@@ -26,7 +26,6 @@ func ExampleOpenFile() {
 
 func ExampleOpenFile_append() {
 	// If the file doesn't exist, create it, or append to the file
-	// If the file doesn't exist, create it, or append to the file
 	f, err := os.OpenFile("access.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
@@ -61,9 +60,6 @@ func ExampleFileMode() {
 	}
 
 	fmt.Printf("permissions: %#o\n", fi.Mode().Perm()) // 0400, 0777, etc.
-	// 0400, 0777, etc.
-	// 0400, 0777, etc.
-	// 0400, 0777, etc.
 	switch mode := fi.Mode(); {
 	case mode.IsRegular():
 		fmt.Println("regular file")
@@ -81,8 +77,6 @@ func ExampleErrNotExist() {
 	if _, err := os.Stat(filename); errors.Is(err, fs.ErrNotExist) {
 		fmt.Println("file does not exist")
 	}
-	// Output:
-	// file does not exist
 	// Output:
 	// file does not exist
 }
@@ -103,8 +97,6 @@ func ExampleExpand() {
 
 	// Output:
 	// Good morning, Gopher!
-	// Output:
-	// Good morning, Gopher!
 }
 
 func ExampleExpandEnv() {
@@ -113,8 +105,6 @@ func ExampleExpandEnv() {
 
 	fmt.Println(os.ExpandEnv("$NAME lives in ${BURROW}."))
 
-	// Output:
-	// gopher lives in /usr/gopher.
 	// Output:
 	// gopher lives in /usr/gopher.
 }
@@ -140,10 +130,6 @@ func ExampleLookupEnv() {
 	// SOME_KEY=value
 	// EMPTY_KEY=
 	// MISSING_KEY not set
-	// Output:
-	// SOME_KEY=value
-	// EMPTY_KEY=
-	// MISSING_KEY not set
 }
 
 func ExampleGetenv() {
@@ -152,8 +138,6 @@ func ExampleGetenv() {
 
 	fmt.Printf("%s lives in %s.\n", os.Getenv("NAME"), os.Getenv("BURROW"))
 
-	// Output:
-	// gopher lives in /usr/gopher.
 	// Output:
 	// gopher lives in /usr/gopher.
 }
@@ -180,9 +164,6 @@ func ExampleMkdirTemp() {
 		log.Fatal(err)
 	}
 	defer os.RemoveAll(dir) // clean up
-	// clean up
-	// clean up
-	// clean up
 
 	file := filepath.Join(dir, "tmpfile")
 	if err := os.WriteFile(file, []byte("content"), 0666); err != nil {
@@ -196,7 +177,6 @@ func ExampleMkdirTemp_suffix() {
 		log.Fatal(err)
 	}
 	defer os.RemoveAll(logsDir) // clean up
-	// clean up
 
 	// Logs can be cleaned out earlier if needed by searching
 	// for all directories whose suffix ends in *-logs.
@@ -219,7 +199,6 @@ func ExampleCreateTemp() {
 		log.Fatal(err)
 	}
 	defer os.Remove(f.Name()) // clean up
-	// clean up
 
 	if _, err := f.Write([]byte("content")); err != nil {
 		log.Fatal(err)
@@ -235,7 +214,6 @@ func ExampleCreateTemp_suffix() {
 		log.Fatal(err)
 	}
 	defer os.Remove(f.Name()) // clean up
-	// clean up
 
 	if _, err := f.Write([]byte("content")); err != nil {
 		f.Close()
@@ -253,8 +231,6 @@ func ExampleReadFile() {
 	}
 	os.Stdout.Write(data)
 
-	// Output:
-	// Hello, Gophers!
 	// Output:
 	// Hello, Gophers!
 }

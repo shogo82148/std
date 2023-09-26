@@ -51,11 +51,8 @@ func ExampleUnmarshal() {
 	fmt.Printf("%+v", animals)
 	// Output:
 	// [{Name:Platypus Order:Monotremata} {Name:Quoll Order:Dasyuromorphia}]
-	// Output:
-	// [{Name:Platypus Order:Monotremata} {Name:Quoll Order:Dasyuromorphia}]
 }
 
-// This example uses a Decoder to decode a stream of distinct JSON values.
 // This example uses a Decoder to decode a stream of distinct JSON values.
 func ExampleDecoder() {
 	const jsonStream = `
@@ -86,7 +83,6 @@ func ExampleDecoder() {
 	// Ed: Go fmt yourself!
 }
 
-// This example uses a Decoder to decode a stream of distinct JSON values.
 // This example uses a Decoder to decode a stream of distinct JSON values.
 func ExampleDecoder_Token() {
 	const jsonStream = `
@@ -124,7 +120,6 @@ func ExampleDecoder_Token() {
 	// json.Delim: }
 }
 
-// This example uses a Decoder to decode a streaming array of JSON objects.
 // This example uses a Decoder to decode a streaming array of JSON objects.
 func ExampleDecoder_Decode_stream() {
 	const jsonStream = `
@@ -178,7 +173,6 @@ func ExampleDecoder_Decode_stream() {
 }
 
 // This example uses RawMessage to delay parsing part of a JSON message.
-// This example uses RawMessage to delay parsing part of a JSON message.
 func ExampleRawMessage_unmarshal() {
 	type Color struct {
 		Space string
@@ -224,7 +218,6 @@ func ExampleRawMessage_unmarshal() {
 	// RGB &{98 218 255}
 }
 
-// This example uses RawMessage to use a precomputed JSON during marshal.
 // This example uses RawMessage to use a precomputed JSON during marshal.
 func ExampleRawMessage_marshal() {
 	h := json.RawMessage(`{"precomputed": true}`)
@@ -278,17 +271,6 @@ func ExampleIndent() {
 	// =		"Number": 51
 	// =	}
 	// =]
-	// Output:
-	// [
-	// =	{
-	// =		"Name": "Diamond Fork",
-	// =		"Number": 29
-	// =	},
-	// =	{
-	// =		"Name": "Sheep Creek",
-	// =		"Number": 51
-	// =	}
-	// =]
 }
 
 func ExampleMarshalIndent() {
@@ -308,11 +290,6 @@ func ExampleMarshalIndent() {
 	// <prefix><indent>"a": 1,
 	// <prefix><indent>"b": 2
 	// <prefix>}
-	// Output:
-	// {
-	// <prefix><indent>"a": 1,
-	// <prefix><indent>"b": 2
-	// <prefix>}
 }
 
 func ExampleValid() {
@@ -322,16 +299,12 @@ func ExampleValid() {
 	fmt.Println(json.Valid([]byte(goodJSON)), json.Valid([]byte(badJSON)))
 	// Output:
 	// true false
-	// Output:
-	// true false
 }
 
 func ExampleHTMLEscape() {
 	var out bytes.Buffer
 	json.HTMLEscape(&out, []byte(`{"Name":"<b>HTML content</b>"}`))
 	out.WriteTo(os.Stdout)
-	// Output:
-	//{"Name":"\u003cb\u003eHTML content\u003c/b\u003e"}
 	// Output:
 	//{"Name":"\u003cb\u003eHTML content\u003c/b\u003e"}
 }

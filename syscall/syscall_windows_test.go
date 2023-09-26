@@ -24,5 +24,3 @@ func ExampleLoadLibrary() {
 	build := uint16(r >> 16)
 	print("windows version ", major, ".", minor, " (Build ", build, ")\n")
 }
-
-// build go dll

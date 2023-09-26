@@ -19,7 +19,6 @@ func ExampleInts() {
 
 func ExampleIntsAreSorted() {
 	s := []int{1, 2, 3, 4, 5, 6} // sorted ascending
-	// sorted ascending
 	fmt.Println(sort.IntsAreSorted(s))
 
 	s = []int{6, 5, 4, 3, 2, 1} // sorted descending
@@ -35,7 +34,6 @@ func ExampleIntsAreSorted() {
 
 func ExampleFloat64s() {
 	s := []float64{5.2, -1.3, 0.7, -3.8, 2.6} // unsorted
-	// unsorted
 	sort.Float64s(s)
 	fmt.Println(s)
 
@@ -49,7 +47,6 @@ func ExampleFloat64s() {
 
 func ExampleFloat64sAreSorted() {
 	s := []float64{0.7, 1.3, 2.6, 3.8, 5.2} // sorted ascending
-	// sorted ascending
 	fmt.Println(sort.Float64sAreSorted(s))
 
 	s = []float64{5.2, 3.8, 2.6, 1.3, 0.7} // sorted descending
@@ -65,7 +62,6 @@ func ExampleFloat64sAreSorted() {
 
 func ExampleReverse() {
 	s := []int{5, 2, 6, 3, 1, 4} // unsorted
-	// unsorted
 	sort.Sort(sort.Reverse(sort.IntSlice(s)))
 	fmt.Println(s)
 	// Output: [6 5 4 3 2 1]
@@ -88,8 +84,6 @@ func ExampleSlice() {
 	fmt.Println("By age:", people)
 	// Output: By name: [{Alice 55} {Bob 75} {Gopher 7} {Vera 24}]
 	// By age: [{Gopher 7} {Vera 24} {Alice 55} {Bob 75}]
-	// Output: By name: [{Alice 55} {Bob 75} {Gopher 7} {Vera 24}]
-	// By age: [{Gopher 7} {Vera 24} {Alice 55} {Bob 75}]
 }
 
 func ExampleSliceStable() {
@@ -109,7 +103,6 @@ func ExampleSliceStable() {
 	}
 
 	// Sort by name, preserving original order
-	// Sort by name, preserving original order
 	sort.SliceStable(people, func(i, j int) bool { return people[i].Name < people[j].Name })
 	fmt.Println("By name:", people)
 
@@ -125,6 +118,5 @@ func ExampleStrings() {
 	s := []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
 	sort.Strings(s)
 	fmt.Println(s)
-	// Output: [Alpha Bravo Delta Go Gopher Grin]
 	// Output: [Alpha Bravo Delta Go Gopher Grin]
 }

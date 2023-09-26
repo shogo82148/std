@@ -21,7 +21,6 @@ func ExampleRat_SetString() {
 func ExampleInt_SetString() {
 	i := new(big.Int)
 	i.SetString("644", 8) // octal
-	// octal
 	fmt.Println(i)
 	// Output: 420
 }
@@ -31,12 +30,9 @@ func ExampleFloat_SetString() {
 	f.SetString("3.14159")
 	fmt.Println(f)
 	// Output: 3.14159
-	// Output: 3.14159
 }
 
 func ExampleRat_Scan() {
-	// The Scan function is rarely used directly;
-	// the fmt package recognizes it as an implementation of fmt.Scanner.
 	// The Scan function is rarely used directly;
 	// the fmt package recognizes it as an implementation of fmt.Scanner.
 	r := new(big.Rat)
@@ -52,8 +48,6 @@ func ExampleRat_Scan() {
 func ExampleInt_Scan() {
 	// The Scan function is rarely used directly;
 	// the fmt package recognizes it as an implementation of fmt.Scanner.
-	// The Scan function is rarely used directly;
-	// the fmt package recognizes it as an implementation of fmt.Scanner.
 	i := new(big.Int)
 	_, err := fmt.Sscan("18446744073709551617", i)
 	if err != nil {
@@ -67,8 +61,6 @@ func ExampleInt_Scan() {
 func ExampleFloat_Scan() {
 	// The Scan function is rarely used directly;
 	// the fmt package recognizes it as an implementation of fmt.Scanner.
-	// The Scan function is rarely used directly;
-	// the fmt package recognizes it as an implementation of fmt.Scanner.
 	f := new(big.Float)
 	_, err := fmt.Sscan("1.19282e99", f)
 	if err != nil {
@@ -79,8 +71,6 @@ func ExampleFloat_Scan() {
 	// Output: 1.19282e+99
 }
 
-// This example demonstrates how to use big.Int to compute the smallest
-// Fibonacci number with 100 decimal digits and to test whether it is prime.
 // This example demonstrates how to use big.Int to compute the smallest
 // Fibonacci number with 100 decimal digits and to test whether it is prime.
 func Example_fibonacci() {
@@ -111,8 +101,6 @@ func Example_fibonacci() {
 	// false
 }
 
-// This example shows how to use big.Float to compute the square root of 2 with
-// a precision of 200 bits, and how to print the result as a decimal number.
 // This example shows how to use big.Float to compute the square root of 2 with
 // a precision of 200 bits, and how to print the result as a decimal number.
 func Example_sqrt2() {

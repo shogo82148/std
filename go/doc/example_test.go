@@ -58,5 +58,3 @@ func ExampleGreet_world() {
 	// func Greet - This comment is associated with the Greet function.
 	//  ⤷ example with suffix "world" - This comment is associated with the ExampleGreet_world example.
 }
-
-// Parse literal source code as a *doc.Package.

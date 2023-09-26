@@ -42,14 +42,6 @@ func ExampleClean() {
 	// Clean("/../a/c") = "/a/c"
 	// Clean("/../a/b/../././/c") = "/a/c"
 	// Clean("") = "."
-	// Output:
-	// Clean("a/c") = "a/c"
-	// Clean("a//c") = "a/c"
-	// Clean("a/c/.") = "a/c"
-	// Clean("a/c/b/..") = "a/c"
-	// Clean("/../a/c") = "/a/c"
-	// Clean("/../a/b/../././/c") = "/a/c"
-	// Clean("") = "."
 }
 
 func ExampleDir() {
@@ -59,13 +51,6 @@ func ExampleDir() {
 	fmt.Println(path.Dir("a/"))
 	fmt.Println(path.Dir("/"))
 	fmt.Println(path.Dir(""))
-	// Output:
-	// /a/b
-	// a/b
-	// /a
-	// a
-	// /
-	// .
 	// Output:
 	// /a/b
 	// a/b
@@ -83,15 +68,10 @@ func ExampleExt() {
 	// .css
 	//
 	//
-	// Output:
-	// .css
-	//
-	//
 }
 
 func ExampleIsAbs() {
 	fmt.Println(path.IsAbs("/dev/null"))
-	// Output: true
 	// Output: true
 }
 
@@ -114,24 +94,12 @@ func ExampleJoin() {
 	//
 	// a
 	// a
-	// Output:
-	// a/b/c
-	// a/b/c
-	// a/b/c
-	// ../xyz
-	//
-	// a
-	// a
 }
 
 func ExampleMatch() {
 	fmt.Println(path.Match("abc", "abc"))
 	fmt.Println(path.Match("a*", "abc"))
 	fmt.Println(path.Match("a*/b", "a/c/b"))
-	// Output:
-	// true <nil>
-	// true <nil>
-	// false <nil>
 	// Output:
 	// true <nil>
 	// true <nil>
@@ -146,10 +114,6 @@ func ExampleSplit() {
 	split("static/myfile.css")
 	split("myfile.css")
 	split("")
-	// Output:
-	// path.Split("static/myfile.css") = dir: "static/", file: "myfile.css"
-	// path.Split("myfile.css") = dir: "", file: "myfile.css"
-	// path.Split("") = dir: "", file: ""
 	// Output:
 	// path.Split("static/myfile.css") = dir: "static/", file: "myfile.css"
 	// path.Split("myfile.css") = dir: "", file: "myfile.css"

@@ -39,8 +39,6 @@ func ExampleParseAddress() {
 
 	// Output:
 	// Alice alice@example.com
-	// Output:
-	// Alice alice@example.com
 }
 
 func ExampleReadMessage() {
@@ -70,12 +68,6 @@ Message body
 	}
 	fmt.Printf("%s", body)
 
-	// Output:
-	// Date: Mon, 23 Jun 2015 11:40:36 -0400
-	// From: Gopher <from@example.com>
-	// To: Another Gopher <to@example.com>
-	// Subject: Gophers at Gophercon
-	// Message body
 	// Output:
 	// Date: Mon, 23 Jun 2015 11:40:36 -0400
 	// From: Gopher <from@example.com>

@@ -54,6 +54,3 @@ func Example_openDBCLI() {
 
 	Query(ctx, *id)
 }
-
-// Ping the database to verify DSN provided by the user is valid and the
-// server accessible. If the ping fails exit the program with an error.

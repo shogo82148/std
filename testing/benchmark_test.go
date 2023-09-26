@@ -30,8 +30,6 @@ func ExampleB_RunParallel() {
 	})
 }
 
-// Test built-in overriding.
-
 func ExampleB_ReportMetric() {
 	// This reports a custom benchmark metric relevant to a
 	// specific algorithm (in this case, sorting).
@@ -54,8 +52,6 @@ func ExampleB_ReportMetric() {
 }
 
 func ExampleB_ReportMetric_parallel() {
-	// This reports a custom benchmark metric relevant to a
-	// specific algorithm (in this case, sorting) in parallel.
 	// This reports a custom benchmark metric relevant to a
 	// specific algorithm (in this case, sorting) in parallel.
 	testing.Benchmark(func(b *testing.B) {

@@ -40,8 +40,6 @@ func Example() {
 
 // This example shows the use of each of the methods on a *Rand.
 // The use of the global functions is the same, without the receiver.
-// This example shows the use of each of the methods on a *Rand.
-// The use of the global functions is the same, without the receiver.
 func Example_rand() {
 	// Create and seed the generator.
 	// Typically a non-fixed seed should be used, such as time.Now().UnixNano().
@@ -102,9 +100,6 @@ func ExamplePerm() {
 	// Unordered output: 1
 	// 2
 	// 0
-	// Unordered output: 1
-	// 2
-	// 0
 }
 
 func ExampleShuffle() {
@@ -118,8 +113,6 @@ func ExampleShuffle() {
 func ExampleShuffle_slicesInUnison() {
 	numbers := []byte("12345")
 	letters := []byte("ABCDE")
-	// Shuffle numbers, swapping corresponding entries in letters at the same time.
-	// Shuffle numbers, swapping corresponding entries in letters at the same time.
 	// Shuffle numbers, swapping corresponding entries in letters at the same time.
 	rand.Shuffle(len(numbers), func(i, j int) {
 		numbers[i], numbers[j] = numbers[j], numbers[i]

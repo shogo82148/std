@@ -52,7 +52,6 @@ func ExampleServer() {
 
 	fmt.Printf("%s", greeting)
 	// Output: Hello, client
-	// Output: Hello, client
 }
 
 func ExampleServer_hTTP2() {
@@ -75,7 +74,6 @@ func ExampleServer_hTTP2() {
 	fmt.Printf("%s", greeting)
 
 	// Output: Hello, HTTP/2.0
-	// Output: Hello, HTTP/2.0
 }
 
 func ExampleNewTLSServer() {
@@ -97,6 +95,5 @@ func ExampleNewTLSServer() {
 	}
 
 	fmt.Printf("%s", greeting)
-	// Output: Hello, client
 	// Output: Hello, client
 }

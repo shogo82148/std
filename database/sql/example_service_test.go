@@ -30,6 +30,3 @@ func Example_openDBService() {
 type Service struct {
 	db *sql.DB
 }
-
-// This is a short SELECT. Use the request context as the base of
-// the context timeout.

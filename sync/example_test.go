@@ -50,6 +50,4 @@ func ExampleOnce() {
 	}
 	// Output:
 	// Only once
-	// Output:
-	// Only once
 }

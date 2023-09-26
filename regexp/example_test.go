@@ -38,10 +38,6 @@ func ExampleMatch() {
 	// true <nil>
 	// false <nil>
 	// false error parsing regexp: missing closing ): `a(b`
-	// Output:
-	// true <nil>
-	// false <nil>
-	// false error parsing regexp: missing closing ): `a(b`
 }
 
 func ExampleMatchString() {
@@ -55,16 +51,10 @@ func ExampleMatchString() {
 	// true <nil>
 	// false <nil>
 	// false error parsing regexp: missing closing ): `a(b`
-	// Output:
-	// true <nil>
-	// false <nil>
-	// false error parsing regexp: missing closing ): `a(b`
 }
 
 func ExampleQuoteMeta() {
 	fmt.Println(regexp.QuoteMeta(`Escaping symbols like: .+*?()|[]{}^$`))
-	// Output:
-	// Escaping symbols like: \.\+\*\?\(\)\|\[\]\{\}\^\$
 	// Output:
 	// Escaping symbols like: \.\+\*\?\(\)\|\[\]\{\}\^\$
 }
@@ -75,16 +65,12 @@ func ExampleRegexp_Find() {
 
 	// Output:
 	// "food"
-	// Output:
-	// "food"
 }
 
 func ExampleRegexp_FindAll() {
 	re := regexp.MustCompile(`foo.?`)
 	fmt.Printf("%q\n", re.FindAll([]byte(`seafood fool`), -1))
 
-	// Output:
-	// ["food" "fool"]
 	// Output:
 	// ["food" "fool"]
 }
@@ -95,16 +81,12 @@ func ExampleRegexp_FindAllSubmatch() {
 
 	// Output:
 	// [["food" "d"] ["fool" "l"]]
-	// Output:
-	// [["food" "d"] ["fool" "l"]]
 }
 
 func ExampleRegexp_FindSubmatch() {
 	re := regexp.MustCompile(`foo(.?)`)
 	fmt.Printf("%q\n", re.FindSubmatch([]byte(`seafood fool`)))
 
-	// Output:
-	// ["food" "d"]
 	// Output:
 	// ["food" "d"]
 }
@@ -117,18 +99,12 @@ func ExampleRegexp_Match() {
 	// Output:
 	// true
 	// false
-	// Output:
-	// true
-	// false
 }
 
 func ExampleRegexp_FindString() {
 	re := regexp.MustCompile(`foo.?`)
 	fmt.Printf("%q\n", re.FindString("seafood fool"))
 	fmt.Printf("%q\n", re.FindString("meat"))
-	// Output:
-	// "food"
-	// ""
 	// Output:
 	// "food"
 	// ""
@@ -141,18 +117,12 @@ func ExampleRegexp_FindStringIndex() {
 	// Output:
 	// [1 3]
 	// true
-	// Output:
-	// [1 3]
-	// true
 }
 
 func ExampleRegexp_FindStringSubmatch() {
 	re := regexp.MustCompile(`a(x*)b(y|z)c`)
 	fmt.Printf("%q\n", re.FindStringSubmatch("-axxxbyc-"))
 	fmt.Printf("%q\n", re.FindStringSubmatch("-abzc-"))
-	// Output:
-	// ["axxxbyc" "xxx" "y"]
-	// ["abzc" "" "z"]
 	// Output:
 	// ["axxxbyc" "xxx" "y"]
 	// ["abzc" "" "z"]
@@ -164,11 +134,6 @@ func ExampleRegexp_FindAllString() {
 	fmt.Println(re.FindAllString("paranormal", 2))
 	fmt.Println(re.FindAllString("graal", -1))
 	fmt.Println(re.FindAllString("none", -1))
-	// Output:
-	// [ar an al]
-	// [ar an]
-	// [aa]
-	// []
 	// Output:
 	// [ar an al]
 	// [ar an]
@@ -187,18 +152,10 @@ func ExampleRegexp_FindAllStringSubmatch() {
 	// [["axxb" "xx"]]
 	// [["ab" ""] ["axb" "x"]]
 	// [["axxb" "xx"] ["ab" ""]]
-	// Output:
-	// [["ab" ""]]
-	// [["axxb" "xx"]]
-	// [["ab" ""] ["axb" "x"]]
-	// [["axxb" "xx"] ["ab" ""]]
 }
 
 func ExampleRegexp_FindAllStringSubmatchIndex() {
 	re := regexp.MustCompile(`a(x*)b`)
-	// Indices:
-	//    01234567   012345678
-	//    -ab-axb-   -axxb-ab-
 	// Indices:
 	//    01234567   012345678
 	//    -ab-axb-   -axxb-ab-
@@ -217,9 +174,6 @@ func ExampleRegexp_FindAllStringSubmatchIndex() {
 
 func ExampleRegexp_FindSubmatchIndex() {
 	re := regexp.MustCompile(`a(x*)b`)
-	// Indices:
-	//    01234567   012345678
-	//    -ab-axb-   -axxb-ab-
 	// Indices:
 	//    01234567   012345678
 	//    -ab-axb-   -axxb-ab-
@@ -244,9 +198,6 @@ func ExampleRegexp_Longest() {
 	// Output:
 	// a
 	// ab
-	// Output:
-	// a
-	// ab
 }
 
 func ExampleRegexp_MatchString() {
@@ -254,10 +205,6 @@ func ExampleRegexp_MatchString() {
 	fmt.Println(re.MatchString("gopher"))
 	fmt.Println(re.MatchString("gophergopher"))
 	fmt.Println(re.MatchString("gophergophergopher"))
-	// Output:
-	// false
-	// true
-	// true
 	// Output:
 	// false
 	// true
@@ -270,9 +217,6 @@ func ExampleRegexp_NumSubexp() {
 
 	re := regexp.MustCompile(`(.*)((a)b)(.*)a`)
 	fmt.Println(re.NumSubexp())
-	// Output:
-	// 0
-	// 4
 	// Output:
 	// 0
 	// 4
@@ -289,11 +233,6 @@ func ExampleRegexp_ReplaceAll() {
 	// --xx-
 	// ---
 	// -W-xxW-
-	// Output:
-	// -T-T-
-	// --xx-
-	// ---
-	// -W-xxW-
 }
 
 func ExampleRegexp_ReplaceAllLiteralString() {
@@ -301,10 +240,6 @@ func ExampleRegexp_ReplaceAllLiteralString() {
 	fmt.Println(re.ReplaceAllLiteralString("-ab-axxb-", "T"))
 	fmt.Println(re.ReplaceAllLiteralString("-ab-axxb-", "$1"))
 	fmt.Println(re.ReplaceAllLiteralString("-ab-axxb-", "${1}"))
-	// Output:
-	// -T-T-
-	// -$1-$1-
-	// -${1}-${1}-
 	// Output:
 	// -T-T-
 	// -$1-$1-
@@ -322,18 +257,11 @@ func ExampleRegexp_ReplaceAllString() {
 	// --xx-
 	// ---
 	// -W-xxW-
-	// Output:
-	// -T-T-
-	// --xx-
-	// ---
-	// -W-xxW-
 }
 
 func ExampleRegexp_ReplaceAllStringFunc() {
 	re := regexp.MustCompile(`[^aeiou]`)
 	fmt.Println(re.ReplaceAllStringFunc("seafood fool", strings.ToUpper))
-	// Output:
-	// SeaFooD FooL
 	// Output:
 	// SeaFooD FooL
 }
@@ -350,11 +278,6 @@ func ExampleRegexp_SubexpNames() {
 	// ["" "first" "last"]
 	// ${last} ${first}
 	// Turing Alan
-	// Output:
-	// true
-	// ["" "first" "last"]
-	// ${last} ${first}
-	// Turing Alan
 }
 
 func ExampleRegexp_SubexpIndex() {
@@ -364,10 +287,6 @@ func ExampleRegexp_SubexpIndex() {
 	lastIndex := re.SubexpIndex("last")
 	fmt.Printf("last => %d\n", lastIndex)
 	fmt.Println(matches[lastIndex])
-	// Output:
-	// true
-	// last => 2
-	// Turing
 	// Output:
 	// true
 	// last => 2
@@ -394,15 +313,6 @@ func ExampleRegexp_Split() {
 	// []
 	// [pizza]
 	// [pi a]
-	// Output:
-	// [b n n ]
-	// []
-	// [banana]
-	// [b nana]
-	// [pi a]
-	// []
-	// [pizza]
-	// [pi a]
 }
 
 func ExampleRegexp_Expand() {
@@ -415,7 +325,6 @@ func ExampleRegexp_Expand() {
 	option3: value3
 `)
 
-	// Regex pattern captures "key: value" pair from the content.
 	// Regex pattern captures "key: value" pair from the content.
 	pattern := regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 
@@ -449,7 +358,6 @@ func ExampleRegexp_ExpandString() {
 `
 
 	// Regex pattern captures "key: value" pair from the content.
-	// Regex pattern captures "key: value" pair from the content.
 	pattern := regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 
 	// Template to convert "key: value" to "key=value" by
@@ -478,7 +386,6 @@ func ExampleRegexp_FindIndex() {
 	option2: value2
 `)
 	// Regex pattern captures "key: value" pair from the content.
-	// Regex pattern captures "key: value" pair from the content.
 	pattern := regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 
 	loc := pattern.FindIndex(content)
@@ -495,7 +402,6 @@ func ExampleRegexp_FindAllSubmatchIndex() {
 	option1: value1
 	option2: value2
 `)
-	// Regex pattern captures "key: value" pair from the content.
 	// Regex pattern captures "key: value" pair from the content.
 	pattern := regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 	allIndexes := pattern.FindAllSubmatchIndex(content, -1)
@@ -521,9 +427,6 @@ func ExampleRegexp_FindAllIndex() {
 	re := regexp.MustCompile(`o.`)
 	fmt.Println(re.FindAllIndex(content, 1))
 	fmt.Println(re.FindAllIndex(content, -1))
-	// Output:
-	// [[1 3]]
-	// [[1 3] [4 6]]
 	// Output:
 	// [[1 3]]
 	// [[1 3] [4 6]]

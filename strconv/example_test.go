@@ -31,9 +31,6 @@ func ExampleAppendFloat() {
 	// Output:
 	// float32:3.1415927E+00
 	// float64:3.1415926535E+00
-	// Output:
-	// float32:3.1415927E+00
-	// float64:3.1415926535E+00
 }
 
 func ExampleAppendInt() {
@@ -48,9 +45,6 @@ func ExampleAppendInt() {
 	// Output:
 	// int (base 10):-42
 	// int (base 16):-2a
-	// Output:
-	// int (base 10):-42
-	// int (base 16):-2a
 }
 
 func ExampleAppendQuote() {
@@ -58,8 +52,6 @@ func ExampleAppendQuote() {
 	b = strconv.AppendQuote(b, `"Fran & Freddie's Diner"`)
 	fmt.Println(string(b))
 
-	// Output:
-	// quote:"\"Fran & Freddie's Diner\""
 	// Output:
 	// quote:"\"Fran & Freddie's Diner\""
 }
@@ -71,8 +63,6 @@ func ExampleAppendQuoteRune() {
 
 	// Output:
 	// rune:'☺'
-	// Output:
-	// rune:'☺'
 }
 
 func ExampleAppendQuoteRuneToASCII() {
@@ -82,8 +72,6 @@ func ExampleAppendQuoteRuneToASCII() {
 
 	// Output:
 	// rune (ascii):'\u263a'
-	// Output:
-	// rune (ascii):'\u263a'
 }
 
 func ExampleAppendQuoteToASCII() {
@@ -91,8 +79,6 @@ func ExampleAppendQuoteToASCII() {
 	b = strconv.AppendQuoteToASCII(b, `"Fran & Freddie's Diner"`)
 	fmt.Println(string(b))
 
-	// Output:
-	// quote (ascii):"\"Fran & Freddie's Diner\""
 	// Output:
 	// quote (ascii):"\"Fran & Freddie's Diner\""
 }
@@ -109,9 +95,6 @@ func ExampleAppendUint() {
 	// Output:
 	// uint (base 10):42
 	// uint (base 16):2a
-	// Output:
-	// uint (base 10):42
-	// uint (base 16):2a
 }
 
 func ExampleAtoi() {
@@ -120,8 +103,6 @@ func ExampleAtoi() {
 		fmt.Printf("%T, %v", s, s)
 	}
 
-	// Output:
-	// int, 10
 	// Output:
 	// int, 10
 }
@@ -133,9 +114,6 @@ func ExampleCanBackquote() {
 	// Output:
 	// true
 	// false
-	// Output:
-	// true
-	// false
 }
 
 func ExampleFormatBool() {
@@ -143,8 +121,6 @@ func ExampleFormatBool() {
 	s := strconv.FormatBool(v)
 	fmt.Printf("%T, %v\n", s, s)
 
-	// Output:
-	// string, true
 	// Output:
 	// string, true
 }
@@ -158,7 +134,6 @@ func ExampleFormatFloat() {
 	s64 := strconv.FormatFloat(v, 'E', -1, 64)
 	fmt.Printf("%T, %v\n", s64, s64)
 
-	// fmt.Println uses these arguments to print floats
 	// fmt.Println uses these arguments to print floats
 	fmt64 := strconv.FormatFloat(v, 'g', -1, 64)
 	fmt.Printf("%T, %v\n", fmt64, fmt64)
@@ -181,9 +156,6 @@ func ExampleFormatInt() {
 	// Output:
 	// string, -42
 	// string, -2a
-	// Output:
-	// string, -42
-	// string, -2a
 }
 
 func ExampleFormatUint() {
@@ -195,9 +167,6 @@ func ExampleFormatUint() {
 	s16 := strconv.FormatUint(v, 16)
 	fmt.Printf("%T, %v\n", s16, s16)
 
-	// Output:
-	// string, 42
-	// string, 2a
 	// Output:
 	// string, 42
 	// string, 2a
@@ -217,10 +186,6 @@ func ExampleIsGraphic() {
 	// true
 	// true
 	// false
-	// Output:
-	// true
-	// true
-	// false
 }
 
 func ExampleIsPrint() {
@@ -233,9 +198,6 @@ func ExampleIsPrint() {
 	// Output:
 	// true
 	// false
-	// Output:
-	// true
-	// false
 }
 
 func ExampleItoa() {
@@ -243,8 +205,6 @@ func ExampleItoa() {
 	s := strconv.Itoa(i)
 	fmt.Printf("%T, %v\n", s, s)
 
-	// Output:
-	// string, 10
 	// Output:
 	// string, 10
 }
@@ -255,8 +215,6 @@ func ExampleParseBool() {
 		fmt.Printf("%T, %v\n", s, s)
 	}
 
-	// Output:
-	// bool, true
 	// Output:
 	// bool, true
 }
@@ -272,7 +230,6 @@ func ExampleParseFloat() {
 	if s, err := strconv.ParseFloat("NaN", 32); err == nil {
 		fmt.Printf("%T, %v\n", s, s)
 	}
-	// ParseFloat is case insensitive
 	// ParseFloat is case insensitive
 	if s, err := strconv.ParseFloat("nan", 32); err == nil {
 		fmt.Printf("%T, %v\n", s, s)
@@ -325,9 +282,6 @@ func ExampleParseInt() {
 	// Output:
 	// int64, -354634382
 	// int64, -3546343826724305832
-	// Output:
-	// int64, -354634382
-	// int64, -3546343826724305832
 }
 
 func ExampleParseUint() {
@@ -342,13 +296,9 @@ func ExampleParseUint() {
 	// Output:
 	// uint64, 42
 	// uint64, 42
-	// Output:
-	// uint64, 42
-	// uint64, 42
 }
 
 func ExampleQuote() {
-	// This string literal contains a tab character.
 	// This string literal contains a tab character.
 	s := strconv.Quote(`"Fran & Freddie's Diner	☺"`)
 	fmt.Println(s)
@@ -363,16 +313,12 @@ func ExampleQuoteRune() {
 
 	// Output:
 	// '☺'
-	// Output:
-	// '☺'
 }
 
 func ExampleQuoteRuneToASCII() {
 	s := strconv.QuoteRuneToASCII('☺')
 	fmt.Println(s)
 
-	// Output:
-	// '\u263a'
 	// Output:
 	// '\u263a'
 }
@@ -388,7 +334,6 @@ func ExampleQuoteRuneToGraphic() {
 	fmt.Println(s)
 
 	s = strconv.QuoteRuneToGraphic('	') // tab character
-	// tab character
 	fmt.Println(s)
 
 	// Output:
@@ -399,7 +344,6 @@ func ExampleQuoteRuneToGraphic() {
 }
 
 func ExampleQuoteToASCII() {
-	// This string literal contains a tab character.
 	// This string literal contains a tab character.
 	s := strconv.QuoteToASCII(`"Fran & Freddie's Diner	☺"`)
 	fmt.Println(s)
@@ -412,7 +356,6 @@ func ExampleQuoteToGraphic() {
 	s := strconv.QuoteToGraphic("☺")
 	fmt.Println(s)
 
-	// This string literal contains a tab character.
 	// This string literal contains a tab character.
 	s = strconv.QuoteToGraphic("This is a \u263a	\u000a")
 	fmt.Println(s)
@@ -434,7 +377,6 @@ func ExampleUnquote() {
 	s, err = strconv.Unquote("`or backquoted.`")
 	fmt.Printf("%q, %v\n", s, err)
 	s, err = strconv.Unquote("'\u263a'") // single character only allowed in single quotes
-	// single character only allowed in single quotes
 	fmt.Printf("%q, %v\n", s, err)
 	s, err = strconv.Unquote("'\u2639\u2639'")
 	fmt.Printf("%q, %v\n", s, err)
@@ -461,10 +403,6 @@ func ExampleUnquoteChar() {
 	// value: "
 	// multibyte: false
 	// tail: Fran & Freddie's Diner\"
-	// Output:
-	// value: "
-	// multibyte: false
-	// tail: Fran & Freddie's Diner\"
 }
 
 func ExampleNumError() {
@@ -477,11 +415,6 @@ func ExampleNumError() {
 		fmt.Println(err)
 	}
 
-	// Output:
-	// Func: ParseFloat
-	// Num: Not a number
-	// Err: invalid syntax
-	// strconv.ParseFloat: parsing "Not a number": invalid syntax
 	// Output:
 	// Func: ParseFloat
 	// Num: Not a number

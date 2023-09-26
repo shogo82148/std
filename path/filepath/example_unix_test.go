@@ -36,11 +36,6 @@ func ExampleRel() {
 	// "/a/b/c": "b/c" <nil>
 	// "/b/c": "../b/c" <nil>
 	// "./b/c": "" Rel: can't make ./b/c relative to /a
-	// Output:
-	// On Unix:
-	// "/a/b/c": "b/c" <nil>
-	// "/b/c": "../b/c" <nil>
-	// "./b/c": "" Rel: can't make ./b/c relative to /a
 }
 
 func ExampleSplit() {
@@ -55,20 +50,6 @@ func ExampleSplit() {
 		dir, file := filepath.Split(p)
 		fmt.Printf("input: %q\n\tdir: %q\n\tfile: %q\n", p, dir, file)
 	}
-	// Output:
-	// On Unix:
-	// input: "/home/arnie/amelia.jpg"
-	// 	dir: "/home/arnie/"
-	// 	file: "amelia.jpg"
-	// input: "/mnt/photos/"
-	// 	dir: "/mnt/photos/"
-	// 	file: ""
-	// input: "rabbit.jpg"
-	// 	dir: ""
-	// 	file: "rabbit.jpg"
-	// input: "/usr/local//go"
-	// 	dir: "/usr/local//"
-	// 	file: "go"
 	// Output:
 	// On Unix:
 	// input: "/home/arnie/amelia.jpg"
@@ -101,13 +82,6 @@ func ExampleJoin() {
 	// a/b/c
 	// a/b/c
 	// ../xyz
-	// Output:
-	// On Unix:
-	// a/b/c
-	// a/b/c
-	// a/b/c
-	// a/b/c
-	// ../xyz
 }
 
 func ExampleMatch() {
@@ -117,12 +91,6 @@ func ExampleMatch() {
 	fmt.Println(filepath.Match("/home/?opher", "/home/gopher"))
 	fmt.Println(filepath.Match("/home/\\*", "/home/*"))
 
-	// Output:
-	// On Unix:
-	// true <nil>
-	// false <nil>
-	// true <nil>
-	// true <nil>
 	// Output:
 	// On Unix:
 	// true <nil>
@@ -143,17 +111,6 @@ func ExampleBase() {
 	fmt.Println(filepath.Base("/"))
 	fmt.Println(filepath.Base(""))
 
-	// Output:
-	// On Unix:
-	// baz.js
-	// baz
-	// baz
-	// dev.txt
-	// todo.txt
-	// ..
-	// .
-	// /
-	// .
 	// Output:
 	// On Unix:
 	// baz.js
@@ -192,18 +149,6 @@ func ExampleDir() {
 	// .
 	// /
 	// .
-	// Output:
-	// On Unix:
-	// /foo/bar
-	// /foo/bar
-	// /foo/bar/baz
-	// /dirty/path
-	// .
-	// ..
-	// .
-	// .
-	// /
-	// .
 }
 
 func ExampleIsAbs() {
@@ -215,14 +160,6 @@ func ExampleIsAbs() {
 	fmt.Println(filepath.IsAbs("/"))
 	fmt.Println(filepath.IsAbs(""))
 
-	// Output:
-	// On Unix:
-	// true
-	// false
-	// false
-	// false
-	// true
-	// false
 	// Output:
 	// On Unix:
 	// true

@@ -48,8 +48,6 @@ func Example() {
 
 // variables to make ExamplePlainAuth compile, without adding
 // unnecessary noise there.
-// variables to make ExamplePlainAuth compile, without adding
-// unnecessary noise there.
 
 func ExamplePlainAuth() {
 	// hostname is used by PlainAuth to validate the TLS certificate.
@@ -63,7 +61,6 @@ func ExamplePlainAuth() {
 }
 
 func ExampleSendMail() {
-	// Set up authentication information.
 	// Set up authentication information.
 	auth := smtp.PlainAuth("", "user@example.com", "password", "mail.example.com")
 

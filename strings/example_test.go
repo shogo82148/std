@@ -30,17 +30,12 @@ func ExampleBuilder() {
 	fmt.Println(b.String())
 
 	// Output: 3...2...1...ignition
-	// Output: 3...2...1...ignition
 }
 
 func ExampleCompare() {
 	fmt.Println(strings.Compare("a", "b"))
 	fmt.Println(strings.Compare("a", "a"))
 	fmt.Println(strings.Compare("b", "a"))
-	// Output:
-	// -1
-	// 0
-	// 1
 	// Output:
 	// -1
 	// 0
@@ -52,11 +47,6 @@ func ExampleContains() {
 	fmt.Println(strings.Contains("seafood", "bar"))
 	fmt.Println(strings.Contains("seafood", ""))
 	fmt.Println(strings.Contains("", ""))
-	// Output:
-	// true
-	// false
-	// true
-	// true
 	// Output:
 	// true
 	// false
@@ -78,18 +68,9 @@ func ExampleContainsAny() {
 	// true
 	// false
 	// false
-	// Output:
-	// false
-	// true
-	// true
-	// true
-	// false
-	// false
 }
 
 func ExampleContainsRune() {
-	// Finds whether a string contains a particular Unicode code point.
-	// The code point for the lowercase letter "a", for example, is 97.
 	// Finds whether a string contains a particular Unicode code point.
 	// The code point for the lowercase letter "a", for example, is 97.
 	fmt.Println(strings.ContainsRune("aardvark", 97))
@@ -102,7 +83,6 @@ func ExampleContainsRune() {
 func ExampleCount() {
 	fmt.Println(strings.Count("cheese", "e"))
 	fmt.Println(strings.Count("five", "")) // before & after each rune
-	// before & after each rune
 	// Output:
 	// 3
 	// 5
@@ -122,11 +102,6 @@ func ExampleCut() {
 	// Cut("Gopher", "ph") = "Go", "er", true
 	// Cut("Gopher", "er") = "Goph", "", true
 	// Cut("Gopher", "Badger") = "Gopher", "", false
-	// Output:
-	// Cut("Gopher", "Go") = "", "pher", true
-	// Cut("Gopher", "ph") = "Go", "er", true
-	// Cut("Gopher", "er") = "Goph", "", true
-	// Cut("Gopher", "Badger") = "Gopher", "", false
 }
 
 func ExampleCutPrefix() {
@@ -136,9 +111,6 @@ func ExampleCutPrefix() {
 	}
 	show("Gopher", "Go")
 	show("Gopher", "ph")
-	// Output:
-	// CutPrefix("Gopher", "Go") = "pher", true
-	// CutPrefix("Gopher", "ph") = "Gopher", false
 	// Output:
 	// CutPrefix("Gopher", "Go") = "pher", true
 	// CutPrefix("Gopher", "ph") = "Gopher", false
@@ -154,16 +126,12 @@ func ExampleCutSuffix() {
 	// Output:
 	// CutSuffix("Gopher", "Go") = "Gopher", false
 	// CutSuffix("Gopher", "er") = "Goph", true
-	// Output:
-	// CutSuffix("Gopher", "Go") = "Gopher", false
-	// CutSuffix("Gopher", "er") = "Goph", true
 }
 
 func ExampleEqualFold() {
 	fmt.Println(strings.EqualFold("Go", "go"))
 	fmt.Println(strings.EqualFold("AB", "ab")) // true because comparison uses simple case-folding
-	// true because comparison uses simple case-folding
-	fmt.Println(strings.EqualFold("ß", "ss")) // false because comparison does not use full case-folding
+	fmt.Println(strings.EqualFold("ß", "ss"))  // false because comparison does not use full case-folding
 	// Output:
 	// true
 	// true
@@ -173,7 +141,6 @@ func ExampleEqualFold() {
 func ExampleFields() {
 	fmt.Printf("Fields are: %q", strings.Fields("  foo bar  baz   "))
 	// Output: Fields are: ["foo" "bar" "baz"]
-	// Output: Fields are: ["foo" "bar" "baz"]
 }
 
 func ExampleFieldsFunc() {
@@ -182,17 +149,12 @@ func ExampleFieldsFunc() {
 	}
 	fmt.Printf("Fields are: %q", strings.FieldsFunc("  foo1;bar2,baz3...", f))
 	// Output: Fields are: ["foo1" "bar2" "baz3"]
-	// Output: Fields are: ["foo1" "bar2" "baz3"]
 }
 
 func ExampleHasPrefix() {
 	fmt.Println(strings.HasPrefix("Gopher", "Go"))
 	fmt.Println(strings.HasPrefix("Gopher", "C"))
 	fmt.Println(strings.HasPrefix("Gopher", ""))
-	// Output:
-	// true
-	// false
-	// true
 	// Output:
 	// true
 	// false
@@ -209,19 +171,11 @@ func ExampleHasSuffix() {
 	// false
 	// false
 	// true
-	// Output:
-	// true
-	// false
-	// false
-	// true
 }
 
 func ExampleIndex() {
 	fmt.Println(strings.Index("chicken", "ken"))
 	fmt.Println(strings.Index("chicken", "dmr"))
-	// Output:
-	// 4
-	// -1
 	// Output:
 	// 4
 	// -1
@@ -236,17 +190,11 @@ func ExampleIndexFunc() {
 	// Output:
 	// 7
 	// -1
-	// Output:
-	// 7
-	// -1
 }
 
 func ExampleIndexAny() {
 	fmt.Println(strings.IndexAny("chicken", "aeiouy"))
 	fmt.Println(strings.IndexAny("crwth", "aeiouy"))
-	// Output:
-	// 2
-	// -1
 	// Output:
 	// 2
 	// -1
@@ -260,17 +208,10 @@ func ExampleIndexByte() {
 	// 0
 	// 3
 	// -1
-	// Output:
-	// 0
-	// 3
-	// -1
 }
 func ExampleIndexRune() {
 	fmt.Println(strings.IndexRune("chicken", 'k'))
 	fmt.Println(strings.IndexRune("chicken", 'd'))
-	// Output:
-	// 4
-	// -1
 	// Output:
 	// 4
 	// -1
@@ -280,10 +221,6 @@ func ExampleLastIndex() {
 	fmt.Println(strings.Index("go gopher", "go"))
 	fmt.Println(strings.LastIndex("go gopher", "go"))
 	fmt.Println(strings.LastIndex("go gopher", "rodent"))
-	// Output:
-	// 0
-	// 3
-	// -1
 	// Output:
 	// 0
 	// 3
@@ -298,20 +235,12 @@ func ExampleLastIndexAny() {
 	// 4
 	// 8
 	// -1
-	// Output:
-	// 4
-	// 8
-	// -1
 }
 
 func ExampleLastIndexByte() {
 	fmt.Println(strings.LastIndexByte("Hello, world", 'l'))
 	fmt.Println(strings.LastIndexByte("Hello, world", 'o'))
 	fmt.Println(strings.LastIndexByte("Hello, world", 'x'))
-	// Output:
-	// 10
-	// 8
-	// -1
 	// Output:
 	// 10
 	// 8
@@ -326,22 +255,16 @@ func ExampleLastIndexFunc() {
 	// 5
 	// 2
 	// -1
-	// Output:
-	// 5
-	// 2
-	// -1
 }
 
 func ExampleJoin() {
 	s := []string{"foo", "bar", "baz"}
 	fmt.Println(strings.Join(s, ", "))
 	// Output: foo, bar, baz
-	// Output: foo, bar, baz
 }
 
 func ExampleRepeat() {
 	fmt.Println("ba" + strings.Repeat("na", 2))
-	// Output: banana
 	// Output: banana
 }
 
@@ -351,15 +274,10 @@ func ExampleReplace() {
 	// Output:
 	// oinky oinky oink
 	// moo moo moo
-	// Output:
-	// oinky oinky oink
-	// moo moo moo
 }
 
 func ExampleReplaceAll() {
 	fmt.Println(strings.ReplaceAll("oink oink oink", "oink", "moo"))
-	// Output:
-	// moo moo moo
 	// Output:
 	// moo moo moo
 }
@@ -374,11 +292,6 @@ func ExampleSplit() {
 	// ["" "man " "plan " "canal panama"]
 	// [" " "x" "y" "z" " "]
 	// [""]
-	// Output:
-	// ["a" "b" "c"]
-	// ["" "man " "plan " "canal panama"]
-	// [" " "x" "y" "z" " "]
-	// [""]
 }
 
 func ExampleSplitN() {
@@ -388,25 +301,19 @@ func ExampleSplitN() {
 	// Output:
 	// ["a" "b,c"]
 	// [] (nil = true)
-	// Output:
-	// ["a" "b,c"]
-	// [] (nil = true)
 }
 
 func ExampleSplitAfter() {
 	fmt.Printf("%q\n", strings.SplitAfter("a,b,c", ","))
-	// Output: ["a," "b," "c"]
 	// Output: ["a," "b," "c"]
 }
 
 func ExampleSplitAfterN() {
 	fmt.Printf("%q\n", strings.SplitAfterN("a,b,c", ",", 2))
 	// Output: ["a," "b,c"]
-	// Output: ["a," "b,c"]
 }
 
 func ExampleTitle() {
-	// Compare this example to the ToTitle example.
 	// Compare this example to the ToTitle example.
 	fmt.Println(strings.Title("her royal highness"))
 	fmt.Println(strings.Title("loud noises"))
@@ -419,7 +326,6 @@ func ExampleTitle() {
 
 func ExampleToTitle() {
 	// Compare this example to the Title example.
-	// Compare this example to the Title example.
 	fmt.Println(strings.ToTitle("her royal highness"))
 	fmt.Println(strings.ToTitle("loud noises"))
 	fmt.Println(strings.ToTitle("хлеб"))
@@ -431,8 +337,6 @@ func ExampleToTitle() {
 
 func ExampleToTitleSpecial() {
 	fmt.Println(strings.ToTitleSpecial(unicode.TurkishCase, "dünyanın ilk borsa yapısı Aizonai kabul edilir"))
-	// Output:
-	// DÜNYANIN İLK BORSA YAPISI AİZONAİ KABUL EDİLİR
 	// Output:
 	// DÜNYANIN İLK BORSA YAPISI AİZONAİ KABUL EDİLİR
 }
@@ -449,49 +353,41 @@ func ExampleMap() {
 	}
 	fmt.Println(strings.Map(rot13, "'Twas brillig and the slithy gopher..."))
 	// Output: 'Gjnf oevyyvt naq gur fyvgul tbcure...
-	// Output: 'Gjnf oevyyvt naq gur fyvgul tbcure...
 }
 
 func ExampleNewReplacer() {
 	r := strings.NewReplacer("<", "&lt;", ">", "&gt;")
 	fmt.Println(r.Replace("This is <b>HTML</b>!"))
 	// Output: This is &lt;b&gt;HTML&lt;/b&gt;!
-	// Output: This is &lt;b&gt;HTML&lt;/b&gt;!
 }
 
 func ExampleToUpper() {
 	fmt.Println(strings.ToUpper("Gopher"))
-	// Output: GOPHER
 	// Output: GOPHER
 }
 
 func ExampleToUpperSpecial() {
 	fmt.Println(strings.ToUpperSpecial(unicode.TurkishCase, "örnek iş"))
 	// Output: ÖRNEK İŞ
-	// Output: ÖRNEK İŞ
 }
 
 func ExampleToLower() {
 	fmt.Println(strings.ToLower("Gopher"))
-	// Output: gopher
 	// Output: gopher
 }
 
 func ExampleToLowerSpecial() {
 	fmt.Println(strings.ToLowerSpecial(unicode.TurkishCase, "Önnek İş"))
 	// Output: önnek iş
-	// Output: önnek iş
 }
 
 func ExampleTrim() {
 	fmt.Print(strings.Trim("¡¡¡Hello, Gophers!!!", "!¡"))
 	// Output: Hello, Gophers
-	// Output: Hello, Gophers
 }
 
 func ExampleTrimSpace() {
 	fmt.Println(strings.TrimSpace(" \t\n Hello, Gophers \n\t\r\n"))
-	// Output: Hello, Gophers
 	// Output: Hello, Gophers
 }
 
@@ -501,7 +397,6 @@ func ExampleTrimPrefix() {
 	s = strings.TrimPrefix(s, "¡¡¡Howdy, ")
 	fmt.Print(s)
 	// Output: Gophers!!!
-	// Output: Gophers!!!
 }
 
 func ExampleTrimSuffix() {
@@ -510,7 +405,6 @@ func ExampleTrimSuffix() {
 	s = strings.TrimSuffix(s, ", Marmots!!!")
 	fmt.Print(s)
 	// Output: ¡¡¡Hello
-	// Output: ¡¡¡Hello
 }
 
 func ExampleTrimFunc() {
@@ -518,12 +412,10 @@ func ExampleTrimFunc() {
 		return !unicode.IsLetter(r) && !unicode.IsNumber(r)
 	}))
 	// Output: Hello, Gophers
-	// Output: Hello, Gophers
 }
 
 func ExampleTrimLeft() {
 	fmt.Print(strings.TrimLeft("¡¡¡Hello, Gophers!!!", "!¡"))
-	// Output: Hello, Gophers!!!
 	// Output: Hello, Gophers!!!
 }
 
@@ -532,12 +424,10 @@ func ExampleTrimLeftFunc() {
 		return !unicode.IsLetter(r) && !unicode.IsNumber(r)
 	}))
 	// Output: Hello, Gophers!!!
-	// Output: Hello, Gophers!!!
 }
 
 func ExampleTrimRight() {
 	fmt.Print(strings.TrimRight("¡¡¡Hello, Gophers!!!", "!¡"))
-	// Output: ¡¡¡Hello, Gophers
 	// Output: ¡¡¡Hello, Gophers
 }
 
@@ -546,17 +436,12 @@ func ExampleTrimRightFunc() {
 		return !unicode.IsLetter(r) && !unicode.IsNumber(r)
 	}))
 	// Output: ¡¡¡Hello, Gophers
-	// Output: ¡¡¡Hello, Gophers
 }
 
 func ExampleToValidUTF8() {
 	fmt.Printf("%s\n", strings.ToValidUTF8("abc", "\uFFFD"))
 	fmt.Printf("%s\n", strings.ToValidUTF8("a\xffb\xC0\xAFc\xff", ""))
 	fmt.Printf("%s\n", strings.ToValidUTF8("\xed\xa0\x80", "abc"))
-	// Output:
-	// abc
-	// abc
-	// abc
 	// Output:
 	// abc
 	// abc

@@ -30,10 +30,8 @@ func ExampleWriter_AvailableBuffer() {
 	}
 	w.Flush()
 	// Output: 1 2 3 4
-	// Output: 1 2 3 4
 }
 
-// The simplest use of a Scanner, to read standard input as a set of lines.
 // The simplest use of a Scanner, to read standard input as a set of lines.
 func ExampleScanner_lines() {
 	scanner := bufio.NewScanner(os.Stdin)
@@ -45,7 +43,6 @@ func ExampleScanner_lines() {
 	}
 }
 
-// Return the most recent call to Scan as a []byte.
 // Return the most recent call to Scan as a []byte.
 func ExampleScanner_Bytes() {
 	scanner := bufio.NewScanner(strings.NewReader("gopher"))
@@ -59,8 +56,6 @@ func ExampleScanner_Bytes() {
 	// true
 }
 
-// Use a Scanner to implement a simple word-count utility by scanning the
-// input as a sequence of space-delimited tokens.
 // Use a Scanner to implement a simple word-count utility by scanning the
 // input as a sequence of space-delimited tokens.
 func ExampleScanner_words() {
@@ -81,8 +76,6 @@ func ExampleScanner_words() {
 	// Output: 15
 }
 
-// Use a Scanner with a custom split function (built by wrapping ScanWords) to validate
-// 32-bit decimal input.
 // Use a Scanner with a custom split function (built by wrapping ScanWords) to validate
 // 32-bit decimal input.
 func ExampleScanner_custom() {
@@ -113,8 +106,6 @@ func ExampleScanner_custom() {
 	// Invalid input: strconv.ParseInt: parsing "1234567901234567890": value out of range
 }
 
-// Use a Scanner with a custom split function to parse a comma-separated
-// list with an empty final value.
 // Use a Scanner with a custom split function to parse a comma-separated
 // list with an empty final value.
 func ExampleScanner_emptyFinalToken() {

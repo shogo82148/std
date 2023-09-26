@@ -57,8 +57,6 @@ func ExampleWithCancel() {
 
 // This example passes a context with an arbitrary deadline to tell a blocking
 // function that it should abandon its work as soon as it gets to it.
-// This example passes a context with an arbitrary deadline to tell a blocking
-// function that it should abandon its work as soon as it gets to it.
 func ExampleWithDeadline() {
 	d := time.Now().Add(shortDuration)
 	ctx, cancel := context.WithDeadline(context.Background(), d)
@@ -81,8 +79,6 @@ func ExampleWithDeadline() {
 
 // This example passes a context with a timeout to tell a blocking function that
 // it should abandon its work after the timeout elapses.
-// This example passes a context with a timeout to tell a blocking function that
-// it should abandon its work after the timeout elapses.
 func ExampleWithTimeout() {
 	// Pass a context with a timeout to tell a blocking function that it
 	// should abandon its work after the timeout elapses.
@@ -100,8 +96,6 @@ func ExampleWithTimeout() {
 	// context deadline exceeded
 }
 
-// This example demonstrates how a value can be passed to the context
-// and also how to retrieve it if it exists.
 // This example demonstrates how a value can be passed to the context
 // and also how to retrieve it if it exists.
 func ExampleWithValue() {
@@ -128,8 +122,6 @@ func ExampleWithValue() {
 
 // This example uses AfterFunc to define a function which waits on a sync.Cond,
 // stopping the wait when a context is canceled.
-// This example uses AfterFunc to define a function which waits on a sync.Cond,
-// stopping the wait when a context is canceled.
 func ExampleAfterFunc_cond() {
 	waitOnCond := func(ctx context.Context, cond *sync.Cond) error {
 		stopf := context.AfterFunc(ctx, cond.Broadcast)
@@ -152,8 +144,6 @@ func ExampleAfterFunc_cond() {
 	// context deadline exceeded
 }
 
-// This example uses AfterFunc to define a function which reads from a net.Conn,
-// stopping the read when a context is canceled.
 // This example uses AfterFunc to define a function which reads from a net.Conn,
 // stopping the read when a context is canceled.
 func ExampleAfterFunc_connection() {
@@ -199,8 +189,6 @@ func ExampleAfterFunc_connection() {
 	// context deadline exceeded
 }
 
-// This example uses AfterFunc to define a function which combines
-// the cancellation signals of two Contexts.
 // This example uses AfterFunc to define a function which combines
 // the cancellation signals of two Contexts.
 func ExampleAfterFunc_merge() {

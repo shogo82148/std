@@ -36,10 +36,6 @@ func ExampleMakeFunc() {
 	// It must work in terms of reflect.Values so that it is possible
 	// to write code without knowing beforehand what the types
 	// will be.
-	// swap is the implementation passed to MakeFunc.
-	// It must work in terms of reflect.Values so that it is possible
-	// to write code without knowing beforehand what the types
-	// will be.
 	swap := func(in []reflect.Value) []reflect.Value {
 		return []reflect.Value{in[1], in[0]}
 	}
@@ -89,8 +85,6 @@ func ExampleStructTag() {
 
 	// Output:
 	// blue gopher
-	// Output:
-	// blue gopher
 }
 
 func ExampleStructTag_Lookup() {
@@ -119,16 +113,9 @@ func ExampleStructTag_Lookup() {
 	// field_0
 	// (blank)
 	// (not specified)
-	// Output:
-	// field_0
-	// (blank)
-	// (not specified)
 }
 
 func ExampleTypeOf() {
-	// As interface types are only used for static typing, a
-	// common idiom to find the reflection Type for an interface
-	// type Foo is to use a *Foo value.
 	// As interface types are only used for static typing, a
 	// common idiom to find the reflection Type for an interface
 	// type Foo is to use a *Foo value.
@@ -178,16 +165,9 @@ func ExampleStructOf() {
 	// value: &{Height:0.4 Age:2}
 	// json:  {"height":0.4,"age":2}
 	// value: &{Height:1.5 Age:10}
-	// Output:
-	// value: &{Height:0.4 Age:2}
-	// json:  {"height":0.4,"age":2}
-	// value: &{Height:1.5 Age:10}
 }
 
 func ExampleValue_FieldByIndex() {
-	// This example shows a case in which the name of a promoted field
-	// is hidden by another field: FieldByName will not work, so
-	// FieldByIndex must be used instead.
 	// This example shows a case in which the name of a promoted field
 	// is hidden by another field: FieldByName will not work, so
 	// FieldByIndex must be used instead.
@@ -224,8 +204,6 @@ func ExampleValue_FieldByName() {
 	s := reflect.ValueOf(u)
 
 	fmt.Println("Name:", s.FieldByName("firstName"))
-	// Output:
-	// Name: John
 	// Output:
 	// Name: John
 }

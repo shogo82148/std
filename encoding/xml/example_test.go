@@ -88,24 +88,8 @@ func ExampleEncoder() {
 	//       <State>Easter Island</State>
 	//       <!-- Need more details. -->
 	//   </person>
-	// Output:
-	//   <person id="13">
-	//       <name>
-	//           <first>John</first>
-	//           <last>Doe</last>
-	//       </name>
-	//       <age>42</age>
-	//       <Married>false</Married>
-	//       <City>Hanga Roa</City>
-	//       <State>Easter Island</State>
-	//       <!-- Need more details. -->
-	//   </person>
 }
 
-// This example demonstrates unmarshaling an XML excerpt into a value with
-// some preset fields. Note that the Phone field isn't modified and that
-// the XML <Company> element is ignored. Also, the Groups field is assigned
-// considering the element path provided in its tag.
 // This example demonstrates unmarshaling an XML excerpt into a value with
 // some preset fields. Note that the Phone field isn't modified and that
 // the XML <Company> element is ignored. Also, the Groups field is assigned

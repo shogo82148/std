@@ -60,14 +60,6 @@ func ExampleDialer_unix() {
 	// how to dial a Unix socket with a Context. Note that the Context only
 	// applies to the dial operation; it does not apply to the connection once
 	// it has been established.
-	// DialUnix does not take a context.Context parameter. This example shows
-	// how to dial a Unix socket with a Context. Note that the Context only
-	// applies to the dial operation; it does not apply to the connection once
-	// it has been established.
-	// DialUnix does not take a context.Context parameter. This example shows
-	// how to dial a Unix socket with a Context. Note that the Context only
-	// applies to the dial operation; it does not apply to the connection once
-	// it has been established.
 	var d net.Dialer
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
@@ -87,8 +79,6 @@ func ExampleDialer_unix() {
 func ExampleIPv4() {
 	fmt.Println(net.IPv4(8, 8, 8, 8))
 
-	// Output:
-	// 8.8.8.8
 	// Output:
 	// 8.8.8.8
 }
@@ -113,11 +103,6 @@ func ExampleParseCIDR() {
 	// 192.0.2.0/24
 	// 2001:db8:a0b:12f0::1
 	// 2001:db8::/32
-	// Output:
-	// 192.0.2.1
-	// 192.0.2.0/24
-	// 2001:db8:a0b:12f0::1
-	// 2001:db8::/32
 }
 
 func ExampleParseIP() {
@@ -129,18 +114,12 @@ func ExampleParseIP() {
 	// 192.0.2.1
 	// 2001:db8::68
 	// <nil>
-	// Output:
-	// 192.0.2.1
-	// 2001:db8::68
-	// <nil>
 }
 
 func ExampleIP_DefaultMask() {
 	ip := net.ParseIP("192.0.2.1")
 	fmt.Println(ip.DefaultMask())
 
-	// Output:
-	// ffffff00
 	// Output:
 	// ffffff00
 }
@@ -154,10 +133,6 @@ func ExampleIP_Equal() {
 	fmt.Println(ipv4DNS.Equal(ipv4Lo))
 	fmt.Println(ipv4DNS.Equal(ipv6DNS))
 
-	// Output:
-	// true
-	// false
-	// true
 	// Output:
 	// true
 	// false
@@ -188,13 +163,6 @@ func ExampleIP_IsGlobalUnicast() {
 	// true
 	// true
 	// false
-	// Output:
-	// true
-	// true
-	// false
-	// true
-	// true
-	// false
 }
 
 func ExampleIP_IsInterfaceLocalMulticast() {
@@ -206,10 +174,6 @@ func ExampleIP_IsInterfaceLocalMulticast() {
 	fmt.Println(ipv6Global.IsInterfaceLocalMulticast())
 	fmt.Println(ipv4.IsInterfaceLocalMulticast())
 
-	// Output:
-	// true
-	// false
-	// false
 	// Output:
 	// true
 	// false
@@ -227,11 +191,6 @@ func ExampleIP_IsLinkLocalMulticast() {
 	fmt.Println(ipv4LinkLocalMulti.IsLinkLocalMulticast())
 	fmt.Println(ipv4LinkLocalUni.IsLinkLocalMulticast())
 
-	// Output:
-	// true
-	// false
-	// true
-	// false
 	// Output:
 	// true
 	// false
@@ -255,11 +214,6 @@ func ExampleIP_IsLinkLocalUnicast() {
 	// false
 	// true
 	// false
-	// Output:
-	// true
-	// false
-	// true
-	// false
 }
 
 func ExampleIP_IsLoopback() {
@@ -273,11 +227,6 @@ func ExampleIP_IsLoopback() {
 	fmt.Println(ipv4Lo.IsLoopback())
 	fmt.Println(ipv4.IsLoopback())
 
-	// Output:
-	// true
-	// false
-	// true
-	// false
 	// Output:
 	// true
 	// false
@@ -307,13 +256,6 @@ func ExampleIP_IsMulticast() {
 	// true
 	// true
 	// false
-	// Output:
-	// true
-	// true
-	// false
-	// true
-	// true
-	// false
 }
 
 func ExampleIP_IsPrivate() {
@@ -327,11 +269,6 @@ func ExampleIP_IsPrivate() {
 	fmt.Println(ipv4Private.IsPrivate())
 	fmt.Println(ipv4Public.IsPrivate())
 
-	// Output:
-	// true
-	// false
-	// true
-	// false
 	// Output:
 	// true
 	// false
@@ -355,16 +292,10 @@ func ExampleIP_IsUnspecified() {
 	// false
 	// true
 	// false
-	// Output:
-	// true
-	// false
-	// true
-	// false
 }
 
 func ExampleIP_Mask() {
 	ipv4Addr := net.ParseIP("192.0.2.1")
-	// This mask corresponds to a /24 subnet for IPv4.
 	// This mask corresponds to a /24 subnet for IPv4.
 	ipv4Mask := net.CIDRMask(24, 32)
 	fmt.Println(ipv4Addr.Mask(ipv4Mask))
@@ -389,9 +320,6 @@ func ExampleIP_String() {
 	// Output:
 	// fc00::
 	// 10.255.0.0
-	// Output:
-	// fc00::
-	// 10.255.0.0
 }
 
 func ExampleIP_To16() {
@@ -401,9 +329,6 @@ func ExampleIP_To16() {
 	fmt.Println(ipv6.To16())
 	fmt.Println(ipv4.To16())
 
-	// Output:
-	// fc00::
-	// 10.255.0.0
 	// Output:
 	// fc00::
 	// 10.255.0.0
@@ -419,13 +344,9 @@ func ExampleIP_to4() {
 	// Output:
 	// <nil>
 	// 10.255.0.0
-	// Output:
-	// <nil>
-	// 10.255.0.0
 }
 
 func ExampleCIDRMask() {
-	// This mask corresponds to a /31 subnet for IPv4.
 	// This mask corresponds to a /31 subnet for IPv4.
 	fmt.Println(net.CIDRMask(31, 32))
 
@@ -442,13 +363,9 @@ func ExampleIPv4Mask() {
 
 	// Output:
 	// ffffff00
-	// Output:
-	// ffffff00
 }
 
 func ExampleUDPConn_WriteTo() {
-	// Unlike Dial, ListenPacket creates a connection without any
-	// association with peers.
 	// Unlike Dial, ListenPacket creates a connection without any
 	// association with peers.
 	conn, err := net.ListenPacket("udp", ":0")

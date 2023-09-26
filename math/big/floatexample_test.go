@@ -28,7 +28,6 @@ func ExampleFloat_Add() {
 
 func ExampleFloat_shift() {
 	// Implement Float "shift" by modifying the (binary) exponents directly.
-	// Implement Float "shift" by modifying the (binary) exponents directly.
 	for s := -5; s <= 5; s++ {
 		x := big.NewFloat(0.5)
 		x.SetMantExp(x, x.MantExp(nil)+s) // shift x by s
@@ -109,50 +108,6 @@ func ExampleFloat_Cmp() {
 	// +Inf     0    1
 	// +Inf   1.2    1
 	// +Inf  +Inf    0
-	// Output:
-	//    x     y  cmp
-	// ---------------
-	// -Inf  -Inf    0
-	// -Inf  -1.2   -1
-	// -Inf    -0   -1
-	// -Inf     0   -1
-	// -Inf   1.2   -1
-	// -Inf  +Inf   -1
-	//
-	// -1.2  -Inf    1
-	// -1.2  -1.2    0
-	// -1.2    -0   -1
-	// -1.2     0   -1
-	// -1.2   1.2   -1
-	// -1.2  +Inf   -1
-	//
-	//   -0  -Inf    1
-	//   -0  -1.2    1
-	//   -0    -0    0
-	//   -0     0    0
-	//   -0   1.2   -1
-	//   -0  +Inf   -1
-	//
-	//    0  -Inf    1
-	//    0  -1.2    1
-	//    0    -0    0
-	//    0     0    0
-	//    0   1.2   -1
-	//    0  +Inf   -1
-	//
-	//  1.2  -Inf    1
-	//  1.2  -1.2    1
-	//  1.2    -0    1
-	//  1.2     0    1
-	//  1.2   1.2    0
-	//  1.2  +Inf   -1
-	//
-	// +Inf  -Inf    1
-	// +Inf  -1.2    1
-	// +Inf    -0    1
-	// +Inf     0    1
-	// +Inf   1.2    1
-	// +Inf  +Inf    0
 }
 
 func ExampleRoundingMode() {
@@ -167,8 +122,6 @@ func ExampleRoundingMode() {
 	for _, f64 := range operands {
 		fmt.Printf("%4g", f64)
 		for mode := big.ToNearestEven; mode <= big.ToPositiveInf; mode++ {
-			// sample operands above require 2 bits to represent mantissa
-			// set binary precision to 2 to round them to integer values
 			// sample operands above require 2 bits to represent mantissa
 			// set binary precision to 2 to round them to integer values
 			f := new(big.Float).SetPrec(2).SetMode(mode).SetFloat64(f64)

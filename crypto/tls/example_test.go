@@ -64,7 +64,6 @@ TBj0/VLZjmmx6BEP3ojY+x1J96relc8geMJgEtslQIxq/H5COEBkEveegeGTLg==
 
 func ExampleConfig_keyLogWriter() {
 	// Debugging TLS applications by decrypting a network traffic capture.
-	// Debugging TLS applications by decrypting a network traffic capture.
 
 	// WARNING: Use of KeyLogWriter compromises security and should only be
 	// used for debugging.
@@ -176,22 +175,6 @@ EKTcWGekdmdDPsHloRNtsiCa697B2O9IFA==
 }
 
 func ExampleConfig_verifyConnection() {
-	// VerifyConnection can be used to replace and customize connection
-	// verification. This example shows a VerifyConnection implementation that
-	// will be approximately equivalent to what crypto/tls does normally to
-	// verify the peer's certificate.
-	// VerifyConnection can be used to replace and customize connection
-	// verification. This example shows a VerifyConnection implementation that
-	// will be approximately equivalent to what crypto/tls does normally to
-	// verify the peer's certificate.
-	// VerifyConnection can be used to replace and customize connection
-	// verification. This example shows a VerifyConnection implementation that
-	// will be approximately equivalent to what crypto/tls does normally to
-	// verify the peer's certificate.
-	// VerifyConnection can be used to replace and customize connection
-	// verification. This example shows a VerifyConnection implementation that
-	// will be approximately equivalent to what crypto/tls does normally to
-	// verify the peer's certificate.
 	// VerifyConnection can be used to replace and customize connection
 	// verification. This example shows a VerifyConnection implementation that
 	// will be approximately equivalent to what crypto/tls does normally to

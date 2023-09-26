@@ -17,60 +17,50 @@ func ExampleAcos() {
 func ExampleAcosh() {
 	fmt.Printf("%.2f", math.Acosh(1))
 	// Output: 0.00
-	// Output: 0.00
 }
 
 func ExampleAsin() {
 	fmt.Printf("%.2f", math.Asin(0))
-	// Output: 0.00
 	// Output: 0.00
 }
 
 func ExampleAsinh() {
 	fmt.Printf("%.2f", math.Asinh(0))
 	// Output: 0.00
-	// Output: 0.00
 }
 
 func ExampleAtan() {
 	fmt.Printf("%.2f", math.Atan(0))
-	// Output: 0.00
 	// Output: 0.00
 }
 
 func ExampleAtan2() {
 	fmt.Printf("%.2f", math.Atan2(0, 0))
 	// Output: 0.00
-	// Output: 0.00
 }
 
 func ExampleAtanh() {
 	fmt.Printf("%.2f", math.Atanh(0))
-	// Output: 0.00
 	// Output: 0.00
 }
 
 func ExampleCopysign() {
 	fmt.Printf("%.2f", math.Copysign(3.2, -1))
 	// Output: -3.20
-	// Output: -3.20
 }
 
 func ExampleCos() {
 	fmt.Printf("%.2f", math.Cos(math.Pi/2))
-	// Output: 0.00
 	// Output: 0.00
 }
 
 func ExampleCosh() {
 	fmt.Printf("%.2f", math.Cosh(0))
 	// Output: 1.00
-	// Output: 1.00
 }
 
 func ExampleSin() {
 	fmt.Printf("%.2f", math.Sin(math.Pi))
-	// Output: 0.00
 	// Output: 0.00
 }
 
@@ -78,24 +68,20 @@ func ExampleSincos() {
 	sin, cos := math.Sincos(0)
 	fmt.Printf("%.2f, %.2f", sin, cos)
 	// Output: 0.00, 1.00
-	// Output: 0.00, 1.00
 }
 
 func ExampleSinh() {
 	fmt.Printf("%.2f", math.Sinh(0))
-	// Output: 0.00
 	// Output: 0.00
 }
 
 func ExampleTan() {
 	fmt.Printf("%.2f", math.Tan(0))
 	// Output: 0.00
-	// Output: 0.00
 }
 
 func ExampleTanh() {
 	fmt.Printf("%.2f", math.Tanh(0))
-	// Output: 0.00
 	// Output: 0.00
 }
 
@@ -107,13 +93,11 @@ func ExampleSqrt() {
 	c := math.Sqrt(a*a + b*b)
 	fmt.Printf("%.1f", c)
 	// Output: 5.0
-	// Output: 5.0
 }
 
 func ExampleCeil() {
 	c := math.Ceil(1.49)
 	fmt.Printf("%.1f", c)
-	// Output: 2.0
 	// Output: 2.0
 }
 
@@ -121,20 +105,17 @@ func ExampleFloor() {
 	c := math.Floor(1.51)
 	fmt.Printf("%.1f", c)
 	// Output: 1.0
-	// Output: 1.0
 }
 
 func ExamplePow() {
 	c := math.Pow(2, 3)
 	fmt.Printf("%.1f", c)
 	// Output: 8.0
-	// Output: 8.0
 }
 
 func ExamplePow10() {
 	c := math.Pow10(2)
 	fmt.Printf("%.1f", c)
-	// Output: 100.0
 	// Output: 100.0
 }
 
@@ -144,9 +125,6 @@ func ExampleRound() {
 
 	n := math.Round(-10.5)
 	fmt.Printf("%.1f\n", n)
-	// Output:
-	// 11.0
-	// -11.0
 	// Output:
 	// 11.0
 	// -11.0
@@ -161,9 +139,6 @@ func ExampleRoundToEven() {
 	// Output:
 	// 12.0
 	// 12.0
-	// Output:
-	// 12.0
-	// 12.0
 }
 
 func ExampleLog() {
@@ -175,33 +150,26 @@ func ExampleLog() {
 	// Output:
 	// 0.0
 	// 1.0
-	// Output:
-	// 0.0
-	// 1.0
 }
 
 func ExampleLog2() {
 	fmt.Printf("%.1f", math.Log2(256))
-	// Output: 8.0
 	// Output: 8.0
 }
 
 func ExampleLog10() {
 	fmt.Printf("%.1f", math.Log10(100))
 	// Output: 2.0
-	// Output: 2.0
 }
 
 func ExampleRemainder() {
 	fmt.Printf("%.1f", math.Remainder(100, 30))
-	// Output: 10.0
 	// Output: 10.0
 }
 
 func ExampleMod() {
 	c := math.Mod(7, 4)
 	fmt.Printf("%.1f", c)
-	// Output: 3.0
 	// Output: 3.0
 }
 
@@ -214,16 +182,10 @@ func ExampleAbs() {
 	// Output:
 	// 2.0
 	// 2.0
-	// Output:
-	// 2.0
-	// 2.0
 }
 func ExampleDim() {
 	fmt.Printf("%.2f\n", math.Dim(4, -2))
 	fmt.Printf("%.2f\n", math.Dim(-4, 2))
-	// Output:
-	// 6.00
-	// 0.00
 	// Output:
 	// 6.00
 	// 0.00
@@ -237,18 +199,11 @@ func ExampleExp() {
 	// 2.72
 	// 7.39
 	// 0.37
-	// Output:
-	// 2.72
-	// 7.39
-	// 0.37
 }
 
 func ExampleExp2() {
 	fmt.Printf("%.2f\n", math.Exp2(1))
 	fmt.Printf("%.2f\n", math.Exp2(-3))
-	// Output:
-	// 2.00
-	// 0.12
 	// Output:
 	// 2.00
 	// 0.12
@@ -260,17 +215,11 @@ func ExampleExpm1() {
 	// Output:
 	// 0.010050
 	// -0.632121
-	// Output:
-	// 0.010050
-	// -0.632121
 }
 
 func ExampleTrunc() {
 	fmt.Printf("%.2f\n", math.Trunc(math.Pi))
 	fmt.Printf("%.2f\n", math.Trunc(-1.2345))
-	// Output:
-	// 3.00
-	// -1.00
 	// Output:
 	// 3.00
 	// -1.00
@@ -282,9 +231,6 @@ func ExampleCbrt() {
 	// Output:
 	// 2.00
 	// 3.00
-	// Output:
-	// 2.00
-	// 3.00
 }
 
 func ExampleModf() {
@@ -293,9 +239,6 @@ func ExampleModf() {
 
 	int, frac = math.Modf(-2.71)
 	fmt.Printf("%.2f, %.2f\n", int, frac)
-	// Output:
-	// 3.00, 0.14
-	// -2.00, -0.71
 	// Output:
 	// 3.00, 0.14
 	// -2.00, -0.71

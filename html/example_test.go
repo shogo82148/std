@@ -19,5 +19,4 @@ func ExampleUnescapeString() {
 	const s = `&quot;Fran &amp; Freddie&#39;s Diner&quot; &lt;tasty@example.com&gt;`
 	fmt.Println(html.UnescapeString(s))
 	// Output: "Fran & Freddie's Diner" <tasty@example.com>
-	// Output: "Fran & Freddie's Diner" <tasty@example.com>
 }

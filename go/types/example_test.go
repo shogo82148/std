@@ -98,7 +98,6 @@ func Unused() { {}; {{ var x int; _ = x }} } // make sure empty block scopes get
 }
 
 // ExampleMethodSet prints the method sets of various types.
-// ExampleMethodSet prints the method sets of various types.
 func ExampleMethodSet() {
 	// Parse a single source file.
 	const input = `
@@ -154,9 +153,6 @@ type I interface { m() byte }
 	// MethodSet {}
 }
 
-// ExampleInfo prints various facts recorded by the type checker in a
-// types.Info struct: definitions of and references to each named object,
-// and the type, value, and mode of every expression in the package.
 // ExampleInfo prints various facts recorded by the type checker in a
 // types.Info struct: definitions of and references to each named object,
 // and the type, value, and mode of every expression in the package.

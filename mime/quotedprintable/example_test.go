@@ -34,6 +34,4 @@ func ExampleNewWriter() {
 
 	// Output:
 	// These symbols will be escaped: =3D =09
-	// Output:
-	// These symbols will be escaped: =3D =09
 }

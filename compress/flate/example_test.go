@@ -71,9 +71,6 @@ func Example_reset() {
 // A preset dictionary can be used to improve the compression ratio.
 // The downside to using a dictionary is that the compressor and decompressor
 // must agree in advance what dictionary to use.
-// A preset dictionary can be used to improve the compression ratio.
-// The downside to using a dictionary is that the compressor and decompressor
-// must agree in advance what dictionary to use.
 func Example_dictionary() {
 	// The dictionary is a string of bytes. When compressing some input data,
 	// the compressor will attempt to substitute substrings with matches found
@@ -157,7 +154,6 @@ func Example_dictionary() {
 	// </#####
 }
 
-// DEFLATE is suitable for transmitting compressed data across the network.
 // DEFLATE is suitable for transmitting compressed data across the network.
 func Example_synchronization() {
 	var wg sync.WaitGroup

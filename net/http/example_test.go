@@ -58,8 +58,6 @@ func ExampleGet() {
 
 func ExampleFileServer() {
 	// Simple static webserver:
-	// Simple static webserver:
-	// Simple static webserver:
 	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("/usr/share/doc"))))
 }
 
@@ -67,16 +65,10 @@ func ExampleFileServer_stripPrefix() {
 	// To serve a directory on disk (/tmp) under an alternate URL
 	// path (/tmpfiles/), use StripPrefix to modify the request
 	// URL's path before the FileServer sees it:
-	// To serve a directory on disk (/tmp) under an alternate URL
-	// path (/tmpfiles/), use StripPrefix to modify the request
-	// URL's path before the FileServer sees it:
 	http.Handle("/tmpfiles/", http.StripPrefix("/tmpfiles/", http.FileServer(http.Dir("/tmp"))))
 }
 
 func ExampleStripPrefix() {
-	// To serve a directory on disk (/tmp) under an alternate URL
-	// path (/tmpfiles/), use StripPrefix to modify the request
-	// URL's path before the FileServer sees it:
 	// To serve a directory on disk (/tmp) under an alternate URL
 	// path (/tmpfiles/), use StripPrefix to modify the request
 	// URL's path before the FileServer sees it:
@@ -89,8 +81,6 @@ func ExampleServeMux_Handle() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		// The "/" pattern matches everything, so we need to check
 		// that we're at the root here.
-		// The "/" pattern matches everything, so we need to check
-		// that we're at the root here.
 		if req.URL.Path != "/" {
 			http.NotFound(w, req)
 			return
@@ -99,8 +89,6 @@ func ExampleServeMux_Handle() {
 	})
 }
 
-// HTTP Trailers are a set of key/value pairs like headers that come
-// after the HTTP response, instead of before.
 // HTTP Trailers are a set of key/value pairs like headers that come
 // after the HTTP response, instead of before.
 func ExampleResponseWriter_trailers() {
@@ -133,7 +121,6 @@ func ExampleServer_Shutdown() {
 		<-sigint
 
 		// We received an interrupt signal, shut down.
-		// We received an interrupt signal, shut down.
 		if err := srv.Shutdown(context.Background()); err != nil {
 			// Error from closing listeners, or context timeout:
 			log.Printf("HTTP server Shutdown: %v", err)
@@ -155,14 +142,12 @@ func ExampleListenAndServeTLS() {
 	})
 
 	// One can use generate_cert.go in crypto/tls to generate cert.pem and key.pem.
-	// One can use generate_cert.go in crypto/tls to generate cert.pem and key.pem.
 	log.Printf("About to listen on 8443. Go to https://127.0.0.1:8443/")
 	err := http.ListenAndServeTLS(":8443", "cert.pem", "key.pem", nil)
 	log.Fatal(err)
 }
 
 func ExampleListenAndServe() {
-	// Hello world, the web server
 	// Hello world, the web server
 
 	helloHandler := func(w http.ResponseWriter, req *http.Request) {
@@ -190,8 +175,6 @@ func ExampleHandleFunc() {
 func ExampleNotFoundHandler() {
 	mux := http.NewServeMux()
 
-	// Create sample handler to returns 404
-	// Create sample handler to returns 404
 	// Create sample handler to returns 404
 	mux.Handle("/resources", http.NotFoundHandler())
 

@@ -39,8 +39,6 @@ func ExampleValue_config() {
 
 // The following example shows how to maintain a scalable frequently read,
 // but infrequently updated data structure using copy-on-write idiom.
-// The following example shows how to maintain a scalable frequently read,
-// but infrequently updated data structure using copy-on-write idiom.
 func ExampleValue_readMostly() {
 	type Map map[string]string
 	var m atomic.Value

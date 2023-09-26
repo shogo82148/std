@@ -22,7 +22,6 @@ func ExampleRing_Len() {
 
 func ExampleRing_Next() {
 	// Create a new ring of size 5
-	// Create a new ring of size 5
 	r := ring.New(5)
 
 	// Get the length of the ring
@@ -49,7 +48,6 @@ func ExampleRing_Next() {
 }
 
 func ExampleRing_Prev() {
-	// Create a new ring of size 5
 	// Create a new ring of size 5
 	r := ring.New(5)
 
@@ -78,7 +76,6 @@ func ExampleRing_Prev() {
 
 func ExampleRing_Do() {
 	// Create a new ring of size 5
-	// Create a new ring of size 5
 	r := ring.New(5)
 
 	// Get the length of the ring
@@ -104,7 +101,6 @@ func ExampleRing_Do() {
 }
 
 func ExampleRing_Move() {
-	// Create a new ring of size 5
 	// Create a new ring of size 5
 	r := ring.New(5)
 
@@ -134,7 +130,6 @@ func ExampleRing_Move() {
 }
 
 func ExampleRing_Link() {
-	// Create two rings, r and s, of size 2
 	// Create two rings, r and s, of size 2
 	r := ring.New(2)
 	s := ring.New(2)
@@ -171,7 +166,6 @@ func ExampleRing_Link() {
 }
 
 func ExampleRing_Unlink() {
-	// Create a new ring of size 6
 	// Create a new ring of size 6
 	r := ring.New(6)
 

@@ -31,11 +31,8 @@ func ExampleNew() {
 		fmt.Print(err)
 	}
 	// Output: emit macho dwarf: elf header corrupted
-	// Output: emit macho dwarf: elf header corrupted
 }
 
-// The fmt package's Errorf function lets us use the package's formatting
-// features to create descriptive error messages.
 // The fmt package's Errorf function lets us use the package's formatting
 // features to create descriptive error messages.
 func ExampleNew_errorf() {
@@ -63,11 +60,6 @@ func ExampleJoin() {
 	// err2
 	// err is err1
 	// err is err2
-	// Output:
-	// err1
-	// err2
-	// err is err1
-	// err is err2
 }
 
 func ExampleIs() {
@@ -79,8 +71,6 @@ func ExampleIs() {
 		}
 	}
 
-	// Output:
-	// file does not exist
 	// Output:
 	// file does not exist
 }
@@ -97,8 +87,6 @@ func ExampleAs() {
 
 	// Output:
 	// Failed at path: non-existing
-	// Output:
-	// Failed at path: non-existing
 }
 
 func ExampleUnwrap() {
@@ -106,9 +94,6 @@ func ExampleUnwrap() {
 	err2 := fmt.Errorf("error2: [%w]", err1)
 	fmt.Println(err2)
 	fmt.Println(errors.Unwrap(err2))
-	// Output
-	// error2: [error1]
-	// error1
 	// Output
 	// error2: [error1]
 	// error1

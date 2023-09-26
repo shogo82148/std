@@ -47,5 +47,3 @@ func Example_interface() {
 	// 10
 	// 15
 }
-
-// interfaceEncode encodes the interface value into the encoder.

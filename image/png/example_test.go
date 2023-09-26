@@ -40,7 +40,6 @@ func ExampleEncode() {
 	const width, height = 256, 256
 
 	// Create a colored image of the given width and height.
-	// Create a colored image of the given width and height.
 	img := image.NewNRGBA(image.Rect(0, 0, width, height))
 
 	for y := 0; y < height; y++ {

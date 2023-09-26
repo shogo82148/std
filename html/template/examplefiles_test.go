@@ -46,7 +46,6 @@ func ExampleTemplate_glob() {
 }
 
 // Here we demonstrate loading a set of templates from files in different directories
-// Here we demonstrate loading a set of templates from files in different directories
 func ExampleTemplate_parsefiles() {
 	// Here we create different temporary directories and populate them with our sample
 	// template definition files; usually the template files would already
@@ -83,8 +82,6 @@ func ExampleTemplate_parsefiles() {
 	// Output:
 	// T1 invokes T2: (This is T2)
 }
-
-// The following example is duplicated in text/template; keep them in sync.
 
 // This example demonstrates one way to share some templates
 // and use them in different contexts. In this variant we add multiple driver
@@ -132,8 +129,6 @@ func ExampleTemplate_helpers() {
 	// Driver 1 calls T1: (T1 invokes T2: (This is T2))
 	// Driver 2 calls T2: (This is T2)
 }
-
-// The following example is duplicated in text/template; keep them in sync.
 
 // This example demonstrates how to use one group of driver
 // templates with distinct sets of helper templates.
