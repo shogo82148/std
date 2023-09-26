@@ -9,18 +9,24 @@
 // TestFormats finds potential (Printf, etc.) format strings.
 // If they are used in a call, the format verbs are verified
 // based on the matching argument type against a precomputed
-// table of valid formats. The knownFormats table can be used
-// to automatically rewrite format strings with the -u flag.
+// map of valid formats (knownFormats). This map can be used to
+// automatically rewrite format strings across all compiler
+// files with the -r flag.
 //
-// A new knownFormats table based on the found formats is printed
-// when the test is run in verbose mode (-v flag). The table
-// needs to be updated whenever a new (type, format) combination
-// is found and the format verb is not 'v' or 'T' (as in "%v" or
-// "%T").
+// The format map needs to be updated whenever a new (type,
+// format) combination is found and the format verb is not
+// 'v' or 'T' (as in "%v" or "%T"). To update the map auto-
+// matically from the compiler source's use of format strings,
+// use the -u flag. (Whether formats are valid for the values
+// to be formatted must be verified manually, of course.)
 //
-// Run as: go test -run Formats [-u][-v]
+// The -v flag prints out the names of all functions called
+// with a format string, the names of files that were not
+// processed, and any format rewrites made (with -r).
 //
-// Known bugs:
+// Run as: go test -run Formats [-r][-u][-v]
+//
+// Known shortcomings:
 //   - indexed format strings ("%[2]s", etc.) are not supported
 //     (the test will fail)
 //   - format strings that are not simple string literals cannot
@@ -52,8 +58,3 @@ type File struct {
 // blacklistedFunctions is the set of functions which may have
 // format-like arguments but which don't do any formatting and
 // thus may be ignored.
-
-// knownFormats entries are of the form "typename format" -> "newformat".
-// An absent entry means that the format is not recognized as valid.
-// An empty new format means that the format should remain unchanged.
-// To print out a new table, run: go test -run Formats -v.

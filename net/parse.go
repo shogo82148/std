@@ -7,8 +7,4 @@
 
 package net
 
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)
-
 // Bigger than we need, not too big to worry about overflow

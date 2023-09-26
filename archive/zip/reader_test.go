@@ -11,11 +11,12 @@ import (
 )
 
 type ZipTest struct {
-	Name    string
-	Source  func() (r io.ReaderAt, size int64)
-	Comment string
-	File    []ZipTestFile
-	Error   error
+	Name     string
+	Source   func() (r io.ReaderAt, size int64)
+	Comment  string
+	File     []ZipTestFile
+	Obscured bool
+	Error    error
 }
 
 type ZipTestFile struct {

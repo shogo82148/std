@@ -200,6 +200,41 @@ func (v Value) MapIndex(key Value) Value
 // It returns an empty slice if v represents a nil map.
 func (v Value) MapKeys() []Value
 
+// A MapIter is an iterator for ranging over a map.
+// See Value.MapRange.
+type MapIter struct {
+	m  Value
+	it unsafe.Pointer
+}
+
+// Key returns the key of the iterator's current map entry.
+func (it *MapIter) Key() Value
+
+// Value returns the value of the iterator's current map entry.
+func (it *MapIter) Value() Value
+
+// Next advances the map iterator and reports whether there is another
+// entry. It returns false when the iterator is exhausted; subsequent
+// calls to Key, Value, or Next will panic.
+func (it *MapIter) Next() bool
+
+// MapRange returns a range iterator for a map.
+// It panics if v's Kind is not Map.
+//
+// Call Next to advance the iterator, and Key/Value to access each entry.
+// Next returns false when the iterator is exhausted.
+// MapRange follows the same iteration semantics as a range statement.
+//
+// Example:
+//
+//	iter := reflect.ValueOf(m).MapRange()
+//	for iter.Next() {
+//		k := iter.Key()
+//		v := iter.Value()
+//		...
+//	}
+func (v Value) MapRange() *MapIter
+
 // Method returns a function value corresponding to v's i'th method.
 // The arguments to a Call on the returned function should not include
 // a receiver; the returned function will always use v as the receiver.

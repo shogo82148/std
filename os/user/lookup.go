@@ -5,6 +5,10 @@
 package user
 
 // Current returns the current user.
+//
+// The first call will cache the current user information.
+// Subsequent calls will return the cached value and will not reflect
+// changes to the current user.
 func Current() (*User, error)
 
 // cache of the current user

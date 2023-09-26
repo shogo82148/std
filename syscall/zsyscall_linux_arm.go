@@ -148,11 +148,7 @@ func Getuid() (uid int)
 
 func InotifyInit() (fd int, err error)
 
-func Lchown(path string, uid int, gid int) (err error)
-
 func Listen(s int, n int) (err error)
-
-func Lstat(path string, stat *Stat_t) (err error)
 
 func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err error)
 
@@ -171,8 +167,6 @@ func Setreuid(ruid int, euid int) (err error)
 func Shutdown(fd int, how int) (err error)
 
 func Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n int, err error)
-
-func Stat(path string, stat *Stat_t) (err error)
 
 func Gettimeofday(tv *Timeval) (err error)
 

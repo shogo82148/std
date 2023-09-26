@@ -1350,6 +1350,7 @@ const (
 	R_RISCV_SET8          R_RISCV = 54
 	R_RISCV_SET16         R_RISCV = 55
 	R_RISCV_SET32         R_RISCV = 56
+	R_RISCV_32_PCREL      R_RISCV = 57
 )
 
 func (i R_RISCV) String() string

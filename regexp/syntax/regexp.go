@@ -42,7 +42,7 @@ const (
 	OpAlternate
 )
 
-// Equal returns true if x and y have identical structure.
+// Equal reports whether x and y have identical structure.
 func (x *Regexp) Equal(y *Regexp) bool
 
 func (re *Regexp) String() string

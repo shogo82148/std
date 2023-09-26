@@ -18,5 +18,11 @@ package regexp
 
 // A machine holds all the state during an NFA simulation for p.
 
+// A lazyFlag is a lazily-evaluated syntax.EmptyOp,
+// for checking zero-width flags like ^ $ \A \z \B \b.
+// It records the pair of relevant runes and does not
+// determine the implied flags until absolutely necessary
+// (most of the time, that means never).
+
 // arrayNoInts is returned by doExecute match if nil dstCap is passed
 // to it with ncap=0.

@@ -123,6 +123,28 @@ func Example_escape() {
 
 }
 
+func ExampleTemplate_Delims() {
+	const text = "<<.Greeting>> {{.Name}}"
+
+	data := struct {
+		Greeting string
+		Name     string
+	}{
+		Greeting: "Hello",
+		Name:     "Joe",
+	}
+
+	t := template.Must(template.New("tpl").Delims("<<", ">>").Parse(text))
+
+	err := t.Execute(os.Stdout, data)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Output:
+	// Hello {{.Name}}
+}
+
 func ExampleTemplate_block() {
 	const (
 		master  = `Names:{{block "list" .}}{{"\n"}}{{range .}}{{println "-" .}}{{end}}{{end}}`

@@ -10,10 +10,14 @@ package main
 // on revision 5f9e4c3eaa555bdef18218a89f38c768303b7b6e.
 
 type Range struct {
-	Name  string
-	Start int
-	End   int
+	Name      string
+	Start     int
+	End       int
+	StartTime int64
+	EndTime   int64
 }
+
+func (r Range) URL() string
 
 type ViewerData struct {
 	Events   []*ViewerEvent         `json:"traceEvents"`

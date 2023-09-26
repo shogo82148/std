@@ -158,11 +158,7 @@ func Ioperm(from int, num int, on int) (err error)
 
 func Iopl(level int) (err error)
 
-func Lchown(path string, uid int, gid int) (err error)
-
 func Listen(s int, n int) (err error)
-
-func Lstat(path string, stat *Stat_t) (err error)
 
 func Pread(fd int, p []byte, offset int64) (n int, err error)
 

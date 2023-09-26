@@ -7,6 +7,8 @@
 
 package js
 
+var _ Wrapper = TypedArray{}
+
 // TypedArray represents a JavaScript typed array.
 type TypedArray struct {
 	Value

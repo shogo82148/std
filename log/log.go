@@ -113,6 +113,9 @@ func (l *Logger) Prefix() string
 // SetPrefix sets the output prefix for the logger.
 func (l *Logger) SetPrefix(prefix string)
 
+// Writer returns the output destination for the logger.
+func (l *Logger) Writer() io.Writer
+
 // SetOutput sets the output destination for the standard logger.
 func SetOutput(w io.Writer)
 

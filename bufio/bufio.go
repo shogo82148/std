@@ -38,7 +38,7 @@ func NewReaderSize(rd io.Reader, size int) *Reader
 func NewReader(rd io.Reader) *Reader
 
 // Size returns the size of the underlying buffer in bytes.
-func (r *Reader) Size() int
+func (b *Reader) Size() int
 
 // Reset discards any buffered data, resets all state, and switches
 // the buffered reader to read from r.
@@ -48,6 +48,9 @@ func (b *Reader) Reset(r io.Reader)
 // being valid at the next read call. If Peek returns fewer than n bytes, it
 // also returns an error explaining why the read is short. The error is
 // ErrBufferFull if n is larger than b's buffer size.
+//
+// Calling Peek prevents a UnreadByte or UnreadRune call from succeeding
+// until the next read operation.
 func (b *Reader) Peek(n int) ([]byte, error)
 
 // Discard skips the next n bytes, returning the number of bytes discarded.
@@ -61,6 +64,7 @@ func (b *Reader) Discard(n int) (discarded int, err error)
 // It returns the number of bytes read into p.
 // The bytes are taken from at most one Read on the underlying Reader,
 // hence n may be less than len(p).
+// To read exactly len(p) bytes, use io.ReadFull(b, p).
 // At EOF, the count will be zero and err will be io.EOF.
 func (b *Reader) Read(p []byte) (n int, err error)
 
@@ -69,6 +73,10 @@ func (b *Reader) Read(p []byte) (n int, err error)
 func (b *Reader) ReadByte() (byte, error)
 
 // UnreadByte unreads the last byte. Only the most recently read byte can be unread.
+//
+// UnreadByte returns an error if the most recent method called on the
+// Reader was not a read operation. Notably, Peek is not considered a
+// read operation.
 func (b *Reader) UnreadByte() error
 
 // ReadRune reads a single UTF-8 encoded Unicode character and returns the
@@ -76,8 +84,8 @@ func (b *Reader) UnreadByte() error
 // and returns unicode.ReplacementChar (U+FFFD) with a size of 1.
 func (b *Reader) ReadRune() (r rune, size int, err error)
 
-// UnreadRune unreads the last rune. If the most recent read operation on
-// the buffer was not a ReadRune, UnreadRune returns an error.  (In this
+// UnreadRune unreads the last rune. If the most recent method called on
+// the Reader was not a ReadRune, UnreadRune returns an error. (In this
 // regard it is stricter than UnreadByte, which will unread the last byte
 // from any read operation.)
 func (b *Reader) UnreadRune() error

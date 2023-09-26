@@ -27,3 +27,7 @@ type ProcessState struct {
 func (p *ProcessState) Pid() int
 
 func (p *ProcessState) String() string
+
+// ExitCode returns the exit code of the exited process, or -1
+// if the process hasn't exited or was terminated by a signal.
+func (p *ProcessState) ExitCode() int

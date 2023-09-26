@@ -11,6 +11,12 @@ func Pipe(p []int) (err error)
 
 func Pipe2(p []int, flags int) (err error)
 
+func Stat(path string, stat *Stat_t) (err error)
+
+func Lchown(path string, uid int, gid int) (err error)
+
+func Lstat(path string, stat *Stat_t) (err error)
+
 func Getrlimit(resource int, rlim *Rlimit) (err error)
 
 func Setrlimit(resource int, rlim *Rlimit) (err error)

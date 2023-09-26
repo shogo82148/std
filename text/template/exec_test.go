@@ -48,8 +48,10 @@ type T struct {
 	Empty3 interface{}
 	Empty4 interface{}
 
-	NonEmptyInterface    I
-	NonEmptyInterfacePtS *I
+	NonEmptyInterface         I
+	NonEmptyInterfacePtS      *I
+	NonEmptyInterfaceNil      I
+	NonEmptyInterfaceTypedNil I
 
 	Str fmt.Stringer
 	Err error
@@ -64,6 +66,7 @@ type T struct {
 	VariadicFuncInt func(int, ...string) string
 	NilOKFunc       func(*int) bool
 	ErrFunc         func() (string, error)
+	PanicFunc       func() string
 
 	Tmpl *Template
 

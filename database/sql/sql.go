@@ -81,6 +81,7 @@ const (
 	LevelLinearizable
 )
 
+// String returns the name of the transaction isolation level.
 func (i IsolationLevel) String() string
 
 var _ fmt.Stringer = LevelDefault
@@ -650,6 +651,13 @@ var (
 
 // Stmt is a prepared statement.
 // A Stmt is safe for concurrent use by multiple goroutines.
+//
+// If a Stmt is prepared on a Tx or Conn, it will be bound to a single
+// underlying connection forever. If the Tx or Conn closes, the Stmt will
+// become unusable and all operations will return an error.
+// If a Stmt is prepared on a DB, it will remain usable for the lifetime of the
+// DB. When the Stmt needs to execute on a new underlying connection, it will
+// prepare itself on the new connection automatically.
 type Stmt struct {
 	db        *DB
 	query     string
@@ -734,7 +742,7 @@ type Rows struct {
 // Every call to Scan, even the first one, must be preceded by a call to Next.
 func (rs *Rows) Next() bool
 
-// NextResultSet prepares the next result set for reading. It returns true if
+// NextResultSet prepares the next result set for reading. It reports whether
 // there is further result sets, or false if there is no further result set
 // or if there is an error advancing to it. The Err method should be consulted
 // to distinguish between the two cases.
@@ -749,8 +757,7 @@ func (rs *Rows) NextResultSet() bool
 func (rs *Rows) Err() error
 
 // Columns returns the column names.
-// Columns returns an error if the rows are closed, or if the rows
-// are from QueryRow and there was a deferred error.
+// Columns returns an error if the rows are closed.
 func (rs *Rows) Columns() ([]string, error)
 
 // ColumnTypes returns column information such as column type, length,
@@ -792,7 +799,7 @@ func (ci *ColumnType) DecimalSize() (precision, scale int64, ok bool)
 // the type of an empty interface.
 func (ci *ColumnType) ScanType() reflect.Type
 
-// Nullable returns whether the column may be null.
+// Nullable reports whether the column may be null.
 // If a driver does not support this property ok will be false.
 func (ci *ColumnType) Nullable() (nullable, ok bool)
 
@@ -818,6 +825,7 @@ func (ci *ColumnType) DatabaseTypeName() string
 //	*float32, *float64
 //	*interface{}
 //	*RawBytes
+//	*Rows (cursor value)
 //	any type implementing Scanner (see Scanner docs)
 //
 // In the most simple case, if the type of the value from the source
@@ -854,6 +862,11 @@ func (ci *ColumnType) DatabaseTypeName() string
 //
 // For scanning into *bool, the source may be true, false, 1, 0, or
 // string inputs parseable by strconv.ParseBool.
+//
+// Scan can also convert a cursor returned from a query, such as
+// "select cursor(select * from my_table) from dual", into a
+// *Rows value that can itself be scanned from. The parent
+// select query will close any cursor *Rows if the parent *Rows is closed.
 func (rs *Rows) Scan(dest ...interface{}) error
 
 // rowsCloseHook returns a function so tests may install the

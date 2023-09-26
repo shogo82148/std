@@ -28,9 +28,7 @@ func NewWalker(context *build.Context, root string) *Walker
 
 func (w *Walker) Features() (fs []string)
 
-// The package cache doesn't operate correctly in rare (so far artificial)
-// circumstances (issue 8425). Disable before debugging non-obvious errors
-// from the type-checker.
+// Disable before debugging non-obvious errors from the type-checker.
 
 // Importing is a sentinel taking the place in Walker.imported
 // for a package that is in the process of being imported.

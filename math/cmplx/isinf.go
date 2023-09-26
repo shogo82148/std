@@ -4,7 +4,7 @@
 
 package cmplx
 
-// IsInf returns true if either real(x) or imag(x) is an infinity.
+// IsInf reports whether either real(x) or imag(x) is an infinity.
 func IsInf(x complex128) bool
 
 // Inf returns a complex infinity, complex(+Inf, +Inf).

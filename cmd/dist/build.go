@@ -37,3 +37,6 @@ package main
 // We list all supported platforms in this list, so that this is the
 // single point of truth for supported platforms. This list is used
 // by 'go tool dist list'.
+
+// List of platforms which are supported but not complete yet. These get
+// filtered out of cgoEnabled for 'dist list'. See golang.org/issue/28944

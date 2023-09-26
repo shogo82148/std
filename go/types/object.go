@@ -132,6 +132,7 @@ func (obj *Var) IsField() bool
 // An abstract method may belong to many interfaces due to embedding.
 type Func struct {
 	object
+	hasPtrRecv bool
 }
 
 // NewFunc returns a new function with the given signature, representing

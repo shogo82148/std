@@ -68,26 +68,42 @@ package regexp
 
 import (
 	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/regexp/syntax"
 )
 
 // Regexp is the representation of a compiled regular expression.
 // A Regexp is safe for concurrent use by multiple goroutines,
 // except for configuration methods, such as Longest.
 type Regexp struct {
-	regexpRO
+	expr           string
+	prog           *syntax.Prog
+	onepass        *onePassProg
+	numSubexp      int
+	maxBitStateLen int
+	subexpNames    []string
+	prefix         string
+	prefixBytes    []byte
+	prefixRune     rune
+	prefixEnd      uint32
+	mpool          int
+	matchcap       int
+	prefixComplete bool
+	cond           syntax.EmptyOp
 
-	mu      sync.Mutex
-	machine []*machine
+	longest bool
 }
 
 // String returns the source text used to compile the regular expression.
 func (re *Regexp) String() string
 
 // Copy returns a new Regexp object copied from re.
+// Calling Longest on one copy does not affect another.
 //
-// When using a Regexp in multiple goroutines, giving each goroutine
-// its own copy helps to avoid lock contention.
+// Deprecated: In earlier releases, when using a Regexp in multiple goroutines,
+// giving each goroutine its own copy helped to avoid lock contention.
+// As of Go 1.12, using Copy is no longer necessary to avoid lock contention.
+// Copy may still be appropriate if the reason for its use is to make
+// two copies with different Longest settings.
 func (re *Regexp) Copy() *Regexp
 
 // Compile parses a regular expression and returns, if successful,
@@ -130,6 +146,13 @@ func CompilePOSIX(expr string) (*Regexp, error)
 // This method modifies the Regexp and may not be called concurrently
 // with any other methods.
 func (re *Regexp) Longest()
+
+// Pools of *machine for use during (*Regexp).doExecute,
+// split up by the size of the execution queues.
+// matchPool[i] machines have queue size matchSize[i].
+// On a 64-bit system each queue entry is 16 bytes,
+// so matchPool[0] has 16*2*128 = 4kB queues, etc.
+// The final matchPool is a catch-all for very large queues.
 
 // MustCompile is like Compile but panics if the expression cannot be parsed.
 // It simplifies safe initialization of global variables holding compiled regular
@@ -187,7 +210,7 @@ func MatchReader(pattern string, r io.RuneReader) (matched bool, err error)
 // More complicated queries need to use Compile and the full Regexp interface.
 func MatchString(pattern string, s string) (matched bool, err error)
 
-// MatchString reports whether the byte slice b
+// Match reports whether the byte slice b
 // contains any match of the regular expression pattern.
 // More complicated queries need to use Compile and the full Regexp interface.
 func Match(pattern string, b []byte) (matched bool, err error)

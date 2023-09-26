@@ -23,7 +23,7 @@ like func declarations if //sys is replaced by func, but:
 
 * If the return parameter is an error number, it must be named err.
 
-  - If go func name needs to be different from it's winapi dll name,
+  - If go func name needs to be different from its winapi dll name,
     the winapi name could be specified at the end, after "=" sign, like
     //sys LoadLibrary(libname string) (handle uint32, err error) = LoadLibraryA
 
@@ -197,7 +197,7 @@ func (src *Source) DLLs() []string
 // ParseFile adds additional file path to a source set src.
 func (src *Source) ParseFile(path string) error
 
-// IsStdRepo returns true if src is part of standard library.
+// IsStdRepo reports whether src is part of standard library.
 func (src *Source) IsStdRepo() (bool, error)
 
 // Generate output source file from a source set src.

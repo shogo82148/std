@@ -48,5 +48,5 @@ func ParseUint(s string, base int, bitSize int) (uint64, error)
 // appropriate bitSize and sign.
 func ParseInt(s string, base int, bitSize int) (i int64, err error)
 
-// Atoi returns the result of ParseInt(s, 10, 0) converted to type int.
+// Atoi is equivalent to ParseInt(s, 10, 0), converted to type int.
 func Atoi(s string) (int, error)

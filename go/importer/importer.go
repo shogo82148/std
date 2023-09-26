@@ -6,6 +6,7 @@
 package importer
 
 import (
+	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/go/types"
 	"github.com/shogo82148/std/io"
 )
@@ -14,7 +15,7 @@ import (
 // a given import path, or an error if no matching package is found.
 type Lookup func(path string) (io.ReadCloser, error)
 
-// For returns an Importer for importing from installed packages
+// ForCompiler returns an Importer for importing from installed packages
 // for the compilers "gc" and "gccgo", or for importing directly
 // from the source if the compiler argument is "source". In this
 // latter case, importing may fail under circumstances where the
@@ -33,6 +34,12 @@ type Lookup func(path string) (io.ReadCloser, error)
 // (not relative or absolute ones); it is assumed that the translation
 // to canonical import paths is being done by the client of the
 // importer.
+func ForCompiler(fset *token.FileSet, compiler string, lookup Lookup) types.Importer
+
+// For calls ForCompiler with a new FileSet.
+//
+// Deprecated: use ForCompiler, which populates a FileSet
+// with the positions of objects created by the importer.
 func For(compiler string, lookup Lookup) types.Importer
 
 // Default returns an Importer for the compiler that built the running binary.

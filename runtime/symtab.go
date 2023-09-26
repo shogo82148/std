@@ -9,9 +9,8 @@ package runtime
 type Frames struct {
 	callers []uintptr
 
-	stackExpander stackExpander
-
-	elideWrapper bool
+	frames     []Frame
+	frameStore [2]Frame
 }
 
 // Frame is the information returned by Frames for each call frame.
@@ -28,18 +27,6 @@ type Frame struct {
 	Entry uintptr
 }
 
-// stackExpander expands a call stack of PCs into a sequence of
-// Frames. It tracks state across PCs necessary to perform this
-// expansion.
-//
-// This is the core of the Frames implementation, but is a separate
-// internal API to make it possible to use within the runtime without
-// heap-allocating the PC slice. The only difference with the public
-// Frames API is that the caller is responsible for threading the PC
-// slice between expansion steps in this API. If escape analysis were
-// smarter, we may not need this (though it may have to be a lot
-// smarter).
-
 // CallersFrames takes a slice of PC values returned by Callers and
 // prepares to return function/file/line information.
 // Do not change the slice until you are done with the Frames.
@@ -48,8 +35,6 @@ func CallersFrames(callers []uintptr) *Frames
 // Next returns frame information for the next caller.
 // If more is false, there are no more callers (the Frame value is valid).
 func (ci *Frames) Next() (frame Frame, more bool)
-
-// A pcExpander expands a single PC into a sequence of Frames.
 
 // A Func represents a Go function in the running binary.
 type Func struct {
@@ -106,7 +91,8 @@ type Func struct {
 // given program counter address, or else nil.
 //
 // If pc represents multiple functions because of inlining, it returns
-// the *Func describing the outermost function.
+// the a *Func describing the innermost function, but with an entry
+// of the outermost function.
 func FuncForPC(pc uintptr) *Func
 
 // Name returns the name of the function.

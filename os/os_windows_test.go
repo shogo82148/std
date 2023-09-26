@@ -8,6 +8,8 @@ import (
 	osexec "os/exec"
 )
 
+// For TestRawConnReadWrite.
+
 // reparseData is used to build reparse buffer data required for tests.
 
 // Windows REPARSE_DATA_BUFFER contains union member, and cannot be

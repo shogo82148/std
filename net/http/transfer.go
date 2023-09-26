@@ -35,3 +35,6 @@ var ErrBodyReadAfterClose = errors.New("http: invalid Read on closed Body")
 
 // finishAsyncByteRead finishes reading the 1-byte sniff
 // from the ContentLength==0, Body!=nil case.
+
+// bufioFlushWriter is an io.Writer wrapper that flushes all writes
+// on its wrapped writer if it's a *bufio.Writer.

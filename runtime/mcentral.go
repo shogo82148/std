@@ -6,8 +6,8 @@
 //
 // See malloc.go for an overview.
 //
-// The MCentral doesn't actually contain the list of free objects; the MSpan does.
-// Each MCentral is two lists of MSpans: those with free objects (c->nonempty)
+// The mcentral doesn't actually contain the list of free objects; the mspan does.
+// Each mcentral is two lists of mspans: those with free objects (c->nonempty)
 // and those that are completely allocated (c->empty).
 
 package runtime

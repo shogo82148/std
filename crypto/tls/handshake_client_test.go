@@ -7,12 +7,15 @@ package tls
 // opensslInputEvent enumerates possible inputs that can be sent to an `openssl
 // s_client` process.
 
-// opensslOutputSink is an io.Writer that receives the stdout and stderr from
-// an `openssl` process and sends a value to handshakeComplete when it sees a
-// log message from a completed server handshake.
+// opensslOutputSink is an io.Writer that receives the stdout and stderr from an
+// `openssl` process and sends a value to handshakeComplete or readKeyUpdate
+// when certain messages are seen.
 
 // opensslEndOfHandshake is a message that the “openssl s_server” tool will
 // print when a handshake completes if run with “-state”.
+
+// opensslReadKeyUpdate is a message that the “openssl s_server” tool will
+// print when a KeyUpdate message is received if run with “-state”.
 
 // clientTest represents a test of the TLS client handshake against a reference
 // implementation.

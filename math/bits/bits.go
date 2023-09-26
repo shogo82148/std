@@ -8,6 +8,8 @@
 // functions for the predeclared unsigned integer types.
 package bits
 
+import _ "github.com/shogo82148/std/unsafe"
+
 // UintSize is the size of a uint in bits.
 const UintSize = uintSize
 
@@ -35,7 +37,7 @@ func TrailingZeros(x uint) int
 func TrailingZeros8(x uint8) int
 
 // TrailingZeros16 returns the number of trailing zero bits in x; the result is 16 for x == 0.
-func TrailingZeros16(x uint16) (n int)
+func TrailingZeros16(x uint16) int
 
 // TrailingZeros32 returns the number of trailing zero bits in x; the result is 32 for x == 0.
 func TrailingZeros32(x uint32) int
@@ -119,3 +121,70 @@ func Len32(x uint32) (n int)
 
 // Len64 returns the minimum number of bits required to represent x; the result is 0 for x == 0.
 func Len64(x uint64) (n int)
+
+// Add returns the sum with carry of x, y and carry: sum = x + y + carry.
+// The carry input must be 0 or 1; otherwise the behavior is undefined.
+// The carryOut output is guaranteed to be 0 or 1.
+func Add(x, y, carry uint) (sum, carryOut uint)
+
+// Add32 returns the sum with carry of x, y and carry: sum = x + y + carry.
+// The carry input must be 0 or 1; otherwise the behavior is undefined.
+// The carryOut output is guaranteed to be 0 or 1.
+func Add32(x, y, carry uint32) (sum, carryOut uint32)
+
+// Add64 returns the sum with carry of x, y and carry: sum = x + y + carry.
+// The carry input must be 0 or 1; otherwise the behavior is undefined.
+// The carryOut output is guaranteed to be 0 or 1.
+func Add64(x, y, carry uint64) (sum, carryOut uint64)
+
+// Sub returns the difference of x, y and borrow: diff = x - y - borrow.
+// The borrow input must be 0 or 1; otherwise the behavior is undefined.
+// The borrowOut output is guaranteed to be 0 or 1.
+func Sub(x, y, borrow uint) (diff, borrowOut uint)
+
+// Sub32 returns the difference of x, y and borrow, diff = x - y - borrow.
+// The borrow input must be 0 or 1; otherwise the behavior is undefined.
+// The borrowOut output is guaranteed to be 0 or 1.
+func Sub32(x, y, borrow uint32) (diff, borrowOut uint32)
+
+// Sub64 returns the difference of x, y and borrow: diff = x - y - borrow.
+// The borrow input must be 0 or 1; otherwise the behavior is undefined.
+// The borrowOut output is guaranteed to be 0 or 1.
+func Sub64(x, y, borrow uint64) (diff, borrowOut uint64)
+
+// Mul returns the full-width product of x and y: (hi, lo) = x * y
+// with the product bits' upper half returned in hi and the lower
+// half returned in lo.
+func Mul(x, y uint) (hi, lo uint)
+
+// Mul32 returns the 64-bit product of x and y: (hi, lo) = x * y
+// with the product bits' upper half returned in hi and the lower
+// half returned in lo.
+func Mul32(x, y uint32) (hi, lo uint32)
+
+// Mul64 returns the 128-bit product of x and y: (hi, lo) = x * y
+// with the product bits' upper half returned in hi and the lower
+// half returned in lo.
+func Mul64(x, y uint64) (hi, lo uint64)
+
+// Div returns the quotient and remainder of (hi, lo) divided by y:
+// quo = (hi, lo)/y, rem = (hi, lo)%y with the dividend bits' upper
+// half in parameter hi and the lower half in parameter lo.
+// Div panics for y == 0 (division by zero) or y <= hi (quotient overflow).
+func Div(hi, lo, y uint) (quo, rem uint)
+
+// Div32 returns the quotient and remainder of (hi, lo) divided by y:
+// quo = (hi, lo)/y, rem = (hi, lo)%y with the dividend bits' upper
+// half in parameter hi and the lower half in parameter lo.
+// Div32 panics for y == 0 (division by zero) or y <= hi (quotient overflow).
+func Div32(hi, lo, y uint32) (quo, rem uint32)
+
+// Div64 returns the quotient and remainder of (hi, lo) divided by y:
+// quo = (hi, lo)/y, rem = (hi, lo)%y with the dividend bits' upper
+// half in parameter hi and the lower half in parameter lo.
+// Div64 panics for y == 0 (division by zero) or y <= hi (quotient overflow).
+func Div64(hi, lo, y uint64) (quo, rem uint64)
+
+//go:linkname overflowError runtime.overflowError
+
+//go:linkname divideError runtime.divideError

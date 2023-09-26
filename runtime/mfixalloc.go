@@ -10,7 +10,7 @@ package runtime
 
 // FixAlloc is a simple free-list allocator for fixed size objects.
 // Malloc uses a FixAlloc wrapped around sysAlloc to manage its
-// MCache and MSpan objects.
+// mcache and mspan objects.
 //
 // Memory returned by fixalloc.alloc is zeroed by default, but the
 // caller may take responsibility for zeroing allocations by setting

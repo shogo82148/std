@@ -23,6 +23,7 @@ func Syscall6(trap, nargs, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err 
 func Syscall9(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr, err Errno)
 func Syscall12(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 uintptr) (r1, r2 uintptr, err Errno)
 func Syscall15(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15 uintptr) (r1, r2 uintptr, err Errno)
+func Syscall18(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18 uintptr) (r1, r2 uintptr, err Errno)
 
 // A DLL implements access to a single DLL.
 type DLL struct {
@@ -67,7 +68,7 @@ type Proc struct {
 // The return value can be passed to Syscall to run the procedure.
 func (p *Proc) Addr() uintptr
 
-// Call executes procedure p with arguments a. It will panic, if more than 15 arguments
+// Call executes procedure p with arguments a. It will panic if more than 18 arguments
 // are supplied.
 //
 // The returned error is always non-nil, constructed from the result of GetLastError.

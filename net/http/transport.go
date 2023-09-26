@@ -66,21 +66,21 @@ const DefaultMaxIdleConnsPerHost = 2
 // To explicitly enable HTTP/2 on a transport, use golang.org/x/net/http2
 // and call ConfigureTransport. See the package docs for more about HTTP/2.
 //
-// The Transport will send CONNECT requests to a proxy for its own use
-// when processing HTTPS requests, but Transport should generally not
-// be used to send a CONNECT request. That is, the Request passed to
-// the RoundTrip method should not have a Method of "CONNECT", as Go's
-// HTTP/1.x implementation does not support full-duplex request bodies
-// being written while the response body is streamed. Go's HTTP/2
-// implementation does support full duplex, but many CONNECT proxies speak
-// HTTP/1.x.
-//
 // Responses with status codes in the 1xx range are either handled
 // automatically (100 expect-continue) or ignored. The one
 // exception is HTTP status code 101 (Switching Protocols), which is
 // considered a terminal status and returned by RoundTrip. To see the
 // ignored 1xx responses, use the httptrace trace package's
 // ClientTrace.Got1xxResponse.
+//
+// Transport only retries a request upon encountering a network error
+// if the request is idempotent and either has no body or has its
+// Request.GetBody defined. HTTP requests are considered idempotent if
+// they have HTTP methods GET, HEAD, OPTIONS, or TRACE; or if their
+// Header map contains an "Idempotency-Key" or "X-Idempotency-Key"
+// entry. If the idempotency key value is an zero-length slice, the
+// request is treated as idempotent but the header is not sent on the
+// wire.
 type Transport struct {
 	idleMu     sync.Mutex
 	wantIdle   bool
@@ -225,10 +225,11 @@ func (t *Transport) CancelRequest(req *Request)
 //
 // A connect method may be of the following types:
 //
-//	Cache key form                    Description
-//	-----------------                 -------------------------
+//	connectMethod.key().String()      Description
+//	------------------------------    -------------------------
 //	|http|foo.com                     http directly to server, no proxy
 //	|https|foo.com                    https directly to server, no proxy
+//	|https,h1|foo.com                 https directly to server w/o HTTP/2, no proxy
 //	http://proxy.com|https|foo.com    http to proxy, then CONNECT to foo.com
 //	http://proxy.com|http             http to proxy, http to anywhere after that
 //	socks5://proxy.com|http|foo.com   socks5 to proxy, then http to foo.com
@@ -243,6 +244,16 @@ func (t *Transport) CancelRequest(req *Request)
 
 // persistConn wraps a connection, usually a persistent one
 // (but may be used for non-keep-alive requests as well)
+
+// errCallerOwnsConn is an internal sentinel error used when we hand
+// off a writable response.Body to the caller. We use this to prevent
+// closing a net.Conn that is now owned by the caller.
+
+// readWriteCloserBody is the Response.Body type used when we want to
+// give users write access to the Body through the underlying
+// connection (TCP, unless using custom dialers). This is then
+// the concrete type for a Response.Body on the 101 Switching
+// Protocols response, as used by WebSockets, h2c, etc.
 
 // nothingWrittenError wraps a write errors which ended up writing zero bytes.
 

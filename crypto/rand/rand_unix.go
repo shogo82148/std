@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || linux || nacl || netbsd || openbsd || plan9 || solaris
-// +build darwin dragonfly freebsd linux nacl netbsd openbsd plan9 solaris
+//go:build aix || darwin || dragonfly || freebsd || linux || nacl || netbsd || openbsd || plan9 || solaris
+// +build aix darwin dragonfly freebsd linux nacl netbsd openbsd plan9 solaris
 
 // Unix cryptographically secure pseudorandom number
 // generator.

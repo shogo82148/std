@@ -88,6 +88,9 @@ func (v *Map) Add(key string, delta int64)
 // AddFloat adds delta to the *Float value stored under the given map key.
 func (v *Map) AddFloat(key string, delta float64)
 
+// Deletes the given key from the map.
+func (v *Map) Delete(key string)
+
 // Do calls f for each entry in the map.
 // The map is locked during the iteration,
 // but existing entries may be concurrently updated.
@@ -100,7 +103,7 @@ type String struct {
 
 func (v *String) Value() string
 
-// String implements the Val interface. To get the unquoted string
+// String implements the Var interface. To get the unquoted string
 // use Value.
 func (v *String) String() string
 

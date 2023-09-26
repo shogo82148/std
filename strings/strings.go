@@ -29,6 +29,9 @@ func ContainsRune(s string, r rune) bool
 // LastIndex returns the index of the last instance of substr in s, or -1 if substr is not present in s.
 func LastIndex(s, substr string) int
 
+// IndexByte returns the index of the first instance of c in s, or -1 if c is not present in s.
+func IndexByte(s string, c byte) int
+
 // IndexRune returns the index of the first instance of the Unicode code point
 // r, or -1 if rune is not present in s.
 // If r is utf8.RuneError, it returns the first instance of any
@@ -140,11 +143,11 @@ func ToLower(s string) string
 func ToTitle(s string) string
 
 // ToUpperSpecial returns a copy of the string s with all Unicode letters mapped to their
-// upper case, giving priority to the special casing rules.
+// upper case using the case mapping specified by c.
 func ToUpperSpecial(c unicode.SpecialCase, s string) string
 
 // ToLowerSpecial returns a copy of the string s with all Unicode letters mapped to their
-// lower case, giving priority to the special casing rules.
+// lower case using the case mapping specified by c.
 func ToLowerSpecial(c unicode.SpecialCase, s string) string
 
 // ToTitleSpecial returns a copy of the string s with all Unicode letters mapped to their
@@ -219,6 +222,13 @@ func TrimSuffix(s, suffix string) string
 // for a k-rune string.
 // If n < 0, there is no limit on the number of replacements.
 func Replace(s, old, new string, n int) string
+
+// ReplaceAll returns a copy of the string s with all
+// non-overlapping instances of old replaced by new.
+// If old is empty, it matches at the beginning of the string
+// and after each UTF-8 sequence, yielding up to k+1 replacements
+// for a k-rune string.
+func ReplaceAll(s, old, new string) string
 
 // EqualFold reports whether s and t, interpreted as UTF-8 strings,
 // are equal under Unicode case-folding.

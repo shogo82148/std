@@ -154,10 +154,6 @@ func Ioperm(from int, num int, on int) (err error)
 
 func Iopl(level int) (err error)
 
-func Lchown(path string, uid int, gid int) (err error)
-
-func Lstat(path string, stat *Stat_t) (err error)
-
 func Pread(fd int, p []byte, offset int64) (n int, err error)
 
 func Pwrite(fd int, p []byte, offset int64) (n int, err error)
@@ -175,8 +171,6 @@ func Setresuid(ruid int, euid int, suid int) (err error)
 func Setreuid(ruid int, euid int) (err error)
 
 func Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n int, err error)
-
-func Stat(path string, stat *Stat_t) (err error)
 
 func SyncFileRange(fd int, off int64, n int64, flags int) (err error)
 

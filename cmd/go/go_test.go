@@ -8,6 +8,11 @@ package main_test
 // build from this process's current GOROOT, but run from a different
 // (temp) directory.
 
+// testCtx is canceled when the test binary is about to time out.
+//
+// If https://golang.org/issue/28135 is accepted, uses of this variable in test
+// functions should be replaced by t.Context().
+
 // The length of an mtime tick on this system. This is an estimate of
 // how long we need to sleep to ensure that the mtime of two files is
 // different.

@@ -9,13 +9,14 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+// smallBufferSize is an initial allocation minimal capacity.
+
 // A Buffer is a variable-sized buffer of bytes with Read and Write methods.
 // The zero value for Buffer is an empty buffer ready to use.
 type Buffer struct {
-	buf       []byte
-	off       int
-	bootstrap [64]byte
-	lastRead  readOp
+	buf      []byte
+	off      int
+	lastRead readOp
 }
 
 // The readOp constants describe the last action performed on
@@ -162,9 +163,9 @@ func (b *Buffer) ReadString(delim byte) (line string, err error)
 // NewBuffer creates and initializes a new Buffer using buf as its
 // initial contents. The new Buffer takes ownership of buf, and the
 // caller should not use buf after this call. NewBuffer is intended to
-// prepare a Buffer to read existing data. It can also be used to size
-// the internal buffer for writing. To do that, buf should have the
-// desired capacity but a length of zero.
+// prepare a Buffer to read existing data. It can also be used to set
+// the initial size of the internal buffer for writing. To do that,
+// buf should have the desired capacity but a length of zero.
 //
 // In most cases, new(Buffer) (or just declaring a Buffer variable) is
 // sufficient to initialize a Buffer.

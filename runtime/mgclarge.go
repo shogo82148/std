@@ -30,3 +30,10 @@ package runtime
 //go:notinheap
 
 //go:notinheap
+
+// treapIter is a bidirectional iterator type which may be used to iterate over a
+// an mTreap in-order forwards (increasing order) or backwards (decreasing order).
+// Its purpose is to hide details about the treap from users when trying to iterate
+// over it.
+//
+// To create iterators over the treap, call start or end on an mTreap.

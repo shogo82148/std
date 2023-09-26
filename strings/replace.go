@@ -4,12 +4,17 @@
 
 package strings
 
-import "github.com/shogo82148/std/io"
+import (
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/sync"
+)
 
 // Replacer replaces a list of strings with replacements.
 // It is safe for concurrent use by multiple goroutines.
 type Replacer struct {
-	r replacer
+	once   sync.Once
+	r      replacer
+	oldnew []string
 }
 
 // replacer is the interface that a replacement algorithm needs to implement.

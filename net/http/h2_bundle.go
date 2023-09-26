@@ -38,11 +38,6 @@ var (
 // which never dials. We let the HTTP/1.1 client dial and use its TLS
 // connection instead.
 
-// noDialH2RoundTripper is a RoundTripper which only tries to complete the request
-// if there's already has a cached connection to the host.
-// (The field is exported so it can be accessed via reflect from net/http; tested
-// by TestNoDialH2RoundTripperType)
-
 // Buffer chunks are allocated from a pool to reduce pressure on GC.
 // The maximum wasted space per dataBuffer is 2x the largest size class,
 // which happens when the dataBuffer has multiple chunks and there is
@@ -166,8 +161,6 @@ var (
 // This type of frame does not appear on the wire and is only returned
 // by the Framer when Framer.ReadMetaHeaders is set.
 
-var _ Pusher = (*http2responseWriter)(nil)
-
 // HTTP/2 stream states.
 //
 // See http://tools.ietf.org/html/rfc7540#section-5.1.
@@ -227,7 +220,7 @@ var _ Pusher = (*http2responseWriter)(nil)
 
 // errHandlerPanicked is the error given to any callers blocked in a read from
 // Request.Body when the main goroutine panics. Since most handlers read in the
-// the main ServeHTTP goroutine, this will show up rarely.
+// main ServeHTTP goroutine, this will show up rarely.
 
 // After sending GOAWAY, the connection will close after goAwayTimeout.
 // If we close the connection immediately after sending GOAWAY, there may
@@ -279,8 +272,7 @@ var (
 
 // Push errors.
 
-// pushOptions is the internal version of http.PushOptions, which we
-// cannot include here because it's only defined in Go 1.8 and later.
+var _ Pusher = (*http2responseWriter)(nil)
 
 // From http://httpwg.org/specs/rfc7540.html#rfc.section.8.1.2.2
 
@@ -327,6 +319,11 @@ var (
 // bodyWriterState encapsulates various state around the Transport's writing
 // of the request body, particularly regarding doing delayed writes of the body
 // when the request contains "Expect: 100-continue".
+
+// noDialH2RoundTripper is a RoundTripper which only tries to complete the request
+// if there's already has a cached connection to the host.
+// (The field is exported so it can be accessed via reflect from net/http; tested
+// by TestNoDialH2RoundTripperType)
 
 // writeFramer is implemented by any type that is used to write frames.
 

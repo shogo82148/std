@@ -6,12 +6,12 @@
 // code but require careful thought to use correctly.
 package subtle
 
-// ConstantTimeCompare returns 1 if and only if the two slices, x
-// and y, have equal contents. The time taken is a function of the length of
-// the slices and is independent of the contents.
+// ConstantTimeCompare returns 1 if the two slices, x and y, have equal contents
+// and 0 otherwise. The time taken is a function of the length of the slices and
+// is independent of the contents.
 func ConstantTimeCompare(x, y []byte) int
 
-// ConstantTimeSelect returns x if v is 1 and y if v is 0.
+// ConstantTimeSelect returns x if v == 1 and y if v == 0.
 // Its behavior is undefined if v takes any other value.
 func ConstantTimeSelect(v, x, y int) int
 

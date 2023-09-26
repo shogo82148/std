@@ -13,9 +13,6 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// onExitFlushLoop is a callback set by tests to detect the state of the
-// flushLoop() goroutine.
-
 // ReverseProxy is an HTTP Handler that takes an incoming request and
 // sends it to another server, proxying the response back to the
 // client.
@@ -58,3 +55,6 @@ func NewSingleHostReverseProxy(target *url.URL) *ReverseProxy
 // compatibility.
 
 func (p *ReverseProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request)
+
+// switchProtocolCopier exists so goroutines proxying data back and
+// forth have nice names in stacks.

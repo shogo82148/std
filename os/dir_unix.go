@@ -2,7 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || (js && wasm) || linux || nacl || netbsd || openbsd || solaris
-// +build darwin dragonfly freebsd js,wasm linux nacl netbsd openbsd solaris
+//go:build aix || (darwin && !arm && !arm64) || dragonfly || freebsd || (js && wasm) || linux || nacl || netbsd || openbsd || solaris
+// +build aix darwin,!arm,!arm64 dragonfly freebsd js,wasm linux nacl netbsd openbsd solaris
 
 package os
+
+// Auxiliary information if the File describes a directory

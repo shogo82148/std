@@ -143,6 +143,6 @@ func (n Number) Int64() (int64, error)
 
 // decodeState represents the state while decoding a JSON value.
 
-// errPhase is used for errors that should not happen unless
-// there is a bug in the JSON decoder or something is editing
-// the data slice while the decoder executes.
+// phasePanicMsg is used as a panic message when we end up with something that
+// shouldn't happen. It can indicate a bug in the JSON decoder, or that
+// something is editing the data slice while the decoder executes.

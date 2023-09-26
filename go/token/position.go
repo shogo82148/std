@@ -111,6 +111,11 @@ func (f *File) SetLines(lines []int) bool
 // It ignores position-altering //line comments.
 func (f *File) SetLinesForContent(content []byte)
 
+// LineStart returns the Pos value of the start of the specified line.
+// It ignores any alternative positions set using AddLineColumnInfo.
+// LineStart panics if the 1-based line number is invalid.
+func (f *File) LineStart(line int) Pos
+
 // A lineInfo object describes alternative file, line, and column
 // number information (such as provided via a //line directive)
 // for a given file offset.

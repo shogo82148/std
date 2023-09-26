@@ -12,6 +12,10 @@
 
 package syscall
 
+// See https://www.freebsd.org/doc/en_US.ISO8859-1/books/porters-handbook/versions.html.
+
+// INO64_FIRST from /usr/src/lib/libc/sys/compat-ino64.h
+
 type SockaddrDatalink struct {
 	Len    uint8
 	Family uint8
@@ -35,3 +39,19 @@ func SetsockoptIPMreqn(fd, level, opt int, mreq *IPMreqn) (err error)
 func Accept4(fd, flags int) (nfd int, sa Sockaddr, err error)
 
 func Getfsstat(buf []Statfs_t, flags int) (n int, err error)
+
+func Stat(path string, st *Stat_t) (err error)
+
+func Lstat(path string, st *Stat_t) (err error)
+
+func Fstat(fd int, st *Stat_t) (err error)
+
+func Fstatat(fd int, path string, st *Stat_t, flags int) (err error)
+
+func Statfs(path string, st *Statfs_t) (err error)
+
+func Fstatfs(fd int, st *Statfs_t) (err error)
+
+func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)
+
+func Mknod(path string, mode uint32, dev uint64) (err error)

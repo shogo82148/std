@@ -4,6 +4,12 @@
 
 package runtime
 
+// throwOnGCWork causes any operations that add pointers to a gcWork
+// buffer to throw.
+//
+// TODO(austin): This is a temporary debugging measure for issue
+// #27993. To be removed before release.
+
 // A gcWork provides the interface to produce and consume work for the
 // garbage collector.
 //
@@ -11,10 +17,7 @@ package runtime
 //
 //     (preemption must be disabled)
 //     gcw := &getg().m.p.ptr().gcw
-//     .. call gcw.put() to produce and gcw.get() to consume ..
-//     if gcBlackenPromptly {
-//         gcw.dispose()
-//     }
+//     .. call gcw.put() to produce and gcw.tryGet() to consume ..
 //
 // It's important that any use of gcWork during the mark phase prevent
 // the garbage collector from transitioning to mark termination since

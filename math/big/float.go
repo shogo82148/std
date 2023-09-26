@@ -39,7 +39,7 @@ import (
 // precision of the argument with the largest precision value before any
 // rounding takes place, and the rounding mode remains unchanged. Thus,
 // uninitialized Floats provided as result arguments will have their
-// precision set to a reasonable value determined by the operands and
+// precision set to a reasonable value determined by the operands, and
 // their mode is the zero value for RoundingMode (ToNearestEven).
 //
 // By setting the desired precision to 24 or 53 and using matching rounding
@@ -51,6 +51,13 @@ import (
 //
 // The zero (uninitialized) value for a Float is ready to use and represents
 // the number +0.0 exactly, with precision 0 and rounding mode ToNearestEven.
+//
+// Operations always take pointer arguments (*Float) rather
+// than Float values, and each unique Float value requires
+// its own unique *Float pointer. To "copy" a Float value,
+// an existing (or newly allocated) Float must be set to
+// a new value using the Float.Set method; shallow copies
+// of Floats are not supported and may lead to errors.
 type Float struct {
 	prec uint32
 	mode RoundingMode
@@ -162,7 +169,7 @@ func (x *Float) Sign() int
 // mantissa value.
 func (x *Float) MantExp(mant *Float) (exp int)
 
-// SetMantExp sets z to mant × 2**exp and and returns z.
+// SetMantExp sets z to mant × 2**exp and returns z.
 // The result z has the same precision and rounding mode
 // as mant. SetMantExp is an inverse of MantExp but does
 // not require 0.5 <= |mant| < 1.0. Specifically:
@@ -179,7 +186,7 @@ func (x *Float) MantExp(mant *Float) (exp int)
 // is set to exp.
 func (z *Float) SetMantExp(mant *Float, exp int) *Float
 
-// Signbit returns true if x is negative or negative zero.
+// Signbit reports whether x is negative or negative zero.
 func (x *Float) Signbit() bool
 
 // IsInf reports whether x is +Inf or -Inf.

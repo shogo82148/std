@@ -4,7 +4,7 @@
 
 package cmplx
 
-// IsNaN returns true if either real(x) or imag(x) is NaN
+// IsNaN reports whether either real(x) or imag(x) is NaN
 // and neither is an infinity.
 func IsNaN(x complex128) bool
 

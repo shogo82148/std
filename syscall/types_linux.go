@@ -54,7 +54,6 @@ package syscall
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
-#include <ustat.h>
 #include <utime.h>
 
 enum {
@@ -123,6 +122,15 @@ struct my_epoll_event {
 #endif
 	int32_t fd;
 	int32_t pad;
+};
+
+// ustat is deprecated and glibc 2.28 removed ustat.h. Provide the type here for
+// backwards compatibility. Copied from /usr/include/bits/ustat.h
+struct ustat {
+	__daddr_t f_tfree;
+	__ino_t f_tinode;
+	char f_fname[6];
+	char f_fpack[6];
 };
 
 */

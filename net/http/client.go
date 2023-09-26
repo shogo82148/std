@@ -129,10 +129,10 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 // error.
 //
 // If the returned error is nil, the Response will contain a non-nil
-// Body which the user is expected to close. If the Body is not
-// closed, the Client's underlying RoundTripper (typically Transport)
-// may not be able to re-use a persistent TCP connection to the server
-// for a subsequent "keep-alive" request.
+// Body which the user is expected to close. If the Body is not both
+// read to EOF and closed, the Client's underlying RoundTripper
+// (typically Transport) may not be able to re-use a persistent TCP
+// connection to the server for a subsequent "keep-alive" request.
 //
 // The request Body, if non-nil, will be closed by the underlying
 // Transport, even on errors.
@@ -237,6 +237,15 @@ func Head(url string) (resp *Response, err error)
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 func (c *Client) Head(url string) (resp *Response, err error)
+
+// CloseIdleConnections closes any connections on its Transport which
+// were previously connected from previous requests but are now
+// sitting idle in a "keep-alive" state. It does not interrupt any
+// connections currently in use.
+//
+// If the Client's Transport does not have a CloseIdleConnections method
+// then this method does nothing.
+func (c *Client) CloseIdleConnections()
 
 // cancelTimerBody is an io.ReadCloser that wraps rc with two features:
 // 1) on Read error or close, the stop func is called.

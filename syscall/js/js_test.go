@@ -5,6 +5,15 @@
 //go:build js && wasm
 // +build js,wasm
 
+// To run these tests:
+//
+// - Install Node
+// - Add /path/to/go/misc/wasm to your $PATH (so that "go test" can find
+//   "go_js_wasm_exec").
+// - GOOS=js GOARCH=wasm go test
+//
+// See -exec in "go help test", and "go help run" for details.
+
 package js_test
 
 import (
@@ -12,11 +21,12 @@ import (
 	"syscall/js"
 )
 
-func ExampleNewCallback() {
-	var cb js.Callback
-	cb = js.NewCallback(func(args []js.Value) {
+func ExampleFuncOf() {
+	var cb js.Func
+	cb = js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		fmt.Println("button clicked")
-		cb.Release() // release the callback if the button will not be clicked again
+		cb.Release() // release the function if the button will not be clicked again
+		return nil
 	})
 	js.Global().Get("document").Call("getElementById", "myButton").Call("addEventListener", "click", cb)
 }

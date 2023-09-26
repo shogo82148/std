@@ -28,8 +28,7 @@
 //    b. Sweep any unswept spans. There will only be unswept spans if
 //    this GC cycle was forced before the expected time.
 //
-// 2. GC performs the "mark 1" sub-phase. In this sub-phase, Ps are
-// allowed to locally cache parts of the work queue.
+// 2. GC performs the mark phase.
 //
 //    a. Prepare for the mark phase by setting gcphase to _GCmark
 //    (from _GCoff), enabling the write barrier, enabling mutator
@@ -54,28 +53,21 @@
 //    object to black and shading all pointers found in the object
 //    (which in turn may add those pointers to the work queue).
 //
-// 3. Once the global work queue is empty (but local work queue caches
-// may still contain work), GC performs the "mark 2" sub-phase.
+//    e. Because GC work is spread across local caches, GC uses a
+//    distributed termination algorithm to detect when there are no
+//    more root marking jobs or grey objects (see gcMarkDone). At this
+//    point, GC transitions to mark termination.
 //
-//    a. GC stops all workers, disables local work queue caches,
-//    flushes each P's local work queue cache to the global work queue
-//    cache, and reenables workers.
-//
-//    b. GC again drains the work queue, as in 2d above.
-//
-// 4. Once the work queue is empty, GC performs mark termination.
+// 3. GC performs mark termination.
 //
 //    a. Stop the world.
 //
 //    b. Set gcphase to _GCmarktermination, and disable workers and
 //    assists.
 //
-//    c. Drain any remaining work from the work queue (typically there
-//    will be none).
+//    c. Perform housekeeping like flushing mcaches.
 //
-//    d. Perform other housekeeping like flushing mcaches.
-//
-// 5. GC performs the sweep phase.
+// 4. GC performs the sweep phase.
 //
 //    a. Prepare for the sweep phase by setting gcphase to _GCoff,
 //    setting up sweep state and disabling the write barrier.
@@ -86,7 +78,7 @@
 //    c. GC does concurrent sweeping in the background and in response
 //    to allocation. See description below.
 //
-// 6. When sufficient allocation has taken place, replay the sequence
+// 5. When sufficient allocation has taken place, replay the sequence
 // starting with 1 above. See discussion of GC rate below.
 
 // Concurrent sweep.
@@ -165,20 +157,6 @@ package runtime
 // workers are allowed to blacken objects. This must only be set when
 // gcphase == _GCmark.
 
-// gcBlackenPromptly indicates that optimizations that may
-// hide work from the global work queue should be disabled.
-//
-// If gcBlackenPromptly is true, per-P gcWork caches should
-// be flushed immediately and new objects should be allocated black.
-//
-// There is a tension between allocating objects white and
-// allocating them black. If white and the objects die before being
-// marked they can be collected during this GC cycle. On the other
-// hand allocating them black will reduce _GCmarktermination latency
-// since more work is done in the mark phase. This tension is resolved
-// by allocating white until the mark phase is approaching its end and
-// then allocating black for the remainder of the mark phase.
-
 // gcMarkWorkerMode represents the mode that a concurrent mark worker
 // should operate in.
 //
@@ -219,7 +197,7 @@ package runtime
 // the more mutator assists are expected to happen, which impact
 // mutator latency.
 
-// gcCreditSlack is the amount of scan work credit that can can
+// gcCreditSlack is the amount of scan work credit that can
 // accumulate locally before updating gcController.scanWork and,
 // optionally, gcController.bgScanCredit. Lower values give a more
 // accurate assist ratio and make it more likely that assists will
@@ -242,3 +220,21 @@ func GC()
 
 // A gcTrigger is a predicate for starting a GC cycle. Specifically,
 // it is an exit condition for the _GCoff phase.
+
+// gcMarkDoneFlushed counts the number of P's with flushed work.
+//
+// Ideally this would be a captured local in gcMarkDone, but forEachP
+// escapes its callback closure, so it can't capture anything.
+//
+// This is protected by markDoneSema.
+
+// debugCachedWork enables extra checks for debugging premature mark
+// termination.
+//
+// For debugging issue #27993.
+
+// gcWorkPauseGen is for debugging the mark completion algorithm.
+// gcWork put operations spin while gcWork.pauseGen == gcWorkPauseGen.
+// Only used if debugCachedWork is true.
+//
+// For debugging issue #27993.

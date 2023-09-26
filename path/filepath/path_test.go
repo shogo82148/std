@@ -48,6 +48,18 @@ var EvalSymlinksTestDirs = []EvalSymlinksTest{
 	{"test/link1", "../test"},
 	{"test/link2", "dir"},
 	{"test/linkabs", "/"},
+	{"test/link4", "../test2"},
+	{"test2", "test/dir"},
+
+	{"src", ""},
+	{"src/pool", ""},
+	{"src/pool/test", ""},
+	{"src/versions", ""},
+	{"src/versions/current", "../../version"},
+	{"src/versions/v1", ""},
+	{"src/versions/v1/modules", ""},
+	{"src/versions/v1/modules/test", "../../../pool/test"},
+	{"version", "src/versions/v1"},
 }
 
 var EvalSymlinksTests = []EvalSymlinksTest{
@@ -61,6 +73,8 @@ var EvalSymlinksTests = []EvalSymlinksTest{
 	{"test/dir/link3", "."},
 	{"test/link2/link3/test", "test"},
 	{"test/linkabs", "/"},
+	{"test/link4/..", "test"},
+	{"src/versions/current/modules/test", "src/pool/test"},
 }
 
 // Test directories relative to temporary directory.

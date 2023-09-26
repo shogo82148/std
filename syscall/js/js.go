@@ -13,16 +13,26 @@
 package js
 
 // ref is used to identify a JavaScript value, since the value itself can not be passed to WebAssembly.
-// A JavaScript number (64-bit float, except NaN) is represented by its IEEE 754 binary representation.
+//
+// The JavaScript value "undefined" is represented by the value 0.
+// A JavaScript number (64-bit float, except 0 and NaN) is represented by its IEEE 754 binary representation.
 // All other values are represented as an IEEE 754 binary representation of NaN with bits 0-31 used as
 // an ID and bits 32-33 used to differentiate between string, symbol, function and object.
 
-// nanHead are the upper 32 bits of a ref which are set if the value is not a JavaScript number or NaN itself.
+// nanHead are the upper 32 bits of a ref which are set if the value is not encoded as an IEEE 754 number (see above).
 
-// Value represents a JavaScript value.
+// Wrapper is implemented by types that are backed by a JavaScript value.
+type Wrapper interface {
+	JSValue() Value
+}
+
+// Value represents a JavaScript value. The zero value is the JavaScript value "undefined".
 type Value struct {
 	ref ref
 }
+
+// JSValue implements Wrapper interface.
+func (v Value) JSValue() Value
 
 // Error wraps a JavaScript error.
 type Error struct {
@@ -47,13 +57,15 @@ func Global() Value
 //	| ---------------------- | ---------------------- |
 //	| js.Value               | [its value]            |
 //	| js.TypedArray          | typed array            |
-//	| js.Callback            | function               |
+//	| js.Func                | function               |
 //	| nil                    | null                   |
 //	| bool                   | boolean                |
 //	| integers and floats    | number                 |
 //	| string                 | string                 |
 //	| []interface{}          | new array              |
 //	| map[string]interface{} | new object             |
+//
+// Panics if x is not one of the expected types.
 func ValueOf(x interface{}) Value
 
 // Type represents the JavaScript type of a Value.
@@ -114,6 +126,11 @@ func (v Value) Int() int
 
 // Bool returns the value v as a bool. It panics if v is not a JavaScript boolean.
 func (v Value) Bool() bool
+
+// Truthy returns the JavaScript "truthiness" of the value v. In JavaScript,
+// false, 0, "", null, undefined, and NaN are "falsy", and everything else is
+// "truthy". See https://developer.mozilla.org/en-US/docs/Glossary/Truthy.
+func (v Value) Truthy() bool
 
 // String returns the value v converted to string according to JavaScript type conversions.
 func (v Value) String() string

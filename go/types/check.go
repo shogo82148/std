@@ -49,8 +49,9 @@ type Checker struct {
 	files            []*ast.File
 	unusedDotImports map[*Scope]map[*Package]token.Pos
 
-	firstErr   error
-	methods    map[*TypeName][]*Func
+	firstErr error
+	methods  map[*TypeName][]*Func
+
 	interfaces map[*TypeName]*ifaceInfo
 	untyped    map[ast.Expr]exprInfo
 	delayed    []func()

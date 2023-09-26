@@ -8,6 +8,13 @@ package big
 
 // A Rat represents a quotient a/b of arbitrary precision.
 // The zero value for a Rat represents the value 0.
+//
+// Operations always take pointer arguments (*Rat) rather
+// than Rat values, and each unique Rat value requires
+// its own unique *Rat pointer. To "copy" a Rat value,
+// an existing (or newly allocated) Rat must be set to
+// a new value using the Rat.Set method; shallow copies
+// of Rats are not supported and may lead to errors.
 type Rat struct {
 	a, b Int
 }

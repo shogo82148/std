@@ -43,6 +43,8 @@ type Conn struct {
 
 	ekm func(label string, context []byte, length int) ([]byte, error)
 
+	resumptionSecret []byte
+
 	clientFinishedIsFirst bool
 
 	closeNotifyErr error
@@ -56,16 +58,17 @@ type Conn struct {
 	clientProtocolFallback bool
 
 	in, out   halfConn
-	rawInput  *block
-	input     *block
+	rawInput  bytes.Buffer
+	input     bytes.Reader
 	hand      bytes.Buffer
+	outBuf    []byte
 	buffering bool
 	sendBuf   []byte
 
 	bytesSent   int64
 	packetsSent int64
 
-	warnCount int
+	retryCount int
 
 	activeCall int32
 
@@ -97,23 +100,27 @@ func (c *Conn) SetWriteDeadline(t time.Time) error
 
 // cbcMode is an interface for block ciphers using cipher block chaining.
 
-// A block is a simple data buffer.
-
-// RecordHeaderError results when a TLS record header is invalid.
+// RecordHeaderError is returned when a TLS record header is invalid.
 type RecordHeaderError struct {
 	Msg string
 
 	RecordHeader [5]byte
+
+	Conn net.Conn
 }
 
 func (e RecordHeaderError) Error() string
+
+// atLeastReader reads from R, stopping with EOF once at least N bytes have been
+// read. It is different from an io.LimitedReader in that it doesn't cut short
+// the last Read call, and in that it considers an early EOF an error.
 
 // Write writes data to the connection.
 func (c *Conn) Write(b []byte) (int, error)
 
 // Read can be made to time out and return a net.Error with Timeout() == true
 // after a fixed time limit; see SetDeadline and SetReadDeadline.
-func (c *Conn) Read(b []byte) (n int, err error)
+func (c *Conn) Read(b []byte) (int, error)
 
 // Close closes the connection.
 func (c *Conn) Close() error

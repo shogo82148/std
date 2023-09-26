@@ -6,8 +6,3 @@
 // +build gc
 
 package build
-
-// gccgoSearch holds the gccgo search directories.
-
-// gccgoSearch is used to check whether a gccgo package exists in the
-// standard library.

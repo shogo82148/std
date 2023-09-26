@@ -74,6 +74,10 @@
 // that difference will be visible when printing t.String() and u.String().
 package time
 
+import (
+	_ "github.com/shogo82148/std/unsafe"
+)
+
 // A Time represents an instant in time with nanosecond precision.
 //
 // Programs using times should typically store and pass them as values,
@@ -98,6 +102,10 @@ package time
 // Changing the location in this way changes only the presentation; it does not
 // change the instant in time being denoted and therefore does not affect the
 // computations described in earlier paragraphs.
+//
+// Representations of a Time value saved by the GobEncode, MarshalBinary,
+// MarshalJSON, and MarshalText methods store the Time.Location's offset, but not
+// the location name. They therefore lose information about Daylight Saving Time.
 //
 // In addition to the required “wall clock” reading, a Time may contain an optional
 // reading of the current process's monotonic clock, to provide additional precision
@@ -302,6 +310,13 @@ func (t Time) AddDate(years int, months int, days int) Time
 // before month m begins. There is an entry for m=12, counting
 // the number of days before January of next year (365).
 
+// Monotonic times are reported as offsets from startNano.
+// We initialize startNano to runtimeNano() - 1 so that on systems where
+// monotonic time resolution is fairly low (e.g. Windows 2008
+// which appears to have a default resolution of 15ms),
+// we avoid ever reporting a monotonic time of 0.
+// (Callers may want to use 0 as "time not set".)
+
 // Now returns the current local time.
 func Now() Time
 
@@ -311,7 +326,7 @@ func (t Time) UTC() Time
 // Local returns t with the location set to local time.
 func (t Time) Local() Time
 
-// In returns a copy of t representating the same time instant, but
+// In returns a copy of t representing the same time instant, but
 // with the copy's location information set to loc for display
 // purposes.
 //

@@ -7,3 +7,6 @@ package tls
 // recordingConn is a net.Conn that records the traffic that passes through it.
 // WriteTo can be used to produce output that can be later be loaded with
 // ParseTestData.
+
+// localListener is set up by TestMain and used by localPipe to create Conn
+// pairs like net.Pipe, but connected by an actual buffered TCP connection.

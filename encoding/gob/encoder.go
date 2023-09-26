@@ -11,7 +11,8 @@ import (
 )
 
 // An Encoder manages the transmission of type and data information to the
-// other side of a connection.
+// other side of a connection.  It is safe for concurrent use by multiple
+// goroutines.
 type Encoder struct {
 	mutex      sync.Mutex
 	w          []io.Writer

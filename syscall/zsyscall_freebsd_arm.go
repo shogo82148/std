@@ -40,15 +40,9 @@ func Flock(fd int, how int) (err error)
 
 func Fpathconf(fd int, name int) (val int, err error)
 
-func Fstat(fd int, stat *Stat_t) (err error)
-
-func Fstatfs(fd int, stat *Statfs_t) (err error)
-
 func Fsync(fd int) (err error)
 
 func Ftruncate(fd int, length int64) (err error)
-
-func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)
 
 func Getdtablesize() (size int)
 
@@ -90,13 +84,9 @@ func Link(path string, link string) (err error)
 
 func Listen(s int, backlog int) (err error)
 
-func Lstat(path string, stat *Stat_t) (err error)
-
 func Mkdir(path string, mode uint32) (err error)
 
 func Mkfifo(path string, mode uint32) (err error)
-
-func Mknod(path string, mode uint32, dev int) (err error)
 
 func Nanosleep(time *Timespec, leftover *Timespec) (err error)
 
@@ -143,10 +133,6 @@ func Setsid() (pid int, err error)
 func Settimeofday(tp *Timeval) (err error)
 
 func Setuid(uid int) (err error)
-
-func Stat(path string, stat *Stat_t) (err error)
-
-func Statfs(path string, stat *Statfs_t) (err error)
 
 func Symlink(path string, link string) (err error)
 

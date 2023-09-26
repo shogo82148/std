@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package tls
+
+// The marshalingFunction type is an adapter to allow the use of ordinary
+// functions as cryptobyte.MarshalingValue.

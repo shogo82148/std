@@ -23,6 +23,12 @@ func (k KeySizeError) Error() string
 // RC4 key, at least 1 byte and at most 256 bytes.
 func NewCipher(key []byte) (*Cipher, error)
 
-// Reset zeros the key data so that it will no longer appear in the
-// process's memory.
+// Reset zeros the key data and makes the Cipher unusable.
+//
+// Deprecated: Reset can't guarantee that the key will be entirely removed from
+// the process's memory.
 func (c *Cipher) Reset()
+
+// XORKeyStream sets dst to the result of XORing src with the key stream.
+// Dst and src must overlap entirely or not at all.
+func (c *Cipher) XORKeyStream(dst, src []byte)

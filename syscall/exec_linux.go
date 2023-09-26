@@ -16,8 +16,9 @@ type SysProcIDMap struct {
 }
 
 type SysProcAttr struct {
-	Chroot       string
-	Credential   *Credential
+	Chroot     string
+	Credential *Credential
+
 	Ptrace       bool
 	Setsid       bool
 	Setpgid      bool

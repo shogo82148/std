@@ -185,6 +185,13 @@ func TempDir() string
 // then it will return an error.
 func UserCacheDir() (string, error)
 
+// UserHomeDir returns the current user's home directory.
+//
+// On Unix, including macOS, it returns the $HOME environment variable.
+// On Windows, it returns %USERPROFILE%.
+// On Plan 9, it returns the $home environment variable.
+func UserHomeDir() (string, error)
+
 // Chmod changes the mode of the named file to mode.
 // If the file is a symbolic link, it changes the mode of the link's target.
 // If there is an error, it will be of type *PathError.
@@ -246,3 +253,7 @@ func (f *File) SetReadDeadline(t time.Time) error
 // A zero value for t means Write will not time out.
 // Not all files support setting deadlines; see SetDeadline.
 func (f *File) SetWriteDeadline(t time.Time) error
+
+// SyscallConn returns a raw file.
+// This implements the syscall.Conn interface.
+func (f *File) SyscallConn() (syscall.RawConn, error)

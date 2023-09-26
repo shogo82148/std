@@ -10,7 +10,7 @@ package io
 // return a non-nil, non-EOF error, Read will return that error.
 func MultiReader(readers ...Reader) Reader
 
-var _ stringWriter = (*multiWriter)(nil)
+var _ StringWriter = (*multiWriter)(nil)
 
 // MultiWriter creates a writer that duplicates its writes to all the
 // provided writers, similar to the Unix tee(1) command.

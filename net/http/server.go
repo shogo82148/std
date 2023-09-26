@@ -324,6 +324,7 @@ func RedirectHandler(url string, code int) Handler
 type ServeMux struct {
 	mu    sync.RWMutex
 	m     map[string]muxEntry
+	es    []muxEntry
 	hosts bool
 }
 

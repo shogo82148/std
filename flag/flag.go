@@ -93,6 +93,12 @@ import (
 // but no such flag is defined.
 var ErrHelp = errors.New("flag: help requested")
 
+// errParse is returned by Set if a flag's value fails to parse, such as with an invalid integer for Int.
+// It then gets wrapped through failf to provide more information.
+
+// errRange is returned by Set if a flag's value is out of range.
+// It then gets wrapped through failf to provide more information.
+
 // -- bool Value
 
 // optional interface to indicate boolean flags that can be
@@ -247,6 +253,8 @@ func (f *FlagSet) PrintDefaults()
 //
 //	-I directory
 //		search directory for include files.
+//
+// To change the destination for flag messages, call CommandLine.SetOutput.
 func PrintDefaults()
 
 // Usage prints a usage message documenting all defined command-line flags

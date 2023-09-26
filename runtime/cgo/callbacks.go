@@ -4,8 +4,6 @@
 
 package cgo
 
-//go:linkname _runtime_cgo_panic_internal runtime._cgo_panic_internal
-
 //go:cgo_import_static x_cgo_init
 //go:linkname x_cgo_init x_cgo_init
 //go:linkname _cgo_init _cgo_init

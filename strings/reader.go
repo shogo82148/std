@@ -11,6 +11,7 @@ import (
 // A Reader implements the io.Reader, io.ReaderAt, io.Seeker, io.WriterTo,
 // io.ByteScanner, and io.RuneScanner interfaces by reading
 // from a string.
+// The zero value for Reader operates like a Reader of an empty string.
 type Reader struct {
 	s        string
 	i        int64

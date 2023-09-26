@@ -21,8 +21,7 @@ import (
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/time"
-
-	cryptobyte_asn1 "golang_org/x/crypto/cryptobyte/asn1"
+	cryptobyte_asn1 "internal/x/crypto/cryptobyte/asn1"
 )
 
 // pkixPublicKey reflects a PKIX public key structure. See SubjectPublicKeyInfo
@@ -78,7 +77,7 @@ const (
 func (algo PublicKeyAlgorithm) String() string
 
 // pssParameters reflects the parameters in an AlgorithmIdentifier that
-// specifies RSA PSS. See https://tools.ietf.org/html/rfc3447#appendix-A.2.3
+// specifies RSA PSS. See RFC 3447, Appendix A.2.3.
 
 // RFC 3279, 2.3 Public Key Algorithms
 //
@@ -387,21 +386,21 @@ type CertificateRequest struct {
 // CreateCertificateRequest creates a new certificate request based on a
 // template. The following members of template are used:
 //
-//   - Attributes
-//   - DNSNames
-//   - EmailAddresses
-//   - ExtraExtensions
-//   - IPAddresses
-//   - URIs
 //   - SignatureAlgorithm
 //   - Subject
+//   - DNSNames
+//   - EmailAddresses
+//   - IPAddresses
+//   - URIs
+//   - ExtraExtensions
+//   - Attributes (deprecated)
 //
-// The private key is the private key of the signer.
+// priv is the private key to sign the CSR with, and the corresponding public
+// key will be included in the CSR. It must implement crypto.Signer and its
+// Public() method must return a *rsa.PublicKey or a *ecdsa.PublicKey. (A
+// *rsa.PrivateKey or *ecdsa.PrivateKey satisfies this.)
 //
 // The returned slice is the certificate request in DER encoding.
-//
-// All keys types that are implemented via crypto.Signer are supported (This
-// includes *rsa.PublicKey and *ecdsa.PublicKey.)
 func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv interface{}) (csr []byte, err error)
 
 // ParseCertificateRequest parses a single certificate request from the

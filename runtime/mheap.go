@@ -13,7 +13,7 @@ package runtime
 // sys.PhysPageSize is an upper-bound on the physical page size.
 
 // Main malloc heap.
-// The heap itself is the "free[]" and "large" arrays,
+// The heap itself is the "free" and "scav" treaps,
 // but all the other global data is here too.
 //
 // mheap must not be heap-allocated because it contains mSpanLists,
@@ -35,8 +35,8 @@ package runtime
 //
 //go:notinheap
 
-// An MSpan representing actual memory has state _MSpanInUse,
-// _MSpanManual, or _MSpanFree. Transitions between these states are
+// An mspan representing actual memory has state mSpanInUse,
+// mSpanManual, or mSpanFree. Transitions between these states are
 // constrained as follows:
 //
 // * A span may transition from free to in-use or manual during any GC

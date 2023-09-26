@@ -66,6 +66,11 @@ func LookupIP(host string) ([]IP, error)
 // It returns a slice of that host's IPv4 and IPv6 addresses.
 func (r *Resolver) LookupIPAddr(ctx context.Context, host string) ([]IPAddr, error)
 
+// onlyValuesCtx is a context that uses an underlying context
+// for value lookup if the underlying context hasn't yet expired.
+
+var _ context.Context = (*onlyValuesCtx)(nil)
+
 // LookupPort looks up the port for the given network and service.
 func LookupPort(network, service string) (port int, err error)
 

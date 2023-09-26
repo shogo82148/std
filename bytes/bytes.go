@@ -10,6 +10,16 @@ import (
 	"github.com/shogo82148/std/unicode"
 )
 
+// Equal returns a boolean reporting whether a and b
+// are the same length and contain the same bytes.
+// A nil argument is equivalent to an empty slice.
+func Equal(a, b []byte) bool
+
+// Compare returns an integer comparing two byte slices lexicographically.
+// The result will be 0 if a==b, -1 if a < b, and +1 if a > b.
+// A nil argument is equivalent to an empty slice.
+func Compare(a, b []byte) int
+
 // Count counts the number of non-overlapping instances of sep in s.
 // If sep is an empty slice, Count returns 1 + the number of UTF-8-encoded code points in s.
 func Count(s, sep []byte) int
@@ -22,6 +32,9 @@ func ContainsAny(b []byte, chars string) bool
 
 // ContainsRune reports whether the rune is contained in the UTF-8-encoded byte slice b.
 func ContainsRune(b []byte, r rune) bool
+
+// IndexByte returns the index of the first instance of c in b, or -1 if c is not present in b.
+func IndexByte(b []byte, c byte) int
 
 // LastIndex returns the index of the last instance of sep in s, or -1 if sep is not present in s.
 func LastIndex(s, sep []byte) int
@@ -207,6 +220,13 @@ func Runes(s []byte) []rune
 // for a k-rune slice.
 // If n < 0, there is no limit on the number of replacements.
 func Replace(s, old, new []byte, n int) []byte
+
+// ReplaceAll returns a copy of the slice s with all
+// non-overlapping instances of old replaced by new.
+// If old is empty, it matches at the beginning of the slice
+// and after each UTF-8 sequence, yielding up to k+1 replacements
+// for a k-rune slice.
+func ReplaceAll(s, old, new []byte) []byte
 
 // EqualFold reports whether s and t, interpreted as UTF-8 strings,
 // are equal under Unicode case-folding.

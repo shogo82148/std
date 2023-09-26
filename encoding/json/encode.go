@@ -191,6 +191,7 @@ type InvalidUTF8Error struct {
 
 func (e *InvalidUTF8Error) Error() string
 
+// A MarshalerError represents an error from calling a MarshalJSON or MarshalText method.
 type MarshalerError struct {
 	Type reflect.Type
 	Err  error

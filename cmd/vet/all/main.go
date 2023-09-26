@@ -8,6 +8,9 @@
 // The vet/all command runs go vet on the standard library and commands.
 // It compares the output against a set of whitelists
 // maintained in the whitelist directory.
+//
+// This program attempts to build packages from golang.org/x/tools,
+// which must be in your GOPATH.
 package main
 
 // ignorePathPrefixes are file path prefixes that should be ignored wholesale.

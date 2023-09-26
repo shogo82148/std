@@ -6,10 +6,3 @@
 // +build arm64
 
 package runtime
-
-// For go:linkname
-import _ "github.com/shogo82148/std/unsafe"
-
-//go:linkname cpu_hwcap internal/cpu.hwcap
-
-//go:linkname cpu_hwcap2 internal/cpu.hwcap2

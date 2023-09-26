@@ -6,6 +6,10 @@ package syscall
 
 func Stat(path string, stat *Stat_t) (err error)
 
+func Lchown(path string, uid int, gid int) (err error)
+
+func Lstat(path string, stat *Stat_t) (err error)
+
 func Gettimeofday(tv *Timeval) (err error)
 
 func Time(t *Time_t) (tt Time_t, err error)

@@ -12,8 +12,6 @@
 
 package net
 
-import _ "github.com/shogo82148/std/unsafe"
-
 // IP address lengths (bytes).
 const (
 	IPv4len = 4

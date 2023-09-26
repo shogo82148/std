@@ -86,6 +86,10 @@ package runtime
 // Keep in sync with linker (../cmd/link/internal/ld/pcln.go:/pclntab)
 // and with package debug/gosym and with symtab.go in package runtime.
 
+// Pseudo-Func that is returned for PCs that occur in inlined code.
+// A *Func can be either a *_func or a *funcinl, and they are distinguished
+// by the first uintptr.
+
 // layout of Itab known to compilers
 // allocated in non-garbage-collected memory
 // Needs to be in sync with

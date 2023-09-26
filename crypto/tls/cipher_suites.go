@@ -7,10 +7,12 @@ package tls
 // a keyAgreement implements the client and server side of a TLS key agreement
 // protocol by generating and processing key exchange messages.
 
-// A cipherSuite is a specific combination of key agreement, cipher and MAC
-// function. All cipher suites currently assume RSA key agreement.
+// A cipherSuite is a specific combination of key agreement, cipher and MAC function.
 
-// fixedNonceAEAD wraps an AEAD and prefixes a fixed portion of the nonce to
+// A cipherSuiteTLS13 defines only the pair of the AEAD algorithm and hash
+// algorithm to be used with HKDF. See RFC 8446, Appendix B.4.
+
+// prefixNonceAEAD wraps an AEAD and prefixes a fixed portion of the nonce to
 // each call.
 
 // xoredNonceAEAD wraps an AEAD by XORing in a fixed pattern to the nonce
@@ -22,13 +24,14 @@ package tls
 // cthWrapper wraps any hash.Hash that implements ConstantTimeSum, and replaces
 // with that all calls to Sum. It's used to obtain a ConstantTimeSum-based HMAC.
 
-// tls10MAC implements the TLS 1.0 MAC function. RFC 2246, section 6.2.3.
+// tls10MAC implements the TLS 1.0 MAC function. RFC 2246, Section 6.2.3.
 
 // A list of cipher suite IDs that are, or have been, implemented by this
 // package.
 //
 // Taken from https://www.iana.org/assignments/tls-parameters/tls-parameters.xml
 const (
+	// TLS 1.0 - 1.2 cipher suites.
 	TLS_RSA_WITH_RC4_128_SHA                uint16 = 0x0005
 	TLS_RSA_WITH_3DES_EDE_CBC_SHA           uint16 = 0x000a
 	TLS_RSA_WITH_AES_128_CBC_SHA            uint16 = 0x002f
@@ -52,8 +55,12 @@ const (
 	TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305    uint16 = 0xcca8
 	TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305  uint16 = 0xcca9
 
+	// TLS 1.3 cipher suites.
+	TLS_AES_128_GCM_SHA256       uint16 = 0x1301
+	TLS_AES_256_GCM_SHA384       uint16 = 0x1302
+	TLS_CHACHA20_POLY1305_SHA256 uint16 = 0x1303
+
 	// TLS_FALLBACK_SCSV isn't a standard cipher suite but an indicator
-	// that the client is doing version fallback. See
-	// https://tools.ietf.org/html/rfc7507.
+	// that the client is doing version fallback. See RFC 7507.
 	TLS_FALLBACK_SCSV uint16 = 0x5600
 )

@@ -22,6 +22,7 @@ var (
 	ExportHttp2ConfigureServer        = http2ConfigureServer
 	Export_shouldCopyHeaderOnRedirect = shouldCopyHeaderOnRedirect
 	Export_writeStatusLine            = writeStatusLine
+	Export_is408Message               = is408Message
 )
 
 const MaxWriteWaitBeforeConnReuse = maxWriteWaitBeforeConnReuse

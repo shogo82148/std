@@ -51,7 +51,7 @@ func (s *StdSizes) Sizeof(T Type) int64
 //
 // Supported architectures for compiler "gc":
 // "386", "arm", "arm64", "amd64", "amd64p32", "mips", "mipsle",
-// "mips64", "mips64le", "ppc64", "ppc64le", "riscv64", "s390x", "wasm".
+// "mips64", "mips64le", "ppc64", "ppc64le", "riscv64", "s390x", "sparc64", "wasm".
 func SizesFor(compiler, arch string) Sizes
 
 // stdSizes is used if Config.Sizes == nil.

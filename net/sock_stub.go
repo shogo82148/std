@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build nacl || (js && wasm) || solaris
-// +build nacl js,wasm solaris
+//go:build aix || nacl || (js && wasm) || solaris
+// +build aix nacl js,wasm solaris
 
 package net

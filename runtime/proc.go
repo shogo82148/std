@@ -19,8 +19,6 @@ package runtime
 // suspend the current goroutine, so execution resumes automatically.
 func Gosched()
 
-//go:linkname internal_cpu_debugOptions internal/cpu.debugOptions
-
 // freezeStopWait is a large value that freezetheworld sets
 // sched.stopwait to in order to request that all Gs permanently stop.
 
@@ -101,6 +99,12 @@ func UnlockOSThread()
 // With the randomness here, as long as the tests pass
 // consistently with -race, they shouldn't have latent scheduling
 // assumptions.
+
+// A gQueue is a dequeue of Gs linked through g.schedlink. A G can only
+// be on one gQueue or gList at a time.
+
+// A gList is a list of Gs linked through g.schedlink. A G can only be
+// on one gQueue or gList at a time.
 
 // randomOrder/randomEnum are helper types for randomized work stealing.
 // They allow to enumerate all Ps in different pseudo-random orders without repetitions.

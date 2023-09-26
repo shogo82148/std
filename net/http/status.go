@@ -55,6 +55,7 @@ const (
 	StatusUnprocessableEntity          = 422
 	StatusLocked                       = 423
 	StatusFailedDependency             = 424
+	StatusTooEarly                     = 425
 	StatusUpgradeRequired              = 426
 	StatusPreconditionRequired         = 428
 	StatusTooManyRequests              = 429

@@ -21,3 +21,5 @@ func (iov *Iovec) SetLen(length int)
 func (msghdr *Msghdr) SetControllen(length int)
 
 func (cmsg *Cmsghdr) SetLen(length int)
+
+func SyncFileRange(fd int, off int64, n int64, flags int) error

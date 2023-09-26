@@ -155,3 +155,29 @@ func ExampleListenAndServe() {
 	http.HandleFunc("/hello", helloHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
+
+func ExampleHandleFunc() {
+	h1 := func(w http.ResponseWriter, _ *http.Request) {
+		io.WriteString(w, "Hello from a HandleFunc #1!\n")
+	}
+	h2 := func(w http.ResponseWriter, _ *http.Request) {
+		io.WriteString(w, "Hello from a HandleFunc #2!\n")
+	}
+
+	http.HandleFunc("/", h1)
+	http.HandleFunc("/endpoint", h2)
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func ExampleNotFoundHandler() {
+	mux := http.NewServeMux()
+
+	// Create sample handler to returns 404
+	mux.Handle("/resources", http.NotFoundHandler())
+
+	// Create sample handler that returns 200
+	mux.Handle("/resources/people/", newPeopleHandler())
+
+	log.Fatal(http.ListenAndServe(":8080", mux))
+}

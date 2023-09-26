@@ -4,9 +4,6 @@
 
 package syscall
 
-// sysnb	gettimeofday(tp *Timeval) (sec int32, usec int32, err error)
-func Gettimeofday(tv *Timeval) error
-
 func SetKevent(k *Kevent_t, fd, mode, flags int)
 
 func (iov *Iovec) SetLen(length int)

@@ -113,6 +113,13 @@ package runtime
 
 // base address for all 0-byte allocations
 
+// persistentChunkSize is the number of bytes we allocate when we grow
+// a persistentAlloc.
+
+// persistentChunks is a list of all the persistent chunks we have
+// allocated. The list is maintained through the first word in the
+// persistent chunk. This is updated atomically.
+
 // linearAlloc is a simple linear allocator that pre-reserves a region
 // of memory and then maps that region as needed. The caller is
 // responsible for locking.

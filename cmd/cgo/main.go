@@ -32,8 +32,11 @@ type Package struct {
 	GccFiles    []string
 	Preamble    string
 	typedefs    map[string]bool
-	typedefList []string
+	typedefList []typedefInfo
 }
+
+// A typedefInfo is an element on Package.typedefList: a typedef name
+// and the position where it was required.
 
 // A File collects information about a single Go input file.
 type File struct {
@@ -53,6 +56,7 @@ type File struct {
 type Call struct {
 	Call     *ast.CallExpr
 	Deferred bool
+	Done     bool
 }
 
 // A Ref refers to an expression of the form C.xxx in the AST.
@@ -60,6 +64,7 @@ type Ref struct {
 	Name    *Name
 	Expr    *ast.Expr
 	Context astContext
+	Done    bool
 }
 
 func (r *Ref) Pos() token.Pos
@@ -106,6 +111,7 @@ type Type struct {
 	Go         ast.Expr
 	EnumValues map[string]int64
 	Typedef    string
+	BadPointer bool
 }
 
 // A FuncType collects information about a function type in both the C and Go worlds.

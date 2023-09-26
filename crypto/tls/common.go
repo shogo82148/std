@@ -18,6 +18,7 @@ const (
 	VersionTLS10 = 0x0301
 	VersionTLS11 = 0x0302
 	VersionTLS12 = 0x0303
+	VersionTLS13 = 0x0304
 )
 
 // TLS record types.
@@ -31,7 +32,10 @@ const (
 // TLS signaling cipher suite values
 
 // CurveID is the type of a TLS identifier for an elliptic curve. See
-// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8
+// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8.
+//
+// In TLS 1.3, this type is called NamedGroup, but at this time this library
+// only supports Elliptic Curve based groups. See RFC 8446, Section 4.2.7.
 type CurveID uint16
 
 const (
@@ -41,6 +45,13 @@ const (
 	X25519    CurveID = 29
 )
 
+// TLS 1.3 Key Share. See RFC 8446, Section 4.2.8.
+
+// TLS 1.3 PSK Key Exchange Modes. See RFC 8446, Section 4.2.9.
+
+// TLS 1.3 PSK Identity. Can be a Session Ticket, or a reference to a saved
+// session. See RFC 8446, Section 4.2.11.
+
 // TLS Elliptic Curve Point Formats
 // https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-9
 
@@ -49,12 +60,17 @@ const (
 // Certificate types (for certificateRequestMsg)
 
 // Signature algorithms (for internal signaling use). Starting at 16 to avoid overlap with
-// TLS 1.2 codepoints (RFC 5246, section A.4.1), with which these have nothing to do.
+// TLS 1.2 codepoints (RFC 5246, Appendix A.4.1), with which these have nothing to do.
 
 // supportedSignatureAlgorithms contains the signature and hash algorithms that
-// the code advertises as supported in a TLS 1.2 ClientHello and in a TLS 1.2
+// the code advertises as supported in a TLS 1.2+ ClientHello and in a TLS 1.2+
 // CertificateRequest. The two fields are merged to match with TLS 1.3.
 // Note that in TLS 1.2, the ECDSA algorithms are not constrained to P-256, etc.
+
+// RSA-PSS is disabled in TLS 1.2 for Go 1.12. See Issue 30055.
+
+// helloRetryRequestRandom is set as the Random value of a ServerHello
+// to signal that the message is actually a HelloRetryRequest.
 
 // ConnectionState records basic TLS details about the connection.
 type ConnectionState struct {
@@ -76,9 +92,9 @@ type ConnectionState struct {
 }
 
 // ExportKeyingMaterial returns length bytes of exported key material in a new
-// slice as defined in https://tools.ietf.org/html/rfc5705. If context is nil,
-// it is not used as part of the seed. If the connection was set to allow
-// renegotiation via Config.Renegotiation, this function will return an error.
+// slice as defined in RFC 5705. If context is nil, it is not used as part of
+// the seed. If the connection was set to allow renegotiation via
+// Config.Renegotiation, this function will return an error.
 func (cs *ConnectionState) ExportKeyingMaterial(label string, context []byte, length int) ([]byte, error)
 
 // ClientAuthType declares the policy the server will follow for
@@ -102,13 +118,19 @@ type ClientSessionState struct {
 	masterSecret       []byte
 	serverCertificates []*x509.Certificate
 	verifiedChains     [][]*x509.Certificate
+	receivedAt         time.Time
+
+	nonce  []byte
+	useBy  time.Time
+	ageAdd uint32
 }
 
 // ClientSessionCache is a cache of ClientSessionState objects that can be used
 // by a client to resume a TLS session with a given server. ClientSessionCache
 // implementations should expect to be called concurrently from different
-// goroutines. Only ticket-based resumption is supported, not SessionID-based
-// resumption.
+// goroutines. Up to TLS 1.2, only ticket-based resumption is supported, not
+// SessionID-based resumption. In TLS 1.3 they were merged into PSK modes, which
+// are supported via this interface.
 type ClientSessionCache interface {
 	Get(sessionKey string) (session *ClientSessionState, ok bool)
 
@@ -116,24 +138,27 @@ type ClientSessionCache interface {
 }
 
 // SignatureScheme identifies a signature algorithm supported by TLS. See
-// https://tools.ietf.org/html/draft-ietf-tls-tls13-18#section-4.2.3.
+// RFC 8446, Section 4.2.3.
 type SignatureScheme uint16
 
 const (
-	PKCS1WithSHA1   SignatureScheme = 0x0201
+	// RSASSA-PKCS1-v1_5 algorithms.
 	PKCS1WithSHA256 SignatureScheme = 0x0401
 	PKCS1WithSHA384 SignatureScheme = 0x0501
 	PKCS1WithSHA512 SignatureScheme = 0x0601
 
+	// RSASSA-PSS algorithms with public key OID rsaEncryption.
 	PSSWithSHA256 SignatureScheme = 0x0804
 	PSSWithSHA384 SignatureScheme = 0x0805
 	PSSWithSHA512 SignatureScheme = 0x0806
 
+	// ECDSA algorithms. Only constrained to a specific curve in TLS 1.3.
 	ECDSAWithP256AndSHA256 SignatureScheme = 0x0403
 	ECDSAWithP384AndSHA384 SignatureScheme = 0x0503
 	ECDSAWithP521AndSHA512 SignatureScheme = 0x0603
 
 	// Legacy signature and hash algorithms for TLS 1.2.
+	PKCS1WithSHA1 SignatureScheme = 0x0201
 	ECDSAWithSHA1 SignatureScheme = 0x0203
 )
 
@@ -178,6 +203,8 @@ type CertificateRequestInfo struct {
 // handshake and application data flow is not permitted so renegotiation can
 // only be used with protocols that synchronise with the renegotiation, such as
 // HTTPS.
+//
+// Renegotiation is not defined in TLS 1.3.
 type RenegotiationSupport int
 
 const (
@@ -260,6 +287,9 @@ type Config struct {
 
 // ticketKey is the internal representation of a session ticket key.
 
+// maxSessionTicketLifetime is the maximum allowed lifetime of a TLS 1.3 session
+// ticket, and the lifetime we set for tickets we send.
+
 // Clone returns a shallow clone of c. It is safe to clone a Config that is
 // being used concurrently by a TLS client or server.
 func (c *Config) Clone() *Config
@@ -270,6 +300,8 @@ func (c *Config) Clone() *Config
 // running in order to rotate the session ticket keys. The function will panic
 // if keys is empty.
 func (c *Config) SetSessionTicketKeys(keys [][32]byte)
+
+// tls13Support caches the result for isTLS13Supported.
 
 // BuildNameToCertificate parses c.Certificates and builds c.NameToCertificate
 // from the CommonName and SubjectAlternateName fields of each of the leaf

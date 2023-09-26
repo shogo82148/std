@@ -194,8 +194,6 @@ func Stat(path string, stat *Stat_t) (err error)
 
 func Statfs(path string, buf *Statfs_t) (err error)
 
-func SyncFileRange(fd int, off int64, n int64, flags int) (err error)
-
 func Truncate(path string, length int64) (err error)
 
 func Gettimeofday(tv *Timeval) (err error)

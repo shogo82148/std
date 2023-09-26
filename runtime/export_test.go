@@ -83,3 +83,23 @@ type RWMutex struct {
 const RuntimeHmapSize = unsafe.Sizeof(hmap{})
 
 type G = g
+
+// Span is a safe wrapper around an mspan, whose memory
+// is managed manually.
+type Span struct {
+	*mspan
+}
+
+type TreapIter struct {
+	treapIter
+}
+
+// Treap is a safe wrapper around mTreap for testing.
+//
+// It must never be heap-allocated because mTreap is
+// notinheap.
+//
+//go:notinheap
+type Treap struct {
+	mTreap
+}

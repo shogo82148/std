@@ -33,6 +33,12 @@
 // For commands, unless the -cmd flag is present "go doc command"
 // shows only the package-level docs for the package.
 //
+// The -src flag causes doc to print the full source code for the symbol, such
+// as the body of a struct, function or method.
+//
+// The -all flag causes doc to print all documentation for the package and
+// all its visible symbols. The argument must identify a package.
+//
 // For complete documentation, run "go help doc".
 package main
 

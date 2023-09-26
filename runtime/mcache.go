@@ -22,4 +22,4 @@ package runtime
 // A gclinkptr is a pointer to a gclink, but it is opaque
 // to the garbage collector.
 
-// dummy MSpan that contains no free objects.
+// dummy mspan that contains no free objects.

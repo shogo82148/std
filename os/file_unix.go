@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || (js && wasm) || linux || nacl || netbsd || openbsd || solaris
-// +build darwin dragonfly freebsd js,wasm linux nacl netbsd openbsd solaris
+//go:build aix || darwin || dragonfly || freebsd || (js && wasm) || linux || nacl || netbsd || openbsd || solaris
+// +build aix darwin dragonfly freebsd js,wasm linux nacl netbsd openbsd solaris
 
 package os
 
@@ -25,8 +25,6 @@ func (f *File) Fd() uintptr
 func NewFile(fd uintptr, name string) *File
 
 // newFileKind describes the kind of file to newFile.
-
-// Auxiliary information if the File describes a directory
 
 // DevNull is the name of the operating system's “null device.”
 // On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
