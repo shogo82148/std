@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || (js && wasm) || solaris
-// +build aix js,wasm solaris
 
 package net

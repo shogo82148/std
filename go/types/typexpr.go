@@ -5,7 +5,3 @@
 // This file implements type-checking of identifiers and type expressions.
 
 package types
-
-// byUniqueTypeName named type lists can be sorted by their unique type names.
-
-// byUniqueMethodName method lists can be sorted by their unique method names.

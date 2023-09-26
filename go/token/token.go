@@ -112,6 +112,9 @@ const (
 	SWITCH
 	TYPE
 	VAR
+
+	// additional tokens, handled in an ad-hoc manner
+	TILDE
 )
 
 // String returns the string corresponding to the token tok.

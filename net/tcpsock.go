@@ -6,6 +6,7 @@ package net
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/net/netip"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
@@ -17,6 +18,13 @@ type TCPAddr struct {
 	Port int
 	Zone string
 }
+
+// AddrPort returns the TCPAddr a as a netip.AddrPort.
+//
+// If a.Port does not fit in a uint16, it's silently truncated.
+//
+// If a is nil, a zero value is returned.
+func (a *TCPAddr) AddrPort() netip.AddrPort
 
 // Network returns the address's network name, "tcp".
 func (a *TCPAddr) Network() string
@@ -39,6 +47,11 @@ func (a *TCPAddr) String() string
 // See func Dial for a description of the network and address
 // parameters.
 func ResolveTCPAddr(network, address string) (*TCPAddr, error)
+
+// TCPAddrFromAddrPort returns addr as a TCPAddr. If addr.IsValid() is false,
+// then the returned TCPAddr will contain a nil IP field, indicating an
+// address family-agnostic unspecified address.
+func TCPAddrFromAddrPort(addr netip.AddrPort) *TCPAddr
 
 // TCPConn is an implementation of the Conn interface for TCP network
 // connections.

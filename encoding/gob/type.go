@@ -76,7 +76,7 @@ type GobDecoder interface {
 
 // RegisterName is like Register but uses the provided name rather than the
 // type's default.
-func RegisterName(name string, value interface{})
+func RegisterName(name string, value any)
 
 // Register records a type, identified by a value for that type, under its
 // internal type name. That name will identify the concrete type of a value
@@ -84,4 +84,4 @@ func RegisterName(name string, value interface{})
 // transferred as implementations of interface values need to be registered.
 // Expecting to be used only during initialization, it panics if the mapping
 // between types and names is not a bijection.
-func Register(value interface{})
+func Register(value any)

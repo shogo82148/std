@@ -29,7 +29,12 @@ package runtime
 // sweepClass is a spanClass and one bit to represent whether we're currently
 // sweeping partial or full spans.
 
-// sweepLocker acquires sweep ownership of spans and blocks sweep
-// completion.
+// activeSweep is a type that captures whether sweeping
+// is done, and whether there are any outstanding sweepers.
+//
+// Every potential sweeper must call begin() before they look
+// for work, and end() after they've finished sweeping.
+
+// sweepLocker acquires sweep ownership of spans.
 
 // sweepLocked represents sweep ownership of a span.

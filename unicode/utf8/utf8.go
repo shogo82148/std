@@ -80,6 +80,11 @@ func RuneLen(r rune) int
 // It returns the number of bytes written.
 func EncodeRune(p []byte, r rune) int
 
+// AppendRune appends the UTF-8 encoding of r to the end of p and
+// returns the extended buffer. If the rune is out of range,
+// it appends the encoding of RuneError.
+func AppendRune(p []byte, r rune) []byte
+
 // RuneCount returns the number of runes in p. Erroneous and short
 // encodings are treated as single runes of width 1 byte.
 func RuneCount(p []byte) int

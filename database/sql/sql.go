@@ -46,7 +46,7 @@ type NamedArg struct {
 
 	Name string
 
-	Value interface{}
+	Value any
 }
 
 // Named provides a more concise way to create NamedArg values.
@@ -61,7 +61,7 @@ type NamedArg struct {
 //	    sql.Named("start", startTime),
 //	    sql.Named("end", endTime),
 //	)
-func Named(name string, value interface{}) NamedArg
+func Named(name string, value any) NamedArg
 
 // IsolationLevel is the transaction isolation level used in TxOptions.
 type IsolationLevel int
@@ -115,7 +115,7 @@ type NullString struct {
 }
 
 // Scan implements the Scanner interface.
-func (ns *NullString) Scan(value interface{}) error
+func (ns *NullString) Scan(value any) error
 
 // Value implements the driver Valuer interface.
 func (ns NullString) Value() (driver.Value, error)
@@ -129,7 +129,7 @@ type NullInt64 struct {
 }
 
 // Scan implements the Scanner interface.
-func (n *NullInt64) Scan(value interface{}) error
+func (n *NullInt64) Scan(value any) error
 
 // Value implements the driver Valuer interface.
 func (n NullInt64) Value() (driver.Value, error)
@@ -143,7 +143,7 @@ type NullInt32 struct {
 }
 
 // Scan implements the Scanner interface.
-func (n *NullInt32) Scan(value interface{}) error
+func (n *NullInt32) Scan(value any) error
 
 // Value implements the driver Valuer interface.
 func (n NullInt32) Value() (driver.Value, error)
@@ -157,7 +157,7 @@ type NullInt16 struct {
 }
 
 // Scan implements the Scanner interface.
-func (n *NullInt16) Scan(value interface{}) error
+func (n *NullInt16) Scan(value any) error
 
 // Value implements the driver Valuer interface.
 func (n NullInt16) Value() (driver.Value, error)
@@ -171,7 +171,7 @@ type NullByte struct {
 }
 
 // Scan implements the Scanner interface.
-func (n *NullByte) Scan(value interface{}) error
+func (n *NullByte) Scan(value any) error
 
 // Value implements the driver Valuer interface.
 func (n NullByte) Value() (driver.Value, error)
@@ -185,7 +185,7 @@ type NullFloat64 struct {
 }
 
 // Scan implements the Scanner interface.
-func (n *NullFloat64) Scan(value interface{}) error
+func (n *NullFloat64) Scan(value any) error
 
 // Value implements the driver Valuer interface.
 func (n NullFloat64) Value() (driver.Value, error)
@@ -199,7 +199,7 @@ type NullBool struct {
 }
 
 // Scan implements the Scanner interface.
-func (n *NullBool) Scan(value interface{}) error
+func (n *NullBool) Scan(value any) error
 
 // Value implements the driver Valuer interface.
 func (n NullBool) Value() (driver.Value, error)
@@ -213,14 +213,14 @@ type NullTime struct {
 }
 
 // Scan implements the Scanner interface.
-func (n *NullTime) Scan(value interface{}) error
+func (n *NullTime) Scan(value any) error
 
 // Value implements the driver Valuer interface.
 func (n NullTime) Value() (driver.Value, error)
 
 // Scanner is an interface used by Scan.
 type Scanner interface {
-	Scan(src interface{}) error
+	Scan(src any) error
 }
 
 // Out may be used to retrieve OUTPUT value parameters from stored procedures.
@@ -234,7 +234,7 @@ type Scanner interface {
 type Out struct {
 	_Named_Fields_Required struct{}
 
-	Dest interface{}
+	Dest any
 
 	In bool
 }
@@ -453,25 +453,25 @@ func (db *DB) Prepare(query string) (*Stmt, error)
 
 // ExecContext executes a query without returning any rows.
 // The args are for any placeholder parameters in the query.
-func (db *DB) ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
+func (db *DB) ExecContext(ctx context.Context, query string, args ...any) (Result, error)
 
 // Exec executes a query without returning any rows.
 // The args are for any placeholder parameters in the query.
 //
 // Exec uses context.Background internally; to specify the context, use
 // ExecContext.
-func (db *DB) Exec(query string, args ...interface{}) (Result, error)
+func (db *DB) Exec(query string, args ...any) (Result, error)
 
 // QueryContext executes a query that returns rows, typically a SELECT.
 // The args are for any placeholder parameters in the query.
-func (db *DB) QueryContext(ctx context.Context, query string, args ...interface{}) (*Rows, error)
+func (db *DB) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // Query executes a query that returns rows, typically a SELECT.
 // The args are for any placeholder parameters in the query.
 //
 // Query uses context.Background internally; to specify the context, use
 // QueryContext.
-func (db *DB) Query(query string, args ...interface{}) (*Rows, error)
+func (db *DB) Query(query string, args ...any) (*Rows, error)
 
 // QueryRowContext executes a query that is expected to return at most one row.
 // QueryRowContext always returns a non-nil value. Errors are deferred until
@@ -479,7 +479,7 @@ func (db *DB) Query(query string, args ...interface{}) (*Rows, error)
 // If the query selects no rows, the *Row's Scan will return ErrNoRows.
 // Otherwise, the *Row's Scan scans the first selected row and discards
 // the rest.
-func (db *DB) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
+func (db *DB) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // QueryRow executes a query that is expected to return at most one row.
 // QueryRow always returns a non-nil value. Errors are deferred until
@@ -490,7 +490,7 @@ func (db *DB) QueryRowContext(ctx context.Context, query string, args ...interfa
 //
 // QueryRow uses context.Background internally; to specify the context, use
 // QueryRowContext.
-func (db *DB) QueryRow(query string, args ...interface{}) *Row
+func (db *DB) QueryRow(query string, args ...any) *Row
 
 // BeginTx starts a transaction.
 //
@@ -551,11 +551,11 @@ func (c *Conn) PingContext(ctx context.Context) error
 
 // ExecContext executes a query without returning any rows.
 // The args are for any placeholder parameters in the query.
-func (c *Conn) ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
+func (c *Conn) ExecContext(ctx context.Context, query string, args ...any) (Result, error)
 
 // QueryContext executes a query that returns rows, typically a SELECT.
 // The args are for any placeholder parameters in the query.
-func (c *Conn) QueryContext(ctx context.Context, query string, args ...interface{}) (*Rows, error)
+func (c *Conn) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // QueryRowContext executes a query that is expected to return at most one row.
 // QueryRowContext always returns a non-nil value. Errors are deferred until
@@ -563,7 +563,7 @@ func (c *Conn) QueryContext(ctx context.Context, query string, args ...interface
 // If the query selects no rows, the *Row's Scan will return ErrNoRows.
 // Otherwise, the *Row's Scan scans the first selected row and discards
 // the rest.
-func (c *Conn) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
+func (c *Conn) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // PrepareContext creates a prepared statement for later queries or executions.
 // Multiple queries or executions may be run concurrently from the
@@ -578,9 +578,9 @@ func (c *Conn) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 // Raw executes f exposing the underlying driver connection for the
 // duration of f. The driverConn must not be used outside of f.
 //
-// Once f returns and err is nil, the Conn will continue to be usable
+// Once f returns and err is not driver.ErrBadConn, the Conn will continue to be usable
 // until Conn.Close is called.
-func (c *Conn) Raw(f func(driverConn interface{}) error) (err error)
+func (c *Conn) Raw(f func(driverConn any) error) (err error)
 
 // BeginTx starts a transaction.
 //
@@ -662,8 +662,8 @@ func (tx *Tx) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 
 // Prepare creates a prepared statement for use within a transaction.
 //
-// The returned statement operates within the transaction and can no longer
-// be used once the transaction has been committed or rolled back.
+// The returned statement operates within the transaction and will be closed
+// when the transaction has been committed or rolled back.
 //
 // To use an existing prepared statement on this transaction, see Tx.Stmt.
 //
@@ -709,23 +709,23 @@ func (tx *Tx) Stmt(stmt *Stmt) *Stmt
 
 // ExecContext executes a query that doesn't return rows.
 // For example: an INSERT and UPDATE.
-func (tx *Tx) ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
+func (tx *Tx) ExecContext(ctx context.Context, query string, args ...any) (Result, error)
 
 // Exec executes a query that doesn't return rows.
 // For example: an INSERT and UPDATE.
 //
 // Exec uses context.Background internally; to specify the context, use
 // ExecContext.
-func (tx *Tx) Exec(query string, args ...interface{}) (Result, error)
+func (tx *Tx) Exec(query string, args ...any) (Result, error)
 
 // QueryContext executes a query that returns rows, typically a SELECT.
-func (tx *Tx) QueryContext(ctx context.Context, query string, args ...interface{}) (*Rows, error)
+func (tx *Tx) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // Query executes a query that returns rows, typically a SELECT.
 //
 // Query uses context.Background internally; to specify the context, use
 // QueryContext.
-func (tx *Tx) Query(query string, args ...interface{}) (*Rows, error)
+func (tx *Tx) Query(query string, args ...any) (*Rows, error)
 
 // QueryRowContext executes a query that is expected to return at most one row.
 // QueryRowContext always returns a non-nil value. Errors are deferred until
@@ -733,7 +733,7 @@ func (tx *Tx) Query(query string, args ...interface{}) (*Rows, error)
 // If the query selects no rows, the *Row's Scan will return ErrNoRows.
 // Otherwise, the *Row's Scan scans the first selected row and discards
 // the rest.
-func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
+func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // QueryRow executes a query that is expected to return at most one row.
 // QueryRow always returns a non-nil value. Errors are deferred until
@@ -744,7 +744,7 @@ func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...interfa
 //
 // QueryRow uses context.Background internally; to specify the context, use
 // QueryRowContext.
-func (tx *Tx) QueryRow(query string, args ...interface{}) *Row
+func (tx *Tx) QueryRow(query string, args ...any) *Row
 
 // connStmt is a prepared statement on a particular connection.
 
@@ -787,25 +787,25 @@ type Stmt struct {
 
 // ExecContext executes a prepared statement with the given arguments and
 // returns a Result summarizing the effect of the statement.
-func (s *Stmt) ExecContext(ctx context.Context, args ...interface{}) (Result, error)
+func (s *Stmt) ExecContext(ctx context.Context, args ...any) (Result, error)
 
 // Exec executes a prepared statement with the given arguments and
 // returns a Result summarizing the effect of the statement.
 //
 // Exec uses context.Background internally; to specify the context, use
 // ExecContext.
-func (s *Stmt) Exec(args ...interface{}) (Result, error)
+func (s *Stmt) Exec(args ...any) (Result, error)
 
 // QueryContext executes a prepared query statement with the given arguments
 // and returns the query results as a *Rows.
-func (s *Stmt) QueryContext(ctx context.Context, args ...interface{}) (*Rows, error)
+func (s *Stmt) QueryContext(ctx context.Context, args ...any) (*Rows, error)
 
 // Query executes a prepared query statement with the given arguments
 // and returns the query results as a *Rows.
 //
 // Query uses context.Background internally; to specify the context, use
 // QueryContext.
-func (s *Stmt) Query(args ...interface{}) (*Rows, error)
+func (s *Stmt) Query(args ...any) (*Rows, error)
 
 // QueryRowContext executes a prepared query statement with the given arguments.
 // If an error occurs during the execution of the statement, that error will
@@ -813,7 +813,7 @@ func (s *Stmt) Query(args ...interface{}) (*Rows, error)
 // If the query selects no rows, the *Row's Scan will return ErrNoRows.
 // Otherwise, the *Row's Scan scans the first selected row and discards
 // the rest.
-func (s *Stmt) QueryRowContext(ctx context.Context, args ...interface{}) *Row
+func (s *Stmt) QueryRowContext(ctx context.Context, args ...any) *Row
 
 // QueryRow executes a prepared query statement with the given arguments.
 // If an error occurs during the execution of the statement, that error will
@@ -829,7 +829,7 @@ func (s *Stmt) QueryRowContext(ctx context.Context, args ...interface{}) *Row
 //
 // QueryRow uses context.Background internally; to specify the context, use
 // QueryRowContext.
-func (s *Stmt) QueryRow(args ...interface{}) *Row
+func (s *Stmt) QueryRow(args ...any) *Row
 
 // Close closes the statement.
 func (s *Stmt) Close() error
@@ -990,7 +990,7 @@ func (ci *ColumnType) DatabaseTypeName() string
 //
 // If any of the first arguments implementing Scanner returns an error,
 // that error will be wrapped in the returned error
-func (rs *Rows) Scan(dest ...interface{}) error
+func (rs *Rows) Scan(dest ...any) error
 
 // rowsCloseHook returns a function so tests may install the
 // hook through a test only mutex.
@@ -1012,7 +1012,7 @@ type Row struct {
 // If more than one row matches the query,
 // Scan uses the first row and discards the rest. If no row matches
 // the query, Scan returns ErrNoRows.
-func (r *Row) Scan(dest ...interface{}) error
+func (r *Row) Scan(dest ...any) error
 
 // Err provides a way for wrapping packages to check for
 // query errors without calling Scan.

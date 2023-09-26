@@ -225,6 +225,12 @@ var (
 // *responseWriter{,State} itself, as the Handler ending nils out the
 // responseWriter's state field.
 
+// maxCachedCanonicalHeadersKeysSize is an arbitrarily-chosen limit on the size
+// of the entries in the canonHeader cache.
+// This should be larger than the size of unique, uncommon header keys likely to
+// be sent by the peer, while not so high as to permit unreasonable memory usage
+// if the peer sends an unbounded number of unique header keys.
+
 // frameWriteResult is the message passed from writeFrameAsync to the serve goroutine.
 
 // Message values sent to serveMsgCh.
@@ -280,8 +286,9 @@ var (
 // prior to the headers being written. If the set of trailers is fixed
 // or known before the header is written, the normal Go trailers mechanism
 // is preferred:
-//    https://golang.org/pkg/net/http/#ResponseWriter
-//    https://golang.org/pkg/net/http/#example_ResponseWriter_trailers
+//
+//	https://golang.org/pkg/net/http/#ResponseWriter
+//	https://golang.org/pkg/net/http/#example_ResponseWriter_trailers
 
 // Push errors.
 
@@ -308,6 +315,8 @@ var _ Pusher = (*http2responseWriter)(nil)
 // isNoCachedConnError.
 
 // RoundTripOpt are options for the Transport.RoundTripOpt method.
+
+// ClientConnState describes the state of a ClientConn.
 
 // clientConnIdleState describes the suitability of a client
 // connection to initiate a new RoundTrip request.

@@ -5,7 +5,7 @@
 package token
 
 // Read calls decode to deserialize a file set into s; s must not be nil.
-func (s *FileSet) Read(decode func(interface{}) error) error
+func (s *FileSet) Read(decode func(any) error) error
 
 // Write calls encode to serialize the file set s.
-func (s *FileSet) Write(encode func(interface{}) error) error
+func (s *FileSet) Write(encode func(any) error) error

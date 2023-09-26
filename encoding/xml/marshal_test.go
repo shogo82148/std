@@ -111,17 +111,17 @@ type MixedNested struct {
 }
 
 type NilTest struct {
-	A interface{} `xml:"parent1>parent2>a"`
-	B interface{} `xml:"parent1>b"`
-	C interface{} `xml:"parent1>parent2>c"`
+	A any `xml:"parent1>parent2>a"`
+	B any `xml:"parent1>b"`
+	C any `xml:"parent1>parent2>c"`
 }
 
 type Service struct {
 	XMLName struct{} `xml:"service"`
 	Domain  *Domain  `xml:"host>domain"`
 	Port    *Port    `xml:"host>port"`
-	Extra1  interface{}
-	Extra2  interface{} `xml:"host>extra2"`
+	Extra1  any
+	Extra2  any `xml:"host>extra2"`
 }
 
 type EmbedA struct {
@@ -267,7 +267,7 @@ type Data struct {
 }
 
 type Plain struct {
-	V interface{}
+	V any
 }
 
 type MyInt int
@@ -373,7 +373,7 @@ type DirectComment struct {
 
 type IfaceComment struct {
 	T1      T1
-	Comment interface{} `xml:",comment"`
+	Comment any `xml:",comment"`
 	T2      T2
 }
 
@@ -391,7 +391,7 @@ type DirectChardata struct {
 
 type IfaceChardata struct {
 	T1       T1
-	Chardata interface{} `xml:",chardata"`
+	Chardata any `xml:",chardata"`
 	T2       T2
 }
 
@@ -409,7 +409,7 @@ type DirectCDATA struct {
 
 type IfaceCDATA struct {
 	T1    T1
-	CDATA interface{} `xml:",cdata"`
+	CDATA any `xml:",cdata"`
 	T2    T2
 }
 
@@ -427,7 +427,7 @@ type DirectInnerXML struct {
 
 type IfaceInnerXML struct {
 	T1       T1
-	InnerXML interface{} `xml:",innerxml"`
+	InnerXML any `xml:",innerxml"`
 	T2       T2
 }
 
@@ -445,7 +445,7 @@ type DirectElement struct {
 
 type IfaceElement struct {
 	T1      T1
-	Element interface{}
+	Element any
 	T2      T2
 }
 
@@ -463,7 +463,7 @@ type DirectOmitEmpty struct {
 
 type IfaceOmitEmpty struct {
 	T1        T1
-	OmitEmpty interface{} `xml:",omitempty"`
+	OmitEmpty any `xml:",omitempty"`
 	T2        T2
 }
 
@@ -481,8 +481,12 @@ type DirectAny struct {
 
 type IfaceAny struct {
 	T1  T1
-	Any interface{} `xml:",any"`
+	Any any `xml:",any"`
 	T2  T2
+}
+
+type Generic[T any] struct {
+	X T
 }
 
 // Unless explicitly stated as such (or *Plain), all of the
@@ -503,4 +507,16 @@ type InvalidXMLName struct {
 	Type    struct {
 		XMLName Name `xml:"type,attr"`
 	}
+}
+
+// Issue 50164. Crash on zero value XML attribute.
+type LayerOne struct {
+	XMLName Name `xml:"l1"`
+
+	Value     *float64 `xml:"value,omitempty"`
+	*LayerTwo `xml:",omitempty"`
+}
+
+type LayerTwo struct {
+	ValueTwo *int `xml:"value_two,attr,omitempty"`
 }

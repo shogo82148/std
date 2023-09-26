@@ -134,7 +134,7 @@ func (obj *Var) IsField() bool
 // An abstract method may belong to many interfaces due to embedding.
 type Func struct {
 	object
-	hasPtrRecv bool
+	hasPtrRecv_ bool
 }
 
 // NewFunc returns a new function with the given signature, representing
@@ -146,6 +146,8 @@ func NewFunc(pos token.Pos, pkg *Package, name string, sig *Signature) *Func
 func (obj *Func) FullName() string
 
 // Scope returns the scope of the function's body block.
+// The result is nil for imported or instantiated functions and methods
+// (but there is also no mechanism to get to an instantiated function).
 func (obj *Func) Scope() *Scope
 
 // A Label represents a declared label.

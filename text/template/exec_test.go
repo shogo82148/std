@@ -35,7 +35,7 @@ type T struct {
 	MSI      map[string]int
 	MSIone   map[string]int
 	MSIEmpty map[string]int
-	MXI      map[interface{}]int
+	MXI      map[any]int
 	MII      map[int]int
 	MI32S    map[int32]string
 	MI64S    map[int64]string
@@ -45,11 +45,11 @@ type T struct {
 	MUI8S    map[uint8]string
 	SMSI     []map[string]int
 
-	Empty0 interface{}
-	Empty1 interface{}
-	Empty2 interface{}
-	Empty3 interface{}
-	Empty4 interface{}
+	Empty0 any
+	Empty1 any
+	Empty2 any
+	Empty3 any
+	Empty4 any
 
 	NonEmptyInterface         I
 	NonEmptyInterfacePtS      *I

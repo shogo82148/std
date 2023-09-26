@@ -33,6 +33,10 @@ func Open(path string, mode int, perm uint32) (fd int, err error)
 
 func Openat(dirfd int, path string, flags int, mode uint32) (fd int, err error)
 
+func Pipe(p []int) error
+
+func Pipe2(p []int, flags int) error
+
 func Readlink(path string, buf []byte) (n int, err error)
 
 func Rename(oldpath string, newpath string) (err error)
@@ -103,8 +107,6 @@ type SockaddrNetlink struct {
 	raw    RawSockaddrNetlink
 }
 
-func Accept(fd int) (nfd int, sa Sockaddr, err error)
-
 func Accept4(fd int, flags int) (nfd int, sa Sockaddr, err error)
 
 func Getsockname(fd int) (sa Sockaddr, err error)
@@ -124,12 +126,6 @@ func GetsockoptICMPv6Filter(fd, level, opt int) (*ICMPv6Filter, error)
 func GetsockoptUcred(fd, level, opt int) (*Ucred, error)
 
 func SetsockoptIPMreqn(fd, level, opt int, mreq *IPMreqn) (err error)
-
-func Recvmsg(fd int, p, oob []byte, flags int) (n, oobn int, recvflags int, from Sockaddr, err error)
-
-func Sendmsg(fd int, p, oob []byte, to Sockaddr, flags int) (err error)
-
-func SendmsgN(fd int, p, oob []byte, to Sockaddr, flags int) (n int, err error)
 
 // BindToDevice binds the socket associated with fd to device.
 func BindToDevice(fd int, device string) (err error)
@@ -167,11 +163,6 @@ func ReadDirent(fd int, buf []byte) (n int, err error)
 func Mount(source string, target string, fstype string, flags uintptr, data string) (err error)
 
 func Getpgrp() (pid int)
-
-// allThreadsCaller holds the input and output state for performing a
-// allThreadsSyscall that needs to synchronize all OS thread state. Linux
-// generally does not always support this natively, so we have to
-// manipulate the runtime to fix things up.
 
 // AllThreadsSyscall performs a syscall on each OS thread of the Go
 // runtime. It first invokes the syscall on one thread. Should that

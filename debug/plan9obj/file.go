@@ -6,6 +6,7 @@
 package plan9obj
 
 import (
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 )
 
@@ -70,6 +71,10 @@ func (f *File) Close() error
 // NewFile creates a new File for accessing a Plan 9 binary in an underlying reader.
 // The Plan 9 binary is expected to start at position 0 in the ReaderAt.
 func NewFile(r io.ReaderAt) (*File, error)
+
+// ErrNoSymbols is returned by File.Symbols if there is no such section
+// in the File.
+var ErrNoSymbols = errors.New("no symbol section")
 
 // Symbols returns the symbol table for f.
 func (f *File) Symbols() ([]Sym, error)

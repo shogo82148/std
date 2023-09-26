@@ -111,9 +111,9 @@ func (v *String) Set(value string)
 
 // Func implements Var by calling the function
 // and formatting the returned value using JSON.
-type Func func() interface{}
+type Func func() any
 
-func (f Func) Value() interface{}
+func (f Func) Value() any
 
 func (f Func) String() string
 

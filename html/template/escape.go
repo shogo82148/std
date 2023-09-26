@@ -13,6 +13,8 @@ import (
 // escaper collects type inferences about templates and changes needed to make
 // templates injection safe.
 
+// rangeContext holds information about the current range loop.
+
 // filterFailsafe is an innocuous word that is emitted in place of unsafe values
 // by sanitizer functions. It is not a keyword in any programming language,
 // contains no special characters, is not empty, and when it appears in output
@@ -38,7 +40,7 @@ func HTMLEscapeString(s string) string
 
 // HTMLEscaper returns the escaped HTML equivalent of the textual
 // representation of its arguments.
-func HTMLEscaper(args ...interface{}) string
+func HTMLEscaper(args ...any) string
 
 // JSEscape writes to w the escaped JavaScript equivalent of the plain text data b.
 func JSEscape(w io.Writer, b []byte)
@@ -48,8 +50,8 @@ func JSEscapeString(s string) string
 
 // JSEscaper returns the escaped JavaScript equivalent of the textual
 // representation of its arguments.
-func JSEscaper(args ...interface{}) string
+func JSEscaper(args ...any) string
 
 // URLQueryEscaper returns the escaped value of the textual representation of
 // its arguments in a form suitable for embedding in a URL query.
-func URLQueryEscaper(args ...interface{}) string
+func URLQueryEscaper(args ...any) string

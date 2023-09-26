@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build !amd64 && !arm64 && !riscv64 && !s390x
-// +build !amd64,!arm64,!riscv64,!s390x
 
 package math

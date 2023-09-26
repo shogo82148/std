@@ -4,15 +4,6 @@
 
 package syscall
 
-// archHonorsR2 captures the fact that r2 is honored by the
-// runtime.GOARCH.  Syscall conventions are generally r1, r2, err :=
-// syscall(trap, ...).  Not all architectures define r2 in their
-// ABI. See "man syscall".
-
-func Pipe(p []int) (err error)
-
-func Pipe2(p []int, flags int) (err error)
-
 func Stat(path string, stat *Stat_t) (err error)
 
 func Lchown(path string, uid int, gid int) (err error)

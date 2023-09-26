@@ -33,7 +33,7 @@ func NewEncoder(w io.Writer) *Encoder
 // Encode transmits the data item represented by the empty interface value,
 // guaranteeing that all necessary type information has been transmitted first.
 // Passing a nil pointer to Encoder will panic, as they cannot be transmitted by gob.
-func (enc *Encoder) Encode(e interface{}) error
+func (enc *Encoder) Encode(e any) error
 
 // EncodeValue transmits the data item represented by the reflection value,
 // guaranteeing that all necessary type information has been transmitted first.

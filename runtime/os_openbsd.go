@@ -5,3 +5,6 @@
 package runtime
 
 // From OpenBSD's <sys/sysctl.h>
+
+// sigPerThreadSyscall is only used on linux, so we assign a bogus signal
+// number.

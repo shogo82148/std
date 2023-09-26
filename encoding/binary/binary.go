@@ -59,7 +59,7 @@ var BigEndian bigEndian
 // The error is EOF only if no bytes were read.
 // If an EOF happens after reading some but not all the bytes,
 // Read returns ErrUnexpectedEOF.
-func Read(r io.Reader, order ByteOrder, data interface{}) error
+func Read(r io.Reader, order ByteOrder, data any) error
 
 // Write writes the binary representation of data into w.
 // Data must be a fixed-size value or a slice of fixed-size
@@ -69,9 +69,9 @@ func Read(r io.Reader, order ByteOrder, data interface{}) error
 // and read from successive fields of the data.
 // When writing structs, zero values are written for fields
 // with blank (_) field names.
-func Write(w io.Writer, order ByteOrder, data interface{}) error
+func Write(w io.Writer, order ByteOrder, data any) error
 
 // Size returns how many bytes Write would generate to encode the value v, which
 // must be a fixed-size value or a slice of fixed-size values, or a pointer to such data.
 // If v is neither of these, Size returns -1.
-func Size(v interface{}) int
+func Size(v any) int

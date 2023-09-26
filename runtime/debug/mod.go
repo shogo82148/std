@@ -9,12 +9,13 @@ package debug
 // in binaries built with module support.
 func ReadBuildInfo() (info *BuildInfo, ok bool)
 
-// BuildInfo represents the build information read from
-// the running binary.
+// BuildInfo represents the build information read from a Go binary.
 type BuildInfo struct {
-	Path string
-	Main Module
-	Deps []*Module
+	GoVersion string
+	Path      string
+	Main      Module
+	Deps      []*Module
+	Settings  []BuildSetting
 }
 
 // Module represents a module.
@@ -24,3 +25,13 @@ type Module struct {
 	Sum     string
 	Replace *Module
 }
+
+// BuildSetting describes a setting that may be used to understand how the
+// binary was built. For example, VCS commit and dirty status is stored here.
+type BuildSetting struct {
+	Key, Value string
+}
+
+func (bi *BuildInfo) String() string
+
+func ParseBuildInfo(data string) (bi *BuildInfo, err error)

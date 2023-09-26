@@ -16,7 +16,7 @@ import (
 func Equal(a, b []byte) bool
 
 // Compare returns an integer comparing two byte slices lexicographically.
-// The result will be 0 if a==b, -1 if a < b, and +1 if a > b.
+// The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
 // A nil argument is equivalent to an empty slice.
 func Compare(a, b []byte) int
 
@@ -69,6 +69,8 @@ func LastIndexAny(s []byte, chars string) int
 //	n > 0: at most n subslices; the last subslice will be the unsplit remainder.
 //	n == 0: the result is nil (zero subslices)
 //	n < 0: all subslices
+//
+// To split around the first instance of a separator, see Cut.
 func SplitN(s, sep []byte, n int) [][]byte
 
 // SplitAfterN slices s into subslices after each instance of sep and
@@ -85,6 +87,8 @@ func SplitAfterN(s, sep []byte, n int) [][]byte
 // the subslices between those separators.
 // If sep is empty, Split splits after each UTF-8 sequence.
 // It is equivalent to SplitN with a count of -1.
+//
+// To split around the first instance of a separator, see Cut.
 func Split(s, sep []byte) [][]byte
 
 // SplitAfter slices s into all subslices after each instance of sep and
@@ -160,7 +164,8 @@ func ToValidUTF8(s, replacement []byte) []byte
 // Title treats s as UTF-8-encoded bytes and returns a copy with all Unicode letters that begin
 // words mapped to their title case.
 //
-// BUG(rsc): The rule Title uses for word boundaries does not handle Unicode punctuation properly.
+// Deprecated: The rule Title uses for word boundaries does not handle Unicode
+// punctuation properly. Use golang.org/x/text/cases instead.
 func Title(s []byte) []byte
 
 // TrimLeftFunc treats s as UTF-8-encoded bytes and returns a subslice of s by slicing off
@@ -199,6 +204,8 @@ func LastIndexFunc(s []byte, f func(r rune) bool) int
 // most-significant bit of the highest word, map to the full range of all
 // 128 ASCII characters. The 128-bits of the upper 16 bytes will be zeroed,
 // ensuring that any non-ASCII character will be reported as not in the set.
+// This allocates a total of 32 bytes even though the upper half
+// is unused to avoid bounds checks in asciiSet.contains.
 
 // Trim returns a subslice of s by slicing off all leading and
 // trailing UTF-8-encoded code points contained in cutset.
@@ -242,3 +249,11 @@ func EqualFold(s, t []byte) bool
 
 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.
 func Index(s, sep []byte) int
+
+// Cut slices s around the first instance of sep,
+// returning the text before and after sep.
+// The found result reports whether sep appears in s.
+// If sep does not appear in s, cut returns s, nil, false.
+//
+// Cut returns slices of the original slice s, not copies.
+func Cut(s, sep []byte) (before, after []byte, found bool)

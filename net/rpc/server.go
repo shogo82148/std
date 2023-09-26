@@ -187,11 +187,14 @@ var DefaultServer = NewServer()
 // no suitable methods. It also logs the error using package log.
 // The client accesses each method using a string of the form "Type.Method",
 // where Type is the receiver's concrete type.
-func (server *Server) Register(rcvr interface{}) error
+func (server *Server) Register(rcvr any) error
 
 // RegisterName is like Register but uses the provided name for the type
 // instead of the receiver's concrete type.
-func (server *Server) RegisterName(name string, rcvr interface{}) error
+func (server *Server) RegisterName(name string, rcvr any) error
+
+// logRegisterError specifies whether to log problems during method registration.
+// To debug registration, recompile the package with this set to true.
 
 // A value sent as a placeholder for the server's response value when the server
 // receives an invalid request. It is never decoded by the client since the Response
@@ -220,11 +223,11 @@ func (server *Server) ServeRequest(codec ServerCodec) error
 func (server *Server) Accept(lis net.Listener)
 
 // Register publishes the receiver's methods in the DefaultServer.
-func Register(rcvr interface{}) error
+func Register(rcvr any) error
 
 // RegisterName is like Register but uses the provided name for the type
 // instead of the receiver's concrete type.
-func RegisterName(name string, rcvr interface{}) error
+func RegisterName(name string, rcvr any) error
 
 // A ServerCodec implements reading of RPC requests and writing of
 // RPC responses for the server side of an RPC session.
@@ -236,8 +239,8 @@ func RegisterName(name string, rcvr interface{}) error
 // See NewClient's comment for information about concurrent access.
 type ServerCodec interface {
 	ReadRequestHeader(*Request) error
-	ReadRequestBody(interface{}) error
-	WriteResponse(*Response, interface{}) error
+	ReadRequestBody(any) error
+	WriteResponse(*Response, any) error
 
 	Close() error
 }

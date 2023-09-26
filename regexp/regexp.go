@@ -23,6 +23,8 @@
 // or any book about automata theory.
 //
 // All characters are UTF-8-encoded code points.
+// Following utf8.DecodeRune, each byte of an invalid UTF-8 sequence
+// is treated as if it encoded utf8.RuneError (U+FFFD).
 //
 // There are 16 methods of Regexp that match a regular expression and identify
 // the matched text. Their names are matched by this regular expression:
@@ -43,7 +45,7 @@
 // successive submatches of the expression. Submatches are matches of
 // parenthesized subexpressions (also known as capturing groups) within the
 // regular expression, numbered from left to right in order of opening
-// parenthesis. Submatch 0 is the match of the entire expression, submatch 1
+// parenthesis. Submatch 0 is the match of the entire expression, submatch 1 is
 // the match of the first parenthesized subexpression, and so on.
 //
 // If 'Index' is present, matches and submatches are identified by byte index

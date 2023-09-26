@@ -107,20 +107,20 @@ type NoInterfaceItem struct {
 
 // A struct with all basic types, stored in interfaces.
 type BasicInterfaceItem struct {
-	Int, Int8, Int16, Int32, Int64      interface{}
-	Uint, Uint8, Uint16, Uint32, Uint64 interface{}
-	Float32, Float64                    interface{}
-	Complex64, Complex128               interface{}
-	Bool                                interface{}
-	String                              interface{}
-	Bytes                               interface{}
+	Int, Int8, Int16, Int32, Int64      any
+	Uint, Uint8, Uint16, Uint32, Uint64 any
+	Float32, Float64                    any
+	Complex64, Complex128               any
+	Bool                                any
+	String                              any
+	Bytes                               any
 }
 
 type String string
 
 type PtrInterfaceItem struct {
-	Str1 interface{}
-	Str2 interface{}
+	Str1 any
+	Str2 any
 }
 
 type U struct {
@@ -139,9 +139,9 @@ type DT struct {
 	A     int
 	B     string
 	C     float64
-	I     interface{}
-	J     interface{}
-	I_nil interface{}
+	I     any
+	J     any
+	I_nil any
 	M     map[string]int
 	T     [3]int
 	S     []string

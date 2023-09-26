@@ -137,7 +137,7 @@ type Header struct {
 // fileState tracks the number of logical (includes sparse holes) and physical
 // (actual in tar archive) bytes remaining for the current file.
 //
-// Invariant: LogicalRemaining >= PhysicalRemaining
+// Invariant: logicalRemaining >= physicalRemaining
 
 // FileInfo returns an fs.FileInfo for the Header.
 func (h *Header) FileInfo() fs.FileInfo

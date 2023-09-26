@@ -5,3 +5,6 @@
 package runtime
 
 //go:linkname executablePath os.executablePath
+
+// sigPerThreadSyscall is only used on linux, so we assign a bogus signal
+// number.

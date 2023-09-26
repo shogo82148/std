@@ -89,6 +89,3 @@ func (h *FileHeader) Mode() (mode fs.FileMode)
 
 // SetMode changes the permission and mode bits for the FileHeader.
 func (h *FileHeader) SetMode(mode fs.FileMode)
-
-// dataDescriptor holds the data descriptor that optionally follows the file
-// contents in the zip file.

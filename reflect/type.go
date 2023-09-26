@@ -116,12 +116,15 @@ const (
 	Func
 	Interface
 	Map
-	Ptr
+	Pointer
 	Slice
 	String
 	Struct
 	UnsafePointer
 )
+
+// Ptr is the old name for the Pointer kind.
+const Ptr = Pointer
 
 // tflag is used by an rtype to signal what extra type information is
 // available in the memory directly following the rtype value.
@@ -246,13 +249,20 @@ func (tag StructTag) Lookup(key string) (value string, ok bool)
 
 // TypeOf returns the reflection Type that represents the dynamic type of i.
 // If i is a nil interface value, TypeOf returns nil.
-func TypeOf(i interface{}) Type
+func TypeOf(i any) Type
 
-// ptrMap is the cache for PtrTo.
+// ptrMap is the cache for PointerTo.
 
 // PtrTo returns the pointer type with element t.
 // For example, if t represents type Foo, PtrTo(t) represents *Foo.
+//
+// PtrTo is the old spelling of PointerTo.
+// The two functions behave identically.
 func PtrTo(t Type) Type
+
+// PointerTo returns the pointer type with element t.
+// For example, if t represents type Foo, PointerTo(t) represents *Foo.
+func PointerTo(t Type) Type
 
 // The lookupCache caches ArrayOf, ChanOf, MapOf and SliceOf lookups.
 

@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build freebsd
-// +build freebsd
 
 package runtime

@@ -72,7 +72,7 @@ type RS3 struct {
 	RS1
 }
 
-type M map[string]interface{}
+type M map[string]any
 
 type Rec1 struct {
 	*Rec2

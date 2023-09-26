@@ -13,7 +13,7 @@ package sort
 //
 // The less function must satisfy the same requirements as
 // the Interface type's Less method.
-func Slice(x interface{}, less func(i, j int) bool)
+func Slice(x any, less func(i, j int) bool)
 
 // SliceStable sorts the slice x using the provided less
 // function, keeping equal elements in their original order.
@@ -21,8 +21,8 @@ func Slice(x interface{}, less func(i, j int) bool)
 //
 // The less function must satisfy the same requirements as
 // the Interface type's Less method.
-func SliceStable(x interface{}, less func(i, j int) bool)
+func SliceStable(x any, less func(i, j int) bool)
 
 // SliceIsSorted reports whether the slice x is sorted according to the provided less function.
 // It panics if x is not a slice.
-func SliceIsSorted(x interface{}, less func(i, j int) bool) bool
+func SliceIsSorted(x any, less func(i, j int) bool) bool

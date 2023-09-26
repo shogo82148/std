@@ -44,17 +44,9 @@ func Gosched()
 // to start threads for us so that we can play nicely with
 // foreign code.
 
-// execLock serializes exec and clone to avoid bugs or unspecified behaviour
-// around exec'ing while creating/destroying threads.  See issue #19546.
-
 // newmHandoff contains a list of m structures that need new OS threads.
 // This is used by newm in situations where newm itself can't safely
 // start an OS thread.
-
-// mFixupRace is used to temporarily borrow the race context from the
-// coordinating m during a syscall_runtime_doAllThreadsSyscall and
-// loan it out to each of the m's of the runtime so they can execute a
-// mFixup.fn in that context.
 
 // inForkedChild is true while manipulating signals in the child process.
 // This is used to avoid calling libc functions in case we are using vfork.
@@ -96,15 +88,14 @@ func LockOSThread()
 // hence the thread) exits.
 func UnlockOSThread()
 
-// If the signal handler receives a SIGPROF signal on a non-Go thread,
-// it tries to collect a traceback into sigprofCallers.
-// sigprofCallersUse is set to non-zero while sigprofCallers holds a traceback.
-
 // forcegcperiod is the maximum time in nanoseconds between garbage
 // collections. If we go this long without a garbage collection, one
 // is forced to run.
 //
 // This is a variable for testing purposes. It normally doesn't change.
+
+// needSysmonWorkaround is true if the workaround for
+// golang.org/issue/42515 is needed on NetBSD.
 
 // forcePreemptNS is the time slice given to a G before it is
 // preempted.

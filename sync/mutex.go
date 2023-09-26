@@ -30,6 +30,13 @@ type Locker interface {
 // blocks until the mutex is available.
 func (m *Mutex) Lock()
 
+// TryLock tries to lock m and reports whether it succeeded.
+//
+// Note that while correct uses of TryLock do exist, they are rare,
+// and use of TryLock is often a sign of a deeper problem
+// in a particular use of mutexes.
+func (m *Mutex) TryLock() bool
+
 // Unlock unlocks m.
 // It is a run-time error if m is not locked on entry to Unlock.
 //

@@ -3,12 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build !aix && !darwin && !freebsd && !openbsd && !solaris && !windows && !(linux && amd64)
-// +build !aix
-// +build !darwin
-// +build !freebsd
-// +build !openbsd
-// +build !solaris
-// +build !windows
-// +build !linux !amd64
 
 package runtime

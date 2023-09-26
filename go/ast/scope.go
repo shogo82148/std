@@ -46,9 +46,9 @@ func (s *Scope) String() string
 type Object struct {
 	Kind ObjKind
 	Name string
-	Decl interface{}
-	Data interface{}
-	Type interface{}
+	Decl any
+	Data any
+	Type any
 }
 
 // NewObj creates a new object of a given kind and name.

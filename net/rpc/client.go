@@ -21,8 +21,8 @@ var ErrShutdown = errors.New("connection is shut down")
 // Call represents an active RPC.
 type Call struct {
 	ServiceMethod string
-	Args          interface{}
-	Reply         interface{}
+	Args          any
+	Reply         any
 	Error         error
 	Done          chan *Call
 }
@@ -54,9 +54,9 @@ type Client struct {
 // discarded.
 // See NewClient's comment for information about concurrent access.
 type ClientCodec interface {
-	WriteRequest(*Request, interface{}) error
+	WriteRequest(*Request, any) error
 	ReadResponseHeader(*Response) error
-	ReadResponseBody(interface{}) error
+	ReadResponseBody(any) error
 
 	Close() error
 }
@@ -95,7 +95,7 @@ func (client *Client) Close() error
 // the invocation. The done channel will signal when the call is complete by returning
 // the same Call object. If done is nil, Go will allocate a new channel.
 // If non-nil, done must be buffered or Go will deliberately crash.
-func (client *Client) Go(serviceMethod string, args interface{}, reply interface{}, done chan *Call) *Call
+func (client *Client) Go(serviceMethod string, args any, reply any, done chan *Call) *Call
 
 // Call invokes the named function, waits for it to complete, and returns its error status.
-func (client *Client) Call(serviceMethod string, args interface{}, reply interface{}) error
+func (client *Client) Call(serviceMethod string, args any, reply any) error

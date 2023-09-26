@@ -3,11 +3,8 @@
 // license that can be found in the LICENSE file.
 
 //go:build js && wasm
-// +build js,wasm
 
 package js
-
-var _ Wrapper = Func{}
 
 // Func is a wrapped Go function to be called by JavaScript.
 type Func struct {
@@ -33,7 +30,7 @@ type Func struct {
 // new goroutine.
 //
 // Func.Release must be called to free up resources when the function will not be invoked any more.
-func FuncOf(fn func(this Value, args []Value) interface{}) Func
+func FuncOf(fn func(this Value, args []Value) any) Func
 
 // Release frees up resources allocated for the function.
 // The function must not be invoked after calling Release.

@@ -19,6 +19,8 @@ import (
 // request being received piecemeal. Deadlines can be set and enforced in both
 // Read and Write.
 
+// cancelableTimeoutContext overwrites the error message to DeadlineExceeded
+
 // repeatReader reads content count times, then EOFs.
 
 // A Response that's just no bigger than 2KB, the buffer-before-chunking threshold.

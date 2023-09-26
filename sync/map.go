@@ -28,7 +28,7 @@ type Map struct {
 
 	read atomic.Value
 
-	dirty map[interface{}]*entry
+	dirty map[any]*entry
 
 	misses int
 }
@@ -43,31 +43,32 @@ type Map struct {
 // Load returns the value stored in the map for a key, or nil if no
 // value is present.
 // The ok result indicates whether value was found in the map.
-func (m *Map) Load(key interface{}) (value interface{}, ok bool)
+func (m *Map) Load(key any) (value any, ok bool)
 
 // Store sets the value for a key.
-func (m *Map) Store(key, value interface{})
+func (m *Map) Store(key, value any)
 
 // LoadOrStore returns the existing value for the key if present.
 // Otherwise, it stores and returns the given value.
 // The loaded result is true if the value was loaded, false if stored.
-func (m *Map) LoadOrStore(key, value interface{}) (actual interface{}, loaded bool)
+func (m *Map) LoadOrStore(key, value any) (actual any, loaded bool)
 
 // LoadAndDelete deletes the value for a key, returning the previous value if any.
 // The loaded result reports whether the key was present.
-func (m *Map) LoadAndDelete(key interface{}) (value interface{}, loaded bool)
+func (m *Map) LoadAndDelete(key any) (value any, loaded bool)
 
 // Delete deletes the value for a key.
-func (m *Map) Delete(key interface{})
+func (m *Map) Delete(key any)
 
 // Range calls f sequentially for each key and value present in the map.
 // If f returns false, range stops the iteration.
 //
 // Range does not necessarily correspond to any consistent snapshot of the Map's
 // contents: no key will be visited more than once, but if the value for any key
-// is stored or deleted concurrently, Range may reflect any mapping for that key
-// from any point during the Range call.
+// is stored or deleted concurrently (including by f), Range may reflect any
+// mapping for that key from any point during the Range call. Range does not
+// block other methods on the receiver; even f itself may call any method on m.
 //
 // Range may be O(N) with the number of elements in the map even if f returns
 // false after a constant number of calls.
-func (m *Map) Range(f func(key, value interface{}) bool)
+func (m *Map) Range(f func(key, value any) bool)

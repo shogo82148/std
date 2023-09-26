@@ -43,7 +43,7 @@ func (e ExecError) Unwrap() error
 // the output writer.
 // A template may be executed safely in parallel, although if parallel
 // executions share a Writer the output may be interleaved.
-func (t *Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) error
+func (t *Template) ExecuteTemplate(wr io.Writer, name string, data any) error
 
 // Execute applies a parsed template to the specified data object,
 // and writes the output to wr.
@@ -55,7 +55,7 @@ func (t *Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) 
 //
 // If data is a reflect.Value, the template applies to the concrete
 // value that the reflect.Value holds, as in fmt.Print.
-func (t *Template) Execute(wr io.Writer, data interface{}) error
+func (t *Template) Execute(wr io.Writer, data any) error
 
 // DefinedTemplates returns a string listing the defined templates,
 // prefixed by the string "; defined templates are: ". If there are none,
@@ -63,7 +63,9 @@ func (t *Template) Execute(wr io.Writer, data interface{}) error
 // and in html/template.
 func (t *Template) DefinedTemplates() string
 
+// Sentinel errors for use with panic to signal early exits from range loops.
+
 // IsTrue reports whether the value is 'true', in the sense of not the zero of its type,
 // and whether the value has a meaningful truth value. This is the definition of
 // truth used by if and other such actions.
-func IsTrue(val interface{}) (truth, ok bool)
+func IsTrue(val any) (truth, ok bool)

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package elliptic implements several standard elliptic curves over prime
-// fields.
+// Package elliptic implements the standard NIST P-224, P-256, P-384, and P-521
+// elliptic curves over prime fields.
 package elliptic
 
 import (
@@ -13,9 +13,12 @@ import (
 
 // A Curve represents a short-form Weierstrass curve with a=-3.
 //
-// Note that the point at infinity (0, 0) is not considered on the curve, and
-// although it can be returned by Add, Double, ScalarMult, or ScalarBaseMult, it
-// can't be marshaled or unmarshaled, and IsOnCurve will return false for it.
+// The behavior of Add, Double, and ScalarMult when the input is not a point on
+// the curve is undefined.
+//
+// Note that the conventional point at infinity (0, 0) is not considered on the
+// curve, although it can be returned by Add, Double, ScalarMult, or
+// ScalarBaseMult (but not the Unmarshal or UnmarshalCompressed functions).
 type Curve interface {
 	Params() *CurveParams
 
@@ -58,22 +61,33 @@ func (curve *CurveParams) ScalarBaseMult(k []byte) (*big.Int, *big.Int)
 func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err error)
 
 // Marshal converts a point on the curve into the uncompressed form specified in
-// section 4.3.6 of ANSI X9.62.
+// SEC 1, Version 2.0, Section 2.3.3. If the point is not on the curve (or is
+// the conventional point at infinity), the behavior is undefined.
 func Marshal(curve Curve, x, y *big.Int) []byte
 
 // MarshalCompressed converts a point on the curve into the compressed form
-// specified in section 4.3.6 of ANSI X9.62.
+// specified in SEC 1, Version 2.0, Section 2.3.3. If the point is not on the
+// curve (or is the conventional point at infinity), the behavior is undefined.
 func MarshalCompressed(curve Curve, x, y *big.Int) []byte
 
-// Unmarshal converts a point, serialized by Marshal, into an x, y pair.
-// It is an error if the point is not in uncompressed form or is not on the curve.
-// On error, x = nil.
+// Unmarshal converts a point, serialized by Marshal, into an x, y pair. It is
+// an error if the point is not in uncompressed form, is not on the curve, or is
+// the point at infinity. On error, x = nil.
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 
-// UnmarshalCompressed converts a point, serialized by MarshalCompressed, into an x, y pair.
-// It is an error if the point is not in compressed form or is not on the curve.
-// On error, x = nil.
+// UnmarshalCompressed converts a point, serialized by MarshalCompressed, into
+// an x, y pair. It is an error if the point is not in compressed form, is not
+// on the curve, or is the point at infinity. On error, x = nil.
 func UnmarshalCompressed(curve Curve, data []byte) (x, y *big.Int)
+
+// P224 returns a Curve which implements NIST P-224 (FIPS 186-3, section D.2.2),
+// also known as secp224r1. The CurveParams.Name of this Curve is "P-224".
+//
+// Multiple invocations of this function will return the same value, so it can
+// be used for equality checks and switch statements.
+//
+// The cryptographic operations are implemented using constant-time algorithms.
+func P224() Curve
 
 // P256 returns a Curve which implements NIST P-256 (FIPS 186-3, section D.2.3),
 // also known as secp256r1 or prime256v1. The CurveParams.Name of this Curve is
@@ -91,7 +105,7 @@ func P256() Curve
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 //
-// The cryptographic operations do not use constant-time algorithms.
+// The cryptographic operations are implemented using constant-time algorithms.
 func P384() Curve
 
 // P521 returns a Curve which implements NIST P-521 (FIPS 186-3, section D.2.5),

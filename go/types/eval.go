@@ -21,9 +21,10 @@ import (
 // type-checked.
 func Eval(fset *token.FileSet, pkg *Package, pos token.Pos, expr string) (_ TypeAndValue, err error)
 
-// CheckExpr type checks the expression expr as if it had appeared at
-// position pos of package pkg. Type information about the expression
-// is recorded in info.
+// CheckExpr type checks the expression expr as if it had appeared at position
+// pos of package pkg. Type information about the expression is recorded in
+// info. The expression may be an identifier denoting an uninstantiated generic
+// function or type.
 //
 // If pkg == nil, the Universe scope is used and the provided
 // position pos is ignored. If pkg != nil, and pos is invalid,

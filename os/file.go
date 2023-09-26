@@ -98,7 +98,7 @@ func (e *LinkError) Error() string
 
 func (e *LinkError) Unwrap() error
 
-// Read reads up to len(b) bytes from the File.
+// Read reads up to len(b) bytes from the File and stores them in b.
 // It returns the number of bytes read and any error encountered.
 // At end of file, Read returns 0, io.EOF.
 func (f *File) Read(b []byte) (n int, err error)
@@ -112,7 +112,7 @@ func (f *File) ReadAt(b []byte, off int64) (n int, err error)
 // ReadFrom implements io.ReaderFrom.
 func (f *File) ReadFrom(r io.Reader) (n int64, err error)
 
-// Write writes len(b) bytes to the File.
+// Write writes len(b) bytes from b to the File.
 // It returns the number of bytes written and an error, if any.
 // Write returns a non-nil error when n != len(b).
 func (f *File) Write(b []byte) (n int, err error)
@@ -301,6 +301,8 @@ func (f *File) SyscallConn() (syscall.RawConn, error)
 // the /prefix tree, then using DirFS does not stop the access any more than using
 // os.Open does. DirFS is therefore not a general substitute for a chroot-style security
 // mechanism when the directory tree contains arbitrary content.
+//
+// The directory dir must not be "".
 func DirFS(dir string) fs.FS
 
 // ReadFile reads the named file and returns the contents.

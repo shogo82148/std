@@ -1335,6 +1335,7 @@ const (
 	R_PPC64_GOT16_HI           R_PPC64 = 16
 	R_PPC64_GOT16_HA           R_PPC64 = 17
 	R_PPC64_JMP_SLOT           R_PPC64 = 21
+	R_PPC64_RELATIVE           R_PPC64 = 22
 	R_PPC64_REL32              R_PPC64 = 26
 	R_PPC64_ADDR64             R_PPC64 = 38
 	R_PPC64_ADDR16_HIGHER      R_PPC64 = 39

@@ -63,7 +63,7 @@ type Context interface {
 
 	Err() error
 
-	Value(key interface{}) interface{}
+	Value(key any) any
 }
 
 // Canceled is the error returned by Context.Err when the context is canceled.
@@ -154,7 +154,7 @@ func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
 // interface{}, context keys often have concrete type
 // struct{}. Alternatively, exported context key variables' static
 // type should be a pointer or interface.
-func WithValue(parent Context, key, val interface{}) Context
+func WithValue(parent Context, key, val any) Context
 
 // A valueCtx carries a key-value pair. It implements Value for that key and
 // delegates all other calls to the embedded Context.

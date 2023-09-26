@@ -115,7 +115,7 @@ type Symbol struct {
 type FormatError struct {
 	off int64
 	msg string
-	val interface{}
+	val any
 }
 
 func (e *FormatError) Error() string

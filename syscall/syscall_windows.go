@@ -73,7 +73,7 @@ func (e Errno) Timeout() bool
 // Only a limited number of callbacks may be created in a single Go process, and any memory allocated
 // for these callbacks is never released.
 // Between NewCallback and NewCallbackCDecl, at least 1024 callbacks can always be created.
-func NewCallback(fn interface{}) uintptr
+func NewCallback(fn any) uintptr
 
 // NewCallbackCDecl converts a Go function to a function pointer conforming to the cdecl calling convention.
 // This is useful when interoperating with Windows code requiring callbacks.
@@ -81,7 +81,7 @@ func NewCallback(fn interface{}) uintptr
 // Only a limited number of callbacks may be created in a single Go process, and any memory allocated
 // for these callbacks is never released.
 // Between NewCallback and NewCallbackCDecl, at least 1024 callbacks can always be created.
-func NewCallbackCDecl(fn interface{}) uintptr
+func NewCallbackCDecl(fn any) uintptr
 
 func Open(path string, mode int, perm uint32) (fd Handle, err error)
 
@@ -330,3 +330,29 @@ func GetQueuedCompletionStatus(cphandle Handle, qty *uint32, key *uint32, overla
 
 // Deprecated: PostQueuedCompletionStatus has the wrong function signature. Use x/sys/windows.PostQueuedCompletionStatus.
 func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlapped *Overlapped) error
+
+// RegEnumKeyEx enumerates the subkeys of an open registry key.
+// Each call retrieves information about one subkey. name is
+// a buffer that should be large enough to hold the name of the
+// subkey plus a null terminating character. nameLen is its
+// length. On return, nameLen will contain the actual length of the
+// subkey.
+//
+// Should name not be large enough to hold the subkey, this function
+// will return ERROR_MORE_DATA, and must be called again with an
+// appropriately sized buffer.
+//
+// reserved must be nil. class and classLen behave like name and nameLen
+// but for the class of the subkey, except that they are optional.
+// lastWriteTime, if not nil, will be populated with the time the subkey
+// was last written.
+//
+// The caller must enumerate all subkeys in order. That is
+// RegEnumKeyEx must be called with index starting at 0, incrementing
+// the index until the function returns ERROR_NO_MORE_ITEMS, or with
+// the index of the last subkey (obtainable from RegQueryInfoKey),
+// decrementing until index 0 is enumerated.
+//
+// Successive calls to this API must happen on the same OS thread,
+// so call runtime.LockOSThread before calling this function.
+func RegEnumKeyEx(key Handle, index uint32, name *uint16, nameLen *uint32, reserved *uint32, class *uint16, classLen *uint32, lastWriteTime *Filetime) (regerrno error)

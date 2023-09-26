@@ -14,7 +14,7 @@ package x509
 // More types might be supported in the future.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PRIVATE KEY".
-func ParsePKCS8PrivateKey(der []byte) (key interface{}, err error)
+func ParsePKCS8PrivateKey(der []byte) (key any, err error)
 
 // MarshalPKCS8PrivateKey converts a private key to PKCS #8, ASN.1 DER form.
 //
@@ -22,4 +22,4 @@ func ParsePKCS8PrivateKey(der []byte) (key interface{}, err error)
 // and ed25519.PrivateKey. Unsupported key types result in an error.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PRIVATE KEY".
-func MarshalPKCS8PrivateKey(key interface{}) ([]byte, error)
+func MarshalPKCS8PrivateKey(key any) ([]byte, error)

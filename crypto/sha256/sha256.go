@@ -34,4 +34,4 @@ func New224() hash.Hash
 func Sum256(data []byte) [Size]byte
 
 // Sum224 returns the SHA224 checksum of the data.
-func Sum224(data []byte) (sum224 [Size224]byte)
+func Sum224(data []byte) [Size224]byte

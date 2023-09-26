@@ -10,4 +10,4 @@ import (
 
 type IntPtr *int
 type IntPtr1 *int
-type Ch <-chan interface{}
+type Ch <-chan any

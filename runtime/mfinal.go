@@ -82,7 +82,7 @@ package runtime
 // A single goroutine runs all finalizers for a program, sequentially.
 // If a finalizer must run for a long time, it should do so by starting
 // a new goroutine.
-func SetFinalizer(obj interface{}, finalizer interface{})
+func SetFinalizer(obj any, finalizer any)
 
 // KeepAlive marks its argument as currently reachable.
 // This ensures that the object is not freed, and its finalizer is not run,
@@ -108,4 +108,4 @@ func SetFinalizer(obj interface{}, finalizer interface{})
 // Note: KeepAlive should only be used to prevent finalizers from
 // running prematurely. In particular, when used with unsafe.Pointer,
 // the rules for valid uses of unsafe.Pointer still apply.
-func KeepAlive(x interface{})
+func KeepAlive(x any)

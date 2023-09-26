@@ -59,6 +59,8 @@ func LastIndexByte(s string, c byte) int
 //
 // Edge cases for s and sep (for example, empty strings) are handled
 // as described in the documentation for Split.
+//
+// To split around the first instance of a separator, see Cut.
 func SplitN(s, sep string, n int) []string
 
 // SplitAfterN slices s into substrings after each instance of sep and
@@ -84,6 +86,8 @@ func SplitAfterN(s, sep string, n int) []string
 // and sep are empty, Split returns an empty slice.
 //
 // It is equivalent to SplitN with a count of -1.
+//
+// To split around the first instance of a separator, see Cut.
 func Split(s, sep string) []string
 
 // SplitAfter slices s into all substrings after each instance of sep and
@@ -161,7 +165,8 @@ func ToValidUTF8(s, replacement string) string
 // Title returns a copy of the string s with all Unicode letters that begin words
 // mapped to their Unicode title case.
 //
-// BUG(rsc): The rule Title uses for word boundaries does not handle Unicode punctuation properly.
+// Deprecated: The rule Title uses for word boundaries does not handle Unicode
+// punctuation properly. Use golang.org/x/text/cases instead.
 func Title(s string) string
 
 // TrimLeftFunc returns a slice of the string s with all leading
@@ -190,6 +195,8 @@ func LastIndexFunc(s string, f func(rune) bool) int
 // most-significant bit of the highest word, map to the full range of all
 // 128 ASCII characters. The 128-bits of the upper 16 bytes will be zeroed,
 // ensuring that any non-ASCII character will be reported as not in the set.
+// This allocates a total of 32 bytes even though the upper half
+// is unused to avoid bounds checks in asciiSet.contains.
 
 // Trim returns a slice of the string s with all leading and
 // trailing Unicode code points contained in cutset removed.
@@ -241,3 +248,9 @@ func EqualFold(s, t string) bool
 
 // Index returns the index of the first instance of substr in s, or -1 if substr is not present in s.
 func Index(s, substr string) int
+
+// Cut slices s around the first instance of sep,
+// returning the text before and after sep.
+// The found result reports whether sep appears in s.
+// If sep does not appear in s, cut returns s, "", false.
+func Cut(s, sep string) (before, after string, found bool)

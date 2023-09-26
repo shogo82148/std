@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || (darwin && !ios) || dragonfly || freebsd || (linux && !android) || netbsd || openbsd || solaris
-// +build aix darwin,!ios dragonfly freebsd linux,!android netbsd openbsd solaris
 
 package time_test

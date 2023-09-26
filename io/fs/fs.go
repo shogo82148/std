@@ -85,7 +85,7 @@ type FileInfo interface {
 	Mode() FileMode
 	ModTime() time.Time
 	IsDir() bool
-	Sys() interface{}
+	Sys() any
 }
 
 // A FileMode represents a file's mode and permission bits.

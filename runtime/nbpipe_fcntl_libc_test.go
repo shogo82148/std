@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || darwin || solaris
-// +build aix darwin solaris
 
 package runtime_test

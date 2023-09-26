@@ -20,7 +20,7 @@ type Writer struct {
 func NewWriter(w *bufio.Writer) *Writer
 
 // PrintfLine writes the formatted output followed by \r\n.
-func (w *Writer) PrintfLine(format string, args ...interface{}) error
+func (w *Writer) PrintfLine(format string, args ...any) error
 
 // DotWriter returns a writer that can be used to write a dot-encoding to w.
 // It takes care of inserting leading dots when necessary,

@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build ios
-// +build ios
 
 package syscall

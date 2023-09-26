@@ -13,21 +13,10 @@ import (
 
 // debugging/development support
 
-// If forceStrict is set, the type-checker enforces additional
-// rules not specified by the Go 1 spec, but which will
-// catch guaranteed run-time errors if the respective
-// code is executed. In other words, programs passing in
-// strict mode are Go 1 compliant, but not all Go 1 programs
-// will pass in strict mode. The additional rules are:
-//
-// - A type assertion x.(T) where T is an interface type
-//   is invalid if any (statically known) method that exists
-//   for both x and T have different signatures.
-//
-
 // exprInfo stores information about an untyped expression.
 
-// A context represents the context within which an object is type-checked.
+// An environment represents the environment within which an object is
+// type-checked.
 
 // An importKey identifies an imported package by import path and source directory
 // (directory containing the file containing the import). In practice, the directory
@@ -38,33 +27,44 @@ import (
 
 // A dotImportKey describes a dot-imported object in the given scope.
 
+// An action describes a (delayed) action.
+
+// An actionDesc provides information on an action.
+// For debugging only.
+
 // A Checker maintains the state of the type checker.
 // It must be created with NewChecker.
 type Checker struct {
 	conf *Config
+	ctxt *Context
 	fset *token.FileSet
 	pkg  *Package
 	*Info
 	version version
+	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
-	posMap  map[*Interface][]token.Pos
-	typMap  map[string]*Named
+	infoMap map[*Named]typeInfo
 
 	pkgPathMap map[string]map[string]bool
 	seenPkgMap map[*Package]bool
 
-	files        []*ast.File
-	imports      []*PkgName
-	dotImportMap map[dotImportKey]*PkgName
+	files         []*ast.File
+	imports       []*PkgName
+	dotImportMap  map[dotImportKey]*PkgName
+	recvTParamMap map[*ast.Ident]*TypeParam
+	brokenAliases map[*TypeName]bool
+	unionTypeSets map[*Union]*_TypeSet
+	mono          monoGraph
 
 	firstErr error
 	methods  map[*TypeName][]*Func
 	untyped  map[ast.Expr]exprInfo
-	delayed  []func()
+	delayed  []action
 	objPath  []Object
+	cleaners []cleaner
 
-	context
+	environment
 
 	indent int
 }

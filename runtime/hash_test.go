@@ -36,7 +36,7 @@ type Int64Key struct {
 }
 
 type EfaceKey struct {
-	i interface{}
+	i any
 }
 
 type IfaceKey struct {

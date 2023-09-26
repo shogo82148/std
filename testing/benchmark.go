@@ -40,7 +40,7 @@ type B struct {
 	previousN        int
 	previousDuration time.Duration
 	benchFunc        func(b *B)
-	benchTime        benchTimeFlag
+	benchTime        durationOrCountFlag
 	bytes            int64
 	missingBytes     bool
 	timerOn          bool

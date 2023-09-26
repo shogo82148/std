@@ -36,7 +36,7 @@ type Example struct {
 //     identifiers from other packages (or predeclared identifiers, such as
 //     "int") and the test file does not include a dot import.
 //   - The entire test file is the example: the file contains exactly one
-//     example function, zero test or benchmark functions, and at least one
-//     top-level function, type, variable, or constant declaration other
-//     than the example function.
+//     example function, zero test, fuzz test, or benchmark function, and at
+//     least one top-level function, type, variable, or constant declaration
+//     other than the example function.
 func Examples(testFiles ...*ast.File) []*Example

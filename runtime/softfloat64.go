@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Software IEEE754 64-bit floating point.
-// Only referred to (and thus linked in) by arm port
+// Only referred to (and thus linked in) by softfloat targets
 // and by tests in this directory.
 
 package runtime

@@ -7,3 +7,6 @@ package runtime
 // From FreeBSD's <sys/sysctl.h>
 
 // Undocumented numbers from FreeBSD's lib/libc/gen/sysctlnametomib.c.
+
+// sigPerThreadSyscall is only used on linux, so we assign a bogus signal
+// number.

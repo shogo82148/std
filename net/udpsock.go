@@ -5,6 +5,7 @@
 package net
 
 import (
+	"github.com/shogo82148/std/net/netip"
 	"github.com/shogo82148/std/syscall"
 )
 
@@ -14,6 +15,13 @@ type UDPAddr struct {
 	Port int
 	Zone string
 }
+
+// AddrPort returns the UDPAddr a as a netip.AddrPort.
+//
+// If a.Port does not fit in a uint16, it's silently truncated.
+//
+// If a is nil, a zero value is returned.
+func (a *UDPAddr) AddrPort() netip.AddrPort
 
 // Network returns the address's network name, "udp".
 func (a *UDPAddr) Network() string
@@ -37,6 +45,13 @@ func (a *UDPAddr) String() string
 // parameters.
 func ResolveUDPAddr(network, address string) (*UDPAddr, error)
 
+// UDPAddrFromAddrPort returns addr as a UDPAddr. If addr.IsValid() is false,
+// then the returned UDPAddr will contain a nil IP field, indicating an
+// address family-agnostic unspecified address.
+func UDPAddrFromAddrPort(addr netip.AddrPort) *UDPAddr
+
+// An addrPortUDPAddr is a netip.AddrPort-based UDP address that satisfies the Addr interface.
+
 // UDPConn is the implementation of the Conn and PacketConn interfaces
 // for UDP network connections.
 type UDPConn struct {
@@ -53,6 +68,9 @@ func (c *UDPConn) ReadFromUDP(b []byte) (n int, addr *UDPAddr, err error)
 // ReadFrom implements the PacketConn ReadFrom method.
 func (c *UDPConn) ReadFrom(b []byte) (int, Addr, error)
 
+// ReadFromUDPAddrPort acts like ReadFrom but returns a netip.AddrPort.
+func (c *UDPConn) ReadFromUDPAddrPort(b []byte) (n int, addr netip.AddrPort, err error)
+
 // ReadMsgUDP reads a message from c, copying the payload into b and
 // the associated out-of-band data into oob. It returns the number of
 // bytes copied into b, the number of bytes copied into oob, the flags
@@ -62,8 +80,14 @@ func (c *UDPConn) ReadFrom(b []byte) (int, Addr, error)
 // used to manipulate IP-level socket options in oob.
 func (c *UDPConn) ReadMsgUDP(b, oob []byte) (n, oobn, flags int, addr *UDPAddr, err error)
 
+// ReadMsgUDPAddrPort is like ReadMsgUDP but returns an netip.AddrPort instead of a UDPAddr.
+func (c *UDPConn) ReadMsgUDPAddrPort(b, oob []byte) (n, oobn, flags int, addr netip.AddrPort, err error)
+
 // WriteToUDP acts like WriteTo but takes a UDPAddr.
 func (c *UDPConn) WriteToUDP(b []byte, addr *UDPAddr) (int, error)
+
+// WriteToUDPAddrPort acts like WriteTo but takes a netip.AddrPort.
+func (c *UDPConn) WriteToUDPAddrPort(b []byte, addr netip.AddrPort) (int, error)
 
 // WriteTo implements the PacketConn WriteTo method.
 func (c *UDPConn) WriteTo(b []byte, addr Addr) (int, error)
@@ -77,6 +101,9 @@ func (c *UDPConn) WriteTo(b []byte, addr Addr) (int, error)
 // The packages golang.org/x/net/ipv4 and golang.org/x/net/ipv6 can be
 // used to manipulate IP-level socket options in oob.
 func (c *UDPConn) WriteMsgUDP(b, oob []byte, addr *UDPAddr) (n, oobn int, err error)
+
+// WriteMsgUDPAddrPort is like WriteMsgUDP but takes a netip.AddrPort instead of a UDPAddr.
+func (c *UDPConn) WriteMsgUDPAddrPort(b, oob []byte, addr netip.AddrPort) (n, oobn int, err error)
 
 // DialUDP acts like Dial for UDP networks.
 //

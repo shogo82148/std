@@ -16,14 +16,14 @@ type Tree struct {
 	Mode      Mode
 	text      string
 
-	funcs      []map[string]interface{}
+	funcs      []map[string]any
 	lex        *lexer
 	token      [3]item
 	peekCount  int
 	vars       []string
 	treeSet    map[string]*Tree
 	actionLine int
-	mode       Mode
+	rangeDepth int
 }
 
 // A mode value is a set of flags (or 0). Modes control parser behavior.
@@ -41,10 +41,10 @@ func (t *Tree) Copy() *Tree
 // templates described in the argument string. The top-level template will be
 // given the specified name. If an error is encountered, parsing stops and an
 // empty map is returned with the error.
-func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]interface{}) (map[string]*Tree, error)
+func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]any) (map[string]*Tree, error)
 
 // New allocates a new parse tree with the given name.
-func New(name string, funcs ...map[string]interface{}) *Tree
+func New(name string, funcs ...map[string]any) *Tree
 
 // ErrorContext returns a textual representation of the location of the node in the input text.
 // The receiver is only used when the node does not have a pointer to the tree inside,
@@ -55,7 +55,7 @@ func (t *Tree) ErrorContext(n Node) (location, context string)
 // the template for execution. If either action delimiter string is empty, the
 // default ("{{" or "}}") is used. Embedded template definitions are added to
 // the treeSet map.
-func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]interface{}) (tree *Tree, err error)
+func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]any) (tree *Tree, err error)
 
 // IsEmptyTree reports whether this tree (node) is empty of everything but space or comments.
 func IsEmptyTree(n Node) bool

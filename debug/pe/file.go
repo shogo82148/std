@@ -15,7 +15,7 @@ import (
 // A File represents an open PE file.
 type File struct {
 	FileHeader
-	OptionalHeader interface{}
+	OptionalHeader any
 	Sections       []*Section
 	Symbols        []*Symbol
 	COFFSymbols    []COFFSymbol

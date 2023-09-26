@@ -112,17 +112,17 @@ package xml
 // A missing element or empty attribute value will be unmarshaled as a zero value.
 // If the field is a slice, a zero value will be appended to the field. Otherwise, the
 // field will be set to its zero value.
-func Unmarshal(data []byte, v interface{}) error
+func Unmarshal(data []byte, v any) error
 
 // Decode works like Unmarshal, except it reads the decoder
 // stream to find the start element.
-func (d *Decoder) Decode(v interface{}) error
+func (d *Decoder) Decode(v any) error
 
 // DecodeElement works like Unmarshal except that it takes
 // a pointer to the start XML element to decode into v.
 // It is useful when a client reads some raw XML tokens itself
 // but also wants to defer to Unmarshal for some elements.
-func (d *Decoder) DecodeElement(v interface{}, start *StartElement) error
+func (d *Decoder) DecodeElement(v any, start *StartElement) error
 
 // An UnmarshalError represents an error in the unmarshaling process.
 type UnmarshalError string

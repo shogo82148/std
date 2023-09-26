@@ -11,9 +11,14 @@
 // https://eprint.iacr.org/2013/816.pdf
 
 //go:build amd64 || arm64
-// +build amd64 arm64
 
 package elliptic
+
+import (
+	_ "github.com/shogo82148/std/embed"
+)
+
+//go:embed p256_asm_table.bin
 
 // p256Mul operates in a Montgomery domain with R = 2^256 mod p, where p is the
 // underlying field of the curve. (See initP256 for the value.) Thus rr here is

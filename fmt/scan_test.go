@@ -10,22 +10,22 @@ import (
 
 type ScanTest struct {
 	text string
-	in   interface{}
-	out  interface{}
+	in   any
+	out  any
 }
 
 type ScanfTest struct {
 	format string
 	text   string
-	in     interface{}
-	out    interface{}
+	in     any
+	out    any
 }
 
 type ScanfMultiTest struct {
 	format string
 	text   string
-	in     []interface{}
-	out    []interface{}
+	in     []any
+	out    []any
 	err    string
 }
 

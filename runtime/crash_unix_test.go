@@ -3,9 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
-// +build aix darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package runtime_test
-
-// sigquit is the signal to send to kill a hanging testdata program.
-// Send SIGQUIT to get a stack trace.

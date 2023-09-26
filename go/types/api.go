@@ -50,6 +50,15 @@ type Error struct {
 // filename:line:column: message
 func (err Error) Error() string
 
+// An ArgumentError holds an error associated with an argument index.
+type ArgumentError struct {
+	Index int
+	Err   error
+}
+
+func (e *ArgumentError) Error() string
+func (e *ArgumentError) Unwrap() error
+
 // An Importer resolves import paths to Packages.
 //
 // CAUTION: This interface does not support the import of locally
@@ -74,7 +83,9 @@ type ImporterFrom interface {
 // A Config specifies the configuration for type checking.
 // The zero value for Config is a ready-to-use default configuration.
 type Config struct {
-	goVersion string
+	Context *Context
+
+	GoVersion string
 
 	IgnoreFuncBodies bool
 
@@ -89,6 +100,28 @@ type Config struct {
 	Sizes Sizes
 
 	DisableUnusedImportCheck bool
+}
+
+// Info holds result type information for a type-checked package.
+// Only the information for which a map is provided is collected.
+// If the package has type errors, the collected information may
+// be incomplete.
+type Info struct {
+	Types map[ast.Expr]TypeAndValue
+
+	Instances map[*ast.Ident]Instance
+
+	Defs map[*ast.Ident]Object
+
+	Uses map[*ast.Ident]Object
+
+	Implicits map[ast.Node]Object
+
+	Selections map[*ast.SelectorExpr]*Selection
+
+	Scopes map[ast.Node]*Scope
+
+	InitOrder []*Initializer
 }
 
 // TypeOf returns the type of expression e, or nil if not found.
@@ -144,8 +177,14 @@ func (tv TypeAndValue) Assignable() bool
 // used on the rhs of a comma-ok assignment.
 func (tv TypeAndValue) HasOk() bool
 
-// _Inferred reports the _Inferred type arguments and signature
-// for a parameterized function call that uses type inference.
+// Instance reports the type arguments and instantiated type for type and
+// function instantiations. For type instantiations, Type will be of dynamic
+// type *Named. For function instantiations, Type will be of dynamic type
+// *Signature.
+type Instance struct {
+	TypeArgs *TypeList
+	Type     Type
+}
 
 // An Initializer describes a package-level variable, or a list of variables in case
 // of a multi-valued initialization expression, and the corresponding initialization
@@ -171,15 +210,31 @@ func (init *Initializer) String() string
 func (conf *Config) Check(path string, fset *token.FileSet, files []*ast.File, info *Info) (*Package, error)
 
 // AssertableTo reports whether a value of type V can be asserted to have type T.
+//
+// The behavior of AssertableTo is undefined in two cases:
+//   - if V is a generalized interface; i.e., an interface that may only be used
+//     as a type constraint in Go code
+//   - if T is an uninstantiated generic type
 func AssertableTo(V *Interface, T Type) bool
 
-// AssignableTo reports whether a value of type V is assignable to a variable of type T.
+// AssignableTo reports whether a value of type V is assignable to a variable
+// of type T.
+//
+// The behavior of AssignableTo is undefined if V or T is an uninstantiated
+// generic type.
 func AssignableTo(V, T Type) bool
 
-// ConvertibleTo reports whether a value of type V is convertible to a value of type T.
+// ConvertibleTo reports whether a value of type V is convertible to a value of
+// type T.
+//
+// The behavior of ConvertibleTo is undefined if V or T is an uninstantiated
+// generic type.
 func ConvertibleTo(V, T Type) bool
 
 // Implements reports whether type V implements interface T.
+//
+// The behavior of Implements is undefined if V is an uninstantiated generic
+// type.
 func Implements(V Type, T *Interface) bool
 
 // Identical reports whether x and y are identical types.

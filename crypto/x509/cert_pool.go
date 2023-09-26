@@ -11,6 +11,8 @@ type CertPool struct {
 	lazyCerts []lazyCert
 
 	haveSum map[sum224]bool
+
+	systemPool bool
 }
 
 // lazyCert is minimal metadata about a Cert and a func to retrieve it
@@ -45,4 +47,7 @@ func (s *CertPool) AppendCertsFromPEM(pemCerts []byte) (ok bool)
 
 // Subjects returns a list of the DER-encoded subjects of
 // all of the certificates in the pool.
+//
+// Deprecated: if s was returned by SystemCertPool, Subjects
+// will not include the system roots.
 func (s *CertPool) Subjects() [][]byte

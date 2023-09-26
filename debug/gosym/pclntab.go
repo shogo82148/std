@@ -40,6 +40,7 @@ type LineTable struct {
 	binary      binary.ByteOrder
 	quantum     uint32
 	ptrsize     uint32
+	textStart   uint64
 	funcnametab []byte
 	cutab       []byte
 	funcdata    []byte
@@ -75,3 +76,11 @@ func (t *LineTable) LineToPC(line int, maxpc uint64) uint64
 // Text must be the start address of the
 // corresponding text segment.
 func NewLineTable(data []byte, text uint64) *LineTable
+
+// funcTab is memory corresponding to a slice of functab structs, followed by an invalid PC.
+// A functab struct is a PC and a func offset.
+
+// funcData is memory corresponding to an _func struct.
+
+// disableRecover causes this package not to swallow panics.
+// This is useful when making changes.

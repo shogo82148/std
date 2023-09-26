@@ -100,6 +100,8 @@ func (p *ProcessState) UserTime() time.Duration
 func (p *ProcessState) SystemTime() time.Duration
 
 // Exited reports whether the program has exited.
+// On Unix systems this reports true if the program exited due to calling exit,
+// but false if the program terminated due to a signal.
 func (p *ProcessState) Exited() bool
 
 // Success reports whether the program exited successfully,
@@ -109,11 +111,11 @@ func (p *ProcessState) Success() bool
 // Sys returns system-dependent exit information about
 // the process. Convert it to the appropriate underlying
 // type, such as syscall.WaitStatus on Unix, to access its contents.
-func (p *ProcessState) Sys() interface{}
+func (p *ProcessState) Sys() any
 
 // SysUsage returns system-dependent resource usage information about
 // the exited process. Convert it to the appropriate underlying
 // type, such as *syscall.Rusage on Unix, to access its contents.
 // (On Unix, *syscall.Rusage matches struct rusage as defined in the
 // getrusage(2) manual page.)
-func (p *ProcessState) SysUsage() interface{}
+func (p *ProcessState) SysUsage() any

@@ -85,6 +85,8 @@ package runtime
 // gTrackingPeriod is the number of transitions out of _Grunning between
 // latency tracking runs.
 
+// Values for m.freeWait.
+
 // Values for the flags field of a sigTabT.
 
 // Layout of in-memory per-function information prepared by linker
@@ -105,9 +107,9 @@ package runtime
 // Also known to export_test.go.
 
 // A _defer holds an entry on the list of deferred calls.
-// If you add a field here, add code to clear it in freedefer and deferProcStack
-// This struct must match the code in cmd/compile/internal/reflectdata/reflect.go:deferstruct
-// and cmd/compile/internal/gc/ssa.go:(*state).call.
+// If you add a field here, add code to clear it in deferProcStack.
+// This struct must match the code in cmd/compile/internal/ssagen/ssa.go:deferstruct
+// and cmd/compile/internal/ssagen/ssa.go:(*state).call.
 // Some defers will be allocated on the stack and some on the heap.
 // All defers are logically part of the stack, so write barriers to
 // initialize them are not required. All defers must be manually scanned,

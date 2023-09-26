@@ -58,7 +58,7 @@ type Entry struct {
 // ClassUnknown.
 type Field struct {
 	Attr  Attr
-	Val   interface{}
+	Val   any
 	Class Class
 }
 
@@ -175,7 +175,7 @@ func (i Class) GoString() string
 // the check that the value has the expected dynamic type, as in:
 //
 //	v, ok := e.Val(AttrSibling).(int64)
-func (e *Entry) Val(a Attr) interface{}
+func (e *Entry) Val(a Attr) any
 
 // AttrField returns the Field associated with attribute Attr in
 // Entry, or nil if there is no such attribute.

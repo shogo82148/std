@@ -59,6 +59,8 @@ const (
 	NodeVariable
 	NodeWith
 	NodeComment
+	NodeBreak
+	NodeContinue
 )
 
 // ListNode holds a sequence of nodes.
@@ -312,6 +314,28 @@ type IfNode struct {
 }
 
 func (i *IfNode) Copy() Node
+
+// BreakNode represents a {{break}} action.
+type BreakNode struct {
+	tr *Tree
+	NodeType
+	Pos
+	Line int
+}
+
+func (b *BreakNode) Copy() Node
+func (b *BreakNode) String() string
+
+// ContinueNode represents a {{continue}} action.
+type ContinueNode struct {
+	tr *Tree
+	NodeType
+	Pos
+	Line int
+}
+
+func (c *ContinueNode) Copy() Node
+func (c *ContinueNode) String() string
 
 // RangeNode represents a {{range}} action and its commands.
 type RangeNode struct {

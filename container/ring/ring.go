@@ -12,7 +12,7 @@ package ring
 // ring with a nil Value.
 type Ring struct {
 	next, prev *Ring
-	Value      interface{}
+	Value      any
 }
 
 // Next returns the next ring element. r must not be empty.
@@ -56,4 +56,4 @@ func (r *Ring) Len() int
 
 // Do calls function f on each element of the ring, in forward order.
 // The behavior of Do is undefined if f changes *r.
-func (r *Ring) Do(f func(interface{}))
+func (r *Ring) Do(f func(any))

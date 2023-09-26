@@ -43,7 +43,7 @@ func (dec *Decoder) DisallowUnknownFields()
 //
 // See the documentation for Unmarshal for details about
 // the conversion of JSON into a Go value.
-func (dec *Decoder) Decode(v interface{}) error
+func (dec *Decoder) Decode(v any) error
 
 // Buffered returns a reader of the data remaining in the Decoder's
 // buffer. The reader is valid until the next call to Decode.
@@ -68,7 +68,7 @@ func NewEncoder(w io.Writer) *Encoder
 //
 // See the documentation for Marshal for details about the
 // conversion of Go values to JSON.
-func (enc *Encoder) Encode(v interface{}) error
+func (enc *Encoder) Encode(v any) error
 
 // SetIndent instructs the encoder to format each subsequent encoded
 // value as if indented by the package-level function Indent(dst, src, prefix, indent).
@@ -106,7 +106,7 @@ var _ Unmarshaler = (*RawMessage)(nil)
 //	Number, for JSON numbers
 //	string, for JSON string literals
 //	nil, for JSON null
-type Token interface{}
+type Token any
 
 // A Delim is a JSON array or object delimiter, one of [ ] { or }.
 type Delim rune

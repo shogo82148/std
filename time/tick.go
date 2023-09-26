@@ -12,9 +12,9 @@ type Ticker struct {
 }
 
 // NewTicker returns a new Ticker containing a channel that will send
-// the time on the channel after each tick. The period of the ticks is
-// specified by the duration argument. The ticker will adjust the time
-// interval or drop ticks to make up for slow receivers.
+// the current time on the channel after each tick. The period of the
+// ticks is specified by the duration argument. The ticker will adjust
+// the time interval or drop ticks to make up for slow receivers.
 // The duration d must be greater than zero; if not, NewTicker will
 // panic. Stop the ticker to release associated resources.
 func NewTicker(d Duration) *Ticker
@@ -25,7 +25,8 @@ func NewTicker(d Duration) *Ticker
 func (t *Ticker) Stop()
 
 // Reset stops a ticker and resets its period to the specified duration.
-// The next tick will arrive after the new period elapses.
+// The next tick will arrive after the new period elapses. The duration d
+// must be greater than zero; if not, Reset will panic.
 func (t *Ticker) Reset(d Duration)
 
 // Tick is a convenience wrapper for NewTicker providing access to the ticking

@@ -8,6 +8,9 @@ import (
 	"database/sql/driver"
 )
 
+// pollDuration is an arbitrary interval to wait between checks when polling for
+// a condition to occur.
+
 var _ driver.NamedValueChecker = &nvcConn{}
 
 var (

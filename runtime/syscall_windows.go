@@ -17,3 +17,9 @@ package runtime
 // the result is always a uintptr. If the C ABI is fastcall,
 // this assumes the four fastcall registers were first spilled
 // to the shadow space.
+
+// maxArgs should be divisible by 2, as Windows stack
+// must be kept 16-byte aligned on syscall entry.
+//
+// Although it only permits maximum 42 parameters, it
+// is arguably large enough.

@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
-// +build aix darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package syscall
 
@@ -96,6 +95,12 @@ func Getpeername(fd int) (sa Sockaddr, err error)
 func GetsockoptInt(fd, level, opt int) (value int, err error)
 
 func Recvfrom(fd int, p []byte, flags int) (n int, from Sockaddr, err error)
+
+func Recvmsg(fd int, p, oob []byte, flags int) (n, oobn int, recvflags int, from Sockaddr, err error)
+
+func Sendmsg(fd int, p, oob []byte, to Sockaddr, flags int) (err error)
+
+func SendmsgN(fd int, p, oob []byte, to Sockaddr, flags int) (n int, err error)
 
 func Sendto(fd int, p []byte, flags int, to Sockaddr) (err error)
 

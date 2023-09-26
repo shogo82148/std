@@ -14,7 +14,7 @@ import (
 // RWMutexMap is an implementation of mapInterface using a sync.RWMutex.
 type RWMutexMap struct {
 	mu    sync.RWMutex
-	dirty map[interface{}]interface{}
+	dirty map[any]any
 }
 
 // DeepCopyMap is an implementation of mapInterface using a Mutex and

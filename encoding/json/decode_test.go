@@ -23,7 +23,7 @@ type U struct {
 }
 
 type V struct {
-	F1 interface{}
+	F1 any
 	F2 int32
 	F3 Number
 	F4 *VOuter
@@ -156,9 +156,9 @@ type Ambig struct {
 }
 
 type XYZ struct {
-	X interface{}
-	Y interface{}
-	Z interface{}
+	X any
+	Y any
+	Z any
 }
 
 type B struct {
@@ -242,8 +242,8 @@ type All struct {
 	PSmall  *Small
 	PPSmall **Small
 
-	Interface  interface{}
-	PInterface *interface{}
+	Interface  any
+	PInterface *any
 
 	unexported int
 }
@@ -270,7 +270,7 @@ type NullTest struct {
 	PBool     *bool
 	Map       map[string]string
 	Slice     []string
-	Interface interface{}
+	Interface any
 
 	PRaw    *RawMessage
 	PTime   *time.Time

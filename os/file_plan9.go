@@ -36,7 +36,7 @@ const DevNull = "/dev/null"
 
 // Close closes the File, rendering it unusable for I/O.
 // On files that support SetDeadline, any pending I/O operations will
-// be canceled and return immediately with an error.
+// be canceled and return immediately with an ErrClosed error.
 // Close will return an error if it has already been called.
 func (f *File) Close() error
 

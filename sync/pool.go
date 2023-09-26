@@ -47,13 +47,13 @@ type Pool struct {
 	victim     unsafe.Pointer
 	victimSize uintptr
 
-	New func() interface{}
+	New func() any
 }
 
 // Local per-P Pool appendix.
 
 // Put adds x to the pool.
-func (p *Pool) Put(x interface{})
+func (p *Pool) Put(x any)
 
 // Get selects an arbitrary item from the Pool, removes it from the
 // Pool, and returns it to the caller.
@@ -63,4 +63,4 @@ func (p *Pool) Put(x interface{})
 //
 // If Get would otherwise return nil and p.New is non-nil, Get returns
 // the result of calling p.New.
-func (p *Pool) Get() interface{}
+func (p *Pool) Get() any

@@ -69,6 +69,13 @@ type TrimTest struct {
 	in, arg, out string
 }
 
+type TrimNilTest struct {
+	f   string
+	in  []byte
+	arg string
+	out []byte
+}
+
 type TrimFuncTest struct {
 	f        predicate
 	in       string

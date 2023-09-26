@@ -107,13 +107,16 @@ func (v Value) Cap() int
 // It panics if v's Kind is not Chan.
 func (v Value) Close()
 
+// CanComplex reports whether Complex can be used without panicking.
+func (v Value) CanComplex() bool
+
 // Complex returns v's underlying value, as a complex128.
 // It panics if v's Kind is not Complex64 or Complex128
 func (v Value) Complex() complex128
 
 // Elem returns the value that the interface v contains
 // or that the pointer v points to.
-// It panics if v's Kind is not Interface or Ptr.
+// It panics if v's Kind is not Interface or Pointer.
 // It returns the zero Value if v is nil.
 func (v Value) Elem() Value
 
@@ -122,8 +125,15 @@ func (v Value) Elem() Value
 func (v Value) Field(i int) Value
 
 // FieldByIndex returns the nested field corresponding to index.
-// It panics if v's Kind is not struct.
+// It panics if evaluation requires stepping through a nil
+// pointer or a field that is not a struct.
 func (v Value) FieldByIndex(index []int) Value
+
+// FieldByIndexErr returns the nested field corresponding to index.
+// It returns an error if evaluation requires stepping through a nil
+// pointer, but panics if it must step through a field that
+// is not a struct.
+func (v Value) FieldByIndexErr(index []int) (Value, error)
 
 // FieldByName returns the struct field with the given name.
 // It returns the zero Value if no field was found.
@@ -136,6 +146,9 @@ func (v Value) FieldByName(name string) Value
 // It returns the zero Value if no field was found.
 func (v Value) FieldByNameFunc(match func(string) bool) Value
 
+// CanFloat reports whether Float can be used without panicking.
+func (v Value) CanFloat() bool
+
 // Float returns v's underlying value, as a float64.
 // It panics if v's Kind is not Float32 or Float64
 func (v Value) Float() float64
@@ -143,6 +156,9 @@ func (v Value) Float() float64
 // Index returns v's i'th element.
 // It panics if v's Kind is not Array, Slice, or String or i is out of range.
 func (v Value) Index(i int) Value
+
+// CanInt reports whether Int can be used without panicking.
+func (v Value) CanInt() bool
 
 // Int returns v's underlying value, as an int64.
 // It panics if v's Kind is not Int, Int8, Int16, Int32, or Int64.
@@ -158,7 +174,7 @@ func (v Value) CanInterface() bool
 //
 // It panics if the Value was obtained by accessing
 // unexported struct fields.
-func (v Value) Interface() (i interface{})
+func (v Value) Interface() (i any)
 
 // InterfaceData returns a pair of unspecified uintptr values.
 // It panics if v's Kind is not Interface.
@@ -211,23 +227,44 @@ func (v Value) MapIndex(key Value) Value
 // It returns an empty slice if v represents a nil map.
 func (v Value) MapKeys() []Value
 
+// hiter's structure matches runtime.hiter's structure.
+// Having a clone here allows us to embed a map iterator
+// inside type MapIter so that MapIters can be re-used
+// without doing any allocations.
+
 // A MapIter is an iterator for ranging over a map.
 // See Value.MapRange.
 type MapIter struct {
-	m  Value
-	it unsafe.Pointer
+	m     Value
+	hiter hiter
 }
 
-// Key returns the key of the iterator's current map entry.
-func (it *MapIter) Key() Value
+// Key returns the key of iter's current map entry.
+func (iter *MapIter) Key() Value
 
-// Value returns the value of the iterator's current map entry.
-func (it *MapIter) Value() Value
+// SetIterKey assigns to v the key of iter's current map entry.
+// It is equivalent to v.Set(iter.Key()), but it avoids allocating a new Value.
+// As in Go, the key must be assignable to v's type.
+func (v Value) SetIterKey(iter *MapIter)
+
+// Value returns the value of iter's current map entry.
+func (iter *MapIter) Value() Value
+
+// SetIterValue assigns to v the value of iter's current map entry.
+// It is equivalent to v.Set(iter.Value()), but it avoids allocating a new Value.
+// As in Go, the value must be assignable to v's type.
+func (v Value) SetIterValue(iter *MapIter)
 
 // Next advances the map iterator and reports whether there is another
-// entry. It returns false when the iterator is exhausted; subsequent
+// entry. It returns false when iter is exhausted; subsequent
 // calls to Key, Value, or Next will panic.
-func (it *MapIter) Next() bool
+func (iter *MapIter) Next() bool
+
+// Reset modifies iter to iterate over v.
+// It panics if v's Kind is not Map and v is not the zero Value.
+// Reset(Value{}) causes iter to not to refer to any map,
+// which may allow the previously iterated-over map to be garbage collected.
+func (iter *MapIter) Reset(v Value)
 
 // MapRange returns a range iterator for a map.
 // It panics if v's Kind is not Map.
@@ -286,7 +323,7 @@ func (v Value) OverflowUint(x uint64) bool
 // It returns uintptr instead of unsafe.Pointer so that
 // code using reflect cannot obtain unsafe.Pointers
 // without importing the unsafe package explicitly.
-// It panics if v's Kind is not Chan, Func, Map, Ptr, Slice, or UnsafePointer.
+// It panics if v's Kind is not Chan, Func, Map, Pointer, Slice, or UnsafePointer.
 //
 // If v's Kind is Func, the returned pointer is an underlying
 // code pointer, but not necessarily enough to identify a
@@ -296,6 +333,8 @@ func (v Value) OverflowUint(x uint64) bool
 // If v's Kind is Slice, the returned pointer is to the first
 // element of the slice. If the slice is nil the returned value
 // is 0.  If the slice is empty but non-nil the return value is non-zero.
+//
+// It's preferred to use uintptr(Value.UnsafePointer()) to get the equivalent result.
 func (v Value) Pointer() uintptr
 
 // Recv receives and returns a value from the channel v.
@@ -399,14 +438,32 @@ func (v Value) TrySend(x Value) bool
 // Type returns v's type.
 func (v Value) Type() Type
 
+// CanUint reports whether Uint can be used without panicking.
+func (v Value) CanUint() bool
+
 // Uint returns v's underlying value, as a uint64.
 // It panics if v's Kind is not Uint, Uintptr, Uint8, Uint16, Uint32, or Uint64.
 func (v Value) Uint() uint64
 
-// UnsafeAddr returns a pointer to v's data.
+// UnsafeAddr returns a pointer to v's data, as a uintptr.
 // It is for advanced clients that also import the "unsafe" package.
 // It panics if v is not addressable.
+//
+// It's preferred to use uintptr(Value.Addr().UnsafePointer()) to get the equivalent result.
 func (v Value) UnsafeAddr() uintptr
+
+// UnsafePointer returns v's value as a unsafe.Pointer.
+// It panics if v's Kind is not Chan, Func, Map, Pointer, Slice, or UnsafePointer.
+//
+// If v's Kind is Func, the returned pointer is an underlying
+// code pointer, but not necessarily enough to identify a
+// single function uniquely. The only guarantee is that the
+// result is zero if and only if v is a nil func Value.
+//
+// If v's Kind is Slice, the returned pointer is to the first
+// element of the slice. If the slice is nil the returned value
+// is nil.  If the slice is empty but non-nil the return value is non-nil.
+func (v Value) UnsafePointer() unsafe.Pointer
 
 // StringHeader is the runtime representation of a string.
 // It cannot be used safely or portably and its representation may
@@ -514,7 +571,7 @@ func Indirect(v Value) Value
 
 // ValueOf returns a new Value initialized to the concrete value
 // stored in the interface i. ValueOf(nil) returns the zero Value.
-func ValueOf(i interface{}) Value
+func ValueOf(i any) Value
 
 // Zero returns a Value representing the zero value for the specified type.
 // The result is different from the zero value of the Value struct,
@@ -528,7 +585,7 @@ func Zero(typ Type) Value
 //go:linkname zeroVal runtime.zeroVal
 
 // New returns a Value representing a pointer to a new zero value
-// for the specified type. That is, the returned Value's Type is PtrTo(typ).
+// for the specified type. That is, the returned Value's Type is PointerTo(typ).
 func New(typ Type) Value
 
 // NewAt returns a Value representing a pointer to a value of the

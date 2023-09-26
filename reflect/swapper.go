@@ -8,4 +8,4 @@ package reflect
 // slice.
 //
 // Swapper panics if the provided interface is not a slice.
-func Swapper(slice interface{}) func(i, j int)
+func Swapper(slice any) func(i, j int)

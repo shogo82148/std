@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build s390x
-// +build s390x
 
 package sha256

@@ -31,7 +31,7 @@ import (
 //
 // The function may return early (before the entire result is written)
 // and return a formatting error, for instance due to an incorrect AST.
-func Node(dst io.Writer, fset *token.FileSet, node interface{}) error
+func Node(dst io.Writer, fset *token.FileSet, node any) error
 
 // Source formats src in canonical gofmt style and returns the result
 // or an (I/O or syntax) error. src is expected to be a syntactically

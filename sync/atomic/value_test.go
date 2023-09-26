@@ -9,10 +9,10 @@ import (
 )
 
 var Value_SwapTests = []struct {
-	init interface{}
-	new  interface{}
-	want interface{}
-	err  interface{}
+	init any
+	new  any
+	want any
+	err  any
 }{
 	{init: nil, new: nil, err: "sync/atomic: swap of nil value into Value"},
 	{init: nil, new: true, want: nil, err: nil},
@@ -21,11 +21,11 @@ var Value_SwapTests = []struct {
 }
 
 var Value_CompareAndSwapTests = []struct {
-	init interface{}
-	new  interface{}
-	old  interface{}
+	init any
+	new  any
+	old  any
 	want bool
-	err  interface{}
+	err  any
 }{
 	{init: nil, new: nil, old: nil, err: "sync/atomic: compare and swap of nil value into Value"},
 	{init: nil, new: true, old: "", err: "sync/atomic: compare and swap of inconsistently typed values into Value"},

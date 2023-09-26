@@ -84,7 +84,7 @@ import (
 // invalid UTF-16 surrogate pairs are not treated as an error.
 // Instead, they are replaced by the Unicode replacement
 // character U+FFFD.
-func Unmarshal(data []byte, v interface{}) error
+func Unmarshal(data []byte, v any) error
 
 // Unmarshaler is the interface implemented by types
 // that can unmarshal a JSON description of themselves.

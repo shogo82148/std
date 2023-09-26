@@ -26,26 +26,6 @@ type Qualifier func(*Package) string
 // all packages other than pkg.
 func RelativeTo(pkg *Package) Qualifier
 
-// If gcCompatibilityMode is set, printing of types is modified
-// to match the representation of some types in the gc compiler:
-//
-//	- byte and rune lose their alias name and simply stand for
-//	  uint8 and int32 respectively
-//	- embedded interfaces get flattened (the embedding info is lost,
-//	  and certain recursive interface types cannot be printed anymore)
-//
-// This makes it easier to compare packages computed with the type-
-// checker vs packages imported from gc export data.
-//
-// Caution: This flag affects all uses of WriteType, globally.
-// It is only provided for testing in conjunction with
-// gc-generated data.
-//
-// This flag is exported in the x/tools/go/types package. We don't
-// need it at the moment in the std repo and so we don't export it
-// anymore. We should eventually try to remove it altogether.
-// TODO(gri) remove this
-
 // TypeString returns the string representation of typ.
 // The Qualifier controls the printing of
 // package-level objects, and may be nil.
@@ -55,9 +35,6 @@ func TypeString(typ Type, qf Qualifier) string
 // The Qualifier controls the printing of
 // package-level objects, and may be nil.
 func WriteType(buf *bytes.Buffer, typ Type, qf Qualifier)
-
-// instanceMarker is the prefix for an instantiated type
-// in "non-evaluated" instance form.
 
 // WriteSignature writes the representation of the signature sig to buf,
 // without a leading "func" keyword.

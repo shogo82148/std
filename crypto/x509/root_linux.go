@@ -6,5 +6,4 @@ package x509
 
 // Possible certificate files; stop after finding one.
 
-// Possible directories with certificate files; stop after successfully
-// reading at least one file from a directory.
+// Possible directories with certificate files; all will be read.

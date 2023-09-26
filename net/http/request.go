@@ -235,7 +235,7 @@ func (r *Request) WriteProxy(w io.Writer) error
 // that the error came from a Read call on the Request.Body.
 // This error type should not escape the net/http package to users.
 
-// ParseHTTPVersion parses an HTTP version string.
+// ParseHTTPVersion parses an HTTP version string according to RFC 7230, section 2.6.
 // "HTTP/1.0" returns (1, 0, true). Note that strings without
 // a minor version, such as "HTTP/2", are not valid.
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)

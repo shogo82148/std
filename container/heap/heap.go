@@ -30,8 +30,8 @@ import "github.com/shogo82148/std/sort"
 // use heap.Push and heap.Pop.
 type Interface interface {
 	sort.Interface
-	Push(x interface{})
-	Pop() interface{}
+	Push(x any)
+	Pop() any
 }
 
 // Init establishes the heap invariants required by the other routines in this package.
@@ -42,16 +42,16 @@ func Init(h Interface)
 
 // Push pushes the element x onto the heap.
 // The complexity is O(log n) where n = h.Len().
-func Push(h Interface, x interface{})
+func Push(h Interface, x any)
 
 // Pop removes and returns the minimum element (according to Less) from the heap.
 // The complexity is O(log n) where n = h.Len().
 // Pop is equivalent to Remove(h, 0).
-func Pop(h Interface) interface{}
+func Pop(h Interface) any
 
 // Remove removes and returns the element at index i from the heap.
 // The complexity is O(log n) where n = h.Len().
-func Remove(h Interface, i int) interface{}
+func Remove(h Interface, i int) any
 
 // Fix re-establishes the heap ordering after the element at index i has changed its value.
 // Changing the value of the element at index i and then calling Fix is equivalent to,

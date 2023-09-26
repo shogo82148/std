@@ -6,6 +6,5 @@
 // for setting SetNonblock and CloseOnExec.
 
 //go:build aix || darwin || (solaris && !illumos)
-// +build aix darwin solaris,!illumos
 
 package net

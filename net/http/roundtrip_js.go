@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build js && wasm
-// +build js,wasm
 
 package http
 
@@ -27,6 +26,9 @@ package http
 // The default is "follow".
 //
 // Reference: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters
+
+// jsFetchMissing will be true if the Fetch API is not present in
+// the browser globals.
 
 // RoundTrip implements the RoundTripper interface using the WHATWG Fetch API.
 func (t *Transport) RoundTrip(req *Request) (*Response, error)

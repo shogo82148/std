@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build !windows && !plan9
-// +build !windows,!plan9
 
 package syslog

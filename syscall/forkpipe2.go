@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build dragonfly || freebsd || netbsd || openbsd
-// +build dragonfly freebsd netbsd openbsd
 
 package syscall

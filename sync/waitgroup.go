@@ -14,7 +14,8 @@ package sync
 type WaitGroup struct {
 	noCopy noCopy
 
-	state1 [3]uint32
+	state1 uint64
+	state2 uint32
 }
 
 // Add adds delta, which may be negative, to the WaitGroup counter.

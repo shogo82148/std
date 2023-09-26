@@ -45,7 +45,7 @@ func NewDecoder(r io.Reader) *Decoder
 // correct type for the next data item received.
 // If the input is at EOF, Decode returns io.EOF and
 // does not modify e.
-func (dec *Decoder) Decode(e interface{}) error
+func (dec *Decoder) Decode(e any) error
 
 // DecodeValue reads the next value from the input stream.
 // If v is the zero reflect.Value (v.Kind() == Invalid), DecodeValue discards the value.

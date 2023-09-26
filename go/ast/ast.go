@@ -70,9 +70,6 @@ func (g *CommentGroup) Text() string
 // in a signature.
 // Field.Names is nil for unnamed parameters (parameter lists which only contain types)
 // and embedded struct fields. In the latter case, the field name is the type name.
-// Field.Names contains a single name "type" for elements of interface type lists.
-// Types belonging to the same type list share the same "type" identifier which also
-// records the position of that keyword.
 type Field struct {
 	Doc     *CommentGroup
 	Names   []*Ident
@@ -85,7 +82,8 @@ func (f *Field) Pos() token.Pos
 
 func (f *Field) End() token.Pos
 
-// A FieldList represents a list of Fields, enclosed by parentheses or braces.
+// A FieldList represents a list of Fields, enclosed by parentheses,
+// curly braces, or square brackets.
 type FieldList struct {
 	Opening token.Pos
 	List    []*Field
@@ -166,6 +164,15 @@ type (
 		Lbrack token.Pos
 		Index  Expr
 		Rbrack token.Pos
+	}
+
+	// An IndexListExpr node represents an expression followed by multiple
+	// indices.
+	IndexListExpr struct {
+		X       Expr
+		Lbrack  token.Pos
+		Indices []Expr
+		Rbrack  token.Pos
 	}
 
 	// A SliceExpr node represents an expression followed by slice indices.
@@ -260,6 +267,14 @@ type (
 		Incomplete bool
 	}
 
+	// A FuncType node represents a function type.
+	FuncType struct {
+		Func       token.Pos
+		TypeParams *FieldList
+		Params     *FieldList
+		Results    *FieldList
+	}
+
 	// An InterfaceType node represents an interface type.
 	InterfaceType struct {
 		Interface  token.Pos
@@ -293,6 +308,7 @@ func (x *CompositeLit) Pos() token.Pos
 func (x *ParenExpr) Pos() token.Pos
 func (x *SelectorExpr) Pos() token.Pos
 func (x *IndexExpr) Pos() token.Pos
+func (x *IndexListExpr) Pos() token.Pos
 func (x *SliceExpr) Pos() token.Pos
 func (x *TypeAssertExpr) Pos() token.Pos
 func (x *CallExpr) Pos() token.Pos
@@ -318,6 +334,7 @@ func (x *CompositeLit) End() token.Pos
 func (x *ParenExpr) End() token.Pos
 func (x *SelectorExpr) End() token.Pos
 func (x *IndexExpr) End() token.Pos
+func (x *IndexListExpr) End() token.Pos
 func (x *SliceExpr) End() token.Pos
 func (x *TypeAssertExpr) End() token.Pos
 func (x *CallExpr) End() token.Pos
@@ -588,6 +605,16 @@ type (
 		Type    Expr
 		Values  []Expr
 		Comment *CommentGroup
+	}
+
+	// A TypeSpec node represents a type declaration (TypeSpec production).
+	TypeSpec struct {
+		Doc        *CommentGroup
+		Name       *Ident
+		TypeParams *FieldList
+		Assign     token.Pos
+		Type       Expr
+		Comment    *CommentGroup
 	}
 )
 

@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix
-// +build aix
 
 package runtime
 
@@ -13,3 +12,6 @@ package runtime
 // tstart is a function descriptor to _tstart defined in assembly.
 
 // sigtramp is a function descriptor to _sigtramp defined in assembly
+
+// sigPerThreadSyscall is only used on linux, so we assign a bogus signal
+// number.

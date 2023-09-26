@@ -49,7 +49,7 @@ type Config struct {
 // A CommentedNode bundles an AST node and corresponding comments.
 // It may be provided as argument to any of the Fprint functions.
 type CommentedNode struct {
-	Node     interface{}
+	Node     any
 	Comments []*ast.CommentGroup
 }
 
@@ -57,10 +57,10 @@ type CommentedNode struct {
 // Position information is interpreted relative to the file set fset.
 // The node type must be *ast.File, *CommentedNode, []ast.Decl, []ast.Stmt,
 // or assignment-compatible to ast.Expr, ast.Decl, ast.Spec, or ast.Stmt.
-func (cfg *Config) Fprint(output io.Writer, fset *token.FileSet, node interface{}) error
+func (cfg *Config) Fprint(output io.Writer, fset *token.FileSet, node any) error
 
 // Fprint "pretty-prints" an AST node to output.
 // It calls Config.Fprint with default settings.
 // Note that gofmt uses tabs for indentation but spaces for alignment;
 // use format.Node (package go/format) for output that matches gofmt.
-func Fprint(output io.Writer, fset *token.FileSet, node interface{}) error
+func Fprint(output io.Writer, fset *token.FileSet, node any) error

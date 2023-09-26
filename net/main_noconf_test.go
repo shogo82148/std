@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build (js && wasm) || plan9 || windows
-// +build js,wasm plan9 windows
 
 package net

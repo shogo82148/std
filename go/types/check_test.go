@@ -20,9 +20,6 @@
 //		_ = x /* ERROR "not declared" */ + 1
 //	}
 
-// TODO(gri) Also collect strict mode errors of the form /* STRICT ... */
-//           and test against strict mode.
-
 package types_test
 
 import (
@@ -39,3 +36,7 @@ import (
 //
 
 // goVersionRx matches a Go version string using '_', e.g. "go1_12".
+
+// excludedForUnifiedBuild lists files that cannot be tested
+// when using the unified build's export data.
+// TODO(gri) enable as soon as the unified build supports this.

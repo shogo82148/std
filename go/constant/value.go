@@ -115,7 +115,7 @@ func Float64Val(x Value) (float64, bool)
 //	Int                int64 or *big.Int
 //	Float              *big.Float or *big.Rat
 //	everything else    nil
-func Val(x Value) interface{}
+func Val(x Value) any
 
 // Make returns the Value for x.
 //
@@ -128,7 +128,7 @@ func Val(x Value) interface{}
 //	*big.Float       Float
 //	*big.Rat         Float
 //	anything else    Unknown
-func Make(x interface{}) Value
+func Make(x any) Value
 
 // BitLen returns the number of bits required to represent
 // the absolute value x in binary representation; x must be an Int or an Unknown.

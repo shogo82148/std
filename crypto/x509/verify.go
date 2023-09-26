@@ -134,6 +134,9 @@ type VerifyOptions struct {
 // list. (While this is not specified, it is common practice in order to limit
 // the types of certificates a CA can issue.)
 //
+// Certificates that use SHA1WithRSA and ECDSAWithSHA1 signatures are not supported,
+// and will not be used to build chains.
+//
 // WARNING: this function doesn't do any revocation checking.
 func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)
 

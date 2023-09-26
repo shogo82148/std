@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build darwin || dragonfly || freebsd || illumos || linux || netbsd || openbsd
-// +build darwin dragonfly freebsd illumos linux netbsd openbsd
 
 package net

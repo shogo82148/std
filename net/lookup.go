@@ -6,6 +6,7 @@ package net
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/net/netip"
 )
 
 // protocols contains minimal mappings between internet protocol
@@ -74,6 +75,12 @@ func (r *Resolver) LookupIPAddr(ctx context.Context, host string) ([]IPAddr, err
 // network must be one of "ip", "ip4" or "ip6".
 func (r *Resolver) LookupIP(ctx context.Context, network, host string) ([]IP, error)
 
+// LookupNetIP looks up host using the local resolver.
+// It returns a slice of that host's IP addresses of the type specified by
+// network.
+// The network must be one of "ip", "ip4" or "ip6".
+func (r *Resolver) LookupNetIP(ctx context.Context, network, host string) ([]netip.Addr, error)
+
 // onlyValuesCtx is a context that uses an underlying context
 // for value lookup if the underlying context hasn't yet expired.
 
@@ -134,7 +141,7 @@ func (r *Resolver) LookupCNAME(ctx context.Context, host string) (string, error)
 // The returned service names are validated to be properly
 // formatted presentation-format domain names. If the response contains
 // invalid names, those records are filtered out and an error
-// will be returned alongside the the remaining results, if any.
+// will be returned alongside the remaining results, if any.
 func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err error)
 
 // LookupSRV tries to resolve an SRV query of the given service,
@@ -150,7 +157,7 @@ func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err err
 // The returned service names are validated to be properly
 // formatted presentation-format domain names. If the response contains
 // invalid names, those records are filtered out and an error
-// will be returned alongside the the remaining results, if any.
+// will be returned alongside the remaining results, if any.
 func (r *Resolver) LookupSRV(ctx context.Context, service, proto, name string) (string, []*SRV, error)
 
 // LookupMX returns the DNS MX records for the given domain name sorted by preference.
@@ -158,7 +165,7 @@ func (r *Resolver) LookupSRV(ctx context.Context, service, proto, name string) (
 // The returned mail server names are validated to be properly
 // formatted presentation-format domain names. If the response contains
 // invalid names, those records are filtered out and an error
-// will be returned alongside the the remaining results, if any.
+// will be returned alongside the remaining results, if any.
 //
 // LookupMX uses context.Background internally; to specify the context, use
 // Resolver.LookupMX.
@@ -169,7 +176,7 @@ func LookupMX(name string) ([]*MX, error)
 // The returned mail server names are validated to be properly
 // formatted presentation-format domain names. If the response contains
 // invalid names, those records are filtered out and an error
-// will be returned alongside the the remaining results, if any.
+// will be returned alongside the remaining results, if any.
 func (r *Resolver) LookupMX(ctx context.Context, name string) ([]*MX, error)
 
 // LookupNS returns the DNS NS records for the given domain name.
@@ -177,7 +184,7 @@ func (r *Resolver) LookupMX(ctx context.Context, name string) ([]*MX, error)
 // The returned name server names are validated to be properly
 // formatted presentation-format domain names. If the response contains
 // invalid names, those records are filtered out and an error
-// will be returned alongside the the remaining results, if any.
+// will be returned alongside the remaining results, if any.
 //
 // LookupNS uses context.Background internally; to specify the context, use
 // Resolver.LookupNS.
@@ -188,7 +195,7 @@ func LookupNS(name string) ([]*NS, error)
 // The returned name server names are validated to be properly
 // formatted presentation-format domain names. If the response contains
 // invalid names, those records are filtered out and an error
-// will be returned alongside the the remaining results, if any.
+// will be returned alongside the remaining results, if any.
 func (r *Resolver) LookupNS(ctx context.Context, name string) ([]*NS, error)
 
 // LookupTXT returns the DNS TXT records for the given domain name.
@@ -205,7 +212,7 @@ func (r *Resolver) LookupTXT(ctx context.Context, name string) ([]string, error)
 //
 // The returned names are validated to be properly formatted presentation-format
 // domain names. If the response contains invalid names, those records are filtered
-// out and an error will be returned alongside the the remaining results, if any.
+// out and an error will be returned alongside the remaining results, if any.
 //
 // When using the host C library resolver, at most one result will be
 // returned. To bypass the host resolver, use a custom Resolver.
@@ -219,9 +226,9 @@ func LookupAddr(addr string) (names []string, err error)
 //
 // The returned names are validated to be properly formatted presentation-format
 // domain names. If the response contains invalid names, those records are filtered
-// out and an error will be returned alongside the the remaining results, if any.
+// out and an error will be returned alongside the remaining results, if any.
 func (r *Resolver) LookupAddr(ctx context.Context, addr string) ([]string, error)
 
 // errMalformedDNSRecordsDetail is the DNSError detail which is returned when a Resolver.Lookup...
-// method recieves DNS records which contain invalid DNS names. This may be returned alongside
+// method receives DNS records which contain invalid DNS names. This may be returned alongside
 // results which have had the malformed records filtered out.

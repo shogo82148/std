@@ -19,12 +19,25 @@ func (e *DLLError) Error() string
 
 func (e *DLLError) Unwrap() error
 
+// Deprecated: Use SyscallN instead.
 func Syscall(trap, nargs, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
+
+// Deprecated: Use SyscallN instead.
 func Syscall6(trap, nargs, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
+
+// Deprecated: Use SyscallN instead.
 func Syscall9(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr, err Errno)
+
+// Deprecated: Use SyscallN instead.
 func Syscall12(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 uintptr) (r1, r2 uintptr, err Errno)
+
+// Deprecated: Use SyscallN instead.
 func Syscall15(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15 uintptr) (r1, r2 uintptr, err Errno)
+
+// Deprecated: Use SyscallN instead.
 func Syscall18(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18 uintptr) (r1, r2 uintptr, err Errno)
+
+func SyscallN(trap uintptr, args ...uintptr) (r1, r2 uintptr, err Errno)
 
 // A DLL implements access to a single DLL.
 type DLL struct {
@@ -69,8 +82,7 @@ type Proc struct {
 // The return value can be passed to Syscall to run the procedure.
 func (p *Proc) Addr() uintptr
 
-// Call executes procedure p with arguments a. It will panic if more than 18 arguments
-// are supplied.
+// Call executes procedure p with arguments a.
 //
 // The returned error is always non-nil, constructed from the result of GetLastError.
 // Callers must inspect the primary return value to decide whether an error occurred
@@ -84,7 +96,7 @@ func (p *Proc) Addr() uintptr
 // values are returned in r2. The return value for C type "float" is
 // math.Float32frombits(uint32(r2)). For C type "double", it is
 // math.Float64frombits(uint64(r2)).
-func (p *Proc) Call(a ...uintptr) (r1, r2 uintptr, lastErr error)
+func (p *Proc) Call(a ...uintptr) (uintptr, uintptr, error)
 
 // A LazyDLL implements access to a single DLL.
 // It will delay the load of the DLL until the first

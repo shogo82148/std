@@ -79,7 +79,7 @@ package time
 // for compatibility with fixed-width Unix time formats. A leading zero represents
 // a zero-padded value.
 //
-// The formats  and 002 are space-padded and zero-padded
+// The formats __2 and 002 are space-padded and zero-padded
 // three-character day of year; there is no unpadded day of year format.
 //
 // A comma or decimal point followed by one or more zeros represents
@@ -176,6 +176,7 @@ func (e *ParseError) Error() string
 // field immediately after the seconds field, even if the layout does not
 // signify its presence. In that case either a comma or a decimal point
 // followed by a maximal series of digits is parsed as a fractional second.
+// Fractional seconds are truncated to nanosecond precision.
 //
 // Elements omitted from the layout are assumed to be zero or, when
 // zero is impossible, one, so parsing "3:04pm" returns the time

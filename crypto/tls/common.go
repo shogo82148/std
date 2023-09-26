@@ -369,6 +369,11 @@ func (c *Config) Clone() *Config
 // compromised.
 func (c *Config) SetSessionTicketKeys(keys [][32]byte)
 
+// debugEnableTLS10 enables TLS 1.0. See issue 45428.
+
+// roleClient and roleServer are meant to call supportedVersions and parents
+// with more readability at the callsite.
+
 // SupportsCertificate returns nil if the provided certificate is supported by
 // the client that sent the ClientHello. Otherwise, it returns an error
 // describing the reason for the incompatibility.

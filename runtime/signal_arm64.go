@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build darwin || freebsd || linux || netbsd || openbsd
-// +build darwin freebsd linux netbsd openbsd
 
 package runtime

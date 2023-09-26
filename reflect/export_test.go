@@ -6,8 +6,6 @@ package reflect
 
 var CallGC = &callGC
 
-const PtrSize = ptrSize
-
 var GCBits = gcbits
 
 type EmbedWithUnexpMeth struct{}
@@ -20,3 +18,5 @@ type OtherPkgFields struct {
 type Buffer struct {
 	buf []byte
 }
+
+var MethodValueCallCodePtr = methodValueCallCodePtr

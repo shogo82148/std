@@ -47,7 +47,7 @@ func (t *Task) End()
 func Log(ctx context.Context, category, message string)
 
 // Logf is like Log, but the value is formatted using the specified format spec.
-func Logf(ctx context.Context, category, format string, args ...interface{})
+func Logf(ctx context.Context, category, format string, args ...any)
 
 // WithRegion starts a region associated with its calling goroutine, runs fn,
 // and then ends the region. If the context carries a task, the region is

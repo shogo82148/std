@@ -25,7 +25,8 @@ func (s *Sym) Static() bool
 func (s *Sym) PackageName() string
 
 // ReceiverName returns the receiver type name of this symbol,
-// or the empty string if there is none.
+// or the empty string if there is none.  A receiver name is only detected in
+// the case that s.Name is fully-specified with a package name.
 func (s *Sym) ReceiverName() string
 
 // BaseName returns the symbol name without the package or receiver name.
@@ -122,7 +123,7 @@ func (e *UnknownLineError) Error() string
 type DecodingError struct {
 	off int
 	msg string
-	val interface{}
+	val any
 }
 
 func (e *DecodingError) Error() string

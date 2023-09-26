@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build dragonfly || freebsd || linux || netbsd || openbsd || solaris
-// +build dragonfly freebsd linux netbsd openbsd solaris
 
 package x509

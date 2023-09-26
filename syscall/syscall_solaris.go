@@ -68,12 +68,6 @@ func FcntlFlock(fd uintptr, cmd int, lk *Flock_t) error
 
 func Accept(fd int) (nfd int, sa Sockaddr, err error)
 
-func Recvmsg(fd int, p, oob []byte, flags int) (n, oobn int, recvflags int, from Sockaddr, err error)
-
-func Sendmsg(fd int, p, oob []byte, to Sockaddr, flags int) (err error)
-
-func SendmsgN(fd int, p, oob []byte, to Sockaddr, flags int) (n int, err error)
-
 func Getexecname() (path string, err error)
 
 func Utimes(path string, tv []Timeval) error

@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build js && wasm
-// +build js,wasm
 
 // Package js gives access to the WebAssembly host environment when using the js/wasm architecture.
 // Its API is based on JavaScript semantics.
@@ -21,11 +20,6 @@ package js
 
 // nanHead are the upper 32 bits of a ref which are set if the value is not encoded as an IEEE 754 number (see above).
 
-// Wrapper is implemented by types that are backed by a JavaScript value.
-type Wrapper interface {
-	JSValue() Value
-}
-
 // Value represents a JavaScript value. The zero value is the JavaScript value "undefined".
 // Values can be checked for equality with the Equal method.
 type Value struct {
@@ -33,9 +27,6 @@ type Value struct {
 	ref   ref
 	gcPtr *ref
 }
-
-// JSValue implements Wrapper interface.
-func (v Value) JSValue() Value
 
 // Error wraps a JavaScript error.
 type Error struct {
@@ -80,7 +71,7 @@ func Global() Value
 //	| map[string]interface{} | new object             |
 //
 // Panics if x is not one of the expected types.
-func ValueOf(x interface{}) Value
+func ValueOf(x any) Value
 
 // Type represents the JavaScript type of a Value.
 type Type int
@@ -108,7 +99,7 @@ func (v Value) Get(p string) Value
 
 // Set sets the JavaScript property p of value v to ValueOf(x).
 // It panics if v is not a JavaScript object.
-func (v Value) Set(p string, x interface{})
+func (v Value) Set(p string, x any)
 
 // Delete deletes the JavaScript property p of value v.
 // It panics if v is not a JavaScript object.
@@ -120,7 +111,7 @@ func (v Value) Index(i int) Value
 
 // SetIndex sets the JavaScript index i of value v to ValueOf(x).
 // It panics if v is not a JavaScript object.
-func (v Value) SetIndex(i int, x interface{})
+func (v Value) SetIndex(i int, x any)
 
 // Length returns the JavaScript property "length" of v.
 // It panics if v is not a JavaScript object.
@@ -129,17 +120,17 @@ func (v Value) Length() int
 // Call does a JavaScript call to the method m of value v with the given arguments.
 // It panics if v has no method m.
 // The arguments get mapped to JavaScript values according to the ValueOf function.
-func (v Value) Call(m string, args ...interface{}) Value
+func (v Value) Call(m string, args ...any) Value
 
 // Invoke does a JavaScript call of the value v with the given arguments.
 // It panics if v is not a JavaScript function.
 // The arguments get mapped to JavaScript values according to the ValueOf function.
-func (v Value) Invoke(args ...interface{}) Value
+func (v Value) Invoke(args ...any) Value
 
 // New uses JavaScript's "new" operator with value v as constructor and the given arguments.
 // It panics if v is not a JavaScript function.
 // The arguments get mapped to JavaScript values according to the ValueOf function.
-func (v Value) New(args ...interface{}) Value
+func (v Value) New(args ...any) Value
 
 // Float returns the value v as a float64.
 // It panics if v is not a JavaScript number.

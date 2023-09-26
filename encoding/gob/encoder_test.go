@@ -36,13 +36,13 @@ type ET4 struct {
 // Types not supported at top level by the Encoder.
 
 type SingleTest struct {
-	in  interface{}
-	out interface{}
+	in  any
+	out any
 	err string
 }
 
 type Struct0 struct {
-	I interface{}
+	I any
 }
 
 type NewType0 struct {
@@ -51,7 +51,7 @@ type NewType0 struct {
 
 // Another bug from golang-nuts, involving nested interfaces.
 type Bug0Outer struct {
-	Bug0Field interface{}
+	Bug0Field any
 }
 
 type Bug0Inner struct {

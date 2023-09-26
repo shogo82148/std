@@ -161,7 +161,7 @@ type Pea struct {
 }
 
 type Pod struct {
-	Pea interface{} `xml:"Pea"`
+	Pea any `xml:"Pea"`
 }
 
 type X struct {

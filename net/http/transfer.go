@@ -28,7 +28,7 @@ var ErrLineTooLong = internal.ErrLineTooLong
 // ResponseWriter.
 var ErrBodyReadAfterClose = errors.New("http: invalid Read on closed Body")
 
-// bodyLocked is a io.Reader reading from a *body when its mutex is
+// bodyLocked is an io.Reader reading from a *body when its mutex is
 // already held.
 
 // finishAsyncByteRead finishes reading the 1-byte sniff

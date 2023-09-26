@@ -15,8 +15,8 @@ type Optionals struct {
 	Slr []string `json:"slr,random"`
 	Slo []string `json:"slo,omitempty"`
 
-	Mr map[string]interface{} `json:"mr"`
-	Mo map[string]interface{} `json:",omitempty"`
+	Mr map[string]any `json:"mr"`
+	Mo map[string]any `json:",omitempty"`
 
 	Fr float64 `json:"fr"`
 	Fo float64 `json:"fo,omitempty"`
@@ -50,7 +50,7 @@ type PointerCycle struct {
 }
 
 type PointerCycleIndirect struct {
-	Ptrs []interface{}
+	Ptrs []any
 }
 
 type RecursiveSlice []RecursiveSlice

@@ -42,6 +42,8 @@ func (b *Reader) Size() int
 
 // Reset discards any buffered data, resets all state, and switches
 // the buffered reader to read from r.
+// Calling Reset on the zero value of Reader initializes the internal buffer
+// to the default size.
 func (b *Reader) Reset(r io.Reader)
 
 // Peek returns the next n bytes without advancing the reader. The bytes stop
@@ -75,8 +77,8 @@ func (b *Reader) ReadByte() (byte, error)
 // UnreadByte unreads the last byte. Only the most recently read byte can be unread.
 //
 // UnreadByte returns an error if the most recent method called on the
-// Reader was not a read operation. Notably, Peek is not considered a
-// read operation.
+// Reader was not a read operation. Notably, Peek, Discard, and WriteTo are not
+// considered read operations.
 func (b *Reader) UnreadByte() error
 
 // ReadRune reads a single UTF-8 encoded Unicode character and returns the
@@ -166,6 +168,8 @@ type Writer struct {
 func NewWriterSize(w io.Writer, size int) *Writer
 
 // NewWriter returns a new Writer whose buffer has the default size.
+// If the argument io.Writer is already a Writer with large enough buffer size,
+// it returns the underlying Writer.
 func NewWriter(w io.Writer) *Writer
 
 // Size returns the size of the underlying buffer in bytes.
@@ -173,6 +177,8 @@ func (b *Writer) Size() int
 
 // Reset discards any unflushed buffered data, clears any error, and
 // resets b to write its output to w.
+// Calling Reset on the zero value of Writer initializes the internal buffer
+// to the default size.
 func (b *Writer) Reset(w io.Writer)
 
 // Flush writes any buffered data to the underlying io.Writer.
@@ -180,6 +186,12 @@ func (b *Writer) Flush() error
 
 // Available returns how many bytes are unused in the buffer.
 func (b *Writer) Available() int
+
+// AvailableBuffer returns an empty buffer with b.Available() capacity.
+// This buffer is intended to be appended to and
+// passed to an immediately succeeding Write call.
+// The buffer is only valid until the next write operation on b.
+func (b *Writer) AvailableBuffer() []byte
 
 // Buffered returns the number of bytes that have been written into the current buffer.
 func (b *Writer) Buffered() int
@@ -204,8 +216,9 @@ func (b *Writer) WriteRune(r rune) (size int, err error)
 func (b *Writer) WriteString(s string) (int, error)
 
 // ReadFrom implements io.ReaderFrom. If the underlying writer
-// supports the ReadFrom method, and b has no buffered data yet,
-// this calls the underlying ReadFrom without buffering.
+// supports the ReadFrom method, this calls the underlying ReadFrom.
+// If there is buffered data and an underlying ReadFrom, this fills
+// the buffer and writes it before calling ReadFrom.
 func (b *Writer) ReadFrom(r io.Reader) (n int64, err error)
 
 // ReadWriter stores pointers to a Reader and a Writer.

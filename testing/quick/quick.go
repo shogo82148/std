@@ -45,7 +45,7 @@ func (s SetupError) Error() string
 // A CheckError is the result of Check finding an error.
 type CheckError struct {
 	Count int
-	In    []interface{}
+	In    []any
 }
 
 func (s *CheckError) Error() string
@@ -53,8 +53,8 @@ func (s *CheckError) Error() string
 // A CheckEqualError is the result CheckEqual finding an error.
 type CheckEqualError struct {
 	CheckError
-	Out1 []interface{}
-	Out2 []interface{}
+	Out1 []any
+	Out2 []any
 }
 
 func (s *CheckEqualError) Error() string
@@ -74,10 +74,10 @@ func (s *CheckEqualError) Error() string
 //			t.Error(err)
 //		}
 //	}
-func Check(f interface{}, config *Config) error
+func Check(f any, config *Config) error
 
 // CheckEqual looks for an input on which f and g return different results.
 // It calls f and g repeatedly with arbitrary values for each argument.
 // If f and g return different answers, CheckEqual returns a *CheckEqualError
 // describing the input and the outputs.
-func CheckEqual(f, g interface{}, config *Config) error
+func CheckEqual(f, g any, config *Config) error

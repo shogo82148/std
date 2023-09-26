@@ -43,29 +43,29 @@ type S struct {
 }
 
 type SI struct {
-	I interface{}
+	I any
 }
 
 // P is a type with a String method with pointer receiver for testing %p.
 type P int
 
-type SE []interface{}
+type SE []any
 
 var _ bytes.Buffer
 
 // PanicS is a type that panics in String.
 type PanicS struct {
-	message interface{}
+	message any
 }
 
 // PanicGo is a type that panics in GoString.
 type PanicGo struct {
-	message interface{}
+	message any
 }
 
 // PanicF is a type that panics in Format.
 type PanicF struct {
-	message interface{}
+	message any
 }
 
 // recurCount tests that erroneous String routine doesn't cause fatal recursion.

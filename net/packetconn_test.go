@@ -6,6 +6,5 @@
 // tag.
 
 //go:build !js
-// +build !js
 
 package net

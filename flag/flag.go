@@ -139,7 +139,7 @@ type Value interface {
 // by this package satisfy the Getter interface, except the type used by Func.
 type Getter interface {
 	Value
-	Get() interface{}
+	Get() any
 }
 
 // ErrorHandling defines how FlagSet.Parse behaves if the parse fails.

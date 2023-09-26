@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build darwin || dragonfly || freebsd || netbsd || openbsd
-// +build darwin dragonfly freebsd netbsd openbsd
 
 // BSD system call wrappers shared by *BSD based systems
 // including OS X (Darwin) and FreeBSD.  Like the other
@@ -60,12 +59,6 @@ func GetsockoptIPv6Mreq(fd, level, opt int) (*IPv6Mreq, error)
 func GetsockoptIPv6MTUInfo(fd, level, opt int) (*IPv6MTUInfo, error)
 
 func GetsockoptICMPv6Filter(fd, level, opt int) (*ICMPv6Filter, error)
-
-func Recvmsg(fd int, p, oob []byte, flags int) (n, oobn int, recvflags int, from Sockaddr, err error)
-
-func Sendmsg(fd int, p, oob []byte, to Sockaddr, flags int) (err error)
-
-func SendmsgN(fd int, p, oob []byte, to Sockaddr, flags int) (n int, err error)
 
 func Kevent(kq int, changes, events []Kevent_t, timeout *Timespec) (n int, err error)
 

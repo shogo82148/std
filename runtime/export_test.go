@@ -25,8 +25,6 @@ var Exitsyscall = exitsyscall
 var LockedOSThread = lockedOSThread
 var Xadduintptr = atomic.Xadduintptr
 
-var FuncPC = funcPC
-
 var Fastlog2 = fastlog2
 
 var Atoi = atoi
@@ -55,15 +53,6 @@ type LFNode struct {
 	Pushcnt uintptr
 }
 
-// Temporary to enable register ABI bringup.
-// TODO(register args): convert back to local variables in RunSchedLocalQueueEmptyTest that
-// get passed to the "go" stmts there.
-var RunSchedLocalQueueEmptyState struct {
-	done  chan bool
-	ready *uint32
-	p     *p
-}
-
 var (
 	StringHash = stringHash
 	BytesHash  = bytesHash
@@ -78,16 +67,14 @@ var (
 
 var UseAeshash = &useAeshash
 
-var HashLoad = &hashLoad
+const HashLoad = hashLoad
 
 var Open = open
 var Close = closefd
 var Read = read
 var Write = write
 
-var BigEndian = sys.BigEndian
-
-const PtrSize = sys.PtrSize
+const PtrSize = goarch.PtrSize
 
 var ForceGCPeriod = &forcegcperiod
 
@@ -169,7 +156,7 @@ var BaseChunkIdx = func() ChunkIdx {
 		prefix = 0x100
 	}
 	baseAddr := prefix * pallocChunkBytes
-	if sys.GoosAix != 0 {
+	if goos.IsAix != 0 {
 		baseAddr += arenaBaseOffset
 	}
 	return ChunkIdx(chunkIndex(baseAddr))
@@ -204,3 +191,26 @@ var TimeHistogramMetricsBuckets = timeHistogramMetricsBuckets
 var GCTestMoveStackOnNextCall = gcTestMoveStackOnNextCall
 
 const Raceenabled = raceenabled
+
+const (
+	GCBackgroundUtilization = gcBackgroundUtilization
+	GCGoalUtilization       = gcGoalUtilization
+)
+
+type GCController struct {
+	gcControllerState
+}
+
+type GCControllerReviseDelta struct {
+	HeapLive        int64
+	HeapScan        int64
+	HeapScanWork    int64
+	StackScanWork   int64
+	GlobalsScanWork int64
+}
+
+var Timediv = timediv
+
+type PIController struct {
+	piController
+}

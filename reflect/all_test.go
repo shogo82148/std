@@ -24,14 +24,14 @@ type Basic struct {
 type NotBasic Basic
 
 type DeepEqualTest struct {
-	a, b interface{}
+	a, b any
 	eq   bool
 }
 
 // Simple functions for DeepEqual tests.
 
 type Loop *Loop
-type Loopy interface{}
+type Loopy any
 
 type Recursive struct {
 	x int
@@ -97,7 +97,7 @@ type T1 struct {
 }
 
 type FTest struct {
-	s     interface{}
+	s     any
 	name  string
 	index []int
 	value int
@@ -210,7 +210,7 @@ type OuterInt struct {
 	InnerInt
 }
 
-type FuncDDD func(...interface{}) error
+type FuncDDD func(...any) error
 
 type Private struct {
 	x int
@@ -443,3 +443,8 @@ type Talias2 struct {
 }
 
 type NonExportedFirst int
+
+//go:notinheap
+
+type A struct{}
+type B[T any] struct{}

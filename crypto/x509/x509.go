@@ -34,7 +34,7 @@ import (
 // ed25519.PublicKey. More types might be supported in the future.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
-func ParsePKIXPublicKey(derBytes []byte) (pub interface{}, err error)
+func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 
 // MarshalPKIXPublicKey converts a public key to PKIX, ASN.1 DER form.
 // The encoded public key is a SubjectPublicKeyInfo structure
@@ -44,7 +44,7 @@ func ParsePKIXPublicKey(derBytes []byte) (pub interface{}, err error)
 // and ed25519.PublicKey. Unsupported key types result in an error.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
-func MarshalPKIXPublicKey(pub interface{}) ([]byte, error)
+func MarshalPKIXPublicKey(pub any) ([]byte, error)
 
 // RFC 5280,  4.2.1.1
 
@@ -192,7 +192,7 @@ type Certificate struct {
 	SignatureAlgorithm SignatureAlgorithm
 
 	PublicKeyAlgorithm PublicKeyAlgorithm
-	PublicKey          interface{}
+	PublicKey          any
 
 	Version             int
 	SerialNumber        *big.Int
@@ -247,7 +247,12 @@ type Certificate struct {
 // involves algorithms that are not currently implemented.
 var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorithm unimplemented")
 
-// An InsecureAlgorithmError
+// An InsecureAlgorithmError indicates that the SignatureAlgorithm used to
+// generate the signature is not secure, and the signature has been rejected.
+//
+// To temporarily restore support for SHA-1 signatures, include the value
+// "x509sha1=1" in the GODEBUG environment variable. Note that this option will
+// be removed in Go 1.19.
 type InsecureAlgorithmError SignatureAlgorithm
 
 func (e InsecureAlgorithmError) Error() string
@@ -262,7 +267,7 @@ func (ConstraintViolationError) Error() string
 func (c *Certificate) Equal(other *Certificate) bool
 
 // CheckSignatureFrom verifies that the signature on c is a valid signature
-// from parent.
+// from parent. SHA1WithRSA and ECDSAWithSHA1 signatures are not supported.
 func (c *Certificate) CheckSignatureFrom(parent *Certificate) error
 
 // CheckSignature verifies that signature is a valid signature over signed from
@@ -337,7 +342,7 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
 // will be generated from the hash of the public key.
-func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv interface{}) ([]byte, error)
+func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // pemCRLPrefix is the magic string that indicates that we have a PEM encoded
 // CRL.
@@ -358,7 +363,7 @@ func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
 //
 // Note: this method does not generate an RFC 5280 conformant X.509 v2 CRL.
 // To generate a standards compliant CRL, use CreateRevocationList instead.
-func (c *Certificate) CreateCRL(rand io.Reader, priv interface{}, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
+func (c *Certificate) CreateCRL(rand io.Reader, priv any, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
 
 // CertificateRequest represents a PKCS #10, certificate signature request.
 type CertificateRequest struct {
@@ -372,7 +377,7 @@ type CertificateRequest struct {
 	SignatureAlgorithm SignatureAlgorithm
 
 	PublicKeyAlgorithm PublicKeyAlgorithm
-	PublicKey          interface{}
+	PublicKey          any
 
 	Subject pkix.Name
 
@@ -410,7 +415,7 @@ type CertificateRequest struct {
 // ed25519.PrivateKey satisfies this.)
 //
 // The returned slice is the certificate request in DER encoding.
-func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv interface{}) (csr []byte, err error)
+func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv any) (csr []byte, err error)
 
 // ParseCertificateRequest parses a single certificate request from the
 // given ASN.1 DER data.

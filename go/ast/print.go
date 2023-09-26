@@ -28,11 +28,11 @@ func NotNilFilter(_ string, v reflect.Value) bool
 // struct fields for which f(fieldname, fieldvalue) is true are
 // printed; all others are filtered from the output. Unexported
 // struct fields are never printed.
-func Fprint(w io.Writer, fset *token.FileSet, x interface{}, f FieldFilter) error
+func Fprint(w io.Writer, fset *token.FileSet, x any, f FieldFilter) error
 
 // Print prints x to standard output, skipping nil fields.
 // Print(fset, x) is the same as Fprint(os.Stdout, fset, x, NotNilFilter).
-func Print(fset *token.FileSet, x interface{}) error
+func Print(fset *token.FileSet, x any) error
 
 // localError wraps locally caught errors so we can distinguish
 // them from genuine panics which we don't want to return as errors.

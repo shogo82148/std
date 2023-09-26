@@ -50,10 +50,10 @@ func New384() hash.Hash
 func Sum512(data []byte) [Size]byte
 
 // Sum384 returns the SHA384 checksum of the data.
-func Sum384(data []byte) (sum384 [Size384]byte)
+func Sum384(data []byte) [Size384]byte
 
 // Sum512_224 returns the Sum512/224 checksum of the data.
-func Sum512_224(data []byte) (sum224 [Size224]byte)
+func Sum512_224(data []byte) [Size224]byte
 
 // Sum512_256 returns the Sum512/256 checksum of the data.
-func Sum512_256(data []byte) (sum256 [Size256]byte)
+func Sum512_256(data []byte) [Size256]byte

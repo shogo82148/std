@@ -37,6 +37,6 @@ func (p PackageError) Error() string
 // main do function, so it doesn't cause an exit. Allows testing to work
 // without running a subprocess. The log prefix will be added when
 // logged in main; it is not added here.
-func (pkg *Package) Fatalf(format string, args ...interface{})
+func (pkg *Package) Fatalf(format string, args ...any)
 
-func (pkg *Package) Printf(format string, args ...interface{})
+func (pkg *Package) Printf(format string, args ...any)

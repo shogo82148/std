@@ -120,7 +120,7 @@ import (
 type Profile struct {
 	name  string
 	mu    sync.Mutex
-	m     map[interface{}][]uintptr
+	m     map[any][]uintptr
 	count func() int
 	write func(io.Writer, int) error
 }
@@ -164,11 +164,11 @@ func (p *Profile) Count() int
 //
 // Passing skip=0 begins the stack trace at the call to Add inside rpc.NewClient.
 // Passing skip=1 begins the stack trace at the call to NewClient inside mypkg.Run.
-func (p *Profile) Add(value interface{}, skip int)
+func (p *Profile) Add(value any, skip int)
 
 // Remove removes the execution stack associated with value from the profile.
 // It is a no-op if the value is not in the profile.
-func (p *Profile) Remove(value interface{})
+func (p *Profile) Remove(value any)
 
 // WriteTo writes a pprof-formatted snapshot of the profile to w.
 // If a write to w returns an error, WriteTo returns that error.

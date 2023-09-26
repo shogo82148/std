@@ -3,23 +3,12 @@
 // license that can be found in the LICENSE file.
 
 //go:build linux && (mips64 || mips64le)
-// +build linux
-// +build mips64 mips64le
 
 package syscall
-
-// archHonorsR2 captures the fact that r2 is honored by the
-// runtime.GOARCH.  Syscall conventions are generally r1, r2, err :=
-// syscall(trap, ...).  Not all architectures define r2 in their
-// ABI. See "man syscall".
 
 func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err error)
 
 func Time(t *Time_t) (tt Time_t, err error)
-
-func Pipe(p []int) (err error)
-
-func Pipe2(p []int, flags int) (err error)
 
 func Ioperm(from int, num int, on int) (err error)
 

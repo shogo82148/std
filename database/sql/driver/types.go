@@ -21,7 +21,7 @@ package driver
 //   - by the sql package, for converting from a driver's Value type
 //     to a user's type in a scan.
 type ValueConverter interface {
-	ConvertValue(v interface{}) (Value, error)
+	ConvertValue(v any) (Value, error)
 }
 
 // Valuer is the interface providing the Value method.
@@ -64,7 +64,7 @@ type Null struct {
 	Converter ValueConverter
 }
 
-func (n Null) ConvertValue(v interface{}) (Value, error)
+func (n Null) ConvertValue(v any) (Value, error)
 
 // NotNull is a type that implements ValueConverter by disallowing nil
 // values but otherwise delegating to another ValueConverter.
@@ -72,14 +72,14 @@ type NotNull struct {
 	Converter ValueConverter
 }
 
-func (n NotNull) ConvertValue(v interface{}) (Value, error)
+func (n NotNull) ConvertValue(v any) (Value, error)
 
 // IsValue reports whether v is a valid Value parameter type.
-func IsValue(v interface{}) bool
+func IsValue(v any) bool
 
 // IsScanValue is equivalent to IsValue.
 // It exists for compatibility.
-func IsScanValue(v interface{}) bool
+func IsScanValue(v any) bool
 
 // DefaultParameterConverter is the default implementation of
 // ValueConverter that's used when a Stmt doesn't implement

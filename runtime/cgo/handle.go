@@ -54,6 +54,41 @@ package cgo
 //	void myprint(uintptr_t handle) {
 //	    MyGoPrint(handle);
 //	}
+//
+// Some C functions accept a void* argument that points to an arbitrary
+// data value supplied by the caller. It is not safe to coerce a cgo.Handle
+// (an integer) to a Go unsafe.Pointer, but instead we can pass the address
+// of the cgo.Handle to the void* parameter, as in this variant of the
+// previous example:
+//
+//	package main
+//
+//	/*
+//	extern void MyGoPrint(void *context);
+//	static inline void myprint(void *context) {
+//	    MyGoPrint(context);
+//	}
+//	*/
+//	import "C"
+//	import (
+//		"runtime/cgo"
+//		"unsafe"
+//	)
+//
+//	//export MyGoPrint
+//	func MyGoPrint(context unsafe.Pointer) {
+//		h := *(*cgo.Handle)(context)
+//		val := h.Value().(string)
+//		println(val)
+//		h.Delete()
+//	}
+//
+//	func main() {
+//		val := "hello Go"
+//		h := cgo.NewHandle(val)
+//		C.myprint(unsafe.Pointer(&h))
+//		// Output: hello Go
+//	}
 type Handle uintptr
 
 // NewHandle returns a handle for a given value.
@@ -65,12 +100,12 @@ type Handle uintptr
 //
 // The intended use is to pass the returned handle to C code, which
 // passes it back to Go, which calls Value.
-func NewHandle(v interface{}) Handle
+func NewHandle(v any) Handle
 
 // Value returns the associated Go value for a valid handle.
 //
 // The method panics if the handle is invalid.
-func (h Handle) Value() interface{}
+func (h Handle) Value() any
 
 // Delete invalidates a handle. This method should only be called once
 // the program no longer needs to pass the handle to C and the C code

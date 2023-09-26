@@ -49,11 +49,12 @@ const (
 // the Writer's Write method. A Logger can be used simultaneously from
 // multiple goroutines; it guarantees to serialize access to the Writer.
 type Logger struct {
-	mu     sync.Mutex
-	prefix string
-	flag   int
-	out    io.Writer
-	buf    []byte
+	mu        sync.Mutex
+	prefix    string
+	flag      int
+	out       io.Writer
+	buf       []byte
+	isDiscard int32
 }
 
 // New creates a new Logger. The out variable sets the
@@ -79,33 +80,33 @@ func (l *Logger) Output(calldepth int, s string) error
 
 // Printf calls l.Output to print to the logger.
 // Arguments are handled in the manner of fmt.Printf.
-func (l *Logger) Printf(format string, v ...interface{})
+func (l *Logger) Printf(format string, v ...any)
 
 // Print calls l.Output to print to the logger.
 // Arguments are handled in the manner of fmt.Print.
-func (l *Logger) Print(v ...interface{})
+func (l *Logger) Print(v ...any)
 
 // Println calls l.Output to print to the logger.
 // Arguments are handled in the manner of fmt.Println.
-func (l *Logger) Println(v ...interface{})
+func (l *Logger) Println(v ...any)
 
 // Fatal is equivalent to l.Print() followed by a call to os.Exit(1).
-func (l *Logger) Fatal(v ...interface{})
+func (l *Logger) Fatal(v ...any)
 
 // Fatalf is equivalent to l.Printf() followed by a call to os.Exit(1).
-func (l *Logger) Fatalf(format string, v ...interface{})
+func (l *Logger) Fatalf(format string, v ...any)
 
 // Fatalln is equivalent to l.Println() followed by a call to os.Exit(1).
-func (l *Logger) Fatalln(v ...interface{})
+func (l *Logger) Fatalln(v ...any)
 
 // Panic is equivalent to l.Print() followed by a call to panic().
-func (l *Logger) Panic(v ...interface{})
+func (l *Logger) Panic(v ...any)
 
 // Panicf is equivalent to l.Printf() followed by a call to panic().
-func (l *Logger) Panicf(format string, v ...interface{})
+func (l *Logger) Panicf(format string, v ...any)
 
 // Panicln is equivalent to l.Println() followed by a call to panic().
-func (l *Logger) Panicln(v ...interface{})
+func (l *Logger) Panicln(v ...any)
 
 // Flags returns the output flags for the logger.
 // The flag bits are Ldate, Ltime, and so on.
@@ -146,33 +147,33 @@ func Writer() io.Writer
 
 // Print calls Output to print to the standard logger.
 // Arguments are handled in the manner of fmt.Print.
-func Print(v ...interface{})
+func Print(v ...any)
 
 // Printf calls Output to print to the standard logger.
 // Arguments are handled in the manner of fmt.Printf.
-func Printf(format string, v ...interface{})
+func Printf(format string, v ...any)
 
 // Println calls Output to print to the standard logger.
 // Arguments are handled in the manner of fmt.Println.
-func Println(v ...interface{})
+func Println(v ...any)
 
 // Fatal is equivalent to Print() followed by a call to os.Exit(1).
-func Fatal(v ...interface{})
+func Fatal(v ...any)
 
 // Fatalf is equivalent to Printf() followed by a call to os.Exit(1).
-func Fatalf(format string, v ...interface{})
+func Fatalf(format string, v ...any)
 
 // Fatalln is equivalent to Println() followed by a call to os.Exit(1).
-func Fatalln(v ...interface{})
+func Fatalln(v ...any)
 
 // Panic is equivalent to Print() followed by a call to panic().
-func Panic(v ...interface{})
+func Panic(v ...any)
 
 // Panicf is equivalent to Printf() followed by a call to panic().
-func Panicf(format string, v ...interface{})
+func Panicf(format string, v ...any)
 
 // Panicln is equivalent to Println() followed by a call to panic().
-func Panicln(v ...interface{})
+func Panicln(v ...any)
 
 // Output writes the output for a logging event. The string s contains
 // the text to print after the prefix specified by the flags of the

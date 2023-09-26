@@ -41,7 +41,10 @@ func (w *Walker) Features() (fs []string)
 
 // Disable before debugging non-obvious errors from the type-checker.
 
-// listSem is a semaphore restricting concurrent invocations of 'go list'.
+// listSem is a semaphore restricting concurrent invocations of 'go list'. 'go
+// list' has its own internal concurrency, so we use a hard-coded constant (to
+// allow the I/O-intensive phases of 'go list' to overlap) instead of scaling
+// all the way up to GOMAXPROCS.
 
 // Importing is a sentinel taking the place in Walker.imported
 // for a package that is in the process of being imported.

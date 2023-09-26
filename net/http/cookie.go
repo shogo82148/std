@@ -54,3 +54,6 @@ func SetCookie(w ResponseWriter, cookie *Cookie)
 // header (if other fields are set).
 // If c is nil or c.Name is invalid, the empty string is returned.
 func (c *Cookie) String() string
+
+// Valid reports whether the cookie is valid.
+func (c *Cookie) Valid() error

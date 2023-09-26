@@ -33,7 +33,7 @@ type MapFile struct {
 	Data    []byte
 	Mode    fs.FileMode
 	ModTime time.Time
-	Sys     interface{}
+	Sys     any
 }
 
 var _ fs.FS = MapFS(nil)

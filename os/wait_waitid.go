@@ -6,6 +6,5 @@
 // waitid returns if the process is stopped, even when using WEXITED.
 
 //go:build linux
-// +build linux
 
 package os

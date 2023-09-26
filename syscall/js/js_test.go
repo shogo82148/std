@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build js && wasm
-// +build js,wasm
 
 // To run these tests:
 //
@@ -23,7 +22,7 @@ import (
 
 func ExampleFuncOf() {
 	var cb js.Func
-	cb = js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+	cb = js.FuncOf(func(this js.Value, args []js.Value) any {
 		fmt.Println("button clicked")
 		cb.Release() // release the function if the button will not be clicked again
 		return nil

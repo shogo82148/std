@@ -8,6 +8,5 @@
 // those functions. These functions will never be called.
 
 //go:build !darwin && !plan9
-// +build !darwin,!plan9
 
 package runtime

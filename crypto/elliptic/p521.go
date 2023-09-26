@@ -3,3 +3,16 @@
 // license that can be found in the LICENSE file.
 
 package elliptic
+
+// p521Curve is a Curve implementation based on nistec.P521Point.
+//
+// It's a wrapper that exposes the big.Int-based Curve interface and encodes the
+// legacy idiosyncrasies it requires, such as invalid and infinity point
+// handling.
+//
+// To interact with the nistec package, points are encoded into and decoded from
+// properly formatted byte slices. All big.Int use is limited to this package.
+// Encoding and decoding is 1/1000th of the runtime of a scalar multiplication,
+// so the overhead is acceptable.
+
+var _ Curve = p521

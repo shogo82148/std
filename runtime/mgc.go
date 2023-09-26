@@ -128,9 +128,6 @@
 
 package runtime
 
-// Temporary in order to enable register ABI work.
-// TODO(register args): convert back to local chan in gcenabled, passed to "go" stmts.
-
 // Garbage collector phase.
 // Indicates to write barrier and synchronization task to perform.
 

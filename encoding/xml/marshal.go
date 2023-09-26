@@ -70,7 +70,7 @@ const (
 // See MarshalIndent for an example.
 //
 // Marshal will return an error if asked to marshal a channel, function, or map.
-func Marshal(v interface{}) ([]byte, error)
+func Marshal(v any) ([]byte, error)
 
 // Marshaler is the interface implemented by objects that can marshal
 // themselves into valid XML elements.
@@ -110,7 +110,7 @@ type MarshalerAttr interface {
 // MarshalIndent works like Marshal, but each XML element begins on a new
 // indented line that starts with prefix and is followed by one or more
 // copies of indent according to the nesting depth.
-func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error)
+func MarshalIndent(v any, prefix, indent string) ([]byte, error)
 
 // An Encoder writes XML data to an output stream.
 type Encoder struct {
@@ -131,7 +131,7 @@ func (enc *Encoder) Indent(prefix, indent string)
 // of Go values to XML.
 //
 // Encode calls Flush before returning.
-func (enc *Encoder) Encode(v interface{}) error
+func (enc *Encoder) Encode(v any) error
 
 // EncodeElement writes the XML encoding of v to the stream,
 // using start as the outermost tag in the encoding.
@@ -140,7 +140,7 @@ func (enc *Encoder) Encode(v interface{}) error
 // of Go values to XML.
 //
 // EncodeElement calls Flush before returning.
-func (enc *Encoder) EncodeElement(v interface{}, start StartElement) error
+func (enc *Encoder) EncodeElement(v any, start StartElement) error
 
 // EncodeToken writes the given XML token to the stream.
 // It returns an error if StartElement and EndElement tokens are not properly matched.

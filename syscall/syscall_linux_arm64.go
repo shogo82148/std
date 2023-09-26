@@ -4,11 +4,6 @@
 
 package syscall
 
-// archHonorsR2 captures the fact that r2 is honored by the
-// runtime.GOARCH.  Syscall conventions are generally r1, r2, err :=
-// syscall(trap, ...).  Not all architectures define r2 in their
-// ABI. See "man syscall".
-
 func EpollCreate(size int) (fd int, err error)
 
 func Stat(path string, stat *Stat_t) (err error)
@@ -22,10 +17,6 @@ func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err
 func Time(t *Time_t) (Time_t, error)
 
 func Utime(path string, buf *Utimbuf) error
-
-func Pipe(p []int) (err error)
-
-func Pipe2(p []int, flags int) (err error)
 
 // Getrlimit prefers the prlimit64 system call. See issue 38604.
 func Getrlimit(resource int, rlim *Rlimit) error
