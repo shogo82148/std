@@ -4,6 +4,7 @@
 
 // Vet is a simple checker for static errors in Go source code.
 // See doc.go for more information.
+
 package main
 
 import (
@@ -32,6 +33,8 @@ import (
 // It is used to identify if a flag appears; the standard boolean flag cannot
 // distinguish missing from unset. It also satisfies flag.Value.
 
+// The exporters data as written to the vetx output file.
+
 // Usage is a replacement usage function for the flags package.
 func Usage()
 
@@ -47,12 +50,14 @@ type File struct {
 
 	basePkg *Package
 
-	stringers map[*ast.Object]bool
+	stringerPtrs map[*ast.Object]bool
 
 	checkers map[ast.Node][]func(*File, ast.Node)
 
 	dead map[ast.Node]bool
 }
+
+// vetConfig is the JSON config struct prepared by the Go command.
 
 type Package struct {
 	path      string
@@ -85,3 +90,5 @@ func (f *File) Warnf(pos token.Pos, format string, args ...interface{})
 
 // Visit implements the ast.Visitor interface.
 func (f *File) Visit(node ast.Node) ast.Visitor
+
+// imported[path][key] is previously written export data.

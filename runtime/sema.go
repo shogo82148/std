@@ -15,7 +15,7 @@
 // even if, due to races, the wakeup happens before the sleep.
 //
 // See Mullender and Cox, ``Semaphores in Plan 9,''
-// http://swtch.com/semaphore.pdf
+// https://swtch.com/semaphore.pdf
 
 package runtime
 

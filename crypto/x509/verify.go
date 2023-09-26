@@ -8,6 +8,8 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// ignoreCN disables interpreting Common Name as a hostname. See issue 24151.
+
 type InvalidReason int
 
 const (
@@ -18,8 +20,8 @@ const (
 	// given in the VerifyOptions.
 	Expired
 	// CANotAuthorizedForThisName results when an intermediate or root
-	// certificate has a name constraint which doesn't include the name
-	// being checked.
+	// certificate has a name constraint which doesn't permit a DNS or
+	// other name (including IP address) in the leaf certificate.
 	CANotAuthorizedForThisName
 	// TooManyIntermediates results when a path length constraint is
 	// violated.
@@ -30,6 +32,28 @@ const (
 	// NameMismatch results when the subject name of a parent certificate
 	// does not match the issuer name in the child.
 	NameMismatch
+	// NameConstraintsWithoutSANs results when a leaf certificate doesn't
+	// contain a Subject Alternative Name extension, but a CA certificate
+	// contains name constraints, and the Common Name can be interpreted as
+	// a hostname.
+	//
+	// You can avoid this error by setting the experimental GODEBUG environment
+	// variable to "x509ignoreCN=1", disabling Common Name matching entirely.
+	// This behavior might become the default in the future.
+	NameConstraintsWithoutSANs
+	// UnconstrainedName results when a CA certificate contains permitted
+	// name constraints, but leaf certificate contains a name of an
+	// unsupported or unconstrained type.
+	UnconstrainedName
+	// TooManyConstraints results when the number of comparison operations
+	// needed to check a certificate exceeds the limit set by
+	// VerifyOptions.MaxConstraintComparisions. This limit exists to
+	// prevent pathological certificates can consuming excessive amounts of
+	// CPU time to verify.
+	TooManyConstraints
+	// CANotAuthorizedForExtKeyUsage results when an intermediate or root
+	// certificate does not permit a requested extended key usage.
+	CANotAuthorizedForExtKeyUsage
 )
 
 // CertificateInvalidError results when an odd error occurs. Users of this
@@ -37,6 +61,7 @@ const (
 type CertificateInvalidError struct {
 	Cert   *Certificate
 	Reason InvalidReason
+	Detail string
 }
 
 func (e CertificateInvalidError) Error() string
@@ -80,7 +105,13 @@ type VerifyOptions struct {
 	CurrentTime   time.Time
 
 	KeyUsages []ExtKeyUsage
+
+	MaxConstraintComparisions int
 }
+
+// rfc2821Mailbox represents a “mailbox” (which is an email address to most
+// people) by breaking it into the “local” (i.e. before the '@') and “domain”
+// parts.
 
 // Verify attempts to verify c by building one or more chains from c to a
 // certificate in opts.Roots, using certificates in opts.Intermediates if
@@ -90,8 +121,23 @@ type VerifyOptions struct {
 // If opts.Roots is nil and system roots are unavailable the returned error
 // will be of type SystemRootsError.
 //
-// WARNING: this doesn't do any revocation checking.
+// Name constraints in the intermediates will be applied to all names claimed
+// in the chain, not just opts.DNSName. Thus it is invalid for a leaf to claim
+// example.com if an intermediate doesn't permit it, even if example.com is not
+// the name being validated. Note that DirectoryName constraints are not
+// supported.
+//
+// Extended Key Usage values are enforced down a chain, so an intermediate or
+// root that enumerates EKUs prevents a leaf from asserting an EKU not in that
+// list.
+//
+// WARNING: this function doesn't do any revocation checking.
 func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)
+
+// maxChainSignatureChecks is the maximum number of CheckSignatureFrom calls
+// that an invocation of buildChains will (tranistively) make. Most chains are
+// less than 15 certificates long, so this leaves space for multiple chains and
+// for failed checks due to different intermediates having the same Subject.
 
 // VerifyHostname returns nil if c is a valid certificate for the named host.
 // Otherwise it returns an error describing the mismatch.

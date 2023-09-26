@@ -84,8 +84,6 @@ const (
 	AttrDescription    Attr = 0x5A
 )
 
-func (a Attr) String() string
-
 func (a Attr) GoString() string
 
 // A format is a DWARF data encoding format.
@@ -158,8 +156,6 @@ const (
 	TagRvalueReferenceType Tag = 0x42
 	TagTemplateAlias       Tag = 0x43
 )
-
-func (t Tag) String() string
 
 func (t Tag) GoString() string
 

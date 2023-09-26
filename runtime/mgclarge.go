@@ -9,7 +9,7 @@
 // Large spans are the subject of this file. Spans consisting of less than
 // _MaxMHeapLists are held in lists of like sized spans. Larger spans
 // are held in a treap. See https://en.wikipedia.org/wiki/Treap or
-// http://faculty.washington.edu/aragon/pubs/rst89.pdf for an overview.
+// https://faculty.washington.edu/aragon/pubs/rst89.pdf for an overview.
 // sema.go also holds an implementation of a treap.
 //
 // Each treapNode holds a single span. The treap is sorted by page size

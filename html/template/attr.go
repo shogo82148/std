@@ -9,6 +9,6 @@ package template
 // other content, or affects the contents, idempotency, or credentials of a
 // network message, then the value in this map is contentTypeUnsafe.
 // This map is derived from HTML5, specifically
-// http://www.w3.org/TR/html5/Overview.html#attributes-1
+// https://www.w3.org/TR/html5/Overview.html#attributes-1
 // as well as "%URI"-typed attributes from
-// http://www.w3.org/TR/html4/index/attributes.html
+// https://www.w3.org/TR/html4/index/attributes.html

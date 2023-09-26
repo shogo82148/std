@@ -20,15 +20,13 @@ type Conn struct {
 	conn     net.Conn
 	isClient bool
 
+	handshakeStatus uint32
+
 	handshakeMutex sync.Mutex
-
-	handshakeCond *sync.Cond
-	handshakeErr  error
-	vers          uint16
-	haveVers      bool
-	config        *Config
-
-	handshakeComplete bool
+	handshakeErr   error
+	vers           uint16
+	haveVers       bool
+	config         *Config
 
 	handshakes       int
 	didResume        bool
@@ -42,6 +40,8 @@ type Conn struct {
 	serverName string
 
 	secureRenegotiation bool
+
+	ekm func(label string, context []byte, length int) ([]byte, error)
 
 	clientFinishedIsFirst bool
 
@@ -64,6 +64,8 @@ type Conn struct {
 
 	bytesSent   int64
 	packetsSent int64
+
+	warnCount int
 
 	activeCall int32
 

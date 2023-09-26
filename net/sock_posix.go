@@ -6,6 +6,3 @@
 // +build darwin dragonfly freebsd linux nacl netbsd openbsd solaris windows
 
 package net
-
-// A sockaddr represents a TCP, UDP, IP or Unix network endpoint
-// address that can be converted into a syscall.Sockaddr.

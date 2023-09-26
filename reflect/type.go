@@ -23,7 +23,8 @@ package reflect
 // calling kind-specific methods. Calling a method
 // inappropriate to the kind of type causes a run-time panic.
 //
-// Type values are comparable, such as with the == operator.
+// Type values are comparable, such as with the == operator,
+// so they can be used as map keys.
 // Two Type values are equal if they represent identical types.
 type Type interface {
 	Align() int
@@ -131,9 +132,7 @@ const (
 //	runtime/type.go
 
 // rtype is the common implementation of most values.
-// It is embedded in other, public struct types, but always
-// with a unique tag like `reflect:"array"` or `reflect:"ptr"`
-// so that code cannot convert from, say, *arrayType to *ptrType.
+// It is embedded in other struct types.
 //
 // rtype must be kept in sync with ../runtime/type.go:/^type._type.
 
@@ -141,10 +140,10 @@ const (
 
 // Method on non-interface type
 
-// uncommonType is present only for types with names or methods
-// (if T is a named type, the uncommonTypes for T and *T have methods).
+// uncommonType is present only for defined types or types with methods
+// (if T is a defined type, the uncommonTypes for T and *T have methods).
 // Using a pointer to this struct reduces the overall size required
-// to describe an unnamed type with no methods.
+// to describe a non-defined type with no methods.
 
 // ChanDir represents a channel type's direction.
 type ChanDir int
@@ -307,7 +306,7 @@ func MapOf(key, elem Type) Type
 // true.
 func FuncOf(in, out []Type, variadic bool) Type
 
-// Make sure these routines stay in sync with ../../runtime/hashmap.go!
+// Make sure these routines stay in sync with ../../runtime/map.go!
 // These types exist only for GC, so we only fill out GC relevant info.
 // Currently, that's just size and the GC program. We also fill in string
 // for possible debugging use.
@@ -324,8 +323,9 @@ func SliceOf(t Type) Type
 // The Offset and Index fields are ignored and computed as they would be
 // by the compiler.
 //
-// StructOf currently does not generate wrapper methods for embedded fields.
-// This limitation may be lifted in a future version.
+// StructOf currently does not generate wrapper methods for embedded
+// fields and panics if passed unexported StructFields.
+// These limitations may be lifted in a future version.
 func StructOf(fields []StructField) Type
 
 // See cmd/compile/internal/gc/reflect.go for derivation of constant.

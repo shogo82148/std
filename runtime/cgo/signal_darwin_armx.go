@@ -8,8 +8,4 @@
 
 package cgo
 
-//go:cgo_import_static x_cgo_panicmem
-//go:linkname x_cgo_panicmem x_cgo_panicmem
-
-// use a pointer to avoid relocation of external symbol in __TEXT
-// make linker happy
+import _ "github.com/shogo82148/std/unsafe"

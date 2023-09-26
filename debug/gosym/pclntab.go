@@ -41,6 +41,7 @@ type LineTable struct {
 	filetab  []byte
 	nfiletab uint32
 	fileMap  map[string]uint32
+	strings  map[uint32]string
 }
 
 // NOTE(rsc): This is wrong for GOARCH=arm, which uses a quantum of 4,

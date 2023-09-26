@@ -3,12 +3,12 @@
 // license that can be found in the LICENSE file.
 
 // Package crc32 implements the 32-bit cyclic redundancy check, or CRC-32,
-// checksum. See http://en.wikipedia.org/wiki/Cyclic_redundancy_check for
+// checksum. See https://en.wikipedia.org/wiki/Cyclic_redundancy_check for
 // information.
 //
 // Polynomials are represented in LSB-first form also known as reversed representation.
 //
-// See http://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks#Reversed_representations_and_reciprocal_polynomials
+// See https://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks#Reversed_representations_and_reciprocal_polynomials
 // for information.
 package crc32
 
@@ -27,12 +27,12 @@ const (
 
 	// Castagnoli's polynomial, used in iSCSI.
 	// Has better error detection characteristics than IEEE.
-	// http://dx.doi.org/10.1109/26.231911
+	// https://dx.doi.org/10.1109/26.231911
 	Castagnoli = 0x82f63b78
 
 	// Koopman's polynomial.
 	// Also has better error detection characteristics than IEEE.
-	// http://dx.doi.org/10.1109/DSN.2002.1028931
+	// https://dx.doi.org/10.1109/DSN.2002.1028931
 	Koopman = 0xeb31d82e
 )
 
@@ -55,14 +55,18 @@ func MakeTable(poly uint32) *Table
 
 // digest represents the partial evaluation of a checksum.
 
-// New creates a new hash.Hash32 computing the CRC-32 checksum
-// using the polynomial represented by the Table.
-// Its Sum method will lay the value out in big-endian byte order.
+// New creates a new hash.Hash32 computing the CRC-32 checksum using the
+// polynomial represented by the Table. Its Sum method will lay the
+// value out in big-endian byte order. The returned Hash32 also
+// implements encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
+// marshal and unmarshal the internal state of the hash.
 func New(tab *Table) hash.Hash32
 
-// NewIEEE creates a new hash.Hash32 computing the CRC-32 checksum
-// using the IEEE polynomial.
-// Its Sum method will lay the value out in big-endian byte order.
+// NewIEEE creates a new hash.Hash32 computing the CRC-32 checksum using
+// the IEEE polynomial. Its Sum method will lay the value out in
+// big-endian byte order. The returned Hash32 also implements
+// encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to marshal
+// and unmarshal the internal state of the hash.
 func NewIEEE() hash.Hash32
 
 // Update returns the result of adding the bytes in p to the crc.

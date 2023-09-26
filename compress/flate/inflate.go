@@ -9,7 +9,6 @@ package flate
 
 import (
 	"github.com/shogo82148/std/io"
-	mathbits "math/bits"
 )
 
 // Initialize the fixedHuffmanDecoder only once upon first use.

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// HTTP client implementation. See RFC 2616.
+// HTTP client implementation. See RFC 7230 through 7235.
 //
 // This is the low-level Transport implementation of RoundTripper.
 // The high-level interface is in client.go.
@@ -42,6 +42,10 @@ var DefaultTransport RoundTripper = &Transport{
 // MaxIdleConnsPerHost.
 const DefaultMaxIdleConnsPerHost = 2
 
+// connsPerHostClosedCh is a closed channel used by MaxConnsPerHost
+// for the property that receives from a closed channel return the
+// zero value.
+
 // Transport is an implementation of RoundTripper that supports HTTP,
 // HTTPS, and HTTP proxies (for either HTTP or HTTPS with CONNECT).
 //
@@ -61,6 +65,22 @@ const DefaultMaxIdleConnsPerHost = 2
 // and how the Transport is configured. The DefaultTransport supports HTTP/2.
 // To explicitly enable HTTP/2 on a transport, use golang.org/x/net/http2
 // and call ConfigureTransport. See the package docs for more about HTTP/2.
+//
+// The Transport will send CONNECT requests to a proxy for its own use
+// when processing HTTPS requests, but Transport should generally not
+// be used to send a CONNECT request. That is, the Request passed to
+// the RoundTrip method should not have a Method of "CONNECT", as Go's
+// HTTP/1.x implementation does not support full-duplex request bodies
+// being written while the response body is streamed. Go's HTTP/2
+// implementation does support full duplex, but many CONNECT proxies speak
+// HTTP/1.x.
+//
+// Responses with status codes in the 1xx range are either handled
+// automatically (100 expect-continue) or ignored. The one
+// exception is HTTP status code 101 (Switching Protocols), which is
+// considered a terminal status and returned by RoundTrip. To see the
+// ignored 1xx responses, use the httptrace trace package's
+// ClientTrace.Got1xxResponse.
 type Transport struct {
 	idleMu     sync.Mutex
 	wantIdle   bool
@@ -73,6 +93,10 @@ type Transport struct {
 
 	altMu    sync.Mutex
 	altProto atomic.Value
+
+	connCountMu          sync.Mutex
+	connPerHostCount     map[connectMethodKey]int
+	connPerHostAvailable map[connectMethodKey]chan struct{}
 
 	Proxy func(*Request) (*url.URL, error)
 
@@ -94,6 +118,8 @@ type Transport struct {
 
 	MaxIdleConnsPerHost int
 
+	MaxConnsPerHost int
+
 	IdleConnTimeout time.Duration
 
 	ResponseHeaderTimeout time.Duration
@@ -107,8 +133,15 @@ type Transport struct {
 	MaxResponseHeaderBytes int64
 
 	nextProtoOnce sync.Once
-	h2transport   *http2Transport
+	h2transport   h2Transport
 }
+
+// h2Transport is the interface we expect to be able to call from
+// net/http against an *http2.Transport that's either bundled into
+// h2_bundle.go or supplied by the user via x/net/http2.
+//
+// We name it with the "h2" prefix to stay out of the "http2" prefix
+// namespace used by x/tools/cmd/bundle for h2_bundle.go.
 
 // ProxyFromEnvironment returns the URL of the proxy to use for a
 // given request, as indicated by the environment variables
@@ -135,12 +168,6 @@ func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 // transportRequest is a wrapper around a *Request that adds
 // optional extra headers to write and stores any error to return
 // from roundTrip.
-
-// RoundTrip implements the RoundTripper interface.
-//
-// For higher-level HTTP client support (such as handling of cookies
-// and redirects), see Get, Post, and the Client type.
-func (t *Transport) RoundTrip(req *Request) (*Response, error)
 
 // ErrSkipAltProtocol is a sentinel error value defined by Transport.RegisterProtocol.
 var ErrSkipAltProtocol = errors.New("net/http: skip alternate protocol")
@@ -171,10 +198,6 @@ func (t *Transport) CloseIdleConnections()
 // requests.
 func (t *Transport) CancelRequest(req *Request)
 
-// envOnce looks up an environment variable (optionally by multiple
-// names) once. It mitigates expensive lookups on some platforms
-// (e.g. Windows).
-
 // error values for debugging and testing, not seen by users.
 
 // transportReadFromServerError is used by Transport.readLoop when the
@@ -185,6 +208,10 @@ func (t *Transport) CancelRequest(req *Request)
 // ECONNRESET sort of thing which varies by platform. But it might be
 // the user's custom net.Conn.Read error too, so we carry it along for
 // them to return from Transport.RoundTrip.
+
+// connCloseListener wraps a connection, the transport that dialed it
+// and the connected-to host key so the host connection count can be
+// transparently decremented by whatever closes the embedded connection.
 
 // persistConnWriter is the io.Writer written to by pc.bw.
 // It accumulates the number of bytes written to the underlying conn,
@@ -198,16 +225,16 @@ func (t *Transport) CancelRequest(req *Request)
 //
 // A connect method may be of the following types:
 //
-// Cache key form                    Description
-// -----------------                 -------------------------
-// |http|foo.com                     http directly to server, no proxy
-// |https|foo.com                    https directly to server, no proxy
-// http://proxy.com|https|foo.com    http to proxy, then CONNECT to foo.com
-// http://proxy.com|http             http to proxy, http to anywhere after that
-// socks5://proxy.com|http|foo.com   socks5 to proxy, then http to foo.com
-// socks5://proxy.com|https|foo.com  socks5 to proxy, then https to foo.com
-//
-// Note: no support to https to the proxy yet.
+//	Cache key form                    Description
+//	-----------------                 -------------------------
+//	|http|foo.com                     http directly to server, no proxy
+//	|https|foo.com                    https directly to server, no proxy
+//	http://proxy.com|https|foo.com    http to proxy, then CONNECT to foo.com
+//	http://proxy.com|http             http to proxy, http to anywhere after that
+//	socks5://proxy.com|http|foo.com   socks5 to proxy, then http to foo.com
+//	socks5://proxy.com|https|foo.com  socks5 to proxy, then https to foo.com
+//	https://proxy.com|https|foo.com   https to proxy, then CONNECT to foo.com
+//	https://proxy.com|http            https to proxy, http to anywhere after that
 //
 
 // connectMethodKey is the map key version of connectMethod, with a
@@ -218,6 +245,10 @@ func (t *Transport) CancelRequest(req *Request)
 // (but may be used for non-keep-alive requests as well)
 
 // nothingWrittenError wraps a write errors which ended up writing zero bytes.
+
+// maxWriteWaitBeforeConnReuse is how long the a Transport RoundTrip
+// will wait to see the Request's Body.Write result after getting a
+// response from the server. See comments in (*persistConn).wroteRequest.
 
 // responseAndError is how the goroutine reading from an HTTP/1 server
 // communicates with the goroutine doing the RoundTrip.

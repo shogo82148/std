@@ -27,8 +27,6 @@ import (
 
 // exprInfo stores information about an untyped expression.
 
-// funcInfo stores the information required for type-checking a function.
-
 // A context represents the context within which an object is type-checked.
 
 // An importKey identifies an imported package by import path and source directory
@@ -51,14 +49,14 @@ type Checker struct {
 	files            []*ast.File
 	unusedDotImports map[*Scope]map[*Package]token.Pos
 
-	firstErr error
-	methods  map[string][]*Func
-	untyped  map[ast.Expr]exprInfo
-	funcs    []funcInfo
-	delayed  []func()
+	firstErr   error
+	methods    map[*TypeName][]*Func
+	interfaces map[*TypeName]*ifaceInfo
+	untyped    map[ast.Expr]exprInfo
+	delayed    []func()
+	objPath    []Object
 
 	context
-	pos token.Pos
 
 	indent int
 }

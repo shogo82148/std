@@ -35,3 +35,8 @@
 //
 // For complete documentation, run "go help doc".
 package main
+
+// dotPaths lists all the dotted paths legal on Unix-like and
+// Windows-like file systems. We check them all, as the chance
+// of error is minute and even on Windows people will use ./
+// sometimes.

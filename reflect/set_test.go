@@ -5,11 +5,8 @@
 package reflect_test
 
 import (
-	"bytes"
 	. "reflect"
 )
-
-type MyBuffer bytes.Buffer
 
 type IntPtr *int
 type IntPtr1 *int

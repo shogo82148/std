@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// HTTP client. See RFC 2616.
+// HTTP client. See RFC 7230 through 7235.
 //
 // This is the high-level Client interface.
 // The low-level implementation is in transport.go.
@@ -78,7 +78,9 @@ type RoundTripper interface {
 //
 // An error is returned if there were too many redirects or if there
 // was an HTTP protocol error. A non-2xx response doesn't cause an
-// error.
+// error. Any returned error will be of type *url.Error. The url.Error
+// value's Timeout method will report true if request timed out or was
+// canceled.
 //
 // When err is nil, resp always contains a non-nil resp.Body.
 // Caller should close resp.Body when done reading from it.
@@ -101,7 +103,9 @@ func Get(url string) (resp *Response, err error)
 //
 // An error is returned if the Client's CheckRedirect function fails
 // or if there was an HTTP protocol error. A non-2xx response doesn't
-// cause an error.
+// cause an error. Any returned error will be of type *url.Error. The
+// url.Error value's Timeout method will report true if request timed
+// out or was canceled.
 //
 // When err is nil, resp always contains a non-nil resp.Body.
 // Caller should close resp.Body when done reading from it.
@@ -148,6 +152,10 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 // provided that the Request.GetBody function is defined.
 // The NewRequest function automatically sets GetBody for common
 // standard library body types.
+//
+// Any returned error will be of type *url.Error. The url.Error
+// value's Timeout method will report true if request timed out or was
+// canceled.
 func (c *Client) Do(req *Request) (*Response, error)
 
 // Post issues a POST to the specified URL.
@@ -163,7 +171,7 @@ func (c *Client) Do(req *Request) (*Response, error)
 //
 // See the Client.Do method documentation for details on how redirects
 // are handled.
-func Post(url string, contentType string, body io.Reader) (resp *Response, err error)
+func Post(url, contentType string, body io.Reader) (resp *Response, err error)
 
 // Post issues a POST to the specified URL.
 //
@@ -176,7 +184,7 @@ func Post(url string, contentType string, body io.Reader) (resp *Response, err e
 //
 // See the Client.Do method documentation for details on how redirects
 // are handled.
-func (c *Client) Post(url string, contentType string, body io.Reader) (resp *Response, err error)
+func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, err error)
 
 // PostForm issues a POST to the specified URL, with data's keys and
 // values URL-encoded as the request body.
@@ -197,7 +205,7 @@ func PostForm(url string, data url.Values) (resp *Response, err error)
 // with data's keys and values URL-encoded as the request body.
 //
 // The Content-Type header is set to application/x-www-form-urlencoded.
-// To set other headers, use NewRequest and DefaultClient.Do.
+// To set other headers, use NewRequest and Client.Do.
 //
 // When err is nil, resp always contains a non-nil resp.Body.
 // Caller should close resp.Body when done reading from it.

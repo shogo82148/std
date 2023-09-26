@@ -11,8 +11,8 @@ import (
 // ErrNotFound is the error resulting if a path search failed to find an executable file.
 var ErrNotFound = errors.New("executable file not found in %PATH%")
 
-// LookPath searches for an executable binary named file
-// in the directories named by the PATH environment variable.
+// LookPath searches for an executable named file in the
+// directories named by the PATH environment variable.
 // If file contains a slash, it is tried directly and the PATH is not consulted.
 // LookPath also uses PATHEXT environment variable to match
 // a suitable candidate.

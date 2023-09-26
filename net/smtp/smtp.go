@@ -128,5 +128,9 @@ func (c *Client) Extension(ext string) (bool, string)
 // transaction.
 func (c *Client) Reset() error
 
+// Noop sends the NOOP command to the server. It does nothing but check
+// that the connection to the server is okay.
+func (c *Client) Noop() error
+
 // Quit sends the QUIT command and closes the connection to the server.
 func (c *Client) Quit() error

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || linux || nacl || netbsd || openbsd || solaris
-// +build darwin dragonfly freebsd linux nacl netbsd openbsd solaris
+//go:build darwin || dragonfly || freebsd || (js && wasm) || linux || nacl || netbsd || openbsd || solaris
+// +build darwin dragonfly freebsd js,wasm linux nacl netbsd openbsd solaris
 
 package os
 
@@ -14,12 +14,17 @@ package os
 
 // Fd returns the integer Unix file descriptor referencing the open file.
 // The file descriptor is valid only until f.Close is called or f is garbage collected.
+// On Unix systems this will cause the SetDeadline methods to stop working.
 func (f *File) Fd() uintptr
 
 // NewFile returns a new File with the given file descriptor and
 // name. The returned value will be nil if fd is not a valid file
-// descriptor.
+// descriptor. On Unix systems, if the file descriptor is in
+// non-blocking mode, NewFile will attempt to return a pollable File
+// (one for which the SetDeadline methods work).
 func NewFile(fd uintptr, name string) *File
+
+// newFileKind describes the kind of file to newFile.
 
 // Auxiliary information if the File describes a directory
 
@@ -27,15 +32,9 @@ func NewFile(fd uintptr, name string) *File
 // On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
 const DevNull = "/dev/null"
 
-// OpenFile is the generalized open call; most users will use Open
-// or Create instead. It opens the named file with specified flag
-// (O_RDONLY etc.) and perm, (0666 etc.) if applicable. If successful,
-// methods on the returned File can be used for I/O.
-// If there is an error, it will be of type *PathError.
-func OpenFile(name string, flag int, perm FileMode) (*File, error)
-
 // Close closes the File, rendering it unusable for I/O.
-// It returns an error, if any.
+// On files that support SetDeadline, any pending I/O operations will
+// be canceled and return immediately with an error.
 func (f *File) Close() error
 
 // Truncate changes the size of the named file.
@@ -43,7 +42,7 @@ func (f *File) Close() error
 // If there is an error, it will be of type *PathError.
 func Truncate(name string, size int64) error
 
-// Remove removes the named file or directory.
+// Remove removes the named file or (empty) directory.
 // If there is an error, it will be of type *PathError.
 func Remove(name string) error
 

@@ -9,3 +9,7 @@ package runtime
 
 // crashing is the number of m's we have waited for when implementing
 // GOTRACEBACK=crash when a signal is received.
+
+// testSigtrap is used by the runtime tests. If non-nil, it is called
+// on SIGTRAP. If it returns true, the normal behavior on SIGTRAP is
+// suppressed.

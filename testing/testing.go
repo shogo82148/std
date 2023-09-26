@@ -8,8 +8,8 @@
 //
 //	func TestXxx(*testing.T)
 //
-// where Xxx can be any alphanumeric string (but the first letter must not be in
-// [a-z]) and serves to identify the test routine.
+// where Xxx does not start with a lowercase letter. The function name
+// serves to identify the test routine.
 //
 // Within these functions, use the Error, Fail or related methods to signal failure.
 //
@@ -39,7 +39,7 @@
 // its -bench flag is provided. Benchmarks are run sequentially.
 //
 // For a description of the testing flags, see
-// https://golang.org/cmd/go/#hdr-Description_of_testing_flags.
+// https://golang.org/cmd/go/#hdr-Testing_flags
 //
 // A sample benchmark function looks like this:
 //
@@ -186,6 +186,9 @@
 //	    }
 //	}
 //
+// The race detector kills the program if it exceeds 8192 concurrent goroutines,
+// so use care when running parallel tests with the -race flag set.
+//
 // Run does not return until parallel subtests have completed, providing a way
 // to clean up after a group of parallel tests:
 //
@@ -222,6 +225,14 @@
 //		os.Exit(m.Run())
 //	}
 package testing
+
+import (
+	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/time"
+)
+
+// The maximum number of stack frames to go through when skipping helper functions for
+// the purpose of decorating log messages.
 
 // common holds the elements common between T and B and
 // captures common methods such as Errorf.
@@ -290,9 +301,9 @@ type InternalTest struct {
 	F    func(*T)
 }
 
-// Run runs f as a subtest of t called name. It reports whether f succeeded. Run
-// runs f in a separate goroutine and will block until all its parallel subtests
-// have completed.
+// Run runs f as a subtest of t called name. It runs f in a separate goroutine
+// and blocks until f returns or calls t.Parallel to become a parallel test.
+// Run reports whether f succeeded (or at least did not fail before calling t.Parallel).
 //
 // Run may be called simultaneously from multiple goroutines, but all such calls
 // must return before the outer test function for t returns.
@@ -318,6 +329,11 @@ type M struct {
 	tests      []InternalTest
 	benchmarks []InternalBenchmark
 	examples   []InternalExample
+
+	timer     *time.Timer
+	afterOnce sync.Once
+
+	numRun int
 }
 
 // testDeps is an internal interface of functionality that is

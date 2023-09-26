@@ -52,6 +52,16 @@ package runtime
 // in the GC, we'd need to allocate the goroutine structs from an
 // alternate arena. Using guintptr doesn't make that problem any worse.
 
+// muintptr is a *m that is not tracked by the garbage collector.
+//
+// Because we do free Ms, there are some additional constrains on
+// muintptrs:
+//
+// 1. Never hold an muintptr locally across a safe point.
+//
+// 2. Any muintptr in the heap must be owned by the M itself so it can
+//    ensure it is not in use when the last true *m is released.
+
 // sudog represents a g in a wait list, such as for sending/receiving
 // on a channel.
 //
@@ -69,13 +79,7 @@ package runtime
 // The bounds of the stack are exactly [lo, hi),
 // with no implicit data structures on either side.
 
-// The m.locked word holds two pieces of state counting active calls to LockOSThread/lockOSThread.
-// The low bit (LockExternal) is a boolean reporting whether any LockOSThread call is active.
-// External locks are not recursive; a second lock is silently ignored.
-// The upper bits of m.locked record the nesting depth of calls to lockOSThread
-// (counting up by LockInternal), popped by unlockOSThread (counting down by LockInternal).
-// Internal locks can be recursive. For instance, a lock for cgo can occur while the main
-// goroutine is holding the lock during the initialization phase.
+// Values for the flags field of a sigTabT.
 
 // Layout of in-memory per-function information prepared by linker
 // See https://golang.org/s/go12symtab.
@@ -93,12 +97,28 @@ package runtime
 // startup_random_data holds random bytes initialized at startup. These come from
 // the ELF AT_RANDOM auxiliary vector (vdso_linux_amd64.go or os_linux_386.go).
 
-// deferred subroutine calls
+// A _defer holds an entry on the list of deferred calls.
+// If you add a field here, add code to clear it in freedefer.
 
-// panics
+// A _panic holds information about an active panic.
+//
+// This is marked go:notinheap because _panic values must only ever
+// live on the stack.
+//
+// The argp and link fields are stack pointers, but don't need special
+// handling during stack growth: because they are pointer-typed and
+// _panic values only live on the stack, regular stack pointer
+// adjustment takes care of them.
+//
+//go:notinheap
 
 // stack traces
 
+// ancestorInfo records details of where a goroutine was started.
+
 // The maximum number of frames we print for a traceback
+
+// A waitReason explains why a goroutine has been stopped.
+// See gopark. Do not re-use waitReasons, add new ones.
 
 // Set by the linker so the runtime can determine the buildmode.

@@ -7,6 +7,7 @@ package zip
 import (
 	"io"
 	"os"
+	"time"
 )
 
 type ZipTest struct {
@@ -18,9 +19,11 @@ type ZipTest struct {
 }
 
 type ZipTestFile struct {
-	Name  string
-	Mode  os.FileMode
-	Mtime string
+	Name     string
+	Mode     os.FileMode
+	NonUTF8  bool
+	ModTime  time.Time
+	Modified time.Time
 
 	ContentErr error
 	Content    []byte

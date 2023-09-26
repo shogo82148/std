@@ -8,7 +8,7 @@ package reflect
 
 // makeFuncImpl is the closure value implementing the function
 // returned by MakeFunc.
-// The first two words of this type must be kept in sync with
+// The first three words of this type must be kept in sync with
 // methodValue and runtime.reflectMethodValue.
 // Any changes should be reflected in all three.
 
@@ -35,6 +35,6 @@ package reflect
 // of how to use MakeFunc to build a swap function for different types.
 func MakeFunc(typ Type, fn func(args []Value) (results []Value)) Value
 
-// The first two words of this type must be kept in sync with
+// The first 3 words of this type must be kept in sync with
 // makeFuncImpl and runtime.reflectMethodValue.
 // Any changes should be reflected in all three.

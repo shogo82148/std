@@ -2,11 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !plan9 && !solaris && !windows && !nacl && (!linux || !amd64)
+//go:build !plan9 && !solaris && !windows && !nacl && (!linux || !amd64) && (!linux || !arm64) && !js && !darwin
 // +build !plan9
 // +build !solaris
 // +build !windows
 // +build !nacl
 // +build !linux !amd64
+// +build !linux !arm64
+// +build !js
+// +build !darwin
 
 package runtime

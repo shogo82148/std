@@ -6,8 +6,8 @@
 // Those systems are also expected to have nanotime subtract startNano,
 // so that time.now and nanotime return the same monotonic clock readings.
 
-//go:build (darwin && amd64) || (darwin && 386) || windows
-// +build darwin,amd64 darwin,386 windows
+//go:build windows
+// +build windows
 
 package runtime
 

@@ -62,6 +62,8 @@ func (g *CommentGroup) Text() string
 // A Field represents a Field declaration list in a struct type,
 // a method list in an interface type, or a parameter/result declaration
 // in a signature.
+// Field.Names is nil for unnamed parameters (parameter lists which only contain types)
+// and embedded struct fields. In the latter case, the field name is the type name.
 type Field struct {
 	Doc     *CommentGroup
 	Names   []*Ident
@@ -85,7 +87,7 @@ func (f *FieldList) Pos() token.Pos
 
 func (f *FieldList) End() token.Pos
 
-// NumFields returns the number of (named and anonymous fields) in a FieldList.
+// NumFields returns the number of parameters or struct fields represented by a FieldList.
 func (f *FieldList) NumFields() int
 
 // An expression is represented by a tree consisting of one
@@ -129,10 +131,11 @@ type (
 
 	// A CompositeLit node represents a composite literal.
 	CompositeLit struct {
-		Type   Expr
-		Lbrace token.Pos
-		Elts   []Expr
-		Rbrace token.Pos
+		Type       Expr
+		Lbrace     token.Pos
+		Elts       []Expr
+		Rbrace     token.Pos
+		Incomplete bool
 	}
 
 	// A ParenExpr node represents a parenthesized expression.
@@ -221,8 +224,8 @@ type (
 	}
 )
 
-// The direction of a channel type is indicated by one
-// of the following constants.
+// The direction of a channel type is indicated by a bit
+// mask including one or both of the following constants.
 type ChanDir int
 
 const (

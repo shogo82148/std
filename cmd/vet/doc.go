@@ -8,25 +8,17 @@ calls whose arguments do not align with the format string. Vet uses heuristics
 that do not guarantee all reports are genuine problems, but it can find errors
 not caught by the compilers.
 
-It can be invoked three ways:
+Vet is normally invoked using the go command by running "go vet":
 
-By package, from the go tool:
+	go vet
+
+vets the package in the current directory.
 
 	go vet package/path/name
 
 vets the package whose path is provided.
 
-By files:
-
-	go tool vet source/directory/*.go
-
-vets the files named, all of which must be in the same package.
-
-By directory:
-
-	go tool vet source/directory
-
-recursively descends the directory, vetting each package it finds.
+Use "go help packages" to see other ways of specifying which packages to vet.
 
 Vet's exit code is 2 for erroneous invocation of the tool, 1 if a
 problem was reported, and 0 otherwise. Note that the tool does not
@@ -129,24 +121,17 @@ Comparisons between functions and nil.
 
 Flag: -printf
 
-Suspicious calls to functions in the Printf family, including any functions
-with these names, disregarding case:
+Suspicious calls to fmt.Print, fmt.Printf, and related functions.
+The check applies to known functions (for example, those in package fmt)
+as well as any detected wrappers of known functions.
 
-	Print Printf Println
-	Fprint Fprintf Fprintln
-	Sprint Sprintf Sprintln
-	Error Errorf
-	Fatal Fatalf
-	Log Logf
-	Panic Panicf Panicln
-
-The -printfuncs flag can be used to redefine this list.
-If the function name ends with an 'f', the function is assumed to take
-a format descriptor string in the manner of fmt.Printf. If not, vet
-complains about arguments that look like format descriptor strings.
-
-It also checks for errors such as using a Writer as the first argument of
-Printf.
+The -printfuncs flag specifies a comma-separated list of names of
+additional known formatting functions. Each name can be of the form
+pkg.Name or pkg.Type.Name, where pkg is a complete import path,
+or else can be a case-insensitive unqualified identifier like "errorf".
+If a listed name ends in f, the function is assumed to be Printf-like,
+taking a format string before the argument list. Otherwise it is
+assumed to be Print-like, taking a list of arguments with no format string.
 
 # Range loop variables
 
@@ -219,5 +204,19 @@ These flags configure the behavior of vet:
 		For more information, see the discussion of the -printf flag.
 	-shadowstrict
 		Whether to be strict about shadowing; can be noisy.
+
+# Using vet directly
+
+For testing and debugging vet can be run directly by invoking
+"go tool vet" or just running the binary. Run this way, vet might not
+have up to date information for imported packages.
+
+	go tool vet source/directory/*.go
+
+vets the files named, all of which must be in the same package.
+
+	go tool vet source/directory
+
+recursively descends the directory, vetting each package it finds.
 */
 package main

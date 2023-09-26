@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || nacl || netbsd || openbsd || solaris
-// +build darwin dragonfly nacl netbsd openbsd solaris
+//go:build darwin || dragonfly || (js && wasm) || nacl || solaris
+// +build darwin dragonfly js,wasm nacl solaris
 
 package os
 

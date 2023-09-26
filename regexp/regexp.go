@@ -18,7 +18,7 @@
 // implementations of regular expressions.) For more information
 // about this property, see
 //
-//	http://swtch.com/~rsc/regexp/regexp1.html
+//	https://swtch.com/~rsc/regexp/regexp1.html
 //
 // or any book about automata theory.
 //
@@ -33,8 +33,8 @@
 // matches of the entire expression. Empty matches abutting a preceding
 // match are ignored. The return value is a slice containing the successive
 // return values of the corresponding non-'All' routine. These routines take
-// an extra integer argument, n; if n >= 0, the function returns at most n
-// matches/submatches.
+// an extra integer argument, n. If n >= 0, the function returns at most n
+// matches/submatches; otherwise, it returns all of them.
 //
 // If 'String' is present, the argument is a string; otherwise it is a slice
 // of bytes; return values are adjusted as appropriate.
@@ -120,7 +120,7 @@ func Compile(expr string) (*Regexp, error)
 // specifies that the match be chosen to maximize the length of the first
 // subexpression, then the second, and so on from left to right.
 // The POSIX rule is computationally prohibitive and not even well-defined.
-// See http://swtch.com/~rsc/regexp/regexp2.html#posix for details.
+// See https://swtch.com/~rsc/regexp/regexp2.html#posix for details.
 func CompilePOSIX(expr string) (*Regexp, error)
 
 // Longest makes future searches prefer the leftmost-longest match.
@@ -165,29 +165,31 @@ func (re *Regexp) SubexpNames() []string
 // literal string comprises the entire regular expression.
 func (re *Regexp) LiteralPrefix() (prefix string, complete bool)
 
-// MatchReader reports whether the Regexp matches the text read by the
-// RuneReader.
+// MatchReader reports whether the text returned by the RuneReader
+// contains any match of the regular expression re.
 func (re *Regexp) MatchReader(r io.RuneReader) bool
 
-// MatchString reports whether the Regexp matches the string s.
+// MatchString reports whether the string s
+// contains any match of the regular expression re.
 func (re *Regexp) MatchString(s string) bool
 
-// Match reports whether the Regexp matches the byte slice b.
+// Match reports whether the byte slice b
+// contains any match of the regular expression re.
 func (re *Regexp) Match(b []byte) bool
 
-// MatchReader checks whether a textual regular expression matches the text
-// read by the RuneReader. More complicated queries need to use Compile and
-// the full Regexp interface.
+// MatchReader reports whether the text returned by the RuneReader
+// contains any match of the regular expression pattern.
+// More complicated queries need to use Compile and the full Regexp interface.
 func MatchReader(pattern string, r io.RuneReader) (matched bool, err error)
 
-// MatchString checks whether a textual regular expression
-// matches a string. More complicated queries need
-// to use Compile and the full Regexp interface.
+// MatchString reports whether the string s
+// contains any match of the regular expression pattern.
+// More complicated queries need to use Compile and the full Regexp interface.
 func MatchString(pattern string, s string) (matched bool, err error)
 
-// Match checks whether a textual regular expression
-// matches a byte slice. More complicated queries need
-// to use Compile and the full Regexp interface.
+// MatchString reports whether the byte slice b
+// contains any match of the regular expression pattern.
+// More complicated queries need to use Compile and the full Regexp interface.
 func Match(pattern string, b []byte) (matched bool, err error)
 
 // ReplaceAllString returns a copy of src, replacing matches of the Regexp
@@ -224,9 +226,9 @@ func (re *Regexp) ReplaceAllFunc(src []byte, repl func([]byte) []byte) []byte
 
 // Bitmap used by func special to check whether a character needs to be escaped.
 
-// QuoteMeta returns a string that quotes all regular expression metacharacters
+// QuoteMeta returns a string that escapes all regular expression metacharacters
 // inside the argument text; the returned string is a regular expression matching
-// the literal text. For example, QuoteMeta(`[foo]`) returns `\[foo\]`.
+// the literal text.
 func QuoteMeta(s string) string
 
 // Find returns a slice holding the text of the leftmost match in b of the regular expression.

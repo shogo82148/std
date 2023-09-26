@@ -4,4 +4,4 @@
 
 package quotedprintable
 
-// From http://fr.wikipedia.org/wiki/Quoted-Printable
+// From https://fr.wikipedia.org/wiki/Quoted-Printable

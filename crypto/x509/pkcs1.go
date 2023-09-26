@@ -17,3 +17,9 @@ func ParsePKCS1PrivateKey(der []byte) (*rsa.PrivateKey, error)
 
 // MarshalPKCS1PrivateKey converts a private key to ASN.1 DER encoded form.
 func MarshalPKCS1PrivateKey(key *rsa.PrivateKey) []byte
+
+// ParsePKCS1PublicKey parses a PKCS#1 public key in ASN.1 DER form.
+func ParsePKCS1PublicKey(der []byte) (*rsa.PublicKey, error)
+
+// MarshalPKCS1PublicKey converts an RSA public key to PKCS#1, ASN.1 DER form.
+func MarshalPKCS1PublicKey(key *rsa.PublicKey) []byte

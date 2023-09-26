@@ -27,14 +27,17 @@ const IntSize = intSize
 // ParseUint is like ParseInt but for unsigned numbers.
 func ParseUint(s string, base int, bitSize int) (uint64, error)
 
-// ParseInt interprets a string s in the given base (2 to 36) and
-// returns the corresponding value i. If base == 0, the base is
-// implied by the string's prefix: base 16 for "0x", base 8 for
-// "0", and base 10 otherwise.
+// ParseInt interprets a string s in the given base (0, 2 to 36) and
+// bit size (0 to 64) and returns the corresponding value i.
+//
+// If base == 0, the base is implied by the string's prefix:
+// base 16 for "0x", base 8 for "0", and base 10 otherwise.
+// For bases 1, below 0 or above 36 an error is returned.
 //
 // The bitSize argument specifies the integer type
 // that the result must fit into. Bit sizes 0, 8, 16, 32, and 64
 // correspond to int, int8, int16, int32, and int64.
+// For a bitSize below 0 or above 64 an error is returned.
 //
 // The errors that ParseInt returns have concrete type *NumError
 // and include err.Num = s. If s is empty or contains invalid

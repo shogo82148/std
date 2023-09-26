@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || nacl || netbsd || openbsd
-// +build darwin nacl netbsd openbsd
+//go:build darwin || (js && wasm) || nacl || netbsd || openbsd
+// +build darwin js,wasm nacl netbsd openbsd
 
 package net

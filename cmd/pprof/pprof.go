@@ -17,3 +17,6 @@ package main
 // file implements driver.ObjFile using Go libraries
 // (instead of invoking GNU binutils).
 // A file represents a single executable being analyzed.
+
+// newUI will be set in readlineui.go in some platforms
+// for interactive readline functionality.

@@ -27,7 +27,7 @@
 //
 // Or to look at a 30-second CPU profile:
 //
-//	go tool pprof http://localhost:6060/debug/pprof/profile
+//	go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
 //
 // Or to look at the goroutine blocking profile, after calling
 // runtime.SetBlockProfileRate in your program:
@@ -61,6 +61,7 @@ import (
 func Cmdline(w http.ResponseWriter, r *http.Request)
 
 // Profile responds with the pprof-formatted cpu profile.
+// Profiling lasts for duration specified in seconds GET parameter, or for 30 seconds if not specified.
 // The package initialization registers it as /debug/pprof/profile.
 func Profile(w http.ResponseWriter, r *http.Request)
 

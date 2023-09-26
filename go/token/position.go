@@ -24,7 +24,9 @@ func (pos *Position) IsValid() bool
 // String returns a string in one of several forms:
 //
 //	file:line:column    valid position with file name
+//	file:line           valid position with file name but no column (column == 0)
 //	line:column         valid position without file name
+//	line                valid position without file name and no column (column == 0)
 //	file                invalid position with file name
 //	-                   invalid position without file name
 func (pos Position) String() string
@@ -109,18 +111,23 @@ func (f *File) SetLines(lines []int) bool
 // It ignores position-altering //line comments.
 func (f *File) SetLinesForContent(content []byte)
 
-// A lineInfo object describes alternative file and line number
-// information (such as provided via a //line comment in a .go
-// file) for a given file offset.
+// A lineInfo object describes alternative file, line, and column
+// number information (such as provided via a //line directive)
+// for a given file offset.
 
-// AddLineInfo adds alternative file and line number information for
-// a given file offset. The offset must be larger than the offset for
-// the previously added alternative line info and smaller than the
-// file size; otherwise the information is ignored.
-//
-// AddLineInfo is typically used to register alternative position
-// information for //line filename:line comments in source files.
+// AddLineInfo is like AddLineColumnInfo with a column = 1 argument.
+// It is here for backward-compatibility for code prior to Go 1.11.
 func (f *File) AddLineInfo(offset int, filename string, line int)
+
+// AddLineColumnInfo adds alternative file, line, and column number
+// information for a given file offset. The offset must be larger
+// than the offset for the previously added alternative line info
+// and smaller than the file size; otherwise the information is
+// ignored.
+//
+// AddLineColumnInfo is typically used to register alternative position
+// information for line directives such as //line filename:line:column.
+func (f *File) AddLineColumnInfo(offset int, filename string, line, column int)
 
 // Pos returns the Pos value for the given file offset;
 // the offset must be <= f.Size().

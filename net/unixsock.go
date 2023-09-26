@@ -96,6 +96,13 @@ type UnixListener struct {
 	unlinkOnce sync.Once
 }
 
+// SyscallConn returns a raw network connection.
+// This implements the syscall.Conn interface.
+//
+// The returned RawConn only supports calling Control. Read and
+// Write return an error.
+func (l *UnixListener) SyscallConn() (syscall.RawConn, error)
+
 // AcceptUnix accepts the next incoming call and returns the new
 // connection.
 func (l *UnixListener) AcceptUnix() (*UnixConn, error)
@@ -117,8 +124,8 @@ func (l *UnixListener) Addr() Addr
 // A zero time value disables the deadline.
 func (l *UnixListener) SetDeadline(t time.Time) error
 
-// File returns a copy of the underlying os.File, set to blocking
-// mode. It is the caller's responsibility to close f when finished.
+// File returns a copy of the underlying os.File.
+// It is the caller's responsibility to close f when finished.
 // Closing l does not affect f, and closing f does not affect l.
 //
 // The returned os.File's file descriptor is different from the

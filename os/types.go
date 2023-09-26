@@ -53,9 +53,10 @@ const (
 	ModeSetgid
 	ModeCharDevice
 	ModeSticky
+	ModeIrregular
 
 	// Mask for the type bits. For regular files, none will be set.
-	ModeType = ModeDir | ModeSymlink | ModeNamedPipe | ModeSocket | ModeDevice
+	ModeType = ModeDir | ModeSymlink | ModeNamedPipe | ModeSocket | ModeDevice | ModeIrregular
 
 	ModePerm FileMode = 0777
 )

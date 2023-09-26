@@ -110,7 +110,7 @@ func (info *Info) TypeOf(e ast.Expr) Type
 // ObjectOf returns the object denoted by the specified id,
 // or nil if not found.
 //
-// If id is an anonymous struct field, ObjectOf returns the field (*Var)
+// If id is an embedded struct field, ObjectOf returns the field (*Var)
 // it uses, not the type (*TypeName) it defines.
 //
 // Precondition: the Uses and Defs maps are populated.
@@ -153,7 +153,7 @@ func (tv TypeAndValue) Addressable() bool
 func (tv TypeAndValue) Assignable() bool
 
 // HasOk reports whether the corresponding expression may be
-// used on the lhs of a comma-ok assignment.
+// used on the rhs of a comma-ok assignment.
 func (tv TypeAndValue) HasOk() bool
 
 // An Initializer describes a package-level variable, or a list of variables in case

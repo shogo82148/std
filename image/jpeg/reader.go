@@ -4,7 +4,7 @@
 
 // Package jpeg implements a JPEG image decoder and encoder.
 //
-// JPEG is defined in ITU-T T.81: http://www.w3.org/Graphics/JPEG/itu-t81.pdf.
+// JPEG is defined in ITU-T T.81: https://www.w3.org/Graphics/JPEG/itu-t81.pdf.
 package jpeg
 
 import (
@@ -24,13 +24,14 @@ func (e UnsupportedError) Error() string
 
 // Component specification, specified in section B.2.2.
 
-// See http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/JPEG.html#Adobe
+// See https://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/JPEG.html#Adobe
 
 // unzig maps from the zig-zag ordering to the natural ordering. For example,
 // unzig[3] is the column and row of the fourth element in zig-zag order. The
 // value is 16, which means first column (16%8 == 0) and third row (16/8 == 2).
 
-// Deprecated: Reader is deprecated.
+// Deprecated: Reader is not used by the image/jpeg package and should
+// not be used by others. It is kept for compatibility.
 type Reader interface {
 	io.ByteReader
 	io.Reader

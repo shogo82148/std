@@ -26,6 +26,9 @@ import (
 )
 
 // New returns a new HMAC hash using the given hash.Hash type and key.
+// Note that unlike other hash implementations in the standard library,
+// the returned Hash does not implement encoding.BinaryMarshaler
+// or encoding.BinaryUnmarshaler.
 func New(h func() hash.Hash, key []byte) hash.Hash
 
 // Equal compares two MACs for equality without leaking timing information.

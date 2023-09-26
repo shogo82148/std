@@ -16,6 +16,7 @@ const (
 	TagUTF8String      = 12
 	TagSequence        = 16
 	TagSet             = 17
+	TagNumericString   = 18
 	TagPrintableString = 19
 	TagT61String       = 20
 	TagIA5String       = 22

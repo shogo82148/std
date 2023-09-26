@@ -5,6 +5,9 @@
 // This file implements API tests across platforms and will never have a build
 // tag.
 
+//go:build !js
+// +build !js
+
 package net
 
 // someTimeout is used just to test that net.Conn implementations

@@ -37,6 +37,9 @@ func NewReaderSize(rd io.Reader, size int) *Reader
 // NewReader returns a new Reader whose buffer has the default size.
 func NewReader(rd io.Reader) *Reader
 
+// Size returns the size of the underlying buffer in bytes.
+func (r *Reader) Size() int
+
 // Reset discards any buffered data, resets all state, and switches
 // the buffered reader to read from r.
 func (b *Reader) Reset(r io.Reader)
@@ -132,6 +135,8 @@ func (b *Reader) ReadString(delim byte) (string, error)
 
 // WriteTo implements io.WriterTo.
 // This may make multiple calls to the Read method of the underlying Reader.
+// If the underlying reader supports the WriteTo method,
+// this calls the underlying WriteTo without buffering.
 func (b *Reader) WriteTo(w io.Writer) (n int64, err error)
 
 // Writer implements buffering for an io.Writer object.
@@ -154,6 +159,9 @@ func NewWriterSize(w io.Writer, size int) *Writer
 
 // NewWriter returns a new Writer whose buffer has the default size.
 func NewWriter(w io.Writer) *Writer
+
+// Size returns the size of the underlying buffer in bytes.
+func (b *Writer) Size() int
 
 // Reset discards any unflushed buffered data, clears any error, and
 // resets b to write its output to w.
@@ -187,7 +195,9 @@ func (b *Writer) WriteRune(r rune) (size int, err error)
 // why the write is short.
 func (b *Writer) WriteString(s string) (int, error)
 
-// ReadFrom implements io.ReaderFrom.
+// ReadFrom implements io.ReaderFrom. If the underlying writer
+// supports the ReadFrom method, and b has no buffered data yet,
+// this calls the underlying ReadFrom without buffering.
 func (b *Writer) ReadFrom(r io.Reader) (n int64, err error)
 
 // ReadWriter stores pointers to a Reader and a Writer.

@@ -17,7 +17,7 @@ import (
 //
 // Comma is the field delimiter.
 //
-// If UseCRLF is true, the Writer ends each record with \r\n instead of \n.
+// If UseCRLF is true, the Writer ends each output line with \r\n instead of \n.
 type Writer struct {
 	Comma   rune
 	UseCRLF bool

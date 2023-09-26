@@ -15,6 +15,10 @@ import (
 )
 
 // Response represents the response from an HTTP request.
+//
+// The Client and Transport return Responses from servers once
+// the response headers have been received. The response body
+// is streamed on demand as the Body field is read.
 type Response struct {
 	Status     string
 	StatusCode int

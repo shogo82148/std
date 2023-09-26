@@ -13,6 +13,10 @@ import (
 
 // primeRK is the prime base used in Rabin-Karp algorithm.
 
+// Count counts the number of non-overlapping instances of substr in s.
+// If substr is an empty string, Count returns 1 + the number of Unicode code points in s.
+func Count(s, substr string) int
+
 // Contains reports whether substr is within s.
 func Contains(s, substr string) bool
 
@@ -94,8 +98,8 @@ func Split(s, sep string) []string
 func SplitAfter(s, sep string) []string
 
 // Fields splits the string s around each instance of one or more consecutive white space
-// characters, as defined by unicode.IsSpace, returning an array of substrings of s or an
-// empty list if s contains only white space.
+// characters, as defined by unicode.IsSpace, returning a slice of substrings of s or an
+// empty slice if s contains only white space.
 func Fields(s string) []string
 
 // FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
@@ -186,10 +190,14 @@ func Trim(s string, cutset string) string
 
 // TrimLeft returns a slice of the string s with all leading
 // Unicode code points contained in cutset removed.
+//
+// To remove a prefix, use TrimPrefix instead.
 func TrimLeft(s string, cutset string) string
 
 // TrimRight returns a slice of the string s, with all trailing
 // Unicode code points contained in cutset removed.
+//
+// To remove a suffix, use TrimSuffix instead.
 func TrimRight(s string, cutset string) string
 
 // TrimSpace returns a slice of the string s, with all leading
@@ -215,3 +223,6 @@ func Replace(s, old, new string, n int) string
 // EqualFold reports whether s and t, interpreted as UTF-8 strings,
 // are equal under Unicode case-folding.
 func EqualFold(s, t string) bool
+
+// Index returns the index of the first instance of substr in s, or -1 if substr is not present in s.
+func Index(s, substr string) int

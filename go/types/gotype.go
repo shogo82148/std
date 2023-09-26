@@ -57,6 +57,8 @@ Flags controlling additional output:
 		print parse trace (forces -seq)
 	-comments
 		parse comments (ignored unless -ast or -trace is provided)
+	-panic
+		panic on first error
 
 Examples:
 

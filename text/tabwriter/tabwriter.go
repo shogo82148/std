@@ -12,7 +12,6 @@
 package tabwriter
 
 import (
-	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/io"
 )
 
@@ -87,7 +86,7 @@ type Writer struct {
 	padbytes [8]byte
 	flags    uint
 
-	buf     bytes.Buffer
+	buf     []byte
 	pos     int
 	cell    cell
 	endChar byte

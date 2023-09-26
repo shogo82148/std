@@ -122,9 +122,9 @@ type Conn interface {
 //
 // Multiple goroutines may invoke methods on a PacketConn simultaneously.
 type PacketConn interface {
-	ReadFrom(b []byte) (n int, addr Addr, err error)
+	ReadFrom(p []byte) (n int, addr Addr, err error)
 
-	WriteTo(b []byte, addr Addr) (n int, err error)
+	WriteTo(p []byte, addr Addr) (n int, err error)
 
 	Close() error
 

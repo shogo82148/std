@@ -54,7 +54,13 @@ func Getppid() int
 func FindProcess(pid int) (*Process, error)
 
 // StartProcess starts a new process with the program, arguments and attributes
-// specified by name, argv and attr.
+// specified by name, argv and attr. The argv slice will become os.Args in the
+// new process, so it normally starts with the program name.
+//
+// If the calling goroutine has locked the operating system thread
+// with runtime.LockOSThread and modified any inheritable OS-level
+// thread state (for example, Linux or Plan 9 name spaces), the new
+// process will inherit the caller's thread state.
 //
 // StartProcess is a low-level interface. The os/exec package provides
 // higher-level interfaces.
@@ -67,7 +73,9 @@ func StartProcess(name string, argv []string, attr *ProcAttr) (*Process, error)
 // Release only needs to be called if Wait is not.
 func (p *Process) Release() error
 
-// Kill causes the Process to exit immediately.
+// Kill causes the Process to exit immediately. Kill does not wait until
+// the Process has actually exited. This only kills the Process itself,
+// not any other processes it may have started.
 func (p *Process) Kill() error
 
 // Wait waits for the Process to exit, and then returns a

@@ -7,3 +7,5 @@ package types
 // A declInfo describes a package-level const, type, var, or func declaration.
 
 // An objSet is simply a set of objects.
+
+// inSourceOrder implements the sort.Sort interface.

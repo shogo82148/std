@@ -27,7 +27,7 @@ type PublicKey struct {
 	X, Y *big.Int
 }
 
-// PrivateKey represents a ECDSA private key.
+// PrivateKey represents an ECDSA private key.
 type PrivateKey struct {
 	PublicKey
 	D *big.Int
@@ -36,11 +36,14 @@ type PrivateKey struct {
 // Public returns the public key corresponding to priv.
 func (priv *PrivateKey) Public() crypto.PublicKey
 
-// Sign signs msg with priv, reading randomness from rand. This method is
-// intended to support keys where the private part is kept in, for example, a
-// hardware module. Common uses should use the Sign function in this package
-// directly.
-func (priv *PrivateKey) Sign(rand io.Reader, msg []byte, opts crypto.SignerOpts) ([]byte, error)
+// Sign signs digest with priv, reading randomness from rand. The opts argument
+// is not currently used but, in keeping with the crypto.Signer interface,
+// should be the hash function used to digest the message.
+//
+// This method implements crypto.Signer, which is an interface to support keys
+// where the private part is kept in, for example, a hardware module. Common
+// uses should use the Sign function in this package directly.
+func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
 
 // GenerateKey generates a public and private key pair.
 func GenerateKey(c elliptic.Curve, rand io.Reader) (*PrivateKey, error)

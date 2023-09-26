@@ -49,6 +49,8 @@ type SI struct {
 // P is a type with a String method with pointer receiver for testing %p.
 type P int
 
+// Copy of io.stringWriter interface used by writeStringFormatter for type assertion.
+
 type SE []interface{}
 
 var _ bytes.Buffer

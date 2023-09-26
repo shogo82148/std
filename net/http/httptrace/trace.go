@@ -10,6 +10,7 @@ import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/net/textproto"
 	"github.com/shogo82148/std/time"
 )
 
@@ -47,6 +48,8 @@ type ClientTrace struct {
 
 	Got100Continue func()
 
+	Got1xxResponse func(code int, header textproto.MIMEHeader) error
+
 	DNSStart func(DNSStartInfo)
 
 	DNSDone func(DNSDoneInfo)
@@ -58,6 +61,8 @@ type ClientTrace struct {
 	TLSHandshakeStart func()
 
 	TLSHandshakeDone func(tls.ConnectionState, error)
+
+	WroteHeaderField func(key string, value []string)
 
 	WroteHeaders func()
 

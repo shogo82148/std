@@ -32,9 +32,10 @@ type Optionals struct {
 }
 
 type StringTag struct {
-	BoolStr bool   `json:",string"`
-	IntStr  int64  `json:",string"`
-	StrStr  string `json:",string"`
+	BoolStr    bool    `json:",string"`
+	IntStr     int64   `json:",string"`
+	UintptrStr uintptr `json:",string"`
+	StrStr     string  `json:",string"`
 }
 
 // byte slices are special even if they're renamed types.

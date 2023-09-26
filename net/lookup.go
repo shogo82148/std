@@ -12,7 +12,7 @@ import (
 // names and numbers for platforms that don't have a complete list of
 // protocol numbers.
 //
-// See http://www.iana.org/assignments/protocol-numbers
+// See https://www.iana.org/assignments/protocol-numbers
 //
 // On Unix, this map is augmented by readProtocols via lookupProtocol.
 
@@ -23,6 +23,9 @@ import (
 // See https://www.iana.org/assignments/service-names-port-numbers
 //
 // On Unix, this map is augmented by readServices via goLookupPort.
+
+// dnsWaitGroup can be used by tests to wait for all DNS goroutines to
+// complete. This avoids races on the test hooks.
 
 // maxPortBufSize is the longest reasonable name of a service
 // (non-numeric port).
@@ -43,6 +46,8 @@ type Resolver struct {
 	StrictErrors bool
 
 	Dial func(ctx context.Context, network, address string) (Conn, error)
+
+	lookupGroup singleflight.Group
 }
 
 // LookupHost looks up the given host using the local resolver.
@@ -60,11 +65,6 @@ func LookupIP(host string) ([]IP, error)
 // LookupIPAddr looks up host using the local resolver.
 // It returns a slice of that host's IPv4 and IPv6 addresses.
 func (r *Resolver) LookupIPAddr(ctx context.Context, host string) ([]IPAddr, error)
-
-// lookupGroup merges LookupIPAddr calls together for lookups
-// for the same host. The lookupGroup key is is the LookupIPAddr.host
-// argument.
-// The return values are ([]IPAddr, error).
 
 // LookupPort looks up the port for the given network and service.
 func LookupPort(network, service string) (port int, err error)

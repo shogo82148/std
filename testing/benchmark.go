@@ -109,9 +109,6 @@ func RunBenchmarks(matchString func(pat, str string) (bool, error), benchmarks [
 //
 // A subbenchmark is like any other benchmark. A benchmark that calls Run at
 // least once will not be measured itself and will be called once with N=1.
-//
-// Run may be called simultaneously from multiple goroutines, but all such
-// calls must return before the outer benchmark function for b returns.
 func (b *B) Run(name string, f func(b *B)) bool
 
 // A PB is used by RunParallel for running parallel benchmarks.

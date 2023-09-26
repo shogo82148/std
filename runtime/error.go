@@ -4,8 +4,6 @@
 
 package runtime
 
-import _ "github.com/shogo82148/std/unsafe"
-
 // The Error interface identifies a run time error.
 type Error interface {
 	error
@@ -15,10 +13,10 @@ type Error interface {
 
 // A TypeAssertionError explains a failed type assertion.
 type TypeAssertionError struct {
-	interfaceString string
-	concreteString  string
-	assertedString  string
-	missingMethod   string
+	_interface    *_type
+	concrete      *_type
+	asserted      *_type
+	missingMethod string
 }
 
 func (*TypeAssertionError) RuntimeError()

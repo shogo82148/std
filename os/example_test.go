@@ -76,6 +76,24 @@ func ExampleIsNotExist() {
 	// file does not exist
 }
 
+func ExampleExpand() {
+	mapper := func(placeholderName string) string {
+		switch placeholderName {
+		case "DAY_PART":
+			return "morning"
+		case "USER":
+			return "Gopher"
+		}
+
+		return ""
+	}
+
+	fmt.Println(os.Expand("Good ${DAY_PART}, $USER!", mapper))
+
+	// Output:
+	// Good morning, Gopher!
+}
+
 func ExampleExpandEnv() {
 	fmt.Println(os.ExpandEnv("$USER lives in ${HOME}."))
 

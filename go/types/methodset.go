@@ -37,5 +37,3 @@ func NewMethodSet(T Type) *MethodSet
 // A methodSet is a set of methods and name collisions.
 // A collision indicates that multiple methods with the
 // same unique id appeared.
-
-// byUniqueName function lists can be sorted by their unique names.

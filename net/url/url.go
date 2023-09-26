@@ -26,16 +26,20 @@ type InvalidHostError string
 
 func (e InvalidHostError) Error() string
 
-// QueryUnescape does the inverse transformation of QueryEscape, converting
-// %AB into the byte 0xAB and '+' into ' ' (space). It returns an error if
-// any % is not followed by two hexadecimal digits.
+// QueryUnescape does the inverse transformation of QueryEscape,
+// converting each 3-byte encoded substring of the form "%AB" into the
+// hex-decoded byte 0xAB.
+// It returns an error if any % is not followed by two hexadecimal
+// digits.
 func QueryUnescape(s string) (string, error)
 
-// PathUnescape does the inverse transformation of PathEscape, converting
-// %AB into the byte 0xAB. It returns an error if any % is not followed by
-// two hexadecimal digits.
+// PathUnescape does the inverse transformation of PathEscape,
+// converting each 3-byte encoded substring of the form "%AB" into the
+// hex-decoded byte 0xAB. It returns an error if any % is not followed
+// by two hexadecimal digits.
 //
-// PathUnescape is identical to QueryUnescape except that it does not unescape '+' to ' ' (space).
+// PathUnescape is identical to QueryUnescape except that it does not
+// unescape '+' to ' ' (space).
 func PathUnescape(s string) (string, error)
 
 // QueryEscape escapes the string so it can be safely placed
@@ -110,7 +114,11 @@ func (u *Userinfo) Password() (string, bool)
 func (u *Userinfo) String() string
 
 // Parse parses rawurl into a URL structure.
-// The rawurl may be relative or absolute.
+//
+// The rawurl may be relative (a path, without a host) or absolute
+// (starting with a scheme). Trying to parse a hostname and path
+// without a scheme is invalid but may not necessarily return an
+// error, due to parsing ambiguities.
 func Parse(rawurl string) (*URL, error)
 
 // ParseRequestURI parses rawurl into a URL structure. It assumes that
@@ -201,7 +209,7 @@ func (u *URL) IsAbs() bool
 func (u *URL) Parse(ref string) (*URL, error)
 
 // ResolveReference resolves a URI reference to an absolute URI from
-// an absolute base URI, per RFC 3986 Section 5.2.  The URI reference
+// an absolute base URI u, per RFC 3986 Section 5.2. The URI reference
 // may be relative or absolute. ResolveReference always returns a new
 // URL instance, even if the returned URL is identical to either the
 // base or reference. If ref is an absolute URL, then ResolveReference
@@ -217,15 +225,15 @@ func (u *URL) Query() Values
 // string that would be used in an HTTP request for u.
 func (u *URL) RequestURI() string
 
-// Hostname returns u.Host, without any port number.
+// Hostname returns u.Host, stripping any valid port number if present.
 //
-// If Host is an IPv6 literal with a port number, Hostname returns the
-// IPv6 literal without the square brackets. IPv6 literals may include
-// a zone identifier.
+// If the result is enclosed in square brackets, as literal IPv6 addresses are,
+// the square brackets are removed from the result.
 func (u *URL) Hostname() string
 
 // Port returns the port part of u.Host, without the leading colon.
-// If u.Host doesn't contain a port, Port returns an empty string.
+//
+// If u.Host doesn't contain a valid numeric port, Port returns an empty string.
 func (u *URL) Port() string
 
 func (u *URL) MarshalBinary() (text []byte, err error)

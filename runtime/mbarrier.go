@@ -6,9 +6,9 @@
 //
 // For the concurrent garbage collector, the Go compiler implements
 // updates to pointer-valued fields that may be in heap objects by
-// emitting calls to write barriers. This file contains the actual write barrier
-// implementation, gcmarkwb_m, and the various wrappers called by the
-// compiler to implement pointer assignment, slice assignment,
-// typed memmove, and so on.
+// emitting calls to write barriers. The main write barrier for
+// individual pointer writes is gcWriteBarrier and is implemented in
+// assembly. This file contains write barrier entry points for bulk
+// operations. See also mwbbuf.go.
 
 package runtime

@@ -21,7 +21,7 @@ type Data struct {
 	ranges   []byte
 	str      []byte
 
-	abbrevCache map[uint32]abbrevTable
+	abbrevCache map[uint64]abbrevTable
 	order       binary.ByteOrder
 	typeCache   map[Offset]Type
 	typeSigs    map[uint64]*typeUnit

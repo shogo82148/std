@@ -119,7 +119,7 @@ func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
 //
 // Canceling this context releases resources associated with it, so code should
 // call cancel as soon as the operations running in this Context complete.
-func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
+func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
 
 // A timerCtx carries a timer and a deadline. It embeds a cancelCtx to
 // implement Done and Err. It implements cancel by stopping its timer then

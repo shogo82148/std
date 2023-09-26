@@ -14,8 +14,9 @@ type Replacer struct {
 
 // replacer is the interface that a replacement algorithm needs to implement.
 
-// NewReplacer returns a new Replacer from a list of old, new string pairs.
-// Replacements are performed in order, without overlapping matches.
+// NewReplacer returns a new Replacer from a list of old, new string
+// pairs. Replacements are performed in the order they appear in the
+// target string, without overlapping matches.
 func NewReplacer(oldnew ...string) *Replacer
 
 // Replace returns a copy of s with all replacements performed.
@@ -54,5 +55,11 @@ func (r *Replacer) WriteString(w io.Writer, s string) (n int, err error)
 
 // byteStringReplacer is the implementation that's used when all the
 // "old" values are single ASCII bytes but the "new" values vary in size.
-// The array contains replacement byte slices indexed by old byte.
-// A nil []byte means that the old byte should not be replaced.
+
+// countCutOff controls the ratio of a string length to a number of replacements
+// at which (*byteStringReplacer).Replace switches algorithms.
+// For strings with higher ration of length to replacements than that value,
+// we call Count, for each replacement from toReplace.
+// For strings, with a lower ratio we use simple loop, because of Count overhead.
+// countCutOff is an empirically determined overhead multiplier.
+// TODO(tocarip) revisit once we have register-based abi/mid-stack inlining.

@@ -30,3 +30,12 @@ type FuncVisitor struct {
 
 // Visit implements the ast.Visitor interface.
 func (v *FuncVisitor) Visit(node ast.Node) ast.Visitor
+
+// Pkg describes a single package, compatible with the JSON output from 'go list'; see 'go help list'.
+type Pkg struct {
+	ImportPath string
+	Dir        string
+	Error      *struct {
+		Err string
+	}
+}

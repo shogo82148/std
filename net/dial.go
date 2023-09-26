@@ -6,6 +6,7 @@ package net
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
 
@@ -30,6 +31,8 @@ type Dialer struct {
 	Resolver *Resolver
 
 	Cancel <-chan struct{}
+
+	Control func(network, address string, c syscall.RawConn) error
 }
 
 // Dial connects to the address on the named network.
@@ -94,7 +97,7 @@ func Dial(network, address string) (Conn, error)
 // parameters.
 func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
 
-// dialParam contains a Dial's parameters and configuration.
+// sysDialer contains a Dial's parameters and configuration.
 
 // Dial connects to the address on the named network.
 //
@@ -121,6 +124,25 @@ func (d *Dialer) Dial(network, address string) (Conn, error)
 // See func Dial for a description of the network and address
 // parameters.
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
+
+// ListenConfig contains options for listening to an address.
+type ListenConfig struct {
+	Control func(network, address string, c syscall.RawConn) error
+}
+
+// Listen announces on the local network address.
+//
+// See func Listen for a description of the network and address
+// parameters.
+func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Listener, error)
+
+// ListenPacket announces on the local network address.
+//
+// See func ListenPacket for a description of the network and address
+// parameters.
+func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address string) (PacketConn, error)
+
+// sysListener contains a Listen's parameters and configuration.
 
 // Listen announces on the local network address.
 //

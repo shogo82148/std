@@ -4,6 +4,4 @@
 
 package runtime
 
-// Mach RPC (MIG)
-
 //go:linkname executablePath os.executablePath

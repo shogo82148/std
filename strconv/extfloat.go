@@ -10,4 +10,4 @@ package strconv
 // sign if neg is true.
 
 // Powers of ten taken from double-conversion library.
-// http://code.google.com/p/double-conversion/
+// https://code.google.com/p/double-conversion/

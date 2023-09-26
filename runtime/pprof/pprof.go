@@ -18,7 +18,7 @@
 // To add equivalent profiling support to a standalone program, add
 // code like the following to your main function:
 //
-//	var cpuprofile = flag.String("cpuprofile", "", "write cpu profile `file`")
+//	var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
 //	var memprofile = flag.String("memprofile", "", "write memory profile to `file`")
 //
 //	func main() {
@@ -68,7 +68,7 @@
 // all pprof commands.
 //
 // For more information about pprof, see
-// https://github.com/google/pprof/blob/master/doc/pprof.md.
+// https://github.com/google/pprof/blob/master/doc/README.md.
 package pprof
 
 import (
@@ -87,7 +87,8 @@ import (
 // Each Profile has a unique name. A few profiles are predefined:
 //
 //	goroutine    - stack traces of all current goroutines
-//	heap         - a sampling of all heap allocations
+//	heap         - a sampling of memory allocations of live objects
+//	allocs       - a sampling of all past memory allocations
 //	threadcreate - stack traces that led to the creation of new OS threads
 //	block        - stack traces that led to blocking on synchronization primitives
 //	mutex        - stack traces of holders of contended mutexes
@@ -101,6 +102,16 @@ import (
 // If there has been no garbage collection at all, the heap profile reports
 // all known allocations. This exception helps mainly in programs running
 // without garbage collection enabled, usually for debugging purposes.
+//
+// The heap profile tracks both the allocation sites for all live objects in
+// the application memory and for all objects allocated since the program start.
+// Pprof's -inuse_space, -inuse_objects, -alloc_space, and -alloc_objects
+// flags select which to display, defaulting to -inuse_space (live objects,
+// scaled by size).
+//
+// The allocs profile is the same as the heap profile but changes the default
+// pprof display to -alloc_space, the total number of bytes allocated since
+// the program began (including garbage-collected bytes).
 //
 // The CPU profile is not available as a Profile. It has a special API,
 // the StartCPUProfile and StopCPUProfile functions, because it streams

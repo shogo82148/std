@@ -11,6 +11,7 @@ package os
 
 // Fd returns the Windows handle referencing the open file.
 // The handle is valid only until f.Close is called or f is garbage collected.
+// On Unix systems this will cause the SetDeadline methods to stop working.
 func (file *File) Fd() uintptr
 
 // NewFile returns a new File with the given file descriptor and
@@ -20,17 +21,13 @@ func NewFile(fd uintptr, name string) *File
 
 // Auxiliary information if the File describes a directory
 
+// DevNull is the name of the operating system's “null device.”
+// On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
 const DevNull = "NUL"
 
-// OpenFile is the generalized open call; most users will use Open
-// or Create instead. It opens the named file with specified flag
-// (O_RDONLY etc.) and perm, (0666 etc.) if applicable. If successful,
-// methods on the returned File can be used for I/O.
-// If there is an error, it will be of type *PathError.
-func OpenFile(name string, flag int, perm FileMode) (*File, error)
-
 // Close closes the File, rendering it unusable for I/O.
-// It returns an error, if any.
+// On files that support SetDeadline, any pending I/O operations will
+// be canceled and return immediately with an error.
 func (file *File) Close() error
 
 // Truncate changes the size of the named file.

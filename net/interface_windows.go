@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package net
-
-// supportsVistaIP reports whether the platform implements new IP
-// stack and ABIs supported on Windows Vista and above.

@@ -4,8 +4,4 @@
 
 package main
 
-// cmdtab records the available commands.
-
-// count is a flag.Value that is like a flag.Bool and a flag.Int.
-// If used as -name, it increments the count, but -name=x sets the count.
-// Used for verbose flag -v.
+// commands records the available commands.

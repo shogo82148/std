@@ -17,9 +17,9 @@ package runtime
 
 // Gosched yields the processor, allowing other goroutines to run. It does not
 // suspend the current goroutine, so execution resumes automatically.
-//
-//go:nosplit
 func Gosched()
+
+//go:linkname internal_cpu_debugOptions internal/cpu.debugOptions
 
 // freezeStopWait is a large value that freezetheworld sets
 // sched.stopwait to in order to request that all Gs permanently stop.
@@ -37,6 +37,10 @@ func Gosched()
 // execLock serializes exec and clone to avoid bugs or unspecified behaviour
 // around exec'ing while creating/destroying threads.  See issue #19546.
 
+// newmHandoff contains a list of m structures that need new OS threads.
+// This is used by newm in situations where newm itself can't safely
+// start an OS thread.
+
 // inForkedChild is true while manipulating signals in the child process.
 // This is used to avoid calling libc functions in case we are using vfork.
 
@@ -44,12 +48,33 @@ func Gosched()
 func Breakpoint()
 
 // LockOSThread wires the calling goroutine to its current operating system thread.
-// Until the calling goroutine exits or calls UnlockOSThread, it will always
-// execute in that thread, and no other goroutine can.
+// The calling goroutine will always execute in that thread,
+// and no other goroutine will execute in it,
+// until the calling goroutine has made as many calls to
+// UnlockOSThread as to LockOSThread.
+// If the calling goroutine exits without unlocking the thread,
+// the thread will be terminated.
+//
+// All init functions are run on the startup thread. Calling LockOSThread
+// from an init function will cause the main function to be invoked on
+// that thread.
+//
+// A goroutine should call LockOSThread before calling OS services or
+// non-Go library functions that depend on per-thread state.
 func LockOSThread()
 
-// UnlockOSThread unwires the calling goroutine from its fixed operating system thread.
-// If the calling goroutine has not called LockOSThread, UnlockOSThread is a no-op.
+// UnlockOSThread undoes an earlier call to LockOSThread.
+// If this drops the number of active LockOSThread calls on the
+// calling goroutine to zero, it unwires the calling goroutine from
+// its fixed operating system thread.
+// If there are no active LockOSThread calls, this is a no-op.
+//
+// Before calling UnlockOSThread, the caller must ensure that the OS
+// thread is suitable for running other goroutines. If the caller made
+// any permanent changes to the state of the thread that would affect
+// other goroutines, it should not call this function and thus leave
+// the goroutine locked to the OS thread until the goroutine (and
+// hence the thread) exits.
 func UnlockOSThread()
 
 // Counts SIGPROFs received while in atomic64 critical section, on mips{,le}

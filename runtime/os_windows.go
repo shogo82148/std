@@ -17,6 +17,10 @@ var (
 	// We will load syscalls, if available, before using them.
 
 	_ stdFunction
+
+	// These are from non-kernel32.dll, so we prefer to LoadLibraryEx them.
+
+	_ stdFunction
 )
 
 // When loading DLLs, we prefer to use LoadLibraryEx with

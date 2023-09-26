@@ -2,14 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build ppc64 || ppc64le
+//go:build linux && (ppc64 || ppc64le)
+// +build linux
 // +build ppc64 ppc64le
 
 package runtime
 
-// cpu can be tested at runtime in go assembler code to check for
-// a certain ISA level or hardware capability, for example:
-//	  ·cpu+facilities_hasVSX(SB) for checking the availability of VSX
-//	  or
-//	  ·cpu+facilities_isPOWER7(SB) for checking if the processor implements
-//	  ISA 2.06 instructions.
+// For go:linkname
+import _ "github.com/shogo82148/std/unsafe"
+
+//go:linkname cpu_hwcap internal/cpu.hwcap
+
+//go:linkname cpu_hwcap2 internal/cpu.hwcap2

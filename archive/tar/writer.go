@@ -5,48 +5,54 @@
 package tar
 
 import (
-	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 )
 
-var (
-	ErrWriteTooLong    = errors.New("archive/tar: write too long")
-	ErrFieldTooLong    = errors.New("archive/tar: header field too long")
-	ErrWriteAfterClose = errors.New("archive/tar: write after close")
-)
-
-// A Writer provides sequential writing of a tar archive in POSIX.1 format.
-// A tar archive consists of a sequence of files.
-// Call WriteHeader to begin a new file, and then call Write to supply that file's data,
-// writing at most hdr.Size bytes in total.
+// Writer provides sequential writing of a tar archive.
+// Write.WriteHeader begins a new file with the provided Header,
+// and then Writer can be treated as an io.Writer to supply that file's data.
 type Writer struct {
-	w          io.Writer
-	err        error
-	nb         int64
-	pad        int64
-	closed     bool
-	usedBinary bool
-	preferPax  bool
-	hdrBuff    block
-	paxHdrBuff block
+	w    io.Writer
+	pad  int64
+	curr fileWriter
+	hdr  Header
+	blk  block
+
+	err error
 }
 
 // NewWriter creates a new Writer writing to w.
 func NewWriter(w io.Writer) *Writer
 
-// Flush finishes writing the current file (optional).
+// Flush finishes writing the current file's block padding.
+// The current file must be fully written before Flush can be called.
+//
+// This is unnecessary as the next call to WriteHeader or Close
+// will implicitly flush out the file's padding.
 func (tw *Writer) Flush() error
 
 // WriteHeader writes hdr and prepares to accept the file's contents.
-// WriteHeader calls Flush if it is not the first header.
-// Calling after a Close will return ErrWriteAfterClose.
+// The Header.Size determines how many bytes can be written for the next file.
+// If the current file is not fully written, then this returns an error.
+// This implicitly flushes any padding necessary before writing the header.
 func (tw *Writer) WriteHeader(hdr *Header) error
 
-// Write writes to the current entry in the tar archive.
+// Write writes to the current file in the tar archive.
 // Write returns the error ErrWriteTooLong if more than
-// hdr.Size bytes are written after WriteHeader.
-func (tw *Writer) Write(b []byte) (n int, err error)
+// Header.Size bytes are written after WriteHeader.
+//
+// Calling Write on special types like TypeLink, TypeSymlink, TypeChar,
+// TypeBlock, TypeDir, and TypeFifo returns (0, ErrWriteTooLong) regardless
+// of what the Header.Size claims.
+func (tw *Writer) Write(b []byte) (int, error)
 
-// Close closes the tar archive, flushing any unwritten
-// data to the underlying writer.
+// Close closes the tar archive by flushing the padding, and writing the footer.
+// If the current file (from a prior call to WriteHeader) is not fully written,
+// then this returns an error.
 func (tw *Writer) Close() error
+
+// regFileWriter is a fileWriter for writing data to a regular file entry.
+
+// sparseFileWriter is a fileWriter for writing data to a sparse file entry.
+
+// zeroWriter may only be written with NULs, otherwise it returns errWriteHole.

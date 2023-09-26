@@ -11,12 +11,13 @@ import (
 
 // A Decoder reads and decodes JSON values from an input stream.
 type Decoder struct {
-	r     io.Reader
-	buf   []byte
-	d     decodeState
-	scanp int
-	scan  scanner
-	err   error
+	r       io.Reader
+	buf     []byte
+	d       decodeState
+	scanp   int
+	scanned int64
+	scan    scanner
+	err     error
 
 	tokenState int
 	tokenStack []int
@@ -31,6 +32,11 @@ func NewDecoder(r io.Reader) *Decoder
 // UseNumber causes the Decoder to unmarshal a number into an interface{} as a
 // Number instead of as a float64.
 func (dec *Decoder) UseNumber()
+
+// DisallowUnknownFields causes the Decoder to return an error when the destination
+// is a struct and the input contains object keys which do not match any
+// non-ignored, exported fields in the destination.
+func (dec *Decoder) DisallowUnknownFields()
 
 // Decode reads the next JSON-encoded value from its
 // input and stores it in the value pointed to by v.

@@ -31,6 +31,8 @@ type ReverseProxy struct {
 	BufferPool BufferPool
 
 	ModifyResponse func(*http.Response) error
+
+	ErrorHandler func(http.ResponseWriter, *http.Request, error)
 }
 
 // A BufferPool is an interface for getting and returning temporary
@@ -50,6 +52,9 @@ type BufferPool interface {
 func NewSingleHostReverseProxy(target *url.URL) *ReverseProxy
 
 // Hop-by-hop headers. These are removed when sent to the backend.
-// http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html
+// As of RFC 7230, hop-by-hop headers are required to appear in the
+// Connection header field. These are the headers defined by the
+// obsoleted RFC 2616 (section 13.5.1) and are used for backward
+// compatibility.
 
 func (p *ReverseProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request)

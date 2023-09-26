@@ -20,7 +20,7 @@ func YCbCrToRGB(y, cb, cr uint8) (uint8, uint8, uint8)
 //
 // Conversion between RGB and Y'CbCr is lossy and there are multiple, slightly
 // different formulae for converting between the two. This package follows
-// the JFIF specification at http://www.w3.org/Graphics/JPEG/jfif3.pdf.
+// the JFIF specification at https://www.w3.org/Graphics/JPEG/jfif3.pdf.
 type YCbCr struct {
 	Y, Cb, Cr uint8
 }

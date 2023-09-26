@@ -4,13 +4,20 @@
 
 package main
 
+// A Dir describes a directory holding code by specifying
+// the expected import path and the file system directory.
+type Dir struct {
+	importPath string
+	dir        string
+}
+
 // Dirs is a structure for scanning the directory tree.
 // Its Next method returns the next Go source directory it finds.
 // Although it can be used to scan the tree multiple times, it
 // only walks the tree once, caching the data it finds.
 type Dirs struct {
-	scan   chan string
-	paths  []string
+	scan   chan Dir
+	hist   []Dir
 	offset int
 }
 
@@ -19,4 +26,4 @@ func (d *Dirs) Reset()
 
 // Next returns the next directory in the scan. The boolean
 // is false when the scan is done.
-func (d *Dirs) Next() (string, bool)
+func (d *Dirs) Next() (Dir, bool)

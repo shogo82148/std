@@ -19,8 +19,4 @@ package bzip2
 
 // huffmanSymbolLengthPair contains a symbol and its code length.
 
-// huffmanSymbolLengthPair is used to provide an interface for sorting.
-
 // huffmanCode contains a symbol, its code and code length.
-
-// huffmanCodes is used to provide an interface for sorting.

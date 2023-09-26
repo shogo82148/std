@@ -8,6 +8,8 @@
 
 package syscall
 
+func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err error)
+
 func Time(t *Time_t) (tt Time_t, err error)
 
 func Pipe(p []int) (err error)

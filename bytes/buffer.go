@@ -12,17 +12,19 @@ import (
 // A Buffer is a variable-sized buffer of bytes with Read and Write methods.
 // The zero value for Buffer is an empty buffer ready to use.
 type Buffer struct {
-	buf      []byte
-	off      int
-	lastRead readOp
-
+	buf       []byte
+	off       int
 	bootstrap [64]byte
+	lastRead  readOp
 }
 
 // The readOp constants describe the last action performed on
 // the buffer, so that UnreadRune and UnreadByte can check for
 // invalid usage. opReadRuneX constants are chosen such that
 // converted to int they correspond to the rune size that was read.
+
+// Don't use iota for these, as the values need to correspond with the
+// names and comments, which is easier to see when being explicit.
 
 // ErrTooLarge is passed to panic if memory cannot be allocated to store data in a buffer.
 var ErrTooLarge = errors.New("bytes.Buffer: too large")
@@ -36,6 +38,8 @@ func (b *Buffer) Bytes() []byte
 
 // String returns the contents of the unread portion of the buffer
 // as a string. If the Buffer is a nil pointer, it returns "<nil>".
+//
+// To build strings more efficiently, see the strings.Builder type.
 func (b *Buffer) String() string
 
 // Len returns the number of bytes of the unread portion of the buffer;

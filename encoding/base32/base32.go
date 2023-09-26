@@ -14,7 +14,7 @@ import (
 // introduced for SASL GSSAPI and standardized in RFC 4648.
 // The alternate "base32hex" encoding is used in DNSSEC.
 type Encoding struct {
-	encode    string
+	encode    [32]byte
 	decodeMap [256]byte
 	padChar   rune
 }

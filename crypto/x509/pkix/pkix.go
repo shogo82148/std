@@ -21,10 +21,14 @@ type AlgorithmIdentifier struct {
 
 type RDNSequence []RelativeDistinguishedNameSET
 
+// String returns a string representation of the sequence r,
+// roughly following the RFC 2253 Distinguished Names syntax.
+func (r RDNSequence) String() string
+
 type RelativeDistinguishedNameSET []AttributeTypeAndValue
 
 // AttributeTypeAndValue mirrors the ASN.1 structure of the same name in
-// http://tools.ietf.org/html/rfc5280#section-4.1.2.4
+// https://tools.ietf.org/html/rfc5280#section-4.1.2.4
 type AttributeTypeAndValue struct {
 	Type  asn1.ObjectIdentifier
 	Value interface{}
@@ -63,6 +67,10 @@ func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
 
 func (n Name) ToRDNSequence() (ret RDNSequence)
 
+// String returns the string form of n, roughly following
+// the RFC 2253 Distinguished Names syntax.
+func (n Name) String() string
+
 // CertificateList represents the ASN.1 structure of the same name. See RFC
 // 5280, section 5.1. Use Certificate.CheckCRLSignature to verify the
 // signature.
@@ -72,7 +80,7 @@ type CertificateList struct {
 	SignatureValue     asn1.BitString
 }
 
-// HasExpired reports whether now is past the expiry time of certList.
+// HasExpired reports whether certList should have been updated by now.
 func (certList *CertificateList) HasExpired(now time.Time) bool
 
 // TBSCertificateList represents the ASN.1 structure of the same name. See RFC

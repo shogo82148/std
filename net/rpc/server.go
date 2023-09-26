@@ -202,6 +202,7 @@ func (server *Server) RegisterName(name string, rcvr interface{}) error
 // The caller typically invokes ServeConn in a go statement.
 // ServeConn uses the gob wire format (see package gob) on the
 // connection. To use an alternate codec, use ServeCodec.
+// See NewClient's comment for information about concurrent access.
 func (server *Server) ServeConn(conn io.ReadWriteCloser)
 
 // ServeCodec is like ServeConn but uses the specified codec to
@@ -232,10 +233,10 @@ func RegisterName(name string, rcvr interface{}) error
 // write a response back. The server calls Close when finished with the
 // connection. ReadRequestBody may be called with a nil
 // argument to force the body of the request to be read and discarded.
+// See NewClient's comment for information about concurrent access.
 type ServerCodec interface {
 	ReadRequestHeader(*Request) error
 	ReadRequestBody(interface{}) error
-
 	WriteResponse(*Response, interface{}) error
 
 	Close() error
@@ -246,6 +247,7 @@ type ServerCodec interface {
 // The caller typically invokes ServeConn in a go statement.
 // ServeConn uses the gob wire format (see package gob) on the
 // connection. To use an alternate codec, use ServeCodec.
+// See NewClient's comment for information about concurrent access.
 func ServeConn(conn io.ReadWriteCloser)
 
 // ServeCodec is like ServeConn but uses the specified codec to

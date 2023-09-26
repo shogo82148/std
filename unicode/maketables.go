@@ -15,7 +15,7 @@ package main
 //	0037;DIGIT SEVEN;Nd;0;EN;;7;7;7;N;;;;;
 //	007A;LATIN SMALL LETTER Z;Ll;0;L;;;;;N;;;005A;;005A
 //
-// See http://www.unicode.org/reports/tr44/ for a full explanation
+// See https://www.unicode.org/reports/tr44/ for a full explanation
 // The fields:
 const (
 	FCodePoint = iota

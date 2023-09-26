@@ -17,7 +17,9 @@ package heap
 
 import "github.com/shogo82148/std/sort"
 
-// Any type that implements heap.Interface may be used as a
+// The Interface type describes the requirements
+// for a type using the routines in this package.
+// Any type that implements it may be used as a
 // min-heap with the following invariants (established after
 // Init has been called or if the data is empty or sorted):
 //
@@ -32,8 +34,8 @@ type Interface interface {
 	Pop() interface{}
 }
 
-// A heap must be initialized before any of the heap operations
-// can be used. Init is idempotent with respect to the heap invariants
+// Init establishes the heap invariants required by the other routines in this package.
+// Init is idempotent with respect to the heap invariants
 // and may be called whenever the heap invariants may have been invalidated.
 // Its complexity is O(n) where n = h.Len().
 func Init(h Interface)

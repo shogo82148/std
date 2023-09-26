@@ -9,7 +9,7 @@ package strconv
 // Any other value returns an error.
 func ParseBool(str string) (bool, error)
 
-// FormatBool returns "true" or "false" according to the value of b
+// FormatBool returns "true" or "false" according to the value of b.
 func FormatBool(b bool) string
 
 // AppendBool appends "true" or "false", according to the value of b,

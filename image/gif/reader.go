@@ -4,7 +4,7 @@
 
 // Package gif implements a GIF image decoder and encoder.
 //
-// The GIF specification is at http://www.w3.org/Graphics/GIF/spec-gif89a.txt.
+// The GIF specification is at https://www.w3.org/Graphics/GIF/spec-gif89a.txt.
 package gif
 
 import (
@@ -29,12 +29,14 @@ const (
 
 // decoder is the type used to decode a GIF file.
 
-// blockReader parses the block structure of GIF image data, which
-// comprises (n, (n bytes)) blocks, with 1 <= n <= 255.  It is the
-// reader given to the LZW decoder, which is thus immune to the
-// blocking. After the LZW decoder completes, there will be a 0-byte
-// block remaining (0, ()), which is consumed when checking that the
-// blockReader is exhausted.
+// blockReader parses the block structure of GIF image data, which comprises
+// (n, (n bytes)) blocks, with 1 <= n <= 255. It is the reader given to the
+// LZW decoder, which is thus immune to the blocking. After the LZW decoder
+// completes, there will be a 0-byte block remaining (0, ()), which is
+// consumed when checking that the blockReader is exhausted.
+//
+// To avoid the allocation of a bufio.Reader for the lzw Reader, blockReader
+// implements io.ReadByte and buffers blocks into the decoder's "tmp" buffer.
 
 // interlaceScan defines the ordering for a pass of the interlace algorithm.
 
@@ -46,8 +48,9 @@ func Decode(r io.Reader) (image.Image, error)
 
 // GIF represents the possibly multiple images stored in a GIF file.
 type GIF struct {
-	Image     []*image.Paletted
-	Delay     []int
+	Image []*image.Paletted
+	Delay []int
+
 	LoopCount int
 
 	Disposal []byte

@@ -93,9 +93,11 @@ type Array struct {
 }
 
 // NewArray returns a new array type for the given element type and length.
+// A negative length indicates an unknown length.
 func NewArray(elem Type, len int64) *Array
 
 // Len returns the length of array a.
+// A negative result indicates an unknown length.
 func (a *Array) Len() int64
 
 // Elem returns element type of array a.
@@ -124,7 +126,7 @@ type Struct struct {
 // if no field has a tag, tags may be nil.
 func NewStruct(fields []*Var, tags []string) *Struct
 
-// NumFields returns the number of fields in the struct (including blank and anonymous fields).
+// NumFields returns the number of fields in the struct (including blank and embedded fields).
 func (s *Struct) NumFields() int
 
 // Field returns the i'th field for 0 <= i < NumFields().
@@ -161,6 +163,7 @@ func (t *Tuple) Len() int
 func (t *Tuple) At(i int) *Var
 
 // A Signature represents a (non-builtin) function or method type.
+// The receiver is ignored when comparing signatures for identity.
 type Signature struct {
 	scope    *Scope
 	recv     *Var
@@ -176,7 +179,7 @@ type Signature struct {
 func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 
 // Recv returns the receiver of signature s (if a method), or nil if a
-// function.
+// function. It is ignored when comparing signatures for identity.
 //
 // For an abstract method, Recv returns the enclosing interface either
 // as a *Named or an *Interface. Due to embedding, an interface may
@@ -195,13 +198,33 @@ func (s *Signature) Variadic() bool
 // An Interface represents an interface type.
 type Interface struct {
 	methods   []*Func
-	embeddeds []*Named
+	embeddeds []Type
 
 	allMethods []*Func
 }
 
-// NewInterface returns a new interface for the given methods and embedded types.
+// emptyInterface represents the empty (completed) interface
+
+// markComplete is used to mark an empty interface as completely
+// set up by setting the allMethods field to a non-nil empty slice.
+
+// NewInterface returns a new (incomplete) interface for the given methods and embedded types.
+// Each embedded type must have an underlying type of interface type.
+// NewInterface takes ownership of the provided methods and may modify their types by setting
+// missing receivers. To compute the method set of the interface, Complete must be called.
+//
+// Deprecated: Use NewInterfaceType instead which allows any (even non-defined) interface types
+// to be embedded. This is necessary for interfaces that embed alias type names referring to
+// non-defined (literal) interface types.
 func NewInterface(methods []*Func, embeddeds []*Named) *Interface
+
+// NewInterfaceType returns a new (incomplete) interface for the given methods and embedded types.
+// Each embedded type must have an underlying type of interface type (this property is not
+// verified for defined types, which may be in the process of being set up and which don't
+// have a valid underlying type yet).
+// NewInterfaceType takes ownership of the provided methods and may modify their types by setting
+// missing receivers. To compute the method set of the interface, Complete must be called.
+func NewInterfaceType(methods []*Func, embeddeds []Type) *Interface
 
 // NumExplicitMethods returns the number of explicitly declared methods of interface t.
 func (t *Interface) NumExplicitMethods() int
@@ -213,9 +236,14 @@ func (t *Interface) ExplicitMethod(i int) *Func
 // NumEmbeddeds returns the number of embedded types in interface t.
 func (t *Interface) NumEmbeddeds() int
 
-// Embedded returns the i'th embedded type of interface t for 0 <= i < t.NumEmbeddeds().
-// The types are ordered by the corresponding TypeName's unique Id.
+// Embedded returns the i'th embedded defined (*Named) type of interface t for 0 <= i < t.NumEmbeddeds().
+// The result is nil if the i'th embedded type is not a defined type.
+//
+// Deprecated: Use EmbeddedType which is not restricted to defined (*Named) types.
 func (t *Interface) Embedded(i int) *Named
+
+// EmbeddedType returns the i'th embedded type of interface t for 0 <= i < t.NumEmbeddeds().
+func (t *Interface) EmbeddedType(i int) Type
 
 // NumMethods returns the total number of methods of interface t.
 func (t *Interface) NumMethods() int
@@ -228,9 +256,9 @@ func (t *Interface) Method(i int) *Func
 func (t *Interface) Empty() bool
 
 // Complete computes the interface's method set. It must be called by users of
-// NewInterface after the interface's embedded types are fully defined and
-// before using the interface type in any way other than to form other types.
-// Complete returns the receiver.
+// NewInterfaceType and NewInterface after the interface's embedded types are
+// fully defined and before using the interface type in any way other than to
+// form other types. Complete returns the receiver.
 func (t *Interface) Complete() *Interface
 
 // A Map represents a map type.
@@ -280,6 +308,7 @@ type Named struct {
 }
 
 // NewNamed returns a new named type for the given type name, underlying type, and associated methods.
+// If the given type name obj doesn't have a type yet, its type is set to the returned named type.
 // The underlying type must not be a *Named.
 func NewNamed(obj *TypeName, underlying Type, methods []*Func) *Named
 
@@ -293,33 +322,31 @@ func (t *Named) NumMethods() int
 func (t *Named) Method(i int) *Func
 
 // SetUnderlying sets the underlying type and marks t as complete.
-// TODO(gri) determine if there's a better solution rather than providing this function
 func (t *Named) SetUnderlying(underlying Type)
 
 // AddMethod adds method m unless it is already in the method list.
-// TODO(gri) find a better solution instead of providing this function
 func (t *Named) AddMethod(m *Func)
 
-func (t *Basic) Underlying() Type
-func (t *Array) Underlying() Type
-func (t *Slice) Underlying() Type
-func (t *Struct) Underlying() Type
-func (t *Pointer) Underlying() Type
+func (b *Basic) Underlying() Type
+func (a *Array) Underlying() Type
+func (s *Slice) Underlying() Type
+func (s *Struct) Underlying() Type
+func (p *Pointer) Underlying() Type
 func (t *Tuple) Underlying() Type
-func (t *Signature) Underlying() Type
+func (s *Signature) Underlying() Type
 func (t *Interface) Underlying() Type
-func (t *Map) Underlying() Type
-func (t *Chan) Underlying() Type
+func (m *Map) Underlying() Type
+func (c *Chan) Underlying() Type
 func (t *Named) Underlying() Type
 
-func (t *Basic) String() string
-func (t *Array) String() string
-func (t *Slice) String() string
-func (t *Struct) String() string
-func (t *Pointer) String() string
+func (b *Basic) String() string
+func (a *Array) String() string
+func (s *Slice) String() string
+func (s *Struct) String() string
+func (p *Pointer) String() string
 func (t *Tuple) String() string
-func (t *Signature) String() string
+func (s *Signature) String() string
 func (t *Interface) String() string
-func (t *Map) String() string
-func (t *Chan) String() string
+func (m *Map) String() string
+func (c *Chan) String() string
 func (t *Named) String() string

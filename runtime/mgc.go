@@ -204,8 +204,20 @@ package runtime
 // All fields of gcController are used only during a single mark
 // cycle.
 
-// gcGoalUtilization is the goal CPU utilization for background
+// gcGoalUtilization is the goal CPU utilization for
 // marking as a fraction of GOMAXPROCS.
+
+// gcBackgroundUtilization is the fixed CPU utilization for background
+// marking. It must be <= gcGoalUtilization. The difference between
+// gcGoalUtilization and gcBackgroundUtilization will be made up by
+// mark assists. The scheduler will aim to use within 50% of this
+// goal.
+//
+// Setting this to < gcGoalUtilization avoids saturating the trigger
+// feedback controller when there are no assists, which allows it to
+// better control CPU and heap growth. However, the larger the gap,
+// the more mutator assists are expected to happen, which impact
+// mutator latency.
 
 // gcCreditSlack is the amount of scan work credit that can can
 // accumulate locally before updating gcController.scanWork and,

@@ -19,6 +19,7 @@ import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/database/sql/driver"
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/reflect"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/time"
@@ -79,6 +80,10 @@ const (
 	LevelSerializable
 	LevelLinearizable
 )
+
+func (i IsolationLevel) String() string
+
+var _ fmt.Stringer = LevelDefault
 
 // TxOptions holds the transaction options to be used in DB.BeginTx.
 type TxOptions struct {
@@ -168,7 +173,7 @@ type Scanner interface {
 // Example usage:
 //
 //	var outArg string
-//	_, err := db.ExecContext(ctx, "ProcName", sql.Named("Arg1", Out{Dest: &outArg}))
+//	_, err := db.ExecContext(ctx, "ProcName", sql.Named("Arg1", sql.Out{Dest: &outArg}))
 type Out struct {
 	_Named_Fields_Required struct{}
 
@@ -188,15 +193,16 @@ var ErrNoRows = errors.New("sql: no rows in result set")
 //
 // The sql package creates and frees connections automatically; it
 // also maintains a free pool of idle connections. If the database has
-// a concept of per-connection state, such state can only be reliably
-// observed within a transaction. Once DB.Begin is called, the
+// a concept of per-connection state, such state can be reliably observed
+// within a transaction (Tx) or connection (Conn). Once DB.Begin is called, the
 // returned Tx is bound to a single connection. Once Commit or
 // Rollback is called on the transaction, that transaction's
 // connection is returned to DB's idle connection pool. The pool size
 // can be controlled with SetMaxIdleConns.
 type DB struct {
-	driver driver.Driver
-	dsn    string
+	waitDuration int64
+
+	connector driver.Connector
 
 	numClosed uint64
 
@@ -206,14 +212,20 @@ type DB struct {
 	nextRequest  uint64
 	numOpen      int
 
-	openerCh    chan struct{}
-	closed      bool
-	dep         map[finalCloser]depSet
-	lastPut     map[*driverConn]string
-	maxIdle     int
-	maxOpen     int
-	maxLifetime time.Duration
-	cleanerCh   chan struct{}
+	openerCh          chan struct{}
+	resetterCh        chan *driverConn
+	closed            bool
+	dep               map[finalCloser]depSet
+	lastPut           map[*driverConn]string
+	maxIdle           int
+	maxOpen           int
+	maxLifetime       time.Duration
+	cleanerCh         chan struct{}
+	waitCount         int64
+	maxIdleClosed     int64
+	maxLifetimeClosed int64
+
+	stop func()
 }
 
 // connReuseStrategy determines how (*DB).conn returns database connections.
@@ -237,6 +249,24 @@ type DB struct {
 // used for db.maxOpen. If maxOpen is significantly larger than
 // connectionRequestQueueSize then it is possible for ALL calls into the *DB
 // to block until the connectionOpener can satisfy the backlog of requests.
+
+// OpenDB opens a database using a Connector, allowing drivers to
+// bypass a string based data source name.
+//
+// Most users will open a database via a driver-specific connection
+// helper function that returns a *DB. No database drivers are included
+// in the Go standard library. See https://golang.org/s/sqldrivers for
+// a list of third-party drivers.
+//
+// OpenDB may just validate its arguments without creating a connection
+// to the database. To verify that the data source name is valid, call
+// Ping.
+//
+// The returned DB is safe for concurrent use by multiple goroutines
+// and maintains its own pool of idle connections. Thus, the OpenDB
+// function should be called just once. It is rarely necessary to
+// close a DB.
+func OpenDB(c driver.Connector) *DB
 
 // Open opens a database specified by its database driver name and a
 // driver-specific data source name, usually consisting of at least a
@@ -265,7 +295,9 @@ func (db *DB) PingContext(ctx context.Context) error
 // establishing a connection if necessary.
 func (db *DB) Ping() error
 
-// Close closes the database, releasing any open resources.
+// Close closes the database and prevents new queries from starting.
+// Close then waits for all queries that have started processing on the server
+// to finish.
 //
 // It is rare to Close a DB, as the DB handle is meant to be
 // long-lived and shared between many goroutines.
@@ -274,17 +306,20 @@ func (db *DB) Close() error
 // SetMaxIdleConns sets the maximum number of connections in the idle
 // connection pool.
 //
-// If MaxOpenConns is greater than 0 but less than the new MaxIdleConns
-// then the new MaxIdleConns will be reduced to match the MaxOpenConns limit
+// If MaxOpenConns is greater than 0 but less than the new MaxIdleConns,
+// then the new MaxIdleConns will be reduced to match the MaxOpenConns limit.
 //
 // If n <= 0, no idle connections are retained.
+//
+// The default max idle connections is currently 2. This may change in
+// a future release.
 func (db *DB) SetMaxIdleConns(n int)
 
 // SetMaxOpenConns sets the maximum number of open connections to the database.
 //
 // If MaxIdleConns is greater than 0 and the new MaxOpenConns is less than
 // MaxIdleConns, then MaxIdleConns will be reduced to match the new
-// MaxOpenConns limit
+// MaxOpenConns limit.
 //
 // If n <= 0, then there is no limit on the number of open connections.
 // The default is 0 (unlimited).
@@ -299,7 +334,16 @@ func (db *DB) SetConnMaxLifetime(d time.Duration)
 
 // DBStats contains database statistics.
 type DBStats struct {
+	MaxOpenConnections int
+
 	OpenConnections int
+	InUse           int
+	Idle            int
+
+	WaitCount         int64
+	WaitDuration      time.Duration
+	MaxIdleClosed     int64
+	MaxLifetimeClosed int64
 }
 
 // Stats returns database statistics.
@@ -387,8 +431,8 @@ func (db *DB) Begin() (*Tx, error)
 func (db *DB) Driver() driver.Driver
 
 // ErrConnDone is returned by any operation that is performed on a connection
-// that has already been committed or rolled back.
-var ErrConnDone = errors.New("database/sql: connection is already closed")
+// that has already been returned to the connection pool.
+var ErrConnDone = errors.New("sql: connection is already closed")
 
 // Conn returns a single connection by either opening a new connection
 // or returning an existing connection from the connection pool. Conn will
@@ -399,9 +443,9 @@ var ErrConnDone = errors.New("database/sql: connection is already closed")
 // calling Conn.Close.
 func (db *DB) Conn(ctx context.Context) (*Conn, error)
 
-// Conn represents a single database session rather a pool of database
-// sessions. Prefer running queries from DB unless there is a specific
-// need for a continuous single database session.
+// Conn represents a single database connection rather than a pool of database
+// connections. Prefer running queries from DB unless there is a specific
+// need for a continuous single database connection.
 //
 // A Conn must call Close to return the connection to the database pool
 // and may do so concurrently with a running query.
@@ -500,7 +544,7 @@ type Tx struct {
 
 // ErrTxDone is returned by any operation that is performed on a transaction
 // that has already been committed or rolled back.
-var ErrTxDone = errors.New("sql: Transaction has already been committed or rolled back")
+var ErrTxDone = errors.New("sql: transaction has already been committed or rolled back")
 
 // hookTxGrabConn specifies an optional hook to be called on
 // a successful call to (*Tx).grabConn. For tests.
@@ -541,6 +585,9 @@ func (tx *Tx) Prepare(query string) (*Stmt, error)
 //	tx, err := db.Begin()
 //	...
 //	res, err := tx.StmtContext(ctx, updateMoney).Exec(123.45, 98293203)
+//
+// The provided context is used for the preparation of the statement, not for the
+// execution of the statement.
 //
 // The returned statement operates within the transaction and will be closed
 // when the transaction has been committed or rolled back.
@@ -645,11 +692,6 @@ func (s *Stmt) Query(args ...interface{}) (*Rows, error)
 // If the query selects no rows, the *Row's Scan will return ErrNoRows.
 // Otherwise, the *Row's Scan scans the first selected row and discards
 // the rest.
-//
-// Example usage:
-//
-//	var name string
-//	err := nameByUseridStmt.QueryRowContext(ctx, id).Scan(&name)
 func (s *Stmt) QueryRowContext(ctx context.Context, args ...interface{}) *Row
 
 // QueryRow executes a prepared query statement with the given arguments.
@@ -669,19 +711,7 @@ func (s *Stmt) QueryRow(args ...interface{}) *Row
 func (s *Stmt) Close() error
 
 // Rows is the result of a query. Its cursor starts before the first row
-// of the result set. Use Next to advance through the rows:
-//
-//	rows, err := db.Query("SELECT ...")
-//	...
-//	defer rows.Close()
-//	for rows.Next() {
-//	    var id int
-//	    var name string
-//	    err = rows.Scan(&id, &name)
-//	    ...
-//	}
-//	err = rows.Err() // get any error encountered during iteration
-//	...
+// of the result set. Use Next to advance from row to row.
 type Rows struct {
 	dc          *driverConn
 	releaseConn func(error)
@@ -817,7 +847,7 @@ func (ci *ColumnType) DatabaseTypeName() string
 //
 // Source values of type time.Time may be scanned into values of type
 // *time.Time, *interface{}, *string, or *[]byte. When converting to
-// the latter two, time.Format3339Nano is used.
+// the latter two, time.RFC3339Nano is used.
 //
 // Source values of type bool may be scanned into types *bool,
 // *interface{}, *string, *[]byte, or *RawBytes.

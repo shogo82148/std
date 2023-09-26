@@ -8,8 +8,6 @@ import (
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/path/filepath"
-	"github.com/shogo82148/std/runtime"
 	pathpkg "path"
 )
 
@@ -218,9 +216,10 @@ func ImportDir(dir string, mode ImportMode) (*Package, error)
 // See golang.org/issue/6038.
 // The @ is for OS X. See golang.org/issue/13720.
 // The % is for Jenkins. See golang.org/issue/16959.
+// The ! is because module paths may use them. See golang.org/issue/26716.
 
 // ToolDir is the directory containing build tools.
-var ToolDir = filepath.Join(runtime.GOROOT(), "pkg/tool/"+runtime.GOOS+"_"+runtime.GOARCH)
+var ToolDir = getToolDir()
 
 // IsLocalImport reports whether the import path is
 // a local import path, like ".", "..", "./foo", or "../foo".

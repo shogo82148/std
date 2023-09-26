@@ -241,6 +241,14 @@ type StructI int
 
 type StructIPtr int
 
+type SettableStruct struct {
+	SettableField int
+}
+
+type SettablePointer struct {
+	SettableField *int
+}
+
 type B1 struct {
 	X int
 	Y int
@@ -379,6 +387,8 @@ type Inner struct {
 
 type Impl struct{}
 
+type UnExportedFirst int
+
 // Issue 18635 (method version).
 type KeepMethodLive struct{}
 
@@ -402,3 +412,5 @@ type Talias2 struct {
 	Tint
 	Tint2
 }
+
+type NonExportedFirst int

@@ -237,6 +237,8 @@ var EqualFoldTests = []struct {
 	{"abcdefghijK", "abcdefghij\u212A", true},
 	{"abcdefghijkz", "abcdefghij\u212Ay", false},
 	{"abcdefghijKz", "abcdefghij\u212Ay", false},
+	{"1", "2", false},
+	{"utf-8", "US-ASCII", false},
 }
 
 var CountTests = []struct {

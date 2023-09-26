@@ -10,6 +10,8 @@ type Frames struct {
 	callers []uintptr
 
 	stackExpander stackExpander
+
+	elideWrapper bool
 }
 
 // Frame is the information returned by Frames for each call frame.
@@ -56,13 +58,19 @@ type Func struct {
 
 // PCDATA and FUNCDATA table indexes.
 //
-// See funcdata.h and ../cmd/internal/obj/funcdata.go.
+// See funcdata.h and ../cmd/internal/objabi/funcdata.go.
+
+// A FuncID identifies particular functions that need to be treated
+// specially by the runtime.
+// Note that in some situations involving plugins, there may be multiple
+// copies of a particular special runtime function.
+// Note: this list must match the list in cmd/internal/objabi/funcid.go.
 
 // moduledata records information about the layout of the executable
 // image. It is written by the linker. Any changes here must be
 // matched changes to the code in cmd/internal/ld/symtab.go:symtab.
-// moduledata is stored in read-only memory; none of the pointers here
-// are visible to the garbage collector.
+// moduledata is stored in statically allocated non-pointer memory;
+// none of the pointers here are visible to the garbage collector.
 
 // A modulehash is used to compare the ABI of a new module or a
 // package in a new module with the loaded program.

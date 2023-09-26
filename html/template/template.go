@@ -107,6 +107,10 @@ func New(name string) *Template
 // New allocates a new HTML template associated with the given one
 // and with the same delimiters. The association, which is transitive,
 // allows one template to invoke another with a {{template}} action.
+//
+// If a template with the given name already exists, the new HTML template
+// will replace it. The existing template will be reset and disassociated with
+// t.
 func (t *Template) New(name string) *Template
 
 // Name returns the name of the template.

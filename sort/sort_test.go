@@ -10,4 +10,4 @@ import (
 )
 
 // This is based on the "antiquicksort" implementation by M. Douglas McIlroy.
-// See http://www.cs.dartmouth.edu/~doug/mdmspe.pdf for more info.
+// See https://www.cs.dartmouth.edu/~doug/mdmspe.pdf for more info.

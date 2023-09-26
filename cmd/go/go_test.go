@@ -15,7 +15,6 @@ package main_test
 
 // Manage a single run of the testgo binary.
 
-// The runtime version string takes one of two forms:
-// "go1.X[.Y]" for Go releases, and "devel +hash" at tip.
-// Determine whether we are in a released copy by
-// inspecting the version.
+// If -testwork is specified, the test prints the name of the temp directory
+// and does not remove it when done, so that a programmer can
+// poke at the test file tree afterward.

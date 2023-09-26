@@ -26,8 +26,13 @@ type SockaddrDatalink struct {
 
 func Syscall9(num, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr, err Errno)
 
-// sysnb pipe() (fd1 int, fd2 int, err error)
 func Pipe(p []int) (err error)
+
+// sysnb pipe2(p *[2]_C_int, flags int) (err error)
+func Pipe2(p []int, flags int) error
+
+// sys paccept(fd int, rsa *RawSockaddrAny, addrlen *_Socklen, sigmask *sigset, flags int) (nfd int, err error)
+func Accept4(fd, flags int) (nfd int, sa Sockaddr, err error)
 
 // sys getdents(fd int, buf []byte) (n int, err error)
 func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)

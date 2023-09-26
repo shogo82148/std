@@ -33,6 +33,16 @@ package main
 
 // Set to yesTsanProlog if we see -fsanitize=thread in the flags for gcc.
 
+// noMsanProlog is a prologue defining an MSAN function in C.
+// This is used when not compiling with -fsanitize=memory.
+
+// yesMsanProlog is a prologue defining an MSAN function in C.
+// This is used when compiling with -fsanitize=memory.
+// See the comment above where _cgo_msan_write is called.
+
+// msanProlog is set to yesMsanProlog if we see -fsanitize=memory in the flags
+// for the C compiler.
+
 // cMallocDefC defines the C version of C.malloc for the gc compiler.
 // It is defined here because C.CString and friends need a definition.
 // We define it by hand, rather than simply inventing a reference to
@@ -41,6 +51,13 @@ package main
 // skips the cgo_topofstack code (which is only needed if the C code
 // calls back into Go). This also avoids returning nil for an
 // allocation of 0 bytes.
+
+// builtinExportProlog is a shorter version of builtinProlog,
+// to be put into the _cgo_export.h file.
+// For historical reasons we can't use builtinProlog in _cgo_export.h,
+// because _cgo_export.h defines GoString as a struct while builtinProlog
+// defines it as a function. We don't change this to avoid unnecessarily
+// breaking existing code.
 
 // gccExportHeaderEpilog goes at the end of the generated header file.
 

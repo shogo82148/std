@@ -34,6 +34,12 @@ type T struct {
 	MSIEmpty map[string]int
 	MXI      map[interface{}]int
 	MII      map[int]int
+	MI32S    map[int32]string
+	MI64S    map[int64]string
+	MUI32S   map[uint32]string
+	MUI64S   map[uint64]string
+	MI8S     map[int8]string
+	MUI8S    map[uint8]string
 	SMSI     []map[string]int
 
 	Empty0 interface{}

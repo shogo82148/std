@@ -34,6 +34,7 @@ type Boundary struct {
 	Start  bool
 	Count  int
 	Norm   float64
+	Index  int
 }
 
 // Boundaries returns a Profile as a set of Boundary objects within the provided src.

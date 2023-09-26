@@ -24,6 +24,8 @@ var (
 	Export_writeStatusLine            = writeStatusLine
 )
 
+const MaxWriteWaitBeforeConnReuse = maxWriteWaitBeforeConnReuse
+
 var (
 	SetEnterRoundTripHook = hookSetter(&testHookEnterRoundTrip)
 	SetRoundTripRetried   = hookSetter(&testHookRoundTripRetried)

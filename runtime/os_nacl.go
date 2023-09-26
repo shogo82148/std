@@ -5,3 +5,10 @@
 package runtime
 
 // gsignalStack is unused on nacl.
+
+// lastfaketime stores the last faketime value written to fd 1 or 2.
+
+// lastfaketimefd stores the fd to which lastfaketime was written.
+//
+// Subsequent writes to the same fd may use the same timestamp,
+// but the timestamp must increase if the fd changes.

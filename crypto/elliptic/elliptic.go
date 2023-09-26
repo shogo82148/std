@@ -12,7 +12,7 @@ import (
 )
 
 // A Curve represents a short-form Weierstrass curve with a=-3.
-// See http://www.hyperelliptic.org/EFD/g1p/auto-shortw.html
+// See https://www.hyperelliptic.org/EFD/g1p/auto-shortw.html
 type Curve interface {
 	Params() *CurveParams
 
@@ -54,11 +54,12 @@ func (curve *CurveParams) ScalarBaseMult(k []byte) (*big.Int, *big.Int)
 // generated using the given reader, which must return random data.
 func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err error)
 
-// Marshal converts a point into the form specified in section 4.3.6 of ANSI X9.62.
+// Marshal converts a point into the uncompressed form specified in section 4.3.6 of ANSI X9.62.
 func Marshal(curve Curve, x, y *big.Int) []byte
 
 // Unmarshal converts a point, serialized by Marshal, into an x, y pair.
-// It is an error if the point is not on the curve. On error, x = nil.
+// It is an error if the point is not in uncompressed form or is not on the curve.
+// On error, x = nil.
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 
 // P256 returns a Curve which implements P-256 (see FIPS 186-3, section D.2.3)

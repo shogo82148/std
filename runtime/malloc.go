@@ -78,6 +78,30 @@
 //
 //	3. We don't zero pages that never get reused.
 
+// Virtual memory layout
+//
+// The heap consists of a set of arenas, which are 64MB on 64-bit and
+// 4MB on 32-bit (heapArenaBytes). Each arena's start address is also
+// aligned to the arena size.
+//
+// Each arena has an associated heapArena object that stores the
+// metadata for that arena: the heap bitmap for all words in the arena
+// and the span map for all pages in the arena. heapArena objects are
+// themselves allocated off-heap.
+//
+// Since arenas are aligned, the address space can be viewed as a
+// series of arena frames. The arena map (mheap_.arenas) maps from
+// arena frame number to *heapArena, or nil for parts of the address
+// space not backed by the Go heap. The arena map is structured as a
+// two-level array consisting of a "L1" arena map and many "L2" arena
+// maps; however, since arenas are large, on many architectures, the
+// arena map consists of a single, large L2 map.
+//
+// The arena map covers the entire possible address space, allowing
+// the Go heap to use any part of the address space. The allocator
+// attempts to keep arenas contiguous so that large spans (and hence
+// large objects) can cross arenas.
+
 package runtime
 
 // physPageSize is the size in bytes of the OS's physical pages.
@@ -88,3 +112,18 @@ package runtime
 // mallocinit.
 
 // base address for all 0-byte allocations
+
+// linearAlloc is a simple linear allocator that pre-reserves a region
+// of memory and then maps that region as needed. The caller is
+// responsible for locking.
+
+// notInHeap is off-heap memory allocated by a lower-level allocator
+// like sysAlloc or persistentAlloc.
+//
+// In general, it's better to use real types marked as go:notinheap,
+// but this serves as a generic type for situations where that isn't
+// possible (like in the allocators).
+//
+// TODO: Use this as the return type of sysAlloc, persistentAlloc, etc?
+//
+//go:notinheap

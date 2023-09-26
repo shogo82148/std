@@ -4,6 +4,10 @@
 
 package cipher
 
+import (
+	subtleoverlap "crypto/internal/subtle"
+)
+
 // AEAD is a cipher mode providing authenticated encryption with associated
 // data. For a description of the methodology, see
 //
@@ -31,7 +35,7 @@ type AEAD interface {
 //   the coefficient of x¹²⁷ can be obtained by v.high & 1.
 
 // gcm represents a Galois Counter Mode with a specific key. See
-// http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-revised-spec.pdf
+// https://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-revised-spec.pdf
 
 // NewGCM returns the given 128-bit, block cipher wrapped in Galois Counter Mode
 // with the standard nonce length.
@@ -48,3 +52,13 @@ func NewGCM(cipher Block) (AEAD, error)
 // cryptosystem that uses non-standard nonce lengths. All other users should use
 // NewGCM, which is faster and more resistant to misuse.
 func NewGCMWithNonceSize(cipher Block, size int) (AEAD, error)
+
+// NewGCMWithTagSize returns the given 128-bit, block cipher wrapped in Galois
+// Counter Mode, which generates tags with the given length.
+//
+// Tag sizes between 12 and 16 bytes are allowed.
+//
+// Only use this function if you require compatibility with an existing
+// cryptosystem that uses non-standard tag lengths. All other users should use
+// NewGCM, which is more resistant to misuse.
+func NewGCMWithTagSize(cipher Block, tagSize int) (AEAD, error)

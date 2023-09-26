@@ -84,10 +84,11 @@ func (t *TextNode) Copy() Node
 type PipeNode struct {
 	NodeType
 	Pos
-	tr   *Tree
-	Line int
-	Decl []*VariableNode
-	Cmds []*CommandNode
+	tr       *Tree
+	Line     int
+	IsAssign bool
+	Decl     []*VariableNode
+	Cmds     []*CommandNode
 }
 
 func (p *PipeNode) String() string
@@ -148,7 +149,7 @@ func (i *IdentifierNode) String() string
 
 func (i *IdentifierNode) Copy() Node
 
-// VariableNode holds a list of variable names, possibly with chained field
+// AssignNode holds a list of variable names, possibly with chained field
 // accesses. The dollar sign is part of the (first) name.
 type VariableNode struct {
 	NodeType

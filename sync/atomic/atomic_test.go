@@ -8,4 +8,4 @@ import (
 	. "sync/atomic"
 )
 
-// Do the 64-bit functions panic?  If so, don't bother testing.
+// Do the 64-bit functions panic? If so, don't bother testing.

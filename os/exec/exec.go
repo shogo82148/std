@@ -27,11 +27,12 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
-// Error records the name of a binary that failed to be executed
-// and the reason it failed.
+// Error is returned by LookPath when it fails to classify a file as an
+// executable.
 type Error struct {
 	Name string
-	Err  error
+
+	Err error
 }
 
 func (e *Error) Error() string
@@ -96,7 +97,7 @@ func Command(name string, arg ...string) *Cmd
 func CommandContext(ctx context.Context, name string, arg ...string) *Cmd
 
 // skipStdinCopyError optionally specifies a function which reports
-// whether the provided the stdin copy error should be ignored.
+// whether the provided stdin copy error should be ignored.
 // It is non-nil everywhere but Plan 9, which lacks EPIPE. See exec_posix.go.
 
 // Run starts the specified command and waits for it to complete.
@@ -107,6 +108,11 @@ func CommandContext(ctx context.Context, name string, arg ...string) *Cmd
 //
 // If the command starts but does not complete successfully, the error is of
 // type *ExitError. Other error types may be returned for other situations.
+//
+// If the calling goroutine has locked the operating system thread
+// with runtime.LockOSThread and modified any inheritable OS-level
+// thread state (for example, Linux or Plan 9 name spaces), the new
+// process will inherit the caller's thread state.
 func (c *Cmd) Run() error
 
 // Start starts the specified command but does not wait for it to complete.
@@ -137,9 +143,8 @@ func (e *ExitError) Error() string
 // error is of type *ExitError. Other error types may be
 // returned for I/O problems.
 //
-// If c.Stdin is not an *os.File, Wait also waits for the I/O loop
-// copying from c.Stdin into the process's standard input
-// to complete.
+// If any of c.Stdin, c.Stdout or c.Stderr are not an *os.File, Wait also waits
+// for the respective I/O loop copying to or from the process to complete.
 //
 // Wait releases any resources associated with the Cmd.
 func (c *Cmd) Wait() error

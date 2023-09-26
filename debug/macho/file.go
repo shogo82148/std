@@ -76,8 +76,21 @@ type SectionHeader struct {
 	Flags  uint32
 }
 
+// A Reloc represents a Mach-O relocation.
+type Reloc struct {
+	Addr  uint32
+	Value uint32
+
+	Type      uint8
+	Len       uint8
+	Pcrel     bool
+	Extern    bool
+	Scattered bool
+}
+
 type Section struct {
 	SectionHeader
+	Relocs []Reloc
 
 	io.ReaderAt
 	sr *io.SectionReader
@@ -110,6 +123,21 @@ type Dysymtab struct {
 	LoadBytes
 	DysymtabCmd
 	IndirectSyms []uint32
+}
+
+// A Rpath represents a Mach-O rpath command.
+type Rpath struct {
+	LoadBytes
+	Path string
+}
+
+// A Symbol is a Mach-O 32-bit or 64-bit symbol table entry.
+type Symbol struct {
+	Name  string
+	Type  uint8
+	Sect  uint8
+	Desc  uint16
+	Value uint64
 }
 
 // FormatError is returned by some operations if the data does

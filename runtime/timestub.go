@@ -5,8 +5,7 @@
 // Declarations for operating systems implementing time.now
 // indirectly, in terms of walltime and nanotime assembly.
 
-//go:build (!darwin || (!amd64 && !386)) && !windows
-// +build !darwin !amd64,!386
+//go:build !windows
 // +build !windows
 
 package runtime

@@ -4,7 +4,7 @@
 
 // Parse "zoneinfo" time zone file.
 // This is a fairly standard file format used on OS X, Linux, BSD, Sun, and others.
-// See tzfile(5), http://en.wikipedia.org/wiki/Zoneinfo,
+// See tzfile(5), https://en.wikipedia.org/wiki/Zoneinfo,
 // and ftp://munnari.oz.au/pub/oldtz/
 
 package time
@@ -16,3 +16,13 @@ package time
 // Copies of io.Seek* constants to avoid importing "io":
 
 // Simple I/O interface to binary blob of data.
+
+// LoadLocationFromTZData returns a Location with the given name
+// initialized from the IANA Time Zone database-formatted data.
+// The data should be in the format of a standard IANA time zone file
+// (for example, the content of /etc/localtime on Unix systems).
+func LoadLocationFromTZData(name string, data []byte) (*Location, error)
+
+// loadTzinfoFromTzdata returns the time zone information of the time zone
+// with the given name, from a tzdata database file as they are typically
+// found on android.

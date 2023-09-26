@@ -493,3 +493,10 @@ type AttrParent struct {
 type BadAttr struct {
 	Name map[string]string `xml:"name,attr"`
 }
+
+type InvalidXMLName struct {
+	XMLName Name `xml:"error"`
+	Type    struct {
+		XMLName Name `xml:"type,attr"`
+	}
+}

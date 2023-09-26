@@ -90,12 +90,13 @@ package xml
 // to the newly created value.
 //
 // Unmarshal maps an XML element or attribute value to a bool by
-// setting it to the boolean value represented by the string.
+// setting it to the boolean value represented by the string. Whitespace
+// is trimmed and ignored.
 //
 // Unmarshal maps an XML element or attribute value to an integer or
 // floating-point field by setting the field to the result of
 // interpreting the string value in decimal. There is no check for
-// overflow.
+// overflow. Whitespace is trimmed and ignored.
 //
 // Unmarshal maps an XML element to a Name by recording the element
 // name.
@@ -133,7 +134,7 @@ func (e UnmarshalError) Error() string
 // UnmarshalXML must consume exactly one XML element.
 // One common implementation strategy is to unmarshal into
 // a separate value with a layout matching the expected XML
-// using d.DecodeElement,  and then to copy the data from
+// using d.DecodeElement, and then to copy the data from
 // that value into the receiver.
 // Another common strategy is to use d.Token to process the
 // XML object one token at a time.

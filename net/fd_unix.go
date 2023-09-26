@@ -8,6 +8,3 @@
 package net
 
 // Network file descriptor.
-
-// tryDupCloexec indicates whether F_DUPFD_CLOEXEC should be used.
-// If the kernel doesn't support it, this is set to 0.

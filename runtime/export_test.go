@@ -6,6 +6,10 @@
 
 package runtime
 
+import (
+	"unsafe"
+)
+
 var Fadd64 = fadd64
 var Fsub64 = fsub64
 var Fmul64 = fmul64
@@ -15,7 +19,6 @@ var F32to64 = f32to64
 var Fcmp64 = fcmp64
 var Fintto64 = fintto64
 var F64toint = f64toint
-var Sqrt = sqrt
 
 var Entersyscall = entersyscall
 var Exitsyscall = exitsyscall
@@ -34,12 +37,19 @@ type LFNode struct {
 	Pushcnt uintptr
 }
 
-var StringHash = stringHash
-var BytesHash = bytesHash
-var Int32Hash = int32Hash
-var Int64Hash = int64Hash
-var EfaceHash = efaceHash
-var IfaceHash = ifaceHash
+var (
+	StringHash = stringHash
+	BytesHash  = bytesHash
+	Int32Hash  = int32Hash
+	Int64Hash  = int64Hash
+	MemHash    = memhash
+	MemHash32  = memhash32
+	MemHash64  = memhash64
+	EfaceHash  = efaceHash
+	IfaceHash  = ifaceHash
+)
+
+var UseAeshash = &useAeshash
 
 var HashLoad = &hashLoad
 
@@ -69,3 +79,7 @@ const (
 type RWMutex struct {
 	rw rwmutex
 }
+
+const RuntimeHmapSize = unsafe.Sizeof(hmap{})
+
+type G = g

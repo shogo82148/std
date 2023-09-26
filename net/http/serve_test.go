@@ -22,3 +22,7 @@ import (
 // repeatReader reads content count times, then EOFs.
 
 // A Response that's just no bigger than 2KB, the buffer-before-chunking threshold.
+
+// Listener for TestServerListenNotComparableListener.
+
+// countCloseListener is a Listener wrapper that counts the number of Close calls.

@@ -30,6 +30,9 @@ type DLL struct {
 	Handle Handle
 }
 
+// We use this for computing the absolute path for system DLLs on systems
+// where SEARCH_SYSTEM32 is not available.
+
 // LoadDLL loads the named DLL file into memory.
 //
 // If name is not an absolute path and is not a known system DLL used by

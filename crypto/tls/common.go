@@ -31,7 +31,7 @@ const (
 // TLS signaling cipher suite values
 
 // CurveID is the type of a TLS identifier for an elliptic curve. See
-// http://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8
+// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8
 type CurveID uint16
 
 const (
@@ -42,22 +42,19 @@ const (
 )
 
 // TLS Elliptic Curve Point Formats
-// http://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-9
+// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-9
 
 // TLS CertificateStatusType (RFC 3546)
 
 // Certificate types (for certificateRequestMsg)
 
-// Hash functions for TLS 1.2 (See RFC 5246, section A.4.1)
-
-// Signature algorithms for TLS 1.2 (See RFC 5246, section A.4.1)
-
-// signatureAndHash mirrors the TLS 1.2, SignatureAndHashAlgorithm struct. See
-// RFC 5246, section A.4.1.
+// Signature algorithms (for internal signaling use). Starting at 16 to avoid overlap with
+// TLS 1.2 codepoints (RFC 5246, section A.4.1), with which these have nothing to do.
 
 // supportedSignatureAlgorithms contains the signature and hash algorithms that
 // the code advertises as supported in a TLS 1.2 ClientHello and in a TLS 1.2
-// CertificateRequest.
+// CertificateRequest. The two fields are merged to match with TLS 1.3.
+// Note that in TLS 1.2, the ECDSA algorithms are not constrained to P-256, etc.
 
 // ConnectionState records basic TLS details about the connection.
 type ConnectionState struct {
@@ -73,8 +70,16 @@ type ConnectionState struct {
 	SignedCertificateTimestamps [][]byte
 	OCSPResponse                []byte
 
+	ekm func(label string, context []byte, length int) ([]byte, error)
+
 	TLSUnique []byte
 }
+
+// ExportKeyingMaterial returns length bytes of exported key material in a new
+// slice as defined in https://tools.ietf.org/html/rfc5705. If context is nil,
+// it is not used as part of the seed. If the connection was set to allow
+// renegotiation via Config.Renegotiation, this function will return an error.
+func (cs *ConnectionState) ExportKeyingMaterial(label string, context []byte, length int) ([]byte, error)
 
 // ClientAuthType declares the policy the server will follow for
 // TLS Client Authentication.
@@ -127,6 +132,9 @@ const (
 	ECDSAWithP256AndSHA256 SignatureScheme = 0x0403
 	ECDSAWithP384AndSHA384 SignatureScheme = 0x0503
 	ECDSAWithP521AndSHA512 SignatureScheme = 0x0603
+
+	// Legacy signature and hash algorithms for TLS 1.2.
+	ECDSAWithSHA1 SignatureScheme = 0x0203
 )
 
 // ClientHelloInfo contains information from a ClientHello message in order to

@@ -18,14 +18,11 @@
 // err is an operating system error describing the failure.
 // On most systems, that error has type syscall.Errno.
 //
-// NOTE: This package is locked down. Code outside the standard
-// Go repository should be migrated to use the corresponding
-// package in the golang.org/x/sys repository. That is also where updates
-// required by new systems or versions should be applied.
-// Signal, Errno and SysProcAttr are not yet available in
-// golang.org/x/sys and must still be referenced from the
-// syscall package. See https://golang.org/s/go1.4-syscall
-// for more information.
+// Deprecated: this package is locked down. Callers should use the
+// corresponding package in the golang.org/x/sys repository instead.
+// That is also where updates required by new systems or versions
+// should be applied. See https://golang.org/s/go1.4-syscall for more
+// information.
 package syscall
 
 // StringByteSlice converts a string to a NUL-terminated []byte,
@@ -55,12 +52,19 @@ func BytePtrFromString(s string) (*byte, error)
 // Single-word zero for use when we need a valid pointer to 0 bytes.
 // See mksyscall.pl.
 
+// Unix returns ts as the number of seconds and nanoseconds elapsed since the
+// Unix epoch.
 func (ts *Timespec) Unix() (sec int64, nsec int64)
 
+// Unix returns tv as the number of seconds and nanoseconds elapsed since the
+// Unix epoch.
 func (tv *Timeval) Unix() (sec int64, nsec int64)
 
+// Nano returns ts as the number of nanoseconds elapsed since the Unix epoch.
 func (ts *Timespec) Nano() int64
 
+// Nano returns tv as the number of nanoseconds elapsed since the Unix epoch.
 func (tv *Timeval) Nano() int64
 
 func Getpagesize() int
+func Exit(code int)

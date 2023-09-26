@@ -5,3 +5,5 @@
 package xml
 
 // Writer whose Write method always returns an error.
+
+type Failure struct{}

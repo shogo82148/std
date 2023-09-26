@@ -37,6 +37,7 @@ package os
 
 import (
 	"github.com/shogo82148/std/syscall"
+	"github.com/shogo82148/std/time"
 )
 
 // Name returns the name of the file as presented to Open.
@@ -57,9 +58,11 @@ var (
 // Flags to OpenFile wrapping those of the underlying system. Not all
 // flags may be implemented on a given system.
 const (
+	// Exactly one of O_RDONLY, O_WRONLY, or O_RDWR must be specified.
 	O_RDONLY int = syscall.O_RDONLY
 	O_WRONLY int = syscall.O_WRONLY
 	O_RDWR   int = syscall.O_RDWR
+	// The remaining values may be or'ed in to control behavior.
 	O_APPEND int = syscall.O_APPEND
 	O_CREATE int = syscall.O_CREAT
 	O_EXCL   int = syscall.O_EXCL
@@ -119,7 +122,8 @@ func (f *File) Seek(offset int64, whence int) (ret int64, err error)
 // a slice of bytes.
 func (f *File) WriteString(s string) (n int, err error)
 
-// Mkdir creates a new directory with the specified name and permission bits.
+// Mkdir creates a new directory with the specified name and permission
+// bits (before umask).
 // If there is an error, it will be of type *PathError.
 func Mkdir(name string, perm FileMode) error
 
@@ -140,6 +144,13 @@ func Open(name string) (*File, error)
 // If there is an error, it will be of type *PathError.
 func Create(name string) (*File, error)
 
+// OpenFile is the generalized open call; most users will use Open
+// or Create instead. It opens the named file with specified flag
+// (O_RDONLY etc.) and perm (before umask), if applicable. If successful,
+// methods on the returned File can be used for I/O.
+// If there is an error, it will be of type *PathError.
+func OpenFile(name string, flag int, perm FileMode) (*File, error)
+
 // lstat is overridden in tests.
 
 // Rename renames (moves) oldpath to newpath.
@@ -158,6 +169,21 @@ func Rename(oldpath, newpath string) error
 // The directory is neither guaranteed to exist nor have accessible
 // permissions.
 func TempDir() string
+
+// UserCacheDir returns the default root directory to use for user-specific
+// cached data. Users should create their own application-specific subdirectory
+// within this one and use that.
+//
+// On Unix systems, it returns $XDG_CACHE_HOME as specified by
+// https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html if
+// non-empty, else $HOME/.cache.
+// On Darwin, it returns $HOME/Library/Caches.
+// On Windows, it returns %LocalAppData%.
+// On Plan 9, it returns $home/lib/cache.
+//
+// If the location cannot be determined (for example, $HOME is not defined),
+// then it will return an error.
+func UserCacheDir() (string, error)
 
 // Chmod changes the mode of the named file to mode.
 // If the file is a symbolic link, it changes the mode of the link's target.
@@ -182,3 +208,41 @@ func Chmod(name string, mode FileMode) error
 // Chmod changes the mode of the file to mode.
 // If there is an error, it will be of type *PathError.
 func (f *File) Chmod(mode FileMode) error
+
+// SetDeadline sets the read and write deadlines for a File.
+// It is equivalent to calling both SetReadDeadline and SetWriteDeadline.
+//
+// Only some kinds of files support setting a deadline. Calls to SetDeadline
+// for files that do not support deadlines will return ErrNoDeadline.
+// On most systems ordinary files do not support deadlines, but pipes do.
+//
+// A deadline is an absolute time after which I/O operations fail with an
+// error instead of blocking. The deadline applies to all future and pending
+// I/O, not just the immediately following call to Read or Write.
+// After a deadline has been exceeded, the connection can be refreshed
+// by setting a deadline in the future.
+//
+// An error returned after a timeout fails will implement the
+// Timeout method, and calling the Timeout method will return true.
+// The PathError and SyscallError types implement the Timeout method.
+// In general, call IsTimeout to test whether an error indicates a timeout.
+//
+// An idle timeout can be implemented by repeatedly extending
+// the deadline after successful Read or Write calls.
+//
+// A zero value for t means I/O operations will not time out.
+func (f *File) SetDeadline(t time.Time) error
+
+// SetReadDeadline sets the deadline for future Read calls and any
+// currently-blocked Read call.
+// A zero value for t means Read will not time out.
+// Not all files support setting deadlines; see SetDeadline.
+func (f *File) SetReadDeadline(t time.Time) error
+
+// SetWriteDeadline sets the deadline for any future Write calls and any
+// currently-blocked Write call.
+// Even if Write times out, it may return n > 0, indicating that
+// some of the data was successfully written.
+// A zero value for t means Write will not time out.
+// Not all files support setting deadlines; see SetDeadline.
+func (f *File) SetWriteDeadline(t time.Time) error

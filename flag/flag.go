@@ -5,7 +5,7 @@
 /*
 Package flag implements command-line flag parsing.
 
-Usage:
+# Usage
 
 Define flags using flag.String(), Bool(), Int(), etc.
 
@@ -44,7 +44,9 @@ After parsing, the arguments following the flags are available as the
 slice flag.Args() or individually as flag.Arg(i).
 The arguments are indexed from 0 through flag.NArg()-1.
 
-Command line flag syntax:
+# Command line flag syntax
+
+The following forms are permitted:
 
 	-flag
 	-flag=x
@@ -56,8 +58,9 @@ meaning of the command
 
 	cmd -x *
 
-will change if there is a file called 0, false, etc.  You must
-use the -flag=false form to turn off a boolean flag.
+where * is a Unix shell wildcard, will change if there is a file
+called 0, false, etc. You must use the -flag=false form to turn
+off a boolean flag.
 
 Flag parsing stops just before the first non-flag argument
 ("-" is a non-flag argument) or after the terminator "--".
@@ -165,6 +168,16 @@ type Flag struct {
 	DefValue string
 }
 
+// Output returns the destination for usage and error messages. os.Stderr is returned if
+// output was not set or was set to nil.
+func (f *FlagSet) Output() io.Writer
+
+// Name returns the name of the flag set.
+func (f *FlagSet) Name() string
+
+// ErrorHandling returns the error handling behavior of the flag set.
+func (f *FlagSet) ErrorHandling() ErrorHandling
+
 // SetOutput sets the destination for usage and error messages.
 // If output is nil, os.Stderr is used.
 func (f *FlagSet) SetOutput(output io.Writer)
@@ -205,9 +218,9 @@ func Set(name, value string) error
 // type of the flag's value, or the empty string if the flag is boolean.
 func UnquoteUsage(flag *Flag) (name string, usage string)
 
-// PrintDefaults prints to standard error the default values of all
-// defined command-line flags in the set. See the documentation for
-// the global function PrintDefaults for more information.
+// PrintDefaults prints, to standard error unless configured otherwise, the
+// default values of all defined command-line flags in the set. See the
+// documentation for the global function PrintDefaults for more information.
 func (f *FlagSet) PrintDefaults()
 
 // PrintDefaults prints, to standard error unless configured otherwise,
@@ -236,13 +249,17 @@ func (f *FlagSet) PrintDefaults()
 //		search directory for include files.
 func PrintDefaults()
 
-// Usage prints to standard error a usage message documenting all defined command-line flags.
+// Usage prints a usage message documenting all defined command-line flags
+// to CommandLine's output, which by default is os.Stderr.
 // It is called when an error occurs while parsing flags.
 // The function is a variable that may be changed to point to a custom function.
 // By default it prints a simple header and calls PrintDefaults; for details about the
 // format of the output and how to control it, see the documentation for PrintDefaults.
+// Custom usage functions may choose to exit the program; by default exiting
+// happens anyway as the command line's error handling strategy is set to
+// ExitOnError.
 var Usage = func() {
-	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+	fmt.Fprintf(CommandLine.Output(), "Usage of %s:\n", os.Args[0])
 	PrintDefaults()
 }
 
@@ -327,15 +344,15 @@ func Int64(name string, value int64, usage string) *int64
 func (f *FlagSet) UintVar(p *uint, name string, value uint, usage string)
 
 // UintVar defines a uint flag with specified name, default value, and usage string.
-// The argument p points to a uint  variable in which to store the value of the flag.
+// The argument p points to a uint variable in which to store the value of the flag.
 func UintVar(p *uint, name string, value uint, usage string)
 
 // Uint defines a uint flag with specified name, default value, and usage string.
-// The return value is the address of a uint  variable that stores the value of the flag.
+// The return value is the address of a uint variable that stores the value of the flag.
 func (f *FlagSet) Uint(name string, value uint, usage string) *uint
 
 // Uint defines a uint flag with specified name, default value, and usage string.
-// The return value is the address of a uint  variable that stores the value of the flag.
+// The return value is the address of a uint variable that stores the value of the flag.
 func Uint(name string, value uint, usage string) *uint
 
 // Uint64Var defines a uint64 flag with specified name, default value, and usage string.
@@ -431,7 +448,7 @@ func (f *FlagSet) Parse(arguments []string) error
 // Parsed reports whether f.Parse has been called.
 func (f *FlagSet) Parsed() bool
 
-// Parse parses the command-line flags from os.Args[1:].  Must be called
+// Parse parses the command-line flags from os.Args[1:]. Must be called
 // after all flags are defined and before flags are accessed by the program.
 func Parse()
 
@@ -444,7 +461,8 @@ func Parsed() bool
 var CommandLine = NewFlagSet(os.Args[0], ExitOnError)
 
 // NewFlagSet returns a new, empty flag set with the specified name and
-// error handling property.
+// error handling property. If the name is not empty, it will be printed
+// in the default usage message and in error messages.
 func NewFlagSet(name string, errorHandling ErrorHandling) *FlagSet
 
 // Init sets the name and error handling property for a flag set.

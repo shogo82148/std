@@ -4,4 +4,6 @@
 
 package runtime
 
+// Note: change the formula in the mallocgc call in itabAdd if you change these fields.
+
 // staticbytes is used to avoid convT2E for byte-sized values.

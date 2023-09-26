@@ -28,25 +28,6 @@ func Sort(data Interface)
 // auto-generated func-optimized variant of sort.go in
 // zfuncversion.go.
 
-// Slice sorts the provided slice given the provided less function.
-//
-// The sort is not guaranteed to be stable. For a stable sort, use
-// SliceStable.
-//
-// The function panics if the provided interface is not a slice.
-func Slice(slice interface{}, less func(i, j int) bool)
-
-// SliceStable sorts the provided slice given the provided less
-// function while keeping the original order of equal elements.
-//
-// The function panics if the provided interface is not a slice.
-func SliceStable(slice interface{}, less func(i, j int) bool)
-
-// SliceIsSorted tests whether a slice is sorted.
-//
-// The function panics if the provided interface is not a slice.
-func SliceIsSorted(slice interface{}, less func(i, j int) bool) bool
-
 // Reverse returns the reverse order for data.
 func Reverse(data Interface) Interface
 

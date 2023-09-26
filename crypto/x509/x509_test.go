@@ -19,6 +19,11 @@ import (
 
 // Self-signed certificate using DSA with SHA1
 
+// openssl req -newkey rsa:2048 -keyout test.key -sha256 -sigopt \
+// rsa_padding_mode:pss -sigopt rsa_pss_saltlen:32 -sigopt rsa_mgf1_md:sha256 \
+// -x509 -days 3650 -nodes -subj '/C=US/ST=CA/L=SF/O=Test/CN=Test' -out \
+// test.pem
+
 // These CSR was generated with OpenSSL:
 //  openssl req -out CSR.csr -new -sha256 -nodes -keyout privateKey.key -config openssl.cnf
 //
@@ -37,3 +42,6 @@ import (
 // certMultipleRDN contains a RelativeDistinguishedName with two elements (the
 // common name and serial number). This particular certificate was the first
 // such certificate in the “Pilot” Certificate Transparency log.
+
+// multipleURLsInCRLDPPEM contains two URLs in a single CRL DistributionPoint
+// structure. It is taken from https://crt.sh/?id=12721534.

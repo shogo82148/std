@@ -32,6 +32,7 @@ package runtime
 #include <sys/sysctl.h>
 #include <sys/cpuset.h>
 #include <sys/param.h>
+#include <sys/vdso.h>
 */
 import "github.com/shogo82148/std/C"
 
@@ -47,6 +48,7 @@ const (
 	PROT_EXEC  = C.PROT_EXEC
 
 	MAP_ANON    = C.MAP_ANON
+	MAP_SHARED  = C.MAP_SHARED
 	MAP_PRIVATE = C.MAP_PRIVATE
 	MAP_FIXED   = C.MAP_FIXED
 
@@ -57,6 +59,7 @@ const (
 	SA_ONSTACK = C.SA_ONSTACK
 
 	CLOCK_MONOTONIC = C.CLOCK_MONOTONIC
+	CLOCK_REALTIME  = C.CLOCK_REALTIME
 
 	UMTX_OP_WAIT_UINT         = C.UMTX_OP_WAIT_UINT
 	UMTX_OP_WAIT_UINT_PRIVATE = C.UMTX_OP_WAIT_UINT_PRIVATE
@@ -120,6 +123,7 @@ const (
 	EV_CLEAR     = C.EV_CLEAR
 	EV_RECEIPT   = C.EV_RECEIPT
 	EV_ERROR     = C.EV_ERROR
+	EV_EOF       = C.EV_EOF
 	EVFILT_READ  = C.EVFILT_READ
 	EVFILT_WRITE = C.EVFILT_WRITE
 )

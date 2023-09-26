@@ -43,7 +43,7 @@ func SetBlockProfileRate(rate int)
 // reported. The previous rate is returned.
 //
 // To turn off profiling entirely, pass rate 0.
-// To just read the current rate, pass rate -1.
+// To just read the current rate, pass rate < 0.
 // (For n>1 the details of sampling may change.)
 func SetMutexProfileFraction(rate int) int
 

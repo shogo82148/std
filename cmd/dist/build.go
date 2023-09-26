@@ -18,6 +18,8 @@ package main
 // deptab lists changes to the default dependencies for a given prefix.
 // deps ending in /* read the whole directory; deps beginning with -
 // exclude files with that prefix.
+// Note that this table applies only to the build of cmd/go,
+// after the main compiler bootstrap.
 
 // depsuffix records the allowed suffixes for source files.
 
@@ -26,7 +28,7 @@ package main
 // installed maps from a dir name (as given to install) to a chan
 // closed when the dir's package is installed.
 
-// buildlist is the list of directories being built, sorted by name.
+// cleanlist is a list of packages with generated files and commands.
 
 // Cannot use go/build directly because cmd/dist for a new release
 // builds against an old release's go/build, which may be out of sync.

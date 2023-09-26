@@ -5,7 +5,7 @@
 package http
 
 // HTTP status codes as registered with IANA.
-// See: http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+// See: https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
 const (
 	StatusContinue           = 100
 	StatusSwitchingProtocols = 101
@@ -51,6 +51,7 @@ const (
 	StatusRequestedRangeNotSatisfiable = 416
 	StatusExpectationFailed            = 417
 	StatusTeapot                       = 418
+	StatusMisdirectedRequest           = 421
 	StatusUnprocessableEntity          = 422
 	StatusLocked                       = 423
 	StatusFailedDependency             = 424

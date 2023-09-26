@@ -21,6 +21,20 @@ package runtime
 //
 //go:notinheap
 
+// A heapArena stores metadata for a heap arena. heapArenas are stored
+// outside of the Go heap and accessed via the mheap_.arenas index.
+//
+// This gets allocated directly from the OS, so ideally it should be a
+// multiple of the system page size. For example, avoid adding small
+// fields.
+//
+//go:notinheap
+
+// arenaHint is a hint for where to grow the heap arenas. See
+// mheap_.arenaHints.
+//
+//go:notinheap
+
 // An MSpan representing actual memory has state _MSpanInUse,
 // _MSpanManual, or _MSpanFree. Transitions between these states are
 // constrained as follows:

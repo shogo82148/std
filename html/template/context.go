@@ -9,7 +9,7 @@ package template
 //
 // The zero value of type context is the start context for a template that
 // produces an HTML fragment as defined at
-// http://www.w3.org/TR/html5/syntax.html#the-end
+// https://www.w3.org/TR/html5/syntax.html#the-end
 // where the context element is null.
 
 // state describes a high-level HTML parser state.

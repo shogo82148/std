@@ -94,7 +94,7 @@ type RawContent []byte
 //
 // An ASN.1 UTCTIME or GENERALIZEDTIME can be written to a time.Time.
 //
-// An ASN.1 PrintableString or IA5String can be written to a string.
+// An ASN.1 PrintableString, IA5String, or NumericString can be written to a string.
 //
 // Any of the above ASN.1 values can be written to an interface{}.
 // The value stored in the interface has the corresponding Go type.
@@ -109,7 +109,8 @@ type RawContent []byte
 //
 // The following tags on struct fields have special meaning to Unmarshal:
 //
-//	application specifies that a APPLICATION tag is used
+//	application specifies that an APPLICATION tag is used
+//	private     specifies that a PRIVATE tag is used
 //	default:x   sets the default value for optional integer fields (only used if optional is also present)
 //	explicit    specifies that an additional, explicit tag wraps the implicit one
 //	optional    marks the field as ASN.1 OPTIONAL
