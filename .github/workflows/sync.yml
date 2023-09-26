@@ -15,7 +15,8 @@ jobs:
           - release-branch.go1.21
 
     steps:
-      - uses: actions/checkout@v4
+      - name: checkout std
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: upstream/${{ matrix.branch }}
@@ -29,16 +30,19 @@ jobs:
         run: |
           go install ./importgodoc
 
-      - uses: actions/checkout@v4
+      - name: checkout golang/go
+        uses: actions/checkout@v4
         with:
           repository: golang/go
           ref: ${{ matrix.branch }}
+          path: "../go"
 
       - name: sync
         env:
           BRANCH_NAME: ${{ matrix.branch }}
         run: |
           git switch "$BRANCH_NAME"
-          importgodoc "$GITHUB_WORKSPACE/go" .
+          ./_tools/rm-all.sh
+          importgodoc "$GITHUB_WORKSPACE/../go" .
           git add .
           git diff --cached
