@@ -47,7 +47,7 @@ var Categories = map[string]*RangeTable{
 	"Zs": Zs,
 }
 
-// The following variables are of type *RangeTable:
+// These variables have type *RangeTable.
 var (
 	Cc     = _Cc
 	Cf     = _Cf
@@ -197,7 +197,7 @@ var Scripts = map[string]*RangeTable{
 	"Yi":                     Yi,
 }
 
-// The following variables are of type *RangeTable:
+// These variables have type *RangeTable.
 var (
 	Arabic                 = _Arabic
 	Armenian               = _Armenian
@@ -332,7 +332,7 @@ var Properties = map[string]*RangeTable{
 	"White_Space":                        White_Space,
 }
 
-// The following variables are of type *RangeTable:
+// These variables have type *RangeTable.
 var (
 	ASCII_Hex_Digit                    = _ASCII_Hex_Digit
 	Bidi_Control                       = _Bidi_Control

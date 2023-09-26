@@ -52,8 +52,11 @@ type CommentGroup struct {
 func (g *CommentGroup) Pos() token.Pos
 func (g *CommentGroup) End() token.Pos
 
-// Text returns the text of the comment,
-// with the comment markers - //, /*, and */ - removed.
+// Text returns the text of the comment.
+// Comment markers (//, /*, and */), the first space of a line comment, and
+// leading and trailing empty lines are removed. Multiple empty lines are
+// reduced to one, and trailing space on lines is trimmed. Unless the result
+// is empty, it is newline-terminated.
 func (g *CommentGroup) Text() string
 
 // A Field represents a Field declaration list in a struct type,

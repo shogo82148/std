@@ -213,6 +213,12 @@ func SetsockoptIPMreq(fd Handle, level, opt int, mreq *IPMreq) (err error)
 func SetsockoptIPv6Mreq(fd Handle, level, opt int, mreq *IPv6Mreq) (err error)
 
 func Getpid() (pid int)
+
+func FindFirstFile(name *uint16, data *Win32finddata) (handle Handle, err error)
+
+func FindNextFile(handle Handle, data *Win32finddata) (err error)
+
+// TODO(brainman): fix all needed for os
 func Getppid() (ppid int)
 
 func Fchdir(fd Handle) (err error)

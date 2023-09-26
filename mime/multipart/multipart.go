@@ -19,15 +19,13 @@ import (
 	"github.com/shogo82148/std/net/textproto"
 )
 
-// TODO(bradfitz): inline these once the compiler can inline them in
-// read-only situation (such as bytes.HasSuffix)
-
 // A Part represents a single part in a multipart body.
 type Part struct {
 	Header textproto.MIMEHeader
 
-	buffer *bytes.Buffer
-	mr     *Reader
+	buffer    *bytes.Buffer
+	mr        *Reader
+	bytesRead int
 
 	disposition       string
 	dispositionParams map[string]string
@@ -60,7 +58,10 @@ type Reader struct {
 	currentPart *Part
 	partsRead   int
 
-	nl, nlDashBoundary, dashBoundaryDash, dashBoundary []byte
+	nl               []byte
+	nlDashBoundary   []byte
+	dashBoundaryDash []byte
+	dashBoundary     []byte
 }
 
 // NextPart returns the next part in the multipart or an error.

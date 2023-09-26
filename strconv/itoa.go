@@ -4,10 +4,14 @@
 
 package strconv
 
-// FormatUint returns the string representation of i in the given base.
+// FormatUint returns the string representation of i in the given base,
+// for 2 <= base <= 36. The result uses the lower-case letters 'a' to 'z'
+// for digit values >= 10.
 func FormatUint(i uint64, base int) string
 
-// FormatInt returns the string representation of i in the given base.
+// FormatInt returns the string representation of i in the given base,
+// for 2 <= base <= 36. The result uses the lower-case letters 'a' to 'z'
+// for digit values >= 10.
 func FormatInt(i int64, base int) string
 
 // Itoa is shorthand for FormatInt(i, 10).

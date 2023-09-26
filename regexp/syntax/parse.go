@@ -39,6 +39,8 @@ const (
 	ErrTrailingBackslash     ErrorCode = "trailing backslash at end of expression"
 )
 
+// TODO: Export for Go 1.1.
+
 func (e ErrorCode) String() string
 
 // Flags control the behavior of the parser and record information about regexp context.

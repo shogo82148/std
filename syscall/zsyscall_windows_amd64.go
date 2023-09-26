@@ -29,10 +29,6 @@ func CloseHandle(handle Handle) (err error)
 
 func GetStdHandle(stdhandle int) (handle Handle, err error)
 
-func FindFirstFile(name *uint16, data *Win32finddata) (handle Handle, err error)
-
-func FindNextFile(handle Handle, data *Win32finddata) (err error)
-
 func FindClose(handle Handle) (err error)
 
 func GetFileInformationByHandle(handle Handle, data *ByHandleFileInformation) (err error)

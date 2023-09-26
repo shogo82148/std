@@ -306,6 +306,9 @@ type Win32finddata struct {
 	AlternateFileName [13]uint16
 }
 
+// This is the actual system call structure.
+// Win32finddata is what we committed to in Go 1.
+
 type ByHandleFileInformation struct {
 	FileAttributes     uint32
 	CreationTime       Filetime
