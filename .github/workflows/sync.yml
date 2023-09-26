@@ -13,6 +13,8 @@ jobs:
         branch:
           - master
           - release-branch.go1.21
+    permissions:
+      contents: write
 
     steps:
       - name: checkout tools
