@@ -46,7 +46,7 @@ jobs:
 
       - name: sync
         env:
-          BRANCH_NAME: ${{ matrix.branch }}
+          BRANCH_NAME: upstream/${{ matrix.branch }}
         working-directory: ./std
         run: |
           "$GITHUB_WORKSPACE/tools/_tools/rm-all.sh"
