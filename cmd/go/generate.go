@@ -18,4 +18,5 @@ type Generator struct {
 	pkg      string
 	commands map[string][]string
 	lineNum  int
+	env      []string
 }

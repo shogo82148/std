@@ -30,6 +30,19 @@ func (c YCbCr) RGBA() (uint32, uint32, uint32, uint32)
 // YCbCrModel is the Model for Y'CbCr colors.
 var YCbCrModel Model = ModelFunc(yCbCrModel)
 
+// NYCbCrA represents a non-alpha-premultiplied Y'CbCr-with-alpha color, having
+// 8 bits each for one luma, two chroma and one alpha component.
+type NYCbCrA struct {
+	YCbCr
+	A uint8
+}
+
+func (c NYCbCrA) RGBA() (uint32, uint32, uint32, uint32)
+
+// NYCbCrAModel is the Model for non-alpha-premultiplied Y'CbCr-with-alpha
+// colors.
+var NYCbCrAModel Model = ModelFunc(nYCbCrAModel)
+
 // RGBToCMYK converts an RGB triple to a CMYK quadruple.
 func RGBToCMYK(r, g, b uint8) (uint8, uint8, uint8, uint8)
 

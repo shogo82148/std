@@ -44,6 +44,7 @@ type Top struct {
 	Loop
 	Embed0p
 	Embed0q
+	embed
 }
 
 type Embed0 struct {

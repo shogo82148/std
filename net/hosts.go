@@ -4,4 +4,4 @@
 
 package net
 
-// Simple cache.
+// hosts contains known host entries.

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:generate go run gen.go -output fixedhuff.go
-
 // Package flate implements the DEFLATE compressed data format, described in
 // RFC 1951.  The gzip and zlib packages implement access to DEFLATE-based file
 // formats.
@@ -12,6 +10,8 @@ package flate
 import (
 	"github.com/shogo82148/std/io"
 )
+
+// Initialize the fixedHuffmanDecoder only once upon first use.
 
 // A CorruptInputError reports the presence of corrupt input at a given offset.
 type CorruptInputError int64
@@ -24,6 +24,8 @@ type InternalError string
 func (e InternalError) Error() string
 
 // A ReadError reports an error encountered while reading input.
+//
+// Deprecated: No longer returned.
 type ReadError struct {
 	Offset int64
 	Err    error
@@ -32,6 +34,8 @@ type ReadError struct {
 func (e *ReadError) Error() string
 
 // A WriteError reports an error encountered while writing output.
+//
+// Deprecated: No longer returned.
 type WriteError struct {
 	Offset int64
 	Err    error

@@ -4,8 +4,4 @@
 
 package types
 
-import (
-	pathLib "path"
-)
-
 // A declInfo describes a package-level const, type, var, or func declaration.

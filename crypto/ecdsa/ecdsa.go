@@ -17,6 +17,10 @@ import (
 	"github.com/shogo82148/std/math/big"
 )
 
+// A invertible implements fast inverse mod Curve.Params().N
+
+// combinedMult implements fast multiplication S1*g + S2*p (g - generator, p - arbitrary point)
+
 // PublicKey represents an ECDSA public key.
 type PublicKey struct {
 	elliptic.Curve

@@ -11,3 +11,6 @@ package runtime
 // A hash iteration structure.
 // If you modify hiter, also change cmd/internal/gc/reflect.go to indicate
 // the layout of this structure.
+
+// All accesses to zeroptr and zerosize must be atomic so that they
+// can be accessed without locks in the common case.

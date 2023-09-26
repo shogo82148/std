@@ -16,8 +16,14 @@ package syscall
 
 /*
 #define KERNEL
+// These defines ensure that builds done on newer versions of Solaris are
+// backwards-compatible with older versions of Solaris and
+// OpenSolaris-based derivatives.
+#define __USE_SUNOS_SOCKETS__          // msghdr
+#define __USE_LEGACY_PROTOTYPES__      // iovec
 #include <dirent.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <signal.h>
 #include <termios.h>
 #include <stdio.h>
@@ -61,6 +67,10 @@ struct sockaddr_any {
 
 */
 import "github.com/shogo82148/std/C"
+
+const (
+	PathMax = C.PATH_MAX
+)
 
 type Timespec C.struct_timespec
 

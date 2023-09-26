@@ -113,7 +113,7 @@ func (z *Int) Mod(x, y *Int) *Int
 // DivMod implements Euclidean division and modulus (unlike Go):
 //
 //	q = x div y  such that
-//	m = x - y*q  with 0 <= m < |q|
+//	m = x - y*q  with 0 <= m < |y|
 //
 // (See Raymond T. Boute, “The Euclidean definition of the functions
 // div and mod”. ACM Transactions on Programming Languages and
@@ -170,8 +170,11 @@ func (z *Int) Exp(x, y, m *Int) *Int
 func (z *Int) GCD(x, y, a, b *Int) *Int
 
 // ProbablyPrime performs n Miller-Rabin tests to check whether x is prime.
-// If it returns true, x is prime with probability 1 - 1/4^n.
-// If it returns false, x is not prime. n must be > 0.
+// If x is prime, it returns true.
+// If x is not prime, it returns false with probability at least 1 - ¼ⁿ.
+//
+// It is not suitable for judging primes that an adversary may have crafted
+// to fool this test.
 func (x *Int) ProbablyPrime(n int) bool
 
 // Rand sets z to a pseudo-random number in [0, n) and returns z.
@@ -221,23 +224,3 @@ func (z *Int) Xor(x, y *Int) *Int
 
 // Not sets z = ^x and returns z.
 func (z *Int) Not(x *Int) *Int
-
-// Gob codec version. Permits backward-compatible changes to the encoding.
-
-// GobEncode implements the gob.GobEncoder interface.
-func (x *Int) GobEncode() ([]byte, error)
-
-// GobDecode implements the gob.GobDecoder interface.
-func (z *Int) GobDecode(buf []byte) error
-
-// MarshalJSON implements the json.Marshaler interface.
-func (z *Int) MarshalJSON() ([]byte, error)
-
-// UnmarshalJSON implements the json.Unmarshaler interface.
-func (z *Int) UnmarshalJSON(text []byte) error
-
-// MarshalText implements the encoding.TextMarshaler interface.
-func (z *Int) MarshalText() (text []byte, err error)
-
-// UnmarshalText implements the encoding.TextUnmarshaler interface.
-func (z *Int) UnmarshalText(text []byte) error

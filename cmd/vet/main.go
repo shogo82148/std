@@ -13,8 +13,7 @@ import (
 	"github.com/shogo82148/std/go/types"
 )
 
-// "all" is here only for the appearance of backwards compatibility.
-// It has no effect; the triState flags do the work.
+// "-all" flag enables all non-experimental checks
 
 // Flags to control which individual checks to perform.
 
@@ -22,6 +21,12 @@ import (
 // requested explicitly; they are not enabled by -all.
 
 // setTrueCount record how many flags are explicitly set to true.
+
+// dirsRun and filesRun indicate whether the vet is applied to directory or
+// file targets. The distinction affects which checks are run.
+
+// includesNonTest indicates whether the vet is applied to non-test targets.
+// Certain checks are relevant only if they touch both test and non-test files.
 
 // A triState is a boolean that knows whether it has been set to either true or false.
 // It is used to identify if a flag appears; the standard boolean flag cannot

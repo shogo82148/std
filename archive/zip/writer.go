@@ -10,10 +10,11 @@ import (
 
 // Writer implements a zip file writer.
 type Writer struct {
-	cw     *countWriter
-	dir    []*header
-	last   *fileWriter
-	closed bool
+	cw          *countWriter
+	dir         []*header
+	last        *fileWriter
+	closed      bool
+	compressors map[uint16]Compressor
 }
 
 // NewWriter returns a new Writer writing a zip file to w.
@@ -50,3 +51,8 @@ func (w *Writer) Create(name string) (io.Writer, error)
 // call to Create, CreateHeader, or Close. The provided FileHeader fh
 // must not be modified after a call to CreateHeader.
 func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
+
+// RegisterCompressor registers or overrides a custom compressor for a specific
+// method ID. If a compressor for a given method is not found, Writer will
+// default to looking up the compressor at the package level.
+func (w *Writer) RegisterCompressor(method uint16, comp Compressor)

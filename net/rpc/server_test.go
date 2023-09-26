@@ -14,6 +14,10 @@ type Reply struct {
 
 type Arith int
 
+type Embed struct {
+	hidden
+}
+
 // CodecEmulator provides a client-like api and a ServerCodec interface.
 // Can be used to test ServeRequest.
 type CodecEmulator struct {

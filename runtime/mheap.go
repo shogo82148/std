@@ -27,6 +27,10 @@ package runtime
 //   stack or in-use to free. Because concurrent GC may read a pointer
 //   and then look up its span, the span state must be monotonic.
 
+// mSpanList heads a linked list of spans.
+//
+// Linked list structure is based on BSD's "tail queue" data structure.
+
 // h_spans is a lookup table to map virtual address page IDs to *mspan.
 // For allocated spans, their pages map to the span itself.
 // For free spans, only the lowest and highest pages map to the span itself.  Internal

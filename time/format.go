@@ -37,6 +37,7 @@ package time
 //
 //	-0700  ±hhmm
 //	-07:00 ±hh:mm
+//	-07    ±hh
 //
 // Replacing the sign in the format with a Z triggers
 // the ISO 8601 behavior of printing Z instead of an
@@ -44,9 +45,17 @@ package time
 //
 //	Z0700  Z or ±hhmm
 //	Z07:00 Z or ±hh:mm
+//	Z07    Z or ±hh
 //
 // The executable example for time.Format demonstrates the working
 // of the layout string in detail and is a good reference.
+//
+// Note that the RFC822, RFC850, and RFC1123 formats should be applied
+// only to local times. Applying them to UTC times will use "UTC" as the
+// time zone abbreviation, while strictly speaking those RFCs require the
+// use of "GMT" in that case.
+// In general RFC1123Z should be used instead of RFC1123 for servers
+// that insist on that format, and RFC3339 should be preferred for new protocols.
 const (
 	ANSIC       = "Mon Jan _2 15:04:05 2006"
 	UnixDate    = "Mon Jan _2 15:04:05 MST 2006"
@@ -145,6 +154,11 @@ func (e *ParseError) Error() string
 // to a time zone used by the current location (Local), then Parse uses that
 // location and zone in the returned time. Otherwise it records the time as
 // being in a fabricated location with time fixed at the given zone offset.
+//
+// No checking is done that the day of the month is within the month's
+// valid dates; any one- or two-digit value is accepted. For example
+// February 31 and even February 99 are valid dates, specifying dates
+// in March and May. This behavior is consistent with time.Date.
 //
 // When parsing a time with a zone abbreviation like MST, if the zone abbreviation
 // has a defined offset in the current location, then that offset is used.

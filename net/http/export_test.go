@@ -7,12 +7,22 @@
 
 package http
 
-var ExportAppendTime = appendTime
+var (
+	DefaultUserAgent              = defaultUserAgent
+	NewLoggingConn                = newLoggingConn
+	ExportAppendTime              = appendTime
+	ExportRefererForURL           = refererForURL
+	ExportServerNewConn           = (*Server).newConn
+	ExportCloseWriteAndWait       = (*conn).closeWriteAndWait
+	ExportErrRequestCanceled      = errRequestCanceled
+	ExportErrRequestCanceledConn  = errRequestCanceledConn
+	ExportServeFile               = serveFile
+	ExportHttp2ConfigureTransport = http2ConfigureTransport
+	ExportHttp2ConfigureServer    = http2ConfigureServer
+)
 
-var DefaultUserAgent = defaultUserAgent
-
-var ExportServerNewConn = (*Server).newConn
-
-var ExportCloseWriteAndWait = (*conn).closeWriteAndWait
-
-var ExportErrRequestCanceled = errRequestCanceled
+var (
+	SetEnterRoundTripHook  = hookSetter(&testHookEnterRoundTrip)
+	SetTestHookWaitResLoop = hookSetter(&testHookWaitResLoop)
+	SetRoundTripRetried    = hookSetter(&testHookRoundTripRetried)
+)

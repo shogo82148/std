@@ -30,7 +30,27 @@ type Reader struct {
 
 // A regFileReader is a numBytesReader for reading file data from a tar archive.
 
-// A sparseFileReader is a numBytesReader for reading sparse file data from a tar archive.
+// A sparseFileReader is a numBytesReader for reading sparse file data from a
+// tar archive.
+
+// A sparseEntry holds a single entry in a sparse file's sparse map.
+//
+// Sparse files are represented using a series of sparseEntrys.
+// Despite the name, a sparseEntry represents an actual data fragment that
+// references data found in the underlying archive stream. All regions not
+// covered by a sparseEntry are logically filled with zeros.
+//
+// For example, if the underlying raw file contains the 10-byte data:
+//	var compactData = "abcdefgh"
+//
+// And the sparse map has the following entries:
+//	var sp = []sparseEntry{
+//		{offset: 2,  numBytes: 5} // Data fragment for [2..7]
+//		{offset: 18, numBytes: 3} // Data fragment for [18..21]
+//	}
+//
+// Then the content of the resulting sparse file with a "real" size of 25 is:
+//	var sparseData = "\x00"*2 + "abcde" + "\x00"*11 + "fgh" + "\x00"*4
 
 // Keywords for GNU sparse files in a PAX extended header
 
@@ -44,11 +64,11 @@ func NewReader(r io.Reader) *Reader
 // io.EOF is returned at the end of the input.
 func (tr *Reader) Next() (*Header, error)
 
-// A sparseEntry holds a single entry in a sparse file's sparse map.
-// A sparse entry indicates the offset and size in a sparse file of a
-// block of data.
-
 // Read reads from the current entry in the tar archive.
 // It returns 0, io.EOF when it reaches the end of that entry,
 // until Next is called to advance to the next entry.
+//
+// Calling Read on special types like TypeLink, TypeSymLink, TypeChar,
+// TypeBlock, TypeDir, and TypeFifo returns 0, io.EOF regardless of what
+// the Header.Size claims.
 func (tr *Reader) Read(b []byte) (n int, err error)

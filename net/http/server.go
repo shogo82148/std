@@ -25,14 +25,19 @@ var (
 	ErrContentLength   = errors.New("Conn.Write wrote more than the declared Content-Length")
 )
 
-// Objects implementing the Handler interface can be
-// registered to serve a particular path or subtree
-// in the HTTP server.
+// A Handler responds to an HTTP request.
 //
 // ServeHTTP should write reply headers and data to the ResponseWriter
-// and then return.  Returning signals that the request is finished
-// and that the HTTP server can move on to the next request on
-// the connection.
+// and then return. Returning signals that the request is finished; it
+// is not valid to use the ResponseWriter or read from the
+// Request.Body after or concurrently with the completion of the
+// ServeHTTP call.
+//
+// Depending on the HTTP client software, HTTP protocol version, and
+// any intermediaries between the client and the Go server, it may not
+// be possible to read from the Request.Body after writing to the
+// ResponseWriter. Cautious handlers should read the Request.Body
+// first, and then reply.
 //
 // If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
 // that the effect of the panic was isolated to the active request.
@@ -44,6 +49,9 @@ type Handler interface {
 
 // A ResponseWriter interface is used by an HTTP handler to
 // construct an HTTP response.
+//
+// A ResponseWriter may not be used after the Handler.ServeHTTP method
+// has returned.
 type ResponseWriter interface {
 	Header() Header
 
@@ -80,12 +88,6 @@ type CloseNotifier interface {
 
 // A conn represents the server side of an HTTP connection.
 
-// A switchWriter can have its Writer changed at runtime.
-// It's not safe for concurrent Writes and switches.
-
-// A liveSwitchReader can have its Reader changed at runtime. It's
-// safe for concurrent reads and switches, if its mutex is held.
-
 // This should be >= 512 bytes for DetectContentType,
 // but otherwise it's somewhat arbitrary.
 
@@ -104,10 +106,14 @@ type CloseNotifier interface {
 // writerOnly hides an io.Writer value's optional ReadFrom method
 // from io.Copy.
 
-// noLimit is an effective infinite upper bound for io.LimitedReader
-
 // debugServerConnections controls whether all server connections are wrapped
 // with a verbose logging wrapper.
+
+// connReader is the io.Reader wrapper used by *conn. It combines a
+// selectively-activated io.LimitedReader (to bound request header
+// read sizes) with support for selectively keeping an io.Reader.Read
+// call blocked in a background goroutine to wait for activity and
+// trigger a CloseNotifier channel.
 
 // DefaultMaxHeaderBytes is the maximum permitted size of the headers
 // in an HTTP request.
@@ -117,10 +123,12 @@ const DefaultMaxHeaderBytes = 1 << 20
 // wrapper around io.ReaderCloser which on first read, sends an
 // HTTP/1.1 100 Continue header
 
-// TimeFormat is the time format to use with
-// time.Parse and time.Time.Format when parsing
-// or generating times in HTTP headers.
-// It is like time.RFC1123 but hard codes GMT as the time zone.
+// TimeFormat is the time format to use when generating times in HTTP
+// headers. It is like time.RFC1123 but hard-codes GMT as the time
+// zone. The time being formatted must be in UTC for Format to
+// generate the correct format.
+//
+// For parsing this time format, see ParseTime.
 const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
 // maxPostHandlerReadBytes is the max number of Request.Body bytes not
@@ -155,10 +163,14 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
 var _ closeWriter = (*net.TCPConn)(nil)
 
+// badRequestError is a literal string (used by in the server in HTML,
+// unescaped) to tell the user why their request was bad. It should
+// be plain text without user info or other embeddded errors.
+
 // The HandlerFunc type is an adapter to allow the use of
 // ordinary functions as HTTP handlers.  If f is a function
 // with the appropriate signature, HandlerFunc(f) is a
-// Handler object that calls f.
+// Handler that calls f.
 type HandlerFunc func(ResponseWriter, *Request)
 
 // ServeHTTP calls f(w, r).
@@ -184,6 +196,9 @@ func StripPrefix(prefix string, h Handler) Handler
 
 // Redirect replies to the request with a redirect to url,
 // which may be a path relative to the request path.
+//
+// The provided code should be in the 3xx range and is usually
+// StatusMovedPermanently, StatusFound or StatusSeeOther.
 func Redirect(w ResponseWriter, r *Request, urlStr string, code int)
 
 // Redirect to a fixed URL
@@ -191,6 +206,9 @@ func Redirect(w ResponseWriter, r *Request, urlStr string, code int)
 // RedirectHandler returns a request handler that redirects
 // each request it receives to the given url using the given
 // status code.
+//
+// The provided code should be in the 3xx range and is usually
+// StatusMovedPermanently, StatusFound or StatusSeeOther.
 func RedirectHandler(url string, code int) Handler
 
 // ServeMux is an HTTP request multiplexer.
@@ -211,6 +229,14 @@ func RedirectHandler(url string, code int) Handler
 // the pattern "/" matches all paths not matched by other registered
 // patterns, not just the URL with Path == "/".
 //
+// If a subtree has been registered and a request is received naming the
+// subtree root without its trailing slash, ServeMux redirects that
+// request to the subtree root (adding the trailing slash). This behavior can
+// be overridden with a separate registration for the path without
+// the trailing slash. For example, registering "/images/" causes ServeMux
+// to redirect a request for "/images" to "/images/", unless "/images" has
+// been registered separately.
+//
 // Patterns may optionally begin with a host name, restricting matches to
 // URLs on that host only.  Host-specific patterns take precedence over
 // general patterns, so that a handler might register for the two patterns
@@ -218,8 +244,8 @@ func RedirectHandler(url string, code int) Handler
 // requests for "http://www.google.com/".
 //
 // ServeMux also takes care of sanitizing the URL request path,
-// redirecting any request containing . or .. elements to an
-// equivalent .- and ..-free URL.
+// redirecting any request containing . or .. elements or repeated slashes
+// to an equivalent, cleaner URL.
 type ServeMux struct {
 	mu    sync.RWMutex
 	m     map[string]muxEntry
@@ -290,6 +316,8 @@ type Server struct {
 	ErrorLog *log.Logger
 
 	disableKeepAlives int32
+	nextProtoOnce     sync.Once
+	nextProtoErr      error
 }
 
 // A ConnState represents the state of a client connection to a server.
@@ -309,6 +337,11 @@ const (
 	// and doesn't fire again until the request has been
 	// handled. After the request is handled, the state
 	// transitions to StateClosed, StateHijacked, or StateIdle.
+	// For HTTP/2, StateActive fires on the transition from zero
+	// to one active request, and only transitions away once all
+	// active requests are complete. That means that ConnState
+	// can not be used to do per-request work; ConnState only notes
+	// the overall state of the connection.
 	StateActive
 
 	// StateIdle represents a connection that has finished
@@ -333,13 +366,16 @@ func (c ConnState) String() string
 // DefaultServeMux and also handles "OPTIONS *" requests.
 
 // ListenAndServe listens on the TCP network address srv.Addr and then
-// calls Serve to handle requests on incoming connections.  If
-// srv.Addr is blank, ":http" is used.
+// calls Serve to handle requests on incoming connections.
+// Accepted connections are configured to enable TCP keep-alives.
+// If srv.Addr is blank, ":http" is used.
+// ListenAndServe always returns a non-nil error.
 func (srv *Server) ListenAndServe() error
 
 // Serve accepts incoming connections on the Listener l, creating a
-// new service goroutine for each.  The service goroutines read requests and
+// new service goroutine for each. The service goroutines read requests and
 // then call srv.Handler to reply to them.
+// Serve always returns a non-nil error.
 func (srv *Server) Serve(l net.Listener) error
 
 // SetKeepAlivesEnabled controls whether HTTP keep-alives are enabled.
@@ -350,8 +386,10 @@ func (srv *Server) SetKeepAlivesEnabled(v bool)
 
 // ListenAndServe listens on the TCP network address addr
 // and then calls Serve with handler to handle requests
-// on incoming connections.  Handler is typically nil,
-// in which case the DefaultServeMux is used.
+// on incoming connections.
+// Accepted connections are configured to enable TCP keep-alives.
+// Handler is typically nil, in which case the DefaultServeMux is
+// used.
 //
 // A trivial example server is:
 //
@@ -370,11 +408,10 @@ func (srv *Server) SetKeepAlivesEnabled(v bool)
 //
 //	func main() {
 //		http.HandleFunc("/hello", HelloServer)
-//		err := http.ListenAndServe(":12345", nil)
-//		if err != nil {
-//			log.Fatal("ListenAndServe: ", err)
-//		}
+//		log.Fatal(http.ListenAndServe(":12345", nil))
 //	}
+//
+// ListenAndServe always returns a non-nil error.
 func ListenAndServe(addr string, handler Handler) error
 
 // ListenAndServeTLS acts identically to ListenAndServe, except that it
@@ -399,24 +436,28 @@ func ListenAndServe(addr string, handler Handler) error
 //		http.HandleFunc("/", handler)
 //		log.Printf("About to listen on 10443. Go to https://127.0.0.1:10443/")
 //		err := http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil)
-//		if err != nil {
-//			log.Fatal(err)
-//		}
+//		log.Fatal(err)
 //	}
 //
 // One can use generate_cert.go in crypto/tls to generate cert.pem and key.pem.
-func ListenAndServeTLS(addr string, certFile string, keyFile string, handler Handler) error
+//
+// ListenAndServeTLS always returns a non-nil error.
+func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
 
 // ListenAndServeTLS listens on the TCP network address srv.Addr and
 // then calls Serve to handle requests on incoming TLS connections.
+// Accepted connections are configured to enable TCP keep-alives.
 //
 // Filenames containing a certificate and matching private key for the
-// server must be provided if the Server's TLSConfig.Certificates is
-// not populated. If the certificate is signed by a certificate
-// authority, the certFile should be the concatenation of the server's
-// certificate, any intermediates, and the CA's certificate.
+// server must be provided if neither the Server's TLSConfig.Certificates
+// nor TLSConfig.GetCertificate are populated. If the certificate is
+// signed by a certificate authority, the certFile should be the
+// concatenation of the server's certificate, any intermediates, and
+// the CA's certificate.
 //
 // If srv.Addr is blank, ":https" is used.
+//
+// ListenAndServeTLS always returns a non-nil error.
 func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 
 // TimeoutHandler returns a Handler that runs h with the given time limit.
@@ -427,6 +468,9 @@ func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 // (If msg is empty, a suitable default message will be sent.)
 // After such a timeout, writes by h to its ResponseWriter will return
 // ErrHandlerTimeout.
+//
+// TimeoutHandler buffers all Handler writes to memory and does not
+// support the Hijacker or Flusher interfaces.
 func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 
 // ErrHandlerTimeout is returned on ResponseWriter Write calls

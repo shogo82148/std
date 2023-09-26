@@ -202,11 +202,13 @@ type OuterInt struct {
 type Private struct {
 	x int
 	y **int
+	Z int
 }
 
 type Public struct {
 	X int
 	Y **int
+	private
 }
 
 var V = ValueOf

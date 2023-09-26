@@ -64,7 +64,7 @@ type Proc struct {
 // The return value can be passed to Syscall to run the procedure.
 func (p *Proc) Addr() uintptr
 
-// Call executes procedure p with arguments a. It will panic, if more then 15 arguments
+// Call executes procedure p with arguments a. It will panic, if more than 15 arguments
 // are supplied.
 //
 // The returned error is always non-nil, constructed from the result of GetLastError.
@@ -120,7 +120,7 @@ func (p *LazyProc) Find() error
 // The return value can be passed to Syscall to run the procedure.
 func (p *LazyProc) Addr() uintptr
 
-// Call executes procedure p with arguments a. It will panic, if more then 15 arguments
+// Call executes procedure p with arguments a. It will panic, if more than 15 arguments
 // are supplied.
 //
 // The returned error is always non-nil, constructed from the result of GetLastError.

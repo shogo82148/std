@@ -95,6 +95,12 @@ type Regexp struct {
 // String returns the source text used to compile the regular expression.
 func (re *Regexp) String() string
 
+// Copy returns a new Regexp object copied from re.
+//
+// When using a Regexp in multiple goroutines, giving each goroutine
+// its own copy helps to avoid lock contention.
+func (re *Regexp) Copy() *Regexp
+
 // Compile parses a regular expression and returns, if successful,
 // a Regexp object that can be used to match against text.
 //

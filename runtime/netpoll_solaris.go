@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// netpolllasterr holds the last error code returned by port_getn to prevent log spamming

@@ -9,4 +9,9 @@
 // Only one call to Dial is necessary. On write failures,
 // the syslog client will attempt to reconnect to the server
 // and write again.
+//
+// The syslog package is frozen and not accepting new features.
+// Some external packages provide more functionality. See:
+//
+//	https://godoc.org/?q=syslog
 package syslog

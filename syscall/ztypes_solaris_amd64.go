@@ -6,6 +6,10 @@
 
 package syscall
 
+const (
+	PathMax = 0x400
+)
+
 type Timespec struct {
 	Sec  int64
 	Nsec int64

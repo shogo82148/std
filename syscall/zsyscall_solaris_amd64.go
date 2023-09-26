@@ -6,6 +6,8 @@
 
 package syscall
 
+func Getcwd(buf []byte) (n int, err error)
+
 func Access(path string, mode uint32) (err error)
 
 func Adjtime(delta *Timeval, olddelta *Timeval) (err error)

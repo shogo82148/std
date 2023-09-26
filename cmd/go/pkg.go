@@ -101,10 +101,13 @@ func (p *PackageError) Error() string
 // so that if we look up a package multiple times
 // we return the same pointer each time.
 
-// The Go 1.5 vendoring experiment is enabled by setting GO15VENDOREXPERIMENT=1.
+// The Go 1.5 vendoring experiment was enabled by setting GO15VENDOREXPERIMENT=1.
+// In Go 1.6 this is on by default and is disabled by setting GO15VENDOREXPERIMENT=0.
+// In Go 1.7 the variable will stop having any effect.
 // The variable is obnoxiously long so that years from now when people find it in
 // their profiles and wonder what it does, there is some chance that a web search
 // might answer the question.
+// There is a copy of this variable in src/go/build/build.go. Delete that one when this one goes away.
 
 // Mode flags for loadImport and download (in get.go).
 

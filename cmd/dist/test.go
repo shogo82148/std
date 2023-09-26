@@ -15,3 +15,5 @@ package main
 //
 // ranGoBench and benchMatches are the same, but are only used
 // in -race mode.
+
+// cgoPackages is the standard packages that use cgo.

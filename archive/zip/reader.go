@@ -17,9 +17,10 @@ var (
 )
 
 type Reader struct {
-	r       io.ReaderAt
-	File    []*File
-	Comment string
+	r             io.ReaderAt
+	File          []*File
+	Comment       string
+	decompressors map[uint16]Decompressor
 }
 
 type ReadCloser struct {
@@ -29,6 +30,7 @@ type ReadCloser struct {
 
 type File struct {
 	FileHeader
+	zip          *Reader
 	zipr         io.ReaderAt
 	zipsize      int64
 	headerOffset int64
@@ -40,6 +42,11 @@ func OpenReader(name string) (*ReadCloser, error)
 // NewReader returns a new Reader reading from r, which is assumed to
 // have the given size in bytes.
 func NewReader(r io.ReaderAt, size int64) (*Reader, error)
+
+// RegisterDecompressor registers or overrides a custom decompressor for a
+// specific method ID. If a decompressor for a given method is not found,
+// Reader will default to looking up the decompressor at the package level.
+func (z *Reader) RegisterDecompressor(method uint16, dcomp Decompressor)
 
 // Close closes the Zip file, rendering it unusable for I/O.
 func (rc *ReadCloser) Close() error

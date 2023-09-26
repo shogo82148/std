@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package x509
-
-// Generated using:
-//   openssl ecparam -genkey -name secp384r1 -outform PEM

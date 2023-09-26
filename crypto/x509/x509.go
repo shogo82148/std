@@ -48,6 +48,8 @@ const (
 	ECDSAWithSHA512
 )
 
+func (algo SignatureAlgorithm) String() string
+
 type PublicKeyAlgorithm int
 
 const (
@@ -196,6 +198,11 @@ type Certificate struct {
 // ErrUnsupportedAlgorithm results from attempting to perform an operation that
 // involves algorithms that are not currently implemented.
 var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorithm unimplemented")
+
+// An InsecureAlgorithmError
+type InsecureAlgorithmError SignatureAlgorithm
+
+func (e InsecureAlgorithmError) Error() string
 
 // ConstraintViolationError results when a requested usage is not permitted by
 // a certificate. For example: checking a signature when the public key isn't a

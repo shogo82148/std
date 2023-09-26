@@ -66,5 +66,36 @@ func (p *YCbCr) SubImage(r Rectangle) Image
 
 func (p *YCbCr) Opaque() bool
 
-// NewYCbCr returns a new YCbCr with the given bounds and subsample ratio.
+// NewYCbCr returns a new YCbCr image with the given bounds and subsample
+// ratio.
 func NewYCbCr(r Rectangle, subsampleRatio YCbCrSubsampleRatio) *YCbCr
+
+// NYCbCrA is an in-memory image of non-alpha-premultiplied Y'CbCr-with-alpha
+// colors. A and AStride are analogous to the Y and YStride fields of the
+// embedded YCbCr.
+type NYCbCrA struct {
+	YCbCr
+	A       []uint8
+	AStride int
+}
+
+func (p *NYCbCrA) ColorModel() color.Model
+
+func (p *NYCbCrA) At(x, y int) color.Color
+
+func (p *NYCbCrA) NYCbCrAAt(x, y int) color.NYCbCrA
+
+// AOffset returns the index of the first element of A that corresponds to the
+// pixel at (x, y).
+func (p *NYCbCrA) AOffset(x, y int) int
+
+// SubImage returns an image representing the portion of the image p visible
+// through r. The returned value shares pixels with the original image.
+func (p *NYCbCrA) SubImage(r Rectangle) Image
+
+// Opaque scans the entire image and reports whether it is fully opaque.
+func (p *NYCbCrA) Opaque() bool
+
+// NewNYCbCrA returns a new NYCbCrA image with the given bounds and subsample
+// ratio.
+func NewNYCbCrA(r Rectangle, subsampleRatio YCbCrSubsampleRatio) *NYCbCrA

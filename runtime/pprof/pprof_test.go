@@ -11,4 +11,4 @@ import (
 	. "runtime/pprof"
 )
 
-// Operating systems that are expected to fail the tests. See issue 6047.
+// Operating systems that are expected to fail the tests. See issue 13841.

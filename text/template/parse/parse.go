@@ -20,6 +20,7 @@ type Tree struct {
 	token     [3]item
 	peekCount int
 	vars      []string
+	treeSet   map[string]*Tree
 }
 
 // Copy returns a copy of the Tree. Any parsing state is discarded.

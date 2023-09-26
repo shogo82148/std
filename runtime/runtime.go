@@ -4,4 +4,6 @@
 
 package runtime
 
-import _ "github.com/shogo82148/std/unsafe"
+import (
+	_ "github.com/shogo82148/std/unsafe"
+)

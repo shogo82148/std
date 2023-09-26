@@ -85,7 +85,7 @@ func (p *RGBA) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *RGBA) Opaque() bool
 
-// NewRGBA returns a new RGBA with the given bounds.
+// NewRGBA returns a new RGBA image with the given bounds.
 func NewRGBA(r Rectangle) *RGBA
 
 // RGBA64 is an in-memory image whose At method returns color.RGBA64 values.
@@ -120,7 +120,7 @@ func (p *RGBA64) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *RGBA64) Opaque() bool
 
-// NewRGBA64 returns a new RGBA64 with the given bounds.
+// NewRGBA64 returns a new RGBA64 image with the given bounds.
 func NewRGBA64(r Rectangle) *RGBA64
 
 // NRGBA is an in-memory image whose At method returns color.NRGBA values.
@@ -155,7 +155,7 @@ func (p *NRGBA) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *NRGBA) Opaque() bool
 
-// NewNRGBA returns a new NRGBA with the given bounds.
+// NewNRGBA returns a new NRGBA image with the given bounds.
 func NewNRGBA(r Rectangle) *NRGBA
 
 // NRGBA64 is an in-memory image whose At method returns color.NRGBA64 values.
@@ -190,7 +190,7 @@ func (p *NRGBA64) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *NRGBA64) Opaque() bool
 
-// NewNRGBA64 returns a new NRGBA64 with the given bounds.
+// NewNRGBA64 returns a new NRGBA64 image with the given bounds.
 func NewNRGBA64(r Rectangle) *NRGBA64
 
 // Alpha is an in-memory image whose At method returns color.Alpha values.
@@ -225,7 +225,7 @@ func (p *Alpha) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Alpha) Opaque() bool
 
-// NewAlpha returns a new Alpha with the given bounds.
+// NewAlpha returns a new Alpha image with the given bounds.
 func NewAlpha(r Rectangle) *Alpha
 
 // Alpha16 is an in-memory image whose At method returns color.Alpha16 values.
@@ -260,7 +260,7 @@ func (p *Alpha16) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Alpha16) Opaque() bool
 
-// NewAlpha16 returns a new Alpha16 with the given bounds.
+// NewAlpha16 returns a new Alpha16 image with the given bounds.
 func NewAlpha16(r Rectangle) *Alpha16
 
 // Gray is an in-memory image whose At method returns color.Gray values.
@@ -295,7 +295,7 @@ func (p *Gray) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Gray) Opaque() bool
 
-// NewGray returns a new Gray with the given bounds.
+// NewGray returns a new Gray image with the given bounds.
 func NewGray(r Rectangle) *Gray
 
 // Gray16 is an in-memory image whose At method returns color.Gray16 values.
@@ -330,7 +330,7 @@ func (p *Gray16) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Gray16) Opaque() bool
 
-// NewGray16 returns a new Gray16 with the given bounds.
+// NewGray16 returns a new Gray16 image with the given bounds.
 func NewGray16(r Rectangle) *Gray16
 
 // CMYK is an in-memory image whose At method returns color.CMYK values.
@@ -365,7 +365,7 @@ func (p *CMYK) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *CMYK) Opaque() bool
 
-// NewCMYK returns a new CMYK with the given bounds.
+// NewCMYK returns a new CMYK image with the given bounds.
 func NewCMYK(r Rectangle) *CMYK
 
 // Paletted is an in-memory image of uint8 indices into a given palette.
@@ -402,5 +402,6 @@ func (p *Paletted) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Paletted) Opaque() bool
 
-// NewPaletted returns a new Paletted with the given width, height and palette.
+// NewPaletted returns a new Paletted image with the given width, height and
+// palette.
 func NewPaletted(r Rectangle, p color.Palette) *Paletted

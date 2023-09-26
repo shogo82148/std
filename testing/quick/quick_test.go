@@ -55,3 +55,8 @@ type TestUintptrAlias uintptr
 
 // This tests that ArbitraryValue is working by checking that all the arbitrary
 // values of type MyStruct have x = 42.
+
+type (
+	A struct{ B *B }
+	B struct{ A *A }
+)

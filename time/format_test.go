@@ -29,6 +29,8 @@ type ParseTest struct {
 	fracDigits int
 }
 
+// All parsed with ANSIC.
+
 type ParseTimeZoneTest struct {
 	value  string
 	length int

@@ -69,6 +69,10 @@ func (r *Rand) Float32() float32
 // Perm returns, as a slice of n ints, a pseudo-random permutation of the integers [0,n).
 func (r *Rand) Perm(n int) []int
 
+// Read generates len(p) random bytes and writes them into p. It
+// always returns len(p) and a nil error.
+func (r *Rand) Read(p []byte) (n int, err error)
+
 // Seed uses the provided seed value to initialize the default Source to a
 // deterministic state. If Seed is not called, the generator behaves as
 // if seeded by Seed(1).
@@ -115,6 +119,10 @@ func Float32() float32
 // Perm returns, as a slice of n ints, a pseudo-random permutation of the integers [0,n)
 // from the default Source.
 func Perm(n int) []int
+
+// Read generates len(p) random bytes from the default Source and
+// writes them into p. It always returns len(p) and a nil error.
+func Read(p []byte) (n int, err error)
 
 // NormFloat64 returns a normally distributed float64 in the range
 // [-math.MaxFloat64, +math.MaxFloat64] with

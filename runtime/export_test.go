@@ -20,9 +20,11 @@ var Sqrt = sqrt
 var Entersyscall = entersyscall
 var Exitsyscall = exitsyscall
 var LockedOSThread = lockedOSThread
-var Xadduintptr = xadduintptr
+var Xadduintptr = atomic.Xadduintptr
 
 var FuncPC = funcPC
+
+var Fastlog2 = fastlog2
 
 type LFNode struct {
 	Next    uint64
@@ -51,16 +53,18 @@ var HashLoad = &hashLoad
 var Gostringnocopy = gostringnocopy
 var Maxstring = &maxstring
 
-type Uintreg uintreg
+type Uintreg sys.Uintreg
 
 var Open = open
 var Close = closefd
 var Read = read
 var Write = write
 
-var BigEndian = _BigEndian
+var BigEndian = sys.BigEndian
 
-const PtrSize = ptrSize
+const PtrSize = sys.PtrSize
 
 var TestingAssertE2I2GC = &testingAssertE2I2GC
 var TestingAssertE2T2GC = &testingAssertE2T2GC
+
+var ForceGCPeriod = &forcegcperiod

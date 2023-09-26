@@ -14,3 +14,7 @@ package main
 
 // httpClient is the default HTTP client, but a variable so it can be
 // changed by tests, without modifying http.DefaultClient.
+
+// impatientInsecureHTTPClient is used in -insecure mode,
+// when we're connecting to https servers that might not be there
+// or might be using self-signed certificates.

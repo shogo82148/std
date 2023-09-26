@@ -5,16 +5,22 @@
 package cipher
 
 // AEAD is a cipher mode providing authenticated encryption with associated
-// data.
+// data. For a description of the methodology, see
+//
+//	https://en.wikipedia.org/wiki/Authenticated_encryption
 type AEAD interface {
 	NonceSize() int
 
 	Overhead() int
 
-	Seal(dst, nonce, plaintext, data []byte) []byte
+	Seal(dst, nonce, plaintext, additionalData []byte) []byte
 
-	Open(dst, nonce, ciphertext, data []byte) ([]byte, error)
+	Open(dst, nonce, ciphertext, additionalData []byte) ([]byte, error)
 }
+
+// gcmAble is an interface implemented by ciphers that have a specific optimized
+// implementation of GCM, like crypto/aes. NewGCM will check for this interface
+// and return the specific AEAD if found.
 
 // gcmFieldElement represents a value in GF(2¹²⁸). In order to reflect the GCM
 // standard and make getUint64 suitable for marshaling these values, the bits

@@ -63,6 +63,9 @@ type SystemRootsError struct{}
 
 func (SystemRootsError) Error() string
 
+// errNotParsed is returned when a certificate without ASN.1 contents is
+// verified. Platform-specific verification needs the ASN.1 contents.
+
 // VerifyOptions contains parameters for Certificate.Verify. It's a structure
 // because other PKIX verification APIs have ended up needing many options.
 type VerifyOptions struct {

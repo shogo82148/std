@@ -42,7 +42,8 @@ type T struct {
 	Empty3 interface{}
 	Empty4 interface{}
 
-	NonEmptyInterface I
+	NonEmptyInterface    I
+	NonEmptyInterfacePtS *I
 
 	Str fmt.Stringer
 	Err error
@@ -62,6 +63,8 @@ type T struct {
 
 	unexported int
 }
+
+type S []string
 
 type U struct {
 	V string
@@ -90,3 +93,6 @@ type Tree struct {
 }
 
 // Use different delimiters to test Set.Delims.
+// Also test the trimming of leading and trailing spaces.
+
+type ErrorWriter int

@@ -8,6 +8,15 @@ package parse
 
 // itemType identifies the type of lex items.
 
+// Trimming spaces.
+// If the action begins "{{- " rather than "{{", then all space/tab/newlines
+// preceding the action are trimmed; conversely if it ends " -}}" the
+// leading spaces are trimmed. This is done entirely in the lexer; the
+// parser never sees it happen. We require an ASCII space to be
+// present to avoid ambiguity with things like "{{-3}}". It reads
+// better with the space present anyway. For simplicity, only ASCII
+// space does the job.
+
 // stateFn represents the state of the scanner as a function that returns the next state.
 
 // lexer holds the state of the scanner.

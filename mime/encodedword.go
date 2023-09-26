@@ -28,8 +28,7 @@ type WordDecoder struct {
 	CharsetReader func(charset string, input io.Reader) (io.Reader, error)
 }
 
-// Decode decodes an encoded-word. If word is not a valid RFC 2047 encoded-word,
-// word is returned unchanged.
+// Decode decodes an RFC 2047 encoded-word.
 func (d *WordDecoder) Decode(word string) (string, error)
 
 // DecodeHeader decodes all encoded-words of the given string. It returns an

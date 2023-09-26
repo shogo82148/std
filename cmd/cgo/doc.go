@@ -116,16 +116,26 @@ The standard C numeric types are available under the names
 C.char, C.schar (signed char), C.uchar (unsigned char),
 C.short, C.ushort (unsigned short), C.int, C.uint (unsigned int),
 C.long, C.ulong (unsigned long), C.longlong (long long),
-C.ulonglong (unsigned long long), C.float, C.double.
+C.ulonglong (unsigned long long), C.float, C.double,
+C.complexfloat (complex float), and C.complexdouble (complex double).
 The C type void* is represented by Go's unsafe.Pointer.
+The C types __int128_t and __uint128_t are represented by [16]byte.
 
 To access a struct, union, or enum type directly, prefix it with
 struct_, union_, or enum_, as in C.struct_stat.
+
+The size of any C type T is available as C.sizeof_T, as in
+C.sizeof_struct_stat.
 
 As Go doesn't have support for C's union type in the general case,
 C's union types are represented as a Go byte array with the same length.
 
 Go structs cannot embed fields with C types.
+
+Go code can not refer to zero-sized fields that occur at the end of
+non-empty C structs.  To get the address of such a field (which is the
+only operation you can do with a zero-sized field) you must take the
+address of the struct and add the size of the struct.
 
 Cgo translates C types into equivalent unexported Go types.
 Because the translations are unexported, a Go package should not
@@ -187,10 +197,10 @@ by making copies of the data.  In pseudo-Go definitions:
 	// C string to Go string
 	func C.GoString(*C.char) string
 
-	// C string, length to Go string
+	// C data with explicit length to Go string
 	func C.GoStringN(*C.char, C.int) string
 
-	// C pointer, length to Go []byte
+	// C data with explicit length to Go []byte
 	func C.GoBytes(unsafe.Pointer, C.int) []byte
 
 # C references to Go
@@ -219,6 +229,55 @@ contain any definitions, only declarations. If a file contains both
 definitions and declarations, then the two output files will produce
 duplicate symbols and the linker will fail. To avoid this, definitions
 must be placed in preambles in other files, or in C source files.
+
+# Passing pointers
+
+Go is a garbage collected language, and the garbage collector needs to
+know the location of every pointer to Go memory.  Because of this,
+there are restrictions on passing pointers between Go and C.
+
+In this section the term Go pointer means a pointer to memory
+allocated by Go (such as by using the & operator or calling the
+predefined new function) and the term C pointer means a pointer to
+memory allocated by C (such as by a call to C.malloc).  Whether a
+pointer is a Go pointer or a C pointer is a dynamic property
+determined by how the memory was allocated; it has nothing to do with
+the type of the pointer.
+
+Go code may pass a Go pointer to C provided the Go memory to which it
+points does not contain any Go pointers.  The C code must preserve
+this property: it must not store any Go pointers in Go memory, even
+temporarily.  When passing a pointer to a field in a struct, the Go
+memory in question is the memory occupied by the field, not the entire
+struct.  When passing a pointer to an element in an array or slice,
+the Go memory in question is the entire array or the entire backing
+array of the slice.
+
+C code may not keep a copy of a Go pointer after the call returns.
+
+A Go function called by C code may not return a Go pointer.  A Go
+function called by C code may take C pointers as arguments, and it may
+store non-pointer or C pointer data through those pointers, but it may
+not store a Go pointer in memory pointed to by a C pointer.  A Go
+function called by C code may take a Go pointer as an argument, but it
+must preserve the property that the Go memory to which it points does
+not contain any Go pointers.
+
+Go code may not store a Go pointer in C memory.  C code may store Go
+pointers in C memory, subject to the rule above: it must stop storing
+the Go pointer when the C function returns.
+
+These rules are checked dynamically at runtime.  The checking is
+controlled by the cgocheck setting of the GODEBUG environment
+variable.  The default setting is GODEBUG=cgocheck=1, which implements
+reasonably cheap dynamic checks.  These checks may be disabled
+entirely using GODEBUG=cgocheck=0.  Complete checking of pointer
+handling, at some cost in run time, is available via GODEBUG=cgocheck=2.
+
+It is possible to defeat this enforcement by using the unsafe package,
+and of course there is nothing stopping the C code from doing anything
+it likes.  However, programs that break these rules are likely to fail
+in unexpected and unpredictable ways.
 
 # Using cgo directly
 

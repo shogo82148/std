@@ -47,6 +47,8 @@ type SectionHeader struct {
 	Info      uint32
 	Addralign uint64
 	Entsize   uint64
+
+	FileSize uint64
 }
 
 // A Section represents a single section in an ELF file.
@@ -55,12 +57,19 @@ type Section struct {
 
 	io.ReaderAt
 	sr *io.SectionReader
+
+	compressionType   CompressionType
+	compressionOffset int64
 }
 
 // Data reads and returns the contents of the ELF section.
+// Even if the section is stored compressed in the ELF file,
+// Data returns uncompressed data.
 func (s *Section) Data() ([]byte, error)
 
 // Open returns a new ReadSeeker reading the ELF section.
+// Even if the section is stored compressed in the ELF file,
+// the ReadSeeker reads uncompressed data.
 func (s *Section) Open() io.ReadSeeker
 
 // A ProgHeader represents a single ELF program header.

@@ -36,7 +36,7 @@ func ExampleRel() {
 	// On Unix:
 	// "/a/b/c": "b/c" <nil>
 	// "/b/c": "../b/c" <nil>
-	// "./b/c": "" Rel: can't make b/c relative to /a
+	// "./b/c": "" Rel: can't make ./b/c relative to /a
 }
 
 func ExampleSplit() {

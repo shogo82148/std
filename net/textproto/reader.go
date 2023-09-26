@@ -87,7 +87,12 @@ func (r *Reader) ReadCodeLine(expectCode int) (code int, message string, err err
 // separated by a newline (\n).
 //
 // See page 36 of RFC 959 (http://www.ietf.org/rfc/rfc959.txt) for
-// details.
+// details of another form of response accepted:
+//
+//	code-message line 1
+//	message line 2
+//	...
+//	code message line n
 //
 // If the prefix of the status does not match the digits in expectCode,
 // ReadResponse returns with err set to &Error{code, message}.

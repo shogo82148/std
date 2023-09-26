@@ -42,6 +42,6 @@ type InterfaceAddrMessage struct {
 // slice containing the RoutingMessage interfaces.
 func ParseRoutingMessage(b []byte) (msgs []RoutingMessage, err error)
 
-// ParseRoutingMessage parses msg's payload as raw sockaddrs and
+// ParseRoutingSockaddr parses msg's payload as raw sockaddrs and
 // returns the slice containing the Sockaddr interfaces.
 func ParseRoutingSockaddr(msg RoutingMessage) ([]Sockaddr, error)

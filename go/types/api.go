@@ -21,6 +21,8 @@
 // Type inference computes the type (Type) of every expression (ast.Expr)
 // and checks for compliance with the language specification.
 // Use Info.Types[expr].Type for the results of type inference.
+//
+// For a tutorial, see https://golang.org/s/types-tutorial.
 package types
 
 import (
@@ -44,10 +46,25 @@ type Error struct {
 // filename:line:column: message
 func (err Error) Error() string
 
-// An importer resolves import paths to Packages.
-// See go/importer for existing implementations.
+// An Importer resolves import paths to Packages.
+//
+// CAUTION: This interface does not support the import of locally
+// vendored packages. See https://golang.org/s/go15vendor.
+// If possible, external implementations should implement ImporterFrom.
 type Importer interface {
 	Import(path string) (*Package, error)
+}
+
+// ImportMode is reserved for future use.
+type ImportMode int
+
+// An ImporterFrom resolves import paths to packages; it
+// supports vendoring per https://golang.org/s/go15vendor.
+// Use go/importer to obtain an ImporterFrom implementation.
+type ImporterFrom interface {
+	Importer
+
+	ImportFrom(path, srcDir string, mode ImportMode) (*Package, error)
 }
 
 // A Config specifies the configuration for type checking.
@@ -149,8 +166,10 @@ type Initializer struct {
 
 func (init *Initializer) String() string
 
-// Check type-checks a package and returns the resulting package object,
-// the first error if any, and if info != nil, additional type information.
+// Check type-checks a package and returns the resulting package object and
+// the first error if any. Additionally, if info != nil, Check populates each
+// of the non-nil maps in the Info struct.
+//
 // The package is marked as complete if no errors occurred, otherwise it is
 // incomplete. See Config.Error for controlling behavior in the presence of
 // errors.

@@ -264,12 +264,27 @@ const (
 	SHF_OS_NONCONFORMING SectionFlag = 0x100
 	SHF_GROUP            SectionFlag = 0x200
 	SHF_TLS              SectionFlag = 0x400
+	SHF_COMPRESSED       SectionFlag = 0x800
 	SHF_MASKOS           SectionFlag = 0x0ff00000
 	SHF_MASKPROC         SectionFlag = 0xf0000000
 )
 
 func (i SectionFlag) String() string
 func (i SectionFlag) GoString() string
+
+// Section compression type.
+type CompressionType int
+
+const (
+	COMPRESS_ZLIB   CompressionType = 1
+	COMPRESS_LOOS   CompressionType = 0x60000000
+	COMPRESS_HIOS   CompressionType = 0x6fffffff
+	COMPRESS_LOPROC CompressionType = 0x70000000
+	COMPRESS_HIPROC CompressionType = 0x7fffffff
+)
+
+func (i CompressionType) String() string
+func (i CompressionType) GoString() string
 
 // Prog.Type
 type ProgType int
@@ -714,6 +729,64 @@ const (
 func (i R_386) String() string
 func (i R_386) GoString() string
 
+// Relocation types for MIPS.
+type R_MIPS int
+
+const (
+	R_MIPS_NONE          R_MIPS = 0
+	R_MIPS_16            R_MIPS = 1
+	R_MIPS_32            R_MIPS = 2
+	R_MIPS_REL32         R_MIPS = 3
+	R_MIPS_26            R_MIPS = 4
+	R_MIPS_HI16          R_MIPS = 5
+	R_MIPS_LO16          R_MIPS = 6
+	R_MIPS_GPREL16       R_MIPS = 7
+	R_MIPS_LITERAL       R_MIPS = 8
+	R_MIPS_GOT16         R_MIPS = 9
+	R_MIPS_PC16          R_MIPS = 10
+	R_MIPS_CALL16        R_MIPS = 11
+	R_MIPS_GPREL32       R_MIPS = 12
+	R_MIPS_SHIFT5        R_MIPS = 16
+	R_MIPS_SHIFT6        R_MIPS = 17
+	R_MIPS_64            R_MIPS = 18
+	R_MIPS_GOT_DISP      R_MIPS = 19
+	R_MIPS_GOT_PAGE      R_MIPS = 20
+	R_MIPS_GOT_OFST      R_MIPS = 21
+	R_MIPS_GOT_HI16      R_MIPS = 22
+	R_MIPS_GOT_LO16      R_MIPS = 23
+	R_MIPS_SUB           R_MIPS = 24
+	R_MIPS_INSERT_A      R_MIPS = 25
+	R_MIPS_INSERT_B      R_MIPS = 26
+	R_MIPS_DELETE        R_MIPS = 27
+	R_MIPS_HIGHER        R_MIPS = 28
+	R_MIPS_HIGHEST       R_MIPS = 29
+	R_MIPS_CALL_HI16     R_MIPS = 30
+	R_MIPS_CALL_LO16     R_MIPS = 31
+	R_MIPS_SCN_DISP      R_MIPS = 32
+	R_MIPS_REL16         R_MIPS = 33
+	R_MIPS_ADD_IMMEDIATE R_MIPS = 34
+	R_MIPS_PJUMP         R_MIPS = 35
+	R_MIPS_RELGOT        R_MIPS = 36
+	R_MIPS_JALR          R_MIPS = 37
+
+	R_MIPS_TLS_DTPMOD32    R_MIPS = 38
+	R_MIPS_TLS_DTPREL32    R_MIPS = 39
+	R_MIPS_TLS_DTPMOD64    R_MIPS = 40
+	R_MIPS_TLS_DTPREL64    R_MIPS = 41
+	R_MIPS_TLS_GD          R_MIPS = 42
+	R_MIPS_TLS_LDM         R_MIPS = 43
+	R_MIPS_TLS_DTPREL_HI16 R_MIPS = 44
+	R_MIPS_TLS_DTPREL_LO16 R_MIPS = 45
+	R_MIPS_TLS_GOTTPREL    R_MIPS = 46
+	R_MIPS_TLS_TPREL32     R_MIPS = 47
+	R_MIPS_TLS_TPREL64     R_MIPS = 48
+	R_MIPS_TLS_TPREL_HI16  R_MIPS = 49
+	R_MIPS_TLS_TPREL_LO16  R_MIPS = 50
+)
+
+func (i R_MIPS) String() string
+func (i R_MIPS) GoString() string
+
 // Relocation types for PowerPC.
 type R_PPC int
 
@@ -1010,6 +1083,13 @@ type Dyn32 struct {
 	Val uint32
 }
 
+// ELF32 Compression header.
+type Chdr32 struct {
+	Type      uint32
+	Size      uint32
+	Addralign uint32
+}
+
 // ELF32 Relocations that don't need an addend field.
 type Rel32 struct {
 	Off  uint32
@@ -1093,6 +1173,14 @@ type Prog64 struct {
 type Dyn64 struct {
 	Tag int64
 	Val uint64
+}
+
+// ELF64 Compression header.
+type Chdr64 struct {
+	Type      uint32
+	_         uint32
+	Size      uint64
+	Addralign uint64
 }
 
 /* ELF64 relocations that don't need an addend field. */

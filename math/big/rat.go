@@ -95,17 +95,3 @@ func (z *Rat) Mul(x, y *Rat) *Rat
 // Quo sets z to the quotient x/y and returns z.
 // If y == 0, a division-by-zero run-time panic occurs.
 func (z *Rat) Quo(x, y *Rat) *Rat
-
-// Gob codec version. Permits backward-compatible changes to the encoding.
-
-// GobEncode implements the gob.GobEncoder interface.
-func (x *Rat) GobEncode() ([]byte, error)
-
-// GobDecode implements the gob.GobDecoder interface.
-func (z *Rat) GobDecode(buf []byte) error
-
-// MarshalText implements the encoding.TextMarshaler interface.
-func (r *Rat) MarshalText() (text []byte, err error)
-
-// UnmarshalText implements the encoding.TextUnmarshaler interface.
-func (r *Rat) UnmarshalText(text []byte) error

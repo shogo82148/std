@@ -128,6 +128,7 @@ type EmbedA struct {
 	EmbedC
 	EmbedB EmbedB
 	FieldA string
+	embedD
 }
 
 type EmbedB struct {
@@ -326,6 +327,15 @@ type NestedAndChardata struct {
 type NestedAndComment struct {
 	AB      []string `xml:"A>B"`
 	Comment string   `xml:",comment"`
+}
+
+type CDataTest struct {
+	Chardata string `xml:",cdata"`
+}
+
+type NestedAndCData struct {
+	AB    []string `xml:"A>B"`
+	CDATA string   `xml:",cdata"`
 }
 
 // Unless explicitly stated as such (or *Plain), all of the

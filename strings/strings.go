@@ -26,9 +26,6 @@ func ContainsAny(s, chars string) bool
 // ContainsRune reports whether the Unicode code point r is within s.
 func ContainsRune(s string, r rune) bool
 
-// Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.
-func Index(s, sep string) int
-
 // LastIndex returns the index of the last instance of sep in s, or -1 if sep is not present in s.
 func LastIndex(s, sep string) int
 

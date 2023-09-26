@@ -33,12 +33,9 @@ func Pipe(p []int) (err error)
 
 func Getsockname(fd int) (sa Sockaddr, err error)
 
-// The const provides a compile-time constant so clients
-// can adjust to whether there is a working Getwd and avoid
-// even linking this function into the binary.  See ../os/getwd.go.
-const ImplementsGetwd = false
+const ImplementsGetwd = true
 
-func Getwd() (string, error)
+func Getwd() (wd string, err error)
 
 func Getgroups() (gids []int, err error)
 

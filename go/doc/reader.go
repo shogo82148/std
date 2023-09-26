@@ -5,7 +5,7 @@
 package doc
 
 // A methodSet describes a set of methods. Entries where Decl == nil are conflict
-// entries (more then one method with the same name at the same embedding level).
+// entries (more than one method with the same name at the same embedding level).
 //
 
 // An embeddedSet describes a set of embedded types.

@@ -6,3 +6,5 @@
 //     go run makeisprint.go -output isprint.go
 
 package strconv
+
+// isGraphic lists the graphic runes not matched by IsPrint.

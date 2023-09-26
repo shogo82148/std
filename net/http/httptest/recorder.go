@@ -34,6 +34,9 @@ func (rw *ResponseRecorder) Header() http.Header
 // Write always succeeds and writes to rw.Body, if not nil.
 func (rw *ResponseRecorder) Write(buf []byte) (int, error)
 
+// WriteString always succeeds and writes to rw.Body, if not nil.
+func (rw *ResponseRecorder) WriteString(str string) (int, error)
+
 // WriteHeader sets rw.Code.
 func (rw *ResponseRecorder) WriteHeader(code int)
 

@@ -36,4 +36,5 @@ package template
 // transition into the correct context at the end of a tag and to identify the
 // end delimiter for the body.
 
-// attr identifies the most recent HTML attribute when inside a start tag.
+// attr identifies the current HTML attribute when inside the attribute,
+// that is, starting from stateAttrName until stateTag/stateText (exclusive).

@@ -30,7 +30,7 @@ func WriteFile(filename string, data []byte, perm os.FileMode) error
 // byName implements sort.Interface.
 
 // ReadDir reads the directory named by dirname and returns
-// a list of sorted directory entries.
+// a list of directory entries sorted by filename.
 func ReadDir(dirname string) ([]os.FileInfo, error)
 
 // NopCloser returns a ReadCloser with a no-op Close method wrapping

@@ -5,6 +5,10 @@
 // Package exec runs external commands. It wraps os.StartProcess to make it
 // easier to remap stdin and stdout, connect I/O with pipes, and do other
 // adjustments.
+//
+// Note that the examples in this package assume a Unix system.
+// They may not run on Windows, and they do not run in the Go Playground
+// used by golang.org and godoc.org.
 package exec
 
 import (
@@ -95,6 +99,8 @@ func (c *Cmd) Start() error
 // An ExitError reports an unsuccessful exit by a command.
 type ExitError struct {
 	*os.ProcessState
+
+	Stderr []byte
 }
 
 func (e *ExitError) Error() string
@@ -118,6 +124,8 @@ func (e *ExitError) Error() string
 func (c *Cmd) Wait() error
 
 // Output runs the command and returns its standard output.
+// Any returned error will usually be of type *ExitError.
+// If c.Stderr was nil, Output populates ExitError.Stderr.
 func (c *Cmd) Output() ([]byte, error)
 
 // CombinedOutput runs the command and returns its combined standard
@@ -151,3 +159,7 @@ func (c *Cmd) StdoutPipe() (io.ReadCloser, error)
 // For the same reason, it is incorrect to use Run when using StderrPipe.
 // See the StdoutPipe example for idiomatic usage.
 func (c *Cmd) StderrPipe() (io.ReadCloser, error)
+
+// prefixSuffixSaver is an io.Writer which retains the first N bytes
+// and the last N bytes written to it. The Bytes() methods reconstructs
+// it with a pretty error message.

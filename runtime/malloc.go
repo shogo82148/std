@@ -76,9 +76,6 @@
 //	   or the page heap can avoid zeroing altogether.
 //	2. the cost of zeroing when reusing a small object is
 //	   charged to the mutator, not the garbage collector.
-//
-// This code was written with an eye toward translating to Go
-// in the future.  Methods have the form Type_Method(Type *t, ...).
 
 package runtime
 

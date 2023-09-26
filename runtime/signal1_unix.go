@@ -12,7 +12,7 @@ package runtime
 // handle a particular signal (e.g., signal occurred on a non-Go thread).
 // See sigfwdgo() for more information on when the signals are forwarded.
 //
-// Signal forwarding is currently available only on Linux.
+// Signal forwarding is currently available only on Darwin and Linux.
 
 // sigmask represents a general signal mask compatible with the GOOS
 // specific sigset types: the signal numbered x is represented by bit x-1

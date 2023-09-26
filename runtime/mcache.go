@@ -6,6 +6,9 @@ package runtime
 
 // Per-thread (in Go, per-P) cache for small objects.
 // No locking needed because it is per-thread (per-P).
+//
+// mcaches are allocated from non-GC'd memory, so any heap pointers
+// must be specially handled.
 
 // A gclink is a node in a linked list of blocks, like mlink,
 // but it is opaque to the garbage collector.

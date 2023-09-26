@@ -31,6 +31,7 @@ type Package struct {
 	GoFiles     []string
 	GccFiles    []string
 	Preamble    string
+	CgoChecks   []string
 }
 
 // A File collects information about a single Go input file.
@@ -40,6 +41,7 @@ type File struct {
 	Package  string
 	Preamble string
 	Ref      []*Ref
+	Calls    []*ast.CallExpr
 	ExpFunc  []*ExpFunc
 	Name     map[string]*Name
 }

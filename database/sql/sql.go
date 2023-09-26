@@ -16,7 +16,10 @@ import (
 	"github.com/shogo82148/std/database/sql/driver"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/time"
 )
+
+// nowFunc returns the current time; it's overridden in tests.
 
 // Register makes a database driver available by the provided name.
 // If Register is called twice with the same name or if driver is nil,
@@ -128,14 +131,15 @@ type DB struct {
 	freeConn     []*driverConn
 	connRequests []chan connRequest
 	numOpen      int
-	pendingOpens int
 
-	openerCh chan struct{}
-	closed   bool
-	dep      map[finalCloser]depSet
-	lastPut  map[*driverConn]string
-	maxIdle  int
-	maxOpen  int
+	openerCh    chan struct{}
+	closed      bool
+	dep         map[finalCloser]depSet
+	lastPut     map[*driverConn]string
+	maxIdle     int
+	maxOpen     int
+	maxLifetime time.Duration
+	cleanerCh   chan struct{}
 }
 
 // connReuseStrategy determines how (*DB).conn returns database connections.
@@ -154,7 +158,7 @@ type DB struct {
 // The finalCloser interface is used by (*DB).addDep and related
 // dependency reference counting.
 
-// This is the size of the connectionOpener request chan (dn.openerCh).
+// This is the size of the connectionOpener request chan (DB.openerCh).
 // This value should be larger than the maximum typical value
 // used for db.maxOpen. If maxOpen is significantly larger than
 // connectionRequestQueueSize then it is possible for ALL calls into the *DB
@@ -208,6 +212,13 @@ func (db *DB) SetMaxIdleConns(n int)
 // The default is 0 (unlimited).
 func (db *DB) SetMaxOpenConns(n int)
 
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+//
+// Expired connections may be closed lazily before reuse.
+//
+// If d <= 0, connections are reused forever.
+func (db *DB) SetConnMaxLifetime(d time.Duration)
+
 // DBStats contains database statistics.
 type DBStats struct {
 	OpenConnections int
@@ -245,7 +256,7 @@ func (db *DB) Exec(query string, args ...interface{}) (Result, error)
 func (db *DB) Query(query string, args ...interface{}) (*Rows, error)
 
 // QueryRow executes a query that is expected to return at most one row.
-// QueryRow always return a non-nil value. Errors are deferred until
+// QueryRow always returns a non-nil value. Errors are deferred until
 // Row's Scan method is called.
 func (db *DB) QueryRow(query string, args ...interface{}) *Row
 
@@ -319,7 +330,7 @@ func (tx *Tx) Exec(query string, args ...interface{}) (Result, error)
 func (tx *Tx) Query(query string, args ...interface{}) (*Rows, error)
 
 // QueryRow executes a query that is expected to return at most one row.
-// QueryRow always return a non-nil value. Errors are deferred until
+// QueryRow always returns a non-nil value. Errors are deferred until
 // Row's Scan method is called.
 func (tx *Tx) QueryRow(query string, args ...interface{}) *Row
 
@@ -412,17 +423,56 @@ func (rs *Rows) Err() error
 func (rs *Rows) Columns() ([]string, error)
 
 // Scan copies the columns in the current row into the values pointed
-// at by dest.
+// at by dest. The number of values in dest must be the same as the
+// number of columns in Rows.
 //
-// If an argument has type *[]byte, Scan saves in that argument a copy
-// of the corresponding data. The copy is owned by the caller and can
-// be modified and held indefinitely. The copy can be avoided by using
-// an argument of type *RawBytes instead; see the documentation for
-// RawBytes for restrictions on its use.
+// Scan converts columns read from the database into the following
+// common Go types and special types provided by the sql package:
+//
+//	*string
+//	*[]byte
+//	*int, *int8, *int16, *int32, *int64
+//	*uint, *uint8, *uint16, *uint32, *uint64
+//	*bool
+//	*float32, *float64
+//	*interface{}
+//	*RawBytes
+//	any type implementing Scanner (see Scanner docs)
+//
+// In the most simple case, if the type of the value from the source
+// column is an integer, bool or string type T and dest is of type *T,
+// Scan simply assigns the value through the pointer.
+//
+// Scan also converts between string and numeric types, as long as no
+// information would be lost. While Scan stringifies all numbers
+// scanned from numeric database columns into *string, scans into
+// numeric types are checked for overflow. For example, a float64 with
+// value 300 or a string with value "300" can scan into a uint16, but
+// not into a uint8, though float64(255) or "255" can scan into a
+// uint8. One exception is that scans of some float64 numbers to
+// strings may lose information when stringifying. In general, scan
+// floating point columns into *float64.
+//
+// If a dest argument has type *[]byte, Scan saves in that argument a
+// copy of the corresponding data. The copy is owned by the caller and
+// can be modified and held indefinitely. The copy can be avoided by
+// using an argument of type *RawBytes instead; see the documentation
+// for RawBytes for restrictions on its use.
 //
 // If an argument has type *interface{}, Scan copies the value
-// provided by the underlying driver without conversion. If the value
-// is of type []byte, a copy is made and the caller owns the result.
+// provided by the underlying driver without conversion. When scanning
+// from a source value of type []byte to *interface{}, a copy of the
+// slice is made and the caller owns the result.
+//
+// Source values of type time.Time may be scanned into values of type
+// *time.Time, *interface{}, *string, or *[]byte. When converting to
+// the latter two, time.Format3339Nano is used.
+//
+// Source values of type bool may be scanned into types *bool,
+// *interface{}, *string, *[]byte, or *RawBytes.
+//
+// For scanning into *bool, the source may be true, false, 1, 0, or
+// string inputs parseable by strconv.ParseBool.
 func (rs *Rows) Scan(dest ...interface{}) error
 
 // Close closes the Rows, preventing further enumeration. If Next returns
@@ -437,8 +487,9 @@ type Row struct {
 }
 
 // Scan copies the columns from the matched row into the values
-// pointed at by dest.  If more than one row matches the query,
-// Scan uses the first row and discards the rest.  If no row matches
+// pointed at by dest. See the documentation on Rows.Scan for details.
+// If more than one row matches the query,
+// Scan uses the first row and discards the rest. If no row matches
 // the query, Scan returns ErrNoRows.
 func (r *Row) Scan(dest ...interface{}) error
 

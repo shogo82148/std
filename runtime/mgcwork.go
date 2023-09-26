@@ -24,7 +24,7 @@ package runtime
 //     (preemption must be disabled)
 //     gcw := &getg().m.p.ptr().gcw
 //     .. call gcw.put() to produce and gcw.get() to consume ..
-//     if gcphase == _GCmarktermination {
+//     if gcBlackenPromptly {
 //         gcw.dispose()
 //     }
 //

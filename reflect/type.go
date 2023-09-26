@@ -178,7 +178,8 @@ func (d ChanDir) String() string
 
 // A StructField describes a single field in a struct.
 type StructField struct {
-	Name    string
+	Name string
+
 	PkgPath string
 
 	Type      Type

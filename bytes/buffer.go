@@ -27,10 +27,11 @@ type Buffer struct {
 // ErrTooLarge is passed to panic if memory cannot be allocated to store data in a buffer.
 var ErrTooLarge = errors.New("bytes.Buffer: too large")
 
-// Bytes returns a slice of the contents of the unread portion of the buffer;
-// len(b.Bytes()) == b.Len().  If the caller changes the contents of the
-// returned slice, the contents of the buffer will change provided there
-// are no intervening method calls on the Buffer.
+// Bytes returns a slice of length b.Len() holding the unread portion of the buffer.
+// The slice is valid for use only until the next buffer modification (that is,
+// only until the next call to a method like Read, Write, Reset, or Truncate).
+// The slice aliases the buffer content at least until the next buffer modification,
+// so immediate changes to the slice will affect the result of future reads.
 func (b *Buffer) Bytes() []byte
 
 // String returns the contents of the unread portion of the buffer
@@ -45,12 +46,14 @@ func (b *Buffer) Len() int
 // total space allocated for the buffer's data.
 func (b *Buffer) Cap() int
 
-// Truncate discards all but the first n unread bytes from the buffer.
+// Truncate discards all but the first n unread bytes from the buffer
+// but continues to use the same allocated storage.
 // It panics if n is negative or greater than the length of the buffer.
 func (b *Buffer) Truncate(n int)
 
-// Reset resets the buffer so it has no content.
-// b.Reset() is the same as b.Truncate(0).
+// Reset resets the buffer to be empty,
+// but it retains the underlying storage for use by future writes.
+// Reset is the same as Truncate(0).
 func (b *Buffer) Reset()
 
 // Grow grows the buffer's capacity, if necessary, to guarantee space for

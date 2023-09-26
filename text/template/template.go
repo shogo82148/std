@@ -42,7 +42,7 @@ func (t *Template) Clone() (*Template, error)
 
 // AddParseTree adds parse tree for template with given name and associates it with t.
 // If the template does not already exist, it will create a new one.
-// It is an error to reuse a name except to overwrite an empty template.
+// If the template does exist, it will be replaced.
 func (t *Template) AddParseTree(name string, tree *parse.Tree) (*Template, error)
 
 // Templates returns a slice of defined templates associated with t.
@@ -57,8 +57,9 @@ func (t *Template) Delims(left, right string) *Template
 
 // Funcs adds the elements of the argument map to the template's function map.
 // It panics if a value in the map is not a function with appropriate return
-// type. However, it is legal to overwrite elements of the map. The return
-// value is the template, so calls can be chained.
+// type or if the name cannot be used syntactically as a function in a template.
+// It is legal to overwrite elements of the map. The return value is the template,
+// so calls can be chained.
 func (t *Template) Funcs(funcMap FuncMap) *Template
 
 // Lookup returns the template with the given name that is associated with t.
@@ -67,9 +68,5 @@ func (t *Template) Lookup(name string) *Template
 
 // Parse defines the template by parsing the text. Nested template definitions will be
 // associated with the top-level template t. Parse may be called multiple times
-// to parse definitions of templates to associate with t. It is an error if a
-// resulting template is non-empty (contains content other than template
-// definitions) and would replace a non-empty template with the same name.
-// (In multiple calls to Parse with the same receiver template, only one call
-// can contain text other than space, comments, and template definitions.)
+// to parse definitions of templates to associate with t.
 func (t *Template) Parse(text string) (*Template, error)

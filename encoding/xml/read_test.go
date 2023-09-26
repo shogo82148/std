@@ -163,3 +163,7 @@ type Pea struct {
 type Pod struct {
 	Pea interface{} `xml:"Pea"`
 }
+
+type X struct {
+	D string `xml:",comment"`
+}

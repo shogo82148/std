@@ -23,6 +23,9 @@ var (
 
 // The gzip file stores a header giving metadata about the compressed file.
 // That header is exposed as the fields of the Writer and Reader structs.
+//
+// Strings must be UTF-8 encoded and may only contain Unicode code points
+// U+0001 through U+00FF, due to limitations of the GZIP file format.
 type Header struct {
 	Comment string
 	Extra   []byte
@@ -60,7 +63,10 @@ type Reader struct {
 // NewReader creates a new Reader reading the given reader.
 // If r does not also implement io.ByteReader,
 // the decompressor may read more data than necessary from r.
+//
 // It is the caller's responsibility to call Close on the Reader when done.
+//
+// The Reader.Header fields will be valid in the Reader returned.
 func NewReader(r io.Reader) (*Reader, error)
 
 // Reset discards the Reader z's state and makes it equivalent to the

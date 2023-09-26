@@ -22,6 +22,7 @@ const Size = 4
 // The low 16 bits are s1, the high 16 bits are s2.
 
 // New returns a new hash.Hash32 computing the Adler-32 checksum.
+// Its Sum method will lay the value out in big-endian byte order.
 func New() hash.Hash32
 
 // Checksum returns the Adler-32 checksum of data.

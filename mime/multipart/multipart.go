@@ -53,6 +53,12 @@ func (p *Part) FileName() string
 // parse such headers.
 func NewReader(r io.Reader, boundary string) *Reader
 
+// stickyErrorReader is an io.Reader which never calls Read on its
+// underlying Reader once an error has been seen. (the io.Reader
+// interface's contract promises nothing about the return values of
+// Read calls after an error, yet this package does do multiple Reads
+// after error)
+
 // Read reads the body of a part, after its headers and before the
 // next part (if any) begins.
 func (p *Part) Read(d []byte) (n int, err error)

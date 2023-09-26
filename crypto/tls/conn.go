@@ -46,6 +46,8 @@ type Conn struct {
 	input    *block
 	hand     bytes.Buffer
 
+	activeCall int32
+
 	tmp [16]byte
 }
 
@@ -75,6 +77,15 @@ func (c *Conn) SetWriteDeadline(t time.Time) error
 // cbcMode is an interface for block ciphers using cipher block chaining.
 
 // A block is a simple data buffer.
+
+// RecordHeaderError results when a TLS record header is invalid.
+type RecordHeaderError struct {
+	Msg string
+
+	RecordHeader [5]byte
+}
+
+func (e RecordHeaderError) Error() string
 
 // Write writes data to the connection.
 func (c *Conn) Write(b []byte) (int, error)

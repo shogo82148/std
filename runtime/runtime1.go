@@ -6,9 +6,9 @@ package runtime
 
 // Keep a cached value to make gotraceback fast,
 // since we call it on every call to gentraceback.
-// The cached value is a uint32 in which the low bit
-// is the "crash" setting and the top 31 bits are the
-// gotraceback value.
+// The cached value is a uint32 in which the low bits
+// are the "crash" and "all" settings and the remaining
+// bits are the traceback value (0 off, 1 on, 2 include system).
 
 // TODO: These should be locals in testAtomic64, but we don't 8-byte
 // align stack variables on 386.

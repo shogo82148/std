@@ -13,3 +13,5 @@ package runtime
 // the program continues execution of other goroutines.
 // If all other goroutines exit, the program crashes.
 func Goexit()
+
+//uint32 runtime·panicking;

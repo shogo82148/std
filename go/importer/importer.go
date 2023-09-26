@@ -17,7 +17,9 @@ type Lookup func(path string) (io.ReadCloser, error)
 // For returns an Importer for the given compiler and lookup interface,
 // or nil. Supported compilers are "gc", and "gccgo". If lookup is nil,
 // the default package lookup mechanism for the given compiler is used.
+// BUG(issue13847): For does not support non-nil lookup functions.
 func For(compiler string, lookup Lookup) types.Importer
 
 // Default returns an Importer for the compiler that built the running binary.
+// If available, the result implements types.ImporterFrom.
 func Default() types.Importer

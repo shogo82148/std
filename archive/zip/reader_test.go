@@ -18,10 +18,12 @@ type ZipTest struct {
 }
 
 type ZipTestFile struct {
-	Name       string
-	Content    []byte
+	Name  string
+	Mode  os.FileMode
+	Mtime string
+
 	ContentErr error
+	Content    []byte
 	File       string
-	Mtime      string
-	Mode       os.FileMode
+	Size       uint64
 }

@@ -38,8 +38,8 @@ type FileSystem interface {
 type File interface {
 	io.Closer
 	io.Reader
+	io.Seeker
 	Readdir(count int) ([]os.FileInfo, error)
-	Seek(offset int64, whence int) (int64, error)
 	Stat() (os.FileInfo, error)
 }
 
@@ -76,6 +76,12 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 
 // ServeFile replies to the request with the contents of the named
 // file or directory.
+//
+// If the provided file or direcory name is a relative path, it is
+// interpreted relative to the current directory and may ascend to parent
+// directories. If the provided name is constructed from user input, it
+// should be sanitized before calling ServeFile. As a precaution, ServeFile
+// will reject requests where r.URL.Path contains a ".." path element.
 //
 // As a special case, ServeFile redirects any request where r.URL.Path
 // ends in "/index.html" to the same path, without the final

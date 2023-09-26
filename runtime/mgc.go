@@ -120,17 +120,6 @@
 
 package runtime
 
-// firstStackBarrierOffset is the approximate byte offset at
-// which to place the first stack barrier from the current SP.
-// This is a lower bound on how much stack will have to be
-// re-scanned during mark termination. Subsequent barriers are
-// placed at firstStackBarrierOffset * 2^n offsets.
-//
-// For debugging, this can be set to 0, which will install a
-// stack barrier at every frame. If you do this, you may also
-// have to raise _StackMin, since the stack barrier
-// bookkeeping will use a large amount of each stack.
-
 // heapminimum is the minimum heap size at which to trigger GC.
 // For small heaps, this overrides the usual GOGC*live set rule.
 //
@@ -150,6 +139,9 @@ package runtime
 
 // Garbage collector phase.
 // Indicates to write barrier and sychronization task to preform.
+
+// The compiler knows about this variable.
+// If you change it, you must change the compiler too.
 
 // gcBlackenEnabled is 1 if mutator assists and background mark
 // workers are allowed to blacken objects. This must only be set when
@@ -191,20 +183,24 @@ package runtime
 // gcGoalUtilization is the goal CPU utilization for background
 // marking as a fraction of GOMAXPROCS.
 
-// gcBgCreditSlack is the amount of scan work credit background
-// scanning can accumulate locally before updating
-// gcController.bgScanCredit. Lower values give mutator assists more
-// accurate accounting of background scanning. Higher values reduce
-// memory contention.
+// gcCreditSlack is the amount of scan work credit that can can
+// accumulate locally before updating gcController.scanWork and,
+// optionally, gcController.bgScanCredit. Lower values give a more
+// accurate assist ratio and make it more likely that assists will
+// successfully steal background credit. Higher values reduce memory
+// contention.
 
 // gcAssistTimeSlack is the nanoseconds of mutator assist time that
 // can accumulate on a P before updating gcController.assistTime.
 
-// bgMarkSignal synchronizes the GC coordinator and background mark workers.
+// gcOverAssistBytes determines how many extra allocation bytes of
+// assist credit a GC assist builds up when an assist happens. This
+// amortizes the cost of an assist by pre-paying for this many bytes
+// of future allocations.
 
 // GC runs a garbage collection and blocks the caller until the
 // garbage collection is complete. It may also block the entire
 // program.
 func GC()
 
-// State of the background concurrent GC goroutine.
+// gcMode indicates how concurrent a GC cycle should be.

@@ -136,7 +136,7 @@ type PacketConn interface {
 //
 // Multiple goroutines may invoke methods on a Listener simultaneously.
 type Listener interface {
-	Accept() (c Conn, err error)
+	Accept() (Conn, error)
 
 	Close() error
 
@@ -221,10 +221,11 @@ func (e *DNSConfigError) Temporary() bool
 
 // DNSError represents a DNS lookup error.
 type DNSError struct {
-	Err       string
-	Name      string
-	Server    string
-	IsTimeout bool
+	Err         string
+	Name        string
+	Server      string
+	IsTimeout   bool
+	IsTemporary bool
 }
 
 func (e *DNSError) Error() string

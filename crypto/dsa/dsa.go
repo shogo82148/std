@@ -50,7 +50,7 @@ const (
 // pick the largest recommended number from table C.1 of FIPS 186-3.
 
 // GenerateParameters puts a random, valid set of DSA parameters into params.
-// This function takes many seconds, even on fast machines.
+// This function can take many seconds, even on fast machines.
 func GenerateParameters(params *Parameters, rand io.Reader, sizes ParameterSizes) (err error)
 
 // GenerateKey generates a public&private key pair. The Parameters of the

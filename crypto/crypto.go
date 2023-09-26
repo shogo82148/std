@@ -63,7 +63,7 @@ type PrivateKey interface{}
 type Signer interface {
 	Public() PublicKey
 
-	Sign(rand io.Reader, msg []byte, opts SignerOpts) (signature []byte, err error)
+	Sign(rand io.Reader, digest []byte, opts SignerOpts) (signature []byte, err error)
 }
 
 // SignerOpts contains options for signing with a Signer.

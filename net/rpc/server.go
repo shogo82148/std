@@ -210,8 +210,9 @@ func (server *Server) ServeCodec(codec ServerCodec)
 func (server *Server) ServeRequest(codec ServerCodec) error
 
 // Accept accepts connections on the listener and serves requests
-// for each incoming connection.  Accept blocks; the caller typically
-// invokes it in a go statement.
+// for each incoming connection. Accept blocks until the listener
+// returns a non-nil error. The caller typically invokes Accept in a
+// go statement.
 func (server *Server) Accept(lis net.Listener)
 
 // Register publishes the receiver's methods in the DefaultServer.

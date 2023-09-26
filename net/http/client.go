@@ -179,6 +179,6 @@ func Head(url string) (resp *Response, err error)
 func (c *Client) Head(url string) (resp *Response, err error)
 
 // cancelTimerBody is an io.ReadCloser that wraps rc with two features:
-// 1) on Read EOF or Close, the timer t is Stopped,
+// 1) on Read error or close, the stop func is called.
 // 2) On Read failure, if reqWasCanceled is true, the error is wrapped and
 //    marked as net.Error that hit its timeout.

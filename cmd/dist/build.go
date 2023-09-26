@@ -23,9 +23,10 @@ package main
 
 // gentab records how to generate some trivial files.
 
-// buildorder records the order of builds for the 'go bootstrap' command.
-// The Go packages and commands must be in dependency order,
-// maintained by hand, but the order doesn't change often.
+// installed maps from a dir name (as given to install) to a chan
+// closed when the dir's package is installed.
+
+// buildlist is the list of directories being built, sorted by name.
 
 // Copied from go/build/build.go.
 // Cannot use go/build directly because cmd/dist for a new release

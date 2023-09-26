@@ -27,12 +27,24 @@ type ReverseProxy struct {
 	FlushInterval time.Duration
 
 	ErrorLog *log.Logger
+
+	BufferPool BufferPool
 }
 
-// NewSingleHostReverseProxy returns a new ReverseProxy that rewrites
+// A BufferPool is an interface for getting and returning temporary
+// byte slices for use by io.CopyBuffer.
+type BufferPool interface {
+	Get() []byte
+	Put([]byte)
+}
+
+// NewSingleHostReverseProxy returns a new ReverseProxy that routes
 // URLs to the scheme, host, and base path provided in target. If the
 // target's path is "/base" and the incoming request was for "/dir",
 // the target request will be for /base/dir.
+// NewSingleHostReverseProxy does not rewrite the Host header.
+// To rewrite Host headers, use ReverseProxy directly with a custom
+// Director policy.
 func NewSingleHostReverseProxy(target *url.URL) *ReverseProxy
 
 // Hop-by-hop headers. These are removed when sent to the backend.

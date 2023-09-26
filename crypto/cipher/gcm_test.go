@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package cipher_test
-
-// AES-GCM test vectors taken from gcmEncryptExtIV128.rsp from
-// http://csrc.nist.gov/groups/STM/cavp/index.html.

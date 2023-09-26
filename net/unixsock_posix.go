@@ -69,8 +69,9 @@ func DialUnix(net string, laddr, raddr *UnixAddr) (*UnixConn, error)
 // typically use variables of type Listener instead of assuming Unix
 // domain sockets.
 type UnixListener struct {
-	fd   *netFD
-	path string
+	fd     *netFD
+	path   string
+	unlink bool
 }
 
 // ListenUnix announces on the Unix domain socket laddr and returns a

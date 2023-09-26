@@ -11,8 +11,8 @@ import (
 
 // Server returns a new TLS server side connection
 // using conn as the underlying transport.
-// The configuration config must be non-nil and must have
-// at least one certificate.
+// The configuration config must be non-nil and must include
+// at least one certificate or else set GetCertificate.
 func Server(conn net.Conn, config *Config) *Conn
 
 // Client returns a new TLS client side connection
@@ -25,14 +25,14 @@ func Client(conn net.Conn, config *Config) *Conn
 
 // NewListener creates a Listener which accepts connections from an inner
 // Listener and wraps each connection with Server.
-// The configuration config must be non-nil and must have
-// at least one certificate.
+// The configuration config must be non-nil and must include
+// at least one certificate or else set GetCertificate.
 func NewListener(inner net.Listener, config *Config) net.Listener
 
 // Listen creates a TLS listener accepting connections on the
 // given network address using net.Listen.
-// The configuration config must be non-nil and must have
-// at least one certificate.
+// The configuration config must be non-nil and must include
+// at least one certificate or else set GetCertificate.
 func Listen(network, laddr string, config *Config) (net.Listener, error)
 
 // DialWithDialer connects to the given network address using dialer.Dial and
@@ -53,9 +53,12 @@ func DialWithDialer(dialer *net.Dialer, network, addr string, config *Config) (*
 func Dial(network, addr string, config *Config) (*Conn, error)
 
 // LoadX509KeyPair reads and parses a public/private key pair from a pair of
-// files. The files must contain PEM encoded data.
+// files. The files must contain PEM encoded data. On successful return,
+// Certificate.Leaf will be nil because the parsed form of the certificate is
+// not retained.
 func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
 
 // X509KeyPair parses a public/private key pair from a pair of
-// PEM encoded data.
+// PEM encoded data. On successful return, Certificate.Leaf will be nil because
+// the parsed form of the certificate is not retained.
 func X509KeyPair(certPEMBlock, keyPEMBlock []byte) (Certificate, error)

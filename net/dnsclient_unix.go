@@ -16,6 +16,8 @@
 
 package net
 
+// A dnsDialer provides dialing suitable for DNS queries.
+
 // A dnsConn represents a DNS transport endpoint.
 
 // A resolverConfig represents a DNS stub resolver configuration.

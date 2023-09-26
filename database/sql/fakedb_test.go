@@ -24,12 +24,21 @@ var _ = log.Printf
 //   INSERT|<tablename>|col=val,col2=val2,col3=?
 //   SELECT|<tablename>|projectcol1,projectcol2|filtercol=?,filtercol2=?
 //
+// Any of these can be preceded by PANIC|<method>|, to cause the
+// named method on fakeStmt to panic.
+//
 // When opening a fakeDriver's database, it starts empty with no
 // tables.  All tables and data are stored in memory only.
 
 type Dummy struct {
 	driver.Driver
 }
+
+// hook to simulate connection failures
+
+// hook to simulate broken connections
+
+// hook to simulate broken connections
 
 // hook to simulate broken connections
 

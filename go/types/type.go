@@ -4,6 +4,10 @@
 
 package types
 
+import (
+	"github.com/shogo82148/std/sync"
+)
+
 // A Type represents a type of Go.
 // All types implement the Type interface.
 type Type interface {
@@ -114,10 +118,10 @@ func (s *Slice) Elem() Type
 
 // A Struct represents a struct type.
 type Struct struct {
-	fields []*Var
-	tags   []string
-
-	offsets []int64
+	fields      []*Var
+	tags        []string
+	offsets     []int64
+	offsetsOnce sync.Once
 }
 
 // NewStruct returns a new struct with the given fields and corresponding field tags.
@@ -258,7 +262,7 @@ type Chan struct {
 // A ChanDir value indicates a channel direction.
 type ChanDir int
 
-// The direction of a channel is indicated by one of the following constants.
+// The direction of a channel is indicated by one of these constants.
 const (
 	SendRecv ChanDir = iota
 	SendOnly

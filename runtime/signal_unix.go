@@ -6,3 +6,5 @@
 // +build darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package runtime
+
+import _ "github.com/shogo82148/std/unsafe"

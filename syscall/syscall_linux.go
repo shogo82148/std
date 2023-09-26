@@ -168,7 +168,7 @@ func Getpgrp() (pid int)
 
 func Setuid(uid int) (err error)
 
-func Setgid(uid int) (err error)
+func Setgid(gid int) (err error)
 
 func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error)
 

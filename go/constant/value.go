@@ -3,8 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package constant implements Values representing untyped
-// Go constants and the corresponding operations. Values
-// and operations may have arbitrary or unlimited precision.
+// Go constants and their corresponding operations.
 //
 // A special Unknown value may be used when a value
 // is unknown due to an error. Operations on unknown
@@ -33,16 +32,22 @@ const (
 	Complex
 )
 
-// A Value represents a mathematically exact value of a given Kind.
+// A Value represents the value of a Go constant.
 type Value interface {
 	Kind() Kind
 
 	String() string
 
+	ExactString() string
+
 	implementsValue()
 }
 
-// int64 bounds
+// Maximum supported mantissa precision.
+// The spec requires at least 256 bits; typical implementations use 512 bits.
+
+// Permit fractions with component sizes up to maxExp
+// before switching to using floating-point numbers.
 
 // MakeUnknown returns the Unknown value.
 func MakeUnknown() Value
@@ -59,17 +64,16 @@ func MakeInt64(x int64) Value
 // MakeUint64 returns the Int value for x.
 func MakeUint64(x uint64) Value
 
-// MakeFloat64 returns the numeric value for x.
-// If x is not finite, the result is unknown.
+// MakeFloat64 returns the Float value for x.
+// If x is not finite, the result is an Unknown.
 func MakeFloat64(x float64) Value
 
 // MakeFromLiteral returns the corresponding integer, floating-point,
-// imaginary, character, or string value for a Go literal string.
-// If prec > 0, prec specifies an upper limit for the precision of
-// a numeric value. If the literal string is invalid, the result is
-// nil.
-// BUG(gri) Only prec == 0 is supported at the moment.
-func MakeFromLiteral(lit string, tok token.Token, prec uint) Value
+// imaginary, character, or string value for a Go literal string. The
+// tok value must be one of token.INT, token.FLOAT, toke.IMAG, token.
+// CHAR, or token.STRING. The final argument must be zero.
+// If the literal string syntax is invalid, the result is an Unknown.
+func MakeFromLiteral(lit string, tok token.Token, zero uint) Value
 
 // BoolVal returns the Go boolean value of x, which must be a Bool or an Unknown.
 // If x is Unknown, the result is false.
@@ -93,7 +97,7 @@ func Uint64Val(x Value) (uint64, bool)
 func Float32Val(x Value) (float32, bool)
 
 // Float64Val returns the nearest Go float64 value of x and whether the result is exact;
-// x must be numeric but not Complex, or Unknown. For values too small (too close to 0)
+// x must be numeric or an Unknown, but not Complex. For values too small (too close to 0)
 // to represent as float64, Float64Val silently underflows to 0. The result sign always
 // matches the sign of x, even for 0.
 // If x is Unknown, the result is (0, false).
@@ -118,15 +122,17 @@ func Bytes(x Value) []byte
 func MakeFromBytes(bytes []byte) Value
 
 // Num returns the numerator of x; x must be Int, Float, or Unknown.
-// If x is Unknown, the result is Unknown, otherwise it is an Int
+// If x is Unknown, or if it is too large or small to represent as a
+// fraction, the result is Unknown. Otherwise the result is an Int
 // with the same sign as x.
 func Num(x Value) Value
 
 // Denom returns the denominator of x; x must be Int, Float, or Unknown.
-// If x is Unknown, the result is Unknown, otherwise it is an Int >= 1.
+// If x is Unknown, or if it is too large or small to represent as a
+// fraction, the result is Unknown. Otherwise the result is an Int >= 1.
 func Denom(x Value) Value
 
-// MakeImag returns the numeric value x*i (possibly 0);
+// MakeImag returns the Complex value x*i;
 // x must be Int, Float, or Unknown.
 // If x is Unknown, the result is Unknown.
 func MakeImag(x Value) Value
@@ -138,6 +144,18 @@ func Real(x Value) Value
 // Imag returns the imaginary part of x, which must be a numeric or unknown value.
 // If x is Unknown, the result is Unknown.
 func Imag(x Value) Value
+
+// ToInt converts x to an Int value if x is representable as an Int.
+// Otherwise it returns an Unknown.
+func ToInt(x Value) Value
+
+// ToFloat converts x to a Float value if x is representable as a Float.
+// Otherwise it returns an Unknown.
+func ToFloat(x Value) Value
+
+// ToComplex converts x to a Complex value if x is representable as a Complex.
+// Otherwise it returns an Unknown.
+func ToComplex(x Value) Value
 
 // UnaryOp returns the result of the unary expression op y.
 // The operation must be defined for the operand.

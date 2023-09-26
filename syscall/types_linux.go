@@ -92,6 +92,8 @@ typedef struct user_regs PtraceRegs;
 typedef struct user_pt_regs PtraceRegs;
 #elif defined(__powerpc64__)
 typedef struct pt_regs PtraceRegs;
+#elif defined(__mips__)
+typedef struct user PtraceRegs;
 #else
 typedef struct user_regs_struct PtraceRegs;
 #endif
@@ -103,6 +105,9 @@ struct my_epoll_event {
 	// padding is not specified in linux/eventpoll.h but added to conform to the
 	// alignment requirements of EABI
 	int32_t padFd;
+#endif
+#ifdef  __powerpc64__
+	int32_t _padFd;
 #endif
 	int32_t fd;
 	int32_t pad;

@@ -50,8 +50,8 @@ var (
 	Stderr = NewFile(uintptr(syscall.Stderr), "/dev/stderr")
 )
 
-// Flags to Open wrapping those of the underlying system. Not all flags
-// may be implemented on a given system.
+// Flags to OpenFile wrapping those of the underlying system. Not all
+// flags may be implemented on a given system.
 const (
 	O_RDONLY int = syscall.O_RDONLY
 	O_WRONLY int = syscall.O_WRONLY
@@ -106,6 +106,7 @@ func (f *File) WriteAt(b []byte, off int64) (n int, err error)
 // according to whence: 0 means relative to the origin of the file, 1 means
 // relative to the current offset, and 2 means relative to the end.
 // It returns the new offset and an error, if any.
+// The behavior of Seek on a file opened with O_APPEND is not specified.
 func (f *File) Seek(offset int64, whence int) (ret int64, err error)
 
 // WriteString is like Write, but writes the contents of string s rather than
@@ -140,6 +141,8 @@ func Create(name string) (*File, error)
 
 // lstat is overridden in tests.
 
-// Rename renames (moves) a file. OS-specific restrictions might apply.
+// Rename renames (moves) oldpath to newpath.
+// If newpath already exists, Rename replaces it.
+// OS-specific restrictions may apply when oldpath and newpath are in different directories.
 // If there is an error, it will be of type *LinkError.
 func Rename(oldpath, newpath string) error

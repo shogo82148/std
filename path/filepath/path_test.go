@@ -63,10 +63,6 @@ var EvalSymlinksTests = []EvalSymlinksTest{
 	{"test/linkabs", "/"},
 }
 
-var EvalSymlinksAbsWindowsTests = []EvalSymlinksTest{
-	{`c:\`, `c:\`},
-}
-
 // Test directories relative to temporary directory.
 // The tests are run in absTestDirs[0].
 

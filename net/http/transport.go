@@ -11,6 +11,7 @@ package http
 
 import (
 	"github.com/shogo82148/std/crypto/tls"
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/sync"
@@ -28,7 +29,8 @@ var DefaultTransport RoundTripper = &Transport{
 		Timeout:   30 * time.Second,
 		KeepAlive: 30 * time.Second,
 	}).Dial,
-	TLSHandshakeTimeout: 10 * time.Second,
+	TLSHandshakeTimeout:   10 * time.Second,
+	ExpectContinueTimeout: 1 * time.Second,
 }
 
 // DefaultMaxIdleConnsPerHost is the default value of Transport's
@@ -37,7 +39,21 @@ const DefaultMaxIdleConnsPerHost = 2
 
 // Transport is an implementation of RoundTripper that supports HTTP,
 // HTTPS, and HTTP proxies (for either HTTP or HTTPS with CONNECT).
-// Transport can also cache connections for future re-use.
+//
+// By default, Transport caches connections for future re-use.
+// This may leave many open connections when accessing many hosts.
+// This behavior can be managed using Transport's CloseIdleConnections method
+// and the MaxIdleConnsPerHost and DisableKeepAlives fields.
+//
+// Transports should be reused instead of created as needed.
+// Transports are safe for concurrent use by multiple goroutines.
+//
+// A Transport is a low-level primitive for making HTTP and HTTPS requests.
+// For high-level functionality, such as cookies and redirects, see Client.
+//
+// Transport uses HTTP/1.1 for HTTP URLs and either HTTP/1.1 or HTTP/2
+// for HTTPS URLs, depending on whether the server supports HTTP/2.
+// See the package docs for more about HTTP/2.
 type Transport struct {
 	idleMu     sync.Mutex
 	wantIdle   bool
@@ -67,6 +83,13 @@ type Transport struct {
 	MaxIdleConnsPerHost int
 
 	ResponseHeaderTimeout time.Duration
+
+	ExpectContinueTimeout time.Duration
+
+	TLSNextProto map[string]func(authority string, c *tls.Conn) RoundTripper
+
+	nextProtoOnce sync.Once
+	h2transport   *http2Transport
 }
 
 // ProxyFromEnvironment returns the URL of the proxy to use for a
@@ -98,7 +121,10 @@ func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 //
 // For higher-level HTTP client support (such as handling of cookies
 // and redirects), see Get, Post, and the Client type.
-func (t *Transport) RoundTrip(req *Request) (resp *Response, err error)
+func (t *Transport) RoundTrip(req *Request) (*Response, error)
+
+// ErrSkipAltProtocol is a sentinel error value defined by Transport.RegisterProtocol.
+var ErrSkipAltProtocol = errors.New("net/http: skip alternate protocol")
 
 // RegisterProtocol registers a new protocol with scheme.
 // The Transport will pass requests using the given scheme to rt.
@@ -106,6 +132,10 @@ func (t *Transport) RoundTrip(req *Request) (resp *Response, err error)
 //
 // RegisterProtocol can be used by other packages to provide
 // implementations of protocol schemes like "ftp" or "file".
+//
+// If rt.RoundTrip returns ErrSkipAltProtocol, the Transport will
+// handle the RoundTrip itself for that one request, as if the
+// protocol were not registered.
 func (t *Transport) RegisterProtocol(scheme string, rt RoundTripper)
 
 // CloseIdleConnections closes any connections which were previously
@@ -116,13 +146,16 @@ func (t *Transport) CloseIdleConnections()
 
 // CancelRequest cancels an in-flight request by closing its connection.
 // CancelRequest should only be called after RoundTrip has returned.
+//
+// Deprecated: Use Request.Cancel instead. CancelRequest can not cancel
+// HTTP/2 requests.
 func (t *Transport) CancelRequest(req *Request)
 
 // envOnce looks up an environment variable (optionally by multiple
 // names) once. It mitigates expensive lookups on some platforms
 // (e.g. Windows).
 
-// Testing hooks:
+// error values for debugging and testing, not seen by users.
 
 // connectMethod is the map key (in its String form) for keeping persistent
 // TCP connections alive for subsequent HTTP requests.
@@ -146,12 +179,18 @@ func (t *Transport) CancelRequest(req *Request)
 // persistConn wraps a connection, usually a persistent one
 // (but may be used for non-keep-alive requests as well)
 
+// responseAndError is how the goroutine reading from an HTTP/1 server
+// communicates with the goroutine doing the RoundTrip.
+
 // A writeRequest is sent by the readLoop's goroutine to the
 // writeLoop's goroutine to write a request while the read loop
 // concurrently waits on both the write response and the server's
 // reply.
 
-// nil except for tests
+// testHooks. Always non-nil.
+
+// beforeRespHeaderError is used to indicate when an IO error has occurred before
+// any header data was received.
 
 // bodyEOFSignal wraps a ReadCloser but runs fn (if non-nil) at most
 // once, right before its final (error-producing) Read or Close call

@@ -15,9 +15,17 @@ type Error struct {
 
 func (e *Error) Error() string
 
+func (e *Error) Timeout() bool
+
+func (e *Error) Temporary() bool
+
 type EscapeError string
 
 func (e EscapeError) Error() string
+
+type InvalidHostError string
+
+func (e InvalidHostError) Error() string
 
 // QueryUnescape does the inverse transformation of QueryEscape, converting
 // %AB into the byte 0xAB and '+' into ' ' (space). It returns an error if
@@ -45,7 +53,7 @@ func QueryEscape(s string) string
 // Go 1.5 introduced the RawPath field to hold the encoded form of Path.
 // The Parse function sets both Path and RawPath in the URL it returns,
 // and URL's String method uses RawPath if it is a valid encoding of Path,
-// by calling the EncodedPath method.
+// by calling the EscapedPath method.
 //
 // In earlier versions of Go, the more indirect workarounds were that an
 // HTTP server could consult req.RequestURI and an HTTP client could
@@ -125,7 +133,7 @@ func (u *URL) EscapedPath() string
 //
 // If u.Opaque is non-empty, String uses the first form;
 // otherwise it uses the second form.
-// To obtain the path, String uses u.EncodedPath().
+// To obtain the path, String uses u.EscapedPath().
 //
 // In the second form, the following rules apply:
 //   - if u.Scheme is empty, scheme: is omitted.

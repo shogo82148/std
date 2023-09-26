@@ -6,6 +6,6 @@
 
 package runtime
 
-// Needs to be in sync with ../cmd/internal/ld/decodesym.go:/^func.commonsize,
-// ../cmd/internal/gc/reflect.go:/^func.dcommontype and
+// Needs to be in sync with ../cmd/compile/internal/ld/decodesym.go:/^func.commonsize,
+// ../cmd/compile/internal/gc/reflect.go:/^func.dcommontype and
 // ../reflect/type.go:/^type.rtype.

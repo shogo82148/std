@@ -24,10 +24,11 @@ type Server struct {
 	Config *http.Server
 
 	wg sync.WaitGroup
-}
 
-// historyListener keeps track of all connections that it's ever
-// accepted.
+	mu     sync.Mutex
+	closed bool
+	conns  map[net.Conn]http.ConnState
+}
 
 // When debugging a particular http server-based test,
 // this flag lets you run
@@ -60,18 +61,5 @@ func NewTLSServer(handler http.Handler) *Server
 // requests on this server have completed.
 func (s *Server) Close()
 
-// CloseClientConnections closes any currently open HTTP connections
-// to the test Server.
+// CloseClientConnections closes any open HTTP connections to the test Server.
 func (s *Server) CloseClientConnections()
-
-// waitGroupHandler wraps a handler, incrementing and decrementing a
-// sync.WaitGroup on each request, to enable Server.Close to block
-// until outstanding requests are finished.
-
-// localhostCert is a PEM-encoded TLS cert with SAN IPs
-// "127.0.0.1" and "[::1]", expiring at the last second of 2049 (the end
-// of ASN.1 time).
-// generated from src/crypto/tls:
-// go run generate_cert.go  --rsa-bits 1024 --host 127.0.0.1,::1,example.com --ca --start-date "Jan 1 00:00:00 1970" --duration=1000000h
-
-// localhostKey is the private key for localhostCert.

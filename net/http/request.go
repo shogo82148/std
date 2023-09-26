@@ -154,6 +154,9 @@ func (r *Request) Write(w io.Writer) error
 // either r.Host or r.URL.Host.
 func (r *Request) WriteProxy(w io.Writer) error
 
+// errMissingHost is returned by Write when there is no Host or URL present in
+// the Request.
+
 // ParseHTTPVersion parses a HTTP version string.
 // "HTTP/1.0" returns (1, 0, true).
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
@@ -186,6 +189,8 @@ func (r *Request) SetBasicAuth(username, password string)
 
 // ReadRequest reads and parses an incoming request from b.
 func ReadRequest(b *bufio.Reader) (req *Request, err error)
+
+// Constants for readRequest's deleteHostHeader parameter.
 
 // MaxBytesReader is similar to io.LimitReader but is intended for
 // limiting the size of incoming request bodies. In contrast to
@@ -238,3 +243,5 @@ func (r *Request) PostFormValue(key string) string
 // FormFile returns the first file for the provided form key.
 // FormFile calls ParseMultipartForm and ParseForm if necessary.
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
+
+// See the validHostHeader comment.

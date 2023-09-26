@@ -65,6 +65,11 @@ func (t *Template) Execute(wr io.Writer, data interface{}) error
 // A template may be executed safely in parallel.
 func (t *Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) error
 
+// DefinedTemplates returns a string listing the defined templates,
+// prefixed by the string "; defined templates are: ". If there are none,
+// it returns the empty string. Used to generate an error message.
+func (t *Template) DefinedTemplates() string
+
 // Parse parses a string into a template. Nested template definitions
 // will be associated with the top-level template t. Parse may be
 // called multiple times to parse definitions of templates to associate
@@ -159,3 +164,8 @@ func ParseGlob(pattern string) (*Template, error)
 // equivalent to calling t.ParseFiles with the list of files matched by the
 // pattern.
 func (t *Template) ParseGlob(pattern string) (*Template, error)
+
+// IsTrue reports whether the value is 'true', in the sense of not the zero of its type,
+// and whether the value has a meaningful truth value. This is the definition of
+// truth used by if and other such actions.
+func IsTrue(val interface{}) (truth, ok bool)

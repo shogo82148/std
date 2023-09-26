@@ -6,7 +6,7 @@
 //   xxhash: https://code.google.com/p/xxhash/
 // cityhash: https://code.google.com/p/cityhash/
 
-//go:build amd64 || amd64p32 || arm64 || ppc64 || ppc64le
-// +build amd64 amd64p32 arm64 ppc64 ppc64le
+//go:build amd64 || amd64p32 || arm64 || mips64 || mips64le || ppc64 || ppc64le
+// +build amd64 amd64p32 arm64 mips64 mips64le ppc64 ppc64le
 
 package runtime
