@@ -21,6 +21,8 @@ func RaceWriteRange(addr unsafe.Pointer, len int)
 func RaceSemacquire(s *uint32)
 func RaceSemrelease(s *uint32)
 
+func RaceErrors() int
+
 // private interface for the runtime
 
 // Race runtime functions called via runtime·racecall.
@@ -53,6 +55,8 @@ func RaceSemrelease(s *uint32)
 //go:linkname __tsan_go_ignore_sync_begin __tsan_go_ignore_sync_begin
 
 //go:linkname __tsan_go_ignore_sync_end __tsan_go_ignore_sync_end
+
+//go:linkname __tsan_report_count __tsan_report_count
 
 // start/end of global data (data+bss).
 

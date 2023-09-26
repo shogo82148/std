@@ -183,6 +183,17 @@ type AttrTest struct {
 	Bytes []byte  `xml:",attr"`
 }
 
+type AttrsTest struct {
+	Attrs []Attr  `xml:",any,attr"`
+	Int   int     `xml:",attr"`
+	Named int     `xml:"int,attr"`
+	Float float64 `xml:",attr"`
+	Uint8 uint8   `xml:",attr"`
+	Bool  bool    `xml:",attr"`
+	Str   string  `xml:",attr"`
+	Bytes []byte  `xml:",attr"`
+}
+
 type OmitAttrTest struct {
 	Int   int     `xml:",attr,omitempty"`
 	Named int     `xml:"int,attr,omitempty"`
@@ -191,6 +202,7 @@ type OmitAttrTest struct {
 	Bool  bool    `xml:",attr,omitempty"`
 	Str   string  `xml:",attr,omitempty"`
 	Bytes []byte  `xml:",attr,omitempty"`
+	PStr  *string `xml:",attr,omitempty"`
 }
 
 type OmitFieldTest struct {
@@ -201,6 +213,7 @@ type OmitFieldTest struct {
 	Bool  bool          `xml:",omitempty"`
 	Str   string        `xml:",omitempty"`
 	Bytes []byte        `xml:",omitempty"`
+	PStr  *string       `xml:",omitempty"`
 	Ptr   *PresenceTest `xml:",omitempty"`
 }
 
@@ -338,15 +351,145 @@ type NestedAndCData struct {
 	CDATA string   `xml:",cdata"`
 }
 
+type T1 struct{}
+type T2 struct{}
+type T3 struct{}
+
+type IndirComment struct {
+	T1      T1
+	Comment *string `xml:",comment"`
+	T2      T2
+}
+
+type DirectComment struct {
+	T1      T1
+	Comment string `xml:",comment"`
+	T2      T2
+}
+
+type IfaceComment struct {
+	T1      T1
+	Comment interface{} `xml:",comment"`
+	T2      T2
+}
+
+type IndirChardata struct {
+	T1       T1
+	Chardata *string `xml:",chardata"`
+	T2       T2
+}
+
+type DirectChardata struct {
+	T1       T1
+	Chardata string `xml:",chardata"`
+	T2       T2
+}
+
+type IfaceChardata struct {
+	T1       T1
+	Chardata interface{} `xml:",chardata"`
+	T2       T2
+}
+
+type IndirCDATA struct {
+	T1    T1
+	CDATA *string `xml:",cdata"`
+	T2    T2
+}
+
+type DirectCDATA struct {
+	T1    T1
+	CDATA string `xml:",cdata"`
+	T2    T2
+}
+
+type IfaceCDATA struct {
+	T1    T1
+	CDATA interface{} `xml:",cdata"`
+	T2    T2
+}
+
+type IndirInnerXML struct {
+	T1       T1
+	InnerXML *string `xml:",innerxml"`
+	T2       T2
+}
+
+type DirectInnerXML struct {
+	T1       T1
+	InnerXML string `xml:",innerxml"`
+	T2       T2
+}
+
+type IfaceInnerXML struct {
+	T1       T1
+	InnerXML interface{} `xml:",innerxml"`
+	T2       T2
+}
+
+type IndirElement struct {
+	T1      T1
+	Element *string
+	T2      T2
+}
+
+type DirectElement struct {
+	T1      T1
+	Element string
+	T2      T2
+}
+
+type IfaceElement struct {
+	T1      T1
+	Element interface{}
+	T2      T2
+}
+
+type IndirOmitEmpty struct {
+	T1        T1
+	OmitEmpty *string `xml:",omitempty"`
+	T2        T2
+}
+
+type DirectOmitEmpty struct {
+	T1        T1
+	OmitEmpty string `xml:",omitempty"`
+	T2        T2
+}
+
+type IfaceOmitEmpty struct {
+	T1        T1
+	OmitEmpty interface{} `xml:",omitempty"`
+	T2        T2
+}
+
+type IndirAny struct {
+	T1  T1
+	Any *string `xml:",any"`
+	T2  T2
+}
+
+type DirectAny struct {
+	T1  T1
+	Any string `xml:",any"`
+	T2  T2
+}
+
+type IfaceAny struct {
+	T1  T1
+	Any interface{} `xml:",any"`
+	T2  T2
+}
+
 // Unless explicitly stated as such (or *Plain), all of the
 // tests below are two-way tests. When introducing new tests,
 // please try to make them two-way as well to ensure that
-// marshalling and unmarshalling are as symmetrical as feasible.
+// marshaling and unmarshaling are as symmetrical as feasible.
 
 type AttrParent struct {
 	X string `xml:"X>Y,attr"`
 }
 
 type BadAttr struct {
-	Name []string `xml:"name,attr"`
+	Name map[string]string `xml:"name,attr"`
 }

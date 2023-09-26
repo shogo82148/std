@@ -15,4 +15,12 @@ func Comparable(T Type) bool
 // Identical reports whether x and y are identical.
 func Identical(x, y Type) bool
 
+// IdenticalIgnoreTags reports whether x and y are identical if tags are ignored.
+func IdenticalIgnoreTags(x, y Type) bool
+
 // An ifacePair is a node in a stack of interface type pairs compared for identity.
+
+// Default returns the default "typed" type for an "untyped" type;
+// it returns the incoming type for all other types. The default type
+// for untyped nil is untyped nil.
+func Default(typ Type) Type

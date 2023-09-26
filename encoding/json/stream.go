@@ -83,8 +83,8 @@ func (enc *Encoder) SetEscapeHTML(on bool)
 // be used to delay JSON decoding or precompute a JSON encoding.
 type RawMessage []byte
 
-// MarshalJSON returns *m as the JSON encoding of m.
-func (m *RawMessage) MarshalJSON() ([]byte, error)
+// MarshalJSON returns m as the JSON encoding of m.
+func (m RawMessage) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSON sets *m to a copy of data.
 func (m *RawMessage) UnmarshalJSON(data []byte) error

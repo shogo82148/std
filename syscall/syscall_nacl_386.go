@@ -13,11 +13,3 @@ type Timeval struct {
 	Sec  int64
 	Usec int32
 }
-
-func TimespecToNsec(ts Timespec) int64
-
-func NsecToTimespec(nsec int64) (ts Timespec)
-
-func TimevalToNsec(tv Timeval) int64
-
-func NsecToTimeval(nsec int64) (tv Timeval)

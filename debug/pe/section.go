@@ -22,8 +22,13 @@ type SectionHeader32 struct {
 	Characteristics      uint32
 }
 
-// _Reloc represents a PE COFF relocation.
+// Reloc represents a PE COFF relocation.
 // Each section contains its own relocation list.
+type Reloc struct {
+	VirtualAddress   uint32
+	SymbolTableIndex uint32
+	Type             uint16
+}
 
 // SectionHeader is similar to SectionHeader32 with Name
 // field replaced by Go string.
@@ -43,7 +48,7 @@ type SectionHeader struct {
 // Section provides access to PE COFF section.
 type Section struct {
 	SectionHeader
-	_Relocs []_Reloc
+	Relocs []Reloc
 
 	io.ReaderAt
 	sr *io.SectionReader

@@ -5,8 +5,10 @@
 package json
 
 import (
+	"bytes"
 	"encoding"
 	"image"
+	"math/big"
 	"time"
 )
 
@@ -24,6 +26,11 @@ type V struct {
 	F1 interface{}
 	F2 int32
 	F3 Number
+	F4 *VOuter
+}
+
+type VOuter struct {
+	V V
 }
 
 // ifaceNumAsFloat64/ifaceNumAsNumber are used to test unmarshaling with and
@@ -139,6 +146,10 @@ type XYZ struct {
 	Z interface{}
 }
 
+type B struct {
+	B bool `json:",string"`
+}
+
 type Xint struct {
 	X int
 }
@@ -219,6 +230,80 @@ type All struct {
 type Small struct {
 	Tag string
 }
+
+type NullTest struct {
+	Bool      bool
+	Int       int
+	Int8      int8
+	Int16     int16
+	Int32     int32
+	Int64     int64
+	Uint      uint
+	Uint8     uint8
+	Uint16    uint16
+	Uint32    uint32
+	Uint64    uint64
+	Float32   float32
+	Float64   float64
+	String    string
+	PBool     *bool
+	Map       map[string]string
+	Slice     []string
+	Interface interface{}
+
+	PRaw    *RawMessage
+	PTime   *time.Time
+	PBigInt *big.Int
+	PText   *MustNotUnmarshalText
+	PBuffer *bytes.Buffer
+	PStruct *struct{}
+
+	Raw    RawMessage
+	Time   time.Time
+	BigInt big.Int
+	Text   MustNotUnmarshalText
+	Buffer bytes.Buffer
+	Struct struct{}
+}
+
+type NullTestStrings struct {
+	Bool      bool              `json:",string"`
+	Int       int               `json:",string"`
+	Int8      int8              `json:",string"`
+	Int16     int16             `json:",string"`
+	Int32     int32             `json:",string"`
+	Int64     int64             `json:",string"`
+	Uint      uint              `json:",string"`
+	Uint8     uint8             `json:",string"`
+	Uint16    uint16            `json:",string"`
+	Uint32    uint32            `json:",string"`
+	Uint64    uint64            `json:",string"`
+	Float32   float32           `json:",string"`
+	Float64   float64           `json:",string"`
+	String    string            `json:",string"`
+	PBool     *bool             `json:",string"`
+	Map       map[string]string `json:",string"`
+	Slice     []string          `json:",string"`
+	Interface interface{}       `json:",string"`
+
+	PRaw    *RawMessage           `json:",string"`
+	PTime   *time.Time            `json:",string"`
+	PBigInt *big.Int              `json:",string"`
+	PText   *MustNotUnmarshalText `json:",string"`
+	PBuffer *bytes.Buffer         `json:",string"`
+	PStruct *struct{}             `json:",string"`
+
+	Raw    RawMessage           `json:",string"`
+	Time   time.Time            `json:",string"`
+	BigInt big.Int              `json:",string"`
+	Text   MustNotUnmarshalText `json:",string"`
+	Buffer bytes.Buffer         `json:",string"`
+	Struct struct{}             `json:",string"`
+}
+
+type MustNotUnmarshalJSON struct{}
+
+type MustNotUnmarshalText struct{}
 
 // Test handling of unexported fields that should be ignored.
 // Issue 4660

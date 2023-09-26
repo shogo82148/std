@@ -52,11 +52,23 @@ For example:
 	// #include <png.h>
 	import "C"
 
+The default pkg-config tool may be changed by setting the PKG_CONFIG environment variable.
+
+For security reasons, only a limited set of flags are allowed, notably -D, -I, and -l.
+To allow additional flags, set CGO_CFLAGS_ALLOW to a regular expression
+matching the new flags. To disallow flags that would otherwise be allowed,
+set CGO_CFLAGS_DISALLOW to a regular expression matching arguments
+that must be disallowed. In both cases the regular expression must match
+a full argument: to allow -mfoo=bar, use CGO_CFLAGS_ALLOW='-mfoo.*',
+not just CGO_CFLAGS_ALLOW='-mfoo'. Similarly named variables control
+the allowed CPPFLAGS, CXXFLAGS, FFLAGS, and LDFLAGS.
+
 When building, the CGO_CFLAGS, CGO_CPPFLAGS, CGO_CXXFLAGS, CGO_FFLAGS and
 CGO_LDFLAGS environment variables are added to the flags derived from
 these directives.  Package-specific flags should be set using the
 directives, not the environment variables, so that builds work in
-unmodified environments.
+unmodified environments. Flags obtained from environment variables
+are not subject to the security limitations described above.
 
 All the cgo CPPFLAGS and CFLAGS directives in a package are concatenated and
 used to compile C files in that package.  All the CPPFLAGS and CXXFLAGS
@@ -213,6 +225,13 @@ by making copies of the data.  In pseudo-Go definitions:
 	// C data with explicit length to Go []byte
 	func C.GoBytes(unsafe.Pointer, C.int) []byte
 
+As a special case, C.malloc does not call the C library malloc directly
+but instead calls a Go helper function that wraps the C library malloc
+but guarantees never to return nil. If C's malloc indicates out of memory,
+the helper function crashes the program, like when Go itself runs out
+of memory. Because C.malloc cannot fail, it has no two-result form
+that returns errno.
+
 # C references to Go
 
 Go functions can be exported for use by C code in the following way:
@@ -317,6 +336,9 @@ The following options are available when running cgo directly:
 		Write out input file in Go syntax replacing C package
 		names with real values. Used to generate files in the
 		syscall package when bootstrapping a new target.
+	-srcdir directory
+		Find the Go input files, listed on the command line,
+		in directory.
 	-objdir directory
 		Put all generated files in directory.
 	-importpath string

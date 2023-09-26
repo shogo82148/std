@@ -89,7 +89,6 @@ func NewParam(pos token.Pos, pkg *Package, name string, typ Type) *Var
 func NewField(pos token.Pos, pkg *Package, name string, typ Type, anonymous bool) *Var
 
 func (obj *Var) Anonymous() bool
-
 func (obj *Var) IsField() bool
 
 // A Func represents a declared function, concrete method, or abstract
@@ -106,6 +105,8 @@ func NewFunc(pos token.Pos, pkg *Package, name string, sig *Signature) *Func
 func (obj *Func) FullName() string
 
 func (obj *Func) Scope() *Scope
+
+// An Alias represents a declared alias.
 
 // A Label represents a declared label.
 type Label struct {
@@ -137,6 +138,7 @@ func (obj *Const) String() string
 func (obj *TypeName) String() string
 func (obj *Var) String() string
 func (obj *Func) String() string
+
 func (obj *Label) String() string
 func (obj *Builtin) String() string
 func (obj *Nil) String() string

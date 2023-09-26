@@ -166,10 +166,13 @@ func UnaryOp(op token.Token, y Value, prec uint) Value
 // BinaryOp returns the result of the binary expression x op y.
 // The operation must be defined for the operands. If one of the
 // operands is Unknown, the result is Unknown.
+// BinaryOp doesn't handle comparisons or shifts; use Compare
+// or Shift instead.
+//
 // To force integer division of Int operands, use op == token.QUO_ASSIGN
 // instead of token.QUO; the result is guaranteed to be Int in this case.
 // Division by zero leads to a run-time panic.
-func BinaryOp(x Value, op token.Token, y Value) Value
+func BinaryOp(x_ Value, op token.Token, y_ Value) Value
 
 // Shift returns the result of the shift expression x op s
 // with op == token.SHL or token.SHR (<< or >>). x must be
@@ -180,4 +183,4 @@ func Shift(x Value, op token.Token, s uint) Value
 // The comparison must be defined for the operands.
 // If one of the operands is Unknown, the result is
 // false.
-func Compare(x Value, op token.Token, y Value) bool
+func Compare(x_ Value, op token.Token, y_ Value) bool

@@ -92,6 +92,12 @@ func (ip IP) IsLinkLocalUnicast() bool
 
 // IsGlobalUnicast reports whether ip is a global unicast
 // address.
+//
+// The identification of global unicast addresses uses address type
+// identification as defined in RFC 1122, RFC 4632 and RFC 4291 with
+// the exception of IPv4 directed broadcast addresses.
+// It returns true even if ip is in IPv4 private address space or
+// local IPv6 unicast address space.
 func (ip IP) IsGlobalUnicast() bool
 
 // To4 converts the IPv4 address ip to a 4-byte representation.
@@ -162,11 +168,12 @@ func (n *IPNet) String() string
 // ParseIP returns nil.
 func ParseIP(s string) IP
 
-// ParseCIDR parses s as a CIDR notation IP address and mask,
+// ParseCIDR parses s as a CIDR notation IP address and prefix length,
 // like "192.0.2.0/24" or "2001:db8::/32", as defined in
 // RFC 4632 and RFC 4291.
 //
-// It returns the IP address and the network implied by the IP
-// and mask. For example, ParseCIDR("198.51.100.1/24") returns
-// the IP address 198.51.100.1 and the network 198.51.100.0/24.
+// It returns the IP address and the network implied by the IP and
+// prefix length.
+// For example, ParseCIDR("192.0.2.1/24") returns the IP address
+// 198.0.2.1 and the network 198.0.2.0/24.
 func ParseCIDR(s string) (IP, *IPNet, error)

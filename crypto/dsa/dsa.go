@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 
 // Package dsa implements the Digital Signature Algorithm, as defined in FIPS 186-3.
+//
+// The DSA operations in this package are not implemented using constant-time algorithms.
 package dsa
 
 import (
@@ -65,6 +67,9 @@ func GenerateKey(priv *PrivateKey, rand io.Reader) error
 // Note that FIPS 186-3 section 4.6 specifies that the hash should be truncated
 // to the byte-length of the subgroup. This function does not perform that
 // truncation itself.
+//
+// Be aware that calling Sign with an attacker-controlled PrivateKey may
+// require an arbitrary amount of CPU.
 func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
 
 // Verify verifies the signature in r, s of hash using the public key, pub. It

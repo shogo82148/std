@@ -4,7 +4,9 @@
 
 package elliptic
 
-// P224 returns a Curve which implements P-224 (see FIPS 186-3, section D.2.2)
+// P224 returns a Curve which implements P-224 (see FIPS 186-3, section D.2.2).
+//
+// The cryptographic operations are implemented using constant-time algorithms.
 func P224() Curve
 
 // Field element functions.

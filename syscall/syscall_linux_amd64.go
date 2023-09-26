@@ -6,17 +6,7 @@ package syscall
 
 func Gettimeofday(tv *Timeval) (err error)
 
-func Getpagesize() int
-
 func Time(t *Time_t) (tt Time_t, err error)
-
-func TimespecToNsec(ts Timespec) int64
-
-func NsecToTimespec(nsec int64) (ts Timespec)
-
-func TimevalToNsec(tv Timeval) int64
-
-func NsecToTimeval(nsec int64) (tv Timeval)
 
 func Pipe(p []int) (err error)
 

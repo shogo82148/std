@@ -88,8 +88,8 @@ type LinkError struct {
 func (e *LinkError) Error() string
 
 // Read reads up to len(b) bytes from the File.
-// It returns the number of bytes read and an error, if any.
-// EOF is signaled by a zero count with err set to io.EOF.
+// It returns the number of bytes read and any error encountered.
+// At end of file, Read returns 0, io.EOF.
 func (f *File) Read(b []byte) (n int, err error)
 
 // ReadAt reads len(b) bytes from the File starting at byte offset off.
@@ -148,7 +148,7 @@ func Create(name string) (*File, error)
 // lstat is overridden in tests.
 
 // Rename renames (moves) oldpath to newpath.
-// If newpath already exists, Rename replaces it.
+// If newpath already exists and is not a directory, Rename replaces it.
 // OS-specific restrictions may apply when oldpath and newpath are in different directories.
 // If there is an error, it will be of type *LinkError.
 func Rename(oldpath, newpath string) error

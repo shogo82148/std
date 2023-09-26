@@ -16,6 +16,7 @@ import (
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 )
 
@@ -29,6 +30,7 @@ var DefaultTransport RoundTripper = &Transport{
 	DialContext: (&net.Dialer{
 		Timeout:   30 * time.Second,
 		KeepAlive: 30 * time.Second,
+		DualStack: true,
 	}).DialContext,
 	MaxIdleConns:          100,
 	IdleConnTimeout:       90 * time.Second,
@@ -55,8 +57,10 @@ const DefaultMaxIdleConnsPerHost = 2
 // For high-level functionality, such as cookies and redirects, see Client.
 //
 // Transport uses HTTP/1.1 for HTTP URLs and either HTTP/1.1 or HTTP/2
-// for HTTPS URLs, depending on whether the server supports HTTP/2.
-// See the package docs for more about HTTP/2.
+// for HTTPS URLs, depending on whether the server supports HTTP/2,
+// and how the Transport is configured. The DefaultTransport supports HTTP/2.
+// To explicitly enable HTTP/2 on a transport, use golang.org/x/net/http2
+// and call ConfigureTransport. See the package docs for more about HTTP/2.
 type Transport struct {
 	idleMu     sync.Mutex
 	wantIdle   bool
@@ -65,10 +69,10 @@ type Transport struct {
 	idleLRU    connLRU
 
 	reqMu       sync.Mutex
-	reqCanceler map[*Request]func()
+	reqCanceler map[*Request]func(error)
 
-	altMu    sync.RWMutex
-	altProto map[string]RoundTripper
+	altMu    sync.Mutex
+	altProto atomic.Value
 
 	Proxy func(*Request) (*url.URL, error)
 
@@ -97,6 +101,8 @@ type Transport struct {
 	ExpectContinueTimeout time.Duration
 
 	TLSNextProto map[string]func(authority string, c *tls.Conn) RoundTripper
+
+	ProxyConnectHeader Header
 
 	MaxResponseHeaderBytes int64
 

@@ -6,6 +6,7 @@ package sort_test
 
 import (
 	. "sort"
+	stringspkg "strings"
 )
 
 // This is based on the "antiquicksort" implementation by M. Douglas McIlroy.

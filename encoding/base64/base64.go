@@ -18,6 +18,7 @@ type Encoding struct {
 	encode    [64]byte
 	decodeMap [256]byte
 	padChar   rune
+	strict    bool
 }
 
 const (
@@ -34,6 +35,11 @@ func NewEncoding(encoder string) *Encoding
 // WithPadding creates a new encoding identical to enc except
 // with a specified padding character, or NoPadding to disable padding.
 func (enc Encoding) WithPadding(padding rune) *Encoding
+
+// Strict creates a new encoding identical to enc except with
+// strict decoding enabled. In this mode, the decoder requires that
+// trailing padding bits are zero, as described in RFC 4648 section 3.5.
+func (enc Encoding) Strict() *Encoding
 
 // StdEncoding is the standard base64 encoding, as defined in
 // RFC 4648.

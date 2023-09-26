@@ -20,6 +20,9 @@ func (p *Package) Translate(f *File)
 // A typeConv is a translator from dwarf types to Go types
 // with equivalent memory layout.
 
+// unionWithPointer is true for a Go type that represents a C union (or class)
+// that may contain a pointer. This is used for cgo pointer checking.
+
 // Map from dwarf text names to aliases we use in package "C".
 
 // String returns the current type representation. Format arguments

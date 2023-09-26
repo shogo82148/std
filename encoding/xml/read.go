@@ -35,6 +35,11 @@ package xml
 //     the explicit name in a struct field tag of the form "name,attr",
 //     Unmarshal records the attribute value in that field.
 //
+//   - If the XML element has an attribute not handled by the previous
+//     rule and the struct has a field with an associated tag containing
+//     ",any,attr", Unmarshal records the attribute value in the first
+//     such field.
+//
 //   - If the XML element contains character data, that data is
 //     accumulated in the first struct field that has tag ",chardata".
 //     The struct field may have type []byte or string.
@@ -68,7 +73,7 @@ package xml
 //   - An anonymous struct field is handled as if the fields of its
 //     value were part of the outer struct.
 //
-//   - A struct field with tag "-" is never unmarshalled into.
+//   - A struct field with tag "-" is never unmarshaled into.
 //
 // Unmarshal maps an XML element to a string or []byte by saving the
 // concatenation of that element's character data in the string or
@@ -77,8 +82,12 @@ package xml
 // Unmarshal maps an attribute value to a string or []byte by saving
 // the value in the string or slice.
 //
-// Unmarshal maps an XML element to a slice by extending the length of
-// the slice and mapping the element to the newly created value.
+// Unmarshal maps an attribute value to an Attr by saving the attribute,
+// including its name, in the Attr.
+//
+// Unmarshal maps an XML element or attribute value to a slice by
+// extending the length of the slice and mapping the element or attribute
+// to the newly created value.
 //
 // Unmarshal maps an XML element or attribute value to a bool by
 // setting it to the boolean value represented by the string.
@@ -105,7 +114,7 @@ func (d *Decoder) Decode(v interface{}) error
 // but also wants to defer to Unmarshal for some elements.
 func (d *Decoder) DecodeElement(v interface{}, start *StartElement) error
 
-// An UnmarshalError represents an error in the unmarshalling process.
+// An UnmarshalError represents an error in the unmarshaling process.
 type UnmarshalError string
 
 func (e UnmarshalError) Error() string

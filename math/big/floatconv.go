@@ -6,9 +6,15 @@
 
 package big
 
+import (
+	"github.com/shogo82148/std/fmt"
+)
+
 // SetString sets z to the value of s and returns z and a boolean indicating
 // success. s must be a floating-point number of the same format as accepted
-// by Parse, with base argument 0.
+// by Parse, with base argument 0. The entire string (not just a prefix) must
+// be valid for success. If the operation failed, the value of z is undefined
+// but the returned value is nil.
 func (z *Float) SetString(s string) (*Float, bool)
 
 // These powers of 5 fit into a uint64.
@@ -24,17 +30,18 @@ func (z *Float) SetString(s string) (*Float, bool)
 //
 // It sets z to the (possibly rounded) value of the corresponding floating-
 // point value, and returns z, the actual base b, and an error err, if any.
+// The entire string (not just a prefix) must be consumed for success.
 // If z's precision is 0, it is changed to 64 before rounding takes effect.
 // The number must be of the form:
 //
-//		number   = [ sign ] [ prefix ] mantissa [ exponent ] | infinity .
-//		sign     = "+" | "-" .
-//	     prefix   = "0" ( "x" | "X" | "b" | "B" ) .
-//		mantissa = digits | digits "." [ digits ] | "." digits .
-//		exponent = ( "E" | "e" | "p" ) [ sign ] digits .
-//		digits   = digit { digit } .
-//		digit    = "0" ... "9" | "a" ... "z" | "A" ... "Z" .
-//	     infinity = [ sign ] ( "inf" | "Inf" ) .
+//	number   = [ sign ] [ prefix ] mantissa [ exponent ] | infinity .
+//	sign     = "+" | "-" .
+//	prefix   = "0" ( "x" | "X" | "b" | "B" ) .
+//	mantissa = digits | digits "." [ digits ] | "." digits .
+//	exponent = ( "E" | "e" | "p" ) [ sign ] digits .
+//	digits   = digit { digit } .
+//	digit    = "0" ... "9" | "a" ... "z" | "A" ... "Z" .
+//	infinity = [ sign ] ( "inf" | "Inf" ) .
 //
 // The base argument must be 0, 2, 10, or 16. Providing an invalid base
 // argument will lead to a run-time panic.
@@ -58,3 +65,12 @@ func (z *Float) Parse(s string, base int) (f *Float, b int, err error)
 // ParseFloat is like f.Parse(s, base) with f set to the given precision
 // and rounding mode.
 func ParseFloat(s string, base int, prec uint, mode RoundingMode) (f *Float, b int, err error)
+
+var _ fmt.Scanner = &floatZero
+
+// Scan is a support routine for fmt.Scanner; it sets z to the value of
+// the scanned number. It accepts formats whose verbs are supported by
+// fmt.Scan for floating point values, which are:
+// 'b' (binary), 'e', 'E', 'f', 'F', 'g' and 'G'.
+// Scan doesn't handle ±Inf.
+func (z *Float) Scan(s fmt.ScanState, ch rune) error

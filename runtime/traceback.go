@@ -8,7 +8,8 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// reflectMethodValue is a partial duplicate of reflect.methodValue.
+// reflectMethodValue is a partial duplicate of reflect.makeFuncImpl
+// and reflect.methodValue.
 
 // SetCgoTraceback records three C functions to use to gather
 // traceback information from C code and to convert that traceback

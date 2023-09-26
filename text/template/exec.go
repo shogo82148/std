@@ -48,6 +48,9 @@ func (t *Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) 
 // execution stops, but partial results may already have been written to
 // the output writer.
 // A template may be executed safely in parallel.
+//
+// If data is a reflect.Value, the template applies to the concrete
+// value that the reflect.Value holds, as in fmt.Print.
 func (t *Template) Execute(wr io.Writer, data interface{}) error
 
 // DefinedTemplates returns a string listing the defined templates,

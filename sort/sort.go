@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:generate go run genzfunc.go
+
 // Package sort provides primitives for sorting slices and user-defined
 // collections.
 package sort
@@ -21,6 +23,29 @@ type Interface interface {
 // It makes one call to data.Len to determine n, and O(n*log(n)) calls to
 // data.Less and data.Swap. The sort is not guaranteed to be stable.
 func Sort(data Interface)
+
+// lessSwap is a pair of Less and Swap function for use with the
+// auto-generated func-optimized variant of sort.go in
+// zfuncversion.go.
+
+// Slice sorts the provided slice given the provided less function.
+//
+// The sort is not guaranteed to be stable. For a stable sort, use
+// SliceStable.
+//
+// The function panics if the provided interface is not a slice.
+func Slice(slice interface{}, less func(i, j int) bool)
+
+// SliceStable sorts the provided slice given the provided less
+// function while keeping the original order of equal elements.
+//
+// The function panics if the provided interface is not a slice.
+func SliceStable(slice interface{}, less func(i, j int) bool)
+
+// SliceIsSorted tests whether a slice is sorted.
+//
+// The function panics if the provided interface is not a slice.
+func SliceIsSorted(slice interface{}, less func(i, j int) bool) bool
 
 // Reverse returns the reverse order for data.
 func Reverse(data Interface) Interface

@@ -22,7 +22,7 @@ import (
 // and is not a nil pointer, Marshal calls its MarshalJSON method
 // to produce JSON. If no MarshalJSON method is present but the
 // value implements encoding.TextMarshaler instead, Marshal calls
-// its MarshalText method.
+// its MarshalText method and encodes the result as a JSON string.
 // The nil pointer exception is not strictly necessary
 // but mimics a similar, necessary exception in the behavior of
 // UnmarshalJSON.
@@ -38,26 +38,33 @@ import (
 // The angle brackets "<" and ">" are escaped to "\u003c" and "\u003e"
 // to keep some browsers from misinterpreting JSON output as HTML.
 // Ampersand "&" is also escaped to "\u0026" for the same reason.
-// This escaping can be disabled using an Encoder with DisableHTMLEscaping.
+// This escaping can be disabled using an Encoder that had SetEscapeHTML(false)
+// called on it.
 //
 // Array and slice values encode as JSON arrays, except that
 // []byte encodes as a base64-encoded string, and a nil slice
 // encodes as the null JSON value.
 //
-// Struct values encode as JSON objects. Each exported struct field
-// becomes a member of the object unless
-//   - the field's tag is "-", or
-//   - the field is empty and its tag specifies the "omitempty" option.
+// Struct values encode as JSON objects.
+// Each exported struct field becomes a member of the object, using the
+// field name as the object key, unless the field is omitted for one of the
+// reasons given below.
 //
-// The empty values are false, 0, any
-// nil pointer or interface value, and any array, slice, map, or string of
-// length zero. The object's default key string is the struct field name
-// but can be specified in the struct field's tag value. The "json" key in
-// the struct field's tag value is the key name, followed by an optional comma
-// and options. Examples:
+// The encoding of each struct field can be customized by the format string
+// stored under the "json" key in the struct field's tag.
+// The format string gives the name of the field, possibly followed by a
+// comma-separated list of options. The name may be empty in order to
+// specify options without overriding the default field name.
 //
-//	// Field is ignored by this package.
-//	Field int `json:"-"`
+// The "omitempty" option specifies that the field should be omitted
+// from the encoding if the field has an empty value, defined as
+// false, 0, a nil pointer, a nil interface value, and any empty array,
+// slice, map, or string.
+//
+// As a special case, if the field tag is "-", the field is always omitted.
+// Note that a field with name "-" can still be generated using the tag "-,".
+//
+// Examples of struct field tags and their meanings:
 //
 //	// Field appears in JSON as key "myName".
 //	Field int `json:"myName"`
@@ -71,6 +78,12 @@ import (
 //	// the field is skipped if empty.
 //	// Note the leading comma.
 //	Field int `json:",omitempty"`
+//
+//	// Field is ignored by this package.
+//	Field int `json:"-"`
+//
+//	// Field appears in JSON as key "-".
+//	Field int `json:"-,"`
 //
 // The "string" option signals that a field is stored as JSON inside a
 // JSON-encoded string. It applies only to fields of string, floating point,
@@ -99,7 +112,9 @@ import (
 //
 // 1) Of those fields, if any are JSON-tagged, only tagged fields are considered,
 // even if there are multiple untagged fields that would otherwise conflict.
+//
 // 2) If there is exactly one field (tagged or not according to the first rule), that is selected.
+//
 // 3) Otherwise there are multiple fields, and all are ignored; no error occurs.
 //
 // Handling of anonymous struct fields is new in Go 1.1.
@@ -185,14 +200,6 @@ func (e *MarshalerError) Error() string
 
 // sliceEncoder just wraps an arrayEncoder, checking to make sure the value isn't nil.
 
-// byString is a slice of reflectWithString where the reflect.Value is either
-// a string or an encoding.TextMarshaler.
-// It implements the methods to sort by string.
-
 // A field represents a single field found in a struct.
-
-// byName sorts field by name, breaking ties with depth,
-// then breaking ties with "name came from json tag", then
-// breaking ties with index sequence.
 
 // byIndex sorts field by index sequence.

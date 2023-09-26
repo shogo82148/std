@@ -14,7 +14,6 @@ package multipart
 
 import (
 	"github.com/shogo82148/std/bufio"
-	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net/textproto"
 )
@@ -27,14 +26,17 @@ import (
 type Part struct {
 	Header textproto.MIMEHeader
 
-	buffer    *bytes.Buffer
-	mr        *Reader
-	bytesRead int
+	mr *Reader
 
 	disposition       string
 	dispositionParams map[string]string
 
 	r io.Reader
+
+	n       int
+	total   int64
+	err     error
+	readErr error
 }
 
 // FormName returns the name parameter if p has a Content-Disposition

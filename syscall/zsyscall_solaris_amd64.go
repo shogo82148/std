@@ -125,5 +125,3 @@ func Ftruncate(fd int, length int64) (err error)
 func Umask(newmask int) (oldmask int)
 
 func Unlink(path string) (err error)
-
-func Utimes(path string, times *[2]Timeval) (err error)

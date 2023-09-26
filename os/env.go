@@ -17,6 +17,7 @@ func ExpandEnv(s string) string
 
 // Getenv retrieves the value of the environment variable named by the key.
 // It returns the value, which will be empty if the variable is not present.
+// To distinguish between an empty value and an unset value, use LookupEnv.
 func Getenv(key string) string
 
 // LookupEnv retrieves the value of the environment variable named

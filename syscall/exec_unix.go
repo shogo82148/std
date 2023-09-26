@@ -54,5 +54,5 @@ func ForkExec(argv0 string, argv []string, attr *ProcAttr) (pid int, err error)
 // StartProcess wraps ForkExec for package os.
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)
 
-// Ordinary exec.
+// Exec invokes the execve(2) system call.
 func Exec(argv0 string, argv []string, envv []string) (err error)

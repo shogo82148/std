@@ -16,4 +16,7 @@ package main
 // ranGoBench and benchMatches are the same, but are only used
 // in -race mode.
 
+// stdOutErrAreTerminals is defined in test_linux.go, to report
+// whether stdout & stderr are terminals.
+
 // cgoPackages is the standard packages that use cgo.

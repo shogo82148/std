@@ -36,7 +36,14 @@ package main
 // metaImport represents the parsed <meta name="go-import"
 // content="prefix vcs reporoot" /> tags from HTML files.
 
-// errNoMatch is returned from matchGoImport when there's no applicable match.
+// A ImportMismatchError is returned where metaImport/s are present
+// but none match our import path.
+type ImportMismatchError struct {
+	importPath string
+	mismatches []string
+}
+
+func (m ImportMismatchError) Error() string
 
 // vcsPaths defines the meaning of import paths referring to
 // commonly-used VCS hosting sites (github.com/user/dir)

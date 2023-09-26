@@ -8,3 +8,6 @@ package flate
 // assembly implementation can fast-path some 16-bytes-at-a-time copies. They
 // aren't necessary in the pure Go implementation, as we don't use those same
 // optimizations, but using the same thresholds doesn't really hurt.
+
+// deflateFast maintains the table for matches,
+// and the previous byte block for cross block matching.

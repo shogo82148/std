@@ -26,6 +26,9 @@ var FuncPC = funcPC
 
 var Fastlog2 = fastlog2
 
+var Atoi = atoi
+var Atoi32 = atoi32
+
 type LFNode struct {
 	Next    uint64
 	Pushcnt uintptr
@@ -37,12 +40,8 @@ var Int32Hash = int32Hash
 var Int64Hash = int64Hash
 var EfaceHash = efaceHash
 var IfaceHash = ifaceHash
-var MemclrBytes = memclrBytes
 
 var HashLoad = &hashLoad
-
-var Gostringnocopy = gostringnocopy
-var Maxstring = &maxstring
 
 type Uintreg sys.Uintreg
 
@@ -54,9 +53,6 @@ var Write = write
 var BigEndian = sys.BigEndian
 
 const PtrSize = sys.PtrSize
-
-var TestingAssertE2I2GC = &testingAssertE2I2GC
-var TestingAssertE2T2GC = &testingAssertE2T2GC
 
 var ForceGCPeriod = &forcegcperiod
 

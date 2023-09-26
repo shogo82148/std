@@ -19,10 +19,11 @@ var (
 // and then it can be treated as an io.Reader to access the file's data.
 type Reader struct {
 	r    io.Reader
-	err  error
 	pad  int64
 	curr numBytesReader
 	blk  block
+
+	err error
 }
 
 // A numBytesReader is an io.Reader with a numBytes method, returning the number
@@ -69,4 +70,4 @@ func (tr *Reader) Next() (*Header, error)
 // Calling Read on special types like TypeLink, TypeSymLink, TypeChar,
 // TypeBlock, TypeDir, and TypeFifo returns 0, io.EOF regardless of what
 // the Header.Size claims.
-func (tr *Reader) Read(b []byte) (n int, err error)
+func (tr *Reader) Read(b []byte) (int, error)

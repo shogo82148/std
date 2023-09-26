@@ -53,8 +53,13 @@ type SE []interface{}
 
 var _ bytes.Buffer
 
-// Panic is a type that panics in String.
-type Panic struct {
+// PanicS is a type that panics in String.
+type PanicS struct {
+	message interface{}
+}
+
+// PanicGo is a type that panics in GoString.
+type PanicGo struct {
 	message interface{}
 }
 

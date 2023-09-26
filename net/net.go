@@ -79,6 +79,7 @@ package net
 
 import (
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/time"
 )
 
@@ -87,6 +88,10 @@ import (
 // conf.go mirrors these into conf for easier testing.
 
 // Addr represents a network end point address.
+//
+// The two methods Network and String conventionally return strings
+// that can be passed as the arguments to Dial, but the exact form
+// and meaning of the strings is up to the implementation.
 type Addr interface {
 	Network() string
 	String() string
@@ -239,3 +244,24 @@ func (e *DNSError) Timeout() bool
 // This is not always known; a DNS lookup may fail due to a temporary
 // error and return a DNSError for which Temporary returns false.
 func (e *DNSError) Temporary() bool
+
+// buffersWriter is the interface implemented by Conns that support a
+// "writev"-like batch write optimization.
+// writeBuffers should fully consume and write all chunks from the
+// provided Buffers, else it should report a non-nil error.
+
+// Buffers contains zero or more runs of bytes to write.
+//
+// On certain machines, for certain types of connections, this is
+// optimized into an OS-specific batch write operation (such as
+// "writev").
+type Buffers [][]byte
+
+var (
+	_ io.WriterTo = (*Buffers)(nil)
+	_ io.Reader   = (*Buffers)(nil)
+)
+
+func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
+
+func (v *Buffers) Read(p []byte) (n int, err error)

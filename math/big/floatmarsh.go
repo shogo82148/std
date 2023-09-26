@@ -10,7 +10,7 @@ package big
 
 // GobEncode implements the gob.GobEncoder interface.
 // The Float value and all its attributes (precision,
-// rounding mode, accuracy) are marshalled.
+// rounding mode, accuracy) are marshaled.
 func (x *Float) GobEncode() ([]byte, error)
 
 // GobDecode implements the gob.GobDecoder interface.

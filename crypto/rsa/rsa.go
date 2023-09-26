@@ -18,6 +18,8 @@
 // with v1.5/OAEP and signing/verifying with v1.5/PSS. If one needs to abstract
 // over the public-key primitive, the PrivateKey struct implements the
 // Decrypter and Signer interfaces from the crypto package.
+//
+// The RSA operations in this package are not implemented using constant-time algorithms.
 package rsa
 
 import (
@@ -120,8 +122,8 @@ var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA public 
 // values could be used to ensure that a ciphertext for one purpose cannot be
 // used for another by an attacker. If not required it can be empty.
 //
-// The message must be no longer than the length of the public modulus less
-// twice the hash length plus 2.
+// The message must be no longer than the length of the public modulus minus
+// twice the hash length, minus a further 2.
 func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
 
 // ErrDecryption represents a failure to decrypt a message.

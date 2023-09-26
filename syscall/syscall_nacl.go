@@ -16,8 +16,6 @@ type Dirent struct {
 	Name   [256]byte
 }
 
-func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, newnames []string)
-
 const PathMax = 256
 
 // An Errno is an unsigned number describing an error condition.
@@ -217,9 +215,9 @@ func Getegid() int
 func Geteuid() int
 func Getgid() int
 func Getgroups() ([]int, error)
-func Getpagesize() int
 func Getppid() int
 func Getpid() int
+func Gettimeofday(tv *Timeval) error
 func Getuid() int
 func Kill(pid int, signum Signal) error
 func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)
@@ -232,3 +230,5 @@ func RouteRIB(facility, param int) ([]byte, error)
 func ParseRoutingMessage(b []byte) ([]RoutingMessage, error)
 func ParseRoutingSockaddr(msg RoutingMessage) ([]Sockaddr, error)
 func SysctlUint32(name string) (value uint32, err error)
+
+type Iovec struct{}

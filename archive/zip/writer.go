@@ -15,6 +15,8 @@ type Writer struct {
 	last        *fileWriter
 	closed      bool
 	compressors map[uint16]Compressor
+
+	testHookCloseSizeOffset func(size, offset uint64)
 }
 
 // NewWriter returns a new Writer writing a zip file to w.

@@ -22,6 +22,9 @@ func (a *UDPAddr) String() string
 // "udp6".  A literal address or host name for IPv6 must be enclosed
 // in square brackets, as in "[::1]:80", "[ipv6-host]:http" or
 // "[ipv6-host%zone]:80".
+//
+// Resolving a hostname is not recommended because this returns at most
+// one of its IP addresses.
 func ResolveUDPAddr(net, addr string) (*UDPAddr, error)
 
 // UDPConn is the implementation of the Conn and PacketConn interfaces

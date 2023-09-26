@@ -160,8 +160,6 @@ func Reboot(cmd int) (err error)
 
 func ReadDirent(fd int, buf []byte) (n int, err error)
 
-func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, newnames []string)
-
 func Mount(source string, target string, fstype string, flags uintptr, data string) (err error)
 
 func Getpgrp() (pid int)

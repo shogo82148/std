@@ -20,6 +20,9 @@ func Gosched()
 // freezeStopWait is a large value that freezetheworld sets
 // sched.stopwait to in order to request that all Gs permanently stop.
 
+// freezing is set to non-zero if the runtime is trying to freeze the
+// world.
+
 // Holding worldsema grants an M the right to try to stop the world
 // and prevents gomaxprocs from changing concurrently.
 

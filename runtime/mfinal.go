@@ -6,6 +6,11 @@
 
 package runtime
 
+// finblock is allocated from non-GC'd memory, so any heap pointers
+// must be specially handled.
+//
+//go:notinheap
+
 // NOTE: Layout known to queuefinalizer.
 
 // SetFinalizer sets the finalizer associated with obj to the provided
@@ -18,11 +23,12 @@ package runtime
 //
 // SetFinalizer(obj, nil) clears any finalizer associated with obj.
 //
-// The argument obj must be a pointer to an object allocated by
-// calling new or by taking the address of a composite literal.
+// The argument obj must be a pointer to an object allocated by calling
+// new, by taking the address of a composite literal, or by taking the
+// address of a local variable.
 // The argument finalizer must be a function that takes a single argument
 // to which obj's type can be assigned, and can have arbitrary ignored return
-// values. If either of these is not true, SetFinalizer aborts the
+// values. If either of these is not true, SetFinalizer may abort the
 // program.
 //
 // Finalizers are run in dependency order: if A points at B, both have

@@ -91,6 +91,8 @@ func New(priority Priority, tag string) (*Writer, error)
 // writer sends a log message with the given facility, severity and
 // tag.
 // If network is empty, Dial will connect to the local syslog server.
+// Otherwise, see the documentation for net.Dial for valid values
+// of network and raddr.
 func Dial(network, raddr string, priority Priority, tag string) (*Writer, error)
 
 // Write sends a log message to the syslog daemon.

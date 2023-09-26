@@ -31,9 +31,6 @@ type Package struct {
 	GoFiles     []string
 	GccFiles    []string
 	Preamble    string
-
-	CgoChecks         []string
-	DeferredCgoChecks []string
 }
 
 // A File collects information about a single Go input file.

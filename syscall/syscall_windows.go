@@ -44,8 +44,6 @@ func StringToUTF16Ptr(s string) *uint16
 // contains a NUL byte at any location, it returns (nil, EINVAL).
 func UTF16PtrFromString(s string) (*uint16, error)
 
-func Getpagesize() int
-
 // Errno is the Windows error number.
 type Errno uintptr
 

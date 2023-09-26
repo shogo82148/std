@@ -26,12 +26,6 @@ type SockaddrDatalink struct {
 	raw    RawSockaddrDatalink
 }
 
-// ParseDirent parses up to max directory entries in buf,
-// appending the names to names. It returns the number
-// bytes consumed from buf, the number of entries added
-// to names, and the new names slice.
-func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, newnames []string)
-
 func Pipe(p []int) (err error)
 
 // sys	extpread(fd int, p []byte, flags int, offset int64) (n int, err error)

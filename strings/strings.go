@@ -31,6 +31,8 @@ func LastIndex(s, sep string) int
 
 // IndexRune returns the index of the first instance of the Unicode code point
 // r, or -1 if rune is not present in s.
+// If r is utf8.RuneError, it returns the first instance of any
+// invalid UTF-8 byte sequence.
 func IndexRune(s string, r rune) int
 
 // IndexAny returns the index of the first instance of any Unicode code point
@@ -105,6 +107,9 @@ func HasSuffix(s, suffix string) bool
 func Map(mapping func(rune) rune, s string) string
 
 // Repeat returns a new string consisting of count copies of the string s.
+//
+// It panics if count is negative or if
+// the result of (len(s) * count) overflows.
 func Repeat(s string, count int) string
 
 // ToUpper returns a copy of the string s with all Unicode letters mapped to their upper case.
@@ -118,15 +123,15 @@ func ToTitle(s string) string
 
 // ToUpperSpecial returns a copy of the string s with all Unicode letters mapped to their
 // upper case, giving priority to the special casing rules.
-func ToUpperSpecial(_case unicode.SpecialCase, s string) string
+func ToUpperSpecial(c unicode.SpecialCase, s string) string
 
 // ToLowerSpecial returns a copy of the string s with all Unicode letters mapped to their
 // lower case, giving priority to the special casing rules.
-func ToLowerSpecial(_case unicode.SpecialCase, s string) string
+func ToLowerSpecial(c unicode.SpecialCase, s string) string
 
 // ToTitleSpecial returns a copy of the string s with all Unicode letters mapped to their
 // title case, giving priority to the special casing rules.
-func ToTitleSpecial(_case unicode.SpecialCase, s string) string
+func ToTitleSpecial(c unicode.SpecialCase, s string) string
 
 // Title returns a copy of the string s with all Unicode letters that begin words
 // mapped to their title case.
@@ -153,6 +158,13 @@ func IndexFunc(s string, f func(rune) bool) int
 // LastIndexFunc returns the index into s of the last
 // Unicode code point satisfying f(c), or -1 if none do.
 func LastIndexFunc(s string, f func(rune) bool) int
+
+// asciiSet is a 32-byte value, where each bit represents the presence of a
+// given ASCII character in the set. The 128-bits of the lower 16 bytes,
+// starting with the least-significant bit of the lowest word to the
+// most-significant bit of the highest word, map to the full range of all
+// 128 ASCII characters. The 128-bits of the upper 16 bytes will be zeroed,
+// ensuring that any non-ASCII character will be reported as not in the set.
 
 // Trim returns a slice of the string s with all leading and
 // trailing Unicode code points contained in cutset removed.

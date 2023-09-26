@@ -18,6 +18,8 @@ type Struct struct {
 	Complex64  complex64
 	Complex128 complex128
 	Array      [4]uint8
+	Bool       bool
+	BoolArray  [4]bool
 }
 
 type T struct {

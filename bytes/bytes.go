@@ -23,9 +23,6 @@ func ContainsAny(b []byte, chars string) bool
 // ContainsRune reports whether the Unicode code point r is within b.
 func ContainsRune(b []byte, r rune) bool
 
-// Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.
-func Index(s, sep []byte) int
-
 // LastIndex returns the index of the last instance of sep in s, or -1 if sep is not present in s.
 func LastIndex(s, sep []byte) int
 
@@ -35,6 +32,8 @@ func LastIndexByte(s []byte, c byte) int
 // IndexRune interprets s as a sequence of UTF-8-encoded Unicode code points.
 // It returns the byte index of the first occurrence in s of the given rune.
 // It returns -1 if rune is not present in s.
+// If r is utf8.RuneError, it returns the first instance of any
+// invalid UTF-8 byte sequence.
 func IndexRune(s []byte, r rune) int
 
 // IndexAny interprets s as a sequence of UTF-8-encoded Unicode code points.
@@ -110,6 +109,9 @@ func HasSuffix(s, suffix []byte) bool
 func Map(mapping func(r rune) rune, s []byte) []byte
 
 // Repeat returns a new byte slice consisting of count copies of b.
+//
+// It panics if count is negative or if
+// the result of (len(b) * count) overflows.
 func Repeat(b []byte, count int) []byte
 
 // ToUpper returns a copy of the byte slice s with all Unicode letters mapped to their upper case.
@@ -123,15 +125,15 @@ func ToTitle(s []byte) []byte
 
 // ToUpperSpecial returns a copy of the byte slice s with all Unicode letters mapped to their
 // upper case, giving priority to the special casing rules.
-func ToUpperSpecial(_case unicode.SpecialCase, s []byte) []byte
+func ToUpperSpecial(c unicode.SpecialCase, s []byte) []byte
 
 // ToLowerSpecial returns a copy of the byte slice s with all Unicode letters mapped to their
 // lower case, giving priority to the special casing rules.
-func ToLowerSpecial(_case unicode.SpecialCase, s []byte) []byte
+func ToLowerSpecial(c unicode.SpecialCase, s []byte) []byte
 
 // ToTitleSpecial returns a copy of the byte slice s with all Unicode letters mapped to their
 // title case, giving priority to the special casing rules.
-func ToTitleSpecial(_case unicode.SpecialCase, s []byte) []byte
+func ToTitleSpecial(c unicode.SpecialCase, s []byte) []byte
 
 // Title returns a copy of s with all Unicode letters that begin words
 // mapped to their title case.
@@ -168,6 +170,13 @@ func IndexFunc(s []byte, f func(r rune) bool) int
 // It returns the byte index in s of the last Unicode
 // code point satisfying f(c), or -1 if none do.
 func LastIndexFunc(s []byte, f func(r rune) bool) int
+
+// asciiSet is a 32-byte value, where each bit represents the presence of a
+// given ASCII character in the set. The 128-bits of the lower 16 bytes,
+// starting with the least-significant bit of the lowest word to the
+// most-significant bit of the highest word, map to the full range of all
+// 128 ASCII characters. The 128-bits of the upper 16 bytes will be zeroed,
+// ensuring that any non-ASCII character will be reported as not in the set.
 
 // Trim returns a subslice of s by slicing off all leading and
 // trailing UTF-8-encoded Unicode code points contained in cutset.

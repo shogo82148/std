@@ -92,6 +92,11 @@ const (
 	// See golang.org/s/go15vendor for more information.
 	//
 	// Setting IgnoreVendor ignores vendor directories.
+	//
+	// In contrast to the package's ImportPath,
+	// the returned package's Imports, TestImports, and XTestImports
+	// are always the exact import paths from the source files:
+	// Import makes no attempt to resolve or check those paths.
 	IgnoreVendor
 )
 
@@ -212,6 +217,7 @@ func ImportDir(dir string, mode ImportMode) (*Package, error)
 // We never pass these arguments to a shell (just to programs we construct argv for), so this should be okay.
 // See golang.org/issue/6038.
 // The @ is for OS X. See golang.org/issue/13720.
+// The % is for Jenkins. See golang.org/issue/16959.
 
 // ToolDir is the directory containing build tools.
 var ToolDir = filepath.Join(runtime.GOROOT(), "pkg/tool/"+runtime.GOOS+"_"+runtime.GOARCH)

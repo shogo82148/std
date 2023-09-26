@@ -96,14 +96,21 @@ type Reader struct {
 	line   int
 	column int
 	r      *bufio.Reader
-	field  bytes.Buffer
+
+	lineBuffer bytes.Buffer
+
+	fieldIndexes []int
 }
 
 // NewReader returns a new Reader that reads from r.
 func NewReader(r io.Reader) *Reader
 
-// Read reads one record from r. The record is a slice of strings with each
-// string representing one field.
+// Read reads one record (a slice of fields) from r.
+// If the record has an unexpected number of fields,
+// Read returns the record along with the error ErrFieldCount.
+// Except for that case, Read always returns either a non-nil
+// record or a non-nil error, but not both.
+// If there is no data left to be read, Read returns nil, io.EOF.
 func (r *Reader) Read() (record []string, err error)
 
 // ReadAll reads all the remaining records from r.

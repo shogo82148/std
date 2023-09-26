@@ -167,3 +167,8 @@ type Pod struct {
 type X struct {
 	D string `xml:",comment"`
 }
+
+type IXField struct {
+	Five        int      `xml:"five"`
+	NotInnerXML []string `xml:",innerxml"`
+}

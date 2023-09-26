@@ -23,9 +23,15 @@ var _ = log.Printf
 //     where types are: "string", [u]int{8,16,32,64}, "bool"
 //   INSERT|<tablename>|col=val,col2=val2,col3=?
 //   SELECT|<tablename>|projectcol1,projectcol2|filtercol=?,filtercol2=?
+//   SELECT|<tablename>|projectcol1,projectcol2|filtercol=?param1,filtercol2=?param2
 //
 // Any of these can be preceded by PANIC|<method>|, to cause the
 // named method on fakeStmt to panic.
+//
+// Any of these can be proceeded by WAIT|<duration>|, to cause the
+// named method on fakeStmt to sleep for the specified duration.
+//
+// Multiple of these can be combined when separated with a semicolon.
 //
 // When opening a fakeDriver's database, it starts empty with no
 // tables. All tables and data are stored in memory only.

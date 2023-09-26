@@ -62,10 +62,16 @@ func Marshal(curve Curve, x, y *big.Int) []byte
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 
 // P256 returns a Curve which implements P-256 (see FIPS 186-3, section D.2.3)
+//
+// The cryptographic operations are implemented using constant-time algorithms.
 func P256() Curve
 
 // P384 returns a Curve which implements P-384 (see FIPS 186-3, section D.2.4)
+//
+// The cryptographic operations do not use constant-time algorithms.
 func P384() Curve
 
 // P521 returns a Curve which implements P-521 (see FIPS 186-3, section D.2.5)
+//
+// The cryptographic operations do not use constant-time algorithms.
 func P521() Curve

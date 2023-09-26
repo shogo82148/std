@@ -13,7 +13,14 @@ package main
 
 // bootstrapDirs is a list of directories holding code that must be
 // compiled with a Go 1.4 toolchain to produce the bootstrapTargets.
-// All directories in this list are relative to and must be below $GOROOT/src/cmd.
-// The list is assumed to have two kinds of entries: names without slashes,
-// which are commands, and entries beginning with internal/, which are
-// packages supporting the commands.
+// All directories in this list are relative to and must be below $GOROOT/src.
+//
+// The list has have two kinds of entries: names beginning with cmd/ with
+// no other slashes, which are commands, and other paths, which are packages
+// supporting the commands. Packages in the standard library can be listed
+// if a newer copy needs to be substituted for the Go 1.4 copy when used
+// by the command packages.
+// These will be imported during bootstrap as bootstrap/name, like bootstrap/math/big.
+
+// File suffixes that use build tags introduced since Go 1.4.
+// These must not be copied into the bootstrap build directory.

@@ -7,6 +7,8 @@ package runtime
 // A wbufptr holds a workbuf*, but protects it from write barriers.
 // workbufs never live on the heap, so write barriers are unnecessary.
 // Write barriers on workbuf pointers may also be dangerous in the GC.
+//
+// TODO: Since workbuf is now go:notinheap, this isn't necessary.
 
 // A gcWork provides the interface to produce and consume work for the
 // garbage collector.
@@ -24,3 +26,5 @@ package runtime
 // the garbage collector from transitioning to mark termination since
 // gcWork may locally hold GC work buffers. This can be done by
 // disabling preemption (systemstack or acquirem).
+
+//go:notinheap

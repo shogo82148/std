@@ -7,7 +7,9 @@
 package types
 
 // stmtContext is a bitset describing which
-// control-flow statements are permissible.
+// control-flow statements are permissible,
+// and provides additional context information
+// for better error messages.
 
 // A valueMap maps a case value (of a basic Go type) to a list of positions
 // where the same case value appeared, together with the corresponding case

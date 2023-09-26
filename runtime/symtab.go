@@ -49,10 +49,26 @@ type Func struct {
 // moduledata is stored in read-only memory; none of the pointers here
 // are visible to the garbage collector.
 
+// A modulehash is used to compare the ABI of a new module or a
+// package in a new module with the loaded program.
+//
 // For each shared library a module links against, the linker creates an entry in the
 // moduledata.modulehashes slice containing the name of the module, the abi hash seen
 // at link time and a pointer to the runtime abi hash. These are checked in
 // moduledataverify1 below.
+//
+// For each loaded plugin, the the pkghashes slice has a modulehash of the
+// newly loaded package that can be used to check the plugin's version of
+// a package against any previously loaded version of the package.
+// This is done in plugin.lastmoduleinit.
+
+// pinnedTypemaps are the map[typeOff]*_type from the moduledata objects.
+//
+// These typemap objects are allocated at run time on the heap, but the
+// only direct reference to them is in the moduledata, created by the
+// linker and marked SNOPTRDATA so it is ignored by the GC.
+//
+// To make sure the map isn't collected, we keep a second reference here.
 
 // findfunctab is an array of these structures.
 // Each bucket represents 4096 bytes of the text segment.

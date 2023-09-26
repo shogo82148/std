@@ -22,6 +22,7 @@
 package expvar
 
 import (
+	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/sync"
 )
 
@@ -35,6 +36,8 @@ type Int struct {
 	i int64
 }
 
+func (v *Int) Value() int64
+
 func (v *Int) String() string
 
 func (v *Int) Add(delta int64)
@@ -45,6 +48,8 @@ func (v *Int) Set(value int64)
 type Float struct {
 	f uint64
 }
+
+func (v *Float) Value() float64
 
 func (v *Float) String() string
 
@@ -91,6 +96,10 @@ type String struct {
 	s  string
 }
 
+func (v *String) Value() string
+
+// String implements the Val interface. To get the unquoted string
+// use Value.
 func (v *String) String() string
 
 func (v *String) Set(value string)
@@ -98,6 +107,8 @@ func (v *String) Set(value string)
 // Func implements Var by calling the function
 // and formatting the returned value using JSON.
 type Func func() interface{}
+
+func (f Func) Value() interface{}
 
 func (f Func) String() string
 
@@ -124,3 +135,8 @@ func NewString(name string) *String
 // The global variable map is locked during the iteration,
 // but existing entries may be concurrently updated.
 func Do(f func(KeyValue))
+
+// Handler returns the expvar HTTP Handler.
+//
+// This is only needed to install the handler in a non-standard location.
+func Handler() http.Handler

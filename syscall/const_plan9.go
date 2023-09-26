@@ -10,6 +10,17 @@ const (
 	O_EXCL    = 0x1000
 )
 
+// Bind flags
+const (
+	MORDER  = 0x0003
+	MREPL   = 0x0000
+	MBEFORE = 0x0001
+	MAFTER  = 0x0002
+	MCREATE = 0x0004
+	MCACHE  = 0x0010
+	MMASK   = 0x0017
+)
+
 // Rfork flags
 const (
 	RFNAMEG  = 1 << 0

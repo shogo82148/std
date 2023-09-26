@@ -17,12 +17,16 @@ package runtime
 //
 // Per-call-stack profiling information.
 // Lookup by hashing call stack into a linked-list hash table.
+//
+// No heap pointers.
+//
+//go:notinheap
 
 // A memRecord is the bucket data for a bucket of type memProfile,
 // part of the memory profile.
 
 // A blockRecord is the bucket data for a bucket of type blockProfile,
-// part of the blocking profile.
+// which is used in blocking and mutex profiles.
 
 // SetBlockProfileRate controls the fraction of goroutine blocking events
 // that are reported in the blocking profile. The profiler aims to sample
@@ -31,6 +35,15 @@ package runtime
 // To include every blocking event in the profile, pass rate = 1.
 // To turn off profiling entirely, pass rate <= 0.
 func SetBlockProfileRate(rate int)
+
+// SetMutexProfileFraction controls the fraction of mutex contention events
+// that are reported in the mutex profile. On average 1/rate events are
+// reported. The previous rate is returned.
+//
+// To turn off profiling entirely, pass rate 0.
+// To just read the current rate, pass rate -1.
+// (For n>1 the details of sampling may change.)
+func SetMutexProfileFraction(rate int) int
 
 // A StackRecord describes a single execution stack.
 type StackRecord struct {
@@ -114,6 +127,14 @@ type BlockProfileRecord struct {
 // the testing package's -test.blockprofile flag instead
 // of calling BlockProfile directly.
 func BlockProfile(p []BlockProfileRecord) (n int, ok bool)
+
+// MutexProfile returns n, the number of records in the current mutex profile.
+// If len(p) >= n, MutexProfile copies the profile into p and returns n, true.
+// Otherwise, MutexProfile does not change p, and returns n, false.
+//
+// Most clients should use the runtime/pprof package
+// instead of calling MutexProfile directly.
+func MutexProfile(p []BlockProfileRecord) (n int, ok bool)
 
 // ThreadCreateProfile returns n, the number of records in the thread creation profile.
 // If len(p) >= n, ThreadCreateProfile copies the profile into p and returns n, true.

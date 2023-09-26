@@ -138,7 +138,8 @@ func (x *Int) Int64() int64
 func (x *Int) Uint64() uint64
 
 // SetString sets z to the value of s, interpreted in the given base,
-// and returns z and a boolean indicating success. If SetString fails,
+// and returns z and a boolean indicating success. The entire string
+// (not just a prefix) must be valid for success. If SetString fails,
 // the value of z is undefined but the returned value is nil.
 //
 // The base argument must be 0 or a value between 2 and MaxBase. If the base
@@ -160,7 +161,9 @@ func (x *Int) BitLen() int
 
 // Exp sets z = x**y mod |m| (i.e. the sign of m is ignored), and returns z.
 // If y <= 0, the result is 1 mod |m|; if m == nil or m == 0, z = x**y.
-// See Knuth, volume 2, section 4.6.3.
+//
+// Modular exponentation of inputs of a particular size is not a
+// cryptographically constant-time operation.
 func (z *Int) Exp(x, y, m *Int) *Int
 
 // GCD sets z to the greatest common divisor of a and b, which both must
@@ -168,14 +171,6 @@ func (z *Int) Exp(x, y, m *Int) *Int
 // If x and y are not nil, GCD sets x and y such that z = a*x + b*y.
 // If either a or b is <= 0, GCD sets z = x = y = 0.
 func (z *Int) GCD(x, y, a, b *Int) *Int
-
-// ProbablyPrime performs n Miller-Rabin tests to check whether x is prime.
-// If x is prime, it returns true.
-// If x is not prime, it returns false with probability at least 1 - ¼ⁿ.
-//
-// It is not suitable for judging primes that an adversary may have crafted
-// to fool this test.
-func (x *Int) ProbablyPrime(n int) bool
 
 // Rand sets z to a pseudo-random number in [0, n) and returns z.
 func (z *Int) Rand(rnd *rand.Rand, n *Int) *Int
@@ -224,3 +219,7 @@ func (z *Int) Xor(x, y *Int) *Int
 
 // Not sets z = ^x and returns z.
 func (z *Int) Not(x *Int) *Int
+
+// Sqrt sets z to ⌊√x⌋, the largest integer such that z² ≤ x, and returns z.
+// It panics if x is negative.
+func (z *Int) Sqrt(x *Int) *Int

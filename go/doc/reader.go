@@ -22,3 +22,6 @@ package doc
 // twice (once when printing the documentation and once when
 // printing the corresponding AST node).
 //
+
+// IsPredeclared reports whether s is a predeclared identifier.
+func IsPredeclared(s string) bool

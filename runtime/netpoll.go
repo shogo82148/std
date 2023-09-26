@@ -21,3 +21,7 @@ package runtime
 // nil - nothing of the above.
 
 // Network poller descriptor.
+//
+// No heap pointers.
+//
+//go:notinheap

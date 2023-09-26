@@ -8,6 +8,7 @@ import (
 	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/crypto/x509"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/time"
 )
@@ -37,6 +38,7 @@ const (
 	CurveP256 CurveID = 23
 	CurveP384 CurveID = 24
 	CurveP521 CurveID = 25
+	X25519    CurveID = 29
 )
 
 // TLS Elliptic Curve Point Formats
@@ -107,6 +109,25 @@ type ClientSessionCache interface {
 	Put(sessionKey string, cs *ClientSessionState)
 }
 
+// SignatureScheme identifies a signature algorithm supported by TLS. See
+// https://tools.ietf.org/html/draft-ietf-tls-tls13-18#section-4.2.3.
+type SignatureScheme uint16
+
+const (
+	PKCS1WithSHA1   SignatureScheme = 0x0201
+	PKCS1WithSHA256 SignatureScheme = 0x0401
+	PKCS1WithSHA384 SignatureScheme = 0x0501
+	PKCS1WithSHA512 SignatureScheme = 0x0601
+
+	PSSWithSHA256 SignatureScheme = 0x0804
+	PSSWithSHA384 SignatureScheme = 0x0805
+	PSSWithSHA512 SignatureScheme = 0x0806
+
+	ECDSAWithP256AndSHA256 SignatureScheme = 0x0403
+	ECDSAWithP384AndSHA384 SignatureScheme = 0x0503
+	ECDSAWithP521AndSHA512 SignatureScheme = 0x0603
+)
+
 // ClientHelloInfo contains information from a ClientHello message in order to
 // guide certificate selection in the GetCertificate callback.
 type ClientHelloInfo struct {
@@ -117,6 +138,23 @@ type ClientHelloInfo struct {
 	SupportedCurves []CurveID
 
 	SupportedPoints []uint8
+
+	SignatureSchemes []SignatureScheme
+
+	SupportedProtos []string
+
+	SupportedVersions []uint16
+
+	Conn net.Conn
+}
+
+// CertificateRequestInfo contains information from a server's
+// CertificateRequest message, which is used to demand a certificate and proof
+// of control from a client.
+type CertificateRequestInfo struct {
+	AcceptableCAs [][]byte
+
+	SignatureSchemes []SignatureScheme
 }
 
 // RenegotiationSupport enumerates the different levels of support for TLS
@@ -159,7 +197,13 @@ type Config struct {
 
 	NameToCertificate map[string]*Certificate
 
-	GetCertificate func(clientHello *ClientHelloInfo) (*Certificate, error)
+	GetCertificate func(*ClientHelloInfo) (*Certificate, error)
+
+	GetClientCertificate func(*CertificateRequestInfo) (*Certificate, error)
+
+	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
+
+	VerifyPeerCertificate func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error
 
 	RootCAs *x509.CertPool
 
@@ -193,17 +237,25 @@ type Config struct {
 
 	Renegotiation RenegotiationSupport
 
+	KeyLogWriter io.Writer
+
 	serverInitOnce sync.Once
 
 	mutex sync.RWMutex
 
 	sessionTicketKeys []ticketKey
+
+	originalConfig *Config
 }
 
 // ticketKeyNameLen is the number of bytes of identifier that is prepended to
 // an encrypted session ticket in order to identify the key used to encrypt it.
 
 // ticketKey is the internal representation of a session ticket key.
+
+// Clone returns a shallow clone of c. It is safe to clone a Config that is
+// being used concurrently by a TLS client or server.
+func (c *Config) Clone() *Config
 
 // SetSessionTicketKeys updates the session ticket keys for a server. The first
 // key will be used when creating new tickets, while all keys can be used for
@@ -216,6 +268,9 @@ func (c *Config) SetSessionTicketKeys(keys [][32]byte)
 // from the CommonName and SubjectAlternateName fields of each of the leaf
 // certificates.
 func (c *Config) BuildNameToCertificate()
+
+// writerMutex protects all KeyLogWriters globally. It is rarely enabled,
+// and is only for debugging, so a global mutex saves space.
 
 // A Certificate is a chain of one or more certificates, leaf first.
 type Certificate struct {

@@ -4,16 +4,6 @@
 
 package syscall
 
-func Getpagesize() int
-
-func TimespecToNsec(ts Timespec) int64
-
-func NsecToTimespec(nsec int64) (ts Timespec)
-
-func TimevalToNsec(tv Timeval) int64
-
-func NsecToTimeval(nsec int64) (tv Timeval)
-
 func SetKevent(k *Kevent_t, fd, mode, flags int)
 
 func (iov *Iovec) SetLen(length int)

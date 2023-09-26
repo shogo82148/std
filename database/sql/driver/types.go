@@ -90,9 +90,9 @@ func IsScanValue(v interface{}) bool
 // Value method is used to return a Value. As a fallback, the provided
 // argument's underlying type is used to convert it to a Value:
 // underlying integer types are converted to int64, floats to float64,
-// and strings to []byte. If the argument is a nil pointer,
-// ConvertValue returns a nil Value. If the argument is a non-nil
-// pointer, it is dereferenced and ConvertValue is called
+// bool, string, and []byte to themselves. If the argument is a nil
+// pointer, ConvertValue returns a nil Value. If the argument is a
+// non-nil pointer, it is dereferenced and ConvertValue is called
 // recursively. Other types are an error.
 var DefaultParameterConverter defaultConverter
 

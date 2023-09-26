@@ -59,10 +59,12 @@ type Writer struct {
 // compressed form of data to its underlying writer.
 func (w *Writer) Write(data []byte) (n int, err error)
 
-// Flush flushes any pending compressed data to the underlying writer.
+// Flush flushes any pending data to the underlying writer.
 // It is useful mainly in compressed network protocols, to ensure that
 // a remote reader has enough data to reconstruct a packet.
 // Flush does not return until the data has been written.
+// Calling Flush when there is no pending data still causes the Writer
+// to emit a sync marker of at least 4 bytes.
 // If the underlying writer returns an error, Flush returns that error.
 //
 // In the terminology of the zlib library, Flush is equivalent to Z_SYNC_FLUSH.

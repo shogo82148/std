@@ -31,9 +31,20 @@ func (e InvalidHostError) Error() string
 // any % is not followed by two hexadecimal digits.
 func QueryUnescape(s string) (string, error)
 
+// PathUnescape does the inverse transformation of PathEscape, converting
+// %AB into the byte 0xAB. It returns an error if any % is not followed by
+// two hexadecimal digits.
+//
+// PathUnescape is identical to QueryUnescape except that it does not unescape '+' to ' ' (space).
+func PathUnescape(s string) (string, error)
+
 // QueryEscape escapes the string so it can be safely placed
 // inside a URL query.
 func QueryEscape(s string) string
+
+// PathEscape escapes the string so it can be safely placed
+// inside a URL path segment.
+func PathEscape(s string) string
 
 // A URL represents a parsed URL (technically, a URI reference).
 // The general form represented is:
@@ -175,6 +186,10 @@ func (v Values) Del(key string)
 // ParseQuery always returns a non-nil map containing all the
 // valid query parameters found; err describes the first decoding error
 // encountered, if any.
+//
+// Query is expected to be a list of key=value settings separated by
+// ampersands or semicolons. A setting without an equals sign is
+// interpreted as a key set to an empty value.
 func ParseQuery(query string) (Values, error)
 
 // Encode encodes the values into “URL encoded” form
@@ -182,6 +197,7 @@ func ParseQuery(query string) (Values, error)
 func (v Values) Encode() string
 
 // IsAbs reports whether the URL is absolute.
+// Absolute means that it has a non-empty scheme.
 func (u *URL) IsAbs() bool
 
 // Parse parses a URL in the context of the receiver. The provided URL
@@ -203,3 +219,18 @@ func (u *URL) Query() Values
 // RequestURI returns the encoded path?query or opaque?query
 // string that would be used in an HTTP request for u.
 func (u *URL) RequestURI() string
+
+// Hostname returns u.Host, without any port number.
+//
+// If Host is an IPv6 literal with a port number, Hostname returns the
+// IPv6 literal without the square brackets. IPv6 literals may include
+// a zone identifier.
+func (u *URL) Hostname() string
+
+// Port returns the port part of u.Host, without the leading colon.
+// If u.Host doesn't contain a port, Port returns an empty string.
+func (u *URL) Port() string
+
+func (u *URL) MarshalBinary() (text []byte, err error)
+
+func (u *URL) UnmarshalBinary(text []byte) error

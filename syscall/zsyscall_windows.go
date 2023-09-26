@@ -8,6 +8,9 @@ import (
 
 var _ unsafe.Pointer
 
+// Do the interface allocations only once for common
+// Errno values.
+
 func GetLastError() (lasterr error)
 
 func LoadLibrary(libname string) (handle Handle, err error)

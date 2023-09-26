@@ -132,7 +132,6 @@ const (
 
 type SemT C.sem_t
 
-type SigaltstackT C.struct_sigaltstack
 type Sigset C.sigset_t
 type StackT C.stack_t
 

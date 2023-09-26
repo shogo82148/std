@@ -22,6 +22,9 @@ package reflect
 // Use the Kind method to find out the kind of type before
 // calling kind-specific methods. Calling a method
 // inappropriate to the kind of type causes a run-time panic.
+//
+// Type values are comparable, such as with the == operator.
+// Two Type values are equal if they represent identical types.
 type Type interface {
 	Align() int
 

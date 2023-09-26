@@ -81,6 +81,8 @@ func DialHTTPPath(network, address, path string) (*Client, error)
 // Dial connects to an RPC server at the specified network address.
 func Dial(network, address string) (*Client, error)
 
+// Close calls the underlying codec's Close method. If the connection is already
+// shutting down, ErrShutdown is returned.
 func (client *Client) Close() error
 
 // Go invokes the function asynchronously. It returns the Call structure representing

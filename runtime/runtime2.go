@@ -81,7 +81,7 @@ package runtime
 
 // Layout of in-memory per-function information prepared by linker
 // See https://golang.org/s/go12symtab.
-// Keep in sync with linker
+// Keep in sync with linker (../cmd/link/internal/ld/pcln.go:/pclntab)
 // and with package debug/gosym and with symtab.go in package runtime.
 
 // layout of Itab known to compilers

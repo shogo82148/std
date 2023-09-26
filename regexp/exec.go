@@ -18,6 +18,5 @@ package regexp
 
 // A machine holds all the state during an NFA simulation for p.
 
-// empty is a non-nil 0-element slice,
-// so doExecute can avoid an allocation
-// when 0 captures are requested from a successful match.
+// arrayNoInts is returned by doExecute match if nil dstCap is passed
+// to it with ncap=0.

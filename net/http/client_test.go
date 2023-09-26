@@ -30,3 +30,7 @@ type RecordingJar struct {
 
 // issue15577Tripper returns a Response with a redirect response
 // header and doesn't populate its Response.Request field.
+
+// issue18239Body is an io.ReadCloser for TestTransportBodyReadError.
+// Its Read returns readErr and increments *readCalls atomically.
+// Its Close returns nil and increments *closeCalls atomically.

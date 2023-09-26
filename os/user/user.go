@@ -6,31 +6,27 @@
 package user
 
 // User represents a user account.
-//
-// On POSIX systems Uid and Gid contain a decimal number
-// representing uid and gid. On windows Uid and Gid
-// contain security identifier (SID) in a string format.
-// On Plan 9, Uid, Gid, Username, and Name will be the
-// contents of /dev/user.
 type User struct {
-	Uid      string
-	Gid      string
+	Uid string
+
+	Gid string
+
 	Username string
-	Name     string
-	HomeDir  string
+
+	Name string
+
+	HomeDir string
 }
 
 // Group represents a grouping of users.
 //
-// On POSIX systems Gid contains a decimal number
-// representing the group ID.
+// On POSIX systems Gid contains a decimal number representing the group ID.
 type Group struct {
 	Gid  string
 	Name string
 }
 
-// UnknownUserIdError is returned by LookupId when
-// a user cannot be found.
+// UnknownUserIdError is returned by LookupId when a user cannot be found.
 type UnknownUserIdError int
 
 func (e UnknownUserIdError) Error() string

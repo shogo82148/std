@@ -30,6 +30,9 @@ type DeepEqualTest struct {
 
 // Simple functions for DeepEqual tests.
 
+type Loop *Loop
+type Loopy interface{}
+
 type Recursive struct {
 	x int
 	r *Recursive
@@ -216,6 +219,9 @@ type Public struct {
 var V = ValueOf
 
 type Empty struct{}
+type MyStruct struct {
+	x int `some:"tag"`
+}
 type MyString string
 type MyBytes []byte
 type MyRunes []int32
@@ -372,6 +378,9 @@ type Inner struct {
 }
 
 type Impl struct{}
+
+// Issue 18635 (method version).
+type KeepMethodLive struct{}
 
 type XM struct{}
 

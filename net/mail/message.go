@@ -38,11 +38,18 @@ func ReadMessage(r io.Reader) (msg *Message, err error)
 // Layouts suitable for passing to time.Parse.
 // These are tried in order.
 
+// ParseDate parses an RFC 5322 date string.
+func ParseDate(date string) (time.Time, error)
+
 // A Header represents the key-value pairs in a mail message header.
 type Header map[string][]string
 
 // Get gets the first value associated with the given key.
+// It is case insensitive; CanonicalMIMEHeaderKey is used
+// to canonicalize the provided key.
 // If there are no values associated with the key, Get returns "".
+// To access multiple values of a key, or to use non-canonical keys,
+// access the map directly.
 func (h Header) Get(key string) string
 
 var ErrHeaderNotPresent = errors.New("mail: header not in message")

@@ -117,6 +117,8 @@ var ErrHelp = errors.New("flag: help requested")
 // rather than using the next command-line argument.
 //
 // Set is called once, in command line order, for each flag present.
+// The flag package may call the String method with a zero-valued receiver,
+// such as a nil pointer.
 type Value interface {
 	String() string
 	Set(string) error

@@ -22,9 +22,11 @@ func (h Header) Add(key, value string)
 func (h Header) Set(key, value string)
 
 // Get gets the first value associated with the given key.
+// It is case insensitive; textproto.CanonicalMIMEHeaderKey is used
+// to canonicalize the provided key.
 // If there are no values associated with the key, Get returns "".
-// To access multiple values of a key, access the map directly
-// with CanonicalHeaderKey.
+// To access multiple values of a key, or to use non-canonical keys,
+// access the map directly.
 func (h Header) Get(key string) string
 
 // Del deletes the values associated with key.

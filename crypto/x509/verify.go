@@ -27,6 +27,9 @@ const (
 	// IncompatibleUsage results when the certificate's key usage indicates
 	// that it may only be used for a different purpose.
 	IncompatibleUsage
+	// NameMismatch results when the subject name of a parent certificate
+	// does not match the issuer name in the child.
+	NameMismatch
 )
 
 // CertificateInvalidError results when an odd error occurs. Users of this
@@ -49,7 +52,7 @@ func (h HostnameError) Error() string
 
 // UnknownAuthorityError results when the certificate issuer is unknown
 type UnknownAuthorityError struct {
-	cert *Certificate
+	Cert *Certificate
 
 	hintErr error
 

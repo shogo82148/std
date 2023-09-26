@@ -59,3 +59,5 @@ func (tv *Timeval) Unix() (sec int64, nsec int64)
 func (ts *Timespec) Nano() int64
 
 func (tv *Timeval) Nano() int64
+
+func Getpagesize() int

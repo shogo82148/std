@@ -337,6 +337,7 @@ func LimitReader(r Reader, n int64) Reader
 // A LimitedReader reads from R but limits the amount of
 // data returned to just N bytes. Each call to Read
 // updates N to reflect the new amount remaining.
+// Read returns EOF when N <= 0 or when the underlying R returns EOF.
 type LimitedReader struct {
 	R Reader
 	N int64

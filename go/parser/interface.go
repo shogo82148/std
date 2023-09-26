@@ -62,7 +62,7 @@ func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode)
 func ParseDir(fset *token.FileSet, path string, filter func(os.FileInfo) bool, mode Mode) (pkgs map[string]*ast.Package, first error)
 
 // ParseExprFrom is a convenience function for parsing an expression.
-// The arguments have the same meaning as for Parse, but the source must
+// The arguments have the same meaning as for ParseFile, but the source must
 // be a valid Go (type or value) expression. Specifically, fset must not
 // be nil.
 func ParseExprFrom(fset *token.FileSet, filename string, src interface{}, mode Mode) (ast.Expr, error)

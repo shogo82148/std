@@ -19,8 +19,6 @@ import (
 // The size of a CRC-32 checksum in bytes.
 const Size = 4
 
-// Use "slice by 8" when payload >= this value.
-
 // Predefined polynomials.
 const (
 	// IEEE is by far and away the most common CRC-32 polynomial.
@@ -47,9 +45,7 @@ type Table [256]uint32
 // using this polynomial.
 
 // IEEETable is the table for the IEEE polynomial.
-var IEEETable = makeTable(IEEE)
-
-// slicing8Table is array of 8 Tables
+var IEEETable = simpleMakeTable(IEEE)
 
 // ieeeTable8 is the slicing8Table for IEEE
 

@@ -12,7 +12,7 @@ import (
 
 // fieldInfo holds details for the xml representation of a single field.
 
-// A TagPathError represents an error in the unmarshalling process
+// A TagPathError represents an error in the unmarshaling process
 // caused by the use of field tags with conflicting paths.
 type TagPathError struct {
 	Struct       reflect.Type

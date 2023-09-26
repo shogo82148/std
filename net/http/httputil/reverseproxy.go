@@ -29,6 +29,8 @@ type ReverseProxy struct {
 	ErrorLog *log.Logger
 
 	BufferPool BufferPool
+
+	ModifyResponse func(*http.Response) error
 }
 
 // A BufferPool is an interface for getting and returning temporary

@@ -17,6 +17,7 @@ const (
 	BestSpeed          = flate.BestSpeed
 	BestCompression    = flate.BestCompression
 	DefaultCompression = flate.DefaultCompression
+	HuffmanOnly        = flate.HuffmanOnly
 )
 
 // A Writer takes data written to it and writes the compressed
@@ -42,9 +43,9 @@ func NewWriter(w io.Writer) *Writer
 // NewWriterLevel is like NewWriter but specifies the compression level instead
 // of assuming DefaultCompression.
 //
-// The compression level can be DefaultCompression, NoCompression, or any
-// integer value between BestSpeed and BestCompression inclusive. The error
-// returned will be nil if the level is valid.
+// The compression level can be DefaultCompression, NoCompression, HuffmanOnly
+// or any integer value between BestSpeed and BestCompression inclusive.
+// The error returned will be nil if the level is valid.
 func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 
 // NewWriterLevelDict is like NewWriterLevel but specifies a dictionary to

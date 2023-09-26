@@ -98,3 +98,13 @@ func ExampleURL_ResolveReference() {
 	// Output:
 	// http://example.com/search?q=dotnet
 }
+
+func ExampleParseQuery() {
+	m, err := url.ParseQuery(`x=1&y=2&y=3;z`)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(toJSON(m))
+	// Output:
+	// {"x":["1"], "y":["2", "3"], "z":[""]}
+}

@@ -21,12 +21,26 @@ type Source interface {
 	Seed(seed int64)
 }
 
+// A Source64 is a Source that can also generate
+// uniformly-distributed pseudo-random uint64 values in
+// the range [0, 1<<64) directly.
+// If a Rand r's underlying Source s implements Source64,
+// then r.Uint64 returns the result of one call to s.Uint64
+// instead of making two calls to s.Int63.
+type Source64 interface {
+	Source
+	Uint64() uint64
+}
+
 // NewSource returns a new pseudo-random Source seeded with the given value.
+// Unlike the default Source used by top-level functions, this source is not
+// safe for concurrent use by multiple goroutines.
 func NewSource(seed int64) Source
 
 // A Rand is a source of random numbers.
 type Rand struct {
 	src Source
+	s64 Source64
 
 	readVal int64
 
@@ -46,6 +60,9 @@ func (r *Rand) Int63() int64
 
 // Uint32 returns a pseudo-random 32-bit value as a uint32.
 func (r *Rand) Uint32() uint32
+
+// Uint64 returns a pseudo-random 64-bit value as a uint64.
+func (r *Rand) Uint64() uint64
 
 // Int31 returns a non-negative pseudo-random 31-bit integer as an int32.
 func (r *Rand) Int31() int32
@@ -93,6 +110,10 @@ func Int63() int64
 // Uint32 returns a pseudo-random 32-bit value as a uint32
 // from the default Source.
 func Uint32() uint32
+
+// Uint64 returns a pseudo-random 64-bit value as a uint64
+// from the default Source.
+func Uint64() uint64
 
 // Int31 returns a non-negative pseudo-random 31-bit integer as an int32
 // from the default Source.

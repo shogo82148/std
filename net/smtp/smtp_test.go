@@ -4,6 +4,11 @@
 
 package smtp
 
+// toServerEmptyAuth is an implementation of Auth that only implements
+// the Start method, and returns "FOOAUTH", nil, nil. Notably, it returns
+// zero bytes for "toServer" so we can test that we don't send spaces at
+// the end of the line. See TestClientAuthTrimSpace.
+
 // (copied from net/http/httptest)
 // localhostCert is a PEM-encoded TLS cert with SAN IPs
 // "127.0.0.1" and "[::1]", expiring at the last second of 2049 (the end

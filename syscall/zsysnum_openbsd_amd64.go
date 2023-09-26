@@ -42,7 +42,6 @@ const (
 	SYS_CHFLAGS        = 34
 	SYS_FCHFLAGS       = 35
 	SYS_SYNC           = 36
-	SYS_KILL           = 37
 	SYS_STAT           = 38
 	SYS_GETPPID        = 39
 	SYS_LSTAT          = 40
@@ -113,6 +112,7 @@ const (
 	SYS_GETSOCKOPT     = 118
 	SYS_READV          = 120
 	SYS_WRITEV         = 121
+	SYS_KILL           = 122
 	SYS_FCHOWN         = 123
 	SYS_FCHMOD         = 124
 	SYS_SETREUID       = 126

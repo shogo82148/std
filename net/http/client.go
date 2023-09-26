@@ -26,6 +26,24 @@ import (
 // A Client is higher-level than a RoundTripper (such as Transport)
 // and additionally handles HTTP details such as cookies and
 // redirects.
+//
+// When following redirects, the Client will forward all headers set on the
+// initial Request except:
+//
+//   - when forwarding sensitive headers like "Authorization",
+//     "WWW-Authenticate", and "Cookie" to untrusted targets.
+//     These headers will be ignored when following a redirect to a domain
+//     that is not a subdomain match or exact match of the initial domain.
+//     For example, a redirect from "foo.com" to either "foo.com" or "sub.foo.com"
+//     will forward the sensitive headers, but a redirect to "bar.com" will not.
+//
+//   - when forwarding the "Cookie" header with a non-nil cookie Jar.
+//     Since each redirect may mutate the state of the cookie jar,
+//     a redirect may possibly alter a cookie set in the initial request.
+//     When forwarding the "Cookie" header, any mutated cookies will be omitted,
+//     with the expectation that the Jar will insert those mutated cookies
+//     with the updated values (assuming the origin matches).
+//     If Jar is nil, the initial cookies are forwarded without change.
 type Client struct {
 	Transport RoundTripper
 
@@ -47,6 +65,55 @@ var DefaultClient = &Client{}
 type RoundTripper interface {
 	RoundTrip(*Request) (*Response, error)
 }
+
+// Get issues a GET to the specified URL. If the response is one of
+// the following redirect codes, Get follows the redirect, up to a
+// maximum of 10 redirects:
+//
+//	301 (Moved Permanently)
+//	302 (Found)
+//	303 (See Other)
+//	307 (Temporary Redirect)
+//	308 (Permanent Redirect)
+//
+// An error is returned if there were too many redirects or if there
+// was an HTTP protocol error. A non-2xx response doesn't cause an
+// error.
+//
+// When err is nil, resp always contains a non-nil resp.Body.
+// Caller should close resp.Body when done reading from it.
+//
+// Get is a wrapper around DefaultClient.Get.
+//
+// To make a request with custom headers, use NewRequest and
+// DefaultClient.Do.
+func Get(url string) (resp *Response, err error)
+
+// Get issues a GET to the specified URL. If the response is one of the
+// following redirect codes, Get follows the redirect after calling the
+// Client's CheckRedirect function:
+//
+//	301 (Moved Permanently)
+//	302 (Found)
+//	303 (See Other)
+//	307 (Temporary Redirect)
+//	308 (Permanent Redirect)
+//
+// An error is returned if the Client's CheckRedirect function fails
+// or if there was an HTTP protocol error. A non-2xx response doesn't
+// cause an error.
+//
+// When err is nil, resp always contains a non-nil resp.Body.
+// Caller should close resp.Body when done reading from it.
+//
+// To make a request with custom headers, use NewRequest and Client.Do.
+func (c *Client) Get(url string) (resp *Response, err error)
+
+// ErrUseLastResponse can be returned by Client.CheckRedirect hooks to
+// control how redirects are processed. If returned, the next request
+// is not sent and the most recent response is returned with its body
+// unclosed.
+var ErrUseLastResponse = errors.New("net/http: use last response")
 
 // Do sends an HTTP request and returns an HTTP response, following
 // policy (such as redirects, cookies, auth) as configured on the
@@ -71,54 +138,17 @@ type RoundTripper interface {
 // the returned Response.Body is already closed.
 //
 // Generally Get, Post, or PostForm will be used instead of Do.
+//
+// If the server replies with a redirect, the Client first uses the
+// CheckRedirect function to determine whether the redirect should be
+// followed. If permitted, a 301, 302, or 303 redirect causes
+// subsequent requests to use HTTP method GET
+// (or HEAD if the original request was HEAD), with no body.
+// A 307 or 308 redirect preserves the original HTTP method and body,
+// provided that the Request.GetBody function is defined.
+// The NewRequest function automatically sets GetBody for common
+// standard library body types.
 func (c *Client) Do(req *Request) (*Response, error)
-
-// Get issues a GET to the specified URL. If the response is one of
-// the following redirect codes, Get follows the redirect, up to a
-// maximum of 10 redirects:
-//
-//	301 (Moved Permanently)
-//	302 (Found)
-//	303 (See Other)
-//	307 (Temporary Redirect)
-//
-// An error is returned if there were too many redirects or if there
-// was an HTTP protocol error. A non-2xx response doesn't cause an
-// error.
-//
-// When err is nil, resp always contains a non-nil resp.Body.
-// Caller should close resp.Body when done reading from it.
-//
-// Get is a wrapper around DefaultClient.Get.
-//
-// To make a request with custom headers, use NewRequest and
-// DefaultClient.Do.
-func Get(url string) (resp *Response, err error)
-
-// Get issues a GET to the specified URL. If the response is one of the
-// following redirect codes, Get follows the redirect after calling the
-// Client's CheckRedirect function:
-//
-//	301 (Moved Permanently)
-//	302 (Found)
-//	303 (See Other)
-//	307 (Temporary Redirect)
-//
-// An error is returned if the Client's CheckRedirect function fails
-// or if there was an HTTP protocol error. A non-2xx response doesn't
-// cause an error.
-//
-// When err is nil, resp always contains a non-nil resp.Body.
-// Caller should close resp.Body when done reading from it.
-//
-// To make a request with custom headers, use NewRequest and Client.Do.
-func (c *Client) Get(url string) (resp *Response, err error)
-
-// ErrUseLastResponse can be returned by Client.CheckRedirect hooks to
-// control how redirects are processed. If returned, the next request
-// is not sent and the most recent response is returned with its body
-// unclosed.
-var ErrUseLastResponse = errors.New("net/http: use last response")
 
 // Post issues a POST to the specified URL.
 //
@@ -130,7 +160,10 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 // Post is a wrapper around DefaultClient.Post.
 //
 // To set custom headers, use NewRequest and DefaultClient.Do.
-func Post(url string, bodyType string, body io.Reader) (resp *Response, err error)
+//
+// See the Client.Do method documentation for details on how redirects
+// are handled.
+func Post(url string, contentType string, body io.Reader) (resp *Response, err error)
 
 // Post issues a POST to the specified URL.
 //
@@ -140,7 +173,10 @@ func Post(url string, bodyType string, body io.Reader) (resp *Response, err erro
 // request.
 //
 // To set custom headers, use NewRequest and Client.Do.
-func (c *Client) Post(url string, bodyType string, body io.Reader) (resp *Response, err error)
+//
+// See the Client.Do method documentation for details on how redirects
+// are handled.
+func (c *Client) Post(url string, contentType string, body io.Reader) (resp *Response, err error)
 
 // PostForm issues a POST to the specified URL, with data's keys and
 // values URL-encoded as the request body.
@@ -152,6 +188,9 @@ func (c *Client) Post(url string, bodyType string, body io.Reader) (resp *Respon
 // Caller should close resp.Body when done reading from it.
 //
 // PostForm is a wrapper around DefaultClient.PostForm.
+//
+// See the Client.Do method documentation for details on how redirects
+// are handled.
 func PostForm(url string, data url.Values) (resp *Response, err error)
 
 // PostForm issues a POST to the specified URL,
@@ -162,9 +201,12 @@ func PostForm(url string, data url.Values) (resp *Response, err error)
 //
 // When err is nil, resp always contains a non-nil resp.Body.
 // Caller should close resp.Body when done reading from it.
+//
+// See the Client.Do method documentation for details on how redirects
+// are handled.
 func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)
 
-// Head issues a HEAD to the specified URL.  If the response is one of
+// Head issues a HEAD to the specified URL. If the response is one of
 // the following redirect codes, Head follows the redirect, up to a
 // maximum of 10 redirects:
 //
@@ -172,11 +214,12 @@ func (c *Client) PostForm(url string, data url.Values) (resp *Response, err erro
 //	302 (Found)
 //	303 (See Other)
 //	307 (Temporary Redirect)
+//	308 (Permanent Redirect)
 //
 // Head is a wrapper around DefaultClient.Head
 func Head(url string) (resp *Response, err error)
 
-// Head issues a HEAD to the specified URL.  If the response is one of the
+// Head issues a HEAD to the specified URL. If the response is one of the
 // following redirect codes, Head follows the redirect after calling the
 // Client's CheckRedirect function:
 //
@@ -184,9 +227,10 @@ func Head(url string) (resp *Response, err error)
 //	302 (Found)
 //	303 (See Other)
 //	307 (Temporary Redirect)
+//	308 (Permanent Redirect)
 func (c *Client) Head(url string) (resp *Response, err error)
 
 // cancelTimerBody is an io.ReadCloser that wraps rc with two features:
 // 1) on Read error or close, the stop func is called.
-// 2) On Read failure, if reqWasCanceled is true, the error is wrapped and
+// 2) On Read failure, if reqDidTimeout is true, the error is wrapped and
 //    marked as net.Error that hit its timeout.

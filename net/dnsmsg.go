@@ -25,7 +25,7 @@ package net
 // Wire constants.
 
 // A dnsStruct describes how to iterate over its fields to emulate
-// reflective marshalling.
+// reflective marshaling.
 
 // The wire format for the DNS packet header.
 

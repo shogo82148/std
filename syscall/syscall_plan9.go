@@ -100,8 +100,6 @@ func NsecToTimeval(nsec int64) (tv Timeval)
 
 func Gettimeofday(tv *Timeval) error
 
-func Getpagesize() int
-
 func Getegid() (egid int)
 func Geteuid() (euid int)
 func Getgid() (gid int)

@@ -18,5 +18,15 @@ Generate a trace file with 'go test':
 View the trace in a web browser:
 
 	go tool trace trace.out
+
+Generate a pprof-like profile from the trace:
+
+	go tool trace -pprof=TYPE trace.out > TYPE.pprof
+
+Supported profile types are:
+  - net: network blocking profile
+  - sync: synchronization blocking profile
+  - syscall: syscall blocking profile
+  - sched: scheduler latency profile
 */
 package main

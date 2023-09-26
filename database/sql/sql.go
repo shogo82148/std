@@ -8,13 +8,18 @@
 // The sql package must be used in conjunction with a database driver.
 // See https://golang.org/s/sqldrivers for a list of drivers.
 //
-// For more usage examples, see the wiki page at
+// Drivers that do not support context cancelation will not return until
+// after the query is completed.
+//
+// For usage examples, see the wiki page at
 // https://golang.org/s/sqlwiki.
 package sql
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/database/sql/driver"
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/reflect"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/time"
 )
@@ -28,6 +33,58 @@ func Register(name string, driver driver.Driver)
 
 // Drivers returns a sorted list of the names of the registered drivers.
 func Drivers() []string
+
+// A NamedArg is a named argument. NamedArg values may be used as
+// arguments to Query or Exec and bind to the corresponding named
+// parameter in the SQL statement.
+//
+// For a more concise way to create NamedArg values, see
+// the Named function.
+type NamedArg struct {
+	_Named_Fields_Required struct{}
+
+	Name string
+
+	Value interface{}
+}
+
+// Named provides a more concise way to create NamedArg values.
+//
+// Example usage:
+//
+//	db.ExecContext(ctx, `
+//	    delete from Invoice
+//	    where
+//	        TimeCreated < @end
+//	        and TimeCreated >= @start;`,
+//	    sql.Named("start", startTime),
+//	    sql.Named("end", endTime),
+//	)
+func Named(name string, value interface{}) NamedArg
+
+// IsolationLevel is the transaction isolation level used in TxOptions.
+type IsolationLevel int
+
+// Various isolation levels that drivers may support in BeginTx.
+// If a driver does not support a given isolation level an error may be returned.
+//
+// See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.
+const (
+	LevelDefault IsolationLevel = iota
+	LevelReadUncommitted
+	LevelReadCommitted
+	LevelWriteCommitted
+	LevelRepeatableRead
+	LevelSnapshot
+	LevelSerializable
+	LevelLinearizable
+)
+
+// TxOptions holds the transaction options to be used in DB.BeginTx.
+type TxOptions struct {
+	Isolation IsolationLevel
+	ReadOnly  bool
+}
 
 // RawBytes is a byte slice that holds a reference to memory owned by
 // the database itself. After a Scan into a RawBytes, the slice is only
@@ -129,7 +186,8 @@ type DB struct {
 
 	mu           sync.Mutex
 	freeConn     []*driverConn
-	connRequests []chan connRequest
+	connRequests map[uint64]chan connRequest
+	nextRequest  uint64
 	numOpen      int
 
 	openerCh    chan struct{}
@@ -182,6 +240,10 @@ type DB struct {
 // function should be called just once. It is rarely necessary to
 // close a DB.
 func Open(driverName, dataSourceName string) (*DB, error)
+
+// PingContext verifies a connection to the database is still alive,
+// establishing a connection if necessary.
+func (db *DB) PingContext(ctx context.Context) error
 
 // Ping verifies a connection to the database is still alive,
 // establishing a connection if necessary.
@@ -240,6 +302,16 @@ func (db *DB) Stats() DBStats
 // driver.ErrBadConn to signal a broken connection before forcing a new
 // connection to be opened.
 
+// PrepareContext creates a prepared statement for later queries or executions.
+// Multiple queries or executions may be run concurrently from the
+// returned statement.
+// The caller must call the statement's Close method
+// when the statement is no longer needed.
+//
+// The provided context is used for the preparation of the statement, not for the
+// execution of the statement.
+func (db *DB) PrepareContext(ctx context.Context, query string) (*Stmt, error)
+
 // Prepare creates a prepared statement for later queries or executions.
 // Multiple queries or executions may be run concurrently from the
 // returned statement.
@@ -247,20 +319,45 @@ func (db *DB) Stats() DBStats
 // when the statement is no longer needed.
 func (db *DB) Prepare(query string) (*Stmt, error)
 
+// ExecContext executes a query without returning any rows.
+// The args are for any placeholder parameters in the query.
+func (db *DB) ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
+
 // Exec executes a query without returning any rows.
 // The args are for any placeholder parameters in the query.
 func (db *DB) Exec(query string, args ...interface{}) (Result, error)
 
+// QueryContext executes a query that returns rows, typically a SELECT.
+// The args are for any placeholder parameters in the query.
+func (db *DB) QueryContext(ctx context.Context, query string, args ...interface{}) (*Rows, error)
+
 // Query executes a query that returns rows, typically a SELECT.
 // The args are for any placeholder parameters in the query.
 func (db *DB) Query(query string, args ...interface{}) (*Rows, error)
+
+// QueryRowContext executes a query that is expected to return at most one row.
+// QueryRowContext always returns a non-nil value. Errors are deferred until
+// Row's Scan method is called.
+func (db *DB) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
 
 // QueryRow executes a query that is expected to return at most one row.
 // QueryRow always returns a non-nil value. Errors are deferred until
 // Row's Scan method is called.
 func (db *DB) QueryRow(query string, args ...interface{}) *Row
 
-// Begin starts a transaction. The isolation level is dependent on
+// BeginTx starts a transaction.
+//
+// The provided context is used until the transaction is committed or rolled back.
+// If the context is canceled, the sql package will roll back
+// the transaction. Tx.Commit will return an error if the context provided to
+// BeginTx is canceled.
+//
+// The provided TxOptions is optional and may be nil if defaults should be used.
+// If a non-default isolation level is used that the driver doesn't support,
+// an error will be returned.
+func (db *DB) BeginTx(ctx context.Context, opts *TxOptions) (*Tx, error)
+
+// Begin starts a transaction. The default isolation level is dependent on
 // the driver.
 func (db *DB) Begin() (*Tx, error)
 
@@ -280,18 +377,29 @@ func (db *DB) Driver() driver.Driver
 type Tx struct {
 	db *DB
 
+	closemu sync.RWMutex
+
 	dc  *driverConn
 	txi driver.Tx
 
-	done bool
+	done int32
 
 	stmts struct {
 		sync.Mutex
 		v []*Stmt
 	}
+
+	cancel func()
+
+	ctx context.Context
 }
 
+// ErrTxDone is returned by any operation that is performed on a transaction
+// that has already been committed or rolled back.
 var ErrTxDone = errors.New("sql: Transaction has already been committed or rolled back")
+
+// hookTxGrabConn specifies an optional hook to be called on
+// a successful call to (*Tx).grabConn. For tests.
 
 // Commit commits the transaction.
 func (tx *Tx) Commit() error
@@ -301,11 +409,38 @@ func (tx *Tx) Rollback() error
 
 // Prepare creates a prepared statement for use within a transaction.
 //
+// The returned statement operates within the transaction and will be closed
+// when the transaction has been committed or rolled back.
+//
+// To use an existing prepared statement on this transaction, see Tx.Stmt.
+//
+// The provided context will be used for the preparation of the context, not
+// for the execution of the returned statement. The returned statement
+// will run in the transaction context.
+func (tx *Tx) PrepareContext(ctx context.Context, query string) (*Stmt, error)
+
+// Prepare creates a prepared statement for use within a transaction.
+//
 // The returned statement operates within the transaction and can no longer
 // be used once the transaction has been committed or rolled back.
 //
 // To use an existing prepared statement on this transaction, see Tx.Stmt.
 func (tx *Tx) Prepare(query string) (*Stmt, error)
+
+// StmtContext returns a transaction-specific prepared statement from
+// an existing statement.
+//
+// Example:
+//
+//	updateMoney, err := db.Prepare("UPDATE balance SET money=money+? WHERE id=?")
+//	...
+//	tx, err := db.Begin()
+//	...
+//	res, err := tx.StmtContext(ctx, updateMoney).Exec(123.45, 98293203)
+//
+// The returned statement operates within the transaction and will be closed
+// when the transaction has been committed or rolled back.
+func (tx *Tx) StmtContext(ctx context.Context, stmt *Stmt) *Stmt
 
 // Stmt returns a transaction-specific prepared statement from
 // an existing statement.
@@ -318,16 +453,28 @@ func (tx *Tx) Prepare(query string) (*Stmt, error)
 //	...
 //	res, err := tx.Stmt(updateMoney).Exec(123.45, 98293203)
 //
-// The returned statement operates within the transaction and can no longer
-// be used once the transaction has been committed or rolled back.
+// The returned statement operates within the transaction and will be closed
+// when the transaction has been committed or rolled back.
 func (tx *Tx) Stmt(stmt *Stmt) *Stmt
+
+// ExecContext executes a query that doesn't return rows.
+// For example: an INSERT and UPDATE.
+func (tx *Tx) ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
 
 // Exec executes a query that doesn't return rows.
 // For example: an INSERT and UPDATE.
 func (tx *Tx) Exec(query string, args ...interface{}) (Result, error)
 
+// QueryContext executes a query that returns rows, typically a SELECT.
+func (tx *Tx) QueryContext(ctx context.Context, query string, args ...interface{}) (*Rows, error)
+
 // Query executes a query that returns rows, typically a SELECT.
 func (tx *Tx) Query(query string, args ...interface{}) (*Rows, error)
+
+// QueryRowContext executes a query that is expected to return at most one row.
+// QueryRowContext always returns a non-nil value. Errors are deferred until
+// Row's Scan method is called.
+func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
 
 // QueryRow executes a query that is expected to return at most one row.
 // QueryRow always returns a non-nil value. Errors are deferred until
@@ -346,7 +493,7 @@ type Stmt struct {
 	closemu sync.RWMutex
 
 	tx   *Tx
-	txsi *driverStmt
+	txds *driverStmt
 
 	mu     sync.Mutex
 	closed bool
@@ -356,13 +503,34 @@ type Stmt struct {
 	lastNumClosed uint64
 }
 
+// ExecContext executes a prepared statement with the given arguments and
+// returns a Result summarizing the effect of the statement.
+func (s *Stmt) ExecContext(ctx context.Context, args ...interface{}) (Result, error)
+
 // Exec executes a prepared statement with the given arguments and
 // returns a Result summarizing the effect of the statement.
 func (s *Stmt) Exec(args ...interface{}) (Result, error)
 
+// QueryContext executes a prepared query statement with the given arguments
+// and returns the query results as a *Rows.
+func (s *Stmt) QueryContext(ctx context.Context, args ...interface{}) (*Rows, error)
+
 // Query executes a prepared query statement with the given arguments
 // and returns the query results as a *Rows.
 func (s *Stmt) Query(args ...interface{}) (*Rows, error)
+
+// QueryRowContext executes a prepared query statement with the given arguments.
+// If an error occurs during the execution of the statement, that error will
+// be returned by a call to Scan on the returned *Row, which is always non-nil.
+// If the query selects no rows, the *Row's Scan will return ErrNoRows.
+// Otherwise, the *Row's Scan scans the first selected row and discards
+// the rest.
+//
+// Example usage:
+//
+//	var name string
+//	err := nameByUseridStmt.QueryRowContext(ctx, id).Scan(&name)
+func (s *Stmt) QueryRowContext(ctx context.Context, args ...interface{}) *Row
 
 // QueryRow executes a prepared query statement with the given arguments.
 // If an error occurs during the execution of the statement, that error will
@@ -398,11 +566,14 @@ type Rows struct {
 	dc          *driverConn
 	releaseConn func(error)
 	rowsi       driver.Rows
+	cancel      func()
+	closeStmt   *driverStmt
 
-	closed    bool
-	lastcols  []driver.Value
-	lasterr   error
-	closeStmt driver.Stmt
+	closemu sync.RWMutex
+	closed  bool
+	lasterr error
+
+	lastcols []driver.Value
 }
 
 // Next prepares the next result row for reading with the Scan method. It
@@ -413,6 +584,16 @@ type Rows struct {
 // Every call to Scan, even the first one, must be preceded by a call to Next.
 func (rs *Rows) Next() bool
 
+// NextResultSet prepares the next result set for reading. It returns true if
+// there is further result sets, or false if there is no further result set
+// or if there is an error advancing to it. The Err method should be consulted
+// to distinguish between the two cases.
+//
+// After calling NextResultSet, the Next method should always be called before
+// scanning. If there are further result sets they may not have rows in the result
+// set.
+func (rs *Rows) NextResultSet() bool
+
 // Err returns the error, if any, that was encountered during iteration.
 // Err may be called after an explicit or implicit Close.
 func (rs *Rows) Err() error
@@ -421,6 +602,56 @@ func (rs *Rows) Err() error
 // Columns returns an error if the rows are closed, or if the rows
 // are from QueryRow and there was a deferred error.
 func (rs *Rows) Columns() ([]string, error)
+
+// ColumnTypes returns column information such as column type, length,
+// and nullable. Some information may not be available from some drivers.
+func (rs *Rows) ColumnTypes() ([]*ColumnType, error)
+
+// ColumnType contains the name and type of a column.
+type ColumnType struct {
+	name string
+
+	hasNullable       bool
+	hasLength         bool
+	hasPrecisionScale bool
+
+	nullable     bool
+	length       int64
+	databaseType string
+	precision    int64
+	scale        int64
+	scanType     reflect.Type
+}
+
+// Name returns the name or alias of the column.
+func (ci *ColumnType) Name() string
+
+// Length returns the column type length for variable length column types such
+// as text and binary field types. If the type length is unbounded the value will
+// be math.MaxInt64 (any database limits will still apply).
+// If the column type is not variable length, such as an int, or if not supported
+// by the driver ok is false.
+func (ci *ColumnType) Length() (length int64, ok bool)
+
+// DecimalSize returns the scale and precision of a decimal type.
+// If not applicable or if not supported ok is false.
+func (ci *ColumnType) DecimalSize() (precision, scale int64, ok bool)
+
+// ScanType returns a Go type suitable for scanning into using Rows.Scan.
+// If a driver does not support this property ScanType will return
+// the type of an empty interface.
+func (ci *ColumnType) ScanType() reflect.Type
+
+// Nullable returns whether the column may be null.
+// If a driver does not support this property ok will be false.
+func (ci *ColumnType) Nullable() (nullable, ok bool)
+
+// DatabaseTypeName returns the database system name of the column type. If an empty
+// string is returned the driver type name is not supported.
+// Consult your driver documentation for a list of driver data types. Length specifiers
+// are not included.
+// Common type include "VARCHAR", "TEXT", "NVARCHAR", "DECIMAL", "BOOL", "INT", "BIGINT".
+func (ci *ColumnType) DatabaseTypeName() string
 
 // Scan copies the columns in the current row into the values pointed
 // at by dest. The number of values in dest must be the same as the
@@ -475,8 +706,12 @@ func (rs *Rows) Columns() ([]string, error)
 // string inputs parseable by strconv.ParseBool.
 func (rs *Rows) Scan(dest ...interface{}) error
 
-// Close closes the Rows, preventing further enumeration. If Next returns
-// false, the Rows are closed automatically and it will suffice to check the
+// rowsCloseHook returns a function so tests may install the
+// hook throug a test only mutex.
+
+// Close closes the Rows, preventing further enumeration. If Next is called
+// and returns false and there are no further result sets,
+// the Rows are closed automatically and it will suffice to check the
 // result of Err. Close is idempotent and does not affect the result of Err.
 func (rs *Rows) Close() error
 

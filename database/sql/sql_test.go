@@ -3,3 +3,14 @@
 // license that can be found in the LICENSE file.
 
 package sql
+
+import (
+	"database/sql/driver"
+)
+
+// badConn implements a bad driver.Conn, for TestBadDriver.
+// The Exec method panics.
+
+// badDriver is a driver.Driver that uses badConn.
+
+var _ driver.Pinger = pingConn{}

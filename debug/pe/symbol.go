@@ -16,6 +16,11 @@ type COFFSymbol struct {
 	NumberOfAuxSymbols uint8
 }
 
+// FullName finds real name of symbol sym. Normally name is stored
+// in sym.Name, but if it is longer then 8 characters, it is stored
+// in COFF string table st instead.
+func (sym *COFFSymbol) FullName(st StringTable) (string, error)
+
 // Symbol is similar to COFFSymbol with Name field replaced
 // by Go string. Symbol also does not have NumberOfAuxSymbols.
 type Symbol struct {

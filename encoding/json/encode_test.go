@@ -83,6 +83,9 @@ type BugX struct {
 	BugB
 }
 
+// Issue 16042. Even if a nil interface value is passed in
+// as long as it implements MarshalJSON, it should be marshaled.
+
 type BugD struct {
 	XXX string `json:"S"`
 }
@@ -99,3 +102,5 @@ type BugZ struct {
 	BugC
 	BugY
 }
+
+// syntactic checks on form of marshaled floating point numbers.

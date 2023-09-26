@@ -7,7 +7,7 @@
 // For the concurrent garbage collector, the Go compiler implements
 // updates to pointer-valued fields that may be in heap objects by
 // emitting calls to write barriers. This file contains the actual write barrier
-// implementation, markwb, and the various wrappers called by the
+// implementation, gcmarkwb_m, and the various wrappers called by the
 // compiler to implement pointer assignment, slice assignment,
 // typed memmove, and so on.
 

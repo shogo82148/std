@@ -88,6 +88,7 @@ import (
 //	heap         - a sampling of all heap allocations
 //	threadcreate - stack traces that led to the creation of new OS threads
 //	block        - stack traces that led to blocking on synchronization primitives
+//	mutex        - stack traces of holders of contended mutexes
 //
 // These predefined profiles maintain themselves and panic on an explicit
 // Add or Remove method call.

@@ -46,7 +46,8 @@ type File interface {
 // ServeContent replies to the request using the content in the
 // provided ReadSeeker. The main benefit of ServeContent over io.Copy
 // is that it handles Range requests properly, sets the MIME type, and
-// handles If-Modified-Since requests.
+// handles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,
+// and If-Range requests.
 //
 // If the response's Content-Type header is not set, ServeContent
 // first tries to deduce the type from name's file extension and,
@@ -63,8 +64,8 @@ type File interface {
 // The content's Seek method must work: ServeContent uses
 // a seek to the end of the content to determine its size.
 //
-// If the caller has set w's ETag header, ServeContent uses it to
-// handle requests using If-Range and If-None-Match.
+// If the caller has set w's ETag header formatted per RFC 7232, section 2.3,
+// ServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.
 //
 // Note that *os.File implements the io.ReadSeeker interface.
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
@@ -73,6 +74,12 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // doesn't seek properly. The underlying Seeker's error text isn't
 // included in the sizeFunc reply so it's not sent over HTTP to end
 // users.
+
+// errNoOverlap is returned by serveContent's parseRange if first-byte-pos of
+// all of the byte-range-spec values is greater than the content size.
+
+// condResult is the result of an HTTP request precondition check.
+// See https://tools.ietf.org/html/rfc7232 section 3.
 
 // ServeFile replies to the request with the contents of the named
 // file or directory.

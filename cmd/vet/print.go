@@ -20,5 +20,3 @@ package main
 // Common flag sets for printf verbs.
 
 // printVerbs identifies which flags are known to printf for each verb.
-// TODO: A type that implements Formatter may do what it wants, and vet
-// will complain incorrectly.

@@ -12,4 +12,4 @@ type StringTest struct {
 // These are not supported by fmt.Fscanf.
 
 // Test inputs to Rat.SetString. The prefix "long:" causes the test
-// to be skipped in --test.short mode.  (The threshold is about 500us.)
+// to be skipped except in -long mode.  (The threshold is about 500us.)

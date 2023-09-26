@@ -7,7 +7,6 @@ package bytes
 import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/unicode/utf8"
 )
 
 // A Buffer is a variable-sized buffer of bytes with Read and Write methods.
@@ -15,14 +14,14 @@ import (
 type Buffer struct {
 	buf       []byte
 	off       int
-	runeBytes [utf8.UTFMax]byte
 	bootstrap [64]byte
 	lastRead  readOp
 }
 
 // The readOp constants describe the last action performed on
-// the buffer, so that UnreadRune and UnreadByte can
-// check for invalid usage.
+// the buffer, so that UnreadRune and UnreadByte can check for
+// invalid usage. opReadRuneX constants are chosen such that
+// converted to int they correspond to the rune size that was read.
 
 // ErrTooLarge is passed to panic if memory cannot be allocated to store data in a buffer.
 var ErrTooLarge = errors.New("bytes.Buffer: too large")

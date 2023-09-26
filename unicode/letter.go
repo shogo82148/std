@@ -123,6 +123,7 @@ func (special SpecialCase) ToLower(r rune) rune
 // the Unicode-defined simple case folding. Among the code points
 // equivalent to rune (including rune itself), SimpleFold returns the
 // smallest rune > r if one exists, or else the smallest rune >= 0.
+// If r is not a valid Unicode code point, SimpleFold(r) returns r.
 //
 // For example:
 //
@@ -134,4 +135,6 @@ func (special SpecialCase) ToLower(r rune) rune
 //	SimpleFold('\u212A') = 'K'
 //
 //	SimpleFold('1') = '1'
+//
+//	SimpleFold(-2) = -2
 func SimpleFold(r rune) rune

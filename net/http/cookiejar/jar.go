@@ -56,9 +56,6 @@ func New(o *Options) (*Jar, error)
 // This struct type is not used outside of this package per se, but the exported
 // fields are those of RFC 6265.
 
-// byPathLength is a []entry sort.Interface that sorts according to RFC 6265
-// section 5.4 point 2: by longest path and then by earliest creation time.
-
 // Cookies implements the Cookies method of the http.CookieJar interface.
 //
 // It returns an empty slice if the URL's scheme is not HTTP or HTTPS.

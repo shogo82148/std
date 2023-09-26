@@ -1,6 +1,6 @@
 // Copyright 2016 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.h
+// license that can be found in the LICENSE file.
 
 // Package httptrace provides mechanisms to trace the events within
 // HTTP client requests.
@@ -8,6 +8,7 @@ package httptrace
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/time"
 )
@@ -25,11 +26,16 @@ func ContextClientTrace(ctx context.Context) *ClientTrace
 // be called first.
 func WithClientTrace(ctx context.Context, trace *ClientTrace) context.Context
 
-// ClientTrace is a set of hooks to run at various stages of an HTTP
-// client request. Any particular hook may be nil. Functions may be
-// called concurrently from different goroutines, starting after the
-// call to Transport.RoundTrip and ending either when RoundTrip
-// returns an error, or when the Response.Body is closed.
+// ClientTrace is a set of hooks to run at various stages of an outgoing
+// HTTP request. Any particular hook may be nil. Functions may be
+// called concurrently from different goroutines and some may be called
+// after the request has completed or failed.
+//
+// ClientTrace currently traces a single HTTP request & response
+// during a single round trip and has no hooks that span a series
+// of redirected requests.
+//
+// See https://blog.golang.org/http-tracing for more.
 type ClientTrace struct {
 	GetConn func(hostPort string)
 
@@ -48,6 +54,10 @@ type ClientTrace struct {
 	ConnectStart func(network, addr string)
 
 	ConnectDone func(network, addr string, err error)
+
+	TLSHandshakeStart func()
+
+	TLSHandshakeDone func(tls.ConnectionState, error)
 
 	WroteHeaders func()
 

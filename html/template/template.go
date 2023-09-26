@@ -70,20 +70,23 @@ func (t *Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) 
 // it returns the empty string. Used to generate an error message.
 func (t *Template) DefinedTemplates() string
 
-// Parse parses a string into a template. Nested template definitions
-// will be associated with the top-level template t. Parse may be
-// called multiple times to parse definitions of templates to associate
-// with t. It is an error if a resulting template is non-empty (contains
-// content other than template definitions) and would replace a
-// non-empty template with the same name.  (In multiple calls to Parse
-// with the same receiver template, only one call can contain text
-// other than space, comments, and template definitions.)
-func (t *Template) Parse(src string) (*Template, error)
+// Parse parses text as a template body for t.
+// Named template definitions ({{define ...}} or {{block ...}} statements) in text
+// define additional templates associated with t and are removed from the
+// definition of t itself.
+//
+// Templates can be redefined in successive calls to Parse,
+// before the first use of Execute on t or any associated template.
+// A template definition with a body containing only white space and comments
+// is considered empty and will not replace an existing template's body.
+// This allows using Parse to add new named template definitions without
+// overwriting the main template body.
+func (t *Template) Parse(text string) (*Template, error)
 
 // AddParseTree creates a new template with the name and parse tree
 // and associates it with t.
 //
-// It returns an error if t has already been executed.
+// It returns an error if t or any associated template has already been executed.
 func (t *Template) AddParseTree(name string, tree *parse.Tree) (*Template, error)
 
 // Clone returns a duplicate of the template, including all associated
@@ -157,6 +160,8 @@ func ParseFiles(filenames ...string) (*Template, error)
 //
 // When parsing multiple files with the same name in different directories,
 // the last one mentioned will be the one that results.
+//
+// ParseFiles returns an error if t or any associated template has already been executed.
 func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 
 // ParseGlob creates a new Template and parses the template definitions from the
@@ -177,6 +182,8 @@ func ParseGlob(pattern string) (*Template, error)
 //
 // When parsing multiple files with the same name in different directories,
 // the last one mentioned will be the one that results.
+//
+// ParseGlob returns an error if t or any associated template has already been executed.
 func (t *Template) ParseGlob(pattern string) (*Template, error)
 
 // IsTrue reports whether the value is 'true', in the sense of not the zero of its type,

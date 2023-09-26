@@ -30,3 +30,10 @@ import (
 //   [ req_attributes ]
 //   challengePassword = ignored challenge
 //   unstructuredName  = ignored unstructured name
+
+// certMissingRSANULL contains an RSA public key where the AlgorithmIdentifer
+// parameters are omitted rather than being an ASN.1 NULL.
+
+// certMultipleRDN contains a RelativeDistinguishedName with two elements (the
+// common name and serial number). This particular certificate was the first
+// such certificate in the “Pilot” Certificate Transparency log.

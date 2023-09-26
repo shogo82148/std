@@ -108,6 +108,16 @@ func (p *PackageError) Error() string
 
 // goTools is a map of Go program import path to install target directory.
 
+// SafeArg reports whether arg is a "safe" command-line argument,
+// meaning that when it appears in a command-line, it probably
+// doesn't have some special meaning other than its own name.
+// Obviously args beginning with - are not safe (they look like flags).
+// Less obviously, args beginning with @ are not safe (they look like
+// GNU binutils flagfile specifiers, sometimes called "response files").
+// To be conservative, we reject almost any arg beginning with non-alphanumeric ASCII.
+// We accept leading . _ and / as likely in file system paths.
+func SafeArg(name string) bool
+
 // The runtime version string takes one of two forms:
 // "go1.X[.Y]" for Go releases, and "devel +hash" at tip.
 // Determine whether we are in a released copy by

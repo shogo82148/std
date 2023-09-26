@@ -4,6 +4,8 @@
 
 // Package path implements utility routines for manipulating slash-separated
 // paths.
+//
+// To manipulate operating system paths, use the path/filepath package.
 package path
 
 // A lazybuf is a lazily constructed path buffer.

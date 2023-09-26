@@ -45,6 +45,10 @@ type Conn struct {
 
 	clientFinishedIsFirst bool
 
+	closeNotifyErr error
+
+	closeNotifySent bool
+
 	clientFinished [12]byte
 	serverFinished [12]byte
 
@@ -111,6 +115,11 @@ func (c *Conn) Read(b []byte) (n int, err error)
 
 // Close closes the connection.
 func (c *Conn) Close() error
+
+// CloseWrite shuts down the writing side of the connection. It should only be
+// called once the handshake has completed and does not call CloseWrite on the
+// underlying connection. Most callers should just use Close.
+func (c *Conn) CloseWrite() error
 
 // Handshake runs the client or server handshake
 // protocol if it has not yet been run.

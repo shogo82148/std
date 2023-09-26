@@ -4,11 +4,7 @@
 
 package asn1
 
-// A forkableWriter is an in-memory buffer that can be
-// 'forked' to create new forkableWriters that bracket the
-// original. After
-//    pre, post := w.fork()
-// the overall sequence of bytes represented is logically w+pre+post.
+// encoder represents a ASN.1 element that is waiting to be marshaled.
 
 // Marshal returns the ASN.1 encoding of val.
 //

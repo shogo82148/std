@@ -12,10 +12,13 @@ import (
 // ResponseRecorder is an implementation of http.ResponseWriter that
 // records its mutations for later inspection in tests.
 type ResponseRecorder struct {
-	Code      int
+	Code int
+
 	HeaderMap http.Header
-	Body      *bytes.Buffer
-	Flushed   bool
+
+	Body *bytes.Buffer
+
+	Flushed bool
 
 	result      *http.Response
 	snapHeader  http.Header
@@ -55,6 +58,9 @@ func (rw *ResponseRecorder) Flush()
 // The Response.Header is a snapshot of the headers at the time of the
 // first write call, or at the time of this call, if the handler never
 // did a write.
+//
+// The Response.Body is guaranteed to be non-nil and Body.Read call is
+// guaranteed to not return any error other than io.EOF.
 //
 // Result must only be called after the handler has finished running.
 func (rw *ResponseRecorder) Result() *http.Response

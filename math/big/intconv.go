@@ -22,6 +22,8 @@ func (x *Int) Append(buf []byte, base int) []byte
 
 func (x *Int) String() string
 
+var _ fmt.Formatter = intOne
+
 // Format implements fmt.Formatter. It accepts the formats
 // 'b' (binary), 'o' (octal), 'd' (decimal), 'x' (lowercase
 // hexadecimal), and 'X' (uppercase hexadecimal).
@@ -36,6 +38,8 @@ func (x *Int) Format(s fmt.State, ch rune)
 
 // byteReader is a local wrapper around fmt.ScanState;
 // it implements the ByteReader interface.
+
+var _ fmt.Scanner = intOne
 
 // Scan is a support routine for fmt.Scanner; it sets z to the value of
 // the scanned number. It accepts the formats 'b' (binary), 'o' (octal),

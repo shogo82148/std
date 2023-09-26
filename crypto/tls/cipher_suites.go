@@ -13,8 +13,14 @@ package tls
 // fixedNonceAEAD wraps an AEAD and prefixes a fixed portion of the nonce to
 // each call.
 
+// xoredNonceAEAD wraps an AEAD by XORing in a fixed pattern to the nonce
+// before each call.
+
 // ssl30MAC implements the SSLv3 MAC function, as defined in
 // www.mozilla.org/projects/security/pki/nss/ssl/draft302.txt section 5.2.3.1
+
+// cthWrapper wraps any hash.Hash that implements ConstantTimeSum, and replaces
+// with that all calls to Sum. It's used to obtain a ConstantTimeSum-based HMAC.
 
 // tls10MAC implements the TLS 1.0 MAC function. RFC 2246, section 6.2.3.
 
@@ -27,6 +33,7 @@ const (
 	TLS_RSA_WITH_3DES_EDE_CBC_SHA           uint16 = 0x000a
 	TLS_RSA_WITH_AES_128_CBC_SHA            uint16 = 0x002f
 	TLS_RSA_WITH_AES_256_CBC_SHA            uint16 = 0x0035
+	TLS_RSA_WITH_AES_128_CBC_SHA256         uint16 = 0x003c
 	TLS_RSA_WITH_AES_128_GCM_SHA256         uint16 = 0x009c
 	TLS_RSA_WITH_AES_256_GCM_SHA384         uint16 = 0x009d
 	TLS_ECDHE_ECDSA_WITH_RC4_128_SHA        uint16 = 0xc007
@@ -36,10 +43,14 @@ const (
 	TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA     uint16 = 0xc012
 	TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA      uint16 = 0xc013
 	TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA      uint16 = 0xc014
+	TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 uint16 = 0xc023
+	TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256   uint16 = 0xc027
 	TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256   uint16 = 0xc02f
 	TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 uint16 = 0xc02b
 	TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384   uint16 = 0xc030
 	TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 uint16 = 0xc02c
+	TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305    uint16 = 0xcca8
+	TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305  uint16 = 0xcca9
 
 	// TLS_FALLBACK_SCSV isn't a standard cipher suite but an indicator
 	// that the client is doing version fallback. See

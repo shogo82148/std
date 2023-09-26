@@ -5,3 +5,9 @@
 // Reverse proxy tests.
 
 package httputil
+
+import (
+	"net/http"
+)
+
+type RoundTripperFunc func(*http.Request) (*http.Response, error)

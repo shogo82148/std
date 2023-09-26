@@ -4,10 +4,6 @@
 
 package types
 
-import (
-	"github.com/shogo82148/std/sync"
-)
-
 // A Type represents a type of Go.
 // All types implement the Type interface.
 type Type interface {
@@ -118,10 +114,8 @@ func (s *Slice) Elem() Type
 
 // A Struct represents a struct type.
 type Struct struct {
-	fields      []*Var
-	tags        []string
-	offsets     []int64
-	offsetsOnce sync.Once
+	fields []*Var
+	tags   []string
 }
 
 // NewStruct returns a new struct with the given fields and corresponding field tags.

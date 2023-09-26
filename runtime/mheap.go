@@ -15,6 +15,11 @@ package runtime
 // Main malloc heap.
 // The heap itself is the "free[]" and "large" arrays,
 // but all the other global data is here too.
+//
+// mheap must not be heap-allocated because it contains mSpanLists,
+// which must not be heap-allocated.
+//
+//go:notinheap
 
 // An MSpan representing actual memory has state _MSpanInUse,
 // _MSpanStack, or _MSpanFree. Transitions between these states are
@@ -31,16 +36,26 @@ package runtime
 //   stack or in-use to free. Because concurrent GC may read a pointer
 //   and then look up its span, the span state must be monotonic.
 
+// mSpanStateNames are the names of the span states, indexed by
+// mSpanState.
+
 // mSpanList heads a linked list of spans.
 //
-// Linked list structure is based on BSD's "tail queue" data structure.
+//go:notinheap
 
-// h_spans is a lookup table to map virtual address page IDs to *mspan.
-// For allocated spans, their pages map to the span itself.
-// For free spans, only the lowest and highest pages map to the span itself. Internal
-// pages map to an arbitrary span.
-// For pages that have never been allocated, h_spans entries are nil.
+//go:notinheap
+
+//go:notinheap
 
 // The described object has a finalizer set for it.
+//
+// specialfinalizer is allocated from non-GC'd memory, so any heap
+// pointers must be specially handled.
+//
+//go:notinheap
 
 // The described object is being heap profiled.
+//
+//go:notinheap
+
+//go:notinheap

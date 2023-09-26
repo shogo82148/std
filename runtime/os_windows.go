@@ -34,4 +34,6 @@ var (
 // function. If GetProcAddress succeeds, the LOAD_LIBRARY_SEARCH_*
 // flags can be used with LoadLibraryEx."
 
+// exiting is set to non-zero when the process is exiting.
+
 // Described in http://www.dcl.hpi.uni-potsdam.de/research/WRK/2007/08/getting-os-information-the-kuser_shared_data-structure/

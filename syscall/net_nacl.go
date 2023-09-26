@@ -6,6 +6,8 @@
 // The simulation is not particularly tied to NaCl,
 // but other systems have real networks.
 
+// All int64 times are UnixNanos.
+
 package syscall
 
 const (

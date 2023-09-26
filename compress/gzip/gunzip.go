@@ -90,6 +90,7 @@ func (z *Reader) Reset(r io.Reader) error
 // If there is no next stream, z.Reset(r) will return io.EOF.
 func (z *Reader) Multistream(ok bool)
 
+// Read implements io.Reader, reading uncompressed bytes from its underlying Reader.
 func (z *Reader) Read(p []byte) (n int, err error)
 
 // Close closes the Reader. It does not close the underlying io.Reader.

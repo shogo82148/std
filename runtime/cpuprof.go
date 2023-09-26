@@ -4,7 +4,7 @@
 
 // CPU profiling.
 // Based on algorithms and data structures used in
-// http://code.google.com/p/google-perftools/.
+// https://github.com/google/pprof.
 //
 // The main difference between this code and the google-perftools
 // code is that this code is written to allow copying the profile data
@@ -49,6 +49,8 @@
 // in the situation when normally the goroutine "owns" handoff.
 
 package runtime
+
+//go:notinheap
 
 // SetCPUProfileRate sets the CPU profiling rate to hz samples per second.
 // If hz <= 0, SetCPUProfileRate turns off profiling.

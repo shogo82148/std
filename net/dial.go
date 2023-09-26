@@ -27,6 +27,8 @@ type Dialer struct {
 
 	KeepAlive time.Duration
 
+	Resolver *Resolver
+
 	Cancel <-chan struct{}
 }
 
@@ -62,6 +64,9 @@ type Dialer struct {
 //	Dial("ip6:ipv6-icmp", "2001:db8::1")
 //
 // For Unix networks, the address must be a file system path.
+//
+// If the host is resolved to multiple addresses,
+// Dial will try each address in order until one succeeds.
 func Dial(network, address string) (Conn, error)
 
 // DialTimeout acts like Dial but takes a timeout.
@@ -84,6 +89,14 @@ func (d *Dialer) Dial(network, address string) (Conn, error)
 // connected, any expiration of the context will not affect the
 // connection.
 //
+// When using TCP, and the host in the address parameter resolves to multiple
+// network addresses, any dial timeout (from d.Timeout or ctx) is spread
+// over each consecutive dial, such that each is given an appropriate
+// fraction of the time to connect.
+// For example, if a host has 4 IP addresses and the timeout is 1 minute,
+// the connect to each single address will be given 15 seconds to complete
+// before trying the next one.
+//
 // See func Dial for a description of the network and address
 // parameters.
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
@@ -95,6 +108,9 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 // If host is omitted, as in ":8080", Listen listens on all available interfaces
 // instead of just the interface with the given host address.
 // See Dial for more details about address syntax.
+//
+// Listening on a hostname is not recommended because this creates a socket
+// for at most one of its IP addresses.
 func Listen(net, laddr string) (Listener, error)
 
 // ListenPacket announces on the local network address laddr.
@@ -104,4 +120,7 @@ func Listen(net, laddr string) (Listener, error)
 // If host is omitted, as in ":8080", ListenPacket listens on all available interfaces
 // instead of just the interface with the given host address.
 // See Dial for the syntax of laddr.
+//
+// Listening on a hostname is not recommended because this creates a socket
+// for at most one of its IP addresses.
 func ListenPacket(net, laddr string) (PacketConn, error)

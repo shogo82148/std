@@ -17,6 +17,7 @@ var (
 	ExportErrRequestCanceled     = errRequestCanceled
 	ExportErrRequestCanceledConn = errRequestCanceledConn
 	ExportServeFile              = serveFile
+	ExportScanETag               = scanETag
 	ExportHttp2ConfigureServer   = http2ConfigureServer
 )
 
@@ -24,3 +25,5 @@ var (
 	SetEnterRoundTripHook = hookSetter(&testHookEnterRoundTrip)
 	SetRoundTripRetried   = hookSetter(&testHookRoundTripRetried)
 )
+
+var Export_shouldCopyHeaderOnRedirect = shouldCopyHeaderOnRedirect

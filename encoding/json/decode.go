@@ -24,6 +24,13 @@ import (
 // the value pointed at by the pointer. If the pointer is nil, Unmarshal
 // allocates a new value for it to point to.
 //
+// To unmarshal JSON into a value implementing the Unmarshaler interface,
+// Unmarshal calls that value's UnmarshalJSON method, including
+// when the input is a JSON null.
+// Otherwise, if the value implements encoding.TextUnmarshaler
+// and the input is a JSON quoted string, Unmarshal calls that value's
+// UnmarshalText method with the unquoted form of the string.
+//
 // To unmarshal JSON into a struct, Unmarshal matches incoming object
 // keys to the keys used by Marshal (either the struct field name or its tag),
 // preferring an exact match but also accepting a case-insensitive match.
@@ -53,8 +60,8 @@ import (
 //
 // To unmarshal a JSON object into a map, Unmarshal first establishes a map to
 // use. If the map is nil, Unmarshal allocates a new map. Otherwise Unmarshal
-// reuses the existing map, keeping existing entries. Unmarshal then stores key-
-// value pairs from the JSON object into the map. The map's key type must
+// reuses the existing map, keeping existing entries. Unmarshal then stores
+// key-value pairs from the JSON object into the map. The map's key type must
 // either be a string, an integer, or implement encoding.TextUnmarshaler.
 //
 // If a JSON value is not appropriate for a given target type,
@@ -79,6 +86,9 @@ func Unmarshal(data []byte, v interface{}) error
 // The input can be assumed to be a valid encoding of
 // a JSON value. UnmarshalJSON must copy the JSON data
 // if it wishes to retain the data after returning.
+//
+// By convention, to approximate the behavior of Unmarshal itself,
+// Unmarshalers implement UnmarshalJSON([]byte("null")) as a no-op.
 type Unmarshaler interface {
 	UnmarshalJSON([]byte) error
 }
@@ -89,6 +99,8 @@ type UnmarshalTypeError struct {
 	Value  string
 	Type   reflect.Type
 	Offset int64
+	Struct string
+	Field  string
 }
 
 func (e *UnmarshalTypeError) Error() string

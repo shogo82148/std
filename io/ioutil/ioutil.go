@@ -27,8 +27,6 @@ func ReadFile(filename string) ([]byte, error)
 // otherwise WriteFile truncates it before writing.
 func WriteFile(filename string, data []byte, perm os.FileMode) error
 
-// byName implements sort.Interface.
-
 // ReadDir reads the directory named by dirname and returns
 // a list of directory entries sorted by filename.
 func ReadDir(dirname string) ([]os.FileInfo, error)

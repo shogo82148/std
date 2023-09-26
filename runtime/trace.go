@@ -19,12 +19,16 @@ package runtime
 // traceBufHeader is per-P tracing buffer.
 
 // traceBuf is per-P tracing buffer.
+//
+//go:notinheap
 
 // traceBufPtr is a *traceBuf that is not traced by the garbage
 // collector and doesn't have write barriers. traceBufs are not
 // allocated from the GC'd heap, so this is safe, and are often
 // manipulated in contexts where write barriers are not allowed, so
 // this is necessary.
+//
+// TODO: Since traceBuf is now go:notinheap, this isn't necessary.
 
 // StartTrace enables tracing for the current process.
 // While tracing, the data will be buffered and available via ReadTrace.
@@ -57,3 +61,7 @@ func ReadTrace() []byte
 // traceAllocBlock is allocated from non-GC'd memory, so it must not
 // contain heap pointers. Writes to pointers to traceAllocBlocks do
 // not need write barriers.
+//
+//go:notinheap
+
+// TODO: Since traceAllocBlock is now go:notinheap, this isn't necessary.

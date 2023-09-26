@@ -7,11 +7,6 @@
 
 package os
 
-// File represents an open file descriptor.
-type File struct {
-	*file
-}
-
 // file is the real representation of *File.
 // The extra level of indirection ensures that no clients of os
 // can overwrite this data, which could cause the finalizer
@@ -40,20 +35,6 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 // Close closes the File, rendering it unusable for I/O.
 // It returns an error, if any.
 func (f *File) Close() error
-
-// Stat returns the FileInfo structure describing file.
-// If there is an error, it will be of type *PathError.
-func (f *File) Stat() (FileInfo, error)
-
-// Stat returns a FileInfo describing the named file.
-// If there is an error, it will be of type *PathError.
-func Stat(name string) (FileInfo, error)
-
-// Lstat returns a FileInfo describing the named file.
-// If the file is a symbolic link, the returned FileInfo
-// describes the symbolic link. Lstat makes no attempt to follow the link.
-// If there is an error, it will be of type *PathError.
-func Lstat(name string) (FileInfo, error)
 
 // Darwin and FreeBSD can't read or write 2GB+ at a time,
 // even on 64-bit systems. See golang.org/issue/7812.

@@ -52,6 +52,9 @@ const (
 	ECDSAWithSHA256
 	ECDSAWithSHA384
 	ECDSAWithSHA512
+	SHA256WithRSAPSS
+	SHA384WithRSAPSS
+	SHA512WithRSAPSS
 )
 
 func (algo SignatureAlgorithm) String() string
@@ -64,6 +67,9 @@ const (
 	DSA
 	ECDSA
 )
+
+// pssParameters reflects the parameters in an AlgorithmIdentifier that
+// specifies RSA PSS. See https://tools.ietf.org/html/rfc3447#appendix-A.2.3
 
 // RFC 3279, 2.3 Public Key Algorithms
 //
@@ -251,6 +257,8 @@ func (h UnhandledCriticalExtension) Error() string
 // RFC 5280, 4.2.2.1
 
 // RFC 5280, 4.2.1.14
+
+// asn1Null is the ASN.1 encoding of a NULL value.
 
 // ParseCertificate parses a single certificate from the given ASN.1 DER data.
 func ParseCertificate(asn1Data []byte) (*Certificate, error)

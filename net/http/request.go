@@ -20,21 +20,40 @@ import (
 // is either not present in the request or not a file field.
 var ErrMissingFile = errors.New("http: no such file")
 
-// HTTP request parsing errors.
+// ProtocolError represents an HTTP protocol error.
+//
+// Deprecated: Not all errors in the http package related to protocol errors
+// are of type ProtocolError.
 type ProtocolError struct {
 	ErrorString string
 }
 
-func (err *ProtocolError) Error() string
+func (pe *ProtocolError) Error() string
 
 var (
-	ErrHeaderTooLong        = &ProtocolError{"header too long"}
-	ErrShortBody            = &ProtocolError{"entity body too short"}
-	ErrNotSupported         = &ProtocolError{"feature not supported"}
-	ErrUnexpectedTrailer    = &ProtocolError{"trailer header without chunked transfer encoding"}
+	// ErrNotSupported is returned by the Push method of Pusher
+	// implementations to indicate that HTTP/2 Push support is not
+	// available.
+	ErrNotSupported = &ProtocolError{"feature not supported"}
+
+	// ErrUnexpectedTrailer is returned by the Transport when a server
+	// replies with a Trailer header, but without a chunked reply.
+	ErrUnexpectedTrailer = &ProtocolError{"trailer header without chunked transfer encoding"}
+
+	// ErrMissingBoundary is returned by Request.MultipartReader when the
+	// request's Content-Type does not include a "boundary" parameter.
+	ErrMissingBoundary = &ProtocolError{"no multipart boundary param in Content-Type"}
+
+	// ErrNotMultipart is returned by Request.MultipartReader when the
+	// request's Content-Type is not multipart/form-data.
+	ErrNotMultipart = &ProtocolError{"request Content-Type isn't multipart/form-data"}
+
+	// Deprecated: ErrHeaderTooLong is not used.
+	ErrHeaderTooLong = &ProtocolError{"header too long"}
+	// Deprecated: ErrShortBody is not used.
+	ErrShortBody = &ProtocolError{"entity body too short"}
+	// Deprecated: ErrMissingContentLength is not used.
 	ErrMissingContentLength = &ProtocolError{"missing ContentLength in HEAD response"}
-	ErrNotMultipart         = &ProtocolError{"request Content-Type isn't multipart/form-data"}
-	ErrMissingBoundary      = &ProtocolError{"no multipart boundary param in Content-Type"}
 )
 
 // Headers that Request.Write handles itself and should be skipped.
@@ -57,6 +76,8 @@ type Request struct {
 	Header Header
 
 	Body io.ReadCloser
+
+	GetBody func() (io.ReadCloser, error)
 
 	ContentLength int64
 
@@ -96,8 +117,8 @@ type Request struct {
 // For outgoing client requests, the context controls cancelation.
 //
 // For incoming server requests, the context is canceled when the
-// ServeHTTP method returns. For its associated values, see
-// ServerContextKey and LocalAddrContextKey.
+// client's connection closes, the request is canceled (with HTTP/2),
+// or when the ServeHTTP method returns.
 func (r *Request) Context() context.Context
 
 // WithContext returns a shallow copy of r with its context changed
@@ -119,6 +140,8 @@ var ErrNoCookie = errors.New("http: named cookie not present")
 
 // Cookie returns the named cookie provided in the request or
 // ErrNoCookie if not found.
+// If multiple cookies match the given name, only one cookie will
+// be returned.
 func (r *Request) Cookie(name string) (*Cookie, error)
 
 // AddCookie adds a cookie to the request. Per RFC 6265 section 5.4,
@@ -190,11 +213,17 @@ func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 // methods Do, Post, and PostForm, and Transport.RoundTrip.
 //
 // NewRequest returns a Request suitable for use with Client.Do or
-// Transport.RoundTrip.
-// To create a request for use with testing a Server Handler use either
-// ReadRequest or manually update the Request fields. See the Request
-// type's documentation for the difference between inbound and outbound
-// request fields.
+// Transport.RoundTrip. To create a request for use with testing a
+// Server Handler, either use the NewRequest function in the
+// net/http/httptest package, use ReadRequest, or manually update the
+// Request fields. See the Request type's documentation for the
+// difference between inbound and outbound request fields.
+//
+// If body is of type *bytes.Buffer, *bytes.Reader, or
+// *strings.Reader, the returned request's ContentLength is set to its
+// exact value (instead of -1), GetBody is populated (so 307 and 308
+// redirects can replay the body), and Body is set to NoBody if the
+// ContentLength is 0.
 func NewRequest(method, urlStr string, body io.Reader) (*Request, error)
 
 // BasicAuth returns the username and password provided in the request's
@@ -224,18 +253,24 @@ func ReadRequest(b *bufio.Reader) (*Request, error)
 // sending a large request and wasting server resources.
 func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser
 
-// ParseForm parses the raw query from the URL and updates r.Form.
+// ParseForm populates r.Form and r.PostForm.
 //
-// For POST or PUT requests, it also parses the request body as a form and
-// put the results into both r.PostForm and r.Form.
-// POST and PUT body parameters take precedence over URL query string values
-// in r.Form.
+// For all requests, ParseForm parses the raw query from the URL and updates
+// r.Form.
+//
+// For POST, PUT, and PATCH requests, it also parses the request body as a form
+// and puts the results into both r.PostForm and r.Form. Request body parameters
+// take precedence over URL query string values in r.Form.
+//
+// For other HTTP methods, or when the Content-Type is not
+// application/x-www-form-urlencoded, the request Body is not read, and
+// r.PostForm is initialized to a non-nil, empty value.
 //
 // If the request Body's size has not already been limited by MaxBytesReader,
 // the size is capped at 10MB.
 //
 // ParseMultipartForm calls ParseForm automatically.
-// It is idempotent.
+// ParseForm is idempotent.
 func (r *Request) ParseForm() error
 
 // ParseMultipartForm parses a request body as multipart/form-data.

@@ -8,9 +8,9 @@ package http
 
 import (
 	"github.com/shogo82148/std/bufio"
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
@@ -26,7 +26,9 @@ var (
 
 	// ErrHijacked is returned by ResponseWriter.Write calls when
 	// the underlying connection has been hijacked using the
-	// Hijacker interfaced.
+	// Hijacker interface. A zero-byte write on a hijacked
+	// connection will return ErrHijacked without any other side
+	// effects.
 	ErrHijacked = errors.New("http: connection has been hijacked")
 
 	// ErrContentLength is returned by ResponseWriter.Write calls
@@ -59,7 +61,9 @@ var (
 // If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
 // that the effect of the panic was isolated to the active request.
 // It recovers the panic, logs a stack trace to the server error log,
-// and hangs up the connection.
+// and hangs up the connection. To abort a handler so the client sees
+// an interrupted response but the server doesn't log an error, panic
+// with the value ErrAbortHandler.
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
@@ -143,6 +147,21 @@ var (
 
 // A response represents the server side of an HTTP response.
 
+// TrailerPrefix is a magic prefix for ResponseWriter.Header map keys
+// that, if present, signals that the map entry is actually for
+// the response trailers, and not the response headers. The prefix
+// is stripped after the ServeHTTP call finishes and the values are
+// sent in the trailers.
+//
+// This mechanism is intended only for trailers that are not known
+// prior to the headers being written. If the set of trailers is fixed
+// or known before the header is written, the normal Go trailers mechanism
+// is preferred:
+//
+//	https://golang.org/pkg/net/http/#ResponseWriter
+//	https://golang.org/pkg/net/http/#example_ResponseWriter_trailers
+const TrailerPrefix = "Trailer:"
+
 // writerOnly hides an io.Writer value's optional ReadFrom method
 // from io.Copy.
 
@@ -203,9 +222,19 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
 var _ closeWriter = (*net.TCPConn)(nil)
 
+// connStateInterface is an array of the interface{} versions of
+// ConnState values, so we can use them in atomic.Values later without
+// paying the cost of shoving their integers in an interface{}.
+
 // badRequestError is a literal string (used by in the server in HTML,
 // unescaped) to tell the user why their request was bad. It should
 // be plain text without user info or other embedded errors.
+
+// ErrAbortHandler is a sentinel panic value to abort a handler.
+// While any panic from ServeHTTP aborts the response to the client,
+// panicking with ErrAbortHandler also suppresses logging of a stack
+// trace to the server's error log.
+var ErrAbortHandler = errors.New("net/http: abort Handler")
 
 // The HandlerFunc type is an adapter to allow the use of
 // ordinary functions as HTTP handlers. If f is a function
@@ -344,11 +373,17 @@ func Serve(l net.Listener, handler Handler) error
 // A Server defines parameters for running an HTTP server.
 // The zero value for Server is a valid configuration.
 type Server struct {
-	Addr         string
-	Handler      Handler
-	ReadTimeout  time.Duration
+	Addr      string
+	Handler   Handler
+	TLSConfig *tls.Config
+
+	ReadTimeout time.Duration
+
+	ReadHeaderTimeout time.Duration
+
 	WriteTimeout time.Duration
-	TLSConfig    *tls.Config
+
+	IdleTimeout time.Duration
 
 	MaxHeaderBytes int
 
@@ -359,9 +394,47 @@ type Server struct {
 	ErrorLog *log.Logger
 
 	disableKeepAlives int32
+	inShutdown        int32
 	nextProtoOnce     sync.Once
 	nextProtoErr      error
+
+	mu         sync.Mutex
+	listeners  map[net.Listener]struct{}
+	activeConn map[*conn]struct{}
+	doneChan   chan struct{}
 }
+
+// Close immediately closes all active net.Listeners and any
+// connections in state StateNew, StateActive, or StateIdle. For a
+// graceful shutdown, use Shutdown.
+//
+// Close does not attempt to close (and does not even know about)
+// any hijacked connections, such as WebSockets.
+//
+// Close returns any error returned from closing the Server's
+// underlying Listener(s).
+func (srv *Server) Close() error
+
+// shutdownPollInterval is how often we poll for quiescence
+// during Server.Shutdown. This is lower during tests, to
+// speed up tests.
+// Ideally we could find a solution that doesn't involve polling,
+// but which also doesn't have a high runtime cost (and doesn't
+// involve any contentious mutexes), but that is left as an
+// exercise for the reader.
+
+// Shutdown gracefully shuts down the server without interrupting any
+// active connections. Shutdown works by first closing all open
+// listeners, then closing all idle connections, and then waiting
+// indefinitely for connections to return to idle and then shut down.
+// If the provided context expires before the shutdown is complete,
+// then the context's error is returned.
+//
+// Shutdown does not attempt to close nor wait for hijacked
+// connections such as WebSockets. The caller of Shutdown should
+// separately notify such long-lived connections of shutdown and wait
+// for them to close, if desired.
+func (srv *Server) Shutdown(ctx context.Context) error
 
 // A ConnState represents the state of a client connection to a server.
 // It's used by the optional Server.ConnState hook.
@@ -415,6 +488,8 @@ func (c ConnState) String() string
 // ListenAndServe always returns a non-nil error.
 func (srv *Server) ListenAndServe() error
 
+var ErrServerClosed = errors.New("http: Server closed")
+
 // Serve accepts incoming connections on the Listener l, creating a
 // new service goroutine for each. The service goroutines read requests and
 // then call srv.Handler to reply to them.
@@ -424,7 +499,8 @@ func (srv *Server) ListenAndServe() error
 // srv.TLSConfig is non-nil and doesn't include the string "h2" in
 // Config.NextProtos, HTTP/2 support is not enabled.
 //
-// Serve always returns a non-nil error.
+// Serve always returns a non-nil error. After Shutdown or Close, the
+// returned error is ErrServerClosed.
 func (srv *Server) Serve(l net.Listener) error
 
 // SetKeepAlivesEnabled controls whether HTTP keep-alives are enabled.
@@ -532,12 +608,6 @@ var ErrHandlerTimeout = errors.New("http: Handler timeout")
 // go away.
 
 // globalOptionsHandler responds to "OPTIONS *" requests.
-
-// eofReader is a non-nil io.ReadCloser that always returns EOF.
-// It has a WriteTo method so io.Copy won't need a buffer.
-
-// Verify that an io.Copy from an eofReader won't require a buffer.
-var _ io.WriterTo = eofReader
 
 // initNPNRequest is an HTTP handler that initializes certain
 // uninitialized fields in its *Request. Such partially-initialized
