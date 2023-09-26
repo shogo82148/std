@@ -24,8 +24,6 @@ func (file *File) Fd() uintptr
 // descriptor.
 func NewFile(fd uintptr, name string) *File
 
-// Auxiliary information if the File describes a directory
-
 // DevNull is the name of the operating system's “null device.”
 // On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
 const DevNull = "NUL"

@@ -1297,6 +1297,8 @@ const (
 	R_MIPS_TLS_TPREL64     R_MIPS = 48
 	R_MIPS_TLS_TPREL_HI16  R_MIPS = 49
 	R_MIPS_TLS_TPREL_LO16  R_MIPS = 50
+
+	R_MIPS_PC32 R_MIPS = 248
 )
 
 func (i R_MIPS) String() string

@@ -8,7 +8,7 @@ package asn1
 
 // Marshal returns the ASN.1 encoding of val.
 //
-// In addition to the struct tags recognised by Unmarshal, the following can be
+// In addition to the struct tags recognized by Unmarshal, the following can be
 // used:
 //
 //	ia5:         causes strings to be marshaled as ASN.1, IA5String values

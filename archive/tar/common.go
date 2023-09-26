@@ -159,4 +159,19 @@ func (h *Header) FileInfo() fs.FileInfo
 // Since fs.FileInfo's Name method only returns the base name of
 // the file it describes, it may be necessary to modify Header.Name
 // to provide the full path name of the file.
+//
+// If fi implements [FileInfoNames]
+// the Gname and Uname of the header are
+// provided by the methods of the interface.
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
+
+// FileInfoNames extends [FileInfo] to translate UID/GID to names.
+// Passing an instance of this to [FileInfoHeader] permits the caller
+// to control UID/GID resolution.
+type FileInfoNames interface {
+	fs.FileInfo
+
+	Uname(uid int) (string, error)
+
+	Gname(gid int) (string, error)
+}

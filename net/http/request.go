@@ -122,6 +122,10 @@ type Request struct {
 	Response *Response
 
 	ctx context.Context
+
+	pat         *pattern
+	matches     []string
+	otherValues map[string]string
 }
 
 // Context returns the request's context. To change the context, use
@@ -251,8 +255,9 @@ func NewRequest(method, url string, body io.Reader) (*Request, error)
 // optional body.
 //
 // If the provided body is also an io.Closer, the returned
-// Request.Body is set to body and will be closed by the Client
-// methods Do, Post, and PostForm, and Transport.RoundTrip.
+// Request.Body is set to body and will be closed (possibly
+// asynchronously) by the Client methods Do, Post, and PostForm,
+// and Transport.RoundTrip.
 //
 // NewRequestWithContext returns a Request suitable for use with
 // Client.Do or Transport.RoundTrip. To create a request for use with
@@ -347,7 +352,7 @@ func (r *Request) ParseForm() error
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
 // FormValue returns the first value for the named component of the query.
-// POST and PUT body parameters take precedence over URL query string values.
+// POST, PUT, and PATCH body parameters take precedence over URL query string values.
 // FormValue calls ParseMultipartForm and ParseForm if necessary and ignores
 // any errors returned by these functions.
 // If key is not present, FormValue returns the empty string.
@@ -356,7 +361,7 @@ func (r *Request) ParseMultipartForm(maxMemory int64) error
 func (r *Request) FormValue(key string) string
 
 // PostFormValue returns the first value for the named component of the POST,
-// PATCH, or PUT request body. URL query parameters are ignored.
+// PUT, or PATCH request body. URL query parameters are ignored.
 // PostFormValue calls ParseMultipartForm and ParseForm if necessary and ignores
 // any errors returned by these functions.
 // If key is not present, PostFormValue returns the empty string.
@@ -365,3 +370,11 @@ func (r *Request) PostFormValue(key string) string
 // FormFile returns the first file for the provided form key.
 // FormFile calls ParseMultipartForm and ParseForm if necessary.
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
+
+// PathValue returns the value for the named path wildcard in the ServeMux pattern
+// that matched the request.
+// It returns the empty string if the request was not matched against a pattern
+// or there is no such wildcard in the pattern.
+func (r *Request) PathValue(name string) string
+
+func (r *Request) SetPathValue(name, value string)

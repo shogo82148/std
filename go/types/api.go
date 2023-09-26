@@ -127,6 +127,8 @@ type Info struct {
 	Scopes map[ast.Node]*Scope
 
 	InitOrder []*Initializer
+
+	_FileVersions map[token.Pos]_Version
 }
 
 // TypeOf returns the type of expression e, or nil if not found.
@@ -200,6 +202,8 @@ type Initializer struct {
 }
 
 func (init *Initializer) String() string
+
+// A _Version represents a released Go version.
 
 // Check type-checks a package and returns the resulting package object and
 // the first error if any. Additionally, if info != nil, Check populates each

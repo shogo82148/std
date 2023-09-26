@@ -9,3 +9,10 @@ import (
 )
 
 // nopos indicates an unknown position
+
+// Version must match types._Version exactly.
+// TODO(gri) remove this declaration once types.Version is exported.
+type Version struct {
+	Major int
+	Minor int
+}

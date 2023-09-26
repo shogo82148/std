@@ -5,6 +5,4 @@
 // This file implements API tests across platforms and will never have a build
 // tag.
 
-//go:build !js && !wasip1
-
 package net

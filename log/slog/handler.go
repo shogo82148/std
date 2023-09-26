@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/context"
 )
 
-// A Handler handles log records produced by a Logger..
+// A Handler handles log records produced by a Logger.
 //
 // A typical handler may print log records to standard error,
 // or write them to a file or database, or perhaps augment them
@@ -52,7 +52,7 @@ const (
 	// message of the log call. The associated value is a string.
 	MessageKey = "msg"
 	// SourceKey is the key used by the built-in handlers for the source file
-	// and line of the log call. The associated value is a string.
+	// and line of the log call. The associated value is a *[Source].
 	SourceKey = "source"
 )
 

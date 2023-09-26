@@ -7,10 +7,11 @@
 
 package main
 
-// DiscardCgoDirectives processes the import C preamble, and discards
-// all #cgo CFLAGS and LDFLAGS directives, so they don't make their
-// way into _cgo_export.h.
-func (f *File) DiscardCgoDirectives()
+// ProcessCgoDirectives processes the import C preamble:
+//  1. discards all #cgo CFLAGS, LDFLAGS, nocallback and noescape directives,
+//     so they don't make their way into _cgo_export.h.
+//  2. parse the nocallback and noescape directives.
+func (f *File) ProcessCgoDirectives()
 
 // Translate rewrites f.AST, the original Go input, to remove
 // references to the imported package C, replacing them with

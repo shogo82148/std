@@ -89,7 +89,7 @@ type Type interface {
 	uncommon() *uncommonType
 }
 
-// A Kind represents the specific kind of type that a Type represents.
+// A Kind represents the specific kind of type that a [Type] represents.
 // The zero Kind is not a valid kind.
 type Kind uint
 
@@ -123,7 +123,7 @@ const (
 	UnsafePointer
 )
 
-// Ptr is the old name for the Pointer kind.
+// Ptr is the old name for the [Pointer] kind.
 const Ptr = Pointer
 
 // uncommonType is present only for defined types or types with methods
@@ -235,7 +235,7 @@ func (tag StructTag) Lookup(key string) (value string, ok bool)
 
 // A fieldScan represents an item on the fieldByNameFunc scan work list.
 
-// TypeOf returns the reflection Type that represents the dynamic type of i.
+// TypeOf returns the reflection [Type] that represents the dynamic type of i.
 // If i is a nil interface value, TypeOf returns nil.
 func TypeOf(i any) Type
 
@@ -244,8 +244,10 @@ func TypeOf(i any) Type
 // PtrTo returns the pointer type with element t.
 // For example, if t represents type Foo, PtrTo(t) represents *Foo.
 //
-// PtrTo is the old spelling of PointerTo.
+// PtrTo is the old spelling of [PointerTo].
 // The two functions behave identically.
+//
+// Deprecated: Superseded by [PointerTo].
 func PtrTo(t Type) Type
 
 // PointerTo returns the pointer type with element t.
@@ -303,9 +305,8 @@ func SliceOf(t Type) Type
 // The Offset and Index fields are ignored and computed as they would be
 // by the compiler.
 //
-// StructOf currently does not generate wrapper methods for embedded
-// fields and panics if passed unexported StructFields.
-// These limitations may be lifted in a future version.
+// StructOf currently does not support promoted methods of embedded fields
+// and panics if passed unexported StructFields.
 func StructOf(fields []StructField) Type
 
 // See cmd/compile/internal/reflectdata/reflect.go for derivation of constant.
@@ -318,3 +319,6 @@ func StructOf(fields []StructField) Type
 func ArrayOf(length int, elem Type) Type
 
 // Note: this type must agree with runtime.bitvector.
+
+// TypeFor returns the [Type] that represents the type argument T.
+func TypeFor[T any]() Type

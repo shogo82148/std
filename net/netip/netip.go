@@ -263,6 +263,11 @@ func MustParseAddrPort(s string) AddrPort
 // All ports are valid, including zero.
 func (p AddrPort) IsValid() bool
 
+// Compare returns an integer comparing two AddrPorts.
+// The result will be 0 if p == p2, -1 if p < p2, and +1 if p > p2.
+// AddrPorts sort first by IP address, then port.
+func (p AddrPort) Compare(p2 AddrPort) int
+
 func (p AddrPort) String() string
 
 // AppendTo appends a text encoding of p,
@@ -324,6 +329,13 @@ func (p Prefix) IsValid() bool
 
 // IsSingleIP reports whether p contains exactly one IP.
 func (p Prefix) IsSingleIP() bool
+
+// Compare returns an integer comparing two prefixes.
+// The result will be 0 if p == p2, -1 if p < p2, and +1 if p > p2.
+// Prefixes sort first by validity (invalid before valid), then
+// address family (IPv4 before IPv6), then prefix length, then
+// address.
+func (p Prefix) Compare(p2 Prefix) int
 
 // ParsePrefix parses s as an IP address prefix.
 // The string can be in the form "192.168.1.0/24" or "2001:db8::/32",

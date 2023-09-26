@@ -23,7 +23,7 @@ type Package struct {
 	IntSize     int64
 	GccOptions  []string
 	GccIsClang  bool
-	CgoFlags    map[string][]string
+	LdFlags     []string
 	Written     map[string]bool
 	Name        map[string]*Name
 	ExpFunc     []*ExpFunc
@@ -33,6 +33,8 @@ type Package struct {
 	Preamble    string
 	typedefs    map[string]bool
 	typedefList []typedefInfo
+	noCallbacks map[string]bool
+	noEscapes   map[string]bool
 }
 
 // A typedefInfo is an element on Package.typedefList: a typedef name
@@ -40,16 +42,18 @@ type Package struct {
 
 // A File collects information about a single Go input file.
 type File struct {
-	AST      *ast.File
-	Comments []*ast.CommentGroup
-	Package  string
-	Preamble string
-	Ref      []*Ref
-	Calls    []*Call
-	ExpFunc  []*ExpFunc
-	Name     map[string]*Name
-	NamePos  map[*Name]token.Pos
-	Edit     *edit.Buffer
+	AST         *ast.File
+	Comments    []*ast.CommentGroup
+	Package     string
+	Preamble    string
+	Ref         []*Ref
+	Calls       []*Call
+	ExpFunc     []*ExpFunc
+	Name        map[string]*Name
+	NamePos     map[*Name]token.Pos
+	NoCallbacks map[string]bool
+	NoEscapes   map[string]bool
+	Edit        *edit.Buffer
 }
 
 // A Call refers to a call of a C.xxx function in the AST.

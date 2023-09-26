@@ -114,7 +114,7 @@ func (v Value) Bool() bool
 
 // Duration returns v's value as a time.Duration. It panics
 // if v is not a time.Duration.
-func (a Value) Duration() time.Duration
+func (v Value) Duration() time.Duration
 
 // Float64 returns v's value as a float64. It panics
 // if v is not a float64.

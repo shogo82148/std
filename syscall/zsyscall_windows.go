@@ -149,8 +149,6 @@ func GetProcessTimes(handle Handle, creationTime *Filetime, exitTime *Filetime, 
 
 func GetShortPathName(longpath *uint16, shortpath *uint16, buflen uint32) (n uint32, err error)
 
-func GetStartupInfo(startupInfo *StartupInfo) (err error)
-
 func GetStdHandle(stdhandle int) (handle Handle, err error)
 
 func GetSystemTimeAsFileTime(time *Filetime)

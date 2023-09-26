@@ -79,7 +79,7 @@ type GobDecoder interface {
 	GobDecode([]byte) error
 }
 
-// RegisterName is like Register but uses the provided name rather than the
+// RegisterName is like [Register] but uses the provided name rather than the
 // type's default.
 func RegisterName(name string, value any)
 

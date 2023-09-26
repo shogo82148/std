@@ -27,7 +27,7 @@ type Encoder struct {
 // buffer in which to encode its length. This means we can use the
 // buffer to assemble the message without another allocation.
 
-// NewEncoder returns a new encoder that will transmit on the io.Writer.
+// NewEncoder returns a new encoder that will transmit on the [io.Writer].
 func NewEncoder(w io.Writer) *Encoder
 
 // Encode transmits the data item represented by the empty interface value,

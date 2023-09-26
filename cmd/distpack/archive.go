@@ -42,7 +42,7 @@ func (a *Archive) Add(name, src string, info fs.FileInfo)
 
 // Sort sorts the files in the archive.
 // It is only necessary to call Sort after calling Add or RenameGoMod.
-// ArchiveDir returns a sorted archive, and the other methods
+// NewArchive returns a sorted archive, and the other methods
 // preserve the sorting of the archive.
 func (a *Archive) Sort()
 

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !js && !wasip1
-
 package net
 
 // Define a pair of blackholed (IPv4, IPv6) addresses, for which dialTCP is

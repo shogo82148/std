@@ -36,9 +36,6 @@ var (
 // We want this to be large enough to hold the contents of sysDirectory, *plus*
 // a slash and another component that itself is greater than MAX_PATH.
 
-// useQPCTime controls whether time.now and nanotime use QueryPerformanceCounter.
-// This is only set to 1 when running under Wine.
-
 // exiting is set to non-zero when the process is exiting.
 
 // suspendLock protects simultaneous SuspendThread operations from

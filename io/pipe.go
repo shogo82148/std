@@ -19,9 +19,7 @@ var ErrClosedPipe = errors.New("io: read/write on closed pipe")
 // A pipe is the shared pipe structure underlying PipeReader and PipeWriter.
 
 // A PipeReader is the read half of a pipe.
-type PipeReader struct {
-	p *pipe
-}
+type PipeReader struct{ pipe }
 
 // Read implements the standard Read interface:
 // it reads data from the pipe, blocking until a writer
@@ -42,9 +40,7 @@ func (r *PipeReader) Close() error
 func (r *PipeReader) CloseWithError(err error) error
 
 // A PipeWriter is the write half of a pipe.
-type PipeWriter struct {
-	p *pipe
-}
+type PipeWriter struct{ r PipeReader }
 
 // Write implements the standard Write interface:
 // it writes data to the pipe, blocking until one or more readers

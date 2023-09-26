@@ -119,10 +119,10 @@ func FieldsFunc(s []byte, f func(rune) bool) [][]byte
 // sep is placed between elements in the resulting slice.
 func Join(s [][]byte, sep []byte) []byte
 
-// HasPrefix tests whether the byte slice s begins with prefix.
+// HasPrefix reports whether the byte slice s begins with prefix.
 func HasPrefix(s, prefix []byte) bool
 
-// HasSuffix tests whether the byte slice s ends with suffix.
+// HasSuffix reports whether the byte slice s ends with suffix.
 func HasSuffix(s, suffix []byte) bool
 
 // Map returns a copy of the byte slice s with all its characters modified

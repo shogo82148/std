@@ -28,7 +28,7 @@ package runtime
 // cpuStatsAggregate represents CPU stats obtained from the runtime
 // acquired together to avoid skew and inconsistencies.
 
-// cpuStatsAggregate represents various GC stats obtained from the runtime
+// gcStatsAggregate represents various GC stats obtained from the runtime
 // acquired together to avoid skew and inconsistencies.
 
 // statAggregate is the main driver of the metrics implementation.

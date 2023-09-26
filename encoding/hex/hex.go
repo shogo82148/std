@@ -14,15 +14,19 @@ import (
 // Specifically, it returns n * 2.
 func EncodedLen(n int) int
 
-// Encode encodes src into EncodedLen(len(src))
+// Encode encodes src into [EncodedLen](len(src))
 // bytes of dst. As a convenience, it returns the number
-// of bytes written to dst, but this value is always EncodedLen(len(src)).
+// of bytes written to dst, but this value is always [EncodedLen](len(src)).
 // Encode implements hexadecimal encoding.
 func Encode(dst, src []byte) int
 
+// AppendEncode appends the hexadecimally encoded src to dst
+// and returns the extended buffer.
+func AppendEncode(dst, src []byte) []byte
+
 // ErrLength reports an attempt to decode an odd-length input
-// using Decode or DecodeString.
-// The stream-based Decoder returns io.ErrUnexpectedEOF instead of ErrLength.
+// using [Decode] or [DecodeString].
+// The stream-based Decoder returns [io.ErrUnexpectedEOF] instead of ErrLength.
 var ErrLength = errors.New("encoding/hex: odd length hex string")
 
 // InvalidByteError values describe errors resulting from an invalid byte in a hex string.
@@ -34,7 +38,7 @@ func (e InvalidByteError) Error() string
 // Specifically, it returns x / 2.
 func DecodedLen(x int) int
 
-// Decode decodes src into DecodedLen(len(src)) bytes,
+// Decode decodes src into [DecodedLen](len(src)) bytes,
 // returning the actual number of bytes written to dst.
 //
 // Decode expects that src contains only hexadecimal
@@ -42,6 +46,11 @@ func DecodedLen(x int) int
 // If the input is malformed, Decode returns the number
 // of bytes decoded before the error.
 func Decode(dst, src []byte) (int, error)
+
+// AppendDecode appends the hexadecimally decoded src to dst
+// and returns the extended buffer.
+// If the input is malformed, it returns the partially decoded src and an error.
+func AppendDecode(dst, src []byte) ([]byte, error)
 
 // EncodeToString returns the hexadecimal encoding of src.
 func EncodeToString(src []byte) string
@@ -60,14 +69,14 @@ func Dump(data []byte) string
 
 // bufferSize is the number of hexadecimal characters to buffer in encoder and decoder.
 
-// NewEncoder returns an io.Writer that writes lowercase hexadecimal characters to w.
+// NewEncoder returns an [io.Writer] that writes lowercase hexadecimal characters to w.
 func NewEncoder(w io.Writer) io.Writer
 
-// NewDecoder returns an io.Reader that decodes hexadecimal characters from r.
+// NewDecoder returns an [io.Reader] that decodes hexadecimal characters from r.
 // NewDecoder expects that r contain only an even number of hexadecimal characters.
 func NewDecoder(r io.Reader) io.Reader
 
-// Dumper returns a WriteCloser that writes a hex dump of all written data to
+// Dumper returns a [io.WriteCloser] that writes a hex dump of all written data to
 // w. The format of the dump matches the output of `hexdump -C` on the command
 // line.
 func Dumper(w io.Writer) io.WriteCloser

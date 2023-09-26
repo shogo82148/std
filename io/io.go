@@ -307,8 +307,8 @@ type StringWriter interface {
 }
 
 // WriteString writes the contents of the string s to w, which accepts a slice of bytes.
-// If w implements StringWriter, its WriteString method is invoked directly.
-// Otherwise, w.Write is called exactly once.
+// If w implements [StringWriter], [StringWriter.WriteString] is invoked directly.
+// Otherwise, [Writer.Write] is called exactly once.
 func WriteString(w Writer, s string) (n int, err error)
 
 // ReadAtLeast reads from r into buf until it has read at least min bytes.
@@ -335,8 +335,7 @@ func ReadFull(r Reader, buf []byte) (n int, err error)
 // error encountered while copying.
 // On return, written == n if and only if err == nil.
 //
-// If dst implements the ReaderFrom interface,
-// the copy is implemented using it.
+// If dst implements [ReaderFrom], the copy is implemented using it.
 func CopyN(dst Writer, src Reader, n int64) (written int64, err error)
 
 // Copy copies from src to dst until either EOF is reached
@@ -347,9 +346,9 @@ func CopyN(dst Writer, src Reader, n int64) (written int64, err error)
 // Because Copy is defined to read from src until EOF, it does
 // not treat an EOF from Read as an error to be reported.
 //
-// If src implements the WriterTo interface,
+// If src implements [WriterTo],
 // the copy is implemented by calling src.WriteTo(dst).
-// Otherwise, if dst implements the ReaderFrom interface,
+// Otherwise, if dst implements [ReaderFrom],
 // the copy is implemented by calling dst.ReadFrom(src).
 func Copy(dst Writer, src Reader) (written int64, err error)
 
@@ -358,7 +357,7 @@ func Copy(dst Writer, src Reader) (written int64, err error)
 // temporary one. If buf is nil, one is allocated; otherwise if it has
 // zero length, CopyBuffer panics.
 //
-// If either src implements WriterTo or dst implements ReaderFrom,
+// If either src implements [WriterTo] or dst implements [ReaderFrom],
 // buf will not be used to perform the copy.
 func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error)
 
@@ -383,7 +382,7 @@ func (l *LimitedReader) Read(p []byte) (n int, err error)
 func NewSectionReader(r ReaderAt, off int64, n int64) *SectionReader
 
 // SectionReader implements Read, Seek, and ReadAt on a section
-// of an underlying ReaderAt.
+// of an underlying [ReaderAt].
 type SectionReader struct {
 	r     ReaderAt
 	base  int64
@@ -432,9 +431,9 @@ var Discard Writer = discard{}
 // io.Discard can avoid doing unnecessary work.
 var _ ReaderFrom = discard{}
 
-// NopCloser returns a ReadCloser with a no-op Close method wrapping
-// the provided Reader r.
-// If r implements WriterTo, the returned ReadCloser will implement WriterTo
+// NopCloser returns a [ReadCloser] with a no-op Close method wrapping
+// the provided [Reader] r.
+// If r implements [WriterTo], the returned ReadCloser will implement WriterTo
 // by forwarding calls to r.
 func NopCloser(r Reader) ReadCloser
 

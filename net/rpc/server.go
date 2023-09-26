@@ -139,8 +139,7 @@ const (
 	DefaultDebugPath = "/debug/rpc"
 )
 
-// Precompute the reflect type for error. Can't use error directly
-// because Typeof takes an empty interface value. This is annoying.
+// Precompute the reflect type for error.
 
 // Request is a header written before every RPC call. It is used internally
 // but documented here as an aid to debugging, such as when analyzing

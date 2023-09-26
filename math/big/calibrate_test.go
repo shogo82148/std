@@ -15,6 +15,6 @@
 // Calculates lower and upper thresholds for when basicSqr
 // is faster than standard multiplication.
 
-// Usage: go test -run=TestCalibrate -v -calibrate
+// Usage: go test -run='^TestCalibrate$' -v -calibrate
 
 package big

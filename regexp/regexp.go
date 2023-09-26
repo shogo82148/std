@@ -229,8 +229,8 @@ func MatchString(pattern string, s string) (matched bool, err error)
 func Match(pattern string, b []byte) (matched bool, err error)
 
 // ReplaceAllString returns a copy of src, replacing matches of the Regexp
-// with the replacement string repl. Inside repl, $ signs are interpreted as
-// in Expand, so for instance $1 represents the text of the first submatch.
+// with the replacement string repl.
+// Inside repl, $ signs are interpreted as in Expand.
 func (re *Regexp) ReplaceAllString(src, repl string) string
 
 // ReplaceAllLiteralString returns a copy of src, replacing matches of the Regexp
@@ -245,8 +245,8 @@ func (re *Regexp) ReplaceAllLiteralString(src, repl string) string
 func (re *Regexp) ReplaceAllStringFunc(src string, repl func(string) string) string
 
 // ReplaceAll returns a copy of src, replacing matches of the Regexp
-// with the replacement text repl. Inside repl, $ signs are interpreted as
-// in Expand, so for instance $1 represents the text of the first submatch.
+// with the replacement text repl.
+// Inside repl, $ signs are interpreted as in Expand.
 func (re *Regexp) ReplaceAll(src, repl []byte) []byte
 
 // ReplaceAllLiteral returns a copy of src, replacing matches of the Regexp

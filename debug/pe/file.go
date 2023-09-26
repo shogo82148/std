@@ -20,8 +20,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Avoid use of post-Go 1.4 io features, to make safe for toolchain bootstrap.
-
 // A File represents an open PE file.
 type File struct {
 	FileHeader

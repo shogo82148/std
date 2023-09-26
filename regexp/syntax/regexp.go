@@ -45,6 +45,8 @@ const (
 // Equal reports whether x and y have identical structure.
 func (x *Regexp) Equal(y *Regexp) bool
 
+// printFlags is a bit set indicating which flags (including non-capturing parens) to print around a regexp.
+
 func (re *Regexp) String() string
 
 // MaxCap walks the regexp to find the maximum capture index.

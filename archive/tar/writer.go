@@ -6,6 +6,7 @@ package tar
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/io/fs"
 )
 
 // Writer provides sequential writing of a tar archive.
@@ -36,6 +37,11 @@ func (tw *Writer) Flush() error
 // If the current file is not fully written, then this returns an error.
 // This implicitly flushes any padding necessary before writing the header.
 func (tw *Writer) WriteHeader(hdr *Header) error
+
+// AddFS adds the files from fs.FS to the archive.
+// It walks the directory tree starting at the root of the filesystem
+// adding each file to the tar archive while maintaining the directory structure.
+func (tw *Writer) AddFS(fsys fs.FS) error
 
 // Write writes to the current file in the tar archive.
 // Write returns the error ErrWriteTooLong if more than

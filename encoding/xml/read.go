@@ -78,7 +78,7 @@ package xml
 // If Unmarshal encounters a field type that implements the Unmarshaler
 // interface, Unmarshal calls its UnmarshalXML method to produce the value from
 // the XML element.  Otherwise, if the value implements
-// encoding.TextUnmarshaler, Unmarshal calls that value's UnmarshalText method.
+// [encoding.TextUnmarshaler], Unmarshal calls that value's UnmarshalText method.
 //
 // Unmarshal maps an XML element to a string or []byte by saving the
 // concatenation of that element's character data in the string or
@@ -87,7 +87,7 @@ package xml
 // Unmarshal maps an attribute value to a string or []byte by saving
 // the value in the string or slice.
 //
-// Unmarshal maps an attribute value to an Attr by saving the attribute,
+// Unmarshal maps an attribute value to an [Attr] by saving the attribute,
 // including its name, in the Attr.
 //
 // Unmarshal maps an XML element or attribute value to a slice by
@@ -114,14 +114,14 @@ package xml
 // field will be set to its zero value.
 func Unmarshal(data []byte, v any) error
 
-// Decode works like Unmarshal, except it reads the decoder
+// Decode works like [Unmarshal], except it reads the decoder
 // stream to find the start element.
 func (d *Decoder) Decode(v any) error
 
-// DecodeElement works like Unmarshal except that it takes
+// DecodeElement works like [Unmarshal] except that it takes
 // a pointer to the start XML element to decode into v.
 // It is useful when a client reads some raw XML tokens itself
-// but also wants to defer to Unmarshal for some elements.
+// but also wants to defer to [Unmarshal] for some elements.
 func (d *Decoder) DecodeElement(v any, start *StartElement) error
 
 // An UnmarshalError represents an error in the unmarshaling process.
@@ -152,7 +152,7 @@ type Unmarshaler interface {
 // an XML attribute description of themselves.
 //
 // UnmarshalXMLAttr decodes a single XML attribute.
-// If it returns an error, the outer call to Unmarshal stops and
+// If it returns an error, the outer call to [Unmarshal] stops and
 // returns that error.
 // UnmarshalXMLAttr is used only for struct fields with the
 // "attr" option in the field tag.

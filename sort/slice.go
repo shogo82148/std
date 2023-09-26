@@ -13,6 +13,9 @@ package sort
 //
 // The less function must satisfy the same requirements as
 // the Interface type's Less method.
+//
+// Note: in many situations, the newer slices.SortFunc function is more
+// ergonomic and runs faster.
 func Slice(x any, less func(i, j int) bool)
 
 // SliceStable sorts the slice x using the provided less
@@ -21,8 +24,14 @@ func Slice(x any, less func(i, j int) bool)
 //
 // The less function must satisfy the same requirements as
 // the Interface type's Less method.
+//
+// Note: in many situations, the newer slices.SortStableFunc function is more
+// ergonomic and runs faster.
 func SliceStable(x any, less func(i, j int) bool)
 
 // SliceIsSorted reports whether the slice x is sorted according to the provided less function.
 // It panics if x is not a slice.
+//
+// Note: in many situations, the newer slices.IsSortedFunc function is more
+// ergonomic and runs faster.
 func SliceIsSorted(x any, less func(i, j int) bool) bool

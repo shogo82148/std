@@ -7,6 +7,7 @@ package slogtest
 
 import (
 	"github.com/shogo82148/std/log/slog"
+	"github.com/shogo82148/std/testing"
 )
 
 // TestHandler tests a [slog.Handler].
@@ -15,6 +16,7 @@ import (
 //
 // TestHandler installs the given Handler in a [slog.Logger] and
 // makes several calls to the Logger's output methods.
+// The Handler should be enabled for levels Info and above.
 //
 // The results function is invoked after all such calls.
 // It should return a slice of map[string]any, one for each call to a Logger output method.
@@ -28,3 +30,9 @@ import (
 // If a Handler intentionally drops an attribute that is checked by a test,
 // then the results function should check for its absence and add it to the map it returns.
 func TestHandler(h slog.Handler, results func() []map[string]any) error
+
+// Run exercises a [slog.Handler] on the same test cases as [TestHandler], but
+// runs each case in a subtest. For each test case, it first calls newHandler to
+// get an instance of the handler under test, then runs the test case, then
+// calls result to get the result. If the test case fails, it calls t.Error.
+func Run(t *testing.T, newHandler func(*testing.T) slog.Handler, result func(*testing.T) map[string]any)

@@ -6,6 +6,7 @@ package zip
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/io/fs"
 )
 
 // Writer implements a zip file writer.
@@ -77,3 +78,8 @@ func (w *Writer) Copy(f *File) error
 // method ID. If a compressor for a given method is not found, Writer will
 // default to looking up the compressor at the package level.
 func (w *Writer) RegisterCompressor(method uint16, comp Compressor)
+
+// AddFS adds the files from fs.FS to the archive.
+// It walks the directory tree starting at the root of the filesystem
+// adding each file to the zip using deflate while maintaining the directory structure.
+func (w *Writer) AddFS(fsys fs.FS) error

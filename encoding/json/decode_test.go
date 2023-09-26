@@ -174,11 +174,6 @@ type Xint struct {
 	X int
 }
 
-// WrongString is a struct that's misusing the ,string modifier.
-type WrongString struct {
-	Message string `json:"result,string"`
-}
-
 type All struct {
 	Bool    bool
 	Int     int

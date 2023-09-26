@@ -366,3 +366,5 @@ func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlap
 // Successive calls to this API must happen on the same OS thread,
 // so call runtime.LockOSThread before calling this function.
 func RegEnumKeyEx(key Handle, index uint32, name *uint16, nameLen *uint32, reserved *uint32, class *uint16, classLen *uint32, lastWriteTime *Filetime) (regerrno error)
+
+func GetStartupInfo(startupInfo *StartupInfo) error

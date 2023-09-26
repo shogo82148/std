@@ -80,34 +80,34 @@ func (x StringSlice) Sort()
 
 // Ints sorts a slice of ints in increasing order.
 //
-// Note: consider using the newer slices.Sort function, which runs faster.
+// Note: as of Go 1.22, this function simply calls slices.Sort.
 func Ints(x []int)
 
 // Float64s sorts a slice of float64s in increasing order.
 // Not-a-number (NaN) values are ordered before other values.
 //
-// Note: consider using the newer slices.Sort function, which runs faster.
+// Note: as of Go 1.22, this function simply calls slices.Sort.
 func Float64s(x []float64)
 
 // Strings sorts a slice of strings in increasing order.
 //
-// Note: consider using the newer slices.Sort function, which runs faster.
+// Note: as of Go 1.22, this function simply calls slices.Sort.
 func Strings(x []string)
 
 // IntsAreSorted reports whether the slice x is sorted in increasing order.
 //
-// Note: consider using the newer slices.IsSorted function, which runs faster.
+// Note: as of Go 1.22, this function simply calls slices.IsSorted.
 func IntsAreSorted(x []int) bool
 
 // Float64sAreSorted reports whether the slice x is sorted in increasing order,
 // with not-a-number (NaN) values before any other values.
 //
-// Note: consider using the newer slices.IsSorted function, which runs faster.
+// Note: as of Go 1.22, this function simply calls slices.IsSorted.
 func Float64sAreSorted(x []float64) bool
 
 // StringsAreSorted reports whether the slice x is sorted in increasing order.
 //
-// Note: consider using the newer slices.IsSorted function, which runs faster.
+// Note: as of Go 1.22, this function simply calls slices.IsSorted.
 func StringsAreSorted(x []string) bool
 
 // Stable sorts data in ascending order as determined by the Less method,

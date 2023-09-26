@@ -4,7 +4,7 @@
 
 package draw
 
-// slowestRGBA is a draw.Image like image.RGBA but it is a different type and
+// slowestRGBA is a draw.Image like image.RGBA, but it is a different type and
 // therefore does not trigger the draw.go fastest code paths.
 //
 // Unlike slowerRGBA, it does not implement the draw.RGBA64Image interface.

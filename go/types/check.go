@@ -44,6 +44,7 @@ type Checker struct {
 	pkg  *Package
 	*Info
 	version version
+	posVers map[token.Pos]version
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
@@ -53,7 +54,6 @@ type Checker struct {
 	seenPkgMap map[*Package]bool
 
 	files         []*ast.File
-	posVers       map[*token.File]version
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
 	recvTParamMap map[*ast.Ident]*TypeParam

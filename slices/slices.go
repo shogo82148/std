@@ -112,3 +112,6 @@ func Clip[S ~[]E, E any](s S) S
 
 // Reverse reverses the elements of the slice in place.
 func Reverse[S ~[]E, E any](s S)
+
+// Concat returns a new slice concatenating the passed in slices.
+func Concat[S ~[]E, E any](slices ...S) S

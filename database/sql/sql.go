@@ -219,6 +219,27 @@ func (n *NullTime) Scan(value any) error
 // Value implements the driver Valuer interface.
 func (n NullTime) Value() (driver.Value, error)
 
+// Null represents a value that may be null.
+// Null implements the Scanner interface so
+// it can be used as a scan destination:
+//
+//	var s Null[string]
+//	err := db.QueryRow("SELECT name FROM foo WHERE id=?", id).Scan(&s)
+//	...
+//	if s.Valid {
+//	   // use s.V
+//	} else {
+//	   // NULL value
+//	}
+type Null[T any] struct {
+	V     T
+	Valid bool
+}
+
+func (n *Null[T]) Scan(value any) error
+
+func (n Null[T]) Value() (driver.Value, error)
+
 // Scanner is an interface used by Scan.
 type Scanner interface {
 	Scan(src any) error

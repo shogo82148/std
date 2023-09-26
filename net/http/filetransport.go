@@ -4,6 +4,10 @@
 
 package http
 
+import (
+	"github.com/shogo82148/std/io/fs"
+)
+
 // fileTransport implements RoundTripper for the 'file' protocol.
 
 // NewFileTransport returns a new RoundTripper, serving the provided
@@ -20,6 +24,22 @@ package http
 //	res, err := c.Get("file:///etc/passwd")
 //	...
 func NewFileTransport(fs FileSystem) RoundTripper
+
+// NewFileTransportFS returns a new RoundTripper, serving the provided
+// file system fsys. The returned RoundTripper ignores the URL host in its
+// incoming requests, as well as most other properties of the
+// request.
+//
+// The typical use case for NewFileTransportFS is to register the "file"
+// protocol with a Transport, as in:
+//
+//	fsys := os.DirFS("/")
+//	t := &http.Transport{}
+//	t.RegisterProtocol("file", http.NewFileTransportFS(fsys))
+//	c := &http.Client{Transport: t}
+//	res, err := c.Get("file:///etc/passwd")
+//	...
+func NewFileTransportFS(fsys fs.FS) RoundTripper
 
 // populateResponse is a ResponseWriter that populates the *Response
 // in res, and writes its body to a pipe connected to the response

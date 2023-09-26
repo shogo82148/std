@@ -36,3 +36,7 @@ func Less[T Ordered](x, y T) bool
 // For floating-point types, a NaN is considered less than any non-NaN,
 // a NaN is considered equal to a NaN, and -0.0 is equal to 0.0.
 func Compare[T Ordered](x, y T) int
+
+// Or returns the first of its arguments that is not equal to the zero value.
+// If no argument is non-zero, it returns the zero value.
+func Or[T comparable](vals ...T) T

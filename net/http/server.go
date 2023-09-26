@@ -47,16 +47,16 @@ var (
 
 // A Handler responds to an HTTP request.
 //
-// ServeHTTP should write reply headers and data to the ResponseWriter
+// ServeHTTP should write reply headers and data to the [ResponseWriter]
 // and then return. Returning signals that the request is finished; it
-// is not valid to use the ResponseWriter or read from the
-// Request.Body after or concurrently with the completion of the
+// is not valid to use the [ResponseWriter] or read from the
+// [Request.Body] after or concurrently with the completion of the
 // ServeHTTP call.
 //
 // Depending on the HTTP client software, HTTP protocol version, and
 // any intermediaries between the client and the Go server, it may not
-// be possible to read from the Request.Body after writing to the
-// ResponseWriter. Cautious handlers should read the Request.Body
+// be possible to read from the [Request.Body] after writing to the
+// [ResponseWriter]. Cautious handlers should read the [Request.Body]
 // first, and then reply.
 //
 // Except for reading the body, handlers should not modify the
@@ -68,7 +68,7 @@ var (
 // and either closes the network connection or sends an HTTP/2
 // RST_STREAM, depending on the HTTP protocol. To abort a handler so
 // the client sees an interrupted response but the server doesn't log
-// an error, panic with the value ErrAbortHandler.
+// an error, panic with the value [ErrAbortHandler].
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
@@ -76,8 +76,7 @@ type Handler interface {
 // A ResponseWriter interface is used by an HTTP handler to
 // construct an HTTP response.
 //
-// A ResponseWriter may not be used after the Handler.ServeHTTP method
-// has returned.
+// A ResponseWriter may not be used after [Handler.ServeHTTP] has returned.
 type ResponseWriter interface {
 	Header() Header
 
@@ -220,7 +219,11 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 // and processes its final data before they process the subsequent RST
 // from closing a connection with known unread data.
 // This RST seems to occur mostly on BSD systems. (And Windows?)
-// This timeout is somewhat arbitrary (~latency around the planet).
+// This timeout is somewhat arbitrary (~latency around the planet),
+// and may be modified by tests.
+//
+// TODO(bcmills): This should arguably be a server configuration parameter,
+// not a hard-coded value.
 
 var _ closeWriter = (*net.TCPConn)(nil)
 
@@ -321,10 +324,10 @@ func RedirectHandler(url string, code int) Handler
 // header, stripping the port number and redirecting any request containing . or
 // .. elements or repeated slashes to an equivalent, cleaner URL.
 type ServeMux struct {
-	mu    sync.RWMutex
-	m     map[string]muxEntry
-	es    []muxEntry
-	hosts bool
+	mu       sync.RWMutex
+	tree     routingNode
+	index    routingIndex
+	patterns []*pattern
 }
 
 // NewServeMux allocates and returns a new ServeMux.
@@ -344,7 +347,7 @@ var DefaultServeMux = &defaultServeMux
 //
 // Handler also returns the registered pattern that matches the
 // request or, in the case of internally-generated redirects,
-// the pattern that will match after following the redirect.
+// the path that will match after following the redirect.
 //
 // If there is no registered handler that applies to the request,
 // Handler returns a “page not found” handler and an empty pattern.
@@ -361,21 +364,19 @@ func (mux *ServeMux) Handle(pattern string, handler Handler)
 // HandleFunc registers the handler function for the given pattern.
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
-// Handle registers the handler for the given pattern
-// in the DefaultServeMux.
-// The documentation for ServeMux explains how patterns are matched.
+// Handle registers the handler for the given pattern in [DefaultServeMux].
+// The documentation for [ServeMux] explains how patterns are matched.
 func Handle(pattern string, handler Handler)
 
-// HandleFunc registers the handler function for the given pattern
-// in the DefaultServeMux.
-// The documentation for ServeMux explains how patterns are matched.
+// HandleFunc registers the handler function for the given pattern in [DefaultServeMux].
+// The documentation for [ServeMux] explains how patterns are matched.
 func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Serve accepts incoming HTTP connections on the listener l,
 // creating a new service goroutine for each. The service goroutines
 // read requests and then call handler to reply to them.
 //
-// The handler is typically nil, in which case the DefaultServeMux is used.
+// The handler is typically nil, in which case [DefaultServeMux] is used.
 //
 // HTTP/2 support is only enabled if the Listener returns *tls.Conn
 // connections and they were configured with "h2" in the TLS
@@ -388,7 +389,7 @@ func Serve(l net.Listener, handler Handler) error
 // creating a new service goroutine for each. The service goroutines
 // read requests and then call handler to reply to them.
 //
-// The handler is typically nil, in which case the DefaultServeMux is used.
+// The handler is typically nil, in which case [DefaultServeMux] is used.
 //
 // Additionally, files containing a certificate and matching private key
 // for the server must be provided. If the certificate is signed by a
@@ -598,12 +599,12 @@ func (srv *Server) SetKeepAlivesEnabled(v bool)
 // Serve with handler to handle requests on incoming connections.
 // Accepted connections are configured to enable TCP keep-alives.
 //
-// The handler is typically nil, in which case the DefaultServeMux is used.
+// The handler is typically nil, in which case [DefaultServeMux] is used.
 //
 // ListenAndServe always returns a non-nil error.
 func ListenAndServe(addr string, handler Handler) error
 
-// ListenAndServeTLS acts identically to ListenAndServe, except that it
+// ListenAndServeTLS acts identically to [ListenAndServe], except that it
 // expects HTTPS connections. Additionally, files containing a certificate and
 // matching private key for the server must be provided. If the certificate
 // is signed by a certificate authority, the certFile should be the concatenation

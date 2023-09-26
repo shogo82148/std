@@ -122,10 +122,10 @@ func FieldsFunc(s string, f func(rune) bool) []string
 // string sep is placed between elements in the resulting string.
 func Join(elems []string, sep string) string
 
-// HasPrefix tests whether the string s begins with prefix.
+// HasPrefix reports whether the string s begins with prefix.
 func HasPrefix(s, prefix string) bool
 
-// HasSuffix tests whether the string s ends with suffix.
+// HasSuffix reports whether the string s ends with suffix.
 func HasSuffix(s, suffix string) bool
 
 // Map returns a copy of the string s with all its characters modified

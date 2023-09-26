@@ -721,6 +721,8 @@ func (f *File) End() token.Pos
 
 // A Package node represents a set of source files
 // collectively building a Go package.
+//
+// Deprecated: use the type checker [go/types] instead; see [Object].
 type Package struct {
 	Name    string
 	Scope   *Scope
@@ -742,3 +744,6 @@ func (p *Package) End() token.Pos
 //	if err != nil { ... }
 //	gen := ast.IsGenerated(f)
 func IsGenerated(file *File) bool
+
+// Unparen returns the expression with any enclosing parentheses removed.
+func Unparen(e Expr) Expr

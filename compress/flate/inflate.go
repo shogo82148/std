@@ -62,7 +62,7 @@ type Reader interface {
 
 // NewReader returns a new ReadCloser that can be used
 // to read the uncompressed version of r.
-// If r does not also implement io.ByteReader,
+// If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.
 // The reader returns io.EOF after the final block in the DEFLATE stream has
 // been encountered. Any trailing data after the final block is ignored.

@@ -10,6 +10,7 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
+// ForkLock is not used on Windows.
 var ForkLock sync.RWMutex
 
 // EscapeArg rewrites command line argument s as prescribed

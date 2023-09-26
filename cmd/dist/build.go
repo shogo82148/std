@@ -43,11 +43,3 @@ package main
 // See go.dev/issue/56679.
 
 // List of platforms which are first class ports. See go.dev/issue/38874.
-
-// IsRuntimePackagePath examines 'pkgpath' and returns TRUE if it
-// belongs to the collection of "runtime-related" packages, including
-// "runtime" itself, "reflect", "syscall", and the
-// "runtime/internal/*" packages.
-//
-// Keep in sync with cmd/internal/objabi/path.go:IsRuntimePackagePath.
-func IsRuntimePackagePath(pkgpath string) bool

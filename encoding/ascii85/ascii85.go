@@ -10,12 +10,12 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Encode encodes src into at most MaxEncodedLen(len(src))
+// Encode encodes src into at most [MaxEncodedLen](len(src))
 // bytes of dst, returning the actual number of bytes written.
 //
 // The encoding handles 4-byte chunks, using a special encoding
 // for the last fragment, so Encode is not appropriate for use on
-// individual blocks of a large data stream. Use NewEncoder() instead.
+// individual blocks of a large data stream. Use [NewEncoder] instead.
 //
 // Often, ascii85-encoded data is wrapped in <~ and ~> symbols.
 // Encode does not add these.
@@ -38,7 +38,7 @@ func (e CorruptInputError) Error() string
 // Decode decodes src into dst, returning both the number
 // of bytes written to dst and the number consumed from src.
 // If src contains invalid ascii85 data, Decode will return the
-// number of bytes successfully written and a CorruptInputError.
+// number of bytes successfully written and a [CorruptInputError].
 // Decode ignores space and control characters in src.
 // Often, ascii85-encoded data is wrapped in <~ and ~> symbols.
 // Decode expects these to have been stripped by the caller.
@@ -47,7 +47,7 @@ func (e CorruptInputError) Error() string
 // end of the input stream and processes it completely rather
 // than wait for the completion of another 32-bit block.
 //
-// NewDecoder wraps an io.Reader interface around Decode.
+// [NewDecoder] wraps an [io.Reader] interface around Decode.
 func Decode(dst, src []byte, flush bool) (ndst, nsrc int, err error)
 
 // NewDecoder constructs a new ascii85 stream decoder.

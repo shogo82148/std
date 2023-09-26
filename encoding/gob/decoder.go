@@ -33,9 +33,9 @@ type Decoder struct {
 	err          error
 }
 
-// NewDecoder returns a new decoder that reads from the io.Reader.
-// If r does not also implement io.ByteReader, it will be wrapped in a
-// bufio.Reader.
+// NewDecoder returns a new decoder that reads from the [io.Reader].
+// If r does not also implement [io.ByteReader], it will be wrapped in a
+// [bufio.Reader].
 func NewDecoder(r io.Reader) *Decoder
 
 // Decode reads the next value from the input stream and stores
@@ -43,7 +43,7 @@ func NewDecoder(r io.Reader) *Decoder
 // If e is nil, the value will be discarded. Otherwise,
 // the value underlying e must be a pointer to the
 // correct type for the next data item received.
-// If the input is at EOF, Decode returns io.EOF and
+// If the input is at EOF, Decode returns [io.EOF] and
 // does not modify e.
 func (dec *Decoder) Decode(e any) error
 
@@ -51,7 +51,7 @@ func (dec *Decoder) Decode(e any) error
 // If v is the zero reflect.Value (v.Kind() == Invalid), DecodeValue discards the value.
 // Otherwise, it stores the value into v. In that case, v must represent
 // a non-nil pointer to data or be an assignable reflect.Value (v.CanSet())
-// If the input is at EOF, DecodeValue returns io.EOF and
+// If the input is at EOF, DecodeValue returns [io.EOF] and
 // does not modify v.
 func (dec *Decoder) DecodeValue(v reflect.Value) error
 

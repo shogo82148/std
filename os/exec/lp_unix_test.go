@@ -4,4 +4,4 @@
 
 //go:build unix
 
-package exec
+package exec_test

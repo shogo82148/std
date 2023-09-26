@@ -6,6 +6,8 @@ package main
 
 // tester executes cmdtest.
 
+// work tracks command execution for a test.
+
 // A distTest is a test run by dist test.
 // Each test has a unique name and belongs to a group (heading)
 

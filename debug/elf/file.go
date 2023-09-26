@@ -22,12 +22,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// seekStart, seekCurrent, seekEnd are copies of
-// io.SeekStart, io.SeekCurrent, and io.SeekEnd.
-// We can't use the ones from package io because
-// we want this code to build with Go 1.4 during
-// cmd/dist bootstrap.
-
 // A FileHeader represents an ELF file header.
 type FileHeader struct {
 	Class      Class

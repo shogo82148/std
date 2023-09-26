@@ -29,7 +29,7 @@ type Decoder struct {
 func NewDecoder(r io.Reader) *Decoder
 
 // UseNumber causes the Decoder to unmarshal a number into an interface{} as a
-// Number instead of as a float64.
+// [Number] instead of as a float64.
 func (dec *Decoder) UseNumber()
 
 // DisallowUnknownFields causes the Decoder to return an error when the destination
@@ -40,12 +40,12 @@ func (dec *Decoder) DisallowUnknownFields()
 // Decode reads the next JSON-encoded value from its
 // input and stores it in the value pointed to by v.
 //
-// See the documentation for Unmarshal for details about
+// See the documentation for [Unmarshal] for details about
 // the conversion of JSON into a Go value.
 func (dec *Decoder) Decode(v any) error
 
 // Buffered returns a reader of the data remaining in the Decoder's
-// buffer. The reader is valid until the next call to Decode.
+// buffer. The reader is valid until the next call to [Decoder.Decode].
 func (dec *Decoder) Buffered() io.Reader
 
 // An Encoder writes JSON values to an output stream.
@@ -65,7 +65,7 @@ func NewEncoder(w io.Writer) *Encoder
 // Encode writes the JSON encoding of v to the stream,
 // followed by a newline character.
 //
-// See the documentation for Marshal for details about the
+// See the documentation for [Marshal] for details about the
 // conversion of Go values to JSON.
 func (enc *Encoder) Encode(v any) error
 
@@ -84,7 +84,7 @@ func (enc *Encoder) SetIndent(prefix, indent string)
 func (enc *Encoder) SetEscapeHTML(on bool)
 
 // RawMessage is a raw encoded JSON value.
-// It implements Marshaler and Unmarshaler and can
+// It implements [Marshaler] and [Unmarshaler] and can
 // be used to delay JSON decoding or precompute a JSON encoding.
 type RawMessage []byte
 
@@ -99,12 +99,12 @@ var _ Unmarshaler = (*RawMessage)(nil)
 
 // A Token holds a value of one of these types:
 //
-//	Delim, for the four JSON delimiters [ ] { }
-//	bool, for JSON booleans
-//	float64, for JSON numbers
-//	Number, for JSON numbers
-//	string, for JSON string literals
-//	nil, for JSON null
+//   - [Delim], for the four JSON delimiters [ ] { }
+//   - bool, for JSON booleans
+//   - float64, for JSON numbers
+//   - [Number], for JSON numbers
+//   - string, for JSON string literals
+//   - nil, for JSON null
 type Token any
 
 // A Delim is a JSON array or object delimiter, one of [ ] { or }.
@@ -113,14 +113,14 @@ type Delim rune
 func (d Delim) String() string
 
 // Token returns the next JSON token in the input stream.
-// At the end of the input stream, Token returns nil, io.EOF.
+// At the end of the input stream, Token returns nil, [io.EOF].
 //
 // Token guarantees that the delimiters [ ] { } it returns are
 // properly nested and matched: if Token encounters an unexpected
 // delimiter in the input, it will return an error.
 //
 // The input stream consists of basic JSON values—bool, string,
-// number, and null—along with delimiters [ ] { } of type Delim
+// number, and null—along with delimiters [ ] { } of type [Delim]
 // to mark the start and end of arrays and objects.
 // Commas and colons are elided.
 func (dec *Decoder) Token() (Token, error)

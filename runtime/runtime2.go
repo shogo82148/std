@@ -65,7 +65,7 @@ package runtime
 //  2. Any muintptr in the heap must be owned by the M itself so it can
 //     ensure it is not in use when the last true *m is released.
 
-// sudog represents a g in a wait list, such as for sending/receiving
+// sudog (pseudo-g) represents a g in a wait list, such as for sending/receiving
 // on a channel.
 //
 // sudog is necessary because the g ↔ synchronization object relation
@@ -125,6 +125,10 @@ package runtime
 // handling during stack growth: because they are pointer-typed and
 // _panic values only live on the stack, regular stack pointer
 // adjustment takes care of them.
+
+// savedOpenDeferState tracks the extra state from _panic that's
+// necessary for deferreturn to pick up where gopanic left off,
+// without needing to unwind the stack.
 
 // ancestorInfo records details of where a goroutine was started.
 

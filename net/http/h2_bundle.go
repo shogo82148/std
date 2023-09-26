@@ -333,6 +333,15 @@ var _ Pusher = (*http2responseWriter)(nil)
 
 // internal error values; they don't escape to callers
 
+// Seven bufPools manage different frame sizes. This helps to avoid scenarios where long-running
+// streaming requests using small frame sizes occupy large buffers initially allocated for prior
+// requests needing big buffers. The size ranges are as follows:
+// {0 KB, 16 KB], {16 KB, 32 KB], {32 KB, 64 KB], {64 KB, 128 KB], {128 KB, 256 KB],
+// {256 KB, 512 KB], {512 KB, infinity}
+// In practice, the maximum scratch buffer size should not exceed 512 KB due to
+// frameScratchBufferLen(maxFrameSize), thus the "infinity pool" should never be used.
+// It exists mainly as a safety measure, for potential future increases in max buffer size.
+
 // clientConnReadLoop is the state owned by the clientConn's frame-reading readLoop.
 
 // GoAwayError is returned by the Transport when the server closes the

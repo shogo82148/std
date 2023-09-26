@@ -71,9 +71,7 @@ package runtime
 // normal behavior on this signal is suppressed.
 
 // sigsetAllExiting is used by sigblock(true) when a thread is
-// exiting. sigset_all is defined in OS specific code, and per GOOS
-// behavior may override this default for sigsetAllExiting: see
-// osinit().
+// exiting.
 
 // gsignalStack saves the fields of the gsignal stack changed by
 // setGsignalStack.

@@ -6,5 +6,5 @@
 
 package binary
 
-// NativeEndian is the native-endian implementation of ByteOrder and AppendByteOrder.
+// NativeEndian is the native-endian implementation of [ByteOrder] and [AppendByteOrder].
 var NativeEndian nativeEndian

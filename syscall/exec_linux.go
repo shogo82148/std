@@ -74,6 +74,8 @@ type SysProcAttr struct {
 	AmbientCaps                []uintptr
 	UseCgroupFD                bool
 	CgroupFD                   int
+
+	PidFD *int
 }
 
 // cloneArgs holds arguments for clone3 Linux syscall.
