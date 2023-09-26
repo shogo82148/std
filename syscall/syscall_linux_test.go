@@ -1,0 +1,11 @@
+// Copyright 2015 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package syscall_test
+
+// reference uapi/linux/prctl.h
+const (
+	PR_GET_KEEPCAPS uintptr = 7
+	PR_SET_KEEPCAPS         = 8
+)

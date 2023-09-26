@@ -1,0 +1,12 @@
+// Copyright 2011 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package runtime
+
+// From FreeBSD's <sys/sysctl.h>
+
+// Undocumented numbers from FreeBSD's lib/libc/gen/sysctlnametomib.c.
+
+// sigPerThreadSyscall is only used on linux, so we assign a bogus signal
+// number.
