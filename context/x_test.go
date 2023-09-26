@@ -7,3 +7,7 @@ package context_test
 import (
 	. "context"
 )
+
+// otherContext is a Context that's not one of the types defined in context.go.
+// This lets us test code paths that differ based on the underlying type of the
+// Context.

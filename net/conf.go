@@ -6,4 +6,6 @@
 
 package net
 
-// conf represents a system's network configuration.
+// conf is used to determine name resolution configuration.
+
+// mdnsTest is for testing only.

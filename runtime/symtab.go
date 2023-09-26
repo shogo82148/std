@@ -52,19 +52,6 @@ type Func struct {
 	opaque struct{}
 }
 
-// PCDATA and FUNCDATA table indexes.
-//
-// See funcdata.h and ../cmd/internal/objabi/funcdata.go.
-
-// A FuncID identifies particular functions that need to be treated
-// specially by the runtime.
-// Note that in some situations involving plugins, there may be multiple
-// copies of a particular special runtime function.
-// Note: this list must match the list in cmd/internal/objabi/funcid.go.
-
-// A FuncFlag holds bits about a function.
-// This list must match the list in cmd/internal/objabi/funcid.go.
-
 // pcHeader holds data used by the pclntab lookups.
 
 // moduledata records information about the layout of the executable
@@ -123,4 +110,6 @@ func (f *Func) Entry() uintptr
 // counter within f.
 func (f *Func) FileLine(pc uintptr) (file string, line int)
 
-// inlinedCall is the encoding of entries in the FUNCDATA_InlTree table.
+// A srcFunc represents a logical function in the source code. This may
+// correspond to an actual symbol in the binary text, or it may correspond to a
+// source function that has been inlined.

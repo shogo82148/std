@@ -85,7 +85,7 @@ type Type interface {
 
 	Out(i int) Type
 
-	common() *rtype
+	common() *abi.Type
 	uncommon() *uncommonType
 }
 
@@ -126,26 +126,15 @@ const (
 // Ptr is the old name for the Pointer kind.
 const Ptr = Pointer
 
-// tflag is used by an rtype to signal what extra type information is
-// available in the memory directly following the rtype value.
-//
-// tflag values must be kept in sync with copies in:
-//
-//	cmd/compile/internal/reflectdata/reflect.go
-//	cmd/link/internal/ld/decodesym.go
-//	runtime/type.go
-
-// rtype is the common implementation of most values.
-// It is embedded in other struct types.
-//
-// rtype must be kept in sync with ../runtime/type.go:/^type._type.
-
-// Method on non-interface type
-
 // uncommonType is present only for defined types or types with methods
 // (if T is a defined type, the uncommonTypes for T and *T have methods).
 // Using a pointer to this struct reduces the overall size required
 // to describe a non-defined type with no methods.
+
+// Embed this type to get common/uncommon
+
+// rtype is the common implementation of most values.
+// It is embedded in other struct types.
 
 // ChanDir represents a channel type's direction.
 type ChanDir int
@@ -171,8 +160,6 @@ const (
 //		uncommonType
 //		[2]*rtype    // [0] is in, [1] is out
 //	}
-
-// imethod represents a method on an interface type
 
 // interfaceType represents an interface type.
 

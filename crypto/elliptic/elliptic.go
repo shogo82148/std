@@ -5,8 +5,10 @@
 // Package elliptic implements the standard NIST P-224, P-256, P-384, and P-521
 // elliptic curves over prime fields.
 //
-// The P224(), P256(), P384() and P521() values are necessary to use the crypto/ecdsa package.
-// Most other uses should migrate to the more efficient and safer crypto/ecdh package.
+// Direct use of this package is deprecated, beyond the [P224], [P256], [P384],
+// and [P521] values necessary to use [crypto/ecdsa]. Most other uses
+// should migrate to the more efficient and safer [crypto/ecdh], or to
+// third-party modules for lower-level functionality.
 package elliptic
 
 import (
@@ -22,6 +24,9 @@ import (
 // Note that the conventional point at infinity (0, 0) is not considered on the
 // curve, although it can be returned by Add, Double, ScalarMult, or
 // ScalarBaseMult (but not the Unmarshal or UnmarshalCompressed functions).
+//
+// Using Curve implementations besides those returned by P224(), P256(), P384(),
+// and P521() is deprecated.
 type Curve interface {
 	Params() *CurveParams
 
@@ -39,7 +44,7 @@ type Curve interface {
 // GenerateKey returns a public/private key pair. The private key is
 // generated using the given reader, which must return random data.
 //
-// Note: for ECDH, use the GenerateKey methods of the crypto/ecdh package;
+// Deprecated: for ECDH, use the GenerateKey methods of the crypto/ecdh package;
 // for ECDSA, use the GenerateKey function of the crypto/ecdsa package.
 func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err error)
 
@@ -47,7 +52,7 @@ func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err e
 // SEC 1, Version 2.0, Section 2.3.3. If the point is not on the curve (or is
 // the conventional point at infinity), the behavior is undefined.
 //
-// Note: for ECDH, use the crypto/ecdh package. This function returns an
+// Deprecated: for ECDH, use the crypto/ecdh package. This function returns an
 // encoding equivalent to that of PublicKey.Bytes in crypto/ecdh.
 func Marshal(curve Curve, x, y *big.Int) []byte
 
@@ -68,7 +73,7 @@ var _ = []unmarshaler{p224, p256, p384, p521}
 // an error if the point is not in uncompressed form, is not on the curve, or is
 // the point at infinity. On error, x = nil.
 //
-// Note: for ECDH, use the crypto/ecdh package. This function accepts an
+// Deprecated: for ECDH, use the crypto/ecdh package. This function accepts an
 // encoding equivalent to that of the NewPublicKey methods in crypto/ecdh.
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 

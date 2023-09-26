@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build unix || (js && wasm) || windows
+//go:build unix || (js && wasm) || wasip1 || windows
 
 package os
 
@@ -52,6 +52,7 @@ func (f *File) Sync() error
 
 // Chtimes changes the access and modification times of the named
 // file, similar to the Unix utime() or utimes() functions.
+// A zero time.Time value will leave the corresponding file time unchanged.
 //
 // The underlying filesystem may truncate or round the values to a
 // less precise time unit.

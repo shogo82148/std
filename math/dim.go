@@ -21,6 +21,9 @@ func Dim(x, y float64) float64
 //	Max(x, NaN) = Max(NaN, x) = NaN
 //	Max(+0, ±0) = Max(±0, +0) = +0
 //	Max(-0, -0) = -0
+//
+// Note that this differs from the built-in function max when called
+// with NaN and +Inf.
 func Max(x, y float64) float64
 
 // Min returns the smaller of x or y.
@@ -30,4 +33,7 @@ func Max(x, y float64) float64
 //	Min(x, -Inf) = Min(-Inf, x) = -Inf
 //	Min(x, NaN) = Min(NaN, x) = NaN
 //	Min(-0, ±0) = Min(±0, -0) = -0
+//
+// Note that this differs from the built-in function min when called
+// with NaN and -Inf.
 func Min(x, y float64) float64

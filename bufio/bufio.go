@@ -44,6 +44,7 @@ func (b *Reader) Size() int
 // the buffered reader to read from r.
 // Calling Reset on the zero value of Reader initializes the internal buffer
 // to the default size.
+// Calling b.Reset(b) (that is, resetting a Reader to itself) does nothing.
 func (b *Reader) Reset(r io.Reader)
 
 // Peek returns the next n bytes without advancing the reader. The bytes stop
@@ -180,6 +181,7 @@ func (b *Writer) Size() int
 // resets b to write its output to w.
 // Calling Reset on the zero value of Writer initializes the internal buffer
 // to the default size.
+// Calling w.Reset(w) (that is, resetting a Writer to itself) does nothing.
 func (b *Writer) Reset(w io.Writer)
 
 // Flush writes any buffered data to the underlying io.Writer.

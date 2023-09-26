@@ -94,6 +94,8 @@ type Config struct {
 
 	go115UsesCgo bool
 
+	_Trace bool
+
 	Error func(err error)
 
 	Importer Importer
@@ -102,7 +104,7 @@ type Config struct {
 
 	DisableUnusedImportCheck bool
 
-	oldComparableSemantics bool
+	_ErrorURL string
 }
 
 // Info holds result type information for a type-checked package.

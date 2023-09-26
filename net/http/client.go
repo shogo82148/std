@@ -66,6 +66,9 @@ type RoundTripper interface {
 	RoundTrip(*Request) (*Response, error)
 }
 
+// ErrSchemeMismatch is returned when a server returns an HTTP response to an HTTPS client.
+var ErrSchemeMismatch = errors.New("http: server gave HTTP response to HTTPS client")
+
 // Get issues a GET to the specified URL. If the response is one of
 // the following redirect codes, Get follows the redirect, up to a
 // maximum of 10 redirects:

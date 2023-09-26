@@ -45,8 +45,6 @@ func (f *File) Close() error
 // NewFile creates a new File for accessing a PE binary in an underlying reader.
 func NewFile(r io.ReaderAt) (*File, error)
 
-// zeroReaderAt is ReaderAt that reads 0s.
-
 // Section returns the first section with the given name, or nil if no such
 // section exists.
 func (f *File) Section(name string) *Section

@@ -50,11 +50,11 @@ const (
 // the Writer's Write method. A Logger can be used simultaneously from
 // multiple goroutines; it guarantees to serialize access to the Writer.
 type Logger struct {
-	mu        sync.Mutex
-	prefix    string
-	flag      int
-	out       io.Writer
-	buf       []byte
+	outMu sync.Mutex
+	out   io.Writer
+
+	prefix    atomic.Pointer[string]
+	flag      atomic.Int32
 	isDiscard atomic.Bool
 }
 
@@ -79,13 +79,13 @@ func Default() *Logger
 // paths it will be 2.
 func (l *Logger) Output(calldepth int, s string) error
 
-// Printf calls l.Output to print to the logger.
-// Arguments are handled in the manner of fmt.Printf.
-func (l *Logger) Printf(format string, v ...any)
-
 // Print calls l.Output to print to the logger.
 // Arguments are handled in the manner of fmt.Print.
 func (l *Logger) Print(v ...any)
+
+// Printf calls l.Output to print to the logger.
+// Arguments are handled in the manner of fmt.Printf.
+func (l *Logger) Printf(format string, v ...any)
 
 // Println calls l.Output to print to the logger.
 // Arguments are handled in the manner of fmt.Println.

@@ -9,7 +9,10 @@ package runtime
 const MaxArgs = maxArgs
 
 var (
-	TestingWER              = &testingWER
 	OsYield                 = osyield
 	TimeBeginPeriodRetValue = &timeBeginPeriodRetValue
 )
+
+type ContextStub struct {
+	context
+}

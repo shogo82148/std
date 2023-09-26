@@ -30,7 +30,7 @@ import (
 // Using == on two Values does not compare the underlying values
 // they represent.
 type Value struct {
-	typ *rtype
+	typ_ *abi.Type
 
 	ptr unsafe.Pointer
 
@@ -480,7 +480,7 @@ func (v Value) UnsafePointer() unsafe.Pointer
 // it references will not be garbage collected, so programs must keep
 // a separate, correctly typed pointer to the underlying data.
 //
-// In new code, use unsafe.String or unsafe.StringData instead.
+// Deprecated: Use unsafe.String or unsafe.StringData instead.
 type StringHeader struct {
 	Data uintptr
 	Len  int
@@ -493,7 +493,7 @@ type StringHeader struct {
 // it references will not be garbage collected, so programs must keep
 // a separate, correctly typed pointer to the underlying data.
 //
-// In new code, use unsafe.Slice or unsafe.SliceData instead.
+// Deprecated: Use unsafe.Slice or unsafe.SliceData instead.
 type SliceHeader struct {
 	Data uintptr
 	Len  int
@@ -507,6 +507,11 @@ type SliceHeader struct {
 // It panics if v's Kind is not a Slice or if n is negative or too large to
 // allocate the memory.
 func (v Value) Grow(n int)
+
+// Clear clears the contents of a map or zeros the contents of a slice.
+//
+// It panics if v's Kind is not Map or Slice.
+func (v Value) Clear()
 
 // Append appends the values x to a slice s and returns the resulting slice.
 // As in Go, each x's value must be assignable to the slice's element type.
@@ -588,6 +593,13 @@ func MakeMapWithSize(typ Type, n int) Value
 // If v is a nil pointer, Indirect returns a zero Value.
 // If v is not a pointer, Indirect returns v.
 func Indirect(v Value) Value
+
+// Before Go 1.21, ValueOf always escapes and a Value's content
+// is always heap allocated.
+// Set go121noForceValueEscape to true to avoid the forced escape,
+// allowing Value content to be on the stack.
+// Set go121noForceValueEscape to false for the legacy behavior
+// (for debugging).
 
 // ValueOf returns a new Value initialized to the concrete value
 // stored in the interface i. ValueOf(nil) returns the zero Value.

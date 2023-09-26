@@ -10,20 +10,17 @@ package main
 
 // The known operating systems.
 
+// clangos lists the operating systems where we prefer clang to gcc.
+
 // The old tools that no longer live in $GOBIN or $GOROOT/bin.
 
 // Unreleased directories (relative to $GOROOT) that should
 // not be in release branches.
 
-// deptab lists changes to the default dependencies for a given prefix.
-// deps ending in /* read the whole directory; deps beginning with -
-// exclude files with that prefix.
-// Note that this table applies only to the build of cmd/go,
-// after the main compiler bootstrap.
-
 // depsuffix records the allowed suffixes for source files.
 
 // gentab records how to generate some trivial files.
+// Files listed here should also be listed in ../distpack/pack.go's srcArch.Remove list.
 
 // installed maps from a dir name (as given to install) to a chan
 // closed when the dir's package is installed.
@@ -31,8 +28,6 @@ package main
 // unixOS is the set of GOOS values matched by the "unix" build tag.
 // This is the same list as in go/build/syslist.go and
 // cmd/go/internal/imports/build.go.
-
-// cleanlist is a list of packages with generated files and commands.
 
 // Cannot use go/build directly because cmd/dist for a new release
 // builds against an old release's go/build, which may be out of sync.
@@ -42,10 +37,12 @@ package main
 // single point of truth for supported platforms. This list is used
 // by 'go tool dist list'.
 
-// List of platforms which are supported but not complete yet. These get
-// filtered out of cgoEnabled for 'dist list'. See golang.org/issue/28944
+// List of platforms that are marked as broken ports.
+// These require -force flag to build, and also
+// get filtered out of cgoEnabled for 'dist list'.
+// See go.dev/issue/56679.
 
-// List of platforms which are first class ports. See golang.org/issue/38874.
+// List of platforms which are first class ports. See go.dev/issue/38874.
 
 // IsRuntimePackagePath examines 'pkgpath' and returns TRUE if it
 // belongs to the collection of "runtime-related" packages, including

@@ -107,8 +107,11 @@ type CRTValue struct {
 // It returns nil if the key is valid, or else an error describing a problem.
 func (priv *PrivateKey) Validate() error
 
-// GenerateKey generates an RSA keypair of the given bit size using the
-// random source random (for example, crypto/rand.Reader).
+// GenerateKey generates a random RSA private key of the given bit size.
+//
+// Most applications should use [crypto/rand.Reader] as rand. Note that the
+// returned key does not depend deterministically on the bytes read from rand,
+// and may change between calls and/or between versions.
 func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 
 // GenerateMultiPrimeKey generates a multi-prime RSA keypair of the given bit
@@ -125,7 +128,7 @@ func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 // This package does not implement CRT optimizations for multi-prime RSA, so the
 // keys with more than two primes will have worse performance.
 //
-// Note: The use of this function with a number of primes different from
+// Deprecated: The use of this function with a number of primes different from
 // two is not recommended for the above security, compatibility, and performance
 // reasons. Use GenerateKey instead.
 //
@@ -145,6 +148,7 @@ var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA key siz
 //
 // The random parameter is used as a source of entropy to ensure that
 // encrypting the same message twice doesn't result in the same ciphertext.
+// Most applications should use [crypto/rand.Reader] as random.
 //
 // The label parameter may contain arbitrary data that will not be encrypted,
 // but which gives important context to the message. For example, if a given
@@ -174,7 +178,7 @@ func (priv *PrivateKey) Precompute()
 // Encryption and decryption of a given message must use the same hash function
 // and sha256.New() is a reasonable choice.
 //
-// The random parameter is legacy and ignored, and it can be as nil.
+// The random parameter is legacy and ignored, and it can be nil.
 //
 // The label parameter must match the value given when encrypting. See
 // EncryptOAEP for details.

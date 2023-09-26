@@ -15,8 +15,6 @@ package runtime
 
 // secureMode holds the value of AT_SECURE passed in the auxiliary vector.
 
-// go118UseTimerCreateProfiler enables the per-thread CPU profiler.
-
 // perThreadSyscallArgs contains the system call number, arguments, and
 // expected return values for a system call to be executed on all threads.
 

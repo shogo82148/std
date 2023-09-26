@@ -180,7 +180,7 @@ func (u *URL) EscapedFragment() string
 func (u *URL) String() string
 
 // Redacted is like String but replaces any password with "xxxxx".
-// Only the password in u.URL is redacted.
+// Only the password in u.User is redacted.
 func (u *URL) Redacted() string
 
 // Values maps a string key to a list of values.

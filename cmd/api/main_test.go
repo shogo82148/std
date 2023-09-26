@@ -12,8 +12,7 @@ import (
 	"go/token"
 )
 
-// contexts are the default contexts which are scanned, unless
-// overridden by the -contexts flag.
+// contexts are the default contexts which are scanned.
 
 // aliasReplacer applies type aliases to earlier API files,
 // to avoid misleading negative results.

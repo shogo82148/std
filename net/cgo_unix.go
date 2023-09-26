@@ -11,6 +11,9 @@
 
 package net
 
+// cgoAvailable set to true to indicate that the cgo resolver
+// is available on this system.
+
 // An addrinfoErrno represents a getaddrinfo, getnameinfo-specific
 // error number. It's a signed number and a zero value is a non-error
 // by convention.

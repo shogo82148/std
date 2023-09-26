@@ -97,6 +97,8 @@ package runtime
 // Pseudo-Func that is returned for PCs that occur in inlined code.
 // A *Func can be either a *_func or a *funcinl, and they are distinguished
 // by the first uintptr.
+//
+// TODO(austin): Can we merge this with inlinedCall?
 
 // layout of Itab known to compilers
 // allocated in non-garbage-collected memory
@@ -125,8 +127,6 @@ package runtime
 // adjustment takes care of them.
 
 // ancestorInfo records details of where a goroutine was started.
-
-// The maximum number of frames we print for a traceback
 
 // A waitReason explains why a goroutine has been stopped.
 // See gopark. Do not re-use waitReasons, add new ones.

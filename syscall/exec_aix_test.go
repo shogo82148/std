@@ -6,4 +6,4 @@
 
 package syscall
 
-var Ioctl = ioctl
+var IoctlPtr = ioctlPtr

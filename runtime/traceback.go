@@ -8,6 +8,28 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
+// unwindFlags control the behavior of various unwinders.
+
+// An unwinder iterates the physical stack frames of a Go sack.
+//
+// Typical use of an unwinder looks like:
+//
+//	var u unwinder
+//	for u.init(gp, 0); u.valid(); u.next() {
+//		// ... use frame info in u ...
+//	}
+//
+// Implementation note: This is carefully structured to be pointer-free because
+// tracebacks happen in places that disallow write barriers (e.g., signals).
+// Even if this is stack-allocated, its pointer-receiver methods don't know that
+// their receiver is on the stack, so they still emit write barriers. Here we
+// address that by carefully avoiding any pointers in this type. Another
+// approach would be to split this into a mutable part that's passed by pointer
+// but contains no pointers itself and an immutable part that's passed and
+// returned by value and can contain pointers. We could potentially hide that
+// we're doing that in trivial methods that are inlined into the caller that has
+// the stack allocation, but that's fragile.
+
 // SetCgoTraceback records three C functions to use to gather
 // traceback information from C code and to convert that traceback
 // information into symbolic information. These are used when printing

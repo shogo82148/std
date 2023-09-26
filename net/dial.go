@@ -10,8 +10,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// defaultTCPKeepAlive is a default constant value for TCPKeepAlive times
-// See golang.org/issue/31510
+// mptcpStatus is a tristate for Multipath TCP, see go.dev/issue/56539
 
 // A Dialer contains options for connecting to an address.
 //
@@ -40,7 +39,23 @@ type Dialer struct {
 	Control func(network, address string, c syscall.RawConn) error
 
 	ControlContext func(ctx context.Context, network, address string, c syscall.RawConn) error
+
+	mptcpStatus mptcpStatus
 }
+
+// MultipathTCP reports whether MPTCP will be used.
+//
+// This method doesn't check if MPTCP is supported by the operating
+// system or not.
+func (d *Dialer) MultipathTCP() bool
+
+// SetMultipathTCP directs the Dial methods to use, or not use, MPTCP,
+// if supported by the operating system. This method overrides the
+// system default and the GODEBUG=multipathtcp=... setting if any.
+//
+// If MPTCP is not available on the host or not supported by the server,
+// the Dial methods will fall back to TCP.
+func (d *Dialer) SetMultipathTCP(use bool)
 
 // Dial connects to the address on the named network.
 //
@@ -140,7 +155,23 @@ type ListenConfig struct {
 	Control func(network, address string, c syscall.RawConn) error
 
 	KeepAlive time.Duration
+
+	mptcpStatus mptcpStatus
 }
+
+// MultipathTCP reports whether MPTCP will be used.
+//
+// This method doesn't check if MPTCP is supported by the operating
+// system or not.
+func (lc *ListenConfig) MultipathTCP() bool
+
+// SetMultipathTCP directs the Listen method to use, or not use, MPTCP,
+// if supported by the operating system. This method overrides the
+// system default and the GODEBUG=multipathtcp=... setting if any.
+//
+// If MPTCP is not available on the host or not supported by the client,
+// the Listen method will fall back to TCP.
+func (lc *ListenConfig) SetMultipathTCP(use bool)
 
 // Listen announces on the local network address.
 //

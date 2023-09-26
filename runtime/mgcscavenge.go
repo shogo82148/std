@@ -9,12 +9,14 @@
 // fragmentation and reduce the RSS of Go applications.
 //
 // Scavenging in Go happens on two fronts: there's the background
-// (asynchronous) scavenger and the heap-growth (synchronous) scavenger.
+// (asynchronous) scavenger and the allocation-time (synchronous) scavenger.
 //
 // The former happens on a goroutine much like the background sweeper which is
 // soft-capped at using scavengePercent of the mutator's time, based on
-// order-of-magnitude estimates of the costs of scavenging. The background
-// scavenger's primary goal is to bring the estimated heap RSS of the
+// order-of-magnitude estimates of the costs of scavenging. The latter happens
+// when allocating pages from the heap.
+//
+// The scavenger's primary goal is to bring the estimated heap RSS of the
 // application down to a goal.
 //
 // Before we consider what this looks like, we need to split the world into two
@@ -61,11 +63,30 @@
 //
 // The goals are updated after each GC.
 //
-// The synchronous heap-growth scavenging happens whenever the heap grows in
-// size, for some definition of heap-growth. The intuition behind this is that
-// the application had to grow the heap because existing fragments were
-// not sufficiently large to satisfy a page-level memory allocation, so we
-// scavenge those fragments eagerly to offset the growth in RSS that results.
+// Synchronous scavenging happens for one of two reasons: if an allocation would
+// exceed the memory limit or whenever the heap grows in size, for some
+// definition of heap-growth. The intuition behind this second reason is that the
+// application had to grow the heap because existing fragments were not sufficiently
+// large to satisfy a page-level memory allocation, so we scavenge those fragments
+// eagerly to offset the growth in RSS that results.
+//
+// Lastly, not all pages are available for scavenging at all times and in all cases.
+// The background scavenger and heap-growth scavenger only release memory in chunks
+// that have not been densely-allocated for at least 1 full GC cycle. The reason
+// behind this is likelihood of reuse: the Go heap is allocated in a first-fit order
+// and by the end of the GC mark phase, the heap tends to be densely packed. Releasing
+// memory in these densely packed chunks while they're being packed is counter-productive,
+// and worse, it breaks up huge pages on systems that support them. The scavenger (invoked
+// during memory allocation) further ensures that chunks it identifies as "dense" are
+// immediately eligible for being backed by huge pages. Note that for the most part these
+// density heuristics are best-effort heuristics. It's totally possible (but unlikely)
+// that a chunk that just became dense is scavenged in the case of a race between memory
+// allocation and scavenging.
+//
+// When synchronously scavenging for the memory limit or for debug.FreeOSMemory, these
+// "dense" packing heuristics are ignored (in other words, scavenging is "forced") because
+// in these scenarios returning memory to the OS is more important than keeping CPU
+// overheads low.
 
 package runtime
 
@@ -73,3 +94,13 @@ package runtime
 
 // scavengeIndex is a structure for efficiently managing which pageAlloc chunks have
 // memory available to scavenge.
+
+// atomicScavChunkData is an atomic wrapper around a scavChunkData
+// that stores it in its packed form.
+
+// scavChunkData tracks information about a palloc chunk for
+// scavenging. It packs well into 64 bits.
+//
+// The zero value always represents a valid newly-grown chunk.
+
+// scavChunkFlags is a set of bit-flags for the scavenger for each palloc chunk.

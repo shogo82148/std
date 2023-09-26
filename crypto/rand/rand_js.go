@@ -6,6 +6,9 @@
 
 package rand
 
+// The maximum buffer size for crypto.getRandomValues is 65536 bytes.
+// https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues#exceptions
+
 // reader implements a pseudorandom generator
 // using JavaScript crypto.getRandomValues method.
 // See https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues.

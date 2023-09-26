@@ -16,6 +16,20 @@ package cgo
 //go:linkname x_cgo_sys_thread_create x_cgo_sys_thread_create
 //go:linkname _cgo_sys_thread_create _cgo_sys_thread_create
 
+//go:cgo_import_static x_cgo_pthread_key_created
+//go:linkname x_cgo_pthread_key_created x_cgo_pthread_key_created
+//go:linkname _cgo_pthread_key_created _cgo_pthread_key_created
+
+//go:cgo_import_static x_crosscall2_ptr
+//go:linkname x_crosscall2_ptr x_crosscall2_ptr
+//go:linkname _crosscall2_ptr _crosscall2_ptr
+
+//go:linkname _set_crosscall2 runtime.set_crosscall2
+
+//go:cgo_import_static x_cgo_bindm
+//go:linkname x_cgo_bindm x_cgo_bindm
+//go:linkname _cgo_bindm _cgo_bindm
+
 //go:cgo_import_static x_cgo_notify_runtime_init_done
 //go:linkname x_cgo_notify_runtime_init_done x_cgo_notify_runtime_init_done
 //go:linkname _cgo_notify_runtime_init_done _cgo_notify_runtime_init_done
@@ -26,3 +40,7 @@ package cgo
 
 //go:cgo_import_static _cgo_yield
 //go:linkname _cgo_yield _cgo_yield
+
+//go:cgo_import_static x_cgo_getstackbound
+//go:linkname x_cgo_getstackbound x_cgo_getstackbound
+//go:linkname _cgo_getstackbound _cgo_getstackbound

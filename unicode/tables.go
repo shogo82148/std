@@ -3,7 +3,7 @@
 package unicode
 
 // Version is the Unicode edition from which the tables are derived.
-const Version = "13.0.0"
+const Version = "15.0.0"
 
 // Categories is the set of Unicode category tables.
 var Categories = map[string]*RangeTable{
@@ -126,6 +126,7 @@ var Scripts = map[string]*RangeTable{
 	"Coptic":                 Coptic,
 	"Cuneiform":              Cuneiform,
 	"Cypriot":                Cypriot,
+	"Cypro_Minoan":           Cypro_Minoan,
 	"Cyrillic":               Cyrillic,
 	"Deseret":                Deseret,
 	"Devanagari":             Devanagari,
@@ -159,6 +160,7 @@ var Scripts = map[string]*RangeTable{
 	"Kaithi":                 Kaithi,
 	"Kannada":                Kannada,
 	"Katakana":               Katakana,
+	"Kawi":                   Kawi,
 	"Kayah_Li":               Kayah_Li,
 	"Kharoshthi":             Kharoshthi,
 	"Khitan_Small_Script":    Khitan_Small_Script,
@@ -193,6 +195,7 @@ var Scripts = map[string]*RangeTable{
 	"Multani":                Multani,
 	"Myanmar":                Myanmar,
 	"Nabataean":              Nabataean,
+	"Nag_Mundari":            Nag_Mundari,
 	"Nandinagari":            Nandinagari,
 	"New_Tai_Lue":            New_Tai_Lue,
 	"Newa":                   Newa,
@@ -209,6 +212,7 @@ var Scripts = map[string]*RangeTable{
 	"Old_Sogdian":            Old_Sogdian,
 	"Old_South_Arabian":      Old_South_Arabian,
 	"Old_Turkic":             Old_Turkic,
+	"Old_Uyghur":             Old_Uyghur,
 	"Oriya":                  Oriya,
 	"Osage":                  Osage,
 	"Osmanya":                Osmanya,
@@ -240,6 +244,7 @@ var Scripts = map[string]*RangeTable{
 	"Tai_Viet":               Tai_Viet,
 	"Takri":                  Takri,
 	"Tamil":                  Tamil,
+	"Tangsa":                 Tangsa,
 	"Tangut":                 Tangut,
 	"Telugu":                 Telugu,
 	"Thaana":                 Thaana,
@@ -247,8 +252,10 @@ var Scripts = map[string]*RangeTable{
 	"Tibetan":                Tibetan,
 	"Tifinagh":               Tifinagh,
 	"Tirhuta":                Tirhuta,
+	"Toto":                   Toto,
 	"Ugaritic":               Ugaritic,
 	"Vai":                    Vai,
+	"Vithkuqi":               Vithkuqi,
 	"Wancho":                 Wancho,
 	"Warang_Citi":            Warang_Citi,
 	"Yezidi":                 Yezidi,
@@ -286,6 +293,7 @@ var (
 	Coptic                 = _Coptic
 	Cuneiform              = _Cuneiform
 	Cypriot                = _Cypriot
+	Cypro_Minoan           = _Cypro_Minoan
 	Cyrillic               = _Cyrillic
 	Deseret                = _Deseret
 	Devanagari             = _Devanagari
@@ -319,6 +327,7 @@ var (
 	Kaithi                 = _Kaithi
 	Kannada                = _Kannada
 	Katakana               = _Katakana
+	Kawi                   = _Kawi
 	Kayah_Li               = _Kayah_Li
 	Kharoshthi             = _Kharoshthi
 	Khitan_Small_Script    = _Khitan_Small_Script
@@ -353,6 +362,7 @@ var (
 	Multani                = _Multani
 	Myanmar                = _Myanmar
 	Nabataean              = _Nabataean
+	Nag_Mundari            = _Nag_Mundari
 	Nandinagari            = _Nandinagari
 	New_Tai_Lue            = _New_Tai_Lue
 	Newa                   = _Newa
@@ -369,6 +379,7 @@ var (
 	Old_Sogdian            = _Old_Sogdian
 	Old_South_Arabian      = _Old_South_Arabian
 	Old_Turkic             = _Old_Turkic
+	Old_Uyghur             = _Old_Uyghur
 	Oriya                  = _Oriya
 	Osage                  = _Osage
 	Osmanya                = _Osmanya
@@ -400,6 +411,7 @@ var (
 	Tai_Viet               = _Tai_Viet
 	Takri                  = _Takri
 	Tamil                  = _Tamil
+	Tangsa                 = _Tangsa
 	Tangut                 = _Tangut
 	Telugu                 = _Telugu
 	Thaana                 = _Thaana
@@ -407,8 +419,10 @@ var (
 	Tibetan                = _Tibetan
 	Tifinagh               = _Tifinagh
 	Tirhuta                = _Tirhuta
+	Toto                   = _Toto
 	Ugaritic               = _Ugaritic
 	Vai                    = _Vai
+	Vithkuqi               = _Vithkuqi
 	Wancho                 = _Wancho
 	Warang_Citi            = _Warang_Citi
 	Yezidi                 = _Yezidi

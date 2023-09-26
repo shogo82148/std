@@ -9,7 +9,7 @@ import (
 	_ "crypto/sha512"
 )
 
-// pemEd25519Key is the example from RFC 8410, Secrion 4.
+// pemEd25519Key is the example from RFC 8410, Section 4.
 
 // pemX25519Key was generated from pemX25519Key with "openssl pkey -pubout".
 

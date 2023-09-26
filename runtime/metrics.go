@@ -28,10 +28,13 @@ package runtime
 // cpuStatsAggregate represents CPU stats obtained from the runtime
 // acquired together to avoid skew and inconsistencies.
 
+// cpuStatsAggregate represents various GC stats obtained from the runtime
+// acquired together to avoid skew and inconsistencies.
+
 // statAggregate is the main driver of the metrics implementation.
 //
 // It contains multiple aggregates of runtime statistics, as well
-// as a set of these aggregates that it has populated. The aggergates
+// as a set of these aggregates that it has populated. The aggregates
 // are populated lazily by its ensure method.
 
 // metricKind is a runtime copy of runtime/metrics.ValueKind and

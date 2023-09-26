@@ -6,6 +6,8 @@ package runtime
 
 // iscgo is set to true by the runtime/cgo package
 
+// set_crosscall2 is set by the runtime/cgo package
+
 // cgoHasExtraM is set on startup when an extra M is created for cgo.
 // The extra M must be created before any C/C++ code calls cgocallback.
 

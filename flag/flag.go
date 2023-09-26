@@ -124,6 +124,8 @@ var ErrHelp = errors.New("flag: help requested")
 
 // -- func Value
 
+// -- boolFunc Value
+
 // Value is the interface to the dynamic value stored in a flag.
 // (The default value is represented as a string.)
 //
@@ -173,6 +175,7 @@ type FlagSet struct {
 	args          []string
 	errorHandling ErrorHandling
 	output        io.Writer
+	undef         map[string]string
 }
 
 // A Flag represents the state of a flag.
@@ -463,6 +466,16 @@ func (f *FlagSet) Func(name, usage string, fn func(string) error)
 // Each time the flag is seen, fn is called with the value of the flag.
 // If fn returns a non-nil error, it will be treated as a flag value parsing error.
 func Func(name, usage string, fn func(string) error)
+
+// BoolFunc defines a flag with the specified name and usage string without requiring values.
+// Each time the flag is seen, fn is called with the value of the flag.
+// If fn returns a non-nil error, it will be treated as a flag value parsing error.
+func (f *FlagSet) BoolFunc(name, usage string, fn func(string) error)
+
+// BoolFunc defines a flag with the specified name and usage string without requiring values.
+// Each time the flag is seen, fn is called with the value of the flag.
+// If fn returns a non-nil error, it will be treated as a flag value parsing error.
+func BoolFunc(name, usage string, fn func(string) error)
 
 // Var defines a flag with the specified name and usage string. The type and
 // value of the flag are represented by the first argument, of type Value, which

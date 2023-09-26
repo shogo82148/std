@@ -65,6 +65,7 @@ func Remove(name string) error
 
 // Chtimes changes the access and modification times of the named
 // file, similar to the Unix utime() or utimes() functions.
+// A zero time.Time value will leave the corresponding file time unchanged.
 //
 // The underlying filesystem may truncate or round the values to a
 // less precise time unit.

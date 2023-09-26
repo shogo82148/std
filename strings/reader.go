@@ -56,5 +56,5 @@ func (r *Reader) WriteTo(w io.Writer) (n int64, err error)
 func (r *Reader) Reset(s string)
 
 // NewReader returns a new Reader reading from s.
-// It is similar to bytes.NewBufferString but more efficient and read-only.
+// It is similar to bytes.NewBufferString but more efficient and non-writable.
 func NewReader(s string) *Reader

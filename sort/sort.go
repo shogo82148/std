@@ -20,6 +20,9 @@ type Interface interface {
 // Sort sorts data in ascending order as determined by the Less method.
 // It makes one call to data.Len to determine n and O(n*log(n)) calls to
 // data.Less and data.Swap. The sort is not guaranteed to be stable.
+//
+// Note: in many situations, the newer slices.SortFunc function is more
+// ergonomic and runs faster.
 func Sort(data Interface)
 
 // xorshift paper: https://www.jstatsoft.org/article/view/v008i14/xorshift.pdf
@@ -32,6 +35,9 @@ func Sort(data Interface)
 func Reverse(data Interface) Interface
 
 // IsSorted reports whether data is sorted.
+//
+// Note: in many situations, the newer slices.IsSortedFunc function is more
+// ergonomic and runs faster.
 func IsSorted(data Interface) bool
 
 // IntSlice attaches the methods of Interface to []int, sorting in increasing order.
@@ -73,23 +79,35 @@ func (x StringSlice) Swap(i, j int)
 func (x StringSlice) Sort()
 
 // Ints sorts a slice of ints in increasing order.
+//
+// Note: consider using the newer slices.Sort function, which runs faster.
 func Ints(x []int)
 
 // Float64s sorts a slice of float64s in increasing order.
 // Not-a-number (NaN) values are ordered before other values.
+//
+// Note: consider using the newer slices.Sort function, which runs faster.
 func Float64s(x []float64)
 
 // Strings sorts a slice of strings in increasing order.
+//
+// Note: consider using the newer slices.Sort function, which runs faster.
 func Strings(x []string)
 
 // IntsAreSorted reports whether the slice x is sorted in increasing order.
+//
+// Note: consider using the newer slices.IsSorted function, which runs faster.
 func IntsAreSorted(x []int) bool
 
 // Float64sAreSorted reports whether the slice x is sorted in increasing order,
 // with not-a-number (NaN) values before any other values.
+//
+// Note: consider using the newer slices.IsSorted function, which runs faster.
 func Float64sAreSorted(x []float64) bool
 
 // StringsAreSorted reports whether the slice x is sorted in increasing order.
+//
+// Note: consider using the newer slices.IsSorted function, which runs faster.
 func StringsAreSorted(x []string) bool
 
 // Stable sorts data in ascending order as determined by the Less method,
@@ -97,4 +115,7 @@ func StringsAreSorted(x []string) bool
 //
 // It makes one call to data.Len to determine n, O(n*log(n)) calls to
 // data.Less and O(n*log(n)*log(n)) calls to data.Swap.
+//
+// Note: in many situations, the newer slices.SortStableFunc function is more
+// ergonomic and runs faster.
 func Stable(data Interface)

@@ -8,11 +8,6 @@ import (
 	_ "github.com/shogo82148/std/unsafe"
 )
 
-// go119MemoryLimitSupport is a feature flag for a number of changes
-// related to the memory limit feature (#48409). Disabling this flag
-// disables those features, as well as the memory limit mechanism,
-// which becomes a no-op.
-
 // gcController implements the GC pacing controller that determines
 // when to trigger concurrent garbage collection and how much marking
 // work to do in mutator assists and background marking.

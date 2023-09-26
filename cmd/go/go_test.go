@@ -8,6 +8,11 @@ import (
 	cmdgo "cmd/go"
 )
 
+// netTestSem is a semaphore limiting the number of tests that may use the
+// external network in parallel. If non-nil, it contains one buffer slot per
+// test (send to acquire), with a low enough limit that the overall number of
+// connections (summed across subprocesses) stays at or below base.NetLimit.
+
 // testGOROOT is the GOROOT to use when running testgo, a cmd/go binary
 // build from this process's current GOROOT, but run from a different
 // (temp) directory.

@@ -71,13 +71,13 @@ const DefaultMaxIdleConnsPerHost = 2
 // ClientTrace.Got1xxResponse.
 //
 // Transport only retries a request upon encountering a network error
-// if the request is idempotent and either has no body or has its
-// Request.GetBody defined. HTTP requests are considered idempotent if
-// they have HTTP methods GET, HEAD, OPTIONS, or TRACE; or if their
-// Header map contains an "Idempotency-Key" or "X-Idempotency-Key"
-// entry. If the idempotency key value is a zero-length slice, the
-// request is treated as idempotent but the header is not sent on the
-// wire.
+// if the connection has been already been used successfully and if the
+// request is idempotent and either has no body or has its Request.GetBody
+// defined. HTTP requests are considered idempotent if they have HTTP methods
+// GET, HEAD, OPTIONS, or TRACE; or if their Header map contains an
+// "Idempotency-Key" or "X-Idempotency-Key" entry. If the idempotency key
+// value is a zero-length slice, the request is treated as idempotent but the
+// header is not sent on the wire.
 type Transport struct {
 	idleMu       sync.Mutex
 	closeIdle    bool
@@ -284,6 +284,9 @@ var _ io.ReaderFrom = (*persistConnWriter)(nil)
 // maxWriteWaitBeforeConnReuse is how long the a Transport RoundTrip
 // will wait to see the Request's Body.Write result after getting a
 // response from the server. See comments in (*persistConn).wroteRequest.
+//
+// In tests, we set this to a large value to avoid flakiness from inconsistent
+// recycling of connections.
 
 // responseAndError is how the goroutine reading from an HTTP/1 server
 // communicates with the goroutine doing the RoundTrip.

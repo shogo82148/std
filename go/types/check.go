@@ -12,6 +12,8 @@ import (
 	. "internal/types/errors"
 )
 
+// nopos indicates an unknown position
+
 // debugging/development support
 
 // exprInfo stores information about an untyped expression.
@@ -51,6 +53,7 @@ type Checker struct {
 	seenPkgMap map[*Package]bool
 
 	files         []*ast.File
+	posVers       map[*token.File]version
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
 	recvTParamMap map[*ast.Ident]*TypeParam
@@ -73,6 +76,8 @@ type Checker struct {
 // NewChecker returns a new Checker instance for a given package.
 // Package files may be added incrementally via checker.Files.
 func NewChecker(conf *Config, fset *token.FileSet, pkg *Package, info *Info) *Checker
+
+// A posVers records that the file starting at pos declares the Go version vers.
 
 // A bailout panic is used for early termination.
 

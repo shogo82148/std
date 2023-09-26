@@ -33,6 +33,10 @@ func (opts *PSSOptions) HashFunc() crypto.Hash
 // digest must be the result of hashing the input message using the given hash
 // function. The opts argument may be nil, in which case sensible defaults are
 // used. If opts.Hash is set, it overrides hash.
+//
+// The signature is randomized depending on the message, key, and salt size,
+// using bytes from rand. Most applications should use [crypto/rand.Reader] as
+// rand.
 func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, digest []byte, opts *PSSOptions) ([]byte, error)
 
 // VerifyPSS verifies a PSS signature.

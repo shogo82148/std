@@ -489,8 +489,24 @@ func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error)
 // CheckSignature reports whether the signature on c is valid.
 func (c *CertificateRequest) CheckSignature() error
 
-// RevocationList contains the fields used to create an X.509 v2 Certificate
-// Revocation list with CreateRevocationList.
+// RevocationListEntry represents an entry in the revokedCertificates
+// sequence of a CRL.
+type RevocationListEntry struct {
+	Raw []byte
+
+	SerialNumber *big.Int
+
+	RevocationTime time.Time
+
+	ReasonCode int
+
+	Extensions []pkix.Extension
+
+	ExtraExtensions []pkix.Extension
+}
+
+// RevocationList represents a Certificate Revocation List (CRL) as specified
+// by RFC 5280.
 type RevocationList struct {
 	Raw []byte
 
@@ -505,6 +521,8 @@ type RevocationList struct {
 	Signature []byte
 
 	SignatureAlgorithm SignatureAlgorithm
+
+	RevokedCertificateEntries []RevocationListEntry
 
 	RevokedCertificates []pkix.RevokedCertificate
 

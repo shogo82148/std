@@ -8,3 +8,5 @@
 //go:generate go test cmd/go -v -run=TestScript/README --fixreadme
 
 package main_test
+
+// testingTBKey is the Context key for a testing.TB.

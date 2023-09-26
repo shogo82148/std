@@ -49,7 +49,7 @@ func (priv PrivateKey) Equal(x crypto.PrivateKey) bool
 // in this package.
 func (priv PrivateKey) Seed() []byte
 
-// Sign signs the given message with priv. rand is ignored.
+// Sign signs the given message with priv. rand is ignored and can be nil.
 //
 // If opts.HashFunc() is [crypto.SHA512], the pre-hashed variant Ed25519ph is used
 // and message is expected to be a SHA-512 hash, otherwise opts.HashFunc() must
@@ -73,6 +73,9 @@ func (o *Options) HashFunc() crypto.Hash
 
 // GenerateKey generates a public/private key pair using entropy from rand.
 // If rand is nil, [crypto/rand.Reader] will be used.
+//
+// The output of this function is deterministic, and equivalent to reading
+// [SeedSize] bytes from rand, and passing them to [NewKeyFromSeed].
 func GenerateKey(rand io.Reader) (PublicKey, PrivateKey, error)
 
 // NewKeyFromSeed calculates a private key from a seed. It will panic if

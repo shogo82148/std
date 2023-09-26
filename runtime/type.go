@@ -6,19 +6,7 @@
 
 package runtime
 
-// tflag is documented in reflect/type.go.
-//
-// tflag values must be kept in sync with copies in:
-//
-//	cmd/compile/internal/reflectdata/reflect.go
-//	cmd/link/internal/ld/decodesym.go
-//	reflect/type.go
-//	internal/reflectlite/type.go
-
-// Needs to be in sync with ../cmd/link/internal/ld/decodesym.go:/^func.commonsize,
-// ../cmd/compile/internal/reflectdata/reflect.go:/^func.dcommontype and
-// ../reflect/type.go:/^type.rtype.
-// ../internal/reflectlite/type.go:/^type.rtype.
+// rtype is a wrapper that allows us to define additional methods.
 
 // reflectOffs holds type offsets defined at run time by the reflect package.
 //
@@ -33,6 +21,3 @@ package runtime
 // do not overlap with any compile-time module offsets.
 //
 // Entries are created by reflect.addReflectOff.
-
-// name is an encoded type name with optional extra data.
-// See reflect/type.go for details.

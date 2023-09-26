@@ -84,7 +84,14 @@ var (
 // the Reason into the Framer's errDetail field, accessible via
 // the (*Framer).ErrorDetail method.
 
-// flow is the flow control window's size.
+// inflowMinRefresh is the minimum number of bytes we'll send for a
+// flow control window update.
+
+// inflow accounts for an inbound flow control window.
+// It tracks both the latest window sent to the peer (used for enforcement)
+// and the accumulated unsent window.
+
+// outflow is the outbound flow control window's size.
 
 // A FrameType is a registered frame type as defined in
 // https://httpwg.org/specs/rfc7540.html#rfc.section.11.2

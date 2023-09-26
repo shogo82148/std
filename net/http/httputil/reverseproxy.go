@@ -104,7 +104,7 @@ type BufferPool interface {
 //		Rewrite: func(r *ProxyRequest) {
 //			r.SetURL(target)
 //			r.Out.Host = r.In.Host // if desired
-//		}
+//		},
 //	}
 func NewSingleHostReverseProxy(target *url.URL) *ReverseProxy
 

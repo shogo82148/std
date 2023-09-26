@@ -4,8 +4,6 @@
 
 package types
 
-import (
-	. "internal/types/errors"
-)
+// A version represents a released Go version.
 
-// goVersionRx matches a Go version string, e.g. "go1.12".
+// Go versions that introduced language changes.

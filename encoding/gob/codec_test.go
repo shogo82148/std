@@ -162,3 +162,7 @@ type StringPair struct {
 type LargeSliceStruct struct {
 	S []StringPair
 }
+
+type LargeSliceString struct {
+	S []string
+}

@@ -15,8 +15,8 @@ const ImplementsGetwd = true
 
 // ErrorString implements Error's String method by returning itself.
 //
-// ErrorString values can be tested against error values from the os package
-// using errors.Is. For example:
+// ErrorString values can be tested against error values using errors.Is.
+// For example:
 //
 //	_, _, err := syscall.Syscall(...)
 //	if errors.Is(err, fs.ErrNotExist) ...

@@ -20,4 +20,15 @@ import (
 // Use the same importer for all std lib tests to
 // avoid repeated importing of the same packages.
 
+// stdlibChecker implements concurrent type-checking of the packages defined by
+// dirFiles, which must define a closed set of packages (such as GOROOT/src).
+
+// A futurePackage is a future result of type-checking.
+
 // Package paths of excluded packages.
+
+// printPackageMu synchronizes the printing of type-checked package files in
+// the typecheckFiles function.
+//
+// Without synchronization, package files may be interleaved during concurrent
+// type-checking.

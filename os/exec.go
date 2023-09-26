@@ -55,7 +55,9 @@ func Getppid() int
 // about the underlying operating system process.
 //
 // On Unix systems, FindProcess always succeeds and returns a Process
-// for the given pid, regardless of whether the process exists.
+// for the given pid, regardless of whether the process exists. To test whether
+// the process actually exists, see whether p.Signal(syscall.Signal(0)) reports
+// an error.
 func FindProcess(pid int) (*Process, error)
 
 // StartProcess starts a new process with the program, arguments and attributes

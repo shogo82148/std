@@ -3,3 +3,7 @@
 // license that can be found in the LICENSE file.
 
 package testing_test
+
+// testingTrueInInit is part of TestTesting.
+
+// testingTrueInPackageVarInit is part of TestTesting.

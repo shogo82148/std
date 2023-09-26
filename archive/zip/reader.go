@@ -50,6 +50,14 @@ type File struct {
 }
 
 // OpenReader will open the Zip file specified by name and return a ReadCloser.
+//
+// If any file inside the archive uses a non-local name
+// (as defined by [filepath.IsLocal]) or a name containing backslashes
+// and the GODEBUG environment variable contains `zipinsecurepath=0`,
+// OpenReader returns the reader with an ErrInsecurePath error.
+// A future version of Go may introduce this behavior by default.
+// Programs that want to accept non-local names can ignore
+// the ErrInsecurePath error and use the returned reader.
 func OpenReader(name string) (*ReadCloser, error)
 
 // NewReader returns a new Reader reading from r, which is assumed to
@@ -67,7 +75,7 @@ func NewReader(r io.ReaderAt, size int64) (*Reader, error)
 // RegisterDecompressor registers or overrides a custom decompressor for a
 // specific method ID. If a decompressor for a given method is not found,
 // Reader will default to looking up the decompressor at the package level.
-func (z *Reader) RegisterDecompressor(method uint16, dcomp Decompressor)
+func (r *Reader) RegisterDecompressor(method uint16, dcomp Decompressor)
 
 // Close closes the Zip file, rendering it unusable for I/O.
 func (rc *ReadCloser) Close() error

@@ -14,7 +14,24 @@ package runtime
 
 // Event types in the trace, args are given in square brackets.
 
+// traceBlockReason is an enumeration of reasons a goroutine might block.
+// This is the interface the rest of the runtime uses to tell the
+// tracer why a goroutine blocked. The tracer then propagates this information
+// into the trace however it sees fit.
+//
+// Note that traceBlockReasons should not be compared, since reasons that are
+// distinct by name may *not* be distinct by value.
+
+// For maximal efficiency, just map the trace block reason directly to a trace
+// event.
+
 // trace is global tracing context.
+
+// gTraceState is per-G state for the tracer.
+
+// mTraceState is per-M state for the tracer.
+
+// pTraceState is per-P state for the tracer.
 
 // traceBufHeader is per-P tracing buffer.
 
@@ -46,6 +63,11 @@ func StopTrace()
 // ReadTrace must be called from one goroutine at a time.
 func ReadTrace() []byte
 
+// logicalStackSentinel is a sentinel value at pcBuf[0] signifying that
+// pcBuf[1:] holds a logical stack requiring no further processing. Any other
+// value at pcBuf[0] represents a skip value to apply to the physical stack in
+// pcBuf[1:] after inline expansion.
+
 // traceStackTable maps stack traces (arrays of PC's) to unique uint32 ids.
 // It is lock-free for reading.
 
@@ -61,3 +83,5 @@ func ReadTrace() []byte
 // not need write barriers.
 
 // TODO: Since traceAllocBlock is now embedded runtime/internal/sys.NotInHeap, this isn't necessary.
+
+// traceTime represents a timestamp for the trace.

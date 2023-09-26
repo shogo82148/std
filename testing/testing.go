@@ -389,6 +389,19 @@ func Init()
 // Short reports whether the -test.short flag is set.
 func Short() bool
 
+// testBinary is set by cmd/go to "1" if this is a binary built by "go test".
+// The value is set to "1" by a -X option to cmd/link. We assume that
+// because this is possible, the compiler will not optimize testBinary
+// into a constant on the basis that it is an unexported package-scope
+// variable that is never changed. If the compiler ever starts implementing
+// such an optimization, we will need some technique to mark this variable
+// as "changed by a cmd/link -X option".
+
+// Testing reports whether the current code is being run in a test.
+// This will report true in programs created by "go test",
+// false in programs created by "go build".
+func Testing() bool
+
 // CoverMode reports what the test coverage mode is set to. The
 // values are "set", "count", or "atomic". The return value will be
 // empty if test coverage is not enabled.

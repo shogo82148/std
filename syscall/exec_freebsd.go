@@ -19,4 +19,5 @@ type SysProcAttr struct {
 	Foreground bool
 	Pgid       int
 	Pdeathsig  Signal
+	Jail       int
 }

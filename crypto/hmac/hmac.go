@@ -25,7 +25,7 @@ import (
 	"github.com/shogo82148/std/hash"
 )
 
-// Marshalable is the combination of encoding.BinaryMarshaler and
+// marshalable is the combination of encoding.BinaryMarshaler and
 // encoding.BinaryUnmarshaler. Their method definitions are repeated here to
 // avoid a dependency on the encoding package.
 

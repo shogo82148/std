@@ -16,7 +16,7 @@ type Description struct {
 }
 
 // The English language descriptions below must be kept in sync with the
-// descriptions of each metric in doc.go.
+// descriptions of each metric in doc.go by running 'go generate'.
 
 // All returns a slice of containing metric descriptions for all supported metrics.
 func All() []Description

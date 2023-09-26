@@ -37,6 +37,12 @@ var ErrTooLarge = errors.New("bytes.Buffer: too large")
 // so immediate changes to the slice will affect the result of future reads.
 func (b *Buffer) Bytes() []byte
 
+// AvailableBuffer returns an empty buffer with b.Available() capacity.
+// This buffer is intended to be appended to and
+// passed to an immediately succeeding Write call.
+// The buffer is only valid until the next write operation on b.
+func (b *Buffer) AvailableBuffer() []byte
+
 // String returns the contents of the unread portion of the buffer
 // as a string. If the Buffer is a nil pointer, it returns "<nil>".
 //
@@ -50,6 +56,9 @@ func (b *Buffer) Len() int
 // Cap returns the capacity of the buffer's underlying byte slice, that is, the
 // total space allocated for the buffer's data.
 func (b *Buffer) Cap() int
+
+// Available returns how many bytes are unused in the buffer.
+func (b *Buffer) Available() int
 
 // Truncate discards all but the first n unread bytes from the buffer
 // but continues to use the same allocated storage.

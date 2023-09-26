@@ -5,7 +5,6 @@
 package json
 
 import (
-	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/io"
 )
 
@@ -55,7 +54,7 @@ type Encoder struct {
 	err        error
 	escapeHTML bool
 
-	indentBuf    *bytes.Buffer
+	indentBuf    []byte
 	indentPrefix string
 	indentValue  string
 }

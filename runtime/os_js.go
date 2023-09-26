@@ -5,7 +5,3 @@
 //go:build js && wasm
 
 package runtime
-
-// wasm has no signals
-
-// gsignalStack is unused on js.

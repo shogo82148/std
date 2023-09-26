@@ -145,6 +145,10 @@ type Package struct {
 	TestGoFiles  []string
 	XTestGoFiles []string
 
+	Directives      []Directive
+	TestDirectives  []Directive
+	XTestDirectives []Directive
+
 	Imports        []string
 	ImportPos      map[string][]token.Position
 	TestImports    []string
@@ -158,6 +162,12 @@ type Package struct {
 	TestEmbedPatternPos  map[string][]token.Position
 	XTestEmbedPatterns   []string
 	XTestEmbedPatternPos map[string][]token.Position
+}
+
+// A Directive is a Go directive comment (//go:zzz...) found in a source file.
+type Directive struct {
+	Text string
+	Pos  token.Position
 }
 
 // IsCommand reports whether the package is considered a

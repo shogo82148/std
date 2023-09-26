@@ -4,13 +4,25 @@
 
 package json
 
-import (
-	"github.com/shogo82148/std/bytes"
-)
+import "github.com/shogo82148/std/bytes"
+
+// HTMLEscape appends to dst the JSON-encoded src with <, >, &, U+2028 and U+2029
+// characters inside string literals changed to \u003c, \u003e, \u0026, \u2028, \u2029
+// so that the JSON will be safe to embed inside HTML <script> tags.
+// For historical reasons, web browsers don't honor standard HTML
+// escaping within <script> tags, so an alternative JSON encoding must be used.
+func HTMLEscape(dst *bytes.Buffer, src []byte)
 
 // Compact appends to dst the JSON-encoded src with
 // insignificant space characters elided.
 func Compact(dst *bytes.Buffer, src []byte) error
+
+// indentGrowthFactor specifies the growth factor of indenting JSON input.
+// Empirically, the growth factor was measured to be between 1.4x to 1.8x
+// for some set of compacted JSON with the indent being a single tab.
+// Specify a growth factor slightly larger than what is observed
+// to reduce probability of allocation in appendIndent.
+// A factor no higher than 2 ensures that wasted space never exceeds 50%.
 
 // Indent appends to dst an indented form of the JSON-encoded src.
 // Each element in a JSON object or array begins on a new,

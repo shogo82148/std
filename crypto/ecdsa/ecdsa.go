@@ -64,7 +64,11 @@ func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool
 // uses can use the SignASN1 function in this package directly.
 func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
 
-// GenerateKey generates a public and private key pair.
+// GenerateKey generates a new ECDSA private key for the specified curve.
+//
+// Most applications should use [crypto/rand.Reader] as rand. Note that the
+// returned key does not depend deterministically on the bytes read from rand,
+// and may change between calls and/or between versions.
 func GenerateKey(c elliptic.Curve, rand io.Reader) (*PrivateKey, error)
 
 // testingOnlyRejectionSamplingLooped is called when rejection sampling in
@@ -77,6 +81,10 @@ func GenerateKey(c elliptic.Curve, rand io.Reader) (*PrivateKey, error)
 // using the private key, priv. If the hash is longer than the bit-length of the
 // private key's curve order, the hash will be truncated to that length. It
 // returns the ASN.1 encoded signature.
+//
+// The signature is randomized. Most applications should use [crypto/rand.Reader]
+// as rand. Note that the returned signature does not depend deterministically on
+// the bytes read from rand, and may change between calls and/or between versions.
 func SignASN1(rand io.Reader, priv *PrivateKey, hash []byte) ([]byte, error)
 
 // VerifyASN1 verifies the ASN.1 encoded signature, sig, of hash using the

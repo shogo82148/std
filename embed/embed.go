@@ -165,7 +165,7 @@ var (
 
 // Open opens the named file for reading and returns it as an fs.File.
 //
-// The returned file implements io.Seeker when the file is not a directory.
+// The returned file implements io.Seeker and io.ReaderAt when the file is not a directory.
 func (f FS) Open(name string) (fs.File, error)
 
 // ReadDir reads and returns the entire named directory.
@@ -177,7 +177,8 @@ func (f FS) ReadFile(name string) ([]byte, error)
 // An openFile is a regular file open for reading.
 
 var (
-	_ io.Seeker = (*openFile)(nil)
+	_ io.Seeker   = (*openFile)(nil)
+	_ io.ReaderAt = (*openFile)(nil)
 )
 
 // An openDir is a directory open for reading.

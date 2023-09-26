@@ -19,13 +19,7 @@ package main
 // ranGoBench and benchMatches are the same, but are only used
 // in -race mode.
 
-// rtSequential is a registerTest option that causes the registered test to run
-// sequentially.
-
-// rtPreFunc is a registerTest option that runs a pre function before running
-// the test.
-
-// rtHostTest is a registerTest option that indicates this is a host test that
-// should be run using goTest.runHostTest. It implies rtSequential.
+// rtSkipFunc is a registerTest option that runs a skip check function before
+// running the test.
 
 // cgoPackages is the standard packages that use cgo.

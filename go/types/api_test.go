@@ -7,3 +7,5 @@ package types_test
 import (
 	. "go/types"
 )
+
+// nopos indicates an unknown position

@@ -45,9 +45,6 @@ type DLL struct {
 	Handle Handle
 }
 
-// We use this for computing the absolute path for system DLLs on systems
-// where SEARCH_SYSTEM32 is not available.
-
 // LoadDLL loads the named DLL file into memory.
 //
 // If name is not an absolute path and is not a known system DLL used by
@@ -96,6 +93,8 @@ func (p *Proc) Addr() uintptr
 // values are returned in r2. The return value for C type "float" is
 // math.Float32frombits(uint32(r2)). For C type "double", it is
 // math.Float64frombits(uint64(r2)).
+//
+//go:uintptrescapes
 func (p *Proc) Call(a ...uintptr) (uintptr, uintptr, error)
 
 // A LazyDLL implements access to a single DLL.
@@ -147,4 +146,6 @@ func (p *LazyProc) Addr() uintptr
 
 // Call executes procedure p with arguments a. See the documentation of
 // Proc.Call for more information.
+//
+//go:uintptrescapes
 func (p *LazyProc) Call(a ...uintptr) (r1, r2 uintptr, lastErr error)

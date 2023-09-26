@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package bytes implements functions for the manipulation of byte slices.
-// It is analogous to the facilities of the strings package.
+// It is analogous to the facilities of the [strings] package.
 package bytes
 
 import (
@@ -32,6 +32,9 @@ func ContainsAny(b []byte, chars string) bool
 
 // ContainsRune reports whether the rune is contained in the UTF-8-encoded byte slice b.
 func ContainsRune(b []byte, r rune) bool
+
+// ContainsFunc reports whether any of the UTF-8-encoded code points r within b satisfy f(r).
+func ContainsFunc(b []byte, f func(rune) bool) bool
 
 // IndexByte returns the index of the first instance of c in b, or -1 if c is not present in b.
 func IndexByte(b []byte, c byte) int

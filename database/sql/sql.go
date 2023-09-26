@@ -544,7 +544,10 @@ type Conn struct {
 
 	dc *driverConn
 
-	done int32
+	done atomic.Bool
+
+	releaseConnOnce  sync.Once
+	releaseConnCache releaseConn
 }
 
 // PingContext verifies the connection to the database is still alive.
@@ -844,11 +847,17 @@ type Rows struct {
 	cancel      func()
 	closeStmt   *driverStmt
 
+	contextDone atomic.Pointer[error]
+
 	closemu sync.RWMutex
 	closed  bool
 	lasterr error
 
 	lastcols []driver.Value
+
+	closemuScanHold bool
+
+	hitEOF bool
 }
 
 // bypassRowsAwaitDone is only used for testing.

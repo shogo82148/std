@@ -43,6 +43,11 @@ var NetpollGenericInit = netpollGenericInit
 var Memmove = memmove
 var MemclrNoHeapPointers = memclrNoHeapPointers
 
+var CgoCheckPointer = cgoCheckPointer
+
+const TracebackInnerFrames = tracebackInnerFrames
+const TracebackOuterFrames = tracebackOuterFrames
+
 var LockPartialOrder = lockPartialOrder
 
 type LockRank lockRank
@@ -74,6 +79,25 @@ var Open = open
 var Close = closefd
 var Read = read
 var Write = write
+
+// blockWrapper is a wrapper type that ensures a T is placed within a
+// large object. This is necessary for safely benchmarking things
+// that manipulate the heap bitmap, like heapBitsSetType.
+//
+// More specifically, allocating threads assume they're the sole writers
+// to their span's heap bits, which allows those writes to be non-atomic.
+// The heap bitmap is written byte-wise, so if one tried to call heapBitsSetType
+// on an existing object in a small object span, we might corrupt that
+// span's bitmap with a concurrent byte write to the heap bitmap. Large
+// object spans contain exactly one object, so we can be sure no other P
+// is going to be allocating from it concurrently, hence this wrapper type
+// which ensures we have a T in a large object span.
+
+// arrayBlockWrapper is like blockWrapper, but the interior value is intended
+// to be used as a backing store for a slice.
+
+// arrayLargeBlockWrapper is like arrayBlockWrapper, but the interior array
+// accommodates many more elements.
 
 const PtrSize = goarch.PtrSize
 
@@ -208,10 +232,11 @@ var GCTestMoveStackOnNextCall = gcTestMoveStackOnNextCall
 const Raceenabled = raceenabled
 
 const (
-	GCBackgroundUtilization     = gcBackgroundUtilization
-	GCGoalUtilization           = gcGoalUtilization
-	DefaultHeapMinimum          = defaultHeapMinimum
-	MemoryLimitHeapGoalHeadroom = memoryLimitHeapGoalHeadroom
+	GCBackgroundUtilization            = gcBackgroundUtilization
+	GCGoalUtilization                  = gcGoalUtilization
+	DefaultHeapMinimum                 = defaultHeapMinimum
+	MemoryLimitHeapGoalHeadroomPercent = memoryLimitHeapGoalHeadroomPercent
+	MemoryLimitMinHeapGoalHeadroom     = memoryLimitMinHeapGoalHeadroom
 )
 
 type GCController struct {
@@ -270,3 +295,10 @@ type UserArena struct {
 }
 
 var AlignUp = alignUp
+
+const FramePointerEnabled = framepointer_enabled
+
+var (
+	IsPinned      = isPinned
+	GetPinCounter = pinnerGetPinCounter
+)

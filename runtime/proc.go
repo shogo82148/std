@@ -6,9 +6,8 @@ package runtime
 
 // set using cmd/go/internal/modload.ModInfoProg
 
-//go:linkname runtime_inittask runtime..inittask
-
-//go:linkname main_inittask main..inittask
+// This slice records the initializing tasks that need to be
+// done to start up the runtime. It is built by the linker.
 
 // main_init_done is a signal used by cgocallbackg that initialization
 // has been completed. It is made before _cgo_notify_runtime_init_done,
@@ -23,6 +22,8 @@ package runtime
 
 // Gosched yields the processor, allowing other goroutines to run. It does not
 // suspend the current goroutine, so execution resumes automatically.
+//
+//go:nosplit
 func Gosched()
 
 // freezeStopWait is a large value that freezetheworld sets
@@ -33,6 +34,16 @@ func Gosched()
 
 // casgstatusAlwaysTrack is a debug flag that causes casgstatus to always track
 // various latencies on every transition instead of sampling them.
+
+// stwReason is an enumeration of reasons the world is stopping.
+
+// Reasons to stop-the-world.
+//
+// Avoid reusing reasons and add new ones instead.
+
+// If you add to this list, also add it to src/internal/trace/parser.go.
+// If you change the values of any of the stw* constants, bump the trace
+// version number and make a copy of this.
 
 // Holding worldsema grants an M the right to try to stop the world.
 
@@ -78,6 +89,8 @@ func Breakpoint()
 //
 // A goroutine should call LockOSThread before calling OS services or
 // non-Go library functions that depend on per-thread state.
+//
+//go:nosplit
 func LockOSThread()
 
 // UnlockOSThread undoes an earlier call to LockOSThread.
@@ -92,6 +105,8 @@ func LockOSThread()
 // other goroutines, it should not call this function and thus leave
 // the goroutine locked to the OS thread until the goroutine (and
 // hence the thread) exits.
+//
+//go:nosplit
 func UnlockOSThread()
 
 // forcegcperiod is the maximum time in nanoseconds between garbage
@@ -130,7 +145,7 @@ func UnlockOSThread()
 // are coprime, then a sequences of (i + X) % GOMAXPROCS gives the required enumeration.
 
 // An initTask represents the set of initializations that need to be done for a package.
-// Keep in sync with ../../test/initempty.go:initTask
+// Keep in sync with ../../test/noinit.go:initTask
 
 // inittrace stores statistics for init functions which are
 // updated by malloc and newproc when active is true.

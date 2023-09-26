@@ -18,7 +18,7 @@ package runtime
 
 // spanSetBlockAlloc represents a concurrent pool of spanSetBlocks.
 
-// haidTailIndex represents a combined 32-bit head and 32-bit tail
+// headTailIndex represents a combined 32-bit head and 32-bit tail
 // of a queue into a single 64-bit value.
 
 // atomicHeadTailIndex is an atomically-accessed headTailIndex.

@@ -53,6 +53,11 @@ type CommonType struct {
 // Under heavy read contention, this is significantly faster than a map
 // protected by a mutex.
 
+// typeInfoMapInit is used instead of typeInfoMap during init time,
+// as types are registered sequentially during init and we can save
+// the overhead of making map copies.
+// It is saved to typeInfoMap and set to nil before init finishes.
+
 // GobEncoder is the interface describing data that provides its own
 // representation for encoding values for transmission to a GobDecoder.
 // A type that implements GobEncoder and GobDecoder has complete

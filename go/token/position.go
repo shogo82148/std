@@ -100,6 +100,10 @@ func (f *File) AddLine(offset int)
 // MergeLine will panic if given an invalid line number.
 func (f *File) MergeLine(line int)
 
+// Lines returns the effective line offset table of the form described by SetLines.
+// Callers must not mutate the result.
+func (f *File) Lines() []int
+
 // SetLines sets the line offsets for a file and reports whether it succeeded.
 // The line offsets are the offsets of the first character of each line;
 // for instance for the content "ab\nc\n" the line offsets are {0, 3}.

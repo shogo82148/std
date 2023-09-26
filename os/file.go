@@ -112,6 +112,10 @@ func (f *File) ReadAt(b []byte, off int64) (n int, err error)
 // ReadFrom implements io.ReaderFrom.
 func (f *File) ReadFrom(r io.Reader) (n int64, err error)
 
+// fileWithoutReadFrom implements all the methods of *File other
+// than ReadFrom. This is used to permit ReadFrom to call io.Copy
+// without leading to a recursive call to ReadFrom.
+
 // Write writes len(b) bytes from b to the File.
 // It returns the number of bytes written and an error, if any.
 // Write returns a non-nil error when n != len(b).
@@ -174,6 +178,9 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 // If there is an error, it will be of type *LinkError.
 func Rename(oldpath, newpath string) error
 
+// checkWrapErr is the test hook to enable checking unexpected wrapped errors of poll.ErrFileClosing.
+// It is set to true in the export_test.go for tests (including fuzz tests).
+
 // TempDir returns the default directory to use for temporary files.
 //
 // On Unix systems, it returns $TMPDIR if non-empty, else /tmp.
@@ -220,6 +227,9 @@ func UserConfigDir() (string, error)
 // On Unix, including macOS, it returns the $HOME environment variable.
 // On Windows, it returns %USERPROFILE%.
 // On Plan 9, it returns the $home environment variable.
+//
+// If the expected variable is not set in the environment, UserHomeDir
+// returns either a platform-specific default value or a non-nil error.
 func UserHomeDir() (string, error)
 
 // Chmod changes the mode of the named file to mode.
@@ -303,7 +313,8 @@ func (f *File) SyscallConn() (syscall.RawConn, error)
 //
 // The directory dir must not be "".
 //
-// The result implements fs.StatFS.
+// The result implements [io/fs.StatFS], [io/fs.ReadFileFS] and
+// [io/fs.ReadDirFS].
 func DirFS(dir string) fs.FS
 
 // ReadFile reads the named file and returns the contents.
@@ -315,6 +326,6 @@ func ReadFile(name string) ([]byte, error)
 // WriteFile writes data to the named file, creating it if necessary.
 // If the file does not exist, WriteFile creates it with permissions perm (before umask);
 // otherwise WriteFile truncates it before writing, without changing permissions.
-// Since Writefile requires multiple system calls to complete, a failure mid-operation
+// Since WriteFile requires multiple system calls to complete, a failure mid-operation
 // can leave the file in a partially written state.
 func WriteFile(name string, data []byte, perm FileMode) error

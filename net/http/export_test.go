@@ -25,7 +25,7 @@ var (
 	Export_is408Message               = is408Message
 )
 
-const MaxWriteWaitBeforeConnReuse = maxWriteWaitBeforeConnReuse
+var MaxWriteWaitBeforeConnReuse = &maxWriteWaitBeforeConnReuse
 
 var (
 	SetEnterRoundTripHook = hookSetter(&testHookEnterRoundTrip)

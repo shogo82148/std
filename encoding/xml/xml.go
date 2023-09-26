@@ -162,6 +162,9 @@ func NewTokenDecoder(t TokenReader) *Decoder
 // or EOF before all expected end elements,
 // it will return an error.
 //
+// If CharsetReader is called and returns an error,
+// the error is wrapped and returned.
+//
 // Token implements XML name spaces as described by
 // https://www.w3.org/TR/REC-xml-names/. Each of the
 // Name structures contained in the Token has the Space

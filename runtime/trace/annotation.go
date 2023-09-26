@@ -17,11 +17,11 @@ import (
 // like the Go execution tracer may assume there are only a bounded
 // number of unique task types in the system.
 //
-// The returned end function is used to mark the task's end.
+// The returned Task's [Task.End] method is used to mark the task's end.
 // The trace tool measures task latency as the time between task creation
-// and when the end function is called, and provides the latency
+// and when the End method is called, and provides the latency
 // distribution per task type.
-// If the end function is called multiple times, only the first
+// If the End method is called multiple times, only the first
 // call is used in the latency measurement.
 //
 //	ctx, task := trace.NewTask(ctx, "awesomeTask")
@@ -38,7 +38,7 @@ type Task struct {
 	id uint64
 }
 
-// End marks the end of the operation represented by the Task.
+// End marks the end of the operation represented by the [Task].
 func (t *Task) End()
 
 // Log emits a one-off event with the given category and message.
@@ -46,7 +46,7 @@ func (t *Task) End()
 // unique categories in the system.
 func Log(ctx context.Context, category, message string)
 
-// Logf is like Log, but the value is formatted using the specified format spec.
+// Logf is like [Log], but the value is formatted using the specified format spec.
 func Logf(ctx context.Context, category, format string, args ...any)
 
 // WithRegion starts a region associated with its calling goroutine, runs fn,
@@ -58,8 +58,8 @@ func Logf(ctx context.Context, category, format string, args ...any)
 // handful of unique region types.
 func WithRegion(ctx context.Context, regionType string, fn func())
 
-// StartRegion starts a region and returns a function for marking the
-// end of the region. The returned Region's End function must be called
+// StartRegion starts a region and returns it.
+// The returned Region's [Region.End] method must be called
 // from the same goroutine where the region was started.
 // Within each goroutine, regions must nest. That is, regions started
 // after this region must be ended before this region can be ended.

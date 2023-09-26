@@ -4,10 +4,6 @@
 
 // Test broken pipes on Unix systems.
 //
-//go:build !plan9 && !js
+//go:build !plan9 && !js && !wasip1
 
 package os_test
-
-import (
-	osexec "os/exec"
-)

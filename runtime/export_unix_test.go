@@ -8,6 +8,7 @@ package runtime
 
 var NonblockingPipe = nonblockingPipe
 var Fcntl = fcntl
+var Closeonexec = closeonexec
 
 type M = m
 

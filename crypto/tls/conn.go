@@ -22,6 +22,7 @@ type Conn struct {
 	conn        net.Conn
 	isClient    bool
 	handshakeFn func(context.Context) error
+	quic        *quicState
 
 	isHandshakeComplete atomic.Bool
 
@@ -32,6 +33,7 @@ type Conn struct {
 	config         *Config
 
 	handshakes       int
+	extMasterSecret  bool
 	didResume        bool
 	cipherSuite      uint16
 	ocspResponse     []byte

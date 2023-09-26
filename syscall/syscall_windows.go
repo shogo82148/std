@@ -24,11 +24,13 @@ func StringToUTF16(s string) []uint16
 
 // UTF16FromString returns the UTF-16 encoding of the UTF-8 string
 // s, with a terminating NUL added. If s contains a NUL byte at any
-// location, it returns (nil, EINVAL).
+// location, it returns (nil, EINVAL). Unpaired surrogates
+// are encoded using WTF-8.
 func UTF16FromString(s string) ([]uint16, error)
 
 // UTF16ToString returns the UTF-8 encoding of the UTF-16 sequence s,
-// with a terminating NUL removed.
+// with a terminating NUL removed. Unpaired surrogates are decoded
+// using WTF-8 instead of UTF-8 encoding.
 func UTF16ToString(s []uint16) string
 
 // StringToUTF16Ptr returns pointer to the UTF-16 encoding of
@@ -42,12 +44,13 @@ func StringToUTF16Ptr(s string) *uint16
 // UTF16PtrFromString returns pointer to the UTF-16 encoding of
 // the UTF-8 string s, with a terminating NUL added. If s
 // contains a NUL byte at any location, it returns (nil, EINVAL).
+// Unpaired surrogates are encoded using WTF-8.
 func UTF16PtrFromString(s string) (*uint16, error)
 
 // Errno is the Windows error number.
 //
-// Errno values can be tested against error values from the os package
-// using errors.Is. For example:
+// Errno values can be tested against error values using errors.Is.
+// For example:
 //
 //	_, _, err := syscall.Syscall(...)
 //	if errors.Is(err, fs.ErrNotExist) ...
@@ -126,6 +129,8 @@ func Gettimeofday(tv *Timeval) (err error)
 func Pipe(p []Handle) (err error)
 
 func Utimes(path string, tv []Timeval) (err error)
+
+// This matches the value in os/file_windows.go.
 
 func UtimesNano(path string, ts []Timespec) (err error)
 
@@ -299,8 +304,9 @@ func FindNextFile(handle Handle, data *Win32finddata) (err error)
 
 func Getppid() (ppid int)
 
-// TODO(brainman): fix all needed for os
 func Fchdir(fd Handle) (err error)
+
+// TODO(brainman): fix all needed for os
 func Link(oldpath, newpath string) (err error)
 func Symlink(path, link string) (err error)
 

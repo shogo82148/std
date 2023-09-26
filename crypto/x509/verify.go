@@ -153,7 +153,7 @@ func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err e
 // IP addresses can be optionally enclosed in square brackets and are checked
 // against the IPAddresses field. Other names are checked case insensitively
 // against the DNSNames field. If the names are valid hostnames, the certificate
-// fields can have a wildcard as the left-most label.
+// fields can have a wildcard as the complete left-most label (e.g. *.example.com).
 //
 // Note that the legacy Common Name field is ignored.
 func (c *Certificate) VerifyHostname(h string) error

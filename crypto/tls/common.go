@@ -25,6 +25,11 @@ const (
 	VersionSSL30 = 0x0300
 )
 
+// VersionName returns the name for the provided TLS version number
+// (e.g. "TLS 1.3"), or a fallback representation of the value if the
+// version is not implemented by this package.
+func VersionName(version uint16) string
+
 // TLS record types.
 
 // TLS handshake message types.
@@ -114,6 +119,10 @@ type ConnectionState struct {
 // slice as defined in RFC 5705. If context is nil, it is not used as part of
 // the seed. If the connection was set to allow renegotiation via
 // Config.Renegotiation, this function will return an error.
+//
+// There are conditions in which the returned values might not be unique to a
+// connection. See the Security Considerations sections of RFC 5705 and RFC 7627,
+// and https://mitls.org/pages/attacks/3SHAKE#channelbindings.
 func (cs *ConnectionState) ExportKeyingMaterial(label string, context []byte, length int) ([]byte, error)
 
 // ClientAuthType declares the policy the server will follow for
@@ -143,24 +152,6 @@ const (
 	// to be sent by the client.
 	RequireAndVerifyClientCert
 )
-
-// ClientSessionState contains the state needed by clients to resume TLS
-// sessions.
-type ClientSessionState struct {
-	sessionTicket      []uint8
-	vers               uint16
-	cipherSuite        uint16
-	masterSecret       []byte
-	serverCertificates []*x509.Certificate
-	verifiedChains     [][]*x509.Certificate
-	receivedAt         time.Time
-	ocspResponse       []byte
-	scts               [][]byte
-
-	nonce  []byte
-	useBy  time.Time
-	ageAdd uint32
-}
 
 // ClientSessionCache is a cache of ClientSessionState objects that can be used
 // by a client to resume a TLS session with a given server. ClientSessionCache
@@ -323,6 +314,10 @@ type Config struct {
 
 	ClientSessionCache ClientSessionCache
 
+	UnwrapSession func(identity []byte, cs ConnectionState) (*SessionState, error)
+
+	WrapSession func(ConnectionState, *SessionState) ([]byte, error)
+
 	MinVersion uint16
 
 	MaxVersion uint16
@@ -345,7 +340,7 @@ type Config struct {
 // ticketKey is the internal representation of a session ticket key.
 
 // maxSessionTicketLifetime is the maximum allowed lifetime of a TLS 1.3 session
-// ticket, and the lifetime we set for tickets we send.
+// ticket, and the lifetime we set for all tickets we send.
 
 // Clone returns a shallow clone of c or nil if c is nil. It is safe to clone a Config that is
 // being used concurrently by a TLS client or server.

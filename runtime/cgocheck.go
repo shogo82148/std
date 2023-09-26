@@ -3,6 +3,6 @@
 // license that can be found in the LICENSE file.
 
 // Code to check that pointer writes follow the cgo rules.
-// These functions are invoked via the write barrier when debug.cgocheck > 1.
+// These functions are invoked when GOEXPERIMENT=cgocheck2 is enabled.
 
 package runtime

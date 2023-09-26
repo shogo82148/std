@@ -11,7 +11,6 @@
 package json
 
 import (
-	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/reflect"
 )
 
@@ -32,6 +31,7 @@ import (
 // Boolean values encode as JSON booleans.
 //
 // Floating point, integer, and Number values encode as JSON numbers.
+// NaN and +/-Inf values will return an [UnsupportedValueError].
 //
 // String values encode as JSON strings coerced to valid UTF-8,
 // replacing invalid bytes with the Unicode replacement rune.
@@ -150,14 +150,6 @@ func Marshal(v any) ([]byte, error)
 // Each JSON element in the output will begin on a new line beginning with prefix
 // followed by one or more copies of indent according to the indentation nesting.
 func MarshalIndent(v any, prefix, indent string) ([]byte, error)
-
-// HTMLEscape appends to dst the JSON-encoded src with <, >, &, U+2028 and U+2029
-// characters inside string literals changed to \u003c, \u003e, \u0026, \u2028, \u2029
-// so that the JSON will be safe to embed inside HTML <script> tags.
-// For historical reasons, web browsers don't honor standard HTML
-// escaping within <script> tags, so an alternative JSON encoding must
-// be used.
-func HTMLEscape(dst *bytes.Buffer, src []byte)
 
 // Marshaler is the interface implemented by types that
 // can marshal themselves into valid JSON.

@@ -10,7 +10,7 @@ package tls
 // multiple Conns. Returned references should not be mutated by callers. Certificates
 // are still safe to use after they are removed from the cache.
 //
-// Certificates are returned wrapped in a activeCert struct that should be held by
+// Certificates are returned wrapped in an activeCert struct that should be held by
 // the caller. When references to the activeCert are freed, the number of references
 // to the certificate in the cache is decremented. Once the number of references
 // reaches zero, the entry is evicted from the cache.

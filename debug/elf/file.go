@@ -203,3 +203,7 @@ func (f *File) ImportedLibraries() ([]string, error)
 // The tag must be one that takes string values: DT_NEEDED, DT_SONAME, DT_RPATH, or
 // DT_RUNPATH.
 func (f *File) DynString(tag DynTag) ([]string, error)
+
+// DynValue returns the values listed for the given tag in the file's dynamic
+// section.
+func (f *File) DynValue(tag DynTag) ([]uint64, error)
