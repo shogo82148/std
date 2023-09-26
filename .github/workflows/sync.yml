@@ -39,6 +39,6 @@ jobs:
           BRANCH_NAME: ${{ matrix.branch }}
         run: |
           git switch "$BRANCH_NAME"
-          importgodoc "$GITHUB_WORKSPACE/golang/go" .
+          importgodoc "$GITHUB_WORKSPACE/go" .
           git add .
           git diff --cached
