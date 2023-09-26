@@ -44,6 +44,9 @@ func (h Header) Del(key string)
 // Write writes a header in wire format.
 func (h Header) Write(w io.Writer) error
 
+// Clone returns a copy of h or nil if h is nil.
+func (h Header) Clone() Header
+
 // ParseTime parses a time header (such as the Date: header),
 // trying each of the three formats allowed by HTTP/1.1:
 // TimeFormat, time.RFC850, and time.ANSIC.

@@ -48,8 +48,16 @@ type UnexpT struct {
 // If the selectWatcher notices that the select has been blocked for >1 second, it prints
 // an error describing the select and panics the entire test binary.
 
+// Dummy type that implements io.WriteCloser
+type WC struct {
+}
+
 type Point struct {
 	x, y int
+}
+
+type DirectIfaceT struct {
+	p *int
 }
 
 type Tinter interface {

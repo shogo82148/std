@@ -23,3 +23,5 @@ package x509
 // like an integer, even though it's an OCTET STRING field). Thus if you
 // regenerate this you may, randomly, find that it's a byte shorter than
 // expected and the Go test will fail to recreate it exactly.
+
+// From RFC 8410, Section 7.

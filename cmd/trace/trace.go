@@ -4,10 +4,8 @@
 
 package main
 
-// See https://github.com/catapult-project/catapult/blob/master/tracing/docs/embedding-trace-viewer.md
-// This is almost verbatim copy of:
-// https://github.com/catapult-project/catapult/blob/master/tracing/bin/index.html
-// on revision 5f9e4c3eaa555bdef18218a89f38c768303b7b6e.
+// https://chromium.googlesource.com/catapult/+/9508452e18f130c98499cb4c4f1e1efaedee8962/tracing/docs/embedding-trace-viewer.md
+// This is almost verbatim copy of https://chromium-review.googlesource.com/c/catapult/+/2062938/2/tracing/bin/index.html
 
 type Range struct {
 	Name      string

@@ -37,6 +37,8 @@ type Error struct {
 
 func (e *Error) Error() string
 
+func (e *Error) Unwrap() error
+
 // Cmd represents an external command being prepared or run.
 //
 // A Cmd cannot be reused after calling its Run, Output or CombinedOutput
@@ -104,6 +106,12 @@ func Command(name string, arg ...string) *Cmd
 // os.Process.Kill) if the context becomes done before the command
 // completes on its own.
 func CommandContext(ctx context.Context, name string, arg ...string) *Cmd
+
+// String returns a human-readable description of c.
+// It is intended only for debugging.
+// In particular, it is not suitable for use as input to a shell.
+// The output of String may vary across Go releases.
+func (c *Cmd) String() string
 
 // skipStdinCopyError optionally specifies a function which reports
 // whether the provided stdin copy error should be ignored.

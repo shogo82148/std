@@ -4,8 +4,6 @@
 
 package debug
 
-// set using cmd/go/internal/modload.ModInfoProg
-
 // ReadBuildInfo returns the build information embedded
 // in the running binary. The information is available only
 // in binaries built with module support.

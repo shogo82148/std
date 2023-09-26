@@ -53,10 +53,12 @@ type B struct {
 
 	netAllocs uint64
 	netBytes  uint64
+
+	extra map[string]float64
 }
 
 // StartTimer starts timing a test. This function is called automatically
-// before a benchmark starts, but it can also used to resume timing after
+// before a benchmark starts, but it can also be used to resume timing after
 // a call to StopTimer.
 func (b *B) StartTimer()
 
@@ -65,7 +67,8 @@ func (b *B) StartTimer()
 // want to measure.
 func (b *B) StopTimer()
 
-// ResetTimer zeros the elapsed benchmark time and memory allocation counters.
+// ResetTimer zeroes the elapsed benchmark time and memory allocation counters
+// and deletes user-reported metrics.
 // It does not affect whether the timer is running.
 func (b *B) ResetTimer()
 
@@ -78,6 +81,17 @@ func (b *B) SetBytes(n int64)
 // benchmark function that calls ReportAllocs.
 func (b *B) ReportAllocs()
 
+// ReportMetric adds "n unit" to the reported benchmark results.
+// If the metric is per-iteration, the caller should divide by b.N,
+// and by convention units should end in "/op".
+// ReportMetric overrides any previously reported value for the same unit.
+// ReportMetric panics if unit is the empty string or if unit contains
+// any whitespace.
+// If unit is a unit normally reported by the benchmark framework itself
+// (such as "allocs/op"), ReportMetric will override that metric.
+// Setting "ns/op" to 0 will suppress that built-in metric.
+func (b *B) ReportMetric(n float64, unit string)
+
 // The results of a benchmark run.
 type BenchmarkResult struct {
 	N         int
@@ -85,16 +99,28 @@ type BenchmarkResult struct {
 	Bytes     int64
 	MemAllocs uint64
 	MemBytes  uint64
+
+	Extra map[string]float64
 }
 
+// NsPerOp returns the "ns/op" metric.
 func (r BenchmarkResult) NsPerOp() int64
 
-// AllocsPerOp returns r.MemAllocs / r.N.
+// AllocsPerOp returns the "allocs/op" metric,
+// which is calculated as r.MemAllocs / r.N.
 func (r BenchmarkResult) AllocsPerOp() int64
 
-// AllocedBytesPerOp returns r.MemBytes / r.N.
+// AllocedBytesPerOp returns the "B/op" metric,
+// which is calculated as r.MemBytes / r.N.
 func (r BenchmarkResult) AllocedBytesPerOp() int64
 
+// String returns a summary of the benchmark results.
+// It follows the benchmark result line format from
+// https://golang.org/design/14313-benchmark-format, not including the
+// benchmark name.
+// Extra metrics override built-in metrics of the same name.
+// String does not include allocs/op or B/op, since those are reported
+// by MemString.
 func (r BenchmarkResult) String() string
 
 // MemString returns r.AllocedBytesPerOp and r.AllocsPerOp in the same format as 'go test'.
@@ -139,8 +165,11 @@ func (b *B) RunParallel(body func(*PB))
 // If p is less than 1, this call will have no effect.
 func (b *B) SetParallelism(p int)
 
-// Benchmark benchmarks a single function. Useful for creating
+// Benchmark benchmarks a single function. It is useful for creating
 // custom benchmarks that do not use the "go test" command.
+//
+// If f depends on testing flags, then Init must be used to register
+// those flags before calling Benchmark and before calling flag.Parse.
 //
 // If f calls Run, the result will be an estimate of running all its
 // subbenchmarks that don't call Run in sequence in a single benchmark.

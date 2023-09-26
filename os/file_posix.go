@@ -11,10 +11,6 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Readlink returns the destination of the named symbolic link.
-// If there is an error, it will be of type *PathError.
-func Readlink(name string) (string, error)
-
 // Chown changes the numeric uid and gid of the named file.
 // If the file is a symbolic link, it changes the uid and gid of the link's target.
 // A uid or gid of -1 means to not change that value.

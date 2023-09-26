@@ -68,6 +68,8 @@ type ParseError struct {
 
 func (e *ParseError) Error() string
 
+func (e *ParseError) Unwrap() error
+
 // These are the errors that can be returned in ParseError.Err.
 var (
 	ErrTrailingComma = errors.New("extra delimiter at end of line")

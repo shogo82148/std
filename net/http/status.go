@@ -10,6 +10,7 @@ const (
 	StatusContinue           = 100
 	StatusSwitchingProtocols = 101
 	StatusProcessing         = 102
+	StatusEarlyHints         = 103
 
 	StatusOK                   = 200
 	StatusCreated              = 201

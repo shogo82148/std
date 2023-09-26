@@ -3,8 +3,8 @@
 // license that can be found in the LICENSE file.
 
 // Test broken pipes on Unix systems.
-//go:build !windows && !plan9 && !nacl && !js
-// +build !windows,!plan9,!nacl,!js
+//go:build !plan9 && !nacl && !js
+// +build !plan9,!nacl,!js
 
 package os_test
 

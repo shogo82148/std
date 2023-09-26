@@ -28,6 +28,8 @@ import (
 // An empty Dir is treated as ".".
 type Dir string
 
+// Open implements FileSystem using os.Open, opening files for reading rooted
+// and relative to the directory d.
 func (d Dir) Open(name string) (File, error)
 
 // A FileSystem implements access to a collection of named files.

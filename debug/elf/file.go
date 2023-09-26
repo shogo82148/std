@@ -107,6 +107,9 @@ type Symbol struct {
 	Info, Other byte
 	Section     SectionIndex
 	Value, Size uint64
+
+	Version string
+	Library string
 }
 
 type FormatError struct {
@@ -153,6 +156,9 @@ func (f *File) Symbols() ([]Symbol, error)
 
 // DynamicSymbols returns the dynamic symbol table for f. The symbols
 // will be listed in the order they appear in f.
+//
+// If f has a symbol version table, the returned Symbols will have
+// initialized Version and Library fields.
 //
 // For compatibility with Symbols, DynamicSymbols omits the null symbol at index 0.
 // After retrieving the symbols as symtab, an externally supplied index x

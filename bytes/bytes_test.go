@@ -14,12 +14,6 @@ type BinOpTest struct {
 	i int
 }
 
-type ExplodeTest struct {
-	s string
-	n int
-	a []string
-}
-
 type SplitTest struct {
 	s   string
 	sep string
@@ -33,9 +27,10 @@ type FieldsTest struct {
 }
 
 // Test case for any function which accepts and returns a byte slice.
-// For ease of creation, we write the byte slices as strings.
+// For ease of creation, we write the input byte slice as a string.
 type StringTest struct {
-	in, out string
+	in  string
+	out []byte
 }
 
 type RepeatTest struct {
@@ -75,8 +70,11 @@ type TrimTest struct {
 }
 
 type TrimFuncTest struct {
-	f       predicate
-	in, out string
+	f        predicate
+	in       string
+	trimOut  []byte
+	leftOut  []byte
+	rightOut []byte
 }
 
 type IndexFuncTest struct {

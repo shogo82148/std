@@ -32,6 +32,10 @@ var Fastlog2 = fastlog2
 var Atoi = atoi
 var Atoi32 = atoi32
 
+var Nanotime = nanotime
+
+var PhysHugePageSize = physHugePageSize
+
 type LFNode struct {
 	Next    uint64
 	Pushcnt uintptr
@@ -89,6 +93,16 @@ type G = g
 type Span struct {
 	*mspan
 }
+
+type TreapIterType treapIterType
+
+const (
+	TreapIterScav TreapIterType = TreapIterType(treapIterScav)
+	TreapIterHuge               = TreapIterType(treapIterHuge)
+	TreapIterBits               = treapIterBits
+)
+
+type TreapIterFilter treapIterFilter
 
 type TreapIter struct {
 	treapIter

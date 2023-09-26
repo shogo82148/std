@@ -5,7 +5,6 @@
 package main
 
 import (
-	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/build"
 	"github.com/shogo82148/std/go/doc"
@@ -14,19 +13,21 @@ import (
 )
 
 type Package struct {
-	writer               io.Writer
-	name                 string
-	userPath             string
-	pkg                  *ast.Package
-	file                 *ast.File
-	doc                  *doc.Package
-	build                *build.Package
-	typedValue           map[*doc.Value]bool
-	constructor          map[*doc.Func]bool
-	packageClausePrinted bool
-	fs                   *token.FileSet
-	buf                  bytes.Buffer
+	writer      io.Writer
+	name        string
+	userPath    string
+	pkg         *ast.Package
+	file        *ast.File
+	doc         *doc.Package
+	build       *build.Package
+	typedValue  map[*doc.Value]bool
+	constructor map[*doc.Func]bool
+	fs          *token.FileSet
+	buf         pkgBuffer
 }
+
+// pkgBuffer is a wrapper for bytes.Buffer that prints a package clause the
+// first time Write is called.
 
 type PackageError string
 

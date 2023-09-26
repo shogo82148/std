@@ -32,7 +32,6 @@ type SockaddrDatalink struct {
 	raw    RawSockaddrDatalink
 }
 
-// sys   ptrace(request int, pid int, addr uintptr, data uintptr) (err error)
 func PtraceAttach(pid int) (err error)
 func PtraceDetach(pid int) (err error)
 
@@ -41,3 +40,5 @@ func Pipe(p []int) (err error)
 func Getfsstat(buf []Statfs_t, flags int) (n int, err error)
 
 func Kill(pid int, signum Signal) (err error)
+
+func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)

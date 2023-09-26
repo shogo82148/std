@@ -33,6 +33,10 @@
 //		log.Fatal(err)
 //	}
 //	fmt.Printf("read %d bytes: %q\n", count, data[:count])
+//
+// Note: The maximum number of concurrent operations on a File may be limited by
+// the OS or the system. The number should be high, but exceeding it may degrade
+// performance or cause other issues.
 package os
 
 import (
@@ -90,6 +94,8 @@ type LinkError struct {
 
 func (e *LinkError) Error() string
 
+func (e *LinkError) Unwrap() error
+
 // Read reads up to len(b) bytes from the File.
 // It returns the number of bytes read and any error encountered.
 // At end of file, Read returns 0, io.EOF.
@@ -109,6 +115,8 @@ func (f *File) Write(b []byte) (n int, err error)
 // WriteAt writes len(b) bytes to the File starting at byte offset off.
 // It returns the number of bytes written and an error, if any.
 // WriteAt returns a non-nil error when n != len(b).
+//
+// If file was opened with the O_APPEND flag, WriteAt returns an error.
 func (f *File) WriteAt(b []byte, off int64) (n int, err error)
 
 // Seek sets the offset for the next Read or Write on file to offset, interpreted
@@ -137,16 +145,17 @@ func Chdir(dir string) error
 // If there is an error, it will be of type *PathError.
 func Open(name string) (*File, error)
 
-// Create creates the named file with mode 0666 (before umask), truncating
-// it if it already exists. If successful, methods on the returned
-// File can be used for I/O; the associated file descriptor has mode
-// O_RDWR.
+// Create creates or truncates the named file. If the file already exists,
+// it is truncated. If the file does not exist, it is created with mode 0666
+// (before umask). If successful, methods on the returned File can
+// be used for I/O; the associated file descriptor has mode O_RDWR.
 // If there is an error, it will be of type *PathError.
 func Create(name string) (*File, error)
 
 // OpenFile is the generalized open call; most users will use Open
 // or Create instead. It opens the named file with specified flag
-// (O_RDONLY etc.) and perm (before umask), if applicable. If successful,
+// (O_RDONLY etc.). If the file does not exist, and the O_CREATE flag
+// is passed, it is created with mode perm (before umask). If successful,
 // methods on the returned File can be used for I/O.
 // If there is an error, it will be of type *PathError.
 func OpenFile(name string, flag int, perm FileMode) (*File, error)
@@ -185,6 +194,21 @@ func TempDir() string
 // then it will return an error.
 func UserCacheDir() (string, error)
 
+// UserConfigDir returns the default root directory to use for user-specific
+// configuration data. Users should create their own application-specific
+// subdirectory within this one and use that.
+//
+// On Unix systems, it returns $XDG_CONFIG_HOME as specified by
+// https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html if
+// non-empty, else $HOME/.config.
+// On Darwin, it returns $HOME/Library/Application Support.
+// On Windows, it returns %AppData%.
+// On Plan 9, it returns $home/lib.
+//
+// If the location cannot be determined (for example, $HOME is not defined),
+// then it will return an error.
+func UserConfigDir() (string, error)
+
 // UserHomeDir returns the current user's home directory.
 //
 // On Unix, including macOS, it returns the $HOME environment variable.
@@ -202,11 +226,11 @@ func UserHomeDir() (string, error)
 // On Unix, the mode's permission bits, ModeSetuid, ModeSetgid, and
 // ModeSticky are used.
 //
-// On Windows, the mode must be non-zero but otherwise only the 0200
-// bit (owner writable) of mode is used; it controls whether the
-// file's read-only attribute is set or cleared. attribute. The other
-// bits are currently unused. Use mode 0400 for a read-only file and
-// 0600 for a readable+writable file.
+// On Windows, only the 0200 bit (owner writable) of mode is used; it
+// controls whether the file's read-only attribute is set or cleared.
+// The other bits are currently unused. For compatibility with Go 1.12
+// and earlier, use a non-zero mode. Use mode 0400 for a read-only
+// file and 0600 for a readable+writable file.
 //
 // On Plan 9, the mode's permission bits, ModeAppend, ModeExclusive,
 // and ModeTemporary are used.

@@ -68,7 +68,7 @@ type Address struct {
 	Address string
 }
 
-// Parses a single RFC 5322 address, e.g. "Barry Gibbs <bg@example.com>"
+// ParseAddress parses a single RFC 5322 address, e.g. "Barry Gibbs <bg@example.com>"
 func ParseAddress(address string) (*Address, error)
 
 // ParseAddressList parses the given string as a list of addresses.

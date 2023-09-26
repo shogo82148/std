@@ -175,6 +175,8 @@ type OpError struct {
 	Err error
 }
 
+func (e *OpError) Unwrap() error
+
 func (e *OpError) Error() string
 
 func (e *OpError) Timeout() bool
@@ -218,6 +220,7 @@ type DNSConfigError struct {
 	Err error
 }
 
+func (e *DNSConfigError) Unwrap() error
 func (e *DNSConfigError) Error() string
 func (e *DNSConfigError) Timeout() bool
 func (e *DNSConfigError) Temporary() bool
@@ -231,6 +234,7 @@ type DNSError struct {
 	Server      string
 	IsTimeout   bool
 	IsTemporary bool
+	IsNotFound  bool
 }
 
 func (e *DNSError) Error() string

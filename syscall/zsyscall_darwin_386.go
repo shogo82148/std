@@ -162,8 +162,6 @@ func Fstat(fd int, stat *Stat_t) (err error)
 
 func Fstatfs(fd int, stat *Statfs_t) (err error)
 
-func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)
-
 func Gettimeofday(tp *Timeval) (err error)
 
 func Lstat(path string, stat *Stat_t) (err error)

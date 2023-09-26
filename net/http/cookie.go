@@ -41,6 +41,7 @@ const (
 	SameSiteDefaultMode SameSite = iota + 1
 	SameSiteLaxMode
 	SameSiteStrictMode
+	SameSiteNoneMode
 )
 
 // SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.

@@ -22,7 +22,7 @@ import (
 // object is qualified by the import path, e.g., "encoding/json.Marshal".
 type Qualifier func(*Package) string
 
-// RelativeTo(pkg) returns a Qualifier that fully qualifies members of
+// RelativeTo returns a Qualifier that fully qualifies members of
 // all packages other than pkg.
 func RelativeTo(pkg *Package) Qualifier
 

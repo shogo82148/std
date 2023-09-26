@@ -22,12 +22,14 @@ package strconv
 // 'e' (-d.dddde±dd, a decimal exponent),
 // 'E' (-d.ddddE±dd, a decimal exponent),
 // 'f' (-ddd.dddd, no exponent),
-// 'g' ('e' for large exponents, 'f' otherwise), or
-// 'G' ('E' for large exponents, 'f' otherwise).
+// 'g' ('e' for large exponents, 'f' otherwise),
+// 'G' ('E' for large exponents, 'f' otherwise),
+// 'x' (-0xd.ddddp±ddd, a hexadecimal fraction and binary exponent), or
+// 'X' (-0Xd.ddddP±ddd, a hexadecimal fraction and binary exponent).
 //
 // The precision prec controls the number of digits (excluding the exponent)
-// printed by the 'e', 'E', 'f', 'g', and 'G' formats.
-// For 'e', 'E', and 'f' it is the number of digits after the decimal point.
+// printed by the 'e', 'E', 'f', 'g', 'G', 'x', and 'X' formats.
+// For 'e', 'E', 'f', 'x', and 'X', it is the number of digits after the decimal point.
 // For 'g' and 'G' it is the maximum number of significant digits (trailing
 // zeros are removed).
 // The special precision -1 uses the smallest number of digits

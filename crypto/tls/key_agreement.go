@@ -10,4 +10,4 @@ package tls
 // ecdheKeyAgreement implements a TLS key agreement where the server
 // generates an ephemeral EC public/private key pair and signs it. The
 // pre-master secret is then calculated using ECDH. The signature may
-// either be ECDSA or RSA.
+// be ECDSA, Ed25519 or RSA.

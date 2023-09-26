@@ -258,6 +258,12 @@ func (d Duration) String() string
 // Nanoseconds returns the duration as an integer nanosecond count.
 func (d Duration) Nanoseconds() int64
 
+// Microseconds returns the duration as an integer microsecond count.
+func (d Duration) Microseconds() int64
+
+// Milliseconds returns the duration as an integer millisecond count.
+func (d Duration) Milliseconds() int64
+
 // Seconds returns the duration as a floating point number of seconds.
 func (d Duration) Seconds() float64
 

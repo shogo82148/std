@@ -76,10 +76,10 @@ func (c *TCPConn) CloseWrite() error
 func (c *TCPConn) SetLinger(sec int) error
 
 // SetKeepAlive sets whether the operating system should send
-// keepalive messages on the connection.
+// keep-alive messages on the connection.
 func (c *TCPConn) SetKeepAlive(keepalive bool) error
 
-// SetKeepAlivePeriod sets period between keep alives.
+// SetKeepAlivePeriod sets period between keep-alives.
 func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error
 
 // SetNoDelay controls whether the operating system should delay
@@ -101,6 +101,7 @@ func DialTCP(network string, laddr, raddr *TCPAddr) (*TCPConn, error)
 // use variables of type Listener instead of assuming TCP.
 type TCPListener struct {
 	fd *netFD
+	lc ListenConfig
 }
 
 // SyscallConn returns a raw network connection.

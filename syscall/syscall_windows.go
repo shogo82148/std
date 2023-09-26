@@ -55,6 +55,8 @@ func FormatMessage(flags uint32, msgsrc uint32, msgid uint32, langid uint32, buf
 
 func (e Errno) Error() string
 
+func (e Errno) Is(target error) bool
+
 func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool

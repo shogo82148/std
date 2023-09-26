@@ -13,7 +13,7 @@ type T struct {
 	True        bool
 	I           int
 	U16         uint16
-	X           string
+	X, S        string
 	FloatZero   float64
 	ComplexZero complex128
 
@@ -26,8 +26,11 @@ type T struct {
 	W1, W2 *W
 
 	SI      []int
+	SICap   []int
 	SIEmpty []int
 	SB      []bool
+
+	AI [3]int
 
 	MSI      map[string]int
 	MSIone   map[string]int

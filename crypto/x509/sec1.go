@@ -15,8 +15,14 @@ import (
 // Per RFC 5915 the NamedCurveOID is marked as ASN.1 OPTIONAL, however in
 // most cases it is not.
 
-// ParseECPrivateKey parses an ASN.1 Elliptic Curve Private Key Structure.
+// ParseECPrivateKey parses an EC public key in SEC 1, ASN.1 DER form.
+//
+// This kind of key is commonly encoded in PEM blocks of type "EC PUBLIC KEY".
 func ParseECPrivateKey(der []byte) (*ecdsa.PrivateKey, error)
 
-// MarshalECPrivateKey marshals an EC private key into ASN.1, DER format.
+// MarshalECPrivateKey converts an EC private key to SEC 1, ASN.1 DER form.
+//
+// This kind of key is commonly encoded in PEM blocks of type "EC PRIVATE KEY".
+// For a more flexible key format which is not EC specific, use
+// MarshalPKCS8PrivateKey.
 func MarshalECPrivateKey(key *ecdsa.PrivateKey) ([]byte, error)

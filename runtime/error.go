@@ -28,3 +28,11 @@ func (e *TypeAssertionError) Error() string
 // plainError represents a runtime error described a string without
 // the prefix "runtime error: " after invoking errorString.Error().
 // See Issue #14965.
+
+// An boundsError represents a an indexing or slicing operation gone wrong.
+
+// boundsErrorFmts provide error text for various out-of-bounds panics.
+// Note: if you change these strings, you should adjust the size of the buffer
+// in boundsError.Error below as well.
+
+// boundsNegErrorFmts are overriding formats if x is negative. In this case there's no need to report y.

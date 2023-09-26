@@ -3,13 +3,12 @@
 // license that can be found in the LICENSE file.
 
 // This file provides Go implementations of elementary multi-precision
-// arithmetic operations on word vectors. Needed for platforms without
-// assembly implementations of these routines.
+// arithmetic operations on word vectors. These have the suffix _g.
+// These are needed for platforms without assembly implementations of these routines.
+// This file also contains elementary operations that can be implemented
+// sufficiently efficiently in Go.
 
 package big
 
 // A Word represents a single digit of a multi-precision unsigned integer.
 type Word uint
-
-// Keep for performance debugging.
-// Using addWW_g is likely slower.

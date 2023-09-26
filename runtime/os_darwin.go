@@ -4,4 +4,6 @@
 
 package runtime
 
+// The read and write file descriptors used by the sigNote functions.
+
 //go:linkname executablePath os.executablePath

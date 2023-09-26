@@ -53,6 +53,10 @@ package time
 // The recognized day of week formats are "Mon" and "Monday".
 // The recognized month formats are "Jan" and "January".
 //
+// The formats 2, _2, and 02 are unpadded, space-padded, and zero-padded
+// day of month. The formats __2 and 002 are space-padded and zero-padded
+// three-character day of year; there is no unpadded day of year format.
+//
 // Text in the format string that is not recognized as part of the reference
 // time is echoed verbatim during Format and expected to appear verbatim
 // in the input to Parse.

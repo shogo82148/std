@@ -12,6 +12,7 @@ type Error struct {
 	Err error
 }
 
+func (e *Error) Unwrap() error
 func (e *Error) Error() string
 
 func (e *Error) Timeout() bool
@@ -46,8 +47,8 @@ func PathUnescape(s string) (string, error)
 // inside a URL query.
 func QueryEscape(s string) string
 
-// PathEscape escapes the string so it can be safely placed
-// inside a URL path segment.
+// PathEscape escapes the string so it can be safely placed inside a URL path segment,
+// replacing special characters (including /) with %XX sequences as needed.
 func PathEscape(s string) string
 
 // A URL represents a parsed URL (technically, a URI reference).
@@ -63,10 +64,11 @@ func PathEscape(s string) string
 // Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
 // A consequence is that it is impossible to tell which slashes in the Path were
 // slashes in the raw URL and which were %2f. This distinction is rarely important,
-// but when it is, code must not use Path directly.
-// The Parse function sets both Path and RawPath in the URL it returns,
-// and URL's String method uses RawPath if it is a valid encoding of Path,
-// by calling the EscapedPath method.
+// but when it is, the code should use RawPath, an optional field which only gets
+// set if the default encoding is different from Path.
+//
+// URL's String method uses the EscapedPath method to obtain the path. See the
+// EscapedPath method for more details.
 type URL struct {
 	Scheme     string
 	Opaque     string

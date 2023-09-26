@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !compiler_bootstrap || go1.8
-// +build !compiler_bootstrap go1.8
-
 package sort
 
 // Slice sorts the provided slice given the provided less function.

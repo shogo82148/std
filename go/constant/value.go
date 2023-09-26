@@ -103,6 +103,32 @@ func Float32Val(x Value) (float32, bool)
 // If x is Unknown, the result is (0, false).
 func Float64Val(x Value) (float64, bool)
 
+// Val returns the underlying value for a given constant. Since it returns an
+// interface, it is up to the caller to type assert the result to the expected
+// type. The possible dynamic return types are:
+//
+//	x Kind             type of result
+//	-----------------------------------------
+//	Bool               bool
+//	String             string
+//	Int                int64 or *big.Int
+//	Float              *big.Float or *big.Rat
+//	everything else    nil
+func Val(x Value) interface{}
+
+// Make returns the Value for x.
+//
+//	type of x        result Kind
+//	----------------------------
+//	bool             Bool
+//	string           String
+//	int64            Int
+//	*big.Int         Int
+//	*big.Float       Float
+//	*big.Rat         Float
+//	anything else    Unknown
+func Make(x interface{}) Value
+
 // BitLen returns the number of bits required to represent
 // the absolute value x in binary representation; x must be an Int or an Unknown.
 // If x is Unknown, the result is 0.

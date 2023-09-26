@@ -151,3 +151,14 @@ func (tok Token) IsOperator() bool
 // IsKeyword returns true for tokens corresponding to keywords;
 // it returns false otherwise.
 func (tok Token) IsKeyword() bool
+
+// IsExported reports whether name starts with an upper-case letter.
+func IsExported(name string) bool
+
+// IsKeyword reports whether name is a Go keyword, such as "func" or "return".
+func IsKeyword(name string) bool
+
+// IsIdentifier reports whether name is a Go identifier, that is, a non-empty
+// string made up of letters, digits, and underscores, where the first character
+// is not a digit. Keywords are not identifiers.
+func IsIdentifier(name string) bool

@@ -34,3 +34,7 @@ func (f *File) Visit(node ast.Node) ast.Visitor
 
 // funcLitFinder implements the ast.Visitor pattern to find the location of any
 // function literal in a subtree.
+
+// pos2 is a pair of token.Position values, used as a map key type.
+
+// seenPos2 tracks whether we have seen a token.Position pair.

@@ -96,13 +96,19 @@ package runtime
 // ../cmd/compile/internal/gc/reflect.go:/^func.dumptypestructs.
 
 // Lock-free stack node.
-// // Also known to export_test.go.
+// Also known to export_test.go.
 
 // startup_random_data holds random bytes initialized at startup. These come from
 // the ELF AT_RANDOM auxiliary vector (vdso_linux_amd64.go or os_linux_386.go).
 
 // A _defer holds an entry on the list of deferred calls.
 // If you add a field here, add code to clear it in freedefer.
+// This struct must match the code in cmd/compile/internal/gc/reflect.go:deferstruct
+// and cmd/compile/internal/gc/ssa.go:(*state).call.
+// Some defers will be allocated on the stack and some on the heap.
+// All defers are logically part of the stack, so write barriers to
+// initialize them are not required. All defers must be manually scanned,
+// and for heap defers, marked.
 
 // A _panic holds information about an active panic.
 //

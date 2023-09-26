@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package runtime
+
+//go:linkname asmsysvicall6x runtime.asmsysvicall6

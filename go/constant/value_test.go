@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package constant
+
+// The RHS operand may be a floating-point quotient n/d of two integer values n and d.

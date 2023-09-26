@@ -28,6 +28,7 @@ package syscall
 #include <netinet/in.h>
 #include <netinet/icmp6.h>
 
+#include <termios.h>
 
 #include <dirent.h>
 #include <fcntl.h>
@@ -133,3 +134,5 @@ const (
 type IfMsgHdr C.struct_if_msghdr
 
 type Utsname C.struct_utsname
+
+type Termios C.struct_termios

@@ -33,6 +33,7 @@ const DevNull = "/dev/null"
 // Close closes the File, rendering it unusable for I/O.
 // On files that support SetDeadline, any pending I/O operations will
 // be canceled and return immediately with an error.
+// Close will return an error if it has already been called.
 func (f *File) Close() error
 
 // Truncate changes the size of the named file.
@@ -51,3 +52,7 @@ func Link(oldname, newname string) error
 // Symlink creates newname as a symbolic link to oldname.
 // If there is an error, it will be of type *LinkError.
 func Symlink(oldname, newname string) error
+
+// Readlink returns the destination of the named symbolic link.
+// If there is an error, it will be of type *PathError.
+func Readlink(name string) (string, error)

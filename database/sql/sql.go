@@ -8,7 +8,7 @@
 // The sql package must be used in conjunction with a database driver.
 // See https://golang.org/s/sqldrivers for a list of drivers.
 //
-// Drivers that do not support context cancelation will not return until
+// Drivers that do not support context cancellation will not return until
 // after the query is completed.
 //
 // For usage examples, see the wiki page at
@@ -134,6 +134,20 @@ func (n *NullInt64) Scan(value interface{}) error
 // Value implements the driver Valuer interface.
 func (n NullInt64) Value() (driver.Value, error)
 
+// NullInt32 represents an int32 that may be null.
+// NullInt32 implements the Scanner interface so
+// it can be used as a scan destination, similar to NullString.
+type NullInt32 struct {
+	Int32 int32
+	Valid bool
+}
+
+// Scan implements the Scanner interface.
+func (n *NullInt32) Scan(value interface{}) error
+
+// Value implements the driver Valuer interface.
+func (n NullInt32) Value() (driver.Value, error)
+
 // NullFloat64 represents a float64 that may be null.
 // NullFloat64 implements the Scanner interface so
 // it can be used as a scan destination, similar to NullString.
@@ -161,6 +175,20 @@ func (n *NullBool) Scan(value interface{}) error
 
 // Value implements the driver Valuer interface.
 func (n NullBool) Value() (driver.Value, error)
+
+// NullTime represents a time.Time that may be null.
+// NullTime implements the Scanner interface so
+// it can be used as a scan destination, similar to NullString.
+type NullTime struct {
+	Time  time.Time
+	Valid bool
+}
+
+// Scan implements the Scanner interface.
+func (n *NullTime) Scan(value interface{}) error
+
+// Value implements the driver Valuer interface.
+func (n NullTime) Value() (driver.Value, error)
 
 // Scanner is an interface used by Scan.
 type Scanner interface {
@@ -214,7 +242,6 @@ type DB struct {
 	numOpen      int
 
 	openerCh          chan struct{}
-	resetterCh        chan *driverConn
 	closed            bool
 	dep               map[finalCloser]depSet
 	lastPut           map[*driverConn]string
@@ -235,6 +262,8 @@ type DB struct {
 // be held during all calls into the Conn. (including any calls onto
 // interfaces returned via that Conn, such as calls on Tx, Stmt,
 // Result, Rows)
+
+// validator was introduced for Go1.15, but backported to Go1.14.
 
 // driverStmt associates a driver.Stmt with the
 // *driverConn from which it came, so the driverConn's lock can be
@@ -492,6 +521,13 @@ func (c *Conn) QueryRowContext(ctx context.Context, query string, args ...interf
 // execution of the statement.
 func (c *Conn) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 
+// Raw executes f exposing the underlying driver connection for the
+// duration of f. The driverConn must not be used outside of f.
+//
+// Once f returns and err is nil, the Conn will continue to be usable
+// until Conn.Close is called.
+func (c *Conn) Raw(f func(driverConn interface{}) error) (err error)
+
 // BeginTx starts a transaction.
 //
 // The provided context is used until the transaction is committed or rolled back.
@@ -532,6 +568,8 @@ type Tx struct {
 	releaseConn func(error)
 
 	done int32
+
+	keepConnOnRollback bool
 
 	stmts struct {
 		sync.Mutex

@@ -20,6 +20,10 @@ import (
 // testConnSet tracks a set of TCP connections and whether they've
 // been closed.
 
+// A countedConn is a net.Conn that decrements an atomic counter when finalized.
+
+// A countingDialer dials connections and counts the number that remain reachable.
+
 // byteFromChanReader is an io.Reader that reads a single byte at a
 // time from the channel. When the channel is closed, the reader
 // returns io.EOF.
@@ -29,3 +33,9 @@ import (
 // It proxies Read calls to a reader it receives from rch.
 
 // rgz is a gzip quine that uncompresses to itself.
+
+// testMockTCPConn is a mock TCP connection used to test that
+// ReadFrom is called when sending the request body.
+
+// breakableConn is a net.Conn wrapper with a Write method
+// that will fail when its brokenState is true.

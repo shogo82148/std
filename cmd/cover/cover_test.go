@@ -3,3 +3,7 @@
 // license that can be found in the LICENSE file.
 
 package main_test
+
+// lineDupContents becomes linedup.go in TestFuncWithDuplicateLines.
+
+// lineDupTestContents becomes linedup_test.go in TestFuncWithDuplicateLines.

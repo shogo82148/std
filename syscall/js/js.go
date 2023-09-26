@@ -56,7 +56,6 @@ func Global() Value
 //	| Go                     | JavaScript             |
 //	| ---------------------- | ---------------------- |
 //	| js.Value               | [its value]            |
-//	| js.TypedArray          | typed array            |
 //	| js.Func                | function               |
 //	| nil                    | null                   |
 //	| bool                   | boolean                |
@@ -89,18 +88,23 @@ func (t Type) String() string
 func (v Value) Type() Type
 
 // Get returns the JavaScript property p of value v.
+// It panics if v is not a JavaScript object.
 func (v Value) Get(p string) Value
 
 // Set sets the JavaScript property p of value v to ValueOf(x).
+// It panics if v is not a JavaScript object.
 func (v Value) Set(p string, x interface{})
 
 // Index returns JavaScript index i of value v.
+// It panics if v is not a JavaScript object.
 func (v Value) Index(i int) Value
 
 // SetIndex sets the JavaScript index i of value v to ValueOf(x).
+// It panics if v is not a JavaScript object.
 func (v Value) SetIndex(i int, x interface{})
 
 // Length returns the JavaScript property "length" of v.
+// It panics if v is not a JavaScript object.
 func (v Value) Length() int
 
 // Call does a JavaScript call to the method m of value v with the given arguments.
@@ -109,22 +113,25 @@ func (v Value) Length() int
 func (v Value) Call(m string, args ...interface{}) Value
 
 // Invoke does a JavaScript call of the value v with the given arguments.
-// It panics if v is not a function.
+// It panics if v is not a JavaScript function.
 // The arguments get mapped to JavaScript values according to the ValueOf function.
 func (v Value) Invoke(args ...interface{}) Value
 
 // New uses JavaScript's "new" operator with value v as constructor and the given arguments.
-// It panics if v is not a function.
+// It panics if v is not a JavaScript function.
 // The arguments get mapped to JavaScript values according to the ValueOf function.
 func (v Value) New(args ...interface{}) Value
 
-// Float returns the value v as a float64. It panics if v is not a JavaScript number.
+// Float returns the value v as a float64.
+// It panics if v is not a JavaScript number.
 func (v Value) Float() float64
 
-// Int returns the value v truncated to an int. It panics if v is not a JavaScript number.
+// Int returns the value v truncated to an int.
+// It panics if v is not a JavaScript number.
 func (v Value) Int() int
 
-// Bool returns the value v as a bool. It panics if v is not a JavaScript boolean.
+// Bool returns the value v as a bool.
+// It panics if v is not a JavaScript boolean.
 func (v Value) Bool() bool
 
 // Truthy returns the JavaScript "truthiness" of the value v. In JavaScript,
@@ -132,7 +139,10 @@ func (v Value) Bool() bool
 // "truthy". See https://developer.mozilla.org/en-US/docs/Glossary/Truthy.
 func (v Value) Truthy() bool
 
-// String returns the value v converted to string according to JavaScript type conversions.
+// String returns the value v as a string.
+// String is a special case because of Go's String method convention. Unlike the other getters,
+// it does not panic if v's Type is not TypeString. Instead, it returns a string of the form "<T>"
+// or "<T: V>" where T is v's type and V is a string representation of v's value.
 func (v Value) String() string
 
 // InstanceOf reports whether v is an instance of type t according to JavaScript's instanceof operator.
@@ -147,3 +157,13 @@ type ValueError struct {
 }
 
 func (e *ValueError) Error() string
+
+// CopyBytesToGo copies bytes from the Uint8Array src to dst.
+// It returns the number of bytes copied, which will be the minimum of the lengths of src and dst.
+// CopyBytesToGo panics if src is not an Uint8Array.
+func CopyBytesToGo(dst []byte, src Value) int
+
+// CopyBytesToJS copies bytes from src to the Uint8Array dst.
+// It returns the number of bytes copied, which will be the minimum of the lengths of src and dst.
+// CopyBytesToJS panics if dst is not an Uint8Array.
+func CopyBytesToJS(dst Value, src []byte) int

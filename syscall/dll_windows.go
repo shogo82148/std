@@ -107,7 +107,7 @@ func (d *LazyDLL) NewProc(name string) *LazyProc
 func NewLazyDLL(name string) *LazyDLL
 
 // A LazyProc implements access to a procedure inside a LazyDLL.
-// It delays the lookup until the Addr method is called.
+// It delays the lookup until the Addr, Call, or Find method is called.
 type LazyProc struct {
 	mu   sync.Mutex
 	Name string
@@ -124,11 +124,6 @@ func (p *LazyProc) Find() error
 // The return value can be passed to Syscall to run the procedure.
 func (p *LazyProc) Addr() uintptr
 
-// Call executes procedure p with arguments a. It will panic, if more than 15 arguments
-// are supplied.
-//
-// The returned error is always non-nil, constructed from the result of GetLastError.
-// Callers must inspect the primary return value to decide whether an error occurred
-// (according to the semantics of the specific function being called) before consulting
-// the error. The error will be guaranteed to contain syscall.Errno.
+// Call executes procedure p with arguments a. See the documentation of
+// Proc.Call for more information.
 func (p *LazyProc) Call(a ...uintptr) (r1, r2 uintptr, lastErr error)

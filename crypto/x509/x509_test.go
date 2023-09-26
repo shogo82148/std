@@ -9,6 +9,8 @@ import (
 	_ "crypto/sha512"
 )
 
+// pemEd25519Key is the example from RFC 8410, Secrion 4.
+
 // Self-signed certificate using ECDSA with SHA1 & secp256r1
 
 // Self-signed certificate using ECDSA with SHA256 & secp256r1

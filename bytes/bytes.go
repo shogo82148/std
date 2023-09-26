@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/unicode"
 )
 
-// Equal returns a boolean reporting whether a and b
+// Equal reports whether a and b
 // are the same length and contain the same bytes.
 // A nil argument is equivalent to an empty slice.
 func Equal(a, b []byte) bool
@@ -129,10 +129,12 @@ func Map(mapping func(r rune) rune, s []byte) []byte
 // the result of (len(b) * count) overflows.
 func Repeat(b []byte, count int) []byte
 
-// ToUpper treats s as UTF-8-encoded bytes and returns a copy with all the Unicode letters within it mapped to their upper case.
+// ToUpper returns a copy of the byte slice s with all Unicode letters mapped to
+// their upper case.
 func ToUpper(s []byte) []byte
 
-// ToLower treats s as UTF-8-encoded bytes and returns a copy with all the Unicode letters mapped to their lower case.
+// ToLower returns a copy of the byte slice s with all Unicode letters mapped to
+// their lower case.
 func ToLower(s []byte) []byte
 
 // ToTitle treats s as UTF-8-encoded bytes and returns a copy with all the Unicode letters mapped to their title case.
@@ -149,6 +151,10 @@ func ToLowerSpecial(c unicode.SpecialCase, s []byte) []byte
 // ToTitleSpecial treats s as UTF-8-encoded bytes and returns a copy with all the Unicode letters mapped to their
 // title case, giving priority to the special casing rules.
 func ToTitleSpecial(c unicode.SpecialCase, s []byte) []byte
+
+// ToValidUTF8 treats s as UTF-8-encoded bytes and returns a copy with each run of bytes
+// representing invalid UTF-8 replaced with the bytes in replacement, which may be empty.
+func ToValidUTF8(s, replacement []byte) []byte
 
 // Title treats s as UTF-8-encoded bytes and returns a copy with all Unicode letters that begin
 // words mapped to their title case.

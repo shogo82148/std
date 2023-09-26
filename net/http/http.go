@@ -12,7 +12,7 @@ import (
 // Transport's byte-limiting readers.
 
 // aLongTimeAgo is a non-zero time, far in the past, used for
-// immediate cancelation of network operations.
+// immediate cancellation of network operations.
 
 // contextKey is a value for use with context.WithValue. It's used as
 // a pointer so it fits in an interface{} without allocation.

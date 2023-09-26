@@ -44,6 +44,9 @@ func (pos Position) String() string
 // returns the respective individual characters (or possibly sub-tokens).
 // For instance, if the mode is ScanIdents (not ScanStrings), the string
 // "foo" is scanned as the token sequence '"' Ident '"'.
+//
+// Use GoTokens to configure the Scanner such that it accepts all Go
+// literal tokens including Go identifiers. Comments will be skipped.
 const (
 	ScanIdents     = 1 << -Ident
 	ScanInts       = 1 << -Int
@@ -140,5 +143,5 @@ func (s *Scanner) Scan() rune
 func (s *Scanner) Pos() (pos Position)
 
 // TokenText returns the string corresponding to the most recently scanned token.
-// Valid after calling Scan().
+// Valid after calling Scan and in calls of Scanner.Error.
 func (s *Scanner) TokenText() string

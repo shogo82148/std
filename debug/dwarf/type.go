@@ -188,6 +188,15 @@ func (t *TypedefType) String() string
 
 func (t *TypedefType) Size() int64
 
+// An UnsupportedType is a placeholder returned in situations where we
+// encounter a type that isn't supported.
+type UnsupportedType struct {
+	CommonType
+	Tag Tag
+}
+
+func (t *UnsupportedType) String() string
+
 // typeReader is used to read from either the info section or the
 // types section.
 

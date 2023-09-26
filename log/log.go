@@ -131,6 +131,9 @@ func Prefix() string
 // SetPrefix sets the output prefix for the standard logger.
 func SetPrefix(prefix string)
 
+// Writer returns the output destination for the standard logger.
+func Writer() io.Writer
+
 // Print calls Output to print to the standard logger.
 // Arguments are handled in the manner of fmt.Print.
 func Print(v ...interface{})

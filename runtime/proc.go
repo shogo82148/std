@@ -4,6 +4,12 @@
 
 package runtime
 
+// set using cmd/go/internal/modload.ModInfoProg
+
+//go:linkname runtime_inittask runtime..inittask
+
+//go:linkname main_inittask main..inittask
+
 // main_init_done is a signal used by cgocallbackg that initialization
 // has been completed. It is made before _cgo_notify_runtime_init_done,
 // so all cgo calls can rely on it existing. When main_init is complete,
@@ -75,8 +81,6 @@ func LockOSThread()
 // hence the thread) exits.
 func UnlockOSThread()
 
-// Counts SIGPROFs received while in atomic64 critical section, on mips{,le}
-
 // If the signal handler receives a SIGPROF signal on a non-Go thread,
 // it tries to collect a traceback into sigprofCallers.
 // sigprofCallersUse is set to non-zero while sigprofCallers holds a traceback.
@@ -110,3 +114,5 @@ func UnlockOSThread()
 // They allow to enumerate all Ps in different pseudo-random orders without repetitions.
 // The algorithm is based on the fact that if we have X such that X and GOMAXPROCS
 // are coprime, then a sequences of (i + X) % GOMAXPROCS gives the required enumeration.
+
+// An initTask represents the set of initializations that need to be done for a package.

@@ -39,9 +39,11 @@ func (x *Rat) Float32() (f float32, exact bool)
 func (x *Rat) Float64() (f float64, exact bool)
 
 // SetFrac sets z to a/b and returns z.
+// If b == 0, SetFrac panics.
 func (z *Rat) SetFrac(a, b *Int) *Rat
 
 // SetFrac64 sets z to a/b and returns z.
+// If b == 0, SetFrac64 panics.
 func (z *Rat) SetFrac64(a, b int64) *Rat
 
 // SetInt sets z to x (by making a copy of x) and returns z.
@@ -49,6 +51,9 @@ func (z *Rat) SetInt(x *Int) *Rat
 
 // SetInt64 sets z to x and returns z.
 func (z *Rat) SetInt64(x int64) *Rat
+
+// SetUint64 sets z to x and returns z.
+func (z *Rat) SetUint64(x uint64) *Rat
 
 // Set sets z to x (by making a copy of x) and returns z.
 func (z *Rat) Set(x *Rat) *Rat
@@ -60,6 +65,7 @@ func (z *Rat) Abs(x *Rat) *Rat
 func (z *Rat) Neg(x *Rat) *Rat
 
 // Inv sets z to 1/x and returns z.
+// If x == 0, Inv panics.
 func (z *Rat) Inv(x *Rat) *Rat
 
 // Sign returns:
@@ -79,7 +85,11 @@ func (x *Rat) IsInt() bool
 func (x *Rat) Num() *Int
 
 // Denom returns the denominator of x; it is always > 0.
-// The result is a reference to x's denominator; it
+// The result is a reference to x's denominator, unless
+// x is an uninitialized (zero value) Rat, in which case
+// the result is a new Int of value 1. (To initialize x,
+// any operation that sets x will do, including x.Set(x).)
+// If the result is a reference to x's denominator it
 // may change if a new value is assigned to x, and vice versa.
 func (x *Rat) Denom() *Int
 
@@ -100,5 +110,5 @@ func (z *Rat) Sub(x, y *Rat) *Rat
 func (z *Rat) Mul(x, y *Rat) *Rat
 
 // Quo sets z to the quotient x/y and returns z.
-// If y == 0, a division-by-zero run-time panic occurs.
+// If y == 0, Quo panics.
 func (z *Rat) Quo(x, y *Rat) *Rat

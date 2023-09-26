@@ -10,6 +10,9 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// defaultTCPKeepAlive is a default constant value for TCPKeepAlive times
+// See golang.org/issue/31510
+
 // A Dialer contains options for connecting to an address.
 //
 // The zero value for each field is equivalent to dialing
@@ -128,6 +131,8 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 // ListenConfig contains options for listening to an address.
 type ListenConfig struct {
 	Control func(network, address string, c syscall.RawConn) error
+
+	KeepAlive time.Duration
 }
 
 // Listen announces on the local network address.

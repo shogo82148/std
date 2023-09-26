@@ -25,6 +25,8 @@ type Frame struct {
 	Line int
 
 	Entry uintptr
+
+	funcInfo funcInfo
 }
 
 // CallersFrames takes a slice of PC values returned by Callers and

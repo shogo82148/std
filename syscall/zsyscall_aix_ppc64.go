@@ -6,6 +6,8 @@
 
 package syscall
 
+func Dup2(old int, new int) (err error)
+
 func Getkerninfo(op int32, where uintptr, size uintptr, arg int64) (i int32, err error)
 
 func Listen(s int, backlog int) (err error)
@@ -21,6 +23,8 @@ func Chdir(path string) (err error)
 func Chmod(path string, mode uint32) (err error)
 
 func Chown(path string, uid int, gid int) (err error)
+
+func Chroot(path string) (err error)
 
 func Close(fd int) (err error)
 
@@ -57,6 +61,8 @@ func Geteuid() (euid int)
 func Getegid() (egid int)
 
 func Getppid() (ppid int)
+
+func Getpriority(which int, who int) (n int, err error)
 
 func Getrlimit(which int, lim *Rlimit) (err error)
 
@@ -100,9 +106,13 @@ func Setgid(gid int) (err error)
 
 func Setpgid(pid int, pgid int) (err error)
 
+func Setpriority(which int, who int, prio int) (err error)
+
 func Setregid(rgid int, egid int) (err error)
 
 func Setreuid(ruid int, euid int) (err error)
+
+func Setrlimit(which int, lim *Rlimit) (err error)
 
 func Stat(path string, stat *Stat_t) (err error)
 

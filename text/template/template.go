@@ -30,6 +30,10 @@ func (t *Template) Name() string
 // New allocates a new, undefined template associated with the given one and with the same
 // delimiters. The association, which is transitive, allows one template to
 // invoke another with a {{template}} action.
+//
+// Because associated templates share underlying data, template construction
+// cannot be done safely in parallel. Once the templates are constructed, they
+// can be executed in parallel.
 func (t *Template) New(name string) *Template
 
 // Clone returns a duplicate of the template, including all associated

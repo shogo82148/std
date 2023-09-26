@@ -29,6 +29,8 @@ type ExecError struct {
 
 func (e ExecError) Error() string
 
+func (e ExecError) Unwrap() error
+
 // writeError is the wrapper type used internally when Execute has an
 // error writing to its output. We strip the wrapper in errRecover.
 // Note that this is not an implementation of error, so it cannot escape

@@ -3,3 +3,9 @@
 // license that can be found in the LICENSE file.
 
 package http
+
+import (
+	"io"
+)
+
+var _ io.ReaderFrom = (*mockTransferWriter)(nil)

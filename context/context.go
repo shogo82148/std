@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package context defines the Context type, which carries deadlines,
-// cancelation signals, and other request-scoped values across API boundaries
+// cancellation signals, and other request-scoped values across API boundaries
 // and between processes.
 //
 // Incoming requests to a server should create a Context, and outgoing
@@ -52,7 +52,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A Context carries a deadline, a cancelation signal, and other values across
+// A Context carries a deadline, a cancellation signal, and other values across
 // API boundaries.
 //
 // Context's methods may be called by multiple goroutines simultaneously.
@@ -90,6 +90,7 @@ func TODO() Context
 
 // A CancelFunc tells an operation to abandon its work.
 // A CancelFunc does not wait for the work to stop.
+// A CancelFunc may be called by multiple goroutines simultaneously.
 // After the first call, subsequent calls to a CancelFunc do nothing.
 type CancelFunc func()
 

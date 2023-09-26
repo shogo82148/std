@@ -16,12 +16,14 @@ import (
 // overridden by the -contexts flag.
 
 type Walker struct {
-	context  *build.Context
-	root     string
-	scope    []string
-	current  *types.Package
-	features map[string]bool
-	imported map[string]*types.Package
+	context   *build.Context
+	root      string
+	scope     []string
+	current   *types.Package
+	features  map[string]bool
+	imported  map[string]*types.Package
+	importMap map[string]map[string]string
+	importDir map[string]string
 }
 
 func NewWalker(context *build.Context, root string) *Walker
@@ -34,3 +36,5 @@ func (w *Walker) Features() (fs []string)
 // for a package that is in the process of being imported.
 
 func (w *Walker) Import(name string) (*types.Package, error)
+
+func (w *Walker) ImportFrom(fromPath, fromDir string, mode types.ImportMode) (*types.Package, error)

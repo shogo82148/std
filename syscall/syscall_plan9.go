@@ -21,6 +21,8 @@ func (e ErrorString) Error() string
 // NewError converts s to an ErrorString, which satisfies the Error interface.
 func NewError(s string) error
 
+func (e ErrorString) Is(target error) bool
+
 func (e ErrorString) Temporary() bool
 
 func (e ErrorString) Timeout() bool

@@ -88,7 +88,7 @@ func (v *Map) Add(key string, delta int64)
 // AddFloat adds delta to the *Float value stored under the given map key.
 func (v *Map) AddFloat(key string, delta float64)
 
-// Deletes the given key from the map.
+// Delete deletes the given key from the map.
 func (v *Map) Delete(key string)
 
 // Do calls f for each entry in the map.

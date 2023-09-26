@@ -144,6 +144,8 @@ var ErrVerification = errors.New("crypto/rsa: verification error")
 // in the future.
 func (priv *PrivateKey) Precompute()
 
+// DecryptOAEP decrypts ciphertext using RSA-OAEP.
+//
 // OAEP is parameterised by a hash function that is used as a random oracle.
 // Encryption and decryption of a given message must use the same hash function
 // and sha256.New() is a reasonable choice.

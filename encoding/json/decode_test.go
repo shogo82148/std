@@ -37,6 +37,15 @@ type W struct {
 	S SS
 }
 
+type P struct {
+	PP PP
+}
+
+type PP struct {
+	T  T
+	Ts []T
+}
+
 type SS string
 
 // ifaceNumAsFloat64/ifaceNumAsNumber are used to test unmarshaling with and

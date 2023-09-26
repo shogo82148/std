@@ -4,8 +4,6 @@
 
 package syscall
 
-func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)
-
 func SetKevent(k *Kevent_t, fd, mode, flags int)
 
 func (iov *Iovec) SetLen(length int)

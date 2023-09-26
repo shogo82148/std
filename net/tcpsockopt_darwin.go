@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package net
+
+// syscall.TCP_KEEPINTVL is missing on some darwin architectures.

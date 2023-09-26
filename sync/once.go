@@ -6,8 +6,8 @@ package sync
 
 // Once is an object that will perform exactly one action.
 type Once struct {
-	m    Mutex
 	done uint32
+	m    Mutex
 }
 
 // Do calls the function f if and only if Do is being called for the

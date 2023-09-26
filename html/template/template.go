@@ -171,9 +171,10 @@ func ParseFiles(filenames ...string) (*Template, error)
 // ParseFiles returns an error if t or any associated template has already been executed.
 func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 
-// ParseGlob creates a new Template and parses the template definitions from the
-// files identified by the pattern, which must match at least one file. The
-// returned template will have the (base) name and (parsed) contents of the
+// ParseGlob creates a new Template and parses the template definitions from
+// the files identified by the pattern. The files are matched according to the
+// semantics of filepath.Match, and the pattern must match at least one file.
+// The returned template will have the (base) name and (parsed) contents of the
 // first file matched by the pattern. ParseGlob is equivalent to calling
 // ParseFiles with the list of files matched by the pattern.
 //
@@ -182,10 +183,10 @@ func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 func ParseGlob(pattern string) (*Template, error)
 
 // ParseGlob parses the template definitions in the files identified by the
-// pattern and associates the resulting templates with t. The pattern is
-// processed by filepath.Glob and must match at least one file. ParseGlob is
-// equivalent to calling t.ParseFiles with the list of files matched by the
-// pattern.
+// pattern and associates the resulting templates with t. The files are matched
+// according to the semantics of filepath.Match, and the pattern must match at
+// least one file. ParseGlob is equivalent to calling t.ParseFiles with the
+// list of files matched by the pattern.
 //
 // When parsing multiple files with the same name in different directories,
 // the last one mentioned will be the one that results.

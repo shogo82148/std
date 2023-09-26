@@ -20,6 +20,15 @@ const (
 	SYS_FCNTL
 )
 
+const (
+	// AF_LOCAL doesn't exist on AIX
+	AF_LOCAL = AF_UNIX
+)
+
+func (ts *StTimespec_t) Unix() (sec int64, nsec int64)
+
+func (ts *StTimespec_t) Nano() int64
+
 // sysnb pipe(p *[2]_C_int) (err error)
 func Pipe(p []int) (err error)
 

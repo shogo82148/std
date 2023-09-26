@@ -242,6 +242,13 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// Init registers testing flags. These flags are automatically registered by
+// the "go test" command before running test functions, so Init is only needed
+// when calling functions such as Benchmark without using "go test".
+//
+// Init has no effect if it was already called.
+func Init()
+
 // The maximum number of stack frames to go through when skipping helper functions for
 // the purpose of decorating log messages.
 

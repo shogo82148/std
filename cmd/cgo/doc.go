@@ -295,7 +295,7 @@ Go functions can be exported for use by C code in the following way:
 
 They will be available in the C code as:
 
-	extern int64 MyFunction(int arg1, int arg2, GoString arg3);
+	extern GoInt64 MyFunction(int arg1, int arg2, GoString arg3);
 	extern struct MyFunction2_return MyFunction2(int arg1, int arg2, GoString arg3);
 
 found in the _cgo_export.h generated header, after any preambles

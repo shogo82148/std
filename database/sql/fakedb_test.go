@@ -44,6 +44,8 @@ type Dummy struct {
 
 // hook to simulate connection failures
 
+var _ validator = (*fakeConn)(nil)
+
 // hook to simulate broken connections
 
 // hook to simulate broken connections

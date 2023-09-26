@@ -21,6 +21,8 @@ const (
 // acceptRange gives the range of valid values for the second byte in a UTF-8
 // sequence.
 
+// acceptRanges has size 16 to avoid bounds checks in the code that uses it.
+
 // FullRune reports whether the bytes in p begin with a full UTF-8 encoding of a rune.
 // An invalid encoding is considered a full Rune since it will convert as a width-1 error rune.
 func FullRune(p []byte) bool

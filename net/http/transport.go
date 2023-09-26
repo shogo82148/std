@@ -13,6 +13,7 @@ import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/sync"
@@ -32,6 +33,7 @@ var DefaultTransport RoundTripper = &Transport{
 		KeepAlive: 30 * time.Second,
 		DualStack: true,
 	}).DialContext,
+	ForceAttemptHTTP2:     true,
 	MaxIdleConns:          100,
 	IdleConnTimeout:       90 * time.Second,
 	TLSHandshakeTimeout:   10 * time.Second,
@@ -41,10 +43,6 @@ var DefaultTransport RoundTripper = &Transport{
 // DefaultMaxIdleConnsPerHost is the default value of Transport's
 // MaxIdleConnsPerHost.
 const DefaultMaxIdleConnsPerHost = 2
-
-// connsPerHostClosedCh is a closed channel used by MaxConnsPerHost
-// for the property that receives from a closed channel return the
-// zero value.
 
 // Transport is an implementation of RoundTripper that supports HTTP,
 // HTTPS, and HTTP proxies (for either HTTP or HTTPS with CONNECT).
@@ -82,11 +80,11 @@ const DefaultMaxIdleConnsPerHost = 2
 // request is treated as idempotent but the header is not sent on the
 // wire.
 type Transport struct {
-	idleMu     sync.Mutex
-	wantIdle   bool
-	idleConn   map[connectMethodKey][]*persistConn
-	idleConnCh map[connectMethodKey]chan *persistConn
-	idleLRU    connLRU
+	idleMu       sync.Mutex
+	closeIdle    bool
+	idleConn     map[connectMethodKey][]*persistConn
+	idleConnWait map[connectMethodKey]wantConnQueue
+	idleLRU      connLRU
 
 	reqMu       sync.Mutex
 	reqCanceler map[*Request]func(error)
@@ -94,9 +92,9 @@ type Transport struct {
 	altMu    sync.Mutex
 	altProto atomic.Value
 
-	connCountMu          sync.Mutex
-	connPerHostCount     map[connectMethodKey]int
-	connPerHostAvailable map[connectMethodKey]chan struct{}
+	connsPerHostMu   sync.Mutex
+	connsPerHost     map[connectMethodKey]int
+	connsPerHostWait map[connectMethodKey]wantConnQueue
 
 	Proxy func(*Request) (*url.URL, error)
 
@@ -132,9 +130,19 @@ type Transport struct {
 
 	MaxResponseHeaderBytes int64
 
-	nextProtoOnce sync.Once
-	h2transport   h2Transport
+	WriteBufferSize int
+
+	ReadBufferSize int
+
+	nextProtoOnce      sync.Once
+	h2transport        h2Transport
+	tlsNextProtoWasNil bool
+
+	ForceAttemptHTTP2 bool
 }
+
+// Clone returns a deep copy of t's exported fields.
+func (t *Transport) Clone() *Transport
 
 // h2Transport is the interface we expect to be able to call from
 // net/http against an *http2.Transport that's either bundled into
@@ -209,9 +217,14 @@ func (t *Transport) CancelRequest(req *Request)
 // the user's custom net.Conn.Read error too, so we carry it along for
 // them to return from Transport.RoundTrip.
 
-// connCloseListener wraps a connection, the transport that dialed it
-// and the connected-to host key so the host connection count can be
-// transparently decremented by whatever closes the embedded connection.
+// A wantConn records state about a wanted connection
+// (that is, an active call to getConn).
+// The conn may be gotten by dialing or by finding an idle connection,
+// or a cancellation may make the conn no longer wanted.
+// These three options are racing against each other and use
+// wantConn to coordinate and agree about the winning outcome.
+
+// A wantConnQueue is a queue of wantConns.
 
 // persistConnWriter is the io.Writer written to by pc.bw.
 // It accumulates the number of bytes written to the underlying conn,
@@ -219,6 +232,8 @@ func (t *Transport) CancelRequest(req *Request)
 // the wire.
 // This is exactly 1 pointer field wide so it can go into an interface
 // without allocation.
+
+var _ io.ReaderFrom = (*persistConnWriter)(nil)
 
 // connectMethod is the map key (in its String form) for keeping persistent
 // TCP connections alive for subsequent HTTP requests.
@@ -268,6 +283,9 @@ func (t *Transport) CancelRequest(req *Request)
 // writeLoop's goroutine to write a request while the read loop
 // concurrently waits on both the write response and the server's
 // reply.
+
+// errRequestCanceled is set to be identical to the one from h2 to facilitate
+// testing.
 
 // testHooks. Always non-nil.
 

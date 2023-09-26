@@ -30,6 +30,8 @@ type Errno uintptr
 
 func (e Errno) Error() string
 
+func (e Errno) Is(target error) bool
+
 func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool
@@ -204,14 +206,24 @@ const ImplementsGetwd = true
 
 func Getwd() (wd string, err error)
 
-func Getegid() int
-func Geteuid() int
-func Getgid() int
-func Getgroups() ([]int, error)
-func Getppid() int
-func Getpid() int
-func Gettimeofday(tv *Timeval) error
 func Getuid() int
+
+func Getgid() int
+
+func Geteuid() int
+
+func Getegid() int
+
+func Getgroups() ([]int, error)
+
+func Getpid() int
+
+func Getppid() int
+
+func Umask(mask int) (oldmask int)
+
+func Gettimeofday(tv *Timeval) error
+
 func Kill(pid int, signum Signal) error
 func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)
 

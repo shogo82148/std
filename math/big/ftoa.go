@@ -20,24 +20,28 @@ import (
 //	'f'	-ddddd.dddd, no exponent
 //	'g'	like 'e' for large exponents, like 'f' otherwise
 //	'G'	like 'E' for large exponents, like 'f' otherwise
-//	'b'	-ddddddp±dd, binary exponent
-//	'p'	-0x.dddp±dd, binary exponent, hexadecimal mantissa
+//	'x'	-0xd.dddddp±dd, hexadecimal mantissa, decimal power of two exponent
+//	'p'	-0x.dddp±dd, hexadecimal mantissa, decimal power of two exponent (non-standard)
+//	'b'	-ddddddp±dd, decimal mantissa, decimal power of two exponent (non-standard)
 //
-// For the binary exponent formats, the mantissa is printed in normalized form:
+// For the power-of-two exponent formats, the mantissa is printed in normalized form:
 //
-//	'b'	decimal integer mantissa using x.Prec() bits, or -0
-//	'p'	hexadecimal fraction with 0.5 <= 0.mantissa < 1.0, or -0
+//	'x'	hexadecimal mantissa in [1, 2), or 0
+//	'p'	hexadecimal mantissa in [½, 1), or 0
+//	'b'	decimal integer mantissa using x.Prec() bits, or 0
+//
+// Note that the 'x' form is the one used by most other languages and libraries.
 //
 // If format is a different character, Text returns a "%" followed by the
 // unrecognized format character.
 //
 // The precision prec controls the number of digits (excluding the exponent)
-// printed by the 'e', 'E', 'f', 'g', and 'G' formats. For 'e', 'E', and 'f'
-// it is the number of digits after the decimal point. For 'g' and 'G' it is
-// the total number of digits. A negative precision selects the smallest
-// number of decimal digits necessary to identify the value x uniquely using
-// x.Prec() mantissa bits.
-// The prec value is ignored for the 'b' or 'p' format.
+// printed by the 'e', 'E', 'f', 'g', 'G', and 'x' formats.
+// For 'e', 'E', 'f', and 'x', it is the number of digits after the decimal point.
+// For 'g' and 'G' it is the total number of digits. A negative precision selects
+// the smallest number of decimal digits necessary to identify the value x uniquely
+// using x.Prec() mantissa bits.
+// The prec value is ignored for the 'b' and 'p' formats.
 func (x *Float) Text(format byte, prec int) string
 
 // String formats x like x.Text('g', 10).
@@ -52,7 +56,7 @@ var _ fmt.Formatter = &floatZero
 
 // Format implements fmt.Formatter. It accepts all the regular
 // formats for floating-point numbers ('b', 'e', 'E', 'f', 'F',
-// 'g', 'G') as well as 'p' and 'v'. See (*Float).Text for the
+// 'g', 'G', 'x') as well as 'p' and 'v'. See (*Float).Text for the
 // interpretation of 'p'. The 'v' format is handled like 'g'.
 // Format also supports specification of the minimum precision
 // in digits, the output field width, as well as the format flags

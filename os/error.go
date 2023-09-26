@@ -4,18 +4,20 @@
 
 package os
 
-import (
-	"github.com/shogo82148/std/errors"
-)
-
 // Portable analogs of some common system call errors.
+//
+// Errors returned from this package may be tested against these errors
+// with errors.Is.
 var (
-	ErrInvalid    = errors.New("invalid argument")
-	ErrPermission = errors.New("permission denied")
-	ErrExist      = errors.New("file already exists")
-	ErrNotExist   = errors.New("file does not exist")
-	ErrClosed     = errors.New("file already closed")
-	ErrNoDeadline = poll.ErrNoDeadline
+	// ErrInvalid indicates an invalid argument.
+	// Methods on File will return this error when the receiver is nil.
+	ErrInvalid = errInvalid()
+
+	ErrPermission = errPermission()
+	ErrExist      = errExist()
+	ErrNotExist   = errNotExist()
+	ErrClosed     = errClosed()
+	ErrNoDeadline = errNoDeadline()
 )
 
 // PathError records an error and the operation and file path that caused it.
@@ -27,6 +29,8 @@ type PathError struct {
 
 func (e *PathError) Error() string
 
+func (e *PathError) Unwrap() error
+
 // Timeout reports whether this error represents a timeout.
 func (e *PathError) Timeout() bool
 
@@ -37,6 +41,8 @@ type SyscallError struct {
 }
 
 func (e *SyscallError) Error() string
+
+func (e *SyscallError) Unwrap() error
 
 // Timeout reports whether this error represents a timeout.
 func (e *SyscallError) Timeout() bool

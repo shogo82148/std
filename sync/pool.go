@@ -44,6 +44,9 @@ type Pool struct {
 	local     unsafe.Pointer
 	localSize uintptr
 
+	victim     unsafe.Pointer
+	victimSize uintptr
+
 	New func() interface{}
 }
 

@@ -46,7 +46,8 @@ type AEAD interface {
 func NewGCM(cipher Block) (AEAD, error)
 
 // NewGCMWithNonceSize returns the given 128-bit, block cipher wrapped in Galois
-// Counter Mode, which accepts nonces of the given length.
+// Counter Mode, which accepts nonces of the given length. The length must not
+// be zero.
 //
 // Only use this function if you require compatibility with an existing
 // cryptosystem that uses non-standard nonce lengths. All other users should use

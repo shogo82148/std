@@ -9,3 +9,10 @@ var Runtime_Semacquire = runtime_Semacquire
 var Runtime_Semrelease = runtime_Semrelease
 var Runtime_procPin = runtime_procPin
 var Runtime_procUnpin = runtime_procUnpin
+
+// poolDequeue testing.
+type PoolDequeue interface {
+	PushHead(val interface{}) bool
+	PopHead() (interface{}, bool)
+	PopTail() (interface{}, bool)
+}

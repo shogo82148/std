@@ -111,6 +111,19 @@ package runtime
 // This must be set by the OS init code (typically in osinit) before
 // mallocinit.
 
+// physHugePageSize is the size in bytes of the OS's default physical huge
+// page size whose allocation is opaque to the application. It is assumed
+// and verified to be a power of two.
+//
+// If set, this must be set by the OS init code (typically in osinit) before
+// mallocinit. However, setting it at all is optional, and leaving the default
+// value is always safe (though potentially less efficient).
+//
+// Since physHugePageSize is always assumed to be a power of two,
+// physHugePageShift is defined as physHugePageSize == 1 << physHugePageShift.
+// The purpose of physHugePageShift is to avoid doing divisions in
+// performance critical functions.
+
 // base address for all 0-byte allocations
 
 // persistentChunkSize is the number of bytes we allocate when we grow
@@ -121,8 +134,8 @@ package runtime
 // persistent chunk. This is updated atomically.
 
 // linearAlloc is a simple linear allocator that pre-reserves a region
-// of memory and then maps that region as needed. The caller is
-// responsible for locking.
+// of memory and then maps that region into the Ready state as needed. The
+// caller is responsible for locking.
 
 // notInHeap is off-heap memory allocated by a lower-level allocator
 // like sysAlloc or persistentAlloc.

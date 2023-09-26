@@ -30,6 +30,8 @@ type Errno uintptr
 
 func (e Errno) Error() string
 
+func (e Errno) Is(target error) bool
+
 func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool

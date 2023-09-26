@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build linux || darwin
-// +build linux darwin
+//go:build darwin || linux || netbsd || openbsd
+// +build darwin linux netbsd openbsd
 
 package runtime
