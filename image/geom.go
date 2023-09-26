@@ -108,6 +108,9 @@ func (r Rectangle) Canon() Rectangle
 // At implements the Image interface.
 func (r Rectangle) At(x, y int) color.Color
 
+// RGBA64At implements the RGBA64Image interface.
+func (r Rectangle) RGBA64At(x, y int) color.RGBA64
+
 // Bounds implements the Image interface.
 func (r Rectangle) Bounds() Rectangle
 

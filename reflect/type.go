@@ -127,7 +127,7 @@ const (
 // available in the memory directly following the rtype value.
 //
 // tflag values must be kept in sync with copies in:
-//	cmd/compile/internal/gc/reflect.go
+//	cmd/compile/internal/reflectdata/reflect.go
 //	cmd/link/internal/ld/decodesym.go
 //	runtime/type.go
 
@@ -182,39 +182,19 @@ const (
 
 // structType represents a struct type.
 
-// name is an encoded type name with optional extra data.
-//
-// The first byte is a bit field containing:
-//
-//	1<<0 the name is exported
-//	1<<1 tag data follows the name
-//	1<<2 pkgPath nameOff follows the name and tag
-//
-// The next two bytes are the data length:
-//
-//	 l := uint16(data[1])<<8 | uint16(data[2])
-//
-// Bytes [3:3+l] are the string data.
-//
-// If tag data follows then bytes 3+l and 3+l+1 are the tag length,
-// with the data following.
-//
-// If the import path follows, then 4 bytes at the end of
-// the data form a nameOff. The import path is only set for concrete
-// methods that are defined in a different package than their type.
-//
-// If a name starts with "*", then the exported bit represents
-// whether the pointed to type is exported.
-
 // Method represents a single method.
 type Method struct {
-	Name    string
+	Name string
+
 	PkgPath string
 
 	Type  Type
 	Func  Value
 	Index int
 }
+
+// IsExported reports whether the method is exported.
+func (m Method) IsExported() bool
 
 // String returns the name of k.
 func (k Kind) String() string
@@ -233,6 +213,9 @@ type StructField struct {
 	Index     []int
 	Anonymous bool
 }
+
+// IsExported reports whether the field is exported.
+func (f StructField) IsExported() bool
 
 // A StructTag is the tag string in a struct field.
 //
@@ -330,13 +313,13 @@ func SliceOf(t Type) Type
 // These limitations may be lifted in a future version.
 func StructOf(fields []StructField) Type
 
-// See cmd/compile/internal/gc/reflect.go for derivation of constant.
+// See cmd/compile/internal/reflectdata/reflect.go for derivation of constant.
 
-// ArrayOf returns the array type with the given count and element type.
+// ArrayOf returns the array type with the given length and element type.
 // For example, if t represents int, ArrayOf(5, t) represents [5]int.
 //
 // If the resulting type would be larger than the available address space,
 // ArrayOf panics.
-func ArrayOf(count int, elem Type) Type
+func ArrayOf(length int, elem Type) Type
 
 // Note: this type must agree with runtime.bitvector.

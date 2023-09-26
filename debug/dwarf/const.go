@@ -232,7 +232,7 @@ func (t Tag) GoString() string
 
 // Statement program extended opcode encodings.
 
-// Line table directory directory and file name entry formats.
+// Line table directory and file name entry formats.
 // These are new in DWARF 5.
 
 // Location list entry codes.

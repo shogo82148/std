@@ -48,7 +48,7 @@ type UDPConn struct {
 func (c *UDPConn) SyscallConn() (syscall.RawConn, error)
 
 // ReadFromUDP acts like ReadFrom but returns a UDPAddr.
-func (c *UDPConn) ReadFromUDP(b []byte) (int, *UDPAddr, error)
+func (c *UDPConn) ReadFromUDP(b []byte) (n int, addr *UDPAddr, err error)
 
 // ReadFrom implements the PacketConn ReadFrom method.
 func (c *UDPConn) ReadFrom(b []byte) (int, Addr, error)

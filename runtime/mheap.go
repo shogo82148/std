@@ -86,6 +86,11 @@ package runtime
 //
 //go:notinheap
 
+// specialReachable tracks whether an object is reachable on the next
+// GC cycle. This is used by testing.
+
+// specialsIter helps iterate over specials lists.
+
 // gcBits is an alloc/mark bitmap. This is always used as *gcBits.
 //
 //go:notinheap

@@ -104,4 +104,8 @@ func SetFinalizer(obj interface{}, finalizer interface{})
 // Without the KeepAlive call, the finalizer could run at the start of
 // syscall.Read, closing the file descriptor before syscall.Read makes
 // the actual system call.
+//
+// Note: KeepAlive should only be used to prevent finalizers from
+// running prematurely. In particular, when used with unsafe.Pointer,
+// the rules for valid uses of unsafe.Pointer still apply.
 func KeepAlive(x interface{})

@@ -31,7 +31,7 @@ type Seed struct {
 //
 // The zero Hash is a valid Hash ready to use.
 // A zero Hash chooses a random seed for itself during
-// the first call to a Reset, Write, Seed, Sum64, or Seed method.
+// the first call to a Reset, Write, Seed, or Sum64 method.
 // For control over the seed, use SetSeed.
 //
 // The computed hash values depend only on the initial seed and
@@ -54,9 +54,14 @@ type Hash struct {
 	_     [0]func()
 	seed  Seed
 	state Seed
-	buf   [64]byte
+	buf   [bufSize]byte
 	n     int
 }
+
+// bufSize is the size of the Hash write buffer.
+// The buffer ensures that writes depend only on the sequence of bytes,
+// not the sequence of WriteByte/Write/WriteString calls,
+// by always calling rthash with a full buffer (except for the tail).
 
 // WriteByte adds b to the sequence of bytes hashed by h.
 // It never fails; the error result is for implementing io.ByteWriter.

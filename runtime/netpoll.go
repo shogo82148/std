@@ -28,3 +28,8 @@ package runtime
 // No heap pointers.
 //
 //go:notinheap
+
+// pollInfo is the bits needed by netpollcheckerr, stored atomically,
+// mostly duplicating state that is manipulated under lock in pollDesc.
+// The one exception is the pollEventErr bit, which is maintained only
+// in the pollInfo.

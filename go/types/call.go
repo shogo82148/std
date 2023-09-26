@@ -5,8 +5,3 @@
 // This file implements typechecking of call and selector expressions.
 
 package types
-
-// A getter sets x as the i'th operand, where 0 <= i < n and n is the total
-// number of operands (context-specific, and maintained elsewhere). A getter
-// type-checks the i'th operand; the details of the actual check are getter-
-// specific.

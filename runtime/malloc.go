@@ -130,8 +130,10 @@ package runtime
 // persistent chunk. This is updated atomically.
 
 // linearAlloc is a simple linear allocator that pre-reserves a region
-// of memory and then maps that region into the Ready state as needed. The
-// caller is responsible for locking.
+// of memory and then optionally maps that region into the Ready state
+// as needed.
+//
+// The caller is responsible for locking.
 
 // notInHeap is off-heap memory allocated by a lower-level allocator
 // like sysAlloc or persistentAlloc.

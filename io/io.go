@@ -400,7 +400,7 @@ func (s *SectionReader) Size() int64
 // Any error encountered while writing is reported as a read error.
 func TeeReader(r Reader, w Writer) Reader
 
-// Discard is an Writer on which all Write calls succeed
+// Discard is a Writer on which all Write calls succeed
 // without doing anything.
 var Discard Writer = discard{}
 

@@ -99,6 +99,8 @@ type I interface {
 // of the max int boundary.
 // We do it this way so the test doesn't depend on ints being 32 bits.
 
+type CustomError struct{}
+
 type Tree struct {
 	Val         int
 	Left, Right *Tree

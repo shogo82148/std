@@ -230,8 +230,22 @@ type Empty struct{}
 type MyStruct struct {
 	x int `some:"tag"`
 }
+type MyStruct1 struct {
+	x struct {
+		int `some:"bar"`
+	}
+}
+type MyStruct2 struct {
+	x struct {
+		int `some:"foo"`
+	}
+}
 type MyString string
 type MyBytes []byte
+type MyBytesArrayPtr0 *[0]byte
+type MyBytesArrayPtr *[4]byte
+type MyBytesArray0 [0]byte
+type MyBytesArray [4]byte
 type MyRunes []int32
 type MyFunc func()
 type MyByte byte

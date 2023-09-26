@@ -6,7 +6,7 @@ package runtime
 
 // Select case descriptor.
 // Known to compiler.
-// Changes here must also be made in src/cmd/internal/gc/select.go's scasetype.
+// Changes here must also be made in src/cmd/compile/internal/walk/select.go's scasetype.
 
 // A runtimeSelect is a single case passed to rselect.
 // This must match ../reflect/value.go:/runtimeSelect

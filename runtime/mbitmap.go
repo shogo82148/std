@@ -63,3 +63,6 @@ var _ = heapBits{arena: (1<<heapAddrBits)/heapArenaBytes - 1}
 // the address of the object in the heap.
 // We maintain one set of mark bits for allocation and one for
 // marking purposes.
+
+// clobberdeadPtr is a special value that is used by the compiler to
+// clobber dead stack slots, when -clobberdead flag is set.

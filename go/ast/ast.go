@@ -70,6 +70,9 @@ func (g *CommentGroup) Text() string
 // in a signature.
 // Field.Names is nil for unnamed parameters (parameter lists which only contain types)
 // and embedded struct fields. In the latter case, the field name is the type name.
+// Field.Names contains a single name "type" for elements of interface type lists.
+// Types belonging to the same type list share the same "type" identifier which also
+// records the position of that keyword.
 type Field struct {
 	Doc     *CommentGroup
 	Names   []*Ident
@@ -123,12 +126,6 @@ type (
 	}
 
 	// A BasicLit node represents a literal of basic type.
-	//
-	// Note that for the CHAR and STRING kinds, the literal is stored
-	// with its quotes. For example, for a double-quoted STRING, the
-	// first and the last rune in the Value field will be ". The
-	// Unquote and UnquoteChar functions in the strconv package can be
-	// used to unquote STRING and CHAR values, respectively.
 	BasicLit struct {
 		ValuePos token.Pos
 		Kind     token.Token
@@ -261,13 +258,6 @@ type (
 		Struct     token.Pos
 		Fields     *FieldList
 		Incomplete bool
-	}
-
-	// A FuncType node represents a function type.
-	FuncType struct {
-		Func    token.Pos
-		Params  *FieldList
-		Results *FieldList
 	}
 
 	// An InterfaceType node represents an interface type.
@@ -597,15 +587,6 @@ type (
 		Names   []*Ident
 		Type    Expr
 		Values  []Expr
-		Comment *CommentGroup
-	}
-
-	// A TypeSpec node represents a type declaration (TypeSpec production).
-	TypeSpec struct {
-		Doc     *CommentGroup
-		Name    *Ident
-		Assign  token.Pos
-		Type    Expr
 		Comment *CommentGroup
 	}
 )

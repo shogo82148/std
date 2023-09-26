@@ -8,6 +8,7 @@ package tls
 
 import (
 	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/x509"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
@@ -19,7 +20,7 @@ import (
 type Conn struct {
 	conn        net.Conn
 	isClient    bool
-	handshakeFn func() error
+	handshakeFn func(context.Context) error
 
 	handshakeStatus uint32
 
@@ -149,8 +150,20 @@ func (c *Conn) CloseWrite() error
 // first Read or Write will call it automatically.
 //
 // For control over canceling or setting a timeout on a handshake, use
-// the Dialer's DialContext method.
+// HandshakeContext or the Dialer's DialContext method instead.
 func (c *Conn) Handshake() error
+
+// HandshakeContext runs the client or server handshake
+// protocol if it has not yet been run.
+//
+// The provided Context must be non-nil. If the context is canceled before
+// the handshake is complete, the handshake is interrupted and an error is returned.
+// Once the handshake has completed, cancellation of the context will not affect the
+// connection.
+//
+// Most uses of this package need not call HandshakeContext explicitly: the
+// first Read or Write will call it automatically.
+func (c *Conn) HandshakeContext(ctx context.Context) error
 
 // ConnectionState returns basic TLS details about the connection.
 func (c *Conn) ConnectionState() ConnectionState

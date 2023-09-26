@@ -165,6 +165,8 @@ func (t *Tuple) At(i int) *Var
 // A Signature represents a (non-builtin) function or method type.
 // The receiver is ignored when comparing signatures for identity.
 type Signature struct {
+	rparams  []*TypeName
+	tparams  []*TypeName
 	scope    *Scope
 	recv     *Var
 	params   *Tuple
@@ -195,12 +197,21 @@ func (s *Signature) Results() *Tuple
 // Variadic reports whether the signature s is variadic.
 func (s *Signature) Variadic() bool
 
+// A _Sum represents a set of possible types.
+// Sums are currently used to represent type lists of interfaces
+// and thus the underlying types of type parameters; they are not
+// first class types of Go.
+
 // An Interface represents an interface type.
 type Interface struct {
 	methods   []*Func
+	types     Type
 	embeddeds []Type
 
 	allMethods []*Func
+	allTypes   Type
+
+	obj Object
 }
 
 // emptyInterface represents the empty (completed) interface
@@ -255,7 +266,6 @@ func (t *Interface) NumMethods() int
 func (t *Interface) Method(i int) *Func
 
 // Empty reports whether t is the empty interface.
-// The interface must have been completed.
 func (t *Interface) Empty() bool
 
 // Complete computes the interface's method set. It must be called by users of
@@ -304,12 +314,15 @@ func (c *Chan) Dir() ChanDir
 // Elem returns the element type of channel c.
 func (c *Chan) Elem() Type
 
-// A Named represents a named type.
+// A Named represents a named (defined) type.
 type Named struct {
+	check      *Checker
 	info       typeInfo
 	obj        *TypeName
 	orig       Type
 	underlying Type
+	tparams    []*TypeName
+	targs      []Type
 	methods    []*Func
 }
 
@@ -333,26 +346,59 @@ func (t *Named) SetUnderlying(underlying Type)
 // AddMethod adds method m unless it is already in the method list.
 func (t *Named) AddMethod(m *Func)
 
-func (b *Basic) Underlying() Type
-func (a *Array) Underlying() Type
-func (s *Slice) Underlying() Type
-func (s *Struct) Underlying() Type
-func (p *Pointer) Underlying() Type
+// Note: This is a uint32 rather than a uint64 because the
+// respective 64 bit atomic instructions are not available
+// on all platforms.
+
+// A _TypeParam represents a type parameter type.
+
+// An instance represents an instantiated generic type syntactically
+// (without expanding the instantiation). Type instances appear only
+// during type-checking and are replaced by their fully instantiated
+// (expanded) types before the end of type-checking.
+
+// expandf is set to expand.
+// Call expandf when calling expand causes compile-time cycle error.
+
+// bottom represents the bottom of the type lattice.
+// It is the underlying type of a type parameter that
+// cannot be satisfied by any type, usually because
+// the intersection of type constraints left nothing).
+
+// theBottom is the singleton bottom type.
+
+// top represents the top of the type lattice.
+// It is the underlying type of a type parameter that
+// can be satisfied by any type (ignoring methods),
+// usually because the type constraint has no type
+// list.
+
+// theTop is the singleton top type.
+
+// Type-specific implementations of Underlying.
+func (t *Basic) Underlying() Type
+func (t *Array) Underlying() Type
+func (t *Slice) Underlying() Type
+func (t *Struct) Underlying() Type
+func (t *Pointer) Underlying() Type
 func (t *Tuple) Underlying() Type
-func (s *Signature) Underlying() Type
+func (t *Signature) Underlying() Type
+
 func (t *Interface) Underlying() Type
-func (m *Map) Underlying() Type
-func (c *Chan) Underlying() Type
+func (t *Map) Underlying() Type
+func (t *Chan) Underlying() Type
 func (t *Named) Underlying() Type
 
-func (b *Basic) String() string
-func (a *Array) String() string
-func (s *Slice) String() string
-func (s *Struct) String() string
-func (p *Pointer) String() string
+// Type-specific implementations of String.
+func (t *Basic) String() string
+func (t *Array) String() string
+func (t *Slice) String() string
+func (t *Struct) String() string
+func (t *Pointer) String() string
 func (t *Tuple) String() string
-func (s *Signature) String() string
+func (t *Signature) String() string
+
 func (t *Interface) String() string
-func (m *Map) String() string
-func (c *Chan) String() string
+func (t *Map) String() string
+func (t *Chan) String() string
 func (t *Named) String() string

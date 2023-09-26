@@ -6,3 +6,8 @@
 // +build aix darwin dragonfly freebsd js,wasm linux netbsd openbsd solaris
 
 package mime
+
+// See https://specifications.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.21.html
+// for the FreeDesktop Shared MIME-info Database specification.
+
+// Common locations for mime.types files on unix.

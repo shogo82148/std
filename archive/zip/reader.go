@@ -42,8 +42,9 @@ type File struct {
 	FileHeader
 	zip          *Reader
 	zipr         io.ReaderAt
-	zipsize      int64
 	headerOffset int64
+	zip64        bool
+	descErr      error
 }
 
 // OpenReader will open the Zip file specified by name and return a ReadCloser.
@@ -71,6 +72,10 @@ func (f *File) DataOffset() (offset int64, err error)
 // Open returns a ReadCloser that provides access to the File's contents.
 // Multiple files may be read concurrently.
 func (f *File) Open() (io.ReadCloser, error)
+
+// OpenRaw returns a Reader that provides access to the File's contents without
+// decompression.
+func (f *File) OpenRaw() (io.Reader, error)
 
 // A fileListEntry is a File and its ename.
 // If file == nil, the fileListEntry describes a directory without metadata.

@@ -18,12 +18,12 @@
 // application down to a goal.
 //
 // That goal is defined as:
-//   (retainExtraPercent+100) / 100 * (next_gc / last_next_gc) * last_heap_inuse
+//   (retainExtraPercent+100) / 100 * (heapGoal / lastHeapGoal) * last_heap_inuse
 //
 // Essentially, we wish to have the application's RSS track the heap goal, but
 // the heap goal is defined in terms of bytes of objects, rather than pages like
 // RSS. As a result, we need to take into account for fragmentation internal to
-// spans. next_gc / last_next_gc defines the ratio between the current heap goal
+// spans. heapGoal / lastHeapGoal defines the ratio between the current heap goal
 // and the last heap goal, which tells us by how much the heap is growing and
 // shrinking. We estimate what the heap will grow to in terms of pages by taking
 // this ratio and multiplying it by heap_inuse at the end of the last GC, which

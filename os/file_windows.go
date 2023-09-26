@@ -37,7 +37,8 @@ func Truncate(name string, size int64) error
 func Remove(name string) error
 
 // Pipe returns a connected pair of Files; reads from r return bytes written to w.
-// It returns the files and an error, if any.
+// It returns the files and an error, if any. The Windows handles underlying
+// the returned files are marked as inheritable by child processes.
 func Pipe() (r *File, w *File, err error)
 
 // Link creates newname as a hard link to the oldname file.
@@ -45,6 +46,8 @@ func Pipe() (r *File, w *File, err error)
 func Link(oldname, newname string) error
 
 // Symlink creates newname as a symbolic link to oldname.
+// On Windows, a symlink to a non-existent oldname creates a file symlink;
+// if oldname is later created as a directory the symlink will not work.
 // If there is an error, it will be of type *LinkError.
 func Symlink(oldname, newname string) error
 

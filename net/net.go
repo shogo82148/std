@@ -192,6 +192,9 @@ type ParseError struct {
 
 func (e *ParseError) Error() string
 
+func (e *ParseError) Timeout() bool
+func (e *ParseError) Temporary() bool
+
 type AddrError struct {
 	Err  string
 	Addr string
@@ -265,7 +268,7 @@ func (e *DNSError) Temporary() bool
 // another goroutine before the I/O is completed. This may be wrapped
 // in another error, and should normally be tested using
 // errors.Is(err, net.ErrClosed).
-var ErrClosed = errClosed
+var ErrClosed error = errClosed
 
 // buffersWriter is the interface implemented by Conns that support a
 // "writev"-like batch write optimization.

@@ -43,6 +43,13 @@ type Image interface {
 	At(x, y int) color.Color
 }
 
+// RGBA64Image is an Image whose pixels can be converted directly to a
+// color.RGBA64.
+type RGBA64Image interface {
+	RGBA64At(x, y int) color.RGBA64
+	Image
+}
+
 // PalettedImage is an image whose colors may come from a limited palette.
 // If m is a PalettedImage and m.ColorModel() returns a color.Palette p,
 // then m.At(x, y) should be equivalent to p[m.ColorIndexAt(x, y)]. If m's
@@ -68,6 +75,8 @@ func (p *RGBA) Bounds() Rectangle
 
 func (p *RGBA) At(x, y int) color.Color
 
+func (p *RGBA) RGBA64At(x, y int) color.RGBA64
+
 func (p *RGBA) RGBAAt(x, y int) color.RGBA
 
 // PixOffset returns the index of the first element of Pix that corresponds to
@@ -75,6 +84,8 @@ func (p *RGBA) RGBAAt(x, y int) color.RGBA
 func (p *RGBA) PixOffset(x, y int) int
 
 func (p *RGBA) Set(x, y int, c color.Color)
+
+func (p *RGBA) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *RGBA) SetRGBA(x, y int, c color.RGBA)
 
@@ -138,6 +149,8 @@ func (p *NRGBA) Bounds() Rectangle
 
 func (p *NRGBA) At(x, y int) color.Color
 
+func (p *NRGBA) RGBA64At(x, y int) color.RGBA64
+
 func (p *NRGBA) NRGBAAt(x, y int) color.NRGBA
 
 // PixOffset returns the index of the first element of Pix that corresponds to
@@ -145,6 +158,8 @@ func (p *NRGBA) NRGBAAt(x, y int) color.NRGBA
 func (p *NRGBA) PixOffset(x, y int) int
 
 func (p *NRGBA) Set(x, y int, c color.Color)
+
+func (p *NRGBA) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *NRGBA) SetNRGBA(x, y int, c color.NRGBA)
 
@@ -173,6 +188,8 @@ func (p *NRGBA64) Bounds() Rectangle
 
 func (p *NRGBA64) At(x, y int) color.Color
 
+func (p *NRGBA64) RGBA64At(x, y int) color.RGBA64
+
 func (p *NRGBA64) NRGBA64At(x, y int) color.NRGBA64
 
 // PixOffset returns the index of the first element of Pix that corresponds to
@@ -180,6 +197,8 @@ func (p *NRGBA64) NRGBA64At(x, y int) color.NRGBA64
 func (p *NRGBA64) PixOffset(x, y int) int
 
 func (p *NRGBA64) Set(x, y int, c color.Color)
+
+func (p *NRGBA64) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *NRGBA64) SetNRGBA64(x, y int, c color.NRGBA64)
 
@@ -208,6 +227,8 @@ func (p *Alpha) Bounds() Rectangle
 
 func (p *Alpha) At(x, y int) color.Color
 
+func (p *Alpha) RGBA64At(x, y int) color.RGBA64
+
 func (p *Alpha) AlphaAt(x, y int) color.Alpha
 
 // PixOffset returns the index of the first element of Pix that corresponds to
@@ -215,6 +236,8 @@ func (p *Alpha) AlphaAt(x, y int) color.Alpha
 func (p *Alpha) PixOffset(x, y int) int
 
 func (p *Alpha) Set(x, y int, c color.Color)
+
+func (p *Alpha) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Alpha) SetAlpha(x, y int, c color.Alpha)
 
@@ -243,6 +266,8 @@ func (p *Alpha16) Bounds() Rectangle
 
 func (p *Alpha16) At(x, y int) color.Color
 
+func (p *Alpha16) RGBA64At(x, y int) color.RGBA64
+
 func (p *Alpha16) Alpha16At(x, y int) color.Alpha16
 
 // PixOffset returns the index of the first element of Pix that corresponds to
@@ -250,6 +275,8 @@ func (p *Alpha16) Alpha16At(x, y int) color.Alpha16
 func (p *Alpha16) PixOffset(x, y int) int
 
 func (p *Alpha16) Set(x, y int, c color.Color)
+
+func (p *Alpha16) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Alpha16) SetAlpha16(x, y int, c color.Alpha16)
 
@@ -278,6 +305,8 @@ func (p *Gray) Bounds() Rectangle
 
 func (p *Gray) At(x, y int) color.Color
 
+func (p *Gray) RGBA64At(x, y int) color.RGBA64
+
 func (p *Gray) GrayAt(x, y int) color.Gray
 
 // PixOffset returns the index of the first element of Pix that corresponds to
@@ -285,6 +314,8 @@ func (p *Gray) GrayAt(x, y int) color.Gray
 func (p *Gray) PixOffset(x, y int) int
 
 func (p *Gray) Set(x, y int, c color.Color)
+
+func (p *Gray) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Gray) SetGray(x, y int, c color.Gray)
 
@@ -313,6 +344,8 @@ func (p *Gray16) Bounds() Rectangle
 
 func (p *Gray16) At(x, y int) color.Color
 
+func (p *Gray16) RGBA64At(x, y int) color.RGBA64
+
 func (p *Gray16) Gray16At(x, y int) color.Gray16
 
 // PixOffset returns the index of the first element of Pix that corresponds to
@@ -320,6 +353,8 @@ func (p *Gray16) Gray16At(x, y int) color.Gray16
 func (p *Gray16) PixOffset(x, y int) int
 
 func (p *Gray16) Set(x, y int, c color.Color)
+
+func (p *Gray16) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Gray16) SetGray16(x, y int, c color.Gray16)
 
@@ -348,6 +383,8 @@ func (p *CMYK) Bounds() Rectangle
 
 func (p *CMYK) At(x, y int) color.Color
 
+func (p *CMYK) RGBA64At(x, y int) color.RGBA64
+
 func (p *CMYK) CMYKAt(x, y int) color.CMYK
 
 // PixOffset returns the index of the first element of Pix that corresponds to
@@ -355,6 +392,8 @@ func (p *CMYK) CMYKAt(x, y int) color.CMYK
 func (p *CMYK) PixOffset(x, y int) int
 
 func (p *CMYK) Set(x, y int, c color.Color)
+
+func (p *CMYK) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *CMYK) SetCMYK(x, y int, c color.CMYK)
 
@@ -385,11 +424,15 @@ func (p *Paletted) Bounds() Rectangle
 
 func (p *Paletted) At(x, y int) color.Color
 
+func (p *Paletted) RGBA64At(x, y int) color.RGBA64
+
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
 func (p *Paletted) PixOffset(x, y int) int
 
 func (p *Paletted) Set(x, y int, c color.Color)
+
+func (p *Paletted) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Paletted) ColorIndexAt(x, y int) uint8
 

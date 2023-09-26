@@ -85,6 +85,10 @@ func CanBackquote(s string) bool
 // If set to zero, it does not permit either escape and allows both quote characters to appear unescaped.
 func UnquoteChar(s string, quote byte) (value rune, multibyte bool, tail string, err error)
 
+// QuotedPrefix returns the quoted string (as understood by Unquote) at the prefix of s.
+// If s does not start with a valid quoted string, QuotedPrefix returns an error.
+func QuotedPrefix(s string) (string, error)
+
 // Unquote interprets s as a single-quoted, double-quoted,
 // or backquoted Go string literal, returning the string value
 // that s quotes.  (If s is single-quoted, it would be a Go

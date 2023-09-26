@@ -19,3 +19,9 @@ type ReadDirFS interface {
 // Otherwise ReadDir calls fs.Open and uses ReadDir and Close
 // on the returned file.
 func ReadDir(fsys FS, name string) ([]DirEntry, error)
+
+// dirInfo is a DirEntry based on a FileInfo.
+
+// FileInfoToDirEntry returns a DirEntry that returns information from info.
+// If info is nil, FileInfoToDirEntry returns nil.
+func FileInfoToDirEntry(info FileInfo) DirEntry

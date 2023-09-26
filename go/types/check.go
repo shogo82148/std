@@ -13,12 +13,12 @@ import (
 
 // debugging/development support
 
-// If Strict is set, the type-checker enforces additional
+// If forceStrict is set, the type-checker enforces additional
 // rules not specified by the Go 1 spec, but which will
 // catch guaranteed run-time errors if the respective
 // code is executed. In other words, programs passing in
-// Strict mode are Go 1 compliant, but not all Go 1 programs
-// will pass in Strict mode. The additional rules are:
+// strict mode are Go 1 compliant, but not all Go 1 programs
+// will pass in strict mode. The additional rules are:
 //
 // - A type assertion x.(T) where T is an interface type
 //   is invalid if any (statically known) method that exists
@@ -36,6 +36,8 @@ import (
 // an importer may still return the same package by mapping them to the same package
 // paths).
 
+// A dotImportKey describes a dot-imported object in the given scope.
+
 // A Checker maintains the state of the type checker.
 // It must be created with NewChecker.
 type Checker struct {
@@ -43,19 +45,23 @@ type Checker struct {
 	fset *token.FileSet
 	pkg  *Package
 	*Info
-	objMap map[Object]*declInfo
-	impMap map[importKey]*Package
-	posMap map[*Interface][]token.Pos
-	pkgCnt map[string]int
+	version version
+	objMap  map[Object]*declInfo
+	impMap  map[importKey]*Package
+	posMap  map[*Interface][]token.Pos
+	typMap  map[string]*Named
 
-	files            []*ast.File
-	unusedDotImports map[*Scope]map[*Package]*ast.ImportSpec
+	pkgPathMap map[string]map[string]bool
+	seenPkgMap map[*Package]bool
+
+	files        []*ast.File
+	imports      []*PkgName
+	dotImportMap map[dotImportKey]*PkgName
 
 	firstErr error
 	methods  map[*TypeName][]*Func
 	untyped  map[ast.Expr]exprInfo
 	delayed  []func()
-	finals   []func()
 	objPath  []Object
 
 	context

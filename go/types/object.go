@@ -27,6 +27,8 @@ type Object interface {
 
 	color() color
 
+	setType(Type)
+
 	setOrder(uint32)
 
 	setColor(color color)

@@ -7,3 +7,6 @@ package types_test
 import (
 	. "go/types"
 )
+
+// genericPkg is a prefix for packages that should be type checked with
+// generics.

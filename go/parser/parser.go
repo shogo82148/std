@@ -17,10 +17,9 @@ package parser
 
 // The parser structure holds the parser's internal state.
 
-// The unresolved object is a sentinel to mark identifiers that have been added
-// to the list of unresolved identifiers. The sentinel is only used for verifying
-// internal consistency.
+// maxNestLev is the deepest we're willing to recurse during parsing
 
-// A bailout panic is raised to indicate early termination.
+// A bailout panic is raised to indicate early termination. pos and msg are
+// only populated when bailing out of object resolution.
 
 // Parsing modes for parseSimpleStmt.

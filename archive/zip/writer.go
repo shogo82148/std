@@ -58,8 +58,20 @@ func (w *Writer) Create(name string) (io.Writer, error)
 //
 // This returns a Writer to which the file contents should be written.
 // The file's contents must be written to the io.Writer before the next
-// call to Create, CreateHeader, or Close.
+// call to Create, CreateHeader, CreateRaw, or Close.
 func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
+
+// CreateRaw adds a file to the zip archive using the provided FileHeader and
+// returns a Writer to which the file contents should be written. The file's
+// contents must be written to the io.Writer before the next call to Create,
+// CreateHeader, CreateRaw, or Close.
+//
+// In contrast to CreateHeader, the bytes passed to Writer are not compressed.
+func (w *Writer) CreateRaw(fh *FileHeader) (io.Writer, error)
+
+// Copy copies the file f (obtained from a Reader) into w. It copies the raw
+// form directly bypassing decompression, compression, and validation.
+func (w *Writer) Copy(f *File) error
 
 // RegisterCompressor registers or overrides a custom compressor for a specific
 // method ID. If a compressor for a given method is not found, Writer will

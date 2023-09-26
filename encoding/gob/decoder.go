@@ -55,6 +55,6 @@ func (dec *Decoder) Decode(e interface{}) error
 // does not modify v.
 func (dec *Decoder) DecodeValue(v reflect.Value) error
 
-// If debug.go is compiled into the program , debugFunc prints a human-readable
+// If debug.go is compiled into the program, debugFunc prints a human-readable
 // representation of the gob data read from r by calling that file's Debug function.
 // Otherwise it is nil.

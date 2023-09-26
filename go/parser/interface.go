@@ -24,6 +24,7 @@ const (
 	Trace
 	DeclarationErrors
 	SpuriousErrors
+	SkipObjectResolution
 	AllErrors = SpuriousErrors
 )
 
@@ -37,8 +38,12 @@ const (
 // If src == nil, ParseFile parses the file specified by filename.
 //
 // The mode parameter controls the amount of source text parsed and other
-// optional parser functionality. Position information is recorded in the
-// file set fset, which must not be nil.
+// optional parser functionality. If the SkipObjectResolution mode bit is set,
+// the object resolution phase of parsing will be skipped, causing File.Scope,
+// File.Unresolved, and all Ident.Obj fields to be nil.
+//
+// Position information is recorded in the file set fset, which must not be
+// nil.
 //
 // If the source couldn't be read, the returned AST is nil and the error
 // indicates the specific failure. If the source was read but syntax

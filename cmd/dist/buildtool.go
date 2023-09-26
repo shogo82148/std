@@ -15,11 +15,12 @@ package main
 // compiled with a Go 1.4 toolchain to produce the bootstrapTargets.
 // All directories in this list are relative to and must be below $GOROOT/src.
 //
-// The list has have two kinds of entries: names beginning with cmd/ with
+// The list has two kinds of entries: names beginning with cmd/ with
 // no other slashes, which are commands, and other paths, which are packages
 // supporting the commands. Packages in the standard library can be listed
 // if a newer copy needs to be substituted for the Go 1.4 copy when used
-// by the command packages.
+// by the command packages. Paths ending with /... automatically
+// include all packages within subdirectories as well.
 // These will be imported during bootstrap as bootstrap/name, like bootstrap/math/big.
 
 // File prefixes that are ignored by go/build anyway, and cause

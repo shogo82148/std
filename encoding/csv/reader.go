@@ -112,6 +112,8 @@ type Reader struct {
 
 	fieldIndexes []int
 
+	fieldPositions []position
+
 	lastRecord []string
 }
 
@@ -127,6 +129,16 @@ func NewReader(r io.Reader) *Reader
 // If ReuseRecord is true, the returned slice may be shared
 // between multiple calls to Read.
 func (r *Reader) Read() (record []string, err error)
+
+// FieldPos returns the line and column corresponding to
+// the start of the field with the given index in the slice most recently
+// returned by Read. Numbering of lines and columns starts at 1;
+// columns are counted in bytes, not runes.
+//
+// If this is called with an out-of-bounds index, it panics.
+func (r *Reader) FieldPos(field int) (line, column int)
+
+// pos holds the position of a field in the current line.
 
 // ReadAll reads all the remaining records from r.
 // Each record is a slice of fields.

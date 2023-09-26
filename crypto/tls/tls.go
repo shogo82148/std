@@ -44,6 +44,9 @@ func Listen(network, laddr string, config *Config) (net.Listener, error)
 //
 // DialWithDialer interprets a nil configuration as equivalent to the zero
 // configuration; see the documentation of Config for the defaults.
+//
+// DialWithDialer uses context.Background internally; to specify the context,
+// use Dialer.DialContext with NetDialer set to the desired dialer.
 func DialWithDialer(dialer *net.Dialer, network, addr string, config *Config) (*Conn, error)
 
 // Dial connects to the given network address using net.Dial
@@ -66,6 +69,9 @@ type Dialer struct {
 // handshake, returning the resulting TLS connection.
 //
 // The returned Conn, if any, will always be of type *Conn.
+//
+// Dial uses context.Background internally; to specify the context,
+// use DialContext.
 func (d *Dialer) Dial(network, addr string) (net.Conn, error)
 
 // DialContext connects to the given network address and initiates a TLS

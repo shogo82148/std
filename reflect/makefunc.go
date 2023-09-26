@@ -38,3 +38,6 @@ func MakeFunc(typ Type, fn func(args []Value) (results []Value)) Value
 // The first 3 words of this type must be kept in sync with
 // makeFuncImpl and runtime.reflectMethodValue.
 // Any changes should be reflected in all three.
+
+// This structure must be kept in sync with runtime.reflectMethodValue.
+// Any changes should be reflected in all both.

@@ -271,4 +271,5 @@ const (
 	SYS_POSIX_SPAWN          = 474
 	SYS_RECVMMSG             = 475
 	SYS_SENDMMSG             = 476
+	SYS_WAIT6                = 481
 )

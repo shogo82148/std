@@ -197,7 +197,7 @@
 //	    }
 //	}
 //
-// The race detector kills the program if it exceeds 8192 concurrent goroutines,
+// The race detector kills the program if it exceeds 8128 concurrent goroutines,
 // so use care when running parallel tests with the -race flag set.
 //
 // Run does not return until parallel subtests have completed, providing a way
@@ -215,14 +215,14 @@
 //
 // # Main
 //
-// It is sometimes necessary for a test program to do extra setup or teardown
-// before or after testing. It is also sometimes necessary for a test to control
+// It is sometimes necessary for a test or benchmark program to do extra setup or teardown
+// before or after it executes. It is also sometimes necessary to control
 // which code runs on the main thread. To support these and other cases,
 // if a test file contains a function:
 //
 //	func TestMain(m *testing.M)
 //
-// then the generated test will call TestMain(m) instead of running the tests
+// then the generated test will call TestMain(m) instead of running the tests or benchmarks
 // directly. TestMain runs in the main goroutine and can do whatever setup
 // and teardown is necessary around a call to m.Run. m.Run will return an exit
 // code that may be passed to os.Exit. If TestMain returns, the test wrapper
@@ -239,6 +239,9 @@
 //		// call flag.Parse() here if TestMain uses flags
 //		os.Exit(m.Run())
 //	}
+//
+// TestMain is a low-level primitive and should not be necessary for casual
+// testing needs, where ordinary test functions suffice.
 package testing
 
 import (
@@ -284,6 +287,7 @@ type TB interface {
 	Log(args ...interface{})
 	Logf(format string, args ...interface{})
 	Name() string
+	Setenv(key, value string)
 	Skip(args ...interface{})
 	SkipNow()
 	Skipf(format string, args ...interface{})
@@ -308,6 +312,7 @@ var _ TB = (*B)(nil)
 type T struct {
 	common
 	isParallel bool
+	isEnvSet   bool
 	context    *testContext
 }
 
@@ -318,6 +323,13 @@ type T struct {
 // -test.count or -test.cpu, multiple instances of a single test never run in
 // parallel with each other.
 func (t *T) Parallel()
+
+// Setenv calls os.Setenv(key, value) and uses Cleanup to
+// restore the environment variable to its original value
+// after the test.
+//
+// This cannot be used in parallel tests.
+func (t *T) Setenv(key, value string)
 
 // InternalTest is an internal type but exported because it is cross-package;
 // it is part of the implementation of the "go test" command.

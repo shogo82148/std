@@ -70,11 +70,17 @@ func (e Errno) Timeout() bool
 // NewCallback converts a Go function to a function pointer conforming to the stdcall calling convention.
 // This is useful when interoperating with Windows code requiring callbacks.
 // The argument is expected to be a function with one uintptr-sized result. The function must not have arguments with size larger than the size of uintptr.
+// Only a limited number of callbacks may be created in a single Go process, and any memory allocated
+// for these callbacks is never released.
+// Between NewCallback and NewCallbackCDecl, at least 1024 callbacks can always be created.
 func NewCallback(fn interface{}) uintptr
 
 // NewCallbackCDecl converts a Go function to a function pointer conforming to the cdecl calling convention.
 // This is useful when interoperating with Windows code requiring callbacks.
 // The argument is expected to be a function with one uintptr-sized result. The function must not have arguments with size larger than the size of uintptr.
+// Only a limited number of callbacks may be created in a single Go process, and any memory allocated
+// for these callbacks is never released.
+// Between NewCallback and NewCallbackCDecl, at least 1024 callbacks can always be created.
 func NewCallbackCDecl(fn interface{}) uintptr
 
 func Open(path string, mode int, perm uint32) (fd Handle, err error)

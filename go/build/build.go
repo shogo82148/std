@@ -26,6 +26,7 @@ type Context struct {
 	Compiler    string
 
 	BuildTags   []string
+	ToolTags    []string
 	ReleaseTags []string
 
 	InstallSuffix string

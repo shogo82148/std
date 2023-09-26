@@ -6,8 +6,11 @@ package main
 
 // see https://msdn.microsoft.com/en-us/library/windows/desktop/ms724958(v=vs.85).aspx
 
+// See https://docs.microsoft.com/en-us/windows/win32/api/sysinfoapi/ns-sysinfoapi-system_info
 const (
 	PROCESSOR_ARCHITECTURE_AMD64 = 9
 	PROCESSOR_ARCHITECTURE_INTEL = 0
 	PROCESSOR_ARCHITECTURE_ARM   = 5
+	PROCESSOR_ARCHITECTURE_ARM64 = 12
+	PROCESSOR_ARCHITECTURE_IA64  = 6
 )

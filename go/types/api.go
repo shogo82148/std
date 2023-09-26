@@ -74,6 +74,8 @@ type ImporterFrom interface {
 // A Config specifies the configuration for type checking.
 // The zero value for Config is a ready-to-use default configuration.
 type Config struct {
+	goVersion string
+
 	IgnoreFuncBodies bool
 
 	FakeImportC bool
@@ -87,26 +89,6 @@ type Config struct {
 	Sizes Sizes
 
 	DisableUnusedImportCheck bool
-}
-
-// Info holds result type information for a type-checked package.
-// Only the information for which a map is provided is collected.
-// If the package has type errors, the collected information may
-// be incomplete.
-type Info struct {
-	Types map[ast.Expr]TypeAndValue
-
-	Defs map[*ast.Ident]Object
-
-	Uses map[*ast.Ident]Object
-
-	Implicits map[ast.Node]Object
-
-	Selections map[*ast.SelectorExpr]*Selection
-
-	Scopes map[ast.Node]*Scope
-
-	InitOrder []*Initializer
 }
 
 // TypeOf returns the type of expression e, or nil if not found.
@@ -161,6 +143,9 @@ func (tv TypeAndValue) Assignable() bool
 // HasOk reports whether the corresponding expression may be
 // used on the rhs of a comma-ok assignment.
 func (tv TypeAndValue) HasOk() bool
+
+// _Inferred reports the _Inferred type arguments and signature
+// for a parameterized function call that uses type inference.
 
 // An Initializer describes a package-level variable, or a list of variables in case
 // of a multi-valued initialization expression, and the corresponding initialization

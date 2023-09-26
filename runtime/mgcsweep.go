@@ -28,3 +28,8 @@ package runtime
 
 // sweepClass is a spanClass and one bit to represent whether we're currently
 // sweeping partial or full spans.
+
+// sweepLocker acquires sweep ownership of spans and blocks sweep
+// completion.
+
+// sweepLocked represents sweep ownership of a span.

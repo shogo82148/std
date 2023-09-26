@@ -160,8 +160,15 @@ func (v Value) CanInterface() bool
 // unexported struct fields.
 func (v Value) Interface() (i interface{})
 
-// InterfaceData returns the interface v's value as a uintptr pair.
+// InterfaceData returns a pair of unspecified uintptr values.
 // It panics if v's Kind is not Interface.
+//
+// In earlier versions of Go, this function returned the interface's
+// value as a uintptr pair. As of Go 1.4, the implementation of
+// interface values precludes any defined use of InterfaceData.
+//
+// Deprecated: The memory representation of interface values is not
+// compatible with InterfaceData.
 func (v Value) InterfaceData() [2]uintptr
 
 // IsNil reports whether its argument v is nil. The argument must be
@@ -530,5 +537,9 @@ func NewAt(typ Type, p unsafe.Pointer) Value
 
 // Convert returns the value v converted to type t.
 // If the usual Go conversion rules do not allow conversion
-// of the value v to type t, Convert panics.
+// of the value v to type t, or if converting v to type t panics, Convert panics.
 func (v Value) Convert(t Type) Value
+
+// CanConvert reports whether the value v can be converted to type t.
+// If v.CanConvert(t) returns true then v.Convert(t) will not panic.
+func (v Value) CanConvert(t Type) bool

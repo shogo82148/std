@@ -79,6 +79,10 @@ func (ip IP) IsUnspecified() bool
 // IsLoopback reports whether ip is a loopback address.
 func (ip IP) IsLoopback() bool
 
+// IsPrivate reports whether ip is a private address, according to
+// RFC 1918 (IPv4 addresses) and RFC 4193 (IPv6 addresses).
+func (ip IP) IsPrivate() bool
+
 // IsMulticast reports whether ip is a multicast address.
 func (ip IP) IsMulticast() bool
 

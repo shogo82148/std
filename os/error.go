@@ -52,7 +52,7 @@ func NewSyscallError(syscall string, err error) error
 // well as some syscall errors.
 //
 // This function predates errors.Is. It only supports errors returned by
-// the os package. New code should use errors.Is(err, os.ErrExist).
+// the os package. New code should use errors.Is(err, fs.ErrExist).
 func IsExist(err error) bool
 
 // IsNotExist returns a boolean indicating whether the error is known to
@@ -60,7 +60,7 @@ func IsExist(err error) bool
 // ErrNotExist as well as some syscall errors.
 //
 // This function predates errors.Is. It only supports errors returned by
-// the os package. New code should use errors.Is(err, os.ErrNotExist).
+// the os package. New code should use errors.Is(err, fs.ErrNotExist).
 func IsNotExist(err error) bool
 
 // IsPermission returns a boolean indicating whether the error is known to
@@ -68,7 +68,7 @@ func IsNotExist(err error) bool
 // as some syscall errors.
 //
 // This function predates errors.Is. It only supports errors returned by
-// the os package. New code should use errors.Is(err, os.ErrPermission).
+// the os package. New code should use errors.Is(err, fs.ErrPermission).
 func IsPermission(err error) bool
 
 // IsTimeout returns a boolean indicating whether the error is known

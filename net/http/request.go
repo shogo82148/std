@@ -236,10 +236,11 @@ func (r *Request) WriteProxy(w io.Writer) error
 // This error type should not escape the net/http package to users.
 
 // ParseHTTPVersion parses an HTTP version string.
-// "HTTP/1.0" returns (1, 0, true).
+// "HTTP/1.0" returns (1, 0, true). Note that strings without
+// a minor version, such as "HTTP/2", are not valid.
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
-// NewRequest wraps NewRequestWithContext using the background context.
+// NewRequest wraps NewRequestWithContext using context.Background.
 func NewRequest(method, url string, body io.Reader) (*Request, error)
 
 // NewRequestWithContext returns a new Request given a method, URL, and
@@ -290,8 +291,6 @@ func (r *Request) SetBasicAuth(username, password string)
 // only supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.
 func ReadRequest(b *bufio.Reader) (*Request, error)
 
-// Constants for readRequest's deleteHostHeader parameter.
-
 // MaxBytesReader is similar to io.LimitReader but is intended for
 // limiting the size of incoming request bodies. In contrast to
 // io.LimitReader, MaxBytesReader's result is a ReadCloser, returns a
@@ -327,6 +326,8 @@ func (r *Request) ParseForm() error
 // its file parts are stored in memory, with the remainder stored on
 // disk in temporary files.
 // ParseMultipartForm calls ParseForm if necessary.
+// If ParseForm returns an error, ParseMultipartForm returns it but also
+// continues parsing the request body.
 // After one call to ParseMultipartForm, subsequent calls have no effect.
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 

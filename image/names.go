@@ -35,6 +35,8 @@ func (c *Uniform) Bounds() Rectangle
 
 func (c *Uniform) At(x, y int) color.Color
 
+func (c *Uniform) RGBA64At(x, y int) color.RGBA64
+
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (c *Uniform) Opaque() bool
 

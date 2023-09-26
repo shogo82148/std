@@ -56,6 +56,9 @@ func TypeString(typ Type, qf Qualifier) string
 // package-level objects, and may be nil.
 func WriteType(buf *bytes.Buffer, typ Type, qf Qualifier)
 
+// instanceMarker is the prefix for an instantiated type
+// in "non-evaluated" instance form.
+
 // WriteSignature writes the representation of the signature sig to buf,
 // without a leading "func" keyword.
 // The Qualifier controls the printing of

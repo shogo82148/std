@@ -50,6 +50,8 @@ func (p *YCbCr) Bounds() Rectangle
 
 func (p *YCbCr) At(x, y int) color.Color
 
+func (p *YCbCr) RGBA64At(x, y int) color.RGBA64
+
 func (p *YCbCr) YCbCrAt(x, y int) color.YCbCr
 
 // YOffset returns the index of the first element of Y that corresponds to
@@ -82,6 +84,8 @@ type NYCbCrA struct {
 func (p *NYCbCrA) ColorModel() color.Model
 
 func (p *NYCbCrA) At(x, y int) color.Color
+
+func (p *NYCbCrA) RGBA64At(x, y int) color.RGBA64
 
 func (p *NYCbCrA) NYCbCrAAt(x, y int) color.NYCbCrA
 

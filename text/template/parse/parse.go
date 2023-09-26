@@ -31,6 +31,7 @@ type Mode uint
 
 const (
 	ParseComments Mode = 1 << iota
+	SkipFuncCheck
 )
 
 // Copy returns a copy of the Tree. Any parsing state is discarded.

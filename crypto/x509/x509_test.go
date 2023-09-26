@@ -47,3 +47,11 @@ import (
 
 // multipleURLsInCRLDPPEM contains two URLs in a single CRL DistributionPoint
 // structure. It is taken from https://crt.sh/?id=12721534.
+
+// mismatchingSigAlgIDPEM contains a certificate where the Certificate
+// signatureAlgorithm and the TBSCertificate signature contain
+// mismatching OIDs
+
+// mismatchingSigAlgParamPEM contains a certificate where the Certificate
+// signatureAlgorithm and the TBSCertificate signature contain
+// mismatching parameters

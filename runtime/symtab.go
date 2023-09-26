@@ -34,8 +34,15 @@ type Frame struct {
 // Do not change the slice until you are done with the Frames.
 func CallersFrames(callers []uintptr) *Frames
 
-// Next returns frame information for the next caller.
-// If more is false, there are no more callers (the Frame value is valid).
+// Next returns a Frame representing the next call frame in the slice
+// of PC values. If it has already returned all call frames, Next
+// returns a zero Frame.
+//
+// The more result indicates whether the next call to Next will return
+// a valid Frame. It does not necessarily indicate whether this call
+// returned one.
+//
+// See the Frames example for idiomatic usage.
 func (ci *Frames) Next() (frame Frame, more bool)
 
 // A Func represents a Go function in the running binary.
@@ -52,6 +59,9 @@ type Func struct {
 // Note that in some situations involving plugins, there may be multiple
 // copies of a particular special runtime function.
 // Note: this list must match the list in cmd/internal/objabi/funcid.go.
+
+// A FuncFlag holds bits about a function.
+// This list must match the list in cmd/internal/objabi/funcid.go.
 
 // pcHeader holds data used by the pclntab lookups.
 

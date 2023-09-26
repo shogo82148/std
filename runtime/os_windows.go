@@ -46,6 +46,11 @@ var (
 // haveHighResTimer indicates that the CreateWaitableTimerEx
 // CREATE_WAITABLE_TIMER_HIGH_RESOLUTION flag is available.
 
+//go:linkname canUseLongPaths os.canUseLongPaths
+
+// We want this to be large enough to hold the contents of sysDirectory, *plus*
+// a slash and another component that itself is greater than MAX_PATH.
+
 // useQPCTime controls whether time.now and nanotime use QueryPerformanceCounter.
 // This is only set to 1 when running under Wine.
 

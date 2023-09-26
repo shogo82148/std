@@ -98,6 +98,9 @@ type DriverContext interface {
 // DriverContext's OpenConnector method, to allow drivers
 // access to context and to avoid repeated parsing of driver
 // configuration.
+//
+// If a Connector implements io.Closer, the sql package's DB.Close
+// method will call Close and return error (if any).
 type Connector interface {
 	Connect(context.Context) (Conn, error)
 

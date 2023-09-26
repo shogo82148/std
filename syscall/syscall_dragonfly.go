@@ -33,6 +33,8 @@ type SockaddrDatalink struct {
 
 func Pipe(p []int) (err error)
 
+func Pipe2(p []int, flags int) (err error)
+
 // sys	extpread(fd int, p []byte, flags int, offset int64) (n int, err error)
 func Pread(fd int, p []byte, offset int64) (n int, err error)
 

@@ -6,7 +6,3 @@
 // +build linux netbsd js,wasm
 
 package os
-
-// We query the executable path at init time to avoid the problem of
-// readlink returns a path appended with " (deleted)" when the original
-// binary gets deleted.

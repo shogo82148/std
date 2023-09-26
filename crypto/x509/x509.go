@@ -282,18 +282,11 @@ func (h UnhandledCriticalExtension) Error() string
 
 // RFC 5280, 4.2.1.14
 
-// ParseCertificate parses a single certificate from the given ASN.1 DER data.
-func ParseCertificate(asn1Data []byte) (*Certificate, error)
-
-// ParseCertificates parses one or more certificates from the given ASN.1 DER
-// data. The certificates must be concatenated with no intermediate padding.
-func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
-
 // emptyASN1Subject is the ASN.1 DER encoding of an empty Subject, which is
 // just an empty SEQUENCE.
 
-// CreateCertificate creates a new X.509v3 certificate based on a template.
-// The following members of template are used:
+// CreateCertificate creates a new X.509 v3 certificate based on a template.
+// The following members of template are currently used:
 //
 //   - AuthorityKeyId
 //   - BasicConstraintsValid
@@ -330,7 +323,7 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 //
 // The certificate is signed by parent. If parent is equal to template then the
 // certificate is self-signed. The parameter pub is the public key of the
-// signee and priv is the private key of the signer.
+// certificate to be generated and priv is the private key of the signer.
 //
 // The returned slice is the certificate in DER encoding.
 //
@@ -344,7 +337,7 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 //
 // If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
 // will be generated from the hash of the public key.
-func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv interface{}) (cert []byte, err error)
+func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv interface{}) ([]byte, error)
 
 // pemCRLPrefix is the magic string that indicates that we have a PEM encoded
 // CRL.

@@ -41,9 +41,12 @@ package main
 // List of platforms which are supported but not complete yet. These get
 // filtered out of cgoEnabled for 'dist list'. See golang.org/issue/28944
 
+// List of platforms which are first class ports. See golang.org/issue/38874.
+
 // IsRuntimePackagePath examines 'pkgpath' and returns TRUE if it
 // belongs to the collection of "runtime-related" packages, including
 // "runtime" itself, "reflect", "syscall", and the
-// "runtime/internal/*" packages. See also the function of the same
-// name in cmd/internal/objabi/path.go.
+// "runtime/internal/*" packages.
+//
+// Keep in sync with cmd/internal/objabi/path.go:IsRuntimePackagePath.
 func IsRuntimePackagePath(pkgpath string) bool

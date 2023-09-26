@@ -27,6 +27,7 @@ type EncoderBufferPool interface {
 // EncoderBuffer holds the buffers used for encoding PNG images.
 type EncoderBuffer encoder
 
+// CompressionLevel indicates the compression level.
 type CompressionLevel int
 
 const (

@@ -14,6 +14,9 @@ import (
 // return value evaluates to non-nil during execution, execution terminates and
 // Execute returns that error.
 //
+// Errors returned by Execute wrap the underlying error; call errors.As to
+// uncover them.
+//
 // When template execution invokes a function with an argument list, that list
 // must be assignable to the function's parameter types. Functions meant to
 // apply to arguments of arbitrary type can use parameters of type interface{} or

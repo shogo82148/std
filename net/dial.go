@@ -108,6 +108,9 @@ func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
 //
 // See func Dial for a description of the network and address
 // parameters.
+//
+// Dial uses context.Background internally; to specify the context, use
+// DialContext.
 func (d *Dialer) Dial(network, address string) (Conn, error)
 
 // DialContext connects to the address on the named network using
@@ -169,6 +172,9 @@ func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address strin
 //
 // See func Dial for a description of the network and address
 // parameters.
+//
+// Listen uses context.Background internally; to specify the context, use
+// ListenConfig.Listen.
 func Listen(network, address string) (Listener, error)
 
 // ListenPacket announces on the local network address.
@@ -193,4 +199,7 @@ func Listen(network, address string) (Listener, error)
 //
 // See func Dial for a description of the network and address
 // parameters.
+//
+// ListenPacket uses context.Background internally; to specify the context, use
+// ListenConfig.ListenPacket.
 func ListenPacket(network, address string) (PacketConn, error)

@@ -43,8 +43,9 @@ type Part struct {
 // of type "form-data".  Otherwise it returns the empty string.
 func (p *Part) FormName() string
 
-// FileName returns the filename parameter of the Part's
-// Content-Disposition header.
+// FileName returns the filename parameter of the Part's Content-Disposition
+// header. If not empty, the filename is passed through filepath.Base (which is
+// platform dependent) before being returned.
 func (p *Part) FileName() string
 
 // NewReader creates a new multipart Reader reading from r using the

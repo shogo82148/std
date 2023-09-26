@@ -8,8 +8,6 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ignoreCN disables interpreting Common Name as a hostname. See issue 24151.
-
 type InvalidReason int
 
 const (
@@ -32,14 +30,7 @@ const (
 	// NameMismatch results when the subject name of a parent certificate
 	// does not match the issuer name in the child.
 	NameMismatch
-	// NameConstraintsWithoutSANs results when a leaf certificate doesn't
-	// contain a Subject Alternative Name extension, but a CA certificate
-	// contains name constraints, and the Common Name can be interpreted as
-	// a hostname.
-	//
-	// This error is only returned when legacy Common Name matching is enabled
-	// by setting the GODEBUG environment variable to "x509ignoreCN=1". This
-	// setting might be removed in the future.
+	// NameConstraintsWithoutSANs is a legacy error and is no longer returned.
 	NameConstraintsWithoutSANs
 	// UnconstrainedName results when a CA certificate contains permitted
 	// name constraints, but leaf certificate contains a name of an
@@ -147,7 +138,7 @@ type VerifyOptions struct {
 func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)
 
 // maxChainSignatureChecks is the maximum number of CheckSignatureFrom calls
-// that an invocation of buildChains will (tranistively) make. Most chains are
+// that an invocation of buildChains will (transitively) make. Most chains are
 // less than 15 certificates long, so this leaves space for multiple chains and
 // for failed checks due to different intermediates having the same Subject.
 
@@ -159,8 +150,5 @@ func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err e
 // against the DNSNames field. If the names are valid hostnames, the certificate
 // fields can have a wildcard as the left-most label.
 //
-// The legacy Common Name field is ignored unless it's a valid hostname, the
-// certificate doesn't have any Subject Alternative Names, and the GODEBUG
-// environment variable is set to "x509ignoreCN=0". Support for Common Name is
-// deprecated will be entirely removed in the future.
+// Note that the legacy Common Name field is ignored.
 func (c *Certificate) VerifyHostname(h string) error

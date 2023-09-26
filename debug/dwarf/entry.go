@@ -114,7 +114,7 @@ const (
 	// the "mac" section.
 	ClassMacPtr
 
-	// ClassMacPtr represents values that are an int64 offset into
+	// ClassRangeListPtr represents values that are an int64 offset into
 	// the "rangelist" section.
 	ClassRangeListPtr
 
@@ -152,7 +152,7 @@ const (
 	// into the "loclists" section.
 	ClassLocList
 
-	// ClassRngList represents values that are an int64 offset
+	// ClassRngList represents values that are a uint64 offset
 	// from the base of the "rnglists" section.
 	ClassRngList
 

@@ -6,4 +6,8 @@ package types
 
 const (
 	_ errorCode = iota
+
+	_
+
+	_
 )

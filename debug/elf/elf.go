@@ -386,6 +386,7 @@ const (
 	SHT_GNU_VERSYM     SectionType = 0x6fffffff
 	SHT_HIOS           SectionType = 0x6fffffff
 	SHT_LOPROC         SectionType = 0x70000000
+	SHT_MIPS_ABIFLAGS  SectionType = 0x7000002a
 	SHT_HIPROC         SectionType = 0x7fffffff
 	SHT_LOUSER         SectionType = 0x80000000
 	SHT_HIUSER         SectionType = 0xffffffff

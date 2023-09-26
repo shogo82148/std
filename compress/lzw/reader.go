@@ -30,8 +30,37 @@ const (
 	MSB
 )
 
-// decoder is the state from which the readXxx method converts a byte
-// stream into a code stream.
+// Reader is an io.Reader which can be used to read compressed data in the
+// LZW format.
+type Reader struct {
+	r        io.ByteReader
+	bits     uint32
+	nBits    uint
+	width    uint
+	read     func(*Reader) (uint16, error)
+	litWidth int
+	err      error
+
+	clear, eof, hi, overflow, last uint16
+
+	suffix [1 << maxWidth]uint8
+	prefix [1 << maxWidth]uint16
+
+	output [2 * 1 << maxWidth]byte
+	o      int
+	toRead []byte
+}
+
+// Read implements io.Reader, reading uncompressed bytes from its underlying Reader.
+func (r *Reader) Read(b []byte) (int, error)
+
+// Close closes the Reader and returns an error for any future read operation.
+// It does not close the underlying io.Reader.
+func (r *Reader) Close() error
+
+// Reset clears the Reader's state and allows it to be reused again
+// as a new Reader.
+func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 
 // NewReader creates a new io.ReadCloser.
 // Reads from the returned io.ReadCloser read and decompress data from r.
@@ -42,4 +71,7 @@ const (
 // The number of bits to use for literal codes, litWidth, must be in the
 // range [2,8] and is typically 8. It must equal the litWidth
 // used during compression.
+//
+// It is guaranteed that the underlying type of the returned io.ReadCloser
+// is a *Reader.
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser

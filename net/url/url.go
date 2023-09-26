@@ -116,20 +116,20 @@ func (u *Userinfo) Password() (string, bool)
 // of "username[:password]".
 func (u *Userinfo) String() string
 
-// Parse parses rawurl into a URL structure.
+// Parse parses a raw url into a URL structure.
 //
-// The rawurl may be relative (a path, without a host) or absolute
+// The url may be relative (a path, without a host) or absolute
 // (starting with a scheme). Trying to parse a hostname and path
 // without a scheme is invalid but may not necessarily return an
 // error, due to parsing ambiguities.
-func Parse(rawurl string) (*URL, error)
+func Parse(rawURL string) (*URL, error)
 
-// ParseRequestURI parses rawurl into a URL structure. It assumes that
-// rawurl was received in an HTTP request, so the rawurl is interpreted
+// ParseRequestURI parses a raw url into a URL structure. It assumes that
+// url was received in an HTTP request, so the url is interpreted
 // only as an absolute URI or an absolute path.
-// The string rawurl is assumed not to have a #fragment suffix.
+// The string url is assumed not to have a #fragment suffix.
 // (Web browsers strip #fragment before sending the URL to a web server.)
-func ParseRequestURI(rawurl string) (*URL, error)
+func ParseRequestURI(rawURL string) (*URL, error)
 
 // EscapedPath returns the escaped form of u.Path.
 // In general there are multiple possible escaped forms of any path.
@@ -202,15 +202,19 @@ func (v Values) Add(key, value string)
 // Del deletes the values associated with key.
 func (v Values) Del(key string)
 
+// Has checks whether a given key is set.
+func (v Values) Has(key string) bool
+
 // ParseQuery parses the URL-encoded query string and returns
 // a map listing the values specified for each key.
 // ParseQuery always returns a non-nil map containing all the
 // valid query parameters found; err describes the first decoding error
 // encountered, if any.
 //
-// Query is expected to be a list of key=value settings separated by
-// ampersands or semicolons. A setting without an equals sign is
-// interpreted as a key set to an empty value.
+// Query is expected to be a list of key=value settings separated by ampersands.
+// A setting without an equals sign is interpreted as a key set to an empty
+// value.
+// Settings containing a non-URL-encoded semicolon are considered invalid.
 func ParseQuery(query string) (Values, error)
 
 // Encode encodes the values into “URL encoded” form

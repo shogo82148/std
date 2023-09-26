@@ -132,7 +132,7 @@ var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA public 
 //
 // The label parameter may contain arbitrary data that will not be encrypted,
 // but which gives important context to the message. For example, if a given
-// public key is used to decrypt two types of messages then distinct label
+// public key is used to encrypt two types of messages then distinct label
 // values could be used to ensure that a ciphertext for one purpose cannot be
 // used for another by an attacker. If not required it can be empty.
 //

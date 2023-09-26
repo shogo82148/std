@@ -38,13 +38,15 @@ type ProcAttr struct {
 }
 
 type SysProcAttr struct {
-	HideWindow        bool
-	CmdLine           string
-	CreationFlags     uint32
-	Token             Token
-	ProcessAttributes *SecurityAttributes
-	ThreadAttributes  *SecurityAttributes
-	NoInheritHandles  bool
+	HideWindow                 bool
+	CmdLine                    string
+	CreationFlags              uint32
+	Token                      Token
+	ProcessAttributes          *SecurityAttributes
+	ThreadAttributes           *SecurityAttributes
+	NoInheritHandles           bool
+	AdditionalInheritedHandles []Handle
+	ParentProcess              Handle
 }
 
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)

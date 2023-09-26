@@ -29,8 +29,6 @@ import (
 	. "go/types"
 )
 
-// Each tests entry is list of files belonging to the same package.
-
 // Positioned errors are of the form filename:line:column: message .
 
 // ERROR comments must start with text `ERROR "rx"` or `ERROR rx` where
@@ -39,3 +37,5 @@ import (
 // for error messages that are located immediately after rather than
 // at a token's position.
 //
+
+// goVersionRx matches a Go version string using '_', e.g. "go1_12".

@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package parser
+
+// TODO(rFindley): use a testdata file or file from another package here, to
+//                 avoid a moving target.

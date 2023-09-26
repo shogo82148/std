@@ -44,11 +44,24 @@ var NetpollGenericInit = netpollGenericInit
 var Memmove = memmove
 var MemclrNoHeapPointers = memclrNoHeapPointers
 
+var LockPartialOrder = lockPartialOrder
+
+type LockRank lockRank
+
 const PreemptMSupported = preemptMSupported
 
 type LFNode struct {
 	Next    uint64
 	Pushcnt uintptr
+}
+
+// Temporary to enable register ABI bringup.
+// TODO(register args): convert back to local variables in RunSchedLocalQueueEmptyTest that
+// get passed to the "go" stmts there.
+var RunSchedLocalQueueEmptyState struct {
+	done  chan bool
+	ready *uint32
+	p     *p
 }
 
 var (
@@ -66,8 +79,6 @@ var (
 var UseAeshash = &useAeshash
 
 var HashLoad = &hashLoad
-
-type Uintreg sys.Uintreg
 
 var Open = open
 var Close = closefd
@@ -186,3 +197,10 @@ const (
 type TimeHistogram timeHistogram
 
 var TimeHistogramMetricsBuckets = timeHistogramMetricsBuckets
+
+// For GCTestMoveStackOnNextCall, it's important not to introduce an
+// extra layer of call, since then there's a return before the "real"
+// next call.
+var GCTestMoveStackOnNextCall = gcTestMoveStackOnNextCall
+
+const Raceenabled = raceenabled

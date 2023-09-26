@@ -6,5 +6,4 @@ package rsa
 
 import (
 	_ "crypto/md5"
-	_ "crypto/sha256"
 )

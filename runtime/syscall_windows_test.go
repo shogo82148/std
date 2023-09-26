@@ -13,3 +13,7 @@ type DLL struct {
 	*syscall.DLL
 	t *testing.T
 }
+
+// TODO(register args): Remove this once we switch to using the register
+// calling convention by default, since this is redundant with the existing
+// tests.

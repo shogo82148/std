@@ -354,6 +354,20 @@ func (t Time) Zone() (name string, offset int)
 // value it is valid for billions of years into the past or future.
 func (t Time) Unix() int64
 
+// UnixMilli returns t as a Unix time, the number of milliseconds elapsed since
+// January 1, 1970 UTC. The result is undefined if the Unix time in
+// milliseconds cannot be represented by an int64 (a date more than 292 million
+// years before or after 1970). The result does not depend on the
+// location associated with t.
+func (t Time) UnixMilli() int64
+
+// UnixMicro returns t as a Unix time, the number of microseconds elapsed since
+// January 1, 1970 UTC. The result is undefined if the Unix time in
+// microseconds cannot be represented by an int64 (a date before year -290307 or
+// after year 294246). The result does not depend on the location associated
+// with t.
+func (t Time) UnixMicro() int64
+
 // UnixNano returns t as a Unix time, the number of nanoseconds elapsed
 // since January 1, 1970 UTC. The result is undefined if the Unix time
 // in nanoseconds cannot be represented by an int64 (a date before the year
@@ -396,6 +410,17 @@ func (t *Time) UnmarshalText(data []byte) error
 // Not all sec values have a corresponding time value. One such
 // value is 1<<63-1 (the largest int64 value).
 func Unix(sec int64, nsec int64) Time
+
+// UnixMilli returns the local Time corresponding to the given Unix time,
+// msec milliseconds since January 1, 1970 UTC.
+func UnixMilli(msec int64) Time
+
+// UnixMicro returns the local Time corresponding to the given Unix time,
+// usec microseconds since January 1, 1970 UTC.
+func UnixMicro(usec int64) Time
+
+// IsDST reports whether the time in the configured location is in Daylight Savings Time.
+func (t Time) IsDST() bool
 
 // Date returns the Time corresponding to
 //

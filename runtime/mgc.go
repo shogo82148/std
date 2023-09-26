@@ -113,8 +113,8 @@
 // Next GC is after we've allocated an extra amount of memory proportional to
 // the amount already in use. The proportion is controlled by GOGC environment variable
 // (100 by default). If GOGC=100 and we're using 4M, we'll GC again when we get to 8M
-// (this mark is tracked in next_gc variable). This keeps the GC cost in linear
-// proportion to the allocation cost. Adjusting GOGC just changes the linear constant
+// (this mark is tracked in gcController.heapGoal variable). This keeps the GC cost in
+// linear proportion to the allocation cost. Adjusting GOGC just changes the linear constant
 // (and also the amount of extra memory used).
 
 // Oblets
@@ -128,22 +128,8 @@
 
 package runtime
 
-// heapminimum is the minimum heap size at which to trigger GC.
-// For small heaps, this overrides the usual GOGC*live set rule.
-//
-// When there is a very small live set but a lot of allocation, simply
-// collecting when the heap reaches GOGC*live results in many GC
-// cycles and high total per-GC overhead. This minimum amortizes this
-// per-GC overhead while keeping the heap reasonably small.
-//
-// During initialization this is set to 4MB*GOGC/100. In the case of
-// GOGC==0, this will set heapminimum to 0, resulting in constant
-// collection even when the heap size is small, which is useful for
-// debugging.
-
-// defaultHeapMinimum is the value of heapminimum for GOGC==100.
-
-// Initialized from $GOGC.  GOGC=off means no GC.
+// Temporary in order to enable register ABI work.
+// TODO(register args): convert back to local chan in gcenabled, passed to "go" stmts.
 
 // Garbage collector phase.
 // Indicates to write barrier and synchronization task to perform.
@@ -167,49 +153,6 @@ package runtime
 
 // gcMarkWorkerModeStrings are the strings labels of gcMarkWorkerModes
 // to use in execution traces.
-
-// gcController implements the GC pacing controller that determines
-// when to trigger concurrent garbage collection and how much marking
-// work to do in mutator assists and background marking.
-//
-// It uses a feedback control algorithm to adjust the memstats.gc_trigger
-// trigger based on the heap growth and GC CPU utilization each cycle.
-// This algorithm optimizes for heap growth to match GOGC and for CPU
-// utilization between assist and background marking to be 25% of
-// GOMAXPROCS. The high-level design of this algorithm is documented
-// at https://golang.org/s/go15gcpacing.
-//
-// All fields of gcController are used only during a single mark
-// cycle.
-
-// gcGoalUtilization is the goal CPU utilization for
-// marking as a fraction of GOMAXPROCS.
-
-// gcBackgroundUtilization is the fixed CPU utilization for background
-// marking. It must be <= gcGoalUtilization. The difference between
-// gcGoalUtilization and gcBackgroundUtilization will be made up by
-// mark assists. The scheduler will aim to use within 50% of this
-// goal.
-//
-// Setting this to < gcGoalUtilization avoids saturating the trigger
-// feedback controller when there are no assists, which allows it to
-// better control CPU and heap growth. However, the larger the gap,
-// the more mutator assists are expected to happen, which impact
-// mutator latency.
-
-// gcCreditSlack is the amount of scan work credit that can
-// accumulate locally before updating gcController.scanWork and,
-// optionally, gcController.bgScanCredit. Lower values give a more
-// accurate assist ratio and make it more likely that assists will
-// successfully steal background credit. Higher values reduce memory
-// contention.
-
-// gcAssistTimeSlack is the nanoseconds of mutator assist time that
-// can accumulate on a P before updating gcController.assistTime.
-
-// gcOverAssistWork determines how many extra units of scan work a GC
-// assist does when an assist happens. This amortizes the cost of an
-// assist by pre-paying for this many bytes of future allocations.
 
 // GC runs a garbage collection and blocks the caller until the
 // garbage collection is complete. It may also block the entire

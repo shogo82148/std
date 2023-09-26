@@ -5,6 +5,7 @@
 package tls
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/crypto/x509"
 	"github.com/shogo82148/std/io"
@@ -221,7 +222,14 @@ type ClientHelloInfo struct {
 	Conn net.Conn
 
 	config *Config
+
+	ctx context.Context
 }
+
+// Context returns the context of the handshake that is in progress.
+// This context is a child of the context passed to HandshakeContext,
+// if any, and is canceled when the handshake concludes.
+func (c *ClientHelloInfo) Context() context.Context
 
 // CertificateRequestInfo contains information from a server's
 // CertificateRequest message, which is used to demand a certificate and proof
@@ -232,7 +240,14 @@ type CertificateRequestInfo struct {
 	SignatureSchemes []SignatureScheme
 
 	Version uint16
+
+	ctx context.Context
 }
+
+// Context returns the context of the handshake that is in progress.
+// This context is a child of the context passed to HandshakeContext,
+// if any, and is canceled when the handshake concludes.
+func (c *CertificateRequestInfo) Context() context.Context
 
 // RenegotiationSupport enumerates the different levels of support for TLS
 // renegotiation. TLS renegotiation is the act of performing subsequent

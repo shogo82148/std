@@ -36,7 +36,7 @@ const (
 // consumed when checking that the blockReader is exhausted.
 //
 // To avoid the allocation of a bufio.Reader for the lzw Reader, blockReader
-// implements io.ReadByte and buffers blocks into the decoder's "tmp" buffer.
+// implements io.ByteReader and buffers blocks into the decoder's "tmp" buffer.
 
 // interlaceScan defines the ordering for a pass of the interlace algorithm.
 

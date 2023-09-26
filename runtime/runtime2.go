@@ -52,6 +52,8 @@ package runtime
 // so I can't see them ever moving. If we did want to start moving data
 // in the GC, we'd need to allocate the goroutine structs from an
 // alternate arena. Using guintptr doesn't make that problem any worse.
+// Note that pollDesc.rg, pollDesc.wg also store g in uintptr form,
+// so they would need to be updated too if g's start moving.
 
 // muintptr is a *m that is not tracked by the garbage collector.
 //
@@ -80,6 +82,9 @@ package runtime
 
 // heldLockInfo gives info on a held lock and the rank of that lock
 
+// gTrackingPeriod is the number of transitions out of _Grunning between
+// latency tracking runs.
+
 // Values for the flags field of a sigTabT.
 
 // Layout of in-memory per-function information prepared by linker
@@ -94,14 +99,14 @@ package runtime
 // layout of Itab known to compilers
 // allocated in non-garbage-collected memory
 // Needs to be in sync with
-// ../cmd/compile/internal/gc/reflect.go:/^func.dumptabs.
+// ../cmd/compile/internal/reflectdata/reflect.go:/^func.WriteTabs.
 
 // Lock-free stack node.
 // Also known to export_test.go.
 
 // A _defer holds an entry on the list of deferred calls.
 // If you add a field here, add code to clear it in freedefer and deferProcStack
-// This struct must match the code in cmd/compile/internal/gc/reflect.go:deferstruct
+// This struct must match the code in cmd/compile/internal/reflectdata/reflect.go:deferstruct
 // and cmd/compile/internal/gc/ssa.go:(*state).call.
 // Some defers will be allocated on the stack and some on the heap.
 // All defers are logically part of the stack, so write barriers to
@@ -128,4 +133,4 @@ package runtime
 
 // Set by the linker so the runtime can determine the buildmode.
 
-// Must agree with cmd/internal/objabi.Framepointer_enabled.
+// Must agree with internal/buildcfg.Experiment.FramePointer.
