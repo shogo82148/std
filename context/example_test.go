@@ -17,11 +17,9 @@ import (
 // goroutine leak. By the end of the example function, the goroutine started
 // by gen will return without leaking.
 func ExampleWithCancel() {
-	// gen generates integers in a separate goroutine and
-	// sends them to the returned channel.
-	// The callers of gen need to cancel the context once
-	// they are done consuming generated integers not to leak
-	// the internal goroutine started by gen.
+	// genは、別のゴルーチンで整数を生成し、それらを返されたチャネルに送信します。
+	// genの呼び出し元は、生成された整数を消費し終わったらコンテキストをキャンセルする必要があります。
+	// そうしないと、genによって開始された内部ゴルーチンがリークすることになります。
 	gen := func(ctx context.Context) <-chan int {
 		dst := make(chan int)
 		n := 1
@@ -39,7 +37,7 @@ func ExampleWithCancel() {
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel() // cancel when we are finished consuming integers
+	defer cancel() // 整数を消費し終わったらキャンセル
 
 	for n := range gen(ctx) {
 		fmt.Println(n)
@@ -55,15 +53,17 @@ func ExampleWithCancel() {
 	// 5
 }
 
+var shortDuration time.Duration = 1
+var neverReady <-chan time.Time
+
 // This example passes a context with an arbitrary deadline to tell a blocking
 // function that it should abandon its work as soon as it gets to it.
 func ExampleWithDeadline() {
 	d := time.Now().Add(shortDuration)
 	ctx, cancel := context.WithDeadline(context.Background(), d)
 
-	// Even though ctx will be expired, it is good practice to call its
-	// cancellation function in any case. Failure to do so may keep the
-	// context and its parent alive longer than necessary.
+	// ctxが期限切れになっている場合でも、そのキャンセル関数を呼び出すことは良い習慣です。
+	// そうしないと、コンテキストとその親が必要以上に長く生き残る可能性があります。
 	defer cancel()
 
 	select {
@@ -80,8 +80,7 @@ func ExampleWithDeadline() {
 // This example passes a context with a timeout to tell a blocking function that
 // it should abandon its work after the timeout elapses.
 func ExampleWithTimeout() {
-	// Pass a context with a timeout to tell a blocking function that it
-	// should abandon its work after the timeout elapses.
+	// タイムアウト付きのコンテキストを渡すことで、ブロッキング関数に、タイムアウトが経過した後に作業を中止するように指示します。
 	ctx, cancel := context.WithTimeout(context.Background(), shortDuration)
 	defer cancel()
 
@@ -89,7 +88,7 @@ func ExampleWithTimeout() {
 	case <-neverReady:
 		fmt.Println("ready")
 	case <-ctx.Done():
-		fmt.Println(ctx.Err()) // prints "context deadline exceeded"
+		fmt.Println(ctx.Err()) // "context deadline exceeded" を出力します
 	}
 
 	// Output:
@@ -194,8 +193,8 @@ func ExampleAfterFunc_connection() {
 		})
 		n, err = conn.Read(b)
 		if !stop() {
-			// The AfterFunc was started.
-			// Wait for it to complete, and reset the Conn's deadline.
+			// AfterFuncが開始されました。
+			// 完了するまで待ち、Connの期限をリセットします。
 			<-stopc
 			conn.SetReadDeadline(time.Time{})
 			return n, ctx.Err()
@@ -231,8 +230,7 @@ func ExampleAfterFunc_connection() {
 // This example uses AfterFunc to define a function which combines
 // the cancellation signals of two Contexts.
 func ExampleAfterFunc_merge() {
-	// mergeCancel returns a context that contains the values of ctx,
-	// and which is canceled when either ctx or cancelCtx is canceled.
+	// mergeCancelは、ctxの値を含み、ctxまたはcancelCtxのいずれかがキャンセルされたときにキャンセルされるコンテキストを返します。
 	mergeCancel := func(ctx, cancelCtx context.Context) (context.Context, context.CancelFunc) {
 		ctx, cancel := context.WithCancelCause(ctx)
 		stop := context.AfterFunc(cancelCtx, func() {
