@@ -52,8 +52,6 @@ func CipherSuiteName(id uint16) string
 // cthWrapper wraps any hash.Hash that implements ConstantTimeSum, and replaces
 // with that all calls to Sum. It's used to obtain a ConstantTimeSum-based HMAC.
 
-// tls10MAC implements the TLS 1.0 MAC function. RFC 2246, Section 6.2.3.
-
 // A list of cipher suite IDs that are, or have been, implemented by this
 // package.
 //

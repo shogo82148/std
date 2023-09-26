@@ -6,6 +6,7 @@ package runtime_test
 
 import (
 	. "runtime"
+	_ "unsafe"
 )
 
 type I interface {

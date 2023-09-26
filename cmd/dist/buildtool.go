@@ -27,3 +27,4 @@ package main
 
 // File suffixes that use build tags introduced since Go 1.4.
 // These must not be copied into the bootstrap build directory.
+// Also ignore test files.

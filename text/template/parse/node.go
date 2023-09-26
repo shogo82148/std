@@ -58,6 +58,7 @@ const (
 	NodeTemplate
 	NodeVariable
 	NodeWith
+	NodeComment
 )
 
 // ListNode holds a sequence of nodes.
@@ -85,6 +86,18 @@ type TextNode struct {
 func (t *TextNode) String() string
 
 func (t *TextNode) Copy() Node
+
+// CommentNode holds a comment.
+type CommentNode struct {
+	NodeType
+	Pos
+	tr   *Tree
+	Text string
+}
+
+func (c *CommentNode) String() string
+
+func (c *CommentNode) Copy() Node
 
 // PipeNode holds a pipeline with optional declaration
 type PipeNode struct {

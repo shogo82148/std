@@ -33,11 +33,11 @@ package runtime
 
 // lockNames gives the names associated with each of the above ranks
 
-// lockPartialOrder is a partial order among the various lock types, listing the immediate
-// ordering that has actually been observed in the runtime. Each entry (which
-// corresponds to a particular lock rank) specifies the list of locks that can be
-// already be held immediately "above" it.
+// lockPartialOrder is a partial order among the various lock types, listing the
+// immediate ordering that has actually been observed in the runtime. Each entry
+// (which corresponds to a particular lock rank) specifies the list of locks
+// that can already be held immediately "above" it.
 //
-// So, for example, the lockRankSched entry shows that all the locks preceding it in
-// rank can actually be held. The fin lock shows that only the sched, timers, or
-// hchan lock can be held immediately above it when it is acquired.
+// So, for example, the lockRankSched entry shows that all the locks preceding
+// it in rank can actually be held. The allp lock shows that only the sysmon or
+// sched lock can be held immediately above it when it is acquired.

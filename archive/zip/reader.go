@@ -7,7 +7,9 @@ package zip
 import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/io/fs"
 	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/sync"
 )
 
 var (
@@ -16,18 +18,26 @@ var (
 	ErrChecksum  = errors.New("zip: checksum error")
 )
 
+// A Reader serves content from a ZIP archive.
 type Reader struct {
 	r             io.ReaderAt
 	File          []*File
 	Comment       string
 	decompressors map[uint16]Decompressor
+
+	fileListOnce sync.Once
+	fileList     []fileListEntry
 }
 
+// A ReadCloser is a Reader that must be closed when no longer needed.
 type ReadCloser struct {
 	f *os.File
 	Reader
 }
 
+// A File is a single file in a ZIP archive.
+// The file information is in the embedded FileHeader.
+// The file content can be accessed by calling Open.
 type File struct {
 	FileHeader
 	zip          *Reader
@@ -61,3 +71,12 @@ func (f *File) DataOffset() (offset int64, err error)
 // Open returns a ReadCloser that provides access to the File's contents.
 // Multiple files may be read concurrently.
 func (f *File) Open() (io.ReadCloser, error)
+
+// A fileListEntry is a File and its ename.
+// If file == nil, the fileListEntry describes a directory without metadata.
+
+// Open opens the named file in the ZIP archive,
+// using the semantics of fs.FS.Open:
+// paths are always slash separated, with no
+// leading / or ../ elements.
+func (r *Reader) Open(name string) (fs.File, error)

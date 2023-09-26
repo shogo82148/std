@@ -29,6 +29,8 @@ func (ts *StTimespec_t) Unix() (sec int64, nsec int64)
 
 func (ts *StTimespec_t) Nano() int64
 
+func Access(path string, mode uint32) (err error)
+
 // sysnb pipe(p *[2]_C_int) (err error)
 func Pipe(p []int) (err error)
 
@@ -61,6 +63,9 @@ func ReadDirent(fd int, buf []byte) (n int, err error)
 
 // sys  wait4(pid _Pid_t, status *_C_int, options int, rusage *Rusage) (wpid _Pid_t, err error)
 func Wait4(pid int, wstatus *WaitStatus, options int, rusage *Rusage) (wpid int, err error)
+
+// sys	fsyncRange(fd int, how int, start int64, length int64) (err error) = fsync_range
+func Fsync(fd int) error
 
 func Getsockname(fd int) (sa Sockaddr, err error)
 

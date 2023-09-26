@@ -18,7 +18,7 @@ package sync
 // depends on wrapping around the ring buffer without wrapping around
 // the index. We divide by 4 so this fits in an int on 32-bit.
 
-// dequeueNil is used in poolDeqeue to represent interface{}(nil).
+// dequeueNil is used in poolDequeue to represent interface{}(nil).
 // Since we use nil to represent empty slots, we need a sentinel value
 // to represent nil.
 

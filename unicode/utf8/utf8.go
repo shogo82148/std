@@ -76,6 +76,7 @@ func DecodeLastRuneInString(s string) (r rune, size int)
 func RuneLen(r rune) int
 
 // EncodeRune writes into p (which must be large enough) the UTF-8 encoding of the rune.
+// If the rune is out of range, it writes the encoding of RuneError.
 // It returns the number of bytes written.
 func EncodeRune(p []byte, r rune) int
 

@@ -43,6 +43,9 @@ var (
 // timer resolution to 15.6 ms, this keeps timer error under roughly 1
 // part in 4.
 
+// haveHighResTimer indicates that the CreateWaitableTimerEx
+// CREATE_WAITABLE_TIMER_HIGH_RESOLUTION flag is available.
+
 // useQPCTime controls whether time.now and nanotime use QueryPerformanceCounter.
 // This is only set to 1 when running under Wine.
 

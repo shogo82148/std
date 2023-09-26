@@ -11,4 +11,4 @@ package main
 // attached to the import "C" comment, a list of references to C.xxx,
 // a list of exported functions, and the actual AST, to be rewritten and
 // printed.
-func (f *File) ParseGo(name string, src []byte)
+func (f *File) ParseGo(abspath string, src []byte)

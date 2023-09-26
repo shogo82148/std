@@ -66,6 +66,9 @@ func New(out io.Writer, prefix string, flag int) *Logger
 // SetOutput sets the output destination for the logger.
 func (l *Logger) SetOutput(w io.Writer)
 
+// Default returns the standard logger used by the package-level output functions.
+func Default() *Logger
+
 // Output writes the output for a logging event. The string s contains
 // the text to print after the prefix specified by the flags of the
 // Logger. A newline is appended if the last character of s is not

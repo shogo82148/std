@@ -4,8 +4,6 @@
 
 package runtime
 
-// type algorithms - known to compiler
-
 // runtime variable to check if the processor we're running on
 // actually supports the instructions used by the AES-based
 // hash implementation.

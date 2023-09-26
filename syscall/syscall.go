@@ -52,18 +52,16 @@ func BytePtrFromString(s string) (*byte, error)
 // Single-word zero for use when we need a valid pointer to 0 bytes.
 // See mksyscall.pl.
 
-// Unix returns ts as the number of seconds and nanoseconds elapsed since the
-// Unix epoch.
+// Unix returns the time stored in ts as seconds plus nanoseconds.
 func (ts *Timespec) Unix() (sec int64, nsec int64)
 
-// Unix returns tv as the number of seconds and nanoseconds elapsed since the
-// Unix epoch.
+// Unix returns the time stored in tv as seconds plus nanoseconds.
 func (tv *Timeval) Unix() (sec int64, nsec int64)
 
-// Nano returns ts as the number of nanoseconds elapsed since the Unix epoch.
+// Nano returns the time stored in ts as nanoseconds.
 func (ts *Timespec) Nano() int64
 
-// Nano returns tv as the number of nanoseconds elapsed since the Unix epoch.
+// Nano returns the time stored in tv as nanoseconds.
 func (tv *Timeval) Nano() int64
 
 func Getpagesize() int

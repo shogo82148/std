@@ -174,15 +174,7 @@ func Setfsgid(gid int) (err error)
 
 func Setfsuid(uid int) (err error)
 
-func Setregid(rgid int, egid int) (err error)
-
-func Setresgid(rgid int, egid int, sgid int) (err error)
-
-func Setresuid(ruid int, euid int, suid int) (err error)
-
 func Setrlimit(resource int, rlim *Rlimit) (err error)
-
-func Setreuid(ruid int, euid int) (err error)
 
 func Shutdown(fd int, how int) (err error)
 

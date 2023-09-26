@@ -76,6 +76,8 @@ func RaceEnable()
 
 //go:linkname __tsan_release __tsan_release
 
+//go:linkname __tsan_release_acquire __tsan_release_acquire
+
 //go:linkname __tsan_release_merge __tsan_release_merge
 
 //go:linkname __tsan_go_ignore_sync_begin __tsan_go_ignore_sync_begin

@@ -20,3 +20,6 @@ type Buffer struct {
 
 // A version of bytes.Buffer that returns n > 0, err on Read
 // when the input is exhausted.
+
+// largeWriter returns an invalid count that is larger than the number
+// of bytes provided (issue 39978).

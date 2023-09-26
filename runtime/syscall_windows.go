@@ -3,3 +3,9 @@
 // license that can be found in the LICENSE file.
 
 package runtime
+
+// cbs stores all registered Go callbacks.
+
+// winCallback records information about a registered Go callback.
+
+// abiPart encodes a step in translating between calling ABIs.

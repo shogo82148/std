@@ -7,7 +7,9 @@
 // http://dwarfstd.org/doc/dwarf-2.0.0.pdf
 package dwarf
 
-import "github.com/shogo82148/std/encoding/binary"
+import (
+	"github.com/shogo82148/std/encoding/binary"
+)
 
 // Data represents the DWARF debugging information
 // loaded from an executable file (for example, an ELF or Mach-O executable).
@@ -24,6 +26,7 @@ type Data struct {
 	addr       []byte
 	lineStr    []byte
 	strOffsets []byte
+	rngLists   []byte
 
 	abbrevCache map[uint64]abbrevTable
 	bigEndian   bool

@@ -5,6 +5,7 @@
 package signal
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/os"
 )
 
@@ -44,3 +45,20 @@ func Reset(sig ...os.Signal)
 // It undoes the effect of all prior calls to Notify using c.
 // When Stop returns, it is guaranteed that c will receive no more signals.
 func Stop(c chan<- os.Signal)
+
+// NotifyContext returns a copy of the parent context that is marked done
+// (its Done channel is closed) when one of the listed signals arrives,
+// when the returned stop function is called, or when the parent context's
+// Done channel is closed, whichever happens first.
+//
+// The stop function unregisters the signal behavior, which, like signal.Reset,
+// may restore the default behavior for a given signal. For example, the default
+// behavior of a Go program receiving os.Interrupt is to exit. Calling
+// NotifyContext(parent, os.Interrupt) will change the behavior to cancel
+// the returned context. Future interrupts received will not trigger the default
+// (exit) behavior until the returned stop function is called.
+//
+// The stop function releases resources associated with it, so code should
+// call stop as soon as the operations running in this Context complete and
+// signals no longer need to be diverted to the context.
+func NotifyContext(parent context.Context, signals ...os.Signal) (ctx context.Context, stop context.CancelFunc)

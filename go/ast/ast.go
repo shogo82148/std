@@ -35,6 +35,11 @@ type Decl interface {
 }
 
 // A Comment node represents a single //-style or /*-style comment.
+//
+// The Text field contains the comment text without carriage returns (\r) that
+// may have been present in the source. Because a comment's end position is
+// computed using len(Text), the position reported by End() does not match the
+// true source end position for comments containing carriage returns.
 type Comment struct {
 	Slash token.Pos
 	Text  string
@@ -118,6 +123,12 @@ type (
 	}
 
 	// A BasicLit node represents a literal of basic type.
+	//
+	// Note that for the CHAR and STRING kinds, the literal is stored
+	// with its quotes. For example, for a double-quoted STRING, the
+	// first and the last rune in the Value field will be ". The
+	// Unquote and UnquoteChar functions in the strconv package can be
+	// used to unquote STRING and CHAR values, respectively.
 	BasicLit struct {
 		ValuePos token.Pos
 		Kind     token.Token

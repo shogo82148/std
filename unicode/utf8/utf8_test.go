@@ -32,3 +32,6 @@ type ValidRuneTest struct {
 	r  rune
 	ok bool
 }
+
+// boolSink is used to reference the return value of benchmarked
+// functions to avoid dead code elimination.

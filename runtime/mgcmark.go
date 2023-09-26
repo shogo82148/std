@@ -7,7 +7,3 @@
 package runtime
 
 // ptrmask for an allocation containing a single pointer.
-
-// If useCheckmark is true, marking of an object uses the
-// checkmark bits (encoding above) instead of the standard
-// mark bits.

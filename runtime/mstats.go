@@ -7,8 +7,6 @@
 package runtime
 
 // Statistics.
-// If you edit this structure, also edit type MemStats below.
-// Their layouts must match exactly.
 //
 // For detailed descriptions see the documentation for MemStats.
 // Fields that differ from MemStats are further documented here.
@@ -89,12 +87,6 @@ type MemStats struct {
 	}
 }
 
-// Size of the trailing by_size array differs between mstats and MemStats,
-// and all data after by_size is local to runtime, not exported.
-// NumSizeClasses was changed, but we cannot change MemStats because of backward compatibility.
-// sizeof_C_MStats is the size of the prefix of mstats that
-// corresponds to MemStats. It should match Sizeof(MemStats{}).
-
 // ReadMemStats populates m with memory allocator statistics.
 //
 // The returned memory allocator statistics are up to date as of the
@@ -102,3 +94,19 @@ type MemStats struct {
 // which is a snapshot as of the most recently completed garbage
 // collection cycle.
 func ReadMemStats(m *MemStats)
+
+// sysMemStat represents a global system statistic that is managed atomically.
+//
+// This type must structurally be a uint64 so that mstats aligns with MemStats.
+
+// heapStatsDelta contains deltas of various runtime memory statistics
+// that need to be updated together in order for them to be kept
+// consistent with one another.
+
+// consistentHeapStats represents a set of various memory statistics
+// whose updates must be viewed completely to get a consistent
+// state of the world.
+//
+// To write updates to memory stats use the acquire and release
+// methods. To obtain a consistent global snapshot of these statistics,
+// use read.

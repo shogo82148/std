@@ -51,6 +51,11 @@ func Gosched()
 // This is used by newm in situations where newm itself can't safely
 // start an OS thread.
 
+// mFixupRace is used to temporarily borrow the race context from the
+// coordinating m during a syscall_runtime_doAllThreadsSyscall and
+// loan it out to each of the m's of the runtime so they can execute a
+// mFixup.fn in that context.
+
 // inForkedChild is true while manipulating signals in the child process.
 // This is used to avoid calling libc functions in case we are using vfork.
 
@@ -104,6 +109,8 @@ func UnlockOSThread()
 // forcePreemptNS is the time slice given to a G before it is
 // preempted.
 
+// pMask is an atomic bitstring with one bit per P.
+
 // To shake out latent assumptions about scheduling order,
 // we introduce some randomness into scheduling decisions
 // when running with the race detector.
@@ -127,3 +134,6 @@ func UnlockOSThread()
 
 // An initTask represents the set of initializations that need to be done for a package.
 // Keep in sync with ../../test/initempty.go:initTask
+
+// inittrace stores statistics for init functions which are
+// updated by malloc and newproc when active is true.

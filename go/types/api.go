@@ -40,6 +40,10 @@ type Error struct {
 	Pos  token.Pos
 	Msg  string
 	Soft bool
+
+	go116code  errorCode
+	go116start token.Pos
+	go116end   token.Pos
 }
 
 // Error returns an error string formatted as follows:

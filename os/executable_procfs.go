@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build linux || netbsd || dragonfly || (js && wasm)
-// +build linux netbsd dragonfly js,wasm
+//go:build linux || netbsd || (js && wasm)
+// +build linux netbsd js,wasm
 
 package os
 

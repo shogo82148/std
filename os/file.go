@@ -41,6 +41,7 @@ package os
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/io/fs"
 	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
@@ -291,3 +292,24 @@ func (f *File) SetWriteDeadline(t time.Time) error
 // SyscallConn returns a raw file.
 // This implements the syscall.Conn interface.
 func (f *File) SyscallConn() (syscall.RawConn, error)
+
+// DirFS returns a file system (an fs.FS) for the tree of files rooted at the directory dir.
+//
+// Note that DirFS("/prefix") only guarantees that the Open calls it makes to the
+// operating system will begin with "/prefix": DirFS("/prefix").Open("file") is the
+// same as os.Open("/prefix/file"). So if /prefix/file is a symbolic link pointing outside
+// the /prefix tree, then using DirFS does not stop the access any more than using
+// os.Open does. DirFS is therefore not a general substitute for a chroot-style security
+// mechanism when the directory tree contains arbitrary content.
+func DirFS(dir string) fs.FS
+
+// ReadFile reads the named file and returns the contents.
+// A successful call returns err == nil, not err == EOF.
+// Because ReadFile reads the whole file, it does not treat an EOF from Read
+// as an error to be reported.
+func ReadFile(name string) ([]byte, error)
+
+// WriteFile writes data to the named file, creating it if necessary.
+// If the file does not exist, WriteFile creates it with permissions perm (before umask);
+// otherwise WriteFile truncates it before writing, without changing permissions.
+func WriteFile(name string, data []byte, perm FileMode) error

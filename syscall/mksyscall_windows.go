@@ -5,4 +5,5 @@
 //go:build ignore
 // +build ignore
 
+// mksyscall_windows wraps golang.org/x/sys/windows/mkwinsyscall.
 package main

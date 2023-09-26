@@ -34,3 +34,7 @@ type RecordingJar struct {
 // issue18239Body is an io.ReadCloser for TestTransportBodyReadError.
 // Its Read returns readErr and increments *readCalls atomically.
 // Its Close returns nil and increments *closeCalls atomically.
+
+// issue40382Body is an io.ReadCloser for TestClientCallsCloseOnlyOnce.
+// Its Read reads n bytes before returning io.EOF.
+// Its Close returns nil but fails the test if called more than once.

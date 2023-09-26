@@ -442,10 +442,43 @@ const (
 	PT_SHLIB   ProgType = 5
 	PT_PHDR    ProgType = 6
 	PT_TLS     ProgType = 7
-	PT_LOOS    ProgType = 0x60000000
-	PT_HIOS    ProgType = 0x6fffffff
-	PT_LOPROC  ProgType = 0x70000000
-	PT_HIPROC  ProgType = 0x7fffffff
+
+	PT_LOOS ProgType = 0x60000000
+
+	PT_GNU_EH_FRAME ProgType = 0x6474e550
+	PT_GNU_STACK    ProgType = 0x6474e551
+	PT_GNU_RELRO    ProgType = 0x6474e552
+	PT_GNU_PROPERTY ProgType = 0x6474e553
+	PT_GNU_MBIND_LO ProgType = 0x6474e555
+	PT_GNU_MBIND_HI ProgType = 0x6474f554
+
+	PT_PAX_FLAGS ProgType = 0x65041580
+
+	PT_OPENBSD_RANDOMIZE ProgType = 0x65a3dbe6
+	PT_OPENBSD_WXNEEDED  ProgType = 0x65a3dbe7
+	PT_OPENBSD_BOOTDATA  ProgType = 0x65a41be6
+
+	PT_SUNW_EH_FRAME ProgType = 0x6474e550
+	PT_SUNWSTACK     ProgType = 0x6ffffffb
+
+	PT_HIOS ProgType = 0x6fffffff
+
+	PT_LOPROC ProgType = 0x70000000
+
+	PT_ARM_ARCHEXT ProgType = 0x70000000
+	PT_ARM_EXIDX   ProgType = 0x70000001
+
+	PT_AARCH64_ARCHEXT ProgType = 0x70000000
+	PT_AARCH64_UNWIND  ProgType = 0x70000001
+
+	PT_MIPS_REGINFO  ProgType = 0x70000000
+	PT_MIPS_RTPROC   ProgType = 0x70000001
+	PT_MIPS_OPTIONS  ProgType = 0x70000002
+	PT_MIPS_ABIFLAGS ProgType = 0x70000003
+
+	PT_S390_PGSTE ProgType = 0x70000000
+
+	PT_HIPROC ProgType = 0x7fffffff
 )
 
 func (i ProgType) String() string
@@ -504,13 +537,112 @@ const (
 
 	DT_PREINIT_ARRAY   DynTag = 32
 	DT_PREINIT_ARRAYSZ DynTag = 33
-	DT_LOOS            DynTag = 0x6000000d
-	DT_HIOS            DynTag = 0x6ffff000
-	DT_VERSYM          DynTag = 0x6ffffff0
-	DT_VERNEED         DynTag = 0x6ffffffe
-	DT_VERNEEDNUM      DynTag = 0x6fffffff
-	DT_LOPROC          DynTag = 0x70000000
-	DT_HIPROC          DynTag = 0x7fffffff
+	DT_SYMTAB_SHNDX    DynTag = 34
+
+	DT_LOOS DynTag = 0x6000000d
+	DT_HIOS DynTag = 0x6ffff000
+
+	DT_VALRNGLO       DynTag = 0x6ffffd00
+	DT_GNU_PRELINKED  DynTag = 0x6ffffdf5
+	DT_GNU_CONFLICTSZ DynTag = 0x6ffffdf6
+	DT_GNU_LIBLISTSZ  DynTag = 0x6ffffdf7
+	DT_CHECKSUM       DynTag = 0x6ffffdf8
+	DT_PLTPADSZ       DynTag = 0x6ffffdf9
+	DT_MOVEENT        DynTag = 0x6ffffdfa
+	DT_MOVESZ         DynTag = 0x6ffffdfb
+	DT_FEATURE        DynTag = 0x6ffffdfc
+	DT_POSFLAG_1      DynTag = 0x6ffffdfd
+	DT_SYMINSZ        DynTag = 0x6ffffdfe
+	DT_SYMINENT       DynTag = 0x6ffffdff
+	DT_VALRNGHI       DynTag = 0x6ffffdff
+
+	DT_ADDRRNGLO    DynTag = 0x6ffffe00
+	DT_GNU_HASH     DynTag = 0x6ffffef5
+	DT_TLSDESC_PLT  DynTag = 0x6ffffef6
+	DT_TLSDESC_GOT  DynTag = 0x6ffffef7
+	DT_GNU_CONFLICT DynTag = 0x6ffffef8
+	DT_GNU_LIBLIST  DynTag = 0x6ffffef9
+	DT_CONFIG       DynTag = 0x6ffffefa
+	DT_DEPAUDIT     DynTag = 0x6ffffefb
+	DT_AUDIT        DynTag = 0x6ffffefc
+	DT_PLTPAD       DynTag = 0x6ffffefd
+	DT_MOVETAB      DynTag = 0x6ffffefe
+	DT_SYMINFO      DynTag = 0x6ffffeff
+	DT_ADDRRNGHI    DynTag = 0x6ffffeff
+
+	DT_VERSYM     DynTag = 0x6ffffff0
+	DT_RELACOUNT  DynTag = 0x6ffffff9
+	DT_RELCOUNT   DynTag = 0x6ffffffa
+	DT_FLAGS_1    DynTag = 0x6ffffffb
+	DT_VERDEF     DynTag = 0x6ffffffc
+	DT_VERDEFNUM  DynTag = 0x6ffffffd
+	DT_VERNEED    DynTag = 0x6ffffffe
+	DT_VERNEEDNUM DynTag = 0x6fffffff
+
+	DT_LOPROC DynTag = 0x70000000
+
+	DT_MIPS_RLD_VERSION           DynTag = 0x70000001
+	DT_MIPS_TIME_STAMP            DynTag = 0x70000002
+	DT_MIPS_ICHECKSUM             DynTag = 0x70000003
+	DT_MIPS_IVERSION              DynTag = 0x70000004
+	DT_MIPS_FLAGS                 DynTag = 0x70000005
+	DT_MIPS_BASE_ADDRESS          DynTag = 0x70000006
+	DT_MIPS_MSYM                  DynTag = 0x70000007
+	DT_MIPS_CONFLICT              DynTag = 0x70000008
+	DT_MIPS_LIBLIST               DynTag = 0x70000009
+	DT_MIPS_LOCAL_GOTNO           DynTag = 0x7000000a
+	DT_MIPS_CONFLICTNO            DynTag = 0x7000000b
+	DT_MIPS_LIBLISTNO             DynTag = 0x70000010
+	DT_MIPS_SYMTABNO              DynTag = 0x70000011
+	DT_MIPS_UNREFEXTNO            DynTag = 0x70000012
+	DT_MIPS_GOTSYM                DynTag = 0x70000013
+	DT_MIPS_HIPAGENO              DynTag = 0x70000014
+	DT_MIPS_RLD_MAP               DynTag = 0x70000016
+	DT_MIPS_DELTA_CLASS           DynTag = 0x70000017
+	DT_MIPS_DELTA_CLASS_NO        DynTag = 0x70000018
+	DT_MIPS_DELTA_INSTANCE        DynTag = 0x70000019
+	DT_MIPS_DELTA_INSTANCE_NO     DynTag = 0x7000001a
+	DT_MIPS_DELTA_RELOC           DynTag = 0x7000001b
+	DT_MIPS_DELTA_RELOC_NO        DynTag = 0x7000001c
+	DT_MIPS_DELTA_SYM             DynTag = 0x7000001d
+	DT_MIPS_DELTA_SYM_NO          DynTag = 0x7000001e
+	DT_MIPS_DELTA_CLASSSYM        DynTag = 0x70000020
+	DT_MIPS_DELTA_CLASSSYM_NO     DynTag = 0x70000021
+	DT_MIPS_CXX_FLAGS             DynTag = 0x70000022
+	DT_MIPS_PIXIE_INIT            DynTag = 0x70000023
+	DT_MIPS_SYMBOL_LIB            DynTag = 0x70000024
+	DT_MIPS_LOCALPAGE_GOTIDX      DynTag = 0x70000025
+	DT_MIPS_LOCAL_GOTIDX          DynTag = 0x70000026
+	DT_MIPS_HIDDEN_GOTIDX         DynTag = 0x70000027
+	DT_MIPS_PROTECTED_GOTIDX      DynTag = 0x70000028
+	DT_MIPS_OPTIONS               DynTag = 0x70000029
+	DT_MIPS_INTERFACE             DynTag = 0x7000002a
+	DT_MIPS_DYNSTR_ALIGN          DynTag = 0x7000002b
+	DT_MIPS_INTERFACE_SIZE        DynTag = 0x7000002c
+	DT_MIPS_RLD_TEXT_RESOLVE_ADDR DynTag = 0x7000002d
+	DT_MIPS_PERF_SUFFIX           DynTag = 0x7000002e
+	DT_MIPS_COMPACT_SIZE          DynTag = 0x7000002f
+	DT_MIPS_GP_VALUE              DynTag = 0x70000030
+	DT_MIPS_AUX_DYNAMIC           DynTag = 0x70000031
+	DT_MIPS_PLTGOT                DynTag = 0x70000032
+	DT_MIPS_RWPLT                 DynTag = 0x70000034
+	DT_MIPS_RLD_MAP_REL           DynTag = 0x70000035
+
+	DT_PPC_GOT DynTag = 0x70000000
+	DT_PPC_OPT DynTag = 0x70000001
+
+	DT_PPC64_GLINK DynTag = 0x70000000
+	DT_PPC64_OPD   DynTag = 0x70000001
+	DT_PPC64_OPDSZ DynTag = 0x70000002
+	DT_PPC64_OPT   DynTag = 0x70000003
+
+	DT_SPARC_REGISTER DynTag = 0x70000001
+
+	DT_AUXILIARY DynTag = 0x7ffffffd
+	DT_USED      DynTag = 0x7ffffffe
+	DT_FILTER    DynTag = 0x7fffffff
+
+	DT_HIPROC DynTag = 0x7fffffff
 )
 
 func (i DynTag) String() string

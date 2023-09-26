@@ -41,8 +41,6 @@ var PhysHugePageSize = physHugePageSize
 
 var NetpollGenericInit = netpollGenericInit
 
-var ParseRelease = parseRelease
-
 var Memmove = memmove
 var MemclrNoHeapPointers = memclrNoHeapPointers
 
@@ -130,10 +128,15 @@ type ChunkIdx chunkIdx
 // not in the heap, so is PageAlloc.
 type PageAlloc pageAlloc
 
-// AddrRange represents a range over addresses.
-// Specifically, it represents the range [Base, Limit).
+// AddrRange is a wrapper around addrRange for testing.
 type AddrRange struct {
-	Base, Limit uintptr
+	addrRange
+}
+
+// AddrRanges is a wrapper around addrRanges for testing.
+type AddrRanges struct {
+	addrRanges
+	mutable bool
 }
 
 // BitRange represents a range over a bitmap.
@@ -147,7 +150,19 @@ type BitRange struct {
 //
 // This should not be higher than 0x100*pallocChunkBytes to support
 // mips and mipsle, which only have 31-bit address spaces.
-var BaseChunkIdx = ChunkIdx(chunkIndex(((0xc000*pageAlloc64Bit + 0x100*pageAlloc32Bit) * pallocChunkBytes) + arenaBaseOffset*sys.GoosAix))
+var BaseChunkIdx = func() ChunkIdx {
+	var prefix uintptr
+	if pageAlloc64Bit != 0 {
+		prefix = 0xc000
+	} else {
+		prefix = 0x100
+	}
+	baseAddr := prefix * pallocChunkBytes
+	if sys.GoosAix != 0 {
+		baseAddr += arenaBaseOffset
+	}
+	return ChunkIdx(chunkIndex(baseAddr))
+}()
 
 type BitsMismatch struct {
 	Base      uintptr
@@ -156,3 +171,18 @@ type BitsMismatch struct {
 
 var Semacquire = semacquire
 var Semrelease1 = semrelease1
+
+// mspan wrapper for testing.
+//
+//go:notinheap
+type MSpan mspan
+
+const (
+	TimeHistSubBucketBits   = timeHistSubBucketBits
+	TimeHistNumSubBuckets   = timeHistNumSubBuckets
+	TimeHistNumSuperBuckets = timeHistNumSuperBuckets
+)
+
+type TimeHistogram timeHistogram
+
+var TimeHistogramMetricsBuckets = timeHistogramMetricsBuckets

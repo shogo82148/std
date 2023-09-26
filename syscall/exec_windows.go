@@ -44,6 +44,7 @@ type SysProcAttr struct {
 	Token             Token
 	ProcessAttributes *SecurityAttributes
 	ThreadAttributes  *SecurityAttributes
+	NoInheritHandles  bool
 }
 
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)

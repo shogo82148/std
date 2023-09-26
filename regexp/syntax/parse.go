@@ -61,6 +61,19 @@ const (
 
 // Pseudo-ops for parsing stack.
 
+// maxHeight is the maximum height of a regexp parse tree.
+// It is somewhat arbitrarily chosen, but the idea is to be large enough
+// that no one will actually hit in real use but at the same time small enough
+// that recursion on the Regexp tree will not hit the 1GB Go stack limit.
+// The maximum amount of stack for a single recursive frame is probably
+// closer to 1kB, so this could potentially be raised, but it seems unlikely
+// that people have regexps nested even this deeply.
+// We ran a test on Google's C++ code base and turned up only
+// a single use case with depth > 100; it had depth 128.
+// Using depth 1000 should be plenty of margin.
+// As an optimization, we don't even bother calculating heights
+// until we've allocated at least maxHeight Regexp structures.
+
 // Parse parses a regular expression string s, controlled by the specified
 // Flags, and returns a regular expression parse tree. The syntax is
 // described in the top-level comment.

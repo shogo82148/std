@@ -7,18 +7,14 @@
 
 package syscall
 
-// TimespecToNsec converts a Timespec value into a number of
-// nanoseconds since the Unix epoch.
+// TimespecToNSec returns the time stored in ts as nanoseconds.
 func TimespecToNsec(ts Timespec) int64
 
-// NsecToTimespec takes a number of nanoseconds since the Unix epoch
-// and returns the corresponding Timespec value.
+// NsecToTimespec converts a number of nanoseconds into a Timespec.
 func NsecToTimespec(nsec int64) Timespec
 
-// TimevalToNsec converts a Timeval value into a number of nanoseconds
-// since the Unix epoch.
+// TimevalToNsec returns the time stored in tv as nanoseconds.
 func TimevalToNsec(tv Timeval) int64
 
-// NsecToTimeval takes a number of nanoseconds since the Unix epoch
-// and returns the corresponding Timeval value.
+// NsecToTimeval converts a number of nanoseconds into a Timeval.
 func NsecToTimeval(nsec int64) Timeval

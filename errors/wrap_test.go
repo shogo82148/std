@@ -7,12 +7,13 @@ package errors_test
 import (
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 )
 
 func ExampleIs() {
 	if _, err := os.Open("non-existing"); err != nil {
-		if errors.Is(err, os.ErrNotExist) {
+		if errors.Is(err, fs.ErrNotExist) {
 			fmt.Println("file does not exist")
 		} else {
 			fmt.Println(err)
@@ -25,7 +26,7 @@ func ExampleIs() {
 
 func ExampleAs() {
 	if _, err := os.Open("non-existing"); err != nil {
-		var pathError *os.PathError
+		var pathError *fs.PathError
 		if errors.As(err, &pathError) {
 			fmt.Println("Failed at path:", pathError.Path)
 		} else {

@@ -65,6 +65,7 @@ func MakeInt64(x int64) Value
 func MakeUint64(x uint64) Value
 
 // MakeFloat64 returns the Float value for x.
+// If x is -0.0, the result is 0.0.
 // If x is not finite, the result is an Unknown.
 func MakeFloat64(x float64) Value
 

@@ -16,6 +16,13 @@ import (
 // contexts are the default contexts which are scanned, unless
 // overridden by the -contexts flag.
 
+// aliasReplacer applies type aliases to earlier API files,
+// to avoid misleading negative results.
+// This makes all the references to os.FileInfo in go1.txt
+// be read as if they said fs.FileInfo, since os.FileInfo is now an alias.
+// If there are many of these, we could do a more general solution,
+// but for now the replacer is fine.
+
 type Walker struct {
 	context     *build.Context
 	root        string

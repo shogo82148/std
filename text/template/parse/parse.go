@@ -13,15 +13,25 @@ type Tree struct {
 	Name      string
 	ParseName string
 	Root      *ListNode
+	Mode      Mode
 	text      string
 
-	funcs     []map[string]interface{}
-	lex       *lexer
-	token     [3]item
-	peekCount int
-	vars      []string
-	treeSet   map[string]*Tree
+	funcs      []map[string]interface{}
+	lex        *lexer
+	token      [3]item
+	peekCount  int
+	vars       []string
+	treeSet    map[string]*Tree
+	actionLine int
+	mode       Mode
 }
+
+// A mode value is a set of flags (or 0). Modes control parser behavior.
+type Mode uint
+
+const (
+	ParseComments Mode = 1 << iota
+)
 
 // Copy returns a copy of the Tree. Any parsing state is discarded.
 func (t *Tree) Copy() *Tree
@@ -46,5 +56,5 @@ func (t *Tree) ErrorContext(n Node) (location, context string)
 // the treeSet map.
 func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]interface{}) (tree *Tree, err error)
 
-// IsEmptyTree reports whether this tree (node) is empty of everything but space.
+// IsEmptyTree reports whether this tree (node) is empty of everything but space or comments.
 func IsEmptyTree(n Node) bool

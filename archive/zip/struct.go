@@ -20,7 +20,7 @@ fields must be used instead.
 package zip
 
 import (
-	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/io/fs"
 	"github.com/shogo82148/std/time"
 )
 
@@ -58,19 +58,19 @@ type FileHeader struct {
 	ExternalAttrs      uint32
 }
 
-// FileInfo returns an os.FileInfo for the FileHeader.
-func (h *FileHeader) FileInfo() os.FileInfo
+// FileInfo returns an fs.FileInfo for the FileHeader.
+func (h *FileHeader) FileInfo() fs.FileInfo
 
-// headerFileInfo implements os.FileInfo.
+// headerFileInfo implements fs.FileInfo.
 
 // FileInfoHeader creates a partially-populated FileHeader from an
-// os.FileInfo.
-// Because os.FileInfo's Name method returns only the base name of
+// fs.FileInfo.
+// Because fs.FileInfo's Name method returns only the base name of
 // the file it describes, it may be necessary to modify the Name field
 // of the returned header to provide the full path name of the file.
 // If compression is desired, callers should set the FileHeader.Method
 // field; it is unset by default.
-func FileInfoHeader(fi os.FileInfo) (*FileHeader, error)
+func FileInfoHeader(fi fs.FileInfo) (*FileHeader, error)
 
 // ModTime returns the modification time in UTC using the legacy
 // ModifiedDate and ModifiedTime fields.
@@ -85,7 +85,7 @@ func (h *FileHeader) ModTime() time.Time
 func (h *FileHeader) SetModTime(t time.Time)
 
 // Mode returns the permission and mode bits for the FileHeader.
-func (h *FileHeader) Mode() (mode os.FileMode)
+func (h *FileHeader) Mode() (mode fs.FileMode)
 
 // SetMode changes the permission and mode bits for the FileHeader.
-func (h *FileHeader) SetMode(mode os.FileMode)
+func (h *FileHeader) SetMode(mode fs.FileMode)

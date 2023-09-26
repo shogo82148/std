@@ -50,8 +50,6 @@ func Fstatfs(fd int, buf *Statfs_t) (err error)
 
 func Ftruncate(fd int, length int64) (err error)
 
-func Fsync(fd int) (err error)
-
 func Getgid() (gid int)
 
 func Getpid() (pid int)

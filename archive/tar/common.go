@@ -12,7 +12,7 @@ package tar
 
 import (
 	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/io/fs"
 	"github.com/shogo82148/std/time"
 )
 
@@ -139,10 +139,10 @@ type Header struct {
 //
 // Invariant: LogicalRemaining >= PhysicalRemaining
 
-// FileInfo returns an os.FileInfo for the Header.
-func (h *Header) FileInfo() os.FileInfo
+// FileInfo returns an fs.FileInfo for the Header.
+func (h *Header) FileInfo() fs.FileInfo
 
-// headerFileInfo implements os.FileInfo.
+// headerFileInfo implements fs.FileInfo.
 
 // sysStat, if non-nil, populates h from system-dependent fields of fi.
 
@@ -150,7 +150,7 @@ func (h *Header) FileInfo() os.FileInfo
 // If fi describes a symlink, FileInfoHeader records link as the link target.
 // If fi describes a directory, a slash is appended to the name.
 //
-// Since os.FileInfo's Name method only returns the base name of
+// Since fs.FileInfo's Name method only returns the base name of
 // the file it describes, it may be necessary to modify Header.Name
 // to provide the full path name of the file.
-func FileInfoHeader(fi os.FileInfo, link string) (*Header, error)
+func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)

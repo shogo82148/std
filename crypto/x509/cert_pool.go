@@ -6,10 +6,15 @@ package x509
 
 // CertPool is a set of certificates.
 type CertPool struct {
-	bySubjectKeyId map[string][]int
-	byName         map[string][]int
-	certs          []*Certificate
+	byName map[string][]int
+
+	lazyCerts []lazyCert
+
+	haveSum map[sum224]bool
 }
+
+// lazyCert is minimal metadata about a Cert and a func to retrieve it
+// in its normal expanded *Certificate form.
 
 // NewCertPool returns a new, empty CertPool.
 func NewCertPool() *CertPool

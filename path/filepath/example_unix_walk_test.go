@@ -9,6 +9,7 @@ package filepath_test
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 )
@@ -25,7 +26,7 @@ func ExampleWalk() {
 	subDirToSkip := "skip"
 
 	fmt.Println("On Unix:")
-	err = filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(".", func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			fmt.Printf("prevent panic by handling failure accessing a path %q: %v\n", path, err)
 			return err

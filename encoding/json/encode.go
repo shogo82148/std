@@ -173,6 +173,8 @@ type UnsupportedTypeError struct {
 
 func (e *UnsupportedTypeError) Error() string
 
+// An UnsupportedValueError is returned by Marshal when attempting
+// to encode an unsupported value.
 type UnsupportedValueError struct {
 	Value reflect.Value
 	Str   string

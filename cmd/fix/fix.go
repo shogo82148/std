@@ -7,5 +7,3 @@ package main
 // main runs sort.Sort(byName(fixes)) before printing list of fixes.
 
 // main runs sort.Sort(byDate(fixes)) before applying fixes.
-
-// A Rename describes a single renaming.

@@ -3,7 +3,7 @@
 package unicode
 
 // Version is the Unicode edition from which the tables are derived.
-const Version = "12.0.0"
+const Version = "13.0.0"
 
 // Categories is the set of Unicode category tables.
 var Categories = map[string]*RangeTable{
@@ -121,6 +121,7 @@ var Scripts = map[string]*RangeTable{
 	"Chakma":                 Chakma,
 	"Cham":                   Cham,
 	"Cherokee":               Cherokee,
+	"Chorasmian":             Chorasmian,
 	"Common":                 Common,
 	"Coptic":                 Coptic,
 	"Cuneiform":              Cuneiform,
@@ -128,6 +129,7 @@ var Scripts = map[string]*RangeTable{
 	"Cyrillic":               Cyrillic,
 	"Deseret":                Deseret,
 	"Devanagari":             Devanagari,
+	"Dives_Akuru":            Dives_Akuru,
 	"Dogra":                  Dogra,
 	"Duployan":               Duployan,
 	"Egyptian_Hieroglyphs":   Egyptian_Hieroglyphs,
@@ -159,6 +161,7 @@ var Scripts = map[string]*RangeTable{
 	"Katakana":               Katakana,
 	"Kayah_Li":               Kayah_Li,
 	"Kharoshthi":             Kharoshthi,
+	"Khitan_Small_Script":    Khitan_Small_Script,
 	"Khmer":                  Khmer,
 	"Khojki":                 Khojki,
 	"Khudawadi":              Khudawadi,
@@ -248,6 +251,7 @@ var Scripts = map[string]*RangeTable{
 	"Vai":                    Vai,
 	"Wancho":                 Wancho,
 	"Warang_Citi":            Warang_Citi,
+	"Yezidi":                 Yezidi,
 	"Yi":                     Yi,
 	"Zanabazar_Square":       Zanabazar_Square,
 }
@@ -277,6 +281,7 @@ var (
 	Chakma                 = _Chakma
 	Cham                   = _Cham
 	Cherokee               = _Cherokee
+	Chorasmian             = _Chorasmian
 	Common                 = _Common
 	Coptic                 = _Coptic
 	Cuneiform              = _Cuneiform
@@ -284,6 +289,7 @@ var (
 	Cyrillic               = _Cyrillic
 	Deseret                = _Deseret
 	Devanagari             = _Devanagari
+	Dives_Akuru            = _Dives_Akuru
 	Dogra                  = _Dogra
 	Duployan               = _Duployan
 	Egyptian_Hieroglyphs   = _Egyptian_Hieroglyphs
@@ -315,6 +321,7 @@ var (
 	Katakana               = _Katakana
 	Kayah_Li               = _Kayah_Li
 	Kharoshthi             = _Kharoshthi
+	Khitan_Small_Script    = _Khitan_Small_Script
 	Khmer                  = _Khmer
 	Khojki                 = _Khojki
 	Khudawadi              = _Khudawadi
@@ -404,6 +411,7 @@ var (
 	Vai                    = _Vai
 	Wancho                 = _Wancho
 	Warang_Citi            = _Warang_Citi
+	Yezidi                 = _Yezidi
 	Yi                     = _Yi
 	Zanabazar_Square       = _Zanabazar_Square
 )

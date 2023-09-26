@@ -5,7 +5,7 @@
 package main
 
 import (
-	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/io/fs"
 )
 
 // The unusual ancestry means the arguments are not Go-standard.
@@ -16,28 +16,16 @@ import (
 // An Archive represents an open archive file. It is always scanned sequentially
 // from start to end, without backing up.
 type Archive struct {
-	fd       *os.File
+	a        *archive.Archive
 	files    []string
 	pad      int
 	matchAll bool
 }
 
-// An Entry is the internal representation of the per-file header information of one entry in the archive.
-type Entry struct {
-	name  string
-	mtime int64
-	uid   int
-	gid   int
-	mode  os.FileMode
-	size  int64
-}
-
-func (e *Entry) String() string
-
 // FileLike abstracts the few methods we need, so we can test without needing real files.
 type FileLike interface {
 	Name() string
-	Stat() (os.FileInfo, error)
+	Stat() (fs.FileInfo, error)
 	Read([]byte) (int, error)
 	Close() error
 }

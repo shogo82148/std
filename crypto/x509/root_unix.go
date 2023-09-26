@@ -6,6 +6,3 @@
 // +build aix dragonfly freebsd js,wasm linux netbsd openbsd solaris
 
 package x509
-
-// Possible directories with certificate files; stop after successfully
-// reading at least one file from a directory.

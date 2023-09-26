@@ -53,6 +53,8 @@ type PointerCycleIndirect struct {
 	Ptrs []interface{}
 }
 
+type RecursiveSlice []RecursiveSlice
+
 // Ref has Marshaler and Unmarshaler methods with pointer receiver.
 type Ref int
 

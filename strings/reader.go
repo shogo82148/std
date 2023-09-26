@@ -8,8 +8,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A Reader implements the io.Reader, io.ReaderAt, io.Seeker, io.WriterTo,
-// io.ByteScanner, and io.RuneScanner interfaces by reading
+// A Reader implements the io.Reader, io.ReaderAt, io.ByteReader, io.ByteScanner,
+// io.RuneReader, io.RuneScanner, io.Seeker, and io.WriterTo interfaces by reading
 // from a string.
 // The zero value for Reader operates like a Reader of an empty string.
 type Reader struct {
@@ -28,16 +28,22 @@ func (r *Reader) Len() int
 // to any other method.
 func (r *Reader) Size() int64
 
+// Read implements the io.Reader interface.
 func (r *Reader) Read(b []byte) (n int, err error)
 
+// ReadAt implements the io.ReaderAt interface.
 func (r *Reader) ReadAt(b []byte, off int64) (n int, err error)
 
+// ReadByte implements the io.ByteReader interface.
 func (r *Reader) ReadByte() (byte, error)
 
+// UnreadByte implements the io.ByteScanner interface.
 func (r *Reader) UnreadByte() error
 
+// ReadRune implements the io.RuneReader interface.
 func (r *Reader) ReadRune() (ch rune, size int, err error)
 
+// UnreadRune implements the io.RuneScanner interface.
 func (r *Reader) UnreadRune() error
 
 // Seek implements the io.Seeker interface.

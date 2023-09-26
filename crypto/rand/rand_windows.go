@@ -6,5 +6,3 @@
 // generator.
 
 package rand
-
-// A rngReader satisfies reads by reading from the Windows CryptGenRandom API.

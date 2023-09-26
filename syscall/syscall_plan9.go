@@ -19,7 +19,7 @@ const ImplementsGetwd = true
 // using errors.Is. For example:
 //
 //	_, _, err := syscall.Syscall(...)
-//	if errors.Is(err, os.ErrNotExist) ...
+//	if errors.Is(err, fs.ErrNotExist) ...
 type ErrorString string
 
 func (e ErrorString) Error() string

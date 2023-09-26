@@ -6,7 +6,7 @@ package zip
 
 import (
 	"io"
-	"os"
+	"io/fs"
 	"time"
 )
 
@@ -21,7 +21,7 @@ type ZipTest struct {
 
 type ZipTestFile struct {
 	Name     string
-	Mode     os.FileMode
+	Mode     fs.FileMode
 	NonUTF8  bool
 	ModTime  time.Time
 	Modified time.Time

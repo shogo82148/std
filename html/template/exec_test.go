@@ -110,3 +110,5 @@ type Tree struct {
 // Also test the trimming of leading and trailing spaces.
 
 type ErrorWriter int
+
+// recursiveInvoker is for TestRecursiveExecuteViaMethod.

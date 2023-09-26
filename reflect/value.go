@@ -516,6 +516,10 @@ func ValueOf(i interface{}) Value
 // The returned value is neither addressable nor settable.
 func Zero(typ Type) Value
 
+// must match declarations in runtime/map.go.
+
+//go:linkname zeroVal runtime.zeroVal
+
 // New returns a Value representing a pointer to a new zero value
 // for the specified type. That is, the returned Value's Type is PtrTo(typ).
 func New(typ Type) Value

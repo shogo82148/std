@@ -13,6 +13,10 @@
 
 package syscall
 
+const ImplementsGetwd = true
+
+func Getwd() (string, error)
+
 func Getgroups() (gids []int, err error)
 
 func Setgroups(gids []int) (err error)

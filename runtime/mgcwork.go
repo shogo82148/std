@@ -4,12 +4,6 @@
 
 package runtime
 
-// throwOnGCWork causes any operations that add pointers to a gcWork
-// buffer to throw.
-//
-// TODO(austin): This is a temporary debugging measure for issue
-// #27993. To be removed before release.
-
 // A gcWork provides the interface to produce and consume work for the
 // garbage collector.
 //

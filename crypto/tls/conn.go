@@ -57,14 +57,12 @@ type Conn struct {
 	clientFinished [12]byte
 	serverFinished [12]byte
 
-	clientProtocol         string
-	clientProtocolFallback bool
+	clientProtocol string
 
 	in, out   halfConn
 	rawInput  bytes.Buffer
 	input     bytes.Reader
 	hand      bytes.Buffer
-	outBuf    []byte
 	buffering bool
 	sendBuf   []byte
 
@@ -118,11 +116,22 @@ func (e RecordHeaderError) Error() string
 // read. It is different from an io.LimitedReader in that it doesn't cut short
 // the last Read call, and in that it considers an early EOF an error.
 
+// outBufPool pools the record-sized scratch buffers used by writeRecordLocked.
+
 // Write writes data to the connection.
+//
+// As Write calls Handshake, in order to prevent indefinite blocking a deadline
+// must be set for both Read and Write before Write is called when the handshake
+// has not yet completed. See SetDeadline, SetReadDeadline, and
+// SetWriteDeadline.
 func (c *Conn) Write(b []byte) (int, error)
 
-// Read can be made to time out and return a net.Error with Timeout() == true
-// after a fixed time limit; see SetDeadline and SetReadDeadline.
+// Read reads data from the connection.
+//
+// As Read calls Handshake, in order to prevent indefinite blocking a deadline
+// must be set for both Read and Write before Read is called when the handshake
+// has not yet completed. See SetDeadline, SetReadDeadline, and
+// SetWriteDeadline.
 func (c *Conn) Read(b []byte) (int, error)
 
 // Close closes the connection.

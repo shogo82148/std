@@ -4,13 +4,11 @@
 
 //go:generate go run genzfunc.go
 
-// Package sort provides primitives for sorting slices and user-defined
-// collections.
+// Package sort provides primitives for sorting slices and user-defined collections.
 package sort
 
-// A type, typically a collection, that satisfies sort.Interface can be
-// sorted by the routines in this package. The methods require that the
-// elements of the collection be enumerated by an integer index.
+// An implementation of Interface can be sorted by the routines in this package.
+// The methods refer to elements of the underlying collection by integer index.
 type Interface interface {
 	Len() int
 
@@ -20,7 +18,7 @@ type Interface interface {
 }
 
 // Sort sorts data.
-// It makes one call to data.Len to determine n, and O(n*log(n)) calls to
+// It makes one call to data.Len to determine n and O(n*log(n)) calls to
 // data.Less and data.Swap. The sort is not guaranteed to be stable.
 func Sort(data Interface)
 
@@ -37,53 +35,60 @@ func IsSorted(data Interface) bool
 // IntSlice attaches the methods of Interface to []int, sorting in increasing order.
 type IntSlice []int
 
-func (p IntSlice) Len() int
-func (p IntSlice) Less(i, j int) bool
-func (p IntSlice) Swap(i, j int)
+func (x IntSlice) Len() int
+func (x IntSlice) Less(i, j int) bool
+func (x IntSlice) Swap(i, j int)
 
-// Sort is a convenience method.
-func (p IntSlice) Sort()
+// Sort is a convenience method: x.Sort() calls Sort(x).
+func (x IntSlice) Sort()
 
-// Float64Slice attaches the methods of Interface to []float64, sorting in increasing order
-// (not-a-number values are treated as less than other values).
+// Float64Slice implements Interface for a []float64, sorting in increasing order,
+// with not-a-number (NaN) values ordered before other values.
 type Float64Slice []float64
 
-func (p Float64Slice) Len() int
-func (p Float64Slice) Less(i, j int) bool
-func (p Float64Slice) Swap(i, j int)
+func (x Float64Slice) Len() int
 
-// Sort is a convenience method.
-func (p Float64Slice) Sort()
+// Less reports whether x[i] should be ordered before x[j], as required by the sort Interface.
+// Note that floating-point comparison by itself is not a transitive relation: it does not
+// report a consistent ordering for not-a-number (NaN) values.
+// This implementation of Less places NaN values before any others, by using:
+//
+//	x[i] < x[j] || (math.IsNaN(x[i]) && !math.IsNaN(x[j]))
+func (x Float64Slice) Less(i, j int) bool
+func (x Float64Slice) Swap(i, j int)
+
+// Sort is a convenience method: x.Sort() calls Sort(x).
+func (x Float64Slice) Sort()
 
 // StringSlice attaches the methods of Interface to []string, sorting in increasing order.
 type StringSlice []string
 
-func (p StringSlice) Len() int
-func (p StringSlice) Less(i, j int) bool
-func (p StringSlice) Swap(i, j int)
+func (x StringSlice) Len() int
+func (x StringSlice) Less(i, j int) bool
+func (x StringSlice) Swap(i, j int)
 
-// Sort is a convenience method.
-func (p StringSlice) Sort()
+// Sort is a convenience method: x.Sort() calls Sort(x).
+func (x StringSlice) Sort()
 
 // Ints sorts a slice of ints in increasing order.
-func Ints(a []int)
+func Ints(x []int)
 
-// Float64s sorts a slice of float64s in increasing order
-// (not-a-number values are treated as less than other values).
-func Float64s(a []float64)
+// Float64s sorts a slice of float64s in increasing order.
+// Not-a-number (NaN) values are ordered before other values.
+func Float64s(x []float64)
 
 // Strings sorts a slice of strings in increasing order.
-func Strings(a []string)
+func Strings(x []string)
 
-// IntsAreSorted tests whether a slice of ints is sorted in increasing order.
-func IntsAreSorted(a []int) bool
+// IntsAreSorted reports whether the slice x is sorted in increasing order.
+func IntsAreSorted(x []int) bool
 
-// Float64sAreSorted tests whether a slice of float64s is sorted in increasing order
-// (not-a-number values are treated as less than other values).
-func Float64sAreSorted(a []float64) bool
+// Float64sAreSorted reports whether the slice x is sorted in increasing order,
+// with not-a-number (NaN) values before any other values.
+func Float64sAreSorted(x []float64) bool
 
-// StringsAreSorted tests whether a slice of strings is sorted in increasing order.
-func StringsAreSorted(a []string) bool
+// StringsAreSorted reports whether the slice x is sorted in increasing order.
+func StringsAreSorted(x []string) bool
 
 // Stable sorts data while keeping the original order of equal elements.
 //

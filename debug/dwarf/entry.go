@@ -195,6 +195,7 @@ type Reader struct {
 	d            *Data
 	err          error
 	unit         int
+	lastUnit     bool
 	lastChildren bool
 	lastSibling  Offset
 	cu           *Entry

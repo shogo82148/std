@@ -49,7 +49,7 @@ type Checker struct {
 	pkgCnt map[string]int
 
 	files            []*ast.File
-	unusedDotImports map[*Scope]map[*Package]token.Pos
+	unusedDotImports map[*Scope]map[*Package]*ast.ImportSpec
 
 	firstErr error
 	methods  map[*TypeName][]*Func

@@ -8,6 +8,11 @@
 
 package syscall
 
+// archHonorsR2 captures the fact that r2 is honored by the
+// runtime.GOARCH.  Syscall conventions are generally r1, r2, err :=
+// syscall(trap, ...).  Not all architectures define r2 in their
+// ABI. See "man syscall".
+
 func Syscall9(trap, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr, err Errno)
 
 func Fstatfs(fd int, buf *Statfs_t) (err error)

@@ -6,6 +6,7 @@ package template
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/io/fs"
 	"github.com/shogo82148/std/text/template"
 	"github.com/shogo82148/std/text/template/parse"
 )
@@ -198,3 +199,15 @@ func (t *Template) ParseGlob(pattern string) (*Template, error)
 // and whether the value has a meaningful truth value. This is the definition of
 // truth used by if and other such actions.
 func IsTrue(val interface{}) (truth, ok bool)
+
+// ParseFS is like ParseFiles or ParseGlob but reads from the file system fs
+// instead of the host operating system's file system.
+// It accepts a list of glob patterns.
+// (Note that most file names serve as glob patterns matching only themselves.)
+func ParseFS(fs fs.FS, patterns ...string) (*Template, error)
+
+// ParseFS is like ParseFiles or ParseGlob but reads from the file system fs
+// instead of the host operating system's file system.
+// It accepts a list of glob patterns.
+// (Note that most file names serve as glob patterns matching only themselves.)
+func (t *Template) ParseFS(fs fs.FS, patterns ...string) (*Template, error)

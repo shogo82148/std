@@ -17,35 +17,6 @@ type Range struct {
 
 func (r Range) URL() string
 
-type ViewerData struct {
-	Events   []*ViewerEvent         `json:"traceEvents"`
-	Frames   map[string]ViewerFrame `json:"stackFrames"`
-	TimeUnit string                 `json:"displayTimeUnit"`
-
-	footer int
-}
-
-type ViewerEvent struct {
-	Name     string      `json:"name,omitempty"`
-	Phase    string      `json:"ph"`
-	Scope    string      `json:"s,omitempty"`
-	Time     float64     `json:"ts"`
-	Dur      float64     `json:"dur,omitempty"`
-	Pid      uint64      `json:"pid"`
-	Tid      uint64      `json:"tid"`
-	ID       uint64      `json:"id,omitempty"`
-	Stack    int         `json:"sf,omitempty"`
-	EndStack int         `json:"esf,omitempty"`
-	Arg      interface{} `json:"args,omitempty"`
-	Cname    string      `json:"cname,omitempty"`
-	Category string      `json:"cat,omitempty"`
-}
-
-type ViewerFrame struct {
-	Name   string `json:"name"`
-	Parent int    `json:"parent,omitempty"`
-}
-
 type NameArg struct {
 	Name string `json:"name"`
 }

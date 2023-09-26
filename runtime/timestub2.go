@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !darwin && !windows && !freebsd && !aix && !solaris
-// +build !darwin,!windows,!freebsd,!aix,!solaris
+//go:build !aix && !darwin && !freebsd && !openbsd && !solaris && !windows
+// +build !aix,!darwin,!freebsd,!openbsd,!solaris,!windows
 
 package runtime

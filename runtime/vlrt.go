@@ -28,7 +28,7 @@
 
 package runtime
 
-// Floating point control word values for GOARCH=386 GO386=387.
+// Floating point control word values.
 // Bits 0-5 are bits to disable floating-point exceptions.
 // Bits 8-9 are the precision control:
 //   0 = single precision a.k.a. float32

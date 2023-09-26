@@ -15,5 +15,3 @@
 // in the crypto/tls.Config.VerifyPeerCertificate hook.
 
 package x509
-
-// loadSystemRootsWithCgo is not available on iOS.

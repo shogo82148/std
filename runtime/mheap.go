@@ -70,6 +70,9 @@ package runtime
 // pointers and thus do not need to be scanned by the garbage
 // collector.
 
+// spanAllocType represents the type of allocation to make, or
+// the type of allocation to be freed.
+
 //go:notinheap
 
 // The described object has a finalizer set for it.

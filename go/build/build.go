@@ -7,7 +7,7 @@ package build
 import (
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/io/fs"
 	exec "internal/execabs"
 	pathpkg "path"
 )
@@ -40,7 +40,7 @@ type Context struct {
 
 	HasSubdir func(root, dir string) (rel string, ok bool)
 
-	ReadDir func(dir string) ([]os.FileInfo, error)
+	ReadDir func(dir string) ([]fs.FileInfo, error)
 
 	OpenFile func(path string) (io.ReadCloser, error)
 }
@@ -120,19 +120,20 @@ type Package struct {
 	ConflictDir   string
 	BinaryOnly    bool
 
-	GoFiles        []string
-	CgoFiles       []string
-	IgnoredGoFiles []string
-	InvalidGoFiles []string
-	CFiles         []string
-	CXXFiles       []string
-	MFiles         []string
-	HFiles         []string
-	FFiles         []string
-	SFiles         []string
-	SwigFiles      []string
-	SwigCXXFiles   []string
-	SysoFiles      []string
+	GoFiles           []string
+	CgoFiles          []string
+	IgnoredGoFiles    []string
+	InvalidGoFiles    []string
+	IgnoredOtherFiles []string
+	CFiles            []string
+	CXXFiles          []string
+	MFiles            []string
+	HFiles            []string
+	FFiles            []string
+	SFiles            []string
+	SwigFiles         []string
+	SwigCXXFiles      []string
+	SysoFiles         []string
 
 	CgoCFLAGS    []string
 	CgoCPPFLAGS  []string
@@ -141,15 +142,22 @@ type Package struct {
 	CgoLDFLAGS   []string
 	CgoPkgConfig []string
 
-	Imports   []string
-	ImportPos map[string][]token.Position
+	TestGoFiles  []string
+	XTestGoFiles []string
 
-	TestGoFiles    []string
+	Imports        []string
+	ImportPos      map[string][]token.Position
 	TestImports    []string
 	TestImportPos  map[string][]token.Position
-	XTestGoFiles   []string
 	XTestImports   []string
 	XTestImportPos map[string][]token.Position
+
+	EmbedPatterns        []string
+	EmbedPatternPos      map[string][]token.Position
+	TestEmbedPatterns    []string
+	TestEmbedPatternPos  map[string][]token.Position
+	XTestEmbedPatterns   []string
+	XTestEmbedPatternPos map[string][]token.Position
 }
 
 // IsCommand reports whether the package is considered a
@@ -204,6 +212,8 @@ func (ctxt *Context) Import(path string, srcDir string, mode ImportMode) (*Packa
 // MatchFile considers the name of the file and may use ctxt.OpenFile to
 // read some or all of the file's content.
 func (ctxt *Context) MatchFile(dir, name string) (match bool, err error)
+
+// fileInfo records information learned about a file included in a build.
 
 // Import is shorthand for Default.Import.
 func Import(path, srcDir string, mode ImportMode) (*Package, error)

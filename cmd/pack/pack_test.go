@@ -5,13 +5,13 @@
 package main
 
 import (
-	"os"
+	"io/fs"
 )
 
-// FakeFile implements FileLike and also os.FileInfo.
+// FakeFile implements FileLike and also fs.FileInfo.
 type FakeFile struct {
 	name     string
 	contents string
-	mode     os.FileMode
+	mode     fs.FileMode
 	offset   int
 }

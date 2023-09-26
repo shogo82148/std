@@ -8,7 +8,7 @@ package http
 
 import (
 	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/io/fs"
 	"github.com/shogo82148/std/time"
 )
 
@@ -37,6 +37,10 @@ func (d Dir) Open(name string) (File, error)
 // A FileSystem implements access to a collection of named files.
 // The elements in a file path are separated by slash ('/', U+002F)
 // characters, regardless of host operating system convention.
+// See the FileServer function to convert a FileSystem to a Handler.
+//
+// This interface predates the fs.FS interface, which can be used instead:
+// the FS adapter function converts an fs.FS to a FileSystem.
 type FileSystem interface {
 	Open(name string) (File, error)
 }
@@ -49,8 +53,8 @@ type File interface {
 	io.Closer
 	io.Reader
 	io.Seeker
-	Readdir(count int) ([]os.FileInfo, error)
-	Stat() (os.FileInfo, error)
+	Readdir(count int) ([]fs.FileInfo, error)
+	Stat() (fs.FileInfo, error)
 }
 
 // ServeContent replies to the request using the content in the
@@ -114,17 +118,25 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // file or directory provided in the name argument is used.
 func ServeFile(w ResponseWriter, r *Request, name string)
 
+// FS converts fsys to a FileSystem implementation,
+// for use with FileServer and NewFileTransport.
+func FS(fsys fs.FS) FileSystem
+
 // FileServer returns a handler that serves HTTP requests
 // with the contents of the file system rooted at root.
+//
+// As a special case, the returned file server redirects any request
+// ending in "/index.html" to the same path, without the final
+// "index.html".
 //
 // To use the operating system's file system implementation,
 // use http.Dir:
 //
 //	http.Handle("/", http.FileServer(http.Dir("/tmp")))
 //
-// As a special case, the returned file server redirects any request
-// ending in "/index.html" to the same path, without the final
-// "index.html".
+// To use an fs.FS implementation, use http.FS to convert it:
+//
+//	http.Handle("/", http.FileServer(http.FS(fsys)))
 func FileServer(root FileSystem) Handler
 
 // httpRange specifies the byte range to be sent to the client.

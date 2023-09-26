@@ -158,14 +158,6 @@ func Setfsgid(gid int) (err error)
 
 func Setfsuid(uid int) (err error)
 
-func Setregid(rgid int, egid int) (err error)
-
-func Setresgid(rgid int, egid int, sgid int) (err error)
-
-func Setresuid(ruid int, euid int, suid int) (err error)
-
-func Setreuid(ruid int, euid int) (err error)
-
 func Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n int, err error)
 
 func SyncFileRange(fd int, off int64, n int64, flags int) (err error)

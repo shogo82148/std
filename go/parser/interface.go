@@ -9,7 +9,7 @@ package parser
 import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/token"
-	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/io/fs"
 )
 
 // A Mode value is a set of flags (or 0).
@@ -51,7 +51,7 @@ func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode)
 // directory specified by path and returns a map of package name -> package
 // AST with all the packages found.
 //
-// If filter != nil, only the files with os.FileInfo entries passing through
+// If filter != nil, only the files with fs.FileInfo entries passing through
 // the filter (and ending in ".go") are considered. The mode bits are passed
 // to ParseFile unchanged. Position information is recorded in fset, which
 // must not be nil.
@@ -59,7 +59,7 @@ func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode)
 // If the directory couldn't be read, a nil map and the respective error are
 // returned. If a parse error occurred, a non-nil but incomplete map and the
 // first error encountered are returned.
-func ParseDir(fset *token.FileSet, path string, filter func(os.FileInfo) bool, mode Mode) (pkgs map[string]*ast.Package, first error)
+func ParseDir(fset *token.FileSet, path string, filter func(fs.FileInfo) bool, mode Mode) (pkgs map[string]*ast.Package, first error)
 
 // ParseExprFrom is a convenience function for parsing an expression.
 // The arguments have the same meaning as for ParseFile, but the source must

@@ -4,18 +4,19 @@
 
 package time
 
-// A Ticker holds a channel that delivers `ticks' of a clock
+// A Ticker holds a channel that delivers “ticks” of a clock
 // at intervals.
 type Ticker struct {
 	C <-chan Time
 	r runtimeTimer
 }
 
-// NewTicker returns a new Ticker containing a channel that will send the
-// time with a period specified by the duration argument.
-// It adjusts the intervals or drops ticks to make up for slow receivers.
-// The duration d must be greater than zero; if not, NewTicker will panic.
-// Stop the ticker to release associated resources.
+// NewTicker returns a new Ticker containing a channel that will send
+// the time on the channel after each tick. The period of the ticks is
+// specified by the duration argument. The ticker will adjust the time
+// interval or drop ticks to make up for slow receivers.
+// The duration d must be greater than zero; if not, NewTicker will
+// panic. Stop the ticker to release associated resources.
 func NewTicker(d Duration) *Ticker
 
 // Stop turns off a ticker. After Stop, no more ticks will be sent.

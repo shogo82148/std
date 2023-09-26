@@ -74,8 +74,6 @@ package runtime
 // sudogs are allocated from a special pool. Use acquireSudog and
 // releaseSudog to allocate and free them.
 
-// describes how to handle callback
-
 // Stack describes a Go execution stack.
 // The bounds of the stack are exactly [lo, hi),
 // with no implicit data structures on either side.
@@ -101,9 +99,6 @@ package runtime
 // Lock-free stack node.
 // Also known to export_test.go.
 
-// startup_random_data holds random bytes initialized at startup. These come from
-// the ELF AT_RANDOM auxiliary vector (vdso_linux_amd64.go or os_linux_386.go).
-
 // A _defer holds an entry on the list of deferred calls.
 // If you add a field here, add code to clear it in freedefer and deferProcStack
 // This struct must match the code in cmd/compile/internal/gc/reflect.go:deferstruct
@@ -115,8 +110,7 @@ package runtime
 
 // A _panic holds information about an active panic.
 //
-// This is marked go:notinheap because _panic values must only ever
-// live on the stack.
+// A _panic value must only ever live on the stack.
 //
 // The argp and link fields are stack pointers, but don't need special
 // handling during stack growth: because they are pointer-typed and
@@ -133,3 +127,5 @@ package runtime
 // See gopark. Do not re-use waitReasons, add new ones.
 
 // Set by the linker so the runtime can determine the buildmode.
+
+// Must agree with cmd/internal/objabi.Framepointer_enabled.

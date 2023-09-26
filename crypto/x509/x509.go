@@ -7,9 +7,6 @@ package x509
 
 import (
 	"github.com/shogo82148/std/crypto"
-	_ "github.com/shogo82148/std/crypto/sha1"
-	_ "github.com/shogo82148/std/crypto/sha256"
-	_ "github.com/shogo82148/std/crypto/sha512"
 	"github.com/shogo82148/std/crypto/x509/pkix"
 	"github.com/shogo82148/std/encoding/asn1"
 	"github.com/shogo82148/std/errors"
@@ -18,6 +15,10 @@ import (
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/time"
+
+	_ "github.com/shogo82148/std/crypto/sha1"
+	_ "github.com/shogo82148/std/crypto/sha256"
+	_ "github.com/shogo82148/std/crypto/sha512"
 
 	cryptobyte_asn1 "golang.org/x/crypto/cryptobyte/asn1"
 )
@@ -51,6 +52,7 @@ type SignatureAlgorithm int
 
 const (
 	UnknownSignatureAlgorithm SignatureAlgorithm = iota
+
 	MD2WithRSA
 	MD5WithRSA
 	SHA1WithRSA
@@ -82,6 +84,14 @@ const (
 )
 
 func (algo PublicKeyAlgorithm) String() string
+
+// hashToPSSParameters contains the DER encoded RSA PSS parameters for the
+// SHA256, SHA384, and SHA512 hashes as defined in RFC 3447, Appendix A.2.3.
+// The parameters contain the following values:
+//   * hashAlgorithm contains the associated hash identifier with NULL parameters
+//   * maskGenAlgorithm always contains the default mgf1SHA1 identifier
+//   * saltLength contains the length of the associated hash
+//   * trailerField always contains the default trailerFieldBC value
 
 // pssParameters reflects the parameters in an AlgorithmIdentifier that
 // specifies RSA PSS. See RFC 3447, Appendix A.2.3.

@@ -136,7 +136,7 @@ type Value interface {
 // Getter is an interface that allows the contents of a Value to be retrieved.
 // It wraps the Value interface, rather than being part of it, because it
 // appeared after Go 1 and its compatibility rules. All Value types provided
-// by this package satisfy the Getter interface.
+// by this package satisfy the Getter interface, except the type used by Func.
 type Getter interface {
 	Value
 	Get() interface{}
@@ -433,6 +433,16 @@ func (f *FlagSet) Duration(name string, value time.Duration, usage string) *time
 // The return value is the address of a time.Duration variable that stores the value of the flag.
 // The flag accepts a value acceptable to time.ParseDuration.
 func Duration(name string, value time.Duration, usage string) *time.Duration
+
+// Func defines a flag with the specified name and usage string.
+// Each time the flag is seen, fn is called with the value of the flag.
+// If fn returns a non-nil error, it will be treated as a flag value parsing error.
+func (f *FlagSet) Func(name, usage string, fn func(string) error)
+
+// Func defines a flag with the specified name and usage string.
+// Each time the flag is seen, fn is called with the value of the flag.
+// If fn returns a non-nil error, it will be treated as a flag value parsing error.
+func Func(name, usage string, fn func(string) error)
 
 // Var defines a flag with the specified name and usage string. The type and
 // value of the flag are represented by the first argument, of type Value, which

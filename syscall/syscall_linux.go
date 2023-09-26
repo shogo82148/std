@@ -168,9 +168,51 @@ func Mount(source string, target string, fstype string, flags uintptr, data stri
 
 func Getpgrp() (pid int)
 
-func Setuid(uid int) (err error)
+// allThreadsCaller holds the input and output state for performing a
+// allThreadsSyscall that needs to synchronize all OS thread state. Linux
+// generally does not always support this natively, so we have to
+// manipulate the runtime to fix things up.
+
+// AllThreadsSyscall performs a syscall on each OS thread of the Go
+// runtime. It first invokes the syscall on one thread. Should that
+// invocation fail, it returns immediately with the error status.
+// Otherwise, it invokes the syscall on all of the remaining threads
+// in parallel. It will terminate the program if it observes any
+// invoked syscall's return value differs from that of the first
+// invocation.
+//
+// AllThreadsSyscall is intended for emulating simultaneous
+// process-wide state changes that require consistently modifying
+// per-thread state of the Go runtime.
+//
+// AllThreadsSyscall is unaware of any threads that are launched
+// explicitly by cgo linked code, so the function always returns
+// ENOTSUP in binaries that use cgo.
+//
+//go:uintptrescapes
+func AllThreadsSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
+
+// AllThreadsSyscall6 is like AllThreadsSyscall, but extended to six
+// arguments.
+//
+//go:uintptrescapes
+func AllThreadsSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
+
+func Setegid(egid int) (err error)
+
+func Seteuid(euid int) (err error)
 
 func Setgid(gid int) (err error)
+
+func Setregid(rgid, egid int) (err error)
+
+func Setresgid(rgid, egid, sgid int) (err error)
+
+func Setresuid(ruid, euid, suid int) (err error)
+
+func Setreuid(ruid, euid int) (err error)
+
+func Setuid(uid int) (err error)
 
 func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error)
 

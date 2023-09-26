@@ -257,6 +257,16 @@ func (e *DNSError) Timeout() bool
 // error and return a DNSError for which Temporary returns false.
 func (e *DNSError) Temporary() bool
 
+// errClosed exists just so that the docs for ErrClosed don't mention
+// the internal package poll.
+
+// ErrClosed is the error returned by an I/O call on a network
+// connection that has already been closed, or that is closed by
+// another goroutine before the I/O is completed. This may be wrapped
+// in another error, and should normally be tested using
+// errors.Is(err, net.ErrClosed).
+var ErrClosed = errClosed
+
 // buffersWriter is the interface implemented by Conns that support a
 // "writev"-like batch write optimization.
 // writeBuffers should fully consume and write all chunks from the

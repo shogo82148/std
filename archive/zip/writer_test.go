@@ -5,12 +5,12 @@
 package zip
 
 import (
-	"os"
+	"io/fs"
 )
 
 type WriteTest struct {
 	Name   string
 	Data   []byte
 	Method uint16
-	Mode   os.FileMode
+	Mode   fs.FileMode
 }

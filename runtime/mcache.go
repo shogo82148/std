@@ -5,6 +5,7 @@
 package runtime
 
 // Per-thread (in Go, per-P) cache for small objects.
+// This includes a small object cache and local allocation stats.
 // No locking needed because it is per-thread (per-P).
 //
 // mcaches are allocated from non-GC'd memory, so any heap pointers

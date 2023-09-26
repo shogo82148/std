@@ -11,4 +11,7 @@ import (
 	. "go/types"
 )
 
+// Use the same importer for all std lib tests to
+// avoid repeated importing of the same packages.
+
 // Package paths of excluded packages.

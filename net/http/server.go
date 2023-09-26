@@ -223,9 +223,8 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
 var _ closeWriter = (*net.TCPConn)(nil)
 
-// badRequestError is a literal string (used by in the server in HTML,
-// unescaped) to tell the user why their request was bad. It should
-// be plain text without user info or other embedded errors.
+// statusError is an error used to respond to a request with an HTTP status.
+// The text should be plain text without user info or other embedded errors.
 
 // ErrAbortHandler is a sentinel panic value to abort a handler.
 // While any panic from ServeHTTP aborts the response to the client,
@@ -255,11 +254,12 @@ func NotFound(w ResponseWriter, r *Request)
 // that replies to each request with a “404 page not found” reply.
 func NotFoundHandler() Handler
 
-// StripPrefix returns a handler that serves HTTP requests
-// by removing the given prefix from the request URL's Path
-// and invoking the handler h. StripPrefix handles a
-// request for a path that doesn't begin with prefix by
-// replying with an HTTP 404 not found error.
+// StripPrefix returns a handler that serves HTTP requests by removing the
+// given prefix from the request URL's Path (and RawPath if set) and invoking
+// the handler h. StripPrefix handles a request for a path that doesn't begin
+// with prefix by replying with an HTTP 404 not found error. The prefix must
+// match exactly: if the prefix in the request contains escaped characters
+// the reply is also an HTTP 404 not found error.
 func StripPrefix(prefix string, h Handler) Handler
 
 // Redirect replies to the request with a redirect to url,
@@ -450,9 +450,9 @@ type Server struct {
 // underlying Listener(s).
 func (srv *Server) Close() error
 
-// shutdownPollInterval is how often we poll for quiescence
-// during Server.Shutdown. This is lower during tests, to
-// speed up tests.
+// shutdownPollIntervalMax is the max polling interval when checking
+// quiescence during Server.Shutdown. Polling starts with a small
+// interval and backs off to the max.
 // Ideally we could find a solution that doesn't involve polling,
 // but which also doesn't have a high runtime cost (and doesn't
 // involve any contentious mutexes), but that is left as an

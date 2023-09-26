@@ -10,6 +10,7 @@
 package http_test
 
 import (
+	mrand "math/rand"
 	. "net/http"
 )
 
@@ -39,3 +40,8 @@ import (
 
 // breakableConn is a net.Conn wrapper with a Write method
 // that will fail when its brokenState is true.
+
+// dumpConn is a net.Conn which writes to Writer and reads from Reader
+
+// delegateReader is a reader that delegates to another reader,
+// once it arrives on a channel.

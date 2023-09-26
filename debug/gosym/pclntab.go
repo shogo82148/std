@@ -13,6 +13,8 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
+// version of the pclntab
+
 // A LineTable is a data structure mapping program counters to line numbers.
 //
 // In Go 1.1 and earlier, each function (represented by a Func) had its own LineTable,
@@ -31,17 +33,25 @@ type LineTable struct {
 	PC   uint64
 	Line int
 
-	mu       sync.Mutex
-	go12     int
-	binary   binary.ByteOrder
-	quantum  uint32
-	ptrsize  uint32
-	functab  []byte
-	nfunctab uint32
-	filetab  []byte
-	nfiletab uint32
-	fileMap  map[string]uint32
-	strings  map[uint32]string
+	mu sync.Mutex
+
+	version version
+
+	binary      binary.ByteOrder
+	quantum     uint32
+	ptrsize     uint32
+	funcnametab []byte
+	cutab       []byte
+	funcdata    []byte
+	functab     []byte
+	nfunctab    uint32
+	filetab     []byte
+	pctab       []byte
+	nfiletab    uint32
+	funcNames   map[uint32]string
+	strings     map[uint32]string
+
+	fileMap map[string]uint32
 }
 
 // NOTE(rsc): This is wrong for GOARCH=arm, which uses a quantum of 4,

@@ -5,6 +5,8 @@
 package sync
 
 // Once is an object that will perform exactly one action.
+//
+// A Once must not be copied after first use.
 type Once struct {
 	done uint32
 	m    Mutex

@@ -917,6 +917,9 @@ func (ci *ColumnType) DatabaseTypeName() string
 // "select cursor(select * from my_table) from dual", into a
 // *Rows value that can itself be scanned from. The parent
 // select query will close any cursor *Rows if the parent *Rows is closed.
+//
+// If any of the first arguments implementing Scanner returns an error,
+// that error will be wrapped in the returned error
 func (rs *Rows) Scan(dest ...interface{}) error
 
 // rowsCloseHook returns a function so tests may install the

@@ -240,3 +240,5 @@ func (t Tag) GoString() string
 
 // Unit header unit type encodings.
 // These are new in DWARF 5.
+
+// Opcodes for DWARFv5 debug_rnglists section.

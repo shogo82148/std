@@ -17,7 +17,7 @@ import (
 // hidden "dot files" from being served.
 
 func ExampleFileServer_dotFileHiding() {
-	fs := dotFileHidingFileSystem{http.Dir(".")}
-	http.Handle("/", http.FileServer(fs))
+	fsys := dotFileHidingFileSystem{http.Dir(".")}
+	http.Handle("/", http.FileServer(fsys))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

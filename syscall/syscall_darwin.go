@@ -12,14 +12,6 @@
 
 package syscall
 
-import (
-	errorspkg "errors"
-)
-
-const ImplementsGetwd = true
-
-func Getwd() (string, error)
-
 type SockaddrDatalink struct {
 	Len    uint8
 	Family uint8

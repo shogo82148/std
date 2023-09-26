@@ -66,6 +66,10 @@ var (
 // StreamError is an error that only affects one stream within an
 // HTTP/2 connection.
 
+// errFromPeer is a sentinel error value for StreamError.Cause to
+// indicate that the StreamError was sent from the peer over the wire
+// and wasn't locally generated in the Transport.
+
 // 6.9.1 The Flow Control Window
 // "If a sender receives a WINDOW_UPDATE that causes a flow control
 // window to exceed this maximum it MUST terminate either the stream
@@ -229,7 +233,9 @@ var (
 // Request.Body when the main goroutine panics. Since most handlers read in the
 // main ServeHTTP goroutine, this will show up rarely.
 
-// After sending GOAWAY, the connection will close after goAwayTimeout.
+// After sending GOAWAY with an error code (non-graceful shutdown), the
+// connection will close after goAwayTimeout.
+//
 // If we close the connection immediately after sending GOAWAY, there may
 // be unsent data in our kernel receive buffer, which will cause the kernel
 // to send a TCP RST on close() instead of a FIN. This RST will abort the
@@ -317,15 +323,10 @@ var _ Pusher = (*http2responseWriter)(nil)
 // TCP connection after sending a GOAWAY frame.
 
 // transportResponseBody is the concrete type of Transport.RoundTrip's
-// Response.Body. It is an io.ReadCloser. On Read, it reads from cs.body.
-// On Close it sends RST_STREAM if EOF wasn't already seen.
+// Response.Body. It is an io.ReadCloser.
 
 // gzipReader wraps a response body so it can lazily
 // call gzip.NewReader on the first call to Read
-
-// bodyWriterState encapsulates various state around the Transport's writing
-// of the request body, particularly regarding doing delayed writes of the body
-// when the request contains "Expect: 100-continue".
 
 // noDialH2RoundTripper is a RoundTripper which only tries to complete the request
 // if there's already has a cached connection to the host.

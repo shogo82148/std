@@ -93,6 +93,8 @@ type SystemRootsError struct {
 
 func (se SystemRootsError) Error() string
 
+func (se SystemRootsError) Unwrap() error
+
 // errNotParsed is returned when a certificate without ASN.1 contents is
 // verified. Platform-specific verification needs the ASN.1 contents.
 

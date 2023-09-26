@@ -6,6 +6,10 @@
 
 package template
 
+import (
+	"github.com/shogo82148/std/io/fs"
+)
+
 // Must is a helper that wraps a call to a function returning (*Template, error)
 // and panics if the error is non-nil. It is intended for use in variable
 // initializations such as
@@ -57,3 +61,15 @@ func ParseGlob(pattern string) (*Template, error)
 // When parsing multiple files with the same name in different directories,
 // the last one mentioned will be the one that results.
 func (t *Template) ParseGlob(pattern string) (*Template, error)
+
+// ParseFS is like ParseFiles or ParseGlob but reads from the file system fsys
+// instead of the host operating system's file system.
+// It accepts a list of glob patterns.
+// (Note that most file names serve as glob patterns matching only themselves.)
+func ParseFS(fsys fs.FS, patterns ...string) (*Template, error)
+
+// ParseFS is like ParseFiles or ParseGlob but reads from the file system fsys
+// instead of the host operating system's file system.
+// It accepts a list of glob patterns.
+// (Note that most file names serve as glob patterns matching only themselves.)
+func (t *Template) ParseFS(fsys fs.FS, patterns ...string) (*Template, error)

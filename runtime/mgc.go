@@ -228,13 +228,5 @@ func GC()
 //
 // This is protected by markDoneSema.
 
-// debugCachedWork enables extra checks for debugging premature mark
-// termination.
-//
-// For debugging issue #27993.
-
-// gcWorkPauseGen is for debugging the mark completion algorithm.
-// gcWork put operations spin while gcWork.pauseGen == gcWorkPauseGen.
-// Only used if debugCachedWork is true.
-//
-// For debugging issue #27993.
+// gcBgMarkWorker is an entry in the gcBgMarkWorkerPool. It points to a single
+// gcBgMarkWorker goroutine.

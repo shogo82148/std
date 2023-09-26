@@ -5,10 +5,14 @@
 package os
 
 import (
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
+
+// ErrProcessDone indicates a Process has finished.
+var ErrProcessDone = errors.New("os: process already finished")
 
 // Process stores the information about a process created by StartProcess.
 type Process struct {
