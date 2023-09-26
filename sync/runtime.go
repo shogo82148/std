@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package sync
-
-// Approximation of notifyList in runtime/sema.go. Size and alignment must
-// agree.

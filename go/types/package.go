@@ -12,6 +12,7 @@ type Package struct {
 	complete bool
 	imports  []*Package
 	fake     bool
+	cgo      bool
 }
 
 // NewPackage returns a new Package for the given package path and name.

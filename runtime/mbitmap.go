@@ -92,7 +92,3 @@ var _ = heapBits{arena: (1<<heapAddrBits)/heapArenaBytes - 1}
 // the address of the object in the heap.
 // We maintain one set of mark bits for allocation and one for
 // marking purposes.
-
-// oneBitCount is indexed by byte and produces the
-// number of 1 bits in that byte. For example 128 has 1 bit set
-// and oneBitCount[128] will holds 1.

@@ -10,6 +10,10 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+// incomparable is a zero-width, non-comparable type. Adding it to a struct
+// makes that struct also non-comparable, and generally doesn't add
+// any size (as long as it's first).
+
 // maxInt64 is the effective "infinite" value for the Server and
 // Transport's byte-limiting readers.
 

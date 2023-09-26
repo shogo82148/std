@@ -19,6 +19,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+// Keep these in sync with cmd/gofmt/gofmt.go.
+
 // Node formats node in canonical gofmt style and writes the result to dst.
 //
 // The node type must be *ast.File, *printer.CommentedNode, []ast.Decl,

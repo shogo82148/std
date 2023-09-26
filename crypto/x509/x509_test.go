@@ -38,7 +38,7 @@ import (
 //   challengePassword = ignored challenge
 //   unstructuredName  = ignored unstructured name
 
-// certMissingRSANULL contains an RSA public key where the AlgorithmIdentifer
+// certMissingRSANULL contains an RSA public key where the AlgorithmIdentifier
 // parameters are omitted rather than being an ASN.1 NULL.
 
 // certMultipleRDN contains a RelativeDistinguishedName with two elements (the

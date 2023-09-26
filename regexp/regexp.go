@@ -176,6 +176,15 @@ func (re *Regexp) NumSubexp() int
 // the empty string. The slice should not be modified.
 func (re *Regexp) SubexpNames() []string
 
+// SubexpIndex returns the index of the first subexpression with the given name,
+// or -1 if there is no subexpression with that name.
+//
+// Note that multiple subexpressions can be written using the same name, as in
+// (?P<bob>a+)(?P<bob>b+), which declares two subexpressions named "bob".
+// In this case, SubexpIndex returns the index of the leftmost such subexpression
+// in the regular expression.
+func (re *Regexp) SubexpIndex(name string) int
+
 // input abstracts different representations of the input text. It provides
 // one-character lookahead.
 

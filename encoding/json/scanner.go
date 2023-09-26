@@ -40,3 +40,6 @@ func (e *SyntaxError) Error() string
 // They give the current state of a composite value
 // being scanned. If the parser is inside a nested value
 // the parseState describes the nested state, outermost at entry 0.
+
+// This limits the max nesting depth to prevent stack overflow.
+// This is permitted by https://tools.ietf.org/html/rfc7159#section-9

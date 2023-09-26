@@ -140,8 +140,6 @@ func Geteuid() (euid int)
 
 func Getgid() (gid int)
 
-func Getrlimit(resource int, rlim *Rlimit) (err error)
-
 func Getuid() (uid int)
 
 func Listen(s int, n int) (err error)
@@ -163,8 +161,6 @@ func Setregid(rgid int, egid int) (err error)
 func Setresgid(rgid int, egid int, sgid int) (err error)
 
 func Setresuid(ruid int, euid int, suid int) (err error)
-
-func Setrlimit(resource int, rlim *Rlimit) (err error)
 
 func Setreuid(ruid int, euid int) (err error)
 

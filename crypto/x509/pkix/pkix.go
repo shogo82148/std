@@ -50,21 +50,37 @@ type Extension struct {
 }
 
 // Name represents an X.509 distinguished name. This only includes the common
-// elements of a DN. When parsing, all elements are stored in Names and
-// non-standard elements can be extracted from there. When marshaling, elements
-// in ExtraNames are appended and override other values with the same OID.
+// elements of a DN. Note that Name is only an approximation of the X.509
+// structure. If an accurate representation is needed, asn1.Unmarshal the raw
+// subject or issuer as an RDNSequence.
 type Name struct {
 	Country, Organization, OrganizationalUnit []string
 	Locality, Province                        []string
 	StreetAddress, PostalCode                 []string
 	SerialNumber, CommonName                  string
 
-	Names      []AttributeTypeAndValue
+	Names []AttributeTypeAndValue
+
 	ExtraNames []AttributeTypeAndValue
 }
 
+// FillFromRDNSequence populates n from the provided RDNSequence.
+// Multi-entry RDNs are flattened, all entries are added to the
+// relevant n fields, and the grouping is not preserved.
 func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
 
+// ToRDNSequence converts n into a single RDNSequence. The following
+// attributes are encoded as multi-value RDNs:
+//
+//   - Country
+//   - Organization
+//   - OrganizationalUnit
+//   - Locality
+//   - Province
+//   - StreetAddress
+//   - PostalCode
+//
+// Each ExtraNames entry is encoded as an individual RDN.
 func (n Name) ToRDNSequence() (ret RDNSequence)
 
 // String returns the string form of n, roughly following

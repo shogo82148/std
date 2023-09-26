@@ -17,6 +17,8 @@ type Hash uint
 // HashFunc simply returns the value of h so that Hash implements SignerOpts.
 func (h Hash) HashFunc() Hash
 
+func (h Hash) String() string
+
 const (
 	MD4 Hash = 1 + iota
 	MD5

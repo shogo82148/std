@@ -74,6 +74,8 @@ type Config struct {
 
 	FakeImportC bool
 
+	go115UsesCgo bool
+
 	Error func(err error)
 
 	Importer Importer

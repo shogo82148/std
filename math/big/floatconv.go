@@ -75,7 +75,7 @@ func (z *Float) Parse(s string, base int) (f *Float, b int, err error)
 // and rounding mode.
 func ParseFloat(s string, base int, prec uint, mode RoundingMode) (f *Float, b int, err error)
 
-var _ fmt.Scanner = &floatZero
+var _ fmt.Scanner = (*Float)(nil)
 
 // Scan is a support routine for fmt.Scanner; it sets z to the value of
 // the scanned number. It accepts formats whose verbs are supported by

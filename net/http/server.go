@@ -426,8 +426,9 @@ type Server struct {
 
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
 
+	inShutdown atomicBool
+
 	disableKeepAlives int32
-	inShutdown        int32
 	nextProtoOnce     sync.Once
 	nextProtoErr      error
 

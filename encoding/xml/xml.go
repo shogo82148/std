@@ -162,7 +162,7 @@ func NewTokenDecoder(t TokenReader) *Decoder
 // it will return an error.
 //
 // Token implements XML name spaces as described by
-// https://www.w3.org/TR/REC-xml-names/.  Each of the
+// https://www.w3.org/TR/REC-xml-names/. Each of the
 // Name structures contained in the Token has the Space
 // set to the URL identifying its name space when known.
 // If Token encounters an unrecognized name space prefix,

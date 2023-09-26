@@ -37,9 +37,9 @@ const (
 	// contains name constraints, and the Common Name can be interpreted as
 	// a hostname.
 	//
-	// You can avoid this error by setting the experimental GODEBUG environment
-	// variable to "x509ignoreCN=1", disabling Common Name matching entirely.
-	// This behavior might become the default in the future.
+	// This error is only returned when legacy Common Name matching is enabled
+	// by setting the GODEBUG environment variable to "x509ignoreCN=1". This
+	// setting might be removed in the future.
 	NameConstraintsWithoutSANs
 	// UnconstrainedName results when a CA certificate contains permitted
 	// name constraints, but leaf certificate contains a name of an
@@ -96,8 +96,7 @@ func (se SystemRootsError) Error() string
 // errNotParsed is returned when a certificate without ASN.1 contents is
 // verified. Platform-specific verification needs the ASN.1 contents.
 
-// VerifyOptions contains parameters for Certificate.Verify. It's a structure
-// because other PKIX verification APIs have ended up needing many options.
+// VerifyOptions contains parameters for Certificate.Verify.
 type VerifyOptions struct {
 	DNSName string
 
@@ -131,6 +130,12 @@ type VerifyOptions struct {
 // the name being validated. Note that DirectoryName constraints are not
 // supported.
 //
+// Name constraint validation follows the rules from RFC 5280, with the
+// addition that DNS name constraints may use the leading period format
+// defined for emails and URIs. When a constraint has a leading period
+// it indicates that at least one additional label must be prepended to
+// the constrained name to be considered valid.
+//
 // Extended Key Usage values are enforced nested down a chain, so an intermediate
 // or root that enumerates EKUs prevents a leaf from asserting an EKU not in that
 // list. (While this is not specified, it is common practice in order to limit
@@ -146,4 +151,14 @@ func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err e
 
 // VerifyHostname returns nil if c is a valid certificate for the named host.
 // Otherwise it returns an error describing the mismatch.
+//
+// IP addresses can be optionally enclosed in square brackets and are checked
+// against the IPAddresses field. Other names are checked case insensitively
+// against the DNSNames field. If the names are valid hostnames, the certificate
+// fields can have a wildcard as the left-most label.
+//
+// The legacy Common Name field is ignored unless it's a valid hostname, the
+// certificate doesn't have any Subject Alternative Names, and the GODEBUG
+// environment variable is set to "x509ignoreCN=0". Support for Common Name is
+// deprecated will be entirely removed in the future.
 func (c *Certificate) VerifyHostname(h string) error

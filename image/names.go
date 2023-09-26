@@ -38,4 +38,5 @@ func (c *Uniform) At(x, y int) color.Color
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (c *Uniform) Opaque() bool
 
+// NewUniform returns a new Uniform image of the given color.
 func NewUniform(c color.Color) *Uniform

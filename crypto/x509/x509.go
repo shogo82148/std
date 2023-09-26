@@ -3,13 +3,10 @@
 // license that can be found in the LICENSE file.
 
 // Package x509 parses X.509-encoded keys and certificates.
-//
-// On UNIX systems the environment variables SSL_CERT_FILE and SSL_CERT_DIR
-// can be used to override the system default locations for the SSL certificate
-// file and SSL certificate files directory, respectively.
 package x509
 
 import (
+	"github.com/shogo82148/std/crypto"
 	_ "github.com/shogo82148/std/crypto/sha1"
 	_ "github.com/shogo82148/std/crypto/sha256"
 	_ "github.com/shogo82148/std/crypto/sha512"
@@ -29,6 +26,8 @@ import (
 // in RFC 3280.
 
 // ParsePKIXPublicKey parses a public key in PKIX, ASN.1 DER form.
+// The encoded public key is a SubjectPublicKeyInfo structure
+// (see RFC 5280, Section 4.1).
 //
 // It returns a *rsa.PublicKey, *dsa.PublicKey, *ecdsa.PublicKey, or
 // ed25519.PublicKey. More types might be supported in the future.
@@ -37,6 +36,8 @@ import (
 func ParsePKIXPublicKey(derBytes []byte) (pub interface{}, err error)
 
 // MarshalPKIXPublicKey converts a public key to PKIX, ASN.1 DER form.
+// The encoded public key is a SubjectPublicKeyInfo structure
+// (see RFC 5280, Section 4.1).
 //
 // The following key types are currently supported: *rsa.PublicKey, *ecdsa.PublicKey
 // and ed25519.PublicKey. Unsupported key types result in an error.
@@ -330,6 +331,9 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 // The AuthorityKeyId will be taken from the SubjectKeyId of parent, if any,
 // unless the resulting certificate is self-signed. Otherwise the value from
 // template will be used.
+//
+// If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
+// will be generated from the hash of the public key.
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv interface{}) (cert []byte, err error)
 
 // pemCRLPrefix is the magic string that indicates that we have a PEM encoded
@@ -348,6 +352,9 @@ func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
 
 // CreateCRL returns a DER encoded CRL, signed by this Certificate, that
 // contains the given list of revoked certificates.
+//
+// Note: this method does not generate an RFC 5280 conformant X.509 v2 CRL.
+// To generate a standards compliant CRL, use CreateRevocationList instead.
 func (c *Certificate) CreateCRL(rand io.Reader, priv interface{}, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
 
 // CertificateRequest represents a PKCS #10, certificate signature request.
@@ -378,7 +385,7 @@ type CertificateRequest struct {
 	URIs           []*url.URL
 }
 
-// oidExtensionRequest is a PKCS#9 OBJECT IDENTIFIER that indicates requested
+// oidExtensionRequest is a PKCS #9 OBJECT IDENTIFIER that indicates requested
 // extensions in a CSR.
 
 // CreateCertificateRequest creates a new certificate request based on a
@@ -408,3 +415,33 @@ func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error)
 
 // CheckSignature reports whether the signature on c is valid.
 func (c *CertificateRequest) CheckSignature() error
+
+// RevocationList contains the fields used to create an X.509 v2 Certificate
+// Revocation list with CreateRevocationList.
+type RevocationList struct {
+	SignatureAlgorithm SignatureAlgorithm
+
+	RevokedCertificates []pkix.RevokedCertificate
+
+	Number *big.Int
+
+	ThisUpdate time.Time
+
+	NextUpdate time.Time
+
+	ExtraExtensions []pkix.Extension
+}
+
+// CreateRevocationList creates a new X.509 v2 Certificate Revocation List,
+// according to RFC 5280, based on template.
+//
+// The CRL is signed by priv which should be the private key associated with
+// the public key in the issuer certificate.
+//
+// The issuer may not be nil, and the crlSign bit must be set in KeyUsage in
+// order to use it as a CRL issuer.
+//
+// The issuer distinguished name CRL field and authority key identifier
+// extension are populated using the issuer certificate. issuer must have
+// SubjectKeyId set.
+func CreateRevocationList(rand io.Reader, template *RevocationList, issuer *Certificate, priv crypto.Signer) ([]byte, error)

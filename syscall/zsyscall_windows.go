@@ -59,12 +59,6 @@ func GetSystemTimeAsFileTime(time *Filetime)
 
 func GetTimeZoneInformation(tzi *Timezoneinformation) (rc uint32, err error)
 
-func CreateIoCompletionPort(filehandle Handle, cphandle Handle, key uint32, threadcnt uint32) (handle Handle, err error)
-
-func GetQueuedCompletionStatus(cphandle Handle, qty *uint32, key *uint32, overlapped **Overlapped, timeout uint32) (err error)
-
-func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlapped *Overlapped) (err error)
-
 func CancelIo(s Handle) (err error)
 
 func CancelIoEx(s Handle, o *Overlapped) (err error)

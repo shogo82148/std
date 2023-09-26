@@ -30,10 +30,6 @@ func (s *MethodSet) Lookup(pkg *Package, name string) *Selection
 // It always returns a non-nil method set, even if it is empty.
 func NewMethodSet(T Type) *MethodSet
 
-// A fieldSet is a set of fields and name collisions.
-// A collision indicates that multiple fields with the
-// same unique id appeared.
-
 // A methodSet is a set of methods and name collisions.
 // A collision indicates that multiple methods with the
-// same unique id appeared.
+// same unique id, or a field with that id appeared.

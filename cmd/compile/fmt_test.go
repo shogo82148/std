@@ -52,9 +52,9 @@ type File struct {
 // A callSite describes a function call that appears to contain
 // a format string.
 
-// blacklistedPackages is the set of packages which can
+// ignoredPackages is the set of packages which can
 // be ignored.
 
-// blacklistedFunctions is the set of functions which may have
+// ignoredFunctions is the set of functions which may have
 // format-like arguments but which don't do any formatting and
 // thus may be ignored.

@@ -11,6 +11,12 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// Close closes the File, rendering it unusable for I/O.
+// On files that support SetDeadline, any pending I/O operations will
+// be canceled and return immediately with an error.
+// Close will return an error if it has already been called.
+func (f *File) Close() error
+
 // Chown changes the numeric uid and gid of the named file.
 // If the file is a symbolic link, it changes the uid and gid of the link's target.
 // A uid or gid of -1 means to not change that value.

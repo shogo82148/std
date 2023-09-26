@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package crc32
+
+// hasVX reports whether the machine has the z/Architecture
+// vector facility installed and enabled.

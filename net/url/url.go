@@ -70,15 +70,16 @@ func PathEscape(s string) string
 // URL's String method uses the EscapedPath method to obtain the path. See the
 // EscapedPath method for more details.
 type URL struct {
-	Scheme     string
-	Opaque     string
-	User       *Userinfo
-	Host       string
-	Path       string
-	RawPath    string
-	ForceQuery bool
-	RawQuery   string
-	Fragment   string
+	Scheme      string
+	Opaque      string
+	User        *Userinfo
+	Host        string
+	Path        string
+	RawPath     string
+	ForceQuery  bool
+	RawQuery    string
+	Fragment    string
+	RawFragment string
 }
 
 // User returns a Userinfo containing the provided username
@@ -141,6 +142,16 @@ func ParseRequestURI(rawurl string) (*URL, error)
 // reading u.RawPath directly.
 func (u *URL) EscapedPath() string
 
+// EscapedFragment returns the escaped form of u.Fragment.
+// In general there are multiple possible escaped forms of any fragment.
+// EscapedFragment returns u.RawFragment when it is a valid escaping of u.Fragment.
+// Otherwise EscapedFragment ignores u.RawFragment and computes an escaped
+// form on its own.
+// The String method uses EscapedFragment to construct its result.
+// In general, code should call EscapedFragment instead of
+// reading u.RawFragment directly.
+func (u *URL) EscapedFragment() string
+
 // String reassembles the URL into a valid URL string.
 // The general form of the result is one of:
 //
@@ -163,6 +174,10 @@ func (u *URL) EscapedPath() string
 //   - if u.RawQuery is empty, ?query is omitted.
 //   - if u.Fragment is empty, #fragment is omitted.
 func (u *URL) String() string
+
+// Redacted is like String but replaces any password with "xxxxx".
+// Only the password in u.URL is redacted.
+func (u *URL) Redacted() string
 
 // Values maps a string key to a list of values.
 // It is typically used for query parameters and form values.

@@ -10,6 +10,12 @@
 package runtime
 
 // addrRange represents a region of address space.
+//
+// An addrRange must never span a gap in the address space.
+
+// offAddr represents an address in a contiguous view
+// of the address space on systems where the address space is
+// segmented. On other systems, it's just a normal address.
 
 // addrRanges is a data structure holding a collection of ranges of
 // address space.

@@ -245,12 +245,14 @@ type DB struct {
 	closed            bool
 	dep               map[finalCloser]depSet
 	lastPut           map[*driverConn]string
-	maxIdle           int
+	maxIdleCount      int
 	maxOpen           int
 	maxLifetime       time.Duration
+	maxIdleTime       time.Duration
 	cleanerCh         chan struct{}
 	waitCount         int64
 	maxIdleClosed     int64
+	maxIdleTimeClosed int64
 	maxLifetimeClosed int64
 
 	stop func()
@@ -262,8 +264,6 @@ type DB struct {
 // be held during all calls into the Conn. (including any calls onto
 // interfaces returned via that Conn, such as calls on Tx, Stmt,
 // Result, Rows)
-
-// validator was introduced for Go1.15, but backported to Go1.14.
 
 // driverStmt associates a driver.Stmt with the
 // *driverConn from which it came, so the driverConn's lock can be
@@ -359,8 +359,15 @@ func (db *DB) SetMaxOpenConns(n int)
 //
 // Expired connections may be closed lazily before reuse.
 //
-// If d <= 0, connections are reused forever.
+// If d <= 0, connections are not closed due to a connection's age.
 func (db *DB) SetConnMaxLifetime(d time.Duration)
+
+// SetConnMaxIdleTime sets the maximum amount of time a connection may be idle.
+//
+// Expired connections may be closed lazily before reuse.
+//
+// If d <= 0, connections are not closed due to a connection's idle time.
+func (db *DB) SetConnMaxIdleTime(d time.Duration)
 
 // DBStats contains database statistics.
 type DBStats struct {
@@ -373,6 +380,7 @@ type DBStats struct {
 	WaitCount         int64
 	WaitDuration      time.Duration
 	MaxIdleClosed     int64
+	MaxIdleTimeClosed int64
 	MaxLifetimeClosed int64
 }
 
@@ -845,10 +853,11 @@ func (ci *ColumnType) ScanType() reflect.Type
 func (ci *ColumnType) Nullable() (nullable, ok bool)
 
 // DatabaseTypeName returns the database system name of the column type. If an empty
-// string is returned the driver type name is not supported.
+// string is returned, then the driver type name is not supported.
 // Consult your driver documentation for a list of driver data types. Length specifiers
 // are not included.
-// Common type include "VARCHAR", "TEXT", "NVARCHAR", "DECIMAL", "BOOL", "INT", "BIGINT".
+// Common type names include "VARCHAR", "TEXT", "NVARCHAR", "DECIMAL", "BOOL",
+// "INT", and "BIGINT".
 func (ci *ColumnType) DatabaseTypeName() string
 
 // Scan copies the columns in the current row into the values pointed
@@ -931,6 +940,12 @@ type Row struct {
 // Scan uses the first row and discards the rest. If no row matches
 // the query, Scan returns ErrNoRows.
 func (r *Row) Scan(dest ...interface{}) error
+
+// Err provides a way for wrapping packages to check for
+// query errors without calling Scan.
+// Err returns the error, if any, that was encountered while running the query.
+// If this error is not nil, this error will also be returned from Scan.
+func (r *Row) Err() error
 
 // A Result summarizes an executed SQL command.
 type Result interface {

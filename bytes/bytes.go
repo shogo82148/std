@@ -103,8 +103,9 @@ func Fields(s []byte) [][]byte
 // It splits the slice s at each run of code points c satisfying f(c) and
 // returns a slice of subslices of s. If all code points in s satisfy f(c), or
 // len(s) == 0, an empty slice is returned.
-// FieldsFunc makes no guarantees about the order in which it calls f(c).
-// If f does not return consistent results for a given c, FieldsFunc may crash.
+//
+// FieldsFunc makes no guarantees about the order in which it calls f(c)
+// and assumes that f always returns the same value for a given c.
 func FieldsFunc(s []byte, f func(rune) bool) [][]byte
 
 // Join concatenates the elements of s to create a new byte slice. The separator
@@ -241,5 +242,3 @@ func EqualFold(s, t []byte) bool
 
 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.
 func Index(s, sep []byte) int
-
-// primeRK is the prime base used in Rabin-Karp algorithm.

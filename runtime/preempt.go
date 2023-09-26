@@ -52,5 +52,7 @@
 
 package runtime
 
+// Keep in sync with cmd/compile/internal/gc/plive.go:go115ReduceLiveness.
+
 // asyncPreemptStack is the bytes of stack space required to inject an
 // asyncPreempt call.

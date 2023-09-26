@@ -214,6 +214,14 @@ func (e InvalidAddrError) Error() string
 func (e InvalidAddrError) Timeout() bool
 func (e InvalidAddrError) Temporary() bool
 
+// errTimeout exists to return the historical "i/o timeout" string
+// for context.DeadlineExceeded. See mapErr.
+// It is also used when Dialer.Deadline is exceeded.
+//
+// TODO(iant): We could consider changing this to os.ErrDeadlineExceeded
+// in the future, but note that that would conflict with the TODO
+// at mapErr that suggests changing it to context.DeadlineExceeded.
+
 // DNSConfigError represents an error reading the machine's DNS configuration.
 // (No longer used; kept for compatibility.)
 type DNSConfigError struct {

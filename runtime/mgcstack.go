@@ -117,5 +117,3 @@ package runtime
 
 // A stackScanState keeps track of the state used during the GC walk
 // of a goroutine.
-//
-//go:notinheap

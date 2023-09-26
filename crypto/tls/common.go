@@ -77,23 +77,36 @@ const (
 // helloRetryRequestRandom is set as the Random value of a ServerHello
 // to signal that the message is actually a HelloRetryRequest.
 
+// testingOnlyForceDowngradeCanary is set in tests to force the server side to
+// include downgrade canaries even if it's using its highers supported version.
+
 // ConnectionState records basic TLS details about the connection.
 type ConnectionState struct {
-	Version                     uint16
-	HandshakeComplete           bool
-	DidResume                   bool
-	CipherSuite                 uint16
-	NegotiatedProtocol          string
-	NegotiatedProtocolIsMutual  bool
-	ServerName                  string
-	PeerCertificates            []*x509.Certificate
-	VerifiedChains              [][]*x509.Certificate
-	SignedCertificateTimestamps [][]byte
-	OCSPResponse                []byte
+	Version uint16
 
-	ekm func(label string, context []byte, length int) ([]byte, error)
+	HandshakeComplete bool
+
+	DidResume bool
+
+	CipherSuite uint16
+
+	NegotiatedProtocol string
+
+	NegotiatedProtocolIsMutual bool
+
+	ServerName string
+
+	PeerCertificates []*x509.Certificate
+
+	VerifiedChains [][]*x509.Certificate
+
+	SignedCertificateTimestamps [][]byte
+
+	OCSPResponse []byte
 
 	TLSUnique []byte
+
+	ekm func(label string, context []byte, length int) ([]byte, error)
 }
 
 // ExportKeyingMaterial returns length bytes of exported key material in a new
@@ -124,6 +137,8 @@ type ClientSessionState struct {
 	serverCertificates []*x509.Certificate
 	verifiedChains     [][]*x509.Certificate
 	receivedAt         time.Time
+	ocspResponse       []byte
+	scts               [][]byte
 
 	nonce  []byte
 	useBy  time.Time
@@ -253,6 +268,8 @@ type Config struct {
 
 	VerifyPeerCertificate func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error
 
+	VerifyConnection func(ConnectionState) error
+
 	RootCAs *x509.CertPool
 
 	NextProtos []string
@@ -287,15 +304,12 @@ type Config struct {
 
 	KeyLogWriter io.Writer
 
-	serverInitOnce sync.Once
-
 	mutex sync.RWMutex
 
 	sessionTicketKeys []ticketKey
-}
 
-// ticketKeyNameLen is the number of bytes of identifier that is prepended to
-// an encrypted session ticket in order to identify the key used to encrypt it.
+	autoSessionTicketKeys []ticketKey
+}
 
 // ticketKey is the internal representation of a session ticket key.
 
@@ -306,11 +320,22 @@ type Config struct {
 // being used concurrently by a TLS client or server.
 func (c *Config) Clone() *Config
 
-// SetSessionTicketKeys updates the session ticket keys for a server. The first
-// key will be used when creating new tickets, while all keys can be used for
-// decrypting tickets. It is safe to call this function while the server is
-// running in order to rotate the session ticket keys. The function will panic
-// if keys is empty.
+// deprecatedSessionTicketKey is set as the prefix of SessionTicketKey if it was
+// randomized for backwards compatibility but is not in use.
+
+// SetSessionTicketKeys updates the session ticket keys for a server.
+//
+// The first key will be used when creating new tickets, while all keys can be
+// used for decrypting tickets. It is safe to call this function while the
+// server is running in order to rotate the session ticket keys. The function
+// will panic if keys is empty.
+//
+// Calling this function will turn off automatic session ticket key rotation.
+//
+// If multiple servers are terminating connections for the same host they should
+// all have the same session ticket keys. If the session ticket keys leaks,
+// previously recorded and future TLS connections using those keys might be
+// compromised.
 func (c *Config) SetSessionTicketKeys(keys [][32]byte)
 
 // SupportsCertificate returns nil if the provided certificate is supported by
@@ -365,5 +390,3 @@ type Certificate struct {
 // capacity that uses an LRU strategy. If capacity is < 1, a default capacity
 // is used instead.
 func NewLRUClientSessionCache(capacity int) ClientSessionCache
-
-// TODO(jsing): Make these available to both crypto/x509 and crypto/tls.

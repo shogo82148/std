@@ -13,4 +13,4 @@ package runtime
 // We then construct interface values of these types,
 // and then extract the type word to use as needed.
 
-// staticbytes is used to avoid convT2E for byte-sized values.
+// staticuint64s is used to avoid allocating in convTx for small integer values.

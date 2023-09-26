@@ -41,7 +41,7 @@ type Dummy struct {
 
 // hook to simulate connection failures
 
-var _ validator = (*fakeConn)(nil)
+var _ driver.Validator = (*fakeConn)(nil)
 
 // hook to simulate broken connections
 

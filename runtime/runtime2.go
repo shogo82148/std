@@ -10,6 +10,7 @@ package runtime
 // as fast as spin locks (just a few user-level instructions),
 // but on the contention path they sleep in the kernel.
 // A zeroed Mutex is unlocked (no need to initialize each lock).
+// Initialization is helpful for static lock ranking, but not required.
 
 // sleep and wakeup on one-time events.
 // before any calls to notesleep or notewakeup,
@@ -79,6 +80,8 @@ package runtime
 // The bounds of the stack are exactly [lo, hi),
 // with no implicit data structures on either side.
 
+// heldLockInfo gives info on a held lock and the rank of that lock
+
 // Values for the flags field of a sigTabT.
 
 // Layout of in-memory per-function information prepared by linker
@@ -119,8 +122,6 @@ package runtime
 // handling during stack growth: because they are pointer-typed and
 // _panic values only live on the stack, regular stack pointer
 // adjustment takes care of them.
-//
-//go:notinheap
 
 // stack traces
 

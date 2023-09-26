@@ -7,5 +7,3 @@
 // +build darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package runtime
-
-// TODO: Remove pushCallSupported once all platforms support it.

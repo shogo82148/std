@@ -13,11 +13,12 @@ var (
 	// Methods on File will return this error when the receiver is nil.
 	ErrInvalid = errInvalid()
 
-	ErrPermission = errPermission()
-	ErrExist      = errExist()
-	ErrNotExist   = errNotExist()
-	ErrClosed     = errClosed()
-	ErrNoDeadline = errNoDeadline()
+	ErrPermission       = errPermission()
+	ErrExist            = errExist()
+	ErrNotExist         = errNotExist()
+	ErrClosed           = errClosed()
+	ErrNoDeadline       = errNoDeadline()
+	ErrDeadlineExceeded = errDeadlineExceeded()
 )
 
 // PathError records an error and the operation and file path that caused it.

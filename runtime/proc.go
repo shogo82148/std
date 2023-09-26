@@ -31,8 +31,14 @@ func Gosched()
 // freezing is set to non-zero if the runtime is trying to freeze the
 // world.
 
-// Holding worldsema grants an M the right to try to stop the world
-// and prevents gomaxprocs from changing concurrently.
+// Holding worldsema grants an M the right to try to stop the world.
+
+// Holding gcsema grants the M the right to block a GC, and blocks
+// until the current GC is done. In particular, it prevents gomaxprocs
+// from changing concurrently.
+//
+// TODO(mknyszek): Once gomaxprocs and the execution tracer can handle
+// being changed/enabled during a GC, remove this.
 
 // When running with cgo, we call _cgo_thread_start
 // to start threads for us so that we can play nicely with

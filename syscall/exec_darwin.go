@@ -9,10 +9,13 @@ type SysProcAttr struct {
 	Credential *Credential
 	Ptrace     bool
 	Setsid     bool
-	Setpgid    bool
-	Setctty    bool
-	Noctty     bool
-	Ctty       int
+
+	Setpgid bool
+
+	Setctty bool
+	Noctty  bool
+	Ctty    int
+
 	Foreground bool
 	Pgid       int
 }

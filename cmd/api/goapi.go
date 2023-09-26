@@ -17,14 +17,15 @@ import (
 // overridden by the -contexts flag.
 
 type Walker struct {
-	context   *build.Context
-	root      string
-	scope     []string
-	current   *types.Package
-	features  map[string]bool
-	imported  map[string]*types.Package
-	importMap map[string]map[string]string
-	importDir map[string]string
+	context     *build.Context
+	root        string
+	scope       []string
+	current     *types.Package
+	features    map[string]bool
+	imported    map[string]*types.Package
+	stdPackages []string
+	importMap   map[string]map[string]string
+	importDir   map[string]string
 }
 
 func NewWalker(context *build.Context, root string) *Walker
@@ -32,6 +33,8 @@ func NewWalker(context *build.Context, root string) *Walker
 func (w *Walker) Features() (fs []string)
 
 // Disable before debugging non-obvious errors from the type-checker.
+
+// listSem is a semaphore restricting concurrent invocations of 'go list'.
 
 // Importing is a sentinel taking the place in Walker.imported
 // for a package that is in the process of being imported.

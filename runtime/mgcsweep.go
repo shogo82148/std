@@ -10,7 +10,7 @@
 //   can free a whole span if none of the objects are marked, but that
 //   isn't its goal. This can be driven either synchronously by
 //   mcentral.cacheSpan for mcentral spans, or asynchronously by
-//   sweepone from the list of all in-use spans in mheap_.sweepSpans.
+//   sweepone, which looks at all the mcentral lists.
 //
 // * The span reclaimer looks for spans that contain no marked objects
 //   and frees whole spans. This is a separate algorithm because
@@ -25,3 +25,6 @@
 package runtime
 
 // State of background sweep.
+
+// sweepClass is a spanClass and one bit to represent whether we're currently
+// sweeping partial or full spans.

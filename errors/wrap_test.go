@@ -10,6 +10,19 @@ import (
 	"os"
 )
 
+func ExampleIs() {
+	if _, err := os.Open("non-existing"); err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			fmt.Println("file does not exist")
+		} else {
+			fmt.Println(err)
+		}
+	}
+
+	// Output:
+	// file does not exist
+}
+
 func ExampleAs() {
 	if _, err := os.Open("non-existing"); err != nil {
 		var pathError *os.PathError

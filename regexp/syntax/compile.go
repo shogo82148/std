@@ -10,9 +10,9 @@ package syntax
 // See https://swtch.com/~rsc/regexp/regexp1.html for inspiration.
 //
 // These aren't really pointers: they're integers, so we can reinterpret them
-// this way without using package unsafe. A value l denotes
-// p.inst[l>>1].Out (l&1==0) or .Arg (l&1==1).
-// l == 0 denotes the empty list, okay because we start every program
+// this way without using package unsafe. A value l.head denotes
+// p.inst[l.head>>1].Out (l.head&1==0) or .Arg (l.head&1==1).
+// head == 0 denotes the empty list, okay because we start every program
 // with a fail instruction, so we'll never want to point at its output link.
 
 // A frag represents a compiled program fragment.

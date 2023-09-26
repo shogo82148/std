@@ -11,8 +11,6 @@ import (
 	"github.com/shogo82148/std/unicode"
 )
 
-// primeRK is the prime base used in Rabin-Karp algorithm.
-
 // Count counts the number of non-overlapping instances of substr in s.
 // If substr is an empty string, Count returns 1 + the number of Unicode code points in s.
 func Count(s, substr string) int
@@ -108,8 +106,9 @@ func Fields(s string) []string
 // FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
 // and returns an array of slices of s. If all code points in s satisfy f(c) or the
 // string is empty, an empty slice is returned.
-// FieldsFunc makes no guarantees about the order in which it calls f(c).
-// If f does not return consistent results for a given c, FieldsFunc may crash.
+//
+// FieldsFunc makes no guarantees about the order in which it calls f(c)
+// and assumes that f always returns the same value for a given c.
 func FieldsFunc(s string, f func(rune) bool) []string
 
 // Join concatenates the elements of its first argument to create a single string. The separator
@@ -194,19 +193,19 @@ func LastIndexFunc(s string, f func(rune) bool) int
 
 // Trim returns a slice of the string s with all leading and
 // trailing Unicode code points contained in cutset removed.
-func Trim(s string, cutset string) string
+func Trim(s, cutset string) string
 
 // TrimLeft returns a slice of the string s with all leading
 // Unicode code points contained in cutset removed.
 //
 // To remove a prefix, use TrimPrefix instead.
-func TrimLeft(s string, cutset string) string
+func TrimLeft(s, cutset string) string
 
 // TrimRight returns a slice of the string s, with all trailing
 // Unicode code points contained in cutset removed.
 //
 // To remove a suffix, use TrimSuffix instead.
-func TrimRight(s string, cutset string) string
+func TrimRight(s, cutset string) string
 
 // TrimSpace returns a slice of the string s, with all leading
 // and trailing white space removed, as defined by Unicode.

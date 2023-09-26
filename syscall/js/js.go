@@ -177,12 +177,12 @@ type ValueError struct {
 
 func (e *ValueError) Error() string
 
-// CopyBytesToGo copies bytes from the Uint8Array src to dst.
+// CopyBytesToGo copies bytes from src to dst.
+// It panics if src is not an Uint8Array or Uint8ClampedArray.
 // It returns the number of bytes copied, which will be the minimum of the lengths of src and dst.
-// CopyBytesToGo panics if src is not an Uint8Array.
 func CopyBytesToGo(dst []byte, src Value) int
 
-// CopyBytesToJS copies bytes from src to the Uint8Array dst.
+// CopyBytesToJS copies bytes from src to dst.
+// It panics if dst is not an Uint8Array or Uint8ClampedArray.
 // It returns the number of bytes copied, which will be the minimum of the lengths of src and dst.
-// CopyBytesToJS panics if dst is not an Uint8Array.
 func CopyBytesToJS(dst Value, src []byte) int

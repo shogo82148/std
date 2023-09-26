@@ -30,7 +30,8 @@ func (z *Rat) Scan(s fmt.ScanState, ch rune) error
 // An optional base-10 “e” or base-2 “p” (or their upper-case variants)
 // exponent may be provided as well, except for hexadecimal floats which
 // only accept an (optional) “p” exponent (because an “e” or “E” cannot
-// be distinguished from a mantissa digit).
+// be distinguished from a mantissa digit). If the exponent's absolute value
+// is too large, the operation may fail.
 // The entire string, not just a prefix, must be valid for success. If the
 // operation failed, the value of z is undefined but the returned value is nil.
 func (z *Rat) SetString(s string) (*Rat, bool)

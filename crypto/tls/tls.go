@@ -7,6 +7,7 @@
 package tls
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/net"
 )
 
@@ -52,6 +53,31 @@ func DialWithDialer(dialer *net.Dialer, network, addr string, config *Config) (*
 // the zero configuration; see the documentation of Config
 // for the defaults.
 func Dial(network, addr string, config *Config) (*Conn, error)
+
+// Dialer dials TLS connections given a configuration and a Dialer for the
+// underlying connection.
+type Dialer struct {
+	NetDialer *net.Dialer
+
+	Config *Config
+}
+
+// Dial connects to the given network address and initiates a TLS
+// handshake, returning the resulting TLS connection.
+//
+// The returned Conn, if any, will always be of type *Conn.
+func (d *Dialer) Dial(network, addr string) (net.Conn, error)
+
+// DialContext connects to the given network address and initiates a TLS
+// handshake, returning the resulting TLS connection.
+//
+// The provided Context must be non-nil. If the context expires before
+// the connection is complete, an error is returned. Once successfully
+// connected, any expiration of the context will not affect the
+// connection.
+//
+// The returned Conn, if any, will always be of type *Conn.
+func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error)
 
 // LoadX509KeyPair reads and parses a public/private key pair from a pair
 // of files. The files must contain PEM encoded data. The certificate file

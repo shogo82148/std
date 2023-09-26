@@ -53,6 +53,10 @@ func (m *Map) Store(key, value interface{})
 // The loaded result is true if the value was loaded, false if stored.
 func (m *Map) LoadOrStore(key, value interface{}) (actual interface{}, loaded bool)
 
+// LoadAndDelete deletes the value for a key, returning the previous value if any.
+// The loaded result reports whether the key was present.
+func (m *Map) LoadAndDelete(key interface{}) (value interface{}, loaded bool)
+
 // Delete deletes the value for a key.
 func (m *Map) Delete(key interface{})
 

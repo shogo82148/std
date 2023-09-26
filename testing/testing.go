@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package testing provides support for automated testing of Go packages.
-// It is intended to be used in concert with the “go test” command, which automates
+// It is intended to be used in concert with the "go test" command, which automates
 // execution of any function of the form
 //
 //	func TestXxx(*testing.T)
@@ -16,8 +16,8 @@
 // To write a new test suite, create a file whose name ends _test.go that
 // contains the TestXxx functions as described here. Put the file in the same
 // package as the one being tested. The file will be excluded from regular
-// package builds but will be included when the “go test” command is run.
-// For more detail, run “go help test” and “go help testflag”.
+// package builds but will be included when the "go test" command is run.
+// For more detail, run "go help test" and "go help testflag".
 //
 // A simple test function looks like this:
 //
@@ -42,9 +42,9 @@
 //
 // A sample benchmark function looks like this:
 //
-//	func BenchmarkHello(b *testing.B) {
+//	func BenchmarkRandInt(b *testing.B) {
 //	    for i := 0; i < b.N; i++ {
-//	        fmt.Sprintf("hello")
+//	        rand.Int()
 //	    }
 //	}
 //
@@ -52,9 +52,9 @@
 // During benchmark execution, b.N is adjusted until the benchmark function lasts
 // long enough to be timed reliably. The output
 //
-//	BenchmarkHello    10000000    282 ns/op
+//	BenchmarkRandInt-8   	68453040	        17.8 ns/op
 //
-// means that the loop ran 10000000 times at a speed of 282 ns per loop.
+// means that the loop ran 68453040 times at a speed of 17.8 ns per loop.
 //
 // If a benchmark needs some expensive setup before running, the timer
 // may be reset:
@@ -224,10 +224,14 @@
 //
 // then the generated test will call TestMain(m) instead of running the tests
 // directly. TestMain runs in the main goroutine and can do whatever setup
-// and teardown is necessary around a call to m.Run. It should then call
-// os.Exit with the result of m.Run. When TestMain is called, flag.Parse has
-// not been run. If TestMain depends on command-line flags, including those
-// of the testing package, it should call flag.Parse explicitly.
+// and teardown is necessary around a call to m.Run. m.Run will return an exit
+// code that may be passed to os.Exit. If TestMain returns, the test wrapper
+// will pass the result of m.Run to os.Exit itself.
+//
+// When TestMain is called, flag.Parse has not been run. If TestMain depends on
+// command-line flags, including those of the testing package, it should call
+// flag.Parse explicitly. Command line flags are always parsed by the time test
+// or benchmark functions run.
 //
 // A simple implementation of TestMain is:
 //
@@ -284,6 +288,7 @@ type TB interface {
 	SkipNow()
 	Skipf(format string, args ...interface{})
 	Skipped() bool
+	TempDir() string
 
 	private()
 }
@@ -329,6 +334,12 @@ type InternalTest struct {
 // must return before the outer test function for t returns.
 func (t *T) Run(name string, f func(t *T)) bool
 
+// Deadline reports the time at which the test binary will have
+// exceeded the timeout specified by the -timeout flag.
+//
+// The ok result is false if the -timeout flag indicates “no timeout” (0).
+func (t *T) Deadline() (deadline time.Time, ok bool)
+
 // testContext holds all fields that are common to all tests. This includes
 // synchronization primitives to run at most *parallel tests.
 
@@ -354,6 +365,8 @@ type M struct {
 	afterOnce sync.Once
 
 	numRun int
+
+	exitCode int
 }
 
 // testDeps is an internal interface of functionality that is
@@ -367,7 +380,7 @@ type M struct {
 func MainStart(deps testDeps, tests []InternalTest, benchmarks []InternalBenchmark, examples []InternalExample) *M
 
 // Run runs the tests. It returns an exit code to pass to os.Exit.
-func (m *M) Run() int
+func (m *M) Run() (code int)
 
 // RunTests is an internal function but exported because it is cross-package;
 // it is part of the implementation of the "go test" command.

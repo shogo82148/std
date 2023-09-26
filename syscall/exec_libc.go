@@ -13,10 +13,13 @@ type SysProcAttr struct {
 	Chroot     string
 	Credential *Credential
 	Setsid     bool
-	Setpgid    bool
-	Setctty    bool
-	Noctty     bool
-	Ctty       int
+
+	Setpgid bool
+
+	Setctty bool
+	Noctty  bool
+	Ctty    int
+
 	Foreground bool
 	Pgid       int
 }

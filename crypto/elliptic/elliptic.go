@@ -12,7 +12,10 @@ import (
 )
 
 // A Curve represents a short-form Weierstrass curve with a=-3.
-// See https://www.hyperelliptic.org/EFD/g1p/auto-shortw.html
+//
+// Note that the point at infinity (0, 0) is not considered on the curve, and
+// although it can be returned by Add, Double, ScalarMult, or ScalarBaseMult, it
+// can't be marshaled or unmarshaled, and IsOnCurve will return false for it.
 type Curve interface {
 	Params() *CurveParams
 
@@ -54,13 +57,23 @@ func (curve *CurveParams) ScalarBaseMult(k []byte) (*big.Int, *big.Int)
 // generated using the given reader, which must return random data.
 func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err error)
 
-// Marshal converts a point into the uncompressed form specified in section 4.3.6 of ANSI X9.62.
+// Marshal converts a point on the curve into the uncompressed form specified in
+// section 4.3.6 of ANSI X9.62.
 func Marshal(curve Curve, x, y *big.Int) []byte
+
+// MarshalCompressed converts a point on the curve into the compressed form
+// specified in section 4.3.6 of ANSI X9.62.
+func MarshalCompressed(curve Curve, x, y *big.Int) []byte
 
 // Unmarshal converts a point, serialized by Marshal, into an x, y pair.
 // It is an error if the point is not in uncompressed form or is not on the curve.
 // On error, x = nil.
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
+
+// UnmarshalCompressed converts a point, serialized by MarshalCompressed, into an x, y pair.
+// It is an error if the point is not in compressed form or is not on the curve.
+// On error, x = nil.
+func UnmarshalCompressed(curve Curve, data []byte) (x, y *big.Int)
 
 // P256 returns a Curve which implements NIST P-256 (FIPS 186-3, section D.2.3),
 // also known as secp256r1 or prime256v1. The CurveParams.Name of this Curve is

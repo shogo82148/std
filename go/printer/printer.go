@@ -33,6 +33,12 @@ const (
 	SourcePos
 )
 
+// The mode below is not included in printer's public API because
+// editing code text is deemed out of scope. Because this mode is
+// unexported, it's also possible to modify or remove it based on
+// the evolving needs of go/format and cmd/gofmt without breaking
+// users. See discussion in CL 240683.
+
 // A Config node controls the output of Fprint.
 type Config struct {
 	Mode     Mode

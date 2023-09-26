@@ -293,6 +293,11 @@ type ChardataEmptyTest struct {
 	Contents *string `xml:",chardata"`
 }
 
+type PointerAnonFields struct {
+	*MyInt
+	*NamedType
+}
+
 type MyMarshalerTest struct {
 }
 

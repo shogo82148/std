@@ -142,7 +142,9 @@ func (x *Float) MinPrec() uint
 // Mode returns the rounding mode of x.
 func (x *Float) Mode() RoundingMode
 
-// Acc returns the accuracy of x produced by the most recent operation.
+// Acc returns the accuracy of x produced by the most recent
+// operation, unless explicitly documented otherwise by that
+// operation.
 func (x *Float) Acc() Accuracy
 
 // Sign returns:

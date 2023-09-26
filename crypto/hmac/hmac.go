@@ -25,6 +25,10 @@ import (
 	"github.com/shogo82148/std/hash"
 )
 
+// Marshalable is the combination of encoding.BinaryMarshaler and
+// encoding.BinaryUnmarshaler. Their method definitions are repeated here to
+// avoid a dependency on the encoding package.
+
 // New returns a new HMAC hash using the given hash.Hash type and key.
 // Note that unlike other hash implementations in the standard library,
 // the returned Hash does not implement encoding.BinaryMarshaler

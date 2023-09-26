@@ -112,6 +112,7 @@ type Type struct {
 	EnumValues map[string]int64
 	Typedef    string
 	BadPointer bool
+	NotInHeap  bool
 }
 
 // A FuncType collects information about a function type in both the C and Go worlds.

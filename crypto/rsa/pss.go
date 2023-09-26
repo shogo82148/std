@@ -25,19 +25,20 @@ type PSSOptions struct {
 	Hash crypto.Hash
 }
 
-// HashFunc returns pssOpts.Hash so that PSSOptions implements
-// crypto.SignerOpts.
-func (pssOpts *PSSOptions) HashFunc() crypto.Hash
+// HashFunc returns opts.Hash so that PSSOptions implements crypto.SignerOpts.
+func (opts *PSSOptions) HashFunc() crypto.Hash
 
-// SignPSS calculates the signature of hashed using RSASSA-PSS [1].
-// Note that hashed must be the result of hashing the input message using the
-// given hash function. The opts argument may be nil, in which case sensible
-// defaults are used.
-func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte, opts *PSSOptions) ([]byte, error)
+// SignPSS calculates the signature of digest using PSS.
+//
+// digest must be the result of hashing the input message using the given hash
+// function. The opts argument may be nil, in which case sensible defaults are
+// used. If opts.Hash is set, it overrides hash.
+func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, digest []byte, opts *PSSOptions) ([]byte, error)
 
 // VerifyPSS verifies a PSS signature.
-// hashed is the result of hashing the input message using the given hash
-// function and sig is the signature. A valid signature is indicated by
-// returning a nil error. The opts argument may be nil, in which case sensible
-// defaults are used.
-func VerifyPSS(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte, opts *PSSOptions) error
+//
+// A valid signature is indicated by returning a nil error. digest must be the
+// result of hashing the input message using the given hash function. The opts
+// argument may be nil, in which case sensible defaults are used. opts.Hash is
+// ignored.
+func VerifyPSS(pub *PublicKey, hash crypto.Hash, digest []byte, sig []byte, opts *PSSOptions) error

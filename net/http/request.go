@@ -175,6 +175,8 @@ func (r *Request) Cookie(name string) (*Cookie, error)
 // AddCookie does not attach more than one Cookie header field. That
 // means all cookies, if any, are written into the same line,
 // separated by semicolon.
+// AddCookie only sanitizes c's name and value, and does not sanitize
+// a Cookie header already present in the request.
 func (r *Request) AddCookie(c *Cookie)
 
 // Referer returns the referring URL, if sent in the request.
@@ -199,7 +201,7 @@ func (r *Request) MultipartReader() (*multipart.Reader, error)
 
 // NOTE: This is not intended to reflect the actual Go version being used.
 // It was changed at the time of Go 1.1 release because the former User-Agent
-// had ended up on a blacklist for some intrusion detection systems.
+// had ended up blocked by some intrusion detection systems.
 // See https://codereview.appspot.com/7532043.
 
 // Write writes an HTTP/1.1 request, which is the header and body, in wire format.
