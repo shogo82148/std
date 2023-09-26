@@ -1,0 +1,27 @@
+// Copyright 2022 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+//go:build !js
+
+// Test that Resolver.Dial can be a func returning an in-memory net.Conn
+// speaking DNS.
+
+package net
+
+import (
+	"errors"
+)
+
+type ResponseWriter struct{ a *resolverFuncConn }
+
+type AWriter struct{ ResponseWriter }
+
+type AAAAWriter struct{ ResponseWriter }
+
+type SRVWriter struct{ ResponseWriter }
+
+var (
+	ErrNotExist = errors.New("name does not exist")
+	ErrRefused  = errors.New("refused")
+)

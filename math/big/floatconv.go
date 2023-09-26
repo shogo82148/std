@@ -22,7 +22,6 @@ func (z *Float) SetString(s string) (*Float, bool)
 //	for p, q := uint64(0), uint64(1); p < q; p, q = q, q*5 {
 //		fmt.Println(q)
 //	}
-//
 
 // Parse parses s which must contain a text representation of a floating-
 // point number with a mantissa in the given conversion base (the exponent

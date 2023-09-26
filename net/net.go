@@ -61,7 +61,7 @@ The resolver decision can be overridden by setting the netdns value of the
 GODEBUG environment variable (see package runtime) to go or cgo, as in:
 
 	export GODEBUG=netdns=go    # force pure Go resolver
-	export GODEBUG=netdns=cgo   # force cgo resolver
+	export GODEBUG=netdns=cgo   # force native resolver (cgo, win32)
 
 The decision can also be forced while building the Go source tree
 by setting the netgo or netcgo build tag.
@@ -73,7 +73,8 @@ join the two settings by a plus sign, as in GODEBUG=netdns=go+1.
 
 On Plan 9, the resolver always accesses /net/cs and /net/dns.
 
-On Windows, the resolver always uses C library functions, such as GetAddrInfo and DnsQuery.
+On Windows, in Go 1.18.x and earlier, the resolver always used C
+library functions, such as GetAddrInfo and DnsQuery.
 */
 package net
 
@@ -161,6 +162,9 @@ var (
 	ErrWriteToConnected = errors.New("use of WriteTo with pre-connected connection")
 )
 
+// canceledError lets us return the same error string we have always
+// returned, while still being Is context.Canceled.
+
 // OpError is the error type usually returned by functions in the net
 // package. It describes the operation, network type, and address of
 // an error.
@@ -221,10 +225,14 @@ func (e InvalidAddrError) Temporary() bool
 // errTimeout exists to return the historical "i/o timeout" string
 // for context.DeadlineExceeded. See mapErr.
 // It is also used when Dialer.Deadline is exceeded.
+// error.Is(errTimeout, context.DeadlineExceeded) returns true.
 //
 // TODO(iant): We could consider changing this to os.ErrDeadlineExceeded
-// in the future, but note that that would conflict with the TODO
-// at mapErr that suggests changing it to context.DeadlineExceeded.
+// in the future, if we make
+//
+//	errors.Is(os.ErrDeadlineExceeded, context.DeadlineExceeded)
+//
+// return true.
 
 // DNSConfigError represents an error reading the machine's DNS configuration.
 // (No longer used; kept for compatibility.)

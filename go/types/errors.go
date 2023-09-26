@@ -6,6 +6,11 @@
 
 package types
 
+// An error_ represents a type-checking error.
+// To report an error_, call Checker.report.
+
+// An errorDesc describes part of a type-checking error.
+
 // The positioner interface is used to extract the position of type-checker
 // errors.
 

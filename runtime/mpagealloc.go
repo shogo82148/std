@@ -47,11 +47,6 @@
 
 package runtime
 
-// Maximum searchAddr value, which indicates that the heap has no free space.
-//
-// We alias maxOffAddr just to make it clear that this is the maximum address
-// for the page allocator's search space. See maxOffAddr for details.
-
 // Global chunk index.
 //
 // Represents an index into the leaf level of the radix tree.

@@ -42,7 +42,7 @@ func Drivers() []string
 // For a more concise way to create NamedArg values, see
 // the Named function.
 type NamedArg struct {
-	_Named_Fields_Required struct{}
+	_NamedFieldsRequired struct{}
 
 	Name string
 
@@ -232,7 +232,7 @@ type Scanner interface {
 //	var outArg string
 //	_, err := db.ExecContext(ctx, "ProcName", sql.Named("Arg1", sql.Out{Dest: &outArg}))
 type Out struct {
-	_Named_Fields_Required struct{}
+	_NamedFieldsRequired struct{}
 
 	Dest any
 

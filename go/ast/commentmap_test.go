@@ -12,4 +12,3 @@ import (
 
 // res maps a key of the form "line number: node type"
 // to the associated comments' text.
-//

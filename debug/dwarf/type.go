@@ -168,11 +168,11 @@ type StructType struct {
 // expect in terms of DWARF bit offset info. Consider this code:
 //
 //	struct S {
-//	  int q;
-//	  int j:5;
-//	  int k:6;
-//	  int m:5;
-//	  int n:8;
+//		int q;
+//		int j:5;
+//		int k:6;
+//		int m:5;
+//		int n:8;
 //	} s;
 //
 // For the code above, one would expect to see the following for

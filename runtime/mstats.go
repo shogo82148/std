@@ -6,14 +6,6 @@
 
 package runtime
 
-// Statistics.
-//
-// For detailed descriptions see the documentation for MemStats.
-// Fields that differ from MemStats are further documented here.
-//
-// Many of these fields are updated on the fly, while others are only
-// updated when updatememstats is called.
-
 // A MemStats records statistics about the memory allocator.
 type MemStats struct {
 	Alloc uint64

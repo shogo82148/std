@@ -27,4 +27,3 @@ package parser
 // The special form /* ERROR HERE "rx" */ must be used for error
 // messages that appear immediately after a token, rather than at
 // a token's position.
-//

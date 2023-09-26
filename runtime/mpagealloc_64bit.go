@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build amd64 || arm64 || mips64 || mips64le || ppc64 || ppc64le || riscv64 || s390x
+//go:build amd64 || arm64 || loong64 || mips64 || mips64le || ppc64 || ppc64le || riscv64 || s390x
 
 package runtime
 
@@ -16,7 +16,8 @@ package runtime
 //
 // With levelShift, one can compute the index of the summary at level l related to a
 // pointer p by doing:
-//   p >> levelShift[l]
+//
+//	p >> levelShift[l]
 
 // levelLogPages is log2 the maximum number of runtime pages in the address space
 // a summary in the given level represents.

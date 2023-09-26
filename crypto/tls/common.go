@@ -70,7 +70,7 @@ const (
 // should be performed, and that the input should be signed directly. It is the
 // hash function associated with the Ed25519 signature scheme.
 
-// supportedSignatureAlgorithms contains the signature and hash algorithms that
+// defaultSupportedSignatureAlgorithms contains the signature and hash algorithms that
 // the code advertises as supported in a TLS 1.2+ ClientHello and in a TLS 1.2+
 // CertificateRequest. The two fields are merged to match with TLS 1.3.
 // Note that in TLS 1.2, the ECDSA algorithms are not constrained to P-256, etc.
@@ -368,8 +368,6 @@ func (c *Config) Clone() *Config
 // previously recorded and future TLS connections using those keys might be
 // compromised.
 func (c *Config) SetSessionTicketKeys(keys [][32]byte)
-
-// debugEnableTLS10 enables TLS 1.0. See issue 45428.
 
 // roleClient and roleServer are meant to call supportedVersions and parents
 // with more readability at the callsite.

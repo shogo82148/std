@@ -18,8 +18,19 @@ The GOGC variable sets the initial garbage collection target percentage.
 A collection is triggered when the ratio of freshly allocated data to live data
 remaining after the previous collection reaches this percentage. The default
 is GOGC=100. Setting GOGC=off disables the garbage collector entirely.
-The runtime/debug package's SetGCPercent function allows changing this
-percentage at run time. See https://golang.org/pkg/runtime/debug/#SetGCPercent.
+[runtime/debug.SetGCPercent] allows changing this percentage at run time.
+
+The GOMEMLIMIT variable sets a soft memory limit for the runtime. This memory limit
+includes the Go heap and all other memory managed by the runtime, and excludes
+external memory sources such as mappings of the binary itself, memory managed in
+other languages, and memory held by the operating system on behalf of the Go
+program. GOMEMLIMIT is a numeric value in bytes with an optional unit suffix.
+The supported suffixes include B, KiB, MiB, GiB, and TiB. These suffixes
+represent quantities of bytes as defined by the IEC 80000-13 standard. That is,
+they are based on powers of two: KiB means 2^10 bytes, MiB means 2^20 bytes,
+and so on. The default setting is math.MaxInt64, which effectively disables the
+memory limit. [runtime/debug.SetMemoryLimit] allows changing this limit at run
+time.
 
 The GODEBUG variable controls debugging variables within the runtime.
 It is a comma-separated list of name=val pairs setting these named variables:
@@ -64,13 +75,15 @@ It is a comma-separated list of name=val pairs setting these named variables:
 	Currently, it is:
 		gc # @#s #%: #+#+# ms clock, #+#/#/#+# ms cpu, #->#-># MB, # MB goal, # P
 	where the fields are as follows:
-		gc #        the GC number, incremented at each GC
-		@#s         time in seconds since program start
-		#%          percentage of time spent in GC since program start
-		#+...+#     wall-clock/CPU times for the phases of the GC
-		#->#-># MB  heap size at GC start, at GC end, and live heap
-		# MB goal   goal heap size
-		# P         number of processors used
+		gc #         the GC number, incremented at each GC
+		@#s          time in seconds since program start
+		#%           percentage of time spent in GC since program start
+		#+...+#      wall-clock/CPU times for the phases of the GC
+		#->#-># MB   heap size at GC start, at GC end, and live heap
+		# MB goal    goal heap size
+		# MB stacks  estimated scannable stack size
+		# MB globals scannable global size
+		# P          number of processors used
 	The phases are stop-the-world (STW) sweep termination, concurrent
 	mark and scan, and STW mark termination. The CPU times
 	for mark/scan are broken down in to assist time (GC performed in
@@ -120,9 +133,8 @@ It is a comma-separated list of name=val pairs setting these named variables:
 	scavenger as well as the total amount of memory returned to the operating system
 	and an estimate of physical memory utilization. The format of this line is subject
 	to change, but currently it is:
-		scav # # KiB work, # KiB total, #% util
+		scav # KiB work, # KiB total, #% util
 	where the fields are as follows:
-		scav #       the scavenge cycle number
 		# KiB work   the amount of memory returned to the OS since the last line
 		# KiB total  the total amount of memory returned to the OS
 		#% util      the fraction of all unscavenged memory which is in-use
@@ -188,6 +200,25 @@ the set of Go environment variables. They influence the building of Go programs
 GOARCH, GOOS, and GOROOT are recorded at compile time and made available by
 constants or functions in this package, but they do not influence the execution
 of the run-time system.
+
+# Security
+
+On Unix platforms, Go's runtime system behaves slightly differently when a
+binary is setuid/setgid or executed with setuid/setgid-like properties, in order
+to prevent dangerous behaviors. On Linux this is determined by checking for the
+AT_SECURE flag in the auxiliary vector, on the BSDs and Solaris/Illumos it is
+determined by checking the issetugid syscall, and on AIX it is determined by
+checking if the uid/gid match the effective uid/gid.
+
+When the runtime determines the binary is setuid/setgid-like, it does three main
+things:
+  - The standard input/output file descriptors (0, 1, 2) are checked to be open.
+    If any of them are closed, they are opened pointing at /dev/null.
+  - The value of the GOTRACEBACK environment variable is set to 'none'.
+  - When a signal is received that terminates the program, or the program
+    encounters an unrecoverable panic that would otherwise override the value
+    of GOTRACEBACK, the goroutine stack, registers, and other memory related
+    information are omitted.
 */
 package runtime
 

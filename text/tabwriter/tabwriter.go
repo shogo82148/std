@@ -19,7 +19,6 @@ import (
 // The text itself is stored in a separate buffer; cell only describes the
 // segment's size in bytes, its width in runes, and whether it's an htab
 // ('\t') terminated cell.
-//
 
 // A Writer is a filter that inserts padding around tab-delimited
 // columns in its input to align them in the output.

@@ -26,8 +26,8 @@ type Addr struct {
 	z *intern.Value
 }
 
-// z0, z4, and z6noz are sentinel IP.z values.
-// See the IP type's field docs.
+// z0, z4, and z6noz are sentinel Addr.z values.
+// See the Addr type's field docs.
 
 // IPv6LinkLocalAllNodes returns the IPv6 link-local all nodes multicast
 // address ff02::1.
@@ -43,7 +43,7 @@ func IPv4Unspecified() Addr
 func AddrFrom4(addr [4]byte) Addr
 
 // AddrFrom16 returns the IPv6 address given by the bytes in addr.
-// An IPv6-mapped IPv4 address is left as an IPv6 address.
+// An IPv4-mapped IPv6 address is left as an IPv6 address.
 // (Use Unmap to convert them if needed.)
 func AddrFrom16(addr [16]byte) Addr
 
@@ -88,7 +88,7 @@ func (ip Addr) Less(ip2 Addr) bool
 
 // Is4 reports whether ip is an IPv4 address.
 //
-// It returns false for IP4-mapped IPv6 addresses. See IP.Unmap.
+// It returns false for IPv4-mapped IPv6 addresses. See Addr.Unmap.
 func (ip Addr) Is4() bool
 
 // Is4In6 reports whether ip is an IPv4-mapped IPv6 address.
@@ -100,7 +100,7 @@ func (ip Addr) Is6() bool
 
 // Unmap returns ip with any IPv4-mapped IPv6 address prefix removed.
 //
-// That is, if ip is an IPv6 address wrapping an IPv4 adddress, it
+// That is, if ip is an IPv6 address wrapping an IPv4 address, it
 // returns the wrapped IPv4 address. Otherwise it returns ip unmodified.
 func (ip Addr) Unmap() Addr
 
@@ -156,7 +156,7 @@ func (ip Addr) IsUnspecified() bool
 func (ip Addr) Prefix(b int) (Prefix, error)
 
 // As16 returns the IP address in its 16-byte representation.
-// IPv4 addresses are returned in their v6-mapped form.
+// IPv4 addresses are returned as IPv4-mapped IPv6 addresses.
 // IPv6 addresses with zones are returned without their zone (use the
 // Zone method to get it).
 // The ip zero value returns all zeroes.
@@ -188,7 +188,7 @@ func (ip Addr) Prev() Addr
 //   - IPv6 with zone ("fe80:db8::1%eth0")
 //
 // Note that unlike package net's IP.String method,
-// IP4-mapped IPv6 addresses format with a "::ffff:"
+// IPv4-mapped IPv6 addresses format with a "::ffff:"
 // prefix before the dotted quad.
 func (ip Addr) String() string
 
@@ -326,6 +326,8 @@ func (p Prefix) IsSingleIP() bool
 // ParsePrefix parses s as an IP address prefix.
 // The string can be in the form "192.168.1.0/24" or "2001:db8::/32",
 // the CIDR notation defined in RFC 4632 and RFC 4291.
+// IPv6 zones are not permitted in prefixes, and an error will be returned if a
+// zone is present.
 //
 // Note that masked address bits are not zeroed. Use Masked for that.
 func ParsePrefix(s string) (Prefix, error)
@@ -343,7 +345,7 @@ func (p Prefix) Masked() Prefix
 // Contains reports whether the network p includes ip.
 //
 // An IPv4 address will not match an IPv6 prefix.
-// A v6-mapped IPv6 address will not match an IPv4 prefix.
+// An IPv4-mapped IPv6 address will not match an IPv4 prefix.
 // A zero-value IP will not match any prefix.
 // If ip has an IPv6 zone, Contains returns false,
 // because Prefixes strip zones.
@@ -352,8 +354,8 @@ func (p Prefix) Contains(ip Addr) bool
 // Overlaps reports whether p and o contain any IP addresses in common.
 //
 // If p and o are of different address families or either have a zero
-// IP, it reports false. Like the Contains method, a prefix with a
-// v6-mapped IPv4 IP is still treated as an IPv6 mask.
+// IP, it reports false. Like the Contains method, a prefix with an
+// IPv4-mapped IPv6 address is still treated as an IPv6 mask.
 func (p Prefix) Overlaps(o Prefix) bool
 
 // AppendTo appends a text encoding of p,

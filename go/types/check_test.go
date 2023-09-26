@@ -33,10 +33,3 @@ import (
 // Space around "rx" or rx is ignored. Use the form `ERROR HERE "rx"`
 // for error messages that are located immediately after rather than
 // at a token's position.
-//
-
-// goVersionRx matches a Go version string using '_', e.g. "go1_12".
-
-// excludedForUnifiedBuild lists files that cannot be tested
-// when using the unified build's export data.
-// TODO(gri) enable as soon as the unified build supports this.

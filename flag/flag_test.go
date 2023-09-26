@@ -11,3 +11,6 @@ import (
 // Declare a user-defined flag type.
 
 // Declare a user-defined boolean flag type.
+
+// zeroPanicker is a flag.Value whose String method panics if its dontPanic
+// field is false.

@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package types
-
-// A tparamEnv provides the environment for looking up the type arguments
-// with which type parameters for a given instance were instantiated.
-// If we don't have an instance, the corresponding tparamEnv is nil.

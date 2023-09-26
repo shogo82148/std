@@ -21,9 +21,6 @@ func Utime(path string, buf *Utimbuf) error
 // Getrlimit prefers the prlimit64 system call. See issue 38604.
 func Getrlimit(resource int, rlim *Rlimit) error
 
-// Setrlimit prefers the prlimit64 system call. See issue 38604.
-func Setrlimit(resource int, rlim *Rlimit) error
-
 func (r *PtraceRegs) PC() uint64
 
 func (r *PtraceRegs) SetPC(pc uint64)

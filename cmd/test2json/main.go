@@ -81,7 +81,3 @@
 // by a final event with Action == "bench" or "fail".
 // Benchmarks have no events with Action == "run", "pause", or "cont".
 package main
-
-import (
-	exec "internal/execabs"
-)

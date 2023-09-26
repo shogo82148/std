@@ -118,9 +118,11 @@ type Header struct {
 // that the file has no data in it, which is rather odd.
 //
 // As an example, if the underlying raw file contains the 10-byte data:
+//
 //	var compactFile = "abcdefgh"
 //
 // And the sparse map has the following entries:
+//
 //	var spd sparseDatas = []sparseEntry{
 //		{Offset: 2,  Length: 5},  // Data fragment for 2..6
 //		{Offset: 18, Length: 3},  // Data fragment for 18..20
@@ -132,6 +134,7 @@ type Header struct {
 //	}
 //
 // Then the content of the resulting sparse file with a Header.Size of 25 is:
+//
 //	var sparseFile = "\x00"*2 + "abcde" + "\x00"*11 + "fgh" + "\x00"*4
 
 // fileState tracks the number of logical (includes sparse holes) and physical

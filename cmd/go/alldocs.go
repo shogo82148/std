@@ -123,6 +123,8 @@
 //	-asan
 //		enable interoperation with address sanitizer.
 //		Supported only on linux/arm64, linux/amd64.
+//		Supported only on linux/amd64 or linux/arm64 and only with GCC 7 and higher
+//		or Clang/LLVM 9 and higher.
 //	-v
 //		print the names of packages as they are compiled.
 //	-work
@@ -193,11 +195,10 @@
 //		For example, when building with a non-standard configuration,
 //		use -pkgdir to keep generated packages in a separate location.
 //	-tags tag,list
-//		a comma-separated list of build tags to consider satisfied during the
-//		build. For more information about build tags, see the description of
-//		build constraints in the documentation for the go/build package.
-//		(Earlier versions of Go used a space-separated list, and that form
-//		is deprecated but still recognized.)
+//		a comma-separated list of additional build tags to consider satisfied
+//		during the build. For more information about build tags, see
+//		'go help buildconstraint'. (Earlier versions of Go used a
+//		space-separated list, and that form is deprecated but still recognized.)
 //	-trimpath
 //		remove all file system paths from the resulting executable.
 //		Instead of absolute file system paths, the recorded file names
@@ -544,8 +545,16 @@
 //		The line number of the directive in the source file.
 //	$GOPACKAGE
 //		The name of the package of the file containing the directive.
+//	$GOROOT
+//		The GOROOT directory for the 'go' command that invoked the
+//		generator, containing the Go toolchain and standard library.
 //	$DOLLAR
 //		A dollar sign.
+//	$PATH
+//		The $PATH of the parent process, with $GOROOT/bin
+//		placed at the beginning. This causes generators
+//		that execute 'go' commands to use the same 'go'
+//		as the parent 'go generate' command.
 //
 // Other than variable substitution and quoted-string evaluation, no
 // special processing such as "globbing" is performed on the command
@@ -862,7 +871,10 @@
 // for the go/build package's Context type.
 //
 // The -json flag causes the package data to be printed in JSON format
-// instead of using the template format.
+// instead of using the template format. The JSON flag can optionally be
+// provided with a set of comma-separated required field names to be output.
+// If so, those required fields will always appear in JSON output, but
+// others may be omitted to save work in computing the JSON struct.
 //
 // The -compiled flag causes list to set CompiledGoFiles to the Go source
 // files presented to the compiler. Typically this means that it repeats
@@ -887,7 +899,8 @@
 // (zeroed).
 //
 // The -export flag causes list to set the Export field to the name of a
-// file containing up-to-date export information for the given package.
+// file containing up-to-date export information for the given package,
+// and the BuildID field to the build ID of the compiled package.
 //
 // The -find flag causes list to identify the named packages but not
 // resolve their dependencies: the Imports and Deps lists will be empty.
@@ -921,19 +934,23 @@
 // applied to a Go struct, but now a Module struct:
 //
 //	type Module struct {
-//	    Path      string       // module path
-//	    Version   string       // module version
-//	    Versions  []string     // available module versions (with -versions)
-//	    Replace   *Module      // replaced by this module
-//	    Time      *time.Time   // time version was created
-//	    Update    *Module      // available update, if any (with -u)
-//	    Main      bool         // is this the main module?
-//	    Indirect  bool         // is this module only an indirect dependency of main module?
-//	    Dir       string       // directory holding files for this module, if any
-//	    GoMod     string       // path to go.mod file used when loading this module, if any
-//	    GoVersion string       // go version used in module
-//	    Retracted string       // retraction information, if any (with -retracted or -u)
-//	    Error     *ModuleError // error loading module
+//	    Path       string        // module path
+//	    Query      string        // version query corresponding to this version
+//	    Version    string        // module version
+//	    Versions   []string      // available module versions
+//	    Replace    *Module       // replaced by this module
+//	    Time       *time.Time    // time version was created
+//	    Update     *Module       // available update (with -u)
+//	    Main       bool          // is this the main module?
+//	    Indirect   bool          // module is only indirectly needed by main module
+//	    Dir        string        // directory holding local copy of files, if any
+//	    GoMod      string        // path to go.mod file describing module, if any
+//	    GoVersion  string        // go version used in module
+//	    Retracted  []string      // retraction information, if any (with -retracted or -u)
+//	    Deprecated string        // deprecation message, if any (with -u)
+//	    Error      *ModuleError  // error loading module
+//	    Origin     any           // provenance of module
+//	    Reuse      bool          // reuse of old module info is safe
 //	}
 //
 //	type ModuleError struct {
@@ -1010,6 +1027,16 @@
 // module as a Module struct. If an error occurs, the result will
 // be a Module struct with a non-nil Error field.
 //
+// When using -m, the -reuse=old.json flag accepts the name of file containing
+// the JSON output of a previous 'go list -m -json' invocation with the
+// same set of modifier flags (such as -u, -retracted, and -versions).
+// The go command may use this file to determine that a module is unchanged
+// since the previous invocation and avoid redownloading information about it.
+// Modules that are not redownloaded will be marked in the new output by
+// setting the Reuse field to true. Normally the module cache provides this
+// kind of reuse automatically; the -reuse flag can be useful on systems that
+// do not preserve the module cache.
+//
 // For more about build flags, see 'go help build'.
 //
 // For more about specifying packages, see 'go help packages'.
@@ -1046,7 +1073,7 @@
 //
 // Usage:
 //
-//	go mod download [-x] [-json] [modules]
+//	go mod download [-x] [-json] [-reuse=old.json] [modules]
 //
 // Download downloads the named modules, which can be module patterns selecting
 // dependencies of the main module or module queries of the form path@version.
@@ -1069,6 +1096,7 @@
 //
 //	type Module struct {
 //	    Path     string // module path
+//	    Query    string // version query corresponding to this version
 //	    Version  string // module version
 //	    Error    string // error loading module
 //	    Info     string // absolute path to cached .info file
@@ -1077,7 +1105,17 @@
 //	    Dir      string // absolute path to cached source root directory
 //	    Sum      string // checksum for path, version (as in go.sum)
 //	    GoModSum string // checksum for go.mod (as in go.sum)
+//	    Origin   any    // provenance of module
+//	    Reuse    bool   // reuse of old module info is safe
 //	}
+//
+// The -reuse flag accepts the name of file containing the JSON output of a
+// previous 'go mod download -json' invocation. The go command may use this
+// file to determine that a module is unchanged since the previous invocation
+// and avoid redownloading it. Modules that are not redownloaded will be marked
+// in the new output by setting the Reuse field to true. Normally the module
+// cache provides this kind of reuse automatically; the -reuse flag can be
+// useful on systems that do not preserve the module cache.
 //
 // The -x flag causes download to print the commands download executes.
 //
@@ -1578,6 +1616,10 @@
 // cross-compiled programs when a simulator or other execution method is
 // available.
 //
+// By default, 'go run' compiles the binary without generating the information
+// used by debuggers, to reduce build time. To include debugger information in
+// the binary, use 'go build'.
+//
 // The exit status of Run is not the exit status of the compiled binary.
 //
 // For more about build flags, see 'go help build'.
@@ -1629,6 +1671,10 @@
 // error. (The go command's standard error is reserved for printing
 // errors building the tests.)
 //
+// The go command places $GOROOT/bin at the beginning of $PATH
+// in the test's environment, so that tests that execute
+// 'go' commands use the same 'go' as the parent 'go test' command.
+//
 // Go test runs in two different modes:
 //
 // The first, called local directory mode, occurs when go test is
@@ -1671,7 +1717,7 @@
 // the package's source root (usually $GOPATH) or that consult environment
 // variables only match future runs in which the files and environment
 // variables are unchanged. A cached test result is treated as executing
-// in no time at all,so a successful package test result will be cached and
+// in no time at all, so a successful package test result will be cached and
 // reused regardless of -timeout setting.
 //
 // In addition to the build flags, the flags handled by 'go test' itself are:
@@ -1783,11 +1829,12 @@
 //
 // # Build constraints
 //
-// A build constraint, also known as a build tag, is a line comment that begins
+// A build constraint, also known as a build tag, is a condition under which a
+// file should be included in the package. Build constraints are given by a
+// line comment that begins
 //
 //	//go:build
 //
-// that lists the conditions under which a file should be included in the package.
 // Constraints may appear in any kind of source file (not just Go), but
 // they must appear near the top of the file, preceded
 // only by blank lines and other line comments. These rules mean that in Go
@@ -1796,9 +1843,9 @@
 // To distinguish build constraints from package documentation,
 // a build constraint should be followed by a blank line.
 //
-// A build constraint is evaluated as an expression containing options
-// combined by ||, &&, and ! operators and parentheses. Operators have
-// the same meaning as in Go.
+// A build constraint comment is evaluated as an expression containing
+// build tags combined by ||, &&, and ! operators and parentheses.
+// Operators have the same meaning as in Go.
 //
 // For example, the following build constraint constrains a file to
 // build when the "linux" and "386" constraints are satisfied, or when
@@ -1808,12 +1855,13 @@
 //
 // It is an error for a file to have more than one //go:build line.
 //
-// During a particular build, the following words are satisfied:
+// During a particular build, the following build tags are satisfied:
 //
 //   - the target operating system, as spelled by runtime.GOOS, set with the
 //     GOOS environment variable.
 //   - the target architecture, as spelled by runtime.GOARCH, set with the
 //     GOARCH environment variable.
+//   - "unix", if GOOS is a Unix or Unix-like system.
 //   - the compiler being used, either "gc" or "gccgo"
 //   - "cgo", if the cgo command is supported (see CGO_ENABLED in
 //     'go help environment').

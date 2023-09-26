@@ -17,6 +17,10 @@ package runtime
 // of the address space on systems where the address space is
 // segmented. On other systems, it's just a normal address.
 
+// atomicOffAddr is like offAddr, but operations on it are atomic.
+// It also contains operations to be able to store marked addresses
+// to ensure that they're not overridden until they've been seen.
+
 // addrRanges is a data structure holding a collection of ranges of
 // address space.
 //

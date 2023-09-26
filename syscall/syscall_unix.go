@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build aix || darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
+//go:build unix
 
 package syscall
 
@@ -15,11 +15,6 @@ var (
 	Stdout = 1
 	Stderr = 2
 )
-
-func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
-func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
-func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
-func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 
 // An Errno is an unsigned number describing an error condition.
 // It implements the error interface. The zero Errno is by convention
@@ -59,6 +54,10 @@ func (s Signal) String() string
 func Read(fd int, p []byte) (n int, err error)
 
 func Write(fd int, p []byte) (n int, err error)
+
+func Pread(fd int, p []byte, offset int64) (n int, err error)
+
+func Pwrite(fd int, p []byte, offset int64) (n int, err error)
 
 // For testing: clients can set this flag to force
 // creation of IPv6 sockets to return EAFNOSUPPORT.

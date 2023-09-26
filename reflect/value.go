@@ -63,7 +63,8 @@ func (v Value) Addr() Value
 func (v Value) Bool() bool
 
 // Bytes returns v's underlying value.
-// It panics if v's underlying value is not a slice of bytes.
+// It panics if v's underlying value is not a slice of bytes or
+// an addressable array of bytes.
 func (v Value) Bytes() []byte
 
 // CanAddr reports whether the value's address can be obtained with Addr.
@@ -100,7 +101,7 @@ func (v Value) Call(in []Value) []Value
 func (v Value) CallSlice(in []Value) []Value
 
 // Cap returns v's capacity.
-// It panics if v's Kind is not Array, Chan, or Slice.
+// It panics if v's Kind is not Array, Chan, Slice or pointer to Array.
 func (v Value) Cap() int
 
 // Close closes the channel v.
@@ -212,7 +213,7 @@ func (v Value) IsZero() bool
 func (v Value) Kind() Kind
 
 // Len returns v's length.
-// It panics if v's Kind is not Array, Chan, Map, Slice, or String.
+// It panics if v's Kind is not Array, Chan, Map, Slice, String, or pointer to Array.
 func (v Value) Len() int
 
 // MapIndex returns the value associated with key in the map v.
@@ -289,7 +290,11 @@ func (v Value) MapRange() *MapIter
 // Method panics if i is out of range or if v is a nil interface value.
 func (v Value) Method(i int) Value
 
-// NumMethod returns the number of exported methods in the value's method set.
+// NumMethod returns the number of methods in the value's method set.
+//
+// For a non-interface type, it returns the number of exported methods.
+//
+// For an interface type, it returns the number of exported and unexported methods.
 func (v Value) NumMethod() int
 
 // MethodByName returns a function value corresponding to the method

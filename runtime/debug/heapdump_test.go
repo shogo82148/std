@@ -11,3 +11,8 @@ import (
 type Obj struct {
 	x, y int
 }
+
+type G[T any] struct{}
+type I interface {
+	M()
+}

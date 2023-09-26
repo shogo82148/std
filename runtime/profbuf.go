@@ -79,7 +79,6 @@ package runtime
 //	if uint32(overflow) > 0 {
 //		emit entry for uint32(overflow), time
 //	}
-//
 
 // A profAtomic is the atomically-accessed word holding a profIndex.
 

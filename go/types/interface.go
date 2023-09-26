@@ -11,7 +11,6 @@ import (
 // An Interface represents an interface type.
 type Interface struct {
 	check     *Checker
-	obj       *TypeName
 	methods   []*Func
 	embeddeds []Type
 	embedPos  *[]token.Pos

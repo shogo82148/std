@@ -51,6 +51,7 @@ func RaceDisable()
 func RaceEnable()
 
 // Race runtime functions called via runtime·racecall.
+//
 //go:linkname __tsan_init __tsan_init
 
 //go:linkname __tsan_fini __tsan_fini

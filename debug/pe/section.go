@@ -59,3 +59,15 @@ func (s *Section) Data() ([]byte, error)
 
 // Open returns a new ReadSeeker reading the PE section s.
 func (s *Section) Open() io.ReadSeeker
+
+// Section characteristics flags.
+const (
+	IMAGE_SCN_CNT_CODE               = 0x00000020
+	IMAGE_SCN_CNT_INITIALIZED_DATA   = 0x00000040
+	IMAGE_SCN_CNT_UNINITIALIZED_DATA = 0x00000080
+	IMAGE_SCN_LNK_COMDAT             = 0x00001000
+	IMAGE_SCN_MEM_DISCARDABLE        = 0x02000000
+	IMAGE_SCN_MEM_EXECUTE            = 0x20000000
+	IMAGE_SCN_MEM_READ               = 0x40000000
+	IMAGE_SCN_MEM_WRITE              = 0x80000000
+)

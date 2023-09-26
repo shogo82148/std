@@ -8,6 +8,4 @@
 
 package syscall
 
-func Accept4(fd int, flags int) (int, Sockaddr, error)
-
 func Flock(fd int, how int) error

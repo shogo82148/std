@@ -76,6 +76,7 @@ type URL struct {
 	Host        string
 	Path        string
 	RawPath     string
+	OmitHost    bool
 	ForceQuery  bool
 	RawQuery    string
 	Fragment    string
@@ -261,3 +262,12 @@ func (u *URL) Port() string
 func (u *URL) MarshalBinary() (text []byte, err error)
 
 func (u *URL) UnmarshalBinary(text []byte) error
+
+// JoinPath returns a new URL with the provided path elements joined to
+// any existing path and the resulting path cleaned of any ./ or ../ elements.
+// Any sequences of multiple / characters will be reduced to a single /.
+func (u *URL) JoinPath(elem ...string) *URL
+
+// JoinPath returns a URL string with the provided path elements joined to
+// the existing path of base and the resulting path cleaned of any ./ or ../ elements.
+func JoinPath(base string, elem ...string) (result string, err error)

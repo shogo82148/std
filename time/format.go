@@ -51,10 +51,10 @@ package time
 // verbatim in the input to Parse.
 //
 //	Year: "2006" "06"
-//	Month: "Jan" "January"
-//	Textual day of the week: "Mon" "Monday"
-//	Numeric day of the month: "2" "_2" "02"
-//	Numeric day of the year: "__2" "002"
+//	Month: "Jan" "January" "01" "1"
+//	Day of the week: "Mon" "Monday"
+//	Day of the month: "2" "_2" "02"
+//	Day of the year: "__2" "002"
 //	Hour: "15" "3" "03" (PM or AM)
 //	Minute: "4" "04"
 //	Second: "5" "05"
@@ -62,17 +62,21 @@ package time
 //
 // Numeric time zone offsets format as follows:
 //
-//	"-0700"  ±hhmm
-//	"-07:00" ±hh:mm
-//	"-07"    ±hh
+//	"-0700"     ±hhmm
+//	"-07:00"    ±hh:mm
+//	"-07"       ±hh
+//	"-070000"   ±hhmmss
+//	"-07:00:00" ±hh:mm:ss
 //
 // Replacing the sign in the format with a Z triggers
 // the ISO 8601 behavior of printing Z instead of an
 // offset for the UTC zone. Thus:
 //
-//	"Z0700"  Z or ±hhmm
-//	"Z07:00" Z or ±hh:mm
-//	"Z07"    Z or ±hh
+//	"Z0700"      Z or ±hhmm
+//	"Z07:00"     Z or ±hh:mm
+//	"Z07"        Z or ±hh
+//	"Z070000"    Z or ±hhmmss
+//	"Z07:00:00"  Z or ±hh:mm:ss
 //
 // Within the format string, the underscores in "_2" and "__2" represent spaces
 // that may be replaced by digits if the following number has multiple digits,

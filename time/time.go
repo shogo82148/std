@@ -64,6 +64,10 @@
 // t.UnmarshalJSON, and t.UnmarshalText always create times with
 // no monotonic clock reading.
 //
+// The monotonic clock reading exists only in Time values. It is not
+// a part of Duration values or the Unix times returned by t.Unix and
+// friends.
+//
 // Note that the Go == operator compares not just the time instant but
 // also the Location and the monotonic clock reading. See the
 // documentation for the Time type for a discussion of equality
@@ -285,6 +289,10 @@ func (d Duration) Truncate(m Duration) Duration
 // If m <= 0, Round returns d unchanged.
 func (d Duration) Round(m Duration) Duration
 
+// Abs returns the absolute value of d.
+// As a special case, math.MinInt64 is converted to math.MaxInt64.
+func (d Duration) Abs() Duration
+
 // Add returns the time t+d.
 func (t Time) Add(d Duration) Time
 
@@ -345,6 +353,13 @@ func (t Time) Location() *Location
 // Zone computes the time zone in effect at time t, returning the abbreviated
 // name of the zone (such as "CET") and its offset in seconds east of UTC.
 func (t Time) Zone() (name string, offset int)
+
+// ZoneBounds returns the bounds of the time zone in effect at time t.
+// The zone begins at start and the next zone begins at end.
+// If the zone begins at the beginning of time, start will be returned as a zero Time.
+// If the zone goes on forever, end will be returned as a zero Time.
+// The Location of the returned times will be the same as t.
+func (t Time) ZoneBounds() (start, end Time)
 
 // Unix returns t as a Unix time, the number of seconds elapsed
 // since January 1, 1970 UTC. The result does not depend on the

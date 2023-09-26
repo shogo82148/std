@@ -113,7 +113,7 @@
 // Next GC is after we've allocated an extra amount of memory proportional to
 // the amount already in use. The proportion is controlled by GOGC environment variable
 // (100 by default). If GOGC=100 and we're using 4M, we'll GC again when we get to 8M
-// (this mark is tracked in gcController.heapGoal variable). This keeps the GC cost in
+// (this mark is computed by the gcController.heapGoal method). This keeps the GC cost in
 // linear proportion to the allocation cost. Adjusting GOGC just changes the linear constant
 // (and also the amount of extra memory used).
 

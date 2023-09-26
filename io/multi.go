@@ -4,6 +4,8 @@
 
 package io
 
+var _ WriterTo = (*multiReader)(nil)
+
 // MultiReader returns a Reader that's the logical concatenation of
 // the provided input readers. They're read sequentially. Once all
 // inputs have returned EOF, Read will return EOF.  If any of the readers

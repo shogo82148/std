@@ -4,6 +4,6 @@
 
 package math
 
-// Copysign returns a value with the magnitude
-// of x and the sign of y.
-func Copysign(x, y float64) float64
+// Copysign returns a value with the magnitude of f
+// and the sign of sign.
+func Copysign(f, sign float64) float64

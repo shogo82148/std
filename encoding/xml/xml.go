@@ -132,6 +132,7 @@ type Decoder struct {
 	ns             map[string]string
 	err            error
 	line           int
+	linestart      int64
 	offset         int64
 	unmarshalDepth int
 }
@@ -183,6 +184,11 @@ func (d *Decoder) RawToken() (Token, error)
 // The offset gives the location of the end of the most recently returned token
 // and the beginning of the next token.
 func (d *Decoder) InputOffset() int64
+
+// InputPos returns the line of the current decoder position and the 1 based
+// input position of the line. The position gives the location of the end of the
+// most recently returned token.
+func (d *Decoder) InputPos() (line, column int)
 
 // HTMLEntity is an entity map containing translations for the
 // standard HTML entity characters.

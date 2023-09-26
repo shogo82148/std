@@ -18,10 +18,81 @@
 // Note that the examples in this package assume a Unix system.
 // They may not run on Windows, and they do not run in the Go Playground
 // used by golang.org and godoc.org.
+//
+// # Executables in the current directory
+//
+// The functions Command and LookPath look for a program
+// in the directories listed in the current path, following the
+// conventions of the host operating system.
+// Operating systems have for decades included the current
+// directory in this search, sometimes implicitly and sometimes
+// configured explicitly that way by default.
+// Modern practice is that including the current directory
+// is usually unexpected and often leads to security problems.
+//
+// To avoid those security problems, as of Go 1.19, this package will not resolve a program
+// using an implicit or explicit path entry relative to the current directory.
+// That is, if you run exec.LookPath("go"), it will not successfully return
+// ./go on Unix nor .\go.exe on Windows, no matter how the path is configured.
+// Instead, if the usual path algorithms would result in that answer,
+// these functions return an error err satisfying errors.Is(err, ErrDot).
+//
+// For example, consider these two program snippets:
+//
+//	path, err := exec.LookPath("prog")
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	use(path)
+//
+// and
+//
+//	cmd := exec.Command("prog")
+//	if err := cmd.Run(); err != nil {
+//		log.Fatal(err)
+//	}
+//
+// These will not find and run ./prog or .\prog.exe,
+// no matter how the current path is configured.
+//
+// Code that always wants to run a program from the current directory
+// can be rewritten to say "./prog" instead of "prog".
+//
+// Code that insists on including results from relative path entries
+// can instead override the error using an errors.Is check:
+//
+//	path, err := exec.LookPath("prog")
+//	if errors.Is(err, exec.ErrDot) {
+//		err = nil
+//	}
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	use(path)
+//
+// and
+//
+//	cmd := exec.Command("prog")
+//	if errors.Is(cmd.Err, exec.ErrDot) {
+//		cmd.Err = nil
+//	}
+//	if err := cmd.Run(); err != nil {
+//		log.Fatal(err)
+//	}
+//
+// Setting the environment variable GODEBUG=execerrdot=0
+// disables generation of ErrDot entirely, temporarily restoring the pre-Go 1.19
+// behavior for programs that are unable to apply more targeted fixes.
+// A future version of Go may remove support for this variable.
+//
+// Before adding such overrides, make sure you understand the
+// security implications of doing so.
+// See https://go.dev/blog/path-security for more information.
 package exec
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/syscall"
@@ -38,6 +109,8 @@ type Error struct {
 func (e *Error) Error() string
 
 func (e *Error) Unwrap() error
+
+// wrappedError wraps an error without relying on fmt.Errorf.
 
 // Cmd represents an external command being prepared or run.
 //
@@ -66,14 +139,15 @@ type Cmd struct {
 	ProcessState *os.ProcessState
 
 	ctx             context.Context
-	lookPathErr     error
-	finished        bool
+	Err             error
 	childFiles      []*os.File
 	closeAfterStart []io.Closer
 	closeAfterWait  []io.Closer
 	goroutine       []func() error
-	errch           chan error
-	waitDone        chan struct{}
+	goroutineErrs   <-chan error
+	ctxErr          <-chan error
+
+	lookPathErr error
 }
 
 // Command returns the Cmd struct to execute the named program with
@@ -113,9 +187,6 @@ func CommandContext(ctx context.Context, name string, arg ...string) *Cmd
 // The output of String may vary across Go releases.
 func (c *Cmd) String() string
 
-// skipStdinCopyError optionally specifies a function which reports
-// whether the provided stdin copy error should be ignored.
-
 // Run starts the specified command and waits for it to complete.
 //
 // The returned error is nil if the command runs, has no problems
@@ -135,8 +206,8 @@ func (c *Cmd) Run() error
 //
 // If Start returns successfully, the c.Process field will be set.
 //
-// The Wait method will return the exit code and release associated resources
-// once the command exits.
+// After a successful call to Start the Wait method must be called in
+// order to release associated system resources.
 func (c *Cmd) Start() error
 
 // An ExitError reports an unsuccessful exit by a command.
@@ -207,3 +278,16 @@ func (c *Cmd) StderrPipe() (io.ReadCloser, error)
 // prefixSuffixSaver is an io.Writer which retains the first N bytes
 // and the last N bytes written to it. The Bytes() methods reconstructs
 // it with a pretty error message.
+
+// Environ returns a copy of the environment in which the command would be run
+// as it is currently configured.
+func (c *Cmd) Environ() []string
+
+// ErrDot indicates that a path lookup resolved to an executable
+// in the current directory due to ‘.’ being in the path, either
+// implicitly or explicitly. See the package documentation for details.
+//
+// Note that functions in this package do not return ErrDot directly.
+// Code should use errors.Is(err, ErrDot), not err == ErrDot,
+// to test whether a returned error err is due to this condition.
+var ErrDot = errors.New("cannot run executable found relative to current directory")

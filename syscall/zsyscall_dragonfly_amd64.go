@@ -131,8 +131,6 @@ func Setregid(rgid int, egid int) (err error)
 
 func Setreuid(ruid int, euid int) (err error)
 
-func Setrlimit(which int, lim *Rlimit) (err error)
-
 func Setsid() (pid int, err error)
 
 func Settimeofday(tp *Timeval) (err error)

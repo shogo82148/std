@@ -240,7 +240,7 @@ func (c *Client) PostForm(url string, data url.Values) (resp *Response, err erro
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
-// # Head is a wrapper around DefaultClient.Head
+// Head is a wrapper around DefaultClient.Head.
 //
 // To make a request with a specified context.Context, use NewRequestWithContext
 // and DefaultClient.Do.
@@ -270,6 +270,6 @@ func (c *Client) Head(url string) (resp *Response, err error)
 func (c *Client) CloseIdleConnections()
 
 // cancelTimerBody is an io.ReadCloser that wraps rc with two features:
-// 1) On Read error or close, the stop func is called.
-// 2) On Read failure, if reqDidTimeout is true, the error is wrapped and
-//    marked as net.Error that hit its timeout.
+//  1. On Read error or close, the stop func is called.
+//  2. On Read failure, if reqDidTimeout is true, the error is wrapped and
+//     marked as net.Error that hit its timeout.

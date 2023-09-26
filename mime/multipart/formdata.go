@@ -42,8 +42,10 @@ type FileHeader struct {
 	Header   textproto.MIMEHeader
 	Size     int64
 
-	content []byte
-	tmpfile string
+	content   []byte
+	tmpfile   string
+	tmpoff    int64
+	tmpshared bool
 }
 
 // Open opens and returns the FileHeader's associated File.

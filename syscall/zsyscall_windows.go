@@ -179,8 +179,6 @@ func ReadConsole(console Handle, buf *uint16, toread uint32, read *uint32, input
 
 func ReadDirectoryChanges(handle Handle, buf *byte, buflen uint32, watchSubTree bool, mask uint32, retlen *uint32, overlapped *Overlapped, completionRoutine uintptr) (err error)
 
-func ReadFile(handle Handle, buf []byte, done *uint32, overlapped *Overlapped) (err error)
-
 func RemoveDirectory(path *uint16) (err error)
 
 func SetCurrentDirectory(path *uint16) (err error)
@@ -210,8 +208,6 @@ func VirtualUnlock(addr uintptr, length uintptr) (err error)
 func WaitForSingleObject(handle Handle, waitMilliseconds uint32) (event uint32, err error)
 
 func WriteConsole(console Handle, buf *uint16, towrite uint32, written *uint32, reserved *byte) (err error)
-
-func WriteFile(handle Handle, buf []byte, done *uint32, overlapped *Overlapped) (err error)
 
 func AcceptEx(ls Handle, as Handle, buf *byte, rxdatalen uint32, laddrlen uint32, raddrlen uint32, recvd *uint32, overlapped *Overlapped) (err error)
 

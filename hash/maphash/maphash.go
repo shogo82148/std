@@ -27,6 +27,26 @@ type Seed struct {
 	s uint64
 }
 
+// Bytes returns the hash of b with the given seed.
+//
+// Bytes is equivalent to, but more convenient and efficient than:
+//
+//	var h Hash
+//	h.SetSeed(seed)
+//	h.Write(b)
+//	return h.Sum64()
+func Bytes(seed Seed, b []byte) uint64
+
+// String returns the hash of s with the given seed.
+//
+// String is equivalent to, but more convenient and efficient than:
+//
+//	var h Hash
+//	h.SetSeed(seed)
+//	h.WriteString(s)
+//	return h.Sum64()
+func String(seed Seed, s string) uint64
+
 // A Hash computes a seeded hash of a byte sequence.
 //
 // The zero Hash is a valid Hash ready to use.

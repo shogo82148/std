@@ -10,19 +10,27 @@ import (
 
 // A Named represents a named (defined) type.
 type Named struct {
-	check      *Checker
-	obj        *TypeName
-	orig       *Named
-	fromRHS    Type
+	check *Checker
+	obj   *TypeName
+
+	fromRHS Type
+
+	inst *instance
+
+	mu         sync.Mutex
+	state_     uint32
 	underlying Type
 	tparams    *TypeParamList
-	targs      *TypeList
 
-	methods *methodList
+	methods []*Func
 
-	resolver func(*Context, *Named) (tparams *TypeParamList, underlying Type, methods *methodList)
-	once     sync.Once
+	loader func(*Named) (tparams []*TypeParam, underlying Type, methods []*Func)
 }
+
+// instance holds information that is only necessary for instantiated named
+// types.
+
+// namedState represents the possible states that a named type may assume.
 
 // NewNamed returns a new named type for the given type name, underlying type, and associated methods.
 // If the given type name obj doesn't have a type yet, its type is set to the returned named type.
@@ -49,13 +57,13 @@ func (t *Named) SetTypeParams(tparams []*TypeParam)
 func (t *Named) TypeArgs() *TypeList
 
 // NumMethods returns the number of explicit methods defined for t.
-//
-// For an ordinary or instantiated type t, the receiver base type of these
-// methods will be the named type t. For an uninstantiated generic type t, each
-// method receiver will be instantiated with its receiver type parameters.
 func (t *Named) NumMethods() int
 
 // Method returns the i'th method of named type t for 0 <= i < t.NumMethods().
+//
+// For an ordinary or instantiated type t, the receiver base type of this
+// method is the named type t. For an uninstantiated generic type t, each
+// method receiver is instantiated with its receiver type parameters.
 func (t *Named) Method(i int) *Func
 
 // SetUnderlying sets the underlying type and marks t as complete.

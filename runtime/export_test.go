@@ -29,6 +29,7 @@ var Fastlog2 = fastlog2
 
 var Atoi = atoi
 var Atoi32 = atoi32
+var ParseByteCount = parseByteCount
 
 var Nanotime = nanotime
 var NetpollBreak = netpollBreak
@@ -131,6 +132,11 @@ type AddrRange struct {
 	addrRange
 }
 
+// testSysStat is the sysStat passed to test versions of various
+// runtime structures. We do actually have to keep track of this
+// because otherwise memstats.mappedReady won't actually line up
+// with other stats in the runtime during tests.
+
 // AddrRanges is a wrapper around addrRanges for testing.
 type AddrRanges struct {
 	addrRanges
@@ -170,6 +176,13 @@ type BitsMismatch struct {
 var Semacquire = semacquire
 var Semrelease1 = semrelease1
 
+const SemTableSize = semTabSize
+
+// SemTable is a wrapper around semTable exported for testing.
+type SemTable struct {
+	semTable
+}
+
 // mspan wrapper for testing.
 //
 //go:notinheap
@@ -193,8 +206,10 @@ var GCTestMoveStackOnNextCall = gcTestMoveStackOnNextCall
 const Raceenabled = raceenabled
 
 const (
-	GCBackgroundUtilization = gcBackgroundUtilization
-	GCGoalUtilization       = gcGoalUtilization
+	GCBackgroundUtilization     = gcBackgroundUtilization
+	GCGoalUtilization           = gcGoalUtilization
+	DefaultHeapMinimum          = defaultHeapMinimum
+	MemoryLimitHeapGoalHeadroom = memoryLimitHeapGoalHeadroom
 )
 
 type GCController struct {
@@ -213,4 +228,31 @@ var Timediv = timediv
 
 type PIController struct {
 	piController
+}
+
+const (
+	CapacityPerProc          = capacityPerProc
+	GCCPULimiterUpdatePeriod = gcCPULimiterUpdatePeriod
+)
+
+type GCCPULimiter struct {
+	limiter gcCPULimiterState
+}
+
+const ScavengePercent = scavengePercent
+
+type Scavenger struct {
+	Sleep      func(int64) int64
+	Scavenge   func(uintptr) (uintptr, int64)
+	ShouldStop func() bool
+	GoMaxProcs func() int32
+
+	released  atomic.Uintptr
+	scavenger scavengerState
+	stop      chan<- struct{}
+	done      <-chan struct{}
+}
+
+type ScavengeIndex struct {
+	i scavengeIndex
 }

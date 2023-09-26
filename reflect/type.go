@@ -130,6 +130,7 @@ const Ptr = Pointer
 // available in the memory directly following the rtype value.
 //
 // tflag values must be kept in sync with copies in:
+//
 //	cmd/compile/internal/reflectdata/reflect.go
 //	cmd/link/internal/ld/decodesym.go
 //	runtime/type.go
@@ -301,7 +302,7 @@ func MapOf(key, elem Type) Type
 // true.
 func FuncOf(in, out []Type, variadic bool) Type
 
-// Make sure these routines stay in sync with ../../runtime/map.go!
+// Make sure these routines stay in sync with ../runtime/map.go!
 // These types exist only for GC, so we only fill out GC relevant info.
 // Currently, that's just size and the GC program. We also fill in string
 // for possible debugging use.

@@ -13,6 +13,8 @@ package runtime
 // startupRandomData holds random bytes initialized at startup. These come from
 // the ELF AT_RANDOM auxiliary vector.
 
+// secureMode holds the value of AT_SECURE passed in the auxiliary vector.
+
 // go118UseTimerCreateProfiler enables the per-thread CPU profiler.
 
 // perThreadSyscallArgs contains the system call number, arguments, and

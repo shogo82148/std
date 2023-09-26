@@ -25,6 +25,8 @@ type Reader struct {
 	Comment       string
 	decompressors map[uint16]Decompressor
 
+	baseOffset int64
+
 	fileListOnce sync.Once
 	fileList     []fileListEntry
 }
@@ -44,7 +46,6 @@ type File struct {
 	zipr         io.ReaderAt
 	headerOffset int64
 	zip64        bool
-	descErr      error
 }
 
 // OpenReader will open the Zip file specified by name and return a ReadCloser.

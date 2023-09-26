@@ -234,7 +234,7 @@ func (z *Int) Rand(rnd *rand.Rand, n *Int) *Int
 // ModInverse sets z to the multiplicative inverse of g in the ring ℤ/nℤ
 // and returns z. If g and n are not relatively prime, g has no multiplicative
 // inverse in the ring ℤ/nℤ.  In this case, z is unchanged and the return value
-// is nil.
+// is nil. If n == 0, a division-by-zero run-time panic occurs.
 func (z *Int) ModInverse(g, n *Int) *Int
 
 // Jacobi returns the Jacobi symbol (x/y), either +1, -1, or 0.
@@ -244,7 +244,7 @@ func Jacobi(x, y *Int) int
 // ModSqrt sets z to a square root of x mod p if such a square root exists, and
 // returns z. The modulus p must be an odd prime. If x is not a square mod p,
 // ModSqrt leaves z unchanged and returns nil. This function panics if p is
-// not an odd integer.
+// not an odd integer, its behavior is undefined if p is odd but not prime.
 func (z *Int) ModSqrt(x, p *Int) *Int
 
 // Lsh sets z = x << n and returns z.

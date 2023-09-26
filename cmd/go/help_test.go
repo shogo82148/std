@@ -3,3 +3,7 @@
 // license that can be found in the LICENSE file.
 
 package main_test
+
+import (
+	diffpkg "internal/diff"
+)

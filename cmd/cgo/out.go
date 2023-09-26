@@ -4,10 +4,6 @@
 
 package main
 
-import (
-	exec "internal/execabs"
-)
-
 // Map predeclared Go types to Type.
 
 // Prologue defining TSAN functions in C.

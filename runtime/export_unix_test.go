@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build aix || darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
+//go:build unix
 
 package runtime
 
 var NonblockingPipe = nonblockingPipe
-var SetNonblock = setNonblock
 var Closeonexec = closeonexec
+var Fcntl = fcntl
 
 type M = m

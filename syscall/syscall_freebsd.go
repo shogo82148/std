@@ -12,6 +12,11 @@
 
 package syscall
 
+func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
+func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
+func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
+func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
+
 // See https://www.freebsd.org/doc/en_US.ISO8859-1/books/porters-handbook/versions.html.
 
 // INO64_FIRST from /usr/src/lib/libc/sys/compat-ino64.h

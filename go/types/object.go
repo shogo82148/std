@@ -105,6 +105,7 @@ type Var struct {
 	embedded bool
 	isField  bool
 	used     bool
+	origin   *Var
 }
 
 // NewVar returns a new variable.
@@ -116,7 +117,7 @@ func NewParam(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
 // NewField returns a new variable representing a struct field.
 // For embedded fields, the name is the unqualified type name
-// / under which the field is accessible.
+// under which the field is accessible.
 func NewField(pos token.Pos, pkg *Package, name string, typ Type, embedded bool) *Var
 
 // Anonymous reports whether the variable is an embedded field.
@@ -129,12 +130,22 @@ func (obj *Var) Embedded() bool
 // IsField reports whether the variable is a struct field.
 func (obj *Var) IsField() bool
 
+// Origin returns the canonical Var for its receiver, i.e. the Var object
+// recorded in Info.Defs.
+//
+// For synthetic Vars created during instantiation (such as struct fields or
+// function parameters that depend on type arguments), this will be the
+// corresponding Var on the generic (uninstantiated) type. For all other Vars
+// Origin returns the receiver.
+func (obj *Var) Origin() *Var
+
 // A Func represents a declared function, concrete method, or abstract
 // (interface) method. Its Type() is always a *Signature.
 // An abstract method may belong to many interfaces due to embedding.
 type Func struct {
 	object
 	hasPtrRecv_ bool
+	origin      *Func
 }
 
 // NewFunc returns a new function with the given signature, representing
@@ -149,6 +160,15 @@ func (obj *Func) FullName() string
 // The result is nil for imported or instantiated functions and methods
 // (but there is also no mechanism to get to an instantiated function).
 func (obj *Func) Scope() *Scope
+
+// Origin returns the canonical Func for its receiver, i.e. the Func object
+// recorded in Info.Defs.
+//
+// For synthetic functions created during instantiation (such as methods on an
+// instantiated Named type or interface methods that depend on type arguments),
+// this will be the corresponding Func on the generic (uninstantiated) type.
+// For all other Funcs Origin returns the receiver.
+func (obj *Func) Origin() *Func
 
 // A Label represents a declared label.
 // Labels don't have a type.

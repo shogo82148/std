@@ -8,7 +8,6 @@ import (
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/io/fs"
-	exec "internal/execabs"
 	pathpkg "path"
 )
 

@@ -143,10 +143,6 @@ func Getuid() (uid int)
 
 func Listen(s int, n int) (err error)
 
-func Pread(fd int, p []byte, offset int64) (n int, err error)
-
-func Pwrite(fd int, p []byte, offset int64) (n int, err error)
-
 func Renameat(olddirfd int, oldpath string, newdirfd int, newpath string) (err error)
 
 func Seek(fd int, offset int64, whence int) (off int64, err error)

@@ -401,7 +401,6 @@ type S struct {
 //	[false false false false]
 //	...
 //	[true true true true]
-//
 
 type Outer struct {
 	*Inner

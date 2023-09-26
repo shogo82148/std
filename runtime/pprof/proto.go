@@ -8,9 +8,10 @@ package pprof
 // stream of profile samples delivered by the runtime.
 
 // symbolizeFlag keeps track of symbolization result.
-//   0                  : no symbol lookup was performed
-//   1<<0 (lookupTried) : symbol lookup was performed
-//   1<<1 (lookupFailed): symbol lookup was performed but failed
+//
+//	0                  : no symbol lookup was performed
+//	1<<0 (lookupTried) : symbol lookup was performed
+//	1<<1 (lookupFailed): symbol lookup was performed but failed
 
 // pcDeck is a helper to detect a sequence of inlined functions from
 // a stack trace returned by the runtime.
@@ -25,9 +26,10 @@ package pprof
 // and looking up debug info is not ideal, so we use a heuristic to filter
 // the fake pcs and restore the inlined and entry functions. Inlined functions
 // have the following properties:
-//   Frame's Func is nil (note: also true for non-Go functions), and
-//   Frame's Entry matches its entry function frame's Entry (note: could also be true for recursive calls and non-Go functions), and
-//   Frame's Name does not match its entry function frame's name (note: inlined functions cannot be directly recursive).
+//
+//	Frame's Func is nil (note: also true for non-Go functions), and
+//	Frame's Entry matches its entry function frame's Entry (note: could also be true for recursive calls and non-Go functions), and
+//	Frame's Name does not match its entry function frame's name (note: inlined functions cannot be directly recursive).
 //
 // As reading and processing the pcs in a stack trace one by one (from leaf to the root),
 // we use pcDeck to temporarily hold the observed pcs and their expanded frames

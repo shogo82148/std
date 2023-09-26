@@ -125,21 +125,27 @@ For complex numbers, the width and precision apply to the two
 components independently and the result is parenthesized, so %f applied
 to 1.2+3.4i produces (1.200000+3.400000i).
 
+When formatting a single integer code point or a rune string (type []rune)
+with %q, invalid Unicode code points are changed to the Unicode replacement
+character, U+FFFD, as in strconv.QuoteRune.
+
 Other flags:
-  - always print a sign for numeric values;
-    guarantee ASCII-only output for %q (%+q)
-  - pad with spaces on the right rather than the left (left-justify the field)
-    #	alternate format: add leading 0b for binary (%#b), 0 for octal (%#o),
-    0x or 0X for hex (%#x or %#X); suppress 0x for %p (%#p);
-    for %q, print a raw (backquoted) string if strconv.CanBackquote
-    returns true;
-    always print a decimal point for %e, %E, %f, %F, %g and %G;
-    do not remove trailing zeros for %g and %G;
-    write e.g. U+0078 'x' if the character is printable for %U (%#U).
-    ' '	(space) leave a space for elided sign in numbers (% d);
-    put spaces between bytes printing strings or slices in hex (% x, % X)
-    0	pad with leading zeros rather than spaces;
-    for numbers, this moves the padding after the sign
+
+	'+'	always print a sign for numeric values;
+		guarantee ASCII-only output for %q (%+q)
+	'-'	pad with spaces on the right rather than the left (left-justify the field)
+	'#'	alternate format: add leading 0b for binary (%#b), 0 for octal (%#o),
+		0x or 0X for hex (%#x or %#X); suppress 0x for %p (%#p);
+		for %q, print a raw (backquoted) string if strconv.CanBackquote
+		returns true;
+		always print a decimal point for %e, %E, %f, %F, %g and %G;
+		do not remove trailing zeros for %g and %G;
+		write e.g. U+0078 'x' if the character is printable for %U (%#U).
+	' '	(space) leave a space for elided sign in numbers (% d);
+		put spaces between bytes printing strings or slices in hex (% x, % X)
+	'0'	pad with leading zeros rather than spaces;
+		for numbers, this moves the padding after the sign;
+		ignored for strings, byte slices and byte arrays
 
 Flags are ignored by verbs that do not expect them.
 For example there is no alternate decimal format, so %#d and %d

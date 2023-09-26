@@ -9,9 +9,9 @@ package runtime
 //
 // A gcWork can be used on the stack as follows:
 //
-//     (preemption must be disabled)
-//     gcw := &getg().m.p.ptr().gcw
-//     .. call gcw.put() to produce and gcw.tryGet() to consume ..
+//	(preemption must be disabled)
+//	gcw := &getg().m.p.ptr().gcw
+//	.. call gcw.put() to produce and gcw.tryGet() to consume ..
 //
 // It's important that any use of gcWork during the mark phase prevent
 // the garbage collector from transitioning to mark termination since

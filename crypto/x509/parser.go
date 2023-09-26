@@ -13,3 +13,10 @@ func ParseCertificate(der []byte) (*Certificate, error)
 // ParseCertificates parses one or more certificates from the given ASN.1 DER
 // data. The certificates must be concatenated with no intermediate padding.
 func ParseCertificates(der []byte) ([]*Certificate, error)
+
+// The X.509 standards confusingly 1-indexed the version names, but 0-indexed
+// the actual encoded version, so the version for X.509v2 is 1.
+
+// ParseRevocationList parses a X509 v2 Certificate Revocation List from the given
+// ASN.1 DER data.
+func ParseRevocationList(der []byte) (*RevocationList, error)

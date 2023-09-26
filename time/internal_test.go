@@ -4,8 +4,6 @@
 
 package time
 
-var OrigZoneSources = zoneSources
-
 var Interrupt = interrupt
 var DaysIn = daysIn
 

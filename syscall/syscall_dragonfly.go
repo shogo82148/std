@@ -12,6 +12,11 @@
 
 package syscall
 
+func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
+func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
+func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
+func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
+
 // See version list in https://github.com/DragonFlyBSD/DragonFlyBSD/blob/master/sys/sys/param.h
 
 // First __DragonFly_version after September 2019 ABI changes
@@ -34,12 +39,6 @@ type SockaddrDatalink struct {
 func Pipe(p []int) (err error)
 
 func Pipe2(p []int, flags int) (err error)
-
-// sys	extpread(fd int, p []byte, flags int, offset int64) (n int, err error)
-func Pread(fd int, p []byte, offset int64) (n int, err error)
-
-// sys	extpwrite(fd int, p []byte, flags int, offset int64) (n int, err error)
-func Pwrite(fd int, p []byte, offset int64) (n int, err error)
 
 func Accept4(fd, flags int) (nfd int, sa Sockaddr, err error)
 

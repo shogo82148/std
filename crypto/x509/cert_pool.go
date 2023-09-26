@@ -21,6 +21,9 @@ type CertPool struct {
 // NewCertPool returns a new, empty CertPool.
 func NewCertPool() *CertPool
 
+// Clone returns a copy of s.
+func (s *CertPool) Clone() *CertPool
+
 // SystemCertPool returns a copy of the system cert pool.
 //
 // On Unix systems other than macOS the environment variables SSL_CERT_FILE and
@@ -51,3 +54,6 @@ func (s *CertPool) AppendCertsFromPEM(pemCerts []byte) (ok bool)
 // Deprecated: if s was returned by SystemCertPool, Subjects
 // will not include the system roots.
 func (s *CertPool) Subjects() [][]byte
+
+// Equal reports whether s and other are equal.
+func (s *CertPool) Equal(other *CertPool) bool

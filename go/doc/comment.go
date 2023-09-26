@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Godoc comment extraction and comment -> HTML formatting.
-
 package doc
 
 import (
@@ -11,37 +9,48 @@ import (
 )
 
 // ToHTML converts comment text to formatted HTML.
-// The comment was prepared by DocReader,
-// so it is known not to have leading, trailing blank lines
-// nor to have trailing spaces at the end of lines.
-// The comment markers have already been removed.
 //
-// Each span of unindented non-blank lines is converted into
-// a single paragraph. There is one exception to the rule: a span that
-// consists of a single line, is followed by another paragraph span,
-// begins with a capital letter, and contains no punctuation
-// other than parentheses and commas is formatted as a heading.
+// Deprecated: ToHTML cannot identify documentation links
+// in the doc comment, because they depend on knowing what
+// package the text came from, which is not included in this API.
 //
-// A span of indented lines is converted into a <pre> block,
-// with the common indent prefix removed.
+// Given the *[doc.Package] p where text was found,
+// ToHTML(w, text, nil) can be replaced by:
 //
-// URLs in the comment text are converted into links; if the URL also appears
-// in the words map, the link is taken from the map (if the corresponding map
-// value is the empty string, the URL is not converted into a link).
+//	w.Write(p.HTML(text))
 //
-// A pair of (consecutive) backticks (`) is converted to a unicode left quote (“), and a pair of (consecutive)
-// single quotes (') is converted to a unicode right quote (”).
+// which is in turn shorthand for:
 //
-// Go identifiers that appear in the words map are italicized; if the corresponding
-// map value is not the empty string, it is considered a URL and the word is converted
-// into a link.
+//	w.Write(p.Printer().HTML(p.Parser().Parse(text)))
+//
+// If words may be non-nil, the longer replacement is:
+//
+//	parser := p.Parser()
+//	parser.Words = words
+//	w.Write(p.Printer().HTML(parser.Parse(d)))
 func ToHTML(w io.Writer, text string, words map[string]string)
 
-// ToText prepares comment text for presentation in textual output.
-// It wraps paragraphs of text to width or fewer Unicode code points
-// and then prefixes each line with the indent. In preformatted sections
-// (such as program text), it prefixes each non-blank line with preIndent.
+// ToText converts comment text to formatted text.
 //
-// A pair of (consecutive) backticks (`) is converted to a unicode left quote (“), and a pair of (consecutive)
-// single quotes (') is converted to a unicode right quote (”).
-func ToText(w io.Writer, text string, indent, preIndent string, width int)
+// Deprecated: ToText cannot identify documentation links
+// in the doc comment, because they depend on knowing what
+// package the text came from, which is not included in this API.
+//
+// Given the *[doc.Package] p where text was found,
+// ToText(w, text, "", "\t", 80) can be replaced by:
+//
+//	w.Write(p.Text(text))
+//
+// In the general case, ToText(w, text, prefix, codePrefix, width)
+// can be replaced by:
+//
+//	d := p.Parser().Parse(text)
+//	pr := p.Printer()
+//	pr.TextPrefix = prefix
+//	pr.TextCodePrefix = codePrefix
+//	pr.TextWidth = width
+//	w.Write(pr.Text(d))
+//
+// See the documentation for [Package.Text] and [comment.Printer.Text]
+// for more details.
+func ToText(w io.Writer, text string, prefix, codePrefix string, width int)

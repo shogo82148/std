@@ -299,10 +299,14 @@ func (f *File) SyscallConn() (syscall.RawConn, error)
 // operating system will begin with "/prefix": DirFS("/prefix").Open("file") is the
 // same as os.Open("/prefix/file"). So if /prefix/file is a symbolic link pointing outside
 // the /prefix tree, then using DirFS does not stop the access any more than using
-// os.Open does. DirFS is therefore not a general substitute for a chroot-style security
-// mechanism when the directory tree contains arbitrary content.
+// os.Open does. Additionally, the root of the fs.FS returned for a relative path,
+// DirFS("prefix"), will be affected by later calls to Chdir. DirFS is therefore not
+// a general substitute for a chroot-style security mechanism when the directory tree
+// contains arbitrary content.
 //
 // The directory dir must not be "".
+//
+// The result implements fs.StatFS.
 func DirFS(dir string) fs.FS
 
 // ReadFile reads the named file and returns the contents.

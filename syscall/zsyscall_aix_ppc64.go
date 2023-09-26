@@ -63,6 +63,8 @@ func Getpriority(which int, who int) (n int, err error)
 
 func Getrlimit(which int, lim *Rlimit) (err error)
 
+func Getrusage(who int, rusage *Rusage) (err error)
+
 func Getuid() (uid int)
 
 func Kill(pid int, signum Signal) (err error)
@@ -80,10 +82,6 @@ func Mkdirat(dirfd int, path string, mode uint32) (err error)
 func Mknodat(dirfd int, path string, mode uint32, dev int) (err error)
 
 func Open(path string, mode int, perm uint32) (fd int, err error)
-
-func Pread(fd int, p []byte, offset int64) (n int, err error)
-
-func Pwrite(fd int, p []byte, offset int64) (n int, err error)
 
 func Reboot(how int) (err error)
 
@@ -108,8 +106,6 @@ func Setpriority(which int, who int, prio int) (err error)
 func Setregid(rgid int, egid int) (err error)
 
 func Setreuid(ruid int, euid int) (err error)
-
-func Setrlimit(which int, lim *Rlimit) (err error)
 
 func Stat(path string, stat *Stat_t) (err error)
 

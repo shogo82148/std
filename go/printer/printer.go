@@ -18,7 +18,6 @@ import (
 // and vtab characters into newlines and htabs (in case no tabwriter
 // is used). Text bracketed by tabwriter.Escape characters is passed
 // through unchanged.
-//
 
 // trimmer is implemented as a state machine.
 // It can be in one of the following states:

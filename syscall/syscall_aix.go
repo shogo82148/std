@@ -11,6 +11,11 @@
 
 package syscall
 
+func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
+func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
+func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
+func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
+
 // Constant expected by package but not supported
 const (
 	_ = iota
@@ -31,19 +36,14 @@ func (ts *StTimespec_t) Nano() int64
 
 func Access(path string, mode uint32) (err error)
 
-// sysnb pipe(p *[2]_C_int) (err error)
 func Pipe(p []int) (err error)
 
-// sys	readlink(path string, buf []byte, bufSize uint64) (n int, err error)
 func Readlink(path string, buf []byte) (n int, err error)
 
-// sys	utimes(path string, times *[2]Timeval) (err error)
 func Utimes(path string, tv []Timeval) error
 
-// sys	utimensat(dirfd int, path string, times *[2]Timespec, flag int) (err error)
 func UtimesNano(path string, ts []Timespec) error
 
-// sys	unlinkat(dirfd int, path string, flags int) (err error)
 func Unlinkat(dirfd int, path string) (err error)
 
 const ImplementsGetwd = true
@@ -58,18 +58,14 @@ func Setgroups(gids []int) (err error)
 
 func Gettimeofday(tv *Timeval) (err error)
 
-// sys	getdirent(fd int, buf []byte) (n int, err error)
 func ReadDirent(fd int, buf []byte) (n int, err error)
 
-// sys  wait4(pid _Pid_t, status *_C_int, options int, rusage *Rusage) (wpid _Pid_t, err error)
 func Wait4(pid int, wstatus *WaitStatus, options int, rusage *Rusage) (wpid int, err error)
 
-// sys	fsyncRange(fd int, how int, start int64, length int64) (err error) = fsync_range
 func Fsync(fd int) error
 
 func Getsockname(fd int) (sa Sockaddr, err error)
 
-// sys	accept(s int, rsa *RawSockaddrAny, addrlen *_Socklen) (fd int, err error)
 func Accept(fd int) (nfd int, sa Sockaddr, err error)
 
 type SockaddrDatalink struct {

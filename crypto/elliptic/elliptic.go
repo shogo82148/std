@@ -33,29 +33,6 @@ type Curve interface {
 	ScalarBaseMult(k []byte) (x, y *big.Int)
 }
 
-// CurveParams contains the parameters of an elliptic curve and also provides
-// a generic, non-constant time implementation of Curve.
-type CurveParams struct {
-	P       *big.Int
-	N       *big.Int
-	B       *big.Int
-	Gx, Gy  *big.Int
-	BitSize int
-	Name    string
-}
-
-func (curve *CurveParams) Params() *CurveParams
-
-func (curve *CurveParams) IsOnCurve(x, y *big.Int) bool
-
-func (curve *CurveParams) Add(x1, y1, x2, y2 *big.Int) (*big.Int, *big.Int)
-
-func (curve *CurveParams) Double(x1, y1 *big.Int) (*big.Int, *big.Int)
-
-func (curve *CurveParams) ScalarMult(Bx, By *big.Int, k []byte) (*big.Int, *big.Int)
-
-func (curve *CurveParams) ScalarBaseMult(k []byte) (*big.Int, *big.Int)
-
 // GenerateKey returns a public/private key pair. The private key is
 // generated using the given reader, which must return random data.
 func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err error)
@@ -69,6 +46,14 @@ func Marshal(curve Curve, x, y *big.Int) []byte
 // specified in SEC 1, Version 2.0, Section 2.3.3. If the point is not on the
 // curve (or is the conventional point at infinity), the behavior is undefined.
 func MarshalCompressed(curve Curve, x, y *big.Int) []byte
+
+// unmarshaler is implemented by curves with their own constant-time Unmarshal.
+//
+// There isn't an equivalent interface for Marshal/MarshalCompressed because
+// that doesn't involve any mathematical operations, only FillBytes and Bit.
+
+// Assert that the known curves implement unmarshaler.
+var _ = []unmarshaler{p224, p256, p384, p521}
 
 // Unmarshal converts a point, serialized by Marshal, into an x, y pair. It is
 // an error if the point is not in uncompressed form, is not on the curve, or is
@@ -96,7 +81,7 @@ func P224() Curve
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 //
-// ScalarMult and ScalarBaseMult are implemented using constant-time algorithms.
+// The cryptographic operations are implemented using constant-time algorithms.
 func P256() Curve
 
 // P384 returns a Curve which implements NIST P-384 (FIPS 186-3, section D.2.4),

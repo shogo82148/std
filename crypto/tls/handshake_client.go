@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package tls
+
+// defaultMaxRSAKeySize is the maximum RSA key size in bits that we are willing
+// to verify the signatures of during a TLS handshake.

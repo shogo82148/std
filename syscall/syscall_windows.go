@@ -89,6 +89,10 @@ func Read(fd Handle, p []byte) (n int, err error)
 
 func Write(fd Handle, p []byte) (n int, err error)
 
+func ReadFile(fd Handle, p []byte, done *uint32, overlapped *Overlapped) error
+
+func WriteFile(fd Handle, p []byte, done *uint32, overlapped *Overlapped) error
+
 func Seek(fd Handle, offset int64, whence int) (newoffset int64, err error)
 
 func Close(fd Handle) (err error)

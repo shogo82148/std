@@ -20,7 +20,7 @@ import (
 // to find the pathname of the file. It is the caller's responsibility
 // to remove the file when no longer needed.
 //
-// As of Go 1.17, this function simply calls os.CreateTemp.
+// Deprecated: As of Go 1.17, this function simply calls os.CreateTemp.
 func TempFile(dir, pattern string) (f *os.File, err error)
 
 // TempDir creates a new temporary directory in the directory dir.
@@ -33,5 +33,5 @@ func TempFile(dir, pattern string) (f *os.File, err error)
 // will not choose the same directory. It is the caller's responsibility
 // to remove the directory when no longer needed.
 //
-// As of Go 1.17, this function simply calls os.MkdirTemp.
+// Deprecated: As of Go 1.17, this function simply calls os.MkdirTemp.
 func TempDir(dir, pattern string) (name string, err error)

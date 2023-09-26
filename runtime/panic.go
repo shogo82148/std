@@ -4,6 +4,9 @@
 
 package runtime
 
+// throwType indicates the current type of ongoing throw, which affects the
+// amount of detail printed to stderr. Higher values include more detail.
+
 // Goexit terminates the goroutine that calls it. No other goroutine is affected.
 // Goexit runs all deferred calls before terminating the goroutine. Because Goexit
 // is not a panic, any recover calls in those deferred functions will return nil.

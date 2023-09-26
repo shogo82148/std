@@ -27,16 +27,18 @@ import (
 // test.pem
 
 // These CSR was generated with OpenSSL:
-//  openssl req -out CSR.csr -new -sha256 -nodes -keyout privateKey.key -config openssl.cnf
+//
+//	openssl req -out CSR.csr -new -sha256 -nodes -keyout privateKey.key -config openssl.cnf
 //
 // With openssl.cnf containing the following sections:
-//   [ v3_req ]
-//   basicConstraints = CA:FALSE
-//   keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-//   subjectAltName = email:gopher@golang.org,DNS:test.example.com
-//   [ req_attributes ]
-//   challengePassword = ignored challenge
-//   unstructuredName  = ignored unstructured name
+//
+//	[ v3_req ]
+//	basicConstraints = CA:FALSE
+//	keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+//	subjectAltName = email:gopher@golang.org,DNS:test.example.com
+//	[ req_attributes ]
+//	challengePassword = ignored challenge
+//	unstructuredName  = ignored unstructured name
 
 // certMissingRSANULL contains an RSA public key where the AlgorithmIdentifier
 // parameters are omitted rather than being an ASN.1 NULL.

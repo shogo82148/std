@@ -13,5 +13,6 @@ const MaxBase = 10 + ('z' - 'a' + 1) + ('Z' - 'A' + 1)
 
 // Split blocks greater than leafSize Words (or set to 0 to disable recursive conversion)
 // Benchmark and configure leafSize using: go test -bench="Leaf"
-//   8 and 16 effective on 3.0 GHz Xeon "Clovertown" CPU (128 byte cache lines)
-//   8 and 16 effective on 2.66 GHz Core 2 Duo "Penryn" CPU
+//
+//	8 and 16 effective on 3.0 GHz Xeon "Clovertown" CPU (128 byte cache lines)
+//	8 and 16 effective on 2.66 GHz Core 2 Duo "Penryn" CPU

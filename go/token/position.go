@@ -6,6 +6,7 @@ package token
 
 import (
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 )
 
 // Position describes an arbitrary source position
@@ -67,7 +68,6 @@ func (p Pos) IsValid() bool
 // A File is a handle for a file belonging to a FileSet.
 // A File has a name, size, and line offset table.
 type File struct {
-	set  *FileSet
 	name string
 	base int
 	size int
@@ -184,7 +184,7 @@ type FileSet struct {
 	mutex sync.RWMutex
 	base  int
 	files []*File
-	last  *File
+	last  atomic.Pointer[File]
 }
 
 // NewFileSet creates a new file set.

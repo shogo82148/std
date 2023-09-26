@@ -17,7 +17,7 @@ package build
 //
 // The general syntax of a rule is:
 //
-//		a, b < c, d;
+//	a, b < c, d;
 //
 // which means c and d come after a and b in the partial order
 // (that is, c and d can import a and b),
@@ -25,12 +25,12 @@ package build
 //
 // The rules can chain together, as in:
 //
-//		e < f, g < h;
+//	e < f, g < h;
 //
 // which is equivalent to
 //
-//		e < f, g;
-//		f, g < h;
+//	e < f, g;
+//	f, g < h;
 //
 // Except for the special bottom element "NONE", each name
 // must appear exactly once on the right-hand side of a rule.
@@ -42,7 +42,7 @@ package build
 //
 // Negative assertions double-check the partial order:
 //
-//		i !< j
+//	i !< j
 //
 // means that it must NOT be the case that i < j.
 // Negative assertions may appear anywhere in the rules,
@@ -52,6 +52,5 @@ package build
 //
 // All-caps names are pseudo-names for specific points
 // in the dependency lattice.
-//
 
 // A depsParser parses the depsRules syntax described above.

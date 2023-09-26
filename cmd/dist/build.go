@@ -28,6 +28,10 @@ package main
 // installed maps from a dir name (as given to install) to a chan
 // closed when the dir's package is installed.
 
+// unixOS is the set of GOOS values matched by the "unix" build tag.
+// This is the same list as in go/build/syslist.go and
+// cmd/go/internal/imports/build.go.
+
 // cleanlist is a list of packages with generated files and commands.
 
 // Cannot use go/build directly because cmd/dist for a new release

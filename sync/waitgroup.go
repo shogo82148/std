@@ -11,6 +11,9 @@ package sync
 // Wait can be used to block until all goroutines have finished.
 //
 // A WaitGroup must not be copied after first use.
+//
+// In the terminology of the Go memory model, a call to Done
+// “synchronizes before” the return of any Wait call that it unblocks.
 type WaitGroup struct {
 	noCopy noCopy
 

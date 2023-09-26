@@ -211,7 +211,8 @@ func (conf *Config) Check(path string, fset *token.FileSet, files []*ast.File, i
 
 // AssertableTo reports whether a value of type V can be asserted to have type T.
 //
-// The behavior of AssertableTo is undefined in two cases:
+// The behavior of AssertableTo is unspecified in three cases:
+//   - if T is Typ[Invalid]
 //   - if V is a generalized interface; i.e., an interface that may only be used
 //     as a type constraint in Go code
 //   - if T is an uninstantiated generic type
@@ -220,21 +221,21 @@ func AssertableTo(V *Interface, T Type) bool
 // AssignableTo reports whether a value of type V is assignable to a variable
 // of type T.
 //
-// The behavior of AssignableTo is undefined if V or T is an uninstantiated
-// generic type.
+// The behavior of AssignableTo is unspecified if V or T is Typ[Invalid] or an
+// uninstantiated generic type.
 func AssignableTo(V, T Type) bool
 
 // ConvertibleTo reports whether a value of type V is convertible to a value of
 // type T.
 //
-// The behavior of ConvertibleTo is undefined if V or T is an uninstantiated
-// generic type.
+// The behavior of ConvertibleTo is unspecified if V or T is Typ[Invalid] or an
+// uninstantiated generic type.
 func ConvertibleTo(V, T Type) bool
 
 // Implements reports whether type V implements interface T.
 //
-// The behavior of Implements is undefined if V is an uninstantiated generic
-// type.
+// The behavior of Implements is unspecified if V is Typ[Invalid] or an uninstantiated
+// generic type.
 func Implements(V Type, T *Interface) bool
 
 // Identical reports whether x and y are identical types.

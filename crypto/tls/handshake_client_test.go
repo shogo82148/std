@@ -28,3 +28,7 @@ package tls
 // brokenConnErr is the error that brokenConn returns once exhausted.
 
 // writeCountingConn wraps a net.Conn and counts the number of Write calls.
+
+// discardConn wraps a net.Conn but discards all writes, but reports that they happened.
+
+// largeRSAKeyCertPEM contains a 8193 bit RSA key

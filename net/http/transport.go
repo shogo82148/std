@@ -259,7 +259,6 @@ var _ io.ReaderFrom = (*persistConnWriter)(nil)
 //	socks5://proxy.com|https|foo.com  socks5 to proxy, then https to foo.com
 //	https://proxy.com|https|foo.com   https to proxy, then CONNECT to foo.com
 //	https://proxy.com|http            https to proxy, http to anywhere after that
-//
 
 // connectMethodKey is the map key version of connectMethod, with a
 // stringified proxy URL (or the empty string) instead of a pointer to

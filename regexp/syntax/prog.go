@@ -50,7 +50,7 @@ const (
 // at the end of the text.
 func EmptyOpContext(r1, r2 rune) EmptyOp
 
-// IsWordChar reports whether r is consider a “word character”
+// IsWordChar reports whether r is considered a “word character”
 // during the evaluation of the \b and \B zero-width assertions.
 // These assertions are ASCII-only: the word characters are [A-Za-z0-9_].
 func IsWordChar(r rune) bool

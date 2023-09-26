@@ -4,9 +4,16 @@
 
 package main_test
 
+import (
+	cmdgo "cmd/go"
+)
+
 // testGOROOT is the GOROOT to use when running testgo, a cmd/go binary
 // build from this process's current GOROOT, but run from a different
 // (temp) directory.
+
+// testGOROOT_FINAL is the GOROOT_FINAL with which the test binary is assumed to
+// have been built.
 
 // The length of an mtime tick on this system. This is an estimate of
 // how long we need to sleep to ensure that the mtime of two files is

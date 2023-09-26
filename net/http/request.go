@@ -276,11 +276,13 @@ func (r *Request) BasicAuth() (username, password string, ok bool)
 // Basic Authentication with the provided username and password.
 //
 // With HTTP Basic Authentication the provided username and password
-// are not encrypted.
+// are not encrypted. It should generally only be used in an HTTPS
+// request.
 //
-// Some protocols may impose additional requirements on pre-escaping the
-// username and password. For instance, when used with OAuth2, both arguments
-// must be URL encoded first with url.QueryEscape.
+// The username may not contain a colon. Some protocols may impose
+// additional requirements on pre-escaping the username and
+// password. For instance, when used with OAuth2, both arguments must
+// be URL encoded first with url.QueryEscape.
 func (r *Request) SetBasicAuth(username, password string)
 
 // ReadRequest reads and parses an incoming request from b.
@@ -294,12 +296,21 @@ func ReadRequest(b *bufio.Reader) (*Request, error)
 // MaxBytesReader is similar to io.LimitReader but is intended for
 // limiting the size of incoming request bodies. In contrast to
 // io.LimitReader, MaxBytesReader's result is a ReadCloser, returns a
-// non-EOF error for a Read beyond the limit, and closes the
-// underlying reader when its Close method is called.
+// non-nil error of type *MaxBytesError for a Read beyond the limit,
+// and closes the underlying reader when its Close method is called.
 //
 // MaxBytesReader prevents clients from accidentally or maliciously
-// sending a large request and wasting server resources.
+// sending a large request and wasting server resources. If possible,
+// it tells the ResponseWriter to close the connection after the limit
+// has been reached.
 func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser
+
+// MaxBytesError is returned by MaxBytesReader when its read limit is exceeded.
+type MaxBytesError struct {
+	Limit int64
+}
+
+func (e *MaxBytesError) Error() string
 
 // ParseForm populates r.Form and r.PostForm.
 //

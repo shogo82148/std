@@ -437,6 +437,8 @@ type Server struct {
 	activeConn map[*conn]struct{}
 	doneChan   chan struct{}
 	onShutdown []func()
+
+	listenerGroup sync.WaitGroup
 }
 
 // Close immediately closes all active net.Listeners and any

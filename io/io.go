@@ -109,7 +109,8 @@ type Closer interface {
 // interpreted according to whence:
 // SeekStart means relative to the start of the file,
 // SeekCurrent means relative to the current offset, and
-// SeekEnd means relative to the end.
+// SeekEnd means relative to the end
+// (for example, offset = -2 specifies the penultimate byte of the file).
 // Seek returns the new offset relative to the start of the
 // file or an error, if any.
 //
@@ -413,6 +414,8 @@ var _ ReaderFrom = discard{}
 
 // NopCloser returns a ReadCloser with a no-op Close method wrapping
 // the provided Reader r.
+// If r implements WriterTo, the returned ReadCloser will implement WriterTo
+// by forwarding calls to r.
 func NopCloser(r Reader) ReadCloser
 
 // ReadAll reads from r until an error or EOF and returns the data it read.

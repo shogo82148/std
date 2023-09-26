@@ -242,7 +242,7 @@ func Replace(s, old, new string, n int) string
 func ReplaceAll(s, old, new string) string
 
 // EqualFold reports whether s and t, interpreted as UTF-8 strings,
-// are equal under Unicode case-folding, which is a more general
+// are equal under simple Unicode case-folding, which is a more general
 // form of case-insensitivity.
 func EqualFold(s, t string) bool
 

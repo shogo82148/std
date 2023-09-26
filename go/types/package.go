@@ -31,6 +31,7 @@ func (pkg *Package) SetName(name string)
 // Scope returns the (complete or incomplete) package scope
 // holding the objects declared at package level (TypeNames,
 // Consts, Vars, and Funcs).
+// For a nil pkg receiver, Scope returns the Universe scope.
 func (pkg *Package) Scope() *Scope
 
 // A package is complete if its scope contains (at least) all

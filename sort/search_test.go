@@ -6,4 +6,5 @@ package sort_test
 
 import (
 	. "sort"
+	stringspkg "strings"
 )

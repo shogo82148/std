@@ -147,10 +147,6 @@ func Iopl(level int) (err error)
 
 func Pause() (err error)
 
-func Pread(fd int, p []byte, offset int64) (n int, err error)
-
-func Pwrite(fd int, p []byte, offset int64) (n int, err error)
-
 func Renameat(olddirfd int, oldpath string, newdirfd int, newpath string) (err error)
 
 func Setfsgid(gid int) (err error)

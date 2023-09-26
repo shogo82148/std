@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:generate go run genzfunc.go
+//go:generate go run gen_sort_variants.go
 
 // Package sort provides primitives for sorting slices and user-defined collections.
 package sort
@@ -21,6 +21,8 @@ type Interface interface {
 // It makes one call to data.Len to determine n and O(n*log(n)) calls to
 // data.Less and data.Swap. The sort is not guaranteed to be stable.
 func Sort(data Interface)
+
+// xorshift paper: https://www.jstatsoft.org/article/view/v008i14/xorshift.pdf
 
 // lessSwap is a pair of Less and Swap function for use with the
 // auto-generated func-optimized variant of sort.go in

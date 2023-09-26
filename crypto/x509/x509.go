@@ -85,46 +85,97 @@ const (
 
 func (algo PublicKeyAlgorithm) String() string
 
+// OIDs for signature algorithms
+//
+//	pkcs-1 OBJECT IDENTIFIER ::= {
+//		iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) 1 }
+//
+// RFC 3279 2.2.1 RSA Signature Algorithms
+//
+//	md2WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 2 }
+//
+//	md5WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 4 }
+//
+//	sha-1WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 5 }
+//
+//	dsaWithSha1 OBJECT IDENTIFIER ::= {
+//		iso(1) member-body(2) us(840) x9-57(10040) x9cm(4) 3 }
+//
+// RFC 3279 2.2.3 ECDSA Signature Algorithm
+//
+//	ecdsa-with-SHA1 OBJECT IDENTIFIER ::= {
+//		iso(1) member-body(2) us(840) ansi-x962(10045)
+//		signatures(4) ecdsa-with-SHA1(1)}
+//
+// RFC 4055 5 PKCS #1 Version 1.5
+//
+//	sha256WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 11 }
+//
+//	sha384WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 12 }
+//
+//	sha512WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 13 }
+//
+// RFC 5758 3.1 DSA Signature Algorithms
+//
+//	dsaWithSha256 OBJECT IDENTIFIER ::= {
+//		joint-iso-ccitt(2) country(16) us(840) organization(1) gov(101)
+//		csor(3) algorithms(4) id-dsa-with-sha2(3) 2}
+//
+// RFC 5758 3.2 ECDSA Signature Algorithm
+//
+//	ecdsa-with-SHA256 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
+//		us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 2 }
+//
+//	ecdsa-with-SHA384 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
+//		us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 3 }
+//
+//	ecdsa-with-SHA512 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
+//		us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 4 }
+//
+// RFC 8410 3 Curve25519 and Curve448 Algorithm Identifiers
+//
+//	id-Ed25519   OBJECT IDENTIFIER ::= { 1 3 101 112 }
+
 // hashToPSSParameters contains the DER encoded RSA PSS parameters for the
 // SHA256, SHA384, and SHA512 hashes as defined in RFC 3447, Appendix A.2.3.
 // The parameters contain the following values:
-//   * hashAlgorithm contains the associated hash identifier with NULL parameters
-//   * maskGenAlgorithm always contains the default mgf1SHA1 identifier
-//   * saltLength contains the length of the associated hash
-//   * trailerField always contains the default trailerFieldBC value
+//   - hashAlgorithm contains the associated hash identifier with NULL parameters
+//   - maskGenAlgorithm always contains the default mgf1SHA1 identifier
+//   - saltLength contains the length of the associated hash
+//   - trailerField always contains the default trailerFieldBC value
 
 // pssParameters reflects the parameters in an AlgorithmIdentifier that
 // specifies RSA PSS. See RFC 3447, Appendix A.2.3.
 
 // RFC 3279, 2.3 Public Key Algorithms
 //
-// pkcs-1 OBJECT IDENTIFIER ::== { iso(1) member-body(2) us(840)
-//    rsadsi(113549) pkcs(1) 1 }
+//	pkcs-1 OBJECT IDENTIFIER ::== { iso(1) member-body(2) us(840)
+//		rsadsi(113549) pkcs(1) 1 }
 //
 // rsaEncryption OBJECT IDENTIFIER ::== { pkcs1-1 1 }
 //
-// id-dsa OBJECT IDENTIFIER ::== { iso(1) member-body(2) us(840)
-//    x9-57(10040) x9cm(4) 1 }
+//	id-dsa OBJECT IDENTIFIER ::== { iso(1) member-body(2) us(840)
+//		x9-57(10040) x9cm(4) 1 }
 //
 // RFC 5480, 2.1.1 Unrestricted Algorithm Identifier and Parameters
 //
-// id-ecPublicKey OBJECT IDENTIFIER ::= {
-//       iso(1) member-body(2) us(840) ansi-X9-62(10045) keyType(2) 1 }
+//	id-ecPublicKey OBJECT IDENTIFIER ::= {
+//		iso(1) member-body(2) us(840) ansi-X9-62(10045) keyType(2) 1 }
 
 // RFC 5480, 2.1.1.1. Named Curve
 //
-// secp224r1 OBJECT IDENTIFIER ::= {
-//   iso(1) identified-organization(3) certicom(132) curve(0) 33 }
+//	secp224r1 OBJECT IDENTIFIER ::= {
+//	  iso(1) identified-organization(3) certicom(132) curve(0) 33 }
 //
-// secp256r1 OBJECT IDENTIFIER ::= {
-//   iso(1) member-body(2) us(840) ansi-X9-62(10045) curves(3)
-//   prime(1) 7 }
+//	secp256r1 OBJECT IDENTIFIER ::= {
+//	  iso(1) member-body(2) us(840) ansi-X9-62(10045) curves(3)
+//	  prime(1) 7 }
 //
-// secp384r1 OBJECT IDENTIFIER ::= {
-//   iso(1) identified-organization(3) certicom(132) curve(0) 34 }
+//	secp384r1 OBJECT IDENTIFIER ::= {
+//	  iso(1) identified-organization(3) certicom(132) curve(0) 34 }
 //
-// secp521r1 OBJECT IDENTIFIER ::= {
-//   iso(1) identified-organization(3) certicom(132) curve(0) 35 }
+//	secp521r1 OBJECT IDENTIFIER ::= {
+//	  iso(1) identified-organization(3) certicom(132) curve(0) 35 }
 //
 // NB: secp256r1 is equivalent to prime256v1
 
@@ -146,16 +197,16 @@ const (
 
 // RFC 5280, 4.2.1.12  Extended Key Usage
 //
-// anyExtendedKeyUsage OBJECT IDENTIFIER ::= { id-ce-extKeyUsage 0 }
+//	anyExtendedKeyUsage OBJECT IDENTIFIER ::= { id-ce-extKeyUsage 0 }
 //
-// id-kp OBJECT IDENTIFIER ::= { id-pkix 3 }
+//	id-kp OBJECT IDENTIFIER ::= { id-pkix 3 }
 //
-// id-kp-serverAuth             OBJECT IDENTIFIER ::= { id-kp 1 }
-// id-kp-clientAuth             OBJECT IDENTIFIER ::= { id-kp 2 }
-// id-kp-codeSigning            OBJECT IDENTIFIER ::= { id-kp 3 }
-// id-kp-emailProtection        OBJECT IDENTIFIER ::= { id-kp 4 }
-// id-kp-timeStamping           OBJECT IDENTIFIER ::= { id-kp 8 }
-// id-kp-OCSPSigning            OBJECT IDENTIFIER ::= { id-kp 9 }
+//	id-kp-serverAuth             OBJECT IDENTIFIER ::= { id-kp 1 }
+//	id-kp-clientAuth             OBJECT IDENTIFIER ::= { id-kp 2 }
+//	id-kp-codeSigning            OBJECT IDENTIFIER ::= { id-kp 3 }
+//	id-kp-emailProtection        OBJECT IDENTIFIER ::= { id-kp 4 }
+//	id-kp-timeStamping           OBJECT IDENTIFIER ::= { id-kp 8 }
+//	id-kp-OCSPSigning            OBJECT IDENTIFIER ::= { id-kp 9 }
 
 // ExtKeyUsage represents an extended set of actions that are valid for a given key.
 // Each of the ExtKeyUsage* constants define a unique action.
@@ -252,7 +303,7 @@ var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorit
 //
 // To temporarily restore support for SHA-1 signatures, include the value
 // "x509sha1=1" in the GODEBUG environment variable. Note that this option will
-// be removed in Go 1.19.
+// be removed in a future release.
 type InsecureAlgorithmError SignatureAlgorithm
 
 func (e InsecureAlgorithmError) Error() string
@@ -275,6 +326,8 @@ func (c *Certificate) CheckSignatureFrom(parent *Certificate) error
 func (c *Certificate) CheckSignature(algo SignatureAlgorithm, signed, signature []byte) error
 
 // CheckCRLSignature checks that the signature in crl is from c.
+//
+// Deprecated: Use RevocationList.CheckSignatureFrom instead.
 func (c *Certificate) CheckCRLSignature(crl *pkix.CertificateList) error
 
 type UnhandledCriticalExtension struct{}
@@ -353,15 +406,19 @@ func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv 
 // encoded CRLs will appear where they should be DER encoded, so this function
 // will transparently handle PEM encoding as long as there isn't any leading
 // garbage.
+//
+// Deprecated: Use ParseRevocationList instead.
 func ParseCRL(crlBytes []byte) (*pkix.CertificateList, error)
 
 // ParseDERCRL parses a DER encoded CRL from the given bytes.
+//
+// Deprecated: Use ParseRevocationList instead.
 func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
 
 // CreateCRL returns a DER encoded CRL, signed by this Certificate, that
 // contains the given list of revoked certificates.
 //
-// Note: this method does not generate an RFC 5280 conformant X.509 v2 CRL.
+// Deprecated: this method does not generate an RFC 5280 conformant X.509 v2 CRL.
 // To generate a standards compliant CRL, use CreateRevocationList instead.
 func (c *Certificate) CreateCRL(rand io.Reader, priv any, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
 
@@ -427,6 +484,18 @@ func (c *CertificateRequest) CheckSignature() error
 // RevocationList contains the fields used to create an X.509 v2 Certificate
 // Revocation list with CreateRevocationList.
 type RevocationList struct {
+	Raw []byte
+
+	RawTBSRevocationList []byte
+
+	RawIssuer []byte
+
+	Issuer pkix.Name
+
+	AuthorityKeyId []byte
+
+	Signature []byte
+
 	SignatureAlgorithm SignatureAlgorithm
 
 	RevokedCertificates []pkix.RevokedCertificate
@@ -436,6 +505,8 @@ type RevocationList struct {
 	ThisUpdate time.Time
 
 	NextUpdate time.Time
+
+	Extensions []pkix.Extension
 
 	ExtraExtensions []pkix.Extension
 }
@@ -453,3 +524,7 @@ type RevocationList struct {
 // extension are populated using the issuer certificate. issuer must have
 // SubjectKeyId set.
 func CreateRevocationList(rand io.Reader, template *RevocationList, issuer *Certificate, priv crypto.Signer) ([]byte, error)
+
+// CheckSignatureFrom verifies that the signature on rl is a valid signature
+// from issuer.
+func (rl *RevocationList) CheckSignatureFrom(parent *Certificate) error

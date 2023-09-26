@@ -5,19 +5,24 @@
 package x509
 
 // Generated using:
-//   openssl genrsa 1024 | openssl pkcs8 -topk8 -nocrypt
+//
+//	openssl genrsa 1024 | openssl pkcs8 -topk8 -nocrypt
 
 // Generated using:
-//   openssl ecparam -genkey -name secp224r1 | openssl pkcs8 -topk8 -nocrypt
+//
+//	openssl ecparam -genkey -name secp224r1 | openssl pkcs8 -topk8 -nocrypt
 
 // Generated using:
-//   openssl ecparam -genkey -name secp256r1 | openssl pkcs8 -topk8 -nocrypt
+//
+//	openssl ecparam -genkey -name secp256r1 | openssl pkcs8 -topk8 -nocrypt
 
 // Generated using:
-//   openssl ecparam -genkey -name secp384r1 | openssl pkcs8 -topk8 -nocrypt
+//
+//	openssl ecparam -genkey -name secp384r1 | openssl pkcs8 -topk8 -nocrypt
 
 // Generated using:
-//   openssl ecparam -genkey -name secp521r1 | openssl pkcs8 -topk8 -nocrypt
+//
+//	openssl ecparam -genkey -name secp521r1 | openssl pkcs8 -topk8 -nocrypt
 //
 // Note that OpenSSL will truncate the private key if it can (i.e. it emits it
 // like an integer, even though it's an OCTET STRING field). Thus if you

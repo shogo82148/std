@@ -25,7 +25,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A ByteOrder specifies how to convert byte sequences into
+// A ByteOrder specifies how to convert byte slices into
 // 16-, 32-, or 64-bit unsigned integers.
 type ByteOrder interface {
 	Uint16([]byte) uint16
@@ -37,10 +37,19 @@ type ByteOrder interface {
 	String() string
 }
 
-// LittleEndian is the little-endian implementation of ByteOrder.
+// AppendByteOrder specifies how to append 16-, 32-, or 64-bit unsigned integers
+// into a byte slice.
+type AppendByteOrder interface {
+	AppendUint16([]byte, uint16) []byte
+	AppendUint32([]byte, uint32) []byte
+	AppendUint64([]byte, uint64) []byte
+	String() string
+}
+
+// LittleEndian is the little-endian implementation of ByteOrder and AppendByteOrder.
 var LittleEndian littleEndian
 
-// BigEndian is the big-endian implementation of ByteOrder.
+// BigEndian is the big-endian implementation of ByteOrder and AppendByteOrder.
 var BigEndian bigEndian
 
 // Read reads structured binary data from r into data.

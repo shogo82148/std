@@ -49,10 +49,11 @@ The arguments are indexed from 0 through flag.NArg()-1.
 The following forms are permitted:
 
 	-flag
+	--flag   // double dashes are also permitted
 	-flag=x
 	-flag x  // non-boolean flags only
 
-One or two minus signs may be used; they are equivalent.
+One or two dashes may be used; they are equivalent.
 The last form is not permitted for boolean flags because the
 meaning of the command
 
@@ -82,6 +83,7 @@ flag set.
 package flag
 
 import (
+	"github.com/shogo82148/std/encoding"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/io"
@@ -117,6 +119,10 @@ var ErrHelp = errors.New("flag: help requested")
 // -- float64 Value
 
 // -- time.Duration Value
+
+// -- encoding.TextUnmarshaler Value
+
+// -- func Value
 
 // Value is the interface to the dynamic value stored in a flag.
 // (The default value is represented as a string.)
@@ -433,6 +439,20 @@ func (f *FlagSet) Duration(name string, value time.Duration, usage string) *time
 // The return value is the address of a time.Duration variable that stores the value of the flag.
 // The flag accepts a value acceptable to time.ParseDuration.
 func Duration(name string, value time.Duration, usage string) *time.Duration
+
+// TextVar defines a flag with a specified name, default value, and usage string.
+// The argument p must be a pointer to a variable that will hold the value
+// of the flag, and p must implement encoding.TextUnmarshaler.
+// If the flag is used, the flag value will be passed to p's UnmarshalText method.
+// The type of the default value must be the same as the type of p.
+func (f *FlagSet) TextVar(p encoding.TextUnmarshaler, name string, value encoding.TextMarshaler, usage string)
+
+// TextVar defines a flag with a specified name, default value, and usage string.
+// The argument p must be a pointer to a variable that will hold the value
+// of the flag, and p must implement encoding.TextUnmarshaler.
+// If the flag is used, the flag value will be passed to p's UnmarshalText method.
+// The type of the default value must be the same as the type of p.
+func TextVar(p encoding.TextUnmarshaler, name string, value encoding.TextMarshaler, usage string)
 
 // Func defines a flag with the specified name and usage string.
 // Each time the flag is seen, fn is called with the value of the flag.

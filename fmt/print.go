@@ -63,6 +63,10 @@ func Printf(format string, a ...any) (n int, err error)
 // Sprintf formats according to a format specifier and returns the resulting string.
 func Sprintf(format string, a ...any) string
 
+// Appendf formats according to a format specifier, appends the result to the byte
+// slice, and returns the updated slice.
+func Appendf(b []byte, format string, a ...any) []byte
+
 // Fprint formats using the default formats for its operands and writes to w.
 // Spaces are added between operands when neither is a string.
 // It returns the number of bytes written and any write error encountered.
@@ -77,6 +81,10 @@ func Print(a ...any) (n int, err error)
 // Spaces are added between operands when neither is a string.
 func Sprint(a ...any) string
 
+// Append formats using the default formats for its operands, appends the result to
+// the byte slice, and returns the updated slice.
+func Append(b []byte, a ...any) []byte
+
 // Fprintln formats using the default formats for its operands and writes to w.
 // Spaces are always added between operands and a newline is appended.
 // It returns the number of bytes written and any write error encountered.
@@ -90,3 +98,8 @@ func Println(a ...any) (n int, err error)
 // Sprintln formats using the default formats for its operands and returns the resulting string.
 // Spaces are always added between operands and a newline is appended.
 func Sprintln(a ...any) string
+
+// Appendln formats using the default formats for its operands, appends the result
+// to the byte slice, and returns the updated slice. Spaces are always added
+// between operands and a newline is appended.
+func Appendln(b []byte, a ...any) []byte

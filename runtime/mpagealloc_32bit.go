@@ -16,3 +16,6 @@ package runtime
 // See comment in mpagealloc_64bit.go.
 
 // See comment in mpagealloc_64bit.go.
+
+// scavengeIndexArray is the backing store for p.scav.index.chunks.
+// On 32-bit platforms, it's small enough to just be a global.

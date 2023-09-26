@@ -143,10 +143,6 @@ func Listen(s int, n int) (err error)
 
 func Pause() (err error)
 
-func Pread(fd int, p []byte, offset int64) (n int, err error)
-
-func Pwrite(fd int, p []byte, offset int64) (n int, err error)
-
 func Renameat(olddirfd int, oldpath string, newdirfd int, newpath string) (err error)
 
 func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err error)

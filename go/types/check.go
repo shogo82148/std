@@ -44,7 +44,7 @@ type Checker struct {
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
-	infoMap map[*Named]typeInfo
+	valids  instanceLookup
 
 	pkgPathMap map[string]map[string]bool
 	seenPkgMap map[*Package]bool

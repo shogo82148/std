@@ -106,6 +106,8 @@ type Reader struct {
 
 	numLine int
 
+	offset int64
+
 	rawBuffer []byte
 
 	recordBuffer []byte
@@ -137,6 +139,11 @@ func (r *Reader) Read() (record []string, err error)
 //
 // If this is called with an out-of-bounds index, it panics.
 func (r *Reader) FieldPos(field int) (line, column int)
+
+// InputOffset returns the input stream byte offset of the current reader
+// position. The offset gives the location of the end of the most recently
+// read row and the beginning of the next row.
+func (r *Reader) InputOffset() int64
 
 // pos holds the position of a field in the current line.
 

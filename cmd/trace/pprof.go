@@ -6,10 +6,6 @@
 
 package main
 
-import (
-	exec "internal/execabs"
-)
-
 // Record represents one entry in pprof-like profiles.
 type Record struct {
 	stk  []*trace.Frame

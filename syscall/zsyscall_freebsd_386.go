@@ -93,10 +93,6 @@ func Open(path string, mode int, perm uint32) (fd int, err error)
 
 func Pathconf(path string, name int) (val int, err error)
 
-func Pread(fd int, p []byte, offset int64) (n int, err error)
-
-func Pwrite(fd int, p []byte, offset int64) (n int, err error)
-
 func Readlink(path string, buf []byte) (n int, err error)
 
 func Rename(from string, to string) (err error)
@@ -124,8 +120,6 @@ func Setpriority(which int, who int, prio int) (err error)
 func Setregid(rgid int, egid int) (err error)
 
 func Setreuid(ruid int, euid int) (err error)
-
-func Setrlimit(which int, lim *Rlimit) (err error)
 
 func Setsid() (pid int, err error)
 

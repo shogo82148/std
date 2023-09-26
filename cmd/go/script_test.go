@@ -13,7 +13,6 @@ package main_test
 // Keep list and the implementations below sorted by name.
 //
 // NOTE: If you make changes here, update testdata/script/README too!
-//
 
 // When expanding shell variables for these commands, we apply regexp quoting to
 // expanded strings within the first argument.

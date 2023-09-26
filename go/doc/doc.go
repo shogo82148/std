@@ -7,6 +7,7 @@ package doc
 
 import (
 	"github.com/shogo82148/std/go/ast"
+	"github.com/shogo82148/std/go/doc/comment"
 	"github.com/shogo82148/std/go/token"
 )
 
@@ -27,6 +28,9 @@ type Package struct {
 	Funcs  []*Func
 
 	Examples []*Example
+
+	importByName map[string]string
+	syms         map[string]bool
 }
 
 // Value is the documentation for a (possibly grouped) var or const declaration.
@@ -121,3 +125,38 @@ func New(pkg *ast.Package, importPath string, mode Mode) *Package
 // NewFromFiles takes ownership of the AST files and may edit them,
 // unless the PreserveAST Mode bit is on.
 func NewFromFiles(fset *token.FileSet, files []*ast.File, importPath string, opts ...any) (*Package, error)
+
+// Parser returns a doc comment parser configured
+// for parsing doc comments from package p.
+// Each call returns a new parser, so that the caller may
+// customize it before use.
+func (p *Package) Parser() *comment.Parser
+
+// Printer returns a doc comment printer configured
+// for printing doc comments from package p.
+// Each call returns a new printer, so that the caller may
+// customize it before use.
+func (p *Package) Printer() *comment.Printer
+
+// HTML returns formatted HTML for the doc comment text.
+//
+// To customize details of the HTML, use [Package.Printer]
+// to obtain a [comment.Printer], and configure it
+// before calling its HTML method.
+func (p *Package) HTML(text string) []byte
+
+// Markdown returns formatted Markdown for the doc comment text.
+//
+// To customize details of the Markdown, use [Package.Printer]
+// to obtain a [comment.Printer], and configure it
+// before calling its Markdown method.
+func (p *Package) Markdown(text string) []byte
+
+// Text returns formatted text for the doc comment text,
+// wrapped to 80 Unicode code points and using tabs for
+// code block indentation.
+//
+// To customize details of the formatting, use [Package.Printer]
+// to obtain a [comment.Printer], and configure it
+// before calling its Text method.
+func (p *Package) Text(text string) []byte

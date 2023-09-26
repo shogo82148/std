@@ -60,10 +60,10 @@ package runtime
 // Because we do free Ms, there are some additional constrains on
 // muintptrs:
 //
-// 1. Never hold an muintptr locally across a safe point.
+//  1. Never hold an muintptr locally across a safe point.
 //
-// 2. Any muintptr in the heap must be owned by the M itself so it can
-//    ensure it is not in use when the last true *m is released.
+//  2. Any muintptr in the heap must be owned by the M itself so it can
+//     ensure it is not in use when the last true *m is released.
 
 // sudog represents a g in a wait list, such as for sending/receiving
 // on a channel.
@@ -135,4 +135,4 @@ package runtime
 
 // Set by the linker so the runtime can determine the buildmode.
 
-// Must agree with internal/buildcfg.Experiment.FramePointer.
+// Must agree with internal/buildcfg.FramePointerEnabled.

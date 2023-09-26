@@ -27,8 +27,9 @@ type SysProcAttr struct {
 	Noctty  bool
 	Ctty    int
 
-	Foreground   bool
-	Pgid         int
+	Foreground bool
+	Pgid       int
+
 	Pdeathsig    Signal
 	Cloneflags   uintptr
 	Unshareflags uintptr
