@@ -21,6 +21,7 @@ type Scope struct {
 	elems    map[string]Object
 	pos, end token.Pos
 	comment  string
+	isFunc   bool
 }
 
 // NewScope returns a new, empty scope contained in the given parent

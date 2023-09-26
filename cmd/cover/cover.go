@@ -21,12 +21,12 @@ type Block struct {
 // File is a wrapper for the state of a file used in the parser.
 // The basic parse tree walker is a method of this type.
 type File struct {
-	fset       *token.FileSet
-	name       string
-	astFile    *ast.File
-	blocks     []Block
-	atomicPkg  string
-	directives map[*ast.Comment]bool
+	fset    *token.FileSet
+	name    string
+	astFile *ast.File
+	blocks  []Block
+	content []byte
+	edit    *edit.Buffer
 }
 
 // Visit implements the ast.Visitor interface.

@@ -10,3 +10,10 @@ package aes
 
 // Assert that aesCipherAsm implements the gcmAble interface.
 var _ gcmAble = (*aesCipherAsm)(nil)
+
+// hasKMA contains the result of supportsKMA.
+
+// gcmKMA implements the cipher.AEAD interface using the KMA instruction. It should
+// only be used if hasKMA is true.
+
+// flags for the KMA instruction

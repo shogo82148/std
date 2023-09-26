@@ -103,6 +103,13 @@ type TCPListener struct {
 	fd *netFD
 }
 
+// SyscallConn returns a raw network connection.
+// This implements the syscall.Conn interface.
+//
+// The returned RawConn only supports calling Control. Read and
+// Write return an error.
+func (l *TCPListener) SyscallConn() (syscall.RawConn, error)
+
 // AcceptTCP accepts the next incoming call and returns the new
 // connection.
 func (l *TCPListener) AcceptTCP() (*TCPConn, error)

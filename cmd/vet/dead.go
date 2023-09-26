@@ -4,4 +4,5 @@
 //
 // Simplified dead code detector. Used for skipping certain checks
 // on unreachable code (for instance, shift checks on arch-specific code).
+
 package main

@@ -49,7 +49,7 @@ func (e *ValueError) Error() string
 
 // emptyInterface is the header for an interface{} value.
 
-// nonEmptyInterface is the header for a interface value with methods.
+// nonEmptyInterface is the header for an interface value with methods.
 
 // Addr returns a pointer value representing the address of v.
 // It panics if CanAddr() returns false.
@@ -402,6 +402,8 @@ func AppendSlice(s, t Value) Value
 // It returns the number of elements copied.
 // Dst and src each must have kind Slice or Array, and
 // dst and src must have the same element type.
+//
+// As a special case, src can have kind String if the element type of dst is kind Uint8.
 func Copy(dst, src Value) int
 
 // A runtimeSelect is a single case passed to rselect.

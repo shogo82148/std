@@ -44,6 +44,7 @@ type StartElement struct {
 	Attr []Attr
 }
 
+// Copy creates a new copy of StartElement.
 func (e StartElement) Copy() StartElement
 
 // End returns the corresponding XML end element.
@@ -59,12 +60,14 @@ type EndElement struct {
 // the characters they represent.
 type CharData []byte
 
+// Copy creates a new copy of CharData.
 func (c CharData) Copy() CharData
 
 // A Comment represents an XML comment of the form <!--comment-->.
 // The bytes do not include the <!-- and --> comment markers.
 type Comment []byte
 
+// Copy creates a new copy of Comment.
 func (c Comment) Copy() Comment
 
 // A ProcInst represents an XML processing instruction of the form <?target inst?>
@@ -73,16 +76,35 @@ type ProcInst struct {
 	Inst   []byte
 }
 
+// Copy creates a new copy of ProcInst.
 func (p ProcInst) Copy() ProcInst
 
 // A Directive represents an XML directive of the form <!text>.
 // The bytes do not include the <! and > markers.
 type Directive []byte
 
+// Copy creates a new copy of Directive.
 func (d Directive) Copy() Directive
 
 // CopyToken returns a copy of a Token.
 func CopyToken(t Token) Token
+
+// A TokenReader is anything that can decode a stream of XML tokens, including a
+// Decoder.
+//
+// When Token encounters an error or end-of-file condition after successfully
+// reading a token, it returns the token. It may return the (non-nil) error from
+// the same call or return the error (and a nil token) from a subsequent call.
+// An instance of this general case is that a TokenReader returning a non-nil
+// token at the end of the token stream may return either io.EOF or a nil error.
+// The next Read should return nil, io.EOF.
+//
+// Implementations of Token are discouraged from returning a nil token with a
+// nil error. Callers should treat a return of nil, nil as indicating that
+// nothing happened; in particular it does not indicate EOF.
+type TokenReader interface {
+	Token() (Token, error)
+}
 
 // A Decoder represents an XML parser reading a particular input stream.
 // The parser assumes that its input is encoded in UTF-8.
@@ -98,6 +120,7 @@ type Decoder struct {
 	DefaultSpace string
 
 	r              io.ByteReader
+	t              TokenReader
 	buf            bytes.Buffer
 	saved          *bytes.Buffer
 	stk            *stack
@@ -117,6 +140,9 @@ type Decoder struct {
 // If r does not implement io.ByteReader, NewDecoder will
 // do its own buffering.
 func NewDecoder(r io.Reader) *Decoder
+
+// NewTokenDecoder creates a new XML parser using an underlying token stream.
+func NewTokenDecoder(t TokenReader) *Decoder
 
 // Token returns the next XML token in the input stream.
 // At the end of the input stream, Token returns nil, io.EOF.

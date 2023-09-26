@@ -79,7 +79,7 @@ type ResponseWriter interface {
 
 	Write([]byte) (int, error)
 
-	WriteHeader(int)
+	WriteHeader(statusCode int)
 }
 
 // The Flusher interface is implemented by ResponseWriters that allow
@@ -371,7 +371,7 @@ func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 // Handler is typically nil, in which case the DefaultServeMux is used.
 func Serve(l net.Listener, handler Handler) error
 
-// Serve accepts incoming HTTPS connections on the listener l,
+// ServeTLS accepts incoming HTTPS connections on the listener l,
 // creating a new service goroutine for each. The service goroutines
 // read requests and then call handler to reply to them.
 //
@@ -386,8 +386,9 @@ func ServeTLS(l net.Listener, handler Handler, certFile, keyFile string) error
 // A Server defines parameters for running an HTTP server.
 // The zero value for Server is a valid configuration.
 type Server struct {
-	Addr      string
-	Handler   Handler
+	Addr    string
+	Handler Handler
+
 	TLSConfig *tls.Config
 
 	ReadTimeout time.Duration
@@ -452,7 +453,8 @@ func (srv *Server) Close() error
 // Shutdown does not attempt to close nor wait for hijacked
 // connections such as WebSockets. The caller of Shutdown should
 // separately notify such long-lived connections of shutdown and wait
-// for them to close, if desired.
+// for them to close, if desired. See RegisterOnShutdown for a way to
+// register shutdown notification functions.
 func (srv *Server) Shutdown(ctx context.Context) error
 
 // RegisterOnShutdown registers a function to call on Shutdown.
@@ -542,7 +544,7 @@ func (srv *Server) Serve(l net.Listener) error
 // server's certificate, any intermediates, and the CA's certificate.
 //
 // For HTTP/2 support, srv.TLSConfig should be initialized to the
-// provided listener's TLS Config before calling Serve. If
+// provided listener's TLS Config before calling ServeTLS. If
 // srv.TLSConfig is non-nil and doesn't include the string "h2" in
 // Config.NextProtos, HTTP/2 support is not enabled.
 //

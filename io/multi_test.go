@@ -8,6 +8,8 @@ import (
 	. "io"
 )
 
+// writerFunc is an io.Writer implemented by the underlying func.
+
 // readerFunc is an io.Reader implemented by the underlying func.
 
 // byteAndEOFReader is a Reader which reads one byte (the underlying

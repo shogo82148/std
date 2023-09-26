@@ -37,3 +37,6 @@ import (
 // certMultipleRDN contains a RelativeDistinguishedName with two elements (the
 // common name and serial number). This particular certificate was the first
 // such certificate in the “Pilot” Certificate Transparency log.
+
+// multipleURLsInCRLDPPEM contains two URLs in a single CRL DistributionPoint
+// structure. It is taken from https://crt.sh/?id=12721534.

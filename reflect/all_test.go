@@ -379,6 +379,8 @@ type Inner struct {
 
 type Impl struct{}
 
+type UnExportedFirst int
+
 // Issue 18635 (method version).
 type KeepMethodLive struct{}
 
@@ -402,3 +404,5 @@ type Talias2 struct {
 	Tint
 	Tint2
 }
+
+type NonExportedFirst int

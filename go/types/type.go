@@ -161,6 +161,7 @@ func (t *Tuple) Len() int
 func (t *Tuple) At(i int) *Var
 
 // A Signature represents a (non-builtin) function or method type.
+// The receiver is ignored when comparing signatures for identity.
 type Signature struct {
 	scope    *Scope
 	recv     *Var
@@ -176,7 +177,7 @@ type Signature struct {
 func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 
 // Recv returns the receiver of signature s (if a method), or nil if a
-// function.
+// function. It is ignored when comparing signatures for identity.
 //
 // For an abstract method, Recv returns the enclosing interface either
 // as a *Named or an *Interface. Due to embedding, an interface may
@@ -200,7 +201,13 @@ type Interface struct {
 	allMethods []*Func
 }
 
-// NewInterface returns a new interface for the given methods and embedded types.
+// emptyInterface represents the empty (completed) interface
+
+// markComplete is used to mark an empty interface as completely
+// set up by setting the allMethods field to a non-nil empty slice.
+
+// NewInterface returns a new (incomplete) interface for the given methods and embedded types.
+// To compute the method set of the interface, Complete must be called.
 func NewInterface(methods []*Func, embeddeds []*Named) *Interface
 
 // NumExplicitMethods returns the number of explicitly declared methods of interface t.
@@ -280,6 +287,7 @@ type Named struct {
 }
 
 // NewNamed returns a new named type for the given type name, underlying type, and associated methods.
+// If the given type name obj doesn't have a type yet, its type is set to the returned named type.
 // The underlying type must not be a *Named.
 func NewNamed(obj *TypeName, underlying Type, methods []*Func) *Named
 
@@ -293,11 +301,9 @@ func (t *Named) NumMethods() int
 func (t *Named) Method(i int) *Func
 
 // SetUnderlying sets the underlying type and marks t as complete.
-// TODO(gri) determine if there's a better solution rather than providing this function
 func (t *Named) SetUnderlying(underlying Type)
 
 // AddMethod adds method m unless it is already in the method list.
-// TODO(gri) find a better solution instead of providing this function
 func (t *Named) AddMethod(m *Func)
 
 func (t *Basic) Underlying() Type

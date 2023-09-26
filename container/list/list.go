@@ -43,14 +43,15 @@ func New() *List
 // The complexity is O(1).
 func (l *List) Len() int
 
-// Front returns the first element of list l or nil.
+// Front returns the first element of list l or nil if the list is empty.
 func (l *List) Front() *Element
 
-// Back returns the last element of list l or nil.
+// Back returns the last element of list l or nil if the list is empty.
 func (l *List) Back() *Element
 
 // Remove removes e from l if e is an element of list l.
 // It returns the element value e.Value.
+// The element must not be nil.
 func (l *List) Remove(e *Element) interface{}
 
 // PushFront inserts a new element e with value v at the front of list l and returns e.
@@ -61,32 +62,38 @@ func (l *List) PushBack(v interface{}) *Element
 
 // InsertBefore inserts a new element e with value v immediately before mark and returns e.
 // If mark is not an element of l, the list is not modified.
+// The mark must not be nil.
 func (l *List) InsertBefore(v interface{}, mark *Element) *Element
 
 // InsertAfter inserts a new element e with value v immediately after mark and returns e.
 // If mark is not an element of l, the list is not modified.
+// The mark must not be nil.
 func (l *List) InsertAfter(v interface{}, mark *Element) *Element
 
 // MoveToFront moves element e to the front of list l.
 // If e is not an element of l, the list is not modified.
+// The element must not be nil.
 func (l *List) MoveToFront(e *Element)
 
 // MoveToBack moves element e to the back of list l.
 // If e is not an element of l, the list is not modified.
+// The element must not be nil.
 func (l *List) MoveToBack(e *Element)
 
 // MoveBefore moves element e to its new position before mark.
 // If e or mark is not an element of l, or e == mark, the list is not modified.
+// The element and mark must not be nil.
 func (l *List) MoveBefore(e, mark *Element)
 
 // MoveAfter moves element e to its new position after mark.
 // If e or mark is not an element of l, or e == mark, the list is not modified.
+// The element and mark must not be nil.
 func (l *List) MoveAfter(e, mark *Element)
 
 // PushBackList inserts a copy of an other list at the back of list l.
-// The lists l and other may be the same.
+// The lists l and other may be the same. They must not be nil.
 func (l *List) PushBackList(other *List)
 
 // PushFrontList inserts a copy of an other list at the front of list l.
-// The lists l and other may be the same.
+// The lists l and other may be the same. They must not be nil.
 func (l *List) PushFrontList(other *List)

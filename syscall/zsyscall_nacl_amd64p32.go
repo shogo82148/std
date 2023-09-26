@@ -5,5 +5,3 @@
 // +build nacl,amd64p32
 
 package syscall
-
-func Exit(code int) (err error)

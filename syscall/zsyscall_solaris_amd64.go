@@ -24,8 +24,6 @@ func Close(fd int) (err error)
 
 func Dup(fd int) (nfd int, err error)
 
-func Exit(code int)
-
 func Fchdir(fd int) (err error)
 
 func Fchmod(fd int, mode uint32) (err error)

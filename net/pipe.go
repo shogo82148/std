@@ -4,6 +4,8 @@
 
 package net
 
+// pipeDeadline is an abstraction for handling timeouts.
+
 // Pipe creates a synchronous, in-memory, full duplex
 // network connection; both ends implement the Conn interface.
 // Reads on one end are matched with writes on the other,

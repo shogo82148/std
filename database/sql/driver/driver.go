@@ -15,7 +15,8 @@ import (
 )
 
 // Value is a value that drivers must be able to handle.
-// It is either nil or an instance of one of these types:
+// It is either nil, a type handled by a database driver's NamedValueChecker
+// interface, or an instance of one of these types:
 //
 //	int64
 //	float64
@@ -36,8 +37,37 @@ type NamedValue struct {
 
 // Driver is the interface that must be implemented by a database
 // driver.
+//
+// Database drivers may implement DriverContext for access
+// to contexts and to parse the name only once for a pool of connections,
+// instead of once per connection.
 type Driver interface {
 	Open(name string) (Conn, error)
+}
+
+// If a Driver implements DriverContext, then sql.DB will call
+// OpenConnector to obtain a Connector and then invoke
+// that Connector's Conn method to obtain each needed connection,
+// instead of invoking the Driver's Open method for each connection.
+// The two-step sequence allows drivers to parse the name just once
+// and also provides access to per-Conn contexts.
+type DriverContext interface {
+	OpenConnector(name string) (Connector, error)
+}
+
+// A Connector represents a driver in a fixed configuration
+// and can create any number of equivalent Conns for use
+// by multiple goroutines.
+//
+// A Connector can be passed to sql.OpenDB, to allow drivers
+// to implement their own sql.DB constructors, or returned by
+// DriverContext's OpenConnector method, to allow drivers
+// access to context and to avoid repeated parsing of driver
+// configuration.
+type Connector interface {
+	Connect(context.Context) (Conn, error)
+
+	Driver() Driver
 }
 
 // ErrSkip may be returned by some optional interfaces' methods to
@@ -71,22 +101,23 @@ type Pinger interface {
 
 // Execer is an optional interface that may be implemented by a Conn.
 //
-// If a Conn does not implement Execer, the sql package's DB.Exec will
-// first prepare a query, execute the statement, and then close the
-// statement.
+// If a Conn implements neither ExecerContext nor Execer Execer,
+// the sql package's DB.Exec will first prepare a query, execute the statement,
+// and then close the statement.
 //
 // Exec may return ErrSkip.
 //
-// Deprecated: Drivers should implement ExecerContext instead (or additionally).
+// Deprecated: Drivers should implement ExecerContext instead.
 type Execer interface {
 	Exec(query string, args []Value) (Result, error)
 }
 
 // ExecerContext is an optional interface that may be implemented by a Conn.
 //
-// If a Conn does not implement ExecerContext, the sql package's DB.Exec will
-// first prepare a query, execute the statement, and then close the
-// statement.
+// If a Conn does not implement ExecerContext, the sql package's DB.Exec
+// will fall back to Execer; if the Conn does not implement Execer either,
+// DB.Exec will first prepare a query, execute the statement, and then
+// close the statement.
 //
 // ExecerContext may return ErrSkip.
 //
@@ -97,22 +128,23 @@ type ExecerContext interface {
 
 // Queryer is an optional interface that may be implemented by a Conn.
 //
-// If a Conn does not implement Queryer, the sql package's DB.Query will
-// first prepare a query, execute the statement, and then close the
-// statement.
+// If a Conn implements neither QueryerContext nor Queryer,
+// the sql package's DB.Query will first prepare a query, execute the statement,
+// and then close the statement.
 //
 // Query may return ErrSkip.
 //
-// Deprecated: Drivers should implement QueryerContext instead (or additionally).
+// Deprecated: Drivers should implement QueryerContext instead.
 type Queryer interface {
 	Query(query string, args []Value) (Rows, error)
 }
 
 // QueryerContext is an optional interface that may be implemented by a Conn.
 //
-// If a Conn does not implement QueryerContext, the sql package's DB.Query will
-// first prepare a query, execute the statement, and then close the
-// statement.
+// If a Conn does not implement QueryerContext, the sql package's DB.Query
+// will fall back to Queryer; if the Conn does not implement Queryer either,
+// DB.Query will first prepare a query, execute the statement, and then
+// close the statement.
 //
 // QueryerContext may return ErrSkip.
 //
@@ -155,6 +187,12 @@ type TxOptions struct {
 // ConnBeginTx enhances the Conn interface with context and TxOptions.
 type ConnBeginTx interface {
 	BeginTx(ctx context.Context, opts TxOptions) (Tx, error)
+}
+
+// SessionResetter may be implemented by Conn to allow drivers to reset the
+// session state associated with the connection and to signal a bad connection.
+type SessionResetter interface {
+	ResetSession(ctx context.Context) error
 }
 
 // Result is the result of a query execution.

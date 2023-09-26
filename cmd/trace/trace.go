@@ -7,7 +7,7 @@ package main
 // See https://github.com/catapult-project/catapult/blob/master/tracing/docs/embedding-trace-viewer.md
 // This is almost verbatim copy of:
 // https://github.com/catapult-project/catapult/blob/master/tracing/bin/index.html
-// on revision 623a005a3ffa9de13c4b92bc72290e7bcd1ca591.
+// on revision 5f9e4c3eaa555bdef18218a89f38c768303b7b6e.
 
 type Range struct {
 	Name  string

@@ -187,7 +187,7 @@ func (src *Source) Import(pkg string)
 func (src *Source) ExternalImport(pkg string)
 
 // ParseFiles parses files listed in fs and extracts all syscall
-// functions listed in  sys comments. It returns source files
+// functions listed in sys comments. It returns source files
 // and functions collection *Source if successful.
 func ParseFiles(fs []string) (*Source, error)
 

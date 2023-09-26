@@ -34,12 +34,19 @@ type LFNode struct {
 	Pushcnt uintptr
 }
 
-var StringHash = stringHash
-var BytesHash = bytesHash
-var Int32Hash = int32Hash
-var Int64Hash = int64Hash
-var EfaceHash = efaceHash
-var IfaceHash = ifaceHash
+var (
+	StringHash = stringHash
+	BytesHash  = bytesHash
+	Int32Hash  = int32Hash
+	Int64Hash  = int64Hash
+	MemHash    = memhash
+	MemHash32  = memhash32
+	MemHash64  = memhash64
+	EfaceHash  = efaceHash
+	IfaceHash  = ifaceHash
+)
+
+var UseAeshash = &useAeshash
 
 var HashLoad = &hashLoad
 

@@ -26,16 +26,21 @@ type InvalidHostError string
 
 func (e InvalidHostError) Error() string
 
-// QueryUnescape does the inverse transformation of QueryEscape, converting
-// %AB into the byte 0xAB and '+' into ' ' (space). It returns an error if
-// any % is not followed by two hexadecimal digits.
+// QueryUnescape does the inverse transformation of QueryEscape,
+// converting each 3-byte encoded substring of the form "%AB" into the
+// hex-decoded byte 0xAB. It also converts '+' into ' ' (space).
+// It returns an error if any % is not followed by two hexadecimal
+// digits.
 func QueryUnescape(s string) (string, error)
 
-// PathUnescape does the inverse transformation of PathEscape, converting
-// %AB into the byte 0xAB. It returns an error if any % is not followed by
-// two hexadecimal digits.
+// PathUnescape does the inverse transformation of PathEscape,
+// converting each 3-byte encoded substring of the form "%AB" into the
+// hex-decoded byte 0xAB. It also converts '+' into ' ' (space).
+// It returns an error if any % is not followed by two hexadecimal
+// digits.
 //
-// PathUnescape is identical to QueryUnescape except that it does not unescape '+' to ' ' (space).
+// PathUnescape is identical to QueryUnescape except that it does not
+// unescape '+' to ' ' (space).
 func PathUnescape(s string) (string, error)
 
 // QueryEscape escapes the string so it can be safely placed
@@ -110,7 +115,11 @@ func (u *Userinfo) Password() (string, bool)
 func (u *Userinfo) String() string
 
 // Parse parses rawurl into a URL structure.
-// The rawurl may be relative or absolute.
+//
+// The rawurl may be relative (a path, without a host) or absolute
+// (starting with a scheme). Trying to parse a hostname and path
+// without a scheme is invalid but may not necessarily return an
+// error, due to parsing ambiguities.
 func Parse(rawurl string) (*URL, error)
 
 // ParseRequestURI parses rawurl into a URL structure. It assumes that

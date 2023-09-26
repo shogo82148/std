@@ -36,6 +36,8 @@ var _ = log.Printf
 // When opening a fakeDriver's database, it starts empty with no
 // tables. All tables and data are stored in memory only.
 
+var _ driver.DriverContext = &fakeDriverCtx{}
+
 type Dummy struct {
 	driver.Driver
 }

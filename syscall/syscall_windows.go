@@ -69,9 +69,6 @@ func NewCallback(fn interface{}) uintptr
 // interoperating with Windows code requiring callbacks.
 func NewCallbackCDecl(fn interface{}) uintptr
 
-// Implemented in ../runtime/syscall_windows.go.
-func Exit(code int)
-
 func Open(path string, mode int, perm uint32) (fd Handle, err error)
 
 func Read(fd Handle, p []byte) (n int, err error)

@@ -14,6 +14,6 @@ import (
 func NewWriteLogger(prefix string, w io.Writer) io.Writer
 
 // NewReadLogger returns a reader that behaves like r except
-// that it logs (using log.Print) each read to standard error,
+// that it logs (using log.Printf) each read to standard error,
 // printing the prefix and the hexadecimal data read.
 func NewReadLogger(prefix string, r io.Reader) io.Reader

@@ -7,6 +7,12 @@
 
 package runtime
 
+// sigTabT is the type of an entry in the global sigtable array.
+// sigtable is inherently system dependent, and appears in OS-specific files,
+// but sigTabT is the same for all Unixy systems.
+// The sigtable array is indexed by a system signal number to get the flags
+// and printable name of each signal.
+
 // Stores the signal handlers registered before Go installed its own.
 // These signal handlers will be invoked in cases where Go doesn't want to
 // handle a particular signal (e.g., signal occurred on a non-Go thread).

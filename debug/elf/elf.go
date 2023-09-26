@@ -453,30 +453,49 @@ func (i SymVis) GoString() string
 type R_X86_64 int
 
 const (
-	R_X86_64_NONE     R_X86_64 = 0
-	R_X86_64_64       R_X86_64 = 1
-	R_X86_64_PC32     R_X86_64 = 2
-	R_X86_64_GOT32    R_X86_64 = 3
-	R_X86_64_PLT32    R_X86_64 = 4
-	R_X86_64_COPY     R_X86_64 = 5
-	R_X86_64_GLOB_DAT R_X86_64 = 6
-	R_X86_64_JMP_SLOT R_X86_64 = 7
-	R_X86_64_RELATIVE R_X86_64 = 8
-	R_X86_64_GOTPCREL R_X86_64 = 9
-	R_X86_64_32       R_X86_64 = 10
-	R_X86_64_32S      R_X86_64 = 11
-	R_X86_64_16       R_X86_64 = 12
-	R_X86_64_PC16     R_X86_64 = 13
-	R_X86_64_8        R_X86_64 = 14
-	R_X86_64_PC8      R_X86_64 = 15
-	R_X86_64_DTPMOD64 R_X86_64 = 16
-	R_X86_64_DTPOFF64 R_X86_64 = 17
-	R_X86_64_TPOFF64  R_X86_64 = 18
-	R_X86_64_TLSGD    R_X86_64 = 19
-	R_X86_64_TLSLD    R_X86_64 = 20
-	R_X86_64_DTPOFF32 R_X86_64 = 21
-	R_X86_64_GOTTPOFF R_X86_64 = 22
-	R_X86_64_TPOFF32  R_X86_64 = 23
+	R_X86_64_NONE            R_X86_64 = 0
+	R_X86_64_64              R_X86_64 = 1
+	R_X86_64_PC32            R_X86_64 = 2
+	R_X86_64_GOT32           R_X86_64 = 3
+	R_X86_64_PLT32           R_X86_64 = 4
+	R_X86_64_COPY            R_X86_64 = 5
+	R_X86_64_GLOB_DAT        R_X86_64 = 6
+	R_X86_64_JMP_SLOT        R_X86_64 = 7
+	R_X86_64_RELATIVE        R_X86_64 = 8
+	R_X86_64_GOTPCREL        R_X86_64 = 9
+	R_X86_64_32              R_X86_64 = 10
+	R_X86_64_32S             R_X86_64 = 11
+	R_X86_64_16              R_X86_64 = 12
+	R_X86_64_PC16            R_X86_64 = 13
+	R_X86_64_8               R_X86_64 = 14
+	R_X86_64_PC8             R_X86_64 = 15
+	R_X86_64_DTPMOD64        R_X86_64 = 16
+	R_X86_64_DTPOFF64        R_X86_64 = 17
+	R_X86_64_TPOFF64         R_X86_64 = 18
+	R_X86_64_TLSGD           R_X86_64 = 19
+	R_X86_64_TLSLD           R_X86_64 = 20
+	R_X86_64_DTPOFF32        R_X86_64 = 21
+	R_X86_64_GOTTPOFF        R_X86_64 = 22
+	R_X86_64_TPOFF32         R_X86_64 = 23
+	R_X86_64_PC64            R_X86_64 = 24
+	R_X86_64_GOTOFF64        R_X86_64 = 25
+	R_X86_64_GOTPC32         R_X86_64 = 26
+	R_X86_64_GOT64           R_X86_64 = 27
+	R_X86_64_GOTPCREL64      R_X86_64 = 28
+	R_X86_64_GOTPC64         R_X86_64 = 29
+	R_X86_64_GOTPLT64        R_X86_64 = 30
+	R_X86_64_PLTOFF64        R_X86_64 = 31
+	R_X86_64_SIZE32          R_X86_64 = 32
+	R_X86_64_SIZE64          R_X86_64 = 33
+	R_X86_64_GOTPC32_TLSDESC R_X86_64 = 34
+	R_X86_64_TLSDESC_CALL    R_X86_64 = 35
+	R_X86_64_TLSDESC         R_X86_64 = 36
+	R_X86_64_IRELATIVE       R_X86_64 = 37
+	R_X86_64_RELATIVE64      R_X86_64 = 38
+	R_X86_64_PC32_BND        R_X86_64 = 39
+	R_X86_64_PLT32_BND       R_X86_64 = 40
+	R_X86_64_GOTPCRELX       R_X86_64 = 41
+	R_X86_64_REX_GOTPCRELX   R_X86_64 = 42
 )
 
 func (i R_X86_64) String() string
@@ -569,10 +588,17 @@ const (
 	R_AARCH64_LDST64_ABS_LO12_NC              R_AARCH64 = 286
 	R_AARCH64_LDST128_ABS_LO12_NC             R_AARCH64 = 299
 	R_AARCH64_GOT_LD_PREL19                   R_AARCH64 = 309
+	R_AARCH64_LD64_GOTOFF_LO15                R_AARCH64 = 310
 	R_AARCH64_ADR_GOT_PAGE                    R_AARCH64 = 311
 	R_AARCH64_LD64_GOT_LO12_NC                R_AARCH64 = 312
+	R_AARCH64_LD64_GOTPAGE_LO15               R_AARCH64 = 313
+	R_AARCH64_TLSGD_ADR_PREL21                R_AARCH64 = 512
 	R_AARCH64_TLSGD_ADR_PAGE21                R_AARCH64 = 513
 	R_AARCH64_TLSGD_ADD_LO12_NC               R_AARCH64 = 514
+	R_AARCH64_TLSGD_MOVW_G1                   R_AARCH64 = 515
+	R_AARCH64_TLSGD_MOVW_G0_NC                R_AARCH64 = 516
+	R_AARCH64_TLSLD_ADR_PREL21                R_AARCH64 = 517
+	R_AARCH64_TLSLD_ADR_PAGE21                R_AARCH64 = 518
 	R_AARCH64_TLSIE_MOVW_GOTTPREL_G1          R_AARCH64 = 539
 	R_AARCH64_TLSIE_MOVW_GOTTPREL_G0_NC       R_AARCH64 = 540
 	R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21       R_AARCH64 = 541
@@ -596,6 +622,10 @@ const (
 	R_AARCH64_TLSDESC_LDR                     R_AARCH64 = 567
 	R_AARCH64_TLSDESC_ADD                     R_AARCH64 = 568
 	R_AARCH64_TLSDESC_CALL                    R_AARCH64 = 569
+	R_AARCH64_TLSLE_LDST128_TPREL_LO12        R_AARCH64 = 570
+	R_AARCH64_TLSLE_LDST128_TPREL_LO12_NC     R_AARCH64 = 571
+	R_AARCH64_TLSLD_LDST128_DTPREL_LO12       R_AARCH64 = 572
+	R_AARCH64_TLSLD_LDST128_DTPREL_LO12_NC    R_AARCH64 = 573
 	R_AARCH64_COPY                            R_AARCH64 = 1024
 	R_AARCH64_GLOB_DAT                        R_AARCH64 = 1025
 	R_AARCH64_JUMP_SLOT                       R_AARCH64 = 1026
@@ -651,39 +681,150 @@ func (i R_ALPHA) GoString() string
 type R_ARM int
 
 const (
-	R_ARM_NONE          R_ARM = 0
-	R_ARM_PC24          R_ARM = 1
-	R_ARM_ABS32         R_ARM = 2
-	R_ARM_REL32         R_ARM = 3
-	R_ARM_PC13          R_ARM = 4
-	R_ARM_ABS16         R_ARM = 5
-	R_ARM_ABS12         R_ARM = 6
-	R_ARM_THM_ABS5      R_ARM = 7
-	R_ARM_ABS8          R_ARM = 8
-	R_ARM_SBREL32       R_ARM = 9
-	R_ARM_THM_PC22      R_ARM = 10
-	R_ARM_THM_PC8       R_ARM = 11
-	R_ARM_AMP_VCALL9    R_ARM = 12
-	R_ARM_SWI24         R_ARM = 13
-	R_ARM_THM_SWI8      R_ARM = 14
-	R_ARM_XPC25         R_ARM = 15
-	R_ARM_THM_XPC22     R_ARM = 16
-	R_ARM_COPY          R_ARM = 20
-	R_ARM_GLOB_DAT      R_ARM = 21
-	R_ARM_JUMP_SLOT     R_ARM = 22
-	R_ARM_RELATIVE      R_ARM = 23
-	R_ARM_GOTOFF        R_ARM = 24
-	R_ARM_GOTPC         R_ARM = 25
-	R_ARM_GOT32         R_ARM = 26
-	R_ARM_PLT32         R_ARM = 27
-	R_ARM_GNU_VTENTRY   R_ARM = 100
-	R_ARM_GNU_VTINHERIT R_ARM = 101
-	R_ARM_RSBREL32      R_ARM = 250
-	R_ARM_THM_RPC22     R_ARM = 251
-	R_ARM_RREL32        R_ARM = 252
-	R_ARM_RABS32        R_ARM = 253
-	R_ARM_RPC24         R_ARM = 254
-	R_ARM_RBASE         R_ARM = 255
+	R_ARM_NONE               R_ARM = 0
+	R_ARM_PC24               R_ARM = 1
+	R_ARM_ABS32              R_ARM = 2
+	R_ARM_REL32              R_ARM = 3
+	R_ARM_PC13               R_ARM = 4
+	R_ARM_ABS16              R_ARM = 5
+	R_ARM_ABS12              R_ARM = 6
+	R_ARM_THM_ABS5           R_ARM = 7
+	R_ARM_ABS8               R_ARM = 8
+	R_ARM_SBREL32            R_ARM = 9
+	R_ARM_THM_PC22           R_ARM = 10
+	R_ARM_THM_PC8            R_ARM = 11
+	R_ARM_AMP_VCALL9         R_ARM = 12
+	R_ARM_SWI24              R_ARM = 13
+	R_ARM_THM_SWI8           R_ARM = 14
+	R_ARM_XPC25              R_ARM = 15
+	R_ARM_THM_XPC22          R_ARM = 16
+	R_ARM_TLS_DTPMOD32       R_ARM = 17
+	R_ARM_TLS_DTPOFF32       R_ARM = 18
+	R_ARM_TLS_TPOFF32        R_ARM = 19
+	R_ARM_COPY               R_ARM = 20
+	R_ARM_GLOB_DAT           R_ARM = 21
+	R_ARM_JUMP_SLOT          R_ARM = 22
+	R_ARM_RELATIVE           R_ARM = 23
+	R_ARM_GOTOFF             R_ARM = 24
+	R_ARM_GOTPC              R_ARM = 25
+	R_ARM_GOT32              R_ARM = 26
+	R_ARM_PLT32              R_ARM = 27
+	R_ARM_CALL               R_ARM = 28
+	R_ARM_JUMP24             R_ARM = 29
+	R_ARM_THM_JUMP24         R_ARM = 30
+	R_ARM_BASE_ABS           R_ARM = 31
+	R_ARM_ALU_PCREL_7_0      R_ARM = 32
+	R_ARM_ALU_PCREL_15_8     R_ARM = 33
+	R_ARM_ALU_PCREL_23_15    R_ARM = 34
+	R_ARM_LDR_SBREL_11_10_NC R_ARM = 35
+	R_ARM_ALU_SBREL_19_12_NC R_ARM = 36
+	R_ARM_ALU_SBREL_27_20_CK R_ARM = 37
+	R_ARM_TARGET1            R_ARM = 38
+	R_ARM_SBREL31            R_ARM = 39
+	R_ARM_V4BX               R_ARM = 40
+	R_ARM_TARGET2            R_ARM = 41
+	R_ARM_PREL31             R_ARM = 42
+	R_ARM_MOVW_ABS_NC        R_ARM = 43
+	R_ARM_MOVT_ABS           R_ARM = 44
+	R_ARM_MOVW_PREL_NC       R_ARM = 45
+	R_ARM_MOVT_PREL          R_ARM = 46
+	R_ARM_THM_MOVW_ABS_NC    R_ARM = 47
+	R_ARM_THM_MOVT_ABS       R_ARM = 48
+	R_ARM_THM_MOVW_PREL_NC   R_ARM = 49
+	R_ARM_THM_MOVT_PREL      R_ARM = 50
+	R_ARM_THM_JUMP19         R_ARM = 51
+	R_ARM_THM_JUMP6          R_ARM = 52
+	R_ARM_THM_ALU_PREL_11_0  R_ARM = 53
+	R_ARM_THM_PC12           R_ARM = 54
+	R_ARM_ABS32_NOI          R_ARM = 55
+	R_ARM_REL32_NOI          R_ARM = 56
+	R_ARM_ALU_PC_G0_NC       R_ARM = 57
+	R_ARM_ALU_PC_G0          R_ARM = 58
+	R_ARM_ALU_PC_G1_NC       R_ARM = 59
+	R_ARM_ALU_PC_G1          R_ARM = 60
+	R_ARM_ALU_PC_G2          R_ARM = 61
+	R_ARM_LDR_PC_G1          R_ARM = 62
+	R_ARM_LDR_PC_G2          R_ARM = 63
+	R_ARM_LDRS_PC_G0         R_ARM = 64
+	R_ARM_LDRS_PC_G1         R_ARM = 65
+	R_ARM_LDRS_PC_G2         R_ARM = 66
+	R_ARM_LDC_PC_G0          R_ARM = 67
+	R_ARM_LDC_PC_G1          R_ARM = 68
+	R_ARM_LDC_PC_G2          R_ARM = 69
+	R_ARM_ALU_SB_G0_NC       R_ARM = 70
+	R_ARM_ALU_SB_G0          R_ARM = 71
+	R_ARM_ALU_SB_G1_NC       R_ARM = 72
+	R_ARM_ALU_SB_G1          R_ARM = 73
+	R_ARM_ALU_SB_G2          R_ARM = 74
+	R_ARM_LDR_SB_G0          R_ARM = 75
+	R_ARM_LDR_SB_G1          R_ARM = 76
+	R_ARM_LDR_SB_G2          R_ARM = 77
+	R_ARM_LDRS_SB_G0         R_ARM = 78
+	R_ARM_LDRS_SB_G1         R_ARM = 79
+	R_ARM_LDRS_SB_G2         R_ARM = 80
+	R_ARM_LDC_SB_G0          R_ARM = 81
+	R_ARM_LDC_SB_G1          R_ARM = 82
+	R_ARM_LDC_SB_G2          R_ARM = 83
+	R_ARM_MOVW_BREL_NC       R_ARM = 84
+	R_ARM_MOVT_BREL          R_ARM = 85
+	R_ARM_MOVW_BREL          R_ARM = 86
+	R_ARM_THM_MOVW_BREL_NC   R_ARM = 87
+	R_ARM_THM_MOVT_BREL      R_ARM = 88
+	R_ARM_THM_MOVW_BREL      R_ARM = 89
+	R_ARM_TLS_GOTDESC        R_ARM = 90
+	R_ARM_TLS_CALL           R_ARM = 91
+	R_ARM_TLS_DESCSEQ        R_ARM = 92
+	R_ARM_THM_TLS_CALL       R_ARM = 93
+	R_ARM_PLT32_ABS          R_ARM = 94
+	R_ARM_GOT_ABS            R_ARM = 95
+	R_ARM_GOT_PREL           R_ARM = 96
+	R_ARM_GOT_BREL12         R_ARM = 97
+	R_ARM_GOTOFF12           R_ARM = 98
+	R_ARM_GOTRELAX           R_ARM = 99
+	R_ARM_GNU_VTENTRY        R_ARM = 100
+	R_ARM_GNU_VTINHERIT      R_ARM = 101
+	R_ARM_THM_JUMP11         R_ARM = 102
+	R_ARM_THM_JUMP8          R_ARM = 103
+	R_ARM_TLS_GD32           R_ARM = 104
+	R_ARM_TLS_LDM32          R_ARM = 105
+	R_ARM_TLS_LDO32          R_ARM = 106
+	R_ARM_TLS_IE32           R_ARM = 107
+	R_ARM_TLS_LE32           R_ARM = 108
+	R_ARM_TLS_LDO12          R_ARM = 109
+	R_ARM_TLS_LE12           R_ARM = 110
+	R_ARM_TLS_IE12GP         R_ARM = 111
+	R_ARM_PRIVATE_0          R_ARM = 112
+	R_ARM_PRIVATE_1          R_ARM = 113
+	R_ARM_PRIVATE_2          R_ARM = 114
+	R_ARM_PRIVATE_3          R_ARM = 115
+	R_ARM_PRIVATE_4          R_ARM = 116
+	R_ARM_PRIVATE_5          R_ARM = 117
+	R_ARM_PRIVATE_6          R_ARM = 118
+	R_ARM_PRIVATE_7          R_ARM = 119
+	R_ARM_PRIVATE_8          R_ARM = 120
+	R_ARM_PRIVATE_9          R_ARM = 121
+	R_ARM_PRIVATE_10         R_ARM = 122
+	R_ARM_PRIVATE_11         R_ARM = 123
+	R_ARM_PRIVATE_12         R_ARM = 124
+	R_ARM_PRIVATE_13         R_ARM = 125
+	R_ARM_PRIVATE_14         R_ARM = 126
+	R_ARM_PRIVATE_15         R_ARM = 127
+	R_ARM_ME_TOO             R_ARM = 128
+	R_ARM_THM_TLS_DESCSEQ16  R_ARM = 129
+	R_ARM_THM_TLS_DESCSEQ32  R_ARM = 130
+	R_ARM_THM_GOT_BREL12     R_ARM = 131
+	R_ARM_THM_ALU_ABS_G0_NC  R_ARM = 132
+	R_ARM_THM_ALU_ABS_G1_NC  R_ARM = 133
+	R_ARM_THM_ALU_ABS_G2_NC  R_ARM = 134
+	R_ARM_THM_ALU_ABS_G3     R_ARM = 135
+	R_ARM_IRELATIVE          R_ARM = 160
+	R_ARM_RXPC25             R_ARM = 249
+	R_ARM_RSBREL32           R_ARM = 250
+	R_ARM_THM_RPC22          R_ARM = 251
+	R_ARM_RREL32             R_ARM = 252
+	R_ARM_RABS32             R_ARM = 253
+	R_ARM_RPC24              R_ARM = 254
+	R_ARM_RBASE              R_ARM = 255
 )
 
 func (i R_ARM) String() string
@@ -693,37 +834,48 @@ func (i R_ARM) GoString() string
 type R_386 int
 
 const (
-	R_386_NONE         R_386 = 0
-	R_386_32           R_386 = 1
-	R_386_PC32         R_386 = 2
-	R_386_GOT32        R_386 = 3
-	R_386_PLT32        R_386 = 4
-	R_386_COPY         R_386 = 5
-	R_386_GLOB_DAT     R_386 = 6
-	R_386_JMP_SLOT     R_386 = 7
-	R_386_RELATIVE     R_386 = 8
-	R_386_GOTOFF       R_386 = 9
-	R_386_GOTPC        R_386 = 10
-	R_386_TLS_TPOFF    R_386 = 14
-	R_386_TLS_IE       R_386 = 15
-	R_386_TLS_GOTIE    R_386 = 16
-	R_386_TLS_LE       R_386 = 17
-	R_386_TLS_GD       R_386 = 18
-	R_386_TLS_LDM      R_386 = 19
-	R_386_TLS_GD_32    R_386 = 24
-	R_386_TLS_GD_PUSH  R_386 = 25
-	R_386_TLS_GD_CALL  R_386 = 26
-	R_386_TLS_GD_POP   R_386 = 27
-	R_386_TLS_LDM_32   R_386 = 28
-	R_386_TLS_LDM_PUSH R_386 = 29
-	R_386_TLS_LDM_CALL R_386 = 30
-	R_386_TLS_LDM_POP  R_386 = 31
-	R_386_TLS_LDO_32   R_386 = 32
-	R_386_TLS_IE_32    R_386 = 33
-	R_386_TLS_LE_32    R_386 = 34
-	R_386_TLS_DTPMOD32 R_386 = 35
-	R_386_TLS_DTPOFF32 R_386 = 36
-	R_386_TLS_TPOFF32  R_386 = 37
+	R_386_NONE          R_386 = 0
+	R_386_32            R_386 = 1
+	R_386_PC32          R_386 = 2
+	R_386_GOT32         R_386 = 3
+	R_386_PLT32         R_386 = 4
+	R_386_COPY          R_386 = 5
+	R_386_GLOB_DAT      R_386 = 6
+	R_386_JMP_SLOT      R_386 = 7
+	R_386_RELATIVE      R_386 = 8
+	R_386_GOTOFF        R_386 = 9
+	R_386_GOTPC         R_386 = 10
+	R_386_32PLT         R_386 = 11
+	R_386_TLS_TPOFF     R_386 = 14
+	R_386_TLS_IE        R_386 = 15
+	R_386_TLS_GOTIE     R_386 = 16
+	R_386_TLS_LE        R_386 = 17
+	R_386_TLS_GD        R_386 = 18
+	R_386_TLS_LDM       R_386 = 19
+	R_386_16            R_386 = 20
+	R_386_PC16          R_386 = 21
+	R_386_8             R_386 = 22
+	R_386_PC8           R_386 = 23
+	R_386_TLS_GD_32     R_386 = 24
+	R_386_TLS_GD_PUSH   R_386 = 25
+	R_386_TLS_GD_CALL   R_386 = 26
+	R_386_TLS_GD_POP    R_386 = 27
+	R_386_TLS_LDM_32    R_386 = 28
+	R_386_TLS_LDM_PUSH  R_386 = 29
+	R_386_TLS_LDM_CALL  R_386 = 30
+	R_386_TLS_LDM_POP   R_386 = 31
+	R_386_TLS_LDO_32    R_386 = 32
+	R_386_TLS_IE_32     R_386 = 33
+	R_386_TLS_LE_32     R_386 = 34
+	R_386_TLS_DTPMOD32  R_386 = 35
+	R_386_TLS_DTPOFF32  R_386 = 36
+	R_386_TLS_TPOFF32   R_386 = 37
+	R_386_SIZE32        R_386 = 38
+	R_386_TLS_GOTDESC   R_386 = 39
+	R_386_TLS_DESC_CALL R_386 = 40
+	R_386_TLS_DESC      R_386 = 41
+	R_386_IRELATIVE     R_386 = 42
+	R_386_GOT32X        R_386 = 43
 )
 
 func (i R_386) String() string
@@ -788,6 +940,11 @@ func (i R_MIPS) String() string
 func (i R_MIPS) GoString() string
 
 // Relocation types for PowerPC.
+//
+// Values that are shared by both R_PPC and R_PPC64 are prefixed with
+// R_POWERPC_ in the ELF standard. For the R_PPC type, the relevant
+// shared relocations have been renamed with the prefix R_PPC_.
+// The original name follows the value in a comment.
 type R_PPC int
 
 const (
@@ -874,6 +1031,11 @@ func (i R_PPC) String() string
 func (i R_PPC) GoString() string
 
 // Relocation types for 64-bit PowerPC or Power Architecture processors.
+//
+// Values that are shared by both R_PPC and R_PPC64 are prefixed with
+// R_POWERPC_ in the ELF standard. For the R_PPC64 type, the relevant
+// shared relocations have been renamed with the prefix R_PPC64_.
+// The original name follows the value in a comment.
 type R_PPC64 int
 
 const (
@@ -908,12 +1070,21 @@ const (
 	R_PPC64_TOC16_HI           R_PPC64 = 49
 	R_PPC64_TOC16_HA           R_PPC64 = 50
 	R_PPC64_TOC                R_PPC64 = 51
+	R_PPC64_PLTGOT16           R_PPC64 = 52
+	R_PPC64_PLTGOT16_LO        R_PPC64 = 53
+	R_PPC64_PLTGOT16_HI        R_PPC64 = 54
+	R_PPC64_PLTGOT16_HA        R_PPC64 = 55
 	R_PPC64_ADDR16_DS          R_PPC64 = 56
 	R_PPC64_ADDR16_LO_DS       R_PPC64 = 57
 	R_PPC64_GOT16_DS           R_PPC64 = 58
 	R_PPC64_GOT16_LO_DS        R_PPC64 = 59
+	R_PPC64_PLT16_LO_DS        R_PPC64 = 60
+	R_PPC64_SECTOFF_DS         R_PPC64 = 61
+	R_PPC64_SECTOFF_LO_DS      R_PPC64 = 61
 	R_PPC64_TOC16_DS           R_PPC64 = 63
 	R_PPC64_TOC16_LO_DS        R_PPC64 = 64
+	R_PPC64_PLTGOT16_DS        R_PPC64 = 65
+	R_PPC64_PLTGOT_LO_DS       R_PPC64 = 66
 	R_PPC64_TLS                R_PPC64 = 67
 	R_PPC64_DTPMOD64           R_PPC64 = 68
 	R_PPC64_TPREL16            R_PPC64 = 69
@@ -956,6 +1127,19 @@ const (
 	R_PPC64_DTPREL16_HIGHESTA  R_PPC64 = 106
 	R_PPC64_TLSGD              R_PPC64 = 107
 	R_PPC64_TLSLD              R_PPC64 = 108
+	R_PPC64_TOCSAVE            R_PPC64 = 109
+	R_PPC64_ADDR16_HIGH        R_PPC64 = 110
+	R_PPC64_ADDR16_HIGHA       R_PPC64 = 111
+	R_PPC64_TPREL16_HIGH       R_PPC64 = 112
+	R_PPC64_TPREL16_HIGHA      R_PPC64 = 113
+	R_PPC64_DTPREL16_HIGH      R_PPC64 = 114
+	R_PPC64_DTPREL16_HIGHA     R_PPC64 = 115
+	R_PPC64_REL24_NOTOC        R_PPC64 = 116
+	R_PPC64_ADDR64_LOCAL       R_PPC64 = 117
+	R_PPC64_ENTRY              R_PPC64 = 118
+	R_PPC64_REL16DX_HA         R_PPC64 = 246
+	R_PPC64_JMP_IREL           R_PPC64 = 247
+	R_PPC64_IRELATIVE          R_PPC64 = 248
 	R_PPC64_REL16              R_PPC64 = 249
 	R_PPC64_REL16_LO           R_PPC64 = 250
 	R_PPC64_REL16_HI           R_PPC64 = 251

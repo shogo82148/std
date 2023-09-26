@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package tar
+
+// testNonEmptyReader wraps an io.Reader and ensures that
+// Read is never called with an empty buffer.

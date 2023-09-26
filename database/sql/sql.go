@@ -168,7 +168,7 @@ type Scanner interface {
 // Example usage:
 //
 //	var outArg string
-//	_, err := db.ExecContext(ctx, "ProcName", sql.Named("Arg1", Out{Dest: &outArg}))
+//	_, err := db.ExecContext(ctx, "ProcName", sql.Named("Arg1", sql.Out{Dest: &outArg}))
 type Out struct {
 	_Named_Fields_Required struct{}
 
@@ -195,8 +195,7 @@ var ErrNoRows = errors.New("sql: no rows in result set")
 // connection is returned to DB's idle connection pool. The pool size
 // can be controlled with SetMaxIdleConns.
 type DB struct {
-	driver driver.Driver
-	dsn    string
+	connector driver.Connector
 
 	numClosed uint64
 
@@ -207,6 +206,7 @@ type DB struct {
 	numOpen      int
 
 	openerCh    chan struct{}
+	resetterCh  chan *driverConn
 	closed      bool
 	dep         map[finalCloser]depSet
 	lastPut     map[*driverConn]string
@@ -214,6 +214,8 @@ type DB struct {
 	maxOpen     int
 	maxLifetime time.Duration
 	cleanerCh   chan struct{}
+
+	stop func()
 }
 
 // connReuseStrategy determines how (*DB).conn returns database connections.
@@ -237,6 +239,24 @@ type DB struct {
 // used for db.maxOpen. If maxOpen is significantly larger than
 // connectionRequestQueueSize then it is possible for ALL calls into the *DB
 // to block until the connectionOpener can satisfy the backlog of requests.
+
+// OpenDB opens a database using a Connector, allowing drivers to
+// bypass a string based data source name.
+//
+// Most users will open a database via a driver-specific connection
+// helper function that returns a *DB. No database drivers are included
+// in the Go standard library. See https://golang.org/s/sqldrivers for
+// a list of third-party drivers.
+//
+// OpenDB may just validate its arguments without creating a connection
+// to the database. To verify that the data source name is valid, call
+// Ping.
+//
+// The returned DB is safe for concurrent use by multiple goroutines
+// and maintains its own pool of idle connections. Thus, the OpenDB
+// function should be called just once. It is rarely necessary to
+// close a DB.
+func OpenDB(c driver.Connector) *DB
 
 // Open opens a database specified by its database driver name and a
 // driver-specific data source name, usually consisting of at least a
@@ -387,7 +407,7 @@ func (db *DB) Begin() (*Tx, error)
 func (db *DB) Driver() driver.Driver
 
 // ErrConnDone is returned by any operation that is performed on a connection
-// that has already been committed or rolled back.
+// that has already been returned to the connection pool.
 var ErrConnDone = errors.New("database/sql: connection is already closed")
 
 // Conn returns a single connection by either opening a new connection
@@ -399,9 +419,9 @@ var ErrConnDone = errors.New("database/sql: connection is already closed")
 // calling Conn.Close.
 func (db *DB) Conn(ctx context.Context) (*Conn, error)
 
-// Conn represents a single database session rather a pool of database
-// sessions. Prefer running queries from DB unless there is a specific
-// need for a continuous single database session.
+// Conn represents a single database connection rather than a pool of database
+// connections. Prefer running queries from DB unless there is a specific
+// need for a continuous single database connection.
 //
 // A Conn must call Close to return the connection to the database pool
 // and may do so concurrently with a running query.
@@ -541,6 +561,9 @@ func (tx *Tx) Prepare(query string) (*Stmt, error)
 //	tx, err := db.Begin()
 //	...
 //	res, err := tx.StmtContext(ctx, updateMoney).Exec(123.45, 98293203)
+//
+// The provided context is used for the preparation of the statement, not for the
+// execution of the statement.
 //
 // The returned statement operates within the transaction and will be closed
 // when the transaction has been committed or rolled back.

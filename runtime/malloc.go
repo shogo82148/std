@@ -88,3 +88,14 @@ package runtime
 // mallocinit.
 
 // base address for all 0-byte allocations
+
+// notInHeap is off-heap memory allocated by a lower-level allocator
+// like sysAlloc or persistentAlloc.
+//
+// In general, it's better to use real types marked as go:notinheap,
+// but this serves as a generic type for situations where that isn't
+// possible (like in the allocators).
+//
+// TODO: Use this as the return type of sysAlloc, persistentAlloc, etc?
+//
+//go:notinheap

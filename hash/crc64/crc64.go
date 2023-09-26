@@ -7,7 +7,9 @@
 // information.
 package crc64
 
-import "github.com/shogo82148/std/hash"
+import (
+	"github.com/shogo82148/std/hash"
+)
 
 // The size of a CRC-64 checksum in bytes.
 const Size = 8
@@ -30,9 +32,11 @@ func MakeTable(poly uint64) *Table
 
 // digest represents the partial evaluation of a checksum.
 
-// New creates a new hash.Hash64 computing the CRC-64 checksum
-// using the polynomial represented by the Table.
-// Its Sum method will lay the value out in big-endian byte order.
+// New creates a new hash.Hash64 computing the CRC-64 checksum using the
+// polynomial represented by the Table. Its Sum method will lay the
+// value out in big-endian byte order. The returned Hash64 also
+// implements encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
+// marshal and unmarshal the internal state of the hash.
 func New(tab *Table) hash.Hash64
 
 // Update returns the result of adding the bytes in p to the crc.

@@ -178,7 +178,8 @@ type All struct {
 	Foo  string `json:"bar"`
 	Foo2 string `json:"bar2,dummyopt"`
 
-	IntStr int64 `json:",string"`
+	IntStr     int64   `json:",string"`
+	UintptrStr uintptr `json:",string"`
 
 	PBool    *bool
 	PInt     *int

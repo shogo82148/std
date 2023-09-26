@@ -33,6 +33,12 @@ type Block struct {
 // rest.
 func Decode(data []byte) (p *Block, rest []byte)
 
+// Encode writes the PEM encoding of b to out.
 func Encode(out io.Writer, b *Block) error
 
+// EncodeToMemory returns the PEM encoding of b.
+//
+// If b has invalid headers and cannot be encoded,
+// EncodeToMemory returns nil. If it is important to
+// report details about this error case, use Encode instead.
 func EncodeToMemory(b *Block) []byte

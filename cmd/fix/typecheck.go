@@ -8,6 +8,8 @@ type TypeConfig struct {
 	Type map[string]*Type
 	Var  map[string]string
 	Func map[string]string
+
+	External map[string]string
 }
 
 // Type describes the Fields and Methods of a type.

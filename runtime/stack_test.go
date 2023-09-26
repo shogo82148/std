@@ -7,3 +7,7 @@ package runtime_test
 import (
 	. "runtime"
 )
+
+type I interface {
+	M()
+}

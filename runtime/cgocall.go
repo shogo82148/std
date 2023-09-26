@@ -8,9 +8,9 @@
 // runtime.cgocall(_cgo_Cfunc_f, frame), where _cgo_Cfunc_f is a
 // gcc-compiled function written by cgo.
 //
-// runtime.cgocall (below) locks g to m, calls entersyscall
-// so as not to block other goroutines or the garbage collector,
-// and then calls runtime.asmcgocall(_cgo_Cfunc_f, frame).
+// runtime.cgocall (below) calls entersyscall so as not to block
+// other goroutines or the garbage collector, and then calls
+// runtime.asmcgocall(_cgo_Cfunc_f, frame).
 //
 // runtime.asmcgocall (in asm_$GOARCH.s) switches to the m->g0 stack
 // (assumed to be an operating system-allocated stack, so safe to run

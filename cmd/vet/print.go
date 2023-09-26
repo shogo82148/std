@@ -6,11 +6,8 @@
 
 package main
 
-// isFormattedPrint records the formatted-print functions. Names are
-// lower-cased so the lookup is case insensitive.
-
-// isPrint records the unformatted-print functions. Names are lower-cased
-// so the lookup is case insensitive.
+// isPrint records the print functions.
+// If a key ends in 'f' then it is assumed to be a formatted print.
 
 // formatState holds the parsed representation of a printf directive such as "%3.*[4]d".
 // It is constructed by parsePrintfVerb.
@@ -20,3 +17,7 @@ package main
 // Common flag sets for printf verbs.
 
 // printVerbs identifies which flags are known to printf for each verb.
+
+// printFormatRE is the regexp we match and report as a possible format string
+// in the first argument to unformatted prints like fmt.Print.
+// We exclude the space flag, so that printing a string like "x % y" is not reported as a format.

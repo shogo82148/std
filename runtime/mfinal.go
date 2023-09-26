@@ -104,4 +104,4 @@ func SetFinalizer(obj interface{}, finalizer interface{})
 // Without the KeepAlive call, the finalizer could run at the start of
 // syscall.Read, closing the file descriptor before syscall.Read makes
 // the actual system call.
-func KeepAlive(interface{})
+func KeepAlive(x interface{})

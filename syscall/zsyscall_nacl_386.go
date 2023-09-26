@@ -5,5 +5,3 @@
 // +build nacl,386
 
 package syscall
-
-func Exit(code int) (err error)

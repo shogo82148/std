@@ -65,6 +65,8 @@ type Conn struct {
 	bytesSent   int64
 	packetsSent int64
 
+	warnCount int
+
 	activeCall int32
 
 	tmp [16]byte

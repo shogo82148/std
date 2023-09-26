@@ -7,7 +7,7 @@ package regexp
 // A queue is a 'sparse array' holding pending threads of execution.
 // See http://research.swtch.com/2008/03/using-uninitialized-memory-for-fun-and.html
 
-// A entry is an entry on a queue.
+// An entry is an entry on a queue.
 // It holds both the instruction pc and the actual thread.
 // Some queue entries are just place holders so that the machine
 // knows it has considered that pc. Such entries have t == nil.

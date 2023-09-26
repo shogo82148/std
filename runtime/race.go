@@ -5,8 +5,6 @@
 //go:build race
 // +build race
 
-// Public race detection API, present iff build with -race.
-
 package runtime
 
 import (
@@ -20,7 +18,38 @@ func RaceWriteRange(addr unsafe.Pointer, len int)
 
 func RaceErrors() int
 
-// private interface for the runtime
+// RaceAcquire/RaceRelease/RaceReleaseMerge establish happens-before relations
+// between goroutines. These inform the race detector about actual synchronization
+// that it can't see for some reason (e.g. synchronization within RaceDisable/RaceEnable
+// sections of code).
+// RaceAcquire establishes a happens-before relation with the preceding
+// RaceReleaseMerge on addr up to and including the last RaceRelease on addr.
+// In terms of the C memory model (C11 §5.1.2.4, §7.17.3),
+// RaceAcquire is equivalent to atomic_load(memory_order_acquire).
+func RaceAcquire(addr unsafe.Pointer)
+
+// RaceRelease performs a release operation on addr that
+// can synchronize with a later RaceAcquire on addr.
+//
+// In terms of the C memory model, RaceRelease is equivalent to
+// atomic_store(memory_order_release).
+func RaceRelease(addr unsafe.Pointer)
+
+// RaceReleaseMerge is like RaceRelease, but also establishes a happens-before
+// relation with the preceding RaceRelease or RaceReleaseMerge on addr.
+//
+// In terms of the C memory model, RaceReleaseMerge is equivalent to
+// atomic_exchange(memory_order_release).
+func RaceReleaseMerge(addr unsafe.Pointer)
+
+// RaceDisable disables handling of race synchronization events in the current goroutine.
+// Handling is re-enabled with RaceEnable. RaceDisable/RaceEnable can be nested.
+// Non-synchronization events (memory accesses, function entry/exit) still affect
+// the race detector.
+func RaceDisable()
+
+// RaceEnable re-enables handling of race events in the current goroutine.
+func RaceEnable()
 
 // Race runtime functions called via runtime·racecall.
 //go:linkname __tsan_init __tsan_init
@@ -58,15 +87,3 @@ func RaceErrors() int
 // start/end of global data (data+bss).
 
 // start/end of heap for race_amd64.s
-
-func RaceAcquire(addr unsafe.Pointer)
-
-func RaceRelease(addr unsafe.Pointer)
-
-func RaceReleaseMerge(addr unsafe.Pointer)
-
-// RaceDisable disables handling of race events in the current goroutine.
-func RaceDisable()
-
-// RaceEnable re-enables handling of race events in the current goroutine.
-func RaceEnable()

@@ -72,8 +72,9 @@ type Table struct {
 	go12line *LineTable
 }
 
-// NewTable decodes the Go symbol table in data,
+// NewTable decodes the Go symbol table (the ".gosymtab" section in ELF),
 // returning an in-memory representation.
+// Starting with Go 1.3, the Go symbol table no longer includes symbol data.
 func NewTable(symtab []byte, pcln *LineTable) (*Table, error)
 
 // PCToFunc returns the function containing the program counter pc,

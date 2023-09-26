@@ -24,3 +24,7 @@ package big
 // Operands that are shorter than karatsubaThreshold are multiplied using
 // "grade school" multiplication; for longer operands the Karatsuba algorithm
 // is used.
+
+// Operands that are shorter than basicSqrThreshold are squared using
+// "grade school" multiplication; for operands longer than karatsubaSqrThreshold
+// the Karatsuba algorithm is used.

@@ -4,7 +4,7 @@
 
 package asn1
 
-// encoder represents a ASN.1 element that is waiting to be marshaled.
+// encoder represents an ASN.1 element that is waiting to be marshaled.
 
 // Marshal returns the ASN.1 encoding of val.
 //
@@ -18,3 +18,7 @@ package asn1
 //	utc:         causes time.Time to be marshaled as ASN.1, UTCTime values
 //	generalized: causes time.Time to be marshaled as ASN.1, GeneralizedTime values
 func Marshal(val interface{}) ([]byte, error)
+
+// MarshalWithParams allows field parameters to be specified for the
+// top-level element. The form of the params is the same as the field tags.
+func MarshalWithParams(val interface{}, params string) ([]byte, error)

@@ -37,6 +37,9 @@ func NewReaderSize(rd io.Reader, size int) *Reader
 // NewReader returns a new Reader whose buffer has the default size.
 func NewReader(rd io.Reader) *Reader
 
+// Size returns the size of the underlying buffer in bytes.
+func (r *Reader) Size() int
+
 // Reset discards any buffered data, resets all state, and switches
 // the buffered reader to read from r.
 func (b *Reader) Reset(r io.Reader)
@@ -154,6 +157,9 @@ func NewWriterSize(w io.Writer, size int) *Writer
 
 // NewWriter returns a new Writer whose buffer has the default size.
 func NewWriter(w io.Writer) *Writer
+
+// Size returns the size of the underlying buffer in bytes.
+func (b *Writer) Size() int
 
 // Reset discards any unflushed buffered data, clears any error, and
 // resets b to write its output to w.

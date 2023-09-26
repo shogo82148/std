@@ -30,8 +30,6 @@ func EpollCtl(epfd int, op int, fd int, event *EpollEvent) (err error)
 
 func EpollWait(epfd int, events []EpollEvent, msec int) (n int, err error)
 
-func Exit(code int)
-
 func Faccessat(dirfd int, path string, mode uint32, flags int) (err error)
 
 func Fallocate(fd int, mode uint32, off int64, len int64) (err error)
@@ -167,8 +165,6 @@ func Pread(fd int, p []byte, offset int64) (n int, err error)
 func Pwrite(fd int, p []byte, offset int64) (n int, err error)
 
 func Seek(fd int, offset int64, whence int) (off int64, err error)
-
-func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err error)
 
 func Setfsgid(gid int) (err error)
 

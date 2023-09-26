@@ -19,7 +19,10 @@ import (
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/math/big"
 	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/time"
+
+	cryptobyte_asn1 "golang_org/x/crypto/cryptobyte/asn1"
 )
 
 // pkixPublicKey reflects a PKIX public key structure. See SubjectPublicKeyInfo
@@ -71,6 +74,8 @@ const (
 	DSA
 	ECDSA
 )
+
+func (algo PublicKeyAlgorithm) String() string
 
 // pssParameters reflects the parameters in an AlgorithmIdentifier that
 // specifies RSA PSS. See https://tools.ietf.org/html/rfc3447#appendix-A.2.3
@@ -153,6 +158,8 @@ const (
 	ExtKeyUsageOCSPSigning
 	ExtKeyUsageMicrosoftServerGatedCrypto
 	ExtKeyUsageNetscapeServerGatedCrypto
+	ExtKeyUsageMicrosoftCommercialCodeSigning
+	ExtKeyUsageMicrosoftKernelCodeSigning
 )
 
 // extKeyUsageOIDs contains the mapping between an ExtKeyUsage and its OID.
@@ -203,10 +210,17 @@ type Certificate struct {
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
+	URIs           []*url.URL
 
 	PermittedDNSDomainsCritical bool
 	PermittedDNSDomains         []string
 	ExcludedDNSDomains          []string
+	PermittedIPRanges           []*net.IPNet
+	ExcludedIPRanges            []*net.IPNet
+	PermittedEmailAddresses     []string
+	ExcludedEmailAddresses      []string
+	PermittedURIDomains         []string
+	ExcludedURIDomains          []string
 
 	CRLDistributionPoints []string
 
@@ -258,8 +272,6 @@ func (h UnhandledCriticalExtension) Error() string
 
 // RFC 5280 4.2.1.4
 
-// RFC 5280, 4.2.1.10
-
 // RFC 5280, 4.2.2.1
 
 // RFC 5280, 4.2.1.14
@@ -271,7 +283,10 @@ func ParseCertificate(asn1Data []byte) (*Certificate, error)
 // data. The certificates must be concatenated with no intermediate padding.
 func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 
-// CreateCertificate creates a new certificate based on a template.
+// emptyASN1Subject is the ASN.1 DER encoding of an empty Subject, which is
+// just an empty SEQUENCE.
+
+// CreateCertificate creates a new X.509v3 certificate based on a template.
 // The following members of template are used: AuthorityKeyId,
 // BasicConstraintsValid, DNSNames, ExcludedDNSDomains, ExtKeyUsage,
 // IsCA, KeyUsage, MaxPathLen, MaxPathLenZero, NotAfter, NotBefore,
@@ -335,6 +350,7 @@ type CertificateRequest struct {
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
+	URIs           []*url.URL
 }
 
 // oidExtensionRequest is a PKCS#9 OBJECT IDENTIFIER that indicates requested
@@ -342,7 +358,7 @@ type CertificateRequest struct {
 
 // CreateCertificateRequest creates a new certificate request based on a
 // template. The following members of template are used: Attributes, DNSNames,
-// EmailAddresses, ExtraExtensions, IPAddresses, SignatureAlgorithm, and
+// EmailAddresses, ExtraExtensions, IPAddresses, URIs, SignatureAlgorithm, and
 // Subject. The private key is the private key of the signer.
 //
 // The returned slice is the certificate request in DER encoding.

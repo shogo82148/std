@@ -47,12 +47,14 @@ type File struct {
 
 	basePkg *Package
 
-	stringers map[*ast.Object]bool
+	stringerPtrs map[*ast.Object]bool
 
 	checkers map[ast.Node][]func(*File, ast.Node)
 
 	dead map[ast.Node]bool
 }
+
+// vetConfig is the JSON config struct prepared by the Go command.
 
 type Package struct {
 	path      string

@@ -10,6 +10,12 @@ import (
 
 var _ driver.NamedValueChecker = &nvcConn{}
 
+var (
+	_ driver.Conn           = &ctxOnlyConn{}
+	_ driver.QueryerContext = &ctxOnlyConn{}
+	_ driver.ExecerContext  = &ctxOnlyConn{}
+)
+
 // badConn implements a bad driver.Conn, for TestBadDriver.
 // The Exec method panics.
 

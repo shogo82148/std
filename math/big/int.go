@@ -129,6 +129,13 @@ func (z *Int) DivMod(x, y, m *Int) (*Int, *Int)
 //	+1 if x >  y
 func (x *Int) Cmp(y *Int) (r int)
 
+// CmpAbs compares the absolute values of x and y and returns:
+//
+//	-1 if |x| <  |y|
+//	 0 if |x| == |y|
+//	+1 if |x| >  |y|
+func (x *Int) CmpAbs(y *Int) int
+
 // Int64 returns the int64 representation of x.
 // If x cannot be represented in an int64, the result is undefined.
 func (x *Int) Int64() int64
@@ -152,6 +159,11 @@ func (x *Int) IsUint64() bool
 // is 0, the string prefix determines the actual conversion base. A prefix of
 // “0x” or “0X” selects base 16; the “0” prefix selects base 8, and a
 // “0b” or “0B” prefix selects base 2. Otherwise the selected base is 10.
+//
+// For bases <= 36, lower and upper case letters are considered the same:
+// The letters 'a' to 'z' and 'A' to 'Z' represent digit values 10 to 35.
+// For bases > 36, the upper case letters 'A' to 'Z' represent the digit
+// values 36 to 61.
 func (z *Int) SetString(s string, base int) (*Int, bool)
 
 // SetBytes interprets buf as the bytes of a big-endian unsigned
@@ -174,11 +186,14 @@ func (z *Int) Exp(x, y, m *Int) *Int
 
 // GCD sets z to the greatest common divisor of a and b, which both must
 // be > 0, and returns z.
-// If x and y are not nil, GCD sets x and y such that z = a*x + b*y.
+// If x or y are not nil, GCD sets their value such that z = a*x + b*y.
 // If either a or b is <= 0, GCD sets z = x = y = 0.
 func (z *Int) GCD(x, y, a, b *Int) *Int
 
 // Rand sets z to a pseudo-random number in [0, n) and returns z.
+//
+// As this uses the math/rand package, it must not be used for
+// security-sensitive work. Use crypto/rand.Int instead.
 func (z *Int) Rand(rnd *rand.Rand, n *Int) *Int
 
 // ModInverse sets z to the multiplicative inverse of g in the ring ℤ/nℤ

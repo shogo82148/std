@@ -302,5 +302,6 @@ const (
 	SYS_LPATHCONF              = 533
 	SYS_VMM_GUEST_CTL          = 534
 	SYS_VMM_GUEST_SYNC_ADDR    = 535
+	SYS_UTIMENSAT              = 539
 	SYS_ACCEPT4                = 541
 )

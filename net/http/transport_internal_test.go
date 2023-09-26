@@ -5,3 +5,5 @@
 // White-box tests for transport.go (in package http instead of http_test).
 
 package http
+
+// issue22091Error acts like a golang.org/x/net/http2.ErrNoCachedConn.

@@ -13,7 +13,9 @@
 //	significant-byte first (network) order.
 package adler32
 
-import "github.com/shogo82148/std/hash"
+import (
+	"github.com/shogo82148/std/hash"
+)
 
 // The size of an Adler-32 checksum in bytes.
 const Size = 4
@@ -21,8 +23,11 @@ const Size = 4
 // digest represents the partial evaluation of a checksum.
 // The low 16 bits are s1, the high 16 bits are s2.
 
-// New returns a new hash.Hash32 computing the Adler-32 checksum.
-// Its Sum method will lay the value out in big-endian byte order.
+// New returns a new hash.Hash32 computing the Adler-32 checksum. Its
+// Sum method will lay the value out in big-endian byte order. The
+// returned Hash32 also implements encoding.BinaryMarshaler and
+// encoding.BinaryUnmarshaler to marshal and unmarshal the internal
+// state of the hash.
 func New() hash.Hash32
 
 // Checksum returns the Adler-32 checksum of data.

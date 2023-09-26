@@ -37,3 +37,6 @@ func (tr *TypeRepr) Empty() bool
 // If fargs are provided, repr is used as a format for fmt.Sprintf.
 // Otherwise, repr is used unprocessed as the type representation.
 func (tr *TypeRepr) Set(repr string, fargs ...interface{})
+
+// jniTypes maps from JNI types that we want to be uintptrs, to the underlying type to which
+// they are mapped.  The base "jobject" maps to the empty string.

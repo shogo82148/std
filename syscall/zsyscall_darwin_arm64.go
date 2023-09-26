@@ -30,8 +30,6 @@ func Dup2(from int, to int) (err error)
 
 func Exchangedata(path1 string, path2 string, options int) (err error)
 
-func Exit(code int)
-
 func Fchdir(fd int) (err error)
 
 func Fchflags(fd int, flags int) (err error)

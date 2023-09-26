@@ -7,7 +7,7 @@
 package big
 
 // MaxBase is the largest number base accepted for string conversions.
-const MaxBase = 'z' - 'a' + 10 + 1
+const MaxBase = 10 + ('z' - 'a' + 1) + ('Z' - 'A' + 1)
 
 // Split blocks greater than leafSize Words (or set to 0 to disable recursive conversion)
 // Benchmark and configure leafSize using: go test -bench="Leaf"

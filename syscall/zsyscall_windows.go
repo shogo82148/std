@@ -71,6 +71,8 @@ func CancelIoEx(s Handle, o *Overlapped) (err error)
 
 func CreateProcess(appName *uint16, commandLine *uint16, procSecurity *SecurityAttributes, threadSecurity *SecurityAttributes, inheritHandles bool, creationFlags uint32, env *uint16, currentDir *uint16, startupInfo *StartupInfo, outProcInfo *ProcessInformation) (err error)
 
+func CreateProcessAsUser(token Token, appName *uint16, commandLine *uint16, procSecurity *SecurityAttributes, threadSecurity *SecurityAttributes, inheritHandles bool, creationFlags uint32, env *uint16, currentDir *uint16, startupInfo *StartupInfo, outProcInfo *ProcessInformation) (err error)
+
 func OpenProcess(da uint32, inheritHandle bool, pid uint32) (handle Handle, err error)
 
 func TerminateProcess(handle Handle, exitcode uint32) (err error)

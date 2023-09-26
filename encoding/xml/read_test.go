@@ -13,7 +13,7 @@ import (
 type Feed struct {
 	XMLName Name      `xml:"http://www.w3.org/2005/Atom feed"`
 	Title   string    `xml:"title"`
-	Id      string    `xml:"id"`
+	ID      string    `xml:"id"`
 	Link    []Link    `xml:"link"`
 	Updated time.Time `xml:"updated,attr"`
 	Author  Person    `xml:"author"`
@@ -22,7 +22,7 @@ type Feed struct {
 
 type Entry struct {
 	Title   string    `xml:"title"`
-	Id      string    `xml:"id"`
+	ID      string    `xml:"id"`
 	Link    []Link    `xml:"link"`
 	Updated time.Time `xml:"updated"`
 	Author  Person    `xml:"author"`
@@ -207,4 +207,52 @@ type Parent struct {
 	Children []Child
 	ChildPtr *Child
 	ChildToEmbed
+}
+
+type WhitespaceValuesParent struct {
+	BFalse bool
+	BTrue  bool
+	I      int
+	INeg   int
+	I8     int8
+	I8Neg  int8
+	I16    int16
+	I16Neg int16
+	I32    int32
+	I32Neg int32
+	I64    int64
+	I64Neg int64
+	UI     uint
+	UI8    uint8
+	UI16   uint16
+	UI32   uint32
+	UI64   uint64
+	F32    float32
+	F32Neg float32
+	F64    float64
+	F64Neg float64
+}
+
+type WhitespaceAttrsParent struct {
+	BFalse bool    `xml:",attr"`
+	BTrue  bool    `xml:",attr"`
+	I      int     `xml:",attr"`
+	INeg   int     `xml:",attr"`
+	I8     int8    `xml:",attr"`
+	I8Neg  int8    `xml:",attr"`
+	I16    int16   `xml:",attr"`
+	I16Neg int16   `xml:",attr"`
+	I32    int32   `xml:",attr"`
+	I32Neg int32   `xml:",attr"`
+	I64    int64   `xml:",attr"`
+	I64Neg int64   `xml:",attr"`
+	UI     uint    `xml:",attr"`
+	UI8    uint8   `xml:",attr"`
+	UI16   uint16  `xml:",attr"`
+	UI32   uint32  `xml:",attr"`
+	UI64   uint64  `xml:",attr"`
+	F32    float32 `xml:",attr"`
+	F32Neg float32 `xml:",attr"`
+	F64    float64 `xml:",attr"`
+	F64Neg float64 `xml:",attr"`
 }

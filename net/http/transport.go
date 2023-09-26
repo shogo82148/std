@@ -61,6 +61,15 @@ const DefaultMaxIdleConnsPerHost = 2
 // and how the Transport is configured. The DefaultTransport supports HTTP/2.
 // To explicitly enable HTTP/2 on a transport, use golang.org/x/net/http2
 // and call ConfigureTransport. See the package docs for more about HTTP/2.
+//
+// The Transport will send CONNECT requests to a proxy for its own use
+// when processing HTTPS requests, but Transport should generally not
+// be used to send a CONNECT request. That is, the Request passed to
+// the RoundTrip method should not have a Method of "CONNECT", as Go's
+// HTTP/1.x implementation does not support full-duplex request bodies
+// being written while the response body is streamed. Go's HTTP/2
+// implementation does support full duplex, but many CONNECT proxies speak
+// HTTP/1.x.
 type Transport struct {
 	idleMu     sync.Mutex
 	wantIdle   bool
@@ -198,16 +207,16 @@ func (t *Transport) CancelRequest(req *Request)
 //
 // A connect method may be of the following types:
 //
-// Cache key form                    Description
-// -----------------                 -------------------------
-// |http|foo.com                     http directly to server, no proxy
-// |https|foo.com                    https directly to server, no proxy
-// http://proxy.com|https|foo.com    http to proxy, then CONNECT to foo.com
-// http://proxy.com|http             http to proxy, http to anywhere after that
-// socks5://proxy.com|http|foo.com   socks5 to proxy, then http to foo.com
-// socks5://proxy.com|https|foo.com  socks5 to proxy, then https to foo.com
-//
-// Note: no support to https to the proxy yet.
+//	Cache key form                    Description
+//	-----------------                 -------------------------
+//	|http|foo.com                     http directly to server, no proxy
+//	|https|foo.com                    https directly to server, no proxy
+//	http://proxy.com|https|foo.com    http to proxy, then CONNECT to foo.com
+//	http://proxy.com|http             http to proxy, http to anywhere after that
+//	socks5://proxy.com|http|foo.com   socks5 to proxy, then http to foo.com
+//	socks5://proxy.com|https|foo.com  socks5 to proxy, then https to foo.com
+//	https://proxy.com|https|foo.com   https to proxy, then CONNECT to foo.com
+//	https://proxy.com|http            https to proxy, http to anywhere after that
 //
 
 // connectMethodKey is the map key version of connectMethod, with a

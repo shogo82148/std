@@ -53,27 +53,27 @@ package csv
 
 import (
 	"github.com/shogo82148/std/bufio"
-	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 )
 
 // A ParseError is returned for parsing errors.
-// The first line is 1.  The first column is 0.
+// Line numbers are 1-indexed and columns are 0-indexed.
 type ParseError struct {
-	Line   int
-	Column int
-	Err    error
+	StartLine int
+	Line      int
+	Column    int
+	Err       error
 }
 
 func (e *ParseError) Error() string
 
-// These are the errors that can be returned in ParseError.Error
+// These are the errors that can be returned in ParseError.Err.
 var (
 	ErrTrailingComma = errors.New("extra delimiter at end of line")
 	ErrBareQuote     = errors.New("bare \" in non-quoted-field")
-	ErrQuote         = errors.New("extraneous \" in field")
-	ErrFieldCount    = errors.New("wrong number of fields in line")
+	ErrQuote         = errors.New("extraneous or missing \" in quoted-field")
+	ErrFieldCount    = errors.New("wrong number of fields")
 )
 
 // A Reader reads records from a CSV-encoded file.
@@ -81,6 +81,10 @@ var (
 // As returned by NewReader, a Reader expects input conforming to RFC 4180.
 // The exported fields can be changed to customize the details before the
 // first call to Read or ReadAll.
+//
+// The Reader converts all \r\n sequences in its input to plain \n,
+// including in multiline field values, so that the returned data does
+// not depend on which line-ending convention an input file uses.
 type Reader struct {
 	Comma rune
 
@@ -88,18 +92,21 @@ type Reader struct {
 
 	FieldsPerRecord int
 
-	LazyQuotes    bool
-	TrailingComma bool
+	LazyQuotes bool
 
 	TrimLeadingSpace bool
 
 	ReuseRecord bool
 
-	line   int
-	column int
-	r      *bufio.Reader
+	TrailingComma bool
 
-	lineBuffer bytes.Buffer
+	r *bufio.Reader
+
+	numLine int
+
+	rawBuffer []byte
+
+	recordBuffer []byte
 
 	fieldIndexes []int
 

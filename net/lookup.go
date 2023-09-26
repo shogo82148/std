@@ -24,6 +24,9 @@ import (
 //
 // On Unix, this map is augmented by readServices via goLookupPort.
 
+// dnsWaitGroup can be used by tests to wait for all DNS goroutines to
+// complete. This avoids races on the test hooks.
+
 // maxPortBufSize is the longest reasonable name of a service
 // (non-numeric port).
 // Currently the longest known IANA-unregistered name is

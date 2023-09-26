@@ -61,7 +61,7 @@ func Wait4(pid int, wstatus *WaitStatus, options int, rusage *Rusage) (wpid int,
 
 func Gethostname() (name string, err error)
 
-func UtimesNano(path string, ts []Timespec) (err error)
+func UtimesNano(path string, ts []Timespec) error
 
 // FcntlFlock performs a fcntl syscall for the F_GETLK, F_SETLK or F_SETLKW command.
 func FcntlFlock(fd uintptr, cmd int, lk *Flock_t) error

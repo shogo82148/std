@@ -28,8 +28,6 @@ func Dup(fd int) (nfd int, err error)
 
 func Dup2(from int, to int) (err error)
 
-func Exit(code int)
-
 func Fchdir(fd int) (err error)
 
 func Fchflags(fd int, flags int) (err error)

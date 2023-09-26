@@ -25,7 +25,7 @@
 // In practice, only one of the wastes comes into play for a
 // given size (sizes < 512 waste mainly on the round-up,
 // sizes > 512 waste mainly on the page chopping).
-//
-// TODO(rsc): Compute max waste for any given size.
+// For really small sizes, alignment constraints force the
+// overhead higher.
 
 package main

@@ -56,12 +56,14 @@ type PrivateKey struct {
 // Public returns the public key corresponding to priv.
 func (priv *PrivateKey) Public() crypto.PublicKey
 
-// Sign signs msg with priv, reading randomness from rand. If opts is a
+// Sign signs digest with priv, reading randomness from rand. If opts is a
 // *PSSOptions then the PSS algorithm will be used, otherwise PKCS#1 v1.5 will
-// be used. This method is intended to support keys where the private part is
-// kept in, for example, a hardware module. Common uses should use the Sign*
-// functions in this package.
-func (priv *PrivateKey) Sign(rand io.Reader, msg []byte, opts crypto.SignerOpts) ([]byte, error)
+// be used.
+//
+// This method implements crypto.Signer, which is an interface to support keys
+// where the private part is kept in, for example, a hardware module. Common
+// uses should use the Sign* functions in this package directly.
+func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
 
 // Decrypt decrypts ciphertext with priv. If opts is nil or of type
 // *PKCS1v15DecryptOptions then PKCS#1 v1.5 decryption is performed. Otherwise

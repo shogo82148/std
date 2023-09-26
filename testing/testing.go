@@ -8,8 +8,8 @@
 //
 //	func TestXxx(*testing.T)
 //
-// where Xxx can be any alphanumeric string (but the first letter must not be in
-// [a-z]) and serves to identify the test routine.
+// where Xxx does not start with a lowercase letter. The function name
+// serves to identify the test routine.
 //
 // Within these functions, use the Error, Fail or related methods to signal failure.
 //
@@ -223,6 +223,11 @@
 //	}
 package testing
 
+import (
+	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/time"
+)
+
 // common holds the elements common between T and B and
 // captures common methods such as Errorf.
 
@@ -290,9 +295,9 @@ type InternalTest struct {
 	F    func(*T)
 }
 
-// Run runs f as a subtest of t called name. It reports whether f succeeded. Run
-// runs f in a separate goroutine and will block until all its parallel subtests
-// have completed.
+// Run runs f as a subtest of t called name. It runs f in a separate goroutine
+// and blocks until f returns or calls t.Parallel to become a parallel test.
+// Run reports whether f succeeded (or at least did not fail before calling t.Parallel).
 //
 // Run may be called simultaneously from multiple goroutines, but all such calls
 // must return before the outer test function for t returns.
@@ -318,6 +323,11 @@ type M struct {
 	tests      []InternalTest
 	benchmarks []InternalBenchmark
 	examples   []InternalExample
+
+	timer     *time.Timer
+	afterOnce sync.Once
+
+	numRun int
 }
 
 // testDeps is an internal interface of functionality that is

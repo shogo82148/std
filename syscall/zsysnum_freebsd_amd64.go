@@ -348,4 +348,5 @@ const (
 	SYS_ACCEPT4                  = 541
 	SYS_PIPE2                    = 542
 	SYS_PROCCTL                  = 544
+	SYS_UTIMENSAT                = 547
 )

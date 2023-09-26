@@ -16,6 +16,10 @@
 
 package http
 
+import (
+	mathrand "math/rand"
+)
+
 // ClientConnPool manages a pool of HTTP/2 client connections.
 
 // clientConnPoolIdleCloser is the interface implemented by ClientConnPool
@@ -223,6 +227,21 @@ var _ Pusher = (*http2responseWriter)(nil)
 // Request.Body when the main goroutine panics. Since most handlers read in the
 // the main ServeHTTP goroutine, this will show up rarely.
 
+// After sending GOAWAY, the connection will close after goAwayTimeout.
+// If we close the connection immediately after sending GOAWAY, there may
+// be unsent data in our kernel receive buffer, which will cause the kernel
+// to send a TCP RST on close() instead of a FIN. This RST will abort the
+// connection immediately, whether or not the client had received the GOAWAY.
+//
+// Ideally we should delay for at least 1 RTT + epsilon so the client has
+// a chance to read the GOAWAY and stop sending messages. Measuring RTT
+// is hard, so we approximate with 1 second. See golang.org/issue/18701.
+//
+// This is a var so it can be shorter in tests, where all requests uses the
+// loopback interface making the expected RTT very small.
+//
+// TODO: configurable?
+
 // A bodyReadMsg tells the server loop that the http.Handler read n
 // bytes of the DATA from the client on the given stream.
 
@@ -273,6 +292,11 @@ var (
 
 // clientStream is the state for a single HTTP/2 stream. One of these
 // is created for each Transport.RoundTrip call.
+
+// noCachedConnError is the concrete type of ErrNoCachedConn, needs to be detected
+// by net/http regardless of whether it's its bundled version (in h2_bundle.go with a rewritten type name)
+// or from a user's x/net/http2. As such, as it has a unique method name (IsHTTP2NoCachedConnError) that
+// net/http sniffs for via func isNoCachedConnError.
 
 // RoundTripOpt are options for the Transport.RoundTripOpt method.
 

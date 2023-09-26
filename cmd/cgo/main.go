@@ -31,6 +31,8 @@ type Package struct {
 	GoFiles     []string
 	GccFiles    []string
 	Preamble    string
+	typedefs    map[string]bool
+	typedefList []string
 }
 
 // A File collects information about a single Go input file.
@@ -43,6 +45,8 @@ type File struct {
 	Calls    []*Call
 	ExpFunc  []*ExpFunc
 	Name     map[string]*Name
+	NamePos  map[*Name]token.Pos
+	Edit     *edit.Buffer
 }
 
 // A Call refers to a call of a C.xxx function in the AST.
@@ -55,7 +59,7 @@ type Call struct {
 type Ref struct {
 	Name    *Name
 	Expr    *ast.Expr
-	Context string
+	Context astContext
 }
 
 func (r *Ref) Pos() token.Pos
@@ -79,7 +83,7 @@ func (n *Name) IsVar() bool
 // IsConst reports whether Kind is either "iconst", "fconst" or "sconst"
 func (n *Name) IsConst() bool
 
-// A ExpFunc is an exported function, callable from C.
+// An ExpFunc is an exported function, callable from C.
 // Such functions are identified in the Go input file
 // by doc comments containing the line //export ExpName
 type ExpFunc struct {

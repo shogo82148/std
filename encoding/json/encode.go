@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package json implements encoding and decoding of JSON as defined in
-// RFC 4627. The mapping between JSON and Go values is described
+// RFC 7159. The mapping between JSON and Go values is described
 // in the documentation for the Marshal and Unmarshal functions.
 //
 // See "JSON and Go" for an introduction to this package:
@@ -146,6 +146,8 @@ import (
 func Marshal(v interface{}) ([]byte, error)
 
 // MarshalIndent is like Marshal but applies Indent to format the output.
+// Each JSON element in the output will begin on a new line beginning with prefix
+// followed by one or more copies of indent according to the indentation nesting.
 func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error)
 
 // HTMLEscape appends to dst the JSON-encoded src with <, >, &, U+2028 and U+2029
@@ -181,8 +183,8 @@ func (e *UnsupportedValueError) Error() string
 // attempting to encode a string value with invalid UTF-8 sequences.
 // As of Go 1.2, Marshal instead coerces the string to valid UTF-8 by
 // replacing invalid bytes with the Unicode replacement rune U+FFFD.
-// This error is no longer generated but is kept for backwards compatibility
-// with programs that might mention it.
+//
+// Deprecated: No longer used; kept for compatibility.
 type InvalidUTF8Error struct {
 	S string
 }

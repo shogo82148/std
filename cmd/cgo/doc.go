@@ -44,8 +44,8 @@ For example:
 	// #include <png.h>
 	import "C"
 
-Alternatively, CPPFLAGS and LDFLAGS may be obtained via the pkg-config
-tool using a '#cgo pkg-config:' directive followed by the package names.
+Alternatively, CPPFLAGS and LDFLAGS may be obtained via the pkg-config tool
+using a '#cgo pkg-config:' directive followed by the package names.
 For example:
 
 	// #cgo pkg-config: png cairo
@@ -111,11 +111,13 @@ the use of cgo, and to 0 to disable it. The go tool will set the
 build constraint "cgo" if cgo is enabled.
 
 When cross-compiling, you must specify a C cross-compiler for cgo to
-use. You can do this by setting the CC_FOR_TARGET environment
-variable when building the toolchain using make.bash, or by setting
-the CC environment variable any time you run the go tool. The
-CXX_FOR_TARGET and CXX environment variables work in a similar way for
-C++ code.
+use. You can do this by setting the generic CC_FOR_TARGET or the
+more specific CC_FOR_${GOOS}_${GOARCH} (for example, CC_FOR_linux_arm)
+environment variable when building the toolchain using make.bash,
+or you can set the CC environment variable any time you run the go tool.
+
+The CXX_FOR_TARGET, CXX_FOR_${GOOS}_${GOARCH}, and CXX
+environment variables work in a similar way for C++ code.
 
 # Go references to C
 
@@ -135,11 +137,28 @@ C.complexfloat (complex float), and C.complexdouble (complex double).
 The C type void* is represented by Go's unsafe.Pointer.
 The C types __int128_t and __uint128_t are represented by [16]byte.
 
+A few special C types which would normally be represented by a pointer
+type in Go are instead represented by a uintptr.  See the Special
+cases section below.
+
 To access a struct, union, or enum type directly, prefix it with
 struct_, union_, or enum_, as in C.struct_stat.
 
 The size of any C type T is available as C.sizeof_T, as in
 C.sizeof_struct_stat.
+
+A C function may be declared in the Go file with a parameter type of
+the special name _GoString_. This function may be called with an
+ordinary Go string value. The string length, and a pointer to the
+string contents, may be accessed by calling the C functions
+
+	size_t _GoStringLen(_GoString_ s);
+	const char *_GoStringPtr(_GoString_ s);
+
+These functions are only available in the preamble, not in other C
+files. The C code must not modify the contents of the pointer returned
+by _GoStringPtr. Note that the string contents may not have a trailing
+NUL byte.
 
 As Go doesn't have support for C's union type in the general case,
 C's union types are represented as a Go byte array with the same length.
@@ -250,7 +269,16 @@ They will be available in the C code as:
 found in the _cgo_export.h generated header, after any preambles
 copied from the cgo input files. Functions with multiple
 return values are mapped to functions returning a struct.
+
 Not all Go types can be mapped to C types in a useful way.
+Go struct types are not supported; use a C struct type.
+Go array types are not supported; use a C pointer.
+
+Go functions that take arguments of type string may be called with the
+C type _GoString_, described above. The _GoString_ type will be
+automatically defined in the preamble. Note that there is no way for C
+code to create a value of this type; this is only useful for passing
+string values from Go to C and back to Go.
 
 Using //export in a file places a restriction on the preamble:
 since it is copied into two different C output files, it must not
@@ -273,6 +301,14 @@ pointer is a Go pointer or a C pointer is a dynamic property
 determined by how the memory was allocated; it has nothing to do with
 the type of the pointer.
 
+Note that values of some Go types, other than the type's zero value,
+always include Go pointers. This is true of string, slice, interface,
+channel, map, and function types. A pointer type may hold a Go pointer
+or a C pointer. Array and struct types may or may not include Go
+pointers, depending on the element types. All the discussion below
+about Go pointers applies not just to pointer types, but also to other
+types that include Go pointers.
+
 Go code may pass a Go pointer to C provided the Go memory to which it
 points does not contain any Go pointers. The C code must preserve
 this property: it must not store any Go pointers in Go memory, even
@@ -283,14 +319,17 @@ the Go memory in question is the entire array or the entire backing
 array of the slice.
 
 C code may not keep a copy of a Go pointer after the call returns.
+This includes the _GoString_ type, which, as noted above, includes a
+Go pointer; _GoString_ values may not be retained by C code.
 
-A Go function called by C code may not return a Go pointer. A Go
-function called by C code may take C pointers as arguments, and it may
-store non-pointer or C pointer data through those pointers, but it may
-not store a Go pointer in memory pointed to by a C pointer. A Go
-function called by C code may take a Go pointer as an argument, but it
-must preserve the property that the Go memory to which it points does
-not contain any Go pointers.
+A Go function called by C code may not return a Go pointer (which
+implies that it may not return a string, slice, channel, and so
+forth). A Go function called by C code may take C pointers as
+arguments, and it may store non-pointer or C pointer data through
+those pointers, but it may not store a Go pointer in memory pointed to
+by a C pointer. A Go function called by C code may take a Go pointer
+as an argument, but it must preserve the property that the Go memory
+to which it points does not contain any Go pointers.
 
 Go code may not store a Go pointer in C memory. C code may store Go
 pointers in C memory, subject to the rule above: it must stop storing
@@ -308,6 +347,45 @@ and of course there is nothing stopping the C code from doing anything
 it likes. However, programs that break these rules are likely to fail
 in unexpected and unpredictable ways.
 
+# Special cases
+
+A few special C types which would normally be represented by a pointer
+type in Go are instead represented by a uintptr. Those include:
+
+1. The *Ref types on Darwin, rooted at CoreFoundation's CFTypeRef type.
+
+2. The object types from Java's JNI interface:
+
+	jobject
+	jclass
+	jthrowable
+	jstring
+	jarray
+	jbooleanArray
+	jbyteArray
+	jcharArray
+	jshortArray
+	jintArray
+	jlongArray
+	jfloatArray
+	jdoubleArray
+	jobjectArray
+	jweak
+
+These types are uintptr on the Go side because they would otherwise
+confuse the Go garbage collector; they are sometimes not really
+pointers but data structures encoded in a pointer type. All operations
+on these types must happen in C. The proper constant to initialize an
+empty such reference is 0, not nil.
+
+These special cases were introduced in Go 1.10. For auto-updating code
+from Go 1.9 and earlier, use the cftype or jni rewrites in the Go fix tool:
+
+	go tool fix -r cftype <pkg>
+	go tool fix -r jni <pkg>
+
+It will replace nil with 0 in the appropriate places.
+
 # Using cgo directly
 
 Usage:
@@ -322,32 +400,35 @@ invoking the C compiler to compile the C parts of the package.
 
 The following options are available when running cgo directly:
 
+	-V
+		Print cgo version and exit.
+	-debug-define
+		Debugging option. Print #defines.
+	-debug-gcc
+		Debugging option. Trace C compiler execution and output.
 	-dynimport file
 		Write list of symbols imported by file. Write to
 		-dynout argument or to standard output. Used by go
 		build when building a cgo package.
+	-dynlinker
+		Write dynamic linker as part of -dynimport output.
 	-dynout file
 		Write -dynimport output to file.
 	-dynpackage package
 		Set Go package for -dynimport output.
-	-dynlinker
-		Write dynamic linker as part of -dynimport output.
-	-godefs
-		Write out input file in Go syntax replacing C package
-		names with real values. Used to generate files in the
-		syscall package when bootstrapping a new target.
-	-srcdir directory
-		Find the Go input files, listed on the command line,
-		in directory.
-	-objdir directory
-		Put all generated files in directory.
-	-importpath string
-		The import path for the Go package. Optional; used for
-		nicer comments in the generated files.
 	-exportheader file
 		If there are any exported functions, write the
 		generated export declarations to file.
 		C code can #include this to see the declarations.
+	-importpath string
+		The import path for the Go package. Optional; used for
+		nicer comments in the generated files.
+	-import_runtime_cgo
+		If set (which it is by default) import runtime/cgo in
+		generated output.
+	-import_syscall
+		If set (which it is by default) import syscall in
+		generated output.
 	-gccgo
 		Generate output for the gccgo compiler rather than the
 		gc compiler.
@@ -355,15 +436,12 @@ The following options are available when running cgo directly:
 		The -fgo-prefix option to be used with gccgo.
 	-gccgopkgpath path
 		The -fgo-pkgpath option to be used with gccgo.
-	-import_runtime_cgo
-		If set (which it is by default) import runtime/cgo in
-		generated output.
-	-import_syscall
-		If set (which it is by default) import syscall in
-		generated output.
-	-debug-define
-		Debugging option. Print #defines.
-	-debug-gcc
-		Debugging option. Trace C compiler execution and output.
+	-godefs
+		Write out input file in Go syntax replacing C package
+		names with real values. Used to generate files in the
+		syscall package when bootstrapping a new target.
+	-objdir directory
+		Put all generated files in directory.
+	-srcdir directory
 */
 package main

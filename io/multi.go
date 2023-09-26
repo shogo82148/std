@@ -14,4 +14,8 @@ var _ stringWriter = (*multiWriter)(nil)
 
 // MultiWriter creates a writer that duplicates its writes to all the
 // provided writers, similar to the Unix tee(1) command.
+//
+// Each write is written to each listed writer, one at a time.
+// If a listed writer returns an error, that overall write operation
+// stops and returns the error; it does not continue down the list.
 func MultiWriter(writers ...Writer) Writer

@@ -12,10 +12,12 @@ func IsInterface(typ Type) bool
 // Comparable reports whether values of type T are comparable.
 func Comparable(T Type) bool
 
-// Identical reports whether x and y are identical.
+// Identical reports whether x and y are identical types.
+// Receivers of Signature types are ignored.
 func Identical(x, y Type) bool
 
-// IdenticalIgnoreTags reports whether x and y are identical if tags are ignored.
+// IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.
+// Receivers of Signature types are ignored.
 func IdenticalIgnoreTags(x, y Type) bool
 
 // An ifacePair is a node in a stack of interface type pairs compared for identity.

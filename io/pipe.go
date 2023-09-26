@@ -11,6 +11,9 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
+// atomicError is a type-safe atomic value for errors.
+// We use a struct{ error } to ensure consistent use of a concrete type.
+
 // ErrClosedPipe is the error used for read or write operations on a closed pipe.
 var ErrClosedPipe = errors.New("io: read/write on closed pipe")
 

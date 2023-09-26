@@ -4,5 +4,7 @@
 
 package runtime
 
+// An notInHeapSlice is a slice backed by go:notinheap memory.
+
 // maxElems is a lookup table containing the maximum capacity for a slice.
 // The index is the size of the slice element.

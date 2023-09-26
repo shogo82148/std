@@ -30,8 +30,6 @@ func EpollCtl(epfd int, op int, fd int, event *EpollEvent) (err error)
 
 func EpollWait(epfd int, events []EpollEvent, msec int) (n int, err error)
 
-func Exit(code int)
-
 func Faccessat(dirfd int, path string, mode uint32, flags int) (err error)
 
 func Fallocate(fd int, mode uint32, off int64, len int64) (err error)

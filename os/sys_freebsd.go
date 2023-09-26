@@ -6,3 +6,4 @@ package os
 
 // supportsCloseOnExec reports whether the platform supports the
 // O_CLOEXEC flag.
+// The O_CLOEXEC flag was introduced in FreeBSD 8.3.

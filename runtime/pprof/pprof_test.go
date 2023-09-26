@@ -6,5 +6,3 @@
 // +build !nacl
 
 package pprof
-
-// Operating systems that are expected to fail the tests. See issue 13841.

@@ -89,15 +89,15 @@ type CorruptInputError int64
 
 func (e CorruptInputError) Error() string
 
+// DecodeString returns the bytes represented by the base64 string s.
+func (enc *Encoding) DecodeString(s string) ([]byte, error)
+
 // Decode decodes src using the encoding enc. It writes at most
 // DecodedLen(len(src)) bytes to dst and returns the number of bytes
 // written. If src contains invalid base64 data, it will return the
 // number of bytes successfully written and CorruptInputError.
 // New line characters (\r and \n) are ignored.
 func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
-
-// DecodeString returns the bytes represented by the base64 string s.
-func (enc *Encoding) DecodeString(s string) ([]byte, error)
 
 // NewDecoder constructs a new base64 stream decoder.
 func NewDecoder(enc *Encoding, r io.Reader) io.Reader

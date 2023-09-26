@@ -11,4 +11,5 @@ var (
 	GetMono                = (*Time).mono
 	ErrLocation            = errLocation
 	ReadFile               = readFile
+	LoadTzinfo             = loadTzinfo
 )

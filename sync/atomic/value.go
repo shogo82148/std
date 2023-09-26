@@ -10,8 +10,6 @@ package atomic
 //
 // A Value must not be copied after first use.
 type Value struct {
-	noCopy noCopy
-
 	v interface{}
 }
 
@@ -25,9 +23,3 @@ func (v *Value) Load() (x interface{})
 // All calls to Store for a given Value must use values of the same concrete type.
 // Store of an inconsistent type panics, as does Store(nil).
 func (v *Value) Store(x interface{})
-
-// noCopy may be embedded into structs which must not be copied
-// after the first use.
-//
-// See https://github.com/golang/go/issues/8005#issuecomment-190753527
-// for details.

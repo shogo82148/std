@@ -92,6 +92,11 @@ func (r *Rand) Float32() float32
 // Perm returns, as a slice of n ints, a pseudo-random permutation of the integers [0,n).
 func (r *Rand) Perm(n int) []int
 
+// Shuffle pseudo-randomizes the order of elements.
+// n is the number of elements. Shuffle panics if n < 0.
+// swap swaps the elements with indexes i and j.
+func (r *Rand) Shuffle(n int, swap func(i, j int))
+
 // Read generates len(p) random bytes and writes them into p. It
 // always returns len(p) and a nil error.
 // Read should not be called concurrently with any other Rand method.
@@ -149,6 +154,11 @@ func Float32() float32
 // Perm returns, as a slice of n ints, a pseudo-random permutation of the integers [0,n)
 // from the default Source.
 func Perm(n int) []int
+
+// Shuffle pseudo-randomizes the order of elements using the default Source.
+// n is the number of elements. Shuffle panics if n < 0.
+// swap swaps the elements with indexes i and j.
+func Shuffle(n int, swap func(i, j int))
 
 // Read generates len(p) random bytes from the default Source and
 // writes them into p. It always returns len(p) and a nil error.

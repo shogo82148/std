@@ -42,6 +42,13 @@ package main
 // calls back into Go). This also avoids returning nil for an
 // allocation of 0 bytes.
 
+// builtinExportProlog is a shorter version of builtinProlog,
+// to be put into the _cgo_export.h file.
+// For historical reasons we can't use builtinProlog in _cgo_export.h,
+// because _cgo_export.h defines GoString as a struct while builtinProlog
+// defines it as a function. We don't change this to avoid unnecessarily
+// breaking existing code.
+
 // gccExportHeaderEpilog goes at the end of the generated header file.
 
 // gccgoExportFileProlog is written to the _cgo_export.c file when

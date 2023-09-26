@@ -55,14 +55,18 @@ func MakeTable(poly uint32) *Table
 
 // digest represents the partial evaluation of a checksum.
 
-// New creates a new hash.Hash32 computing the CRC-32 checksum
-// using the polynomial represented by the Table.
-// Its Sum method will lay the value out in big-endian byte order.
+// New creates a new hash.Hash32 computing the CRC-32 checksum using the
+// polynomial represented by the Table. Its Sum method will lay the
+// value out in big-endian byte order. The returned Hash32 also
+// implements encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
+// marshal and unmarshal the internal state of the hash.
 func New(tab *Table) hash.Hash32
 
-// NewIEEE creates a new hash.Hash32 computing the CRC-32 checksum
-// using the IEEE polynomial.
-// Its Sum method will lay the value out in big-endian byte order.
+// NewIEEE creates a new hash.Hash32 computing the CRC-32 checksum using
+// the IEEE polynomial. Its Sum method will lay the value out in
+// big-endian byte order. The returned Hash32 also implements
+// encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to marshal
+// and unmarshal the internal state of the hash.
 func NewIEEE() hash.Hash32
 
 // Update returns the result of adding the bytes in p to the crc.
