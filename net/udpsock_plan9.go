@@ -41,9 +41,11 @@ func (c *UDPConn) WriteToUDP(b []byte, addr *UDPAddr) (int, error)
 // WriteTo implements the PacketConn WriteTo method.
 func (c *UDPConn) WriteTo(b []byte, addr Addr) (int, error)
 
-// WriteMsgUDP writes a packet to addr via c, copying the payload from
-// b and the associated out-of-band data from oob.  It returns the
-// number of payload and out-of-band bytes written.
+// WriteMsgUDP writes a packet to addr via c if c isn't connected, or
+// to c's remote destination address if c is connected (in which case
+// addr must be nil).  The payload is copied from b and the associated
+// out-of-band data is copied from oob.  It returns the number of
+// payload and out-of-band bytes written.
 func (c *UDPConn) WriteMsgUDP(b, oob []byte, addr *UDPAddr) (n, oobn int, err error)
 
 // DialUDP connects to the remote address raddr on the network net,
@@ -61,7 +63,14 @@ func DialUDP(net string, laddr, raddr *UDPAddr) (*UDPConn, error)
 func ListenUDP(net string, laddr *UDPAddr) (*UDPConn, error)
 
 // ListenMulticastUDP listens for incoming multicast UDP packets
-// addressed to the group address gaddr on ifi, which specifies the
-// interface to join.  ListenMulticastUDP uses default multicast
-// interface if ifi is nil.
-func ListenMulticastUDP(net string, ifi *Interface, gaddr *UDPAddr) (*UDPConn, error)
+// addressed to the group address gaddr on the interface ifi.
+// Network must be "udp", "udp4" or "udp6".
+// ListenMulticastUDP uses the system-assigned multicast interface
+// when ifi is nil, although this is not recommended because the
+// assignment depends on platforms and sometimes it might require
+// routing configuration.
+//
+// ListenMulticastUDP is just for convenience of simple, small
+// applications. There are golang.org/x/net/ipv4 and
+// golang.org/x/net/ipv6 packages for general purpose uses.
+func ListenMulticastUDP(network string, ifi *Interface, gaddr *UDPAddr) (*UDPConn, error)

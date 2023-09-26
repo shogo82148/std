@@ -4,8 +4,6 @@
 
 package net
 
-type DialErrorTest struct {
-	Net     string
-	Raddr   string
-	Pattern string
-}
+// Define a pair of blackholed (IPv4, IPv6) addresses, for which dialTCP is
+// expected to hang until the timeout elapses. These addresses are reserved
+// for benchmarking by RFC 6890.

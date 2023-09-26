@@ -16,7 +16,7 @@ func LookupHost(host string) (addrs []string, err error)
 
 // LookupIP looks up host using the local resolver.
 // It returns an array of that host's IPv4 and IPv6 addresses.
-func LookupIP(host string) (addrs []IP, err error)
+func LookupIP(host string) (ips []IP, err error)
 
 // LookupPort looks up the port for the given network and service.
 func LookupPort(network, service string) (port int, err error)
@@ -39,14 +39,14 @@ func LookupCNAME(name string) (cname string, err error)
 func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err error)
 
 // LookupMX returns the DNS MX records for the given domain name sorted by preference.
-func LookupMX(name string) (mx []*MX, err error)
+func LookupMX(name string) (mxs []*MX, err error)
 
 // LookupNS returns the DNS NS records for the given domain name.
-func LookupNS(name string) (ns []*NS, err error)
+func LookupNS(name string) (nss []*NS, err error)
 
 // LookupTXT returns the DNS TXT records for the given domain name.
-func LookupTXT(name string) (txt []string, err error)
+func LookupTXT(name string) (txts []string, err error)
 
 // LookupAddr performs a reverse lookup for the given address, returning a list
 // of names mapping to that address.
-func LookupAddr(addr string) (name []string, err error)
+func LookupAddr(addr string) (names []string, err error)

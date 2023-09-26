@@ -58,12 +58,10 @@ func Read(fd int, p []byte) (n int, err error)
 
 func Write(fd int, p []byte) (n int, err error)
 
-func Getwd() (wd string, err error)
-
 // sys	fd2path(fd int, buf []byte) (err error)
 func Fd2path(fd int) (path string, err error)
 
-// sys	pipe(p *[2]_C_int) (err error)
+// sys	pipe(p *[2]int32) (err error)
 func Pipe(p []int) (err error)
 
 func Seek(fd int, offset int64, whence int) (newoffset int64, err error)
@@ -110,3 +108,24 @@ func Getgid() (gid int)
 func Getuid() (uid int)
 
 func Getgroups() (gids []int, err error)
+
+// sys	open(path string, mode int) (fd int, err error)
+func Open(path string, mode int) (fd int, err error)
+
+// sys	create(path string, mode int, perm uint32) (fd int, err error)
+func Create(path string, mode int, perm uint32) (fd int, err error)
+
+// sys	remove(path string) (err error)
+func Remove(path string) error
+
+// sys	stat(path string, edir []byte) (n int, err error)
+func Stat(path string, edir []byte) (n int, err error)
+
+// sys	bind(name string, old string, flag int) (err error)
+func Bind(name string, old string, flag int) (err error)
+
+// sys	mount(fd int, afd int, old string, flag int, aname string) (err error)
+func Mount(fd int, afd int, old string, flag int, aname string) (err error)
+
+// sys	wstat(path string, edir []byte) (err error)
+func Wstat(path string, edir []byte) (err error)

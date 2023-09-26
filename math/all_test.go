@@ -27,3 +27,5 @@ const (
 	SmallestNormalFloat64   = 2.2250738585072014e-308
 	LargestSubnormalFloat64 = SmallestNormalFloat64 - SmallestNonzeroFloat64
 )
+
+var Global float64

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// MAC address manipulations
-
 package net
 
 // A HardwareAddr represents a physical hardware address.

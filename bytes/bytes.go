@@ -11,6 +11,7 @@ import (
 )
 
 // Count counts the number of non-overlapping instances of sep in s.
+// If sep is an empty slice, Count returns 1 + the number of Unicode code points in s.
 func Count(s, sep []byte) int
 
 // Contains reports whether subslice is within b.
@@ -21,6 +22,9 @@ func Index(s, sep []byte) int
 
 // LastIndex returns the index of the last instance of sep in s, or -1 if sep is not present in s.
 func LastIndex(s, sep []byte) int
+
+// LastIndexByte returns the index of the last instance of c in s, or -1 if c is not present in s.
+func LastIndexByte(s []byte, c byte) int
 
 // IndexRune interprets s as a sequence of UTF-8-encoded Unicode code points.
 // It returns the byte index of the first occurrence in s of the given rune.
@@ -126,7 +130,7 @@ func ToTitleSpecial(_case unicode.SpecialCase, s []byte) []byte
 // Title returns a copy of s with all Unicode letters that begin words
 // mapped to their title case.
 //
-// BUG: The rule Title uses for word boundaries does not handle Unicode punctuation properly.
+// BUG(rsc): The rule Title uses for word boundaries does not handle Unicode punctuation properly.
 func Title(s []byte) []byte
 
 // TrimLeftFunc returns a subslice of s by slicing off all leading UTF-8-encoded

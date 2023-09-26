@@ -26,10 +26,10 @@ import (
 // See http://www.w3.org/TR/PNG/#8Interlace
 
 // Decoding stage.
-// The PNG specification says that the IHDR, PLTE (if present), IDAT and IEND
-// chunks must appear in that order. There may be multiple IDAT chunks, and
-// IDAT chunks must be sequential (i.e. they may not have any other chunks
-// between them).
+// The PNG specification says that the IHDR, PLTE (if present), tRNS (if
+// present), IDAT and IEND chunks must appear in that order. There may be
+// multiple IDAT chunks, and IDAT chunks must be sequential (i.e. they may not
+// have any other chunks between them).
 // http://www.w3.org/TR/PNG/#5ChunkOrdering
 
 // A FormatError reports that the input is not a valid PNG.

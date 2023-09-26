@@ -17,6 +17,10 @@ func TimevalToNsec(tv Timeval) int64
 
 func NsecToTimeval(nsec int64) (tv Timeval)
 
+func Pipe(p []int) (err error)
+
+func Pipe2(p []int, flags int) (err error)
+
 func Getrlimit(resource int, rlim *Rlimit) (err error)
 
 func Setrlimit(resource int, rlim *Rlimit) (err error)

@@ -40,7 +40,7 @@ they are all pointers; if you bind to variables, they're values.
 	fmt.Println("ip has value ", *ip)
 	fmt.Println("flagvar has value ", flagvar)
 
-After parsing, the arguments after the flag are available as the
+After parsing, the arguments following the flags are available as the
 slice flag.Args() or individually as flag.Arg(i).
 The arguments are indexed from 0 through flag.NArg()-1.
 
@@ -115,6 +115,8 @@ var ErrHelp = errors.New("flag: help requested")
 // If a Value has an IsBoolFlag() bool method returning true,
 // the command-line parser makes -name equivalent to -name=true
 // rather than using the next command-line argument.
+//
+// Set is called once, in command line order, for each flag present.
 type Value interface {
 	String() string
 	Set(string) error
@@ -129,9 +131,10 @@ type Getter interface {
 	Get() interface{}
 }
 
-// ErrorHandling defines how to handle flag parsing errors.
+// ErrorHandling defines how FlagSet.Parse behaves if the parse fails.
 type ErrorHandling int
 
+// These constants cause FlagSet.Parse to behave as described if the parse fails.
 const (
 	ContinueOnError ErrorHandling = iota
 	ExitOnError
@@ -193,16 +196,49 @@ func (f *FlagSet) Set(name, value string) error
 // Set sets the value of the named command-line flag.
 func Set(name, value string) error
 
-// PrintDefaults prints, to standard error unless configured
-// otherwise, the default values of all defined flags in the set.
+// UnquoteUsage extracts a back-quoted name from the usage
+// string for a flag and returns it and the un-quoted usage.
+// Given "a `name` to show" it returns ("name", "a name to show").
+// If there are no back quotes, the name is an educated guess of the
+// type of the flag's value, or the empty string if the flag is boolean.
+func UnquoteUsage(flag *Flag) (name string, usage string)
+
+// PrintDefaults prints to standard error the default values of all
+// defined command-line flags in the set. See the documentation for
+// the global function PrintDefaults for more information.
 func (f *FlagSet) PrintDefaults()
 
-// PrintDefaults prints to standard error the default values of all defined command-line flags.
+// PrintDefaults prints, to standard error unless configured otherwise,
+// a usage message showing the default settings of all defined
+// command-line flags.
+// For an integer valued flag x, the default output has the form
+//
+//	-x int
+//		usage-message-for-x (default 7)
+//
+// The usage message will appear on a separate line for anything but
+// a bool flag with a one-byte name. For bool flags, the type is
+// omitted and if the flag name is one byte the usage message appears
+// on the same line. The parenthetical default is omitted if the
+// default is the zero value for the type. The listed type, here int,
+// can be changed by placing a back-quoted name in the flag's usage
+// string; the first such item in the message is taken to be a parameter
+// name to show in the message and the back quotes are stripped from
+// the message when displayed. For instance, given
+//
+//	flag.String("I", "", "search `directory` for include files")
+//
+// the output will be
+//
+//	-I directory
+//		search directory for include files.
 func PrintDefaults()
 
 // Usage prints to standard error a usage message documenting all defined command-line flags.
 // It is called when an error occurs while parsing flags.
 // The function is a variable that may be changed to point to a custom function.
+// By default it prints a simple header and calls PrintDefaults; for details about the
+// format of the output and how to control it, see the documentation for PrintDefaults.
 var Usage = func() {
 	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 	PrintDefaults()
@@ -215,11 +251,13 @@ func (f *FlagSet) NFlag() int
 func NFlag() int
 
 // Arg returns the i'th argument.  Arg(0) is the first remaining argument
-// after flags have been processed.
+// after flags have been processed. Arg returns an empty string if the
+// requested element does not exist.
 func (f *FlagSet) Arg(i int) string
 
 // Arg returns the i'th command-line argument.  Arg(0) is the first remaining argument
-// after flags have been processed.
+// after flags have been processed. Arg returns an empty string if the
+// requested element does not exist.
 func Arg(i int) string
 
 // NArg is the number of arguments remaining after flags have been processed.
@@ -395,7 +433,7 @@ func (f *FlagSet) Parsed() bool
 // after all flags are defined and before flags are accessed by the program.
 func Parse()
 
-// Parsed returns true if the command-line flags have been parsed.
+// Parsed reports whether the command-line flags have been parsed.
 func Parsed() bool
 
 // CommandLine is the default set of command-line flags, parsed from os.Args.

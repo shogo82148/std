@@ -36,7 +36,7 @@ const DevNull = "/dev/null"
 // (O_RDONLY etc.) and perm, (0666 etc.) if applicable.  If successful,
 // methods on the returned File can be used for I/O.
 // If there is an error, it will be of type *PathError.
-func OpenFile(name string, flag int, perm FileMode) (file *File, err error)
+func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // Close closes the File, rendering it unusable for I/O.
 // It returns an error, if any.
@@ -44,7 +44,7 @@ func (f *File) Close() error
 
 // Stat returns the FileInfo structure describing file.
 // If there is an error, it will be of type *PathError.
-func (f *File) Stat() (fi FileInfo, err error)
+func (f *File) Stat() (FileInfo, error)
 
 // Truncate changes the size of the file.
 // It does not change the I/O offset.
@@ -58,7 +58,7 @@ func (f *File) Chmod(mode FileMode) error
 // Sync commits the current contents of the file to stable storage.
 // Typically, this means flushing the file system's in-memory copy
 // of recently written data to disk.
-func (f *File) Sync() (err error)
+func (f *File) Sync() error
 
 // Truncate changes the size of the named file.
 // If the file is a symbolic link, it changes the size of the link's target.

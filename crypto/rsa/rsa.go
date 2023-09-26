@@ -19,6 +19,14 @@ type PublicKey struct {
 	E int
 }
 
+// OAEPOptions is an interface for passing options to OAEP decryption using the
+// crypto.Decrypter interface.
+type OAEPOptions struct {
+	Hash crypto.Hash
+
+	Label []byte
+}
+
 // A PrivateKey represents an RSA key
 type PrivateKey struct {
 	PublicKey
@@ -38,6 +46,11 @@ func (priv *PrivateKey) Public() crypto.PublicKey
 // functions in this package.
 func (priv *PrivateKey) Sign(rand io.Reader, msg []byte, opts crypto.SignerOpts) ([]byte, error)
 
+// Decrypt decrypts ciphertext with priv. If opts is nil or of type
+// *PKCS1v15DecryptOptions then PKCS#1 v1.5 decryption is performed. Otherwise
+// opts must have type *OAEPOptions and OAEP decryption is done.
+func (priv *PrivateKey) Decrypt(rand io.Reader, ciphertext []byte, opts crypto.DecrypterOpts) (plaintext []byte, err error)
+
 type PrecomputedValues struct {
 	Dp, Dq *big.Int
 	Qinv   *big.Int
@@ -45,7 +58,7 @@ type PrecomputedValues struct {
 	CRTValues []CRTValue
 }
 
-// CRTValue contains the precomputed chinese remainder theorem values.
+// CRTValue contains the precomputed Chinese remainder theorem values.
 type CRTValue struct {
 	Exp   *big.Int
 	Coeff *big.Int

@@ -5,3 +5,5 @@
 package runtime
 
 // exported value for testing
+
+// argp used in Defer structs when there is no argp.

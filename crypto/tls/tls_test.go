@@ -5,4 +5,4 @@
 package tls
 
 // keyPEM is the same as rsaKeyPEM, but declares itself as just
-// "PRIVATE KEY", not "RSA PRIVATE KEY".  http://golang.org/issue/4477
+// "PRIVATE KEY", not "RSA PRIVATE KEY".  https://golang.org/issue/4477

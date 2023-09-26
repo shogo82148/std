@@ -27,7 +27,8 @@ func (w *Writer) Boundary() string
 // boundary separator with an explicit value.
 //
 // SetBoundary must be called before any parts are created, may only
-// contain certain ASCII characters, and must be 1-69 bytes long.
+// contain certain ASCII characters, and must be non-empty and
+// at most 69 bytes long.
 func (w *Writer) SetBoundary(boundary string) error
 
 // FormDataContentType returns the Content-Type for an HTTP

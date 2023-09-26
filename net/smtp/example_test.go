@@ -46,14 +46,31 @@ func Example() {
 	}
 }
 
+// variables to make ExamplePlainAuth compile, without adding
+// unnecessary noise there.
+
 func ExamplePlainAuth() {
+	// hostname is used by PlainAuth to validate the TLS certificate.
+	hostname := "mail.example.com"
+	auth := smtp.PlainAuth("", "user@example.com", "password", hostname)
+
+	err := smtp.SendMail(hostname+":25", auth, from, recipients, msg)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func ExampleSendMail() {
 	// Set up authentication information.
 	auth := smtp.PlainAuth("", "user@example.com", "password", "mail.example.com")
 
 	// Connect to the server, authenticate, set the sender and recipient,
 	// and send the email all in one step.
 	to := []string{"recipient@example.net"}
-	msg := []byte("This is the email body.")
+	msg := []byte("To: recipient@example.net\r\n" +
+		"Subject: discount Gophers!\r\n" +
+		"\r\n" +
+		"This is the email body.\r\n")
 	err := smtp.SendMail("mail.example.com:25", auth, "sender@example.org", to, msg)
 	if err != nil {
 		log.Fatal(err)

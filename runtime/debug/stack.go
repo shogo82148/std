@@ -14,5 +14,5 @@ func PrintStack()
 // then attempts to discover, for Go functions, the calling function or
 // method and the text of the line containing the invocation.
 //
-// This function is deprecated. Use package runtime's Stack instead.
+// Deprecated: Use package runtime's Stack instead.
 func Stack() []byte

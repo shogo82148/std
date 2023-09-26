@@ -11,7 +11,7 @@ import (
 // ErrBadPattern indicates a globbing pattern was malformed.
 var ErrBadPattern = errors.New("syntax error in pattern")
 
-// Match returns true if name matches the shell file name pattern.
+// Match reports whether name matches the shell file name pattern.
 // The pattern syntax is:
 //
 //	pattern:

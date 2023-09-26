@@ -29,6 +29,7 @@ type Conn struct {
 	didResume         bool
 	cipherSuite       uint16
 	ocspResponse      []byte
+	scts              [][]byte
 	peerCertificates  []*x509.Certificate
 
 	verifiedChains [][]*x509.Certificate

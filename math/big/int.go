@@ -7,7 +7,6 @@
 package big
 
 import (
-	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/math/rand"
 )
 
@@ -130,25 +129,6 @@ func (z *Int) DivMod(x, y, m *Int) (*Int, *Int)
 //	+1 if x >  y
 func (x *Int) Cmp(y *Int) (r int)
 
-func (x *Int) String() string
-
-// Format is a support routine for fmt.Formatter. It accepts
-// the formats 'b' (binary), 'o' (octal), 'd' (decimal), 'x'
-// (lowercase hexadecimal), and 'X' (uppercase hexadecimal).
-// Also supported are the full suite of package fmt's format
-// verbs for integral types, including '+', '-', and ' '
-// for sign control, '#' for leading zero in octal and for
-// hexadecimal, a leading "0x" or "0X" for "%#x" and "%#X"
-// respectively, specification of minimum digits precision,
-// output field width, space or zero padding, and left or
-// right justification.
-func (x *Int) Format(s fmt.State, ch rune)
-
-// Scan is a support routine for fmt.Scanner; it sets z to the value of
-// the scanned number. It accepts the formats 'b' (binary), 'o' (octal),
-// 'd' (decimal), 'x' (lowercase hexadecimal), and 'X' (uppercase hexadecimal).
-func (z *Int) Scan(s fmt.ScanState, ch rune) error
-
 // Int64 returns the int64 representation of x.
 // If x cannot be represented in an int64, the result is undefined.
 func (x *Int) Int64() int64
@@ -161,7 +141,7 @@ func (x *Int) Uint64() uint64
 // and returns z and a boolean indicating success. If SetString fails,
 // the value of z is undefined but the returned value is nil.
 //
-// The base argument must be 0 or a value from 2 through MaxBase. If the base
+// The base argument must be 0 or a value between 2 and MaxBase. If the base
 // is 0, the string prefix determines the actual conversion base. A prefix of
 // “0x” or “0X” selects base 16; the “0” prefix selects base 8, and a
 // “0b” or “0B” prefix selects base 2. Otherwise the selected base is 10.
@@ -191,7 +171,7 @@ func (z *Int) GCD(x, y, a, b *Int) *Int
 
 // ProbablyPrime performs n Miller-Rabin tests to check whether x is prime.
 // If it returns true, x is prime with probability 1 - 1/4^n.
-// If it returns false, x is not prime.
+// If it returns false, x is not prime. n must be > 0.
 func (x *Int) ProbablyPrime(n int) bool
 
 // Rand sets z to a pseudo-random number in [0, n) and returns z.
@@ -200,6 +180,16 @@ func (z *Int) Rand(rnd *rand.Rand, n *Int) *Int
 // ModInverse sets z to the multiplicative inverse of g in the ring ℤ/nℤ
 // and returns z. If g and n are not relatively prime, the result is undefined.
 func (z *Int) ModInverse(g, n *Int) *Int
+
+// Jacobi returns the Jacobi symbol (x/y), either +1, -1, or 0.
+// The y argument must be an odd integer.
+func Jacobi(x, y *Int) int
+
+// ModSqrt sets z to a square root of x mod p if such a square root exists, and
+// returns z. The modulus p must be an odd prime. If x is not a square mod p,
+// ModSqrt leaves z unchanged and returns nil. This function panics if p is
+// not an odd integer.
+func (z *Int) ModSqrt(x, p *Int) *Int
 
 // Lsh sets z = x << n and returns z.
 func (z *Int) Lsh(x *Int, n uint) *Int

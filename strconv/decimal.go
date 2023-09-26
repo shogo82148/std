@@ -12,4 +12,4 @@
 package strconv
 
 // Maximum shift that we can do in one pass without overflow.
-// Signed int has 31 bits, and we have to be able to accommodate 9<<k.
+// A uint has 32 or 64 bits, and we have to be able to accommodate 9<<k.

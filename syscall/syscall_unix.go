@@ -38,6 +38,9 @@ func (e Errno) Temporary() bool
 
 func (e Errno) Timeout() bool
 
+// Do the interface allocations only once for common
+// Errno values.
+
 // A Signal is a number describing a process signal.
 // It implements the os.Signal interface.
 type Signal int

@@ -18,6 +18,7 @@ package mail
 import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/mime"
 	"github.com/shogo82148/std/time"
 )
 
@@ -63,6 +64,19 @@ func ParseAddress(address string) (*Address, error)
 
 // ParseAddressList parses the given string as a list of addresses.
 func ParseAddressList(list string) ([]*Address, error)
+
+// An AddressParser is an RFC 5322 address parser.
+type AddressParser struct {
+	WordDecoder *mime.WordDecoder
+}
+
+// Parse parses a single RFC 5322 address of the
+// form "Gogh Fir <gf@example.com>" or "foo@example.com".
+func (p *AddressParser) Parse(address string) (*Address, error)
+
+// ParseList parses the given string as a list of comma-separated addresses
+// of the form "Gogh Fir <gf@example.com>" or "foo@example.com".
+func (p *AddressParser) ParseList(list string) ([]*Address, error)
 
 // String formats the address as a valid RFC 5322 address.
 // If the address's name contains non-ASCII characters

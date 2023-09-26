@@ -19,11 +19,14 @@ import (
 
 // Self-signed certificate using DSA with SHA1
 
-// This CSR was generated with OpenSSL:
-//  openssl req -out CSR.csr -new -newkey rsa:2048 -nodes -keyout privateKey.key -config openssl.cnf
+// These CSR was generated with OpenSSL:
+//  openssl req -out CSR.csr -new -sha256 -nodes -keyout privateKey.key -config openssl.cnf
 //
-// The openssl.cnf needs to include this section:
+// With openssl.cnf containing the following sections:
 //   [ v3_req ]
 //   basicConstraints = CA:FALSE
 //   keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 //   subjectAltName = email:gopher@golang.org,DNS:test.example.com
+//   [ req_attributes ]
+//   challengePassword = ignored challenge
+//   unstructuredName  = ignored unstructured name

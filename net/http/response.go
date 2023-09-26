@@ -42,6 +42,8 @@ type Response struct {
 // Cookies parses and returns the cookies set in the Set-Cookie headers.
 func (r *Response) Cookies() []*Cookie
 
+// ErrNoLocation is returned by Response's Location method
+// when no Location header is present.
 var ErrNoLocation = errors.New("http: no Location header in response")
 
 // Location returns the URL of the response's "Location" header,
@@ -62,8 +64,10 @@ func ReadResponse(r *bufio.Reader, req *Request) (*Response, error)
 // in the response is at least major.minor.
 func (r *Response) ProtoAtLeast(major, minor int) bool
 
-// Writes the response (header, body and trailer) in wire format. This method
-// consults the following fields of the response:
+// Write writes r to w in the HTTP/1.n server response format,
+// including the status line, headers, body, and optional trailer.
+//
+// This method consults the following fields of the response r:
 //
 //	StatusCode
 //	ProtoMajor
@@ -75,5 +79,5 @@ func (r *Response) ProtoAtLeast(major, minor int) bool
 //	ContentLength
 //	Header, values for non-canonical keys will have unpredictable behavior
 //
-// Body is closed after it is sent.
+// The Response Body is closed after it is sent.
 func (r *Response) Write(w io.Writer) error

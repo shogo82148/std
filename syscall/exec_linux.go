@@ -24,8 +24,12 @@ type SysProcAttr struct {
 	Setctty     bool
 	Noctty      bool
 	Ctty        int
+	Foreground  bool
+	Pgid        int
 	Pdeathsig   Signal
 	Cloneflags  uintptr
 	UidMappings []SysProcIDMap
 	GidMappings []SysProcIDMap
+
+	GidMappingsEnableSetgroups bool
 }

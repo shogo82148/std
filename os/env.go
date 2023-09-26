@@ -19,6 +19,13 @@ func ExpandEnv(s string) string
 // It returns the value, which will be empty if the variable is not present.
 func Getenv(key string) string
 
+// LookupEnv retrieves the value of the environment variable named
+// by the key. If the variable is present in the environment the
+// value (which may be empty) is returned and the boolean is true.
+// Otherwise the returned value will be empty and the boolean will
+// be false.
+func LookupEnv(key string) (string, bool)
+
 // Setenv sets the value of the environment variable named by the key.
 // It returns an error, if any.
 func Setenv(key, value string) error

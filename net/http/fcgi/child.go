@@ -5,6 +5,7 @@
 package fcgi
 
 import (
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/http"
 )
@@ -13,6 +14,14 @@ import (
 // it's converted to an http.Request.
 
 // response implements http.ResponseWriter.
+
+// ErrRequestAborted is returned by Read when a handler attempts to read the
+// body of a request that has been aborted by the web server.
+var ErrRequestAborted = errors.New("fcgi: request aborted by web server")
+
+// ErrConnClosed is returned by Read when a handler attempts to read the body of
+// a request after the connection to the web server has been closed.
+var ErrConnClosed = errors.New("fcgi: connection to web server closed")
 
 // Serve accepts incoming FastCGI connections on the listener l, creating a new
 // goroutine for each. The goroutine reads requests and then calls handler

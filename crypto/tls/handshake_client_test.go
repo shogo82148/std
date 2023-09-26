@@ -8,3 +8,5 @@ package tls
 
 // clientTest represents a test of the TLS client handshake against a reference
 // implementation.
+
+// sctsBase64 contains data from `openssl s_client -serverinfo 18 -connect ritter.vg:443`

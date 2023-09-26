@@ -24,3 +24,5 @@ type StringReader struct {
 // An onlyReader only implements io.Reader, no matter what other methods the underlying implementation may have.
 
 // An onlyWriter only implements io.Writer, no matter what other methods the underlying implementation may have.
+
+// A scriptedReader is an io.Reader that executes its steps sequentially.

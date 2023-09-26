@@ -2,16 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build api_tool
-// +build api_tool
-
 // Binary api computes the exported API of a set of Go packages.
 package main
 
 import (
 	"github.com/shogo82148/std/go/build"
-
-	"github.com/shogo82148/std/code.google.com/p/go.tools/go/types"
+	"github.com/shogo82148/std/go/types"
 )
 
 // Flags
@@ -39,4 +35,4 @@ func (w *Walker) Features() (fs []string)
 // Importing is a sentinel taking the place in Walker.imported
 // for a package that is in the process of being imported.
 
-func (w *Walker) Import(name string) (pkg *types.Package)
+func (w *Walker) Import(name string) (*types.Package, error)

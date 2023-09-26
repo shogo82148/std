@@ -32,8 +32,7 @@ type Var interface {
 
 // Int is a 64-bit integer variable that satisfies the Var interface.
 type Int struct {
-	mu sync.RWMutex
-	i  int64
+	i int64
 }
 
 func (v *Int) String() string
@@ -44,8 +43,7 @@ func (v *Int) Set(value int64)
 
 // Float is a 64-bit float variable that satisfies the Var interface.
 type Float struct {
-	mu sync.RWMutex
-	f  float64
+	f uint64
 }
 
 func (v *Float) String() string

@@ -15,9 +15,11 @@ type Handle uintptr
 
 const InvalidHandle = ^Handle(0)
 
-// StringToUTF16 is deprecated. Use UTF16FromString instead.
-// If s contains a NUL byte this function panics instead of
-// returning an error.
+// StringToUTF16 returns the UTF-16 encoding of the UTF-8 string s,
+// with a terminating NUL added. If s contains a NUL byte this
+// function panics instead of returning an error.
+//
+// Deprecated: Use UTF16FromString instead.
 func StringToUTF16(s string) []uint16
 
 // UTF16FromString returns the UTF-16 encoding of the UTF-8 string
@@ -29,9 +31,12 @@ func UTF16FromString(s string) ([]uint16, error)
 // with a terminating NUL removed.
 func UTF16ToString(s []uint16) string
 
-// StringToUTF16Ptr is deprecated. Use UTF16PtrFromString instead.
+// StringToUTF16Ptr returns pointer to the UTF-16 encoding of
+// the UTF-8 string s, with a terminating NUL added. If s
 // If s contains a NUL byte this function panics instead of
 // returning an error.
+//
+// Deprecated: Use UTF16PtrFromString instead.
 func StringToUTF16Ptr(s string) *uint16
 
 // UTF16PtrFromString returns pointer to the UTF-16 encoding of
@@ -43,6 +48,12 @@ func Getpagesize() int
 
 // Errno is the Windows error number.
 type Errno uintptr
+
+// FormatMessage is deprecated (msgsrc should be uintptr, not uint32, but can
+// not be changed due to the Go 1 compatibility guarantee).
+//
+// Deprecated: Use FormatMessage from golang.org/x/sys/windows instead.
+func FormatMessage(flags uint32, msgsrc uint32, msgid uint32, langid uint32, buf []uint16, args *byte) (n uint32, err error)
 
 func (e Errno) Error() string
 

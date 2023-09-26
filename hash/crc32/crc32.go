@@ -5,6 +5,11 @@
 // Package crc32 implements the 32-bit cyclic redundancy check, or CRC-32,
 // checksum. See http://en.wikipedia.org/wiki/Cyclic_redundancy_check for
 // information.
+//
+// Polynomials are represented in LSB-first form also known as reversed representation.
+//
+// See http://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks#Reversed_representations_and_reciprocal_polynomials
+// for information.
 package crc32
 
 import (
@@ -41,6 +46,10 @@ type Table [256]uint32
 
 // IEEETable is the table for the IEEE polynomial.
 var IEEETable = makeTable(IEEE)
+
+// slicing8Table is array of 8 Tables
+
+// iEEETable8 is the slicing8Table for IEEE
 
 // MakeTable returns the Table constructed from the specified polynomial.
 func MakeTable(poly uint32) *Table

@@ -21,4 +21,8 @@ import (
 // time from the channel.  When the channel is closed, the reader
 // returns io.EOF.
 
+// logWritesConn is a net.Conn that logs each Write call to writes
+// and then proxies to w.
+// It proxies Read calls to a reader it receives from rch.
+
 // rgz is a gzip quine that uncompresses to itself.

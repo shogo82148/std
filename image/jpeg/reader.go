@@ -24,11 +24,13 @@ func (e UnsupportedError) Error() string
 
 // Component specification, specified in section B.2.2.
 
+// See http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/JPEG.html#Adobe
+
 // unzig maps from the zig-zag ordering to the natural ordering. For example,
 // unzig[3] is the column and row of the fourth element in zig-zag order. The
 // value is 16, which means first column (16%8 == 0) and third row (16/8 == 2).
 
-// Reader is deprecated.
+// Deprecated: Reader is deprecated.
 type Reader interface {
 	io.ByteReader
 	io.Reader

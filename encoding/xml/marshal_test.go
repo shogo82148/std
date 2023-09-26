@@ -318,6 +318,16 @@ type OuterOuterStruct struct {
 	OuterStruct
 }
 
+type NestedAndChardata struct {
+	AB       []string `xml:"A>B"`
+	Chardata string   `xml:",chardata"`
+}
+
+type NestedAndComment struct {
+	AB      []string `xml:"A>B"`
+	Comment string   `xml:",comment"`
+}
+
 // Unless explicitly stated as such (or *Plain), all of the
 // tests below are two-way tests. When introducing new tests,
 // please try to make them two-way as well to ensure that

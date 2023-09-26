@@ -20,7 +20,7 @@
 // initialization side effects.
 //
 // See "The Go image package" for more details:
-// http://golang.org/doc/articles/image_package.html
+// https://golang.org/doc/articles/image_package.html
 package image
 
 import (
@@ -44,9 +44,9 @@ type Image interface {
 }
 
 // PalettedImage is an image whose colors may come from a limited palette.
-// If m is a PalettedImage and m.ColorModel() returns a PalettedColorModel p,
+// If m is a PalettedImage and m.ColorModel() returns a color.Palette p,
 // then m.At(x, y) should be equivalent to p[m.ColorIndexAt(x, y)]. If m's
-// color model is not a PalettedColorModel, then ColorIndexAt's behavior is
+// color model is not a color.Palette, then ColorIndexAt's behavior is
 // undefined.
 type PalettedImage interface {
 	ColorIndexAt(x, y int) uint8
@@ -228,7 +228,7 @@ func (p *Alpha) Opaque() bool
 // NewAlpha returns a new Alpha with the given bounds.
 func NewAlpha(r Rectangle) *Alpha
 
-// Alpha16 is an in-memory image whose At method returns color.Alpha64 values.
+// Alpha16 is an in-memory image whose At method returns color.Alpha16 values.
 type Alpha16 struct {
 	Pix []uint8
 
@@ -332,6 +332,41 @@ func (p *Gray16) Opaque() bool
 
 // NewGray16 returns a new Gray16 with the given bounds.
 func NewGray16(r Rectangle) *Gray16
+
+// CMYK is an in-memory image whose At method returns color.CMYK values.
+type CMYK struct {
+	Pix []uint8
+
+	Stride int
+
+	Rect Rectangle
+}
+
+func (p *CMYK) ColorModel() color.Model
+
+func (p *CMYK) Bounds() Rectangle
+
+func (p *CMYK) At(x, y int) color.Color
+
+func (p *CMYK) CMYKAt(x, y int) color.CMYK
+
+// PixOffset returns the index of the first element of Pix that corresponds to
+// the pixel at (x, y).
+func (p *CMYK) PixOffset(x, y int) int
+
+func (p *CMYK) Set(x, y int, c color.Color)
+
+func (p *CMYK) SetCMYK(x, y int, c color.CMYK)
+
+// SubImage returns an image representing the portion of the image p visible
+// through r. The returned value shares pixels with the original image.
+func (p *CMYK) SubImage(r Rectangle) Image
+
+// Opaque scans the entire image and reports whether it is fully opaque.
+func (p *CMYK) Opaque() bool
+
+// NewCMYK returns a new CMYK with the given bounds.
+func NewCMYK(r Rectangle) *CMYK
 
 // Paletted is an in-memory image of uint8 indices into a given palette.
 type Paletted struct {

@@ -4,7 +4,7 @@
 
 package filepath
 
-// IsAbs returns true if the path is absolute.
+// IsAbs reports whether the path is absolute.
 func IsAbs(path string) (b bool)
 
 // HasPrefix exists for historical compatibility and should not be used.

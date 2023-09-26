@@ -53,24 +53,23 @@ const (
 // signatureAndHash mirrors the TLS 1.2, SignatureAndHashAlgorithm struct. See
 // RFC 5246, section A.4.1.
 
-// supportedSKXSignatureAlgorithms contains the signature and hash algorithms
-// that the code advertises as supported in a TLS 1.2 ClientHello.
-
-// supportedClientCertSignatureAlgorithms contains the signature and hash
-// algorithms that the code advertises as supported in a TLS 1.2
+// supportedSignatureAlgorithms contains the signature and hash algorithms that
+// the code advertises as supported in a TLS 1.2 ClientHello and in a TLS 1.2
 // CertificateRequest.
 
 // ConnectionState records basic TLS details about the connection.
 type ConnectionState struct {
-	Version                    uint16
-	HandshakeComplete          bool
-	DidResume                  bool
-	CipherSuite                uint16
-	NegotiatedProtocol         string
-	NegotiatedProtocolIsMutual bool
-	ServerName                 string
-	PeerCertificates           []*x509.Certificate
-	VerifiedChains             [][]*x509.Certificate
+	Version                     uint16
+	HandshakeComplete           bool
+	DidResume                   bool
+	CipherSuite                 uint16
+	NegotiatedProtocol          string
+	NegotiatedProtocolIsMutual  bool
+	ServerName                  string
+	PeerCertificates            []*x509.Certificate
+	VerifiedChains              [][]*x509.Certificate
+	SignedCertificateTimestamps [][]byte
+	OCSPResponse                []byte
 
 	TLSUnique []byte
 }
@@ -95,6 +94,7 @@ type ClientSessionState struct {
 	cipherSuite        uint16
 	masterSecret       []byte
 	serverCertificates []*x509.Certificate
+	verifiedChains     [][]*x509.Certificate
 }
 
 // ClientSessionCache is a cache of ClientSessionState objects that can be used
@@ -163,7 +163,23 @@ type Config struct {
 	CurvePreferences []CurveID
 
 	serverInitOnce sync.Once
+
+	mutex sync.RWMutex
+
+	sessionTicketKeys []ticketKey
 }
+
+// ticketKeyNameLen is the number of bytes of identifier that is prepended to
+// an encrypted session ticket in order to identify the key used to encrypt it.
+
+// ticketKey is the internal representation of a session ticket key.
+
+// SetSessionTicketKeys updates the session ticket keys for a server. The first
+// key will be used when creating new tickets, while all keys can be used for
+// decrypting tickets. It is safe to call this function while the server is
+// running in order to rotate the session ticket keys. The function will panic
+// if keys is empty.
+func (c *Config) SetSessionTicketKeys(keys [][32]byte)
 
 // BuildNameToCertificate parses c.Certificates and builds c.NameToCertificate
 // from the CommonName and SubjectAlternateName fields of each of the leaf
@@ -177,6 +193,8 @@ type Certificate struct {
 	PrivateKey crypto.PrivateKey
 
 	OCSPStaple []byte
+
+	SignedCertificateTimestamps [][]byte
 
 	Leaf *x509.Certificate
 }

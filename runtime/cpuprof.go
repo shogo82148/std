@@ -30,8 +30,8 @@
 // The state of this dance between the signal handler and the goroutine
 // is encoded in the Profile.handoff field.  If handoff == 0, then the goroutine
 // is not using either log half and is waiting (or will soon be waiting) for
-// a new piece by calling notesleep(&p->wait).  If the signal handler
-// changes handoff from 0 to non-zero, it must call notewakeup(&p->wait)
+// a new piece by calling notesleep(&p.wait).  If the signal handler
+// changes handoff from 0 to non-zero, it must call notewakeup(&p.wait)
 // to wake the goroutine.  The value indicates the number of entries in the
 // log half being handed off.  The goroutine leaves the non-zero value in
 // place until it has finished processing the log half and then flips the number

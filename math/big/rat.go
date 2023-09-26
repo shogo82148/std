@@ -6,10 +6,6 @@
 
 package big
 
-import (
-	"github.com/shogo82148/std/fmt"
-)
-
 // A Rat represents a quotient a/b of arbitrary precision.
 // The zero value for a Rat represents the value 0.
 type Rat struct {
@@ -66,7 +62,7 @@ func (z *Rat) Inv(x *Rat) *Rat
 //	+1 if x >  0
 func (x *Rat) Sign() int
 
-// IsInt returns true if the denominator of x is 1.
+// IsInt reports whether the denominator of x is 1.
 func (x *Rat) IsInt() bool
 
 // Num returns the numerator of x; it may be <= 0.
@@ -99,27 +95,6 @@ func (z *Rat) Mul(x, y *Rat) *Rat
 // Quo sets z to the quotient x/y and returns z.
 // If y == 0, a division-by-zero run-time panic occurs.
 func (z *Rat) Quo(x, y *Rat) *Rat
-
-// Scan is a support routine for fmt.Scanner. It accepts the formats
-// 'e', 'E', 'f', 'F', 'g', 'G', and 'v'. All formats are equivalent.
-func (z *Rat) Scan(s fmt.ScanState, ch rune) error
-
-// SetString sets z to the value of s and returns z and a boolean indicating
-// success. s can be given as a fraction "a/b" or as a floating-point number
-// optionally followed by an exponent. If the operation failed, the value of
-// z is undefined but the returned value is nil.
-func (z *Rat) SetString(s string) (*Rat, bool)
-
-// String returns a string representation of x in the form "a/b" (even if b == 1).
-func (x *Rat) String() string
-
-// RatString returns a string representation of x in the form "a/b" if b != 1,
-// and in the form "a" if b == 1.
-func (x *Rat) RatString() string
-
-// FloatString returns a string representation of x in decimal form with prec
-// digits of precision after the decimal point and the last digit rounded.
-func (x *Rat) FloatString(prec int) string
 
 // Gob codec version. Permits backward-compatible changes to the encoding.
 

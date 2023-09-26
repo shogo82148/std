@@ -10,10 +10,8 @@ package sync
 // runs and calls Done when finished.  At the same time,
 // Wait can be used to block until all goroutines have finished.
 type WaitGroup struct {
-	m       Mutex
-	counter int32
-	waiters int32
-	sema    *uint32
+	state1 [12]byte
+	sema   uint32
 }
 
 // Add adds delta, which may be negative, to the WaitGroup counter.
@@ -26,6 +24,8 @@ type WaitGroup struct {
 // at any time.
 // Typically this means the calls to Add should execute before the statement
 // creating the goroutine or other event to be waited for.
+// If a WaitGroup is reused to wait for several independent sets of events,
+// new Add calls must happen after all previous Wait calls have returned.
 // See the WaitGroup example.
 func (wg *WaitGroup) Add(delta int)
 

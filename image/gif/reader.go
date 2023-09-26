@@ -16,6 +16,13 @@ import (
 
 // Masks etc.
 
+// Disposal Methods.
+const (
+	DisposalNone       = 0x01
+	DisposalBackground = 0x02
+	DisposalPrevious   = 0x03
+)
+
 // Section indicators.
 
 // Extensions.
@@ -42,6 +49,12 @@ type GIF struct {
 	Image     []*image.Paletted
 	Delay     []int
 	LoopCount int
+
+	Disposal []byte
+
+	Config image.Config
+
+	BackgroundIndex byte
 }
 
 // DecodeAll reads a GIF image from r and returns the sequential frames

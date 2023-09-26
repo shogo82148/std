@@ -13,16 +13,6 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// RaceDisable disables handling of race events in the current goroutine.
-func RaceDisable()
-
-// RaceEnable re-enables handling of race events in the current goroutine.
-func RaceEnable()
-
-func RaceAcquire(addr unsafe.Pointer)
-func RaceRelease(addr unsafe.Pointer)
-func RaceReleaseMerge(addr unsafe.Pointer)
-
 func RaceRead(addr unsafe.Pointer)
 func RaceWrite(addr unsafe.Pointer)
 func RaceReadRange(addr unsafe.Pointer, len int)

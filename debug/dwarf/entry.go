@@ -14,6 +14,13 @@ package dwarf
 
 // a map from entry format ids to their descriptions
 
+// attrIsExprloc indicates attributes that allow exprloc values that
+// are encoded as block values in DWARF 2 and 3. See DWARF 4, Figure
+// 20.
+
+// attrPtrClass indicates the *ptr class of attributes that have
+// encoding formSecOffset in DWARF 4 or formData* in DWARF 2 and 3.
+
 // An entry is a sequence of attribute/value pairs.
 type Entry struct {
 	Offset   Offset
@@ -23,10 +30,112 @@ type Entry struct {
 }
 
 // A Field is a single attribute/value pair in an Entry.
+//
+// A value can be one of several "attribute classes" defined by DWARF.
+// The Go types corresponding to each class are:
+//
+//	DWARF class       Go type        Class
+//	-----------       -------        -----
+//	address           uint64         ClassAddress
+//	block             []byte         ClassBlock
+//	constant          int64          ClassConstant
+//	flag              bool           ClassFlag
+//	reference
+//	  to info         dwarf.Offset   ClassReference
+//	  to type unit    uint64         ClassReferenceSig
+//	string            string         ClassString
+//	exprloc           []byte         ClassExprLoc
+//	lineptr           int64          ClassLinePtr
+//	loclistptr        int64          ClassLocListPtr
+//	macptr            int64          ClassMacPtr
+//	rangelistptr      int64          ClassRangeListPtr
 type Field struct {
-	Attr Attr
-	Val  interface{}
+	Attr  Attr
+	Val   interface{}
+	Class Class
 }
+
+// A Class is the DWARF 4 class of an attibute value.
+//
+// In general, a given attribute's value may take on one of several
+// possible classes defined by DWARF, each of which leads to a
+// slightly different interpretation of the attribute.
+//
+// DWARF version 4 distinguishes attribute value classes more finely
+// than previous versions of DWARF. The reader will disambiguate
+// coarser classes from earlier versions of DWARF into the appropriate
+// DWARF 4 class. For example, DWARF 2 uses "constant" for constants
+// as well as all types of section offsets, but the reader will
+// canonicalize attributes in DWARF 2 files that refer to section
+// offsets to one of the Class*Ptr classes, even though these classes
+// were only defined in DWARF 3.
+type Class int
+
+const (
+	// ClassAddress represents values of type uint64 that are
+	// addresses on the target machine.
+	ClassAddress Class = 1 + iota
+
+	// ClassBlock represents values of type []byte whose
+	// interpretation depends on the attribute.
+	ClassBlock
+
+	// ClassConstant represents values of type int64 that are
+	// constants. The interpretation of this constant depends on
+	// the attribute.
+	ClassConstant
+
+	// ClassExprLoc represents values of type []byte that contain
+	// an encoded DWARF expression or location description.
+	ClassExprLoc
+
+	// ClassFlag represents values of type bool.
+	ClassFlag
+
+	// ClassLinePtr represents values that are an int64 offset
+	// into the "line" section.
+	ClassLinePtr
+
+	// ClassLocListPtr represents values that are an int64 offset
+	// into the "loclist" section.
+	ClassLocListPtr
+
+	// ClassMacPtr represents values that are an int64 offset into
+	// the "mac" section.
+	ClassMacPtr
+
+	// ClassMacPtr represents values that are an int64 offset into
+	// the "rangelist" section.
+	ClassRangeListPtr
+
+	// ClassReference represents values that are an Offset offset
+	// of an Entry in the info section (for use with Reader.Seek).
+	// The DWARF specification combines ClassReference and
+	// ClassReferenceSig into class "reference".
+	ClassReference
+
+	// ClassReferenceSig represents values that are a uint64 type
+	// signature referencing a type Entry.
+	ClassReferenceSig
+
+	// ClassString represents values that are strings. If the
+	// compilation unit specifies the AttrUseUTF8 flag (strongly
+	// recommended), the string value will be encoded in UTF-8.
+	// Otherwise, the encoding is unspecified.
+	ClassString
+
+	// ClassReferenceAlt represents values of type int64 that are
+	// an offset into the DWARF "info" section of an alternate
+	// object file.
+	ClassReferenceAlt
+
+	// ClassStringAlt represents values of type int64 that are an
+	// offset into the DWARF string section of an alternate object
+	// file.
+	ClassStringAlt
+)
+
+func (i Class) GoString() string
 
 // Val returns the value associated with attribute Attr in Entry,
 // or nil if there is no such attribute.
@@ -34,8 +143,12 @@ type Field struct {
 // A common idiom is to merge the check for nil return with
 // the check that the value has the expected dynamic type, as in:
 //
-//	v, ok := e.Val(AttrSibling).(int64);
+//	v, ok := e.Val(AttrSibling).(int64)
 func (e *Entry) Val(a Attr) interface{}
+
+// AttrField returns the Field associated with attribute Attr in
+// Entry, or nil if there is no such attribute.
+func (e *Entry) AttrField(a Attr) *Field
 
 // An Offset represents the location of an Entry within the DWARF info.
 // (See Reader.Seek.)
@@ -58,6 +171,10 @@ type Reader struct {
 // Reader returns a new Reader for Data.
 // The reader is positioned at byte offset 0 in the DWARF “info” section.
 func (d *Data) Reader() *Reader
+
+// AddressSize returns the size in bytes of addresses in the current compilation
+// unit.
+func (r *Reader) AddressSize() int
 
 // Seek positions the Reader at offset off in the encoded entry stream.
 // Offset 0 can be used to denote the first entry.

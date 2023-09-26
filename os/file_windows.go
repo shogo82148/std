@@ -30,7 +30,7 @@ const DevNull = "NUL"
 // (O_RDONLY etc.) and perm, (0666 etc.) if applicable.  If successful,
 // methods on the returned File can be used for I/O.
 // If there is an error, it will be of type *PathError.
-func OpenFile(name string, flag int, perm FileMode) (file *File, err error)
+func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // Close closes the File, rendering it unusable for I/O.
 // It returns an error, if any.

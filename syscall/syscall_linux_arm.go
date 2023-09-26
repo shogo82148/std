@@ -12,6 +12,10 @@ func NsecToTimespec(nsec int64) (ts Timespec)
 
 func NsecToTimeval(nsec int64) (tv Timeval)
 
+func Pipe(p []int) (err error)
+
+func Pipe2(p []int, flags int) (err error)
+
 func Seek(fd int, offset int64, whence int) (newoffset int64, err error)
 
 func Fstatfs(fd int, buf *Statfs_t) (err error)

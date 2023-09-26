@@ -15,13 +15,25 @@ import (
 // (RFC 1421).  RFC 4648 also defines an alternate encoding, which is
 // the standard encoding with - and _ substituted for + and /.
 type Encoding struct {
-	encode    string
+	encode    [64]byte
 	decodeMap [256]byte
+	padChar   rune
 }
 
-// NewEncoding returns a new Encoding defined by the given alphabet,
+const (
+	StdPadding rune = '='
+	NoPadding  rune = -1
+)
+
+// NewEncoding returns a new padded Encoding defined by the given alphabet,
 // which must be a 64-byte string.
+// The resulting Encoding uses the default padding character ('='),
+// which may be changed or disabled via WithPadding.
 func NewEncoding(encoder string) *Encoding
+
+// WithPadding creates a new encoding identical to enc except
+// with a specified padding character, or NoPadding to disable padding.
+func (enc Encoding) WithPadding(padding rune) *Encoding
 
 // StdEncoding is the standard base64 encoding, as defined in
 // RFC 4648.
@@ -30,6 +42,16 @@ var StdEncoding = NewEncoding(encodeStd)
 // URLEncoding is the alternate base64 encoding defined in RFC 4648.
 // It is typically used in URLs and file names.
 var URLEncoding = NewEncoding(encodeURL)
+
+// RawStdEncoding is the standard raw, unpadded base64 encoding,
+// as defined in RFC 4648 section 3.2.
+// This is the same as StdEncoding but omits padding characters.
+var RawStdEncoding = StdEncoding.WithPadding(NoPadding)
+
+// URLEncoding is the unpadded alternate base64 encoding defined in RFC 4648.
+// It is typically used in URLs and file names.
+// This is the same as URLEncoding but omits padding characters.
+var RawURLEncoding = URLEncoding.WithPadding(NoPadding)
 
 // Encode encodes src using the encoding enc, writing
 // EncodedLen(len(src)) bytes to dst.

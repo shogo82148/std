@@ -55,10 +55,10 @@ type File interface {
 // The name is otherwise unused; in particular it can be empty and is
 // never sent in the response.
 //
-// If modtime is not the zero time, ServeContent includes it in a
-// Last-Modified header in the response.  If the request includes an
-// If-Modified-Since header, ServeContent uses modtime to decide
-// whether the content needs to be sent at all.
+// If modtime is not the zero time or Unix epoch, ServeContent
+// includes it in a Last-Modified header in the response.  If the
+// request includes an If-Modified-Since header, ServeContent uses
+// modtime to decide whether the content needs to be sent at all.
 //
 // The content's Seek method must work: ServeContent uses
 // a seek to the end of the content to determine its size.
@@ -74,7 +74,13 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // included in the sizeFunc reply so it's not sent over HTTP to end
 // users.
 
-// ServeFile replies to the request with the contents of the named file or directory.
+// ServeFile replies to the request with the contents of the named
+// file or directory.
+//
+// As a special case, ServeFile redirects any request where r.URL.Path
+// ends in "/index.html" to the same path, without the final
+// "index.html". To avoid such redirects either modify the path or
+// use ServeContent.
 func ServeFile(w ResponseWriter, r *Request, name string)
 
 // FileServer returns a handler that serves HTTP requests
@@ -84,6 +90,10 @@ func ServeFile(w ResponseWriter, r *Request, name string)
 // use http.Dir:
 //
 //	http.Handle("/", http.FileServer(http.Dir("/tmp")))
+//
+// As a special case, the returned file server redirects any request
+// ending in "/index.html" to the same path, without the final
+// "index.html".
 func FileServer(root FileSystem) Handler
 
 // httpRange specifies the byte range to be sent to the client.

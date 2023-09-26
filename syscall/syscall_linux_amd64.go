@@ -4,9 +4,9 @@
 
 package syscall
 
-func Getpagesize() int
-
 func Gettimeofday(tv *Timeval) (err error)
+
+func Getpagesize() int
 
 func Time(t *Time_t) (tt Time_t, err error)
 
@@ -17,6 +17,10 @@ func NsecToTimespec(nsec int64) (ts Timespec)
 func TimevalToNsec(tv Timeval) int64
 
 func NsecToTimeval(nsec int64) (tv Timeval)
+
+func Pipe(p []int) (err error)
+
+func Pipe2(p []int, flags int) (err error)
 
 func (r *PtraceRegs) PC() uint64
 

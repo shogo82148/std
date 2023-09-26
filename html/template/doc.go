@@ -145,7 +145,7 @@ The template
 
 can be invoked with
 
-	tmpl.Execute(out, HTML(`<b>World</b>`))
+	tmpl.Execute(out, template.HTML(`<b>World</b>`))
 
 to produce
 

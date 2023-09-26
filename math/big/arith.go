@@ -10,3 +10,6 @@ package big
 
 // A Word represents a single digit of a multi-precision unsigned integer.
 type Word uintptr
+
+// Keep for performance debugging.
+// Using addWW_g is likely slower.

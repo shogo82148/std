@@ -4,5 +4,7 @@
 
 package base64
 
+// A nonstandard encoding with a funny padding character, for testing
+
 // faultInjectReader returns data from source, rate-limited
 // and with the errors as written to nextc.

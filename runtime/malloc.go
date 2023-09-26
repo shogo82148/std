@@ -2,61 +2,86 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Memory allocator, based on tcmalloc.
+// http://goog-perftools.sourceforge.net/doc/tcmalloc.html
+
+// The main allocator works in runs of pages.
+// Small allocation sizes (up to and including 32 kB) are
+// rounded to one of about 100 size classes, each of which
+// has its own free list of objects of exactly that size.
+// Any free page of memory can be split into a set of objects
+// of one size class, which are then managed using free list
+// allocators.
+//
+// The allocator's data structures are:
+//
+//	FixAlloc: a free-list allocator for fixed-size objects,
+//		used to manage storage used by the allocator.
+//	MHeap: the malloc heap, managed at page (4096-byte) granularity.
+//	MSpan: a run of pages managed by the MHeap.
+//	MCentral: a shared free list for a given size class.
+//	MCache: a per-thread (in Go, per-P) cache for small objects.
+//	MStats: allocation statistics.
+//
+// Allocating a small object proceeds up a hierarchy of caches:
+//
+//	1. Round the size up to one of the small size classes
+//	   and look in the corresponding MCache free list.
+//	   If the list is not empty, allocate an object from it.
+//	   This can all be done without acquiring a lock.
+//
+//	2. If the MCache free list is empty, replenish it by
+//	   taking a bunch of objects from the MCentral free list.
+//	   Moving a bunch amortizes the cost of acquiring the MCentral lock.
+//
+//	3. If the MCentral free list is empty, replenish it by
+//	   allocating a run of pages from the MHeap and then
+//	   chopping that memory into objects of the given size.
+//	   Allocating many objects amortizes the cost of locking
+//	   the heap.
+//
+//	4. If the MHeap is empty or has no page runs large enough,
+//	   allocate a new group of pages (at least 1MB) from the
+//	   operating system.  Allocating a large run of pages
+//	   amortizes the cost of talking to the operating system.
+//
+// Freeing a small object proceeds up the same hierarchy:
+//
+//	1. Look up the size class for the object and add it to
+//	   the MCache free list.
+//
+//	2. If the MCache free list is too long or the MCache has
+//	   too much memory, return some to the MCentral free lists.
+//
+//	3. If all the objects in a given span have returned to
+//	   the MCentral list, return that span to the page heap.
+//
+//	4. If the heap has too much memory, return some to the
+//	   operating system.
+//
+//	TODO(rsc): Step 4 is not implemented.
+//
+// Allocating and freeing a large object uses the page heap
+// directly, bypassing the MCache and MCentral free lists.
+//
+// The small objects on the MCache and MCentral free lists
+// may or may not be zeroed.  They are zeroed if and only if
+// the second word of the object is zero.  A span in the
+// page heap is zeroed unless s->needzero is set. When a span
+// is allocated to break into small objects, it is zeroed if needed
+// and s->needzero is set. There are two main benefits to delaying the
+// zeroing this way:
+//
+//	1. stack frames allocated from the small object lists
+//	   or the page heap can avoid zeroing altogether.
+//	2. the cost of zeroing when reusing a small object is
+//	   charged to the mutator, not the garbage collector.
+//
+// This code was written with an eye toward translating to Go
+// in the future.  Methods have the form Type_Method(Type *t, ...).
+
 package runtime
 
 // Page number (address>>pageShift)
 
 // base address for all 0-byte allocations
-
-// GC runs a garbage collection.
-func GC()
-
-// linker-provided
-
-// SetFinalizer sets the finalizer associated with x to f.
-// When the garbage collector finds an unreachable block
-// with an associated finalizer, it clears the association and runs
-// f(x) in a separate goroutine.  This makes x reachable again, but
-// now without an associated finalizer.  Assuming that SetFinalizer
-// is not called again, the next time the garbage collector sees
-// that x is unreachable, it will free x.
-//
-// SetFinalizer(x, nil) clears any finalizer associated with x.
-//
-// The argument x must be a pointer to an object allocated by
-// calling new or by taking the address of a composite literal.
-// The argument f must be a function that takes a single argument
-// to which x's type can be assigned, and can have arbitrary ignored return
-// values. If either of these is not true, SetFinalizer aborts the
-// program.
-//
-// Finalizers are run in dependency order: if A points at B, both have
-// finalizers, and they are otherwise unreachable, only the finalizer
-// for A runs; once A is freed, the finalizer for B can run.
-// If a cyclic structure includes a block with a finalizer, that
-// cycle is not guaranteed to be garbage collected and the finalizer
-// is not guaranteed to run, because there is no ordering that
-// respects the dependencies.
-//
-// The finalizer for x is scheduled to run at some arbitrary time after
-// x becomes unreachable.
-// There is no guarantee that finalizers will run before a program exits,
-// so typically they are useful only for releasing non-memory resources
-// associated with an object during a long-running program.
-// For example, an os.File object could use a finalizer to close the
-// associated operating system file descriptor when a program discards
-// an os.File without calling Close, but it would be a mistake
-// to depend on a finalizer to flush an in-memory I/O buffer such as a
-// bufio.Writer, because the buffer would not be flushed at program exit.
-//
-// It is not guaranteed that a finalizer will run if the size of *x is
-// zero bytes.
-//
-// It is not guaranteed that a finalizer will run for objects allocated
-// in initializers for package-level variables. Such objects may be
-// linker-allocated, not heap-allocated.
-//
-// A single goroutine runs all finalizers for a program, sequentially.
-// If a finalizer must run for a long time, it should do so by starting
-// a new goroutine.
-func SetFinalizer(obj interface{}, finalizer interface{})

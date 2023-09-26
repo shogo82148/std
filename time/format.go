@@ -44,6 +44,9 @@ package time
 //
 //	Z0700  Z or ±hhmm
 //	Z07:00 Z or ±hh:mm
+//
+// The executable example for time.Format demonstrates the working
+// of the layout string in detail and is a good reference.
 const (
 	ANSIC       = "Mon Jan _2 15:04:05 2006"
 	UnixDate    = "Mon Jan _2 15:04:05 MST 2006"
@@ -85,11 +88,20 @@ func (t Time) String() string
 // would be displayed if it were the value; it serves as an example of the
 // desired output. The same display rules will then be applied to the time
 // value.
+//
+// A fractional second is represented by adding a period and zeros
+// to the end of the seconds section of layout string, as in "15:04:05.000"
+// to format a time stamp with millisecond precision.
+//
 // Predefined layouts ANSIC, UnixDate, RFC3339 and others describe standard
 // and convenient representations of the reference time. For more information
 // about the formats and the definition of the reference time, see the
 // documentation for ANSIC and the other constants defined by this package.
 func (t Time) Format(layout string) string
+
+// AppendFormat is like Format but appends the textual
+// representation to b and returns the extended buffer.
+func (t Time) AppendFormat(b []byte, layout string) []byte
 
 // ParseError describes a problem parsing a time string.
 type ParseError struct {
@@ -112,10 +124,13 @@ func (e *ParseError) Error() string
 // would be interpreted if it were the value; it serves as an example of
 // the input format. The same interpretation will then be made to the
 // input string.
+//
 // Predefined layouts ANSIC, UnixDate, RFC3339 and others describe standard
 // and convenient representations of the reference time. For more information
 // about the formats and the definition of the reference time, see the
 // documentation for ANSIC and the other constants defined by this package.
+// Also, the executable example for time.Format demonstrates the working
+// of the layout string in detail and is a good reference.
 //
 // Elements omitted from the value are assumed to be zero or, when
 // zero is impossible, one, so parsing "3:04pm" returns the time

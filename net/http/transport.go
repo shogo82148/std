@@ -114,8 +114,8 @@ func (t *Transport) RegisterProtocol(scheme string, rt RoundTripper)
 // in use.
 func (t *Transport) CloseIdleConnections()
 
-// CancelRequest cancels an in-flight request by closing its
-// connection.
+// CancelRequest cancels an in-flight request by closing its connection.
+// CancelRequest should only be called after RoundTrip has returned.
 func (t *Transport) CancelRequest(req *Request)
 
 // envOnce looks up an environment variable (optionally by multiple
@@ -151,11 +151,19 @@ func (t *Transport) CancelRequest(req *Request)
 // concurrently waits on both the write response and the server's
 // reply.
 
+// nil except for tests
+
 // bodyEOFSignal wraps a ReadCloser but runs fn (if non-nil) at most
 // once, right before its final (error-producing) Read or Close call
-// returns. If earlyCloseFn is non-nil and Close is called before
-// io.EOF is seen, earlyCloseFn is called instead of fn, and its
-// return value is the return value from Close.
+// returns. fn should return the new error to return from Read or Close.
+//
+// If earlyCloseFn is non-nil and Close is called before io.EOF is
+// seen, earlyCloseFn is called instead of fn, and its return value is
+// the return value from Close.
 
 // gzipReader wraps a response body so it can lazily
 // call gzip.NewReader on the first call to Read
+
+// fakeLocker is a sync.Locker which does nothing. It's used to guard
+// test-only fields when not under test, to avoid runtime atomic
+// overhead.

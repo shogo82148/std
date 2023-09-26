@@ -4,6 +4,10 @@
 
 package image
 
+import (
+	"github.com/shogo82148/std/image/color"
+)
+
 // A Point is an X, Y coordinate pair. The axes increase right and down.
 type Point struct {
 	X, Y int
@@ -44,6 +48,10 @@ func Pt(X, Y int) Point
 // It is well-formed if Min.X <= Max.X and likewise for Y. Points are always
 // well-formed. A rectangle's methods always return well-formed outputs for
 // well-formed inputs.
+//
+// A Rectangle is also an Image whose bounds are the rectangle itself. At
+// returns color.Opaque for points in the rectangle and color.Transparent
+// otherwise.
 type Rectangle struct {
 	Min, Max Point
 }
@@ -81,7 +89,8 @@ func (r Rectangle) Union(s Rectangle) Rectangle
 // Empty reports whether the rectangle contains no points.
 func (r Rectangle) Empty() bool
 
-// Eq reports whether r and s are equal.
+// Eq reports whether r and s contain the same set of points. All empty
+// rectangles are considered equal.
 func (r Rectangle) Eq(s Rectangle) bool
 
 // Overlaps reports whether r and s have a non-empty intersection.
@@ -94,8 +103,19 @@ func (r Rectangle) In(s Rectangle) bool
 // and maximum coordinates swapped if necessary so that it is well-formed.
 func (r Rectangle) Canon() Rectangle
 
+// At implements the Image interface.
+func (r Rectangle) At(x, y int) color.Color
+
+// Bounds implements the Image interface.
+func (r Rectangle) Bounds() Rectangle
+
+// ColorModel implements the Image interface.
+func (r Rectangle) ColorModel() color.Model
+
 // ZR is the zero Rectangle.
 var ZR Rectangle
 
-// Rect is shorthand for Rectangle{Pt(x0, y0), Pt(x1, y1)}.
+// Rect is shorthand for Rectangle{Pt(x0, y0), Pt(x1, y1)}. The returned
+// rectangle has minimum and maximum coordinates swapped if necessary so that
+// it is well-formed.
 func Rect(x0, y0, x1, y1 int) Rectangle

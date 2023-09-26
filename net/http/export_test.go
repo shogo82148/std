@@ -14,3 +14,5 @@ var DefaultUserAgent = defaultUserAgent
 var ExportServerNewConn = (*Server).newConn
 
 var ExportCloseWriteAndWait = (*conn).closeWriteAndWait
+
+var ExportErrRequestCanceled = errRequestCanceled

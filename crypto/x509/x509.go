@@ -6,6 +6,7 @@
 package x509
 
 import (
+	_ "github.com/shogo82148/std/crypto/sha1"
 	_ "github.com/shogo82148/std/crypto/sha256"
 	_ "github.com/shogo82148/std/crypto/sha512"
 	"github.com/shogo82148/std/crypto/x509/pkix"
@@ -163,6 +164,8 @@ type Certificate struct {
 
 	ExtraExtensions []pkix.Extension
 
+	UnhandledCriticalExtensions []asn1.ObjectIdentifier
+
 	ExtKeyUsage        []ExtKeyUsage
 	UnknownExtKeyUsage []asn1.ObjectIdentifier
 
@@ -255,9 +258,9 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 //
 // The returned slice is the certificate in DER encoding.
 //
-// The only supported key types are RSA and ECDSA (*rsa.PublicKey or
-// *ecdsa.PublicKey for pub, *rsa.PrivateKey or *ecdsa.PrivateKey for priv).
-func CreateCertificate(rand io.Reader, template, parent *Certificate, pub interface{}, priv interface{}) (cert []byte, err error)
+// All keys types that are implemented via crypto.Signer are supported (This
+// includes *rsa.PublicKey and *ecdsa.PublicKey.)
+func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv interface{}) (cert []byte, err error)
 
 // pemCRLPrefix is the magic string that indicates that we have a PEM encoded
 // CRL.
@@ -275,8 +278,6 @@ func ParseDERCRL(derBytes []byte) (certList *pkix.CertificateList, err error)
 
 // CreateCRL returns a DER encoded CRL, signed by this Certificate, that
 // contains the given list of revoked certificates.
-//
-// The only supported key type is RSA (*rsa.PrivateKey for priv).
 func (c *Certificate) CreateCRL(rand io.Reader, priv interface{}, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
 
 // CertificateRequest represents a PKCS #10, certificate signature request.
@@ -316,10 +317,13 @@ type CertificateRequest struct {
 //
 // The returned slice is the certificate request in DER encoding.
 //
-// The only supported key types are RSA (*rsa.PrivateKey) and ECDSA
-// (*ecdsa.PrivateKey).
+// All keys types that are implemented via crypto.Signer are supported (This
+// includes *rsa.PublicKey and *ecdsa.PublicKey.)
 func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv interface{}) (csr []byte, err error)
 
 // ParseCertificateRequest parses a single certificate request from the
 // given ASN.1 DER data.
 func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error)
+
+// CheckSignature verifies that the signature on c is a valid signature
+func (c *CertificateRequest) CheckSignature() (err error)

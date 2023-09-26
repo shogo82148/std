@@ -4,9 +4,8 @@
 
 package reflect
 
-var ArrayOf = arrayOf
 var CallGC = &callGC
 
 const PtrSize = ptrSize
-const BitsPointer = bitsPointer
-const BitsScalar = bitsScalar
+
+var GCBits = gcbits

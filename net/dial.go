@@ -22,6 +22,8 @@ type Dialer struct {
 
 	DualStack bool
 
+	FallbackDelay time.Duration
+
 	KeepAlive time.Duration
 }
 
@@ -60,6 +62,8 @@ func Dial(network, address string) (Conn, error)
 // DialTimeout acts like Dial but takes a timeout.
 // The timeout includes name resolution, if required.
 func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
+
+// dialContext holds common state for all dial operations.
 
 // Dial connects to the address on the named network.
 //

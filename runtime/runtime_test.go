@@ -7,3 +7,5 @@ package runtime_test
 import (
 	. "runtime"
 )
+
+var One = []int64{1}

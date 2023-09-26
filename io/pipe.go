@@ -53,7 +53,10 @@ func (w *PipeWriter) Write(data []byte) (n int, err error)
 func (w *PipeWriter) Close() error
 
 // CloseWithError closes the writer; subsequent reads from the
-// read half of the pipe will return no bytes and the error err.
+// read half of the pipe will return no bytes and the error err,
+// or EOF if err is nil.
+//
+// CloseWithError always returns nil.
 func (w *PipeWriter) CloseWithError(err error) error
 
 // Pipe creates a synchronous in-memory pipe.

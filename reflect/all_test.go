@@ -364,3 +364,5 @@ type Inner struct {
 }
 
 type Impl struct{}
+
+type XM struct{}

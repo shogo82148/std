@@ -69,28 +69,28 @@ var (
 	IPv6linklocalallrouters    = IP{0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x02}
 )
 
-// IsUnspecified returns true if ip is an unspecified address.
+// IsUnspecified reports whether ip is an unspecified address.
 func (ip IP) IsUnspecified() bool
 
-// IsLoopback returns true if ip is a loopback address.
+// IsLoopback reports whether ip is a loopback address.
 func (ip IP) IsLoopback() bool
 
-// IsMulticast returns true if ip is a multicast address.
+// IsMulticast reports whether ip is a multicast address.
 func (ip IP) IsMulticast() bool
 
-// IsInterfaceLinkLocalMulticast returns true if ip is
+// IsInterfaceLocalMulticast reports whether ip is
 // an interface-local multicast address.
 func (ip IP) IsInterfaceLocalMulticast() bool
 
-// IsLinkLocalMulticast returns true if ip is a link-local
+// IsLinkLocalMulticast reports whether ip is a link-local
 // multicast address.
 func (ip IP) IsLinkLocalMulticast() bool
 
-// IsLinkLocalUnicast returns true if ip is a link-local
+// IsLinkLocalUnicast reports whether ip is a link-local
 // unicast address.
 func (ip IP) IsLinkLocalUnicast() bool
 
-// IsGlobalUnicast returns true if ip is a global unicast
+// IsGlobalUnicast reports whether ip is a global unicast
 // address.
 func (ip IP) IsGlobalUnicast() bool
 
@@ -126,7 +126,7 @@ func (ip IP) MarshalText() ([]byte, error)
 // The IP address is expected in a form accepted by ParseIP.
 func (ip *IP) UnmarshalText(text []byte) error
 
-// Equal returns true if ip and x are the same IP address.
+// Equal reports whether ip and x are the same IP address.
 // An IPv4 address and that same address in IPv6 form are
 // considered to be equal.
 func (ip IP) Equal(x IP) bool
@@ -152,14 +152,6 @@ func (n *IPNet) Network() string
 // character and a mask expressed as hexadecimal form with no
 // punctuation like "192.168.100.1/c000ff00".
 func (n *IPNet) String() string
-
-// A ParseError represents a malformed text string and the type of string that was expected.
-type ParseError struct {
-	Type string
-	Text string
-}
-
-func (e *ParseError) Error() string
 
 // ParseIP parses s as an IP address, returning the result.
 // The string s can be in dotted decimal ("74.125.19.99")

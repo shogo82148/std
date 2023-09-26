@@ -54,8 +54,8 @@ func Dial(network, addr string, config *Config) (*Conn, error)
 
 // LoadX509KeyPair reads and parses a public/private key pair from a pair of
 // files. The files must contain PEM encoded data.
-func LoadX509KeyPair(certFile, keyFile string) (cert Certificate, err error)
+func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
 
 // X509KeyPair parses a public/private key pair from a pair of
 // PEM encoded data.
-func X509KeyPair(certPEMBlock, keyPEMBlock []byte) (cert Certificate, err error)
+func X509KeyPair(certPEMBlock, keyPEMBlock []byte) (Certificate, error)

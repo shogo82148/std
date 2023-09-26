@@ -22,5 +22,5 @@ import (
 // It is the caller's responsibility to call Close on the WriteCloser when
 // finished writing.
 // The number of bits to use for literal codes, litWidth, must be in the
-// range [2,8] and is typically 8.
+// range [2,8] and is typically 8. Input bytes must be less than 1<<litWidth.
 func NewWriter(w io.Writer, order Order, litWidth int) io.WriteCloser

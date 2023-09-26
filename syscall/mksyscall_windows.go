@@ -40,17 +40,16 @@ Usage:
 
 The flags are:
 
+	-output
+		Specify output file name (outputs to console if blank).
 	-trace
 		Generate print statement after every syscall.
 */
 package main
 
 import (
-	"github.com/shogo82148/std/flag"
 	"github.com/shogo82148/std/io"
 )
-
-var PrintTraceFlag = flag.Bool("trace", false, "generate print statement after every syscall")
 
 // Param is function parameter
 type Param struct {
@@ -177,9 +176,12 @@ func (f *Fn) HelperName() string
 
 // Source files and functions.
 type Source struct {
-	Funcs []*Fn
-	Files []string
+	Funcs   []*Fn
+	Files   []string
+	Imports []string
 }
+
+func (src *Source) Import(pkg string)
 
 // ParseFiles parses files listed in fs and extracts all syscall
 // functions listed in  sys comments. It returns source files
@@ -189,7 +191,7 @@ func ParseFiles(fs []string) (*Source, error)
 // DLLs return dll names for a source set src.
 func (src *Source) DLLs() []string
 
-// ParseFile adds adition file path to a source set src.
+// ParseFile adds additional file path to a source set src.
 func (src *Source) ParseFile(path string) error
 
 // Generate output source file from a source set src.

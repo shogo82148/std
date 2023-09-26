@@ -4,4 +4,4 @@
 
 package net
 
-// Network file descritor.
+// Network file descriptor.

@@ -4,6 +4,9 @@
 // Created by cgo -godefs - DO NOT EDIT
 // cgo -godefs -- -m64 _const.go
 
+//go:build amd64 && openbsd
+// +build amd64,openbsd
+
 package syscall
 
 const (

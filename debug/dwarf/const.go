@@ -170,3 +170,7 @@ func (t Tag) GoString() string
 // the opPlusUconst operator is expected by the type parser.
 
 // Basic type encodings -- the value for AttrEncoding in a TagBaseType Entry.
+
+// Statement program standard opcode encodings.
+
+// Statement program extended opcode encodings.

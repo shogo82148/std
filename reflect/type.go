@@ -12,7 +12,7 @@
 // for that type.
 //
 // See "The Laws of Reflection" for an introduction to reflection in Go:
-// http://golang.org/doc/articles/laws_of_reflection.html
+// https://golang.org/doc/articles/laws_of_reflection.html
 package reflect
 
 // Type is the representation of a Go type.
@@ -124,6 +124,8 @@ const (
 // with a unique tag like `reflect:"array"` or `reflect:"ptr"`
 // so that code cannot convert from, say, *arrayType to *ptrType.
 
+// a copy of runtime.typeAlg
+
 // Method on non-interface type
 
 // uncommonType is present only for types with names or methods
@@ -204,8 +206,8 @@ func (tag StructTag) Get(key string) string
 
 // A fieldScan represents an item on the fieldByNameFunc scan work list.
 
-// TypeOf returns the reflection Type of the value in the interface{}.
-// TypeOf(nil) returns nil.
+// TypeOf returns the reflection Type that represents the dynamic type of i.
+// If i is a nil interface value, TypeOf returns nil.
 func TypeOf(i interface{}) Type
 
 // ptrMap is the cache for PtrTo.
@@ -219,6 +221,10 @@ func PtrTo(t Type) Type
 // A cacheKey is the key for use in the lookupCache.
 // Four values describe any of the types we are looking for:
 // type kind, one or two subtypes, and an extra integer.
+
+// The funcLookupCache caches FuncOf lookups.
+// FuncOf does not share the common lookupCache since cacheKey is not
+// sufficient to represent functions unambiguously.
 
 // ChanOf returns the channel type with the given direction and element type.
 // For example, if t represents int, ChanOf(RecvDir, t) represents <-chan int.
@@ -235,9 +241,14 @@ func ChanOf(dir ChanDir, t Type) Type
 // not implement Go's == operator), MapOf panics.
 func MapOf(key, elem Type) Type
 
-// gcProg is a helper type for generatation of GC pointer info.
-
-// These constants must stay in sync with ../runtime/mgc0.h.
+// FuncOf returns the function type with the given argument and result types.
+// For example if k represents int and e represents string,
+// FuncOf([]Type{k}, []Type{e}, false) represents func(int) string.
+//
+// The variadic argument controls whether the function is variadic. FuncOf
+// panics if the in[len(in)-1] does not represent a slice and variadic is
+// true.
+func FuncOf(in, out []Type, variadic bool) Type
 
 // Make sure these routines stay in sync with ../../runtime/hashmap.go!
 // These types exist only for GC, so we only fill out GC relevant info.
@@ -247,5 +258,14 @@ func MapOf(key, elem Type) Type
 // SliceOf returns the slice type with element type t.
 // For example, if t represents int, SliceOf(t) represents []int.
 func SliceOf(t Type) Type
+
+// See cmd/compile/internal/gc/reflect.go for derivation of constant.
+
+// ArrayOf returns the array type with the given count and element type.
+// For example, if t represents int, ArrayOf(5, t) represents [5]int.
+//
+// If the resulting type would be larger than the available address space,
+// ArrayOf panics.
+func ArrayOf(count int, elem Type) Type
 
 // Layout matches runtime.BitVector (well enough).

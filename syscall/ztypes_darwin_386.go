@@ -1,6 +1,9 @@
 // Created by cgo -godefs - DO NOT EDIT
 // cgo -godefs types_darwin.go
 
+//go:build 386 && darwin
+// +build 386,darwin
+
 package syscall
 
 type Timespec struct {

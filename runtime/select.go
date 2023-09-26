@@ -4,6 +4,14 @@
 
 package runtime
 
+// Select statement header.
+// Known to compiler.
+// Changes here must also be made in src/cmd/internal/gc/select.go's selecttype.
+
+// Select case descriptor.
+// Known to compiler.
+// Changes here must also be made in src/cmd/internal/gc/select.go's selecttype.
+
 // A runtimeSelect is a single case passed to rselect.
 // This must match ../reflect/value.go:/runtimeSelect
 

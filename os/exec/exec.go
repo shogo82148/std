@@ -23,6 +23,9 @@ type Error struct {
 func (e *Error) Error() string
 
 // Cmd represents an external command being prepared or run.
+//
+// A Cmd cannot be reused after calling its Run, Output or CombinedOutput
+// methods.
 type Cmd struct {
 	Path string
 
@@ -68,6 +71,10 @@ type Cmd struct {
 // command name itself. For example, Command("echo", "hello")
 func Command(name string, arg ...string) *Cmd
 
+// skipStdinCopyError optionally specifies a function which reports
+// whether the provided the stdin copy error should be ignored.
+// It is non-nil everywhere but Plan 9, which lacks EPIPE. See exec_posix.go.
+
 // Run starts the specified command and waits for it to complete.
 //
 // The returned error is nil if the command runs, has no problems
@@ -102,6 +109,10 @@ func (e *ExitError) Error() string
 // If the command fails to run or doesn't complete successfully, the
 // error is of type *ExitError. Other error types may be
 // returned for I/O problems.
+//
+// If c.Stdin is not an *os.File, Wait also waits for the I/O loop
+// copying from c.Stdin into the process's standard input
+// to complete.
 //
 // Wait releases any resources associated with the Cmd.
 func (c *Cmd) Wait() error

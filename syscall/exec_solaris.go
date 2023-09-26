@@ -11,4 +11,7 @@ type SysProcAttr struct {
 	Setpgid    bool
 	Setctty    bool
 	Noctty     bool
+	Ctty       int
+	Foreground bool
+	Pgid       int
 }

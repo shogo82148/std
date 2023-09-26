@@ -15,28 +15,29 @@ var F32to64 = f32to64
 var Fcmp64 = fcmp64
 var Fintto64 = fintto64
 var F64toint = f64toint
+var Sqrt = sqrt
 
 var Entersyscall = entersyscall
 var Exitsyscall = exitsyscall
 var LockedOSThread = lockedOSThread
+var Xadduintptr = xadduintptr
+
+var FuncPC = funcPC
 
 type LFNode struct {
-	Next    *LFNode
+	Next    uint64
 	Pushcnt uintptr
 }
 
 type ParFor struct {
-	body    *byte
-	done    uint32
-	Nthr    uint32
-	nthrmax uint32
-	thrseq  uint32
-	Cnt     uint32
-	Ctx     *byte
-	wait    bool
+	body   func(*ParFor, uint32)
+	done   uint32
+	Nthr   uint32
+	thrseq uint32
+	Cnt    uint32
+	wait   bool
 }
 
-var HaveGoodHash = haveGoodHash
 var StringHash = stringHash
 var BytesHash = bytesHash
 var Int32Hash = int32Hash
@@ -49,3 +50,17 @@ var HashLoad = &hashLoad
 
 var Gostringnocopy = gostringnocopy
 var Maxstring = &maxstring
+
+type Uintreg uintreg
+
+var Open = open
+var Close = closefd
+var Read = read
+var Write = write
+
+var BigEndian = _BigEndian
+
+const PtrSize = ptrSize
+
+var TestingAssertE2I2GC = &testingAssertE2I2GC
+var TestingAssertE2T2GC = &testingAssertE2T2GC

@@ -5,8 +5,6 @@
 //go:build darwin || dragonfly || freebsd || netbsd || openbsd
 // +build darwin dragonfly freebsd netbsd openbsd
 
-// Routing sockets and messages
-
 package syscall
 
 // RouteRIB returns routing information base, as known as RIB,
@@ -16,7 +14,7 @@ func RouteRIB(facility, param int) ([]byte, error)
 
 // RoutingMessage represents a routing message.
 type RoutingMessage interface {
-	sockaddr() []Sockaddr
+	sockaddr() ([]Sockaddr, error)
 }
 
 // RouteMessage represents a routing message containing routing
@@ -46,4 +44,4 @@ func ParseRoutingMessage(b []byte) (msgs []RoutingMessage, err error)
 
 // ParseRoutingMessage parses msg's payload as raw sockaddrs and
 // returns the slice containing the Sockaddr interfaces.
-func ParseRoutingSockaddr(msg RoutingMessage) (sas []Sockaddr, err error)
+func ParseRoutingSockaddr(msg RoutingMessage) ([]Sockaddr, error)

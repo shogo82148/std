@@ -14,14 +14,19 @@ package template
 func Must(t *Template, err error) *Template
 
 // ParseFiles creates a new Template and parses the template definitions from
-// the named files. The returned template's name will have the (base) name and
-// (parsed) contents of the first file. There must be at least one file.
+// the named files. The returned template's name will have the base name and
+// parsed contents of the first file. There must be at least one file.
 // If an error occurs, parsing stops and the returned *Template is nil.
 func ParseFiles(filenames ...string) (*Template, error)
 
 // ParseFiles parses the named files and associates the resulting templates with
 // t. If an error occurs, parsing stops and the returned template is nil;
 // otherwise it is t. There must be at least one file.
+// Since the templates created by ParseFiles are named by the base
+// names of the argument files, t should usually have the name of one
+// of the (base) names of the files. If it does not, depending on t's
+// contents before calling ParseFiles, t.Execute may fail. In that
+// case use t.ExecuteTemplate to execute a valid template.
 func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 
 // ParseGlob creates a new Template and parses the template definitions from the

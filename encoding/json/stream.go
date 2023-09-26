@@ -10,11 +10,15 @@ import (
 
 // A Decoder reads and decodes JSON objects from an input stream.
 type Decoder struct {
-	r    io.Reader
-	buf  []byte
-	d    decodeState
-	scan scanner
-	err  error
+	r     io.Reader
+	buf   []byte
+	d     decodeState
+	scanp int
+	scan  scanner
+	err   error
+
+	tokenState int
+	tokenStack []int
 }
 
 // NewDecoder returns a new decoder that reads from r.
@@ -67,3 +71,35 @@ func (m *RawMessage) UnmarshalJSON(data []byte) error
 
 var _ Marshaler = (*RawMessage)(nil)
 var _ Unmarshaler = (*RawMessage)(nil)
+
+// A Token holds a value of one of these types:
+//
+//	Delim, for the four JSON delimiters [ ] { }
+//	bool, for JSON booleans
+//	float64, for JSON numbers
+//	Number, for JSON numbers
+//	string, for JSON string literals
+//	nil, for JSON null
+type Token interface{}
+
+// A Delim is a JSON array or object delimiter, one of [ ] { or }.
+type Delim rune
+
+func (d Delim) String() string
+
+// Token returns the next JSON token in the input stream.
+// At the end of the input stream, Token returns nil, io.EOF.
+//
+// Token guarantees that the delimiters [ ] { } it returns are
+// properly nested and matched: if Token encounters an unexpected
+// delimiter in the input, it will return an error.
+//
+// The input stream consists of basic JSON values—bool, string,
+// number, and null—along with delimiters [ ] { } of type Delim
+// to mark the start and end of arrays and objects.
+// Commas and colons are elided.
+func (dec *Decoder) Token() (Token, error)
+
+// More reports whether there is another element in the
+// current array or object being parsed.
+func (dec *Decoder) More() bool

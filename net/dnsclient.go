@@ -4,19 +4,6 @@
 
 package net
 
-// DNSError represents a DNS lookup error.
-type DNSError struct {
-	Err       string
-	Name      string
-	Server    string
-	IsTimeout bool
-}
-
-func (e *DNSError) Error() string
-
-func (e *DNSError) Timeout() bool
-func (e *DNSError) Temporary() bool
-
 // An SRV represents a single DNS SRV record.
 type SRV struct {
 	Target   string

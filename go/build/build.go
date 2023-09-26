@@ -53,6 +53,8 @@ func (ctxt *Context) SrcDirs() []string
 // if set, or else the compiled code's GOARCH, GOOS, and GOROOT.
 var Default Context = defaultContext()
 
+// Also known to cmd/dist/build.go.
+
 // An ImportMode controls the behavior of the Import method.
 type ImportMode uint
 
@@ -83,6 +85,7 @@ type Package struct {
 	Root          string
 	SrcRoot       string
 	PkgRoot       string
+	PkgTargetRoot string
 	BinDir        string
 	Goroot        bool
 	PkgObj        string
@@ -188,6 +191,9 @@ var ToolDir = filepath.Join(runtime.GOROOT(), "pkg/tool/"+runtime.GOOS+"_"+runti
 // a local import path, like ".", "..", "./foo", or "../foo".
 func IsLocalImport(path string) bool
 
-// ArchChar returns the architecture character for the given goarch.
-// For example, ArchChar("amd64") returns "6".
+// ArchChar returns "?" and an error.
+// In earlier versions of Go, the returned string was used to derive
+// the compiler and linker tool names, the default object file suffix,
+// and the default linker output name. As of Go 1.5, those strings
+// no longer vary by architecture; they are compile, link, .o, and a.out, respectively.
 func ArchChar(goarch string) (string, error)

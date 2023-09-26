@@ -8,5 +8,8 @@ import (
 	. "net/http"
 )
 
+// delayedEOFReader never returns (n > 0, io.EOF), instead putting
+// off the io.EOF until a subsequent Read call.
+
 // infiniteReader satisfies Read requests as if the contents of buf
 // loop indefinitely.

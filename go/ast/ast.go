@@ -361,10 +361,11 @@ type (
 
 	// An EmptyStmt node represents an empty statement.
 	// The "position" of the empty statement is the position
-	// of the immediately preceding semicolon.
+	// of the immediately following (explicit or implicit) semicolon.
 	//
 	EmptyStmt struct {
 		Semicolon token.Pos
+		Implicit  bool
 	}
 
 	// A LabeledStmt node represents a labeled statement.

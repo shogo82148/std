@@ -5,6 +5,4 @@
 //go:build !cgo || netgo
 // +build !cgo netgo
 
-// Stub cgo routines for systems that do not use cgo to do network lookups.
-
 package net

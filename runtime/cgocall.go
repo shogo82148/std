@@ -78,6 +78,3 @@
 // callee-save registers for gcc and returns to GoF, which returns to f.
 
 package runtime
-
-// Filled by schedinit from corresponding C variables,
-// which are in turn filled in by dynamic linker when Cgo is available.

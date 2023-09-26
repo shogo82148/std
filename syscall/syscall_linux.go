@@ -11,13 +11,35 @@
 
 package syscall
 
+func Access(path string, mode uint32) (err error)
+
+func Chmod(path string, mode uint32) (err error)
+
+func Chown(path string, uid int, gid int) (err error)
+
+func Creat(path string, mode uint32) (fd int, err error)
+
+func Link(oldpath string, newpath string) (err error)
+
+func Mkdir(path string, mode uint32) (err error)
+
+func Mknod(path string, mode uint32, dev int) (err error)
+
 func Open(path string, mode int, perm uint32) (fd int, err error)
 
 func Openat(dirfd int, path string, flags int, mode uint32) (fd int, err error)
 
-func Pipe(p []int) (err error)
+func Readlink(path string, buf []byte) (n int, err error)
 
-func Pipe2(p []int, flags int) (err error)
+func Rename(oldpath string, newpath string) (err error)
+
+func Rmdir(path string) error
+
+func Symlink(oldpath string, newpath string) (err error)
+
+func Unlink(path string) error
+
+func Unlinkat(dirfd int, path string) error
 
 func Utimes(path string, tv []Timeval) (err error)
 
@@ -141,6 +163,8 @@ func ReadDirent(fd int, buf []byte) (n int, err error)
 func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, newnames []string)
 
 func Mount(source string, target string, fstype string, flags uintptr, data string) (err error)
+
+func Getpgrp() (pid int)
 
 func Setuid(uid int) (err error)
 

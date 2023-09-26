@@ -65,7 +65,9 @@ func DialUnix(net string, laddr, raddr *UnixAddr) (*UnixConn, error)
 // UnixListener is a Unix domain socket listener.  Clients should
 // typically use variables of type Listener instead of assuming Unix
 // domain sockets.
-type UnixListener struct{}
+type UnixListener struct {
+	fd *netFD
+}
 
 // ListenUnix announces on the Unix domain socket laddr and returns a
 // Unix listener.  The network net must be "unix" or "unixpacket".
@@ -84,6 +86,8 @@ func (l *UnixListener) Accept() (Conn, error)
 func (l *UnixListener) Close() error
 
 // Addr returns the listener's network address.
+// The Addr returned is shared by all invocations of Addr, so
+// do not modify it.
 func (l *UnixListener) Addr() Addr
 
 // SetDeadline sets the deadline associated with the listener.

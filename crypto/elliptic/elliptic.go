@@ -35,6 +35,7 @@ type CurveParams struct {
 	B       *big.Int
 	Gx, Gy  *big.Int
 	BitSize int
+	Name    string
 }
 
 func (curve *CurveParams) Params() *CurveParams
@@ -56,7 +57,8 @@ func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err e
 // Marshal converts a point into the form specified in section 4.3.6 of ANSI X9.62.
 func Marshal(curve Curve, x, y *big.Int) []byte
 
-// Unmarshal converts a point, serialized by Marshal, into an x, y pair. On error, x = nil.
+// Unmarshal converts a point, serialized by Marshal, into an x, y pair.
+// It is an error if the point is not on the curve. On error, x = nil.
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 
 // P256 returns a Curve which implements P-256 (see FIPS 186-3, section D.2.3)

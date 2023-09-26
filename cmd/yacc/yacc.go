@@ -105,6 +105,7 @@ const (
 	TYPEDEF
 	TYPENAME
 	UNION
+	ERROR
 )
 
 const ENDFILE = 0
@@ -163,6 +164,17 @@ type Wset struct {
 type Resrv struct {
 	name  string
 	value int
+}
+
+type Error struct {
+	lineno int
+	tokens []string
+	msg    string
+}
+
+type Row struct {
+	actions       []int
+	defaultAction int
 }
 
 const EOF = -1

@@ -27,5 +27,14 @@ type AEAD interface {
 // gcm represents a Galois Counter Mode with a specific key. See
 // http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-revised-spec.pdf
 
-// NewGCM returns the given 128-bit, block cipher wrapped in Galois Counter Mode.
+// NewGCM returns the given 128-bit, block cipher wrapped in Galois Counter Mode
+// with the standard nonce length.
 func NewGCM(cipher Block) (AEAD, error)
+
+// NewGCMWithNonceSize returns the given 128-bit, block cipher wrapped in Galois
+// Counter Mode, which accepts nonces of the given length.
+//
+// Only use this function if you require compatibility with an existing
+// cryptosystem that uses non-standard nonce lengths. All other users should use
+// NewGCM, which is faster and more resistant to misuse.
+func NewGCMWithNonceSize(cipher Block, size int) (AEAD, error)

@@ -31,6 +31,8 @@ const (
 	SHA3_256
 	SHA3_384
 	SHA3_512
+	SHA512_224
+	SHA512_256
 )
 
 // Size returns the length, in bytes, of a digest resulting from the given hash
@@ -68,3 +70,14 @@ type Signer interface {
 type SignerOpts interface {
 	HashFunc() Hash
 }
+
+// Decrypter is an interface for an opaque private key that can be used for
+// asymmetric decryption operations. An example would be an RSA key
+// kept in a hardware module.
+type Decrypter interface {
+	Public() PublicKey
+
+	Decrypt(rand io.Reader, msg []byte, opts DecrypterOpts) (plaintext []byte, err error)
+}
+
+type DecrypterOpts interface{}

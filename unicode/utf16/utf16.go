@@ -5,7 +5,7 @@
 // Package utf16 implements encoding and decoding of UTF-16 sequences.
 package utf16
 
-// IsSurrogate returns true if the specified Unicode code point
+// IsSurrogate reports whether the specified Unicode code point
 // can appear in a surrogate pair.
 func IsSurrogate(r rune) bool
 

@@ -6,4 +6,9 @@ package runtime
 
 // type algorithms - known to compiler
 
-// used in asm_{386,amd64}.s
+// typeAlg is also copied/used in reflect/type.go.
+// keep them in sync.
+
+// used in asm_{386,amd64}.s to seed the hash function
+
+// used in hash{32,64}.go to seed the hash function

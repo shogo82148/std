@@ -47,6 +47,13 @@ func (b *Reader) Reset(r io.Reader)
 // ErrBufferFull if n is larger than b's buffer size.
 func (b *Reader) Peek(n int) ([]byte, error)
 
+// Discard skips the next n bytes, returning the number of bytes discarded.
+//
+// If Discard skips fewer than n bytes, it also returns an error.
+// If 0 <= n <= b.Buffered(), Discard is guaranteed to succeed without
+// reading from the underlying io.Reader.
+func (b *Reader) Discard(n int) (discarded int, err error)
+
 // Read reads data into p.
 // It returns the number of bytes read into p.
 // It calls Read at most once on the underlying Reader,

@@ -2,7 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package strings implements simple functions to manipulate strings.
+// Package strings implements simple functions to manipulate UTF-8 encoded strings.
+//
+// For information about UTF-8 strings in Go, see https://blog.golang.org/strings.
 package strings
 
 import (
@@ -12,15 +14,16 @@ import (
 // primeRK is the prime base used in Rabin-Karp algorithm.
 
 // Count counts the number of non-overlapping instances of sep in s.
+// If sep is an empty string, Count returns 1 + the number of Unicode code points in s.
 func Count(s, sep string) int
 
-// Contains returns true if substr is within s.
+// Contains reports whether substr is within s.
 func Contains(s, substr string) bool
 
-// ContainsAny returns true if any Unicode code points in chars are within s.
+// ContainsAny reports whether any Unicode code points in chars are within s.
 func ContainsAny(s, chars string) bool
 
-// ContainsRune returns true if the Unicode code point r is within s.
+// ContainsRune reports whether the Unicode code point r is within s.
 func ContainsRune(s string, r rune) bool
 
 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.
@@ -41,6 +44,9 @@ func IndexAny(s, chars string) int
 // point from chars in s, or -1 if no Unicode code point from chars is
 // present in s.
 func LastIndexAny(s, chars string) int
+
+// LastIndexByte returns the index of the last instance of c in s, or -1 if c is not present in s.
+func LastIndexByte(s string, c byte) int
 
 // SplitN slices s into substrings separated by sep and returns a slice of
 // the substrings between those separators.
@@ -128,7 +134,7 @@ func ToTitleSpecial(_case unicode.SpecialCase, s string) string
 // Title returns a copy of the string s with all Unicode letters that begin words
 // mapped to their title case.
 //
-// BUG: The rule Title uses for word boundaries does not handle Unicode punctuation properly.
+// BUG(rsc): The rule Title uses for word boundaries does not handle Unicode punctuation properly.
 func Title(s string) string
 
 // TrimLeftFunc returns a slice of the string s with all leading

@@ -4,19 +4,9 @@
 
 package runtime_test
 
-const (
-	BitsDead = iota
-	BitsScalar
-	BitsPointer
-	BitsMultiWord
-)
-
-const (
-	BitsString = iota
-	BitsSlice
-	BitsIface
-	BitsEface
-)
+type Ptr struct {
+	*byte
+}
 
 type ScalarPtr struct {
 	q int

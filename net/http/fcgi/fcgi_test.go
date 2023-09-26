@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package fcgi
+
+// a series of FastCGI records that start a request and begin sending the
+// request body

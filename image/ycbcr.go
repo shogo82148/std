@@ -16,6 +16,8 @@ const (
 	YCbCrSubsampleRatio422
 	YCbCrSubsampleRatio420
 	YCbCrSubsampleRatio440
+	YCbCrSubsampleRatio411
+	YCbCrSubsampleRatio410
 )
 
 func (s YCbCrSubsampleRatio) String() string
@@ -32,6 +34,8 @@ func (s YCbCrSubsampleRatio) String() string
 //	For 4:2:2, CStride == YStride/2 && len(Cb) == len(Cr) == len(Y)/2.
 //	For 4:2:0, CStride == YStride/2 && len(Cb) == len(Cr) == len(Y)/4.
 //	For 4:4:0, CStride == YStride/1 && len(Cb) == len(Cr) == len(Y)/2.
+//	For 4:1:1, CStride == YStride/4 && len(Cb) == len(Cr) == len(Y)/4.
+//	For 4:1:0, CStride == YStride/4 && len(Cb) == len(Cr) == len(Y)/8.
 type YCbCr struct {
 	Y, Cb, Cr      []uint8
 	YStride        int

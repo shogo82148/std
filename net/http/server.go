@@ -80,14 +80,11 @@ type CloseNotifier interface {
 
 // A conn represents the server side of an HTTP connection.
 
-// A switchReader can have its Reader changed at runtime.
-// It's not safe for concurrent Reads and switches.
-
 // A switchWriter can have its Writer changed at runtime.
 // It's not safe for concurrent Writes and switches.
 
-// A liveSwitchReader is a switchReader that's safe for concurrent
-// reads and switches, if its mutex is held.
+// A liveSwitchReader can have its Reader changed at runtime. It's
+// safe for concurrent reads and switches, if its mutex is held.
 
 // This should be >= 512 bytes for DetectContentType,
 // but otherwise it's somewhat arbitrary.
@@ -349,7 +346,7 @@ func (srv *Server) Serve(l net.Listener) error
 // By default, keep-alives are always enabled. Only very
 // resource-constrained environments or servers in the process of
 // shutting down should disable them.
-func (s *Server) SetKeepAlivesEnabled(v bool)
+func (srv *Server) SetKeepAlivesEnabled(v bool)
 
 // ListenAndServe listens on the TCP network address addr
 // and then calls Serve with handler to handle requests
@@ -384,7 +381,7 @@ func ListenAndServe(addr string, handler Handler) error
 // expects HTTPS connections. Additionally, files containing a certificate and
 // matching private key for the server must be provided. If the certificate
 // is signed by a certificate authority, the certFile should be the concatenation
-// of the server's certificate followed by the CA's certificate.
+// of the server's certificate, any intermediates, and the CA's certificate.
 //
 // A trivial example server is:
 //
@@ -413,10 +410,11 @@ func ListenAndServeTLS(addr string, certFile string, keyFile string, handler Han
 // ListenAndServeTLS listens on the TCP network address srv.Addr and
 // then calls Serve to handle requests on incoming TLS connections.
 //
-// Filenames containing a certificate and matching private key for
-// the server must be provided. If the certificate is signed by a
-// certificate authority, the certFile should be the concatenation
-// of the server's certificate followed by the CA's certificate.
+// Filenames containing a certificate and matching private key for the
+// server must be provided if the Server's TLSConfig.Certificates is
+// not populated. If the certificate is signed by a certificate
+// authority, the certFile should be the concatenation of the server's
+// certificate, any intermediates, and the CA's certificate.
 //
 // If srv.Addr is blank, ":https" is used.
 func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error

@@ -30,10 +30,17 @@ type DLL struct {
 	Handle Handle
 }
 
-// LoadDLL loads DLL file into memory.
-func LoadDLL(name string) (dll *DLL, err error)
+// LoadDLL loads the named DLL file into memory.
+//
+// If name is not an absolute path and is not a known system DLL used by
+// Go, Windows will search for the named DLL in many locations, causing
+// potential DLL preloading attacks.
+//
+// Use LazyDLL in golang.org/x/sys/windows for a secure way to
+// load system DLLs.
+func LoadDLL(name string) (*DLL, error)
 
-// MustLoadDLL is like LoadDLL but panics if load operation failes.
+// MustLoadDLL is like LoadDLL but panics if load operation fails.
 func MustLoadDLL(name string) *DLL
 
 // FindProc searches DLL d for procedure named name and returns *Proc
@@ -70,6 +77,12 @@ func (p *Proc) Call(a ...uintptr) (r1, r2 uintptr, lastErr error)
 // It will delay the load of the DLL until the first
 // call to its Handle method or to one of its
 // LazyProc's Addr method.
+//
+// LazyDLL is subject to the same DLL preloading attacks as documented
+// on LoadDLL.
+//
+// Use LazyDLL in golang.org/x/sys/windows for a secure way to
+// load system DLLs.
 type LazyDLL struct {
 	mu   sync.Mutex
 	dll  *DLL

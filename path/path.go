@@ -32,7 +32,7 @@ package path
 // http://plan9.bell-labs.com/sys/doc/lexnames.html
 func Clean(path string) string
 
-// Split splits path immediately following the final slash.
+// Split splits path immediately following the final slash,
 // separating it into a directory and file name component.
 // If there is no slash path, Split returns an empty dir and
 // file set to path.
@@ -56,7 +56,7 @@ func Ext(path string) string
 // If the path consists entirely of slashes, Base returns "/".
 func Base(path string) string
 
-// IsAbs returns true if the path is absolute.
+// IsAbs reports whether the path is absolute.
 func IsAbs(path string) bool
 
 // Dir returns all but the last element of path, typically the path's directory.

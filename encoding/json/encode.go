@@ -7,7 +7,7 @@
 // in the documentation for the Marshal and Unmarshal functions.
 //
 // See "JSON and Go" for an introduction to this package:
-// http://golang.org/doc/articles/json_and_go.html
+// https://golang.org/doc/articles/json_and_go.html
 package json
 
 import (
@@ -70,8 +70,8 @@ import (
 //
 // The "string" option signals that a field is stored as JSON inside a
 // JSON-encoded string. It applies only to fields of string, floating point,
-// or integer types. This extra level of encoding is sometimes used when
-// communicating with JavaScript programs:
+// integer, or boolean types. This extra level of encoding is sometimes used
+// when communicating with JavaScript programs:
 //
 //	Int64String int64 `json:",string"`
 //
@@ -104,8 +104,8 @@ import (
 // a JSON tag of "-".
 //
 // Map values encode as JSON objects.
-// The map's key type must be string; the object keys are used directly
-// as map keys.
+// The map's key type must be string; the map keys are used as JSON object
+// keys, subject to the UTF-8 coercion described for string values above.
 //
 // Pointer values encode as the value pointed to.
 // A nil pointer encodes as the null JSON object.

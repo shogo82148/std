@@ -29,3 +29,22 @@ func (c YCbCr) RGBA() (uint32, uint32, uint32, uint32)
 
 // YCbCrModel is the Model for Y'CbCr colors.
 var YCbCrModel Model = ModelFunc(yCbCrModel)
+
+// RGBToCMYK converts an RGB triple to a CMYK quadruple.
+func RGBToCMYK(r, g, b uint8) (uint8, uint8, uint8, uint8)
+
+// CMYKToRGB converts a CMYK quadruple to an RGB triple.
+func CMYKToRGB(c, m, y, k uint8) (uint8, uint8, uint8)
+
+// CMYK represents a fully opaque CMYK color, having 8 bits for each of cyan,
+// magenta, yellow and black.
+//
+// It is not associated with any particular color profile.
+type CMYK struct {
+	C, M, Y, K uint8
+}
+
+func (c CMYK) RGBA() (uint32, uint32, uint32, uint32)
+
+// CMYKModel is the Model for CMYK colors.
+var CMYKModel Model = ModelFunc(cmykModel)

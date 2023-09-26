@@ -6,10 +6,10 @@
 // databases.
 //
 // The sql package must be used in conjunction with a database driver.
-// See http://golang.org/s/sqldrivers for a list of drivers.
+// See https://golang.org/s/sqldrivers for a list of drivers.
 //
 // For more usage examples, see the wiki page at
-// http://golang.org/s/sqlwiki.
+// https://golang.org/s/sqlwiki.
 package sql
 
 import (
@@ -122,6 +122,8 @@ type DB struct {
 	driver driver.Driver
 	dsn    string
 
+	numClosed uint64
+
 	mu           sync.Mutex
 	freeConn     []*driverConn
 	connRequests []chan connRequest
@@ -135,6 +137,8 @@ type DB struct {
 	maxIdle  int
 	maxOpen  int
 }
+
+// connReuseStrategy determines how (*DB).conn returns database connections.
 
 // driverConn wraps a driver.Conn with a mutex, to
 // be held during all calls into the Conn. (including any calls onto
@@ -162,7 +166,7 @@ type DB struct {
 //
 // Most users will open a database via a driver-specific connection
 // helper function that returns a *DB. No database drivers are included
-// in the Go standard library. See http://golang.org/s/sqldrivers for
+// in the Go standard library. See https://golang.org/s/sqldrivers for
 // a list of third-party drivers.
 //
 // Open may just validate its arguments without creating a connection
@@ -204,6 +208,14 @@ func (db *DB) SetMaxIdleConns(n int)
 // The default is 0 (unlimited).
 func (db *DB) SetMaxOpenConns(n int)
 
+// DBStats contains database statistics.
+type DBStats struct {
+	OpenConnections int
+}
+
+// Stats returns database statistics.
+func (db *DB) Stats() DBStats
+
 // connRequest represents one request for a new connection
 // When there are no idle connections available, DB.conn will create
 // a new connRequest and put it on the db.connRequests list.
@@ -214,11 +226,14 @@ func (db *DB) SetMaxOpenConns(n int)
 // are returned for more verbose crashes.
 
 // maxBadConnRetries is the number of maximum retries if the driver returns
-// driver.ErrBadConn to signal a broken connection.
+// driver.ErrBadConn to signal a broken connection before forcing a new
+// connection to be opened.
 
 // Prepare creates a prepared statement for later queries or executions.
 // Multiple queries or executions may be run concurrently from the
 // returned statement.
+// The caller must call the statement's Close method
+// when the statement is no longer needed.
 func (db *DB) Prepare(query string) (*Stmt, error)
 
 // Exec executes a query without returning any rows.
@@ -247,6 +262,10 @@ func (db *DB) Driver() driver.Driver
 //
 // After a call to Commit or Rollback, all operations on the
 // transaction fail with ErrTxDone.
+//
+// The statements prepared for a transaction by calling
+// the transaction's Prepare or Stmt methods are closed
+// by the call to Commit or Rollback.
 type Tx struct {
 	db *DB
 
@@ -287,6 +306,9 @@ func (tx *Tx) Prepare(query string) (*Stmt, error)
 //	tx, err := db.Begin()
 //	...
 //	res, err := tx.Stmt(updateMoney).Exec(123.45, 98293203)
+//
+// The returned statement operates within the transaction and can no longer
+// be used once the transaction has been committed or rolled back.
 func (tx *Tx) Stmt(stmt *Stmt) *Stmt
 
 // Exec executes a query that doesn't return rows.
@@ -303,7 +325,8 @@ func (tx *Tx) QueryRow(query string, args ...interface{}) *Row
 
 // connStmt is a prepared statement on a particular connection.
 
-// Stmt is a prepared statement. Stmt is safe for concurrent use by multiple goroutines.
+// Stmt is a prepared statement.
+// A Stmt is safe for concurrent use by multiple goroutines.
 type Stmt struct {
 	db        *DB
 	query     string
@@ -318,6 +341,8 @@ type Stmt struct {
 	closed bool
 
 	css []connStmt
+
+	lastNumClosed uint64
 }
 
 // Exec executes a prepared statement with the given arguments and

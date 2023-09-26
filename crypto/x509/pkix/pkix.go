@@ -46,14 +46,17 @@ type Extension struct {
 }
 
 // Name represents an X.509 distinguished name. This only includes the common
-// elements of a DN.  Additional elements in the name are ignored.
+// elements of a DN. When parsing, all elements are stored in Names and
+// non-standard elements can be extracted from there. When marshaling, elements
+// in ExtraNames are appended and override other values with the same OID.
 type Name struct {
 	Country, Organization, OrganizationalUnit []string
 	Locality, Province                        []string
 	StreetAddress, PostalCode                 []string
 	SerialNumber, CommonName                  string
 
-	Names []AttributeTypeAndValue
+	Names      []AttributeTypeAndValue
+	ExtraNames []AttributeTypeAndValue
 }
 
 func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
@@ -76,7 +79,7 @@ func (certList *CertificateList) HasExpired(now time.Time) bool
 // 5280, section 5.1.
 type TBSCertificateList struct {
 	Raw                 asn1.RawContent
-	Version             int `asn1:"optional,default:2"`
+	Version             int `asn1:"optional,default:1"`
 	Signature           AlgorithmIdentifier
 	Issuer              RDNSequence
 	ThisUpdate          time.Time

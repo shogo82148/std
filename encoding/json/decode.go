@@ -38,6 +38,13 @@ import (
 //	map[string]interface{}, for JSON objects
 //	nil for JSON null
 //
+// To unmarshal a JSON array into a slice, Unmarshal resets the slice to nil
+// and then appends each element to the slice.
+//
+// To unmarshal a JSON object into a map, Unmarshal replaces the map
+// with an empty map and then adds key-value pairs from the object to
+// the map.
+//
 // If a JSON value is not appropriate for a given target type,
 // or if a JSON number overflows the target type, Unmarshal
 // skips that field and completes the unmarshalling as best it can.
@@ -67,8 +74,9 @@ type Unmarshaler interface {
 // An UnmarshalTypeError describes a JSON value that was
 // not appropriate for a value of a specific Go type.
 type UnmarshalTypeError struct {
-	Value string
-	Type  reflect.Type
+	Value  string
+	Type   reflect.Type
+	Offset int64
 }
 
 func (e *UnmarshalTypeError) Error() string

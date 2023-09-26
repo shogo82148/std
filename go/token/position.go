@@ -18,7 +18,7 @@ type Position struct {
 	Column   int
 }
 
-// IsValid returns true if the position is valid.
+// IsValid reports whether the position is valid.
 func (pos *Position) IsValid() bool
 
 // String returns a string in one of several forms:
@@ -37,8 +37,8 @@ func (pos Position) String() string
 // where base and size are specified when adding the file to the file set via
 // AddFile.
 //
-// To create the Pos value for a specific source offset, first add
-// the respective file to the current file set (via FileSet.AddFile)
+// To create the Pos value for a specific source offset (measured in bytes),
+// first add the respective file to the current file set using FileSet.AddFile
 // and then call File.Pos(offset) for that file. Given a Pos value p
 // for a specific file set fset, the corresponding Position value is
 // obtained by calling fset.Position(p).
@@ -56,7 +56,7 @@ type Pos int
 // for NoPos is the zero value for Position.
 const NoPos Pos = 0
 
-// IsValid returns true if the position is valid.
+// IsValid reports whether the position is valid.
 func (p Pos) IsValid() bool
 
 // A File is a handle for a file belonging to a FileSet.
@@ -94,7 +94,7 @@ func (f *File) AddLine(offset int)
 // MergeLine will panic if given an invalid line number.
 func (f *File) MergeLine(line int)
 
-// SetLines sets the line offsets for a file and returns true if successful.
+// SetLines sets the line offsets for a file and reports whether it succeeded.
 // The line offsets are the offsets of the first character of each line;
 // for instance for the content "ab\nc\n" the line offsets are {0, 3}.
 // An empty file has an empty line offset table.

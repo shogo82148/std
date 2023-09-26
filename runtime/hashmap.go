@@ -9,5 +9,5 @@ package runtime
 // A bucket for a Go map.
 
 // A hash iteration structure.
-// If you modify hiter, also change cmd/gc/reflect.c to indicate
+// If you modify hiter, also change cmd/internal/gc/reflect.go to indicate
 // the layout of this structure.

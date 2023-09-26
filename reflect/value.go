@@ -25,6 +25,10 @@ import (
 // A Value can be used concurrently by multiple goroutines provided that
 // the underlying Go value can be used concurrently for the equivalent
 // direct operations.
+//
+// Using == on two Values does not compare the underlying values
+// they represent, but rather the contents of the Value structs.
+// To compare two Values, compare the results of the Interface method.
 type Value struct {
 	typ *rtype
 
@@ -62,18 +66,18 @@ func (v Value) Bool() bool
 // It panics if v's underlying value is not a slice of bytes.
 func (v Value) Bytes() []byte
 
-// CanAddr returns true if the value's address can be obtained with Addr.
+// CanAddr reports whether the value's address can be obtained with Addr.
 // Such values are called addressable.  A value is addressable if it is
 // an element of a slice, an element of an addressable array,
 // a field of an addressable struct, or the result of dereferencing a pointer.
 // If CanAddr returns false, calling Addr will panic.
 func (v Value) CanAddr() bool
 
-// CanSet returns true if the value of v can be changed.
+// CanSet reports whether the value of v can be changed.
 // A Value can be changed only if it is addressable and was not
 // obtained by the use of unexported struct fields.
 // If CanSet returns false, calling Set or any type-specific
-// setter (e.g., SetBool, SetInt64) will panic.
+// setter (e.g., SetBool, SetInt) will panic.
 func (v Value) CanSet() bool
 
 // Call calls the function v with the input arguments in.
@@ -88,8 +92,8 @@ func (v Value) Call(in []Value) []Value
 
 // CallSlice calls the variadic function v with the input arguments in,
 // assigning the slice in[len(in)-1] to v's final variadic argument.
-// For example, if len(in) == 3, v.Call(in) represents the Go call v(in[0], in[1], in[2]...).
-// Call panics if v's Kind is not Func or if v is not variadic.
+// For example, if len(in) == 3, v.CallSlice(in) represents the Go call v(in[0], in[1], in[2]...).
+// CallSlice panics if v's Kind is not Func or if v is not variadic.
 // It returns the output results as Values.
 // As in Go, each input argument must be assignable to the
 // type of the function's corresponding input parameter.
@@ -144,7 +148,7 @@ func (v Value) Index(i int) Value
 // It panics if v's Kind is not Int, Int8, Int16, Int32, or Int64.
 func (v Value) Int() int64
 
-// CanInterface returns true if Interface can be used without panicking.
+// CanInterface reports whether Interface can be used without panicking.
 func (v Value) CanInterface() bool
 
 // Interface returns v's current value as an interface{}.
@@ -169,7 +173,7 @@ func (v Value) InterfaceData() [2]uintptr
 // Value.
 func (v Value) IsNil() bool
 
-// IsValid returns true if v represents a value.
+// IsValid reports whether v represents a value.
 // It returns false if v is the zero Value.
 // If IsValid returns false, all other methods except String panic.
 // Most functions and methods never return an invalid value.
@@ -216,19 +220,19 @@ func (v Value) MethodByName(name string) Value
 // It panics if v's Kind is not Struct.
 func (v Value) NumField() int
 
-// OverflowComplex returns true if the complex128 x cannot be represented by v's type.
+// OverflowComplex reports whether the complex128 x cannot be represented by v's type.
 // It panics if v's Kind is not Complex64 or Complex128.
 func (v Value) OverflowComplex(x complex128) bool
 
-// OverflowFloat returns true if the float64 x cannot be represented by v's type.
+// OverflowFloat reports whether the float64 x cannot be represented by v's type.
 // It panics if v's Kind is not Float32 or Float64.
 func (v Value) OverflowFloat(x float64) bool
 
-// OverflowInt returns true if the int64 x cannot be represented by v's type.
+// OverflowInt reports whether the int64 x cannot be represented by v's type.
 // It panics if v's Kind is not Int, Int8, int16, Int32, or Int64.
 func (v Value) OverflowInt(x int64) bool
 
-// OverflowUint returns true if the uint64 x cannot be represented by v's type.
+// OverflowUint reports whether the uint64 x cannot be represented by v's type.
 // It panics if v's Kind is not Uint, Uintptr, Uint8, Uint16, Uint32, or Uint64.
 func (v Value) OverflowUint(x uint64) bool
 
@@ -329,6 +333,8 @@ func (v Value) Slice3(i, j, k int) Value
 // String is a special case because of Go's String method convention.
 // Unlike the other getters, it does not panic if v's Kind is not String.
 // Instead, it returns a string of the form "<T value>" where T is v's type.
+// The fmt package treats Values specially. It does not call their String
+// method implicitly but instead prints the concrete values they hold.
 func (v Value) String() string
 
 // TryRecv attempts to receive a value from the channel v but will not block.
@@ -340,7 +346,7 @@ func (v Value) TryRecv() (x Value, ok bool)
 
 // TrySend attempts to send x on the channel v but will not block.
 // It panics if v's Kind is not Chan.
-// It returns true if the value was sent, false otherwise.
+// It reports whether the value was sent.
 // As in Go, x's value must be assignable to the channel's element type.
 func (v Value) TrySend(x Value) bool
 

@@ -25,7 +25,7 @@ type UnixConn struct {
 // ReadFromUnix can be made to time out and return an error with
 // Timeout() == true after a fixed time limit; see SetDeadline and
 // SetReadDeadline.
-func (c *UnixConn) ReadFromUnix(b []byte) (n int, addr *UnixAddr, err error)
+func (c *UnixConn) ReadFromUnix(b []byte) (int, *UnixAddr, error)
 
 // ReadFrom implements the PacketConn ReadFrom method.
 func (c *UnixConn) ReadFrom(b []byte) (int, Addr, error)
@@ -42,7 +42,7 @@ func (c *UnixConn) ReadMsgUnix(b, oob []byte) (n, oobn, flags int, addr *UnixAdd
 // Timeout() == true after a fixed time limit; see SetDeadline and
 // SetWriteDeadline.  On packet-oriented connections, write timeouts
 // are rare.
-func (c *UnixConn) WriteToUnix(b []byte, addr *UnixAddr) (n int, err error)
+func (c *UnixConn) WriteToUnix(b []byte, addr *UnixAddr) (int, error)
 
 // WriteTo implements the PacketConn WriteTo method.
 func (c *UnixConn) WriteTo(b []byte, addr Addr) (n int, err error)
@@ -90,11 +90,13 @@ func (l *UnixListener) Accept() (c Conn, err error)
 func (l *UnixListener) Close() error
 
 // Addr returns the listener's network address.
+// The Addr returned is shared by all invocations of Addr, so
+// do not modify it.
 func (l *UnixListener) Addr() Addr
 
 // SetDeadline sets the deadline associated with the listener.
 // A zero time value disables the deadline.
-func (l *UnixListener) SetDeadline(t time.Time) (err error)
+func (l *UnixListener) SetDeadline(t time.Time) error
 
 // File returns a copy of the underlying os.File, set to blocking
 // mode.  It is the caller's responsibility to close f when finished.

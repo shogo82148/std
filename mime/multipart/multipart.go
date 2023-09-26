@@ -19,6 +19,10 @@ import (
 	"github.com/shogo82148/std/net/textproto"
 )
 
+// This constant needs to be at least 76 for this package to work correctly.
+// This is because \r\n--separator_of_len_70- would fill the buffer and it
+// wouldn't be safe to consume a single byte from it.
+
 // A Part represents a single part in a multipart body.
 type Part struct {
 	Header textproto.MIMEHeader

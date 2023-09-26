@@ -18,7 +18,7 @@ func NewCertPool() *CertPool
 func (s *CertPool) AddCert(cert *Certificate)
 
 // AppendCertsFromPEM attempts to parse a series of PEM encoded certificates.
-// It appends any certificates found to s and returns true if any certificates
+// It appends any certificates found to s and reports whether any certificates
 // were successfully parsed.
 //
 // On many Linux systems, /etc/ssl/cert.pem will contain the system wide set

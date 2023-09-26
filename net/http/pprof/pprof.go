@@ -35,12 +35,16 @@
 //
 //	go tool pprof http://localhost:6060/debug/pprof/block
 //
+// Or to collect a 5-second execution trace:
+//
+//	wget http://localhost:6060/debug/pprof/trace?seconds=5
+//
 // To view all available profiles, open http://localhost:6060/debug/pprof/
 // in your browser.
 //
 // For a study of the facility in action, visit
 //
-//	http://blog.golang.org/2011/06/profiling-go-programs.html
+//	https://blog.golang.org/2011/06/profiling-go-programs.html
 package pprof
 
 import (
@@ -55,6 +59,11 @@ func Cmdline(w http.ResponseWriter, r *http.Request)
 // Profile responds with the pprof-formatted cpu profile.
 // The package initialization registers it as /debug/pprof/profile.
 func Profile(w http.ResponseWriter, r *http.Request)
+
+// Trace responds with the execution trace in binary form.
+// Tracing lasts for duration specified in seconds GET parameter, or for 1 second if not specified.
+// The package initialization registers it as /debug/pprof/trace.
+func Trace(w http.ResponseWriter, r *http.Request)
 
 // Symbol looks up the program counters listed in the request,
 // responding with a table mapping program counters to function names.

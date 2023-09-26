@@ -40,6 +40,8 @@ type Reader struct {
 func NewReader(r io.Reader) *Reader
 
 // Next advances to the next entry in the tar archive.
+//
+// io.EOF is returned at the end of the input.
 func (tr *Reader) Next() (*Header, error)
 
 // A sparseEntry holds a single entry in a sparse file's sparse map.

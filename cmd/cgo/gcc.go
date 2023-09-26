@@ -27,7 +27,7 @@ func (p *Package) Translate(f *File)
 // values are taken into account.
 func (tr *TypeRepr) String() string
 
-// Empty returns true if the result of String would be "".
+// Empty reports whether the result of String would be "".
 func (tr *TypeRepr) Empty() bool
 
 // Set modifies the type representation.

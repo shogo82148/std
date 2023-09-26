@@ -4,6 +4,8 @@
 
 package quick
 
+type TestArrayAlias [4]byte
+
 type TestBoolAlias bool
 
 type TestFloat32Alias float32
@@ -25,6 +27,8 @@ type TestInt8Alias int8
 type TestIntAlias int
 
 type TestMapAlias map[int]int
+
+type TestPtrAlias *int
 
 type TestSliceAlias []byte
 
@@ -48,8 +52,6 @@ type TestUint8Alias uint8
 type TestUintAlias uint
 
 type TestUintptrAlias uintptr
-
-type TestIntptrAlias *int
 
 // This tests that ArbitraryValue is working by checking that all the arbitrary
 // values of type MyStruct have x = 42.
