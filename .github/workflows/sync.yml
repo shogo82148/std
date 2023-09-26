@@ -1,0 +1,34 @@
+name: sync
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - master
+          - release-branch.go1.21
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: upstream/${{ matrix.branch }}
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: ./_tools/go.mod
+          cache-dependency-path: ./_tools/go.sum
+      - name: install tools
+        working-directory: ./_tools
+        run: |
+          go install ./importgodoc
+          pwd
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
