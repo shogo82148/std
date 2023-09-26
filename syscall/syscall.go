@@ -14,12 +14,14 @@
 // On most systems, that error has type syscall.Errno.
 package syscall
 
-// StringByteSlice returns a NUL-terminated slice of bytes
-// containing the text of s.
+// StringByteSlice returns a NUL-terminated slice of bytes containing the text of s.
+// If s contains a NUL byte this function panics instead of
+// returning an error.
 func StringByteSlice(s string) []byte
 
-// StringBytePtr returns a pointer to a NUL-terminated array of bytes
-// containing the text of s.
+// StringBytePtr returns a pointer to a NUL-terminated array of bytes containing the text of s.
+// If s contains a NUL byte this function panics instead of
+// returning an error.
 func StringBytePtr(s string) *byte
 
 // Single-word zero for use when we need a valid pointer to 0 bytes.

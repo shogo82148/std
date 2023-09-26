@@ -47,9 +47,13 @@ type RoundTripper interface {
 // Do sends an HTTP request and returns an HTTP response, following
 // policy (e.g. redirects, cookies, auth) as configured on the client.
 //
-// A non-nil response always contains a non-nil resp.Body.
+// An error is returned if caused by client policy (such as
+// CheckRedirect), or if there was an HTTP protocol error.
+// A non-2xx response doesn't cause an error.
 //
-// Callers should close resp.Body when done reading from it. If
+// When err is nil, resp always contains a non-nil resp.Body.
+//
+// Callers should close res.Body when done reading from it. If
 // resp.Body is not closed, the Client's underlying RoundTripper
 // (typically Transport) may not be able to re-use a persistent TCP
 // connection to the server for a subsequent "keep-alive" request.
@@ -65,10 +69,15 @@ func (c *Client) Do(req *Request) (resp *Response, err error)
 //	303 (See Other)
 //	307 (Temporary Redirect)
 //
-// Caller should close r.Body when done reading from it.
+// An error is returned if there were too many redirects or if there
+// was an HTTP protocol error. A non-2xx response doesn't cause an
+// error.
+//
+// When err is nil, resp always contains a non-nil resp.Body.
+// Caller should close resp.Body when done reading from it.
 //
 // Get is a wrapper around DefaultClient.Get.
-func Get(url string) (r *Response, err error)
+func Get(url string) (resp *Response, err error)
 
 // Get issues a GET to the specified URL.  If the response is one of the
 // following redirect codes, Get follows the redirect after calling the
@@ -79,34 +88,41 @@ func Get(url string) (r *Response, err error)
 //	303 (See Other)
 //	307 (Temporary Redirect)
 //
-// Caller should close r.Body when done reading from it.
-func (c *Client) Get(url string) (r *Response, err error)
+// An error is returned if the Client's CheckRedirect function fails
+// or if there was an HTTP protocol error. A non-2xx response doesn't
+// cause an error.
+//
+// When err is nil, resp always contains a non-nil resp.Body.
+// Caller should close resp.Body when done reading from it.
+func (c *Client) Get(url string) (resp *Response, err error)
 
 // Post issues a POST to the specified URL.
 //
-// Caller should close r.Body when done reading from it.
+// Caller should close resp.Body when done reading from it.
 //
 // Post is a wrapper around DefaultClient.Post
-func Post(url string, bodyType string, body io.Reader) (r *Response, err error)
+func Post(url string, bodyType string, body io.Reader) (resp *Response, err error)
 
 // Post issues a POST to the specified URL.
 //
-// Caller should close r.Body when done reading from it.
-func (c *Client) Post(url string, bodyType string, body io.Reader) (r *Response, err error)
+// Caller should close resp.Body when done reading from it.
+func (c *Client) Post(url string, bodyType string, body io.Reader) (resp *Response, err error)
 
-// PostForm issues a POST to the specified URL,
-// with data's keys and values urlencoded as the request body.
+// PostForm issues a POST to the specified URL, with data's keys and
+// values URL-encoded as the request body.
 //
-// Caller should close r.Body when done reading from it.
+// When err is nil, resp always contains a non-nil resp.Body.
+// Caller should close resp.Body when done reading from it.
 //
 // PostForm is a wrapper around DefaultClient.PostForm
-func PostForm(url string, data url.Values) (r *Response, err error)
+func PostForm(url string, data url.Values) (resp *Response, err error)
 
 // PostForm issues a POST to the specified URL,
 // with data's keys and values urlencoded as the request body.
 //
-// Caller should close r.Body when done reading from it.
-func (c *Client) PostForm(url string, data url.Values) (r *Response, err error)
+// When err is nil, resp always contains a non-nil resp.Body.
+// Caller should close resp.Body when done reading from it.
+func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)
 
 // Head issues a HEAD to the specified URL.  If the response is one of the
 // following redirect codes, Head follows the redirect after calling the
@@ -118,7 +134,7 @@ func (c *Client) PostForm(url string, data url.Values) (r *Response, err error)
 //	307 (Temporary Redirect)
 //
 // Head is a wrapper around DefaultClient.Head
-func Head(url string) (r *Response, err error)
+func Head(url string) (resp *Response, err error)
 
 // Head issues a HEAD to the specified URL.  If the response is one of the
 // following redirect codes, Head follows the redirect after calling the
@@ -128,4 +144,4 @@ func Head(url string) (r *Response, err error)
 //	302 (Found)
 //	303 (See Other)
 //	307 (Temporary Redirect)
-func (c *Client) Head(url string) (r *Response, err error)
+func (c *Client) Head(url string) (resp *Response, err error)

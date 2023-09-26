@@ -40,7 +40,7 @@ func DialTimeout(net, addr string, timeout time.Duration) (Conn, error)
 
 // Listen announces on the local network address laddr.
 // The network string net must be a stream-oriented network:
-// "tcp", "tcp4", "tcp6", or "unix", or "unixpacket".
+// "tcp", "tcp4", "tcp6", "unix" or "unixpacket".
 func Listen(net, laddr string) (Listener, error)
 
 // ListenPacket announces on the local network address laddr.

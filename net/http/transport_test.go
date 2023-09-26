@@ -12,4 +12,9 @@ import (
 
 // hostPortHandler writes back the client's "host:port".
 
+// testCloseConn is a net.Conn tracked by a testConnSet.
+
+// testConnSet tracks a set of TCP connections and whether they've
+// been closed.
+
 // rgz is a gzip quine that uncompresses to itself.

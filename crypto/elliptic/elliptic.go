@@ -65,5 +65,5 @@ func P256() Curve
 // P384 returns a Curve which implements P-384 (see FIPS 186-3, section D.2.4)
 func P384() Curve
 
-// P256 returns a Curve which implements P-521 (see FIPS 186-3, section D.2.5)
+// P521 returns a Curve which implements P-521 (see FIPS 186-3, section D.2.5)
 func P521() Curve

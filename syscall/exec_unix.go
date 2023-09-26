@@ -15,8 +15,9 @@ import (
 
 var ForkLock sync.RWMutex
 
-// Convert array of string to array
-// of NUL-terminated byte pointer.
+// Convert array of string to array of NUL-terminated byte pointer.
+// If any string contains a NUL byte this function panics instead
+// of returning an error.
 func StringSlicePtr(ss []string) []*byte
 
 func CloseOnExec(fd int)

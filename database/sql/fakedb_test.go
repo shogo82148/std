@@ -23,5 +23,5 @@ var _ = log.Printf
 //   INSERT|<tablename>|col=val,col2=val2,col3=?
 //   SELECT|<tablename>|projectcol1,projectcol2|filtercol=?,filtercol2=?
 //
-// When opening a a fakeDriver's database, it starts empty with no
+// When opening a fakeDriver's database, it starts empty with no
 // tables.  All tables and data are stored in memory only.

@@ -63,9 +63,8 @@ package builtin
 // used, by convention, to distinguish byte values from 8-bit unsigned
 // integer values.
 
-// rune is an alias for int and is equivalent to int in all ways. It is
+// rune is an alias for int32 and is equivalent to int32 in all ways. It is
 // used, by convention, to distinguish character values from integer values.
-// In a future version of Go, it will change to an alias of int32.
 
 // Type is here for the purposes of documentation only. It is a stand-in
 // for any Go type, but represents the same type for any given function

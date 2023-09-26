@@ -271,4 +271,8 @@ const (
 	SYS_SYMLINKAT            = 470
 	SYS_UNLINKAT             = 471
 	SYS_FUTIMENS             = 472
+	SYS___QUOTACTL           = 473
+	SYS_POSIX_SPAWN          = 474
+	SYS_RECVMMSG             = 475
+	SYS_SENDMMSG             = 476
 )

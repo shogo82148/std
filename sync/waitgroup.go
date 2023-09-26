@@ -18,6 +18,7 @@ type WaitGroup struct {
 
 // Add adds delta, which may be negative, to the WaitGroup counter.
 // If the counter becomes zero, all goroutines blocked on Wait() are released.
+// If the counter goes negative, Add panics.
 func (wg *WaitGroup) Add(delta int)
 
 // Done decrements the WaitGroup counter.

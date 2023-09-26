@@ -11,8 +11,10 @@ import (
 
 // bitCount counts the number of bits needed to hold an integer.
 
-// unscaledQuant are the unscaled quantization tables. Each encoder copies and
-// scales the tables according to its quality parameter.
+// unscaledQuant are the unscaled quantization tables in zig-zag order. Each
+// encoder copies and scales the tables according to its quality parameter.
+// The values are derived from section K.1 after converting from natural to
+// zig-zag order.
 
 // huffmanSpec specifies a Huffman encoding.
 
@@ -36,7 +38,9 @@ import (
 //	- component 1 uses DC table 0 and AC table 0 "\x01\x00",
 //	- component 2 uses DC table 1 and AC table 1 "\x02\x11",
 //	- component 3 uses DC table 1 and AC table 1 "\x03\x11",
-//	- padding "\x00\x00\x00".
+//	- the bytes "\x00\x3f\x00". Section B.2.3 of the spec says that for
+//	  sequential DCTs, those bytes (8-bit Ss, 8-bit Se, 4-bit Ah, 4-bit Al)
+//	  should be 0x00, 0x3f, 0x00<<4 | 0x00.
 
 // DefaultQuality is the default quality encoding parameter.
 const DefaultQuality = 75

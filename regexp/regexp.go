@@ -187,7 +187,7 @@ func (re *Regexp) ReplaceAllString(src, repl string) string
 func (re *Regexp) ReplaceAllLiteralString(src, repl string) string
 
 // ReplaceAllStringFunc returns a copy of src in which all matches of the
-// Regexp have been replaced by the return value of of function repl applied
+// Regexp have been replaced by the return value of function repl applied
 // to the matched substring.  The replacement returned by repl is substituted
 // directly, without using Expand.
 func (re *Regexp) ReplaceAllStringFunc(src string, repl func(string) string) string
@@ -203,7 +203,7 @@ func (re *Regexp) ReplaceAll(src, repl []byte) []byte
 func (re *Regexp) ReplaceAllLiteral(src, repl []byte) []byte
 
 // ReplaceAllFunc returns a copy of src in which all matches of the
-// Regexp have been replaced by the return value of of function repl applied
+// Regexp have been replaced by the return value of function repl applied
 // to the matched byte slice.  The replacement returned by repl is substituted
 // directly, without using Expand.
 func (re *Regexp) ReplaceAllFunc(src []byte, repl func([]byte) []byte) []byte
@@ -238,8 +238,9 @@ func (re *Regexp) FindStringIndex(s string) (loc []int)
 
 // FindReaderIndex returns a two-element slice of integers defining the
 // location of the leftmost match of the regular expression in text read from
-// the RuneReader.  The match itself is at s[loc[0]:loc[1]].  A return
-// value of nil indicates no match.
+// the RuneReader.  The match text was found in the input stream at
+// byte offset loc[0] through loc[1]-1.
+// A return value of nil indicates no match.
 func (re *Regexp) FindReaderIndex(r io.RuneReader) (loc []int)
 
 // FindSubmatch returns a slice of slices holding the text of the leftmost

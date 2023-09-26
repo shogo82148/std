@@ -11,7 +11,7 @@ import (
 // Getpagesize returns the underlying system's memory page size.
 func Getpagesize() int
 
-// A FileInfo describes a file and is returned by Stat and Lstat
+// A FileInfo describes a file and is returned by Stat and Lstat.
 type FileInfo interface {
 	Name() string
 	Size() int64

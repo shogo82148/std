@@ -9,14 +9,18 @@ import (
 )
 
 var ServeFileRangeTests = []struct {
-	start, end int
-	r          string
-	code       int
+	r      string
+	code   int
+	ranges []wantRange
 }{
-	{0, testFileLength, "", StatusOK},
-	{0, 5, "0-4", StatusPartialContent},
-	{2, testFileLength, "2-", StatusPartialContent},
-	{testFileLength - 5, testFileLength, "-5", StatusPartialContent},
-	{3, 8, "3-7", StatusPartialContent},
-	{0, 0, "20-", StatusRequestedRangeNotSatisfiable},
+	{r: "", code: StatusOK},
+	{r: "bytes=0-4", code: StatusPartialContent, ranges: []wantRange{{0, 5}}},
+	{r: "bytes=2-", code: StatusPartialContent, ranges: []wantRange{{2, testFileLen}}},
+	{r: "bytes=-5", code: StatusPartialContent, ranges: []wantRange{{testFileLen - 5, testFileLen}}},
+	{r: "bytes=3-7", code: StatusPartialContent, ranges: []wantRange{{3, 8}}},
+	{r: "bytes=20-", code: StatusRequestedRangeNotSatisfiable},
+	{r: "bytes=0-0,-2", code: StatusPartialContent, ranges: []wantRange{{0, 1}, {testFileLen - 2, testFileLen}}},
+	{r: "bytes=0-1,5-8", code: StatusPartialContent, ranges: []wantRange{{0, 2}, {5, 9}}},
+	{r: "bytes=0-1,5-", code: StatusPartialContent, ranges: []wantRange{{0, 2}, {5, testFileLen}}},
+	{r: "bytes=0-,1-,2-,3-,4-", code: StatusOK},
 }

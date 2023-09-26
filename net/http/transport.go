@@ -31,8 +31,9 @@ const DefaultMaxIdleConnsPerHost = 2
 // https, and http proxies (for either http or https with CONNECT).
 // Transport can also cache connections for future re-use.
 type Transport struct {
-	lk       sync.Mutex
+	idleLk   sync.Mutex
 	idleConn map[string][]*persistConn
+	altLk    sync.RWMutex
 	altProto map[string]RoundTripper
 
 	Proxy func(*Request) (*url.URL, error)

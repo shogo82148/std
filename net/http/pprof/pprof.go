@@ -15,6 +15,14 @@
 //
 //	import _ "net/http/pprof"
 //
+// If your application is not already running an http server, you
+// need to start one.  Add "net/http" and "log" to your imports and
+// the following code to your main function:
+//
+//	go func() {
+//		log.Println(http.ListenAndServe("localhost:6060", nil))
+//	}()
+//
 // Then use the pprof tool to look at the heap profile:
 //
 //	go tool pprof http://localhost:6060/debug/pprof/heap

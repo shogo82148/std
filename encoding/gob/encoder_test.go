@@ -72,3 +72,6 @@ type Bug3 struct {
 	Num      int
 	Children []*Bug3
 }
+
+type Z struct {
+}

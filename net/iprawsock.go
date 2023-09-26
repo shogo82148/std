@@ -6,7 +6,7 @@
 
 package net
 
-// IPAddr represents the address of a IP end point.
+// IPAddr represents the address of an IP end point.
 type IPAddr struct {
 	IP IP
 }
@@ -16,7 +16,7 @@ func (a *IPAddr) Network() string
 
 func (a *IPAddr) String() string
 
-// ResolveIPAddr parses addr as a IP address and resolves domain
+// ResolveIPAddr parses addr as an IP address and resolves domain
 // names to numeric addresses on the network net, which must be
 // "ip", "ip4" or "ip6".  A literal IPv6 host address must be
 // enclosed in square brackets, as in "[::]".

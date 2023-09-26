@@ -392,10 +392,11 @@ func Indirect(v Value) Value
 // stored in the interface i.  ValueOf(nil) returns the zero Value.
 func ValueOf(i interface{}) Value
 
-// Zero returns a Value representing a zero value for the specified type.
+// Zero returns a Value representing the zero value for the specified type.
 // The result is different from the zero value of the Value struct,
 // which represents no value at all.
 // For example, Zero(TypeOf(42)) returns a Value with Kind Int and value 0.
+// The returned value is neither addressable nor settable.
 func Zero(typ Type) Value
 
 // New returns a Value representing a pointer to a new zero value

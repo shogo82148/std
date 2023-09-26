@@ -83,6 +83,9 @@ func (b *Reader) Buffered() int
 // ReadSlice returns err != nil if and only if line does not end in delim.
 func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
 
+// ReadLine is a low-level line-reading primitive. Most callers should use
+// ReadBytes('\n') or ReadString('\n') instead.
+//
 // ReadLine tries to return a single line, not including the end-of-line bytes.
 // If the line was too long for the buffer then isPrefix is set and the
 // beginning of the line is returned. The rest of the line will be returned

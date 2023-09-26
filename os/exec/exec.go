@@ -13,7 +13,7 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
-// Error records the name of a binary that failed to be be executed
+// Error records the name of a binary that failed to be executed
 // and the reason it failed.
 type Error struct {
 	Name string

@@ -39,7 +39,7 @@ func (p *Part) FormName() string
 // Content-Disposition header.
 func (p *Part) FileName() string
 
-// NewReader creates a new multipart Reader reading from r using the
+// NewReader creates a new multipart Reader reading from reader using the
 // given MIME boundary.
 func NewReader(reader io.Reader, boundary string) *Reader
 

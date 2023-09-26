@@ -73,3 +73,5 @@ func ServeFile(w ResponseWriter, r *Request, name string)
 func FileServer(root FileSystem) Handler
 
 // httpRange specifies the byte range to be sent to the client.
+
+// countingWriter counts how many bytes have been written to it.

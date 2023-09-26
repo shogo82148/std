@@ -24,7 +24,7 @@ func (e *NumError) Error() string
 const IntSize = intSize
 
 // ParseUint is like ParseInt but for unsigned numbers.
-func ParseUint(s string, b int, bitSize int) (n uint64, err error)
+func ParseUint(s string, base int, bitSize int) (n uint64, err error)
 
 // ParseInt interprets a string s in the given base (2 to 36) and
 // returns the corresponding value i.  If base == 0, the base is

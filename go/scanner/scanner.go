@@ -36,7 +36,7 @@ type Scanner struct {
 	ErrorCount int
 }
 
-// A mode value is set of flags (or 0).
+// A mode value is a set of flags (or 0).
 // They control scanner behavior.
 type Mode uint
 

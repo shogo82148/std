@@ -112,7 +112,7 @@ func Repeat(b []byte, count int) []byte
 // ToUpper returns a copy of the byte array s with all Unicode letters mapped to their upper case.
 func ToUpper(s []byte) []byte
 
-// ToUpper returns a copy of the byte array s with all Unicode letters mapped to their lower case.
+// ToLower returns a copy of the byte array s with all Unicode letters mapped to their lower case.
 func ToLower(s []byte) []byte
 
 // ToTitle returns a copy of the byte array s with all Unicode letters mapped to their title case.

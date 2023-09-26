@@ -188,6 +188,16 @@ func (ConstraintViolationError) Error() string
 
 func (c *Certificate) Equal(other *Certificate) bool
 
+// Entrust have a broken root certificate (CN=Entrust.net Certification
+// Authority (2048)) which isn't marked as a CA certificate and is thus invalid
+// according to PKIX.
+// We recognise this certificate by its SubjectPublicKeyInfo and exempt it
+// from the Basic Constraints requirement.
+// See http://www.entrust.net/knowledge-base/technote.cfm?tn=7869
+//
+// TODO(agl): remove this hack once their reissued root is sufficiently
+// widespread.
+
 // CheckSignatureFrom verifies that the signature on c is a valid signature
 // from parent.
 func (c *Certificate) CheckSignatureFrom(parent *Certificate) (err error)

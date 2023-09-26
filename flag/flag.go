@@ -42,7 +42,7 @@ they are all pointers; if you bind to variables, they're values.
 
 After parsing, the arguments after the flag are available as the
 slice flag.Args() or individually as flag.Arg(i).
-The arguments are indexed from 0 up to flag.NArg().
+The arguments are indexed from 0 through flag.NArg()-1.
 
 Command line flag syntax:
 

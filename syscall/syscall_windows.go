@@ -10,16 +10,18 @@ type Handle uintptr
 
 const InvalidHandle = ^Handle(0)
 
-// StringToUTF16 returns the UTF-16 encoding of the UTF-8 string s,
-// with a terminating NUL added.
+// StringToUTF16 returns the UTF-16 encoding of the UTF-8 string s.
+// If s contains a NUL byte this function panics instead of
+// returning an error.
 func StringToUTF16(s string) []uint16
 
 // UTF16ToString returns the UTF-8 encoding of the UTF-16 sequence s,
 // with a terminating NUL removed.
 func UTF16ToString(s []uint16) string
 
-// StringToUTF16Ptr returns pointer to the UTF-16 encoding of
-// the UTF-8 string s, with a terminating NUL added.
+// StringToUTF16Ptr returns pointer to the UTF-16 encoding of the UTF-8 string s, with a terminating NUL added.
+// If s contains a NUL byte this function panics instead of
+// returning an error.
 func StringToUTF16Ptr(s string) *uint16
 
 func Getpagesize() int

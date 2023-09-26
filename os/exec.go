@@ -12,7 +12,7 @@ import (
 type Process struct {
 	Pid    int
 	handle uintptr
-	done   bool
+	isdone uint32
 }
 
 // ProcAttr holds the attributes that will be applied to a new process

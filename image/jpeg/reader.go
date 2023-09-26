@@ -24,7 +24,9 @@ func (e UnsupportedError) Error() string
 
 // Component specification, specified in section B.2.2.
 
-// Maps from the zig-zag ordering to the natural ordering.
+// unzig maps from the zig-zag ordering to the natural ordering. For example,
+// unzig[3] is the column and row of the fourth element in zig-zag order. The
+// value is 16, which means first column (16%8 == 0) and third row (16/8 == 2).
 
 // If the passed in io.Reader does not also have ReadByte, then Decode will introduce its own buffering.
 type Reader interface {
