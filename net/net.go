@@ -107,11 +107,17 @@ type Listener interface {
 	Addr() Addr
 }
 
+// OpError is the error type usually returned by functions in the net
+// package. It describes the operation, network type, and address of
+// an error.
 type OpError struct {
-	Op   string
-	Net  string
+	Op string
+
+	Net string
+
 	Addr Addr
-	Err  error
+
+	Err error
 }
 
 func (e *OpError) Error() string
@@ -146,3 +152,6 @@ func (e *DNSConfigError) Error() string
 
 func (e *DNSConfigError) Timeout() bool
 func (e *DNSConfigError) Temporary() bool
+
+// deadline is an atomically-accessed number of nanoseconds since 1970
+// or 0, if no deadline is set.

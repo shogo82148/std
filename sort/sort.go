@@ -22,6 +22,9 @@ type Interface interface {
 // data.Less and data.Swap. The sort is not guaranteed to be stable.
 func Sort(data Interface)
 
+// Reverse returns the reverse order for data.
+func Reverse(data Interface) Interface
+
 // IsSorted reports whether data is sorted.
 func IsSorted(data Interface) bool
 

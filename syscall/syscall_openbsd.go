@@ -34,6 +34,3 @@ func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, 
 
 // sysnb pipe(p *[2]_C_int) (err error)
 func Pipe(p []int) (err error)
-
-// TODO
-func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)

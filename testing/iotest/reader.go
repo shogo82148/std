@@ -18,9 +18,11 @@ func OneByteReader(r io.Reader) io.Reader
 // by reading half as many requested bytes from r.
 func HalfReader(r io.Reader) io.Reader
 
-// DataErrReader returns a Reader that returns the final
-// error with the last data read, instead of by itself with
-// zero bytes of data.
+// DataErrReader changes the way errors are handled by a Reader. Normally, a
+// Reader returns an error (typically EOF) from the first Read call after the
+// last piece of data is read. DataErrReader wraps a Reader and changes its
+// behavior so the final error is returned along with the final data, instead
+// of in the first call after the final data.
 func DataErrReader(r io.Reader) io.Reader
 
 var ErrTimeout = errors.New("timeout")

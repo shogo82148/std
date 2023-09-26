@@ -4,7 +4,7 @@
 
 package math
 
-// Atanh(x) calculates the inverse hyperbolic tangent of x.
+// Atanh returns the inverse hyperbolic tangent of x.
 //
 // Special cases are:
 //

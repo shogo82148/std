@@ -34,3 +34,8 @@ type MX struct {
 }
 
 // byPref implements sort.Interface to sort MX records by preference
+
+// An NS represents a single DNS NS record.
+type NS struct {
+	Host string
+}

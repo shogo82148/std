@@ -6,6 +6,7 @@ package http
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/time"
 )
 
 // A Header represents the key-value pairs in an HTTP header.
@@ -31,6 +32,19 @@ func (h Header) Del(key string)
 
 // Write writes a header in wire format.
 func (h Header) Write(w io.Writer) error
+
+// ParseTime parses a time header (such as the Date: header),
+// trying each of the three formats allowed by HTTP/1.1:
+// TimeFormat, time.RFC850, and time.ANSIC.
+func ParseTime(text string) (t time.Time, err error)
+
+// stringWriter implements WriteString on a Writer.
+
+// A headerSorter implements sort.Interface by sorting a []keyValues
+// by key. It's used as a pointer, so it can fit in a sort.Interface
+// interface value without allocation.
+
+// TODO: convert this to a sync.Cache (issue 4720)
 
 // WriteSubset writes a header in wire format.
 // If exclude is not nil, keys where exclude[key] == true are not written.

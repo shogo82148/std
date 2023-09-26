@@ -6,23 +6,37 @@
 
 package syscall
 
+import (
+	errorspkg "errors"
+)
+
 type Handle uintptr
 
 const InvalidHandle = ^Handle(0)
 
-// StringToUTF16 returns the UTF-16 encoding of the UTF-8 string s.
+// StringToUTF16 is deprecated. Use UTF16FromString instead.
 // If s contains a NUL byte this function panics instead of
 // returning an error.
 func StringToUTF16(s string) []uint16
+
+// UTF16FromString returns the UTF-16 encoding of the UTF-8 string
+// s, with a terminating NUL added. If s contains a NUL byte at any
+// location, it returns (nil, EINVAL).
+func UTF16FromString(s string) ([]uint16, error)
 
 // UTF16ToString returns the UTF-8 encoding of the UTF-16 sequence s,
 // with a terminating NUL removed.
 func UTF16ToString(s []uint16) string
 
-// StringToUTF16Ptr returns pointer to the UTF-16 encoding of the UTF-8 string s, with a terminating NUL added.
+// StringToUTF16Ptr is deprecated. Use UTF16PtrFromString instead.
 // If s contains a NUL byte this function panics instead of
 // returning an error.
 func StringToUTF16Ptr(s string) *uint16
+
+// UTF16PtrFromString returns pointer to the UTF-16 encoding of
+// the UTF-8 string s, with a terminating NUL added. If s
+// contains a NUL byte at any location, it returns (nil, EINVAL).
+func UTF16PtrFromString(s string) (*uint16, error)
 
 func Getpagesize() int
 
@@ -38,7 +52,7 @@ func (e Errno) Timeout() bool
 // Converts a Go function to a function pointer conforming
 // to the stdcall calling convention.  This is useful when
 // interoperating with Windows code requiring callbacks.
-// Implemented in ../runtime/windows/syscall.goc
+// Implemented in ../runtime/syscall_windows.goc
 func NewCallback(fn interface{}) uintptr
 
 func Exit(code int)
@@ -83,9 +97,13 @@ func Pipe(p []Handle) (err error)
 
 func Utimes(path string, tv []Timeval) (err error)
 
+func UtimesNano(path string, ts []Timespec) (err error)
+
 func Fsync(fd Handle) (err error)
 
 func Chmod(path string, mode uint32) (err error)
+
+func LoadCancelIoEx() error
 
 // For testing: clients can set this flag to force
 // creation of IPv6 sockets to return EAFNOSUPPORT.
@@ -96,6 +114,14 @@ type RawSockaddrInet4 struct {
 	Port   uint16
 	Addr   [4]byte
 	Zero   [8]uint8
+}
+
+type RawSockaddrInet6 struct {
+	Family   uint16
+	Port     uint16
+	Flowinfo uint32
+	Addr     [16]byte
+	Scope_id uint32
 }
 
 type RawSockaddr struct {
@@ -122,6 +148,7 @@ type SockaddrInet6 struct {
 	Port   int
 	ZoneId uint32
 	Addr   [16]byte
+	raw    RawSockaddrInet6
 }
 
 type SockaddrUnix struct {
@@ -147,6 +174,12 @@ func Listen(s Handle, n int) (err error)
 func Shutdown(fd Handle, how int) (err error)
 
 func WSASendto(s Handle, bufs *WSABuf, bufcnt uint32, sent *uint32, flags uint32, to Sockaddr, overlapped *Overlapped, croutine *byte) (err error)
+
+func LoadGetAddrInfo() error
+
+func LoadConnectEx() error
+
+func ConnectEx(fd Handle, sa Sockaddr, sendBuf *byte, sendDataLen uint32, bytesSent *uint32, overlapped *Overlapped) error
 
 // Invented structures to support what package os expects.
 type Rusage struct {
@@ -185,6 +218,10 @@ type Timespec struct {
 	Nsec int64
 }
 
+func TimespecToNsec(ts Timespec) int64
+
+func NsecToTimespec(nsec int64) (ts Timespec)
+
 func Accept(fd Handle) (nfd Handle, sa Sockaddr, err error)
 func Recvfrom(fd Handle, p []byte, flags int) (n int, from Sockaddr, err error)
 
@@ -207,7 +244,9 @@ type IPv6Mreq struct {
 }
 
 func GetsockoptInt(fd Handle, level, opt int) (int, error)
+
 func SetsockoptLinger(fd Handle, level, opt int, l *Linger) (err error)
+
 func SetsockoptInet4Addr(fd Handle, level, opt int, value [4]byte) (err error)
 
 func SetsockoptIPMreq(fd Handle, level, opt int, mreq *IPMreq) (err error)

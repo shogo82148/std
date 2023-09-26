@@ -4,7 +4,7 @@
 
 package math
 
-// Asinh(x) calculates the inverse hyperbolic sine of x.
+// Asinh returns the inverse hyperbolic sine of x.
 //
 // Special cases are:
 //

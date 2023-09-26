@@ -26,3 +26,27 @@ type T struct {
 	Uintptr uintptr
 	Array   [4]int
 }
+
+type BlankFields struct {
+	A uint32
+	_ int32
+	B float64
+	_ [4]int16
+	C byte
+	_ [7]byte
+	_ struct {
+		f [8]float32
+	}
+}
+
+type BlankFieldsProbe struct {
+	A  uint32
+	P0 int32
+	B  float64
+	P1 [4]int16
+	C  byte
+	P2 [7]byte
+	P3 struct {
+		F [8]float32
+	}
+}

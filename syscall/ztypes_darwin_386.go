@@ -207,6 +207,12 @@ type Cmsghdr struct {
 	Type  int32
 }
 
+type Inet4Pktinfo struct {
+	Ifindex  uint32
+	Spec_dst [4]byte
+	Addr     [4]byte
+}
+
 type Inet6Pktinfo struct {
 	Addr    [16]byte
 	Ifindex uint32
@@ -223,6 +229,7 @@ const (
 	SizeofIPv6Mreq         = 0x14
 	SizeofMsghdr           = 0x1c
 	SizeofCmsghdr          = 0xc
+	SizeofInet4Pktinfo     = 0xc
 	SizeofInet6Pktinfo     = 0x14
 )
 
@@ -396,4 +403,14 @@ type BpfHdr struct {
 	Datalen   uint32
 	Hdrlen    uint16
 	Pad_cgo_0 [2]byte
+}
+
+type Termios struct {
+	Iflag  uint32
+	Oflag  uint32
+	Cflag  uint32
+	Lflag  uint32
+	Cc     [20]uint8
+	Ispeed uint32
+	Ospeed uint32
 }

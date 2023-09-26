@@ -268,6 +268,7 @@ type (
 	// A ChanType node represents a channel type.
 	ChanType struct {
 		Begin token.Pos
+		Arrow token.Pos
 		Dir   ChanDir
 		Value Expr
 	}

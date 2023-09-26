@@ -34,6 +34,11 @@ var EOF = errors.New("EOF")
 // middle of reading a fixed-size block or data structure.
 var ErrUnexpectedEOF = errors.New("unexpected EOF")
 
+// ErrNoProgress is returned by some clients of an io.Reader when
+// many calls to Read have failed to return any data or error,
+// usually the sign of a broken io.Reader implementation.
+var ErrNoProgress = errors.New("multiple Read calls return no data or error")
+
 // Reader is the interface that wraps the basic Read method.
 //
 // Read reads up to len(p) bytes into p.  It returns the number of bytes
@@ -55,6 +60,10 @@ var ErrUnexpectedEOF = errors.New("unexpected EOF")
 // considering the error err.  Doing so correctly handles I/O errors
 // that happen after reading some bytes and also both of the
 // allowed EOF behaviors.
+//
+// Implementations of Read are discouraged from returning a
+// zero byte count with a nil error, and callers should treat
+// that situation as a no-op.
 type Reader interface {
 	Read(p []byte) (n int, err error)
 }
@@ -70,6 +79,9 @@ type Writer interface {
 }
 
 // Closer is the interface that wraps the basic Close method.
+//
+// The behavior of Close after the first call is undefined.
+// Specific implementations may document their own behavior.
 type Closer interface {
 	Close() error
 }
@@ -216,6 +228,11 @@ type ByteScanner interface {
 	UnreadByte() error
 }
 
+// ByteWriter is the interface that wraps the WriteByte method.
+type ByteWriter interface {
+	WriteByte(c byte) error
+}
+
 // RuneReader is the interface that wraps the ReadRune method.
 //
 // ReadRune reads a single UTF-8 encoded Unicode character
@@ -249,6 +266,7 @@ func WriteString(w Writer, s string) (n int, err error)
 // If an EOF happens after reading fewer than min bytes,
 // ReadAtLeast returns ErrUnexpectedEOF.
 // If min is greater than the length of buf, ReadAtLeast returns ErrShortBuffer.
+// On return, n >= min if and only if err == nil.
 func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
 
 // ReadFull reads exactly len(buf) bytes from r into buf.
@@ -256,13 +274,13 @@ func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
 // The error is EOF only if no bytes were read.
 // If an EOF happens after reading some but not all the bytes,
 // ReadFull returns ErrUnexpectedEOF.
+// On return, n == len(buf) if and only if err == nil.
 func ReadFull(r Reader, buf []byte) (n int, err error)
 
 // CopyN copies n bytes (or until an error) from src to dst.
 // It returns the number of bytes copied and the earliest
-// error encountered while copying.  Because Read can
-// return the full amount requested as well as an error
-// (including EOF), so can CopyN.
+// error encountered while copying.
+// On return, written == n if and only if err == nil.
 //
 // If dst implements the ReaderFrom interface,
 // the copy is implemented using it.

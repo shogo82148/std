@@ -4,7 +4,7 @@
 
 package math
 
-// Acosh(x) calculates the inverse hyperbolic cosine of x.
+// Acosh returns the inverse hyperbolic cosine of x.
 //
 // Special cases are:
 //

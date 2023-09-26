@@ -9,3 +9,9 @@ package http_test
 import (
 	. "net/http"
 )
+
+// trackLastConnListener tracks the last net.Conn that was accepted.
+
+// repeatReader reads content count times, then EOFs.
+
+// A Response that's just no bigger than 2KB, the buffer-before-chunking threshold.

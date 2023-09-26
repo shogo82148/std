@@ -38,8 +38,45 @@ type UnexpT struct {
 	m map[int]int
 }
 
+// caseInfo describes a single case in a select test.
+
+// selectWatch and the selectWatcher are a watchdog mechanism for running Select.
+// If the selectWatcher notices that the select has been blocked for >1 second, it prints
+// an error describing the select and panics the entire test binary.
+
 type Point struct {
 	x, y int
+}
+
+type Tinter interface {
+	M(int, byte) (byte, int)
+}
+
+type Tsmallv byte
+
+type Tsmallp byte
+
+type Twordv uintptr
+
+type Twordp uintptr
+
+type Tbigv [2]uintptr
+
+type Tbigp [2]uintptr
+
+type Tm1 struct {
+	Tm2
+}
+
+type Tm2 struct {
+	*Tm3
+}
+
+type Tm3 struct {
+	*Tm4
+}
+
+type Tm4 struct {
 }
 
 type T1 struct {
@@ -97,6 +134,61 @@ type S4 struct {
 	A int
 }
 
+// The X in S6 and S7 annihilate, but they also block the X in S8.S9.
+type S5 struct {
+	S6
+	S7
+	S8
+}
+
+type S6 struct {
+	X int
+}
+
+type S7 S6
+
+type S8 struct {
+	S9
+}
+
+type S9 struct {
+	X int
+	Y int
+}
+
+// The X in S11.S6 and S12.S6 annihilate, but they also block the X in S13.S8.S9.
+type S10 struct {
+	S11
+	S12
+	S13
+}
+
+type S11 struct {
+	S6
+}
+
+type S12 struct {
+	S6
+}
+
+type S13 struct {
+	S8
+}
+
+// The X in S15.S11.S1 and S16.S11.S1 annihilate.
+type S14 struct {
+	S15
+	S16
+}
+
+type S15 struct {
+	S11
+}
+
+type S16 struct {
+	S11
+}
+
 type InnerInt struct {
 	X int
 }
@@ -115,3 +207,132 @@ type Public struct {
 	X int
 	Y **int
 }
+
+var V = ValueOf
+
+type Empty struct{}
+type MyString string
+type MyBytes []byte
+type MyRunes []int32
+type MyFunc func()
+type MyByte byte
+
+type B1 struct {
+	X int
+	Y int
+	Z int
+}
+
+type R0 struct {
+	*R1
+	*R2
+	*R3
+	*R4
+}
+
+type R1 struct {
+	*R5
+	*R6
+	*R7
+	*R8
+}
+
+type R2 R1
+type R3 R1
+type R4 R1
+
+type R5 struct {
+	*R9
+	*R10
+	*R11
+	*R12
+}
+
+type R6 R5
+type R7 R5
+type R8 R5
+
+type R9 struct {
+	*R13
+	*R14
+	*R15
+	*R16
+}
+
+type R10 R9
+type R11 R9
+type R12 R9
+
+type R13 struct {
+	*R17
+	*R18
+	*R19
+	*R20
+}
+
+type R14 R13
+type R15 R13
+type R16 R13
+
+type R17 struct {
+	*R21
+	*R22
+	*R23
+	*R24
+}
+
+type R18 R17
+type R19 R17
+type R20 R17
+
+type R21 struct {
+	X int
+}
+
+type R22 R21
+type R23 R21
+type R24 R21
+
+// An exhaustive is a mechanism for writing exhaustive or stochastic tests.
+// The basic usage is:
+//
+//	for x.Next() {
+//		... code using x.Maybe() or x.Choice(n) to create test cases ...
+//	}
+//
+// Each iteration of the loop returns a different set of results, until all
+// possible result sets have been explored. It is okay for different code paths
+// to make different method call sequences on x, but there must be no
+// other source of non-determinism in the call sequences.
+//
+// When faced with a new decision, x chooses randomly. Future explorations
+// of that path will choose successive values for the result. Thus, stopping
+// the loop after a fixed number of iterations gives somewhat stochastic
+// testing.
+//
+// Example:
+//
+//	for x.Next() {
+//		v := make([]bool, x.Choose(4))
+//		for i := range v {
+//			v[i] = x.Maybe()
+//		}
+//		fmt.Println(v)
+//	}
+//
+// prints (in some order):
+//
+//	[]
+//	[false]
+//	[true]
+//	[false false]
+//	[false true]
+//	...
+//	[true true]
+//	[false false false]
+//	...
+//	[true true true]
+//	[false false false false]
+//	...
+//	[true true true true]
+//

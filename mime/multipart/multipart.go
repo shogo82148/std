@@ -29,6 +29,8 @@ type Part struct {
 
 	disposition       string
 	dispositionParams map[string]string
+
+	r io.Reader
 }
 
 // FormName returns the name parameter if p has a Content-Disposition
@@ -46,6 +48,9 @@ func NewReader(reader io.Reader, boundary string) *Reader
 // Read reads the body of a part, after its headers and before the
 // next part (if any) begins.
 func (p *Part) Read(d []byte) (n int, err error)
+
+// partReader implements io.Reader by reading raw bytes directly from the
+// wrapped *Part, without doing any Transfer-Encoding decoding.
 
 func (p *Part) Close() error
 

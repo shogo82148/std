@@ -37,13 +37,6 @@ type WriteError struct {
 
 func (e *WriteError) Error() string
 
-// Huffman decoder is based on
-// J. Brian Connell, ``A Huffman-Shannon-Fano Code,''
-// Proceedings of the IEEE, 61(7) (July 1973), pp 1046-1047.
-
-// Hard-coded Huffman tables for DEFLATE algorithm.
-// See RFC 1951, section 3.2.6.
-
 // The actual read interface needed by NewReader.
 // If the passed in io.Reader does not also have ReadByte,
 // the NewReader will introduce its own buffering.

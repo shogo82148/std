@@ -5,6 +5,4 @@
 //go:build darwin || freebsd || netbsd || openbsd
 // +build darwin freebsd netbsd openbsd
 
-// Network interface identification for BSD variants
-
 package net

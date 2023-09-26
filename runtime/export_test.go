@@ -20,3 +20,29 @@ var Entersyscall = entersyscall
 var Exitsyscall = exitsyscall
 var LockedOSThread = golockedOSThread
 var Stackguard = stackguard
+
+type LFNode struct {
+	Next    *LFNode
+	Pushcnt uintptr
+}
+
+var LFStackPush = lfstackpush
+var LFStackPop = lfstackpop2
+
+type ParFor struct {
+	body    *byte
+	done    uint32
+	Nthr    uint32
+	nthrmax uint32
+	thrseq  uint32
+	Cnt     uint32
+	Ctx     *byte
+	wait    bool
+}
+
+var NewParFor = parforalloc2
+var ParForSetup = parforsetup2
+var ParForDo = parfordo
+
+var TestSchedLocalQueue1 = testSchedLocalQueue
+var TestSchedLocalQueueSteal1 = testSchedLocalQueueSteal

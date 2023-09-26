@@ -33,6 +33,6 @@ type Block struct {
 // rest.
 func Decode(data []byte) (p *Block, rest []byte)
 
-func Encode(out io.Writer, b *Block) (err error)
+func Encode(out io.Writer, b *Block) error
 
 func EncodeToMemory(b *Block) []byte

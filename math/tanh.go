@@ -4,7 +4,7 @@
 
 package math
 
-// Tanh computes the hyperbolic tangent of x.
+// Tanh returns the hyperbolic tangent of x.
 //
 // Special cases are:
 //

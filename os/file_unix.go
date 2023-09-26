@@ -63,9 +63,5 @@ func Truncate(name string, size int64) error
 // If there is an error, it will be of type *PathError.
 func Remove(name string) error
 
-// Pipe returns a connected pair of Files; reads from r return bytes written to w.
-// It returns the files and an error, if any.
-func Pipe() (r *File, w *File, err error)
-
 // TempDir returns the default directory to use for temporary files.
 func TempDir() string

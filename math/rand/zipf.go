@@ -26,6 +26,6 @@ type Zipf struct {
 // proportional to (v+k)**(-s) where s>1 and k>=0, and v>=1.
 func NewZipf(r *Rand, s float64, v float64, imax uint64) *Zipf
 
-// Uint64 returns a value drawn from the Zipf distributed described
+// Uint64 returns a value drawn from the Zipf distribution described
 // by the Zipf object.
 func (z *Zipf) Uint64() uint64

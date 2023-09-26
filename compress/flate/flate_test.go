@@ -7,11 +7,3 @@
 // end-to-end test of the decompressor.
 
 package flate
-
-// The Huffman code lengths used by the fixed-format Huffman blocks.
-
-type InitDecoderTest struct {
-	in  []int
-	out huffmanDecoder
-	ok  bool
-}

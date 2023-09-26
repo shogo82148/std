@@ -10,12 +10,14 @@ package parse
 
 // Tree is the representation of a single parsed template.
 type Tree struct {
-	Name string
-	Root *ListNode
+	Name      string
+	ParseName string
+	Root      *ListNode
+	text      string
 
 	funcs     []map[string]interface{}
 	lex       *lexer
-	token     [2]item
+	token     [3]item
 	peekCount int
 	vars      []string
 }
@@ -29,11 +31,14 @@ func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]interfa
 // New allocates a new parse tree with the given name.
 func New(name string, funcs ...map[string]interface{}) *Tree
 
+// ErrorContext returns a textual representation of the location of the node in the input text.
+func (t *Tree) ErrorContext(n Node) (location, context string)
+
 // Parse parses the template definition string to construct a representation of
 // the template for execution. If either action delimiter string is empty, the
 // default ("{{" or "}}") is used. Embedded template definitions are added to
 // the treeSet map.
-func (t *Tree) Parse(s, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]interface{}) (tree *Tree, err error)
+func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]interface{}) (tree *Tree, err error)
 
 // IsEmptyTree reports whether this tree (node) is empty of everything but space.
 func IsEmptyTree(n Node) bool

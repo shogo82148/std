@@ -7,7 +7,15 @@ Package zip provides support for reading and writing ZIP archives.
 
 See: http://www.pkware.com/documents/casestudies/APPNOTE.TXT
 
-This package does not support ZIP64 or disk spanning.
+This package does not support disk spanning.
+
+A note about ZIP64:
+
+To be backwards compatible the FileHeader has both 32 and 64 bit Size
+fields. The 64 bit fields will always contain the correct value and
+for normal archives both fields will be the same. For files requiring
+the ZIP64 format the 32 bit fields will be 0xffffffff and the 64 bit
+fields must be used instead.
 */
 package zip
 
@@ -22,20 +30,25 @@ const (
 	Deflate uint16 = 8
 )
 
+// FileHeader describes a file within a zip file.
+// See the zip spec for details.
 type FileHeader struct {
-	Name             string
-	CreatorVersion   uint16
-	ReaderVersion    uint16
-	Flags            uint16
-	Method           uint16
-	ModifiedTime     uint16
-	ModifiedDate     uint16
-	CRC32            uint32
-	CompressedSize   uint32
-	UncompressedSize uint32
-	Extra            []byte
-	ExternalAttrs    uint32
-	Comment          string
+	Name string
+
+	CreatorVersion     uint16
+	ReaderVersion      uint16
+	Flags              uint16
+	Method             uint16
+	ModifiedTime       uint16
+	ModifiedDate       uint16
+	CRC32              uint32
+	CompressedSize     uint32
+	UncompressedSize   uint32
+	CompressedSize64   uint64
+	UncompressedSize64 uint64
+	Extra              []byte
+	ExternalAttrs      uint32
+	Comment            string
 }
 
 // FileInfo returns an os.FileInfo for the FileHeader.

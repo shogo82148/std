@@ -32,9 +32,6 @@ func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, 
 
 func Pipe(p []int) (err error)
 
-// TODO
-func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)
-
 func GetsockoptIPMreqn(fd, level, opt int) (*IPMreqn, error)
 
 func SetsockoptIPMreqn(fd, level, opt int, mreq *IPMreqn) (err error)

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Unix domain sockets
-
 package net
 
 // UnixAddr represents the address of a Unix domain socket end point.
@@ -12,7 +10,8 @@ type UnixAddr struct {
 	Net  string
 }
 
-// Network returns the address's network name, "unix" or "unixgram".
+// Network returns the address's network name, "unix", "unixgram" or
+// "unixpacket".
 func (a *UnixAddr) Network() string
 
 func (a *UnixAddr) String() string

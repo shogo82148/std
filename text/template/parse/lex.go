@@ -8,8 +8,6 @@ package parse
 
 // itemType identifies the type of lex items.
 
-// Make the types prettyprint.
-
 // stateFn represents the state of the scanner as a function that returns the next state.
 
 // lexer holds the state of the scanner.

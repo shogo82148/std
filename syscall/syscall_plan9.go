@@ -21,13 +21,22 @@ func (e ErrorString) Error() string
 // NewError converts s to an ErrorString, which satisfies the Error interface.
 func NewError(s string) error
 
+func (e ErrorString) Temporary() bool
+
+func (e ErrorString) Timeout() bool
+
+// A Note is a string describing a process note.
+// It implements the os.Signal interface.
+type Note string
+
+func (n Note) Signal()
+
+func (n Note) String() string
+
 var (
 	Stdin  = 0
 	Stdout = 1
 	Stderr = 2
-
-	EAFNOSUPPORT = NewError("address family not supported by protocol")
-	EISDIR       = NewError("file is a directory")
 )
 
 // For testing: clients can set this flag to force
@@ -38,11 +47,6 @@ func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err ErrorString)
 func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err ErrorString)
 func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2, err uintptr)
 func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2, err uintptr)
-
-func Getpagesize() int
-
-// sys	exits(msg *byte)
-func Exits(msg *string)
 
 func Exit(code int)
 
@@ -98,7 +102,7 @@ func NsecToTimeval(nsec int64) (tv Timeval)
 
 func DecodeBintime(b []byte) (nsec int64, err error)
 
-func Gettimeofday(tv *Timeval) (err error)
+func Gettimeofday(tv *Timeval) error
 
 func Getegid() (egid int)
 func Geteuid() (euid int)
@@ -106,9 +110,3 @@ func Getgid() (gid int)
 func Getuid() (uid int)
 
 func Getgroups() (gids []int, err error)
-
-type Signal int
-
-func (s Signal) Signal()
-
-func (s Signal) String() string

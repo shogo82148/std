@@ -5,7 +5,7 @@
 // This file exercises the import parser but also checks that
 // some low-level packages do not have new dependencies added.
 
-package build_test
+package build
 
 // pkgDeps defines the expected dependencies between packages in
 // the Go source tree.  It is a statement of policy.

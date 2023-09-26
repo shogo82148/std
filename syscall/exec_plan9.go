@@ -12,10 +12,15 @@ import (
 
 var ForkLock sync.RWMutex
 
-// Convert array of string to array of NUL-terminated byte pointer.
+// StringSlicePtr is deprecated. Use SlicePtrFromStrings instead.
 // If any string contains a NUL byte this function panics instead
 // of returning an error.
 func StringSlicePtr(ss []string) []*byte
+
+// SlicePtrFromStrings converts a slice of strings to a slice of
+// pointers to NUL-terminated byte slices. If any string contains
+// a NUL byte, it returns (nil, EINVAL).
+func SlicePtrFromStrings(ss []string) ([]*byte, error)
 
 type ProcAttr struct {
 	Dir   string
@@ -36,3 +41,10 @@ func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle 
 
 // Ordinary exec.
 func Exec(argv0 string, argv []string, envv []string) (err error)
+
+// WaitProcess waits until the pid of a
+// running process is found in the queue of
+// wait messages. It is used in conjunction
+// with ForkExec/StartProcess to wait for a
+// running process to exit.
+func WaitProcess(pid int, w *Waitmsg) (err error)

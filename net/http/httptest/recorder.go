@@ -17,6 +17,8 @@ type ResponseRecorder struct {
 	HeaderMap http.Header
 	Body      *bytes.Buffer
 	Flushed   bool
+
+	wroteHeader bool
 }
 
 // NewRecorder returns an initialized ResponseRecorder.

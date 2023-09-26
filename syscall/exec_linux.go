@@ -15,5 +15,6 @@ type SysProcAttr struct {
 	Setpgid    bool
 	Setctty    bool
 	Noctty     bool
+	Ctty       int
 	Pdeathsig  Signal
 }

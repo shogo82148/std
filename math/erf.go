@@ -4,7 +4,7 @@
 
 package math
 
-// Erf(x) returns the error function of x.
+// Erf returns the error function of x.
 //
 // Special cases are:
 //
@@ -13,7 +13,7 @@ package math
 //	Erf(NaN) = NaN
 func Erf(x float64) float64
 
-// Erfc(x) returns the complementary error function of x.
+// Erfc returns the complementary error function of x.
 //
 // Special cases are:
 //

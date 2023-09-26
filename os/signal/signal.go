@@ -17,4 +17,17 @@ import (
 // that c has sufficient buffer space to keep up with the expected
 // signal rate.  For a channel used for notification of just one signal value,
 // a buffer of size 1 is sufficient.
+//
+// It is allowed to call Notify multiple times with the same channel:
+// each call expands the set of signals sent to that channel.
+// The only way to remove signals from the set is to call Stop.
+//
+// It is allowed to call Notify multiple times with different channels
+// and the same signals: each channel receives copies of incoming
+// signals independently.
 func Notify(c chan<- os.Signal, sig ...os.Signal)
+
+// Stop causes package signal to stop relaying incoming signals to c.
+// It undoes the effect of all prior calls to Notify using c.
+// When Stop returns, it is guaranteed that c will receive no more signals.
+func Stop(c chan<- os.Signal)

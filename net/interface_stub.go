@@ -5,6 +5,4 @@
 //go:build plan9
 // +build plan9
 
-// Network interface identification
-
 package net

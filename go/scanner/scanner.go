@@ -68,6 +68,8 @@ func (s *Scanner) Init(file *token.File, src []byte, err ErrorHandler, mode Mode
 // token.IMAG, token.CHAR, token.STRING) or token.COMMENT, the literal string
 // has the corresponding value.
 //
+// If the returned token is a keyword, the literal string is the keyword.
+//
 // If the returned token is token.SEMICOLON, the corresponding
 // literal string is ";" if the semicolon was present in the source,
 // and "\n" if the semicolon was inserted because of a newline or

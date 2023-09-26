@@ -13,12 +13,20 @@ import (
 // A Rat represents a quotient a/b of arbitrary precision.
 // The zero value for a Rat represents the value 0.
 type Rat struct {
-	a Int
-	b nat
+	a, b Int
 }
 
 // NewRat creates a new Rat with numerator a and denominator b.
 func NewRat(a, b int64) *Rat
+
+// SetFloat64 sets z to exactly f and returns z.
+// If f is not finite, SetFloat returns nil.
+func (z *Rat) SetFloat64(f float64) *Rat
+
+// Float64 returns the nearest float64 value for x and a bool indicating
+// whether f represents x exactly. The sign of f always matches the sign
+// of x, even if f == 0.
+func (x *Rat) Float64() (f float64, exact bool)
 
 // SetFrac sets z to a/b and returns z.
 func (z *Rat) SetFrac(a, b *Int) *Rat
@@ -56,12 +64,13 @@ func (x *Rat) IsInt() bool
 
 // Num returns the numerator of x; it may be <= 0.
 // The result is a reference to x's numerator; it
-// may change if a new value is assigned to x.
+// may change if a new value is assigned to x, and vice versa.
+// The sign of the numerator corresponds to the sign of x.
 func (x *Rat) Num() *Int
 
 // Denom returns the denominator of x; it is always > 0.
 // The result is a reference to x's denominator; it
-// may change if a new value is assigned to x.
+// may change if a new value is assigned to x, and vice versa.
 func (x *Rat) Denom() *Int
 
 // Cmp compares x and y and returns:

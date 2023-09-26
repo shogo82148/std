@@ -25,3 +25,11 @@ var _ = log.Printf
 //
 // When opening a fakeDriver's database, it starts empty with no
 // tables.  All tables and data are stored in memory only.
+
+// fakeDriverString is like driver.String, but indirects pointers like
+// DefaultValueConverter.
+//
+// This could be surprising behavior to retroactively apply to
+// driver.String now that Go1 is out, but this is convenient for
+// our TestPointerParamsAndScans.
+//

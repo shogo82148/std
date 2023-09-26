@@ -7,3 +7,6 @@ package http_test
 import (
 	. "net/http"
 )
+
+// infiniteReader satisfies Read requests as if the contents of buf
+// loop indefinitely.

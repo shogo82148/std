@@ -89,3 +89,9 @@ func Dial(network, addr string) (*Conn, error)
 //	}
 //	return c.ReadCodeLine(250)
 func (c *Conn) Cmd(format string, args ...interface{}) (id uint, err error)
+
+// TrimString returns s without leading and trailing ASCII space.
+func TrimString(s string) string
+
+// TrimBytes returns b without leading and trailing ASCII space.
+func TrimBytes(b []byte) []byte

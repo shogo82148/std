@@ -3,7 +3,8 @@
 // license that can be found in the LICENSE file.
 
 // Package json implements encoding and decoding of JSON objects as defined in
-// RFC 4627.
+// RFC 4627. The mapping between JSON objects and Go values is described
+// in the documentation for the Marshal and Unmarshal functions.
 //
 // See "JSON and Go" for an introduction to this package:
 // http://golang.org/doc/articles/json_and_go.html
@@ -27,10 +28,10 @@ import (
 //
 // Boolean values encode as JSON booleans.
 //
-// Floating point and integer values encode as JSON numbers.
+// Floating point, integer, and Number values encode as JSON numbers.
 //
-// String values encode as JSON strings, with each invalid UTF-8 sequence
-// replaced by the encoding of the Unicode replacement character U+FFFD.
+// String values encode as JSON strings. InvalidUTF8Error will be returned
+// if an invalid UTF-8 sequence is encountered.
 // The angle brackets "<" and ">" are escaped to "\u003c" and "\u003e"
 // to keep some browsers from misinterpreting JSON output as HTML.
 //
@@ -67,14 +68,37 @@ import (
 //	Field int `json:",omitempty"`
 //
 // The "string" option signals that a field is stored as JSON inside a
-// JSON-encoded string.  This extra level of encoding is sometimes
-// used when communicating with JavaScript programs:
+// JSON-encoded string. It applies only to fields of string, floating point,
+// or integer types. This extra level of encoding is sometimes used when
+// communicating with JavaScript programs:
 //
 //	Int64String int64 `json:",string"`
 //
 // The key name will be used if it's a non-empty string consisting of
 // only Unicode letters, digits, dollar signs, percent signs, hyphens,
 // underscores and slashes.
+//
+// Anonymous struct fields are usually marshaled as if their inner exported fields
+// were fields in the outer struct, subject to the usual Go visibility rules amended
+// as described in the next paragraph.
+// An anonymous struct field with a name given in its JSON tag is treated as
+// having that name, rather than being anonymous.
+//
+// The Go visibility rules for struct fields are amended for JSON when
+// deciding which field to marshal or unmarshal. If there are
+// multiple fields at the same level, and that level is the least
+// nested (and would therefore be the nesting level selected by the
+// usual Go rules), the following extra rules apply:
+//
+// 1) Of those fields, if any are JSON-tagged, only tagged fields are considered,
+// even if there are multiple untagged fields that would otherwise conflict.
+// 2) If there is exactly one field (tagged or not according to the first rule), that is selected.
+// 3) Otherwise there are multiple fields, and all are ignored; no error occurs.
+//
+// Handling of anonymous struct fields is new in Go 1.1.
+// Prior to Go 1.1, anonymous struct fields were ignored. To force ignoring of
+// an anonymous struct field in both current and earlier versions, give the field
+// a JSON tag of "-".
 //
 // Map values encode as JSON objects.
 // The map's key type must be string; the object keys are used directly
@@ -127,6 +151,8 @@ type UnsupportedValueError struct {
 
 func (e *UnsupportedValueError) Error() string
 
+// An InvalidUTF8Error is returned by Marshal when attempting
+// to encode a string value with invalid UTF-8 sequences.
 type InvalidUTF8Error struct {
 	S string
 }
@@ -145,5 +171,10 @@ func (e *MarshalerError) Error() string
 // stringValues is a slice of reflect.Value holding *reflect.StringValue.
 // It implements the methods to sort by string.
 
-// encodeField contains information about how to encode a field of a
-// struct.
+// A field represents a single field found in a struct.
+
+// byName sorts field by name, breaking ties with depth,
+// then breaking ties with "name came from json tag", then
+// breaking ties with index sequence.
+
+// byIndex sorts field by index sequence.

@@ -36,6 +36,14 @@ func QueryEscape(s string) string
 // URLs that do not start with a slash after the scheme are interpreted as:
 //
 //	scheme:opaque[?query][#fragment]
+//
+// Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
+// A consequence is that it is impossible to tell which slashes in the Path were
+// slashes in the raw URL and which were %2f. This distinction is rarely important,
+// but when it is a client must use other routines to parse the raw URL or construct
+// the parsed URL. For example, an HTTP server can consult req.RequestURI, and
+// an HTTP client can use URL{Host: "example.com", Opaque: "//example.com/Go%2f"}
+// instead of URL{Host: "example.com", Path: "/Go/"}.
 type URL struct {
 	Scheme   string
 	Opaque   string
@@ -136,7 +144,7 @@ func (u *URL) IsAbs() bool
 func (u *URL) Parse(ref string) (*URL, error)
 
 // ResolveReference resolves a URI reference to an absolute URI from
-// an absolute base URI, per RFC 2396 Section 5.2.  The URI reference
+// an absolute base URI, per RFC 3986 Section 5.2.  The URI reference
 // may be relative or absolute.  ResolveReference always returns a new
 // URL instance, even if the returned URL is identical to either the
 // base or reference. If ref is an absolute URL, then ResolveReference

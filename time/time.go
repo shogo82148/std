@@ -127,6 +127,10 @@ func (t Time) Second() int
 // in the range [0, 999999999].
 func (t Time) Nanosecond() int
 
+// YearDay returns the day of the year specified by t, in the range [1,365] for non-leap years,
+// and [1,366] in leap years.
+func (t Time) YearDay() int
+
 // A Duration represents the elapsed time between two instants
 // as an int64 nanosecond count.  The representation limits the
 // largest representable duration to approximately 290 years.
@@ -266,3 +270,12 @@ func Unix(sec int64, nsec int64) Time
 //
 // Date panics if loc is nil.
 func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) Time
+
+// Truncate returns the result of rounding t down to a multiple of d (since the zero time).
+// If d <= 0, Truncate returns t unchanged.
+func (t Time) Truncate(d Duration) Time
+
+// Round returns the result of rounding t to the nearest multiple of d (since the zero time).
+// The rounding behavior for halfway values is to round up.
+// If d <= 0, Round returns t unchanged.
+func (t Time) Round(d Duration) Time

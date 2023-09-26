@@ -33,7 +33,7 @@ var (
 	ErrUnexpectedTrailer    = &ProtocolError{"trailer header without chunked transfer encoding"}
 	ErrMissingContentLength = &ProtocolError{"missing ContentLength in HEAD response"}
 	ErrNotMultipart         = &ProtocolError{"request Content-Type isn't multipart/form-data"}
-	ErrMissingBoundary      = &ProtocolError{"no multipart boundary param Content-Type"}
+	ErrMissingBoundary      = &ProtocolError{"no multipart boundary param in Content-Type"}
 )
 
 // Headers that Request.Write handles itself and should be skipped.
@@ -42,7 +42,8 @@ var (
 // or to be sent by a client.
 type Request struct {
 	Method string
-	URL    *url.URL
+
+	URL *url.URL
 
 	Proto      string
 	ProtoMajor int
@@ -61,6 +62,8 @@ type Request struct {
 	Host string
 
 	Form url.Values
+
+	PostForm url.Values
 
 	MultipartForm *multipart.Form
 
@@ -153,6 +156,8 @@ func NewRequest(method, urlStr string, body io.Reader) (*Request, error)
 // are not encrypted.
 func (r *Request) SetBasicAuth(username, password string)
 
+// TODO(bradfitz): use a sync.Cache when available
+
 // ReadRequest reads and parses a request from b.
 func ReadRequest(b *bufio.Reader) (req *Request, err error)
 
@@ -166,15 +171,19 @@ func ReadRequest(b *bufio.Reader) (req *Request, err error)
 // sending a large request and wasting server resources.
 func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser
 
-// ParseForm parses the raw query from the URL.
+// ParseForm parses the raw query from the URL and updates r.Form.
 //
-// For POST or PUT requests, it also parses the request body as a form.
+// For POST or PUT requests, it also parses the request body as a form and
+// put the results into both r.PostForm and r.Form.
+// POST and PUT body parameters take precedence over URL query string values
+// in r.Form.
+//
 // If the request Body's size has not already been limited by MaxBytesReader,
 // the size is capped at 10MB.
 //
 // ParseMultipartForm calls ParseForm automatically.
 // It is idempotent.
-func (r *Request) ParseForm() (err error)
+func (r *Request) ParseForm() error
 
 // ParseMultipartForm parses a request body as multipart/form-data.
 // The whole request body is parsed and up to a total of maxMemory bytes of
@@ -185,8 +194,15 @@ func (r *Request) ParseForm() (err error)
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
 // FormValue returns the first value for the named component of the query.
+// POST and PUT body parameters take precedence over URL query string values.
 // FormValue calls ParseMultipartForm and ParseForm if necessary.
+// To access multiple values of the same key use ParseForm.
 func (r *Request) FormValue(key string) string
+
+// PostFormValue returns the first value for the named component of the POST
+// or PUT request body. URL query parameters are ignored.
+// PostFormValue calls ParseMultipartForm and ParseForm if necessary.
+func (r *Request) PostFormValue(key string) string
 
 // FormFile returns the first file for the provided form key.
 // FormFile calls ParseMultipartForm and ParseForm if necessary.

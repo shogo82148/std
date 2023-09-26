@@ -63,11 +63,11 @@ func Getpid() (pid int)
 
 func Getppid() (ppid int)
 
-func Getrlimit(resource int, rlim *Rlimit) (err error)
-
 func Getrusage(who int, rusage *Rusage) (err error)
 
 func Gettid() (tid int)
+
+func Getxattr(path string, attr string, dest []byte) (sz int, err error)
 
 func InotifyAddWatch(fd int, pathname string, mask uint32) (watchdesc int, err error)
 
@@ -83,6 +83,8 @@ func Klogctl(typ int, buf []byte) (n int, err error)
 
 func Link(oldpath string, newpath string) (err error)
 
+func Listxattr(path string, dest []byte) (sz int, err error)
+
 func Mkdir(path string, mode uint32) (err error)
 
 func Mkdirat(dirfd int, path string, mode uint32) (err error)
@@ -97,9 +99,9 @@ func Pause() (err error)
 
 func PivotRoot(newroot string, putold string) (err error)
 
-func Read(fd int, p []byte) (n int, err error)
-
 func Readlink(path string, buf []byte) (n int, err error)
+
+func Removexattr(path string, attr string) (err error)
 
 func Rename(oldpath string, newpath string) (err error)
 
@@ -113,13 +115,13 @@ func Sethostname(p []byte) (err error)
 
 func Setpgid(pid int, pgid int) (err error)
 
-func Setrlimit(resource int, rlim *Rlimit) (err error)
-
 func Setsid() (pid int, err error)
 
 func Settimeofday(tv *Timeval) (err error)
 
 func Setuid(uid int) (err error)
+
+func Setxattr(path string, attr string, data []byte, flags int) (err error)
 
 func Symlink(oldpath string, newpath string) (err error)
 
@@ -148,8 +150,6 @@ func Unshare(flags int) (err error)
 func Ustat(dev int, ubuf *Ustat_t) (err error)
 
 func Utime(path string, buf *Utimbuf) (err error)
-
-func Write(fd int, p []byte) (n int, err error)
 
 func Madvise(b []byte, advice int) (err error)
 
@@ -190,8 +190,6 @@ func Lstat(path string, stat *Stat_t) (err error)
 func Pread(fd int, p []byte, offset int64) (n int, err error)
 
 func Pwrite(fd int, p []byte, offset int64) (n int, err error)
-
-func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)
 
 func Setfsgid(gid int) (err error)
 

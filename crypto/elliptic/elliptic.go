@@ -22,9 +22,9 @@ type Curve interface {
 
 	Double(x1, y1 *big.Int) (x, y *big.Int)
 
-	ScalarMult(x1, y1 *big.Int, scalar []byte) (x, y *big.Int)
+	ScalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int)
 
-	ScalarBaseMult(scalar []byte) (x, y *big.Int)
+	ScalarBaseMult(k []byte) (x, y *big.Int)
 }
 
 // CurveParams contains the parameters of an elliptic curve and also provides

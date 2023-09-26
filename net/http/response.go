@@ -65,7 +65,7 @@ func (r *Response) ProtoAtLeast(major, minor int) bool
 //	StatusCode
 //	ProtoMajor
 //	ProtoMinor
-//	RequestMethod
+//	Request.Method
 //	TransferEncoding
 //	Trailer
 //	Body

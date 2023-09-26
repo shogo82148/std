@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package ecdsa
-
-// These test vectors were taken from
-//   http://csrc.nist.gov/groups/STM/cavp/documents/dss/ecdsatestvectors.zip

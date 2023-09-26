@@ -7,6 +7,7 @@ package doc
 
 import (
 	"github.com/shogo82148/std/go/ast"
+	"github.com/shogo82148/std/go/token"
 )
 
 // Package is the documentation for an entire package.
@@ -16,7 +17,9 @@ type Package struct {
 	ImportPath string
 	Imports    []string
 	Filenames  []string
-	Bugs       []string
+	Notes      map[string][]*Note
+
+	Bugs []string
 
 	Consts []*Value
 	Types  []*Type
@@ -54,6 +57,16 @@ type Func struct {
 	Recv  string
 	Orig  string
 	Level int
+}
+
+// A Note represents a marked comment starting with "MARKER(uid): note body".
+// Any note with a marker of 2 or more upper case [A-Z] letters and a uid of
+// at least one character is recognized. The ":" following the uid is optional.
+// Notes are collected in the Package.Notes map indexed by the notes marker.
+type Note struct {
+	Pos, End token.Pos
+	UID      string
+	Body     string
 }
 
 // Mode values control the operation of New.

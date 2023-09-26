@@ -12,12 +12,26 @@
 // [a-z]) and serves to identify the test routine.
 // These TestXxx routines should be declared within the package they are testing.
 //
+// Tests and benchmarks may be skipped if not applicable like this:
+//
+//	func TestTimeConsuming(t *testing.T) {
+//	    if testing.Short() {
+//	        t.Skip("skipping test in short mode.")
+//	    }
+//	    ...
+//	}
+//
+// # Benchmarks
+//
 // Functions of the form
 //
 //	func BenchmarkXxx(*testing.B)
 //
 // are considered benchmarks, and are executed by the "go test" command when
-// the -test.bench flag is provided.
+// the -test.bench flag is provided. Benchmarks are run sequentially.
+//
+// For a description of the testing flags, see
+// http://golang.org/cmd/go/#Description_of_testing_flags.
 //
 // A sample benchmark function looks like this:
 //
@@ -27,29 +41,31 @@
 //	    }
 //	}
 //
+// The benchmark function must run the target code b.N times.
 // The benchmark package will vary b.N until the benchmark function lasts
 // long enough to be timed reliably.  The output
 //
-//	testing.BenchmarkHello    10000000    282 ns/op
+//	BenchmarkHello    10000000    282 ns/op
 //
 // means that the loop ran 10000000 times at a speed of 282 ns per loop.
 //
 // If a benchmark needs some expensive setup before running, the timer
-// may be stopped:
+// may be reset:
 //
 //	func BenchmarkBigLen(b *testing.B) {
-//	    b.StopTimer()
 //	    big := NewBig()
-//	    b.StartTimer()
+//	    b.ResetTimer()
 //	    for i := 0; i < b.N; i++ {
 //	        big.Len()
 //	    }
 //	}
 //
+// # Examples
+//
 // The package also runs and verifies example code. Example functions may
-// include a concluding comment that begins with "Output:" and is compared with
-// the standard output of the function when the tests are run, as in these
-// examples of an example:
+// include a concluding line comment that begins with "Output:" and is compared with
+// the standard output of the function when the tests are run. (The comparison
+// ignores leading and trailing space.) These are examples of an example:
 //
 //	func ExampleHello() {
 //	        fmt.Println("hello")
@@ -92,6 +108,9 @@ package testing
 // Short reports whether the -test.short flag is set.
 func Short() bool
 
+// Verbose reports whether the -test.v flag is set.
+func Verbose() bool
+
 // T is a type passed to Test functions to manage test state and support formatted test logs.
 // Logs are accumulated during execution and dumped to standard error when done.
 type T struct {
@@ -101,7 +120,7 @@ type T struct {
 }
 
 // Parallel signals that this test is to be run in parallel with (and only with)
-// other parallel tests in this CPU group.
+// other parallel tests.
 func (t *T) Parallel()
 
 // An internal type but exported because it is cross-package; part of the implementation

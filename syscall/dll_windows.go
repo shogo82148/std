@@ -57,8 +57,14 @@ type Proc struct {
 // The return value can be passed to Syscall to run the procedure.
 func (p *Proc) Addr() uintptr
 
-// Call executes procedure p with arguments a.
-func (p *Proc) Call(a ...uintptr) (r1, r2 uintptr, err error)
+// Call executes procedure p with arguments a. It will panic, if more then 15 arguments
+// are supplied.
+//
+// The returned error is always non-nil, constructed from the result of GetLastError.
+// Callers must inspect the primary return value to decide whether an error occurred
+// (according to the semantics of the specific function being called) before consulting
+// the error. The error will be guaranteed to contain syscall.Errno.
+func (p *Proc) Call(a ...uintptr) (r1, r2 uintptr, lastErr error)
 
 // A LazyDLL implements access to a single DLL.
 // It will delay the load of the DLL until the first
@@ -101,5 +107,11 @@ func (p *LazyProc) Find() error
 // The return value can be passed to Syscall to run the procedure.
 func (p *LazyProc) Addr() uintptr
 
-// Call executes procedure p with arguments a.
-func (p *LazyProc) Call(a ...uintptr) (r1, r2 uintptr, err error)
+// Call executes procedure p with arguments a. It will panic, if more then 15 arguments
+// are supplied.
+//
+// The returned error is always non-nil, constructed from the result of GetLastError.
+// Callers must inspect the primary return value to decide whether an error occurred
+// (according to the semantics of the specific function being called) before consulting
+// the error. The error will be guaranteed to contain syscall.Errno.
+func (p *LazyProc) Call(a ...uintptr) (r1, r2 uintptr, lastErr error)

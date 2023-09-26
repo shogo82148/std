@@ -20,7 +20,7 @@ type SockaddrDatalink struct {
 	Nlen   uint8
 	Alen   uint8
 	Slen   uint8
-	Data   [24]int8
+	Data   [12]int8
 	raw    RawSockaddrDatalink
 }
 
@@ -32,11 +32,8 @@ func Syscall9(trap, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr,
 // to names, and the new names slice.
 func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, newnames []string)
 
-// sysnb pipe2(p *[2]_C_int, flags _C_int) (err error)
+// sysnb pipe() (fd1 int, fd2 int, err error)
 func Pipe(p []int) (err error)
 
 // sys getdents(fd int, buf []byte) (n int, err error)
 func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)
-
-// TODO
-func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)

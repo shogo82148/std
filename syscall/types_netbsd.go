@@ -32,6 +32,7 @@ package syscall
 #include <sys/signal.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/sysctl.h>
 #include <sys/time.h>
 #include <sys/uio.h>
 #include <sys/un.h>
@@ -70,23 +71,6 @@ type Timeval C.struct_timeval
 type Rusage C.struct_rusage
 
 type Rlimit C.struct_rlimit
-
-const (
-	S_IFMT   = C.S_IFMT
-	S_IFIFO  = C.S_IFIFO
-	S_IFCHR  = C.S_IFCHR
-	S_IFDIR  = C.S_IFDIR
-	S_IFBLK  = C.S_IFBLK
-	S_IFREG  = C.S_IFREG
-	S_IFLNK  = C.S_IFLNK
-	S_IFSOCK = C.S_IFSOCK
-	S_ISUID  = C.S_ISUID
-	S_ISGID  = C.S_ISGID
-	S_ISVTX  = C.S_ISVTX
-	S_IRUSR  = C.S_IRUSR
-	S_IWUSR  = C.S_IWUSR
-	S_IXUSR  = C.S_IXUSR
-)
 
 type Stat_t C.struct_stat
 
@@ -149,11 +133,12 @@ type Kevent_t C.struct_kevent
 type FdSet C.fd_set
 
 const (
-	SizeofIfMsghdr  = C.sizeof_struct_if_msghdr
-	SizeofIfData    = C.sizeof_struct_if_data
-	SizeofIfaMsghdr = C.sizeof_struct_ifa_msghdr
-	SizeofRtMsghdr  = C.sizeof_struct_rt_msghdr
-	SizeofRtMetrics = C.sizeof_struct_rt_metrics
+	SizeofIfMsghdr         = C.sizeof_struct_if_msghdr
+	SizeofIfData           = C.sizeof_struct_if_data
+	SizeofIfaMsghdr        = C.sizeof_struct_ifa_msghdr
+	SizeofIfAnnounceMsghdr = C.sizeof_struct_if_announcemsghdr
+	SizeofRtMsghdr         = C.sizeof_struct_rt_msghdr
+	SizeofRtMetrics        = C.sizeof_struct_rt_metrics
 )
 
 type IfMsghdr C.struct_if_msghdr
@@ -161,6 +146,8 @@ type IfMsghdr C.struct_if_msghdr
 type IfData C.struct_if_data
 
 type IfaMsghdr C.struct_ifa_msghdr
+
+type IfAnnounceMsghdr C.struct_if_announcemsghdr
 
 type RtMsghdr C.struct_rt_msghdr
 
@@ -187,3 +174,5 @@ type BpfInsn C.struct_bpf_insn
 type BpfHdr C.struct_bpf_hdr
 
 type BpfTimeval C.struct_bpf_timeval
+
+type Sysctlnode C.struct_sysctlnode

@@ -32,8 +32,8 @@ type FieldsTest struct {
 	a []string
 }
 
-// Test case for any function which accepts and returns a byte array.
-// For ease of creation, we write the byte arrays as strings.
+// Test case for any function which accepts and returns a byte slice.
+// For ease of creation, we write the byte slices as strings.
 type StringTest struct {
 	in, out string
 }
@@ -70,8 +70,8 @@ var RunesTests = []RunesTest{
 }
 
 type TrimTest struct {
-	f               string
-	in, cutset, out string
+	f            string
+	in, arg, out string
 }
 
 type TrimFuncTest struct {

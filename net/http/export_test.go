@@ -6,3 +6,5 @@
 // package.
 
 package http
+
+var DefaultUserAgent = defaultUserAgent

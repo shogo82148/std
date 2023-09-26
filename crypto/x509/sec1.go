@@ -1,0 +1,19 @@
+// Copyright 2012 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package x509
+
+import (
+	"github.com/shogo82148/std/crypto/ecdsa"
+)
+
+// ecPrivateKey reflects an ASN.1 Elliptic Curve Private Key Structure.
+// References:
+//   RFC5915
+//   SEC1 - http://www.secg.org/download/aid-780/sec1-v2.pdf
+// Per RFC5915 the NamedCurveOID is marked as ASN.1 OPTIONAL, however in
+// most cases it is not.
+
+// ParseECPrivateKey parses an ASN.1 Elliptic Curve Private Key Structure.
+func ParseECPrivateKey(der []byte) (key *ecdsa.PrivateKey, err error)

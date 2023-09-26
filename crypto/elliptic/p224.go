@@ -19,6 +19,8 @@ func P224() Curve
 // than we would really like. But it has the useful feature that we hit 2**224
 // exactly, making the reflections during a reduce much nicer.
 
+// p224P is the order of the field, represented as a p224FieldElement.
+
 // p224ZeroModP31 is 0 mod p where bit 31 is set in all limbs so that we can
 // subtract smaller amounts without underflow. See the section "Subtraction" in
 // [1] for reasoning.

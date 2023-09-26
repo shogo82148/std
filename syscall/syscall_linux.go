@@ -11,26 +11,24 @@
 
 package syscall
 
-// sys	open(path string, mode int, perm uint32) (fd int, err error)
 func Open(path string, mode int, perm uint32) (fd int, err error)
 
-// sys	openat(dirfd int, path string, flags int, mode uint32) (fd int, err error)
 func Openat(dirfd int, path string, flags int, mode uint32) (fd int, err error)
 
-// sysnb	pipe(p *[2]_C_int) (err error)
 func Pipe(p []int) (err error)
 
-// sys	utimes(path string, times *[2]Timeval) (err error)
+func Pipe2(p []int, flags int) (err error)
+
 func Utimes(path string, tv []Timeval) (err error)
 
-// sys	futimesat(dirfd int, path *byte, times *[2]Timeval) (err error)
+func UtimesNano(path string, ts []Timespec) (err error)
+
 func Futimesat(dirfd int, path string, tv []Timeval) (err error)
 
 func Futimes(fd int, tv []Timeval) (err error)
 
 const ImplementsGetwd = true
 
-// sys	Getcwd(buf []byte) (n int, err error)
 func Getwd() (wd string, err error)
 
 func Getgroups() (gids []int, err error)
@@ -57,7 +55,6 @@ func (w WaitStatus) StopSignal() Signal
 
 func (w WaitStatus) TrapCause() int
 
-// sys	wait4(pid int, wstatus *_C_int, options int, rusage *Rusage) (wpid int, err error)
 func Wait4(pid int, wstatus *WaitStatus, options int, rusage *Rusage) (wpid int, err error)
 
 func Mkfifo(path string, mode uint32) (err error)
@@ -108,6 +105,8 @@ type SockaddrNetlink struct {
 
 func Accept(fd int) (nfd int, sa Sockaddr, err error)
 
+func Accept4(fd int, flags int) (nfd int, sa Sockaddr, err error)
+
 func Getsockname(fd int) (sa Sockaddr, err error)
 
 func Getpeername(fd int) (sa Sockaddr, err error)
@@ -129,6 +128,8 @@ func GetsockoptIPMreq(fd, level, opt int) (*IPMreq, error)
 func GetsockoptIPMreqn(fd, level, opt int) (*IPMreqn, error)
 
 func GetsockoptIPv6Mreq(fd, level, opt int) (*IPv6Mreq, error)
+
+func GetsockoptUcred(fd, level, opt int) (*Ucred, error)
 
 func SetsockoptInt(fd, level, opt int, value int) (err error)
 
@@ -175,20 +176,20 @@ func PtraceGetEventMsg(pid int) (msg uint, err error)
 
 func PtraceCont(pid int, signal int) (err error)
 
+func PtraceSyscall(pid int, signal int) (err error)
+
 func PtraceSingleStep(pid int) (err error)
 
 func PtraceAttach(pid int) (err error)
 
 func PtraceDetach(pid int) (err error)
 
-// sys	reboot(magic1 uint, magic2 uint, cmd int, arg string) (err error)
 func Reboot(cmd int) (err error)
 
 func ReadDirent(fd int, buf []byte) (n int, err error)
 
 func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, newnames []string)
 
-// sys	mount(source string, target string, fstype string, flags uintptr, data *byte) (err error)
 func Mount(source string, target string, fstype string, flags uintptr, data string) (err error)
 
 func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error)

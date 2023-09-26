@@ -21,6 +21,7 @@ type FileHeader struct {
 	ByteOrder  binary.ByteOrder
 	Type       Type
 	Machine    Machine
+	Entry      uint64
 }
 
 // A File represents an open ELF file.
@@ -123,6 +124,10 @@ func (f *File) Section(name string) *Section
 func (f *File) DWARF() (*dwarf.Data, error)
 
 // Symbols returns the symbol table for f.
+//
+// For compatibility with Go 1.0, Symbols omits the null symbol at index 0.
+// After retrieving the symbols as symtab, an externally supplied index x
+// corresponds to symtab[x-1], not symtab[x].
 func (f *File) Symbols() ([]Symbol, error)
 
 type ImportedSymbol struct {
@@ -141,3 +146,10 @@ func (f *File) ImportedSymbols() ([]ImportedSymbol, error)
 // referred to by the binary f that are expected to be
 // linked with the binary at dynamic link time.
 func (f *File) ImportedLibraries() ([]string, error)
+
+// DynString returns the strings listed for the given tag in the file's dynamic
+// section.
+//
+// The tag must be one that takes string values: DT_NEEDED, DT_SONAME, DT_RPATH, or
+// DT_RUNPATH.
+func (f *File) DynString(tag DynTag) ([]string, error)

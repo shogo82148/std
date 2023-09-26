@@ -61,10 +61,12 @@ func (m FileMode) String() string
 // That is, it tests for the ModeDir bit being set in m.
 func (m FileMode) IsDir() bool
 
+// IsRegular reports whether m describes a regular file.
+// That is, it tests that no mode type bits are set.
+func (m FileMode) IsRegular() bool
+
 // Perm returns the Unix permission bits in m.
 func (m FileMode) Perm() FileMode
-
-// A fileStat is the implementation of FileInfo returned by Stat and Lstat.
 
 // SameFile reports whether fi1 and fi2 describe the same file.
 // For example, on Unix this means that the device and inode fields

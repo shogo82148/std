@@ -18,7 +18,8 @@ import (
 type Server struct {
 	URL      string
 	Listener net.Listener
-	TLS      *tls.Config
+
+	TLS *tls.Config
 
 	Config *http.Server
 
@@ -67,8 +68,10 @@ func (s *Server) CloseClientConnections()
 // sync.WaitGroup on each request, to enable Server.Close to block
 // until outstanding requests are finished.
 
-// localhostCert is a PEM-encoded TLS cert with SAN DNS names
+// localhostCert is a PEM-encoded TLS cert with SAN IPs
 // "127.0.0.1" and "[::1]", expiring at the last second of 2049 (the end
 // of ASN.1 time).
+// generated from src/pkg/crypto/tls:
+// go run generate_cert.go  --rsa-bits 512 --host 127.0.0.1,::1,example.com --ca --start-date "Jan 1 00:00:00 1970" --duration=1000000h
 
 // localhostKey is the private key for localhostCert.

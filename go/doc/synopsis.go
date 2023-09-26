@@ -8,5 +8,12 @@ package doc
 // That sentence ends after the first period followed by space and
 // not preceded by exactly one uppercase letter. The result string
 // has no \n, \r, or \t characters and uses only single spaces between
-// words.
+// words. If s starts with any of the IllegalPrefixes, the result
+// is the empty string.
 func Synopsis(s string) string
+
+var IllegalPrefixes = []string{
+	"copyright",
+	"all rights",
+	"author",
+}

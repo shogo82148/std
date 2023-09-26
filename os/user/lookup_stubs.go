@@ -6,9 +6,3 @@
 // +build !cgo,!windows
 
 package user
-
-func Current() (*User, error)
-
-func Lookup(username string) (*User, error)
-
-func LookupId(string) (*User, error)

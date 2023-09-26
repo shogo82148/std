@@ -27,5 +27,6 @@ type CodecEmulator struct {
 type ReplyNotPointer int
 type ArgNotPublic int
 type ReplyNotPublic int
+type NeedsPtrType int
 
 type WriteFailCodec int

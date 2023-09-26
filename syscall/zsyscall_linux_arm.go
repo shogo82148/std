@@ -63,11 +63,11 @@ func Getpid() (pid int)
 
 func Getppid() (ppid int)
 
-func Getrlimit(resource int, rlim *Rlimit) (err error)
-
 func Getrusage(who int, rusage *Rusage) (err error)
 
 func Gettid() (tid int)
+
+func Getxattr(path string, attr string, dest []byte) (sz int, err error)
 
 func InotifyAddWatch(fd int, pathname string, mask uint32) (watchdesc int, err error)
 
@@ -83,6 +83,8 @@ func Klogctl(typ int, buf []byte) (n int, err error)
 
 func Link(oldpath string, newpath string) (err error)
 
+func Listxattr(path string, dest []byte) (sz int, err error)
+
 func Mkdir(path string, mode uint32) (err error)
 
 func Mkdirat(dirfd int, path string, mode uint32) (err error)
@@ -97,9 +99,9 @@ func Pause() (err error)
 
 func PivotRoot(newroot string, putold string) (err error)
 
-func Read(fd int, p []byte) (n int, err error)
-
 func Readlink(path string, buf []byte) (n int, err error)
+
+func Removexattr(path string, attr string) (err error)
 
 func Rename(oldpath string, newpath string) (err error)
 
@@ -113,13 +115,13 @@ func Sethostname(p []byte) (err error)
 
 func Setpgid(pid int, pgid int) (err error)
 
-func Setrlimit(resource int, rlim *Rlimit) (err error)
-
 func Setsid() (pid int, err error)
 
 func Settimeofday(tv *Timeval) (err error)
 
 func Setuid(uid int) (err error)
+
+func Setxattr(path string, attr string, data []byte, flags int) (err error)
 
 func Symlink(oldpath string, newpath string) (err error)
 
@@ -149,8 +151,6 @@ func Ustat(dev int, ubuf *Ustat_t) (err error)
 
 func Utime(path string, buf *Utimbuf) (err error)
 
-func Write(fd int, p []byte) (n int, err error)
-
 func Madvise(b []byte, advice int) (err error)
 
 func Mprotect(b []byte, prot int) (err error)
@@ -169,8 +169,6 @@ func Fchown(fd int, uid int, gid int) (err error)
 
 func Fstat(fd int, stat *Stat_t) (err error)
 
-func Fstatfs(fd int, buf *Statfs_t) (err error)
-
 func Getegid() (egid int)
 
 func Geteuid() (euid int)
@@ -184,8 +182,6 @@ func Lchown(path string, uid int, gid int) (err error)
 func Listen(s int, n int) (err error)
 
 func Lstat(path string, stat *Stat_t) (err error)
-
-func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)
 
 func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err error)
 
@@ -208,8 +204,6 @@ func Shutdown(fd int, how int) (err error)
 func Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n int, err error)
 
 func Stat(path string, stat *Stat_t) (err error)
-
-func Statfs(path string, buf *Statfs_t) (err error)
 
 func Gettimeofday(tv *Timeval) (err error)
 

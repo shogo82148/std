@@ -26,8 +26,8 @@ import (
 // comprises (n, (n bytes)) blocks, with 1 <= n <= 255.  It is the
 // reader given to the LZW decoder, which is thus immune to the
 // blocking.  After the LZW decoder completes, there will be a 0-byte
-// block remaining (0, ()), but under normal execution blockReader
-// doesn't consume it, so it is handled in decode.
+// block remaining (0, ()), which is consumed when checking that the
+// blockReader is exhausted.
 
 // interlaceScan defines the ordering for a pass of the interlace algorithm.
 

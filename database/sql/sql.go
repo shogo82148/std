@@ -4,6 +4,9 @@
 
 // Package sql provides a generic interface around SQL (or SQL-like)
 // databases.
+//
+// The sql package must be used in conjunction with a database driver.
+// See http://golang.org/s/sqldrivers for a list of drivers.
 package sql
 
 import (
@@ -100,44 +103,83 @@ var ErrNoRows = errors.New("sql: no rows in result set")
 // DB is a database handle. It's safe for concurrent use by multiple
 // goroutines.
 //
-// If the underlying database driver has the concept of a connection
-// and per-connection session state, the sql package manages creating
-// and freeing connections automatically, including maintaining a free
-// pool of idle connections. If observing session state is required,
-// either do not share a *DB between multiple concurrent goroutines or
-// create and observe all state only within a transaction. Once
-// DB.Open is called, the returned Tx is bound to a single isolated
-// connection. Once Tx.Commit or Tx.Rollback is called, that
-// connection is returned to DB's idle connection pool.
+// The sql package creates and frees connections automatically; it
+// also maintains a free pool of idle connections. If the database has
+// a concept of per-connection state, such state can only be reliably
+// observed within a transaction. Once DB.Begin is called, the
+// returned Tx is bound to a single connection. Once Commit or
+// Rollback is called on the transaction, that transaction's
+// connection is returned to DB's idle connection pool. The pool size
+// can be controlled with SetMaxIdleConns.
 type DB struct {
 	driver driver.Driver
 	dsn    string
 
 	mu       sync.Mutex
-	freeConn []driver.Conn
+	freeConn []*driverConn
 	closed   bool
+	dep      map[finalCloser]depSet
+	lastPut  map[*driverConn]string
+	maxIdle  int
 }
+
+// driverConn wraps a driver.Conn with a mutex, to
+// be held during all calls into the Conn. (including any calls onto
+// interfaces returned via that Conn, such as calls on Tx, Stmt,
+// Result, Rows)
+
+// driverStmt associates a driver.Stmt with the
+// *driverConn from which it came, so the driverConn's lock can be
+// held during calls.
+
+// depSet is a finalCloser's outstanding dependencies
+
+// The finalCloser interface is used by (*DB).addDep and related
+// dependency reference counting.
 
 // Open opens a database specified by its database driver name and a
 // driver-specific data source name, usually consisting of at least a
 // database name and connection information.
 //
 // Most users will open a database via a driver-specific connection
-// helper function that returns a *DB.
+// helper function that returns a *DB. No database drivers are included
+// in the Go standard library. See http://golang.org/s/sqldrivers for
+// a list of third-party drivers.
+//
+// Open may just validate its arguments without creating a connection
+// to the database. To verify that the data source name is valid, call
+// Ping.
 func Open(driverName, dataSourceName string) (*DB, error)
+
+// Ping verifies a connection to the database is still alive,
+// establishing a connection if necessary.
+func (db *DB) Ping() error
 
 // Close closes the database, releasing any open resources.
 func (db *DB) Close() error
 
+// SetMaxIdleConns sets the maximum number of connections in the idle
+// connection pool.
+//
+// If n <= 0, no idle connections are retained.
+func (db *DB) SetMaxIdleConns(n int)
+
 // putConnHook is a hook for testing.
 
-// Prepare creates a prepared statement for later execution.
+// debugGetPut determines whether getConn & putConn calls' stack traces
+// are returned for more verbose crashes.
+
+// Prepare creates a prepared statement for later queries or executions.
+// Multiple queries or executions may be run concurrently from the
+// returned statement.
 func (db *DB) Prepare(query string) (*Stmt, error)
 
 // Exec executes a query without returning any rows.
+// The args are for any placeholder parameters in the query.
 func (db *DB) Exec(query string, args ...interface{}) (Result, error)
 
 // Query executes a query that returns rows, typically a SELECT.
+// The args are for any placeholder parameters in the query.
 func (db *DB) Query(query string, args ...interface{}) (*Rows, error)
 
 // QueryRow executes a query that is expected to return at most one row.
@@ -161,10 +203,8 @@ func (db *DB) Driver() driver.Driver
 type Tx struct {
 	db *DB
 
-	ci  driver.Conn
+	dc  *driverConn
 	txi driver.Tx
-
-	cimu sync.Mutex
 
 	done bool
 }
@@ -217,8 +257,10 @@ type Stmt struct {
 	query     string
 	stickyErr error
 
+	closemu sync.RWMutex
+
 	tx   *Tx
-	txsi driver.Stmt
+	txsi *driverStmt
 
 	mu     sync.Mutex
 	closed bool
@@ -264,15 +306,14 @@ func (s *Stmt) Close() error
 //	err = rows.Err() // get any error encountered during iteration
 //	...
 type Rows struct {
-	db          *DB
-	ci          driver.Conn
+	dc          *driverConn
 	releaseConn func(error)
 	rowsi       driver.Rows
 
 	closed    bool
 	lastcols  []driver.Value
 	lasterr   error
-	closeStmt *Stmt
+	closeStmt driver.Stmt
 }
 
 // Next prepares the next result row for reading with the Scan method.

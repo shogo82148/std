@@ -28,6 +28,9 @@ func (x *Int) Sign() int
 // SetInt64 sets z to x and returns z.
 func (z *Int) SetInt64(x int64) *Int
 
+// SetUint64 sets z to x and returns z.
+func (z *Int) SetUint64(x uint64) *Int
+
 // NewInt allocates and returns a new Int set to x.
 func NewInt(x int64) *Int
 
@@ -150,6 +153,10 @@ func (z *Int) Scan(s fmt.ScanState, ch rune) error
 // If x cannot be represented in an int64, the result is undefined.
 func (x *Int) Int64() int64
 
+// Uint64 returns the uint64 representation of x.
+// If x cannot be represented in a uint64, the result is undefined.
+func (x *Int) Uint64() uint64
+
 // SetString sets z to the value of s, interpreted in the given base,
 // and returns z and a boolean indicating success. If SetString fails,
 // the value of z is undefined but the returned value is nil.
@@ -171,14 +178,15 @@ func (x *Int) Bytes() []byte
 // The bit length of 0 is 0.
 func (x *Int) BitLen() int
 
-// Exp sets z = x**y mod m and returns z. If m is nil, z = x**y.
+// Exp sets z = x**y mod |m| (i.e. the sign of m is ignored), and returns z.
+// If y <= 0, the result is 1; if m == nil or m == 0, z = x**y.
 // See Knuth, volume 2, section 4.6.3.
 func (z *Int) Exp(x, y, m *Int) *Int
 
-// GCD sets z to the greatest common divisor of a and b, which must be
-// positive numbers, and returns z.
+// GCD sets z to the greatest common divisor of a and b, which both must
+// be > 0, and returns z.
 // If x and y are not nil, GCD sets x and y such that z = a*x + b*y.
-// If either a or b is not positive, GCD sets z = x = y = 0.
+// If either a or b is <= 0, GCD sets z = x = y = 0.
 func (z *Int) GCD(x, y, a, b *Int) *Int
 
 // ProbablyPrime performs n Miller-Rabin tests to check whether x is prime.
@@ -204,8 +212,8 @@ func (z *Int) Rsh(x *Int, n uint) *Int
 func (x *Int) Bit(i int) uint
 
 // SetBit sets z to x, with x's i'th bit set to b (0 or 1).
-// That is, if bit is 1 SetBit sets z = x | (1 << i);
-// if bit is 0 it sets z = x &^ (1 << i). If bit is not 0 or 1,
+// That is, if b is 1 SetBit sets z = x | (1 << i);
+// if b is 0 SetBit sets z = x &^ (1 << i). If b is not 0 or 1,
 // SetBit will panic.
 func (z *Int) SetBit(x *Int, i int, b uint) *Int
 
@@ -231,3 +239,9 @@ func (x *Int) GobEncode() ([]byte, error)
 
 // GobDecode implements the gob.GobDecoder interface.
 func (z *Int) GobDecode(buf []byte) error
+
+// MarshalJSON implements the json.Marshaler interface.
+func (x *Int) MarshalJSON() ([]byte, error)
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (z *Int) UnmarshalJSON(x []byte) error

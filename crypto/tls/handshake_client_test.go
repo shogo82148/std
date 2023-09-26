@@ -6,12 +6,10 @@ package tls
 
 // Script of interaction with gnutls implementation.
 // The values for this test are obtained by building and running in client mode:
-//   % go test -run "TestRunClient" -connect
-// and then:
-//   % gnutls-serv -p 10443 --debug 100 --x509keyfile key.pem --x509certfile cert.pem -a > /tmp/log 2>&1
-//   % python parse-gnutls-cli-debug-log.py < /tmp/log
+//   % go test -test.run "TestRunClient" -connect
+// The recorded bytes are written to stdout.
 //
-// Where key.pem is:
+// The server private key is:
 // -----BEGIN RSA PRIVATE KEY-----
 // MIIBPAIBAAJBAJ+zw4Qnlf8SMVIPFe9GEcStgOY2Ww/dgNdhjeD8ckUJNP5VZkVD
 // TGiXav6ooKXfX3j/7tdkuD8Ey2//Kv7+ue0CAwEAAQJAN6W31vDEP2DjdqhzCDDu
@@ -22,15 +20,18 @@ package tls
 // vnlEGo8K85u+KwIOimM48ZG8oTk7iFdkqLJR1utT3aU=
 // -----END RSA PRIVATE KEY-----
 //
-// and cert.pem is:
+// and certificate is:
 // -----BEGIN CERTIFICATE-----
-// MIIBoDCCAUoCAQAwDQYJKoZIhvcNAQEEBQAwYzELMAkGA1UEBhMCQVUxEzARBgNV
-// BAgTClF1ZWVuc2xhbmQxGjAYBgNVBAoTEUNyeXB0U29mdCBQdHkgTHRkMSMwIQYD
-// VQQDExpTZXJ2ZXIgdGVzdCBjZXJ0ICg1MTIgYml0KTAeFw05NzA5MDkwMzQxMjZa
-// Fw05NzEwMDkwMzQxMjZaMF4xCzAJBgNVBAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0
-// YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxFzAVBgNVBAMT
-// DkVyaWMgdGhlIFlvdW5nMFEwCQYFKw4DAgwFAANEAAJBALVEqPODnpI4rShlY8S7
-// tB713JNvabvn6Gned7zylwLLiXQAo/PAT6mfdWPTyCX9RlId/Aroh1ou893BA32Q
-// sggwDQYJKoZIhvcNAQEEBQADQQCU5SSgapJSdRXJoX+CpCvFy+JVh9HpSjCpSNKO
-// 19raHv98hKAUJuP9HyM+SUsffO6mAIgitUaqW8/wDMePhEC3
+// MIICKzCCAdWgAwIBAgIJALE1E2URIMWSMA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
+// BAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX
+// aWRnaXRzIFB0eSBMdGQwHhcNMTIwNDA2MTcxMDEzWhcNMTUwNDA2MTcxMDEzWjBF
+// MQswCQYDVQQGEwJBVTETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50
+// ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ+z
+// w4Qnlf8SMVIPFe9GEcStgOY2Ww/dgNdhjeD8ckUJNP5VZkVDTGiXav6ooKXfX3j/
+// 7tdkuD8Ey2//Kv7+ue0CAwEAAaOBpzCBpDAdBgNVHQ4EFgQUeKaXmmO1xaGlM7oi
+// fCNuWxt6zCswdQYDVR0jBG4wbIAUeKaXmmO1xaGlM7oifCNuWxt6zCuhSaRHMEUx
+// CzAJBgNVBAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRl
+// cm5ldCBXaWRnaXRzIFB0eSBMdGSCCQCxNRNlESDFkjAMBgNVHRMEBTADAQH/MA0G
+// CSqGSIb3DQEBBQUAA0EAhTZAc8G7GtrUWZ8tonAxRnTsg26oyDxRrzms7EC86CJG
+// HZnWRiok1IsFCEv7NRFukrt3uuQSu/TIXpyBqJdgTA==
 // -----END CERTIFICATE-----

@@ -6,16 +6,27 @@
 
 package parse
 
-// A node is an element in the parse tree. The interface is trivial.
+// A Node is an element in the parse tree. The interface is trivial.
+// The interface contains an unexported method so that only
+// types local to this package can satisfy it.
 type Node interface {
 	Type() NodeType
 	String() string
 
 	Copy() Node
+	Position() Pos
+
+	unexported()
 }
 
 // NodeType identifies the type of a parse tree node.
 type NodeType int
+
+// Pos represents a byte position in the original input text from which
+// this template was parsed.
+type Pos int
+
+func (p Pos) Position() Pos
 
 // Type returns itself and provides an easy default implementation
 // for embedding in a Node. Embedded in all non-trivial Nodes.
@@ -25,6 +36,7 @@ const (
 	NodeText    NodeType = iota
 	NodeAction
 	NodeBool
+	NodeChain
 	NodeCommand
 	NodeDot
 
@@ -32,6 +44,7 @@ const (
 	NodeIdentifier
 	NodeIf
 	NodeList
+	NodeNil
 	NodeNumber
 	NodePipe
 	NodeRange
@@ -44,6 +57,7 @@ const (
 // ListNode holds a sequence of nodes.
 type ListNode struct {
 	NodeType
+	Pos
 	Nodes []Node
 }
 
@@ -56,6 +70,7 @@ func (l *ListNode) Copy() Node
 // TextNode holds plain text.
 type TextNode struct {
 	NodeType
+	Pos
 	Text []byte
 }
 
@@ -66,6 +81,7 @@ func (t *TextNode) Copy() Node
 // PipeNode holds a pipeline with optional declaration
 type PipeNode struct {
 	NodeType
+	Pos
 	Line int
 	Decl []*VariableNode
 	Cmds []*CommandNode
@@ -79,9 +95,10 @@ func (p *PipeNode) Copy() Node
 
 // ActionNode holds an action (something bounded by delimiters).
 // Control actions have their own nodes; ActionNode represents simple
-// ones such as field evaluations.
+// ones such as field evaluations and parenthesized pipelines.
 type ActionNode struct {
 	NodeType
+	Pos
 	Line int
 	Pipe *PipeNode
 }
@@ -93,6 +110,7 @@ func (a *ActionNode) Copy() Node
 // CommandNode holds a command (a pipeline inside an evaluating action).
 type CommandNode struct {
 	NodeType
+	Pos
 	Args []Node
 }
 
@@ -103,20 +121,27 @@ func (c *CommandNode) Copy() Node
 // IdentifierNode holds an identifier.
 type IdentifierNode struct {
 	NodeType
+	Pos
 	Ident string
 }
 
 // NewIdentifier returns a new IdentifierNode with the given identifier name.
 func NewIdentifier(ident string) *IdentifierNode
 
+// SetPos sets the position. NewIdentifier is a public method so we can't modify its signature.
+// Chained for convenience.
+// TODO: fix one day?
+func (i *IdentifierNode) SetPos(pos Pos) *IdentifierNode
+
 func (i *IdentifierNode) String() string
 
 func (i *IdentifierNode) Copy() Node
 
-// VariableNode holds a list of variable names. The dollar sign is
-// part of the name.
+// VariableNode holds a list of variable names, possibly with chained field
+// accesses. The dollar sign is part of the (first) name.
 type VariableNode struct {
 	NodeType
+	Pos
 	Ident []string
 }
 
@@ -124,8 +149,10 @@ func (v *VariableNode) String() string
 
 func (v *VariableNode) Copy() Node
 
-// DotNode holds the special identifier '.'. It is represented by a nil pointer.
-type DotNode bool
+// DotNode holds the special identifier '.'.
+type DotNode struct {
+	Pos
+}
 
 func (d *DotNode) Type() NodeType
 
@@ -133,11 +160,23 @@ func (d *DotNode) String() string
 
 func (d *DotNode) Copy() Node
 
+// NilNode holds the special identifier 'nil' representing an untyped nil constant.
+type NilNode struct {
+	Pos
+}
+
+func (n *NilNode) Type() NodeType
+
+func (n *NilNode) String() string
+
+func (n *NilNode) Copy() Node
+
 // FieldNode holds a field (identifier starting with '.').
 // The names may be chained ('.x.y').
 // The period is dropped from each ident.
 type FieldNode struct {
 	NodeType
+	Pos
 	Ident []string
 }
 
@@ -145,9 +184,27 @@ func (f *FieldNode) String() string
 
 func (f *FieldNode) Copy() Node
 
+// ChainNode holds a term followed by a chain of field accesses (identifier starting with '.').
+// The names may be chained ('.x.y').
+// The periods are dropped from each ident.
+type ChainNode struct {
+	NodeType
+	Pos
+	Node  Node
+	Field []string
+}
+
+// Add adds the named field (which should start with a period) to the end of the chain.
+func (c *ChainNode) Add(field string)
+
+func (c *ChainNode) String() string
+
+func (c *ChainNode) Copy() Node
+
 // BoolNode holds a boolean constant.
 type BoolNode struct {
 	NodeType
+	Pos
 	True bool
 }
 
@@ -160,6 +217,7 @@ func (b *BoolNode) Copy() Node
 // This simulates in a small amount of code the behavior of Go's ideal constants.
 type NumberNode struct {
 	NodeType
+	Pos
 	IsInt      bool
 	IsUint     bool
 	IsFloat    bool
@@ -178,6 +236,7 @@ func (n *NumberNode) Copy() Node
 // StringNode holds a string constant. The value has been "unquoted".
 type StringNode struct {
 	NodeType
+	Pos
 	Quoted string
 	Text   string
 }
@@ -186,7 +245,7 @@ func (s *StringNode) String() string
 
 func (s *StringNode) Copy() Node
 
-// endNode represents an {{end}} action. It is represented by a nil pointer.
+// endNode represents an {{end}} action.
 // It does not appear in the final parse tree.
 
 // elseNode represents an {{else}} action. Does not appear in the final tree.
@@ -194,6 +253,7 @@ func (s *StringNode) Copy() Node
 // BranchNode is the common representation of if, range, and with.
 type BranchNode struct {
 	NodeType
+	Pos
 	Line     int
 	Pipe     *PipeNode
 	List     *ListNode
@@ -226,6 +286,7 @@ func (w *WithNode) Copy() Node
 // TemplateNode represents a {{template}} action.
 type TemplateNode struct {
 	NodeType
+	Pos
 	Line int
 	Name string
 	Pipe *PipeNode

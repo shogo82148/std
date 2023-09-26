@@ -5,5 +5,3 @@
 package big
 
 // Examples from the Go Language Spec, section "Arithmetic operators"
-
-// used by TestIntGobEncoding and TestRatGobEncoding

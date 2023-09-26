@@ -25,6 +25,7 @@ type Conn struct {
 	haveVers          bool
 	config            *Config
 	handshakeComplete bool
+	didResume         bool
 	cipherSuite       uint16
 	ocspResponse      []byte
 	peerCertificates  []*x509.Certificate
@@ -36,8 +37,7 @@ type Conn struct {
 	clientProtocol         string
 	clientProtocolFallback bool
 
-	errMutex sync.Mutex
-	err      error
+	connErr
 
 	in, out  halfConn
 	rawInput *block

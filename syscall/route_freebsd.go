@@ -6,6 +6,12 @@
 
 package syscall
 
+// InterfaceAnnounceMessage represents a routing message containing
+// network interface arrival and depature information.
+type InterfaceAnnounceMessage struct {
+	Header IfAnnounceMsghdr
+}
+
 // InterfaceMulticastAddrMessage represents a routing message
 // containing network interface address entries.
 type InterfaceMulticastAddrMessage struct {

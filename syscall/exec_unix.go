@@ -15,10 +15,15 @@ import (
 
 var ForkLock sync.RWMutex
 
-// Convert array of string to array of NUL-terminated byte pointer.
+// StringSlicePtr is deprecated. Use SlicePtrFromStrings instead.
 // If any string contains a NUL byte this function panics instead
 // of returning an error.
 func StringSlicePtr(ss []string) []*byte
+
+// SlicePtrFromStrings converts a slice of strings to a slice of
+// pointers to NUL-terminated byte slices. If any string contains
+// a NUL byte, it returns (nil, EINVAL).
+func SlicePtrFromStrings(ss []string) ([]*byte, error)
 
 func CloseOnExec(fd int)
 

@@ -16,5 +16,5 @@ type Buffer struct {
 	WriterTo
 }
 
-// A version of bytes.Buffer that returns n > 0, EOF on Read
+// A version of bytes.Buffer that returns n > 0, err on Read
 // when the input is exhausted.

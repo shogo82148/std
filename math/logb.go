@@ -4,7 +4,7 @@
 
 package math
 
-// Logb(x) returns the binary exponent of x.
+// Logb returns the binary exponent of x.
 //
 // Special cases are:
 //
@@ -13,7 +13,7 @@ package math
 //	Logb(NaN) = NaN
 func Logb(x float64) float64
 
-// Ilogb(x) returns the binary exponent of x as an integer.
+// Ilogb returns the binary exponent of x as an integer.
 //
 // Special cases are:
 //

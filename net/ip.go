@@ -7,7 +7,7 @@
 // IPv4 addresses are 4 bytes; IPv6 addresses are 16 bytes.
 // An IPv4 address can be converted to an IPv6 address by
 // adding a canonical prefix (10 zeros, 2 0xFFs).
-// This library accepts either size of byte array but always
+// This library accepts either size of byte slice but always
 // returns 16-byte addresses.
 
 package net
@@ -18,14 +18,14 @@ const (
 	IPv6len = 16
 )
 
-// An IP is a single IP address, an array of bytes.
+// An IP is a single IP address, a slice of bytes.
 // Functions in this package accept either 4-byte (IPv4)
-// or 16-byte (IPv6) arrays as input.
+// or 16-byte (IPv6) slices as input.
 //
 // Note that in this documentation, referring to an
 // IP address as an IPv4 address or an IPv6 address
 // is a semantic property of the address, not just the
-// length of the byte array: a 16-byte array can still
+// length of the byte slice: a 16-byte slice can still
 // be an IPv4 address.
 type IP []byte
 
@@ -134,6 +134,9 @@ func (m IPMask) String() string
 // Contains reports whether the network includes ip.
 func (n *IPNet) Contains(ip IP) bool
 
+// Network returns the address's network name, "ip+net".
+func (n *IPNet) Network() string
+
 // String returns the CIDR notation of n like "192.168.100.1/24"
 // or "2001:DB8::/48" as defined in RFC 4632 and RFC 4291.
 // If the mask is not in the canonical form, it returns the
@@ -141,9 +144,6 @@ func (n *IPNet) Contains(ip IP) bool
 // character and a mask expressed as hexadecimal form with no
 // punctuation like "192.168.100.1/c000ff00".
 func (n *IPNet) String() string
-
-// Network returns the address's network name, "ip+net".
-func (n *IPNet) Network() string
 
 // A ParseError represents a malformed text string and the type of string that was expected.
 type ParseError struct {

@@ -35,8 +35,9 @@ type ProcAttr struct {
 }
 
 type SysProcAttr struct {
-	HideWindow bool
-	CmdLine    string
+	HideWindow    bool
+	CmdLine       string
+	CreationFlags uint32
 }
 
 func StartProcess(argv0 string, argv []string, attr *ProcAttr) (pid int, handle uintptr, err error)

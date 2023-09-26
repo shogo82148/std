@@ -4,9 +4,8 @@
 
 package net
 
-const (
-	ICMP4_ECHO_REQUEST = 8
-	ICMP4_ECHO_REPLY   = 0
-	ICMP6_ECHO_REQUEST = 128
-	ICMP6_ECHO_REPLY   = 129
-)
+// icmpMessage represents an ICMP message.
+
+// icmpMessageBody represents an ICMP message body.
+
+// imcpEcho represenets an ICMP echo request or reply message body.

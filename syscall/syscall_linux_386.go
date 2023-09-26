@@ -14,6 +14,10 @@ func TimevalToNsec(tv Timeval) int64
 
 func NsecToTimeval(nsec int64) (tv Timeval)
 
+func Getrlimit(resource int, rlim *Rlimit) (err error)
+
+func Setrlimit(resource int, rlim *Rlimit) (err error)
+
 // Underlying system call writes to newoffset via pointer.
 // Implemented in assembly to avoid allocation.
 func Seek(fd int, offset int64, whence int) (newoffset int64, err error)

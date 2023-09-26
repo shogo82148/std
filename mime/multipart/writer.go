@@ -20,8 +20,15 @@ type Writer struct {
 // writing to w.
 func NewWriter(w io.Writer) *Writer
 
-// Boundary returns the Writer's randomly selected boundary string.
+// Boundary returns the Writer's boundary.
 func (w *Writer) Boundary() string
+
+// SetBoundary overrides the Writer's default randomly-generated
+// boundary separator with an explicit value.
+//
+// SetBoundary must be called before any parts are created, may only
+// contain certain ASCII characters, and must be 1-69 bytes long.
+func (w *Writer) SetBoundary(boundary string) error
 
 // FormDataContentType returns the Content-Type for an HTTP
 // multipart/form-data with this Writer's Boundary.

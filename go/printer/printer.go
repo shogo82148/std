@@ -23,7 +23,7 @@ import (
 // trimmer is implemented as a state machine.
 // It can be in one of the following states:
 
-// A Mode value is a set of flags (or 0). They coontrol printing.
+// A Mode value is a set of flags (or 0). They control printing.
 type Mode uint
 
 const (
@@ -37,6 +37,7 @@ const (
 type Config struct {
 	Mode     Mode
 	Tabwidth int
+	Indent   int
 }
 
 // A CommentedNode bundles an AST node and corresponding comments.
@@ -48,8 +49,8 @@ type CommentedNode struct {
 
 // Fprint "pretty-prints" an AST node to output for a given configuration cfg.
 // Position information is interpreted relative to the file set fset.
-// The node type must be *ast.File, *CommentedNode, or assignment-compatible
-// to ast.Expr, ast.Decl, ast.Spec, or ast.Stmt.
+// The node type must be *ast.File, *CommentedNode, []ast.Decl, []ast.Stmt,
+// or assignment-compatible to ast.Expr, ast.Decl, ast.Spec, or ast.Stmt.
 func (cfg *Config) Fprint(output io.Writer, fset *token.FileSet, node interface{}) error
 
 // Fprint "pretty-prints" an AST node to output.

@@ -14,12 +14,16 @@ import (
 	"github.com/shogo82148/std/net/url"
 )
 
-// A Client is an HTTP client. Its zero value (DefaultClient) is a usable client
-// that uses DefaultTransport.
+// A Client is an HTTP client. Its zero value (DefaultClient) is a
+// usable client that uses DefaultTransport.
 //
-// The Client's Transport typically has internal state (cached
-// TCP connections), so Clients should be reused instead of created as
+// The Client's Transport typically has internal state (cached TCP
+// connections), so Clients should be reused instead of created as
 // needed. Clients are safe for concurrent use by multiple goroutines.
+//
+// A Client is higher-level than a RoundTripper (such as Transport)
+// and additionally handles HTTP details such as cookies and
+// redirects.
 type Client struct {
 	Transport RoundTripper
 
@@ -53,7 +57,7 @@ type RoundTripper interface {
 //
 // When err is nil, resp always contains a non-nil resp.Body.
 //
-// Callers should close res.Body when done reading from it. If
+// Callers should close resp.Body when done reading from it. If
 // resp.Body is not closed, the Client's underlying RoundTripper
 // (typically Transport) may not be able to re-use a persistent TCP
 // connection to the server for a subsequent "keep-alive" request.

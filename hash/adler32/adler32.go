@@ -3,7 +3,8 @@
 // license that can be found in the LICENSE file.
 
 // Package adler32 implements the Adler-32 checksum.
-// Defined in RFC 1950:
+//
+// It is defined in RFC 1950:
 //
 //	Adler-32 is composed of two sums accumulated per byte: s1 is
 //	the sum of all bytes, s2 is the sum of all s1 values. Both sums
@@ -18,6 +19,7 @@ import "github.com/shogo82148/std/hash"
 const Size = 4
 
 // digest represents the partial evaluation of a checksum.
+// The low 16 bits are s1, the high 16 bits are s2.
 
 // New returns a new hash.Hash32 computing the Adler-32 checksum.
 func New() hash.Hash32

@@ -11,6 +11,7 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/math/big"
+	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/time"
 )
 
@@ -38,6 +39,10 @@ const (
 	SHA512WithRSA
 	DSAWithSHA1
 	DSAWithSHA256
+	ECDSAWithSHA1
+	ECDSAWithSHA256
+	ECDSAWithSHA384
+	ECDSAWithSHA512
 )
 
 type PublicKeyAlgorithm int
@@ -46,41 +51,8 @@ const (
 	UnknownPublicKeyAlgorithm PublicKeyAlgorithm = iota
 	RSA
 	DSA
+	ECDSA
 )
-
-// OIDs for signature algorithms
-//
-// pkcs-1 OBJECT IDENTIFIER ::= {
-//    iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) 1 }
-//
-//
-// RFC 3279 2.2.1 RSA Signature Algorithms
-//
-// md2WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 2 }
-//
-// md5WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 4 }
-//
-// sha-1WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 5 }
-//
-// dsaWithSha1 OBJECT IDENTIFIER ::= {
-//    iso(1) member-body(2) us(840) x9-57(10040) x9cm(4) 3 }
-//
-//
-// RFC 4055 5 PKCS #1 Version 1.5
-//
-// sha256WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 11 }
-//
-// sha384WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 12 }
-//
-// sha512WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 13 }
-//
-//
-// RFC 5758 3.1 DSA Signature Algorithms
-//
-// dsaWithSha256 OBJECT IDENTIFIER ::= {
-//    joint-iso-ccitt(2) country(16) us(840) organization(1) gov(101)
-//    csor(3) algorithms(4) id-dsa-with-sha2(3) 2}
-//
 
 // RFC 3279, 2.3 Public Key Algorithms
 //
@@ -91,6 +63,28 @@ const (
 //
 // id-dsa OBJECT IDENTIFIER ::== { iso(1) member-body(2) us(840)
 //    x9-57(10040) x9cm(4) 1 }
+//
+// RFC 5480, 2.1.1 Unrestricted Algorithm Identifier and Parameters
+//
+// id-ecPublicKey OBJECT IDENTIFIER ::= {
+//       iso(1) member-body(2) us(840) ansi-X9-62(10045) keyType(2) 1 }
+
+// RFC 5480, 2.1.1.1. Named Curve
+//
+// secp224r1 OBJECT IDENTIFIER ::= {
+//   iso(1) identified-organization(3) certicom(132) curve(0) 33 }
+//
+// secp256r1 OBJECT IDENTIFIER ::= {
+//   iso(1) member-body(2) us(840) ansi-X9-62(10045) curves(3)
+//   prime(1) 7 }
+//
+// secp384r1 OBJECT IDENTIFIER ::= {
+//   iso(1) identified-organization(3) certicom(132) curve(0) 34 }
+//
+// secp521r1 OBJECT IDENTIFIER ::= {
+//   iso(1) identified-organization(3) certicom(132) curve(0) 35 }
+//
+// NB: secp256r1 is equivalent to prime256v1
 
 // KeyUsage represents the set of actions that are valid for a given key. It's
 // a bitmap of the KeyUsage* constants.
@@ -131,9 +125,16 @@ const (
 	ExtKeyUsageClientAuth
 	ExtKeyUsageCodeSigning
 	ExtKeyUsageEmailProtection
+	ExtKeyUsageIPSECEndSystem
+	ExtKeyUsageIPSECTunnel
+	ExtKeyUsageIPSECUser
 	ExtKeyUsageTimeStamping
 	ExtKeyUsageOCSPSigning
+	ExtKeyUsageMicrosoftServerGatedCrypto
+	ExtKeyUsageNetscapeServerGatedCrypto
 )
+
+// extKeyUsageOIDs contains the mapping between an ExtKeyUsage and its OID.
 
 // A Certificate represents an X.509 certificate.
 type Certificate struct {
@@ -168,6 +169,7 @@ type Certificate struct {
 
 	DNSNames       []string
 	EmailAddresses []string
+	IPAddresses    []net.IP
 
 	PermittedDNSDomainsCritical bool
 	PermittedDNSDomains         []string
@@ -226,8 +228,9 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 
 // CreateCertificate creates a new certificate based on a template. The
 // following members of template are used: SerialNumber, Subject, NotBefore,
-// NotAfter, KeyUsage, BasicConstraintsValid, IsCA, MaxPathLen, SubjectKeyId,
-// DNSNames, PermittedDNSDomainsCritical, PermittedDNSDomains.
+// NotAfter, KeyUsage, ExtKeyUsage, UnknownExtKeyUsage, BasicConstraintsValid,
+// IsCA, MaxPathLen, SubjectKeyId, DNSNames, PermittedDNSDomainsCritical,
+// PermittedDNSDomains.
 //
 // The certificate is signed by parent. If parent is equal to template then the
 // certificate is self-signed. The parameter pub is the public key of the
@@ -235,8 +238,8 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 //
 // The returned slice is the certificate in DER encoding.
 //
-// The only supported key type is RSA (*rsa.PublicKey for pub, *rsa.PrivateKey
-// for priv).
+// The only supported key types are RSA and ECDSA (*rsa.PublicKey or
+// *ecdsa.PublicKey for pub, *rsa.PrivateKey or *ecdsa.PublicKey for priv).
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub interface{}, priv interface{}) (cert []byte, err error)
 
 // pemCRLPrefix is the magic string that indicates that we have a PEM encoded

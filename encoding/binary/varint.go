@@ -44,5 +44,5 @@ func Varint(buf []byte) (int64, int)
 // ReadUvarint reads an encoded unsigned integer from r and returns it as a uint64.
 func ReadUvarint(r io.ByteReader) (uint64, error)
 
-// ReadVarint reads an encoded unsigned integer from r and returns it as an int64.
+// ReadVarint reads an encoded signed integer from r and returns it as an int64.
 func ReadVarint(r io.ByteReader) (int64, error)

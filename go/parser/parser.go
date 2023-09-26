@@ -14,4 +14,6 @@ package parser
 // to the list of unresolved identifiers. The sentinel is only used for verifying
 // internal consistency.
 
+// A bailout panic is raised to indicate early termination.
+
 // Parsing modes for parseSimpleStmt.

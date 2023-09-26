@@ -17,12 +17,15 @@ func CmsgLen(datalen int) int
 // payload of the passed data length occupies.
 func CmsgSpace(datalen int) int
 
+// SocketControlMessage represents a socket control message.
 type SocketControlMessage struct {
 	Header Cmsghdr
 	Data   []byte
 }
 
-func ParseSocketControlMessage(buf []byte) ([]SocketControlMessage, error)
+// ParseSocketControlMessage parses b as an array of socket control
+// messages.
+func ParseSocketControlMessage(b []byte) ([]SocketControlMessage, error)
 
 // UnixRights encodes a set of open file descriptors into a socket
 // control message for sending to another process.
@@ -30,4 +33,4 @@ func UnixRights(fds ...int) []byte
 
 // ParseUnixRights decodes a socket control message that contains an
 // integer array of open file descriptors from another process.
-func ParseUnixRights(msg *SocketControlMessage) ([]int, error)
+func ParseUnixRights(m *SocketControlMessage) ([]int, error)

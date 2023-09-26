@@ -5,18 +5,29 @@
 //go:build !windows && !plan9
 // +build !windows,!plan9
 
-// Package syslog provides a simple interface to the system log service. It
-// can send messages to the syslog daemon using UNIX domain sockets, UDP, or
-// TCP connections.
+// Package syslog provides a simple interface to the system log
+// service. It can send messages to the syslog daemon using UNIX
+// domain sockets, UDP or TCP.
+//
+// Only one call to Dial is necessary. On write failures,
+// the syslog client will attempt to reconnect to the server
+// and write again.
 package syslog
 
 import (
 	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/sync"
 )
 
+// The Priority is a combination of the syslog facility and
+// severity. For example, LOG_ALERT | LOG_FTP sends an alert severity
+// message from the FTP facility. The default severity is LOG_EMERG;
+// the default facility is LOG_KERN.
 type Priority int
 
 const (
+
 	// From /usr/include/sys/syslog.h.
 	// These are the same on Linux, BSD, and OS X.
 	LOG_EMERG Priority = iota
@@ -29,51 +40,95 @@ const (
 	LOG_DEBUG
 )
 
+const (
+
+	// From /usr/include/sys/syslog.h.
+	// These are the same up to LOG_FTP on Linux, BSD, and OS X.
+	LOG_KERN Priority = iota << 3
+	LOG_USER
+	LOG_MAIL
+	LOG_DAEMON
+	LOG_AUTH
+	LOG_SYSLOG
+	LOG_LPR
+	LOG_NEWS
+	LOG_UUCP
+	LOG_CRON
+	LOG_AUTHPRIV
+	LOG_FTP
+	_
+	_
+	_
+	_
+	LOG_LOCAL0
+	LOG_LOCAL1
+	LOG_LOCAL2
+	LOG_LOCAL3
+	LOG_LOCAL4
+	LOG_LOCAL5
+	LOG_LOCAL6
+	LOG_LOCAL7
+)
+
 // A Writer is a connection to a syslog server.
 type Writer struct {
 	priority Priority
-	prefix   string
-	conn     serverConn
+	tag      string
+	hostname string
+	network  string
+	raddr    string
+
+	mu   sync.Mutex
+	conn net.Conn
 }
 
-// New establishes a new connection to the system log daemon.
-// Each write to the returned writer sends a log message with
-// the given priority and prefix.
-func New(priority Priority, prefix string) (w *Writer, err error)
+// New establishes a new connection to the system log daemon.  Each
+// write to the returned writer sends a log message with the given
+// priority and prefix.
+func New(priority Priority, tag string) (w *Writer, err error)
 
-// Dial establishes a connection to a log daemon by connecting
-// to address raddr on the network net.
-// Each write to the returned writer sends a log message with
-// the given priority and prefix.
-func Dial(network, raddr string, priority Priority, prefix string) (w *Writer, err error)
+// Dial establishes a connection to a log daemon by connecting to
+// address raddr on the network net.  Each write to the returned
+// writer sends a log message with the given facility, severity and
+// tag.
+func Dial(network, raddr string, priority Priority, tag string) (*Writer, error)
 
 // Write sends a log message to the syslog daemon.
 func (w *Writer) Write(b []byte) (int, error)
 
+// Close closes a connection to the syslog daemon.
 func (w *Writer) Close() error
 
-// Emerg logs a message using the LOG_EMERG priority.
+// Emerg logs a message with severity LOG_EMERG, ignoring the severity
+// passed to New.
 func (w *Writer) Emerg(m string) (err error)
 
-// Alert logs a message using the LOG_ALERT priority.
+// Alert logs a message with severity LOG_ALERT, ignoring the severity
+// passed to New.
 func (w *Writer) Alert(m string) (err error)
 
-// Crit logs a message using the LOG_CRIT priority.
+// Crit logs a message with severity LOG_CRIT, ignoring the severity
+// passed to New.
 func (w *Writer) Crit(m string) (err error)
 
-// Err logs a message using the LOG_ERR priority.
+// Err logs a message with severity LOG_ERR, ignoring the severity
+// passed to New.
 func (w *Writer) Err(m string) (err error)
 
-// Warning logs a message using the LOG_WARNING priority.
+// Wanring logs a message with severity LOG_WARNING, ignoring the
+// severity passed to New.
 func (w *Writer) Warning(m string) (err error)
 
-// Notice logs a message using the LOG_NOTICE priority.
+// Notice logs a message with severity LOG_NOTICE, ignoring the
+// severity passed to New.
 func (w *Writer) Notice(m string) (err error)
 
-// Info logs a message using the LOG_INFO priority.
+// Info logs a message with severity LOG_INFO, ignoring the severity
+// passed to New.
 func (w *Writer) Info(m string) (err error)
 
-// Debug logs a message using the LOG_DEBUG priority.
+// Debug logs a message with severity LOG_DEBUG, ignoring the severity
+// passed to New.
 func (w *Writer) Debug(m string) (err error)
 
 // NewLogger creates a log.Logger whose output is written to

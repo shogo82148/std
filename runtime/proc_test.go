@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package runtime_test
+
+type Matrix [][]float64

@@ -26,7 +26,7 @@ import (
 // the underlying Go value can be used concurrently for the equivalent
 // direct operations.
 type Value struct {
-	typ *commonType
+	typ *rtype
 
 	val unsafe.Pointer
 
@@ -147,7 +147,7 @@ func (v Value) FieldByNameFunc(match func(string) bool) Value
 func (v Value) Float() float64
 
 // Index returns v's i'th element.
-// It panics if v's Kind is not Array or Slice or i is out of range.
+// It panics if v's Kind is not Array, Slice, or String or i is out of range.
 func (v Value) Index(i int) Value
 
 // Int returns v's underlying value, as an int64.
@@ -207,7 +207,7 @@ func (v Value) MapKeys() []Value
 // Method returns a function value corresponding to v's i'th method.
 // The arguments to a Call on the returned function should not include
 // a receiver; the returned function will always use v as the receiver.
-// Method panics if i is out of range.
+// Method panics if i is out of range or if v is a nil interface value.
 func (v Value) Method(i int) Value
 
 // NumMethod returns the number of methods in the value's method set.
@@ -245,6 +245,11 @@ func (v Value) OverflowUint(x uint64) bool
 // code using reflect cannot obtain unsafe.Pointers
 // without importing the unsafe package explicitly.
 // It panics if v's Kind is not Chan, Func, Map, Ptr, Slice, or UnsafePointer.
+//
+// If v's Kind is Func, the returned pointer is an underlying
+// code pointer, but not necessarily enough to identify a
+// single function uniquely. The only guarantee is that the
+// result is zero if and only if v is a nil func Value.
 func (v Value) Pointer() uintptr
 
 // Recv receives and returns a value from the channel v.
@@ -309,7 +314,7 @@ func (v Value) SetPointer(x unsafe.Pointer)
 func (v Value) SetString(x string)
 
 // Slice returns a slice of v.
-// It panics if v's Kind is not Array or Slice.
+// It panics if v's Kind is not Array, Slice or String, or if v is an unaddressable array.
 func (v Value) Slice(beg, end int) Value
 
 // String returns the string v's underlying value, as a string.
@@ -344,14 +349,22 @@ func (v Value) Uint() uint64
 func (v Value) UnsafeAddr() uintptr
 
 // StringHeader is the runtime representation of a string.
-// It cannot be used safely or portably.
+// It cannot be used safely or portably and its representation may
+// change in a later release.
+// Moreover, the Data field is not sufficient to guarantee the data
+// it references will not be garbage collected, so programs must keep
+// a separate, correctly typed pointer to the underlying data.
 type StringHeader struct {
 	Data uintptr
 	Len  int
 }
 
 // SliceHeader is the runtime representation of a slice.
-// It cannot be used safely or portably.
+// It cannot be used safely or portably and its representation may
+// change in a later release.
+// Moreover, the Data field is not sufficient to guarantee the data
+// it references will not be garbage collected, so programs must keep
+// a separate, correctly typed pointer to the underlying data.
 type SliceHeader struct {
 	Data uintptr
 	Len  int
@@ -372,6 +385,50 @@ func AppendSlice(s, t Value) Value
 // Dst and src each must have kind Slice or Array, and
 // dst and src must have the same element type.
 func Copy(dst, src Value) int
+
+// A runtimeSelect is a single case passed to rselect.
+// This must match ../runtime/chan.c:/runtimeSelect
+
+// A SelectDir describes the communication direction of a select case.
+type SelectDir int
+
+const (
+	_ SelectDir = iota
+	SelectSend
+	SelectRecv
+	SelectDefault
+)
+
+// A SelectCase describes a single case in a select operation.
+// The kind of case depends on Dir, the communication direction.
+//
+// If Dir is SelectDefault, the case represents a default case.
+// Chan and Send must be zero Values.
+//
+// If Dir is SelectSend, the case represents a send operation.
+// Normally Chan's underlying value must be a channel, and Send's underlying value must be
+// assignable to the channel's element type. As a special case, if Chan is a zero Value,
+// then the case is ignored, and the field Send will also be ignored and may be either zero
+// or non-zero.
+//
+// If Dir is SelectRecv, the case represents a receive operation.
+// Normally Chan's underlying value must be a channel and Send must be a zero Value.
+// If Chan is a zero Value, then the case is ignored, but Send must still be a zero Value.
+// When a receive operation is selected, the received Value is returned by Select.
+type SelectCase struct {
+	Dir  SelectDir
+	Chan Value
+	Send Value
+}
+
+// Select executes a select operation described by the list of cases.
+// Like the Go select statement, it blocks until at least one of the cases
+// can proceed, makes a uniform pseudo-random choice,
+// and then executes that case. It returns the index of the chosen case
+// and, if that case was a receive operation, the value received and a
+// boolean indicating whether the value corresponds to a send on the channel
+// (as opposed to a zero value received because the channel is closed).
+func Select(cases []SelectCase) (chosen int, recv Value, recvOK bool)
 
 // MakeSlice creates a new zero-initialized slice value
 // for the specified slice type, length, and capacity.
@@ -406,3 +463,8 @@ func New(typ Type) Value
 // NewAt returns a Value representing a pointer to a value of the
 // specified type, using p as that pointer.
 func NewAt(typ Type, p unsafe.Pointer) Value
+
+// Convert returns the value v converted to type t.
+// If the usual Go conversion rules do not allow conversion
+// of the value v to type t, Convert panics.
+func (v Value) Convert(t Type) Value

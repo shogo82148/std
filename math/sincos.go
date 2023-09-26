@@ -4,7 +4,7 @@
 
 package math
 
-// Sincos(x) returns Sin(x), Cos(x).
+// Sincos returns Sin(x), Cos(x).
 //
 // Special cases are:
 //

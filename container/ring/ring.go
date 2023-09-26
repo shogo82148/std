@@ -28,7 +28,7 @@ func (r *Ring) Move(n int) *Ring
 // New creates a ring of n elements.
 func New(n int) *Ring
 
-// Link connects ring r with with ring s such that r.Next()
+// Link connects ring r with ring s such that r.Next()
 // becomes s and returns the original value for r.Next().
 // r must not be empty.
 //

@@ -4,7 +4,7 @@
 
 package math
 
-// Cbrt returns the cube root of its argument.
+// Cbrt returns the cube root of x.
 //
 // Special cases are:
 //

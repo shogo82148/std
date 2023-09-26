@@ -88,6 +88,9 @@ var ErrHelp = errors.New("flag: help requested")
 
 // -- bool Value
 
+// optional interface to indicate boolean flags that can be
+// supplied without "=value" text
+
 // -- int Value
 
 // -- int64 Value
@@ -104,6 +107,10 @@ var ErrHelp = errors.New("flag: help requested")
 
 // Value is the interface to the dynamic value stored in a flag.
 // (The default value is represented as a string.)
+//
+// If a Value has an IsBoolFlag() bool method returning true,
+// the command-line parser makes -name equivalent to -name=true
+// rather than using the next command-line argument.
 type Value interface {
 	String() string
 	Set(string) error

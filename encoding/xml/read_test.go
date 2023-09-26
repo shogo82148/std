@@ -116,3 +116,22 @@ type TestThree struct {
 	XMLName Name   `xml:"Test3"`
 	Attr    string `xml:",attr"`
 }
+
+type Tables struct {
+	HTable string `xml:"http://www.w3.org/TR/html4/ table"`
+	FTable string `xml:"http://www.w3schools.com/furniture table"`
+}
+
+type TableAttrs struct {
+	TAttr TAttr
+}
+
+type TAttr struct {
+	HTable string `xml:"http://www.w3.org/TR/html4/ table,attr"`
+	FTable string `xml:"http://www.w3schools.com/furniture table,attr"`
+	Lang   string `xml:"http://www.w3.org/XML/1998/namespace lang,attr,omitempty"`
+	Other1 string `xml:"http://golang.org/xml/ other,attr,omitempty"`
+	Other2 string `xml:"http://golang.org/xmlfoo/ other,attr,omitempty"`
+	Other3 string `xml:"http://golang.org/json/ other,attr,omitempty"`
+	Other4 string `xml:"http://golang.org/2/json/ other,attr,omitempty"`
+}

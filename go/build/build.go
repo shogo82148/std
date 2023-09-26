@@ -20,9 +20,13 @@ type Context struct {
 	GOROOT      string
 	GOPATH      string
 	CgoEnabled  bool
-	BuildTags   []string
 	UseAllFiles bool
 	Compiler    string
+
+	BuildTags   []string
+	ReleaseTags []string
+
+	InstallSuffix string
 
 	JoinPath func(elem ...string) string
 
@@ -76,12 +80,15 @@ type Package struct {
 	Goroot     bool
 	PkgObj     string
 
-	GoFiles   []string
-	CgoFiles  []string
-	CFiles    []string
-	HFiles    []string
-	SFiles    []string
-	SysoFiles []string
+	GoFiles        []string
+	CgoFiles       []string
+	IgnoredGoFiles []string
+	CFiles         []string
+	HFiles         []string
+	SFiles         []string
+	SysoFiles      []string
+	SwigFiles      []string
+	SwigCXXFiles   []string
 
 	CgoPkgConfig []string
 	CgoCFLAGS    []string

@@ -112,7 +112,7 @@ or
 
 	// Asynchronous call
 	quotient := new(Quotient)
-	divCall := client.Go("Arith.Divide", args, &quotient, nil)
+	divCall := client.Go("Arith.Divide", args, quotient, nil)
 	replyCall := <-divCall.Done	// will be equal to divCall
 	// check errors, print, etc.
 
@@ -178,8 +178,8 @@ var DefaultServer = NewServer()
 //   - two arguments, both pointers to exported structs
 //   - one return value, of type error
 //
-// It returns an error if the receiver is not an exported type or has no
-// suitable methods.
+// It returns an error if the receiver is not an exported type or has
+// no methods or unsuitable methods. It also logs the error using package log.
 // The client accesses each method using a string of the form "Type.Method",
 // where Type is the receiver's concrete type.
 func (server *Server) Register(rcvr interface{}) error

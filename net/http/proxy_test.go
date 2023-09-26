@@ -22,5 +22,5 @@ var UseProxyTests = []struct {
 	{"localhost.net", true},
 	{"local.localhost", true},
 	{"barbarbaz.net", true},
-	{"www.foobar.com", true},
+	{"www.foobar.com", false},
 }

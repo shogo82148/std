@@ -13,9 +13,6 @@
 
 package syscall
 
-/*
- * Pseudo-system calls
- */
 // The const provides a compile-time constant so clients
 // can adjust to whether there is a working Getwd and avoid
 // even linking this function into the binary.  See ../os/getwd.go.
@@ -133,6 +130,8 @@ func SysctlUint32(name string) (value uint32, err error)
 
 // sys	utimes(path string, timeval *[2]Timeval) (err error)
 func Utimes(path string, tv []Timeval) (err error)
+
+func UtimesNano(path string, ts []Timespec) error
 
 // sys	futimes(fd int, timeval *[2]Timeval) (err error)
 func Futimes(fd int, tv []Timeval) (err error)

@@ -40,9 +40,9 @@ type InterfaceAddrMessage struct {
 	Data   []byte
 }
 
-// ParseRoutingMessage parses buf as routing messages and returns
-// the slice containing the RoutingMessage interfaces.
-func ParseRoutingMessage(buf []byte) (msgs []RoutingMessage, err error)
+// ParseRoutingMessage parses b as routing messages and returns the
+// slice containing the RoutingMessage interfaces.
+func ParseRoutingMessage(b []byte) (msgs []RoutingMessage, err error)
 
 // ParseRoutingMessage parses msg's payload as raw sockaddrs and
 // returns the slice containing the Sockaddr interfaces.

@@ -13,3 +13,9 @@ type Reply struct {
 }
 
 type Arith int
+
+type ArithAddResp struct {
+	Id     interface{} `json:"id"`
+	Result Reply       `json:"result"`
+	Error  interface{} `json:"error"`
+}

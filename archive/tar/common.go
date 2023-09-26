@@ -10,9 +10,13 @@
 //
 //	http://www.freebsd.org/cgi/man.cgi?query=tar&sektion=5
 //	http://www.gnu.org/software/tar/manual/html_node/Standard.html
+//	http://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html
 package tar
 
-import "github.com/shogo82148/std/time"
+import (
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/time"
+)
 
 const (
 
@@ -28,6 +32,8 @@ const (
 	TypeCont          = '7'
 	TypeXHeader       = 'x'
 	TypeXGlobalHeader = 'g'
+	TypeGNULongName   = 'L'
+	TypeGNULongLink   = 'K'
 )
 
 // A Header represents a single header in a tar archive.
@@ -48,3 +54,19 @@ type Header struct {
 	AccessTime time.Time
 	ChangeTime time.Time
 }
+
+// File name constants from the tar spec.
+
+// FileInfo returns an os.FileInfo for the Header.
+func (h *Header) FileInfo() os.FileInfo
+
+// headerFileInfo implements os.FileInfo.
+
+// sysStat, if non-nil, populates h from system-dependent fields of fi.
+
+// Mode constants from the tar spec.
+
+// FileInfoHeader creates a partially-populated Header from fi.
+// If fi describes a symlink, FileInfoHeader records link as the link target.
+// If fi describes a directory, a slash is appended to the name.
+func FileInfoHeader(fi os.FileInfo, link string) (*Header, error)

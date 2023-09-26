@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package big
+
+// Test inputs to Rat.SetString.  The prefix "long:" causes the test
+// to be skipped in --test.short mode.  (The threshold is about 500us.)

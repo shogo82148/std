@@ -16,8 +16,8 @@ import (
 // Close ensures that the body has been fully read
 // and then reads the trailer if necessary.
 
-// ErrBodyReadAfterClose is returned when reading a Request Body after
-// the body has been closed. This typically happens when the body is
+// ErrBodyReadAfterClose is returned when reading a Request or Response
+// Body after the body has been closed. This typically happens when the body is
 // read after an HTTP Handler calls WriteHeader or Write on its
 // ResponseWriter.
-var ErrBodyReadAfterClose = errors.New("http: invalid Read on closed request Body")
+var ErrBodyReadAfterClose = errors.New("http: invalid Read on closed Body")

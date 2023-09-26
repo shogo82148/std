@@ -29,7 +29,7 @@ func Exit(code int)
 
 func Fchdir(fd int) (err error)
 
-func Fchflags(path string, flags int) (err error)
+func Fchflags(fd int, flags int) (err error)
 
 func Fchmod(fd int, mode uint32) (err error)
 
@@ -109,8 +109,6 @@ func Pread(fd int, p []byte, offset int64) (n int, err error)
 
 func Pwrite(fd int, p []byte, offset int64) (n int, err error)
 
-func Read(fd int, p []byte) (n int, err error)
-
 func Readlink(path string, buf []byte) (n int, err error)
 
 func Rename(from string, to string) (err error)
@@ -164,5 +162,3 @@ func Undelete(path string) (err error)
 func Unlink(path string) (err error)
 
 func Unmount(path string, flags int) (err error)
-
-func Write(fd int, p []byte) (n int, err error)

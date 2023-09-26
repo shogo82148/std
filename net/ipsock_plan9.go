@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// IP sockets stubs for Plan 9
+// Internet protocol family sockets for Plan 9
 
 package net
+
+// /sys/include/ape/sys/socket.h:/SOMAXCONN

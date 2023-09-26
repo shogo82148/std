@@ -19,8 +19,9 @@ const (
 // The two slices must be in sorted order and non-overlapping.
 // Also, R32 should contain only values >= 0x10000 (1<<16).
 type RangeTable struct {
-	R16 []Range16
-	R32 []Range32
+	R16         []Range16
+	R32         []Range32
+	LatinOffset int
 }
 
 // Range16 represents of a range of 16-bit Unicode code points.  The range runs from Lo to Hi
@@ -77,7 +78,10 @@ const (
 	UpperLower = MaxRune + 1
 )
 
-// Is tests whether rune is in the specified table of ranges.
+// linearMax is the maximum size table for linear search for non-Latin1 rune.
+// Derived by running 'go test -calibrate'.
+
+// Is reports whether the rune is in the specified table of ranges.
 func Is(rangeTab *RangeTable, r rune) bool
 
 // IsUpper reports whether the rune is an upper case letter.

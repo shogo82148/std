@@ -49,16 +49,21 @@ func (b *Buffer) Truncate(n int)
 // b.Reset() is the same as b.Truncate(0).
 func (b *Buffer) Reset()
 
-// Write appends the contents of p to the buffer.  The return
-// value n is the length of p; err is always nil.
-// If the buffer becomes too large, Write will panic with
-// ErrTooLarge.
+// Grow grows the buffer's capacity, if necessary, to guarantee space for
+// another n bytes. After Grow(n), at least n bytes can be written to the
+// buffer without another allocation.
+// If n is negative, Grow will panic.
+// If the buffer can't grow it will panic with ErrTooLarge.
+func (b *Buffer) Grow(n int)
+
+// Write appends the contents of p to the buffer, growing the buffer as
+// needed. The return value n is the length of p; err is always nil. If the
+// buffer becomes too large, Write will panic with ErrTooLarge.
 func (b *Buffer) Write(p []byte) (n int, err error)
 
-// WriteString appends the contents of s to the buffer.  The return
-// value n is the length of s; err is always nil.
-// If the buffer becomes too large, WriteString will panic with
-// ErrTooLarge.
+// WriteString appends the contents of s to the buffer, growing the buffer as
+// needed. The return value n is the length of s; err is always nil. If the
+// buffer becomes too large, WriteString will panic with ErrTooLarge.
 func (b *Buffer) WriteString(s string) (n int, err error)
 
 // MinRead is the minimum slice size passed to a Read call by
@@ -67,33 +72,28 @@ func (b *Buffer) WriteString(s string) (n int, err error)
 // underlying buffer.
 const MinRead = 512
 
-// ReadFrom reads data from r until EOF and appends it to the buffer.
-// The return value n is the number of bytes read.
-// Any error except io.EOF encountered during the read
-// is also returned.
-// If the buffer becomes too large, ReadFrom will panic with
-// ErrTooLarge.
+// ReadFrom reads data from r until EOF and appends it to the buffer, growing
+// the buffer as needed. The return value n is the number of bytes read. Any
+// error except io.EOF encountered during the read is also returned. If the
+// buffer becomes too large, ReadFrom will panic with ErrTooLarge.
 func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error)
 
-// WriteTo writes data to w until the buffer is drained or an error
-// occurs. The return value n is the number of bytes written; it always
-// fits into an int, but it is int64 to match the io.WriterTo interface.
-// Any error encountered during the write is also returned.
+// WriteTo writes data to w until the buffer is drained or an error occurs.
+// The return value n is the number of bytes written; it always fits into an
+// int, but it is int64 to match the io.WriterTo interface. Any error
+// encountered during the write is also returned.
 func (b *Buffer) WriteTo(w io.Writer) (n int64, err error)
 
-// WriteByte appends the byte c to the buffer.
-// The returned error is always nil, but is included
-// to match bufio.Writer's WriteByte.
-// If the buffer becomes too large, WriteByte will panic with
+// WriteByte appends the byte c to the buffer, growing the buffer as needed.
+// The returned error is always nil, but is included to match bufio.Writer's
+// WriteByte. If the buffer becomes too large, WriteByte will panic with
 // ErrTooLarge.
 func (b *Buffer) WriteByte(c byte) error
 
-// WriteRune appends the UTF-8 encoding of Unicode
-// code point r to the buffer, returning its length and
-// an error, which is always nil but is included
-// to match bufio.Writer's WriteRune.
-// If the buffer becomes too large, WriteRune will panic with
-// ErrTooLarge.
+// WriteRune appends the UTF-8 encoding of Unicode code point r to the
+// buffer, returning its length and an error, which is always nil but is
+// included to match bufio.Writer's WriteRune. The buffer is grown as needed;
+// if it becomes too large, WriteRune will panic with ErrTooLarge.
 func (b *Buffer) WriteRune(r rune) (n int, err error)
 
 // Read reads the next len(p) bytes from the buffer or until the buffer

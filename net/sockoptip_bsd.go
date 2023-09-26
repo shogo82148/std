@@ -5,6 +5,4 @@
 //go:build darwin || freebsd || netbsd || openbsd
 // +build darwin freebsd netbsd openbsd
 
-// IP-level socket options for BSD variants
-
 package net

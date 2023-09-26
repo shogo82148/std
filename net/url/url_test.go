@@ -17,9 +17,8 @@ type EscapeTest struct {
 }
 
 type EncodeQueryTest struct {
-	m         Values
-	expected  string
-	expected1 string
+	m        Values
+	expected string
 }
 
 type RequestURITest struct {

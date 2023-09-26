@@ -24,6 +24,9 @@ const (
 	// TooManyIntermediates results when a path length constraint is
 	// violated.
 	TooManyIntermediates
+	// IncompatibleUsage results when the certificate's key usage indicates
+	// that it may only be used for a different purpose.
+	IncompatibleUsage
 )
 
 // CertificateInvalidError results when an odd error occurs. Users of this
@@ -51,6 +54,12 @@ type UnknownAuthorityError struct {
 
 func (e UnknownAuthorityError) Error() string
 
+// SystemRootsError results when we fail to load the system root certificates.
+type SystemRootsError struct {
+}
+
+func (e SystemRootsError) Error() string
+
 // VerifyOptions contains parameters for Certificate.Verify. It's a structure
 // because other PKIX verification APIs have ended up needing many options.
 type VerifyOptions struct {
@@ -58,6 +67,8 @@ type VerifyOptions struct {
 	Intermediates *CertPool
 	Roots         *CertPool
 	CurrentTime   time.Time
+
+	KeyUsages []ExtKeyUsage
 }
 
 // Verify attempts to verify c by building one or more chains from c to a

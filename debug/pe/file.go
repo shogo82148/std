@@ -14,6 +14,7 @@ import (
 type File struct {
 	FileHeader
 	Sections []*Section
+	Symbols  []*Symbol
 
 	closer io.Closer
 }
@@ -36,6 +37,14 @@ type Section struct {
 
 	io.ReaderAt
 	sr *io.SectionReader
+}
+
+type Symbol struct {
+	Name          string
+	Value         uint32
+	SectionNumber int16
+	Type          uint16
+	StorageClass  uint8
 }
 
 type ImportDirectory struct {

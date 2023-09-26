@@ -4,9 +4,6 @@
 
 // HTTP server.  See RFC 2616.
 
-// TODO(rsc):
-//	logging
-
 package http
 
 import (
@@ -65,11 +62,51 @@ type Hijacker interface {
 	Hijack() (net.Conn, *bufio.ReadWriter, error)
 }
 
+// The CloseNotifier interface is implemented by ResponseWriters which
+// allow detecting when the underlying connection has gone away.
+//
+// This mechanism can be used to cancel long operations on the server
+// if the client has disconnected before the response is ready.
+type CloseNotifier interface {
+	CloseNotify() <-chan bool
+}
+
 // A conn represents the server side of an HTTP connection.
+
+// A switchReader can have its Reader changed at runtime.
+// It's not safe for concurrent Reads and switches.
+
+// A switchWriter can have its Writer changed at runtime.
+// It's not safe for concurrent Writes and switches.
+
+// A liveSwitchReader is a switchReader that's safe for concurrent
+// reads and switches, if its mutex is held.
+
+// This should be >= 512 bytes for DetectContentType,
+// but otherwise it's somewhat arbitrary.
+
+// chunkWriter writes to a response's conn buffer, and is the writer
+// wrapped by the response.bufw buffered writer.
+//
+// chunkWriter also is responsible for finalizing the Header, including
+// conditionally setting the Content-Type and setting a Content-Length
+// in cases where the handler's final output is smaller than the buffer
+// size. It also conditionally adds chunk headers, when in chunking mode.
+//
+// See the comment above (*response).Write for the entire write flow.
 
 // A response represents the server side of an HTTP response.
 
 // noLimit is an effective infinite upper bound for io.LimitedReader
+
+// debugServerConnections controls whether all server connections are wrapped
+// with a verbose logging wrapper.
+
+// TODO: remove this, if issue 5100 is fixed
+
+// TODO: remove this, if issue 5100 is fixed
+
+// TODO: use a sync.Cache instead
 
 // DefaultMaxHeaderBytes is the maximum permitted size of the headers
 // in an HTTP request.
@@ -94,6 +131,26 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 // This number is approximately what a typical machine's TCP buffer
 // size is anyway.  (if we have the bytes on the machine, we might as
 // well read them)
+
+// extraHeader is the set of headers sometimes added by chunkWriter.writeHeader.
+// This type is used to avoid extra allocations from cloning and/or populating
+// the response Header map and all its 1-element slices.
+
+// Sorted the same as extraHeader.Write's loop.
+
+// statusLines is a cache of Status-Line strings, keyed by code (for
+// HTTP/1.1) or negative code (for HTTP/1.0). This is faster than a
+// map keyed by struct of two fields. This map's max size is bounded
+// by 2*len(statusText), two protocol types for each known official
+// status code in the statusText map.
+
+// rstAvoidanceDelay is the amount of time we sleep after closing the
+// write side of a TCP connection before closing the entire socket.
+// By sleeping, we increase the chances that the client sees our FIN
+// and processes its final data before they process the subsequent RST
+// from closing a connection with known unread data.
+// This RST seems to occur mostly on BSD systems. (And Windows?)
+// This timeout is somewhat arbitrary (~latency around the planet).
 
 // The HandlerFunc type is an adapter to allow the use of
 // ordinary functions as HTTP handlers.  If f is a function
@@ -156,8 +213,9 @@ func RedirectHandler(url string, code int) Handler
 // redirecting any request containing . or .. elements to an
 // equivalent .- and ..-free URL.
 type ServeMux struct {
-	mu sync.RWMutex
-	m  map[string]muxEntry
+	mu    sync.RWMutex
+	m     map[string]muxEntry
+	hosts bool
 }
 
 // NewServeMux allocates and returns a new ServeMux.
@@ -165,6 +223,20 @@ func NewServeMux() *ServeMux
 
 // DefaultServeMux is the default ServeMux used by Serve.
 var DefaultServeMux = NewServeMux()
+
+// Handler returns the handler to use for the given request,
+// consulting r.Method, r.Host, and r.URL.Path. It always returns
+// a non-nil handler. If the path is not in its canonical form, the
+// handler will be an internally-generated handler that redirects
+// to the canonical path.
+//
+// Handler also returns the registered pattern that matches the
+// request or, in the case of internally-generated redirects,
+// the pattern that will match after following the redirect.
+//
+// If there is no registered handler that applies to the request,
+// Handler returns a “page not found” handler and an empty pattern.
+func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 
 // ServeHTTP dispatches the request to the handler whose
 // pattern most closely matches the request URL.
@@ -188,7 +260,7 @@ func Handle(pattern string, handler Handler)
 func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Serve accepts incoming HTTP connections on the listener l,
-// creating a new service thread for each.  The service threads
+// creating a new service goroutine for each.  The service goroutines
 // read requests and then call handler to reply to them.
 // Handler is typically nil, in which case the DefaultServeMux is used.
 func Serve(l net.Listener, handler Handler) error
@@ -201,7 +273,12 @@ type Server struct {
 	WriteTimeout   time.Duration
 	MaxHeaderBytes int
 	TLSConfig      *tls.Config
+
+	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)
 }
+
+// serverHandler delegates to either the server's Handler or
+// DefaultServeMux and also handles "OPTIONS *" requests.
 
 // ListenAndServe listens on the TCP network address srv.Addr and then
 // calls Serve to handle requests on incoming connections.  If
@@ -209,7 +286,7 @@ type Server struct {
 func (srv *Server) ListenAndServe() error
 
 // Serve accepts incoming connections on the Listener l, creating a
-// new service thread for each.  The service threads read requests and
+// new service goroutine for each.  The service goroutines read requests and
 // then call srv.Handler to reply to them.
 func (srv *Server) Serve(l net.Listener) error
 
@@ -286,7 +363,7 @@ func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 // TimeoutHandler returns a Handler that runs h with the given time limit.
 //
 // The new Handler calls h.ServeHTTP to handle each request, but if a
-// call runs for more than ns nanoseconds, the handler responds with
+// call runs for longer than its time limit, the handler responds with
 // a 503 Service Unavailable error and the given message in its body.
 // (If msg is empty, a suitable default message will be sent.)
 // After such a timeout, writes by h to its ResponseWriter will return
@@ -296,3 +373,13 @@ func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 // ErrHandlerTimeout is returned on ResponseWriter Write calls
 // in handlers which have timed out.
 var ErrHandlerTimeout = errors.New("http: Handler timeout")
+
+// globalOptionsHandler responds to "OPTIONS *" requests.
+
+// eofReader is a non-nil io.ReadCloser that always returns EOF.
+
+// initNPNRequest is an HTTP handler that initializes certain
+// uninitialized fields in its *Request. Such partially-initialized
+// Requests come from NPN protocol handlers.
+
+// loggingConn is used for debugging.

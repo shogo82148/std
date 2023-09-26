@@ -20,12 +20,19 @@ type Timer struct {
 
 // Stop prevents the Timer from firing.
 // It returns true if the call stops the timer, false if the timer has already
-// expired or stopped.
-func (t *Timer) Stop() (ok bool)
+// expired or been stopped.
+// Stop does not close the channel, to prevent a read from the channel succeeding
+// incorrectly.
+func (t *Timer) Stop() bool
 
 // NewTimer creates a new Timer that will send
 // the current time on its channel after at least duration d.
 func NewTimer(d Duration) *Timer
+
+// Reset changes the timer to expire after duration d.
+// It returns true if the timer had been active, false if the timer had
+// expired or been stopped.
+func (t *Timer) Reset(d Duration) bool
 
 // After waits for the duration to elapse and then sends the current time
 // on the returned channel.

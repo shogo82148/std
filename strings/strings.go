@@ -9,6 +9,8 @@ import (
 	"github.com/shogo82148/std/unicode"
 )
 
+// primeRK is the prime base used in Rabin-Karp algorithm.
+
 // Count counts the number of non-overlapping instances of sep in s.
 func Count(s, sep string) int
 
@@ -73,7 +75,8 @@ func Split(s, sep string) []string
 func SplitAfter(s, sep string) []string
 
 // Fields splits the string s around each instance of one or more consecutive white space
-// characters, returning an array of substrings of s or an empty list if s contains only white space.
+// characters, as defined by unicode.IsSpace, returning an array of substrings of s or an
+// empty list if s contains only white space.
 func Fields(s string) []string
 
 // FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
@@ -122,6 +125,8 @@ func ToTitleSpecial(_case unicode.SpecialCase, s string) string
 
 // Title returns a copy of the string s with all Unicode letters that begin words
 // mapped to their title case.
+//
+// BUG: The rule Title uses for word boundaries does not handle Unicode punctuation properly.
 func Title(s string) string
 
 // TrimLeftFunc returns a slice of the string s with all leading
@@ -159,6 +164,14 @@ func TrimRight(s string, cutset string) string
 // TrimSpace returns a slice of the string s, with all leading
 // and trailing white space removed, as defined by Unicode.
 func TrimSpace(s string) string
+
+// TrimPrefix returns s without the provided leading prefix string.
+// If s doesn't start with prefix, s is returned unchanged.
+func TrimPrefix(s, prefix string) string
+
+// TrimSuffix returns s without the provided trailing suffix string.
+// If s doesn't end with suffix, s is returned unchanged.
+func TrimSuffix(s, suffix string) string
 
 // Replace returns a copy of the string s with the first n
 // non-overlapping instances of old replaced by new.

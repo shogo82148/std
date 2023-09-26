@@ -8,6 +8,9 @@
 // general syntax used by Perl, Python, and other languages.
 // More precisely, it is the syntax accepted by RE2 and described at
 // http://code.google.com/p/re2/wiki/Syntax, except for \C.
+// For an overview of the syntax, run
+//
+//	godoc regexp/syntax
 //
 // All characters are UTF-8-encoded code points.
 //
@@ -27,11 +30,11 @@
 // of bytes; return values are adjusted as appropriate.
 //
 // If 'Submatch' is present, the return value is a slice identifying the
-// successive submatches of the expression.  Submatches are matches of
-// parenthesized subexpressions within the regular expression, numbered from
-// left to right in order of opening parenthesis.  Submatch 0 is the match of
-// the entire expression, submatch 1 the match of the first parenthesized
-// subexpression, and so on.
+// successive submatches of the expression. Submatches are matches of
+// parenthesized subexpressions (also known as capturing groups) within the
+// regular expression, numbered from left to right in order of opening
+// parenthesis. Submatch 0 is the match of the entire expression, submatch 1
+// the match of the first parenthesized subexpression, and so on.
 //
 // If 'Index' is present, matches and submatches are identified by byte index
 // pairs within the input string: result[2*n:2*n+1] identifies the indexes of
@@ -114,6 +117,12 @@ func Compile(expr string) (*Regexp, error)
 // See http://swtch.com/~rsc/regexp/regexp2.html#posix for details.
 func CompilePOSIX(expr string) (*Regexp, error)
 
+// Longest makes future searches prefer the leftmost-longest match.
+// That is, when matching against text, the regexp returns a match that
+// begins as early as possible in the input (leftmost), and among those
+// it chooses a match that is as long as possible.
+func (re *Regexp) Longest()
+
 // MustCompile is like Compile but panics if the expression cannot be parsed.
 // It simplifies safe initialization of global variables holding compiled regular
 // expressions.
@@ -164,17 +173,17 @@ func (re *Regexp) Match(b []byte) bool
 // MatchReader checks whether a textual regular expression matches the text
 // read by the RuneReader.  More complicated queries need to use Compile and
 // the full Regexp interface.
-func MatchReader(pattern string, r io.RuneReader) (matched bool, error error)
+func MatchReader(pattern string, r io.RuneReader) (matched bool, err error)
 
 // MatchString checks whether a textual regular expression
 // matches a string.  More complicated queries need
 // to use Compile and the full Regexp interface.
-func MatchString(pattern string, s string) (matched bool, error error)
+func MatchString(pattern string, s string) (matched bool, err error)
 
 // Match checks whether a textual regular expression
 // matches a byte slice.  More complicated queries need
 // to use Compile and the full Regexp interface.
-func Match(pattern string, b []byte) (matched bool, error error)
+func Match(pattern string, b []byte) (matched bool, err error)
 
 // ReplaceAllString returns a copy of src, replacing matches of the Regexp
 // with the replacement string repl.  Inside repl, $ signs are interpreted as
@@ -350,3 +359,22 @@ func (re *Regexp) FindAllStringSubmatch(s string, n int) [][]string
 // comment.
 // A return value of nil indicates no match.
 func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int
+
+// Split slices s into substrings separated by the expression and returns a slice of
+// the substrings between those expression matches.
+//
+// The slice returned by this method consists of all the substrings of s
+// not contained in the slice returned by FindAllString. When called on an expression
+// that contains no metacharacters, it is equivalent to strings.SplitN.
+//
+// Example:
+//
+//	s := regexp.MustCompile("a*").Split("abaabaccadaaae", 5)
+//	// s: ["", "b", "b", "c", "cadaaae"]
+//
+// The count determines the number of substrings to return:
+//
+//	n > 0: at most n substrings; the last substring will be the unsplit remainder.
+//	n == 0: the result is nil (zero substrings)
+//	n < 0: all substrings
+func (re *Regexp) Split(s string, n int) []string

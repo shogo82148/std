@@ -11,6 +11,14 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
+// The only signal values guaranteed to be present on all systems
+// are Interrupt (send the process an interrupt) and Kill (force
+// the process to exit).
+var (
+	Interrupt Signal = syscall.SIGINT
+	Kill      Signal = syscall.SIGKILL
+)
+
 // ProcessState stores information about a process, as reported by Wait.
 type ProcessState struct {
 	pid    int

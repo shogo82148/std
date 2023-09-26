@@ -23,12 +23,20 @@ type Decoder struct {
 // read data from r beyond the JSON values requested.
 func NewDecoder(r io.Reader) *Decoder
 
+// UseNumber causes the Decoder to unmarshal a number into an interface{} as a
+// Number instead of as a float64.
+func (dec *Decoder) UseNumber()
+
 // Decode reads the next JSON-encoded value from its
 // input and stores it in the value pointed to by v.
 //
 // See the documentation for Unmarshal for details about
 // the conversion of JSON into a Go value.
 func (dec *Decoder) Decode(v interface{}) error
+
+// Buffered returns a reader of the data remaining in the Decoder's
+// buffer. The reader is valid until the next call to Decode.
+func (dec *Decoder) Buffered() io.Reader
 
 // An Encoder writes JSON objects to an output stream.
 type Encoder struct {

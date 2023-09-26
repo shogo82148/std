@@ -148,4 +148,5 @@ func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 // letter and any letter following a hyphen to upper case;
 // the rest are converted to lowercase.  For example, the
 // canonical key for "accept-encoding" is "Accept-Encoding".
+// MIME header keys are assumed to be ASCII only.
 func CanonicalMIMEHeaderKey(s string) string

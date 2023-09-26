@@ -11,7 +11,10 @@ package reflect
 // checks in progress are true when it reencounters them.
 // Visited are stored in a map indexed by 17 * a1 + a2;
 
-// DeepEqual tests for deep equality. It uses normal == equality where possible
-// but will scan members of arrays, slices, maps, and fields of structs. It correctly
-// handles recursive types. Functions are equal only if they are both nil.
+// DeepEqual tests for deep equality. It uses normal == equality where
+// possible but will scan elements of arrays, slices, maps, and fields of
+// structs. In maps, keys are compared with == but elements use deep
+// equality. DeepEqual correctly handles recursive types. Functions are equal
+// only if they are both nil.
+// An empty slice is not equal to a nil slice.
 func DeepEqual(a1, a2 interface{}) bool

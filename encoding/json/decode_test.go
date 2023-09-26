@@ -4,10 +4,125 @@
 
 package json
 
+import (
+	"image"
+	"time"
+)
+
 type T struct {
 	X string
 	Y int
 	Z int `json:"-"`
+}
+
+type U struct {
+	Alphabet string `json:"alpha"`
+}
+
+type V struct {
+	F1 interface{}
+	F2 int32
+	F3 Number
+}
+
+// ifaceNumAsFloat64/ifaceNumAsNumber are used to test unmarshaling with and
+// without UseNumber
+
+type Point struct {
+	Z int
+}
+
+type Top struct {
+	Level0 int
+	Embed0
+	*Embed0a
+	*Embed0b `json:"e,omitempty"`
+	Embed0c  `json:"-"`
+	Loop
+	Embed0p
+	Embed0q
+}
+
+type Embed0 struct {
+	Level1a int
+	Level1b int
+	Level1c int
+	Level1d int
+	Level1e int `json:"x"`
+}
+
+type Embed0a struct {
+	Level1a int `json:"Level1a,omitempty"`
+	Level1b int `json:"LEVEL1B,omitempty"`
+	Level1c int `json:"-"`
+	Level1d int
+	Level1f int `json:"x"`
+}
+
+type Embed0b Embed0
+
+type Embed0c Embed0
+
+type Embed0p struct {
+	image.Point
+}
+
+type Embed0q struct {
+	Point
+}
+
+type Loop struct {
+	Loop1 int `json:",omitempty"`
+	Loop2 int `json:",omitempty"`
+	*Loop
+}
+
+// From reflect test:
+// The X in S6 and S7 annihilate, but they also block the X in S8.S9.
+type S5 struct {
+	S6
+	S7
+	S8
+}
+
+type S6 struct {
+	X int
+}
+
+type S7 S6
+
+type S8 struct {
+	S9
+}
+
+type S9 struct {
+	X int
+	Y int
+}
+
+// From reflect test:
+// The X in S11.S6 and S12.S6 annihilate, but they also block the X in S13.S8.S9.
+type S10 struct {
+	S11
+	S12
+	S13
+}
+
+type S11 struct {
+	S6
+}
+
+type S12 struct {
+	S6
+}
+
+type S13 struct {
+	S8
+}
+
+type Ambig struct {
+	First  int `json:"HELLO"`
+	Second int `json:"Hello"`
 }
 
 type Xint struct {
@@ -90,3 +205,10 @@ type All struct {
 type Small struct {
 	Tag string
 }
+
+// Test handling of unexported fields that should be ignored.
+// Issue 4660
+
+// Time3339 is a time.Time which encodes to and from JSON
+// as an RFC 3339 time in UTC.
+type Time3339 time.Time

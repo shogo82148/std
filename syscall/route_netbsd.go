@@ -5,3 +5,9 @@
 // Routing sockets and messages for NetBSD
 
 package syscall
+
+// InterfaceAnnounceMessage represents a routing message containing
+// network interface arrival and depature information.
+type InterfaceAnnounceMessage struct {
+	Header IfAnnounceMsghdr
+}

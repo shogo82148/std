@@ -20,3 +20,6 @@ type Foo struct {
 	H *Bar
 	I *Foo
 }
+
+type N1 struct{}
+type N2 struct{}

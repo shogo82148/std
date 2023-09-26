@@ -24,6 +24,10 @@ import (
 // the value pointed at by the pointer.  If the pointer is nil, Unmarshal
 // allocates a new value for it to point to.
 //
+// To unmarshal JSON into a struct, Unmarshal matches incoming object
+// keys to the keys used by Marshal (either the struct field name or its tag),
+// preferring an exact match but also accepting a case-insensitive match.
+//
 // To unmarshal JSON into an interface value, Unmarshal unmarshals
 // the JSON into the concrete value contained in the interface value.
 // If the interface value is nil, that is, has no concrete value stored in it,
@@ -41,12 +45,17 @@ import (
 // skips that field and completes the unmarshalling as best it can.
 // If no more serious errors are encountered, Unmarshal returns
 // an UnmarshalTypeError describing the earliest such error.
+//
+// When unmarshaling quoted strings, invalid UTF-8 or
+// invalid UTF-16 surrogate pairs are not treated as an error.
+// Instead, they are replaced by the Unicode replacement
+// character U+FFFD.
 func Unmarshal(data []byte, v interface{}) error
 
 // Unmarshaler is the interface implemented by objects
 // that can unmarshal a JSON description of themselves.
-// The input can be assumed to be a valid JSON object
-// encoding.  UnmarshalJSON must copy the JSON data
+// The input can be assumed to be a valid encoding of
+// a JSON value. UnmarshalJSON must copy the JSON data
 // if it wishes to retain the data after returning.
 type Unmarshaler interface {
 	UnmarshalJSON([]byte) error
@@ -63,6 +72,7 @@ func (e *UnmarshalTypeError) Error() string
 
 // An UnmarshalFieldError describes a JSON object key that
 // led to an unexported (and therefore unwritable) struct field.
+// (No longer used; kept for compatibility.)
 type UnmarshalFieldError struct {
 	Key   string
 	Type  reflect.Type
@@ -78,6 +88,18 @@ type InvalidUnmarshalError struct {
 }
 
 func (e *InvalidUnmarshalError) Error() string
+
+// A Number represents a JSON number literal.
+type Number string
+
+// String returns the literal text of the number.
+func (n Number) String() string
+
+// Float64 returns the number as a float64.
+func (n Number) Float64() (float64, error)
+
+// Int64 returns the number as an int64.
+func (n Number) Int64() (int64, error)
 
 // decodeState represents the state while decoding a JSON value.
 

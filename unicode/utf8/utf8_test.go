@@ -18,7 +18,17 @@ type RuneCountTest struct {
 	out int
 }
 
+type RuneLenTest struct {
+	r    rune
+	size int
+}
+
 type ValidTest struct {
 	in  string
 	out bool
+}
+
+type ValidRuneTest struct {
+	r  rune
+	ok bool
 }

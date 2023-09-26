@@ -5,11 +5,8 @@
 package os
 
 import (
-	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/time"
 )
-
-var ErrPlan9 = errors.New("unimplemented on Plan 9")
 
 // File represents an open file descriptor.
 type File struct {
@@ -42,14 +39,15 @@ func OpenFile(name string, flag int, perm FileMode) (file *File, err error)
 
 // Close closes the File, rendering it unusable for I/O.
 // It returns an error, if any.
-func (file *File) Close() error
+func (f *File) Close() error
 
 // Stat returns the FileInfo structure describing file.
-// It returns the FileInfo and an error, if any.
-func (f *File) Stat() (FileInfo, error)
+// If there is an error, it will be of type *PathError.
+func (f *File) Stat() (fi FileInfo, err error)
 
 // Truncate changes the size of the file.
 // It does not change the I/O offset.
+// If there is an error, it will be of type *PathError.
 func (f *File) Truncate(size int64) error
 
 // Chmod changes the mode of the file to mode.
@@ -74,6 +72,7 @@ func Remove(name string) error
 func Rename(oldname, newname string) error
 
 // Chmod changes the mode of the named file to mode.
+// If the file is a symbolic link, it changes the mode of the link's target.
 // If there is an error, it will be of type *PathError.
 func Chmod(name string, mode FileMode) error
 
@@ -82,11 +81,14 @@ func Chmod(name string, mode FileMode) error
 //
 // The underlying filesystem may truncate or round the values to a
 // less precise time unit.
+// If there is an error, it will be of type *PathError.
 func Chtimes(name string, atime time.Time, mtime time.Time) error
 
+// Pipe returns a connected pair of Files; reads from r return bytes
+// written to w. It returns the files and an error, if any.
 func Pipe() (r *File, w *File, err error)
 
-// Link creates a hard link.
+// Link creates newname as a hard link to the oldname file.
 // If there is an error, it will be of type *LinkError.
 func Link(oldname, newname string) error
 
@@ -94,12 +96,22 @@ func Link(oldname, newname string) error
 // If there is an error, it will be of type *LinkError.
 func Symlink(oldname, newname string) error
 
+// Readlink returns the destination of the named symbolic link.
+// If there is an error, it will be of type *PathError.
 func Readlink(name string) (string, error)
 
+// Chown changes the numeric uid and gid of the named file.
+// If the file is a symbolic link, it changes the uid and gid of the link's target.
+// If there is an error, it will be of type *PathError.
 func Chown(name string, uid, gid int) error
 
+// Lchown changes the numeric uid and gid of the named file.
+// If the file is a symbolic link, it changes the uid and gid of the link itself.
+// If there is an error, it will be of type *PathError.
 func Lchown(name string, uid, gid int) error
 
+// Chown changes the numeric uid and gid of the named file.
+// If there is an error, it will be of type *PathError.
 func (f *File) Chown(uid, gid int) error
 
 // TempDir returns the default directory to use for temporary files.

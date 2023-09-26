@@ -1,4 +1,4 @@
-// Copyright 20011 The Go Authors. All rights reserved.
+// Copyright 2011 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -50,6 +50,18 @@ type GobTest4 struct {
 type GobTest5 struct {
 	X int
 	V *ValueGobber
+}
+
+type GobTest6 struct {
+	X int
+	V ValueGobber
+	W *ValueGobber
+}
+
+type GobTest7 struct {
+	X int
+	V *ValueGobber
+	W ValueGobber
 }
 
 type GobTestIgnoreEncoder struct {

@@ -14,13 +14,14 @@ import (
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/time"
 )
 
 // DefaultTransport is the default implementation of Transport and is
-// used by DefaultClient.  It establishes a new network connection for
-// each call to Do and uses HTTP proxies as directed by the
-// $HTTP_PROXY and $NO_PROXY (or $http_proxy and $no_proxy)
-// environment variables.
+// used by DefaultClient. It establishes network connections as needed
+// and caches them for reuse by subsequent calls. It uses HTTP proxies
+// as directed by the $HTTP_PROXY and $NO_PROXY (or $http_proxy and
+// $no_proxy) environment variables.
 var DefaultTransport RoundTripper = &Transport{Proxy: ProxyFromEnvironment}
 
 // DefaultMaxIdleConnsPerHost is the default value of Transport's
@@ -31,21 +32,27 @@ const DefaultMaxIdleConnsPerHost = 2
 // https, and http proxies (for either http or https with CONNECT).
 // Transport can also cache connections for future re-use.
 type Transport struct {
-	idleLk   sync.Mutex
-	idleConn map[string][]*persistConn
-	altLk    sync.RWMutex
-	altProto map[string]RoundTripper
+	idleMu     sync.Mutex
+	idleConn   map[string][]*persistConn
+	idleConnCh map[string]chan *persistConn
+	reqMu      sync.Mutex
+	reqConn    map[*Request]*persistConn
+	altMu      sync.RWMutex
+	altProto   map[string]RoundTripper
 
 	Proxy func(*Request) (*url.URL, error)
 
-	Dial func(net, addr string) (c net.Conn, err error)
+	Dial func(network, addr string) (net.Conn, error)
 
 	TLSClientConfig *tls.Config
 
-	DisableKeepAlives  bool
+	DisableKeepAlives bool
+
 	DisableCompression bool
 
 	MaxIdleConnsPerHost int
+
+	ResponseHeaderTimeout time.Duration
 }
 
 // ProxyFromEnvironment returns the URL of the proxy to use for a
@@ -64,6 +71,9 @@ func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 // optional extra headers to write.
 
 // RoundTrip implements the RoundTripper interface.
+//
+// For higher-level HTTP client support (such as handling of cookies
+// and redirects), see Get, Post, and the Client type.
 func (t *Transport) RoundTrip(req *Request) (resp *Response, err error)
 
 // RegisterProtocol registers a new protocol with scheme.
@@ -79,6 +89,10 @@ func (t *Transport) RegisterProtocol(scheme string, rt RoundTripper)
 // a "keep-alive" state. It does not interrupt any connections currently
 // in use.
 func (t *Transport) CloseIdleConnections()
+
+// CancelRequest cancels an in-flight request by closing its
+// connection.
+func (t *Transport) CancelRequest(req *Request)
 
 // connectMethod is the map key (in its String form) for keeping persistent
 // TCP connections alive for subsequent HTTP requests.
@@ -98,8 +112,13 @@ func (t *Transport) CloseIdleConnections()
 // persistConn wraps a connection, usually a persistent one
 // (but may be used for non-keep-alive requests as well)
 
-// bodyEOFSignal wraps a ReadCloser but runs fn (if non-nil) at most
-// once, right before the final Read() or Close() call returns, but after
-// EOF has been seen.
+// A writeRequest is sent by the readLoop's goroutine to the
+// writeLoop's goroutine to write a request while the read loop
+// concurrently waits on both the write response and the server's
+// reply.
 
-// discardOnCloseReadCloser consumes all its input on Close.
+// bodyEOFSignal wraps a ReadCloser but runs fn (if non-nil) at most
+// once, right before its final (error-producing) Read or Close call
+// returns. If earlyCloseFn is non-nil and Close is called before
+// io.EOF is seen, earlyCloseFn is called instead of fn, and its
+// return value is the return value from Close.

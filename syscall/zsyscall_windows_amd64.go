@@ -61,6 +61,8 @@ func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlap
 
 func CancelIo(s Handle) (err error)
 
+func CancelIoEx(s Handle, o *Overlapped) (err error)
+
 func CreateProcess(appName *uint16, commandLine *uint16, procSecurity *SecurityAttributes, threadSecurity *SecurityAttributes, inheritHandles bool, creationFlags uint32, env *uint16, currentDir *uint16, startupInfo *StartupInfo, outProcInfo *ProcessInformation) (err error)
 
 func OpenProcess(da uint32, inheritHandle bool, pid uint32) (handle Handle, err error)
@@ -169,6 +171,12 @@ func RegEnumKeyEx(key Handle, index uint32, name *uint16, nameLen *uint32, reser
 
 func RegQueryValueEx(key Handle, name *uint16, reserved *uint32, valtype *uint32, buf *byte, buflen *uint32) (regerrno error)
 
+func GetConsoleMode(console Handle, mode *uint32) (err error)
+
+func WriteConsole(console Handle, buf *uint16, towrite uint32, written *uint32, reserved *byte) (err error)
+
+func ReadConsole(console Handle, buf *uint16, toread uint32, read *uint32, inputControl *byte) (err error)
+
 func WSAStartup(verreq uint32, data *WSAData) (sockerr error)
 
 func WSACleanup() (err error)
@@ -176,6 +184,8 @@ func WSACleanup() (err error)
 func WSAIoctl(s Handle, iocc uint32, inbuf *byte, cbif uint32, outbuf *byte, cbob uint32, cbbr *uint32, overlapped *Overlapped, completionRoutine uintptr) (err error)
 
 func Setsockopt(s Handle, level int32, optname int32, optval *byte, optlen int32) (err error)
+
+func Getsockopt(s Handle, level int32, optname int32, optval *byte, optlen *int32) (err error)
 
 func Closesocket(s Handle) (err error)
 
@@ -202,6 +212,10 @@ func GetProtoByName(name string) (p *Protoent, err error)
 func DnsQuery(name string, qtype uint16, options uint32, extra *byte, qrs **DNSRecord, pr *byte) (status error)
 
 func DnsRecordListFree(rl *DNSRecord, freetype uint32)
+
+func GetAddrInfoW(nodename *uint16, servicename *uint16, hints *AddrinfoW, result **AddrinfoW) (sockerr error)
+
+func FreeAddrInfoW(addrinfo *AddrinfoW)
 
 func GetIfEntry(pIfRow *MibIfRow) (errcode error)
 

@@ -10,8 +10,8 @@ package driver
 
 import "github.com/shogo82148/std/errors"
 
-// A driver Value is a value that drivers must be able to handle.
-// A Value is either nil or an instance of one of these types:
+// Value is a value that drivers must be able to handle.
+// It is either nil or an instance of one of these types:
 //
 //	int64
 //	float64
@@ -47,13 +47,24 @@ var ErrBadConn = errors.New("driver: bad connection")
 
 // Execer is an optional interface that may be implemented by a Conn.
 //
-// If a Conn does not implement Execer, the db package's DB.Exec will
+// If a Conn does not implement Execer, the sql package's DB.Exec will
 // first prepare a query, execute the statement, and then close the
 // statement.
 //
 // Exec may return ErrSkip.
 type Execer interface {
 	Exec(query string, args []Value) (Result, error)
+}
+
+// Queryer is an optional interface that may be implemented by a Conn.
+//
+// If a Conn does not implement Queryer, the sql package's DB.Query will
+// first prepare a query, execute the statement, and then close the
+// statement.
+//
+// Query may return ErrSkip.
+type Queryer interface {
+	Query(query string, args []Value) (Rows, error)
 }
 
 // Conn is a connection to a database. It is not used concurrently

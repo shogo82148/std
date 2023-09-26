@@ -24,7 +24,7 @@ type PrivateKey struct {
 	D *big.Int
 }
 
-// GenerateKey generates a public&private key pair.
+// GenerateKey generates a public and private key pair.
 func GenerateKey(c elliptic.Curve, rand io.Reader) (priv *PrivateKey, err error)
 
 // Sign signs an arbitrary length hash (which should be the result of hashing a

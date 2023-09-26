@@ -24,6 +24,7 @@ const (
 	Trace
 	DeclarationErrors
 	SpuriousErrors
+	AllErrors = SpuriousErrors
 )
 
 // ParseFile parses the source code of a single Go source file and returns
@@ -44,7 +45,7 @@ const (
 // errors were found, the result is a partial AST (with ast.Bad* nodes
 // representing the fragments of erroneous source code). Multiple errors
 // are returned via a scanner.ErrorList which is sorted by file position.
-func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode) (*ast.File, error)
+func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode) (f *ast.File, err error)
 
 // ParseDir calls ParseFile for the files in the directory specified by path and
 // returns a map of package name -> package AST with all the packages found. If
@@ -58,5 +59,6 @@ func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode)
 func ParseDir(fset *token.FileSet, path string, filter func(os.FileInfo) bool, mode Mode) (pkgs map[string]*ast.Package, first error)
 
 // ParseExpr is a convenience function for obtaining the AST of an expression x.
-// The position information recorded in the AST is undefined.
+// The position information recorded in the AST is undefined. The filename used
+// in error messages is the empty string.
 func ParseExpr(x string) (ast.Expr, error)

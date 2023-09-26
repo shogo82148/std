@@ -47,6 +47,8 @@ type Type interface {
 
 	AssignableTo(u Type) bool
 
+	ConvertibleTo(u Type) bool
+
 	Bits() int
 
 	ChanDir() ChanDir
@@ -77,8 +79,7 @@ type Type interface {
 
 	Out(i int) Type
 
-	runtimeType() *runtimeType
-	common() *commonType
+	common() *rtype
 	uncommon() *uncommonType
 }
 
@@ -116,13 +117,7 @@ const (
 	UnsafePointer
 )
 
-// The compiler can only construct empty interface values at
-// compile time; non-empty interface values get created
-// during initialization.  Type is an empty interface
-// so that the compiler can lay out references as data.
-// The underlying type is *reflect.ArrayType and so on.
-
-// commonType is the common implementation of most values.
+// rtype is the common implementation of most values.
 // It is embedded in other, public struct types, but always
 // with a unique tag like `reflect:"array"` or `reflect:"ptr"`
 // so that code cannot convert from, say, *arrayType to *ptrType.
@@ -162,6 +157,9 @@ const (
 // Struct field
 
 // structType represents a struct type.
+
+// NOTE: These are copied from ../runtime/mgc0.h.
+// They must be kept in sync.
 
 // Method represents a single method.
 type Method struct {
@@ -208,12 +206,54 @@ type StructTag string
 // returned by Get is unspecified.
 func (tag StructTag) Get(key string) string
 
+// A fieldScan represents an item on the fieldByNameFunc scan work list.
+
 // TypeOf returns the reflection Type of the value in the interface{}.
 // TypeOf(nil) returns nil.
 func TypeOf(i interface{}) Type
 
 // ptrMap is the cache for PtrTo.
 
+// garbage collection bytecode program for pointer to memory without pointers.
+// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
+
+// garbage collection bytecode program for pointer to memory with pointers.
+// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
+
 // PtrTo returns the pointer type with element t.
 // For example, if t represents type Foo, PtrTo(t) represents *Foo.
 func PtrTo(t Type) Type
+
+// The lookupCache caches ChanOf, MapOf, and SliceOf lookups.
+
+// A cacheKey is the key for use in the lookupCache.
+// Four values describe any of the types we are looking for:
+// type kind, one or two subtypes, and an extra integer.
+
+// garbage collection bytecode program for chan or map.
+// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
+
+// ChanOf returns the channel type with the given direction and element type.
+// For example, if t represents int, ChanOf(RecvDir, t) represents <-chan int.
+//
+// The gc runtime imposes a limit of 64 kB on channel element types.
+// If t's size is equal to or exceeds this limit, ChanOf panics.
+func ChanOf(dir ChanDir, t Type) Type
+
+// MapOf returns the map type with the given key and element types.
+// For example, if k represents int and e represents string,
+// MapOf(k, e) represents map[int]string.
+//
+// If the key type is not a valid map key type (that is, if it does
+// not implement Go's == operator), MapOf panics.
+func MapOf(key, elem Type) Type
+
+// garbage collection bytecode program for slice of non-zero-length values.
+// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
+
+// garbage collection bytecode program for slice of zero-length values.
+// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
+
+// SliceOf returns the slice type with element type t.
+// For example, if t represents int, SliceOf(t) represents []int.
+func SliceOf(t Type) Type

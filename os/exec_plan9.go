@@ -8,10 +8,13 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
-// Plan9Note implements the Signal interface on Plan 9.
-type Plan9Note string
-
-func (note Plan9Note) String() string
+// The only signal values guaranteed to be present on all systems
+// are Interrupt (send the process an interrupt) and Kill (force
+// the process to exit).
+var (
+	Interrupt Signal = syscall.Note("interrupt")
+	Kill      Signal = syscall.Note("kill")
+)
 
 // ProcessState stores information about a process, as reported by Wait.
 type ProcessState struct {

@@ -73,5 +73,14 @@ type Bug3 struct {
 	Children []*Bug3
 }
 
+type Bug4Public struct {
+	Name   string
+	Secret Bug4Secret
+}
+
+type Bug4Secret struct {
+	a int
+}
+
 type Z struct {
 }

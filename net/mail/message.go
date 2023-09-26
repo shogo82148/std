@@ -58,6 +58,12 @@ type Address struct {
 	Address string
 }
 
+// Parses a single RFC 5322 address, e.g. "Barry Gibbs <bg@example.com>"
+func ParseAddress(address string) (*Address, error)
+
+// ParseAddressList parses the given string as a list of addresses.
+func ParseAddressList(list string) ([]*Address, error)
+
 // String formats the address as a valid RFC 5322 address.
 // If the address's name contains non-ASCII characters
 // the name will be rendered according to RFC 2047.

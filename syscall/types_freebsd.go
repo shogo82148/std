@@ -155,12 +155,13 @@ type Kevent_t C.struct_kevent
 type FdSet C.fd_set
 
 const (
-	SizeofIfMsghdr   = C.sizeof_struct_if_msghdr
-	SizeofIfData     = C.sizeof_struct_if_data
-	SizeofIfaMsghdr  = C.sizeof_struct_ifa_msghdr
-	SizeofIfmaMsghdr = C.sizeof_struct_ifma_msghdr
-	SizeofRtMsghdr   = C.sizeof_struct_rt_msghdr
-	SizeofRtMetrics  = C.sizeof_struct_rt_metrics
+	SizeofIfMsghdr         = C.sizeof_struct_if_msghdr
+	SizeofIfData           = C.sizeof_struct_if_data
+	SizeofIfaMsghdr        = C.sizeof_struct_ifa_msghdr
+	SizeofIfmaMsghdr       = C.sizeof_struct_ifma_msghdr
+	SizeofIfAnnounceMsghdr = C.sizeof_struct_if_announcemsghdr
+	SizeofRtMsghdr         = C.sizeof_struct_rt_msghdr
+	SizeofRtMetrics        = C.sizeof_struct_rt_metrics
 )
 
 type IfMsghdr C.struct_if_msghdr
@@ -170,6 +171,8 @@ type IfData C.struct_if_data
 type IfaMsghdr C.struct_ifa_msghdr
 
 type IfmaMsghdr C.struct_ifma_msghdr
+
+type IfAnnounceMsghdr C.struct_if_announcemsghdr
 
 type RtMsghdr C.struct_rt_msghdr
 

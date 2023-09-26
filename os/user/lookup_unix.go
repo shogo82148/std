@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build (darwin || freebsd || linux) && cgo
-// +build darwin freebsd linux
+//go:build (darwin || freebsd || linux || netbsd || openbsd) && cgo
+// +build darwin freebsd linux netbsd openbsd
 // +build cgo
 
 package user
@@ -19,14 +19,3 @@ static int mygetpwuid_r(int uid, struct passwd *pwd,
  return getpwuid_r(uid, pwd, buf, buflen, result);
 }
 */
-
-// Current returns the current user.
-func Current() (*User, error)
-
-// Lookup looks up a user by username. If the user cannot be found,
-// the returned error is of type UnknownUserError.
-func Lookup(username string) (*User, error)
-
-// LookupId looks up a user by userid. If the user cannot be found,
-// the returned error is of type UnknownUserIdError.
-func LookupId(uid string) (*User, error)

@@ -8,6 +8,10 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// Global lock to ensure only one benchmark runs at a time.
+
+// Used for every benchmark for measuring memory.
+
 // An internal type but exported because it is cross-package; part of the implementation
 // of the "go test" command.
 type InternalBenchmark struct {
@@ -19,11 +23,18 @@ type InternalBenchmark struct {
 // timing and to specify the number of iterations to run.
 type B struct {
 	common
-	N         int
-	benchmark InternalBenchmark
-	bytes     int64
-	timerOn   bool
-	result    BenchmarkResult
+	N               int
+	benchmark       InternalBenchmark
+	bytes           int64
+	timerOn         bool
+	showAllocResult bool
+	result          BenchmarkResult
+
+	startAllocs uint64
+	startBytes  uint64
+
+	netAllocs uint64
+	netBytes  uint64
 }
 
 // StartTimer starts timing a test.  This function is called automatically
@@ -44,16 +55,29 @@ func (b *B) ResetTimer()
 // If this is called, the benchmark will report ns/op and MB/s.
 func (b *B) SetBytes(n int64)
 
+// ReportAllocs enables malloc statistics for this benchmark.
+// It is equivalent to setting -test.benchmem, but it only affects the
+// benchmark function that calls ReportAllocs.
+func (b *B) ReportAllocs()
+
 // The results of a benchmark run.
 type BenchmarkResult struct {
-	N     int
-	T     time.Duration
-	Bytes int64
+	N         int
+	T         time.Duration
+	Bytes     int64
+	MemAllocs uint64
+	MemBytes  uint64
 }
 
 func (r BenchmarkResult) NsPerOp() int64
 
+func (r BenchmarkResult) AllocsPerOp() int64
+
+func (r BenchmarkResult) AllocedBytesPerOp() int64
+
 func (r BenchmarkResult) String() string
+
+func (r BenchmarkResult) MemString() string
 
 // An internal function but exported because it is cross-package; part of the implementation
 // of the "go test" command.

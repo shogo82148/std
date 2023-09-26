@@ -25,7 +25,7 @@ type Writer struct {
 	Header
 	w          io.Writer
 	level      int
-	compressor io.WriteCloser
+	compressor *flate.Writer
 	digest     hash.Hash32
 	size       uint32
 	closed     bool
@@ -57,6 +57,16 @@ func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 // Write writes a compressed form of p to the underlying io.Writer. The
 // compressed bytes are not necessarily flushed until the Writer is closed.
 func (z *Writer) Write(p []byte) (int, error)
+
+// Flush flushes any pending compressed data to the underlying writer.
+//
+// It is useful mainly in compressed network protocols, to ensure that
+// a remote reader has enough data to reconstruct a packet. Flush does
+// not return until the data has been written. If the underlying
+// writer returns an error, Flush returns that error.
+//
+// In the terminology of the zlib library, Flush is equivalent to Z_SYNC_FLUSH.
+func (z *Writer) Flush() error
 
 // Close closes the Writer. It does not close the underlying io.Writer.
 func (z *Writer) Close() error

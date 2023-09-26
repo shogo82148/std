@@ -40,10 +40,11 @@ func (s *Scope) String() string
 //
 // The Data fields contains object-specific data:
 //
-//	Kind    Data type    Data value
-//	Pkg	*Scope       package scope
-//	Con     int          iota for the respective declaration
-//	Con     != nil       constant value
+//	Kind    Data type         Data value
+//	Pkg	*types.Package    package scope
+//	Con     int               iota for the respective declaration
+//	Con     != nil            constant value
+//	Typ     *Scope            (used as method scope during type checking - transient)
 type Object struct {
 	Kind ObjKind
 	Name string
@@ -60,7 +61,7 @@ func NewObj(kind ObjKind, name string) *Object
 // (obj.Decl may be nil or not correct).
 func (obj *Object) Pos() token.Pos
 
-// ObKind describes what an object represents.
+// ObjKind describes what an object represents.
 type ObjKind int
 
 // The list of possible Object kinds.

@@ -4,19 +4,21 @@
 
 package time
 
-// These are predefined layouts for use in Time.Format.
-// The standard time used in the layouts is:
+// These are predefined layouts for use in Time.Format and Time.Parse.
+// The reference time used in the layouts is:
 //
 //	Mon Jan 2 15:04:05 MST 2006
 //
-// which is Unix time 1136243045. Since MST is GMT-0700,
-// the standard time can be thought of as
+// which is Unix time 1136239445. Since MST is GMT-0700,
+// the reference time can be thought of as
 //
 //	01/02 03:04:05PM '06 -0700
 //
-// To define your own format, write down what the standard time would look
+// To define your own format, write down what the reference time would look
 // like formatted your way; see the values of constants like ANSIC,
-// StampMicro or Kitchen for examples.
+// StampMicro or Kitchen for examples. The model is to demonstrate what the
+// reference time looks like so that the Format and Parse methods can apply
+// the same transformation to a general time value.
 //
 // Within the format string, an underscore _ represents a space that may be
 // replaced by a digit if the following number (a day) has two digits; for
@@ -61,6 +63,12 @@ const (
 	StampNano  = "Jan _2 15:04:05.000000000"
 )
 
+const (
+	_ = iota
+)
+
+// std0x records the std values for "01", "02", ..., "06".
+
 // Never printed, just needs to be non-nil for return by atoi.
 
 // String returns the time formatted using the format string
@@ -69,15 +77,18 @@ const (
 func (t Time) String() string
 
 // Format returns a textual representation of the time value formatted
-// according to layout.  The layout defines the format by showing the
-// representation of the standard time,
+// according to layout, which defines the format by showing how the reference
+// time,
 //
 //	Mon Jan 2 15:04:05 -0700 MST 2006
 //
-// which is then used to describe the time to be formatted. Predefined
-// layouts ANSIC, UnixDate, RFC3339 and others describe standard
-// representations. For more information about the formats and the
-// definition of the standard time, see the documentation for ANSIC.
+// would be displayed if it were the value; it serves as an example of the
+// desired output. The same display rules will then be applied to the time
+// value.
+// Predefined layouts ANSIC, UnixDate, RFC3339 and others describe standard
+// and convenient representations of the reference time. For more information
+// about the formats and the definition of the reference time, see the
+// documentation for ANSIC and the other constants defined by this package.
 func (t Time) Format(layout string) string
 
 // ParseError describes a problem parsing a time string.
@@ -93,22 +104,49 @@ type ParseError struct {
 func (e *ParseError) Error() string
 
 // Parse parses a formatted string and returns the time value it represents.
-// The layout defines the format by showing the representation of the
-// standard time,
+// The layout  defines the format by showing how the reference time,
 //
 //	Mon Jan 2 15:04:05 -0700 MST 2006
 //
-// which is then used to describe the string to be parsed. Predefined layouts
-// ANSIC, UnixDate, RFC3339 and others describe standard representations. For
-// more information about the formats and the definition of the standard
-// time, see the documentation for ANSIC.
+// would be interpreted if it were the value; it serves as an example of
+// the input format. The same interpretation will then be made to the
+// input string.
+// Predefined layouts ANSIC, UnixDate, RFC3339 and others describe standard
+// and convenient representations of the reference time. For more information
+// about the formats and the definition of the reference time, see the
+// documentation for ANSIC and the other constants defined by this package.
 //
 // Elements omitted from the value are assumed to be zero or, when
 // zero is impossible, one, so parsing "3:04pm" returns the time
-// corresponding to Jan 1, year 0, 15:04:00 UTC.
+// corresponding to Jan 1, year 0, 15:04:00 UTC (note that because the year is
+// 0, this time is before the zero Time).
 // Years must be in the range 0000..9999. The day of the week is checked
 // for syntax but it is otherwise ignored.
+//
+// In the absence of a time zone indicator, Parse returns a time in UTC.
+//
+// When parsing a time with a zone offset like -0700, if the offset corresponds
+// to a time zone used by the current location (Local), then Parse uses that
+// location and zone in the returned time. Otherwise it records the time as
+// being in a fabricated location with time fixed at the given zone offset.
+//
+// When parsing a time with a zone abbreviation like MST, if the zone abbreviation
+// has a defined offset in the current location, then that offset is used.
+// The zone abbreviation "UTC" is recognized as UTC regardless of location.
+// If the zone abbreviation is unknown, Parse records the time as being
+// in a fabricated location with the given zone abbreviation and a zero offset.
+// This choice means that such a time can be parse and reformatted with the
+// same layout losslessly, but the exact instant used in the representation will
+// differ by the actual zone offset. To avoid such problems, prefer time layouts
+// that use a numeric zone offset, or use ParseInLocation.
 func Parse(layout, value string) (Time, error)
+
+// ParseInLocation is like Parse but differs in two important ways.
+// First, in the absence of time zone information, Parse interprets a time as UTC;
+// ParseInLocation interprets the time as in the given location.
+// Second, when given a zone offset or abbreviation, Parse tries to match it
+// against the Local location; ParseInLocation uses the given location.
+func ParseInLocation(layout, value string, loc *Location) (Time, error)
 
 // ParseDuration parses a duration string.
 // A duration string is a possibly signed sequence of

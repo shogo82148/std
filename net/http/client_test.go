@@ -7,6 +7,7 @@
 package http_test
 
 import (
+	"bytes"
 	. "net/http"
 	"sync"
 )
@@ -16,4 +17,11 @@ import (
 type TestJar struct {
 	m      sync.Mutex
 	perURL map[string][]*Cookie
+}
+
+// RecordingJar keeps a log of calls made to it, without
+// tracking any cookies.
+type RecordingJar struct {
+	mu  sync.Mutex
+	log bytes.Buffer
 }

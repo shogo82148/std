@@ -41,3 +41,9 @@ type Signal int
 func (s Signal) Signal()
 
 func (s Signal) String() string
+
+func Read(fd int, p []byte) (n int, err error)
+
+func Write(fd int, p []byte) (n int, err error)
+
+func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)

@@ -84,7 +84,7 @@ func (b *Reader) Buffered() int
 func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
 
 // ReadLine is a low-level line-reading primitive. Most callers should use
-// ReadBytes('\n') or ReadString('\n') instead.
+// ReadBytes('\n') or ReadString('\n') instead or use a Scanner.
 //
 // ReadLine tries to return a single line, not including the end-of-line bytes.
 // If the line was too long for the buffer then isPrefix is set and the
@@ -93,6 +93,9 @@ func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
 // of the line. The returned buffer is only valid until the next call to
 // ReadLine. ReadLine either returns a non-nil line or it returns an error,
 // never both.
+//
+// The text returned from ReadLine does not include the line end ("\r\n" or "\n").
+// No indication or error is given if the input ends without a final line end.
 func (b *Reader) ReadLine() (line []byte, isPrefix bool, err error)
 
 // ReadBytes reads until the first occurrence of delim in the input,
@@ -101,6 +104,7 @@ func (b *Reader) ReadLine() (line []byte, isPrefix bool, err error)
 // it returns the data read before the error and the error itself (often io.EOF).
 // ReadBytes returns err != nil if and only if the returned data does not end in
 // delim.
+// For simple uses, a Scanner may be more convenient.
 func (b *Reader) ReadBytes(delim byte) (line []byte, err error)
 
 // ReadString reads until the first occurrence of delim in the input,
@@ -109,7 +113,11 @@ func (b *Reader) ReadBytes(delim byte) (line []byte, err error)
 // it returns the data read before the error and the error itself (often io.EOF).
 // ReadString returns err != nil if and only if the returned data does not end in
 // delim.
+// For simple uses, a Scanner may be more convenient.
 func (b *Reader) ReadString(delim byte) (line string, err error)
+
+// WriteTo implements io.WriterTo.
+func (b *Reader) WriteTo(w io.Writer) (n int64, err error)
 
 // Writer implements buffering for an io.Writer object.
 // If an error occurs writing to a Writer, no more data will be
@@ -156,6 +164,9 @@ func (b *Writer) WriteRune(r rune) (size int, err error)
 // If the count is less than len(s), it also returns an error explaining
 // why the write is short.
 func (b *Writer) WriteString(s string) (int, error)
+
+// ReadFrom implements io.ReaderFrom.
+func (b *Writer) ReadFrom(r io.Reader) (n int64, err error)
 
 // ReadWriter stores pointers to a Reader and a Writer.
 // It implements io.ReadWriter.

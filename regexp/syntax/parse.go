@@ -2,10 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package syntax parses regular expressions into parse trees and compiles
-// parse trees into programs. Most clients of regular expressions will use
-// the facilities of package regexp (such as Compile and Match) instead of
-// this package.
 package syntax
 
 // An Error describes a failure to parse a regular expression
@@ -37,9 +33,8 @@ const (
 	ErrMissingParen          ErrorCode = "missing closing )"
 	ErrMissingRepeatArgument ErrorCode = "missing argument to repetition operator"
 	ErrTrailingBackslash     ErrorCode = "trailing backslash at end of expression"
+	ErrUnexpectedParen       ErrorCode = "unexpected )"
 )
-
-// TODO: Export for Go 1.1.
 
 func (e ErrorCode) String() string
 

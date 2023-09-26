@@ -57,6 +57,9 @@ type File interface {
 // The content's Seek method must work: ServeContent uses
 // a seek to the end of the content to determine its size.
 //
+// If the caller has set w's ETag header, ServeContent uses it to
+// handle requests using If-Range and If-None-Match.
+//
 // Note that *os.File implements the io.ReadSeeker interface.
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 

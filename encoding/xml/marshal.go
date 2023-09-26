@@ -39,7 +39,7 @@ const (
 //   - a field with tag "name,attr" becomes an attribute with
 //     the given name in the XML element.
 //   - a field with tag ",attr" becomes an attribute with the
-//     field name in the in the XML element.
+//     field name in the XML element.
 //   - a field with tag ",chardata" is written as character data,
 //     not as an XML element.
 //   - a field with tag ",innerxml" is written verbatim, not subject
@@ -51,8 +51,8 @@ const (
 //     if the field value is empty. The empty values are false, 0, any
 //     nil pointer or interface value, and any array, slice, map, or
 //     string of length zero.
-//   - a non-pointer anonymous struct field is handled as if the
-//     fields of its value were part of the outer struct.
+//   - an anonymous struct field is handled as if the fields of its
+//     value were part of the outer struct.
 //
 // If a field uses a tag "a>b>c", then the element c will be nested inside
 // parent elements a and b.  Fields that appear next to each other that name
@@ -75,6 +75,11 @@ type Encoder struct {
 
 // NewEncoder returns a new encoder that writes to w.
 func NewEncoder(w io.Writer) *Encoder
+
+// Indent sets the encoder to generate XML in which each element
+// begins on a new indented line that starts with prefix and is followed by
+// one or more copies of indent according to the nesting depth.
+func (enc *Encoder) Indent(prefix, indent string)
 
 // Encode writes the XML encoding of v to the stream.
 //

@@ -149,6 +149,7 @@ const (
 	SYS_FFCLOCK_GETCOUNTER       = 241
 	SYS_FFCLOCK_SETESTIMATE      = 242
 	SYS_FFCLOCK_GETESTIMATE      = 243
+	SYS_CLOCK_GETCPUCLOCKID2     = 247
 	SYS_NTP_GETTIME              = 248
 	SYS_MINHERIT                 = 250
 	SYS_RFORK                    = 251
@@ -337,4 +338,5 @@ const (
 	SYS_RCTL_REMOVE_RULE         = 529
 	SYS_POSIX_FALLOCATE          = 530
 	SYS_POSIX_FADVISE            = 531
+	SYS_WAIT6                    = 532
 )

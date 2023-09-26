@@ -48,9 +48,12 @@ type IntString struct {
 // myStringReader implements Read but not ReadRune, allowing us to test our readRune wrapper
 // type that creates something that can read runes given only Read().
 
-// Special Reader that counts reads at end of file.
+// eofCounter is a special Reader that counts reads at end of file.
 
 type TwoLines string
+
+// simpleReader is a strings.Reader that implements only Read, not ReadRune.
+// Good for testing readahead.
 
 // RecursiveInt accepts a string matching %d.%d.%d....
 // and parses it into a linked list.

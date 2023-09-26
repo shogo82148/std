@@ -5,6 +5,8 @@
 //go:build darwin || freebsd || linux || netbsd || openbsd || windows
 // +build darwin freebsd linux netbsd openbsd windows
 
+// Internet protocol family sockets for POSIX
+
 package net
 
 // A sockaddr represents a TCP, UDP or IP network address that can

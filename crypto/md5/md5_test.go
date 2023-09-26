@@ -2,16 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package md5_test
+package md5
 
 import (
-	"crypto/md5"
 	"fmt"
 	"io"
 )
 
 func ExampleNew() {
-	h := md5.New()
+	h := New()
 	io.WriteString(h, "The fog is getting thicker!")
 	io.WriteString(h, "And Leon's getting laaarger!")
 	fmt.Printf("%x", h.Sum(nil))

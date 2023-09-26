@@ -92,6 +92,8 @@ type Decoder struct {
 
 	CharsetReader func(charset string, input io.Reader) (io.Reader, error)
 
+	DefaultSpace string
+
 	r         io.ByteReader
 	buf       bytes.Buffer
 	saved     *bytes.Buffer
@@ -104,7 +106,6 @@ type Decoder struct {
 	ns        map[string]string
 	err       error
 	line      int
-	tmp       [32]byte
 }
 
 // NewDecoder creates a new XML parser reading from r.
@@ -152,6 +153,11 @@ var HTMLEntity = htmlEntity
 // should be considered to close automatically.
 var HTMLAutoClose = htmlAutoClose
 
-// Escape writes to w the properly escaped XML equivalent
+// EscapeText writes to w the properly escaped XML equivalent
 // of the plain text data s.
+func EscapeText(w io.Writer, s []byte) error
+
+// Escape is like EscapeText but omits the error return value.
+// It is provided for backwards compatibility with Go 1.0.
+// Code targeting Go 1.1 or later should use EscapeText.
 func Escape(w io.Writer, s []byte)

@@ -54,8 +54,11 @@ type T struct {
 	BinaryFunc      func(string, string) string
 	VariadicFunc    func(...string) string
 	VariadicFuncInt func(int, ...string) string
+	NilOKFunc       func(*int) bool
 
 	Tmpl *Template
+
+	unexported int
 }
 
 type U struct {

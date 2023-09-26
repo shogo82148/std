@@ -8,6 +8,7 @@ import (
 	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/crypto/x509"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/time"
 )
 
@@ -32,6 +33,7 @@ import (
 // ConnectionState records basic TLS details about the connection.
 type ConnectionState struct {
 	HandshakeComplete          bool
+	DidResume                  bool
 	CipherSuite                uint16
 	NegotiatedProtocol         string
 	NegotiatedProtocolIsMutual bool
@@ -79,6 +81,14 @@ type Config struct {
 	InsecureSkipVerify bool
 
 	CipherSuites []uint16
+
+	PreferServerCipherSuites bool
+
+	SessionTicketsDisabled bool
+
+	SessionTicketKey [32]byte
+
+	serverInitOnce sync.Once
 }
 
 // BuildNameToCertificate parses c.Certificates and builds c.NameToCertificate

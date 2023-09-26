@@ -9,3 +9,5 @@ import (
 )
 
 // Declare a user-defined flag type.
+
+// Declare a user-defined boolean flag type.

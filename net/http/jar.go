@@ -12,6 +12,8 @@ import (
 //
 // Implementations of CookieJar must be safe for concurrent use by multiple
 // goroutines.
+//
+// The net/http/cookiejar package provides a CookieJar implementation.
 type CookieJar interface {
 	SetCookies(u *url.URL, cookies []*Cookie)
 

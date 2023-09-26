@@ -4,6 +4,10 @@
 
 package xml
 
+import (
+	"time"
+)
+
 type DriveType int
 
 const (
@@ -46,6 +50,36 @@ type Domain struct {
 type Book struct {
 	XMLName struct{} `xml:"book"`
 	Title   string   `xml:",chardata"`
+}
+
+type Event struct {
+	XMLName struct{} `xml:"event"`
+	Year    int      `xml:",chardata"`
+}
+
+type Movie struct {
+	XMLName struct{} `xml:"movie"`
+	Length  uint     `xml:",chardata"`
+}
+
+type Pi struct {
+	XMLName       struct{} `xml:"pi"`
+	Approximation float32  `xml:",chardata"`
+}
+
+type Universe struct {
+	XMLName struct{} `xml:"universe"`
+	Visible float64  `xml:",chardata"`
+}
+
+type Particle struct {
+	XMLName struct{} `xml:"particle"`
+	HasMass bool     `xml:",chardata"`
+}
+
+type Departure struct {
+	XMLName struct{}  `xml:"departure"`
+	When    time.Time `xml:",chardata"`
 }
 
 type SecretAgent struct {
@@ -98,7 +132,7 @@ type EmbedA struct {
 
 type EmbedB struct {
 	FieldB string
-	EmbedC
+	*EmbedC
 }
 
 type EmbedC struct {
@@ -175,6 +209,18 @@ type AnyTest struct {
 	AnyField AnyHolder `xml:",any"`
 }
 
+type AnyOmitTest struct {
+	XMLName  struct{}   `xml:"a"`
+	Nested   string     `xml:"nested>value"`
+	AnyField *AnyHolder `xml:",any,omitempty"`
+}
+
+type AnySliceTest struct {
+	XMLName  struct{}    `xml:"a"`
+	Nested   string      `xml:"nested>value"`
+	AnyField []AnyHolder `xml:",any"`
+}
+
 type AnyHolder struct {
 	XMLName Name
 	XML     string `xml:",innerxml"`
@@ -210,7 +256,21 @@ type Plain struct {
 	V interface{}
 }
 
+type MyInt int
+
+type EmbedInt struct {
+	MyInt
+}
+
+type Strings struct {
+	X []string `xml:"A>B,omitempty"`
+}
+
 // Unless explicitly stated as such (or *Plain), all of the
 // tests below are two-way tests. When introducing new tests,
 // please try to make them two-way as well to ensure that
 // marshalling and unmarshalling are as symmetrical as feasible.
+
+type AttrParent struct {
+	X string `xml:"X>Y,attr"`
+}

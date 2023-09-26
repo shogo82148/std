@@ -63,6 +63,9 @@
 // they must appear near the top of the file, preceded
 // only by blank lines and other line comments.
 //
+// To distinguish build constraints from package documentation, a series of
+// build constraints must be followed by a blank line.
+//
 // A build constraint is evaluated as the OR of space-separated options;
 // each option evaluates as the AND of its comma-separated terms;
 // and each term is an alphanumeric word or, preceded by !, its negation.
@@ -74,17 +77,40 @@
 //
 //	(linux AND 386) OR (darwin AND (NOT cgo))
 //
+// A file may have multiple build constraints. The overall constraint is the AND
+// of the individual constraints. That is, the build constraints:
+//
+//	// +build linux darwin
+//	// +build 386
+//
+// corresponds to the boolean formula:
+//
+//	(linux OR darwin) AND 386
+//
 // During a particular build, the following words are satisfied:
 //
 //   - the target operating system, as spelled by runtime.GOOS
 //   - the target architecture, as spelled by runtime.GOARCH
+//   - the compiler being used, either "gc" or "gccgo"
 //   - "cgo", if ctxt.CgoEnabled is true
+//   - "go1.1", from Go version 1.1 onward
 //   - any additional words listed in ctxt.BuildTags
 //
 // If a file's name, after stripping the extension and a possible _test suffix,
-// matches *_GOOS, *_GOARCH, or *_GOOS_GOARCH for any known operating
-// system and architecture values, then the file is considered to have an implicit
-// build constraint requiring those terms.
+// matches any of the following patterns:
+//
+//	*_GOOS
+//	*_GOARCH
+//	*_GOOS_GOARCH
+//
+// (example: source_windows_amd64.go) or the literals:
+//
+//	GOOS
+//	GOARCH
+//
+// (example: windows.go) where GOOS and GOARCH represent any known operating
+// system and architecture values respectively, then the file is considered to
+// have an implicit build constraint requiring those terms.
 //
 // To keep a file from being considered for the build:
 //
@@ -100,7 +126,7 @@
 // default functionality for other systems, which in this case would
 // carry the constraint:
 //
-//	// +build !linux !darwin !cgo
+//	// +build !linux,!darwin !cgo
 //
 // Naming a file dns_windows.go will cause it to be included only when
 // building the package for Windows; similarly, math_386.s will be included

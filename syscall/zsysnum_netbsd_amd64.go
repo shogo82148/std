@@ -163,12 +163,6 @@ const (
 	SYS__LWP_SETNAME         = 323
 	SYS__LWP_GETNAME         = 324
 	SYS__LWP_CTL             = 325
-	SYS_SA_REGISTER          = 330
-	SYS_SA_STACKS            = 331
-	SYS_SA_ENABLE            = 332
-	SYS_SA_SETCONCURRENCY    = 333
-	SYS_SA_YIELD             = 334
-	SYS_SA_PREEMPT           = 335
 	SYS___SIGACTION_SIGTRAMP = 340
 	SYS_PMC_GET_INFO         = 341
 	SYS_PMC_CONTROL          = 342
@@ -250,7 +244,6 @@ const (
 	SYS_WAIT4                = 449
 	SYS_MKNOD                = 450
 	SYS_FHSTAT               = 451
-	SYS_QUOTACTL             = 452
 	SYS_PIPE2                = 453
 	SYS_DUP3                 = 454
 	SYS_KQUEUE1              = 455

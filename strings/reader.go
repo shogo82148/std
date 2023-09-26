@@ -4,7 +4,11 @@
 
 package strings
 
-// A Reader implements the io.Reader, io.ReaderAt, io.Seeker,
+import (
+	"github.com/shogo82148/std/io"
+)
+
+// A Reader implements the io.Reader, io.ReaderAt, io.Seeker, io.WriterTo,
 // io.ByteScanner, and io.RuneScanner interfaces by reading
 // from a string.
 type Reader struct {
@@ -31,6 +35,9 @@ func (r *Reader) UnreadRune() error
 
 // Seek implements the io.Seeker interface.
 func (r *Reader) Seek(offset int64, whence int) (int64, error)
+
+// WriteTo implements the io.WriterTo interface.
+func (r *Reader) WriteTo(w io.Writer) (n int64, err error)
 
 // NewReader returns a new Reader reading from s.
 // It is similar to bytes.NewBufferString but more efficient and read-only.

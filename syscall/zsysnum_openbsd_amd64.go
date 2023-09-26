@@ -11,6 +11,7 @@ const (
 	SYS_OPEN           = 5
 	SYS_CLOSE          = 6
 	SYS_WAIT4          = 7
+	SYS___TFORK        = 8
 	SYS_LINK           = 9
 	SYS_UNLINK         = 10
 	SYS_CHDIR          = 12
@@ -19,6 +20,7 @@ const (
 	SYS_CHMOD          = 15
 	SYS_CHOWN          = 16
 	SYS_OBREAK         = 17
+	SYS_GETDTABLECOUNT = 18
 	SYS_GETPID         = 20
 	SYS_MOUNT          = 21
 	SYS_UNMOUNT        = 22
@@ -111,10 +113,6 @@ const (
 	SYS_SETGID         = 181
 	SYS_SETEGID        = 182
 	SYS_SETEUID        = 183
-	LFS_BMAPV          = 184
-	LFS_MARKV          = 185
-	LFS_SEGCLEAN       = 186
-	LFS_SEGWAIT        = 187
 	SYS_PATHCONF       = 191
 	SYS_FPATHCONF      = 192
 	SYS_SWAPCTL        = 193
@@ -129,7 +127,6 @@ const (
 	SYS_MUNLOCK        = 204
 	SYS_FUTIMES        = 206
 	SYS_GETPGID        = 207
-	SYS_NNPFSPIOCTL    = 208
 	SYS_SEMGET         = 221
 	SYS_MSGGET         = 225
 	SYS_MSGSND         = 226
@@ -141,7 +138,6 @@ const (
 	SYS_CLOCK_GETRES   = 234
 	SYS_NANOSLEEP      = 240
 	SYS_MINHERIT       = 250
-	SYS_RFORK          = 251
 	SYS_POLL           = 252
 	SYS_ISSETUGID      = 253
 	SYS_LCHOWN         = 254
@@ -201,7 +197,6 @@ const (
 	SYS_UNLINKAT       = 325
 	SYS_UTIMENSAT      = 326
 	SYS_FUTIMENS       = 327
-	SYS___TFORK        = 328
 	SYS___SET_TCB      = 329
 	SYS___GET_TCB      = 330
 )

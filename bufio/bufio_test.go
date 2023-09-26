@@ -17,3 +17,10 @@ type StringReader struct {
 }
 
 // TestReader wraps a []byte and returns reads of a specific length.
+
+// A writeCountingDiscard is like ioutil.Discard and counts the number of times
+// Write is called on it.
+
+// An onlyReader only implements io.Reader, no matter what other methods the underlying implementation may have.
+
+// An onlyWriter only implements io.Writer, no matter what other methods the underlying implementation may have.

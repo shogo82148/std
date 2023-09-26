@@ -4,9 +4,10 @@
 
 package tls
 
+// recordingConn is a net.Conn that records the traffic that passes through it.
+// WriteTo can be used to produce Go code that contains the recorded traffic.
+
 // Script of interaction with gnutls implementation.
 // The values for this test are obtained by building and running in server mode:
-//   % go test -run "TestRunServer" -serve
-// and then:
-//   % gnutls-cli --insecure --debug 100 -p 10443 localhost > /tmp/log 2>&1
-//   % python parse-gnutls-cli-debug-log.py < /tmp/log
+//   % go test -test.run "TestRunServer" -serve
+// The recorded bytes are written to stdout.

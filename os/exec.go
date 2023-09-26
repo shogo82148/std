@@ -35,14 +35,6 @@ type Signal interface {
 	Signal()
 }
 
-// The only signal values guaranteed to be present on all systems
-// are Interrupt (send the process an interrupt) and
-// Kill (force the process to exit).
-var (
-	Interrupt Signal = syscall.SIGINT
-	Kill      Signal = syscall.SIGKILL
-)
-
 // Getpid returns the process id of the caller.
 func Getpid() int
 
