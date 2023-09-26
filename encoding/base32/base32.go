@@ -16,7 +16,13 @@ import (
 type Encoding struct {
 	encode    string
 	decodeMap [256]byte
+	padChar   rune
 }
+
+const (
+	StdPadding rune = '='
+	NoPadding  rune = -1
+)
 
 // NewEncoding returns a new Encoding defined by the given alphabet,
 // which must be a 32-byte string.
@@ -29,6 +35,13 @@ var StdEncoding = NewEncoding(encodeStd)
 // HexEncoding is the “Extended Hex Alphabet” defined in RFC 4648.
 // It is typically used in DNS.
 var HexEncoding = NewEncoding(encodeHex)
+
+// WithPadding creates a new encoding identical to enc except
+// with a specified padding character, or NoPadding to disable padding.
+// The padding character must not be '\r' or '\n', must not
+// be contained in the encoding's alphabet and must be a rune equal or
+// below '\xff'.
+func (enc Encoding) WithPadding(padding rune) *Encoding
 
 // Encode encodes src using the encoding enc, writing
 // EncodedLen(len(src)) bytes to dst.

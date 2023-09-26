@@ -283,7 +283,7 @@ type Named struct {
 // The underlying type must not be a *Named.
 func NewNamed(obj *TypeName, underlying Type, methods []*Func) *Named
 
-// TypeName returns the type name for the named type t.
+// Obj returns the type name for the named type t.
 func (t *Named) Obj() *TypeName
 
 // NumMethods returns the number of explicit methods whose receiver is named type t.

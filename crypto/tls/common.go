@@ -102,7 +102,8 @@ type ClientSessionState struct {
 // ClientSessionCache is a cache of ClientSessionState objects that can be used
 // by a client to resume a TLS session with a given server. ClientSessionCache
 // implementations should expect to be called concurrently from different
-// goroutines.
+// goroutines. Only ticket-based resumption is supported, not SessionID-based
+// resumption.
 type ClientSessionCache interface {
 	Get(sessionKey string) (session *ClientSessionState, ok bool)
 
@@ -244,8 +245,6 @@ type Config struct {
 	mutex sync.RWMutex
 
 	sessionTicketKeys []ticketKey
-
-	originalConfig *Config
 }
 
 // ticketKeyNameLen is the number of bytes of identifier that is prepended to

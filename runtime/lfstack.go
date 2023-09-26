@@ -3,9 +3,15 @@
 // license that can be found in the LICENSE file.
 
 // Lock-free stack.
-// Initialize head to 0, compare with 0 to test for emptiness.
-// The stack does not keep pointers to nodes,
-// so they can be garbage collected if there are no other pointers to nodes.
-// The following code runs only in non-preemptible contexts.
 
 package runtime
+
+// lfstack is the head of a lock-free stack.
+//
+// The zero value of lfstack is an empty list.
+//
+// This stack is intrusive. Nodes must embed lfnode as the first field.
+//
+// The stack does not keep GC-visible pointers to nodes, so the caller
+// is responsible for ensuring the nodes are not garbage collected
+// (typically by allocating them from manually-managed memory).

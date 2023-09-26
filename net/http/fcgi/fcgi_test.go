@@ -6,3 +6,5 @@ package fcgi
 
 // a series of FastCGI records that start a request and begin sending the
 // request body
+
+// a series of FastCGI records that start and end a request

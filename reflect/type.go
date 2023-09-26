@@ -134,6 +134,8 @@ const (
 // It is embedded in other, public struct types, but always
 // with a unique tag like `reflect:"array"` or `reflect:"ptr"`
 // so that code cannot convert from, say, *arrayType to *ptrType.
+//
+// rtype must be kept in sync with ../runtime/type.go:/^type._type.
 
 // a copy of runtime.typeAlg
 
@@ -335,4 +337,4 @@ func StructOf(fields []StructField) Type
 // ArrayOf panics.
 func ArrayOf(count int, elem Type) Type
 
-// Layout matches runtime.BitVector (well enough).
+// Layout matches runtime.gobitvector (well enough).

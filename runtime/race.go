@@ -18,9 +18,6 @@ func RaceWrite(addr unsafe.Pointer)
 func RaceReadRange(addr unsafe.Pointer, len int)
 func RaceWriteRange(addr unsafe.Pointer, len int)
 
-func RaceSemacquire(s *uint32)
-func RaceSemrelease(s *uint32)
-
 func RaceErrors() int
 
 // private interface for the runtime

@@ -83,13 +83,14 @@ type Writer struct {
 
 // New establishes a new connection to the system log daemon. Each
 // write to the returned writer sends a log message with the given
-// priority and prefix.
+// priority (a combination of the syslog facility and severity) and
+// prefix tag. If tag is empty, the os.Args[0] is used.
 func New(priority Priority, tag string) (*Writer, error)
 
 // Dial establishes a connection to a log daemon by connecting to
 // address raddr on the specified network. Each write to the returned
-// writer sends a log message with the given facility, severity and
-// tag.
+// writer sends a log message with the facility and severity
+// (from priority) and tag. If tag is empty, the os.Args[0] is used.
 // If network is empty, Dial will connect to the local syslog server.
 // Otherwise, see the documentation for net.Dial for valid values
 // of network and raddr.
@@ -133,8 +134,8 @@ func (w *Writer) Info(m string) error
 // passed to New.
 func (w *Writer) Debug(m string) error
 
-// NewLogger creates a log.Logger whose output is written to
-// the system log service with the specified priority. The logFlag
-// argument is the flag set passed through to log.New to create
-// the Logger.
+// NewLogger creates a log.Logger whose output is written to the
+// system log service with the specified priority, a combination of
+// the syslog facility and severity. The logFlag argument is the flag
+// set passed through to log.New to create the Logger.
 func NewLogger(p Priority, logFlag int) (*log.Logger, error)

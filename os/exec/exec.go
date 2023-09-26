@@ -6,6 +6,15 @@
 // easier to remap stdin and stdout, connect I/O with pipes, and do other
 // adjustments.
 //
+// Unlike the "system" library call from C and other languages, the
+// os/exec package intentionally does not invoke the system shell and
+// does not expand any glob patterns or handle other expansions,
+// pipelines, or redirections typically done by shells. The package
+// behaves more like C's "exec" family of functions. To expand glob
+// patterns, either call the shell directly, taking care to escape any
+// dangerous input, or use the path/filepath package's Glob function.
+// To expand environment variables, use package os's ExpandEnv.
+//
 // Note that the examples in this package assume a Unix system.
 // They may not run on Windows, and they do not run in the Go Playground
 // used by golang.org and godoc.org.
@@ -96,9 +105,8 @@ func CommandContext(ctx context.Context, name string, arg ...string) *Cmd
 // copying stdin, stdout, and stderr, and exits with a zero exit
 // status.
 //
-// If the command fails to run or doesn't complete successfully, the
-// error is of type *ExitError. Other error types may be
-// returned for I/O problems.
+// If the command starts but does not complete successfully, the error is of
+// type *ExitError. Other error types may be returned for other situations.
 func (c *Cmd) Run() error
 
 // Start starts the specified command but does not wait for it to complete.
@@ -116,8 +124,10 @@ type ExitError struct {
 
 func (e *ExitError) Error() string
 
-// Wait waits for the command to exit.
-// It must have been started by Start.
+// Wait waits for the command to exit and waits for any copying to
+// stdin or copying from stdout or stderr to complete.
+//
+// The command must have been started by Start.
 //
 // The returned error is nil if the command runs, has no problems
 // copying stdin, stdout, and stderr, and exits with a zero exit

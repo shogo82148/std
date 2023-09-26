@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package runtime
+
+// gsignalStack is unused on Plan 9.

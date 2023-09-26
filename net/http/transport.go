@@ -133,7 +133,8 @@ func ProxyFromEnvironment(req *Request) (*url.URL, error)
 func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 
 // transportRequest is a wrapper around a *Request that adds
-// optional extra headers to write.
+// optional extra headers to write and stores any error to return
+// from roundTrip.
 
 // RoundTrip implements the RoundTripper interface.
 //
@@ -197,12 +198,14 @@ func (t *Transport) CancelRequest(req *Request)
 //
 // A connect method may be of the following types:
 //
-// Cache key form                Description
-// -----------------             -------------------------
-// |http|foo.com                 http directly to server, no proxy
-// |https|foo.com                https directly to server, no proxy
-// http://proxy.com|https|foo.com  http to proxy, then CONNECT to foo.com
-// http://proxy.com|http           http to proxy, http to anywhere after that
+// Cache key form                    Description
+// -----------------                 -------------------------
+// |http|foo.com                     http directly to server, no proxy
+// |https|foo.com                    https directly to server, no proxy
+// http://proxy.com|https|foo.com    http to proxy, then CONNECT to foo.com
+// http://proxy.com|http             http to proxy, http to anywhere after that
+// socks5://proxy.com|http|foo.com   socks5 to proxy, then http to foo.com
+// socks5://proxy.com|https|foo.com  socks5 to proxy, then https to foo.com
 //
 // Note: no support to https to the proxy yet.
 //
@@ -225,6 +228,9 @@ func (t *Transport) CancelRequest(req *Request)
 // reply.
 
 // testHooks. Always non-nil.
+
+// tLogKey is a context WithValue key for test debugging contexts containing
+// a t.Logf func. See export_test.go's Request.WithT method.
 
 // bodyEOFSignal is used by the HTTP/1 transport when reading response
 // bodies to make sure we see the end of a response body before

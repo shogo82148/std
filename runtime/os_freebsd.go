@@ -5,3 +5,5 @@
 package runtime
 
 // From FreeBSD's <sys/sysctl.h>
+
+// Undocumented numbers from FreeBSD's lib/libc/gen/sysctlnametomib.c.

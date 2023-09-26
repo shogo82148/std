@@ -66,12 +66,15 @@ func NewConst(pos token.Pos, pkg *Package, name string, typ Type, val constant.V
 
 func (obj *Const) Val() constant.Value
 
-// A TypeName represents a declared type.
+// A TypeName represents a name for a (named or alias) type.
 type TypeName struct {
 	object
 }
 
 func NewTypeName(pos token.Pos, pkg *Package, name string, typ Type) *TypeName
+
+// IsAlias reports whether obj is an alias name for a type.
+func (obj *TypeName) IsAlias() bool
 
 // A Variable represents a declared variable (including function parameters and results, and struct fields).
 type Var struct {
@@ -106,8 +109,6 @@ func (obj *Func) FullName() string
 
 func (obj *Func) Scope() *Scope
 
-// An Alias represents a declared alias.
-
 // A Label represents a declared label.
 type Label struct {
 	object
@@ -138,7 +139,6 @@ func (obj *Const) String() string
 func (obj *TypeName) String() string
 func (obj *Var) String() string
 func (obj *Func) String() string
-
 func (obj *Label) String() string
 func (obj *Builtin) String() string
 func (obj *Nil) String() string

@@ -15,27 +15,27 @@ import (
 // If there is an error, it will be of type *PathError.
 func Readlink(name string) (string, error)
 
-// Chmod changes the mode of the named file to mode.
-// If the file is a symbolic link, it changes the mode of the link's target.
-// If there is an error, it will be of type *PathError.
-func Chmod(name string, mode FileMode) error
-
-// Chmod changes the mode of the file to mode.
-// If there is an error, it will be of type *PathError.
-func (f *File) Chmod(mode FileMode) error
-
 // Chown changes the numeric uid and gid of the named file.
 // If the file is a symbolic link, it changes the uid and gid of the link's target.
 // If there is an error, it will be of type *PathError.
+//
+// On Windows, it always returns the syscall.EWINDOWS error, wrapped
+// in *PathError.
 func Chown(name string, uid, gid int) error
 
 // Lchown changes the numeric uid and gid of the named file.
 // If the file is a symbolic link, it changes the uid and gid of the link itself.
 // If there is an error, it will be of type *PathError.
+//
+// On Windows, it always returns the syscall.EWINDOWS error, wrapped
+// in *PathError.
 func Lchown(name string, uid, gid int) error
 
 // Chown changes the numeric uid and gid of the named file.
 // If there is an error, it will be of type *PathError.
+//
+// On Windows, it always returns the syscall.EWINDOWS error, wrapped
+// in *PathError.
 func (f *File) Chown(uid, gid int) error
 
 // Truncate changes the size of the file.
@@ -55,3 +55,8 @@ func (f *File) Sync() error
 // less precise time unit.
 // If there is an error, it will be of type *PathError.
 func Chtimes(name string, atime time.Time, mtime time.Time) error
+
+// Chdir changes the current working directory to the file,
+// which must be a directory.
+// If there is an error, it will be of type *PathError.
+func (f *File) Chdir() error

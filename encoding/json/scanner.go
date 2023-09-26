@@ -4,6 +4,9 @@
 
 package json
 
+// Valid reports whether data is a valid JSON encoding.
+func Valid(data []byte) bool
+
 // A SyntaxError is a description of a JSON syntax error.
 type SyntaxError struct {
 	msg    string

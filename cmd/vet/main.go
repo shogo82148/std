@@ -50,6 +50,8 @@ type File struct {
 	stringers map[*ast.Object]bool
 
 	checkers map[ast.Node][]func(*File, ast.Node)
+
+	dead map[ast.Node]bool
 }
 
 type Package struct {

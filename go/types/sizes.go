@@ -44,4 +44,14 @@ func (s *StdSizes) Offsetsof(fields []*Var) []int64
 
 func (s *StdSizes) Sizeof(T Type) int64
 
+// common architecture word sizes and alignments
+
+// SizesFor returns the Sizes used by a compiler for an architecture.
+// The result is nil if a compiler/architecture pair is not known.
+//
+// Supported architectures for compiler "gc":
+// "386", "arm", "arm64", "amd64", "amd64p32", "mips", "mipsle",
+// "mips64", "mips64le", "ppc64", "ppc64le", "s390x".
+func SizesFor(compiler, arch string) Sizes
+
 // stdSizes is used if Config.Sizes == nil.

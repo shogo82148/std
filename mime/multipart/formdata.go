@@ -5,14 +5,22 @@
 package multipart
 
 import (
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net/textproto"
 )
 
+// ErrMessageTooLarge is returned by ReadForm if the message form
+// data is too large to be processed.
+var ErrMessageTooLarge = errors.New("multipart: message too large")
+
 // ReadForm parses an entire multipart message whose parts have
 // a Content-Disposition of "form-data".
-// It stores up to maxMemory bytes of the file parts in memory
-// and the remainder on disk in temporary files.
+// It stores up to maxMemory bytes + 10MB (reserved for non-file parts)
+// in memory. File parts which can't be stored in memory will be stored on
+// disk in temporary files.
+// It returns ErrMessageTooLarge if all non-file parts can't be stored in
+// memory.
 func (r *Reader) ReadForm(maxMemory int64) (*Form, error)
 
 // Form is a parsed multipart form.
@@ -32,6 +40,7 @@ func (f *Form) RemoveAll() error
 type FileHeader struct {
 	Filename string
 	Header   textproto.MIMEHeader
+	Size     int64
 
 	content []byte
 	tmpfile string

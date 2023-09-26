@@ -9,12 +9,16 @@ package runtime
 // so all cgo calls can rely on it existing. When main_init is complete,
 // it is closed, meaning cgocallbackg can reliably receive from it.
 
+// mainStarted indicates that the main M has started.
+
 // runtimeInitTime is the nanotime() at which the runtime started.
 
 // Value to use for signal mask for newly created M's.
 
 // Gosched yields the processor, allowing other goroutines to run. It does not
 // suspend the current goroutine, so execution resumes automatically.
+//
+//go:nosplit
 func Gosched()
 
 // freezeStopWait is a large value that freezetheworld sets
@@ -30,6 +34,12 @@ func Gosched()
 // to start threads for us so that we can play nicely with
 // foreign code.
 
+// execLock serializes exec and clone to avoid bugs or unspecified behaviour
+// around exec'ing while creating/destroying threads.  See issue #19546.
+
+// inForkedChild is true while manipulating signals in the child process.
+// This is used to avoid calling libc functions in case we are using vfork.
+
 // Breakpoint executes a breakpoint trap.
 func Breakpoint()
 
@@ -41,6 +51,8 @@ func LockOSThread()
 // UnlockOSThread unwires the calling goroutine from its fixed operating system thread.
 // If the calling goroutine has not called LockOSThread, UnlockOSThread is a no-op.
 func UnlockOSThread()
+
+// Counts SIGPROFs received while in atomic64 critical section, on mips{,le}
 
 // If the signal handler receives a SIGPROF signal on a non-Go thread,
 // it tries to collect a traceback into sigprofCallers.

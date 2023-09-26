@@ -25,3 +25,6 @@ package cgo
 //go:cgo_import_static x_cgo_set_context_function
 //go:linkname x_cgo_set_context_function x_cgo_set_context_function
 //go:linkname _cgo_set_context_function _cgo_set_context_function
+
+//go:cgo_import_static _cgo_yield
+//go:linkname _cgo_yield _cgo_yield

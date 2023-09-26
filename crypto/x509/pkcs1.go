@@ -10,10 +10,10 @@ import (
 
 // pkcs1PrivateKey is a structure which mirrors the PKCS#1 ASN.1 for an RSA private key.
 
+// pkcs1PublicKey reflects the ASN.1 structure of a PKCS#1 public key.
+
 // ParsePKCS1PrivateKey returns an RSA private key from its ASN.1 PKCS#1 DER encoded form.
 func ParsePKCS1PrivateKey(der []byte) (*rsa.PrivateKey, error)
 
 // MarshalPKCS1PrivateKey converts a private key to ASN.1 DER encoded form.
 func MarshalPKCS1PrivateKey(key *rsa.PrivateKey) []byte
-
-// rsaPublicKey reflects the ASN.1 structure of a PKCS#1 public key.

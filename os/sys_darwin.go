@@ -6,3 +6,5 @@ package os
 
 // supportsCloseOnExec reports whether the platform supports the
 // O_CLOEXEC flag.
+// The O_CLOEXEC flag was introduced in OS X 10.7 (Darwin 11.0.0).
+// See http://support.apple.com/kb/HT1633.

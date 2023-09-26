@@ -33,7 +33,7 @@ type WaitGroup struct {
 // See the WaitGroup example.
 func (wg *WaitGroup) Add(delta int)
 
-// Done decrements the WaitGroup counter.
+// Done decrements the WaitGroup counter by one.
 func (wg *WaitGroup) Done()
 
 // Wait blocks until the WaitGroup counter is zero.

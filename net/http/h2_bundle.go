@@ -31,11 +31,28 @@ var (
 // dialCall is an in-flight Transport dial call to a host.
 
 // noDialClientConnPool is an implementation of http2.ClientConnPool
-// which never dials.  We let the HTTP/1.1 client dial and use its TLS
+// which never dials. We let the HTTP/1.1 client dial and use its TLS
 // connection instead.
 
 // noDialH2RoundTripper is a RoundTripper which only tries to complete the request
 // if there's already has a cached connection to the host.
+
+// Buffer chunks are allocated from a pool to reduce pressure on GC.
+// The maximum wasted space per dataBuffer is 2x the largest size class,
+// which happens when the dataBuffer has multiple chunks and there is
+// one unread byte in both the first and last chunks. We use a few size
+// classes to minimize overheads for servers that typically receive very
+// small request bodies.
+//
+// TODO: Benchmark to determine if the pools are necessary. The GC may have
+// improved enough that we can instead allocate chunks like this:
+// make([]byte, max(16<<10, expectedBytesRemaining))
+
+// dataBuffer is an io.ReadWriter backed by a list of data chunks.
+// Each dataBuffer is used to read DATA frames on a single stream.
+// The buffer is divided into chunks so the server can limit the
+// total memory used by a single connection without limiting the
+// request body size on any single stream.
 
 // An ErrCode is an unsigned 32-bit error code as defined in the HTTP/2 spec.
 
@@ -51,11 +68,13 @@ var (
 // or the connection, as appropriate. For streams, [...]; for the
 // connection, a GOAWAY frame with a FLOW_CONTROL_ERROR code."
 
+// connError represents an HTTP/2 ConnectionError error code, along
+// with a string (for debugging) explaining why.
+//
 // Errors of this type are only returned by the frame parser functions
-// and converted into ConnectionError(ErrCodeProtocol).
-
-// fixedBuffer is an io.ReadWriter backed by a fixed size buffer.
-// It never allocates, but moves old data as new data is written.
+// and converted into ConnectionError(Code), after stashing away
+// the Reason into the Framer's errDetail field, accessible via
+// the (*Framer).ErrorDetail method.
 
 // flow is the flow control window's size.
 
@@ -178,7 +197,7 @@ var _ Pusher = (*http2responseWriter)(nil)
 // (3 x typical 1500 byte MTU) at least. Other than that,
 // not much thought went into it.
 
-// pipe is a goroutine-safe io.Reader/io.Writer pair.  It's like
+// pipe is a goroutine-safe io.Reader/io.Writer pair. It's like
 // io.Pipe except there are no PipeReader/PipeWriter halves, and the
 // underlying buffer is an interface. (io.Pipe is always unbuffered)
 
@@ -198,6 +217,8 @@ var _ Pusher = (*http2responseWriter)(nil)
 
 // frameWriteResult is the message passed from writeFrameAsync to the serve goroutine.
 
+// Message values sent to serveMsgCh.
+
 // errHandlerPanicked is the error given to any callers blocked in a read from
 // Request.Body when the main goroutine panics. Since most handlers read in the
 // the main ServeHTTP goroutine, this will show up rarely.
@@ -208,8 +229,8 @@ var _ Pusher = (*http2responseWriter)(nil)
 // requestBody is the Handler's Request.Body type.
 // Read and Close may be called concurrently.
 
-// responseWriter is the http.ResponseWriter implementation.  It's
-// intentionally small (1 pointer wide) to minimize garbage.  The
+// responseWriter is the http.ResponseWriter implementation. It's
+// intentionally small (1 pointer wide) to minimize garbage. The
 // responseWriterState pointer inside is zeroed at the end of a
 // request (in handlerDone) and calls on the responseWriter thereafter
 // simply crash (caller's mistake), but the much larger responseWriterState
@@ -241,8 +262,6 @@ var (
 // cannot include here because it's only defined in Go 1.8 and later.
 
 // From http://httpwg.org/specs/rfc7540.html#rfc.section.8.1.2.2
-
-// optional test hook for h1ServerShutdownChan.
 
 // Transport is an HTTP/2 Transport.
 //

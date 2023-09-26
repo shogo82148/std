@@ -17,7 +17,9 @@ import (
 // The file descriptor is valid only until f.Close is called or f is garbage collected.
 func (f *File) Fd() uintptr
 
-// NewFile returns a new File with the given file descriptor and name.
+// NewFile returns a new File with the given file descriptor and
+// name. The returned value will be nil if fd is not a valid file
+// descriptor.
 func NewFile(fd uintptr, name string) *File
 
 // Auxiliary information if the File describes a directory
@@ -46,10 +48,6 @@ func (f *File) Stat() (FileInfo, error)
 // If there is an error, it will be of type *PathError.
 func (f *File) Truncate(size int64) error
 
-// Chmod changes the mode of the file to mode.
-// If there is an error, it will be of type *PathError.
-func (f *File) Chmod(mode FileMode) error
-
 // Sync commits the current contents of the file to stable storage.
 // Typically, this means flushing the file system's in-memory copy
 // of recently written data to disk.
@@ -63,11 +61,6 @@ func Truncate(name string, size int64) error
 // Remove removes the named file or directory.
 // If there is an error, it will be of type *PathError.
 func Remove(name string) error
-
-// Chmod changes the mode of the named file to mode.
-// If the file is a symbolic link, it changes the mode of the link's target.
-// If there is an error, it will be of type *PathError.
-func Chmod(name string, mode FileMode) error
 
 // Chtimes changes the access and modification times of the named
 // file, similar to the Unix utime() or utimes() functions.
@@ -107,5 +100,7 @@ func Lchown(name string, uid, gid int) error
 // If there is an error, it will be of type *PathError.
 func (f *File) Chown(uid, gid int) error
 
-// TempDir returns the default directory to use for temporary files.
-func TempDir() string
+// Chdir changes the current working directory to the file,
+// which must be a directory.
+// If there is an error, it will be of type *PathError.
+func (f *File) Chdir() error

@@ -63,7 +63,8 @@ func (p IntSlice) Swap(i, j int)
 // Sort is a convenience method.
 func (p IntSlice) Sort()
 
-// Float64Slice attaches the methods of Interface to []float64, sorting in increasing order.
+// Float64Slice attaches the methods of Interface to []float64, sorting in increasing order
+// (not-a-number values are treated as less than other values).
 type Float64Slice []float64
 
 func (p Float64Slice) Len() int
@@ -86,7 +87,8 @@ func (p StringSlice) Sort()
 // Ints sorts a slice of ints in increasing order.
 func Ints(a []int)
 
-// Float64s sorts a slice of float64s in increasing order.
+// Float64s sorts a slice of float64s in increasing order
+// (not-a-number values are treated as less than other values).
 func Float64s(a []float64)
 
 // Strings sorts a slice of strings in increasing order.
@@ -95,7 +97,8 @@ func Strings(a []string)
 // IntsAreSorted tests whether a slice of ints is sorted in increasing order.
 func IntsAreSorted(a []int) bool
 
-// Float64sAreSorted tests whether a slice of float64s is sorted in increasing order.
+// Float64sAreSorted tests whether a slice of float64s is sorted in increasing order
+// (not-a-number values are treated as less than other values).
 func Float64sAreSorted(a []float64) bool
 
 // StringsAreSorted tests whether a slice of strings is sorted in increasing order.

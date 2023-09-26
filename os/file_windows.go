@@ -13,7 +13,9 @@ package os
 // The handle is valid only until f.Close is called or f is garbage collected.
 func (file *File) Fd() uintptr
 
-// NewFile returns a new File with the given file descriptor and name.
+// NewFile returns a new File with the given file descriptor and
+// name. The returned value will be nil if fd is not a valid file
+// descriptor.
 func NewFile(fd uintptr, name string) *File
 
 // Auxiliary information if the File describes a directory
@@ -42,9 +44,6 @@ func Remove(name string) error
 // Pipe returns a connected pair of Files; reads from r return bytes written to w.
 // It returns the files and an error, if any.
 func Pipe() (r *File, w *File, err error)
-
-// TempDir returns the default directory to use for temporary files.
-func TempDir() string
 
 // Link creates newname as a hard link to the oldname file.
 // If there is an error, it will be of type *LinkError.

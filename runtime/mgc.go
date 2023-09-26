@@ -157,7 +157,9 @@ package runtime
 // Indicates to write barrier and synchronization task to perform.
 
 // The compiler knows about this variable.
-// If you change it, you must change the compiler too.
+// If you change it, you must change builtin/runtime.go, too.
+// If you change the first four bytes, you must also change the write
+// barrier insertion code.
 
 // gcBlackenEnabled is 1 if mutator assists and background mark
 // workers are allowed to blacken objects. This must only be set when
@@ -198,6 +200,9 @@ package runtime
 // utilization between assist and background marking to be 25% of
 // GOMAXPROCS. The high-level design of this algorithm is documented
 // at https://golang.org/s/go15gcpacing.
+//
+// All fields of gcController are used only during a single mark
+// cycle.
 
 // gcGoalUtilization is the goal CPU utilization for background
 // marking as a fraction of GOMAXPROCS.
@@ -222,3 +227,6 @@ package runtime
 func GC()
 
 // gcMode indicates how concurrent a GC cycle should be.
+
+// A gcTrigger is a predicate for starting a GC cycle. Specifically,
+// it is an exit condition for the _GCoff phase.

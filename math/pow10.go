@@ -4,13 +4,16 @@
 
 package math
 
-// This table might overflow 127-bit exponent representations.
-// In that case, truncate it after 1.0e38.
+// pow10tab stores the pre-computed values 10**i for i < 32.
 
-// Pow10 returns 10**e, the base-10 exponential of e.
+// pow10postab32 stores the pre-computed value for 10**(i*32) at index i.
+
+// pow10negtab32 stores the pre-computed value for 10**(-i*32) at index i.
+
+// Pow10 returns 10**n, the base-10 exponential of n.
 //
 // Special cases are:
 //
-//	Pow10(e) = +Inf for e > 309
-//	Pow10(e) = 0 for e < -324
-func Pow10(e int) float64
+//	Pow10(n) =    0 for n < -323
+//	Pow10(n) = +Inf for n > 308
+func Pow10(n int) float64

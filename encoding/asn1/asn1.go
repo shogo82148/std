@@ -40,6 +40,12 @@ func (b BitString) At(i int) int
 // slice may share memory with the BitString.
 func (b BitString) RightAlign() []byte
 
+// NullRawValue is a RawValue with its Tag set to the ASN.1 NULL type tag (5).
+var NullRawValue = RawValue{Tag: TagNull}
+
+// NullBytes contains bytes representing the DER-encoded ASN.1 NULL type.
+var NullBytes = []byte{TagNull, 0}
+
 // An ObjectIdentifier represents an ASN.1 OBJECT IDENTIFIER.
 type ObjectIdentifier []int
 
@@ -103,12 +109,12 @@ type RawContent []byte
 //
 // The following tags on struct fields have special meaning to Unmarshal:
 //
-//	application	specifies that a APPLICATION tag is used
-//	default:x	sets the default value for optional integer fields (only used if optional is also present)
-//	explicit	specifies that an additional, explicit tag wraps the implicit one
-//	optional	marks the field as ASN.1 OPTIONAL
-//	set		causes a SET, rather than a SEQUENCE type to be expected
-//	tag:x		specifies the ASN.1 tag number; implies ASN.1 CONTEXT SPECIFIC
+//	application specifies that a APPLICATION tag is used
+//	default:x   sets the default value for optional integer fields (only used if optional is also present)
+//	explicit    specifies that an additional, explicit tag wraps the implicit one
+//	optional    marks the field as ASN.1 OPTIONAL
+//	set         causes a SET, rather than a SEQUENCE type to be expected
+//	tag:x       specifies the ASN.1 tag number; implies ASN.1 CONTEXT SPECIFIC
 //
 // If the type of the first field of a structure is RawContent then the raw
 // ASN1 contents of the struct will be stored in it.

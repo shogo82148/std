@@ -18,6 +18,8 @@ type Embed struct {
 	hidden
 }
 
+type BuiltinTypes struct{}
+
 // CodecEmulator provides a client-like api and a ServerCodec interface.
 // Can be used to test ServeRequest.
 type CodecEmulator struct {

@@ -8,6 +8,9 @@ package cookiejar
 
 // testPSL implements PublicSuffixList with just two rules: "co.uk"
 // and the default rule "*".
+// The implementation has two intentional bugs:
+//    PublicSuffix("www.buggy.psl") == "xy"
+//    PublicSuffix("www2.buggy.psl") == "com"
 
 // jarTest encapsulates the following actions on a jar:
 //   1. Perform SetCookies with fromURL and the cookies from setCookies.

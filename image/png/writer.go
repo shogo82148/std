@@ -12,7 +12,20 @@ import (
 // Encoder configures encoding PNG images.
 type Encoder struct {
 	CompressionLevel CompressionLevel
+
+	BufferPool EncoderBufferPool
 }
+
+// EncoderBufferPool is an interface for getting and returning temporary
+// instances of the EncoderBuffer struct. This can be used to reuse buffers
+// when encoding multiple images.
+type EncoderBufferPool interface {
+	Get() *EncoderBuffer
+	Put(*EncoderBuffer)
+}
+
+// EncoderBuffer holds the buffers used for encoding PNG images.
+type EncoderBuffer encoder
 
 type CompressionLevel int
 

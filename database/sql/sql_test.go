@@ -8,6 +8,8 @@ import (
 	"database/sql/driver"
 )
 
+var _ driver.NamedValueChecker = &nvcConn{}
+
 // badConn implements a bad driver.Conn, for TestBadDriver.
 // The Exec method panics.
 

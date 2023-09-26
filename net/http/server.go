@@ -61,9 +61,10 @@ var (
 // If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
 // that the effect of the panic was isolated to the active request.
 // It recovers the panic, logs a stack trace to the server error log,
-// and hangs up the connection. To abort a handler so the client sees
-// an interrupted response but the server doesn't log an error, panic
-// with the value ErrAbortHandler.
+// and either closes the network connection or sends an HTTP/2
+// RST_STREAM, depending on the HTTP protocol. To abort a handler so
+// the client sees an interrupted response but the server doesn't log
+// an error, panic with the value ErrAbortHandler.
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
@@ -179,7 +180,7 @@ const TrailerPrefix = "Trailer:"
 // This can be overridden by setting Server.MaxHeaderBytes.
 const DefaultMaxHeaderBytes = 1 << 20
 
-// wrapper around io.ReaderCloser which on first read, sends an
+// wrapper around io.ReadCloser which on first read, sends an
 // HTTP/1.1 100 Continue header
 
 // TimeFormat is the time format to use when generating times in HTTP
@@ -205,12 +206,6 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 // the response Header map and all its 1-element slices.
 
 // Sorted the same as extraHeader.Write's loop.
-
-// statusLines is a cache of Status-Line strings, keyed by code (for
-// HTTP/1.1) or negative code (for HTTP/1.0). This is faster than a
-// map keyed by struct of two fields. This map's max size is bounded
-// by 2*len(statusText), two protocol types for each known official
-// status code in the statusText map.
 
 // rstAvoidanceDelay is the amount of time we sleep after closing the
 // write side of a TCP connection before closing the entire socket.
@@ -270,7 +265,10 @@ func StripPrefix(prefix string, h Handler) Handler
 //
 // The provided code should be in the 3xx range and is usually
 // StatusMovedPermanently, StatusFound or StatusSeeOther.
-func Redirect(w ResponseWriter, r *Request, urlStr string, code int)
+func Redirect(w ResponseWriter, r *Request, url string, code int)
+
+// parseURL is just url.Parse. It exists only so that url.Parse can be called
+// in places where url is shadowed for godoc. See https://golang.org/cl/49930.
 
 // Redirect to a fixed URL
 
@@ -333,7 +331,10 @@ var DefaultServeMux = &defaultServeMux
 // consulting r.Method, r.Host, and r.URL.Path. It always returns
 // a non-nil handler. If the path is not in its canonical form, the
 // handler will be an internally-generated handler that redirects
-// to the canonical path.
+// to the canonical path. If the host contains a port, it is ignored
+// when matching handlers.
+//
+// The path and host are used unchanged for CONNECT requests.
 //
 // Handler also returns the registered pattern that matches the
 // request or, in the case of internally-generated redirects,
@@ -370,6 +371,18 @@ func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 // Handler is typically nil, in which case the DefaultServeMux is used.
 func Serve(l net.Listener, handler Handler) error
 
+// Serve accepts incoming HTTPS connections on the listener l,
+// creating a new service goroutine for each. The service goroutines
+// read requests and then call handler to reply to them.
+//
+// Handler is typically nil, in which case the DefaultServeMux is used.
+//
+// Additionally, files containing a certificate and matching private key
+// for the server must be provided. If the certificate is signed by a
+// certificate authority, the certFile should be the concatenation
+// of the server's certificate, any intermediates, and the CA's certificate.
+func ServeTLS(l net.Listener, handler Handler, certFile, keyFile string) error
+
 // A Server defines parameters for running an HTTP server.
 // The zero value for Server is a valid configuration.
 type Server struct {
@@ -402,6 +415,7 @@ type Server struct {
 	listeners  map[net.Listener]struct{}
 	activeConn map[*conn]struct{}
 	doneChan   chan struct{}
+	onShutdown []func()
 }
 
 // Close immediately closes all active net.Listeners and any
@@ -428,13 +442,25 @@ func (srv *Server) Close() error
 // listeners, then closing all idle connections, and then waiting
 // indefinitely for connections to return to idle and then shut down.
 // If the provided context expires before the shutdown is complete,
-// then the context's error is returned.
+// Shutdown returns the context's error, otherwise it returns any
+// error returned from closing the Server's underlying Listener(s).
+//
+// When Shutdown is called, Serve, ListenAndServe, and
+// ListenAndServeTLS immediately return ErrServerClosed. Make sure the
+// program doesn't exit and waits instead for Shutdown to return.
 //
 // Shutdown does not attempt to close nor wait for hijacked
 // connections such as WebSockets. The caller of Shutdown should
 // separately notify such long-lived connections of shutdown and wait
 // for them to close, if desired.
 func (srv *Server) Shutdown(ctx context.Context) error
+
+// RegisterOnShutdown registers a function to call on Shutdown.
+// This can be used to gracefully shutdown connections that have
+// undergone NPN/ALPN protocol upgrade or that have been hijacked.
+// This function should start protocol-specific graceful shutdown,
+// but should not wait for shutdown to complete.
+func (srv *Server) RegisterOnShutdown(f func())
 
 // A ConnState represents the state of a client connection to a server.
 // It's used by the optional Server.ConnState hook.
@@ -488,6 +514,8 @@ func (c ConnState) String() string
 // ListenAndServe always returns a non-nil error.
 func (srv *Server) ListenAndServe() error
 
+// ErrServerClosed is returned by the Server's Serve, ServeTLS, ListenAndServe,
+// and ListenAndServeTLS methods after a call to Shutdown or Close.
 var ErrServerClosed = errors.New("http: Server closed")
 
 // Serve accepts incoming connections on the Listener l, creating a
@@ -502,6 +530,25 @@ var ErrServerClosed = errors.New("http: Server closed")
 // Serve always returns a non-nil error. After Shutdown or Close, the
 // returned error is ErrServerClosed.
 func (srv *Server) Serve(l net.Listener) error
+
+// ServeTLS accepts incoming connections on the Listener l, creating a
+// new service goroutine for each. The service goroutines read requests and
+// then call srv.Handler to reply to them.
+//
+// Additionally, files containing a certificate and matching private key for
+// the server must be provided if neither the Server's TLSConfig.Certificates
+// nor TLSConfig.GetCertificate are populated.. If the certificate is signed by
+// a certificate authority, the certFile should be the concatenation of the
+// server's certificate, any intermediates, and the CA's certificate.
+//
+// For HTTP/2 support, srv.TLSConfig should be initialized to the
+// provided listener's TLS Config before calling Serve. If
+// srv.TLSConfig is non-nil and doesn't include the string "h2" in
+// Config.NextProtos, HTTP/2 support is not enabled.
+//
+// ServeTLS always returns a non-nil error. After Shutdown or Close, the
+// returned error is ErrServerClosed.
+func (srv *Server) ServeTLS(l net.Listener, certFile, keyFile string) error
 
 // SetKeepAlivesEnabled controls whether HTTP keep-alives are enabled.
 // By default, keep-alives are always enabled. Only very

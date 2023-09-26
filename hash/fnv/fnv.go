@@ -27,3 +27,11 @@ func New64() hash.Hash64
 // New64a returns a new 64-bit FNV-1a hash.Hash.
 // Its Sum method will lay the value out in big-endian byte order.
 func New64a() hash.Hash64
+
+// New128 returns a new 128-bit FNV-1 hash.Hash.
+// Its Sum method will lay the value out in big-endian byte order.
+func New128() hash.Hash
+
+// New128a returns a new 128-bit FNV-1a hash.Hash.
+// Its Sum method will lay the value out in big-endian byte order.
+func New128a() hash.Hash

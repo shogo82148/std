@@ -26,9 +26,9 @@ import (
 // the underlying Go value can be used concurrently for the equivalent
 // direct operations.
 //
-// Using == on two Values does not compare the underlying values
-// they represent, but rather the contents of the Value structs.
 // To compare two Values, compare the results of the Interface method.
+// Using == on two Values does not compare the underlying values
+// they represent.
 type Value struct {
 	typ *rtype
 
@@ -206,7 +206,7 @@ func (v Value) MapKeys() []Value
 // Method panics if i is out of range or if v is a nil interface value.
 func (v Value) Method(i int) Value
 
-// NumMethod returns the number of methods in the value's method set.
+// NumMethod returns the number of exported methods in the value's method set.
 func (v Value) NumMethod() int
 
 // MethodByName returns a function value corresponding to the method
@@ -455,8 +455,12 @@ func MakeSlice(typ Type, len, cap int) Value
 // MakeChan creates a new channel with the specified type and buffer size.
 func MakeChan(typ Type, buffer int) Value
 
-// MakeMap creates a new map of the specified type.
+// MakeMap creates a new map with the specified type.
 func MakeMap(typ Type) Value
+
+// MakeMapWithSize creates a new map with the specified type
+// and initial space for approximately n elements.
+func MakeMapWithSize(typ Type, n int) Value
 
 // Indirect returns the value that v points to.
 // If v is a nil pointer, Indirect returns a zero Value.

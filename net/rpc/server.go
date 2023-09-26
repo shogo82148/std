@@ -163,8 +163,7 @@ type Response struct {
 
 // Server represents an RPC Server.
 type Server struct {
-	mu         sync.RWMutex
-	serviceMap map[string]*service
+	serviceMap sync.Map
 	reqLock    sync.Mutex
 	freeReq    *Request
 	respLock   sync.Mutex

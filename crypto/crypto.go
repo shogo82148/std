@@ -33,6 +33,10 @@ const (
 	SHA3_512
 	SHA512_224
 	SHA512_256
+	BLAKE2s_256
+	BLAKE2b_256
+	BLAKE2b_384
+	BLAKE2b_512
 )
 
 // Size returns the length, in bytes, of a digest resulting from the given hash

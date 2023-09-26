@@ -22,5 +22,8 @@ package main
 // by the command packages.
 // These will be imported during bootstrap as bootstrap/name, like bootstrap/math/big.
 
+// File prefixes that are ignored by go/build anyway, and cause
+// problems with editor generated temporary files (#18931).
+
 // File suffixes that use build tags introduced since Go 1.4.
 // These must not be copied into the bootstrap build directory.

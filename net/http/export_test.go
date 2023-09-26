@@ -8,22 +8,23 @@
 package http
 
 var (
-	DefaultUserAgent             = defaultUserAgent
-	NewLoggingConn               = newLoggingConn
-	ExportAppendTime             = appendTime
-	ExportRefererForURL          = refererForURL
-	ExportServerNewConn          = (*Server).newConn
-	ExportCloseWriteAndWait      = (*conn).closeWriteAndWait
-	ExportErrRequestCanceled     = errRequestCanceled
-	ExportErrRequestCanceledConn = errRequestCanceledConn
-	ExportServeFile              = serveFile
-	ExportScanETag               = scanETag
-	ExportHttp2ConfigureServer   = http2ConfigureServer
+	DefaultUserAgent                  = defaultUserAgent
+	NewLoggingConn                    = newLoggingConn
+	ExportAppendTime                  = appendTime
+	ExportRefererForURL               = refererForURL
+	ExportServerNewConn               = (*Server).newConn
+	ExportCloseWriteAndWait           = (*conn).closeWriteAndWait
+	ExportErrRequestCanceled          = errRequestCanceled
+	ExportErrRequestCanceledConn      = errRequestCanceledConn
+	ExportErrServerClosedIdle         = errServerClosedIdle
+	ExportServeFile                   = serveFile
+	ExportScanETag                    = scanETag
+	ExportHttp2ConfigureServer        = http2ConfigureServer
+	Export_shouldCopyHeaderOnRedirect = shouldCopyHeaderOnRedirect
+	Export_writeStatusLine            = writeStatusLine
 )
 
 var (
 	SetEnterRoundTripHook = hookSetter(&testHookEnterRoundTrip)
 	SetRoundTripRetried   = hookSetter(&testHookRoundTripRetried)
 )
-
-var Export_shouldCopyHeaderOnRedirect = shouldCopyHeaderOnRedirect

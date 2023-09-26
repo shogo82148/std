@@ -382,6 +382,23 @@ type Impl struct{}
 // Issue 18635 (method version).
 type KeepMethodLive struct{}
 
-type XM struct{}
+type XM struct{ _ bool }
 
 type TheNameOfThisTypeIsExactly255BytesLongSoWhenTheCompilerPrependsTheReflectTestPackageNameAndExtraStarTheLinkerRuntimeAndReflectPackagesWillHaveToCorrectlyDecodeTheSecondLengthByte0123456789_0123456789_0123456789_0123456789_0123456789_012345678 int
+
+type Tint int
+
+type Tint2 = Tint
+
+type Talias1 struct {
+	byte
+	uint8
+	int
+	int32
+	rune
+}
+
+type Talias2 struct {
+	Tint
+	Tint2
+}

@@ -53,7 +53,8 @@ var BigEndian bigEndian
 // When reading into structs, the field data for fields with
 // blank (_) field names is skipped; i.e., blank field names
 // may be used for padding.
-// When reading into a struct, all non-blank fields must be exported.
+// When reading into a struct, all non-blank fields must be exported
+// or Read may panic.
 //
 // The error is EOF only if no bytes were read.
 // If an EOF happens after reading some but not all the bytes,

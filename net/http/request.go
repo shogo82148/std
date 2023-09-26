@@ -202,6 +202,10 @@ func (r *Request) WriteProxy(w io.Writer) error
 // errMissingHost is returned by Write when there is no Host or URL present in
 // the Request.
 
+// requestBodyReadError wraps an error from (*Request).write to indicate
+// that the error came from a Read call on the Request.Body.
+// This error type should not escape the net/http package to users.
+
 // ParseHTTPVersion parses a HTTP version string.
 // "HTTP/1.0" returns (1, 0, true).
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
@@ -224,7 +228,7 @@ func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 // exact value (instead of -1), GetBody is populated (so 307 and 308
 // redirects can replay the body), and Body is set to NoBody if the
 // ContentLength is 0.
-func NewRequest(method, urlStr string, body io.Reader) (*Request, error)
+func NewRequest(method, url string, body io.Reader) (*Request, error)
 
 // BasicAuth returns the username and password provided in the request's
 // Authorization header, if the request uses HTTP Basic Authentication.

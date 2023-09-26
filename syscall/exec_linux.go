@@ -33,4 +33,5 @@ type SysProcAttr struct {
 	GidMappings  []SysProcIDMap
 
 	GidMappingsEnableSetgroups bool
+	AmbientCaps                []uintptr
 }

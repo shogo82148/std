@@ -2,20 +2,24 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Internet protocol family sockets
-
 package net
 
 // An addrList represents a list of network endpoint addresses.
 
 // SplitHostPort splits a network address of the form "host:port",
-// "[host]:port" or "[ipv6-host%zone]:port" into host or
-// ipv6-host%zone and port. A literal address or host name for IPv6
-// must be enclosed in square brackets, as in "[::1]:80",
-// "[ipv6-host]:http" or "[ipv6-host%zone]:80".
+// "host%zone:port", "[host]:port" or "[host%zone]:port" into host or
+// host%zone and port.
+//
+// A literal IPv6 address in hostport must be enclosed in square
+// brackets, as in "[::1]:80", "[::1%lo0]:80".
+//
+// See func Dial for a description of the hostport parameter, and host
+// and port results.
 func SplitHostPort(hostport string) (host, port string, err error)
 
 // JoinHostPort combines host and port into a network address of the
-// form "host:port" or, if host contains a colon or a percent sign,
-// "[host]:port".
+// form "host:port". If host contains a colon, as found in literal
+// IPv6 addresses, then JoinHostPort returns "[host]:port".
+//
+// See func Dial for a description of the host and port parameters.
 func JoinHostPort(host, port string) string

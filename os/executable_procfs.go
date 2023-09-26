@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build linux || netbsd || openbsd || dragonfly || nacl
-// +build linux netbsd openbsd dragonfly nacl
+//go:build linux || netbsd || dragonfly || nacl
+// +build linux netbsd dragonfly nacl
 
 package os
 

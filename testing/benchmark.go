@@ -34,6 +34,7 @@ type InternalBenchmark struct {
 // affecting benchmark results.
 type B struct {
 	common
+	importPath       string
 	context          *benchContext
 	N                int
 	previousN        int
@@ -88,12 +89,15 @@ type BenchmarkResult struct {
 
 func (r BenchmarkResult) NsPerOp() int64
 
+// AllocsPerOp returns r.MemAllocs / r.N.
 func (r BenchmarkResult) AllocsPerOp() int64
 
+// AllocedBytesPerOp returns r.MemBytes / r.N.
 func (r BenchmarkResult) AllocedBytesPerOp() int64
 
 func (r BenchmarkResult) String() string
 
+// MemString returns r.AllocedBytesPerOp and r.AllocsPerOp in the same format as 'go test'.
 func (r BenchmarkResult) MemString() string
 
 // An internal function but exported because it is cross-package; part of the implementation
@@ -107,7 +111,7 @@ func RunBenchmarks(matchString func(pat, str string) (bool, error), benchmarks [
 // least once will not be measured itself and will be called once with N=1.
 //
 // Run may be called simultaneously from multiple goroutines, but all such
-// calls must happen before the outer benchmark function for b returns.
+// calls must return before the outer benchmark function for b returns.
 func (b *B) Run(name string, f func(b *B)) bool
 
 // A PB is used by RunParallel for running parallel benchmarks.

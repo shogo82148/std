@@ -93,6 +93,8 @@ type Reader struct {
 
 	TrimLeadingSpace bool
 
+	ReuseRecord bool
+
 	line   int
 	column int
 	r      *bufio.Reader
@@ -100,6 +102,8 @@ type Reader struct {
 	lineBuffer bytes.Buffer
 
 	fieldIndexes []int
+
+	lastRecord []string
 }
 
 // NewReader returns a new Reader that reads from r.
@@ -111,6 +115,8 @@ func NewReader(r io.Reader) *Reader
 // Except for that case, Read always returns either a non-nil
 // record or a non-nil error, but not both.
 // If there is no data left to be read, Read returns nil, io.EOF.
+// If ReuseRecord is true, the returned slice may be shared
+// between multiple calls to Read.
 func (r *Reader) Read() (record []string, err error)
 
 // ReadAll reads all the remaining records from r.

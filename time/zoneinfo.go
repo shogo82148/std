@@ -4,10 +4,6 @@
 
 package time
 
-import (
-	"github.com/shogo82148/std/syscall"
-)
-
 // A Location maps time instants to the zone in use at that time.
 // Typically, the Location represents the collection of time offsets
 // in use in a geographical area, such as CEST and CET for central Europe.
@@ -42,14 +38,12 @@ var Local *Location = &localLoc
 // it even if a client has changed Local.
 
 // String returns a descriptive name for the time zone information,
-// corresponding to the argument to LoadLocation.
+// corresponding to the name argument to LoadLocation or FixedZone.
 func (l *Location) String() string
 
 // FixedZone returns a Location that always uses
 // the given zone name and offset (seconds east of UTC).
 func FixedZone(name string, offset int) *Location
-
-var _ = syscall.Getenv("ZONEINFO")
 
 // LoadLocation returns the Location with the given name.
 //

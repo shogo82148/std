@@ -7,5 +7,4 @@
 package main
 
 // stdImporter is the importer we use to import packages.
-// It is created during initialization so that all packages
-// are imported by the same importer.
+// It is shared so that all packages are imported by the same importer.

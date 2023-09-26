@@ -57,12 +57,6 @@ type C int
 // CText implements Marshaler and returns unescaped text.
 type CText int
 
-type IntType int
-
-type MyStruct struct {
-	IntType
-}
-
 type BugA struct {
 	S string
 }

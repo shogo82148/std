@@ -161,6 +161,22 @@ type Scanner interface {
 	Scan(src interface{}) error
 }
 
+// Out may be used to retrieve OUTPUT value parameters from stored procedures.
+//
+// Not all drivers and databases support OUTPUT value parameters.
+//
+// Example usage:
+//
+//	var outArg string
+//	_, err := db.ExecContext(ctx, "ProcName", sql.Named("Arg1", Out{Dest: &outArg}))
+type Out struct {
+	_Named_Fields_Required struct{}
+
+	Dest interface{}
+
+	In bool
+}
+
 // ErrNoRows is returned by Scan when QueryRow doesn't return a
 // row. In such a case, QueryRow returns a placeholder *Row value that
 // defers this error until a Scan.
@@ -338,11 +354,17 @@ func (db *DB) Query(query string, args ...interface{}) (*Rows, error)
 // QueryRowContext executes a query that is expected to return at most one row.
 // QueryRowContext always returns a non-nil value. Errors are deferred until
 // Row's Scan method is called.
+// If the query selects no rows, the *Row's Scan will return ErrNoRows.
+// Otherwise, the *Row's Scan scans the first selected row and discards
+// the rest.
 func (db *DB) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
 
 // QueryRow executes a query that is expected to return at most one row.
 // QueryRow always returns a non-nil value. Errors are deferred until
 // Row's Scan method is called.
+// If the query selects no rows, the *Row's Scan will return ErrNoRows.
+// Otherwise, the *Row's Scan scans the first selected row and discards
+// the rest.
 func (db *DB) QueryRow(query string, args ...interface{}) *Row
 
 // BeginTx starts a transaction.
@@ -364,6 +386,86 @@ func (db *DB) Begin() (*Tx, error)
 // Driver returns the database's underlying driver.
 func (db *DB) Driver() driver.Driver
 
+// ErrConnDone is returned by any operation that is performed on a connection
+// that has already been committed or rolled back.
+var ErrConnDone = errors.New("database/sql: connection is already closed")
+
+// Conn returns a single connection by either opening a new connection
+// or returning an existing connection from the connection pool. Conn will
+// block until either a connection is returned or ctx is canceled.
+// Queries run on the same Conn will be run in the same database session.
+//
+// Every Conn must be returned to the database pool after use by
+// calling Conn.Close.
+func (db *DB) Conn(ctx context.Context) (*Conn, error)
+
+// Conn represents a single database session rather a pool of database
+// sessions. Prefer running queries from DB unless there is a specific
+// need for a continuous single database session.
+//
+// A Conn must call Close to return the connection to the database pool
+// and may do so concurrently with a running query.
+//
+// After a call to Close, all operations on the
+// connection fail with ErrConnDone.
+type Conn struct {
+	db *DB
+
+	closemu sync.RWMutex
+
+	dc *driverConn
+
+	done int32
+}
+
+// PingContext verifies the connection to the database is still alive.
+func (c *Conn) PingContext(ctx context.Context) error
+
+// ExecContext executes a query without returning any rows.
+// The args are for any placeholder parameters in the query.
+func (c *Conn) ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
+
+// QueryContext executes a query that returns rows, typically a SELECT.
+// The args are for any placeholder parameters in the query.
+func (c *Conn) QueryContext(ctx context.Context, query string, args ...interface{}) (*Rows, error)
+
+// QueryRowContext executes a query that is expected to return at most one row.
+// QueryRowContext always returns a non-nil value. Errors are deferred until
+// Row's Scan method is called.
+// If the query selects no rows, the *Row's Scan will return ErrNoRows.
+// Otherwise, the *Row's Scan scans the first selected row and discards
+// the rest.
+func (c *Conn) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
+
+// PrepareContext creates a prepared statement for later queries or executions.
+// Multiple queries or executions may be run concurrently from the
+// returned statement.
+// The caller must call the statement's Close method
+// when the statement is no longer needed.
+//
+// The provided context is used for the preparation of the statement, not for the
+// execution of the statement.
+func (c *Conn) PrepareContext(ctx context.Context, query string) (*Stmt, error)
+
+// BeginTx starts a transaction.
+//
+// The provided context is used until the transaction is committed or rolled back.
+// If the context is canceled, the sql package will roll back
+// the transaction. Tx.Commit will return an error if the context provided to
+// BeginTx is canceled.
+//
+// The provided TxOptions is optional and may be nil if defaults should be used.
+// If a non-default isolation level is used that the driver doesn't support,
+// an error will be returned.
+func (c *Conn) BeginTx(ctx context.Context, opts *TxOptions) (*Tx, error)
+
+// Close returns the connection to the connection pool.
+// All operations after a Close will return with ErrConnDone.
+// Close is safe to call concurrently with other operations and will
+// block until all other operations finish. It may be useful to first
+// cancel any used context and then call close directly after.
+func (c *Conn) Close() error
+
 // Tx is an in-progress database transaction.
 //
 // A transaction must end with a call to Commit or Rollback.
@@ -381,6 +483,8 @@ type Tx struct {
 
 	dc  *driverConn
 	txi driver.Tx
+
+	releaseConn func(error)
 
 	done int32
 
@@ -407,7 +511,7 @@ func (tx *Tx) Commit() error
 // Rollback aborts the transaction.
 func (tx *Tx) Rollback() error
 
-// Prepare creates a prepared statement for use within a transaction.
+// PrepareContext creates a prepared statement for use within a transaction.
 //
 // The returned statement operates within the transaction and will be closed
 // when the transaction has been committed or rolled back.
@@ -474,14 +578,28 @@ func (tx *Tx) Query(query string, args ...interface{}) (*Rows, error)
 // QueryRowContext executes a query that is expected to return at most one row.
 // QueryRowContext always returns a non-nil value. Errors are deferred until
 // Row's Scan method is called.
+// If the query selects no rows, the *Row's Scan will return ErrNoRows.
+// Otherwise, the *Row's Scan scans the first selected row and discards
+// the rest.
 func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
 
 // QueryRow executes a query that is expected to return at most one row.
 // QueryRow always returns a non-nil value. Errors are deferred until
 // Row's Scan method is called.
+// If the query selects no rows, the *Row's Scan will return ErrNoRows.
+// Otherwise, the *Row's Scan scans the first selected row and discards
+// the rest.
 func (tx *Tx) QueryRow(query string, args ...interface{}) *Row
 
 // connStmt is a prepared statement on a particular connection.
+
+// stmtConnGrabber represents a Tx or Conn that will return the underlying
+// driverConn and release function.
+
+var (
+	_ stmtConnGrabber = &Tx{}
+	_ stmtConnGrabber = &Conn{}
+)
 
 // Stmt is a prepared statement.
 // A Stmt is safe for concurrent use by multiple goroutines.
@@ -492,8 +610,10 @@ type Stmt struct {
 
 	closemu sync.RWMutex
 
-	tx   *Tx
-	txds *driverStmt
+	cg   stmtConnGrabber
+	cgds *driverStmt
+
+	parentStmt *Stmt
 
 	mu     sync.Mutex
 	closed bool
@@ -707,7 +827,7 @@ func (ci *ColumnType) DatabaseTypeName() string
 func (rs *Rows) Scan(dest ...interface{}) error
 
 // rowsCloseHook returns a function so tests may install the
-// hook throug a test only mutex.
+// hook through a test only mutex.
 
 // Close closes the Rows, preventing further enumeration. If Next is called
 // and returns false and there are no further result sets,

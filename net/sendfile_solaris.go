@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package net
-
-// maxSendfileSize is the largest chunk size we ask the kernel to copy
-// at a time.

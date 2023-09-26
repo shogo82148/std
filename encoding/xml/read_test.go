@@ -172,3 +172,39 @@ type IXField struct {
 	Five        int      `xml:"five"`
 	NotInnerXML []string `xml:",innerxml"`
 }
+
+type Child struct {
+	G struct {
+		I int
+	}
+}
+
+type ChildToEmbed struct {
+	X bool
+}
+
+type Parent struct {
+	I        int
+	IPtr     *int
+	Is       []int
+	IPtrs    []*int
+	F        float32
+	FPtr     *float32
+	Fs       []float32
+	FPtrs    []*float32
+	B        bool
+	BPtr     *bool
+	Bs       []bool
+	BPtrs    []*bool
+	Bytes    []byte
+	BytesPtr *[]byte
+	S        string
+	SPtr     *string
+	Ss       []string
+	SPtrs    []*string
+	MyI      MyInt
+	Child    Child
+	Children []Child
+	ChildPtr *Child
+	ChildToEmbed
+}

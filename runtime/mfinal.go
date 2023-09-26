@@ -6,8 +6,12 @@
 
 package runtime
 
+// finblock is an array of finalizers to be executed. finblocks are
+// arranged in a linked list for the finalizer queue.
+//
 // finblock is allocated from non-GC'd memory, so any heap pointers
-// must be specially handled.
+// must be specially handled. GC currently assumes that the finalizer
+// queue does not grow during marking (but it can shrink).
 //
 //go:notinheap
 

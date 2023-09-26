@@ -29,8 +29,13 @@ package runtime
 #include <sys/thr.h>
 #include <sys/_sigset.h>
 #include <sys/unistd.h>
+#include <sys/sysctl.h>
+#include <sys/cpuset.h>
+#include <sys/param.h>
 */
 import "github.com/shogo82148/std/C"
+
+// Local consts.
 
 const (
 	EINTR  = C.EINTR

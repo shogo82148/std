@@ -25,6 +25,8 @@ package runtime
 // A memRecord is the bucket data for a bucket of type memProfile,
 // part of the memory profile.
 
+// memRecordCycle
+
 // A blockRecord is the bucket data for a bucket of type blockProfile,
 // which is used in blocking and mutex profiles.
 

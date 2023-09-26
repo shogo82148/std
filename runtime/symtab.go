@@ -9,9 +9,7 @@ package runtime
 type Frames struct {
 	callers []uintptr
 
-	wasPanic bool
-
-	frames *[]Frame
+	stackExpander stackExpander
 }
 
 // Frame is the information returned by Frames for each call frame.
@@ -21,11 +19,24 @@ type Frame struct {
 	Func *Func
 
 	Function string
-	File     string
-	Line     int
+
+	File string
+	Line int
 
 	Entry uintptr
 }
+
+// stackExpander expands a call stack of PCs into a sequence of
+// Frames. It tracks state across PCs necessary to perform this
+// expansion.
+//
+// This is the core of the Frames implementation, but is a separate
+// internal API to make it possible to use within the runtime without
+// heap-allocating the PC slice. The only difference with the public
+// Frames API is that the caller is responsible for threading the PC
+// slice between expansion steps in this API. If escape analysis were
+// smarter, we may not need this (though it may have to be a lot
+// smarter).
 
 // CallersFrames takes a slice of PC values returned by Callers and
 // prepares to return function/file/line information.
@@ -36,12 +47,16 @@ func CallersFrames(callers []uintptr) *Frames
 // If more is false, there are no more callers (the Frame value is valid).
 func (ci *Frames) Next() (frame Frame, more bool)
 
+// A pcExpander expands a single PC into a sequence of Frames.
+
 // A Func represents a Go function in the running binary.
 type Func struct {
 	opaque struct{}
 }
 
-// funcdata.h
+// PCDATA and FUNCDATA table indexes.
+//
+// See funcdata.h and ../cmd/internal/obj/funcdata.go.
 
 // moduledata records information about the layout of the executable
 // image. It is written by the linker. Any changes here must be
@@ -57,7 +72,7 @@ type Func struct {
 // at link time and a pointer to the runtime abi hash. These are checked in
 // moduledataverify1 below.
 //
-// For each loaded plugin, the the pkghashes slice has a modulehash of the
+// For each loaded plugin, the pkghashes slice has a modulehash of the
 // newly loaded package that can be used to check the plugin's version of
 // a package against any previously loaded version of the package.
 // This is done in plugin.lastmoduleinit.
@@ -81,6 +96,9 @@ type Func struct {
 
 // FuncForPC returns a *Func describing the function that contains the
 // given program counter address, or else nil.
+//
+// If pc represents multiple functions because of inlining, it returns
+// the *Func describing the outermost function.
 func FuncForPC(pc uintptr) *Func
 
 // Name returns the name of the function.
@@ -94,3 +112,5 @@ func (f *Func) Entry() uintptr
 // The result will not be accurate if pc is not a program
 // counter within f.
 func (f *Func) FileLine(pc uintptr) (file string, line int)
+
+// inlinedCall is the encoding of entries in the FUNCDATA_InlTree table.

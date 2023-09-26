@@ -22,18 +22,18 @@ package runtime
 //go:notinheap
 
 // An MSpan representing actual memory has state _MSpanInUse,
-// _MSpanStack, or _MSpanFree. Transitions between these states are
+// _MSpanManual, or _MSpanFree. Transitions between these states are
 // constrained as follows:
 //
-// * A span may transition from free to in-use or stack during any GC
+// * A span may transition from free to in-use or manual during any GC
 //   phase.
 //
 // * During sweeping (gcphase == _GCoff), a span may transition from
-//   in-use to free (as a result of sweeping) or stack to free (as a
+//   in-use to free (as a result of sweeping) or manual to free (as a
 //   result of stacks being freed).
 //
 // * During GC (gcphase != _GCoff), a span *must not* transition from
-//   stack or in-use to free. Because concurrent GC may read a pointer
+//   manual or in-use to free. Because concurrent GC may read a pointer
 //   and then look up its span, the span state must be monotonic.
 
 // mSpanStateNames are the names of the span states, indexed by
@@ -45,6 +45,13 @@ package runtime
 
 //go:notinheap
 
+// A spanClass represents the size class and noscan-ness of a span.
+//
+// Each size class has a noscan spanClass and a scan spanClass. The
+// noscan spanClass contains only noscan objects, which do not contain
+// pointers and thus do not need to be scanned by the garbage
+// collector.
+
 //go:notinheap
 
 // The described object has a finalizer set for it.
@@ -55,6 +62,10 @@ package runtime
 //go:notinheap
 
 // The described object is being heap profiled.
+//
+//go:notinheap
+
+// gcBits is an alloc/mark bitmap. This is always used as *gcBits.
 //
 //go:notinheap
 

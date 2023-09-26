@@ -63,8 +63,6 @@ func (h *Header) FileInfo() os.FileInfo
 
 // sysStat, if non-nil, populates h from system-dependent fields of fi.
 
-// Mode constants from the tar spec.
-
 // Keywords for the PAX Extended Header
 
 // FileInfoHeader creates a partially-populated Header from fi.

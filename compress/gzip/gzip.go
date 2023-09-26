@@ -72,6 +72,7 @@ func (z *Writer) Write(p []byte) (int, error)
 // In the terminology of the zlib library, Flush is equivalent to Z_SYNC_FLUSH.
 func (z *Writer) Flush() error
 
-// Close closes the Writer, flushing any unwritten data to the underlying
-// io.Writer, but does not close the underlying io.Writer.
+// Close closes the Writer by flushing any unwritten data to the underlying
+// io.Writer and writing the GZIP footer.
+// It does not close the underlying io.Writer.
 func (z *Writer) Close() error

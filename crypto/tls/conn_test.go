@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package tls
+
+// hairpinConn is a net.Conn that makes a “hairpin” call when closed, back into
+// the tls.Conn which is calling it.

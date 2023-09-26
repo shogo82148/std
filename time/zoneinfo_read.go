@@ -9,6 +9,10 @@
 
 package time
 
+// maxFileSize is the max permitted size of files read by readFile.
+// As reference, the zoneinfo.zip distributed by Go is ~350 KB,
+// so 10MB is overkill.
+
 // Copies of io.Seek* constants to avoid importing "io":
 
 // Simple I/O interface to binary blob of data.

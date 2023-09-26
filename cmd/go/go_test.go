@@ -4,6 +4,10 @@
 
 package main_test
 
+// testGOROOT is the GOROOT to use when running testgo, a cmd/go binary
+// build from this process's current GOROOT, but run from a different
+// (temp) directory.
+
 // The length of an mtime tick on this system. This is an estimate of
 // how long we need to sleep to ensure that the mtime of two files is
 // different.

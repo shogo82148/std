@@ -27,13 +27,17 @@ const (
 )
 
 // NewEncoding returns a new padded Encoding defined by the given alphabet,
-// which must be a 64-byte string.
+// which must be a 64-byte string that does not contain the padding character
+// or CR / LF ('\r', '\n').
 // The resulting Encoding uses the default padding character ('='),
 // which may be changed or disabled via WithPadding.
 func NewEncoding(encoder string) *Encoding
 
 // WithPadding creates a new encoding identical to enc except
 // with a specified padding character, or NoPadding to disable padding.
+// The padding character must not be '\r' or '\n', must not
+// be contained in the encoding's alphabet and must be a rune equal or
+// below '\xff'.
 func (enc Encoding) WithPadding(padding rune) *Encoding
 
 // Strict creates a new encoding identical to enc except with

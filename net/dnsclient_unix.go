@@ -16,9 +16,15 @@
 
 package net
 
-// A dnsDialer provides dialing suitable for DNS queries.
-
 // A dnsConn represents a DNS transport endpoint.
+
+// dnsPacketConn implements the dnsConn interface for RFC 1035's
+// "UDP usage" transport mechanism. Conn is a packet-oriented connection,
+// such as a *UDPConn.
+
+// dnsStreamConn implements the dnsConn interface for RFC 1035's
+// "TCP usage" transport mechanism. Conn is a stream-oriented connection,
+// such as a *TCPConn.
 
 // A resolverConfig represents a DNS stub resolver configuration.
 

@@ -4,6 +4,8 @@
 
 package runtime
 
+import _ "github.com/shogo82148/std/unsafe"
+
 // The Error interface identifies a run time error.
 type Error interface {
 	error

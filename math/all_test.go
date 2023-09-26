@@ -28,4 +28,12 @@ const (
 	LargestSubnormalFloat64 = SmallestNormalFloat64 - SmallestNonzeroFloat64
 )
 
-var Global float64
+// Global exported variables are used to store the
+// return values of functions measured in the benchmarks.
+// Storing the results in these variables prevents the compiler
+// from completely optimizing the benchmarked functions away.
+var (
+	GlobalI int
+	GlobalB bool
+	GlobalF float64
+)

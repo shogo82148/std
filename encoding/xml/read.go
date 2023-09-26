@@ -102,6 +102,10 @@ package xml
 //
 // Unmarshal maps an XML element to a pointer by setting the pointer
 // to a freshly allocated value and then mapping the element to that value.
+//
+// A missing element or empty attribute value will be unmarshaled as a zero value.
+// If the field is a slice, a zero value will be appended to the field. Otherwise, the
+// field will be set to its zero value.
 func Unmarshal(data []byte, v interface{}) error
 
 // Decode works like Unmarshal, except it reads the decoder

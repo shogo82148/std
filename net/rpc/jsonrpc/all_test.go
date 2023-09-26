@@ -19,3 +19,5 @@ type ArithAddResp struct {
 	Result Reply       `json:"result"`
 	Error  interface{} `json:"error"`
 }
+
+type BuiltinTypes struct{}

@@ -6,16 +6,16 @@ package sync
 
 // An RWMutex is a reader/writer mutual exclusion lock.
 // The lock can be held by an arbitrary number of readers or a single writer.
-// RWMutexes can be created as part of other structures;
-// the zero value for a RWMutex is an unlocked mutex.
+// The zero value for a RWMutex is an unlocked mutex.
 //
 // An RWMutex must not be copied after first use.
 //
-// If a goroutine holds a RWMutex for reading, it must not expect this or any
-// other goroutine to be able to also take the read lock until the first read
-// lock is released. In particular, this prohibits recursive read locking.
-// This is to ensure that the lock eventually becomes available;
-// a blocked Lock call excludes new readers from acquiring the lock.
+// If a goroutine holds a RWMutex for reading and another goroutine might
+// call Lock, no goroutine should expect to be able to acquire a read lock
+// until the initial read lock is released. In particular, this prohibits
+// recursive read locking. This is to ensure that the lock eventually becomes
+// available; a blocked Lock call excludes new readers from acquiring the
+// lock.
 type RWMutex struct {
 	w           Mutex
 	writerSem   uint32
@@ -25,6 +25,10 @@ type RWMutex struct {
 }
 
 // RLock locks rw for reading.
+//
+// It should not be used for recursive read locking; a blocked Lock
+// call excludes new readers from acquiring the lock. See the
+// documentation on the RWMutex type.
 func (rw *RWMutex) RLock()
 
 // RUnlock undoes a single RLock call;

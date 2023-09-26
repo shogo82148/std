@@ -13,6 +13,9 @@ import (
 // request holds the state for an in-progress request. As soon as it's complete,
 // it's converted to an http.Request.
 
+// envVarsContextKey uniquely identifies a mapping of CGI
+// environment variables to their values in a request context
+
 // response implements http.ResponseWriter.
 
 // ErrRequestAborted is returned by Read when a handler attempts to read the
@@ -29,3 +32,10 @@ var ErrConnClosed = errors.New("fcgi: connection to web server closed")
 // If l is nil, Serve accepts connections from os.Stdin.
 // If handler is nil, http.DefaultServeMux is used.
 func Serve(l net.Listener, handler http.Handler) error
+
+// ProcessEnv returns FastCGI environment variables associated with the request r
+// for which no effort was made to be included in the request itself - the data
+// is hidden in the request's context. As an example, if REMOTE_USER is set for a
+// request, it will not be found anywhere in r, but it will be included in
+// ProcessEnv's response (via r's context).
+func ProcessEnv(r *http.Request) map[string]string

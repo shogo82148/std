@@ -4,10 +4,4 @@
 
 package net
 
-// operation contains superset of data necessary to perform all async IO.
-
-// ioSrv executes net IO requests.
-
-// Start helper goroutines.
-
 // Network file descriptor.

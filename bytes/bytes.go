@@ -10,10 +10,6 @@ import (
 	"github.com/shogo82148/std/unicode"
 )
 
-// Count counts the number of non-overlapping instances of sep in s.
-// If sep is an empty slice, Count returns 1 + the number of Unicode code points in s.
-func Count(s, sep []byte) int
-
 // Contains reports whether subslice is within b.
 func Contains(b, subslice []byte) bool
 

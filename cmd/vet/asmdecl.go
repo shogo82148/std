@@ -17,7 +17,5 @@ package main
 
 // An asmVar describes a single assembly variable.
 
-// Common architecture word sizes and alignments.
-
 // A component is an assembly-addressable component of a composite type,
 // or a composite type itself.

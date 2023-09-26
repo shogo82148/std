@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 // Package x509 parses X.509-encoded keys and certificates.
+//
+// On UNIX systems the environment variables SSL_CERT_FILE and SSL_CERT_DIR
+// can be used to override the system default locations for the SSL certificate
+// file and SSL certificate files directory, respectively.
 package x509
 
 import (
@@ -185,7 +189,8 @@ type Certificate struct {
 
 	BasicConstraintsValid bool
 	IsCA                  bool
-	MaxPathLen            int
+
+	MaxPathLen int
 
 	MaxPathLenZero bool
 
@@ -201,6 +206,7 @@ type Certificate struct {
 
 	PermittedDNSDomainsCritical bool
 	PermittedDNSDomains         []string
+	ExcludedDNSDomains          []string
 
 	CRLDistributionPoints []string
 
@@ -258,8 +264,6 @@ func (h UnhandledCriticalExtension) Error() string
 
 // RFC 5280, 4.2.1.14
 
-// asn1Null is the ASN.1 encoding of a NULL value.
-
 // ParseCertificate parses a single certificate from the given ASN.1 DER data.
 func ParseCertificate(asn1Data []byte) (*Certificate, error)
 
@@ -267,11 +271,12 @@ func ParseCertificate(asn1Data []byte) (*Certificate, error)
 // data. The certificates must be concatenated with no intermediate padding.
 func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 
-// CreateCertificate creates a new certificate based on a template. The
-// following members of template are used: SerialNumber, Subject, NotBefore,
-// NotAfter, KeyUsage, ExtKeyUsage, UnknownExtKeyUsage, BasicConstraintsValid,
-// IsCA, MaxPathLen, SubjectKeyId, DNSNames, PermittedDNSDomainsCritical,
-// PermittedDNSDomains, SignatureAlgorithm.
+// CreateCertificate creates a new certificate based on a template.
+// The following members of template are used: AuthorityKeyId,
+// BasicConstraintsValid, DNSNames, ExcludedDNSDomains, ExtKeyUsage,
+// IsCA, KeyUsage, MaxPathLen, MaxPathLenZero, NotAfter, NotBefore,
+// PermittedDNSDomains, PermittedDNSDomainsCritical, SerialNumber,
+// SignatureAlgorithm, Subject, SubjectKeyId, and UnknownExtKeyUsage.
 //
 // The certificate is signed by parent. If parent is equal to template then the
 // certificate is self-signed. The parameter pub is the public key of the
@@ -281,6 +286,10 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 //
 // All keys types that are implemented via crypto.Signer are supported (This
 // includes *rsa.PublicKey and *ecdsa.PublicKey.)
+//
+// The AuthorityKeyId will be taken from the SubjectKeyId of parent, if any,
+// unless the resulting certificate is self-signed. Otherwise the value from
+// template will be used.
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv interface{}) (cert []byte, err error)
 
 // pemCRLPrefix is the magic string that indicates that we have a PEM encoded
@@ -331,10 +340,10 @@ type CertificateRequest struct {
 // oidExtensionRequest is a PKCS#9 OBJECT IDENTIFIER that indicates requested
 // extensions in a CSR.
 
-// CreateCertificateRequest creates a new certificate request based on a template.
-// The following members of template are used: Subject, Attributes,
-// SignatureAlgorithm, Extensions, DNSNames, EmailAddresses, and IPAddresses.
-// The private key is the private key of the signer.
+// CreateCertificateRequest creates a new certificate request based on a
+// template. The following members of template are used: Attributes, DNSNames,
+// EmailAddresses, ExtraExtensions, IPAddresses, SignatureAlgorithm, and
+// Subject. The private key is the private key of the signer.
 //
 // The returned slice is the certificate request in DER encoding.
 //

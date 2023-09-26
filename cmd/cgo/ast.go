@@ -6,9 +6,9 @@
 
 package main
 
-// ReadGo populates f with information learned from reading the
-// Go source file with the given file name. It gathers the C preamble
+// ParseGo populates f with information learned from the Go source code
+// which was read from the named file. It gathers the C preamble
 // attached to the import "C" comment, a list of references to C.xxx,
 // a list of exported functions, and the actual AST, to be rewritten and
 // printed.
-func (f *File) ReadGo(name string)
+func (f *File) ParseGo(name string, src []byte)

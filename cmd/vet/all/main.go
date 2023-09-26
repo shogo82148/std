@@ -12,8 +12,5 @@ package main
 
 // ignorePathPrefixes are file path prefixes that should be ignored wholesale.
 
-// nbits maps from architecture names to the number of bits in a pointer.
-// TODO: figure out a clean way to avoid get this info rather than listing it here yet again.
-
 // archAsmX maps architectures to the suffix usually used for their assembly files,
 // if different than the arch name itself.

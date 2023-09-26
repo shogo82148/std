@@ -4,4 +4,5 @@
 
 package runtime
 
-// net_op must be the same as beginning of net.operation. Keep these in sync.
+// net_op must be the same as beginning of internal/poll.operation.
+// Keep these in sync.

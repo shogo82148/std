@@ -16,7 +16,9 @@ package os
 // The file descriptor is valid only until f.Close is called or f is garbage collected.
 func (f *File) Fd() uintptr
 
-// NewFile returns a new File with the given file descriptor and name.
+// NewFile returns a new File with the given file descriptor and
+// name. The returned value will be nil if fd is not a valid file
+// descriptor.
 func NewFile(fd uintptr, name string) *File
 
 // Auxiliary information if the File describes a directory
@@ -36,11 +38,6 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 // It returns an error, if any.
 func (f *File) Close() error
 
-// Darwin and FreeBSD can't read or write 2GB+ at a time,
-// even on 64-bit systems. See golang.org/issue/7812.
-// Use 1GB instead of, say, 2GB-1, to keep subsequent
-// reads aligned.
-
 // Truncate changes the size of the named file.
 // If the file is a symbolic link, it changes the size of the link's target.
 // If there is an error, it will be of type *PathError.
@@ -49,9 +46,6 @@ func Truncate(name string, size int64) error
 // Remove removes the named file or directory.
 // If there is an error, it will be of type *PathError.
 func Remove(name string) error
-
-// TempDir returns the default directory to use for temporary files.
-func TempDir() string
 
 // Link creates newname as a hard link to the oldname file.
 // If there is an error, it will be of type *LinkError.

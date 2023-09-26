@@ -10,6 +10,7 @@ const (
 	TagInteger         = 2
 	TagBitString       = 3
 	TagOctetString     = 4
+	TagNull            = 5
 	TagOID             = 6
 	TagEnum            = 10
 	TagUTF8String      = 12

@@ -34,6 +34,12 @@ var (
 // function. If GetProcAddress succeeds, the LOAD_LIBRARY_SEARCH_*
 // flags can be used with LoadLibraryEx."
 
-// exiting is set to non-zero when the process is exiting.
+// osRelaxMinNS indicates that sysmon shouldn't osRelax if the next
+// timer is less than 60 ms from now. Since osRelaxing may reduce
+// timer resolution to 15.6 ms, this keeps timer error under roughly 1
+// part in 4.
 
-// Described in http://www.dcl.hpi.uni-potsdam.de/research/WRK/2007/08/getting-os-information-the-kuser_shared_data-structure/
+// useQPCTime controls whether time.now and nanotime use QueryPerformanceCounter.
+// This is only set to 1 when running under Wine.
+
+// exiting is set to non-zero when the process is exiting.

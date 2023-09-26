@@ -135,6 +135,8 @@ func (s *Scanner) Scan() rune
 
 // Pos returns the position of the character immediately after
 // the character or token returned by the last call to Next or Scan.
+// Use the Scanner's Position field for the start position of the most
+// recently scanned token.
 func (s *Scanner) Pos() (pos Position)
 
 // TokenText returns the string corresponding to the most recently scanned token.

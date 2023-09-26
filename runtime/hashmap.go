@@ -6,6 +6,8 @@ package runtime
 
 // A header for a Go map.
 
+// mapextra holds fields that are not present on all maps.
+
 // A bucket for a Go map.
 
 // A hash iteration structure.

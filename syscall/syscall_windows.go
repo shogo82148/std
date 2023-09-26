@@ -33,7 +33,7 @@ func UTF16ToString(s []uint16) string
 
 // StringToUTF16Ptr returns pointer to the UTF-16 encoding of
 // the UTF-8 string s, with a terminating NUL added. If s
-// If s contains a NUL byte this function panics instead of
+// contains a NUL byte this function panics instead of
 // returning an error.
 //
 // Deprecated: Use UTF16PtrFromString instead.
@@ -69,6 +69,7 @@ func NewCallback(fn interface{}) uintptr
 // interoperating with Windows code requiring callbacks.
 func NewCallbackCDecl(fn interface{}) uintptr
 
+// Implemented in ../runtime/syscall_windows.go.
 func Exit(code int)
 
 func Open(path string, mode int, perm uint32) (fd Handle, err error)

@@ -11,8 +11,10 @@ package asn1
 // In addition to the struct tags recognised by Unmarshal, the following can be
 // used:
 //
-//	ia5:		causes strings to be marshaled as ASN.1, IA5 strings
-//	omitempty:	causes empty slices to be skipped
-//	printable:	causes strings to be marshaled as ASN.1, PrintableString strings.
-//	utf8:		causes strings to be marshaled as ASN.1, UTF8 strings
+//	ia5:         causes strings to be marshaled as ASN.1, IA5String values
+//	omitempty:   causes empty slices to be skipped
+//	printable:   causes strings to be marshaled as ASN.1, PrintableString values
+//	utf8:        causes strings to be marshaled as ASN.1, UTF8String values
+//	utc:         causes time.Time to be marshaled as ASN.1, UTCTime values
+//	generalized: causes time.Time to be marshaled as ASN.1, GeneralizedTime values
 func Marshal(val interface{}) ([]byte, error)

@@ -13,10 +13,6 @@ import (
 
 // primeRK is the prime base used in Rabin-Karp algorithm.
 
-// Count counts the number of non-overlapping instances of sep in s.
-// If sep is an empty string, Count returns 1 + the number of Unicode code points in s.
-func Count(s, sep string) int
-
 // Contains reports whether substr is within s.
 func Contains(s, substr string) bool
 
@@ -26,8 +22,8 @@ func ContainsAny(s, chars string) bool
 // ContainsRune reports whether the Unicode code point r is within s.
 func ContainsRune(s string, r rune) bool
 
-// LastIndex returns the index of the last instance of sep in s, or -1 if sep is not present in s.
-func LastIndex(s, sep string) int
+// LastIndex returns the index of the last instance of substr in s, or -1 if substr is not present in s.
+func LastIndex(s, substr string) int
 
 // IndexRune returns the index of the first instance of the Unicode code point
 // r, or -1 if rune is not present in s.
@@ -49,33 +45,51 @@ func LastIndexByte(s string, c byte) int
 
 // SplitN slices s into substrings separated by sep and returns a slice of
 // the substrings between those separators.
-// If sep is empty, SplitN splits after each UTF-8 sequence.
+//
 // The count determines the number of substrings to return:
 //
 //	n > 0: at most n substrings; the last substring will be the unsplit remainder.
 //	n == 0: the result is nil (zero substrings)
 //	n < 0: all substrings
+//
+// Edge cases for s and sep (for example, empty strings) are handled
+// as described in the documentation for Split.
 func SplitN(s, sep string, n int) []string
 
 // SplitAfterN slices s into substrings after each instance of sep and
 // returns a slice of those substrings.
-// If sep is empty, SplitAfterN splits after each UTF-8 sequence.
+//
 // The count determines the number of substrings to return:
 //
 //	n > 0: at most n substrings; the last substring will be the unsplit remainder.
 //	n == 0: the result is nil (zero substrings)
 //	n < 0: all substrings
+//
+// Edge cases for s and sep (for example, empty strings) are handled
+// as described in the documentation for SplitAfter.
 func SplitAfterN(s, sep string, n int) []string
 
 // Split slices s into all substrings separated by sep and returns a slice of
 // the substrings between those separators.
-// If sep is empty, Split splits after each UTF-8 sequence.
+//
+// If s does not contain sep and sep is not empty, Split returns a
+// slice of length 1 whose only element is s.
+//
+// If sep is empty, Split splits after each UTF-8 sequence. If both s
+// and sep are empty, Split returns an empty slice.
+//
 // It is equivalent to SplitN with a count of -1.
 func Split(s, sep string) []string
 
 // SplitAfter slices s into all substrings after each instance of sep and
 // returns a slice of those substrings.
-// If sep is empty, SplitAfter splits after each UTF-8 sequence.
+//
+// If s does not contain sep and sep is not empty, SplitAfter returns
+// a slice of length 1 whose only element is s.
+//
+// If sep is empty, SplitAfter splits after each UTF-8 sequence. If
+// both s and sep are empty, SplitAfter returns an empty slice.
+//
 // It is equivalent to SplitAfterN with a count of -1.
 func SplitAfter(s, sep string) []string
 

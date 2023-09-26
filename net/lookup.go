@@ -19,7 +19,16 @@ import (
 // services contains minimal mappings between services names and port
 // numbers for platforms that don't have a complete list of port numbers
 // (some Solaris distros, nacl, etc).
+//
+// See https://www.iana.org/assignments/service-names-port-numbers
+//
 // On Unix, this map is augmented by readServices via goLookupPort.
+
+// maxPortBufSize is the longest reasonable name of a service
+// (non-numeric port).
+// Currently the longest known IANA-unregistered name is
+// "mobility-header", so we use that length, plus some slop in case
+// something longer is added in the future.
 
 // DefaultResolver is the resolver used by the package-level Lookup
 // functions and by Dialers without a specified Resolver.
@@ -30,6 +39,10 @@ var DefaultResolver = &Resolver{}
 // A nil *Resolver is equivalent to a zero Resolver.
 type Resolver struct {
 	PreferGo bool
+
+	StrictErrors bool
+
+	Dial func(ctx context.Context, network, address string) (Conn, error)
 }
 
 // LookupHost looks up the given host using the local resolver.

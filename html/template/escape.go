@@ -10,8 +10,6 @@ import (
 
 // funcMap maps command names to functions that render their inputs safe.
 
-// equivEscapers matches contextual escapers to equivalent template builtins.
-
 // escaper collects type inferences about templates and changes needed to make
 // templates injection safe.
 
@@ -20,6 +18,12 @@ import (
 // contains no special characters, is not empty, and when it appears in output
 // it is distinct enough that a developer can find the source of the problem
 // via a search engine.
+
+// predefinedEscapers contains template predefined escapers that are equivalent
+// to some contextual escapers. Keep in sync with equivEscapers.
+
+// equivEscapers matches contextual escapers to equivalent predefined
+// template escapers.
 
 // redundantFuncs[a][b] implies that funcMap[b](funcMap[a](x)) == funcMap[a](x)
 // for all x.

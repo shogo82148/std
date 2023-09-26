@@ -24,7 +24,9 @@ type SockaddrDatalink struct {
 	raw    RawSockaddrDatalink
 }
 
-func Pipe(p []int) (err error)
+func Pipe(p []int) error
+
+func Pipe2(p []int, flags int) error
 
 func GetsockoptIPMreqn(fd, level, opt int) (*IPMreqn, error)
 

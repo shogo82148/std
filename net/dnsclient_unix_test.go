@@ -10,5 +10,8 @@ package net
 // Test address from 192.0.2.0/24 block, reserved by RFC 5737 for documentation.
 const TestAddr uint32 = 0xc0000201
 
+// Test address from 2001:db8::/32 block, reserved by RFC 3849 for documentation.
+var TestAddr6 = [16]byte{0x20, 0x01, 0x0d, 0xb8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}
+
 // See RFC 6761 for further information about the reserved, pseudo
 // domain names.

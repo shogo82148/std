@@ -13,9 +13,9 @@
 // One argument:
 //
 //	go doc <pkg>
-//	go doc <sym>[.<method>]
-//	go doc [<pkg>.]<sym>[.<method>]
-//	go doc [<pkg>.][<sym>.]<method>
+//	go doc <sym>[.<methodOrField>]
+//	go doc [<pkg>.]<sym>[.<methodOrField>]
+//	go doc [<pkg>.][<sym>.]<methodOrField>
 //
 // The first item in this list that succeeds is the one whose documentation
 // is printed. If there is a symbol but no package, the package in the current
@@ -24,9 +24,9 @@
 //
 // Two arguments:
 //
-//	go doc <pkg> <sym>[.<method>]
+//	go doc <pkg> <sym>[.<methodOrField>]
 //
-// Show the documentation for the package, symbol, and method. The
+// Show the documentation for the package, symbol, and method or field. The
 // first argument must be a full package path. This is similar to the
 // command-line usage for the godoc command.
 //

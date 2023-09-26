@@ -5,7 +5,7 @@
 package os
 
 var (
-	FixLongPath     = fixLongPath
-	NewConsoleFile  = newConsoleFile
-	ReadConsoleFunc = &readConsole
+	FixLongPath       = fixLongPath
+	NewConsoleFile    = newConsoleFile
+	CommandLineToArgv = commandLineToArgv
 )

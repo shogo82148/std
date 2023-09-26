@@ -4,11 +4,6 @@
 
 package runtime
 
-// Goroutine preemption request.
-// Stored into g->stackguard0 to cause split stack check failure.
-// Must be greater than any real sp.
-// 0xfffffade in hex.
-
 // Global pool of spans that have free stacks.
 // Stacks are assigned an order according to size.
 //     order = log_2(size/FixedStack)

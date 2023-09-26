@@ -69,8 +69,6 @@ package runtime
 // The bounds of the stack are exactly [lo, hi),
 // with no implicit data structures on either side.
 
-// stkbar records the state of a G's stack barrier.
-
 // The m.locked word holds two pieces of state counting active calls to LockOSThread/lockOSThread.
 // The low bit (LockExternal) is a boolean reporting whether any LockOSThread call is active.
 // External locks are not recursive; a second lock is silently ignored.

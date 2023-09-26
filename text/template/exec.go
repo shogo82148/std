@@ -39,7 +39,8 @@ func (e ExecError) Error() string
 // If an error occurs executing the template or writing its output,
 // execution stops, but partial results may already have been written to
 // the output writer.
-// A template may be executed safely in parallel.
+// A template may be executed safely in parallel, although if parallel
+// executions share a Writer the output may be interleaved.
 func (t *Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) error
 
 // Execute applies a parsed template to the specified data object,
@@ -47,7 +48,8 @@ func (t *Template) ExecuteTemplate(wr io.Writer, name string, data interface{}) 
 // If an error occurs executing the template or writing its output,
 // execution stops, but partial results may already have been written to
 // the output writer.
-// A template may be executed safely in parallel.
+// A template may be executed safely in parallel, although if parallel
+// executions share a Writer the output may be interleaved.
 //
 // If data is a reflect.Value, the template applies to the concrete
 // value that the reflect.Value holds, as in fmt.Print.

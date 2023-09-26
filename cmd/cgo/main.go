@@ -76,6 +76,9 @@ type Name struct {
 // IsVar reports whether Kind is either "var" or "fpvar"
 func (n *Name) IsVar() bool
 
+// IsConst reports whether Kind is either "iconst", "fconst" or "sconst"
+func (n *Name) IsConst() bool
+
 // A ExpFunc is an exported function, callable from C.
 // Such functions are identified in the Go input file
 // by doc comments containing the line //export ExpName

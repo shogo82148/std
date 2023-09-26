@@ -5,10 +5,6 @@
 //go:build !nacl
 // +build !nacl
 
-package pprof_test
-
-import (
-	. "runtime/pprof"
-)
+package pprof
 
 // Operating systems that are expected to fail the tests. See issue 13841.

@@ -66,6 +66,8 @@ package time
 // RFC822, RFC822Z, RFC1123, and RFC1123Z are useful for formatting;
 // when used with time.Parse they do not accept all the time formats
 // permitted by the RFCs.
+// The RFC3339Nano format removes trailing zeros from the seconds field
+// and thus may not sort correctly once formatted.
 const (
 	ANSIC       = "Mon Jan _2 15:04:05 2006"
 	UnixDate    = "Mon Jan _2 15:04:05 MST 2006"
@@ -96,6 +98,14 @@ const (
 // String returns the time formatted using the format string
 //
 //	"2006-01-02 15:04:05.999999999 -0700 MST"
+//
+// If the time has a monotonic clock reading, the returned string
+// includes a final field "m=±<value>", where value is the monotonic
+// clock reading formatted as a decimal number of seconds.
+//
+// The returned string is meant for debugging; for a stable serialized
+// representation, use t.MarshalText, t.MarshalBinary, or t.Format
+// with an explicit format string.
 func (t Time) String() string
 
 // Format returns a textual representation of the time value formatted
@@ -164,11 +174,6 @@ func (e *ParseError) Error() string
 // to a time zone used by the current location (Local), then Parse uses that
 // location and zone in the returned time. Otherwise it records the time as
 // being in a fabricated location with time fixed at the given zone offset.
-//
-// No checking is done that the day of the month is within the month's
-// valid dates; any one- or two-digit value is accepted. For example
-// February 31 and even February 99 are valid dates, specifying dates
-// in March and May. This behavior is consistent with time.Date.
 //
 // When parsing a time with a zone abbreviation like MST, if the zone abbreviation
 // has a defined offset in the current location, then that offset is used.

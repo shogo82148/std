@@ -12,7 +12,7 @@
 package fcgi
 
 // recType is a record type, as defined by
-// http://www.fastcgi.com/devkit/doc/fcgi-spec.html#S8
+// https://web.archive.org/web/20150420080736/http://www.fastcgi.com/drupal/node/6?q=node/22#S8
 
 // keep the connection between web-server and responder open after request
 

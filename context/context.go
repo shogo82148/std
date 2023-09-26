@@ -105,6 +105,8 @@ func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
 // A canceler is a context type that can be canceled directly. The
 // implementations are *cancelCtx and *timerCtx.
 
+// closedchan is a reusable closed channel.
+
 // A cancelCtx can be canceled. When canceled, it also cancels any children
 // that implement canceler.
 

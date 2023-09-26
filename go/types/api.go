@@ -64,7 +64,7 @@ type ImportMode int
 type ImporterFrom interface {
 	Importer
 
-	ImportFrom(path, srcDir string, mode ImportMode) (*Package, error)
+	ImportFrom(path, dir string, mode ImportMode) (*Package, error)
 }
 
 // A Config specifies the configuration for type checking.

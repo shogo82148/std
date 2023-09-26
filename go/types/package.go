@@ -14,8 +14,7 @@ type Package struct {
 	fake     bool
 }
 
-// NewPackage returns a new Package for the given package path and name;
-// the name must not be the blank identifier.
+// NewPackage returns a new Package for the given package path and name.
 // The package is not complete and contains no explicit imports.
 func NewPackage(path, name string) *Package
 
@@ -41,7 +40,7 @@ func (pkg *Package) Complete() bool
 func (pkg *Package) MarkComplete()
 
 // Imports returns the list of packages directly imported by
-// pkg; the list is in source order. Package unsafe is excluded.
+// pkg; the list is in source order.
 //
 // If pkg was loaded from export data, Imports includes packages that
 // provide package-level objects referenced by pkg. This may be more or

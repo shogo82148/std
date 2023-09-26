@@ -24,6 +24,7 @@ package expvar
 import (
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 )
 
 // Var is an abstract type for all exported variables.
@@ -61,9 +62,9 @@ func (v *Float) Set(value float64)
 
 // Map is a string-to-Var map variable that satisfies the Var interface.
 type Map struct {
-	mu   sync.RWMutex
-	m    map[string]Var
-	keys []string
+	m      sync.Map
+	keysMu sync.RWMutex
+	keys   []string
 }
 
 // KeyValue represents a single entry in a Map.
@@ -74,12 +75,14 @@ type KeyValue struct {
 
 func (v *Map) String() string
 
+// Init removes all keys from the map.
 func (v *Map) Init() *Map
 
 func (v *Map) Get(key string) Var
 
 func (v *Map) Set(key string, av Var)
 
+// Add adds delta to the *Int value stored under the given map key.
 func (v *Map) Add(key string, delta int64)
 
 // AddFloat adds delta to the *Float value stored under the given map key.
@@ -92,8 +95,7 @@ func (v *Map) Do(f func(KeyValue))
 
 // String is a string variable, and satisfies the Var interface.
 type String struct {
-	mu sync.RWMutex
-	s  string
+	s atomic.Value
 }
 
 func (v *String) Value() string

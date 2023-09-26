@@ -8,6 +8,7 @@ package httptest
 
 import (
 	"github.com/shogo82148/std/crypto/tls"
+	"github.com/shogo82148/std/crypto/x509"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/sync"
@@ -23,11 +24,15 @@ type Server struct {
 
 	Config *http.Server
 
+	certificate *x509.Certificate
+
 	wg sync.WaitGroup
 
 	mu     sync.Mutex
 	closed bool
 	conns  map[net.Conn]http.ConnState
+
+	client *http.Client
 }
 
 // When debugging a particular http server-based test,
@@ -63,3 +68,12 @@ func (s *Server) Close()
 
 // CloseClientConnections closes any open HTTP connections to the test Server.
 func (s *Server) CloseClientConnections()
+
+// Certificate returns the certificate used by the server, or nil if
+// the server doesn't use TLS.
+func (s *Server) Certificate() *x509.Certificate
+
+// Client returns an HTTP client configured for making requests to the server.
+// It is configured to trust the server's TLS test certificate and will
+// close its idle connections on Server.Close.
+func (s *Server) Client() *http.Client

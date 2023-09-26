@@ -14,4 +14,12 @@ package runtime
 // If all other goroutines exit, the program crashes.
 func Goexit()
 
-//uint32 runtime·panicking;
+// runningPanicDefers is non-zero while running deferred functions for panic.
+// runningPanicDefers is incremented and decremented atomically.
+// This is used to try hard to get a panic stack trace out when exiting.
+
+// panicking is non-zero when crashing the program for an unrecovered panic.
+// panicking is incremented and decremented atomically.
+
+// paniclk is held while printing the panic information and stack trace,
+// so that two concurrent panics don't overlap their output.

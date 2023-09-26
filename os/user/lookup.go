@@ -7,6 +7,8 @@ package user
 // Current returns the current user.
 func Current() (*User, error)
 
+// cache of the current user
+
 // Lookup looks up a user by username. If the user cannot be found, the
 // returned error is of type UnknownUserError.
 func Lookup(username string) (*User, error)

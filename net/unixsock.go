@@ -7,6 +7,7 @@ package net
 import (
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
 
@@ -22,16 +23,23 @@ func (a *UnixAddr) Network() string
 
 func (a *UnixAddr) String() string
 
-// ResolveUnixAddr parses addr as a Unix domain socket address.
-// The string net gives the network name, "unix", "unixgram" or
-// "unixpacket".
-func ResolveUnixAddr(net, addr string) (*UnixAddr, error)
+// ResolveUnixAddr returns an address of Unix domain socket end point.
+//
+// The network must be a Unix network name.
+//
+// See func Dial for a description of the network and address
+// parameters.
+func ResolveUnixAddr(network, address string) (*UnixAddr, error)
 
 // UnixConn is an implementation of the Conn interface for connections
 // to Unix domain sockets.
 type UnixConn struct {
 	conn
 }
+
+// SyscallConn returns a raw network connection.
+// This implements the syscall.Conn interface.
+func (c *UnixConn) SyscallConn() (syscall.RawConn, error)
 
 // CloseRead shuts down the reading side of the Unix domain connection.
 // Most callers should just use Close.
@@ -41,50 +49,42 @@ func (c *UnixConn) CloseRead() error
 // Most callers should just use Close.
 func (c *UnixConn) CloseWrite() error
 
-// ReadFromUnix reads a packet from c, copying the payload into b. It
-// returns the number of bytes copied into b and the source address of
-// the packet.
-//
-// ReadFromUnix can be made to time out and return an error with
-// Timeout() == true after a fixed time limit; see SetDeadline and
-// SetReadDeadline.
+// ReadFromUnix acts like ReadFrom but returns a UnixAddr.
 func (c *UnixConn) ReadFromUnix(b []byte) (int, *UnixAddr, error)
 
 // ReadFrom implements the PacketConn ReadFrom method.
 func (c *UnixConn) ReadFrom(b []byte) (int, Addr, error)
 
-// ReadMsgUnix reads a packet from c, copying the payload into b and
+// ReadMsgUnix reads a message from c, copying the payload into b and
 // the associated out-of-band data into oob. It returns the number of
 // bytes copied into b, the number of bytes copied into oob, the flags
-// that were set on the packet, and the source address of the packet.
+// that were set on the message and the source address of the message.
 //
 // Note that if len(b) == 0 and len(oob) > 0, this function will still
 // read (and discard) 1 byte from the connection.
 func (c *UnixConn) ReadMsgUnix(b, oob []byte) (n, oobn, flags int, addr *UnixAddr, err error)
 
-// WriteToUnix writes a packet to addr via c, copying the payload from b.
-//
-// WriteToUnix can be made to time out and return an error with
-// Timeout() == true after a fixed time limit; see SetDeadline and
-// SetWriteDeadline. On packet-oriented connections, write timeouts
-// are rare.
+// WriteToUnix acts like WriteTo but takes a UnixAddr.
 func (c *UnixConn) WriteToUnix(b []byte, addr *UnixAddr) (int, error)
 
 // WriteTo implements the PacketConn WriteTo method.
 func (c *UnixConn) WriteTo(b []byte, addr Addr) (int, error)
 
-// WriteMsgUnix writes a packet to addr via c, copying the payload
-// from b and the associated out-of-band data from oob. It returns
-// the number of payload and out-of-band bytes written.
+// WriteMsgUnix writes a message to addr via c, copying the payload
+// from b and the associated out-of-band data from oob. It returns the
+// number of payload and out-of-band bytes written.
 //
 // Note that if len(b) == 0 and len(oob) > 0, this function will still
 // write 1 byte to the connection.
 func (c *UnixConn) WriteMsgUnix(b, oob []byte, addr *UnixAddr) (n, oobn int, err error)
 
-// DialUnix connects to the remote address raddr on the network net,
-// which must be "unix", "unixgram" or "unixpacket".  If laddr is not
-// nil, it is used as the local address for the connection.
-func DialUnix(net string, laddr, raddr *UnixAddr) (*UnixConn, error)
+// DialUnix acts like Dial for Unix networks.
+//
+// The network must be a Unix network name; see func Dial for details.
+//
+// If laddr is non-nil, it is used as the local address for the
+// connection.
+func DialUnix(network string, laddr, raddr *UnixAddr) (*UnixConn, error)
 
 // UnixListener is a Unix domain socket listener. Clients should
 // typically use variables of type Listener instead of assuming Unix
@@ -126,12 +126,12 @@ func (l *UnixListener) SetDeadline(t time.Time) error
 // using this duplicate may or may not have the desired effect.
 func (l *UnixListener) File() (f *os.File, err error)
 
-// ListenUnix announces on the Unix domain socket laddr and returns a
-// Unix listener. The network net must be "unix" or "unixpacket".
-func ListenUnix(net string, laddr *UnixAddr) (*UnixListener, error)
+// ListenUnix acts like Listen for Unix networks.
+//
+// The network must be "unix" or "unixpacket".
+func ListenUnix(network string, laddr *UnixAddr) (*UnixListener, error)
 
-// ListenUnixgram listens for incoming Unix datagram packets addressed
-// to the local address laddr. The network net must be "unixgram".
-// The returned connection's ReadFrom and WriteTo methods can be used
-// to receive and send packets with per-packet addressing.
-func ListenUnixgram(net string, laddr *UnixAddr) (*UnixConn, error)
+// ListenUnixgram acts like ListenPacket for Unix networks.
+//
+// The network must be "unixgram".
+func ListenUnixgram(network string, laddr *UnixAddr) (*UnixConn, error)

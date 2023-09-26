@@ -16,6 +16,10 @@ import (
 
 // A Decoder manages the receipt of type and data information read from the
 // remote side of a connection.
+//
+// The Decoder does only basic sanity checking on decoded input sizes,
+// and its limits are not configurable. Take caution when decoding gob data
+// from untrusted sources.
 type Decoder struct {
 	mutex        sync.Mutex
 	r            io.Reader

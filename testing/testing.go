@@ -91,16 +91,30 @@
 // ignores leading and trailing space.) These are examples of an example:
 //
 //	func ExampleHello() {
-//	        fmt.Println("hello")
-//	        // Output: hello
+//	    fmt.Println("hello")
+//	    // Output: hello
 //	}
 //
 //	func ExampleSalutations() {
-//	        fmt.Println("hello, and")
-//	        fmt.Println("goodbye")
-//	        // Output:
-//	        // hello, and
-//	        // goodbye
+//	    fmt.Println("hello, and")
+//	    fmt.Println("goodbye")
+//	    // Output:
+//	    // hello, and
+//	    // goodbye
+//	}
+//
+// The comment prefix "Unordered output:" is like "Output:", but matches any
+// line order:
+//
+//	func ExamplePerm() {
+//	    for _, value := range Perm(4) {
+//	        fmt.Println(value)
+//	    }
+//	    // Unordered output: 4
+//	    // 2
+//	    // 1
+//	    // 3
+//	    // 0
 //	}
 //
 // Example functions without output comments are compiled but not executed.
@@ -239,6 +253,7 @@ type TB interface {
 	SkipNow()
 	Skipf(format string, args ...interface{})
 	Skipped() bool
+	Helper()
 
 	private()
 }
@@ -263,7 +278,9 @@ type T struct {
 }
 
 // Parallel signals that this test is to be run in parallel with (and only with)
-// other parallel tests.
+// other parallel tests. When a test is run multiple times due to use of
+// -test.count or -test.cpu, multiple instances of a single test never run in
+// parallel with each other.
 func (t *T) Parallel()
 
 // An internal type but exported because it is cross-package; part of the implementation
@@ -273,11 +290,12 @@ type InternalTest struct {
 	F    func(*T)
 }
 
-// Run runs f as a subtest of t called name. It reports whether f succeeded.
-// Run will block until all its parallel subtests have completed.
+// Run runs f as a subtest of t called name. It reports whether f succeeded. Run
+// runs f in a separate goroutine and will block until all its parallel subtests
+// have completed.
 //
-// Run may be called simultaneously from multiple goroutines, but all such
-// calls must happen before the outer test function for t returns.
+// Run may be called simultaneously from multiple goroutines, but all such calls
+// must return before the outer test function for t returns.
 func (t *T) Run(name string, f func(t *T)) bool
 
 // testContext holds all fields that are common to all tests. This includes

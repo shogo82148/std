@@ -137,6 +137,12 @@ func (x *Int) Int64() int64
 // If x cannot be represented in a uint64, the result is undefined.
 func (x *Int) Uint64() uint64
 
+// IsInt64 reports whether x can be represented as an int64.
+func (x *Int) IsInt64() bool
+
+// IsUint64 reports whether x can be represented as a uint64.
+func (x *Int) IsUint64() bool
+
 // SetString sets z to the value of s, interpreted in the given base,
 // and returns z and a boolean indicating success. The entire string
 // (not just a prefix) must be valid for success. If SetString fails,

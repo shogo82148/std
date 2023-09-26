@@ -12,6 +12,10 @@ import (
 // with malformed chunked encoding.
 var ErrLineTooLong = internal.ErrLineTooLong
 
+// transferBodyReader is an io.Reader that reads from tw.Body
+// and records any non-EOF error in tw.bodyReadError.
+// It is exactly 1 pointer wide to avoid allocations into interfaces.
+
 // transferWriter inspects the fields of a user-supplied Request or Response,
 // sanitizes them without changing the user object and provides methods for
 // writing the respective header, body and trailer in wire format.

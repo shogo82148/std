@@ -12,10 +12,11 @@ import (
 // A Buffer is a variable-sized buffer of bytes with Read and Write methods.
 // The zero value for Buffer is an empty buffer ready to use.
 type Buffer struct {
-	buf       []byte
-	off       int
+	buf      []byte
+	off      int
+	lastRead readOp
+
 	bootstrap [64]byte
-	lastRead  readOp
 }
 
 // The readOp constants describe the last action performed on
@@ -127,14 +128,15 @@ func (b *Buffer) ReadRune() (r rune, size int, err error)
 
 // UnreadRune unreads the last rune returned by ReadRune.
 // If the most recent read or write operation on the buffer was
-// not a ReadRune, UnreadRune returns an error.  (In this regard
+// not a successful ReadRune, UnreadRune returns an error.  (In this regard
 // it is stricter than UnreadByte, which will unread the last byte
 // from any read operation.)
 func (b *Buffer) UnreadRune() error
 
-// UnreadByte unreads the last byte returned by the most recent
-// read operation. If write has happened since the last read, UnreadByte
-// returns an error.
+// UnreadByte unreads the last byte returned by the most recent successful
+// read operation that read at least one byte. If a write has happened since
+// the last read, if the last read returned an error, or if the read read zero
+// bytes, UnreadByte returns an error.
 func (b *Buffer) UnreadByte() error
 
 // ReadBytes reads until the first occurrence of delim in the input,
@@ -153,10 +155,12 @@ func (b *Buffer) ReadBytes(delim byte) (line []byte, err error)
 // in delim.
 func (b *Buffer) ReadString(delim byte) (line string, err error)
 
-// NewBuffer creates and initializes a new Buffer using buf as its initial
-// contents. It is intended to prepare a Buffer to read existing data. It
-// can also be used to size the internal buffer for writing. To do that,
-// buf should have the desired capacity but a length of zero.
+// NewBuffer creates and initializes a new Buffer using buf as its
+// initial contents. The new Buffer takes ownership of buf, and the
+// caller should not use buf after this call. NewBuffer is intended to
+// prepare a Buffer to read existing data. It can also be used to size
+// the internal buffer for writing. To do that, buf should have the
+// desired capacity but a length of zero.
 //
 // In most cases, new(Buffer) (or just declaring a Buffer variable) is
 // sufficient to initialize a Buffer.

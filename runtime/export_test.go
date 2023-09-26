@@ -58,3 +58,14 @@ var ForceGCPeriod = &forcegcperiod
 
 var ReadUnaligned32 = readUnaligned32
 var ReadUnaligned64 = readUnaligned64
+
+type ProfBuf profBuf
+
+const (
+	ProfBufBlocking    = profBufBlocking
+	ProfBufNonBlocking = profBufNonBlocking
+)
+
+type RWMutex struct {
+	rw rwmutex
+}
