@@ -133,7 +133,7 @@ func (l *UnixListener) SetDeadline(t time.Time) (err error)
 
 // File returns a copy of the underlying os.File, set to blocking mode.
 // It is the caller's responsibility to close f when finished.
-// Closing c does not affect f, and closing f does not affect c.
+// Closing l does not affect f, and closing f does not affect l.
 func (l *UnixListener) File() (f *os.File, err error)
 
 // ListenUnixgram listens for incoming Unix datagram packets addressed to the

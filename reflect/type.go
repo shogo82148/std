@@ -209,6 +209,7 @@ type StructTag string
 func (tag StructTag) Get(key string) string
 
 // TypeOf returns the reflection Type of the value in the interface{}.
+// TypeOf(nil) returns nil.
 func TypeOf(i interface{}) Type
 
 // ptrMap is the cache for PtrTo.

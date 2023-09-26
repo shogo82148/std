@@ -7,10 +7,12 @@ Package flag implements command-line flag parsing.
 
 Usage:
 
-Define flags using flag.String(), Bool(), Int(), etc. Example:
+Define flags using flag.String(), Bool(), Int(), etc.
+
+This declares an integer flag, -flagname, stored in the pointer ip, with type *int.
 
 	import "flag"
-	var ip *int = flag.Int("flagname", 1234, "help message for flagname")
+	var ip = flag.Int("flagname", 1234, "help message for flagname")
 
 If you like, you can bind the flag to a variable using the Var() functions.
 
@@ -35,8 +37,8 @@ to parse the command line into the defined flags.
 Flags may then be used directly. If you're using the flags themselves,
 they are all pointers; if you bind to variables, they're values.
 
-	fmt.Println("ip has value ", *ip);
-	fmt.Println("flagvar has value ", flagvar);
+	fmt.Println("ip has value ", *ip)
+	fmt.Println("flagvar has value ", flagvar)
 
 After parsing, the arguments after the flag are available as the
 slice flag.Args() or individually as flag.Arg(i).

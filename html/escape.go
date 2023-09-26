@@ -10,7 +10,7 @@ package html
 // http://www.whatwg.org/specs/web-apps/current-work/multipage/tokenization.html#consume-a-character-reference
 
 // EscapeString escapes special characters like "<" to become "&lt;". It
-// escapes only five such characters: amp, apos, lt, gt and quot.
+// escapes only five such characters: <, >, &, ' and ".
 // UnescapeString(EscapeString(s)) == s always holds, but the converse isn't
 // always true.
 func EscapeString(s string) string

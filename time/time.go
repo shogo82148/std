@@ -153,7 +153,7 @@ const (
 	Hour                 = 60 * Minute
 )
 
-// Duration returns a string representing the duration in the form "72h3m0.5s".
+// String returns a string representing the duration in the form "72h3m0.5s".
 // Leading zero units are omitted.  As a special case, durations less than one
 // second format use a smaller unit (milli-, micro-, or nanoseconds) to ensure
 // that the leading digit is non-zero.  The zero duration formats as 0,
@@ -223,7 +223,9 @@ func (t Time) Zone() (name string, offset int)
 func (t Time) Unix() int64
 
 // UnixNano returns t as a Unix time, the number of nanoseconds elapsed
-// since January 1, 1970 UTC.
+// since January 1, 1970 UTC. The result is undefined if the Unix time
+// in nanoseconds cannot be represented by an int64. Note that this
+// means the result of calling UnixNano on the zero Time is undefined.
 func (t Time) UnixNano() int64
 
 // GobEncode implements the gob.GobEncoder interface.
