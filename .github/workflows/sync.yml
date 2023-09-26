@@ -49,5 +49,9 @@ jobs:
         run: |
           "$GITHUB_WORKSPACE/tools/_tools/rm-all.sh"
           importgodoc "$GITHUB_WORKSPACE/go/src" "$GITHUB_WORKSPACE/std"
-          git add .
-          git diff --cached
+
+      - name: commit
+        uses: shogo82148/actions-commit@v1
+        with:
+          base-branch: ${{ matrix.branch }}
+          working-directory: ./std
