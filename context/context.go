@@ -2,55 +2,40 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package context defines the Context type, which carries deadlines,
-// cancellation signals, and other request-scoped values across API boundaries
-// and between processes.
+// Package context は、期限、キャンセルシグナル、および他のAPI境界やプロセス間を超えたリクエストスコープの値を伝達するContext型を定義します。
 //
-// Incoming requests to a server should create a [Context], and outgoing
-// calls to servers should accept a Context. The chain of function
-// calls between them must propagate the Context, optionally replacing
-// it with a derived Context created using [WithCancel], [WithDeadline],
-// [WithTimeout], or [WithValue]. When a Context is canceled, all
-// Contexts derived from it are also canceled.
+// サーバーへの入力リクエストは [Context] を作成し、サーバーへの出力呼び出しは[Context]を受け入れる必要があります。
+// それらの間の関数呼び出しのチェーンは、Contextを伝播させ、[WithCancel]、[WithDeadline]、[WithTimeout]、または [WithValue] を使用して作成された派生Contextで置き換えることができます。
+// Contextがキャンセルされると、それから派生したすべてのContextもキャンセルされます。
 //
-// The [WithCancel], [WithDeadline], and [WithTimeout] functions take a
-// Context (the parent) and return a derived Context (the child) and a
-// [CancelFunc]. Calling the CancelFunc cancels the child and its
-// children, removes the parent's reference to the child, and stops
-// any associated timers. Failing to call the CancelFunc leaks the
-// child and its children until the parent is canceled or the timer
-// fires. The go vet tool checks that CancelFuncs are used on all
-// control-flow paths.
+// [WithCancel]、[WithDeadline]、および [WithTimeout] 関数は、Context（親）を取得し、派生Context（子）と [CancelFunc] を返します。
+// CancelFuncを呼び出すと、子とその子がキャンセルされ、親の子への参照が削除され、関連するタイマーが停止します。
+// CancelFuncを呼び出さないと、子とその子は親がキャンセルされるか、タイマーが発火するまでリークします。
+// go vetツールは、CancelFuncがすべての制御フローパスで使用されていることを確認します。
 //
-// The [WithCancelCause] function returns a [CancelCauseFunc], which
-// takes an error and records it as the cancellation cause. Calling
-// [Cause] on the canceled context or any of its children retrieves
-// the cause. If no cause is specified, Cause(ctx) returns the same
-// value as ctx.Err().
+// [WithCancelCause] 関数は [CancelCauseFunc] を返し、エラーを受け取り、キャンセルの原因として記録します。
+// キャンセルされたコンテキストまたはその子のいずれかで [Cause] を呼び出すと、原因が取得されます。
+// 原因が指定されていない場合、 Cause(ctx) は ctx.Err() と同じ値を返します。
 //
-// Programs that use Contexts should follow these rules to keep interfaces
-// consistent across packages and enable static analysis tools to check context
-// propagation:
+// Contextを使用するプログラムは、これらのルールに従う必要があります。
+// これにより、パッケージ間でインターフェースを一貫させ、静的解析ツールがコンテキストの伝播をチェックできるようになります。
 //
-// Do not store Contexts inside a struct type; instead, pass a Context
-// explicitly to each function that needs it. The Context should be the first
-// parameter, typically named ctx:
+// 構造体型の内部にContextを格納しないでください。
+// 代わりに、それが必要な各関数に明示的にContextを渡してください。
+// 通常、最初のパラメーターにctxという名前を付けます。
 //
 //	func DoSomething(ctx context.Context, arg Arg) error {
 //		// ... use ctx ...
 //	}
 //
-// Do not pass a nil [Context], even if a function permits it. Pass [context.TODO]
-// if you are unsure about which Context to use.
+// 関数がnilの [Context] を許可していても、nilの [Context] を渡さないでください。
+// どの [Context] を使用するかわからない場合は、 [context.TODO] を渡してください。
 //
-// Use context Values only for request-scoped data that transits processes and
-// APIs, not for passing optional parameters to functions.
+// コンテキストの値は、オプションのパラメータを関数に渡すためではなく、プロセスやAPIを超えるリクエストスコープのデータにのみ使用してください。
 //
-// The same Context may be passed to functions running in different goroutines;
-// Contexts are safe for simultaneous use by multiple goroutines.
+// 同じContextは、異なるゴルーチンで実行される関数に渡すことができます。Contextは、複数のゴルーチンによる同時使用に対して安全です。
 //
-// See https://blog.golang.org/context for example code for a server that uses
-// Contexts.
+// サーバーでContextを使用する例のコードについては、https://blog.golang.org/contextを参照してください。
 package context
 
 import (
