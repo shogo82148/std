@@ -13,6 +13,7 @@ jobs:
         branch:
           - master
           - release-branch.go1.21
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,8 +28,17 @@ jobs:
         working-directory: ./_tools
         run: |
           go install ./importgodoc
-          pwd
 
       - uses: actions/checkout@v4
         with:
+          repository: golang/go
           ref: ${{ matrix.branch }}
+
+      - name: sync
+        env:
+          BRANCH_NAME: ${{ matrix.branch }}
+        run: |
+          git switch "$BRANCH_NAME"
+          importgodoc "$GITHUB_WORKSPACE/golang/go" .
+          git add .
+          git diff --cached
