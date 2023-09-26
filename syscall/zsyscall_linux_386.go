@@ -25,6 +25,8 @@ func Dup(oldfd int) (fd int, err error)
 
 func Dup2(oldfd int, newfd int) (err error)
 
+func Dup3(oldfd int, newfd int, flags int) (err error)
+
 func EpollCreate(size int) (fd int, err error)
 
 func EpollCreate1(flag int) (fd int, err error)
@@ -62,6 +64,8 @@ func Getpgrp() (pid int)
 func Getpid() (pid int)
 
 func Getppid() (ppid int)
+
+func Getpriority(which int, who int) (prio int, err error)
 
 func Getrusage(who int, rusage *Rusage) (err error)
 
@@ -120,6 +124,8 @@ func Setsid() (pid int, err error)
 func Settimeofday(tv *Timeval) (err error)
 
 func Setuid(uid int) (err error)
+
+func Setpriority(which int, who int, prio int) (err error)
 
 func Setxattr(path string, attr string, data []byte, flags int) (err error)
 

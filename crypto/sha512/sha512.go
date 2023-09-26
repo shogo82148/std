@@ -26,3 +26,9 @@ func New() hash.Hash
 
 // New384 returns a new hash.Hash computing the SHA384 checksum.
 func New384() hash.Hash
+
+// Sum512 returns the SHA512 checksum of the data.
+func Sum512(data []byte) [Size]byte
+
+// Sum384 returns the SHA384 checksum of the data.
+func Sum384(data []byte) (sum384 [Size384]byte)

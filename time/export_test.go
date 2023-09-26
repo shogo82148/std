@@ -3,3 +3,8 @@
 // license that can be found in the LICENSE file.
 
 package time
+
+var (
+	ForceZipFileForTesting = forceZipFileForTesting
+	ParseTimeZone          = parseTimeZone
+)

@@ -128,6 +128,16 @@ var TitleTests = []TitleTest{
 	{"ÿøû", "Ÿøû"},
 }
 
+var ToTitleTests = []TitleTest{
+	{"", ""},
+	{"a", "A"},
+	{" aaa aaa aaa ", " AAA AAA AAA "},
+	{" Aaa Aaa Aaa ", " AAA AAA AAA "},
+	{"123a456", "123A456"},
+	{"double-blind", "DOUBLE-BLIND"},
+	{"ÿøû", "ŸØÛ"},
+}
+
 var EqualFoldTests = []struct {
 	s, t string
 	out  bool

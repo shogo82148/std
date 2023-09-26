@@ -26,3 +26,9 @@ func New() hash.Hash
 
 // New224 returns a new hash.Hash computing the SHA224 checksum.
 func New224() hash.Hash
+
+// Sum256 returns the SHA256 checksum of the data.
+func Sum256(data []byte) [Size]byte
+
+// Sum224 returns the SHA224 checksum of the data.
+func Sum224(data []byte) (sum224 [Size224]byte)

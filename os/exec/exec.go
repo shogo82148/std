@@ -111,14 +111,28 @@ func (c *Cmd) CombinedOutput() ([]byte, error)
 
 // StdinPipe returns a pipe that will be connected to the command's
 // standard input when the command starts.
+// The pipe will be closed automatically after Wait sees the command exit.
+// A caller need only call Close to force the pipe to close sooner.
+// For example, if the command being run will not exit until standard input
+// is closed, the caller must close the pipe.
 func (c *Cmd) StdinPipe() (io.WriteCloser, error)
 
 // StdoutPipe returns a pipe that will be connected to the command's
 // standard output when the command starts.
-// The pipe will be closed automatically after Wait sees the command exit.
+//
+// Wait will close the pipe after seeing the command exit, so most callers
+// need not close the pipe themselves; however, an implication is that
+// it is incorrect to call Wait before all reads from the pipe have completed.
+// For the same reason, it is incorrect to call Run when using StdoutPipe.
+// See the example for idiomatic usage.
 func (c *Cmd) StdoutPipe() (io.ReadCloser, error)
 
 // StderrPipe returns a pipe that will be connected to the command's
 // standard error when the command starts.
-// The pipe will be closed automatically after Wait sees the command exit.
+//
+// Wait will close the pipe after seeing the command exit, so most callers
+// need not close the pipe themselves; however, an implication is that
+// it is incorrect to call Wait before all reads from the pipe have completed.
+// For the same reason, it is incorrect to use Run when using StderrPipe.
+// See the StdoutPipe example for idiomatic usage.
 func (c *Cmd) StderrPipe() (io.ReadCloser, error)

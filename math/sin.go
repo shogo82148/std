@@ -8,7 +8,7 @@ package math
 
 // cos coefficients
 
-// Cos returns the cosine of x.
+// Cos returns the cosine of the radian argument x.
 //
 // Special cases are:
 //
@@ -16,7 +16,7 @@ package math
 //	Cos(NaN) = NaN
 func Cos(x float64) float64
 
-// Sin returns the sine of x.
+// Sin returns the sine of the radian argument x.
 //
 // Special cases are:
 //

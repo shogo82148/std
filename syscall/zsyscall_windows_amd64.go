@@ -221,11 +221,17 @@ func GetIfEntry(pIfRow *MibIfRow) (errcode error)
 
 func GetAdaptersInfo(ai *IpAdapterInfo, ol *uint32) (errcode error)
 
+func SetFileCompletionNotificationModes(handle Handle, flags uint8) (err error)
+
+func WSAEnumProtocols(protocols *int32, protocolBuffer *WSAProtocolInfo, bufferLength *uint32) (n int32, err error)
+
 func TranslateName(accName *uint16, accNameFormat uint32, desiredNameFormat uint32, translatedName *uint16, nSize *uint32) (err error)
 
 func GetUserNameEx(nameFormat uint32, nameBuffre *uint16, nSize *uint32) (err error)
 
 func NetUserGetInfo(serverName *uint16, userName *uint16, level uint32, buf **byte) (neterr error)
+
+func NetGetJoinInformation(server *uint16, name **uint16, bufType *uint32) (neterr error)
 
 func NetApiBufferFree(buf *byte) (neterr error)
 

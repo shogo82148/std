@@ -5,6 +5,7 @@
 package testing
 
 // AllocsPerRun returns the average number of allocations during calls to f.
+// Although the return value has type float64, it will always be an integral value.
 //
 // To compute the number of allocations, the function will first be run once as
 // a warm-up.  The average number of allocations over the specified number of

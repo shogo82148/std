@@ -6,7 +6,7 @@ package math
 
 // tan coefficients
 
-// Tan returns the tangent of x.
+// Tan returns the tangent of the radian argument x.
 //
 // Special cases are:
 //

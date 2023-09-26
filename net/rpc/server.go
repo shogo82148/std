@@ -229,6 +229,7 @@ func RegisterName(name string, rcvr interface{}) error
 type ServerCodec interface {
 	ReadRequestHeader(*Request) error
 	ReadRequestBody(interface{}) error
+
 	WriteResponse(*Response, interface{}) error
 
 	Close() error

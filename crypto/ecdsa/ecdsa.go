@@ -33,6 +33,6 @@ func GenerateKey(c elliptic.Curve, rand io.Reader) (priv *PrivateKey, err error)
 // rand.
 func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
 
-// Verify verifies the signature in r, s of hash using the public key, pub. It
-// returns true iff the signature is valid.
+// Verify verifies the signature in r, s of hash using the public key, pub. Its
+// return value records whether the signature is valid.
 func Verify(pub *PublicKey, hash []byte, r, s *big.Int) bool

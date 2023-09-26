@@ -76,7 +76,7 @@ type Request struct {
 	TLS *tls.ConnectionState
 }
 
-// ProtoAtLeast returns whether the HTTP protocol used
+// ProtoAtLeast reports whether the HTTP protocol used
 // in the request is at least major.minor.
 func (r *Request) ProtoAtLeast(major, minor int) bool
 
@@ -118,6 +118,12 @@ func (r *Request) Referer() string
 // process the request body as a stream.
 func (r *Request) MultipartReader() (*multipart.Reader, error)
 
+// NOTE: This is not intended to reflect the actual Go version being used.
+// It was changed from "Go http package" to "Go 1.1 package http" at the
+// time of the Go 1.1 release because the former User-Agent had ended up
+// on a blacklist for some intrusion detection systems.
+// See https://codereview.appspot.com/7532043.
+
 // Write writes an HTTP/1.1 request -- header and body -- in wire format.
 // This method consults the following fields of the request:
 //
@@ -147,6 +153,10 @@ func (r *Request) WriteProxy(w io.Writer) error
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
 // NewRequest returns a new Request given a method, URL, and optional body.
+//
+// If the provided body is also an io.Closer, the returned
+// Request.Body is set to body and will be closed by the Client
+// methods Do, Post, and PostForm, and Transport.RoundTrip.
 func NewRequest(method, urlStr string, body io.Reader) (*Request, error)
 
 // SetBasicAuth sets the request's Authorization header to use HTTP

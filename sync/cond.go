@@ -11,15 +11,15 @@ package sync
 // Each Cond has an associated Locker L (often a *Mutex or *RWMutex),
 // which must be held when changing the condition and
 // when calling the Wait method.
+//
+// A Cond can be created as part of other structures.
+// A Cond must not be copied after first use.
 type Cond struct {
 	L Locker
-	m Mutex
 
-	oldWaiters int
-	oldSema    *uint32
-
-	newWaiters int
-	newSema    *uint32
+	sema    syncSema
+	waiters uint32
+	checker copyChecker
 }
 
 // NewCond returns a new Cond with Locker l.
@@ -53,3 +53,5 @@ func (c *Cond) Signal()
 // It is allowed but not required for the caller to hold c.L
 // during the call.
 func (c *Cond) Broadcast()
+
+// copyChecker holds back pointer to itself to detect object copying.

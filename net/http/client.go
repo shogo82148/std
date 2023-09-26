@@ -110,6 +110,9 @@ func Post(url string, bodyType string, body io.Reader) (resp *Response, err erro
 // Post issues a POST to the specified URL.
 //
 // Caller should close resp.Body when done reading from it.
+//
+// If the provided body is also an io.Closer, it is closed after the
+// body is successfully written to the server.
 func (c *Client) Post(url string, bodyType string, body io.Reader) (resp *Response, err error)
 
 // PostForm issues a POST to the specified URL, with data's keys and

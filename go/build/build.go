@@ -69,30 +69,35 @@ const (
 
 // A Package describes the Go package found in a directory.
 type Package struct {
-	Dir        string
-	Name       string
-	Doc        string
-	ImportPath string
-	Root       string
-	SrcRoot    string
-	PkgRoot    string
-	BinDir     string
-	Goroot     bool
-	PkgObj     string
+	Dir         string
+	Name        string
+	Doc         string
+	ImportPath  string
+	Root        string
+	SrcRoot     string
+	PkgRoot     string
+	BinDir      string
+	Goroot      bool
+	PkgObj      string
+	AllTags     []string
+	ConflictDir string
 
 	GoFiles        []string
 	CgoFiles       []string
 	IgnoredGoFiles []string
 	CFiles         []string
+	CXXFiles       []string
 	HFiles         []string
 	SFiles         []string
-	SysoFiles      []string
 	SwigFiles      []string
 	SwigCXXFiles   []string
+	SysoFiles      []string
 
-	CgoPkgConfig []string
 	CgoCFLAGS    []string
+	CgoCPPFLAGS  []string
+	CgoCXXFLAGS  []string
 	CgoLDFLAGS   []string
+	CgoPkgConfig []string
 
 	Imports   []string
 	ImportPos map[string][]token.Position
@@ -115,7 +120,8 @@ func (p *Package) IsCommand() bool
 func (ctxt *Context) ImportDir(dir string, mode ImportMode) (*Package, error)
 
 // NoGoError is the error used by Import to describe a directory
-// containing no Go source files.
+// containing no buildable Go source files. (It may still contain
+// test files, files hidden by build tags, and so on.)
 type NoGoError struct {
 	Dir string
 }
@@ -139,11 +145,23 @@ func (e *NoGoError) Error() string
 // *Package containing partial information.
 func (ctxt *Context) Import(path string, srcDir string, mode ImportMode) (*Package, error)
 
+// MatchFile reports whether the file with the given name in the given directory
+// matches the context and would be included in a Package created by ImportDir
+// of that directory.
+//
+// MatchFile considers the name of the file and may use ctxt.OpenFile to
+// read some or all of the file's content.
+func (ctxt *Context) MatchFile(dir, name string) (match bool, err error)
+
 // Import is shorthand for Default.Import.
 func Import(path, srcDir string, mode ImportMode) (*Package, error)
 
 // ImportDir is shorthand for Default.ImportDir.
 func ImportDir(dir string, mode ImportMode) (*Package, error)
+
+// NOTE: $ is not safe for the shell, but it is allowed here because of linker options like -Wl,$ORIGIN.
+// We never pass these arguments to a shell (just to programs we construct argv for), so this should be okay.
+// See golang.org/issue/6038.
 
 // ToolDir is the directory containing build tools.
 var ToolDir = filepath.Join(runtime.GOROOT(), "pkg/tool/"+runtime.GOOS+"_"+runtime.GOARCH)

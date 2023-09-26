@@ -10,8 +10,8 @@ type Once struct {
 	done uint32
 }
 
-// Do calls the function f if and only if the method is being called for the
-// first time with this receiver.  In other words, given
+// Do calls the function f if and only if Do is being called for the
+// first time for this instance of Once.  In other words, given
 //
 //	var once Once
 //

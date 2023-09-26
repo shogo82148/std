@@ -4,4 +4,7 @@
 
 package runtime_test
 
+// The function is used to test preemption at split stack checks.
+// Declaring a var avoids inlining at the call site.
+
 type Matrix [][]float64

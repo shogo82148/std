@@ -27,6 +27,8 @@ type MemStats struct {
 	MCacheInuse uint64
 	MCacheSys   uint64
 	BuckHashSys uint64
+	GCSys       uint64
+	OtherSys    uint64
 
 	NextGC       uint64
 	LastGC       uint64

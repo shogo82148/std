@@ -5,6 +5,7 @@
 package json
 
 import (
+	"encoding"
 	"image"
 	"time"
 )
@@ -27,6 +28,8 @@ type V struct {
 
 // ifaceNumAsFloat64/ifaceNumAsNumber are used to test unmarshaling with and
 // without UseNumber
+
+var _ encoding.TextUnmarshaler = (*unmarshalerText)(nil)
 
 type Point struct {
 	Z int
@@ -123,6 +126,12 @@ type S13 struct {
 type Ambig struct {
 	First  int `json:"HELLO"`
 	Second int `json:"Hello"`
+}
+
+type XYZ struct {
+	X interface{}
+	Y interface{}
+	Z interface{}
 }
 
 type Xint struct {

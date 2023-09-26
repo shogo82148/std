@@ -10,6 +10,8 @@ package user
 // On posix systems Uid and Gid contain a decimal number
 // representing uid and gid. On windows Uid and Gid
 // contain security identifier (SID) in a string format.
+// On Plan 9, Uid, Gid, Username, and Name will be the
+// contents of /dev/user.
 type User struct {
 	Uid      string
 	Gid      string

@@ -48,7 +48,7 @@ type Encoder struct {
 // NewEncoder returns a new encoder that writes to w.
 func NewEncoder(w io.Writer) *Encoder
 
-// Encode writes the JSON encoding of v to the connection.
+// Encode writes the JSON encoding of v to the stream.
 //
 // See the documentation for Marshal for details about the
 // conversion of Go values to JSON.

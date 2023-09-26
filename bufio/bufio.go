@@ -37,6 +37,10 @@ func NewReaderSize(rd io.Reader, size int) *Reader
 // NewReader returns a new Reader whose buffer has the default size.
 func NewReader(rd io.Reader) *Reader
 
+// Reset discards any buffered data, resets all state, and switches
+// the buffered reader to read from r.
+func (b *Reader) Reset(r io.Reader)
+
 // Peek returns the next n bytes without advancing the reader. The bytes stop
 // being valid at the next read call. If Peek returns fewer than n bytes, it
 // also returns an error explaining why the read is short. The error is
@@ -73,7 +77,7 @@ func (b *Reader) Buffered() int
 
 // ReadSlice reads until the first occurrence of delim in the input,
 // returning a slice pointing at the bytes in the buffer.
-// The bytes stop being valid at the next read call.
+// The bytes stop being valid at the next read.
 // If ReadSlice encounters an error before finding a delimiter,
 // it returns all the data in the buffer and the error itself (often io.EOF).
 // ReadSlice fails with error ErrBufferFull if the buffer fills without a delim.
@@ -122,6 +126,9 @@ func (b *Reader) WriteTo(w io.Writer) (n int64, err error)
 // Writer implements buffering for an io.Writer object.
 // If an error occurs writing to a Writer, no more data will be
 // accepted and all subsequent writes will return the error.
+// After all data has been written, the client should call the
+// Flush method to guarantee all data has been forwarded to
+// the underlying io.Writer.
 type Writer struct {
 	err error
 	buf []byte
@@ -132,10 +139,14 @@ type Writer struct {
 // NewWriterSize returns a new Writer whose buffer has at least the specified
 // size. If the argument io.Writer is already a Writer with large enough
 // size, it returns the underlying Writer.
-func NewWriterSize(wr io.Writer, size int) *Writer
+func NewWriterSize(w io.Writer, size int) *Writer
 
 // NewWriter returns a new Writer whose buffer has the default size.
-func NewWriter(wr io.Writer) *Writer
+func NewWriter(w io.Writer) *Writer
+
+// Reset discards any unflushed buffered data, clears any error, and
+// resets b to write its output to w.
+func (b *Writer) Reset(w io.Writer)
 
 // Flush writes any buffered data to the underlying io.Writer.
 func (b *Writer) Flush() error

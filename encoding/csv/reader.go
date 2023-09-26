@@ -94,8 +94,6 @@ var (
 // If LazyQuotes is true, a quote may appear in an unquoted field and a
 // non-doubled quote may appear in a quoted field.
 //
-// If TrailingComma is true, the last field may be an unquoted empty field.
-//
 // If TrimLeadingSpace is true, leading white space in a field is ignored.
 type Reader struct {
 	Comma            rune

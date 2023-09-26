@@ -15,7 +15,7 @@ type T struct {
 	U16         uint16
 	X           string
 	FloatZero   float64
-	ComplexZero float64
+	ComplexZero complex128
 
 	U *U
 
@@ -48,6 +48,7 @@ type T struct {
 	Err error
 
 	PI  *int
+	PS  *string
 	PSI *[]int
 	NIL *int
 
@@ -55,6 +56,7 @@ type T struct {
 	VariadicFunc    func(...string) string
 	VariadicFuncInt func(int, ...string) string
 	NilOKFunc       func(*int) bool
+	ErrFunc         func() (string, error)
 
 	Tmpl *Template
 

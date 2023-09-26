@@ -58,6 +58,9 @@ func (h *FileHeader) FileInfo() os.FileInfo
 
 // FileInfoHeader creates a partially-populated FileHeader from an
 // os.FileInfo.
+// Because os.FileInfo's Name method returns only the base name of
+// the file it describes, it may be necessary to modify the Name field
+// of the returned header to provide the full path name of the file.
 func FileInfoHeader(fi os.FileInfo) (*FileHeader, error)
 
 // ModTime returns the modification time.

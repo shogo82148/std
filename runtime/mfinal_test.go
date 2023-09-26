@@ -3,3 +3,10 @@
 // license that can be found in the LICENSE file.
 
 package runtime_test
+
+type Tintptr *int
+type Tint int
+
+type Tinter interface {
+	m()
+}

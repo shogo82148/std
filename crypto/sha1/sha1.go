@@ -19,3 +19,6 @@ const BlockSize = 64
 
 // New returns a new hash.Hash computing the SHA1 checksum.
 func New() hash.Hash
+
+// Sum returns the SHA1 checksum of the data.
+func Sum(data []byte) [Size]byte

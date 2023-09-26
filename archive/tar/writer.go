@@ -26,6 +26,7 @@ type Writer struct {
 	pad        int64
 	closed     bool
 	usedBinary bool
+	preferPax  bool
 }
 
 // NewWriter creates a new Writer writing to w.

@@ -157,6 +157,10 @@ type Certificate struct {
 	NotBefore, NotAfter time.Time
 	KeyUsage            KeyUsage
 
+	Extensions []pkix.Extension
+
+	ExtraExtensions []pkix.Extension
+
 	ExtKeyUsage        []ExtKeyUsage
 	UnknownExtKeyUsage []asn1.ObjectIdentifier
 
@@ -167,6 +171,9 @@ type Certificate struct {
 	SubjectKeyId   []byte
 	AuthorityKeyId []byte
 
+	OCSPServer            []string
+	IssuingCertificateURL []string
+
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
@@ -174,12 +181,14 @@ type Certificate struct {
 	PermittedDNSDomainsCritical bool
 	PermittedDNSDomains         []string
 
+	CRLDistributionPoints []string
+
 	PolicyIdentifiers []asn1.ObjectIdentifier
 }
 
 // ErrUnsupportedAlgorithm results from attempting to perform an operation that
 // involves algorithms that are not currently implemented.
-var ErrUnsupportedAlgorithm = errors.New("crypto/x509: cannot verify signature: algorithm unimplemented")
+var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorithm unimplemented")
 
 // ConstraintViolationError results when a requested usage is not permitted by
 // a certificate. For example: checking a signature when the public key isn't a
@@ -218,6 +227,10 @@ func (h UnhandledCriticalExtension) Error() string
 // RFC 5280 4.2.1.4
 
 // RFC 5280, 4.2.1.10
+
+// RFC 5280, 4.2.2.1
+
+// RFC 5280, 4.2.1.14
 
 // ParseCertificate parses a single certificate from the given ASN.1 DER data.
 func ParseCertificate(asn1Data []byte) (*Certificate, error)

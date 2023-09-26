@@ -44,6 +44,13 @@ func NewReader(r io.ReaderAt, size int64) (*Reader, error)
 // Close closes the Zip file, rendering it unusable for I/O.
 func (rc *ReadCloser) Close() error
 
+// DataOffset returns the offset of the file's possibly-compressed
+// data, relative to the beginning of the zip file.
+//
+// Most callers should instead use Open, which transparently
+// decompresses data and verifies checksums.
+func (f *File) DataOffset() (offset int64, err error)
+
 // Open returns a ReadCloser that provides access to the File's contents.
 // Multiple files may be read concurrently.
 func (f *File) Open() (rc io.ReadCloser, err error)

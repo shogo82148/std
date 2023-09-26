@@ -122,8 +122,8 @@ func Marshal(v interface{}) ([]byte, error)
 // MarshalIndent is like Marshal but applies Indent to format the output.
 func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error)
 
-// HTMLEscape appends to dst the JSON-encoded src with <, >, and &
-// characters inside string literals changed to \u003c, \u003e, \u0026
+// HTMLEscape appends to dst the JSON-encoded src with <, >, &, U+2028 and U+2029
+// characters inside string literals changed to \u003c, \u003e, \u0026, \u2028, \u2029
 // so that the JSON will be safe to embed inside HTML <script> tags.
 // For historical reasons, web browsers don't honor standard HTML
 // escaping within <script> tags, so an alternative JSON encoding must
@@ -151,8 +151,12 @@ type UnsupportedValueError struct {
 
 func (e *UnsupportedValueError) Error() string
 
-// An InvalidUTF8Error is returned by Marshal when attempting
-// to encode a string value with invalid UTF-8 sequences.
+// Before Go 1.2, an InvalidUTF8Error was returned by Marshal when
+// attempting to encode a string value with invalid UTF-8 sequences.
+// As of Go 1.2, Marshal instead coerces the string to valid UTF-8 by
+// replacing invalid bytes with the Unicode replacement rune U+FFFD.
+// This error is no longer generated but is kept for backwards compatibility
+// with programs that might mention it.
 type InvalidUTF8Error struct {
 	S string
 }
@@ -167,6 +171,10 @@ type MarshalerError struct {
 func (e *MarshalerError) Error() string
 
 // An encodeState encodes JSON into a bytes.Buffer.
+
+// TODO(bradfitz): use a sync.Cache here
+
+// sliceEncoder just wraps an arrayEncoder, checking to make sure the value isn't nil.
 
 // stringValues is a slice of reflect.Value holding *reflect.StringValue.
 // It implements the methods to sort by string.

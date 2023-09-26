@@ -75,3 +75,9 @@ func Float64sAreSorted(a []float64) bool
 
 // StringsAreSorted tests whether a slice of strings is sorted in increasing order.
 func StringsAreSorted(a []string) bool
+
+// Stable sorts data while keeping the original order of equal elements.
+//
+// It makes one call to data.Len to determine n, O(n*log(n)) calls to
+// data.Less and O(n*log(n)*log(n)) calls to data.Swap.
+func Stable(data Interface)

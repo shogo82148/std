@@ -27,6 +27,8 @@ type T struct {
 	Array   [4]int
 }
 
+// Addresses of arrays are easier to manipulate with reflection than are slices.
+
 type BlankFields struct {
 	A uint32
 	_ int32

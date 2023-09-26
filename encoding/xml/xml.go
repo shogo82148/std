@@ -46,6 +46,9 @@ type StartElement struct {
 
 func (e StartElement) Copy() StartElement
 
+// End returns the corresponding XML end element.
+func (e StartElement) End() EndElement
+
 // An EndElement represents an XML end element.
 type EndElement struct {
 	Name Name
@@ -94,18 +97,19 @@ type Decoder struct {
 
 	DefaultSpace string
 
-	r         io.ByteReader
-	buf       bytes.Buffer
-	saved     *bytes.Buffer
-	stk       *stack
-	free      *stack
-	needClose bool
-	toClose   Name
-	nextToken Token
-	nextByte  int
-	ns        map[string]string
-	err       error
-	line      int
+	r              io.ByteReader
+	buf            bytes.Buffer
+	saved          *bytes.Buffer
+	stk            *stack
+	free           *stack
+	needClose      bool
+	toClose        Name
+	nextToken      Token
+	nextByte       int
+	ns             map[string]string
+	err            error
+	line           int
+	unmarshalDepth int
 }
 
 // NewDecoder creates a new XML parser reading from r.

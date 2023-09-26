@@ -97,14 +97,13 @@ type CloseNotifier interface {
 
 // A response represents the server side of an HTTP response.
 
+// writerOnly hides an io.Writer value's optional ReadFrom method
+// from io.Copy.
+
 // noLimit is an effective infinite upper bound for io.LimitedReader
 
 // debugServerConnections controls whether all server connections are wrapped
 // with a verbose logging wrapper.
-
-// TODO: remove this, if issue 5100 is fixed
-
-// TODO: remove this, if issue 5100 is fixed
 
 // TODO: use a sync.Cache instead
 
@@ -162,6 +161,7 @@ type HandlerFunc func(ResponseWriter, *Request)
 func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 
 // Error replies to the request with the specified error message and HTTP code.
+// The error message should be plain text.
 func Error(w ResponseWriter, error string, code int)
 
 // NotFound replies to the request with an HTTP 404 not found error.
@@ -202,6 +202,10 @@ func RedirectHandler(url string, code int) Handler
 // called for paths beginning "/images/thumbnails/" and the
 // former will receive requests for any other paths in the
 // "/images/" subtree.
+//
+// Note that since a pattern ending in a slash names a rooted subtree,
+// the pattern "/" matches all paths not matched by other registered
+// patterns, not just the URL with Path == "/".
 //
 // Patterns may optionally begin with a host name, restricting matches to
 // URLs on that host only.  Host-specific patterns take precedence over
@@ -377,6 +381,8 @@ var ErrHandlerTimeout = errors.New("http: Handler timeout")
 // globalOptionsHandler responds to "OPTIONS *" requests.
 
 // eofReader is a non-nil io.ReadCloser that always returns EOF.
+// It embeds a *strings.Reader so it still has a WriteTo method
+// and io.Copy won't need a buffer.
 
 // initNPNRequest is an HTTP handler that initializes certain
 // uninitialized fields in its *Request. Such partially-initialized

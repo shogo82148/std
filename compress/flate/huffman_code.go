@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package flate
+
+// A levelInfo describes the state of the constructed tree for a given depth.

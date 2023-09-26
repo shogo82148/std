@@ -15,6 +15,17 @@ import (
 
 // m is the maximum color value returned by image.Color.RGBA.
 
+// Image is an image.Image with a Set method to change a single pixel.
+type Image interface {
+	image.Image
+	Set(x, y int, c color.Color)
+}
+
+// Quantizer produces a palette for an image.
+type Quantizer interface {
+	Quantize(p color.Palette, m image.Image) color.Palette
+}
+
 // Op is a Porter-Duff compositing operator.
 type Op int
 
@@ -25,11 +36,18 @@ const (
 	Src
 )
 
-// A draw.Image is an image.Image with a Set method to change a single pixel.
-type Image interface {
-	image.Image
-	Set(x, y int, c color.Color)
+// Draw implements the Drawer interface by calling the Draw function with this
+// Op.
+func (op Op) Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point)
+
+// Drawer contains the Draw method.
+type Drawer interface {
+	Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point)
 }
+
+// FloydSteinberg is a Drawer that is the Src Op with Floyd-Steinberg error
+// diffusion.
+var FloydSteinberg Drawer = floydSteinberg{}
 
 // Draw calls DrawMask with a nil mask.
 func Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point, op Op)

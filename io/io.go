@@ -91,10 +91,14 @@ type Closer interface {
 // Seek sets the offset for the next Read or Write to offset,
 // interpreted according to whence: 0 means relative to the origin of
 // the file, 1 means relative to the current offset, and 2 means
-// relative to the end.  Seek returns the new offset and an Error, if
+// relative to the end.  Seek returns the new offset and an error, if
 // any.
+//
+// Seeking to a negative offset is an error. Seeking to any positive
+// offset is legal, but the behavior of subsequent I/O operations on
+// the underlying object is implementation-dependent.
 type Seeker interface {
-	Seek(offset int64, whence int) (ret int64, err error)
+	Seek(offset int64, whence int) (int64, error)
 }
 
 // ReadWriter is the interface that groups the basic Read and Write methods.
@@ -294,10 +298,10 @@ func CopyN(dst Writer, src Reader, n int64) (written int64, err error)
 // Because Copy is defined to read from src until EOF, it does
 // not treat an EOF from Read as an error to be reported.
 //
-// If dst implements the ReaderFrom interface,
-// the copy is implemented by calling dst.ReadFrom(src).
-// Otherwise, if src implements the WriterTo interface,
+// If src implements the WriterTo interface,
 // the copy is implemented by calling src.WriteTo(dst).
+// Otherwise, if dst implements the ReaderFrom interface,
+// the copy is implemented by calling dst.ReadFrom(src).
 func Copy(dst Writer, src Reader) (written int64, err error)
 
 // LimitReader returns a Reader that reads from r
@@ -330,7 +334,7 @@ type SectionReader struct {
 
 func (s *SectionReader) Read(p []byte) (n int, err error)
 
-func (s *SectionReader) Seek(offset int64, whence int) (ret int64, err error)
+func (s *SectionReader) Seek(offset int64, whence int) (int64, error)
 
 func (s *SectionReader) ReadAt(p []byte, off int64) (n int, err error)
 

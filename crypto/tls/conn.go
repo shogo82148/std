@@ -70,6 +70,8 @@ func (c *Conn) SetWriteDeadline(t time.Time) error
 // A halfConn represents one direction of the record layer
 // connection, either sending or receiving.
 
+// cbcMode is an interface for block ciphers using cipher block chaining.
+
 // A block is a simple data buffer.
 
 // Write writes data to the connection.

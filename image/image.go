@@ -80,7 +80,7 @@ func (p *RGBA) SetRGBA(x, y int, c color.RGBA)
 // through r. The returned value shares pixels with the original image.
 func (p *RGBA) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *RGBA) Opaque() bool
 
 // NewRGBA returns a new RGBA with the given bounds.
@@ -113,7 +113,7 @@ func (p *RGBA64) SetRGBA64(x, y int, c color.RGBA64)
 // through r. The returned value shares pixels with the original image.
 func (p *RGBA64) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *RGBA64) Opaque() bool
 
 // NewRGBA64 returns a new RGBA64 with the given bounds.
@@ -146,7 +146,7 @@ func (p *NRGBA) SetNRGBA(x, y int, c color.NRGBA)
 // through r. The returned value shares pixels with the original image.
 func (p *NRGBA) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *NRGBA) Opaque() bool
 
 // NewNRGBA returns a new NRGBA with the given bounds.
@@ -179,7 +179,7 @@ func (p *NRGBA64) SetNRGBA64(x, y int, c color.NRGBA64)
 // through r. The returned value shares pixels with the original image.
 func (p *NRGBA64) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *NRGBA64) Opaque() bool
 
 // NewNRGBA64 returns a new NRGBA64 with the given bounds.
@@ -212,7 +212,7 @@ func (p *Alpha) SetAlpha(x, y int, c color.Alpha)
 // through r. The returned value shares pixels with the original image.
 func (p *Alpha) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Alpha) Opaque() bool
 
 // NewAlpha returns a new Alpha with the given bounds.
@@ -245,7 +245,7 @@ func (p *Alpha16) SetAlpha16(x, y int, c color.Alpha16)
 // through r. The returned value shares pixels with the original image.
 func (p *Alpha16) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Alpha16) Opaque() bool
 
 // NewAlpha16 returns a new Alpha16 with the given bounds.
@@ -278,7 +278,7 @@ func (p *Gray) SetGray(x, y int, c color.Gray)
 // through r. The returned value shares pixels with the original image.
 func (p *Gray) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Gray) Opaque() bool
 
 // NewGray returns a new Gray with the given bounds.
@@ -311,7 +311,7 @@ func (p *Gray16) SetGray16(x, y int, c color.Gray16)
 // through r. The returned value shares pixels with the original image.
 func (p *Gray16) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Gray16) Opaque() bool
 
 // NewGray16 returns a new Gray16 with the given bounds.
@@ -348,7 +348,7 @@ func (p *Paletted) SetColorIndex(x, y int, index uint8)
 // through r. The returned value shares pixels with the original image.
 func (p *Paletted) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Paletted) Opaque() bool
 
 // NewPaletted returns a new Paletted with the given width, height and palette.

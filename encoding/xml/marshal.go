@@ -63,6 +63,41 @@ const (
 // Marshal will return an error if asked to marshal a channel, function, or map.
 func Marshal(v interface{}) ([]byte, error)
 
+// Marshaler is the interface implemented by objects that can marshal
+// themselves into valid XML elements.
+//
+// MarshalXML encodes the receiver as zero or more XML elements.
+// By convention, arrays or slices are typically encoded as a sequence
+// of elements, one per entry.
+// Using start as the element tag is not required, but doing so
+// will enable Unmarshal to match the XML elements to the correct
+// struct field.
+// One common implementation strategy is to construct a separate
+// value with a layout corresponding to the desired XML and then
+// to encode it using e.EncodeElement.
+// Another common strategy is to use repeated calls to e.EncodeToken
+// to generate the XML output one token at a time.
+// The sequence of encoded tokens must make up zero or more valid
+// XML elements.
+type Marshaler interface {
+	MarshalXML(e *Encoder, start StartElement) error
+}
+
+// MarshalerAttr is the interface implemented by objects that can marshal
+// themselves into valid XML attributes.
+//
+// MarshalXMLAttr returns an XML attribute with the encoded value of the receiver.
+// Using name as the attribute name is not required, but doing so
+// will enable Unmarshal to match the attribute to the correct
+// struct field.
+// If MarshalXMLAttr returns the zero attribute Attr{}, no attribute
+// will be generated in the output.
+// MarshalXMLAttr is used only for struct fields with the
+// "attr" option in the field tag.
+type MarshalerAttr interface {
+	MarshalXMLAttr(name Name) (Attr, error)
+}
+
 // MarshalIndent works like Marshal, but each XML element begins on a new
 // indented line that starts with prefix and is followed by one or more
 // copies of indent according to the nesting depth.
@@ -70,7 +105,7 @@ func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error)
 
 // An Encoder writes XML data to an output stream.
 type Encoder struct {
-	printer
+	p printer
 }
 
 // NewEncoder returns a new encoder that writes to w.
@@ -85,7 +120,34 @@ func (enc *Encoder) Indent(prefix, indent string)
 //
 // See the documentation for Marshal for details about the conversion
 // of Go values to XML.
+//
+// Encode calls Flush before returning.
 func (enc *Encoder) Encode(v interface{}) error
+
+// EncodeElement writes the XML encoding of v to the stream,
+// using start as the outermost tag in the encoding.
+//
+// See the documentation for Marshal for details about the conversion
+// of Go values to XML.
+//
+// EncodeElement calls Flush before returning.
+func (enc *Encoder) EncodeElement(v interface{}, start StartElement) error
+
+// EncodeToken writes the given XML token to the stream.
+// It returns an error if StartElement and EndElement tokens are not properly matched.
+//
+// EncodeToken does not call Flush, because usually it is part of a larger operation
+// such as Encode or EncodeElement (or a custom Marshaler's MarshalXML invoked
+// during those), and those will call Flush when finished.
+//
+// Callers that create an Encoder and then invoke EncodeToken directly, without
+// using Encode or EncodeElement, need to call Flush when finished to ensure
+// that the XML is written to the underlying writer.
+func (enc *Encoder) EncodeToken(t Token) error
+
+// Flush flushes any buffered XML to the underlying writer.
+// See the EncodeToken documentation for details about when it is necessary.
+func (enc *Encoder) Flush() error
 
 // A MarshalXMLError is returned when Marshal encounters a type
 // that cannot be converted into XML.

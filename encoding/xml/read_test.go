@@ -135,3 +135,23 @@ type TAttr struct {
 	Other3 string `xml:"http://golang.org/json/ other,attr,omitempty"`
 	Other4 string `xml:"http://golang.org/2/json/ other,attr,omitempty"`
 }
+
+type MyCharData struct {
+	body string
+}
+
+var _ Unmarshaler = (*MyCharData)(nil)
+
+type MyAttr struct {
+	attr string
+}
+
+var _ UnmarshalerAttr = (*MyAttr)(nil)
+
+type MyStruct struct {
+	Data *MyCharData
+	Attr *MyAttr `xml:",attr"`
+
+	Data2 MyCharData
+	Attr2 MyAttr `xml:",attr"`
+}

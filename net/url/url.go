@@ -131,8 +131,8 @@ func (v Values) Del(key string)
 // encountered, if any.
 func ParseQuery(query string) (m Values, err error)
 
-// Encode encodes the values into “URL encoded” form.
-// e.g. "foo=bar&bar=baz"
+// Encode encodes the values into “URL encoded” form
+// ("bar=baz&foo=quux") sorted by key.
 func (v Values) Encode() string
 
 // IsAbs returns true if the URL is absolute.

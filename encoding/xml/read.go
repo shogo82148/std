@@ -36,12 +36,12 @@ package xml
 //     Unmarshal records the attribute value in that field.
 //
 //   - If the XML element contains character data, that data is
-//     accumulated in the first struct field that has tag "chardata".
+//     accumulated in the first struct field that has tag ",chardata".
 //     The struct field may have type []byte or string.
 //     If there is no such field, the character data is discarded.
 //
 //   - If the XML element contains comments, they are accumulated in
-//     the first struct field that has tag ",comments".  The struct
+//     the first struct field that has tag ",comment".  The struct
 //     field may have type []byte or string.  If there is no such
 //     field, the comments are discarded.
 //
@@ -109,6 +109,37 @@ func (d *Decoder) DecodeElement(v interface{}, start *StartElement) error
 type UnmarshalError string
 
 func (e UnmarshalError) Error() string
+
+// Unmarshaler is the interface implemented by objects that can unmarshal
+// an XML element description of themselves.
+//
+// UnmarshalXML decodes a single XML element
+// beginning with the given start element.
+// If it returns an error, the outer call to Unmarshal stops and
+// returns that error.
+// UnmarshalXML must consume exactly one XML element.
+// One common implementation strategy is to unmarshal into
+// a separate value with a layout matching the expected XML
+// using d.DecodeElement,  and then to copy the data from
+// that value into the receiver.
+// Another common strategy is to use d.Token to process the
+// XML object one token at a time.
+// UnmarshalXML may not use d.RawToken.
+type Unmarshaler interface {
+	UnmarshalXML(d *Decoder, start StartElement) error
+}
+
+// UnmarshalerAttr is the interface implemented by objects that can unmarshal
+// an XML attribute description of themselves.
+//
+// UnmarshalXMLAttr decodes a single XML attribute.
+// If it returns an error, the outer call to Unmarshal stops and
+// returns that error.
+// UnmarshalXMLAttr is used only for struct fields with the
+// "attr" option in the field tag.
+type UnmarshalerAttr interface {
+	UnmarshalXMLAttr(attr Attr) error
+}
 
 // Skip reads tokens until it has consumed the end element
 // matching the most recent start element already consumed.

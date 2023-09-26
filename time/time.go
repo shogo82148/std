@@ -31,7 +31,7 @@ package time
 type Time struct {
 	sec int64
 
-	nsec int32
+	nsec uintptr
 
 	loc *Location
 }
@@ -179,7 +179,9 @@ func (d Duration) Hours() float64
 // Add returns the time t+d.
 func (t Time) Add(d Duration) Time
 
-// Sub returns the duration t-u.
+// Sub returns the duration t-u. If the result exceeds the maximum (or minimum)
+// value that can be stored in a Duration, the maximum (or minimum) duration
+// will be returned.
 // To compute t-d for a duration d, use t.Add(-d).
 func (t Time) Sub(u Time) Duration
 
@@ -232,19 +234,33 @@ func (t Time) Unix() int64
 // means the result of calling UnixNano on the zero Time is undefined.
 func (t Time) UnixNano() int64
 
+// MarshalBinary implements the encoding.BinaryMarshaler interface.
+func (t Time) MarshalBinary() ([]byte, error)
+
+// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
+func (t *Time) UnmarshalBinary(data []byte) error
+
 // GobEncode implements the gob.GobEncoder interface.
 func (t Time) GobEncode() ([]byte, error)
 
 // GobDecode implements the gob.GobDecoder interface.
-func (t *Time) GobDecode(buf []byte) error
+func (t *Time) GobDecode(data []byte) error
 
 // MarshalJSON implements the json.Marshaler interface.
-// Time is formatted as RFC3339.
+// The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
 func (t Time) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-// Time is expected in RFC3339 format.
+// The time is expected to be a quoted string in RFC 3339 format.
 func (t *Time) UnmarshalJSON(data []byte) (err error)
+
+// MarshalText implements the encoding.TextMarshaler interface.
+// The time is formatted in RFC 3339 format, with sub-second precision added if present.
+func (t Time) MarshalText() ([]byte, error)
+
+// UnmarshalText implements the encoding.TextUnmarshaler interface.
+// The time is expected to be in RFC 3339 format.
+func (t *Time) UnmarshalText(data []byte) (err error)
 
 // Unix returns the local Time corresponding to the given Unix time,
 // sec seconds and nsec nanoseconds since January 1, 1970 UTC.

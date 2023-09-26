@@ -24,14 +24,14 @@ func (p Point) Mul(k int) Point
 // Div returns the vector p/k.
 func (p Point) Div(k int) Point
 
-// In returns whether p is in r.
+// In reports whether p is in r.
 func (p Point) In(r Rectangle) bool
 
 // Mod returns the point q in r such that p.X-q.X is a multiple of r's width
 // and p.Y-q.Y is a multiple of r's height.
 func (p Point) Mod(r Rectangle) Point
 
-// Eq returns whether p and q are equal.
+// Eq reports whether p and q are equal.
 func (p Point) Eq(q Point) bool
 
 // ZP is the zero Point.
@@ -78,16 +78,16 @@ func (r Rectangle) Intersect(s Rectangle) Rectangle
 // Union returns the smallest rectangle that contains both r and s.
 func (r Rectangle) Union(s Rectangle) Rectangle
 
-// Empty returns whether the rectangle contains no points.
+// Empty reports whether the rectangle contains no points.
 func (r Rectangle) Empty() bool
 
-// Eq returns whether r and s are equal.
+// Eq reports whether r and s are equal.
 func (r Rectangle) Eq(s Rectangle) bool
 
-// Overlaps returns whether r and s have a non-empty intersection.
+// Overlaps reports whether r and s have a non-empty intersection.
 func (r Rectangle) Overlaps(s Rectangle) bool
 
-// In returns whether every point in r is in s.
+// In reports whether every point in r is in s.
 func (r Rectangle) In(s Rectangle) bool
 
 // Canon returns the canonical version of r. The returned rectangle has minimum

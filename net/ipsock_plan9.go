@@ -5,5 +5,3 @@
 // Internet protocol family sockets for Plan 9
 
 package net
-
-// /sys/include/ape/sys/socket.h:/SOMAXCONN

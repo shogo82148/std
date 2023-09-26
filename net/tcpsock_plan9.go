@@ -44,6 +44,9 @@ func (c *TCPConn) SetLinger(sec int) error
 // keepalive messages on the connection.
 func (c *TCPConn) SetKeepAlive(keepalive bool) error
 
+// SetKeepAlivePeriod sets period between keep alives.
+func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error
+
 // SetNoDelay controls whether the operating system should delay
 // packet transmission in hopes of sending fewer packets (Nagle's
 // algorithm).  The default is true (no delay), meaning that data is
@@ -62,7 +65,7 @@ type TCPListener struct {
 }
 
 // AcceptTCP accepts the next incoming call and returns the new
-// connection and the remote address.
+// connection.
 func (l *TCPListener) AcceptTCP() (*TCPConn, error)
 
 // Accept implements the Accept method in the Listener interface; it

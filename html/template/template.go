@@ -16,6 +16,8 @@ type Template struct {
 	escaped bool
 
 	text *template.Template
+
+	Tree *parse.Tree
 	*nameSpace
 }
 

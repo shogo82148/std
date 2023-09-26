@@ -90,6 +90,12 @@ func (f *File) LineCount() int
 // and smaller than the file size; otherwise the line offset is ignored.
 func (f *File) AddLine(offset int)
 
+// MergeLine merges a line with the following line. It is akin to replacing
+// the newline character at the end of the line with a space (to not change the
+// remaining offsets). To obtain the line number, consult e.g. Position.Line.
+// MergeLine will panic if given an invalid line number.
+func (f *File) MergeLine(line int)
+
 // SetLines sets the line offsets for a file and returns true if successful.
 // The line offsets are the offsets of the first character of each line;
 // for instance for the content "ab\nc\n" the line offsets are {0, 3}.
@@ -153,7 +159,8 @@ func (s *FileSet) Base() int
 // AddFile adds a new file with a given filename, base offset, and file size
 // to the file set s and returns the file. Multiple files may have the same
 // name. The base offset must not be smaller than the FileSet's Base(), and
-// size must not be negative.
+// size must not be negative. As a special case, if a negative base is provided,
+// the current value of the FileSet's Base() is used instead.
 //
 // Adding the file will set the file set's Base() value to base + size + 1
 // as the minimum base value for the next file. The following relationship

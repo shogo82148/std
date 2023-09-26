@@ -7,6 +7,12 @@ package bytes
 // IndexByte returns the index of the first instance of c in s, or -1 if c is not present in s.
 func IndexByte(s []byte, c byte) int
 
-// Equal returns a boolean reporting whether a == b.
+// Equal returns a boolean reporting whether a and b
+// are the same length and contain the same bytes.
 // A nil argument is equivalent to an empty slice.
 func Equal(a, b []byte) bool
+
+// Compare returns an integer comparing two byte slices lexicographically.
+// The result will be 0 if a==b, -1 if a < b, and +1 if a > b.
+// A nil argument is equivalent to an empty slice.
+func Compare(a, b []byte) int

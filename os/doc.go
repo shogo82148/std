@@ -42,7 +42,7 @@ func (p *ProcessState) UserTime() time.Duration
 // SystemTime returns the system CPU time of the exited process and its children.
 func (p *ProcessState) SystemTime() time.Duration
 
-// Exited returns whether the program has exited.
+// Exited reports whether the program has exited.
 func (p *ProcessState) Exited() bool
 
 // Success reports whether the program exited successfully,

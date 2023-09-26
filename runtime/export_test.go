@@ -46,3 +46,11 @@ var ParForDo = parfordo
 
 var TestSchedLocalQueue1 = testSchedLocalQueue
 var TestSchedLocalQueueSteal1 = testSchedLocalQueueSteal
+
+var HaveGoodHash = haveGoodHash
+var StringHash = stringHash
+var BytesHash = bytesHash
+var Int32Hash = int32Hash
+var Int64Hash = int64Hash
+
+var HashLoad = &hashLoad

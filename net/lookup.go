@@ -4,6 +4,12 @@
 
 package net
 
+// protocols contains minimal mappings between internet protocol
+// names and numbers for platforms that don't have a complete list of
+// protocol numbers.
+//
+// See http://www.iana.org/assignments/protocol-numbers
+
 // LookupHost looks up the given host using the local resolver.
 // It returns an array of that host's addresses.
 func LookupHost(host string) (addrs []string, err error)

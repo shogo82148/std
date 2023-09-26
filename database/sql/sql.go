@@ -7,9 +7,13 @@
 //
 // The sql package must be used in conjunction with a database driver.
 // See http://golang.org/s/sqldrivers for a list of drivers.
+//
+// For more usage examples, see the wiki page at
+// http://golang.org/s/sqlwiki.
 package sql
 
 import (
+	"github.com/shogo82148/std/container/list"
 	"github.com/shogo82148/std/database/sql/driver"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
@@ -115,12 +119,18 @@ type DB struct {
 	driver driver.Driver
 	dsn    string
 
-	mu       sync.Mutex
-	freeConn []*driverConn
+	mu           sync.Mutex
+	freeConn     *list.List
+	connRequests *list.List
+	numOpen      int
+	pendingOpens int
+
+	openerCh chan struct{}
 	closed   bool
 	dep      map[finalCloser]depSet
 	lastPut  map[*driverConn]string
 	maxIdle  int
+	maxOpen  int
 }
 
 // driverConn wraps a driver.Conn with a mutex, to
@@ -136,6 +146,12 @@ type DB struct {
 
 // The finalCloser interface is used by (*DB).addDep and related
 // dependency reference counting.
+
+// This is the size of the connectionOpener request chan (dn.openerCh).
+// This value should be larger than the maximum typical value
+// used for db.maxOpen. If maxOpen is significantly larger than
+// connectionRequestQueueSize then it is possible for ALL calls into the *DB
+// to block until the connectionOpener can satify the backlog of requests.
 
 // Open opens a database specified by its database driver name and a
 // driver-specific data source name, usually consisting of at least a
@@ -161,8 +177,25 @@ func (db *DB) Close() error
 // SetMaxIdleConns sets the maximum number of connections in the idle
 // connection pool.
 //
+// If MaxOpenConns is greater than 0 but less than the new MaxIdleConns
+// then the new MaxIdleConns will be reduced to match the MaxOpenConns limit
+//
 // If n <= 0, no idle connections are retained.
 func (db *DB) SetMaxIdleConns(n int)
+
+// SetMaxOpenConns sets the maximum number of open connections to the database.
+//
+// If MaxIdleConns is greater than 0 and the new MaxOpenConns is less than
+// MaxIdleConns, then MaxIdleConns will be reduced to match the new
+// MaxOpenConns limit
+//
+// If n <= 0, then there is no limit on the number of open connections.
+// The default is 0 (unlimited).
+func (db *DB) SetMaxOpenConns(n int)
+
+// connRequest represents one request for a new connection
+// When there are no idle connections available, DB.conn will create
+// a new connRequest and put it on the db.connRequests list.
 
 // putConnHook is a hook for testing.
 
@@ -323,6 +356,7 @@ type Rows struct {
 func (rs *Rows) Next() bool
 
 // Err returns the error, if any, that was encountered during iteration.
+// Err may be called after an explicit or implicit Close.
 func (rs *Rows) Err() error
 
 // Columns returns the column names.
@@ -344,9 +378,9 @@ func (rs *Rows) Columns() ([]string, error)
 // is of type []byte, a copy is made and the caller owns the result.
 func (rs *Rows) Scan(dest ...interface{}) error
 
-// Close closes the Rows, preventing further enumeration. If the
-// end is encountered, the Rows are closed automatically. Close
-// is idempotent.
+// Close closes the Rows, preventing further enumeration. If Next returns
+// false, the Rows are closed automatically and it will suffice to check the
+// result of Err. Close is idempotent and does not affect the result of Err.
 func (rs *Rows) Close() error
 
 // Row is the result of calling QueryRow to select a single row.
@@ -364,5 +398,6 @@ func (r *Row) Scan(dest ...interface{}) error
 // A Result summarizes an executed SQL command.
 type Result interface {
 	LastInsertId() (int64, error)
+
 	RowsAffected() (int64, error)
 }

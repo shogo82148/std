@@ -4,18 +4,7 @@
 
 package net
 
-// Interface for all IO operations.
-
-// IO completion result parameters.
-
-// anOp implements functionality common to all IO operations.
-
-// bufOp is used by IO operations that read / write
-// data from / to client buffer.
-
-// resultSrv will retrieve all IO completion results from
-// iocp and send them to the correspondent waiting client
-// goroutine via channel supplied in the request.
+// operation contains superset of data necessary to perform all async IO.
 
 // ioSrv executes net IO requests.
 

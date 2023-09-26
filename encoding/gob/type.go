@@ -8,6 +8,8 @@ package gob
 // to the package.  It's computed once and stored in a map keyed by reflection
 // type.
 
+// externalEncoding bits
+
 // A typeId represents a gob Type as an integer that can be passed on the wire.
 // Internally, typeIds are used as keys to a map to recover the underlying type info.
 

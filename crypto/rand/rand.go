@@ -14,5 +14,6 @@ import "github.com/shogo82148/std/io"
 // On Windows systems, Reader uses the CryptGenRandom API.
 var Reader io.Reader
 
-// Read is a helper function that calls Reader.Read.
+// Read is a helper function that calls Reader.Read using io.ReadFull.
+// On return, n == len(b) if and only if err == nil.
 func Read(b []byte) (n int, err error)

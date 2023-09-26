@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package draw
+
+// embeddedPaletted is an Image that behaves like an *image.Paletted but whose
+// type is not *image.Paletted.

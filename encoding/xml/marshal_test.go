@@ -266,6 +266,33 @@ type Strings struct {
 	X []string `xml:"A>B,omitempty"`
 }
 
+type PointerFieldsTest struct {
+	XMLName  Name    `xml:"dummy"`
+	Name     *string `xml:"name,attr"`
+	Age      *uint   `xml:"age,attr"`
+	Empty    *string `xml:"empty,attr"`
+	Contents *string `xml:",chardata"`
+}
+
+type ChardataEmptyTest struct {
+	XMLName  Name    `xml:"test"`
+	Contents *string `xml:",chardata"`
+}
+
+type MyMarshalerTest struct {
+}
+
+var _ Marshaler = (*MyMarshalerTest)(nil)
+
+type MyMarshalerAttrTest struct {
+}
+
+var _ MarshalerAttr = (*MyMarshalerAttrTest)(nil)
+
+type MarshalerStruct struct {
+	Foo MyMarshalerAttrTest `xml:",attr"`
+}
+
 // Unless explicitly stated as such (or *Plain), all of the
 // tests below are two-way tests. When introducing new tests,
 // please try to make them two-way as well to ensure that
@@ -273,4 +300,8 @@ type Strings struct {
 
 type AttrParent struct {
 	X string `xml:"X>Y,attr"`
+}
+
+type BadAttr struct {
+	Name []string `xml:"name,attr"`
 }

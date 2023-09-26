@@ -37,11 +37,15 @@ type Client struct {
 }
 
 // Dial returns a new Client connected to an SMTP server at addr.
+// The addr must include a port number.
 func Dial(addr string) (*Client, error)
 
 // NewClient returns a new Client using an existing connection and host as a
 // server name to be used when authenticating.
 func NewClient(conn net.Conn, host string) (*Client, error)
+
+// Close closes the connection.
+func (c *Client) Close() error
 
 // Hello sends a HELO or EHLO to the server as the given host name.
 // Calling this method is only necessary if the client needs control
@@ -82,9 +86,10 @@ func (c *Client) Rcpt(to string) error
 // A call to Data must be preceded by one or more calls to Rcpt.
 func (c *Client) Data() (io.WriteCloser, error)
 
-// SendMail connects to the server at addr, switches to TLS if possible,
-// authenticates with mechanism a if possible, and then sends an email from
-// address from, to addresses to, with message msg.
+// SendMail connects to the server at addr, switches to TLS if
+// possible, authenticates with the optional mechanism a if possible,
+// and then sends an email from address from, to addresses to, with
+// message msg.
 func SendMail(addr string, a Auth, from string, to []string, msg []byte) error
 
 // Extension reports whether an extension is support by the server.

@@ -6,11 +6,10 @@
 
 package net
 
-type InvalidAddrError string
+// A netaddr represents a network endpoint address or a list of
+// network endpoint addresses.
 
-func (e InvalidAddrError) Error() string
-func (e InvalidAddrError) Timeout() bool
-func (e InvalidAddrError) Temporary() bool
+// An addrList represents a list of network endpoint addresses.
 
 // SplitHostPort splits a network address of the form "host:port",
 // "[host]:port" or "[ipv6-host%zone]:port" into host or

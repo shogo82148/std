@@ -116,6 +116,15 @@ type Value interface {
 	Set(string) error
 }
 
+// Getter is an interface that allows the contents of a Value to be retrieved.
+// It wraps the Value interface, rather than being part of it, because it
+// appeared after Go 1 and its compatibility rules. All Value types provided
+// by this package satisfy the Getter interface.
+type Getter interface {
+	Value
+	Get() interface{}
+}
+
 // ErrorHandling defines how to handle flag parsing errors.
 type ErrorHandling int
 
@@ -125,7 +134,8 @@ const (
 	PanicOnError
 )
 
-// A FlagSet represents a set of defined flags.
+// A FlagSet represents a set of defined flags.  The zero value of a FlagSet
+// has no name and has ContinueOnError error handling.
 type FlagSet struct {
 	Usage func()
 
@@ -380,7 +390,10 @@ func Parse()
 // Parsed returns true if the command-line flags have been parsed.
 func Parsed() bool
 
-// The default set of command-line flags, parsed from os.Args.
+// CommandLine is the default set of command-line flags, parsed from os.Args.
+// The top-level functions such as BoolVar, Arg, and on are wrappers for the
+// methods of CommandLine.
+var CommandLine = NewFlagSet(os.Args[0], ExitOnError)
 
 // NewFlagSet returns a new, empty flag set with the specified name and
 // error handling property.

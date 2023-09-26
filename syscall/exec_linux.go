@@ -17,4 +17,5 @@ type SysProcAttr struct {
 	Noctty     bool
 	Ctty       int
 	Pdeathsig  Signal
+	Cloneflags uintptr
 }

@@ -35,7 +35,7 @@ func (c *Uniform) Bounds() Rectangle
 
 func (c *Uniform) At(x, y int) color.Color
 
-// Opaque scans the entire image and returns whether or not it is fully opaque.
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (c *Uniform) Opaque() bool
 
 func NewUniform(c color.Color) *Uniform

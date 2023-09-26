@@ -23,14 +23,15 @@ const (
 // to its wrapped io.Writer.
 type Writer struct {
 	Header
-	w          io.Writer
-	level      int
-	compressor *flate.Writer
-	digest     hash.Hash32
-	size       uint32
-	closed     bool
-	buf        [10]byte
-	err        error
+	w           io.Writer
+	level       int
+	wroteHeader bool
+	compressor  *flate.Writer
+	digest      hash.Hash32
+	size        uint32
+	closed      bool
+	buf         [10]byte
+	err         error
 }
 
 // NewWriter creates a new Writer that satisfies writes by compressing data
@@ -53,6 +54,12 @@ func NewWriter(w io.Writer) *Writer
 // integer value between BestSpeed and BestCompression inclusive. The error
 // returned will be nil if the level is valid.
 func NewWriterLevel(w io.Writer, level int) (*Writer, error)
+
+// Reset discards the Writer z's state and makes it equivalent to the
+// result of its original state from NewWriter or NewWriterLevel, but
+// writing to w instead. This permits reusing a Writer rather than
+// allocating a new one.
+func (z *Writer) Reset(w io.Writer)
 
 // Write writes a compressed form of p to the underlying io.Writer. The
 // compressed bytes are not necessarily flushed until the Writer is closed.

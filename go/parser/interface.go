@@ -47,11 +47,13 @@ const (
 // are returned via a scanner.ErrorList which is sorted by file position.
 func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode) (f *ast.File, err error)
 
-// ParseDir calls ParseFile for the files in the directory specified by path and
-// returns a map of package name -> package AST with all the packages found. If
-// filter != nil, only the files with os.FileInfo entries passing through the filter
-// are considered. The mode bits are passed to ParseFile unchanged. Position
-// information is recorded in the file set fset.
+// ParseDir calls ParseFile for all files with names ending in ".go" in the
+// directory specified by path and returns a map of package name -> package
+// AST with all the packages found.
+//
+// If filter != nil, only the files with os.FileInfo entries passing through
+// the filter (and ending in ".go") are considered. The mode bits are passed
+// to ParseFile unchanged. Position information is recorded in fset.
 //
 // If the directory couldn't be read, a nil map and the respective error are
 // returned. If a parse error occurred, a non-nil but incomplete map and the

@@ -44,10 +44,22 @@ type ParseTest struct {
 	fracDigits int
 }
 
+type ParseTimeZoneTest struct {
+	value  string
+	length int
+	ok     bool
+}
+
 type ParseErrorTest struct {
 	format string
 	value  string
 	expect string
+}
+
+type SecondsTimeZoneOffsetTest struct {
+	format         string
+	value          string
+	expectedoffset int
 }
 
 type ISOWeekTest struct {

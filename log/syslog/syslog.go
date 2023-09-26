@@ -16,7 +16,6 @@ package syslog
 
 import (
 	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
 )
 
@@ -79,8 +78,15 @@ type Writer struct {
 	raddr    string
 
 	mu   sync.Mutex
-	conn net.Conn
+	conn serverConn
 }
+
+// This interface and the separate syslog_unix.go file exist for
+// Solaris support as implemented by gccgo.  On Solaris you can not
+// simply open a TCP connection to the syslog daemon.  The gccgo
+// sources have a syslog_solaris.go file that implements unixSyslog to
+// return a type that satisfies this interface and simply calls the C
+// library syslog function.
 
 // New establishes a new connection to the system log daemon.  Each
 // write to the returned writer sends a log message with the given
@@ -115,7 +121,7 @@ func (w *Writer) Crit(m string) (err error)
 // passed to New.
 func (w *Writer) Err(m string) (err error)
 
-// Wanring logs a message with severity LOG_WARNING, ignoring the
+// Warning logs a message with severity LOG_WARNING, ignoring the
 // severity passed to New.
 func (w *Writer) Warning(m string) (err error)
 

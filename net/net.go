@@ -143,6 +143,12 @@ func (e UnknownNetworkError) Error() string
 func (e UnknownNetworkError) Temporary() bool
 func (e UnknownNetworkError) Timeout() bool
 
+type InvalidAddrError string
+
+func (e InvalidAddrError) Error() string
+func (e InvalidAddrError) Timeout() bool
+func (e InvalidAddrError) Temporary() bool
+
 // DNSConfigError represents an error reading the machine's DNS configuration.
 type DNSConfigError struct {
 	Err error
@@ -152,6 +158,3 @@ func (e *DNSConfigError) Error() string
 
 func (e *DNSConfigError) Timeout() bool
 func (e *DNSConfigError) Temporary() bool
-
-// deadline is an atomically-accessed number of nanoseconds since 1970
-// or 0, if no deadline is set.

@@ -40,6 +40,7 @@ func (l *List) Init() *List
 func New() *List
 
 // Len returns the number of elements of list l.
+// The complexity is O(1).
 func (l *List) Len() int
 
 // Front returns the first element of list l or nil
@@ -52,7 +53,7 @@ func (l *List) Back() *Element
 // It returns the element value e.Value.
 func (l *List) Remove(e *Element) interface{}
 
-// Pushfront inserts a new element e with value v at the front of list l and returns e.
+// PushFront inserts a new element e with value v at the front of list l and returns e.
 func (l *List) PushFront(v interface{}) *Element
 
 // PushBack inserts a new element e with value v at the back of list l and returns e.
@@ -73,6 +74,14 @@ func (l *List) MoveToFront(e *Element)
 // MoveToBack moves element e to the back of list l.
 // If e is not an element of l, the list is not modified.
 func (l *List) MoveToBack(e *Element)
+
+// MoveBefore moves element e to its new position before mark.
+// If e is not an element of l, or e == mark, the list is not modified.
+func (l *List) MoveBefore(e, mark *Element)
+
+// MoveAfter moves element e to its new position after mark.
+// If e is not an element of l, or e == mark, the list is not modified.
+func (l *List) MoveAfter(e, mark *Element)
 
 // PushBackList inserts a copy of an other list at the back of list l.
 // The lists l and other may be the same.

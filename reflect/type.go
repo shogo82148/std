@@ -230,7 +230,7 @@ func PtrTo(t Type) Type
 // Four values describe any of the types we are looking for:
 // type kind, one or two subtypes, and an extra integer.
 
-// garbage collection bytecode program for chan or map.
+// garbage collection bytecode program for chan.
 // See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
 
 // ChanOf returns the channel type with the given direction and element type.
@@ -247,6 +247,11 @@ func ChanOf(dir ChanDir, t Type) Type
 // If the key type is not a valid map key type (that is, if it does
 // not implement Go's == operator), MapOf panics.
 func MapOf(key, elem Type) Type
+
+// Make sure these routines stay in sync with ../../pkg/runtime/hashmap.c!
+// These types exist only for GC, so we only fill out GC relevant info.
+// Currently, that's just size and the GC program.  We also fill in string
+// for possible debugging use.
 
 // garbage collection bytecode program for slice of non-zero-length values.
 // See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.

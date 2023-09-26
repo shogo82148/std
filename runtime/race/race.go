@@ -39,9 +39,9 @@ func Read(racectx uintptr, addr, pc uintptr)
 
 func Write(racectx uintptr, addr, pc uintptr)
 
-func ReadRange(racectx uintptr, addr, sz, step, pc uintptr)
+func ReadRange(racectx uintptr, addr, sz, pc uintptr)
 
-func WriteRange(racectx uintptr, addr, sz, step, pc uintptr)
+func WriteRange(racectx uintptr, addr, sz, pc uintptr)
 
 func FuncEnter(racectx uintptr, pc uintptr)
 

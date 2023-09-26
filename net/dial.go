@@ -19,6 +19,8 @@ type Dialer struct {
 	Deadline time.Time
 
 	LocalAddr Addr
+
+	DualStack bool
 }
 
 // Dial connects to the address on the named network.

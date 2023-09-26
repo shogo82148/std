@@ -72,7 +72,7 @@ type UnixListener struct{}
 func ListenUnix(net string, laddr *UnixAddr) (*UnixListener, error)
 
 // AcceptUnix accepts the next incoming call and returns the new
-// connection and the remote address.
+// connection.
 func (l *UnixListener) AcceptUnix() (*UnixConn, error)
 
 // Accept implements the Accept method in the Listener interface; it

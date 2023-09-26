@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || freebsd || linux || netbsd || openbsd || windows
-// +build darwin freebsd linux netbsd openbsd windows
+//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd || windows
+// +build darwin dragonfly freebsd linux netbsd openbsd windows
 
 package net
 
@@ -78,7 +78,7 @@ type UnixListener struct {
 func ListenUnix(net string, laddr *UnixAddr) (*UnixListener, error)
 
 // AcceptUnix accepts the next incoming call and returns the new
-// connection and the remote address.
+// connection.
 func (l *UnixListener) AcceptUnix() (*UnixConn, error)
 
 // Accept implements the Accept method in the Listener interface; it

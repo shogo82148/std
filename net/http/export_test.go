@@ -7,4 +7,6 @@
 
 package http
 
+var ExportAppendTime = appendTime
+
 var DefaultUserAgent = defaultUserAgent

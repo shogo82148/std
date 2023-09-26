@@ -28,7 +28,7 @@ type ET4 struct {
 	Next int
 }
 
-// Types not supported by the Encoder.
+// Types not supported at top level by the Encoder.
 
 type SingleTest struct {
 	in  interface{}
@@ -60,11 +60,13 @@ type Bug1Elem struct {
 
 type Bug1StructMap map[string]Bug1Elem
 
-// Should be able to have unrepresentable fields (chan, func) as long as they
-// are unexported.
+// Should be able to have unrepresentable fields (chan, func, *chan etc.); we just ignore them.
 type Bug2 struct {
-	A int
-	b chan int
+	A   int
+	C   chan int
+	CP  *chan int
+	F   func()
+	FPP **func()
 }
 
 // Mutually recursive slices of structs caused problems.

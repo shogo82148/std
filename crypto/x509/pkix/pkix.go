@@ -62,7 +62,7 @@ type CertificateList struct {
 	SignatureValue     asn1.BitString
 }
 
-// HasExpired returns true iff now is past the expiry time of certList.
+// HasExpired reports whether now is past the expiry time of certList.
 func (certList *CertificateList) HasExpired(now time.Time) bool
 
 // TBSCertificateList represents the ASN.1 structure of the same name. See RFC

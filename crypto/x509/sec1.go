@@ -17,3 +17,6 @@ import (
 
 // ParseECPrivateKey parses an ASN.1 Elliptic Curve Private Key Structure.
 func ParseECPrivateKey(der []byte) (key *ecdsa.PrivateKey, err error)
+
+// MarshalECPrivateKey marshals an EC private key into ASN.1, DER format.
+func MarshalECPrivateKey(key *ecdsa.PrivateKey) ([]byte, error)

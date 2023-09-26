@@ -4,6 +4,9 @@
 
 package os
 
+// useSyscallwd determines whether to use the return value of
+// syscall.Getwd based on its error.
+
 // Getwd returns a rooted path name corresponding to the
 // current directory.  If the current directory can be
 // reached via multiple paths (due to symbolic links),

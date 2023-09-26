@@ -118,6 +118,14 @@ func (ip IP) Mask(mask IPMask) IP
 // is IPv6 ("2001:4860:0:2001::68").
 func (ip IP) String() string
 
+// MarshalText implements the encoding.TextMarshaler interface.
+// The encoding is the same as returned by String.
+func (ip IP) MarshalText() ([]byte, error)
+
+// UnmarshalText implements the encoding.TextUnmarshaler interface.
+// The IP address is expected in a form accepted by ParseIP.
+func (ip *IP) UnmarshalText(text []byte) error
+
 // Equal returns true if ip and x are the same IP address.
 // An IPv4 address and that same address in IPv6 form are
 // considered to be equal.

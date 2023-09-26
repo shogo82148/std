@@ -162,3 +162,19 @@ var EqualFoldTests = []struct {
 	{"abcdefghijkz", "abcdefghij\u212Ay", false},
 	{"abcdefghijKz", "abcdefghij\u212Ay", false},
 }
+
+var CountTests = []struct {
+	s, sep string
+	num    int
+}{
+	{"", "", 1},
+	{"", "notempty", 0},
+	{"notempty", "", 9},
+	{"smaller", "not smaller", 0},
+	{"12345678987654321", "6", 2},
+	{"611161116", "6", 3},
+	{"notequal", "NotEqual", 0},
+	{"equal", "equal", 1},
+	{"abc1231231123q", "123", 3},
+	{"11111", "11", 2},
+}

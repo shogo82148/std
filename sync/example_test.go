@@ -6,7 +6,6 @@ package sync_test
 
 import (
 	"fmt"
-	"net/http"
 	"sync"
 )
 

@@ -105,6 +105,8 @@ func Chmod(path string, mode uint32) (err error)
 
 func LoadCancelIoEx() error
 
+func LoadSetFileCompletionNotificationModes() error
+
 // For testing: clients can set this flag to force
 // creation of IPv6 sockets to return EAFNOSUPPORT.
 var SocketDisableIPv6 bool

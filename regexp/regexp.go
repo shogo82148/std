@@ -157,17 +157,14 @@ func (re *Regexp) SubexpNames() []string
 // literal string comprises the entire regular expression.
 func (re *Regexp) LiteralPrefix() (prefix string, complete bool)
 
-// MatchReader returns whether the Regexp matches the text read by the
-// RuneReader.  The return value is a boolean: true for match, false for no
-// match.
+// MatchReader reports whether the Regexp matches the text read by the
+// RuneReader.
 func (re *Regexp) MatchReader(r io.RuneReader) bool
 
-// MatchString returns whether the Regexp matches the string s.
-// The return value is a boolean: true for match, false for no match.
+// MatchString reports whether the Regexp matches the string s.
 func (re *Regexp) MatchString(s string) bool
 
-// Match returns whether the Regexp matches the byte slice b.
-// The return value is a boolean: true for match, false for no match.
+// Match reports whether the Regexp matches the byte slice b.
 func (re *Regexp) Match(b []byte) bool
 
 // MatchReader checks whether a textual regular expression matches the text

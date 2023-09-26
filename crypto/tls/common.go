@@ -12,6 +12,13 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+const (
+	VersionSSL30 = 0x0300
+	VersionTLS10 = 0x0301
+	VersionTLS11 = 0x0302
+	VersionTLS12 = 0x0303
+)
+
 // TLS record types.
 
 // TLS handshake message types.
@@ -30,6 +37,20 @@ import (
 
 // Certificate types (for certificateRequestMsg)
 
+// Hash functions for TLS 1.2 (See RFC 5246, section A.4.1)
+
+// Signature algorithms for TLS 1.2 (See RFC 5246, section A.4.1)
+
+// signatureAndHash mirrors the TLS 1.2, SignatureAndHashAlgorithm struct. See
+// RFC 5246, section A.4.1.
+
+// supportedSKXSignatureAlgorithms contains the signature and hash algorithms
+// that the code advertises as supported in a TLS 1.2 ClientHello.
+
+// supportedClientCertSignatureAlgorithms contains the signature and hash
+// algorithms that the code advertises as supported in a TLS 1.2
+// CertificateRequest.
+
 // ConnectionState records basic TLS details about the connection.
 type ConnectionState struct {
 	HandshakeComplete          bool
@@ -37,12 +58,9 @@ type ConnectionState struct {
 	CipherSuite                uint16
 	NegotiatedProtocol         string
 	NegotiatedProtocolIsMutual bool
-
-	ServerName string
-
-	PeerCertificates []*x509.Certificate
-
-	VerifiedChains [][]*x509.Certificate
+	ServerName                 string
+	PeerCertificates           []*x509.Certificate
+	VerifiedChains             [][]*x509.Certificate
 }
 
 // ClientAuthType declares the policy the server will follow for
@@ -88,6 +106,10 @@ type Config struct {
 
 	SessionTicketKey [32]byte
 
+	MinVersion uint16
+
+	MaxVersion uint16
+
 	serverInitOnce sync.Once
 }
 
@@ -107,3 +129,5 @@ type Certificate struct {
 }
 
 // A TLS record.
+
+// TODO(jsing): Make these available to both crypto/x509 and crypto/tls.

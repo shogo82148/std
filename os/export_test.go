@@ -5,3 +5,4 @@
 package os
 
 var Atime = atime
+var LstatP = &lstat

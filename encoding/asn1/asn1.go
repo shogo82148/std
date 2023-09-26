@@ -43,7 +43,7 @@ func (b BitString) RightAlign() []byte
 // An ObjectIdentifier represents an ASN.1 OBJECT IDENTIFIER.
 type ObjectIdentifier []int
 
-// Equal returns true iff oi and other represent the same identifier.
+// Equal reports whether oi and other represent the same identifier.
 func (oi ObjectIdentifier) Equal(other ObjectIdentifier) bool
 
 // An Enumerated is represented as a plain int.

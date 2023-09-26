@@ -63,7 +63,7 @@ const (
 
 // Parse parses a regular expression string s, controlled by the specified
 // Flags, and returns a regular expression parse tree. The syntax is
-// described in the top-level comment for package regexp.
+// described in the top-level comment.
 func Parse(s string, flags Flags) (*Regexp, error)
 
 // ranges implements sort.Interface on a []rune.

@@ -137,3 +137,5 @@ func Open(name string) (file *File, err error)
 // O_RDWR.
 // If there is an error, it will be of type *PathError.
 func Create(name string) (file *File, err error)
+
+// lstat is overridden in tests.

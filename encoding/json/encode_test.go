@@ -33,8 +33,17 @@ type Ref int
 // Val has Marshaler methods with value receiver.
 type Val int
 
+// RefText has Marshaler and Unmarshaler methods with pointer receiver.
+type RefText int
+
+// ValText has Marshaler methods with value receiver.
+type ValText int
+
 // C implements Marshaler and returns unescaped JSON.
 type C int
+
+// CText implements Marshaler and returns unescaped text.
+type CText int
 
 type IntType int
 

@@ -24,3 +24,7 @@ func ConstantTimeEq(x, y int32) int
 // ConstantTimeCopy copies the contents of y into x iff v == 1. If v == 0, x is left unchanged.
 // Its behavior is undefined if v takes any other value.
 func ConstantTimeCopy(v int, x, y []byte)
+
+// ConstantTimeLessOrEq returns 1 if x <= y and 0 otherwise.
+// Its behavior is undefined if x or y are negative or > 2**31 - 1.
+func ConstantTimeLessOrEq(x, y int) int

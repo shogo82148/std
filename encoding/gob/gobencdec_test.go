@@ -22,6 +22,14 @@ type Gobber int
 
 type ValueGobber string
 
+type BinaryGobber int
+
+type BinaryValueGobber string
+
+type TextGobber int
+
+type TextValueGobber string
+
 type GobTest0 struct {
 	X int
 	G *ByteStruct
@@ -40,28 +48,42 @@ type GobTest2 struct {
 type GobTest3 struct {
 	X int
 	G *Gobber
+	B *BinaryGobber
+	T *TextGobber
 }
 
 type GobTest4 struct {
-	X int
-	V ValueGobber
+	X  int
+	V  ValueGobber
+	BV BinaryValueGobber
+	TV TextValueGobber
 }
 
 type GobTest5 struct {
-	X int
-	V *ValueGobber
+	X  int
+	V  *ValueGobber
+	BV *BinaryValueGobber
+	TV *TextValueGobber
 }
 
 type GobTest6 struct {
-	X int
-	V ValueGobber
-	W *ValueGobber
+	X  int
+	V  ValueGobber
+	W  *ValueGobber
+	BV BinaryValueGobber
+	BW *BinaryValueGobber
+	TV TextValueGobber
+	TW *TextValueGobber
 }
 
 type GobTest7 struct {
-	X int
-	V *ValueGobber
-	W ValueGobber
+	X  int
+	V  *ValueGobber
+	W  ValueGobber
+	BV *BinaryValueGobber
+	BW BinaryValueGobber
+	TV *TextValueGobber
+	TW TextValueGobber
 }
 
 type GobTestIgnoreEncoder struct {

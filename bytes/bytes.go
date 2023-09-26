@@ -10,15 +10,10 @@ import (
 	"github.com/shogo82148/std/unicode"
 )
 
-// Compare returns an integer comparing two byte slices lexicographically.
-// The result will be 0 if a==b, -1 if a < b, and +1 if a > b.
-// A nil argument is equivalent to an empty slice.
-func Compare(a, b []byte) int
-
 // Count counts the number of non-overlapping instances of sep in s.
 func Count(s, sep []byte) int
 
-// Contains returns whether subslice is within b.
+// Contains reports whether subslice is within b.
 func Contains(b, subslice []byte) bool
 
 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.

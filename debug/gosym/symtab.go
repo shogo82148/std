@@ -17,7 +17,7 @@ type Sym struct {
 	Func *Func
 }
 
-// Static returns whether this symbol is static (not visible outside its file).
+// Static reports whether this symbol is static (not visible outside its file).
 func (s *Sym) Static() bool
 
 // PackageName returns the package part of the symbol name,
@@ -43,9 +43,20 @@ type Func struct {
 	Obj       *Obj
 }
 
-// An Obj represents a single object file.
+// An Obj represents a collection of functions in a symbol table.
+//
+// The exact method of division of a binary into separate Objs is an internal detail
+// of the symbol table format.
+//
+// In early versions of Go each source file became a different Obj.
+//
+// In Go 1 and Go 1.1, each package produced one Obj for all Go sources
+// and one Obj per C source file.
+//
+// In Go 1.2, there is a single Obj for the entire program.
 type Obj struct {
 	Funcs []Func
+
 	Paths []Sym
 }
 
@@ -57,6 +68,8 @@ type Table struct {
 	Funcs []Func
 	Files map[string]*Obj
 	Objs  []Obj
+
+	go12line *LineTable
 }
 
 // NewTable decodes the Go symbol table in data,
@@ -72,7 +85,7 @@ func (t *Table) PCToFunc(pc uint64) *Func
 func (t *Table) PCToLine(pc uint64) (file string, line int, fn *Func)
 
 // LineToPC looks up the first program counter on the given line in
-// the named file.  Returns UnknownPathError or UnknownLineError if
+// the named file.  It returns UnknownPathError or UnknownLineError if
 // there is an error looking up this line.
 func (t *Table) LineToPC(file string, line int) (pc uint64, fn *Func, err error)
 
@@ -85,7 +98,6 @@ func (t *Table) LookupSym(name string) *Sym
 func (t *Table) LookupFunc(name string) *Func
 
 // SymByAddr returns the text, data, or bss symbol starting at the given address.
-// TODO(rsc): Allow lookup by any address within the symbol.
 func (t *Table) SymByAddr(addr uint64) *Sym
 
 // UnknownFileError represents a failure to find the specific file in

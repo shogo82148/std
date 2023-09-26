@@ -293,6 +293,11 @@ type R22 R21
 type R23 R21
 type R24 R21
 
+type S struct {
+	i1 int64
+	i2 int64
+}
+
 // An exhaustive is a mechanism for writing exhaustive or stochastic tests.
 // The basic usage is:
 //

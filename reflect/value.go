@@ -162,10 +162,7 @@ func (v Value) CanInterface() bool
 //
 //	var i interface{} = (v's underlying value)
 //
-// If v is a method obtained by invoking Value.Method
-// (as opposed to Type.Method), Interface cannot return an
-// interface value, so it panics.
-// It also panics if the Value was obtained by accessing
+// It panics if the Value was obtained by accessing
 // unexported struct fields.
 func (v Value) Interface() (i interface{})
 
@@ -294,6 +291,11 @@ func (v Value) SetInt(x int64)
 // greater than the capacity of the slice.
 func (v Value) SetLen(n int)
 
+// SetCap sets v's capacity to n.
+// It panics if v's Kind is not Slice or if n is smaller than the length or
+// greater than the capacity of the slice.
+func (v Value) SetCap(n int)
+
 // SetMapIndex sets the value associated with key in the map v to val.
 // It panics if v's Kind is not Map.
 // If val is the zero Value, SetMapIndex deletes the key from the map.
@@ -313,9 +315,15 @@ func (v Value) SetPointer(x unsafe.Pointer)
 // It panics if v's Kind is not String or if CanSet() is false.
 func (v Value) SetString(x string)
 
-// Slice returns a slice of v.
-// It panics if v's Kind is not Array, Slice or String, or if v is an unaddressable array.
-func (v Value) Slice(beg, end int) Value
+// Slice returns v[i:j].
+// It panics if v's Kind is not Array, Slice or String, or if v is an unaddressable array,
+// or if the indexes are out of bounds.
+func (v Value) Slice(i, j int) Value
+
+// Slice3 is the 3-index form of the slice operation: it returns v[i:j:k].
+// It panics if v's Kind is not Array or Slice, or if v is an unaddressable array,
+// or if the indexes are out of bounds.
+func (v Value) Slice3(i, j, k int) Value
 
 // String returns the string v's underlying value, as a string.
 // String is a special case because of Go's String method convention.

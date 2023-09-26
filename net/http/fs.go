@@ -63,6 +63,11 @@ type File interface {
 // Note that *os.File implements the io.ReadSeeker interface.
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
+// errSeeker is returned by ServeContent's sizeFunc when the content
+// doesn't seek properly. The underlying Seeker's error text isn't
+// included in the sizeFunc reply so it's not sent over HTTP to end
+// users.
+
 // ServeFile replies to the request with the contents of the named file or directory.
 func ServeFile(w ResponseWriter, r *Request, name string)
 

@@ -6,4 +6,5 @@ package os_test
 
 import (
 	. "os"
+	osexec "os/exec"
 )

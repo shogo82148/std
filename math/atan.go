@@ -4,7 +4,7 @@
 
 package math
 
-// Atan returns the arctangent of x.
+// Atan returns the arctangent, in radians, of x.
 //
 // Special cases are:
 //

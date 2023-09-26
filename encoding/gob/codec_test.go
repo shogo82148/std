@@ -64,11 +64,6 @@ type IT0 struct {
 	C        float64
 }
 
-type Bad0 struct {
-	CH chan int
-	C  float64
-}
-
 type Indirect struct {
 	A ***[3]int
 	S ***[]int

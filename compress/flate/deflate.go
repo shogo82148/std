@@ -38,7 +38,8 @@ func NewWriterDict(w io.Writer, level int, dict []byte) (*Writer, error)
 // A Writer takes data written to it and writes the compressed
 // form of that data to an underlying writer (see NewWriter).
 type Writer struct {
-	d compressor
+	d    compressor
+	dict []byte
 }
 
 // Write writes data to w, which will eventually write the
@@ -56,3 +57,8 @@ func (w *Writer) Flush() error
 
 // Close flushes and closes the writer.
 func (w *Writer) Close() error
+
+// Reset discards the writer's state and makes it equivalent to
+// the result of NewWriter or NewWriterDict called with dst
+// and w's level and dictionary.
+func (w *Writer) Reset(dst io.Writer)

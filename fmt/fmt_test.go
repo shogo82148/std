@@ -44,6 +44,8 @@ type SI struct {
 // P is a type with a String method with pointer receiver for testing %p.
 type P int
 
+type SE []interface{}
+
 var _ bytes.Buffer
 
 // Panic is a type that panics in String.

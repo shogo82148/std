@@ -28,10 +28,10 @@
 //	func BenchmarkXxx(*testing.B)
 //
 // are considered benchmarks, and are executed by the "go test" command when
-// the -test.bench flag is provided. Benchmarks are run sequentially.
+// its -bench flag is provided. Benchmarks are run sequentially.
 //
 // For a description of the testing flags, see
-// http://golang.org/cmd/go/#Description_of_testing_flags.
+// http://golang.org/cmd/go/#hdr-Description_of_testing_flags.
 //
 // A sample benchmark function looks like this:
 //
@@ -82,17 +82,19 @@
 //
 // Example functions without output comments are compiled but not executed.
 //
-// The naming convention to declare examples for a function F, a type T and
+// The naming convention to declare examples for the package, a function F, a type T and
 // method M on type T are:
 //
+//	func Example() { ... }
 //	func ExampleF() { ... }
 //	func ExampleT() { ... }
 //	func ExampleT_M() { ... }
 //
-// Multiple example functions for a type/function/method may be provided by
+// Multiple example functions for a package/type/function/method may be provided by
 // appending a distinct suffix to the name. The suffix must start with a
 // lower-case letter.
 //
+//	func Example_suffix() { ... }
 //	func ExampleF_suffix() { ... }
 //	func ExampleT_suffix() { ... }
 //	func ExampleT_M_suffix() { ... }
@@ -110,6 +112,28 @@ func Short() bool
 
 // Verbose reports whether the -test.v flag is set.
 func Verbose() bool
+
+// TB is the interface common to T and B.
+type TB interface {
+	Error(args ...interface{})
+	Errorf(format string, args ...interface{})
+	Fail()
+	FailNow()
+	Failed() bool
+	Fatal(args ...interface{})
+	Fatalf(format string, args ...interface{})
+	Log(args ...interface{})
+	Logf(format string, args ...interface{})
+	Skip(args ...interface{})
+	SkipNow()
+	Skipf(format string, args ...interface{})
+	Skipped() bool
+
+	private()
+}
+
+var _ TB = (*T)(nil)
+var _ TB = (*B)(nil)
 
 // T is a type passed to Test functions to manage test state and support formatted test logs.
 // Logs are accumulated during execution and dumped to standard error when done.

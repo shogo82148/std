@@ -29,6 +29,14 @@ const (
 // object name from one format to another.
 func TranslateAccountName(username string, from, to uint32, initSize int) (string, error)
 
+const (
+	// do not reorder
+	NetSetupUnknownStatus = iota
+	NetSetupUnjoined
+	NetSetupWorkgroupName
+	NetSetupDomainName
+)
+
 type UserInfo10 struct {
 	Name       *uint16
 	Comment    *uint16

@@ -11,6 +11,18 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
+func SwapInt32(addr *int32, new int32) (old int32)
+
+func SwapUint32(addr *uint32, new uint32) (old uint32)
+
+func SwapInt64(addr *int64, new int64) (old int64)
+
+func SwapUint64(addr *uint64, new uint64) (old uint64)
+
+func SwapUintptr(addr *uintptr, new uintptr) (old uintptr)
+
+func SwapPointer(addr *unsafe.Pointer, new unsafe.Pointer) (old unsafe.Pointer)
+
 func CompareAndSwapInt32(val *int32, old, new int32) bool
 
 func CompareAndSwapUint32(val *uint32, old, new uint32) (swapped bool)

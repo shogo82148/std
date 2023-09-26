@@ -54,6 +54,11 @@ func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 // the Writer is closed.
 func NewWriterLevelDict(w io.Writer, level int, dict []byte) (*Writer, error)
 
+// Reset clears the state of the Writer z such that it is equivalent to its
+// initial state from NewWriterLevel or NewWriterLevelDict, but instead writing
+// to w.
+func (z *Writer) Reset(w io.Writer)
+
 // Write writes a compressed form of p to the underlying io.Writer. The
 // compressed bytes are not necessarily flushed until the Writer is closed or
 // explicitly flushed.

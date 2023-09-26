@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build linux || freebsd
-// +build linux freebsd
+//go:build dragonfly || freebsd || linux
+// +build dragonfly freebsd linux
 
 package runtime
 

@@ -30,7 +30,11 @@ func IsGraphic(r rune) bool
 func IsPrint(r rune) bool
 
 // IsOneOf reports whether the rune is a member of one of the ranges.
-func IsOneOf(set []*RangeTable, r rune) bool
+// The function "In" provides a nicer signature and should be used in preference to IsOneOf.
+func IsOneOf(ranges []*RangeTable, r rune) bool
+
+// In reports whether the rune is a member of one of the ranges.
+func In(r rune, ranges ...*RangeTable) bool
 
 // IsControl reports whether the rune is a control character.
 // The C (Other) Unicode category includes more code points
