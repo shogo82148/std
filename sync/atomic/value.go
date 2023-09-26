@@ -8,7 +8,11 @@ package atomic
 // Values can be created as part of other data structures.
 // The zero value for a Value returns nil from Load.
 // Once Store has been called, a Value must not be copied.
+//
+// A Value must not be copied after first use.
 type Value struct {
+	noCopy noCopy
+
 	v interface{}
 }
 
@@ -22,3 +26,9 @@ func (v *Value) Load() (x interface{})
 // All calls to Store for a given Value must use values of the same concrete type.
 // Store of an inconsistent type panics, as does Store(nil).
 func (v *Value) Store(x interface{})
+
+// noCopy may be embedded into structs which must not be copied
+// after the first use.
+//
+// See https://github.com/golang/go/issues/8005#issuecomment-190753527
+// for details.

@@ -18,9 +18,8 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// Header type flags.
 const (
-
-	// Types
 	TypeReg           = '0'
 	TypeRegA          = '\x00'
 	TypeLink          = '1'
@@ -56,8 +55,6 @@ type Header struct {
 	ChangeTime time.Time
 	Xattrs     map[string]string
 }
-
-// File name constants from the tar spec.
 
 // FileInfo returns an os.FileInfo for the Header.
 func (h *Header) FileInfo() os.FileInfo

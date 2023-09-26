@@ -5,7 +5,7 @@
 package gob
 
 // userTypeInfo stores the information associated with a type the user has handed
-// to the package.  It's computed once and stored in a map keyed by reflection
+// to the package. It's computed once and stored in a map keyed by reflection
 // type.
 
 // externalEncoding bits
@@ -41,7 +41,7 @@ type CommonType struct {
 // For bootstrapping purposes, we assume that the recipient knows how
 // to decode a wireType; it is exactly the wireType struct here, interpreted
 // using the gob rules for sending a structure, except that we assume the
-// ids for wireType and structType etc. are known.  The relevant pieces
+// ids for wireType and structType etc. are known. The relevant pieces
 // are built in encode.go's init() function.
 // To maintain binary compatibility, if you extend this type, always put
 // the new fields last.
@@ -62,7 +62,7 @@ type CommonType struct {
 //
 // Note: Since gobs can be stored permanently, it is good design
 // to guarantee the encoding used by a GobEncoder is stable as the
-// software evolves.  For instance, it might make sense for GobEncode
+// software evolves. For instance, it might make sense for GobEncode
 // to include a version number in the encoding.
 type GobEncoder interface {
 	GobEncode() ([]byte, error)
@@ -79,8 +79,8 @@ type GobDecoder interface {
 func RegisterName(name string, value interface{})
 
 // Register records a type, identified by a value for that type, under its
-// internal type name.  That name will identify the concrete type of a value
-// sent or received as an interface variable.  Only types that will be
+// internal type name. That name will identify the concrete type of a value
+// sent or received as an interface variable. Only types that will be
 // transferred as implementations of interface values need to be registered.
 // Expecting to be used only during initialization, it panics if the mapping
 // between types and names is not a bijection.

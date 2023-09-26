@@ -1,4 +1,4 @@
-// Copyright 2012 The Go Authors.  All rights reserved.
+// Copyright 2012 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -31,3 +31,6 @@ package reflect
 // The Examples section of the documentation includes an illustration
 // of how to use MakeFunc to build a swap function for different types.
 func MakeFunc(typ Type, fn func(args []Value) (results []Value)) Value
+
+// This type is partially duplicated as runtime.reflectMethodValue.
+// Any changes should be reflected in both.

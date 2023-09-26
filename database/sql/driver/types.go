@@ -8,7 +8,7 @@ package driver
 //
 // Various implementations of ValueConverter are provided by the
 // driver package to provide consistent implementations of conversions
-// between drivers.  The ValueConverters have several uses:
+// between drivers. The ValueConverters have several uses:
 //
 //   - converting from the Value types as provided by the sql package
 //     into a database table's specific column type and making sure it
@@ -75,11 +75,10 @@ type NotNull struct {
 func (n NotNull) ConvertValue(v interface{}) (Value, error)
 
 // IsValue reports whether v is a valid Value parameter type.
-// Unlike IsScanValue, IsValue permits the string type.
 func IsValue(v interface{}) bool
 
-// IsScanValue reports whether v is a valid Value scan type.
-// Unlike IsValue, IsScanValue does not permit the string type.
+// IsScanValue is equivalent to IsValue.
+// It exists for compatibility.
 func IsScanValue(v interface{}) bool
 
 // DefaultParameterConverter is the default implementation of

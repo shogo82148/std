@@ -1,4 +1,4 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -17,4 +17,4 @@ var ErrNotFound = errors.New("executable file not found in %PATH%")
 // LookPath also uses PATHEXT environment variable to match
 // a suitable candidate.
 // The result may be an absolute path or a path relative to the current directory.
-func LookPath(file string) (f string, err error)
+func LookPath(file string) (string, error)

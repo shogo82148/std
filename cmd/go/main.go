@@ -1,4 +1,4 @@
-// Copyright 2011 The Go Authors.  All rights reserved.
+// Copyright 2011 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -35,5 +35,8 @@ func (c *Command) Runnable() bool
 
 // Commands lists the available commands and help topics.
 // The order here is the order in which they are printed by 'go help'.
+
+// commentWriter writes a Go comment to the underlying io.Writer,
+// using line comment form (//).
 
 // An errWriter wraps a writer, recording whether a write error occurred.

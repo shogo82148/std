@@ -20,31 +20,46 @@ type Conn struct {
 	conn     net.Conn
 	isClient bool
 
-	handshakeMutex    sync.Mutex
-	handshakeErr      error
-	vers              uint16
-	haveVers          bool
-	config            *Config
+	handshakeMutex sync.Mutex
+
+	handshakeCond *sync.Cond
+	handshakeErr  error
+	vers          uint16
+	haveVers      bool
+	config        *Config
+
 	handshakeComplete bool
-	didResume         bool
-	cipherSuite       uint16
-	ocspResponse      []byte
-	scts              [][]byte
-	peerCertificates  []*x509.Certificate
+
+	handshakes       int
+	didResume        bool
+	cipherSuite      uint16
+	ocspResponse     []byte
+	scts             [][]byte
+	peerCertificates []*x509.Certificate
 
 	verifiedChains [][]*x509.Certificate
 
 	serverName string
 
-	firstFinished [12]byte
+	secureRenegotiation bool
+
+	clientFinishedIsFirst bool
+
+	clientFinished [12]byte
+	serverFinished [12]byte
 
 	clientProtocol         string
 	clientProtocolFallback bool
 
-	in, out  halfConn
-	rawInput *block
-	input    *block
-	hand     bytes.Buffer
+	in, out   halfConn
+	rawInput  *block
+	input     *block
+	hand      bytes.Buffer
+	buffering bool
+	sendBuf   []byte
+
+	bytesSent   int64
+	packetsSent int64
 
 	activeCall int32
 
@@ -111,6 +126,6 @@ func (c *Conn) ConnectionState() ConnectionState
 func (c *Conn) OCSPResponse() []byte
 
 // VerifyHostname checks that the peer certificate chain is valid for
-// connecting to host.  If so, it returns nil; if not, it returns an error
+// connecting to host. If so, it returns nil; if not, it returns an error
 // describing the problem.
 func (c *Conn) VerifyHostname(host string) error

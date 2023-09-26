@@ -8,6 +8,7 @@ package http
 
 import (
 	"github.com/shogo82148/std/bufio"
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
@@ -80,7 +81,28 @@ type Request struct {
 	TLS *tls.ConnectionState
 
 	Cancel <-chan struct{}
+
+	Response *Response
+
+	ctx context.Context
 }
+
+// Context returns the request's context. To change the context, use
+// WithContext.
+//
+// The returned context is always non-nil; it defaults to the
+// background context.
+//
+// For outgoing client requests, the context controls cancelation.
+//
+// For incoming server requests, the context is canceled when the
+// ServeHTTP method returns. For its associated values, see
+// ServerContextKey and LocalAddrContextKey.
+func (r *Request) Context() context.Context
+
+// WithContext returns a shallow copy of r with its context changed
+// to ctx. The provided ctx must be non-nil.
+func (r *Request) WithContext(ctx context.Context) *Request
 
 // ProtoAtLeast reports whether the HTTP protocol used
 // in the request is at least major.minor.
@@ -99,8 +121,8 @@ var ErrNoCookie = errors.New("http: named cookie not present")
 // ErrNoCookie if not found.
 func (r *Request) Cookie(name string) (*Cookie, error)
 
-// AddCookie adds a cookie to the request.  Per RFC 6265 section 5.4,
-// AddCookie does not attach more than one Cookie header field.  That
+// AddCookie adds a cookie to the request. Per RFC 6265 section 5.4,
+// AddCookie does not attach more than one Cookie header field. That
 // means all cookies, if any, are written into the same line,
 // separated by semicolon.
 func (r *Request) AddCookie(c *Cookie)
@@ -147,7 +169,7 @@ func (r *Request) MultipartReader() (*multipart.Reader, error)
 func (r *Request) Write(w io.Writer) error
 
 // WriteProxy is like Write but writes the request in the form
-// expected by an HTTP proxy.  In particular, WriteProxy writes the
+// expected by an HTTP proxy. In particular, WriteProxy writes the
 // initial Request-URI line of the request with an absolute URI, per
 // section 5.1.2 of RFC 2616, including the scheme and host.
 // In either case, WriteProxy also writes a Host header, using
@@ -188,7 +210,7 @@ func (r *Request) BasicAuth() (username, password string, ok bool)
 func (r *Request) SetBasicAuth(username, password string)
 
 // ReadRequest reads and parses an incoming request from b.
-func ReadRequest(b *bufio.Reader) (req *Request, err error)
+func ReadRequest(b *bufio.Reader) (*Request, error)
 
 // Constants for readRequest's deleteHostHeader parameter.
 
@@ -243,5 +265,3 @@ func (r *Request) PostFormValue(key string) string
 // FormFile returns the first file for the provided form key.
 // FormFile calls ParseMultipartForm and ParseForm if necessary.
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
-
-// See the validHostHeader comment.

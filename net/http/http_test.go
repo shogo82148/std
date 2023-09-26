@@ -2,6 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Tests of internal functions with no better homes.
+// Tests of internal functions and things with no better homes.
 
 package http

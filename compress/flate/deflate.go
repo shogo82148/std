@@ -9,28 +9,41 @@ import (
 )
 
 const (
-	NoCompression = 0
-	BestSpeed     = 1
-
+	NoCompression      = 0
+	BestSpeed          = 1
 	BestCompression    = 9
 	DefaultCompression = -1
+
+	// HuffmanOnly disables Lempel-Ziv match searching and only performs Huffman
+	// entropy encoding. This mode is useful in compressing data that has
+	// already been compressed with an LZ style algorithm (e.g. Snappy or LZ4)
+	// that lacks an entropy encoder. Compression gains are achieved when
+	// certain bytes in the input stream occur more frequently than others.
+	//
+	// Note that HuffmanOnly produces a compressed output that is
+	// RFC 1951 compliant. That is, any valid DEFLATE decompressor will
+	// continue to be able to decompress this output.
+	HuffmanOnly = -2
 )
 
 // NewWriter returns a new Writer compressing data at the given level.
 // Following zlib, levels range from 1 (BestSpeed) to 9 (BestCompression);
 // higher levels typically run slower but compress more. Level 0
 // (NoCompression) does not attempt any compression; it only adds the
-// necessary DEFLATE framing. Level -1 (DefaultCompression) uses the default
-// compression level.
+// necessary DEFLATE framing.
+// Level -1 (DefaultCompression) uses the default compression level.
+// Level -2 (HuffmanOnly) will use Huffman compression only, giving
+// a very fast compression for all types of input, but sacrificing considerable
+// compression efficiency.
 //
-// If level is in the range [-1, 9] then the error returned will be nil.
+// If level is in the range [-2, 9] then the error returned will be nil.
 // Otherwise the error returned will be non-nil.
 func NewWriter(w io.Writer, level int) (*Writer, error)
 
 // NewWriterDict is like NewWriter but initializes the new
-// Writer with a preset dictionary.  The returned Writer behaves
+// Writer with a preset dictionary. The returned Writer behaves
 // as if the dictionary had been written to it without producing
-// any compressed output.  The compressed data written to w
+// any compressed output. The compressed data written to w
 // can only be decompressed by a Reader initialized with the
 // same dictionary.
 func NewWriterDict(w io.Writer, level int, dict []byte) (*Writer, error)

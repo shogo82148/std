@@ -1,10 +1,11 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package net
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/time"
 )
 
@@ -45,8 +46,8 @@ type Dialer struct {
 //
 // Examples:
 //
-//	Dial("tcp", "12.34.56.78:80")
-//	Dial("tcp", "google.com:http")
+//	Dial("tcp", "192.0.2.1:80")
+//	Dial("tcp", "golang.org:http")
 //	Dial("tcp", "[2001:db8::1]:http")
 //	Dial("tcp", "[fe80::1%lo0]:80")
 //	Dial("tcp", ":80")
@@ -57,8 +58,8 @@ type Dialer struct {
 //
 // Examples:
 //
-//	Dial("ip4:1", "127.0.0.1")
-//	Dial("ip6:ospf", "::1")
+//	Dial("ip4:1", "192.0.2.1")
+//	Dial("ip6:ipv6-icmp", "2001:db8::1")
 //
 // For Unix networks, the address must be a file system path.
 func Dial(network, address string) (Conn, error)
@@ -67,13 +68,25 @@ func Dial(network, address string) (Conn, error)
 // The timeout includes name resolution, if required.
 func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
 
-// dialContext holds common state for all dial operations.
+// dialParam contains a Dial's parameters and configuration.
 
 // Dial connects to the address on the named network.
 //
 // See func Dial for a description of the network and address
 // parameters.
 func (d *Dialer) Dial(network, address string) (Conn, error)
+
+// DialContext connects to the address on the named network using
+// the provided context.
+//
+// The provided Context must be non-nil. If the context expires before
+// the connection is complete, an error is returned. Once successfully
+// connected, any expiration of the context will not affect the
+// connection.
+//
+// See func Dial for a description of the network and address
+// parameters.
+func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
 
 // Listen announces on the local network address laddr.
 // The network net must be a stream-oriented network: "tcp", "tcp4",

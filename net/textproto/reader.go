@@ -1,4 +1,4 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -34,7 +34,7 @@ func (r *Reader) ReadLineBytes() ([]byte, error)
 // ReadContinuedLine reads a possibly continued line from r,
 // eliding the final trailing ASCII white space.
 // Lines after the first are considered continuations if they
-// begin with a space or tab character.  In the returned data,
+// begin with a space or tab character. In the returned data,
 // continuation lines are separated from the previous line
 // only by a single space: the newline and leading white space
 // are removed.
@@ -60,7 +60,7 @@ func (r *Reader) ReadContinuedLineBytes() ([]byte, error)
 //	code message
 //
 // where code is a three-digit status code and the message
-// extends to the rest of the line.  An example of such a line is:
+// extends to the rest of the line. An example of such a line is:
 //
 //	220 plan9.bell-labs.com ESMTP
 //
@@ -153,9 +153,9 @@ func (r *Reader) ReadDotLines() ([]string, error)
 func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 
 // CanonicalMIMEHeaderKey returns the canonical format of the
-// MIME header key s.  The canonicalization converts the first
+// MIME header key s. The canonicalization converts the first
 // letter and any letter following a hyphen to upper case;
-// the rest are converted to lowercase.  For example, the
+// the rest are converted to lowercase. For example, the
 // canonical key for "accept-encoding" is "Accept-Encoding".
 // MIME header keys are assumed to be ASCII only.
 // If s contains a space or invalid header field bytes, it is
@@ -163,3 +163,6 @@ func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 func CanonicalMIMEHeaderKey(s string) string
 
 // commonHeader interns common header strings.
+
+// isTokenTable is a copy of net/http/lex.go's isTokenTable.
+// See https://httpwg.github.io/specs/rfc7230.html#rule.token.separators

@@ -21,7 +21,7 @@ import (
 // been closed.
 
 // byteFromChanReader is an io.Reader that reads a single byte at a
-// time from the channel.  When the channel is closed, the reader
+// time from the channel. When the channel is closed, the reader
 // returns io.EOF.
 
 // logWritesConn is a net.Conn that logs each Write call to writes

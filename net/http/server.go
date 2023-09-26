@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// HTTP server.  See RFC 2616.
+// HTTP server. See RFC 2616.
 
 package http
 
@@ -17,12 +17,26 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Errors introduced by the HTTP server.
+// Errors used by the HTTP server.
 var (
-	ErrWriteAfterFlush = errors.New("Conn.Write called after Flush")
-	ErrBodyNotAllowed  = errors.New("http: request method or response status code does not allow body")
-	ErrHijacked        = errors.New("Conn has been hijacked")
-	ErrContentLength   = errors.New("Conn.Write wrote more than the declared Content-Length")
+	// ErrBodyNotAllowed is returned by ResponseWriter.Write calls
+	// when the HTTP method or response code does not permit a
+	// body.
+	ErrBodyNotAllowed = errors.New("http: request method or response status code does not allow body")
+
+	// ErrHijacked is returned by ResponseWriter.Write calls when
+	// the underlying connection has been hijacked using the
+	// Hijacker interfaced.
+	ErrHijacked = errors.New("http: connection has been hijacked")
+
+	// ErrContentLength is returned by ResponseWriter.Write calls
+	// when a Handler set a Content-Length response header with a
+	// declared size and then attempted to write more bytes than
+	// declared.
+	ErrContentLength = errors.New("http: wrote more than the declared Content-Length")
+
+	// Deprecated: ErrWriteAfterFlush is no longer used.
+	ErrWriteAfterFlush = errors.New("unused")
 )
 
 // A Handler responds to an HTTP request.
@@ -38,6 +52,9 @@ var (
 // be possible to read from the Request.Body after writing to the
 // ResponseWriter. Cautious handlers should read the Request.Body
 // first, and then reply.
+//
+// Except for reading the body, handlers should not modify the
+// provided Request.
 //
 // If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
 // that the effect of the panic was isolated to the active request.
@@ -63,6 +80,10 @@ type ResponseWriter interface {
 // The Flusher interface is implemented by ResponseWriters that allow
 // an HTTP handler to flush buffered data to the client.
 //
+// The default HTTP/1.x and HTTP/2 ResponseWriter implementations
+// support Flusher, but ResponseWriter wrappers may not. Handlers
+// should always test for this ability at runtime.
+//
 // Note that even for ResponseWriters that support Flush,
 // if the client is connected through an HTTP proxy,
 // the buffered data may not reach the client until the response
@@ -73,6 +94,11 @@ type Flusher interface {
 
 // The Hijacker interface is implemented by ResponseWriters that allow
 // an HTTP handler to take over the connection.
+//
+// The default ResponseWriter for HTTP/1.x connections supports
+// Hijacker, but HTTP/2 connections intentionally do not.
+// ResponseWriter wrappers may also not support Hijacker. Handlers
+// should always test for this ability at runtime.
 type Hijacker interface {
 	Hijack() (net.Conn, *bufio.ReadWriter, error)
 }
@@ -85,6 +111,20 @@ type Hijacker interface {
 type CloseNotifier interface {
 	CloseNotify() <-chan bool
 }
+
+var (
+	// ServerContextKey is a context key. It can be used in HTTP
+	// handlers with context.WithValue to access the server that
+	// started the handler. The associated value will be of
+	// type *Server.
+	ServerContextKey = &contextKey{"http-server"}
+
+	// LocalAddrContextKey is a context key. It can be used in
+	// HTTP handlers with context.WithValue to access the address
+	// the local address the connection arrived on.
+	// The associated value will be of type net.Addr.
+	LocalAddrContextKey = &contextKey{"local-addr"}
+)
 
 // A conn represents the server side of an HTTP connection.
 
@@ -133,7 +173,7 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
 // maxPostHandlerReadBytes is the max number of Request.Body bytes not
 // consumed by a handler that the server will read from the client
-// in order to keep a connection alive.  If there are more bytes than
+// in order to keep a connection alive. If there are more bytes than
 // this then the server to be paranoid instead sends a "Connection:
 // close" response.
 //
@@ -165,10 +205,10 @@ var _ closeWriter = (*net.TCPConn)(nil)
 
 // badRequestError is a literal string (used by in the server in HTML,
 // unescaped) to tell the user why their request was bad. It should
-// be plain text without user info or other embeddded errors.
+// be plain text without user info or other embedded errors.
 
 // The HandlerFunc type is an adapter to allow the use of
-// ordinary functions as HTTP handlers.  If f is a function
+// ordinary functions as HTTP handlers. If f is a function
 // with the appropriate signature, HandlerFunc(f) is a
 // Handler that calls f.
 type HandlerFunc func(ResponseWriter, *Request)
@@ -177,6 +217,8 @@ type HandlerFunc func(ResponseWriter, *Request)
 func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 
 // Error replies to the request with the specified error message and HTTP code.
+// It does not otherwise end the request; the caller should ensure no further
+// writes are done to w.
 // The error message should be plain text.
 func Error(w ResponseWriter, error string, code int)
 
@@ -238,7 +280,7 @@ func RedirectHandler(url string, code int) Handler
 // been registered separately.
 //
 // Patterns may optionally begin with a host name, restricting matches to
-// URLs on that host only.  Host-specific patterns take precedence over
+// URLs on that host only. Host-specific patterns take precedence over
 // general patterns, so that a handler might register for the two patterns
 // "/codesearch" and "codesearch.google.com/" without also taking over
 // requests for "http://www.google.com/".
@@ -256,7 +298,7 @@ type ServeMux struct {
 func NewServeMux() *ServeMux
 
 // DefaultServeMux is the default ServeMux used by Serve.
-var DefaultServeMux = NewServeMux()
+var DefaultServeMux = &defaultServeMux
 
 // Handler returns the handler to use for the given request,
 // consulting r.Method, r.Host, and r.URL.Path. It always returns
@@ -294,7 +336,7 @@ func Handle(pattern string, handler Handler)
 func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Serve accepts incoming HTTP connections on the listener l,
-// creating a new service goroutine for each.  The service goroutines
+// creating a new service goroutine for each. The service goroutines
 // read requests and then call handler to reply to them.
 // Handler is typically nil, in which case the DefaultServeMux is used.
 func Serve(l net.Listener, handler Handler) error
@@ -302,12 +344,13 @@ func Serve(l net.Listener, handler Handler) error
 // A Server defines parameters for running an HTTP server.
 // The zero value for Server is a valid configuration.
 type Server struct {
-	Addr           string
-	Handler        Handler
-	ReadTimeout    time.Duration
-	WriteTimeout   time.Duration
+	Addr         string
+	Handler      Handler
+	ReadTimeout  time.Duration
+	WriteTimeout time.Duration
+	TLSConfig    *tls.Config
+
 	MaxHeaderBytes int
-	TLSConfig      *tls.Config
 
 	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)
 
@@ -340,7 +383,7 @@ const (
 	// For HTTP/2, StateActive fires on the transition from zero
 	// to one active request, and only transitions away once all
 	// active requests are complete. That means that ConnState
-	// can not be used to do per-request work; ConnState only notes
+	// cannot be used to do per-request work; ConnState only notes
 	// the overall state of the connection.
 	StateActive
 
@@ -375,6 +418,12 @@ func (srv *Server) ListenAndServe() error
 // Serve accepts incoming connections on the Listener l, creating a
 // new service goroutine for each. The service goroutines read requests and
 // then call srv.Handler to reply to them.
+//
+// For HTTP/2 support, srv.TLSConfig should be initialized to the
+// provided listener's TLS Config before calling Serve. If
+// srv.TLSConfig is non-nil and doesn't include the string "h2" in
+// Config.NextProtos, HTTP/2 support is not enabled.
+//
 // Serve always returns a non-nil error.
 func (srv *Server) Serve(l net.Listener) error
 

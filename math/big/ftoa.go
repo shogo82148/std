@@ -49,12 +49,11 @@ func (x *Float) String() string
 func (x *Float) Append(buf []byte, fmt byte, prec int) []byte
 
 // Format implements fmt.Formatter. It accepts all the regular
-// formats for floating-point numbers ('e', 'E', 'f', 'F', 'g',
-// 'G') as well as 'b', 'p', and 'v'. See (*Float).Text for the
-// interpretation of 'b' and 'p'. The 'v' format is handled like
-// 'g'.
+// formats for floating-point numbers ('b', 'e', 'E', 'f', 'F',
+// 'g', 'G') as well as 'p' and 'v'. See (*Float).Text for the
+// interpretation of 'p'. The 'v' format is handled like 'g'.
 // Format also supports specification of the minimum precision
-// in digits, the output field width, as well as the format verbs
+// in digits, the output field width, as well as the format flags
 // '+' and ' ' for sign control, '0' for space or zero padding,
 // and '-' for left or right justification. See the fmt package
 // for details.

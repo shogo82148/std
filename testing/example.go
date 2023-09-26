@@ -5,9 +5,10 @@
 package testing
 
 type InternalExample struct {
-	Name   string
-	F      func()
-	Output string
+	Name      string
+	F         func()
+	Output    string
+	Unordered bool
 }
 
 func RunExamples(matchString func(pat, str string) (bool, error), examples []InternalExample) (ok bool)

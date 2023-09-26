@@ -6,13 +6,11 @@
 
 package main
 
-// printfList records the formatted-print functions. The value is the location
-// of the format parameter. Names are lower-cased so the lookup is
-// case insensitive.
+// isFormattedPrint records the formatted-print functions. Names are
+// lower-cased so the lookup is case insensitive.
 
-// printList records the unformatted-print functions. The value is the location
-// of the first parameter to be printed.  Names are lower-cased so the lookup is
-// case insensitive.
+// isPrint records the unformatted-print functions. Names are lower-cased
+// so the lookup is case insensitive.
 
 // formatState holds the parsed representation of a printf directive such as "%3.*[4]d".
 // It is constructed by parsePrintfVerb.

@@ -8,6 +8,10 @@
 
 package runtime
 
+// minPhysPageSize is a lower-bound on the physical page size. The
+// true physical page size may be larger than this. In contrast,
+// sys.PhysPageSize is an upper-bound on the physical page size.
+
 // Main malloc heap.
 // The heap itself is the "free[]" and "large" arrays,
 // but all the other global data is here too.
@@ -33,7 +37,7 @@ package runtime
 
 // h_spans is a lookup table to map virtual address page IDs to *mspan.
 // For allocated spans, their pages map to the span itself.
-// For free spans, only the lowest and highest pages map to the span itself.  Internal
+// For free spans, only the lowest and highest pages map to the span itself. Internal
 // pages map to an arbitrary span.
 // For pages that have never been allocated, h_spans entries are nil.
 

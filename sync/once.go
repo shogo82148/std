@@ -16,10 +16,10 @@ type Once struct {
 //	var once Once
 //
 // if once.Do(f) is called multiple times, only the first call will invoke f,
-// even if f has a different value in each invocation.  A new instance of
+// even if f has a different value in each invocation. A new instance of
 // Once is required for each function to execute.
 //
-// Do is intended for initialization that must be run exactly once.  Since f
+// Do is intended for initialization that must be run exactly once. Since f
 // is niladic, it may be necessary to use a function literal to capture the
 // arguments to a function to be invoked by Do:
 //

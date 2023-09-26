@@ -31,7 +31,7 @@ func (r *Reader) Read(b []byte) (n int, err error)
 
 func (r *Reader) ReadAt(b []byte, off int64) (n int, err error)
 
-func (r *Reader) ReadByte() (b byte, err error)
+func (r *Reader) ReadByte() (byte, error)
 
 func (r *Reader) UnreadByte() error
 
@@ -44,6 +44,9 @@ func (r *Reader) Seek(offset int64, whence int) (int64, error)
 
 // WriteTo implements the io.WriterTo interface.
 func (r *Reader) WriteTo(w io.Writer) (n int64, err error)
+
+// Reset resets the Reader to be reading from s.
+func (r *Reader) Reset(s string)
 
 // NewReader returns a new Reader reading from s.
 // It is similar to bytes.NewBufferString but more efficient and read-only.

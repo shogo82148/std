@@ -17,6 +17,4 @@ package runtime
 
 // Global pool of large stack spans.
 
-// Cached value of haveexperiment("framepointer")
-
 // Information from the compiler about the layout of stack frames.

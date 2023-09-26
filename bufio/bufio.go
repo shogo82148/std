@@ -63,9 +63,9 @@ func (b *Reader) Read(p []byte) (n int, err error)
 
 // ReadByte reads and returns a single byte.
 // If no byte is available, returns an error.
-func (b *Reader) ReadByte() (c byte, err error)
+func (b *Reader) ReadByte() (byte, error)
 
-// UnreadByte unreads the last byte.  Only the most recently read byte can be unread.
+// UnreadByte unreads the last byte. Only the most recently read byte can be unread.
 func (b *Reader) UnreadByte() error
 
 // ReadRune reads a single UTF-8 encoded Unicode character and returns the
@@ -73,7 +73,7 @@ func (b *Reader) UnreadByte() error
 // and returns unicode.ReplacementChar (U+FFFD) with a size of 1.
 func (b *Reader) ReadRune() (r rune, size int, err error)
 
-// UnreadRune unreads the last rune.  If the most recent read operation on
+// UnreadRune unreads the last rune. If the most recent read operation on
 // the buffer was not a ReadRune, UnreadRune returns an error.  (In this
 // regard it is stricter than UnreadByte, which will unread the last byte
 // from any read operation.)
@@ -119,7 +119,7 @@ func (b *Reader) ReadLine() (line []byte, isPrefix bool, err error)
 // ReadBytes returns err != nil if and only if the returned data does not end in
 // delim.
 // For simple uses, a Scanner may be more convenient.
-func (b *Reader) ReadBytes(delim byte) (line []byte, err error)
+func (b *Reader) ReadBytes(delim byte) ([]byte, error)
 
 // ReadString reads until the first occurrence of delim in the input,
 // returning a string containing the data up to and including the delimiter.
@@ -128,7 +128,7 @@ func (b *Reader) ReadBytes(delim byte) (line []byte, err error)
 // ReadString returns err != nil if and only if the returned data does not end in
 // delim.
 // For simple uses, a Scanner may be more convenient.
-func (b *Reader) ReadString(delim byte) (line string, err error)
+func (b *Reader) ReadString(delim byte) (string, error)
 
 // WriteTo implements io.WriterTo.
 func (b *Reader) WriteTo(w io.Writer) (n int64, err error)

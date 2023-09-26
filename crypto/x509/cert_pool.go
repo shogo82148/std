@@ -14,6 +14,12 @@ type CertPool struct {
 // NewCertPool returns a new, empty CertPool.
 func NewCertPool() *CertPool
 
+// SystemCertPool returns a copy of the system cert pool.
+//
+// Any mutations to the returned pool are not written to disk and do
+// not affect any other pool.
+func SystemCertPool() (*CertPool, error)
+
 // AddCert adds a certificate to a pool.
 func (s *CertPool) AddCert(cert *Certificate)
 
@@ -27,4 +33,4 @@ func (s *CertPool) AppendCertsFromPEM(pemCerts []byte) (ok bool)
 
 // Subjects returns a list of the DER-encoded subjects of
 // all of the certificates in the pool.
-func (s *CertPool) Subjects() (res [][]byte)
+func (s *CertPool) Subjects() [][]byte

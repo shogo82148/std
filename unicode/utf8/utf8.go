@@ -76,7 +76,7 @@ func RuneLen(r rune) int
 // It returns the number of bytes written.
 func EncodeRune(p []byte, r rune) int
 
-// RuneCount returns the number of runes in p.  Erroneous and short
+// RuneCount returns the number of runes in p. Erroneous and short
 // encodings are treated as single runes of width 1 byte.
 func RuneCount(p []byte) int
 
@@ -84,7 +84,7 @@ func RuneCount(p []byte) int
 func RuneCountInString(s string) (n int)
 
 // RuneStart reports whether the byte could be the first byte of an encoded,
-// possibly invalid rune.  Second and subsequent bytes always have the top two
+// possibly invalid rune. Second and subsequent bytes always have the top two
 // bits set to 10.
 func RuneStart(b byte) bool
 

@@ -62,4 +62,4 @@ func NewChecker(conf *Config, fset *token.FileSet, pkg *Package, info *Info) *Ch
 // A bailout panic is used for early termination.
 
 // Files checks the provided files as part of the checker's package.
-func (check *Checker) Files(files []*ast.File) (err error)
+func (check *Checker) Files(files []*ast.File) error

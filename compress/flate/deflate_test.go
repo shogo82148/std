@@ -6,3 +6,5 @@ package flate
 
 // A sparseReader returns a stream consisting of 0s followed by 1<<16 1s.
 // This tests missing hash references in a very large input.
+
+// failWriter fails with errIO exactly at the nth call to Write.

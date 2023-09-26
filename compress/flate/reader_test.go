@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package flate
-
-// These short names are so that gofmt doesn't break the BenchmarkXxx function
-// bodies below over multiple lines.

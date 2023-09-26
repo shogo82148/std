@@ -1,4 +1,4 @@
-// Copyright 2011 The Go Authors.  All rights reserved.
+// Copyright 2011 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -26,7 +26,7 @@ package main
 // errPrintedOutput is a special error indicating that a command failed
 // but that it generated output as well, and that output has already
 // been printed, so there's no point showing 'exit status 1' or whatever
-// the wait status was.  The main executor, builder.do, knows not to
+// the wait status was. The main executor, builder.do, knows not to
 // print this error.
 
 // The Go toolchain.
@@ -34,6 +34,8 @@ package main
 // The Gccgo toolchain.
 
 // Make sure SWIG is new enough.
+
+// Find the value to pass for the -intgosize option to swig.
 
 // This code fails to build if sizeof(int) <= 32
 

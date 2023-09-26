@@ -78,8 +78,8 @@ struct sockaddr_any {
 // copied from /usr/include/linux/un.h
 struct my_sockaddr_un {
 	sa_family_t sun_family;
-#if defined(__ARM_EABI__) || defined(__powerpc64__)
-	// on ARM and PPC char is by default unsigned
+#if defined(__ARM_EABI__) || defined(__powerpc64__) || defined(__s390x__)
+	// on ARM, PPC and s390x char is by default unsigned
 	signed char sun_path[108];
 #else
 	char sun_path[108];
@@ -94,8 +94,20 @@ typedef struct user_pt_regs PtraceRegs;
 typedef struct pt_regs PtraceRegs;
 #elif defined(__mips__)
 typedef struct user PtraceRegs;
+#elif defined(__s390x__)
+typedef struct _user_regs_struct PtraceRegs;
 #else
 typedef struct user_regs_struct PtraceRegs;
+#endif
+
+#if defined(__s390x__)
+typedef struct _user_psw_struct ptracePsw;
+typedef struct _user_fpregs_struct ptraceFpregs;
+typedef struct _user_per_struct ptracePer;
+#else
+typedef struct {} ptracePsw;
+typedef struct {} ptraceFpregs;
+typedef struct {} ptracePer;
 #endif
 
 // The real epoll_event is a union, and godefs doesn't handle it well.
@@ -106,7 +118,7 @@ struct my_epoll_event {
 	// alignment requirements of EABI
 	int32_t padFd;
 #endif
-#ifdef  __powerpc64__
+#if defined(__powerpc64__) || defined(__s390x__)
 	int32_t _padFd;
 #endif
 	int32_t fd;
@@ -334,6 +346,8 @@ const SizeofInotifyEvent = C.sizeof_struct_inotify_event
 
 // Register structures
 type PtraceRegs C.PtraceRegs
+
+// Structures contained in PtraceRegs on s390x (exported by post.go)
 
 type FdSet C.fd_set
 

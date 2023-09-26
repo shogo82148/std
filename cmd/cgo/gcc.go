@@ -1,4 +1,4 @@
-// Copyright 2009 The Go Authors.  All rights reserved.
+// Copyright 2009 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -22,7 +22,7 @@ func (p *Package) Translate(f *File)
 
 // Map from dwarf text names to aliases we use in package "C".
 
-// String returns the current type representation.  Format arguments
+// String returns the current type representation. Format arguments
 // are assembled within this method so that any changes in mutable
 // values are taken into account.
 func (tr *TypeRepr) String() string

@@ -52,10 +52,10 @@ type Value interface {
 // MakeUnknown returns the Unknown value.
 func MakeUnknown() Value
 
-// MakeBool returns the Bool value for x.
+// MakeBool returns the Bool value for b.
 func MakeBool(b bool) Value
 
-// MakeString returns the String value for x.
+// MakeString returns the String value for s.
 func MakeString(s string) Value
 
 // MakeInt64 returns the Int value for x.
@@ -70,8 +70,8 @@ func MakeFloat64(x float64) Value
 
 // MakeFromLiteral returns the corresponding integer, floating-point,
 // imaginary, character, or string value for a Go literal string. The
-// tok value must be one of token.INT, token.FLOAT, toke.IMAG, token.
-// CHAR, or token.STRING. The final argument must be zero.
+// tok value must be one of token.INT, token.FLOAT, token.IMAG,
+// token.CHAR, or token.STRING. The final argument must be zero.
 // If the literal string syntax is invalid, the result is an Unknown.
 func MakeFromLiteral(lit string, tok token.Token, zero uint) Value
 

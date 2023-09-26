@@ -4,8 +4,8 @@
 
 package runtime
 
-// Goexit terminates the goroutine that calls it.  No other goroutine is affected.
-// Goexit runs all deferred calls before terminating the goroutine.  Because Goexit
+// Goexit terminates the goroutine that calls it. No other goroutine is affected.
+// Goexit runs all deferred calls before terminating the goroutine. Because Goexit
 // is not panic, however, any recover calls in those deferred functions will return nil.
 //
 // Calling Goexit from the main goroutine terminates that goroutine

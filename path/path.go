@@ -12,7 +12,7 @@ package path
 // to hold the output until that output diverges from s.
 
 // Clean returns the shortest path name equivalent to path
-// by purely lexical processing.  It applies the following rules
+// by purely lexical processing. It applies the following rules
 // iteratively until no further processing can be done:
 //
 //  1. Replace multiple slashes with a single slash.
@@ -29,7 +29,7 @@ package path
 //
 // See also Rob Pike, “Lexical File Names in Plan 9 or
 // Getting Dot-Dot Right,”
-// http://plan9.bell-labs.com/sys/doc/lexnames.html
+// https://9p.io/sys/doc/lexnames.html
 func Clean(path string) string
 
 // Split splits path immediately following the final slash,

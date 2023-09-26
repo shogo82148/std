@@ -1,4 +1,4 @@
-// Copyright 2009 The Go Authors.  All rights reserved.
+// Copyright 2009 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -31,7 +31,9 @@ type Package struct {
 	GoFiles     []string
 	GccFiles    []string
 	Preamble    string
-	CgoChecks   []string
+
+	CgoChecks         []string
+	DeferredCgoChecks []string
 }
 
 // A File collects information about a single Go input file.
@@ -41,9 +43,15 @@ type File struct {
 	Package  string
 	Preamble string
 	Ref      []*Ref
-	Calls    []*ast.CallExpr
+	Calls    []*Call
 	ExpFunc  []*ExpFunc
 	Name     map[string]*Name
+}
+
+// A Call refers to a call of a C.xxx function in the AST.
+type Call struct {
+	Call     *ast.CallExpr
+	Deferred bool
 }
 
 // A Ref refers to an expression of the form C.xxx in the AST.

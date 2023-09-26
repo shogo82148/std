@@ -10,6 +10,7 @@
 package http
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/net"
@@ -25,10 +26,12 @@ import (
 // $no_proxy) environment variables.
 var DefaultTransport RoundTripper = &Transport{
 	Proxy: ProxyFromEnvironment,
-	Dial: (&net.Dialer{
+	DialContext: (&net.Dialer{
 		Timeout:   30 * time.Second,
 		KeepAlive: 30 * time.Second,
-	}).Dial,
+	}).DialContext,
+	MaxIdleConns:          100,
+	IdleConnTimeout:       90 * time.Second,
 	TLSHandshakeTimeout:   10 * time.Second,
 	ExpectContinueTimeout: 1 * time.Second,
 }
@@ -59,6 +62,7 @@ type Transport struct {
 	wantIdle   bool
 	idleConn   map[connectMethodKey][]*persistConn
 	idleConnCh map[connectMethodKey]chan *persistConn
+	idleLRU    connLRU
 
 	reqMu       sync.Mutex
 	reqCanceler map[*Request]func()
@@ -67,6 +71,8 @@ type Transport struct {
 	altProto map[string]RoundTripper
 
 	Proxy func(*Request) (*url.URL, error)
+
+	DialContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
 	Dial func(network, addr string) (net.Conn, error)
 
@@ -80,13 +86,19 @@ type Transport struct {
 
 	DisableCompression bool
 
+	MaxIdleConns int
+
 	MaxIdleConnsPerHost int
+
+	IdleConnTimeout time.Duration
 
 	ResponseHeaderTimeout time.Duration
 
 	ExpectContinueTimeout time.Duration
 
 	TLSNextProto map[string]func(authority string, c *tls.Conn) RoundTripper
+
+	MaxResponseHeaderBytes int64
 
 	nextProtoOnce sync.Once
 	h2transport   *http2Transport
@@ -147,8 +159,9 @@ func (t *Transport) CloseIdleConnections()
 // CancelRequest cancels an in-flight request by closing its connection.
 // CancelRequest should only be called after RoundTrip has returned.
 //
-// Deprecated: Use Request.Cancel instead. CancelRequest can not cancel
-// HTTP/2 requests.
+// Deprecated: Use Request.WithContext to create a request with a
+// cancelable context instead. CancelRequest cannot cancel HTTP/2
+// requests.
 func (t *Transport) CancelRequest(req *Request)
 
 // envOnce looks up an environment variable (optionally by multiple
@@ -156,6 +169,22 @@ func (t *Transport) CancelRequest(req *Request)
 // (e.g. Windows).
 
 // error values for debugging and testing, not seen by users.
+
+// transportReadFromServerError is used by Transport.readLoop when the
+// 1 byte peek read fails and we're actually anticipating a response.
+// Usually this is just due to the inherent keep-alive shut down race,
+// where the server closed the connection at the same time the client
+// wrote. The underlying err field is usually io.EOF or some
+// ECONNRESET sort of thing which varies by platform. But it might be
+// the user's custom net.Conn.Read error too, so we carry it along for
+// them to return from Transport.RoundTrip.
+
+// persistConnWriter is the io.Writer written to by pc.bw.
+// It accumulates the number of bytes written to the underlying conn,
+// so the retry logic can determine whether any bytes made it across
+// the wire.
+// This is exactly 1 pointer field wide so it can go into an interface
+// without allocation.
 
 // connectMethod is the map key (in its String form) for keeping persistent
 // TCP connections alive for subsequent HTTP requests.
@@ -179,6 +208,8 @@ func (t *Transport) CancelRequest(req *Request)
 // persistConn wraps a connection, usually a persistent one
 // (but may be used for non-keep-alive requests as well)
 
+// nothingWrittenError wraps a write errors which ended up writing zero bytes.
+
 // responseAndError is how the goroutine reading from an HTTP/1 server
 // communicates with the goroutine doing the RoundTrip.
 
@@ -189,10 +220,11 @@ func (t *Transport) CancelRequest(req *Request)
 
 // testHooks. Always non-nil.
 
-// beforeRespHeaderError is used to indicate when an IO error has occurred before
-// any header data was received.
-
-// bodyEOFSignal wraps a ReadCloser but runs fn (if non-nil) at most
+// bodyEOFSignal is used by the HTTP/1 transport when reading response
+// bodies to make sure we see the end of a response body before
+// proceeding and reading on the connection again.
+//
+// It wraps a ReadCloser but runs fn (if non-nil) at most
 // once, right before its final (error-producing) Read or Close call
 // returns. fn should return the new error to return from Read or Close.
 //

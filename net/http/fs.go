@@ -44,7 +44,7 @@ type File interface {
 }
 
 // ServeContent replies to the request using the content in the
-// provided ReadSeeker.  The main benefit of ServeContent over io.Copy
+// provided ReadSeeker. The main benefit of ServeContent over io.Copy
 // is that it handles Range requests properly, sets the MIME type, and
 // handles If-Modified-Since requests.
 //
@@ -56,7 +56,7 @@ type File interface {
 // never sent in the response.
 //
 // If modtime is not the zero time or Unix epoch, ServeContent
-// includes it in a Last-Modified header in the response.  If the
+// includes it in a Last-Modified header in the response. If the
 // request includes an If-Modified-Since header, ServeContent uses
 // modtime to decide whether the content needs to be sent at all.
 //
@@ -77,7 +77,7 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // ServeFile replies to the request with the contents of the named
 // file or directory.
 //
-// If the provided file or direcory name is a relative path, it is
+// If the provided file or directory name is a relative path, it is
 // interpreted relative to the current directory and may ascend to parent
 // directories. If the provided name is constructed from user input, it
 // should be sanitized before calling ServeFile. As a precaution, ServeFile

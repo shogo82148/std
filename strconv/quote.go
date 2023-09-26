@@ -6,7 +6,7 @@
 
 package strconv
 
-// Quote returns a double-quoted Go string literal representing s.  The
+// Quote returns a double-quoted Go string literal representing s. The
 // returned string uses Go escape sequences (\t, \n, \xFF, \u0100) for
 // control characters and non-printable characters as defined by
 // IsPrint.
@@ -89,7 +89,7 @@ func UnquoteChar(s string, quote byte) (value rune, multibyte bool, tail string,
 // that s quotes.  (If s is single-quoted, it would be a Go
 // character literal; Unquote returns the corresponding
 // one-character string.)
-func Unquote(s string) (t string, err error)
+func Unquote(s string) (string, error)
 
 // IsPrint reports whether the rune is defined as printable by Go, with
 // the same definition as unicode.IsPrint: letters, numbers, punctuation,

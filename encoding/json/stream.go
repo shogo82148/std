@@ -1,14 +1,15 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package json
 
 import (
+	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/io"
 )
 
-// A Decoder reads and decodes JSON objects from an input stream.
+// A Decoder reads and decodes JSON values from an input stream.
 type Decoder struct {
 	r     io.Reader
 	buf   []byte
@@ -42,10 +43,15 @@ func (dec *Decoder) Decode(v interface{}) error
 // buffer. The reader is valid until the next call to Decode.
 func (dec *Decoder) Buffered() io.Reader
 
-// An Encoder writes JSON objects to an output stream.
+// An Encoder writes JSON values to an output stream.
 type Encoder struct {
-	w   io.Writer
-	err error
+	w          io.Writer
+	err        error
+	escapeHTML bool
+
+	indentBuf    *bytes.Buffer
+	indentPrefix string
+	indentValue  string
 }
 
 // NewEncoder returns a new encoder that writes to w.
@@ -58,7 +64,21 @@ func NewEncoder(w io.Writer) *Encoder
 // conversion of Go values to JSON.
 func (enc *Encoder) Encode(v interface{}) error
 
-// RawMessage is a raw encoded JSON object.
+// SetIndent instructs the encoder to format each subsequent encoded
+// value as if indented by the package-level function Indent(dst, src, prefix, indent).
+// Calling SetIndent("", "") disables indentation.
+func (enc *Encoder) SetIndent(prefix, indent string)
+
+// SetEscapeHTML specifies whether problematic HTML characters
+// should be escaped inside JSON quoted strings.
+// The default behavior is to escape &, <, and > to \u0026, \u003c, and \u003e
+// to avoid certain safety problems that can arise when embedding JSON in HTML.
+//
+// In non-HTML settings where the escaping interferes with the readability
+// of the output, SetEscapeHTML(false) disables this behavior.
+func (enc *Encoder) SetEscapeHTML(on bool)
+
+// RawMessage is a raw encoded JSON value.
 // It implements Marshaler and Unmarshaler and can
 // be used to delay JSON decoding or precompute a JSON encoding.
 type RawMessage []byte

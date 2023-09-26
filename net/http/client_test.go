@@ -27,3 +27,6 @@ type RecordingJar struct {
 }
 
 // eofReaderFunc is an io.Reader that runs itself, and then returns io.EOF.
+
+// issue15577Tripper returns a Response with a redirect response
+// header and doesn't populate its Response.Request field.

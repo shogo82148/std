@@ -1,13 +1,26 @@
-// Copyright 2014 The Go Authors.  All rights reserved.
+// Copyright 2014 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package main
 
+// See https://github.com/catapult-project/catapult/blob/master/tracing/docs/embedding-trace-viewer.md
+// This is almost verbatim copy of:
+// https://github.com/catapult-project/catapult/blob/master/tracing/bin/index.html
+// on revision 623a005a3ffa9de13c4b92bc72290e7bcd1ca591.
+
+type Range struct {
+	Name  string
+	Start int
+	End   int
+}
+
 type ViewerData struct {
 	Events   []*ViewerEvent         `json:"traceEvents"`
 	Frames   map[string]ViewerFrame `json:"stackFrames"`
 	TimeUnit string                 `json:"displayTimeUnit"`
+
+	footer int
 }
 
 type ViewerEvent struct {

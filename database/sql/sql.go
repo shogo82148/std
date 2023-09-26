@@ -405,9 +405,9 @@ type Rows struct {
 	closeStmt driver.Stmt
 }
 
-// Next prepares the next result row for reading with the Scan method.  It
+// Next prepares the next result row for reading with the Scan method. It
 // returns true on success, or false if there is no next result row or an error
-// happened while preparing it.  Err should be consulted to distinguish between
+// happened while preparing it. Err should be consulted to distinguish between
 // the two cases.
 //
 // Every call to Scan, even the first one, must be preceded by a call to Next.

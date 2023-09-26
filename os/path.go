@@ -15,6 +15,6 @@ func MkdirAll(path string, perm FileMode) error
 
 // RemoveAll removes path and any children it contains.
 // It removes everything it can but returns the first error
-// it encounters.  If the path does not exist, RemoveAll
+// it encounters. If the path does not exist, RemoveAll
 // returns nil (no error).
 func RemoveAll(path string) error

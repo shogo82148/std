@@ -16,20 +16,21 @@ type SysProcIDMap struct {
 }
 
 type SysProcAttr struct {
-	Chroot      string
-	Credential  *Credential
-	Ptrace      bool
-	Setsid      bool
-	Setpgid     bool
-	Setctty     bool
-	Noctty      bool
-	Ctty        int
-	Foreground  bool
-	Pgid        int
-	Pdeathsig   Signal
-	Cloneflags  uintptr
-	UidMappings []SysProcIDMap
-	GidMappings []SysProcIDMap
+	Chroot       string
+	Credential   *Credential
+	Ptrace       bool
+	Setsid       bool
+	Setpgid      bool
+	Setctty      bool
+	Noctty       bool
+	Ctty         int
+	Foreground   bool
+	Pgid         int
+	Pdeathsig    Signal
+	Cloneflags   uintptr
+	Unshareflags uintptr
+	UidMappings  []SysProcIDMap
+	GidMappings  []SysProcIDMap
 
 	GidMappingsEnableSetgroups bool
 }

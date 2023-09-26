@@ -24,7 +24,7 @@ type RangeTable struct {
 	LatinOffset int
 }
 
-// Range16 represents of a range of 16-bit Unicode code points.  The range runs from Lo to Hi
+// Range16 represents of a range of 16-bit Unicode code points. The range runs from Lo to Hi
 // inclusive and has the specified stride.
 type Range16 struct {
 	Lo     uint16
@@ -33,7 +33,7 @@ type Range16 struct {
 }
 
 // Range32 represents of a range of Unicode code points and is used when one or
-// more of the values will not fit in 16 bits.  The range runs from Lo to Hi
+// more of the values will not fit in 16 bits. The range runs from Lo to Hi
 // inclusive and has the specified stride. Lo and Hi must always be >= 1<<16.
 type Range32 struct {
 	Lo     uint32
@@ -45,10 +45,10 @@ type Range32 struct {
 // code point to one code point) case conversion.
 // The range runs from Lo to Hi inclusive, with a fixed stride of 1.  Deltas
 // are the number to add to the code point to reach the code point for a
-// different case for that character.  They may be negative.  If zero, it
+// different case for that character. They may be negative. If zero, it
 // means the character is in the corresponding case. There is a special
 // case representing sequences of alternating corresponding Upper and Lower
-// pairs.  It appears with a fixed Delta of
+// pairs. It appears with a fixed Delta of
 //
 //	{UpperLower, UpperLower, UpperLower}
 //
@@ -114,13 +114,13 @@ func (special SpecialCase) ToTitle(r rune) rune
 // ToLower maps the rune to lower case giving priority to the special mapping.
 func (special SpecialCase) ToLower(r rune) rune
 
-// caseOrbit is defined in tables.go as []foldPair.  Right now all the
+// caseOrbit is defined in tables.go as []foldPair. Right now all the
 // entries fit in uint16, so use uint16.  If that changes, compilation
 // will fail (the constants in the composite literal will not fit in uint16)
 // and the types here can change to uint32.
 
 // SimpleFold iterates over Unicode code points equivalent under
-// the Unicode-defined simple case folding.  Among the code points
+// the Unicode-defined simple case folding. Among the code points
 // equivalent to rune (including rune itself), SimpleFold returns the
 // smallest rune > r if one exists, or else the smallest rune >= 0.
 //

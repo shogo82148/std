@@ -8,11 +8,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// runeUnreader is the interface to something that can unread runes.
-// If the object provided to Scan does not satisfy this interface,
-// a local buffer will be used to back up the input, but its contents
-// will be lost when Scan returns.
-
 // ScanState represents the scanner state passed to custom scanners.
 // Scanners may do rune-at-a-time scanning or ask the ScanState
 // to discover the next space-delimited token.
@@ -32,15 +27,15 @@ type ScanState interface {
 
 // Scanner is implemented by any value that has a Scan method, which scans
 // the input for the representation of a value and stores the result in the
-// receiver, which must be a pointer to be useful.  The Scan method is called
+// receiver, which must be a pointer to be useful. The Scan method is called
 // for any argument to Scan, Scanf, or Scanln that implements it.
 type Scanner interface {
 	Scan(state ScanState, verb rune) error
 }
 
 // Scan scans text read from standard input, storing successive
-// space-separated values into successive arguments.  Newlines count
-// as space.  It returns the number of items successfully scanned.
+// space-separated values into successive arguments. Newlines count
+// as space. It returns the number of items successfully scanned.
 // If that is less than the number of arguments, err will report why.
 func Scan(a ...interface{}) (n int, err error)
 
@@ -50,7 +45,7 @@ func Scanln(a ...interface{}) (n int, err error)
 
 // Scanf scans text read from standard input, storing successive
 // space-separated values into successive arguments as determined by
-// the format.  It returns the number of items successfully scanned.
+// the format. It returns the number of items successfully scanned.
 // If that is less than the number of arguments, err will report why.
 // Newlines in the input must match newlines in the format.
 // The one exception: the verb %c always scans the next rune in the
@@ -58,8 +53,8 @@ func Scanln(a ...interface{}) (n int, err error)
 func Scanf(format string, a ...interface{}) (n int, err error)
 
 // Sscan scans the argument string, storing successive space-separated
-// values into successive arguments.  Newlines count as space.  It
-// returns the number of items successfully scanned.  If that is less
+// values into successive arguments. Newlines count as space. It
+// returns the number of items successfully scanned. If that is less
 // than the number of arguments, err will report why.
 func Sscan(str string, a ...interface{}) (n int, err error)
 
@@ -68,14 +63,14 @@ func Sscan(str string, a ...interface{}) (n int, err error)
 func Sscanln(str string, a ...interface{}) (n int, err error)
 
 // Sscanf scans the argument string, storing successive space-separated
-// values into successive arguments as determined by the format.  It
+// values into successive arguments as determined by the format. It
 // returns the number of items successfully parsed.
 // Newlines in the input must match newlines in the format.
 func Sscanf(str string, format string, a ...interface{}) (n int, err error)
 
 // Fscan scans text read from r, storing successive space-separated
-// values into successive arguments.  Newlines count as space.  It
-// returns the number of items successfully scanned.  If that is less
+// values into successive arguments. Newlines count as space. It
+// returns the number of items successfully scanned. If that is less
 // than the number of arguments, err will report why.
 func Fscan(r io.Reader, a ...interface{}) (n int, err error)
 
@@ -84,7 +79,7 @@ func Fscan(r io.Reader, a ...interface{}) (n int, err error)
 func Fscanln(r io.Reader, a ...interface{}) (n int, err error)
 
 // Fscanf scans text read from r, storing successive space-separated
-// values into successive arguments as determined by the format.  It
+// values into successive arguments as determined by the format. It
 // returns the number of items successfully parsed.
 // Newlines in the input must match newlines in the format.
 func Fscanf(r io.Reader, format string, a ...interface{}) (n int, err error)
@@ -101,7 +96,7 @@ func Fscanf(r io.Reader, format string, a ...interface{}) (n int, err error)
 // to avoid depending on package unicode.
 
 // readRune is a structure to enable reading UTF-8 encoded code points
-// from an io.Reader.  It is used if the Reader given to the scanner does
-// not already implement io.RuneReader.
+// from an io.Reader. It is used if the Reader given to the scanner does
+// not already implement io.RuneScanner.
 
 // Numerical elements

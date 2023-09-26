@@ -16,7 +16,7 @@ type KeySizeError int
 
 func (k KeySizeError) Error() string
 
-// NewCipher creates and returns a new Cipher.  The key argument should be the
+// NewCipher creates and returns a new Cipher. The key argument should be the
 // RC4 key, at least 1 byte and at most 256 bytes.
 func NewCipher(key []byte) (*Cipher, error)
 

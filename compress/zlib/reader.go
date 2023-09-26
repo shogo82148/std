@@ -46,7 +46,8 @@ type Resetter interface {
 
 // NewReader creates a new ReadCloser.
 // Reads from the returned ReadCloser read and decompress data from r.
-// The implementation buffers input and may read more data than necessary from r.
+// If r does not implement io.ByteReader, the decompressor may read more
+// data than necessary from r.
 // It is the caller's responsibility to call Close on the ReadCloser when done.
 //
 // The ReadCloser returned by NewReader also implements Resetter.

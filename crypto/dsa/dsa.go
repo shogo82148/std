@@ -51,7 +51,7 @@ const (
 
 // GenerateParameters puts a random, valid set of DSA parameters into params.
 // This function can take many seconds, even on fast machines.
-func GenerateParameters(params *Parameters, rand io.Reader, sizes ParameterSizes) (err error)
+func GenerateParameters(params *Parameters, rand io.Reader, sizes ParameterSizes) error
 
 // GenerateKey generates a public&private key pair. The Parameters of the
 // PrivateKey must already be valid (see GenerateParameters).

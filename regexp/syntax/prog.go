@@ -66,12 +66,12 @@ type Inst struct {
 func (p *Prog) String() string
 
 // Prefix returns a literal string that all matches for the
-// regexp must start with.  Complete is true if the prefix
+// regexp must start with. Complete is true if the prefix
 // is the entire match.
 func (p *Prog) Prefix() (prefix string, complete bool)
 
 // StartCond returns the leading empty-width conditions that must
-// be true in any match.  It returns ^EmptyOp(0) if no matches are possible.
+// be true in any match. It returns ^EmptyOp(0) if no matches are possible.
 func (p *Prog) StartCond() EmptyOp
 
 // MatchRune reports whether the instruction matches (and consumes) r.

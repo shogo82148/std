@@ -10,8 +10,8 @@ package time
 // A Time represents an instant in time with nanosecond precision.
 //
 // Programs using times should typically store and pass them as values,
-// not pointers.  That is, time variables and struct fields should be of
-// type time.Time, not *time.Time.  A Time value can be used by
+// not pointers. That is, time variables and struct fields should be of
+// type time.Time, not *time.Time. A Time value can be used by
 // multiple goroutines simultaneously.
 //
 // Time instants can be compared using the Before, After, and Equal methods.
@@ -137,11 +137,11 @@ func (t Time) Nanosecond() int
 func (t Time) YearDay() int
 
 // A Duration represents the elapsed time between two instants
-// as an int64 nanosecond count.  The representation limits the
+// as an int64 nanosecond count. The representation limits the
 // largest representable duration to approximately 290 years.
 type Duration int64
 
-// Common durations.  There is no definition for units of Day or larger
+// Common durations. There is no definition for units of Day or larger
 // to avoid confusion across daylight savings time zone transitions.
 //
 // To count the number of units in a Duration, divide:
@@ -163,10 +163,9 @@ const (
 )
 
 // String returns a string representing the duration in the form "72h3m0.5s".
-// Leading zero units are omitted.  As a special case, durations less than one
+// Leading zero units are omitted. As a special case, durations less than one
 // second format use a smaller unit (milli-, micro-, or nanoseconds) to ensure
-// that the leading digit is non-zero.  The zero duration formats as 0,
-// with no unit.
+// that the leading digit is non-zero. The zero duration formats as 0s.
 func (d Duration) String() string
 
 // Nanoseconds returns the duration as an integer nanosecond count.
@@ -205,7 +204,7 @@ func Since(t Time) Duration
 func (t Time) AddDate(years int, months int, days int) Time
 
 // daysBefore[m] counts the number of days in a non-leap year
-// before month m begins.  There is an entry for m=12, counting
+// before month m begins. There is an entry for m=12, counting
 // the number of days before January of next year (365).
 
 // Now returns the current local time.
@@ -257,7 +256,7 @@ func (t Time) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 // The time is expected to be a quoted string in RFC 3339 format.
-func (t *Time) UnmarshalJSON(data []byte) (err error)
+func (t *Time) UnmarshalJSON(data []byte) error
 
 // MarshalText implements the encoding.TextMarshaler interface.
 // The time is formatted in RFC 3339 format, with sub-second precision added if present.
@@ -265,7 +264,7 @@ func (t Time) MarshalText() ([]byte, error)
 
 // UnmarshalText implements the encoding.TextUnmarshaler interface.
 // The time is expected to be in RFC 3339 format.
-func (t *Time) UnmarshalText(data []byte) (err error)
+func (t *Time) UnmarshalText(data []byte) error
 
 // Unix returns the local Time corresponding to the given Unix time,
 // sec seconds and nsec nanoseconds since January 1, 1970 UTC.
@@ -286,7 +285,7 @@ func Unix(sec int64, nsec int64) Time
 //
 // A daylight savings time transition skips or repeats times.
 // For example, in the United States, March 13, 2011 2:15am never occurred,
-// while November 6, 2011 1:15am occurred twice.  In such cases, the
+// while November 6, 2011 1:15am occurred twice. In such cases, the
 // choice of time zone, and therefore the time, is not well-defined.
 // Date returns a time that is correct in one of the two zones involved
 // in the transition, but it does not guarantee which.

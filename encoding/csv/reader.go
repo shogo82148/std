@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 
 // Package csv reads and writes comma-separated values (CSV) files.
+// There are many kinds of CSV files; this package supports the format
+// described in RFC 4180.
 //
 // A csv file contains zero or more records of one or more fields per record.
 // Each record is separated by the newline character. The final record may
@@ -14,11 +16,11 @@
 //
 // Carriage returns before newline characters are silently removed.
 //
-// Blank lines are ignored.  A line with only whitespace characters (excluding
+// Blank lines are ignored. A line with only whitespace characters (excluding
 // the ending newline character) is not considered a blank line.
 //
 // Fields which start and stop with the quote character " are called
-// quoted-fields.  The beginning and ending quote are not part of the
+// quoted-fields. The beginning and ending quote are not part of the
 // field.
 //
 // The source:
@@ -79,39 +81,28 @@ var (
 // As returned by NewReader, a Reader expects input conforming to RFC 4180.
 // The exported fields can be changed to customize the details before the
 // first call to Read or ReadAll.
-//
-// Comma is the field delimiter.  It defaults to ','.
-//
-// Comment, if not 0, is the comment character. Lines beginning with the
-// Comment character are ignored.
-//
-// If FieldsPerRecord is positive, Read requires each record to
-// have the given number of fields.  If FieldsPerRecord is 0, Read sets it to
-// the number of fields in the first record, so that future records must
-// have the same field count.  If FieldsPerRecord is negative, no check is
-// made and records may have a variable number of fields.
-//
-// If LazyQuotes is true, a quote may appear in an unquoted field and a
-// non-doubled quote may appear in a quoted field.
-//
-// If TrimLeadingSpace is true, leading white space in a field is ignored.
 type Reader struct {
-	Comma            rune
-	Comment          rune
-	FieldsPerRecord  int
-	LazyQuotes       bool
-	TrailingComma    bool
+	Comma rune
+
+	Comment rune
+
+	FieldsPerRecord int
+
+	LazyQuotes    bool
+	TrailingComma bool
+
 	TrimLeadingSpace bool
-	line             int
-	column           int
-	r                *bufio.Reader
-	field            bytes.Buffer
+
+	line   int
+	column int
+	r      *bufio.Reader
+	field  bytes.Buffer
 }
 
 // NewReader returns a new Reader that reads from r.
 func NewReader(r io.Reader) *Reader
 
-// Read reads one record from r.  The record is a slice of strings with each
+// Read reads one record from r. The record is a slice of strings with each
 // string representing one field.
 func (r *Reader) Read() (record []string, err error)
 

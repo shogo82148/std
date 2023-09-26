@@ -89,7 +89,7 @@ func Fields(s string) []string
 // If f does not return consistent results for a given c, FieldsFunc may crash.
 func FieldsFunc(s string, f func(rune) bool) []string
 
-// Join concatenates the elements of a to create a single string.   The separator string
+// Join concatenates the elements of a to create a single string. The separator string
 // sep is placed between elements in the resulting string.
 func Join(a []string, sep string) string
 

@@ -30,7 +30,7 @@ func (t *Tree) Copy() *Tree
 // templates described in the argument string. The top-level template will be
 // given the specified name. If an error is encountered, parsing stops and an
 // empty map is returned with the error.
-func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]interface{}) (treeSet map[string]*Tree, err error)
+func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]interface{}) (map[string]*Tree, error)
 
 // New allocates a new parse tree with the given name.
 func New(name string, funcs ...map[string]interface{}) *Tree

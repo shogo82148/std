@@ -29,12 +29,6 @@ type ScanfMultiTest struct {
 	err    string
 }
 
-type FloatTest struct {
-	text string
-	in   float64
-	out  float64
-}
-
 // Xs accepts any non-empty run of the verb character
 type Xs string
 
@@ -45,15 +39,9 @@ type IntString struct {
 	s string
 }
 
-// myStringReader implements Read but not ReadRune, allowing us to test our readRune wrapper
-// type that creates something that can read runes given only Read().
-
 // eofCounter is a special Reader that counts reads at end of file.
 
 type TwoLines string
-
-// simpleReader is a strings.Reader that implements only Read, not ReadRune.
-// Good for testing readahead.
 
 // runeScanner implements the Scanner interface for TestScanStateCount.
 

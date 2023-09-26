@@ -32,6 +32,8 @@ type Response struct {
 
 	Close bool
 
+	Uncompressed bool
+
 	Trailer Header
 
 	Request *Request
@@ -47,8 +49,8 @@ func (r *Response) Cookies() []*Cookie
 var ErrNoLocation = errors.New("http: no Location header in response")
 
 // Location returns the URL of the response's "Location" header,
-// if present.  Relative redirects are resolved relative to
-// the Response's Request.  ErrNoLocation is returned if no
+// if present. Relative redirects are resolved relative to
+// the Response's Request. ErrNoLocation is returned if no
 // Location header is present.
 func (r *Response) Location() (*url.URL, error)
 
@@ -64,7 +66,7 @@ func ReadResponse(r *bufio.Reader, req *Request) (*Response, error)
 // in the response is at least major.minor.
 func (r *Response) ProtoAtLeast(major, minor int) bool
 
-// Write writes r to w in the HTTP/1.n server response format,
+// Write writes r to w in the HTTP/1.x server response format,
 // including the status line, headers, body, and optional trailer.
 //
 // This method consults the following fields of the response r:

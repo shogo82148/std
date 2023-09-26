@@ -5,6 +5,7 @@
 package os
 
 import (
+	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/syscall"
 )
 
@@ -13,6 +14,7 @@ type Process struct {
 	Pid    int
 	handle uintptr
 	isdone uint32
+	sigMu  sync.RWMutex
 }
 
 // ProcAttr holds the attributes that will be applied to a new process

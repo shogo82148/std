@@ -1,4 +1,4 @@
-// Copyright 2012 The Go Authors.  All rights reserved.
+// Copyright 2012 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -8,7 +8,7 @@
 package build
 
 // pkgDeps defines the expected dependencies between packages in
-// the Go source tree.  It is a statement of policy.
+// the Go source tree. It is a statement of policy.
 // Changes should not be made to this map without prior discussion.
 //
 // The map contains two kinds of entries:
@@ -19,6 +19,3 @@ package build
 //
 // DO NOT CHANGE THIS DATA TO FIX BUILDS.
 //
-
-// allowedErrors are the operating systems and packages known to contain errors
-// (currently just "no Go source files")

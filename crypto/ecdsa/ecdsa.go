@@ -43,12 +43,13 @@ func (priv *PrivateKey) Public() crypto.PublicKey
 func (priv *PrivateKey) Sign(rand io.Reader, msg []byte, opts crypto.SignerOpts) ([]byte, error)
 
 // GenerateKey generates a public and private key pair.
-func GenerateKey(c elliptic.Curve, rand io.Reader) (priv *PrivateKey, err error)
+func GenerateKey(c elliptic.Curve, rand io.Reader) (*PrivateKey, error)
 
-// Sign signs an arbitrary length hash (which should be the result of hashing a
-// larger message) using the private key, priv. It returns the signature as a
-// pair of integers. The security of the private key depends on the entropy of
-// rand.
+// Sign signs a hash (which should be the result of hashing a larger message)
+// using the private key, priv. If the hash is longer than the bit-length of the
+// private key's curve order, the hash will be truncated to that length.  It
+// returns the signature as a pair of integers. The security of the private key
+// depends on the entropy of rand.
 func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
 
 // Verify verifies the signature in r, s of hash using the public key, pub. Its

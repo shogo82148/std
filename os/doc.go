@@ -57,12 +57,12 @@ func (p *ProcessState) Exited() bool
 func (p *ProcessState) Success() bool
 
 // Sys returns system-dependent exit information about
-// the process.  Convert it to the appropriate underlying
+// the process. Convert it to the appropriate underlying
 // type, such as syscall.WaitStatus on Unix, to access its contents.
 func (p *ProcessState) Sys() interface{}
 
 // SysUsage returns system-dependent resource usage information about
-// the exited process.  Convert it to the appropriate underlying
+// the exited process. Convert it to the appropriate underlying
 // type, such as *syscall.Rusage on Unix, to access its contents.
 // (On Unix, *syscall.Rusage matches struct rusage as defined in the
 // getrusage(2) manual page.)
@@ -86,7 +86,7 @@ func Hostname() (name string, err error)
 // nil error. If it encounters an error before the end of the
 // directory, Readdir returns the FileInfo read until that point
 // and a non-nil error.
-func (f *File) Readdir(n int) (fi []FileInfo, err error)
+func (f *File) Readdir(n int) ([]FileInfo, error)
 
 // Readdirnames reads and returns a slice of names from the directory f.
 //

@@ -1,4 +1,4 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -17,7 +17,7 @@ type Header map[string][]string
 func (h Header) Add(key, value string)
 
 // Set sets the header entries associated with key to
-// the single element value.  It replaces any existing
+// the single element value. It replaces any existing
 // values associated with key.
 func (h Header) Set(key, value string)
 
@@ -49,9 +49,9 @@ func ParseTime(text string) (t time.Time, err error)
 func (h Header) WriteSubset(w io.Writer, exclude map[string]bool) error
 
 // CanonicalHeaderKey returns the canonical format of the
-// header key s.  The canonicalization converts the first
+// header key s. The canonicalization converts the first
 // letter and any letter following a hyphen to upper case;
-// the rest are converted to lowercase.  For example, the
+// the rest are converted to lowercase. For example, the
 // canonical key for "accept-encoding" is "Accept-Encoding".
 // If s contains a space or invalid header field bytes, it is
 // returned without modifications.

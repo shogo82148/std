@@ -12,6 +12,7 @@
 package exec
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/syscall"
@@ -52,6 +53,7 @@ type Cmd struct {
 
 	ProcessState *os.ProcessState
 
+	ctx             context.Context
 	lookPathErr     error
 	finished        bool
 	childFiles      []*os.File
@@ -59,6 +61,7 @@ type Cmd struct {
 	closeAfterWait  []io.Closer
 	goroutine       []func() error
 	errch           chan error
+	waitDone        chan struct{}
 }
 
 // Command returns the Cmd struct to execute the named program with
@@ -74,6 +77,13 @@ type Cmd struct {
 // followed by the elements of arg, so arg should not include the
 // command name itself. For example, Command("echo", "hello")
 func Command(name string, arg ...string) *Cmd
+
+// CommandContext is like Command but includes a context.
+//
+// The provided context is used to kill the process (by calling
+// os.Process.Kill) if the context becomes done before the command
+// completes on its own.
+func CommandContext(ctx context.Context, name string, arg ...string) *Cmd
 
 // skipStdinCopyError optionally specifies a function which reports
 // whether the provided the stdin copy error should be ignored.

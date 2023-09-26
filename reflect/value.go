@@ -10,10 +10,10 @@ import (
 
 // Value is the reflection interface to a Go value.
 //
-// Not all methods apply to all kinds of values.  Restrictions,
+// Not all methods apply to all kinds of values. Restrictions,
 // if any, are noted in the documentation for each method.
 // Use the Kind method to find out the kind of value before
-// calling kind-specific methods.  Calling a method
+// calling kind-specific methods. Calling a method
 // inappropriate to the kind of type causes a run time panic.
 //
 // The zero Value represents no value.
@@ -38,7 +38,7 @@ type Value struct {
 }
 
 // A ValueError occurs when a Value method is invoked on
-// a Value that does not support it.  Such cases are documented
+// a Value that does not support it. Such cases are documented
 // in the description of each method.
 type ValueError struct {
 	Method string
@@ -67,7 +67,7 @@ func (v Value) Bool() bool
 func (v Value) Bytes() []byte
 
 // CanAddr reports whether the value's address can be obtained with Addr.
-// Such values are called addressable.  A value is addressable if it is
+// Such values are called addressable. A value is addressable if it is
 // an element of a slice, an element of an addressable array,
 // a field of an addressable struct, or the result of dereferencing a pointer.
 // If CanAddr returns false, calling Addr will panic.
@@ -248,7 +248,7 @@ func (v Value) OverflowUint(x uint64) bool
 // result is zero if and only if v is a nil func Value.
 //
 // If v's Kind is Slice, the returned pointer is to the first
-// element of the slice.  If the slice is nil the returned value
+// element of the slice. If the slice is nil the returned value
 // is 0.  If the slice is empty but non-nil the return value is non-zero.
 func (v Value) Pointer() uintptr
 
@@ -464,7 +464,7 @@ func MakeMap(typ Type) Value
 func Indirect(v Value) Value
 
 // ValueOf returns a new Value initialized to the concrete value
-// stored in the interface i.  ValueOf(nil) returns the zero Value.
+// stored in the interface i. ValueOf(nil) returns the zero Value.
 func ValueOf(i interface{}) Value
 
 // Zero returns a Value representing the zero value for the specified type.
@@ -475,7 +475,7 @@ func ValueOf(i interface{}) Value
 func Zero(typ Type) Value
 
 // New returns a Value representing a pointer to a new zero value
-// for the specified type.  That is, the returned Value's Type is PtrTo(typ).
+// for the specified type. That is, the returned Value's Type is PtrTo(typ).
 func New(typ Type) Value
 
 // NewAt returns a Value representing a pointer to a value of the

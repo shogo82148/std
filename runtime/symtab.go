@@ -4,6 +4,38 @@
 
 package runtime
 
+// Frames may be used to get function/file/line information for a
+// slice of PC values returned by Callers.
+type Frames struct {
+	callers []uintptr
+
+	wasPanic bool
+
+	frames *[]Frame
+}
+
+// Frame is the information returned by Frames for each call frame.
+type Frame struct {
+	PC uintptr
+
+	Func *Func
+
+	Function string
+	File     string
+	Line     int
+
+	Entry uintptr
+}
+
+// CallersFrames takes a slice of PC values returned by Callers and
+// prepares to return function/file/line information.
+// Do not change the slice until you are done with the Frames.
+func CallersFrames(callers []uintptr) *Frames
+
+// Next returns frame information for the next caller.
+// If more is false, there are no more callers (the Frame value is valid).
+func (ci *Frames) Next() (frame Frame, more bool)
+
 // A Func represents a Go function in the running binary.
 type Func struct {
 	opaque struct{}
@@ -26,8 +58,8 @@ type Func struct {
 // Each bucket represents 4096 bytes of the text segment.
 // Each subbucket represents 256 bytes of the text segment.
 // To find a function given a pc, locate the bucket and subbucket for
-// that pc.  Add together the idx and subbucket value to obtain a
-// function index.  Then scan the functab array starting at that
+// that pc. Add together the idx and subbucket value to obtain a
+// function index. Then scan the functab array starting at that
 // index to find the target function.
 // This table uses 20 bytes for every 4096 bytes of code, or ~0.5% overhead.
 

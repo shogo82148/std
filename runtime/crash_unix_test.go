@@ -6,3 +6,6 @@
 // +build darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package runtime_test
+
+// sigquit is the signal to send to kill a hanging testdata program.
+// Send SIGQUIT to get a stack trace.

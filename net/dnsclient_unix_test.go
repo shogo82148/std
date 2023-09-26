@@ -7,5 +7,8 @@
 
 package net
 
+// Test address from 192.0.2.0/24 block, reserved by RFC 5737 for documentation.
+const TestAddr uint32 = 0xc0000201
+
 // See RFC 6761 for further information about the reserved, pseudo
 // domain names.

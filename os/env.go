@@ -1,4 +1,4 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -11,7 +11,7 @@ package os
 func Expand(s string, mapping func(string) string) string
 
 // ExpandEnv replaces ${var} or $var in the string according to the values
-// of the current environment variables.  References to undefined
+// of the current environment variables. References to undefined
 // variables are replaced by the empty string.
 func ExpandEnv(s string) string
 

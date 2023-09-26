@@ -17,7 +17,7 @@ import "github.com/shogo82148/std/errors"
 //	float64
 //	bool
 //	[]byte
-//	string   [*] everywhere except from Rows.Next.
+//	string
 //	time.Time
 type Value interface{}
 

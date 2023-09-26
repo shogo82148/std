@@ -1,4 +1,4 @@
-// Copyright 2009 The Go Authors.  All rights reserved.
+// Copyright 2009 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -24,21 +24,24 @@
 // In each 2-bit entry, the lower bit holds the same information as in the 1-bit
 // bitmaps: 0 means uninteresting and 1 means live pointer to be visited during GC.
 // The meaning of the high bit depends on the position of the word being described
-// in its allocated object. In the first word, the high bit is the GC ``marked'' bit.
+// in its allocated object. In all words *except* the second word, the
+// high bit indicates that the object is still being described. In
+// these words, if a bit pair with a high bit 0 is encountered, the
+// low bit can also be assumed to be 0, and the object description is
+// over. This 00 is called the ``dead'' encoding: it signals that the
+// rest of the words in the object are uninteresting to the garbage
+// collector.
+//
 // In the second word, the high bit is the GC ``checkmarked'' bit (see below).
-// In the third and later words, the high bit indicates that the object is still
-// being described. In these words, if a bit pair with a high bit 0 is encountered,
-// the low bit can also be assumed to be 0, and the object description is over.
-// This 00 is called the ``dead'' encoding: it signals that the rest of the words
-// in the object are uninteresting to the garbage collector.
 //
 // The 2-bit entries are split when written into the byte, so that the top half
-// of the byte contains 4 mark bits and the bottom half contains 4 pointer bits.
+// of the byte contains 4 high bits and the bottom half contains 4 low (pointer)
+// bits.
 // This form allows a copy from the 1-bit to the 4-bit form to keep the
 // pointer bits contiguous, instead of having to space them out.
 //
 // The code makes use of the fact that the zero value for a heap bitmap
-// has no live pointer bit set and is (depending on position), not marked,
+// has no live pointer bit set and is (depending on position), not used,
 // not checkmarked, and is the dead encoding.
 // These properties must be preserved when modifying the encoding.
 //
@@ -63,6 +66,7 @@
 // It is still used in general, except in checkmark the type bit is repurposed
 // as the checkmark bit and then reinitialized (to 1) as the type bit when
 // finished.
+//
 
 package runtime
 
@@ -70,3 +74,17 @@ package runtime
 // The methods on heapBits take value receivers so that the compiler
 // can more easily inline calls to those methods and registerize the
 // struct fields independently.
+
+// markBits provides access to the mark bit for an object in the heap.
+// bytep points to the byte holding the mark bit.
+// mask is a byte with a single bit set that can be &ed with *bytep
+// to see if the bit has been set.
+// *m.byte&m.mask != 0 indicates the mark bit is set.
+// index can be used along with span information to generate
+// the address of the object in the heap.
+// We maintain one set of mark bits for allocation and one for
+// marking purposes.
+
+// oneBitCount is indexed by byte and produces the
+// number of 1 bits in that byte. For example 128 has 1 bit set
+// and oneBitCount[128] will holds 1.

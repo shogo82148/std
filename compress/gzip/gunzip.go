@@ -9,7 +9,6 @@ package gzip
 import (
 	"github.com/shogo82148/std/compress/flate"
 	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/time"
 )
@@ -38,23 +37,22 @@ type Header struct {
 // uncompressed data from a gzip-format compressed file.
 //
 // In general, a gzip file can be a concatenation of gzip files,
-// each with its own header.  Reads from the Reader
+// each with its own header. Reads from the Reader
 // return the concatenation of the uncompressed data of each.
 // Only the first header is recorded in the Reader fields.
 //
 // Gzip files store a length and checksum of the uncompressed data.
 // The Reader will return a ErrChecksum when Read
 // reaches the end of the uncompressed data if it does not
-// have the expected length or checksum.  Clients should treat data
+// have the expected length or checksum. Clients should treat data
 // returned by Read as tentative until they receive the io.EOF
 // marking the end of the data.
 type Reader struct {
 	Header
 	r            flate.Reader
 	decompressor io.ReadCloser
-	digest       hash.Hash32
+	digest       uint32
 	size         uint32
-	flg          byte
 	buf          [512]byte
 	err          error
 	multistream  bool
@@ -95,4 +93,6 @@ func (z *Reader) Multistream(ok bool)
 func (z *Reader) Read(p []byte) (n int, err error)
 
 // Close closes the Reader. It does not close the underlying io.Reader.
+// In order for the GZIP checksum to be verified, the reader must be
+// fully consumed until the io.EOF.
 func (z *Reader) Close() error

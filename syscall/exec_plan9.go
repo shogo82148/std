@@ -10,7 +10,10 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
+// ForkLock is not used on plan9.
 var ForkLock sync.RWMutex
+
+// Offset of the name field in a 9P directory entry - see UnmarshalDir() in dir_plan9.go
 
 // StringSlicePtr converts a slice of strings to a slice of pointers
 // to NUL-terminated byte arrays. If any string contains a NUL byte
@@ -23,6 +26,9 @@ func StringSlicePtr(ss []string) []*byte
 // pointers to NUL-terminated byte arrays. If any string contains
 // a NUL byte, it returns (nil, EINVAL).
 func SlicePtrFromStrings(ss []string) ([]*byte, error)
+
+// name of the directory containing names and control files for all open file descriptors
+var _ = BytePtrFromString("#d")
 
 type ProcAttr struct {
 	Dir   string

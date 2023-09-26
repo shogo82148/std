@@ -31,6 +31,10 @@ type V struct {
 
 var _ encoding.TextUnmarshaler = (*unmarshalerText)(nil)
 
+// u8marshal is an integer type that can marshal/unmarshal itself.
+
+var _ encoding.TextUnmarshaler = (*u8marshal)(nil)
+
 type Point struct {
 	Z int
 }

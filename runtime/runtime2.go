@@ -4,9 +4,33 @@
 
 package runtime
 
-/*
- * defined constants
- */
+// defined constants
+
+// Mutual exclusion locks.  In the uncontended case,
+// as fast as spin locks (just a few user-level instructions),
+// but on the contention path they sleep in the kernel.
+// A zeroed Mutex is unlocked (no need to initialize each lock).
+
+// sleep and wakeup on one-time events.
+// before any calls to notesleep or notewakeup,
+// must call noteclear to initialize the Note.
+// then, exactly one thread can call notesleep
+// and exactly one thread can call notewakeup (once).
+// once notewakeup has been called, the notesleep
+// will return.  future notesleep will return immediately.
+// subsequent noteclear must be called only after
+// previous notesleep has returned, e.g. it's disallowed
+// to call noteclear straight after notewakeup.
+//
+// notetsleep is like notesleep but wakes up after
+// a given number of nanoseconds even if the event
+// has not yet happened.  if a goroutine uses notetsleep to
+// wake up early, it must wait to call noteclear until it
+// can be sure that no other goroutine is calling
+// notewakeup.
+//
+// notesleep/notetsleep are generally called on g0,
+// notetsleepg is similar to notetsleep but is called on user g.
 
 // A guintptr holds a goroutine pointer, but typed as a uintptr
 // to bypass write barriers. It is used in the Gobuf goroutine state
@@ -28,8 +52,16 @@ package runtime
 // in the GC, we'd need to allocate the goroutine structs from an
 // alternate arena. Using guintptr doesn't make that problem any worse.
 
-// Known to compiler.
-// Changes here must also be made in src/cmd/internal/gc/select.go's selecttype.
+// sudog represents a g in a wait list, such as for sending/receiving
+// on a channel.
+//
+// sudog is necessary because the g ↔ synchronization object relation
+// is many-to-many. A g can be on many wait lists, so there may be
+// many sudogs for one g; and many gs may be waiting on the same
+// synchronization object, so there may be many sudogs for one object.
+//
+// sudogs are allocated from a special pool. Use acquireSudog and
+// releaseSudog to allocate and free them.
 
 // describes how to handle callback
 
@@ -39,10 +71,10 @@ package runtime
 
 // stkbar records the state of a G's stack barrier.
 
-// The m->locked word holds two pieces of state counting active calls to LockOSThread/lockOSThread.
+// The m.locked word holds two pieces of state counting active calls to LockOSThread/lockOSThread.
 // The low bit (LockExternal) is a boolean reporting whether any LockOSThread call is active.
 // External locks are not recursive; a second lock is silently ignored.
-// The upper bits of m->locked record the nesting depth of calls to lockOSThread
+// The upper bits of m.locked record the nesting depth of calls to lockOSThread
 // (counting up by LockInternal), popped by unlockOSThread (counting down by LockInternal).
 // Internal locks can be recursive. For instance, a lock for cgo can occur while the main
 // goroutine is holding the lock during the initialization phase.
@@ -54,23 +86,21 @@ package runtime
 
 // layout of Itab known to compilers
 // allocated in non-garbage-collected memory
+// Needs to be in sync with
+// ../cmd/compile/internal/gc/reflect.go:/^func.dumptypestructs.
 
 // Lock-free stack node.
 // // Also known to export_test.go.
 
-/*
- * known to compiler
- */
-
-// startup_random_data holds random bytes initialized at startup.  These come from
+// startup_random_data holds random bytes initialized at startup. These come from
 // the ELF AT_RANDOM auxiliary vector (vdso_linux_amd64.go or os_linux_386.go).
 
-/*
- * deferred subroutine calls
- */
+// deferred subroutine calls
 
-/*
- * panics
- */
+// panics
+
+// stack traces
+
+// The maximum number of frames we print for a traceback
 
 // Set by the linker so the runtime can determine the buildmode.

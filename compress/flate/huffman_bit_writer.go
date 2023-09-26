@@ -11,3 +11,6 @@ package flate
 // offset code word extra bits.
 
 // The odd order in which the codegen code sizes are written.
+
+// huffOffset is a static offset encoder used for huffman only encoding.
+// It can be reused since we will not be encoding offset values.

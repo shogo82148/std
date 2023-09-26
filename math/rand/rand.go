@@ -27,6 +27,10 @@ func NewSource(seed int64) Source
 // A Rand is a source of random numbers.
 type Rand struct {
 	src Source
+
+	readVal int64
+
+	readPos int8
 }
 
 // New returns a new Rand that uses random values from src
@@ -34,6 +38,7 @@ type Rand struct {
 func New(src Source) *Rand
 
 // Seed uses the provided seed value to initialize the generator to a deterministic state.
+// Seed should not be called concurrently with any other Rand method.
 func (r *Rand) Seed(seed int64)
 
 // Int63 returns a non-negative pseudo-random 63-bit integer as an int64.
@@ -71,11 +76,14 @@ func (r *Rand) Perm(n int) []int
 
 // Read generates len(p) random bytes and writes them into p. It
 // always returns len(p) and a nil error.
+// Read should not be called concurrently with any other Rand method.
 func (r *Rand) Read(p []byte) (n int, err error)
 
 // Seed uses the provided seed value to initialize the default Source to a
 // deterministic state. If Seed is not called, the generator behaves as
-// if seeded by Seed(1).
+// if seeded by Seed(1). Seed values that have the same remainder when
+// divided by 2^31-1 generate the same pseudo-random sequence.
+// Seed, unlike the Rand.Seed method, is safe for concurrent use.
 func Seed(seed int64)
 
 // Int63 returns a non-negative pseudo-random 63-bit integer as an int64
@@ -122,6 +130,7 @@ func Perm(n int) []int
 
 // Read generates len(p) random bytes from the default Source and
 // writes them into p. It always returns len(p) and a nil error.
+// Read, unlike the Rand.Read method, is safe for concurrent use.
 func Read(p []byte) (n int, err error)
 
 // NormFloat64 returns a normally distributed float64 in the range

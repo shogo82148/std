@@ -24,6 +24,10 @@
 // Hudson, R., and Moss, J.E.B. Copying Garbage Collection without stopping the world.
 // Concurrency and Computation: Practice and Experience 15(3-5), 2003.
 //
+// TODO(austin): The rest of this comment is woefully out of date and
+// needs to be rewritten. There is no distinct scan phase any more and
+// we allocate black during GC.
+//
 //  0. Set phase = GCscan from GCoff.
 //  1. Wait for all P's to acknowledge phase change.
 //         At this point all goroutines have passed through a GC safepoint and
@@ -193,10 +197,9 @@ package runtime
 // gcAssistTimeSlack is the nanoseconds of mutator assist time that
 // can accumulate on a P before updating gcController.assistTime.
 
-// gcOverAssistBytes determines how many extra allocation bytes of
-// assist credit a GC assist builds up when an assist happens. This
-// amortizes the cost of an assist by pre-paying for this many bytes
-// of future allocations.
+// gcOverAssistWork determines how many extra units of scan work a GC
+// assist does when an assist happens. This amortizes the cost of an
+// assist by pre-paying for this many bytes of future allocations.
 
 // GC runs a garbage collection and blocks the caller until the
 // garbage collection is complete. It may also block the entire

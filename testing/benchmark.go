@@ -34,13 +34,17 @@ type InternalBenchmark struct {
 // affecting benchmark results.
 type B struct {
 	common
+	context          *benchContext
 	N                int
 	previousN        int
 	previousDuration time.Duration
-	benchmark        InternalBenchmark
+	benchFunc        func(b *B)
+	benchTime        time.Duration
 	bytes            int64
+	missingBytes     bool
 	timerOn          bool
 	showAllocResult  bool
+	hasSub           bool
 	result           BenchmarkResult
 	parallelism      int
 
@@ -51,12 +55,12 @@ type B struct {
 	netBytes  uint64
 }
 
-// StartTimer starts timing a test.  This function is called automatically
+// StartTimer starts timing a test. This function is called automatically
 // before a benchmark starts, but it can also used to resume timing after
 // a call to StopTimer.
 func (b *B) StartTimer()
 
-// StopTimer stops timing a test.  This can be used to pause the timer
+// StopTimer stops timing a test. This can be used to pause the timer
 // while performing complex initialization that you don't
 // want to measure.
 func (b *B) StopTimer()
@@ -97,6 +101,13 @@ func (r BenchmarkResult) MemString() string
 // of the "go test" command.
 func RunBenchmarks(matchString func(pat, str string) (bool, error), benchmarks []InternalBenchmark)
 
+// Run benchmarks f as a subbenchmark with the given name. It reports
+// whether there were any failures.
+//
+// A subbenchmark is like any other benchmark. A benchmark that calls Run at
+// least once will not be measured itself and will be called once with N=1.
+func (b *B) Run(name string, f func(b *B)) bool
+
 // A PB is used by RunParallel for running parallel benchmarks.
 type PB struct {
 	globalN *uint64
@@ -117,7 +128,7 @@ func (pb *PB) Next() bool
 // The body function will be run in each goroutine. It should set up any
 // goroutine-local state and then iterate until pb.Next returns false.
 // It should not use the StartTimer, StopTimer, or ResetTimer functions,
-// because they have global effect.
+// because they have global effect. It should also not call Run.
 func (b *B) RunParallel(body func(*PB))
 
 // SetParallelism sets the number of goroutines used by RunParallel to p*GOMAXPROCS.
@@ -127,4 +138,7 @@ func (b *B) SetParallelism(p int)
 
 // Benchmark benchmarks a single function. Useful for creating
 // custom benchmarks that do not use the "go test" command.
+//
+// If f calls Run, the result will be an estimate of running all its
+// subbenchmarks that don't call Run in sequence in a single benchmark.
 func Benchmark(f func(b *B)) BenchmarkResult

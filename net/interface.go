@@ -1,11 +1,11 @@
-// Copyright 2011 The Go Authors.  All rights reserved.
+// Copyright 2011 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package net
 
 // Interface represents a mapping between network interface name
-// and index.  It also represents network interface facility
+// and index. It also represents network interface facility
 // information.
 type Interface struct {
 	Index        int
@@ -46,3 +46,7 @@ func InterfaceByIndex(index int) (*Interface, error)
 
 // InterfaceByName returns the interface specified by name.
 func InterfaceByName(name string) (*Interface, error)
+
+// An ipv6ZoneCache represents a cache holding partial network
+// interface information. It is used for reducing the cost of IPv6
+// addressing scope zone resolution.

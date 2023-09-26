@@ -1,4 +1,4 @@
-// Copyright 2012 The Go Authors.  All rights reserved.
+// Copyright 2012 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -28,12 +28,12 @@ func LookupPort(network, service string) (port int, err error)
 func LookupCNAME(name string) (cname string, err error)
 
 // LookupSRV tries to resolve an SRV query of the given service,
-// protocol, and domain name.  The proto is "tcp" or "udp".
+// protocol, and domain name. The proto is "tcp" or "udp".
 // The returned records are sorted by priority and randomized
 // by weight within a priority.
 //
 // LookupSRV constructs the DNS name to look up following RFC 2782.
-// That is, it looks up _service._proto.name.  To accommodate services
+// That is, it looks up _service._proto.name. To accommodate services
 // publishing SRV records under non-standard names, if both service
 // and proto are empty strings, LookupSRV looks up name directly.
 func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err error)

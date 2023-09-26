@@ -1,4 +1,4 @@
-// Copyright 2009 The Go Authors.  All rights reserved.
+// Copyright 2009 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -58,7 +58,7 @@ type Field struct {
 	Class Class
 }
 
-// A Class is the DWARF 4 class of an attibute value.
+// A Class is the DWARF 4 class of an attribute value.
 //
 // In general, a given attribute's value may take on one of several
 // possible classes defined by DWARF, each of which leads to a
@@ -161,7 +161,7 @@ func (e *Entry) AttrField(a Attr) *Field
 type Offset uint32
 
 // A Reader allows reading Entry structures from a DWARF “info” section.
-// The Entry structures are arranged in a tree.  The Reader's Next function
+// The Entry structures are arranged in a tree. The Reader's Next function
 // return successive entries from a pre-order traversal of the tree.
 // If an entry has children, its Children field will be true, and the children
 // follow, terminated by an Entry with Tag 0.
@@ -193,6 +193,25 @@ func (r *Reader) Seek(off Offset)
 func (r *Reader) Next() (*Entry, error)
 
 // SkipChildren skips over the child entries associated with
-// the last Entry returned by Next.  If that Entry did not have
+// the last Entry returned by Next. If that Entry did not have
 // children or Next has not been called, SkipChildren is a no-op.
 func (r *Reader) SkipChildren()
+
+// SeekPC returns the Entry for the compilation unit that includes pc,
+// and positions the reader to read the children of that unit.  If pc
+// is not covered by any unit, SeekPC returns ErrUnknownPC and the
+// position of the reader is undefined.
+//
+// Because compilation units can describe multiple regions of the
+// executable, in the worst case SeekPC must search through all the
+// ranges in all the compilation units. Each call to SeekPC starts the
+// search at the compilation unit of the last call, so in general
+// looking up a series of PCs will be faster if they are sorted. If
+// the caller wishes to do repeated fast PC lookups, it should build
+// an appropriate index using the Ranges method.
+func (r *Reader) SeekPC(pc uint64) (*Entry, error)
+
+// Ranges returns the PC ranges covered by e, a slice of [low,high) pairs.
+// Only some entry types, such as TagCompileUnit or TagSubprogram, have PC
+// ranges; for others, this will return nil with no error.
+func (d *Data) Ranges(e *Entry) ([][2]uint64, error)

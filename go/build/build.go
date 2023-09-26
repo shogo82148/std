@@ -1,4 +1,4 @@
-// Copyright 2011 The Go Authors.  All rights reserved.
+// Copyright 2011 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -38,9 +38,9 @@ type Context struct {
 
 	HasSubdir func(root, dir string) (rel string, ok bool)
 
-	ReadDir func(dir string) (fi []os.FileInfo, err error)
+	ReadDir func(dir string) ([]os.FileInfo, error)
 
-	OpenFile func(path string) (r io.ReadCloser, err error)
+	OpenFile func(path string) (io.ReadCloser, error)
 }
 
 // SrcDirs returns a list of package source root directories.
@@ -53,19 +53,24 @@ func (ctxt *Context) SrcDirs() []string
 // if set, or else the compiled code's GOARCH, GOOS, and GOROOT.
 var Default Context = defaultContext()
 
-// Also known to cmd/dist/build.go.
-
 // An ImportMode controls the behavior of the Import method.
 type ImportMode uint
 
 const (
 	// If FindOnly is set, Import stops after locating the directory
-	// that should contain the sources for a package.  It does not
+	// that should contain the sources for a package. It does not
 	// read any files in the directory.
 	FindOnly ImportMode = 1 << iota
 
 	// If AllowBinary is set, Import can be satisfied by a compiled
 	// package object without corresponding sources.
+	//
+	// Deprecated:
+	// The supported way to create a compiled-only package is to
+	// write source code containing a //go:binary-only-package comment at
+	// the top of the file. Such a package will be recognized
+	// regardless of this flag setting (because it has source code)
+	// and will have BinaryOnly set to true in the returned Package.
 	AllowBinary
 
 	// If ImportComment is set, parse import comments on package statements.
@@ -106,6 +111,7 @@ type Package struct {
 	PkgObj        string
 	AllTags       []string
 	ConflictDir   string
+	BinaryOnly    bool
 
 	GoFiles        []string
 	CgoFiles       []string
@@ -115,6 +121,7 @@ type Package struct {
 	CXXFiles       []string
 	MFiles         []string
 	HFiles         []string
+	FFiles         []string
 	SFiles         []string
 	SwigFiles      []string
 	SwigCXXFiles   []string
@@ -123,6 +130,7 @@ type Package struct {
 	CgoCFLAGS    []string
 	CgoCPPFLAGS  []string
 	CgoCXXFLAGS  []string
+	CgoFFLAGS    []string
 	CgoLDFLAGS   []string
 	CgoPkgConfig []string
 
@@ -195,6 +203,10 @@ func Import(path, srcDir string, mode ImportMode) (*Package, error)
 
 // ImportDir is shorthand for Default.ImportDir.
 func ImportDir(dir string, mode ImportMode) (*Package, error)
+
+// Special comment denoting a binary-only package.
+// See https://golang.org/design/2775-binary-only-packages
+// for more about the design of binary-only packages.
 
 // NOTE: $ is not safe for the shell, but it is allowed here because of linker options like -Wl,$ORIGIN.
 // We never pass these arguments to a shell (just to programs we construct argv for), so this should be okay.

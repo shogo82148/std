@@ -1,4 +1,4 @@
-// Copyright 2011 The Go Authors.  All rights reserved.
+// Copyright 2011 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -22,8 +22,10 @@ type Package struct {
 	Goroot        bool   `json:",omitempty"`
 	Standard      bool   `json:",omitempty"`
 	Stale         bool   `json:",omitempty"`
+	StaleReason   string `json:",omitempty"`
 	Root          string `json:",omitempty"`
 	ConflictDir   string `json:",omitempty"`
+	BinaryOnly    bool   `json:",omitempty"`
 
 	GoFiles        []string `json:",omitempty"`
 	CgoFiles       []string `json:",omitempty"`
@@ -32,6 +34,7 @@ type Package struct {
 	CXXFiles       []string `json:",omitempty"`
 	MFiles         []string `json:",omitempty"`
 	HFiles         []string `json:",omitempty"`
+	FFiles         []string `json:",omitempty"`
 	SFiles         []string `json:",omitempty"`
 	SwigFiles      []string `json:",omitempty"`
 	SwigCXXFiles   []string `json:",omitempty"`
@@ -40,6 +43,7 @@ type Package struct {
 	CgoCFLAGS    []string `json:",omitempty"`
 	CgoCPPFLAGS  []string `json:",omitempty"`
 	CgoCXXFLAGS  []string `json:",omitempty"`
+	CgoFFLAGS    []string `json:",omitempty"`
 	CgoLDFLAGS   []string `json:",omitempty"`
 	CgoPkgConfig []string `json:",omitempty"`
 
@@ -65,7 +69,6 @@ type Package struct {
 	target       string
 	fake         bool
 	external     bool
-	forceBuild   bool
 	forceLibrary bool
 	cmdline      bool
 	local        bool
@@ -100,14 +103,6 @@ func (p *PackageError) Error() string
 // packageCache is a lookup cache for loadPackage,
 // so that if we look up a package multiple times
 // we return the same pointer each time.
-
-// The Go 1.5 vendoring experiment was enabled by setting GO15VENDOREXPERIMENT=1.
-// In Go 1.6 this is on by default and is disabled by setting GO15VENDOREXPERIMENT=0.
-// In Go 1.7 the variable will stop having any effect.
-// The variable is obnoxiously long so that years from now when people find it in
-// their profiles and wonder what it does, there is some chance that a web search
-// might answer the question.
-// There is a copy of this variable in src/go/build/build.go. Delete that one when this one goes away.
 
 // Mode flags for loadImport and download (in get.go).
 

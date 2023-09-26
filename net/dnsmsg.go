@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// DNS packet assembly.  See RFC 1035.
+// DNS packet assembly. See RFC 1035.
 //
 // This is intended to support name resolution during Dial.
 // It doesn't have to be blazing fast.
@@ -18,7 +18,7 @@
 // generic pack/unpack routines.
 //
 // TODO(rsc):  There are enough names defined in this file that they're all
-// prefixed with dns.  Perhaps put this in its own package later.
+// prefixed with dns. Perhaps put this in its own package later.
 
 package net
 

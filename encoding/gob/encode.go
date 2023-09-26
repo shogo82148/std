@@ -19,4 +19,4 @@ package gob
 // The 'instructions' of the encoding machine
 
 // encEngine an array of instructions indexed by field number of the encoding
-// data, typically a struct.  It is executed top to bottom, walking the struct.
+// data, typically a struct. It is executed top to bottom, walking the struct.

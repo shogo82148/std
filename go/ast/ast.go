@@ -278,7 +278,6 @@ type (
 	}
 )
 
-// Pos and End implementations for expression/type nodes.
 func (x *BadExpr) Pos() token.Pos
 func (x *Ident) Pos() token.Pos
 func (x *Ellipsis) Pos() token.Pos
@@ -507,7 +506,6 @@ type (
 	}
 )
 
-// Pos and End implementations for statement nodes.
 func (s *BadStmt) Pos() token.Pos
 func (s *DeclStmt) Pos() token.Pos
 func (s *EmptyStmt) Pos() token.Pos
@@ -597,7 +595,6 @@ type (
 	}
 )
 
-// Pos and End implementations for spec nodes.
 func (s *ImportSpec) Pos() token.Pos
 
 func (s *ValueSpec) Pos() token.Pos
@@ -649,7 +646,6 @@ type (
 	}
 )
 
-// Pos and End implementations for declaration nodes.
 func (d *BadDecl) Pos() token.Pos
 func (d *GenDecl) Pos() token.Pos
 func (d *FuncDecl) Pos() token.Pos

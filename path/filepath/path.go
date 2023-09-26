@@ -4,9 +4,6 @@
 
 // Package filepath implements utility routines for manipulating filename paths
 // in a way compatible with the target operating system-defined file paths.
-//
-// Functions in this package replace any occurrences of the slash ('/') character
-// with os.PathSeparator when returning paths unless otherwise specified.
 package filepath
 
 import (
@@ -25,7 +22,7 @@ const (
 )
 
 // Clean returns the shortest path name equivalent to path
-// by purely lexical processing.  It applies the following rules
+// by purely lexical processing. It applies the following rules
 // iteratively until no further processing can be done:
 //
 //  1. Replace multiple Separator elements with a single one.
@@ -39,12 +36,14 @@ const (
 // The returned path ends in a slash only if it represents a root directory,
 // such as "/" on Unix or `C:\` on Windows.
 //
+// Finally, any occurrences of slash are replaced by Separator.
+//
 // If the result of this process is an empty string, Clean
 // returns the string ".".
 //
 // See also Rob Pike, “Lexical File Names in Plan 9 or
 // Getting Dot-Dot Right,”
-// http://plan9.bell-labs.com/sys/doc/lexnames.html
+// https://9p.io/sys/doc/lexnames.html
 func Clean(path string) string
 
 // ToSlash returns the result of replacing each separator character
@@ -71,7 +70,7 @@ func SplitList(path string) []string
 func Split(path string) (dir, file string)
 
 // Join joins any number of path elements into a single path, adding
-// a Separator if necessary. The result is Cleaned, in particular
+// a Separator if necessary. Join calls Clean on the result; in particular,
 // all empty strings are ignored.
 // On Windows, the result is a UNC path if and only if the first path
 // element is a UNC path.
@@ -87,12 +86,14 @@ func Ext(path string) string
 // links.
 // If path is relative the result will be relative to the current directory,
 // unless one of the components is an absolute symbolic link.
+// EvalSymlinks calls Clean on the result.
 func EvalSymlinks(path string) (string, error)
 
 // Abs returns an absolute representation of path.
 // If the path is not absolute it will be joined with the current
-// working directory to turn it into an absolute path.  The absolute
+// working directory to turn it into an absolute path. The absolute
 // path name for a given file is not guaranteed to be unique.
+// Abs calls Clean on the result.
 func Abs(path string) (string, error)
 
 // Rel returns a relative path that is lexically equivalent to targpath when
@@ -102,6 +103,7 @@ func Abs(path string) (string, error)
 // even if basepath and targpath share no elements.
 // An error is returned if targpath can't be made relative to basepath or if
 // knowing the current working directory would be necessary to compute it.
+// Rel calls Clean on the result.
 func Rel(basepath, targpath string) (string, error)
 
 // SkipDir is used as a return value from WalkFuncs to indicate that
@@ -140,7 +142,7 @@ func Walk(root string, walkFn WalkFunc) error
 func Base(path string) string
 
 // Dir returns all but the last element of path, typically the path's directory.
-// After dropping the final element, the path is Cleaned and trailing
+// After dropping the final element, Dir calls Clean on the path and trailing
 // slashes are removed.
 // If the path is empty, Dir returns ".".
 // If the path consists entirely of separators, Dir returns a single separator.

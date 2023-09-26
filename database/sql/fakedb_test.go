@@ -28,7 +28,7 @@ var _ = log.Printf
 // named method on fakeStmt to panic.
 //
 // When opening a fakeDriver's database, it starts empty with no
-// tables.  All tables and data are stored in memory only.
+// tables. All tables and data are stored in memory only.
 
 type Dummy struct {
 	driver.Driver

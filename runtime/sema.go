@@ -21,4 +21,6 @@ package runtime
 
 // Prime to not correlate with any user patterns.
 
-// Synchronous semaphore for sync.Cond.
+// notifyList is a ticket-based notification list used to implement sync.Cond.
+//
+// It must be kept in sync with the sync package.

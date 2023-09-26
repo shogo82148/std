@@ -71,9 +71,9 @@ type Reader interface {
 func NewReader(r io.Reader) io.ReadCloser
 
 // NewReaderDict is like NewReader but initializes the reader
-// with a preset dictionary.  The returned Reader behaves as if
+// with a preset dictionary. The returned Reader behaves as if
 // the uncompressed data stream started with the given dictionary,
-// which has already been read.  NewReaderDict is typically used
+// which has already been read. NewReaderDict is typically used
 // to read data compressed by NewWriterDict.
 //
 // The ReadCloser returned by NewReader also implements Resetter.

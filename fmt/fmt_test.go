@@ -7,6 +7,11 @@ package fmt_test
 import (
 	"bytes"
 	. "fmt"
+	"math"
+)
+
+var (
+	NaN = math.NaN()
 )
 
 type A struct {

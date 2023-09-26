@@ -15,7 +15,7 @@
  *
  * Copyright (c) 1996-1998 John D. Polstra.  All rights reserved.
  * Copyright (c) 2001 David E. O'Brien
- * Portions Copyright 2009 The Go Authors.  All rights reserved.
+ * Portions Copyright 2009 The Go Authors. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -965,6 +965,76 @@ const (
 func (i R_PPC64) String() string
 func (i R_PPC64) GoString() string
 
+// Relocation types for s390x processors.
+type R_390 int
+
+const (
+	R_390_NONE        R_390 = 0
+	R_390_8           R_390 = 1
+	R_390_12          R_390 = 2
+	R_390_16          R_390 = 3
+	R_390_32          R_390 = 4
+	R_390_PC32        R_390 = 5
+	R_390_GOT12       R_390 = 6
+	R_390_GOT32       R_390 = 7
+	R_390_PLT32       R_390 = 8
+	R_390_COPY        R_390 = 9
+	R_390_GLOB_DAT    R_390 = 10
+	R_390_JMP_SLOT    R_390 = 11
+	R_390_RELATIVE    R_390 = 12
+	R_390_GOTOFF      R_390 = 13
+	R_390_GOTPC       R_390 = 14
+	R_390_GOT16       R_390 = 15
+	R_390_PC16        R_390 = 16
+	R_390_PC16DBL     R_390 = 17
+	R_390_PLT16DBL    R_390 = 18
+	R_390_PC32DBL     R_390 = 19
+	R_390_PLT32DBL    R_390 = 20
+	R_390_GOTPCDBL    R_390 = 21
+	R_390_64          R_390 = 22
+	R_390_PC64        R_390 = 23
+	R_390_GOT64       R_390 = 24
+	R_390_PLT64       R_390 = 25
+	R_390_GOTENT      R_390 = 26
+	R_390_GOTOFF16    R_390 = 27
+	R_390_GOTOFF64    R_390 = 28
+	R_390_GOTPLT12    R_390 = 29
+	R_390_GOTPLT16    R_390 = 30
+	R_390_GOTPLT32    R_390 = 31
+	R_390_GOTPLT64    R_390 = 32
+	R_390_GOTPLTENT   R_390 = 33
+	R_390_GOTPLTOFF16 R_390 = 34
+	R_390_GOTPLTOFF32 R_390 = 35
+	R_390_GOTPLTOFF64 R_390 = 36
+	R_390_TLS_LOAD    R_390 = 37
+	R_390_TLS_GDCALL  R_390 = 38
+	R_390_TLS_LDCALL  R_390 = 39
+	R_390_TLS_GD32    R_390 = 40
+	R_390_TLS_GD64    R_390 = 41
+	R_390_TLS_GOTIE12 R_390 = 42
+	R_390_TLS_GOTIE32 R_390 = 43
+	R_390_TLS_GOTIE64 R_390 = 44
+	R_390_TLS_LDM32   R_390 = 45
+	R_390_TLS_LDM64   R_390 = 46
+	R_390_TLS_IE32    R_390 = 47
+	R_390_TLS_IE64    R_390 = 48
+	R_390_TLS_IEENT   R_390 = 49
+	R_390_TLS_LE32    R_390 = 50
+	R_390_TLS_LE64    R_390 = 51
+	R_390_TLS_LDO32   R_390 = 52
+	R_390_TLS_LDO64   R_390 = 53
+	R_390_TLS_DTPMOD  R_390 = 54
+	R_390_TLS_DTPOFF  R_390 = 55
+	R_390_TLS_TPOFF   R_390 = 56
+	R_390_20          R_390 = 57
+	R_390_GOT20       R_390 = 58
+	R_390_GOTPLT20    R_390 = 59
+	R_390_TLS_GOTIE20 R_390 = 60
+)
+
+func (i R_390) String() string
+func (i R_390) GoString() string
+
 // Relocation types for SPARC.
 type R_SPARC int
 
@@ -1077,7 +1147,7 @@ type Prog32 struct {
 	Align  uint32
 }
 
-// ELF32 Dynamic structure.  The ".dynamic" section contains an array of them.
+// ELF32 Dynamic structure. The ".dynamic" section contains an array of them.
 type Dyn32 struct {
 	Tag int32
 	Val uint32
@@ -1169,7 +1239,7 @@ type Prog64 struct {
 	Align  uint64
 }
 
-// ELF64 Dynamic structure.  The ".dynamic" section contains an array of them.
+// ELF64 Dynamic structure. The ".dynamic" section contains an array of them.
 type Dyn64 struct {
 	Tag int64
 	Val uint64

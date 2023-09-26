@@ -59,9 +59,11 @@ type UnknownAuthorityError struct {
 func (e UnknownAuthorityError) Error() string
 
 // SystemRootsError results when we fail to load the system root certificates.
-type SystemRootsError struct{}
+type SystemRootsError struct {
+	Err error
+}
 
-func (SystemRootsError) Error() string
+func (se SystemRootsError) Error() string
 
 // errNotParsed is returned when a certificate without ASN.1 contents is
 // verified. Platform-specific verification needs the ASN.1 contents.

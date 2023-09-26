@@ -1,9 +1,9 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package json implements encoding and decoding of JSON objects as defined in
-// RFC 4627. The mapping between JSON objects and Go values is described
+// Package json implements encoding and decoding of JSON as defined in
+// RFC 4627. The mapping between JSON and Go values is described
 // in the documentation for the Marshal and Unmarshal functions.
 //
 // See "JSON and Go" for an introduction to this package:
@@ -38,10 +38,11 @@ import (
 // The angle brackets "<" and ">" are escaped to "\u003c" and "\u003e"
 // to keep some browsers from misinterpreting JSON output as HTML.
 // Ampersand "&" is also escaped to "\u0026" for the same reason.
+// This escaping can be disabled using an Encoder with DisableHTMLEscaping.
 //
 // Array and slice values encode as JSON arrays, except that
 // []byte encodes as a base64-encoded string, and a nil slice
-// encodes as the null JSON object.
+// encodes as the null JSON value.
 //
 // Struct values encode as JSON objects. Each exported struct field
 // becomes a member of the object unless
@@ -79,8 +80,8 @@ import (
 //	Int64String int64 `json:",string"`
 //
 // The key name will be used if it's a non-empty string consisting of
-// only Unicode letters, digits, dollar signs, percent signs, hyphens,
-// underscores and slashes.
+// only Unicode letters, digits, and ASCII punctuation except quotation
+// marks, backslash, and comma.
 //
 // Anonymous struct fields are usually marshaled as if their inner exported fields
 // were fields in the outer struct, subject to the usual Go visibility rules amended
@@ -106,22 +107,26 @@ import (
 // an anonymous struct field in both current and earlier versions, give the field
 // a JSON tag of "-".
 //
-// Map values encode as JSON objects.
-// The map's key type must be string; the map keys are used as JSON object
-// keys, subject to the UTF-8 coercion described for string values above.
+// Map values encode as JSON objects. The map's key type must either be a
+// string, an integer type, or implement encoding.TextMarshaler. The map keys
+// are sorted and used as JSON object keys by applying the following rules,
+// subject to the UTF-8 coercion described for string values above:
+//   - string keys are used directly
+//   - encoding.TextMarshalers are marshaled
+//   - integer keys are converted to strings
 //
 // Pointer values encode as the value pointed to.
-// A nil pointer encodes as the null JSON object.
+// A nil pointer encodes as the null JSON value.
 //
 // Interface values encode as the value contained in the interface.
-// A nil interface value encodes as the null JSON object.
+// A nil interface value encodes as the null JSON value.
 //
 // Channel, complex, and function values cannot be encoded in JSON.
 // Attempting to encode such a value causes Marshal to return
 // an UnsupportedTypeError.
 //
 // JSON cannot represent cyclic data structures and Marshal does not
-// handle them.  Passing cyclic structures to Marshal will result in
+// handle them. Passing cyclic structures to Marshal will result in
 // an infinite recursion.
 func Marshal(v interface{}) ([]byte, error)
 
@@ -136,7 +141,7 @@ func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error)
 // be used.
 func HTMLEscape(dst *bytes.Buffer, src []byte)
 
-// Marshaler is the interface implemented by objects that
+// Marshaler is the interface implemented by types that
 // can marshal themselves into valid JSON.
 type Marshaler interface {
 	MarshalJSON() ([]byte, error)
@@ -180,7 +185,8 @@ func (e *MarshalerError) Error() string
 
 // sliceEncoder just wraps an arrayEncoder, checking to make sure the value isn't nil.
 
-// stringValues is a slice of reflect.Value holding *reflect.StringValue.
+// byString is a slice of reflectWithString where the reflect.Value is either
+// a string or an encoding.TextMarshaler.
 // It implements the methods to sort by string.
 
 // A field represents a single field found in a struct.

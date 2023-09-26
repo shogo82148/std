@@ -1,11 +1,9 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 // Package pprof serves via its HTTP server runtime profiling data
 // in the format expected by the pprof visualization tool.
-// For more information about pprof, see
-// http://code.google.com/p/google-perftools/.
 //
 // The package is typically only imported for the side effect of
 // registering its HTTP handlers.
@@ -16,7 +14,7 @@
 //	import _ "net/http/pprof"
 //
 // If your application is not already running an http server, you
-// need to start one.  Add "net/http" and "log" to your imports and
+// need to start one. Add "net/http" and "log" to your imports and
 // the following code to your main function:
 //
 //	go func() {
@@ -31,7 +29,8 @@
 //
 //	go tool pprof http://localhost:6060/debug/pprof/profile
 //
-// Or to look at the goroutine blocking profile:
+// Or to look at the goroutine blocking profile, after calling
+// runtime.SetBlockProfileRate in your program:
 //
 //	go tool pprof http://localhost:6060/debug/pprof/block
 //

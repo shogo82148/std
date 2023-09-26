@@ -22,17 +22,13 @@ var (
 // This is an API usage error - the local side is closed.
 // ErrPersistEOF (above) reports that the remote side is closed.
 
-// A ServerConn reads requests and sends responses over an underlying
-// connection, until the HTTP keepalive logic commands an end. ServerConn
-// also allows hijacking the underlying connection by calling Hijack
-// to regain control over the connection. ServerConn supports pipe-lining,
-// i.e. requests can be read out of sync (but in the same order) while the
-// respective responses are sent.
+// ServerConn is an artifact of Go's early HTTP implementation.
+// It is low-level, old, and unused by Go's current HTTP stack.
+// We should have deleted it before Go 1.
 //
-// ServerConn is low-level and old. Applications should instead use Server
-// in the net/http package.
+// Deprecated: Use the Server in package net/http instead.
 type ServerConn struct {
-	lk              sync.Mutex
+	mu              sync.Mutex
 	c               net.Conn
 	r               *bufio.Reader
 	re, we          error
@@ -43,27 +39,27 @@ type ServerConn struct {
 	pipe textproto.Pipeline
 }
 
-// NewServerConn returns a new ServerConn reading and writing c. If r is not
-// nil, it is the buffer to use when reading c.
+// NewServerConn is an artifact of Go's early HTTP implementation.
+// It is low-level, old, and unused by Go's current HTTP stack.
+// We should have deleted it before Go 1.
 //
-// ServerConn is low-level and old. Applications should instead use Server
-// in the net/http package.
+// Deprecated: Use the Server in package net/http instead.
 func NewServerConn(c net.Conn, r *bufio.Reader) *ServerConn
 
 // Hijack detaches the ServerConn and returns the underlying connection as well
 // as the read-side bufio which may have some left over data. Hijack may be
 // called before Read has signaled the end of the keep-alive logic. The user
 // should not call Hijack while Read or Write is in progress.
-func (sc *ServerConn) Hijack() (c net.Conn, r *bufio.Reader)
+func (sc *ServerConn) Hijack() (net.Conn, *bufio.Reader)
 
-// Close calls Hijack and then also closes the underlying connection
+// Close calls Hijack and then also closes the underlying connection.
 func (sc *ServerConn) Close() error
 
 // Read returns the next request on the wire. An ErrPersistEOF is returned if
 // it is gracefully determined that there are no more requests (e.g. after the
 // first request on an HTTP/1.0 connection, or after a Connection:close on a
 // HTTP/1.1 connection).
-func (sc *ServerConn) Read() (req *http.Request, err error)
+func (sc *ServerConn) Read() (*http.Request, error)
 
 // Pending returns the number of unanswered requests
 // that have been received on the connection.
@@ -74,15 +70,13 @@ func (sc *ServerConn) Pending() int
 // it returns an error, regardless of any errors returned on the Read side.
 func (sc *ServerConn) Write(req *http.Request, resp *http.Response) error
 
-// A ClientConn sends request and receives headers over an underlying
-// connection, while respecting the HTTP keepalive logic. ClientConn
-// supports hijacking the connection calling Hijack to
-// regain control of the underlying net.Conn and deal with it as desired.
+// ClientConn is an artifact of Go's early HTTP implementation.
+// It is low-level, old, and unused by Go's current HTTP stack.
+// We should have deleted it before Go 1.
 //
-// ClientConn is low-level and old. Applications should instead use
-// Client or Transport in the net/http package.
+// Deprecated: Use Client or Transport in package net/http instead.
 type ClientConn struct {
-	lk              sync.Mutex
+	mu              sync.Mutex
 	c               net.Conn
 	r               *bufio.Reader
 	re, we          error
@@ -94,18 +88,18 @@ type ClientConn struct {
 	writeReq func(*http.Request, io.Writer) error
 }
 
-// NewClientConn returns a new ClientConn reading and writing c.  If r is not
-// nil, it is the buffer to use when reading c.
+// NewClientConn is an artifact of Go's early HTTP implementation.
+// It is low-level, old, and unused by Go's current HTTP stack.
+// We should have deleted it before Go 1.
 //
-// ClientConn is low-level and old. Applications should use Client or
-// Transport in the net/http package.
+// Deprecated: Use the Client or Transport in package net/http instead.
 func NewClientConn(c net.Conn, r *bufio.Reader) *ClientConn
 
-// NewProxyClientConn works like NewClientConn but writes Requests
-// using Request's WriteProxy method.
+// NewProxyClientConn is an artifact of Go's early HTTP implementation.
+// It is low-level, old, and unused by Go's current HTTP stack.
+// We should have deleted it before Go 1.
 //
-// New code should not use NewProxyClientConn. See Client or
-// Transport in the net/http package instead.
+// Deprecated: Use the Client or Transport in package net/http instead.
 func NewProxyClientConn(c net.Conn, r *bufio.Reader) *ClientConn
 
 // Hijack detaches the ClientConn and returns the underlying connection as well
@@ -114,7 +108,7 @@ func NewProxyClientConn(c net.Conn, r *bufio.Reader) *ClientConn
 // logic. The user should not call Hijack while Read or Write is in progress.
 func (cc *ClientConn) Hijack() (c net.Conn, r *bufio.Reader)
 
-// Close calls Hijack and then also closes the underlying connection
+// Close calls Hijack and then also closes the underlying connection.
 func (cc *ClientConn) Close() error
 
 // Write writes a request. An ErrPersistEOF error is returned if the connection
@@ -122,7 +116,7 @@ func (cc *ClientConn) Close() error
 // keepalive connection is logically closed after this request and the opposing
 // server is informed. An ErrUnexpectedEOF indicates the remote closed the
 // underlying TCP connection, which is usually considered as graceful close.
-func (cc *ClientConn) Write(req *http.Request) (err error)
+func (cc *ClientConn) Write(req *http.Request) error
 
 // Pending returns the number of unanswered requests
 // that have been sent on the connection.
@@ -135,4 +129,4 @@ func (cc *ClientConn) Pending() int
 func (cc *ClientConn) Read(req *http.Request) (resp *http.Response, err error)
 
 // Do is convenience method that writes a request and reads a response.
-func (cc *ClientConn) Do(req *http.Request) (resp *http.Response, err error)
+func (cc *ClientConn) Do(req *http.Request) (*http.Response, error)

@@ -10,7 +10,7 @@ package regexp
 // A entry is an entry on a queue.
 // It holds both the instruction pc and the actual thread.
 // Some queue entries are just place holders so that the machine
-// knows it has considered that pc.  Such entries have t == nil.
+// knows it has considered that pc. Such entries have t == nil.
 
 // A thread is the state of a single path through the machine:
 // an instruction and a corresponding capture array.

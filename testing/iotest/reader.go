@@ -28,5 +28,5 @@ func DataErrReader(r io.Reader) io.Reader
 var ErrTimeout = errors.New("timeout")
 
 // TimeoutReader returns ErrTimeout on the second read
-// with no data.  Subsequent calls to read succeed.
+// with no data. Subsequent calls to read succeed.
 func TimeoutReader(r io.Reader) io.Reader

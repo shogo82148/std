@@ -1,4 +1,4 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -35,5 +35,5 @@ func (e *SyntaxError) Error() string
 
 // These values are stored in the parseState stack.
 // They give the current state of a composite value
-// being scanned.  If the parser is inside a nested value
+// being scanned. If the parser is inside a nested value
 // the parseState describes the nested state, outermost at entry 0.

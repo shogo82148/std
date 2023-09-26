@@ -135,10 +135,10 @@ const (
 	DefaultDebugPath = "/debug/rpc"
 )
 
-// Precompute the reflect type for error.  Can't use error directly
-// because Typeof takes an empty interface value.  This is annoying.
+// Precompute the reflect type for error. Can't use error directly
+// because Typeof takes an empty interface value. This is annoying.
 
-// Request is a header written before every RPC call.  It is used internally
+// Request is a header written before every RPC call. It is used internally
 // but documented here as an aid to debugging, such as when analyzing
 // network traffic.
 type Request struct {
@@ -147,7 +147,7 @@ type Request struct {
 	next          *Request
 }
 
-// Response is a header written before every RPC return.  It is used internally
+// Response is a header written before every RPC return. It is used internally
 // but documented here as an aid to debugging, such as when analyzing
 // network traffic.
 type Response struct {
@@ -198,7 +198,7 @@ func (server *Server) RegisterName(name string, rcvr interface{}) error
 // ServeConn blocks, serving the connection until the client hangs up.
 // The caller typically invokes ServeConn in a go statement.
 // ServeConn uses the gob wire format (see package gob) on the
-// connection.  To use an alternate codec, use ServeCodec.
+// connection. To use an alternate codec, use ServeCodec.
 func (server *Server) ServeConn(conn io.ReadWriteCloser)
 
 // ServeCodec is like ServeConn but uses the specified codec to
@@ -226,7 +226,7 @@ func RegisterName(name string, rcvr interface{}) error
 // RPC responses for the server side of an RPC session.
 // The server calls ReadRequestHeader and ReadRequestBody in pairs
 // to read requests from the connection, and it calls WriteResponse to
-// write a response back.  The server calls Close when finished with the
+// write a response back. The server calls Close when finished with the
 // connection. ReadRequestBody may be called with a nil
 // argument to force the body of the request to be read and discarded.
 type ServerCodec interface {
@@ -242,7 +242,7 @@ type ServerCodec interface {
 // ServeConn blocks, serving the connection until the client hangs up.
 // The caller typically invokes ServeConn in a go statement.
 // ServeConn uses the gob wire format (see package gob) on the
-// connection.  To use an alternate codec, use ServeCodec.
+// connection. To use an alternate codec, use ServeCodec.
 func ServeConn(conn io.ReadWriteCloser)
 
 // ServeCodec is like ServeConn but uses the specified codec to

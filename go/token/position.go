@@ -101,6 +101,7 @@ func (f *File) MergeLine(line int)
 // Each line offset must be larger than the offset for the previous line
 // and smaller than the file size; otherwise SetLines fails and returns
 // false.
+// Callers must not mutate the provided slice after SetLines returns.
 func (f *File) SetLines(lines []int) bool
 
 // SetLinesForContent sets the line offsets for the given file content.

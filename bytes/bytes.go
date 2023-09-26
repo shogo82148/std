@@ -17,6 +17,12 @@ func Count(s, sep []byte) int
 // Contains reports whether subslice is within b.
 func Contains(b, subslice []byte) bool
 
+// ContainsAny reports whether any of the UTF-8-encoded Unicode code points in chars are within b.
+func ContainsAny(b []byte, chars string) bool
+
+// ContainsRune reports whether the Unicode code point r is within b.
+func ContainsRune(b []byte, r rune) bool
+
 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.
 func Index(s, sep []byte) int
 
@@ -33,13 +39,13 @@ func IndexRune(s []byte, r rune) int
 
 // IndexAny interprets s as a sequence of UTF-8-encoded Unicode code points.
 // It returns the byte index of the first occurrence in s of any of the Unicode
-// code points in chars.  It returns -1 if chars is empty or if there is no code
+// code points in chars. It returns -1 if chars is empty or if there is no code
 // point in common.
 func IndexAny(s []byte, chars string) int
 
 // LastIndexAny interprets s as a sequence of UTF-8-encoded Unicode code
-// points.  It returns the byte index of the last occurrence in s of any of
-// the Unicode code points in chars.  It returns -1 if chars is empty or if
+// points. It returns the byte index of the last occurrence in s of any of
+// the Unicode code points in chars. It returns -1 if chars is empty or if
 // there is no code point in common.
 func LastIndexAny(s []byte, chars string) int
 
@@ -81,7 +87,7 @@ func Fields(s []byte) [][]byte
 
 // FieldsFunc interprets s as a sequence of UTF-8-encoded Unicode code points.
 // It splits the slice s at each run of code points c satisfying f(c) and
-// returns a slice of subslices of s.  If all code points in s satisfy f(c), or
+// returns a slice of subslices of s. If all code points in s satisfy f(c), or
 // len(s) == 0, an empty slice is returned.
 // FieldsFunc makes no guarantees about the order in which it calls f(c).
 // If f does not return consistent results for a given c, FieldsFunc may crash.
@@ -99,7 +105,7 @@ func HasSuffix(s, suffix []byte) bool
 
 // Map returns a copy of the byte slice s with all its characters modified
 // according to the mapping function. If mapping returns a negative value, the character is
-// dropped from the string with no replacement.  The characters in s and the
+// dropped from the string with no replacement. The characters in s and the
 // output are interpreted as UTF-8-encoded Unicode code points.
 func Map(mapping func(r rune) rune, s []byte) []byte
 

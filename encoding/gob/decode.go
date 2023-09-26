@@ -17,7 +17,7 @@ package gob
 // The 'instructions' of the decoding machine
 
 // The encoder engine is an array of instructions indexed by field number of the incoming
-// decoder.  It is executed with random access according to field number.
+// decoder. It is executed with random access according to field number.
 
 // Index by Go types.
 

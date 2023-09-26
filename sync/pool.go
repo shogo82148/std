@@ -36,7 +36,11 @@ import (
 // not a suitable use for a Pool, since the overhead does not amortize well in
 // that scenario. It is more efficient to have such objects implement their own
 // free list.
+//
+// A Pool must not be copied after first use.
 type Pool struct {
+	noCopy noCopy
+
 	local     unsafe.Pointer
 	localSize uintptr
 

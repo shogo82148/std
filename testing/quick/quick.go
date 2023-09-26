@@ -58,8 +58,8 @@ type CheckEqualError struct {
 func (s *CheckEqualError) Error() string
 
 // Check looks for an input to f, any function that returns bool,
-// such that f returns false.  It calls f repeatedly, with arbitrary
-// values for each argument.  If f returns false on a given input,
+// such that f returns false. It calls f repeatedly, with arbitrary
+// values for each argument. If f returns false on a given input,
 // Check returns that input as a *CheckError.
 // For example:
 //
@@ -72,10 +72,10 @@ func (s *CheckEqualError) Error() string
 //			t.Error(err)
 //		}
 //	}
-func Check(f interface{}, config *Config) (err error)
+func Check(f interface{}, config *Config) error
 
 // CheckEqual looks for an input on which f and g return different results.
 // It calls f and g repeatedly with arbitrary values for each argument.
 // If f and g return different answers, CheckEqual returns a *CheckEqualError
 // describing the input and the outputs.
-func CheckEqual(f, g interface{}, config *Config) (err error)
+func CheckEqual(f, g interface{}, config *Config) error

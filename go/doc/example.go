@@ -18,6 +18,7 @@ type Example struct {
 	Play        *ast.File
 	Comments    []*ast.CommentGroup
 	Output      string
+	Unordered   bool
 	EmptyOutput bool
 	Order       int
 }

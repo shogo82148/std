@@ -65,8 +65,8 @@
 // directly, bypassing the MCache and MCentral free lists.
 //
 // The small objects on the MCache and MCentral free lists
-// may or may not be zeroed.  They are zeroed if and only if
-// the second word of the object is zero.  A span in the
+// may or may not be zeroed. They are zeroed if and only if
+// the second word of the object is zero. A span in the
 // page heap is zeroed unless s->needzero is set. When a span
 // is allocated to break into small objects, it is zeroed if needed
 // and s->needzero is set. There are two main benefits to delaying the
@@ -78,7 +78,5 @@
 //	   charged to the mutator, not the garbage collector.
 
 package runtime
-
-// Page number (address>>pageShift)
 
 // base address for all 0-byte allocations

@@ -8,14 +8,14 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Some constants in the form of bytes, to avoid string overhead.
-// Needlessly fastidious, I suppose.
+// Strings for use with buffer.WriteString.
+// This is less overhead than using buffer.Write with byte arrays.
 
 // State represents the printer state passed to custom formatters.
 // It provides access to the io.Writer interface plus information about
 // the flags and options for the operand's format specifier.
 type State interface {
-	Write(b []byte) (ret int, err error)
+	Write(b []byte) (n int, err error)
 
 	Width() (wid int, ok bool)
 
@@ -49,6 +49,8 @@ type GoStringer interface {
 }
 
 // Use simple []byte instead of bytes.Buffer to avoid large dependency.
+
+// pp is used to store a printer's state and is reused with sync.Pool to avoid allocations.
 
 // Fprintf formats according to a format specifier and writes to w.
 // It returns the number of bytes written and any write error encountered.

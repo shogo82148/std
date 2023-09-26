@@ -48,7 +48,7 @@ type Client struct {
 // reading of RPC responses for the client side of an RPC session.
 // The client calls WriteRequest to write a request to the connection
 // and calls ReadResponseHeader and ReadResponseBody in pairs
-// to read responses.  The client calls Close when finished with the
+// to read responses. The client calls Close when finished with the
 // connection. ReadResponseBody may be called with a nil
 // argument to force the body of the response to be read and then
 // discarded.
@@ -83,9 +83,9 @@ func Dial(network, address string) (*Client, error)
 
 func (client *Client) Close() error
 
-// Go invokes the function asynchronously.  It returns the Call structure representing
-// the invocation.  The done channel will signal when the call is complete by returning
-// the same Call object.  If done is nil, Go will allocate a new channel.
+// Go invokes the function asynchronously. It returns the Call structure representing
+// the invocation. The done channel will signal when the call is complete by returning
+// the same Call object. If done is nil, Go will allocate a new channel.
 // If non-nil, done must be buffered or Go will deliberately crash.
 func (client *Client) Go(serviceMethod string, args interface{}, reply interface{}, done chan *Call) *Call
 

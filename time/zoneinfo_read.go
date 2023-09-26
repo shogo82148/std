@@ -9,4 +9,6 @@
 
 package time
 
+// Copies of io.Seek* constants to avoid importing "io":
+
 // Simple I/O interface to binary blob of data.

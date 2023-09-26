@@ -14,17 +14,15 @@ import (
 )
 
 type Package struct {
-	writer     io.Writer
-	name       string
-	userPath   string
-	unexported bool
-	matchCase  bool
-	pkg        *ast.Package
-	file       *ast.File
-	doc        *doc.Package
-	build      *build.Package
-	fs         *token.FileSet
-	buf        bytes.Buffer
+	writer   io.Writer
+	name     string
+	userPath string
+	pkg      *ast.Package
+	file     *ast.File
+	doc      *doc.Package
+	build    *build.Package
+	fs       *token.FileSet
+	buf      bytes.Buffer
 }
 
 type PackageError string

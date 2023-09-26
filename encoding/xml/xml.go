@@ -123,7 +123,7 @@ func NewDecoder(r io.Reader) *Decoder
 //
 // Slices of bytes in the returned token data refer to the
 // parser's internal buffer and remain valid only until the next
-// call to Token.  To acquire a copy of the bytes, call CopyToken
+// call to Token. To acquire a copy of the bytes, call CopyToken
 // or the token's Copy method.
 //
 // Token expands self-closing elements such as <br/>
@@ -141,10 +141,10 @@ func NewDecoder(r io.Reader) *Decoder
 // set to the URL identifying its name space when known.
 // If Token encounters an unrecognized name space prefix,
 // it uses the prefix as the Space rather than report an error.
-func (d *Decoder) Token() (t Token, err error)
+func (d *Decoder) Token() (Token, error)
 
 // Parsing state - stack holds old name space translations
-// and the current set of open elements.  The translations to pop when
+// and the current set of open elements. The translations to pop when
 // ending a given tag are *below* it on the stack, which is
 // more work but forced on us by XML.
 

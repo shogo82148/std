@@ -6,7 +6,6 @@ package gzip
 
 import (
 	"github.com/shogo82148/std/compress/flate"
-	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"
 )
 
@@ -27,7 +26,7 @@ type Writer struct {
 	level       int
 	wroteHeader bool
 	compressor  *flate.Writer
-	digest      hash.Hash32
+	digest      uint32
 	size        uint32
 	closed      bool
 	buf         [10]byte

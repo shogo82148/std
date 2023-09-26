@@ -15,10 +15,11 @@ package sync
 // A Cond can be created as part of other structures.
 // A Cond must not be copied after first use.
 type Cond struct {
+	noCopy noCopy
+
 	L Locker
 
-	sema    syncSema
-	waiters uint32
+	notify  notifyList
 	checker copyChecker
 }
 
@@ -26,13 +27,13 @@ type Cond struct {
 func NewCond(l Locker) *Cond
 
 // Wait atomically unlocks c.L and suspends execution
-// of the calling goroutine.  After later resuming execution,
-// Wait locks c.L before returning.  Unlike in other systems,
+// of the calling goroutine. After later resuming execution,
+// Wait locks c.L before returning. Unlike in other systems,
 // Wait cannot return unless awoken by Broadcast or Signal.
 //
 // Because c.L is not locked when Wait first resumes, the caller
 // typically cannot assume that the condition is true when
-// Wait returns.  Instead, the caller should Wait in a loop:
+// Wait returns. Instead, the caller should Wait in a loop:
 //
 //	c.L.Lock()
 //	for !condition() {
@@ -55,3 +56,9 @@ func (c *Cond) Signal()
 func (c *Cond) Broadcast()
 
 // copyChecker holds back pointer to itself to detect object copying.
+
+// noCopy may be embedded into structs which must not be copied
+// after the first use.
+//
+// See https://github.com/golang/go/issues/8005#issuecomment-190753527
+// for details.

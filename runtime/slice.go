@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package runtime
+
+// maxElems is a lookup table containing the maximum capacity for a slice.
+// The index is the size of the slice element.

@@ -51,7 +51,7 @@
 //
 // The benchmark function must run the target code b.N times.
 // During benchmark execution, b.N is adjusted until the benchmark function lasts
-// long enough to be timed reliably.  The output
+// long enough to be timed reliably. The output
 //
 //	BenchmarkHello    10000000    282 ns/op
 //
@@ -126,6 +126,61 @@
 // example function, at least one other function, type, variable, or constant
 // declaration, and no test or benchmark functions.
 //
+// # Subtests and Sub-benchmarks
+//
+// The Run methods of T and B allow defining subtests and sub-benchmarks,
+// without having to define separate functions for each. This enables uses
+// like table-driven benchmarks and creating hierarchical tests.
+// It also provides a way to share common setup and tear-down code:
+//
+//	func TestFoo(t *testing.T) {
+//	    // <setup code>
+//	    t.Run("A=1", func(t *testing.T) { ... })
+//	    t.Run("A=2", func(t *testing.T) { ... })
+//	    t.Run("B=1", func(t *testing.T) { ... })
+//	    // <tear-down code>
+//	}
+//
+// Each subtest and sub-benchmark has a unique name: the combination of the name
+// of the top-level test and the sequence of names passed to Run, separated by
+// slashes, with an optional trailing sequence number for disambiguation.
+//
+// The argument to the -run and -bench command-line flags is a slash-separated
+// list of regular expressions that match each name element in turn.
+// For example:
+//
+//	go test -run Foo     # Run top-level tests matching "Foo".
+//	go test -run Foo/A=  # Run subtests of Foo matching "A=".
+//	go test -run /A=1    # Run all subtests of a top-level test matching "A=1".
+//
+// Subtests can also be used to control parallelism. A parent test will only
+// complete once all of its subtests complete. In this example, all tests are
+// run in parallel with each other, and only with each other, regardless of
+// other top-level tests that may be defined:
+//
+//	func TestGroupedParallel(t *testing.T) {
+//	    for _, tc := range tests {
+//	        tc := tc // capture range variable
+//	        t.Run(tc.Name, func(t *testing.T) {
+//	            t.Parallel()
+//	            ...
+//	        })
+//	    }
+//	}
+//
+// Run does not return until parallel subtests have completed, providing a way
+// to clean up after a group of parallel tests:
+//
+//	func TestTeardownParallel(t *testing.T) {
+//	    // This Run will not return until the parallel tests finish.
+//	    t.Run("group", func(t *testing.T) {
+//	        t.Run("Test1", parallelTest1)
+//	        t.Run("Test2", parallelTest2)
+//	        t.Run("Test3", parallelTest3)
+//	    })
+//	    // <tear-down code>
+//	}
+//
 // # Main
 //
 // It is sometimes necessary for a test program to do extra setup or teardown
@@ -182,7 +237,7 @@ var _ TB = (*T)(nil)
 var _ TB = (*B)(nil)
 
 // T is a type passed to Test functions to manage test state and support formatted test logs.
-// Logs are accumulated during execution and dumped to standard error when done.
+// Logs are accumulated during execution and dumped to standard output when done.
 //
 // A test ends when its Test function returns or calls any of the methods
 // FailNow, Fatal, Fatalf, SkipNow, Skip, or Skipf. Those methods, as well as
@@ -193,9 +248,8 @@ var _ TB = (*B)(nil)
 // may be called simultaneously from multiple goroutines.
 type T struct {
 	common
-	name          string
-	isParallel    bool
-	startParallel chan bool
+	isParallel bool
+	context    *testContext
 }
 
 // Parallel signals that this test is to be run in parallel with (and only with)
@@ -208,6 +262,13 @@ type InternalTest struct {
 	Name string
 	F    func(*T)
 }
+
+// Run runs f as a subtest of t called name. It reports whether f succeeded.
+// Run will block until all its parallel subtests have completed.
+func (t *T) Run(name string, f func(t *T)) bool
+
+// testContext holds all fields that are common to all tests. This includes
+// synchronization primitives to run at most *parallel tests.
 
 // An internal function but exported because it is cross-package; part of the implementation
 // of the "go test" command.

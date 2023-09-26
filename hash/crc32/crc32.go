@@ -19,6 +19,8 @@ import (
 // The size of a CRC-32 checksum in bytes.
 const Size = 4
 
+// Use "slice by 8" when payload >= this value.
+
 // Predefined polynomials.
 const (
 	// IEEE is by far and away the most common CRC-32 polynomial.

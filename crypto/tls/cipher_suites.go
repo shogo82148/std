@@ -18,8 +18,10 @@ package tls
 
 // tls10MAC implements the TLS 1.0 MAC function. RFC 2246, section 6.2.3.
 
-// A list of the possible cipher suite ids. Taken from
-// http://www.iana.org/assignments/tls-parameters/tls-parameters.xml
+// A list of cipher suite IDs that are, or have been, implemented by this
+// package.
+//
+// Taken from http://www.iana.org/assignments/tls-parameters/tls-parameters.xml
 const (
 	TLS_RSA_WITH_RC4_128_SHA                uint16 = 0x0005
 	TLS_RSA_WITH_3DES_EDE_CBC_SHA           uint16 = 0x000a
@@ -41,6 +43,6 @@ const (
 
 	// TLS_FALLBACK_SCSV isn't a standard cipher suite but an indicator
 	// that the client is doing version fallback. See
-	// https://tools.ietf.org/html/draft-ietf-tls-downgrade-scsv-00.
+	// https://tools.ietf.org/html/rfc7507.
 	TLS_FALLBACK_SCSV uint16 = 0x5600
 )

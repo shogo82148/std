@@ -25,7 +25,7 @@ const (
 // rfc1423Algo holds a method for enciphering a PEM block.
 
 // rfc1423Algos holds a slice of the possible ways to encrypt a PEM
-// block.  The ivSize numbers were taken from the OpenSSL source.
+// block. The ivSize numbers were taken from the OpenSSL source.
 
 // IsEncryptedPEMBlock returns if the PEM block is password encrypted.
 func IsEncryptedPEMBlock(b *pem.Block) bool

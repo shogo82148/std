@@ -15,7 +15,7 @@ func TimevalToNsec(tv Timeval) int64
 func NsecToTimeval(nsec int64) (tv Timeval)
 
 // sysnb	gettimeofday(tp *Timeval) (sec int64, usec int32, err error)
-func Gettimeofday(tv *Timeval) (err error)
+func Gettimeofday(tv *Timeval) error
 
 func SetKevent(k *Kevent_t, fd, mode, flags int)
 

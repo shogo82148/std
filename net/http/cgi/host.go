@@ -10,11 +10,12 @@
 //
 // Note that using CGI means starting a new process to handle each
 // request, which is typically less efficient than using a
-// long-running server.  This package is intended primarily for
+// long-running server. This package is intended primarily for
 // compatibility with existing systems.
 package cgi
 
 import (
+	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net/http"
 )
@@ -30,6 +31,7 @@ type Handler struct {
 	InheritEnv []string
 	Logger     *log.Logger
 	Args       []string
+	Stderr     io.Writer
 
 	PathLocationHandler http.Handler
 }

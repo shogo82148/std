@@ -36,6 +36,6 @@ func ToHTML(w io.Writer, text string, words map[string]string)
 
 // ToText prepares comment text for presentation in textual output.
 // It wraps paragraphs of text to width or fewer Unicode code points
-// and then prefixes each line with the indent.  In preformatted sections
+// and then prefixes each line with the indent. In preformatted sections
 // (such as program text), it prefixes each non-blank line with preIndent.
 func ToText(w io.Writer, text string, indent, preIndent string, width int)

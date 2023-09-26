@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 // Package url parses URLs and implements query escaping.
-// See RFC 3986.
 package url
 
 // Error reports an error and the operation and URL that caused it.
@@ -60,14 +59,15 @@ func QueryEscape(s string) string
 // construct a URL struct directly and set the Opaque field instead of Path.
 // These still work as well.
 type URL struct {
-	Scheme   string
-	Opaque   string
-	User     *Userinfo
-	Host     string
-	Path     string
-	RawPath  string
-	RawQuery string
-	Fragment string
+	Scheme     string
+	Opaque     string
+	User       *Userinfo
+	Host       string
+	Path       string
+	RawPath    string
+	ForceQuery bool
+	RawQuery   string
+	Fragment   string
 }
 
 // User returns a Userinfo containing the provided username
@@ -105,14 +105,14 @@ func (u *Userinfo) String() string
 
 // Parse parses rawurl into a URL structure.
 // The rawurl may be relative or absolute.
-func Parse(rawurl string) (url *URL, err error)
+func Parse(rawurl string) (*URL, error)
 
-// ParseRequestURI parses rawurl into a URL structure.  It assumes that
+// ParseRequestURI parses rawurl into a URL structure. It assumes that
 // rawurl was received in an HTTP request, so the rawurl is interpreted
 // only as an absolute URI or an absolute path.
 // The string rawurl is assumed not to have a #fragment suffix.
 // (Web browsers strip #fragment before sending the URL to a web server.)
-func ParseRequestURI(rawurl string) (url *URL, err error)
+func ParseRequestURI(rawurl string) (*URL, error)
 
 // EscapedPath returns the escaped form of u.Path.
 // In general there are multiple possible escaped forms of any path.
@@ -175,7 +175,7 @@ func (v Values) Del(key string)
 // ParseQuery always returns a non-nil map containing all the
 // valid query parameters found; err describes the first decoding error
 // encountered, if any.
-func ParseQuery(query string) (m Values, err error)
+func ParseQuery(query string) (Values, error)
 
 // Encode encodes the values into “URL encoded” form
 // ("bar=baz&foo=quux") sorted by key.
@@ -184,14 +184,14 @@ func (v Values) Encode() string
 // IsAbs reports whether the URL is absolute.
 func (u *URL) IsAbs() bool
 
-// Parse parses a URL in the context of the receiver.  The provided URL
-// may be relative or absolute.  Parse returns nil, err on parse
+// Parse parses a URL in the context of the receiver. The provided URL
+// may be relative or absolute. Parse returns nil, err on parse
 // failure, otherwise its return value is the same as ResolveReference.
 func (u *URL) Parse(ref string) (*URL, error)
 
 // ResolveReference resolves a URI reference to an absolute URI from
 // an absolute base URI, per RFC 3986 Section 5.2.  The URI reference
-// may be relative or absolute.  ResolveReference always returns a new
+// may be relative or absolute. ResolveReference always returns a new
 // URL instance, even if the returned URL is identical to either the
 // base or reference. If ref is an absolute URL, then ResolveReference
 // ignores base and returns a copy of ref.

@@ -10,6 +10,7 @@
 package http
 
 import (
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/time"
@@ -47,29 +48,30 @@ type RoundTripper interface {
 	RoundTrip(*Request) (*Response, error)
 }
 
-// Used in Send to implement io.ReadCloser by bundling together the
-// bufio.Reader through which we read the response, and the underlying
-// network connection.
-
 // Do sends an HTTP request and returns an HTTP response, following
-// policy (e.g. redirects, cookies, auth) as configured on the client.
+// policy (such as redirects, cookies, auth) as configured on the
+// client.
 //
 // An error is returned if caused by client policy (such as
-// CheckRedirect), or if there was an HTTP protocol error.
-// A non-2xx response doesn't cause an error.
+// CheckRedirect), or failure to speak HTTP (such as a network
+// connectivity problem). A non-2xx status code doesn't cause an
+// error.
 //
-// When err is nil, resp always contains a non-nil resp.Body.
-//
-// Callers should close resp.Body when done reading from it. If
-// resp.Body is not closed, the Client's underlying RoundTripper
-// (typically Transport) may not be able to re-use a persistent TCP
-// connection to the server for a subsequent "keep-alive" request.
+// If the returned error is nil, the Response will contain a non-nil
+// Body which the user is expected to close. If the Body is not
+// closed, the Client's underlying RoundTripper (typically Transport)
+// may not be able to re-use a persistent TCP connection to the server
+// for a subsequent "keep-alive" request.
 //
 // The request Body, if non-nil, will be closed by the underlying
 // Transport, even on errors.
 //
+// On error, any Response can be ignored. A non-nil Response with a
+// non-nil error only occurs when CheckRedirect fails, and even then
+// the returned Response.Body is already closed.
+//
 // Generally Get, Post, or PostForm will be used instead of Do.
-func (c *Client) Do(req *Request) (resp *Response, err error)
+func (c *Client) Do(req *Request) (*Response, error)
 
 // Get issues a GET to the specified URL. If the response is one of
 // the following redirect codes, Get follows the redirect, up to a
@@ -111,6 +113,12 @@ func Get(url string) (resp *Response, err error)
 //
 // To make a request with custom headers, use NewRequest and Client.Do.
 func (c *Client) Get(url string) (resp *Response, err error)
+
+// ErrUseLastResponse can be returned by Client.CheckRedirect hooks to
+// control how redirects are processed. If returned, the next request
+// is not sent and the most recent response is returned with its body
+// unclosed.
+var ErrUseLastResponse = errors.New("net/http: use last response")
 
 // Post issues a POST to the specified URL.
 //

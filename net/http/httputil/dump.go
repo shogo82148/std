@@ -34,15 +34,17 @@ func DumpRequestOut(req *http.Request, body bool) ([]byte, error)
 //
 // The documentation for http.Request.Write details which fields
 // of req are included in the dump.
-func DumpRequest(req *http.Request, body bool) (dump []byte, err error)
+func DumpRequest(req *http.Request, body bool) ([]byte, error)
 
-// errNoBody is a sentinel error value used by failureToReadBody so we can detect
-// that the lack of body was intentional.
+// errNoBody is a sentinel error value used by failureToReadBody so we
+// can detect that the lack of body was intentional.
 
 // failureToReadBody is a io.ReadCloser that just returns errNoBody on
-// Read.  It's swapped in when we don't actually want to consume the
-// body, but need a non-nil one, and want to distinguish the error
-// from reading the dummy body.
+// Read. It's swapped in when we don't actually want to consume
+// the body, but need a non-nil one, and want to distinguish the
+// error from reading the dummy body.
+
+// emptyBody is an instance of empty reader.
 
 // DumpResponse is like DumpRequest but dumps a response.
-func DumpResponse(resp *http.Response, body bool) (dump []byte, err error)
+func DumpResponse(resp *http.Response, body bool) ([]byte, error)

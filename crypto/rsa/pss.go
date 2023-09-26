@@ -33,7 +33,7 @@ func (pssOpts *PSSOptions) HashFunc() crypto.Hash
 // Note that hashed must be the result of hashing the input message using the
 // given hash function. The opts argument may be nil, in which case sensible
 // defaults are used.
-func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte, opts *PSSOptions) (s []byte, err error)
+func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte, opts *PSSOptions) ([]byte, error)
 
 // VerifyPSS verifies a PSS signature.
 // hashed is the result of hashing the input message using the given hash

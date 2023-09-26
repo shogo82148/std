@@ -176,12 +176,15 @@ func (f *Fn) HelperName() string
 
 // Source files and functions.
 type Source struct {
-	Funcs   []*Fn
-	Files   []string
-	Imports []string
+	Funcs           []*Fn
+	Files           []string
+	StdLibImports   []string
+	ExternalImports []string
 }
 
 func (src *Source) Import(pkg string)
+
+func (src *Source) ExternalImport(pkg string)
 
 // ParseFiles parses files listed in fs and extracts all syscall
 // functions listed in  sys comments. It returns source files
@@ -193,6 +196,9 @@ func (src *Source) DLLs() []string
 
 // ParseFile adds additional file path to a source set src.
 func (src *Source) ParseFile(path string) error
+
+// IsStdRepo returns true if src is part of standard library.
+func (src *Source) IsStdRepo() (bool, error)
 
 // Generate output source file from a source set src.
 func (src *Source) Generate(w io.Writer) error

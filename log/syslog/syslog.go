@@ -75,19 +75,19 @@ type Writer struct {
 }
 
 // This interface and the separate syslog_unix.go file exist for
-// Solaris support as implemented by gccgo.  On Solaris you can not
-// simply open a TCP connection to the syslog daemon.  The gccgo
+// Solaris support as implemented by gccgo. On Solaris you cannot
+// simply open a TCP connection to the syslog daemon. The gccgo
 // sources have a syslog_solaris.go file that implements unixSyslog to
 // return a type that satisfies this interface and simply calls the C
 // library syslog function.
 
-// New establishes a new connection to the system log daemon.  Each
+// New establishes a new connection to the system log daemon. Each
 // write to the returned writer sends a log message with the given
 // priority and prefix.
-func New(priority Priority, tag string) (w *Writer, err error)
+func New(priority Priority, tag string) (*Writer, error)
 
 // Dial establishes a connection to a log daemon by connecting to
-// address raddr on the specified network.  Each write to the returned
+// address raddr on the specified network. Each write to the returned
 // writer sends a log message with the given facility, severity and
 // tag.
 // If network is empty, Dial will connect to the local syslog server.
@@ -101,35 +101,35 @@ func (w *Writer) Close() error
 
 // Emerg logs a message with severity LOG_EMERG, ignoring the severity
 // passed to New.
-func (w *Writer) Emerg(m string) (err error)
+func (w *Writer) Emerg(m string) error
 
 // Alert logs a message with severity LOG_ALERT, ignoring the severity
 // passed to New.
-func (w *Writer) Alert(m string) (err error)
+func (w *Writer) Alert(m string) error
 
 // Crit logs a message with severity LOG_CRIT, ignoring the severity
 // passed to New.
-func (w *Writer) Crit(m string) (err error)
+func (w *Writer) Crit(m string) error
 
 // Err logs a message with severity LOG_ERR, ignoring the severity
 // passed to New.
-func (w *Writer) Err(m string) (err error)
+func (w *Writer) Err(m string) error
 
 // Warning logs a message with severity LOG_WARNING, ignoring the
 // severity passed to New.
-func (w *Writer) Warning(m string) (err error)
+func (w *Writer) Warning(m string) error
 
 // Notice logs a message with severity LOG_NOTICE, ignoring the
 // severity passed to New.
-func (w *Writer) Notice(m string) (err error)
+func (w *Writer) Notice(m string) error
 
 // Info logs a message with severity LOG_INFO, ignoring the severity
 // passed to New.
-func (w *Writer) Info(m string) (err error)
+func (w *Writer) Info(m string) error
 
 // Debug logs a message with severity LOG_DEBUG, ignoring the severity
 // passed to New.
-func (w *Writer) Debug(m string) (err error)
+func (w *Writer) Debug(m string) error
 
 // NewLogger creates a log.Logger whose output is written to
 // the system log service with the specified priority. The logFlag

@@ -15,7 +15,7 @@
 //	memstats  runtime.Memstats
 //
 // The package is sometimes only imported for the side effect of
-// registering its HTTP handler and the above variables.  To use it
+// registering its HTTP handler and the above variables. To use it
 // this way, link this package into your program:
 //
 //	import _ "expvar"
@@ -108,7 +108,8 @@ func (f Func) String() string
 // registered then this will log.Panic.
 func Publish(name string, v Var)
 
-// Get retrieves a named exported variable.
+// Get retrieves a named exported variable. It returns nil if the name has
+// not been registered.
 func Get(name string) Var
 
 func NewInt(name string) *Int

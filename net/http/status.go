@@ -4,10 +4,12 @@
 
 package http
 
-// HTTP status codes, defined in RFC 2616.
+// HTTP status codes as registered with IANA.
+// See: http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
 const (
 	StatusContinue           = 100
 	StatusSwitchingProtocols = 101
+	StatusProcessing         = 102
 
 	StatusOK                   = 200
 	StatusCreated              = 201
@@ -16,6 +18,9 @@ const (
 	StatusNoContent            = 204
 	StatusResetContent         = 205
 	StatusPartialContent       = 206
+	StatusMultiStatus          = 207
+	StatusAlreadyReported      = 208
+	StatusIMUsed               = 226
 
 	StatusMultipleChoices   = 300
 	StatusMovedPermanently  = 301
@@ -23,7 +28,9 @@ const (
 	StatusSeeOther          = 303
 	StatusNotModified       = 304
 	StatusUseProxy          = 305
+	_                       = 306
 	StatusTemporaryRedirect = 307
+	StatusPermanentRedirect = 308
 
 	StatusBadRequest                   = 400
 	StatusUnauthorized                 = 401
@@ -44,6 +51,10 @@ const (
 	StatusRequestedRangeNotSatisfiable = 416
 	StatusExpectationFailed            = 417
 	StatusTeapot                       = 418
+	StatusUnprocessableEntity          = 422
+	StatusLocked                       = 423
+	StatusFailedDependency             = 424
+	StatusUpgradeRequired              = 426
 	StatusPreconditionRequired         = 428
 	StatusTooManyRequests              = 429
 	StatusRequestHeaderFieldsTooLarge  = 431
@@ -55,6 +66,10 @@ const (
 	StatusServiceUnavailable            = 503
 	StatusGatewayTimeout                = 504
 	StatusHTTPVersionNotSupported       = 505
+	StatusVariantAlsoNegotiates         = 506
+	StatusInsufficientStorage           = 507
+	StatusLoopDetected                  = 508
+	StatusNotExtended                   = 510
 	StatusNetworkAuthenticationRequired = 511
 )
 

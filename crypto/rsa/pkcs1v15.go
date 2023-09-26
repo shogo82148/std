@@ -15,15 +15,17 @@ type PKCS1v15DecryptOptions struct {
 	SessionKeyLen int
 }
 
-// EncryptPKCS1v15 encrypts the given message with RSA and the padding scheme from PKCS#1 v1.5.
-// The message must be no longer than the length of the public modulus minus 11 bytes.
+// EncryptPKCS1v15 encrypts the given message with RSA and the padding
+// scheme from PKCS#1 v1.5.  The message must be no longer than the
+// length of the public modulus minus 11 bytes.
 //
-// The rand parameter is used as a source of entropy to ensure that encrypting
-// the same message twice doesn't result in the same ciphertext.
+// The rand parameter is used as a source of entropy to ensure that
+// encrypting the same message twice doesn't result in the same
+// ciphertext.
 //
-// WARNING: use of this function to encrypt plaintexts other than session keys
-// is dangerous. Use RSA OAEP in new protocols.
-func EncryptPKCS1v15(rand io.Reader, pub *PublicKey, msg []byte) (out []byte, err error)
+// WARNING: use of this function to encrypt plaintexts other than
+// session keys is dangerous. Use RSA OAEP in new protocols.
+func EncryptPKCS1v15(rand io.Reader, pub *PublicKey, msg []byte) ([]byte, error)
 
 // DecryptPKCS1v15 decrypts a plaintext using RSA and the padding scheme from PKCS#1 v1.5.
 // If rand != nil, it uses RSA blinding to avoid timing side-channel attacks.
@@ -33,7 +35,7 @@ func EncryptPKCS1v15(rand io.Reader, pub *PublicKey, msg []byte) (out []byte, er
 // learn whether each instance returned an error then they can decrypt and
 // forge signatures as if they had the private key. See
 // DecryptPKCS1v15SessionKey for a way of solving this problem.
-func DecryptPKCS1v15(rand io.Reader, priv *PrivateKey, ciphertext []byte) (out []byte, err error)
+func DecryptPKCS1v15(rand io.Reader, priv *PrivateKey, ciphertext []byte) ([]byte, error)
 
 // DecryptPKCS1v15SessionKey decrypts a session key using RSA and the padding scheme from PKCS#1 v1.5.
 // If rand != nil, it uses RSA blinding to avoid timing side-channel attacks.
@@ -54,7 +56,7 @@ func DecryptPKCS1v15(rand io.Reader, priv *PrivateKey, ciphertext []byte) (out [
 // a random value was used (because it'll be different for the same ciphertext)
 // and thus whether the padding was correct. This defeats the point of this
 // function. Using at least a 16-byte key will protect against this attack.
-func DecryptPKCS1v15SessionKey(rand io.Reader, priv *PrivateKey, ciphertext []byte, key []byte) (err error)
+func DecryptPKCS1v15SessionKey(rand io.Reader, priv *PrivateKey, ciphertext []byte, key []byte) error
 
 // These are ASN1 DER structures:
 //   DigestInfo ::= SEQUENCE {
@@ -65,22 +67,24 @@ func DecryptPKCS1v15SessionKey(rand io.Reader, priv *PrivateKey, ciphertext []by
 // precompute a prefix of the digest value that makes a valid ASN1 DER string
 // with the correct contents.
 
-// SignPKCS1v15 calculates the signature of hashed using RSASSA-PKCS1-V1_5-SIGN from RSA PKCS#1 v1.5.
-// Note that hashed must be the result of hashing the input message using the
-// given hash function. If hash is zero, hashed is signed directly. This isn't
+// SignPKCS1v15 calculates the signature of hashed using
+// RSASSA-PKCS1-V1_5-SIGN from RSA PKCS#1 v1.5.  Note that hashed must
+// be the result of hashing the input message using the given hash
+// function. If hash is zero, hashed is signed directly. This isn't
 // advisable except for interoperability.
 //
-// If rand is not nil then RSA blinding will be used to avoid timing side-channel attacks.
+// If rand is not nil then RSA blinding will be used to avoid timing
+// side-channel attacks.
 //
-// This function is deterministic. Thus, if the set of possible messages is
-// small, an attacker may be able to build a map from messages to signatures
-// and identify the signed messages. As ever, signatures provide authenticity,
-// not confidentiality.
-func SignPKCS1v15(rand io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte) (s []byte, err error)
+// This function is deterministic. Thus, if the set of possible
+// messages is small, an attacker may be able to build a map from
+// messages to signatures and identify the signed messages. As ever,
+// signatures provide authenticity, not confidentiality.
+func SignPKCS1v15(rand io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte) ([]byte, error)
 
 // VerifyPKCS1v15 verifies an RSA PKCS#1 v1.5 signature.
 // hashed is the result of hashing the input message using the given hash
 // function and sig is the signature. A valid signature is indicated by
 // returning a nil error. If hash is zero then hashed is used directly. This
 // isn't advisable except for interoperability.
-func VerifyPKCS1v15(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte) (err error)
+func VerifyPKCS1v15(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte) error

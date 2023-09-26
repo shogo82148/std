@@ -141,7 +141,7 @@ const (
 	PanicOnError
 )
 
-// A FlagSet represents a set of defined flags.  The zero value of a FlagSet
+// A FlagSet represents a set of defined flags. The zero value of a FlagSet
 // has no name and has ContinueOnError error handling.
 type FlagSet struct {
 	Usage func()
@@ -172,7 +172,7 @@ func (f *FlagSet) SetOutput(output io.Writer)
 func (f *FlagSet) VisitAll(fn func(*Flag))
 
 // VisitAll visits the command-line flags in lexicographical order, calling
-// fn for each.  It visits all flags, even those not set.
+// fn for each. It visits all flags, even those not set.
 func VisitAll(fn func(*Flag))
 
 // Visit visits the flags in lexicographical order, calling fn for each.
@@ -180,7 +180,7 @@ func VisitAll(fn func(*Flag))
 func (f *FlagSet) Visit(fn func(*Flag))
 
 // Visit visits the command-line flags in lexicographical order, calling fn
-// for each.  It visits only those flags that have been set.
+// for each. It visits only those flags that have been set.
 func Visit(fn func(*Flag))
 
 // Lookup returns the Flag structure of the named flag, returning nil if none exists.
@@ -250,12 +250,12 @@ func (f *FlagSet) NFlag() int
 // NFlag returns the number of command-line flags that have been set.
 func NFlag() int
 
-// Arg returns the i'th argument.  Arg(0) is the first remaining argument
+// Arg returns the i'th argument. Arg(0) is the first remaining argument
 // after flags have been processed. Arg returns an empty string if the
 // requested element does not exist.
 func (f *FlagSet) Arg(i int) string
 
-// Arg returns the i'th command-line argument.  Arg(0) is the first remaining argument
+// Arg returns the i'th command-line argument. Arg(0) is the first remaining argument
 // after flags have been processed. Arg returns an empty string if the
 // requested element does not exist.
 func Arg(i int) string
@@ -421,7 +421,7 @@ func (f *FlagSet) Var(value Value, name string, usage string)
 func Var(value Value, name string, usage string)
 
 // Parse parses flag definitions from the argument list, which should not
-// include the command name.  Must be called after all flags in the FlagSet
+// include the command name. Must be called after all flags in the FlagSet
 // are defined and before flags are accessed by the program.
 // The return value will be ErrHelp if -help or -h were set but not defined.
 func (f *FlagSet) Parse(arguments []string) error

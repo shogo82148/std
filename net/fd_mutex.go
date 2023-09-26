@@ -4,9 +4,9 @@
 
 package net
 
-// fdMutex is a specialized synchronization primitive
-// that manages lifetime of an fd and serializes access
-// to Read and Write methods on netFD.
+// fdMutex is a specialized synchronization primitive that manages
+// lifetime of an fd and serializes access to Read, Write and Close
+// methods on netFD.
 
 // fdMutex.state is organized as follows:
 // 1 bit - whether netFD is closed, if set all subsequent lock operations will fail.

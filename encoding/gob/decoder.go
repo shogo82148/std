@@ -44,7 +44,7 @@ func (dec *Decoder) Decode(e interface{}) error
 
 // DecodeValue reads the next value from the input stream.
 // If v is the zero reflect.Value (v.Kind() == Invalid), DecodeValue discards the value.
-// Otherwise, it stores the value into v.  In that case, v must represent
+// Otherwise, it stores the value into v. In that case, v must represent
 // a non-nil pointer to data or be an assignable reflect.Value (v.CanSet())
 // If the input is at EOF, DecodeValue returns io.EOF and
 // does not modify v.

@@ -23,6 +23,12 @@ import (
 
 // ParsePKIXPublicKey parses a DER encoded public key. These values are
 // typically found in PEM blocks with "BEGIN PUBLIC KEY".
+//
+// Supported key types include RSA, DSA, and ECDSA. Unknown key
+// types result in an error.
+//
+// On success, pub will be of type *rsa.PublicKey, *dsa.PublicKey,
+// or *ecdsa.PublicKey.
 func ParsePKIXPublicKey(derBytes []byte) (pub interface{}, err error)
 
 // MarshalPKIXPublicKey serialises a public key to DER-encoded PKIX format.
@@ -225,14 +231,14 @@ func (c *Certificate) Equal(other *Certificate) bool
 
 // CheckSignatureFrom verifies that the signature on c is a valid signature
 // from parent.
-func (c *Certificate) CheckSignatureFrom(parent *Certificate) (err error)
+func (c *Certificate) CheckSignatureFrom(parent *Certificate) error
 
 // CheckSignature verifies that signature is a valid signature over signed from
 // c's public key.
-func (c *Certificate) CheckSignature(algo SignatureAlgorithm, signed, signature []byte) (err error)
+func (c *Certificate) CheckSignature(algo SignatureAlgorithm, signed, signature []byte) error
 
 // CheckCRLSignature checks that the signature in crl is from c.
-func (c *Certificate) CheckCRLSignature(crl *pkix.CertificateList) (err error)
+func (c *Certificate) CheckCRLSignature(crl *pkix.CertificateList) error
 
 type UnhandledCriticalExtension struct{}
 
@@ -278,10 +284,10 @@ func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv 
 // encoded CRLs will appear where they should be DER encoded, so this function
 // will transparently handle PEM encoding as long as there isn't any leading
 // garbage.
-func ParseCRL(crlBytes []byte) (certList *pkix.CertificateList, err error)
+func ParseCRL(crlBytes []byte) (*pkix.CertificateList, error)
 
 // ParseDERCRL parses a DER encoded CRL from the given bytes.
-func ParseDERCRL(derBytes []byte) (certList *pkix.CertificateList, err error)
+func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
 
 // CreateCRL returns a DER encoded CRL, signed by this Certificate, that
 // contains the given list of revoked certificates.
@@ -317,8 +323,8 @@ type CertificateRequest struct {
 // oidExtensionRequest is a PKCS#9 OBJECT IDENTIFIER that indicates requested
 // extensions in a CSR.
 
-// CreateCertificateRequest creates a new certificate based on a template. The
-// following members of template are used: Subject, Attributes,
+// CreateCertificateRequest creates a new certificate request based on a template.
+// The following members of template are used: Subject, Attributes,
 // SignatureAlgorithm, Extensions, DNSNames, EmailAddresses, and IPAddresses.
 // The private key is the private key of the signer.
 //
@@ -332,5 +338,5 @@ func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv
 // given ASN.1 DER data.
 func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error)
 
-// CheckSignature verifies that the signature on c is a valid signature
-func (c *CertificateRequest) CheckSignature() (err error)
+// CheckSignature reports whether the signature on c is valid.
+func (c *CertificateRequest) CheckSignature() error

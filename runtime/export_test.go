@@ -1,4 +1,4 @@
-// Copyright 2010 The Go Authors.  All rights reserved.
+// Copyright 2010 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -31,15 +31,6 @@ type LFNode struct {
 	Pushcnt uintptr
 }
 
-type ParFor struct {
-	body   func(*ParFor, uint32)
-	done   uint32
-	Nthr   uint32
-	thrseq uint32
-	Cnt    uint32
-	wait   bool
-}
-
 var StringHash = stringHash
 var BytesHash = bytesHash
 var Int32Hash = int32Hash
@@ -68,3 +59,6 @@ var TestingAssertE2I2GC = &testingAssertE2I2GC
 var TestingAssertE2T2GC = &testingAssertE2T2GC
 
 var ForceGCPeriod = &forcegcperiod
+
+var ReadUnaligned32 = readUnaligned32
+var ReadUnaligned64 = readUnaligned64

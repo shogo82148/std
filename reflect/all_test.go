@@ -199,6 +199,8 @@ type OuterInt struct {
 	InnerInt
 }
 
+type FuncDDD func(...interface{}) error
+
 type Private struct {
 	x int
 	y **int
@@ -228,6 +230,10 @@ type NonComparableStruct struct {
 	X int
 	Y map[string]int
 }
+
+type StructI int
+
+type StructIPtr int
 
 type B1 struct {
 	X int
@@ -368,3 +374,5 @@ type Inner struct {
 type Impl struct{}
 
 type XM struct{}
+
+type TheNameOfThisTypeIsExactly255BytesLongSoWhenTheCompilerPrependsTheReflectTestPackageNameAndExtraStarTheLinkerRuntimeAndReflectPackagesWillHaveToCorrectlyDecodeTheSecondLengthByte0123456789_0123456789_0123456789_0123456789_0123456789_012345678 int

@@ -17,6 +17,6 @@ Generate a trace file with 'go test':
 
 View the trace in a web browser:
 
-	go tool trace pkg.test trace.out
+	go tool trace trace.out
 */
 package main

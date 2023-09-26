@@ -45,6 +45,8 @@ type File struct {
 	file    *ast.File
 	b       bytes.Buffer
 
+	basePkg *Package
+
 	stringers map[*ast.Object]bool
 
 	checkers map[ast.Node][]func(*File, ast.Node)

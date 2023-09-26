@@ -27,8 +27,8 @@ type Writer struct {
 	closed     bool
 	usedBinary bool
 	preferPax  bool
-	hdrBuff    [blockSize]byte
-	paxHdrBuff [blockSize]byte
+	hdrBuff    block
+	paxHdrBuff block
 }
 
 // NewWriter creates a new Writer writing to w.

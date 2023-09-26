@@ -4,4 +4,8 @@
 
 package cmplx
 
+// The higher-precision values in vc26 were used to derive the
+// input arguments vc (see also comment below). For reference
+// only (do not delete).
+
 // special cases

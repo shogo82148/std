@@ -14,7 +14,7 @@
 // possible.
 //
 // Two sets of interfaces are included in this package. When a more abstract
-// interface isn't neccessary, there are functions for encrypting/decrypting
+// interface isn't necessary, there are functions for encrypting/decrypting
 // with v1.5/OAEP and signing/verifying with v1.5/PSS. If one needs to abstract
 // over the public-key primitive, the PrivateKey struct implements the
 // Decrypter and Signer interfaces from the crypto package.
@@ -86,7 +86,7 @@ func (priv *PrivateKey) Validate() error
 
 // GenerateKey generates an RSA keypair of the given bit size using the
 // random source random (for example, crypto/rand.Reader).
-func GenerateKey(random io.Reader, bits int) (priv *PrivateKey, err error)
+func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 
 // GenerateMultiPrimeKey generates a multi-prime RSA keypair of the given bit
 // size and the given random source, as suggested in [1]. Although the public
@@ -99,7 +99,7 @@ func GenerateKey(random io.Reader, bits int) (priv *PrivateKey, err error)
 //
 // [1] US patent 4405829 (1972, expired)
 // [2] http://www.cacr.math.uwaterloo.ca/techreports/2006/cacr2006-16.pdf
-func GenerateMultiPrimeKey(random io.Reader, nprimes int, bits int) (priv *PrivateKey, err error)
+func GenerateMultiPrimeKey(random io.Reader, nprimes int, bits int) (*PrivateKey, error)
 
 // ErrMessageTooLong is returned when attempting to encrypt a message which is
 // too large for the size of the public key.
@@ -122,7 +122,7 @@ var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA public 
 //
 // The message must be no longer than the length of the public modulus less
 // twice the hash length plus 2.
-func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) (out []byte, err error)
+func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
 
 // ErrDecryption represents a failure to decrypt a message.
 // It is deliberately vague to avoid adaptive attacks.
@@ -146,4 +146,4 @@ func (priv *PrivateKey) Precompute()
 //
 // The label parameter must match the value given when encrypting. See
 // EncryptOAEP for details.
-func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext []byte, label []byte) (msg []byte, err error)
+func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)

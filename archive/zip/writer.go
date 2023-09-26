@@ -31,7 +31,7 @@ func (w *Writer) SetOffset(n int64)
 func (w *Writer) Flush() error
 
 // Close finishes writing the zip file by writing the central directory.
-// It does not (and can not) close the underlying writer.
+// It does not (and cannot) close the underlying writer.
 func (w *Writer) Close() error
 
 // Create adds a file to the zip file using the provided name.

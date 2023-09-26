@@ -12,7 +12,7 @@
 // sigsend is called by the signal handler to queue a new signal.
 // signal_recv is called by the Go program to receive a newly queued signal.
 // Synchronization between sigsend and signal_recv is based on the sig.state
-// variable.  It can be in 3 states: sigIdle, sigReceiving and sigSending.
+// variable. It can be in 3 states: sigIdle, sigReceiving and sigSending.
 // sigReceiving means that signal_recv is blocked on sig.Note and there are no
 // new pending signals.
 // sigSending means that sig.mask *may* contain new pending signals,
@@ -28,3 +28,7 @@
 // +build !plan9
 
 package runtime
+
+import (
+	_ "github.com/shogo82148/std/unsafe"
+)

@@ -24,7 +24,7 @@ type Scope struct {
 }
 
 // NewScope returns a new, empty scope contained in the given parent
-// scope, if any.  The comment is for debugging only.
+// scope, if any. The comment is for debugging only.
 func NewScope(parent *Scope, pos, end token.Pos, comment string) *Scope
 
 // Parent returns the scope's containing (parent) scope.

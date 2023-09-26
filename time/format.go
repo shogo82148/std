@@ -25,7 +25,7 @@ package time
 // compatibility with fixed-width Unix time formats.
 //
 // A decimal point followed by one or more zeros represents a fractional
-// second, printed to the given number of decimal places.  A decimal point
+// second, printed to the given number of decimal places. A decimal point
 // followed by one or more nines represents a fractional second, printed to
 // the given number of decimal places, with trailing zeros removed.
 // When parsing (only), the input may contain a fractional second
@@ -41,7 +41,7 @@ package time
 //
 // Replacing the sign in the format with a Z triggers
 // the ISO 8601 behavior of printing Z instead of an
-// offset for the UTC zone.  Thus:
+// offset for the UTC zone. Thus:
 //
 //	Z0700  Z or ±hhmm
 //	Z07:00 Z or ±hh:mm
@@ -56,6 +56,9 @@ package time
 // use of "GMT" in that case.
 // In general RFC1123Z should be used instead of RFC1123 for servers
 // that insist on that format, and RFC3339 should be preferred for new protocols.
+// RFC822, RFC822Z, RFC1123, and RFC1123Z are useful for formatting;
+// when used with time.Parse they do not accept all the time formats
+// permitted by the RFCs.
 const (
 	ANSIC       = "Mon Jan _2 15:04:05 2006"
 	UnixDate    = "Mon Jan _2 15:04:05 MST 2006"

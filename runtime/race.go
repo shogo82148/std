@@ -1,4 +1,4 @@
-// Copyright 2012 The Go Authors.  All rights reserved.
+// Copyright 2012 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -28,6 +28,10 @@ func RaceSemrelease(s *uint32)
 
 //go:linkname __tsan_fini __tsan_fini
 
+//go:linkname __tsan_proc_create __tsan_proc_create
+
+//go:linkname __tsan_proc_destroy __tsan_proc_destroy
+
 //go:linkname __tsan_map_shadow __tsan_map_shadow
 
 //go:linkname __tsan_finalizer_goroutine __tsan_finalizer_goroutine
@@ -37,6 +41,8 @@ func RaceSemrelease(s *uint32)
 //go:linkname __tsan_go_end __tsan_go_end
 
 //go:linkname __tsan_malloc __tsan_malloc
+
+//go:linkname __tsan_free __tsan_free
 
 //go:linkname __tsan_acquire __tsan_acquire
 

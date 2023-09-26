@@ -11,10 +11,20 @@
 
 package cipher
 
+// cbcEncAble is an interface implemented by ciphers that have a specific
+// optimized implementation of CBC encryption, like crypto/aes.
+// NewCBCEncrypter will check for this interface and return the specific
+// BlockMode if found.
+
 // NewCBCEncrypter returns a BlockMode which encrypts in cipher block chaining
 // mode, using the given Block. The length of iv must be the same as the
 // Block's block size.
 func NewCBCEncrypter(b Block, iv []byte) BlockMode
+
+// cbcDecAble is an interface implemented by ciphers that have a specific
+// optimized implementation of CBC decryption, like crypto/aes.
+// NewCBCDecrypter will check for this interface and return the specific
+// BlockMode if found.
 
 // NewCBCDecrypter returns a BlockMode which decrypts in cipher block chaining
 // mode, using the given Block. The length of iv must be the same as the

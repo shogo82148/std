@@ -13,7 +13,7 @@ import (
 // a Content-Disposition of "form-data".
 // It stores up to maxMemory bytes of the file parts in memory
 // and the remainder on disk in temporary files.
-func (r *Reader) ReadForm(maxMemory int64) (f *Form, err error)
+func (r *Reader) ReadForm(maxMemory int64) (*Form, error)
 
 // Form is a parsed multipart form.
 // Its File parts are stored either in memory or on disk,

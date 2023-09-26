@@ -13,7 +13,7 @@ package runtime
 
 // Value to use for signal mask for newly created M's.
 
-// Gosched yields the processor, allowing other goroutines to run.  It does not
+// Gosched yields the processor, allowing other goroutines to run. It does not
 // suspend the current goroutine, so execution resumes automatically.
 func Gosched()
 
@@ -39,6 +39,10 @@ func LockOSThread()
 // If the calling goroutine has not called LockOSThread, UnlockOSThread is a no-op.
 func UnlockOSThread()
 
+// If the signal handler receives a SIGPROF signal on a non-Go thread,
+// it tries to collect a traceback into sigprofCallers.
+// sigprofCallersUse is set to non-zero while sigprofCallers holds a traceback.
+
 // forcegcperiod is the maximum time in nanoseconds between garbage
 // collections. If we go this long without a garbage collection, one
 // is forced to run.
@@ -57,3 +61,8 @@ func UnlockOSThread()
 // With the randomness here, as long as the tests pass
 // consistently with -race, they shouldn't have latent scheduling
 // assumptions.
+
+// randomOrder/randomEnum are helper types for randomized work stealing.
+// They allow to enumerate all Ps in different pseudo-random orders without repetitions.
+// The algorithm is based on the fact that if we have X such that X and GOMAXPROCS
+// are coprime, then a sequences of (i + X) % GOMAXPROCS gives the required enumeration.

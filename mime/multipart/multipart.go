@@ -69,7 +69,7 @@ func (p *Part) Read(d []byte) (n int, err error)
 func (p *Part) Close() error
 
 // Reader is an iterator over parts in a MIME multipart body.
-// Reader's underlying parser consumes its input as needed.  Seeking
+// Reader's underlying parser consumes its input as needed. Seeking
 // isn't supported.
 type Reader struct {
 	bufReader *bufio.Reader

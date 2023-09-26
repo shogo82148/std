@@ -25,4 +25,4 @@ package strconv
 // If s is syntactically well-formed but is more than 1/2 ULP
 // away from the largest floating point number of the given size,
 // ParseFloat returns f = ±Inf, err.Err = ErrRange.
-func ParseFloat(s string, bitSize int) (f float64, err error)
+func ParseFloat(s string, bitSize int) (float64, error)

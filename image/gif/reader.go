@@ -32,7 +32,7 @@ const (
 // blockReader parses the block structure of GIF image data, which
 // comprises (n, (n bytes)) blocks, with 1 <= n <= 255.  It is the
 // reader given to the LZW decoder, which is thus immune to the
-// blocking.  After the LZW decoder completes, there will be a 0-byte
+// blocking. After the LZW decoder completes, there will be a 0-byte
 // block remaining (0, ()), which is consumed when checking that the
 // blockReader is exhausted.
 

@@ -18,11 +18,11 @@ var (
 // The Next method advances to the next file in the archive (including the first),
 // and then it can be treated as an io.Reader to access the file's data.
 type Reader struct {
-	r       io.Reader
-	err     error
-	pad     int64
-	curr    numBytesReader
-	hdrBuff [blockSize]byte
+	r    io.Reader
+	err  error
+	pad  int64
+	curr numBytesReader
+	blk  block
 }
 
 // A numBytesReader is an io.Reader with a numBytes method, returning the number
@@ -53,8 +53,6 @@ type Reader struct {
 //	var sparseData = "\x00"*2 + "abcde" + "\x00"*11 + "fgh" + "\x00"*4
 
 // Keywords for GNU sparse files in a PAX extended header
-
-// Keywords for old GNU sparse headers
 
 // NewReader creates a new Reader reading from r.
 func NewReader(r io.Reader) *Reader

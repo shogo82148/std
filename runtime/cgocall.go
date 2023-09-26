@@ -1,4 +1,4 @@
-// Copyright 2009 The Go Authors.  All rights reserved.
+// Copyright 2009 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -28,7 +28,7 @@
 // and then unlocks g from m.
 //
 // The above description skipped over the possibility of the gcc-compiled
-// function f calling back into Go.  If that happens, we continue down
+// function f calling back into Go. If that happens, we continue down
 // the rabbit hole during the execution of f.
 //
 // To make it possible for gcc-compiled C code to call a Go function p.GoF,
@@ -38,13 +38,13 @@
 // GoF calls crosscall2(_cgoexp_GoF, frame, framesize).  Crosscall2
 // (in cgo/gcc_$GOARCH.S, a gcc-compiled assembly file) is a two-argument
 // adapter from the gcc function call ABI to the 6c function call ABI.
-// It is called from gcc to call 6c functions.  In this case it calls
+// It is called from gcc to call 6c functions. In this case it calls
 // _cgoexp_GoF(frame, framesize), still running on m->g0's stack
-// and outside the $GOMAXPROCS limit.  Thus, this code cannot yet
+// and outside the $GOMAXPROCS limit. Thus, this code cannot yet
 // call arbitrary Go code directly and must be careful not to allocate
 // memory or use up m->g0's stack.
 //
-// _cgoexp_GoF calls runtime.cgocallback(p.GoF, frame, framesize).
+// _cgoexp_GoF calls runtime.cgocallback(p.GoF, frame, framesize, ctxt).
 // (The reason for having _cgoexp_GoF instead of writing a crosscall3
 // to make this call directly is that _cgoexp_GoF, because it is compiled
 // with 6c instead of gcc, can refer to dotted names like
@@ -78,3 +78,6 @@
 // callee-save registers for gcc and returns to GoF, which returns to f.
 
 package runtime
+
+// Addresses collected in a cgo backtrace when crashing.
+// Length must match arg.Max in x_cgo_callers in runtime/cgo/gcc_traceback.c.

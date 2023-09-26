@@ -8,7 +8,7 @@ package os
 // syscall.Getwd based on its error.
 
 // Getwd returns a rooted path name corresponding to the
-// current directory.  If the current directory can be
+// current directory. If the current directory can be
 // reached via multiple paths (due to symbolic links),
 // Getwd may return any one of them.
 func Getwd() (dir string, err error)
