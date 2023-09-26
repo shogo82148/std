@@ -1,0 +1,31 @@
+// Copyright 2011 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package color
+
+// RGBToYCbCr converts an RGB triple to a Y'CbCr triple.
+func RGBToYCbCr(r, g, b uint8) (uint8, uint8, uint8)
+
+// YCbCrToRGB converts a Y'CbCr triple to an RGB triple.
+func YCbCrToRGB(y, cb, cr uint8) (uint8, uint8, uint8)
+
+// YCbCr represents a fully opaque 24-bit Y'CbCr color, having 8 bits each for
+// one luma and two chroma components.
+//
+// JPEG, VP8, the MPEG family and other codecs use this color model. Such
+// codecs often use the terms YUV and Y'CbCr interchangeably, but strictly
+// speaking, the term YUV applies only to analog video signals, and Y' (luma)
+// is Y (luminance) after applying gamma correction.
+//
+// Conversion between RGB and Y'CbCr is lossy and there are multiple, slightly
+// different formulae for converting between the two. This package follows
+// the JFIF specification at http://www.w3.org/Graphics/JPEG/jfif3.pdf.
+type YCbCr struct {
+	Y, Cb, Cr uint8
+}
+
+func (c YCbCr) RGBA() (uint32, uint32, uint32, uint32)
+
+// YCbCrModel is the Model for Y'CbCr colors.
+var YCbCrModel Model = ModelFunc(yCbCrModel)

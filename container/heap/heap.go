@@ -1,0 +1,50 @@
+// Copyright 2009 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package heap provides heap operations for any type that implements
+// heap.Interface. A heap is a tree with the property that each node is the
+// highest-valued node in its subtree.
+//
+// A heap is a common way to implement a priority queue. To build a priority
+// queue, implement the Heap interface with the (negative) priority as the
+// ordering for the Less method, so Push adds items while Pop removes the
+// highest-priority item from the queue. The Examples include such an
+// implementation; the file example_test.go has the complete source.
+package heap
+
+import "github.com/shogo82148/std/sort"
+
+// Any type that implements heap.Interface may be used as a
+// min-heap with the following invariants (established after
+// Init has been called or if the data is empty or sorted):
+//
+//	!h.Less(j, i) for 0 <= i < h.Len() and j = 2*i+1 or 2*i+2 and j < h.Len()
+//
+// Note that Push and Pop in this interface are for package heap's
+// implementation to call.  To add and remove things from the heap,
+// use heap.Push and heap.Pop.
+type Interface interface {
+	sort.Interface
+	Push(x interface{})
+	Pop() interface{}
+}
+
+// A heap must be initialized before any of the heap operations
+// can be used. Init is idempotent with respect to the heap invariants
+// and may be called whenever the heap invariants may have been invalidated.
+// Its complexity is O(n) where n = h.Len().
+func Init(h Interface)
+
+// Push pushes the element x onto the heap. The complexity is
+// O(log(n)) where n = h.Len().
+func Push(h Interface, x interface{})
+
+// Pop removes the minimum element (according to Less) from the heap
+// and returns it. The complexity is O(log(n)) where n = h.Len().
+// Same as Remove(h, 0).
+func Pop(h Interface) interface{}
+
+// Remove removes the element at index i from the heap.
+// The complexity is O(log(n)) where n = h.Len().
+func Remove(h Interface, i int) interface{}

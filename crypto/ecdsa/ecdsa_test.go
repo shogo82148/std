@@ -1,0 +1,8 @@
+// Copyright 2011 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package ecdsa
+
+// These test vectors were taken from
+//   http://csrc.nist.gov/groups/STM/cavp/documents/dss/ecdsatestvectors.zip
