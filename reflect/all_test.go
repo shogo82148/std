@@ -5,6 +5,7 @@
 package reflect_test
 
 import (
+	"io"
 	. "reflect"
 )
 
@@ -341,3 +342,14 @@ type S struct {
 //	...
 //	[true true true true]
 //
+
+type Outer struct {
+	*Inner
+	R io.Reader
+}
+
+type Inner struct {
+	X  *Outer
+	P1 uintptr
+	P2 uintptr
+}

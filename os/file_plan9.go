@@ -68,9 +68,6 @@ func Truncate(name string, size int64) error
 // If there is an error, it will be of type *PathError.
 func Remove(name string) error
 
-// Rename renames a file.
-func Rename(oldname, newname string) error
-
 // Chmod changes the mode of the named file to mode.
 // If the file is a symbolic link, it changes the mode of the link's target.
 // If there is an error, it will be of type *PathError.

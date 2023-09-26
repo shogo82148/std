@@ -14,7 +14,7 @@ var _ = log.Printf
 // interface, just for testing.
 //
 // It speaks a query language that's semantically similar to but
-// syntantically different and simpler than SQL.  The syntax is as
+// syntactically different and simpler than SQL.  The syntax is as
 // follows:
 //
 //   WIPE
@@ -25,6 +25,12 @@ var _ = log.Printf
 //
 // When opening a fakeDriver's database, it starts empty with no
 // tables.  All tables and data are stored in memory only.
+
+// hook to simulate broken connections
+
+// hook to simulate broken connections
+
+// hook to simulate broken connections
 
 // fakeDriverString is like driver.String, but indirects pointers like
 // DefaultValueConverter.

@@ -32,8 +32,8 @@ type Writer struct {
 	wroteHeader bool
 }
 
-// NewWriter creates a new Writer that satisfies writes by compressing data
-// written to w.
+// NewWriter creates a new Writer.
+// Writes to the returned Writer are compressed and written to w.
 //
 // It is the caller's responsibility to call Close on the WriteCloser when done.
 // Writes may be buffered and not flushed until Close.
@@ -67,5 +67,6 @@ func (z *Writer) Write(p []byte) (n int, err error)
 // Flush flushes the Writer to its underlying io.Writer.
 func (z *Writer) Flush() error
 
-// Calling Close does not close the wrapped io.Writer originally passed to NewWriter.
+// Close closes the Writer, flushing any unwritten data to the underlying
+// io.Writer, but does not close the underlying io.Writer.
 func (z *Writer) Close() error

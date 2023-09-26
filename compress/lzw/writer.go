@@ -17,8 +17,8 @@ import (
 // errOutOfCodes is an internal error that means that the encoder has run out
 // of unused codes and a clear code needs to be sent next.
 
-// NewWriter creates a new io.WriteCloser that satisfies writes by compressing
-// the data and writing it to w.
+// NewWriter creates a new io.WriteCloser.
+// Writes to the returned io.WriteCloser are compressed and written to w.
 // It is the caller's responsibility to call Close on the WriteCloser when
 // finished writing.
 // The number of bits to use for literal codes, litWidth, must be in the

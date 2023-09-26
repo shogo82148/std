@@ -12,6 +12,16 @@
 //
 //	godoc regexp/syntax
 //
+// The regexp implementation provided by this package is
+// guaranteed to run in time linear in the size of the input.
+// (This is a property not guaranteed by most open source
+// implementations of regular expressions.) For more information
+// about this property, see
+//
+//	http://swtch.com/~rsc/regexp/regexp1.html
+//
+// or any book about automata theory.
+//
 // All characters are UTF-8-encoded code points.
 //
 // There are 16 methods of Regexp that match a regular expression and identify
@@ -63,15 +73,16 @@ import (
 )
 
 // Regexp is the representation of a compiled regular expression.
-// The public interface is entirely through methods.
 // A Regexp is safe for concurrent use by multiple goroutines.
 type Regexp struct {
 	expr           string
 	prog           *syntax.Prog
+	onepass        *onePassProg
 	prefix         string
 	prefixBytes    []byte
 	prefixComplete bool
 	prefixRune     rune
+	prefixEnd      uint32
 	cond           syntax.EmptyOp
 	numSubexp      int
 	subexpNames    []string

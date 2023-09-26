@@ -45,14 +45,16 @@ type CRTValue struct {
 // It returns nil if the key is valid, or else an error describing a problem.
 func (priv *PrivateKey) Validate() error
 
-// GenerateKey generates an RSA keypair of the given bit size.
+// GenerateKey generates an RSA keypair of the given bit size using the
+// random source random (for example, crypto/rand.Reader).
 func GenerateKey(random io.Reader, bits int) (priv *PrivateKey, err error)
 
 // GenerateMultiPrimeKey generates a multi-prime RSA keypair of the given bit
-// size, as suggested in [1]. Although the public keys are compatible
-// (actually, indistinguishable) from the 2-prime case, the private keys are
-// not. Thus it may not be possible to export multi-prime private keys in
-// certain formats or to subsequently import them into other code.
+// size and the given random source, as suggested in [1]. Although the public
+// keys are compatible (actually, indistinguishable) from the 2-prime case,
+// the private keys are not. Thus it may not be possible to export multi-prime
+// private keys in certain formats or to subsequently import them into other
+// code.
 //
 // Table 1 in [2] suggests maximum numbers of primes for a given size.
 //

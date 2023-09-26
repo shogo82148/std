@@ -38,10 +38,6 @@ type Rlimit struct {
 }
 
 const (
-	O_CLOEXEC = 0
-)
-
-const (
 	S_IFMT   = 0xf000
 	S_IFIFO  = 0x1000
 	S_IFCHR  = 0x2000
@@ -265,7 +261,8 @@ type FdSet struct {
 }
 
 const (
-	SizeofIfMsghdr         = 0xa8
+	SizeofIfMsghdr = 0xa8
+
 	SizeofIfData           = 0x98
 	SizeofIfaMsghdr        = 0x14
 	SizeofIfmaMsghdr       = 0x10
@@ -426,4 +423,14 @@ type BpfZbufHeader struct {
 	Kernel_len uint32
 	User_gen   uint32
 	X_bzh_pad  [5]uint32
+}
+
+type Termios struct {
+	Iflag  uint32
+	Oflag  uint32
+	Cflag  uint32
+	Lflag  uint32
+	Cc     [20]uint8
+	Ispeed uint32
+	Ospeed uint32
 }

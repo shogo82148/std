@@ -139,3 +139,6 @@ func Open(name string) (file *File, err error)
 func Create(name string) (file *File, err error)
 
 // lstat is overridden in tests.
+
+// Rename renames (moves) a file. OS-specific restrictions might apply.
+func Rename(oldpath, newpath string) error

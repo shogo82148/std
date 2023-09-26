@@ -25,7 +25,7 @@ type PSSOptions struct {
 
 // SignPSS calculates the signature of hashed using RSASSA-PSS [1].
 // Note that hashed must be the result of hashing the input message using the
-// given hash funcion. The opts argument may be nil, in which case sensible
+// given hash function. The opts argument may be nil, in which case sensible
 // defaults are used.
 func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte, opts *PSSOptions) (s []byte, err error)
 

@@ -2,7 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package filepath
+package filepath_test
+
+import (
+	. "path/filepath"
+)
 
 type MatchTest struct {
 	pattern, s string

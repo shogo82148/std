@@ -55,8 +55,6 @@ func Getegid() (egid int)
 
 func Geteuid() (uid int)
 
-func Getfsstat(buf []Statfs_t, flags int) (n int, err error)
-
 func Getgid() (gid int)
 
 func Getpgid(pid int) (pgid int, err error)

@@ -139,10 +139,12 @@ func (enc *Encoder) EncodeElement(v interface{}, start StartElement) error
 // EncodeToken does not call Flush, because usually it is part of a larger operation
 // such as Encode or EncodeElement (or a custom Marshaler's MarshalXML invoked
 // during those), and those will call Flush when finished.
-//
 // Callers that create an Encoder and then invoke EncodeToken directly, without
 // using Encode or EncodeElement, need to call Flush when finished to ensure
 // that the XML is written to the underlying writer.
+//
+// EncodeToken allows writing a ProcInst with Target set to "xml" only as the first token
+// in the stream.
 func (enc *Encoder) EncodeToken(t Token) error
 
 // Flush flushes any buffered XML to the underlying writer.

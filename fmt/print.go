@@ -50,10 +50,6 @@ type GoStringer interface {
 
 // Use simple []byte instead of bytes.Buffer to avoid large dependency.
 
-// A cache holds a set of reusable objects.
-// The slice is a stack (LIFO).
-// If more are needed, the cache creates them by calling new.
-
 // Fprintf formats according to a format specifier and writes to w.
 // It returns the number of bytes written and any write error encountered.
 func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error)

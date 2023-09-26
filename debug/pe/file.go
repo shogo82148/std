@@ -13,8 +13,9 @@ import (
 // A File represents an open PE file.
 type File struct {
 	FileHeader
-	Sections []*Section
-	Symbols  []*Symbol
+	OptionalHeader interface{}
+	Sections       []*Section
+	Symbols        []*Symbol
 
 	closer io.Closer
 }

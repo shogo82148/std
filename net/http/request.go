@@ -40,6 +40,10 @@ var (
 
 // A Request represents an HTTP request received by a server
 // or to be sent by a client.
+//
+// The field semantics differ slightly between client and server
+// usage. In addition to the notes on the fields below, see the
+// documentation for Request.Write and RoundTripper.
 type Request struct {
 	Method string
 
@@ -165,8 +169,6 @@ func NewRequest(method, urlStr string, body io.Reader) (*Request, error)
 // With HTTP Basic Authentication the provided username and password
 // are not encrypted.
 func (r *Request) SetBasicAuth(username, password string)
-
-// TODO(bradfitz): use a sync.Cache when available
 
 // ReadRequest reads and parses a request from b.
 func ReadRequest(b *bufio.Reader) (req *Request, err error)

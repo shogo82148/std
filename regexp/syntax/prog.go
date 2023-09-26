@@ -28,6 +28,8 @@ const (
 	InstRuneAnyNotNL
 )
 
+func (i InstOp) String() string
+
 // An EmptyOp specifies a kind or mixture of zero-width assertions.
 type EmptyOp uint8
 
@@ -75,6 +77,13 @@ func (p *Prog) StartCond() EmptyOp
 // MatchRune returns true if the instruction matches (and consumes) r.
 // It should only be called when i.Op == InstRune.
 func (i *Inst) MatchRune(r rune) bool
+
+// MatchRunePos checks whether the instruction matches (and consumes) r.
+// If so, MatchRunePos returns the index of the matching rune pair
+// (or, when len(i.Rune) == 1, rune singleton).
+// If not, MatchRunePos returns -1.
+// MatchRunePos should only be called when i.Op == InstRune.
+func (i *Inst) MatchRunePos(r rune) int
 
 // MatchEmptyWidth returns true if the instruction matches
 // an empty string between the runes before and after.

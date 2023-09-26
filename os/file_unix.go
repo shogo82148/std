@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd
-// +build darwin dragonfly freebsd linux netbsd openbsd
+//go:build darwin || dragonfly || freebsd || linux || nacl || netbsd || openbsd || solaris
+// +build darwin dragonfly freebsd linux nacl netbsd openbsd solaris
 
 package os
 
@@ -53,6 +53,11 @@ func Stat(name string) (fi FileInfo, err error)
 // describes the symbolic link.  Lstat makes no attempt to follow the link.
 // If there is an error, it will be of type *PathError.
 func Lstat(name string) (fi FileInfo, err error)
+
+// Darwin and FreeBSD can't read or write 2GB+ at a time,
+// even on 64-bit systems. See golang.org/issue/7812.
+// Use 1GB instead of, say, 2GB-1, to keep subsequent
+// reads aligned.
 
 // Truncate changes the size of the named file.
 // If the file is a symbolic link, it changes the size of the link's target.

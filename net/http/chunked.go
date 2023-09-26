@@ -4,7 +4,7 @@
 
 // The wire protocol for HTTP's "chunked" Transfer-Encoding.
 
-// This code is duplicated in httputil/chunked.go.
+// This code is duplicated in net/http and net/http/httputil.
 // Please make any changes in both files.
 
 package http

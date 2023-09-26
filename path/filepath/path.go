@@ -126,8 +126,6 @@ type WalkFunc func(path string, info os.FileInfo, err error) error
 // Walk does not follow symbolic links.
 func Walk(root string, walkFn WalkFunc) error
 
-// byName implements sort.Interface.
-
 // Base returns the last element of path.
 // Trailing path separators are removed before extracting the last element.
 // If the path is empty, Base returns ".".

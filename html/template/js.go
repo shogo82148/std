@@ -4,7 +4,7 @@
 
 package template
 
-// regexPrecederKeywords is a set of reserved JS keywords that can precede a
+// regexpPrecederKeywords is a set of reserved JS keywords that can precede a
 // regular expression in JS source.
 
 // jsStrNormReplacementTable is like jsStrReplacementTable but does not

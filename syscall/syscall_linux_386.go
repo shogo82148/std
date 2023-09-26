@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// TODO(rsc): Rewrite all nn(SP) references into name+(nn-8)(FP)
+// so that go vet can check that they are correct.
+
 package syscall
 
 func Getpagesize() int
@@ -18,8 +21,6 @@ func Getrlimit(resource int, rlim *Rlimit) (err error)
 
 func Setrlimit(resource int, rlim *Rlimit) (err error)
 
-// Underlying system call writes to newoffset via pointer.
-// Implemented in assembly to avoid allocation.
 func Seek(fd int, offset int64, whence int) (newoffset int64, err error)
 
 func Listen(s int, n int) (err error)

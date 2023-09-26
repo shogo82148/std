@@ -87,6 +87,7 @@ type Package struct {
 	IgnoredGoFiles []string
 	CFiles         []string
 	CXXFiles       []string
+	MFiles         []string
 	HFiles         []string
 	SFiles         []string
 	SwigFiles      []string

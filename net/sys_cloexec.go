@@ -5,7 +5,7 @@
 // This file implements sysSocket and accept for platforms that do not
 // provide a fast path for setting SetNonblock and CloseOnExec.
 
-//go:build darwin || dragonfly || freebsd || netbsd || openbsd
-// +build darwin dragonfly freebsd netbsd openbsd
+//go:build darwin || dragonfly || nacl || netbsd || openbsd || solaris
+// +build darwin dragonfly nacl netbsd openbsd solaris
 
 package net

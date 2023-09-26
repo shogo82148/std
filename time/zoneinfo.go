@@ -25,6 +25,9 @@ type Location struct {
 
 // A zoneTrans represents a single time zone transition.
 
+// alpha and omega are the beginning and end of time for zone
+// transitions.
+
 // UTC represents Universal Coordinated Time (UTC).
 var UTC *Location = &utcLoc
 

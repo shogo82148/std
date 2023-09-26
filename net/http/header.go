@@ -44,8 +44,6 @@ func ParseTime(text string) (t time.Time, err error)
 // by key. It's used as a pointer, so it can fit in a sort.Interface
 // interface value without allocation.
 
-// TODO: convert this to a sync.Cache (issue 4720)
-
 // WriteSubset writes a header in wire format.
 // If exclude is not nil, keys where exclude[key] == true are not written.
 func (h Header) WriteSubset(w io.Writer, exclude map[string]bool) error

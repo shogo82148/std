@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || netbsd || openbsd
-// +build darwin dragonfly freebsd netbsd openbsd
+//go:build darwin || dragonfly || freebsd || nacl || netbsd || openbsd
+// +build darwin dragonfly freebsd nacl netbsd openbsd
 
 // os code shared between *BSD systems including OS X (Darwin)
 // and FreeBSD.

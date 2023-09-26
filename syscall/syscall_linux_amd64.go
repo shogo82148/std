@@ -7,6 +7,7 @@ package syscall
 func Getpagesize() int
 
 func Gettimeofday(tv *Timeval) (err error)
+
 func Time(t *Time_t) (tt Time_t, err error)
 
 func TimespecToNsec(ts Timespec) int64

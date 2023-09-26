@@ -32,8 +32,8 @@ type Var interface {
 
 // Int is a 64-bit integer variable that satisfies the Var interface.
 type Int struct {
-	i  int64
 	mu sync.RWMutex
+	i  int64
 }
 
 func (v *Int) String() string
@@ -44,8 +44,8 @@ func (v *Int) Set(value int64)
 
 // Float is a 64-bit float variable that satisfies the Var interface.
 type Float struct {
-	f  float64
 	mu sync.RWMutex
+	f  float64
 }
 
 func (v *Float) String() string
@@ -58,8 +58,9 @@ func (v *Float) Set(value float64)
 
 // Map is a string-to-Var map variable that satisfies the Var interface.
 type Map struct {
-	m  map[string]Var
-	mu sync.RWMutex
+	mu   sync.RWMutex
+	m    map[string]Var
+	keys []string
 }
 
 // KeyValue represents a single entry in a Map.
@@ -88,8 +89,8 @@ func (v *Map) Do(f func(KeyValue))
 
 // String is a string variable, and satisfies the Var interface.
 type String struct {
-	s  string
 	mu sync.RWMutex
+	s  string
 }
 
 func (v *String) String() string

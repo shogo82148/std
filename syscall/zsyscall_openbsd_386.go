@@ -47,13 +47,9 @@ func Fsync(fd int) (err error)
 
 func Ftruncate(fd int, length int64) (err error)
 
-func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)
-
 func Getegid() (egid int)
 
 func Geteuid() (uid int)
-
-func Getfsstat(buf []Statfs_t, flags int) (n int, err error)
 
 func Getgid() (gid int)
 

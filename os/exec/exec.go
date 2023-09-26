@@ -45,7 +45,7 @@ type Cmd struct {
 
 	ProcessState *os.ProcessState
 
-	err             error
+	lookPathErr     error
 	finished        bool
 	childFiles      []*os.File
 	closeAfterStart []io.Closer
@@ -57,8 +57,7 @@ type Cmd struct {
 // Command returns the Cmd struct to execute the named program with
 // the given arguments.
 //
-// It sets Path and Args in the returned structure and zeroes the
-// other fields.
+// It sets only the Path and Args in the returned structure.
 //
 // If name contains no path separators, Command uses LookPath to
 // resolve the path to a complete name if possible. Otherwise it uses
@@ -81,6 +80,9 @@ func Command(name string, arg ...string) *Cmd
 func (c *Cmd) Run() error
 
 // Start starts the specified command but does not wait for it to complete.
+//
+// The Wait method will return the exit code and release associated resources
+// once the command exits.
 func (c *Cmd) Start() error
 
 // An ExitError reports an unsuccessful exit by a command.
@@ -100,6 +102,8 @@ func (e *ExitError) Error() string
 // If the command fails to run or doesn't complete successfully, the
 // error is of type *ExitError. Other error types may be
 // returned for I/O problems.
+//
+// Wait releases any resources associated with the Cmd.
 func (c *Cmd) Wait() error
 
 // Output runs the command and returns its standard output.

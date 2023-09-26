@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !netgo && (darwin || dragonfly || freebsd)
+//go:build !netgo && (darwin || dragonfly || freebsd || solaris)
 // +build !netgo
-// +build darwin dragonfly freebsd
+// +build darwin dragonfly freebsd solaris
 
 package net
 

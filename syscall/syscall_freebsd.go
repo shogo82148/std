@@ -35,3 +35,7 @@ func Pipe(p []int) (err error)
 func GetsockoptIPMreqn(fd, level, opt int) (*IPMreqn, error)
 
 func SetsockoptIPMreqn(fd, level, opt int, mreq *IPMreqn) (err error)
+
+func Accept4(fd, flags int) (nfd int, sa Sockaddr, err error)
+
+func Getfsstat(buf []Statfs_t, flags int) (n int, err error)

@@ -17,6 +17,18 @@ type Optionals struct {
 
 	Mr map[string]interface{} `json:"mr"`
 	Mo map[string]interface{} `json:",omitempty"`
+
+	Fr float64 `json:"fr"`
+	Fo float64 `json:"fo,omitempty"`
+
+	Br bool `json:"br"`
+	Bo bool `json:"bo,omitempty"`
+
+	Ur uint `json:"ur"`
+	Uo uint `json:"uo,omitempty"`
+
+	Str struct{} `json:"str"`
+	Sto struct{} `json:"sto,omitempty"`
 }
 
 type StringTag struct {

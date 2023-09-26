@@ -34,6 +34,7 @@ import (
 // if an invalid UTF-8 sequence is encountered.
 // The angle brackets "<" and ">" are escaped to "\u003c" and "\u003e"
 // to keep some browsers from misinterpreting JSON output as HTML.
+// Ampersand "&" is also escaped to "\u0026" for the same reason.
 //
 // Array and slice values encode as JSON arrays, except that
 // []byte encodes as a base64-encoded string, and a nil slice
@@ -171,8 +172,6 @@ type MarshalerError struct {
 func (e *MarshalerError) Error() string
 
 // An encodeState encodes JSON into a bytes.Buffer.
-
-// TODO(bradfitz): use a sync.Cache here
 
 // sliceEncoder just wraps an arrayEncoder, checking to make sure the value isn't nil.
 

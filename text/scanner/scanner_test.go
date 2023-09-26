@@ -9,3 +9,5 @@ type StringReader struct {
 	data []string
 	step int
 }
+
+// An errReader returns (0, err) where err is not io.EOF.

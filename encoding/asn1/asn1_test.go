@@ -31,6 +31,10 @@ type TestBigInt struct {
 	X *big.Int
 }
 
+type TestSet struct {
+	Ints []int `asn1:"set"`
+}
+
 type Certificate struct {
 	TBSCertificate     TBSCertificate
 	SignatureAlgorithm AlgorithmIdentifier

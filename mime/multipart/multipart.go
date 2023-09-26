@@ -41,9 +41,13 @@ func (p *Part) FormName() string
 // Content-Disposition header.
 func (p *Part) FileName() string
 
-// NewReader creates a new multipart Reader reading from reader using the
+// NewReader creates a new multipart Reader reading from r using the
 // given MIME boundary.
-func NewReader(reader io.Reader, boundary string) *Reader
+//
+// The boundary is usually obtained from the "boundary" parameter of
+// the message's "Content-Type" header. Use mime.ParseMediaType to
+// parse such headers.
+func NewReader(r io.Reader, boundary string) *Reader
 
 // Read reads the body of a part, after its headers and before the
 // next part (if any) begins.

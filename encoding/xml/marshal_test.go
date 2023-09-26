@@ -293,6 +293,31 @@ type MarshalerStruct struct {
 	Foo MyMarshalerAttrTest `xml:",attr"`
 }
 
+type InnerStruct struct {
+	XMLName Name `xml:"testns outer"`
+}
+
+type OuterStruct struct {
+	InnerStruct
+	IntAttr int `xml:"int,attr"`
+}
+
+type OuterNamedStruct struct {
+	InnerStruct
+	XMLName Name `xml:"outerns test"`
+	IntAttr int  `xml:"int,attr"`
+}
+
+type OuterNamedOrderedStruct struct {
+	XMLName Name `xml:"outerns test"`
+	InnerStruct
+	IntAttr int `xml:"int,attr"`
+}
+
+type OuterOuterStruct struct {
+	OuterStruct
+}
+
 // Unless explicitly stated as such (or *Plain), all of the
 // tests below are two-way tests. When introducing new tests,
 // please try to make them two-way as well to ensure that

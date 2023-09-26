@@ -63,11 +63,11 @@ func (h *FileHeader) FileInfo() os.FileInfo
 // of the returned header to provide the full path name of the file.
 func FileInfoHeader(fi os.FileInfo) (*FileHeader, error)
 
-// ModTime returns the modification time.
+// ModTime returns the modification time in UTC.
 // The resolution is 2s.
 func (h *FileHeader) ModTime() time.Time
 
-// SetModTime sets the ModifiedTime and ModifiedDate fields to the given time.
+// SetModTime sets the ModifiedTime and ModifiedDate fields to the given time in UTC.
 // The resolution is 2s.
 func (h *FileHeader) SetModTime(t time.Time)
 

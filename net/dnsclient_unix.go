@@ -2,14 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd
-// +build darwin dragonfly freebsd linux netbsd openbsd
+//go:build darwin || dragonfly || freebsd || linux || nacl || netbsd || openbsd || solaris
+// +build darwin dragonfly freebsd linux nacl netbsd openbsd solaris
 
 // DNS client: see RFC 1035.
 // Has to be linked into package net for Dial.
 
 // TODO(rsc):
-//	Check periodically whether /etc/resolv.conf has changed.
 //	Could potentially handle many outstanding lookups faster.
 //	Could have a small cache.
 //	Random UDP source port (net.Dial should do that for us).

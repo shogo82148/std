@@ -52,3 +52,7 @@ type BlankFieldsProbe struct {
 		F [8]float32
 	}
 }
+
+type Unexported struct {
+	a int32
+}

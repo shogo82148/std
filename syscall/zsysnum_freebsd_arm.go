@@ -322,7 +322,7 @@ const (
 	SYS_CLOSEFROM                = 509
 	SYS_LPATHCONF                = 513
 	SYS_CAP_NEW                  = 514
-	SYS_CAP_RIGHTS_GET           = 515
+	SYS_CAP_GETRIGHTS            = 515
 	SYS_CAP_ENTER                = 516
 	SYS_CAP_GETMODE              = 517
 	SYS_PDFORK                   = 518
@@ -339,9 +339,10 @@ const (
 	SYS_POSIX_FALLOCATE          = 530
 	SYS_POSIX_FADVISE            = 531
 	SYS_WAIT6                    = 532
-	SYS_CAP_RIGHTS_LIMIT         = 533
-	SYS_CAP_IOCTLS_LIMIT         = 534
-	SYS_CAP_IOCTLS_GET           = 535
-	SYS_CAP_FCNTLS_LIMIT         = 536
-	SYS_CAP_FCNTLS_GET           = 537
+	SYS_BINDAT                   = 538
+	SYS_CONNECTAT                = 539
+	SYS_CHFLAGSAT                = 540
+	SYS_ACCEPT4                  = 541
+	SYS_PIPE2                    = 542
+	SYS_PROCCTL                  = 544
 )

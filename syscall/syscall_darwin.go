@@ -44,4 +44,6 @@ func PtraceDetach(pid int) (err error)
 
 func Pipe(p []int) (err error)
 
+func Getfsstat(buf []Statfs_t, flags int) (n int, err error)
+
 func Kill(pid int, signum Signal) (err error)

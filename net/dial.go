@@ -21,6 +21,8 @@ type Dialer struct {
 	LocalAddr Addr
 
 	DualStack bool
+
+	KeepAlive time.Duration
 }
 
 // Dial connects to the address on the named network.

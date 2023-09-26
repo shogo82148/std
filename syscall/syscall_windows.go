@@ -8,6 +8,7 @@ package syscall
 
 import (
 	errorspkg "errors"
+	"github.com/shogo82148/std/unsafe"
 )
 
 type Handle uintptr
@@ -50,10 +51,11 @@ func (e Errno) Temporary() bool
 func (e Errno) Timeout() bool
 
 // Converts a Go function to a function pointer conforming
-// to the stdcall calling convention.  This is useful when
+// to the stdcall or cdecl calling convention.  This is useful when
 // interoperating with Windows code requiring callbacks.
 // Implemented in ../runtime/syscall_windows.goc
 func NewCallback(fn interface{}) uintptr
+func NewCallbackCDecl(fn interface{}) uintptr
 
 func Exit(code int)
 
@@ -137,7 +139,7 @@ type RawSockaddrAny struct {
 }
 
 type Sockaddr interface {
-	sockaddr() (ptr uintptr, len int32, err error)
+	sockaddr() (ptr unsafe.Pointer, len int32, err error)
 }
 
 type SockaddrInet4 struct {

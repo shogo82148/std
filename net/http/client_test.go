@@ -25,3 +25,5 @@ type RecordingJar struct {
 	mu  sync.Mutex
 	log bytes.Buffer
 }
+
+// eofReaderFunc is an io.Reader that runs itself, and then returns io.EOF.

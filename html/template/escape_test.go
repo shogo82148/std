@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package template
+
+type Issue7379 int

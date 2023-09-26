@@ -28,7 +28,9 @@ import (
 type Value struct {
 	typ *rtype
 
-	val unsafe.Pointer
+	ptr unsafe.Pointer
+
+	scalar uintptr
 
 	flag
 }
@@ -48,10 +50,9 @@ func (e *ValueError) Error() string
 // bigger than a pointer, its word is a pointer to v's data.
 // Otherwise, its word holds the data stored
 // in its leading bytes (so is not a pointer).
-// Because the value sometimes holds a pointer, we use
-// unsafe.Pointer to represent it, so that if iword appears
-// in a struct, the garbage collector knows that might be
-// a pointer.
+// This type is very dangerous for the garbage collector because
+// it must be treated conservatively.  We try to never expose it
+// to the GC here so that GC remains precise.
 
 // emptyInterface is the header for an interface{} value.
 
@@ -170,8 +171,13 @@ func (v Value) Interface() (i interface{})
 // It panics if v's Kind is not Interface.
 func (v Value) InterfaceData() [2]uintptr
 
-// IsNil returns true if v is a nil value.
-// It panics if v's Kind is not Chan, Func, Interface, Map, Ptr, or Slice.
+// IsNil reports whether its argument v is nil. The argument must be
+// a chan, func, interface, map, pointer, or slice value; if it is
+// not, IsNil panics. Note that IsNil is not always equivalent to a
+// regular comparison with nil in Go. For example, if v was created
+// by calling ValueOf with an uninitialized interface variable i,
+// i==nil will be true but v.IsNil will panic as v will be the zero
+// Value.
 func (v Value) IsNil() bool
 
 // IsValid returns true if v represents a value.
@@ -247,6 +253,10 @@ func (v Value) OverflowUint(x uint64) bool
 // code pointer, but not necessarily enough to identify a
 // single function uniquely. The only guarantee is that the
 // result is zero if and only if v is a nil func Value.
+//
+// If v's Kind is Slice, the returned pointer is to the first
+// element of the slice.  If the slice is nil the returned value
+// is 0.  If the slice is empty but non-nil the return value is non-zero.
 func (v Value) Pointer() uintptr
 
 // Recv receives and returns a value from the channel v.
@@ -299,6 +309,7 @@ func (v Value) SetCap(n int)
 // SetMapIndex sets the value associated with key in the map v to val.
 // It panics if v's Kind is not Map.
 // If val is the zero Value, SetMapIndex deletes the key from the map.
+// Otherwise if v holds a nil map, SetMapIndex will panic.
 // As in Go, key's value must be assignable to the map's key type,
 // and val's value must be assignable to the map's value type.
 func (v Value) SetMapIndex(key, val Value)
@@ -333,9 +344,9 @@ func (v Value) String() string
 
 // TryRecv attempts to receive a value from the channel v but will not block.
 // It panics if v's Kind is not Chan.
-// If the receive cannot finish without blocking, x is the zero Value.
-// The boolean ok is true if the value x corresponds to a send
-// on the channel, false if it is a zero value received because the channel is closed.
+// If the receive delivers a value, x is the transferred value and ok is true.
+// If the receive cannot finish without blocking, x is the zero Value and ok is false.
+// If the channel is closed, x is the zero value for the channel's element type and ok is false.
 func (v Value) TryRecv() (x Value, ok bool)
 
 // TrySend attempts to send x on the channel v but will not block.
@@ -367,6 +378,8 @@ type StringHeader struct {
 	Len  int
 }
 
+// stringHeader is a safe version of StringHeader used within this package.
+
 // SliceHeader is the runtime representation of a slice.
 // It cannot be used safely or portably and its representation may
 // change in a later release.
@@ -378,6 +391,8 @@ type SliceHeader struct {
 	Len  int
 	Cap  int
 }
+
+// sliceHeader is a safe version of SliceHeader used within this package.
 
 // Append appends the values x to a slice s and returns the resulting slice.
 // As in Go, each x's value must be assignable to the slice's element type.
@@ -465,7 +480,7 @@ func ValueOf(i interface{}) Value
 func Zero(typ Type) Value
 
 // New returns a Value representing a pointer to a new zero value
-// for the specified type.  That is, the returned Value's Type is PtrTo(t).
+// for the specified type.  That is, the returned Value's Type is PtrTo(typ).
 func New(typ Type) Value
 
 // NewAt returns a Value representing a pointer to a value of the

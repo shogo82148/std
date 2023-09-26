@@ -39,3 +39,5 @@ func Pread(fd int, p []byte, offset int64) (n int, err error)
 
 // sys	extpwrite(fd int, p []byte, flags int, offset int64) (n int, err error)
 func Pwrite(fd int, p []byte, offset int64) (n int, err error)
+
+func Getfsstat(buf []Statfs_t, flags int) (n int, err error)

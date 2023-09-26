@@ -31,17 +31,21 @@ type Decoder struct {
 // bufio.Reader.
 func NewDecoder(r io.Reader) *Decoder
 
-// Decode reads the next value from the connection and stores
+// Decode reads the next value from the input stream and stores
 // it in the data represented by the empty interface value.
 // If e is nil, the value will be discarded. Otherwise,
 // the value underlying e must be a pointer to the
 // correct type for the next data item received.
+// If the input is at EOF, Decode returns io.EOF and
+// does not modify e.
 func (dec *Decoder) Decode(e interface{}) error
 
-// DecodeValue reads the next value from the connection.
+// DecodeValue reads the next value from the input stream.
 // If v is the zero reflect.Value (v.Kind() == Invalid), DecodeValue discards the value.
 // Otherwise, it stores the value into v.  In that case, v must represent
 // a non-nil pointer to data or be an assignable reflect.Value (v.CanSet())
+// If the input is at EOF, DecodeValue returns io.EOF and
+// does not modify e.
 func (dec *Decoder) DecodeValue(v reflect.Value) error
 
 // If debug.go is compiled into the program , debugFunc prints a human-readable

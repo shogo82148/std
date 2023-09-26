@@ -21,3 +21,6 @@ import (
 // read after an HTTP Handler calls WriteHeader or Write on its
 // ResponseWriter.
 var ErrBodyReadAfterClose = errors.New("http: invalid Read on closed Body")
+
+// bodyLocked is a io.Reader reading from a *body when its mutex is
+// already held.

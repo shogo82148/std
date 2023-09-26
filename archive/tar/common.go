@@ -34,6 +34,7 @@ const (
 	TypeXGlobalHeader = 'g'
 	TypeGNULongName   = 'L'
 	TypeGNULongLink   = 'K'
+	TypeGNUSparse     = 'S'
 )
 
 // A Header represents a single header in a tar archive.
@@ -53,6 +54,7 @@ type Header struct {
 	Devminor   int64
 	AccessTime time.Time
 	ChangeTime time.Time
+	Xattrs     map[string]string
 }
 
 // File name constants from the tar spec.

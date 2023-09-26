@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build (darwin || dragonfly || freebsd || linux || netbsd || openbsd) && cgo
-// +build darwin dragonfly freebsd linux netbsd openbsd
+//go:build (darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris) && cgo
+// +build darwin dragonfly freebsd linux netbsd openbsd solaris
 // +build cgo
 
 package user

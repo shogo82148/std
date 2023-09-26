@@ -8,6 +8,7 @@ package http
 
 import (
 	"github.com/shogo82148/std/bufio"
+	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net/url"
@@ -34,6 +35,8 @@ type Response struct {
 	Trailer Header
 
 	Request *Request
+
+	TLS *tls.ConnectionState
 }
 
 // Cookies parses and returns the cookies set in the Set-Cookie headers.
@@ -71,4 +74,6 @@ func (r *Response) ProtoAtLeast(major, minor int) bool
 //	Body
 //	ContentLength
 //	Header, values for non-canonical keys will have unpredictable behavior
+//
+// Body is closed after it is sent.
 func (r *Response) Write(w io.Writer) error

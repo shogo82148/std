@@ -57,8 +57,6 @@ func Getegid() (egid int)
 
 func Geteuid() (uid int)
 
-func Getfsstat(buf []Statfs_t, flags int) (n int, err error)
-
 func Getgid() (gid int)
 
 func Getpgid(pid int) (pgid int, err error)
@@ -96,6 +94,16 @@ func Mkdir(path string, mode uint32) (err error)
 func Mkfifo(path string, mode uint32) (err error)
 
 func Mknod(path string, mode uint32, dev int) (err error)
+
+func Mlock(b []byte) (err error)
+
+func Mlockall(flags int) (err error)
+
+func Mprotect(b []byte, prot int) (err error)
+
+func Munlock(b []byte) (err error)
+
+func Munlockall() (err error)
 
 func Open(path string, mode int, perm uint32) (fd int, err error)
 

@@ -6,6 +6,8 @@
 package x509
 
 import (
+	_ "github.com/shogo82148/std/crypto/sha256"
+	_ "github.com/shogo82148/std/crypto/sha512"
 	"github.com/shogo82148/std/crypto/x509/pkix"
 	"github.com/shogo82148/std/encoding/asn1"
 	"github.com/shogo82148/std/errors"
@@ -243,7 +245,7 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 // following members of template are used: SerialNumber, Subject, NotBefore,
 // NotAfter, KeyUsage, ExtKeyUsage, UnknownExtKeyUsage, BasicConstraintsValid,
 // IsCA, MaxPathLen, SubjectKeyId, DNSNames, PermittedDNSDomainsCritical,
-// PermittedDNSDomains.
+// PermittedDNSDomains, SignatureAlgorithm.
 //
 // The certificate is signed by parent. If parent is equal to template then the
 // certificate is self-signed. The parameter pub is the public key of the
@@ -252,7 +254,7 @@ func ParseCertificates(asn1Data []byte) ([]*Certificate, error)
 // The returned slice is the certificate in DER encoding.
 //
 // The only supported key types are RSA and ECDSA (*rsa.PublicKey or
-// *ecdsa.PublicKey for pub, *rsa.PrivateKey or *ecdsa.PublicKey for priv).
+// *ecdsa.PublicKey for pub, *rsa.PrivateKey or *ecdsa.PrivateKey for priv).
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub interface{}, priv interface{}) (cert []byte, err error)
 
 // pemCRLPrefix is the magic string that indicates that we have a PEM encoded
@@ -274,3 +276,48 @@ func ParseDERCRL(derBytes []byte) (certList *pkix.CertificateList, err error)
 //
 // The only supported key type is RSA (*rsa.PrivateKey for priv).
 func (c *Certificate) CreateCRL(rand io.Reader, priv interface{}, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
+
+// CertificateRequest represents a PKCS #10, certificate signature request.
+type CertificateRequest struct {
+	Raw                      []byte
+	RawTBSCertificateRequest []byte
+	RawSubjectPublicKeyInfo  []byte
+	RawSubject               []byte
+
+	Version            int
+	Signature          []byte
+	SignatureAlgorithm SignatureAlgorithm
+
+	PublicKeyAlgorithm PublicKeyAlgorithm
+	PublicKey          interface{}
+
+	Subject pkix.Name
+
+	Attributes []pkix.AttributeTypeAndValueSET
+
+	Extensions []pkix.Extension
+
+	ExtraExtensions []pkix.Extension
+
+	DNSNames       []string
+	EmailAddresses []string
+	IPAddresses    []net.IP
+}
+
+// oidExtensionRequest is a PKCS#9 OBJECT IDENTIFIER that indicates requested
+// extensions in a CSR.
+
+// CreateCertificateRequest creates a new certificate based on a template. The
+// following members of template are used: Subject, Attributes,
+// SignatureAlgorithm, Extension, DNSNames, EmailAddresses, and IPAddresses.
+// The private key is the private key of the signer.
+//
+// The returned slice is the certificate request in DER encoding.
+//
+// The only supported key types are RSA (*rsa.PrivateKey) and ECDSA
+// (*ecdsa.PrivateKey).
+func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv interface{}) (csr []byte, err error)
+
+// ParseCertificateRequest parses a single certificate request from the
+// given ASN.1 DER data.
+func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error)

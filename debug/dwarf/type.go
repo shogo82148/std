@@ -183,4 +183,8 @@ func (t *TypedefType) String() string
 
 func (t *TypedefType) Size() int64
 
+// typeReader is used to read from either the info section or the
+// types section.
+
+// Type reads the type at off in the DWARF “info” section.
 func (d *Data) Type(off Offset) (Type, error)

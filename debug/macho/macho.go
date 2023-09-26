@@ -19,16 +19,19 @@ type FileHeader struct {
 }
 
 const (
-	Magic32 uint32 = 0xfeedface
-	Magic64 uint32 = 0xfeedfacf
+	Magic32  uint32 = 0xfeedface
+	Magic64  uint32 = 0xfeedfacf
+	MagicFat uint32 = 0xcafebabe
 )
 
-// A Type is a Mach-O file type, either an object or an executable.
+// A Type is the Mach-O file type, e.g. an object file, executable, or dynamic library.
 type Type uint32
 
 const (
-	TypeObj  Type = 1
-	TypeExec Type = 2
+	TypeObj    Type = 1
+	TypeExec   Type = 2
+	TypeDylib  Type = 6
+	TypeBundle Type = 8
 )
 
 // A Cpu is a Mach-O cpu type.
@@ -36,7 +39,10 @@ type Cpu uint32
 
 const (
 	Cpu386   Cpu = 7
-	CpuAmd64 Cpu = Cpu386 + 1<<24
+	CpuAmd64 Cpu = Cpu386 | cpuArch64
+	CpuArm   Cpu = 12
+	CpuPpc   Cpu = 18
+	CpuPpc64 Cpu = CpuPpc | cpuArch64
 )
 
 func (i Cpu) String() string

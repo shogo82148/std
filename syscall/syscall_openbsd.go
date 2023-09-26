@@ -34,3 +34,8 @@ func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, 
 
 // sysnb pipe(p *[2]_C_int) (err error)
 func Pipe(p []int) (err error)
+
+// sys getdents(fd int, buf []byte) (n int, err error)
+func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)
+
+func Getfsstat(buf []Statfs_t, flags int) (n int, err error)

@@ -71,7 +71,7 @@ const (
 	MaxCase
 )
 
-// If the Delta field of a CaseRange is UpperLower or LowerUpper, it means
+// If the Delta field of a CaseRange is UpperLower, it means
 // this CaseRange represents a sequence of the form (say)
 // Upper Lower Upper Lower.
 const (
@@ -122,7 +122,7 @@ func (special SpecialCase) ToLower(r rune) rune
 // SimpleFold iterates over Unicode code points equivalent under
 // the Unicode-defined simple case folding.  Among the code points
 // equivalent to rune (including rune itself), SimpleFold returns the
-// smallest rune >= r if one exists, or else the smallest rune >= 0.
+// smallest rune > r if one exists, or else the smallest rune >= 0.
 //
 // For example:
 //

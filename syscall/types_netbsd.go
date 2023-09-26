@@ -19,6 +19,7 @@ package syscall
 #include <dirent.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <termios.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/param.h>
@@ -181,5 +182,7 @@ type BpfInsn C.struct_bpf_insn
 type BpfHdr C.struct_bpf_hdr
 
 type BpfTimeval C.struct_bpf_timeval
+
+type Termios C.struct_termios
 
 type Sysctlnode C.struct_sysctlnode

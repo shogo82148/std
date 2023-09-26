@@ -11,4 +11,12 @@ package asn1
 // the overall sequence of bytes represented is logically w+pre+post.
 
 // Marshal returns the ASN.1 encoding of val.
+//
+// In addition to the struct tags recognised by Unmarshal, the following can be
+// used:
+//
+//	ia5:		causes strings to be marshaled as ASN.1, IA5 strings
+//	omitempty:	causes empty slices to be skipped
+//	printable:	causes strings to be marshaled as ASN.1, PrintableString strings.
+//	utf8:		causes strings to be marshaled as ASN.1, UTF8 strings
 func Marshal(val interface{}) ([]byte, error)

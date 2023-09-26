@@ -17,9 +17,8 @@ func Server(conn net.Conn, config *Config) *Conn
 
 // Client returns a new TLS client side connection
 // using conn as the underlying transport.
-// Client interprets a nil configuration as equivalent to
-// the zero configuration; see the documentation of Config
-// for the defaults.
+// The config cannot be nil: users must set either ServerName or
+// InsecureSkipVerify in the config.
 func Client(conn net.Conn, config *Config) *Conn
 
 // A listener implements a network listener (net.Listener) for TLS connections.
@@ -35,6 +34,15 @@ func NewListener(inner net.Listener, config *Config) net.Listener
 // The configuration config must be non-nil and must have
 // at least one certificate.
 func Listen(network, laddr string, config *Config) (net.Listener, error)
+
+// DialWithDialer connects to the given network address using dialer.Dial and
+// then initiates a TLS handshake, returning the resulting TLS connection. Any
+// timeout or deadline given in the dialer apply to connection and TLS
+// handshake as a whole.
+//
+// DialWithDialer interprets a nil configuration as equivalent to the zero
+// configuration; see the documentation of Config for the defaults.
+func DialWithDialer(dialer *net.Dialer, network, addr string, config *Config) (*Conn, error)
 
 // Dial connects to the given network address using net.Dial
 // and then initiates a TLS handshake, returning the resulting

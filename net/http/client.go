@@ -12,6 +12,7 @@ package http
 import (
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net/url"
+	"github.com/shogo82148/std/time"
 )
 
 // A Client is an HTTP client. Its zero value (DefaultClient) is a
@@ -30,6 +31,8 @@ type Client struct {
 	CheckRedirect func(req *Request, via []*Request) error
 
 	Jar CookieJar
+
+	Timeout time.Duration
 }
 
 // DefaultClient is the default Client and is used by Get, Head, and Post.
@@ -61,6 +64,9 @@ type RoundTripper interface {
 // resp.Body is not closed, the Client's underlying RoundTripper
 // (typically Transport) may not be able to re-use a persistent TCP
 // connection to the server for a subsequent "keep-alive" request.
+//
+// The request Body, if non-nil, will be closed by the underlying
+// Transport, even on errors.
 //
 // Generally Get, Post, or PostForm will be used instead of Do.
 func (c *Client) Do(req *Request) (resp *Response, err error)
@@ -112,7 +118,7 @@ func Post(url string, bodyType string, body io.Reader) (resp *Response, err erro
 // Caller should close resp.Body when done reading from it.
 //
 // If the provided body is also an io.Closer, it is closed after the
-// body is successfully written to the server.
+// request.
 func (c *Client) Post(url string, bodyType string, body io.Reader) (resp *Response, err error)
 
 // PostForm issues a POST to the specified URL, with data's keys and

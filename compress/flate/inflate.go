@@ -42,7 +42,7 @@ func (e *WriteError) Error() string
 // the NewReader will introduce its own buffering.
 type Reader interface {
 	io.Reader
-	ReadByte() (c byte, err error)
+	io.ByteReader
 }
 
 // Decompress state.

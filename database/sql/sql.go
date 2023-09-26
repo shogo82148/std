@@ -104,7 +104,8 @@ type Scanner interface {
 // defers this error until a Scan.
 var ErrNoRows = errors.New("sql: no rows in result set")
 
-// DB is a database handle. It's safe for concurrent use by multiple
+// DB is a database handle representing a pool of zero or more
+// underlying connections. It's safe for concurrent use by multiple
 // goroutines.
 //
 // The sql package creates and frees connections automatically; it
@@ -151,7 +152,7 @@ type DB struct {
 // This value should be larger than the maximum typical value
 // used for db.maxOpen. If maxOpen is significantly larger than
 // connectionRequestQueueSize then it is possible for ALL calls into the *DB
-// to block until the connectionOpener can satify the backlog of requests.
+// to block until the connectionOpener can satisfy the backlog of requests.
 
 // Open opens a database specified by its database driver name and a
 // driver-specific data source name, usually consisting of at least a
@@ -165,6 +166,11 @@ type DB struct {
 // Open may just validate its arguments without creating a connection
 // to the database. To verify that the data source name is valid, call
 // Ping.
+//
+// The returned DB is safe for concurrent use by multiple goroutines
+// and maintains its own pool of idle connections. Thus, the Open
+// function should be called just once. It is rarely necessary to
+// close a DB.
 func Open(driverName, dataSourceName string) (*DB, error)
 
 // Ping verifies a connection to the database is still alive,
@@ -172,6 +178,9 @@ func Open(driverName, dataSourceName string) (*DB, error)
 func (db *DB) Ping() error
 
 // Close closes the database, releasing any open resources.
+//
+// It is rare to Close a DB, as the DB handle is meant to be
+// long-lived and shared between many goroutines.
 func (db *DB) Close() error
 
 // SetMaxIdleConns sets the maximum number of connections in the idle
@@ -201,6 +210,9 @@ func (db *DB) SetMaxOpenConns(n int)
 
 // debugGetPut determines whether getConn & putConn calls' stack traces
 // are returned for more verbose crashes.
+
+// maxBadConnRetries is the number of maximum retries if the driver returns
+// driver.ErrBadConn to signal a broken connection.
 
 // Prepare creates a prepared statement for later queries or executions.
 // Multiple queries or executions may be run concurrently from the
@@ -330,6 +342,7 @@ func (s *Stmt) Close() error
 //
 //	rows, err := db.Query("SELECT ...")
 //	...
+//	defer rows.Close()
 //	for rows.Next() {
 //	    var id int
 //	    var name string
@@ -349,10 +362,12 @@ type Rows struct {
 	closeStmt driver.Stmt
 }
 
-// Next prepares the next result row for reading with the Scan method.
-// It returns true on success, false if there is no next result row.
-// Every call to Scan, even the first one, must be preceded by a call
-// to Next.
+// Next prepares the next result row for reading with the Scan method.  It
+// returns true on success, or false if there is no next result row or an error
+// happened while preparing it.  Err should be consulted to distinguish between
+// the two cases.
+//
+// Every call to Scan, even the first one, must be preceded by a call to Next.
 func (rs *Rows) Next() bool
 
 // Err returns the error, if any, that was encountered during iteration.

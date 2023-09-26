@@ -6,7 +6,8 @@ package io
 
 // MultiReader returns a Reader that's the logical concatenation of
 // the provided input readers.  They're read sequentially.  Once all
-// inputs are drained, Read will return EOF.
+// inputs have returned EOF, Read will return EOF.  If any of the readers
+// return a non-nil, non-EOF error, Read will return that error.
 func MultiReader(readers ...Reader) Reader
 
 // MultiWriter creates a writer that duplicates its writes to all the

@@ -104,14 +104,14 @@ func (z *Rat) Scan(s fmt.ScanState, ch rune) error
 // z is undefined but the returned value is nil.
 func (z *Rat) SetString(s string) (*Rat, bool)
 
-// String returns a string representation of z in the form "a/b" (even if b == 1).
+// String returns a string representation of x in the form "a/b" (even if b == 1).
 func (x *Rat) String() string
 
-// RatString returns a string representation of z in the form "a/b" if b != 1,
+// RatString returns a string representation of x in the form "a/b" if b != 1,
 // and in the form "a" if b == 1.
 func (x *Rat) RatString() string
 
-// FloatString returns a string representation of z in decimal form with prec
+// FloatString returns a string representation of x in decimal form with prec
 // digits of precision after the decimal point and the last digit rounded.
 func (x *Rat) FloatString(prec int) string
 
@@ -122,3 +122,9 @@ func (x *Rat) GobEncode() ([]byte, error)
 
 // GobDecode implements the gob.GobDecoder interface.
 func (z *Rat) GobDecode(buf []byte) error
+
+// MarshalText implements the encoding.TextMarshaler interface
+func (r *Rat) MarshalText() (text []byte, err error)
+
+// UnmarshalText implements the encoding.TextUnmarshaler interface
+func (r *Rat) UnmarshalText(text []byte) error

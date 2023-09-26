@@ -5,6 +5,7 @@
 package strings_test
 
 import (
+	"bytes"
 	. "strings"
 )
 
@@ -65,6 +66,17 @@ var RunesTests = []struct {
 	{"ab\xc0c", []rune{97, 98, 0xFFFD, 99}, true},
 }
 
+var UnreadRuneErrorTests = []struct {
+	name string
+	f    func(*Reader)
+}{
+	{"Read", func(r *Reader) { r.Read([]byte{0}) }},
+	{"ReadByte", func(r *Reader) { r.ReadByte() }},
+	{"UnreadRune", func(r *Reader) { r.UnreadRune() }},
+	{"Seek", func(r *Reader) { r.Seek(0, 1) }},
+	{"WriteTo", func(r *Reader) { r.WriteTo(&bytes.Buffer{}) }},
+}
+
 var ReplaceTests = []struct {
 	in       string
 	old, new string
@@ -102,6 +114,8 @@ var TitleTests = []struct {
 	{"123a456", "123a456"},
 	{"double-blind", "Double-Blind"},
 	{"ÿøû", "Ÿøû"},
+	{"with_underscore", "With_underscore"},
+	{"unicode \xe2\x80\xa8 line separator", "Unicode \xe2\x80\xa8 Line Separator"},
 }
 
 var ContainsTests = []struct {

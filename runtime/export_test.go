@@ -26,8 +26,8 @@ type LFNode struct {
 	Pushcnt uintptr
 }
 
-var LFStackPush = lfstackpush
-var LFStackPop = lfstackpop2
+var LFStackPush = lfstackpush_go
+var LFStackPop = lfstackpop_go
 
 type ParFor struct {
 	body    *byte
@@ -40,9 +40,9 @@ type ParFor struct {
 	wait    bool
 }
 
-var NewParFor = parforalloc2
-var ParForSetup = parforsetup2
-var ParForDo = parfordo
+var NewParFor = newParFor
+var ParForSetup = parForSetup
+var ParForDo = parForDo
 
 var TestSchedLocalQueue1 = testSchedLocalQueue
 var TestSchedLocalQueueSteal1 = testSchedLocalQueueSteal
@@ -54,3 +54,7 @@ var Int32Hash = int32Hash
 var Int64Hash = int64Hash
 
 var HashLoad = &hashLoad
+
+var MemclrBytes = memclrBytes
+
+var GogoBytes = gogoBytes

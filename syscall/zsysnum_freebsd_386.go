@@ -339,4 +339,10 @@ const (
 	SYS_POSIX_FALLOCATE          = 530
 	SYS_POSIX_FADVISE            = 531
 	SYS_WAIT6                    = 532
+	SYS_BINDAT                   = 538
+	SYS_CONNECTAT                = 539
+	SYS_CHFLAGSAT                = 540
+	SYS_ACCEPT4                  = 541
+	SYS_PIPE2                    = 542
+	SYS_PROCCTL                  = 544
 )

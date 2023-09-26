@@ -5,3 +5,4 @@
 package reflect
 
 var ArrayOf = arrayOf
+var CallGC = &callGC

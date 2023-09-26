@@ -115,9 +115,6 @@ const (
 	SYS_UNAME         = 164
 	SYS_SYSARCH       = 165
 	SYS_RTPRIO        = 166
-	SYS_SEMSYS        = 169
-	SYS_MSGSYS        = 170
-	SYS_SHMSYS        = 171
 	SYS_EXTPREAD      = 173
 	SYS_EXTPWRITE     = 174
 	SYS_NTP_ADJTIME   = 176
@@ -300,4 +297,6 @@ const (
 	SYS_LINKAT                 = 531
 	SYS_EACCESS                = 532
 	SYS_LPATHCONF              = 533
+	SYS_VMM_GUEST_CTL          = 534
+	SYS_VMM_GUEST_SYNC_ADDR    = 535
 )

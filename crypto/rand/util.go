@@ -22,6 +22,7 @@ import (
 
 // Prime returns a number, p, of the given size, such that p is prime
 // with high probability.
+// Prime will return error for any error returned by rand.Read or if bits < 2.
 func Prime(rand io.Reader, bits int) (p *big.Int, err error)
 
 // Int returns a uniform random value in [0, max). It panics if max <= 0.

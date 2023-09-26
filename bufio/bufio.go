@@ -100,6 +100,9 @@ func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
 //
 // The text returned from ReadLine does not include the line end ("\r\n" or "\n").
 // No indication or error is given if the input ends without a final line end.
+// Calling UnreadByte after ReadLine will always unread the last byte read
+// (possibly a character belonging to the line end) even if that byte is not
+// part of the line returned by ReadLine.
 func (b *Reader) ReadLine() (line []byte, isPrefix bool, err error)
 
 // ReadBytes reads until the first occurrence of delim in the input,

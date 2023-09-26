@@ -45,11 +45,13 @@ func DecryptPKCS1v15SessionKey(rand io.Reader, priv *PrivateKey, ciphertext []by
 
 // SignPKCS1v15 calculates the signature of hashed using RSASSA-PKCS1-V1_5-SIGN from RSA PKCS#1 v1.5.
 // Note that hashed must be the result of hashing the input message using the
-// given hash function.
+// given hash function. If hash is zero, hashed is signed directly. This isn't
+// advisable except for interoperability.
 func SignPKCS1v15(rand io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte) (s []byte, err error)
 
 // VerifyPKCS1v15 verifies an RSA PKCS#1 v1.5 signature.
 // hashed is the result of hashing the input message using the given hash
 // function and sig is the signature. A valid signature is indicated by
-// returning a nil error.
+// returning a nil error. If hash is zero then hashed is used directly. This
+// isn't advisable except for interoperability.
 func VerifyPKCS1v15(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte) (err error)

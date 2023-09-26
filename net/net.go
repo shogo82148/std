@@ -40,6 +40,7 @@ The Listen function creates servers:
 package net
 
 import (
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/time"
 )
 
@@ -106,6 +107,11 @@ type Listener interface {
 
 	Addr() Addr
 }
+
+// Various errors contained in OpError.
+var (
+	ErrWriteToConnected = errors.New("use of WriteTo with pre-connected connection")
+)
 
 // OpError is the error type usually returned by functions in the net
 // package. It describes the operation, network type, and address of

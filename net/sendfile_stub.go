@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || netbsd || openbsd
-// +build darwin netbsd openbsd
+//go:build darwin || nacl || netbsd || openbsd || solaris
+// +build darwin nacl netbsd openbsd solaris
 
 package net

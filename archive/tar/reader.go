@@ -18,17 +18,32 @@ var (
 // The Next method advances to the next file in the archive (including the first),
 // and then it can be treated as an io.Reader to access the file's data.
 type Reader struct {
-	r   io.Reader
-	err error
-	nb  int64
-	pad int64
+	r    io.Reader
+	err  error
+	pad  int64
+	curr numBytesReader
 }
+
+// A numBytesReader is an io.Reader with a numBytes method, returning the number
+// of bytes remaining in the underlying encoded data.
+
+// A regFileReader is a numBytesReader for reading file data from a tar archive.
+
+// A sparseFileReader is a numBytesReader for reading sparse file data from a tar archive.
+
+// Keywords for GNU sparse files in a PAX extended header
+
+// Keywords for old GNU sparse headers
 
 // NewReader creates a new Reader reading from r.
 func NewReader(r io.Reader) *Reader
 
 // Next advances to the next entry in the tar archive.
 func (tr *Reader) Next() (*Header, error)
+
+// A sparseEntry holds a single entry in a sparse file's sparse map.
+// A sparse entry indicates the offset and size in a sparse file of a
+// block of data.
 
 // Read reads from the current entry in the tar archive.
 // It returns 0, io.EOF when it reaches the end of that entry,

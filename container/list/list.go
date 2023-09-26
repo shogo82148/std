@@ -43,7 +43,7 @@ func New() *List
 // The complexity is O(1).
 func (l *List) Len() int
 
-// Front returns the first element of list l or nil
+// Front returns the first element of list l or nil.
 func (l *List) Front() *Element
 
 // Back returns the last element of list l or nil.
@@ -76,11 +76,11 @@ func (l *List) MoveToFront(e *Element)
 func (l *List) MoveToBack(e *Element)
 
 // MoveBefore moves element e to its new position before mark.
-// If e is not an element of l, or e == mark, the list is not modified.
+// If e or mark is not an element of l, or e == mark, the list is not modified.
 func (l *List) MoveBefore(e, mark *Element)
 
 // MoveAfter moves element e to its new position after mark.
-// If e is not an element of l, or e == mark, the list is not modified.
+// If e or mark is not an element of l, or e == mark, the list is not modified.
 func (l *List) MoveAfter(e, mark *Element)
 
 // PushBackList inserts a copy of an other list at the back of list l.

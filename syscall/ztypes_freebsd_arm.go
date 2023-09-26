@@ -1,16 +1,18 @@
 // Created by cgo -godefs - DO NOT EDIT
-// cgo -godefs types_freebsd.go
+// cgo -godefs -- -fsigned-char types_freebsd.go
 
 package syscall
 
 type Timespec struct {
-	Sec  int64
-	Nsec int32
+	Sec       int64
+	Nsec      int32
+	Pad_cgo_0 [4]byte
 }
 
 type Timeval struct {
-	Sec  int64
-	Usec int32
+	Sec       int64
+	Usec      int32
+	Pad_cgo_0 [4]byte
 }
 
 type Rusage struct {
@@ -36,10 +38,6 @@ type Rlimit struct {
 	Cur int64
 	Max int64
 }
-
-const (
-	O_CLOEXEC = 0
-)
 
 const (
 	S_IFMT   = 0xf000
@@ -76,7 +74,6 @@ type Stat_t struct {
 	Gen           uint32
 	Lspare        int32
 	Birthtimespec Timespec
-	Pad_cgo_0     [4]byte
 }
 
 type Statfs_t struct {
@@ -105,12 +102,13 @@ type Statfs_t struct {
 }
 
 type Flock_t struct {
-	Start  int64
-	Len    int64
-	Pid    int32
-	Type   int16
-	Whence int16
-	Sysid  int32
+	Start     int64
+	Len       int64
+	Pid       int32
+	Type      int16
+	Whence    int16
+	Sysid     int32
+	Pad_cgo_0 [4]byte
 }
 
 type Dirent struct {
@@ -143,22 +141,20 @@ type RawSockaddrInet6 struct {
 }
 
 type RawSockaddrUnix struct {
-	Len       uint8
-	Family    uint8
-	Path      [104]int8
-	Pad_cgo_0 [2]byte
+	Len    uint8
+	Family uint8
+	Path   [104]int8
 }
 
 type RawSockaddrDatalink struct {
-	Len       uint8
-	Family    uint8
-	Index     uint16
-	Type      uint8
-	Nlen      uint8
-	Alen      uint8
-	Slen      uint8
-	Data      [46]int8
-	Pad_cgo_0 [2]byte
+	Len    uint8
+	Family uint8
+	Index  uint16
+	Type   uint8
+	Nlen   uint8
+	Alen   uint8
+	Slen   uint8
+	Data   [46]int8
 }
 
 type RawSockaddr struct {
@@ -232,8 +228,8 @@ const (
 	SizeofSockaddrInet4    = 0x10
 	SizeofSockaddrInet6    = 0x1c
 	SizeofSockaddrAny      = 0x6c
-	SizeofSockaddrUnix     = 0x6c
-	SizeofSockaddrDatalink = 0x38
+	SizeofSockaddrUnix     = 0x6a
+	SizeofSockaddrDatalink = 0x36
 	SizeofLinger           = 0x8
 	SizeofIPMreq           = 0x8
 	SizeofIPMreqn          = 0xc
@@ -265,8 +261,9 @@ type FdSet struct {
 }
 
 const (
-	SizeofIfMsghdr         = 0x68
-	SizeofIfData           = 0x58
+	SizeofIfMsghdr = 0x70
+
+	SizeofIfData           = 0x60
 	SizeofIfaMsghdr        = 0x14
 	SizeofIfmaMsghdr       = 0x10
 	SizeofIfAnnounceMsghdr = 0x18
@@ -309,6 +306,7 @@ type IfData struct {
 	Iqdrops     uint32
 	Noproto     uint32
 	Hwassist    uint32
+	Pad_cgo_0   [4]byte
 	Epoch       int64
 	Lastchange  Timeval
 }
@@ -380,7 +378,7 @@ const (
 	SizeofBpfZbuf       = 0xc
 	SizeofBpfProgram    = 0x8
 	SizeofBpfInsn       = 0x8
-	SizeofBpfHdr        = 0x18
+	SizeofBpfHdr        = 0x20
 	SizeofBpfZbufHeader = 0x20
 )
 
@@ -417,7 +415,7 @@ type BpfHdr struct {
 	Caplen    uint32
 	Datalen   uint32
 	Hdrlen    uint16
-	Pad_cgo_0 [2]byte
+	Pad_cgo_0 [6]byte
 }
 
 type BpfZbufHeader struct {
@@ -425,4 +423,14 @@ type BpfZbufHeader struct {
 	Kernel_len uint32
 	User_gen   uint32
 	X_bzh_pad  [5]uint32
+}
+
+type Termios struct {
+	Iflag  uint32
+	Oflag  uint32
+	Cflag  uint32
+	Lflag  uint32
+	Cc     [20]uint8
+	Ispeed uint32
+	Ospeed uint32
 }

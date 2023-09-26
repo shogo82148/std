@@ -2,10 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd
-// +build darwin dragonfly freebsd linux netbsd openbsd
+//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
+// +build darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package syscall
+
+import (
+	"github.com/shogo82148/std/unsafe"
+)
 
 var (
 	Stdin  = 0
@@ -51,7 +55,7 @@ func Write(fd int, p []byte) (n int, err error)
 var SocketDisableIPv6 bool
 
 type Sockaddr interface {
-	sockaddr() (ptr uintptr, len _Socklen, err error)
+	sockaddr() (ptr unsafe.Pointer, len _Socklen, err error)
 }
 
 type SockaddrInet4 struct {

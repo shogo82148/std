@@ -155,3 +155,11 @@ type MyStruct struct {
 	Data2 MyCharData
 	Attr2 MyAttr `xml:",attr"`
 }
+
+type Pea struct {
+	Cotelydon string
+}
+
+type Pod struct {
+	Pea interface{} `xml:"Pea"`
+}

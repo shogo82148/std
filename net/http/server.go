@@ -10,6 +10,8 @@ import (
 	"github.com/shogo82148/std/bufio"
 	"github.com/shogo82148/std/crypto/tls"
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/time"
@@ -104,8 +106,6 @@ type CloseNotifier interface {
 
 // debugServerConnections controls whether all server connections are wrapped
 // with a verbose logging wrapper.
-
-// TODO: use a sync.Cache instead
 
 // DefaultMaxHeaderBytes is the maximum permitted size of the headers
 // in an HTTP request.
@@ -270,6 +270,7 @@ func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 func Serve(l net.Listener, handler Handler) error
 
 // A Server defines parameters for running an HTTP server.
+// The zero value for Server is a valid configuration.
 type Server struct {
 	Addr           string
 	Handler        Handler
@@ -279,7 +280,50 @@ type Server struct {
 	TLSConfig      *tls.Config
 
 	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)
+
+	ConnState func(net.Conn, ConnState)
+
+	ErrorLog *log.Logger
+
+	disableKeepAlives int32
 }
+
+// A ConnState represents the state of a client connection to a server.
+// It's used by the optional Server.ConnState hook.
+type ConnState int
+
+const (
+	// StateNew represents a new connection that is expected to
+	// send a request immediately. Connections begin at this
+	// state and then transition to either StateActive or
+	// StateClosed.
+	StateNew ConnState = iota
+
+	// StateActive represents a connection that has read 1 or more
+	// bytes of a request. The Server.ConnState hook for
+	// StateActive fires before the request has entered a handler
+	// and doesn't fire again until the request has been
+	// handled. After the request is handled, the state
+	// transitions to StateClosed, StateHijacked, or StateIdle.
+	StateActive
+
+	// StateIdle represents a connection that has finished
+	// handling a request and is in the keep-alive state, waiting
+	// for a new request. Connections transition from StateIdle
+	// to either StateActive or StateClosed.
+	StateIdle
+
+	// StateHijacked represents a hijacked connection.
+	// This is a terminal state. It does not transition to StateClosed.
+	StateHijacked
+
+	// StateClosed represents a closed connection.
+	// This is a terminal state. Hijacked connections do not
+	// transition to StateClosed.
+	StateClosed
+)
+
+func (c ConnState) String() string
 
 // serverHandler delegates to either the server's Handler or
 // DefaultServeMux and also handles "OPTIONS *" requests.
@@ -293,6 +337,12 @@ func (srv *Server) ListenAndServe() error
 // new service goroutine for each.  The service goroutines read requests and
 // then call srv.Handler to reply to them.
 func (srv *Server) Serve(l net.Listener) error
+
+// SetKeepAlivesEnabled controls whether HTTP keep-alives are enabled.
+// By default, keep-alives are always enabled. Only very
+// resource-constrained environments or servers in the process of
+// shutting down should disable them.
+func (s *Server) SetKeepAlivesEnabled(v bool)
 
 // ListenAndServe listens on the TCP network address addr
 // and then calls Serve with handler to handle requests
@@ -378,11 +428,18 @@ func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 // in handlers which have timed out.
 var ErrHandlerTimeout = errors.New("http: Handler timeout")
 
+// tcpKeepAliveListener sets TCP keep-alive timeouts on accepted
+// connections. It's used by ListenAndServe and ListenAndServeTLS so
+// dead TCP connections (e.g. closing laptop mid-download) eventually
+// go away.
+
 // globalOptionsHandler responds to "OPTIONS *" requests.
 
 // eofReader is a non-nil io.ReadCloser that always returns EOF.
-// It embeds a *strings.Reader so it still has a WriteTo method
-// and io.Copy won't need a buffer.
+// It has a WriteTo method so io.Copy won't need a buffer.
+
+// Verify that an io.Copy from an eofReader won't require a buffer.
+var _ io.WriterTo = eofReader
 
 // initNPNRequest is an HTTP handler that initializes certain
 // uninitialized fields in its *Request. Such partially-initialized

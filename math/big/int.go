@@ -179,7 +179,7 @@ func (x *Int) Bytes() []byte
 func (x *Int) BitLen() int
 
 // Exp sets z = x**y mod |m| (i.e. the sign of m is ignored), and returns z.
-// If y <= 0, the result is 1; if m == nil or m == 0, z = x**y.
+// If y <= 0, the result is 1 mod |m|; if m == nil or m == 0, z = x**y.
 // See Knuth, volume 2, section 4.6.3.
 func (z *Int) Exp(x, y, m *Int) *Int
 
@@ -241,7 +241,13 @@ func (x *Int) GobEncode() ([]byte, error)
 func (z *Int) GobDecode(buf []byte) error
 
 // MarshalJSON implements the json.Marshaler interface.
-func (x *Int) MarshalJSON() ([]byte, error)
+func (z *Int) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-func (z *Int) UnmarshalJSON(x []byte) error
+func (z *Int) UnmarshalJSON(text []byte) error
+
+// MarshalText implements the encoding.TextMarshaler interface
+func (z *Int) MarshalText() (text []byte, err error)
+
+// UnmarshalText implements the encoding.TextUnmarshaler interface
+func (z *Int) UnmarshalText(text []byte) error

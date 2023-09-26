@@ -37,7 +37,8 @@ var (
 	ErrHeader = errors.New("zlib: invalid header")
 )
 
-// NewReader creates a new io.ReadCloser that satisfies reads by decompressing data read from r.
+// NewReader creates a new io.ReadCloser.
+// Reads from the returned io.ReadCloser read and decompress data from r.
 // The implementation buffers input and may read more data than necessary from r.
 // It is the caller's responsibility to call Close on the ReadCloser when done.
 func NewReader(r io.Reader) (io.ReadCloser, error)

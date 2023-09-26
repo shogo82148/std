@@ -7,7 +7,7 @@
 package syscall
 
 // InterfaceAnnounceMessage represents a routing message containing
-// network interface arrival and depature information.
+// network interface arrival and departure information.
 type InterfaceAnnounceMessage struct {
 	Header IfAnnounceMsghdr
 }

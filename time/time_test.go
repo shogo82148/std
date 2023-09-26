@@ -23,45 +23,6 @@ type TimeTest struct {
 // 1970 - 2001 is -(31*365+8)*86400 = -978307200 seconds.
 // 2001 - 1 is 2000*365.2425*86400 = 63113904000 seconds.
 
-type TimeFormatTest struct {
-	time           Time
-	formattedValue string
-}
-
-type FormatTest struct {
-	name   string
-	format string
-	result string
-}
-
-type ParseTest struct {
-	name       string
-	format     string
-	value      string
-	hasTZ      bool
-	hasWD      bool
-	yearSign   int
-	fracDigits int
-}
-
-type ParseTimeZoneTest struct {
-	value  string
-	length int
-	ok     bool
-}
-
-type ParseErrorTest struct {
-	format string
-	value  string
-	expect string
-}
-
-type SecondsTimeZoneOffsetTest struct {
-	format         string
-	value          string
-	expectedoffset int
-}
-
 type ISOWeekTest struct {
 	year       int
 	month, day int

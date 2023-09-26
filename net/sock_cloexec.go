@@ -5,7 +5,7 @@
 // This file implements sysSocket and accept for platforms that
 // provide a fast path for setting SetNonblock and CloseOnExec.
 
-//go:build linux
-// +build linux
+//go:build freebsd || linux
+// +build freebsd linux
 
 package net

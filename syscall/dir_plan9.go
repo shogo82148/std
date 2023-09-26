@@ -11,6 +11,7 @@ import "github.com/shogo82148/std/errors"
 var (
 	ErrShortStat = errors.New("stat buffer too short")
 	ErrBadStat   = errors.New("malformed stat buffer")
+	ErrBadName   = errors.New("bad character in file name")
 )
 
 // A Qid represents a 9P server's unique identification for a file.
@@ -37,7 +38,7 @@ type Dir struct {
 }
 
 // Null assigns special "don't touch" values to members of d to
-// avoid modifiying them during syscall.Wstat.
+// avoid modifying them during syscall.Wstat.
 func (d *Dir) Null()
 
 // Marshal encodes a 9P stat message corresponding to d into b

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd || windows
-// +build darwin dragonfly freebsd linux netbsd openbsd windows
+//go:build darwin || dragonfly || freebsd || linux || nacl || netbsd || openbsd || solaris || windows
+// +build darwin dragonfly freebsd linux nacl netbsd openbsd solaris windows
 
 package os
 
@@ -22,9 +22,6 @@ func Symlink(oldname, newname string) error
 // Readlink returns the destination of the named symbolic link.
 // If there is an error, it will be of type *PathError.
 func Readlink(name string) (string, error)
-
-// Rename renames a file.
-func Rename(oldname, newname string) error
 
 // Chmod changes the mode of the named file to mode.
 // If the file is a symbolic link, it changes the mode of the link's target.

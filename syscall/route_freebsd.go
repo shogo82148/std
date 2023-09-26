@@ -6,8 +6,10 @@
 
 package syscall
 
+// See http://www.freebsd.org/doc/en/books/porters-handbook/freebsd-versions.html.
+
 // InterfaceAnnounceMessage represents a routing message containing
-// network interface arrival and depature information.
+// network interface arrival and departure information.
 type InterfaceAnnounceMessage struct {
 	Header IfAnnounceMsghdr
 }

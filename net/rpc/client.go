@@ -32,11 +32,13 @@ type Call struct {
 // with a single Client, and a Client may be used by
 // multiple goroutines simultaneously.
 type Client struct {
+	codec ClientCodec
+
+	sending sync.Mutex
+
 	mutex    sync.Mutex
-	sending  sync.Mutex
 	request  Request
 	seq      uint64
-	codec    ClientCodec
 	pending  map[uint64]*Call
 	closing  bool
 	shutdown bool

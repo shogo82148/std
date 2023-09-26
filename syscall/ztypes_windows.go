@@ -20,6 +20,7 @@ const (
 	ERROR_PROC_NOT_FOUND      Errno = 127
 	ERROR_ALREADY_EXISTS      Errno = 183
 	ERROR_ENVVAR_NOT_FOUND    Errno = 203
+	ERROR_MORE_DATA           Errno = 234
 	ERROR_OPERATION_ABORTED   Errno = 995
 	ERROR_IO_PENDING          Errno = 997
 	ERROR_NOT_FOUND           Errno = 1168
@@ -444,9 +445,11 @@ const (
 
 	IOC_OUT                            = 0x40000000
 	IOC_IN                             = 0x80000000
+	IOC_VENDOR                         = 0x18000000
 	IOC_INOUT                          = IOC_IN | IOC_OUT
 	IOC_WS2                            = 0x08000000
 	SIO_GET_EXTENSION_FUNCTION_POINTER = IOC_INOUT | IOC_WS2 | 6
+	SIO_KEEPALIVE_VALS                 = IOC_IN | IOC_VENDOR | 4
 
 	IP_TOS             = 0x3
 	IP_TTL             = 0x4
@@ -957,4 +960,10 @@ type WSAProtocolInfo struct {
 type WSAProtocolChain struct {
 	ChainLen     int32
 	ChainEntries [MAX_PROTOCOL_CHAIN]uint32
+}
+
+type TCPKeepalive struct {
+	OnOff    uint32
+	Time     uint32
+	Interval uint32
 }

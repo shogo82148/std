@@ -117,7 +117,7 @@ func (v Values) Get(key string) string
 // values.
 func (v Values) Set(key, value string)
 
-// Add adds the key to value. It appends to any existing
+// Add adds the value to key. It appends to any existing
 // values associated with key.
 func (v Values) Add(key, value string)
 

@@ -11,4 +11,4 @@ package os
 // current directory.  If the current directory can be
 // reached via multiple paths (due to symbolic links),
 // Getwd may return any one of them.
-func Getwd() (pwd string, err error)
+func Getwd() (dir string, err error)

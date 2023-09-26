@@ -22,7 +22,14 @@ import (
 // and caches them for reuse by subsequent calls. It uses HTTP proxies
 // as directed by the $HTTP_PROXY and $NO_PROXY (or $http_proxy and
 // $no_proxy) environment variables.
-var DefaultTransport RoundTripper = &Transport{Proxy: ProxyFromEnvironment}
+var DefaultTransport RoundTripper = &Transport{
+	Proxy: ProxyFromEnvironment,
+	Dial: (&net.Dialer{
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+	}).Dial,
+	TLSHandshakeTimeout: 10 * time.Second,
+}
 
 // DefaultMaxIdleConnsPerHost is the default value of Transport's
 // MaxIdleConnsPerHost.
@@ -32,19 +39,21 @@ const DefaultMaxIdleConnsPerHost = 2
 // https, and http proxies (for either http or https with CONNECT).
 // Transport can also cache connections for future re-use.
 type Transport struct {
-	idleMu     sync.Mutex
-	idleConn   map[string][]*persistConn
-	idleConnCh map[string]chan *persistConn
-	reqMu      sync.Mutex
-	reqConn    map[*Request]*persistConn
-	altMu      sync.RWMutex
-	altProto   map[string]RoundTripper
+	idleMu      sync.Mutex
+	idleConn    map[connectMethodKey][]*persistConn
+	idleConnCh  map[connectMethodKey]chan *persistConn
+	reqMu       sync.Mutex
+	reqCanceler map[*Request]func()
+	altMu       sync.RWMutex
+	altProto    map[string]RoundTripper
 
 	Proxy func(*Request) (*url.URL, error)
 
 	Dial func(network, addr string) (net.Conn, error)
 
 	TLSClientConfig *tls.Config
+
+	TLSHandshakeTimeout time.Duration
 
 	DisableKeepAlives bool
 
@@ -61,6 +70,9 @@ type Transport struct {
 // An error is returned if the proxy environment is invalid.
 // A nil URL and nil error are returned if no proxy is defined in the
 // environment, or a proxy should not be used for the given request.
+//
+// As a special case, if req.URL.Host is "localhost" (with or without
+// a port number), then a nil URL and nil error will be returned.
 func ProxyFromEnvironment(req *Request) (*url.URL, error)
 
 // ProxyURL returns a proxy function (for use in a Transport)
@@ -94,6 +106,10 @@ func (t *Transport) CloseIdleConnections()
 // connection.
 func (t *Transport) CancelRequest(req *Request)
 
+// envOnce looks up an environment variable (optionally by multiple
+// names) once. It mitigates expensive lookups on some platforms
+// (e.g. Windows).
+
 // connectMethod is the map key (in its String form) for keeping persistent
 // TCP connections alive for subsequent HTTP requests.
 //
@@ -101,13 +117,17 @@ func (t *Transport) CancelRequest(req *Request)
 //
 // Cache key form                Description
 // -----------------             -------------------------
-// ||http|foo.com                http directly to server, no proxy
-// ||https|foo.com               https directly to server, no proxy
+// |http|foo.com                 http directly to server, no proxy
+// |https|foo.com                https directly to server, no proxy
 // http://proxy.com|https|foo.com  http to proxy, then CONNECT to foo.com
 // http://proxy.com|http           http to proxy, http to anywhere after that
 //
 // Note: no support to https to the proxy yet.
 //
+
+// connectMethodKey is the map key version of connectMethod, with a
+// stringified proxy URL (or the empty string) instead of a pointer to
+// a URL.
 
 // persistConn wraps a connection, usually a persistent one
 // (but may be used for non-keep-alive requests as well)
@@ -122,3 +142,6 @@ func (t *Transport) CancelRequest(req *Request)
 // returns. If earlyCloseFn is non-nil and Close is called before
 // io.EOF is seen, earlyCloseFn is called instead of fn, and its
 // return value is the return value from Close.
+
+// gzipReader wraps a response body so it can lazily
+// call gzip.NewReader on the first call to Read

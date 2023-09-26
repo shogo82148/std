@@ -19,6 +19,7 @@ package syscall
 #include <dirent.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <termios.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/event.h>
@@ -60,6 +61,91 @@ struct sockaddr_any {
 	char pad[sizeof(union sockaddr_all) - sizeof(struct sockaddr)];
 };
 
+// This structure is a duplicate of stat on FreeBSD 8-STABLE.
+// See /usr/include/sys/stat.h.
+struct stat8 {
+#undef st_atimespec	st_atim
+#undef st_mtimespec	st_mtim
+#undef st_ctimespec	st_ctim
+#undef st_birthtimespec	st_birthtim
+	__dev_t   st_dev;
+	ino_t     st_ino;
+	mode_t    st_mode;
+	nlink_t   st_nlink;
+	uid_t     st_uid;
+	gid_t     st_gid;
+	__dev_t   st_rdev;
+#if __BSD_VISIBLE
+	struct  timespec st_atimespec;
+	struct  timespec st_mtimespec;
+	struct  timespec st_ctimespec;
+#else
+	time_t    st_atime;
+	long      __st_atimensec;
+	time_t    st_mtime;
+	long      __st_mtimensec;
+	time_t    st_ctime;
+	long      __st_ctimensec;
+#endif
+	off_t     st_size;
+	blkcnt_t st_blocks;
+	blksize_t st_blksize;
+	fflags_t  st_flags;
+	__uint32_t st_gen;
+	__int32_t st_lspare;
+#if __BSD_VISIBLE
+	struct timespec st_birthtimespec;
+	unsigned int :(8 / 2) * (16 - (int)sizeof(struct timespec));
+	unsigned int :(8 / 2) * (16 - (int)sizeof(struct timespec));
+#else
+	time_t    st_birthtime;
+	long      st_birthtimensec;
+	unsigned int :(8 / 2) * (16 - (int)sizeof(struct __timespec));
+	unsigned int :(8 / 2) * (16 - (int)sizeof(struct __timespec));
+#endif
+};
+
+// This structure is a duplicate of if_data on FreeBSD 8-STABLE.
+// See /usr/include/net/if.h.
+struct if_data8 {
+	u_char  ifi_type;
+	u_char  ifi_physical;
+	u_char  ifi_addrlen;
+	u_char  ifi_hdrlen;
+	u_char  ifi_link_state;
+	u_char  ifi_spare_char1;
+	u_char  ifi_spare_char2;
+	u_char  ifi_datalen;
+	u_long  ifi_mtu;
+	u_long  ifi_metric;
+	u_long  ifi_baudrate;
+	u_long  ifi_ipackets;
+	u_long  ifi_ierrors;
+	u_long  ifi_opackets;
+	u_long  ifi_oerrors;
+	u_long  ifi_collisions;
+	u_long  ifi_ibytes;
+	u_long  ifi_obytes;
+	u_long  ifi_imcasts;
+	u_long  ifi_omcasts;
+	u_long  ifi_iqdrops;
+	u_long  ifi_noproto;
+	u_long  ifi_hwassist;
+	time_t  ifi_epoch;
+	struct  timeval ifi_lastchange;
+};
+
+// This structure is a duplicate of if_msghdr on FreeBSD 8-STABLE.
+// See /usr/include/net/if.h.
+struct if_msghdr8 {
+	u_short ifm_msglen;
+	u_char  ifm_version;
+	u_char  ifm_type;
+	int     ifm_addrs;
+	int     ifm_flags;
+	u_short ifm_index;
+	struct  if_data8 ifm_data;
+};
 */
 import "github.com/shogo82148/std/C"
 
@@ -70,10 +156,6 @@ type Timeval C.struct_timeval
 type Rusage C.struct_rusage
 
 type Rlimit C.struct_rlimit
-
-const (
-	O_CLOEXEC = 0
-)
 
 const (
 	S_IFMT   = C.S_IFMT
@@ -92,7 +174,7 @@ const (
 	S_IXUSR  = C.S_IXUSR
 )
 
-type Stat_t C.struct_stat
+type Stat_t C.struct_stat8
 
 type Statfs_t C.struct_statfs
 
@@ -162,8 +244,9 @@ type Kevent_t C.struct_kevent
 type FdSet C.fd_set
 
 const (
-	SizeofIfMsghdr         = C.sizeof_struct_if_msghdr
-	SizeofIfData           = C.sizeof_struct_if_data
+	SizeofIfMsghdr = C.sizeof_struct_if_msghdr8
+
+	SizeofIfData           = C.sizeof_struct_if_data8
 	SizeofIfaMsghdr        = C.sizeof_struct_ifa_msghdr
 	SizeofIfmaMsghdr       = C.sizeof_struct_ifma_msghdr
 	SizeofIfAnnounceMsghdr = C.sizeof_struct_if_announcemsghdr
@@ -171,9 +254,9 @@ const (
 	SizeofRtMetrics        = C.sizeof_struct_rt_metrics
 )
 
-type IfMsghdr C.struct_if_msghdr
+type IfMsghdr C.struct_if_msghdr8
 
-type IfData C.struct_if_data
+type IfData C.struct_if_data8
 
 type IfaMsghdr C.struct_ifa_msghdr
 
@@ -208,3 +291,5 @@ type BpfInsn C.struct_bpf_insn
 type BpfHdr C.struct_bpf_hdr
 
 type BpfZbufHeader C.struct_bpf_zbuf_header
+
+type Termios C.struct_termios

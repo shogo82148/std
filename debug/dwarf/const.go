@@ -141,15 +141,22 @@ const (
 	TagVariantPart            Tag = 0x33
 	TagVariable               Tag = 0x34
 	TagVolatileType           Tag = 0x35
-	TagDwarfProcedure         Tag = 0x36
-	TagRestrictType           Tag = 0x37
-	TagInterfaceType          Tag = 0x38
-	TagNamespace              Tag = 0x39
-	TagImportedModule         Tag = 0x3A
-	TagUnspecifiedType        Tag = 0x3B
-	TagPartialUnit            Tag = 0x3C
-	TagImportedUnit           Tag = 0x3D
-	TagMutableType            Tag = 0x3E
+	// The following are new in DWARF 3.
+	TagDwarfProcedure  Tag = 0x36
+	TagRestrictType    Tag = 0x37
+	TagInterfaceType   Tag = 0x38
+	TagNamespace       Tag = 0x39
+	TagImportedModule  Tag = 0x3A
+	TagUnspecifiedType Tag = 0x3B
+	TagPartialUnit     Tag = 0x3C
+	TagImportedUnit    Tag = 0x3D
+	TagMutableType     Tag = 0x3E
+	TagCondition       Tag = 0x3F
+	TagSharedType      Tag = 0x40
+	// The following are new in DWARF 4.
+	TagTypeUnit            Tag = 0x41
+	TagRvalueReferenceType Tag = 0x42
+	TagTemplateAlias       Tag = 0x43
 )
 
 func (t Tag) String() string

@@ -17,4 +17,8 @@ import (
 // testConnSet tracks a set of TCP connections and whether they've
 // been closed.
 
+// byteFromChanReader is an io.Reader that reads a single byte at a
+// time from the channel.  When the channel is closed, the reader
+// returns io.EOF.
+
 // rgz is a gzip quine that uncompresses to itself.

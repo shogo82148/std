@@ -21,6 +21,7 @@ type Conn struct {
 	isClient bool
 
 	handshakeMutex    sync.Mutex
+	handshakeErr      error
 	vers              uint16
 	haveVers          bool
 	config            *Config
@@ -36,8 +37,6 @@ type Conn struct {
 
 	clientProtocol         string
 	clientProtocolFallback bool
-
-	connErr
 
 	in, out  halfConn
 	rawInput *block
@@ -62,7 +61,7 @@ func (c *Conn) SetDeadline(t time.Time) error
 // A zero value for t means Read will not time out.
 func (c *Conn) SetReadDeadline(t time.Time) error
 
-// SetWriteDeadline sets the write deadline on the underlying conneciton.
+// SetWriteDeadline sets the write deadline on the underlying connection.
 // A zero value for t means Write will not time out.
 // After a Write has timed out, the TLS state is corrupt and all future writes will return the same error.
 func (c *Conn) SetWriteDeadline(t time.Time) error

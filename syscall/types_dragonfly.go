@@ -19,6 +19,7 @@ package syscall
 #include <dirent.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <termios.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/event.h>
@@ -70,10 +71,6 @@ type Timeval C.struct_timeval
 type Rusage C.struct_rusage
 
 type Rlimit C.struct_rlimit
-
-const (
-	F_DUPFD_CLOEXEC = 0
-)
 
 const (
 	S_IFMT   = C.S_IFMT
@@ -199,3 +196,5 @@ type BpfProgram C.struct_bpf_program
 type BpfInsn C.struct_bpf_insn
 
 type BpfHdr C.struct_bpf_hdr
+
+type Termios C.struct_termios

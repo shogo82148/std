@@ -135,6 +135,8 @@ type Dirent C.struct_dirent
 
 type Fsid C.fsid_t
 
+type Flock_t C.struct_flock
+
 type RawSockaddrInet4 C.struct_sockaddr_in
 
 type RawSockaddrInet6 C.struct_sockaddr_in6

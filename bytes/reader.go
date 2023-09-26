@@ -14,7 +14,7 @@ import (
 // Unlike a Buffer, a Reader is read-only and supports seeking.
 type Reader struct {
 	s        []byte
-	i        int
+	i        int64
 	prevRune int
 }
 

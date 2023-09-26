@@ -13,7 +13,7 @@ import (
 // from a string.
 type Reader struct {
 	s        string
-	i        int
+	i        int64
 	prevRune int
 }
 

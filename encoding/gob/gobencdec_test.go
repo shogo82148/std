@@ -109,3 +109,7 @@ type GobTestIndirectArrayEncDec struct {
 	X int
 	A ***ArrayStruct
 }
+
+// Another bug: this caused a crash with the new Go1 Time type.
+// We throw in a gob-encoding array, to test another case of isZero,
+// and a struct containing an nil interface, to test a third.

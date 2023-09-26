@@ -150,3 +150,5 @@ func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 // canonical key for "accept-encoding" is "Accept-Encoding".
 // MIME header keys are assumed to be ASCII only.
 func CanonicalMIMEHeaderKey(s string) string
+
+// commonHeader interns common header strings.
