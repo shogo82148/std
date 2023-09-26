@@ -94,8 +94,6 @@ func Example_autoescaping() {
 	check(err)
 	// Output:
 	// Hello, &lt;script&gt;alert(&#39;you have been pwned&#39;)&lt;/script&gt;!
-	// Output:
-	// Hello, &lt;script&gt;alert(&#39;you have been pwned&#39;)&lt;/script&gt;!
 }
 
 func Example_escape() {
@@ -114,14 +112,6 @@ func Example_escape() {
 
 	fmt.Println(template.URLQueryEscaper(v...))
 
-	// Output:
-	// &#34;Fran &amp; Freddie&#39;s Diner&#34; &lt;tasty@example.com&gt;
-	// &#34;Fran &amp; Freddie&#39;s Diner&#34; &lt;tasty@example.com&gt;
-	// &#34;Fran &amp; Freddie&#39;s Diner&#34;32&lt;tasty@example.com&gt;
-	// \"Fran \u0026 Freddie\'s Diner\" \u003Ctasty@example.com\u003E
-	// \"Fran \u0026 Freddie\'s Diner\" \u003Ctasty@example.com\u003E
-	// \"Fran \u0026 Freddie\'s Diner\"32\u003Ctasty@example.com\u003E
-	// %22Fran+%26+Freddie%27s+Diner%2232%3Ctasty%40example.com%3E
 	// Output:
 	// &#34;Fran &amp; Freddie&#39;s Diner&#34; &lt;tasty@example.com&gt;
 	// &#34;Fran &amp; Freddie&#39;s Diner&#34; &lt;tasty@example.com&gt;
@@ -153,11 +143,7 @@ func ExampleTemplate_Delims() {
 
 	// Output:
 	// Hello {{.Name}}
-	// Output:
-	// Hello {{.Name}}
 }
-
-// The following example is duplicated in text/template; keep them in sync.
 
 func ExampleTemplate_block() {
 	const (

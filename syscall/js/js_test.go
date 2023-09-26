@@ -29,8 +29,3 @@ func ExampleFuncOf() {
 	})
 	js.Global().Get("document").Call("getElementById", "myButton").Call("addEventListener", "click", cb)
 }
-
-// See
-// - https://developer.mozilla.org/en-US/docs/Glossary/Truthy
-// - https://stackoverflow.com/questions/19839952/all-falsey-values-in-javascript/19839953#19839953
-// - http://www.ecma-international.org/ecma-262/5.1/#sec-9.2

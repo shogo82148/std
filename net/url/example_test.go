@@ -28,16 +28,12 @@ func ExamplePathUnescape() {
 
 	// Output:
 	// my/cool+blog&about,stuff
-	// Output:
-	// my/cool+blog&about,stuff
 }
 
 func ExampleQueryEscape() {
 	query := url.QueryEscape("my/cool+blog&about,stuff")
 	fmt.Println(query)
 
-	// Output:
-	// my%2Fcool%2Bblog%26about%2Cstuff
 	// Output:
 	// my%2Fcool%2Bblog%26about%2Cstuff
 }
@@ -52,8 +48,6 @@ func ExampleQueryUnescape() {
 
 	// Output:
 	// my/cool+blog&about,stuff
-	// Output:
-	// my/cool+blog&about,stuff
 }
 
 func ExampleValues() {
@@ -62,7 +56,6 @@ func ExampleValues() {
 	v.Add("friend", "Jess")
 	v.Add("friend", "Sarah")
 	v.Add("friend", "Zoe")
-	// v.Encode() == "name=Ava&friend=Jess&friend=Sarah&friend=Zoe"
 	// v.Encode() == "name=Ava&friend=Jess&friend=Sarah&friend=Zoe"
 	fmt.Println(v.Get("name"))
 	fmt.Println(v.Get("friend"))
@@ -82,8 +75,6 @@ func ExampleValues_Add() {
 
 	// Output:
 	// [meow mew mau]
-	// Output:
-	// [meow mew mau]
 }
 
 func ExampleValues_Del() {
@@ -99,9 +90,6 @@ func ExampleValues_Del() {
 	// Output:
 	// [meow mew mau]
 	// []
-	// Output:
-	// [meow mew mau]
-	// []
 }
 
 func ExampleValues_Encode() {
@@ -111,8 +99,6 @@ func ExampleValues_Encode() {
 	v.Add("cat sounds", "mau$")
 	fmt.Println(v.Encode())
 
-	// Output:
-	// cat+sounds=meow&cat+sounds=mew%2F&cat+sounds=mau%24
 	// Output:
 	// cat+sounds=meow&cat+sounds=mew%2F&cat+sounds=mau%24
 }
@@ -128,9 +114,6 @@ func ExampleValues_Get() {
 	// Output:
 	// "meow"
 	// ""
-	// Output:
-	// "meow"
-	// ""
 }
 
 func ExampleValues_Has() {
@@ -141,9 +124,6 @@ func ExampleValues_Has() {
 	fmt.Println(v.Has("cat sounds"))
 	fmt.Println(v.Has("dog sounds"))
 
-	// Output:
-	// true
-	// false
 	// Output:
 	// true
 	// false
@@ -162,9 +142,6 @@ func ExampleValues_Set() {
 	// Output:
 	// [meow mew mau]
 	// [meow]
-	// Output:
-	// [meow mew mau]
-	// [meow]
 }
 
 func ExampleURL() {
@@ -179,11 +156,9 @@ func ExampleURL() {
 	u.RawQuery = q.Encode()
 	fmt.Println(u)
 	// Output: https://google.com/search?q=golang
-	// Output: https://google.com/search?q=golang
 }
 
 func ExampleURL_roundtrip() {
-	// Parse + String preserve the original encoding.
 	// Parse + String preserve the original encoding.
 	u, err := url.Parse("https://example.com/foo%2fbar")
 	if err != nil {
@@ -210,8 +185,6 @@ func ExampleURL_ResolveReference() {
 	fmt.Println(base.ResolveReference(u))
 	// Output:
 	// http://example.com/search?q=dotnet
-	// Output:
-	// http://example.com/search?q=dotnet
 }
 
 func ExampleParseQuery() {
@@ -220,8 +193,6 @@ func ExampleParseQuery() {
 		log.Fatal(err)
 	}
 	fmt.Println(toJSON(m))
-	// Output:
-	// {"x":["1"], "y":["2", "3"]}
 	// Output:
 	// {"x":["1"], "y":["2", "3"]}
 }
@@ -238,10 +209,6 @@ func ExampleURL_EscapedPath() {
 	// Path: /x/y/z
 	// RawPath: /x/y%2Fz
 	// EscapedPath: /x/y%2Fz
-	// Output:
-	// Path: /x/y/z
-	// RawPath: /x/y%2Fz
-	// EscapedPath: /x/y%2Fz
 }
 
 func ExampleURL_EscapedFragment() {
@@ -252,10 +219,6 @@ func ExampleURL_EscapedFragment() {
 	fmt.Println("Fragment:", u.Fragment)
 	fmt.Println("RawFragment:", u.RawFragment)
 	fmt.Println("EscapedFragment:", u.EscapedFragment())
-	// Output:
-	// Fragment: x/y/z
-	// RawFragment: x/y%2Fz
-	// EscapedFragment: x/y%2Fz
 	// Output:
 	// Fragment: x/y/z
 	// RawFragment: x/y%2Fz
@@ -276,9 +239,6 @@ func ExampleURL_Hostname() {
 	// Output:
 	// example.org
 	// 2001:0db8:85a3:0000:0000:8a2e:0370:7334
-	// Output:
-	// example.org
-	// 2001:0db8:85a3:0000:0000:8a2e:0370:7334
 }
 
 func ExampleURL_IsAbs() {
@@ -286,9 +246,6 @@ func ExampleURL_IsAbs() {
 	fmt.Println(u.IsAbs())
 	u.Scheme = "http"
 	fmt.Println(u.IsAbs())
-	// Output:
-	// false
-	// true
 	// Output:
 	// false
 	// true
@@ -301,8 +258,6 @@ func ExampleURL_MarshalBinary() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%s\n", b)
-	// Output:
-	// https://example.org
 	// Output:
 	// https://example.org
 }
@@ -323,8 +278,6 @@ func ExampleURL_Parse() {
 	}
 	// Output:
 	// https://example.org/foo
-	// Output:
-	// https://example.org/foo
 }
 
 func ExampleURL_Port() {
@@ -341,9 +294,6 @@ func ExampleURL_Port() {
 	// Output:
 	//
 	// 8080
-	// Output:
-	//
-	// 8080
 }
 
 func ExampleURL_Query() {
@@ -355,10 +305,6 @@ func ExampleURL_Query() {
 	fmt.Println(q["a"])
 	fmt.Println(q.Get("b"))
 	fmt.Println(q.Get(""))
-	// Output:
-	// [1 2]
-	//
-	// 3
 	// Output:
 	// [1 2]
 	//
@@ -380,9 +326,6 @@ func ExampleURL_String() {
 	// Output:
 	// https://me:pass@example.com/foo/bar?x=1&y=2#anchor
 	// https:opaque?x=1&y=2#anchor
-	// Output:
-	// https://me:pass@example.com/foo/bar?x=1&y=2#anchor
-	// https:opaque?x=1&y=2#anchor
 }
 
 func ExampleURL_UnmarshalBinary() {
@@ -392,8 +335,6 @@ func ExampleURL_UnmarshalBinary() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%s\n", u)
-	// Output:
-	// https://example.org/foo
 	// Output:
 	// https://example.org/foo
 }
@@ -411,9 +352,6 @@ func ExampleURL_Redacted() {
 	// Output:
 	// https://user:xxxxx@example.com/foo/bar
 	// https://me:xxxxx@example.com/foo/bar
-	// Output:
-	// https://user:xxxxx@example.com/foo/bar
-	// https://me:xxxxx@example.com/foo/bar
 }
 
 func ExampleURL_RequestURI() {
@@ -422,6 +360,5 @@ func ExampleURL_RequestURI() {
 		log.Fatal(err)
 	}
 	fmt.Println(u.RequestURI())
-	// Output: /path?foo=bar
 	// Output: /path?foo=bar
 }

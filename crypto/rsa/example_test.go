@@ -89,11 +89,6 @@ func ExampleSignPKCS1v15() {
 	// that the hash function be collision resistant. SHA-256 is the
 	// least-strong hash function that should be used for this at the time
 	// of writing (2016).
-	// Only small messages can be signed directly; thus the hash of a
-	// message, rather than the message itself, is signed. This requires
-	// that the hash function be collision resistant. SHA-256 is the
-	// least-strong hash function that should be used for this at the time
-	// of writing (2016).
 	hashed := sha256.Sum256(message)
 
 	signature, err := rsa.SignPKCS1v15(nil, rsaPrivateKey, crypto.SHA256, hashed[:])
@@ -114,11 +109,6 @@ func ExampleVerifyPKCS1v15() {
 	// that the hash function be collision resistant. SHA-256 is the
 	// least-strong hash function that should be used for this at the time
 	// of writing (2016).
-	// Only small messages can be signed directly; thus the hash of a
-	// message, rather than the message itself, is signed. This requires
-	// that the hash function be collision resistant. SHA-256 is the
-	// least-strong hash function that should be used for this at the time
-	// of writing (2016).
 	hashed := sha256.Sum256(message)
 
 	err := rsa.VerifyPKCS1v15(&rsaPrivateKey.PublicKey, crypto.SHA256, hashed[:], signature)
@@ -134,8 +124,6 @@ func ExampleEncryptOAEP() {
 	secretMessage := []byte("send reinforcements, we're going to advance")
 	label := []byte("orders")
 
-	// crypto/rand.Reader is a good source of entropy for randomizing the
-	// encryption function.
 	// crypto/rand.Reader is a good source of entropy for randomizing the
 	// encryption function.
 	rng := rand.Reader
@@ -163,9 +151,6 @@ func ExampleDecryptOAEP() {
 
 	fmt.Printf("Plaintext: %s\n", string(plaintext))
 
-	// Remember that encryption only provides confidentiality. The
-	// ciphertext should be signed before authenticity is assumed and, even
-	// then, consider that messages might be reordered.
 	// Remember that encryption only provides confidentiality. The
 	// ciphertext should be signed before authenticity is assumed and, even
 	// then, consider that messages might be reordered.

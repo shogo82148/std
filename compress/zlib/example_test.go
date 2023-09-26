@@ -33,6 +33,5 @@ func ExampleNewReader() {
 	}
 	io.Copy(os.Stdout, r)
 	// Output: hello, world
-	// Output: hello, world
 	r.Close()
 }

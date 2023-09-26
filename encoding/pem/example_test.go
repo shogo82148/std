@@ -62,10 +62,4 @@ func ExampleEncode() {
 	//
 	// dGVzdA==
 	// -----END MESSAGE-----
-	// Output:
-	// -----BEGIN MESSAGE-----
-	// Animal: Gopher
-	//
-	// dGVzdA==
-	// -----END MESSAGE-----
 }

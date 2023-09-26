@@ -40,8 +40,6 @@ func ExampleWriter_Init() {
 func Example_elastic() {
 	// Observe how the b's and the d's, despite appearing in the
 	// second cell of each line, belong to different columns.
-	// Observe how the b's and the d's, despite appearing in the
-	// second cell of each line, belong to different columns.
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, '.', tabwriter.AlignRight|tabwriter.Debug)
 	fmt.Fprintln(w, "a\tb\tc")
 	fmt.Fprintln(w, "aa\tbb\tcc")
@@ -57,8 +55,6 @@ func Example_elastic() {
 }
 
 func Example_trailingTab() {
-	// Observe that the third line has no trailing tab,
-	// so its final cell is not part of an aligned column.
 	// Observe that the third line has no trailing tab,
 	// so its final cell is not part of an aligned column.
 	const padding = 3

@@ -54,7 +54,4 @@ func ExampleBoolFunc() {
 	// Output:
 	// dummy message: true
 	// dummy message: 0
-	// Output:
-	// dummy message: true
-	// dummy message: 0
 }

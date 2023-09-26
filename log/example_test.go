@@ -38,6 +38,4 @@ func ExampleLogger_Output() {
 	fmt.Print(&buf)
 	// Output:
 	// INFO: example_test.go:36: Hello world
-	// Output:
-	// INFO: example_test.go:36: Hello world
 }

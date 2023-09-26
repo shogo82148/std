@@ -128,23 +128,9 @@ func ExampleReader_Multistream() {
 	// ModTime: 2007-03-02 04:05:06 +0000 UTC
 	//
 	// Hello Gophers - 2
-	// Output:
-	// Name: file-1.txt
-	// Comment: file-header-1
-	// ModTime: 2006-02-01 03:04:05 +0000 UTC
-	//
-	// Hello Gophers - 1
-	//
-	// Name: file-2.txt
-	// Comment: file-header-2
-	// ModTime: 2007-03-02 04:05:06 +0000 UTC
-	//
-	// Hello Gophers - 2
 }
 
 func Example_compressingReader() {
-	// This is an example of writing a compressing reader.
-	// This can be useful for an HTTP client body, as shown.
 	// This is an example of writing a compressing reader.
 	// This can be useful for an HTTP client body, as shown.
 

@@ -27,9 +27,6 @@ func ExampleSearch() {
 // This example demonstrates searching a list sorted in descending order.
 // The approach is the same as searching a list in ascending order,
 // but with the condition inverted.
-// This example demonstrates searching a list sorted in descending order.
-// The approach is the same as searching a list in ascending order,
-// but with the condition inverted.
 func ExampleSearch_descendingOrder() {
 	a := []int{55, 45, 36, 28, 21, 15, 10, 6, 3, 1}
 	x := 6
@@ -44,7 +41,6 @@ func ExampleSearch_descendingOrder() {
 	// found 6 at index 7 in [55 45 36 28 21 15 10 6 3 1]
 }
 
-// This example demonstrates searching for float64 in a list sorted in ascending order.
 // This example demonstrates searching for float64 in a list sorted in ascending order.
 func ExampleSearchFloat64s() {
 	a := []float64{1.0, 2.0, 3.3, 4.6, 6.1, 7.2, 8.0}
@@ -61,7 +57,6 @@ func ExampleSearchFloat64s() {
 	// 0.5 not found, can be inserted at index 0 in [1 2 3.3 4.6 6.1 7.2 8]
 }
 
-// This example demonstrates searching for int in a list sorted in ascending order.
 // This example demonstrates searching for int in a list sorted in ascending order.
 func ExampleSearchInts() {
 	a := []int{1, 2, 3, 4, 6, 7, 8}

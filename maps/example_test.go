@@ -42,6 +42,4 @@ func ExampleEqualFunc() {
 	fmt.Println(eq)
 	// Output:
 	// true
-	// Output:
-	// true
 }

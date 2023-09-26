@@ -45,23 +45,11 @@ func ExampleDuration_Round() {
 	// d.Round(  1m0s) = 1h16m0s
 	// d.Round( 10m0s) = 1h20m0s
 	// d.Round(1h0m0s) = 1h0m0s
-	// Output:
-	// d.Round(   1ns) = 1h15m30.918273645s
-	// d.Round(   1µs) = 1h15m30.918274s
-	// d.Round(   1ms) = 1h15m30.918s
-	// d.Round(    1s) = 1h15m31s
-	// d.Round(    2s) = 1h15m30s
-	// d.Round(  1m0s) = 1h16m0s
-	// d.Round( 10m0s) = 1h20m0s
-	// d.Round(1h0m0s) = 1h0m0s
 }
 
 func ExampleDuration_String() {
 	fmt.Println(1*time.Hour + 2*time.Minute + 300*time.Millisecond)
 	fmt.Println(300 * time.Millisecond)
-	// Output:
-	// 1h2m0.3s
-	// 300ms
 	// Output:
 	// 1h2m0.3s
 	// 300ms
@@ -96,22 +84,12 @@ func ExampleDuration_Truncate() {
 	// d.Truncate(  1m0s) = 1h15m0s
 	// d.Truncate( 10m0s) = 1h10m0s
 	// d.Truncate(1h0m0s) = 1h0m0s
-	// Output:
-	// d.Truncate(   1ns) = 1h15m30.918273645s
-	// d.Truncate(   1µs) = 1h15m30.918273s
-	// d.Truncate(   1ms) = 1h15m30.918s
-	// d.Truncate(    1s) = 1h15m30s
-	// d.Truncate(    2s) = 1h15m30s
-	// d.Truncate(  1m0s) = 1h15m0s
-	// d.Truncate( 10m0s) = 1h10m0s
-	// d.Truncate(1h0m0s) = 1h0m0s
 }
 
 func ExampleParseDuration() {
 	hours, _ := time.ParseDuration("10h")
 	complex, _ := time.ParseDuration("1h10m10s")
 	micro, _ := time.ParseDuration("1µs")
-	// The package also accepts the incorrect but common prefix u for micro.
 	// The package also accepts the incorrect but common prefix u for micro.
 	micro2, _ := time.ParseDuration("1us")
 
@@ -132,14 +110,11 @@ func ExampleDuration_Hours() {
 	h, _ := time.ParseDuration("4h30m")
 	fmt.Printf("I've got %.1f hours of work left.", h.Hours())
 	// Output: I've got 4.5 hours of work left.
-	// Output: I've got 4.5 hours of work left.
 }
 
 func ExampleDuration_Microseconds() {
 	u, _ := time.ParseDuration("1s")
 	fmt.Printf("One second is %d microseconds.\n", u.Microseconds())
-	// Output:
-	// One second is 1000000 microseconds.
 	// Output:
 	// One second is 1000000 microseconds.
 }
@@ -149,14 +124,11 @@ func ExampleDuration_Milliseconds() {
 	fmt.Printf("One second is %d milliseconds.\n", u.Milliseconds())
 	// Output:
 	// One second is 1000 milliseconds.
-	// Output:
-	// One second is 1000 milliseconds.
 }
 
 func ExampleDuration_Minutes() {
 	m, _ := time.ParseDuration("1h30m")
 	fmt.Printf("The movie is %.0f minutes long.", m.Minutes())
-	// Output: The movie is 90 minutes long.
 	// Output: The movie is 90 minutes long.
 }
 
@@ -165,14 +137,11 @@ func ExampleDuration_Nanoseconds() {
 	fmt.Printf("One microsecond is %d nanoseconds.\n", u.Nanoseconds())
 	// Output:
 	// One microsecond is 1000 nanoseconds.
-	// Output:
-	// One microsecond is 1000 nanoseconds.
 }
 
 func ExampleDuration_Seconds() {
 	m, _ := time.ParseDuration("1m30s")
 	fmt.Printf("Take off in t-%.0f seconds.", m.Seconds())
-	// Output: Take off in t-90 seconds.
 	// Output: Take off in t-90 seconds.
 }
 
@@ -207,11 +176,6 @@ func ExampleDate() {
 	t := time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
 	fmt.Printf("Go launched at %s\n", t.Local())
 	// Output: Go launched at 2009-11-10 15:00:00 -0800 PST
-	// Output: Go launched at 2009-11-10 15:00:00 -0800 PST
-	// Output: Go launched at 2009-11-10 15:00:00 -0800 PST
-	// Output: Go launched at 2009-11-10 15:00:00 -0800 PST
-	// Output: Go launched at 2009-11-10 15:00:00 -0800 PST
-	// Output: Go launched at 2009-11-10 15:00:00 -0800 PST
 }
 
 func ExampleNewTicker() {
@@ -234,8 +198,6 @@ func ExampleNewTicker() {
 }
 
 func ExampleTime_Format() {
-	// Parse a time value from a string in the standard Unix format.
-	// Parse a time value from a string in the standard Unix format.
 	// Parse a time value from a string in the standard Unix format.
 	t, err := time.Parse(time.UnixDate, "Wed Feb 25 11:06:39 PST 2015")
 	if err != nil { // Always check errors even if they should not happen.
@@ -341,7 +303,6 @@ func ExampleTime_Format() {
 
 func ExampleTime_Format_pad() {
 	// Parse a time value from a string in the standard Unix format.
-	// Parse a time value from a string in the standard Unix format.
 	t, err := time.Parse(time.UnixDate, "Sat Mar 7 11:06:39 PST 2015")
 	if err != nil { // Always check errors even if they should not happen.
 		panic(err)
@@ -401,17 +362,9 @@ func ExampleTime_GoString() {
 	// time.Date(2009, time.November, 10, 23, 1, 0, 0, time.UTC)
 	// time.Date(2009, time.December, 10, 23, 1, 0, 0, time.UTC)
 	// time.Date(2013, time.February, 3, 19, 54, 0, 0, time.UTC)
-	// Output:
-	// time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
-	// time.Date(2009, time.November, 10, 23, 1, 0, 0, time.UTC)
-	// time.Date(2009, time.December, 10, 23, 1, 0, 0, time.UTC)
-	// time.Date(2013, time.February, 3, 19, 54, 0, 0, time.UTC)
 }
 
 func ExampleParse() {
-	// See the example for Time.Format for a thorough description of how
-	// to define the layout string to parse a time.Time value; Parse and
-	// Format use the same model to describe their input and output.
 	// See the example for Time.Format for a thorough description of how
 	// to define the layout string to parse a time.Time value; Parse and
 	// Format use the same model to describe their input and output.
@@ -454,7 +407,6 @@ func ExampleParseInLocation() {
 	loc, _ := time.LoadLocation("Europe/Berlin")
 
 	// This will look for the name CEST in the Europe/Berlin time zone.
-	// This will look for the name CEST in the Europe/Berlin time zone.
 	const longForm = "Jan 2, 2006 at 3:04pm (MST)"
 	t, _ := time.ParseInLocation(longForm, "Jul 9, 2012 at 5:02am (CEST)", loc)
 	fmt.Println(t)
@@ -478,9 +430,6 @@ func ExampleUnix() {
 	// Output:
 	// 1257894000
 	// 2009-11-10 23:00:00 +0000 UTC
-	// Output:
-	// 1257894000
-	// 2009-11-10 23:00:00 +0000 UTC
 }
 
 func ExampleUnixMicro() {
@@ -489,9 +438,6 @@ func ExampleUnixMicro() {
 	t := time.UnixMicro(umt.UnixMicro()).UTC()
 	fmt.Println(t)
 
-	// Output:
-	// 1257894000000000
-	// 2009-11-10 23:00:00 +0000 UTC
 	// Output:
 	// 1257894000000000
 	// 2009-11-10 23:00:00 +0000 UTC
@@ -506,13 +452,9 @@ func ExampleUnixMilli() {
 	// Output:
 	// 1257894000000
 	// 2009-11-10 23:00:00 +0000 UTC
-	// Output:
-	// 1257894000000
-	// 2009-11-10 23:00:00 +0000 UTC
 }
 
 func ExampleTime_Unix() {
-	// 1 billion seconds of Unix, three ways.
 	// 1 billion seconds of Unix, three ways.
 	fmt.Println(time.Unix(1e9, 0).UTC())     // 1e9 seconds
 	fmt.Println(time.Unix(0, 1e18).UTC())    // 1e18 nanoseconds
@@ -555,15 +497,6 @@ func ExampleTime_Round() {
 	// t.Round(  1m0s) = 12:16:00
 	// t.Round( 10m0s) = 12:20:00
 	// t.Round(1h0m0s) = 12:00:00
-	// Output:
-	// t.Round(   1ns) = 12:15:30.918273645
-	// t.Round(   1µs) = 12:15:30.918274
-	// t.Round(   1ms) = 12:15:30.918
-	// t.Round(    1s) = 12:15:31
-	// t.Round(    2s) = 12:15:30
-	// t.Round(  1m0s) = 12:16:00
-	// t.Round( 10m0s) = 12:20:00
-	// t.Round(1h0m0s) = 12:00:00
 }
 
 func ExampleTime_Truncate() {
@@ -581,7 +514,6 @@ func ExampleTime_Truncate() {
 	for _, d := range trunc {
 		fmt.Printf("t.Truncate(%5s) = %s\n", d, t.Truncate(d).Format("15:04:05.999999999"))
 	}
-	// To round to the last midnight in the local timezone, create a new Date.
 	// To round to the last midnight in the local timezone, create a new Date.
 	midnight := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.Local)
 	_ = midnight
@@ -605,11 +537,9 @@ func ExampleLoadLocation() {
 	timeInUTC := time.Date(2018, 8, 30, 12, 0, 0, 0, time.UTC)
 	fmt.Println(timeInUTC.In(location))
 	// Output: 2018-08-30 05:00:00 -0700 PDT
-	// Output: 2018-08-30 05:00:00 -0700 PDT
 }
 
 func ExampleLocation() {
-	// China doesn't have daylight saving. It uses a fixed 8 hour offset from UTC.
 	// China doesn't have daylight saving. It uses a fixed 8 hour offset from UTC.
 	secondsEastOfUTC := int((8 * time.Hour).Seconds())
 	beijing := time.FixedZone("Beijing Time", secondsEastOfUTC)
@@ -650,12 +580,6 @@ func ExampleTime_Add() {
 	// start.Add(time.Minute * 10) = 2009-01-01 12:10:00 +0000 UTC
 	// start.Add(time.Hour * 10) = 2009-01-01 22:00:00 +0000 UTC
 	// start.Add(time.Hour * 24 * 10) = 2009-01-11 12:00:00 +0000 UTC
-	// Output:
-	// start = 2009-01-01 12:00:00 +0000 UTC
-	// start.Add(time.Second * 10) = 2009-01-01 12:00:10 +0000 UTC
-	// start.Add(time.Minute * 10) = 2009-01-01 12:10:00 +0000 UTC
-	// start.Add(time.Hour * 10) = 2009-01-01 22:00:00 +0000 UTC
-	// start.Add(time.Hour * 24 * 10) = 2009-01-11 12:00:00 +0000 UTC
 }
 
 func ExampleTime_AddDate() {
@@ -672,10 +596,6 @@ func ExampleTime_AddDate() {
 	// oneDayLater: start.AddDate(0, 0, 1) = 2009-01-02 00:00:00 +0000 UTC
 	// oneMonthLater: start.AddDate(0, 1, 0) = 2009-02-01 00:00:00 +0000 UTC
 	// oneYearLater: start.AddDate(1, 0, 0) = 2010-01-01 00:00:00 +0000 UTC
-	// Output:
-	// oneDayLater: start.AddDate(0, 0, 1) = 2009-01-02 00:00:00 +0000 UTC
-	// oneMonthLater: start.AddDate(0, 1, 0) = 2009-02-01 00:00:00 +0000 UTC
-	// oneYearLater: start.AddDate(1, 0, 0) = 2010-01-01 00:00:00 +0000 UTC
 }
 
 func ExampleTime_After() {
@@ -683,7 +603,6 @@ func ExampleTime_After() {
 	year3000 := time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC)
 
 	isYear3000AfterYear2000 := year3000.After(year2000) // True
-	// True
 	isYear2000AfterYear3000 := year2000.After(year3000) // False
 
 	fmt.Printf("year3000.After(year2000) = %v\n", isYear3000AfterYear2000)
@@ -699,7 +618,6 @@ func ExampleTime_Before() {
 	year3000 := time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC)
 
 	isYear2000BeforeYear3000 := year2000.Before(year3000) // True
-	// True
 	isYear3000BeforeYear2000 := year3000.Before(year2000) // False
 
 	fmt.Printf("year2000.Before(year3000) = %v\n", isYear2000BeforeYear3000)
@@ -722,10 +640,6 @@ func ExampleTime_Date() {
 	// year = 2000
 	// month = February
 	// day = 1
-	// Output:
-	// year = 2000
-	// month = February
-	// day = 1
 }
 
 func ExampleTime_Day() {
@@ -736,16 +650,12 @@ func ExampleTime_Day() {
 
 	// Output:
 	// day = 1
-	// Output:
-	// day = 1
 }
 
 func ExampleTime_Equal() {
 	secondsEastOfUTC := int((8 * time.Hour).Seconds())
 	beijing := time.FixedZone("Beijing Time", secondsEastOfUTC)
 
-	// Unlike the equal operator, Equal is aware that d1 and d2 are the
-	// same instant but in different time zones.
 	// Unlike the equal operator, Equal is aware that d1 and d2 are the
 	// same instant but in different time zones.
 	d1 := time.Date(2000, 2, 1, 12, 30, 0, 0, time.UTC)
@@ -775,9 +685,6 @@ func ExampleTime_String() {
 	// Output:
 	// withNanoseconds = 2000-02-01 12:13:14.000000015 +0000 UTC
 	// withoutNanoseconds = 2000-02-01 12:13:14 +0000 UTC
-	// Output:
-	// withNanoseconds = 2000-02-01 12:13:14.000000015 +0000 UTC
-	// withoutNanoseconds = 2000-02-01 12:13:14 +0000 UTC
 }
 
 func ExampleTime_Sub() {
@@ -787,8 +694,6 @@ func ExampleTime_Sub() {
 	difference := end.Sub(start)
 	fmt.Printf("difference = %v\n", difference)
 
-	// Output:
-	// difference = 12h0m0s
 	// Output:
 	// difference = 12h0m0s
 }
@@ -802,14 +707,11 @@ func ExampleTime_AppendFormat() {
 
 	// Output:
 	// Time: 11:00AM
-	// Output:
-	// Time: 11:00AM
 }
 
 func ExampleFixedZone() {
 	loc := time.FixedZone("UTC-8", -8*60*60)
 	t := time.Date(2009, time.November, 10, 23, 0, 0, 0, loc)
 	fmt.Println("The time is:", t.Format(time.RFC822))
-	// Output: The time is: 10 Nov 09 23:00 UTC-8
 	// Output: The time is: 10 Nov 09 23:00 UTC-8
 }

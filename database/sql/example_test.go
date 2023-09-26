@@ -147,38 +147,6 @@ func ExampleDB_PingContext() {
 	//
 	// When used in long running service Ping may be part of the health
 	// checking system.
-	// Ping and PingContext may be used to determine if communication with
-	// the database server is still possible.
-	//
-	// When used in a command line application Ping may be used to establish
-	// that further queries are possible; that the provided DSN is valid.
-	//
-	// When used in long running service Ping may be part of the health
-	// checking system.
-	// Ping and PingContext may be used to determine if communication with
-	// the database server is still possible.
-	//
-	// When used in a command line application Ping may be used to establish
-	// that further queries are possible; that the provided DSN is valid.
-	//
-	// When used in long running service Ping may be part of the health
-	// checking system.
-	// Ping and PingContext may be used to determine if communication with
-	// the database server is still possible.
-	//
-	// When used in a command line application Ping may be used to establish
-	// that further queries are possible; that the provided DSN is valid.
-	//
-	// When used in long running service Ping may be part of the health
-	// checking system.
-	// Ping and PingContext may be used to determine if communication with
-	// the database server is still possible.
-	//
-	// When used in a command line application Ping may be used to establish
-	// that further queries are possible; that the provided DSN is valid.
-	//
-	// When used in long running service Ping may be part of the health
-	// checking system.
 
 	ctx, cancel := context.WithTimeout(ctx, 1*time.Second)
 	defer cancel()
@@ -206,7 +174,6 @@ func ExampleDB_Prepare() {
 		log.Fatal(err)
 	}
 	defer stmt.Close() // Prepared statements take up server resources and should be closed after use.
-	// Prepared statements take up server resources and should be closed after use.
 
 	for id, project := range projects {
 		if _, err := stmt.Exec(id+1, project.mascot, project.release, "open source"); err != nil {
@@ -231,7 +198,6 @@ func ExampleTx_Prepare() {
 		log.Fatal(err)
 	}
 	defer tx.Rollback() // The rollback will be ignored if the tx has been committed later in the function.
-	// The rollback will be ignored if the tx has been committed later in the function.
 
 	stmt, err := tx.Prepare("INSERT INTO projects(id, mascot, release, category) VALUES( ?, ?, ?, ? )")
 	if err != nil {
@@ -266,10 +232,6 @@ func ExampleDB_BeginTx() {
 }
 
 func ExampleConn_ExecContext() {
-	// A *DB is a pool of connections. Call Conn to reserve a connection for
-	// exclusive use.
-	// A *DB is a pool of connections. Call Conn to reserve a connection for
-	// exclusive use.
 	// A *DB is a pool of connections. Call Conn to reserve a connection for
 	// exclusive use.
 	conn, err := db.Conn(ctx)
@@ -336,9 +298,6 @@ func ExampleTx_Rollback() {
 
 func ExampleStmt() {
 	// In normal use, create one Stmt when your process starts.
-	// In normal use, create one Stmt when your process starts.
-	// In normal use, create one Stmt when your process starts.
-	// In normal use, create one Stmt when your process starts.
 	stmt, err := db.PrepareContext(ctx, "SELECT username FROM users WHERE id = ?")
 	if err != nil {
 		log.Fatal(err)
@@ -360,7 +319,6 @@ func ExampleStmt() {
 }
 
 func ExampleStmt_QueryRowContext() {
-	// In normal use, create one Stmt when your process starts.
 	// In normal use, create one Stmt when your process starts.
 	stmt, err := db.PrepareContext(ctx, "SELECT username FROM users WHERE id = ?")
 	if err != nil {
@@ -398,7 +356,6 @@ func ExampleRows() {
 		}
 		names = append(names, name)
 	}
-	// Check for errors from iterating over rows.
 	// Check for errors from iterating over rows.
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)

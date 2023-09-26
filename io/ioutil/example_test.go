@@ -46,8 +46,6 @@ func ExampleTempDir() {
 	}
 
 	defer os.RemoveAll(dir) // clean up
-	// clean up
-	// clean up
 
 	tmpfn := filepath.Join(dir, "tmpfile")
 	if err := ioutil.WriteFile(tmpfn, content, 0666); err != nil {
@@ -62,7 +60,6 @@ func ExampleTempDir_suffix() {
 		log.Fatal(err)
 	}
 	defer os.RemoveAll(logsDir) // clean up
-	// clean up
 
 	// Logs can be cleaned out earlier if needed by searching
 	// for all directories whose suffix ends in *-logs.
@@ -87,7 +84,6 @@ func ExampleTempFile() {
 	}
 
 	defer os.Remove(tmpfile.Name()) // clean up
-	// clean up
 
 	if _, err := tmpfile.Write(content); err != nil {
 		log.Fatal(err)
@@ -105,7 +101,6 @@ func ExampleTempFile_suffix() {
 	}
 
 	defer os.Remove(tmpfile.Name()) // clean up
-	// clean up
 
 	if _, err := tmpfile.Write(content); err != nil {
 		tmpfile.Close()
@@ -124,8 +119,6 @@ func ExampleReadFile() {
 
 	fmt.Printf("File contents: %s", content)
 
-	// Output:
-	// File contents: Hello, Gophers!
 	// Output:
 	// File contents: Hello, Gophers!
 }

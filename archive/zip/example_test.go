@@ -49,7 +49,6 @@ func ExampleWriter() {
 
 func ExampleReader() {
 	// Open a zip archive for reading.
-	// Open a zip archive for reading.
 	r, err := zip.OpenReader("testdata/readme.zip")
 	if err != nil {
 		log.Fatal(err)
@@ -77,7 +76,6 @@ func ExampleReader() {
 }
 
 func ExampleWriter_RegisterCompressor() {
-	// Override the default Deflate compressor with a higher compression level.
 	// Override the default Deflate compressor with a higher compression level.
 
 	// Create a buffer to write our archive to.

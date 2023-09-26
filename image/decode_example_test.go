@@ -32,13 +32,6 @@ func Example() {
 	//     log.Fatal(err)
 	// }
 	// defer reader.Close()
-	// Decode the JPEG data. If reading from file, create a reader with
-	//
-	// reader, err := os.Open("testdata/video-001.q50.420.jpeg")
-	// if err != nil {
-	//     log.Fatal(err)
-	// }
-	// defer reader.Close()
 	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(data))
 	m, _, err := image.Decode(reader)
 	if err != nil {

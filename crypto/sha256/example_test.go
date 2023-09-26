@@ -23,7 +23,6 @@ func ExampleNew() {
 	h.Write([]byte("hello world\n"))
 	fmt.Printf("%x", h.Sum(nil))
 	// Output: a948904f2f0f479b8f8197694b30184b0d2ed1c1cd2a1ec0fb85d299a192a447
-	// Output: a948904f2f0f479b8f8197694b30184b0d2ed1c1cd2a1ec0fb85d299a192a447
 }
 
 func ExampleNew_file() {

@@ -114,8 +114,7 @@ func Example_is() {
 }
 
 func ExampleSimpleFold() {
-	fmt.Printf("%#U\n", unicode.SimpleFold('A')) // 'a'
-	// 'a'
+	fmt.Printf("%#U\n", unicode.SimpleFold('A'))      // 'a'
 	fmt.Printf("%#U\n", unicode.SimpleFold('a'))      // 'A'
 	fmt.Printf("%#U\n", unicode.SimpleFold('K'))      // 'k'
 	fmt.Printf("%#U\n", unicode.SimpleFold('k'))      // '\u212A' (Kelvin symbol, K)
@@ -149,21 +148,12 @@ func ExampleTo() {
 	// U+0047 'G'
 	// U+0067 'g'
 	// U+0047 'G'
-	// Output:
-	// U+0047 'G'
-	// U+0067 'g'
-	// U+0047 'G'
-	// U+0047 'G'
-	// U+0067 'g'
-	// U+0047 'G'
 }
 
 func ExampleToLower() {
 	const ucG = 'G'
 	fmt.Printf("%#U\n", unicode.ToLower(ucG))
 
-	// Output:
-	// U+0067 'g'
 	// Output:
 	// U+0067 'g'
 }
@@ -173,16 +163,12 @@ func ExampleToTitle() {
 
 	// Output:
 	// U+0047 'G'
-	// Output:
-	// U+0047 'G'
 }
 
 func ExampleToUpper() {
 	const ucG = 'g'
 	fmt.Printf("%#U\n", unicode.ToUpper(ucG))
 
-	// Output:
-	// U+0047 'G'
 	// Output:
 	// U+0047 'G'
 }
@@ -207,21 +193,11 @@ func ExampleSpecialCase() {
 	// U+0069 'i'
 	// U+0130 'İ'
 	// U+0130 'İ'
-	// Output:
-	// U+0069 'i'
-	// U+0130 'İ'
-	// U+0130 'İ'
-	// U+0069 'i'
-	// U+0130 'İ'
-	// U+0130 'İ'
 }
 
 func ExampleIsDigit() {
 	fmt.Printf("%t\n", unicode.IsDigit('৩'))
 	fmt.Printf("%t\n", unicode.IsDigit('A'))
-	// Output:
-	// true
-	// false
 	// Output:
 	// true
 	// false
@@ -233,17 +209,11 @@ func ExampleIsNumber() {
 	// Output:
 	// true
 	// false
-	// Output:
-	// true
-	// false
 }
 
 func ExampleIsLetter() {
 	fmt.Printf("%t\n", unicode.IsLetter('A'))
 	fmt.Printf("%t\n", unicode.IsLetter('7'))
-	// Output:
-	// true
-	// false
 	// Output:
 	// true
 	// false
@@ -255,17 +225,11 @@ func ExampleIsLower() {
 	// Output:
 	// true
 	// false
-	// Output:
-	// true
-	// false
 }
 
 func ExampleIsUpper() {
 	fmt.Printf("%t\n", unicode.IsUpper('A'))
 	fmt.Printf("%t\n", unicode.IsUpper('a'))
-	// Output:
-	// true
-	// false
 	// Output:
 	// true
 	// false
@@ -277,9 +241,6 @@ func ExampleIsTitle() {
 	// Output:
 	// true
 	// false
-	// Output:
-	// true
-	// false
 }
 
 func ExampleIsSpace() {
@@ -287,11 +248,6 @@ func ExampleIsSpace() {
 	fmt.Printf("%t\n", unicode.IsSpace('\n'))
 	fmt.Printf("%t\n", unicode.IsSpace('\t'))
 	fmt.Printf("%t\n", unicode.IsSpace('a'))
-	// Output:
-	// true
-	// true
-	// true
-	// false
 	// Output:
 	// true
 	// true

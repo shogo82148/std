@@ -56,7 +56,6 @@ var X = f(3.14)*2 + c
 }
 
 // This example shows what an AST looks like when printed for debugging.
-// This example shows what an AST looks like when printed for debugging.
 func ExamplePrint() {
 	// src is the input for which we want to print the AST.
 	src := `
@@ -141,9 +140,6 @@ func main() {
 	//     61  }
 }
 
-// This example illustrates how to remove a variable declaration
-// in a Go program while maintaining correct comment association
-// using an ast.CommentMap.
 // This example illustrates how to remove a variable declaration
 // in a Go program while maintaining correct comment association
 // using an ast.CommentMap.

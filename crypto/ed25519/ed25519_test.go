@@ -29,5 +29,3 @@ func Example_ed25519ctx() {
 		log.Fatal("invalid signature")
 	}
 }
-
-// From RFC 8032, Section 7.3

@@ -40,9 +40,7 @@ func ExampleCommand_environment() {
 	cmd := exec.Command("prog")
 	cmd.Env = append(os.Environ(),
 		"FOO=duplicate_value", // ignored
-		// ignored
-		// ignored
-		"FOO=actual_value", // this value is used
+		"FOO=actual_value",    // this value is used
 	)
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
@@ -150,22 +148,6 @@ func ExampleCmd_Environ() {
 
 	// Set Dir before calling cmd.Environ so that it will include an
 	// updated PWD variable (on platforms where that is used).
-	// Set Dir before calling cmd.Environ so that it will include an
-	// updated PWD variable (on platforms where that is used).
-	// Set Dir before calling cmd.Environ so that it will include an
-	// updated PWD variable (on platforms where that is used).
-	// Set Dir before calling cmd.Environ so that it will include an
-	// updated PWD variable (on platforms where that is used).
-	// Set Dir before calling cmd.Environ so that it will include an
-	// updated PWD variable (on platforms where that is used).
-	// Set Dir before calling cmd.Environ so that it will include an
-	// updated PWD variable (on platforms where that is used).
-	// Set Dir before calling cmd.Environ so that it will include an
-	// updated PWD variable (on platforms where that is used).
-	// Set Dir before calling cmd.Environ so that it will include an
-	// updated PWD variable (on platforms where that is used).
-	// Set Dir before calling cmd.Environ so that it will include an
-	// updated PWD variable (on platforms where that is used).
 	cmd.Dir = ".."
 	cmd.Env = append(cmd.Environ(), "POSIXLY_CORRECT=1")
 
@@ -181,8 +163,6 @@ func ExampleCommandContext() {
 	defer cancel()
 
 	if err := exec.CommandContext(ctx, "sleep", "5").Run(); err != nil {
-		// This will fail after 100 milliseconds. The 5 second sleep
-		// will be interrupted.
 		// This will fail after 100 milliseconds. The 5 second sleep
 		// will be interrupted.
 	}

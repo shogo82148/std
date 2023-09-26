@@ -25,7 +25,6 @@ func ExampleBuffer() {
 
 func ExampleBuffer_reader() {
 	// A Buffer can turn a string or a []byte into an io.Reader.
-	// A Buffer can turn a string or a []byte into an io.Reader.
 	buf := bytes.NewBufferString("R29waGVycyBydWxlIQ==")
 	dec := base64.NewDecoder(base64.StdEncoding, buf)
 	io.Copy(os.Stdout, dec)
@@ -36,7 +35,6 @@ func ExampleBuffer_Bytes() {
 	buf := bytes.Buffer{}
 	buf.Write([]byte{'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'})
 	os.Stdout.Write(buf.Bytes())
-	// Output: hello world
 	// Output: hello world
 }
 
@@ -50,7 +48,6 @@ func ExampleBuffer_AvailableBuffer() {
 	}
 	os.Stdout.Write(buf.Bytes())
 	// Output: 0 1 2 3
-	// Output: 0 1 2 3
 }
 
 func ExampleBuffer_Cap() {
@@ -58,9 +55,6 @@ func ExampleBuffer_Cap() {
 	buf2 := bytes.NewBuffer(make([]byte, 0, 10))
 	fmt.Println(buf1.Cap())
 	fmt.Println(buf2.Cap())
-	// Output:
-	// 10
-	// 10
 	// Output:
 	// 10
 	// 10
@@ -73,7 +67,6 @@ func ExampleBuffer_Grow() {
 	b.Write([]byte("64 bytes or fewer"))
 	fmt.Printf("%q", bb[:b.Len()])
 	// Output: "64 bytes or fewer"
-	// Output: "64 bytes or fewer"
 }
 
 func ExampleBuffer_Len() {
@@ -81,7 +74,6 @@ func ExampleBuffer_Len() {
 	b.Grow(64)
 	b.Write([]byte("abcde"))
 	fmt.Printf("%d", b.Len())
-	// Output: 5
 	// Output: 5
 }
 
@@ -92,10 +84,6 @@ func ExampleBuffer_Next() {
 	fmt.Printf("%s\n", string(b.Next(2)))
 	fmt.Printf("%s\n", string(b.Next(2)))
 	fmt.Printf("%s", string(b.Next(2)))
-	// Output:
-	// ab
-	// cd
-	// e
 	// Output:
 	// ab
 	// cd
@@ -118,10 +106,6 @@ func ExampleBuffer_Read() {
 	// 1
 	// bcde
 	// a
-	// Output
-	// 1
-	// bcde
-	// a
 }
 
 func ExampleBuffer_ReadByte() {
@@ -134,9 +118,6 @@ func ExampleBuffer_ReadByte() {
 	}
 	fmt.Println(c)
 	fmt.Println(b.String())
-	// Output
-	// 97
-	// bcde
 	// Output
 	// 97
 	// bcde
@@ -153,14 +134,9 @@ func ExampleClone() {
 	// abc
 	// abc
 	// dbc
-	// Output:
-	// abc
-	// abc
-	// dbc
 }
 
 func ExampleCompare() {
-	// Interpret Compare's result by comparing it to zero.
 	// Interpret Compare's result by comparing it to zero.
 	var a, b []byte
 	if bytes.Compare(a, b) < 0 {
@@ -187,7 +163,6 @@ func ExampleCompare() {
 
 func ExampleCompare_search() {
 	// Binary search to find a matching byte slice.
-	// Binary search to find a matching byte slice.
 	var needle []byte
 	var haystack [][]byte // Assume sorted
 	i := sort.Search(len(haystack), func(i int) bool {
@@ -209,11 +184,6 @@ func ExampleContains() {
 	// false
 	// true
 	// true
-	// Output:
-	// true
-	// false
-	// true
-	// true
 }
 
 func ExampleContainsAny() {
@@ -221,11 +191,6 @@ func ExampleContainsAny() {
 	fmt.Println(bytes.ContainsAny([]byte("I like seafood."), "去是伟大的."))
 	fmt.Println(bytes.ContainsAny([]byte("I like seafood."), ""))
 	fmt.Println(bytes.ContainsAny([]byte(""), ""))
-	// Output:
-	// true
-	// true
-	// false
-	// false
 	// Output:
 	// true
 	// true
@@ -245,18 +210,11 @@ func ExampleContainsRune() {
 	// true
 	// true
 	// false
-	// Output:
-	// true
-	// false
-	// true
-	// true
-	// false
 }
 
 func ExampleCount() {
 	fmt.Println(bytes.Count([]byte("cheese"), []byte("e")))
 	fmt.Println(bytes.Count([]byte("five"), []byte(""))) // before & after each rune
-	// before & after each rune
 	// Output:
 	// 3
 	// 5
@@ -276,11 +234,6 @@ func ExampleCut() {
 	// Cut("Gopher", "ph") = "Go", "er", true
 	// Cut("Gopher", "er") = "Goph", "", true
 	// Cut("Gopher", "Badger") = "Gopher", "", false
-	// Output:
-	// Cut("Gopher", "Go") = "", "pher", true
-	// Cut("Gopher", "ph") = "Go", "er", true
-	// Cut("Gopher", "er") = "Goph", "", true
-	// Cut("Gopher", "Badger") = "Gopher", "", false
 }
 
 func ExampleCutPrefix() {
@@ -290,9 +243,6 @@ func ExampleCutPrefix() {
 	}
 	show("Gopher", "Go")
 	show("Gopher", "ph")
-	// Output:
-	// CutPrefix("Gopher", "Go") = "pher", true
-	// CutPrefix("Gopher", "ph") = "Gopher", false
 	// Output:
 	// CutPrefix("Gopher", "Go") = "pher", true
 	// CutPrefix("Gopher", "ph") = "Gopher", false
@@ -308,9 +258,6 @@ func ExampleCutSuffix() {
 	// Output:
 	// CutSuffix("Gopher", "Go") = "Gopher", false
 	// CutSuffix("Gopher", "er") = "Goph", true
-	// Output:
-	// CutSuffix("Gopher", "Go") = "Gopher", false
-	// CutSuffix("Gopher", "er") = "Goph", true
 }
 
 func ExampleEqual() {
@@ -319,20 +266,15 @@ func ExampleEqual() {
 	// Output:
 	// true
 	// false
-	// Output:
-	// true
-	// false
 }
 
 func ExampleEqualFold() {
 	fmt.Println(bytes.EqualFold([]byte("Go"), []byte("go")))
 	// Output: true
-	// Output: true
 }
 
 func ExampleFields() {
 	fmt.Printf("Fields are: %q", bytes.Fields([]byte("  foo bar  baz   ")))
-	// Output: Fields are: ["foo" "bar" "baz"]
 	// Output: Fields are: ["foo" "bar" "baz"]
 }
 
@@ -342,17 +284,12 @@ func ExampleFieldsFunc() {
 	}
 	fmt.Printf("Fields are: %q", bytes.FieldsFunc([]byte("  foo1;bar2,baz3..."), f))
 	// Output: Fields are: ["foo1" "bar2" "baz3"]
-	// Output: Fields are: ["foo1" "bar2" "baz3"]
 }
 
 func ExampleHasPrefix() {
 	fmt.Println(bytes.HasPrefix([]byte("Gopher"), []byte("Go")))
 	fmt.Println(bytes.HasPrefix([]byte("Gopher"), []byte("C")))
 	fmt.Println(bytes.HasPrefix([]byte("Gopher"), []byte("")))
-	// Output:
-	// true
-	// false
-	// true
 	// Output:
 	// true
 	// false
@@ -369,11 +306,6 @@ func ExampleHasSuffix() {
 	// false
 	// false
 	// true
-	// Output:
-	// true
-	// false
-	// false
-	// true
 }
 
 func ExampleIndex() {
@@ -382,17 +314,11 @@ func ExampleIndex() {
 	// Output:
 	// 4
 	// -1
-	// Output:
-	// 4
-	// -1
 }
 
 func ExampleIndexByte() {
 	fmt.Println(bytes.IndexByte([]byte("chicken"), byte('k')))
 	fmt.Println(bytes.IndexByte([]byte("chicken"), byte('g')))
-	// Output:
-	// 4
-	// -1
 	// Output:
 	// 4
 	// -1
@@ -407,17 +333,11 @@ func ExampleIndexFunc() {
 	// Output:
 	// 7
 	// -1
-	// Output:
-	// 7
-	// -1
 }
 
 func ExampleIndexAny() {
 	fmt.Println(bytes.IndexAny([]byte("chicken"), "aeiouy"))
 	fmt.Println(bytes.IndexAny([]byte("crwth"), "aeiouy"))
-	// Output:
-	// 2
-	// -1
 	// Output:
 	// 2
 	// -1
@@ -429,15 +349,11 @@ func ExampleIndexRune() {
 	// Output:
 	// 4
 	// -1
-	// Output:
-	// 4
-	// -1
 }
 
 func ExampleJoin() {
 	s := [][]byte{[]byte("foo"), []byte("bar"), []byte("baz")}
 	fmt.Printf("%s", bytes.Join(s, []byte(", ")))
-	// Output: foo, bar, baz
 	// Output: foo, bar, baz
 }
 
@@ -445,10 +361,6 @@ func ExampleLastIndex() {
 	fmt.Println(bytes.Index([]byte("go gopher"), []byte("go")))
 	fmt.Println(bytes.LastIndex([]byte("go gopher"), []byte("go")))
 	fmt.Println(bytes.LastIndex([]byte("go gopher"), []byte("rodent")))
-	// Output:
-	// 0
-	// 3
-	// -1
 	// Output:
 	// 0
 	// 3
@@ -463,10 +375,6 @@ func ExampleLastIndexAny() {
 	// 5
 	// 3
 	// -1
-	// Output:
-	// 5
-	// 3
-	// -1
 }
 
 func ExampleLastIndexByte() {
@@ -477,20 +385,12 @@ func ExampleLastIndexByte() {
 	// 3
 	// 8
 	// -1
-	// Output:
-	// 3
-	// 8
-	// -1
 }
 
 func ExampleLastIndexFunc() {
 	fmt.Println(bytes.LastIndexFunc([]byte("go gopher!"), unicode.IsLetter))
 	fmt.Println(bytes.LastIndexFunc([]byte("go gopher!"), unicode.IsPunct))
 	fmt.Println(bytes.LastIndexFunc([]byte("go gopher!"), unicode.IsNumber))
-	// Output:
-	// 8
-	// 9
-	// -1
 	// Output:
 	// 8
 	// 9
@@ -510,8 +410,6 @@ func ExampleMap() {
 	fmt.Printf("%s\n", bytes.Map(rot13, []byte("'Twas brillig and the slithy gopher...")))
 	// Output:
 	// 'Gjnf oevyyvt naq gur fyvgul tbcure...
-	// Output:
-	// 'Gjnf oevyyvt naq gur fyvgul tbcure...
 }
 
 func ExampleReader_Len() {
@@ -520,14 +418,10 @@ func ExampleReader_Len() {
 	// Output:
 	// 3
 	// 16
-	// Output:
-	// 3
-	// 16
 }
 
 func ExampleRepeat() {
 	fmt.Printf("ba%s", bytes.Repeat([]byte("na"), 2))
-	// Output: banana
 	// Output: banana
 }
 
@@ -537,15 +431,10 @@ func ExampleReplace() {
 	// Output:
 	// oinky oinky oink
 	// moo moo moo
-	// Output:
-	// oinky oinky oink
-	// moo moo moo
 }
 
 func ExampleReplaceAll() {
 	fmt.Printf("%s\n", bytes.ReplaceAll([]byte("oink oink oink"), []byte("oink"), []byte("moo")))
-	// Output:
-	// moo moo moo
 	// Output:
 	// moo moo moo
 }
@@ -555,16 +444,6 @@ func ExampleRunes() {
 	for _, r := range rs {
 		fmt.Printf("%#U\n", r)
 	}
-	// Output:
-	// U+0067 'g'
-	// U+006F 'o'
-	// U+0020 ' '
-	// U+0067 'g'
-	// U+006F 'o'
-	// U+0070 'p'
-	// U+0068 'h'
-	// U+0065 'e'
-	// U+0072 'r'
 	// Output:
 	// U+0067 'g'
 	// U+006F 'o'
@@ -587,11 +466,6 @@ func ExampleSplit() {
 	// ["" "man " "plan " "canal panama"]
 	// [" " "x" "y" "z" " "]
 	// [""]
-	// Output:
-	// ["a" "b" "c"]
-	// ["" "man " "plan " "canal panama"]
-	// [" " "x" "y" "z" " "]
-	// [""]
 }
 
 func ExampleSplitN() {
@@ -601,35 +475,26 @@ func ExampleSplitN() {
 	// Output:
 	// ["a" "b,c"]
 	// [] (nil = true)
-	// Output:
-	// ["a" "b,c"]
-	// [] (nil = true)
 }
 
 func ExampleSplitAfter() {
 	fmt.Printf("%q\n", bytes.SplitAfter([]byte("a,b,c"), []byte(",")))
-	// Output: ["a," "b," "c"]
 	// Output: ["a," "b," "c"]
 }
 
 func ExampleSplitAfterN() {
 	fmt.Printf("%q\n", bytes.SplitAfterN([]byte("a,b,c"), []byte(","), 2))
 	// Output: ["a," "b,c"]
-	// Output: ["a," "b,c"]
 }
 
 func ExampleTitle() {
 	fmt.Printf("%s", bytes.Title([]byte("her royal highness")))
-	// Output: Her Royal Highness
 	// Output: Her Royal Highness
 }
 
 func ExampleToTitle() {
 	fmt.Printf("%s\n", bytes.ToTitle([]byte("loud noises")))
 	fmt.Printf("%s\n", bytes.ToTitle([]byte("хлеб")))
-	// Output:
-	// LOUD NOISES
-	// ХЛЕБ
 	// Output:
 	// LOUD NOISES
 	// ХЛЕБ
@@ -643,9 +508,6 @@ func ExampleToTitleSpecial() {
 	// Output:
 	// Original : ahoj vývojári golang
 	// ToTitle : AHOJ VÝVOJÁRİ GOLANG
-	// Output:
-	// Original : ahoj vývojári golang
-	// ToTitle : AHOJ VÝVOJÁRİ GOLANG
 }
 
 func ExampleToValidUTF8() {
@@ -656,15 +518,10 @@ func ExampleToValidUTF8() {
 	// abc
 	// abc
 	// abc
-	// Output:
-	// abc
-	// abc
-	// abc
 }
 
 func ExampleTrim() {
 	fmt.Printf("[%q]", bytes.Trim([]byte(" !!! Achtung! Achtung! !!! "), "! "))
-	// Output: ["Achtung! Achtung"]
 	// Output: ["Achtung! Achtung"]
 }
 
@@ -678,17 +535,10 @@ func ExampleTrimFunc() {
 	// "go-gopher!"
 	// go-gopher
 	// go-gopher!
-	// Output:
-	// -gopher!
-	// "go-gopher!"
-	// go-gopher
-	// go-gopher!
 }
 
 func ExampleTrimLeft() {
 	fmt.Print(string(bytes.TrimLeft([]byte("453gopher8257"), "0123456789")))
-	// Output:
-	// gopher8257
 	// Output:
 	// gopher8257
 }
@@ -701,10 +551,6 @@ func ExampleTrimLeftFunc() {
 	// -gopher
 	// go-gopher!
 	// go-gopher!567
-	// Output:
-	// -gopher
-	// go-gopher!
-	// go-gopher!567
 }
 
 func ExampleTrimPrefix() {
@@ -713,12 +559,10 @@ func ExampleTrimPrefix() {
 	b = bytes.TrimPrefix(b, []byte("See ya,"))
 	fmt.Printf("Hello%s", b)
 	// Output: Hello, world!
-	// Output: Hello, world!
 }
 
 func ExampleTrimSpace() {
 	fmt.Printf("%s", bytes.TrimSpace([]byte(" \t\n a lone gopher \n\t\r\n")))
-	// Output: a lone gopher
 	// Output: a lone gopher
 }
 
@@ -729,13 +573,10 @@ func ExampleTrimSuffix() {
 	b = append(b, bytes.TrimSuffix([]byte("world!"), []byte("x!"))...)
 	os.Stdout.Write(b)
 	// Output: Hello, world!
-	// Output: Hello, world!
 }
 
 func ExampleTrimRight() {
 	fmt.Print(string(bytes.TrimRight([]byte("453gopher8257"), "0123456789")))
-	// Output:
-	// 453gopher
 	// Output:
 	// 453gopher
 }
@@ -748,15 +589,10 @@ func ExampleTrimRightFunc() {
 	// go-
 	// go-gopher
 	// 1234go-gopher!
-	// Output:
-	// go-
-	// go-gopher
-	// 1234go-gopher!
 }
 
 func ExampleToLower() {
 	fmt.Printf("%s", bytes.ToLower([]byte("Gopher")))
-	// Output: gopher
 	// Output: gopher
 }
 
@@ -768,14 +604,10 @@ func ExampleToLowerSpecial() {
 	// Output:
 	// Original : AHOJ VÝVOJÁRİ GOLANG
 	// ToLower : ahoj vývojári golang
-	// Output:
-	// Original : AHOJ VÝVOJÁRİ GOLANG
-	// ToLower : ahoj vývojári golang
 }
 
 func ExampleToUpper() {
 	fmt.Printf("%s", bytes.ToUpper([]byte("Gopher")))
-	// Output: GOPHER
 	// Output: GOPHER
 }
 
@@ -784,9 +616,6 @@ func ExampleToUpperSpecial() {
 	totitle := bytes.ToUpperSpecial(unicode.AzeriCase, str)
 	fmt.Println("Original : " + string(str))
 	fmt.Println("ToUpper : " + string(totitle))
-	// Output:
-	// Original : ahoj vývojári golang
-	// ToUpper : AHOJ VÝVOJÁRİ GOLANG
 	// Output:
 	// Original : ahoj vývojári golang
 	// ToUpper : AHOJ VÝVOJÁRİ GOLANG

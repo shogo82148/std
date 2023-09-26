@@ -53,7 +53,6 @@ func Example_isIdentRune() {
 	s.Filename = "percent"
 
 	// treat leading '%' as part of an identifier
-	// treat leading '%' as part of an identifier
 	s.IsIdentRune = func(ch rune, i int) bool {
 		return ch == '%' && i == 0 || unicode.IsLetter(ch) || unicode.IsDigit(ch) && i > 0
 	}
@@ -90,7 +89,6 @@ its entirety.
 	s.Init(strings.NewReader(src))
 	s.Filename = "comments"
 	s.Mode ^= scanner.SkipComments // don't skip comments
-	// don't skip comments
 
 	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
 		txt := s.TokenText()
@@ -109,7 +107,6 @@ its entirety.
 }
 
 func Example_whitespace() {
-	// tab-separated values
 	// tab-separated values
 	const src = `aa	ab	ac	ad
 ba	bb	bc	bd

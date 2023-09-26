@@ -37,9 +37,6 @@ func ExampleWordDecoder_Decode() {
 			// Fake character set for example.
 			// Real use would integrate with packages such
 			// as code.google.com/p/go-charset
-			// Fake character set for example.
-			// Real use would integrate with packages such
-			// as code.google.com/p/go-charset
 			content, err := io.ReadAll(input)
 			if err != nil {
 				return nil, err
@@ -79,9 +76,6 @@ func ExampleWordDecoder_DecodeHeader() {
 			// Fake character set for example.
 			// Real use would integrate with packages such
 			// as code.google.com/p/go-charset
-			// Fake character set for example.
-			// Real use would integrate with packages such
-			// as code.google.com/p/go-charset
 			content, err := io.ReadAll(input)
 			if err != nil {
 				return nil, err
@@ -113,8 +107,6 @@ func ExampleFormatMediaType() {
 	fmt.Println("result:", result)
 	// Output:
 	// result: text/html; charset=utf-8
-	// Output:
-	// result: text/html; charset=utf-8
 }
 
 func ExampleParseMediaType() {
@@ -125,9 +117,6 @@ func ExampleParseMediaType() {
 
 	fmt.Println("type:", mediatype)
 	fmt.Println("charset:", params["charset"])
-	// Output:
-	// type: text/html
-	// charset: utf-8
 	// Output:
 	// type: text/html
 	// charset: utf-8

@@ -41,8 +41,6 @@ Ken,Thompson,ken
 
 // This example shows how csv.Reader can be configured to handle other
 // types of CSV files.
-// This example shows how csv.Reader can be configured to handle other
-// types of CSV files.
 func ExampleReader_options() {
 	in := `first_name;last_name;username
 "Rob";"Pike";rob
@@ -80,8 +78,6 @@ Ken,Thompson,ken
 	fmt.Print(records)
 	// Output:
 	// [[first_name last_name username] [Rob Pike rob] [Ken Thompson ken] [Robert Griesemer gri]]
-	// Output:
-	// [[first_name last_name username] [Rob Pike rob] [Ken Thompson ken] [Robert Griesemer gri]]
 }
 
 func ExampleWriter() {
@@ -100,7 +96,6 @@ func ExampleWriter() {
 		}
 	}
 
-	// Write any buffered data to the underlying writer (standard output).
 	// Write any buffered data to the underlying writer (standard output).
 	w.Flush()
 
@@ -124,7 +119,6 @@ func ExampleWriter_WriteAll() {
 
 	w := csv.NewWriter(os.Stdout)
 	w.WriteAll(records) // calls Flush internally
-	// calls Flush internally
 
 	if err := w.Error(); err != nil {
 		log.Fatalln("error writing csv:", err)

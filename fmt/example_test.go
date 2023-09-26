@@ -39,9 +39,6 @@ func ExampleFscanf() {
 	// Output:
 	// 5 true gophers
 	// 3
-	// Output:
-	// 5 true gophers
-	// 3
 }
 
 func ExampleFscanln() {
@@ -64,9 +61,6 @@ func ExampleFscanln() {
 	// Output:
 	// 3: dmr, 1771, 1.618034
 	// 3: ken, 271828, 3.141590
-	// Output:
-	// 3: dmr, 1771, 1.618034
-	// 3: ken, 271828, 3.141590
 }
 
 func ExampleSscanf() {
@@ -80,16 +74,12 @@ func ExampleSscanf() {
 
 	// Output:
 	// 2: Kim, 22
-	// Output:
-	// 2: Kim, 22
 }
 
 func ExamplePrint() {
 	const name, age = "Kim", 22
 	fmt.Print(name, " is ", age, " years old.\n")
 
-	// It is conventional not to worry about any
-	// error returned by Print.
 	// It is conventional not to worry about any
 	// error returned by Print.
 
@@ -103,8 +93,6 @@ func ExamplePrintln() {
 
 	// It is conventional not to worry about any
 	// error returned by Println.
-	// It is conventional not to worry about any
-	// error returned by Println.
 
 	// Output:
 	// Kim is 22 years old.
@@ -114,8 +102,6 @@ func ExamplePrintf() {
 	const name, age = "Kim", 22
 	fmt.Printf("%s is %d years old.\n", name, age)
 
-	// It is conventional not to worry about any
-	// error returned by Printf.
 	// It is conventional not to worry about any
 	// error returned by Printf.
 
@@ -128,7 +114,6 @@ func ExampleSprint() {
 	s := fmt.Sprint(name, " is ", age, " years old.\n")
 
 	io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
-	// Ignoring error for simplicity.
 
 	// Output:
 	// Kim is 22 years old.
@@ -139,7 +124,6 @@ func ExampleSprintln() {
 	s := fmt.Sprintln(name, "is", age, "years old.")
 
 	io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
-	// Ignoring error for simplicity.
 
 	// Output:
 	// Kim is 22 years old.
@@ -150,7 +134,6 @@ func ExampleSprintf() {
 	s := fmt.Sprintf("%s is %d years old.\n", name, age)
 
 	io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
-	// Ignoring error for simplicity.
 
 	// Output:
 	// Kim is 22 years old.
@@ -160,8 +143,6 @@ func ExampleFprint() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprint(os.Stdout, name, " is ", age, " years old.\n")
 
-	// The n and err return values from Fprint are
-	// those returned by the underlying io.Writer.
 	// The n and err return values from Fprint are
 	// those returned by the underlying io.Writer.
 	if err != nil {
@@ -180,8 +161,6 @@ func ExampleFprintln() {
 
 	// The n and err return values from Fprintln are
 	// those returned by the underlying io.Writer.
-	// The n and err return values from Fprintln are
-	// those returned by the underlying io.Writer.
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprintln: %v\n", err)
 	}
@@ -198,8 +177,6 @@ func ExampleFprintf() {
 
 	// The n and err return values from Fprintf are
 	// those returned by the underlying io.Writer.
-	// The n and err return values from Fprintf are
-	// those returned by the underlying io.Writer.
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprintf: %v\n", err)
 	}
@@ -210,12 +187,6 @@ func ExampleFprintf() {
 	// 21 bytes written.
 }
 
-// Print, Println, and Printf lay out their arguments differently. In this example
-// we can compare their behaviors. Println always adds blanks between the items it
-// prints, while Print adds blanks only between non-string arguments and Printf
-// does exactly what it is told.
-// Sprint, Sprintln, Sprintf, Fprint, Fprintln, and Fprintf behave the same as
-// their corresponding Print, Println, and Printf functions shown here.
 // Print, Println, and Printf lay out their arguments differently. In this example
 // we can compare their behaviors. Println always adds blanks between the items it
 // prints, while Print adds blanks only between non-string arguments and Printf
@@ -247,15 +218,6 @@ func Example_printers() {
 	// The vector (3 4) has length 5.
 }
 
-// These examples demonstrate the basics of printing using a format string. Printf,
-// Sprintf, and Fprintf all take a format string that specifies how to format the
-// subsequent arguments. For example, %d (we call that a 'verb') says to print the
-// corresponding argument, which must be an integer (or something containing an
-// integer, such as a slice of ints) in decimal. The verb %v ('v' for 'value')
-// always formats the argument in its default form, just how Print or Println would
-// show it. The special verb %T ('T' for 'Type') prints the type of the argument
-// rather than its value. The examples are not exhaustive; see the package comment
-// for all the details.
 // These examples demonstrate the basics of printing using a format string. Printf,
 // Sprintf, and Fprintf all take a format string that specifies how to format the
 // subsequent arguments. For example, %d (we call that a 'verb') says to print the

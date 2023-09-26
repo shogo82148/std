@@ -29,7 +29,6 @@ func ExampleCopyBuffer() {
 	buf := make([]byte, 8)
 
 	// buf is used here...
-	// buf is used here...
 	if _, err := io.CopyBuffer(os.Stdout, r1, buf); err != nil {
 		log.Fatal(err)
 	}
@@ -53,8 +52,6 @@ func ExampleCopyN() {
 
 	// Output:
 	// some
-	// Output:
-	// some
 }
 
 func ExampleReadAtLeast() {
@@ -66,7 +63,6 @@ func ExampleReadAtLeast() {
 	}
 	fmt.Printf("%s\n", buf)
 
-	// buffer smaller than minimal read size.
 	// buffer smaller than minimal read size.
 	shortBuf := make([]byte, 3)
 	if _, err := io.ReadAtLeast(r, shortBuf, 4); err != nil {
@@ -95,7 +91,6 @@ func ExampleReadFull() {
 	fmt.Printf("%s\n", buf)
 
 	// minimal read size bigger than io.Reader stream
-	// minimal read size bigger than io.Reader stream
 	longBuf := make([]byte, 64)
 	if _, err := io.ReadFull(r, longBuf); err != nil {
 		fmt.Println("error:", err)
@@ -112,7 +107,6 @@ func ExampleWriteString() {
 	}
 
 	// Output: Hello World
-	// Output: Hello World
 }
 
 func ExampleLimitReader() {
@@ -123,8 +117,6 @@ func ExampleLimitReader() {
 		log.Fatal(err)
 	}
 
-	// Output:
-	// some
 	// Output:
 	// some
 }
@@ -141,8 +133,6 @@ func ExampleMultiReader() {
 
 	// Output:
 	// first reader second reader third reader
-	// Output:
-	// first reader second reader third reader
 }
 
 func ExampleTeeReader() {
@@ -150,7 +140,6 @@ func ExampleTeeReader() {
 
 	r = io.TeeReader(r, os.Stdout)
 
-	// Everything read from r will be copied to stdout.
 	// Everything read from r will be copied to stdout.
 	if _, err := io.ReadAll(r); err != nil {
 		log.Fatal(err)
@@ -170,8 +159,6 @@ func ExampleSectionReader() {
 
 	// Output:
 	// io.Reader stream
-	// Output:
-	// io.Reader stream
 }
 
 func ExampleSectionReader_Read() {
@@ -187,8 +174,6 @@ func ExampleSectionReader_Read() {
 
 	// Output:
 	// io.Reader
-	// Output:
-	// io.Reader
 }
 
 func ExampleSectionReader_ReadAt() {
@@ -202,8 +187,6 @@ func ExampleSectionReader_ReadAt() {
 
 	fmt.Printf("%s\n", buf)
 
-	// Output:
-	// stream
 	// Output:
 	// stream
 }
@@ -222,8 +205,6 @@ func ExampleSectionReader_Seek() {
 
 	// Output:
 	// stream
-	// Output:
-	// stream
 }
 
 func ExampleSectionReader_Size() {
@@ -234,15 +215,12 @@ func ExampleSectionReader_Size() {
 
 	// Output:
 	// 17
-	// Output:
-	// 17
 }
 
 func ExampleSeeker_Seek() {
 	r := strings.NewReader("some io.Reader stream to be read\n")
 
 	r.Seek(5, io.SeekStart) // move to the 5th char from the start
-	// move to the 5th char from the start
 	if _, err := io.Copy(os.Stdout, r); err != nil {
 		log.Fatal(err)
 	}
@@ -273,9 +251,6 @@ func ExampleMultiWriter() {
 	// Output:
 	// some io.Reader stream to be read
 	// some io.Reader stream to be read
-	// Output:
-	// some io.Reader stream to be read
-	// some io.Reader stream to be read
 }
 
 func ExamplePipe() {
@@ -292,8 +267,6 @@ func ExamplePipe() {
 
 	// Output:
 	// some io.Reader stream to be read
-	// Output:
-	// some io.Reader stream to be read
 }
 
 func ExampleReadAll() {
@@ -306,8 +279,6 @@ func ExampleReadAll() {
 
 	fmt.Printf("%s", b)
 
-	// Output:
-	// Go is a general-purpose language designed with systems programming in mind.
 	// Output:
 	// Go is a general-purpose language designed with systems programming in mind.
 }

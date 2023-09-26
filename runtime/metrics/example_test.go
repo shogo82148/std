@@ -38,7 +38,6 @@ func ExampleRead_readingOneMetric() {
 
 func ExampleRead_readingAllMetrics() {
 	// Get descriptions for all supported metrics.
-	// Get descriptions for all supported metrics.
 	descs := metrics.All()
 
 	// Create a sample for each metric.

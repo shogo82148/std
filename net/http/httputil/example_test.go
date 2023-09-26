@@ -66,8 +66,6 @@ func ExampleDumpRequestOut() {
 
 	// Output:
 	// "PUT / HTTP/1.1\r\nHost: www.example.org\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 75\r\nAccept-Encoding: gzip\r\n\r\nGo is a general-purpose language designed with systems programming in mind."
-	// Output:
-	// "PUT / HTTP/1.1\r\nHost: www.example.org\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 75\r\nAccept-Encoding: gzip\r\n\r\nGo is a general-purpose language designed with systems programming in mind."
 }
 
 func ExampleDumpResponse() {
@@ -91,8 +89,6 @@ func ExampleDumpResponse() {
 
 	fmt.Printf("%q", dump)
 
-	// Output:
-	// "HTTP/1.1 200 OK\r\nContent-Length: 76\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 19 Jul 1972 19:00:00 GMT\r\n\r\nGo is a general-purpose language designed with systems programming in mind.\n"
 	// Output:
 	// "HTTP/1.1 200 OK\r\nContent-Length: 76\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 19 Jul 1972 19:00:00 GMT\r\n\r\nGo is a general-purpose language designed with systems programming in mind.\n"
 }
@@ -127,8 +123,6 @@ func ExampleReverseProxy() {
 
 	fmt.Printf("%s", b)
 
-	// Output:
-	// this call was relayed by the reverse proxy
 	// Output:
 	// this call was relayed by the reverse proxy
 }

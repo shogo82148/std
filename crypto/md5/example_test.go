@@ -24,7 +24,6 @@ func ExampleSum() {
 	data := []byte("These pretzels are making me thirsty.")
 	fmt.Printf("%x", md5.Sum(data))
 	// Output: b0804ec967f48520697662a204f5fe72
-	// Output: b0804ec967f48520697662a204f5fe72
 }
 
 func ExampleNew_file() {

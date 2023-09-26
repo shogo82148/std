@@ -47,7 +47,6 @@ func Example_complexNumbers() {
 
 func ExampleBinaryOp() {
 	// 11 / 0.5
-	// 11 / 0.5
 	a := constant.MakeUint64(11)
 	b := constant.MakeFloat64(0.5)
 	c := constant.BinaryOp(a, token.QUO, b)
@@ -72,8 +71,6 @@ func ExampleUnaryOp() {
 			vs[i] = constant.UnaryOp(token.SUB, v, 0)
 
 		case constant.Int:
-			// Use 16-bit precision.
-			// This would be equivalent to ^uint16(v).
 			// Use 16-bit precision.
 			// This would be equivalent to ^uint16(v).
 			vs[i] = constant.UnaryOp(token.XOR, v, 16)
@@ -102,7 +99,6 @@ func ExampleCompare() {
 	}
 
 	sort.Slice(vs, func(i, j int) bool {
-		// Equivalent to vs[i] <= vs[j].
 		// Equivalent to vs[i] <= vs[j].
 		return constant.Compare(vs[i], token.LEQ, vs[j])
 	})
@@ -160,18 +156,6 @@ func ExampleSign() {
 	//  1 1
 	//  1 (0 + 1i)
 	//  1 (1 + 1i)
-	// Output:
-	//
-	// -1 -1
-	// -1 (0 + -1i)
-	// -1 (1 + -1i)
-	// -1 (-1 + 1i)
-	// -1 (-1 + -1i)
-	//  0 0
-	//  0 (0 + 0i)
-	//  1 1
-	//  1 (0 + 1i)
-	//  1 (1 + 1i)
 }
 
 func ExampleVal() {
@@ -187,12 +171,6 @@ func ExampleVal() {
 	b = constant.Make(false)
 	fmt.Printf("%v\n", constant.Val(b))
 
-	// Output:
-	//
-	// 9223372036854775807
-	// 6121026514868073/2251799813685248
-	// true
-	// false
 	// Output:
 	//
 	// 9223372036854775807

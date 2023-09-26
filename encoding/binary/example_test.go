@@ -37,7 +37,6 @@ func ExampleWrite_multi() {
 	}
 	fmt.Printf("%x", buf.Bytes())
 	// Output: beefcafe
-	// Output: beefcafe
 }
 
 func ExampleRead() {
@@ -49,7 +48,6 @@ func ExampleRead() {
 		fmt.Println("binary.Read failed:", err)
 	}
 	fmt.Print(pi)
-	// Output: 3.141592653589793
 	// Output: 3.141592653589793
 }
 
@@ -77,11 +75,6 @@ func ExampleRead_multi() {
 	// 255
 	// 01 02 03
 	// 61374
-	// Output:
-	// 3.141592653589793
-	// 255
-	// 01 02 03
-	// 61374
 }
 
 func ExampleByteOrder_put() {
@@ -91,8 +84,6 @@ func ExampleByteOrder_put() {
 	fmt.Printf("% x\n", b)
 	// Output:
 	// e8 03 d0 07
-	// Output:
-	// e8 03 d0 07
 }
 
 func ExampleByteOrder_get() {
@@ -100,8 +91,6 @@ func ExampleByteOrder_get() {
 	x1 := binary.LittleEndian.Uint16(b[0:])
 	x2 := binary.LittleEndian.Uint16(b[2:])
 	fmt.Printf("%#04x %#04x\n", x1, x2)
-	// Output:
-	// 0x03e8 0x07d0
 	// Output:
 	// 0x03e8 0x07d0
 }
@@ -120,13 +109,6 @@ func ExamplePutUvarint() {
 	// 8001
 	// ff01
 	// 8002
-	// Output:
-	// 01
-	// 02
-	// 7f
-	// 8001
-	// ff01
-	// 8002
 }
 
 func ExamplePutVarint() {
@@ -136,16 +118,6 @@ func ExamplePutVarint() {
 		n := binary.PutVarint(buf, x)
 		fmt.Printf("%x\n", buf[:n])
 	}
-	// Output:
-	// 8101
-	// 7f
-	// 03
-	// 01
-	// 00
-	// 02
-	// 04
-	// 7e
-	// 8001
 	// Output:
 	// 8101
 	// 7f
@@ -181,13 +153,6 @@ func ExampleUvarint() {
 	// 128
 	// 255
 	// 256
-	// Output:
-	// 1
-	// 2
-	// 127
-	// 128
-	// 255
-	// 256
 }
 
 func ExampleVarint() {
@@ -209,16 +174,6 @@ func ExampleVarint() {
 		}
 		fmt.Println(x)
 	}
-	// Output:
-	// -65
-	// -64
-	// -2
-	// -1
-	// 0
-	// 1
-	// 2
-	// 63
-	// 64
 	// Output:
 	// -65
 	// -64

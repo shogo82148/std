@@ -33,8 +33,6 @@ func ExampleEncoding_EncodeToString() {
 	fmt.Println(str)
 	// Output:
 	// YW55ICsgb2xkICYgZGF0YQ==
-	// Output:
-	// YW55ICsgb2xkICYgZGF0YQ==
 }
 
 func ExampleEncoding_Encode() {
@@ -42,8 +40,6 @@ func ExampleEncoding_Encode() {
 	dst := make([]byte, base64.StdEncoding.EncodedLen(len(data)))
 	base64.StdEncoding.Encode(dst, data)
 	fmt.Println(string(dst))
-	// Output:
-	// SGVsbG8sIHdvcmxkIQ==
 	// Output:
 	// SGVsbG8sIHdvcmxkIQ==
 }
@@ -56,8 +52,6 @@ func ExampleEncoding_DecodeString() {
 		return
 	}
 	fmt.Printf("%q\n", data)
-	// Output:
-	// "some data with \x00 and \ufeff"
 	// Output:
 	// "some data with \x00 and \ufeff"
 }
@@ -74,17 +68,12 @@ func ExampleEncoding_Decode() {
 	fmt.Printf("%q\n", dst)
 	// Output:
 	// "Hello, world!"
-	// Output:
-	// "Hello, world!"
 }
 
 func ExampleNewEncoder() {
 	input := []byte("foo\x00bar")
 	encoder := base64.NewEncoder(base64.StdEncoding, os.Stdout)
 	encoder.Write(input)
-	// Must close the encoder when finished to flush any partial blocks.
-	// If you comment out the following line, the last partial block "r"
-	// won't be encoded.
 	// Must close the encoder when finished to flush any partial blocks.
 	// If you comment out the following line, the last partial block "r"
 	// won't be encoded.

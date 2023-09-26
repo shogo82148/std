@@ -74,8 +74,6 @@ Josie
 	// Josie
 }
 
-// The following example is duplicated in html/template; keep them in sync.
-
 func ExampleTemplate_block() {
 	const (
 		master  = `Names:{{block "list" .}}{{"\n"}}{{range .}}{{println "-" .}}{{end}}{{end}}`

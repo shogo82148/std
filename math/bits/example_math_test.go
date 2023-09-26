@@ -36,7 +36,6 @@ func ExampleAdd32() {
 
 func ExampleAdd64() {
 	// First number is 33<<64 + 12
-	// First number is 33<<64 + 12
 	n1 := []uint64{33, 12}
 	// Second number is 21<<64 + 23
 	n2 := []uint64{21, 23}
@@ -61,7 +60,6 @@ func ExampleAdd64() {
 }
 
 func ExampleSub32() {
-	// First number is 33<<32 + 23
 	// First number is 33<<32 + 23
 	n1 := []uint32{33, 23}
 	// Second number is 21<<32 + 12
@@ -88,7 +86,6 @@ func ExampleSub32() {
 
 func ExampleSub64() {
 	// First number is 33<<64 + 23
-	// First number is 33<<64 + 23
 	n1 := []uint64{33, 23}
 	// Second number is 21<<64 + 12
 	n2 := []uint64{21, 12}
@@ -114,7 +111,6 @@ func ExampleSub64() {
 
 func ExampleMul32() {
 	// First number is 0<<32 + 12
-	// First number is 0<<32 + 12
 	n1 := []uint32{0, 12}
 	// Second number is 0<<32 + 12
 	n2 := []uint32{0, 12}
@@ -137,7 +133,6 @@ func ExampleMul32() {
 }
 
 func ExampleMul64() {
-	// First number is 0<<64 + 12
 	// First number is 0<<64 + 12
 	n1 := []uint64{0, 12}
 	// Second number is 0<<64 + 12
@@ -162,7 +157,6 @@ func ExampleMul64() {
 
 func ExampleDiv32() {
 	// First number is 0<<32 + 6
-	// First number is 0<<32 + 6
 	n1 := []uint32{0, 6}
 	// Second number is 0<<32 + 3
 	n2 := []uint32{0, 3}
@@ -185,7 +179,6 @@ func ExampleDiv32() {
 }
 
 func ExampleDiv64() {
-	// First number is 0<<64 + 6
 	// First number is 0<<64 + 6
 	n1 := []uint64{0, 6}
 	// Second number is 0<<64 + 3
