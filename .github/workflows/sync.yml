@@ -55,5 +55,5 @@ jobs:
       - name: commit
         uses: shogo82148/actions-commit@v1
         with:
-          base-branch: ${{ matrix.branch }}
+          base-branch: upstream/${{ matrix.branch }}
           working-directory: ./std
