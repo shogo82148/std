@@ -7,3 +7,5 @@ package context_test
 import (
 	. "context"
 )
+
+var _ = Background
