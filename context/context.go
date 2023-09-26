@@ -43,10 +43,9 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A Context carries a deadline, a cancellation signal, and other values across
-// API boundaries.
+// Context は、期限、キャンセルシグナル、および他の値をAPI境界を超えて伝達します。
 //
-// Context's methods may be called by multiple goroutines simultaneously.
+// Contextのメソッドは、複数のゴルーチンから同時に呼び出すことができます。
 type Context interface {
 	Deadline() (deadline time.Time, ok bool)
 
@@ -57,93 +56,89 @@ type Context interface {
 	Value(key any) any
 }
 
-// Canceled is the error returned by [Context.Err] when the context is canceled.
+// Canceled コンテキストがキャンセルされた場合に [Context.Err] が返すエラーです。
 var Canceled = errors.New("context canceled")
 
-// DeadlineExceeded is the error returned by [Context.Err] when the context's
-// deadline passes.
+type deadlineExceededError struct{}
+
+func (deadlineExceededError) Error() string { return "context deadline exceeded" }
+
+// DeadlineExceeded コンテキストの期限が切れた場合に [Context.Err] が返すエラーです。
 var DeadlineExceeded error = deadlineExceededError{}
 
 // An emptyCtx is never canceled, has no values, and has no deadline.
 // It is the common base of backgroundCtx and todoCtx.
 
-// Background returns a non-nil, empty [Context]. It is never canceled, has no
-// values, and has no deadline. It is typically used by the main function,
-// initialization, and tests, and as the top-level Context for incoming
-// requests.
+// Backgroundは、非nilで空の [Context] を返します。
+// キャンセルされることはなく、値も期限もありません。
+// 通常、main関数、初期化、テスト、および着信リクエストのトップレベルContextとして使用されます。
 func Background() Context
 
-// TODO returns a non-nil, empty [Context]. Code should use context.TODO when
-// it's unclear which Context to use or it is not yet available (because the
-// surrounding function has not yet been extended to accept a Context
-// parameter).
+// TODO 非nilで空の [Context] を返します。
+// コードがどの[Context]を使用するか不明である場合や、まだ [Context] パラメータを受け入れるように拡張されていない
+// （周囲の関数がまだ[Context]を受け入れるように拡張されていない）場合に、コードは [context.TODO] を使用する必要があります。
 func TODO() Context
 
-// A CancelFunc tells an operation to abandon its work.
-// A CancelFunc does not wait for the work to stop.
-// A CancelFunc may be called by multiple goroutines simultaneously.
-// After the first call, subsequent calls to a CancelFunc do nothing.
+// CancelFunc 操作がその作業を中止するように指示します。
+// CancelFuncは、作業が停止するのを待ちません。
+// CancelFuncは、複数のゴルーチンから同時に呼び出すことができます。
+// 最初の呼び出しの後、CancelFuncへの後続の呼び出しは何もしません。
 type CancelFunc func()
 
-// WithCancel returns a copy of parent with a new Done channel. The returned
-// context's Done channel is closed when the returned cancel function is called
-// or when the parent context's Done channel is closed, whichever happens first.
+// WithCancel 新しいDoneチャネルを持つ親のコピーを返します。
+// 返されたコンテキストのDoneチャネルは、返されたキャンセル関数が呼び出されるか、
+// または親のコンテキストのDoneチャネルが閉じられたとき、より早く閉じられます。
 //
-// Canceling this context releases resources associated with it, so code should
-// call cancel as soon as the operations running in this Context complete.
+// このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、コードはこのContextで実行される操作が完了したらすぐにcancelを呼び出す必要があります。
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
 
-// A CancelCauseFunc behaves like a [CancelFunc] but additionally sets the cancellation cause.
-// This cause can be retrieved by calling [Cause] on the canceled Context or on
-// any of its derived Contexts.
+// CancelCauseFunc [CancelFunc]と同様に動作しますが、キャンセルの原因を設定します。
+// この原因は、キャンセルされたContextまたはその派生Contextのいずれかで [Cause] を呼び出すことで取得できます。
 //
-// If the context has already been canceled, CancelCauseFunc does not set the cause.
-// For example, if childContext is derived from parentContext:
-//   - if parentContext is canceled with cause1 before childContext is canceled with cause2,
-//     then Cause(parentContext) == Cause(childContext) == cause1
-//   - if childContext is canceled with cause2 before parentContext is canceled with cause1,
-//     then Cause(parentContext) == cause1 and Cause(childContext) == cause2
+// コンテキストが既にキャンセルされている場合、 [CancelCauseFunc] は原因を設定しません。
+// たとえば、childContextがparentContextから派生している場合：
+//   - childContextがcause2でキャンセルされる前に、parentContextがcause1でキャンセルされた場合、
+//     その後、Cause(parentContext) == Cause(childContext) == cause1
+//   - parentContextがcause1でキャンセルされる前に、childContextがcause2でキャンセルされた場合、
+//     その後、Cause(parentContext) == cause1 および Cause(childContext) == cause2
 type CancelCauseFunc func(cause error)
 
-// WithCancelCause behaves like [WithCancel] but returns a [CancelCauseFunc] instead of a [CancelFunc].
-// Calling cancel with a non-nil error (the "cause") records that error in ctx;
-// it can then be retrieved using Cause(ctx).
-// Calling cancel with nil sets the cause to Canceled.
+// WithCancelCause [WithCancel] と同様に動作しますが、 [CancelFunc] の代わりに [CancelCauseFunc] を返します。
+// エラー（「原因」と呼ばれる）を非nilで渡すと、そのエラーがctxに記録されます。
+// その後、[Cause] を使用して取得できます。
+// nilでキャンセルすると、原因は [Canceled] に設定されます。
 //
-// Example use:
+// 使用例：
 //
-//	ctx, cancel := context.WithCancelCause(parent)
+//	ctx、cancel := context.WithCancelCause(parent)
 //	cancel(myError)
-//	ctx.Err() // returns context.Canceled
-//	context.Cause(ctx) // returns myError
+//	ctx.Err() // context.Canceledを返します
+//	context.Cause(ctx) // myErrorを返します
 func WithCancelCause(parent Context) (ctx Context, cancel CancelCauseFunc)
 
-// Cause returns a non-nil error explaining why c was canceled.
-// The first cancellation of c or one of its parents sets the cause.
-// If that cancellation happened via a call to CancelCauseFunc(err),
-// then [Cause] returns err.
-// Otherwise Cause(c) returns the same value as c.Err().
-// Cause returns nil if c has not been canceled yet.
+// Causeは、cがキャンセルされた理由を説明する非nilのエラーを返します。
+// cまたはその親の最初のキャンセルは原因を設定します。
+// そのキャンセルがCancelCauseFunc(err)の呼び出しによって行われた場合、 [Cause] はerrを返します。
+// そうでない場合、Cause(c)はc.Err()と同じ値を返します。
+// cがまだキャンセルされていない場合、Causeはnilを返します。
 func Cause(c Context) error
 
-// AfterFunc arranges to call f in its own goroutine after ctx is done
-// (cancelled or timed out).
-// If ctx is already done, AfterFunc calls f immediately in its own goroutine.
+// AfterFunc ctxが完了（キャンセルまたはタイムアウト）した後、fを独自のゴルーチンで呼び出すように設定します。
+// もしctxが既に完了している場合、AfterFuncは独自のゴルーチンで直ちにfを呼び出します。
 //
-// Multiple calls to AfterFunc on a context operate independently;
-// one does not replace another.
+// ContextでのAfterFuncの複数回の呼び出しは独立して動作し、1つが他を置き換えることはありません。
 //
-// Calling the returned stop function stops the association of ctx with f.
-// It returns true if the call stopped f from being run.
-// If stop returns false,
-// either the context is done and f has been started in its own goroutine;
-// or f was already stopped.
-// The stop function does not wait for f to complete before returning.
-// If the caller needs to know whether f is completed,
-// it must coordinate with f explicitly.
+// 返されたstop関数を呼び出すと、ctxとfの関連付けが停止します。
+// 呼び出しがfの実行を停止した場合、trueを返します。
+// stopがfalseを返す場合、
+// コンテキストが完了し、fが独自のゴルーチンで開始されたか、
+// またはfが既に停止されています。
+// stop関数は、fが完了するのを待ってから戻りません。
+// 呼び出し元がfが完了したかどうかを知る必要がある場合、
+// 明示的にfと調整する必要があります。
 //
-// If ctx has a "AfterFunc(func()) func() bool" method,
-// AfterFunc will use it to schedule the call.
+// ctxに「AfterFunc(func()) func() bool」メソッドがある場合、
+// AfterFuncはそれを使用して呼び出しをスケジュールします。
 func AfterFunc(ctx Context, f func()) (stop func() bool)
 
 // A stopCtx is used as the parent context of a cancelCtx when
@@ -162,61 +157,50 @@ func AfterFunc(ctx Context, f func()) (stop func() bool)
 // A cancelCtx can be canceled. When canceled, it also cancels any children
 // that implement canceler.
 
-// WithoutCancel returns a copy of parent that is not canceled when parent is canceled.
-// The returned context returns no Deadline or Err, and its Done channel is nil.
-// Calling [Cause] on the returned context returns nil.
+// WithoutCancelは、親がキャンセルされたときにキャンセルされない親のコピーを返します。
+// 返されたコンテキストは、期限やエラーを返さず、そのDoneチャネルはnilです。
+// 返されたコンテキストで [Cause] を呼び出すと、nilが返されます。
 func WithoutCancel(parent Context) Context
 
-// WithDeadline returns a copy of the parent context with the deadline adjusted
-// to be no later than d. If the parent's deadline is already earlier than d,
-// WithDeadline(parent, d) is semantically equivalent to parent. The returned
-// [Context.Done] channel is closed when the deadline expires, when the returned
-// cancel function is called, or when the parent context's Done channel is
-// closed, whichever happens first.
+// WithDeadlineは、親の期限をdよりも遅くならないように調整した親のコピーを返します。
+// 親の期限がすでにdよりも早い場合、 WithDeadline(parent, d) は親と意味的に等価です。
+// 返された [Context.Done] チャネルは、期限が切れたとき、返されたキャンセル関数が呼び出されたとき、または親のコンテキストのDoneチャネルが閉じられたときのいずれかが最初に発生したときに閉じられます。
 //
-// Canceling this context releases resources associated with it, so code should
-// call cancel as soon as the operations running in this [Context] complete.
+// このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、コードはこの [Context] で実行される操作が完了したらすぐにcancelを呼び出す必要があります。
 func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
 
-// WithDeadlineCause behaves like [WithDeadline] but also sets the cause of the
-// returned Context when the deadline is exceeded. The returned [CancelFunc] does
-// not set the cause.
+// WithDeadlineCause [WithDeadline] と同様に動作しますが、期限が切れたときに返された [Context] の原因も設定します。
+// 返された [CancelFunc] は原因を設定しません。
 func WithDeadlineCause(parent Context, d time.Time, cause error) (Context, CancelFunc)
 
 // A timerCtx carries a timer and a deadline. It embeds a cancelCtx to
 // implement Done and Err. It implements cancel by stopping its timer then
 // delegating to cancelCtx.cancel.
 
-// WithTimeout returns WithDeadline(parent, time.Now().Add(timeout)).
+// WithTimeout WithDeadline(parent, time.Now().Add(timeout)) を返します。
 //
-// Canceling this context releases resources associated with it, so code should
-// call cancel as soon as the operations running in this [Context] complete:
+// このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、
+// コードはこの [Context] で実行される操作が完了したらすぐにcancelを呼び出す必要があります。
 //
 //	func slowOperationWithTimeout(ctx context.Context) (Result, error) {
 //		ctx, cancel := context.WithTimeout(ctx, 100*time.Millisecond)
-//		defer cancel()  // releases resources if slowOperation completes before timeout elapses
+//		defer cancel()  // slowOperationがタイムアウトが経過する前に完了した場合、リソースが解放されます
 //		return slowOperation(ctx)
 //	}
 func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
 
-// WithTimeoutCause behaves like [WithTimeout] but also sets the cause of the
-// returned Context when the timeout expires. The returned [CancelFunc] does
-// not set the cause.
+// WithTimeoutCause [WithTimeout]と同様に動作しますが、タイムアウトが切れたときに返された [Context] の原因も設定します。
+// 返された [CancelFunc] は原因を設定しません。
 func WithTimeoutCause(parent Context, timeout time.Duration, cause error) (Context, CancelFunc)
 
-// WithValue returns a copy of parent in which the value associated with key is
-// val.
+// WithValueは、キーに関連付けられた値がvalである親のコピーを返します。
 //
-// Use context Values only for request-scoped data that transits processes and
-// APIs, not for passing optional parameters to functions.
+// コンテキストの値は、プロセスやAPIを超えて転送されるリクエストスコープのデータにのみ使用し、関数にオプションのパラメータを渡すために使用しないでください。
 //
-// The provided key must be comparable and should not be of type
-// string or any other built-in type to avoid collisions between
-// packages using context. Users of WithValue should define their own
-// types for keys. To avoid allocating when assigning to an
-// interface{}, context keys often have concrete type
-// struct{}. Alternatively, exported context key variables' static
-// type should be a pointer or interface.
+// 提供されたキーは比較可能である必要があり、衝突を避けるためにstringまたは他の組み込み型であってはなりません。
+// WithValueを使用するユーザーは、キーのために独自の型を定義する必要があります。
+// interface{} に代入するときのアロケーションを避けるために、コンテキストキーは通常、具体的な型 struct{} を持ちます。
+// 代替案として、エクスポートされたコンテキストキー変数の静的型はポインタまたはインターフェースである必要があります。
 func WithValue(parent Context, key, val any) Context
 
 // A valueCtx carries a key-value pair. It implements Value for that key and
