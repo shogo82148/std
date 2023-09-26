@@ -15,34 +15,39 @@ jobs:
           - release-branch.go1.21
 
     steps:
-      - name: checkout std
+      - name: checkout tools
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          ref: upstream/${{ matrix.branch }}
+          path: tools
 
       - uses: actions/setup-go@v4
         with:
-          go-version-file: ./_tools/go.mod
-          cache-dependency-path: ./_tools/go.sum
+          go-version-file: ./tools/_tools/go.mod
+          cache-dependency-path: ./tools/_tools/go.sum
       - name: install tools
-        working-directory: ./_tools
+        working-directory: ./tools/_tools
         run: |
           go install ./importgodoc
+
+      - name: checkout std
+        uses: actions/checkout@v4
+        with:
+          ref: upstream/${{ matrix.branch }}
+          path: std
 
       - name: checkout golang/go
         uses: actions/checkout@v4
         with:
           repository: golang/go
           ref: ${{ matrix.branch }}
-          path: "../go"
+          path: go
 
       - name: sync
         env:
           BRANCH_NAME: ${{ matrix.branch }}
+        working-directory: ./std
         run: |
-          git switch "$BRANCH_NAME"
-          ./_tools/rm-all.sh
-          importgodoc "$GITHUB_WORKSPACE/../go" .
+          "$GITHUB_WORKSPACE/tools/_tools/rm-all.sh"
+          importgodoc "$GITHUB_WORKSPACE/go" "$GITHUB_WORKSPACE/std"
           git add .
           git diff --cached
