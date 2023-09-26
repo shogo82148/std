@@ -188,13 +188,13 @@ func godoc(path string) ([]byte, error) {
 	}
 	if isTest {
 		for _, imp := range imports {
-			if strings.HasPrefix(imp, "internal/") || !astutil.UsesImport(node, imp) {
+			if isInternal(imp) || !astutil.UsesImport(node, imp) {
 				astutil.DeleteImport(fset, node, imp)
 			}
 		}
 	} else {
 		for _, imp := range imports {
-			if strings.HasPrefix(imp, "internal/") || !astutil.UsesImport(node, imp) {
+			if isInternal(imp) || !astutil.UsesImport(node, imp) {
 				astutil.DeleteImport(fset, node, imp)
 			} else {
 				astutil.RewriteImport(fset, node, imp, "github.com/shogo82148/std/"+imp)
@@ -215,6 +215,19 @@ func isSpecialDir(s string) bool {
 
 func isSpecialComment(c *ast.Comment) bool {
 	return strings.HasPrefix(c.Text, "//go:build ") || strings.HasPrefix(c.Text, "// +build ")
+}
+
+func isInternal(path string) bool {
+	if strings.HasPrefix(path, "internal/") {
+		return true
+	}
+	if strings.HasSuffix(path, "/internal") {
+		return true
+	}
+	if strings.Contains(path, "/internal/") {
+		return true
+	}
+	return false
 }
 
 func recvExported(d *ast.FuncDecl) bool {
