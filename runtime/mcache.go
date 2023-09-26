@@ -10,8 +10,6 @@ package runtime
 //
 // mcaches are allocated from non-GC'd memory, so any heap pointers
 // must be specially handled.
-//
-//go:notinheap
 
 // A gclink is a node in a linked list of blocks, like mlink,
 // but it is opaque to the garbage collector.

@@ -7,6 +7,7 @@ package os
 import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
@@ -18,7 +19,7 @@ var ErrProcessDone = errors.New("os: process already finished")
 type Process struct {
 	Pid    int
 	handle uintptr
-	isdone uint32
+	isdone atomic.Bool
 	sigMu  sync.RWMutex
 }
 

@@ -46,7 +46,7 @@
 // The canonical way to strip a monotonic clock reading is to use t = t.Round(0).
 //
 // If Times t and u both contain monotonic clock readings, the operations
-// t.After(u), t.Before(u), t.Equal(u), and t.Sub(u) are carried out
+// t.After(u), t.Before(u), t.Equal(u), t.Compare(u), and t.Sub(u) are carried out
 // using the monotonic clock readings alone, ignoring the wall clock
 // readings. If either t or u contains no monotonic clock reading, these
 // operations fall back to using the wall clock readings.
@@ -137,6 +137,10 @@ func (t Time) After(u Time) bool
 
 // Before reports whether the time instant t is before u.
 func (t Time) Before(u Time) bool
+
+// Compare compares the time instant t with u. If t is before u, it returns -1;
+// if t is after u, it returns +1; if they're the same, it returns 0.
+func (t Time) Compare(u Time) int
 
 // Equal reports whether t and u represent the same time instant.
 // Two times can be equal even if they are in different locations.
@@ -404,19 +408,23 @@ func (t Time) GobEncode() ([]byte, error)
 func (t *Time) GobDecode(data []byte) error
 
 // MarshalJSON implements the json.Marshaler interface.
-// The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
+// The time is a quoted string in the RFC 3339 format with sub-second precision.
+// If the timestamp cannot be represented as valid RFC 3339
+// (e.g., the year is out of range), then an error is reported.
 func (t Time) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-// The time is expected to be a quoted string in RFC 3339 format.
+// The time must be a quoted string in the RFC 3339 format.
 func (t *Time) UnmarshalJSON(data []byte) error
 
 // MarshalText implements the encoding.TextMarshaler interface.
-// The time is formatted in RFC 3339 format, with sub-second precision added if present.
+// The time is formatted in RFC 3339 format with sub-second precision.
+// If the timestamp cannot be represented as valid RFC 3339
+// (e.g., the year is out of range), then an error is reported.
 func (t Time) MarshalText() ([]byte, error)
 
 // UnmarshalText implements the encoding.TextUnmarshaler interface.
-// The time is expected to be in RFC 3339 format.
+// The time must be in the RFC 3339 format.
 func (t *Time) UnmarshalText(data []byte) error
 
 // Unix returns the local Time corresponding to the given Unix time,

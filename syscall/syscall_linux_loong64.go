@@ -4,8 +4,6 @@
 
 package syscall
 
-func EpollCreate(size int) (fd int, err error)
-
 func Fstatat(fd int, path string, stat *Stat_t, flags int) (err error)
 
 func Fstat(fd int, stat *Stat_t) (err error)

@@ -81,6 +81,11 @@ func (b *B) SetBytes(n int64)
 // benchmark function that calls ReportAllocs.
 func (b *B) ReportAllocs()
 
+// Elapsed returns the measured elapsed time of the benchmark.
+// The duration reported by Elapsed matches the one measured by
+// StartTimer, StopTimer, and ResetTimer.
+func (b *B) Elapsed() time.Duration
+
 // ReportMetric adds "n unit" to the reported benchmark results.
 // If the metric is per-iteration, the caller should divide by b.N,
 // and by convention units should end in "/op".
@@ -130,6 +135,10 @@ func (r BenchmarkResult) MemString() string
 // it is part of the implementation of the "go test" command.
 func RunBenchmarks(matchString func(pat, str string) (bool, error), benchmarks []InternalBenchmark)
 
+// If hideStdoutForTesting is true, Run does not print the benchName.
+// This avoids a spurious print during 'go test' on package testing itself,
+// which invokes b.Run in its own tests (see sub_test.go).
+
 // Run benchmarks f as a subbenchmark with the given name. It reports
 // whether there were any failures.
 //
@@ -158,6 +167,9 @@ func (pb *PB) Next() bool
 // goroutine-local state and then iterate until pb.Next returns false.
 // It should not use the StartTimer, StopTimer, or ResetTimer functions,
 // because they have global effect. It should also not call Run.
+//
+// RunParallel reports ns/op values as wall time for the benchmark as a whole,
+// not the sum of wall time or CPU time over each parallel goroutine.
 func (b *B) RunParallel(body func(*PB))
 
 // SetParallelism sets the number of goroutines used by RunParallel to p*GOMAXPROCS.

@@ -2,23 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build cgo && !netgo && unix
+// This file is called cgo_unix.go, but to allow syscalls-to-libc-based
+// implementations to share the code, it does not use cgo directly.
+// Instead of C.foo it uses _C_foo, which is defined in either
+// cgo_unix_cgo.go or cgo_unix_syscall.go
+
+//go:build !netgo && ((cgo && unix) || darwin)
 
 package net
-
-/*
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <string.h>
-
-// If nothing else defined EAI_OVERFLOW, make sure it has a value.
-#ifndef EAI_OVERFLOW
-#define EAI_OVERFLOW -12
-#endif
-*/
 
 // An addrinfoErrno represents a getaddrinfo, getnameinfo-specific
 // error number. It's a signed number and a zero value is a non-error

@@ -13,5 +13,3 @@
 package runtime
 
 // Central list of free objects of a given size.
-//
-//go:notinheap

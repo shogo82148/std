@@ -32,9 +32,12 @@ type ProtocolError struct {
 func (pe *ProtocolError) Error() string
 
 var (
-	// ErrNotSupported is returned by the Push method of Pusher
-	// implementations to indicate that HTTP/2 Push support is not
-	// available.
+	// ErrNotSupported indicates that a feature is not supported.
+	//
+	// It is returned by ResponseController methods to indicate that
+	// the handler does not support the method, and by the Push method
+	// of Pusher implementations to indicate that HTTP/2 Push support
+	// is not available.
 	ErrNotSupported = &ProtocolError{"feature not supported"}
 
 	// Deprecated: ErrUnexpectedTrailer is no longer returned by
@@ -119,7 +122,7 @@ type Request struct {
 }
 
 // Context returns the request's context. To change the context, use
-// WithContext.
+// Clone or WithContext.
 //
 // The returned context is always non-nil; it defaults to the
 // background context.
@@ -139,9 +142,7 @@ func (r *Request) Context() context.Context
 // sending the request, and reading the response headers and body.
 //
 // To create a new request with a context, use NewRequestWithContext.
-// To change the context of a request, such as an incoming request you
-// want to modify before sending back out, use Request.Clone. Between
-// those two uses, it's rare to need WithContext.
+// To make a deep copy of a request with a new context, use Request.Clone.
 func (r *Request) WithContext(ctx context.Context) *Request
 
 // Clone returns a deep copy of r with its context changed to ctx.

@@ -79,4 +79,8 @@ func Accept(fd int) (nfd int, sa Sockaddr, err error)
 
 func Getexecname() (path string, err error)
 
+func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error)
+
+func Munmap(b []byte) (err error)
+
 func Utimes(path string, tv []Timeval) error

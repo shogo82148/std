@@ -12,13 +12,17 @@ func ReadBuildInfo() (info *BuildInfo, ok bool)
 // BuildInfo represents the build information read from a Go binary.
 type BuildInfo struct {
 	GoVersion string
-	Path      string
-	Main      Module
-	Deps      []*Module
-	Settings  []BuildSetting
+
+	Path string
+
+	Main Module
+
+	Deps []*Module
+
+	Settings []BuildSetting
 }
 
-// Module represents a module.
+// A Module describes a single module included in a build.
 type Module struct {
 	Path    string
 	Version string
@@ -26,8 +30,24 @@ type Module struct {
 	Replace *Module
 }
 
-// BuildSetting describes a setting that may be used to understand how the
-// binary was built. For example, VCS commit and dirty status is stored here.
+// A BuildSetting is a key-value pair describing one setting that influenced a build.
+//
+// Defined keys include:
+//
+//   - -buildmode: the buildmode flag used (typically "exe")
+//   - -compiler: the compiler toolchain flag used (typically "gc")
+//   - CGO_ENABLED: the effective CGO_ENABLED environment variable
+//   - CGO_CFLAGS: the effective CGO_CFLAGS environment variable
+//   - CGO_CPPFLAGS: the effective CGO_CPPFLAGS environment variable
+//   - CGO_CXXFLAGS:  the effective CGO_CPPFLAGS environment variable
+//   - CGO_LDFLAGS: the effective CGO_CPPFLAGS environment variable
+//   - GOARCH: the architecture target
+//   - GOAMD64/GOARM64/GO386/etc: the architecture feature level for GOARCH
+//   - GOOS: the operating system target
+//   - vcs: the version control system for the source tree where the build ran
+//   - vcs.revision: the revision identifier for the current commit or checkout
+//   - vcs.time: the modification time associated with vcs.revision, in RFC3339 format
+//   - vcs.modified: true or false indicating whether the source tree had local modifications
 type BuildSetting struct {
 	Key, Value string
 }

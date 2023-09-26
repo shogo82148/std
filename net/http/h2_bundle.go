@@ -87,7 +87,7 @@ var (
 // flow is the flow control window's size.
 
 // A FrameType is a registered frame type as defined in
-// http://http2.github.io/http2-spec/#rfc.section.11.2
+// https://httpwg.org/specs/rfc7540.html#rfc.section.11.2
 
 // Flags is a bitmask of HTTP/2 flags.
 // The meaning of flags varies depending on the frame type.
@@ -100,7 +100,7 @@ var (
 
 // A FrameHeader is the 9 byte header of all HTTP/2 frames.
 //
-// See http://http2.github.io/http2-spec/#FrameHeader
+// See https://httpwg.org/specs/rfc7540.html#FrameHeader
 
 // frame header bytes.
 // Used only by ReadFrameHeader.
@@ -118,27 +118,27 @@ var (
 
 // A DataFrame conveys arbitrary, variable-length sequences of octets
 // associated with a stream.
-// See http://http2.github.io/http2-spec/#rfc.section.6.1
+// See https://httpwg.org/specs/rfc7540.html#rfc.section.6.1
 
 // A SettingsFrame conveys configuration parameters that affect how
 // endpoints communicate, such as preferences and constraints on peer
 // behavior.
 //
-// See http://http2.github.io/http2-spec/#SETTINGS
+// See https://httpwg.org/specs/rfc7540.html#SETTINGS
 
 // A PingFrame is a mechanism for measuring a minimal round trip time
 // from the sender, as well as determining whether an idle connection
 // is still functional.
-// See http://http2.github.io/http2-spec/#rfc.section.6.7
+// See https://httpwg.org/specs/rfc7540.html#rfc.section.6.7
 
 // A GoAwayFrame informs the remote peer to stop creating streams on this connection.
-// See http://http2.github.io/http2-spec/#rfc.section.6.8
+// See https://httpwg.org/specs/rfc7540.html#rfc.section.6.8
 
 // An UnknownFrame is the frame type returned when the frame type is unknown
 // or no specific frame type parser exists.
 
 // A WindowUpdateFrame is used to implement flow control.
-// See http://http2.github.io/http2-spec/#rfc.section.6.9
+// See https://httpwg.org/specs/rfc7540.html#rfc.section.6.9
 
 // A HeadersFrame is used to open a stream and additionally carries a
 // header block fragment.
@@ -146,18 +146,18 @@ var (
 // HeadersFrameParam are the parameters for writing a HEADERS frame.
 
 // A PriorityFrame specifies the sender-advised priority of a stream.
-// See http://http2.github.io/http2-spec/#rfc.section.6.3
+// See https://httpwg.org/specs/rfc7540.html#rfc.section.6.3
 
 // PriorityParam are the stream prioritzation parameters.
 
 // A RSTStreamFrame allows for abnormal termination of a stream.
-// See http://http2.github.io/http2-spec/#rfc.section.6.4
+// See https://httpwg.org/specs/rfc7540.html#rfc.section.6.4
 
 // A ContinuationFrame is used to continue a sequence of header block fragments.
-// See http://http2.github.io/http2-spec/#rfc.section.6.10
+// See https://httpwg.org/specs/rfc7540.html#rfc.section.6.10
 
 // A PushPromiseFrame is used to initiate a server stream.
-// See http://http2.github.io/http2-spec/#rfc.section.6.6
+// See https://httpwg.org/specs/rfc7540.html#rfc.section.6.6
 
 // PushPromiseParam are the parameters for writing a PUSH_PROMISE frame.
 
@@ -184,7 +184,7 @@ var (
 // Setting is a setting parameter: which setting it is, and its value.
 
 // A SettingID is an HTTP/2 setting as defined in
-// http://http2.github.io/http2-spec/#iana-settings
+// https://httpwg.org/specs/rfc7540.html#iana-settings
 
 // from pkg io
 

@@ -4,10 +4,6 @@
 
 package cipher
 
-import (
-	subtleoverlap "crypto/internal/subtle"
-)
-
 // AEAD is a cipher mode providing authenticated encryption with associated
 // data. For a description of the methodology, see
 // https://en.wikipedia.org/wiki/Authenticated_encryption.

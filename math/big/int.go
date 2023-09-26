@@ -77,7 +77,7 @@ func (z *Int) Mul(x, y *Int) *Int
 // If a > b (empty range), the result is 1.
 func (z *Int) MulRange(a, b int64) *Int
 
-// Binomial sets z to the binomial coefficient of (n, k) and returns z.
+// Binomial sets z to the binomial coefficient C(n, k) and returns z.
 func (z *Int) Binomial(n, k int64) *Int
 
 // Quo sets z to the quotient x/y for y != 0 and returns z.

@@ -12,6 +12,7 @@ import (
 	"github.com/shogo82148/std/crypto/x509"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 )
 
@@ -22,7 +23,7 @@ type Conn struct {
 	isClient    bool
 	handshakeFn func(context.Context) error
 
-	handshakeStatus uint32
+	isHandshakeComplete atomic.Bool
 
 	handshakeMutex sync.Mutex
 	handshakeErr   error
@@ -36,6 +37,8 @@ type Conn struct {
 	ocspResponse     []byte
 	scts             [][]byte
 	peerCertificates []*x509.Certificate
+
+	activeCertHandles []*activeCert
 
 	verifiedChains [][]*x509.Certificate
 
@@ -72,7 +75,7 @@ type Conn struct {
 
 	retryCount int
 
-	activeCall int32
+	activeCall atomic.Int32
 
 	tmp [16]byte
 }

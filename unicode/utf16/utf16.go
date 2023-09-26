@@ -22,6 +22,11 @@ func EncodeRune(r rune) (r1, r2 rune)
 // Encode returns the UTF-16 encoding of the Unicode code point sequence s.
 func Encode(s []rune) []uint16
 
+// AppendRune appends the UTF-16 encoding of the Unicode code point r
+// to the end of p and returns the extended buffer. If the rune is not
+// a valid Unicode code point, it appends the encoding of U+FFFD.
+func AppendRune(a []uint16, r rune) []uint16
+
 // Decode returns the Unicode code point sequence represented
 // by the UTF-16 encoding s.
 func Decode(s []uint16) []rune

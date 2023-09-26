@@ -14,6 +14,7 @@ import (
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 	urlpkg "net/url"
 )
@@ -404,6 +405,8 @@ type Server struct {
 
 	Handler Handler
 
+	DisableGeneralOptionsHandler bool
+
 	TLSConfig *tls.Config
 
 	ReadTimeout time.Duration
@@ -426,16 +429,15 @@ type Server struct {
 
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
 
-	inShutdown atomicBool
+	inShutdown atomic.Bool
 
-	disableKeepAlives int32
+	disableKeepAlives atomic.Bool
 	nextProtoOnce     sync.Once
 	nextProtoErr      error
 
 	mu         sync.Mutex
 	listeners  map[*net.Listener]struct{}
 	activeConn map[*conn]struct{}
-	doneChan   chan struct{}
 	onShutdown []func()
 
 	listenerGroup sync.WaitGroup

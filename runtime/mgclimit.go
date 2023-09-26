@@ -31,7 +31,7 @@ package runtime
 
 // capacityPerProc is the limiter's bucket capacity for each P in GOMAXPROCS.
 
-// limiterEventType indicates the type of an event occuring on some P.
+// limiterEventType indicates the type of an event occurring on some P.
 //
 // These events represent the full set of events that the GC CPU limiter tracks
 // to execute its function.

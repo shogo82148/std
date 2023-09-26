@@ -6,9 +6,5 @@
 
 package aes
 
-import (
-	subtleoverlap "crypto/internal/subtle"
-)
-
 // Assert that aesCipherGCM implements the gcmAble interface.
 var _ gcmAble = (*aesCipherGCM)(nil)

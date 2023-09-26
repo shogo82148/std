@@ -127,8 +127,6 @@ func Fchown(fd int, uid int, gid int) (err error)
 
 func Fstat(fd int, stat *Stat_t) (err error)
 
-func Fstatat(fd int, path string, stat *Stat_t, flags int) (err error)
-
 func Fstatfs(fd int, buf *Statfs_t) (err error)
 
 func Ftruncate(fd int, length int64) (err error)

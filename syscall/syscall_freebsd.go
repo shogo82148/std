@@ -17,10 +17,6 @@ func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
 func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 
-// See https://www.freebsd.org/doc/en_US.ISO8859-1/books/porters-handbook/versions.html.
-
-// INO64_FIRST from /usr/src/lib/libc/sys/compat-ino64.h
-
 type SockaddrDatalink struct {
 	Len    uint8
 	Family uint8
@@ -48,14 +44,6 @@ func Getfsstat(buf []Statfs_t, flags int) (n int, err error)
 func Stat(path string, st *Stat_t) (err error)
 
 func Lstat(path string, st *Stat_t) (err error)
-
-func Fstat(fd int, st *Stat_t) (err error)
-
-func Fstatat(fd int, path string, st *Stat_t, flags int) (err error)
-
-func Statfs(path string, st *Statfs_t) (err error)
-
-func Fstatfs(fd int, st *Statfs_t) (err error)
 
 func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error)
 

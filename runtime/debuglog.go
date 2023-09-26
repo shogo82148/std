@@ -26,8 +26,6 @@ package runtime
 //
 // To obtain a dlogger, call dlog(). When done with the dlogger, call
 // end().
-//
-//go:notinheap
 
 // allDloggers is a list of all dloggers, linked through
 // dlogger.allLink. This is accessed atomically. This is prepend only,
@@ -46,7 +44,3 @@ package runtime
 // overwrite old records. Hence, it maintains a reader that consumes
 // the log as it gets overwritten. That reader state is where an
 // actual log reader would start.
-//
-//go:notinheap
-
-//go:notinheap

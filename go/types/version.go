@@ -4,4 +4,8 @@
 
 package types
 
+import (
+	. "internal/types/errors"
+)
+
 // goVersionRx matches a Go version string, e.g. "go1.12".

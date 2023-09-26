@@ -17,5 +17,3 @@ package runtime
 // the garbage collector from transitioning to mark termination since
 // gcWork may locally hold GC work buffers. This can be done by
 // disabling preemption (systemstack or acquirem).
-
-//go:notinheap

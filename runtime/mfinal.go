@@ -12,8 +12,8 @@ package runtime
 // finblock is allocated from non-GC'd memory, so any heap pointers
 // must be specially handled. GC currently assumes that the finalizer
 // queue does not grow during marking (but it can shrink).
-//
-//go:notinheap
+
+// finalizer goroutine status.
 
 // NOTE: Layout known to queuefinalizer.
 
@@ -55,11 +55,20 @@ package runtime
 // bufio.Writer, because the buffer would not be flushed at program exit.
 //
 // It is not guaranteed that a finalizer will run if the size of *obj is
-// zero bytes.
+// zero bytes, because it may share same address with other zero-size
+// objects in memory. See https://go.dev/ref/spec#Size_and_alignment_guarantees.
 //
 // It is not guaranteed that a finalizer will run for objects allocated
 // in initializers for package-level variables. Such objects may be
 // linker-allocated, not heap-allocated.
+//
+// Note that because finalizers may execute arbitrarily far into the future
+// after an object is no longer referenced, the runtime is allowed to perform
+// a space-saving optimization that batches objects together in a single
+// allocation slot. The finalizer for an unreferenced object in such an
+// allocation may never run if it always exists in the same batch as a
+// referenced object. Typically, this batching only happens for tiny
+// (on the order of 16 bytes or less) and pointer-free objects.
 //
 // A finalizer may run as soon as an object becomes unreachable.
 // In order to use finalizers correctly, the program must ensure that

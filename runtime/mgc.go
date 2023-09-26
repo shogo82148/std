@@ -168,5 +168,5 @@ func GC()
 //
 // This is protected by markDoneSema.
 
-// gcBgMarkWorker is an entry in the gcBgMarkWorkerPool. It points to a single
+// gcBgMarkWorkerNode is an entry in the gcBgMarkWorkerPool. It points to a single
 // gcBgMarkWorker goroutine.

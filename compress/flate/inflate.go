@@ -64,8 +64,8 @@ type Reader interface {
 // to read the uncompressed version of r.
 // If r does not also implement io.ByteReader,
 // the decompressor may read more data than necessary from r.
-// It is the caller's responsibility to call Close on the ReadCloser
-// when finished reading.
+// The reader returns io.EOF after the final block in the DEFLATE stream has
+// been encountered. Any trailing data after the final block is ignored.
 //
 // The ReadCloser returned by NewReader also implements Resetter.
 func NewReader(r io.Reader) io.ReadCloser

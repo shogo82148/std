@@ -21,12 +21,15 @@ var (
 	ErrWriteTooLong    = errors.New("archive/tar: write too long")
 	ErrFieldTooLong    = errors.New("archive/tar: header field too long")
 	ErrWriteAfterClose = errors.New("archive/tar: write after close")
+	ErrInsecurePath    = errors.New("archive/tar: insecure file path")
 )
 
 // Type flags for Header.Typeflag.
 const (
 	// Type '0' indicates a regular file.
-	TypeReg  = '0'
+	TypeReg = '0'
+
+	// Deprecated: Use TypeReg instead.
 	TypeRegA = '\x00'
 
 	// Type '1' to '6' are header-only flags and may not have a data body.

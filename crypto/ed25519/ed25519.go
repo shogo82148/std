@@ -35,10 +35,10 @@ type PublicKey []byte
 // Equal reports whether pub and x have the same value.
 func (pub PublicKey) Equal(x crypto.PublicKey) bool
 
-// PrivateKey is the type of Ed25519 private keys. It implements crypto.Signer.
+// PrivateKey is the type of Ed25519 private keys. It implements [crypto.Signer].
 type PrivateKey []byte
 
-// Public returns the PublicKey corresponding to priv.
+// Public returns the [PublicKey] corresponding to priv.
 func (priv PrivateKey) Public() crypto.PublicKey
 
 // Equal reports whether priv and x have the same value.
@@ -49,27 +49,55 @@ func (priv PrivateKey) Equal(x crypto.PrivateKey) bool
 // in this package.
 func (priv PrivateKey) Seed() []byte
 
-// Sign signs the given message with priv.
-// Ed25519 performs two passes over messages to be signed and therefore cannot
-// handle pre-hashed messages. Thus opts.HashFunc() must return zero to
-// indicate the message hasn't been hashed. This can be achieved by passing
-// crypto.Hash(0) as the value for opts.
+// Sign signs the given message with priv. rand is ignored.
+//
+// If opts.HashFunc() is [crypto.SHA512], the pre-hashed variant Ed25519ph is used
+// and message is expected to be a SHA-512 hash, otherwise opts.HashFunc() must
+// be [crypto.Hash](0) and the message must not be hashed, as Ed25519 performs two
+// passes over messages to be signed.
+//
+// A value of type [Options] can be used as opts, or crypto.Hash(0) or
+// crypto.SHA512 directly to select plain Ed25519 or Ed25519ph, respectively.
 func (priv PrivateKey) Sign(rand io.Reader, message []byte, opts crypto.SignerOpts) (signature []byte, err error)
 
+// Options can be used with [PrivateKey.Sign] or [VerifyWithOptions]
+// to select Ed25519 variants.
+type Options struct {
+	Hash crypto.Hash
+
+	Context string
+}
+
+// HashFunc returns o.Hash.
+func (o *Options) HashFunc() crypto.Hash
+
 // GenerateKey generates a public/private key pair using entropy from rand.
-// If rand is nil, crypto/rand.Reader will be used.
+// If rand is nil, [crypto/rand.Reader] will be used.
 func GenerateKey(rand io.Reader) (PublicKey, PrivateKey, error)
 
 // NewKeyFromSeed calculates a private key from a seed. It will panic if
-// len(seed) is not SeedSize. This function is provided for interoperability
+// len(seed) is not [SeedSize]. This function is provided for interoperability
 // with RFC 8032. RFC 8032's private keys correspond to seeds in this
 // package.
 func NewKeyFromSeed(seed []byte) PrivateKey
 
 // Sign signs the message with privateKey and returns a signature. It will
-// panic if len(privateKey) is not PrivateKeySize.
+// panic if len(privateKey) is not [PrivateKeySize].
 func Sign(privateKey PrivateKey, message []byte) []byte
 
+// Domain separation prefixes used to disambiguate Ed25519/Ed25519ph/Ed25519ctx.
+// See RFC 8032, Section 2 and Section 5.1.
+
 // Verify reports whether sig is a valid signature of message by publicKey. It
-// will panic if len(publicKey) is not PublicKeySize.
+// will panic if len(publicKey) is not [PublicKeySize].
 func Verify(publicKey PublicKey, message, sig []byte) bool
+
+// VerifyWithOptions reports whether sig is a valid signature of message by
+// publicKey. A valid signature is indicated by returning a nil error. It will
+// panic if len(publicKey) is not [PublicKeySize].
+//
+// If opts.Hash is [crypto.SHA512], the pre-hashed variant Ed25519ph is used and
+// message is expected to be a SHA-512 hash, otherwise opts.Hash must be
+// [crypto.Hash](0) and the message must not be hashed, as Ed25519 performs two
+// passes over messages to be signed.
+func VerifyWithOptions(publicKey PublicKey, message, sig []byte, opts *Options) error

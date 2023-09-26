@@ -96,6 +96,7 @@ import (
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/syscall"
+	"github.com/shogo82148/std/time"
 )
 
 // Error is returned by LookPath when it fails to classify a file as an
@@ -109,6 +110,11 @@ type Error struct {
 func (e *Error) Error() string
 
 func (e *Error) Unwrap() error
+
+// ErrWaitDelay is returned by (*Cmd).Wait if the process exits with a
+// successful status code but its output pipes are not closed before the
+// command's WaitDelay expires.
+var ErrWaitDelay = errors.New("exec: WaitDelay expired before I/O complete")
 
 // wrappedError wraps an error without relying on fmt.Errorf.
 
@@ -138,17 +144,31 @@ type Cmd struct {
 
 	ProcessState *os.ProcessState
 
-	ctx             context.Context
-	Err             error
-	childFiles      []*os.File
-	closeAfterStart []io.Closer
-	closeAfterWait  []io.Closer
-	goroutine       []func() error
-	goroutineErrs   <-chan error
-	ctxErr          <-chan error
+	ctx context.Context
+
+	Err error
+
+	Cancel func() error
+
+	WaitDelay time.Duration
+
+	childIOFiles []io.Closer
+
+	parentIOPipes []io.Closer
+
+	goroutine []func() error
+
+	goroutineErr <-chan error
+
+	ctxResult <-chan ctxResult
+
+	createdByStack []byte
 
 	lookPathErr error
 }
+
+// A ctxResult reports the result of watching the Context associated with a
+// running command (and sending corresponding signals if needed).
 
 // Command returns the Cmd struct to execute the named program with
 // the given arguments.
@@ -176,9 +196,13 @@ func Command(name string, arg ...string) *Cmd
 
 // CommandContext is like Command but includes a context.
 //
-// The provided context is used to kill the process (by calling
-// os.Process.Kill) if the context becomes done before the command
-// completes on its own.
+// The provided context is used to interrupt the process
+// (by calling cmd.Cancel or os.Process.Kill)
+// if the context becomes done before the command completes on its own.
+//
+// CommandContext sets the command's Cancel function to invoke the Kill method
+// on its Process, and leaves its WaitDelay unset. The caller may change the
+// cancellation behavior by modifying those fields before starting the command.
 func CommandContext(ctx context.Context, name string, arg ...string) *Cmd
 
 // String returns a human-readable description of c.

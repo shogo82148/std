@@ -4,10 +4,6 @@
 
 package filepath
 
-// reservedNames lists reserved Windows names. Search for PRN in
-// https://docs.microsoft.com/en-us/windows/desktop/fileio/naming-a-file
-// for details.
-
 // IsAbs reports whether the path is absolute.
 func IsAbs(path string) (b bool)
 

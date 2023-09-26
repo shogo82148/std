@@ -124,8 +124,6 @@ package runtime
 // _panic values only live on the stack, regular stack pointer
 // adjustment takes care of them.
 
-// stack traces
-
 // ancestorInfo records details of where a goroutine was started.
 
 // The maximum number of frames we print for a traceback

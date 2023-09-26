@@ -37,7 +37,6 @@ func TypeString(typ Type, qf Qualifier) string
 func WriteType(buf *bytes.Buffer, typ Type, qf Qualifier)
 
 // WriteSignature writes the representation of the signature sig to buf,
-// without a leading "func" keyword.
-// The Qualifier controls the printing of
-// package-level objects, and may be nil.
+// without a leading "func" keyword. The Qualifier controls the printing
+// of package-level objects, and may be nil.
 func WriteSignature(buf *bytes.Buffer, sig *Signature, qf Qualifier)

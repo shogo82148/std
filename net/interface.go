@@ -23,6 +23,7 @@ const (
 	FlagLoopback
 	FlagPointToPoint
 	FlagMulticast
+	FlagRunning
 )
 
 func (f Flags) String() string

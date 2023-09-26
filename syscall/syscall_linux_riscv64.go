@@ -4,7 +4,7 @@
 
 package syscall
 
-func EpollCreate(size int) (fd int, err error)
+func Fstatat(fd int, path string, stat *Stat_t, flags int) error
 
 func Renameat(olddirfd int, oldpath string, newdirfd int, newpath string) (err error)
 

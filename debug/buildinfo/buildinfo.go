@@ -37,3 +37,5 @@ func Read(r io.ReaderAt) (*BuildInfo, error)
 // machoExe is the Mach-O (Apple macOS/iOS) implementation of the exe interface.
 
 // xcoffExe is the XCOFF (AIX eXtended COFF) implementation of the exe interface.
+
+// plan9objExe is the Plan 9 a.out implementation of the exe interface.

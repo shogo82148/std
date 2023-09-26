@@ -521,6 +521,7 @@ type (
 		Key, Value Expr
 		TokPos     token.Pos
 		Tok        token.Token
+		Range      token.Pos
 		X          Expr
 		Body       *BlockStmt
 	}
@@ -697,17 +698,24 @@ func (d *FuncDecl) End() token.Pos
 // and Comment comments directly associated with nodes, the remaining comments
 // are "free-floating" (see also issues #18593, #20744).
 type File struct {
-	Doc        *CommentGroup
-	Package    token.Pos
-	Name       *Ident
-	Decls      []Decl
-	Scope      *Scope
-	Imports    []*ImportSpec
-	Unresolved []*Ident
-	Comments   []*CommentGroup
+	Doc     *CommentGroup
+	Package token.Pos
+	Name    *Ident
+	Decls   []Decl
+
+	FileStart, FileEnd token.Pos
+	Scope              *Scope
+	Imports            []*ImportSpec
+	Unresolved         []*Ident
+	Comments           []*CommentGroup
 }
 
+// Pos returns the position of the package declaration.
+// (Use FileStart for the start of the entire file.)
 func (f *File) Pos() token.Pos
+
+// End returns the end of the last declaration in the file.
+// (Use FileEnd for the end of the entire file.)
 func (f *File) End() token.Pos
 
 // A Package node represents a set of source files

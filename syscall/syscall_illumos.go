@@ -4,8 +4,9 @@
 
 //go:build illumos
 
-// Illumos system calls not present on Solaris.
-
 package syscall
+
+// F_DUP2FD_CLOEXEC has different values on Solaris and Illumos.
+const F_DUP2FD_CLOEXEC = 0x24
 
 func Flock(fd int, how int) error

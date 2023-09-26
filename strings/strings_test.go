@@ -51,6 +51,9 @@ var RepeatTests = []struct {
 	{"-", "-", 1},
 	{"-", "----------", 10},
 	{"abc ", "abc abc abc ", 3},
+
+	{string(rune(0)), string(make([]byte, 1<<16)), 1 << 16},
+	{longString, longString + longString, 2},
 }
 
 var RunesTests = []struct {

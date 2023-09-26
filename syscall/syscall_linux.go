@@ -37,6 +37,8 @@ func Chown(path string, uid int, gid int) (err error)
 
 func Creat(path string, mode uint32) (fd int, err error)
 
+func EpollCreate(size int) (fd int, err error)
+
 func Faccessat(dirfd int, path string, mode uint32, flags int) (err error)
 
 func Fchmodat(dirfd int, path string, mode uint32, flags int) (err error)

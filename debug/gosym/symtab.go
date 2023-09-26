@@ -15,6 +15,8 @@ type Sym struct {
 	GoType uint64
 
 	Func *Func
+
+	goVersion version
 }
 
 // Static reports whether this symbol is static (not visible outside its file).

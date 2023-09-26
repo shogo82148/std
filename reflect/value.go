@@ -208,6 +208,10 @@ func (v Value) IsValid() bool
 // It panics if the argument is invalid.
 func (v Value) IsZero() bool
 
+// SetZero sets v to be the zero value of v's type.
+// It panics if CanSet returns false.
+func (v Value) SetZero()
+
 // Kind returns v's Kind.
 // If v is the zero Value (IsValid returns false), Kind returns Invalid.
 func (v Value) Kind() Kind
@@ -245,7 +249,8 @@ func (iter *MapIter) Key() Value
 
 // SetIterKey assigns to v the key of iter's current map entry.
 // It is equivalent to v.Set(iter.Key()), but it avoids allocating a new Value.
-// As in Go, the key must be assignable to v's type.
+// As in Go, the key must be assignable to v's type and
+// must not be derived from an unexported field.
 func (v Value) SetIterKey(iter *MapIter)
 
 // Value returns the value of iter's current map entry.
@@ -253,7 +258,8 @@ func (iter *MapIter) Value() Value
 
 // SetIterValue assigns to v the value of iter's current map entry.
 // It is equivalent to v.Set(iter.Value()), but it avoids allocating a new Value.
-// As in Go, the value must be assignable to v's type.
+// As in Go, the value must be assignable to v's type and
+// must not be derived from an unexported field.
 func (v Value) SetIterValue(iter *MapIter)
 
 // Next advances the map iterator and reports whether there is another
@@ -325,9 +331,6 @@ func (v Value) OverflowInt(x int64) bool
 func (v Value) OverflowUint(x uint64) bool
 
 // Pointer returns v's value as a uintptr.
-// It returns uintptr instead of unsafe.Pointer so that
-// code using reflect cannot obtain unsafe.Pointers
-// without importing the unsafe package explicitly.
 // It panics if v's Kind is not Chan, Func, Map, Pointer, Slice, or UnsafePointer.
 //
 // If v's Kind is Func, the returned pointer is an underlying
@@ -356,7 +359,8 @@ func (v Value) Send(x Value)
 
 // Set assigns x to the value v.
 // It panics if CanSet returns false.
-// As in Go, x's value must be assignable to v's type.
+// As in Go, x's value must be assignable to v's type and
+// must not be derived from an unexported field.
 func (v Value) Set(x Value)
 
 // SetBool sets v's underlying value.
@@ -401,7 +405,7 @@ func (v Value) SetMapIndex(key, elem Value)
 // It panics if v's Kind is not Uint, Uintptr, Uint8, Uint16, Uint32, or Uint64, or if CanSet() is false.
 func (v Value) SetUint(x uint64)
 
-// SetPointer sets the unsafe.Pointer value v to x.
+// SetPointer sets the [unsafe.Pointer] value v to x.
 // It panics if v's Kind is not UnsafePointer.
 func (v Value) SetPointer(x unsafe.Pointer)
 
@@ -451,13 +455,12 @@ func (v Value) CanUint() bool
 func (v Value) Uint() uint64
 
 // UnsafeAddr returns a pointer to v's data, as a uintptr.
-// It is for advanced clients that also import the "unsafe" package.
 // It panics if v is not addressable.
 //
 // It's preferred to use uintptr(Value.Addr().UnsafePointer()) to get the equivalent result.
 func (v Value) UnsafeAddr() uintptr
 
-// UnsafePointer returns v's value as a unsafe.Pointer.
+// UnsafePointer returns v's value as a [unsafe.Pointer].
 // It panics if v's Kind is not Chan, Func, Map, Pointer, Slice, or UnsafePointer.
 //
 // If v's Kind is Func, the returned pointer is an underlying
@@ -476,6 +479,8 @@ func (v Value) UnsafePointer() unsafe.Pointer
 // Moreover, the Data field is not sufficient to guarantee the data
 // it references will not be garbage collected, so programs must keep
 // a separate, correctly typed pointer to the underlying data.
+//
+// In new code, use unsafe.String or unsafe.StringData instead.
 type StringHeader struct {
 	Data uintptr
 	Len  int
@@ -487,11 +492,21 @@ type StringHeader struct {
 // Moreover, the Data field is not sufficient to guarantee the data
 // it references will not be garbage collected, so programs must keep
 // a separate, correctly typed pointer to the underlying data.
+//
+// In new code, use unsafe.Slice or unsafe.SliceData instead.
 type SliceHeader struct {
 	Data uintptr
 	Len  int
 	Cap  int
 }
+
+// Grow increases the slice's capacity, if necessary, to guarantee space for
+// another n elements. After Grow(n), at least n elements can be appended
+// to the slice without another allocation.
+//
+// It panics if v's Kind is not a Slice or if n is negative or too large to
+// allocate the memory.
+func (v Value) Grow(n int)
 
 // Append appends the values x to a slice s and returns the resulting slice.
 // As in Go, each x's value must be assignable to the slice's element type.
@@ -605,3 +620,19 @@ func (v Value) Convert(t Type) Value
 // CanConvert reports whether the value v can be converted to type t.
 // If v.CanConvert(t) returns true then v.Convert(t) will not panic.
 func (v Value) CanConvert(t Type) bool
+
+// Comparable reports whether the value v is comparable.
+// If the type of v is an interface, this checks the dynamic type.
+// If this reports true then v.Interface() == x will not panic for any x,
+// nor will v.Equal(u) for any Value u.
+func (v Value) Comparable() bool
+
+// Equal reports true if v is equal to u.
+// For two invalid values, Equal will report true.
+// For an interface value, Equal will compare the value within the interface.
+// Otherwise, If the values have different types, Equal will report false.
+// Otherwise, for arrays and structs Equal will compare each element in order,
+// and report false if it finds non-equal elements.
+// During all comparisons, if values of the same type are compared,
+// and the type is not comparable, Equal will panic.
+func (v Value) Equal(u Value) bool

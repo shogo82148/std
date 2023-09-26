@@ -33,6 +33,13 @@ type Addr struct {
 // address ff02::1.
 func IPv6LinkLocalAllNodes() Addr
 
+// IPv6LinkLocalAllRouters returns the IPv6 link-local all routers multicast
+// address ff02::2.
+func IPv6LinkLocalAllRouters() Addr
+
+// IPv6Loopback returns the IPv6 loopback address ::1.
+func IPv6Loopback() Addr
+
 // IPv6Unspecified returns the IPv6 unspecified address "::".
 func IPv6Unspecified() Addr
 
@@ -253,7 +260,7 @@ func ParseAddrPort(s string) (AddrPort, error)
 // It is intended for use in tests with hard-coded strings.
 func MustParseAddrPort(s string) AddrPort
 
-// IsValid reports whether p.IP() is valid.
+// IsValid reports whether p.Addr() is valid.
 // All ports are valid, including zero.
 func (p AddrPort) IsValid() bool
 
@@ -315,7 +322,7 @@ func (p Prefix) Addr() Addr
 // It reports -1 if invalid.
 func (p Prefix) Bits() int
 
-// IsValid reports whether p.Bits() has a valid range for p.IP().
+// IsValid reports whether p.Bits() has a valid range for p.Addr().
 // If p.Addr() is the zero Addr, IsValid returns false.
 // Note that if p is the zero Prefix, then p.IsValid() == false.
 func (p Prefix) IsValid() bool

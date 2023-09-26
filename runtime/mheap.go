@@ -14,18 +14,12 @@ package runtime
 //
 // mheap must not be heap-allocated because it contains mSpanLists,
 // which must not be heap-allocated.
-//
-//go:notinheap
 
 // A heapArena stores metadata for a heap arena. heapArenas are stored
 // outside of the Go heap and accessed via the mheap_.arenas index.
-//
-//go:notinheap
 
 // arenaHint is a hint for where to grow the heap arenas. See
 // mheap_.arenaHints.
-//
-//go:notinheap
 
 // An mspan representing actual memory has state mSpanInUse,
 // mSpanManual, or mSpanFree. Transitions between these states are
@@ -53,15 +47,11 @@ package runtime
 // mSpanStateNames are the names of the span states, indexed by
 // mSpanState.
 
-// mSpanStateBox holds an mSpanState and provides atomic operations on
-// it. This is a separate type to disallow accidental comparison or
-// assignment with mSpanState.
+// mSpanStateBox holds an atomic.Uint8 to provide atomic operations on
+// an mSpanState. This is a separate type to disallow accidental comparison
+// or assignment with mSpanState.
 
 // mSpanList heads a linked list of spans.
-//
-//go:notinheap
-
-//go:notinheap
 
 // A spanClass represents the size class and noscan-ness of a span.
 //
@@ -73,26 +63,16 @@ package runtime
 // spanAllocType represents the type of allocation to make, or
 // the type of allocation to be freed.
 
-//go:notinheap
-
 // The described object has a finalizer set for it.
 //
 // specialfinalizer is allocated from non-GC'd memory, so any heap
 // pointers must be specially handled.
-//
-//go:notinheap
 
 // The described object is being heap profiled.
-//
-//go:notinheap
 
 // specialReachable tracks whether an object is reachable on the next
 // GC cycle. This is used by testing.
 
 // specialsIter helps iterate over specials lists.
 
-// gcBits is an alloc/mark bitmap. This is always used as *gcBits.
-//
-//go:notinheap
-
-//go:notinheap
+// gcBits is an alloc/mark bitmap. This is always used as gcBits.x.

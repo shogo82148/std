@@ -22,6 +22,12 @@
 // fires. The go vet tool checks that CancelFuncs are used on all
 // control-flow paths.
 //
+// The WithCancelCause function returns a CancelCauseFunc, which
+// takes an error and records it as the cancellation cause. Calling
+// Cause on the canceled context or any of its children retrieves
+// the cause. If no cause is specified, Cause(ctx) returns the same
+// value as ctx.Err().
+//
 // Programs that use Contexts should follow these rules to keep interfaces
 // consistent across packages and enable static analysis tools to check context
 // propagation:
@@ -101,6 +107,39 @@ type CancelFunc func()
 // Canceling this context releases resources associated with it, so code should
 // call cancel as soon as the operations running in this Context complete.
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
+
+// A CancelCauseFunc behaves like a CancelFunc but additionally sets the cancellation cause.
+// This cause can be retrieved by calling Cause on the canceled Context or on
+// any of its derived Contexts.
+//
+// If the context has already been canceled, CancelCauseFunc does not set the cause.
+// For example, if childContext is derived from parentContext:
+//   - if parentContext is canceled with cause1 before childContext is canceled with cause2,
+//     then Cause(parentContext) == Cause(childContext) == cause1
+//   - if childContext is canceled with cause2 before parentContext is canceled with cause1,
+//     then Cause(parentContext) == cause1 and Cause(childContext) == cause2
+type CancelCauseFunc func(cause error)
+
+// WithCancelCause behaves like WithCancel but returns a CancelCauseFunc instead of a CancelFunc.
+// Calling cancel with a non-nil error (the "cause") records that error in ctx;
+// it can then be retrieved using Cause(ctx).
+// Calling cancel with nil sets the cause to Canceled.
+//
+// Example use:
+//
+//	ctx, cancel := context.WithCancelCause(parent)
+//	cancel(myError)
+//	ctx.Err() // returns context.Canceled
+//	context.Cause(ctx) // returns myError
+func WithCancelCause(parent Context) (ctx Context, cancel CancelCauseFunc)
+
+// Cause returns a non-nil error explaining why c was canceled.
+// The first cancellation of c or one of its parents sets the cause.
+// If that cancellation happened via a call to CancelCauseFunc(err),
+// then Cause returns err.
+// Otherwise Cause(c) returns the same value as c.Err().
+// Cause returns nil if c has not been canceled yet.
+func Cause(c Context) error
 
 // goroutines counts the number of goroutines ever created; for testing.
 

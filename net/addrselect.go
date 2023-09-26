@@ -7,8 +7,6 @@
 package net
 
 // RFC 6724 section 2.1.
-
-// byMaskLength sorts policyTableEntry by the size of their Prefix.Mask.Size,
-// from smallest mask, to largest.
+// Items are sorted by the size of their Prefix.Mask.Size,
 
 // RFC 6724 section 3.1.

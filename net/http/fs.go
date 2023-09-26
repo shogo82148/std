@@ -120,6 +120,7 @@ func ServeFile(w ResponseWriter, r *Request, name string)
 
 // FS converts fsys to a FileSystem implementation,
 // for use with FileServer and NewFileTransport.
+// The files provided by fsys must implement io.Seeker.
 func FS(fsys fs.FS) FileSystem
 
 // FileServer returns a handler that serves HTTP requests

@@ -13,5 +13,4 @@ package runtime
 // This stack is intrusive. Nodes must embed lfnode as the first field.
 //
 // The stack does not keep GC-visible pointers to nodes, so the caller
-// is responsible for ensuring the nodes are not garbage collected
-// (typically by allocating them from manually-managed memory).
+// must ensure the nodes are allocated outside the Go heap.

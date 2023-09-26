@@ -30,3 +30,7 @@ package x509
 // expected and the Go test will fail to recreate it exactly.
 
 // From RFC 8410, Section 7.
+
+// Generated using:
+//
+//	openssl genpkey -algorithm x25519

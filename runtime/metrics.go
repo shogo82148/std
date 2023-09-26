@@ -25,13 +25,16 @@ package runtime
 // heapStatsAggregate, means there could be some skew, but because of
 // these stats are independent, there's no real consistency issue here.
 
+// cpuStatsAggregate represents CPU stats obtained from the runtime
+// acquired together to avoid skew and inconsistencies.
+
 // statAggregate is the main driver of the metrics implementation.
 //
 // It contains multiple aggregates of runtime statistics, as well
 // as a set of these aggregates that it has populated. The aggergates
 // are populated lazily by its ensure method.
 
-// metricValidKind is a runtime copy of runtime/metrics.ValueKind and
+// metricKind is a runtime copy of runtime/metrics.ValueKind and
 // must be kept structurally identical to that type.
 
 // metricSample is a runtime copy of runtime/metrics.Sample and

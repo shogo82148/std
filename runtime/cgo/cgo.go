@@ -30,3 +30,8 @@ package cgo
 #cgo solaris CPPFLAGS: -D_POSIX_PTHREAD_SEMANTICS
 
 */
+
+// Incomplete is used specifically for the semantics of incomplete C types.
+type Incomplete struct {
+	_ sys.NotInHeap
+}

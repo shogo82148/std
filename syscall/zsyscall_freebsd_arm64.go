@@ -39,6 +39,12 @@ func Flock(fd int, how int) (err error)
 
 func Fpathconf(fd int, name int) (val int, err error)
 
+func Fstat(fd int, stat *Stat_t) (err error)
+
+func Fstatat(fd int, path string, stat *Stat_t, flags int) (err error)
+
+func Fstatfs(fd int, stat *Statfs_t) (err error)
+
 func Fsync(fd int) (err error)
 
 func Ftruncate(fd int, length int64) (err error)
@@ -126,6 +132,8 @@ func Setsid() (pid int, err error)
 func Settimeofday(tp *Timeval) (err error)
 
 func Setuid(uid int) (err error)
+
+func Statfs(path string, stat *Statfs_t) (err error)
 
 func Symlink(path string, link string) (err error)
 

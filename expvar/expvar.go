@@ -47,7 +47,7 @@ func (v *Int) Set(value int64)
 
 // Float is a 64-bit float variable that satisfies the Var interface.
 type Float struct {
-	f uint64
+	f atomic.Uint64
 }
 
 func (v *Float) Value() float64

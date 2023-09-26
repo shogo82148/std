@@ -4,10 +4,6 @@
 
 package aes
 
-import (
-	subtleoverlap "crypto/internal/subtle"
-)
-
 // gcmCount represents a 16-byte big-endian count value.
 
 // gcmHashKey represents the 16-byte hash key required by the GHASH algorithm.

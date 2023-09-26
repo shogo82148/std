@@ -11,6 +11,11 @@ import (
 
 // mapInterface is the interface Map implements.
 
+var (
+	_ mapInterface = &RWMutexMap{}
+	_ mapInterface = &DeepCopyMap{}
+)
+
 // RWMutexMap is an implementation of mapInterface using a sync.RWMutex.
 type RWMutexMap struct {
 	mu    sync.RWMutex

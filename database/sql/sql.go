@@ -22,6 +22,7 @@ import (
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/reflect"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 )
 
@@ -257,11 +258,11 @@ var ErrNoRows = errors.New("sql: no rows in result set")
 // connection is returned to DB's idle connection pool. The pool size
 // can be controlled with SetMaxIdleConns.
 type DB struct {
-	waitDuration int64
+	waitDuration atomic.Int64
 
 	connector driver.Connector
 
-	numClosed uint64
+	numClosed atomic.Uint64
 
 	mu           sync.Mutex
 	freeConn     []*driverConn
@@ -621,7 +622,7 @@ type Tx struct {
 
 	releaseConn func(error)
 
-	done int32
+	done atomic.Bool
 
 	keepConnOnRollback bool
 
@@ -989,7 +990,7 @@ func (ci *ColumnType) DatabaseTypeName() string
 // select query will close any cursor *Rows if the parent *Rows is closed.
 //
 // If any of the first arguments implementing Scanner returns an error,
-// that error will be wrapped in the returned error
+// that error will be wrapped in the returned error.
 func (rs *Rows) Scan(dest ...any) error
 
 // rowsCloseHook returns a function so tests may install the

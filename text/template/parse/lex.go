@@ -20,3 +20,5 @@ package parse
 // stateFn represents the state of the scanner as a function that returns the next state.
 
 // lexer holds the state of the scanner.
+
+// lexOptions control behavior of the lexer. All default to false.

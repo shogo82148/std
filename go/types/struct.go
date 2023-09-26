@@ -4,6 +4,10 @@
 
 package types
 
+import (
+	. "internal/types/errors"
+)
+
 // A Struct represents a struct type.
 type Struct struct {
 	fields []*Var

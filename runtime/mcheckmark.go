@@ -16,8 +16,6 @@ package runtime
 // per-arena bitmap with a bit for every word in the arena. The mark
 // is stored on the bit corresponding to the first word of the marked
 // allocation.
-//
-//go:notinheap
 
 // If useCheckmark is true, marking of an object uses the checkmark
 // bits instead of the standard mark bits.

@@ -4,6 +4,10 @@
 
 package sync
 
+import (
+	"github.com/shogo82148/std/sync/atomic"
+)
+
 // A RWMutex is a reader/writer mutual exclusion lock.
 // The lock can be held by an arbitrary number of readers or a single writer.
 // The zero value for a RWMutex is an unlocked mutex.
@@ -28,8 +32,8 @@ type RWMutex struct {
 	w           Mutex
 	writerSem   uint32
 	readerSem   uint32
-	readerCount int32
-	readerWait  int32
+	readerCount atomic.Int32
+	readerWait  atomic.Int32
 }
 
 // RLock locks rw for reading.

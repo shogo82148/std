@@ -8,11 +8,9 @@ package runtime
 // nanoseconds.
 //
 // The accuracy and range of the histogram is defined by the
-// timeHistSubBucketBits and timeHistNumSuperBuckets constants.
+// timeHistSubBucketBits and timeHistNumBuckets constants.
 //
 // It is an HDR histogram with exponentially-distributed
 // buckets and linearly distributed sub-buckets.
 //
-// Counts in the histogram are updated atomically, so it is safe
-// for concurrent use. It is also safe to read all the values
-// atomically.
+// The histogram is safe for concurrent reads and writes.

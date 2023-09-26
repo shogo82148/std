@@ -26,4 +26,5 @@ package parser
 // a regular expression that matches the expected error message.
 // The special form /* ERROR HERE "rx" */ must be used for error
 // messages that appear immediately after a token, rather than at
-// a token's position.
+// a token's position, and ERROR AFTER means after the comment
+// (e.g. at end of line).

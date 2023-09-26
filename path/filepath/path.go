@@ -51,6 +51,22 @@ const (
 // https://9p.io/sys/doc/lexnames.html
 func Clean(path string) string
 
+// IsLocal reports whether path, using lexical analysis only, has all of these properties:
+//
+//   - is within the subtree rooted at the directory in which path is evaluated
+//   - is not an absolute path
+//   - is not empty
+//   - on Windows, is not a reserved name such as "NUL"
+//
+// If IsLocal(path) returns true, then
+// Join(base, path) will always produce a path contained within base and
+// Clean(path) will always produce an unrooted path with no ".." path elements.
+//
+// IsLocal is a purely lexical operation.
+// In particular, it does not account for the effect of any symbolic links
+// that may exist in the filesystem.
+func IsLocal(path string) bool
+
 // ToSlash returns the result of replacing each separator character
 // in path with a slash ('/') character. Multiple separators are
 // replaced by multiple slashes.
@@ -118,6 +134,11 @@ func Rel(basepath, targpath string) (string, error)
 // as an error by any function.
 var SkipDir error = fs.SkipDir
 
+// SkipAll is used as a return value from WalkFuncs to indicate that
+// all remaining files and directories are to be skipped. It is not returned
+// as an error by any function.
+var SkipAll error = fs.SkipAll
+
 // WalkFunc is the type of the function called by Walk to visit each
 // file or directory.
 //
@@ -136,8 +157,9 @@ var SkipDir error = fs.SkipDir
 // The error result returned by the function controls how Walk continues.
 // If the function returns the special value SkipDir, Walk skips the
 // current directory (path if info.IsDir() is true, otherwise path's
-// parent directory). Otherwise, if the function returns a non-nil error,
-// Walk stops entirely and returns that error.
+// parent directory). If the function returns the special value SkipAll,
+// Walk skips all remaining files and directories. Otherwise, if the function
+// returns a non-nil error, Walk stops entirely and returns that error.
 //
 // The err argument reports an error related to path, signaling that Walk
 // will not walk into that directory. The function can decide how to
@@ -168,6 +190,10 @@ type WalkFunc func(path string, info fs.FileInfo, err error) error
 // to walk that directory.
 //
 // WalkDir does not follow symbolic links.
+//
+// WalkDir calls fn with paths that use the separator character appropriate
+// for the operating system. This is unlike [io/fs.WalkDir], which always
+// uses slash separated paths.
 func WalkDir(root string, fn fs.WalkDirFunc) error
 
 // Walk walks the file tree rooted at root, calling fn for each file or

@@ -7,7 +7,12 @@
 package runtime
 
 var NonblockingPipe = nonblockingPipe
-var Closeonexec = closeonexec
 var Fcntl = fcntl
 
 type M = m
+
+const (
+	O_WRONLY = _O_WRONLY
+	O_CREAT  = _O_CREAT
+	O_TRUNC  = _O_TRUNC
+)

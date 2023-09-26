@@ -13,21 +13,19 @@ package runtime
 // goroutines respectively. The semaphore can be in the following states:
 //
 //	pdReady - io readiness notification is pending;
-//	          a goroutine consumes the notification by changing the state to nil.
+//	          a goroutine consumes the notification by changing the state to pdNil.
 //	pdWait - a goroutine prepares to park on the semaphore, but not yet parked;
 //	         the goroutine commits to park by changing the state to G pointer,
 //	         or, alternatively, concurrent io notification changes the state to pdReady,
-//	         or, alternatively, concurrent timeout/close changes the state to nil.
+//	         or, alternatively, concurrent timeout/close changes the state to pdNil.
 //	G pointer - the goroutine is blocked on the semaphore;
-//	            io notification or timeout/close changes the state to pdReady or nil respectively
+//	            io notification or timeout/close changes the state to pdReady or pdNil respectively
 //	            and unparks the goroutine.
-//	nil - none of the above.
+//	pdNil - none of the above.
 
 // Network poller descriptor.
 //
 // No heap pointers.
-//
-//go:notinheap
 
 // pollInfo is the bits needed by netpollcheckerr, stored atomically,
 // mostly duplicating state that is manipulated under lock in pollDesc.

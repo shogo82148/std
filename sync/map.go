@@ -27,13 +27,15 @@ import (
 // In the terminology of the Go memory model, Map arranges that a write operation
 // “synchronizes before” any read operation that observes the effect of the write, where
 // read and write operations are defined as follows.
-// Load, LoadAndDelete, LoadOrStore are read operations;
-// Delete, LoadAndDelete, and Store are write operations;
-// and LoadOrStore is a write operation when it returns loaded set to false.
+// Load, LoadAndDelete, LoadOrStore, Swap, CompareAndSwap, and CompareAndDelete
+// are read operations; Delete, LoadAndDelete, Store, and Swap are write operations;
+// LoadOrStore is a write operation when it returns loaded set to false;
+// CompareAndSwap is a write operation when it returns swapped set to true;
+// and CompareAndDelete is a write operation when it returns deleted set to true.
 type Map struct {
 	mu Mutex
 
-	read atomic.Value
+	read atomic.Pointer[readOnly]
 
 	dirty map[any]*entry
 
@@ -66,6 +68,22 @@ func (m *Map) LoadAndDelete(key any) (value any, loaded bool)
 
 // Delete deletes the value for a key.
 func (m *Map) Delete(key any)
+
+// Swap swaps the value for a key and returns the previous value if any.
+// The loaded result reports whether the key was present.
+func (m *Map) Swap(key, value any) (previous any, loaded bool)
+
+// CompareAndSwap swaps the old and new values for key
+// if the value stored in the map is equal to old.
+// The old value must be of a comparable type.
+func (m *Map) CompareAndSwap(key, old, new any) bool
+
+// CompareAndDelete deletes the entry for key if its value is equal to old.
+// The old value must be of a comparable type.
+//
+// If there is no current value for key in the map, CompareAndDelete
+// returns false (even if the old value is the nil interface value).
+func (m *Map) CompareAndDelete(key, old any) (deleted bool)
 
 // Range calls f sequentially for each key and value present in the map.
 // If f returns false, range stops the iteration.

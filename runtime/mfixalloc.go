@@ -21,12 +21,11 @@ package runtime
 // Callers can keep state in the object but the first word is
 // smashed by freeing and reallocating.
 //
-// Consider marking fixalloc'd types go:notinheap.
+// Consider marking fixalloc'd types not in heap by embedding
+// runtime/internal/sys.NotInHeap.
 
 // A generic linked list of blocks.  (Typically the block is bigger than sizeof(MLink).)
 // Since assignments to mlink.next will result in a write barrier being performed
 // this cannot be used by some of the internal GC structures. For example when
 // the sweeper is placing an unmarked object on the free list it does not want the
 // write barrier to be called since that could result in the object being reachable.
-//
-//go:notinheap

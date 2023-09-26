@@ -24,6 +24,8 @@ type Frame struct {
 	File string
 	Line int
 
+	startLine int
+
 	Entry uintptr
 
 	funcInfo funcInfo
@@ -92,7 +94,7 @@ type Func struct {
 //
 // To make sure the map isn't collected, we keep a second reference here.
 
-// findfunctab is an array of these structures.
+// findfuncbucket is an array of these structures.
 // Each bucket represents 4096 bytes of the text segment.
 // Each subbucket represents 256 bytes of the text segment.
 // To find a function given a pc, locate the bucket and subbucket for

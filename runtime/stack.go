@@ -11,8 +11,6 @@ package runtime
 //
 // There is a free list for each order.
 
-//go:notinheap
-
 // Global pool of large stack spans.
 
 // Information from the compiler about the layout of stack frames.

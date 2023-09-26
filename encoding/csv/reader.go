@@ -72,10 +72,12 @@ func (e *ParseError) Unwrap() error
 
 // These are the errors that can be returned in ParseError.Err.
 var (
+	ErrBareQuote  = errors.New("bare \" in non-quoted-field")
+	ErrQuote      = errors.New("extraneous or missing \" in quoted-field")
+	ErrFieldCount = errors.New("wrong number of fields")
+
+	// Deprecated: ErrTrailingComma is no longer used.
 	ErrTrailingComma = errors.New("extra delimiter at end of line")
-	ErrBareQuote     = errors.New("bare \" in non-quoted-field")
-	ErrQuote         = errors.New("extraneous or missing \" in quoted-field")
-	ErrFieldCount    = errors.New("wrong number of fields")
 )
 
 // A Reader reads records from a CSV-encoded file.

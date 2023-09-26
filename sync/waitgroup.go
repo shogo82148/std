@@ -4,6 +4,10 @@
 
 package sync
 
+import (
+	"github.com/shogo82148/std/sync/atomic"
+)
+
 // A WaitGroup waits for a collection of goroutines to finish.
 // The main goroutine calls Add to set the number of
 // goroutines to wait for. Then each of the goroutines
@@ -17,8 +21,8 @@ package sync
 type WaitGroup struct {
 	noCopy noCopy
 
-	state1 uint64
-	state2 uint32
+	state atomic.Uint64
+	sema  uint32
 }
 
 // Add adds delta, which may be negative, to the WaitGroup counter.

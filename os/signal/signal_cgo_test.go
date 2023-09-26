@@ -9,7 +9,3 @@
 // C library do not define the posix_openpt function.
 
 package signal_test
-
-import (
-	ptypkg "os/signal/internal/pty"
-)

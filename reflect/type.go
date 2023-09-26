@@ -290,9 +290,6 @@ func ChanOf(dir ChanDir, t Type) Type
 // not implement Go's == operator), MapOf panics.
 func MapOf(key, elem Type) Type
 
-// TODO(crawshaw): as these funcTypeFixedN structs have no methods,
-// they could be defined at runtime using the StructOf function.
-
 // FuncOf returns the function type with the given argument and result types.
 // For example if k represents int and e represents string,
 // FuncOf([]Type{k}, []Type{e}, false) represents func(int) string.

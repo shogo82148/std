@@ -19,7 +19,10 @@
 // over the public key primitive, the PrivateKey type implements the
 // Decrypter and Signer interfaces from the crypto package.
 //
-// The RSA operations in this package are not implemented using constant-time algorithms.
+// Operations in this package are implemented using constant-time algorithms,
+// except for [GenerateKey], [PrivateKey.Precompute], and [PrivateKey.Validate].
+// Every other operation only leaks the bit size of the involved values, which
+// all depend on the selected key size.
 package rsa
 
 import (
@@ -47,6 +50,8 @@ func (pub *PublicKey) Equal(x crypto.PublicKey) bool
 // crypto.Decrypter interface.
 type OAEPOptions struct {
 	Hash crypto.Hash
+
+	MGFHash crypto.Hash
 
 	Label []byte
 }
@@ -87,6 +92,8 @@ type PrecomputedValues struct {
 	Qinv   *big.Int
 
 	CRTValues []CRTValue
+
+	n, p, q *bigmod.Modulus
 }
 
 // CRTValue contains the precomputed Chinese remainder theorem values.
@@ -105,21 +112,30 @@ func (priv *PrivateKey) Validate() error
 func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 
 // GenerateMultiPrimeKey generates a multi-prime RSA keypair of the given bit
-// size and the given random source, as suggested in [1]. Although the public
-// keys are compatible (actually, indistinguishable) from the 2-prime case,
-// the private keys are not. Thus it may not be possible to export multi-prime
-// private keys in certain formats or to subsequently import them into other
-// code.
+// size and the given random source.
 //
-// Table 1 in [2] suggests maximum numbers of primes for a given size.
+// Table 1 in "[On the Security of Multi-prime RSA]" suggests maximum numbers of
+// primes for a given bit size.
 //
-// [1] US patent 4405829 (1972, expired)
-// [2] http://www.cacr.math.uwaterloo.ca/techreports/2006/cacr2006-16.pdf
+// Although the public keys are compatible (actually, indistinguishable) from
+// the 2-prime case, the private keys are not. Thus it may not be possible to
+// export multi-prime private keys in certain formats or to subsequently import
+// them into other code.
+//
+// This package does not implement CRT optimizations for multi-prime RSA, so the
+// keys with more than two primes will have worse performance.
+//
+// Note: The use of this function with a number of primes different from
+// two is not recommended for the above security, compatibility, and performance
+// reasons. Use GenerateKey instead.
+//
+// [On the Security of Multi-prime RSA]: http://www.cacr.math.uwaterloo.ca/techreports/2006/cacr2006-16.pdf
 func GenerateMultiPrimeKey(random io.Reader, nprimes int, bits int) (*PrivateKey, error)
 
-// ErrMessageTooLong is returned when attempting to encrypt a message which is
-// too large for the size of the public key.
-var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA public key size")
+// ErrMessageTooLong is returned when attempting to encrypt or sign a message
+// which is too large for the size of the key. When using SignPSS, this can also
+// be returned if the size of the salt is too large.
+var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA key size")
 
 // EncryptOAEP encrypts the given message with RSA-OAEP.
 //
@@ -158,9 +174,7 @@ func (priv *PrivateKey) Precompute()
 // Encryption and decryption of a given message must use the same hash function
 // and sha256.New() is a reasonable choice.
 //
-// The random parameter, if not nil, is used to blind the private-key operation
-// and avoid timing side-channel attacks. Blinding is purely internal to this
-// function – the random data need not match that used when encrypting.
+// The random parameter is legacy and ignored, and it can be as nil.
 //
 // The label parameter must match the value given when encrypting. See
 // EncryptOAEP for details.

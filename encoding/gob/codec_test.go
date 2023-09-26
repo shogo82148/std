@@ -146,3 +146,19 @@ type DT struct {
 	T     [3]int
 	S     []string
 }
+
+type LargeSliceByte struct {
+	S []byte
+}
+
+type LargeSliceInt8 struct {
+	S []int8
+}
+
+type StringPair struct {
+	A, B string
+}
+
+type LargeSliceStruct struct {
+	S []StringPair
+}

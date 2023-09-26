@@ -397,6 +397,23 @@ func (s *SectionReader) ReadAt(p []byte, off int64) (n int, err error)
 // Size returns the size of the section in bytes.
 func (s *SectionReader) Size() int64
 
+// An OffsetWriter maps writes at offset base to offset base+off in the underlying writer.
+type OffsetWriter struct {
+	w    WriterAt
+	base int64
+	off  int64
+}
+
+// NewOffsetWriter returns an OffsetWriter that writes to w
+// starting at offset off.
+func NewOffsetWriter(w WriterAt, off int64) *OffsetWriter
+
+func (o *OffsetWriter) Write(p []byte) (n int, err error)
+
+func (o *OffsetWriter) WriteAt(p []byte, off int64) (n int, err error)
+
+func (o *OffsetWriter) Seek(offset int64, whence int) (int64, error)
+
 // TeeReader returns a Reader that writes to w what it reads from r.
 // All reads from r performed through it are matched with
 // corresponding writes to w. There is no internal buffering -

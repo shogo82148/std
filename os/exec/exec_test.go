@@ -9,3 +9,6 @@ package exec_test
 
 // haveUnexpectedFDs is set at init time to report whether any file descriptors
 // were open at program start.
+
+// A tickReader reads an unbounded sequence of timestamps at no more than a
+// fixed interval.

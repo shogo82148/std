@@ -14,6 +14,7 @@ Notable divergences:
     such as breaking addresses across lines.
   - No unicode normalization is performed.
   - The special characters ()[]:;@\, are allowed to appear unquoted in names.
+  - A leading From line is permitted, as in mbox format (RFC 4155).
 */
 package mail
 

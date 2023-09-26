@@ -105,6 +105,10 @@ type Reader struct {
 // maxMIMEHeaderSize is the maximum size of a MIME header we will parse,
 // including header keys, values, and map overhead.
 
+// multipartMaxHeaders is the maximum number of header entries NextPart will return,
+// as well as the maximum combined total of header entries Reader.ReadForm will return
+// in FileHeaders.
+
 // NextPart returns the next part in the multipart or an error.
 // When there are no more parts, the error io.EOF is returned.
 //

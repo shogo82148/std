@@ -35,11 +35,7 @@ package runtime
 //go:linkname __sanitizer_cov_8bit_counters_init __sanitizer_cov_8bit_counters_init
 //go:cgo_import_static __sanitizer_cov_8bit_counters_init
 
-//go:linkname __start___sancov_cntrs __start___sancov_cntrs
-//go:cgo_import_static __start___sancov_cntrs
-
-//go:linkname __stop___sancov_cntrs __stop___sancov_cntrs
-//go:cgo_import_static __stop___sancov_cntrs
+// start, stop markers of counters, set by the linker
 
 //go:linkname __sanitizer_cov_pcs_init __sanitizer_cov_pcs_init
 //go:cgo_import_static __sanitizer_cov_pcs_init

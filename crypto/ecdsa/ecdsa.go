@@ -12,20 +12,22 @@ package ecdsa
 
 import (
 	"github.com/shogo82148/std/crypto"
+	"github.com/shogo82148/std/crypto/ecdh"
 	"github.com/shogo82148/std/crypto/elliptic"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/math/big"
 )
-
-// A invertible implements fast inverse in GF(N).
-
-// A combinedMult implements fast combined multiplication for verification.
 
 // PublicKey represents an ECDSA public key.
 type PublicKey struct {
 	elliptic.Curve
 	X, Y *big.Int
 }
+
+// ECDH returns k as a [ecdh.PublicKey]. It returns an error if the key is
+// invalid according to the definition of [ecdh.Curve.NewPublicKey], or if the
+// Curve is not supported by crypto/ecdh.
+func (k *PublicKey) ECDH() (*ecdh.PublicKey, error)
 
 // Equal reports whether pub and x have the same value.
 //
@@ -39,6 +41,11 @@ type PrivateKey struct {
 	PublicKey
 	D *big.Int
 }
+
+// ECDH returns k as a [ecdh.PrivateKey]. It returns an error if the key is
+// invalid according to the definition of [ecdh.Curve.NewPrivateKey], or if the
+// Curve is not supported by crypto/ecdh.
+func (k *PrivateKey) ECDH() (*ecdh.PrivateKey, error)
 
 // Public returns the public key corresponding to priv.
 func (priv *PrivateKey) Public() crypto.PublicKey
@@ -60,12 +67,11 @@ func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOp
 // GenerateKey generates a public and private key pair.
 func GenerateKey(c elliptic.Curve, rand io.Reader) (*PrivateKey, error)
 
-// Sign signs a hash (which should be the result of hashing a larger message)
-// using the private key, priv. If the hash is longer than the bit-length of the
-// private key's curve order, the hash will be truncated to that length. It
-// returns the signature as a pair of integers. Most applications should use
-// SignASN1 instead of dealing directly with r, s.
-func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
+// testingOnlyRejectionSamplingLooped is called when rejection sampling in
+// randomPoint rejects a candidate for being higher than the modulus.
+
+// errNoAsm is returned by signAsm and verifyAsm when the assembly
+// implementation is not available.
 
 // SignASN1 signs a hash (which should be the result of hashing a larger message)
 // using the private key, priv. If the hash is longer than the bit-length of the
@@ -73,11 +79,8 @@ func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err err
 // returns the ASN.1 encoded signature.
 func SignASN1(rand io.Reader, priv *PrivateKey, hash []byte) ([]byte, error)
 
-// Verify verifies the signature in r, s of hash using the public key, pub. Its
-// return value records whether the signature is valid. Most applications should
-// use VerifyASN1 instead of dealing directly with r, s.
-func Verify(pub *PublicKey, hash []byte, r, s *big.Int) bool
-
 // VerifyASN1 verifies the ASN.1 encoded signature, sig, of hash using the
 // public key, pub. Its return value records whether the signature is valid.
 func VerifyASN1(pub *PublicKey, hash, sig []byte) bool
+
+// nistPoint is a generic constraint for the nistec Point types.

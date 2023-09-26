@@ -9,6 +9,7 @@ package types
 import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/token"
+	. "internal/types/errors"
 )
 
 // debugging/development support

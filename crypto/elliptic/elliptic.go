@@ -4,6 +4,9 @@
 
 // Package elliptic implements the standard NIST P-224, P-256, P-384, and P-521
 // elliptic curves over prime fields.
+//
+// The P224(), P256(), P384() and P521() values are necessary to use the crypto/ecdsa package.
+// Most other uses should migrate to the more efficient and safer crypto/ecdh package.
 package elliptic
 
 import (
@@ -35,11 +38,17 @@ type Curve interface {
 
 // GenerateKey returns a public/private key pair. The private key is
 // generated using the given reader, which must return random data.
+//
+// Note: for ECDH, use the GenerateKey methods of the crypto/ecdh package;
+// for ECDSA, use the GenerateKey function of the crypto/ecdsa package.
 func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err error)
 
 // Marshal converts a point on the curve into the uncompressed form specified in
 // SEC 1, Version 2.0, Section 2.3.3. If the point is not on the curve (or is
 // the conventional point at infinity), the behavior is undefined.
+//
+// Note: for ECDH, use the crypto/ecdh package. This function returns an
+// encoding equivalent to that of PublicKey.Bytes in crypto/ecdh.
 func Marshal(curve Curve, x, y *big.Int) []byte
 
 // MarshalCompressed converts a point on the curve into the compressed form
@@ -58,6 +67,9 @@ var _ = []unmarshaler{p224, p256, p384, p521}
 // Unmarshal converts a point, serialized by Marshal, into an x, y pair. It is
 // an error if the point is not in uncompressed form, is not on the curve, or is
 // the point at infinity. On error, x = nil.
+//
+// Note: for ECDH, use the crypto/ecdh package. This function accepts an
+// encoding equivalent to that of the NewPublicKey methods in crypto/ecdh.
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 
 // UnmarshalCompressed converts a point, serialized by MarshalCompressed, into

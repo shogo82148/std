@@ -29,6 +29,7 @@ import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/constant"
 	"github.com/shogo82148/std/go/token"
+	. "internal/types/errors"
 )
 
 // An Error describes a type-checking error; it implements the error interface.
@@ -41,7 +42,7 @@ type Error struct {
 	Msg  string
 	Soft bool
 
-	go116code  errorCode
+	go116code  Code
 	go116start token.Pos
 	go116end   token.Pos
 }
@@ -100,6 +101,8 @@ type Config struct {
 	Sizes Sizes
 
 	DisableUnusedImportCheck bool
+
+	oldComparableSemantics bool
 }
 
 // Info holds result type information for a type-checked package.
@@ -237,6 +240,12 @@ func ConvertibleTo(V, T Type) bool
 // The behavior of Implements is unspecified if V is Typ[Invalid] or an uninstantiated
 // generic type.
 func Implements(V Type, T *Interface) bool
+
+// Satisfies reports whether type V satisfies the constraint T.
+//
+// The behavior of Satisfies is unspecified if V is Typ[Invalid] or an uninstantiated
+// generic type.
+func Satisfies(V Type, T *Interface) bool
 
 // Identical reports whether x and y are identical types.
 // Receivers of Signature types are ignored.

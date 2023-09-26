@@ -7,6 +7,10 @@
 
 package types
 
+import (
+	. "internal/types/errors"
+)
+
 // Instantiate instantiates the type orig with the given type arguments targs.
 // orig must be a *Named or a *Signature type. If there is no error, the
 // resulting Type is an instantiated type of the same kind (either a *Named or

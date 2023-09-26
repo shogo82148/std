@@ -8,6 +8,11 @@ type PathTest struct {
 	path, result string
 }
 
+type IsLocalTest struct {
+	path    string
+	isLocal bool
+}
+
 type SplitListTest struct {
 	list   string
 	result []string

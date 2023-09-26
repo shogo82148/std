@@ -33,7 +33,7 @@ type BitString struct {
 }
 
 // At returns the bit at the given index. If the index is out of range it
-// returns false.
+// returns 0.
 func (b BitString) At(i int) int
 
 // RightAlign returns a slice where the padding bits are at the beginning. The

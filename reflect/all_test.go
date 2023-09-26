@@ -16,6 +16,8 @@ type T struct {
 	d *int
 }
 
+var _ = T{} == T{}
+
 type Basic struct {
 	x int
 	y float32
@@ -278,12 +280,6 @@ type SettablePointer struct {
 	SettableField *int
 }
 
-type B1 struct {
-	X int
-	Y int
-	Z int
-}
-
 type R0 struct {
 	*R1
 	*R2
@@ -353,11 +349,6 @@ type R21 struct {
 type R22 R21
 type R23 R21
 type R24 R21
-
-type S struct {
-	i1 int64
-	i2 int64
-}
 
 // An exhaustive is a mechanism for writing exhaustive or stochastic tests.
 // The basic usage is:
@@ -443,7 +434,11 @@ type Talias2 struct {
 
 type NonExportedFirst int
 
-//go:notinheap
-
 type A struct{}
 type B[T any] struct{}
+
+type ValueEqualTest struct {
+	v, u           any
+	eq             bool
+	vDeref, uDeref bool
+}

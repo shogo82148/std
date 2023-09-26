@@ -2,7 +2,22 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package x509 parses X.509-encoded keys and certificates.
+// Package x509 implements a subset of the X.509 standard.
+//
+// It allows parsing and generating certificates, certificate signing
+// requests, certificate revocation lists, and encoded public and private keys.
+// It provides a certificate verifier, complete with a chain builder.
+//
+// The package targets the X.509 technical profile defined by the IETF (RFC
+// 2459/3280/5280), and as further restricted by the CA/Browser Forum Baseline
+// Requirements. There is minimal support for features outside of these
+// profiles, as the primary goal of the package is to provide compatibility
+// with the publicly trusted TLS certificate ecosystem and its policies and
+// constraints.
+//
+// On macOS and Windows, certificate verification is handled by system APIs, but
+// the package aims to apply consistent validation rules across operating
+// systems.
 package x509
 
 import (
@@ -26,12 +41,12 @@ import (
 // pkixPublicKey reflects a PKIX public key structure. See SubjectPublicKeyInfo
 // in RFC 3280.
 
-// ParsePKIXPublicKey parses a public key in PKIX, ASN.1 DER form.
-// The encoded public key is a SubjectPublicKeyInfo structure
-// (see RFC 5280, Section 4.1).
+// ParsePKIXPublicKey parses a public key in PKIX, ASN.1 DER form. The encoded
+// public key is a SubjectPublicKeyInfo structure (see RFC 5280, Section 4.1).
 //
-// It returns a *rsa.PublicKey, *dsa.PublicKey, *ecdsa.PublicKey, or
-// ed25519.PublicKey. More types might be supported in the future.
+// It returns a *rsa.PublicKey, *dsa.PublicKey, *ecdsa.PublicKey,
+// ed25519.PublicKey (not a pointer), or *ecdh.PublicKey (for X25519).
+// More types might be supported in the future.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
 func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
@@ -40,8 +55,9 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 // The encoded public key is a SubjectPublicKeyInfo structure
 // (see RFC 5280, Section 4.1).
 //
-// The following key types are currently supported: *rsa.PublicKey, *ecdsa.PublicKey
-// and ed25519.PublicKey. Unsupported key types result in an error.
+// The following key types are currently supported: *rsa.PublicKey,
+// *ecdsa.PublicKey, ed25519.PublicKey (not a pointer), and *ecdh.PublicKey.
+// Unsupported key types result in an error.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
 func MarshalPKIXPublicKey(pub any) ([]byte, error)
@@ -146,21 +162,6 @@ func (algo PublicKeyAlgorithm) String() string
 
 // pssParameters reflects the parameters in an AlgorithmIdentifier that
 // specifies RSA PSS. See RFC 3447, Appendix A.2.3.
-
-// RFC 3279, 2.3 Public Key Algorithms
-//
-//	pkcs-1 OBJECT IDENTIFIER ::== { iso(1) member-body(2) us(840)
-//		rsadsi(113549) pkcs(1) 1 }
-//
-// rsaEncryption OBJECT IDENTIFIER ::== { pkcs1-1 1 }
-//
-//	id-dsa OBJECT IDENTIFIER ::== { iso(1) member-body(2) us(840)
-//		x9-57(10040) x9cm(4) 1 }
-//
-// RFC 5480, 2.1.1 Unrestricted Algorithm Identifier and Parameters
-//
-//	id-ecPublicKey OBJECT IDENTIFIER ::= {
-//		iso(1) member-body(2) us(840) ansi-X9-62(10045) keyType(2) 1 }
 
 // RFC 5480, 2.1.1.1. Named Curve
 //
@@ -317,12 +318,19 @@ func (ConstraintViolationError) Error() string
 
 func (c *Certificate) Equal(other *Certificate) bool
 
-// CheckSignatureFrom verifies that the signature on c is a valid signature
-// from parent. SHA1WithRSA and ECDSAWithSHA1 signatures are not supported.
+// CheckSignatureFrom verifies that the signature on c is a valid signature from parent.
+//
+// This is a low-level API that performs very limited checks, and not a full
+// path verifier. Most users should use [Certificate.Verify] instead.
 func (c *Certificate) CheckSignatureFrom(parent *Certificate) error
 
 // CheckSignature verifies that signature is a valid signature over signed from
 // c's public key.
+//
+// This is a low-level API that performs no validity checks on the certificate.
+//
+// [MD5WithRSA] signatures are rejected, while [SHA1WithRSA] and [ECDSAWithSHA1]
+// signatures are currently accepted.
 func (c *Certificate) CheckSignature(algo SignatureAlgorithm, signed, signature []byte) error
 
 // CheckCRLSignature checks that the signature in crl is from c.
@@ -510,6 +518,13 @@ type RevocationList struct {
 
 	ExtraExtensions []pkix.Extension
 }
+
+// These structures reflect the ASN.1 structure of X.509 CRLs better than
+// the existing crypto/x509/pkix variants do. These mirror the existing
+// certificate structs in this file.
+//
+// Notably, we include issuer as an asn1.RawValue, mirroring the behavior of
+// tbsCertificate and allowing raw (unparsed) subjects to be passed cleanly.
 
 // CreateRevocationList creates a new X.509 v2 Certificate Revocation List,
 // according to RFC 5280, based on template.

@@ -9,7 +9,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// PKCS1v15DecrypterOpts is for passing options to PKCS #1 v1.5 decryption using
+// PKCS1v15DecryptOptions is for passing options to PKCS #1 v1.5 decryption using
 // the crypto.Decrypter interface.
 type PKCS1v15DecryptOptions struct {
 	SessionKeyLen int
@@ -28,7 +28,7 @@ type PKCS1v15DecryptOptions struct {
 func EncryptPKCS1v15(random io.Reader, pub *PublicKey, msg []byte) ([]byte, error)
 
 // DecryptPKCS1v15 decrypts a plaintext using RSA and the padding scheme from PKCS #1 v1.5.
-// If random != nil, it uses RSA blinding to avoid timing side-channel attacks.
+// The random parameter is legacy and ignored, and it can be as nil.
 //
 // Note that whether this function returns an error or not discloses secret
 // information. If an attacker can cause this function to run repeatedly and
@@ -38,7 +38,7 @@ func EncryptPKCS1v15(random io.Reader, pub *PublicKey, msg []byte) ([]byte, erro
 func DecryptPKCS1v15(random io.Reader, priv *PrivateKey, ciphertext []byte) ([]byte, error)
 
 // DecryptPKCS1v15SessionKey decrypts a session key using RSA and the padding scheme from PKCS #1 v1.5.
-// If random != nil, it uses RSA blinding to avoid timing side-channel attacks.
+// The random parameter is legacy and ignored, and it can be as nil.
 // It returns an error if the ciphertext is the wrong length or if the
 // ciphertext is greater than the public modulus. Otherwise, no error is
 // returned. If the padding is valid, the resulting plaintext message is copied
@@ -75,8 +75,7 @@ func DecryptPKCS1v15SessionKey(random io.Reader, priv *PrivateKey, ciphertext []
 // function. If hash is zero, hashed is signed directly. This isn't
 // advisable except for interoperability.
 //
-// If random is not nil then RSA blinding will be used to avoid timing
-// side-channel attacks.
+// The random parameter is legacy and ignored, and it can be as nil.
 //
 // This function is deterministic. Thus, if the set of possible
 // messages is small, an attacker may be able to build a map from

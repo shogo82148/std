@@ -32,6 +32,7 @@ type Scanner struct {
 	rdOffset   int
 	lineOffset int
 	insertSemi bool
+	nlPos      token.Pos
 
 	ErrorCount int
 }

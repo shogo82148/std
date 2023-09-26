@@ -123,8 +123,6 @@ func Munlockall() (err error)
 
 func Dup2(oldfd int, newfd int) (err error)
 
-func EpollCreate(size int) (fd int, err error)
-
 func EpollWait(epfd int, events []EpollEvent, msec int) (n int, err error)
 
 func Fchown(fd int, uid int, gid int) (err error)

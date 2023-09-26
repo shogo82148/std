@@ -2,7 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package elf implements access to ELF object files.
+/*
+Package elf implements access to ELF object files.
+
+# Security
+
+This package is not designed to be hardened against adversarial inputs, and is
+outside the scope of https://go.dev/security/policy. In particular, only basic
+validation is done when parsing object files. As such, care should be taken when
+parsing untrusted inputs, as parsing malformed files may consume significant
+resources, or cause panics.
+*/
 package elf
 
 import (
@@ -71,11 +81,16 @@ type Section struct {
 // Data reads and returns the contents of the ELF section.
 // Even if the section is stored compressed in the ELF file,
 // Data returns uncompressed data.
+//
+// For an SHT_NOBITS section, Data always returns a non-nil error.
 func (s *Section) Data() ([]byte, error)
 
 // Open returns a new ReadSeeker reading the ELF section.
 // Even if the section is stored compressed in the ELF file,
 // the ReadSeeker reads uncompressed data.
+//
+// For an SHT_NOBITS section, all calls to the opened reader
+// will return a non-nil error.
 func (s *Section) Open() io.ReadSeeker
 
 // A ProgHeader represents a single ELF program header.

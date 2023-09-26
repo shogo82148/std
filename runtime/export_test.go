@@ -99,6 +99,8 @@ type G = g
 
 type Sudog = sudog
 
+var CasGStatusAlwaysTrack = &casgstatusAlwaysTrack
+
 const (
 	PageSize         = pageSize
 	PallocChunkPages = pallocChunkPages
@@ -184,14 +186,14 @@ type SemTable struct {
 }
 
 // mspan wrapper for testing.
-//
-//go:notinheap
 type MSpan mspan
 
 const (
-	TimeHistSubBucketBits   = timeHistSubBucketBits
-	TimeHistNumSubBuckets   = timeHistNumSubBuckets
-	TimeHistNumSuperBuckets = timeHistNumSuperBuckets
+	TimeHistSubBucketBits = timeHistSubBucketBits
+	TimeHistNumSubBuckets = timeHistNumSubBuckets
+	TimeHistNumBuckets    = timeHistNumBuckets
+	TimeHistMinBucketBits = timeHistMinBucketBits
+	TimeHistMaxBucketBits = timeHistMaxBucketBits
 )
 
 type TimeHistogram timeHistogram
@@ -256,3 +258,15 @@ type Scavenger struct {
 type ScavengeIndex struct {
 	i scavengeIndex
 }
+
+const GTrackingPeriod = gTrackingPeriod
+
+var ZeroBase = unsafe.Pointer(&zerobase)
+
+const UserArenaChunkBytes = userArenaChunkBytes
+
+type UserArena struct {
+	arena *userArena
+}
+
+var AlignUp = alignUp

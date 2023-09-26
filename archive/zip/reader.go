@@ -13,9 +13,10 @@ import (
 )
 
 var (
-	ErrFormat    = errors.New("zip: not a valid zip file")
-	ErrAlgorithm = errors.New("zip: unsupported compression algorithm")
-	ErrChecksum  = errors.New("zip: checksum error")
+	ErrFormat       = errors.New("zip: not a valid zip file")
+	ErrAlgorithm    = errors.New("zip: unsupported compression algorithm")
+	ErrChecksum     = errors.New("zip: checksum error")
+	ErrInsecurePath = errors.New("zip: insecure file path")
 )
 
 // A Reader serves content from a ZIP archive.
@@ -53,6 +54,14 @@ func OpenReader(name string) (*ReadCloser, error)
 
 // NewReader returns a new Reader reading from r, which is assumed to
 // have the given size in bytes.
+//
+// If any file inside the archive uses a non-local name
+// (as defined by [filepath.IsLocal]) or a name containing backslashes
+// and the GODEBUG environment variable contains `zipinsecurepath=0`,
+// NewReader returns the reader with an ErrInsecurePath error.
+// A future version of Go may introduce this behavior by default.
+// Programs that want to accept non-local names can ignore
+// the ErrInsecurePath error and use the returned reader.
 func NewReader(r io.ReaderAt, size int64) (*Reader, error)
 
 // RegisterDecompressor registers or overrides a custom decompressor for a

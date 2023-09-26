@@ -13,13 +13,13 @@ type Value struct {
 	v any
 }
 
-// ifaceWords is interface{} internal representation.
+// efaceWords is interface{} internal representation.
 
 // Load returns the value set by the most recent Store.
 // It returns nil if there has been no call to Store for this Value.
 func (v *Value) Load() (val any)
 
-// Store sets the value of the Value to x.
+// Store sets the value of the Value v to val.
 // All calls to Store for a given Value must use values of the same concrete type.
 // Store of an inconsistent type panics, as does Store(nil).
 func (v *Value) Store(val any)

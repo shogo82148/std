@@ -120,14 +120,10 @@ const (
 	SYS_SETGID                   = 181
 	SYS_SETEGID                  = 182
 	SYS_SETEUID                  = 183
-	SYS_STAT                     = 188
-	SYS_FSTAT                    = 189
-	SYS_LSTAT                    = 190
 	SYS_PATHCONF                 = 191
 	SYS_FPATHCONF                = 192
 	SYS_GETRLIMIT                = 194
 	SYS_SETRLIMIT                = 195
-	SYS_GETDIRENTRIES            = 196
 	SYS_FREEBSD6_MMAP            = 197
 	SYS_FREEBSD6_LSEEK           = 199
 	SYS_FREEBSD6_TRUNCATE        = 200
@@ -234,9 +230,6 @@ const (
 	SYS_UUIDGEN                  = 392
 	SYS_SENDFILE                 = 393
 	SYS_MAC_SYSCALL              = 394
-	SYS_GETFSSTAT                = 395
-	SYS_STATFS                   = 396
-	SYS_FSTATFS                  = 397
 	SYS_FHSTATFS                 = 398
 	SYS___MAC_GET_PID            = 409
 	SYS___MAC_GET_LINK           = 410
@@ -306,12 +299,10 @@ const (
 	SYS_FCHMODAT                 = 490
 	SYS_FCHOWNAT                 = 491
 	SYS_FEXECVE                  = 492
-	SYS_FSTATAT                  = 493
 	SYS_FUTIMESAT                = 494
 	SYS_LINKAT                   = 495
 	SYS_MKDIRAT                  = 496
 	SYS_MKFIFOAT                 = 497
-	SYS_MKNODAT                  = 498
 	SYS_OPENAT                   = 499
 	SYS_READLINKAT               = 500
 	SYS_RENAMEAT                 = 501
@@ -348,4 +339,11 @@ const (
 	SYS_PIPE2                    = 542
 	SYS_PROCCTL                  = 544
 	SYS_UTIMENSAT                = 547
+	SYS_FSTAT                    = 551
+	SYS_FSTATAT                  = 552
+	SYS_GETDIRENTRIES            = 554
+	SYS_STATFS                   = 555
+	SYS_FSTATFS                  = 556
+	SYS_GETFSSTAT                = 557
+	SYS_MKNODAT                  = 559
 )

@@ -68,8 +68,8 @@ func FixedZone(name string, offset int) *Location
 // LoadLocation looks for the IANA Time Zone database in the following
 // locations in order:
 //
-// - the directory or uncompressed zip file named by the ZONEINFO environment variable
-// - on a Unix system, the system standard installation location
-// - $GOROOT/lib/time/zoneinfo.zip
-// - the time/tzdata package, if it was imported
+//   - the directory or uncompressed zip file named by the ZONEINFO environment variable
+//   - on a Unix system, the system standard installation location
+//   - $GOROOT/lib/time/zoneinfo.zip
+//   - the time/tzdata package, if it was imported
 func LoadLocation(name string) (*Location, error)

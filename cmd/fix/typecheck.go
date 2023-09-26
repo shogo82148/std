@@ -21,3 +21,6 @@ type Type struct {
 	Embed  []string
 	Def    string
 }
+
+// reportCgoError, if non-nil, reports a non-nil error from running the "cgo"
+// tool. (Set to a non-nil hook during testing if cgo is expected to work.)

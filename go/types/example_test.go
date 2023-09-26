@@ -5,12 +5,11 @@
 // Only run where builders (build.golang.org) have
 // access to compiled packages for import.
 //
-//go:build !arm && !arm64
+//go:build !android && !ios && !js
 
 package types_test
 
 import (
-	"bytes"
 	"fmt"
 	"go/ast"
 	"go/importer"
@@ -47,11 +46,7 @@ const Boiling Celsius = 100
 func Unused() { {}; {{ var x int; _ = x }} } // make sure empty block scopes get printed
 `},
 	} {
-		f, err := parser.ParseFile(fset, file.name, file.input, 0)
-		if err != nil {
-			log.Fatal(err)
-		}
-		files = append(files, f)
+		files = append(files, mustParse(fset, file.name, file.input))
 	}
 
 	// Type-check a package consisting of these files.
@@ -65,9 +60,9 @@ func Unused() { {}; {{ var x int; _ = x }} } // make sure empty block scopes get
 
 	// Print the tree of scopes.
 	// For determinism, we redact addresses.
-	var buf bytes.Buffer
+	var buf strings.Builder
 	pkg.Scope().WriteTo(&buf, 0, true)
-	rx := regexp.MustCompile(` 0x[a-fA-F0-9]*`)
+	rx := regexp.MustCompile(` 0x[a-fA-F\d]*`)
 	fmt.Println(rx.ReplaceAllString(buf.String(), ""))
 
 	// Output:
@@ -179,10 +174,7 @@ func fib(x int) int {
 	return fib(x-1) - fib(x-2)
 }`
 	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, "fib.go", input, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
+	f := mustParse(fset, "fib.go", input)
 
 	// Type-check the package.
 	// We create an empty map for each kind of input
@@ -226,7 +218,7 @@ func fib(x int) int {
 	fmt.Println("Types and Values of each expression:")
 	items = nil
 	for expr, tv := range info.Types {
-		var buf bytes.Buffer
+		var buf strings.Builder
 		posn := fset.Position(expr.Pos())
 		tvstr := tv.Type.String()
 		if tv.Value != nil {

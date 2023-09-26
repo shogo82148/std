@@ -5,7 +5,7 @@
 /*
 Package zip provides support for reading and writing ZIP archives.
 
-See: https://www.pkware.com/appnote
+See the [ZIP specification] for details.
 
 This package does not support disk spanning.
 
@@ -16,6 +16,8 @@ fields. The 64 bit fields will always contain the correct value and
 for normal archives both fields will be the same. For files requiring
 the ZIP64 format the 32 bit fields will be 0xffffffff and the 64 bit
 fields must be used instead.
+
+[ZIP specification]: https://www.pkware.com/appnote
 */
 package zip
 
@@ -30,8 +32,10 @@ const (
 	Deflate uint16 = 8
 )
 
-// FileHeader describes a file within a zip file.
-// See the zip spec for details.
+// FileHeader describes a file within a ZIP file.
+// See the [ZIP specification] for details.
+//
+// [ZIP specification]: https://www.pkware.com/appnote
 type FileHeader struct {
 	Name string
 
@@ -45,17 +49,24 @@ type FileHeader struct {
 
 	Method uint16
 
-	Modified     time.Time
+	Modified time.Time
+
 	ModifiedTime uint16
+
 	ModifiedDate uint16
 
-	CRC32              uint32
-	CompressedSize     uint32
-	UncompressedSize   uint32
-	CompressedSize64   uint64
+	CRC32 uint32
+
+	CompressedSize uint32
+
+	UncompressedSize uint32
+
+	CompressedSize64 uint64
+
 	UncompressedSize64 uint64
-	Extra              []byte
-	ExternalAttrs      uint32
+
+	Extra         []byte
+	ExternalAttrs uint32
 }
 
 // FileInfo returns an fs.FileInfo for the FileHeader.

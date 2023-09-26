@@ -132,8 +132,8 @@ func Map(mapping func(rune) rune, s string) string
 
 // Repeat returns a new string consisting of count copies of the string s.
 //
-// It panics if count is negative or if
-// the result of (len(s) * count) overflows.
+// It panics if count is negative or if the result of (len(s) * count)
+// overflows.
 func Repeat(s string, count int) string
 
 // ToUpper returns s with all Unicode letters mapped to their upper case.
@@ -254,3 +254,15 @@ func Index(s, substr string) int
 // The found result reports whether sep appears in s.
 // If sep does not appear in s, cut returns s, "", false.
 func Cut(s, sep string) (before, after string, found bool)
+
+// CutPrefix returns s without the provided leading prefix string
+// and reports whether it found the prefix.
+// If s doesn't start with prefix, CutPrefix returns s, false.
+// If prefix is the empty string, CutPrefix returns s, true.
+func CutPrefix(s, prefix string) (after string, found bool)
+
+// CutSuffix returns s without the provided ending suffix string
+// and reports whether it found the suffix.
+// If s doesn't end with suffix, CutSuffix returns s, false.
+// If suffix is the empty string, CutSuffix returns s, true.
+func CutSuffix(s, suffix string) (before string, found bool)

@@ -160,6 +160,11 @@ func (enc *Encoder) EncodeToken(t Token) error
 // See the EncodeToken documentation for details about when it is necessary.
 func (enc *Encoder) Flush() error
 
+// Close the Encoder, indicating that no more data will be written. It flushes
+// any buffered XML to the underlying writer and returns an error if the
+// written XML is invalid (e.g. by containing unclosed elements).
+func (enc *Encoder) Close() error
+
 // UnsupportedTypeError is returned when Marshal encounters a type
 // that cannot be converted into XML.
 type UnsupportedTypeError struct {

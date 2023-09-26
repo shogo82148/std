@@ -4,6 +4,14 @@
 
 package main_test
 
-// lineDupContents becomes linedup.go in TestFuncWithDuplicateLines.
+import (
+	cmdcover "cmd/cover"
+)
 
-// lineDupTestContents becomes linedup_test.go in TestFuncWithDuplicateLines.
+// testTempDir is a temporary directory created in TestMain.
+
+// If set, this will preserve all the tmpdir files from the test run.
+
+// lineDupContents becomes linedup.go in testFuncWithDuplicateLines.
+
+// lineDupTestContents becomes linedup_test.go in testFuncWithDuplicateLines.

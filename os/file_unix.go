@@ -6,6 +6,10 @@
 
 package os
 
+import (
+	_ "github.com/shogo82148/std/unsafe"
+)
+
 // file is the real representation of *File.
 // The extra level of indirection ensures that no clients of os
 // can overwrite this data, which could cause the finalizer

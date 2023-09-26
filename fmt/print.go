@@ -48,6 +48,14 @@ type GoStringer interface {
 	GoString() string
 }
 
+// FormatString returns a string representing the fully qualified formatting
+// directive captured by the State, followed by the argument verb. (State does not
+// itself contain the verb.) The result has a leading percent sign followed by any
+// flags, the width, and the precision. Missing flags, width, and precision are
+// omitted. This function allows a Formatter to reconstruct the original
+// directive triggering the call to Format.
+func FormatString(state State, verb rune) string
+
 // Use simple []byte instead of bytes.Buffer to avoid large dependency.
 
 // pp is used to store a printer's state and is reused with sync.Pool to avoid allocations.

@@ -9,6 +9,9 @@ package main
 // A distTest is a test run by dist test.
 // Each test has a unique name and belongs to a group (heading)
 
+// goTest represents all options to a "go test" command. The final command will
+// combine configuration from goTest and tester flags.
+
 // ranGoTest and stdMatches are state closed over by the stdlib
 // testing func in registerStdTest below. The tests are run
 // sequentially, so there's no need for locks.
@@ -16,7 +19,13 @@ package main
 // ranGoBench and benchMatches are the same, but are only used
 // in -race mode.
 
-// stdOutErrAreTerminals is defined in test_linux.go, to report
-// whether stdout & stderr are terminals.
+// rtSequential is a registerTest option that causes the registered test to run
+// sequentially.
+
+// rtPreFunc is a registerTest option that runs a pre function before running
+// the test.
+
+// rtHostTest is a registerTest option that indicates this is a host test that
+// should be run using goTest.runHostTest. It implies rtSequential.
 
 // cgoPackages is the standard packages that use cgo.

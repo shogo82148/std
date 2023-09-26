@@ -6,7 +6,7 @@ package testing
 
 // fuzzWorkerExitCode is used as an exit code by fuzz worker processes after an
 // internal error. This distinguishes internal errors from uncontrolled panics
-// and other failiures. Keep in sync with internal/fuzz.workerExitCode.
+// and other failures. Keep in sync with internal/fuzz.workerExitCode.
 
 // InternalFuzzTarget is an internal type but exported because it is
 // cross-package; it is part of the implementation of the "go test" command.

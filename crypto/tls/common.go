@@ -424,3 +424,13 @@ type Certificate struct {
 // capacity that uses an LRU strategy. If capacity is < 1, a default capacity
 // is used instead.
 func NewLRUClientSessionCache(capacity int) ClientSessionCache
+
+// CertificateVerificationError is returned when certificate verification fails during the handshake.
+type CertificateVerificationError struct {
+	UnverifiedCertificates []*x509.Certificate
+	Err                    error
+}
+
+func (e *CertificateVerificationError) Error() string
+
+func (e *CertificateVerificationError) Unwrap() error

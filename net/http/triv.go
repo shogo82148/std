@@ -41,7 +41,7 @@ func ChanCreate() Chan
 
 func (ch Chan) ServeHTTP(w http.ResponseWriter, req *http.Request)
 
-// exec a program, redirecting output
+// exec a program, redirecting output.
 func DateServer(rw http.ResponseWriter, req *http.Request)
 
 func Logger(w http.ResponseWriter, req *http.Request)

@@ -5,5 +5,3 @@
 package os
 
 // A fileStat is the implementation of FileInfo returned by Stat and Lstat.
-
-// devNullStat is fileStat structure describing DevNull file ("NUL").

@@ -12,3 +12,5 @@ package types
 
 // allTermlist represents the set of all types.
 // It is in normal form.
+
+// termSep is the separator used between individual terms.

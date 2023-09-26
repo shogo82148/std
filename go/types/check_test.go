@@ -30,6 +30,4 @@ import (
 
 // ERROR comments must start with text `ERROR "rx"` or `ERROR rx` where
 // rx is a regular expression that matches the expected error message.
-// Space around "rx" or rx is ignored. Use the form `ERROR HERE "rx"`
-// for error messages that are located immediately after rather than
-// at a token's position.
+// Space around "rx" or rx is ignored.

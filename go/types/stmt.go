@@ -6,6 +6,10 @@
 
 package types
 
+import (
+	. "internal/types/errors"
+)
+
 // stmtContext is a bitset describing which
 // control-flow statements are permissible,
 // and provides additional context information

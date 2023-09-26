@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build (race && linux && amd64) || (race && freebsd && amd64) || (race && netbsd && amd64) || (race && darwin && amd64) || (race && windows && amd64) || (race && linux && ppc64le) || (race && linux && arm64) || (race && darwin && arm64) || (race && openbsd && amd64) || (race && linux && s390x)
+//go:build race && ((linux && (amd64 || arm64 || ppc64le || s390x)) || ((freebsd || netbsd || openbsd || windows) && amd64))
 
 package race
 

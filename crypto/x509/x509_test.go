@@ -11,6 +11,8 @@ import (
 
 // pemEd25519Key is the example from RFC 8410, Secrion 4.
 
+// pemX25519Key was generated from pemX25519Key with "openssl pkey -pubout".
+
 // Self-signed certificate using ECDSA with SHA1 & secp256r1
 
 // Self-signed certificate using ECDSA with SHA256 & secp256r1

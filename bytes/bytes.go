@@ -130,8 +130,8 @@ func Map(mapping func(r rune) rune, s []byte) []byte
 
 // Repeat returns a new byte slice consisting of count copies of b.
 //
-// It panics if count is negative or if
-// the result of (len(b) * count) overflows.
+// It panics if count is negative or if the result of (len(b) * count)
+// overflows.
 func Repeat(b []byte, count int) []byte
 
 // ToUpper returns a copy of the byte slice s with all Unicode letters mapped to
@@ -257,3 +257,24 @@ func Index(s, sep []byte) int
 //
 // Cut returns slices of the original slice s, not copies.
 func Cut(s, sep []byte) (before, after []byte, found bool)
+
+// Clone returns a copy of b[:len(b)].
+// The result may have additional unused capacity.
+// Clone(nil) returns nil.
+func Clone(b []byte) []byte
+
+// CutPrefix returns s without the provided leading prefix byte slice
+// and reports whether it found the prefix.
+// If s doesn't start with prefix, CutPrefix returns s, false.
+// If prefix is the empty byte slice, CutPrefix returns s, true.
+//
+// CutPrefix returns slices of the original slice s, not copies.
+func CutPrefix(s, prefix []byte) (after []byte, found bool)
+
+// CutSuffix returns s without the provided ending suffix byte slice
+// and reports whether it found the suffix.
+// If s doesn't end with suffix, CutSuffix returns s, false.
+// If suffix is the empty byte slice, CutSuffix returns s, true.
+//
+// CutSuffix returns slices of the original slice s, not copies.
+func CutSuffix(s, suffix []byte) (before []byte, found bool)

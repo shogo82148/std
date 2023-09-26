@@ -4,6 +4,10 @@
 
 package types
 
+import (
+	. "internal/types/errors"
+)
+
 // A Signature represents a (non-builtin) function or method type.
 // The receiver is ignored when comparing signatures for identity.
 type Signature struct {

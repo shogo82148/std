@@ -5,3 +5,7 @@
 // This file implements initialization and assignment checks.
 
 package types
+
+import (
+	. "internal/types/errors"
+)

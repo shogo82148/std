@@ -38,6 +38,8 @@ type Dialer struct {
 	Cancel <-chan struct{}
 
 	Control func(network, address string, c syscall.RawConn) error
+
+	ControlContext func(ctx context.Context, network, address string, c syscall.RawConn) error
 }
 
 // Dial connects to the address on the named network.

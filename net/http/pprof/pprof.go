@@ -21,10 +21,15 @@
 //		log.Println(http.ListenAndServe("localhost:6060", nil))
 //	}()
 //
+// By default, all the profiles listed in [runtime/pprof.Profile] are
+// available (via [Handler]), in addition to the [Cmdline], [Profile], [Symbol],
+// and [Trace] profiles defined in this package.
 // If you are not using DefaultServeMux, you will have to register handlers
 // with the mux you are using.
 //
-// Then use the pprof tool to look at the heap profile:
+// # Usage examples
+//
+// Use the pprof tool to look at the heap profile:
 //
 //	go tool pprof http://localhost:6060/debug/pprof/heap
 //
@@ -81,6 +86,7 @@ func Trace(w http.ResponseWriter, r *http.Request)
 func Symbol(w http.ResponseWriter, r *http.Request)
 
 // Handler returns an HTTP handler that serves the named profile.
+// Available profiles can be found in [runtime/pprof.Profile].
 func Handler(name string) http.Handler
 
 // Index responds with the pprof-formatted profile named by the request.

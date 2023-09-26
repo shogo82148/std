@@ -18,6 +18,18 @@ type Block struct {
 	numStmt   int
 }
 
+// Package holds package-specific state.
+type Package struct {
+	mdb            *encodemeta.CoverageMetaDataBuilder
+	counterLengths []int
+}
+
+// Function holds func-specific state.
+type Func struct {
+	units      []coverage.CoverableUnit
+	counterVar string
+}
+
 // File is a wrapper for the state of a file used in the parser.
 // The basic parse tree walker is a method of this type.
 type File struct {
@@ -27,6 +39,9 @@ type File struct {
 	blocks  []Block
 	content []byte
 	edit    *edit.Buffer
+	mdb     *encodemeta.CoverageMetaDataBuilder
+	fn      Func
+	pkg     *Package
 }
 
 // Visit implements the ast.Visitor interface.

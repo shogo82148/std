@@ -96,24 +96,14 @@ package runtime
 
 // Buffer for pointers found during stack tracing.
 // Must be smaller than or equal to workbuf.
-//
-//go:notinheap
 
 // Header declaration must come after the buf declaration above, because of issue #14620.
-//
-//go:notinheap
 
 // Buffer for stack objects found on a goroutine stack.
 // Must be smaller than or equal to workbuf.
-//
-//go:notinheap
-
-//go:notinheap
 
 // A stackObject represents a variable on the stack that has had
 // its address taken.
-//
-//go:notinheap
 
 // A stackScanState keeps track of the state used during the GC walk
 // of a goroutine.

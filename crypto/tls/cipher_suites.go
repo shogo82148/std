@@ -117,7 +117,7 @@ func CipherSuiteName(id uint16) string
 // prefixNonceAEAD wraps an AEAD and prefixes a fixed portion of the nonce to
 // each call.
 
-// xoredNonceAEAD wraps an AEAD by XORing in a fixed pattern to the nonce
+// xorNonceAEAD wraps an AEAD by XORing in a fixed pattern to the nonce
 // before each call.
 
 // cthWrapper wraps any hash.Hash that implements ConstantTimeSum, and replaces

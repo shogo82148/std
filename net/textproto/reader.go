@@ -163,6 +163,3 @@ func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 func CanonicalMIMEHeaderKey(s string) string
 
 // commonHeader interns common header strings.
-
-// isTokenTable is a copy of net/http/lex.go's isTokenTable.
-// See https://httpwg.github.io/specs/rfc7230.html#rule.token.separators

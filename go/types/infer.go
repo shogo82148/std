@@ -6,3 +6,7 @@
 // a list of concrete arguments and a parameter list.
 
 package types
+
+import (
+	. "internal/types/errors"
+)

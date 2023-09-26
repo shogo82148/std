@@ -50,7 +50,13 @@ func PutVarint(buf []byte, x int64) int
 func Varint(buf []byte) (int64, int)
 
 // ReadUvarint reads an encoded unsigned integer from r and returns it as a uint64.
+// The error is EOF only if no bytes were read.
+// If an EOF happens after reading some but not all the bytes,
+// ReadUvarint returns io.ErrUnexpectedEOF.
 func ReadUvarint(r io.ByteReader) (uint64, error)
 
 // ReadVarint reads an encoded signed integer from r and returns it as an int64.
+// The error is EOF only if no bytes were read.
+// If an EOF happens after reading some but not all the bytes,
+// ReadVarint returns io.ErrUnexpectedEOF.
 func ReadVarint(r io.ByteReader) (int64, error)

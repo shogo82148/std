@@ -14,9 +14,6 @@ Input to cgo -godefs.  See also mkerrors.sh and mkall.sh
 package syscall
 
 /*
-#define	_WANT_FREEBSD11_STAT	1
-#define	_WANT_FREEBSD11_STATFS	1
-#define	_WANT_FREEBSD11_DIRENT	1
 #define	_WANT_FREEBSD11_KEVENT	1
 
 #include <dirent.h>

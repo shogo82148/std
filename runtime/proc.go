@@ -31,6 +31,9 @@ func Gosched()
 // freezing is set to non-zero if the runtime is trying to freeze the
 // world.
 
+// casgstatusAlwaysTrack is a debug flag that causes casgstatus to always track
+// various latencies on every transition instead of sampling them.
+
 // Holding worldsema grants an M the right to try to stop the world.
 
 // Holding gcsema grants the M the right to block a GC, and blocks
@@ -43,6 +46,9 @@ func Gosched()
 // When running with cgo, we call _cgo_thread_start
 // to start threads for us so that we can play nicely with
 // foreign code.
+
+// These errors are reported (via writeErrStr) by some OS-specific
+// versions of newosproc and newosproc0.
 
 // newmHandoff contains a list of m structures that need new OS threads.
 // This is used by newm in situations where newm itself can't safely
