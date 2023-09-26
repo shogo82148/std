@@ -48,6 +48,6 @@ jobs:
         working-directory: ./std
         run: |
           "$GITHUB_WORKSPACE/tools/_tools/rm-all.sh"
-          importgodoc "$GITHUB_WORKSPACE/go" "$GITHUB_WORKSPACE/std"
+          importgodoc "$GITHUB_WORKSPACE/go/src" "$GITHUB_WORKSPACE/std"
           git add .
           git diff --cached
