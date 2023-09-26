@@ -13,7 +13,26 @@ var (
 	ReadFile               = readFile
 	LoadTzinfo             = loadTzinfo
 	NextStdChunk           = nextStdChunk
+	Tzset                  = tzset
+	TzsetName              = tzsetName
+	TzsetOffset            = tzsetOffset
 )
+
+type RuleKind int
+
+const (
+	RuleJulian       = RuleKind(ruleJulian)
+	RuleDOY          = RuleKind(ruleDOY)
+	RuleMonthWeekDay = RuleKind(ruleMonthWeekDay)
+)
+
+type Rule struct {
+	Kind RuleKind
+	Day  int
+	Week int
+	Mon  int
+	Time int
+}
 
 // StdChunkNames maps from nextStdChunk results to the matched strings.
 var StdChunkNames = map[int]string{

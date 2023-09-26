@@ -218,3 +218,18 @@ func Div32(hi, lo, y uint32) (quo, rem uint32)
 // half in parameter hi and the lower half in parameter lo.
 // Div64 panics for y == 0 (division by zero) or y <= hi (quotient overflow).
 func Div64(hi, lo, y uint64) (quo, rem uint64)
+
+// Rem returns the remainder of (hi, lo) divided by y. Rem panics for
+// y == 0 (division by zero) but, unlike Div, it doesn't panic on a
+// quotient overflow.
+func Rem(hi, lo, y uint) uint
+
+// Rem32 returns the remainder of (hi, lo) divided by y. Rem32 panics
+// for y == 0 (division by zero) but, unlike Div32, it doesn't panic
+// on a quotient overflow.
+func Rem32(hi, lo, y uint32) uint32
+
+// Rem64 returns the remainder of (hi, lo) divided by y. Rem64 panics
+// for y == 0 (division by zero) but, unlike Div64, it doesn't panic
+// on a quotient overflow.
+func Rem64(hi, lo, y uint64) uint64

@@ -159,7 +159,7 @@ type (
 		Rbrack token.Pos
 	}
 
-	// An SliceExpr node represents an expression followed by slice indices.
+	// A SliceExpr node represents an expression followed by slice indices.
 	SliceExpr struct {
 		X      Expr
 		Lbrack token.Pos
@@ -465,7 +465,7 @@ type (
 		Body   *BlockStmt
 	}
 
-	// An TypeSwitchStmt node represents a type switch statement.
+	// A TypeSwitchStmt node represents a type switch statement.
 	TypeSwitchStmt struct {
 		Switch token.Pos
 		Init   Stmt
@@ -481,7 +481,7 @@ type (
 		Body  []Stmt
 	}
 
-	// An SelectStmt node represents a select statement.
+	// A SelectStmt node represents a select statement.
 	SelectStmt struct {
 		Select token.Pos
 		Body   *BlockStmt
@@ -546,6 +546,7 @@ func (s *ReturnStmt) End() token.Pos
 func (s *BranchStmt) End() token.Pos
 
 func (s *BlockStmt) End() token.Pos
+
 func (s *IfStmt) End() token.Pos
 
 func (s *CaseClause) End() token.Pos

@@ -23,3 +23,8 @@ func Goexit()
 
 // paniclk is held while printing the panic information and stack trace,
 // so that two concurrent panics don't overlap their output.
+
+// throwReportQuirk, if non-nil, is called by throw after dumping the stacks.
+//
+// TODO(austin): Remove this after Go 1.15 when we remove the
+// mlockGsignal workaround.

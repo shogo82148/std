@@ -143,7 +143,7 @@ import (
 //
 // JSON cannot represent cyclic data structures and Marshal does not
 // handle them. Passing cyclic structures to Marshal will result in
-// an infinite recursion.
+// an error.
 func Marshal(v interface{}) ([]byte, error)
 
 // MarshalIndent is like Marshal but applies Indent to format the output.
@@ -194,12 +194,14 @@ func (e *InvalidUTF8Error) Error() string
 
 // A MarshalerError represents an error from calling a MarshalJSON or MarshalText method.
 type MarshalerError struct {
-	Type reflect.Type
-	Err  error
+	Type       reflect.Type
+	Err        error
+	sourceFunc string
 }
 
 func (e *MarshalerError) Error() string
 
+// Unwrap returns the underlying error.
 func (e *MarshalerError) Unwrap() error
 
 // An encodeState encodes JSON into a bytes.Buffer.

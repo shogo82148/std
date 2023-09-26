@@ -8,3 +8,7 @@
 // The run program is invoked via the dist tool.
 // To invoke manually: go tool dist test -run api --no-rebuild
 package main
+
+import (
+	exec "internal/execabs"
+)

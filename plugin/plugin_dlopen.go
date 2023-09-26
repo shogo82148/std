@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build (linux && cgo) || (darwin && cgo)
-// +build linux,cgo darwin,cgo
+//go:build (linux && cgo) || (darwin && cgo) || (freebsd && cgo)
+// +build linux,cgo darwin,cgo freebsd,cgo
 
 package plugin
 

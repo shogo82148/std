@@ -17,7 +17,7 @@ package js
 // The JavaScript value "undefined" is represented by the value 0.
 // A JavaScript number (64-bit float, except 0 and NaN) is represented by its IEEE 754 binary representation.
 // All other values are represented as an IEEE 754 binary representation of NaN with bits 0-31 used as
-// an ID and bits 32-33 used to differentiate between string, symbol, function and object.
+// an ID and bits 32-34 used to differentiate between string, symbol, function and object.
 
 // nanHead are the upper 32 bits of a ref which are set if the value is not encoded as an IEEE 754 number (see above).
 
@@ -27,8 +27,11 @@ type Wrapper interface {
 }
 
 // Value represents a JavaScript value. The zero value is the JavaScript value "undefined".
+// Values can be checked for equality with the Equal method.
 type Value struct {
-	ref ref
+	_     [0]func()
+	ref   ref
+	gcPtr *ref
 }
 
 // JSValue implements Wrapper interface.
@@ -42,11 +45,23 @@ type Error struct {
 // Error implements the error interface.
 func (e Error) Error() string
 
+// Equal reports whether v and w are equal according to JavaScript's === operator.
+func (v Value) Equal(w Value) bool
+
 // Undefined returns the JavaScript value "undefined".
 func Undefined() Value
 
+// IsUndefined reports whether v is the JavaScript value "undefined".
+func (v Value) IsUndefined() bool
+
 // Null returns the JavaScript value "null".
 func Null() Value
+
+// IsNull reports whether v is the JavaScript value "null".
+func (v Value) IsNull() bool
+
+// IsNaN reports whether v is the JavaScript value "NaN".
+func (v Value) IsNaN() bool
 
 // Global returns the JavaScript global object, usually "window" or "global".
 func Global() Value
@@ -94,6 +109,10 @@ func (v Value) Get(p string) Value
 // Set sets the JavaScript property p of value v to ValueOf(x).
 // It panics if v is not a JavaScript object.
 func (v Value) Set(p string, x interface{})
+
+// Delete deletes the JavaScript property p of value v.
+// It panics if v is not a JavaScript object.
+func (v Value) Delete(p string)
 
 // Index returns JavaScript index i of value v.
 // It panics if v is not a JavaScript object.

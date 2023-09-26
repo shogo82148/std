@@ -18,7 +18,12 @@ type LineReader struct {
 
 	section []byte
 
+	str     []byte
+	lineStr []byte
+
 	version              uint16
+	addrsize             int
+	segmentSelectorSize  int
 	minInstructionLength int
 	maxOpsPerInstruction int
 	defaultIsStmt        bool
@@ -78,6 +83,10 @@ type LineFile struct {
 // If this compilation unit has no line table, it returns nil, nil.
 func (d *Data) LineReader(cu *Entry) (*LineReader, error)
 
+// lnctForm is a pair of an LNCT code and a form. This represents an
+// entry in the directory name or file name description in the DWARF 5
+// line number program header.
+
 // Next sets *entry to the next row in this line table and moves to
 // the next row. If there are no more entries and the line table is
 // properly terminated, it returns io.EOF.
@@ -111,6 +120,20 @@ func (r *LineReader) Seek(pos LineReaderPos)
 // Reset repositions the line table reader at the beginning of the
 // line table.
 func (r *LineReader) Reset()
+
+// Files returns the file name table of this compilation unit as of
+// the current position in the line table. The file name table may be
+// referenced from attributes in this compilation unit such as
+// AttrDeclFile.
+//
+// Entry 0 is always nil, since file index 0 represents "no file".
+//
+// The file name table of a compilation unit is not fixed. Files
+// returns the file table as of the current position in the line
+// table. This may contain more entries than the file table at an
+// earlier position in the line table, though existing entries never
+// change.
+func (r *LineReader) Files() []*LineFile
 
 // ErrUnknownPC is the error returned by LineReader.ScanPC when the
 // seek PC is not covered by any entry in the line table.

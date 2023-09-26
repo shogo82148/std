@@ -87,4 +87,15 @@ type Reader struct {
 
 // NextPart returns the next part in the multipart or an error.
 // When there are no more parts, the error io.EOF is returned.
+//
+// As a special case, if the "Content-Transfer-Encoding" header
+// has a value of "quoted-printable", that header is instead
+// hidden and the body is transparently decoded during Read calls.
 func (r *Reader) NextPart() (*Part, error)
+
+// NextRawPart returns the next part in the multipart or an error.
+// When there are no more parts, the error io.EOF is returned.
+//
+// Unlike NextPart, it does not have special handling for
+// "Content-Transfer-Encoding: quoted-printable".
+func (r *Reader) NextRawPart() (*Part, error)

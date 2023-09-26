@@ -2,7 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || linux || nacl || netbsd || openbsd
-// +build darwin dragonfly freebsd linux nacl netbsd openbsd
+//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd
+// +build darwin dragonfly freebsd linux netbsd openbsd
 
 package runtime
+
+// TODO(issue 35439): enabling async preemption causes failures on darwin/arm.
+// Disable for now.

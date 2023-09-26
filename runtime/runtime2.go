@@ -93,7 +93,7 @@ package runtime
 // layout of Itab known to compilers
 // allocated in non-garbage-collected memory
 // Needs to be in sync with
-// ../cmd/compile/internal/gc/reflect.go:/^func.dumptypestructs.
+// ../cmd/compile/internal/gc/reflect.go:/^func.dumptabs.
 
 // Lock-free stack node.
 // Also known to export_test.go.
@@ -102,7 +102,7 @@ package runtime
 // the ELF AT_RANDOM auxiliary vector (vdso_linux_amd64.go or os_linux_386.go).
 
 // A _defer holds an entry on the list of deferred calls.
-// If you add a field here, add code to clear it in freedefer.
+// If you add a field here, add code to clear it in freedefer and deferProcStack
 // This struct must match the code in cmd/compile/internal/gc/reflect.go:deferstruct
 // and cmd/compile/internal/gc/ssa.go:(*state).call.
 // Some defers will be allocated on the stack and some on the heap.

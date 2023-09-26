@@ -8,15 +8,19 @@ import (
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
+	exec "internal/execabs"
 	pathpkg "path"
 )
 
 // A Context specifies the supporting context for a build.
 type Context struct {
-	GOARCH      string
-	GOOS        string
-	GOROOT      string
-	GOPATH      string
+	GOARCH string
+	GOOS   string
+	GOROOT string
+	GOPATH string
+
+	Dir string
+
 	CgoEnabled  bool
 	UseAllFiles bool
 	Compiler    string
@@ -217,6 +221,7 @@ func ImportDir(dir string, mode ImportMode) (*Package, error)
 // The @ is for OS X. See golang.org/issue/13720.
 // The % is for Jenkins. See golang.org/issue/16959.
 // The ! is because module paths may use them. See golang.org/issue/26716.
+// The ~ and ^ are for sr.ht. See golang.org/issue/32260.
 
 // ToolDir is the directory containing build tools.
 var ToolDir = getToolDir()

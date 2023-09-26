@@ -12,6 +12,11 @@
 
 package syscall
 
+// See version list in https://github.com/DragonFlyBSD/DragonFlyBSD/blob/master/sys/sys/param.h
+
+// First __DragonFly_version after September 2019 ABI changes
+// http://lists.dragonflybsd.org/pipermail/users/2019-September/358280.html
+
 type SockaddrDatalink struct {
 	Len    uint8
 	Family uint8

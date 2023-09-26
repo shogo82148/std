@@ -31,10 +31,16 @@ func (h Header) Set(key, value string)
 // Get gets the first value associated with the given key. If
 // there are no values associated with the key, Get returns "".
 // It is case insensitive; textproto.CanonicalMIMEHeaderKey is
-// used to canonicalize the provided key. To access multiple
-// values of a key, or to use non-canonical keys, access the
-// map directly.
+// used to canonicalize the provided key. To use non-canonical keys,
+// access the map directly.
 func (h Header) Get(key string) string
+
+// Values returns all values associated with the given key.
+// It is case insensitive; textproto.CanonicalMIMEHeaderKey is
+// used to canonicalize the provided key. To use non-canonical
+// keys, access the map directly.
+// The returned slice is not a copy.
+func (h Header) Values(key string) []string
 
 // Del deletes the values associated with key.
 // The key is case insensitive; it is canonicalized by
@@ -60,6 +66,7 @@ func ParseTime(text string) (t time.Time, err error)
 
 // WriteSubset writes a header in wire format.
 // If exclude is not nil, keys where exclude[key] == true are not written.
+// Keys are not canonicalized before checking the exclude map.
 func (h Header) WriteSubset(w io.Writer, exclude map[string]bool) error
 
 // CanonicalHeaderKey returns the canonical format of the

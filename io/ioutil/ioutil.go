@@ -23,8 +23,8 @@ func ReadAll(r io.Reader) ([]byte, error)
 func ReadFile(filename string) ([]byte, error)
 
 // WriteFile writes data to a file named by filename.
-// If the file does not exist, WriteFile creates it with permissions perm;
-// otherwise WriteFile truncates it before writing.
+// If the file does not exist, WriteFile creates it with permissions perm
+// (before umask); otherwise WriteFile truncates it before writing.
 func WriteFile(filename string, data []byte, perm os.FileMode) error
 
 // ReadDir reads the directory named by dirname and returns

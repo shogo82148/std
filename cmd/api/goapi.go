@@ -8,6 +8,7 @@ package main
 import (
 	"github.com/shogo82148/std/go/build"
 	"github.com/shogo82148/std/go/types"
+	exec "internal/execabs"
 )
 
 // Flags

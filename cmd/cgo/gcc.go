@@ -23,6 +23,9 @@ func (p *Package) Translate(f *File)
 // unionWithPointer is true for a Go type that represents a C union (or class)
 // that may contain a pointer. This is used for cgo pointer checking.
 
+// anonymousStructTag provides a consistent tag for an anonymous struct.
+// The same dwarf.StructType pointer will always get the same tag.
+
 // Map from dwarf text names to aliases we use in package "C".
 
 // String returns the current type representation. Format arguments

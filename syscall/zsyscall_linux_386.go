@@ -22,8 +22,6 @@ func Dup(oldfd int) (fd int, err error)
 
 func Dup3(oldfd int, newfd int, flags int) (err error)
 
-func EpollCreate(size int) (fd int, err error)
-
 func EpollCreate1(flag int) (fd int, err error)
 
 func EpollCtl(epfd int, op int, fd int, event *EpollEvent) (err error)
@@ -76,13 +74,9 @@ func Mknodat(dirfd int, path string, mode uint32, dev int) (err error)
 
 func Nanosleep(time *Timespec, leftover *Timespec) (err error)
 
-func Pause() (err error)
-
 func PivotRoot(newroot string, putold string) (err error)
 
 func Removexattr(path string, attr string) (err error)
-
-func Renameat(olddirfd int, oldpath string, newdirfd int, newpath string) (err error)
 
 func Setdomainname(p []byte) (err error)
 
@@ -116,10 +110,6 @@ func Unmount(target string, flags int) (err error)
 
 func Unshare(flags int) (err error)
 
-func Ustat(dev int, ubuf *Ustat_t) (err error)
-
-func Utime(path string, buf *Utimbuf) (err error)
-
 func Madvise(b []byte, advice int) (err error)
 
 func Mprotect(b []byte, prot int) (err error)
@@ -133,6 +123,8 @@ func Mlockall(flags int) (err error)
 func Munlockall() (err error)
 
 func Dup2(oldfd int, newfd int) (err error)
+
+func EpollCreate(size int) (fd int, err error)
 
 func Fchown(fd int, uid int, gid int) (err error)
 
@@ -154,9 +146,13 @@ func Ioperm(from int, num int, on int) (err error)
 
 func Iopl(level int) (err error)
 
+func Pause() (err error)
+
 func Pread(fd int, p []byte, offset int64) (n int, err error)
 
 func Pwrite(fd int, p []byte, offset int64) (n int, err error)
+
+func Renameat(olddirfd int, oldpath string, newdirfd int, newpath string) (err error)
 
 func Setfsgid(gid int) (err error)
 
@@ -176,6 +172,8 @@ func SyncFileRange(fd int, off int64, n int64, flags int) (err error)
 
 func Truncate(path string, length int64) (err error)
 
+func Ustat(dev int, ubuf *Ustat_t) (err error)
+
 func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err error)
 
 func EpollWait(epfd int, events []EpollEvent, msec int) (n int, err error)
@@ -183,3 +181,5 @@ func EpollWait(epfd int, events []EpollEvent, msec int) (n int, err error)
 func Gettimeofday(tv *Timeval) (err error)
 
 func Time(t *Time_t) (tt Time_t, err error)
+
+func Utime(path string, buf *Utimbuf) (err error)

@@ -3,7 +3,7 @@
 package unicode
 
 // Version is the Unicode edition from which the tables are derived.
-const Version = "11.0.0"
+const Version = "12.0.0"
 
 // Categories is the set of Unicode category tables.
 var Categories = map[string]*RangeTable{
@@ -132,6 +132,7 @@ var Scripts = map[string]*RangeTable{
 	"Duployan":               Duployan,
 	"Egyptian_Hieroglyphs":   Egyptian_Hieroglyphs,
 	"Elbasan":                Elbasan,
+	"Elymaic":                Elymaic,
 	"Ethiopic":               Ethiopic,
 	"Georgian":               Georgian,
 	"Glagolitic":             Glagolitic,
@@ -189,10 +190,12 @@ var Scripts = map[string]*RangeTable{
 	"Multani":                Multani,
 	"Myanmar":                Myanmar,
 	"Nabataean":              Nabataean,
+	"Nandinagari":            Nandinagari,
 	"New_Tai_Lue":            New_Tai_Lue,
 	"Newa":                   Newa,
 	"Nko":                    Nko,
 	"Nushu":                  Nushu,
+	"Nyiakeng_Puachue_Hmong": Nyiakeng_Puachue_Hmong,
 	"Ogham":                  Ogham,
 	"Ol_Chiki":               Ol_Chiki,
 	"Old_Hungarian":          Old_Hungarian,
@@ -243,6 +246,7 @@ var Scripts = map[string]*RangeTable{
 	"Tirhuta":                Tirhuta,
 	"Ugaritic":               Ugaritic,
 	"Vai":                    Vai,
+	"Wancho":                 Wancho,
 	"Warang_Citi":            Warang_Citi,
 	"Yi":                     Yi,
 	"Zanabazar_Square":       Zanabazar_Square,
@@ -284,6 +288,7 @@ var (
 	Duployan               = _Duployan
 	Egyptian_Hieroglyphs   = _Egyptian_Hieroglyphs
 	Elbasan                = _Elbasan
+	Elymaic                = _Elymaic
 	Ethiopic               = _Ethiopic
 	Georgian               = _Georgian
 	Glagolitic             = _Glagolitic
@@ -341,10 +346,12 @@ var (
 	Multani                = _Multani
 	Myanmar                = _Myanmar
 	Nabataean              = _Nabataean
+	Nandinagari            = _Nandinagari
 	New_Tai_Lue            = _New_Tai_Lue
 	Newa                   = _Newa
 	Nko                    = _Nko
 	Nushu                  = _Nushu
+	Nyiakeng_Puachue_Hmong = _Nyiakeng_Puachue_Hmong
 	Ogham                  = _Ogham
 	Ol_Chiki               = _Ol_Chiki
 	Old_Hungarian          = _Old_Hungarian
@@ -395,6 +402,7 @@ var (
 	Tirhuta                = _Tirhuta
 	Ugaritic               = _Ugaritic
 	Vai                    = _Vai
+	Wancho                 = _Wancho
 	Warang_Citi            = _Warang_Citi
 	Yi                     = _Yi
 	Zanabazar_Square       = _Zanabazar_Square

@@ -106,7 +106,7 @@
 // line order:
 //
 //	func ExamplePerm() {
-//	    for _, value := range Perm(4) {
+//	    for _, value := range Perm(5) {
 //	        fmt.Println(value)
 //	    }
 //	    // Unordered output: 4
@@ -268,6 +268,7 @@ func Verbose() bool
 
 // TB is the interface common to T and B.
 type TB interface {
+	Cleanup(func())
 	Error(args ...interface{})
 	Errorf(format string, args ...interface{})
 	Fail()
@@ -275,6 +276,7 @@ type TB interface {
 	Failed() bool
 	Fatal(args ...interface{})
 	Fatalf(format string, args ...interface{})
+	Helper()
 	Log(args ...interface{})
 	Logf(format string, args ...interface{})
 	Name() string
@@ -282,7 +284,6 @@ type TB interface {
 	SkipNow()
 	Skipf(format string, args ...interface{})
 	Skipped() bool
-	Helper()
 
 	private()
 }
@@ -291,7 +292,6 @@ var _ TB = (*T)(nil)
 var _ TB = (*B)(nil)
 
 // T is a type passed to Test functions to manage test state and support formatted test logs.
-// Logs are accumulated during execution and dumped to standard output when done.
 //
 // A test ends when its Test function returns or calls any of the methods
 // FailNow, Fatal, Fatalf, SkipNow, Skip, or Skipf. Those methods, as well as
@@ -306,14 +306,16 @@ type T struct {
 	context    *testContext
 }
 
+// panicHanding is an argument to runCleanup.
+
 // Parallel signals that this test is to be run in parallel with (and only with)
 // other parallel tests. When a test is run multiple times due to use of
 // -test.count or -test.cpu, multiple instances of a single test never run in
 // parallel with each other.
 func (t *T) Parallel()
 
-// An internal type but exported because it is cross-package; part of the implementation
-// of the "go test" command.
+// InternalTest is an internal type but exported because it is cross-package;
+// it is part of the implementation of the "go test" command.
 type InternalTest struct {
 	Name string
 	F    func(*T)
@@ -367,6 +369,6 @@ func MainStart(deps testDeps, tests []InternalTest, benchmarks []InternalBenchma
 // Run runs the tests. It returns an exit code to pass to os.Exit.
 func (m *M) Run() int
 
-// An internal function but exported because it is cross-package; part of the implementation
-// of the "go test" command.
+// RunTests is an internal function but exported because it is cross-package;
+// it is part of the implementation of the "go test" command.
 func RunTests(matchString func(pat, str string) (bool, error), tests []InternalTest) (ok bool)

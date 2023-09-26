@@ -9,6 +9,7 @@ package main
 import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/token"
+	exec "internal/execabs"
 )
 
 // FuncExtent describes a function's extent in the source by file and position.

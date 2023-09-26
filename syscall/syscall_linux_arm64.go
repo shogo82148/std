@@ -4,6 +4,8 @@
 
 package syscall
 
+func EpollCreate(size int) (fd int, err error)
+
 func Stat(path string, stat *Stat_t) (err error)
 
 func Lchown(path string, uid int, gid int) (err error)
@@ -11,6 +13,10 @@ func Lchown(path string, uid int, gid int) (err error)
 func Lstat(path string, stat *Stat_t) (err error)
 
 func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err error)
+
+func Time(t *Time_t) (Time_t, error)
+
+func Utime(path string, buf *Utimbuf) error
 
 func Pipe(p []int) (err error)
 
@@ -28,18 +34,4 @@ func (cmsg *Cmsghdr) SetLen(length int)
 
 func InotifyInit() (fd int, err error)
 
-// TODO(dfc): constants that should be in zsysnum_linux_arm64.go, remove
-// these when the deprecated syscalls that the syscall package relies on
-// are removed.
-const (
-	SYS_GETPGRP      = 1060
-	SYS_UTIMES       = 1037
-	SYS_FUTIMESAT    = 1066
-	SYS_PAUSE        = 1061
-	SYS_USTAT        = 1070
-	SYS_UTIME        = 1063
-	SYS_LCHOWN       = 1032
-	SYS_TIME         = 1062
-	SYS_EPOLL_CREATE = 1042
-	SYS_EPOLL_WAIT   = 1069
-)
+func Pause() error

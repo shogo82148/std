@@ -14,6 +14,7 @@ import (
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/mime/multipart"
 	"github.com/shogo82148/std/net/url"
+	urlpkg "github.com/shogo82148/std/net/url"
 )
 
 // ErrMissingFile is returned by FormFile when the provided file field name
@@ -138,8 +139,8 @@ func (r *Request) Context() context.Context
 // sending the request, and reading the response headers and body.
 //
 // To create a new request with a context, use NewRequestWithContext.
-// To change the context of a request (such as an incoming) you then
-// also want to modify to send back out, use Request.Clone. Between
+// To change the context of a request, such as an incoming request you
+// want to modify before sending back out, use Request.Clone. Between
 // those two uses, it's rare to need WithContext.
 func (r *Request) WithContext(ctx context.Context) *Request
 
@@ -232,7 +233,7 @@ func (r *Request) WriteProxy(w io.Writer) error
 // that the error came from a Read call on the Request.Body.
 // This error type should not escape the net/http package to users.
 
-// ParseHTTPVersion parses a HTTP version string.
+// ParseHTTPVersion parses an HTTP version string.
 // "HTTP/1.0" returns (1, 0, true).
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
@@ -304,16 +305,16 @@ func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser
 // For all requests, ParseForm parses the raw query from the URL and updates
 // r.Form.
 //
-// For POST, PUT, and PATCH requests, it also parses the request body as a form
-// and puts the results into both r.PostForm and r.Form. Request body parameters
-// take precedence over URL query string values in r.Form.
+// For POST, PUT, and PATCH requests, it also reads the request body, parses it
+// as a form and puts the results into both r.PostForm and r.Form. Request body
+// parameters take precedence over URL query string values in r.Form.
+//
+// If the request Body's size has not already been limited by MaxBytesReader,
+// the size is capped at 10MB.
 //
 // For other HTTP methods, or when the Content-Type is not
 // application/x-www-form-urlencoded, the request Body is not read, and
 // r.PostForm is initialized to a non-nil, empty value.
-//
-// If the request Body's size has not already been limited by MaxBytesReader,
-// the size is capped at 10MB.
 //
 // ParseMultipartForm calls ParseForm automatically.
 // ParseForm is idempotent.

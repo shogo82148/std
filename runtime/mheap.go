@@ -8,10 +8,6 @@
 
 package runtime
 
-// minPhysPageSize is a lower-bound on the physical page size. The
-// true physical page size may be larger than this. In contrast,
-// sys.PhysPageSize is an upper-bound on the physical page size.
-
 // Main malloc heap.
 // The heap itself is the "free" and "scav" treaps,
 // but all the other global data is here too.
@@ -23,10 +19,6 @@ package runtime
 
 // A heapArena stores metadata for a heap arena. heapArenas are stored
 // outside of the Go heap and accessed via the mheap_.arenas index.
-//
-// This gets allocated directly from the OS, so ideally it should be a
-// multiple of the system page size. For example, avoid adding small
-// fields.
 //
 //go:notinheap
 
@@ -49,9 +41,21 @@ package runtime
 // * During GC (gcphase != _GCoff), a span *must not* transition from
 //   manual or in-use to free. Because concurrent GC may read a pointer
 //   and then look up its span, the span state must be monotonic.
+//
+// Setting mspan.state to mSpanInUse or mSpanManual must be done
+// atomically and only after all other span fields are valid.
+// Likewise, if inspecting a span is contingent on it being
+// mSpanInUse, the state should be loaded atomically and checked
+// before depending on other fields. This allows the garbage collector
+// to safely deal with potentially invalid pointers, since resolving
+// such pointers may race with a span being allocated.
 
 // mSpanStateNames are the names of the span states, indexed by
 // mSpanState.
+
+// mSpanStateBox holds an mSpanState and provides atomic operations on
+// it. This is a separate type to disallow accidental comparison or
+// assignment with mSpanState.
 
 // mSpanList heads a linked list of spans.
 //

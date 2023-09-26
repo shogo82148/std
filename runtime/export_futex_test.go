@@ -7,5 +7,4 @@
 
 package runtime
 
-var Futexsleep = futexsleep
 var Futexwakeup = futexwakeup

@@ -36,9 +36,22 @@ type StringTag struct {
 	IntStr     int64   `json:",string"`
 	UintptrStr uintptr `json:",string"`
 	StrStr     string  `json:",string"`
+	NumberStr  Number  `json:",string"`
 }
 
 // byte slices are special even if they're renamed types.
+
+type SamePointerNoCycle struct {
+	Ptr1, Ptr2 *SamePointerNoCycle
+}
+
+type PointerCycle struct {
+	Ptr *PointerCycle
+}
+
+type PointerCycleIndirect struct {
+	Ptrs []interface{}
+}
 
 // Ref has Marshaler and Unmarshaler methods with pointer receiver.
 type Ref int
@@ -78,8 +91,13 @@ type BugX struct {
 	BugB
 }
 
-// Issue 16042. Even if a nil interface value is passed in
-// as long as it implements MarshalJSON, it should be marshaled.
+// golang.org/issue/16042.
+// Even if a nil interface value is passed in, as long as
+// it implements Marshaler, it should be marshaled.
+
+// golang.org/issue/34235.
+// Even if a nil interface value is passed in, as long as
+// it implements encoding.TextMarshaler, it should be marshaled.
 
 type BugD struct {
 	XXX string `json:"S"`

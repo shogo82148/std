@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:generate bundle -o=h2_bundle.go -prefix=http2 -tags=!nethttpomithttp2 golang.org/x/net/http2
+
 package http
 
 import (
@@ -13,6 +15,10 @@ import (
 
 // aLongTimeAgo is a non-zero time, far in the past, used for
 // immediate cancellation of network operations.
+
+// omitBundledHTTP2 is set by omithttp2.go when the nethttpomithttp2
+// build tag is set. That means h2_bundle.go isn't compiled in and we
+// shouldn't try to use it.
 
 // contextKey is a value for use with context.WithValue. It's used as
 // a pointer so it fits in an interface{} without allocation.

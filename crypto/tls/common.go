@@ -19,8 +19,8 @@ const (
 	VersionTLS12 = 0x0303
 	VersionTLS13 = 0x0304
 
-	// Deprecated: SSLv3 is cryptographically broken, and will be
-	// removed in Go 1.14. See golang.org/issue/32716.
+	// Deprecated: SSLv3 is cryptographically broken, and is no longer
+	// supported by this package. See golang.org/issue/32716.
 	VersionSSL30 = 0x0300
 )
 
@@ -73,10 +73,6 @@ const (
 // the code advertises as supported in a TLS 1.2+ ClientHello and in a TLS 1.2+
 // CertificateRequest. The two fields are merged to match with TLS 1.3.
 // Note that in TLS 1.2, the ECDSA algorithms are not constrained to P-256, etc.
-
-// supportedSignatureAlgorithmsTLS12 contains the signature and hash algorithms
-// that are supported in TLS 1.2, where it is possible to distinguish the
-// protocol version. This is temporary, see Issue 32425.
 
 // helloRetryRequestRandom is set as the Random value of a ServerHello
 // to signal that the message is actually a HelloRetryRequest.
@@ -175,7 +171,7 @@ const (
 )
 
 // ClientHelloInfo contains information from a ClientHello message in order to
-// guide certificate selection in the GetCertificate callback.
+// guide application logic in the GetCertificate and GetConfigForClient callbacks.
 type ClientHelloInfo struct {
 	CipherSuites []uint16
 
@@ -192,6 +188,8 @@ type ClientHelloInfo struct {
 	SupportedVersions []uint16
 
 	Conn net.Conn
+
+	config *Config
 }
 
 // CertificateRequestInfo contains information from a server's
@@ -201,6 +199,8 @@ type CertificateRequestInfo struct {
 	AcceptableCAs [][]byte
 
 	SignatureSchemes []SignatureScheme
+
+	Version uint16
 }
 
 // RenegotiationSupport enumerates the different levels of support for TLS
@@ -313,11 +313,31 @@ func (c *Config) Clone() *Config
 // if keys is empty.
 func (c *Config) SetSessionTicketKeys(keys [][32]byte)
 
-// tls13Support caches the result for isTLS13Supported.
+// SupportsCertificate returns nil if the provided certificate is supported by
+// the client that sent the ClientHello. Otherwise, it returns an error
+// describing the reason for the incompatibility.
+//
+// If this ClientHelloInfo was passed to a GetConfigForClient or GetCertificate
+// callback, this method will take into account the associated Config. Note that
+// if GetConfigForClient returns a different Config, the change can't be
+// accounted for by this method.
+//
+// This function will call x509.ParseCertificate unless c.Leaf is set, which can
+// incur a significant performance cost.
+func (chi *ClientHelloInfo) SupportsCertificate(c *Certificate) error
+
+// SupportsCertificate returns nil if the provided certificate is supported by
+// the server that sent the CertificateRequest. Otherwise, it returns an error
+// describing the reason for the incompatibility.
+func (cri *CertificateRequestInfo) SupportsCertificate(c *Certificate) error
 
 // BuildNameToCertificate parses c.Certificates and builds c.NameToCertificate
 // from the CommonName and SubjectAlternateName fields of each of the leaf
 // certificates.
+//
+// Deprecated: NameToCertificate only allows associating a single certificate
+// with a given name. Leave that field nil to let the library select the first
+// compatible chain from Certificates.
 func (c *Config) BuildNameToCertificate()
 
 // writerMutex protects all KeyLogWriters globally. It is rarely enabled,
@@ -328,6 +348,8 @@ type Certificate struct {
 	Certificate [][]byte
 
 	PrivateKey crypto.PrivateKey
+
+	SupportedSignatureAlgorithms []SignatureScheme
 
 	OCSPStaple []byte
 

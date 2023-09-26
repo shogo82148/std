@@ -10,6 +10,10 @@
 
 package dwarf
 
+import (
+	"github.com/shogo82148/std/encoding/binary"
+)
+
 // a single entry's description: a sequence of attributes
 
 // a map from entry format ids to their descriptions
@@ -139,6 +143,27 @@ const (
 	// offset into the DWARF string section of an alternate object
 	// file.
 	ClassStringAlt
+
+	// ClassAddrPtr represents values that are an int64 offset
+	// into the "addr" section.
+	ClassAddrPtr
+
+	// ClassLocList represents values that are an int64 offset
+	// into the "loclists" section.
+	ClassLocList
+
+	// ClassRngList represents values that are an int64 offset
+	// from the base of the "rnglists" section.
+	ClassRngList
+
+	// ClassRngListsPtr represents values that are an int64 offset
+	// into the "rnglists" section. These are used as the base for
+	// ClassRngList values.
+	ClassRngListsPtr
+
+	// ClassStrOffsetsPtr represents values that are an int64
+	// offset into the "str_offsets" section.
+	ClassStrOffsetsPtr
 )
 
 func (i Class) GoString() string
@@ -172,6 +197,7 @@ type Reader struct {
 	unit         int
 	lastChildren bool
 	lastSibling  Offset
+	cu           *Entry
 }
 
 // Reader returns a new Reader for Data.
@@ -181,6 +207,9 @@ func (d *Data) Reader() *Reader
 // AddressSize returns the size in bytes of addresses in the current compilation
 // unit.
 func (r *Reader) AddressSize() int
+
+// ByteOrder returns the byte order in the current compilation unit.
+func (r *Reader) ByteOrder() binary.ByteOrder
 
 // Seek positions the Reader at offset off in the encoded entry stream.
 // Offset 0 can be used to denote the first entry.

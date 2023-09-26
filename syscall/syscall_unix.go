@@ -30,6 +30,12 @@ func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errn
 //	if errno != 0 {
 //		err = errno
 //	}
+//
+// Errno values can be tested against error values from the os package
+// using errors.Is. For example:
+//
+//	_, _, err := syscall.Syscall(...)
+//	if errors.Is(err, os.ErrNotExist) ...
 type Errno uintptr
 
 func (e Errno) Error() string

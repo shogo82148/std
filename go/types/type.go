@@ -246,19 +246,23 @@ func (t *Interface) Embedded(i int) *Named
 func (t *Interface) EmbeddedType(i int) Type
 
 // NumMethods returns the total number of methods of interface t.
+// The interface must have been completed.
 func (t *Interface) NumMethods() int
 
 // Method returns the i'th method of interface t for 0 <= i < t.NumMethods().
 // The methods are ordered by their unique Id.
+// The interface must have been completed.
 func (t *Interface) Method(i int) *Func
 
 // Empty reports whether t is the empty interface.
+// The interface must have been completed.
 func (t *Interface) Empty() bool
 
 // Complete computes the interface's method set. It must be called by users of
 // NewInterfaceType and NewInterface after the interface's embedded types are
 // fully defined and before using the interface type in any way other than to
-// form other types. Complete returns the receiver.
+// form other types. The interface must not contain duplicate methods or a
+// panic occurs. Complete returns the receiver.
 func (t *Interface) Complete() *Interface
 
 // A Map represents a map type.
@@ -302,7 +306,9 @@ func (c *Chan) Elem() Type
 
 // A Named represents a named type.
 type Named struct {
+	info       typeInfo
 	obj        *TypeName
+	orig       Type
 	underlying Type
 	methods    []*Func
 }

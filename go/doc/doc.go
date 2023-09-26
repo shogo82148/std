@@ -25,6 +25,8 @@ type Package struct {
 	Types  []*Type
 	Vars   []*Value
 	Funcs  []*Func
+
+	Examples []*Example
 }
 
 // Value is the documentation for a (possibly grouped) var or const declaration.
@@ -46,6 +48,8 @@ type Type struct {
 	Vars    []*Value
 	Funcs   []*Func
 	Methods []*Func
+
+	Examples []*Example
 }
 
 // Func is the documentation for a func declaration.
@@ -57,6 +61,8 @@ type Func struct {
 	Recv  string
 	Orig  string
 	Level int
+
+	Examples []*Example
 }
 
 // A Note represents a marked comment starting with "MARKER(uid): note body".
@@ -69,7 +75,7 @@ type Note struct {
 	Body     string
 }
 
-// Mode values control the operation of New.
+// Mode values control the operation of New and NewFromFiles.
 type Mode int
 
 const (
@@ -89,4 +95,29 @@ const (
 
 // New computes the package documentation for the given package AST.
 // New takes ownership of the AST pkg and may edit or overwrite it.
+// To have the Examples fields populated, use NewFromFiles and include
+// the package's _test.go files.
 func New(pkg *ast.Package, importPath string, mode Mode) *Package
+
+// NewFromFiles computes documentation for a package.
+//
+// The package is specified by a list of *ast.Files and corresponding
+// file set, which must not be nil.
+// NewFromFiles uses all provided files when computing documentation,
+// so it is the caller's responsibility to provide only the files that
+// match the desired build context. "go/build".Context.MatchFile can
+// be used for determining whether a file matches a build context with
+// the desired GOOS and GOARCH values, and other build constraints.
+// The import path of the package is specified by importPath.
+//
+// Examples found in _test.go files are associated with the corresponding
+// type, function, method, or the package, based on their name.
+// If the example has a suffix in its name, it is set in the
+// Example.Suffix field. Examples with malformed names are skipped.
+//
+// Optionally, a single extra argument of type Mode can be provided to
+// control low-level aspects of the documentation extraction behavior.
+//
+// NewFromFiles takes ownership of the AST files and may edit them,
+// unless the PreserveAST Mode bit is on.
+func NewFromFiles(fset *token.FileSet, files []*ast.File, importPath string, opts ...interface{}) (*Package, error)

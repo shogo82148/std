@@ -236,6 +236,13 @@ type MyRunes []int32
 type MyFunc func()
 type MyByte byte
 
+type IntChan chan int
+type IntChanRecv <-chan int
+type IntChanSend chan<- int
+type BytesChan chan []byte
+type BytesChanRecv <-chan []byte
+type BytesChanSend chan<- []byte
+
 type ComparableStruct struct {
 	X int
 }

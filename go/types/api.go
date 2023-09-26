@@ -190,3 +190,11 @@ func ConvertibleTo(V, T Type) bool
 
 // Implements reports whether type V implements interface T.
 func Implements(V Type, T *Interface) bool
+
+// Identical reports whether x and y are identical types.
+// Receivers of Signature types are ignored.
+func Identical(x, y Type) bool
+
+// IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.
+// Receivers of Signature types are ignored.
+func IdenticalIgnoreTags(x, y Type) bool

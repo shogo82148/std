@@ -129,3 +129,8 @@ func (dec *Decoder) Token() (Token, error)
 // More reports whether there is another element in the
 // current array or object being parsed.
 func (dec *Decoder) More() bool
+
+// InputOffset returns the input stream byte offset of the current decoder position.
+// The offset gives the location of the end of the most recently returned token
+// and the beginning of the next token.
+func (dec *Decoder) InputOffset() int64

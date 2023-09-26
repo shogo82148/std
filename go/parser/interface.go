@@ -44,7 +44,7 @@ const (
 // indicates the specific failure. If the source was read but syntax
 // errors were found, the result is a partial AST (with ast.Bad* nodes
 // representing the fragments of erroneous source code). Multiple errors
-// are returned via a scanner.ErrorList which is sorted by file position.
+// are returned via a scanner.ErrorList which is sorted by source position.
 func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode) (f *ast.File, err error)
 
 // ParseDir calls ParseFile for all files with names ending in ".go" in the
@@ -65,9 +65,19 @@ func ParseDir(fset *token.FileSet, path string, filter func(os.FileInfo) bool, m
 // The arguments have the same meaning as for ParseFile, but the source must
 // be a valid Go (type or value) expression. Specifically, fset must not
 // be nil.
-func ParseExprFrom(fset *token.FileSet, filename string, src interface{}, mode Mode) (ast.Expr, error)
+//
+// If the source couldn't be read, the returned AST is nil and the error
+// indicates the specific failure. If the source was read but syntax
+// errors were found, the result is a partial AST (with ast.Bad* nodes
+// representing the fragments of erroneous source code). Multiple errors
+// are returned via a scanner.ErrorList which is sorted by source position.
+func ParseExprFrom(fset *token.FileSet, filename string, src interface{}, mode Mode) (expr ast.Expr, err error)
 
 // ParseExpr is a convenience function for obtaining the AST of an expression x.
 // The position information recorded in the AST is undefined. The filename used
 // in error messages is the empty string.
+//
+// If syntax errors were found, the result is a partial AST (with ast.Bad* nodes
+// representing the fragments of erroneous source code). Multiple errors are
+// returned via a scanner.ErrorList which is sorted by source position.
 func ParseExpr(x string) (ast.Expr, error)

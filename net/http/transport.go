@@ -76,7 +76,7 @@ const DefaultMaxIdleConnsPerHost = 2
 // Request.GetBody defined. HTTP requests are considered idempotent if
 // they have HTTP methods GET, HEAD, OPTIONS, or TRACE; or if their
 // Header map contains an "Idempotency-Key" or "X-Idempotency-Key"
-// entry. If the idempotency key value is an zero-length slice, the
+// entry. If the idempotency key value is a zero-length slice, the
 // request is treated as idempotent but the header is not sent on the
 // wire.
 type Transport struct {
@@ -87,7 +87,7 @@ type Transport struct {
 	idleLRU      connLRU
 
 	reqMu       sync.Mutex
-	reqCanceler map[*Request]func(error)
+	reqCanceler map[cancelKey]func(error)
 
 	altMu    sync.Mutex
 	altProto atomic.Value
@@ -101,6 +101,8 @@ type Transport struct {
 	DialContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
 	Dial func(network, addr string) (net.Conn, error)
+
+	DialTLSContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
 	DialTLS func(network, addr string) (net.Conn, error)
 
@@ -140,6 +142,10 @@ type Transport struct {
 
 	ForceAttemptHTTP2 bool
 }
+
+// A cancelKey is the key of the reqCanceler map.
+// We wrap the *Request in this type since we want to use the original request,
+// not any transient one created by roundTrip.
 
 // Clone returns a deep copy of t's exported fields.
 func (t *Transport) Clone() *Transport

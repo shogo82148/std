@@ -6,8 +6,9 @@ package runtime
 
 // type algorithms - known to compiler
 
-// typeAlg is also copied/used in reflect/type.go.
-// keep them in sync.
+// runtime variable to check if the processor we're running on
+// actually supports the instructions used by the AES-based
+// hash implementation.
 
 // used in asm_{386,amd64,arm64}.s to seed the hash function
 

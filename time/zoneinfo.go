@@ -6,18 +6,21 @@ package time
 
 // A Location maps time instants to the zone in use at that time.
 // Typically, the Location represents the collection of time offsets
-// in use in a geographical area, such as CEST and CET for central Europe.
+// in use in a geographical area. For many Locations the time offset varies
+// depending on whether daylight savings time is in use at the time instant.
 type Location struct {
 	name string
 	zone []zone
 	tx   []zoneTrans
+
+	extend string
 
 	cacheStart int64
 	cacheEnd   int64
 	cacheZone  *zone
 }
 
-// A zone represents a single time zone such as CEST or CET.
+// A zone represents a single time zone such as CET.
 
 // A zoneTrans represents a single time zone transition.
 
@@ -32,6 +35,11 @@ var UTC *Location = &utcLoc
 // even if a badly behaved client has changed UTC.
 
 // Local represents the system's local time zone.
+// On Unix systems, Local consults the TZ environment
+// variable to find the time zone to use. No TZ means
+// use the system default /etc/localtime.
+// TZ="" means use UTC.
+// TZ="foo" means use file foo in the system timezone directory.
 var Local *Location = &localLoc
 
 // localLoc is separate so that initLocal can initialize
@@ -44,6 +52,10 @@ func (l *Location) String() string
 // FixedZone returns a Location that always uses
 // the given zone name and offset (seconds east of UTC).
 func FixedZone(name string, offset int) *Location
+
+// ruleKind is the kinds of rules that can be seen in a tzset string.
+
+// rule is a rule read from a tzset string.
 
 // LoadLocation returns the Location with the given name.
 //

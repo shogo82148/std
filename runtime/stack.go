@@ -8,7 +8,8 @@ package runtime
 // Stacks are assigned an order according to size.
 //     order = log_2(size/FixedStack)
 // There is a free list for each order.
-// TODO: one lock per order?
+
+//go:notinheap
 
 // Global pool of large stack spans.
 

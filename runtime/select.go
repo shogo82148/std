@@ -6,7 +6,7 @@ package runtime
 
 // scase.kind values.
 // Known to compiler.
-// Changes here must also be made in src/cmd/compile/internal/gc/select.go's walkselect.
+// Changes here must also be made in src/cmd/compile/internal/gc/select.go's walkselectcases.
 
 // Select case descriptor.
 // Known to compiler.

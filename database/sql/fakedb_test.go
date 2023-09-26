@@ -6,10 +6,7 @@ package sql
 
 import (
 	"database/sql/driver"
-	"log"
 )
-
-var _ = log.Printf
 
 // fakeDriver is a fake database that implements Go's driver.Driver
 // interface, just for testing.

@@ -29,7 +29,7 @@ func (e *TypeAssertionError) Error() string
 // the prefix "runtime error: " after invoking errorString.Error().
 // See Issue #14965.
 
-// An boundsError represents a an indexing or slicing operation gone wrong.
+// A boundsError represents an indexing or slicing operation gone wrong.
 
 // boundsErrorFmts provide error text for various out-of-bounds panics.
 // Note: if you change these strings, you should adjust the size of the buffer

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build nacl || (js && wasm)
-// +build nacl js,wasm
+//go:build js && wasm
+// +build js,wasm
 
 package net

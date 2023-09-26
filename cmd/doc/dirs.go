@@ -4,11 +4,16 @@
 
 package main
 
+import (
+	exec "internal/execabs"
+)
+
 // A Dir describes a directory holding code by specifying
 // the expected import path and the file system directory.
 type Dir struct {
 	importPath string
 	dir        string
+	inModule   bool
 }
 
 // Dirs is a structure for scanning the directory tree.

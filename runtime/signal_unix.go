@@ -13,6 +13,37 @@ package runtime
 // The sigtable array is indexed by a system signal number to get the flags
 // and printable name of each signal.
 
+// sigPreempt is the signal used for non-cooperative preemption.
+//
+// There's no good way to choose this signal, but there are some
+// heuristics:
+//
+// 1. It should be a signal that's passed-through by debuggers by
+// default. On Linux, this is SIGALRM, SIGURG, SIGCHLD, SIGIO,
+// SIGVTALRM, SIGPROF, and SIGWINCH, plus some glibc-internal signals.
+//
+// 2. It shouldn't be used internally by libc in mixed Go/C binaries
+// because libc may assume it's the only thing that can handle these
+// signals. For example SIGCANCEL or SIGSETXID.
+//
+// 3. It should be a signal that can happen spuriously without
+// consequences. For example, SIGALRM is a bad choice because the
+// signal handler can't tell if it was caused by the real process
+// alarm or not (arguably this means the signal is broken, but I
+// digress). SIGUSR1 and SIGUSR2 are also bad because those are often
+// used in meaningful ways by applications.
+//
+// 4. We need to deal with platforms without real-time signals (like
+// macOS), so those are out.
+//
+// We use SIGURG because it meets all of these criteria, is extremely
+// unlikely to be used by an application for its "real" meaning (both
+// because out-of-band data is basically unused and because SIGURG
+// doesn't report which socket has the condition, making it pretty
+// useless), and even if it is, the application has to be ready for
+// spurious SIGURG. SIGIO wouldn't be a bad choice either, but is more
+// likely to be used for real.
+
 // Stores the signal handlers registered before Go installed its own.
 // These signal handlers will be invoked in cases where Go doesn't want to
 // handle a particular signal (e.g., signal occurred on a non-Go thread).
@@ -28,6 +59,13 @@ package runtime
 
 // channels for synchronizing signal mask updates with the signal mask
 // thread
+
+// crashing is the number of m's we have waited for when implementing
+// GOTRACEBACK=crash when a signal is received.
+
+// testSigtrap and testSigusr1 are used by the runtime tests. If
+// non-nil, it is called on SIGTRAP/SIGUSR1. If it returns true, the
+// normal behavior on this signal is suppressed.
 
 // gsignalStack saves the fields of the gsignal stack changed by
 // setGsignalStack.

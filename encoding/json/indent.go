@@ -4,7 +4,9 @@
 
 package json
 
-import "github.com/shogo82148/std/bytes"
+import (
+	"github.com/shogo82148/std/bytes"
+)
 
 // Compact appends to dst the JSON-encoded src with
 // insignificant space characters elided.

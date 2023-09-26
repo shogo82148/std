@@ -45,6 +45,12 @@ func StringToUTF16Ptr(s string) *uint16
 func UTF16PtrFromString(s string) (*uint16, error)
 
 // Errno is the Windows error number.
+//
+// Errno values can be tested against error values from the os package
+// using errors.Is. For example:
+//
+//	_, _, err := syscall.Syscall(...)
+//	if errors.Is(err, os.ErrNotExist) ...
 type Errno uintptr
 
 // FormatMessage is deprecated (msgsrc should be uintptr, not uint32, but can

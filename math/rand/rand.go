@@ -105,10 +105,13 @@ func (r *Rand) Shuffle(n int, swap func(i, j int))
 // Read should not be called concurrently with any other Rand method.
 func (r *Rand) Read(p []byte) (n int, err error)
 
+// Type assert that globalRand's source is a lockedSource whose src is a *rngSource.
+var _ *rngSource = globalRand.src.(*lockedSource).src
+
 // Seed uses the provided seed value to initialize the default Source to a
 // deterministic state. If Seed is not called, the generator behaves as
 // if seeded by Seed(1). Seed values that have the same remainder when
-// divided by 2^31-1 generate the same pseudo-random sequence.
+// divided by 2³¹-1 generate the same pseudo-random sequence.
 // Seed, unlike the Rand.Seed method, is safe for concurrent use.
 func Seed(seed int64)
 

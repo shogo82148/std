@@ -7,7 +7,7 @@ package html
 
 // These replacements permit compatibility with old numeric entities that
 // assumed Windows-1252 encoding.
-// http://www.whatwg.org/specs/web-apps/current-work/multipage/tokenization.html#consume-a-character-reference
+// https://html.spec.whatwg.org/multipage/parsing.html#numeric-character-reference-end-state
 
 // EscapeString escapes special characters like "<" to become "&lt;". It
 // escapes only five such characters: <, >, &, ' and ".

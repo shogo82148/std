@@ -6,6 +6,10 @@
 
 package parse
 
+import (
+	"github.com/shogo82148/std/strings"
+)
+
 // A Node is an element in the parse tree. The interface is trivial.
 // The interface contains an unexported method so that only
 // types local to this package can satisfy it.
@@ -17,6 +21,8 @@ type Node interface {
 	Position() Pos
 
 	tree() *Tree
+
+	writeTo(*strings.Builder)
 }
 
 // NodeType identifies the type of a parse tree node.
@@ -33,7 +39,7 @@ func (p Pos) Position() Pos
 func (t NodeType) Type() NodeType
 
 const (
-	NodeText    NodeType = iota
+	NodeText NodeType = iota
 	NodeAction
 	NodeBool
 	NodeChain

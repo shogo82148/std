@@ -19,7 +19,7 @@
 //	fixalloc: a free-list allocator for fixed-size off-heap objects,
 //		used to manage storage used by the allocator.
 //	mheap: the malloc heap, managed at page (8192-byte) granularity.
-//	mspan: a run of pages managed by the mheap.
+//	mspan: a run of in-use pages managed by the mheap.
 //	mcentral: collects all spans of a given size class.
 //	mcache: a per-P cache of mspans with free space.
 //	mstats: allocation statistics.
@@ -56,20 +56,16 @@
 //	   it is placed on the mcentral free list for the mspan's size
 //	   class.
 //
-//	3. Otherwise, if all objects in the mspan are free, the mspan
-//	   is now "idle", so it is returned to the mheap and no longer
-//	   has a size class.
-//	   This may coalesce it with adjacent idle mspans.
-//
-//	4. If an mspan remains idle for long enough, return its pages
-//	   to the operating system.
+//	3. Otherwise, if all objects in the mspan are free, the mspan's
+//	   pages are returned to the mheap and the mspan is now dead.
 //
 // Allocating and freeing a large object uses the mheap
 // directly, bypassing the mcache and mcentral.
 //
-// Free object slots in an mspan are zeroed only if mspan.needzero is
-// false. If needzero is true, objects are zeroed as they are
-// allocated. There are various benefits to delaying zeroing this way:
+// If mspan.needzero is false, then free object slots in the mspan are
+// already zeroed. Otherwise if needzero is true, objects are zeroed as
+// they are allocated. There are various benefits to delaying zeroing
+// this way:
 //
 //	1. Stack frame allocation can avoid zeroing altogether.
 //

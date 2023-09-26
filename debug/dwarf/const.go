@@ -69,19 +69,71 @@ const (
 	AttrVarParam       Attr = 0x4B
 	AttrVirtuality     Attr = 0x4C
 	AttrVtableElemLoc  Attr = 0x4D
-	AttrAllocated      Attr = 0x4E
-	AttrAssociated     Attr = 0x4F
-	AttrDataLocation   Attr = 0x50
-	AttrStride         Attr = 0x51
-	AttrEntrypc        Attr = 0x52
-	AttrUseUTF8        Attr = 0x53
-	AttrExtension      Attr = 0x54
-	AttrRanges         Attr = 0x55
-	AttrTrampoline     Attr = 0x56
-	AttrCallColumn     Attr = 0x57
-	AttrCallFile       Attr = 0x58
-	AttrCallLine       Attr = 0x59
-	AttrDescription    Attr = 0x5A
+	// The following are new in DWARF 3.
+	AttrAllocated     Attr = 0x4E
+	AttrAssociated    Attr = 0x4F
+	AttrDataLocation  Attr = 0x50
+	AttrStride        Attr = 0x51
+	AttrEntrypc       Attr = 0x52
+	AttrUseUTF8       Attr = 0x53
+	AttrExtension     Attr = 0x54
+	AttrRanges        Attr = 0x55
+	AttrTrampoline    Attr = 0x56
+	AttrCallColumn    Attr = 0x57
+	AttrCallFile      Attr = 0x58
+	AttrCallLine      Attr = 0x59
+	AttrDescription   Attr = 0x5A
+	AttrBinaryScale   Attr = 0x5B
+	AttrDecimalScale  Attr = 0x5C
+	AttrSmall         Attr = 0x5D
+	AttrDecimalSign   Attr = 0x5E
+	AttrDigitCount    Attr = 0x5F
+	AttrPictureString Attr = 0x60
+	AttrMutable       Attr = 0x61
+	AttrThreadsScaled Attr = 0x62
+	AttrExplicit      Attr = 0x63
+	AttrObjectPointer Attr = 0x64
+	AttrEndianity     Attr = 0x65
+	AttrElemental     Attr = 0x66
+	AttrPure          Attr = 0x67
+	AttrRecursive     Attr = 0x68
+	// The following are new in DWARF 4.
+	AttrSignature      Attr = 0x69
+	AttrMainSubprogram Attr = 0x6A
+	AttrDataBitOffset  Attr = 0x6B
+	AttrConstExpr      Attr = 0x6C
+	AttrEnumClass      Attr = 0x6D
+	AttrLinkageName    Attr = 0x6E
+	// The following are new in DWARF 5.
+	AttrStringLengthBitSize  Attr = 0x6F
+	AttrStringLengthByteSize Attr = 0x70
+	AttrRank                 Attr = 0x71
+	AttrStrOffsetsBase       Attr = 0x72
+	AttrAddrBase             Attr = 0x73
+	AttrRnglistsBase         Attr = 0x74
+	AttrDwoName              Attr = 0x76
+	AttrReference            Attr = 0x77
+	AttrRvalueReference      Attr = 0x78
+	AttrMacros               Attr = 0x79
+	AttrCallAllCalls         Attr = 0x7A
+	AttrCallAllSourceCalls   Attr = 0x7B
+	AttrCallAllTailCalls     Attr = 0x7C
+	AttrCallReturnPC         Attr = 0x7D
+	AttrCallValue            Attr = 0x7E
+	AttrCallOrigin           Attr = 0x7F
+	AttrCallParameter        Attr = 0x80
+	AttrCallPC               Attr = 0x81
+	AttrCallTailCall         Attr = 0x82
+	AttrCallTarget           Attr = 0x83
+	AttrCallTargetClobbered  Attr = 0x84
+	AttrCallDataLocation     Attr = 0x85
+	AttrCallDataValue        Attr = 0x86
+	AttrNoreturn             Attr = 0x87
+	AttrAlignment            Attr = 0x88
+	AttrExportSymbols        Attr = 0x89
+	AttrDeleted              Attr = 0x8A
+	AttrDefaulted            Attr = 0x8B
+	AttrLoclistsBase         Attr = 0x8C
 )
 
 func (a Attr) GoString() string
@@ -155,6 +207,15 @@ const (
 	TagTypeUnit            Tag = 0x41
 	TagRvalueReferenceType Tag = 0x42
 	TagTemplateAlias       Tag = 0x43
+	// The following are new in DWARF 5.
+	TagCoarrayType       Tag = 0x44
+	TagGenericSubrange   Tag = 0x45
+	TagDynamicType       Tag = 0x46
+	TagAtomicType        Tag = 0x47
+	TagCallSite          Tag = 0x48
+	TagCallSiteParameter Tag = 0x49
+	TagSkeletonUnit      Tag = 0x4A
+	TagImmutableType     Tag = 0x4B
 )
 
 func (t Tag) GoString() string
@@ -170,3 +231,12 @@ func (t Tag) GoString() string
 // Statement program standard opcode encodings.
 
 // Statement program extended opcode encodings.
+
+// Line table directory directory and file name entry formats.
+// These are new in DWARF 5.
+
+// Location list entry codes.
+// These are new in DWARF 5.
+
+// Unit header unit type encodings.
+// These are new in DWARF 5.

@@ -47,3 +47,6 @@ var (
 // This is only set to 1 when running under Wine.
 
 // exiting is set to non-zero when the process is exiting.
+
+// suspendLock protects simultaneous SuspendThread operations from
+// suspending each other.

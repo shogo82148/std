@@ -11,8 +11,7 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// atomicError is a type-safe atomic value for errors.
-// We use a struct{ error } to ensure consistent use of a concrete type.
+// onceError is an object that will only store an error once.
 
 // ErrClosedPipe is the error used for read or write operations on a closed pipe.
 var ErrClosedPipe = errors.New("io: read/write on closed pipe")
@@ -37,6 +36,9 @@ func (r *PipeReader) Close() error
 
 // CloseWithError closes the reader; subsequent writes
 // to the write half of the pipe will return the error err.
+//
+// CloseWithError never overwrites the previous error if it exists
+// and always returns nil.
 func (r *PipeReader) CloseWithError(err error) error
 
 // A PipeWriter is the write half of a pipe.
@@ -59,7 +61,8 @@ func (w *PipeWriter) Close() error
 // read half of the pipe will return no bytes and the error err,
 // or EOF if err is nil.
 //
-// CloseWithError always returns nil.
+// CloseWithError never overwrites the previous error if it exists
+// and always returns nil.
 func (w *PipeWriter) CloseWithError(err error) error
 
 // Pipe creates a synchronous in-memory pipe.

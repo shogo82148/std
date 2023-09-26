@@ -16,7 +16,7 @@ type SyntaxError struct {
 func (e *SyntaxError) Error() string
 
 // A scanner is a JSON scanning state machine.
-// Callers call scan.reset() and then pass bytes in one at a time
+// Callers call scan.reset and then pass bytes in one at a time
 // by calling scan.step(&scan, c) for each byte.
 // The return value, referred to as an opcode, tells the
 // caller about significant parsing events like beginning

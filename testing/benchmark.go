@@ -12,8 +12,8 @@ import (
 
 // Used for every benchmark for measuring memory.
 
-// An internal type but exported because it is cross-package; part of the implementation
-// of the "go test" command.
+// InternalBenchmark is an internal type but exported because it is cross-package;
+// it is part of the implementation of the "go test" command.
 type InternalBenchmark struct {
 	Name string
 	F    func(b *B)
@@ -29,7 +29,7 @@ type InternalBenchmark struct {
 // may be called simultaneously from multiple goroutines.
 //
 // Like in tests, benchmark logs are accumulated during execution
-// and dumped to standard error when done. Unlike in tests, benchmark logs
+// and dumped to standard output when done. Unlike in tests, benchmark logs
 // are always printed, so as not to hide output whose existence may be
 // affecting benchmark results.
 type B struct {
@@ -92,7 +92,7 @@ func (b *B) ReportAllocs()
 // Setting "ns/op" to 0 will suppress that built-in metric.
 func (b *B) ReportMetric(n float64, unit string)
 
-// The results of a benchmark run.
+// BenchmarkResult contains the results of a benchmark run.
 type BenchmarkResult struct {
 	N         int
 	T         time.Duration
@@ -126,8 +126,8 @@ func (r BenchmarkResult) String() string
 // MemString returns r.AllocedBytesPerOp and r.AllocsPerOp in the same format as 'go test'.
 func (r BenchmarkResult) MemString() string
 
-// An internal function but exported because it is cross-package; part of the implementation
-// of the "go test" command.
+// RunBenchmarks is an internal function but exported because it is cross-package;
+// it is part of the implementation of the "go test" command.
 func RunBenchmarks(matchString func(pat, str string) (bool, error), benchmarks []InternalBenchmark)
 
 // Run benchmarks f as a subbenchmark with the given name. It reports

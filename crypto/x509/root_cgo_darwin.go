@@ -160,7 +160,7 @@ static Boolean isRootCertificate(SecCertificateRef cert, CFErrorRef *errRef) {
 //
 // Note: The CFDataRef returned in pemRoots and untrustedPemRoots must
 // be released (using CFRelease) after we've consumed its content.
-int CopyPEMRoots(CFDataRef *pemRoots, CFDataRef *untrustedPemRoots, bool debugDarwinRoots) {
+static int CopyPEMRoots(CFDataRef *pemRoots, CFDataRef *untrustedPemRoots, bool debugDarwinRoots) {
 	int i;
 
 	if (debugDarwinRoots) {

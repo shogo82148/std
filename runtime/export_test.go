@@ -33,8 +33,20 @@ var Atoi = atoi
 var Atoi32 = atoi32
 
 var Nanotime = nanotime
+var NetpollBreak = netpollBreak
+var Usleep = usleep
 
+var PhysPageSize = physPageSize
 var PhysHugePageSize = physHugePageSize
+
+var NetpollGenericInit = netpollGenericInit
+
+var ParseRelease = parseRelease
+
+var Memmove = memmove
+var MemclrNoHeapPointers = memclrNoHeapPointers
+
+const PreemptMSupported = preemptMSupported
 
 type LFNode struct {
 	Next    uint64
@@ -88,32 +100,61 @@ const RuntimeHmapSize = unsafe.Sizeof(hmap{})
 
 type G = g
 
-// Span is a safe wrapper around an mspan, whose memory
-// is managed manually.
-type Span struct {
-	*mspan
-}
-
-type TreapIterType treapIterType
-
 const (
-	TreapIterScav TreapIterType = TreapIterType(treapIterScav)
-	TreapIterHuge               = TreapIterType(treapIterHuge)
-	TreapIterBits               = treapIterBits
+	PageSize         = pageSize
+	PallocChunkPages = pallocChunkPages
+	PageAlloc64Bit   = pageAlloc64Bit
+	PallocSumBytes   = pallocSumBytes
 )
 
-type TreapIterFilter treapIterFilter
+// Expose pallocSum for testing.
+type PallocSum pallocSum
 
-type TreapIter struct {
-	treapIter
+// Expose pallocBits for testing.
+type PallocBits pallocBits
+
+// Expose pallocData for testing.
+type PallocData pallocData
+
+// Expose pageCache for testing.
+type PageCache pageCache
+
+const PageCachePages = pageCachePages
+
+// Expose chunk index type.
+type ChunkIdx chunkIdx
+
+// Expose pageAlloc for testing. Note that because pageAlloc is
+// not in the heap, so is PageAlloc.
+type PageAlloc pageAlloc
+
+// AddrRange represents a range over addresses.
+// Specifically, it represents the range [Base, Limit).
+type AddrRange struct {
+	Base, Limit uintptr
 }
 
-// Treap is a safe wrapper around mTreap for testing.
-//
-// It must never be heap-allocated because mTreap is
-// notinheap.
-//
-//go:notinheap
-type Treap struct {
-	mTreap
+// BitRange represents a range over a bitmap.
+type BitRange struct {
+	I, N uint
 }
+
+// BaseChunkIdx is a convenient chunkIdx value which works on both
+// 64 bit and 32 bit platforms, allowing the tests to share code
+// between the two.
+//
+// On AIX, the arenaBaseOffset is 0x0a00000000000000. However, this
+// constant can't be used here because it is negative and will cause
+// a constant overflow.
+//
+// This should not be higher than 0x100*pallocChunkBytes to support
+// mips and mipsle, which only have 31-bit address spaces.
+var BaseChunkIdx = ChunkIdx(chunkIndex(((0xc000*pageAlloc64Bit + 0x100*pageAlloc32Bit) * pallocChunkBytes) + 0x0a00000000000000*sys.GoosAix))
+
+type BitsMismatch struct {
+	Base      uintptr
+	Got, Want uint64
+}
+
+var Semacquire = semacquire
+var Semrelease1 = semrelease1

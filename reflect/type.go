@@ -136,8 +136,6 @@ const (
 //
 // rtype must be kept in sync with ../runtime/type.go:/^type._type.
 
-// a copy of runtime.typeAlg
-
 // Method on non-interface type
 
 // uncommonType is present only for defined types or types with methods
@@ -341,4 +339,4 @@ func StructOf(fields []StructField) Type
 // ArrayOf panics.
 func ArrayOf(count int, elem Type) Type
 
-// Layout matches runtime.gobitvector (well enough).
+// Note: this type must agree with runtime.bitvector.

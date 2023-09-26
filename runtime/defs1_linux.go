@@ -22,6 +22,7 @@ import "github.com/shogo82148/std/C"
 
 const (
 	O_RDONLY    = C.O_RDONLY
+	O_NONBLOCK  = C.O_NONBLOCK
 	O_CLOEXEC   = C.O_CLOEXEC
 	SA_RESTORER = C.SA_RESTORER
 )

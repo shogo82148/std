@@ -235,7 +235,8 @@ func Replace(s, old, new []byte, n int) []byte
 func ReplaceAll(s, old, new []byte) []byte
 
 // EqualFold reports whether s and t, interpreted as UTF-8 strings,
-// are equal under Unicode case-folding.
+// are equal under Unicode case-folding, which is a more general
+// form of case-insensitivity.
 func EqualFold(s, t []byte) bool
 
 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.

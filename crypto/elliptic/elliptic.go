@@ -62,17 +62,30 @@ func Marshal(curve Curve, x, y *big.Int) []byte
 // On error, x = nil.
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 
-// P256 returns a Curve which implements P-256 (see FIPS 186-3, section D.2.3)
+// P256 returns a Curve which implements NIST P-256 (FIPS 186-3, section D.2.3),
+// also known as secp256r1 or prime256v1. The CurveParams.Name of this Curve is
+// "P-256".
+//
+// Multiple invocations of this function will return the same value, so it can
+// be used for equality checks and switch statements.
 //
 // The cryptographic operations are implemented using constant-time algorithms.
 func P256() Curve
 
-// P384 returns a Curve which implements P-384 (see FIPS 186-3, section D.2.4)
+// P384 returns a Curve which implements NIST P-384 (FIPS 186-3, section D.2.4),
+// also known as secp384r1. The CurveParams.Name of this Curve is "P-384".
+//
+// Multiple invocations of this function will return the same value, so it can
+// be used for equality checks and switch statements.
 //
 // The cryptographic operations do not use constant-time algorithms.
 func P384() Curve
 
-// P521 returns a Curve which implements P-521 (see FIPS 186-3, section D.2.5)
+// P521 returns a Curve which implements NIST P-521 (FIPS 186-3, section D.2.5),
+// also known as secp521r1. The CurveParams.Name of this Curve is "P-521".
+//
+// Multiple invocations of this function will return the same value, so it can
+// be used for equality checks and switch statements.
 //
 // The cryptographic operations do not use constant-time algorithms.
 func P521() Curve

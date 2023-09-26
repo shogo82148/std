@@ -48,6 +48,10 @@ func Gosched()
 // inForkedChild is true while manipulating signals in the child process.
 // This is used to avoid calling libc functions in case we are using vfork.
 
+// pendingPreemptSignals is the number of preemption signals
+// that have been sent but not received. This is only used on Darwin.
+// For #41702.
+
 // Breakpoint executes a breakpoint trap.
 func Breakpoint()
 
@@ -116,3 +120,4 @@ func UnlockOSThread()
 // are coprime, then a sequences of (i + X) % GOMAXPROCS gives the required enumeration.
 
 // An initTask represents the set of initializations that need to be done for a package.
+// Keep in sync with ../../test/initempty.go:initTask

@@ -1,0 +1,11 @@
+// Copyright 2013 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+//go:build amd64 && (darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris)
+// +build amd64
+// +build darwin dragonfly freebsd linux netbsd openbsd solaris
+
+package runtime
+
+// TODO: Remove pushCallSupported once all platforms support it.

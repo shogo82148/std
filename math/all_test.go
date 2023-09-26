@@ -28,6 +28,12 @@ const (
 	LargestSubnormalFloat64 = SmallestNormalFloat64 - SmallestNonzeroFloat64
 )
 
+// Test cases were generated with Berkeley TestFloat-3e/testfloat_gen.
+// http://www.jhauser.us/arithmetic/TestFloat.html.
+// The default rounding mode is selected (nearest/even), and exception flags are ignored.
+
+var PortableFMA = FMA
+
 // Global exported variables are used to store the
 // return values of functions measured in the benchmarks.
 // Storing the results in these variables prevents the compiler

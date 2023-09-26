@@ -200,14 +200,21 @@ func (x *Int) TrailingZeroBits() uint
 // If m == nil or m == 0, z = x**y unless y <= 0 then z = 1. If m > 0, y < 0,
 // and x and n are not relatively prime, z is unchanged and nil is returned.
 //
-// Modular exponentation of inputs of a particular size is not a
+// Modular exponentiation of inputs of a particular size is not a
 // cryptographically constant-time operation.
 func (z *Int) Exp(x, y, m *Int) *Int
 
-// GCD sets z to the greatest common divisor of a and b, which both must
-// be > 0, and returns z.
+// GCD sets z to the greatest common divisor of a and b and returns z.
 // If x or y are not nil, GCD sets their value such that z = a*x + b*y.
-// If either a or b is <= 0, GCD sets z = x = y = 0.
+//
+// a and b may be positive, zero or negative. (Before Go 1.14 both had
+// to be > 0.) Regardless of the signs of a and b, z is always >= 0.
+//
+// If a == b == 0, GCD sets z = x = y = 0.
+//
+// If a == 0 and b != 0, GCD sets z = |b|, x = 0, y = sign(b) * 1.
+//
+// If a != 0 and b == 0, GCD sets z = |a|, x = sign(a) * 1, y = 0.
 func (z *Int) GCD(x, y, a, b *Int) *Int
 
 // Rand sets z to a pseudo-random number in [0, n) and returns z.

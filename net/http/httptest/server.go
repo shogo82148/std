@@ -20,6 +20,8 @@ type Server struct {
 	URL      string
 	Listener net.Listener
 
+	EnableHTTP2 bool
+
 	TLS *tls.Config
 
 	Config *http.Server

@@ -102,6 +102,10 @@ type CancelFunc func()
 // call cancel as soon as the operations running in this Context complete.
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
 
+// goroutines counts the number of goroutines ever created; for testing.
+
+// &cancelCtxKey is the key that a cancelCtx returns itself for.
+
 // A canceler is a context type that can be canceled directly. The
 // implementations are *cancelCtx and *timerCtx.
 

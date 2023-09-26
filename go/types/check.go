@@ -45,17 +45,18 @@ type Checker struct {
 	*Info
 	objMap map[Object]*declInfo
 	impMap map[importKey]*Package
+	posMap map[*Interface][]token.Pos
+	pkgCnt map[string]int
 
 	files            []*ast.File
 	unusedDotImports map[*Scope]map[*Package]token.Pos
 
 	firstErr error
 	methods  map[*TypeName][]*Func
-
-	interfaces map[*TypeName]*ifaceInfo
-	untyped    map[ast.Expr]exprInfo
-	delayed    []func()
-	objPath    []Object
+	untyped  map[ast.Expr]exprInfo
+	delayed  []func()
+	finals   []func()
+	objPath  []Object
 
 	context
 

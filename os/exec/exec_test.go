@@ -6,3 +6,10 @@
 // circular dependency on non-cgo darwin.
 
 package exec_test
+
+// haveUnexpectedFDs is set at init time to report whether any
+// file descriptors were open at program start.
+
+// unfinalizedFiles holds files that should not be finalized,
+// because that would close the associated file descriptor,
+// which we don't want to do.

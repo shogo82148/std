@@ -15,6 +15,7 @@ import (
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/time"
+	urlpkg "net/url"
 )
 
 // Errors used by the HTTP server.
@@ -273,9 +274,6 @@ func StripPrefix(prefix string, h Handler) Handler
 // disables that behavior.
 func Redirect(w ResponseWriter, r *Request, url string, code int)
 
-// parseURL is just url.Parse. It exists only so that url.Parse can be called
-// in places where url is shadowed for godoc. See https://golang.org/cl/49930.
-
 // Redirect to a fixed URL
 
 // RedirectHandler returns a request handler that redirects
@@ -402,7 +400,8 @@ func ServeTLS(l net.Listener, handler Handler, certFile, keyFile string) error
 // A Server defines parameters for running an HTTP server.
 // The zero value for Server is a valid configuration.
 type Server struct {
-	Addr    string
+	Addr string
+
 	Handler Handler
 
 	TLSConfig *tls.Config
@@ -482,7 +481,7 @@ func (srv *Server) Shutdown(ctx context.Context) error
 
 // RegisterOnShutdown registers a function to call on Shutdown.
 // This can be used to gracefully shutdown connections that have
-// undergone NPN/ALPN protocol upgrade or that have been hijacked.
+// undergone ALPN protocol upgrade or that have been hijacked.
 // This function should start protocol-specific graceful shutdown,
 // but should not wait for shutdown to complete.
 func (srv *Server) RegisterOnShutdown(f func())
@@ -621,8 +620,8 @@ func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 // After such a timeout, writes by h to its ResponseWriter will return
 // ErrHandlerTimeout.
 //
-// TimeoutHandler supports the Flusher and Pusher interfaces but does not
-// support the Hijacker interface.
+// TimeoutHandler supports the Pusher interface but does not support
+// the Hijacker or Flusher interfaces.
 func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 
 // ErrHandlerTimeout is returned on ResponseWriter Write calls
@@ -636,9 +635,9 @@ var _ Pusher = (*timeoutWriter)(nil)
 
 // globalOptionsHandler responds to "OPTIONS *" requests.
 
-// initNPNRequest is an HTTP handler that initializes certain
+// initALPNRequest is an HTTP handler that initializes certain
 // uninitialized fields in its *Request. Such partially-initialized
-// Requests come from NPN protocol handlers.
+// Requests come from ALPN protocol handlers.
 
 // loggingConn is used for debugging.
 

@@ -772,6 +772,9 @@ type Rows struct {
 	lastcols []driver.Value
 }
 
+// bypassRowsAwaitDone is only used for testing.
+// If true, it will not close the Rows automatically from the context.
+
 // Next prepares the next result row for reading with the Scan method. It
 // returns true on success, or false if there is no next result row or an error
 // happened while preparing it. Err should be consulted to distinguish between

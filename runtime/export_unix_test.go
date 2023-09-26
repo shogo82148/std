@@ -6,3 +6,10 @@
 // +build aix darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package runtime
+
+var NonblockingPipe = nonblockingPipe
+var Pipe = pipe
+var SetNonblock = setNonblock
+var Closeonexec = closeonexec
+
+type M = m

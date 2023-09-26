@@ -16,3 +16,5 @@ type ComplexAlgKey struct {
 	_       int
 	f, g, h int64
 }
+
+var BoolSink bool

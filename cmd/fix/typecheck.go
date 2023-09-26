@@ -4,6 +4,10 @@
 
 package main
 
+import (
+	exec "internal/execabs"
+)
+
 type TypeConfig struct {
 	Type map[string]*Type
 	Var  map[string]string

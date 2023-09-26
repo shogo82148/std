@@ -112,9 +112,9 @@ func Fields(s string) []string
 // If f does not return consistent results for a given c, FieldsFunc may crash.
 func FieldsFunc(s string, f func(rune) bool) []string
 
-// Join concatenates the elements of a to create a single string. The separator string
-// sep is placed between elements in the resulting string.
-func Join(a []string, sep string) string
+// Join concatenates the elements of its first argument to create a single string. The separator
+// string sep is placed between elements in the resulting string.
+func Join(elems []string, sep string) string
 
 // HasPrefix tests whether the string s begins with prefix.
 func HasPrefix(s, prefix string) bool
@@ -236,7 +236,8 @@ func Replace(s, old, new string, n int) string
 func ReplaceAll(s, old, new string) string
 
 // EqualFold reports whether s and t, interpreted as UTF-8 strings,
-// are equal under Unicode case-folding.
+// are equal under Unicode case-folding, which is a more general
+// form of case-insensitivity.
 func EqualFold(s, t string) bool
 
 // Index returns the index of the first instance of substr in s, or -1 if substr is not present in s.

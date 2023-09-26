@@ -5,9 +5,20 @@
 // Package ecdsa implements the Elliptic Curve Digital Signature Algorithm, as
 // defined in FIPS 186-3.
 //
-// This implementation  derives the nonce from an AES-CTR CSPRNG keyed by
-// ChopMD(256, SHA2-512(priv.D || entropy || hash)). The CSPRNG key is IRO by
-// a result of Coron; the AES-CTR stream is IRO under standard assumptions.
+// This implementation derives the nonce from an AES-CTR CSPRNG keyed by:
+//
+// SHA2-512(priv.D || entropy || hash)[:32]
+//
+// The CSPRNG key is indifferentiable from a random oracle as shown in
+// [Coron], the AES-CTR stream is indifferentiable from a random oracle
+// under standard cryptographic assumptions (see [Larsson] for examples).
+//
+// References:
+//
+//	[Coron]
+//	  https://cs.nyu.edu/~dodis/ps/merkle.pdf
+//	[Larsson]
+//	  https://www.nada.kth.se/kurser/kth/2D1441/semteo03/lecturenotes/assump.pdf
 package ecdsa
 
 import (

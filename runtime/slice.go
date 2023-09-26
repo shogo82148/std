@@ -4,4 +4,4 @@
 
 package runtime
 
-// An notInHeapSlice is a slice backed by go:notinheap memory.
+// A notInHeapSlice is a slice backed by go:notinheap memory.

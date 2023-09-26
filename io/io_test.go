@@ -9,7 +9,7 @@ import (
 	. "io"
 )
 
-// An version of bytes.Buffer without ReadFrom and WriteTo
+// A version of bytes.Buffer without ReadFrom and WriteTo
 type Buffer struct {
 	bytes.Buffer
 	ReaderFrom

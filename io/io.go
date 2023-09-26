@@ -334,6 +334,9 @@ func Copy(dst Writer, src Reader) (written int64, err error)
 // provided buffer (if one is required) rather than allocating a
 // temporary one. If buf is nil, one is allocated; otherwise if it has
 // zero length, CopyBuffer panics.
+//
+// If either src implements WriterTo or dst implements ReaderFrom,
+// buf will not be used to perform the copy.
 func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error)
 
 // LimitReader returns a Reader that reads from r

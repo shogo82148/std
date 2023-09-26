@@ -21,7 +21,12 @@ type Data struct {
 	ranges   []byte
 	str      []byte
 
+	addr       []byte
+	lineStr    []byte
+	strOffsets []byte
+
 	abbrevCache map[uint64]abbrevTable
+	bigEndian   bool
 	order       binary.ByteOrder
 	typeCache   map[Offset]Type
 	typeSigs    map[uint64]*typeUnit
@@ -43,3 +48,9 @@ func New(abbrev, aranges, frame, info, line, pubnames, ranges, str []byte) (*Dat
 // .debug_types sections. The name is used for error reporting only,
 // and serves to distinguish one .debug_types section from another.
 func (d *Data) AddTypes(name string, types []byte) error
+
+// AddSection adds another DWARF section by name. The name should be a
+// DWARF section name such as ".debug_addr", ".debug_str_offsets", and
+// so forth. This approach is used for new DWARF sections added in
+// DWARF 5 and later.
+func (d *Data) AddSection(name string, contents []byte) error

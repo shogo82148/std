@@ -44,9 +44,10 @@ func (t *Template) New(name string) *Template
 // by adding the variants after the clone is made.
 func (t *Template) Clone() (*Template, error)
 
-// AddParseTree adds parse tree for template with given name and associates it with t.
-// If the template does not already exist, it will create a new one.
-// If the template does exist, it will be replaced.
+// AddParseTree associates the argument parse tree with the template t, giving
+// it the specified name. If the template has not been defined, this tree becomes
+// its definition. If it has been defined and already has that name, the existing
+// definition is replaced; otherwise a new template is created, defined, and returned.
 func (t *Template) AddParseTree(name string, tree *parse.Tree) (*Template, error)
 
 // Templates returns a slice of defined templates associated with t.

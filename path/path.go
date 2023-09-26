@@ -44,9 +44,11 @@ func Clean(path string) string
 // The returned values have the property that path = dir+file.
 func Split(path string) (dir, file string)
 
-// Join joins any number of path elements into a single path, adding a
-// separating slash if necessary. The result is Cleaned; in particular,
-// all empty strings are ignored.
+// Join joins any number of path elements into a single path,
+// separating them with slashes. Empty elements are ignored.
+// The result is Cleaned. However, if the argument list is
+// empty or all its elements are empty, Join returns
+// an empty string.
 func Join(elem ...string) string
 
 // Ext returns the file name extension used by path.
