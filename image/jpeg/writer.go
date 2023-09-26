@@ -32,7 +32,15 @@ import (
 
 // encoder encodes an image to the JPEG format.
 
-// sosHeader is the SOS marker "\xff\xda" followed by 12 bytes:
+// sosHeaderY is the SOS marker "\xff\xda" followed by 8 bytes:
+//	- the marker length "\x00\x08",
+//	- the number of components "\x01",
+//	- component 1 uses DC table 0 and AC table 0 "\x01\x00",
+//	- the bytes "\x00\x3f\x00". Section B.2.3 of the spec says that for
+//	  sequential DCTs, those bytes (8-bit Ss, 8-bit Se, 4-bit Ah, 4-bit Al)
+//	  should be 0x00, 0x3f, 0x00<<4 | 0x00.
+
+// sosHeaderYCbCr is the SOS marker "\xff\xda" followed by 12 bytes:
 //	- the marker length "\x00\x0c",
 //	- the number of components "\x03",
 //	- component 1 uses DC table 0 and AC table 0 "\x01\x00",

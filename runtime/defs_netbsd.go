@@ -110,7 +110,7 @@ const (
 	EVFILT_WRITE = C.EVFILT_WRITE
 )
 
-type Sigaltstack C.struct_sigaltstack
+type SigaltstackT C.struct_sigaltstack
 type Sigset C.sigset_t
 type Siginfo C.struct__ksiginfo
 

@@ -33,6 +33,11 @@ var (
 // and then return.  Returning signals that the request is finished
 // and that the HTTP server can move on to the next request on
 // the connection.
+//
+// If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
+// that the effect of the panic was isolated to the active request.
+// It recovers the panic, logs a stack trace to the server error log,
+// and hangs up the connection.
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
@@ -150,6 +155,8 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 // from closing a connection with known unread data.
 // This RST seems to occur mostly on BSD systems. (And Windows?)
 // This timeout is somewhat arbitrary (~latency around the planet).
+
+var _ closeWriter = (*net.TCPConn)(nil)
 
 // The HandlerFunc type is an adapter to allow the use of
 // ordinary functions as HTTP handlers.  If f is a function
@@ -446,3 +453,7 @@ var _ io.WriterTo = eofReader
 // Requests come from NPN protocol handlers.
 
 // loggingConn is used for debugging.
+
+// checkConnErrorWriter writes to c.rwc and records any write errors to c.werr.
+// It only contains one field (and a pointer field at that), so it
+// fits in an interface value without an extra allocation.

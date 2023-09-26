@@ -33,9 +33,8 @@ type Dialer struct {
 // "unixpacket".
 //
 // For TCP and UDP networks, addresses have the form host:port.
-// If host is a literal IPv6 address or host name, it must be enclosed
-// in square brackets as in "[::1]:80", "[ipv6-host]:http" or
-// "[ipv6-host%zone]:80".
+// If host is a literal IPv6 address it must be enclosed
+// in square brackets as in "[::1]:80" or "[ipv6-host%zone]:80".
 // The functions JoinHostPort and SplitHostPort manipulate addresses
 // in this form.
 //

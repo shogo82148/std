@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package png
+
+// intSize is either 32 or 64.

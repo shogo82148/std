@@ -6,6 +6,7 @@
 package rsa
 
 import (
+	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"
@@ -26,6 +27,16 @@ type PrivateKey struct {
 
 	Precomputed PrecomputedValues
 }
+
+// Public returns the public key corresponding to priv.
+func (priv *PrivateKey) Public() crypto.PublicKey
+
+// Sign signs msg with priv, reading randomness from rand. If opts is a
+// *PSSOptions then the PSS algorithm will be used, otherwise PKCS#1 v1.5 will
+// be used. This method is intended to support keys where the private part is
+// kept in, for example, a hardware module. Common uses should use the Sign*
+// functions in this package.
+func (priv *PrivateKey) Sign(rand io.Reader, msg []byte, opts crypto.SignerOpts) ([]byte, error)
 
 type PrecomputedValues struct {
 	Dp, Dq *big.Int

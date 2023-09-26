@@ -170,6 +170,8 @@ type Certificate struct {
 	IsCA                  bool
 	MaxPathLen            int
 
+	MaxPathLenZero bool
+
 	SubjectKeyId   []byte
 	AuthorityKeyId []byte
 
@@ -309,7 +311,7 @@ type CertificateRequest struct {
 
 // CreateCertificateRequest creates a new certificate based on a template. The
 // following members of template are used: Subject, Attributes,
-// SignatureAlgorithm, Extension, DNSNames, EmailAddresses, and IPAddresses.
+// SignatureAlgorithm, Extensions, DNSNames, EmailAddresses, and IPAddresses.
 // The private key is the private key of the signer.
 //
 // The returned slice is the certificate request in DER encoding.

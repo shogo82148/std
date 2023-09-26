@@ -33,6 +33,7 @@ type Scanner struct {
 	start        int
 	end          int
 	err          error
+	empties      int
 }
 
 // SplitFunc is the signature of the split function used to tokenize the
@@ -61,8 +62,9 @@ var (
 )
 
 const (
-	// Maximum size used to buffer a token. The actual maximum token size
-	// may be smaller as the buffer may need to include, for instance, a newline.
+	// MaxScanTokenSize is the maximum size used to buffer a token.
+	// The actual maximum token size may be smaller as the buffer
+	// may need to include, for instance, a newline.
 	MaxScanTokenSize = 64 * 1024
 )
 
@@ -88,6 +90,8 @@ func (s *Scanner) Text() string
 // After Scan returns false, the Err method will return any error that
 // occurred during scanning, except that if it was io.EOF, Err
 // will return nil.
+// Split panics if the split function returns 100 empty tokens without
+// advancing the input. This is a common error mode for scanners.
 func (s *Scanner) Scan() bool
 
 // Split sets the split function for the Scanner. If called, it must be

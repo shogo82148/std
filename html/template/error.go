@@ -4,9 +4,15 @@
 
 package template
 
+import (
+	"github.com/shogo82148/std/text/template/parse"
+)
+
 // Error describes a problem encountered during template Escaping.
 type Error struct {
 	ErrorCode ErrorCode
+
+	Node parse.Node
 
 	Name string
 

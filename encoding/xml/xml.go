@@ -109,6 +109,7 @@ type Decoder struct {
 	ns             map[string]string
 	err            error
 	line           int
+	offset         int64
 	unmarshalDepth int
 }
 
@@ -150,6 +151,11 @@ func (d *Decoder) Token() (t Token, err error)
 // start and end elements match and does not translate
 // name space prefixes to their corresponding URLs.
 func (d *Decoder) RawToken() (Token, error)
+
+// InputOffset returns the input stream byte offset of the current decoder position.
+// The offset gives the location of the end of the most recently returned token
+// and the beginning of the next token.
+func (d *Decoder) InputOffset() int64
 
 // HTMLEntity is an entity map containing translations for the
 // standard HTML entity characters.

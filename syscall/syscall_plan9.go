@@ -100,9 +100,9 @@ type Timeval struct {
 
 func NsecToTimeval(nsec int64) (tv Timeval)
 
-func DecodeBintime(b []byte) (nsec int64, err error)
-
 func Gettimeofday(tv *Timeval) error
+
+func Getpagesize() int
 
 func Getegid() (egid int)
 func Geteuid() (euid int)

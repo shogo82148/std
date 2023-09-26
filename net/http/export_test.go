@@ -10,3 +10,7 @@ package http
 var ExportAppendTime = appendTime
 
 var DefaultUserAgent = defaultUserAgent
+
+var ExportServerNewConn = (*Server).newConn
+
+var ExportCloseWriteAndWait = (*conn).closeWriteAndWait

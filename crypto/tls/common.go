@@ -71,6 +71,8 @@ type ConnectionState struct {
 	ServerName                 string
 	PeerCertificates           []*x509.Certificate
 	VerifiedChains             [][]*x509.Certificate
+
+	TLSUnique []byte
 }
 
 // ClientAuthType declares the policy the server will follow for
@@ -105,6 +107,18 @@ type ClientSessionCache interface {
 	Put(sessionKey string, cs *ClientSessionState)
 }
 
+// ClientHelloInfo contains information from a ClientHello message in order to
+// guide certificate selection in the GetCertificate callback.
+type ClientHelloInfo struct {
+	CipherSuites []uint16
+
+	ServerName string
+
+	SupportedCurves []CurveID
+
+	SupportedPoints []uint8
+}
+
 // A Config structure is used to configure a TLS client or server.
 // After one has been passed to a TLS function it must not be
 // modified. A Config may be reused; the tls package will also not
@@ -117,6 +131,8 @@ type Config struct {
 	Certificates []Certificate
 
 	NameToCertificate map[string]*Certificate
+
+	GetCertificate func(clientHello *ClientHelloInfo) (*Certificate, error)
 
 	RootCAs *x509.CertPool
 
@@ -157,7 +173,8 @@ func (c *Config) BuildNameToCertificate()
 // A Certificate is a chain of one or more certificates, leaf first.
 type Certificate struct {
 	Certificate [][]byte
-	PrivateKey  crypto.PrivateKey
+
+	PrivateKey crypto.PrivateKey
 
 	OCSPStaple []byte
 

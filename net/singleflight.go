@@ -8,3 +8,6 @@ package net
 
 // singleflight represents a class of work and forms a namespace in
 // which units of work can be executed with duplicate suppression.
+
+// singleflightResult holds the results of Do, so they can be passed
+// on a channel.

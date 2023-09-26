@@ -34,10 +34,10 @@ type Call struct {
 type Client struct {
 	codec ClientCodec
 
-	sending sync.Mutex
+	reqMutex sync.Mutex
+	request  Request
 
 	mutex    sync.Mutex
-	request  Request
 	seq      uint64
 	pending  map[uint64]*Call
 	closing  bool

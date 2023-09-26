@@ -72,7 +72,7 @@ func (s *CheckEqualError) Error() string
 //			t.Error(err)
 //		}
 //	}
-func Check(function interface{}, config *Config) (err error)
+func Check(f interface{}, config *Config) (err error)
 
 // CheckEqual looks for an input on which f and g return different results.
 // It calls f and g repeatedly with arbitrary values for each argument.

@@ -7,11 +7,15 @@ package crypto
 
 import (
 	"github.com/shogo82148/std/hash"
+	"github.com/shogo82148/std/io"
 )
 
 // Hash identifies a cryptographic hash function that is implemented in another
 // package.
 type Hash uint
+
+// HashFunc simply returns the value of h so that Hash implements SignerOpts.
+func (h Hash) HashFunc() Hash
 
 const (
 	MD4 Hash = 1 + iota
@@ -23,6 +27,10 @@ const (
 	SHA512
 	MD5SHA1
 	RIPEMD160
+	SHA3_224
+	SHA3_256
+	SHA3_384
+	SHA3_512
 )
 
 // Size returns the length, in bytes, of a digest resulting from the given hash
@@ -47,3 +55,16 @@ type PublicKey interface{}
 
 // PrivateKey represents a private key using an unspecified algorithm.
 type PrivateKey interface{}
+
+// Signer is an interface for an opaque private key that can be used for
+// signing operations. For example, an RSA key kept in a hardware module.
+type Signer interface {
+	Public() PublicKey
+
+	Sign(rand io.Reader, msg []byte, opts SignerOpts) (signature []byte, err error)
+}
+
+// SignerOpts contains options for signing with a Signer.
+type SignerOpts interface {
+	HashFunc() Hash
+}

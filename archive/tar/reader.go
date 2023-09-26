@@ -18,10 +18,11 @@ var (
 // The Next method advances to the next file in the archive (including the first),
 // and then it can be treated as an io.Reader to access the file's data.
 type Reader struct {
-	r    io.Reader
-	err  error
-	pad  int64
-	curr numBytesReader
+	r       io.Reader
+	err     error
+	pad     int64
+	curr    numBytesReader
+	hdrBuff [blockSize]byte
 }
 
 // A numBytesReader is an io.Reader with a numBytes method, returning the number

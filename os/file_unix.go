@@ -18,6 +18,7 @@ type File struct {
 // to close the wrong file descriptor.
 
 // Fd returns the integer Unix file descriptor referencing the open file.
+// The file descriptor is valid only until f.Close is called or f is garbage collected.
 func (f *File) Fd() uintptr
 
 // NewFile returns a new File with the given file descriptor and name.
@@ -70,3 +71,11 @@ func Remove(name string) error
 
 // TempDir returns the default directory to use for temporary files.
 func TempDir() string
+
+// Link creates newname as a hard link to the oldname file.
+// If there is an error, it will be of type *LinkError.
+func Link(oldname, newname string) error
+
+// Symlink creates newname as a symbolic link to oldname.
+// If there is an error, it will be of type *LinkError.
+func Symlink(oldname, newname string) error

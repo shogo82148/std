@@ -79,6 +79,11 @@ type AddrType struct {
 	BasicType
 }
 
+// An UnspecifiedType represents an implicit, unknown, ambiguous or nonexistent type.
+type UnspecifiedType struct {
+	BasicType
+}
+
 // A QualType represents a type that has the C/C++ "const", "restrict", or "volatile" qualifier.
 type QualType struct {
 	CommonType

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || linux || nacl || netbsd || openbsd || solaris
-// +build darwin dragonfly freebsd linux nacl netbsd openbsd solaris
+//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
+// +build darwin dragonfly freebsd linux netbsd openbsd solaris
 
 // DNS client: see RFC 1035.
 // Has to be linked into package net for Dial.
@@ -15,3 +15,5 @@
 //	Random request IDs.
 
 package net
+
+// A dnsConn represents a DNS transport endpoint.

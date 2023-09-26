@@ -163,6 +163,11 @@ func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 // methods Do, Post, and PostForm, and Transport.RoundTrip.
 func NewRequest(method, urlStr string, body io.Reader) (*Request, error)
 
+// BasicAuth returns the username and password provided in the request's
+// Authorization header, if the request uses HTTP Basic Authentication.
+// See RFC 2617, Section 2.
+func (r *Request) BasicAuth() (username, password string, ok bool)
+
 // SetBasicAuth sets the request's Authorization header to use HTTP
 // Basic Authentication with the provided username and password.
 //
@@ -207,13 +212,16 @@ func (r *Request) ParseMultipartForm(maxMemory int64) error
 
 // FormValue returns the first value for the named component of the query.
 // POST and PUT body parameters take precedence over URL query string values.
-// FormValue calls ParseMultipartForm and ParseForm if necessary.
-// To access multiple values of the same key use ParseForm.
+// FormValue calls ParseMultipartForm and ParseForm if necessary and ignores
+// any errors returned by these functions.
+// To access multiple values of the same key, call ParseForm and
+// then inspect Request.Form directly.
 func (r *Request) FormValue(key string) string
 
 // PostFormValue returns the first value for the named component of the POST
 // or PUT request body. URL query parameters are ignored.
-// PostFormValue calls ParseMultipartForm and ParseForm if necessary.
+// PostFormValue calls ParseMultipartForm and ParseForm if necessary and ignores
+// any errors returned by these functions.
 func (r *Request) PostFormValue(key string) string
 
 // FormFile returns the first file for the provided form key.

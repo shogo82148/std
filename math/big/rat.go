@@ -23,6 +23,12 @@ func NewRat(a, b int64) *Rat
 // If f is not finite, SetFloat returns nil.
 func (z *Rat) SetFloat64(f float64) *Rat
 
+// Float32 returns the nearest float32 value for x and a bool indicating
+// whether f represents x exactly. If the magnitude of x is too large to
+// be represented by a float32, f is an infinity and exact is false.
+// The sign of f always matches the sign of x, even if f == 0.
+func (x *Rat) Float32() (f float32, exact bool)
+
 // Float64 returns the nearest float64 value for x and a bool indicating
 // whether f represents x exactly. If the magnitude of x is too large to
 // be represented by a float64, f is an infinity and exact is false.
@@ -123,8 +129,8 @@ func (x *Rat) GobEncode() ([]byte, error)
 // GobDecode implements the gob.GobDecoder interface.
 func (z *Rat) GobDecode(buf []byte) error
 
-// MarshalText implements the encoding.TextMarshaler interface
+// MarshalText implements the encoding.TextMarshaler interface.
 func (r *Rat) MarshalText() (text []byte, err error)
 
-// UnmarshalText implements the encoding.TextUnmarshaler interface
+// UnmarshalText implements the encoding.TextUnmarshaler interface.
 func (r *Rat) UnmarshalText(text []byte) error

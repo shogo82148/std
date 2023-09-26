@@ -197,9 +197,9 @@ func (x *Int) ProbablyPrime(n int) bool
 // Rand sets z to a pseudo-random number in [0, n) and returns z.
 func (z *Int) Rand(rnd *rand.Rand, n *Int) *Int
 
-// ModInverse sets z to the multiplicative inverse of g in the group ℤ/pℤ (where
-// p is a prime) and returns z.
-func (z *Int) ModInverse(g, p *Int) *Int
+// ModInverse sets z to the multiplicative inverse of g in the ring ℤ/nℤ
+// and returns z. If g and n are not relatively prime, the result is undefined.
+func (z *Int) ModInverse(g, n *Int) *Int
 
 // Lsh sets z = x << n and returns z.
 func (z *Int) Lsh(x *Int, n uint) *Int
@@ -246,8 +246,8 @@ func (z *Int) MarshalJSON() ([]byte, error)
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (z *Int) UnmarshalJSON(text []byte) error
 
-// MarshalText implements the encoding.TextMarshaler interface
+// MarshalText implements the encoding.TextMarshaler interface.
 func (z *Int) MarshalText() (text []byte, err error)
 
-// UnmarshalText implements the encoding.TextUnmarshaler interface
+// UnmarshalText implements the encoding.TextUnmarshaler interface.
 func (z *Int) UnmarshalText(text []byte) error

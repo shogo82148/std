@@ -86,7 +86,8 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ErrHelp is the error returned if the flag -help is invoked but no such flag is defined.
+// ErrHelp is the error returned if the -help or -h flag is invoked
+// but no such flag is defined.
 var ErrHelp = errors.New("flag: help requested")
 
 // -- bool Value
@@ -200,6 +201,7 @@ func (f *FlagSet) PrintDefaults()
 func PrintDefaults()
 
 // Usage prints to standard error a usage message documenting all defined command-line flags.
+// It is called when an error occurs while parsing flags.
 // The function is a variable that may be changed to point to a custom function.
 var Usage = func() {
 	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
@@ -346,18 +348,22 @@ func Float64(name string, value float64, usage string) *float64
 
 // DurationVar defines a time.Duration flag with specified name, default value, and usage string.
 // The argument p points to a time.Duration variable in which to store the value of the flag.
+// The flag accepts a value acceptable to time.ParseDuration.
 func (f *FlagSet) DurationVar(p *time.Duration, name string, value time.Duration, usage string)
 
 // DurationVar defines a time.Duration flag with specified name, default value, and usage string.
 // The argument p points to a time.Duration variable in which to store the value of the flag.
+// The flag accepts a value acceptable to time.ParseDuration.
 func DurationVar(p *time.Duration, name string, value time.Duration, usage string)
 
 // Duration defines a time.Duration flag with specified name, default value, and usage string.
 // The return value is the address of a time.Duration variable that stores the value of the flag.
+// The flag accepts a value acceptable to time.ParseDuration.
 func (f *FlagSet) Duration(name string, value time.Duration, usage string) *time.Duration
 
 // Duration defines a time.Duration flag with specified name, default value, and usage string.
 // The return value is the address of a time.Duration variable that stores the value of the flag.
+// The flag accepts a value acceptable to time.ParseDuration.
 func Duration(name string, value time.Duration, usage string) *time.Duration
 
 // Var defines a flag with the specified name and usage string. The type and
@@ -379,7 +385,7 @@ func Var(value Value, name string, usage string)
 // Parse parses flag definitions from the argument list, which should not
 // include the command name.  Must be called after all flags in the FlagSet
 // are defined and before flags are accessed by the program.
-// The return value will be ErrHelp if -help was set but not defined.
+// The return value will be ErrHelp if -help or -h were set but not defined.
 func (f *FlagSet) Parse(arguments []string) error
 
 // Parsed reports whether f.Parse has been called.
@@ -393,7 +399,7 @@ func Parse()
 func Parsed() bool
 
 // CommandLine is the default set of command-line flags, parsed from os.Args.
-// The top-level functions such as BoolVar, Arg, and on are wrappers for the
+// The top-level functions such as BoolVar, Arg, and so on are wrappers for the
 // methods of CommandLine.
 var CommandLine = NewFlagSet(os.Args[0], ExitOnError)
 

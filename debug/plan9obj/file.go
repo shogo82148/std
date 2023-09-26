@@ -11,10 +11,12 @@ import (
 
 // A FileHeader represents a Plan 9 a.out file header.
 type FileHeader struct {
-	Magic   uint32
-	Bss     uint32
-	Entry   uint64
-	PtrSize int
+	Magic       uint32
+	Bss         uint32
+	Entry       uint64
+	PtrSize     int
+	LoadAddress uint64
+	HdrSize     uint64
 }
 
 // A File represents an open Plan 9 a.out file.

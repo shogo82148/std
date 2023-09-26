@@ -13,13 +13,15 @@ import (
 // Template is a specialized Template from "text/template" that produces a safe
 // HTML document fragment.
 type Template struct {
-	escaped bool
+	escapeErr error
 
 	text *template.Template
 
 	Tree *parse.Tree
 	*nameSpace
 }
+
+// escapeOK is a sentinel value used to indicate valid escaping.
 
 // nameSpace is the data structure shared by all templates in an association.
 

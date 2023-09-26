@@ -51,10 +51,13 @@ func (e Errno) Temporary() bool
 func (e Errno) Timeout() bool
 
 // Converts a Go function to a function pointer conforming
-// to the stdcall or cdecl calling convention.  This is useful when
+// to the stdcall calling convention. This is useful when
 // interoperating with Windows code requiring callbacks.
-// Implemented in ../runtime/syscall_windows.goc
 func NewCallback(fn interface{}) uintptr
+
+// Converts a Go function to a function pointer conforming
+// to the cdecl calling convention. This is useful when
+// interoperating with Windows code requiring callbacks.
 func NewCallbackCDecl(fn interface{}) uintptr
 
 func Exit(code int)
@@ -263,13 +266,12 @@ func FindFirstFile(name *uint16, data *Win32finddata) (handle Handle, err error)
 
 func FindNextFile(handle Handle, data *Win32finddata) (err error)
 
-// TODO(brainman): fix all needed for os
 func Getppid() (ppid int)
 
+// TODO(brainman): fix all needed for os
 func Fchdir(fd Handle) (err error)
 func Link(oldpath, newpath string) (err error)
 func Symlink(path, link string) (err error)
-func Readlink(path string, buf []byte) (n int, err error)
 
 func Fchmod(fd Handle, mode uint32) (err error)
 func Chown(path string, uid int, gid int) (err error)
@@ -287,3 +289,8 @@ type Signal int
 func (s Signal) Signal()
 
 func (s Signal) String() string
+
+func LoadCreateSymbolicLink() error
+
+// Readlink returns the destination of the named symbolic link.
+func Readlink(path string, buf []byte) (n int, err error)

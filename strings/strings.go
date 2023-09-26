@@ -82,6 +82,8 @@ func Fields(s string) []string
 // FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
 // and returns an array of slices of s. If all code points in s satisfy f(c) or the
 // string is empty, an empty slice is returned.
+// FieldsFunc makes no guarantees about the order in which it calls f(c).
+// If f does not return consistent results for a given c, FieldsFunc may crash.
 func FieldsFunc(s string, f func(rune) bool) []string
 
 // Join concatenates the elements of a to create a single string.   The separator string
@@ -175,6 +177,9 @@ func TrimSuffix(s, suffix string) string
 
 // Replace returns a copy of the string s with the first n
 // non-overlapping instances of old replaced by new.
+// If old is empty, it matches at the beginning of the string
+// and after each UTF-8 sequence, yielding up to k+1 replacements
+// for a k-rune string.
 // If n < 0, there is no limit on the number of replacements.
 func Replace(s, old, new string, n int) string
 

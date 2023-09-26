@@ -10,6 +10,8 @@ func Getenv(key string) (value string, found bool)
 
 func Setenv(key, value string) error
 
+func Unsetenv(key string) error
+
 func Clearenv()
 
 func Environ() []string

@@ -9,6 +9,8 @@
 
 package syscall
 
+func Unsetenv(key string) error
+
 func Getenv(key string) (value string, found bool)
 
 func Setenv(key, value string) error

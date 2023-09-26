@@ -8,7 +8,7 @@
 //
 // usage:
 //
-// go run genzabbrs.go | gofmt > $GOROOT/src/pkg/time/zoneinfo_abbrs_windows.go
+// go run genzabbrs.go -output zoneinfo_abbrs_windows.go
 //
 
 package main

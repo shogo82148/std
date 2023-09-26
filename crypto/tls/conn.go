@@ -35,6 +35,8 @@ type Conn struct {
 
 	serverName string
 
+	firstFinished [12]byte
+
 	clientProtocol         string
 	clientProtocolFallback bool
 

@@ -49,6 +49,8 @@ type Type interface {
 
 	ConvertibleTo(u Type) bool
 
+	Comparable() bool
+
 	Bits() int
 
 	ChanDir() ChanDir
@@ -158,9 +160,6 @@ const (
 
 // structType represents a struct type.
 
-// NOTE: These are copied from ../runtime/mgc0.h.
-// They must be kept in sync.
-
 // Method represents a single method.
 type Method struct {
 	Name    string
@@ -170,9 +169,6 @@ type Method struct {
 	Func  Value
 	Index int
 }
-
-// High bit says whether type has
-// embedded pointers,to help garbage collector.
 
 func (k Kind) String() string
 
@@ -214,12 +210,6 @@ func TypeOf(i interface{}) Type
 
 // ptrMap is the cache for PtrTo.
 
-// garbage collection bytecode program for pointer to memory without pointers.
-// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
-
-// garbage collection bytecode program for pointer to memory with pointers.
-// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
-
 // PtrTo returns the pointer type with element t.
 // For example, if t represents type Foo, PtrTo(t) represents *Foo.
 func PtrTo(t Type) Type
@@ -229,9 +219,6 @@ func PtrTo(t Type) Type
 // A cacheKey is the key for use in the lookupCache.
 // Four values describe any of the types we are looking for:
 // type kind, one or two subtypes, and an extra integer.
-
-// garbage collection bytecode program for chan.
-// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
 
 // ChanOf returns the channel type with the given direction and element type.
 // For example, if t represents int, ChanOf(RecvDir, t) represents <-chan int.
@@ -248,17 +235,17 @@ func ChanOf(dir ChanDir, t Type) Type
 // not implement Go's == operator), MapOf panics.
 func MapOf(key, elem Type) Type
 
-// Make sure these routines stay in sync with ../../pkg/runtime/hashmap.c!
+// gcProg is a helper type for generatation of GC pointer info.
+
+// These constants must stay in sync with ../runtime/mgc0.h.
+
+// Make sure these routines stay in sync with ../../runtime/hashmap.go!
 // These types exist only for GC, so we only fill out GC relevant info.
 // Currently, that's just size and the GC program.  We also fill in string
 // for possible debugging use.
 
-// garbage collection bytecode program for slice of non-zero-length values.
-// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
-
-// garbage collection bytecode program for slice of zero-length values.
-// See ../../cmd/gc/reflect.c:/^dgcsym1 and :/^dgcsym.
-
 // SliceOf returns the slice type with element type t.
 // For example, if t represents int, SliceOf(t) represents []int.
 func SliceOf(t Type) Type
+
+// Layout matches runtime.BitVector (well enough).

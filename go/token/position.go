@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// TODO(gri) consider making this a separate package outside the go directory.
-
 package token
 
 import (
@@ -106,6 +104,7 @@ func (f *File) MergeLine(line int)
 func (f *File) SetLines(lines []int) bool
 
 // SetLinesForContent sets the line offsets for the given file content.
+// It ignores position-altering //line comments.
 func (f *File) SetLinesForContent(content []byte)
 
 // A lineInfo object describes alternative file and line number
@@ -135,8 +134,14 @@ func (f *File) Offset(p Pos) int
 // p must be a Pos value in that file or NoPos.
 func (f *File) Line(p Pos) int
 
-// Position returns the Position value for the given file position p;
-// p must be a Pos value in that file or NoPos.
+// PositionFor returns the Position value for the given file position p.
+// If adjusted is set, the position may be adjusted by position-altering
+// //line comments; otherwise those comments are ignored.
+// p must be a Pos value in f or NoPos.
+func (f *File) PositionFor(p Pos, adjusted bool) (pos Position)
+
+// Position returns the Position value for the given file position p.
+// Calling f.Position(p) is equivalent to calling f.PositionFor(p, true).
 func (f *File) Position(p Pos) (pos Position)
 
 // A FileSet represents a set of source files.
@@ -182,5 +187,12 @@ func (s *FileSet) Iterate(f func(*File) bool)
 // the result is nil.
 func (s *FileSet) File(p Pos) (f *File)
 
-// Position converts a Pos in the fileset into a general Position.
+// PositionFor converts a Pos p in the fileset into a Position value.
+// If adjusted is set, the position may be adjusted by position-altering
+// //line comments; otherwise those comments are ignored.
+// p must be a Pos value in s or NoPos.
+func (s *FileSet) PositionFor(p Pos, adjusted bool) (pos Position)
+
+// Position converts a Pos p in the fileset into a Position value.
+// Calling s.Position(p) is equivalent to calling s.PositionFor(p, true).
 func (s *FileSet) Position(p Pos) (pos Position)

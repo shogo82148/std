@@ -4,11 +4,18 @@
 
 package math
 
-// Nextafter returns the next representable value after x towards y.
-// If x == y, then x is returned.
+// Nextafter32 returns the next representable float32 value after x towards y.
+// Special cases:
 //
-// Special cases are:
+//		Nextafter32(x, x)   = x
+//	     Nextafter32(NaN, y) = NaN
+//	     Nextafter32(x, NaN) = NaN
+func Nextafter32(x, y float32) (r float32)
+
+// Nextafter returns the next representable float64 value after x towards y.
+// Special cases:
 //
-//	Nextafter(NaN, y) = NaN
-//	Nextafter(x, NaN) = NaN
+//		Nextafter64(x, x)   = x
+//	     Nextafter64(NaN, y) = NaN
+//	     Nextafter64(x, NaN) = NaN
 func Nextafter(x, y float64) (r float64)

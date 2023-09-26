@@ -4,6 +4,11 @@
 
 package gob
 
+type ET0 struct {
+	A int
+	B string
+}
+
 type ET2 struct {
 	X string
 }

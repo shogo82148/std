@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:generate go run gen.go -output fixedhuff.go
+
 // Package flate implements the DEFLATE compressed data format, described in
 // RFC 1951.  The gzip and zlib packages implement access to DEFLATE-based file
 // formats.
@@ -37,6 +39,13 @@ type WriteError struct {
 
 func (e *WriteError) Error() string
 
+// Resetter resets a ReadCloser returned by NewReader or NewReaderDict to
+// to switch to a new underlying Reader. This permits reusing a ReadCloser
+// instead of allocating a new one.
+type Resetter interface {
+	Reset(r io.Reader, dict []byte) error
+}
+
 // The actual read interface needed by NewReader.
 // If the passed in io.Reader does not also have ReadByte,
 // the NewReader will introduce its own buffering.
@@ -48,9 +57,13 @@ type Reader interface {
 // Decompress state.
 
 // NewReader returns a new ReadCloser that can be used
-// to read the uncompressed version of r.  It is the caller's
-// responsibility to call Close on the ReadCloser when
-// finished reading.
+// to read the uncompressed version of r.
+// If r does not also implement io.ByteReader,
+// the decompressor may read more data than necessary from r.
+// It is the caller's responsibility to call Close on the ReadCloser
+// when finished reading.
+//
+// The ReadCloser returned by NewReader also implements Resetter.
 func NewReader(r io.Reader) io.ReadCloser
 
 // NewReaderDict is like NewReader but initializes the reader
@@ -58,4 +71,6 @@ func NewReader(r io.Reader) io.ReadCloser
 // the uncompressed data stream started with the given dictionary,
 // which has already been read.  NewReaderDict is typically used
 // to read data compressed by NewWriterDict.
+//
+// The ReadCloser returned by NewReader also implements Resetter.
 func NewReaderDict(r io.Reader, dict []byte) io.ReadCloser

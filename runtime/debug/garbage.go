@@ -14,6 +14,7 @@ type GCStats struct {
 	NumGC          int64
 	PauseTotal     time.Duration
 	Pause          []time.Duration
+	PauseEnd       []time.Time
 	PauseQuantiles []time.Duration
 }
 

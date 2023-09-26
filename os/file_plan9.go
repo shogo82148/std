@@ -18,7 +18,8 @@ type File struct {
 // can overwrite this data, which could cause the finalizer
 // to close the wrong file descriptor.
 
-// Fd returns the integer Unix file descriptor referencing the open file.
+// Fd returns the integer Plan 9 file descriptor referencing the open file.
+// The file descriptor is valid only until f.Close is called or f is garbage collected.
 func (f *File) Fd() uintptr
 
 // NewFile returns a new File with the given file descriptor and name.

@@ -39,12 +39,20 @@ a comma-separated list of name=val pairs. Supported names are:
 	gcdead: setting gcdead=1 causes the garbage collector to clobber all stack slots
 	that it thinks are dead.
 
+	invalidptr: defaults to invalidptr=1, causing the garbage collector and stack
+	copier to crash the program if an invalid pointer value (for example, 1)
+	is found in a pointer-typed location. Setting invalidptr=0 disables this check.
+	This should only be used as a temporary workaround to diagnose buggy code.
+	The real fix is to not store integers in pointer-typed locations.
+
 	scheddetail: setting schedtrace=X and scheddetail=1 causes the scheduler to emit
 	detailed multiline info every X milliseconds, describing state of the scheduler,
 	processors, threads and goroutines.
 
 	schedtrace: setting schedtrace=X causes the scheduler to emit a single line to standard
 	error every X milliseconds, summarizing the scheduler state.
+
+	scavenge: scavenge=1 enables debugging mode of heap scavenger.
 
 The GOMAXPROCS variable limits the number of operating system threads that
 can execute user-level Go code simultaneously. There is no limit to the number of threads
@@ -73,19 +81,6 @@ of the run-time system.
 */
 package runtime
 
-// Gosched yields the processor, allowing other goroutines to run.  It does not
-// suspend the current goroutine, so execution resumes automatically.
-func Gosched()
-
-// Goexit terminates the goroutine that calls it.  No other goroutine is affected.
-// Goexit runs all deferred calls before terminating the goroutine.
-//
-// Calling Goexit from the main goroutine terminates that goroutine
-// without func main returning. Since func main has not returned,
-// the program continues execution of other goroutines.
-// If all other goroutines exit, the program crashes.
-func Goexit()
-
 // Caller reports file and line number information about function invocations on
 // the calling goroutine's stack.  The argument skip is the number of stack frames
 // to ascend, with 0 identifying the caller of Caller.  (For historical reasons the
@@ -94,76 +89,21 @@ func Goexit()
 // call.  The boolean ok is false if it was not possible to recover the information.
 func Caller(skip int) (pc uintptr, file string, line int, ok bool)
 
-// Callers fills the slice pc with the program counters of function invocations
+// Callers fills the slice pc with the return program counters of function invocations
 // on the calling goroutine's stack.  The argument skip is the number of stack frames
 // to skip before recording in pc, with 0 identifying the frame for Callers itself and
 // 1 identifying the caller of Callers.
 // It returns the number of entries written to pc.
+//
+// Note that since each slice entry pc[i] is a return program counter,
+// looking up the file and line for pc[i] (for example, using (*Func).FileLine)
+// will return the file and line number of the instruction immediately
+// following the call.
+// To look up the file and line number of the call itself, use pc[i]-1.
+// As an exception to this rule, if pc[i-1] corresponds to the function
+// runtime.sigpanic, then pc[i] is the program counter of a faulting
+// instruction and should be used without any subtraction.
 func Callers(skip int, pc []uintptr) int
-
-type Func struct {
-	opaque struct{}
-}
-
-// FuncForPC returns a *Func describing the function that contains the
-// given program counter address, or else nil.
-func FuncForPC(pc uintptr) *Func
-
-// Name returns the name of the function.
-func (f *Func) Name() string
-
-// Entry returns the entry address of the function.
-func (f *Func) Entry() uintptr
-
-// FileLine returns the file name and line number of the
-// source code corresponding to the program counter pc.
-// The result will not be accurate if pc is not a program
-// counter within f.
-func (f *Func) FileLine(pc uintptr) (file string, line int)
-
-// SetFinalizer sets the finalizer associated with x to f.
-// When the garbage collector finds an unreachable block
-// with an associated finalizer, it clears the association and runs
-// f(x) in a separate goroutine.  This makes x reachable again, but
-// now without an associated finalizer.  Assuming that SetFinalizer
-// is not called again, the next time the garbage collector sees
-// that x is unreachable, it will free x.
-//
-// SetFinalizer(x, nil) clears any finalizer associated with x.
-//
-// The argument x must be a pointer to an object allocated by
-// calling new or by taking the address of a composite literal.
-// The argument f must be a function that takes a single argument
-// to which x's type can be assigned, and can have arbitrary ignored return
-// values. If either of these is not true, SetFinalizer aborts the
-// program.
-//
-// Finalizers are run in dependency order: if A points at B, both have
-// finalizers, and they are otherwise unreachable, only the finalizer
-// for A runs; once A is freed, the finalizer for B can run.
-// If a cyclic structure includes a block with a finalizer, that
-// cycle is not guaranteed to be garbage collected and the finalizer
-// is not guaranteed to run, because there is no ordering that
-// respects the dependencies.
-//
-// The finalizer for x is scheduled to run at some arbitrary time after
-// x becomes unreachable.
-// There is no guarantee that finalizers will run before a program exits,
-// so typically they are useful only for releasing non-memory resources
-// associated with an object during a long-running program.
-// For example, an os.File object could use a finalizer to close the
-// associated operating system file descriptor when a program discards
-// an os.File without calling Close, but it would be a mistake
-// to depend on a finalizer to flush an in-memory I/O buffer such as a
-// bufio.Writer, because the buffer would not be flushed at program exit.
-//
-// It is not guaranteed that a finalizer will run if the size of *x is
-// zero bytes.
-//
-// A single goroutine runs all finalizers for a program, sequentially.
-// If a finalizer must run for a long time, it should do so by starting
-// a new goroutine.
-func SetFinalizer(x, f interface{})
 
 // GOROOT returns the root of the Go tree.
 // It uses the GOROOT environment variable, if set,

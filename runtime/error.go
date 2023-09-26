@@ -24,6 +24,3 @@ func (*TypeAssertionError) RuntimeError()
 func (e *TypeAssertionError) Error() string
 
 // An errorString represents a runtime error described by a single string.
-
-// An errorCString represents a runtime error described by a single C string.
-// Not "type errorCString uintptr" because of http://golang.org/issue/7084.

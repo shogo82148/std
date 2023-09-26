@@ -59,10 +59,9 @@ type UnknownAuthorityError struct {
 func (e UnknownAuthorityError) Error() string
 
 // SystemRootsError results when we fail to load the system root certificates.
-type SystemRootsError struct {
-}
+type SystemRootsError struct{}
 
-func (e SystemRootsError) Error() string
+func (SystemRootsError) Error() string
 
 // VerifyOptions contains parameters for Certificate.Verify. It's a structure
 // because other PKIX verification APIs have ended up needing many options.
@@ -79,6 +78,9 @@ type VerifyOptions struct {
 // certificate in opts.Roots, using certificates in opts.Intermediates if
 // needed. If successful, it returns one or more chains where the first
 // element of the chain is c and the last element is from opts.Roots.
+//
+// If opts.Roots is nil and system roots are unavailable the returned error
+// will be of type SystemRootsError.
 //
 // WARNING: this doesn't do any revocation checking.
 func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)

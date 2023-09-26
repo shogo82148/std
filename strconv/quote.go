@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:generate go run makeisprint.go -output isprint.go
+
 package strconv
 
 // Quote returns a double-quoted Go string literal representing s.  The
@@ -44,7 +46,7 @@ func AppendQuoteRuneToASCII(dst []byte, r rune) []byte
 
 // CanBackquote reports whether the string s can be represented
 // unchanged as a single-line backquoted string without control
-// characters other than space and tab.
+// characters other than tab.
 func CanBackquote(s string) bool
 
 // UnquoteChar decodes the first character or byte in the escaped string

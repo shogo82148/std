@@ -30,8 +30,6 @@ type Value struct {
 
 	ptr unsafe.Pointer
 
-	scalar uintptr
-
 	flag
 }
 
@@ -44,15 +42,6 @@ type ValueError struct {
 }
 
 func (e *ValueError) Error() string
-
-// An iword is the word that would be stored in an
-// interface to represent a given value v.  Specifically, if v is
-// bigger than a pointer, its word is a pointer to v's data.
-// Otherwise, its word holds the data stored
-// in its leading bytes (so is not a pointer).
-// This type is very dangerous for the garbage collector because
-// it must be treated conservatively.  We try to never expose it
-// to the GC here so that GC remains precise.
 
 // emptyInterface is the header for an interface{} value.
 
@@ -410,7 +399,7 @@ func AppendSlice(s, t Value) Value
 func Copy(dst, src Value) int
 
 // A runtimeSelect is a single case passed to rselect.
-// This must match ../runtime/chan.c:/runtimeSelect
+// This must match ../runtime/select.go:/runtimeSelect
 
 // A SelectDir describes the communication direction of a select case.
 type SelectDir int

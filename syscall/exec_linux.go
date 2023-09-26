@@ -7,15 +7,25 @@
 
 package syscall
 
+// SysProcIDMap holds Container ID to Host ID mappings used for User Namespaces in Linux.
+// See user_namespaces(7).
+type SysProcIDMap struct {
+	ContainerID int
+	HostID      int
+	Size        int
+}
+
 type SysProcAttr struct {
-	Chroot     string
-	Credential *Credential
-	Ptrace     bool
-	Setsid     bool
-	Setpgid    bool
-	Setctty    bool
-	Noctty     bool
-	Ctty       int
-	Pdeathsig  Signal
-	Cloneflags uintptr
+	Chroot      string
+	Credential  *Credential
+	Ptrace      bool
+	Setsid      bool
+	Setpgid     bool
+	Setctty     bool
+	Noctty      bool
+	Ctty        int
+	Pdeathsig   Signal
+	Cloneflags  uintptr
+	UidMappings []SysProcIDMap
+	GidMappings []SysProcIDMap
 }

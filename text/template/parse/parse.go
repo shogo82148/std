@@ -35,6 +35,8 @@ func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]interfa
 func New(name string, funcs ...map[string]interface{}) *Tree
 
 // ErrorContext returns a textual representation of the location of the node in the input text.
+// The receiver is only used when the node does not have a pointer to the tree inside,
+// which can occur in old code.
 func (t *Tree) ErrorContext(n Node) (location, context string)
 
 // Parse parses the template definition string to construct a representation of

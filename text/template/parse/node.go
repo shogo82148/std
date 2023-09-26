@@ -16,7 +16,7 @@ type Node interface {
 	Copy() Node
 	Position() Pos
 
-	unexported()
+	tree() *Tree
 }
 
 // NodeType identifies the type of a parse tree node.
@@ -58,6 +58,7 @@ const (
 type ListNode struct {
 	NodeType
 	Pos
+	tr    *Tree
 	Nodes []Node
 }
 
@@ -71,6 +72,7 @@ func (l *ListNode) Copy() Node
 type TextNode struct {
 	NodeType
 	Pos
+	tr   *Tree
 	Text []byte
 }
 
@@ -82,6 +84,7 @@ func (t *TextNode) Copy() Node
 type PipeNode struct {
 	NodeType
 	Pos
+	tr   *Tree
 	Line int
 	Decl []*VariableNode
 	Cmds []*CommandNode
@@ -99,6 +102,7 @@ func (p *PipeNode) Copy() Node
 type ActionNode struct {
 	NodeType
 	Pos
+	tr   *Tree
 	Line int
 	Pipe *PipeNode
 }
@@ -111,6 +115,7 @@ func (a *ActionNode) Copy() Node
 type CommandNode struct {
 	NodeType
 	Pos
+	tr   *Tree
 	Args []Node
 }
 
@@ -122,6 +127,7 @@ func (c *CommandNode) Copy() Node
 type IdentifierNode struct {
 	NodeType
 	Pos
+	tr    *Tree
 	Ident string
 }
 
@@ -133,6 +139,11 @@ func NewIdentifier(ident string) *IdentifierNode
 // TODO: fix one day?
 func (i *IdentifierNode) SetPos(pos Pos) *IdentifierNode
 
+// SetTree sets the parent tree for the node. NewIdentifier is a public method so we can't modify its signature.
+// Chained for convenience.
+// TODO: fix one day?
+func (i *IdentifierNode) SetTree(t *Tree) *IdentifierNode
+
 func (i *IdentifierNode) String() string
 
 func (i *IdentifierNode) Copy() Node
@@ -142,6 +153,7 @@ func (i *IdentifierNode) Copy() Node
 type VariableNode struct {
 	NodeType
 	Pos
+	tr    *Tree
 	Ident []string
 }
 
@@ -151,7 +163,9 @@ func (v *VariableNode) Copy() Node
 
 // DotNode holds the special identifier '.'.
 type DotNode struct {
+	NodeType
 	Pos
+	tr *Tree
 }
 
 func (d *DotNode) Type() NodeType
@@ -162,7 +176,9 @@ func (d *DotNode) Copy() Node
 
 // NilNode holds the special identifier 'nil' representing an untyped nil constant.
 type NilNode struct {
+	NodeType
 	Pos
+	tr *Tree
 }
 
 func (n *NilNode) Type() NodeType
@@ -177,6 +193,7 @@ func (n *NilNode) Copy() Node
 type FieldNode struct {
 	NodeType
 	Pos
+	tr    *Tree
 	Ident []string
 }
 
@@ -190,6 +207,7 @@ func (f *FieldNode) Copy() Node
 type ChainNode struct {
 	NodeType
 	Pos
+	tr    *Tree
 	Node  Node
 	Field []string
 }
@@ -205,6 +223,7 @@ func (c *ChainNode) Copy() Node
 type BoolNode struct {
 	NodeType
 	Pos
+	tr   *Tree
 	True bool
 }
 
@@ -218,6 +237,7 @@ func (b *BoolNode) Copy() Node
 type NumberNode struct {
 	NodeType
 	Pos
+	tr         *Tree
 	IsInt      bool
 	IsUint     bool
 	IsFloat    bool
@@ -237,6 +257,7 @@ func (n *NumberNode) Copy() Node
 type StringNode struct {
 	NodeType
 	Pos
+	tr     *Tree
 	Quoted string
 	Text   string
 }
@@ -254,6 +275,7 @@ func (s *StringNode) Copy() Node
 type BranchNode struct {
 	NodeType
 	Pos
+	tr       *Tree
 	Line     int
 	Pipe     *PipeNode
 	List     *ListNode
@@ -261,6 +283,8 @@ type BranchNode struct {
 }
 
 func (b *BranchNode) String() string
+
+func (b *BranchNode) Copy() Node
 
 // IfNode represents an {{if}} action and its commands.
 type IfNode struct {
@@ -287,6 +311,7 @@ func (w *WithNode) Copy() Node
 type TemplateNode struct {
 	NodeType
 	Pos
+	tr   *Tree
 	Line int
 	Name string
 	Pipe *PipeNode

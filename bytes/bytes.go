@@ -79,6 +79,8 @@ func Fields(s []byte) [][]byte
 // It splits the slice s at each run of code points c satisfying f(c) and
 // returns a slice of subslices of s.  If all code points in s satisfy f(c), or
 // len(s) == 0, an empty slice is returned.
+// FieldsFunc makes no guarantees about the order in which it calls f(c).
+// If f does not return consistent results for a given c, FieldsFunc may crash.
 func FieldsFunc(s []byte, f func(rune) bool) [][]byte
 
 // Join concatenates the elements of s to create a new byte slice. The separator
@@ -178,6 +180,9 @@ func Runes(s []byte) []rune
 
 // Replace returns a copy of the slice s with the first n
 // non-overlapping instances of old replaced by new.
+// If old is empty, it matches at the beginning of the slice
+// and after each UTF-8 sequence, yielding up to k+1 replacements
+// for a k-rune slice.
 // If n < 0, there is no limit on the number of replacements.
 func Replace(s, old, new []byte, n int) []byte
 

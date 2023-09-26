@@ -9,6 +9,8 @@ package mime
 // The extension ext should begin with a leading dot, as in ".html".
 // When ext has no associated type, TypeByExtension returns "".
 //
+// Extensions are looked up first case-sensitively, then case-insensitively.
+//
 // The built-in table is small but on unix it is augmented by the local
 // system's mime.types file(s) if available under one or more of these
 // names:
@@ -17,12 +19,12 @@ package mime
 //	/etc/apache2/mime.types
 //	/etc/apache/mime.types
 //
-// Windows system mime types are extracted from registry.
+// On Windows, MIME types are extracted from the registry.
 //
 // Text types have the charset parameter set to "utf-8" by default.
 func TypeByExtension(ext string) string
 
 // AddExtensionType sets the MIME type associated with
-// the extension ext to typ.  The extension should begin with
+// the extension ext to typ. The extension should begin with
 // a leading dot, as in ".html".
 func AddExtensionType(ext, typ string) error

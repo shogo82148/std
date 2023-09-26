@@ -99,6 +99,24 @@ func Parse(rawurl string) (url *URL, err error)
 func ParseRequestURI(rawurl string) (url *URL, err error)
 
 // String reassembles the URL into a valid URL string.
+// The general form of the result is one of:
+//
+//	scheme:opaque
+//	scheme://userinfo@host/path?query#fragment
+//
+// If u.Opaque is non-empty, String uses the first form;
+// otherwise it uses the second form.
+//
+// In the second form, the following rules apply:
+//   - if u.Scheme is empty, scheme: is omitted.
+//   - if u.User is nil, userinfo@ is omitted.
+//   - if u.Host is empty, host/ is omitted.
+//   - if u.Scheme and u.Host are empty and u.User is nil,
+//     the entire scheme://userinfo@host/ is omitted.
+//   - if u.Host is non-empty and u.Path begins with a /,
+//     the form host/path does not add its own /.
+//   - if u.RawQuery is empty, ?query is omitted.
+//   - if u.Fragment is empty, #fragment is omitted.
 func (u *URL) String() string
 
 // Values maps a string key to a list of values.

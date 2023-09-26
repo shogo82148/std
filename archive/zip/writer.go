@@ -19,6 +19,10 @@ type Writer struct {
 // NewWriter returns a new Writer writing a zip file to w.
 func NewWriter(w io.Writer) *Writer
 
+// Flush flushes any buffered data to the underlying writer.
+// Calling Flush is not normally necessary; calling Close is sufficient.
+func (w *Writer) Flush() error
+
 // Close finishes writing the zip file by writing the central directory.
 // It does not (and can not) close the underlying writer.
 func (w *Writer) Close() error

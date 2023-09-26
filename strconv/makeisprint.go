@@ -5,5 +5,10 @@
 //go:build ignore
 // +build ignore
 
-// makeisprint generates the tables for strconv's compact isPrint.
+//
+// usage:
+//
+// go run makeisprint.go -output isprint.go
+//
+
 package main

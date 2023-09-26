@@ -46,6 +46,13 @@ type CommonType struct {
 // To maintain binary compatibility, if you extend this type, always put
 // the new fields last.
 
+// typeInfoMap is an atomic pointer to map[reflect.Type]*typeInfo.
+// It's updated copy-on-write. Readers just do an atomic load
+// to get the current version of the map. Writers make a full copy of
+// the map and atomically update the pointer to point to the new map.
+// Under heavy read contention, this is significantly faster than a map
+// protected by a mutex.
+
 // GobEncoder is the interface describing data that provides its own
 // representation for encoding values for transmission to a GobDecoder.
 // A type that implements GobEncoder and GobDecoder has complete

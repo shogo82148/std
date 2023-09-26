@@ -21,7 +21,13 @@ const (
 // PSSOptions contains options for creating and verifying PSS signatures.
 type PSSOptions struct {
 	SaltLength int
+
+	Hash crypto.Hash
 }
+
+// HashFunc returns pssOpts.Hash so that PSSOptions implements
+// crypto.SignerOpts.
+func (pssOpts *PSSOptions) HashFunc() crypto.Hash
 
 // SignPSS calculates the signature of hashed using RSASSA-PSS [1].
 // Note that hashed must be the result of hashing the input message using the

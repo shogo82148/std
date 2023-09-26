@@ -9,6 +9,23 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Encode writes the Image m to w in PNG format. Any Image may be encoded, but
-// images that are not image.NRGBA might be encoded lossily.
+// Encoder configures encoding PNG images.
+type Encoder struct {
+	CompressionLevel CompressionLevel
+}
+
+type CompressionLevel int
+
+const (
+	DefaultCompression CompressionLevel = 0
+	NoCompression      CompressionLevel = -1
+	BestSpeed          CompressionLevel = -2
+	BestCompression    CompressionLevel = -3
+)
+
+// Encode writes the Image m to w in PNG format. Any Image may be
+// encoded, but images that are not image.NRGBA might be encoded lossily.
 func Encode(w io.Writer, m image.Image) error
+
+// Encode writes the Image m to w in PNG format.
+func (enc *Encoder) Encode(w io.Writer, m image.Image) error

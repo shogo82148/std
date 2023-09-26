@@ -7,11 +7,3 @@ package runtime_test
 import (
 	. "runtime"
 )
-
-// See stack.h.
-const (
-	StackGuard = 256
-	StackLimit = 128
-)
-
-var Used byte

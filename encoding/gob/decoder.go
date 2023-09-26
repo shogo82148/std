@@ -5,24 +5,26 @@
 package gob
 
 import (
-	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/reflect"
 	"github.com/shogo82148/std/sync"
 )
+
+// tooBig provides a sanity check for sizes; used in several places.
+// Upper limit of 1GB, allowing room to grow a little without overflow.
+// TODO: make this adjustable?
 
 // A Decoder manages the receipt of type and data information read from the
 // remote side of a connection.
 type Decoder struct {
 	mutex        sync.Mutex
 	r            io.Reader
-	buf          bytes.Buffer
+	buf          decBuffer
 	wireType     map[typeId]*wireType
 	decoderCache map[reflect.Type]map[typeId]**decEngine
 	ignorerCache map[typeId]**decEngine
 	freeList     *decoderState
 	countBuf     []byte
-	tmp          []byte
 	err          error
 }
 
@@ -45,7 +47,7 @@ func (dec *Decoder) Decode(e interface{}) error
 // Otherwise, it stores the value into v.  In that case, v must represent
 // a non-nil pointer to data or be an assignable reflect.Value (v.CanSet())
 // If the input is at EOF, DecodeValue returns io.EOF and
-// does not modify e.
+// does not modify v.
 func (dec *Decoder) DecodeValue(v reflect.Value) error
 
 // If debug.go is compiled into the program , debugFunc prints a human-readable

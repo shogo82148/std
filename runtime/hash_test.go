@@ -35,4 +35,14 @@ type Int64Key struct {
 	i uint64
 }
 
+type EfaceKey struct {
+	i interface{}
+}
+
+type IfaceKey struct {
+	i interface {
+		F()
+	}
+}
+
 // size of the hash output (32 or 64 bits)

@@ -8,6 +8,7 @@ package elf
 import (
 	"github.com/shogo82148/std/debug/dwarf"
 	"github.com/shogo82148/std/encoding/binary"
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 )
 
@@ -117,18 +118,31 @@ func (f *File) SectionByType(typ SectionType) *Section
 // The ELF binary is expected to start at position 0 in the ReaderAt.
 func NewFile(r io.ReaderAt) (*File, error)
 
+// ErrNoSymbols is returned by File.Symbols and File.DynamicSymbols
+// if there is no such section in the File.
+var ErrNoSymbols = errors.New("no symbol section")
+
 // Section returns a section with the given name, or nil if no such
 // section exists.
 func (f *File) Section(name string) *Section
 
 func (f *File) DWARF() (*dwarf.Data, error)
 
-// Symbols returns the symbol table for f.
+// Symbols returns the symbol table for f. The symbols will be listed in the order
+// they appear in f.
 //
 // For compatibility with Go 1.0, Symbols omits the null symbol at index 0.
 // After retrieving the symbols as symtab, an externally supplied index x
 // corresponds to symtab[x-1], not symtab[x].
 func (f *File) Symbols() ([]Symbol, error)
+
+// DynamicSymbols returns the dynamic symbol table for f. The symbols
+// will be listed in the order they appear in f.
+//
+// For compatibility with Symbols, DynamicSymbols omits the null symbol at index 0.
+// After retrieving the symbols as symtab, an externally supplied index x
+// corresponds to symtab[x-1], not symtab[x].
+func (f *File) DynamicSymbols() ([]Symbol, error)
 
 type ImportedSymbol struct {
 	Name    string

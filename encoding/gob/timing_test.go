@@ -10,3 +10,5 @@ type Bench struct {
 	C string
 	D []byte
 }
+
+// benchmarkBuf is a read buffer we can reset

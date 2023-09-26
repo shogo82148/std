@@ -11,3 +11,6 @@
 package rand
 
 // A devReader satisfies reads by reading the file named name.
+
+// altGetRandom if non-nil specifies an OS-specific function to get
+// urandom-style randomness.

@@ -41,4 +41,8 @@ func Match(pattern, name string) (matched bool, err error)
 // if there is no matching file. The syntax of patterns is the same
 // as in Match. The pattern may describe hierarchical names such as
 // /usr/*/bin/ed (assuming the Separator is '/').
+//
+// Glob ignores file system errors such as I/O errors reading directories.
+// The only possible returned error is ErrBadPattern, when pattern
+// is malformed.
 func Glob(pattern string) (matches []string, err error)

@@ -5,7 +5,7 @@
 package time
 
 // These are predefined layouts for use in Time.Format and Time.Parse.
-// The reference time used in the layouts is:
+// The reference time used in the layouts is the specific time:
 //
 //	Mon Jan 2 15:04:05 MST 2006
 //
@@ -78,7 +78,7 @@ func (t Time) String() string
 
 // Format returns a textual representation of the time value formatted
 // according to layout, which defines the format by showing how the reference
-// time,
+// time, defined to be
 //
 //	Mon Jan 2 15:04:05 -0700 MST 2006
 //
@@ -105,6 +105,7 @@ func (e *ParseError) Error() string
 
 // Parse parses a formatted string and returns the time value it represents.
 // The layout  defines the format by showing how the reference time,
+// defined to be
 //
 //	Mon Jan 2 15:04:05 -0700 MST 2006
 //
@@ -135,7 +136,7 @@ func (e *ParseError) Error() string
 // The zone abbreviation "UTC" is recognized as UTC regardless of location.
 // If the zone abbreviation is unknown, Parse records the time as being
 // in a fabricated location with the given zone abbreviation and a zero offset.
-// This choice means that such a time can be parse and reformatted with the
+// This choice means that such a time can be parsed and reformatted with the
 // same layout losslessly, but the exact instant used in the representation will
 // differ by the actual zone offset. To avoid such problems, prefer time layouts
 // that use a numeric zone offset, or use ParseInLocation.

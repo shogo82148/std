@@ -8,7 +8,7 @@
 // This program generates md5block.go
 // Invoke as
 //
-//	go run gen.go [-full] |gofmt >md5block.go
+//	go run gen.go [-full] -output md5block.go
 //
 // The -full flag causes the generated code to do a full
 // (16x) unrolling instead of a 4x unrolling.

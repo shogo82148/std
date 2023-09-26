@@ -123,8 +123,6 @@ func Setsid() (pid int, err error)
 
 func Settimeofday(tv *Timeval) (err error)
 
-func Setuid(uid int) (err error)
-
 func Setpriority(which int, who int, prio int) (err error)
 
 func Setxattr(path string, attr string, data []byte, flags int) (err error)
@@ -194,8 +192,6 @@ func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err
 func Setfsgid(gid int) (err error)
 
 func Setfsuid(uid int) (err error)
-
-func Setgid(gid int) (err error)
 
 func Setregid(rgid int, egid int) (err error)
 

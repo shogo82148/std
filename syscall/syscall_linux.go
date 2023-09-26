@@ -142,6 +142,10 @@ func ParseDirent(buf []byte, max int, names []string) (consumed int, count int, 
 
 func Mount(source string, target string, fstype string, flags uintptr, data string) (err error)
 
+func Setuid(uid int) (err error)
+
+func Setgid(uid int) (err error)
+
 func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error)
 
 func Munmap(b []byte) (err error)

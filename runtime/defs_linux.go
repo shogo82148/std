@@ -29,6 +29,7 @@ package runtime
 #include <asm-generic/errno.h>
 #include <asm-generic/poll.h>
 #include <linux/eventpoll.h>
+#undef size_t
 */
 import "github.com/shogo82148/std/C"
 

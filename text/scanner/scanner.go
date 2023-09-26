@@ -11,7 +11,7 @@
 // By default, a Scanner skips white space and Go comments and recognizes all
 // literals as defined by the Go language specification.  It may be
 // customized to recognize only a subset of those literals and to recognize
-// different white space characters.
+// different identifier and white space characters.
 //
 // Basic usage pattern:
 //
@@ -48,6 +48,12 @@ func (pos Position) String() string
 // integers, and skips comments, set the Scanner's Mode field to:
 //
 //	ScanIdents | ScanInts | SkipComments
+//
+// With the exceptions of comments, which are skipped if SkipComments is
+// set, unrecognized tokens are not ignored. Instead, the scanner simply
+// returns the respective individual characters (or possibly sub-tokens).
+// For instance, if the mode is ScanIdents (not ScanStrings), the string
+// "foo" is scanned as the token sequence '"' Ident '"'.
 const (
 	ScanIdents     = 1 << -Ident
 	ScanInts       = 1 << -Int
@@ -106,6 +112,8 @@ type Scanner struct {
 	Mode uint
 
 	Whitespace uint64
+
+	IsIdentRune func(ch rune, i int) bool
 
 	Position
 }

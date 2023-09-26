@@ -22,6 +22,10 @@ type TestContextSpecificTags2 struct {
 	B int
 }
 
+type TestContextSpecificTags3 struct {
+	S string `asn1:"tag:1,utf8"`
+}
+
 type TestElementsAfterString struct {
 	S    string
 	A, B int

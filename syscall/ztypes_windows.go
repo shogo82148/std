@@ -24,6 +24,7 @@ const (
 	ERROR_OPERATION_ABORTED   Errno = 995
 	ERROR_IO_PENDING          Errno = 997
 	ERROR_NOT_FOUND           Errno = 1168
+	ERROR_PRIVILEGE_NOT_HELD  Errno = 1314
 	WSAEACCES                 Errno = 10013
 	WSAECONNRESET             Errno = 10054
 )
@@ -71,15 +72,16 @@ const (
 	FILE_APPEND_DATA      = 0x00000004
 	FILE_WRITE_ATTRIBUTES = 0x00000100
 
-	FILE_SHARE_READ          = 0x00000001
-	FILE_SHARE_WRITE         = 0x00000002
-	FILE_SHARE_DELETE        = 0x00000004
-	FILE_ATTRIBUTE_READONLY  = 0x00000001
-	FILE_ATTRIBUTE_HIDDEN    = 0x00000002
-	FILE_ATTRIBUTE_SYSTEM    = 0x00000004
-	FILE_ATTRIBUTE_DIRECTORY = 0x00000010
-	FILE_ATTRIBUTE_ARCHIVE   = 0x00000020
-	FILE_ATTRIBUTE_NORMAL    = 0x00000080
+	FILE_SHARE_READ              = 0x00000001
+	FILE_SHARE_WRITE             = 0x00000002
+	FILE_SHARE_DELETE            = 0x00000004
+	FILE_ATTRIBUTE_READONLY      = 0x00000001
+	FILE_ATTRIBUTE_HIDDEN        = 0x00000002
+	FILE_ATTRIBUTE_SYSTEM        = 0x00000004
+	FILE_ATTRIBUTE_DIRECTORY     = 0x00000010
+	FILE_ATTRIBUTE_ARCHIVE       = 0x00000020
+	FILE_ATTRIBUTE_NORMAL        = 0x00000080
+	FILE_ATTRIBUTE_REPARSE_POINT = 0x00000400
 
 	INVALID_FILE_ATTRIBUTES = 0xffffffff
 
@@ -89,8 +91,9 @@ const (
 	OPEN_ALWAYS       = 4
 	TRUNCATE_EXISTING = 5
 
-	FILE_FLAG_BACKUP_SEMANTICS = 0x02000000
-	FILE_FLAG_OVERLAPPED       = 0x40000000
+	FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000
+	FILE_FLAG_BACKUP_SEMANTICS   = 0x02000000
+	FILE_FLAG_OVERLAPPED         = 0x40000000
 
 	HANDLE_FLAG_INHERIT    = 0x00000001
 	STARTF_USESTDHANDLES   = 0x00000100
@@ -155,6 +158,17 @@ const (
 
 	CTRL_C_EVENT     = 0
 	CTRL_BREAK_EVENT = 1
+)
+
+const (
+	// flags for CreateToolhelp32Snapshot
+	TH32CS_SNAPHEAPLIST = 0x01
+	TH32CS_SNAPPROCESS  = 0x02
+	TH32CS_SNAPTHREAD   = 0x04
+	TH32CS_SNAPMODULE   = 0x08
+	TH32CS_SNAPMODULE32 = 0x10
+	TH32CS_SNAPALL      = TH32CS_SNAPHEAPLIST | TH32CS_SNAPMODULE | TH32CS_SNAPPROCESS | TH32CS_SNAPTHREAD
+	TH32CS_INHERIT      = 0x80000000
 )
 
 const (
@@ -394,6 +408,19 @@ type ProcessInformation struct {
 	ThreadId  uint32
 }
 
+type ProcessEntry32 struct {
+	Size            uint32
+	Usage           uint32
+	ProcessID       uint32
+	DefaultHeapID   uintptr
+	ModuleID        uint32
+	Threads         uint32
+	ParentProcessID uint32
+	PriClassBase    int32
+	Flags           uint32
+	ExeFile         [MAX_PATH]uint16
+}
+
 type Systemtime struct {
 	Year         uint16
 	Month        uint16
@@ -450,6 +477,7 @@ const (
 	IOC_WS2                            = 0x08000000
 	SIO_GET_EXTENSION_FUNCTION_POINTER = IOC_INOUT | IOC_WS2 | 6
 	SIO_KEEPALIVE_VALS                 = IOC_IN | IOC_VENDOR | 4
+	SIO_UDP_CONNRESET                  = IOC_IN | IOC_VENDOR | 12
 
 	IP_TOS             = 0x3
 	IP_TTL             = 0x4
@@ -588,6 +616,18 @@ const (
 	DNS_TYPE_WINS    = 0xff01
 	DNS_TYPE_WINSR   = 0xff02
 	DNS_TYPE_NBSTAT  = 0xff01
+)
+
+const (
+	DNS_INFO_NO_RECORDS = 0x251D
+)
+
+const (
+	// flags inside DNSRecord.Dw
+	DnsSectionQuestion   = 0x0000
+	DnsSectionAnswer     = 0x0001
+	DnsSectionAuthority  = 0x0002
+	DnsSectionAdditional = 0x0003
 )
 
 type DNSSRVData struct {
@@ -967,3 +1007,10 @@ type TCPKeepalive struct {
 	Time     uint32
 	Interval uint32
 }
+
+const (
+	FSCTL_GET_REPARSE_POINT          = 0x900A8
+	MAXIMUM_REPARSE_DATA_BUFFER_SIZE = 16 * 1024
+	IO_REPARSE_TAG_SYMLINK           = 0xA000000C
+	SYMBOLIC_LINK_FLAG_DIRECTORY     = 0x1
+)

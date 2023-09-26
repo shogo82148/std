@@ -2,10 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:generate go run decgen.go -output dec_helpers.go
+
 package gob
 
 // decoderState is the execution state of an instance of the decoder. A new state
 // is created for nested objects.
+
+// decBuffer is an extremely simple, fast implementation of a read-only byte buffer.
+// It is initialized by calling Size and then copying the data into the slice returned by Bytes().
 
 // decOp is the signature of a decoding operator for a given type.
 

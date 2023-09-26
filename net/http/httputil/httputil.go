@@ -6,7 +6,9 @@
 // more common ones in the net/http package.
 package httputil
 
-import "github.com/shogo82148/std/io"
+import (
+	"github.com/shogo82148/std/io"
+)
 
 // NewChunkedReader returns a new chunkedReader that translates the data read from r
 // out of HTTP "chunked" format before returning it.
@@ -26,3 +28,7 @@ func NewChunkedReader(r io.Reader) io.Reader
 // would result in double chunking or chunking with a Content-Length
 // length, both of which are wrong.
 func NewChunkedWriter(w io.Writer) io.WriteCloser
+
+// ErrLineTooLong is returned when reading malformed chunked data
+// with lines that are too long.
+var ErrLineTooLong = internal.ErrLineTooLong

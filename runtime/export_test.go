@@ -18,16 +18,12 @@ var F64toint = f64toint
 
 var Entersyscall = entersyscall
 var Exitsyscall = exitsyscall
-var LockedOSThread = golockedOSThread
-var Stackguard = stackguard
+var LockedOSThread = lockedOSThread
 
 type LFNode struct {
 	Next    *LFNode
 	Pushcnt uintptr
 }
-
-var LFStackPush = lfstackpush_go
-var LFStackPop = lfstackpop_go
 
 type ParFor struct {
 	body    *byte
@@ -40,21 +36,16 @@ type ParFor struct {
 	wait    bool
 }
 
-var NewParFor = newParFor
-var ParForSetup = parForSetup
-var ParForDo = parForDo
-
-var TestSchedLocalQueue1 = testSchedLocalQueue
-var TestSchedLocalQueueSteal1 = testSchedLocalQueueSteal
-
 var HaveGoodHash = haveGoodHash
 var StringHash = stringHash
 var BytesHash = bytesHash
 var Int32Hash = int32Hash
 var Int64Hash = int64Hash
+var EfaceHash = efaceHash
+var IfaceHash = ifaceHash
+var MemclrBytes = memclrBytes
 
 var HashLoad = &hashLoad
 
-var MemclrBytes = memclrBytes
-
-var GogoBytes = gogoBytes
+var Gostringnocopy = gostringnocopy
+var Maxstring = &maxstring

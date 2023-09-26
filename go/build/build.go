@@ -65,22 +65,29 @@ const (
 	// If AllowBinary is set, Import can be satisfied by a compiled
 	// package object without corresponding sources.
 	AllowBinary
+
+	// If ImportComment is set, parse import comments on package statements.
+	// Import returns an error if it finds a comment it cannot understand
+	// or finds conflicting comments in multiple source files.
+	// See golang.org/s/go14customimport for more information.
+	ImportComment
 )
 
 // A Package describes the Go package found in a directory.
 type Package struct {
-	Dir         string
-	Name        string
-	Doc         string
-	ImportPath  string
-	Root        string
-	SrcRoot     string
-	PkgRoot     string
-	BinDir      string
-	Goroot      bool
-	PkgObj      string
-	AllTags     []string
-	ConflictDir string
+	Dir           string
+	Name          string
+	ImportComment string
+	Doc           string
+	ImportPath    string
+	Root          string
+	SrcRoot       string
+	PkgRoot       string
+	BinDir        string
+	Goroot        bool
+	PkgObj        string
+	AllTags       []string
+	ConflictDir   string
 
 	GoFiles        []string
 	CgoFiles       []string
@@ -128,6 +135,16 @@ type NoGoError struct {
 }
 
 func (e *NoGoError) Error() string
+
+// MultiplePackageError describes a directory containing
+// multiple buildable Go source files for multiple packages.
+type MultiplePackageError struct {
+	Dir      string
+	Packages []string
+	Files    []string
+}
+
+func (e *MultiplePackageError) Error() string
 
 // Import returns details about the Go package named by the import path,
 // interpreting local import paths relative to the srcDir directory.

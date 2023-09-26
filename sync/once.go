@@ -11,7 +11,7 @@ type Once struct {
 }
 
 // Do calls the function f if and only if Do is being called for the
-// first time for this instance of Once.  In other words, given
+// first time for this instance of Once. In other words, given
 //
 //	var once Once
 //
@@ -27,4 +27,7 @@ type Once struct {
 //
 // Because no call to Do returns until the one call to f returns, if f causes
 // Do to be called, it will deadlock.
+//
+// If f panics, Do considers it to have returned; future calls of Do return
+// without calling f.
 func (o *Once) Do(f func())

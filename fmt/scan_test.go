@@ -55,6 +55,8 @@ type TwoLines string
 // simpleReader is a strings.Reader that implements only Read, not ReadRune.
 // Good for testing readahead.
 
+// runeScanner implements the Scanner interface for TestScanStateCount.
+
 // RecursiveInt accepts a string matching %d.%d.%d....
 // and parses it into a linked list.
 // It allows us to benchmark recursive descent style scanners.

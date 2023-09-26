@@ -69,12 +69,10 @@ func Sysctl(name string) (value string, err error)
 
 func SysctlUint32(name string) (value uint32, err error)
 
-// sys	utimes(path string, timeval *[2]Timeval) (err error)
 func Utimes(path string, tv []Timeval) (err error)
 
 func UtimesNano(path string, ts []Timespec) error
 
-// sys	futimes(fd int, timeval *[2]Timeval) (err error)
 func Futimes(fd int, tv []Timeval) (err error)
 
 func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error)

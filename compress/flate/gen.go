@@ -8,6 +8,6 @@
 // This program generates fixedhuff.go
 // Invoke as
 //
-//      go run gen.go |gofmt >fixedhuff.go
+//	go run gen.go -output fixedhuff.go
 
 package main

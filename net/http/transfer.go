@@ -8,6 +8,10 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
+// ErrLineTooLong is returned when reading request or response bodies
+// with malformed chunked encoding.
+var ErrLineTooLong = internal.ErrLineTooLong
+
 // transferWriter inspects the fields of a user-supplied Request or Response,
 // sanitizes them without changing the user object and provides methods for
 // writing the respective header, body and trailer in wire format.

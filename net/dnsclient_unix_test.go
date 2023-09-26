@@ -6,3 +6,6 @@
 // +build darwin dragonfly freebsd linux netbsd openbsd solaris
 
 package net
+
+// See RFC 6761 for further information about the reserved, pseudo
+// domain names.

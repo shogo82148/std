@@ -4,11 +4,13 @@
 
 package jpeg
 
-// Each code is at most 16 bits long.
+// maxCodeLength is the maximum (inclusive) number of bits in a Huffman code.
 
-// Each decoded value is a uint8, so there are at most 256 such values.
+// maxNCodes is the maximum (inclusive) number of codes in a Huffman tree.
 
-// Bit stream for the Huffman decoder.
-// The n least significant bits of a form the unread bits, to be read in MSB to LSB order.
+// lutSize is the log-2 size of the Huffman decoder's look-up table.
 
-// Huffman table decoder, specified in section C.
+// huffman is a Huffman decoder, specified in section C.
+
+// errShortHuffmanData means that an unexpected EOF occurred while decoding
+// Huffman data.

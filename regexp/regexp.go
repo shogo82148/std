@@ -198,7 +198,7 @@ func Match(pattern string, b []byte) (matched bool, err error)
 // in Expand, so for instance $1 represents the text of the first submatch.
 func (re *Regexp) ReplaceAllString(src, repl string) string
 
-// ReplaceAllStringLiteral returns a copy of src, replacing matches of the Regexp
+// ReplaceAllLiteralString returns a copy of src, replacing matches of the Regexp
 // with the replacement string repl.  The replacement repl is substituted directly,
 // without using Expand.
 func (re *Regexp) ReplaceAllLiteralString(src, repl string) string

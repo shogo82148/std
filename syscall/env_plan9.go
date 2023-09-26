@@ -12,4 +12,6 @@ func Setenv(key, value string) error
 
 func Clearenv()
 
+func Unsetenv(key string) error
+
 func Environ() []string

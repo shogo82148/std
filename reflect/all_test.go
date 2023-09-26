@@ -218,6 +218,15 @@ type MyRunes []int32
 type MyFunc func()
 type MyByte byte
 
+type ComparableStruct struct {
+	X int
+}
+
+type NonComparableStruct struct {
+	X int
+	Y map[string]int
+}
+
 type B1 struct {
 	X int
 	Y int
@@ -353,3 +362,5 @@ type Inner struct {
 	P1 uintptr
 	P2 uintptr
 }
+
+type Impl struct{}

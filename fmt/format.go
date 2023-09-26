@@ -4,5 +4,7 @@
 
 package fmt
 
+// flags placed in a separate struct for easy clearing.
+
 // A fmt is the raw formatter used by Printf etc.
 // It prints into a buffer that must be set up separately.

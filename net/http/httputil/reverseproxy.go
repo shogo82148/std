@@ -7,6 +7,7 @@
 package httputil
 
 import (
+	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/time"
@@ -24,6 +25,8 @@ type ReverseProxy struct {
 	Transport http.RoundTripper
 
 	FlushInterval time.Duration
+
+	ErrorLog *log.Logger
 }
 
 // NewSingleHostReverseProxy returns a new ReverseProxy that rewrites

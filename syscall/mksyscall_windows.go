@@ -72,6 +72,9 @@ func (p *Param) StringTmpVarCode() string
 // TmpVarCode returns source code for temp variable.
 func (p *Param) TmpVarCode() string
 
+// TmpVarHelperCode returns source code for helper's temp variable.
+func (p *Param) TmpVarHelperCode() string
+
 // SyscallArgList returns source code fragments representing p parameter
 // in syscall. Slices are translated into 2 syscall parameters: pointer to
 // the first element and length.
@@ -79,6 +82,9 @@ func (p *Param) SyscallArgList() []string
 
 // IsError determines if p parameter is used to return error.
 func (p *Param) IsError() bool
+
+// HelperType returns type of parameter p used in helper function.
+func (p *Param) HelperType() string
 
 // Rets describes function return parameters.
 type Rets struct {
@@ -129,6 +135,9 @@ func (f *Fn) DLLFuncName() string
 // ParamList returns source code for function f parameters.
 func (f *Fn) ParamList() string
 
+// HelperParamList returns source code for helper function f parameters.
+func (f *Fn) HelperParamList() string
+
 // ParamPrintList returns source code of trace printing part correspondent
 // to syscall input parameters.
 func (f *Fn) ParamPrintList() string
@@ -146,6 +155,9 @@ func (f *Fn) Syscall() string
 // SyscallParamList returns source code for SyscallX parameters for function f.
 func (f *Fn) SyscallParamList() string
 
+// HelperCallParamList returns source code of call into function f helper.
+func (f *Fn) HelperCallParamList() string
+
 // IsUTF16 is true, if f is W (utf16) function. It is false
 // for all A (ascii) functions.
 func (f *Fn) IsUTF16() bool
@@ -155,6 +167,13 @@ func (f *Fn) StrconvFunc() string
 
 // StrconvType returns Go type name used for OS string for f.
 func (f *Fn) StrconvType() string
+
+// HasStringParam is true, if f has at least one string parameter.
+// Otherwise it is false.
+func (f *Fn) HasStringParam() bool
+
+// HelperName returns name of function f helper.
+func (f *Fn) HelperName() string
 
 // Source files and functions.
 type Source struct {

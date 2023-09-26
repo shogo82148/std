@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build freebsd || linux || nacl || netbsd
-// +build freebsd linux nacl netbsd
+//go:build freebsd || linux || netbsd || solaris
+// +build freebsd linux netbsd solaris
 
 package net

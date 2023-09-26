@@ -7,6 +7,7 @@
 package ecdsa
 
 import (
+	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/crypto/elliptic"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/math/big"
@@ -23,6 +24,15 @@ type PrivateKey struct {
 	PublicKey
 	D *big.Int
 }
+
+// Public returns the public key corresponding to priv.
+func (priv *PrivateKey) Public() crypto.PublicKey
+
+// Sign signs msg with priv, reading randomness from rand. This method is
+// intended to support keys where the private part is kept in, for example, a
+// hardware module. Common uses should use the Sign function in this package
+// directly.
+func (priv *PrivateKey) Sign(rand io.Reader, msg []byte, opts crypto.SignerOpts) ([]byte, error)
 
 // GenerateKey generates a public and private key pair.
 func GenerateKey(c elliptic.Curve, rand io.Reader) (priv *PrivateKey, err error)

@@ -23,6 +23,9 @@ func Getenv(key string) string
 // It returns an error, if any.
 func Setenv(key, value string) error
 
+// Unsetenv unsets a single environment variable.
+func Unsetenv(key string) error
+
 // Clearenv deletes all environment variables.
 func Clearenv()
 

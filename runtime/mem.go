@@ -34,6 +34,7 @@ type MemStats struct {
 	LastGC       uint64
 	PauseTotalNs uint64
 	PauseNs      [256]uint64
+	PauseEnd     [256]uint64
 	NumGC        uint32
 	EnableGC     bool
 	DebugGC      bool
@@ -47,6 +48,3 @@ type MemStats struct {
 
 // ReadMemStats populates m with memory allocator statistics.
 func ReadMemStats(m *MemStats)
-
-// GC runs a garbage collection.
-func GC()

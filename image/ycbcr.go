@@ -46,6 +46,8 @@ func (p *YCbCr) Bounds() Rectangle
 
 func (p *YCbCr) At(x, y int) color.Color
 
+func (p *YCbCr) YCbCrAt(x, y int) color.YCbCr
+
 // YOffset returns the index of the first element of Y that corresponds to
 // the pixel at (x, y).
 func (p *YCbCr) YOffset(x, y int) int

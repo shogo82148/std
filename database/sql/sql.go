@@ -13,7 +13,6 @@
 package sql
 
 import (
-	"github.com/shogo82148/std/container/list"
 	"github.com/shogo82148/std/database/sql/driver"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
@@ -23,6 +22,9 @@ import (
 // If Register is called twice with the same name or if driver is nil,
 // it panics.
 func Register(name string, driver driver.Driver)
+
+// Drivers returns a sorted list of the names of the registered drivers.
+func Drivers() []string
 
 // RawBytes is a byte slice that holds a reference to memory owned by
 // the database itself. After a Scan into a RawBytes, the slice is only
@@ -121,8 +123,8 @@ type DB struct {
 	dsn    string
 
 	mu           sync.Mutex
-	freeConn     *list.List
-	connRequests *list.List
+	freeConn     []*driverConn
+	connRequests []chan connRequest
 	numOpen      int
 	pendingOpens int
 
@@ -252,6 +254,11 @@ type Tx struct {
 	txi driver.Tx
 
 	done bool
+
+	stmts struct {
+		sync.Mutex
+		v []*Stmt
+	}
 }
 
 var ErrTxDone = errors.New("sql: Transaction has already been committed or rolled back")

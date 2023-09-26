@@ -6,16 +6,13 @@ package strings
 
 import "github.com/shogo82148/std/io"
 
-// A Replacer replaces a list of strings with replacements.
+// Replacer replaces a list of strings with replacements.
+// It is safe for concurrent use by multiple goroutines.
 type Replacer struct {
 	r replacer
 }
 
 // replacer is the interface that a replacement algorithm needs to implement.
-
-// byteBitmap represents bytes which are sought for replacement.
-// byteBitmap is 256 bits wide, with a bit set for each old byte to be
-// replaced.
 
 // NewReplacer returns a new Replacer from a list of old, new string pairs.
 // Replacements are performed in order, without overlapping matches.
@@ -53,7 +50,9 @@ func (r *Replacer) WriteString(w io.Writer, s string) (n int, err error)
 
 // byteReplacer is the implementation that's used when all the "old"
 // and "new" values are single ASCII bytes.
+// The array contains replacement bytes indexed by old byte.
 
 // byteStringReplacer is the implementation that's used when all the
-// "old" values are single ASCII bytes but the "new" values vary in
-// size.
+// "old" values are single ASCII bytes but the "new" values vary in size.
+// The array contains replacement byte slices indexed by old byte.
+// A nil []byte means that the old byte should not be replaced.

@@ -7,3 +7,7 @@ package runtime_test
 import (
 	. "runtime"
 )
+
+type LargeStruct struct {
+	x [16][]byte
+}

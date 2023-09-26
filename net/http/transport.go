@@ -35,21 +35,26 @@ var DefaultTransport RoundTripper = &Transport{
 // MaxIdleConnsPerHost.
 const DefaultMaxIdleConnsPerHost = 2
 
-// Transport is an implementation of RoundTripper that supports http,
-// https, and http proxies (for either http or https with CONNECT).
+// Transport is an implementation of RoundTripper that supports HTTP,
+// HTTPS, and HTTP proxies (for either HTTP or HTTPS with CONNECT).
 // Transport can also cache connections for future re-use.
 type Transport struct {
-	idleMu      sync.Mutex
-	idleConn    map[connectMethodKey][]*persistConn
-	idleConnCh  map[connectMethodKey]chan *persistConn
+	idleMu     sync.Mutex
+	wantIdle   bool
+	idleConn   map[connectMethodKey][]*persistConn
+	idleConnCh map[connectMethodKey]chan *persistConn
+
 	reqMu       sync.Mutex
 	reqCanceler map[*Request]func()
-	altMu       sync.RWMutex
-	altProto    map[string]RoundTripper
+
+	altMu    sync.RWMutex
+	altProto map[string]RoundTripper
 
 	Proxy func(*Request) (*url.URL, error)
 
 	Dial func(network, addr string) (net.Conn, error)
+
+	DialTLS func(network, addr string) (net.Conn, error)
 
 	TLSClientConfig *tls.Config
 
@@ -66,10 +71,17 @@ type Transport struct {
 
 // ProxyFromEnvironment returns the URL of the proxy to use for a
 // given request, as indicated by the environment variables
-// $HTTP_PROXY and $NO_PROXY (or $http_proxy and $no_proxy).
-// An error is returned if the proxy environment is invalid.
+// HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions
+// thereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https
+// requests.
+//
+// The environment values may be either a complete URL or a
+// "host[:port]", in which case the "http" scheme is assumed.
+// An error is returned if the value is a different form.
+//
 // A nil URL and nil error are returned if no proxy is defined in the
-// environment, or a proxy should not be used for the given request.
+// environment, or a proxy should not be used for the given request,
+// as defined by NO_PROXY.
 //
 // As a special case, if req.URL.Host is "localhost" (with or without
 // a port number), then a nil URL and nil error will be returned.
@@ -109,6 +121,8 @@ func (t *Transport) CancelRequest(req *Request)
 // envOnce looks up an environment variable (optionally by multiple
 // names) once. It mitigates expensive lookups on some platforms
 // (e.g. Windows).
+
+// Testing hooks:
 
 // connectMethod is the map key (in its String form) for keeping persistent
 // TCP connections alive for subsequent HTTP requests.

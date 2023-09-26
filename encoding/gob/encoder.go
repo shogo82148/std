@@ -5,7 +5,6 @@
 package gob
 
 import (
-	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/reflect"
 	"github.com/shogo82148/std/sync"
@@ -19,7 +18,7 @@ type Encoder struct {
 	sent       map[reflect.Type]typeId
 	countState *encoderState
 	freeList   *encoderState
-	byteBuf    bytes.Buffer
+	byteBuf    encBuffer
 	err        error
 }
 

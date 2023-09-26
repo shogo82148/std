@@ -4,4 +4,4 @@
 
 package sync
 
-// Opaque representation of SyncSema in runtime/sema.goc.
+// Approximation of syncSema in runtime/sema.go.

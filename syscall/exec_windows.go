@@ -27,6 +27,9 @@ func CloseOnExec(fd Handle)
 
 func SetNonblock(fd Handle, nonblocking bool) (err error)
 
+// FullPath retrieves the full path of the specified file.
+func FullPath(name string) (path string, err error)
+
 type ProcAttr struct {
 	Dir   string
 	Env   []string

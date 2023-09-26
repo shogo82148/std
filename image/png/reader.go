@@ -18,6 +18,13 @@ import (
 
 // Filter type, as per the PNG spec.
 
+// Interlace type.
+
+// interlaceScan defines the placement and size of a pass for Adam7 interlacing.
+
+// interlacing defines Adam7 interlacing, with 7 passes of reduced images.
+// See http://www.w3.org/TR/PNG/#8Interlace
+
 // Decoding stage.
 // The PNG specification says that the IHDR, PLTE (if present), IDAT and IEND
 // chunks must appear in that order. There may be multiple IDAT chunks, and

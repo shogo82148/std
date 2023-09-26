@@ -28,10 +28,15 @@ package time
 // Changing the location in this way changes only the presentation; it does not
 // change the instant in time being denoted and therefore does not affect the
 // computations described in earlier paragraphs.
+//
+// Note that the Go == operator compares not just the time instant but also the
+// Location. Therefore, Time values should not be used as map or database keys
+// without first guaranteeing that the identical Location has been set for all
+// values, which can be achieved through use of the UTC or Local method.
 type Time struct {
 	sec int64
 
-	nsec uintptr
+	nsec int32
 
 	loc *Location
 }

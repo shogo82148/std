@@ -13,5 +13,5 @@ type T struct {
 	script string
 }
 
-// Hand-chosen tests from Unicode 5.1.0, 6.0.0 and 6.2.0 mostly to discover when new
-// scripts and categories arise.
+// Hand-chosen tests from Unicode 5.1.0, 6.0.0, 6.2.0, 6.3.0 and 7.0.0 mostly to
+// discover when new scripts and categories arise.

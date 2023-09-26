@@ -68,6 +68,8 @@ func (p *RGBA) Bounds() Rectangle
 
 func (p *RGBA) At(x, y int) color.Color
 
+func (p *RGBA) RGBAAt(x, y int) color.RGBA
+
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
 func (p *RGBA) PixOffset(x, y int) int
@@ -100,6 +102,8 @@ func (p *RGBA64) ColorModel() color.Model
 func (p *RGBA64) Bounds() Rectangle
 
 func (p *RGBA64) At(x, y int) color.Color
+
+func (p *RGBA64) RGBA64At(x, y int) color.RGBA64
 
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
@@ -134,6 +138,8 @@ func (p *NRGBA) Bounds() Rectangle
 
 func (p *NRGBA) At(x, y int) color.Color
 
+func (p *NRGBA) NRGBAAt(x, y int) color.NRGBA
+
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
 func (p *NRGBA) PixOffset(x, y int) int
@@ -166,6 +172,8 @@ func (p *NRGBA64) ColorModel() color.Model
 func (p *NRGBA64) Bounds() Rectangle
 
 func (p *NRGBA64) At(x, y int) color.Color
+
+func (p *NRGBA64) NRGBA64At(x, y int) color.NRGBA64
 
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
@@ -200,6 +208,8 @@ func (p *Alpha) Bounds() Rectangle
 
 func (p *Alpha) At(x, y int) color.Color
 
+func (p *Alpha) AlphaAt(x, y int) color.Alpha
+
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
 func (p *Alpha) PixOffset(x, y int) int
@@ -232,6 +242,8 @@ func (p *Alpha16) ColorModel() color.Model
 func (p *Alpha16) Bounds() Rectangle
 
 func (p *Alpha16) At(x, y int) color.Color
+
+func (p *Alpha16) Alpha16At(x, y int) color.Alpha16
 
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
@@ -266,6 +278,8 @@ func (p *Gray) Bounds() Rectangle
 
 func (p *Gray) At(x, y int) color.Color
 
+func (p *Gray) GrayAt(x, y int) color.Gray
+
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
 func (p *Gray) PixOffset(x, y int) int
@@ -298,6 +312,8 @@ func (p *Gray16) ColorModel() color.Model
 func (p *Gray16) Bounds() Rectangle
 
 func (p *Gray16) At(x, y int) color.Color
+
+func (p *Gray16) Gray16At(x, y int) color.Gray16
 
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
