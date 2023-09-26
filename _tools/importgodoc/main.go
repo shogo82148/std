@@ -100,11 +100,8 @@ func godoc(path string) ([]byte, error) {
 				d.Body = nil
 			} else {
 				for _, c := range node.Comments {
-					if c.Pos() >= d.Body.Pos() {
+					if c.End() > d.Body.Pos() && c.End() < d.Body.End() {
 						comments = append(comments, c)
-					}
-					if c.Pos() >= d.Body.End() {
-						break
 					}
 				}
 			}
