@@ -13,22 +13,47 @@ jobs:
         branch:
           - master
           - release-branch.go1.21
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: checkout tools
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          ref: upstream/${{ matrix.branch }}
+          path: tools
 
       - uses: actions/setup-go@v4
         with:
-          go-version-file: ./_tools/go.mod
-          cache-dependency-path: ./_tools/go.sum
+          go-version-file: ./tools/_tools/go.mod
+          cache-dependency-path: ./tools/_tools/go.sum
       - name: install tools
-        working-directory: ./_tools
+        working-directory: ./tools/_tools
         run: |
           go install ./importgodoc
-          pwd
 
-      - uses: actions/checkout@v4
+      - name: checkout std
+        uses: actions/checkout@v4
         with:
+          ref: upstream/${{ matrix.branch }}
+          path: std
+
+      - name: checkout golang/go
+        uses: actions/checkout@v4
+        with:
+          repository: golang/go
           ref: ${{ matrix.branch }}
+          path: go
+
+      - name: sync
+        env:
+          BRANCH_NAME: upstream/${{ matrix.branch }}
+        working-directory: ./std
+        run: |
+          "$GITHUB_WORKSPACE/tools/_tools/rm-all.sh"
+          importgodoc "$GITHUB_WORKSPACE/go/src" "$GITHUB_WORKSPACE/std"
+
+      - name: commit
+        uses: shogo82148/actions-commit@v1
+        with:
+          base-branch: upstream/${{ matrix.branch }}
+          working-directory: ./std
