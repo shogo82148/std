@@ -8,6 +8,9 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+type fileReader struct{}
+type block struct{}
+
 // Reader provides sequential access to the contents of a tar archive.
 // Reader.Next advances to the next file in the archive (including the first),
 // and then Reader can be treated as an io.Reader to access the file's data.

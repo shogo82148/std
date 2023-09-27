@@ -8,6 +8,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+type fileWriter struct{}
+
 // Writer provides sequential writing of a tar archive.
 // Write.WriteHeader begins a new file with the provided Header,
 // and then Writer can be treated as an io.Writer to supply that file's data.
