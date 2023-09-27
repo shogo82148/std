@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package tar implements access to tar archives.
+// tarパッケージは、tarアーカイブへのアクセスを実装します。
 //
-// Tape archives (tar) are a file format for storing a sequence of files that
-// can be read and written in a streaming manner.
-// This package aims to cover most variations of the format,
-// including those produced by GNU and BSD tar tools.
+// テープアーカイブ（tar）は、ストリーミング方式で読み書きできるファイル形式で、
+// 一連のファイルを格納するために使用されます。
+// このパッケージは、GNUおよびBSD tarツールによって生成されたものを含め、
+// このフォーマットのほとんどのバリエーションをカバーすることを目的としています。
 package tar
 
 import (
@@ -26,13 +26,13 @@ var (
 
 // Type flags for Header.Typeflag.
 const (
-	// Type '0' indicates a regular file.
+	// Type '0' は通常のファイルを示します。
 	TypeReg = '0'
 
-	// Deprecated: Use TypeReg instead.
+	// Deprecated: 非推奨：かわりにTypeRegを使用してください。
 	TypeRegA = '\x00'
 
-	// Type '1' to '6' are header-only flags and may not have a data body.
+	// Type '1'から'6'は、ヘッダーのみのフラグであり、データ本体を持たない場合があります。
 	TypeLink    = '1'
 	TypeSymlink = '2'
 	TypeChar    = '3'
@@ -40,26 +40,23 @@ const (
 	TypeDir     = '5'
 	TypeFifo    = '6'
 
-	// Type '7' is reserved.
+	// Type '7' は予約されています。
 	TypeCont = '7'
 
-	// Type 'x' is used by the PAX format to store key-value records that
-	// are only relevant to the next file.
-	// This package transparently handles these types.
+	// Type 'x' は、PAXフォーマットで、次のファイルにのみ関連するキー-値レコードを格納するために使用されます。
+	// このパッケージは、これらのタイプを透過的に処理します。
 	TypeXHeader = 'x'
 
-	// Type 'g' is used by the PAX format to store key-value records that
-	// are relevant to all subsequent files.
-	// This package only supports parsing and composing such headers,
-	// but does not currently support persisting the global state across files.
+	// 'g' 型は、すべての後続ファイルに関連するキーと値のレコードを格納するために PAX 形式で使用されます。
+	// このパッケージは、このようなヘッダーの解析と構成のみをサポートしていますが、現在はファイル間でグローバル状態を永続化することはできません。
 	TypeXGlobalHeader = 'g'
 
-	// Type 'S' indicates a sparse file in the GNU format.
+	// 'S' 型は、GNU 形式でスパースファイルを示します。
 	TypeGNUSparse = 'S'
 
-	// Types 'L' and 'K' are used by the GNU format for a meta file
-	// used to store the path or link name for the next file.
-	// This package transparently handles these types.
+	// 'L' 型と 'K' 型は、GNU 形式でメタファイルに使用されます。
+	// このメタファイルは、次のファイルのパスまたはリンク名を格納するために使用されます。
+	// このパッケージは、これらのタイプを透過的に処理します。
 	TypeGNULongName = 'L'
 	TypeGNULongLink = 'K'
 )
@@ -71,13 +68,12 @@ const (
 // so adding them as first-class features of Header is unlikely.
 // Users can use the PAXRecords field to set it themselves.
 
-// A Header represents a single header in a tar archive.
-// Some fields may not be populated.
+// Header は、tar アーカイブ内の単一のヘッダーを表します。
+// 一部のフィールドは、値が設定されていない場合があります。
 //
-// For forward compatibility, users that retrieve a Header from Reader.Next,
-// mutate it in some ways, and then pass it back to Writer.WriteHeader
-// should do so by creating a new Header and copying the fields
-// that they are interested in preserving.
+// 将来の互換性のために、Reader.Next から Header を取得し、
+// いくつかの方法で変更し、Writer.WriteHeader に戻すユーザーは、
+// 新しい Header を作成し、保存する必要があるフィールドをコピーすることで行う必要があります。
 type Header struct {
 	Typeflag byte
 
@@ -145,18 +141,18 @@ type Header struct {
 //
 // Invariant: logicalRemaining >= physicalRemaining
 
-// FileInfo returns an fs.FileInfo for the Header.
+// FileInfo は、Header の fs.FileInfo を返します。
 func (h *Header) FileInfo() fs.FileInfo
 
 // headerFileInfo implements fs.FileInfo.
 
 // sysStat, if non-nil, populates h from system-dependent fields of fi.
 
-// FileInfoHeader creates a partially-populated Header from fi.
-// If fi describes a symlink, FileInfoHeader records link as the link target.
-// If fi describes a directory, a slash is appended to the name.
+// FileInfoHeader は、fi から部分的に設定された Header を作成します。
+// fi がシンボリックリンクを記述している場合、FileInfoHeader は link をリンクターゲットとして記録します。
+// fi がディレクトリを記述している場合、名前にスラッシュが追加されます。
 //
-// Since fs.FileInfo's Name method only returns the base name of
-// the file it describes, it may be necessary to modify Header.Name
-// to provide the full path name of the file.
+// fs.FileInfo の Name メソッドは、
+// 記述するファイルのベース名のみを返すため、
+// ファイルの完全なパス名を提供するために Header.Name を変更する必要がある場合があります。
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
