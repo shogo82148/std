@@ -6,8 +6,6 @@
 
 package syscall
 
-// origRlimitNofile, if not {0, 0}, is the original soft RLIMIT_NOFILE.
-// When we can assume that we are bootstrapping with Go 1.19,
-// this can be atomic.Pointer[Rlimit].
+// origRlimitNofile, if non-nil, is the original soft RLIMIT_NOFILE.
 
 func Setrlimit(resource int, rlim *Rlimit) error

@@ -63,7 +63,7 @@ type PrivateKey struct {
 	publicKeyOnce sync.Once
 }
 
-// ECDH performs a ECDH exchange and returns the shared secret. The PrivateKey
+// ECDH performs an ECDH exchange and returns the shared secret. The PrivateKey
 // and PublicKey must use the same curve.
 //
 // For NIST curves, this performs ECDH as specified in SEC 1, Version 2.0,
