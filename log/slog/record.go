@@ -8,11 +8,13 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A Record holds information about a log event.
-// Copies of a Record share state.
-// Do not modify a Record after handing out a copy to it.
-// Call [NewRecord] to create a new Record.
-// Use [Record.Clone] to create a copy with no shared state.
+const nAttrsInline = 4
+
+// Recordは、ログイベントに関する情報を保持します。
+// Recordのコピーは状態を共有します。
+// Recordをコピーしてから変更しないでください。
+// 新しいRecordを作成するには、 [NewRecord] を呼び出します。
+// 共有状態のないコピーを作成するには、 [Record.Clone] を使用します。
 type Record struct {
 	Time time.Time
 
@@ -29,35 +31,34 @@ type Record struct {
 	back []Attr
 }
 
-// NewRecord creates a Record from the given arguments.
-// Use [Record.AddAttrs] to add attributes to the Record.
+// NewRecordは、指定された引数からRecordを作成します。
+// Recordに属性を追加するには、 [Record.AddAttrs] を使用します。
 //
-// NewRecord is intended for logging APIs that want to support a [Handler] as
-// a backend.
+// NewRecordは、 [Handler] をバックエンドとしてサポートするログAPIに使用することを想定しています。
 func NewRecord(t time.Time, level Level, msg string, pc uintptr) Record
 
-// Clone returns a copy of the record with no shared state.
-// The original record and the clone can both be modified
-// without interfering with each other.
+// Cloneは、共有状態のないレコードのコピーを返します。
+// オリジナルのレコードとクローンの両方を変更できます。
+// 互いに干渉しません。
 func (r Record) Clone() Record
 
-// NumAttrs returns the number of attributes in the Record.
+// NumAttrsは、Recordの属性の数を返します。
 func (r Record) NumAttrs() int
 
-// Attrs calls f on each Attr in the Record.
-// Iteration stops if f returns false.
+// Attrsは、Record内の各Attrに対してfを呼び出します。
+// fがfalseを返すと、反復処理が停止します。
 func (r Record) Attrs(f func(Attr) bool)
 
-// AddAttrs appends the given Attrs to the Record's list of Attrs.
-// It omits empty groups.
+// AddAttrsは、指定されたAttrsをRecordのAttrsリストに追加します。
+// 空のグループは省略されます。
 func (r *Record) AddAttrs(attrs ...Attr)
 
-// Add converts the args to Attrs as described in [Logger.Log],
-// then appends the Attrs to the Record's list of Attrs.
-// It omits empty groups.
+// Addは、[Logger.Log]で説明されているように、argsをAttrsに変換し、
+// RecordのAttrsリストにAttrsを追加します。
+// 空のグループは省略されます。
 func (r *Record) Add(args ...any)
 
-// Source describes the location of a line of source code.
+// Sourceは、ソースコードの行の場所を記述します。
 type Source struct {
 	Function string `json:"function"`
 
