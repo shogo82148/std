@@ -9,9 +9,11 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// Writer provides sequential writing of a tar archive.
-// Write.WriteHeader begins a new file with the provided Header,
-// and then Writer can be treated as an io.Writer to supply that file's data.
+type fileWriter struct{}
+
+// Writerはtarアーカイブの順次書き込みを提供します。
+// Write.WriteHeaderは提供されたHeaderで新しいファイルを開始し、
+// その後、Writerはそのファイルのデータを提供するためのio.Writerとして扱うことができます。
 type Writer struct {
 	w    io.Writer
 	pad  int64
@@ -22,20 +24,20 @@ type Writer struct {
 	err error
 }
 
-// NewWriter creates a new Writer writing to w.
+// NewWriterはwに書き込む新しいWriterを作成します。
 func NewWriter(w io.Writer) *Writer
 
-// Flush finishes writing the current file's block padding.
-// The current file must be fully written before Flush can be called.
+// Flushは現在のファイルのブロックパディングの書き込みを終了します。
+// Flushを呼び出す前に、現在のファイルは完全に書き込まれている必要があります。
 //
-// This is unnecessary as the next call to WriteHeader or Close
-// will implicitly flush out the file's padding.
+// これは、次のWriteHeaderまたはCloseの呼び出しで
+// ファイルのパディングが暗黙的にフラッシュされるため、不要です。
 func (tw *Writer) Flush() error
 
-// WriteHeader writes hdr and prepares to accept the file's contents.
-// The Header.Size determines how many bytes can be written for the next file.
-// If the current file is not fully written, then this returns an error.
-// This implicitly flushes any padding necessary before writing the header.
+// WriteHeaderはhdrを書き込み、ファイルの内容を受け入れる準備をします。
+// Header.Sizeは、次のファイルの書き込み可能なバイト数を決定します。
+// 現在のファイルが完全に書き込まれていない場合、エラーが返されます。
+// これにより、ヘッダを書き込す前に必要なパディングが暗黙的にフラッシュされます。
 func (tw *Writer) WriteHeader(hdr *Header) error
 
 // AddFS adds the files from fs.FS to the archive.
@@ -47,14 +49,12 @@ func (tw *Writer) AddFS(fsys fs.FS) error
 // Write returns the error ErrWriteTooLong if more than
 // Header.Size bytes are written after WriteHeader.
 //
-// Calling Write on special types like TypeLink, TypeSymlink, TypeChar,
-// TypeBlock, TypeDir, and TypeFifo returns (0, ErrWriteTooLong) regardless
-// of what the Header.Size claims.
+// TypeLink、TypeSymlink、TypeChar、TypeBlock、TypeDir、TypeFifoなどの特殊なタイプでWriteを呼び出すと、
+// Header.Sizeが示す内容に関係なく、(0、ErrWriteTooLong)が返されます。
 func (tw *Writer) Write(b []byte) (int, error)
 
-// Close closes the tar archive by flushing the padding, and writing the footer.
-// If the current file (from a prior call to WriteHeader) is not fully written,
-// then this returns an error.
+// Closeはパディングをフラッシュし、フッターを書き込むことでtarアーカイブを閉じます。
+// (WriteHeaderの前の)現在のファイルが完全に書き込まれていない場合、エラーが返されます。
 func (tw *Writer) Close() error
 
 // regFileWriter is a fileWriter for writing data to a regular file entry.

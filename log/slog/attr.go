@@ -8,52 +8,49 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// An Attr is a key-value pair.
+// Attrはキーと値のペアです。
 type Attr struct {
 	Key   string
 	Value Value
 }
 
-// String returns an Attr for a string value.
+// Stringは文字列値のAttrを返します。
 func String(key, value string) Attr
 
-// Int64 returns an Attr for an int64.
+// Int64はint64のAttrを返します。
 func Int64(key string, value int64) Attr
 
-// Int converts an int to an int64 and returns
-// an Attr with that value.
+// Intはintをint64に変換し、その値を持つAttrを返します。
 func Int(key string, value int) Attr
 
-// Uint64 returns an Attr for a uint64.
+// Uint64はuint64のAttrを返します。
 func Uint64(key string, v uint64) Attr
 
-// Float64 returns an Attr for a floating-point number.
+// Float64は浮動小数点数のAttrを返します。
 func Float64(key string, v float64) Attr
 
-// Bool returns an Attr for a bool.
+// BoolはboolのAttrを返します。
 func Bool(key string, v bool) Attr
 
-// Time returns an Attr for a time.Time.
-// It discards the monotonic portion.
+// Timeはtime.TimeのAttrを返します。
+// monotonic部分は破棄されます。
 func Time(key string, v time.Time) Attr
 
-// Duration returns an Attr for a time.Duration.
+// Durationはtime.DurationのAttrを返します。
 func Duration(key string, v time.Duration) Attr
 
-// Group returns an Attr for a Group Value.
-// The first argument is the key; the remaining arguments
-// are converted to Attrs as in [Logger.Log].
+// GroupはGroup ValueのAttrを返します。
+// 最初の引数はキーで、残りの引数は[Logger.Log]と同様にAttrsに変換されます。
 //
-// Use Group to collect several key-value pairs under a single
-// key on a log line, or as the result of LogValue
-// in order to log a single value as multiple Attrs.
+// Groupを使用して、ログ行の単一のキーの下に複数のキー-値ペアを収集するか、
+// LogValueの結果として単一の値を複数のAttrsとしてログに記録するために使用します。
 func Group(key string, args ...any) Attr
 
-// Any returns an Attr for the supplied value.
-// See [AnyValue] for how values are treated.
+// Anyは指定された値のAttrを返します。
+// 値の扱い方については[AnyValue]を参照してください。
 func Any(key string, value any) Attr
 
-// Equal reports whether a and b have equal keys and values.
+// Equalはaとbが等しいキーと値を持つかどうかを報告します。
 func (a Attr) Equal(b Attr) bool
 
 func (a Attr) String() string

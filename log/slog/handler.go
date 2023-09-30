@@ -8,18 +8,19 @@ import (
 	"github.com/shogo82148/std/context"
 )
 
+type commonHandler struct{}
+
 // A Handler handles log records produced by a Logger.
 //
-// A typical handler may print log records to standard error,
-// or write them to a file or database, or perhaps augment them
-// with additional attributes and pass them on to another handler.
+// 典型的なハンドラは、ログレコードを標準エラーに出力したり、
+// ファイルやデータベースに書き込んだり、
+// または追加の属性を追加して別のハンドラに渡すことができます。
 //
-// Any of the Handler's methods may be called concurrently with itself
-// or with other methods. It is the responsibility of the Handler to
-// manage this concurrency.
+// Handlerのメソッドのいずれかは、自身または他のメソッドと同時に呼び出される可能性があります。
+// Handlerは、この並行性を管理する責任があります。
 //
-// Users of the slog package should not invoke Handler methods directly.
-// They should use the methods of [Logger] instead.
+// slogパッケージのユーザーは、Handlerメソッドを直接呼び出すべきではありません。
+// 代わりに、[Logger]のメソッドを使用する必要があります。
 type Handler interface {
 	Enabled(context.Context, Level) bool
 
@@ -30,8 +31,8 @@ type Handler interface {
 	WithGroup(name string) Handler
 }
 
-// HandlerOptions are options for a TextHandler or JSONHandler.
-// A zero HandlerOptions consists entirely of default values.
+// HandlerOptionsは、TextHandlerまたはJSONHandlerのオプションです。
+// ゼロ値のHandlerOptionsは、完全にデフォルト値で構成されています。
 type HandlerOptions struct {
 	AddSource bool
 
@@ -40,19 +41,28 @@ type HandlerOptions struct {
 	ReplaceAttr func(groups []string, a Attr) Attr
 }
 
-// Keys for "built-in" attributes.
+// "built-in"属性のキー。
 const (
-	// TimeKey is the key used by the built-in handlers for the time
-	// when the log method is called. The associated Value is a [time.Time].
+	// TimeKeyは、ログメソッドが呼び出されたときの時間を表すために、
+	// 組み込みハンドラによって使用されるキーです。
+	// 関連する値は[time.Time]です。
 	TimeKey = "time"
-	// LevelKey is the key used by the built-in handlers for the level
-	// of the log call. The associated value is a [Level].
+	// LevelKeyは、ログ呼び出しのレベルを表すために、
+	// 組み込みハンドラによって使用されるキーです。
+	// 関連する値は[Level]です。
 	LevelKey = "level"
-	// MessageKey is the key used by the built-in handlers for the
-	// message of the log call. The associated value is a string.
+	// MessageKeyは、ログ呼び出しのメッセージを表すために、
+	// 組み込みハンドラによって使用されるキーです。
+	// 関連する値は文字列です。
 	MessageKey = "msg"
+<<<<<<< HEAD
 	// SourceKey is the key used by the built-in handlers for the source file
 	// and line of the log call. The associated value is a *[Source].
+=======
+	// SourceKeyは、ログ呼び出しのソースファイルと行を表すために、
+	// 組み込みハンドラによって使用されるキーです。
+	// 関連する値は文字列です。
+>>>>>>> release-branch.go1.21
 	SourceKey = "source"
 )
 

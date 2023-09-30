@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package slog
-
-import (
-	loginternal "log/internal"
-)
-
-// panicTextAndJsonMarshaler is a type that panics in MarshalText and MarshalJSON.
