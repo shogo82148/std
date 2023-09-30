@@ -16,14 +16,13 @@ type LevelHandler struct {
 	handler slog.Handler
 }
 
-// This example shows how to Use a LevelHandler to change the level of an
-// existing Handler while preserving its other behavior.
+// この例では、LevelHandlerを使用して、既存のHandlerのレベルを変更しながら、
+// その他の動作を維持する方法を示します。
 //
-// This example demonstrates increasing the log level to reduce a logger's
-// output.
+// この例では、ログレベルを上げて、ロガーの出力を減らす方法を示しています。
 //
-// Another typical use would be to decrease the log level (to LevelDebug, say)
-// during a part of the program that was suspected of containing a bug.
+// 別の一般的な使用方法は、（例えばLevelDebugに）ログレベルを下げて、
+// バグが含まれていると疑われるプログラムの一部分でログを出力することです。
 func ExampleHandler_levelHandler() {
 	th := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: slogtest.RemoveTime})
 	logger := slog.New(NewLevelHandler(slog.LevelWarn, th))

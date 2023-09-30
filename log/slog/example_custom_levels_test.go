@@ -15,7 +15,7 @@ import (
 // Emergency levels. The ReplaceAttr changes the way levels are printed for both
 // the standard log levels and the custom log levels.
 func ExampleHandlerOptions_customLevels() {
-	// Exported constants from a custom logging package.
+	// カスタムログパッケージからエクスポートされた定数。
 	const (
 		LevelTrace     = slog.Level(-8)
 		LevelDebug     = slog.LevelDebug
@@ -27,29 +27,28 @@ func ExampleHandlerOptions_customLevels() {
 	)
 
 	th := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
-		// Set a custom level to show all log output. The default value is
-		// LevelInfo, which would drop Debug and Trace logs.
+		// すべてのログ出力を表示するために、カスタムレベルを設定します。
+		// デフォルト値はLevelInfoであり、DebugとTraceログをドロップします。
 		Level: LevelTrace,
 
 		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
-			// Remove time from the output for predictable test output.
+			// 予測可能なテスト出力のために、出力から時間を削除します。
 			if a.Key == slog.TimeKey {
 				return slog.Attr{}
 			}
 
-			// Customize the name of the level key and the output string, including
-			// custom level values.
+			// レベルキーの名前と出力文字列をカスタマイズします。
+			// カスタムレベル値を含みます。
 			if a.Key == slog.LevelKey {
-				// Rename the level key from "level" to "sev".
+				// レベルキーを "level" から "sev" に変更します。
 				a.Key = "sev"
 
-				// Handle custom level values.
+				// カスタムレベル値を処理します。
 				level := a.Value.Any().(slog.Level)
 
-				// This could also look up the name from a map or other structure, but
-				// this demonstrates using a switch statement to rename levels. For
-				// maximum performance, the string values should be constants, but this
-				// example uses the raw strings for readability.
+				// これはマップや他の構造から名前を検索することもできますが、
+				// この例ではswitch文を使用してレベルをリネームする方法を示しています。
+				// 文字列値は定数であるべきですが、可読性のためにこの例では生の文字列を使用しています。
 				switch {
 				case level < LevelDebug:
 					a.Value = slog.StringValue("TRACE")
