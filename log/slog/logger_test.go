@@ -8,4 +8,10 @@ import (
 	loginternal "log/internal"
 )
 
+// textTimeRE is a regexp to match log timestamps for Text handler.
+// This is RFC3339Nano with the fixed 3 digit sub-second precision.
+
+// jsonTimeRE is a regexp to match log timestamps for Text handler.
+// This is RFC3339Nano with an arbitrary sub-second precision.
+
 // panicTextAndJsonMarshaler is a type that panics in MarshalText and MarshalJSON.
