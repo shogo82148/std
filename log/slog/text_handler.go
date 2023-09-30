@@ -33,7 +33,7 @@ func (h *TextHandler) WithGroup(name string) Handler
 // そうでない場合、keyは"time"であり、RFC3339形式でミリ秒精度で出力されます。
 //
 // Recordのlevelがゼロの場合、levelは省略されます。
-// そうでない場合、keyは"level"であり、[Level.String]の値が出力されます。
+// そうでない場合、keyは"level"であり、 [Level.String] の値が出力されます。
 //
 // AddSourceオプションが設定されており、ソース情報が利用可能な場合、
 // keyは"source"であり、値はFILE:LINEとして出力されます。
@@ -41,19 +41,19 @@ func (h *TextHandler) WithGroup(name string) Handler
 // メッセージのkeyは"msg"です。
 //
 // これらまたは他の属性を変更したり、出力から削除するには、
-// [HandlerOptions.ReplaceAttr]を使用します。
+// [HandlerOptions.ReplaceAttr] を使用します。
 //
-// 値が[encoding.TextMarshaler]を実装している場合、MarshalTextの結果が書き込まれます。
+// 値が [encoding.TextMarshaler] を実装している場合、MarshalTextの結果が書き込まれます。
 // そうでない場合、fmt.Sprintの結果が書き込まれます。
 //
-// キーと値は、Unicodeスペース文字、非表示文字、'"'、'='を含む場合、[strconv.Quote]で引用符で囲まれます。
+// キーと値は、Unicodeスペース文字、非表示文字、'"'、'='を含む場合、 [strconv.Quote] で引用符で囲まれます。
 //
 // グループ内のキーは、ドットで区切られたコンポーネント（キーまたはグループ名）で構成されます。
 // さらにエスケープは行われません。
 // したがって、キー"a.b.c"から、2つのグループ"a"と"b"とキー"c"があるか、
 // 単一のグループ"a.b"とキー"c"があるか、単一のグループ"a"とキー"b.c"があるかを判断する方法はありません。
 // コンポーネント内にドットがある場合でも、キーのグループ構造を再構築する必要がある場合は、
-// [HandlerOptions.ReplaceAttr]を使用して、その情報をキーにエンコードします。
+// [HandlerOptions.ReplaceAttr] を使用して、その情報をキーにエンコードします。
 //
 // Handleの各呼び出しは、io.Writer.Writeへの単一のシリアル化された呼び出しの結果を返します。
 func (h *TextHandler) Handle(_ context.Context, r Record) error

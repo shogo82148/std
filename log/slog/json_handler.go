@@ -34,17 +34,17 @@ func (h *JSONHandler) WithGroup(name string) Handler
 // そうでない場合、キーは "time" であり、値はjson.Marshalと同様に出力されます。
 //
 // Recordのレベルがゼロの場合、レベルは省略されます。
-// そうでない場合、キーは "level" であり、[Level.String]の値が出力されます。
+// そうでない場合、キーは "level" であり、 [Level.String] の値が出力されます。
 //
 // AddSourceオプションが設定されており、ソース情報が利用可能な場合、
-// キーは "source" であり、値は[Source]型のレコードです。
+// キーは "source" であり、値は [Source] 型のレコードです。
 //
 // メッセージのキーは "msg" です。
 //
 // これらまたは他の属性を変更したり、出力から削除したりするには、
-// [HandlerOptions.ReplaceAttr]を使用します。
+// [HandlerOptions.ReplaceAttr] を使用します。
 //
-// 値は、SetEscapeHTML(false)を使用して[encoding/json.Encoder]と同様にフォーマットされます。
+// 値は、SetEscapeHTML(false)を使用して [encoding/json.Encoder] と同様にフォーマットされます。
 // ただし、2つの例外があります。
 //
 // 1つ目は、Valueがerror型のAttrは、そのErrorメソッドを呼び出すことで文字列としてフォーマットされます。
