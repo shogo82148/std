@@ -34,9 +34,8 @@ Loggerの出力メソッドは、メソッド引数から [Record] を作成し�
 
 	2022/11/08 15:28:26 INFO hello count=3
 
-For more control over the output format, create a logger with a different handler.
-This statement uses [New] to create a new logger with a [TextHandler]
-that writes structured records in text form to standard error:
+出力フォーマットをより細かく制御するには、別のハンドラを持つロガーを作成します。
+このステートメントでは、 [New] を使用して、 [TextHandler] で構造化されたレコードをテキスト形式で標準エラーに書き込む新しいロガーを作成しています。
 
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
 
@@ -186,13 +185,9 @@ logger.LogAttrs(ctx, slog.LevelInfo, "hello", slog.Int("count", 3))
 
 slog.Info("hello", "count", 3)
 
-<<<<<<< HEAD
-
 	slog.InfoContext(ctx, "hello", "count", 3)
 
-=======
 # タイプのログ出力のカスタマイズ
->>>>>>> release-branch.go1.21
 
 タイプが [LogValuer] インターフェースを実装している場合、その [LogValue] メソッドから返される [Value] がログ出力に使用されます。
 これを使用して、タイプの値がログにどのように表示されるかを制御できます。
@@ -209,17 +204,9 @@ LogValueメソッドは、 [LogValuer] を実装している [Value] を返す�
 これは、slogをラップする関数に対して誤ったソース情報を生成する可能性があります。
 たとえば、mylog.goファイルでこの関数を定義する場合、以下のようになります。
 
-<<<<<<< HEAD
-
 	func Infof(logger *slog.Logger, format string, args ...any) {
 	    logger.Info(fmt.Sprintf(format, args...))
 
-=======
-
-	func Infof(format string, args ...any) {
-		slog.Default().Info(fmt.Sprintf(format, args...))
-
->>>>>>> release-branch.go1.21
 
 	}
 

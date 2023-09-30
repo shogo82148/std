@@ -55,14 +55,8 @@ const (
 	// 組み込みハンドラによって使用されるキーです。
 	// 関連する値は文字列です。
 	MessageKey = "msg"
-<<<<<<< HEAD
-	// SourceKey is the key used by the built-in handlers for the source file
-	// and line of the log call. The associated value is a *[Source].
-=======
-	// SourceKeyは、ログ呼び出しのソースファイルと行を表すために、
-	// 組み込みハンドラによって使用されるキーです。
-	// 関連する値は文字列です。
->>>>>>> release-branch.go1.21
+	// SourceKey は、ログ呼び出しのソースファイルと行のためにビルトインハンドラによって使用されるキーです。
+	// 関連する値は *[Source] です。
 	SourceKey = "source"
 )
 

@@ -40,14 +40,13 @@ func (tw *Writer) Flush() error
 // これにより、ヘッダを書き込す前に必要なパディングが暗黙的にフラッシュされます。
 func (tw *Writer) WriteHeader(hdr *Header) error
 
-// AddFS adds the files from fs.FS to the archive.
-// It walks the directory tree starting at the root of the filesystem
-// adding each file to the tar archive while maintaining the directory structure.
+// AddFSは、fs.FSからファイルをアーカイブに追加します。
+// ファイルシステムのルートから開始してディレクトリツリーを走査し、
+// 各ファイルをtarアーカイブに追加しながらディレクトリ構造を維持します。
 func (tw *Writer) AddFS(fsys fs.FS) error
 
-// Write writes to the current file in the tar archive.
-// Write returns the error ErrWriteTooLong if more than
-// Header.Size bytes are written after WriteHeader.
+// Writeは、tarアーカイブの現在のファイルに書き込みます。
+// WriteHeaderの後にHeader.Sizeバイト以上が書き込まれた場合、WriteはErrWriteTooLongエラーを返します。
 //
 // TypeLink、TypeSymlink、TypeChar、TypeBlock、TypeDir、TypeFifoなどの特殊なタイプでWriteを呼び出すと、
 // Header.Sizeが示す内容に関係なく、(0、ErrWriteTooLong)が返されます。
