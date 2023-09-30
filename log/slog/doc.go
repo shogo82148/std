@@ -3,318 +3,278 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package slog provides structured logging,
-in which log records include a message,
-a severity level, and various other attributes
-expressed as key-value pairs.
+Package slogは、メッセージ、重大度レベル、およびキー-値ペアとして表されるさまざまなその他の属性を含むログレコードを提供する構造化されたログを提供します。
 
-It defines a type, [Logger],
-which provides several methods (such as [Logger.Info] and [Logger.Error])
-for reporting events of interest.
+[Logger] という型を定義し、
+[Logger.Info] や [Logger.Error] などのいくつかのメソッドを提供して、
+興味深いイベントを報告するための構造化されたログを提供します。
 
-Each Logger is associated with a [Handler].
-A Logger output method creates a [Record] from the method arguments
-and passes it to the Handler, which decides how to handle it.
-There is a default Logger accessible through top-level functions
-(such as [Info] and [Error]) that call the corresponding Logger methods.
+各Loggerは [Handler] に関連付けられています。
+Loggerの出力メソッドは、メソッド引数から [Record] を作成し、
+それを処理する方法を決定するHandlerに渡します。
+対応するLoggerメソッドを呼び出す [Info] や [Error] などのトップレベル関数を介してアクセス可能なデフォルトのLoggerがあります。
 
-A log record consists of a time, a level, a message, and a set of key-value
-pairs, where the keys are strings and the values may be of any type.
-As an example,
+ログレコードは、時刻、レベル、メッセージ、およびキー-値ペアのセットで構成されます。
+キーは文字列で、値は任意の型である場合があります。
+例として、
 
 	slog.Info("hello", "count", 3)
 
-creates a record containing the time of the call,
-a level of Info, the message "hello", and a single
-pair with key "count" and value 3.
+呼び出しの時間、Infoレベル、メッセージ"hello"、および単一のキー"count"と値3を持つレコードを作成します。
 
-The [Info] top-level function calls the [Logger.Info] method on the default Logger.
-In addition to [Logger.Info], there are methods for Debug, Warn and Error levels.
-Besides these convenience methods for common levels,
-there is also a [Logger.Log] method which takes the level as an argument.
-Each of these methods has a corresponding top-level function that uses the
-default logger.
+[Info] トップレベル関数は、デフォルトのLogger上の [Logger.Info] メソッドを呼び出します。
+[Logger.Info] に加えて、Debug、Warn、Errorレベルのメソッドがあります。
+これらの一般的なレベルのための便利なメソッドに加えて、
+[Logger.Log] メソッドがあり、レベルを引数として受け取ります。
+これらのメソッドのそれぞれに対応するトップレベル関数があり、
+デフォルトのロガーを使用します。
 
-The default handler formats the log record's message, time, level, and attributes
-as a string and passes it to the [log] package.
+デフォルトのハンドラは、ログレコードのメッセージ、時刻、レベル、および属性を
+文字列としてフォーマットし、 [log] パッケージに渡します。
 
 	2022/11/08 15:28:26 INFO hello count=3
 
-For more control over the output format, create a logger with a different handler.
-This statement uses [New] to create a new logger with a TextHandler
-that writes structured records in text form to standard error:
+出力フォーマットをより細かく制御するには、異なるハンドラを持つロガーを作成します。
+この文は、TextHandlerを使用して構造化されたレコードをテキスト形式で標準エラーに書き込む
+新しいロガーを作成するために [New] を使用しています。
 
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
 
-[TextHandler] output is a sequence of key=value pairs, easily and unambiguously
-parsed by machine. This statement:
+[TextHandler] の出力は、キー=値のペアのシーケンスであり、機械によって簡単かつ曖昧に解析できます。
+この文:
 
 	logger.Info("hello", "count", 3)
 
-produces this output:
+は、次の出力を生成します。
 
 	time=2022-11-08T15:28:26.000-05:00 level=INFO msg=hello count=3
 
-The package also provides [JSONHandler], whose output is line-delimited JSON:
+パッケージはまた、行区切りJSONで出力される [JSONHandler] を提供します。
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	logger.Info("hello", "count", 3)
 
-produces this output:
+次の出力を生成します:
 
 	{"time":"2022-11-08T15:28:26.000000000-05:00","level":"INFO","msg":"hello","count":3}
 
-Both [TextHandler] and [JSONHandler] can be configured with [HandlerOptions].
-There are options for setting the minimum level (see Levels, below),
-displaying the source file and line of the log call, and
-modifying attributes before they are logged.
+[TextHandler] と [JSONHandler] の両方は、 [HandlerOptions] で構成できます。
+最小レベルの設定(以下の [Levels] を参照)、
+ログ呼び出しのソースファイルと行の表示、
+およびログに記録される前に属性を変更するためのオプションがあります。
 
-Setting a logger as the default with
+デフォルトのロガーは以下のようにして変更できます。
 
 	slog.SetDefault(logger)
 
-will cause the top-level functions like [Info] to use it.
-[SetDefault] also updates the default logger used by the [log] package,
-so that existing applications that use [log.Printf] and related functions
-will send log records to the logger's handler without needing to be rewritten.
+[Info] のようなトップレベルの関数がloggerを使用するようになります。
+[SetDefault] は、 [log] パッケージが使用するデフォルトのロガーも更新します。
+これにより [log.Printf] などを使用する既存のアプリケーションが、
+書き換える必要なくログレコードをロガーのハンドラに送信できます。
 
-Some attributes are common to many log calls.
-For example, you may wish to include the URL or trace identifier of a server request
-with all log events arising from the request.
-Rather than repeat the attribute with every log call, you can use [Logger.With]
-to construct a new Logger containing the attributes:
+多くのログ呼び出しで共通の属性があります。
+たとえば、サーバーリクエストから生じるすべてのログイベントにURLやトレース識別子を含めたい場合があります。
+ログ呼び出しごとに属性を繰り返す代わりに、 [Logger.With] を使用して属性を含む新しいLoggerを構築できます。
 
 	logger2 := logger.With("url", r.URL)
 
-The arguments to With are the same key-value pairs used in [Logger.Info].
-The result is a new Logger with the same handler as the original, but additional
-attributes that will appear in the output of every call.
+Withの引数は、 [Logger.Info] で使用されるキー-値ペアと同じです。
+結果は、元のハンドラと同じハンドラを持つ新しいLoggerですが、
+すべての呼び出しの出力に表示される追加の属性が含まれています。
 
 # Levels
 
-A [Level] is an integer representing the importance or severity of a log event.
-The higher the level, the more severe the event.
-This package defines constants for the most common levels,
-but any int can be used as a level.
+[Level] は、ログイベントの重要度または深刻度を表す整数です。
+レベルが高いほど、イベントはより深刻です。
+このパッケージは、最も一般的なレベルの定数を定義していますが、
+任意のintをレベルとして使用できます。
 
-In an application, you may wish to log messages only at a certain level or greater.
-One common configuration is to log messages at Info or higher levels,
-suppressing debug logging until it is needed.
-The built-in handlers can be configured with the minimum level to output by
-setting [HandlerOptions.Level].
-The program's `main` function typically does this.
-The default value is LevelInfo.
+アプリケーションでは、特定のレベル以上のメッセージのみをログに記録することが望ましい場合があります。
+一般的な構成の1つは、Infoレベル以上のメッセージをログに記録し、
+デバッグログを必要になるまで抑制することです。
+組み込みのハンドラは、 [HandlerOptions.Level] を設定することで、
+出力する最小レベルを構成できます。
+通常、プログラムの`main`関数がこれを行います。
+デフォルト値はLevelInfoです。
 
-Setting the [HandlerOptions.Level] field to a [Level] value
-fixes the handler's minimum level throughout its lifetime.
-Setting it to a [LevelVar] allows the level to be varied dynamically.
-A LevelVar holds a Level and is safe to read or write from multiple
-goroutines.
-To vary the level dynamically for an entire program, first initialize
-a global LevelVar:
+[HandlerOptions.Level] フィールドを [Level] 値に設定すると、
+ハンドラの最小レベルがその寿命全体で固定されます。
+[LevelVar] に設定すると、レベルを動的に変化させることができます。
+LevelVarはLevelを保持し、複数のゴルーチンから読み書きすることができます。
+プログラム全体でレベルを動的に変化させるには、まずグローバルなLevelVarを初期化します。
 
 	var programLevel = new(slog.LevelVar) // Info by default
 
-Then use the LevelVar to construct a handler, and make it the default:
+次に、LevelVarを使用してハンドラを構築し、デフォルトにします。
 
 	h := slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{Level: programLevel})
 	slog.SetDefault(slog.New(h))
 
-Now the program can change its logging level with a single statement:
+プログラムは、単一のステートメントでログレベルを変更できるようになりました。
 
 	programLevel.Set(slog.LevelDebug)
 
 # Groups
 
-Attributes can be collected into groups.
-A group has a name that is used to qualify the names of its attributes.
-How this qualification is displayed depends on the handler.
-[TextHandler] separates the group and attribute names with a dot.
-[JSONHandler] treats each group as a separate JSON object, with the group name as the key.
+属性はグループに集めることができます。
+グループには、属性の名前に修飾子として使用される名前があります。
+この修飾子がどのように表示されるかは、ハンドラによって異なります。
+[TextHandler] は、グループと属性名をドットで区切ります。
+[JSONHandler] は、各グループを別々のJSONオブジェクトとして扱い、グループ名をキーとして扱います。
 
-Use [Group] to create a Group attribute from a name and a list of key-value pairs:
+[Group] を使用して、名前とキー値のリストからグループ属性を作成します。
 
 	slog.Group("request",
 	    "method", r.Method,
 	    "url", r.URL)
 
-TextHandler would display this group as
+[TextHandler] は、このグループを次のように表示します。
 
 	request.method=GET request.url=http://example.com
 
-JSONHandler would display it as
+[JSONHandler] は、次のように表示します。
 
 	"request":{"method":"GET","url":"http://example.com"}
 
-Use [Logger.WithGroup] to qualify all of a Logger's output
-with a group name. Calling WithGroup on a Logger results in a
-new Logger with the same Handler as the original, but with all
-its attributes qualified by the group name.
+[Logger.WithGroup] を使用して、Loggerのすべての出力にグループ名を付けます。
+LoggerでWithGroupを呼び出すと、元のハンドラと同じハンドラを持つ新しいLoggerが生成されますが、すべての属性がグループ名で修飾されます。
 
-This can help prevent duplicate attribute keys in large systems,
-where subsystems might use the same keys.
-Pass each subsystem a different Logger with its own group name so that
-potential duplicates are qualified:
+これにより、大規模なシステムで重複した属性キーを防止できます。
+サブシステムが同じキーを使用する可能性がある場合、異なるグループ名を持つ独自のLoggerを各サブシステムに渡して、潜在的な重複を修飾します。
 
 	logger := slog.Default().With("id", systemID)
 	parserLogger := logger.WithGroup("parser")
 	parseInput(input, parserLogger)
 
-When parseInput logs with parserLogger, its keys will be qualified with "parser",
-so even if it uses the common key "id", the log line will have distinct keys.
+parseInputがparserLoggerでログを記録する場合、そのキーは "parser"で修飾されるため、共通のキー "id"を使用していても、ログ行には異なるキーがあります。
 
 # Contexts
 
-Some handlers may wish to include information from the [context.Context] that is
-available at the call site. One example of such information
-is the identifier for the current span when tracing is enabled.
+一部のハンドラは、呼び出し元で利用可能な [context.Context] から情報を取得することを望む場合があります。
+トレースが有効になっている場合、現在のスパンの識別子などの情報が含まれます。
 
-The [Logger.Log] and [Logger.LogAttrs] methods take a context as a first
-argument, as do their corresponding top-level functions.
+[Logger.Log] と [Logger.LogAttrs] メソッドは、対応するトップレベル関数と同様に、最初の引数としてコンテキストを取ります。
 
-Although the convenience methods on Logger (Info and so on) and the
-corresponding top-level functions do not take a context, the alternatives ending
-in "Context" do. For example,
+Loggerの便利なメソッド(Infoなど)と対応するトップレベル関数は、コンテキストを取りませんが、"Context"で終わる代替メソッドはコンテキストを取ります。例えば、
 
 	slog.InfoContext(ctx, "message")
 
-It is recommended to pass a context to an output method if one is available.
+出力メソッドにコンテキストが利用可能な場合は、コンテキストを渡すことをお勧めします。
 
 # Attrs and Values
 
-An [Attr] is a key-value pair. The Logger output methods accept Attrs as well as
-alternating keys and values. The statement
+[Attr] は、キーと値のペアです。Loggerの出力メソッドは、Attrsと交互にキーと値を受け入れます。以下の文を参照してください。
 
 	slog.Info("hello", slog.Int("count", 3))
 
-behaves the same as
+以下のように動作します。
 
 	slog.Info("hello", "count", 3)
 
-There are convenience constructors for [Attr] such as [Int], [String], and [Bool]
-for common types, as well as the function [Any] for constructing Attrs of any
-type.
+[Attr] には [Int] 、 [String] 、 [Bool] などの便利なコンストラクタがあり、一般的な型に対して、 [Any] 関数を使用して任意の型の [Attr] を構築することもできます。
 
-The value part of an Attr is a type called [Value].
-Like an [any], a Value can hold any Go value,
-but it can represent typical values, including all numbers and strings,
-without an allocation.
+[Attr] の値部分は [Value] と呼ばれる型です。
+[any] のように、 [Value] は任意のGo値を保持できますが、
+すべての数値と文字列を含む一般的な値を、割り当てなしで表現できます。
 
-For the most efficient log output, use [Logger.LogAttrs].
-It is similar to [Logger.Log] but accepts only Attrs, not alternating
-keys and values; this allows it, too, to avoid allocation.
+最も効率的なログ出力には、 [Logger.LogAttrs] を使用してください。
+これは [Logger.Log] に似ていますが、交互にキーと値を受け入れるのではなく、Attrsのみを受け入れるため、これも割り当てを回避できます。
 
-The call
+logger.LogAttrs(ctx, slog.LevelInfo, "hello", slog.Int("count", 3))
 
-	logger.LogAttrs(ctx, slog.LevelInfo, "hello", slog.Int("count", 3))
+は、以下と同じ出力を生成する最も効率的な方法です。
 
-is the most efficient way to achieve the same output as
+slog.Info("hello", "count", 3)
 
-	slog.Info("hello", "count", 3)
+# タイプのログ出力のカスタマイズ
 
-# Customizing a type's logging behavior
+タイプが [LogValuer] インターフェースを実装している場合、その [LogValue] メソッドから返される [Value] がログ出力に使用されます。
+これを使用して、タイプの値がログにどのように表示されるかを制御できます。
+例えば、パスワードのような秘密情報を伏せたり、構造体のフィールドをグループ化したりすることができます。
+詳細については、 [LogValuer] の例を参照してください。
 
-If a type implements the [LogValuer] interface, the [Value] returned from its LogValue
-method is used for logging. You can use this to control how values of the type
-appear in logs. For example, you can redact secret information like passwords,
-or gather a struct's fields in a Group. See the examples under [LogValuer] for
-details.
+LogValueメソッドは、 [LogValuer] を実装している [Value] を返すことができます。
+[Value.Resolve] メソッドは、これらの場合に無限ループや無制限の再帰を回避するように注意して処理します。
+ハンドラの作者やその他の人々は、LogValueを直接呼び出す代わりに、Value.Resolveを使用したい場合があります。
 
-A LogValue method may return a Value that itself implements [LogValuer]. The [Value.Resolve]
-method handles these cases carefully, avoiding infinite loops and unbounded recursion.
-Handler authors and others may wish to use Value.Resolve instead of calling LogValue directly.
+# 出力メソッドのラッピング
 
-# Wrapping output methods
-
-The logger functions use reflection over the call stack to find the file name
-and line number of the logging call within the application. This can produce
-incorrect source information for functions that wrap slog. For instance, if you
-define this function in file mylog.go:
+ロガー関数は、呼び出し元のコールスタック上でリフレクションを使用して、アプリケーション内のログ呼び出しのファイル名と行番号を検索します。
+これは、slogをラップする関数に対して誤ったソース情報を生成する可能性があります。
+たとえば、mylog.goファイルでこの関数を定義する場合、以下のようになります。
 
 	func Infof(format string, args ...any) {
-	    slog.Default().Info(fmt.Sprintf(format, args...))
+		slog.Default().Info(fmt.Sprintf(format, args...))
 	}
 
-and you call it like this in main.go:
+そして、main.goで次のように呼び出す場合、
 
 	Infof(slog.Default(), "hello, %s", "world")
 
-then slog will report the source file as mylog.go, not main.go.
+slogは、ソースファイルをmylog.goではなくmain.goとして報告しません。
 
-A correct implementation of Infof will obtain the source location
-(pc) and pass it to NewRecord.
-The Infof function in the package-level example called "wrapping"
-demonstrates how to do this.
+Infofの正しい実装は、ソースの場所(pc)を取得し、NewRecordに渡す必要があります。
+パッケージレベルの例である "wrapping" で示されているように、Infof関数の実装方法を示します。
 
-# Working with Records
+# レコードの操作
 
-Sometimes a Handler will need to modify a Record
-before passing it on to another Handler or backend.
-A Record contains a mixture of simple public fields (e.g. Time, Level, Message)
-and hidden fields that refer to state (such as attributes) indirectly. This
-means that modifying a simple copy of a Record (e.g. by calling
-[Record.Add] or [Record.AddAttrs] to add attributes)
-may have unexpected effects on the original.
-Before modifying a Record, use [Record.Clone] to
-create a copy that shares no state with the original,
-or create a new Record with [NewRecord]
-and build up its Attrs by traversing the old ones with [Record.Attrs].
+ハンドラが別のハンドラやバックエンドに渡す前に、レコードを変更する必要がある場合があります。
+レコードには、単純な公開フィールド(例: Time、Level、Message)と、状態(属性など)を間接的に参照する非公開フィールドが混在しています。
+これは、レコードの単純なコピーを変更する(例えば、属性を追加するために [Record.Add] または [Record.AddAttrs] を呼び出す)と、元のレコードに予期しない影響を与える可能性があることを意味します。
+レコードを変更する前に、 [Record.Clone] を使用して、元のレコードと状態を共有しないコピーを作成するか、 [NewRecord] で新しいレコードを作成し、 [Record.Attrs] を使用して古いレコードをトラバースしてそのAttrsを構築してください。
 
-# Performance considerations
+# パフォーマンスに関する考慮事項
 
-If profiling your application demonstrates that logging is taking significant time,
-the following suggestions may help.
+アプリケーションのプロファイリングによって、ログの記録にかかる時間がかなりあることが示された場合、以下の提案が役立つ場合があります。
 
-If many log lines have a common attribute, use [Logger.With] to create a Logger with
-that attribute. The built-in handlers will format that attribute only once, at the
-call to [Logger.With]. The [Handler] interface is designed to allow that optimization,
-and a well-written Handler should take advantage of it.
+多くのログ行に共通の属性がある場合は、 [Logger.With] を使用して、その属性を持つLoggerを作成します。
+組み込みのハンドラは、 [Logger.With] の呼び出し時にその属性を1回だけフォーマットします。
+[Handler] インターフェースは、その最適化を許容するように設計されており、適切に書かれたHandlerはそれを活用するはずです。
 
-The arguments to a log call are always evaluated, even if the log event is discarded.
-If possible, defer computation so that it happens only if the value is actually logged.
-For example, consider the call
+ログ呼び出しの引数は常に評価されます。たとえログイベントが破棄された場合でもです。
+可能であれば、値が実際にログに記録される場合にのみ計算が行われるように遅延させてください。
+たとえば、次の呼び出しを考えてみてください。
 
 	slog.Info("starting request", "url", r.URL.String())  // may compute String unnecessarily
 
-The URL.String method will be called even if the logger discards Info-level events.
-Instead, pass the URL directly:
+URL.Stringメソッドは、ロガーがInfoレベルのイベントを破棄する場合でも呼び出されます。
+代わりに、URLを直接渡してください。
 
 	slog.Info("starting request", "url", &r.URL) // calls URL.String only if needed
 
-The built-in [TextHandler] will call its String method, but only
-if the log event is enabled.
-Avoiding the call to String also preserves the structure of the underlying value.
-For example [JSONHandler] emits the components of the parsed URL as a JSON object.
-If you want to avoid eagerly paying the cost of the String call
-without causing the handler to potentially inspect the structure of the value,
-wrap the value in a fmt.Stringer implementation that hides its Marshal methods.
+組み込みの [TextHandler] は、そのStringメソッドを呼び出しますが、
+ログイベントが有効になっている場合にのみ呼び出します。
+Stringの呼び出しを回避することは、基礎となる値の構造を保持することもできます。
+例えば、 [JSONHandler] は解析されたURLのコンポーネントをJSONオブジェクトとして出力します。
+String呼び出しのコストを支払うことを避けたい場合、
+値の構造を検査する可能性のあるハンドラを引き起こすことなく、
+その値を隠すfmt.Stringer実装でラップしてください。
 
-You can also use the [LogValuer] interface to avoid unnecessary work in disabled log
-calls. Say you need to log some expensive value:
+[LogValuer] インターフェースを使用すると、無効なログ呼び出しで不必要な作業を回避できます。
+例えば、高価な値をログに記録する必要がある場合を考えてみましょう。
 
 	slog.Debug("frobbing", "value", computeExpensiveValue(arg))
 
-Even if this line is disabled, computeExpensiveValue will be called.
-To avoid that, define a type implementing LogValuer:
+この行が無効になっていても、computeExpensiveValueが呼び出されます。
+これを回避するには、LogValuerを実装する型を定義します。
 
 	type expensive struct { arg int }
 
 	func (e expensive) LogValue() slog.Value {
-	    return slog.AnyValue(computeExpensiveValue(e.arg))
+		return slog.AnyValue(computeExpensiveValue(e.arg))
 	}
 
-Then use a value of that type in log calls:
+そして、ログ呼び出しでその型の値を使用します。
 
 	slog.Debug("frobbing", "value", expensive{arg})
 
-Now computeExpensiveValue will only be called when the line is enabled.
+これで、行が有効になっている場合にのみcomputeExpensiveValueが呼び出されます。
 
-The built-in handlers acquire a lock before calling [io.Writer.Write]
-to ensure that each record is written in one piece. User-defined
-handlers are responsible for their own locking.
+組み込みのハンドラは、各レコードが1つの塊で書き込まれることを保証するために、 [io.Writer.Write] を呼び出す前にロックを取得します。
+ユーザー定義のハンドラは、自分自身のロックを管理する責任があります。
 
-# Writing a handler
+# ハンドラの作成
 
-For a guide to writing a custom handler, see https://golang.org/s/slog-handler-guide.
+カスタムハンドラの作成方法についてのガイドについては、https://golang.org/s/slog-handler-guide を参照してください。
 */
 package slog
