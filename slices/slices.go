@@ -98,13 +98,8 @@ func Grow[S ~[]E, E any](s S, n int) S { return nil }
 // Clip は、スライスから未使用の容量を削除し、s[:len(s):len(s)] を返します。
 func Clip[S ~[]E, E any](s S) S { return nil }
 
-<<<<<<< HEAD
-// Reverse reverses the elements of the slice in place.
-func Reverse[S ~[]E, E any](s S)
-
-// Concat returns a new slice concatenating the passed in slices.
-func Concat[S ~[]E, E any](slices ...S) S
-=======
 // Reverse は、スライスの要素を逆順にします。
-func Reverse[S ~[]E, E any](s S) {}
->>>>>>> release-branch.go1.21
+func Reverse[S ~[]E, E any](s S) { return }
+
+// Concat は、渡されたスライスを連結した新しいスライスを返します。
+func Concat[S ~[]E, E any](slices ...S) S { return nil }
