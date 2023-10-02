@@ -9,7 +9,13 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// Writer implements a zip file writer.
+type (
+	countWriter struct{}
+	header      struct{}
+	fileWriter  struct{}
+)
+
+// Writer は、ZIP ファイルのライターを実装します。
 type Writer struct {
 	cw          *countWriter
 	dir         []*header
@@ -21,62 +27,57 @@ type Writer struct {
 	testHookCloseSizeOffset func(size, offset uint64)
 }
 
-// NewWriter returns a new Writer writing a zip file to w.
+// NewWriter は、w に ZIP ファイルを書き込む新しい Writer を返します。
 func NewWriter(w io.Writer) *Writer
 
-// SetOffset sets the offset of the beginning of the zip data within the
-// underlying writer. It should be used when the zip data is appended to an
-// existing file, such as a binary executable.
-// It must be called before any data is written.
+// SetOffset は、zip データの開始オフセットを基になるライター内に設定します。
+// これは、バイナリ実行可能ファイルなどに zip データが追加される場合に使用する必要があります。
+// データが書き込まれる前に呼び出す必要があります。
 func (w *Writer) SetOffset(n int64)
 
-// Flush flushes any buffered data to the underlying writer.
-// Calling Flush is not normally necessary; calling Close is sufficient.
+// Flush は、バッファリングされたデータを基になるライターにフラッシュします。
+// Flush を呼び出す必要は通常ありません。Close を呼び出すだけで十分です。
 func (w *Writer) Flush() error
 
-// SetComment sets the end-of-central-directory comment field.
-// It can only be called before Close.
+// SetComment は、中央ディレクトリのコメントフィールドを設定します。
+// Close を呼び出す前にのみ呼び出すことができます。
 func (w *Writer) SetComment(comment string) error
 
-// Close finishes writing the zip file by writing the central directory.
-// It does not close the underlying writer.
+// Close は、中央ディレクトリを書き込むことで zip ファイルの書き込みを終了します。
+// 基になるライターを閉じません。
 func (w *Writer) Close() error
 
-// Create adds a file to the zip file using the provided name.
-// It returns a Writer to which the file contents should be written.
-// The file contents will be compressed using the Deflate method.
-// The name must be a relative path: it must not start with a drive
-// letter (e.g. C:) or leading slash, and only forward slashes are
-// allowed. To create a directory instead of a file, add a trailing
-// slash to the name.
-// The file's contents must be written to the io.Writer before the next
-// call to Create, CreateHeader, or Close.
+// Create は、指定された名前を使用してファイルを zip ファイルに追加します。
+// 返される Writer にファイルの内容を書き込む必要があります。
+// ファイルの内容は、Deflate メソッドを使用して圧縮されます。
+// 名前は相対パスである必要があります。
+// ドライブレター（例：C：）または先頭のスラッシュで始まることはできず、
+// スラッシュのみが許可されます。
+// ファイルではなくディレクトリを作成するには、名前の末尾にスラッシュを追加します。
+// 次の Create、CreateHeader、または Close を呼び出す前に、ファイルの内容を io.Writer に書き込む必要があります。
 func (w *Writer) Create(name string) (io.Writer, error)
 
-// CreateHeader adds a file to the zip archive using the provided FileHeader
-// for the file metadata. Writer takes ownership of fh and may mutate
-// its fields. The caller must not modify fh after calling CreateHeader.
+// CreateHeader は、ファイルメタデータに提供された FileHeader を使用して、zip アーカイブにファイルを追加します。
+// Writer は fh を所有し、そのフィールドを変更する可能性があります。
+// CreateHeader を呼び出した後、呼び出し元は fh を変更してはいけません。
 //
-// This returns a Writer to which the file contents should be written.
-// The file's contents must be written to the io.Writer before the next
-// call to Create, CreateHeader, CreateRaw, or Close.
+// これは、ファイルの内容を書き込む必要がある Writer を返します。
+// 次の Create、CreateHeader、CreateRaw、または Close を呼び出す前に、ファイルの内容を io.Writer に書き込む必要があります。
 func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
 
-// CreateRaw adds a file to the zip archive using the provided FileHeader and
-// returns a Writer to which the file contents should be written. The file's
-// contents must be written to the io.Writer before the next call to Create,
-// CreateHeader, CreateRaw, or Close.
+// CreateRaw は、提供された FileHeader を使用して zip アーカイブにファイルを追加し、
+// ファイルの内容を書き込むための Writer を返します。
+// 次の Create、CreateHeader、CreateRaw、または Close を呼び出す前に、ファイルの内容を io.Writer に書き込む必要があります。
 //
-// In contrast to CreateHeader, the bytes passed to Writer are not compressed.
+// CreateHeader とは異なり、Writer に渡されるバイトは圧縮されません。
 func (w *Writer) CreateRaw(fh *FileHeader) (io.Writer, error)
 
-// Copy copies the file f (obtained from a Reader) into w. It copies the raw
-// form directly bypassing decompression, compression, and validation.
+// Copy は、ファイル f（Reader から取得された）を w にコピーします。
+// これは、解凍、圧縮、および検証をバイパスして、生の形式で直接コピーします。
 func (w *Writer) Copy(f *File) error
 
-// RegisterCompressor registers or overrides a custom compressor for a specific
-// method ID. If a compressor for a given method is not found, Writer will
-// default to looking up the compressor at the package level.
+// RegisterCompressor は、特定のメソッド ID にカスタムの圧縮プログラムを登録または上書きします。
+// メソッドの圧縮プログラムが見つからない場合、Writer はパッケージレベルで圧縮プログラムを検索します。
 func (w *Writer) RegisterCompressor(method uint16, comp Compressor)
 
 // AddFS adds the files from fs.FS to the archive.

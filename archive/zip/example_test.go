@@ -15,19 +15,19 @@ import (
 )
 
 func ExampleWriter() {
-	// Create a buffer to write our archive to.
+	// アーカイブを書き込むためのバッファを作成します。
 	buf := new(bytes.Buffer)
 
-	// Create a new zip archive.
+	// 新しい zip アーカイブを作成します。
 	w := zip.NewWriter(buf)
 
-	// Add some files to the archive.
+	// アーカイブにいくつかのファイルを追加します。
 	var files = []struct {
 		Name, Body string
 	}{
-		{"readme.txt", "This archive contains some text files."},
+		{"readme.txt", "このアーカイブにはいくつかのテキストファイルが含まれています。"},
 		{"gopher.txt", "Gopher names:\nGeorge\nGeoffrey\nGonzo"},
-		{"todo.txt", "Get animal handling licence.\nWrite more examples."},
+		{"todo.txt", "動物取扱業免許を取得する。\nもっと例を書く。"},
 	}
 	for _, file := range files {
 		f, err := w.Create(file.Name)
@@ -40,7 +40,7 @@ func ExampleWriter() {
 		}
 	}
 
-	// Make sure to check the error on Close.
+	// Close でエラーを確認することを忘れないでください。
 	err := w.Close()
 	if err != nil {
 		log.Fatal(err)
@@ -48,15 +48,14 @@ func ExampleWriter() {
 }
 
 func ExampleReader() {
-	// Open a zip archive for reading.
+	// 読み取り用に zip アーカイブを開きます。
 	r, err := zip.OpenReader("testdata/readme.zip")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer r.Close()
 
-	// Iterate through the files in the archive,
-	// printing some of their contents.
+	// アーカイブ内のファイルを反復処理し、その内容の一部を出力します。
 	for _, f := range r.File {
 		fmt.Printf("Contents of %s:\n", f.Name)
 		rc, err := f.Open()
@@ -76,18 +75,18 @@ func ExampleReader() {
 }
 
 func ExampleWriter_RegisterCompressor() {
-	// Override the default Deflate compressor with a higher compression level.
+	// デフォルトの Deflate 圧縮プログラムを、より高い圧縮レベルのカスタム圧縮プログラムで上書きします。
 
-	// Create a buffer to write our archive to.
+	// アーカイブを書き込むためのバッファを作成します。
 	buf := new(bytes.Buffer)
 
-	// Create a new zip archive.
+	// 新しい zip アーカイブを作成します。
 	w := zip.NewWriter(buf)
 
-	// Register a custom Deflate compressor.
+	// カスタムの Deflate 圧縮プログラムを登録します。
 	w.RegisterCompressor(zip.Deflate, func(out io.Writer) (io.WriteCloser, error) {
 		return flate.NewWriter(out, flate.BestCompression)
 	})
 
-	// Proceed to add files to w.
+	// ファイルを w に追加します。
 }
