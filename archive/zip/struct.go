@@ -3,19 +3,17 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package zip provides support for reading and writing ZIP archives.
+Package zip は、ZIP アーカイブの読み書きをサポートします。
 
-See the [ZIP specification] for details.
+詳細については、[ZIP specification] を参照してください。
 
-This package does not support disk spanning.
+このパッケージはディスクスパニングをサポートしていません。
 
-A note about ZIP64:
+ZIP64 についての注意点:
 
-To be backwards compatible the FileHeader has both 32 and 64 bit Size
-fields. The 64 bit fields will always contain the correct value and
-for normal archives both fields will be the same. For files requiring
-the ZIP64 format the 32 bit fields will be 0xffffffff and the 64 bit
-fields must be used instead.
+後方互換性を保つために、FileHeader には 32 ビットと 64 ビットの両方の Size フィールドがあります。
+64 ビットフィールドには常に正しい値が含まれ、通常のアーカイブでは両方のフィールドが同じ値になります。
+ZIP64 形式が必要なファイルの場合、32 ビットフィールドは 0xffffffff になり、代わりに 64 ビットフィールドを使用する必要があります。
 
 [ZIP specification]: https://www.pkware.com/appnote
 */
@@ -26,14 +24,14 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Compression methods.
+// 圧縮方式
 const (
 	Store   uint16 = 0
 	Deflate uint16 = 8
 )
 
-// FileHeader describes a file within a ZIP file.
-// See the [ZIP specification] for details.
+// FileHeader は、ZIP ファイル内のファイルを説明します。
+// 詳細については、[ZIP specification] を参照してください。
 //
 // [ZIP specification]: https://www.pkware.com/appnote
 type FileHeader struct {
@@ -69,34 +67,30 @@ type FileHeader struct {
 	ExternalAttrs uint32
 }
 
-// FileInfo returns an fs.FileInfo for the FileHeader.
+// FileInfo は、FileHeader の fs.FileInfo を返します。
 func (h *FileHeader) FileInfo() fs.FileInfo
 
 // headerFileInfo implements fs.FileInfo.
 
-// FileInfoHeader creates a partially-populated FileHeader from an
-// fs.FileInfo.
-// Because fs.FileInfo's Name method returns only the base name of
-// the file it describes, it may be necessary to modify the Name field
-// of the returned header to provide the full path name of the file.
-// If compression is desired, callers should set the FileHeader.Method
-// field; it is unset by default.
+// FileInfoHeader は、fs.FileInfo から部分的に設定された FileHeader を作成します。
+// fs.FileInfo の Name メソッドは、説明するファイルの基本名のみを返すため、
+// 返されたヘッダーの Name フィールドを変更して、ファイルの完全なパス名を提供する必要がある場合があります。
+// 圧縮が必要な場合、呼び出し元は FileHeader.Method フィールドを設定する必要があります。
+// デフォルトでは、Method は未設定です。
 func FileInfoHeader(fi fs.FileInfo) (*FileHeader, error)
 
-// ModTime returns the modification time in UTC using the legacy
-// ModifiedDate and ModifiedTime fields.
+// ModTime は、旧来の ModifiedDate および ModifiedTime フィールドを使用して、UTC での変更時刻を返します。
 //
-// Deprecated: Use Modified instead.
+// Deprecated: 代わりに Modified を使用してください。
 func (h *FileHeader) ModTime() time.Time
 
-// SetModTime sets the Modified, ModifiedTime, and ModifiedDate fields
-// to the given time in UTC.
+// SetModTime は、与えられた時刻を UTC で指定して、Modified、ModifiedTime、および ModifiedDate フィールドを設定します。
 //
-// Deprecated: Use Modified instead.
+// Deprecated: 代わりに Modified を使用してください。
 func (h *FileHeader) SetModTime(t time.Time)
 
-// Mode returns the permission and mode bits for the FileHeader.
+// Mode は、FileHeader のパーミッションとモードビットを返します。
 func (h *FileHeader) Mode() (mode fs.FileMode)
 
-// SetMode changes the permission and mode bits for the FileHeader.
+// SetMode は、FileHeader のパーミッションとモードビットを変更します。
 func (h *FileHeader) SetMode(mode fs.FileMode)
