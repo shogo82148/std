@@ -4,10 +4,13 @@ on:
   push:
 
 jobs:
-  actionlint:
+  godoc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
       - run: |
           set -uexo pipefail
           go list ./... | xargs -n1 go doc -all > /dev/null
