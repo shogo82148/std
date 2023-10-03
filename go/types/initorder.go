@@ -4,10 +4,6 @@
 
 package types
 
-import (
-	. "internal/types/errors"
-)
-
 // A dependency is an object that may be a dependency in an initialization
 // expression. Only constants, variables, and functions can be dependencies.
 // Constants are here because constant expression cycles are reported during
