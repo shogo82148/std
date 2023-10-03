@@ -2,12 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package ioutil implements some I/O utility functions.
+// パッケージioutilは、いくつかのI/Oユーティリティ関数を実装しています。
 //
-// Deprecated: As of Go 1.16, the same functionality is now provided
-// by package [io] or package [os], and those implementations
-// should be preferred in new code.
-// See the specific function documentation for details.
+// Deprecated: Go 1.16以降、同じ機能はパッケージ [io] またはパッケージ [os] で提供されるようになり、
+// これらの実装が新しいコードで優先されるべきです。
+// 詳細については、特定の関数のドキュメントを参照してください。
 package ioutil
 
 import (
@@ -15,40 +14,38 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// ReadAll reads from r until an error or EOF and returns the data it read.
-// A successful call returns err == nil, not err == EOF. Because ReadAll is
-// defined to read from src until EOF, it does not treat an EOF from Read
-// as an error to be reported.
+// ReadAllは、rからエラーまたはEOFが発生するまで読み取り、読み取ったデータを返します。
+// 成功した呼び出しはerr == nilを返します。err == EOFではありません。
+// ReadAllは、EOFをエラーとして報告する必要はありません。
+// なぜなら、ReadAllはsrcからEOFまで読み取るように定義されているためです。
 //
-// Deprecated: As of Go 1.16, this function simply calls [io.ReadAll].
+// Deprecated: Go 1.16以降、この関数は単に [io.ReadAll] を呼び出すだけです。
 func ReadAll(r io.Reader) ([]byte, error)
 
-// ReadFile reads the file named by filename and returns the contents.
-// A successful call returns err == nil, not err == EOF. Because ReadFile
-// reads the whole file, it does not treat an EOF from Read as an error
-// to be reported.
+// ReadFileは、filenameで指定されたファイルを読み取り、その内容を返します。
+// 成功した呼び出しはerr == nilを返します。err == EOFではありません。
+// ReadFileは、ファイル全体を読み取るため、ReadからのEOFをエラーとして報告する必要はありません。
 //
-// Deprecated: As of Go 1.16, this function simply calls [os.ReadFile].
+// Deprecated: Go 1.16以降、この関数は単に[os.ReadFile]を呼び出すだけです。
 func ReadFile(filename string) ([]byte, error)
 
-// WriteFile writes data to a file named by filename.
-// If the file does not exist, WriteFile creates it with permissions perm
-// (before umask); otherwise WriteFile truncates it before writing, without changing permissions.
+// WriteFileは、filenameで指定されたファイルにデータを書き込みます。
+// ファイルが存在しない場合、WriteFileは、パーミッションperm（umaskの前）で作成します。
+// それ以外の場合、WriteFileはパーミッションを変更せずに書き込むために切り捨てます。
 //
-// Deprecated: As of Go 1.16, this function simply calls [os.WriteFile].
+// Deprecated: Go 1.16以降、この関数は単に[os.WriteFile]を呼び出すだけです。
 func WriteFile(filename string, data []byte, perm fs.FileMode) error
 
-// ReadDir reads the directory named by dirname and returns
-// a list of fs.FileInfo for the directory's contents,
-// sorted by filename. If an error occurs reading the directory,
-// ReadDir returns no directory entries along with the error.
+// ReadDirは、dirnameで指定されたディレクトリを読み取り、
+// ファイル名でソートされたディレクトリの内容の [fs.FileInfo] リストを返します。
+// ディレクトリの読み取り中にエラーが発生した場合、
+// ReadDirはエラーとともにディレクトリエントリを返しません。
 //
-// Deprecated: As of Go 1.16, [os.ReadDir] is a more efficient and correct choice:
-// it returns a list of [fs.DirEntry] instead of [fs.FileInfo],
-// and it returns partial results in the case of an error
-// midway through reading a directory.
+// Deprecated: Go 1.16以降、 [os.ReadDir] がより効率的で正確な選択肢となります。
+// [os.ReadDir] は [fs.FileInfo] のリストではなく[fs.DirEntry]のリストを返し、
+// ディレクトリの読み取り中にエラーが発生した場合でも部分的な結果を返します。
 //
-// If you must continue obtaining a list of [fs.FileInfo], you still can:
+// [fs.FileInfo] のリストを引き続き取得する必要がある場合は、次のようにします。
 //
 //	entries, err := os.ReadDir(dirname)
 //	if err != nil { ... }
@@ -60,14 +57,12 @@ func WriteFile(filename string, data []byte, perm fs.FileMode) error
 //	}
 func ReadDir(dirname string) ([]fs.FileInfo, error)
 
-// NopCloser returns a ReadCloser with a no-op Close method wrapping
-// the provided Reader r.
+// NopCloserは、提供されたReader rをラップするCloseメソッドのないReadCloserを返します。
 //
-// Deprecated: As of Go 1.16, this function simply calls [io.NopCloser].
+// Deprecated: Go 1.16以降、この関数は単に [io.NopCloser] を呼び出すだけです。
 func NopCloser(r io.Reader) io.ReadCloser
 
-// Discard is an io.Writer on which all Write calls succeed
-// without doing anything.
+// Discardは、何もしないですべての書き込み呼び出しが成功するio.Writerです。
 //
-// Deprecated: As of Go 1.16, this value is simply [io.Discard].
+// Deprecated: Go 1.16以降、この値は単に [io.Discard] です。
 var Discard io.Writer = io.Discard
