@@ -4,8 +4,4 @@
 
 package ioutil_test
 
-import (
-	. "io/ioutil"
-)
-
 // This string is from os.errPatternHasSeparator.
