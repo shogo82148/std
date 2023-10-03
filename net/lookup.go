@@ -93,6 +93,8 @@ var _ context.Context = (*onlyValuesCtx)(nil)
 func LookupPort(network, service string) (port int, err error)
 
 // LookupPort looks up the port for the given network and service.
+//
+// The network must be one of "tcp", "tcp4", "tcp6", "udp", "udp4", "udp6" or "ip".
 func (r *Resolver) LookupPort(ctx context.Context, network, service string) (port int, err error)
 
 // LookupCNAME returns the canonical name for the given host.

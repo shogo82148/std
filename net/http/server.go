@@ -328,6 +328,7 @@ type ServeMux struct {
 	tree     routingNode
 	index    routingIndex
 	patterns []*pattern
+	mux121   serveMux121
 }
 
 // NewServeMux allocates and returns a new ServeMux.

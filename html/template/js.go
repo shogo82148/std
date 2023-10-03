@@ -11,5 +11,8 @@ package template
 // regexpPrecederKeywords is a set of reserved JS keywords that can precede a
 // regular expression in JS source.
 
+// jsBqStrReplacementTable is like jsStrReplacementTable except it also contains
+// the special characters for JS template literals: $, {, and }.
+
 // jsStrNormReplacementTable is like jsStrReplacementTable but does not
 // overencode existing escapes since this table has no entry for `\`.
