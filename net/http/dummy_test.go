@@ -1,6 +1,8 @@
 package http_test
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type dotFileHidingFileSystem struct{ any }
 
