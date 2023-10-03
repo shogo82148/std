@@ -34,8 +34,6 @@ import (
 	_ "github.com/shogo82148/std/crypto/sha1"
 	_ "github.com/shogo82148/std/crypto/sha256"
 	_ "github.com/shogo82148/std/crypto/sha512"
-
-	cryptobyte_asn1 "golang.org/x/crypto/cryptobyte/asn1"
 )
 
 // pkixPublicKey reflects a PKIX public key structure. See SubjectPublicKeyInfo

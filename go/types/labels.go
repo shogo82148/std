@@ -4,8 +4,4 @@
 
 package types
 
-import (
-	. "internal/types/errors"
-)
-
 // A block tracks label declarations in a block and its enclosing blocks.

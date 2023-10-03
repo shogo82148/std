@@ -5,7 +5,3 @@
 // This file implements typechecking of conversions.
 
 package types
-
-import (
-	. "internal/types/errors"
-)

@@ -8,9 +8,6 @@
 
 package types
 
-import (
-	. "internal/types/errors"
-)
 
 // If enableReverseTypeInference is set, uninstantiated and
 // partially instantiated generic functions may be assigned
