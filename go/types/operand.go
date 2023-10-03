@@ -6,10 +6,6 @@
 
 package types
 
-import (
-	. "internal/types/errors"
-)
-
 // An operandMode specifies the (addressing) mode of an operand.
 
 // An operand represents an intermediate value during type checking.

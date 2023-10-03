@@ -6,10 +6,6 @@
 
 package types
 
-import (
-	. "internal/types/errors"
-)
-
 // An error_ represents a type-checking error.
 // To report an error_, call Checker.report.
 

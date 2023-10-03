@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package x509
-
-import (
-	macOS "crypto/x509/internal/macos"
-)

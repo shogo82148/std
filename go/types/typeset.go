@@ -4,10 +4,6 @@
 
 package types
 
-import (
-	. "internal/types/errors"
-)
-
 // A _TypeSet represents the type set of an interface.
 // Because of existing language restrictions, methods can be "factored out"
 // from the terms. The actual type set is the intersection of the type set

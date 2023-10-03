@@ -1,0 +1,13 @@
+name: godoc
+on:
+  pull_request:
+  push:
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          set -uexo pipefail
+          go list ./... | xargs -n1 go doc -all > /dev/null

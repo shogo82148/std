@@ -5,7 +5,3 @@
 // This file implements type-checking of identifiers and type expressions.
 
 package types
-
-import (
-	. "internal/types/errors"
-)
