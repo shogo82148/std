@@ -14,17 +14,6 @@ import (
 	"github.com/shogo82148/std/encoding/binary"
 )
 
-// a single entry's description: a sequence of attributes
-
-// a map from entry format ids to their descriptions
-
-// attrIsExprloc indicates attributes that allow exprloc values that
-// are encoded as block values in DWARF 2 and 3. See DWARF 4, Figure
-// 20.
-
-// attrPtrClass indicates the *ptr class of attributes that have
-// encoding formSecOffset in DWARF 4 or formData* in DWARF 2 and 3.
-
 // An entry is a sequence of attribute/value pairs.
 type Entry struct {
 	Offset   Offset

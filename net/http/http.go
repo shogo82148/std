@@ -10,6 +10,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+<<<<<<< HEAD
 // incomparable is a zero-width, non-comparable type. Adding it to a struct
 // makes that struct also non-comparable, and generally doesn't add
 // any size (as long as it's first).
@@ -30,6 +31,12 @@ import (
 // NoBodyは、バイトを持たないio.ReadCloserです。Readは常にEOFを返し、Closeは常にnilを返します。
 // リクエストに0バイトがあることを明示的に示すために、送信クライアントのリクエストで使用できます。
 // ただし、Request.Bodyをnilに設定する代替手段もあります。
+=======
+// NoBody is an io.ReadCloser with no bytes. Read always returns EOF
+// and Close always returns nil. It can be used in an outgoing client
+// request to explicitly signal that a request has zero bytes.
+// An alternative, however, is to simply set Request.Body to nil.
+>>>>>>> release-branch.go1.21
 var NoBody = noBody{}
 
 var (
@@ -40,8 +47,13 @@ var (
 
 // PushOptionsは、Pusher.Pushのオプションを記述します。
 type PushOptions struct {
+	// Method specifies the HTTP method for the promised request.
+	// If set, it must be "GET" or "HEAD". Empty means "GET".
 	Method string
 
+	// Header specifies additional promised request headers. This cannot
+	// include HTTP/2 pseudo header fields like ":path" and ":scheme",
+	// which will be added automatically.
 	Header Header
 }
 

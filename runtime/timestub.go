@@ -8,5 +8,3 @@
 //go:build !faketime && !windows && !(linux && amd64)
 
 package runtime
-
-import _ "github.com/shogo82148/std/unsafe"

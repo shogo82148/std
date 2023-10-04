@@ -285,15 +285,6 @@ func Callers(skip int, pc []uintptr) int
 // or else the root used during the Go build.
 func GOROOT() string
 
-// buildVersion is the Go tree's version string at build time.
-//
-// If any GOEXPERIMENTs are set to non-default values, it will include
-// "X:<GOEXPERIMENT>".
-//
-// This is set by the linker.
-//
-// This is accessed by "go version <binary>".
-
 // Version returns the Go tree's version string.
 // It is either the commit hash and date at the time of the build or,
 // when possible, a release tag like "go1.3".

@@ -10,7 +10,7 @@
 //
 // There are a few limitations on runtime package tests that this bridges:
 //
-// 1. Tests use the signature "XTest<name>(t TestingT)". Since runtime can't import
+// 1. Tests use the signature "XTest<name>(t T)". Since runtime can't import
 // testing, test functions can't use testing.T, so instead we have the T
 // interface, which *testing.T satisfies. And we start names with "XTest"
 // because otherwise go test will complain about Test functions with the wrong

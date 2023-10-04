@@ -145,9 +145,6 @@ type RawContent []byte
 // Unmarshal returns a parse error.
 func Unmarshal(b []byte, val any) (rest []byte, err error)
 
-// An invalidUnmarshalError describes an invalid argument passed to Unmarshal.
-// (The argument to Unmarshal must be a non-nil pointer.)
-
 // UnmarshalWithParams allows field parameters to be specified for the
 // top-level element. The form of the params is the same as the field tags.
 func UnmarshalWithParams(b []byte, val any, params string) (rest []byte, err error)

@@ -32,8 +32,6 @@ func LeadingZeros32(x uint32) int
 // LeadingZeros64 returns the number of leading zero bits in x; the result is 64 for x == 0.
 func LeadingZeros64(x uint64) int
 
-// See http://supertech.csail.mit.edu/papers/debruijn.pdf
-
 // TrailingZeros returns the number of trailing zero bits in x; the result is UintSize for x == 0.
 func TrailingZeros(x uint) int
 

@@ -14,5 +14,3 @@ Usage: headscan [-root root_directory]
 By default, the $GOROOT/src directory is scanned.
 */
 package main
-
-// ToHTML in comment.go assigns a (possibly blank) ID to each heading

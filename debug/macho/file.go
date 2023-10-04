@@ -64,6 +64,12 @@ type Segment struct {
 	LoadBytes
 	SegmentHeader
 
+	// Embed ReaderAt for ReadAt method.
+	// Do not embed SectionReader directly
+	// to avoid having Read and Seek.
+	// If a client wants Read and Seek it must use
+	// Open() to avoid fighting over the seek offset
+	// with other clients.
 	io.ReaderAt
 	sr *io.SectionReader
 }
@@ -90,7 +96,9 @@ type SectionHeader struct {
 type Reloc struct {
 	Addr  uint32
 	Value uint32
-
+	// when Scattered == false && Extern == true, Value is the symbol number.
+	// when Scattered == false && Extern == false, Value is the section number.
+	// when Scattered == true, Value is the value that this reloc refers to.
 	Type      uint8
 	Len       uint8
 	Pcrel     bool
@@ -102,6 +110,12 @@ type Section struct {
 	SectionHeader
 	Relocs []Reloc
 
+	// Embed ReaderAt for ReadAt method.
+	// Do not embed SectionReader directly
+	// to avoid having Read and Seek.
+	// If a client wants Read and Seek it must use
+	// Open() to avoid fighting over the seek offset
+	// with other clients.
 	io.ReaderAt
 	sr *io.SectionReader
 }

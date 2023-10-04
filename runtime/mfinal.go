@@ -6,17 +6,6 @@
 
 package runtime
 
-// finblock is an array of finalizers to be executed. finblocks are
-// arranged in a linked list for the finalizer queue.
-//
-// finblock is allocated from non-GC'd memory, so any heap pointers
-// must be specially handled. GC currently assumes that the finalizer
-// queue does not grow during marking (but it can shrink).
-
-// finalizer goroutine status.
-
-// NOTE: Layout known to queuefinalizer.
-
 // SetFinalizer sets the finalizer associated with obj to the provided
 // finalizer function. When the garbage collector finds an unreachable block
 // with an associated finalizer, it clears the association and runs

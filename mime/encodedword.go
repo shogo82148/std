@@ -25,6 +25,12 @@ func (e WordEncoder) Encode(charset, s string) string
 
 // A WordDecoder decodes MIME headers containing RFC 2047 encoded-words.
 type WordDecoder struct {
+	// CharsetReader, if non-nil, defines a function to generate
+	// charset-conversion readers, converting from the provided
+	// charset into UTF-8.
+	// Charsets are always lower-case. utf-8, iso-8859-1 and us-ascii charsets
+	// are handled by default.
+	// One of the CharsetReader's result values must be non-nil.
 	CharsetReader func(charset string, input io.Reader) (io.Reader, error)
 }
 

@@ -11,12 +11,8 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// onceError is an object that will only store an error once.
-
 // ErrClosedPipe is the error used for read or write operations on a closed pipe.
 var ErrClosedPipe = errors.New("io: read/write on closed pipe")
-
-// A pipe is the shared pipe structure underlying PipeReader and PipeWriter.
 
 // A PipeReader is the read half of a pipe.
 type PipeReader struct {

@@ -3,12 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package unicode_test
-
-import (
-	. "unicode"
-)
-
-type T struct {
-	rune   rune
-	script string
-}

@@ -4,12 +4,6 @@
 
 package math
 
-// pow10tab stores the pre-computed values 10**i for i < 32.
-
-// pow10postab32 stores the pre-computed value for 10**(i*32) at index i.
-
-// pow10negtab32 stores the pre-computed value for 10**(-i*32) at index i.
-
 // Pow10 returns 10**n, the base-10 exponential of n.
 //
 // Special cases are:

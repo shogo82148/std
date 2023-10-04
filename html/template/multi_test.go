@@ -5,5 +5,3 @@
 // Tests for multiple-template execution, copied from text/template.
 
 package template
-
-// These strings are also in testdata/*.

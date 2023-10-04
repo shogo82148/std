@@ -5,7 +5,3 @@
 // GOMAXPROCS=10 go test
 
 package sync_test
-
-import (
-	. "sync"
-)

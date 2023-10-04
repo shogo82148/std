@@ -20,13 +20,19 @@ type Package struct {
 	Filenames  []string
 	Notes      map[string][]*Note
 
+	// Deprecated: For backward compatibility Bugs is still populated,
+	// but all new code should use Notes instead.
 	Bugs []string
 
+	// declarations
 	Consts []*Value
 	Types  []*Type
 	Vars   []*Value
 	Funcs  []*Func
 
+	// Examples is a sorted list of examples associated with
+	// the package. Examples are extracted from _test.go files
+	// provided to NewFromFiles.
 	Examples []*Example
 
 	importByName map[string]string
@@ -48,11 +54,15 @@ type Type struct {
 	Name string
 	Decl *ast.GenDecl
 
+	// associated declarations
 	Consts  []*Value
 	Vars    []*Value
 	Funcs   []*Func
 	Methods []*Func
 
+	// Examples is a sorted list of examples associated with
+	// this type. Examples are extracted from _test.go files
+	// provided to NewFromFiles.
 	Examples []*Example
 }
 
@@ -62,10 +72,15 @@ type Func struct {
 	Name string
 	Decl *ast.FuncDecl
 
+	// methods
+	// (for functions, these fields have the respective zero value)
 	Recv  string
 	Orig  string
 	Level int
 
+	// Examples is a sorted list of examples associated with this
+	// function or method. Examples are extracted from _test.go files
+	// provided to NewFromFiles.
 	Examples []*Example
 }
 

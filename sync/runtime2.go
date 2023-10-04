@@ -5,6 +5,3 @@
 //go:build !goexperiment.staticlockranking
 
 package sync
-
-// Approximation of notifyList in runtime/sema.go. Size and alignment must
-// agree.

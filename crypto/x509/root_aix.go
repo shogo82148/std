@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package x509
-
-// Possible certificate files; stop after finding one.
-
-// Possible directories with certificate files; all will be read.

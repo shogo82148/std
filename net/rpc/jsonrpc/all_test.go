@@ -3,21 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package jsonrpc
-
-type Args struct {
-	A, B int
-}
-
-type Reply struct {
-	C int
-}
-
-type Arith int
-
-type ArithAddResp struct {
-	Id     any   `json:"id"`
-	Result Reply `json:"result"`
-	Error  any   `json:"error"`
-}
-
-type BuiltinTypes struct{}

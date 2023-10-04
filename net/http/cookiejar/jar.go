@@ -33,6 +33,12 @@ type PublicSuffixList interface {
 
 // Options are the options for creating a new Jar.
 type Options struct {
+	// PublicSuffixList is the public suffix list that determines whether
+	// an HTTP server can set a cookie for a domain.
+	//
+	// A nil value is valid and may be useful for testing but it is not
+	// secure: it means that the HTTP server for foo.co.uk can set a cookie
+	// for bar.co.uk.
 	PublicSuffixList PublicSuffixList
 }
 
@@ -40,21 +46,21 @@ type Options struct {
 type Jar struct {
 	psList PublicSuffixList
 
+	// mu locks the remaining fields.
 	mu sync.Mutex
 
+	// entries is a set of entries, keyed by their eTLD+1 and subkeyed by
+	// their name/domain/path.
 	entries map[string]map[string]entry
 
+	// nextSeqNum is the next sequence number assigned to a new cookie
+	// created SetCookies.
 	nextSeqNum uint64
 }
 
 // New returns a new cookie jar. A nil *Options is equivalent to a zero
 // Options.
 func New(o *Options) (*Jar, error)
-
-// entry is the internal representation of a cookie.
-//
-// This struct type is not used outside of this package per se, but the exported
-// fields are those of RFC 6265.
 
 // Cookies implements the Cookies method of the http.CookieJar interface.
 //
@@ -65,7 +71,3 @@ func (j *Jar) Cookies(u *url.URL) (cookies []*http.Cookie)
 //
 // It does nothing if the URL's scheme is not HTTP or HTTPS.
 func (j *Jar) SetCookies(u *url.URL, cookies []*http.Cookie)
-
-// endOfTime is the time when session (non-persistent) cookies expire.
-// This instant is representable in most date/time formats (not just
-// Go's time.Time) and should be far enough in the future.

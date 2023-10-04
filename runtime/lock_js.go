@@ -5,12 +5,3 @@
 //go:build js && wasm
 
 package runtime
-
-import _ "github.com/shogo82148/std/unsafe"
-
-// events is a stack of calls from JavaScript into Go.
-
-// The timeout event started by beforeIdle.
-
-// eventHandler retrieves and executes handlers for pending JavaScript events.
-// It returns true if an event was handled.

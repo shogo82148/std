@@ -4,10 +4,6 @@
 
 package x509
 
-// pkcs8 reflects an ASN.1, PKCS #8 PrivateKey. See
-// ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-8/pkcs-8v1_2.asn
-// and RFC 5208.
-
 // ParsePKCS8PrivateKey parses an unencrypted private key in PKCS #8, ASN.1 DER form.
 //
 // It returns a *rsa.PrivateKey, an *ecdsa.PrivateKey, an ed25519.PrivateKey (not

@@ -138,8 +138,6 @@ const (
 
 func (a Attr) GoString() string
 
-// A format is a DWARF data encoding format.
-
 // A Tag is the classification (the type) of an Entry.
 type Tag uint32
 
@@ -219,26 +217,3 @@ const (
 )
 
 func (t Tag) GoString() string
-
-// Location expression operators.
-// The debug info encodes value locations like 8(R3)
-// as a sequence of these op codes.
-// This package does not implement full expressions;
-// the opPlusUconst operator is expected by the type parser.
-
-// Basic type encodings -- the value for AttrEncoding in a TagBaseType Entry.
-
-// Statement program standard opcode encodings.
-
-// Statement program extended opcode encodings.
-
-// Line table directory and file name entry formats.
-// These are new in DWARF 5.
-
-// Location list entry codes.
-// These are new in DWARF 5.
-
-// Unit header unit type encodings.
-// These are new in DWARF 5.
-
-// Opcodes for DWARFv5 debug_rnglists section.

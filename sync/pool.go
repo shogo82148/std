@@ -52,10 +52,11 @@ type Pool struct {
 	victim     unsafe.Pointer
 	victimSize uintptr
 
+	// New optionally specifies a function to generate
+	// a value when Get would otherwise return nil.
+	// It may not be changed concurrently with calls to Get.
 	New func() any
 }
-
-// Local per-P Pool appendix.
 
 // Put adds x to the pool.
 func (p *Pool) Put(x any)

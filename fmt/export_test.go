@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package fmt
-
-var IsSpace = isSpace
-var Parsenum = parsenum

@@ -15,8 +15,12 @@ type Named struct {
 	check *Checker
 	obj   *TypeName
 
+	// fromRHS holds the type (on RHS of declaration) this *Named type is derived
+	// from (for cycle reporting). Only used by validType, and therefore does not
+	// require synchronization.
 	fromRHS Type
 
+	// information for instantiated types; nil otherwise
 	inst *instance
 
 	mu         sync.Mutex
@@ -24,15 +28,16 @@ type Named struct {
 	underlying Type
 	tparams    *TypeParamList
 
+	// methods declared for this type (not the method set of this type)
+	// Signatures are type-checked lazily.
+	// For non-instantiated types, this is a fully populated list of methods. For
+	// instantiated types, methods are individually expanded when they are first
+	// accessed.
 	methods []*Func
 
+	// loader may be provided to lazily load type parameters, underlying type, and methods.
 	loader func(*Named) (tparams []*TypeParam, underlying Type, methods []*Func)
 }
-
-// instance holds information that is only necessary for instantiated named
-// types.
-
-// namedState represents the possible states that a named type may assume.
 
 // NewNamed returns a new named type for the given type name, underlying type, and associated methods.
 // If the given type name obj doesn't have a type yet, its type is set to the returned named type.

@@ -4,10 +4,6 @@
 
 package math
 
-// sin coefficients
-
-// cos coefficients
-
 // Cos returns the cosine of the radian argument x.
 //
 // Special cases are:

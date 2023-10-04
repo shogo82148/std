@@ -90,34 +90,71 @@ var (
 // including in multiline field values, so that the returned data does
 // not depend on which line-ending convention an input file uses.
 type Reader struct {
+	// Comma is the field delimiter.
+	// It is set to comma (',') by NewReader.
+	// Comma must be a valid rune and must not be \r, \n,
+	// or the Unicode replacement character (0xFFFD).
 	Comma rune
 
+	// Comment, if not 0, is the comment character. Lines beginning with the
+	// Comment character without preceding whitespace are ignored.
+	// With leading whitespace the Comment character becomes part of the
+	// field, even if TrimLeadingSpace is true.
+	// Comment must be a valid rune and must not be \r, \n,
+	// or the Unicode replacement character (0xFFFD).
+	// It must also not be equal to Comma.
 	Comment rune
 
+	// FieldsPerRecord is the number of expected fields per record.
+	// If FieldsPerRecord is positive, Read requires each record to
+	// have the given number of fields. If FieldsPerRecord is 0, Read sets it to
+	// the number of fields in the first record, so that future records must
+	// have the same field count. If FieldsPerRecord is negative, no check is
+	// made and records may have a variable number of fields.
 	FieldsPerRecord int
 
+	// If LazyQuotes is true, a quote may appear in an unquoted field and a
+	// non-doubled quote may appear in a quoted field.
 	LazyQuotes bool
 
+	// If TrimLeadingSpace is true, leading white space in a field is ignored.
+	// This is done even if the field delimiter, Comma, is white space.
 	TrimLeadingSpace bool
 
+	// ReuseRecord controls whether calls to Read may return a slice sharing
+	// the backing array of the previous call's returned slice for performance.
+	// By default, each call to Read returns newly allocated memory owned by the caller.
 	ReuseRecord bool
 
+	// Deprecated: TrailingComma is no longer used.
 	TrailingComma bool
 
 	r *bufio.Reader
 
+	// numLine is the current line being read in the CSV file.
 	numLine int
 
+	// offset is the input stream byte offset of the current reader position.
 	offset int64
 
+	// rawBuffer is a line buffer only used by the readLine method.
 	rawBuffer []byte
 
+	// recordBuffer holds the unescaped fields, one after another.
+	// The fields can be accessed by using the indexes in fieldIndexes.
+	// E.g., For the row `a,"b","c""d",e`, recordBuffer will contain `abc"de`
+	// and fieldIndexes will contain the indexes [1, 2, 5, 6].
 	recordBuffer []byte
 
+	// fieldIndexes is an index of fields inside recordBuffer.
+	// The i'th field ends at offset fieldIndexes[i] in recordBuffer.
 	fieldIndexes []int
 
+	// fieldPositions is an index of field positions for the
+	// last record returned by Read.
 	fieldPositions []position
 
+	// lastRecord is a record cache and only used when ReuseRecord == true.
 	lastRecord []string
 }
 
@@ -147,8 +184,6 @@ func (r *Reader) FieldPos(field int) (line, column int)
 // position. The offset gives the location of the end of the most recently
 // read row and the beginning of the next row.
 func (r *Reader) InputOffset() int64
-
-// pos holds the position of a field in the current line.
 
 // ReadAll reads all the remaining records from r.
 // Each record is a slice of fields.

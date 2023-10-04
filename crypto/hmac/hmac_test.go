@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package hmac
-
-// justHash implements just the hash.Hash methods and nothing else

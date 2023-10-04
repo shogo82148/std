@@ -5,6 +5,3 @@
 //go:build debuglog
 
 package runtime
-
-// dlogPerM is the per-M debug log data. This is embedded in the m
-// struct.

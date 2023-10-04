@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package x509
-
-import (
-	cryptobyte_asn1 "golang.org/x/crypto/cryptobyte/asn1"
-)

@@ -36,9 +36,6 @@ type Message struct {
 // for reading from msg.Body.
 func ReadMessage(r io.Reader) (msg *Message, err error)
 
-// Layouts suitable for passing to time.Parse.
-// These are tried in order.
-
 // ParseDate parses an RFC 5322 date string.
 func ParseDate(date string) (time.Time, error)
 
@@ -77,6 +74,7 @@ func ParseAddressList(list string) ([]*Address, error)
 
 // An AddressParser is an RFC 5322 address parser.
 type AddressParser struct {
+	// WordDecoder optionally specifies a decoder for RFC 2047 encoded-words.
 	WordDecoder *mime.WordDecoder
 }
 

@@ -13,7 +13,7 @@ type Sym struct {
 	Type   byte
 	Name   string
 	GoType uint64
-
+	// If this symbol is a function symbol, the corresponding Func
 	Func *Func
 
 	goVersion version
@@ -58,8 +58,13 @@ type Func struct {
 //
 // In Go 1.2, there is a single Obj for the entire program.
 type Obj struct {
+	// Funcs is a list of functions in the Obj.
 	Funcs []Func
 
+	// In Go 1.1 and earlier, Paths is a list of symbols corresponding
+	// to the source file names that produced the Obj.
+	// In Go 1.2, Paths is nil.
+	// Use the keys of Table.Files to obtain a list of source files.
 	Paths []Sym
 }
 

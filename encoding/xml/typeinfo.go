@@ -8,10 +8,6 @@ import (
 	"github.com/shogo82148/std/reflect"
 )
 
-// typeInfo holds details for the xml representation of a type.
-
-// fieldInfo holds details for the xml representation of a single field.
-
 // A TagPathError represents an error in the unmarshaling process
 // caused by the use of field tags with conflicting paths.
 type TagPathError struct {

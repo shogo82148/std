@@ -62,10 +62,12 @@ type PalettedImage interface {
 
 // RGBA is an in-memory image whose At method returns color.RGBA values.
 type RGBA struct {
+	// Pix holds the image's pixels, in R, G, B, A order. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -101,10 +103,12 @@ func NewRGBA(r Rectangle) *RGBA
 
 // RGBA64 is an in-memory image whose At method returns color.RGBA64 values.
 type RGBA64 struct {
+	// Pix holds the image's pixels, in R, G, B, A order and big-endian format. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -136,10 +140,12 @@ func NewRGBA64(r Rectangle) *RGBA64
 
 // NRGBA is an in-memory image whose At method returns color.NRGBA values.
 type NRGBA struct {
+	// Pix holds the image's pixels, in R, G, B, A order. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -175,10 +181,12 @@ func NewNRGBA(r Rectangle) *NRGBA
 
 // NRGBA64 is an in-memory image whose At method returns color.NRGBA64 values.
 type NRGBA64 struct {
+	// Pix holds the image's pixels, in R, G, B, A order and big-endian format. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -214,10 +222,12 @@ func NewNRGBA64(r Rectangle) *NRGBA64
 
 // Alpha is an in-memory image whose At method returns color.Alpha values.
 type Alpha struct {
+	// Pix holds the image's pixels, as alpha values. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -253,10 +263,12 @@ func NewAlpha(r Rectangle) *Alpha
 
 // Alpha16 is an in-memory image whose At method returns color.Alpha16 values.
 type Alpha16 struct {
+	// Pix holds the image's pixels, as alpha values in big-endian format. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -292,10 +304,12 @@ func NewAlpha16(r Rectangle) *Alpha16
 
 // Gray is an in-memory image whose At method returns color.Gray values.
 type Gray struct {
+	// Pix holds the image's pixels, as gray values. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -331,10 +345,12 @@ func NewGray(r Rectangle) *Gray
 
 // Gray16 is an in-memory image whose At method returns color.Gray16 values.
 type Gray16 struct {
+	// Pix holds the image's pixels, as gray values in big-endian format. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -370,10 +386,12 @@ func NewGray16(r Rectangle) *Gray16
 
 // CMYK is an in-memory image whose At method returns color.CMYK values.
 type CMYK struct {
+	// Pix holds the image's pixels, in C, M, Y, K order. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
 }
 
@@ -409,12 +427,14 @@ func NewCMYK(r Rectangle) *CMYK
 
 // Paletted is an in-memory image of uint8 indices into a given palette.
 type Paletted struct {
+	// Pix holds the image's pixels, as palette indices. The pixel at
+	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1].
 	Pix []uint8
-
+	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
 	Stride int
-
+	// Rect is the image's bounds.
 	Rect Rectangle
-
+	// Palette is the image's palette.
 	Palette color.Palette
 }
 

@@ -8,8 +8,6 @@ import (
 	"github.com/shogo82148/std/text/template/parse"
 )
 
-// common holds the information shared by related templates.
-
 // Template is the representation of a parsed template. The *parse.Tree
 // field is exported only for use by html/template and should be treated
 // as unexported by all other clients.

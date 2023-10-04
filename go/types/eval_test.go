@@ -5,7 +5,3 @@
 // This file contains tests for Eval.
 
 package types_test
-
-import (
-	. "go/types"
-)

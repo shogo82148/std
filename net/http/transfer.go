@@ -12,27 +12,8 @@ import (
 // with malformed chunked encoding.
 var ErrLineTooLong = internal.ErrLineTooLong
 
-// transferWriter inspects the fields of a user-supplied Request or Response,
-// sanitizes them without changing the user object and provides methods for
-// writing the respective header, body and trailer in wire format.
-
-// unsupportedTEError reports unsupported transfer-encodings.
-
-// body turns a Reader into a ReadCloser.
-// Close ensures that the body has been fully read
-// and then reads the trailer if necessary.
-
 // ErrBodyReadAfterClose is returned when reading a Request or Response
 // Body after the body has been closed. This typically happens when the body is
 // read after an HTTP Handler calls WriteHeader or Write on its
 // ResponseWriter.
 var ErrBodyReadAfterClose = errors.New("http: invalid Read on closed Body")
-
-// bodyLocked is an io.Reader reading from a *body when its mutex is
-// already held.
-
-// finishAsyncByteRead finishes reading the 1-byte sniff
-// from the ContentLength==0, Body!=nil case.
-
-// bufioFlushWriter is an io.Writer wrapper that flushes all writes
-// on its wrapped writer if it's a *bufio.Writer.

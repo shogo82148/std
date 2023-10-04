@@ -11,11 +11,6 @@
 // operating system paths, use the path/filepath package.
 package path
 
-// A lazybuf is a lazily constructed path buffer.
-// It supports append, reading previously appended bytes,
-// and retrieving the final string. It does not allocate a buffer
-// to hold the output until that output diverges from s.
-
 // Clean returns the shortest path name equivalent to path
 // by purely lexical processing. It applies the following rules
 // iteratively until no further processing can be done:

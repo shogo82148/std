@@ -13,5 +13,3 @@ import (
 func MSanRead(addr unsafe.Pointer, len int)
 
 func MSanWrite(addr unsafe.Pointer, len int)
-
-// Private interface for the runtime.

@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package types_test
-
-import (
-	. "go/types"
-)
-
-// nopos indicates an unknown position

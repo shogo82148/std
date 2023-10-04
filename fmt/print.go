@@ -8,9 +8,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Strings for use with buffer.WriteString.
-// This is less overhead than using buffer.Write with byte arrays.
-
 // State represents the printer state passed to custom formatters.
 // It provides access to the io.Writer interface plus information about
 // the flags and options for the operand's format specifier.
@@ -55,10 +52,6 @@ type GoStringer interface {
 // omitted. This function allows a Formatter to reconstruct the original
 // directive triggering the call to Format.
 func FormatString(state State, verb rune) string
-
-// Use simple []byte instead of bytes.Buffer to avoid large dependency.
-
-// pp is used to store a printer's state and is reused with sync.Pool to avoid allocations.
 
 // Fprintf formats according to a format specifier and writes to w.
 // It returns the number of bytes written and any write error encountered.

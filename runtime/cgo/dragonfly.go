@@ -5,5 +5,3 @@
 //go:build dragonfly
 
 package cgo
-
-import _ "github.com/shogo82148/std/unsafe"

@@ -3,13 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package path_test
-
-import (
-	. "path"
-)
-
-type MatchTest struct {
-	pattern, s string
-	match      bool
-	err        error
-}

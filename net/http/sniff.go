@@ -4,8 +4,6 @@
 
 package http
 
-// The algorithm uses at most sniffLen bytes to make its decision.
-
 // DetectContentType implements the algorithm described
 // at https://mimesniff.spec.whatwg.org/ to determine the
 // Content-Type of the given data. It considers at most the
@@ -13,5 +11,3 @@ package http
 // a valid MIME type: if it cannot determine a more specific one, it
 // returns "application/octet-stream".
 func DetectContentType(data []byte) string
-
-// Data matching the table in section 6.

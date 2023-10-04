@@ -3,15 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package log
-
-const (
-	Rdate         = `[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]`
-	Rtime         = `[0-9][0-9]:[0-9][0-9]:[0-9][0-9]`
-	Rmicroseconds = `\.[0-9][0-9][0-9][0-9][0-9][0-9]`
-	Rline         = `(63|65):`
-	Rlongfile     = `.*/[A-Za-z0-9_\-]+\.go:` + Rline
-	Rshortfile    = `[A-Za-z0-9_\-]+\.go:` + Rline
-)
-
-// discard is identical to io.Discard,
-// but copied here to avoid the io.Discard optimization in Logger.

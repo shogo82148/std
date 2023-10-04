@@ -61,6 +61,7 @@ type File interface {
 // *os.Fileはio.ReadSeekerインターフェースを実装していることに注意してください。
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
+<<<<<<< HEAD
 // errSeeker is returned by ServeContent's sizeFunc when the content
 // doesn't seek properly. The underlying Seeker's error text isn't
 // included in the sizeFunc reply so it's not sent over HTTP to end
@@ -81,6 +82,29 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // もう1つの特別な場合として、ServeFileはr.URL.Pathが"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。そのようなリダイレクトを回避するには、パスを変更するか、ServeContentを使用してください。
 
 // これら2つの特別な場合以外では、ServeFileはファイルまたはディレクトリを選択するためにr.URL.Pathを使用しません。名前引数で提供されたファイルまたはディレクトリのみが使用されます。
+=======
+// ServeFile replies to the request with the contents of the named
+// file or directory.
+//
+// If the provided file or directory name is a relative path, it is
+// interpreted relative to the current directory and may ascend to
+// parent directories. If the provided name is constructed from user
+// input, it should be sanitized before calling ServeFile.
+//
+// As a precaution, ServeFile will reject requests where r.URL.Path
+// contains a ".." path element; this protects against callers who
+// might unsafely use filepath.Join on r.URL.Path without sanitizing
+// it and then use that filepath.Join result as the name argument.
+//
+// As another special case, ServeFile redirects any request where r.URL.Path
+// ends in "/index.html" to the same path, without the final
+// "index.html". To avoid such redirects either modify the path or
+// use ServeContent.
+//
+// Outside of those two special cases, ServeFile does not use
+// r.URL.Path for selecting the file or directory to serve; only the
+// file or directory provided in the name argument is used.
+>>>>>>> release-branch.go1.21
 func ServeFile(w ResponseWriter, r *Request, name string)
 
 // FSは、fsysをFileSystem実装に変換し、FileServerおよびNewFileTransportで使用するために使用されます。
@@ -99,7 +123,3 @@ func FS(fsys fs.FS) FileSystem
 //
 //	http.Handle("/", http.FileServer(http.FS(fsys)))
 func FileServer(root FileSystem) Handler
-
-// httpRange specifies the byte range to be sent to the client.
-
-// countingWriter counts how many bytes have been written to it.

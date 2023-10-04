@@ -5,5 +5,3 @@
 //go:build cgo && !netgo
 
 package net
-
-//#include <netdb.h>

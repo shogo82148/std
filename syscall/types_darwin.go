@@ -13,59 +13,6 @@ Input to cgo -godefs.  See also mkerrors.sh and mkall.sh
 
 package syscall
 
-/*
-#define __DARWIN_UNIX03 0
-#define KERNEL
-#define _DARWIN_USE_64_BIT_INODE
-#include <dirent.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <termios.h>
-#include <unistd.h>
-#include <mach/mach.h>
-#include <mach/message.h>
-#include <sys/event.h>
-#include <sys/mman.h>
-#include <sys/mount.h>
-#include <sys/param.h>
-#include <sys/ptrace.h>
-#include <sys/resource.h>
-#include <sys/select.h>
-#include <sys/signal.h>
-#include <sys/socket.h>
-#include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <sys/un.h>
-#include <sys/wait.h>
-#include <net/bpf.h>
-#include <net/if.h>
-#include <net/if_dl.h>
-#include <net/if_var.h>
-#include <net/route.h>
-#include <netinet/in.h>
-#include <netinet/icmp6.h>
-#include <netinet/tcp.h>
-
-enum {
-	sizeofPtr = sizeof(void*),
-};
-
-union sockaddr_all {
-	struct sockaddr s1;	// this one gets used for fields
-	struct sockaddr_in s2;	// these pad it out
-	struct sockaddr_in6 s3;
-	struct sockaddr_un s4;
-	struct sockaddr_dl s5;
-};
-
-struct sockaddr_any {
-	struct sockaddr addr;
-	char pad[sizeof(union sockaddr_all) - sizeof(struct sockaddr)];
-};
-
-*/
 import "github.com/shogo82148/std/C"
 
 type Timespec C.struct_timespec

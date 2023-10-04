@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package pprof
-
-// A protobuf is a simple protocol buffer encoder.

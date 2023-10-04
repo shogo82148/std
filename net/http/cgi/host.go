@@ -25,6 +25,10 @@ type Handler struct {
 	Path string
 	Root string
 
+	// Dir specifies the CGI executable's working directory.
+	// If Dir is empty, the base directory of Path is used.
+	// If Path has no base directory, the current working
+	// directory is used.
 	Dir string
 
 	Env        []string
@@ -33,6 +37,14 @@ type Handler struct {
 	Args       []string
 	Stderr     io.Writer
 
+	// PathLocationHandler specifies the root http Handler that
+	// should handle internal redirects when the CGI process
+	// returns a Location header value starting with a "/", as
+	// specified in RFC 3875 § 6.3.2. This will likely be
+	// http.DefaultServeMux.
+	//
+	// If nil, a CGI response with a local URI path is instead sent
+	// back to the client and not redirected internally.
 	PathLocationHandler http.Handler
 }
 

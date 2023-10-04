@@ -9,15 +9,6 @@ import (
 	"sort"
 )
 
-type Person struct {
-	Name string
-	Age  int
-}
-
-// ByAge implements sort.Interface for []Person based on
-// the Age field.
-type ByAge []Person
-
 func Example() {
 	people := []Person{
 		{"Bob", 31},
