@@ -327,7 +327,7 @@ func NewRequest(method, url string, body io.Reader) (*Request, error)
 
 // NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しいRequestを返します。
 //
-//提供されたボディがio.Closerでもある場合、返されたRequest.Bodyはbodyに設定され、ClientメソッドDo、Post、およびPostForm、およびTransport.RoundTripによって閉じられます。
+// 提供されたボディがio.Closerでもある場合、返されたRequest.Bodyはbodyに設定され、ClientメソッドDo、Post、およびPostForm、およびTransport.RoundTripによって閉じられます。
 //
 // NewRequestWithContextは、Client.Do または Transport.RoundTrip で使用するためのRequestを返します。
 // Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージのNewRequest関数を使用するか、
@@ -337,11 +337,11 @@ func NewRequest(method, url string, body io.Reader) (*Request, error)
 //
 // bodyが *bytes.Buffer、 *bytes.Reader、または *strings.Readerの場合、返されたリクエストのContentLengthはその正確な値に設定されます（-1の代わりに）、
 // GetBodyが作成されます（307および308のリダイレクトがボディを再生できるように）、およびContentLengthが0の場合はBodyがNoBodyに設定されます。
-func NewRequestWithContext(ctx context.Context、method、url string、body io.Reader) (*Request、error)
+func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error)
 
 // BasicAuthは、リクエストがHTTP Basic認証を使用する場合、リクエストのAuthorizationヘッダーで提供されるユーザー名とパスワードを返します。
 // RFC 2617、セクション2を参照してください。
-func (r *Request) BasicAuth() (username、password string、ok bool)
+func (r *Request) BasicAuth() (username, password string, ok bool)
 
 // SetBasicAuthは、提供されたユーザー名とパスワードを使用して、HTTP Basic認証を使用するようにリクエストのAuthorizationヘッダーを設定します。
 //
