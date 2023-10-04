@@ -8,9 +8,6 @@ import (
 	"database/sql/driver"
 )
 
-// pollDuration is an arbitrary interval to wait between checks when polling for
-// a condition to occur.
-
 var _ driver.NamedValueChecker = &nvcConn{}
 
 var (
@@ -18,10 +15,5 @@ var (
 	_ driver.QueryerContext = &ctxOnlyConn{}
 	_ driver.ExecerContext  = &ctxOnlyConn{}
 )
-
-// badConn implements a bad driver.Conn, for TestBadDriver.
-// The Exec method panics.
-
-// badDriver is a driver.Driver that uses badConn.
 
 var _ driver.Pinger = pingConn{}

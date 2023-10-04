@@ -7,5 +7,3 @@ package rsa_test
 import (
 	. "crypto/rsa"
 )
-
-// testEncryptOAEPData contains a subset of the vectors from RSA's "Test vectors for RSA-OAEP".

@@ -10,8 +10,13 @@ import (
 
 // Sample captures a single metric sample.
 type Sample struct {
+	// Name is the name of the metric sampled.
+	//
+	// It must correspond to a name in one of the metric descriptions
+	// returned by All.
 	Name string
 
+	// Value is the value of the metric sample.
 	Value Value
 }
 

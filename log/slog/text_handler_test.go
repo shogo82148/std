@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package slog
-
-// for testing fmt.Sprint
-
-// for testing TextMarshaler

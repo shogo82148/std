@@ -4,8 +4,6 @@
 
 package asn1
 
-// encoder represents an ASN.1 element that is waiting to be marshaled.
-
 // Marshal returns the ASN.1 encoding of val.
 //
 // In addition to the struct tags recognised by Unmarshal, the following can be

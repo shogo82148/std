@@ -14,12 +14,3 @@
 // entries where the spec permits exactly one. Consequently, the corresponding
 // field in the AST (ast.FuncDecl.Recv) field is not restricted to one entry.
 package parser
-
-// The parser structure holds the parser's internal state.
-
-// maxNestLev is the deepest we're willing to recurse during parsing
-
-// A bailout panic is raised to indicate early termination. pos and msg are
-// only populated when bailing out of object resolution.
-
-// Parsing modes for parseSimpleStmt.

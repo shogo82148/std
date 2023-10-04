@@ -5,6 +5,3 @@
 package slices
 
 const N = 100_000
-
-// These benchmarks compare sorting a slice of structs with sort.Sort vs.
-// slices.SortFunc.

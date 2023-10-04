@@ -123,10 +123,6 @@ const (
 	_ = iota
 )
 
-// std0x records the std values for "01", "02", ..., "06".
-
-// Never printed, just needs to be non-nil for return by atoi.
-
 // String returns the time formatted using the format string
 //
 //	"2006-01-02 15:04:05.999999999 -0700 MST"
@@ -164,9 +160,6 @@ type ParseError struct {
 	ValueElem  string
 	Message    string
 }
-
-// These are borrowed from unicode/utf8 and strconv and replicate behavior in
-// that package, since we can't take a dependency on either.
 
 // Error returns the string representation of a ParseError.
 func (e *ParseError) Error() string

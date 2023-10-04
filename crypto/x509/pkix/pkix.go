@@ -59,8 +59,15 @@ type Name struct {
 	StreetAddress, PostalCode                 []string
 	SerialNumber, CommonName                  string
 
+	// Names contains all parsed attributes. When parsing distinguished names,
+	// this can be used to extract non-standard attributes that are not parsed
+	// by this package. When marshaling to RDNSequences, the Names field is
+	// ignored, see ExtraNames.
 	Names []AttributeTypeAndValue
 
+	// ExtraNames contains attributes to be copied, raw, into any marshaled
+	// distinguished names. Values override any attributes with the same OID.
+	// The ExtraNames field is not populated when parsing, see Names.
 	ExtraNames []AttributeTypeAndValue
 }
 

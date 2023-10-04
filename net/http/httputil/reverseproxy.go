@@ -15,8 +15,14 @@ import (
 
 // A ProxyRequest contains a request to be rewritten by a ReverseProxy.
 type ProxyRequest struct {
+	// In is the request received by the proxy.
+	// The Rewrite function must not modify In.
 	In *http.Request
 
+	// Out is the request which will be sent by the proxy.
+	// The Rewrite function may modify or replace this request.
+	// Hop-by-hop headers are removed from this request
+	// before Rewrite is called.
 	Out *http.Request
 }
 
@@ -62,20 +68,101 @@ func (r *ProxyRequest) SetXForwarded()
 // 1xx responses are forwarded to the client if the underlying
 // transport supports ClientTrace.Got1xxResponse.
 type ReverseProxy struct {
+	// Rewrite must be a function which modifies
+	// the request into a new request to be sent
+	// using Transport. Its response is then copied
+	// back to the original client unmodified.
+	// Rewrite must not access the provided ProxyRequest
+	// or its contents after returning.
+	//
+	// The Forwarded, X-Forwarded, X-Forwarded-Host,
+	// and X-Forwarded-Proto headers are removed from the
+	// outbound request before Rewrite is called. See also
+	// the ProxyRequest.SetXForwarded method.
+	//
+	// Unparsable query parameters are removed from the
+	// outbound request before Rewrite is called.
+	// The Rewrite function may copy the inbound URL's
+	// RawQuery to the outbound URL to preserve the original
+	// parameter string. Note that this can lead to security
+	// issues if the proxy's interpretation of query parameters
+	// does not match that of the downstream server.
+	//
+	// At most one of Rewrite or Director may be set.
 	Rewrite func(*ProxyRequest)
 
+	// Director is a function which modifies
+	// the request into a new request to be sent
+	// using Transport. Its response is then copied
+	// back to the original client unmodified.
+	// Director must not access the provided Request
+	// after returning.
+	//
+	// By default, the X-Forwarded-For header is set to the
+	// value of the client IP address. If an X-Forwarded-For
+	// header already exists, the client IP is appended to the
+	// existing values. As a special case, if the header
+	// exists in the Request.Header map but has a nil value
+	// (such as when set by the Director func), the X-Forwarded-For
+	// header is not modified.
+	//
+	// To prevent IP spoofing, be sure to delete any pre-existing
+	// X-Forwarded-For header coming from the client or
+	// an untrusted proxy.
+	//
+	// Hop-by-hop headers are removed from the request after
+	// Director returns, which can remove headers added by
+	// Director. Use a Rewrite function instead to ensure
+	// modifications to the request are preserved.
+	//
+	// Unparsable query parameters are removed from the outbound
+	// request if Request.Form is set after Director returns.
+	//
+	// At most one of Rewrite or Director may be set.
 	Director func(*http.Request)
 
+	// The transport used to perform proxy requests.
+	// If nil, http.DefaultTransport is used.
 	Transport http.RoundTripper
 
+	// FlushInterval specifies the flush interval
+	// to flush to the client while copying the
+	// response body.
+	// If zero, no periodic flushing is done.
+	// A negative value means to flush immediately
+	// after each write to the client.
+	// The FlushInterval is ignored when ReverseProxy
+	// recognizes a response as a streaming response, or
+	// if its ContentLength is -1; for such responses, writes
+	// are flushed to the client immediately.
 	FlushInterval time.Duration
 
+	// ErrorLog specifies an optional logger for errors
+	// that occur when attempting to proxy the request.
+	// If nil, logging is done via the log package's standard logger.
 	ErrorLog *log.Logger
 
+	// BufferPool optionally specifies a buffer pool to
+	// get byte slices for use by io.CopyBuffer when
+	// copying HTTP response bodies.
 	BufferPool BufferPool
 
+	// ModifyResponse is an optional function that modifies the
+	// Response from the backend. It is called if the backend
+	// returns a response at all, with any HTTP status code.
+	// If the backend is unreachable, the optional ErrorHandler is
+	// called without any call to ModifyResponse.
+	//
+	// If ModifyResponse returns an error, ErrorHandler is called
+	// with its error value. If ErrorHandler is nil, its default
+	// implementation is used.
 	ModifyResponse func(*http.Response) error
 
+	// ErrorHandler is an optional function that handles errors
+	// reaching the backend or errors from ModifyResponse.
+	//
+	// If nil, the default is to log the provided error and return
+	// a 502 Status Bad Gateway response.
 	ErrorHandler func(http.ResponseWriter, *http.Request, error)
 }
 
@@ -108,13 +195,4 @@ type BufferPool interface {
 //	}
 func NewSingleHostReverseProxy(target *url.URL) *ReverseProxy
 
-// Hop-by-hop headers. These are removed when sent to the backend.
-// As of RFC 7230, hop-by-hop headers are required to appear in the
-// Connection header field. These are the headers defined by the
-// obsoleted RFC 2616 (section 13.5.1) and are used for backward
-// compatibility.
-
 func (p *ReverseProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request)
-
-// switchProtocolCopier exists so goroutines proxying data back and
-// forth have nice names in stacks.

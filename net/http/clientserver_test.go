@@ -8,13 +8,4 @@ package http_test
 
 import (
 	. "net/http"
-	"testing"
 )
-
-type TBRun[T any] interface {
-	testing.TB
-	Run(string, func(T)) bool
-}
-
-// h12Compare is a test that compares HTTP/1 and HTTP/2 behavior
-// against each other.

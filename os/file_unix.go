@@ -10,11 +10,6 @@ import (
 	_ "github.com/shogo82148/std/unsafe"
 )
 
-// file is the real representation of *File.
-// The extra level of indirection ensures that no clients of os
-// can overwrite this data, which could cause the finalizer
-// to close the wrong file descriptor.
-
 // Fd returns the integer Unix file descriptor referencing the open file.
 // If f is closed, the file descriptor becomes invalid.
 // If f is garbage collected, a finalizer may close the file descriptor,
@@ -39,8 +34,6 @@ func (f *File) Fd() uintptr
 // conditions described in the comments of the Fd method, and the same
 // constraints apply.
 func NewFile(fd uintptr, name string) *File
-
-// newFileKind describes the kind of file to newFile.
 
 // DevNull is the name of the operating system's “null device.”
 // On Unix-like systems, it is "/dev/null"; on Windows, "NUL".

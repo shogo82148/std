@@ -7,9 +7,3 @@ package path_test
 import (
 	. "path"
 )
-
-type MatchTest struct {
-	pattern, s string
-	match      bool
-	err        error
-}

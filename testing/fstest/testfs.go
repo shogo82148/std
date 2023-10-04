@@ -26,5 +26,3 @@ import (
 //		t.Fatal(err)
 //	}
 func TestFS(fsys fs.FS, expected ...string) error
-
-// An fsTester holds state for running the test.

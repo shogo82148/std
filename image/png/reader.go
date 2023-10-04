@@ -12,26 +12,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Color type, as per the PNG spec.
-
-// A cb is a combination of color type and bit depth.
-
-// Filter type, as per the PNG spec.
-
-// Interlace type.
-
-// interlaceScan defines the placement and size of a pass for Adam7 interlacing.
-
-// interlacing defines Adam7 interlacing, with 7 passes of reduced images.
-// See https://www.w3.org/TR/PNG/#8Interlace
-
-// Decoding stage.
-// The PNG specification says that the IHDR, PLTE (if present), tRNS (if
-// present), IDAT and IEND chunks must appear in that order. There may be
-// multiple IDAT chunks, and IDAT chunks must be sequential (i.e. they may not
-// have any other chunks between them).
-// https://www.w3.org/TR/PNG/#5ChunkOrdering
-
 // A FormatError reports that the input is not a valid PNG.
 type FormatError string
 

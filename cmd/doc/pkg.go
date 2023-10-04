@@ -28,9 +28,6 @@ type Package struct {
 
 func (p *Package) ToText(w io.Writer, text, prefix, codePrefix string)
 
-// pkgBuffer is a wrapper for bytes.Buffer that prints a package clause the
-// first time Write is called.
-
 type PackageError string
 
 func (p PackageError) Error() string

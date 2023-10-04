@@ -6,10 +6,6 @@
 
 package types
 
-// Note: This is a uint32 rather than a uint64 because the
-// respective 64 bit atomic instructions are not available
-// on all platforms.
-
 // A TypeParam represents a type parameter type.
 type TypeParam struct {
 	check *Checker

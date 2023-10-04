@@ -17,22 +17,6 @@ type AEAD interface {
 	Open(dst, nonce, ciphertext, additionalData []byte) ([]byte, error)
 }
 
-// gcmAble is an interface implemented by ciphers that have a specific optimized
-// implementation of GCM, like crypto/aes. NewGCM will check for this interface
-// and return the specific AEAD if found.
-
-// gcmFieldElement represents a value in GF(2¹²⁸). In order to reflect the GCM
-// standard and make binary.BigEndian suitable for marshaling these values, the
-// bits are stored in big endian order. For example:
-//
-//	the coefficient of x⁰ can be obtained by v.low >> 63.
-//	the coefficient of x⁶³ can be obtained by v.low & 1.
-//	the coefficient of x⁶⁴ can be obtained by v.high >> 63.
-//	the coefficient of x¹²⁷ can be obtained by v.high & 1.
-
-// gcm represents a Galois Counter Mode with a specific key. See
-// https://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-revised-spec.pdf
-
 // NewGCM returns the given 128-bit, block cipher wrapped in Galois Counter Mode
 // with the standard nonce length.
 //

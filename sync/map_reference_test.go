@@ -4,28 +4,7 @@
 
 package sync_test
 
-import (
-	"sync"
-	"sync/atomic"
-)
-
-// mapInterface is the interface Map implements.
-
 var (
 	_ mapInterface = &RWMutexMap{}
 	_ mapInterface = &DeepCopyMap{}
 )
-
-// RWMutexMap is an implementation of mapInterface using a sync.RWMutex.
-type RWMutexMap struct {
-	mu    sync.RWMutex
-	dirty map[any]any
-}
-
-// DeepCopyMap is an implementation of mapInterface using a Mutex and
-// atomic.Value.  It makes deep copies of the map on every write to avoid
-// acquiring the Mutex in Load.
-type DeepCopyMap struct {
-	mu    sync.Mutex
-	clean atomic.Value
-}

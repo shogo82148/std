@@ -12,6 +12,3 @@ const (
 	Rlongfile     = `.*/[A-Za-z0-9_\-]+\.go:` + Rline
 	Rshortfile    = `[A-Za-z0-9_\-]+\.go:` + Rline
 )
-
-// discard is identical to io.Discard,
-// but copied here to avoid the io.Discard optimization in Logger.

@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package quotedprintable
-
-// From https://fr.wikipedia.org/wiki/Quoted-Printable

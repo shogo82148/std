@@ -50,14 +50,7 @@ const TracebackOuterFrames = tracebackOuterFrames
 
 var LockPartialOrder = lockPartialOrder
 
-type LockRank lockRank
-
 const PreemptMSupported = preemptMSupported
-
-type LFNode struct {
-	Next    uint64
-	Pushcnt uintptr
-}
 
 var (
 	StringHash = stringHash
@@ -80,25 +73,6 @@ var Close = closefd
 var Read = read
 var Write = write
 
-// blockWrapper is a wrapper type that ensures a T is placed within a
-// large object. This is necessary for safely benchmarking things
-// that manipulate the heap bitmap, like heapBitsSetType.
-//
-// More specifically, allocating threads assume they're the sole writers
-// to their span's heap bits, which allows those writes to be non-atomic.
-// The heap bitmap is written byte-wise, so if one tried to call heapBitsSetType
-// on an existing object in a small object span, we might corrupt that
-// span's bitmap with a concurrent byte write to the heap bitmap. Large
-// object spans contain exactly one object, so we can be sure no other P
-// is going to be allocating from it concurrently, hence this wrapper type
-// which ensures we have a T in a large object span.
-
-// arrayBlockWrapper is like blockWrapper, but the interior value is intended
-// to be used as a backing store for a slice.
-
-// arrayLargeBlockWrapper is like arrayBlockWrapper, but the interior array
-// accommodates many more elements.
-
 const PtrSize = goarch.PtrSize
 
 var ForceGCPeriod = &forcegcperiod
@@ -106,22 +80,12 @@ var ForceGCPeriod = &forcegcperiod
 var ReadUnaligned32 = readUnaligned32
 var ReadUnaligned64 = readUnaligned64
 
-type ProfBuf profBuf
-
 const (
 	ProfBufBlocking    = profBufBlocking
 	ProfBufNonBlocking = profBufNonBlocking
 )
 
-type RWMutex struct {
-	rw rwmutex
-}
-
 const RuntimeHmapSize = unsafe.Sizeof(hmap{})
-
-type G = g
-
-type Sudog = sudog
 
 var CasGStatusAlwaysTrack = &casgstatusAlwaysTrack
 
@@ -132,47 +96,7 @@ const (
 	PallocSumBytes   = pallocSumBytes
 )
 
-// Expose pallocSum for testing.
-type PallocSum pallocSum
-
-// Expose pallocBits for testing.
-type PallocBits pallocBits
-
-// Expose pallocData for testing.
-type PallocData pallocData
-
-// Expose pageCache for testing.
-type PageCache pageCache
-
 const PageCachePages = pageCachePages
-
-// Expose chunk index type.
-type ChunkIdx chunkIdx
-
-// Expose pageAlloc for testing. Note that because pageAlloc is
-// not in the heap, so is PageAlloc.
-type PageAlloc pageAlloc
-
-// AddrRange is a wrapper around addrRange for testing.
-type AddrRange struct {
-	addrRange
-}
-
-// testSysStat is the sysStat passed to test versions of various
-// runtime structures. We do actually have to keep track of this
-// because otherwise memstats.mappedReady won't actually line up
-// with other stats in the runtime during tests.
-
-// AddrRanges is a wrapper around addrRanges for testing.
-type AddrRanges struct {
-	addrRanges
-	mutable bool
-}
-
-// BitRange represents a range over a bitmap.
-type BitRange struct {
-	I, N uint
-}
 
 // BaseChunkIdx is a convenient chunkIdx value which works on both
 // 64 bit and 32 bit platforms, allowing the tests to share code
@@ -194,23 +118,10 @@ var BaseChunkIdx = func() ChunkIdx {
 	return ChunkIdx(chunkIndex(baseAddr))
 }()
 
-type BitsMismatch struct {
-	Base      uintptr
-	Got, Want uint64
-}
-
 var Semacquire = semacquire
 var Semrelease1 = semrelease1
 
 const SemTableSize = semTabSize
-
-// SemTable is a wrapper around semTable exported for testing.
-type SemTable struct {
-	semTable
-}
-
-// mspan wrapper for testing.
-type MSpan mspan
 
 const (
 	TimeHistSubBucketBits = timeHistSubBucketBits
@@ -219,8 +130,6 @@ const (
 	TimeHistMinBucketBits = timeHistMinBucketBits
 	TimeHistMaxBucketBits = timeHistMaxBucketBits
 )
-
-type TimeHistogram timeHistogram
 
 var TimeHistogramMetricsBuckets = timeHistogramMetricsBuckets
 
@@ -239,50 +148,14 @@ const (
 	MemoryLimitMinHeapGoalHeadroom     = memoryLimitMinHeapGoalHeadroom
 )
 
-type GCController struct {
-	gcControllerState
-}
-
-type GCControllerReviseDelta struct {
-	HeapLive        int64
-	HeapScan        int64
-	HeapScanWork    int64
-	StackScanWork   int64
-	GlobalsScanWork int64
-}
-
 var Timediv = timediv
-
-type PIController struct {
-	piController
-}
 
 const (
 	CapacityPerProc          = capacityPerProc
 	GCCPULimiterUpdatePeriod = gcCPULimiterUpdatePeriod
 )
 
-type GCCPULimiter struct {
-	limiter gcCPULimiterState
-}
-
 const ScavengePercent = scavengePercent
-
-type Scavenger struct {
-	Sleep      func(int64) int64
-	Scavenge   func(uintptr) (uintptr, int64)
-	ShouldStop func() bool
-	GoMaxProcs func() int32
-
-	released  atomic.Uintptr
-	scavenger scavengerState
-	stop      chan<- struct{}
-	done      <-chan struct{}
-}
-
-type ScavengeIndex struct {
-	i scavengeIndex
-}
 
 const GTrackingPeriod = gTrackingPeriod
 
@@ -290,13 +163,7 @@ var ZeroBase = unsafe.Pointer(&zerobase)
 
 const UserArenaChunkBytes = userArenaChunkBytes
 
-type UserArena struct {
-	arena *userArena
-}
-
 var AlignUp = alignUp
-
-const FramePointerEnabled = framepointer_enabled
 
 var (
 	IsPinned      = isPinned

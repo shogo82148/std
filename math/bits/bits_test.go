@@ -17,5 +17,3 @@ var Input uint64 = DeBruijn64
 // during benchmarking to ensure side-effect free calls
 // are not optimized away.
 var Output int
-
-// tab contains results for all uint8 values

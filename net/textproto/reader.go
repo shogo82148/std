@@ -161,5 +161,3 @@ func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 // If s contains a space or invalid header field bytes, it is
 // returned without modifications.
 func CanonicalMIMEHeaderKey(s string) string
-
-// commonHeader interns common header strings.

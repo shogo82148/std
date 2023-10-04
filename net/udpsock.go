@@ -50,8 +50,6 @@ func ResolveUDPAddr(network, address string) (*UDPAddr, error)
 // address family-agnostic unspecified address.
 func UDPAddrFromAddrPort(addr netip.AddrPort) *UDPAddr
 
-// An addrPortUDPAddr is a netip.AddrPort-based UDP address that satisfies the Addr interface.
-
 // UDPConn is the implementation of the Conn and PacketConn interfaces
 // for UDP network connections.
 type UDPConn struct {

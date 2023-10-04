@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package os
-
-// Auxiliary information if the File describes a directory

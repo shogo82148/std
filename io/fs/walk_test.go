@@ -8,9 +8,3 @@ import (
 	. "io/fs"
 	pathpkg "path"
 )
-
-type Node struct {
-	name    string
-	entries []*Node
-	mark    int
-}

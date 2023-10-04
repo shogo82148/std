@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package tls
-
-// A finishedHash calculates the hash of a set of handshake messages suitable
-// for including in a Finished message.

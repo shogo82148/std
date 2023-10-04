@@ -143,11 +143,3 @@ func (n Number) Float64() (float64, error)
 
 // Int64 returns the number as an int64.
 func (n Number) Int64() (int64, error)
-
-// An errorContext provides context for type errors during decoding.
-
-// decodeState represents the state while decoding a JSON value.
-
-// phasePanicMsg is used as a panic message when we end up with something that
-// shouldn't happen. It can indicate a bug in the JSON decoder, or that
-// something is editing the data slice while the decoder executes.

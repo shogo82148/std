@@ -35,15 +35,3 @@ package runtime
 import (
 	_ "github.com/shogo82148/std/unsafe"
 )
-
-// sig handles communication between the signal handler and os/signal.
-// Other than the inuse and recv fields, the fields are accessed atomically.
-//
-// The wanted and ignored fields are only written by one goroutine at
-// a time; access is controlled by the handlers Mutex in os/signal.
-// The fields are only read by that one goroutine and by the signal handler.
-// We access them atomically to minimize the race between setting them
-// in the goroutine calling os/signal and the signal handler,
-// which may be running in a different thread. That race is unavoidable,
-// as there is no connection between handling a signal and receiving one,
-// but atomic instructions should minimize it.

@@ -7,5 +7,3 @@ package unicode_test
 import (
 	. "unicode"
 )
-
-// Contains all the special cased Latin-1 chars.

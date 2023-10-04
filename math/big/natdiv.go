@@ -497,6 +497,3 @@ usual long division proofs apply essentially unaltered.
 */
 
 package big
-
-// divRecursiveThreshold is the number of divisor digits
-// at which point divRecursive is faster than divBasic.

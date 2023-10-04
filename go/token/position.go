@@ -72,6 +72,7 @@ type File struct {
 	base int
 	size int
 
+	// lines and infos are protected by mutex
 	mutex sync.Mutex
 	lines []int
 	infos []lineInfo
@@ -122,10 +123,6 @@ func (f *File) SetLinesForContent(content []byte)
 // It ignores any alternative positions set using AddLineColumnInfo.
 // LineStart panics if the 1-based line number is invalid.
 func (f *File) LineStart(line int) Pos
-
-// A lineInfo object describes alternative file, line, and column
-// number information (such as provided via a //line directive)
-// for a given file offset.
 
 // AddLineInfo is like AddLineColumnInfo with a column = 1 argument.
 // It is here for backward-compatibility for code prior to Go 1.11.

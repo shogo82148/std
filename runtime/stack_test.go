@@ -8,9 +8,3 @@ import (
 	. "runtime"
 	_ "unsafe"
 )
-
-type I interface {
-	M()
-}
-
-// Pass a value to escapeMe to force it to escape.

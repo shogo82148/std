@@ -7,8 +7,3 @@ package unicode_test
 import (
 	. "unicode"
 )
-
-type T struct {
-	rune   rune
-	script string
-}

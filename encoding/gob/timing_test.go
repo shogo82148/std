@@ -3,12 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package gob
-
-type Bench struct {
-	A int
-	B float64
-	C string
-	D []byte
-}
-
-// benchmarkBuf is a read buffer we can reset

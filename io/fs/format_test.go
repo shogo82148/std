@@ -7,6 +7,3 @@ package fs_test
 import (
 	. "io/fs"
 )
-
-// formatTest implements FileInfo to test FormatFileInfo,
-// and implements DirEntry to test FormatDirEntry.

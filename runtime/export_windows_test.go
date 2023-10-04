@@ -12,7 +12,3 @@ var (
 	OsYield                 = osyield
 	TimeBeginPeriodRetValue = &timeBeginPeriodRetValue
 )
-
-type ContextStub struct {
-	context
-}

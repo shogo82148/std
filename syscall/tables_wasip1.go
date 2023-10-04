@@ -87,8 +87,3 @@ const (
 	// needed by src/net/error_unix_test.go
 	EOPNOTSUPP = ENOTSUP
 )
-
-// TODO: Auto-generate some day. (Hard-coded in binaries so not likely to change.)
-
-// Do the interface allocations only once for common
-// Errno values.

@@ -10,23 +10,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// incomparable is a zero-width, non-comparable type. Adding it to a struct
-// makes that struct also non-comparable, and generally doesn't add
-// any size (as long as it's first).
-
-// maxInt64 is the effective "infinite" value for the Server and
-// Transport's byte-limiting readers.
-
-// aLongTimeAgo is a non-zero time, far in the past, used for
-// immediate cancellation of network operations.
-
-// omitBundledHTTP2 is set by omithttp2.go when the nethttpomithttp2
-// build tag is set. That means h2_bundle.go isn't compiled in and we
-// shouldn't try to use it.
-
-// contextKey is a value for use with context.WithValue. It's used as
-// a pointer so it fits in an interface{} without allocation.
-
 // NoBody is an io.ReadCloser with no bytes. Read always returns EOF
 // and Close always returns nil. It can be used in an outgoing client
 // request to explicitly signal that a request has zero bytes.
@@ -41,8 +24,13 @@ var (
 
 // PushOptions describes options for Pusher.Push.
 type PushOptions struct {
+	// Method specifies the HTTP method for the promised request.
+	// If set, it must be "GET" or "HEAD". Empty means "GET".
 	Method string
 
+	// Header specifies additional promised request headers. This cannot
+	// include HTTP/2 pseudo header fields like ":path" and ":scheme",
+	// which will be added automatically.
 	Header Header
 }
 

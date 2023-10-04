@@ -7,15 +7,3 @@ package rsa_test
 import (
 	. "crypto/rsa"
 )
-
-type DecryptPKCS1v15Test struct {
-	in, out string
-}
-
-// These test vectors were generated with `openssl rsautl -pkcs -encrypt`
-
-// These test vectors were generated with `openssl rsautl -pkcs -encrypt`
-
-// These vectors have been tested with
-//
-//	`openssl rsautl -verify -inkey pk -in signature | hexdump -C`

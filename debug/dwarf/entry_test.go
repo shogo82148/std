@@ -7,6 +7,3 @@ package dwarf_test
 import (
 	. "debug/dwarf"
 )
-
-// wantRange maps from a PC to the ranges of the compilation unit
-// containing that PC.

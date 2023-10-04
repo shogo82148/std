@@ -10,34 +10,11 @@ import (
 	. "strings"
 )
 
-type IndexTest struct {
-	s   string
-	sep string
-	out int
-}
-
-type SplitTest struct {
-	s   string
-	sep string
-	n   int
-	a   []string
-}
-
-type FieldsTest struct {
-	s string
-	a []string
-}
-
 var FieldsFuncTests = []FieldsTest{
 	{"", []string{}},
 	{"XX", []string{}},
 	{"XXhiXXX", []string{"hi"}},
 	{"aXXbXXXcX", []string{"a", "b", "c"}},
-}
-
-// Test case for any function which accepts and returns a single string.
-type StringTest struct {
-	in, out string
 }
 
 var RepeatTests = []struct {

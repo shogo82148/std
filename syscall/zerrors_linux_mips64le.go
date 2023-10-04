@@ -1620,7 +1620,3 @@ const (
 	SIGXCPU   = Signal(0x1e)
 	SIGXFSZ   = Signal(0x1f)
 )
-
-// Error table
-
-// Signal table

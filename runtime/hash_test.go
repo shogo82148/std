@@ -5,44 +5,5 @@
 package runtime_test
 
 import (
-	"math/rand"
 	. "runtime"
 )
-
-type HashSet struct {
-	m map[uintptr]struct{}
-	n int
-}
-
-type Key interface {
-	clear()
-	random(r *rand.Rand)
-	bits() int
-	flipBit(i int)
-	hash() uintptr
-	name() string
-}
-
-type BytesKey struct {
-	b []byte
-}
-
-type Int32Key struct {
-	i uint32
-}
-
-type Int64Key struct {
-	i uint64
-}
-
-type EfaceKey struct {
-	i any
-}
-
-type IfaceKey struct {
-	i interface {
-		F()
-	}
-}
-
-// size of the hash output (32 or 64 bits)

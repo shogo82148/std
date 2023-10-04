@@ -7,7 +7,3 @@ package reflect_test
 import (
 	. "reflect"
 )
-
-type IntPtr *int
-type IntPtr1 *int
-type Ch <-chan any

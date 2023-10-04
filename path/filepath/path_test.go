@@ -4,48 +4,6 @@
 
 package filepath_test
 
-type PathTest struct {
-	path, result string
-}
-
-type IsLocalTest struct {
-	path    string
-	isLocal bool
-}
-
-type SplitListTest struct {
-	list   string
-	result []string
-}
-
-type SplitTest struct {
-	path, dir, file string
-}
-
-type JoinTest struct {
-	elem []string
-	path string
-}
-
-type ExtTest struct {
-	path, ext string
-}
-
-type Node struct {
-	name    string
-	entries []*Node
-	mark    int
-}
-
-type IsAbsTest struct {
-	path  string
-	isAbs bool
-}
-
-type EvalSymlinksTest struct {
-	path, dest string
-}
-
 var EvalSymlinksTestDirs = []EvalSymlinksTest{
 	{"test", ""},
 	{"test/dir", ""},
@@ -80,20 +38,4 @@ var EvalSymlinksTests = []EvalSymlinksTest{
 	{"test/linkabs", "/"},
 	{"test/link4/..", "test"},
 	{"src/versions/current/modules/test", "src/pool/test"},
-}
-
-// Test directories relative to temporary directory.
-// The tests are run in absTestDirs[0].
-
-// Test paths relative to temporary directory. $ expands to the directory.
-// The tests are run in absTestDirs[0].
-// We create absTestDirs first.
-
-type RelTests struct {
-	root, path, want string
-}
-
-type VolumeNameTest struct {
-	path string
-	vol  string
 }

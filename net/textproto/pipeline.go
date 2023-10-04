@@ -50,8 +50,3 @@ func (p *Pipeline) StartResponse(id uint)
 // EndResponse notifies p that the response with the given id has been received
 // (or, if this is a server, sent).
 func (p *Pipeline) EndResponse(id uint)
-
-// A sequencer schedules a sequence of numbered events that must
-// happen in order, one after the other. The event numbering must start
-// at 0 and increment without skipping. The event number wraps around
-// safely as long as there are not 2^32 simultaneous events pending.

@@ -28,8 +28,6 @@ type File struct {
 // and zip.FileInfoHeader.
 func (f *File) Info() fs.FileInfo
 
-// A fileInfo is an implementation of fs.FileInfo describing a File.
-
 // NewArchive returns a new Archive containing all the files in the directory dir.
 // The archive can be amended afterward using methods like Add and Filter.
 func NewArchive(dir string) (*Archive, error)

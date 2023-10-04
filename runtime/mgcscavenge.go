@@ -89,18 +89,3 @@
 // overheads low.
 
 package runtime
-
-// Sleep/wait state of the background scavenger.
-
-// scavengeIndex is a structure for efficiently managing which pageAlloc chunks have
-// memory available to scavenge.
-
-// atomicScavChunkData is an atomic wrapper around a scavChunkData
-// that stores it in its packed form.
-
-// scavChunkData tracks information about a palloc chunk for
-// scavenging. It packs well into 64 bits.
-//
-// The zero value always represents a valid newly-grown chunk.
-
-// scavChunkFlags is a set of bit-flags for the scavenger for each palloc chunk.

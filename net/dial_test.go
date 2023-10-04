@@ -5,9 +5,3 @@
 //go:build !js && !wasip1
 
 package net
-
-// Define a pair of blackholed (IPv4, IPv6) addresses, for which dialTCP is
-// expected to hang until the timeout elapses. These addresses are reserved
-// for benchmarking by RFC 6890.
-
-// isEADDRINUSE reports whether err is syscall.EADDRINUSE.

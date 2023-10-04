@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// covMeta is the top-level container for bits of state related to
-// code coverage meta-data in the runtime.

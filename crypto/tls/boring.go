@@ -5,11 +5,3 @@
 //go:build boringcrypto
 
 package tls
-
-// default defaultFIPSCurvePreferences is the FIPS-allowed curves,
-// in preference order (most preferable first).
-
-// defaultCipherSuitesFIPS are the FIPS-allowed cipher suites.
-
-// fipsSupportedSignatureAlgorithms currently are a subset of
-// defaultSupportedSignatureAlgorithms without Ed25519 and SHA-1.

@@ -63,8 +63,11 @@ func (priv PrivateKey) Sign(rand io.Reader, message []byte, opts crypto.SignerOp
 // Options can be used with [PrivateKey.Sign] or [VerifyWithOptions]
 // to select Ed25519 variants.
 type Options struct {
+	// Hash can be zero for regular Ed25519, or crypto.SHA512 for Ed25519ph.
 	Hash crypto.Hash
 
+	// Context, if not empty, selects Ed25519ctx or provides the context string
+	// for Ed25519ph. It can be at most 255 bytes in length.
 	Context string
 }
 
@@ -87,9 +90,6 @@ func NewKeyFromSeed(seed []byte) PrivateKey
 // Sign signs the message with privateKey and returns a signature. It will
 // panic if len(privateKey) is not [PrivateKeySize].
 func Sign(privateKey PrivateKey, message []byte) []byte
-
-// Domain separation prefixes used to disambiguate Ed25519/Ed25519ph/Ed25519ctx.
-// See RFC 8032, Section 2 and Section 5.1.
 
 // Verify reports whether sig is a valid signature of message by publicKey. It
 // will panic if len(publicKey) is not [PublicKeySize].

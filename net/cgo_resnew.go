@@ -5,10 +5,3 @@
 //go:build cgo && !netgo && ((linux && !android) || netbsd || solaris)
 
 package net
-
-/*
-#include <sys/types.h>
-#include <sys/socket.h>
-
-#include <netdb.h>
-*/

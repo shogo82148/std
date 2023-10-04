@@ -11,9 +11,3 @@ package types
 import (
 	. "internal/types/errors"
 )
-
-// If enableReverseTypeInference is set, uninstantiated and
-// partially instantiated generic functions may be assigned
-// (incl. returned) to variables of function type and type
-// inference will attempt to infer the missing type arguments.
-// Available with go1.21.

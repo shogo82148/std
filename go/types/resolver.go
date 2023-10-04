@@ -7,7 +7,3 @@ package types
 import (
 	. "internal/types/errors"
 )
-
-// A declInfo describes a package-level const, type, var, or func declaration.
-
-// inSourceOrder implements the sort.Sort interface.

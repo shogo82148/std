@@ -5,6 +5,3 @@
 //go:build boringcrypto
 
 package tls
-
-// A self-signed test certificate with an RSA key of size 2048, for testing
-// RSA-PSS with SHA512. SAN of example.golang.

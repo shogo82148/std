@@ -49,9 +49,6 @@ func StringBytePtr(s string) *byte
 // location, it returns (nil, EINVAL).
 func BytePtrFromString(s string) (*byte, error)
 
-// Single-word zero for use when we need a valid pointer to 0 bytes.
-// See mksyscall.pl.
-
 // Unix returns the time stored in ts as seconds plus nanoseconds.
 func (ts *Timespec) Unix() (sec int64, nsec int64)
 

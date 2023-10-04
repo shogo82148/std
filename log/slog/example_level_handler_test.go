@@ -9,13 +9,6 @@ import (
 	"os"
 )
 
-// A LevelHandler wraps a Handler with an Enabled method
-// that returns false for levels below a minimum.
-type LevelHandler struct {
-	level   slog.Leveler
-	handler slog.Handler
-}
-
 // This example shows how to Use a LevelHandler to change the level of an
 // existing Handler while preserving its other behavior.
 //

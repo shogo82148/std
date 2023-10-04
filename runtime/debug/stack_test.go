@@ -7,5 +7,3 @@ package debug_test
 import (
 	. "runtime/debug"
 )
-
-type T int

@@ -42,13 +42,6 @@ var _ fs.File = (*openMapFile)(nil)
 // Open opens the named file.
 func (fsys MapFS) Open(name string) (fs.File, error)
 
-// fsOnly is a wrapper that hides all but the fs.FS methods,
-// to avoid an infinite recursion when implementing special
-// methods in terms of helpers that would use them.
-// (In general, implementing these methods using the package fs helpers
-// is redundant and unnecessary, but having the methods may make
-// MapFS exercise more code paths when used in tests.)
-
 func (fsys MapFS) ReadFile(name string) ([]byte, error)
 
 func (fsys MapFS) Stat(name string) (fs.FileInfo, error)
@@ -58,9 +51,3 @@ func (fsys MapFS) ReadDir(name string) ([]fs.DirEntry, error)
 func (fsys MapFS) Glob(pattern string) ([]string, error)
 
 func (fsys MapFS) Sub(dir string) (fs.FS, error)
-
-// A mapFileInfo implements fs.FileInfo and fs.DirEntry for a given map file.
-
-// An openMapFile is a regular (non-directory) fs.File open for reading.
-
-// A mapDir is a directory fs.File (so also an fs.ReadDirFile) open for reading.

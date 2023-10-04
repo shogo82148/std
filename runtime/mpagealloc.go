@@ -46,15 +46,3 @@
 // that a large amount of virtual address space may be reserved by the runtime.
 
 package runtime
-
-// Global chunk index.
-//
-// Represents an index into the leaf level of the radix tree.
-// Similar to arenaIndex, except instead of arenas, it divides the address
-// space into chunks.
-
-// pallocSum is a packed summary type which packs three numbers: start, max,
-// and end into a single 8-byte value. Each of these values are a summary of
-// a bitmap and are thus counts, each of which may have a maximum value of
-// 2^21 - 1, or all three may be equal to 2^21. The latter case is represented
-// by just setting the 64th bit.

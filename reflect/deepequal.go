@@ -6,11 +6,6 @@
 
 package reflect
 
-// During deepValueEqual, must keep track of checks that are
-// in progress. The comparison algorithm assumes that all
-// checks in progress are true when it reencounters them.
-// Visited comparisons are stored in a map indexed by visit.
-
 // DeepEqual reports whether x and y are “deeply equal,” defined as follows.
 // Two values of identical type are deeply equal if one of the following cases applies.
 // Values of distinct types are never deeply equal.

@@ -10,6 +10,4 @@ var (
 	Z6noz = z6noz
 )
 
-type Uint128 = uint128
-
 var TestAppendToMarshal = testAppendToMarshal

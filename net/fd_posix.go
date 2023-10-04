@@ -5,5 +5,3 @@
 //go:build unix || windows
 
 package net
-
-// Network file descriptor.

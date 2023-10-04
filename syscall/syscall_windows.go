@@ -130,8 +130,6 @@ func Pipe(p []Handle) (err error)
 
 func Utimes(path string, tv []Timeval) (err error)
 
-// This matches the value in os/file_windows.go.
-
 func UtimesNano(path string, ts []Timespec) (err error)
 
 func Fsync(fd Handle) (err error)

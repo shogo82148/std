@@ -5,7 +5,3 @@
 //go:build cgo && !netgo && (dragonfly || freebsd)
 
 package net
-
-/*
-#include <netdb.h>
-*/

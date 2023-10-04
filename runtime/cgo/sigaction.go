@@ -6,9 +6,4 @@
 
 package cgo
 
-// Import "unsafe" because we use go:linkname.
 import _ "github.com/shogo82148/std/unsafe"
-
-//go:cgo_import_static x_cgo_sigaction
-//go:linkname x_cgo_sigaction x_cgo_sigaction
-//go:linkname _cgo_sigaction _cgo_sigaction

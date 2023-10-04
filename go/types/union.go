@@ -32,5 +32,3 @@ func NewTerm(tilde bool, typ Type) *Term
 func (t *Term) Tilde() bool
 func (t *Term) Type() Type
 func (t *Term) String() string
-
-// Avoid excessive type-checking times due to quadratic termlist operations.

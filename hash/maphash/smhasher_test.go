@@ -5,5 +5,3 @@
 //go:build !race
 
 package maphash
-
-// A hashSet measures the frequency of hash collisions.

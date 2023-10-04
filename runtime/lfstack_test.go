@@ -7,8 +7,3 @@ package runtime_test
 import (
 	. "runtime"
 )
-
-type MyNode struct {
-	LFNode
-	data int
-}

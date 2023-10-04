@@ -8,15 +8,4 @@ var CallGC = &callGC
 
 var GCBits = gcbits
 
-type EmbedWithUnexpMeth struct{}
-
-type OtherPkgFields struct {
-	OtherExported   int
-	otherUnexported int
-}
-
-type Buffer struct {
-	buf []byte
-}
-
 var MethodValueCallCodePtr = methodValueCallCodePtr

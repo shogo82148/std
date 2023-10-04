@@ -7,7 +7,3 @@ package netip_test
 import (
 	. "net/netip"
 )
-
-// zeros is a slice of eight stringified zeros. It's used in
-// parseIPSlow to construct slices of specific amounts of zero fields,
-// from 1 to 8.

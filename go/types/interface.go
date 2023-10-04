@@ -21,8 +21,6 @@ type Interface struct {
 	tset *_TypeSet
 }
 
-// emptyInterface represents the empty (completed) interface
-
 // NewInterface returns a new interface for the given methods and embedded types.
 // NewInterface takes ownership of the provided methods and may modify their types
 // by setting missing receivers.

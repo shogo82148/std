@@ -8,36 +8,6 @@ import (
 	. "bytes"
 )
 
-type BinOpTest struct {
-	a string
-	b string
-	i int
-}
-
-type SplitTest struct {
-	s   string
-	sep string
-	n   int
-	a   []string
-}
-
-type FieldsTest struct {
-	s string
-	a []string
-}
-
-// Test case for any function which accepts and returns a byte slice.
-// For ease of creation, we write the input byte slice as a string.
-type StringTest struct {
-	in  string
-	out []byte
-}
-
-type RepeatTest struct {
-	in, out string
-	count   int
-}
-
 var RepeatTests = []RepeatTest{
 	{"", "", 0},
 	{"", "", 1},
@@ -51,12 +21,6 @@ var RepeatTests = []RepeatTest{
 	{longString, longString + longString, 2},
 }
 
-type RunesTest struct {
-	in    string
-	out   []rune
-	lossy bool
-}
-
 var RunesTests = []RunesTest{
 	{"", []rune{}, false},
 	{" ", []rune{32}, false},
@@ -65,39 +29,6 @@ var RunesTests = []RunesTest{
 	{"\u65e5\u672c\u8a9e", []rune{26085, 26412, 35486}, false},
 	{"ab\x80c", []rune{97, 98, 0xFFFD, 99}, true},
 	{"ab\xc0c", []rune{97, 98, 0xFFFD, 99}, true},
-}
-
-type TrimTest struct {
-	f            string
-	in, arg, out string
-}
-
-type TrimNilTest struct {
-	f   string
-	in  []byte
-	arg string
-	out []byte
-}
-
-type TrimFuncTest struct {
-	f        predicate
-	in       string
-	trimOut  []byte
-	leftOut  []byte
-	rightOut []byte
-}
-
-type IndexFuncTest struct {
-	in          string
-	f           predicate
-	first, last int
-}
-
-type ReplaceTest struct {
-	in       string
-	old, new string
-	n        int
-	out      string
 }
 
 var ReplaceTests = []ReplaceTest{
@@ -120,10 +51,6 @@ var ReplaceTests = []ReplaceTest{
 	{"banana", "a", "a", -1, "banana"},
 	{"banana", "a", "a", 1, "banana"},
 	{"☺☻☹", "", "<>", -1, "<>☺<>☻<>☹<>"},
-}
-
-type TitleTest struct {
-	in, out string
 }
 
 var TitleTests = []TitleTest{

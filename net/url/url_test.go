@@ -8,27 +8,5 @@ import (
 	encodingPkg "encoding"
 )
 
-type URLTest struct {
-	in        string
-	out       *URL
-	roundtrip string
-}
-
-type EscapeTest struct {
-	in  string
-	out string
-	err error
-}
-
-type EncodeQueryTest struct {
-	m        Values
-	expected string
-}
-
-type RequestURITest struct {
-	url *URL
-	out string
-}
-
 var _ encodingPkg.BinaryMarshaler = (*URL)(nil)
 var _ encodingPkg.BinaryUnmarshaler = (*URL)(nil)

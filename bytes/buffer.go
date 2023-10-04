@@ -9,8 +9,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// smallBufferSize is an initial allocation minimal capacity.
-
 // A Buffer is a variable-sized buffer of bytes with Read and Write methods.
 // The zero value for Buffer is an empty buffer ready to use.
 type Buffer struct {
@@ -18,14 +16,6 @@ type Buffer struct {
 	off      int
 	lastRead readOp
 }
-
-// The readOp constants describe the last action performed on
-// the buffer, so that UnreadRune and UnreadByte can check for
-// invalid usage. opReadRuneX constants are chosen such that
-// converted to int they correspond to the rune size that was read.
-
-// Don't use iota for these, as the values need to correspond with the
-// names and comments, which is easier to see when being explicit.
 
 // ErrTooLarge is passed to panic if memory cannot be allocated to store data in a buffer.
 var ErrTooLarge = errors.New("bytes.Buffer: too large")

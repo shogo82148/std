@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package parse
-
-// Make the types prettyprint.
-
-// Some easy cases from above, but with delimiters $$ and @@

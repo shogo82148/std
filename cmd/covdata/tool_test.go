@@ -7,7 +7,3 @@ package main_test
 import (
 	cmdcovdata "cmd/covdata"
 )
-
-// Top level tempdir for test.
-
-// If set, this will preserve all the tmpdir files from the test run.

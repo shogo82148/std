@@ -8,12 +8,6 @@ import (
 	"fmt"
 )
 
-// Animal has a Name and an Age to represent an animal.
-type Animal struct {
-	Name string
-	Age  uint
-}
-
 func ExampleStringer() {
 	a := Animal{
 		Name: "Gopher",

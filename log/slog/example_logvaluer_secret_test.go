@@ -9,9 +9,6 @@ import (
 	"os"
 )
 
-// A token is a secret value that grants permissions.
-type Token string
-
 // This example demonstrates a Value that replaces itself
 // with an alternative representation to avoid revealing secrets.
 func ExampleLogValuer_secret() {

@@ -4,8 +4,6 @@
 
 package bufio
 
-// Exported for testing only.
-
 var IsSpace = isSpace
 
 const DefaultBufSize = defaultBufSize

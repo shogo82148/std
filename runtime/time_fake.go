@@ -10,6 +10,3 @@
 // (See CL 192739 PS 3.)
 
 package runtime
-
-// faketime is the simulated time in nanoseconds since 1970 for the
-// playground.

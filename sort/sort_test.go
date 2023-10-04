@@ -8,6 +8,3 @@ import (
 	. "sort"
 	stringspkg "strings"
 )
-
-// This is based on the "antiquicksort" implementation by M. Douglas McIlroy.
-// See https://www.cs.dartmouth.edu/~doug/mdmspe.pdf for more info.

@@ -81,6 +81,14 @@ func godoc(path string) ([]byte, error) {
 
 	var decls []ast.Decl
 	var comments []*ast.CommentGroup
+	seen := map[*ast.CommentGroup]bool{}
+	addComment := func(c *ast.CommentGroup) {
+		if seen[c] {
+			return
+		}
+		seen[c] = true
+		comments = append(comments, c)
+	}
 
 	for _, d := range node.Decls {
 		switch d := d.(type) {
@@ -101,19 +109,15 @@ func godoc(path string) ([]byte, error) {
 			} else {
 				for _, c := range node.Comments {
 					if c.End() > d.Body.Pos() && c.End() < d.Body.End() {
-						comments = append(comments, c)
+						addComment(c)
 					}
 				}
 			}
 			if d.Doc != nil {
-				comments = append(comments, d.Doc)
+				addComment(d.Doc)
 			}
 
 		case *ast.GenDecl:
-			if d.Doc != nil {
-				comments = append(comments, d.Doc)
-			}
-
 			var specs []ast.Spec
 			for _, spec := range d.Specs {
 				switch spec := spec.(type) {
@@ -130,15 +134,29 @@ func godoc(path string) ([]byte, error) {
 					}
 					spec.Names = names
 
+					if d.Doc != nil {
+						addComment(d.Doc)
+					}
 					if spec.Doc != nil {
-						comments = append(comments, spec.Doc)
+						addComment(spec.Doc)
 					}
 				case *ast.TypeSpec:
-					if spec.Name == nil || !ast.IsExported(spec.Name.Name) {
+					if isTest || spec.Name == nil || !ast.IsExported(spec.Name.Name) {
 						continue
 					}
+
+					if d.Doc != nil {
+						addComment(d.Doc)
+					}
 					if spec.Doc != nil {
-						comments = append(comments, spec.Doc)
+						addComment(spec.Doc)
+					}
+					if st, ok := spec.Type.(*ast.StructType); ok {
+						for _, f := range st.Fields.List {
+							if f.Doc != nil {
+								comments = append(comments, f.Doc)
+							}
+						}
 					}
 				}
 				specs = append(specs, spec)
@@ -154,18 +172,7 @@ func godoc(path string) ([]byte, error) {
 
 	// remove comments
 	for _, g := range node.Comments {
-		group := g.List[:0]
-		for _, c := range g.List {
-			if c.Pos() < node.Name.Pos() {
-				group = append(group, c)
-				continue
-			}
-			if isSpecialComment(c) {
-				group = append(group, c)
-			}
-		}
-		if len(group) != 0 {
-			g.List = group
+		if g.Pos() < node.Name.Pos() {
 			comments = append(comments, g)
 		}
 	}

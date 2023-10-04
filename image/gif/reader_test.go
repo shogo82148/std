@@ -8,9 +8,5 @@ import (
 	"io"
 )
 
-// header, palette and trailer are parts of a valid 2x1 GIF image.
-
 // lzw.NewReader wants a io.ByteReader, this ensures we're compatible.
 var _ io.ByteReader = (*blockReader)(nil)
-
-// testGIF is a simple GIF that we can modify to test different scenarios.

@@ -5,7 +5,3 @@
 //go:build aix || openbsd
 
 package os
-
-// We query the working directory at init, to use it later to search for the
-// executable file
-// errWd will be checked later, if we need to use initWd

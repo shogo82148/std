@@ -12,6 +12,10 @@ import (
 // PKCS1v15DecryptOptions is for passing options to PKCS #1 v1.5 decryption using
 // the crypto.Decrypter interface.
 type PKCS1v15DecryptOptions struct {
+	// SessionKeyLen is the length of the session key that is being
+	// decrypted. If not zero, then a padding error during decryption will
+	// cause a random plaintext of this length to be returned rather than
+	// an error. These alternatives happen in constant time.
 	SessionKeyLen int
 }
 
@@ -75,17 +79,6 @@ func DecryptPKCS1v15(random io.Reader, priv *PrivateKey, ciphertext []byte) ([]b
 //   - [1] RFC 3218, Preventing the Million Message Attack on CMS,
 //     https://www.rfc-editor.org/rfc/rfc3218.html
 func DecryptPKCS1v15SessionKey(random io.Reader, priv *PrivateKey, ciphertext []byte, key []byte) error
-
-// These are ASN1 DER structures:
-//
-//	DigestInfo ::= SEQUENCE {
-//	  digestAlgorithm AlgorithmIdentifier,
-//	  digest OCTET STRING
-//	}
-//
-// For performance, we don't use the generic ASN1 encoder. Rather, we
-// precompute a prefix of the digest value that makes a valid ASN1 DER string
-// with the correct contents.
 
 // SignPKCS1v15 calculates the signature of hashed using
 // RSASSA-PKCS1-V1_5-SIGN from RSA PKCS #1 v1.5.  Note that hashed must

@@ -126,9 +126,25 @@ import (
 // correctly handles the case when only one of its arguments has a monotonic
 // clock reading.
 type Time struct {
+	// wall and ext encode the wall time seconds, wall time nanoseconds,
+	// and optional monotonic clock reading in nanoseconds.
+	//
+	// From high to low bit position, wall encodes a 1-bit flag (hasMonotonic),
+	// a 33-bit seconds field, and a 30-bit wall time nanoseconds field.
+	// The nanoseconds field is in the range [0, 999999999].
+	// If the hasMonotonic bit is 0, then the 33-bit field must be zero
+	// and the full signed 64-bit wall seconds since Jan 1 year 1 is stored in ext.
+	// If the hasMonotonic bit is 1, then the 33-bit field holds a 33-bit
+	// unsigned wall seconds since Jan 1 year 1885, and ext holds a
+	// signed 64-bit monotonic clock reading, nanoseconds since process start.
 	wall uint64
 	ext  int64
 
+	// loc specifies the Location that should be used to
+	// determine the minute, hour, month, day, and year
+	// that correspond to this Time.
+	// The nil location means UTC.
+	// All UTC times are represented with loc==nil, never loc==&utcLoc.
 	loc *Location
 }
 
@@ -323,17 +339,6 @@ func Until(t Time) Duration
 // so, for example, adding one month to October 31 yields
 // December 1, the normalized form for November 31.
 func (t Time) AddDate(years int, months int, days int) Time
-
-// daysBefore[m] counts the number of days in a non-leap year
-// before month m begins. There is an entry for m=12, counting
-// the number of days before January of next year (365).
-
-// Monotonic times are reported as offsets from startNano.
-// We initialize startNano to runtimeNano() - 1 so that on systems where
-// monotonic time resolution is fairly low (e.g. Windows 2008
-// which appears to have a default resolution of 15ms),
-// we avoid ever reporting a monotonic time of 0.
-// (Callers may want to use 0 as "time not set".)
 
 // Now returns the current local time.
 func Now() Time
