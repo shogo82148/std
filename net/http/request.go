@@ -14,72 +14,59 @@ import (
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/mime/multipart"
 	"github.com/shogo82148/std/net/url"
-	urlpkg "github.com/shogo82148/std/net/url"
 )
 
-// ErrMissingFile is returned by FormFile when the provided file field name
-// is either not present in the request or not a file field.
+// ErrMissingFileは、FormFileが提供されたファイルフィールド名がリクエストに存在しないか、ファイルフィールドではない場合に返されます。
 var ErrMissingFile = errors.New("http: no such file")
 
-// ProtocolError represents an HTTP protocol error.
+// ProtocolErrorは、HTTPプロトコルエラーを表します。
 //
-// Deprecated: Not all errors in the http package related to protocol errors
-// are of type ProtocolError.
+// Deprecated: httpパッケージのすべてのプロトコルエラーに関連するエラーがProtocolError型ではありません。
 type ProtocolError struct {
 	ErrorString string
 }
 
 func (pe *ProtocolError) Error() string
 
-// Is lets http.ErrNotSupported match errors.ErrUnsupported.
+// Isは、http.ErrNotSupportedがerrors.ErrUnsupportedに一致するようにします。
 func (pe *ProtocolError) Is(err error) bool
 
 var (
-	// ErrNotSupported indicates that a feature is not supported.
+	// ErrNotSupportedは、機能がサポートされていないことを示します。
 	//
-	// It is returned by ResponseController methods to indicate that
-	// the handler does not support the method, and by the Push method
-	// of Pusher implementations to indicate that HTTP/2 Push support
-	// is not available.
+	// ResponseControllerメソッドによって、ハンドラがメソッドをサポートしていないことを示すために返され、
+	// Pusher実装のPushメソッドによって、HTTP/2 Pushサポートが利用できないことを示すために返されます。
 	ErrNotSupported = &ProtocolError{"feature not supported"}
 
-	// Deprecated: ErrUnexpectedTrailer is no longer returned by
-	// anything in the net/http package. Callers should not
-	// compare errors against this variable.
+	// Deprecated: ErrUnexpectedTrailerは、net/httpパッケージの何も返さなくなりました。
+	// 呼び出し元は、この変数とエラーを比較すべきではありません。
 	ErrUnexpectedTrailer = &ProtocolError{"trailer header without chunked transfer encoding"}
 
-	// ErrMissingBoundary is returned by Request.MultipartReader when the
-	// request's Content-Type does not include a "boundary" parameter.
+	// ErrMissingBoundaryは、リクエストのContent-Typeに「boundary」パラメータが含まれていない場合に、Request.MultipartReaderによって返されます。
 	ErrMissingBoundary = &ProtocolError{"no multipart boundary param in Content-Type"}
 
-	// ErrNotMultipart is returned by Request.MultipartReader when the
-	// request's Content-Type is not multipart/form-data.
+	/// ErrNotMultipartは、リクエストのContent-Typeがmultipart/form-dataでない場合、Request.MultipartReaderによって返されます。
 	ErrNotMultipart = &ProtocolError{"request Content-Type isn't multipart/form-data"}
 
-	// Deprecated: ErrHeaderTooLong is no longer returned by
-	// anything in the net/http package. Callers should not
-	// compare errors against this variable.
+	// Deprecated: ErrHeaderTooLongは、net/httpパッケージの何も返さなくなりました。
+	// 呼び出し元は、この変数とエラーを比較すべきではありません。
 	ErrHeaderTooLong = &ProtocolError{"header too long"}
 
-	// Deprecated: ErrShortBody is no longer returned by
-	// anything in the net/http package. Callers should not
-	// compare errors against this variable.
+	// Deprecated: ErrShortBodyは、net/httpパッケージの何も返さなくなりました。
+	// 呼び出し元は、この変数とエラーを比較すべきではありません。
 	ErrShortBody = &ProtocolError{"entity body too short"}
 
-	// Deprecated: ErrMissingContentLength is no longer returned by
-	// anything in the net/http package. Callers should not
-	// compare errors against this variable.
+	// Deprecated: ErrMissingContentLengthは、net/httpパッケージの何も返さなくなりました。
+	// 呼び出し元は、この変数とエラーを比較すべきではありません。
 	ErrMissingContentLength = &ProtocolError{"missing ContentLength in HEAD response"}
 )
 
 // Headers that Request.Write handles itself and should be skipped.
 
-// A Request represents an HTTP request received by a server
-// or to be sent by a client.
+// Requestは、サーバーによって受信されたHTTPリクエストまたはクライアントによって送信されるHTTPリクエストを表します。
 //
-// The field semantics differ slightly between client and server
-// usage. In addition to the notes on the fields below, see the
-// documentation for Request.Write and RoundTripper.
+// フィールドの意味は、クライアントとサーバーの使用方法でわずかに異なります。
+// 以下のフィールドに関する注意事項に加えて、Request.WriteおよびRoundTripperのドキュメントを参照してください。
 type Request struct {
 	Method string
 

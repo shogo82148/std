@@ -60,3 +60,5 @@ func (noBody) WriteTo(w io.Writer) (n int64, err error)
 func (noBody) Read(p []byte) (n int, err error)
 
 func (noBody) Close() error
+
+type httpRange struct{ a, b int }
