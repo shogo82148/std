@@ -238,228 +238,170 @@ type Request struct {
 	ctx context.Context
 }
 
-// Context returns the request's context. To change the context, use
-// Clone or WithContext.
+// Contextは、リクエストのコンテキストを返します。コンテキストを変更するには、CloneまたはWithContextを使用してください。
 //
-// The returned context is always non-nil; it defaults to the
-// background context.
+// 返されるコンテキストは常にnilではありません。デフォルトでは、バックグラウンドコンテキストになります。
 //
-// For outgoing client requests, the context controls cancellation.
+// 出力クライアントリクエストの場合、コンテキストはキャンセルを制御します。
 //
-// For incoming server requests, the context is canceled when the
-// client's connection closes, the request is canceled (with HTTP/2),
-// or when the ServeHTTP method returns.
+// 入力サーバーリクエストの場合、クライアントの接続が閉じられたとき、リクエストがキャンセルされたとき（HTTP/2で）、またはServeHTTPメソッドが返されたときに、コンテキストがキャンセルされます。
 func (r *Request) Context() context.Context
 
-// WithContext returns a shallow copy of r with its context changed
-// to ctx. The provided ctx must be non-nil.
+// WithContextは、そのコンテキストをctxに変更したrの浅いコピーを返します。提供されたctxはnilであってはなりません。
 //
-// For outgoing client request, the context controls the entire
-// lifetime of a request and its response: obtaining a connection,
-// sending the request, and reading the response headers and body.
+// 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
 //
-// To create a new request with a context, use NewRequestWithContext.
-// To make a deep copy of a request with a new context, use Request.Clone.
+// コンテキストを持つ新しいリクエストを作成するには、NewRequestWithContextを使用します。
+// 新しいコンテキストを持つリクエストのディープコピーを作成するには、Request.Cloneを使用します。
 func (r *Request) WithContext(ctx context.Context) *Request
 
-// Clone returns a deep copy of r with its context changed to ctx.
-// The provided ctx must be non-nil.
+// Cloneは、そのコンテキストをctxに変更したrのディープコピーを返します。提供されたctxはnilであってはなりません。
 //
-// For an outgoing client request, the context controls the entire
-// lifetime of a request and its response: obtaining a connection,
-// sending the request, and reading the response headers and body.
+// 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
+//
+// 新しいコンテキストを持つリクエストを作成するには、NewRequestWithContextを使用します。
+// コンテキストを変更せずに新しいリクエストを作成するには、Request.WithContextを使用します。
 func (r *Request) Clone(ctx context.Context) *Request
 
-// ProtoAtLeast reports whether the HTTP protocol used
-// in the request is at least major.minor.
+// ProtoAtLeastは、リクエストで使用されるHTTPプロトコルがmajor.minor以上であるかどうかを報告します。
 func (r *Request) ProtoAtLeast(major, minor int) bool
 
-// UserAgent returns the client's User-Agent, if sent in the request.
+// UserAgentは、リクエストで送信された場合にクライアントのUser-Agentを返します。
 func (r *Request) UserAgent() string
 
-// Cookies parses and returns the HTTP cookies sent with the request.
+// Cookiesは、リクエストで送信されたHTTPクッキーを解析して返します。
 func (r *Request) Cookies() []*Cookie
 
-// ErrNoCookie is returned by Request's Cookie method when a cookie is not found.
+// ErrNoCookieは、Cookieメソッドがクッキーを見つけられなかった場合にRequestによって返されます。
 var ErrNoCookie = errors.New("http: named cookie not present")
 
-// Cookie returns the named cookie provided in the request or
-// ErrNoCookie if not found.
-// If multiple cookies match the given name, only one cookie will
-// be returned.
+// Cookieは、リクエストで提供された名前付きクッキーを返します。クッキーが見つからない場合はErrNoCookieを返します。
+// 複数のクッキーが指定された名前に一致する場合、1つのクッキーのみが返されます。
 func (r *Request) Cookie(name string) (*Cookie, error)
 
-// AddCookie adds a cookie to the request. Per RFC 6265 section 5.4,
-// AddCookie does not attach more than one Cookie header field. That
-// means all cookies, if any, are written into the same line,
-// separated by semicolon.
-// AddCookie only sanitizes c's name and value, and does not sanitize
-// a Cookie header already present in the request.
+// AddCookieは、リクエストにクッキーを追加します。RFC 6265セクション5.4に従い、
+// AddCookieは1つ以上のCookieヘッダーフィールドを添付しません。つまり、すべてのクッキーが、
+// セミコロンで区切られた同じ行に書き込まれます。
+// AddCookieは、cの名前と値をサニタイズするだけで、すでにリクエストに存在するCookieヘッダーをサニタイズしません。
 func (r *Request) AddCookie(c *Cookie)
 
-// Referer returns the referring URL, if sent in the request.
+// Refererは、リクエストで送信された場合に参照元のURLを返します。
 //
-// Referer is misspelled as in the request itself, a mistake from the
-// earliest days of HTTP.  This value can also be fetched from the
-// Header map as Header["Referer"]; the benefit of making it available
-// as a method is that the compiler can diagnose programs that use the
-// alternate (correct English) spelling req.Referrer() but cannot
-// diagnose programs that use Header["Referrer"].
+// Refererは、HTTPの初期の日々からの誤りで、リクエスト自体で誤ってスペルがされています。
+// この値はHeader["Referer"]としてHeaderマップから取得することもできますが、
+// メソッドとして利用可能にすることの利点は、代替の（正しい英語の）スペルreq.Referrer()を使用するプログラムをコンパイラが診断できるが、
+// Header["Referrer"]を使用するプログラムを診断できないことです。
 func (r *Request) Referer() string
 
-// MultipartReader returns a MIME multipart reader if this is a
-// multipart/form-data or a multipart/mixed POST request, else returns nil and an error.
-// Use this function instead of ParseMultipartForm to
-// process the request body as a stream.
+// MultipartReaderは、これがmultipart/form-dataまたはmultipart/mixed POSTリクエストである場合、MIMEマルチパートリーダーを返します。
+// それ以外の場合はnilとエラーを返します。
+// リクエストボディをストリームとして処理するために、ParseMultipartFormの代わりにこの関数を使用してください。
 func (r *Request) MultipartReader() (*multipart.Reader, error)
 
-// Write writes an HTTP/1.1 request, which is the header and body, in wire format.
-// This method consults the following fields of the request:
+// Writeは、ワイヤフォーマットでHTTP/1.1リクエスト（ヘッダーとボディ）を書き込みます。
+// このメソッドは、リクエストの以下のフィールドを参照します。
 //
 //	Host
 //	URL
-//	Method (defaults to "GET")
+//	Method（デフォルトは "GET"）
 //	Header
 //	ContentLength
 //	TransferEncoding
 //	Body
 //
-// If Body is present, Content-Length is <= 0 and TransferEncoding
-// hasn't been set to "identity", Write adds "Transfer-Encoding:
-// chunked" to the header. Body is closed after it is sent.
+// Bodyが存在し、Content-Lengthが0以下であり、TransferEncodingが "identity"に設定されていない場合、
+// Writeはヘッダーに "Transfer-Encoding: chunked"を追加します。Bodyは送信後に閉じられます。
 func (r *Request) Write(w io.Writer) error
 
-// WriteProxy is like Write but writes the request in the form
-// expected by an HTTP proxy. In particular, WriteProxy writes the
-// initial Request-URI line of the request with an absolute URI, per
-// section 5.3 of RFC 7230, including the scheme and host.
-// In either case, WriteProxy also writes a Host header, using
-// either r.Host or r.URL.Host.
+// WriteProxyは、Writeと似ていますが、HTTPプロキシが期待する形式でリクエストを書き込みます。
+// 特に、WriteProxyは、RFC 7230のセクション5.3に従って、スキームとホストを含む絶対URIでリクエストの最初のRequest-URI行を書き込みます。
+// WriteProxyは、r.Host または r.URL.Host を使用して、Hostヘッダーも書き込みます。
 func (r *Request) WriteProxy(w io.Writer) error
 
-// ParseHTTPVersion parses an HTTP version string according to RFC 7230, section 2.6.
-// "HTTP/1.0" returns (1, 0, true). Note that strings without
-// a minor version, such as "HTTP/2", are not valid.
+// ParseHTTPVersionは、RFC 7230、セクション2.6に従ってHTTPバージョン文字列を解析します。
+// "HTTP/1.0"は(1, 0, true)を返します。注意："HTTP/2"のようにマイナーバージョンがない文字列は無効です。
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
-// NewRequest wraps NewRequestWithContext using context.Background.
+// NewRequestWithContextは、context.Backgroundを使用してNewRequestWithContextをラップします。
 func NewRequest(method, url string, body io.Reader) (*Request, error)
 
-// NewRequestWithContext returns a new Request given a method, URL, and
-// optional body.
+// NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しいRequestを返します。
 //
-// If the provided body is also an io.Closer, the returned
-// Request.Body is set to body and will be closed by the Client
-// methods Do, Post, and PostForm, and Transport.RoundTrip.
+//提供されたボディがio.Closerでもある場合、返されたRequest.Bodyはbodyに設定され、ClientメソッドDo、Post、およびPostForm、およびTransport.RoundTripによって閉じられます。
 //
-// NewRequestWithContext returns a Request suitable for use with
-// Client.Do or Transport.RoundTrip. To create a request for use with
-// testing a Server Handler, either use the NewRequest function in the
-// net/http/httptest package, use ReadRequest, or manually update the
-// Request fields. For an outgoing client request, the context
-// controls the entire lifetime of a request and its response:
-// obtaining a connection, sending the request, and reading the
-// response headers and body. See the Request type's documentation for
-// the difference between inbound and outbound request fields.
+// NewRequestWithContextは、Client.Do または Transport.RoundTrip で使用するためのRequestを返します。
+// Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージのNewRequest関数を使用するか、
+// ReadRequestを使用するか、またはRequestフィールドを手動で更新します。送信元のクライアントリクエストの場合、
+// コンテキストはリクエストとその応答の全寿命を制御します：接続の取得、リクエストの送信、および応答ヘッダーとボディの読み取り。
+// 入力リクエストフィールドと出力リクエストフィールドの違いについては、Requestタイプのドキュメントを参照してください。
 //
-// If body is of type *bytes.Buffer, *bytes.Reader, or
-// *strings.Reader, the returned request's ContentLength is set to its
-// exact value (instead of -1), GetBody is populated (so 307 and 308
-// redirects can replay the body), and Body is set to NoBody if the
-// ContentLength is 0.
-func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error)
+// bodyが *bytes.Buffer、 *bytes.Reader、または *strings.Readerの場合、返されたリクエストのContentLengthはその正確な値に設定されます（-1の代わりに）、
+// GetBodyが作成されます（307および308のリダイレクトがボディを再生できるように）、およびContentLengthが0の場合はBodyがNoBodyに設定されます。
+func NewRequestWithContext(ctx context.Context、method、url string、body io.Reader) (*Request、error)
 
-// BasicAuth returns the username and password provided in the request's
-// Authorization header, if the request uses HTTP Basic Authentication.
-// See RFC 2617, Section 2.
-func (r *Request) BasicAuth() (username, password string, ok bool)
+// BasicAuthは、リクエストがHTTP Basic認証を使用する場合、リクエストのAuthorizationヘッダーで提供されるユーザー名とパスワードを返します。
+// RFC 2617、セクション2を参照してください。
+func (r *Request) BasicAuth() (username、password string、ok bool)
 
-// SetBasicAuth sets the request's Authorization header to use HTTP
-// Basic Authentication with the provided username and password.
+// SetBasicAuthは、提供されたユーザー名とパスワードを使用して、HTTP Basic認証を使用するようにリクエストのAuthorizationヘッダーを設定します。
 //
-// With HTTP Basic Authentication the provided username and password
-// are not encrypted. It should generally only be used in an HTTPS
-// request.
+// HTTP Basic認証では、提供されたユーザー名とパスワードは暗号化されません。 HTTPSリクエストでのみ使用することが一般的です。
 //
-// The username may not contain a colon. Some protocols may impose
-// additional requirements on pre-escaping the username and
-// password. For instance, when used with OAuth2, both arguments must
-// be URL encoded first with url.QueryEscape.
+// ユーザー名にはコロンを含めることはできません。一部のプロトコルでは、ユーザー名とパスワードを事前にエスケープする追加の要件がある場合があります。たとえば、OAuth2と一緒に使用する場合、両方の引数を最初にurl.QueryEscapeでURLエンコードする必要があります。
 func (r *Request) SetBasicAuth(username, password string)
 
-// ReadRequest reads and parses an incoming request from b.
+// ReadRequestは、bから受信したリクエストを読み取り、解析します。
 //
-// ReadRequest is a low-level function and should only be used for
-// specialized applications; most code should use the Server to read
-// requests and handle them via the Handler interface. ReadRequest
-// only supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.
+// ReadRequestは、低レベルの関数であり、特殊なアプリケーションにのみ使用する必要があります。ほとんどのコードは、Serverを使用してリクエストを読み取り、Handlerインターフェイスを介して処理する必要があります。 ReadRequestは、HTTP / 1.xリクエストのみをサポートしています。 HTTP / 2の場合は、golang.org/x/net/http2を使用してください。
 func ReadRequest(b *bufio.Reader) (*Request, error)
 
-// MaxBytesReader is similar to io.LimitReader but is intended for
-// limiting the size of incoming request bodies. In contrast to
-// io.LimitReader, MaxBytesReader's result is a ReadCloser, returns a
-// non-nil error of type *MaxBytesError for a Read beyond the limit,
-// and closes the underlying reader when its Close method is called.
+// MaxBytesReaderは、io.LimitReaderに似ていますが、着信リクエストボディのサイズを制限するために使用されます。
+// io.LimitReaderとは異なり、MaxBytesReaderの結果はReadCloserであり、制限を超えたReadに対して *MaxBytesError 型の非nilエラーを返し、Closeメソッドが呼び出されたときに基になるリーダーを閉じます。
 //
-// MaxBytesReader prevents clients from accidentally or maliciously
-// sending a large request and wasting server resources. If possible,
-// it tells the ResponseWriter to close the connection after the limit
-// has been reached.
+// MaxBytesReaderは、クライアントが誤ってまたは悪意を持って大きなリクエストを送信してサーバーのリソースを浪費することを防止します。可能であれば、ResponseWriterに制限に達した後に接続を閉じるように指示します。
 func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser
 
-// MaxBytesError is returned by MaxBytesReader when its read limit is exceeded.
+// MaxBytesErrorは、MaxBytesReaderの読み取り制限を超えた場合にMaxBytesReaderによって返されます。
 type MaxBytesError struct {
 	Limit int64
 }
 
 func (e *MaxBytesError) Error() string
 
-// ParseForm populates r.Form and r.PostForm.
+// ParseFormはr.Formとr.PostFormを埋めます。
 //
-// For all requests, ParseForm parses the raw query from the URL and updates
-// r.Form.
+// すべてのリクエストに対して、ParseFormはURLから生のクエリを解析し、r.Formを更新します。
 //
-// For POST, PUT, and PATCH requests, it also reads the request body, parses it
-// as a form and puts the results into both r.PostForm and r.Form. Request body
-// parameters take precedence over URL query string values in r.Form.
+// POST、PUT、およびPATCHリクエストの場合、それはまた、リクエストボディを読み取り、フォームとして解析し、その結果をr.PostFormとr.Formの両方に入れます。リクエストボディのパラメータは、r.FormのURLクエリ文字列値より優先されます。
 //
-// If the request Body's size has not already been limited by MaxBytesReader,
-// the size is capped at 10MB.
+// リクエストボディのサイズがすでにMaxBytesReaderによって制限されていない場合、サイズは10MBに制限されます。
 //
-// For other HTTP methods, or when the Content-Type is not
-// application/x-www-form-urlencoded, the request Body is not read, and
-// r.PostForm is initialized to a non-nil, empty value.
+// 他のHTTPメソッド、またはContent-Typeがapplication/x-www-form-urlencodedでない場合、リクエストボディは読み取られず、r.PostFormはnilでない空の値に初期化されます。
 //
-// ParseMultipartForm calls ParseForm automatically.
-// ParseForm is idempotent.
+// ParseMultipartFormは自動的にParseFormを呼び出します。
+// ParseFormは冪等です。
 func (r *Request) ParseForm() error
 
-// ParseMultipartForm parses a request body as multipart/form-data.
-// The whole request body is parsed and up to a total of maxMemory bytes of
-// its file parts are stored in memory, with the remainder stored on
-// disk in temporary files.
-// ParseMultipartForm calls ParseForm if necessary.
-// If ParseForm returns an error, ParseMultipartForm returns it but also
-// continues parsing the request body.
-// After one call to ParseMultipartForm, subsequent calls have no effect.
+// ParseMultipartFormは、リクエストボディをmultipart/form-dataとして解析します。
+// リクエストボディ全体が解析され、そのファイルパーツの最大maxMemoryバイトがメモリに格納され、残りは一時ファイルに格納されます。
+// ParseMultipartFormは必要に応じてParseFormを呼び出します。
+// ParseFormがエラーを返した場合、ParseMultipartFormはそれを返しますが、リクエストボディの解析を続けます。
+// ParseMultipartFormを1回呼び出した後、以降の呼び出しは効果がありません。
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
-// FormValue returns the first value for the named component of the query.
-// POST and PUT body parameters take precedence over URL query string values.
-// FormValue calls ParseMultipartForm and ParseForm if necessary and ignores
-// any errors returned by these functions.
-// If key is not present, FormValue returns the empty string.
-// To access multiple values of the same key, call ParseForm and
-// then inspect Request.Form directly.
+// FormValueは、クエリの名前付きコンポーネントの最初の値を返します。
+// POSTおよびPUTボディパラメータは、URLクエリ文字列値より優先されます。
+// FormValueは必要に応じてParseMultipartFormおよびParseFormを呼び出し、これらの関数によって返されたエラーを無視します。
+// キーが存在しない場合、FormValueは空の文字列を返します。
+// 同じキーの複数の値にアクセスするには、ParseFormを呼び出して、その後Request.Formを直接調べます。
 func (r *Request) FormValue(key string) string
 
-// PostFormValue returns the first value for the named component of the POST,
-// PATCH, or PUT request body. URL query parameters are ignored.
-// PostFormValue calls ParseMultipartForm and ParseForm if necessary and ignores
-// any errors returned by these functions.
-// If key is not present, PostFormValue returns the empty string.
+// PostFormValueは、POST、PATCH、またはPUTリクエストボディの名前付きコンポーネントの最初の値を返します。
+// URLクエリパラメータは無視されます。
+// PostFormValueは必要に応じてParseMultipartFormおよびParseFormを呼び出し、これらの関数によって返されたエラーを無視します。
+// キーが存在しない場合、PostFormValueは空の文字列を返します。
 func (r *Request) PostFormValue(key string) string
 
-// FormFile returns the first file for the provided form key.
-// FormFile calls ParseMultipartForm and ParseForm if necessary.
+// FormFileは、指定されたフォームキーの最初のファイルを返します。
+// 必要に応じて、FormFileはParseMultipartFormおよびParseFormを呼び出します。
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
