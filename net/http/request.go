@@ -61,14 +61,8 @@ var (
 	ErrMissingContentLength = &ProtocolError{"missing ContentLength in HEAD response"}
 )
 
-<<<<<<< HEAD
-// Headers that Request.Write handles itself and should be skipped.
-
-// Requestは、サーバーによって受信されたHTTPリクエストまたはクライアントによって送信されるHTTPリクエストを表します。
-=======
 // A Request represents an HTTP request received by a server
 // or to be sent by a client.
->>>>>>> release-branch.go1.21
 //
 // フィールドの意味は、クライアントとサーバーの使用方法でわずかに異なります。
 // 以下のフィールドに関する注意事項に加えて、Request.WriteおよびRoundTripperのドキュメントを参照してください。

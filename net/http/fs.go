@@ -61,28 +61,6 @@ type File interface {
 // *os.Fileはio.ReadSeekerインターフェースを実装していることに注意してください。
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
-<<<<<<< HEAD
-// errSeeker is returned by ServeContent's sizeFunc when the content
-// doesn't seek properly. The underlying Seeker's error text isn't
-// included in the sizeFunc reply so it's not sent over HTTP to end
-// users.
-
-// errNoOverlap is returned by serveContent's parseRange if first-byte-pos of
-// all of the byte-range-spec values is greater than the content size.
-
-// condResult is the result of an HTTP request precondition check.
-// See https://tools.ietf.org/html/rfc7232 section 3.
-
-// ServeFileは、指定された名前のファイルまたはディレクトリの内容でリクエストに応答します。
-
-// 提供されたファイルまたはディレクトリ名が相対パスである場合、現在のディレクトリを基準に解釈され、親ディレクトリに移動することができます。提供された名前がユーザー入力から構築された場合、ServeFileを呼び出す前にサニタイズする必要があります。
-
-// 予防措置として、ServeFileはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。これにより、r.URL.Pathでfilepath.Joinを安全に使用せずにサニタイズせずにそのfilepath.Join結果を名前引数として使用する呼び出し元を保護します。
-
-// もう1つの特別な場合として、ServeFileはr.URL.Pathが"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。そのようなリダイレクトを回避するには、パスを変更するか、ServeContentを使用してください。
-
-// これら2つの特別な場合以外では、ServeFileはファイルまたはディレクトリを選択するためにr.URL.Pathを使用しません。名前引数で提供されたファイルまたはディレクトリのみが使用されます。
-=======
 // ServeFile replies to the request with the contents of the named
 // file or directory.
 //
@@ -104,7 +82,6 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // Outside of those two special cases, ServeFile does not use
 // r.URL.Path for selecting the file or directory to serve; only the
 // file or directory provided in the name argument is used.
->>>>>>> release-branch.go1.21
 func ServeFile(w ResponseWriter, r *Request, name string)
 
 // FSは、fsysをFileSystem実装に変換し、FileServerおよびNewFileTransportで使用するために使用されます。

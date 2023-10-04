@@ -4,17 +4,10 @@
 
 package http
 
-<<<<<<< HEAD
-// fileTransport implements RoundTripper for the 'file' protocol.
-
-// NewFileTransport は、提供された FileSystem を提供する新しい RoundTripper を返します。
-// 返された RoundTripper は、リクエストの URL ホストやその他のプロパティを無視します。
-=======
 // NewFileTransport returns a new RoundTripper, serving the provided
 // FileSystem. The returned RoundTripper ignores the URL host in its
 // incoming requests, as well as most other properties of the
 // request.
->>>>>>> release-branch.go1.21
 //
 // NewFileTransport の典型的な使用例は、Transport に "file" プロトコルを登録することです。
 // 例:

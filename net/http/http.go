@@ -10,33 +10,10 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-<<<<<<< HEAD
-// incomparable is a zero-width, non-comparable type. Adding it to a struct
-// makes that struct also non-comparable, and generally doesn't add
-// any size (as long as it's first).
-
-// maxInt64 is the effective "infinite" value for the Server and
-// Transport's byte-limiting readers.
-
-// aLongTimeAgo is a non-zero time, far in the past, used for
-// immediate cancellation of network operations.
-
-// omitBundledHTTP2 is set by omithttp2.go when the nethttpomithttp2
-// build tag is set. That means h2_bundle.go isn't compiled in and we
-// shouldn't try to use it.
-
-// contextKey is a value for use with context.WithValue. It's used as
-// a pointer so it fits in an interface{} without allocation.
-
-// NoBodyは、バイトを持たないio.ReadCloserです。Readは常にEOFを返し、Closeは常にnilを返します。
-// リクエストに0バイトがあることを明示的に示すために、送信クライアントのリクエストで使用できます。
-// ただし、Request.Bodyをnilに設定する代替手段もあります。
-=======
 // NoBody is an io.ReadCloser with no bytes. Read always returns EOF
 // and Close always returns nil. It can be used in an outgoing client
 // request to explicitly signal that a request has zero bytes.
 // An alternative, however, is to simply set Request.Body to nil.
->>>>>>> release-branch.go1.21
 var NoBody = noBody{}
 
 var (

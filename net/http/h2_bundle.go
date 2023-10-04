@@ -19,14 +19,6 @@
 
 package http
 
-<<<<<<< HEAD
-// ClientConnPool manages a pool of HTTP/2 client connections.
-
-// clientConnPoolIdleCloser is the interface implemented by ClientConnPool
-// implementations which can close their idle connections.
-
-=======
->>>>>>> release-branch.go1.21
 var (
 	_ http2clientConnPoolIdleCloser = (*http2clientConnPool)(nil)
 	_ http2clientConnPoolIdleCloser = http2noDialClientConnPool{}
