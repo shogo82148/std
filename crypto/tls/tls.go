@@ -23,8 +23,6 @@ func Server(conn net.Conn, config *Config) *Conn
 // InsecureSkipVerify in the config.
 func Client(conn net.Conn, config *Config) *Conn
 
-// A listener implements a network listener (net.Listener) for TLS connections.
-
 // NewListener creates a Listener which accepts connections from an inner
 // Listener and wraps each connection with Server.
 // The configuration config must be non-nil and must include
@@ -60,8 +58,15 @@ func Dial(network, addr string, config *Config) (*Conn, error)
 // Dialer dials TLS connections given a configuration and a Dialer for the
 // underlying connection.
 type Dialer struct {
+	// NetDialer is the optional dialer to use for the TLS connections'
+	// underlying TCP connections.
+	// A nil NetDialer is equivalent to the net.Dialer zero value.
 	NetDialer *net.Dialer
 
+	// Config is the TLS configuration to use for new connections.
+	// A nil configuration is equivalent to the zero
+	// configuration; see the documentation of Config for the
+	// defaults.
 	Config *Config
 }
 

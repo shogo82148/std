@@ -8,10 +8,6 @@
 
 package plan9obj
 
-// Plan 9 Program header.
-
-// Plan 9 symbol table entries.
-
 const (
 	Magic64 = 0x8000
 

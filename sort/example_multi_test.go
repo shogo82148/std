@@ -8,15 +8,6 @@ import (
 	"fmt"
 )
 
-// A Change is a record of source code changes, recording user, language, and delta size.
-type Change struct {
-	user     string
-	language string
-	lines    int
-}
-
-// multiSorter implements the Sort interface, sorting the changes within.
-
 // ExampleMultiKeys demonstrates a technique for sorting a struct type using different
 // sets of multiple fields in the comparison. We chain together "Less" functions, each of
 // which compares a single field.

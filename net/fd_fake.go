@@ -5,5 +5,3 @@
 //go:build js || wasip1
 
 package net
-
-// Network file descriptor.

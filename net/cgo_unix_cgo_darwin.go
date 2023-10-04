@@ -5,10 +5,3 @@
 //go:build !netgo && cgo && darwin
 
 package net
-
-/*
-#include <resolv.h>
-*/
-
-// This will cause a compile error when the size of
-// unix.ResState is too small.

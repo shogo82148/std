@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package http
-
-// A generator is a function that calls its argument with the strings that it
-// generates.

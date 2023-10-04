@@ -28,7 +28,3 @@
 //	}
 
 package types_test
-
-import (
-	. "go/types"
-)

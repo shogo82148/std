@@ -11,32 +11,11 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// nopos indicates an unknown position
-
-// debugging/development support
-
-// exprInfo stores information about an untyped expression.
-
-// An environment represents the environment within which an object is
-// type-checked.
-
-// An importKey identifies an imported package by import path and source directory
-// (directory containing the file containing the import). In practice, the directory
-// may always be the same, or may not matter. Given an (import path, directory), an
-// importer must always return the same package (but given two different import paths,
-// an importer may still return the same package by mapping them to the same package
-// paths).
-
-// A dotImportKey describes a dot-imported object in the given scope.
-
-// An action describes a (delayed) action.
-
-// An actionDesc provides information on an action.
-// For debugging only.
-
 // A Checker maintains the state of the type checker.
 // It must be created with NewChecker.
 type Checker struct {
+	// package information
+	// (initialized by NewChecker, valid for the life-time of checker)
 	conf *Config
 	ctxt *Context
 	fset *token.FileSet
@@ -49,9 +28,19 @@ type Checker struct {
 	impMap  map[importKey]*Package
 	valids  instanceLookup
 
+	// pkgPathMap maps package names to the set of distinct import paths we've
+	// seen for that name, anywhere in the import graph. It is used for
+	// disambiguating package names in error messages.
+	//
+	// pkgPathMap is allocated lazily, so that we don't pay the price of building
+	// it on the happy path. seenPkgMap tracks the packages that we've already
+	// walked.
 	pkgPathMap map[string]map[string]bool
 	seenPkgMap map[*Package]bool
 
+	// information collected during type-checking of a set of package files
+	// (initialized by Files, valid only for the duration of check.Files;
+	// maps and lists are allocated on demand)
 	files         []*ast.File
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
@@ -67,18 +56,17 @@ type Checker struct {
 	objPath  []Object
 	cleaners []cleaner
 
+	// environment within which the current object is type-checked (valid only
+	// for the duration of type-checking a specific object)
 	environment
 
+	// debugging
 	indent int
 }
 
 // NewChecker returns a new Checker instance for a given package.
 // Package files may be added incrementally via checker.Files.
 func NewChecker(conf *Config, fset *token.FileSet, pkg *Package, info *Info) *Checker
-
-// A posVers records that the file starting at pos declares the Go version vers.
-
-// A bailout panic is used for early termination.
 
 // Files checks the provided files as part of the checker's package.
 func (check *Checker) Files(files []*ast.File) error

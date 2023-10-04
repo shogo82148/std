@@ -4,9 +4,6 @@
 
 package runtime
 
-// throwType indicates the current type of ongoing throw, which affects the
-// amount of detail printed to stderr. Higher values include more detail.
-
 // Goexit terminates the goroutine that calls it. No other goroutine is affected.
 // Goexit runs all deferred calls before terminating the goroutine. Because Goexit
 // is not a panic, any recover calls in those deferred functions will return nil.
@@ -23,16 +20,14 @@ func Goexit()
 // Starting in Go 1.21, programs that call panic(nil) observe recover returning a *PanicNilError.
 // Programs can change back to the old behavior by setting GODEBUG=panicnil=1.
 type PanicNilError struct {
+	// This field makes PanicNilError structurally different from
+	// any other struct in this package, and the _ makes it different
+	// from any struct in other packages too.
+	// This avoids any accidental conversions being possible
+	// between this struct and some other struct sharing the same fields,
+	// like happened in go.dev/issue/56603.
 	_ [0]*PanicNilError
 }
 
 func (*PanicNilError) Error() string
 func (*PanicNilError) RuntimeError()
-
-// runningPanicDefers is non-zero while running deferred functions for panic.
-// This is used to try hard to get a panic stack trace out when exiting.
-
-// panicking is non-zero when crashing the program for an unrecovered panic.
-
-// paniclk is held while printing the panic information and stack trace,
-// so that two concurrent panics don't overlap their output.

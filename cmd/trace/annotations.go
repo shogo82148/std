@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package main
-
-// taskDesc represents a task.
-
-// regionDesc represents a region.
-
-// Five buckets for every power of 10.

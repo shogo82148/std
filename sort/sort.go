@@ -25,12 +25,6 @@ type Interface interface {
 // ergonomic and runs faster.
 func Sort(data Interface)
 
-// xorshift paper: https://www.jstatsoft.org/article/view/v008i14/xorshift.pdf
-
-// lessSwap is a pair of Less and Swap function for use with the
-// auto-generated func-optimized variant of sort.go in
-// zfuncversion.go.
-
 // Reverse returns the reverse order for data.
 func Reverse(data Interface) Interface
 

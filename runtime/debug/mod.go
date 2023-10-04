@@ -11,14 +11,22 @@ func ReadBuildInfo() (info *BuildInfo, ok bool)
 
 // BuildInfo represents the build information read from a Go binary.
 type BuildInfo struct {
+	// GoVersion is the version of the Go toolchain that built the binary
+	// (for example, "go1.19.2").
 	GoVersion string
 
+	// Path is the package path of the main package for the binary
+	// (for example, "golang.org/x/tools/cmd/stringer").
 	Path string
 
+	// Main describes the module that contains the main package for the binary.
 	Main Module
 
+	// Deps describes all the dependency modules, both direct and indirect,
+	// that contributed packages to the build of this binary.
 	Deps []*Module
 
+	// Settings describes the build settings used to build the binary.
 	Settings []BuildSetting
 }
 
@@ -49,6 +57,9 @@ type Module struct {
 //   - vcs.time: the modification time associated with vcs.revision, in RFC3339 format
 //   - vcs.modified: true or false indicating whether the source tree had local modifications
 type BuildSetting struct {
+	// Key and Value describe the build setting.
+	// Key must not contain an equals sign, space, tab, or newline.
+	// Value must not contain newlines ('\n').
 	Key, Value string
 }
 

@@ -5,10 +5,3 @@
 //go:build cgo && !netgo && (aix || dragonfly || freebsd || netbsd || openbsd)
 
 package net
-
-/*
-#include <sys/types.h>
-#include <sys/socket.h>
-
-#include <netinet/in.h>
-*/

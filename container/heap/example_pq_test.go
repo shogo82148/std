@@ -10,17 +10,6 @@ import (
 	"fmt"
 )
 
-// An Item is something we manage in a priority queue.
-type Item struct {
-	value    string
-	priority int
-
-	index int
-}
-
-// A PriorityQueue implements heap.Interface and holds Items.
-type PriorityQueue []*Item
-
 // This example creates a PriorityQueue with some items, adds and manipulates an item,
 // and then removes the items in priority order.
 func Example_priorityQueue() {

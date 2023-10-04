@@ -11,16 +11,6 @@ import (
 	"log"
 )
 
-type P struct {
-	X, Y, Z int
-	Name    string
-}
-
-type Q struct {
-	X, Y *int32
-	Name string
-}
-
 // This example shows the basic usage of the package: Create an encoder,
 // transmit some values, receive them with a decoder.
 func Example_basic() {

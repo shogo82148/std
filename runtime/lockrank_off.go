@@ -5,6 +5,3 @@
 //go:build !goexperiment.staticlockranking
 
 package runtime
-
-// // lockRankStruct is embedded in mutex, but is empty when staticklockranking is
-// disabled (the default)

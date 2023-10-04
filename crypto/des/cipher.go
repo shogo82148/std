@@ -15,12 +15,8 @@ type KeySizeError int
 
 func (k KeySizeError) Error() string
 
-// desCipher is an instance of DES encryption.
-
 // NewCipher creates and returns a new cipher.Block.
 func NewCipher(key []byte) (cipher.Block, error)
-
-// A tripleDESCipher is an instance of TripleDES encryption.
 
 // NewTripleDESCipher creates and returns a new cipher.Block.
 func NewTripleDESCipher(key []byte) (cipher.Block, error)

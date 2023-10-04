@@ -117,8 +117,6 @@ func (f Func) Value() any
 
 func (f Func) String() string
 
-// All published variables.
-
 // Publish declares a named exported variable. This should be called from a
 // package's init function when it creates its Vars. If the name is already
 // registered then this will log.Panic.

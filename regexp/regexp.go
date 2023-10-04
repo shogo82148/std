@@ -94,6 +94,8 @@ type Regexp struct {
 	cond           syntax.EmptyOp
 	minInputLen    int
 
+	// This field can be modified by the Longest method,
+	// but it is otherwise read-only.
 	longest bool
 }
 
@@ -151,13 +153,6 @@ func CompilePOSIX(expr string) (*Regexp, error)
 // with any other methods.
 func (re *Regexp) Longest()
 
-// Pools of *machine for use during (*Regexp).doExecute,
-// split up by the size of the execution queues.
-// matchPool[i] machines have queue size matchSize[i].
-// On a 64-bit system each queue entry is 16 bytes,
-// so matchPool[0] has 16*2*128 = 4kB queues, etc.
-// The final matchPool is a catch-all for very large queues.
-
 // MustCompile is like Compile but panics if the expression cannot be parsed.
 // It simplifies safe initialization of global variables holding compiled regular
 // expressions.
@@ -186,15 +181,6 @@ func (re *Regexp) SubexpNames() []string
 // In this case, SubexpIndex returns the index of the leftmost such subexpression
 // in the regular expression.
 func (re *Regexp) SubexpIndex(name string) int
-
-// input abstracts different representations of the input text. It provides
-// one-character lookahead.
-
-// inputString scans a string.
-
-// inputBytes scans a byte slice.
-
-// inputReader scans a RuneReader.
 
 // LiteralPrefix returns a literal string that must begin any match
 // of the regular expression re. It returns the boolean true if the
@@ -259,8 +245,6 @@ func (re *Regexp) ReplaceAllLiteral(src, repl []byte) []byte
 // to the matched byte slice. The replacement returned by repl is substituted
 // directly, without using Expand.
 func (re *Regexp) ReplaceAllFunc(src []byte, repl func([]byte) []byte) []byte
-
-// Bitmap used by func special to check whether a character needs to be escaped.
 
 // QuoteMeta returns a string that escapes all regular expression metacharacters
 // inside the argument text; the returned string is a regular expression matching

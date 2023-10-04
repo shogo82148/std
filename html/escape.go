@@ -5,10 +5,6 @@
 // Package html provides functions for escaping and unescaping HTML text.
 package html
 
-// These replacements permit compatibility with old numeric entities that
-// assumed Windows-1252 encoding.
-// https://html.spec.whatwg.org/multipage/parsing.html#numeric-character-reference-end-state
-
 // EscapeString escapes special characters like "<" to become "&lt;". It
 // escapes only five such characters: <, >, &, ' and ".
 // UnescapeString(EscapeString(s)) == s always holds, but the converse isn't

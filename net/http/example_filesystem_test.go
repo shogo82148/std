@@ -9,13 +9,6 @@ import (
 	"net/http"
 )
 
-// dotFileHidingFile is the http.File use in dotFileHidingFileSystem.
-// It is used to wrap the Readdir method of http.File so that we can
-// remove files and directories that start with a period from its output.
-
-// dotFileHidingFileSystem is an http.FileSystem that hides
-// hidden "dot files" from being served.
-
 func ExampleFileServer_dotFileHiding() {
 	fsys := dotFileHidingFileSystem{http.Dir(".")}
 	http.Handle("/", http.FileServer(fsys))

@@ -8,9 +8,6 @@ package time
 // A negative or zero duration causes Sleep to return immediately.
 func Sleep(d Duration)
 
-// Interface to timers implemented in package runtime.
-// Must be in sync with ../runtime/time.go:/^type timer
-
 // The Timer type represents a single event.
 // When the Timer expires, the current time will be sent on C,
 // unless the Timer was created by AfterFunc.

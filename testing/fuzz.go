@@ -4,10 +4,6 @@
 
 package testing
 
-// fuzzWorkerExitCode is used as an exit code by fuzz worker processes after an
-// internal error. This distinguishes internal errors from uncontrolled panics
-// and other failures. Keep in sync with internal/fuzz.workerExitCode.
-
 // InternalFuzzTarget is an internal type but exported because it is
 // cross-package; it is part of the implementation of the "go test" command.
 type InternalFuzzTarget struct {
@@ -35,8 +31,12 @@ type F struct {
 	fuzzContext *fuzzContext
 	testContext *testContext
 
+	// inFuzzFn is true when the fuzz function is running. Most F methods cannot
+	// be called when inFuzzFn is true.
 	inFuzzFn bool
 
+	// corpus is a set of seed corpus entries, added with F.Add and loaded
+	// from testdata.
 	corpus []corpusEntry
 
 	result     fuzzResult
@@ -44,10 +44,6 @@ type F struct {
 }
 
 var _ TB = (*F)(nil)
-
-// corpusEntry is an alias to the same type as internal/fuzz.CorpusEntry.
-// We use a type alias because we don't want to export this type, and we can't
-// import internal/fuzz from testing.
 
 // Helper marks the calling function as a test helper function.
 // When printing file and line information, that function will be skipped.
@@ -64,8 +60,6 @@ func (f *F) Skipped() bool
 // a no-op if called after or within the fuzz target, and args must match the
 // arguments for the fuzz target.
 func (f *F) Add(args ...any)
-
-// supportedTypes represents all of the supported types which can be fuzzed.
 
 // Fuzz runs the fuzz function, ff, for fuzz testing. If ff fails for a set of
 // arguments, those arguments will be added to the seed corpus.
@@ -94,12 +88,3 @@ func (f *F) Add(args ...any)
 // (set with -fuzztime), or the test process is interrupted by a signal. F.Fuzz
 // should be called exactly once, unless F.Skip or F.Fail is called beforehand.
 func (f *F) Fuzz(ff any)
-
-// fuzzResult contains the results of a fuzz run.
-
-// fuzzCrashError is satisfied by a failing input detected while fuzzing.
-// These errors are written to the seed corpus and can be re-run with 'go test'.
-// Errors within the fuzzing framework (like I/O errors between coordinator
-// and worker processes) don't satisfy this interface.
-
-// fuzzContext holds fields common to all fuzz tests.

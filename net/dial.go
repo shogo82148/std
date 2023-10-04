@@ -10,8 +10,6 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// mptcpStatus is a tristate for Multipath TCP, see go.dev/issue/56539
-
 // A Dialer contains options for connecting to an address.
 //
 // The zero value for each field is equivalent to dialing
@@ -20,26 +18,93 @@ import (
 //
 // It is safe to call Dialer's methods concurrently.
 type Dialer struct {
+	// Timeout is the maximum amount of time a dial will wait for
+	// a connect to complete. If Deadline is also set, it may fail
+	// earlier.
+	//
+	// The default is no timeout.
+	//
+	// When using TCP and dialing a host name with multiple IP
+	// addresses, the timeout may be divided between them.
+	//
+	// With or without a timeout, the operating system may impose
+	// its own earlier timeout. For instance, TCP timeouts are
+	// often around 3 minutes.
 	Timeout time.Duration
 
+	// Deadline is the absolute point in time after which dials
+	// will fail. If Timeout is set, it may fail earlier.
+	// Zero means no deadline, or dependent on the operating system
+	// as with the Timeout option.
 	Deadline time.Time
 
+	// LocalAddr is the local address to use when dialing an
+	// address. The address must be of a compatible type for the
+	// network being dialed.
+	// If nil, a local address is automatically chosen.
 	LocalAddr Addr
 
+	// DualStack previously enabled RFC 6555 Fast Fallback
+	// support, also known as "Happy Eyeballs", in which IPv4 is
+	// tried soon if IPv6 appears to be misconfigured and
+	// hanging.
+	//
+	// Deprecated: Fast Fallback is enabled by default. To
+	// disable, set FallbackDelay to a negative value.
 	DualStack bool
 
+	// FallbackDelay specifies the length of time to wait before
+	// spawning a RFC 6555 Fast Fallback connection. That is, this
+	// is the amount of time to wait for IPv6 to succeed before
+	// assuming that IPv6 is misconfigured and falling back to
+	// IPv4.
+	//
+	// If zero, a default delay of 300ms is used.
+	// A negative value disables Fast Fallback support.
 	FallbackDelay time.Duration
 
+	// KeepAlive specifies the interval between keep-alive
+	// probes for an active network connection.
+	// If zero, keep-alive probes are sent with a default value
+	// (currently 15 seconds), if supported by the protocol and operating
+	// system. Network protocols or operating systems that do
+	// not support keep-alives ignore this field.
+	// If negative, keep-alive probes are disabled.
 	KeepAlive time.Duration
 
+	// Resolver optionally specifies an alternate resolver to use.
 	Resolver *Resolver
 
+	// Cancel is an optional channel whose closure indicates that
+	// the dial should be canceled. Not all types of dials support
+	// cancellation.
+	//
+	// Deprecated: Use DialContext instead.
 	Cancel <-chan struct{}
 
+	// If Control is not nil, it is called after creating the network
+	// connection but before actually dialing.
+	//
+	// Network and address parameters passed to Control function are not
+	// necessarily the ones passed to Dial. For example, passing "tcp" to Dial
+	// will cause the Control function to be called with "tcp4" or "tcp6".
+	//
+	// Control is ignored if ControlContext is not nil.
 	Control func(network, address string, c syscall.RawConn) error
 
+	// If ControlContext is not nil, it is called after creating the network
+	// connection but before actually dialing.
+	//
+	// Network and address parameters passed to ControlContext function are not
+	// necessarily the ones passed to Dial. For example, passing "tcp" to Dial
+	// will cause the ControlContext function to be called with "tcp4" or "tcp6".
+	//
+	// If ControlContext is not nil, Control is ignored.
 	ControlContext func(ctx context.Context, network, address string, c syscall.RawConn) error
 
+	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
+	// used, any call to Dial with "tcp(4|6)" as network will use MPTCP if
+	// supported by the operating system.
 	mptcpStatus mptcpStatus
 }
 
@@ -119,8 +184,6 @@ func Dial(network, address string) (Conn, error)
 // parameters.
 func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
 
-// sysDialer contains a Dial's parameters and configuration.
-
 // Dial connects to the address on the named network.
 //
 // See func Dial for a description of the network and address
@@ -152,10 +215,25 @@ func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn
 
 // ListenConfig contains options for listening to an address.
 type ListenConfig struct {
+	// If Control is not nil, it is called after creating the network
+	// connection but before binding it to the operating system.
+	//
+	// Network and address parameters passed to Control method are not
+	// necessarily the ones passed to Listen. For example, passing "tcp" to
+	// Listen will cause the Control function to be called with "tcp4" or "tcp6".
 	Control func(network, address string, c syscall.RawConn) error
 
+	// KeepAlive specifies the keep-alive period for network
+	// connections accepted by this listener.
+	// If zero, keep-alives are enabled if supported by the protocol
+	// and operating system. Network protocols or operating systems
+	// that do not support keep-alives ignore this field.
+	// If negative, keep-alives are disabled.
 	KeepAlive time.Duration
 
+	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
+	// used, any call to Listen with "tcp(4|6)" as network will use MPTCP if
+	// supported by the operating system.
 	mptcpStatus mptcpStatus
 }
 
@@ -184,8 +262,6 @@ func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Li
 // See func ListenPacket for a description of the network and address
 // parameters.
 func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address string) (PacketConn, error)
-
-// sysListener contains a Listen's parameters and configuration.
 
 // Listen announces on the local network address.
 //

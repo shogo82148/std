@@ -5,5 +5,3 @@
 //go:build !js && !plan9 && !wasip1 && !windows
 
 package os_test
-
-// noDeadline is a zero time.Time value, which cancels a deadline.

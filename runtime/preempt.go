@@ -51,6 +51,3 @@
 // allocate memory and start threads in the preemption path.)
 
 package runtime
-
-// asyncPreemptStack is the bytes of stack space required to inject an
-// asyncPreempt call.

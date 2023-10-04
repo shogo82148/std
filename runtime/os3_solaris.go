@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-//go:linkname executablePath os.executablePath
-
-// sigPerThreadSyscall is only used on linux, so we assign a bogus signal
-// number.

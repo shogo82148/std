@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 package types
+<<<<<<< HEAD
 
 // A _TypeSet represents the type set of an interface.
 // Because of existing language restrictions, methods can be "factored out"
@@ -21,3 +22,5 @@ package types
 // invalidTypeSet is a singleton type set to signal an invalid type set
 // due to an error. It's also a valid empty type set, so consumers of
 // type sets may choose to ignore it.
+=======
+>>>>>>> upstream/master

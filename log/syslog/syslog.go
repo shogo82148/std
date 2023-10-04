@@ -73,13 +73,6 @@ type Writer struct {
 	conn serverConn
 }
 
-// This interface and the separate syslog_unix.go file exist for
-// Solaris support as implemented by gccgo. On Solaris you cannot
-// simply open a TCP connection to the syslog daemon. The gccgo
-// sources have a syslog_solaris.go file that implements unixSyslog to
-// return a type that satisfies this interface and simply calls the C
-// library syslog function.
-
 // New establishes a new connection to the system log daemon. Each
 // write to the returned writer sends a log message with the given
 // priority (a combination of the syslog facility and severity) and

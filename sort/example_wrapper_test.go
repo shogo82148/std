@@ -9,23 +9,6 @@ import (
 	"sort"
 )
 
-type Grams int
-
-type Organ struct {
-	Name   string
-	Weight Grams
-}
-
-type Organs []*Organ
-
-// ByName implements sort.Interface by providing Less and using the Len and
-// Swap methods of the embedded Organs value.
-type ByName struct{ Organs }
-
-// ByWeight implements sort.Interface by providing Less and using the Len and
-// Swap methods of the embedded Organs value.
-type ByWeight struct{ Organs }
-
 func Example_sortWrapper() {
 	s := []*Organ{
 		{"brain", 1340},

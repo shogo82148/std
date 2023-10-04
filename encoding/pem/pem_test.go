@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package pem
-
-type GetLineTest struct {
-	in, out1, out2 string
-}

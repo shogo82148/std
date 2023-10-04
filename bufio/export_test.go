@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package bufio
-
-// Exported for testing only.
-
-var IsSpace = isSpace
-
-const DefaultBufSize = defaultBufSize

@@ -7,7 +7,3 @@
 // the functions are not used by the library itself, only in tests.
 
 package reflect_test
-
-import (
-	. "reflect"
-)

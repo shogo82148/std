@@ -9,30 +9,6 @@ import (
 	"github.com/shogo82148/std/net/netip"
 )
 
-// protocols contains minimal mappings between internet protocol
-// names and numbers for platforms that don't have a complete list of
-// protocol numbers.
-//
-// See https://www.iana.org/assignments/protocol-numbers
-//
-// On Unix, this map is augmented by readProtocols via lookupProtocol.
-
-// services contains minimal mappings between services names and port
-// numbers for platforms that don't have a complete list of port numbers.
-//
-// See https://www.iana.org/assignments/service-names-port-numbers
-//
-// On Unix, this map is augmented by readServices via goLookupPort.
-
-// dnsWaitGroup can be used by tests to wait for all DNS goroutines to
-// complete. This avoids races on the test hooks.
-
-// maxPortBufSize is the longest reasonable name of a service
-// (non-numeric port).
-// Currently the longest known IANA-unregistered name is
-// "mobility-header", so we use that length, plus some slop in case
-// something longer is added in the future.
-
 // DefaultResolver is the resolver used by the package-level Lookup
 // functions and by Dialers without a specified Resolver.
 var DefaultResolver = &Resolver{}
@@ -41,12 +17,37 @@ var DefaultResolver = &Resolver{}
 //
 // A nil *Resolver is equivalent to a zero Resolver.
 type Resolver struct {
+	// PreferGo controls whether Go's built-in DNS resolver is preferred
+	// on platforms where it's available. It is equivalent to setting
+	// GODEBUG=netdns=go, but scoped to just this resolver.
 	PreferGo bool
 
+	// StrictErrors controls the behavior of temporary errors
+	// (including timeout, socket errors, and SERVFAIL) when using
+	// Go's built-in resolver. For a query composed of multiple
+	// sub-queries (such as an A+AAAA address lookup, or walking the
+	// DNS search list), this option causes such errors to abort the
+	// whole query instead of returning a partial result. This is
+	// not enabled by default because it may affect compatibility
+	// with resolvers that process AAAA queries incorrectly.
 	StrictErrors bool
 
+	// Dial optionally specifies an alternate dialer for use by
+	// Go's built-in DNS resolver to make TCP and UDP connections
+	// to DNS services. The host in the address parameter will
+	// always be a literal IP address and not a host name, and the
+	// port in the address parameter will be a literal port number
+	// and not a service name.
+	// If the Conn returned is also a PacketConn, sent and received DNS
+	// messages must adhere to RFC 1035 section 4.2.1, "UDP usage".
+	// Otherwise, DNS messages transmitted over Conn must adhere
+	// to RFC 7766 section 5, "Transport Protocol Selection".
+	// If nil, the default dialer is used.
 	Dial func(ctx context.Context, network, address string) (Conn, error)
 
+	// lookupGroup merges LookupIPAddr calls together for lookups for the same
+	// host. The lookupGroup key is the LookupIPAddr.host argument.
+	// The return values are ([]IPAddr, error).
 	lookupGroup singleflight.Group
 }
 
@@ -81,9 +82,6 @@ func (r *Resolver) LookupIP(ctx context.Context, network, host string) ([]IP, er
 // The network must be one of "ip", "ip4" or "ip6".
 func (r *Resolver) LookupNetIP(ctx context.Context, network, host string) ([]netip.Addr, error)
 
-// onlyValuesCtx is a context that uses an underlying context
-// for value lookup if the underlying context hasn't yet expired.
-
 var _ context.Context = (*onlyValuesCtx)(nil)
 
 // LookupPort looks up the port for the given network and service.
@@ -93,6 +91,8 @@ var _ context.Context = (*onlyValuesCtx)(nil)
 func LookupPort(network, service string) (port int, err error)
 
 // LookupPort looks up the port for the given network and service.
+//
+// The network must be one of "tcp", "tcp4", "tcp6", "udp", "udp4", "udp6" or "ip".
 func (r *Resolver) LookupPort(ctx context.Context, network, service string) (port int, err error)
 
 // LookupCNAME returns the canonical name for the given host.
@@ -228,7 +228,3 @@ func LookupAddr(addr string) (names []string, err error)
 // domain names. If the response contains invalid names, those records are filtered
 // out and an error will be returned alongside the remaining results, if any.
 func (r *Resolver) LookupAddr(ctx context.Context, addr string) ([]string, error)
-
-// errMalformedDNSRecordsDetail is the DNSError detail which is returned when a Resolver.Lookup...
-// method receives DNS records which contain invalid DNS names. This may be returned alongside
-// results which have had the malformed records filtered out.

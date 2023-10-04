@@ -33,5 +33,3 @@ const (
 	ClassContextSpecific = 2
 	ClassPrivate         = 3
 )
-
-// fieldParameters is the parsed representation of tag string from a structure field.

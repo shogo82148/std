@@ -30,10 +30,28 @@ import (
 // Using == on two Values does not compare the underlying values
 // they represent.
 type Value struct {
+	// typ_ holds the type of the value represented by a Value.
+	// Access using the typ method to avoid escape of v.
 	typ_ *abi.Type
 
+	// Pointer-valued data or, if flagIndir is set, pointer to data.
+	// Valid when either flagIndir is set or typ.pointers() is true.
 	ptr unsafe.Pointer
 
+	// flag holds metadata about the value.
+	//
+	// The lowest five bits give the Kind of the value, mirroring typ.Kind().
+	//
+	// The next set of bits are flag bits:
+	//	- flagStickyRO: obtained via unexported not embedded field, so read-only
+	//	- flagEmbedRO: obtained via unexported embedded field, so read-only
+	//	- flagIndir: val holds a pointer to the data
+	//	- flagAddr: v.CanAddr is true (implies flagIndir and ptr is non-nil)
+	//	- flagMethod: v is a method value.
+	// If ifaceIndir(typ), code can assume that flagIndir is set.
+	//
+	// The remaining 22+ bits give a method number for method values.
+	// If flag.kind() != Func, code can assume that flagMethod is unset.
 	flag
 }
 
@@ -46,10 +64,6 @@ type ValueError struct {
 }
 
 func (e *ValueError) Error() string
-
-// emptyInterface is the header for an interface{} value.
-
-// nonEmptyInterface is the header for an interface value with methods.
 
 // Addr returns a pointer value representing the address of v.
 // It panics if [Value.CanAddr] returns false.
@@ -232,11 +246,6 @@ func (v Value) MapIndex(key Value) Value
 // It panics if v's Kind is not [Map].
 // It returns an empty slice if v represents a nil map.
 func (v Value) MapKeys() []Value
-
-// hiter's structure matches runtime.hiter's structure.
-// Having a clone here allows us to embed a map iterator
-// inside type MapIter so that MapIters can be re-used
-// without doing any allocations.
 
 // A MapIter is an iterator for ranging over a map.
 // See [Value.MapRange].
@@ -531,9 +540,6 @@ func AppendSlice(s, t Value) Value
 // As a special case, src can have kind [String] if the element type of dst is kind [Uint8].
 func Copy(dst, src Value) int
 
-// A runtimeSelect is a single case passed to rselect.
-// This must match ../runtime/select.go:/runtimeSelect
-
 // A SelectDir describes the communication direction of a select case.
 type SelectDir int
 
@@ -595,13 +601,6 @@ func MakeMapWithSize(typ Type, n int) Value
 // If v is not a pointer, Indirect returns v.
 func Indirect(v Value) Value
 
-// Before Go 1.21, ValueOf always escapes and a Value's content
-// is always heap allocated.
-// Set go121noForceValueEscape to true to avoid the forced escape,
-// allowing Value content to be on the stack.
-// Set go121noForceValueEscape to false for the legacy behavior
-// (for debugging).
-
 // ValueOf returns a new Value initialized to the concrete value
 // stored in the interface i. ValueOf(nil) returns the zero Value.
 func ValueOf(i any) Value
@@ -612,10 +611,6 @@ func ValueOf(i any) Value
 // For example, Zero(TypeOf(42)) returns a Value with Kind [Int] and value 0.
 // The returned value is neither addressable nor settable.
 func Zero(typ Type) Value
-
-// must match declarations in runtime/map.go.
-
-//go:linkname zeroVal runtime.zeroVal
 
 // New returns a Value representing a pointer to a new zero value
 // for the specified type. That is, the returned Value's Type is PointerTo(typ).

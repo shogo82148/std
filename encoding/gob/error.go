@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package gob
-
-// A gobError is used to distinguish errors (panics) generated in this package.

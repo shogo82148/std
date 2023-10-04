@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package net
-
-// These constants aren't in the syscall package, which is frozen

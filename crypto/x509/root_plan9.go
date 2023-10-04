@@ -5,5 +5,3 @@
 //go:build plan9
 
 package x509
-
-// Possible certificate files; stop after finding one.

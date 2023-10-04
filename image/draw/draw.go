@@ -13,8 +13,6 @@ import (
 	"github.com/shogo82148/std/image/color"
 )
 
-// m is the maximum color value returned by image.Color.RGBA.
-
 // Image is an image.Image with a Set method to change a single pixel.
 type Image interface {
 	image.Image

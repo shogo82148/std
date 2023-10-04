@@ -17,6 +17,3 @@
 // when that fails we will try against /a/{x}/c.
 
 package http
-
-// A routingNode is a node in the decision tree.
-// The same struct is used for leaf and interior nodes.

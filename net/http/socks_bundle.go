@@ -9,21 +9,3 @@
 //
 
 package http
-
-// A Command represents a SOCKS command.
-
-// An AuthMethod represents a SOCKS authentication method.
-
-// A Reply represents a SOCKS command reply code.
-
-// Wire protocol constants.
-
-// An Addr represents a SOCKS-specific address.
-// Either Name or IP is used exclusively.
-
-// A Conn represents a forward proxy connection.
-
-// A Dialer holds SOCKS-specific options.
-
-// UsernamePassword are the credentials for the username/password
-// authentication method.

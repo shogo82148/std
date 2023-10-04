@@ -71,12 +71,6 @@ func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOp
 // and may change between calls and/or between versions.
 func GenerateKey(c elliptic.Curve, rand io.Reader) (*PrivateKey, error)
 
-// testingOnlyRejectionSamplingLooped is called when rejection sampling in
-// randomPoint rejects a candidate for being higher than the modulus.
-
-// errNoAsm is returned by signAsm and verifyAsm when the assembly
-// implementation is not available.
-
 // SignASN1 signs a hash (which should be the result of hashing a larger message)
 // using the private key, priv. If the hash is longer than the bit-length of the
 // private key's curve order, the hash will be truncated to that length. It
@@ -90,5 +84,3 @@ func SignASN1(rand io.Reader, priv *PrivateKey, hash []byte) ([]byte, error)
 // VerifyASN1 verifies the ASN.1 encoded signature, sig, of hash using the
 // public key, pub. Its return value records whether the signature is valid.
 func VerifyASN1(pub *PublicKey, hash, sig []byte) bool
-
-// nistPoint is a generic constraint for the nistec Point types.

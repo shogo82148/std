@@ -144,6 +144,38 @@ import (
 //
 // See the package documentation for more details about initializing an FS.
 type FS struct {
+	// The compiler knows the layout of this struct.
+	// See cmd/compile/internal/staticdata's WriteEmbed.
+	//
+	// The files list is sorted by name but not by simple string comparison.
+	// Instead, each file's name takes the form "dir/elem" or "dir/elem/".
+	// The optional trailing slash indicates that the file is itself a directory.
+	// The files list is sorted first by dir (if dir is missing, it is taken to be ".")
+	// and then by base, so this list of files:
+	//
+	//	p
+	//	q/
+	//	q/r
+	//	q/s/
+	//	q/s/t
+	//	q/s/u
+	//	q/v
+	//	w
+	//
+	// is actually sorted as:
+	//
+	//	p       # dir=.    elem=p
+	//	q/      # dir=.    elem=q
+	//	w/      # dir=.    elem=w
+	//	q/r     # dir=q    elem=r
+	//	q/s/    # dir=q    elem=s
+	//	q/v     # dir=q    elem=v
+	//	q/s/t   # dir=q/s  elem=t
+	//	q/s/u   # dir=q/s  elem=u
+	//
+	// This order brings directory contents together in contiguous sections
+	// of the list, allowing a directory read to use binary search to find
+	// the relevant sequence of entries.
 	files *[]file
 }
 
@@ -152,16 +184,10 @@ var (
 	_ fs.ReadFileFS = FS{}
 )
 
-// A file is a single file in the FS.
-// It implements fs.FileInfo and fs.DirEntry.
-
 var (
 	_ fs.FileInfo = (*file)(nil)
 	_ fs.DirEntry = (*file)(nil)
 )
-
-// dotFile is a file for the root directory,
-// which is omitted from the files list in a FS.
 
 // Open opens the named file for reading and returns it as an fs.File.
 //
@@ -174,11 +200,7 @@ func (f FS) ReadDir(name string) ([]fs.DirEntry, error)
 // ReadFile reads and returns the content of the named file.
 func (f FS) ReadFile(name string) ([]byte, error)
 
-// An openFile is a regular file open for reading.
-
 var (
 	_ io.Seeker   = (*openFile)(nil)
 	_ io.ReaderAt = (*openFile)(nil)
 )
-
-// An openDir is a directory open for reading.

@@ -14,17 +14,16 @@ import (
 // Template is a specialized Template from "text/template" that produces a safe
 // HTML document fragment.
 type Template struct {
+	// Sticky error if escaping fails, or escapeOK if succeeded.
 	escapeErr error
-
+	// We could embed the text/template field, but it's safer not to because
+	// we need to keep our version of the name space and the underlying
+	// template's in sync.
 	text *template.Template
-
+	// The underlying template's parse tree, updated to be HTML-safe.
 	Tree *parse.Tree
 	*nameSpace
 }
-
-// escapeOK is a sentinel value used to indicate valid escaping.
-
-// nameSpace is the data structure shared by all templates in an association.
 
 // Templates returns a slice of the templates associated with t, including t
 // itself.

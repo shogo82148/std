@@ -8,9 +8,6 @@ import (
 
 var _ unsafe.Pointer
 
-// Do the interface allocations only once for common
-// Errno values.
-
 func ConvertSidToStringSid(sid *SID, stringSid **uint16) (err error)
 
 func ConvertStringSidToSid(stringSid *uint16, sid **SID) (err error)

@@ -4,15 +4,6 @@
 
 package gob
 
-// userTypeInfo stores the information associated with a type the user has handed
-// to the package. It's computed once and stored in a map keyed by reflection
-// type.
-
-// externalEncoding bits
-
-// A typeId represents a gob Type as an integer that can be passed on the wire.
-// Internally, typeIds are used as keys to a map to recover the underlying type info.
-
 // CommonType holds elements of all types.
 // It is a historical artifact, kept for binary compatibility and exported
 // only for the benefit of the package's encoding of type descriptors. It is
@@ -21,42 +12,6 @@ type CommonType struct {
 	Name string
 	Id   typeId
 }
-
-// Predefined because it's needed by the Decoder
-
-// Array type
-
-// GobEncoder type (something that implements the GobEncoder interface)
-
-// Map type
-
-// Slice type
-
-// Struct type
-
-// Representation of the information we send and receive about this type.
-// Each value we send is preceded by its type definition: an encoded int.
-// However, the very first time we send the value, we first send the pair
-// (-id, wireType).
-// For bootstrapping purposes, we assume that the recipient knows how
-// to decode a wireType; it is exactly the wireType struct here, interpreted
-// using the gob rules for sending a structure, except that we assume the
-// ids for wireType and structType etc. are known. The relevant pieces
-// are built in encode.go's init() function.
-// To maintain binary compatibility, if you extend this type, always put
-// the new fields last.
-
-// typeInfoMap is an atomic pointer to map[reflect.Type]*typeInfo.
-// It's updated copy-on-write. Readers just do an atomic load
-// to get the current version of the map. Writers make a full copy of
-// the map and atomically update the pointer to point to the new map.
-// Under heavy read contention, this is significantly faster than a map
-// protected by a mutex.
-
-// typeInfoMapInit is used instead of typeInfoMap during init time,
-// as types are registered sequentially during init and we can save
-// the overhead of making map copies.
-// It is saved to typeInfoMap and set to nil before init finishes.
 
 // GobEncoder is the interface describing data that provides its own
 // representation for encoding values for transmission to a GobDecoder.

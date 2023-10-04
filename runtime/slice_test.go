@@ -3,10 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime_test
-
-const N = 20
-
-var (
-	SinkIntSlice        []int
-	SinkIntPointerSlice []*int
-)

@@ -125,8 +125,6 @@ type Profile struct {
 	write func(io.Writer, int) error
 }
 
-// profiles records all registered profiles.
-
 // NewProfile creates a new profile with the given name.
 // If a profile with that name already exists, NewProfile panics.
 // The convention is to use a 'import/path.' prefix to create
@@ -186,13 +184,6 @@ func (p *Profile) Remove(value any)
 // print the goroutine stacks in the same form that a Go program uses
 // when dying due to an unrecovered panic.
 func (p *Profile) WriteTo(w io.Writer, debug int) error
-
-// A countProfile is a set of stack traces to be printed as counts
-// grouped by stack trace. There are multiple implementations:
-// all that matters is that we can find out how many traces there are
-// and obtain each trace in turn.
-
-// keysByCount sorts keys with higher counts first, breaking ties by key string order.
 
 // WriteHeapProfile is shorthand for Lookup("heap").WriteTo(w, 0).
 // It is preserved for backwards compatibility.

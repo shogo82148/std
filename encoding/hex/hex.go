@@ -67,8 +67,6 @@ func DecodeString(s string) ([]byte, error)
 // of the hex dump matches the output of `hexdump -C` on the command line.
 func Dump(data []byte) string
 
-// bufferSize is the number of hexadecimal characters to buffer in encoder and decoder.
-
 // NewEncoder returns an [io.Writer] that writes lowercase hexadecimal characters to w.
 func NewEncoder(w io.Writer) io.Writer
 

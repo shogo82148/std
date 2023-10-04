@@ -13,9 +13,18 @@ import (
 // ゼロ値のValueはnilに対応します。
 type Value struct {
 	_ [0]func()
-
+	// num holds the value for Kinds Int64, Uint64, Float64, Bool and Duration,
+	// the string length for KindString, and nanoseconds since the epoch for KindTime.
 	num uint64
-
+	// If any is of type Kind, then the value is in num as described above.
+	// If any is of type *time.Location, then the Kind is Time and time.Time value
+	// can be constructed from the Unix nanos in num and the location (monotonic time
+	// is not preserved).
+	// If any is of type stringptr, then the Kind is String and the string value
+	// consists of the length in num and the pointer in any.
+	// Otherwise, the Kind is Any and any is the value.
+	// (This implies that Attrs cannot store values of type Kind, *time.Location
+	// or stringptr.)
 	any any
 }
 
@@ -37,10 +46,14 @@ const (
 
 func (k Kind) String() string
 
+<<<<<<< HEAD
 // Unexported version of Kind, just so we can store Kinds in Values.
 // (No user-provided value has this type.)
 
 // Kindは、Valueの種類を返します。
+=======
+// Kind returns v's Kind.
+>>>>>>> upstream/master
 func (v Value) Kind() Kind
 
 // StringValueは、文字列の新しいValueを返します。
@@ -61,11 +74,16 @@ func Float64Value(v float64) Value
 // BoolValueは、boolのValueを返します。
 func BoolValue(v bool) Value
 
+<<<<<<< HEAD
 // Unexported version of *time.Location, just so we can store *time.Locations in
 // Values. (No user-provided value has this type.)
 
 // TimeValueは、time.TimeのValueを返します。
 // monotonic部分は破棄されます。
+=======
+// TimeValue returns a Value for a time.Time.
+// It discards the monotonic portion.
+>>>>>>> upstream/master
 func TimeValue(v time.Time) Value
 
 // DurationValueは、time.DurationのValueを返します。

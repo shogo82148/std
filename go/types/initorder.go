@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 package types
+<<<<<<< HEAD
 
 // A dependency is an object that may be a dependency in an initialization
 // expression. Only constants, variables, and functions can be dependencies.
@@ -16,3 +17,5 @@ package types
 
 // nodeQueue implements the container/heap interface;
 // a nodeQueue may be used as a priority queue.
+=======
+>>>>>>> upstream/master

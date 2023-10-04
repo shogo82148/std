@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 package context_test
+<<<<<<< HEAD
 
 import (
 	. "context"
@@ -15,3 +16,5 @@ var _ = Background
 // Context.
 
 // customCauseContext is a custom Context used to test context.Cause.
+=======
+>>>>>>> upstream/master

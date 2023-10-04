@@ -11,8 +11,6 @@ import (
 	"text/template"
 )
 
-// templateFile defines the contents of a template to be stored in a file, for testing.
-
 // Here we demonstrate loading a set of templates from a directory.
 func ExampleTemplate_glob() {
 	// Here we create a temporary directory and populate it with our sample

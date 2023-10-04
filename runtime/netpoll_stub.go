@@ -5,5 +5,3 @@
 //go:build plan9
 
 package runtime
-
-// netpollBroken, protected by netpollBrokenLock, avoids a double notewakeup.

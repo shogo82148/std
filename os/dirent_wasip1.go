@@ -5,5 +5,3 @@
 //go:build wasip1
 
 package os
-
-// https://github.com/WebAssembly/WASI/blob/main/legacy/preview1/docs.md#-dirent-record

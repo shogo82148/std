@@ -50,6 +50,12 @@ type SectionHeader struct {
 type Section struct {
 	SectionHeader
 
+	// Embed ReaderAt for ReadAt method.
+	// Do not embed SectionReader directly
+	// to avoid having Read and Seek.
+	// If a client wants Read and Seek it must use
+	// Open() to avoid fighting over the seek offset
+	// with other clients.
 	io.ReaderAt
 	sr *io.SectionReader
 }
@@ -66,9 +72,6 @@ type Sym struct {
 	Type  rune
 	Name  string
 }
-
-// formatError is returned by some operations if the data does
-// not have the correct format for an object file.
 
 // Open opens the named file using os.Open and prepares it for use as a Plan 9 a.out binary.
 func Open(name string) (*File, error)

@@ -6,6 +6,4 @@
 
 package syscall
 
-// origRlimitNofile, if non-nil, is the original soft RLIMIT_NOFILE.
-
 func Setrlimit(resource int, rlim *Rlimit) error

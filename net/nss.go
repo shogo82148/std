@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package net
-
-// nssConf represents the state of the machine's /etc/nsswitch.conf file.
-
-// nssCriterion is the parsed structure of one of the criteria in brackets
-// after an NSS source name.

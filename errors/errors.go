@@ -60,8 +60,6 @@ package errors
 // Each call to New returns a distinct error value even if the text is identical.
 func New(text string) error
 
-// errorString is a trivial implementation of error.
-
 // ErrUnsupported indicates that a requested operation cannot be performed,
 // because it is unsupported. For example, a call to [os.Link] when using a
 // file system that does not support hard links.

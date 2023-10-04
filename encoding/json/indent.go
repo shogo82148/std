@@ -17,13 +17,6 @@ func HTMLEscape(dst *bytes.Buffer, src []byte)
 // insignificant space characters elided.
 func Compact(dst *bytes.Buffer, src []byte) error
 
-// indentGrowthFactor specifies the growth factor of indenting JSON input.
-// Empirically, the growth factor was measured to be between 1.4x to 1.8x
-// for some set of compacted JSON with the indent being a single tab.
-// Specify a growth factor slightly larger than what is observed
-// to reduce probability of allocation in appendIndent.
-// A factor no higher than 2 ensures that wasted space never exceeds 50%.
-
 // Indent appends to dst an indented form of the JSON-encoded src.
 // Each element in a JSON object or array begins on a new,
 // indented line beginning with prefix followed by one or more

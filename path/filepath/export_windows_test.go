@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package filepath
-
-var (
-	ToNorm   = toNorm
-	NormBase = normBase
-)

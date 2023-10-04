@@ -7,12 +7,7 @@ package flag_test
 import (
 	"flag"
 	"fmt"
-	"net/url"
 )
-
-type URLValue struct {
-	URL *url.URL
-}
 
 func ExampleValue() {
 	fs := flag.NewFlagSet("ExampleValue", flag.ExitOnError)

@@ -4,13 +4,6 @@
 
 package os
 
-// This matches the value in syscall/syscall_windows.go.
-
-// file is the real representation of *File.
-// The extra level of indirection ensures that no clients of os
-// can overwrite this data, which could cause the finalizer
-// to close the wrong file descriptor.
-
 // Fd returns the Windows handle referencing the open file.
 // If f is closed, the file descriptor becomes invalid.
 // If f is garbage collected, a finalizer may close the file descriptor,

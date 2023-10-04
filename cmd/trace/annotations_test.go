@@ -5,7 +5,3 @@
 //go:build !js
 
 package main
-
-import (
-	traceparser "internal/trace"
-)

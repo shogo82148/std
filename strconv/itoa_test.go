@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package strconv_test
-
-import (
-	. "strconv"
-)
-
-var BenchSink int

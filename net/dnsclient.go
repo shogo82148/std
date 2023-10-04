@@ -12,15 +12,11 @@ type SRV struct {
 	Weight   uint16
 }
 
-// byPriorityWeight sorts SRV records by ascending priority and weight.
-
 // An MX represents a single DNS MX record.
 type MX struct {
 	Host string
 	Pref uint16
 }
-
-// byPref implements sort.Interface to sort MX records by preference
 
 // An NS represents a single DNS NS record.
 type NS struct {
