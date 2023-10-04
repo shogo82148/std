@@ -4,6 +4,7 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // A _TypeSet represents the type set of an interface.
 // Because of existing language restrictions, methods can be "factored out"
@@ -24,3 +25,5 @@ package types
 // type sets may choose to ignore it.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

@@ -6,6 +6,7 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // An error_ represents a type-checking error.
 // To report an error_, call Checker.report.
@@ -24,3 +25,5 @@ package types
 // atPos wraps a token.Pos to implement the positioner interface.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

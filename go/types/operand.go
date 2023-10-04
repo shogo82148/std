@@ -6,6 +6,7 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // An operandMode specifies the (addressing) mode of an operand.
 
@@ -16,3 +17,5 @@ package types
 // The zero value of operand is a ready to use invalid operand.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

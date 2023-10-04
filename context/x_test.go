@@ -4,6 +4,7 @@
 
 package context_test
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import (
 	. "context"
@@ -18,3 +19,5 @@ var _ = Background
 // customCauseContext is a custom Context used to test context.Cause.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

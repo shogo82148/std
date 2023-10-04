@@ -6,6 +6,7 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // stmtContext is a bitset describing which
 // control-flow statements are permissible,
@@ -20,3 +21,5 @@ package types
 // when the switch expression is of interface type.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

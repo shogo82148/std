@@ -47,6 +47,7 @@ const (
 func (k Kind) String() string
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Unexported version of Kind, just so we can store Kinds in Values.
 // (No user-provided value has this type.)
 
@@ -54,6 +55,9 @@ func (k Kind) String() string
 =======
 // Kind returns v's Kind.
 >>>>>>> upstream/master
+=======
+// Kindは、Valueの種類を返します。
+>>>>>>> release-branch.go1.21
 func (v Value) Kind() Kind
 
 // StringValueは、文字列の新しいValueを返します。
@@ -75,6 +79,7 @@ func Float64Value(v float64) Value
 func BoolValue(v bool) Value
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Unexported version of *time.Location, just so we can store *time.Locations in
 // Values. (No user-provided value has this type.)
 
@@ -84,6 +89,10 @@ func BoolValue(v bool) Value
 // TimeValue returns a Value for a time.Time.
 // It discards the monotonic portion.
 >>>>>>> upstream/master
+=======
+// TimeValueは、time.TimeのValueを返します。
+// monotonic部分は破棄されます。
+>>>>>>> release-branch.go1.21
 func TimeValue(v time.Time) Value
 
 // DurationValueは、time.DurationのValueを返します。

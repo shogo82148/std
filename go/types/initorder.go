@@ -4,6 +4,7 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // A dependency is an object that may be a dependency in an initialization
 // expression. Only constants, variables, and functions can be dependencies.
@@ -19,3 +20,5 @@ package types
 // a nodeQueue may be used as a priority queue.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

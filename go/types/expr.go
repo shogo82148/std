@@ -6,6 +6,7 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // This is only used for operations that may cause overflow.
 
@@ -13,3 +14,5 @@ package types
 // determines if an expression is valid in 'statement context'.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

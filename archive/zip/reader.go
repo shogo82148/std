@@ -96,6 +96,7 @@ func (f *File) Open() (io.ReadCloser, error)
 func (f *File) OpenRaw() (io.Reader, error)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // A fileListEntry is a File and its ename.
 // If file == nil, the fileListEntry describes a directory without metadata.
 
@@ -107,4 +108,8 @@ func (f *File) OpenRaw() (io.Reader, error)
 // paths are always slash separated, with no
 // leading / or ../ elements.
 >>>>>>> upstream/master
+=======
+// Openは、fs.FS.Openのセマンティクスを使用して、ZIPアーカイブ内の指定されたファイルを開きます。
+// パスは常にスラッシュで区切られ、先頭に/または../要素はありません。
+>>>>>>> release-branch.go1.21
 func (r *Reader) Open(name string) (fs.File, error)

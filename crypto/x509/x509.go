@@ -31,12 +31,15 @@ import (
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/time"
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	_ "github.com/shogo82148/std/crypto/sha1"
 	_ "github.com/shogo82148/std/crypto/sha256"
 	_ "github.com/shogo82148/std/crypto/sha512"
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21
 )
 
 // ParsePKIXPublicKey parses a public key in PKIX, ASN.1 DER form. The encoded

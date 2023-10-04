@@ -62,6 +62,7 @@ const (
 )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Keywords for PAX extended header records.
 
 // basicKeys is a set of the PAX keys for which we have built-in support.
@@ -75,6 +76,10 @@ const (
 // A Header represents a single header in a tar archive.
 // Some fields may not be populated.
 >>>>>>> upstream/master
+=======
+// Header は、tar アーカイブ内の単一のヘッダーを表します。
+// 一部のフィールドは、値が設定されていない場合があります。
+>>>>>>> release-branch.go1.21
 //
 // 将来の互換性のために、Reader.Next から Header を取得し、
 // いくつかの方法で変更し、Writer.WriteHeader に戻すユーザーは、
@@ -145,6 +150,7 @@ type Header struct {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // sparseEntry represents a Length-sized fragment at Offset in the file.
 
 // A sparse file can be represented as either a sparseDatas or a sparseHoles.
@@ -209,6 +215,18 @@ func (h *Header) FileInfo() fs.FileInfo
 //
 // fiが[FileInfoNames]を実装している場合、ヘッダーのGnameとUnameは、
 // インターフェースのメソッドによって提供されます。
+=======
+// FileInfoは、Headerのfs.FileInfoを返します。
+func (h *Header) FileInfo() fs.FileInfo
+
+// FileInfoHeaderは、fiから部分的に設定されたHeaderを作成します。
+// fiがシンボリックリンクを記述している場合、FileInfoHeaderはlinkをリンクターゲットとして記録します。
+// fiがディレクトリを記述している場合、名前にスラッシュが追加されます。
+//
+// fs.FileInfoのNameメソッドは、
+// 記述するファイルのベース名のみを返すため、
+// ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
+>>>>>>> release-branch.go1.21
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 
 // FileInfoNamesは、UID/GIDを名前に変換するために[FileInfo]を拡張します。

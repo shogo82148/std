@@ -4,9 +4,12 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // A declInfo describes a package-level const, type, var, or func declaration.
 
 // inSourceOrder implements the sort.Sort interface.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

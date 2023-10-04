@@ -4,6 +4,7 @@
 
 package context_test
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import (
 	. "context"
@@ -12,3 +13,5 @@ import (
 var _ = Background
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

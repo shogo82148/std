@@ -8,6 +8,7 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 // If enableReverseTypeInference is set, uninstantiated and
@@ -17,3 +18,5 @@ package types
 // Available with go1.21.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21

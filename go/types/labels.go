@@ -4,7 +4,10 @@
 
 package types
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // A block tracks label declarations in a block and its enclosing blocks.
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> release-branch.go1.21
