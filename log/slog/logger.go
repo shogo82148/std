@@ -17,24 +17,9 @@ func Default() *Logger
 // lのHandlerを使用してLevelInfoでログに記録されます。
 func SetDefault(l *Logger)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-// handlerWriterは、Handlerを呼び出すio.Writerです。
-// デフォルトのlog.Loggerをデフォルトのslog.Loggerにリンクするために使用されます。
-
 // Loggerは、各Log、Debug、Info、Warn、Errorメソッドの呼び出しについて、
 // 構造化された情報を記録します。
 // 各呼び出しに対して、Recordを作成し、Handlerに渡します。
-=======
-// A Logger records structured information about each call to its
-// Log, Debug, Info, Warn, and Error methods.
-// For each call, it creates a Record and passes it to a Handler.
->>>>>>> upstream/master
-=======
-// Loggerは、各Log、Debug、Info、Warn、Errorメソッドの呼び出しについて、
-// 構造化された情報を記録します。
-// 各呼び出しに対して、Recordを作成し、Handlerに渡します。
->>>>>>> release-branch.go1.21
 //
 // 新しいLoggerを作成するには、[New]または"With"で始まるLoggerメソッドを呼び出します。
 type Logger struct {

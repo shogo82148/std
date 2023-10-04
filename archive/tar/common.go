@@ -61,25 +61,8 @@ const (
 	TypeGNULongLink = 'K'
 )
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-// Keywords for PAX extended header records.
-
-// basicKeys is a set of the PAX keys for which we have built-in support.
-// This does not contain "charset" or "comment", which are both PAX-specific,
-// so adding them as first-class features of Header is unlikely.
-// Users can use the PAXRecords field to set it themselves.
-
 // Header は、tar アーカイブ内の単一のヘッダーを表します。
 // 一部のフィールドは、値が設定されていない場合があります。
-=======
-// A Header represents a single header in a tar archive.
-// Some fields may not be populated.
->>>>>>> upstream/master
-=======
-// Header は、tar アーカイブ内の単一のヘッダーを表します。
-// 一部のフィールドは、値が設定されていない場合があります。
->>>>>>> release-branch.go1.21
 //
 // 将来の互換性のために、Reader.Next から Header を取得し、
 // いくつかの方法で変更し、Writer.WriteHeader に戻すユーザーは、
@@ -149,73 +132,11 @@ type Header struct {
 	Format Format
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-// sparseEntry represents a Length-sized fragment at Offset in the file.
-
-// A sparse file can be represented as either a sparseDatas or a sparseHoles.
-// As long as the total size is known, they are equivalent and one can be
-// converted to the other form and back. The various tar formats with sparse
-// file support represent sparse files in the sparseDatas form. That is, they
-// specify the fragments in the file that has data, and treat everything else as
-// having zero bytes. As such, the encoding and decoding logic in this package
-// deals with sparseDatas.
-//
-// However, the external API uses sparseHoles instead of sparseDatas because the
-// zero value of sparseHoles logically represents a normal file (i.e., there are
-// no holes in it). On the other hand, the zero value of sparseDatas implies
-// that the file has no data in it, which is rather odd.
-//
-// As an example, if the underlying raw file contains the 10-byte data:
-//
-//	var compactFile = "abcdefgh"
-//
-// And the sparse map has the following entries:
-//
-//	var spd sparseDatas = []sparseEntry{
-//		{Offset: 2,  Length: 5},  // Data fragment for 2..6
-//		{Offset: 18, Length: 3},  // Data fragment for 18..20
-//	}
-//	var sph sparseHoles = []sparseEntry{
-//		{Offset: 0,  Length: 2},  // Hole fragment for 0..1
-//		{Offset: 7,  Length: 11}, // Hole fragment for 7..17
-//		{Offset: 21, Length: 4},  // Hole fragment for 21..24
-//	}
-//
-// Then the content of the resulting sparse file with a Header.Size of 25 is:
-//
-//	var sparseFile = "\x00"*2 + "abcde" + "\x00"*11 + "fgh" + "\x00"*4
-
-// fileState tracks the number of logical (includes sparse holes) and physical
-// (actual in tar archive) bytes remaining for the current file.
-//
-// Invariant: logicalRemaining >= physicalRemaining
-
-// FileInfo は、Header の fs.FileInfo を返します。
-func (h *Header) FileInfo() fs.FileInfo
-
-// headerFileInfo implements fs.FileInfo.
-
-// sysStat, if non-nil, populates h from system-dependent fields of fi.
-
-// FileInfoHeader は、fi から部分的に設定された Header を作成します。
-// fi がシンボリックリンクを記述している場合、FileInfoHeader は link をリンクターゲットとして記録します。
-// fi がディレクトリを記述している場合、名前にスラッシュが追加されます。
-=======
-// FileInfo returns an fs.FileInfo for the Header.
-func (h *Header) FileInfo() fs.FileInfo
-
-// FileInfoHeader creates a partially-populated Header from fi.
-// If fi describes a symlink, FileInfoHeader records link as the link target.
-// If fi describes a directory, a slash is appended to the name.
->>>>>>> upstream/master
-//
 // fs.FileInfoのNameメソッドは、説明するファイルのベース名のみを返すため、
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
 //
 // fiが[FileInfoNames]を実装している場合、ヘッダーのGnameとUnameは、
 // インターフェースのメソッドによって提供されます。
-=======
 // FileInfoは、Headerのfs.FileInfoを返します。
 func (h *Header) FileInfo() fs.FileInfo
 
@@ -226,7 +147,6 @@ func (h *Header) FileInfo() fs.FileInfo
 // fs.FileInfoのNameメソッドは、
 // 記述するファイルのベース名のみを返すため、
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
->>>>>>> release-branch.go1.21
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 
 // FileInfoNamesは、UID/GIDを名前に変換するために[FileInfo]を拡張します。

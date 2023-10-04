@@ -3,11 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package ioutil_test
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-// This string is from os.errPatternHasSeparator.
-=======
->>>>>>> upstream/master
-=======
->>>>>>> release-branch.go1.21

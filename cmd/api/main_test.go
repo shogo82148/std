@@ -5,9 +5,6 @@
 // This package computes the exported API of a set of Go packages.
 // It is only a test, not a command, nor a usefully importable package.
 
-<<<<<<< HEAD
-package main
-=======
 package api
 
 import (
@@ -46,4 +43,3 @@ type Walker struct {
 
 // Importing is a sentinel taking the place in Walker.imported
 // for a package that is in the process of being imported.
->>>>>>> release-branch.go1.21
