@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package types
-
-// A block tracks label declarations in a block and its enclosing blocks.

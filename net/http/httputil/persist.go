@@ -24,9 +24,6 @@ var (
 	ErrPipeline = &http.ProtocolError{ErrorString: "pipeline error"}
 )
 
-// This is an API usage error - the local side is closed.
-// ErrPersistEOF (above) reports that the remote side is closed.
-
 // ServerConn is an artifact of Go's early HTTP implementation.
 // It is low-level, old, and unused by Go's current HTTP stack.
 // We should have deleted it before Go 1.

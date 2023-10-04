@@ -7,35 +7,6 @@
 
 package runtime
 
-// NOTE(rsc): Everything here could use cas if contention became an issue.
-
-// A bucket holds per-call-stack profiling information.
-// The representation is a bit sleazy, inherited from C.
-// This struct defines the bucket header. It is followed in
-// memory by the stack words and then the actual record
-// data, either a memRecord or a blockRecord.
-//
-// Per-call-stack profiling information.
-// Lookup by hashing call stack into a linked-list hash table.
-//
-// None of the fields in this bucket header are modified after
-// creation, including its next and allnext links.
-//
-// No heap pointers.
-
-// A memRecord is the bucket data for a bucket of type memProfile,
-// part of the memory profile.
-
-// memRecordCycle
-
-// A blockRecord is the bucket data for a bucket of type blockProfile,
-// which is used in blocking and mutex profiles.
-
-// mProfCycleHolder holds the global heap profile cycle number (wrapped at
-// mProfCycleWrap, stored starting at bit 1), and a flag (stored at bit 0) to
-// indicate whether future[cycle] in all buckets has been queued to flush into
-// the active profile.
-
 // SetBlockProfileRate controls the fraction of goroutine blocking events
 // that are reported in the blocking profile. The profiler aims to sample
 // an average of one blocking event per rate nanoseconds spent blocked.
@@ -77,10 +48,6 @@ func (r *StackRecord) Stack() []uintptr
 // possible in the execution of the program (for example,
 // at the beginning of main).
 var MemProfileRate int = 512 * 1024
-
-// disableMemoryProfiling is set by the linker if runtime.MemProfile
-// is not used and the link type guarantees nobody else could use it
-// elsewhere.
 
 // A MemProfileRecord describes the live objects allocated
 // by a particular call sequence (stack trace).
@@ -155,18 +122,6 @@ func MutexProfile(p []BlockProfileRecord) (n int, ok bool)
 // Most clients should use the runtime/pprof package instead
 // of calling ThreadCreateProfile directly.
 func ThreadCreateProfile(p []StackRecord) (n int, ok bool)
-
-// goroutineProfileState indicates the status of a goroutine's stack for the
-// current in-progress goroutine profile. Goroutines' stacks are initially
-// "Absent" from the profile, and end up "Satisfied" by the time the profile is
-// complete. While a goroutine's stack is being captured, its
-// goroutineProfileState will be "InProgress" and it will not be able to run
-// until the capture completes and the state moves to "Satisfied".
-//
-// Some goroutines (the finalizer goroutine, which at various times can be
-// either a "system" or a "user" goroutine, and the goroutine that is
-// coordinating the profile, any goroutines created during the profile) move
-// directly to the "Satisfied" state.
 
 // GoroutineProfile returns n, the number of records in the active goroutine stack profile.
 // If len(p) >= n, GoroutineProfile copies the profile into p and returns n, true.

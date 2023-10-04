@@ -6,8 +6,4 @@
 
 package main
 
-import (
-	rtrace "runtime/trace"
-)
-
 var _ = go11tag

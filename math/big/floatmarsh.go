@@ -6,8 +6,6 @@
 
 package big
 
-// Gob codec version. Permits backward-compatible changes to the encoding.
-
 // GobEncode implements the gob.GobEncoder interface.
 // The Float value and all its attributes (precision,
 // rounding mode, accuracy) are marshaled.

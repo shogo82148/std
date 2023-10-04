@@ -5,7 +5,7 @@
 // This package computes the exported API of a set of Go packages.
 // It is only a test, not a command, nor a usefully importable package.
 
-package main
+package api
 
 import (
 	"go/build"

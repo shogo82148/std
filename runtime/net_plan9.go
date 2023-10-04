@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)

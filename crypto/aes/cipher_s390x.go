@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package aes
-
-// Function codes for the cipher message family of instructions.

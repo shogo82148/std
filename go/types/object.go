@@ -48,13 +48,6 @@ type Object interface {
 // returns the name qualified with the package path.
 func Id(pkg *Package, name string) string
 
-// An object implements the common parts of an Object.
-
-// color encodes the color of an object (see Checker.objDecl for details).
-
-// An object may be painted in one of three colors.
-// Color values other than white or black are considered grey.
-
 // A PkgName represents an imported Go package.
 // PkgNames don't have a type.
 type PkgName struct {

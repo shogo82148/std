@@ -5,7 +5,3 @@
 //go:build !js
 
 package net
-
-// conf is used to determine name resolution configuration.
-
-// mdnsTest is for testing only.

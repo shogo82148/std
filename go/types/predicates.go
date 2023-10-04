@@ -14,10 +14,6 @@ func IsInterface(t Type) bool
 // Comparable reports whether values of type T are comparable.
 func Comparable(T Type) bool
 
-// An ifacePair is a node in a stack of interface type pairs compared for identity.
-
-// A comparer is used to compare types.
-
 // Default returns the default "typed" type for an "untyped" type;
 // it returns the incoming type for all other types. The default type
 // for untyped nil is untyped nil.

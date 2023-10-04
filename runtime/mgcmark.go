@@ -5,5 +5,3 @@
 // Garbage collector: marking and scanning
 
 package runtime
-
-// ptrmask for an allocation containing a single pointer.

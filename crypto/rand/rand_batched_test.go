@@ -5,7 +5,3 @@
 //go:build unix
 
 package rand
-
-import (
-	prand "math/rand"
-)

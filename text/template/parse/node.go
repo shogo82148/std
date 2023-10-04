@@ -288,11 +288,6 @@ func (s *StringNode) String() string
 
 func (s *StringNode) Copy() Node
 
-// endNode represents an {{end}} action.
-// It does not appear in the final parse tree.
-
-// elseNode represents an {{else}} action. Does not appear in the final tree.
-
 // BranchNode is the common representation of if, range, and with.
 type BranchNode struct {
 	NodeType

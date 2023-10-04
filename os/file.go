@@ -112,10 +112,6 @@ func (f *File) ReadAt(b []byte, off int64) (n int, err error)
 // ReadFrom implements io.ReaderFrom.
 func (f *File) ReadFrom(r io.Reader) (n int64, err error)
 
-// fileWithoutReadFrom implements all the methods of *File other
-// than ReadFrom. This is used to permit ReadFrom to call io.Copy
-// without leading to a recursive call to ReadFrom.
-
 // Write writes len(b) bytes from b to the File.
 // It returns the number of bytes written and an error, if any.
 // Write returns a non-nil error when n != len(b).
@@ -169,17 +165,12 @@ func Create(name string) (*File, error)
 // If there is an error, it will be of type *PathError.
 func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
-// lstat is overridden in tests.
-
 // Rename renames (moves) oldpath to newpath.
 // If newpath already exists and is not a directory, Rename replaces it.
 // OS-specific restrictions may apply when oldpath and newpath are in different directories.
 // Even within the same directory, on non-Unix platforms Rename is not an atomic operation.
 // If there is an error, it will be of type *LinkError.
 func Rename(oldpath, newpath string) error
-
-// checkWrapErr is the test hook to enable checking unexpected wrapped errors of poll.ErrFileClosing.
-// It is set to true in the export_test.go for tests (including fuzz tests).
 
 // TempDir returns the default directory to use for temporary files.
 //

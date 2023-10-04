@@ -13,11 +13,6 @@ import (
 // the association.
 type CommentMap map[Node][]*CommentGroup
 
-// A commentListReader helps iterating through a list of comment groups.
-
-// A nodeStack keeps track of nested nodes.
-// A node lower on the stack lexically contains the nodes higher on the stack.
-
 // NewCommentMap creates a new comment map by associating comment groups
 // of the comments list with the nodes of the AST specified by node.
 //

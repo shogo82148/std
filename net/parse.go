@@ -6,5 +6,3 @@
 // depending on strconv and bufio and strings.
 
 package net
-
-// Bigger than we need, not too big to worry about overflow

@@ -13,10 +13,10 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net"
+
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
-	urlpkg "net/url"
 )
 
 // Errors used by the HTTP server.
@@ -138,23 +138,6 @@ var (
 	LocalAddrContextKey = &contextKey{"local-addr"}
 )
 
-// A conn represents the server side of an HTTP connection.
-
-// This should be >= 512 bytes for DetectContentType,
-// but otherwise it's somewhat arbitrary.
-
-// chunkWriter writes to a response's conn buffer, and is the writer
-// wrapped by the response.w buffered writer.
-//
-// chunkWriter also is responsible for finalizing the Header, including
-// conditionally setting the Content-Type and setting a Content-Length
-// in cases where the handler's final output is smaller than the buffer
-// size. It also conditionally adds chunk headers, when in chunking mode.
-//
-// See the comment above (*response).Write for the entire write flow.
-
-// A response represents the server side of an HTTP response.
-
 // TrailerPrefix is a magic prefix for ResponseWriter.Header map keys
 // that, if present, signals that the map entry is actually for
 // the response trailers, and not the response headers. The prefix
@@ -170,25 +153,10 @@ var (
 //	https://pkg.go.dev/net/http#example-ResponseWriter-Trailers
 const TrailerPrefix = "Trailer:"
 
-// writerOnly hides an io.Writer value's optional ReadFrom method
-// from io.Copy.
-
-// debugServerConnections controls whether all server connections are wrapped
-// with a verbose logging wrapper.
-
-// connReader is the io.Reader wrapper used by *conn. It combines a
-// selectively-activated io.LimitedReader (to bound request header
-// read sizes) with support for selectively keeping an io.Reader.Read
-// call blocked in a background goroutine to wait for activity and
-// trigger a CloseNotifier channel.
-
 // DefaultMaxHeaderBytes is the maximum permitted size of the headers
 // in an HTTP request.
 // This can be overridden by setting Server.MaxHeaderBytes.
 const DefaultMaxHeaderBytes = 1 << 20
-
-// wrapper around io.ReadCloser which on first read, sends an
-// HTTP/1.1 100 Continue header
 
 // TimeFormat is the time format to use when generating times in HTTP
 // headers. It is like time.RFC1123 but hard-codes GMT as the time
@@ -198,34 +166,7 @@ const DefaultMaxHeaderBytes = 1 << 20
 // For parsing this time format, see ParseTime.
 const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
-// maxPostHandlerReadBytes is the max number of Request.Body bytes not
-// consumed by a handler that the server will read from the client
-// in order to keep a connection alive. If there are more bytes than
-// this then the server to be paranoid instead sends a "Connection:
-// close" response.
-//
-// This number is approximately what a typical machine's TCP buffer
-// size is anyway.  (if we have the bytes on the machine, we might as
-// well read them)
-
-// extraHeader is the set of headers sometimes added by chunkWriter.writeHeader.
-// This type is used to avoid extra allocations from cloning and/or populating
-// the response Header map and all its 1-element slices.
-
-// Sorted the same as extraHeader.Write's loop.
-
-// rstAvoidanceDelay is the amount of time we sleep after closing the
-// write side of a TCP connection before closing the entire socket.
-// By sleeping, we increase the chances that the client sees our FIN
-// and processes its final data before they process the subsequent RST
-// from closing a connection with known unread data.
-// This RST seems to occur mostly on BSD systems. (And Windows?)
-// This timeout is somewhat arbitrary (~latency around the planet).
-
 var _ closeWriter = (*net.TCPConn)(nil)
-
-// statusError is an error used to respond to a request with an HTTP status.
-// The text should be plain text without user info or other embedded errors.
 
 // ErrAbortHandler is a sentinel panic value to abort a handler.
 // While any panic from ServeHTTP aborts the response to the client,
@@ -274,8 +215,6 @@ func StripPrefix(prefix string, h Handler) Handler
 // Setting the Content-Type header to any value, including nil,
 // disables that behavior.
 func Redirect(w ResponseWriter, r *Request, url string, code int)
-
-// Redirect to a fixed URL
 
 // RedirectHandler returns a request handler that redirects
 // each request it receives to the given url using the given
@@ -401,32 +340,99 @@ func ServeTLS(l net.Listener, handler Handler, certFile, keyFile string) error
 // A Server defines parameters for running an HTTP server.
 // The zero value for Server is a valid configuration.
 type Server struct {
+	// Addr optionally specifies the TCP address for the server to listen on,
+	// in the form "host:port". If empty, ":http" (port 80) is used.
+	// The service names are defined in RFC 6335 and assigned by IANA.
+	// See net.Dial for details of the address format.
 	Addr string
 
 	Handler Handler
 
+	// DisableGeneralOptionsHandler, if true, passes "OPTIONS *" requests to the Handler,
+	// otherwise responds with 200 OK and Content-Length: 0.
 	DisableGeneralOptionsHandler bool
 
+	// TLSConfig optionally provides a TLS configuration for use
+	// by ServeTLS and ListenAndServeTLS. Note that this value is
+	// cloned by ServeTLS and ListenAndServeTLS, so it's not
+	// possible to modify the configuration with methods like
+	// tls.Config.SetSessionTicketKeys. To use
+	// SetSessionTicketKeys, use Server.Serve with a TLS Listener
+	// instead.
 	TLSConfig *tls.Config
 
+	// ReadTimeout is the maximum duration for reading the entire
+	// request, including the body. A zero or negative value means
+	// there will be no timeout.
+	//
+	// Because ReadTimeout does not let Handlers make per-request
+	// decisions on each request body's acceptable deadline or
+	// upload rate, most users will prefer to use
+	// ReadHeaderTimeout. It is valid to use them both.
 	ReadTimeout time.Duration
 
+	// ReadHeaderTimeout is the amount of time allowed to read
+	// request headers. The connection's read deadline is reset
+	// after reading the headers and the Handler can decide what
+	// is considered too slow for the body. If ReadHeaderTimeout
+	// is zero, the value of ReadTimeout is used. If both are
+	// zero, there is no timeout.
 	ReadHeaderTimeout time.Duration
 
+	// WriteTimeout is the maximum duration before timing out
+	// writes of the response. It is reset whenever a new
+	// request's header is read. Like ReadTimeout, it does not
+	// let Handlers make decisions on a per-request basis.
+	// A zero or negative value means there will be no timeout.
 	WriteTimeout time.Duration
 
+	// IdleTimeout is the maximum amount of time to wait for the
+	// next request when keep-alives are enabled. If IdleTimeout
+	// is zero, the value of ReadTimeout is used. If both are
+	// zero, there is no timeout.
 	IdleTimeout time.Duration
 
+	// MaxHeaderBytes controls the maximum number of bytes the
+	// server will read parsing the request header's keys and
+	// values, including the request line. It does not limit the
+	// size of the request body.
+	// If zero, DefaultMaxHeaderBytes is used.
 	MaxHeaderBytes int
 
+	// TLSNextProto optionally specifies a function to take over
+	// ownership of the provided TLS connection when an ALPN
+	// protocol upgrade has occurred. The map key is the protocol
+	// name negotiated. The Handler argument should be used to
+	// handle HTTP requests and will initialize the Request's TLS
+	// and RemoteAddr if not already set. The connection is
+	// automatically closed when the function returns.
+	// If TLSNextProto is not nil, HTTP/2 support is not enabled
+	// automatically.
 	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)
 
+	// ConnState specifies an optional callback function that is
+	// called when a client connection changes state. See the
+	// ConnState type and associated constants for details.
 	ConnState func(net.Conn, ConnState)
 
+	// ErrorLog specifies an optional logger for errors accepting
+	// connections, unexpected behavior from handlers, and
+	// underlying FileSystem errors.
+	// If nil, logging is done via the log package's standard logger.
 	ErrorLog *log.Logger
 
+	// BaseContext optionally specifies a function that returns
+	// the base context for incoming requests on this server.
+	// The provided Listener is the specific Listener that's
+	// about to start accepting requests.
+	// If BaseContext is nil, the default is context.Background().
+	// If non-nil, it must return a non-nil context.
 	BaseContext func(net.Listener) context.Context
 
+	// ConnContext optionally specifies a function that modifies
+	// the context used for a new connection c. The provided ctx
+	// is derived from the base context and has a ServerContextKey
+	// value.
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
 
 	inShutdown atomic.Bool
@@ -453,14 +459,6 @@ type Server struct {
 // Close returns any error returned from closing the Server's
 // underlying Listener(s).
 func (srv *Server) Close() error
-
-// shutdownPollIntervalMax is the max polling interval when checking
-// quiescence during Server.Shutdown. Polling starts with a small
-// interval and backs off to the max.
-// Ideally we could find a solution that doesn't involve polling,
-// but which also doesn't have a high runtime cost (and doesn't
-// involve any contentious mutexes), but that is left as an
-// exercise for the reader.
 
 // Shutdown gracefully shuts down the server without interrupting any
 // active connections. Shutdown works by first closing all open
@@ -532,9 +530,6 @@ const (
 )
 
 func (c ConnState) String() string
-
-// serverHandler delegates to either the server's Handler or
-// DefaultServeMux and also handles "OPTIONS *" requests.
 
 // AllowQuerySemicolons returns a handler that serves requests by converting any
 // unescaped semicolons in the URL query to ampersands, and invoking the handler h.
@@ -645,21 +640,6 @@ func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 var ErrHandlerTimeout = errors.New("http: Handler timeout")
 
 var _ Pusher = (*timeoutWriter)(nil)
-
-// onceCloseListener wraps a net.Listener, protecting it from
-// multiple Close calls.
-
-// globalOptionsHandler responds to "OPTIONS *" requests.
-
-// initALPNRequest is an HTTP handler that initializes certain
-// uninitialized fields in its *Request. Such partially-initialized
-// Requests come from ALPN protocol handlers.
-
-// loggingConn is used for debugging.
-
-// checkConnErrorWriter writes to c.rwc and records any write errors to c.werr.
-// It only contains one field (and a pointer field at that), so it
-// fits in an interface value without an extra allocation.
 
 // MaxBytesHandler returns a Handler that runs h with its ResponseWriter and Request.Body wrapped by a MaxBytesReader.
 func MaxBytesHandler(h Handler, n int64) Handler

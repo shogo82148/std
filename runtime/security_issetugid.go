@@ -5,6 +5,3 @@
 //go:build darwin || dragonfly || freebsd || illumos || netbsd || openbsd || solaris
 
 package runtime
-
-// secureMode is only ever mutated in schedinit, so we don't need to worry about
-// synchronization primitives.

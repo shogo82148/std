@@ -8,11 +8,6 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// The unusual ancestry means the arguments are not Go-standard.
-// These variables hold the decoded operation specified by the first argument.
-// op holds the operation we are doing (prtx).
-// verbose tells whether the 'v' option was specified.
-
 // An Archive represents an open archive file. It is always scanned sequentially
 // from start to end, without backing up.
 type Archive struct {
@@ -29,5 +24,3 @@ type FileLike interface {
 	Read([]byte) (int, error)
 	Close() error
 }
-
-// can be modified for testing.

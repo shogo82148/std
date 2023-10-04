@@ -8,20 +8,6 @@ import (
 	"fmt"
 )
 
-// A couple of type definitions to make the units clear.
-
-// A Planet defines the properties of a solar system object.
-type Planet struct {
-	name     string
-	mass     earthMass
-	distance au
-}
-
-// By is the type of a "less" function that defines the ordering of its Planet arguments.
-type By func(p1, p2 *Planet) bool
-
-// planetSorter joins a By function and a slice of Planets to be sorted.
-
 // ExampleSortKeys demonstrates a technique for sorting a struct type using programmable sort criteria.
 func Example_sortKeys() {
 	// Closures that order the Planet structure.

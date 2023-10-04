@@ -4,11 +4,6 @@
 
 package main
 
-//go:embed static/trace_viewer_full.html static/webcomponents.min.js
-
-// https://chromium.googlesource.com/catapult/+/9508452e18f130c98499cb4c4f1e1efaedee8962/tracing/docs/embedding-trace-viewer.md
-// This is almost verbatim copy of https://chromium-review.googlesource.com/c/catapult/+/2062938/2/tracing/bin/index.html
-
 type Range struct {
 	Name      string
 	Start     int
@@ -36,7 +31,3 @@ type RegionArg struct {
 type SortIndexArg struct {
 	Index int `json:"sort_index"`
 }
-
-// Mapping from more reasonable color names to the reserved color names in
-// https://github.com/catapult-project/catapult/blob/master/tracing/tracing/base/color_scheme.html#L50
-// The chrome trace viewer allows only those as cname values.

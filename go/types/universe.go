@@ -53,8 +53,6 @@ var Typ = []*Basic{
 	UntypedNil:     {UntypedNil, IsUntyped, "untyped nil"},
 }
 
-// A builtinId is the id of a builtin function.
-
 // DefPredeclaredTestFuncs defines the assert and trace built-ins.
 // These built-ins are intended for debugging and testing of this
 // package only.

@@ -7,7 +7,3 @@
 //go:build !race
 
 package sync_test
-
-import (
-	. "sync"
-)

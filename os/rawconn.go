@@ -5,5 +5,3 @@
 //go:build !plan9
 
 package os
-
-// rawConn implements syscall.RawConn.

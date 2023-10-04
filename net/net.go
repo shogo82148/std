@@ -162,21 +162,33 @@ var (
 	ErrWriteToConnected = errors.New("use of WriteTo with pre-connected connection")
 )
 
-// canceledError lets us return the same error string we have always
-// returned, while still being Is context.Canceled.
-
 // OpError is the error type usually returned by functions in the net
 // package. It describes the operation, network type, and address of
 // an error.
 type OpError struct {
+	// Op is the operation which caused the error, such as
+	// "read" or "write".
 	Op string
 
+	// Net is the network type on which this error occurred,
+	// such as "tcp" or "udp6".
 	Net string
 
+	// For operations involving a remote network connection, like
+	// Dial, Read, or Write, Source is the corresponding local
+	// network address.
 	Source Addr
 
+	// Addr is the network address for which this error occurred.
+	// For local operations, like Listen or SetDeadline, Addr is
+	// the address of the local endpoint being manipulated.
+	// For operations involving a remote network connection, like
+	// Dial, Read, or Write, Addr is the remote address of that
+	// connection.
 	Addr Addr
 
+	// Err is the error that occurred during the operation.
+	// The Error method panics if the error is nil.
 	Err error
 }
 
@@ -190,8 +202,11 @@ func (e *OpError) Temporary() bool
 
 // A ParseError is the error type of literal network address parsers.
 type ParseError struct {
+	// Type is the type of string that was expected, such as
+	// "IP address", "CIDR address".
 	Type string
 
+	// Text is the malformed text string.
 	Text string
 }
 
@@ -222,18 +237,6 @@ func (e InvalidAddrError) Error() string
 func (e InvalidAddrError) Timeout() bool
 func (e InvalidAddrError) Temporary() bool
 
-// errTimeout exists to return the historical "i/o timeout" string
-// for context.DeadlineExceeded. See mapErr.
-// It is also used when Dialer.Deadline is exceeded.
-// error.Is(errTimeout, context.DeadlineExceeded) returns true.
-//
-// TODO(iant): We could consider changing this to os.ErrDeadlineExceeded
-// in the future, if we make
-//
-//	errors.Is(os.ErrDeadlineExceeded, context.DeadlineExceeded)
-//
-// return true.
-
 // DNSConfigError represents an error reading the machine's DNS configuration.
 // (No longer used; kept for compatibility.)
 type DNSConfigError struct {
@@ -244,8 +247,6 @@ func (e *DNSConfigError) Unwrap() error
 func (e *DNSConfigError) Error() string
 func (e *DNSConfigError) Timeout() bool
 func (e *DNSConfigError) Temporary() bool
-
-// Various errors contained in DNSError.
 
 // DNSError represents a DNS lookup error.
 type DNSError struct {
@@ -269,20 +270,12 @@ func (e *DNSError) Timeout() bool
 // error and return a DNSError for which Temporary returns false.
 func (e *DNSError) Temporary() bool
 
-// errClosed exists just so that the docs for ErrClosed don't mention
-// the internal package poll.
-
 // ErrClosed is the error returned by an I/O call on a network
 // connection that has already been closed, or that is closed by
 // another goroutine before the I/O is completed. This may be wrapped
 // in another error, and should normally be tested using
 // errors.Is(err, net.ErrClosed).
 var ErrClosed error = errClosed
-
-// buffersWriter is the interface implemented by Conns that support a
-// "writev"-like batch write optimization.
-// writeBuffers should fully consume and write all chunks from the
-// provided Buffers, else it should report a non-nil error.
 
 // Buffers contains zero or more runs of bytes to write.
 //

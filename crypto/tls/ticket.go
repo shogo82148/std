@@ -10,14 +10,31 @@ import (
 
 // A SessionState is a resumable session.
 type SessionState struct {
+
+	// Extra is ignored by crypto/tls, but is encoded by [SessionState.Bytes]
+	// and parsed by [ParseSessionState].
+	//
+	// This allows [Config.UnwrapSession]/[Config.WrapSession] and
+	// [ClientSessionCache] implementations to store and retrieve additional
+	// data alongside this session.
+	//
+	// To allow different layers in a protocol stack to share this field,
+	// applications must only append to it, not replace it, and must use entries
+	// that can be recognized even if out of order (for example, by starting
+	// with a id and version prefix).
 	Extra [][]byte
 
+	// EarlyData indicates whether the ticket can be used for 0-RTT in a QUIC
+	// connection. The application may set this to false if it is true to
+	// decline to offer 0-RTT even if supported.
 	EarlyData bool
 
 	version     uint16
 	isClient    bool
 	cipherSuite uint16
-
+	// createdAt is the generation time of the secret on the sever (which for
+	// TLS 1.0–1.2 might be earlier than the current session) and the time at
+	// which the ticket was received on the client.
 	createdAt         uint64
 	secret            []byte
 	extMasterSecret   bool
@@ -28,6 +45,7 @@ type SessionState struct {
 	verifiedChains    [][]*x509.Certificate
 	alpnProtocol      string
 
+	// Client-side TLS 1.3-only fields.
 	useBy  uint64
 	ageAdd uint32
 }

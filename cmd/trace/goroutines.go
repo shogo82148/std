@@ -5,5 +5,3 @@
 // Goroutine-related profiles.
 
 package main
-
-// gtype describes a group of goroutines grouped by start PC.

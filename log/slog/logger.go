@@ -17,9 +17,6 @@ func Default() *Logger
 // lのHandlerを使用してLevelInfoでログに記録されます。
 func SetDefault(l *Logger)
 
-// handlerWriterは、Handlerを呼び出すio.Writerです。
-// デフォルトのlog.Loggerをデフォルトのslog.Loggerにリンクするために使用されます。
-
 // Loggerは、各Log、Debug、Info、Warn、Errorメソッドの呼び出しについて、
 // 構造化された情報を記録します。
 // 各呼び出しに対して、Recordを作成し、Handlerに渡します。

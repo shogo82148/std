@@ -5,5 +5,3 @@
 //go:build aix || dragonfly || freebsd || (js && wasm) || wasip1 || linux || netbsd || openbsd || solaris
 
 package os
-
-// Auxiliary information if the File describes a directory

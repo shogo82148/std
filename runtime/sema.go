@@ -18,20 +18,3 @@
 // https://swtch.com/semaphore.pdf
 
 package runtime
-
-// A semaRoot holds a balanced tree of sudog with distinct addresses (s.elem).
-// Each of those sudog may in turn point (through s.waitlink) to a list
-// of other sudogs waiting on the same address.
-// The operations on the inner lists of sudogs with the same address
-// are all O(1). The scanning of the top-level semaRoot list is O(log n),
-// where n is the number of distinct addresses with goroutines blocked
-// on them that hash to the given semaRoot.
-// See golang.org/issue/17953 for a program that worked badly
-// before we introduced the second level of list, and
-// BenchmarkSemTable/OneAddrCollision/* for a benchmark that exercises this.
-
-// Prime to not correlate with any user patterns.
-
-// notifyList is a ticket-based notification list used to implement sync.Cond.
-//
-// It must be kept in sync with the sync package.

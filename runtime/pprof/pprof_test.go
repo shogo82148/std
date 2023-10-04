@@ -5,7 +5,3 @@
 //go:build !js
 
 package pprof
-
-import (
-	_ "unsafe"
-)

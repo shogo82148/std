@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// net_op must be the same as beginning of internal/poll.operation.
-// Keep these in sync.

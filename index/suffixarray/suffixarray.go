@@ -20,17 +20,11 @@ import (
 	"github.com/shogo82148/std/regexp"
 )
 
-// Can change for testing
-
 // Index implements a suffix array for fast substring search.
 type Index struct {
 	data []byte
 	sa   ints
 }
-
-// An ints is either an []int32 or an []int64.
-// That is, one of them is empty, and one is the real data.
-// The int64 form is used when len(data) > maxData32
 
 // New creates a new Index for data.
 // Index creation time is O(N) for N = len(data).

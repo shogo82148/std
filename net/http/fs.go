@@ -84,17 +84,6 @@ type File interface {
 // Note that *os.File implements the io.ReadSeeker interface.
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
-// errSeeker is returned by ServeContent's sizeFunc when the content
-// doesn't seek properly. The underlying Seeker's error text isn't
-// included in the sizeFunc reply so it's not sent over HTTP to end
-// users.
-
-// errNoOverlap is returned by serveContent's parseRange if first-byte-pos of
-// all of the byte-range-spec values is greater than the content size.
-
-// condResult is the result of an HTTP request precondition check.
-// See https://tools.ietf.org/html/rfc7232 section 3.
-
 // ServeFile replies to the request with the contents of the named
 // file or directory.
 //
@@ -139,7 +128,3 @@ func FS(fsys fs.FS) FileSystem
 //
 //	http.Handle("/", http.FileServer(http.FS(fsys)))
 func FileServer(root FileSystem) Handler
-
-// httpRange specifies the byte range to be sent to the client.
-
-// countingWriter counts how many bytes have been written to it.

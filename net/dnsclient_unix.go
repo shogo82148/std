@@ -13,9 +13,3 @@
 //	Random request IDs.
 
 package net
-
-// A resolverConfig represents a DNS stub resolver configuration.
-
-// hostLookupOrder specifies the order of LookupHost lookup strategies.
-// It is basically a simplified representation of nsswitch.conf.
-// "files" means /etc/hosts.

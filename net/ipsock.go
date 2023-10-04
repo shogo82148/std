@@ -4,8 +4,6 @@
 
 package net
 
-// An addrList represents a list of network endpoint addresses.
-
 // SplitHostPort splits a network address of the form "host:port",
 // "host%zone:port", "[host]:port" or "[host%zone]:port" into host or
 // host%zone and port.

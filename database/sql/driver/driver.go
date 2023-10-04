@@ -62,10 +62,16 @@ type Value any
 
 // NamedValue holds both the value name and value.
 type NamedValue struct {
+	// If the Name is not empty it should be used for the parameter identifier and
+	// not the ordinal position.
+	//
+	// Name will not have a symbol prefix.
 	Name string
 
+	// Ordinal position of the parameter starting from one and is always set.
 	Ordinal int
 
+	// Value is the parameter value.
 	Value Value
 }
 

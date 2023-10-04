@@ -16,18 +16,6 @@ GOARCH=mips64 go tool cgo -godefs defs_openbsd.go
 
 package runtime
 
-/*
-#include <sys/types.h>
-#include <sys/event.h>
-#include <sys/mman.h>
-#include <sys/time.h>
-#include <sys/unistd.h>
-#include <sys/signal.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <pthread.h>
-#include <signal.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

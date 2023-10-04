@@ -10,8 +10,6 @@ import (
 	"log"
 )
 
-type Size int
-
 const (
 	Unrecognized Size = iota
 	Small

@@ -88,10 +88,6 @@ const (
 	MaxPrec = math.MaxUint32
 )
 
-// A form value describes the internal representation.
-
-// The form value order is relevant - do not change!
-
 // RoundingMode determines how a Float value is rounded to the
 // desired precision. Rounding may change the Float value; the
 // rounding error is described by the Float's Accuracy.

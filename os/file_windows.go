@@ -4,13 +4,6 @@
 
 package os
 
-// This matches the value in syscall/syscall_windows.go.
-
-// file is the real representation of *File.
-// The extra level of indirection ensures that no clients of os
-// can overwrite this data, which could cause the finalizer
-// to close the wrong file descriptor.
-
 // Fd returns the Windows handle referencing the open file.
 // If f is closed, the file descriptor becomes invalid.
 // If f is garbage collected, a finalizer may close the file descriptor,
@@ -23,8 +16,6 @@ func (file *File) Fd() uintptr
 // name. The returned value will be nil if fd is not a valid file
 // descriptor.
 func NewFile(fd uintptr, name string) *File
-
-// Auxiliary information if the File describes a directory
 
 // DevNull is the name of the operating system's “null device.”
 // On Unix-like systems, it is "/dev/null"; on Windows, "NUL".

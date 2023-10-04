@@ -10,10 +10,6 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// tooBig provides a sanity check for sizes; used in several places. Upper limit
-// of is 1GB on 32-bit systems, 8GB on 64-bit, allowing room to grow a little
-// without overflow.
-
 // A Decoder manages the receipt of type and data information read from the
 // remote side of a connection.  It is safe for concurrent use by multiple
 // goroutines.
@@ -54,7 +50,3 @@ func (dec *Decoder) Decode(e any) error
 // If the input is at EOF, DecodeValue returns io.EOF and
 // does not modify v.
 func (dec *Decoder) DecodeValue(v reflect.Value) error
-
-// If debug.go is compiled into the program, debugFunc prints a human-readable
-// representation of the gob data read from r by calling that file's Debug function.
-// Otherwise it is nil.

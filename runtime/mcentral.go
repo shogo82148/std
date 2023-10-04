@@ -11,5 +11,3 @@
 // and those that are completely allocated (c->empty).
 
 package runtime
-
-// Central list of free objects of a given size.

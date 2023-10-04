@@ -5,7 +5,3 @@
 //go:build unix
 
 package os_test
-
-import (
-	. "os"
-)

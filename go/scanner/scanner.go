@@ -21,12 +21,14 @@ type ErrorHandler func(pos token.Position, msg string)
 // a given text. It can be allocated as part of another data
 // structure but must be initialized via Init before use.
 type Scanner struct {
+	// immutable state
 	file *token.File
 	dir  string
 	src  []byte
 	err  ErrorHandler
 	mode Mode
 
+	// scanning state
 	ch         rune
 	offset     int
 	rdOffset   int
@@ -34,6 +36,7 @@ type Scanner struct {
 	insertSemi bool
 	nlPos      token.Pos
 
+	// public state - ok to modify
 	ErrorCount int
 }
 

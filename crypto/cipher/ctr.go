@@ -12,10 +12,6 @@
 
 package cipher
 
-// ctrAble is an interface implemented by ciphers that have a specific optimized
-// implementation of CTR, like crypto/aes. NewCTR will check for this interface
-// and return the specific Stream if found.
-
 // NewCTR returns a Stream which encrypts/decrypts using the given Block in
 // counter mode. The length of iv must be the same as the Block's block size.
 func NewCTR(block Block, iv []byte) Stream

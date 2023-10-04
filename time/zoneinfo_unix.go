@@ -10,7 +10,3 @@
 // and ftp://munnari.oz.au/pub/oldtz/
 
 package time
-
-// Many systems use /usr/share/zoneinfo, Solaris 2 has
-// /usr/share/lib/zoneinfo, IRIX 6 has /usr/lib/locale/TZ,
-// NixOS has /etc/zoneinfo.

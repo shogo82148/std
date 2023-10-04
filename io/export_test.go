@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package io
-
-// exported for test
-var ErrInvalidWrite = errInvalidWrite
-var ErrWhence = errWhence
-var ErrOffset = errOffset

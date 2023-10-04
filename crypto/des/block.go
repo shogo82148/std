@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package des
-
-// feistelBox[s][16*i+j] contains the output of permutationFunction
-// for sBoxes[s][i][j] << 4*(7-s)

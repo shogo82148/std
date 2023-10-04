@@ -9,8 +9,6 @@ import (
 	"net/http"
 )
 
-//go:embed internal/embedtest/testdata/*.txt
-
 func Example() {
 	mutex := http.NewServeMux()
 	mutex.Handle("/", http.FileServer(http.FS(content)))

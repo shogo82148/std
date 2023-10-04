@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package tar
-
-// testFile is an io.ReadWriteSeeker where the IO operations performed
-// on it must match the list of operations in ops.

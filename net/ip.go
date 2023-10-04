@@ -116,8 +116,6 @@ func (ip IP) To4() IP
 // If ip is not an IP address (it is the wrong length), To16 returns nil.
 func (ip IP) To16() IP
 
-// Default route masks for IPv4.
-
 // DefaultMask returns the default IP mask for the IP address ip.
 // Only IPv4 addresses have default masks; DefaultMask returns
 // nil if ip is not a valid IPv4 address.

@@ -4,73 +4,11 @@
 
 package runtime
 
-// set using cmd/go/internal/modload.ModInfoProg
-
-// This slice records the initializing tasks that need to be
-// done to start up the runtime. It is built by the linker.
-
-// main_init_done is a signal used by cgocallbackg that initialization
-// has been completed. It is made before _cgo_notify_runtime_init_done,
-// so all cgo calls can rely on it existing. When main_init is complete,
-// it is closed, meaning cgocallbackg can reliably receive from it.
-
-// mainStarted indicates that the main M has started.
-
-// runtimeInitTime is the nanotime() at which the runtime started.
-
-// Value to use for signal mask for newly created M's.
-
 // Gosched yields the processor, allowing other goroutines to run. It does not
 // suspend the current goroutine, so execution resumes automatically.
 //
 //go:nosplit
 func Gosched()
-
-// freezeStopWait is a large value that freezetheworld sets
-// sched.stopwait to in order to request that all Gs permanently stop.
-
-// freezing is set to non-zero if the runtime is trying to freeze the
-// world.
-
-// casgstatusAlwaysTrack is a debug flag that causes casgstatus to always track
-// various latencies on every transition instead of sampling them.
-
-// stwReason is an enumeration of reasons the world is stopping.
-
-// Reasons to stop-the-world.
-//
-// Avoid reusing reasons and add new ones instead.
-
-// If you add to this list, also add it to src/internal/trace/parser.go.
-// If you change the values of any of the stw* constants, bump the trace
-// version number and make a copy of this.
-
-// Holding worldsema grants an M the right to try to stop the world.
-
-// Holding gcsema grants the M the right to block a GC, and blocks
-// until the current GC is done. In particular, it prevents gomaxprocs
-// from changing concurrently.
-//
-// TODO(mknyszek): Once gomaxprocs and the execution tracer can handle
-// being changed/enabled during a GC, remove this.
-
-// When running with cgo, we call _cgo_thread_start
-// to start threads for us so that we can play nicely with
-// foreign code.
-
-// These errors are reported (via writeErrStr) by some OS-specific
-// versions of newosproc and newosproc0.
-
-// newmHandoff contains a list of m structures that need new OS threads.
-// This is used by newm in situations where newm itself can't safely
-// start an OS thread.
-
-// inForkedChild is true while manipulating signals in the child process.
-// This is used to avoid calling libc functions in case we are using vfork.
-
-// pendingPreemptSignals is the number of preemption signals
-// that have been sent but not received. This is only used on Darwin.
-// For #41702.
 
 // Breakpoint executes a breakpoint trap.
 func Breakpoint()
@@ -108,44 +46,3 @@ func LockOSThread()
 //
 //go:nosplit
 func UnlockOSThread()
-
-// forcegcperiod is the maximum time in nanoseconds between garbage
-// collections. If we go this long without a garbage collection, one
-// is forced to run.
-//
-// This is a variable for testing purposes. It normally doesn't change.
-
-// needSysmonWorkaround is true if the workaround for
-// golang.org/issue/42515 is needed on NetBSD.
-
-// forcePreemptNS is the time slice given to a G before it is
-// preempted.
-
-// pMask is an atomic bitstring with one bit per P.
-
-// To shake out latent assumptions about scheduling order,
-// we introduce some randomness into scheduling decisions
-// when running with the race detector.
-// The need for this was made obvious by changing the
-// (deterministic) scheduling order in Go 1.5 and breaking
-// many poorly-written tests.
-// With the randomness here, as long as the tests pass
-// consistently with -race, they shouldn't have latent scheduling
-// assumptions.
-
-// A gQueue is a dequeue of Gs linked through g.schedlink. A G can only
-// be on one gQueue or gList at a time.
-
-// A gList is a list of Gs linked through g.schedlink. A G can only be
-// on one gQueue or gList at a time.
-
-// randomOrder/randomEnum are helper types for randomized work stealing.
-// They allow to enumerate all Ps in different pseudo-random orders without repetitions.
-// The algorithm is based on the fact that if we have X such that X and GOMAXPROCS
-// are coprime, then a sequences of (i + X) % GOMAXPROCS gives the required enumeration.
-
-// An initTask represents the set of initializations that need to be done for a package.
-// Keep in sync with ../../test/noinit.go:initTask
-
-// inittrace stores statistics for init functions which are
-// updated by malloc and newproc when active is true.

@@ -13,26 +13,29 @@ type Location struct {
 	zone []zone
 	tx   []zoneTrans
 
+	// The tzdata information can be followed by a string that describes
+	// how to handle DST transitions not recorded in zoneTrans.
+	// The format is the TZ environment variable without a colon; see
+	// https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html.
+	// Example string, for America/Los_Angeles: PST8PDT,M3.2.0,M11.1.0
 	extend string
 
+	// Most lookups will be for the current time.
+	// To avoid the binary search through tx, keep a
+	// static one-element cache that gives the correct
+	// zone for the time when the Location was created.
+	// if cacheStart <= t < cacheEnd,
+	// lookup can return cacheZone.
+	// The units for cacheStart and cacheEnd are seconds
+	// since January 1, 1970 UTC, to match the argument
+	// to lookup.
 	cacheStart int64
 	cacheEnd   int64
 	cacheZone  *zone
 }
 
-// A zone represents a single time zone such as CET.
-
-// A zoneTrans represents a single time zone transition.
-
-// alpha and omega are the beginning and end of time for zone
-// transitions.
-
 // UTC represents Universal Coordinated Time (UTC).
 var UTC *Location = &utcLoc
-
-// utcLoc is separate so that get can refer to &utcLoc
-// and ensure that it never returns a nil *Location,
-// even if a badly behaved client has changed UTC.
 
 // Local represents the system's local time zone.
 // On Unix systems, Local consults the TZ environment
@@ -42,9 +45,6 @@ var UTC *Location = &utcLoc
 // TZ="foo" means use file foo in the system timezone directory.
 var Local *Location = &localLoc
 
-// localLoc is separate so that initLocal can initialize
-// it even if a client has changed Local.
-
 // String returns a descriptive name for the time zone information,
 // corresponding to the name argument to LoadLocation or FixedZone.
 func (l *Location) String() string
@@ -52,10 +52,6 @@ func (l *Location) String() string
 // FixedZone returns a Location that always uses
 // the given zone name and offset (seconds east of UTC).
 func FixedZone(name string, offset int) *Location
-
-// ruleKind is the kinds of rules that can be seen in a tzset string.
-
-// rule is a rule read from a tzset string.
 
 // LoadLocation returns the Location with the given name.
 //

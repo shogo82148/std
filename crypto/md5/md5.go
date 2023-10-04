@@ -20,8 +20,6 @@ const Size = 16
 // The blocksize of MD5 in bytes.
 const BlockSize = 64
 
-// digest represents the partial evaluation of a checksum.
-
 // New returns a new hash.Hash computing the MD5 checksum. The Hash also
 // implements encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
 // marshal and unmarshal the internal state of the hash.

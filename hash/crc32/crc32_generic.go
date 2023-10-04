@@ -11,7 +11,3 @@
 // table (8*256*4 bytes).
 
 package crc32
-
-// Use slicing-by-8 when payload >= this value.
-
-// slicing8Table is array of 8 Tables, used by the slicing-by-8 algorithm.

@@ -7,5 +7,3 @@
 //go:build js && wasm
 
 package net
-
-// Network file descriptor.

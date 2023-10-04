@@ -20,6 +20,9 @@ type Reader struct {
 	curr fileReader
 	blk  block
 
+	// err is a persistent error.
+	// It is only the responsibility of every exported method of Reader to
+	// ensure that this error is sticky.
 	err error
 }
 
@@ -49,7 +52,3 @@ func (tr *Reader) Next() (*Header, error)
 // TypeLink、TypeSymlink、TypeChar、TypeBlock、TypeDir、TypeFifoなどの特殊なタイプでReadを呼び出すと、
 // Header.Sizeが示す内容に関係なく、(0、io.EOF)が返されます。
 func (tr *Reader) Read(b []byte) (int, error)
-
-// regFileReader is a fileReader for reading data from a regular file entry.
-
-// sparseFileReader is a fileReader for reading data from a sparse file entry.

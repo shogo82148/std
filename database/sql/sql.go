@@ -26,8 +26,6 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// nowFunc returns the current time; it's overridden in tests.
-
 // Register makes a database driver available by the provided name.
 // If Register is called twice with the same name or if driver is nil,
 // it panics.
@@ -45,8 +43,17 @@ func Drivers() []string
 type NamedArg struct {
 	_NamedFieldsRequired struct{}
 
+	// Name is the name of the parameter placeholder.
+	//
+	// If empty, the ordinal position in the argument list will be
+	// used.
+	//
+	// Name must omit any symbol prefix.
 	Name string
 
+	// Value is the value of the parameter.
+	// It may be assigned the same value types as the query
+	// arguments.
 	Value any
 }
 
@@ -89,6 +96,8 @@ var _ fmt.Stringer = LevelDefault
 
 // TxOptions holds the transaction options to be used in DB.BeginTx.
 type TxOptions struct {
+	// Isolation is the transaction isolation level.
+	// If zero, the driver or database's default level is used.
 	Isolation IsolationLevel
 	ReadOnly  bool
 }
@@ -235,8 +244,13 @@ type Scanner interface {
 type Out struct {
 	_NamedFieldsRequired struct{}
 
+	// Dest is a pointer to the value that will be set to the result of the
+	// stored procedure's OUTPUT parameter.
 	Dest any
 
+	// In is whether the parameter is an INOUT parameter. If so, the input value to the stored
+	// procedure is the dereferenced value of Dest's pointer, which is then replaced with
+	// the output value.
 	In bool
 }
 
@@ -258,10 +272,13 @@ var ErrNoRows = errors.New("sql: no rows in result set")
 // connection is returned to DB's idle connection pool. The pool size
 // can be controlled with SetMaxIdleConns.
 type DB struct {
+	// Total time waited for new connections.
 	waitDuration atomic.Int64
 
 	connector driver.Connector
-
+	// numClosed is an atomic counter which represents a total number of
+	// closed connections. Stmt.openStmt checks it before cleaning closed
+	// connections in Stmt.css.
 	numClosed atomic.Uint64
 
 	mu           sync.Mutex
@@ -269,7 +286,11 @@ type DB struct {
 	connRequests map[uint64]chan connRequest
 	nextRequest  uint64
 	numOpen      int
-
+	// Used to signal the need for new connections
+	// a goroutine running connectionOpener() reads on this chan and
+	// maybeOpenNewConnections sends on the chan (one send per needed connection)
+	// It is closed during db.Close(). The close tells the connectionOpener
+	// goroutine to exit.
 	openerCh          chan struct{}
 	closed            bool
 	dep               map[finalCloser]depSet
@@ -286,28 +307,6 @@ type DB struct {
 
 	stop func()
 }
-
-// connReuseStrategy determines how (*DB).conn returns database connections.
-
-// driverConn wraps a driver.Conn with a mutex, to
-// be held during all calls into the Conn. (including any calls onto
-// interfaces returned via that Conn, such as calls on Tx, Stmt,
-// Result, Rows)
-
-// driverStmt associates a driver.Stmt with the
-// *driverConn from which it came, so the driverConn's lock can be
-// held during calls.
-
-// depSet is a finalCloser's outstanding dependencies
-
-// The finalCloser interface is used by (*DB).addDep and related
-// dependency reference counting.
-
-// This is the size of the connectionOpener request chan (DB.openerCh).
-// This value should be larger than the maximum typical value
-// used for db.maxOpen. If maxOpen is significantly larger than
-// connectionRequestQueueSize then it is possible for ALL calls into the *DB
-// to block until the connectionOpener can satisfy the backlog of requests.
 
 // OpenDB opens a database using a Connector, allowing drivers to
 // bypass a string based data source name.
@@ -405,10 +404,12 @@ func (db *DB) SetConnMaxIdleTime(d time.Duration)
 type DBStats struct {
 	MaxOpenConnections int
 
+	// Pool Status
 	OpenConnections int
 	InUse           int
 	Idle            int
 
+	// Counters
 	WaitCount         int64
 	WaitDuration      time.Duration
 	MaxIdleClosed     int64
@@ -418,19 +419,6 @@ type DBStats struct {
 
 // Stats returns database statistics.
 func (db *DB) Stats() DBStats
-
-// connRequest represents one request for a new connection
-// When there are no idle connections available, DB.conn will create
-// a new connRequest and put it on the db.connRequests list.
-
-// putConnHook is a hook for testing.
-
-// debugGetPut determines whether getConn & putConn calls' stack traces
-// are returned for more verbose crashes.
-
-// maxBadConnRetries is the number of maximum retries if the driver returns
-// driver.ErrBadConn to signal a broken connection before forcing a new
-// connection to be opened.
 
 // PrepareContext creates a prepared statement for later queries or executions.
 // Multiple queries or executions may be run concurrently from the
@@ -540,12 +528,21 @@ func (db *DB) Conn(ctx context.Context) (*Conn, error)
 type Conn struct {
 	db *DB
 
+	// closemu prevents the connection from closing while there
+	// is an active query. It is held for read during queries
+	// and exclusively during close.
 	closemu sync.RWMutex
 
+	// dc is owned until close, at which point
+	// it's returned to the connection pool.
 	dc *driverConn
 
+	// done transitions from false to true exactly once, on close.
+	// Once done, all operations fail with ErrConnDone.
 	done atomic.Bool
 
+	// releaseConn is a cache of c.closemuRUnlockCondReleaseConn
+	// to save allocations in a call to grabConn.
 	releaseConnOnce  sync.Once
 	releaseConnCache releaseConn
 }
@@ -618,33 +615,47 @@ func (c *Conn) Close() error
 type Tx struct {
 	db *DB
 
+	// closemu prevents the transaction from closing while there
+	// is an active query. It is held for read during queries
+	// and exclusively during close.
 	closemu sync.RWMutex
 
+	// dc is owned exclusively until Commit or Rollback, at which point
+	// it's returned with putConn.
 	dc  *driverConn
 	txi driver.Tx
 
+	// releaseConn is called once the Tx is closed to release
+	// any held driverConn back to the pool.
 	releaseConn func(error)
 
+	// done transitions from false to true exactly once, on Commit
+	// or Rollback. once done, all operations fail with
+	// ErrTxDone.
 	done atomic.Bool
 
+	// keepConnOnRollback is true if the driver knows
+	// how to reset the connection's session and if need be discard
+	// the connection.
 	keepConnOnRollback bool
 
+	// All Stmts prepared for this transaction. These will be closed after the
+	// transaction has been committed or rolled back.
 	stmts struct {
 		sync.Mutex
 		v []*Stmt
 	}
 
+	// cancel is called after done transitions from 0 to 1.
 	cancel func()
 
+	// ctx lives for the life of the transaction.
 	ctx context.Context
 }
 
 // ErrTxDone is returned by any operation that is performed on a transaction
 // that has already been committed or rolled back.
 var ErrTxDone = errors.New("sql: transaction has already been committed or rolled back")
-
-// hookTxGrabConn specifies an optional hook to be called on
-// a successful call to (*Tx).grabConn. For tests.
 
 // Commit commits the transaction.
 func (tx *Tx) Commit() error
@@ -750,11 +761,6 @@ func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...any) *R
 // QueryRowContext.
 func (tx *Tx) QueryRow(query string, args ...any) *Row
 
-// connStmt is a prepared statement on a particular connection.
-
-// stmtConnGrabber represents a Tx or Conn that will return the underlying
-// driverConn and release function.
-
 var (
 	_ stmtConnGrabber = &Tx{}
 	_ stmtConnGrabber = &Conn{}
@@ -770,22 +776,40 @@ var (
 // DB. When the Stmt needs to execute on a new underlying connection, it will
 // prepare itself on the new connection automatically.
 type Stmt struct {
+	// Immutable:
 	db        *DB
 	query     string
 	stickyErr error
 
 	closemu sync.RWMutex
 
+	// If Stmt is prepared on a Tx or Conn then cg is present and will
+	// only ever grab a connection from cg.
+	// If cg is nil then the Stmt must grab an arbitrary connection
+	// from db and determine if it must prepare the stmt again by
+	// inspecting css.
 	cg   stmtConnGrabber
 	cgds *driverStmt
 
+	// parentStmt is set when a transaction-specific statement
+	// is requested from an identical statement prepared on the same
+	// conn. parentStmt is used to track the dependency of this statement
+	// on its originating ("parent") statement so that parentStmt may
+	// be closed by the user without them having to know whether or not
+	// any transactions are still using it.
 	parentStmt *Stmt
 
 	mu     sync.Mutex
 	closed bool
 
+	// css is a list of underlying driver statement interfaces
+	// that are valid on particular connections. This is only
+	// used if cg == nil and one is found that has idle
+	// connections. If cg != nil, cgds is always used.
 	css []connStmt
 
+	// lastNumClosed is copied from db.numClosed when Stmt is created
+	// without tx and closed connections in css are removed.
 	lastNumClosed uint64
 }
 
@@ -849,19 +873,34 @@ type Rows struct {
 
 	contextDone atomic.Pointer[error]
 
+	// closemu prevents Rows from closing while there
+	// is an active streaming result. It is held for read during non-close operations
+	// and exclusively during close.
+	//
+	// closemu guards lasterr and closed.
 	closemu sync.RWMutex
 	closed  bool
 	lasterr error
 
+	// lastcols is only used in Scan, Next, and NextResultSet which are expected
+	// not to be called concurrently.
 	lastcols []driver.Value
 
+	// closemuScanHold is whether the previous call to Scan kept closemu RLock'ed
+	// without unlocking it. It does that when the user passes a *RawBytes scan
+	// target. In that case, we need to prevent awaitDone from closing the Rows
+	// while the user's still using the memory. See go.dev/issue/60304.
+	//
+	// It is only used by Scan, Next, and NextResultSet which are expected
+	// not to be called concurrently.
 	closemuScanHold bool
 
+	// hitEOF is whether Next hit the end of the rows without
+	// encountering an error. It's set in Next before
+	// returning. It's only used by Next and Err which are
+	// expected not to be called concurrently.
 	hitEOF bool
 }
-
-// bypassRowsAwaitDone is only used for testing.
-// If true, it will not close the Rows automatically from the context.
 
 // Next prepares the next result row for reading with the Scan method. It
 // returns true on success, or false if there is no next result row or an error
@@ -1002,9 +1041,6 @@ func (ci *ColumnType) DatabaseTypeName() string
 // that error will be wrapped in the returned error.
 func (rs *Rows) Scan(dest ...any) error
 
-// rowsCloseHook returns a function so tests may install the
-// hook through a test only mutex.
-
 // Close closes the Rows, preventing further enumeration. If Next is called
 // and returns false and there are no further result sets,
 // the Rows are closed automatically and it will suffice to check the
@@ -1013,6 +1049,7 @@ func (rs *Rows) Close() error
 
 // Row is the result of calling QueryRow to select a single row.
 type Row struct {
+	// One of these two will be non-nil:
 	err  error
 	rows *Rows
 }

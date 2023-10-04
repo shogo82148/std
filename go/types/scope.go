@@ -97,6 +97,3 @@ func (s *Scope) WriteTo(w io.Writer, n int, recurse bool)
 
 // String returns a string representation of the scope, for debugging.
 func (s *Scope) String() string
-
-// A lazyObject represents an imported Object that has not been fully
-// resolved yet by its importer.

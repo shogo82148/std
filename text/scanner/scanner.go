@@ -80,34 +80,64 @@ const GoWhitespace = 1<<'\t' | 1<<'\n' | 1<<'\r' | 1<<' '
 
 // A Scanner implements reading of Unicode characters and tokens from an io.Reader.
 type Scanner struct {
+	// Input
 	src io.Reader
 
+	// Source buffer
 	srcBuf [bufLen + 1]byte
 	srcPos int
 	srcEnd int
 
+	// Source position
 	srcBufOffset int
 	line         int
 	column       int
 	lastLineLen  int
 	lastCharLen  int
 
+	// Token text buffer
+	// Typically, token text is stored completely in srcBuf, but in general
+	// the token text's head may be buffered in tokBuf while the token text's
+	// tail is stored in srcBuf.
 	tokBuf bytes.Buffer
 	tokPos int
 	tokEnd int
 
+	// One character look-ahead
 	ch rune
 
+	// Error is called for each error encountered. If no Error
+	// function is set, the error is reported to os.Stderr.
 	Error func(s *Scanner, msg string)
 
+	// ErrorCount is incremented by one for each error encountered.
 	ErrorCount int
 
+	// The Mode field controls which tokens are recognized. For instance,
+	// to recognize Ints, set the ScanInts bit in Mode. The field may be
+	// changed at any time.
 	Mode uint
 
+	// The Whitespace field controls which characters are recognized
+	// as white space. To recognize a character ch <= ' ' as white space,
+	// set the ch'th bit in Whitespace (the Scanner's behavior is undefined
+	// for values ch > ' '). The field may be changed at any time.
 	Whitespace uint64
 
+	// IsIdentRune is a predicate controlling the characters accepted
+	// as the ith rune in an identifier. The set of valid characters
+	// must not intersect with the set of white space characters.
+	// If no IsIdentRune function is set, regular Go identifiers are
+	// accepted instead. The field may be changed at any time.
 	IsIdentRune func(ch rune, i int) bool
 
+	// Start position of most recently scanned token; set by Scan.
+	// Calling Init or Next invalidates the position (Line == 0).
+	// The Filename field is always left untouched by the Scanner.
+	// If an error is reported (via Error) and Position is invalid,
+	// the scanner is not inside a token. Call Pos to obtain an error
+	// position in that case, or to obtain the position immediately
+	// after the most recently scanned token.
 	Position
 }
 

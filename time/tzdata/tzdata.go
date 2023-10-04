@@ -14,7 +14,3 @@
 //
 // このパッケージは、-tags timetzdata でビルドすると自動的にインポートされます。
 package tzdata
-
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)

@@ -55,12 +55,3 @@ func (h *JSONHandler) WithGroup(name string) Handler
 //
 // Handleの各呼び出しは、io.Writer.Writeに対して1回のシリアル化された呼び出しを生成します。
 func (h *JSONHandler) Handle(_ context.Context, r Record) error
-
-// Copied from encoding/json/tables.go.
-//
-// safeSet holds the value true if the ASCII character with the given array
-// position can be represented inside a JSON string without any further
-// escaping.
-//
-// All values are true except for the ASCII control characters (0-31), the
-// double quote ("), and the backslash character ("\").

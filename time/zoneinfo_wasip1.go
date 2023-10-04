@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package time
-
-// in wasip1 zoneinfo is managed by the runtime.

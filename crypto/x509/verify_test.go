@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package x509
-
-// googleLeafWithInvalidHash is the same as googleLeaf, but the signature
-// algorithm in the certificate contains a nonsense OID.

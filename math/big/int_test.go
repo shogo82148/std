@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package big
-
-// Examples from the Go Language Spec, section "Arithmetic operators"
-
-// Entries must be sorted by value in ascending order.

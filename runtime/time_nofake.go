@@ -5,8 +5,3 @@
 //go:build !faketime
 
 package runtime
-
-// faketime is the simulated time in nanoseconds since 1970 for the
-// playground.
-//
-// Zero means not to use faketime.

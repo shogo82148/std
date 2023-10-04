@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package context_test
-
-// afterFuncContext is a context that's not one of the types
-// defined in context.go, that supports registering AfterFuncs.

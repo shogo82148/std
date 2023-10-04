@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package tls
-
-// serverTest represents a test of the TLS server handshake against a reference
-// implementation.

@@ -10,14 +10,6 @@ import (
 	"fmt"
 )
 
-type Point struct {
-	X, Y int
-}
-
-type Pythagoras interface {
-	Hypotenuse() float64
-}
-
 // This example shows how to encode an interface value. The key
 // distinction from regular types is to register the concrete type that
 // implements the interface.

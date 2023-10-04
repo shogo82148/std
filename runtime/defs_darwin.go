@@ -12,18 +12,6 @@ GOARCH=amd64 go tool cgo -cdefs defs_darwin.go >defs_darwin_amd64.h
 
 package runtime
 
-/*
-#define __DARWIN_UNIX03 0
-#include <mach/mach_time.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <errno.h>
-#include <signal.h>
-#include <sys/event.h>
-#include <sys/mman.h>
-#include <pthread.h>
-#include <fcntl.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

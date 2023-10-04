@@ -18,12 +18,3 @@
 // decimal format - left shift can be done precisely in binary format.
 
 package big
-
-// A decimal represents an unsigned floating-point number in decimal representation.
-// The value of a non-zero decimal d is d.mant * 10**d.exp with 0.1 <= d.mant < 1,
-// with the most-significant mantissa digit at index 0. For the zero decimal, the
-// mantissa length and exponent are 0.
-// The zero value for decimal represents a ready-to-use 0.0.
-
-// Maximum shift amount that can be done in one pass without overflow.
-// A Word has _W bits and (1<<maxShift - 1)*10 + 9 must fit into Word.

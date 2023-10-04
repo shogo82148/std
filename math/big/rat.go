@@ -16,6 +16,11 @@ package big
 // a new value using the Rat.Set method; shallow copies
 // of Rats are not supported and may lead to errors.
 type Rat struct {
+	// To make zero values for Rat work w/o initialization,
+	// a zero value of b (len(b) == 0) acts like b == 1. At
+	// the earliest opportunity (when an assignment to the Rat
+	// is made), such uninitialized denominators are set to 1.
+	// a.neg determines the sign of the Rat, b.neg is ignored.
 	a, b Int
 }
 
