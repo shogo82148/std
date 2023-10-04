@@ -19,10 +19,6 @@
 
 package http
 
-import (
-	mathrand "math/rand"
-)
-
 // ClientConnPool manages a pool of HTTP/2 client connections.
 
 // clientConnPoolIdleCloser is the interface implemented by ClientConnPool

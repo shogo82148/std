@@ -37,3 +37,17 @@ type hookSetter any
 
 var testHookEnterRoundTrip any
 var testHookRoundTripRetried any
+
+type http2clientConnPoolIdleCloser any
+type http2clientConnPool struct{}
+type http2noDialClientConnPool struct{}
+
+type http2responseWriter struct{}
+
+func (*http2responseWriter) CloseNotify() <-chan bool
+
+func (w *http2responseWriter) Flush()
+
+func (w *http2responseWriter) Push(target string, opts *PushOptions) error
+
+type http2stringWriter any
