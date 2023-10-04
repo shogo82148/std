@@ -14,30 +14,7 @@ GOARCH=arm go tool cgo -cdefs defs_freebsd.go >defs_freebsd_arm.h
 
 package runtime
 
-/*
-#include <sys/types.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/time.h>
-#include <signal.h>
-#include <errno.h>
-#include <sys/event.h>
-#include <sys/mman.h>
-#include <sys/ucontext.h>
-#include <sys/umtx.h>
-#include <sys/_umtx.h>
-#include <sys/rtprio.h>
-#include <sys/thr.h>
-#include <sys/_sigset.h>
-#include <sys/unistd.h>
-#include <sys/sysctl.h>
-#include <sys/cpuset.h>
-#include <sys/param.h>
-#include <sys/vdso.h>
-*/
 import "github.com/shogo82148/std/C"
-
-// Local consts.
 
 const (
 	EINTR     = C.EINTR

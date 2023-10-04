@@ -5,5 +5,3 @@
 //go:build aix
 
 package syscall
-
-var IoctlPtr = ioctlPtr

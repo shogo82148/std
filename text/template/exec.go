@@ -8,17 +8,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// maxExecDepth specifies the maximum stack depth of templates within
-// templates. This limit is only practically reached by accidentally
-// recursive template invocations. This limit allows us to return
-// an error instead of triggering a stack overflow.
-
-// state represents the state of an execution. It's not part of the
-// template so that multiple executions of the same template
-// can execute in parallel.
-
-// variable holds the dynamic value of a variable such as $, $x etc.
-
 // ExecError is the custom error type returned when Execute has an
 // error evaluating its template. (If a write error occurs, the actual
 // error is returned; it will not be of type ExecError.)
@@ -30,11 +19,6 @@ type ExecError struct {
 func (e ExecError) Error() string
 
 func (e ExecError) Unwrap() error
-
-// writeError is the wrapper type used internally when Execute has an
-// error writing to its output. We strip the wrapper in errRecover.
-// Note that this is not an implementation of error, so it cannot escape
-// from the package as an error value.
 
 // ExecuteTemplate applies the template associated with t that has the given name
 // to the specified data object and writes the output to wr.
@@ -62,8 +46,6 @@ func (t *Template) Execute(wr io.Writer, data any) error
 // it returns the empty string. For generating an error message here
 // and in html/template.
 func (t *Template) DefinedTemplates() string
-
-// Sentinel errors for use with panic to signal early exits from range loops.
 
 // IsTrue reports whether the value is 'true', in the sense of not the zero of its type,
 // and whether the value has a meaningful truth value. This is the definition of

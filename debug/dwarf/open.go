@@ -24,6 +24,7 @@ import (
 // Data represents the DWARF debugging information
 // loaded from an executable file (for example, an ELF or Mach-O executable).
 type Data struct {
+	// raw data
 	abbrev   []byte
 	aranges  []byte
 	frame    []byte
@@ -33,11 +34,13 @@ type Data struct {
 	ranges   []byte
 	str      []byte
 
+	// New sections added in DWARF 5.
 	addr       []byte
 	lineStr    []byte
 	strOffsets []byte
 	rngLists   []byte
 
+	// parsed data
 	abbrevCache map[uint64]abbrevTable
 	bigEndian   bool
 	order       binary.ByteOrder

@@ -5,6 +5,3 @@
 //go:build darwin || dragonfly || freebsd || openbsd
 
 package syscall_test
-
-const MNT_WAIT = 1
-const MNT_NOWAIT = 2

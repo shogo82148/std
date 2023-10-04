@@ -55,10 +55,3 @@ func InterfaceByIndex(index int) (*Interface, error)
 
 // InterfaceByName returns the interface specified by name.
 func InterfaceByName(name string) (*Interface, error)
-
-// An ipv6ZoneCache represents a cache holding partial network
-// interface information. It is used for reducing the cost of IPv6
-// addressing scope zone resolution.
-//
-// Multiple names sharing the index are managed by first-come
-// first-served basis for consistency.

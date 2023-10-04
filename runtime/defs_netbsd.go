@@ -16,17 +16,6 @@ GOARCH=arm go tool cgo -cdefs defs_netbsd.go defs_netbsd_arm.go >defs_netbsd_arm
 
 package runtime
 
-/*
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/signal.h>
-#include <sys/event.h>
-#include <sys/time.h>
-#include <sys/ucontext.h>
-#include <sys/unistd.h>
-#include <errno.h>
-#include <signal.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

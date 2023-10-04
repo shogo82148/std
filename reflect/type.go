@@ -126,16 +126,6 @@ const (
 // Ptr is the old name for the [Pointer] kind.
 const Ptr = Pointer
 
-// uncommonType is present only for defined types or types with methods
-// (if T is a defined type, the uncommonTypes for T and *T have methods).
-// Using a pointer to this struct reduces the overall size required
-// to describe a non-defined type with no methods.
-
-// Embed this type to get common/uncommon
-
-// rtype is the common implementation of most values.
-// It is embedded in other struct types.
-
 // ChanDir represents a channel type's direction.
 type ChanDir int
 
@@ -145,38 +135,16 @@ const (
 	BothDir = RecvDir | SendDir
 )
 
-// arrayType represents a fixed array type.
-
-// chanType represents a channel type.
-
-// funcType represents a function type.
-//
-// A *rtype for each in and out parameter is stored in an array that
-// directly follows the funcType (and possibly its uncommonType). So
-// a function type with one method, one input, and one output is:
-//
-//	struct {
-//		funcType
-//		uncommonType
-//		[2]*rtype    // [0] is in, [1] is out
-//	}
-
-// interfaceType represents an interface type.
-
-// mapType represents a map type.
-
-// ptrType represents a pointer type.
-
-// sliceType represents a slice type.
-
-// Struct field
-
-// structType represents a struct type.
-
 // Method represents a single method.
 type Method struct {
+	// Name is the method name.
 	Name string
 
+	// PkgPath is the package path that qualifies a lower case (unexported)
+	// method name. It is empty for upper case (exported) method names.
+	// The combination of PkgPath and Name uniquely identifies a method
+	// in a method set.
+	// See https://golang.org/ref/spec#Uniqueness_of_identifiers
 	PkgPath string
 
 	Type  Type
@@ -194,8 +162,12 @@ func (d ChanDir) String() string
 
 // A StructField describes a single field in a struct.
 type StructField struct {
+	// Name is the field name.
 	Name string
 
+	// PkgPath is the package path that qualifies a lower case (unexported)
+	// field name. It is empty for upper case (exported) field names.
+	// See https://golang.org/ref/spec#Uniqueness_of_identifiers
 	PkgPath string
 
 	Type      Type
@@ -233,13 +205,9 @@ func (tag StructTag) Get(key string) string
 // the value returned by Lookup is unspecified.
 func (tag StructTag) Lookup(key string) (value string, ok bool)
 
-// A fieldScan represents an item on the fieldByNameFunc scan work list.
-
 // TypeOf returns the reflection [Type] that represents the dynamic type of i.
 // If i is a nil interface value, TypeOf returns nil.
 func TypeOf(i any) Type
-
-// ptrMap is the cache for PointerTo.
 
 // PtrTo returns the pointer type with element t.
 // For example, if t represents type Foo, PtrTo(t) represents *Foo.
@@ -253,16 +221,6 @@ func PtrTo(t Type) Type
 // PointerTo returns the pointer type with element t.
 // For example, if t represents type Foo, PointerTo(t) represents *Foo.
 func PointerTo(t Type) Type
-
-// The lookupCache caches ArrayOf, ChanOf, MapOf and SliceOf lookups.
-
-// A cacheKey is the key for use in the lookupCache.
-// Four values describe any of the types we are looking for:
-// type kind, one or two subtypes, and an extra integer.
-
-// The funcLookupCache caches FuncOf lookups.
-// FuncOf does not share the common lookupCache since cacheKey is not
-// sufficient to represent functions unambiguously.
 
 // ChanOf returns the channel type with the given direction and element type.
 // For example, if t represents int, ChanOf(RecvDir, t) represents <-chan int.
@@ -288,18 +246,9 @@ func MapOf(key, elem Type) Type
 // true.
 func FuncOf(in, out []Type, variadic bool) Type
 
-// Make sure these routines stay in sync with ../runtime/map.go!
-// These types exist only for GC, so we only fill out GC relevant info.
-// Currently, that's just size and the GC program. We also fill in string
-// for possible debugging use.
-
 // SliceOf returns the slice type with element type t.
 // For example, if t represents int, SliceOf(t) represents []int.
 func SliceOf(t Type) Type
-
-// The structLookupCache caches StructOf lookups.
-// StructOf does not share the common lookupCache since we need to pin
-// the memory associated with *structTypeFixedN.
 
 // StructOf returns the struct type containing fields.
 // The Offset and Index fields are ignored and computed as they would be
@@ -309,16 +258,12 @@ func SliceOf(t Type) Type
 // and panics if passed unexported StructFields.
 func StructOf(fields []StructField) Type
 
-// See cmd/compile/internal/reflectdata/reflect.go for derivation of constant.
-
 // ArrayOf returns the array type with the given length and element type.
 // For example, if t represents int, ArrayOf(5, t) represents [5]int.
 //
 // If the resulting type would be larger than the available address space,
 // ArrayOf panics.
 func ArrayOf(length int, elem Type) Type
-
-// Note: this type must agree with runtime.bitvector.
 
 // TypeFor returns the [Type] that represents the type argument T.
 func TypeFor[T any]() Type

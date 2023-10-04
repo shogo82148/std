@@ -17,7 +17,3 @@
 // This package will be automatically imported if you build with
 // -tags timetzdata.
 package tzdata
-
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)

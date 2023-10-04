@@ -8,7 +8,3 @@
 // runtime rwmutex.
 
 package runtime_test
-
-import (
-	. "runtime"
-)

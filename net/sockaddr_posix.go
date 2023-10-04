@@ -5,6 +5,3 @@
 //go:build unix || js || wasip1 || windows
 
 package net
-
-// A sockaddr represents a TCP, UDP, IP or Unix network endpoint
-// address that can be converted into a syscall.Sockaddr.

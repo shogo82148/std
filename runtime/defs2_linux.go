@@ -16,32 +16,6 @@ file.  Sigh.
 
 package runtime
 
-/*
-#cgo CFLAGS: -I/tmp/linux/arch/x86/include -I/tmp/linux/include -D_LOOSE_KERNEL_NAMES -D__ARCH_SI_UID_T=__kernel_uid32_t
-
-#define size_t __kernel_size_t
-#define pid_t int
-#include <asm/signal.h>
-#include <asm/mman.h>
-#include <asm/sigcontext.h>
-#include <asm/ucontext.h>
-#include <asm/siginfo.h>
-#include <asm-generic/errno.h>
-#include <asm-generic/fcntl.h>
-#include <asm-generic/poll.h>
-#include <linux/eventpoll.h>
-
-// This is the sigaction structure from the Linux 2.1.68 kernel which
-//   is used with the rt_sigaction system call. For 386 this is not
-//   defined in any public header file.
-
-struct kernel_sigaction {
-	__sighandler_t k_sa_handler;
-	unsigned long sa_flags;
-	void (*sa_restorer) (void);
-	unsigned long long sa_mask;
-};
-*/
 import "github.com/shogo82148/std/C"
 
 const (

@@ -128,45 +128,7 @@
 
 package runtime
 
-// Garbage collector phase.
-// Indicates to write barrier and synchronization task to perform.
-
-// The compiler knows about this variable.
-// If you change it, you must change builtin/runtime.go, too.
-// If you change the first four bytes, you must also change the write
-// barrier insertion code.
-
-// gcBlackenEnabled is 1 if mutator assists and background mark
-// workers are allowed to blacken objects. This must only be set when
-// gcphase == _GCmark.
-
-// gcMarkWorkerMode represents the mode that a concurrent mark worker
-// should operate in.
-//
-// Concurrent marking happens through four different mechanisms. One
-// is mutator assists, which happen in response to allocations and are
-// not scheduled. The other three are variations in the per-P mark
-// workers and are distinguished by gcMarkWorkerMode.
-
-// gcMarkWorkerModeStrings are the strings labels of gcMarkWorkerModes
-// to use in execution traces.
-
 // GC runs a garbage collection and blocks the caller until the
 // garbage collection is complete. It may also block the entire
 // program.
 func GC()
-
-// gcMode indicates how concurrent a GC cycle should be.
-
-// A gcTrigger is a predicate for starting a GC cycle. Specifically,
-// it is an exit condition for the _GCoff phase.
-
-// gcMarkDoneFlushed counts the number of P's with flushed work.
-//
-// Ideally this would be a captured local in gcMarkDone, but forEachP
-// escapes its callback closure, so it can't capture anything.
-//
-// This is protected by markDoneSema.
-
-// gcBgMarkWorkerNode is an entry in the gcBgMarkWorkerPool. It points to a single
-// gcBgMarkWorker goroutine.

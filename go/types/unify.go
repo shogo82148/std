@@ -33,9 +33,3 @@
 // upon instantiation and function argument passing.
 
 package types
-
-// A unifier maintains a list of type parameters and
-// corresponding types inferred for each type parameter.
-// A unifier is created by calling newUnifier.
-
-// unifyMode controls the behavior of the unifier.

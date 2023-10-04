@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package types
-
-// A version represents a released Go version.
-
-// Go versions that introduced language changes.

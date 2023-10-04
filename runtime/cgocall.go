@@ -83,8 +83,3 @@
 // to GoF, which unpacks any result values and returns to f.
 
 package runtime
-
-// Addresses collected in a cgo backtrace when crashing.
-// Length must match arg.Max in x_cgo_callers in runtime/cgo/gcc_traceback.c.
-
-// argset matches runtime/cgo/linux_syscall.c:argset_t

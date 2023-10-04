@@ -3,11 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package sort_test
-
-import (
-	. "sort"
-	stringspkg "strings"
-)
-
-// This is based on the "antiquicksort" implementation by M. Douglas McIlroy.
-// See https://www.cs.dartmouth.edu/~doug/mdmspe.pdf for more info.

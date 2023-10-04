@@ -24,12 +24,6 @@ func (s *MethodSet) At(i int) *Selection
 // Lookup returns the method with matching package and name, or nil if not found.
 func (s *MethodSet) Lookup(pkg *Package, name string) *Selection
 
-// Shared empty method set.
-
 // NewMethodSet returns the method set for the given type T.
 // It always returns a non-nil method set, even if it is empty.
 func NewMethodSet(T Type) *MethodSet
-
-// A methodSet is a set of methods and name collisions.
-// A collision indicates that multiple methods with the
-// same unique id, or a field with that id appeared.

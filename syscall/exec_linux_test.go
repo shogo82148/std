@@ -5,6 +5,3 @@
 //go:build linux
 
 package syscall_test
-
-const CAP_SYS_TIME = 25
-const CAP_SYSLOG = 34

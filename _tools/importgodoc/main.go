@@ -79,8 +79,23 @@ func godoc(path string) ([]byte, error) {
 		return nil, err
 	}
 
+	var packageName string
+	if node.Name != nil {
+		packageName = node.Name.Name
+	}
+	isTestPackage := strings.HasSuffix(packageName, "_test")
+	isExample := isTestPackage && includesExampleTest(node)
+
 	var decls []ast.Decl
 	var comments []*ast.CommentGroup
+	seen := map[*ast.CommentGroup]bool{}
+	addComment := func(c *ast.CommentGroup) {
+		if seen[c] {
+			return
+		}
+		seen[c] = true
+		comments = append(comments, c)
+	}
 
 	for _, d := range node.Decls {
 		switch d := d.(type) {
@@ -101,25 +116,31 @@ func godoc(path string) ([]byte, error) {
 			} else {
 				for _, c := range node.Comments {
 					if c.End() > d.Body.Pos() && c.End() < d.Body.End() {
-						comments = append(comments, c)
+						addComment(c)
 					}
 				}
 			}
 			if d.Doc != nil {
-				comments = append(comments, d.Doc)
+				addComment(d.Doc)
 			}
 
 		case *ast.GenDecl:
-			if d.Doc != nil {
-				comments = append(comments, d.Doc)
-			}
-
 			var specs []ast.Spec
 			for _, spec := range d.Specs {
 				switch spec := spec.(type) {
+				case *ast.ImportSpec:
+					// 名前付きインポートは、ドキュメント中では使わないので除外する
+					if spec.Name != nil {
+						continue
+					}
 				case *ast.ValueSpec:
 					var names []*ast.Ident
 					for _, name := range spec.Names {
+						// テスト中の変数は除外する
+						if isTest && !isExample {
+							continue
+						}
+						// 非公開の変数は除外する
 						if name == nil || (!ast.IsExported(name.Name) && name.Name != "_") {
 							continue
 						}
@@ -130,15 +151,29 @@ func godoc(path string) ([]byte, error) {
 					}
 					spec.Names = names
 
+					if d.Doc != nil {
+						addComment(d.Doc)
+					}
 					if spec.Doc != nil {
-						comments = append(comments, spec.Doc)
+						addComment(spec.Doc)
 					}
 				case *ast.TypeSpec:
-					if spec.Name == nil || !ast.IsExported(spec.Name.Name) {
+					if isTest || spec.Name == nil || !ast.IsExported(spec.Name.Name) {
 						continue
 					}
+
+					if d.Doc != nil {
+						addComment(d.Doc)
+					}
 					if spec.Doc != nil {
-						comments = append(comments, spec.Doc)
+						addComment(spec.Doc)
+					}
+					if st, ok := spec.Type.(*ast.StructType); ok {
+						for _, f := range st.Fields.List {
+							if f.Doc != nil {
+								comments = append(comments, f.Doc)
+							}
+						}
 					}
 				}
 				specs = append(specs, spec)
@@ -154,18 +189,7 @@ func godoc(path string) ([]byte, error) {
 
 	// remove comments
 	for _, g := range node.Comments {
-		group := g.List[:0]
-		for _, c := range g.List {
-			if c.Pos() < node.Name.Pos() {
-				group = append(group, c)
-				continue
-			}
-			if isSpecialComment(c) {
-				group = append(group, c)
-			}
-		}
-		if len(group) != 0 {
-			g.List = group
+		if g.Pos() < node.Name.Pos() {
 			comments = append(comments, g)
 		}
 	}
@@ -210,8 +234,13 @@ func isSpecialDir(s string) bool {
 	return strings.HasPrefix(s, ".") || s == "testdata" || s == "internal" || s == "vendor"
 }
 
-func isSpecialComment(c *ast.Comment) bool {
-	return strings.HasPrefix(c.Text, "//go:build ") || strings.HasPrefix(c.Text, "// +build ")
+func includesExampleTest(node *ast.File) bool {
+	for _, d := range node.Decls {
+		if d, ok := d.(*ast.FuncDecl); ok && d.Name != nil && strings.HasPrefix(d.Name.Name, "Example") {
+			return true
+		}
+	}
+	return false
 }
 
 func isInternal(path string) bool {

@@ -6,28 +6,3 @@
 // package.
 
 package http
-
-var (
-	DefaultUserAgent                  = defaultUserAgent
-	NewLoggingConn                    = newLoggingConn
-	ExportAppendTime                  = appendTime
-	ExportRefererForURL               = refererForURL
-	ExportServerNewConn               = (*Server).newConn
-	ExportCloseWriteAndWait           = (*conn).closeWriteAndWait
-	ExportErrRequestCanceled          = errRequestCanceled
-	ExportErrRequestCanceledConn      = errRequestCanceledConn
-	ExportErrServerClosedIdle         = errServerClosedIdle
-	ExportServeFile                   = serveFile
-	ExportScanETag                    = scanETag
-	ExportHttp2ConfigureServer        = http2ConfigureServer
-	Export_shouldCopyHeaderOnRedirect = shouldCopyHeaderOnRedirect
-	Export_writeStatusLine            = writeStatusLine
-	Export_is408Message               = is408Message
-)
-
-var MaxWriteWaitBeforeConnReuse = &maxWriteWaitBeforeConnReuse
-
-var (
-	SetEnterRoundTripHook = hookSetter(&testHookEnterRoundTrip)
-	SetRoundTripRetried   = hookSetter(&testHookRoundTripRetried)
-)

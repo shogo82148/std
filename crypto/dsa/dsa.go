@@ -54,9 +54,6 @@ const (
 	L3072N256
 )
 
-// numMRTests is the number of Miller-Rabin primality tests that we perform. We
-// pick the largest recommended number from table C.1 of FIPS 186-3.
-
 // GenerateParameters puts a random, valid set of DSA parameters into params.
 // This function can take many seconds, even on fast machines.
 func GenerateParameters(params *Parameters, rand io.Reader, sizes ParameterSizes) error

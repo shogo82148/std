@@ -35,8 +35,6 @@ package types
 //     the method's formal receiver base type, nor was the receiver addressable.
 func LookupFieldOrMethod(T Type, addressable bool, pkg *Package, name string) (obj Object, index []int, indirect bool)
 
-// embeddedType represents an embedded type
-
 // MissingMethod returns (nil, false) if V implements T, otherwise it
 // returns a missing method required by T and whether it is missing or
 // just has the wrong type: either a pointer receiver or wrong signature.

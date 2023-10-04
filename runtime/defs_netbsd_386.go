@@ -12,10 +12,6 @@ GOARCH=386 go tool cgo -cdefs defs_netbsd.go defs_netbsd_386.go >defs_netbsd_386
 
 package runtime
 
-/*
-#include <sys/types.h>
-#include <machine/mcontext.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

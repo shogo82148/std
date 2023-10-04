@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package net
-
-// submissions service is only available through a tcp network, see:
-// https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?search=submissions

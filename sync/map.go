@@ -35,19 +35,37 @@ import (
 type Map struct {
 	mu Mutex
 
+	// read contains the portion of the map's contents that are safe for
+	// concurrent access (with or without mu held).
+	//
+	// The read field itself is always safe to load, but must only be stored with
+	// mu held.
+	//
+	// Entries stored in read may be updated concurrently without mu, but updating
+	// a previously-expunged entry requires that the entry be copied to the dirty
+	// map and unexpunged with mu held.
 	read atomic.Pointer[readOnly]
 
+	// dirty contains the portion of the map's contents that require mu to be
+	// held. To ensure that the dirty map can be promoted to the read map quickly,
+	// it also includes all of the non-expunged entries in the read map.
+	//
+	// Expunged entries are not stored in the dirty map. An expunged entry in the
+	// clean map must be unexpunged and added to the dirty map before a new value
+	// can be stored to it.
+	//
+	// If the dirty map is nil, the next write to the map will initialize it by
+	// making a shallow copy of the clean map, omitting stale entries.
 	dirty map[any]*entry
 
+	// misses counts the number of loads since the read map was last updated that
+	// needed to lock mu to determine whether the key was present.
+	//
+	// Once enough misses have occurred to cover the cost of copying the dirty
+	// map, the dirty map will be promoted to the read map (in the unamended
+	// state) and the next store to the map will make a new dirty copy.
 	misses int
 }
-
-// readOnly is an immutable struct stored atomically in the Map.read field.
-
-// expunged is an arbitrary pointer that marks entries which have been deleted
-// from the dirty map.
-
-// An entry is a slot in the map corresponding to a particular key.
 
 // Load returns the value stored in the map for a key, or nil if no
 // value is present.

@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// key and version at man 7 vdso : riscv
-
-// initialize to fall back to syscall

@@ -13,43 +13,6 @@ Input to cgo -godefs.  See also mkerrors.sh and mkall.sh
 
 package syscall
 
-/*
-#include <sys/types.h>
-#include <sys/time.h>
-#include <sys/limits.h>
-#include <sys/un.h>
-#include <sys/utsname.h>
-#include <sys/ptrace.h>
-#include <sys/statfs.h>
-
-#include <net/if.h>
-#include <net/if_dl.h>
-#include <netinet/in.h>
-#include <netinet/icmp6.h>
-
-#include <termios.h>
-
-#include <dirent.h>
-#include <fcntl.h>
-#include <gcrypt.h>
-
-enum {
-	sizeofPtr = sizeof(void*),
-};
-
-union sockaddr_all {
-	struct sockaddr s1;	// this one gets used for fields
-	struct sockaddr_in s2;	// these pad it out
-	struct sockaddr_in6 s3;
-	struct sockaddr_un s4;
-};
-
-struct sockaddr_any {
-	struct sockaddr addr;
-	char pad[sizeof(union sockaddr_all) - sizeof(struct sockaddr)];
-};
-
-*/
 import "github.com/shogo82148/std/C"
 
 const (

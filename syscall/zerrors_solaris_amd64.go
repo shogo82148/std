@@ -1245,7 +1245,3 @@ const (
 	SIGXFSZ    = Signal(0x1f)
 	SIGXRES    = Signal(0x26)
 )
-
-// Error table
-
-// Signal table

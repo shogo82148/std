@@ -3,14 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package zip
-
-import (
-	"io/fs"
-)
-
-type WriteTest struct {
-	Name   string
-	Data   []byte
-	Method uint16
-	Mode   fs.FileMode
-}

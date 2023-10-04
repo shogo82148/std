@@ -61,11 +61,6 @@ func Marshal(curve Curve, x, y *big.Int) []byte
 // curve (or is the conventional point at infinity), the behavior is undefined.
 func MarshalCompressed(curve Curve, x, y *big.Int) []byte
 
-// unmarshaler is implemented by curves with their own constant-time Unmarshal.
-//
-// There isn't an equivalent interface for Marshal/MarshalCompressed because
-// that doesn't involve any mathematical operations, only FillBytes and Bit.
-
 // Assert that the known curves implement unmarshaler.
 var _ = []unmarshaler{p224, p256, p384, p521}
 

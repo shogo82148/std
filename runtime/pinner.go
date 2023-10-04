@@ -25,8 +25,3 @@ func (p *Pinner) Pin(pointer any)
 
 // Unpin unpins all pinned objects of the Pinner.
 func (p *Pinner) Unpin()
-
-// pinnerBits is the same type as gcBits but has different methods.
-
-// to be able to test that the GC panics when a pinned pointer is leaking, this
-// panic function is a variable, that can be overwritten by a test.

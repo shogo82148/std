@@ -61,12 +61,3 @@ func (h *JSONHandler) WithGroup(name string) Handler
 //
 // Each call to Handle results in a single serialized call to io.Writer.Write.
 func (h *JSONHandler) Handle(_ context.Context, r Record) error
-
-// Copied from encoding/json/tables.go.
-//
-// safeSet holds the value true if the ASCII character with the given array
-// position can be represented inside a JSON string without any further
-// escaping.
-//
-// All values are true except for the ASCII control characters (0-31), the
-// double quote ("), and the backslash character ("\").

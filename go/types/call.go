@@ -5,7 +5,3 @@
 // This file implements typechecking of call and selector expressions.
 
 package types
-
-import (
-	. "internal/types/errors"
-)

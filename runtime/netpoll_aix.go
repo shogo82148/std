@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// pollfd represents the poll structure for AIX operating system.

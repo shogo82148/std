@@ -8,10 +8,6 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Global lock to ensure only one benchmark runs at a time.
-
-// Used for every benchmark for measuring memory.
-
 // InternalBenchmark is an internal type but exported because it is cross-package;
 // it is part of the implementation of the "go test" command.
 type InternalBenchmark struct {
@@ -47,13 +43,13 @@ type B struct {
 	showAllocResult  bool
 	result           BenchmarkResult
 	parallelism      int
-
+	// The initial states of memStats.Mallocs and memStats.TotalAlloc.
 	startAllocs uint64
 	startBytes  uint64
-
+	// The net total of this test after being run.
 	netAllocs uint64
 	netBytes  uint64
-
+	// Extra metrics collected by ReportMetric.
 	extra map[string]float64
 }
 
@@ -105,6 +101,7 @@ type BenchmarkResult struct {
 	MemAllocs uint64
 	MemBytes  uint64
 
+	// Extra records additional metrics reported by ReportMetric.
 	Extra map[string]float64
 }
 
@@ -134,10 +131,6 @@ func (r BenchmarkResult) MemString() string
 // RunBenchmarks is an internal function but exported because it is cross-package;
 // it is part of the implementation of the "go test" command.
 func RunBenchmarks(matchString func(pat, str string) (bool, error), benchmarks []InternalBenchmark)
-
-// If hideStdoutForTesting is true, Run does not print the benchName.
-// This avoids a spurious print during 'go test' on package testing itself,
-// which invokes b.Run in its own tests (see sub_test.go).
 
 // Run benchmarks f as a subbenchmark with the given name. It reports
 // whether there were any failures.

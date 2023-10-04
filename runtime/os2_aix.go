@@ -9,6 +9,3 @@
 // assembly functions.
 
 package runtime
-
-// asmsyscall6 calls the libc symbol using a C convention.
-// It's defined in sys_aix_ppc64.go.

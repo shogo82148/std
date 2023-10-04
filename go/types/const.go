@@ -7,7 +7,3 @@
 // This file implements functions for untyped constant operands.
 
 package types
-
-import (
-	. "internal/types/errors"
-)

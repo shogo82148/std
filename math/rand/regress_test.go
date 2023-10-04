@@ -10,7 +10,3 @@
 // outputs.
 
 package rand_test
-
-import (
-	. "math/rand"
-)

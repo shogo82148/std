@@ -20,13 +20,32 @@ package netip
 // The zero Addr is not a valid IP address.
 // Addr{} is distinct from both 0.0.0.0 and ::.
 type Addr struct {
+	// addr is the hi and lo bits of an IPv6 address. If z==z4,
+	// hi and lo contain the IPv4-mapped IPv6 address.
+	//
+	// hi and lo are constructed by interpreting a 16-byte IPv6
+	// address as a big-endian 128-bit number. The most significant
+	// bits of that number go into hi, the rest into lo.
+	//
+	// For example, 0011:2233:4455:6677:8899:aabb:ccdd:eeff is stored as:
+	//  addr.hi = 0x0011223344556677
+	//  addr.lo = 0x8899aabbccddeeff
+	//
+	// We store IPs like this, rather than as [16]byte, because it
+	// turns most operations on IPs into arithmetic and bit-twiddling
+	// operations on 64-bit registers, which is much faster than
+	// bytewise processing.
 	addr uint128
 
+	// z is a combination of the address family and the IPv6 zone.
+	//
+	// nil means invalid IP address (for a zero Addr).
+	// z4 means an IPv4 address.
+	// z6noz means an IPv6 address without a zone.
+	//
+	// Otherwise it's the interned zone name string.
 	z *intern.Value
 }
-
-// z0, z4, and z6noz are sentinel Addr.z values.
-// See the Addr type's field docs.
 
 // IPv6LinkLocalAllNodes returns the IPv6 link-local all nodes multicast
 // address ff02::1.
@@ -203,9 +222,6 @@ func (ip Addr) String() string
 // to b and returns the extended buffer.
 func (ip Addr) AppendTo(b []byte) []byte
 
-// digits is a string of the hex digits from 0 to f. It's used in
-// appendDecimal and appendHex to format IP addresses.
-
 // StringExpanded is like String but IPv6 addresses are expanded with leading
 // zeroes and no "::" compression. For example, "2001:db8::1" becomes
 // "2001:0db8:0000:0000:0000:0000:0000:0001".
@@ -301,6 +317,8 @@ func (p *AddrPort) UnmarshalBinary(b []byte) error
 type Prefix struct {
 	ip Addr
 
+	// bitsPlusOne stores the prefix bit length plus one.
+	// A Prefix is valid if and only if bitsPlusOne is non-zero.
 	bitsPlusOne uint8
 }
 

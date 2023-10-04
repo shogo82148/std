@@ -8,30 +8,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// funcMap maps command names to functions that render their inputs safe.
-
-// escaper collects type inferences about templates and changes needed to make
-// templates injection safe.
-
-// rangeContext holds information about the current range loop.
-
-// filterFailsafe is an innocuous word that is emitted in place of unsafe values
-// by sanitizer functions. It is not a keyword in any programming language,
-// contains no special characters, is not empty, and when it appears in output
-// it is distinct enough that a developer can find the source of the problem
-// via a search engine.
-
-// predefinedEscapers contains template predefined escapers that are equivalent
-// to some contextual escapers. Keep in sync with equivEscapers.
-
-// equivEscapers matches contextual escapers to equivalent predefined
-// template escapers.
-
-// redundantFuncs[a][b] implies that funcMap[b](funcMap[a](x)) == funcMap[a](x)
-// for all x.
-
-// delimEnds maps each delim to a string of characters that terminate it.
-
 // HTMLEscape writes to w the escaped HTML equivalent of the plain text data b.
 func HTMLEscape(w io.Writer, b []byte)
 

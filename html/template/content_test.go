@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package template
-
-// Test that we print using the String method. Was issue 3073.

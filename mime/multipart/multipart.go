@@ -33,12 +33,11 @@ import (
 	"github.com/shogo82148/std/net/textproto"
 )
 
-// This constant needs to be at least 76 for this package to work correctly.
-// This is because \r\n--separator_of_len_70- would fill the buffer and it
-// wouldn't be safe to consume a single byte from it.
-
 // A Part represents a single part in a multipart body.
 type Part struct {
+	// The headers of the body, if any, with the keys canonicalized
+	// in the same fashion that the Go http.Request headers are.
+	// For example, "foo-bar" changes case to "Foo-Bar"
 	Header textproto.MIMEHeader
 
 	mr *Reader
@@ -46,6 +45,9 @@ type Part struct {
 	disposition       string
 	dispositionParams map[string]string
 
+	// r is either a reader directly reading from mr, or it's a
+	// wrapper around such a reader, decoding the
+	// Content-Transfer-Encoding
 	r io.Reader
 
 	n       int
@@ -71,18 +73,9 @@ func (p *Part) FileName() string
 // parse such headers.
 func NewReader(r io.Reader, boundary string) *Reader
 
-// stickyErrorReader is an io.Reader which never calls Read on its
-// underlying Reader once an error has been seen. (the io.Reader
-// interface's contract promises nothing about the return values of
-// Read calls after an error, yet this package does do multiple Reads
-// after error)
-
 // Read reads the body of a part, after its headers and before the
 // next part (if any) begins.
 func (p *Part) Read(d []byte) (n int, err error)
-
-// partReader implements io.Reader by reading raw bytes directly from the
-// wrapped *Part, without doing any Transfer-Encoding decoding.
 
 func (p *Part) Close() error
 
@@ -101,13 +94,6 @@ type Reader struct {
 	dashBoundaryDash []byte
 	dashBoundary     []byte
 }
-
-// maxMIMEHeaderSize is the maximum size of a MIME header we will parse,
-// including header keys, values, and map overhead.
-
-// multipartMaxHeaders is the maximum number of header entries NextPart will return,
-// as well as the maximum combined total of header entries Reader.ReadForm will return
-// in FileHeaders.
 
 // NextPart returns the next part in the multipart or an error.
 // When there are no more parts, the error io.EOF is returned.

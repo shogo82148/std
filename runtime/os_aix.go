@@ -5,13 +5,3 @@
 //go:build aix
 
 package runtime
-
-// funcDescriptor is a structure representing a function descriptor
-// A variable with this type is always created in assembler
-
-// tstart is a function descriptor to _tstart defined in assembly.
-
-// sigtramp is a function descriptor to _sigtramp defined in assembly
-
-// sigPerThreadSyscall is only used on linux, so we assign a bogus signal
-// number.

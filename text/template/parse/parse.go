@@ -15,7 +15,7 @@ type Tree struct {
 	Root      *ListNode
 	Mode      Mode
 	text      string
-
+	// Parsing only; cleared after parse.
 	funcs      []map[string]any
 	lex        *lexer
 	token      [3]item

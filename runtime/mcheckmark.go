@@ -11,11 +11,3 @@
 // sure that everything that should be marked is marked.
 
 package runtime
-
-// A checkmarksMap stores the GC marks in "checkmarks" mode. It is a
-// per-arena bitmap with a bit for every word in the arena. The mark
-// is stored on the bit corresponding to the first word of the marked
-// allocation.
-
-// If useCheckmark is true, marking of an object uses the checkmark
-// bits instead of the standard mark bits.

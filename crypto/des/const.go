@@ -9,24 +9,3 @@
 // DES is cryptographically broken and should not be used for secure
 // applications.
 package des
-
-// Used to perform an initial permutation of a 64-bit input block.
-
-// Used to perform a final permutation of a 4-bit preoutput block. This is the
-// inverse of initialPermutation
-
-// Used to expand an input block of 32 bits, producing an output block of 48
-// bits.
-
-// Yields a 32-bit output from a 32-bit input
-
-// Used in the key schedule to select 56 bits
-// from a 64-bit input.
-
-// Used in the key schedule to produce each subkey by selecting 48 bits from
-// the 56-bit input
-
-// 8 S-boxes composed of 4 rows and 16 columns
-// Used in the DES cipher function
-
-// Size of left rotation per round in each half of the key schedule

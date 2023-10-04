@@ -8,15 +8,10 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
-// dumpConn is a net.Conn which writes to Writer and reads from Reader
-
 // DumpRequestOut is like DumpRequest but for outgoing client requests. It
 // includes any headers that the standard http.Transport adds, such as
 // User-Agent.
 func DumpRequestOut(req *http.Request, body bool) ([]byte, error)
-
-// delegateReader is a reader that delegates to another reader,
-// once it arrives on a channel.
 
 // DumpRequest returns the given request in its HTTP/1.x wire
 // representation. It should only be used by servers to debug client
@@ -35,16 +30,6 @@ func DumpRequestOut(req *http.Request, body bool) ([]byte, error)
 // The documentation for http.Request.Write details which fields
 // of req are included in the dump.
 func DumpRequest(req *http.Request, body bool) ([]byte, error)
-
-// errNoBody is a sentinel error value used by failureToReadBody so we
-// can detect that the lack of body was intentional.
-
-// failureToReadBody is an io.ReadCloser that just returns errNoBody on
-// Read. It's swapped in when we don't actually want to consume
-// the body, but need a non-nil one, and want to distinguish the
-// error from reading the dummy body.
-
-// emptyBody is an instance of empty reader.
 
 // DumpResponse is like DumpRequest but dumps a response.
 func DumpResponse(resp *http.Response, body bool) ([]byte, error)

@@ -78,9 +78,6 @@ const (
 	UpperLower = MaxRune + 1
 )
 
-// linearMax is the maximum size table for linear search for non-Latin1 rune.
-// Derived by running 'go test -calibrate'.
-
 // Is reports whether the rune is in the specified table of ranges.
 func Is(rangeTab *RangeTable, r rune) bool
 
@@ -113,11 +110,6 @@ func (special SpecialCase) ToTitle(r rune) rune
 
 // ToLower maps the rune to lower case giving priority to the special mapping.
 func (special SpecialCase) ToLower(r rune) rune
-
-// caseOrbit is defined in tables.go as []foldPair. Right now all the
-// entries fit in uint16, so use uint16. If that changes, compilation
-// will fail (the constants in the composite literal will not fit in uint16)
-// and the types here can change to uint32.
 
 // SimpleFold iterates over Unicode code points equivalent under
 // the Unicode-defined simple case folding. Among the code points

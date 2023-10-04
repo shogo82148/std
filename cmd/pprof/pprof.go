@@ -8,15 +8,3 @@
 // upstreaming any modifications to these packages.
 
 package main
-
-// cpuProfileHandler is the Go pprof CPU profile handler URL.
-
-// objTool implements driver.ObjTool using Go libraries
-// (instead of invoking GNU binutils).
-
-// file implements driver.ObjFile using Go libraries
-// (instead of invoking GNU binutils).
-// A file represents a single executable being analyzed.
-
-// newUI will be set in readlineui.go in some platforms
-// for interactive readline functionality.

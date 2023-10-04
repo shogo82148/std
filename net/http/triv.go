@@ -11,8 +11,6 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// hello world, the web server
-
 func HelloServer(w http.ResponseWriter, req *http.Request)
 
 // Simple counter server. POSTing to it will set the value.
@@ -26,8 +24,6 @@ type Counter struct {
 func (ctr *Counter) String() string
 
 func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request)
-
-// simple flag server
 
 func FlagServer(w http.ResponseWriter, req *http.Request)
 

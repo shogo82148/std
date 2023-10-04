@@ -5,13 +5,3 @@
 //go:build cgo && !osusergo && (dragonfly || freebsd || (!android && linux) || netbsd || openbsd || (solaris && !illumos))
 
 package user
-
-/*
-#include <unistd.h>
-#include <sys/types.h>
-#include <grp.h>
-
-static int mygetgrouplist(const char* user, gid_t group, gid_t* groups, int* ngroups) {
-	return getgrouplist(user, group, groups, ngroups);
-}
-*/

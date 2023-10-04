@@ -5,7 +5,3 @@
 // This file implements tests for various issues.
 
 package types_test
-
-import (
-	. "go/types"
-)

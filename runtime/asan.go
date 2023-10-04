@@ -14,5 +14,3 @@ import (
 func ASanRead(addr unsafe.Pointer, len int)
 
 func ASanWrite(addr unsafe.Pointer, len int)
-
-// Private interface for the runtime.

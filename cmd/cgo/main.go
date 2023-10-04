@@ -37,9 +37,6 @@ type Package struct {
 	noEscapes   map[string]bool
 }
 
-// A typedefInfo is an element on Package.typedefList: a typedef name
-// and the position where it was required.
-
 // A File collects information about a single Go input file.
 type File struct {
 	AST         *ast.File
@@ -124,10 +121,6 @@ type FuncType struct {
 	Result *Type
 	Go     *ast.FuncType
 }
-
-// This flag is for bootstrapping a new Go implementation,
-// to generate Go types that match the data layout and
-// constant values used in the host's C libraries and system calls.
 
 // Record what needs to be recorded about f.
 func (p *Package) Record(f *File)

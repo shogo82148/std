@@ -3,13 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package subtle
-
-type TestConstantTimeCompareStruct struct {
-	a, b []byte
-	out  int
-}
-
-type TestConstantTimeByteEqStruct struct {
-	a, b uint8
-	out  int
-}

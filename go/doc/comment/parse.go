@@ -6,8 +6,10 @@ package comment
 
 // A Doc is a parsed Go doc comment.
 type Doc struct {
+	// Content is the sequence of content blocks in the comment.
 	Content []Block
 
+	// Links is the link definitions in the comment.
 	Links []*LinkDef
 }
 
@@ -34,10 +36,25 @@ type Heading struct {
 // In a numbered list, every Items[i].Number is a non-empty string.
 // In a bullet list, every Items[i].Number is an empty string.
 type List struct {
+	// Items is the list items.
 	Items []*ListItem
 
+	// ForceBlankBefore indicates that the list must be
+	// preceded by a blank line when reformatting the comment,
+	// overriding the usual conditions. See the BlankBefore method.
+	//
+	// The comment parser sets ForceBlankBefore for any list
+	// that is preceded by a blank line, to make sure
+	// the blank line is preserved when printing.
 	ForceBlankBefore bool
 
+	// ForceBlankBetween indicates that list items must be
+	// separated by blank lines when reformatting the comment,
+	// overriding the usual conditions. See the BlankBetween method.
+	//
+	// The comment parser sets ForceBlankBetween for any list
+	// that has a blank line between any two of its items, to make sure
+	// the blank lines are preserved when printing.
 	ForceBlankBetween bool
 }
 
@@ -60,8 +77,13 @@ func (l *List) BlankBetween() bool
 
 // A ListItem is a single item in a numbered or bullet list.
 type ListItem struct {
+	// Number is a decimal string in a numbered list
+	// or an empty string in a bullet list.
 	Number string
 
+	// Content is the list content.
+	// Currently, restrictions in the parser and printer
+	// require every element of Content to be a *Paragraph.
 	Content []Block
 }
 
@@ -72,6 +94,9 @@ type Paragraph struct {
 
 // A Code is a preformatted code block.
 type Code struct {
+	// Text is the preformatted text, ending with a newline character.
+	// It may be multiple lines, each of which ends with a newline character.
+	// It is never empty, nor does it start or end with a blank line.
 	Text string
 }
 
@@ -98,6 +123,14 @@ type Link struct {
 type DocLink struct {
 	Text []Text
 
+	// ImportPath, Recv, and Name identify the Go package or symbol
+	// that is the link target. The potential combinations of
+	// non-empty fields are:
+	//  - ImportPath: a link to another package
+	//  - ImportPath, Name: a link to a const, func, type, or var in another package
+	//  - ImportPath, Recv, Name: a link to a method in another package
+	//  - Name: a link to a const, func, type, or var in this package
+	//  - Recv, Name: a link to a method in this package
 	ImportPath string
 	Recv       string
 	Name       string
@@ -107,14 +140,49 @@ type DocLink struct {
 // The fields in the struct can be filled in before calling Parse
 // in order to customize the details of the parsing process.
 type Parser struct {
+	// Words is a map of Go identifier words that
+	// should be italicized and potentially linked.
+	// If Words[w] is the empty string, then the word w
+	// is only italicized. Otherwise it is linked, using
+	// Words[w] as the link target.
+	// Words corresponds to the [go/doc.ToHTML] words parameter.
 	Words map[string]string
 
+	// LookupPackage resolves a package name to an import path.
+	//
+	// If LookupPackage(name) returns ok == true, then [name]
+	// (or [name.Sym] or [name.Sym.Method])
+	// is considered a documentation link to importPath's package docs.
+	// It is valid to return "", true, in which case name is considered
+	// to refer to the current package.
+	//
+	// If LookupPackage(name) returns ok == false,
+	// then [name] (or [name.Sym] or [name.Sym.Method])
+	// will not be considered a documentation link,
+	// except in the case where name is the full (but single-element) import path
+	// of a package in the standard library, such as in [math] or [io.Reader].
+	// LookupPackage is still called for such names,
+	// in order to permit references to imports of other packages
+	// with the same package names.
+	//
+	// Setting LookupPackage to nil is equivalent to setting it to
+	// a function that always returns "", false.
 	LookupPackage func(name string) (importPath string, ok bool)
 
+	// LookupSym reports whether a symbol name or method name
+	// exists in the current package.
+	//
+	// If LookupSym("", "Name") returns true, then [Name]
+	// is considered a documentation link for a const, func, type, or var.
+	//
+	// Similarly, if LookupSym("Recv", "Name") returns true,
+	// then [Recv.Name] is considered a documentation link for
+	// type Recv's method Name.
+	//
+	// Setting LookupSym to nil is equivalent to setting it to a function
+	// that always returns false.
 	LookupSym func(recv, name string) (ok bool)
 }
-
-// parseDoc is parsing state for a single doc comment.
 
 // DefaultLookupPackage is the default package lookup
 // function, used when [Parser].LookupPackage is nil.
@@ -129,11 +197,6 @@ func DefaultLookupPackage(name string) (importPath string, ok bool)
 // Parse parses the doc comment text and returns the *Doc form.
 // Comment markers (/* // and */) in the text must have already been removed.
 func (p *Parser) Parse(text string) *Doc
-
-// A span represents a single span of comment lines (lines[start:end])
-// of an identified kind (code, heading, paragraph, and so on).
-
-// A spanKind describes the kind of span.
 
 const (
 	_ spanKind = iota
