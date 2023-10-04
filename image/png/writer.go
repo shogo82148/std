@@ -13,6 +13,8 @@ import (
 type Encoder struct {
 	CompressionLevel CompressionLevel
 
+	// BufferPool optionally specifies a buffer pool to get temporary
+	// EncoderBuffers when encoding an image.
 	BufferPool EncoderBufferPool
 }
 

@@ -12,18 +12,6 @@ GOARCH=amd64 go tool cgo -cdefs defs_dragonfly.go >defs_dragonfly_amd64.h
 
 package runtime
 
-/*
-#include <sys/user.h>
-#include <sys/time.h>
-#include <sys/event.h>
-#include <sys/mman.h>
-#include <sys/ucontext.h>
-#include <sys/rtprio.h>
-#include <sys/signal.h>
-#include <sys/unistd.h>
-#include <errno.h>
-#include <signal.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

@@ -5,5 +5,3 @@
 //go:build !windows && !plan9
 
 package os
-
-// A fileStat is the implementation of FileInfo returned by Stat and Lstat.

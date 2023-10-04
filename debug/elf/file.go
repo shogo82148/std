@@ -22,12 +22,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// seekStart, seekCurrent, seekEnd are copies of
-// io.SeekStart, io.SeekCurrent, and io.SeekEnd.
-// We can't use the ones from package io because
-// we want this code to build with Go 1.4 during
-// cmd/dist bootstrap.
-
 // A FileHeader represents an ELF file header.
 type FileHeader struct {
 	Class      Class
@@ -64,6 +58,10 @@ type SectionHeader struct {
 	Addralign uint64
 	Entsize   uint64
 
+	// FileSize is the size of this section in the file in bytes.
+	// If a section is compressed, FileSize is the size of the
+	// compressed data, while Size (above) is the size of the
+	// uncompressed data.
 	FileSize uint64
 }
 
@@ -71,6 +69,16 @@ type SectionHeader struct {
 type Section struct {
 	SectionHeader
 
+	// Embed ReaderAt for ReadAt method.
+	// Do not embed SectionReader directly
+	// to avoid having Read and Seek.
+	// If a client wants Read and Seek it must use
+	// Open() to avoid fighting over the seek offset
+	// with other clients.
+	//
+	// ReaderAt may be nil if the section is not easily available
+	// in a random-access form. For example, a compressed section
+	// may have a nil ReaderAt.
 	io.ReaderAt
 	sr *io.SectionReader
 
@@ -109,6 +117,12 @@ type ProgHeader struct {
 type Prog struct {
 	ProgHeader
 
+	// Embed ReaderAt for ReadAt method.
+	// Do not embed SectionReader directly
+	// to avoid having Read and Seek.
+	// If a client wants Read and Seek it must use
+	// Open() to avoid fighting over the seek offset
+	// with other clients.
 	io.ReaderAt
 	sr *io.SectionReader
 }
@@ -123,6 +137,8 @@ type Symbol struct {
 	Section     SectionIndex
 	Value, Size uint64
 
+	// Version and Library are present only for the dynamic symbol
+	// table.
 	Version string
 	Library string
 }

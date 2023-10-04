@@ -8,15 +8,23 @@ package x509
 type CertPool struct {
 	byName map[string][]int
 
+	// lazyCerts contains funcs that return a certificate,
+	// lazily parsing/decompressing it as needed.
 	lazyCerts []lazyCert
 
+	// haveSum maps from sum224(cert.Raw) to true. It's used only
+	// for AddCert duplicate detection, to avoid CertPool.contains
+	// calls in the AddCert path (because the contains method can
+	// call getCert and otherwise negate savings from lazy getCert
+	// funcs).
 	haveSum map[sum224]bool
 
+	// systemPool indicates whether this is a special pool derived from the
+	// system roots. If it includes additional roots, it requires doing two
+	// verifications, one using the roots provided by the caller, and one using
+	// the system platform verifier.
 	systemPool bool
 }
-
-// lazyCert is minimal metadata about a Cert and a func to retrieve it
-// in its normal expanded *Certificate form.
 
 // NewCertPool returns a new, empty CertPool.
 func NewCertPool() *CertPool

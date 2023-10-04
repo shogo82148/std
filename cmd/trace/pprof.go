@@ -12,5 +12,3 @@ type Record struct {
 	n    uint64
 	time int64
 }
-
-// interval represents a time interval in the trace.

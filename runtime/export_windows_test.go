@@ -5,14 +5,3 @@
 // Export guts for testing.
 
 package runtime
-
-const MaxArgs = maxArgs
-
-var (
-	OsYield                 = osyield
-	TimeBeginPeriodRetValue = &timeBeginPeriodRetValue
-)
-
-type ContextStub struct {
-	context
-}

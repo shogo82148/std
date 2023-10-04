@@ -20,32 +20,35 @@ type Server struct {
 	URL      string
 	Listener net.Listener
 
+	// EnableHTTP2 controls whether HTTP/2 is enabled
+	// on the server. It must be set between calling
+	// NewUnstartedServer and calling Server.StartTLS.
 	EnableHTTP2 bool
 
+	// TLS is the optional TLS configuration, populated with a new config
+	// after TLS is started. If set on an unstarted server before StartTLS
+	// is called, existing fields are copied into the new config.
 	TLS *tls.Config
 
+	// Config may be changed after calling NewUnstartedServer and
+	// before Start or StartTLS.
 	Config *http.Server
 
+	// certificate is a parsed version of the TLS config certificate, if present.
 	certificate *x509.Certificate
 
+	// wg counts the number of outstanding HTTP requests on this server.
+	// Close blocks until all requests are finished.
 	wg sync.WaitGroup
 
 	mu     sync.Mutex
 	closed bool
 	conns  map[net.Conn]http.ConnState
 
+	// client is configured for use with the server.
+	// Its transport is automatically closed when Close is called.
 	client *http.Client
 }
-
-// When debugging a particular http server-based test,
-// this flag lets you run
-//
-//	go test -run=BrokenTest -httptest.serve=127.0.0.1:8000
-//
-// to start the broken server so you can interact with it manually.
-// We only register this flag if it looks like the caller knows about it
-// and is trying to use it as we don't want to pollute flags and this
-// isn't really part of our API. Don't depend on this.
 
 // NewServer starts and returns a new Server.
 // The caller should call Close when finished, to shut it down.

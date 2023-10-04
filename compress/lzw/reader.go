@@ -41,11 +41,34 @@ type Reader struct {
 	litWidth int
 	err      error
 
+	// The first 1<<litWidth codes are literal codes.
+	// The next two codes mean clear and EOF.
+	// Other valid codes are in the range [lo, hi] where lo := clear + 2,
+	// with the upper bound incrementing on each code seen.
+	//
+	// overflow is the code at which hi overflows the code width. It always
+	// equals 1 << width.
+	//
+	// last is the most recently seen code, or decoderInvalidCode.
+	//
+	// An invariant is that hi < overflow.
 	clear, eof, hi, overflow, last uint16
 
+	// Each code c in [lo, hi] expands to two or more bytes. For c != hi:
+	//   suffix[c] is the last of these bytes.
+	//   prefix[c] is the code for all but the last byte.
+	//   This code can either be a literal code or another code in [lo, c).
+	// The c == hi case is a special case.
 	suffix [1 << maxWidth]uint8
 	prefix [1 << maxWidth]uint16
 
+	// output is the temporary output buffer.
+	// Literal codes are accumulated from the start of the buffer.
+	// Non-literal codes decode to a sequence of suffixes that are first
+	// written right-to-left from the end of the buffer before being copied
+	// to the start of the buffer.
+	// It is flushed when it contains >= 1<<maxWidth bytes,
+	// so that there is always room to decode an entire code.
 	output [2 * 1 << maxWidth]byte
 	o      int
 	toRead []byte

@@ -5,6 +5,7 @@
 // This file defines operands and associated operations.
 
 package types
+<<<<<<< HEAD
 
 // An operandMode specifies the (addressing) mode of an operand.
 
@@ -13,3 +14,5 @@ package types
 // the operand, the operand's type, a value for constants, and an id
 // for built-in functions.
 // The zero value of operand is a ready to use invalid operand.
+=======
+>>>>>>> upstream/release-branch.go1.21

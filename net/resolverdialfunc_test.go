@@ -8,20 +8,3 @@
 // speaking DNS.
 
 package net
-
-import (
-	"errors"
-)
-
-type ResponseWriter struct{ a *resolverFuncConn }
-
-type AWriter struct{ ResponseWriter }
-
-type AAAAWriter struct{ ResponseWriter }
-
-type SRVWriter struct{ ResponseWriter }
-
-var (
-	ErrNotExist = errors.New("name does not exist")
-	ErrRefused  = errors.New("refused")
-)

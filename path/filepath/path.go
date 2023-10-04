@@ -16,11 +16,6 @@ import (
 	"github.com/shogo82148/std/os"
 )
 
-// A lazybuf is a lazily constructed path buffer.
-// It supports append, reading previously appended bytes,
-// and retrieving the final string. It does not allocate a buffer
-// to hold the output until that output diverges from s.
-
 const (
 	Separator     = os.PathSeparator
 	ListSeparator = os.PathListSeparator

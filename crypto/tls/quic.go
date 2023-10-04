@@ -85,10 +85,14 @@ const (
 type QUICEvent struct {
 	Kind QUICEventKind
 
+	// Set for QUICSetReadSecret, QUICSetWriteSecret, and QUICWriteData.
 	Level QUICEncryptionLevel
 
+	// Set for QUICTransportParameters, QUICSetReadSecret, QUICSetWriteSecret, and QUICWriteData.
+	// The contents are owned by crypto/tls, and are valid until the next NextEvent call.
 	Data []byte
 
+	// Set for QUICSetReadSecret and QUICSetWriteSecret.
 	Suite uint16
 }
 
@@ -122,6 +126,7 @@ func (q *QUICConn) Close() error
 func (q *QUICConn) HandleData(level QUICEncryptionLevel, data []byte) error
 
 type QUICSessionTicketOptions struct {
+	// EarlyData specifies whether the ticket may be used for 0-RTT.
 	EarlyData bool
 }
 

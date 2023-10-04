@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package csv
-
-// nTimes is an io.Reader which yields the string s n times.

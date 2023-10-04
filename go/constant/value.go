@@ -43,12 +43,6 @@ type Value interface {
 	implementsValue()
 }
 
-// Maximum supported mantissa precision.
-// The spec requires at least 256 bits; typical implementations use 512 bits.
-
-// Permit fractions with component sizes up to maxExp
-// before switching to using floating-point numbers.
-
 // MakeUnknown returns the Unknown value.
 func MakeUnknown() Value
 

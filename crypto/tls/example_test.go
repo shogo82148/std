@@ -14,8 +14,6 @@ import (
 	"time"
 )
 
-// zeroSource is an io.Reader that returns an unlimited number of zero bytes.
-
 func ExampleDial() {
 	// Connecting with a custom root-certificate set.
 

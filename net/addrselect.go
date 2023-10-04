@@ -5,8 +5,3 @@
 // Minimal RFC 6724 address selection.
 
 package net
-
-// RFC 6724 section 2.1.
-// Items are sorted by the size of their Prefix.Mask.Size,
-
-// RFC 6724 section 3.1.

@@ -23,10 +23,6 @@ type Encoder struct {
 	err        error
 }
 
-// Before we encode a message, we reserve space at the head of the
-// buffer in which to encode its length. This means we can use the
-// buffer to assemble the message without another allocation.
-
 // NewEncoder returns a new encoder that will transmit on the io.Writer.
 func NewEncoder(w io.Writer) *Encoder
 

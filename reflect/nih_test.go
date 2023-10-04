@@ -5,7 +5,3 @@
 //go:build cgo
 
 package reflect_test
-
-import (
-	. "reflect"
-)

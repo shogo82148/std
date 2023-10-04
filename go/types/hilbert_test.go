@@ -5,13 +5,3 @@
 // license that can be found in the LICENSE file.
 
 package types_test
-
-import (
-	"flag"
-
-	. "go/types"
-)
-
-var (
-	H = flag.Int("H", 5, "Hilbert matrix size")
-)

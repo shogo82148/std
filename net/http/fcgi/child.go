@@ -10,14 +10,6 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
-// request holds the state for an in-progress request. As soon as it's complete,
-// it's converted to an http.Request.
-
-// envVarsContextKey uniquely identifies a mapping of CGI
-// environment variables to their values in a request context
-
-// response implements http.ResponseWriter.
-
 // ErrRequestAborted is returned by Read when a handler attempts to read the
 // body of a request that has been aborted by the web server.
 var ErrRequestAborted = errors.New("fcgi: request aborted by web server")

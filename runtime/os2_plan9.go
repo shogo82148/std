@@ -5,9 +5,3 @@
 // Plan 9-specific system calls
 
 package runtime
-
-// open
-
-// rfork
-
-// notify

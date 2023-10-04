@@ -13,8 +13,6 @@ type Value struct {
 	v any
 }
 
-// efaceWords is interface{} internal representation.
-
 // Load returns the value set by the most recent Store.
 // It returns nil if there has been no call to Store for this Value.
 func (v *Value) Load() (val any)

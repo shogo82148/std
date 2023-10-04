@@ -5,10 +5,3 @@
 //go:build cgo && !netgo && (android || freebsd || dragonfly || openbsd)
 
 package net
-
-/*
-#include <sys/types.h>
-#include <sys/socket.h>
-
-#include <netdb.h>
-*/

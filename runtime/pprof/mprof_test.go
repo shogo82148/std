@@ -5,12 +5,3 @@
 //go:build !js
 
 package pprof
-
-import (
-	"unsafe"
-)
-
-type Obj32 struct {
-	link *Obj32
-	pad  [32 - unsafe.Sizeof(uintptr(0))]byte
-}

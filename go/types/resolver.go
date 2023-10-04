@@ -3,7 +3,10 @@
 // license that can be found in the LICENSE file.
 
 package types
+<<<<<<< HEAD
 
 // A declInfo describes a package-level const, type, var, or func declaration.
 
 // inSourceOrder implements the sort.Sort interface.
+=======
+>>>>>>> upstream/release-branch.go1.21

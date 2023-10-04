@@ -22,11 +22,6 @@ const (
 	PEMCipherAES256
 )
 
-// rfc1423Algo holds a method for enciphering a PEM block.
-
-// rfc1423Algos holds a slice of the possible ways to encrypt a PEM
-// block. The ivSize numbers were taken from the OpenSSL source.
-
 // IsEncryptedPEMBlock returns whether the PEM block is password encrypted
 // according to RFC 1423.
 //

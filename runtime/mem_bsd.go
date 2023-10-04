@@ -5,5 +5,3 @@
 //go:build dragonfly || freebsd || netbsd || openbsd || solaris
 
 package runtime
-
-// Indicates not to reserve swap space for the mapping.

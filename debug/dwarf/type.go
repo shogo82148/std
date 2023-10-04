@@ -274,8 +274,5 @@ type UnsupportedType struct {
 
 func (t *UnsupportedType) String() string
 
-// typeReader is used to read from either the info section or the
-// types section.
-
 // Type reads the type at off in the DWARF “info” section.
 func (d *Data) Type(off Offset) (Type, error)

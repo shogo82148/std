@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package cipher
-
-// Export internal functions for testing.
-var NewCBCGenericEncrypter = newCBCGenericEncrypter
-var NewCBCGenericDecrypter = newCBCGenericDecrypter

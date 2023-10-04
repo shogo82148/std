@@ -8,8 +8,3 @@
 //go:build (darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris || windows) && !appengine && !android
 
 package main
-
-// readlineUI implements driver.UI interface using the
-// golang.org/x/term package.
-// The upstream pprof command implements the same functionality
-// using the github.com/chzyer/readline package.

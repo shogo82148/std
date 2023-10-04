@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package flate
-
-// errorWriter is a writer that fails after N writes.

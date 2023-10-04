@@ -4,10 +4,6 @@
 
 package strconv
 
-// decimal power of ten to binary power of two.
-
-// Exact powers of 10.
-
 // ParseFloat converts the string s to a floating-point number
 // with the precision specified by bitSize: 32 for float32, or 64 for float64.
 // When bitSize=32, the result still has type float64, but it will be

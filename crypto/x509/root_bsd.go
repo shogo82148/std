@@ -5,7 +5,3 @@
 //go:build dragonfly || freebsd || netbsd || openbsd
 
 package x509
-
-// Possible certificate files; stop after finding one.
-
-// Possible directories with certificate files; all will be read.

@@ -26,7 +26,3 @@ func Example_openDBService() {
 
 	http.ListenAndServe(":8080", s)
 }
-
-type Service struct {
-	db *sql.DB
-}

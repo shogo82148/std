@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package bytes_test
-
-import (
-	. "bytes"
-)
-
-const N = 10000

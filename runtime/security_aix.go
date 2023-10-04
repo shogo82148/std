@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// secureMode is only ever mutated in schedinit, so we don't need to worry about
-// synchronization primitives.

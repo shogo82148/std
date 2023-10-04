@@ -38,21 +38,3 @@
 // (can be junk).
 
 package runtime
-
-// markBits provides access to the mark bit for an object in the heap.
-// bytep points to the byte holding the mark bit.
-// mask is a byte with a single bit set that can be &ed with *bytep
-// to see if the bit has been set.
-// *m.byte&m.mask != 0 indicates the mark bit is set.
-// index can be used along with span information to generate
-// the address of the object in the heap.
-// We maintain one set of mark bits for allocation and one for
-// marking purposes.
-
-// clobberdeadPtr is a special value that is used by the compiler to
-// clobber dead stack slots, when -clobberdead flag is set.
-
-// heapBits provides access to the bitmap bits for a single heap word.
-// The methods on heapBits take value receivers so that the compiler
-// can more easily inline calls to those methods and registerize the
-// struct fields independently.

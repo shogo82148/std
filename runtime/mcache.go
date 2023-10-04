@@ -3,22 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// Per-thread (in Go, per-P) cache for small objects.
-// This includes a small object cache and local allocation stats.
-// No locking needed because it is per-thread (per-P).
-//
-// mcaches are allocated from non-GC'd memory, so any heap pointers
-// must be specially handled.
-
-// A gclink is a node in a linked list of blocks, like mlink,
-// but it is opaque to the garbage collector.
-// The GC does not trace the pointers during collection,
-// and the compiler does not emit write barriers for assignments
-// of gclinkptr values. Code should store references to gclinks
-// as gclinkptr, not as *gclink.
-
-// A gclinkptr is a pointer to a gclink, but it is opaque
-// to the garbage collector.
-
-// dummy mspan that contains no free objects.

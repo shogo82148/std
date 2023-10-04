@@ -197,15 +197,3 @@ func (e *MarshalerError) Error() string
 
 // Unwrap returns the underlying error.
 func (e *MarshalerError) Unwrap() error
-
-// An encodeState encodes JSON into a bytes.Buffer.
-
-// jsonError is an error wrapper type for internal use only.
-// Panics with errors are wrapped in jsonError so that the top-level recover
-// can distinguish intentional panics from this package.
-
-// sliceEncoder just wraps an arrayEncoder, checking to make sure the value isn't nil.
-
-// A field represents a single field found in a struct.
-
-// byIndex sorts field by index sequence.

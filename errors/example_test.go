@@ -9,14 +9,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"time"
 )
-
-// MyError is an error implementation that includes a time and message.
-type MyError struct {
-	When time.Time
-	What string
-}
 
 func Example() {
 	if err := oops(); err != nil {

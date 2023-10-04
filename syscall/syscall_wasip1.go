@@ -22,14 +22,15 @@ const (
 )
 
 type Dirent struct {
+	// The offset of the next directory entry stored in this directory.
 	Next Dircookie
-
+	// The serial number of the file referred to by this directory entry.
 	Ino uint64
-
+	// The length of the name of the directory entry.
 	Namlen uint32
-
+	// The type of the file referred to by this directory entry.
 	Type Filetype
-
+	// Name of the directory entry.
 	Name *byte
 }
 

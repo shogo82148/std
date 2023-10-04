@@ -11,15 +11,6 @@
 // comprehensive API for users. It is exempt from the Go compatibility promise.
 package js
 
-// ref is used to identify a JavaScript value, since the value itself can not be passed to WebAssembly.
-//
-// The JavaScript value "undefined" is represented by the value 0.
-// A JavaScript number (64-bit float, except 0 and NaN) is represented by its IEEE 754 binary representation.
-// All other values are represented as an IEEE 754 binary representation of NaN with bits 0-31 used as
-// an ID and bits 32-34 used to differentiate between string, symbol, function and object.
-
-// nanHead are the upper 32 bits of a ref which are set if the value is not encoded as an IEEE 754 number (see above).
-
 // Value represents a JavaScript value. The zero value is the JavaScript value "undefined".
 // Values can be checked for equality with the Equal method.
 type Value struct {
@@ -30,6 +21,7 @@ type Value struct {
 
 // Error wraps a JavaScript error.
 type Error struct {
+	// Value is the underlying JavaScript error value.
 	Value
 }
 

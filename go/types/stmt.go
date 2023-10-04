@@ -5,6 +5,7 @@
 // This file implements typechecking of statements.
 
 package types
+<<<<<<< HEAD
 
 // stmtContext is a bitset describing which
 // control-flow statements are permissible,
@@ -17,3 +18,5 @@ package types
 // Since two case values may have the same "underlying" value but different
 // types we need to also check the value's types (e.g., byte(1) vs myByte(1))
 // when the switch expression is of interface type.
+=======
+>>>>>>> upstream/release-branch.go1.21

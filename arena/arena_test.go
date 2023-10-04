@@ -5,8 +5,3 @@
 //go:build goexperiment.arenas
 
 package arena_test
-
-type T1 struct {
-	n int
-}
-type T2 [1 << 20]byte

@@ -61,6 +61,7 @@ const (
 	TypeGNULongLink = 'K'
 )
 
+<<<<<<< HEAD
 // Keywords for PAX extended header records.
 
 // basicKeys is a set of the PAX keys for which we have built-in support.
@@ -70,11 +71,18 @@ const (
 
 // Header は、tar アーカイブ内の単一のヘッダーを表します。
 // 一部のフィールドは、値が設定されていない場合があります。
+=======
+// A Header represents a single header in a tar archive.
+// Some fields may not be populated.
+>>>>>>> upstream/release-branch.go1.21
 //
 // 将来の互換性のために、Reader.Next から Header を取得し、
 // いくつかの方法で変更し、Writer.WriteHeader に戻すユーザーは、
 // 新しい Header を作成し、保存する必要があるフィールドをコピーすることで行う必要があります。
 type Header struct {
+	// Typeflag is the type of header entry.
+	// The zero value is automatically promoted to either TypeReg or TypeDir
+	// depending on the presence of a trailing slash in Name.
 	Typeflag byte
 
 	Name     string
@@ -87,6 +95,11 @@ type Header struct {
 	Uname string
 	Gname string
 
+	// If the Format is unspecified, then Writer.WriteHeader rounds ModTime
+	// to the nearest second and ignores the AccessTime and ChangeTime fields.
+	//
+	// To use AccessTime or ChangeTime, specify the Format as PAX or GNU.
+	// To use sub-second resolution, specify the Format as PAX.
 	ModTime    time.Time
 	AccessTime time.Time
 	ChangeTime time.Time
@@ -94,13 +107,44 @@ type Header struct {
 	Devmajor int64
 	Devminor int64
 
+	// Xattrs stores extended attributes as PAX records under the
+	// "SCHILY.xattr." namespace.
+	//
+	// The following are semantically equivalent:
+	//  h.Xattrs[key] = value
+	//  h.PAXRecords["SCHILY.xattr."+key] = value
+	//
+	// When Writer.WriteHeader is called, the contents of Xattrs will take
+	// precedence over those in PAXRecords.
+	//
+	// Deprecated: Use PAXRecords instead.
 	Xattrs map[string]string
 
+	// PAXRecords is a map of PAX extended header records.
+	//
+	// User-defined records should have keys of the following form:
+	//	VENDOR.keyword
+	// Where VENDOR is some namespace in all uppercase, and keyword may
+	// not contain the '=' character (e.g., "GOLANG.pkg.version").
+	// The key and value should be non-empty UTF-8 strings.
+	//
+	// When Writer.WriteHeader is called, PAX records derived from the
+	// other fields in Header take precedence over PAXRecords.
 	PAXRecords map[string]string
 
+	// Format specifies the format of the tar header.
+	//
+	// This is set by Reader.Next as a best-effort guess at the format.
+	// Since the Reader liberally reads some non-compliant files,
+	// it is possible for this to be FormatUnknown.
+	//
+	// If the format is unspecified when Writer.WriteHeader is called,
+	// then it uses the first format (in the order of USTAR, PAX, GNU)
+	// capable of encoding this Header (see Format).
 	Format Format
 }
 
+<<<<<<< HEAD
 // sparseEntry represents a Length-sized fragment at Offset in the file.
 
 // A sparse file can be represented as either a sparseDatas or a sparseHoles.
@@ -151,6 +195,14 @@ func (h *Header) FileInfo() fs.FileInfo
 // FileInfoHeader は、fi から部分的に設定された Header を作成します。
 // fi がシンボリックリンクを記述している場合、FileInfoHeader は link をリンクターゲットとして記録します。
 // fi がディレクトリを記述している場合、名前にスラッシュが追加されます。
+=======
+// FileInfo returns an fs.FileInfo for the Header.
+func (h *Header) FileInfo() fs.FileInfo
+
+// FileInfoHeader creates a partially-populated Header from fi.
+// If fi describes a symlink, FileInfoHeader records link as the link target.
+// If fi describes a directory, a slash is appended to the name.
+>>>>>>> upstream/release-branch.go1.21
 //
 // fs.FileInfo の Name メソッドは、
 // 記述するファイルのベース名のみを返すため、

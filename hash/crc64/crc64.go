@@ -30,8 +30,6 @@ type Table [256]uint64
 // The contents of this Table must not be modified.
 func MakeTable(poly uint64) *Table
 
-// digest represents the partial evaluation of a checksum.
-
 // New creates a new hash.Hash64 computing the CRC-64 checksum using the
 // polynomial represented by the Table. Its Sum method will lay the
 // value out in big-endian byte order. The returned Hash64 also

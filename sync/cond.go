@@ -31,6 +31,7 @@ package sync
 type Cond struct {
 	noCopy noCopy
 
+	// L is held while observing or changing the condition
 	L Locker
 
 	notify  notifyList
@@ -71,13 +72,3 @@ func (c *Cond) Signal()
 // It is allowed but not required for the caller to hold c.L
 // during the call.
 func (c *Cond) Broadcast()
-
-// copyChecker holds back pointer to itself to detect object copying.
-
-// noCopy may be added to structs which must not be copied
-// after the first use.
-//
-// See https://golang.org/issues/8005#issuecomment-190753527
-// for details.
-//
-// Note that it must not be embedded, due to the Lock and Unlock methods.

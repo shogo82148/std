@@ -31,19 +31,3 @@ Modifications made:
 */
 
 package runtime
-
-/*
-
-#include <sys/types.h>
-#include <sys/errno.h>
-#include <sys/time.h>
-#include <sys/signal.h>
-#include <sys/mman.h>
-#include <sys/thread.h>
-#include <sys/resource.h>
-
-#include <unistd.h>
-#include <fcntl.h>
-#include <pthread.h>
-#include <semaphore.h>
-*/

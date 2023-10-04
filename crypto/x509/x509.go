@@ -30,14 +30,14 @@ import (
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/time"
+<<<<<<< HEAD
 
 	_ "github.com/shogo82148/std/crypto/sha1"
 	_ "github.com/shogo82148/std/crypto/sha256"
 	_ "github.com/shogo82148/std/crypto/sha512"
+=======
+>>>>>>> upstream/release-branch.go1.21
 )
-
-// pkixPublicKey reflects a PKIX public key structure. See SubjectPublicKeyInfo
-// in RFC 3280.
 
 // ParsePKIXPublicKey parses a public key in PKIX, ASN.1 DER form. The encoded
 // public key is a SubjectPublicKeyInfo structure (see RFC 5280, Section 4.1).
@@ -59,8 +59,6 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
 func MarshalPKIXPublicKey(pub any) ([]byte, error)
-
-// RFC 5280,  4.2.1.1
 
 type SignatureAlgorithm int
 
@@ -99,85 +97,6 @@ const (
 
 func (algo PublicKeyAlgorithm) String() string
 
-// OIDs for signature algorithms
-//
-//	pkcs-1 OBJECT IDENTIFIER ::= {
-//		iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) 1 }
-//
-// RFC 3279 2.2.1 RSA Signature Algorithms
-//
-//	md2WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 2 }
-//
-//	md5WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 4 }
-//
-//	sha-1WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 5 }
-//
-//	dsaWithSha1 OBJECT IDENTIFIER ::= {
-//		iso(1) member-body(2) us(840) x9-57(10040) x9cm(4) 3 }
-//
-// RFC 3279 2.2.3 ECDSA Signature Algorithm
-//
-//	ecdsa-with-SHA1 OBJECT IDENTIFIER ::= {
-//		iso(1) member-body(2) us(840) ansi-x962(10045)
-//		signatures(4) ecdsa-with-SHA1(1)}
-//
-// RFC 4055 5 PKCS #1 Version 1.5
-//
-//	sha256WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 11 }
-//
-//	sha384WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 12 }
-//
-//	sha512WithRSAEncryption OBJECT IDENTIFIER ::= { pkcs-1 13 }
-//
-// RFC 5758 3.1 DSA Signature Algorithms
-//
-//	dsaWithSha256 OBJECT IDENTIFIER ::= {
-//		joint-iso-ccitt(2) country(16) us(840) organization(1) gov(101)
-//		csor(3) algorithms(4) id-dsa-with-sha2(3) 2}
-//
-// RFC 5758 3.2 ECDSA Signature Algorithm
-//
-//	ecdsa-with-SHA256 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-//		us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 2 }
-//
-//	ecdsa-with-SHA384 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-//		us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 3 }
-//
-//	ecdsa-with-SHA512 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-//		us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 4 }
-//
-// RFC 8410 3 Curve25519 and Curve448 Algorithm Identifiers
-//
-//	id-Ed25519   OBJECT IDENTIFIER ::= { 1 3 101 112 }
-
-// hashToPSSParameters contains the DER encoded RSA PSS parameters for the
-// SHA256, SHA384, and SHA512 hashes as defined in RFC 3447, Appendix A.2.3.
-// The parameters contain the following values:
-//   - hashAlgorithm contains the associated hash identifier with NULL parameters
-//   - maskGenAlgorithm always contains the default mgf1SHA1 identifier
-//   - saltLength contains the length of the associated hash
-//   - trailerField always contains the default trailerFieldBC value
-
-// pssParameters reflects the parameters in an AlgorithmIdentifier that
-// specifies RSA PSS. See RFC 3447, Appendix A.2.3.
-
-// RFC 5480, 2.1.1.1. Named Curve
-//
-//	secp224r1 OBJECT IDENTIFIER ::= {
-//	  iso(1) identified-organization(3) certicom(132) curve(0) 33 }
-//
-//	secp256r1 OBJECT IDENTIFIER ::= {
-//	  iso(1) member-body(2) us(840) ansi-X9-62(10045) curves(3)
-//	  prime(1) 7 }
-//
-//	secp384r1 OBJECT IDENTIFIER ::= {
-//	  iso(1) identified-organization(3) certicom(132) curve(0) 34 }
-//
-//	secp521r1 OBJECT IDENTIFIER ::= {
-//	  iso(1) identified-organization(3) certicom(132) curve(0) 35 }
-//
-// NB: secp256r1 is equivalent to prime256v1
-
 // KeyUsage represents the set of actions that are valid for a given key. It's
 // a bitmap of the KeyUsage* constants.
 type KeyUsage int
@@ -193,19 +112,6 @@ const (
 	KeyUsageEncipherOnly
 	KeyUsageDecipherOnly
 )
-
-// RFC 5280, 4.2.1.12  Extended Key Usage
-//
-//	anyExtendedKeyUsage OBJECT IDENTIFIER ::= { id-ce-extKeyUsage 0 }
-//
-//	id-kp OBJECT IDENTIFIER ::= { id-pkix 3 }
-//
-//	id-kp-serverAuth             OBJECT IDENTIFIER ::= { id-kp 1 }
-//	id-kp-clientAuth             OBJECT IDENTIFIER ::= { id-kp 2 }
-//	id-kp-codeSigning            OBJECT IDENTIFIER ::= { id-kp 3 }
-//	id-kp-emailProtection        OBJECT IDENTIFIER ::= { id-kp 4 }
-//	id-kp-timeStamping           OBJECT IDENTIFIER ::= { id-kp 8 }
-//	id-kp-OCSPSigning            OBJECT IDENTIFIER ::= { id-kp 9 }
 
 // ExtKeyUsage represents an extended set of actions that are valid for a given key.
 // Each of the ExtKeyUsage* constants define a unique action.
@@ -228,8 +134,6 @@ const (
 	ExtKeyUsageMicrosoftKernelCodeSigning
 )
 
-// extKeyUsageOIDs contains the mapping between an ExtKeyUsage and its OID.
-
 // A Certificate represents an X.509 certificate.
 type Certificate struct {
 	Raw                     []byte
@@ -251,33 +155,71 @@ type Certificate struct {
 	NotBefore, NotAfter time.Time
 	KeyUsage            KeyUsage
 
+	// Extensions contains raw X.509 extensions. When parsing certificates,
+	// this can be used to extract non-critical extensions that are not
+	// parsed by this package. When marshaling certificates, the Extensions
+	// field is ignored, see ExtraExtensions.
 	Extensions []pkix.Extension
 
+	// ExtraExtensions contains extensions to be copied, raw, into any
+	// marshaled certificates. Values override any extensions that would
+	// otherwise be produced based on the other fields. The ExtraExtensions
+	// field is not populated when parsing certificates, see Extensions.
 	ExtraExtensions []pkix.Extension
 
+	// UnhandledCriticalExtensions contains a list of extension IDs that
+	// were not (fully) processed when parsing. Verify will fail if this
+	// slice is non-empty, unless verification is delegated to an OS
+	// library which understands all the critical extensions.
+	//
+	// Users can access these extensions using Extensions and can remove
+	// elements from this slice if they believe that they have been
+	// handled.
 	UnhandledCriticalExtensions []asn1.ObjectIdentifier
 
 	ExtKeyUsage        []ExtKeyUsage
 	UnknownExtKeyUsage []asn1.ObjectIdentifier
 
+	// BasicConstraintsValid indicates whether IsCA, MaxPathLen,
+	// and MaxPathLenZero are valid.
 	BasicConstraintsValid bool
 	IsCA                  bool
 
+	// MaxPathLen and MaxPathLenZero indicate the presence and
+	// value of the BasicConstraints' "pathLenConstraint".
+	//
+	// When parsing a certificate, a positive non-zero MaxPathLen
+	// means that the field was specified, -1 means it was unset,
+	// and MaxPathLenZero being true mean that the field was
+	// explicitly set to zero. The case of MaxPathLen==0 with MaxPathLenZero==false
+	// should be treated equivalent to -1 (unset).
+	//
+	// When generating a certificate, an unset pathLenConstraint
+	// can be requested with either MaxPathLen == -1 or using the
+	// zero value for both MaxPathLen and MaxPathLenZero.
 	MaxPathLen int
-
+	// MaxPathLenZero indicates that BasicConstraintsValid==true
+	// and MaxPathLen==0 should be interpreted as an actual
+	// maximum path length of zero. Otherwise, that combination is
+	// interpreted as MaxPathLen not being set.
 	MaxPathLenZero bool
 
 	SubjectKeyId   []byte
 	AuthorityKeyId []byte
 
+	// RFC 5280, 4.2.2.1 (Authority Information Access)
 	OCSPServer            []string
 	IssuingCertificateURL []string
 
+	// Subject Alternate Name values. (Note that these values may not be valid
+	// if invalid values were contained within a parsed certificate. For
+	// example, an element of DNSNames may not be a valid DNS domain name.)
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
 	URIs           []*url.URL
 
+	// Name constraints
 	PermittedDNSDomainsCritical bool
 	PermittedDNSDomains         []string
 	ExcludedDNSDomains          []string
@@ -288,6 +230,7 @@ type Certificate struct {
 	PermittedURIDomains         []string
 	ExcludedURIDomains          []string
 
+	// CRL Distribution Points
 	CRLDistributionPoints []string
 
 	PolicyIdentifiers []asn1.ObjectIdentifier
@@ -339,15 +282,6 @@ func (c *Certificate) CheckCRLSignature(crl *pkix.CertificateList) error
 type UnhandledCriticalExtension struct{}
 
 func (h UnhandledCriticalExtension) Error() string
-
-// RFC 5280 4.2.1.4
-
-// RFC 5280, 4.2.2.1
-
-// RFC 5280, 4.2.1.14
-
-// emptyASN1Subject is the ASN.1 DER encoding of an empty Subject, which is
-// just an empty SEQUENCE.
 
 // CreateCertificate creates a new X.509 v3 certificate based on a template.
 // The following members of template are currently used:
@@ -403,11 +337,6 @@ func (h UnhandledCriticalExtension) Error() string
 // will be generated from the hash of the public key.
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
-// pemCRLPrefix is the magic string that indicates that we have a PEM encoded
-// CRL.
-
-// pemType is the type of a PEM encoded CRL.
-
 // ParseCRL parses a CRL from the given bytes. It's often the case that PEM
 // encoded CRLs will appear where they should be DER encoded, so this function
 // will transparently handle PEM encoding as long as there isn't any leading
@@ -444,20 +373,33 @@ type CertificateRequest struct {
 
 	Subject pkix.Name
 
+	// Attributes contains the CSR attributes that can parse as
+	// pkix.AttributeTypeAndValueSET.
+	//
+	// Deprecated: Use Extensions and ExtraExtensions instead for parsing and
+	// generating the requestedExtensions attribute.
 	Attributes []pkix.AttributeTypeAndValueSET
 
+	// Extensions contains all requested extensions, in raw form. When parsing
+	// CSRs, this can be used to extract extensions that are not parsed by this
+	// package.
 	Extensions []pkix.Extension
 
+	// ExtraExtensions contains extensions to be copied, raw, into any CSR
+	// marshaled by CreateCertificateRequest. Values override any extensions
+	// that would otherwise be produced based on the other fields but are
+	// overridden by any extensions specified in Attributes.
+	//
+	// The ExtraExtensions field is not populated by ParseCertificateRequest,
+	// see Extensions instead.
 	ExtraExtensions []pkix.Extension
 
+	// Subject Alternate Name values.
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
 	URIs           []*url.URL
 }
-
-// oidExtensionRequest is a PKCS #9 OBJECT IDENTIFIER that indicates requested
-// extensions in a CSR.
 
 // CreateCertificateRequest creates a new certificate request based on a
 // template. The following members of template are used:
@@ -490,57 +432,101 @@ func (c *CertificateRequest) CheckSignature() error
 // RevocationListEntry represents an entry in the revokedCertificates
 // sequence of a CRL.
 type RevocationListEntry struct {
+	// Raw contains the raw bytes of the revokedCertificates entry. It is set when
+	// parsing a CRL; it is ignored when generating a CRL.
 	Raw []byte
 
+	// SerialNumber represents the serial number of a revoked certificate. It is
+	// both used when creating a CRL and populated when parsing a CRL. It must not
+	// be nil.
 	SerialNumber *big.Int
-
+	// RevocationTime represents the time at which the certificate was revoked. It
+	// is both used when creating a CRL and populated when parsing a CRL. It must
+	// not be the zero time.
 	RevocationTime time.Time
-
+	// ReasonCode represents the reason for revocation, using the integer enum
+	// values specified in RFC 5280 Section 5.3.1. When creating a CRL, the zero
+	// value will result in the reasonCode extension being omitted. When parsing a
+	// CRL, the zero value may represent either the reasonCode extension being
+	// absent (which implies the default revocation reason of 0/Unspecified), or
+	// it may represent the reasonCode extension being present and explicitly
+	// containing a value of 0/Unspecified (which should not happen according to
+	// the DER encoding rules, but can and does happen anyway).
 	ReasonCode int
 
+	// Extensions contains raw X.509 extensions. When parsing CRL entries,
+	// this can be used to extract non-critical extensions that are not
+	// parsed by this package. When marshaling CRL entries, the Extensions
+	// field is ignored, see ExtraExtensions.
 	Extensions []pkix.Extension
-
+	// ExtraExtensions contains extensions to be copied, raw, into any
+	// marshaled CRL entries. Values override any extensions that would
+	// otherwise be produced based on the other fields. The ExtraExtensions
+	// field is not populated when parsing CRL entries, see Extensions.
 	ExtraExtensions []pkix.Extension
 }
 
 // RevocationList represents a Certificate Revocation List (CRL) as specified
 // by RFC 5280.
 type RevocationList struct {
+	// Raw contains the complete ASN.1 DER content of the CRL (tbsCertList,
+	// signatureAlgorithm, and signatureValue.)
 	Raw []byte
-
+	// RawTBSRevocationList contains just the tbsCertList portion of the ASN.1
+	// DER.
 	RawTBSRevocationList []byte
-
+	// RawIssuer contains the DER encoded Issuer.
 	RawIssuer []byte
 
+	// Issuer contains the DN of the issuing certificate.
 	Issuer pkix.Name
-
+	// AuthorityKeyId is used to identify the public key associated with the
+	// issuing certificate. It is populated from the authorityKeyIdentifier
+	// extension when parsing a CRL. It is ignored when creating a CRL; the
+	// extension is populated from the issuing certificate itself.
 	AuthorityKeyId []byte
 
 	Signature []byte
-
+	// SignatureAlgorithm is used to determine the signature algorithm to be
+	// used when signing the CRL. If 0 the default algorithm for the signing
+	// key will be used.
 	SignatureAlgorithm SignatureAlgorithm
 
+	// RevokedCertificateEntries represents the revokedCertificates sequence in
+	// the CRL. It is used when creating a CRL and also populated when parsing a
+	// CRL. When creating a CRL, it may be empty or nil, in which case the
+	// revokedCertificates ASN.1 sequence will be omitted from the CRL entirely.
 	RevokedCertificateEntries []RevocationListEntry
 
+	// RevokedCertificates is used to populate the revokedCertificates
+	// sequence in the CRL if RevokedCertificateEntries is empty. It may be empty
+	// or nil, in which case an empty CRL will be created.
+	//
+	// Deprecated: Use RevokedCertificateEntries instead.
 	RevokedCertificates []pkix.RevokedCertificate
 
+	// Number is used to populate the X.509 v2 cRLNumber extension in the CRL,
+	// which should be a monotonically increasing sequence number for a given
+	// CRL scope and CRL issuer. It is also populated from the cRLNumber
+	// extension when parsing a CRL.
 	Number *big.Int
 
+	// ThisUpdate is used to populate the thisUpdate field in the CRL, which
+	// indicates the issuance date of the CRL.
 	ThisUpdate time.Time
-
+	// NextUpdate is used to populate the nextUpdate field in the CRL, which
+	// indicates the date by which the next CRL will be issued. NextUpdate
+	// must be greater than ThisUpdate.
 	NextUpdate time.Time
 
+	// Extensions contains raw X.509 extensions. When creating a CRL,
+	// the Extensions field is ignored, see ExtraExtensions.
 	Extensions []pkix.Extension
 
+	// ExtraExtensions contains any additional extensions to add directly to
+	// the CRL.
 	ExtraExtensions []pkix.Extension
 }
-
-// These structures reflect the ASN.1 structure of X.509 CRLs better than
-// the existing crypto/x509/pkix variants do. These mirror the existing
-// certificate structs in this file.
-//
-// Notably, we include issuer as an asn1.RawValue, mirroring the behavior of
-// tbsCertificate and allowing raw (unparsed) subjects to be passed cleanly.
 
 // CreateRevocationList creates a new X.509 v2 Certificate Revocation List,
 // according to RFC 5280, based on template.

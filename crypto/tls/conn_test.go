@@ -3,10 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package tls
-
-// will be initialized with {0, 255, 255, ..., 255}
-
-// will be initialized with {255, 255, 255, ..., 255}
-
-// hairpinConn is a net.Conn that makes a “hairpin” call when closed, back into
-// the tls.Conn which is calling it.

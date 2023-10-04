@@ -8,32 +8,35 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A writer is a buffered, flushable writer.
-
 // Writer is an LZW compressor. It writes the compressed form of the data
 // to an underlying writer (see NewWriter).
 type Writer struct {
+	// w is the writer that compressed bytes are written to.
 	w writer
-
+	// order, write, bits, nBits and width are the state for
+	// converting a code stream into a byte stream.
 	order Order
 	write func(*Writer, uint32) error
 	bits  uint32
 	nBits uint
 	width uint
-
+	// litWidth is the width in bits of literal codes.
 	litWidth uint
-
+	// hi is the code implied by the next code emission.
+	// overflow is the code at which hi overflows the code width.
 	hi, overflow uint32
-
+	// savedCode is the accumulated code at the end of the most recent Write
+	// call. It is equal to invalidCode if there was no such call.
 	savedCode uint32
-
+	// err is the first error encountered during writing. Closing the writer
+	// will make any future Write calls return errClosed
 	err error
-
+	// table is the hash table from 20-bit keys to 12-bit values. Each table
+	// entry contains key<<12|val and collisions resolve by linear probing.
+	// The keys consist of a 12-bit code prefix and an 8-bit byte suffix.
+	// The values are a 12-bit code.
 	table [tableSize]uint32
 }
-
-// errOutOfCodes is an internal error that means that the writer has run out
-// of unused codes and a clear code needs to be sent next.
 
 // Write writes a compressed representation of p to w's underlying writer.
 func (w *Writer) Write(p []byte) (n int, err error)

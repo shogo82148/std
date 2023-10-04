@@ -3,11 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package reflect_test
-
-import (
-	. "reflect"
-)
-
-type IntPtr *int
-type IntPtr1 *int
-type Ch <-chan any

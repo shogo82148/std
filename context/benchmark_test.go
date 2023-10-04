@@ -3,9 +3,12 @@
 // license that can be found in the LICENSE file.
 
 package context_test
+<<<<<<< HEAD
 
 import (
 	. "context"
 )
 
 var _ = Background
+=======
+>>>>>>> upstream/release-branch.go1.21

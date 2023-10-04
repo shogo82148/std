@@ -10,8 +10,6 @@
 
 package strconv
 
-// TODO: move elsewhere?
-
 // FormatFloat converts the floating-point number f to a string,
 // according to the format fmt and precision prec. It rounds the
 // result assuming that the original was obtained from a floating-point

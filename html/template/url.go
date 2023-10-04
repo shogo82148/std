@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package template
-
-// Derived from https://play.golang.org/p/Dhmj7FORT5

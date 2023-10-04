@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package coverage
-
-// Set to true for debugging (linux only).

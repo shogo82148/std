@@ -19,19 +19,25 @@ import (
 // A Conn represents a secured connection.
 // It implements the net.Conn interface.
 type Conn struct {
+	// constant
 	conn        net.Conn
 	isClient    bool
 	handshakeFn func(context.Context) error
 	quic        *quicState
 
+	// isHandshakeComplete is true if the connection is currently transferring
+	// application data (i.e. is not currently processing a handshake).
+	// isHandshakeComplete is true implies handshakeErr == nil.
 	isHandshakeComplete atomic.Bool
-
+	// constant after handshake; protected by handshakeMutex
 	handshakeMutex sync.Mutex
 	handshakeErr   error
 	vers           uint16
 	haveVers       bool
 	config         *Config
-
+	// handshakes counts the number of handshakes performed on the
+	// connection so far. If renegotiation is disabled then this is either
+	// zero or one.
 	handshakes       int
 	extMasterSecret  bool
 	didResume        bool
@@ -39,32 +45,52 @@ type Conn struct {
 	ocspResponse     []byte
 	scts             [][]byte
 	peerCertificates []*x509.Certificate
-
+	// activeCertHandles contains the cache handles to certificates in
+	// peerCertificates that are used to track active references.
 	activeCertHandles []*activeCert
-
+	// verifiedChains contains the certificate chains that we built, as
+	// opposed to the ones presented by the server.
 	verifiedChains [][]*x509.Certificate
-
+	// serverName contains the server name indicated by the client, if any.
 	serverName string
-
+	// secureRenegotiation is true if the server echoed the secure
+	// renegotiation extension. (This is meaningless as a server because
+	// renegotiation is not supported in that case.)
 	secureRenegotiation bool
-
+	// ekm is a closure for exporting keying material.
 	ekm func(label string, context []byte, length int) ([]byte, error)
-
+	// resumptionSecret is the resumption_master_secret for handling
+	// or sending NewSessionTicket messages.
 	resumptionSecret []byte
 
+	// ticketKeys is the set of active session ticket keys for this
+	// connection. The first one is used to encrypt new tickets and
+	// all are tried to decrypt tickets.
 	ticketKeys []ticketKey
 
+	// clientFinishedIsFirst is true if the client sent the first Finished
+	// message during the most recent handshake. This is recorded because
+	// the first transmitted Finished message is the tls-unique
+	// channel-binding value.
 	clientFinishedIsFirst bool
 
+	// closeNotifyErr is any error from sending the alertCloseNotify record.
 	closeNotifyErr error
-
+	// closeNotifySent is true if the Conn attempted to send an
+	// alertCloseNotify record.
 	closeNotifySent bool
 
+	// clientFinished and serverFinished contain the Finished message sent
+	// by the client or server in the most recent handshake. This is
+	// retained to support the renegotiation extension and tls-unique
+	// channel-binding.
 	clientFinished [12]byte
 	serverFinished [12]byte
 
+	// clientProtocol is the negotiated ALPN protocol.
 	clientProtocol string
 
+	// input/output
 	in, out   halfConn
 	rawInput  bytes.Buffer
 	input     bytes.Reader
@@ -72,11 +98,18 @@ type Conn struct {
 	buffering bool
 	sendBuf   []byte
 
+	// bytesSent counts the bytes of application data sent.
+	// packetsSent counts packets.
 	bytesSent   int64
 	packetsSent int64
 
+	// retryCount counts the number of consecutive non-advancing records
+	// received by Conn.readRecord. That is, records that neither advance the
+	// handshake, nor deliver application data. Protected by in.Mutex.
 	retryCount int
 
+	// activeCall indicates whether Close has been call in the low bit.
+	// the rest of the bits are the number of goroutines in Conn.Write.
 	activeCall atomic.Int32
 
 	tmp [16]byte
@@ -107,27 +140,21 @@ func (c *Conn) SetWriteDeadline(t time.Time) error
 // TLS session.
 func (c *Conn) NetConn() net.Conn
 
-// A halfConn represents one direction of the record layer
-// connection, either sending or receiving.
-
-// cbcMode is an interface for block ciphers using cipher block chaining.
-
 // RecordHeaderError is returned when a TLS record header is invalid.
 type RecordHeaderError struct {
+	// Msg contains a human readable string that describes the error.
 	Msg string
-
+	// RecordHeader contains the five bytes of TLS record header that
+	// triggered the error.
 	RecordHeader [5]byte
-
+	// Conn provides the underlying net.Conn in the case that a client
+	// sent an initial handshake that didn't look like TLS.
+	// It is nil if there's already been a handshake or a TLS alert has
+	// been written to the connection.
 	Conn net.Conn
 }
 
 func (e RecordHeaderError) Error() string
-
-// atLeastReader reads from R, stopping with EOF once at least N bytes have been
-// read. It is different from an io.LimitedReader in that it doesn't cut short
-// the last Read call, and in that it considers an early EOF an error.
-
-// outBufPool pools the record-sized scratch buffers used by writeRecordLocked.
 
 // Write writes data to the connection.
 //
@@ -161,11 +188,6 @@ func (c *Conn) CloseWrite() error
 //
 // For control over canceling or setting a timeout on a handshake, use
 // HandshakeContext or the Dialer's DialContext method instead.
-//
-// In order to avoid denial of service attacks, the maximum RSA key size allowed
-// in certificates sent by either the TLS server or client is limited to 8192
-// bits. This limit can be overridden by setting tlsmaxrsasize in the GODEBUG
-// environment variable (e.g. GODEBUG=tlsmaxrsasize=4096).
 func (c *Conn) Handshake() error
 
 // HandshakeContext runs the client or server handshake

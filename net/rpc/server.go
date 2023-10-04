@@ -139,9 +139,6 @@ const (
 	DefaultDebugPath = "/debug/rpc"
 )
 
-// Precompute the reflect type for error. Can't use error directly
-// because Typeof takes an empty interface value. This is annoying.
-
 // Request is a header written before every RPC call. It is used internally
 // but documented here as an aid to debugging, such as when analyzing
 // network traffic.
@@ -192,13 +189,6 @@ func (server *Server) Register(rcvr any) error
 // RegisterName is like Register but uses the provided name for the type
 // instead of the receiver's concrete type.
 func (server *Server) RegisterName(name string, rcvr any) error
-
-// logRegisterError specifies whether to log problems during method registration.
-// To debug registration, recompile the package with this set to true.
-
-// A value sent as a placeholder for the server's response value when the server
-// receives an invalid request. It is never decoded by the client since the Response
-// contains an error when it is used.
 
 // ServeConn runs the server on a single connection.
 // ServeConn blocks, serving the connection until the client hangs up.
@@ -265,8 +255,6 @@ func ServeRequest(codec ServerCodec) error
 // to DefaultServer for each incoming connection.
 // Accept blocks; the caller typically invokes it in a go statement.
 func Accept(lis net.Listener)
-
-// Can connect to RPC service using HTTP CONNECT to rpcPath.
 
 // ServeHTTP implements an http.Handler that answers RPC requests.
 func (server *Server) ServeHTTP(w http.ResponseWriter, req *http.Request)

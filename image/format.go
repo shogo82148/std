@@ -12,10 +12,6 @@ import (
 // ErrFormat indicates that decoding encountered an unknown format.
 var ErrFormat = errors.New("image: unknown format")
 
-// A format holds an image format's name, magic header and how to decode it.
-
-// Formats is the list of registered formats.
-
 // RegisterFormat registers an image format for use by Decode.
 // Name is the name of the format, like "jpeg" or "png".
 // Magic is the magic prefix that identifies the format's encoding. The magic
@@ -23,8 +19,6 @@ var ErrFormat = errors.New("image: unknown format")
 // Decode is the function that decodes the encoded image.
 // DecodeConfig is the function that decodes just its configuration.
 func RegisterFormat(name, magic string, decode func(io.Reader) (Image, error), decodeConfig func(io.Reader) (Config, error))
-
-// A reader is an io.Reader that can also peek ahead.
 
 // Decode decodes an image that has been encoded in a registered format.
 // The string returned is the format name used during format registration.

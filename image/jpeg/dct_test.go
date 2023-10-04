@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package jpeg
-
-// testBlocks are the first 10 pre-IDCT blocks from ../testdata/video-001.jpeg.
