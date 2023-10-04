@@ -4,10 +4,6 @@
 
 package math_test
 
-import (
-	. "math"
-)
-
 // arguments and expected results for boundary cases
 const (
 	SmallestNormalFloat64   = 2.2250738585072014e-308

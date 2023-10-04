@@ -4,10 +4,6 @@
 
 package strconv_test
 
-import (
-	. "strconv"
-)
-
 // Sink makes sure the compiler cannot optimize away the benchmarks.
 var Sink struct {
 	Bool       bool

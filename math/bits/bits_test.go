@@ -4,10 +4,6 @@
 
 package bits_test
 
-import (
-	. "math/bits"
-)
-
 // Exported (global) variable serving as input for some
 // of the benchmarks to ensure side-effect free calls
 // are not optimized away.

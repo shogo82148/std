@@ -5,7 +5,6 @@
 package bytes_test
 
 import (
-	. "bytes"
 	"io"
 )
 

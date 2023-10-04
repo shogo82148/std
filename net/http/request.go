@@ -14,7 +14,6 @@ import (
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/mime/multipart"
 	"github.com/shogo82148/std/net/url"
-	urlpkg "github.com/shogo82148/std/net/url"
 )
 
 // ErrMissingFile is returned by FormFile when the provided file field name

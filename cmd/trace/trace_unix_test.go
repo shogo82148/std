@@ -5,7 +5,3 @@
 //go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
 
 package main
-
-import (
-	traceparser "internal/trace"
-)

@@ -5,7 +5,3 @@
 // This file implements various error reporters.
 
 package types
-
-import (
-	. "internal/types/errors"
-)

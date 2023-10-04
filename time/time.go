@@ -78,10 +78,6 @@
 // that difference will be visible when printing t.String() and u.String().
 package time
 
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)
-
 // A Time represents an instant in time with nanosecond precision.
 //
 // Programs using times should typically store and pass them as values,

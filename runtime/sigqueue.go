@@ -31,7 +31,3 @@
 //go:build !plan9
 
 package runtime
-
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)

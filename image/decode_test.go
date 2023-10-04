@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package image_test
-
-import (
-	_ "image/gif"
-	_ "image/jpeg"
-	_ "image/png"
-)

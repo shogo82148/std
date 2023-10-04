@@ -6,5 +6,3 @@
 // +build !compiler_bootstrap
 
 package bits
-
-import _ "github.com/shogo82148/std/unsafe"

@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package filepath_test
-
-import (
-	. "path/filepath"
-)

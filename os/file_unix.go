@@ -6,10 +6,6 @@
 
 package os
 
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)
-
 // Fd returns the integer Unix file descriptor referencing the open file.
 // If f is closed, the file descriptor becomes invalid.
 // If f is garbage collected, a finalizer may close the file descriptor,

@@ -9,7 +9,6 @@ package types
 import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/token"
-	. "internal/types/errors"
 )
 
 // A Checker maintains the state of the type checker.

@@ -4,10 +4,6 @@
 
 package x509
 
-import (
-	cryptobyte_asn1 "golang.org/x/crypto/cryptobyte/asn1"
-)
-
 // ParseCertificate parses a single certificate from the given ASN.1 DER data.
 func ParseCertificate(der []byte) (*Certificate, error)
 

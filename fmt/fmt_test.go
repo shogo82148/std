@@ -6,7 +6,7 @@ package fmt_test
 
 import (
 	"bytes"
-	. "fmt"
+
 	"math"
 )
 

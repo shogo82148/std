@@ -8,8 +8,6 @@ package types_test
 
 import (
 	"flag"
-
-	. "go/types"
 )
 
 var (

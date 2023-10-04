@@ -13,10 +13,10 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net"
+
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
-	urlpkg "net/url"
 )
 
 // Errors used by the HTTP server.

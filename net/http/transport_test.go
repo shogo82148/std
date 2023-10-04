@@ -8,8 +8,3 @@
 // HTTP/1 and HTTP/2). This
 
 package http_test
-
-import (
-	mrand "math/rand"
-	. "net/http"
-)

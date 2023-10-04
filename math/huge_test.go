@@ -8,7 +8,3 @@
 //go:build !s390x
 
 package math_test
-
-import (
-	. "math"
-)

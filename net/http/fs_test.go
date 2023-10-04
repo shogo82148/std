@@ -4,10 +4,6 @@
 
 package http_test
 
-import (
-	. "net/http"
-)
-
 var ServeFileRangeTests = []struct {
 	r      string
 	code   int

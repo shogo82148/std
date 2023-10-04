@@ -5,7 +5,3 @@
 // To avoid a cyclic dependency with go/parser, this file is in a separate package.
 
 package ast_test
-
-import (
-	. "go/ast"
-)

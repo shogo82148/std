@@ -7,7 +7,6 @@ package strings_test
 import (
 	"bytes"
 	"io"
-	. "strings"
 )
 
 var FieldsFuncTests = []FieldsTest{

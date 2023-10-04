@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package x509
-
-import (
-	_ "crypto/sha256"
-	_ "crypto/sha512"
-)

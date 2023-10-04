@@ -4,10 +4,6 @@
 
 package atomic_test
 
-import (
-	. "sync/atomic"
-)
-
 var Value_SwapTests = []struct {
 	init any
 	new  any

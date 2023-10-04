@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package fs_test
-
-import (
-	. "io/fs"
-	pathpkg "path"
-)

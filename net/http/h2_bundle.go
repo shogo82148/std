@@ -19,10 +19,6 @@
 
 package http
 
-import (
-	mathrand "math/rand"
-)
-
 var (
 	_ http2clientConnPoolIdleCloser = (*http2clientConnPool)(nil)
 	_ http2clientConnPoolIdleCloser = http2noDialClientConnPool{}

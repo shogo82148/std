@@ -5,7 +5,3 @@
 // This file defines operands and associated operations.
 
 package types
-
-import (
-	. "internal/types/errors"
-)

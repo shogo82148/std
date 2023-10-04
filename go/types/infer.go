@@ -7,7 +7,3 @@
 // This file implements type parameter inference.
 
 package types
-
-import (
-	. "internal/types/errors"
-)

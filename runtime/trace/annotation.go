@@ -6,7 +6,6 @@ package trace
 
 import (
 	"github.com/shogo82148/std/context"
-	_ "github.com/shogo82148/std/unsafe"
 )
 
 // NewTask creates a task instance with the type taskType and returns

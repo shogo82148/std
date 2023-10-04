@@ -127,6 +127,11 @@ func godoc(path string) ([]byte, error) {
 			var specs []ast.Spec
 			for _, spec := range d.Specs {
 				switch spec := spec.(type) {
+				case *ast.ImportSpec:
+					// 名前付きインポートは、ドキュメント中では使わないので除外する
+					if spec.Name != nil {
+						continue
+					}
 				case *ast.ValueSpec:
 					var names []*ast.Ident
 					for _, name := range spec.Names {

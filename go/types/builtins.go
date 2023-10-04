@@ -5,7 +5,3 @@
 // This file implements typechecking of builtin function calls.
 
 package types
-
-import (
-	. "internal/types/errors"
-)

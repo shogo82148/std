@@ -7,7 +7,6 @@ package slog
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/log"
-	loginternal "log/internal"
 )
 
 // Default returns the default Logger.

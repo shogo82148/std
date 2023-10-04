@@ -5,7 +5,3 @@
 // End-to-end serving tests
 
 package http_test
-
-import (
-	. "net/http"
-)

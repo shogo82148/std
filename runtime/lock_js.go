@@ -5,5 +5,3 @@
 //go:build js && wasm
 
 package runtime
-
-import _ "github.com/shogo82148/std/unsafe"

@@ -6,7 +6,3 @@
 // typecheck the standard library and tests.
 
 package types_test
-
-import (
-	. "go/types"
-)

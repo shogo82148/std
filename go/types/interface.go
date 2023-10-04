@@ -6,7 +6,6 @@ package types
 
 import (
 	"github.com/shogo82148/std/go/token"
-	. "internal/types/errors"
 )
 
 // An Interface represents an interface type.

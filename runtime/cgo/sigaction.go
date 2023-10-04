@@ -5,5 +5,3 @@
 //go:build (linux && amd64) || (freebsd && amd64) || (linux && arm64) || (linux && ppc64le)
 
 package cgo
-
-import _ "github.com/shogo82148/std/unsafe"

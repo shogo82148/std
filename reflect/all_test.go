@@ -4,10 +4,6 @@
 
 package reflect_test
 
-import (
-	. "reflect"
-)
-
 var _ = T{} == T{}
 
 var V = ValueOf

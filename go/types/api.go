@@ -29,7 +29,6 @@ import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/constant"
 	"github.com/shogo82148/std/go/token"
-	. "internal/types/errors"
 )
 
 // An Error describes a type-checking error; it implements the error interface.

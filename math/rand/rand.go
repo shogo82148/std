@@ -17,10 +17,6 @@
 // crypto/rand package.
 package rand
 
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)
-
 // A Source represents a source of uniformly-distributed
 // pseudo-random int64 values in the range [0, 1<<63).
 //

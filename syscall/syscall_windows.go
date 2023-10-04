@@ -7,7 +7,6 @@
 package syscall
 
 import (
-	errorspkg "errors"
 	"github.com/shogo82148/std/unsafe"
 )
 

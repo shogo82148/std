@@ -4,8 +4,4 @@
 
 package strconv_test
 
-import (
-	. "strconv"
-)
-
 var BenchSink int

@@ -5,7 +5,3 @@
 //go:build wasip1
 
 package net
-
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)

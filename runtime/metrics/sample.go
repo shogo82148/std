@@ -4,10 +4,6 @@
 
 package metrics
 
-import (
-	_ "github.com/shogo82148/std/runtime"
-)
-
 // Sample captures a single metric sample.
 type Sample struct {
 	// Name is the name of the metric sampled.

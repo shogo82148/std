@@ -4,10 +4,6 @@
 
 package bytes_test
 
-import (
-	. "bytes"
-)
-
 var RepeatTests = []RepeatTest{
 	{"", "", 0},
 	{"", "", 1},

@@ -5,5 +5,3 @@
 //go:build tools
 
 package tools
-
-import _ "github.com/shogo82148/std/golang.org/x/tools/cmd/bisect"

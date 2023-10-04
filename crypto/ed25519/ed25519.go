@@ -13,8 +13,8 @@
 package ed25519
 
 import (
-	cryptorand "crypto/rand"
 	"github.com/shogo82148/std/crypto"
+
 	"github.com/shogo82148/std/io"
 )
 

@@ -4,8 +4,4 @@
 
 package bytes_test
 
-import (
-	. "bytes"
-)
-
 const N = 10000

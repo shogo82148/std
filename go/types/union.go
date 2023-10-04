@@ -4,10 +4,6 @@
 
 package types
 
-import (
-	. "internal/types/errors"
-)
-
 // A Union represents a union of terms embedded in an interface.
 type Union struct {
 	terms []*Term

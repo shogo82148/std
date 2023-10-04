@@ -5,7 +5,3 @@
 // This file implements typechecking of expressions.
 
 package types
-
-import (
-	. "internal/types/errors"
-)
