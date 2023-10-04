@@ -27,10 +27,9 @@ import (
 // contextKey is a value for use with context.WithValue. It's used as
 // a pointer so it fits in an interface{} without allocation.
 
-// NoBody is an io.ReadCloser with no bytes. Read always returns EOF
-// and Close always returns nil. It can be used in an outgoing client
-// request to explicitly signal that a request has zero bytes.
-// An alternative, however, is to simply set Request.Body to nil.
+// NoBodyは、バイトを持たないio.ReadCloserです。Readは常にEOFを返し、Closeは常にnilを返します。
+// リクエストに0バイトがあることを明示的に示すために、送信クライアントのリクエストで使用できます。
+// ただし、Request.Bodyをnilに設定する代替手段もあります。
 var NoBody = noBody{}
 
 var (
@@ -39,16 +38,15 @@ var (
 	_ io.ReadCloser = NoBody
 )
 
-// PushOptions describes options for Pusher.Push.
+// PushOptionsは、Pusher.Pushのオプションを記述します。
 type PushOptions struct {
 	Method string
 
 	Header Header
 }
 
-// Pusher is the interface implemented by ResponseWriters that support
-// HTTP/2 server push. For more background, see
-// https://tools.ietf.org/html/rfc7540#section-8.2.
+// Pusherは、HTTP/2サーバープッシュをサポートするResponseWritersによって実装されるインターフェースです。
+// 詳細については、 https://tools.ietf.org/html/rfc7540#section-8.2 を参照してください。
 type Pusher interface {
 	Push(target string, opts *PushOptions) error
 }

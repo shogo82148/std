@@ -3,6 +3,7 @@ package http
 import (
 	"errors"
 
+	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net"
 )
 
@@ -51,3 +52,11 @@ func (w *http2responseWriter) Flush()
 func (w *http2responseWriter) Push(target string, opts *PushOptions) error
 
 type http2stringWriter any
+
+type noBody struct{}
+
+func (noBody) WriteTo(w io.Writer) (n int64, err error)
+
+func (noBody) Read(p []byte) (n int, err error)
+
+func (noBody) Close() error
