@@ -61,47 +61,40 @@ var (
 	ErrMissingContentLength = &ProtocolError{"missing ContentLength in HEAD response"}
 )
 
-// A Request represents an HTTP request received by a server
-// or to be sent by a client.
+// Requestは、サーバーによって受信されたHTTPリクエストまたはクライアントによって送信されるHTTPリクエストを表します。
 //
 // フィールドの意味は、クライアントとサーバーの使用方法でわずかに異なります。
 // 以下のフィールドに関する注意事項に加えて、Request.WriteおよびRoundTripperのドキュメントを参照してください。
 type Request struct {
-	// Method specifies the HTTP method (GET, POST, PUT, etc.).
-	// For client requests, an empty string means GET.
+	// Methodは、HTTPメソッド（GET、POST、PUTなど）を指定します。
+	// クライアントリクエストの場合、空の文字列はGETを意味します。
 	//
-	// Go's HTTP client does not support sending a request with
-	// the CONNECT method. See the documentation on Transport for
-	// details.
+	// GoのHTTPクライアントは、CONNECTメソッドでリクエストを送信することをサポートしていません。
+	// 詳細については、Transportのドキュメントを参照してください。
 	Method string
 
-	// URL specifies either the URI being requested (for server
-	// requests) or the URL to access (for client requests).
+	// URLは、サーバーリクエストの場合に要求されるURI（URI）を指定するか、
+	// クライアントリクエストの場合にアクセスするURLを指定します。
 	//
-	// For server requests, the URL is parsed from the URI
-	// supplied on the Request-Line as stored in RequestURI.  For
-	// most requests, fields other than Path and RawQuery will be
-	// empty. (See RFC 7230, Section 5.3)
+	// サーバーリクエストの場合、URLはRequestURIに格納されたRequest-Lineで指定されたURIから解析されます。
+	// ほとんどのリクエストでは、PathとRawQuery以外のフィールドは空になります。 （RFC 7230、セクション5.3を参照）
 	//
-	// For client requests, the URL's Host specifies the server to
-	// connect to, while the Request's Host field optionally
-	// specifies the Host header value to send in the HTTP
-	// request.
+	// クライアントリクエストの場合、URLのHostは接続するサーバーを指定し、
+	// RequestのHostフィールドはHTTPリクエストで送信するHostヘッダー値をオプションで指定します。
 	URL *url.URL
 
-	// The protocol version for incoming server requests.
+	// サーバーリクエストのプロトコルバージョン。
 	//
-	// For client requests, these fields are ignored. The HTTP
-	// client code always uses either HTTP/1.1 or HTTP/2.
-	// See the docs on Transport for details.
+	// クライアントリクエストの場合、これらのフィールドは無視されます。
+	// HTTPクライアントコードは常にHTTP/1.1またはHTTP/2を使用します。
+	// 詳細については、Transportのドキュメントを参照してください。
 	Proto      string
 	ProtoMajor int
 	ProtoMinor int
 
-	// Header contains the request header fields either received
-	// by the server or to be sent by the client.
+	// Headerは、サーバーによって受信されたリクエストヘッダーフィールドまたはクライアントによって送信されるリクエストヘッダーフィールドを含みます。
 	//
-	// If a server received a request with header lines,
+	// サーバーがヘッダーラインを含むリクエストを受信した場合、
 	//
 	//	Host: example.com
 	//	accept-encoding: gzip, deflate
@@ -109,7 +102,7 @@ type Request struct {
 	//	fOO: Bar
 	//	foo: two
 	//
-	// then
+	// その場合、
 	//
 	//	Header = map[string][]string{
 	//		"Accept-Encoding": {"gzip, deflate"},
@@ -117,169 +110,125 @@ type Request struct {
 	//		"Foo": {"Bar", "two"},
 	//	}
 	//
-	// For incoming requests, the Host header is promoted to the
-	// Request.Host field and removed from the Header map.
+	// 入力リクエストの場合、HostヘッダーはRequest.Hostフィールドに昇格し、Headerマップから削除されます。
 	//
-	// HTTP defines that header names are case-insensitive. The
-	// request parser implements this by using CanonicalHeaderKey,
-	// making the first character and any characters following a
-	// hyphen uppercase and the rest lowercase.
+	// HTTPは、ヘッダー名が大文字小文字を区別しないことを定義しています。リクエストパーサーは、CanonicalHeaderKeyを使用してこれを実装し、ハイフンの後に続く最初の文字と任意の文字を大文字にし、残りを小文字にします。
 	//
-	// For client requests, certain headers such as Content-Length
-	// and Connection are automatically written when needed and
-	// values in Header may be ignored. See the documentation
-	// for the Request.Write method.
+	// クライアントリクエストの場合、Content-LengthやConnectionなどの特定のヘッダーは必要に応じて自動的に書き込まれ、Headerの値は無視される場合があります。Request.Writeメソッドのドキュメントを参照してください。
 	Header Header
 
-	// Body is the request's body.
+	// Bodyは、リクエストの本文です。
 	//
-	// For client requests, a nil body means the request has no
-	// body, such as a GET request. The HTTP Client's Transport
-	// is responsible for calling the Close method.
+	// クライアントリクエストの場合、nilのBodyは、GETリクエストなど、リクエストに本文がないことを意味します。
+	// HTTPクライアントのTransportは、Closeメソッドを呼び出す責任があります。
 	//
-	// For server requests, the Request Body is always non-nil
-	// but will return EOF immediately when no body is present.
-	// The Server will close the request body. The ServeHTTP
-	// Handler does not need to.
+	// サーバーリクエストの場合、Request Bodyは常にnilではありませんが、本文が存在しない場合はすぐにEOFが返されます。
+	// サーバーはリクエストボディを閉じます。ServeHTTPハンドラーは閉じる必要はありません。
 	//
-	// Body must allow Read to be called concurrently with Close.
-	// In particular, calling Close should unblock a Read waiting
-	// for input.
+	// Bodyは、ReadがCloseと同時に呼び出されることを許可する必要があります。
+	// 特に、Closeを呼び出すと、入力を待機しているReadがブロックされている場合は、それを解除する必要があります。
 	Body io.ReadCloser
 
-	// GetBody defines an optional func to return a new copy of
-	// Body. It is used for client requests when a redirect requires
-	// reading the body more than once. Use of GetBody still
-	// requires setting Body.
+	// GetBodyは、Bodyの新しいコピーを返すオプションの関数を定義します。
+	// リダイレクトにより、Bodyを複数回読み取る必要がある場合にクライアントリクエストで使用されます。
+	// GetBodyの使用には、Bodyを設定する必要があります。
 	//
-	// For server requests, it is unused.
+	// サーバーリクエストの場合、使用されません。
 	GetBody func() (io.ReadCloser, error)
 
-	// ContentLength records the length of the associated content.
-	// The value -1 indicates that the length is unknown.
-	// Values >= 0 indicate that the given number of bytes may
-	// be read from Body.
+	// ContentLengthは、関連するコンテンツの長さを記録します。
+	// 値-1は、長さが不明であることを示します。
+	// 値が0以上の場合、Bodyから指定されたバイト数を読み取ることができます。
 	//
-	// For client requests, a value of 0 with a non-nil Body is
-	// also treated as unknown.
+	// クライアントリクエストの場合、Bodyがnilでない場合、値0は不明として扱われます。
 	ContentLength int64
 
-	// TransferEncoding lists the transfer encodings from outermost to
-	// innermost. An empty list denotes the "identity" encoding.
-	// TransferEncoding can usually be ignored; chunked encoding is
-	// automatically added and removed as necessary when sending and
-	// receiving requests.
+	// TransferEncodingは、最も外側から最も内側までの転送エンコーディングをリストします。
+	// 空のリストは「identity」エンコーディングを示します。
+	// TransferEncodingは通常無視できます。チャンクエンコーディングは、
+	// リクエストの送信と受信時に必要に応じて自動的に追加および削除されます。
 	TransferEncoding []string
 
-	// Close indicates whether to close the connection after
-	// replying to this request (for servers) or after sending this
-	// request and reading its response (for clients).
+	// Closeは、このリクエストに応答した後（サーバーの場合）またはこのリクエストを送信してその応答を読み取った後（クライアントの場合）に接続を閉じるかどうかを示します。
 	//
-	// For server requests, the HTTP server handles this automatically
-	// and this field is not needed by Handlers.
+	// サーバーリクエストの場合、HTTPサーバーがこれを自動的に処理し、このフィールドはHandlersによって必要ではありません。
 	//
-	// For client requests, setting this field prevents re-use of
-	// TCP connections between requests to the same hosts, as if
-	// Transport.DisableKeepAlives were set.
+	// クライアントリクエストの場合、このフィールドを設定すると、 Transport.DisableKeepAlives が設定された場合と同様に、同じホストへのリクエスト間でTCP接続の再利用が防止されます。
 	Close bool
 
-	// For server requests, Host specifies the host on which the
-	// URL is sought. For HTTP/1 (per RFC 7230, section 5.4), this
-	// is either the value of the "Host" header or the host name
-	// given in the URL itself. For HTTP/2, it is the value of the
-	// ":authority" pseudo-header field.
-	// It may be of the form "host:port". For international domain
-	// names, Host may be in Punycode or Unicode form. Use
-	// golang.org/x/net/idna to convert it to either format if
-	// needed.
-	// To prevent DNS rebinding attacks, server Handlers should
-	// validate that the Host header has a value for which the
-	// Handler considers itself authoritative. The included
-	// ServeMux supports patterns registered to particular host
-	// names and thus protects its registered Handlers.
+	// サーバーリクエストの場合、HostはURLが要求されるホストを指定します。
+	// HTTP/1（RFC 7230、セクション5.4による）の場合、これは「Host」ヘッダーの値またはURL自体で指定されたホスト名のいずれかです。
+	// HTTP/2の場合、これは「:authority」疑似ヘッダーフィールドの値です。
+	// 形式は「host:port」にすることができます。
+	// 国際ドメイン名の場合、HostはPunycodeまたはUnicode形式である場合があります。
+	// 必要に応じて、golang.org/x/net/idna を使用してどちらの形式にも変換できます。
+	// DNSリバインディング攻撃を防ぐために、サーバーハンドラーは、Hostヘッダーがハンドラー自身が権限を持つ値であることを検証する必要があります。
+	// 含まれるServeMuxは、特定のホスト名に登録されたパターンをサポートし、その登録されたハンドラーを保護します。
 	//
-	// For client requests, Host optionally overrides the Host
-	// header to send. If empty, the Request.Write method uses
-	// the value of URL.Host. Host may contain an international
-	// domain name.
+	// クライアントリクエストの場合、HostはオプションでHostヘッダーを上書きして送信します。
+	// 空の場合、Request.Write メソッドは URL.Host の値を使用します。
+	// Hostには国際ドメイン名が含まれる場合があります。
 	Host string
 
-	// Form contains the parsed form data, including both the URL
-	// field's query parameters and the PATCH, POST, or PUT form data.
-	// This field is only available after ParseForm is called.
-	// The HTTP client ignores Form and uses Body instead.
+	// Formには、URLフィールドのクエリパラメータとPATCH、POST、またはPUTフォームデータを含む解析されたフォームデータが含まれます。
+	// ParseFormが呼び出された後にのみこのフィールドが使用可能です。
+	// HTTPクライアントはFormを無視し、代わりにBodyを使用します。
 	Form url.Values
 
-	// PostForm contains the parsed form data from PATCH, POST
-	// or PUT body parameters.
+	// PostFormには、PATCH、POST、またはPUTボディパラメータから解析されたフォームデータが含まれます。
 	//
-	// This field is only available after ParseForm is called.
-	// The HTTP client ignores PostForm and uses Body instead.
+	// ParseFormが呼び出された後にのみこのフィールドが使用可能です。
+	// HTTPクライアントはPostFormを無視し、代わりにBodyを使用します。
 	PostForm url.Values
 
-	// MultipartForm is the parsed multipart form, including file uploads.
-	// This field is only available after ParseMultipartForm is called.
-	// The HTTP client ignores MultipartForm and uses Body instead.
+	// MultipartFormは、ファイルのアップロードを含む解析されたマルチパートフォームです。
+	// ParseMultipartFormが呼び出された後にのみこのフィールドが使用可能です。
+	// HTTPクライアントはMultipartFormを無視し、代わりにBodyを使用します。
 	MultipartForm *multipart.Form
 
-	// Trailer specifies additional headers that are sent after the request
-	// body.
+	// Trailerは、リクエスト本文の後に送信される追加のヘッダーを指定します。
 	//
-	// For server requests, the Trailer map initially contains only the
-	// trailer keys, with nil values. (The client declares which trailers it
-	// will later send.)  While the handler is reading from Body, it must
-	// not reference Trailer. After reading from Body returns EOF, Trailer
-	// can be read again and will contain non-nil values, if they were sent
-	// by the client.
+	// サーバーリクエストの場合、Trailerマップには最初にトレーラーキーのみが含まれ、nil値が含まれます。
+	// （クライアントは、後で送信するトレーラーを宣言します。）
+	// ハンドラーがBodyから読み取っている間、Trailerに参照しないでください。
+	// Bodyからの読み取りがEOFを返した後、Trailerを再度読み取ると、クライアントが送信した場合は非nil値が含まれます。
 	//
-	// For client requests, Trailer must be initialized to a map containing
-	// the trailer keys to later send. The values may be nil or their final
-	// values. The ContentLength must be 0 or -1, to send a chunked request.
-	// After the HTTP request is sent the map values can be updated while
-	// the request body is read. Once the body returns EOF, the caller must
-	// not mutate Trailer.
+	// クライアントリクエストの場合、Trailerは、後で送信するトレーラーキーを含むマップで初期化する必要があります。
+	// 値はnilまたは最終値である場合があります。ContentLengthは0または-1である必要があります。
+	// HTTPリクエストが送信された後、マップの値は、リクエストボディが読み取られている間に更新できます。
+	// ボディがEOFを返した後、呼び出し元はTrailerを変更してはいけません。
 	//
-	// Few HTTP clients, servers, or proxies support HTTP trailers.
+	// 少数のHTTPクライアント、サーバー、またはプロキシがHTTPトレーラーをサポートしています。
 	Trailer Header
 
-	// RemoteAddr allows HTTP servers and other software to record
-	// the network address that sent the request, usually for
-	// logging. This field is not filled in by ReadRequest and
-	// has no defined format. The HTTP server in this package
-	// sets RemoteAddr to an "IP:port" address before invoking a
-	// handler.
-	// This field is ignored by the HTTP client.
+	// RemoteAddrは、HTTPサーバーやその他のソフトウェアが、通常はログ記録のためにリクエストを送信したネットワークアドレスを記録できるようにします。
+	// このフィールドはReadRequestによって入力されず、定義された形式はありません。
+	// このパッケージのHTTPサーバーは、ハンドラーを呼び出す前にRemoteAddrを「IP:port」アドレスに設定します。
+	// このフィールドはHTTPクライアントによって無視されます。
 	RemoteAddr string
 
-	// RequestURI is the unmodified request-target of the
-	// Request-Line (RFC 7230, Section 3.1.1) as sent by the client
-	// to a server. Usually the URL field should be used instead.
-	// It is an error to set this field in an HTTP client request.
+	// RequestURIは、クライアントがサーバーに送信したRequest-Line（RFC 7230、セクション3.1.1）の変更されていないリクエストターゲットです。
+	// 通常、URLフィールドを代わりに使用する必要があります。
+	// HTTPクライアントリクエストでこのフィールドを設定することはエラーです。
 	RequestURI string
 
-	// TLS allows HTTP servers and other software to record
-	// information about the TLS connection on which the request
-	// was received. This field is not filled in by ReadRequest.
-	// The HTTP server in this package sets the field for
-	// TLS-enabled connections before invoking a handler;
-	// otherwise it leaves the field nil.
-	// This field is ignored by the HTTP client.
+	// TLSは、HTTPサーバーやその他のソフトウェアが、リクエストを受信したTLS接続に関する情報を記録できるようにします。
+	// このフィールドはReadRequestによって入力されず、定義された形式はありません。
+	// このパッケージのHTTPサーバーは、ハンドラーを呼び出す前にTLS有効な接続のためにこのフィールドを設定します。
+	// それ以外の場合は、このフィールドをnilのままにします。
+	// このフィールドはHTTPクライアントによって無視されます。
 	TLS *tls.ConnectionState
 
-	// Cancel is an optional channel whose closure indicates that the client
-	// request should be regarded as canceled. Not all implementations of
-	// RoundTripper may support Cancel.
+	// Cancelは、クライアントリクエストがキャンセルされたと見なす必要があることを示すチャネルのオプションです。
+	// RoundTripperのすべての実装がCancelをサポートしているわけではありません。
 	//
-	// For server requests, this field is not applicable.
+	// サーバーリクエストの場合、このフィールドは適用されません。
 	//
-	// Deprecated: Set the Request's context with NewRequestWithContext
-	// instead. If a Request's Cancel field and context are both
-	// set, it is undefined whether Cancel is respected.
+	// Deprecated: NewRequestWithContextでRequestのコンテキストを設定してください。
+	// RequestのCancelフィールドとコンテキストの両方が設定されている場合、Cancelが尊重されるかどうかは未定義です。
 	Cancel <-chan struct{}
 
-	// Response is the redirect response which caused this request
-	// to be created. This field is only populated during client
-	// redirects.
+	// Responseは、このリクエストが作成されたクライアントリダイレクト中にのみ設定されるリダイレクトレスポンスです。
 	Response *Response
 
 	// ctx is either the client or server context. It should only
