@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package reflect
-
-var CallGC = &callGC
-
-var GCBits = gcbits
-
-var MethodValueCallCodePtr = methodValueCallCodePtr

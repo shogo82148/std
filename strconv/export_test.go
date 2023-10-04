@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package strconv
-
-var (
-	BitSizeError = bitSizeError
-	BaseError    = baseError
-)

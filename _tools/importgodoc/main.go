@@ -79,6 +79,12 @@ func godoc(path string) ([]byte, error) {
 		return nil, err
 	}
 
+	var packageName string
+	if node.Name != nil {
+		packageName = node.Name.Name
+	}
+	isTestPackage := strings.HasSuffix(packageName, "_test")
+
 	var decls []ast.Decl
 	var comments []*ast.CommentGroup
 	seen := map[*ast.CommentGroup]bool{}
@@ -124,6 +130,11 @@ func godoc(path string) ([]byte, error) {
 				case *ast.ValueSpec:
 					var names []*ast.Ident
 					for _, name := range spec.Names {
+						// テスト中の変数は除外する
+						if isTest && !isTestPackage {
+							continue
+						}
+						// 非公開の変数は除外する
 						if name == nil || (!ast.IsExported(name.Name) && name.Name != "_") {
 							continue
 						}

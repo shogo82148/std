@@ -3,11 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package json
-
-import (
-	"encoding"
-)
-
-var _ encoding.TextUnmarshaler = (*unmarshalerText)(nil)
-
-var _ encoding.TextUnmarshaler = (*u8marshal)(nil)

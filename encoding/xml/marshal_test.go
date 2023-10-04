@@ -3,12 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package xml
-
-const (
-	HyperDrive DriveType = iota
-	ImprobabilityDrive
-)
-
-var _ Marshaler = (*MyMarshalerTest)(nil)
-
-var _ MarshalerAttr = (*MyMarshalerAttrTest)(nil)

@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package xml
-
-const OK = "OK"
-
-var _ Unmarshaler = (*MyCharData)(nil)
-
-var _ UnmarshalerAttr = (*MyAttr)(nil)

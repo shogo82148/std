@@ -8,12 +8,3 @@
 // speaking DNS.
 
 package net
-
-import (
-	"errors"
-)
-
-var (
-	ErrNotExist = errors.New("name does not exist")
-	ErrRefused  = errors.New("refused")
-)

@@ -3,17 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package sql
-
-import (
-	"database/sql/driver"
-)
-
-var _ driver.NamedValueChecker = &nvcConn{}
-
-var (
-	_ driver.Conn           = &ctxOnlyConn{}
-	_ driver.QueryerContext = &ctxOnlyConn{}
-	_ driver.ExecerContext  = &ctxOnlyConn{}
-)
-
-var _ driver.Pinger = pingConn{}

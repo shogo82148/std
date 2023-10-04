@@ -7,6 +7,3 @@
 // TODO: Generate this
 
 package runtime
-
-var FmtSprintf func(format string, a ...any) string
-var TestenvOptimizationOff func() bool

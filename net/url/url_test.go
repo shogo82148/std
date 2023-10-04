@@ -7,6 +7,3 @@ package url
 import (
 	encodingPkg "encoding"
 )
-
-var _ encodingPkg.BinaryMarshaler = (*URL)(nil)
-var _ encodingPkg.BinaryUnmarshaler = (*URL)(nil)

@@ -3,11 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package sql
-
-import (
-	"database/sql/driver"
-)
-
-var _ driver.DriverContext = &fakeDriverCtx{}
-
-var _ driver.Validator = (*fakeConn)(nil)
