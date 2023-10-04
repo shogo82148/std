@@ -13,8 +13,6 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// version of the pclntab
-
 // A LineTable is a data structure mapping program counters to line numbers.
 //
 // In Go 1.1 and earlier, each function (represented by a Func) had its own LineTable,
@@ -33,10 +31,13 @@ type LineTable struct {
 	PC   uint64
 	Line int
 
+	// This mutex is used to keep parsing of pclntab synchronous.
 	mu sync.Mutex
 
+	// Contains the version of the pclntab section.
 	version version
 
+	// Go 1.2/1.16/1.18 state
 	binary      binary.ByteOrder
 	quantum     uint32
 	ptrsize     uint32
@@ -51,14 +52,11 @@ type LineTable struct {
 	nfiletab    uint32
 	funcNames   map[uint32]string
 	strings     map[uint32]string
-
+	// fileMap varies depending on the version of the object file.
+	// For ver12, it maps the name to the index in the file table.
+	// For ver116, it maps the name to the offset in filetab.
 	fileMap map[string]uint32
 }
-
-// NOTE(rsc): This is wrong for GOARCH=arm, which uses a quantum of 4,
-// but we have no idea whether we're using arm or not. This only
-// matters in the old (pre-Go 1.2) symbol table format, so it's not worth
-// fixing.
 
 // PCToLine returns the line number for the given program counter.
 //
@@ -76,11 +74,3 @@ func (t *LineTable) LineToPC(line int, maxpc uint64) uint64
 // Text must be the start address of the
 // corresponding text segment.
 func NewLineTable(data []byte, text uint64) *LineTable
-
-// funcTab is memory corresponding to a slice of functab structs, followed by an invalid PC.
-// A functab struct is a PC and a func offset.
-
-// funcData is memory corresponding to an _func struct.
-
-// disableRecover causes this package not to swallow panics.
-// This is useful when making changes.

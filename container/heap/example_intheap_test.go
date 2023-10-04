@@ -10,9 +10,6 @@ import (
 	"fmt"
 )
 
-// An IntHeap is a min-heap of ints.
-type IntHeap []int
-
 // This example inserts several ints into an IntHeap, checks the minimum,
 // and removes them in order of priority.
 func Example_intHeap() {

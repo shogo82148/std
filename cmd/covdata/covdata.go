@@ -5,5 +5,3 @@
 package main
 
 func Exit(code int)
-
-// Modes of operation.

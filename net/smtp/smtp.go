@@ -26,15 +26,18 @@ import (
 
 // A Client represents a client connection to an SMTP server.
 type Client struct {
+	// Text is the textproto.Conn used by the Client. It is exported to allow for
+	// clients to add extensions.
 	Text *textproto.Conn
-
+	// keep a reference to the connection so it can be used to create a TLS
+	// connection later
 	conn net.Conn
-
+	// whether the Client is using TLS
 	tls        bool
 	serverName string
-
+	// map of supported extensions
 	ext map[string]string
-
+	// supported auth mechanisms
 	auth       []string
 	localName  string
 	didHello   bool

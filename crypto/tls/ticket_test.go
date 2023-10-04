@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package tls
-
-var _ = &Config{WrapSession: (&Config{}).EncryptTicket}
-var _ = &Config{UnwrapSession: (&Config{}).DecryptTicket}

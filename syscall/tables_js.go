@@ -6,12 +6,6 @@
 
 package syscall
 
-// These were originally used by Nacl, then later also used by
-// js/wasm. Now that they're only used by js/wasm, these numbers are
-// just arbitrary.
-//
-// TODO: delete? replace with something meaningful?
-
 // TODO: Auto-generate some day. (Hard-coded in binaries so not likely to change.)
 const (
 	// native_client/src/trusted/service_runtime/include/sys/errno.h
@@ -139,8 +133,3 @@ const (
 	ECASECLASH      Errno = 2053
 	EWOULDBLOCK     Errno = EAGAIN
 )
-
-// TODO: Auto-generate some day. (Hard-coded in binaries so not likely to change.)
-
-// Do the interface allocations only once for common
-// Errno values.

@@ -3,15 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// A header for a Go map.
-
-// mapextra holds fields that are not present on all maps.
-
-// A bucket for a Go map.
-
-// A hash iteration structure.
-// If you modify hiter, also change cmd/compile/internal/reflectdata/reflect.go
-// and reflect/value.go to match the layout of this structure.
-
-// evacDst is an evacuation destination.

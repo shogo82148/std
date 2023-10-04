@@ -29,13 +29,3 @@ func ReadFile(name string) (info *BuildInfo, err error)
 // accessed through the given ReaderAt. Most information is only available for
 // binaries built with module support.
 func Read(r io.ReaderAt) (*BuildInfo, error)
-
-// elfExe is the ELF implementation of the exe interface.
-
-// peExe is the PE (Windows Portable Executable) implementation of the exe interface.
-
-// machoExe is the Mach-O (Apple macOS/iOS) implementation of the exe interface.
-
-// xcoffExe is the XCOFF (AIX eXtended COFF) implementation of the exe interface.
-
-// plan9objExe is the Plan 9 a.out implementation of the exe interface.

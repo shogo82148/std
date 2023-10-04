@@ -6,5 +6,3 @@ package aes
 
 // Assert that aesCipherAsm implements the ctrAble interface.
 var _ ctrAble = (*aesCipherAsm)(nil)
-
-// streamBufferSize is the number of bytes of encrypted counter values to cache.

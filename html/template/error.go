@@ -10,14 +10,16 @@ import (
 
 // Error describes a problem encountered during template Escaping.
 type Error struct {
+	// ErrorCode describes the kind of error.
 	ErrorCode ErrorCode
-
+	// Node is the node that caused the problem, if known.
+	// If not nil, it overrides Name and Line.
 	Node parse.Node
-
+	// Name is the name of the template in which the error was encountered.
 	Name string
-
+	// Line is the line number of the error in the template source or 0.
 	Line int
-
+	// Description is a human-readable description of the problem.
 	Description string
 }
 
@@ -218,6 +220,10 @@ const (
 	// Discussion:
 	//   Package html/template does not support actions inside of JS template
 	//   literals.
+	//
+	// Deprecated: ErrJSTemplate is no longer returned when an action is present
+	// in a JS template literal. Actions inside of JS template literals are now
+	// escaped as expected.
 	ErrJSTemplate
 )
 

@@ -58,7 +58,8 @@ type PrivateKey struct {
 	curve      Curve
 	privateKey []byte
 	boring     *boring.PrivateKeyECDH
-
+	// publicKey is set under publicKeyOnce, to allow loading private keys with
+	// NewPrivateKey without having to perform a scalar multiplication.
 	publicKey     *PublicKey
 	publicKeyOnce sync.Once
 }

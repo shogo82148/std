@@ -22,27 +22,12 @@ type UnsupportedError string
 
 func (e UnsupportedError) Error() string
 
-// Component specification, specified in section B.2.2.
-
-// See https://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/JPEG.html#Adobe
-
-// unzig maps from the zig-zag ordering to the natural ordering. For example,
-// unzig[3] is the column and row of the fourth element in zig-zag order. The
-// value is 16, which means first column (16%8 == 0) and third row (16/8 == 2).
-
 // Deprecated: Reader is not used by the image/jpeg package and should
 // not be used by others. It is kept for compatibility.
 type Reader interface {
 	io.ByteReader
 	io.Reader
 }
-
-// bits holds the unprocessed bits that have been taken from the byte-stream.
-// The n least significant bits of a form the unread bits, to be read in MSB to
-// LSB order.
-
-// errMissingFF00 means that readByteStuffedByte encountered an 0xff byte (a
-// marker byte) that wasn't the expected byte-stuffed sequence 0xff, 0x00.
 
 // Decode reads a JPEG image from r and returns it as an image.Image.
 func Decode(r io.Reader) (image.Image, error)

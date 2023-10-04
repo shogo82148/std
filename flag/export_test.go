@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package flag
-
-var DefaultUsage = Usage

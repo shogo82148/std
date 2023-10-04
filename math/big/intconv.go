@@ -41,9 +41,6 @@ var _ fmt.Formatter = intOne
 // justification.
 func (x *Int) Format(s fmt.State, ch rune)
 
-// byteReader is a local wrapper around fmt.ScanState;
-// it implements the ByteReader interface.
-
 var _ fmt.Scanner = intOne
 
 // Scan is a support routine for fmt.Scanner; it sets z to the value of

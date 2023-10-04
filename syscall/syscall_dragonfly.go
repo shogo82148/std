@@ -17,11 +17,6 @@ func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
 func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 
-// See version list in https://github.com/DragonFlyBSD/DragonFlyBSD/blob/master/sys/sys/param.h
-
-// First __DragonFly_version after September 2019 ABI changes
-// http://lists.dragonflybsd.org/pipermail/users/2019-September/358280.html
-
 type SockaddrDatalink struct {
 	Len    uint8
 	Family uint8

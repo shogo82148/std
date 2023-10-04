@@ -12,6 +12,3 @@
 //go:build (netgo && unix) || (unix && !cgo && !darwin) || js || wasip1
 
 package net
-
-// cgoAvailable set to false to indicate that the cgo resolver
-// is not available on this system.

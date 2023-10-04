@@ -59,12 +59,6 @@ func (h Header) Clone() Header
 // TimeFormat, time.RFC850, and time.ANSIC.
 func ParseTime(text string) (t time.Time, err error)
 
-// stringWriter implements WriteString on a Writer.
-
-// A headerSorter implements sort.Interface by sorting a []keyValues
-// by key. It's used as a pointer, so it can fit in a sort.Interface
-// interface value without allocation.
-
 // WriteSubset writes a header in wire format.
 // If exclude is not nil, keys where exclude[key] == true are not written.
 // Keys are not canonicalized before checking the exclude map.

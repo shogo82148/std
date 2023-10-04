@@ -60,9 +60,6 @@ type DirEntry = fs.DirEntry
 // When it succeeds, it returns a nil error (not io.EOF).
 func (f *File) ReadDir(n int) ([]DirEntry, error)
 
-// testingForceReadDirLstat forces ReadDir to call Lstat, for testing that code path.
-// This can be difficult to provoke on some Unix systems otherwise.
-
 // ReadDir reads the named directory,
 // returning all its directory entries sorted by filename.
 // If an error occurs reading the directory,

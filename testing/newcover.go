@@ -5,6 +5,3 @@
 // Support for test coverage with redesigned coverage implementation.
 
 package testing
-
-// cover2 variable stores the current coverage mode and a
-// tear-down function to be called at the end of the testing run.

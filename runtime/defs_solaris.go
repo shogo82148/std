@@ -12,25 +12,6 @@ GOARCH=amd64 go tool cgo -cdefs defs_solaris.go >defs_solaris_amd64.h
 
 package runtime
 
-/*
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/select.h>
-#include <sys/siginfo.h>
-#include <sys/signal.h>
-#include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/ucontext.h>
-#include <sys/regset.h>
-#include <sys/unistd.h>
-#include <sys/fork.h>
-#include <sys/port.h>
-#include <semaphore.h>
-#include <errno.h>
-#include <signal.h>
-#include <pthread.h>
-#include <netdb.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

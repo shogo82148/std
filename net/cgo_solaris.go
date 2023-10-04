@@ -5,8 +5,3 @@
 //go:build cgo && !netgo
 
 package net
-
-/*
-#cgo LDFLAGS: -lsocket -lnsl -lsendfile
-#include <netdb.h>
-*/

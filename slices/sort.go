@@ -70,5 +70,3 @@ func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool) { return 0, 
 func BinarySearchFunc[S ~[]E, E, T any](x S, target T, cmp func(E, T) int) (int, bool) {
 	return 0, false
 }
-
-// xorshift paper: https://www.jstatsoft.org/article/view/v008i14/xorshift.pdf

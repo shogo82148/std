@@ -13,8 +13,6 @@ import (
 // ForkLock is not used on plan9.
 var ForkLock sync.RWMutex
 
-// Offset of the name field in a 9P directory entry - see UnmarshalDir() in dir_plan9.go
-
 // StringSlicePtr converts a slice of strings to a slice of pointers
 // to NUL-terminated byte arrays. If any string contains a NUL byte
 // this function panics instead of returning an error.

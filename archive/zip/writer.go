@@ -24,6 +24,8 @@ type Writer struct {
 	compressors map[uint16]Compressor
 	comment     string
 
+	// testHookCloseSizeOffset if non-nil is called with the size
+	// of offset of the central directory at Close.
 	testHookCloseSizeOffset func(size, offset uint64)
 }
 

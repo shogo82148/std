@@ -3,11 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime_test
-
-import (
-	. "runtime"
-)
-
-type LargeStruct struct {
-	x [16][]byte
-}

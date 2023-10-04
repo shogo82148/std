@@ -8,6 +8,3 @@
 //go:build js || wasip1
 
 package net
-
-// A packetQueue is a set of 1-buffered channels implementing a FIFO queue
-// of packets.

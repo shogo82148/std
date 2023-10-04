@@ -5,11 +5,3 @@
 // Export debuglog guts for testing.
 
 package runtime
-
-const DlogEnabled = dlogEnabled
-
-const DebugLogBytes = debugLogBytes
-
-const DebugLogStringLimit = debugLogStringLimit
-
-var Dlog = dlog

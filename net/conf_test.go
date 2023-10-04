@@ -5,5 +5,3 @@
 //go:build unix
 
 package net
-
-// represents a dnsConfig returned by parsing a nonexistent resolv.conf

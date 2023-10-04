@@ -17,10 +17,6 @@
 // crypto/rand package.
 package rand
 
-import (
-	_ "github.com/shogo82148/std/unsafe"
-)
-
 // A Source represents a source of uniformly-distributed
 // pseudo-random int64 values in the range [0, 1<<63).
 //
@@ -52,8 +48,13 @@ type Rand struct {
 	src Source
 	s64 Source64
 
+	// readVal contains remainder of 63-bit integer used for bytes
+	// generation during most recent Read call.
+	// It is saved so next Read call can start where the previous
+	// one finished.
 	readVal int64
-
+	// readPos indicates the number of low-order bytes of readVal
+	// that are still valid.
 	readPos int8
 }
 
@@ -111,14 +112,6 @@ func (r *Rand) Shuffle(n int, swap func(i, j int))
 // always returns len(p) and a nil error.
 // Read should not be called concurrently with any other Rand method.
 func (r *Rand) Read(p []byte) (n int, err error)
-
-// globalRandGenerator is the source of random numbers for the top-level
-// convenience functions. When possible it uses the runtime fastrand64
-// function to avoid locking. This is not possible if the user called Seed,
-// either explicitly or implicitly via GODEBUG=randautoseed=0.
-
-// fastSource is an implementation of Source64 that uses the runtime
-// fastrand functions.
 
 // Seed uses the provided seed value to initialize the default Source to a
 // deterministic state. Seed values that have the same remainder when

@@ -3,14 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime_test
-
-import (
-	. "runtime"
-	_ "unsafe"
-)
-
-type I interface {
-	M()
-}
-
-// Pass a value to escapeMe to force it to escape.

@@ -192,15 +192,6 @@ func IndexFunc(s string, f func(rune) bool) int
 // Unicode code point satisfying f(c), or -1 if none do.
 func LastIndexFunc(s string, f func(rune) bool) int
 
-// asciiSet is a 32-byte value, where each bit represents the presence of a
-// given ASCII character in the set. The 128-bits of the lower 16 bytes,
-// starting with the least-significant bit of the lowest word to the
-// most-significant bit of the highest word, map to the full range of all
-// 128 ASCII characters. The 128-bits of the upper 16 bytes will be zeroed,
-// ensuring that any non-ASCII character will be reported as not in the set.
-// This allocates a total of 32 bytes even though the upper half
-// is unused to avoid bounds checks in asciiSet.contains.
-
 // Trim returns a slice of the string s with all leading and
 // trailing Unicode code points contained in cutset removed.
 func Trim(s, cutset string) string

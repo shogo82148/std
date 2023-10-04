@@ -23,9 +23,11 @@ type Qid struct {
 
 // A Dir contains the metadata for a file.
 type Dir struct {
+	// system-modified data
 	Type uint16
 	Dev  uint32
 
+	// file data
 	Qid    Qid
 	Mode   uint32
 	Atime  uint32

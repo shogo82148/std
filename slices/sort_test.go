@@ -3,12 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package slices_test
-
-import (
-	. "slices"
-)
-
-type S struct {
-	a int
-	b string
-}

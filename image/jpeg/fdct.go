@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package jpeg
-
-// Trigonometric constants in 13-bit fixed point format.

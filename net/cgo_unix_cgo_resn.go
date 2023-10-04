@@ -7,16 +7,3 @@
 //go:build cgo && !netgo && unix && !(darwin || linux || openbsd)
 
 package net
-
-/*
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <string.h>
-#include <arpa/nameser.h>
-#include <resolv.h>
-
-#cgo !aix,!dragonfly,!freebsd LDFLAGS: -lresolv
-*/

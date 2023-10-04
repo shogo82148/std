@@ -13,8 +13,3 @@
 // regexps when onepass cannot be used.
 
 package regexp
-
-// A job is an entry on the backtracker's job stack. It holds
-// the instruction pc and the position in the input.
-
-// bitState holds state for the backtracker.

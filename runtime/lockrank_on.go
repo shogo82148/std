@@ -5,8 +5,3 @@
 //go:build goexperiment.staticlockranking
 
 package runtime
-
-// worldIsStopped is accessed atomically to track world-stops. 1 == world
-// stopped.
-
-// lockRankStruct is embedded in mutex

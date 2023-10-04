@@ -6,8 +6,6 @@
 
 package template
 
-// missingKeyAction defines how to respond to indexing a map with a key that is not present.
-
 // Option sets options for the template. Options are described by
 // strings, either a simple string or "key=value". There can be at
 // most one equals sign in an option string. If the option string

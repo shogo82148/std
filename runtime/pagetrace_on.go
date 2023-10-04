@@ -38,10 +38,3 @@
 // but like for the delta we drop the bottom pageTraceTimeLostBits here as well.
 
 package runtime
-
-// pageTraceEventType is a page trace event type.
-
-// pageTraceEvents is the low-level buffer containing the trace data.
-
-// pageTraceBuf is a wrapper around pageTraceEvents that knows how to write events
-// to the buffer. It tracks state necessary to do so.

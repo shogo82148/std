@@ -4,8 +4,6 @@
 
 package comment
 
-// An mdPrinter holds the state needed for printing a Doc as Markdown.
-
 // Markdown returns a Markdown formatting of the Doc.
 // See the [Printer] documentation for ways to customize the Markdown output.
 func (p *Printer) Markdown(d *Doc) []byte

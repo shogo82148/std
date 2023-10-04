@@ -20,8 +20,14 @@ const (
 
 // PSSOptions contains options for creating and verifying PSS signatures.
 type PSSOptions struct {
+	// SaltLength controls the length of the salt used in the PSS signature. It
+	// can either be a positive number of bytes, or one of the special
+	// PSSSaltLength constants.
 	SaltLength int
 
+	// Hash is the hash function used to generate the message digest. If not
+	// zero, it overrides the hash function passed to SignPSS. It's required
+	// when using PrivateKey.Sign.
 	Hash crypto.Hash
 }
 

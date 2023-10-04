@@ -13,8 +13,6 @@ type StructuralError string
 
 func (s StructuralError) Error() string
 
-// A reader decompresses bzip2 compressed data.
-
 // NewReader returns an io.Reader which decompresses bzip2 data from r.
 // If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.

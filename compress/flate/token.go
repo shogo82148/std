@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package flate
-
-// The length code for length X (MIN_MATCH_LENGTH <= X <= MAX_MATCH_LENGTH)
-// is lengthCodes[length - MIN_MATCH_LENGTH]

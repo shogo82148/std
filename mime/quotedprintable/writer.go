@@ -8,6 +8,8 @@ import "github.com/shogo82148/std/io"
 
 // A Writer is a quoted-printable writer that implements io.WriteCloser.
 type Writer struct {
+	// Binary mode treats the writer's input as pure binary and processes end of
+	// line bytes as binary data.
 	Binary bool
 
 	w    io.Writer

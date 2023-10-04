@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package net
-
-// Define a pair of blackholed (IPv4, IPv6) addresses, for which dialTCP is
-// expected to hang until the timeout elapses. These addresses are reserved
-// for benchmarking by RFC 6890.
-
-// isEADDRINUSE reports whether err is syscall.EADDRINUSE.

@@ -12,25 +12,6 @@ GOARCH=amd64 go tool cgo -cdefs defs_linux.go defs1_linux.go >defs_linux_amd64.h
 
 package runtime
 
-/*
-// Linux glibc and Linux kernel define different and conflicting
-// definitions for struct sigaction, struct timespec, etc.
-// We want the kernel ones, which are in the asm/* headers.
-// But then we'd get conflicts when we include the system
-// headers for things like ucontext_t, so that happens in
-// a separate file, defs1.go.
-
-#define	_SYS_TYPES_H	// avoid inclusion of sys/types.h
-#include <asm/posix_types.h>
-#define size_t __kernel_size_t
-#include <asm/signal.h>
-#include <asm/siginfo.h>
-#include <asm/mman.h>
-#include <asm-generic/errno.h>
-#include <asm-generic/poll.h>
-#include <linux/eventpoll.h>
-#include <linux/time.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

@@ -13,10 +13,10 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net"
+
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
-	urlpkg "net/url"
 )
 
 // Errors used by the HTTP server.
@@ -137,23 +137,6 @@ var (
 	LocalAddrContextKey = &contextKey{"local-addr"}
 )
 
-// A conn represents the server side of an HTTP connection.
-
-// This should be >= 512 bytes for DetectContentType,
-// but otherwise it's somewhat arbitrary.
-
-// chunkWriter writes to a response's conn buffer, and is the writer
-// wrapped by the response.w buffered writer.
-//
-// chunkWriter also is responsible for finalizing the Header, including
-// conditionally setting the Content-Type and setting a Content-Length
-// in cases where the handler's final output is smaller than the buffer
-// size. It also conditionally adds chunk headers, when in chunking mode.
-//
-// See the comment above (*response).Write for the entire write flow.
-
-// A response represents the server side of an HTTP response.
-
 // TrailerPrefix is a magic prefix for ResponseWriter.Header map keys
 // that, if present, signals that the map entry is actually for
 // the response trailers, and not the response headers. The prefix
@@ -169,25 +152,10 @@ var (
 //	https://pkg.go.dev/net/http#example-ResponseWriter-Trailers
 const TrailerPrefix = "Trailer:"
 
-// writerOnly hides an io.Writer value's optional ReadFrom method
-// from io.Copy.
-
-// debugServerConnections controls whether all server connections are wrapped
-// with a verbose logging wrapper.
-
-// connReader is the io.Reader wrapper used by *conn. It combines a
-// selectively-activated io.LimitedReader (to bound request header
-// read sizes) with support for selectively keeping an io.Reader.Read
-// call blocked in a background goroutine to wait for activity and
-// trigger a CloseNotifier channel.
-
 // DefaultMaxHeaderBytes is the maximum permitted size of the headers
 // in an HTTP request.
 // This can be overridden by setting Server.MaxHeaderBytes.
 const DefaultMaxHeaderBytes = 1 << 20
-
-// wrapper around io.ReadCloser which on first read, sends an
-// HTTP/1.1 100 Continue header
 
 // TimeFormat is the time format to use when generating times in HTTP
 // headers. It is like time.RFC1123 but hard-codes GMT as the time
@@ -197,38 +165,7 @@ const DefaultMaxHeaderBytes = 1 << 20
 // For parsing this time format, see ParseTime.
 const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
-// maxPostHandlerReadBytes is the max number of Request.Body bytes not
-// consumed by a handler that the server will read from the client
-// in order to keep a connection alive. If there are more bytes than
-// this then the server to be paranoid instead sends a "Connection:
-// close" response.
-//
-// This number is approximately what a typical machine's TCP buffer
-// size is anyway.  (if we have the bytes on the machine, we might as
-// well read them)
-
-// extraHeader is the set of headers sometimes added by chunkWriter.writeHeader.
-// This type is used to avoid extra allocations from cloning and/or populating
-// the response Header map and all its 1-element slices.
-
-// Sorted the same as extraHeader.Write's loop.
-
-// rstAvoidanceDelay is the amount of time we sleep after closing the
-// write side of a TCP connection before closing the entire socket.
-// By sleeping, we increase the chances that the client sees our FIN
-// and processes its final data before they process the subsequent RST
-// from closing a connection with known unread data.
-// This RST seems to occur mostly on BSD systems. (And Windows?)
-// This timeout is somewhat arbitrary (~latency around the planet),
-// and may be modified by tests.
-//
-// TODO(bcmills): This should arguably be a server configuration parameter,
-// not a hard-coded value.
-
 var _ closeWriter = (*net.TCPConn)(nil)
-
-// statusError is an error used to respond to a request with an HTTP status.
-// The text should be plain text without user info or other embedded errors.
 
 // ErrAbortHandler is a sentinel panic value to abort a handler.
 // While any panic from ServeHTTP aborts the response to the client,
@@ -278,8 +215,6 @@ func StripPrefix(prefix string, h Handler) Handler
 // disables that behavior.
 func Redirect(w ResponseWriter, r *Request, url string, code int)
 
-// Redirect to a fixed URL
-
 // RedirectHandler returns a request handler that redirects
 // each request it receives to the given url using the given
 // status code.
@@ -293,41 +228,124 @@ func RedirectHandler(url string, code int) Handler
 // patterns and calls the handler for the pattern that
 // most closely matches the URL.
 //
-// Patterns name fixed, rooted paths, like "/favicon.ico",
-// or rooted subtrees, like "/images/" (note the trailing slash).
-// Longer patterns take precedence over shorter ones, so that
-// if there are handlers registered for both "/images/"
-// and "/images/thumbnails/", the latter handler will be
-// called for paths beginning with "/images/thumbnails/" and the
-// former will receive requests for any other paths in the
-// "/images/" subtree.
+// # Patterns
 //
-// Note that since a pattern ending in a slash names a rooted subtree,
-// the pattern "/" matches all paths not matched by other registered
-// patterns, not just the URL with Path == "/".
+// Patterns can match the method, host and path of a request.
+// Some examples:
 //
-// If a subtree has been registered and a request is received naming the
-// subtree root without its trailing slash, ServeMux redirects that
-// request to the subtree root (adding the trailing slash). This behavior can
-// be overridden with a separate registration for the path without
-// the trailing slash. For example, registering "/images/" causes ServeMux
+//   - "/index.html" matches the path "/index.html" for any host and method.
+//   - "GET /static/" matches a GET request whose path begins with "/static/".
+//   - "example.com/" matches any request to the host "example.com".
+//   - "example.com/{$}" matches requests with host "example.com" and path "/".
+//   - "/b/{bucket}/o/{objectname...}" matches paths whose first segment is "b"
+//     and whose third segment is "o". The name "bucket" denotes the second
+//     segment and "objectname" denotes the remainder of the path.
+//
+// In general, a pattern looks like
+//
+//	[METHOD ][HOST]/[PATH]
+//
+// All three parts are optional; "/" is a valid pattern.
+// If METHOD is present, it must be followed by a single space.
+//
+// Literal (that is, non-wildcard) parts of a pattern match
+// the corresponding parts of a request case-sensitively.
+//
+// A pattern with no method matches every method. A pattern
+// with the method GET matches both GET and HEAD requests.
+// Otherwise, the method must match exactly.
+//
+// A pattern with no host matches every host.
+// A pattern with a host matches URLs on that host only.
+//
+// A path can include wildcard segments of the form {NAME} or {NAME...}.
+// For example, "/b/{bucket}/o/{objectname...}".
+// The wildcard name must be a valid Go identifier.
+// Wildcards must be full path segments: they must be preceded by a slash and followed by
+// either a slash or the end of the string.
+// For example, "/b_{bucket}" is not a valid pattern.
+//
+// Normally a wildcard matches only a single path segment,
+// ending at the next literal slash (not %2F) in the request URL.
+// But if the "..." is present, then the wildcard matches the remainder of the URL path, including slashes.
+// (Therefore it is invalid for a "..." wildcard to appear anywhere but at the end of a pattern.)
+// The match for a wildcard can be obtained by calling [Request.PathValue] with the wildcard's name.
+// A trailing slash in a path acts as an anonymous "..." wildcard.
+//
+// The special wildcard {$} matches only the end of the URL.
+// For example, the pattern "/{$}" matches only the path "/",
+// whereas the pattern "/" matches every path.
+//
+// For matching, both pattern paths and incoming request paths are unescaped segment by segment.
+// So, for example, the path "/a%2Fb/100%25" is treated as having two segments, "a/b" and "100%".
+// The pattern "/a%2fb/" matches it, but the pattern "/a/b/" does not.
+//
+// # Precedence
+//
+// If two or more patterns match a request, then the most specific pattern takes precedence.
+// A pattern P1 is more specific than P2 if P1 matches a strict subset of P2’s requests;
+// that is, if P2 matches all the requests of P1 and more.
+// If neither is more specific, then the patterns conflict.
+// There is one exception to this rule, for backwards compatibility:
+// if two patterns would otherwise conflict and one has a host while the other does not,
+// then the pattern with the host takes precedence.
+// If a pattern passed [ServeMux.Handle] or [ServeMux.HandleFunc] conflicts with
+// another pattern that is already registered, those functions panic.
+//
+// As an example of the general rule, "/images/thumbnails/" is more specific than "/images/",
+// so both can be registered.
+// The former matches paths beginning with "/images/thumbnails/"
+// and the latter will match any other path in the "/images/" subtree.
+//
+// As another example, consider the patterns "GET /" and "/index.html":
+// both match a GET request for "/index.html", but the former pattern
+// matches all other GET and HEAD requests, while the latter matches any
+// request for "/index.html" that uses a different method.
+// The patterns conflict.
+//
+// # Trailing-slash redirection
+//
+// Consider a ServeMux with a handler for a subtree, registered using a trailing slash or "..." wildcard.
+// If the ServeMux receives a request for the subtree root without a trailing slash,
+// it redirects the request by adding the trailing slash.
+// This behavior can be overridden with a separate registration for the path without
+// the trailing slash or "..." wildcard. For example, registering "/images/" causes ServeMux
 // to redirect a request for "/images" to "/images/", unless "/images" has
 // been registered separately.
 //
-// Patterns may optionally begin with a host name, restricting matches to
-// URLs on that host only. Host-specific patterns take precedence over
-// general patterns, so that a handler might register for the two patterns
-// "/codesearch" and "codesearch.google.com/" without also taking over
-// requests for "http://www.google.com/".
+// # Request sanitizing
 //
 // ServeMux also takes care of sanitizing the URL request path and the Host
 // header, stripping the port number and redirecting any request containing . or
-// .. elements or repeated slashes to an equivalent, cleaner URL.
+// .. segments or repeated slashes to an equivalent, cleaner URL.
+//
+// # Compatibility
+//
+// The pattern syntax and matching behavior of ServeMux changed significantly
+// in Go 1.22. To restore the old behavior, set the GODEBUG environment variable
+// to "httpmuxgo121=1". This setting is read once, at program startup; changes
+// during execution will be ignored.
+//
+// The backwards-incompatible changes include:
+//   - Wildcards are just ordinary literal path segments in 1.21.
+//     For example, the pattern "/{x}" will match only that path in 1.21,
+//     but will match any one-segment path in 1.22.
+//   - In 1.21, no pattern was rejected, unless it was empty or conflicted with an existing pattern.
+//     In 1.22, syntactically invalid patterns will cause [ServeMux.Handle] and [ServeMux.HandleFunc] to panic.
+//     For example, in 1.21, the patterns "/{"  and "/a{x}" match themselves,
+//     but in 1.22 they are invalid and will cause a panic when registered.
+//   - In 1.22, each segment of a pattern is unescaped; this was not done in 1.21.
+//     For example, in 1.22 the pattern "/%61" matches the path "/a" ("%61" being the URL escape sequence for "a"),
+//     but in 1.21 it would match only the path "/%2561" (where "%25" is the escape for the percent sign).
+//   - When matching patterns to paths, in 1.22 each segment of the path is unescaped; in 1.21, the entire path is unescaped.
+//     This change mostly affects how paths with %2F escapes adjacent to slashes are treated.
+//     See https://go.dev/issue/21955 for details.
 type ServeMux struct {
 	mu       sync.RWMutex
 	tree     routingNode
 	index    routingIndex
 	patterns []*pattern
+	mux121   serveMux121
 }
 
 // NewServeMux allocates and returns a new ServeMux.
@@ -358,10 +376,13 @@ func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
 // Handle registers the handler for the given pattern.
-// If a handler already exists for pattern, Handle panics.
+// If the given pattern conflicts, with one that is already registered, Handle
+// panics.
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
 // HandleFunc registers the handler function for the given pattern.
+// If the given pattern conflicts, with one that is already registered, HandleFunc
+// panics.
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Handle registers the handler for the given pattern in [DefaultServeMux].
@@ -402,32 +423,99 @@ func ServeTLS(l net.Listener, handler Handler, certFile, keyFile string) error
 // A Server defines parameters for running an HTTP server.
 // The zero value for Server is a valid configuration.
 type Server struct {
+	// Addr optionally specifies the TCP address for the server to listen on,
+	// in the form "host:port". If empty, ":http" (port 80) is used.
+	// The service names are defined in RFC 6335 and assigned by IANA.
+	// See net.Dial for details of the address format.
 	Addr string
 
 	Handler Handler
 
+	// DisableGeneralOptionsHandler, if true, passes "OPTIONS *" requests to the Handler,
+	// otherwise responds with 200 OK and Content-Length: 0.
 	DisableGeneralOptionsHandler bool
 
+	// TLSConfig optionally provides a TLS configuration for use
+	// by ServeTLS and ListenAndServeTLS. Note that this value is
+	// cloned by ServeTLS and ListenAndServeTLS, so it's not
+	// possible to modify the configuration with methods like
+	// tls.Config.SetSessionTicketKeys. To use
+	// SetSessionTicketKeys, use Server.Serve with a TLS Listener
+	// instead.
 	TLSConfig *tls.Config
 
+	// ReadTimeout is the maximum duration for reading the entire
+	// request, including the body. A zero or negative value means
+	// there will be no timeout.
+	//
+	// Because ReadTimeout does not let Handlers make per-request
+	// decisions on each request body's acceptable deadline or
+	// upload rate, most users will prefer to use
+	// ReadHeaderTimeout. It is valid to use them both.
 	ReadTimeout time.Duration
 
+	// ReadHeaderTimeout is the amount of time allowed to read
+	// request headers. The connection's read deadline is reset
+	// after reading the headers and the Handler can decide what
+	// is considered too slow for the body. If ReadHeaderTimeout
+	// is zero, the value of ReadTimeout is used. If both are
+	// zero, there is no timeout.
 	ReadHeaderTimeout time.Duration
 
+	// WriteTimeout is the maximum duration before timing out
+	// writes of the response. It is reset whenever a new
+	// request's header is read. Like ReadTimeout, it does not
+	// let Handlers make decisions on a per-request basis.
+	// A zero or negative value means there will be no timeout.
 	WriteTimeout time.Duration
 
+	// IdleTimeout is the maximum amount of time to wait for the
+	// next request when keep-alives are enabled. If IdleTimeout
+	// is zero, the value of ReadTimeout is used. If both are
+	// zero, there is no timeout.
 	IdleTimeout time.Duration
 
+	// MaxHeaderBytes controls the maximum number of bytes the
+	// server will read parsing the request header's keys and
+	// values, including the request line. It does not limit the
+	// size of the request body.
+	// If zero, DefaultMaxHeaderBytes is used.
 	MaxHeaderBytes int
 
+	// TLSNextProto optionally specifies a function to take over
+	// ownership of the provided TLS connection when an ALPN
+	// protocol upgrade has occurred. The map key is the protocol
+	// name negotiated. The Handler argument should be used to
+	// handle HTTP requests and will initialize the Request's TLS
+	// and RemoteAddr if not already set. The connection is
+	// automatically closed when the function returns.
+	// If TLSNextProto is not nil, HTTP/2 support is not enabled
+	// automatically.
 	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)
 
+	// ConnState specifies an optional callback function that is
+	// called when a client connection changes state. See the
+	// ConnState type and associated constants for details.
 	ConnState func(net.Conn, ConnState)
 
+	// ErrorLog specifies an optional logger for errors accepting
+	// connections, unexpected behavior from handlers, and
+	// underlying FileSystem errors.
+	// If nil, logging is done via the log package's standard logger.
 	ErrorLog *log.Logger
 
+	// BaseContext optionally specifies a function that returns
+	// the base context for incoming requests on this server.
+	// The provided Listener is the specific Listener that's
+	// about to start accepting requests.
+	// If BaseContext is nil, the default is context.Background().
+	// If non-nil, it must return a non-nil context.
 	BaseContext func(net.Listener) context.Context
 
+	// ConnContext optionally specifies a function that modifies
+	// the context used for a new connection c. The provided ctx
+	// is derived from the base context and has a ServerContextKey
+	// value.
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
 
 	inShutdown atomic.Bool
@@ -454,14 +542,6 @@ type Server struct {
 // Close returns any error returned from closing the Server's
 // underlying Listener(s).
 func (srv *Server) Close() error
-
-// shutdownPollIntervalMax is the max polling interval when checking
-// quiescence during Server.Shutdown. Polling starts with a small
-// interval and backs off to the max.
-// Ideally we could find a solution that doesn't involve polling,
-// but which also doesn't have a high runtime cost (and doesn't
-// involve any contentious mutexes), but that is left as an
-// exercise for the reader.
 
 // Shutdown gracefully shuts down the server without interrupting any
 // active connections. Shutdown works by first closing all open
@@ -533,9 +613,6 @@ const (
 )
 
 func (c ConnState) String() string
-
-// serverHandler delegates to either the server's Handler or
-// DefaultServeMux and also handles "OPTIONS *" requests.
 
 // AllowQuerySemicolons returns a handler that serves requests by converting any
 // unescaped semicolons in the URL query to ampersands, and invoking the handler h.
@@ -646,21 +723,6 @@ func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 var ErrHandlerTimeout = errors.New("http: Handler timeout")
 
 var _ Pusher = (*timeoutWriter)(nil)
-
-// onceCloseListener wraps a net.Listener, protecting it from
-// multiple Close calls.
-
-// globalOptionsHandler responds to "OPTIONS *" requests.
-
-// initALPNRequest is an HTTP handler that initializes certain
-// uninitialized fields in its *Request. Such partially-initialized
-// Requests come from ALPN protocol handlers.
-
-// loggingConn is used for debugging.
-
-// checkConnErrorWriter writes to c.rwc and records any write errors to c.werr.
-// It only contains one field (and a pointer field at that), so it
-// fits in an interface value without an extra allocation.
 
 // MaxBytesHandler returns a Handler that runs h with its ResponseWriter and Request.Body wrapped by a MaxBytesReader.
 func MaxBytesHandler(h Handler, n int64) Handler

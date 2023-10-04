@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package tls
-
-// These test vectors were generated from GnuTLS using `gnutls-cli --insecure -d 9 `

@@ -5,9 +5,3 @@
 //go:build !js
 
 package main
-
-import (
-	rtrace "runtime/trace"
-)
-
-// stacks is a fake stack map populated for test.

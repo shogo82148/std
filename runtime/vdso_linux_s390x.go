@@ -6,5 +6,3 @@
 // +build linux,s390x
 
 package runtime
-
-// initialize with vsyscall fallbacks

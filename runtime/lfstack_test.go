@@ -3,12 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime_test
-
-import (
-	. "runtime"
-)
-
-type MyNode struct {
-	LFNode
-	data int
-}

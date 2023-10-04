@@ -10,8 +10,6 @@ import (
 	"log"
 )
 
-type Animal int
-
 const (
 	Unknown Animal = iota
 	Gopher

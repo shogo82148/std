@@ -5,10 +5,3 @@
 //go:build cgo && !netgo
 
 package net
-
-/*
-#include <sys/types.h>
-#include <sys/socket.h>
-
-#include <netdb.h>
-*/

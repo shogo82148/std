@@ -95,37 +95,6 @@ import (
 // but no such flag is defined.
 var ErrHelp = errors.New("flag: help requested")
 
-// errParse is returned by Set if a flag's value fails to parse, such as with an invalid integer for Int.
-// It then gets wrapped through failf to provide more information.
-
-// errRange is returned by Set if a flag's value is out of range.
-// It then gets wrapped through failf to provide more information.
-
-// -- bool Value
-
-// optional interface to indicate boolean flags that can be
-// supplied without "=value" text
-
-// -- int Value
-
-// -- int64 Value
-
-// -- uint Value
-
-// -- uint64 Value
-
-// -- string Value
-
-// -- float64 Value
-
-// -- time.Duration Value
-
-// -- encoding.TextUnmarshaler Value
-
-// -- func Value
-
-// -- boolFunc Value
-
 // Value is the interface to the dynamic value stored in a flag.
 // (The default value is represented as a string.)
 //
@@ -166,6 +135,11 @@ const (
 // Flag names must be unique within a FlagSet. An attempt to define a flag whose
 // name is already in use will cause a panic.
 type FlagSet struct {
+	// Usage is the function called when an error occurs while parsing flags.
+	// The field is a function (not a method) that may be changed to point to
+	// a custom error handler. What happens after Usage is called depends
+	// on the ErrorHandling setting; for the command line, this defaults
+	// to ExitOnError, which exits the program after calling Usage.
 	Usage func()
 
 	name          string

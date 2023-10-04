@@ -17,9 +17,6 @@ type Generator interface {
 	Generate(rand *rand.Rand, size int) reflect.Value
 }
 
-// complexSize is the maximum length of arbitrary values that contain other
-// values.
-
 // Value returns an arbitrary value of the given type.
 // If the type implements the Generator interface, that will be used.
 // Note: To create arbitrary values for structs, all the fields must be exported.
@@ -27,12 +24,21 @@ func Value(t reflect.Type, rand *rand.Rand) (value reflect.Value, ok bool)
 
 // A Config structure contains options for running a test.
 type Config struct {
+	// MaxCount sets the maximum number of iterations.
+	// If zero, MaxCountScale is used.
 	MaxCount int
-
+	// MaxCountScale is a non-negative scale factor applied to the
+	// default maximum.
+	// A count of zero implies the default, which is usually 100
+	// but can be set by the -quickchecks flag.
 	MaxCountScale float64
-
+	// Rand specifies a source of random numbers.
+	// If nil, a default pseudo-random source will be used.
 	Rand *rand.Rand
-
+	// Values specifies a function to generate a slice of
+	// arbitrary reflect.Values that are congruent with the
+	// arguments to the function being tested.
+	// If nil, the top-level Value function is used to generate them.
 	Values func([]reflect.Value, *rand.Rand)
 }
 

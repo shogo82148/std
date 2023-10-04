@@ -32,8 +32,6 @@ const (
 	BlockSize = 128
 )
 
-// digest represents the partial evaluation of a checksum.
-
 // New returns a new hash.Hash computing the SHA-512 checksum.
 func New() hash.Hash
 

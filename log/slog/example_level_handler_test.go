@@ -16,9 +16,6 @@ type LevelHandler struct {
 	handler slog.Handler
 }
 
-// この例では、LevelHandlerを使用して、既存のHandlerのレベルを変更しながら、
-// その他の動作を維持する方法を示します。
-//
 // この例では、ログレベルを上げて、ロガーの出力を減らす方法を示しています。
 //
 // 別の一般的な使用方法は、（例えばLevelDebugに）ログレベルを下げて、

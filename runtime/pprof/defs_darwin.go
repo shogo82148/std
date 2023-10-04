@@ -9,9 +9,3 @@
 //go:build ignore
 
 package pprof
-
-/*
-#include <sys/param.h>
-#include <mach/vm_prot.h>
-#include <mach/vm_region.h>
-*/

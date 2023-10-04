@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package os
-
-// A fileStat is the implementation of FileInfo returned by Stat and Lstat.
