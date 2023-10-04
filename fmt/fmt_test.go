@@ -3,15 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package fmt_test
-
-import (
-	"bytes"
-
-	"math"
-)
-
-var (
-	NaN = math.NaN()
-)
-
-var _ bytes.Buffer

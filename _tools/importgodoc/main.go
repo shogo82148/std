@@ -84,6 +84,7 @@ func godoc(path string) ([]byte, error) {
 		packageName = node.Name.Name
 	}
 	isTestPackage := strings.HasSuffix(packageName, "_test")
+	isExample := isTestPackage && includesExampleTest(node)
 
 	var decls []ast.Decl
 	var comments []*ast.CommentGroup
@@ -136,7 +137,7 @@ func godoc(path string) ([]byte, error) {
 					var names []*ast.Ident
 					for _, name := range spec.Names {
 						// テスト中の変数は除外する
-						if isTest && !isTestPackage {
+						if isTest && !isExample {
 							continue
 						}
 						// 非公開の変数は除外する
@@ -233,8 +234,13 @@ func isSpecialDir(s string) bool {
 	return strings.HasPrefix(s, ".") || s == "testdata" || s == "internal" || s == "vendor"
 }
 
-func isSpecialComment(c *ast.Comment) bool {
-	return strings.HasPrefix(c.Text, "//go:build ") || strings.HasPrefix(c.Text, "// +build ")
+func includesExampleTest(node *ast.File) bool {
+	for _, d := range node.Decls {
+		if d, ok := d.(*ast.FuncDecl); ok && d.Name != nil && strings.HasPrefix(d.Name.Name, "Example") {
+			return true
+		}
+	}
+	return false
 }
 
 func isInternal(path string) bool {

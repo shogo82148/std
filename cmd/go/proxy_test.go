@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package main_test
-
-import (
-	"os"
-)
-
-var _ = os.Getwd()

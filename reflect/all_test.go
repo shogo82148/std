@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package reflect_test
-
-var _ = T{} == T{}
-
-var V = ValueOf

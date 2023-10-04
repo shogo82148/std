@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime_test
-
-var (
-	Foo2 = &Object2{}
-	Foo1 = &Object1{}
-)
