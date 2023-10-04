@@ -114,23 +114,10 @@ type FileHeader struct {
 // FileInfo は、FileHeader の fs.FileInfo を返します。
 func (h *FileHeader) FileInfo() fs.FileInfo
 
-<<<<<<< HEAD
-// headerFileInfo implements fs.FileInfo.
-
-// FileInfoHeader は、fs.FileInfo から部分的に設定された FileHeader を作成します。
-// fs.FileInfo の Name メソッドは、説明するファイルの基本名のみを返すため、
-// 返されたヘッダーの Name フィールドを変更して、ファイルの完全なパス名を提供する必要がある場合があります。
-// 圧縮が必要な場合、呼び出し元は FileHeader.Method フィールドを設定する必要があります。
-// デフォルトでは、Method は未設定です。
-=======
-// FileInfoHeader creates a partially-populated FileHeader from an
-// fs.FileInfo.
-// Because fs.FileInfo's Name method returns only the base name of
-// the file it describes, it may be necessary to modify the Name field
-// of the returned header to provide the full path name of the file.
-// If compression is desired, callers should set the FileHeader.Method
-// field; it is unset by default.
->>>>>>> upstream/release-branch.go1.21
+// FileInfoHeaderは、fs.FileInfoから部分的に設定されたFileHeaderを作成します。
+// fs.FileInfoのNameメソッドは、記述するファイルのベース名のみを返すため、
+// ファイルの完全なパス名を提供するために、返されたヘッダーのNameフィールドを変更する必要がある場合があります。
+// 圧縮が必要な場合は、呼び出し元はFileHeader.Methodフィールドを設定する必要があります。デフォルトでは設定されていません。
 func FileInfoHeader(fi fs.FileInfo) (*FileHeader, error)
 
 // ModTime は、旧来の ModifiedDate および ModifiedTime フィールドを使用して、UTC での変更時刻を返します。

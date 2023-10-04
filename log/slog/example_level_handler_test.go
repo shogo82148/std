@@ -9,7 +9,6 @@ import (
 	"os"
 )
 
-<<<<<<< HEAD
 // A LevelHandler wraps a Handler with an Enabled method
 // that returns false for levels below a minimum.
 type LevelHandler struct {
@@ -19,10 +18,6 @@ type LevelHandler struct {
 
 // この例では、LevelHandlerを使用して、既存のHandlerのレベルを変更しながら、
 // その他の動作を維持する方法を示します。
-=======
-// This example shows how to Use a LevelHandler to change the level of an
-// existing Handler while preserving its other behavior.
->>>>>>> upstream/release-branch.go1.21
 //
 // この例では、ログレベルを上げて、ロガーの出力を減らす方法を示しています。
 //

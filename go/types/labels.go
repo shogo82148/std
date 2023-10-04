@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package types
-<<<<<<< HEAD
-
-// A block tracks label declarations in a block and its enclosing blocks.
-=======
->>>>>>> upstream/release-branch.go1.21

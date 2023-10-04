@@ -66,19 +66,8 @@ func (deadlineExceededError) Error() string { return "context deadline exceeded"
 // DeadlineExceeded コンテキストの期限が切れた場合に [Context.Err] が返すエラーです。
 var DeadlineExceeded error = deadlineExceededError{}
 
-<<<<<<< HEAD
-// An emptyCtx is never canceled, has no values, and has no deadline.
-// It is the common base of backgroundCtx and todoCtx.
-
-// Backgroundは、非nilで空の [Context] を返します。
-// キャンセルされることはなく、値も期限もありません。
+// Backgroundは、非nilで空の[Context]を返します。キャンセルされることはなく、値も期限もありません。
 // 通常、main関数、初期化、テスト、および着信リクエストのトップレベルContextとして使用されます。
-=======
-// Background returns a non-nil, empty [Context]. It is never canceled, has no
-// values, and has no deadline. It is typically used by the main function,
-// initialization, and tests, and as the top-level Context for incoming
-// requests.
->>>>>>> upstream/release-branch.go1.21
 func Background() Context
 
 // TODO 非nilで空の [Context] を返します。
@@ -148,31 +137,9 @@ func Cause(c Context) error
 // AfterFuncはそれを使用して呼び出しをスケジュールします。
 func AfterFunc(ctx Context, f func()) (stop func() bool)
 
-<<<<<<< HEAD
-// A stopCtx is used as the parent context of a cancelCtx when
-// an AfterFunc has been registered with the parent.
-// It holds the stop function used to unregister the AfterFunc.
-
-// goroutines counts the number of goroutines ever created; for testing.
-
-// &cancelCtxKey is the key that a cancelCtx returns itself for.
-
-// A canceler is a context type that can be canceled directly. The
-// implementations are *cancelCtx and *timerCtx.
-
-// closedchan is a reusable closed channel.
-
-// A cancelCtx can be canceled. When canceled, it also cancels any children
-// that implement canceler.
-
-// WithoutCancelは、親がキャンセルされたときにキャンセルされない親のコピーを返します。
-// 返されたコンテキストは、期限やエラーを返さず、そのDoneチャネルはnilです。
-// 返されたコンテキストで [Cause] を呼び出すと、nilが返されます。
-=======
 // WithoutCancel returns a copy of parent that is not canceled when parent is canceled.
 // The returned context returns no Deadline or Err, and its Done channel is nil.
 // Calling [Cause] on the returned context returns nil.
->>>>>>> upstream/release-branch.go1.21
 func WithoutCancel(parent Context) Context
 
 // WithDeadlineは、親の期限をdよりも遅くならないように調整した親のコピーを返します。
@@ -186,15 +153,7 @@ func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
 // 返された [CancelFunc] は原因を設定しません。
 func WithDeadlineCause(parent Context, d time.Time, cause error) (Context, CancelFunc)
 
-<<<<<<< HEAD
-// A timerCtx carries a timer and a deadline. It embeds a cancelCtx to
-// implement Done and Err. It implements cancel by stopping its timer then
-// delegating to cancelCtx.cancel.
-
-// WithTimeout WithDeadline(parent, time.Now().Add(timeout)) を返します。
-=======
 // WithTimeout returns WithDeadline(parent, time.Now().Add(timeout)).
->>>>>>> upstream/release-branch.go1.21
 //
 // このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、
 // コードはこの [Context] で実行される操作が完了したらすぐにcancelを呼び出す必要があります。

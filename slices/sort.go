@@ -59,7 +59,6 @@ func MaxFunc[S ~[]E, E any](x S, cmp func(a, b E) int) E { var zero E; return ze
 // スライスは昇順にソートする必要があります。
 func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool) { return 0, false }
 
-<<<<<<< HEAD
 // BinarySearchFunc は、カスタム比較関数を使用して [BinarySearch] と同様に動作します。
 // スライスは、cmp によって定義される増加順でソートする必要があります。
 // cmp は、スライス要素がターゲットに一致する場合は 0、スライス要素がターゲットよりも前の場合は負の数、
@@ -69,15 +68,3 @@ func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool) { return 0, 
 func BinarySearchFunc[S ~[]E, E, T any](x S, target T, cmp func(E, T) int) (int, bool) {
 	return 0, false
 }
-
-// xorshift paper: https://www.jstatsoft.org/article/view/v008i14/xorshift.pdf
-=======
-// BinarySearchFunc works like [BinarySearch], but uses a custom comparison
-// function. The slice must be sorted in increasing order, where "increasing"
-// is defined by cmp. cmp should return 0 if the slice element matches
-// the target, a negative number if the slice element precedes the target,
-// or a positive number if the slice element follows the target.
-// cmp must implement the same ordering as the slice, such that if
-// cmp(a, t) < 0 and cmp(b, t) >= 0, then a must precede b in the slice.
-func BinarySearchFunc[S ~[]E, E, T any](x S, target T, cmp func(E, T) int) (int, bool)
->>>>>>> upstream/release-branch.go1.21
