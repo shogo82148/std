@@ -17,3 +17,7 @@ type apiHandler struct{}
 func (h apiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 
 func newPeopleHandler() http.Handler
+
+type wantRange struct{ a, b int }
+
+const testFileLen = 100
