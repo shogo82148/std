@@ -4,10 +4,9 @@
 
 package strings
 
-// Compare returns an integer comparing two strings lexicographically.
-// The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
+// Compareは、2つの文字列を辞書順で比較して整数を返します。
+// a == bの場合は0、a < bの場合は-1、a > bの場合は+1になります。
 //
-// Compare is included only for symmetry with package bytes.
-// It is usually clearer and always faster to use the built-in
-// string comparison operators ==, <, >, and so on.
+// Compareは、パッケージbytesとの対称性のために含まれています。
+// 通常、組み込みの文字列比較演算子==、<、>などを使用する方が明確で、常に高速です。
 func Compare(a, b string) int
