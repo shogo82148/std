@@ -8,10 +8,9 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A Cookie represents an HTTP cookie as sent in the Set-Cookie header of an
-// HTTP response or the Cookie header of an HTTP request.
+// Cookieは、HTTP応答のSet-CookieヘッダーまたはHTTPリクエストのCookieヘッダーで送信されるHTTPクッキーを表します。
 //
-// See https://tools.ietf.org/html/rfc6265 for details.
+// 詳細については、https://tools.ietf.org/html/rfc6265 を参照してください。
 type Cookie struct {
 	Name  string
 	Value string
@@ -32,12 +31,9 @@ type Cookie struct {
 	Unparsed []string
 }
 
-// SameSite allows a server to define a cookie attribute making it impossible for
-// the browser to send this cookie along with cross-site requests. The main
-// goal is to mitigate the risk of cross-origin information leakage, and provide
-// some protection against cross-site request forgery attacks.
+// SameSiteは、サーバーがクッキー属性を定義して、ブラウザがクロスサイトリクエストと一緒にこのクッキーを送信できなくすることを可能にします。主な目的は、クロスオリジン情報漏洩のリスクを軽減し、クロスサイトリクエスト偽造攻撃に対する保護を提供することです。
 //
-// See https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00 for details.
+// 詳細については、https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00 を参照してください。
 type SameSite int
 
 const (
@@ -47,16 +43,13 @@ const (
 	SameSiteNoneMode
 )
 
-// SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.
-// The provided cookie must have a valid Name. Invalid cookies may be
-// silently dropped.
+// SetCookieは、提供されたResponseWriterのヘッダーにSet-Cookieヘッダーを追加します。
+// 提供されたクッキーには有効な名前が必要です。無効なクッキーは黙って破棄される場合があります。
 func SetCookie(w ResponseWriter, cookie *Cookie)
 
-// String returns the serialization of the cookie for use in a Cookie
-// header (if only Name and Value are set) or a Set-Cookie response
-// header (if other fields are set).
-// If c is nil or c.Name is invalid, the empty string is returned.
+// Stringは、Cookieヘッダー（NameとValueのみが設定されている場合）またはSet-Cookie応答ヘッダー（他のフィールドが設定されている場合）で使用するためのクッキーのシリアル化を返します。
+// cがnilであるか、c.Nameが無効な場合、空の文字列が返されます。
 func (c *Cookie) String() string
 
-// Valid reports whether the cookie is valid.
+// Validは、クッキーが有効かどうかを報告します。
 func (c *Cookie) Valid() error

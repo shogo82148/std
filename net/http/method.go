@@ -4,9 +4,9 @@
 
 package http
 
-// Common HTTP methods.
+// 一般的なHTTPメソッド。
 //
-// Unless otherwise noted, these are defined in RFC 7231 section 4.3.
+// それ以外に注釈がない限り、これらはRFC 7231セクション4.3で定義されています。
 const (
 	MethodGet     = "GET"
 	MethodHead    = "HEAD"
