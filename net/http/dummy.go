@@ -15,11 +15,7 @@ var refererForURL any
 
 func (s *Server) newConn(c net.Conn)
 
-type connType struct{}
-
-var conn *connType
-
-func (connType) closeWriteAndWait()
+type conn struct{}
 
 var errRequestCanceled = errors.New("net/http: request canceled")
 var errRequestCanceledConn = errors.New("net/http: request canceled while waiting for connection")
@@ -62,3 +58,15 @@ func (noBody) Read(p []byte) (n int, err error)
 func (noBody) Close() error
 
 type httpRange struct{ a, b int }
+
+type contextKey struct{ name string }
+
+type closeWriter any
+
+type muxEntry struct{}
+
+var defaultServeMux ServeMux
+
+type timeoutWriter struct{}
+
+func (*timeoutWriter) Push(target string, opts *PushOptions) error
