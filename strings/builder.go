@@ -4,45 +4,44 @@
 
 package strings
 
-// A Builder is used to efficiently build a string using Write methods.
-// It minimizes memory copying. The zero value is ready to use.
-// Do not copy a non-zero Builder.
+// Builderは、Writeメソッドを使用して効率的に文字列を構築するために使用されます。
+// メモリのコピーを最小限に抑えます。ゼロ値はすぐに使用できます。
+// 非ゼロのBuilderをコピーしないでください。
 type Builder struct {
 	addr *Builder
 	buf  []byte
 }
 
-// String returns the accumulated string.
+// Stringは、蓄積された文字列を返します。
 func (b *Builder) String() string
 
-// Len returns the number of accumulated bytes; b.Len() == len(b.String()).
+// Lenは、蓄積されたバイト数を返します。b.Len() == len(b.String())です。
 func (b *Builder) Len() int
 
-// Cap returns the capacity of the builder's underlying byte slice. It is the
-// total space allocated for the string being built and includes any bytes
-// already written.
+// Capは、ビルダーの基礎となるバイトスライスの容量を返します。
+// 構築中の文字列に割り当てられた総スペースを含み、すでに書き込まれたバイトも含みます。
 func (b *Builder) Cap() int
 
-// Reset resets the Builder to be empty.
+// Resetは、Builderを空にリセットします。
 func (b *Builder) Reset()
 
-// Grow grows b's capacity, if necessary, to guarantee space for
-// another n bytes. After Grow(n), at least n bytes can be written to b
-// without another allocation. If n is negative, Grow panics.
+// Growは、必要に応じてbの容量を拡張し、別のnバイトのスペースを保証します。
+// Grow(n)の後、少なくともnバイトを別の割り当てなしでbに書き込むことができます。
+// nが負の場合、Growはパニックを引き起こします。
 func (b *Builder) Grow(n int)
 
-// Write appends the contents of p to b's buffer.
-// Write always returns len(p), nil.
+// Writeは、pの内容をbのバッファに追加します。
+// Writeは常にlen(p)、nilを返します。
 func (b *Builder) Write(p []byte) (int, error)
 
-// WriteByte appends the byte c to b's buffer.
-// The returned error is always nil.
+// WriteByteは、バイトcをbのバッファに追加します。
+// 返されるエラーは常にnilです。
 func (b *Builder) WriteByte(c byte) error
 
-// WriteRune appends the UTF-8 encoding of Unicode code point r to b's buffer.
-// It returns the length of r and a nil error.
+// WriteRuneは、UnicodeコードポイントrのUTF-8エンコーディングをbのバッファに追加します。
+// rの長さとnilエラーを返します。
 func (b *Builder) WriteRune(r rune) (int, error)
 
-// WriteString appends the contents of s to b's buffer.
-// It returns the length of s and a nil error.
+// WriteStringは、sの内容をbのバッファに追加します。
+// sの長さとnilエラーを返します。
 func (b *Builder) WriteString(s string) (int, error)

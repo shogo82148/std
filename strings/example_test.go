@@ -71,8 +71,8 @@ func ExampleContainsAny() {
 }
 
 func ExampleContainsRune() {
-	// Finds whether a string contains a particular Unicode code point.
-	// The code point for the lowercase letter "a", for example, is 97.
+	// 文字列が特定のUnicodeコードポイントを含むかどうかを検索します。
+	// たとえば、小文字の"a"のコードポイントは97です。
 	fmt.Println(strings.ContainsRune("aardvark", 97))
 	fmt.Println(strings.ContainsRune("timeout", 97))
 	// Output:
@@ -130,8 +130,8 @@ func ExampleCutSuffix() {
 
 func ExampleEqualFold() {
 	fmt.Println(strings.EqualFold("Go", "go"))
-	fmt.Println(strings.EqualFold("AB", "ab")) // true because comparison uses simple case-folding
-	fmt.Println(strings.EqualFold("ß", "ss"))  // false because comparison does not use full case-folding
+	fmt.Println(strings.EqualFold("AB", "ab")) // 単純なケースフォールディングを使用した比較のためtrue
+	fmt.Println(strings.EqualFold("ß", "ss"))  // 完全なケースフォールディングを使用しないためfalse
 	// Output:
 	// true
 	// true
@@ -314,7 +314,7 @@ func ExampleSplitAfterN() {
 }
 
 func ExampleTitle() {
-	// Compare this example to the ToTitle example.
+	// この例をToTitleの例と比較してください。
 	fmt.Println(strings.Title("her royal highness"))
 	fmt.Println(strings.Title("loud noises"))
 	fmt.Println(strings.Title("хлеб"))
@@ -325,7 +325,7 @@ func ExampleTitle() {
 }
 
 func ExampleToTitle() {
-	// Compare this example to the Title example.
+	// この例をToTitleの例と比較してください。
 	fmt.Println(strings.ToTitle("her royal highness"))
 	fmt.Println(strings.ToTitle("loud noises"))
 	fmt.Println(strings.ToTitle("хлеб"))
