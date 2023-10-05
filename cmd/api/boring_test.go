@@ -4,4 +4,4 @@
 
 //go:build boringcrypto
 
-package api
+package main
