@@ -12,43 +12,31 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A Dir implements FileSystem using the native file system restricted to a
-// specific directory tree.
-//
-// While the FileSystem.Open method takes '/'-separated paths, a Dir's string
-// value is a filename on the native file system, not a URL, so it is separated
-// by filepath.Separator, which isn't necessarily '/'.
-//
-// Note that Dir could expose sensitive files and directories. Dir will follow
-// symlinks pointing out of the directory tree, which can be especially dangerous
-// if serving from a directory in which users are able to create arbitrary symlinks.
-// Dir will also allow access to files and directories starting with a period,
-// which could expose sensitive directories like .git or sensitive files like
-// .htpasswd. To exclude files with a leading period, remove the files/directories
-// from the server or create a custom FileSystem implementation.
-//
-// An empty Dir is treated as ".".
+// Dirは、特定のディレクトリツリーに制限されたネイティブファイルシステムを使用してFileSystemを実装します。
+
+// FileSystem.Openメソッドは'/'で区切られたパスを取りますが、Dirの文字列値はURLではなくネイティブファイルシステム上のファイル名であるため、filepath.Separatorで区切られます。これは必ずしも'/'ではありません。
+
+// Dirは、機密ファイルやディレクトリを公開する可能性があります。Dirは、ディレクトリツリーから外部を指すシンボリックリンクを追跡します。これは、ユーザーが任意のシンボリックリンクを作成できるディレクトリからサービスを提供する場合に特に危険です。Dirは、ピリオドで始まるファイルやディレクトリにもアクセスを許可します。これには、.gitのような機密ディレクトリや.htpasswdのような機密ファイルが含まれます。ピリオドで始まるファイルを除外するには、ファイル/ディレクトリをサーバーから削除するか、カスタムFileSystem実装を作成してください。
+
+// 空のDirは"."として扱われます。
 type Dir string
 
-// Open implements FileSystem using os.Open, opening files for reading rooted
-// and relative to the directory d.
+// Openは、os.Openを使用して、ディレクトリdにルートされ、相対的なファイルを読み取るためにFileSystemを実装します。
 func (d Dir) Open(name string) (File, error)
 
-// A FileSystem implements access to a collection of named files.
-// The elements in a file path are separated by slash ('/', U+002F)
-// characters, regardless of host operating system convention.
-// See the FileServer function to convert a FileSystem to a Handler.
+// FileSystemは、名前付きファイルのコレクションへのアクセスを実装します。
+// ファイルパスの要素は、ホストオペレーティングシステムの規約に関係なく、スラッシュ（'/'、U+002F）で区切られます。
+// FileSystemをHandlerに変換するには、FileServer関数を参照してください。
 //
-// This interface predates the fs.FS interface, which can be used instead:
-// the FS adapter function converts an fs.FS to a FileSystem.
+// このインターフェースは、fs.FSインターフェースより前に存在しており、代わりに使用できます。
+// FSアダプター関数は、fs.FSをFileSystemに変換します。
 type FileSystem interface {
 	Open(name string) (File, error)
 }
 
-// A File is returned by a FileSystem's Open method and can be
-// served by the FileServer implementation.
-//
-// The methods should behave the same as those on an *os.File.
+// FileSystemのOpenメソッドによって返され、FileServer実装によって提供されるファイルです。
+
+// メソッドは、 *os.File と同じ動作をする必要があります。
 type File interface {
 	io.Closer
 	io.Reader
@@ -57,31 +45,20 @@ type File interface {
 	Stat() (fs.FileInfo, error)
 }
 
-// ServeContent replies to the request using the content in the
-// provided ReadSeeker. The main benefit of ServeContent over io.Copy
-// is that it handles Range requests properly, sets the MIME type, and
-// handles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,
-// and If-Range requests.
+// ServeContentは、提供されたReadSeeker内のコンテンツを使用してリクエストに応答します。
+// ServeContentの主な利点は、Rangeリクエストを適切に処理し、MIMEタイプを設定し、If-Match、If-Unmodified-Since、If-None-Match、If-Modified-Since、およびIf-Rangeリクエストを処理することです。
 //
-// If the response's Content-Type header is not set, ServeContent
-// first tries to deduce the type from name's file extension and,
-// if that fails, falls back to reading the first block of the content
-// and passing it to DetectContentType.
-// The name is otherwise unused; in particular it can be empty and is
-// never sent in the response.
+// 応答のContent-Typeヘッダーが設定されていない場合、ServeContentはまず、名前のファイル拡張子からタイプを推測し、それでも失敗した場合は、コンテンツの最初のブロックを読み取ってDetectContentTypeに渡します。
+// 名前はそれ以外では使用されず、特に空であっても、応答に送信されません。
 //
-// If modtime is not the zero time or Unix epoch, ServeContent
-// includes it in a Last-Modified header in the response. If the
-// request includes an If-Modified-Since header, ServeContent uses
-// modtime to decide whether the content needs to be sent at all.
+// modtimeがゼロ時またはUnixエポックでない場合、ServeContentは応答のLast-Modifiedヘッダーに含めます。
+// リクエストにIf-Modified-Sinceヘッダーが含まれている場合、ServeContentはmodtimeを使用して、コンテンツを送信する必要があるかどうかを決定します。
 //
-// The content's Seek method must work: ServeContent uses
-// a seek to the end of the content to determine its size.
+// コンテンツのSeekメソッドは動作する必要があります。ServeContentは、コンテンツのサイズを決定するために、コンテンツの末尾にシークを使用します。
 //
-// If the caller has set w's ETag header formatted per RFC 7232, section 2.3,
-// ServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.
+// 呼び出し元がRFC 7232、セクション2.3に従ってフォーマットされたwのETagヘッダーを設定している場合、ServeContentはそれを使用して、If-Match、If-None-Match、またはIf-Rangeを使用するリクエストを処理します。
 //
-// Note that *os.File implements the io.ReadSeeker interface.
+// *os.Fileはio.ReadSeekerインターフェースを実装していることに注意してください。
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
 // ServeFile replies to the request with the contents of the named
@@ -107,24 +84,19 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // file or directory provided in the name argument is used.
 func ServeFile(w ResponseWriter, r *Request, name string)
 
-// FS converts fsys to a FileSystem implementation,
-// for use with FileServer and NewFileTransport.
-// The files provided by fsys must implement io.Seeker.
+// FSは、fsysをFileSystem実装に変換し、FileServerおよびNewFileTransportで使用するために使用されます。
+// fsysによって提供されるファイルは、io.Seekerを実装する必要があります。
 func FS(fsys fs.FS) FileSystem
 
-// FileServer returns a handler that serves HTTP requests
-// with the contents of the file system rooted at root.
+// FileServerは、ルートでルートされたファイルシステムの内容でHTTPリクエストを処理するハンドラーを返します。
 //
-// As a special case, the returned file server redirects any request
-// ending in "/index.html" to the same path, without the final
-// "index.html".
+// 特別な場合として、返されたファイルサーバーは、"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。
 //
-// To use the operating system's file system implementation,
-// use http.Dir:
+// オペレーティングシステムのファイルシステム実装を使用するには、http.Dirを使用してください。
 //
 //	http.Handle("/", http.FileServer(http.Dir("/tmp")))
 //
-// To use an fs.FS implementation, use http.FS to convert it:
+// fs.FS実装を使用するには、http.FSを使用して変換してください。
 //
 //	http.Handle("/", http.FileServer(http.FS(fsys)))
 func FileServer(root FileSystem) Handler

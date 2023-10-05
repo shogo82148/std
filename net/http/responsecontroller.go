@@ -10,62 +10,61 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A ResponseController is used by an HTTP handler to control the response.
+// ResponseControllerは、HTTPハンドラーがレスポンスを制御するために使用されます。
 //
-// A ResponseController may not be used after the Handler.ServeHTTP method has returned.
+// Handler.ServeHTTPメソッドが返された後にResponseControllerを使用することはできません。
 type ResponseController struct {
 	rw ResponseWriter
 }
 
-// NewResponseController creates a ResponseController for a request.
+// NewResponseControllerは、リクエスト用のResponseControllerを作成します。
 //
-// The ResponseWriter should be the original value passed to the Handler.ServeHTTP method,
-// or have an Unwrap method returning the original ResponseWriter.
+// ResponseWriterは、Handler.ServeHTTPメソッドに渡された元の値である必要があります。
+// または、元のResponseWriterを返すUnwrapメソッドを持っている必要があります。
 //
-// If the ResponseWriter implements any of the following methods, the ResponseController
-// will call them as appropriate:
+// ResponseWriterが次のいずれかのメソッドを実装している場合、ResponseControllerは
+// 適切に呼び出します。
 //
 //	Flush()
-//	FlushError() error // alternative Flush returning an error
-//	Hijack() (net.Conn, *bufio.ReadWriter, error)
+//	FlushError() error // エラーを返す代替Flush
+//	Hijack() (net.Conn、*bufio.ReadWriter、error)
 //	SetReadDeadline(deadline time.Time) error
 //	SetWriteDeadline(deadline time.Time) error
 //	EnableFullDuplex() error
 //
-// If the ResponseWriter does not support a method, ResponseController returns
-// an error matching ErrNotSupported.
+// ResponseWriterがメソッドをサポートしていない場合、ResponseControllerは
+// ErrNotSupportedに一致するエラーを返します。
 func NewResponseController(rw ResponseWriter) *ResponseController
 
-// Flush flushes buffered data to the client.
+// Flushは、バッファリングされたデータをクライアントにフラッシュします。
 func (c *ResponseController) Flush() error
 
-// Hijack lets the caller take over the connection.
-// See the Hijacker interface for details.
+// Hijackは、呼び出し元が接続を引き継ぐことを可能にします。
+// 詳細については、Hijackerインターフェースを参照してください。
 func (c *ResponseController) Hijack() (net.Conn, *bufio.ReadWriter, error)
 
-// SetReadDeadline sets the deadline for reading the entire request, including the body.
-// Reads from the request body after the deadline has been exceeded will return an error.
-// A zero value means no deadline.
+// SetReadDeadlineは、ボディを含むリクエスト全体の読み取りの期限を設定します。
+// 期限が超過した後にリクエストボディから読み取りを行うと、エラーが返されます。
+// ゼロ値は期限がないことを意味します。
 //
-// Setting the read deadline after it has been exceeded will not extend it.
+// 期限が超過した後に読み取り期限を設定しても、期限は延長されません。
 func (c *ResponseController) SetReadDeadline(deadline time.Time) error
 
-// SetWriteDeadline sets the deadline for writing the response.
-// Writes to the response body after the deadline has been exceeded will not block,
-// but may succeed if the data has been buffered.
-// A zero value means no deadline.
+// SetWriteDeadlineは、レスポンスの書き込みの期限を設定します。
+// 期限が超過した後にレスポンスボディに書き込みを行うと、ブロックされず、
+// データがバッファリングされている場合は成功する可能性があります。
+// ゼロ値は期限がないことを意味します。
 //
-// Setting the write deadline after it has been exceeded will not extend it.
+// 期限が超過した後に書き込み期限を設定しても、期限は延長されません。
 func (c *ResponseController) SetWriteDeadline(deadline time.Time) error
 
-// EnableFullDuplex indicates that the request handler will interleave reads from Request.Body
-// with writes to the ResponseWriter.
+// EnableFullDuplexは、リクエストハンドラがRequest.Bodyからの読み取りを交互に行い、
+// ResponseWriterへの書き込みと交互に行うことを示します。
 //
-// For HTTP/1 requests, the Go HTTP server by default consumes any unread portion of
-// the request body before beginning to write the response, preventing handlers from
-// concurrently reading from the request and writing the response.
-// Calling EnableFullDuplex disables this behavior and permits handlers to continue to read
-// from the request while concurrently writing the response.
+// HTTP/1リクエストの場合、Go HTTPサーバーはデフォルトで、レスポンスの書き込みを開始する前に
+// リクエストボディの未読部分を消費し、ハンドラがリクエストから読み取りとレスポンスの書き込みを
+// 同時に行うことを防止します。EnableFullDuplexを呼び出すと、この動作が無効になり、
+// ハンドラがリクエストからの読み取りを続けながらレスポンスを同時に書き込むことができるようになります。
 //
-// For HTTP/2 requests, the Go HTTP server always permits concurrent reads and responses.
+// HTTP/2リクエストの場合、Go HTTPサーバーは常に並行して読み取りとレスポンスを許可します。
 func (c *ResponseController) EnableFullDuplex() error

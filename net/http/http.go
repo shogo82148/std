@@ -22,7 +22,7 @@ var (
 	_ io.ReadCloser = NoBody
 )
 
-// PushOptions describes options for Pusher.Push.
+// PushOptionsは、Pusher.Pushのオプションを記述します。
 type PushOptions struct {
 	// Method specifies the HTTP method for the promised request.
 	// If set, it must be "GET" or "HEAD". Empty means "GET".
@@ -34,9 +34,8 @@ type PushOptions struct {
 	Header Header
 }
 
-// Pusher is the interface implemented by ResponseWriters that support
-// HTTP/2 server push. For more background, see
-// https://tools.ietf.org/html/rfc7540#section-8.2.
+// Pusherは、HTTP/2サーバープッシュをサポートするResponseWritersによって実装されるインターフェースです。
+// 詳細については、 https://tools.ietf.org/html/rfc7540#section-8.2 を参照してください。
 type Pusher interface {
 	Push(target string, opts *PushOptions) error
 }

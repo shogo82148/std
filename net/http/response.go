@@ -14,11 +14,10 @@ import (
 	"github.com/shogo82148/std/net/url"
 )
 
-// Response represents the response from an HTTP request.
+// Responseは、HTTPリクエストからのレスポンスを表します。
 //
-// The Client and Transport return Responses from servers once
-// the response headers have been received. The response body
-// is streamed on demand as the Body field is read.
+// ClientとTransportは、レスポンスヘッダが受信された後、サーバーからResponsesを返します。
+// レスポンスボディは、Bodyフィールドが読み取られるたびにオンデマンドでストリーミングされます。
 type Response struct {
 	Status     string
 	StatusCode int
@@ -26,117 +25,96 @@ type Response struct {
 	ProtoMajor int
 	ProtoMinor int
 
-	// Header maps header keys to values. If the response had multiple
-	// headers with the same key, they may be concatenated, with comma
-	// delimiters.  (RFC 7230, section 3.2.2 requires that multiple headers
-	// be semantically equivalent to a comma-delimited sequence.) When
-	// Header values are duplicated by other fields in this struct (e.g.,
-	// ContentLength, TransferEncoding, Trailer), the field values are
-	// authoritative.
+	// Headerは、ヘッダーキーを値にマップします。
+	// レスポンスに同じキーを持つ複数のヘッダーがある場合、それらはカンマ区切りで連結される場合があります。
+	// (RFC 7230、セクション3.2.2では、複数のヘッダーがカンマ区切りのシーケンスとして意味的に等価である必要があります。)
+	// Headerの値がこの構造体の他のフィールド(ContentLength、TransferEncoding、Trailerなど)によって重複する場合、フィールド値が優先されます。
 	//
-	// Keys in the map are canonicalized (see CanonicalHeaderKey).
+	// マップ内のキーは正準化されます(CanonicalHeaderKeyを参照)。
 	Header Header
 
-	// Body represents the response body.
+	// Bodyは、レスポンスボディを表します。
 	//
-	// The response body is streamed on demand as the Body field
-	// is read. If the network connection fails or the server
-	// terminates the response, Body.Read calls return an error.
+	// レスポンスボディは、Bodyフィールドが読み取られるたびにオンデマンドでストリーミングされます。
+	// ネットワーク接続が失敗した場合や、サーバーがレスポンスを終了した場合、Body.Read呼び出しはエラーを返します。
 	//
-	// The http Client and Transport guarantee that Body is always
-	// non-nil, even on responses without a body or responses with
-	// a zero-length body. It is the caller's responsibility to
-	// close Body. The default HTTP client's Transport may not
-	// reuse HTTP/1.x "keep-alive" TCP connections if the Body is
-	// not read to completion and closed.
+	// http ClientおよびTransportは、Bodyが常にnilでないことを保証します。
+	// これは、ボディのないレスポンスまたは長さがゼロのボディを持つレスポンスでも同様です。
+	// Bodyを閉じるのは呼び出し側の責任です。
+	// デフォルトのHTTPクライアントのTransportは、Bodyが完全に読み取られて閉じられていない場合、
+	// HTTP/1.xの「keep-alive」TCP接続を再利用しない場合があります。
 	//
-	// The Body is automatically dechunked if the server replied
-	// with a "chunked" Transfer-Encoding.
+	// サーバーが「chunked」Transfer-Encodingで返答した場合、Bodyは自動的にデチャンクされます。
 	//
-	// As of Go 1.12, the Body will also implement io.Writer
-	// on a successful "101 Switching Protocols" response,
-	// as used by WebSockets and HTTP/2's "h2c" mode.
+	// Go 1.12以降、Bodyは、WebSocketsおよびHTTP/2の「h2c」モードで使用される「101 Switching Protocols」レスポンスに成功した場合、io.Writerも実装します。
 	Body io.ReadCloser
 
-	// ContentLength records the length of the associated content. The
-	// value -1 indicates that the length is unknown. Unless Request.Method
-	// is "HEAD", values >= 0 indicate that the given number of bytes may
-	// be read from Body.
+	// ContentLengthは、関連するコンテンツの長さを記録します。
+	// 値-1は、長さが不明であることを示します。
+	// Request.Methodが"HEAD"でない限り、0以上の値は、Bodyから指定されたバイト数を読み取ることができることを示します。
 	ContentLength int64
 
-	// Contains transfer encodings from outer-most to inner-most. Value is
-	// nil, means that "identity" encoding is used.
+	// TransferEncodingは、最も外側から最も内側の転送エンコーディングを含みます。
+	// 値がnilの場合、"identity"エンコーディングが使用されます。
 	TransferEncoding []string
 
-	// Close records whether the header directed that the connection be
-	// closed after reading Body. The value is advice for clients: neither
-	// ReadResponse nor Response.Write ever closes a connection.
+	// Closeは、ヘッダーがBodyの読み取り後に接続を閉じるよう指示したかどうかを記録します。
+	// この値はクライアントに対するアドバイスです。
+	// ReadResponseまたはResponse.Writeは、接続を閉じません。
 	Close bool
 
-	// Uncompressed reports whether the response was sent compressed but
-	// was decompressed by the http package. When true, reading from
-	// Body yields the uncompressed content instead of the compressed
-	// content actually set from the server, ContentLength is set to -1,
-	// and the "Content-Length" and "Content-Encoding" fields are deleted
-	// from the responseHeader. To get the original response from
-	// the server, set Transport.DisableCompression to true.
+	// Uncompressedは、レスポンスが圧縮されて送信されたが、httpパッケージによって解凍されたかどうかを報告します。
+	// trueの場合、Bodyから読み取ると、サーバーから実際に設定された圧縮されたコンテンツの代わりに、解凍されたコンテンツが返されます。
+	// ContentLengthは-1に設定され、"Content-Length"および"Content-Encoding"フィールドはresponseHeaderから削除されます。
+	// サーバーからの元のレスポンスを取得するには、Transport.DisableCompressionをtrueに設定します。
 	Uncompressed bool
 
-	// Trailer maps trailer keys to values in the same
-	// format as Header.
+	// Trailerは、トレーラーキーをHeaderと同じ形式の値にマップします。
 	//
-	// The Trailer initially contains only nil values, one for
-	// each key specified in the server's "Trailer" header
-	// value. Those values are not added to Header.
+	// Trailerには最初に、サーバーの"Trailer"ヘッダー値で指定されたキーごとに1つのnil値のみが含まれます。
+	// これらの値はHeaderに追加されません。
 	//
-	// Trailer must not be accessed concurrently with Read calls
-	// on the Body.
+	// BodyのRead呼び出しと同時にTrailerにアクセスしないでください。
 	//
-	// After Body.Read has returned io.EOF, Trailer will contain
-	// any trailer values sent by the server.
+	// Body.Readがio.EOFを返した後、Trailerにはサーバーから送信されたトレーラー値が含まれます。
 	Trailer Header
 
-	// Request is the request that was sent to obtain this Response.
-	// Request's Body is nil (having already been consumed).
-	// This is only populated for Client requests.
+	// Requestは、このResponseを取得するために送信されたリクエストです。
+	// RequestのBodyはnilです(すでに消費されています)。
+	// これは、クライアントリクエストに対してのみ設定されます。
 	Request *Request
 
-	// TLS contains information about the TLS connection on which the
-	// response was received. It is nil for unencrypted responses.
-	// The pointer is shared between responses and should not be
-	// modified.
+	// TLSは、レスポンスを受信したTLS接続に関する情報を含みます。
+	// 非暗号化のレスポンスの場合、nilです。
+	// このポインタはレスポンス間で共有され、変更してはいけません。
 	TLS *tls.ConnectionState
 }
 
-// Cookies parses and returns the cookies set in the Set-Cookie headers.
+// Cookiesは、Set-Cookieヘッダーで設定されたCookieを解析して返します。
 func (r *Response) Cookies() []*Cookie
 
-// ErrNoLocation is returned by Response's Location method
-// when no Location header is present.
+// ErrNoLocationは、LocationメソッドがLocationヘッダーが存在しない場合に返されます。
 var ErrNoLocation = errors.New("http: no Location header in response")
 
-// Location returns the URL of the response's "Location" header,
-// if present. Relative redirects are resolved relative to
-// the Response's Request. ErrNoLocation is returned if no
-// Location header is present.
+// Locationは、レスポンスの「Location」ヘッダーのURLを返します。
+// 存在する場合、相対リダイレクトはレスポンスのリクエストに対して相対的に解決されます。
+// Locationヘッダーが存在しない場合、ErrNoLocationが返されます。
 func (r *Response) Location() (*url.URL, error)
 
-// ReadResponse reads and returns an HTTP response from r.
-// The req parameter optionally specifies the Request that corresponds
-// to this Response. If nil, a GET request is assumed.
-// Clients must call resp.Body.Close when finished reading resp.Body.
-// After that call, clients can inspect resp.Trailer to find key/value
-// pairs included in the response trailer.
+// ReadResponseは、rからHTTPレスポンスを読み取り、返します。
+// reqパラメータは、このResponseに対応するRequestをオプションで指定します。
+// nilの場合、GETリクエストが想定されます。
+// クライアントは、resp.Bodyを読み取り終えたらresp.Body.Closeを呼び出す必要があります。
+// その呼び出しの後、クライアントはresp.Trailerを調べて、レスポンストレーラーに含まれるキー/値ペアを見つけることができます。
 func ReadResponse(r *bufio.Reader, req *Request) (*Response, error)
 
-// ProtoAtLeast reports whether the HTTP protocol used
-// in the response is at least major.minor.
+// ProtoAtLeastは、レスポンスで使用されるHTTPプロトコルが少なくともmajor.minorであるかどうかを報告します。
 func (r *Response) ProtoAtLeast(major, minor int) bool
 
-// Write writes r to w in the HTTP/1.x server response format,
-// including the status line, headers, body, and optional trailer.
+// Writeは、HTTP/1.xサーバーレスポンス形式でrをwに書き込みます。
+// ステータス行、ヘッダー、ボディ、およびオプションのトレーラーを含みます。
 //
-// This method consults the following fields of the response r:
+// このメソッドは、レスポンスrの以下のフィールドを参照します。
 //
 //	StatusCode
 //	ProtoMajor
@@ -146,7 +124,7 @@ func (r *Response) ProtoAtLeast(major, minor int) bool
 //	Trailer
 //	Body
 //	ContentLength
-//	Header, values for non-canonical keys will have unpredictable behavior
+//	Header, 非正準化キーの値は予測不可能な動作をします
 //
-// The Response Body is closed after it is sent.
+// レスポンスボディは送信後に閉じられます。
 func (r *Response) Write(w io.Writer) error
