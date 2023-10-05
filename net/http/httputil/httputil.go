@@ -8,6 +8,7 @@ package httputil
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/net/http/internal"
 )
 
 // NewChunkedReader returns a new chunkedReader that translates the data read from r
