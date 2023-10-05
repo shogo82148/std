@@ -108,17 +108,10 @@ func FieldsFunc(s string, f func(rune) bool) []string
 // Joinは、最初の引数の要素を連結して単一の文字列を作成します。区切り文字列sepは、結果の文字列の要素間に配置されます。
 func Join(elems []string, sep string) string
 
-<<<<<<< HEAD
-// HasPrefix reports whether the string s begins with prefix.
+// HasPrefixは、文字列sがprefixで始まるかどうかを報告します。
 func HasPrefix(s, prefix string) bool
 
-// HasSuffix reports whether the string s ends with suffix.
-=======
-// HasPrefixは、文字列sがprefixで始まるかどうかをテストします。
-func HasPrefix(s, prefix string) bool
-
-// HasSuffixは、文字列sがsuffixで終わるかどうかをテストします。
->>>>>>> release-branch.go1.21
+// HasSuffixは、文字列sがsuffixで終わるかどうかを報告します。
 func HasSuffix(s, suffix string) bool
 
 // Mapは、マッピング関数に従ってすべての文字を変更した文字列sのコピーを返します。
