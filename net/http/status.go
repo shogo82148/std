@@ -76,6 +76,6 @@ const (
 	StatusNetworkAuthenticationRequired = 511
 )
 
-// StatusText returns a text for the HTTP status code. It returns the empty
-// string if the code is unknown.
+// StatusTextは、HTTPステータスコードのテキストを返します。
+// コードが不明な場合は、空の文字列を返します。
 func StatusText(code int) string

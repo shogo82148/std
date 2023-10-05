@@ -4,10 +4,9 @@
 
 package http
 
-// DetectContentType implements the algorithm described
-// at https://mimesniff.spec.whatwg.org/ to determine the
-// Content-Type of the given data. It considers at most the
-// first 512 bytes of data. DetectContentType always returns
-// a valid MIME type: if it cannot determine a more specific one, it
-// returns "application/octet-stream".
+// DetectContentTypeは、指定されたデータのContent-Typeを決定するために
+// https://mimesniff.spec.whatwg.org/ で説明されているアルゴリズムを実装します。
+// データの最初の512バイトまでしか考慮しません。
+// DetectContentTypeは常に有効なMIMEタイプを返します。
+// より具体的なMIMEタイプを決定できない場合は、"application/octet-stream"を返します。
 func DetectContentType(data []byte) string

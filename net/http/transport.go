@@ -21,11 +21,9 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// DefaultTransport is the default implementation of Transport and is
-// used by DefaultClient. It establishes network connections as needed
-// and caches them for reuse by subsequent calls. It uses HTTP proxies
-// as directed by the environment variables HTTP_PROXY, HTTPS_PROXY
-// and NO_PROXY (or the lowercase versions thereof).
+// DefaultTransportはTransportのデフォルト実装であり、DefaultClientによって使用されます。
+// 必要に応じてネットワーク接続を確立し、後続の呼び出しで再利用するためにキャッシュします。
+// 環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはその小文字バージョン）によって指示されたように、HTTPプロキシを使用します。
 var DefaultTransport RoundTripper = &Transport{
 	Proxy: ProxyFromEnvironment,
 	DialContext: defaultTransportDialContext(&net.Dialer{
@@ -39,45 +37,36 @@ var DefaultTransport RoundTripper = &Transport{
 	ExpectContinueTimeout: 1 * time.Second,
 }
 
-// DefaultMaxIdleConnsPerHost is the default value of Transport's
-// MaxIdleConnsPerHost.
+// DefaultMaxIdleConnsPerHostは、TransportのMaxIdleConnsPerHostのデフォルト値です。
 const DefaultMaxIdleConnsPerHost = 2
 
-// Transport is an implementation of RoundTripper that supports HTTP,
-// HTTPS, and HTTP proxies (for either HTTP or HTTPS with CONNECT).
+// Transportは、HTTP、HTTPS、およびHTTPプロキシ（HTTPまたはHTTPS with CONNECTのいずれか）をサポートするRoundTripperの実装です。
 //
-// By default, Transport caches connections for future re-use.
-// This may leave many open connections when accessing many hosts.
-// This behavior can be managed using Transport's CloseIdleConnections method
-// and the MaxIdleConnsPerHost and DisableKeepAlives fields.
+// デフォルトでは、Transportは将来の再利用のために接続をキャッシュします。
+// これにより、多くのホストにアクセスする場合に多数のオープンな接続が残る可能性があります。
+// この動作は、TransportのCloseIdleConnectionsメソッドとMaxIdleConnsPerHostおよびDisableKeepAlivesフィールドを使用して管理できます。
 //
-// Transports should be reused instead of created as needed.
-// Transports are safe for concurrent use by multiple goroutines.
+// Transportは必要に応じて作成するのではなく、再利用する必要があります。
+// Transportは、複数のgoroutineによる同時使用に対して安全です。
 //
-// A Transport is a low-level primitive for making HTTP and HTTPS requests.
-// For high-level functionality, such as cookies and redirects, see Client.
+// Transportは、HTTPおよびHTTPSリクエストを行うための低レベルのプリミティブです。
+// クッキーやリダイレクトなどの高レベルの機能については、Clientを参照してください。
 //
-// Transport uses HTTP/1.1 for HTTP URLs and either HTTP/1.1 or HTTP/2
-// for HTTPS URLs, depending on whether the server supports HTTP/2,
-// and how the Transport is configured. The DefaultTransport supports HTTP/2.
-// To explicitly enable HTTP/2 on a transport, use golang.org/x/net/http2
-// and call ConfigureTransport. See the package docs for more about HTTP/2.
+// Transportは、HTTP URLではHTTP/1.1を、HTTPS URLではHTTP/1.1またはHTTP/2を使用します。
+// これは、サーバーがHTTP/2をサポートしているかどうか、およびTransportの構成によって異なります。
+// DefaultTransportはHTTP/2をサポートしています。
+// Transportで明示的にHTTP/2を有効にするには、golang.org/x/net/http2を使用してConfigureTransportを呼び出します。
+// HTTP/2についての詳細については、パッケージのドキュメントを参照してください。
 //
-// Responses with status codes in the 1xx range are either handled
-// automatically (100 expect-continue) or ignored. The one
-// exception is HTTP status code 101 (Switching Protocols), which is
-// considered a terminal status and returned by RoundTrip. To see the
-// ignored 1xx responses, use the httptrace trace package's
-// ClientTrace.Got1xxResponse.
+// ステータスコードが1xx範囲にあるレスポンスは、自動的に処理されます（100 expect-continue）。
+// ただし、HTTPステータスコード101（Switching Protocols）は、終端ステータスと見なされ、RoundTripによって返されます。
+// 無視された1xxレスポンスを表示するには、httptraceトレースパッケージのClientTrace.Got1xxResponseを使用します。
 //
-// Transport only retries a request upon encountering a network error
-// if the connection has been already been used successfully and if the
-// request is idempotent and either has no body or has its Request.GetBody
-// defined. HTTP requests are considered idempotent if they have HTTP methods
-// GET, HEAD, OPTIONS, or TRACE; or if their Header map contains an
-// "Idempotency-Key" or "X-Idempotency-Key" entry. If the idempotency key
-// value is a zero-length slice, the request is treated as idempotent but the
-// header is not sent on the wire.
+// Transportは、ネットワークエラーに遭遇した場合にのみ、接続がすでに正常に使用されており、
+// リクエストが冪等であり、ボディがないか、またはRequest.GetBodyが定義されている場合に、
+// リクエストを再試行します。HTTPリクエストは、HTTPメソッドがGET、HEAD、OPTIONS、またはTRACEである場合、
+// またはHeaderマップに「Idempotency-Key」または「X-Idempotency-Key」エントリが含まれている場合、冪等と見なされます。
+// 冪等性キーの値がゼロ長のスライスの場合、リクエストは冪等と見なされますが、ヘッダーはワイヤーに送信されません。
 type Transport struct {
 	idleMu       sync.Mutex
 	closeIdle    bool
@@ -95,173 +84,137 @@ type Transport struct {
 	connsPerHost     map[connectMethodKey]int
 	connsPerHostWait map[connectMethodKey]wantConnQueue
 
-	// Proxy specifies a function to return a proxy for a given
-	// Request. If the function returns a non-nil error, the
-	// request is aborted with the provided error.
+	// Proxyは、指定されたRequestに対するプロキシを返す関数を指定します。
+	// 関数が非nilのエラーを返す場合、リクエストは提供されたエラーで中止されます。
 	//
-	// The proxy type is determined by the URL scheme. "http",
-	// "https", and "socks5" are supported. If the scheme is empty,
-	// "http" is assumed.
+	// プロキシのタイプは、URLスキームによって決定されます。
+	// "http"、"https"、および"socks5"がサポートされています。
+	// スキームが空の場合、"http"が想定されます。
 	//
-	// If the proxy URL contains a userinfo subcomponent,
-	// the proxy request will pass the username and password
-	// in a Proxy-Authorization header.
+	// プロキシURLにuserinfoサブコンポーネントが含まれている場合、
+	// プロキシリクエストはProxy-Authorizationヘッダーでユーザー名とパスワードを渡します。
 	//
-	// If Proxy is nil or returns a nil *URL, no proxy is used.
+	// Proxyがnilまたはnilの*URLを返す場合、プロキシは使用されません。
 	Proxy func(*Request) (*url.URL, error)
 
-	// OnProxyConnectResponse is called when the Transport gets an HTTP response from
-	// a proxy for a CONNECT request. It's called before the check for a 200 OK response.
-	// If it returns an error, the request fails with that error.
+	// OnProxyConnectResponseは、TransportがCONNECTリクエストのプロキシからHTTPレスポンスを受信したときに呼び出されます。
+	// これは、200 OKレスポンスのチェックの前に呼び出されます。
+	// エラーを返すと、リクエストはそのエラーで失敗します。
 	OnProxyConnectResponse func(ctx context.Context, proxyURL *url.URL, connectReq *Request, connectRes *Response) error
 
-	// DialContext specifies the dial function for creating unencrypted TCP connections.
-	// If DialContext is nil (and the deprecated Dial below is also nil),
-	// then the transport dials using package net.
+	// DialContextは、暗号化されていないTCP接続を作成するためのダイアル関数を指定します。
+	// DialContextがnilである場合（および下記の非推奨のDialもnilである場合）、
+	// トランスポートはnetパッケージを使用してダイアルします。
 	//
-	// DialContext runs concurrently with calls to RoundTrip.
-	// A RoundTrip call that initiates a dial may end up using
-	// a connection dialed previously when the earlier connection
-	// becomes idle before the later DialContext completes.
+	// DialContextは、RoundTripの呼び出しと並行して実行されます。
+	// ダイアルを開始するRoundTrip呼び出しが、後のDialContextが完了する前に
+	// 以前にダイアルされた接続を使用する場合があります。
 	DialContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
-	// Dial specifies the dial function for creating unencrypted TCP connections.
+	// Dialは、暗号化されていないTCP接続を作成するためのダイアル関数を指定します。
 	//
-	// Dial runs concurrently with calls to RoundTrip.
-	// A RoundTrip call that initiates a dial may end up using
-	// a connection dialed previously when the earlier connection
-	// becomes idle before the later Dial completes.
+	// Dialは、RoundTripの呼び出しと並行して実行されます。
+	// 以前にダイアルされた接続が後でアイドル状態になる場合、
+	// 後のDialが完了する前に、ダイアルを開始するRoundTrip呼び出しが以前にダイアルされた接続を使用する場合があります。
 	//
-	// Deprecated: Use DialContext instead, which allows the transport
-	// to cancel dials as soon as they are no longer needed.
-	// If both are set, DialContext takes priority.
+	// Deprecated: 代わりにDialContextを使用してください。これにより、トランスポートはダイアルが不要になった直後にキャンセルできます。
+	// 両方が設定されている場合、DialContextが優先されます。
 	Dial func(network, addr string) (net.Conn, error)
 
-	// DialTLSContext specifies an optional dial function for creating
-	// TLS connections for non-proxied HTTPS requests.
+	// DialTLSContextは、プロキシを使用しないHTTPSリクエストのためのTLS接続を作成するためのオプションのダイアル関数を指定します。
 	//
-	// If DialTLSContext is nil (and the deprecated DialTLS below is also nil),
-	// DialContext and TLSClientConfig are used.
+	// DialTLSContextがnilである場合（および下記の非推奨のDialTLSもnilである場合）、
+	// DialContextとTLSClientConfigが使用されます。
 	//
-	// If DialTLSContext is set, the Dial and DialContext hooks are not used for HTTPS
-	// requests and the TLSClientConfig and TLSHandshakeTimeout
-	// are ignored. The returned net.Conn is assumed to already be
-	// past the TLS handshake.
+	// DialTLSContextが設定されている場合、HTTPSリクエストに対してDialおよびDialContextフックは使用されず、
+	// TLSClientConfigおよびTLSHandshakeTimeoutは無視されます。
+	// 返されたnet.Connは、すでにTLSハンドシェイクを完了しているものと見なされます。
 	DialTLSContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
-	// DialTLS specifies an optional dial function for creating
-	// TLS connections for non-proxied HTTPS requests.
+	// DialTLSは、プロキシを使用しないHTTPSリクエストのためのTLS接続を作成するためのオプションのダイアル関数を指定します。
 	//
-	// Deprecated: Use DialTLSContext instead, which allows the transport
-	// to cancel dials as soon as they are no longer needed.
-	// If both are set, DialTLSContext takes priority.
+	// Deprecated: 代わりにDialTLSContextを使用してください。これにより、トランスポートはダイアルが不要になった直後にキャンセルできます。
+	// 両方が設定されている場合、DialTLSContextが優先されます。
 	DialTLS func(network, addr string) (net.Conn, error)
 
-	// TLSClientConfig specifies the TLS configuration to use with
-	// tls.Client.
-	// If nil, the default configuration is used.
-	// If non-nil, HTTP/2 support may not be enabled by default.
+	// TLSClientConfigは、tls.Clientで使用するTLS構成を指定します。
+	// nilの場合、デフォルトの構成が使用されます。
+	// nil以外の場合、HTTP/2サポートがデフォルトで有効になっていない場合があります。
 	TLSClientConfig *tls.Config
 
-	// TLSHandshakeTimeout specifies the maximum amount of time to
-	// wait for a TLS handshake. Zero means no timeout.
+	// TLSHandshakeTimeoutは、TLSハンドシェイクを待機する最大時間を指定します。
+	// ゼロの場合、タイムアウトはありません。
 	TLSHandshakeTimeout time.Duration
 
-	// DisableKeepAlives, if true, disables HTTP keep-alives and
-	// will only use the connection to the server for a single
-	// HTTP request.
+	// DisableKeepAlivesがtrueの場合、HTTP keep-alivesが無効になり、
+	// サーバーへの接続は単一のHTTPリクエストにのみ使用されます。
 	//
-	// This is unrelated to the similarly named TCP keep-alives.
+	// これは、同様に名前が付けられたTCP keep-alivesとは無関係です。
 	DisableKeepAlives bool
 
-	// DisableCompression, if true, prevents the Transport from
-	// requesting compression with an "Accept-Encoding: gzip"
-	// request header when the Request contains no existing
-	// Accept-Encoding value. If the Transport requests gzip on
-	// its own and gets a gzipped response, it's transparently
-	// decoded in the Response.Body. However, if the user
-	// explicitly requested gzip it is not automatically
-	// uncompressed.
+	// DisableCompressionがtrueの場合、Transportは、Requestに既存のAccept-Encoding値がない場合に、
+	// "Accept-Encoding: gzip"リクエストヘッダーで圧縮を要求しません。
+	// Transportが自動的にgzipを要求し、gzipされたレスポンスを受け取った場合、Response.Bodyで透過的にデコードされます。
+	// ただし、ユーザーが明示的にgzipを要求した場合は、自動的に解凍されません。
 	DisableCompression bool
 
-	// MaxIdleConns controls the maximum number of idle (keep-alive)
-	// connections across all hosts. Zero means no limit.
+	// MaxIdleConnsは、すべてのホストをまたいでアイドル（keep-alive）接続の最大数を制御します。
+	// ゼロの場合、制限はありません。
 	MaxIdleConns int
 
-	// MaxIdleConnsPerHost, if non-zero, controls the maximum idle
-	// (keep-alive) connections to keep per-host. If zero,
-	// DefaultMaxIdleConnsPerHost is used.
+	// MaxIdleConnsPerHostがゼロでない場合、ホストごとに保持する最大アイドル（keep-alive）接続数を制御します。
+	// ゼロの場合、DefaultMaxIdleConnsPerHostが使用されます。
 	MaxIdleConnsPerHost int
 
-	// MaxConnsPerHost optionally limits the total number of
-	// connections per host, including connections in the dialing,
-	// active, and idle states. On limit violation, dials will block.
+	// MaxConnsPerHostは、ダイアル、アクティブ、およびアイドル状態の接続を含む、ホストごとの総接続数をオプションで制限します。
+	// 制限を超えると、ダイアルはブロックされます。
 	//
-	// Zero means no limit.
+	// ゼロは制限がないことを意味します。
 	MaxConnsPerHost int
 
-	// IdleConnTimeout is the maximum amount of time an idle
-	// (keep-alive) connection will remain idle before closing
-	// itself.
-	// Zero means no limit.
+	// IdleConnTimeoutは、アイドル（keep-alive）接続が自己クローズする前にアイドル状態になる最大時間です。
+	// ゼロは制限がないことを意味します。
 	IdleConnTimeout time.Duration
 
-	// ResponseHeaderTimeout, if non-zero, specifies the amount of
-	// time to wait for a server's response headers after fully
-	// writing the request (including its body, if any). This
-	// time does not include the time to read the response body.
+	// ResponseHeaderTimeoutがゼロでない場合、リクエスト（ボディがある場合はそれも含む）を完全に書き込んだ後、
+	// サーバーのレスポンスヘッダーを待機する時間を指定します。
+	// この時間には、レスポンスボディを読み取る時間は含まれません。
 	ResponseHeaderTimeout time.Duration
 
-	// ExpectContinueTimeout, if non-zero, specifies the amount of
-	// time to wait for a server's first response headers after fully
-	// writing the request headers if the request has an
-	// "Expect: 100-continue" header. Zero means no timeout and
-	// causes the body to be sent immediately, without
-	// waiting for the server to approve.
-	// This time does not include the time to send the request header.
+	// ExpectContinueTimeoutがゼロでない場合、リクエストに"Expect: 100-continue"ヘッダーがある場合、
+	// リクエストヘッダーを完全に書き込んだ後、サーバーの最初のレスポンスヘッダーを待機する時間を指定します。
+	// ゼロはタイムアウトがないことを意味し、サーバーの承認を待たずに、すぐにボディを送信します。
+	// この時間には、リクエストヘッダーを送信する時間は含まれません。
 	ExpectContinueTimeout time.Duration
 
-	// TLSNextProto specifies how the Transport switches to an
-	// alternate protocol (such as HTTP/2) after a TLS ALPN
-	// protocol negotiation. If Transport dials an TLS connection
-	// with a non-empty protocol name and TLSNextProto contains a
-	// map entry for that key (such as "h2"), then the func is
-	// called with the request's authority (such as "example.com"
-	// or "example.com:1234") and the TLS connection. The function
-	// must return a RoundTripper that then handles the request.
-	// If TLSNextProto is not nil, HTTP/2 support is not enabled
-	// automatically.
+	// TLSNextProtoは、TLS ALPNプロトコルネゴシエーション後にTransportが代替プロトコル（HTTP/2など）に切り替える方法を指定します。
+	// Transportがプロトコル名が空でないTLS接続をダイアルし、TLSNextProtoにそのキーのマップエントリが含まれている場合（"h2"など）、
+	// リクエストの権限（"example.com"または"example.com:1234"など）とTLS接続でfuncが呼び出されます。
+	// この関数は、その後リクエストを処理するRoundTripperを返さなければなりません。
+	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的に有効になりません。
 	TLSNextProto map[string]func(authority string, c *tls.Conn) RoundTripper
 
-	// ProxyConnectHeader optionally specifies headers to send to
-	// proxies during CONNECT requests.
-	// To set the header dynamically, see GetProxyConnectHeader.
+	// ProxyConnectHeaderは、CONNECTリクエスト中にプロキシに送信するヘッダーをオプションで指定します。
+	// ヘッダーを動的に設定するには、GetProxyConnectHeaderを参照してください。
 	ProxyConnectHeader Header
 
-	// GetProxyConnectHeader optionally specifies a func to return
-	// headers to send to proxyURL during a CONNECT request to the
-	// ip:port target.
-	// If it returns an error, the Transport's RoundTrip fails with
-	// that error. It can return (nil, nil) to not add headers.
-	// If GetProxyConnectHeader is non-nil, ProxyConnectHeader is
-	// ignored.
+	// GetProxyConnectHeaderは、ip:portターゲットへのCONNECTリクエスト中にproxyURLに送信するヘッダーを返すためのオプションの関数を指定します。
+	// エラーを返すと、TransportのRoundTripはそのエラーで失敗します。
+	// ヘッダーを追加しない場合は、(nil, nil)を返すことができます。
+	// GetProxyConnectHeaderが非nilの場合、ProxyConnectHeaderは無視されます。
 	GetProxyConnectHeader func(ctx context.Context, proxyURL *url.URL, target string) (Header, error)
 
-	// MaxResponseHeaderBytes specifies a limit on how many
-	// response bytes are allowed in the server's response
-	// header.
+	// MaxResponseHeaderBytesは、サーバーのレスポンスヘッダーに許可されるレスポンスバイト数の制限を指定します。
 	//
-	// Zero means to use a default limit.
+	// ゼロは、デフォルトの制限を使用することを意味します。
 	MaxResponseHeaderBytes int64
 
-	// WriteBufferSize specifies the size of the write buffer used
-	// when writing to the transport.
-	// If zero, a default (currently 4KB) is used.
+	// WriteBufferSizeは、トランスポートへの書き込み時に使用される書き込みバッファのサイズを指定します。
+	// ゼロの場合、デフォルト値（現在は4KB）が使用されます。
 	WriteBufferSize int
 
-	// ReadBufferSize specifies the size of the read buffer used
-	// when reading from the transport.
-	// If zero, a default (currently 4KB) is used.
+	// ReadBufferSizeは、トランスポートから読み取るときに使用される読み取りバッファのサイズを指定します。
+	// ゼロの場合、デフォルト値（現在は4KB）が使用されます。
 	ReadBufferSize int
 
 	// nextProtoOnce guards initialization of TLSNextProto and
@@ -278,59 +231,48 @@ type Transport struct {
 	ForceAttemptHTTP2 bool
 }
 
-// Clone returns a deep copy of t's exported fields.
+// Cloneは、tのエクスポートされたフィールドのディープコピーを返します。
 func (t *Transport) Clone() *Transport
 
-// ProxyFromEnvironment returns the URL of the proxy to use for a
-// given request, as indicated by the environment variables
-// HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions
-// thereof). Requests use the proxy from the environment variable
-// matching their scheme, unless excluded by NO_PROXY.
+// ProxyFromEnvironmentは、環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはそれらの小文字バージョン）によって示されるように、
+// 指定されたリクエストに使用するプロキシのURLを返します。
+// リクエストは、NO_PROXYによって除外されていない限り、スキームに一致する環境変数からプロキシを使用します。
 //
-// The environment values may be either a complete URL or a
-// "host[:port]", in which case the "http" scheme is assumed.
-// The schemes "http", "https", and "socks5" are supported.
-// An error is returned if the value is a different form.
+// 環境値は、完全なURLまたは"host[:port]"のいずれかである場合があります。この場合、"http"スキームが想定されます。
+// スキーム"http"、"https"、および"socks5"がサポートされています。
+// 値が異なる形式の場合は、エラーが返されます。
 //
-// A nil URL and nil error are returned if no proxy is defined in the
-// environment, or a proxy should not be used for the given request,
-// as defined by NO_PROXY.
+// 環境変数でプロキシが定義されていない場合、またはNO_PROXYによって指定されたリクエストにプロキシを使用しない場合、
+// nilのURLとnilのエラーが返されます。
 //
-// As a special case, if req.URL.Host is "localhost" (with or without
-// a port number), then a nil URL and nil error will be returned.
+// 特別な場合として、req.URL.Hostが"localhost"（ポート番号ありまたはなし）の場合、nilのURLとnilのエラーが返されます。
 func ProxyFromEnvironment(req *Request) (*url.URL, error)
 
-// ProxyURL returns a proxy function (for use in a Transport)
-// that always returns the same URL.
+// ProxyURLは、常に同じURLを返すプロキシ関数（Transportで使用するため）を返します。
 func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 
-// ErrSkipAltProtocol is a sentinel error value defined by Transport.RegisterProtocol.
+// ErrSkipAltProtocolは、Transport.RegisterProtocolによって定義されたセンチネルエラー値です。
 var ErrSkipAltProtocol = errors.New("net/http: skip alternate protocol")
 
-// RegisterProtocol registers a new protocol with scheme.
-// The Transport will pass requests using the given scheme to rt.
-// It is rt's responsibility to simulate HTTP request semantics.
+// RegisterProtocolは、新しいプロトコルをスキームとともに登録します。
+// Transportは、指定されたスキームを使用してリクエストをrtに渡します。
+// HTTPリクエストのセマンティクスをシミュレートする責任は、rtにあります。
 //
-// RegisterProtocol can be used by other packages to provide
-// implementations of protocol schemes like "ftp" or "file".
+// RegisterProtocolは、他のパッケージが"ftp"や"file"などのプロトコルスキームの実装を提供するために使用できます。
 //
-// If rt.RoundTrip returns ErrSkipAltProtocol, the Transport will
-// handle the RoundTrip itself for that one request, as if the
-// protocol were not registered.
+// rt.RoundTripがErrSkipAltProtocolを返す場合、Transportは、
+// 登録されたプロトコルのように扱わずに、その1つのリクエストに対して自身でRoundTripを処理します。
 func (t *Transport) RegisterProtocol(scheme string, rt RoundTripper)
 
-// CloseIdleConnections closes any connections which were previously
-// connected from previous requests but are now sitting idle in
-// a "keep-alive" state. It does not interrupt any connections currently
-// in use.
+// CloseIdleConnectionsは、以前のリクエストから接続されていたが、現在はアイドル状態になっている"keep-alive"状態の接続を閉じます。
+// 現在使用中の接続は中断しません。
 func (t *Transport) CloseIdleConnections()
 
-// CancelRequest cancels an in-flight request by closing its connection.
-// CancelRequest should only be called after RoundTrip has returned.
+// CancelRequestは、その接続を閉じることにより、進行中のリクエストをキャンセルします。
+// CancelRequestは、RoundTripが返された後にのみ呼び出す必要があります。
 //
-// Deprecated: Use Request.WithContext to create a request with a
-// cancelable context instead. CancelRequest cannot cancel HTTP/2
-// requests.
+// Deprecated: 代わりに、キャンセル可能なコンテキストを持つリクエストを作成するためにRequest.WithContextを使用してください。
+// CancelRequestは、HTTP/2リクエストをキャンセルできません。
 func (t *Transport) CancelRequest(req *Request)
 
 var _ io.ReaderFrom = (*persistConnWriter)(nil)

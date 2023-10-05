@@ -26,7 +26,7 @@ func ExampleHijacker() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Don't forget to close the connection:
+		// 接続を閉じることを忘れないでください:
 		defer conn.Close()
 		bufrw.WriteString("Now we're speaking raw TCP. Say hi: ")
 		bufrw.Flush()
@@ -57,30 +57,30 @@ func ExampleGet() {
 }
 
 func ExampleFileServer() {
-	// Simple static webserver:
+	// シンプルな静的 Web サーバー:
 	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("/usr/share/doc"))))
 }
 
 func ExampleFileServer_stripPrefix() {
-	// To serve a directory on disk (/tmp) under an alternate URL
-	// path (/tmpfiles/), use StripPrefix to modify the request
-	// URL's path before the FileServer sees it:
+	// ディスク上のディレクトリ (/tmp) を別の URL パス (/tmpfiles/) の下で提供するには、
+	// StripPrefix を使用して、FileServer がそれを見る前に
+	// リクエスト URL のパスを変更します。
 	http.Handle("/tmpfiles/", http.StripPrefix("/tmpfiles/", http.FileServer(http.Dir("/tmp"))))
 }
 
 func ExampleStripPrefix() {
-	// To serve a directory on disk (/tmp) under an alternate URL
-	// path (/tmpfiles/), use StripPrefix to modify the request
-	// URL's path before the FileServer sees it:
+	// ディスク上のディレクトリ (/tmp) を別の URL パス (/tmpfiles/) の下で提供するには、
+	// StripPrefix を使用して、FileServer がそれを見る前に
+	// リクエスト URL のパスを変更します。
 	http.Handle("/tmpfiles/", http.StripPrefix("/tmpfiles/", http.FileServer(http.Dir("/tmp"))))
 }
 
 func ExampleServeMux_Handle() {
+	// ServeMux を作成し、"/api/" には apiHandler{} を、"/" には無名関数を割り当てます。
 	mux := http.NewServeMux()
 	mux.Handle("/api/", apiHandler{})
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		// The "/" pattern matches everything, so we need to check
-		// that we're at the root here.
+		// "/" パターンはすべてにマッチするため、ここでルートにいることを確認する必要があります。
 		if req.URL.Path != "/" {
 			http.NotFound(w, req)
 			return
@@ -89,15 +89,12 @@ func ExampleServeMux_Handle() {
 	})
 }
 
-// HTTP Trailers are a set of key/value pairs like headers that come
-// after the HTTP response, instead of before.
+// HTTP トレーラーは、ヘッダーの前ではなく、HTTP レスポンスの後にあるヘッダーのようなキー/値のセットです。
 func ExampleResponseWriter_trailers() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/sendstrailers", func(w http.ResponseWriter, req *http.Request) {
-		// Before any call to WriteHeader or Write, declare
-		// the trailers you will set during the HTTP
-		// response. These three headers are actually sent in
-		// the trailer.
+		// WriteHeader または Write の呼び出しの前に、HTTP レスポンス中に設定するトレーラーを宣言してください。
+		// これらの 3 つのヘッダーは、実際にはトレーラーで送信されます。
 		w.Header().Set("Trailer", "AtEnd1, AtEnd2")
 		w.Header().Add("Trailer", "AtEnd3")
 
@@ -107,7 +104,7 @@ func ExampleResponseWriter_trailers() {
 		w.Header().Set("AtEnd1", "value 1")
 		io.WriteString(w, "This HTTP response has both headers before this text and trailers at the end.\n")
 		w.Header().Set("AtEnd2", "value 2")
-		w.Header().Set("AtEnd3", "value 3") // These will appear as trailers.
+		w.Header().Set("AtEnd3", "value 3") // これらはトレーラーとして表示されます。
 	})
 }
 
@@ -120,16 +117,16 @@ func ExampleServer_Shutdown() {
 		signal.Notify(sigint, os.Interrupt)
 		<-sigint
 
-		// We received an interrupt signal, shut down.
+		// 割り込みシグナルを受信したため、シャットダウンします。
 		if err := srv.Shutdown(context.Background()); err != nil {
-			// Error from closing listeners, or context timeout:
+			// リスナーのクローズ時のエラー、またはコンテキストのタイムアウト:
 			log.Printf("HTTP server Shutdown: %v", err)
 		}
 		close(idleConnsClosed)
 	}()
 
 	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
-		// Error starting or closing listener:
+		// リスナーの開始またはクローズ時のエラー:
 		log.Fatalf("HTTP server ListenAndServe: %v", err)
 	}
 
@@ -141,7 +138,7 @@ func ExampleListenAndServeTLS() {
 		io.WriteString(w, "Hello, TLS!\n")
 	})
 
-	// One can use generate_cert.go in crypto/tls to generate cert.pem and key.pem.
+	// crypto/tls の generate_cert.go を使用して、cert.pem と key.pem を生成できます。
 	log.Printf("About to listen on 8443. Go to https://127.0.0.1:8443/")
 	err := http.ListenAndServeTLS(":8443", "cert.pem", "key.pem", nil)
 	log.Fatal(err)

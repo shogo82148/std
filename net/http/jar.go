@@ -8,12 +8,11 @@ import (
 	"github.com/shogo82148/std/net/url"
 )
 
-// A CookieJar manages storage and use of cookies in HTTP requests.
+// CookieJarは、HTTPリクエストでのCookieのストレージと使用を管理します。
 //
-// Implementations of CookieJar must be safe for concurrent use by multiple
-// goroutines.
+// CookieJarの実装は、複数のゴルーチンによる同時使用に対して安全である必要があります。
 //
-// The net/http/cookiejar package provides a CookieJar implementation.
+// net/http/cookiejarパッケージはCookieJarの実装を提供します。
 type CookieJar interface {
 	SetCookies(u *url.URL, cookies []*Cookie)
 

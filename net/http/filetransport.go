@@ -13,8 +13,8 @@ import (
 // incoming requests, as well as most other properties of the
 // request.
 //
-// The typical use case for NewFileTransport is to register the "file"
-// protocol with a Transport, as in:
+// NewFileTransport の典型的な使用例は、Transport に "file" プロトコルを登録することです。
+// 例:
 //
 //	t := &http.Transport{}
 //	t.RegisterProtocol("file", http.NewFileTransport(http.Dir("/")))
