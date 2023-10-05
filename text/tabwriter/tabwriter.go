@@ -15,11 +15,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A cell represents a segment of text terminated by tabs or line breaks.
-// The text itself is stored in a separate buffer; cell only describes the
-// segment's size in bytes, its width in runes, and whether it's an htab
-// ('\t') terminated cell.
-
 // A Writer is a filter that inserts padding around tab-delimited
 // columns in its input to align them in the output.
 //
@@ -78,6 +73,7 @@ import (
 // of one line may depend on the cells in future lines. Clients must
 // call Flush when done calling Write.
 type Writer struct {
+	// configuration
 	output   io.Writer
 	minwidth int
 	tabwidth int
@@ -85,6 +81,7 @@ type Writer struct {
 	padbytes [8]byte
 	flags    uint
 
+	// current state
 	buf     []byte
 	pos     int
 	cell    cell
@@ -134,9 +131,6 @@ const (
 //			to the tab width in the viewer displaying the result)
 //	flags		formatting control
 func (b *Writer) Init(output io.Writer, minwidth, tabwidth, padding int, padchar byte, flags uint) *Writer
-
-// local error wrapper so we can distinguish errors we want to return
-// as errors from genuine panics (which we don't want to return as errors)
 
 // To escape a text segment, bracket it with Escape characters.
 // For instance, the tab in this string "Ignore this tab: \xff\t\xff"

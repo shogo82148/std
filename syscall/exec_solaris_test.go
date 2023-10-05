@@ -5,5 +5,3 @@
 //go:build solaris
 
 package syscall
-
-var IoctlPtr = ioctlPtr

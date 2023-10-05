@@ -3,6 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package os
-
-// These constants aren't in the syscall package, which is frozen.
-// Values taken from golang.org/x/sys/unix.

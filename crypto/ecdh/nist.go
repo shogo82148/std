@@ -4,8 +4,6 @@
 
 package ecdh
 
-// nistPoint is a generic constraint for the nistec Point types.
-
 // P256 returns a Curve which implements NIST P-256 (FIPS 186-3, section D.2.3),
 // also known as secp256r1 or prime256v1.
 //

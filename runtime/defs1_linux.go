@@ -12,11 +12,6 @@ GOARCH=amd64 cgo -cdefs defs.go defs1.go >amd64/defs.h
 
 package runtime
 
-/*
-#include <ucontext.h>
-#include <fcntl.h>
-#include <asm/signal.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

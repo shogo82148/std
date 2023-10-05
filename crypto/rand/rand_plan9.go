@@ -6,8 +6,3 @@
 // generator.
 
 package rand
-
-// reader is a new pseudorandom generator that seeds itself by
-// reading from /dev/random. The Read method on the returned
-// reader always returns the full amount asked for, or else it
-// returns an error. The generator is a fast key erasure RNG.

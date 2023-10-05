@@ -3,8 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package build
-
-type GoodFileTest struct {
-	name   string
-	result bool
-}

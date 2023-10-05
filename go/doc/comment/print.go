@@ -9,18 +9,43 @@ package comment
 // any of the printing methods
 // in order to customize the details of the printing process.
 type Printer struct {
+	// HeadingLevel is the nesting level used for
+	// HTML and Markdown headings.
+	// If HeadingLevel is zero, it defaults to level 3,
+	// meaning to use <h3> and ###.
 	HeadingLevel int
 
+	// HeadingID is a function that computes the heading ID
+	// (anchor tag) to use for the heading h when generating
+	// HTML and Markdown. If HeadingID returns an empty string,
+	// then the heading ID is omitted.
+	// If HeadingID is nil, h.DefaultID is used.
 	HeadingID func(h *Heading) string
 
+	// DocLinkURL is a function that computes the URL for the given DocLink.
+	// If DocLinkURL is nil, then link.DefaultURL(p.DocLinkBaseURL) is used.
 	DocLinkURL func(link *DocLink) string
 
+	// DocLinkBaseURL is used when DocLinkURL is nil,
+	// passed to [DocLink.DefaultURL] to construct a DocLink's URL.
+	// See that method's documentation for details.
 	DocLinkBaseURL string
 
+	// TextPrefix is a prefix to print at the start of every line
+	// when generating text output using the Text method.
 	TextPrefix string
 
+	// TextCodePrefix is the prefix to print at the start of each
+	// preformatted (code block) line when generating text output,
+	// instead of (not in addition to) TextPrefix.
+	// If TextCodePrefix is the empty string, it defaults to TextPrefix+"\t".
 	TextCodePrefix string
 
+	// TextWidth is the maximum width text line to generate,
+	// measured in Unicode code points,
+	// excluding TextPrefix and the newline character.
+	// If TextWidth is zero, it defaults to 80 minus the number of code points in TextPrefix.
+	// If TextWidth is negative, there is no limit.
 	TextWidth int
 }
 

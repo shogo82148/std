@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// A notInHeapSlice is a slice backed by runtime/internal/sys.NotInHeap memory.

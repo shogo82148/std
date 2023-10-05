@@ -79,9 +79,6 @@ var Canceled = errors.New("context canceled")
 // deadline passes.
 var DeadlineExceeded error = deadlineExceededError{}
 
-// An emptyCtx is never canceled, has no values, and has no deadline.
-// It is the common base of backgroundCtx and todoCtx.
-
 // Background returns a non-nil, empty [Context]. It is never canceled, has no
 // values, and has no deadline. It is typically used by the main function,
 // initialization, and tests, and as the top-level Context for incoming
@@ -161,22 +158,6 @@ func Cause(c Context) error
 // AfterFunc will use it to schedule the call.
 func AfterFunc(ctx Context, f func()) (stop func() bool)
 
-// A stopCtx is used as the parent context of a cancelCtx when
-// an AfterFunc has been registered with the parent.
-// It holds the stop function used to unregister the AfterFunc.
-
-// goroutines counts the number of goroutines ever created; for testing.
-
-// &cancelCtxKey is the key that a cancelCtx returns itself for.
-
-// A canceler is a context type that can be canceled directly. The
-// implementations are *cancelCtx and *timerCtx.
-
-// closedchan is a reusable closed channel.
-
-// A cancelCtx can be canceled. When canceled, it also cancels any children
-// that implement canceler.
-
 // WithoutCancel returns a copy of parent that is not canceled when parent is canceled.
 // The returned context returns no Deadline or Err, and its Done channel is nil.
 // Calling [Cause] on the returned context returns nil.
@@ -197,10 +178,6 @@ func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
 // returned Context when the deadline is exceeded. The returned [CancelFunc] does
 // not set the cause.
 func WithDeadlineCause(parent Context, d time.Time, cause error) (Context, CancelFunc)
-
-// A timerCtx carries a timer and a deadline. It embeds a cancelCtx to
-// implement Done and Err. It implements cancel by stopping its timer then
-// delegating to cancelCtx.cancel.
 
 // WithTimeout returns WithDeadline(parent, time.Now().Add(timeout)).
 //
@@ -233,6 +210,3 @@ func WithTimeoutCause(parent Context, timeout time.Duration, cause error) (Conte
 // struct{}. Alternatively, exported context key variables' static
 // type should be a pointer or interface.
 func WithValue(parent Context, key, val any) Context
-
-// A valueCtx carries a key-value pair. It implements Value for that key and
-// delegates all other calls to the embedded Context.

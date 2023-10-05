@@ -19,6 +19,9 @@ type Writer struct {
 	hdr  Header
 	blk  block
 
+	// err is a persistent error.
+	// It is only the responsibility of every exported method of Writer to
+	// ensure that this error is sticky.
 	err error
 }
 
@@ -56,9 +59,3 @@ func (tw *Writer) Write(b []byte) (int, error)
 // If the current file (from a prior call to WriteHeader) is not fully written,
 // then this returns an error.
 func (tw *Writer) Close() error
-
-// regFileWriter is a fileWriter for writing data to a regular file entry.
-
-// sparseFileWriter is a fileWriter for writing data to a sparse file entry.
-
-// zeroWriter may only be written with NULs, otherwise it returns errWriteHole.

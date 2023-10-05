@@ -27,8 +27,6 @@ const (
 // but failed to return an explicit error.
 var ErrShortWrite = errors.New("short write")
 
-// errInvalidWrite means that a write returned an impossible count.
-
 // ErrShortBuffer means that a read required a longer buffer than was provided.
 var ErrShortBuffer = errors.New("short buffer")
 

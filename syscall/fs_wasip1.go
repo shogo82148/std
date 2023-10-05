@@ -71,21 +71,6 @@ const (
 	FILESTAT_SET_MTIM_NOW = 0x0008
 )
 
-// https://github.com/WebAssembly/WASI/blob/a2b96e81c0586125cc4dc79a5be0b78d9a059925/legacy/preview1/docs.md#-fdstat-record
-// fdflags must be at offset 2, hence the uint16 type rather than the
-// fdflags (uint32) type.
-
-// List of preopen directories that were exposed by the runtime. The first one
-// is assumed to the be root directory of the file system, and others are seen
-// as mount points at sub paths of the root.
-
-// Current working directory. We maintain this as a string and resolve paths in
-// the code because wasmtime does not allow relative path lookups outside of the
-// scope of a directory; a previous approach we tried consisted in maintaining
-// open a file descriptor to the current directory so we could perform relative
-// path lookups from that location, but it resulted in breaking path resolution
-// from the current directory to its parent.
-
 func Open(path string, openmode int, perm uint32) (int, error)
 
 func Close(fd int) error
@@ -108,6 +93,7 @@ type Stat_t struct {
 
 	Mode int
 
+	// Uid and Gid are always zero on wasip1 platforms
 	Uid uint32
 	Gid uint32
 }

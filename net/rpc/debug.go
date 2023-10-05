@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package rpc
-
-// If set, print log statements for internal and I/O errors.

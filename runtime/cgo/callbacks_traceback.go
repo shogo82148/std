@@ -5,9 +5,3 @@
 //go:build darwin || linux
 
 package cgo
-
-import _ "github.com/shogo82148/std/unsafe"
-
-//go:cgo_import_static x_cgo_callers
-//go:linkname x_cgo_callers x_cgo_callers
-//go:linkname _cgo_callers _cgo_callers

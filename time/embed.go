@@ -8,5 +8,3 @@
 //go:build timetzdata
 
 package time
-
-import _ "github.com/shogo82148/std/time/tzdata"

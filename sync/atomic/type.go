@@ -31,6 +31,9 @@ var _ = &Pointer[int]{}
 
 // A Pointer is an atomic pointer of type *T. The zero value is a nil *T.
 type Pointer[T any] struct {
+	// Mention *T in a field to disallow conversion between Pointer types.
+	// See go.dev/issue/56603 for more details.
+	// Use *T, not T, to avoid spurious recursive type definition errors.
 	_ [0]*T
 
 	_ noCopy
@@ -155,15 +158,3 @@ func (x *Uintptr) CompareAndSwap(old, new uintptr) (swapped bool)
 
 // Add atomically adds delta to x and returns the new value.
 func (x *Uintptr) Add(delta uintptr) (new uintptr)
-
-// noCopy may be added to structs which must not be copied
-// after the first use.
-//
-// See https://golang.org/issues/8005#issuecomment-190753527
-// for details.
-//
-// Note that it must not be embedded, due to the Lock and Unlock methods.
-
-// align64 may be added to structs that must be 64-bit aligned.
-// This struct is recognized by a special case in the compiler
-// and will not work if copied to any other package.

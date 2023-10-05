@@ -20,9 +20,6 @@ import (
 // The size of an Adler-32 checksum in bytes.
 const Size = 4
 
-// digest represents the partial evaluation of a checksum.
-// The low 16 bits are s1, the high 16 bits are s2.
-
 // New returns a new hash.Hash32 computing the Adler-32 checksum. Its
 // Sum method will lay the value out in big-endian byte order. The
 // returned Hash32 also implements encoding.BinaryMarshaler and

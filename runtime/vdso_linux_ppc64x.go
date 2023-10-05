@@ -5,5 +5,3 @@
 //go:build linux && (ppc64 || ppc64le)
 
 package runtime
-
-// initialize with vsyscall fallbacks

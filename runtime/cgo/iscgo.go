@@ -10,7 +10,3 @@
 // backup: it depends only on old C style static linking rules.
 
 package cgo
-
-import _ "github.com/shogo82148/std/unsafe"
-
-//go:linkname _iscgo runtime.iscgo

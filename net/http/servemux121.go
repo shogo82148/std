@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package http
-
-// serveMux121 holds the state of a ServeMux needed for Go 1.21 behavior.

@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package main
-
-// main runs sort.Sort(byName(fixes)) before printing list of fixes.
-
-// main runs sort.Sort(byDate(fixes)) before applying fixes.

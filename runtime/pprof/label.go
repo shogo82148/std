@@ -13,12 +13,6 @@ type LabelSet struct {
 	list []label
 }
 
-// labelContextKey is the type of contextKeys used for profiler labels.
-
-// labelMap is the representation of the label set held in the context type.
-// This is an initial implementation, but it will be replaced with something
-// that admits incremental immutable modification more efficiently.
-
 // WithLabels returns a new context.Context with the given labels added.
 // A label overwrites a prior label with the same key.
 func WithLabels(ctx context.Context, labels LabelSet) context.Context

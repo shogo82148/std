@@ -3,5 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime_test
-
-// Do not add/remove lines in this block without updating the line numbers.

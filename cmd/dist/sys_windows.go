@@ -4,8 +4,6 @@
 
 package main
 
-// see https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/ns-sysinfoapi-system_info
-
 // See https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/ns-sysinfoapi-system_info
 const (
 	PROCESSOR_ARCHITECTURE_AMD64 = 9

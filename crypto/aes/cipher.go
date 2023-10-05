@@ -11,8 +11,6 @@ import (
 // The AES block size in bytes.
 const BlockSize = 16
 
-// A cipher is an instance of AES encryption using a particular key.
-
 type KeySizeError int
 
 func (k KeySizeError) Error() string

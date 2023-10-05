@@ -7,27 +7,58 @@ package runtime
 // Frames may be used to get function/file/line information for a
 // slice of PC values returned by Callers.
 type Frames struct {
+	// callers is a slice of PCs that have not yet been expanded to frames.
 	callers []uintptr
 
+	// frames is a slice of Frames that have yet to be returned.
 	frames     []Frame
 	frameStore [2]Frame
 }
 
 // Frame is the information returned by Frames for each call frame.
 type Frame struct {
+	// PC is the program counter for the location in this frame.
+	// For a frame that calls another frame, this will be the
+	// program counter of a call instruction. Because of inlining,
+	// multiple frames may have the same PC value, but different
+	// symbolic information.
 	PC uintptr
 
+	// Func is the Func value of this call frame. This may be nil
+	// for non-Go code or fully inlined functions.
 	Func *Func
 
+	// Function is the package path-qualified function name of
+	// this call frame. If non-empty, this string uniquely
+	// identifies a single function in the program.
+	// This may be the empty string if not known.
+	// If Func is not nil then Function == Func.Name().
 	Function string
 
+	// File and Line are the file name and line number of the
+	// location in this frame. For non-leaf frames, this will be
+	// the location of a call. These may be the empty string and
+	// zero, respectively, if not known.
 	File string
 	Line int
 
+	// startLine is the line number of the beginning of the function in
+	// this frame. Specifically, it is the line number of the func keyword
+	// for Go functions. Note that //line directives can change the
+	// filename and/or line number arbitrarily within a function, meaning
+	// that the Line - startLine offset is not always meaningful.
+	//
+	// This may be zero if not known.
 	startLine int
 
+	// Entry point program counter for the function; may be zero
+	// if not known. If Func is not nil then Entry ==
+	// Func.Entry().
 	Entry uintptr
 
+	// The runtime's internal view of the function. This field
+	// is set (funcInfo.valid() returns true) only for Go functions,
+	// not for C functions.
 	funcInfo funcInfo
 }
 
@@ -52,44 +83,6 @@ type Func struct {
 	opaque struct{}
 }
 
-// pcHeader holds data used by the pclntab lookups.
-
-// moduledata records information about the layout of the executable
-// image. It is written by the linker. Any changes here must be
-// matched changes to the code in cmd/link/internal/ld/symtab.go:symtab.
-// moduledata is stored in statically allocated non-pointer memory;
-// none of the pointers here are visible to the garbage collector.
-
-// A modulehash is used to compare the ABI of a new module or a
-// package in a new module with the loaded program.
-//
-// For each shared library a module links against, the linker creates an entry in the
-// moduledata.modulehashes slice containing the name of the module, the abi hash seen
-// at link time and a pointer to the runtime abi hash. These are checked in
-// moduledataverify1 below.
-//
-// For each loaded plugin, the pkghashes slice has a modulehash of the
-// newly loaded package that can be used to check the plugin's version of
-// a package against any previously loaded version of the package.
-// This is done in plugin.lastmoduleinit.
-
-// pinnedTypemaps are the map[typeOff]*_type from the moduledata objects.
-//
-// These typemap objects are allocated at run time on the heap, but the
-// only direct reference to them is in the moduledata, created by the
-// linker and marked SNOPTRDATA so it is ignored by the GC.
-//
-// To make sure the map isn't collected, we keep a second reference here.
-
-// findfuncbucket is an array of these structures.
-// Each bucket represents 4096 bytes of the text segment.
-// Each subbucket represents 256 bytes of the text segment.
-// To find a function given a pc, locate the bucket and subbucket for
-// that pc. Add together the idx and subbucket value to obtain a
-// function index. Then scan the functab array starting at that
-// index to find the target function.
-// This table uses 20 bytes for every 4096 bytes of code, or ~0.5% overhead.
-
 // FuncForPC returns a *Func describing the function that contains the
 // given program counter address, or else nil.
 //
@@ -109,7 +102,3 @@ func (f *Func) Entry() uintptr
 // The result will not be accurate if pc is not a program
 // counter within f.
 func (f *Func) FileLine(pc uintptr) (file string, line int)
-
-// A srcFunc represents a logical function in the source code. This may
-// correspond to an actual symbol in the binary text, or it may correspond to a
-// source function that has been inlined.

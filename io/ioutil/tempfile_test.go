@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package ioutil_test
-
-import (
-	. "io/ioutil"
-)
-
-// This string is from os.errPatternHasSeparator.

@@ -13,36 +13,6 @@ cgo -cdefs defs_arm.c >arm/defs.h
 
 package runtime
 
-/*
-#cgo CFLAGS: -I/usr/src/linux-headers-2.6.26-2-versatile/include
-
-#define __ARCH_SI_UID_T int
-#include <asm/signal.h>
-#include <asm/mman.h>
-#include <asm/sigcontext.h>
-#include <asm/ucontext.h>
-#include <asm/siginfo.h>
-#include <linux/time.h>
-
-struct xsiginfo {
-	int si_signo;
-	int si_errno;
-	int si_code;
-	char _sifields[4];
-};
-
-#undef sa_handler
-#undef sa_flags
-#undef sa_restorer
-#undef sa_mask
-
-struct xsigaction {
-	void (*sa_handler)(void);
-	unsigned long sa_flags;
-	void (*sa_restorer)(void);
-	unsigned int sa_mask;		// mask last for extensibility
-};
-*/
 import "github.com/shogo82148/std/C"
 
 const (

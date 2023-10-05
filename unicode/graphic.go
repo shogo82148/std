@@ -4,8 +4,6 @@
 
 package unicode
 
-// Bit masks for each code point under U+0100, for fast lookup.
-
 // GraphicRanges defines the set of graphic characters according to Unicode.
 var GraphicRanges = []*RangeTable{
 	L, M, N, P, S, Zs,

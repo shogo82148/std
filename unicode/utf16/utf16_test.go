@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package utf16_test
-
-import (
-	. "unicode/utf16"
-)

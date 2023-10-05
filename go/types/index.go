@@ -5,7 +5,3 @@
 // This file implements typechecking of index/slice expressions.
 
 package types
-
-import (
-	. "internal/types/errors"
-)

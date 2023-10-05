@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package runtime
-
-// Numbers fundamental to the encoding.
-
-// Code points in the surrogate range are not valid for UTF-8.

@@ -8,11 +8,3 @@
 // generator.
 
 package rand
-
-// A reader satisfies reads by reading from urandomDevice
-
-// altGetRandom if non-nil specifies an OS-specific function to get
-// urandom-style randomness.
-
-// hideAgainReader masks EAGAIN reads from /dev/urandom.
-// See golang.org/issue/9205

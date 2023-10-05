@@ -69,9 +69,11 @@ func (h HostnameError) Error() string
 // UnknownAuthorityError results when the certificate issuer is unknown
 type UnknownAuthorityError struct {
 	Cert *Certificate
-
+	// hintErr contains an error that may be helpful in determining why an
+	// authority wasn't found.
 	hintErr error
-
+	// hintCert contains a possible authority certificate that was rejected
+	// because of the error in hintErr.
 	hintCert *Certificate
 }
 
@@ -86,27 +88,36 @@ func (se SystemRootsError) Error() string
 
 func (se SystemRootsError) Unwrap() error
 
-// errNotParsed is returned when a certificate without ASN.1 contents is
-// verified. Platform-specific verification needs the ASN.1 contents.
-
 // VerifyOptions contains parameters for Certificate.Verify.
 type VerifyOptions struct {
+	// DNSName, if set, is checked against the leaf certificate with
+	// Certificate.VerifyHostname or the platform verifier.
 	DNSName string
 
+	// Intermediates is an optional pool of certificates that are not trust
+	// anchors, but can be used to form a chain from the leaf certificate to a
+	// root certificate.
 	Intermediates *CertPool
-
+	// Roots is the set of trusted root certificates the leaf certificate needs
+	// to chain up to. If nil, the system roots or the platform verifier are used.
 	Roots *CertPool
 
+	// CurrentTime is used to check the validity of all certificates in the
+	// chain. If zero, the current time is used.
 	CurrentTime time.Time
 
+	// KeyUsages specifies which Extended Key Usage values are acceptable. A
+	// chain is accepted if it allows any of the listed values. An empty list
+	// means ExtKeyUsageServerAuth. To accept any key usage, include ExtKeyUsageAny.
 	KeyUsages []ExtKeyUsage
 
+	// MaxConstraintComparisions is the maximum number of comparisons to
+	// perform when checking a given certificate's name constraints. If
+	// zero, a sensible default is used. This limit prevents pathological
+	// certificates from consuming excessive amounts of CPU time when
+	// validating. It does not apply to the platform verifier.
 	MaxConstraintComparisions int
 }
-
-// rfc2821Mailbox represents a “mailbox” (which is an email address to most
-// people) by breaking it into the “local” (i.e. before the '@') and “domain”
-// parts.
 
 // Verify attempts to verify c by building one or more chains from c to a
 // certificate in opts.Roots, using certificates in opts.Intermediates if
@@ -141,11 +152,6 @@ type VerifyOptions struct {
 //
 // WARNING: this function doesn't do any revocation checking.
 func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)
-
-// maxChainSignatureChecks is the maximum number of CheckSignatureFrom calls
-// that an invocation of buildChains will (transitively) make. Most chains are
-// less than 15 certificates long, so this leaves space for multiple chains and
-// for failed checks due to different intermediates having the same Subject.
 
 // VerifyHostname returns nil if c is a valid certificate for the named host.
 // Otherwise it returns an error describing the mismatch.

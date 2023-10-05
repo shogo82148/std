@@ -50,6 +50,12 @@ type Section struct {
 	SectionHeader
 	Relocs []Reloc
 
+	// Embed ReaderAt for ReadAt method.
+	// Do not embed SectionReader directly
+	// to avoid having Read and Seek.
+	// If a client wants Read and Seek it must use
+	// Open() to avoid fighting over the seek offset
+	// with other clients.
 	io.ReaderAt
 	sr *io.SectionReader
 }

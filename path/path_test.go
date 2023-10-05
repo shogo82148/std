@@ -3,29 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package path_test
-
-import (
-	. "path"
-)
-
-type PathTest struct {
-	path, result string
-}
-
-type SplitTest struct {
-	path, dir, file string
-}
-
-type JoinTest struct {
-	elem []string
-	path string
-}
-
-type ExtTest struct {
-	path, ext string
-}
-
-type IsAbsTest struct {
-	path  string
-	isAbs bool
-}

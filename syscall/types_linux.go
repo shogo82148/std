@@ -13,128 +13,6 @@ Input to cgo -godefs.  See also mkerrors.sh and mkall.sh
 
 package syscall
 
-/*
-#define _LARGEFILE_SOURCE
-#define _LARGEFILE64_SOURCE
-#define _FILE_OFFSET_BITS 64
-#define _GNU_SOURCE
-
-#include <dirent.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netpacket/packet.h>
-#include <signal.h>
-#include <stdio.h>
-#include <sys/epoll.h>
-#include <sys/inotify.h>
-#include <sys/mman.h>
-#include <sys/mount.h>
-#include <sys/param.h>
-#include <sys/ptrace.h>
-#include <sys/resource.h>
-#include <sys/select.h>
-#include <sys/signal.h>
-#include <sys/stat.h>
-#include <sys/statfs.h>
-#include <sys/sysinfo.h>
-#include <sys/time.h>
-#include <sys/times.h>
-#include <sys/timex.h>
-#include <sys/types.h>
-#include <sys/un.h>
-#include <sys/user.h>
-#include <sys/utsname.h>
-#include <sys/wait.h>
-#include <linux/filter.h>
-#include <linux/netlink.h>
-#include <linux/rtnetlink.h>
-#include <linux/icmpv6.h>
-#include <poll.h>
-#include <termios.h>
-#include <time.h>
-#include <unistd.h>
-#include <utime.h>
-
-enum {
-	sizeofPtr = sizeof(void*),
-};
-
-union sockaddr_all {
-	struct sockaddr s1;	// this one gets used for fields
-	struct sockaddr_in s2;	// these pad it out
-	struct sockaddr_in6 s3;
-	struct sockaddr_un s4;
-	struct sockaddr_ll s5;
-	struct sockaddr_nl s6;
-};
-
-struct sockaddr_any {
-	struct sockaddr addr;
-	char pad[sizeof(union sockaddr_all) - sizeof(struct sockaddr)];
-};
-
-// copied from /usr/include/linux/un.h
-struct my_sockaddr_un {
-	sa_family_t sun_family;
-#if defined(__ARM_EABI__) || defined(__powerpc64__) || defined(__riscv__) || defined(__s390x__)
-	// on ARM, PPC, RISC-V, and s390x char is by default unsigned
-	signed char sun_path[108];
-#else
-	char sun_path[108];
-#endif
-};
-
-#ifdef __ARM_EABI__
-typedef struct user_regs PtraceRegs;
-#elif defined(__aarch64__)
-typedef struct user_pt_regs PtraceRegs;
-#elif defined(__powerpc64__)
-typedef struct pt_regs PtraceRegs;
-#elif defined(__mips__)
-typedef struct user PtraceRegs;
-#elif defined(__s390x__)
-typedef struct _user_regs_struct PtraceRegs;
-#else
-typedef struct user_regs_struct PtraceRegs;
-#endif
-
-#if defined(__s390x__)
-typedef struct _user_psw_struct ptracePsw;
-typedef struct _user_fpregs_struct ptraceFpregs;
-typedef struct _user_per_struct ptracePer;
-#else
-typedef struct {} ptracePsw;
-typedef struct {} ptraceFpregs;
-typedef struct {} ptracePer;
-#endif
-
-// The real epoll_event is a union, and godefs doesn't handle it well.
-struct my_epoll_event {
-	uint32_t events;
-#if defined(__ARM_EABI__) || defined(__aarch64__) || (defined(__mips__) && _MIPS_SIM == _ABIO32)
-	// padding is not specified in linux/eventpoll.h but added to conform to the
-	// alignment requirements of EABI
-	int32_t padFd;
-#endif
-#if defined(__powerpc64__) || defined(__s390x__) || (defined(__riscv_xlen) && __riscv_xlen == 64) \
-		|| (defined(__mips__) && _MIPS_SIM == _MIPS_SIM_ABI64) || defined(__loongarch64)
-	int32_t _padFd;
-#endif
-	int32_t fd;
-	int32_t pad;
-};
-
-// ustat is deprecated and glibc 2.28 removed ustat.h. Provide the type here for
-// backwards compatibility. Copied from /usr/include/bits/ustat.h
-struct ustat {
-	__daddr_t f_tfree;
-	__ino_t f_tinode;
-	char f_fname[6];
-	char f_fpack[6];
-};
-
-*/
 import "github.com/shogo82148/std/C"
 
 const (
@@ -355,8 +233,6 @@ const SizeofInotifyEvent = C.sizeof_struct_inotify_event
 
 // Register structures
 type PtraceRegs C.PtraceRegs
-
-// Structures contained in PtraceRegs on s390x (exported by post.go)
 
 type FdSet C.fd_set
 

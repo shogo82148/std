@@ -71,8 +71,6 @@ func Parse(line string) (Expr, error)
 // It only checks the prefix of the text, not that the expression itself parses.
 func IsGoBuild(line string) bool
 
-// An exprParser holds state for parsing a build expression.
-
 // IsPlusBuild reports whether the line of text is a “// +build” constraint.
 // It only checks the prefix of the text, not that the expression itself parses.
 func IsPlusBuild(line string) bool

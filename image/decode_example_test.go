@@ -11,8 +11,6 @@ import (
 	"image"
 	"log"
 	"strings"
-
-	_ "image/jpeg"
 )
 
 func Example_decodeConfig() {

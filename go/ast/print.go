@@ -33,6 +33,3 @@ func Fprint(w io.Writer, fset *token.FileSet, x any, f FieldFilter) error
 // Print prints x to standard output, skipping nil fields.
 // Print(fset, x) is the same as Fprint(os.Stdout, fset, x, NotNilFilter).
 func Print(fset *token.FileSet, x any) error
-
-// localError wraps locally caught errors so we can distinguish
-// them from genuine panics which we don't want to return as errors.

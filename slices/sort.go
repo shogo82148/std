@@ -68,5 +68,3 @@ func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool)
 // cmp must implement the same ordering as the slice, such that if
 // cmp(a, t) < 0 and cmp(b, t) >= 0, then a must precede b in the slice.
 func BinarySearchFunc[S ~[]E, E, T any](x S, target T, cmp func(E, T) int) (int, bool)
-
-// xorshift paper: https://www.jstatsoft.org/article/view/v008i14/xorshift.pdf

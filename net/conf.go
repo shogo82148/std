@@ -3,7 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package net
-
-// conf is used to determine name resolution configuration.
-
-// mdnsTest is for testing only.

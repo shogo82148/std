@@ -146,5 +146,3 @@ const (
 	EXFULL
 	EWINDOWS
 )
-
-// Error strings for invented errors

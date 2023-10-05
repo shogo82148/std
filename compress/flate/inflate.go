@@ -11,8 +11,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Initialize the fixedHuffmanDecoder only once upon first use.
-
 // A CorruptInputError reports the presence of corrupt input at a given offset.
 type CorruptInputError int64
 
@@ -57,8 +55,6 @@ type Reader interface {
 	io.Reader
 	io.ByteReader
 }
-
-// Decompress state.
 
 // NewReader returns a new ReadCloser that can be used
 // to read the uncompressed version of r.

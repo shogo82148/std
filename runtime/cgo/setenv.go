@@ -5,13 +5,3 @@
 //go:build unix
 
 package cgo
-
-import _ "github.com/shogo82148/std/unsafe"
-
-//go:cgo_import_static x_cgo_setenv
-//go:linkname x_cgo_setenv x_cgo_setenv
-//go:linkname _cgo_setenv runtime._cgo_setenv
-
-//go:cgo_import_static x_cgo_unsetenv
-//go:linkname x_cgo_unsetenv x_cgo_unsetenv
-//go:linkname _cgo_unsetenv runtime._cgo_unsetenv

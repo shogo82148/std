@@ -94,7 +94,3 @@ const (
 )
 
 func (f Format) String() string
-
-// Magics used to identify various formats.
-
-// Size constants from various tar specifications.

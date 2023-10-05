@@ -7,7 +7,6 @@ package slog
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/log"
-	loginternal "log/internal"
 )
 
 // Default returns the default Logger.
@@ -17,9 +16,6 @@ func Default() *Logger
 // After this call, output from the log package's default Logger
 // (as with [log.Print], etc.) will be logged at LevelInfo using l's Handler.
 func SetDefault(l *Logger)
-
-// handlerWriter is an io.Writer that calls a Handler.
-// It is used to link the default log.Logger to the default slog.Logger.
 
 // A Logger records structured information about each call to its
 // Log, Debug, Info, Warn, and Error methods.

@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package asn1
-
-import (
-	"time"
-)
-
-var PST = time.FixedZone("PST", -8*60*60)

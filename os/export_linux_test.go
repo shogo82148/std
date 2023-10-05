@@ -3,9 +3,3 @@
 // license that can be found in the LICENSE file.
 
 package os
-
-var (
-	PollCopyFileRangeP = &pollCopyFileRange
-	PollSpliceFile     = &pollSplice
-	GetPollFDForTest   = getPollFD
-)

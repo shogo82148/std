@@ -6,10 +6,6 @@ package slog_test
 
 import "log/slog"
 
-type Name struct {
-	First, Last string
-}
-
 func ExampleLogValuer_group() {
 	n := Name{"Perry", "Platypus"}
 	slog.Info("mission accomplished", "agent", n)

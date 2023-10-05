@@ -12,13 +12,6 @@ GOARCH=ppc64 cgo -cdefs defs_linux.go defs3_linux.go > defs_linux_ppc64.h
 
 package runtime
 
-/*
-#define size_t __kernel_size_t
-#define sigset_t __sigset_t // rename the sigset_t here otherwise cgo will complain about "inconsistent definitions for C.sigset_t"
-#define	_SYS_TYPES_H	// avoid inclusion of sys/types.h
-#include <asm/ucontext.h>
-#include <asm-generic/fcntl.h>
-*/
 import "github.com/shogo82148/std/C"
 
 const (

@@ -109,14 +109,55 @@ type TokenReader interface {
 // A Decoder represents an XML parser reading a particular input stream.
 // The parser assumes that its input is encoded in UTF-8.
 type Decoder struct {
+	// Strict defaults to true, enforcing the requirements
+	// of the XML specification.
+	// If set to false, the parser allows input containing common
+	// mistakes:
+	//	* If an element is missing an end tag, the parser invents
+	//	  end tags as necessary to keep the return values from Token
+	//	  properly balanced.
+	//	* In attribute values and character data, unknown or malformed
+	//	  character entities (sequences beginning with &) are left alone.
+	//
+	// Setting:
+	//
+	//	d.Strict = false
+	//	d.AutoClose = xml.HTMLAutoClose
+	//	d.Entity = xml.HTMLEntity
+	//
+	// creates a parser that can handle typical HTML.
+	//
+	// Strict mode does not enforce the requirements of the XML name spaces TR.
+	// In particular it does not reject name space tags using undefined prefixes.
+	// Such tags are recorded with the unknown prefix as the name space URL.
 	Strict bool
 
+	// When Strict == false, AutoClose indicates a set of elements to
+	// consider closed immediately after they are opened, regardless
+	// of whether an end element is present.
 	AutoClose []string
 
+	// Entity can be used to map non-standard entity names to string replacements.
+	// The parser behaves as if these standard mappings are present in the map,
+	// regardless of the actual map content:
+	//
+	//	"lt": "<",
+	//	"gt": ">",
+	//	"amp": "&",
+	//	"apos": "'",
+	//	"quot": `"`,
 	Entity map[string]string
 
+	// CharsetReader, if non-nil, defines a function to generate
+	// charset-conversion readers, converting from the provided
+	// non-UTF-8 charset into UTF-8. If CharsetReader is nil or
+	// returns an error, parsing stops with an error. One of the
+	// CharsetReader's result values must be non-nil.
 	CharsetReader func(charset string, input io.Reader) (io.Reader, error)
 
+	// DefaultSpace sets the default name space used for unadorned tags,
+	// as if the entire XML stream were wrapped in an element containing
+	// the attribute xmlns="DefaultSpace".
 	DefaultSpace string
 
 	r              io.ByteReader
@@ -172,11 +213,6 @@ func NewTokenDecoder(t TokenReader) *Decoder
 // If Token encounters an unrecognized name space prefix,
 // it uses the prefix as the Space rather than report an error.
 func (d *Decoder) Token() (Token, error)
-
-// Parsing state - stack holds old name space translations
-// and the current set of open elements. The translations to pop when
-// ending a given tag are *below* it on the stack, which is
-// more work but forced on us by XML.
 
 // RawToken is like [Decoder.Token] but does not verify that
 // start and end elements match and does not translate

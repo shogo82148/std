@@ -78,11 +78,6 @@ type Hash struct {
 	n     int
 }
 
-// bufSize is the size of the Hash write buffer.
-// The buffer ensures that writes depend only on the sequence of bytes,
-// not the sequence of WriteByte/Write/WriteString calls,
-// by always calling rthash with a full buffer (except for the tail).
-
 // WriteByte adds b to the sequence of bytes hashed by h.
 // It never fails; the error result is for implementing io.ByteWriter.
 func (h *Hash) WriteByte(b byte) error

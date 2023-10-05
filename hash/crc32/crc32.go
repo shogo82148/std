@@ -39,21 +39,12 @@ const (
 // Table is a 256-word table representing the polynomial for efficient processing.
 type Table [256]uint32
 
-// castagnoliTable points to a lazily initialized Table for the Castagnoli
-// polynomial. MakeTable will always return this value when asked to make a
-// Castagnoli table so we can compare against it to find when the caller is
-// using this polynomial.
-
 // IEEETable is the table for the IEEE polynomial.
 var IEEETable = simpleMakeTable(IEEE)
-
-// ieeeTable8 is the slicing8Table for IEEE
 
 // MakeTable returns a Table constructed from the specified polynomial.
 // The contents of this Table must not be modified.
 func MakeTable(poly uint32) *Table
-
-// digest represents the partial evaluation of a checksum.
 
 // New creates a new hash.Hash32 computing the CRC-32 checksum using the
 // polynomial represented by the Table. Its Sum method will lay the

@@ -8,10 +8,6 @@ import (
 	"github.com/shogo82148/std/crypto/rsa"
 )
 
-// pkcs1PrivateKey is a structure which mirrors the PKCS #1 ASN.1 for an RSA private key.
-
-// pkcs1PublicKey reflects the ASN.1 structure of a PKCS #1 public key.
-
 // ParsePKCS1PrivateKey parses an RSA private key in PKCS #1, ASN.1 DER form.
 //
 // This kind of key is commonly encoded in PEM blocks of type "RSA PRIVATE KEY".

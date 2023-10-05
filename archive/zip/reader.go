@@ -26,8 +26,12 @@ type Reader struct {
 	Comment       string
 	decompressors map[uint16]Decompressor
 
+	// Some JAR files are zip files with a prefix that is a bash script.
+	// The baseOffset field is the start of the zip file proper.
 	baseOffset int64
 
+	// fileList is a list of files sorted by ename,
+	// for use by the Open method.
 	fileListOnce sync.Once
 	fileList     []fileListEntry
 }
@@ -94,9 +98,6 @@ func (f *File) Open() (io.ReadCloser, error)
 // OpenRaw returns a Reader that provides access to the File's contents without
 // decompression.
 func (f *File) OpenRaw() (io.Reader, error)
-
-// A fileListEntry is a File and its ename.
-// If file == nil, the fileListEntry describes a directory without metadata.
 
 // Open opens the named file in the ZIP archive,
 // using the semantics of fs.FS.Open:
