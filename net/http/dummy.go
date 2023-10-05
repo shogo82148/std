@@ -3,6 +3,7 @@ package http
 import (
 	"errors"
 
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net"
 )
@@ -70,3 +71,21 @@ var defaultServeMux ServeMux
 type timeoutWriter struct{}
 
 func (*timeoutWriter) Push(target string, opts *PushOptions) error
+
+func defaultTransportDialContext(*net.Dialer) func(ctx context.Context, network string, addr string) (net.Conn, error)
+
+type connectMethodKey struct{}
+
+type persistConn struct{}
+
+type wantConnQueue struct{}
+
+type connLRU struct{}
+
+type cancelKey struct{}
+
+type h2Transport struct{}
+
+type persistConnWriter struct{}
+
+func (*persistConnWriter) ReadFrom(r io.Reader) (n int64, err error)
