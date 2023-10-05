@@ -91,15 +91,10 @@ type Transport struct {
 	// "http"、"https"、および"socks5"がサポートされています。
 	// スキームが空の場合、"http"が想定されます。
 	//
-<<<<<<< HEAD
-	// If the proxy URL contains a userinfo subcomponent,
-	// the proxy request will pass the username and password
-	// in a Proxy-Authorization header.
+	// プロキシURLにuserinfoサブコンポーネントが含まれている場合、
+	// プロキシリクエストはProxy-Authorizationヘッダーでユーザー名とパスワードを渡します。
 	//
-	// If Proxy is nil or returns a nil *URL, no proxy is used.
-=======
-	// Proxyがnilであるか、nilの*URLを返す場合、プロキシは使用されません。
->>>>>>> release-branch.go1.21
+	// Proxyがnilまたはnilの*URLを返す場合、プロキシは使用されません。
 	Proxy func(*Request) (*url.URL, error)
 
 	// OnProxyConnectResponseは、TransportがCONNECTリクエストのプロキシからHTTPレスポンスを受信したときに呼び出されます。

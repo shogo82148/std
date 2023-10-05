@@ -25,30 +25,14 @@ import (
 //
 // リダイレクトに従う場合、Clientは、初期リクエストに設定されたすべてのヘッダーを転送しますが、以下の場合は除外されます。
 //
-<<<<<<< HEAD
-//   - when forwarding sensitive headers like "Authorization",
-//     "WWW-Authenticate", and "Cookie" to untrusted targets.
-//     These headers will be ignored when following a redirect to a domain
-//     that is not a subdomain match or exact match of the initial domain.
-//     For example, a redirect from "foo.com" to either "foo.com" or "sub.foo.com"
-//     will forward the sensitive headers, but a redirect to "bar.com" will not.
-//   - when forwarding the "Cookie" header with a non-nil cookie Jar.
-//     Since each redirect may mutate the state of the cookie jar,
-//     a redirect may possibly alter a cookie set in the initial request.
-//     When forwarding the "Cookie" header, any mutated cookies will be omitted,
-//     with the expectation that the Jar will insert those mutated cookies
-//     with the updated values (assuming the origin matches).
-//     If Jar is nil, the initial cookies are forwarded without change.
-=======
-// * 「Authorization」、「WWW-Authenticate」、「Cookie」などの機密性の高いヘッダーを、信頼できないターゲットに転送する場合。
-// これらのヘッダーは、初期ドメインのサブドメインマッチまたは完全一致ではないドメインにリダイレクトする場合には無視されます。
-// たとえば、「foo.com」から「foo.com」または「sub.foo.com」にリダイレクトする場合、機密性の高いヘッダーが転送されますが、「bar.com」にリダイレクトする場合は転送されません。
-//
-// * 非nilのCookie Jarで「Cookie」ヘッダーを転送する場合。
-// 各リダイレクトは、Cookie Jarの状態を変更する可能性があるため、初期リクエストで設定されたCookieを変更する可能性があります。
-// 「Cookie」ヘッダーを転送する場合、変更されたCookieは省略され、Jarが更新された値でこれらの変更されたCookieを挿入することが期待されます(元の値が一致する場合)。
-// Jarがnilの場合、初期Cookieは変更せずに転送されます。
->>>>>>> release-branch.go1.21
+//   - "Authorization"、"WWW-Authenticate"、および"Cookie"などの機密ヘッダーを、信頼できないターゲットに転送する場合。
+//     これらのヘッダーは、初期ドメインのサブドメインマッチまたは完全一致でないドメインにリダイレクトする場合は無視されます。
+//     たとえば、"foo.com"から"foo.com"または"sub.foo.com"にリダイレクトする場合は、機密ヘッダーが転送されますが、
+//     "bar.com"にリダイレクトする場合は転送されません。
+//   - 非nilのCookie Jarで"Cookie"ヘッダーを転送する場合。
+//     各リダイレクトはCookie Jarの状態を変更する可能性があるため、初期リクエストで設定されたCookieを変更する可能性があります。
+//     "Cookie"ヘッダーを転送する場合、変更されたCookieは省略され、Jarが更新された値で変更されたCookieを挿入することが期待されます（元のドメインが一致する場合）。
+//     Jarがnilの場合、初期Cookieは変更せずに転送されます。
 type Client struct {
 	// Transport specifies the mechanism by which individual
 	// HTTP requests are made.
@@ -170,13 +154,8 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 //
 // 返されたエラーがnilの場合、Responseにはユーザーが閉じる必要のある非nilのBodyが含まれます。BodyがEOFまで読み取られずに閉じられていない場合、Clientの基礎となるRoundTripper(通常はTransport)は、次の「keep-alive」リクエストのためにサーバーへの永続的なTCP接続を再利用できなくなる可能性があります。
 //
-<<<<<<< HEAD
-// The request Body, if non-nil, will be closed by the underlying
-// Transport, even on errors. The Body may be closed asynchronously after
-// Do returns.
-=======
-// リクエストBodyがnilでない場合、下層のTransportによってクローズされます。エラーが発生した場合でも同様です。
->>>>>>> release-branch.go1.21
+// 非nilの場合、リクエストのBodyは、Transportによって、エラーが発生した場合でも閉じられます。
+// Doが返された後、Bodyは非同期に閉じられる可能性があります。
 //
 // エラーが発生した場合、任意のResponseは無視できます。非nilのResponseと非nilのエラーが返されるのは、CheckRedirectが失敗した場合だけであり、その場合でも返されたResponse.Bodyは既に閉じられています。
 //

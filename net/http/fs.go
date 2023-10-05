@@ -84,37 +84,23 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // file or directory provided in the name argument is used.
 func ServeFile(w ResponseWriter, r *Request, name string)
 
-<<<<<<< HEAD
-// ServeFileFS replies to the request with the contents
-// of the named file or directory from the file system fsys.
+// ServeFileFSは、ファイルシステムfsysから指定されたファイルまたはディレクトリの内容でリクエストに応答します。
 //
-// If the provided file or directory name is a relative path, it is
-// interpreted relative to the current directory and may ascend to
-// parent directories. If the provided name is constructed from user
-// input, it should be sanitized before calling ServeFile.
+// 提供されたファイルまたはディレクトリ名が相対パスの場合、現在のディレクトリを基準に解釈され、親ディレクトリに移動することができます。
+// 提供された名前がユーザー入力から構築された場合、ServeFileを呼び出す前にサニタイズする必要があります。
 //
-// As a precaution, ServeFile will reject requests where r.URL.Path
-// contains a ".." path element; this protects against callers who
-// might unsafely use filepath.Join on r.URL.Path without sanitizing
-// it and then use that filepath.Join result as the name argument.
+// 予防措置として、ServeFileはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。
+// これにより、r.URL.Pathにfilepath.Joinを安全に使用せずにサニタイズせずに使用し、そのfilepath.Joinの結果を名前引数として使用する可能性がある呼び出し元を保護します。
 //
-// As another special case, ServeFile redirects any request where r.URL.Path
-// ends in "/index.html" to the same path, without the final
-// "index.html". To avoid such redirects either modify the path or
-// use ServeContent.
+// もう1つの特別な場合として、ServeFileはr.URL.Pathが"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。
+// そのようなリダイレクトを回避するには、パスを変更するか、ServeContentを使用してください。
 //
-// Outside of those two special cases, ServeFile does not use
-// r.URL.Path for selecting the file or directory to serve; only the
-// file or directory provided in the name argument is used.
+// これら2つの特別な場合以外では、ServeFileはファイルまたはディレクトリを選択するためにr.URL.Pathを使用しません。
+// 名前引数で提供されたファイルまたはディレクトリのみが使用されます。
 func ServeFileFS(w ResponseWriter, r *Request, fsys fs.FS, name string)
 
-// FS converts fsys to a FileSystem implementation,
-// for use with FileServer and NewFileTransport.
-// The files provided by fsys must implement io.Seeker.
-=======
-// FSは、fsysをFileSystem実装に変換し、FileServerおよびNewFileTransportで使用するために使用されます。
-// fsysによって提供されるファイルは、io.Seekerを実装する必要があります。
->>>>>>> release-branch.go1.21
+// FSは、io.Seekerを実装する必要があるfsysをFileSystem実装に変換します。
+// FileServerおよびNewFileTransportで使用するためです。
 func FS(fsys fs.FS) FileSystem
 
 // FileServerは、ルートでルートされたファイルシステムの内容でHTTPリクエストを処理するハンドラーを返します。
@@ -125,13 +111,7 @@ func FS(fsys fs.FS) FileSystem
 //
 //	http.Handle("/", http.FileServer(http.Dir("/tmp")))
 //
-<<<<<<< HEAD
 // To use an fs.FS implementation, use http.FileServerFS instead.
-=======
-// fs.FS実装を使用するには、http.FSを使用して変換してください。
-//
-//	http.Handle("/", http.FileServer(http.FS(fsys)))
->>>>>>> release-branch.go1.21
 func FileServer(root FileSystem) Handler
 
 // FileServerFS returns a handler that serves HTTP requests

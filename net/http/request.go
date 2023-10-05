@@ -332,14 +332,7 @@ func NewRequest(method, url string, body io.Reader) (*Request, error)
 
 // NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しいRequestを返します。
 //
-<<<<<<< HEAD
-// If the provided body is also an io.Closer, the returned
-// Request.Body is set to body and will be closed (possibly
-// asynchronously) by the Client methods Do, Post, and PostForm,
-// and Transport.RoundTrip.
-=======
-// 提供されたボディがio.Closerでもある場合、返されたRequest.Bodyはbodyに設定され、ClientメソッドDo、Post、およびPostForm、およびTransport.RoundTripによって閉じられます。
->>>>>>> release-branch.go1.21
+// 提供されたbodyがio.Closerでも、返されたRequest.Bodyはbodyに設定され、ClientのDo、Post、PostForm、およびTransport.RoundTripによって（非同期に）閉じられます。
 //
 // NewRequestWithContextは、Client.Do または Transport.RoundTrip で使用するためのRequestを返します。
 // Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージのNewRequest関数を使用するか、
@@ -401,34 +394,20 @@ func (r *Request) ParseForm() error
 // ParseMultipartFormを1回呼び出した後、以降の呼び出しは効果がありません。
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
-<<<<<<< HEAD
-// FormValue returns the first value for the named component of the query.
-// POST, PUT, and PATCH body parameters take precedence over URL query string values.
-// FormValue calls ParseMultipartForm and ParseForm if necessary and ignores
-// any errors returned by these functions.
-// If key is not present, FormValue returns the empty string.
-// To access multiple values of the same key, call ParseForm and
-// then inspect Request.Form directly.
-func (r *Request) FormValue(key string) string
-
-// PostFormValue returns the first value for the named component of the POST,
-// PUT, or PATCH request body. URL query parameters are ignored.
-// PostFormValue calls ParseMultipartForm and ParseForm if necessary and ignores
-// any errors returned by these functions.
-// If key is not present, PostFormValue returns the empty string.
-=======
 // FormValueは、クエリの名前付きコンポーネントの最初の値を返します。
-// POSTおよびPUTボディパラメータは、URLクエリ文字列値より優先されます。
-// FormValueは必要に応じてParseMultipartFormおよびParseFormを呼び出し、これらの関数によって返されたエラーを無視します。
+// POST、PUT、およびPATCHのボディパラメータは、URLクエリ文字列の値より優先されます。
+// FormValueは、必要に応じてParseMultipartFormおよびParseFormを呼び出し、
+// これらの関数によって返されるエラーを無視します。
 // キーが存在しない場合、FormValueは空の文字列を返します。
-// 同じキーの複数の値にアクセスするには、ParseFormを呼び出して、その後Request.Formを直接調べます。
+// 同じキーの複数の値にアクセスするには、ParseFormを呼び出して、
+// 直接Request.Formを調べます。
 func (r *Request) FormValue(key string) string
 
-// PostFormValueは、POST、PATCH、またはPUTリクエストボディの名前付きコンポーネントの最初の値を返します。
+// PostFormValueは、POST、PUT、またはPATCHリクエストボディの名前付きコンポーネントの最初の値を返します。
 // URLクエリパラメータは無視されます。
-// PostFormValueは必要に応じてParseMultipartFormおよびParseFormを呼び出し、これらの関数によって返されたエラーを無視します。
+// 必要に応じて、PostFormValueはParseMultipartFormおよびParseFormを呼び出し、
+// これらの関数によって返されるエラーを無視します。
 // キーが存在しない場合、PostFormValueは空の文字列を返します。
->>>>>>> release-branch.go1.21
 func (r *Request) PostFormValue(key string) string
 
 // FormFileは、指定されたフォームキーの最初のファイルを返します。

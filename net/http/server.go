@@ -38,54 +38,26 @@ var (
 
 // Handlerは、HTTPリクエストに応答します。
 //
-<<<<<<< HEAD
-// ServeHTTP should write reply headers and data to the [ResponseWriter]
-// and then return. Returning signals that the request is finished; it
-// is not valid to use the [ResponseWriter] or read from the
-// [Request.Body] after or concurrently with the completion of the
-// ServeHTTP call.
-//
-// Depending on the HTTP client software, HTTP protocol version, and
-// any intermediaries between the client and the Go server, it may not
-// be possible to read from the [Request.Body] after writing to the
-// [ResponseWriter]. Cautious handlers should read the [Request.Body]
-// first, and then reply.
-=======
-// ServeHTTPは、応答ヘッダーとデータをResponseWriterに書き込んでから返す必要があります。
+// ServeHTTPは、応答ヘッダーとデータを [ResponseWriter] に書き込んでから返す必要があります。
 // 返すことで、リクエストが完了したことを示します。
-// ServeHTTP呼び出しの完了後または同時に、ResponseWriterを使用するか、Request.Bodyから読み取ることは無効です。
+// ServeHTTPの呼び出しの完了後または同時に、 [ResponseWriter] を使用するか、[Request.Body]から読み取ることはできません。
 //
 // HTTPクライアントソフトウェア、HTTPプロトコルバージョン、およびクライアントとGoサーバーの間の中間者によっては、
-// ResponseWriterに書き込んだ後にRequest.Bodyから読み取ることができない場合があります。
-// 慎重なハンドラーは、最初にRequest.Bodyを読み取り、その後に返信する必要があります。
->>>>>>> release-branch.go1.21
+// [ResponseWriter]に書き込んだ後に [Request.Body] から読み取ることができない場合があります。
+// 注意深いハンドラーは、最初に [Request.Body] を読み取り、その後に応答する必要があります。
 //
 // ボディを読み取る以外の場合、ハンドラーは提供されたRequestを変更してはいけません。
 //
-<<<<<<< HEAD
-// If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
-// that the effect of the panic was isolated to the active request.
-// It recovers the panic, logs a stack trace to the server error log,
-// and either closes the network connection or sends an HTTP/2
-// RST_STREAM, depending on the HTTP protocol. To abort a handler so
-// the client sees an interrupted response but the server doesn't log
-// an error, panic with the value [ErrAbortHandler].
-=======
-// ServeHTTPがパニックを起こすと、サーバー（ServeHTTPの呼び出し元）は、パニックの影響がアクティブなリクエストに限定されたと仮定します。
+// ServeHTTPがパニックを起こすと、サーバー（ServeHTTPの呼び出し元）は、パニックの影響がアクティブなリクエストに限定されたものであると仮定します。
 // サーバーはパニックを回復し、サーバーエラーログにスタックトレースを記録し、ネットワーク接続を閉じるか、HTTP/2 RST_STREAMを送信します。
-// クライアントが中断された応答を見るが、サーバーがエラーをログに記録しないように、ErrAbortHandlerの値でパニックを発生させることで、ハンドラーを中止できます。
->>>>>>> release-branch.go1.21
+// クライアントが中断された応答を見るが、サーバーがエラーをログに記録しないように、 [ErrAbortHandler] の値でパニックを発生させることで、ハンドラーを中止できます。
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
 
 // ResponseWriterインターフェースは、HTTPハンドラーがHTTPレスポンスを構築するために使用されます。
 //
-<<<<<<< HEAD
-// A ResponseWriter may not be used after [Handler.ServeHTTP] has returned.
-=======
-// Handler.ServeHTTPメソッドが返された後に、ResponseWriterを使用することはできません。
->>>>>>> release-branch.go1.21
+// [Handler.ServeHTTP] が返された後に、ResponseWriter を使用することはできません。
 type ResponseWriter interface {
 	Header() Header
 
@@ -206,133 +178,100 @@ func RedirectHandler(url string, code int) Handler
 // それは、登録されたパターンのリストに対して、各受信リクエストのURLを一致させ、
 // URLに最も近いパターンのハンドラーを呼び出します。
 //
-<<<<<<< HEAD
-// # Patterns
+// # パターン
 //
-// Patterns can match the method, host and path of a request.
-// Some examples:
+// パターンは、リクエストのメソッド、ホスト、およびパスに一致することができます。
+// いくつかの例：
 //
-//   - "/index.html" matches the path "/index.html" for any host and method.
-//   - "GET /static/" matches a GET request whose path begins with "/static/".
-//   - "example.com/" matches any request to the host "example.com".
-//   - "example.com/{$}" matches requests with host "example.com" and path "/".
-//   - "/b/{bucket}/o/{objectname...}" matches paths whose first segment is "b"
-//     and whose third segment is "o". The name "bucket" denotes the second
-//     segment and "objectname" denotes the remainder of the path.
+//   - "/index.html" は、任意のホストとメソッドに対してパス "/index.html" に一致します。
+//   - "GET /static/" は、"/static/" で始まるGETリクエストに一致します。
+//   - "example.com/" は、ホスト "example.com" への任意のリクエストに一致します。
+//   - "example.com/{$}" は、ホストが "example.com" でパスが "/" のリクエストに一致します。
+//   - "/b/{bucket}/o/{objectname...}" は、最初のセグメントが "b" で、3番目のセグメントが "o" のパスに一致します。
+//     "bucket" は2番目のセグメントを示し、"objectname" はパスの残りを示します。
 //
-// In general, a pattern looks like
+// 一般的に、パターンは以下のようになります。
 //
-//	[METHOD ][HOST]/[PATH]
+//	[METHOD][HOST]/[PATH]
 //
-// All three parts are optional; "/" is a valid pattern.
-// If METHOD is present, it must be followed by a single space.
+// すべての3つの部分はオプションです。"/" は有効なパターンです。
+// METHODが存在する場合、後に単一のスペースが続く必要があります。
 //
-// Literal (that is, non-wildcard) parts of a pattern match
-// the corresponding parts of a request case-sensitively.
+// パターンのリテラル（ワイルドカードでない）部分は、リクエストの対応する部分と大文字小文字を区別して一致します。
 //
-// A pattern with no method matches every method. A pattern
-// with the method GET matches both GET and HEAD requests.
-// Otherwise, the method must match exactly.
+// メソッドのないパターンはすべてのメソッドに一致します。メソッドがGETの場合、GETとHEADの両方のリクエストに一致します。
+// それ以外の場合、メソッドは完全に一致する必要があります。
 //
-// A pattern with no host matches every host.
-// A pattern with a host matches URLs on that host only.
+// ホストのないパターンはすべてのホストに一致します。ホストがあるパターンは、そのホストのURLにのみ一致します。
 //
-// A path can include wildcard segments of the form {NAME} or {NAME...}.
-// For example, "/b/{bucket}/o/{objectname...}".
-// The wildcard name must be a valid Go identifier.
-// Wildcards must be full path segments: they must be preceded by a slash and followed by
-// either a slash or the end of the string.
-// For example, "/b_{bucket}" is not a valid pattern.
+// パスには、{NAME}または{NAME...}のワイルドカードセグメントを含めることができます。
+// 例えば、"/b/{bucket}/o/{objectname...}" です。
+// ワイルドカード名は有効なGo識別子でなければなりません。
+// ワイルドカードは完全なパスセグメントでなければなりません。つまり、スラッシュに続き、スラッシュまたは文字列の終わりに続く必要があります。
+// 例えば、"/b_{bucket}" は有効なパターンではありません。
 //
-// Normally a wildcard matches only a single path segment,
-// ending at the next literal slash (not %2F) in the request URL.
-// But if the "..." is present, then the wildcard matches the remainder of the URL path, including slashes.
-// (Therefore it is invalid for a "..." wildcard to appear anywhere but at the end of a pattern.)
-// The match for a wildcard can be obtained by calling [Request.PathValue] with the wildcard's name.
-// A trailing slash in a path acts as an anonymous "..." wildcard.
+// 通常、ワイルドカードはリクエストURLの次のリテラルスラッシュ（%2Fではない）で終わる、単一のパスセグメントにのみ一致します。
+// ただし、"..."が存在する場合、ワイルドカードは、スラッシュを含むURLパスの残り全体に一致します。
+// （したがって、"..."ワイルドカードはパターンの末尾以外に現れることはできません。）
+// ワイルドカードの一致は、ワイルドカードの名前を指定して[Request.PathValue]を呼び出すことで取得できます。
+// パスの末尾にスラッシュがある場合、匿名の "..." ワイルドカードとして機能します。
 //
-// The special wildcard {$} matches only the end of the URL.
-// For example, the pattern "/{$}" matches only the path "/",
-// whereas the pattern "/" matches every path.
+// 特別なワイルドカード {$} は、URLの末尾にのみ一致します。
+// 例えば、パターン "/{$}" はパス "/" にのみ一致し、パターン "/" はすべてのパスに一致します。
 //
-// For matching, both pattern paths and incoming request paths are unescaped segment by segment.
-// So, for example, the path "/a%2Fb/100%25" is treated as having two segments, "a/b" and "100%".
-// The pattern "/a%2fb/" matches it, but the pattern "/a/b/" does not.
+// 一致には、パターンパスと受信リクエストパスの両方が、セグメントごとにエスケープされていない状態で使用されます。
+// したがって、パス "/a%2Fb/100%25" は、2つのセグメント "a/b" と "100%" を持つと見なされます。
+// パターン "/a%2fb/" はそれに一致しますが、パターン "/a/b/" は一致しません。
 //
-// # Precedence
+// # 優先順位
 //
-// If two or more patterns match a request, then the most specific pattern takes precedence.
-// A pattern P1 is more specific than P2 if P1 matches a strict subset of P2’s requests;
-// that is, if P2 matches all the requests of P1 and more.
-// If neither is more specific, then the patterns conflict.
-// There is one exception to this rule, for backwards compatibility:
-// if two patterns would otherwise conflict and one has a host while the other does not,
-// then the pattern with the host takes precedence.
-// If a pattern passed [ServeMux.Handle] or [ServeMux.HandleFunc] conflicts with
-// another pattern that is already registered, those functions panic.
+// リクエストに2つ以上のパターンが一致する場合、最も具体的なパターンが優先されます。
+// パターンP1がパターンP2よりも具体的である場合、P1はP2のリクエストの厳密なサブセットに一致するためです。
+// つまり、P2はP1のすべてのリクエストとそれ以上に一致します。
+// もしどちらも同じ具体性である場合、パターンは競合します。
+// 1つの例外があります。後方互換性のために：
+// 2つのパターンが競合し、1つがホストを持っている場合、もう1つがホストを持っていない場合、ホストを持つパターンが優先されます。
+// [ServeMux.Handle]または[ServeMux.HandleFunc]で渡されたパターンが、すでに登録されている別のパターンと競合する場合、これらの関数はパニックを発生させます。
 //
-// As an example of the general rule, "/images/thumbnails/" is more specific than "/images/",
-// so both can be registered.
-// The former matches paths beginning with "/images/thumbnails/"
-// and the latter will match any other path in the "/images/" subtree.
+// 一般的なルールの例として、"/images/thumbnails/"は"/images/"よりも具体的であり、両方とも登録できます。
+// 前者は"/images/thumbnails/"で始まるパスに一致し、後者は"/images/"サブツリー内の他のパスに一致します。
 //
-// As another example, consider the patterns "GET /" and "/index.html":
-// both match a GET request for "/index.html", but the former pattern
-// matches all other GET and HEAD requests, while the latter matches any
-// request for "/index.html" that uses a different method.
-// The patterns conflict.
+// 別の例として、パターン"GET /"と"/index.html"を考えてみてください。
+// 両方が"/index.html"のGETリクエストに一致しますが、前者のパターンはすべての他のGETおよびHEADリクエストに一致し、
+// 後者のパターンは異なるメソッドを使用する"/index.html"のすべてのリクエストに一致します。
+// パターンは競合します。
 //
-// # Trailing-slash redirection
+// # 末尾スラッシュのリダイレクト
 //
-// Consider a ServeMux with a handler for a subtree, registered using a trailing slash or "..." wildcard.
-// If the ServeMux receives a request for the subtree root without a trailing slash,
-// it redirects the request by adding the trailing slash.
-// This behavior can be overridden with a separate registration for the path without
-// the trailing slash or "..." wildcard. For example, registering "/images/" causes ServeMux
-// to redirect a request for "/images" to "/images/", unless "/images" has
-// been registered separately.
+// 末尾スラッシュまたは "..." ワイルドカードを使用して登録されたサブツリーのハンドラを持つServeMuxを考えてみてください。
+// ServeMuxが末尾スラッシュのないサブツリールートのリクエストを受信した場合、
+// 末尾スラッシュを追加してリクエストをリダイレクトします。
+// この動作は、末尾スラッシュまたは "..." ワイルドカードを使用しないパスの別個の登録によって上書きできます。
+// 例えば、"/images/"を登録すると、ServeMuxは"/images"のリクエストを"/images/"にリダイレクトします。
+// "/images"が別途登録されていない限りです。
 //
-// # Request sanitizing
+// # リクエストのサニタイズ
 //
-// ServeMux also takes care of sanitizing the URL request path and the Host
-// header, stripping the port number and redirecting any request containing . or
-// .. segments or repeated slashes to an equivalent, cleaner URL.
+// ServeMuxは、URLリクエストパスとHostヘッダーをサニタイズし、ポート番号を削除し、.または..セグメントまたは重複したスラッシュを含むリクエストを同等のクリーンなURLにリダイレクトします。
 //
-// # Compatibility
+// # 互換性
 //
-// The pattern syntax and matching behavior of ServeMux changed significantly
-// in Go 1.22. To restore the old behavior, set the GODEBUG environment variable
-// to "httpmuxgo121=1". This setting is read once, at program startup; changes
-// during execution will be ignored.
+// ServeMuxのパターン構文と一致動作は、Go 1.22で大幅に変更されました。
+// 古い動作を復元するには、GODEBUG環境変数を "httpmuxgo121=1" に設定します。
+// この設定は、プログラムの起動時に1回だけ読み取られます。実行中の変更は無視されます。
 //
-// The backwards-incompatible changes include:
-//   - Wildcards are just ordinary literal path segments in 1.21.
-//     For example, the pattern "/{x}" will match only that path in 1.21,
-//     but will match any one-segment path in 1.22.
-//   - In 1.21, no pattern was rejected, unless it was empty or conflicted with an existing pattern.
-//     In 1.22, syntactically invalid patterns will cause [ServeMux.Handle] and [ServeMux.HandleFunc] to panic.
-//     For example, in 1.21, the patterns "/{"  and "/a{x}" match themselves,
-//     but in 1.22 they are invalid and will cause a panic when registered.
-//   - In 1.22, each segment of a pattern is unescaped; this was not done in 1.21.
-//     For example, in 1.22 the pattern "/%61" matches the path "/a" ("%61" being the URL escape sequence for "a"),
-//     but in 1.21 it would match only the path "/%2561" (where "%25" is the escape for the percent sign).
-//   - When matching patterns to paths, in 1.22 each segment of the path is unescaped; in 1.21, the entire path is unescaped.
-//     This change mostly affects how paths with %2F escapes adjacent to slashes are treated.
-//     See https://go.dev/issue/21955 for details.
-=======
-// パターンは、"/favicon.ico"のような固定されたルートパス、または"/images/"のようなルートサブツリーの名前を付けます（末尾のスラッシュに注意）。
-// より長いパターンが優先されるため、"/images/"と"/images/thumbnails/"の両方にハンドラーが登録されている場合、後者のハンドラーは"/images/thumbnails/"で始まるパスに対して呼び出され、前者は"/images/"サブツリー内の他のパスに対してリクエストを受け取ります。
-//
-// スラッシュで終わるパターンは、ルートサブツリーを名前付けるため、注意が必要です。
-// パターン"/"は、他の登録されたパターンに一致しないすべてのパス（Path == "/"のURLだけでなく）に一致します。
-//
-// サブツリーが登録され、トレーリングスラッシュなしでサブツリールートを指定するリクエストが受信された場合、ServeMuxはそのリクエストをサブツリールートにリダイレクトします（トレーリングスラッシュを追加）。
-// この動作は、トレーリングスラッシュなしのパスに対する別個の登録でオーバーライドできます。たとえば、"/images/"を登録すると、ServeMuxは"/images"のリクエストを"/images/"にリダイレクトしますが、"/images"が別個に登録されている場合は、リダイレクトは行われません。
-//
-// パターンは、ホスト名で始まることがあり、そのホスト上のURLにのみ一致するように制限できます。ホスト固有のパターンは、一般的なパターンより優先されるため、ハンドラーは"/codesearch"と"codesearch.google.com/"の2つのパターンに登録でき、"http://www.google.com/"のリクエストを引き継ぐことはありません。
-//
-// ServeMuxは、URLリクエストパスとHostヘッダーをサニタイズし、ポート番号を削除し、.または..要素または重複したスラッシュを含むリクエストを同等のクリーンなURLにリダイレクトします。
->>>>>>> release-branch.go1.21
+// 互換性のない変更には以下が含まれます。
+//   - ワイルドカードは1.21では通常のリテラルパスセグメントでした。
+//     例えば、パターン "/{x}" は1.21ではそのパスのみに一致しますが、1.22では1つのセグメントのパスに一致します。
+//   - 1.21では、既存のパターンと競合しない限り、パターンは拒否されませんでした。
+//     1.22では、構文的に無効なパターンは[ServeMux.Handle]および[ServeMux.HandleFunc]でパニックを引き起こします。
+//     例えば、1.21では、パターン "/{" と "/a{x}" はそれ自身に一致しますが、1.22では無効であり、登録時にパニックを引き起こします。
+//   - 1.22では、パターンの各セグメントがエスケープ解除されますが、1.21ではそうではありませんでした。
+//     例えば、1.22ではパターン "/%61" はパス "/a" ("%61"は "a"のURLエスケープシーケンス) に一致しますが、
+//     1.21ではパス "/%2561" のみに一致します（"%25"はパーセント記号のエスケープです）。
+//   - パターンをパスに一致させる場合、1.22ではパスの各セグメントがエスケープ解除されますが、1.21ではパス全体がエスケープ解除されます。
+//     この変更は、スラッシュに隣接する%2Fエスケープを持つパスがどのように処理されるかに影響します。
+//     詳細については、https://go.dev/issue/21955を参照してください。
 type ServeMux struct {
 	mu       sync.RWMutex
 	tree     routingNode
@@ -355,14 +294,7 @@ var DefaultServeMux = &defaultServeMux
 //
 // CONNECTリクエストでは、パスとホストは変更されずに使用されます。
 //
-<<<<<<< HEAD
-// Handler also returns the registered pattern that matches the
-// request or, in the case of internally-generated redirects,
-// the path that will match after following the redirect.
-=======
-// Handlerは、リクエストに一致する登録済みパターンと、
-// 内部生成されたリダイレクトの場合は、リダイレクトをたどった後に一致するパターンを返します。
->>>>>>> release-branch.go1.21
+// Handlerは、リクエストに一致する登録済みのパターン、または内部で生成されたリダイレクトの場合はリダイレクトをたどった後に一致するパスを返します。
 //
 // リクエストに適用される登録済みハンドラーがない場合、
 // Handlerは「ページが見つかりません」というハンドラーと空のパターンを返します。
@@ -371,48 +303,26 @@ func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 // ServeHTTPは、リクエストURLに最も近いパターンを持つハンドラにリクエストをディスパッチします。
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
-<<<<<<< HEAD
-// Handle registers the handler for the given pattern.
-// If the given pattern conflicts, with one that is already registered, Handle
-// panics.
-func (mux *ServeMux) Handle(pattern string, handler Handler)
-
-// HandleFunc registers the handler function for the given pattern.
-// If the given pattern conflicts, with one that is already registered, HandleFunc
-// panics.
-func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
-
-// Handle registers the handler for the given pattern in [DefaultServeMux].
-// The documentation for [ServeMux] explains how patterns are matched.
-func Handle(pattern string, handler Handler)
-
-// HandleFunc registers the handler function for the given pattern in [DefaultServeMux].
-// The documentation for [ServeMux] explains how patterns are matched.
-=======
 // Handleは、指定されたパターンのハンドラを登録します。
-// パターンに対するハンドラがすでに存在する場合、Handleはパニックを発生させます。
+// 登録済みのパターンと競合する場合、Handleはパニックを発生させます。
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
 // HandleFuncは、指定されたパターンのハンドラ関数を登録します。
+// 登録済みのパターンと競合する場合、HandleFuncはパニックを発生させます。
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
-// Handleは、DefaultServeMuxに指定されたパターンのハンドラを登録します。
-// ServeMuxのドキュメントには、パターンがどのようにマッチするかが説明されています。
+// Handleは、[DefaultServeMux]に指定されたパターンのハンドラを登録します。
+// [ServeMux]のドキュメントには、パターンの一致方法が説明されています。
 func Handle(pattern string, handler Handler)
 
-// HandleFuncは、DefaultServeMuxに指定されたパターンのハンドラ関数を登録します。
-// ServeMuxのドキュメントには、パターンがどのようにマッチするかが説明されています。
->>>>>>> release-branch.go1.21
+// HandleFuncは、[DefaultServeMux]に指定されたパターンのハンドラ関数を登録します。
+// [ServeMux]のドキュメントには、パターンの一致方法が説明されています。
 func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Serveは、リスナーlに対して着信HTTP接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
 // サービスgoroutineはリクエストを読み取り、その後handlerを呼び出して応答します。
 //
-<<<<<<< HEAD
-// The handler is typically nil, in which case [DefaultServeMux] is used.
-=======
-// handlerは通常nilであり、その場合はDefaultServeMuxが使用されます。
->>>>>>> release-branch.go1.21
+// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
 // TLS Config.NextProtosで"h2"が設定された *tls.Conn 接続を返すリスナーがある場合、HTTP / 2サポートが有効になります。
 //
@@ -422,11 +332,7 @@ func Serve(l net.Listener, handler Handler) error
 // ServeTLSは、リスナーlに対して着信HTTPS接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
 // サービスgoroutineはリクエストを読み取り、その後handlerを呼び出して応答します。
 //
-<<<<<<< HEAD
-// The handler is typically nil, in which case [DefaultServeMux] is used.
-=======
-// handlerは通常nilであり、その場合はDefaultServeMuxが使用されます。
->>>>>>> release-branch.go1.21
+// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
 // さらに、サーバーの証明書と対応する秘密鍵を含むファイルを提供する必要があります。
 // 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
@@ -631,26 +537,14 @@ func (srv *Server) SetKeepAlivesEnabled(v bool)
 // Serveを呼び出して着信接続のリクエストを処理します。
 // 受け入れられた接続は、TCP keep-alivesを有効にするように構成されます。
 //
-<<<<<<< HEAD
-// The handler is typically nil, in which case [DefaultServeMux] is used.
-=======
-// ハンドラは通常nilであり、その場合はDefaultServeMuxが使用されます。
->>>>>>> release-branch.go1.21
+// ハンドラは通常nilであり、その場合は[DefaultServeMux]が使用されます。
 //
 // ListenAndServeは常に非nilのエラーを返します。
 func ListenAndServe(addr string, handler Handler) error
 
-<<<<<<< HEAD
-// ListenAndServeTLS acts identically to [ListenAndServe], except that it
-// expects HTTPS connections. Additionally, files containing a certificate and
-// matching private key for the server must be provided. If the certificate
-// is signed by a certificate authority, the certFile should be the concatenation
-// of the server's certificate, any intermediates, and the CA's certificate.
-=======
-// ListenAndServeTLSは、ListenAndServeと同じように動作しますが、HTTPS接続が必要です。
-// さらに、サーバーの証明書と対応する秘密鍵が含まれるファイルを提供する必要があります。
+// ListenAndServeTLSは、[ListenAndServe]と同じように動作しますが、HTTPS接続を想定しています。
+// さらに、サーバーの証明書と一致する秘密鍵を含むファイルを提供する必要があります。
 // 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
->>>>>>> release-branch.go1.21
 func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
 
 // ListenAndServeTLSは、TCPネットワークアドレスsrv.Addrでリッスンし、
