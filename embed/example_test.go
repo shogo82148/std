@@ -5,8 +5,8 @@
 package embed_test
 
 import (
-	"log"
-	"net/http"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/net/http"
 )
 
 func Example() {

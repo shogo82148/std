@@ -16,8 +16,8 @@
 package js_test
 
 import (
-	"fmt"
-	"syscall/js"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/syscall/js"
 )
 
 func ExampleFuncOf() {

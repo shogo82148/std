@@ -5,14 +5,14 @@
 package bytes_test
 
 import (
-	"bytes"
-	"encoding/base64"
-	"fmt"
-	"io"
-	"os"
-	"sort"
-	"strconv"
-	"unicode"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/encoding/base64"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/sort"
+	"github.com/shogo82148/std/strconv"
+	"github.com/shogo82148/std/unicode"
 )
 
 func ExampleBuffer() {

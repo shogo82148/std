@@ -5,9 +5,9 @@
 package big_test
 
 import (
-	"fmt"
-	"math"
-	"math/big"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/math"
+	"github.com/shogo82148/std/math/big"
 )
 
 func ExampleFloat_Add() {

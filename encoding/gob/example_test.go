@@ -5,10 +5,10 @@
 package gob_test
 
 import (
-	"bytes"
-	"encoding/gob"
-	"fmt"
-	"log"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/encoding/gob"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
 )
 
 // This example shows the basic usage of the package: Create an encoder,

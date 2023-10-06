@@ -207,19 +207,13 @@ func godoc(path string) ([]byte, error) {
 		}
 		imports = append(imports, v)
 	}
-	if isTest {
-		for _, imp := range imports {
-			if isInternal(imp) || !astutil.UsesImport(node, imp) {
-				astutil.DeleteImport(fset, node, imp)
-			}
-		}
-	} else {
-		for _, imp := range imports {
-			if isInternal(imp) || !astutil.UsesImport(node, imp) {
-				astutil.DeleteImport(fset, node, imp)
-			} else {
-				astutil.RewriteImport(fset, node, imp, "github.com/shogo82148/std/"+imp)
-			}
+	for _, imp := range imports {
+		if isInternal(imp) || !astutil.UsesImport(node, imp) {
+			// 未使用のimport文を削除
+			astutil.DeleteImport(fset, node, imp)
+		} else {
+			// import文をgithub.com/shogo82148/stdに置き換える
+			astutil.RewriteImport(fset, node, imp, "github.com/shogo82148/std/"+imp)
 		}
 	}
 

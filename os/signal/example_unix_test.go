@@ -7,12 +7,12 @@
 package signal_test
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-	"os/signal"
-	"time"
+	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/os/signal"
+	"github.com/shogo82148/std/time"
 )
 
 // This example passes a context with a signal to tell a blocking function that

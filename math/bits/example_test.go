@@ -7,8 +7,8 @@
 package bits_test
 
 import (
-	"fmt"
-	"math/bits"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/math/bits"
 )
 
 func ExampleLeadingZeros8() {

@@ -5,10 +5,10 @@
 package strings_test
 
 import (
-	"fmt"
-	"strings"
-	"unicode"
-	"unsafe"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/strings"
+	"github.com/shogo82148/std/unicode"
+	"github.com/shogo82148/std/unsafe"
 )
 
 func ExampleClone() {

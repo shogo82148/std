@@ -5,9 +5,9 @@
 package xml_test
 
 import (
-	"encoding/xml"
-	"fmt"
-	"log"
+	"github.com/shogo82148/std/encoding/xml"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
 )
 
 const (

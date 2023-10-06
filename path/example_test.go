@@ -5,8 +5,8 @@
 package path_test
 
 import (
-	"fmt"
-	"path"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/path"
 )
 
 func ExampleBase() {
