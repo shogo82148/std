@@ -5,11 +5,11 @@
 package draw_test
 
 import (
-	"fmt"
-	"image"
-	"image/color"
-	"image/draw"
-	"math"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/image"
+	"github.com/shogo82148/std/image/color"
+	"github.com/shogo82148/std/image/draw"
+	"github.com/shogo82148/std/math"
 )
 
 func ExampleDrawer_floydSteinberg() {

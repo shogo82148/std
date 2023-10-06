@@ -5,8 +5,8 @@
 package unicode_test
 
 import (
-	"fmt"
-	"unicode"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/unicode"
 )
 
 // Functions starting with "Is" can be used to inspect which table of range a

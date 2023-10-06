@@ -5,9 +5,9 @@
 package log_test
 
 import (
-	"bytes"
-	"fmt"
-	"log"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
 )
 
 func ExampleLogger() {

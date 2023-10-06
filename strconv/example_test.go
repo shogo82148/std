@@ -5,9 +5,9 @@
 package strconv_test
 
 import (
-	"fmt"
-	"log"
-	"strconv"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/strconv"
 )
 
 func ExampleAppendBool() {

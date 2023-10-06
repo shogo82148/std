@@ -5,9 +5,9 @@
 package json_test
 
 import (
-	"encoding/json"
-	"fmt"
-	"log"
+	"github.com/shogo82148/std/encoding/json"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
 )
 
 const (

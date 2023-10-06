@@ -5,11 +5,11 @@
 package quotedprintable_test
 
 import (
-	"fmt"
-	"io"
-	"mime/quotedprintable"
-	"os"
-	"strings"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/mime/quotedprintable"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/strings"
 )
 
 func ExampleNewReader() {

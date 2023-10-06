@@ -5,8 +5,8 @@
 package suffixarray_test
 
 import (
-	"fmt"
-	"index/suffixarray"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/index/suffixarray"
 )
 
 func ExampleIndex_Lookup() {

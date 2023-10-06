@@ -5,7 +5,7 @@
 package sort_test
 
 import (
-	"fmt"
+	"github.com/shogo82148/std/fmt"
 )
 
 // ExampleSortKeys demonstrates a technique for sorting a struct type using programmable sort criteria.

@@ -5,9 +5,9 @@
 package trace_test
 
 import (
-	"log"
-	"os"
-	"runtime/trace"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/runtime/trace"
 )
 
 // Example demonstrates the use of the trace package to trace

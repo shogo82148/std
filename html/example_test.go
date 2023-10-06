@@ -5,8 +5,8 @@
 package html_test
 
 import (
-	"fmt"
-	"html"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/html"
 )
 
 func ExampleEscapeString() {

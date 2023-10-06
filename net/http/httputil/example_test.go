@@ -5,14 +5,14 @@
 package httputil_test
 
 import (
-	"fmt"
-	"io"
-	"log"
-	"net/http"
-	"net/http/httptest"
-	"net/http/httputil"
-	"net/url"
-	"strings"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/net/http"
+	"github.com/shogo82148/std/net/http/httptest"
+	"github.com/shogo82148/std/net/http/httputil"
+	"github.com/shogo82148/std/net/url"
+	"github.com/shogo82148/std/strings"
 )
 
 func ExampleDumpRequest() {

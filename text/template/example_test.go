@@ -5,10 +5,10 @@
 package template_test
 
 import (
-	"log"
-	"os"
-	"strings"
-	"text/template"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/strings"
+	"github.com/shogo82148/std/text/template"
 )
 
 func ExampleTemplate() {
