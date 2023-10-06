@@ -5,11 +5,11 @@
 package bufio_test
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"strconv"
-	"strings"
+	"github.com/shogo82148/std/bufio"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/strconv"
+	"github.com/shogo82148/std/strings"
 )
 
 func ExampleWriter() {

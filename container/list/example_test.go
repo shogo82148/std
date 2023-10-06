@@ -5,8 +5,8 @@
 package list_test
 
 import (
-	"container/list"
-	"fmt"
+	"github.com/shogo82148/std/container/list"
+	"github.com/shogo82148/std/fmt"
 )
 
 func Example() {

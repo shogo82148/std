@@ -5,11 +5,11 @@
 package template_test
 
 import (
-	"fmt"
-	"html/template"
-	"log"
-	"os"
-	"strings"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/html/template"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/strings"
 )
 
 func Example() {

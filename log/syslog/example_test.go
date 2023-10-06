@@ -7,9 +7,9 @@
 package syslog_test
 
 import (
-	"fmt"
-	"log"
-	"log/syslog"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/log/syslog"
 )
 
 func ExampleDial() {

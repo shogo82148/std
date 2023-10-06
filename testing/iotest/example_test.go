@@ -5,9 +5,9 @@
 package iotest_test
 
 import (
-	"errors"
-	"fmt"
-	"testing/iotest"
+	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/testing/iotest"
 )
 
 func ExampleErrReader() {

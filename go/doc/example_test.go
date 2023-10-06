@@ -5,10 +5,10 @@
 package doc_test
 
 import (
-	"fmt"
-	"go/ast"
-	"go/doc"
-	"go/token"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/go/ast"
+	"github.com/shogo82148/std/go/doc"
+	"github.com/shogo82148/std/go/token"
 )
 
 // This example illustrates how to use NewFromFiles

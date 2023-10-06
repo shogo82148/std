@@ -5,13 +5,13 @@
 package multipart_test
 
 import (
-	"fmt"
-	"io"
-	"log"
-	"mime"
-	"mime/multipart"
-	"net/mail"
-	"strings"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/mime"
+	"github.com/shogo82148/std/mime/multipart"
+	"github.com/shogo82148/std/net/mail"
+	"github.com/shogo82148/std/strings"
 )
 
 func ExampleNewReader() {

@@ -5,8 +5,8 @@
 package flag_test
 
 import (
-	"flag"
-	"fmt"
+	"github.com/shogo82148/std/flag"
+	"github.com/shogo82148/std/fmt"
 )
 
 func ExampleValue() {
