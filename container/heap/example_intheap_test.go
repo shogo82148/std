@@ -6,8 +6,8 @@
 package heap_test
 
 import (
-	"github.com/shogo82148/std/container/heap"
-	"github.com/shogo82148/std/fmt"
+	"container/heap"
+	"fmt"
 )
 
 // This example inserts several ints into an IntHeap, checks the minimum,

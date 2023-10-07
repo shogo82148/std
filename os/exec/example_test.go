@@ -5,15 +5,15 @@
 package exec_test
 
 import (
-	"github.com/shogo82148/std/context"
-	"github.com/shogo82148/std/encoding/json"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/os/exec"
-	"github.com/shogo82148/std/strings"
-	"github.com/shogo82148/std/time"
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"os/exec"
+	"strings"
+	"time"
 )
 
 func ExampleLookPath() {

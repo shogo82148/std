@@ -5,9 +5,9 @@
 package atomic_test
 
 import (
-	"github.com/shogo82148/std/sync"
-	"github.com/shogo82148/std/sync/atomic"
-	"github.com/shogo82148/std/time"
+	"sync"
+	"sync/atomic"
+	"time"
 )
 
 // The following example shows how to use Value for periodic program config updates

@@ -5,7 +5,7 @@
 package sync_test
 
 import (
-	"github.com/shogo82148/std/os"
+	"os"
 )
 
 func ExamplePool() {

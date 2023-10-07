@@ -5,10 +5,10 @@
 package gob_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/encoding/gob"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/log"
+	"bytes"
+	"encoding/gob"
+	"fmt"
+	"log"
 )
 
 // This example transmits a value that implements the custom encoding and decoding methods.

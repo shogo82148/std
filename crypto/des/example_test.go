@@ -4,7 +4,7 @@
 
 package des_test
 
-import "github.com/shogo82148/std/crypto/des"
+import "crypto/des"
 
 func ExampleNewTripleDESCipher() {
 	// NewTripleDESCipher can also be used when EDE2 is required by

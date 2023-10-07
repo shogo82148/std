@@ -5,11 +5,11 @@
 package io_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/strings"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"strings"
 )
 
 func ExampleCopy() {

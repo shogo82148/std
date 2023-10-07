@@ -5,9 +5,9 @@
 package rand_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/crypto/rand"
-	"github.com/shogo82148/std/fmt"
+	"bytes"
+	"crypto/rand"
+	"fmt"
 )
 
 // This example reads 10 cryptographically secure pseudorandom numbers from

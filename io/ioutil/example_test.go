@@ -5,12 +5,12 @@
 package ioutil_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io/ioutil"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/path/filepath"
-	"github.com/shogo82148/std/strings"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 func ExampleReadAll() {

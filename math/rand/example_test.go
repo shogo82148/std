@@ -5,11 +5,11 @@
 package rand_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/math/rand"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/strings"
-	"github.com/shogo82148/std/text/tabwriter"
+	"fmt"
+	"math/rand"
+	"os"
+	"strings"
+	"text/tabwriter"
 )
 
 func Example() {

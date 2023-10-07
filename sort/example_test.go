@@ -5,9 +5,9 @@
 package sort_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/math"
-	"github.com/shogo82148/std/sort"
+	"fmt"
+	"math"
+	"sort"
 )
 
 func ExampleInts() {

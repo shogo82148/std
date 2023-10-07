@@ -5,9 +5,9 @@
 package sql_test
 
 import (
-	"github.com/shogo82148/std/database/sql"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/net/http"
+	"database/sql"
+	"log"
+	"net/http"
 )
 
 func Example_openDBService() {

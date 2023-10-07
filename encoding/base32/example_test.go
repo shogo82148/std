@@ -7,9 +7,9 @@
 package base32_test
 
 import (
-	"github.com/shogo82148/std/encoding/base32"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/os"
+	"encoding/base32"
+	"fmt"
+	"os"
 )
 
 func ExampleEncoding_EncodeToString() {

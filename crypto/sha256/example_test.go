@@ -5,11 +5,11 @@
 package sha256_test
 
 import (
-	"github.com/shogo82148/std/crypto/sha256"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
+	"crypto/sha256"
+	"fmt"
+	"io"
+	"log"
+	"os"
 )
 
 func ExampleSum256() {

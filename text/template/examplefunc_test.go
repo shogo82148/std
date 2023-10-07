@@ -5,10 +5,10 @@
 package template_test
 
 import (
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/strings"
-	"github.com/shogo82148/std/text/template"
+	"log"
+	"os"
+	"strings"
+	"text/template"
 )
 
 // This example demonstrates a custom function to process template text.

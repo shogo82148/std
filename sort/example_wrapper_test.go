@@ -5,8 +5,8 @@
 package sort_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/sort"
+	"fmt"
+	"sort"
 )
 
 func Example_sortWrapper() {

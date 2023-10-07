@@ -7,8 +7,8 @@
 package filepath_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/path/filepath"
+	"fmt"
+	"path/filepath"
 )
 
 func ExampleSplitList() {

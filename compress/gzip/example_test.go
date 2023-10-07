@@ -5,16 +5,16 @@
 package gzip_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/compress/gzip"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/net/http"
-	"github.com/shogo82148/std/net/http/httptest"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/strings"
-	"github.com/shogo82148/std/time"
+	"bytes"
+	"compress/gzip"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"strings"
+	"time"
 )
 
 func Example_writerReader() {

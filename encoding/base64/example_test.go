@@ -7,9 +7,9 @@
 package base64_test
 
 import (
-	"github.com/shogo82148/std/encoding/base64"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/os"
+	"encoding/base64"
+	"fmt"
+	"os"
 )
 
 func Example() {

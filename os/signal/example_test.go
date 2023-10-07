@@ -5,9 +5,9 @@
 package signal_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/os/signal"
+	"fmt"
+	"os"
+	"os/signal"
 )
 
 func ExampleNotify() {

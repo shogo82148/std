@@ -5,11 +5,11 @@
 package zlib_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/compress/zlib"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/os"
+	"bytes"
+	"compress/zlib"
+	"fmt"
+	"io"
+	"os"
 )
 
 func ExampleNewWriter() {
