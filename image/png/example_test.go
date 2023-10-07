@@ -5,12 +5,12 @@
 package png_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/image"
-	"github.com/shogo82148/std/image/color"
-	"github.com/shogo82148/std/image/png"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
+	"fmt"
+	"image"
+	"image/color"
+	"image/png"
+	"log"
+	"os"
 )
 
 func ExampleDecode() {

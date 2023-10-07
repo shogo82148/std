@@ -5,10 +5,10 @@
 package token_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/go/ast"
-	"github.com/shogo82148/std/go/parser"
-	"github.com/shogo82148/std/go/token"
+	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
 )
 
 func Example_retrievePositionInfo() {

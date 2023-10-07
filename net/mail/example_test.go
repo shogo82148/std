@@ -5,11 +5,11 @@
 package mail_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/net/mail"
-	"github.com/shogo82148/std/strings"
+	"fmt"
+	"io"
+	"log"
+	"net/mail"
+	"strings"
 )
 
 func ExampleParseAddressList() {

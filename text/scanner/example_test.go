@@ -5,10 +5,10 @@
 package scanner_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/strings"
-	"github.com/shogo82148/std/text/scanner"
-	"github.com/shogo82148/std/unicode"
+	"fmt"
+	"strings"
+	"text/scanner"
+	"unicode"
 )
 
 func Example() {

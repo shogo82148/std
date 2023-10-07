@@ -5,8 +5,8 @@
 package time_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/time"
+	"fmt"
+	"time"
 )
 
 func ExampleDuration() {

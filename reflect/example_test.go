@@ -5,12 +5,12 @@
 package reflect_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/encoding/json"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/reflect"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+	"reflect"
 )
 
 func ExampleKind() {

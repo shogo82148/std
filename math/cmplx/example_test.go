@@ -5,9 +5,9 @@
 package cmplx_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/math"
-	"github.com/shogo82148/std/math/cmplx"
+	"fmt"
+	"math"
+	"math/cmplx"
 )
 
 func ExampleAbs() {

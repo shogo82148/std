@@ -5,8 +5,8 @@
 package metrics_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/runtime/metrics"
+	"fmt"
+	"runtime/metrics"
 )
 
 func ExampleRead_readingOneMetric() {

@@ -5,14 +5,14 @@
 package flate_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/compress/flate"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/strings"
-	"github.com/shogo82148/std/sync"
+	"bytes"
+	"compress/flate"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"strings"
+	"sync"
 )
 
 // In performance critical applications, Reset can be used to discard the

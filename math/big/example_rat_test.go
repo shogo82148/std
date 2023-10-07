@@ -5,7 +5,7 @@
 package big_test
 
 import (
-	"github.com/shogo82148/std/fmt"
+	"fmt"
 )
 
 // This example demonstrates how to use big.Rat to compute the

@@ -5,13 +5,13 @@
 package tls_test
 
 import (
-	"github.com/shogo82148/std/crypto/tls"
-	"github.com/shogo82148/std/crypto/x509"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/net/http"
-	"github.com/shogo82148/std/net/http/httptest"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/time"
+	"crypto/tls"
+	"crypto/x509"
+	"log"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"time"
 )
 
 func ExampleDial() {

@@ -5,9 +5,9 @@
 package smtp_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/net/smtp"
+	"fmt"
+	"log"
+	"net/smtp"
 )
 
 func Example() {

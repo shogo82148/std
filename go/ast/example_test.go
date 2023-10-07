@@ -5,12 +5,12 @@
 package ast_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/go/ast"
-	"github.com/shogo82148/std/go/format"
-	"github.com/shogo82148/std/go/parser"
-	"github.com/shogo82148/std/go/token"
-	"github.com/shogo82148/std/strings"
+	"fmt"
+	"go/ast"
+	"go/format"
+	"go/parser"
+	"go/token"
+	"strings"
 )
 
 // This example demonstrates how to inspect the AST of a Go program.

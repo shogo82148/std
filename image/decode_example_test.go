@@ -6,11 +6,11 @@
 package image_test
 
 import (
-	"github.com/shogo82148/std/encoding/base64"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/image"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/strings"
+	"encoding/base64"
+	"fmt"
+	"image"
+	"log"
+	"strings"
 )
 
 func Example_decodeConfig() {

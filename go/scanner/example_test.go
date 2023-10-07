@@ -5,9 +5,9 @@
 package scanner_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/go/scanner"
-	"github.com/shogo82148/std/go/token"
+	"fmt"
+	"go/scanner"
+	"go/token"
 )
 
 func ExampleScanner_Scan() {

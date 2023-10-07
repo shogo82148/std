@@ -5,10 +5,10 @@
 package hex_test
 
 import (
-	"github.com/shogo82148/std/encoding/hex"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
+	"encoding/hex"
+	"fmt"
+	"log"
+	"os"
 )
 
 func ExampleEncode() {

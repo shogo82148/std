@@ -5,12 +5,12 @@
 package format_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/go/format"
-	"github.com/shogo82148/std/go/parser"
-	"github.com/shogo82148/std/go/token"
-	"github.com/shogo82148/std/log"
+	"bytes"
+	"fmt"
+	"go/format"
+	"go/parser"
+	"go/token"
+	"log"
 )
 
 func ExampleNode() {

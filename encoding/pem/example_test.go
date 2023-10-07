@@ -5,11 +5,11 @@
 package pem_test
 
 import (
-	"github.com/shogo82148/std/crypto/x509"
-	"github.com/shogo82148/std/encoding/pem"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
+	"crypto/x509"
+	"encoding/pem"
+	"fmt"
+	"log"
+	"os"
 )
 
 func ExampleDecode() {

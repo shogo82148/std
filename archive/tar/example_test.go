@@ -5,12 +5,12 @@
 package tar_test
 
 import (
-	"github.com/shogo82148/std/archive/tar"
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
+	"archive/tar"
+	"bytes"
+	"fmt"
+	"io"
+	"log"
+	"os"
 )
 
 func Example_minimal() {

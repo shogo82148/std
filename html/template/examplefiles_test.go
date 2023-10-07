@@ -5,10 +5,10 @@
 package template_test
 
 import (
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/path/filepath"
-	"github.com/shogo82148/std/text/template"
+	"log"
+	"os"
+	"path/filepath"
+	"text/template"
 )
 
 // Here we demonstrate loading a set of templates from a directory.

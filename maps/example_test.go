@@ -5,9 +5,9 @@
 package maps_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/maps"
-	"github.com/shogo82148/std/strings"
+	"fmt"
+	"maps"
+	"strings"
 )
 
 func ExampleDeleteFunc() {

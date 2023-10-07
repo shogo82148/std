@@ -5,11 +5,11 @@
 package slices_test
 
 import (
-	"github.com/shogo82148/std/cmp"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/slices"
-	"github.com/shogo82148/std/strconv"
-	"github.com/shogo82148/std/strings"
+	"cmp"
+	"fmt"
+	"slices"
+	"strconv"
+	"strings"
 )
 
 func ExampleBinarySearch() {

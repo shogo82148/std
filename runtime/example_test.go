@@ -5,9 +5,9 @@
 package runtime_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/runtime"
-	"github.com/shogo82148/std/strings"
+	"fmt"
+	"runtime"
+	"strings"
 )
 
 func ExampleFrames() {

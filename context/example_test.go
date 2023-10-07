@@ -5,12 +5,12 @@
 package context_test
 
 import (
-	"github.com/shogo82148/std/context"
-	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/net"
-	"github.com/shogo82148/std/sync"
-	"github.com/shogo82148/std/time"
+	"context"
+	"errors"
+	"fmt"
+	"net"
+	"sync"
+	"time"
 )
 
 // This example demonstrates the use of a cancelable context to prevent a

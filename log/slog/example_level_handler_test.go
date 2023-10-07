@@ -5,8 +5,8 @@
 package slog_test
 
 import (
-	"github.com/shogo82148/std/log/slog"
-	"github.com/shogo82148/std/os"
+	"log/slog"
+	"os"
 )
 
 // This example shows how to Use a LevelHandler to change the level of an

@@ -5,7 +5,7 @@
 package sort_test
 
 import (
-	"github.com/shogo82148/std/fmt"
+	"fmt"
 )
 
 // ExampleMultiKeys demonstrates a technique for sorting a struct type using different

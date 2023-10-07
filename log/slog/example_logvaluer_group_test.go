@@ -4,7 +4,7 @@
 
 package slog_test
 
-import "github.com/shogo82148/std/log/slog"
+import "log/slog"
 
 func ExampleLogValuer_group() {
 	n := Name{"Perry", "Platypus"}

@@ -5,11 +5,11 @@
 package httptest_test
 
 import (
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/net/http"
-	"github.com/shogo82148/std/net/http/httptest"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"net/http/httptest"
 )
 
 func ExampleResponseRecorder() {

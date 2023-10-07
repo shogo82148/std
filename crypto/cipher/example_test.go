@@ -5,14 +5,14 @@
 package cipher_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/crypto/aes"
-	"github.com/shogo82148/std/crypto/cipher"
-	"github.com/shogo82148/std/crypto/rand"
-	"github.com/shogo82148/std/encoding/hex"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/os"
+	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"encoding/hex"
+	"fmt"
+	"io"
+	"os"
 )
 
 func ExampleNewGCM_encrypt() {

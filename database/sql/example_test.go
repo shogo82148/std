@@ -5,12 +5,12 @@
 package sql_test
 
 import (
-	"github.com/shogo82148/std/context"
-	"github.com/shogo82148/std/database/sql"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/strings"
-	"github.com/shogo82148/std/time"
+	"context"
+	"database/sql"
+	"fmt"
+	"log"
+	"strings"
+	"time"
 )
 
 func ExampleDB_QueryContext() {

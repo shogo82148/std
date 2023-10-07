@@ -5,7 +5,7 @@
 package fmt_test
 
 import (
-	"github.com/shogo82148/std/fmt"
+	"fmt"
 )
 
 func ExampleStringer() {

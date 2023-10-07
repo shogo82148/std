@@ -5,9 +5,9 @@
 package slog_test
 
 import (
-	"github.com/shogo82148/std/context"
-	"github.com/shogo82148/std/log/slog"
-	"github.com/shogo82148/std/os"
+	"context"
+	"log/slog"
+	"os"
 )
 
 // This example demonstrates using custom log levels and custom log level names.

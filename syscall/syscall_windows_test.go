@@ -5,7 +5,7 @@
 package syscall_test
 
 import (
-	"github.com/shogo82148/std/syscall"
+	"syscall"
 )
 
 func ExampleLoadLibrary() {

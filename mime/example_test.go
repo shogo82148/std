@@ -5,10 +5,10 @@
 package mime_test
 
 import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/mime"
+	"bytes"
+	"fmt"
+	"io"
+	"mime"
 )
 
 func ExampleWordEncoder_Encode() {

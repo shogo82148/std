@@ -5,15 +5,15 @@
 package rsa_test
 
 import (
-	"github.com/shogo82148/std/crypto"
-	"github.com/shogo82148/std/crypto/aes"
-	"github.com/shogo82148/std/crypto/cipher"
-	"github.com/shogo82148/std/crypto/rand"
-	"github.com/shogo82148/std/crypto/rsa"
-	"github.com/shogo82148/std/crypto/sha256"
-	"github.com/shogo82148/std/encoding/hex"
-	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/os"
+	"crypto"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"os"
 )
 
 // RSA is able to encrypt only a very limited amount of data. In order
