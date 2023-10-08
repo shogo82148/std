@@ -78,14 +78,9 @@ var ErrFinalToken = errors.New("final token")
 // スプリット関数が入力を進めずに多くの空のトークンを返すと、Scanはパニックを起こします。これはスキャナーの共通のエラーモードです。
 func (s *Scanner) Scan() bool
 
-<<<<<<< HEAD
-// Buffer sets the initial buffer to use when scanning
-// and the maximum size of buffer that may be allocated during scanning.
-// The maximum token size must be less than the larger of max and cap(buf).
-// If max <= cap(buf), Scan will use this buffer only and do no allocation.
-=======
-// Bufferはスキャン時に使用する初期バッファと、スキャン中に割り当て可能なバッファの最大サイズを設定します。最大トークンサイズはmaxとcap(buf)のうち大きい方です。max <= cap(buf)の場合、Scanはこのバッファのみを使用し、割り当ては行いません。
->>>>>>> release-branch.go1.21
+// Bufferは、スキャン中に使用する初期バッファと、割り当て可能な最大バッファサイズを設定します。
+// 最大トークンサイズは、maxとcap(buf)の大きい方よりも小さくなければなりません。
+// max <= cap(buf)の場合、Scanはこのバッファのみを使用し、割り当てを行いません。
 //
 // デフォルトでは、Scanは内部バッファを使用し、最大トークンサイズをMaxScanTokenSizeに設定します。
 //

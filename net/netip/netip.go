@@ -325,25 +325,16 @@ func (p Prefix) IsValid() bool
 // IsSingleIPは、pが正確に1つのIPを含むかどうかを報告します。
 func (p Prefix) IsSingleIP() bool
 
-<<<<<<< HEAD
-// Compare returns an integer comparing two prefixes.
-// The result will be 0 if p == p2, -1 if p < p2, and +1 if p > p2.
-// Prefixes sort first by validity (invalid before valid), then
-// address family (IPv4 before IPv6), then prefix length, then
-// address.
+// Compareは、2つのプレフィックスを比較して整数を返します。
+// p == p2の場合、結果は0になります。p < p2の場合は-1、p > p2の場合は+1になります。
+// プレフィックスは、まず有効性（有効でない場合は有効な前）、次にアドレスファミリ（IPv4はIPv6の前）、
+// 次にプレフィックス長、最後にアドレスでソートされます。
 func (p Prefix) Compare(p2 Prefix) int
 
-// ParsePrefix parses s as an IP address prefix.
-// The string can be in the form "192.168.1.0/24" or "2001:db8::/32",
-// the CIDR notation defined in RFC 4632 and RFC 4291.
-// IPv6 zones are not permitted in prefixes, and an error will be returned if a
-// zone is present.
-=======
 // ParsePrefixは、sをIPアドレスプレフィックスとして解析します。
-// 文字列は、RFC 4632およびRFC 4291で定義されたCIDR表記法である場合があります。
-// たとえば、"192.168.1.0/24"または"2001:db8::/32"の形式です。
-// IPv6ゾーンはプレフィックスでは許可されておらず、ゾーンが存在する場合はエラーが返されます。
->>>>>>> release-branch.go1.21
+// 文字列は、RFC 4632およびRFC 4291で定義されたCIDR表記形式である場合があります。
+// 文字列は、"192.168.1.0/24"または"2001:db8::/32"のようになります。
+// IPv6ゾーンはプレフィックスで許可されていません。ゾーンが存在する場合は、エラーが返されます。
 //
 // マスクされたアドレスビットはゼロになりません。そのため、Maskedを使用してください。
 func ParsePrefix(s string) (Prefix, error)

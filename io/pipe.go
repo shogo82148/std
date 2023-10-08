@@ -14,15 +14,8 @@ import (
 // ErrClosedPipeは、クローズされたパイプに対する読み取りまたは書き込み操作で使用されるエラーです。
 var ErrClosedPipe = errors.New("io: read/write on closed pipe")
 
-<<<<<<< HEAD
-// A PipeReader is the read half of a pipe.
-type PipeReader struct{ pipe }
-=======
 // PipeReaderは、パイプの読み取り側です。
-type PipeReader struct {
-	p *pipe
-}
->>>>>>> release-branch.go1.21
+type PipeReader struct{ pipe }
 
 // Readは、標準のReadインターフェースを実装します。
 // パイプからデータを読み取り、ライターが到着するか、書き込み側が閉じられるまでブロックします。
@@ -39,15 +32,8 @@ func (r *PipeReader) Close() error
 // CloseWithErrorは、以前にエラーが存在する場合、前のエラーを上書きせず、常にnilを返します。
 func (r *PipeReader) CloseWithError(err error) error
 
-<<<<<<< HEAD
-// A PipeWriter is the write half of a pipe.
-type PipeWriter struct{ r PipeReader }
-=======
 // PipeWriterは、パイプの書き込み側です。
-type PipeWriter struct {
-	p *pipe
-}
->>>>>>> release-branch.go1.21
+type PipeWriter struct{ r PipeReader }
 
 // Writeは、標準のWriteインターフェースを実装します。
 // データをパイプに書き込み、1つ以上のリーダーがすべてのデータを消費するか、

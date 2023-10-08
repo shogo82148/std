@@ -220,10 +220,9 @@ func (n *NullTime) Scan(value any) error
 // Valueは、driver.Valuerインターフェースを実装します。
 func (n NullTime) Value() (driver.Value, error)
 
-<<<<<<< HEAD
-// Null represents a value that may be null.
-// Null implements the Scanner interface so
-// it can be used as a scan destination:
+// Nullは、nullである可能性がある値を表します。
+// NullはScannerインターフェースを実装するため、
+// スキャン先として使用できます。
 //
 //	var s Null[string]
 //	err := db.QueryRow("SELECT name FROM foo WHERE id=?", id).Scan(&s)
@@ -243,9 +242,6 @@ func (n *Null[T]) Scan(value any) error
 func (n Null[T]) Value() (driver.Value, error)
 
 // Scanner is an interface used by Scan.
-=======
-// ScannerはScanで使用されるインターフェースです。
->>>>>>> release-branch.go1.21
 type Scanner interface {
 	Scan(src any) error
 }

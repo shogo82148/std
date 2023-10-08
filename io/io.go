@@ -256,15 +256,9 @@ type StringWriter interface {
 	WriteString(s string) (n int, err error)
 }
 
-<<<<<<< HEAD
-// WriteString writes the contents of the string s to w, which accepts a slice of bytes.
-// If w implements [StringWriter], [StringWriter.WriteString] is invoked directly.
-// Otherwise, [Writer.Write] is called exactly once.
-=======
 // WriteStringはstring sの内容をバイトスライスを受け取るwに書き込みます。
-// もしwがStringWriterを実装している場合は、WriteStringメソッドが直接呼び出されます。
-// そうでない場合は、w.Writeが一度だけ呼び出されます。
->>>>>>> release-branch.go1.21
+// もしwが [StringWriter] を実装している場合は、 [StringWriter.WriteString] が直接呼び出されます。
+// そうでない場合は、 [Writer.Write] が一度だけ呼び出されます。
 func WriteString(w Writer, s string) (n int, err error)
 
 // ReadAtLeastは、rからbufに少なくともminバイト読み取るまで読み取ります。
@@ -288,44 +282,24 @@ func ReadFull(r Reader, buf []byte) (n int, err error)
 // コピーされたバイト数とコピー中に最初に遭遇したエラーが返されます。
 // コピーが完了し、エラーがない場合、written == nが成り立ちます。
 //
-<<<<<<< HEAD
-// If dst implements [ReaderFrom], the copy is implemented using it.
-=======
-// もしdstがReaderFromインターフェースを実装している場合、
+// もしdstが [ReaderFrom] インターフェースを実装している場合、
 // そのインターフェースを使用してコピーが実装されます。
->>>>>>> release-branch.go1.21
 func CopyN(dst Writer, src Reader, n int64) (written int64, err error)
 
 // CopyはsrcからdstにEOFに到達するか、エラーが発生するまでコピーします。コピーされたバイト数と最初に遭遇したエラーが返されます。
 // 成功したコピーではerr == nilを返します。err == EOFではありません。
 // CopyはsrcからEOFに到達するまで読み取るように定義されているため、ReadからのEOFは報告されるエラーではありません。
 //
-<<<<<<< HEAD
-// A successful Copy returns err == nil, not err == EOF.
-// Because Copy is defined to read from src until EOF, it does
-// not treat an EOF from Read as an error to be reported.
-//
-// If src implements [WriterTo],
-// the copy is implemented by calling src.WriteTo(dst).
-// Otherwise, if dst implements [ReaderFrom],
-// the copy is implemented by calling dst.ReadFrom(src).
-=======
-// srcがWriterToインターフェースを実装している場合、コピーはsrc.WriteTo(dst)の呼び出しで実装されます。
-// それ以外の場合、dstがReaderFromインターフェースを実装している場合、コピーはdst.ReadFrom(src)の呼び出しで実装されます。
->>>>>>> release-branch.go1.21
+// srcが [WriterTo] インターフェースを実装している場合、コピーはsrc.WriteTo(dst)の呼び出しで実装されます。
+// それ以外の場合、dstが [ReaderFrom] インターフェースを実装している場合、コピーはdst.ReadFrom(src)の呼び出しで実装されます。
 func Copy(dst Writer, src Reader) (written int64, err error)
 
 // CopyBuffer は Copy と同じですが、一時的なバッファを割り当てる代わりに、
 // 提供されたバッファを使用してステージングします（必要な場合）。buf が nil の場合、一時的なバッファが割り当てられます。
 // もし buf の長さがゼロなら、CopyBuffer はパニックを引き起こします。
 //
-<<<<<<< HEAD
-// If either src implements [WriterTo] or dst implements [ReaderFrom],
-// buf will not be used to perform the copy.
-=======
-// もし src が WriterTo を実装しているか、dst が ReaderFrom を実装している場合、
+// もし src が [WriterTo] を実装しているか、dst が [ReaderFrom] を実装している場合、
 // コピーを実行するために buf は使用されません。
->>>>>>> release-branch.go1.21
 func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error)
 
 // LimitReaderは、rから読み取るReaderを返します。
@@ -344,12 +318,7 @@ func (l *LimitedReader) Read(p []byte) (n int, err error)
 // NewSectionReaderは、rからオフセットoffで読み取りを開始し、nバイト後にEOFで停止するSectionReaderを返します。
 func NewSectionReader(r ReaderAt, off int64, n int64) *SectionReader
 
-<<<<<<< HEAD
-// SectionReader implements Read, Seek, and ReadAt on a section
-// of an underlying [ReaderAt].
-=======
-// SectionReaderは、元となるReaderAtの一部に対してRead、Seek、ReadAtを実装します。
->>>>>>> release-branch.go1.21
+// SectionReaderは、元となる [ReaderAt] の一部に対してRead、Seek、ReadAtを実装します。
 type SectionReader struct {
 	r     ReaderAt
 	base  int64
@@ -396,16 +365,9 @@ var Discard Writer = discard{}
 // discardは、最適化としてReaderFromを実装しています。そのため、io.DiscardへのCopyに不要な作業を避けることができます。
 var _ ReaderFrom = discard{}
 
-<<<<<<< HEAD
-// NopCloser returns a [ReadCloser] with a no-op Close method wrapping
-// the provided [Reader] r.
-// If r implements [WriterTo], the returned ReadCloser will implement WriterTo
-// by forwarding calls to r.
-=======
-// NopCloser は、提供された Reader r を包む、Close メソッドの動作がない ReadCloser を返します。
-// r が WriterTo を実装している場合、返された ReadCloser は WriterTo を実装し、
+// NopCloser は、提供された [Reader] r を包む、Close メソッドの動作がない [ReadCloser] を返します。
+// r が [WriterTo] を実装している場合、返された ReadCloser は WriterTo を実装し、
 // 呼び出しを r に転送します。
->>>>>>> release-branch.go1.21
 func NopCloser(r Reader) ReadCloser
 
 // ReadAllはrからエラーまたはEOFが発生するまで読み取り、読み取ったデータを返します。
