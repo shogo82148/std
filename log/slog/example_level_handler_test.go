@@ -5,8 +5,8 @@
 package slog_test
 
 import (
-	"log/slog"
-	"os"
+	"github.com/shogo82148/std/log/slog"
+	"github.com/shogo82148/std/os"
 )
 
 // A LevelHandler wraps a Handler with an Enabled method

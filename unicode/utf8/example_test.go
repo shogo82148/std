@@ -5,8 +5,8 @@
 package utf8_test
 
 import (
-	"fmt"
-	"unicode/utf8"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/unicode/utf8"
 )
 
 func ExampleDecodeLastRune() {

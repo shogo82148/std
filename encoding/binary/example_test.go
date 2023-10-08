@@ -5,10 +5,10 @@
 package binary_test
 
 import (
-	"bytes"
-	"encoding/binary"
-	"fmt"
-	"math"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/encoding/binary"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/math"
 )
 
 func ExampleWrite() {

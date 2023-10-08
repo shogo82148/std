@@ -5,13 +5,13 @@
 package http_test
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"log"
-	"net/http"
-	"os"
-	"os/signal"
+	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/net/http"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/os/signal"
 )
 
 func ExampleHijacker() {

@@ -5,12 +5,12 @@
 package sql_test
 
 import (
-	"context"
-	"database/sql"
-	"flag"
-	"log"
-	"os"
-	"os/signal"
+	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/database/sql"
+	"github.com/shogo82148/std/flag"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/os/signal"
 )
 
 func Example_openDBCLI() {

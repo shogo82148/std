@@ -5,13 +5,13 @@
 package zip_test
 
 import (
-	"archive/zip"
-	"bytes"
-	"compress/flate"
-	"fmt"
-	"io"
-	"log"
-	"os"
+	"github.com/shogo82148/std/archive/zip"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/compress/flate"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/os"
 )
 
 func ExampleWriter() {

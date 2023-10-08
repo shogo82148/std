@@ -4,12 +4,11 @@
 
 package errors
 
-// Join returns an error that wraps the given errors.
-// Any nil error values are discarded.
-// Join returns nil if every value in errs is nil.
-// The error formats as the concatenation of the strings obtained
-// by calling the Error method of each element of errs, with a newline
-// between each string.
+// Joinは、指定されたエラーをラップするエラーを返します。
+// nilエラー値は破棄されます。
+// errsのすべての値がnilの場合、Joinはnilを返します。
+// エラーは、errsの各要素のErrorメソッドを呼び出して得られた文字列を連結したもので、
+// 各文字列の間に改行が挿入されたものとしてフォーマットされます。
 //
-// A non-nil error returned by Join implements the Unwrap() []error method.
+// Joinによって返されるnilでないエラーは、Unwrap() []errorメソッドを実装します。
 func Join(errs ...error) error

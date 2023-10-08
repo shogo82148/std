@@ -5,7 +5,7 @@
 package ed25519
 
 import (
-	"log"
+	"github.com/shogo82148/std/log"
 )
 
 func Example_ed25519ctx() {

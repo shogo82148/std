@@ -5,10 +5,10 @@
 package big_test
 
 import (
-	"fmt"
-	"log"
-	"math"
-	"math/big"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/math"
+	"github.com/shogo82148/std/math/big"
 )
 
 func ExampleRat_SetString() {
