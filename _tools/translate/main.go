@@ -60,7 +60,7 @@ func main() {
 		log.Println("output:", output)
 
 		list := []*ast.Comment{}
-		pos := g.Pos()
+		pos := g.End()
 		for output != "" {
 			var c *ast.Comment
 			if strings.HasPrefix(output, "//") {
