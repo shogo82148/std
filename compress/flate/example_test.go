@@ -15,9 +15,8 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// In performance critical applications, Reset can be used to discard the
-// current compressor or decompressor state and reinitialize them quickly
-// by taking advantage of previously allocated memory.
+// パフォーマンスの重要なアプリケーションでは、Reset を使用して現在の圧縮器または伸張器の状態を破棄し、
+// 以前に割り当てられたメモリを活用してそれらを迅速に再初期化することができます。
 func Example_reset() {
 	proverbs := []string{
 		"Don't communicate by sharing memory, share memory by communicating.\n",
@@ -40,7 +39,7 @@ func Example_reset() {
 		r.Reset(s)
 		b.Reset()
 
-		// Reset the compressor and encode from some input stream.
+		// コンプレッサーをリセットし、入力ストリームからエンコードします。
 		zw.Reset(&b)
 		if _, err := io.CopyBuffer(zw, &r, buf); err != nil {
 			log.Fatal(err)
@@ -49,7 +48,7 @@ func Example_reset() {
 			log.Fatal(err)
 		}
 
-		// Reset the decompressor and decode to some output stream.
+		// デコンプレッサをリセットし、いくつかの出力ストリームにデコードします。
 		if err := zr.(flate.Resetter).Reset(&b, nil); err != nil {
 			log.Fatal(err)
 		}
@@ -68,18 +67,14 @@ func Example_reset() {
 	// Documentation is for users.
 }
 
-// A preset dictionary can be used to improve the compression ratio.
-// The downside to using a dictionary is that the compressor and decompressor
-// must agree in advance what dictionary to use.
+// あらかじめ設定された辞書を使用すると、圧縮率を改善することができます。
+// 辞書を使用する際の難点は、圧縮機と展開機が事前に使用する辞書について合意する必要があるということです。
 func Example_dictionary() {
-	// The dictionary is a string of bytes. When compressing some input data,
-	// the compressor will attempt to substitute substrings with matches found
-	// in the dictionary. As such, the dictionary should only contain substrings
-	// that are expected to be found in the actual data stream.
+
+	// 辞書はバイトの連続です。入力データを圧縮する際、圧縮器は辞書内で見つかった一致する部分文字列を代替しようとします。そのため、辞書には実際のデータストリームで見つかることが期待される部分文字列のみを含めるべきです。
 	const dict = `<?xml version="1.0"?>` + `<book>` + `<data>` + `<meta name="` + `" content="`
 
-	// The data to compress should (but is not required to) contain frequent
-	// substrings that match those in the dictionary.
+	// 圧縮するデータには、辞書と一致する頻繁な（必要ではありませんが）部分文字列が含まれることが望ましいです。
 	const data = `<?xml version="1.0"?>
 <book>
 	<meta name="title" content="The Go Programming Language"/>
@@ -92,7 +87,7 @@ func Example_dictionary() {
 
 	var b bytes.Buffer
 
-	// Compress the data using the specially crafted dictionary.
+	// 特殊に作られた辞書を使用してデータを圧縮する。
 	zw, err := flate.NewWriterDict(&b, flate.DefaultCompression, []byte(dict))
 	if err != nil {
 		log.Fatal(err)
@@ -104,8 +99,8 @@ func Example_dictionary() {
 		log.Fatal(err)
 	}
 
-	// The decompressor must use the same dictionary as the compressor.
-	// Otherwise, the input may appear as corrupted.
+	// 解凍プログラムは圧縮プログラムと同じ辞書を使用する必要があります。
+	// そうでないと、入力が破損しているように見えるかもしれません。
 	fmt.Println("Decompressed output using the dictionary:")
 	zr := flate.NewReaderDict(bytes.NewReader(b.Bytes()), []byte(dict))
 	if _, err := io.Copy(os.Stdout, zr); err != nil {
@@ -117,8 +112,7 @@ func Example_dictionary() {
 
 	fmt.Println()
 
-	// Substitute all of the bytes in the dictionary with a '#' to visually
-	// demonstrate the approximate effectiveness of using a preset dictionary.
+	// 辞書のすべてのバイトを '#' に置き換えて、予め設定された辞書の近似効果を視覚的に示します。
 	fmt.Println("Substrings matched by the dictionary are marked with #:")
 	hashDict := []byte(dict)
 	for i := range hashDict {
@@ -154,17 +148,16 @@ func Example_dictionary() {
 	// </#####
 }
 
-// DEFLATE is suitable for transmitting compressed data across the network.
+// DEFLATEはネットワーク上で圧縮データを送信するのに適しています。
 func Example_synchronization() {
 	var wg sync.WaitGroup
 	defer wg.Wait()
 
-	// Use io.Pipe to simulate a network connection.
-	// A real network application should take care to properly close the
-	// underlying connection.
+	// io.Pipeを使用してネットワーク接続をシミュレートします。
+	// 実際のネットワークアプリケーションでは、基礎となる接続を適切に閉じる必要があります。
 	rp, wp := io.Pipe()
 
-	// Start a goroutine to act as the transmitter.
+	// 送信機能として機能するために、ゴールーチンを開始します。
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
@@ -176,15 +169,15 @@ func Example_synchronization() {
 
 		b := make([]byte, 256)
 		for _, m := range strings.Fields("A long time ago in a galaxy far, far away...") {
-			// We use a simple framing format where the first byte is the
-			// message length, followed the message itself.
+
+			// 最初のバイトがメッセージの長さであり、その後にメッセージ自体が続く、単純なフレーム形式を使用しています。
 			b[0] = uint8(copy(b[1:], m))
 
 			if _, err := zw.Write(b[:1+len(m)]); err != nil {
 				log.Fatal(err)
 			}
 
-			// Flush ensures that the receiver can read all data sent so far.
+			// Flushは、受信者がこれまでに送信されたすべてのデータを読み取ることができることを保証します。
 			if err := zw.Flush(); err != nil {
 				log.Fatal(err)
 			}
@@ -195,7 +188,7 @@ func Example_synchronization() {
 		}
 	}()
 
-	// Start a goroutine to act as the receiver.
+	// 受信者として動作するゴルーチンを開始する。
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
@@ -204,17 +197,18 @@ func Example_synchronization() {
 
 		b := make([]byte, 256)
 		for {
-			// Read the message length.
-			// This is guaranteed to return for every corresponding
-			// Flush and Close on the transmitter side.
+
+			// メッセージの長さを読み取ります。
+			// これは送信側のFlushとCloseに対して
+			// 必ず返されることが保証されています。
 			if _, err := io.ReadFull(zr, b[:1]); err != nil {
 				if err == io.EOF {
-					break // The transmitter closed the stream
+					break // 送信者がストリームを閉じました
 				}
 				log.Fatal(err)
 			}
 
-			// Read the message content.
+			// メッセージの内容を読み取る。
 			n := int(b[0])
 			if _, err := io.ReadFull(zr, b[:n]); err != nil {
 				log.Fatal(err)
