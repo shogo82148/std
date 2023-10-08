@@ -32,18 +32,18 @@ func ExampleWriter_AvailableBuffer() {
 	// Output: 1 2 3 4
 }
 
-// The simplest use of a Scanner, to read standard input as a set of lines.
+// Scannerの最も単純な使用方法は、標準入力を行のセットとして読み取ることです。
 func ExampleScanner_lines() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		fmt.Println(scanner.Text()) // Println will add back the final '\n'
+		fmt.Println(scanner.Text()) // Printlnは最後の'\n'を追加します
 	}
 	if err := scanner.Err(); err != nil {
 		fmt.Fprintln(os.Stderr, "reading standard input:", err)
 	}
 }
 
-// Return the most recent call to Scan as a []byte.
+// 最新のScan呼び出しを[]byteとして返します。
 func ExampleScanner_Bytes() {
 	scanner := bufio.NewScanner(strings.NewReader("gopher"))
 	for scanner.Scan() {
@@ -56,15 +56,15 @@ func ExampleScanner_Bytes() {
 	// true
 }
 
-// Use a Scanner to implement a simple word-count utility by scanning the
-// input as a sequence of space-delimited tokens.
+// スキャナを使用して、スペースで区切られたトークンのシーケンスとして入力をスキャンすることにより、
+// 単純な単語カウントユーティリティを実装します。
 func ExampleScanner_words() {
-	// An artificial input source.
+	// 人工的な入力ソース。
 	const input = "Now is the winter of our discontent,\nMade glorious summer by this sun of York.\n"
 	scanner := bufio.NewScanner(strings.NewReader(input))
-	// Set the split function for the scanning operation.
+	// スキャン操作のための分割関数を設定します。
 	scanner.Split(bufio.ScanWords)
-	// Count the words.
+	// 単語を数えます。
 	count := 0
 	for scanner.Scan() {
 		count++
@@ -76,13 +76,13 @@ func ExampleScanner_words() {
 	// Output: 15
 }
 
-// Use a Scanner with a custom split function (built by wrapping ScanWords) to validate
-// 32-bit decimal input.
+// ScanWordsをラップして構築されたカスタム分割関数を使用するScannerを使用して、
+// 32ビットの10進数入力を検証します。
 func ExampleScanner_custom() {
-	// An artificial input source.
+	// 人工的な入力ソース。
 	const input = "1234 5678 1234567901234567890"
 	scanner := bufio.NewScanner(strings.NewReader(input))
-	// Create a custom split function by wrapping the existing ScanWords function.
+	// 既存のScanWords関数をラップして、カスタム分割関数を作成します。
 	split := func(data []byte, atEOF bool) (advance int, token []byte, err error) {
 		advance, token, err = bufio.ScanWords(data, atEOF)
 		if err == nil && token != nil {
@@ -90,9 +90,9 @@ func ExampleScanner_custom() {
 		}
 		return
 	}
-	// Set the split function for the scanning operation.
+	// スキャン操作のための分割関数を設定します。
 	scanner.Split(split)
-	// Validate the input
+	// 入力を検証します。
 	for scanner.Scan() {
 		fmt.Printf("%s\n", scanner.Text())
 	}
@@ -106,13 +106,12 @@ func ExampleScanner_custom() {
 	// Invalid input: strconv.ParseInt: parsing "1234567901234567890": value out of range
 }
 
-// Use a Scanner with a custom split function to parse a comma-separated
-// list with an empty final value.
+// 空の最終値を持つカンマ区切りリストを解析するために、カスタム分割関数を使用するScannerを使用します。
 func ExampleScanner_emptyFinalToken() {
-	// Comma-separated list; last entry is empty.
+	// カンマ区切りのリスト。最後のエントリは空です。
 	const input = "1,2,3,4,"
 	scanner := bufio.NewScanner(strings.NewReader(input))
-	// Define a split function that separates on commas.
+	// コンマで区切る分割関数を定義します。
 	onComma := func(data []byte, atEOF bool) (advance int, token []byte, err error) {
 		for i := 0; i < len(data); i++ {
 			if data[i] == ',' {
@@ -122,9 +121,9 @@ func ExampleScanner_emptyFinalToken() {
 		if !atEOF {
 			return 0, nil, nil
 		}
-		// There is one final token to be delivered, which may be the empty string.
-		// Returning bufio.ErrFinalToken here tells Scan there are no more tokens after this
-		// but does not trigger an error to be returned from Scan itself.
+		// 最後に配信されるトークンが1つあります。これが空の文字列である場合があります。
+		// ここでbufio.ErrFinalTokenを返すと、Scanにこれ以降のトークンがないことを伝えます。
+		// ただし、Scan自体からエラーが返されるわけではありません。
 		return 0, data, bufio.ErrFinalToken
 	}
 	scanner.Split(onComma)
