@@ -5,11 +5,11 @@
 package flag_test
 
 import (
-	"errors"
-	"flag"
-	"fmt"
-	"net"
-	"os"
+	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/flag"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/os"
 )
 
 func ExampleFunc() {

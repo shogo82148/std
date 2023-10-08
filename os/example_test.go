@@ -5,13 +5,13 @@
 package os_test
 
 import (
-	"errors"
-	"fmt"
-	"io/fs"
-	"log"
-	"os"
-	"path/filepath"
-	"time"
+	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io/fs"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/path/filepath"
+	"github.com/shogo82148/std/time"
 )
 
 func ExampleOpenFile() {

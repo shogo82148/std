@@ -2,23 +2,22 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package netip defines an IP address type that's a small value type.
-// Building on that [Addr] type, the package also defines [AddrPort] (an
-// IP address and a port) and [Prefix] (an IP address and a bit length
-// prefix).
+// パッケージnetipは、小さな値型であるIPアドレス型を定義します。
+// この[Addr]型をベースに、パッケージは [AddrPort] （IPアドレスとポート）と [Prefix] （IPアドレスとビット長のプレフィックス）も定義します。
 //
-// Compared to the [net.IP] type, [Addr] type takes less memory, is immutable,
-// and is comparable (supports == and being a map key).
+// [net.IP] 型と比較して、 [Addr] 型はメモリを少なく使用し、不変であり、比較可能（==およびマップキーとしてサポート）です。
 package netip
 
-// Addr represents an IPv4 or IPv6 address (with or without a scoped
-// addressing zone), similar to [net.IP] or [net.IPAddr].
+import (
+	"github.com/shogo82148/std/net/netip/internal/intern"
+)
+
+// Addrは、[net.IP]または[net.IPAddr]に似た、スコープ付きアドレスを持つIPv4またはIPv6アドレスを表します。
 //
-// Unlike [net.IP] or [net.IPAddr], Addr is a comparable value
-// type (it supports == and can be a map key) and is immutable.
+// [net.IP]または[net.IPAddr]とは異なり、Addrは比較可能な値型であり（==をサポートし、マップキーとして使用可能）、不変です。
 //
-// The zero Addr is not a valid IP address.
-// Addr{} is distinct from both 0.0.0.0 and ::.
+// ゼロ値のAddrは有効なIPアドレスではありません。
+// Addr{}は、0.0.0.0と::の両方とは異なります。
 type Addr struct {
 	// addr is the hi and lo bits of an IPv6 address. If z==z4,
 	// hi and lo contain the IPv4-mapped IPv6 address.
@@ -47,236 +46,221 @@ type Addr struct {
 	z *intern.Value
 }
 
-// IPv6LinkLocalAllNodes returns the IPv6 link-local all nodes multicast
-// address ff02::1.
+// IPv6LinkLocalAllNodesは、IPv6リンクローカル全ノードマルチキャストアドレスff02::1を返します。
 func IPv6LinkLocalAllNodes() Addr
 
-// IPv6LinkLocalAllRouters returns the IPv6 link-local all routers multicast
-// address ff02::2.
+// IPv6LinkLocalAllRoutersは、IPv6リンクローカル全ルーターマルチキャストアドレスff02::2を返します。
 func IPv6LinkLocalAllRouters() Addr
 
-// IPv6Loopback returns the IPv6 loopback address ::1.
+// IPv6Loopbackは、IPv6ループバックアドレス::1を返します。
 func IPv6Loopback() Addr
 
-// IPv6Unspecified returns the IPv6 unspecified address "::".
+// IPv6Unspecifiedは、IPv6未指定アドレス"::"を返します。
 func IPv6Unspecified() Addr
 
-// IPv4Unspecified returns the IPv4 unspecified address "0.0.0.0".
+// IPv4Unspecifiedは、IPv4未指定アドレス"0.0.0.0"を返します。
 func IPv4Unspecified() Addr
 
-// AddrFrom4 returns the address of the IPv4 address given by the bytes in addr.
+// AddrFrom4は、addrのバイトで指定されたIPv4アドレスのアドレスを返します。
 func AddrFrom4(addr [4]byte) Addr
 
-// AddrFrom16 returns the IPv6 address given by the bytes in addr.
-// An IPv4-mapped IPv6 address is left as an IPv6 address.
-// (Use Unmap to convert them if needed.)
+// AddrFrom16は、addrのバイトで指定されたIPv6アドレスを返します。
+// IPv4マップされたIPv6アドレスはIPv6アドレスのままです。
+// （必要に応じて、Unmapを使用して変換してください。）
 func AddrFrom16(addr [16]byte) Addr
 
-// ParseAddr parses s as an IP address, returning the result. The string
-// s can be in dotted decimal ("192.0.2.1"), IPv6 ("2001:db8::68"),
-// or IPv6 with a scoped addressing zone ("fe80::1cc0:3e8c:119f:c2e1%ens18").
+// ParseAddrは、sをIPアドレスとして解析し、その結果を返します。
+// 文字列sは、ドット付き10進表記（"192.0.2.1"）、IPv6（"2001:db8::68"）、
+// またはスコープ付きアドレスゾーンを持つIPv6（"fe80::1cc0:3e8c:119f:c2e1%ens18"）のいずれかである必要があります。
 func ParseAddr(s string) (Addr, error)
 
-// MustParseAddr calls ParseAddr(s) and panics on error.
-// It is intended for use in tests with hard-coded strings.
+// / MustParseAddrは、ParseAddr(s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
+// ハードコードされた文字列を使用したテストで使用することを目的としています。
 func MustParseAddr(s string) Addr
 
-// AddrFromSlice parses the 4- or 16-byte byte slice as an IPv4 or IPv6 address.
-// Note that a net.IP can be passed directly as the []byte argument.
-// If slice's length is not 4 or 16, AddrFromSlice returns Addr{}, false.
+// AddrFromSliceは、4バイトまたは16バイトのバイトスライスをIPv4またはIPv6アドレスとして解析します。
+// net.IPは、[]byte引数として直接渡すことができます。
+// スライスの長さが4または16でない場合、Addr{}、falseを返します。
 func AddrFromSlice(slice []byte) (ip Addr, ok bool)
 
-// IsValid reports whether the Addr is an initialized address (not the zero Addr).
+// IsValidは、Addrが初期化されたアドレス（ゼロのAddrではない）であるかどうかを報告します。
 //
-// Note that "0.0.0.0" and "::" are both valid values.
+// "0.0.0.0"と"::"の両方が有効な値であることに注意してください。
 func (ip Addr) IsValid() bool
 
-// BitLen returns the number of bits in the IP address:
-// 128 for IPv6, 32 for IPv4, and 0 for the zero Addr.
+// BitLenは、IPアドレスのビット数を返します。
+// IPv6の場合は128、IPv4の場合は32、ゼロのAddrの場合は0です。
 //
-// Note that IPv4-mapped IPv6 addresses are considered IPv6 addresses
-// and therefore have bit length 128.
+// IPv4マップされたIPv6アドレスはIPv6アドレスと見なされるため、ビット長は128になります。
 func (ip Addr) BitLen() int
 
-// Zone returns ip's IPv6 scoped addressing zone, if any.
+// Zoneは、ipのIPv6スコープ付きアドレッシングゾーンを返します（存在する場合）。
 func (ip Addr) Zone() string
 
-// Compare returns an integer comparing two IPs.
-// The result will be 0 if ip == ip2, -1 if ip < ip2, and +1 if ip > ip2.
-// The definition of "less than" is the same as the Less method.
+// Compareは、2つのIPを比較して整数を返します。
+// ip == ip2の場合、結果は0になります。
+// ip < ip2の場合、結果は-1になります。
+// ip > ip2の場合、結果は+1になります。
+// "less than"の定義は、Lessメソッドと同じです。
 func (ip Addr) Compare(ip2 Addr) int
 
-// Less reports whether ip sorts before ip2.
-// IP addresses sort first by length, then their address.
-// IPv6 addresses with zones sort just after the same address without a zone.
+// Lessは、ipがip2よりも前にソートされるかどうかを報告します。
+// IPアドレスは、まず長さでソートされ、次にアドレスでソートされます。
+// ゾーンを持つIPv6アドレスは、ゾーンのない同じアドレスの直後にソートされます。
 func (ip Addr) Less(ip2 Addr) bool
 
-// Is4 reports whether ip is an IPv4 address.
+// Is4は、ipがIPv4アドレスであるかどうかを報告します。
 //
-// It returns false for IPv4-mapped IPv6 addresses. See Addr.Unmap.
+// IPv4マップされたIPv6アドレスの場合、falseを返します。Addr.Unmapを参照してください。
 func (ip Addr) Is4() bool
 
-// Is4In6 reports whether ip is an IPv4-mapped IPv6 address.
+// Is4In6は、ipがIPv4マップされたIPv6アドレスであるかどうかを報告します。
 func (ip Addr) Is4In6() bool
 
-// Is6 reports whether ip is an IPv6 address, including IPv4-mapped
-// IPv6 addresses.
+// Is6は、IPv6アドレス、IPv4マップされたIPv6アドレスを含むかどうかを報告します。
 func (ip Addr) Is6() bool
 
-// Unmap returns ip with any IPv4-mapped IPv6 address prefix removed.
+// Unmapは、IPv4マップされたIPv6アドレスのプレフィックスを削除したipを返します。
 //
-// That is, if ip is an IPv6 address wrapping an IPv4 address, it
-// returns the wrapped IPv4 address. Otherwise it returns ip unmodified.
+// つまり、ipがIPv4アドレスをラップしたIPv6アドレスである場合、
+// ラップされたIPv4アドレスを返します。それ以外の場合は、ipを変更せずに返します。
 func (ip Addr) Unmap() Addr
 
-// WithZone returns an IP that's the same as ip but with the provided
-// zone. If zone is empty, the zone is removed. If ip is an IPv4
-// address, WithZone is a no-op and returns ip unchanged.
+// WithZoneは、提供されたゾーンを持つipと同じIPを返します。
+// zoneが空の場合、ゾーンは削除されます。
+// ipがIPv4アドレスの場合、WithZoneは何も行わず、ipを変更せずに返します。
 func (ip Addr) WithZone(zone string) Addr
 
-// IsLinkLocalUnicast reports whether ip is a link-local unicast address.
+// IsLinkLocalUnicastは、ipがリンクローカルユニキャストアドレスであるかどうかを報告します。
 func (ip Addr) IsLinkLocalUnicast() bool
 
-// IsLoopback reports whether ip is a loopback address.
+// IsLoopbackは、ipがループバックアドレスであるかどうかを報告します。
 func (ip Addr) IsLoopback() bool
 
-// IsMulticast reports whether ip is a multicast address.
+// IsMulticastは、ipがマルチキャストアドレスであるかどうかを報告します。
 func (ip Addr) IsMulticast() bool
 
-// IsInterfaceLocalMulticast reports whether ip is an IPv6 interface-local
-// multicast address.
+// IsInterfaceLocalMulticastは、ipがIPv6インターフェースローカルマルチキャストアドレスであるかどうかを報告します。
 func (ip Addr) IsInterfaceLocalMulticast() bool
 
-// IsLinkLocalMulticast reports whether ip is a link-local multicast address.
+// IsLinkLocalMulticastは、ipがリンクローカルマルチキャストアドレスであるかどうかを報告します。
 func (ip Addr) IsLinkLocalMulticast() bool
 
-// IsGlobalUnicast reports whether ip is a global unicast address.
+// IsGlobalUnicastは、ipがグローバルユニキャストアドレスであるかどうかを報告します。
 //
-// It returns true for IPv6 addresses which fall outside of the current
-// IANA-allocated 2000::/3 global unicast space, with the exception of the
-// link-local address space. It also returns true even if ip is in the IPv4
-// private address space or IPv6 unique local address space.
-// It returns false for the zero Addr.
+// リンクローカルアドレススペースを除く、現在のIANA割り当て2000::/3のグローバルユニキャストスペース外にあるIPv6アドレスに対してtrueを返します。
+// また、ipがIPv4プライベートアドレススペースまたはIPv6ユニークローカルアドレススペースにある場合でも、trueを返します。
+// ゼロのAddrの場合はfalseを返します。
 //
-// For reference, see RFC 1122, RFC 4291, and RFC 4632.
+// 参考文献については、RFC 1122、RFC 4291、およびRFC 4632を参照してください。
 func (ip Addr) IsGlobalUnicast() bool
 
-// IsPrivate reports whether ip is a private address, according to RFC 1918
-// (IPv4 addresses) and RFC 4193 (IPv6 addresses). That is, it reports whether
-// ip is in 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, or fc00::/7. This is the
-// same as net.IP.IsPrivate.
+// IsPrivateは、RFC 1918（IPv4アドレス）およびRFC 4193（IPv6アドレス）に従って、
+// ipがプライベートアドレスであるかどうかを報告します。
+// つまり、ipが10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、またはfc00::/7のいずれかであるかどうかを報告します。
+// これは、net.IP.IsPrivateと同じです。
 func (ip Addr) IsPrivate() bool
 
-// IsUnspecified reports whether ip is an unspecified address, either the IPv4
-// address "0.0.0.0" or the IPv6 address "::".
+// IsUnspecifiedは、ipが未指定のアドレスであるかどうかを報告します。
+// IPv4アドレス"0.0.0.0"またはIPv6アドレス"::"のいずれかです。
 //
-// Note that the zero Addr is not an unspecified address.
+// ただし、ゼロのAddrは未指定のアドレスではありません。
 func (ip Addr) IsUnspecified() bool
 
-// Prefix keeps only the top b bits of IP, producing a Prefix
-// of the specified length.
-// If ip is a zero Addr, Prefix always returns a zero Prefix and a nil error.
-// Otherwise, if bits is less than zero or greater than ip.BitLen(),
-// Prefix returns an error.
+// Prefixは、IPの上位bビットのみを保持し、指定された長さのPrefixを生成します。
+// ipがゼロのAddrの場合、Prefixは常にゼロのPrefixとnilエラーを返します。
+// それ以外の場合、bitsが負の場合またはip.BitLen()より大きい場合、Prefixはエラーを返します。
 func (ip Addr) Prefix(b int) (Prefix, error)
 
-// As16 returns the IP address in its 16-byte representation.
-// IPv4 addresses are returned as IPv4-mapped IPv6 addresses.
-// IPv6 addresses with zones are returned without their zone (use the
-// Zone method to get it).
-// The ip zero value returns all zeroes.
+// As16は、IPアドレスを16バイトの表現で返します。
+// IPv4アドレスはIPv4マップされたIPv6アドレスとして返されます。
+// ゾーンを持つIPv6アドレスは、ゾーンを除いた形式で返されます（ゾーンを取得するにはZoneメソッドを使用してください）。
+// ゼロのAddrの場合は、すべてのバイトがゼロの値を返します。
 func (ip Addr) As16() (a16 [16]byte)
 
-// As4 returns an IPv4 or IPv4-in-IPv6 address in its 4-byte representation.
-// If ip is the zero Addr or an IPv6 address, As4 panics.
-// Note that 0.0.0.0 is not the zero Addr.
+// As4は、IPv4またはIPv4-in-IPv6アドレスを4バイトの表現で返します。
+// ipがゼロのAddrまたはIPv6アドレスの場合、As4はパニックを引き起こします。
+// 0.0.0.0はゼロのAddrではないことに注意してください。
 func (ip Addr) As4() (a4 [4]byte)
 
-// AsSlice returns an IPv4 or IPv6 address in its respective 4-byte or 16-byte representation.
+// AsSliceは、IPv4またはIPv6アドレスを、それぞれ4バイトまたは16バイトの表現で返します。
 func (ip Addr) AsSlice() []byte
 
-// Next returns the address following ip.
-// If there is none, it returns the zero Addr.
+// Nextは、ipの次のアドレスを返します。
+// アドレスが存在しない場合、ゼロのAddrを返します。
 func (ip Addr) Next() Addr
 
-// Prev returns the IP before ip.
-// If there is none, it returns the IP zero value.
+// Prevは、ipの前のアドレスを返します。
+// アドレスが存在しない場合、ゼロのAddrを返します。
 func (ip Addr) Prev() Addr
 
-// String returns the string form of the IP address ip.
-// It returns one of 5 forms:
+// Stringは、IPアドレスipの文字列形式を返します。
+// 返される形式は、次の5つのいずれかです。
 //
-//   - "invalid IP", if ip is the zero Addr
-//   - IPv4 dotted decimal ("192.0.2.1")
-//   - IPv6 ("2001:db8::1")
-//   - "::ffff:1.2.3.4" (if Is4In6)
-//   - IPv6 with zone ("fe80:db8::1%eth0")
+//   - ゼロのAddrの場合は "invalid IP"
+//   - IPv4ドット付き10進数表記 ("192.0.2.1")
+//   - IPv6表記 ("2001:db8::1")
+//   - Is4In6の場合は "::ffff:1.2.3.4"
+//   - ゾーンを持つIPv6表記 ("fe80:db8::1%eth0")
 //
-// Note that unlike package net's IP.String method,
-// IPv4-mapped IPv6 addresses format with a "::ffff:"
-// prefix before the dotted quad.
+// 注意：パッケージnetのIP.Stringメソッドとは異なり、
+// IPv4マップされたIPv6アドレスは、ドット区切りの4つ組の前に"::ffff:"の接頭辞が付きます。
 func (ip Addr) String() string
 
-// AppendTo appends a text encoding of ip,
-// as generated by MarshalText,
-// to b and returns the extended buffer.
+// AppendToは、MarshalTextによって生成されたipのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
 func (ip Addr) AppendTo(b []byte) []byte
 
-// StringExpanded is like String but IPv6 addresses are expanded with leading
-// zeroes and no "::" compression. For example, "2001:db8::1" becomes
-// "2001:0db8:0000:0000:0000:0000:0000:0001".
+// StringExpandedは、Stringと同様ですが、IPv6アドレスは先頭にゼロを付けて"::"の圧縮を行わずに展開されます。
+// たとえば、"2001:db8::1"は"2001:0db8:0000:0000:0000:0000:0000:0001"になります。
 func (ip Addr) StringExpanded() string
 
-// MarshalText implements the encoding.TextMarshaler interface,
-// The encoding is the same as returned by String, with one exception:
-// If ip is the zero Addr, the encoding is the empty string.
+// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
+// エンコーディングは、Stringが返すものと同じですが、1つの例外があります。
+// ipがゼロのAddrの場合、エンコーディングは空の文字列になります。
 func (ip Addr) MarshalText() ([]byte, error)
 
-// UnmarshalText implements the encoding.TextUnmarshaler interface.
-// The IP address is expected in a form accepted by ParseAddr.
+// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+// IPアドレスは、ParseAddrで受け入れられる形式で指定する必要があります。
 //
-// If text is empty, UnmarshalText sets *ip to the zero Addr and
-// returns no error.
+// textが空の場合、UnmarshalTextは*ipをゼロのAddrに設定し、エラーを返しません。
 func (ip *Addr) UnmarshalText(text []byte) error
 
-// MarshalBinary implements the encoding.BinaryMarshaler interface.
-// It returns a zero-length slice for the zero Addr,
-// the 4-byte form for an IPv4 address,
-// and the 16-byte form with zone appended for an IPv6 address.
+// MarshalBinaryは、encoding.BinaryMarshalerインターフェースを実装します。
+// ゼロのAddrの場合は長さ0のスライスを返し、IPv4アドレスの場合は4バイトの形式を、
+// IPv6アドレスの場合はゾーンを追加した16バイトの形式を返します。
 func (ip Addr) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
-// It expects data in the form generated by MarshalBinary.
+// UnmarshalBinaryは、encoding.BinaryUnmarshalerインターフェースを実装します。
+// MarshalBinaryによって生成された形式のデータを想定しています。
 func (ip *Addr) UnmarshalBinary(b []byte) error
 
-// AddrPort is an IP and a port number.
+// AddrPortは、IPアドレスとポート番号です。
 type AddrPort struct {
 	ip   Addr
 	port uint16
 }
 
-// AddrPortFrom returns an AddrPort with the provided IP and port.
-// It does not allocate.
+// AddrPortFromは、提供されたIPとポート番号でAddrPortを返します。
+// アロケーションは行いません。
 func AddrPortFrom(ip Addr, port uint16) AddrPort
 
-// Addr returns p's IP address.
+// Addrは、pのIPアドレスを返します。
 func (p AddrPort) Addr() Addr
 
-// Port returns p's port.
+// Portは、pのポート番号を返します。
 func (p AddrPort) Port() uint16
 
-// ParseAddrPort parses s as an AddrPort.
+// ParseAddrPortは、sをAddrPortとして解析します。
 //
-// It doesn't do any name resolution: both the address and the port
-// must be numeric.
+// 名前解決は行われません。アドレスとポートの両方が数値である必要があります。
 func ParseAddrPort(s string) (AddrPort, error)
 
-// MustParseAddrPort calls ParseAddrPort(s) and panics on error.
-// It is intended for use in tests with hard-coded strings.
+// MustParseAddrPortは、ParseAddrPort(s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
+// テストでハードコードされた文字列を使用するために使用することを意図しています。
 func MustParseAddrPort(s string) AddrPort
 
-// IsValid reports whether p.Addr() is valid.
-// All ports are valid, including zero.
+// IsValidは、p.Addr()が有効かどうかを報告します。
+// ゼロを含むすべてのポートが有効です。
 func (p AddrPort) IsValid() bool
 
 // Compare returns an integer comparing two AddrPorts.
@@ -286,34 +270,30 @@ func (p AddrPort) Compare(p2 AddrPort) int
 
 func (p AddrPort) String() string
 
-// AppendTo appends a text encoding of p,
-// as generated by MarshalText,
-// to b and returns the extended buffer.
+// AppendToは、MarshalTextによって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
 func (p AddrPort) AppendTo(b []byte) []byte
 
-// MarshalText implements the encoding.TextMarshaler interface. The
-// encoding is the same as returned by String, with one exception: if
-// p.Addr() is the zero Addr, the encoding is the empty string.
+// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
+// エンコーディングは、Stringが返すものと同じですが、1つの例外があります。
+// p.Addr()がゼロのAddrの場合、エンコーディングは空の文字列になります。
 func (p AddrPort) MarshalText() ([]byte, error)
 
-// UnmarshalText implements the encoding.TextUnmarshaler
-// interface. The AddrPort is expected in a form
-// generated by MarshalText or accepted by ParseAddrPort.
+// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+// AddrPortは、MarshalTextによって生成された形式のデータ、またはParseAddrPortで受け入れられる形式で指定する必要があります。
 func (p *AddrPort) UnmarshalText(text []byte) error
 
-// MarshalBinary implements the encoding.BinaryMarshaler interface.
-// It returns Addr.MarshalBinary with an additional two bytes appended
-// containing the port in little-endian.
+// MarshalBinaryは、encoding.BinaryMarshalerインターフェースを実装します。
+// これは、Addr.MarshalBinaryに、リトルエンディアンで表されたポートを追加したものを返します。
 func (p AddrPort) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
-// It expects data in the form generated by MarshalBinary.
+// UnmarshalBinaryは、encoding.BinaryUnmarshalerインターフェースを実装します。
+// これは、MarshalBinaryによって生成された形式のデータを想定しています。
 func (p *AddrPort) UnmarshalBinary(b []byte) error
 
-// Prefix is an IP address prefix (CIDR) representing an IP network.
+// Prefixは、IPネットワークを表すIPアドレスプレフィックス（CIDR）です。
 //
-// The first Bits() of Addr() are specified. The remaining bits match any address.
-// The range of Bits() is [0,32] for IPv4 or [0,128] for IPv6.
+// Addr()の最初のBits()が指定されます。残りのビットは任意のアドレスに一致します。
+// Bits()の範囲は、IPv4の場合は[0,32]、IPv6の場合は[0,128]です。
 type Prefix struct {
 	ip Addr
 
@@ -322,97 +302,86 @@ type Prefix struct {
 	bitsPlusOne uint8
 }
 
-// PrefixFrom returns a Prefix with the provided IP address and bit
-// prefix length.
+// PrefixFromは、指定されたIPアドレスとビットプレフィックス長でPrefixを返します。
 //
-// It does not allocate. Unlike Addr.Prefix, PrefixFrom does not mask
-// off the host bits of ip.
+// アロケーションは行いません。Addr.Prefixとは異なり、PrefixFromはipのホストビットをマスクしません。
 //
-// If bits is less than zero or greater than ip.BitLen, Prefix.Bits
-// will return an invalid value -1.
+// bitsが負の場合またはip.BitLenより大きい場合、Prefix.Bitsは無効な値-1を返します。
 func PrefixFrom(ip Addr, bits int) Prefix
 
-// Addr returns p's IP address.
+// Addrは、pのIPアドレスを返します。
 func (p Prefix) Addr() Addr
 
-// Bits returns p's prefix length.
+// Bitsは、pのプレフィックス長を返します。
 //
-// It reports -1 if invalid.
+// 無効な場合は-1を報告します。
 func (p Prefix) Bits() int
 
-// IsValid reports whether p.Bits() has a valid range for p.Addr().
-// If p.Addr() is the zero Addr, IsValid returns false.
-// Note that if p is the zero Prefix, then p.IsValid() == false.
+// IsValidは、p.Addr()に対してp.Bits()が有効な範囲であるかどうかを報告します。
+// p.Addr()がゼロのAddrの場合、IsValidはfalseを返します。
+// pがゼロのPrefixの場合、p.IsValid() == falseになることに注意してください。
 func (p Prefix) IsValid() bool
 
-// IsSingleIP reports whether p contains exactly one IP.
+// IsSingleIPは、pが正確に1つのIPを含むかどうかを報告します。
 func (p Prefix) IsSingleIP() bool
 
-// Compare returns an integer comparing two prefixes.
-// The result will be 0 if p == p2, -1 if p < p2, and +1 if p > p2.
-// Prefixes sort first by validity (invalid before valid), then
-// address family (IPv4 before IPv6), then prefix length, then
-// address.
+// Compareは、2つのプレフィックスを比較して整数を返します。
+// p == p2の場合、結果は0になります。p < p2の場合は-1、p > p2の場合は+1になります。
+// プレフィックスは、まず有効性（有効でない場合は有効な前）、次にアドレスファミリ（IPv4はIPv6の前）、
+// 次にプレフィックス長、最後にアドレスでソートされます。
 func (p Prefix) Compare(p2 Prefix) int
 
-// ParsePrefix parses s as an IP address prefix.
-// The string can be in the form "192.168.1.0/24" or "2001:db8::/32",
-// the CIDR notation defined in RFC 4632 and RFC 4291.
-// IPv6 zones are not permitted in prefixes, and an error will be returned if a
-// zone is present.
+// ParsePrefixは、sをIPアドレスプレフィックスとして解析します。
+// 文字列は、RFC 4632およびRFC 4291で定義されたCIDR表記形式である場合があります。
+// 文字列は、"192.168.1.0/24"または"2001:db8::/32"のようになります。
+// IPv6ゾーンはプレフィックスで許可されていません。ゾーンが存在する場合は、エラーが返されます。
 //
-// Note that masked address bits are not zeroed. Use Masked for that.
+// マスクされたアドレスビットはゼロになりません。そのため、Maskedを使用してください。
 func ParsePrefix(s string) (Prefix, error)
 
-// MustParsePrefix calls ParsePrefix(s) and panics on error.
-// It is intended for use in tests with hard-coded strings.
+// MustParsePrefixは、ParsePrefix(s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
+// テストでハードコードされた文字列を使用するために使用することを意図しています。
 func MustParsePrefix(s string) Prefix
 
-// Masked returns p in its canonical form, with all but the high
-// p.Bits() bits of p.Addr() masked off.
+// Maskedは、pを正規形式で返します。p.Addr()の高位p.Bits()ビット以外はすべてマスクされます。
 //
-// If p is zero or otherwise invalid, Masked returns the zero Prefix.
+// pがゼロまたは無効な場合、MaskedはゼロのPrefixを返します。
 func (p Prefix) Masked() Prefix
 
-// Contains reports whether the network p includes ip.
+// Containsは、ネットワークpがipを含むかどうかを報告します。
 //
-// An IPv4 address will not match an IPv6 prefix.
-// An IPv4-mapped IPv6 address will not match an IPv4 prefix.
-// A zero-value IP will not match any prefix.
-// If ip has an IPv6 zone, Contains returns false,
-// because Prefixes strip zones.
+// IPv4アドレスはIPv6プレフィックスに一致しません。
+// IPv4マップされたIPv6アドレスはIPv4プレフィックスに一致しません。
+// ゼロ値のIPはどのプレフィックスにも一致しません。
+// ipがIPv6ゾーンを持つ場合、Prefixesはゾーンを削除するため、Containsはfalseを返します。
 func (p Prefix) Contains(ip Addr) bool
 
-// Overlaps reports whether p and o contain any IP addresses in common.
+// Overlapsは、pとoが共通のIPアドレスを含むかどうかを報告します。
 //
-// If p and o are of different address families or either have a zero
-// IP, it reports false. Like the Contains method, a prefix with an
-// IPv4-mapped IPv6 address is still treated as an IPv6 mask.
+// pとoが異なるアドレスファミリであるか、どちらかがゼロのIPである場合、falseを報告します。
+// Containsメソッドと同様に、IPv4マップされたIPv6アドレスを持つプレフィックスは、IPv6マスクとして扱われます。
 func (p Prefix) Overlaps(o Prefix) bool
 
-// AppendTo appends a text encoding of p,
-// as generated by MarshalText,
-// to b and returns the extended buffer.
+// AppendToは、MarshalTextによって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
 func (p Prefix) AppendTo(b []byte) []byte
 
-// MarshalText implements the encoding.TextMarshaler interface,
-// The encoding is the same as returned by String, with one exception:
-// If p is the zero value, the encoding is the empty string.
+// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
+// エンコーディングは、Stringが返すものと同じですが、1つの例外があります。
+// pがゼロ値の場合、エンコーディングは空の文字列になります。
 func (p Prefix) MarshalText() ([]byte, error)
 
-// UnmarshalText implements the encoding.TextUnmarshaler interface.
-// The IP address is expected in a form accepted by ParsePrefix
-// or generated by MarshalText.
+// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+// IPアドレスは、ParsePrefixで受け入れられる形式で指定する必要があります。
+// または、MarshalTextによって生成された形式である必要があります。
 func (p *Prefix) UnmarshalText(text []byte) error
 
-// MarshalBinary implements the encoding.BinaryMarshaler interface.
-// It returns Addr.MarshalBinary with an additional byte appended
-// containing the prefix bits.
+// MarshalBinaryは、encoding.BinaryMarshalerインターフェースを実装します。
+// これは、Addr.MarshalBinaryに、プレフィックスビットを表す追加のバイトを追加したものを返します。
 func (p Prefix) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
-// It expects data in the form generated by MarshalBinary.
+// UnmarshalBinaryは、encoding.BinaryUnmarshalerインターフェースを実装します。
+// これは、MarshalBinaryによって生成された形式のデータを想定しています。
 func (p *Prefix) UnmarshalBinary(b []byte) error
 
-// String returns the CIDR notation of p: "<ip>/<bits>".
+// Stringは、pのCIDR表記を返します: "<ip>/<bits>"。
 func (p Prefix) String() string

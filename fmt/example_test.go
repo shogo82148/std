@@ -5,12 +5,12 @@
 package fmt_test
 
 import (
-	"fmt"
-	"io"
-	"math"
-	"os"
-	"strings"
-	"time"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/math"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/strings"
+	"github.com/shogo82148/std/time"
 )
 
 // The Errorf function lets us use formatting features

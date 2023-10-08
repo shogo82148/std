@@ -6,8 +6,8 @@
 package heap_test
 
 import (
-	"container/heap"
-	"fmt"
+	"github.com/shogo82148/std/container/heap"
+	"github.com/shogo82148/std/fmt"
 )
 
 // This example creates a PriorityQueue with some items, adds and manipulates an item,

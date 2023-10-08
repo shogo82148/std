@@ -5,11 +5,11 @@
 package ecdsa_test
 
 import (
-	"crypto/ecdsa"
-	"crypto/elliptic"
-	"crypto/rand"
-	"crypto/sha256"
-	"fmt"
+	"github.com/shogo82148/std/crypto/ecdsa"
+	"github.com/shogo82148/std/crypto/elliptic"
+	"github.com/shogo82148/std/crypto/rand"
+	"github.com/shogo82148/std/crypto/sha256"
+	"github.com/shogo82148/std/fmt"
 )
 
 func Example() {

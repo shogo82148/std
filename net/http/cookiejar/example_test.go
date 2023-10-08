@@ -5,12 +5,12 @@
 package cookiejar_test
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"net/http/cookiejar"
-	"net/http/httptest"
-	"net/url"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/net/http"
+	"github.com/shogo82148/std/net/http/cookiejar"
+	"github.com/shogo82148/std/net/http/httptest"
+	"github.com/shogo82148/std/net/url"
 )
 
 func ExampleNew() {

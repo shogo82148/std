@@ -5,8 +5,8 @@
 package maphash_test
 
 import (
-	"fmt"
-	"hash/maphash"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/hash/maphash"
 )
 
 func Example() {
