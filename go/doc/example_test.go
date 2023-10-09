@@ -11,11 +11,10 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// This example illustrates how to use NewFromFiles
-// to compute package documentation with examples.
+// この例は、NewFromFilesを使用してパッケージのドキュメントと例を計算する方法を示しています。
 func ExampleNewFromFiles() {
-	// src and test are two source files that make up
-	// a package whose documentation will be computed.
+
+	// srcとtestは、ドキュメントが計算されるパッケージを構成する2つのソースファイルです。
 	const src = `
 // This is the package comment.
 package p
@@ -36,14 +35,14 @@ func ExampleGreet_world() {
 }
 `
 
-	// Create the AST by parsing src and test.
+	// srcとtestを解析してASTを作成します。
 	fset := token.NewFileSet()
 	files := []*ast.File{
 		mustParse(fset, "src.go", src),
 		mustParse(fset, "src_test.go", test),
 	}
 
-	// Compute package documentation with examples.
+	// 例を用いて計算パッケージのドキュメントを作成します。
 	p, err := doc.NewFromFiles(fset, files, "example.com/p")
 	if err != nil {
 		panic(err)
