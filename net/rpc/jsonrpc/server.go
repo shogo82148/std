@@ -9,10 +9,10 @@ import (
 	"github.com/shogo82148/std/net/rpc"
 )
 
-// NewServerCodec returns a new rpc.ServerCodec using JSON-RPC on conn.
+// NewServerCodecはconn上でJSON-RPCを使用する新しいrpc.ServerCodecを返します。
 func NewServerCodec(conn io.ReadWriteCloser) rpc.ServerCodec
 
-// ServeConn runs the JSON-RPC server on a single connection.
-// ServeConn blocks, serving the connection until the client hangs up.
-// The caller typically invokes ServeConn in a go statement.
+// ServeConnは単一の接続でJSON-RPCサーバーを実行します。
+// ServeConnはブロックし、クライアントが切断するまで接続を処理します。
+// 呼び出し元は通常、goステートメントでServeConnを呼び出します。
 func ServeConn(conn io.ReadWriteCloser)
