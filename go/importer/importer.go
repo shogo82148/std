@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package importer provides access to export data importers.
+// パッケージインポーターは、エクスポートデータのインポートを提供します。
 package importer
 
 import (
@@ -11,35 +11,26 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A Lookup function returns a reader to access package data for
-// a given import path, or an error if no matching package is found.
+// Lookup 関数は、与えられたインポートパスに対してパッケージデータにアクセスするためのリーダー、または一致するパッケージが見つからない場合はエラーを返します。
 type Lookup func(path string) (io.ReadCloser, error)
 
-// ForCompiler returns an Importer for importing from installed packages
-// for the compilers "gc" and "gccgo", or for importing directly
-// from the source if the compiler argument is "source". In this
-// latter case, importing may fail under circumstances where the
-// exported API is not entirely defined in pure Go source code
-// (if the package API depends on cgo-defined entities, the type
-// checker won't have access to those).
-//
-// The lookup function is called each time the resulting importer needs
-// to resolve an import path. In this mode the importer can only be
-// invoked with canonical import paths (not relative or absolute ones);
-// it is assumed that the translation to canonical import paths is being
-// done by the client of the importer.
-//
-// A lookup function must be provided for correct module-aware operation.
-// Deprecated: If lookup is nil, for backwards-compatibility, the importer
-// will attempt to resolve imports in the $GOPATH workspace.
+// ForCompilerは、インストールされたパッケージからインポートするためのImporterを返します。
+// コンパイラの引数が「gc」または「gccgo」の場合、またはコンパイラの引数が「source」の場合はソースから直接インポートするためのものです。
+// この後者の場合、純粋なGoソースコードに完全に定義されていない場合には、インポートが失敗することがあります
+// (パッケージAPIがcgoで定義されたエンティティに依存する場合、型チェッカはそれにアクセスできません)。
+// 結果のImporterがインポートパスの解決に必要な場合、lookup関数が呼び出されます。
+// このモードでは、インポータには正規のインポートパス(相対的または絶対のものではない)でのみ呼び出されるものとします。
+// 正規のインポートパスへの変換は、インポータのクライアントによって行われているものとします。
+// 正しいモジュール対応動作のためには、lookup関数を提供する必要があります。
+// Deprecated: もしlookupがnilの場合、後方互換性のためにインポータは$GOPATHワークスペースでインポートを解決しようとします。
 func ForCompiler(fset *token.FileSet, compiler string, lookup Lookup) types.Importer
 
-// For calls ForCompiler with a new FileSet.
+// 新しいFileSetでForCompilerを呼び出します。
 //
-// Deprecated: Use ForCompiler, which populates a FileSet
-// with the positions of objects created by the importer.
+// Deprecated:  importerによって作成されたオブジェクトの位置を
+// FileSetで設定するためにForCompilerを使用してください。
 func For(compiler string, lookup Lookup) types.Importer
 
-// Default returns an Importer for the compiler that built the running binary.
-// If available, the result implements types.ImporterFrom.
+// Defaultは実行バイナリをビルドしたコンパイラのためのImporterを返します。
+// もし利用可能であれば、結果はtypes.ImporterFromを実装します。
 func Default() types.Importer
