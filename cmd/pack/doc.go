@@ -3,38 +3,35 @@
 // license that can be found in the LICENSE file.
 
 /*
-Pack is a simple version of the traditional Unix ar tool.
-It implements only the operations needed by Go.
+Packは、伝統的なUnixのarツールの簡易版です。
+Go言語で必要な操作のみを実装しています。
 
-Usage:
+使用方法:
 
 	go tool pack op file.a [name...]
 
-Pack applies the operation to the archive, using the names as arguments to the operation.
+Packは、アーカイブに対して操作を適用し、操作の引数として名前を使用します。
 
-The operation op is given by one of these letters:
+opは、次のいずれかの文字で指定される操作です:
 
-	c	append files (from the file system) to a new archive
-	p	print files from the archive
-	r	append files (from the file system) to the archive
-	t	list files from the archive
-	x	extract files from the archive
+	c	新しいアーカイブにファイル（ファイルシステムから）を追加する
+	p	アーカイブからファイルを表示する
+	r	アーカイブにファイル（ファイルシステムから）を追加する
+	t	アーカイブからファイルを一覧表示する
+	x	アーカイブからファイルを抽出する
 
-The archive argument to the c command must be non-existent or a
-valid archive file, which will be cleared before adding new entries. It
-is an error if the file exists but is not an archive.
+cコマンドへのアーカイブ引数は、存在しないか有効なアーカイブファイルでなければならず、
+新しいエントリを追加する前にクリアされます。ファイルが存在するがアーカイブではない場合はエラーです。
 
-For the p, t, and x commands, listing no names on the command line
-causes the operation to apply to all files in the archive.
+p、t、xコマンドでは、コマンドラインの名前がない場合、操作はアーカイブ内のすべてのファイルに適用されます。
 
-In contrast to Unix ar, the r operation always appends to the archive,
-even if a file with the given name already exists in the archive. In this way
-pack's r operation is more like Unix ar's rq operation.
+Unixのarとは異なり、r操作は常にアーカイブに追記されます。
+つまり、指定した名前のファイルがアーカイブに既に存在していても、追加されます。
+このように、packのr操作はUnixのarのrq操作に近い動作です。
 
-Adding the letter v to an operation, as in pv or rv, enables verbose operation:
-For the c and r commands, names are printed as files are added.
-For the p command, each file is prefixed by the name on a line by itself.
-For the t command, the listing includes additional file metadata.
-For the x command, names are printed as files are extracted.
-*/
-package main
+操作の末尾にv文字を追加する（pvまたはrvなど）と、冗長な操作が有効になります:
+cおよびrコマンドでは、ファイルが追加されるたびに名前が表示されます。
+pコマンドでは、各ファイルが名前で前置された行で表示されます。
+tコマンドでは、一覧には追加のファイルメタデータが含まれます。
+xコマンドでは、ファイルが抽出されるたびに名前が表示されます。
+*/package main
