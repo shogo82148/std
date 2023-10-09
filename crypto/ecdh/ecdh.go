@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package ecdh implements Elliptic Curve Diffie-Hellman over
-// NIST curves and Curve25519.
+// パッケージecdhはNIST曲線とCurve25519上での楕円曲線ディフィー・ヘルマンを実装します。
 package ecdh
 
 import (
@@ -24,42 +23,39 @@ type Curve interface {
 	privateKeyToPublicKey(*PrivateKey) *PublicKey
 }
 
-// PublicKey is an ECDH public key, usually a peer's ECDH share sent over the wire.
+// PublicKeyは通常、ワイヤ経由で送信されるECDHの共有キーです。
 //
-// These keys can be parsed with [crypto/x509.ParsePKIXPublicKey] and encoded
-// with [crypto/x509.MarshalPKIXPublicKey]. For NIST curves, they then need to
-// be converted with [crypto/ecdsa.PublicKey.ECDH] after parsing.
+// これらのキーは[crypto/x509.ParsePKIXPublicKey]で解析可能であり、
+// [crypto/x509.MarshalPKIXPublicKey]を使用してエンコードすることもできます。
+// NIST曲線の場合、解析後に[crypto/ecdsa.PublicKey.ECDH]で変換する必要があります。
 type PublicKey struct {
 	curve     Curve
 	publicKey []byte
 	boring    *boring.PublicKeyECDH
 }
 
-// Bytes returns a copy of the encoding of the public key.
+// Bytesは公開鍵のエンコードのコピーを返します。
 func (k *PublicKey) Bytes() []byte
 
-// Equal returns whether x represents the same public key as k.
+// Equalは、xがkと同じ公開鍵を表すかどうかを返します。
 //
-// Note that there can be equivalent public keys with different encodings which
-// would return false from this check but behave the same way as inputs to ECDH.
+// 注意：異なるエンコーディングを持つ同等の公開鍵があり、このチェックではfalseを返しますが、ECDHの入力として同じ結果を示す可能性があります。
 //
-// This check is performed in constant time as long as the key types and their
-// curve match.
+// キーのタイプとその曲線が一致している限り、このチェックは一定時間で実行されます。
 func (k *PublicKey) Equal(x crypto.PublicKey) bool
 
 func (k *PublicKey) Curve() Curve
 
-// PrivateKey is an ECDH private key, usually kept secret.
+// PrivateKeyは通常秘密に保持されるECDHの秘密鍵です。
 //
-// These keys can be parsed with [crypto/x509.ParsePKCS8PrivateKey] and encoded
-// with [crypto/x509.MarshalPKCS8PrivateKey]. For NIST curves, they then need to
-// be converted with [crypto/ecdsa.PrivateKey.ECDH] after parsing.
+// これらの鍵は[crypto/x509.ParsePKCS8PrivateKey]でパースでき、[crypto/x509.MarshalPKCS8PrivateKey]
+// でエンコードすることができます。NIST曲線の場合、パース後に[crypto/ecdsa.PrivateKey.ECDH]で変換する必要があります。
 type PrivateKey struct {
 	curve      Curve
 	privateKey []byte
 	boring     *boring.PrivateKeyECDH
-	// publicKey is set under publicKeyOnce, to allow loading private keys with
-	// NewPrivateKey without having to perform a scalar multiplication.
+
+	// publicKeyは、公開鍵を公開鍵の一度セットしています。これにより、スカラー乗算を行わずにNewPrivateKeyで秘密鍵を読み込むことができます。
 	publicKey     *PublicKey
 	publicKeyOnce sync.Once
 }
@@ -67,30 +63,25 @@ type PrivateKey struct {
 // ECDH performs an ECDH exchange and returns the shared secret. The PrivateKey
 // and PublicKey must use the same curve.
 //
-// For NIST curves, this performs ECDH as specified in SEC 1, Version 2.0,
-// Section 3.3.1, and returns the x-coordinate encoded according to SEC 1,
-// Version 2.0, Section 2.3.5. The result is never the point at infinity.
+// NIST曲線の場合、これはSEC 1バージョン2.0セクション3.3.1で指定されたようにECDHを実行し、SEC 1バージョン2.0セクション2.3.5に従ってエンコードされたx座標を返します。結果は決して無限遠点ではありません。
 //
-// For X25519, this performs ECDH as specified in RFC 7748, Section 6.1. If
-// the result is the all-zero value, ECDH returns an error.
+// X25519の場合、これはRFC 7748セクション6.1で指定されたようにECDHを実行します。結果が全て0値の場合、ECDHはエラーを返します。
 func (k *PrivateKey) ECDH(remote *PublicKey) ([]byte, error)
 
-// Bytes returns a copy of the encoding of the private key.
+// Bytesは、プライベートキーのエンコーディングのコピーを返します。
 func (k *PrivateKey) Bytes() []byte
 
-// Equal returns whether x represents the same private key as k.
+// Equalは、xがkと同じ秘密鍵を表しているかどうかを返します。
 //
-// Note that there can be equivalent private keys with different encodings which
-// would return false from this check but behave the same way as inputs to ECDH.
+// ただし、異なるエンコーディングを持つ等価な秘密鍵が存在する場合があることに注意してください。
+// この場合、このチェックではfalseが返されますが、ECDHの入力としては同じように機能します。
 //
-// This check is performed in constant time as long as the key types and their
-// curve match.
+// このチェックは、キーのタイプと曲線が一致している限り、一定の時間で実行されます。
 func (k *PrivateKey) Equal(x crypto.PrivateKey) bool
 
 func (k *PrivateKey) Curve() Curve
 
 func (k *PrivateKey) PublicKey() *PublicKey
 
-// Public implements the implicit interface of all standard library private
-// keys. See the docs of crypto.PrivateKey.
+// Publicは、すべての標準ライブラリの非公開キーの暗黙のインターフェースを実装します。crypto.PrivateKeyのドキュメントを参照してください。
 func (k *PrivateKey) Public() crypto.PublicKey

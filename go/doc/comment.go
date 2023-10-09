@@ -8,41 +8,39 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// ToHTML converts comment text to formatted HTML.
+// ToHTMLはコメントテキストをフォーマットされたHTMLに変換します。
 //
-// Deprecated: ToHTML cannot identify documentation links
-// in the doc comment, because they depend on knowing what
-// package the text came from, which is not included in this API.
+// Deprecated: ToHTMLはドキュメントリンクを識別できません
+// ドキュメントコメント内のリンクは、テキストがパッケージから取得された内容を知っている必要があるため、このAPIには含まれていません。
 //
-// Given the *[doc.Package] p where text was found,
-// ToHTML(w, text, nil) can be replaced by:
+// *[doc.Package] pがテキストが見つかった場所で見つかる場合、
+// ToHTML(w, text, nil)は以下のように置き換えられます：
 //
 //	w.Write(p.HTML(text))
 //
-// which is in turn shorthand for:
+// これは次の省略形です：
 //
 //	w.Write(p.Printer().HTML(p.Parser().Parse(text)))
 //
-// If words may be non-nil, the longer replacement is:
+// wordsがnilでない場合、より長い置換は次のとおりです：
 //
 //	parser := p.Parser()
 //	parser.Words = words
 //	w.Write(p.Printer().HTML(parser.Parse(d)))
 func ToHTML(w io.Writer, text string, words map[string]string)
 
-// ToText converts comment text to formatted text.
+// ToTextはコメントテキストを整形されたテキストに変換します。
 //
-// Deprecated: ToText cannot identify documentation links
-// in the doc comment, because they depend on knowing what
-// package the text came from, which is not included in this API.
+// Deprecated: ToTextはドキュメントリンクを識別できません。
+// ドキュメントリンクはテキストが含まれるパッケージを知る必要があるため、
+// このAPIには含まれていません。
 //
-// Given the *[doc.Package] p where text was found,
-// ToText(w, text, "", "\t", 80) can be replaced by:
+// *[doc.Package] pでテキストが見つかった場合、
+// ToText(w, text, "", "\t", 80)は次のように置き換えられます:
 //
 //	w.Write(p.Text(text))
 //
-// In the general case, ToText(w, text, prefix, codePrefix, width)
-// can be replaced by:
+// 一般的な場合、ToText(w, text, prefix, codePrefix, width)は次のように置き換えられます:
 //
 //	d := p.Parser().Parse(text)
 //	pr := p.Printer()
@@ -51,6 +49,5 @@ func ToHTML(w io.Writer, text string, words map[string]string)
 //	pr.TextWidth = width
 //	w.Write(pr.Text(d))
 //
-// See the documentation for [Package.Text] and [comment.Printer.Text]
-// for more details.
+// 詳細については、[Package.Text] と [comment.Printer.Text] のドキュメントを参照してください。
 func ToText(w io.Writer, text string, prefix, codePrefix string, width int)

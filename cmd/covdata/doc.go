@@ -3,9 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Covdata is a program for manipulating and generating reports
-from 2nd-generation coverage testing output files, those produced
-from running applications or integration tests. E.g.
+Covdataは、アプリケーションや統合テストを実行することによって生成される、2世代のカバレッジテストの出力ファイルを操作し、レポートを生成するためのプログラムです。例えば、
 
 	$ mkdir ./profiledir
 	$ go build -cover -o myapp.exe .
@@ -20,21 +18,21 @@ selecting a specific reporting, merging, or data manipulation operation.
 Descriptions on the various modes (run "go tool cover <mode> -help" for
 specifics on usage of a given mode):
 
-1. Report percent of statements covered in each profiled package
+1. プロファイルされたパッケージごとのステートメントのカバー率を報告する：
 
 	$ go tool covdata percent -i=profiledir
-	cov-example/p	coverage: 41.1% of statements
-	main	coverage: 87.5% of statements
+	cov-example/p	カバレッジ：ステートメントの41.1%
+	main	カバレッジ：ステートメントの87.5%
 	$
 
-2. Report import paths of packages profiled
+2. プロファイルされたパッケージのインポートパスを報告する：
 
 	$ go tool covdata pkglist -i=profiledir
 	cov-example/p
 	main
 	$
 
-3. Report percent statements covered by function:
+3. 関数ごとのステートメントのカバー率を報告する：
 
 	$ go tool covdata func -i=profiledir
 	cov-example/p/p.go:12:		emptyFn			0.0%
@@ -43,7 +41,7 @@ specifics on usage of a given mode):
 	...
 	$
 
-4. Convert coverage data to legacy textual format:
+4. カバレッジデータを古いテキスト形式に変換する：
 
 	$ go tool covdata textfmt -i=profiledir -o=cov.txt
 	$ head cov.txt
@@ -56,25 +54,24 @@ specifics on usage of a given mode):
 	$ go tool cover -html=cov.txt
 	$
 
-5. Merge profiles together:
+5. プロファイルをマージする：
 
 	$ go tool covdata merge -i=indir1,indir2 -o=outdir -modpaths=github.com/go-delve/delve
 	$
 
-6. Subtract one profile from another
+6. プロファイルから別のプロファイルを差し引く：
 
 	$ go tool covdata subtract -i=indir1,indir2 -o=outdir
 	$
 
-7. Intersect profiles
+7. プロファイルの交差点を求める：
 
 	$ go tool covdata intersect -i=indir1,indir2 -o=outdir
 	$
 
-8. Dump a profile for debugging purposes.
+8. デバッグ目的でプロファイルをダンプする：
 
 	$ go tool covdata debugdump -i=indir
-	<human readable output>
+	<人間に読みやすい出力>
 	$
-*/
-package main
+*/package main

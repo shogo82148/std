@@ -6,6 +6,6 @@ package doc
 
 type Filter func(string) bool
 
-// Filter eliminates documentation for names that don't pass through the filter f.
-// TODO(gri): Recognize "Type.Method" as a name.
+// Filterは、フィルターfを通過しない名前のドキュメントを除外します。
+// TODO（gri）："Type.Method"を名前として認識する。
 func (p *Package) Filter(f Filter)

@@ -2,16 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package format implements standard formatting of Go source.
+// パッケージformatはGoソースコードの標準的なフォーマットを実装します。
 //
-// Note that formatting of Go source code changes over time, so tools relying on
-// consistent formatting should execute a specific version of the gofmt binary
-// instead of using this package. That way, the formatting will be stable, and
-// the tools won't need to be recompiled each time gofmt changes.
+// Goソースコードのフォーマットは時間とともに変化するため、
+// 一貫したフォーマットに依存するツールは、このパッケージを使う代わりに特定のバージョンのgofmtバイナリを実行する必要があります。
+// その方法で、フォーマットが安定し、ツールをgoftmtの変更ごとに再コンパイルする必要がなくなります。
 //
-// For example, pre-submit checks that use this package directly would behave
-// differently depending on what Go version each developer uses, causing the
-// check to be inherently fragile.
+// たとえば、このパッケージを直接使用するプレサブミットチェックは、
+// 開発者が使用しているGoのバージョンによって異なる動作をするため、不安定になる可能性があります。
 package format
 
 import (
@@ -19,24 +17,23 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Node formats node in canonical gofmt style and writes the result to dst.
+// Nodeはソースコードを標準的なgofmtスタイルに整形し、結果をdstに書き込みます。
 //
-// The node type must be *ast.File, *printer.CommentedNode, []ast.Decl,
-// []ast.Stmt, or assignment-compatible to ast.Expr, ast.Decl, ast.Spec,
-// or ast.Stmt. Node does not modify node. Imports are not sorted for
-// nodes representing partial source files (for instance, if the node is
-// not an *ast.File or a *printer.CommentedNode not wrapping an *ast.File).
+// nodeの型は*ast.File、*printer.CommentedNode、[]ast.Decl、[]ast.Stmtのいずれかである必要があります。
+// もしくはast.Expr、ast.Decl、ast.Spec、ast.Stmtと互換性のある代入可能な型である必要があります。
+// Nodeはnodeを変更しません。部分的なソースファイルを表すノードの場合、
+// （例えば、nodeが*ast.Fileでない場合や*printer.CommentedNodeが*ast.Fileを包んでいない場合）インポートはソートされません。
 //
-// The function may return early (before the entire result is written)
-// and return a formatting error, for instance due to an incorrect AST.
+// 関数は早期に（結果が完全に書き込まれる前に）戻って、
+// 正しくないASTのためにフォーマットエラーを返す場合があります。
 func Node(dst io.Writer, fset *token.FileSet, node any) error
 
-// Source formats src in canonical gofmt style and returns the result
-// or an (I/O or syntax) error. src is expected to be a syntactically
-// correct Go source file, or a list of Go declarations or statements.
+// この関数は、ソースコードが正規のgofmtスタイルで書かれていると仮定して、
+// ソースコードを変換し結果を返します。エラーが発生した場合はそれも返されます。
+// srcは構文的に正しいGoのソースファイル、またはGoの宣言または文のリストであることが期待されます。
 //
-// If src is a partial source file, the leading and trailing space of src
-// is applied to the result (such that it has the same leading and trailing
-// space as src), and the result is indented by the same amount as the first
-// line of src containing code. Imports are not sorted for partial source files.
+// srcが部分的なソースファイルの場合、srcの先頭と末尾のスペースが結果に適用されます
+// (つまり、先頭と末尾のスペースがsrcと同じになるように)。
+// また、結果はsrcのコードを含む最初の行と同じだけインデントされます。
+// 部分的なソースファイルでは、インポートステートメントはソートされません。
 func Source(src []byte) ([]byte, error)

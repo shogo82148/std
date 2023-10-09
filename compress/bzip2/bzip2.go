@@ -7,8 +7,7 @@ package bzip2
 
 import "github.com/shogo82148/std/io"
 
-// A StructuralError is returned when the bzip2 data is found to be
-// syntactically invalid.
+// StructuralErrorは、bzip2データが構文的に無効であることが判明した場合に返されます。
 type StructuralError string
 
 func (s StructuralError) Error() string

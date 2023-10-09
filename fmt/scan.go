@@ -8,9 +8,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// ScanState represents the scanner state passed to custom scanners.
-// Scanners may do rune-at-a-time scanning or ask the ScanState
-// to discover the next space-delimited token.
+// ScanStateはカスタムスキャナーに渡されるスキャナーの状態を表します。
+// スキャナーは一文字ずつスキャンすることもでき、またScanStateに次のスペース区切りのトークンを見つけるように依頼することもできます。
 type ScanState interface {
 	ReadRune() (r rune, size int, err error)
 
@@ -25,61 +24,42 @@ type ScanState interface {
 	Read(buf []byte) (n int, err error)
 }
 
-// Scanner is implemented by any value that has a Scan method, which scans
-// the input for the representation of a value and stores the result in the
-// receiver, which must be a pointer to be useful. The Scan method is called
-// for any argument to Scan, Scanf, or Scanln that implements it.
+// Scannerは、値のスキャンメソッドを持つ任意の値によって実装されており、
+// 入力を値の表現形式でスキャンし、結果をレシーバに格納します。
+// 有用にするために、レシーバはポインタでなければなりません。
+// スキャンメソッドは、Scan、Scanf、またはScanlnの引数として実装するものです。
 type Scanner interface {
 	Scan(state ScanState, verb rune) error
 }
 
-// Scan scans text read from standard input, storing successive
-// space-separated values into successive arguments. Newlines count
-// as space. It returns the number of items successfully scanned.
-// If that is less than the number of arguments, err will report why.
+// Scanは標準入力から読み取ったテキストをスキャンし、連続するスペースで区切られた値を連続した引数に格納します。改行はスペースとして扱われます。スキャンに成功したアイテムの数を返します。引数の数よりも少ない場合、errにはエラーの理由が報告されます。
 func Scan(a ...any) (n int, err error)
 
-// Scanln is similar to Scan, but stops scanning at a newline and
-// after the final item there must be a newline or EOF.
+// ScanlnはScanに似ていますが、改行でスキャンを停止し、
+// 最後のアイテムの後には改行またはEOFが必要です。
 func Scanln(a ...any) (n int, err error)
 
-// Scanf scans text read from standard input, storing successive
-// space-separated values into successive arguments as determined by
-// the format. It returns the number of items successfully scanned.
-// If that is less than the number of arguments, err will report why.
-// Newlines in the input must match newlines in the format.
-// The one exception: the verb %c always scans the next rune in the
-// input, even if it is a space (or tab etc.) or newline.
+// Scanfは標準入力から読み取ったテキストをスキャンし、形式に応じて連続したスペースで区切られた値を連続した引数に保存します。成功したスキャンのアイテム数を返します。引数の数よりも少ない場合、エラーが発生した理由がerrに報告されます。入力にある改行は、形式にある改行と一致する必要があります。ただし例外として、動詞%cは常に入力の次のルーンをスキャンします。それがスペース（またはタブなど）や改行であってもです。
 func Scanf(format string, a ...any) (n int, err error)
 
-// Sscan scans the argument string, storing successive space-separated
-// values into successive arguments. Newlines count as space. It
-// returns the number of items successfully scanned. If that is less
-// than the number of arguments, err will report why.
+// Sscanは引数の文字列をスキャンし、連続するスペースで区切られた値を連続する引数に格納します。改行もスペースとして扱われます。正常にスキャンできたアイテムの数を返します。もし正常にスキャンされたアイテムの数が引数の数よりも少ない場合、errがその理由を報告します。
 func Sscan(str string, a ...any) (n int, err error)
 
-// Sscanln is similar to Sscan, but stops scanning at a newline and
-// after the final item there must be a newline or EOF.
+// SscanlnはSscanに似ていますが、改行でスキャンを停止し、最後のアイテムの後には改行またはEOFが必要です。
 func Sscanln(str string, a ...any) (n int, err error)
 
-// Sscanf scans the argument string, storing successive space-separated
-// values into successive arguments as determined by the format. It
-// returns the number of items successfully parsed.
-// Newlines in the input must match newlines in the format.
+// Sscanfは引数文字列をスキャンし、フォーマットによって決まる連続するスペースで区切られた値を連続した引数に格納します。正常に解析されたアイテムの数を返します。
+// 入力の改行は、フォーマットと一致する必要があります。
 func Sscanf(str string, format string, a ...any) (n int, err error)
 
-// Fscan scans text read from r, storing successive space-separated
-// values into successive arguments. Newlines count as space. It
-// returns the number of items successfully scanned. If that is less
-// than the number of arguments, err will report why.
+// Fscan は、r から読み取ったテキストをスキャンし、連続した空白で区切られた値を連続した引数に格納します。改行も空白としてカウントされます。成功したスキャンのアイテム数を返します。引数の数よりも少ない場合、err がなぜエラーが発生したのかを報告します。
 func Fscan(r io.Reader, a ...any) (n int, err error)
 
-// Fscanln is similar to Fscan, but stops scanning at a newline and
-// after the final item there must be a newline or EOF.
+// FscanlnはFscanに似ていますが、改行でスキャンを終了し、最後の項目の後には改行かEOFが必要です。
 func Fscanln(r io.Reader, a ...any) (n int, err error)
 
-// Fscanf scans text read from r, storing successive space-separated
-// values into successive arguments as determined by the format. It
-// returns the number of items successfully parsed.
-// Newlines in the input must match newlines in the format.
+// Fscanfはrから読み取ったテキストをスキャンし、
+// フォーマットに従って連続したスペースで区切られた値を連続した引数に格納します。
+// 成功した解析のアイテム数を返します。
+// 入力の改行はフォーマットの改行と一致する必要があります。
 func Fscanf(r io.Reader, format string, a ...any) (n int, err error)

@@ -2,40 +2,36 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Nm lists the symbols defined or used by an object file, archive, or executable.
+// Nmはオブジェクトファイル、アーカイブ、または実行可能ファイルで定義または使用されているシンボルをリストアップします。
 //
-// Usage:
+// 使用法:
 //
-//	go tool nm [options] file...
+//	go tool nm [オプション] ファイル...
 //
-// The default output prints one line per symbol, with three space-separated
-// fields giving the address (in hexadecimal), type (a character), and name of
-// the symbol. The types are:
+// デフォルトの出力は、1行ごとにシンボルごとに3つのスペースで区切られたフィールドを表示します。フィールドは、アドレス（16進数）、タイプ（文字）、およびシンボルの名前が含まれます。タイプは次のとおりです：
 //
-//	T	text (code) segment symbol
-//	t	static text segment symbol
-//	R	read-only data segment symbol
-//	r	static read-only data segment symbol
-//	D	data segment symbol
-//	d	static data segment symbol
-//	B	bss segment symbol
-//	b	static bss segment symbol
-//	C	constant address
-//	U	referenced but undefined symbol
+//	T	テキスト（コード）セグメントのシンボル
+//	t	静的テキストセグメントのシンボル
+//	R	読み取り専用データセグメントのシンボル
+//	r	静的読み取り専用データセグメントのシンボル
+//	D	データセグメントのシンボル
+//	d	静的データセグメントのシンボル
+//	B	bssセグメントのシンボル
+//	b	静的bssセグメントのシンボル
+//	C	定数アドレス
+//	U	参照されていますが定義されていないシンボル
 //
-// Following established convention, the address is omitted for undefined
-// symbols (type U).
+// 確立された規則に従い、未定義のシンボル（タイプU）のアドレスは省略されます。
 //
-// The options control the printed output:
+// オプションは出力の制御に使用されます：
 //
 //	-n
-//		an alias for -sort address (numeric),
-//		for compatibility with other nm commands
+//		他のnmコマンドとの互換性のため、-sort address（数値）のエイリアスです。
 //	-size
-//		print symbol size in decimal between address and type
+//		アドレスとタイプの間にシンボルのサイズを10進数で表示します。
 //	-sort {address,name,none,size}
-//		sort output in the given order (default name)
-//		size orders from largest to smallest
+//		指定された順序で出力をソートします（デフォルトはname）。
+//		サイズは最も大きな順に並べ替えます。
 //	-type
-//		print symbol type after name
+//		名前の後にシンボルのタイプを表示します。
 package main

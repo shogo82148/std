@@ -3,129 +3,122 @@
 // license that can be found in the LICENSE file.
 
 /*
-Link, typically invoked as “go tool link”, reads the Go archive or object
-for a package main, along with its dependencies, and combines them
-into an executable binary.
+「リンク（Link）」は、通常「go tool link」として呼び出され、パッケージmainのGoアーカイブまたはオブジェクトとその依存関係を読み込み、それらを実行可能バイナリに結合します。
 
-# Command Line
+# コマンドライン
 
-Usage:
+使用法:
 
-	go tool link [flags] main.a
+	go tool link [フラグ] main.a
 
-Flags:
+フラグ:
 
-	-B note
-		Add an ELF_NT_GNU_BUILD_ID note when using ELF.
-		The value should start with 0x and be an even number of hex digits.
-		Alternatively, you can pass "gobuildid" in order to derive the
-		GNU build ID from the Go build ID.
-	-E entry
-		Set entry symbol name.
-	-H type
-		Set executable format type.
-		The default format is inferred from GOOS and GOARCH.
-		On Windows, -H windowsgui writes a "GUI binary" instead of a "console binary."
-	-I interpreter
-		Set the ELF dynamic linker to use.
+	- Bノート
+		ELFを使用する場合、ELF_NT_GNU_BUILD_IDノートを追加します。
+		値は0xで始まり、偶数桁の16進数である必要があります。
+		代わりに、GoビルドIDからGNUビルドIDを派生させるために「gobuildid」を渡すこともできます。
+	-E エントリ
+		エントリシンボル名を設定します。
+	-H タイプ
+		実行可能フォーマットタイプを設定します。
+		デフォルトのフォーマットはGOOSおよびGOARCHから推測されます。
+		Windowsでは、-H windowsguiは「GUIバイナリ」ではなく「コンソールバイナリ」を書き込みます。
+	-I インタプリタ
+		使用するELFダイナミックリンカを設定します。
 	-L dir1 -L dir2
-		Search for imported packages in dir1, dir2, etc,
-		after consulting $GOROOT/pkg/$GOOS_$GOARCH.
+		$GOROOT/pkg/$GOOS_$GOARCHを参照した後、dir1、dir2などでインポートされたパッケージを検索します。
 	-R quantum
-		Set address rounding quantum.
+		アドレスの丸め量子を設定します。
 	-T address
-		Set the start address of text symbols.
+		テキストシンボルの開始アドレスを設定します。
 	-V
-		Print linker version and exit.
+		リンカのバージョンを表示して終了します。
 	-X importpath.name=value
-		Set the value of the string variable in importpath named name to value.
-		This is only effective if the variable is declared in the source code either uninitialized
-		or initialized to a constant string expression. -X will not work if the initializer makes
-		a function call or refers to other variables.
-		Note that before Go 1.5 this option took two separate arguments.
+		importpathの名前がvalueになる文字列変数の値を設定します。
+		これは、変数がソースコードで未初期化または定数の文字列式に初期化されている場合にのみ有効です。
+		イニシャライザが関数呼び出しを行うか、他の変数に参照がある場合、-Xは機能しません。
+		Go 1.5より前では、このオプションは2つの別々の引数をとりました。
 	-a
-		Disassemble output.
+		出力を逆アセンブルします。
 	-asan
-		Link with C/C++ address sanitizer support.
+		C/C++のアドレスサニタイザーサポートをリンクします。
 	-buildid id
-		Record id as Go toolchain build id.
+		GoツールチェインのビルドIDとしてidを記録します。
 	-buildmode mode
-		Set build mode (default exe).
+		ビルドモードを設定します（デフォルトはexe）。
 	-c
-		Dump call graphs.
+		コールグラフをダンプします。
 	-compressdwarf
-		Compress DWARF if possible (default true).
+		可能な場合はDWARFを圧縮します（デフォルトはtrue）。
 	-cpuprofile file
-		Write CPU profile to file.
+		CPUプロファイルをfileに書き込みます。
 	-d
-		Disable generation of dynamic executables.
-		The emitted code is the same in either case; the option
-		controls only whether a dynamic header is included.
-		The dynamic header is on by default, even without any
-		references to dynamic libraries, because many common
-		system tools now assume the presence of the header.
+		動的実行可能ファイルの生成を無効にします。
+		出力されるコードはどちらの場合も同じです。このオプションは、動的ヘッダが含まれるかどうかだけを制御します。
+		動的ヘッダはデフォルトでオンになっており、動的ライブラリへの参照は必要ありませんが、
+		多くの共通のシステムツールは、ヘッダが存在することを前提としています。
 	-debugtramp int
-		Debug trampolines.
+		トランポリンのデバッグ。
 	-dumpdep
-		Dump symbol dependency graph.
+		シンボル依存関係グラフをダンプします。
 	-extar ar
-		Set the external archive program (default "ar").
-		Used only for -buildmode=c-archive.
+		外部アーカイブプログラムを設定します（デフォルトは「ar」）。
+		-buildmode=c-archiveにのみ使用されます。
 	-extld linker
-		Set the external linker (default "clang" or "gcc").
+		外部リンカを設定します（デフォルトは「clang」または「gcc」）。
 	-extldflags flags
-		Set space-separated flags to pass to the external linker.
+		外部リンカに渡すスペース区切りのフラグを設定します。
 	-f
-		Ignore version mismatch in the linked archives.
+		リンクされたアーカイブのバージョンの不一致を無視します。
 	-g
-		Disable Go package data checks.
+		Goパッケージデータのチェックを無効にします。
 	-importcfg file
-		Read import configuration from file.
-		In the file, set packagefile, packageshlib to specify import resolution.
+		ファイルからインポート構成を読み込みます。
+		ファイルで、packagefile、packageshlibを設定してインポート解決を指定します。
 	-installsuffix suffix
-		Look for packages in $GOROOT/pkg/$GOOS_$GOARCH_suffix
-		instead of $GOROOT/pkg/$GOOS_$GOARCH.
+		$GOROOT/pkg/$GOOS_$GOARCH_suffixでパッケージを検索します。
+		$GOROOT/pkg/$GOOS_$GOARCHではなく。
 	-k symbol
-		Set field tracking symbol. Use this flag when GOEXPERIMENT=fieldtrack is set.
+		フィールドトラッキングシンボルを設定します。GOEXPERIMENT=fieldtrackが設定されている場合にこのフラグを使用します。
 	-libgcc file
-		Set name of compiler support library.
-		This is only used in internal link mode.
-		If not set, default value comes from running the compiler,
-		which may be set by the -extld option.
-		Set to "none" to use no support library.
+		コンパイラサポートライブラリの名前を設定します。
+		これは内部リンクモードでのみ使用されます。
+		設定されていない場合、デフォルトの値はコンパイラの実行結果から取得されます。
+		-extldオプションで設定できます。
+		サポートライブラリを使用しない場合は「none」を設定します。
 	-linkmode mode
-		Set link mode (internal, external, auto).
-		This sets the linking mode as described in cmd/cgo/doc.go.
+		リンクモードを設定します（internal、external、auto）。
+		これはcmd/cgo/doc.goで説明されているリンクモードを設定します。
 	-linkshared
-		Link against installed Go shared libraries (experimental).
+		インストールされたGo共有ライブラリとリンクします（実験的）。
 	-memprofile file
-		Write memory profile to file.
+		メモリプロファイルをfileに書き込みます。
 	-memprofilerate rate
-		Set runtime.MemProfileRate to rate.
+		runtime.MemProfileRateをrateに設定します。
 	-msan
-		Link with C/C++ memory sanitizer support.
+		C/C++のメモリサニタイザーサポートをリンクします。
 	-n
-		Dump symbol table.
+		シンボルテーブルをダンプします。
 	-o file
-		Write output to file (default a.out, or a.out.exe on Windows).
+		出力をfileに書き込みます（デフォルトはa.out、Windowsではa.out.exe）。
 	-pluginpath path
-		The path name used to prefix exported plugin symbols.
-	-r dir1:dir2:...
-		Set the ELF dynamic linker search path.
+		エクスポートされたプラグインシンボルの接頭辞として使用されるパス名です。
+	-r dir1:dir2：...
+		ELFダイナミックリンカの検索パスを設定します。
 	-race
-		Link with race detection libraries.
+		レース検出ライブラリとリンクします。
 	-s
-		Omit the symbol table and debug information.
+		シンボルテーブルとデバッグ情報を省略します。
 	-shared
-		Generated shared object (implies -linkmode external; experimental).
+		共有オブジェクトを生成します（-linkmode externalを含む; 実験的）。
 	-tmpdir dir
-		Write temporary files to dir.
-		Temporary files are only used in external linking mode.
+		一時ファイルをdirに書き込みます。
+		一時ファイルは外部リンキングモードでのみ使用されます。
 	-u
-		Reject unsafe packages.
+		安全でないパッケージを拒否します。
 	-v
-		Print trace of linker operations.
+		リンカ操作のトレースを表示します。
 	-w
-		Omit the DWARF symbol table.
-*/
-package main
+		DWARFシンボルテーブルを省略します。
+
+*/package main

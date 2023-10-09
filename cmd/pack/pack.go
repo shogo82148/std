@@ -8,8 +8,7 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// An Archive represents an open archive file. It is always scanned sequentially
-// from start to end, without backing up.
+// アーカイブは、開いたアーカイブファイルを表します。バックアップを取らずに、常に開始から終了まで順にスキャンされます。
 type Archive struct {
 	a        *archive.Archive
 	files    []string
@@ -17,7 +16,7 @@ type Archive struct {
 	matchAll bool
 }
 
-// FileLike abstracts the few methods we need, so we can test without needing real files.
+// FileLikeは、実際のファイルを必要とせずにテストするために必要なわずかなメソッドを抽象化します。
 type FileLike interface {
 	Name() string
 	Stat() (fs.FileInfo, error)

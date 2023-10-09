@@ -3,35 +3,30 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package hmac implements the Keyed-Hash Message Authentication Code (HMAC) as
-defined in U.S. Federal Information Processing Standards Publication 198.
-An HMAC is a cryptographic hash that uses a key to sign a message.
-The receiver verifies the hash by recomputing it using the same key.
+Package hmacは、米国連邦情報処理標準出版物198で定義されているキー付きハッシュメッセージ認証コード（HMAC）を実装しています。
+HMACは、メッセージに署名するためにキーを使用する暗号ハッシュです。
+受信者は、同じキーを使用してハッシュを再計算することで、ハッシュを検証します。
 
-Receivers should be careful to use Equal to compare MACs in order to avoid
-timing side-channels:
+タイミングの副作用を回避するために、受信者はMACを比較するためにEqualを使用することに注意する必要があります：
 
-	// ValidMAC reports whether messageMAC is a valid HMAC tag for message.
-	func ValidMAC(message, messageMAC, key []byte) bool {
-		mac := hmac.New(sha256.New, key)
+	// ValidMACは、messageMACがメッセージの有効なHMACタグであるかどうかを報告します。
+	func ValidMAC(message、messageMAC、key []byte) bool {
+		mac := hmac.New(sha256.New、key)
 		mac.Write(message)
 		expectedMAC := mac.Sum(nil)
-		return hmac.Equal(messageMAC, expectedMAC)
+		return hmac.Equal(messageMAC、expectedMAC)
 	}
-*/
-package hmac
+*/package hmac
 
 import (
 	"github.com/shogo82148/std/hash"
 )
 
-// New returns a new HMAC hash using the given hash.Hash type and key.
-// New functions like sha256.New from crypto/sha256 can be used as h.
-// h must return a new Hash every time it is called.
-// Note that unlike other hash implementations in the standard library,
-// the returned Hash does not implement encoding.BinaryMarshaler
-// or encoding.BinaryUnmarshaler.
+// Newは指定したhash.Hashタイプとキーを使用して新しいHMACハッシュを返します。
+// crypto/sha256からのsha256.NewのようなNew関数はhとして使用できます。
+// hは呼び出されるたびに新しいハッシュを返す必要があります。
+// 標準ライブラリの他のハッシュ実装とは異なり、返されたハッシュはencoding.BinaryMarshalerまたはencoding.BinaryUnmarshalerを実装していません。
 func New(h func() hash.Hash, key []byte) hash.Hash
 
-// Equal compares two MACs for equality without leaking timing information.
+// Equalは、タイミング情報を漏らさずに2つのMACを比較します。
 func Equal(mac1, mac2 []byte) bool
