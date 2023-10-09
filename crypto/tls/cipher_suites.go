@@ -4,48 +4,40 @@
 
 package tls
 
-// CipherSuite is a TLS cipher suite. Note that most functions in this package
-// accept and expose cipher suite IDs instead of this type.
+// CipherSuiteはTLSの暗号スイートです。このパッケージのほとんどの関数は、この型の代わりに暗号スイートのIDを受け入れて公開します。
 type CipherSuite struct {
 	ID   uint16
 	Name string
 
-	// Supported versions is the list of TLS protocol versions that can
-	// negotiate this cipher suite.
+	// Supported versionsは、この暗号スイートをネゴシエートできるTLSプロトコルのバージョンのリストです。
 	SupportedVersions []uint16
 
-	// Insecure is true if the cipher suite has known security issues
-	// due to its primitives, design, or implementation.
+	// Insecureは、そのプリミティブ、設計、または実装による既知のセキュリティ問題があるため、暗号スイートが安全ではない場合にtrueとなります。
 	Insecure bool
 }
 
-// CipherSuites returns a list of cipher suites currently implemented by this
-// package, excluding those with security issues, which are returned by
-// InsecureCipherSuites.
+// CipherSuitesは、このパッケージで現在実装されている暗号スイートのリストを返します。
+// ただし、セキュリティ上の問題があるものはInsecureCipherSuitesによって返されます。
 //
-// The list is sorted by ID. Note that the default cipher suites selected by
-// this package might depend on logic that can't be captured by a static list,
-// and might not match those returned by this function.
+// このリストはIDでソートされています。このパッケージによって選択されるデフォルトの暗号スイートが、
+// 静的なリストでは捉えることができないロジックに依存している場合があり、
+// この関数によって返されるものと一致しない場合があります。
 func CipherSuites() []*CipherSuite
 
-// InsecureCipherSuites returns a list of cipher suites currently implemented by
-// this package and which have security issues.
-//
-// Most applications should not use the cipher suites in this list, and should
-// only use those returned by CipherSuites.
+// InsecureCipherSuitesは、現在このパッケージで実装されているセキュリティ上の問題を抱えた暗号スイートのリストを返します。
+// ほとんどのアプリケーションは、このリストに含まれる暗号スイートを使用すべきではありません。代わりに、CipherSuitesで返されるスイートのみを使用するべきです。
 func InsecureCipherSuites() []*CipherSuite
 
-// CipherSuiteName returns the standard name for the passed cipher suite ID
-// (e.g. "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"), or a fallback representation
-// of the ID value if the cipher suite is not implemented by this package.
+// CipherSuiteNameは渡された暗号スイートIDの標準名
+// （例：「TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256」）を返します。
+// もしこのパッケージで暗号スイートが実装されていない場合は、IDの値をフォールバック表現として返します。
 func CipherSuiteName(id uint16) string
 
-// A list of cipher suite IDs that are, or have been, implemented by this
-// package.
+// このパッケージで実装されている、または実装されていた暗号スイートのIDのリストです。
 //
-// See https://www.iana.org/assignments/tls-parameters/tls-parameters.xml
+// 詳細は、https://www.iana.org/assignments/tls-parameters/tls-parameters.xml を参照してください。
 const (
-	// TLS 1.0 - 1.2 cipher suites.
+	// TLS 1.0 - 1.2の暗号スイート。
 	TLS_RSA_WITH_RC4_128_SHA                      uint16 = 0x0005
 	TLS_RSA_WITH_3DES_EDE_CBC_SHA                 uint16 = 0x000a
 	TLS_RSA_WITH_AES_128_CBC_SHA                  uint16 = 0x002f
@@ -69,17 +61,16 @@ const (
 	TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256   uint16 = 0xcca8
 	TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 uint16 = 0xcca9
 
-	// TLS 1.3 cipher suites.
+	// TLS 1.3サイファースイート。
 	TLS_AES_128_GCM_SHA256       uint16 = 0x1301
 	TLS_AES_256_GCM_SHA384       uint16 = 0x1302
 	TLS_CHACHA20_POLY1305_SHA256 uint16 = 0x1303
 
-	// TLS_FALLBACK_SCSV isn't a standard cipher suite but an indicator
-	// that the client is doing version fallback. See RFC 7507.
+	// TLS_FALLBACK_SCSVは標準の暗号スイートではなく、クライアントがバージョンのフォールバックを行っていることを示すものです。RFC 7507を参照してください。
 	TLS_FALLBACK_SCSV uint16 = 0x5600
 
-	// Legacy names for the corresponding cipher suites with the correct _SHA256
-	// suffix, retained for backward compatibility.
+	// 正しい_SHA256サフィックスを持つ対応する暗号スイートのためのレガシー名前
+	// 互換性のために保持されています。
 	TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305   = TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305 = TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
 )
