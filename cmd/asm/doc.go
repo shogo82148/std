@@ -3,56 +3,54 @@
 // license that can be found in the LICENSE file.
 
 /*
-Asm, typically invoked as “go tool asm”, assembles the source file into an object
-file named for the basename of the argument source file with a .o suffix. The
-object file can then be combined with other objects into a package archive.
+Asmは通常「go tool asm」として呼び出され、ソースファイルをオブジェクトファイルにアセンブルします。
+オブジェクトファイルは他のオブジェクトと結合してパッケージアーカイブにできます。
 
-# Command Line
+# コマンドライン
 
-Usage:
+使用法:
 
-	go tool asm [flags] file
+	go tool asm [フラグ] ファイル
 
-The specified file must be a Go assembly file.
-The same assembler is used for all target operating systems and architectures.
-The GOOS and GOARCH environment variables set the desired target.
+指定されたファイルはGoアセンブリファイルでなければなりません。
+同じアセンブラがすべてのターゲットオペレーティングシステムとアーキテクチャで使用されます。
+GOOSとGOARCHの環境変数によって目的のターゲットが設定されます。
 
-Flags:
+フラグ:
 
 	-D name[=value]
-		Predefine symbol name with an optional simple value.
-		Can be repeated to define multiple symbols.
+		省略可能な単純な値を持つ記号名を予め定義します。
+		複数の記号を定義するために繰り返すことができます。
 	-I dir1 -I dir2
-		Search for #include files in dir1, dir2, etc,
-		after consulting $GOROOT/pkg/$GOOS_$GOARCH.
+		dir1、dir2などのディレクトリで#includeファイルを検索します。
+		検索前に$GOROOT/pkg/$GOOS_$GOARCHを参照します。
 	-S
-		Print assembly and machine code.
+		アセンブリとマシンコードを表示します。
 	-V
-		Print assembler version and exit.
+		アセンブラのバージョンを表示して終了します。
 	-debug
-		Dump instructions as they are parsed.
+		パースされる命令をダンプします。
 	-dynlink
-		Support references to Go symbols defined in other shared libraries.
+		他の共有ライブラリで定義されたGoシンボルへの参照をサポートします。
 	-gensymabis
-		Write symbol ABI information to output file. Don't assemble.
-	-o file
-		Write output to file. The default is foo.o for /a/b/c/foo.s.
+		シンボルABI情報を出力ファイルに書き込みます。アセンブルを行いません。
+	-o ファイル
+		出力をファイルに書き込みます。/a/b/c/foo.sの場合、デフォルトはfoo.oです。
 	-p pkgpath
-		Set expected package import to pkgpath.
+		予想されるパッケージのインポートをpkgpathに設定します。
 	-shared
-		Generate code that can be linked into a shared library.
+		共有ライブラリにリンクできるコードを生成します。
 	-spectre list
-		Enable spectre mitigations in list (all, ret).
+		リスト（all、ret）のスペクトル緩和を有効にします。
 	-trimpath prefix
-		Remove prefix from recorded source file paths.
+		記録されたソースファイルパスからプレフィックスを削除します。
 
-Input language:
+入力言語:
 
-The assembler uses mostly the same syntax for all architectures,
-the main variation having to do with addressing modes. Input is
-run through a simplified C preprocessor that implements #include,
-#define, #ifdef/endif, but not #if or ##.
+アセンブラは基本的にすべてのアーキテクチャに対してほぼ同じ構文を使用しますが、
+アドレッシングモードに関しては主に変化があります。入力は
+#include、#define、#ifdef/endifを実装した簡略化されたCプリプロセッサを経由しますが、
+#ifや##は使用されません。
 
-For more information, see https://golang.org/doc/asm.
-*/
-package main
+詳細については、https://golang.org/doc/asmを参照してください。
+*/package main
