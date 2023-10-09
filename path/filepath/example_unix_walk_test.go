@@ -7,10 +7,10 @@
 package filepath_test
 
 import (
-	"fmt"
-	"io/fs"
-	"os"
-	"path/filepath"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io/fs"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/path/filepath"
 )
 
 func ExampleWalk() {

@@ -10,16 +10,16 @@
 package types_test
 
 import (
-	"fmt"
-	"go/ast"
-	"go/importer"
-	"go/parser"
-	"go/token"
-	"go/types"
-	"log"
-	"regexp"
-	"sort"
-	"strings"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/go/ast"
+	"github.com/shogo82148/std/go/importer"
+	"github.com/shogo82148/std/go/parser"
+	"github.com/shogo82148/std/go/token"
+	"github.com/shogo82148/std/go/types"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/regexp"
+	"github.com/shogo82148/std/sort"
+	"github.com/shogo82148/std/strings"
 )
 
 // ExampleScope prints the tree of Scopes of a package created from a

@@ -5,11 +5,11 @@
 package testing_test
 
 import (
-	"bytes"
-	"sort"
-	"sync/atomic"
-	"testing"
-	"text/template"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/sort"
+	"github.com/shogo82148/std/sync/atomic"
+	"github.com/shogo82148/std/testing"
+	"github.com/shogo82148/std/text/template"
 )
 
 func ExampleB_RunParallel() {

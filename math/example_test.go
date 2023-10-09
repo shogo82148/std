@@ -5,8 +5,8 @@
 package math_test
 
 import (
-	"fmt"
-	"math"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/math"
 )
 
 func ExampleAcos() {

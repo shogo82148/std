@@ -5,9 +5,9 @@
 package url_test
 
 import (
-	"fmt"
-	"log"
-	"net/url"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/net/url"
 )
 
 func ExamplePathEscape() {

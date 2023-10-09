@@ -5,8 +5,8 @@
 package sync_test
 
 import (
-	"fmt"
-	"sync"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/sync"
 )
 
 // This example fetches several URLs concurrently,
