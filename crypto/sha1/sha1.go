@@ -2,26 +2,23 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package sha1 implements the SHA-1 hash algorithm as defined in RFC 3174.
+// パッケージsha1は、RFC 3174で定義されているSHA-1ハッシュアルゴリズムを実装しています。
 //
-// SHA-1 is cryptographically broken and should not be used for secure
-// applications.
+// SHA-1は暗号学的に破られており、セキュアなアプリケーションには使用すべきではありません。
 package sha1
 
 import (
 	"github.com/shogo82148/std/hash"
 )
 
-// The size of a SHA-1 checksum in bytes.
+// SHA-1チェックサムのサイズ（バイト単位）。
 const Size = 20
 
-// The blocksize of SHA-1 in bytes.
+// SHA-1のブロックサイズ（バイト単位）です。
 const BlockSize = 64
 
-// New returns a new hash.Hash computing the SHA1 checksum. The Hash also
-// implements encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
-// marshal and unmarshal the internal state of the hash.
+// NewはSHA1チェックサムを計算する新しいhash.Hashを返します。Hashはまた、encoding.BinaryMarshalerとencoding.BinaryUnmarshalerを実装しており、ハッシュの内部状態をマーシャリングおよびアンマーシャリングすることができます。
 func New() hash.Hash
 
-// Sum returns the SHA-1 checksum of the data.
+// SumはデータのSHA-1チェックサムを返します。
 func Sum(data []byte) [Size]byte
