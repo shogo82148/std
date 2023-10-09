@@ -4,64 +4,49 @@
 
 package x509
 
-// CertPool is a set of certificates.
+// CertPoolは証明書のセットです。
 type CertPool struct {
 	byName map[string][]int
 
-	// lazyCerts contains funcs that return a certificate,
-	// lazily parsing/decompressing it as needed.
+	// lazyCertsには、必要に応じて遅延的に解析/展開される証明書を返す関数が含まれています。
 	lazyCerts []lazyCert
 
-	// haveSum maps from sum224(cert.Raw) to true. It's used only
-	// for AddCert duplicate detection, to avoid CertPool.contains
-	// calls in the AddCert path (because the contains method can
-	// call getCert and otherwise negate savings from lazy getCert
-	// funcs).
+	// haveSum は sum224(cert.Raw) を true にマッピングします。これは、AddCert の重複検出のためにのみ使用されます。CertPool.contains の呼び出しを AddCert パスで避けるためです（なぜなら、contains メソッドは getCert を呼び出し、怠惰な getCert からの節約を否定することができるためです）。
 	haveSum map[sum224]bool
 
-	// systemPool indicates whether this is a special pool derived from the
-	// system roots. If it includes additional roots, it requires doing two
-	// verifications, one using the roots provided by the caller, and one using
-	// the system platform verifier.
+	// systemPoolは、システムルートから派生した特別なプールであることを示します。追加のルートを含む場合、呼び出し元によって提供されたルートを使用して1つの検証、およびシステムプラットフォームの検証装置を使用してもう1つの検証が必要です。
 	systemPool bool
 }
 
-// NewCertPool returns a new, empty CertPool.
+// NewCertPoolは新しい、空のCertPoolを返します。
 func NewCertPool() *CertPool
 
-// Clone returns a copy of s.
+// Cloneはsのコピーを返します。
 func (s *CertPool) Clone() *CertPool
 
-// SystemCertPool returns a copy of the system cert pool.
+// SystemCertPoolはシステム証明書プールのコピーを返します。
 //
-// On Unix systems other than macOS the environment variables SSL_CERT_FILE and
-// SSL_CERT_DIR can be used to override the system default locations for the SSL
-// certificate file and SSL certificate files directory, respectively. The
-// latter can be a colon-separated list.
+// macOS以外のUnixシステムでは、環境変数SSL_CERT_FILEとSSL_CERT_DIRを使用して、
+// SSL証明書ファイルとSSL証明書ファイルのディレクトリのシステムのデフォルト場所を上書きすることができます。後者はコロンで区切られたリストになります。
 //
-// Any mutations to the returned pool are not written to disk and do not affect
-// any other pool returned by SystemCertPool.
+// 返されたプールへの変更はディスクに書き込まれず、SystemCertPoolによって返される他のプールに影響を与えません。
 //
-// New changes in the system cert pool might not be reflected in subsequent calls.
+// システム証明書プールの新しい変更は、後続の呼び出しで反映されない場合があります。
 func SystemCertPool() (*CertPool, error)
 
-// AddCert adds a certificate to a pool.
+// AddCertは証明書をプールに追加します。
 func (s *CertPool) AddCert(cert *Certificate)
 
-// AppendCertsFromPEM attempts to parse a series of PEM encoded certificates.
-// It appends any certificates found to s and reports whether any certificates
-// were successfully parsed.
+// AppendCertsFromPEMは、一連のPEMエンコードされた証明書を解析しようとします。
+// 見つかった証明書をsに追加し、成功した証明書があるかどうかを報告します。
 //
-// On many Linux systems, /etc/ssl/cert.pem will contain the system wide set
-// of root CAs in a format suitable for this function.
+// 多くのLinuxシステムでは、/etc/ssl/cert.pemには、この関数に適した形式でシステム全体のルートCAセットが含まれています。
 func (s *CertPool) AppendCertsFromPEM(pemCerts []byte) (ok bool)
 
-// Subjects returns a list of the DER-encoded subjects of
-// all of the certificates in the pool.
+// Subjectsはプール内のすべての証明書のDERエンコードされたサブジェクトのリストを返します。
 //
-// Deprecated: if s was returned by SystemCertPool, Subjects
-// will not include the system roots.
+// 非推奨: sがSystemCertPoolから返された場合、Subjectsにはシステムルートは含まれません。
 func (s *CertPool) Subjects() [][]byte
 
-// Equal reports whether s and other are equal.
+// Equalは、sとotherが等しいかどうかを報告します。
 func (s *CertPool) Equal(other *CertPool) bool

@@ -15,7 +15,7 @@ import (
 )
 
 func ExampleCertificate_Verify() {
-	// Verifying with a custom list of root certificates.
+	// カスタムのルート証明書リストで検証する。
 
 	const rootPEM = `
 -----BEGIN CERTIFICATE-----
@@ -67,9 +67,8 @@ RvOTa8hYiU6A475WuZKyEHcwnGYe57u2I2KbMgcKjPniocj4QzgYsVAVKW3IwaOh
 yE+vPxsiUkvQHdO2fojCkY8jg70jxM+gu59tPDNbw3Uh/2Ij310FgTHsnGQMyA==
 -----END CERTIFICATE-----`
 
-	// First, create the set of root certificates. For this example we only
-	// have one. It's also possible to omit this in order to use the
-	// default root set of the current operating system.
+	// まず、ルート証明書のセットを作成します。この例では、1つだけです。
+	// 現在のオペレーティングシステムのデフォルトのルートセットを使用するために、これを省略することもできます。
 	roots := x509.NewCertPool()
 	ok := roots.AppendCertsFromPEM([]byte(rootPEM))
 	if !ok {
