@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Only run where builders (build.golang.org) have
-// access to compiled packages for import.
+// ビルダー（build.golang.org）がコンパイルされたパッケージにアクセスできる場所でのみ実行する。
 //
 //go:build !android && !ios && !js && !wasip1
 
@@ -22,10 +21,9 @@ import (
 	"github.com/shogo82148/std/strings"
 )
 
-// ExampleScope prints the tree of Scopes of a package created from a
-// set of parsed files.
+// ExampleScope は解析されたファイルの集まりから作成されたパッケージのスコープのツリーを出力します。
 func ExampleScope() {
-	// Parse the source files for a package.
+	// パッケージのソースファイルを解析する。
 	fset := token.NewFileSet()
 	var files []*ast.File
 	for _, src := range []string{
@@ -47,17 +45,16 @@ func Unused() { {}; {{ var x int; _ = x }} } // make sure empty block scopes get
 		files = append(files, mustParse(fset, src))
 	}
 
-	// Type-check a package consisting of these files.
-	// Type information for the imported "fmt" package
-	// comes from $GOROOT/pkg/$GOOS_$GOOARCH/fmt.a.
+	// これらのファイルから成るパッケージの型チェックを行います。
+	// インポートされた "fmt" パッケージの型情報は、$GOROOT/pkg/$GOOS_$GOOARCH/fmt.a から取得されます。
 	conf := types.Config{Importer: importer.Default()}
 	pkg, err := conf.Check("temperature", fset, files, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Print the tree of scopes.
-	// For determinism, we redact addresses.
+	// スコープツリーを表示します。
+	// 同一性を確保するために、アドレスは非表示にします。
 	var buf strings.Builder
 	pkg.Scope().WriteTo(&buf, 0, true)
 	rx := regexp.MustCompile(` 0x[a-fA-F\d]*`)
@@ -97,9 +94,9 @@ func Unused() { {}; {{ var x int; _ = x }} } // make sure empty block scopes get
 	// }
 }
 
-// ExampleMethodSet prints the method sets of various types.
+// ExampleMethodSet は様々な型のメソッドセットを表示します。
 func ExampleMethodSet() {
-	// Parse a single source file.
+	// 1つのソースファイルを解析する。
 	const input = `
 package temperature
 import "fmt"
@@ -116,16 +113,15 @@ type I interface { m() byte }
 		log.Fatal(err)
 	}
 
-	// Type-check a package consisting of this file.
-	// Type information for the imported packages
-	// comes from $GOROOT/pkg/$GOOS_$GOOARCH/fmt.a.
+	// このファイルからなるパッケージを型チェックします。
+	// インポートされたパッケージの型情報は、$GOROOT/pkg/$GOOS_$GOOARCH/fmt.a から来ます。
 	conf := types.Config{Importer: importer.Default()}
 	pkg, err := conf.Check("temperature", fset, []*ast.File{f}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Print the method sets of Celsius and *Celsius.
+	// Celsiusと*Celsiusのメソッドセットを表示する。
 	celsius := pkg.Scope().Lookup("Celsius").Type()
 	for _, t := range []types.Type{celsius, types.NewPointer(celsius)} {
 		fmt.Printf("Method set of %s:\n", t)
@@ -136,7 +132,7 @@ type I interface { m() byte }
 		fmt.Println()
 	}
 
-	// Print the method set of S.
+	// Sのメソッドセットを出力する。
 	styp := pkg.Scope().Lookup("S").Type()
 	fmt.Printf("Method set of %s:\n", styp)
 	fmt.Println(types.NewMethodSet(styp))
@@ -153,11 +149,9 @@ type I interface { m() byte }
 	// MethodSet {}
 }
 
-// ExampleInfo prints various facts recorded by the type checker in a
-// types.Info struct: definitions of and references to each named object,
-// and the type, value, and mode of every expression in the package.
+// ExampleInfoは、型チェッカーによって型構造体(types.Info)に記録されたさまざまな事実を出力します。名前付きオブジェクトの定義と参照、パッケージ内のすべての式の型、値、モードなどが含まれます。
 func ExampleInfo() {
-	// Parse a single source file.
+	// 1つのソースファイルを解析する。
 	const input = `
 package fib
 
@@ -171,14 +165,14 @@ func fib(x int) int {
 	}
 	return fib(x-1) - fib(x-2)
 }`
-	// We need a specific fileset in this test below for positions.
-	// Cannot use typecheck helper.
+
+	// このテストでは、位置情報のために特定のファイルセットが必要です。
+	// 型チェックのヘルパーは使用できません。
 	fset := token.NewFileSet()
 	f := mustParse(fset, input)
 
-	// Type-check the package.
-	// We create an empty map for each kind of input
-	// we're interested in, and Check populates them.
+	// パッケージの型チェックを行います。
+	// 我々は興味のある各種類の入力に対して空のマップを作成し、Checkがそれらを埋め込みます。
 	info := types.Info{
 		Types: make(map[ast.Expr]types.TypeAndValue),
 		Defs:  make(map[*ast.Ident]types.Object),
@@ -190,11 +184,10 @@ func fib(x int) int {
 		log.Fatal(err)
 	}
 
-	// Print package-level variables in initialization order.
+	// 初期化順にパッケージレベルの変数を表示する。
 	fmt.Printf("InitOrder: %v\n\n", info.InitOrder)
 
-	// For each named object, print the line and
-	// column of its definition and each of its uses.
+	// 各名前付きオブジェクトについて、その定義の行と列、およびそれぞれの使用箇所を出力します。
 	fmt.Println("Defs and Uses of each named object:")
 	usesByObj := make(map[types.Object][]string)
 	for id, obj := range info.Uses {
@@ -211,7 +204,7 @@ func fib(x int) int {
 			strings.Join(uses, ", "))
 		items = append(items, item)
 	}
-	sort.Strings(items) // sort by line:col, in effect
+	sort.Strings(items) // 行：列によるソート、実質的には
 	fmt.Println(strings.Join(items, "\n"))
 	fmt.Println()
 
@@ -224,7 +217,7 @@ func fib(x int) int {
 		if tv.Value != nil {
 			tvstr += " = " + tv.Value.String()
 		}
-		// line:col | expr | mode : type = value
+		// 行：列 | 式 | モード：型 = 値
 		fmt.Fprintf(&buf, "%2d:%2d | %-19s | %-7s : %s",
 			posn.Line, posn.Column, exprString(fset, expr),
 			mode(tv), tvstr)
