@@ -9,220 +9,169 @@ import (
 	"github.com/shogo82148/std/net/netip"
 )
 
-// DefaultResolver is the resolver used by the package-level Lookup
-// functions and by Dialers without a specified Resolver.
+// DefaultResolverは、パッケージレベルのLookup関数と指定されていないResolverを持つDialersによって使用されるリゾルバです。
 var DefaultResolver = &Resolver{}
 
-// A Resolver looks up names and numbers.
+// Resolverは名前や数値を検索します。
 //
-// A nil *Resolver is equivalent to a zero Resolver.
+// nil *ResolverはゼロのResolverと同等です。
 type Resolver struct {
-	// PreferGo controls whether Go's built-in DNS resolver is preferred
-	// on platforms where it's available. It is equivalent to setting
-	// GODEBUG=netdns=go, but scoped to just this resolver.
+
+	// PreferGoは、利用可能なプラットフォーム上でGoの組み込みDNSリゾルバーを優先するかどうかを制御します。これはGODEBUG=netdns=goを設定するのと同等ですが、このリゾルバーにのみスコープされます。
 	PreferGo bool
 
-	// StrictErrors controls the behavior of temporary errors
-	// (including timeout, socket errors, and SERVFAIL) when using
-	// Go's built-in resolver. For a query composed of multiple
-	// sub-queries (such as an A+AAAA address lookup, or walking the
-	// DNS search list), this option causes such errors to abort the
-	// whole query instead of returning a partial result. This is
-	// not enabled by default because it may affect compatibility
-	// with resolvers that process AAAA queries incorrectly.
+	// StrictErrorsは、一時的なエラー（タイムアウト、ソケットエラー、およびSERVFAILを含む）の動作を制御します。Goの組み込みリゾルバを使用する場合、このオプションは複数のサブクエリからなるクエリ（A+AAAAアドレスの検索やDNS検索リストの走査など）に対して、部分的な結果を返す代わりに、エラーが発生した場合にクエリ全体を中止させます。これはデフォルトでは有効にされていませんが、AAAAクエリを正しく処理しないリゾルバとの互換性に影響を与える可能性があるためです。
 	StrictErrors bool
 
-	// Dial optionally specifies an alternate dialer for use by
-	// Go's built-in DNS resolver to make TCP and UDP connections
-	// to DNS services. The host in the address parameter will
-	// always be a literal IP address and not a host name, and the
-	// port in the address parameter will be a literal port number
-	// and not a service name.
-	// If the Conn returned is also a PacketConn, sent and received DNS
-	// messages must adhere to RFC 1035 section 4.2.1, "UDP usage".
-	// Otherwise, DNS messages transmitted over Conn must adhere
-	// to RFC 7766 section 5, "Transport Protocol Selection".
-	// If nil, the default dialer is used.
+	// Dialは、Go言語の組み込みDNSリゾルバがTCPおよびUDP接続を作成するために使用する代替ダイラーをオプションで指定します。アドレスパラメーターのホストは常にリテラルIPアドレスであり、ホスト名ではありません。また、アドレスパラメーターのポートはリテラルポート番号であり、サービス名ではありません。
+	// 返されたConnがPacketConnでもある場合、送信および受信されるDNSメッセージはRFC 1035セクション4.2.1「UDP使用」に準拠する必要があります。
 	Dial func(ctx context.Context, network, address string) (Conn, error)
 
-	// lookupGroup merges LookupIPAddr calls together for lookups for the same
-	// host. The lookupGroup key is the LookupIPAddr.host argument.
-	// The return values are ([]IPAddr, error).
+	// lookupGroupは同じホストのルックアップをまとめてLookupIPAddr呼び出しをマージします。
+	// lookupGroupのキーはLookupIPAddr.hostの引数です。
+	// 返り値は([]IPAddr, error)です。
 	lookupGroup singleflight.Group
 }
 
-// LookupHost looks up the given host using the local resolver.
-// It returns a slice of that host's addresses.
+// LookupHostは、ローカルのリゾルバを使用して指定されたホストを検索します。
+// そのホストのアドレスのスライスを返します。
 //
-// LookupHost uses context.Background internally; to specify the context, use
-// Resolver.LookupHost.
+// LookupHostは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、
+// Resolver.LookupHostを使用してください。
 func LookupHost(host string) (addrs []string, err error)
 
-// LookupHost looks up the given host using the local resolver.
-// It returns a slice of that host's addresses.
+// LookupHostは、ローカルのリゾルバを使用して指定されたホストを検索します。
+// そのホストのアドレスのスライスを返します。
 func (r *Resolver) LookupHost(ctx context.Context, host string) (addrs []string, err error)
 
-// LookupIP looks up host using the local resolver.
-// It returns a slice of that host's IPv4 and IPv6 addresses.
+// LookupIPはローカルリゾルバを使用してホストを検索します。
+// それはそのホストのIPv4およびIPv6アドレスのスライスを返します。
 func LookupIP(host string) ([]IP, error)
 
-// LookupIPAddr looks up host using the local resolver.
-// It returns a slice of that host's IPv4 and IPv6 addresses.
+// LookupIPAddrは、ローカルのリゾルバを使用してホストを検索します。
+// そのホストのIPv4およびIPv6アドレスのスライスを返します。
 func (r *Resolver) LookupIPAddr(ctx context.Context, host string) ([]IPAddr, error)
 
-// LookupIP looks up host for the given network using the local resolver.
-// It returns a slice of that host's IP addresses of the type specified by
-// network.
-// network must be one of "ip", "ip4" or "ip6".
+// LookupIPは、ローカルリゾルバーを使用して指定されたネットワークのホストを検索します。
+// networkによって指定されたタイプのホストのIPアドレスのスライスを返します。
+// networkは"ip"、"ip4"、または"ip6"のいずれかでなければなりません。
 func (r *Resolver) LookupIP(ctx context.Context, network, host string) ([]IP, error)
 
-// LookupNetIP looks up host using the local resolver.
-// It returns a slice of that host's IP addresses of the type specified by
-// network.
-// The network must be one of "ip", "ip4" or "ip6".
+// LookupNetIPはローカルリゾルバを使用してホストを検索します。
+// それは、ネットワークで指定されたタイプのそのホストのIPアドレスのスライスを返します。
+// ネットワークは、"ip"、"ip4"、または "ip6"のいずれかでなければなりません。
 func (r *Resolver) LookupNetIP(ctx context.Context, network, host string) ([]netip.Addr, error)
 
 var _ context.Context = (*onlyValuesCtx)(nil)
 
-// LookupPort looks up the port for the given network and service.
+// LookupPortは指定されたネットワークとサービスに対するポートを調べます。
 //
-// LookupPort uses context.Background internally; to specify the context, use
-// Resolver.LookupPort.
+// LookupPortは内部でcontext.Backgroundを使用します。コンテキストを指定するには、
+// Resolver.LookupPortを使用してください。
 func LookupPort(network, service string) (port int, err error)
 
-// LookupPort looks up the port for the given network and service.
+// LookupPortは、指定されたネットワークとサービスのポートを検索します。
 func (r *Resolver) LookupPort(ctx context.Context, network, service string) (port int, err error)
 
-// LookupCNAME returns the canonical name for the given host.
-// Callers that do not care about the canonical name can call
-// LookupHost or LookupIP directly; both take care of resolving
-// the canonical name as part of the lookup.
+// LookupCNAMEは指定されたホストの正式な名前（カノニカル名）を返します。
+// カノニカル名に関心がない場合は、LookupHostまたはLookupIPを直接呼び出すことができます。
+// どちらも、ルックアップの一部としてカノニカル名の解決を行います。
 //
-// A canonical name is the final name after following zero
-// or more CNAME records.
-// LookupCNAME does not return an error if host does not
-// contain DNS "CNAME" records, as long as host resolves to
-// address records.
+// カノニカル名は、ゼロまたは複数のCNAMEレコードを辿った後の最終的な名前です。
+// hostにDNSの"CNAME"レコードが含まれていない場合でも、hostがアドレスレコードに解決されている限り、LookupCNAMEはエラーを返しません。
 //
-// The returned canonical name is validated to be a properly
-// formatted presentation-format domain name.
+// 返されるカノニカル名は、正しくフォーマットされたプレゼンテーション形式のドメイン名であることが検証されます。
 //
-// LookupCNAME uses context.Background internally; to specify the context, use
-// Resolver.LookupCNAME.
+// LookupCNAMEは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、Resolver.LookupCNAMEを使用してください。
 func LookupCNAME(host string) (cname string, err error)
 
-// LookupCNAME returns the canonical name for the given host.
-// Callers that do not care about the canonical name can call
-// LookupHost or LookupIP directly; both take care of resolving
-// the canonical name as part of the lookup.
+// LookupCNAMEは指定されたホストの正規名を返します。
+// 正規名に関心を持たない呼び出し元は、
+// LookupHostまたはLookupIPを直接呼び出すことができます。
+// 両者は名前解決の一環として正規名を処理します。
 //
-// A canonical name is the final name after following zero
-// or more CNAME records.
-// LookupCNAME does not return an error if host does not
-// contain DNS "CNAME" records, as long as host resolves to
-// address records.
+// 正規名は、ゼロ個以上のCNAMEレコードをたどった後の最終名です。
+// LookupCNAMEは、ホストがDNSの"CNAME"レコードを含まない場合でも、
+// ホストがアドレスレコードに解決されている限り、エラーを返しません。
 //
-// The returned canonical name is validated to be a properly
-// formatted presentation-format domain name.
+// 返される正規名は、適切な形式のドメイン名であることが検証されます。
 func (r *Resolver) LookupCNAME(ctx context.Context, host string) (string, error)
 
-// LookupSRV tries to resolve an SRV query of the given service,
-// protocol, and domain name. The proto is "tcp" or "udp".
-// The returned records are sorted by priority and randomized
-// by weight within a priority.
+// LookupSRVは、指定されたサービス、プロトコル、およびドメイン名のSRVクエリを解決しようとします。
+// protoは「tcp」または「udp」です。
+// 返されるレコードは優先度に従ってソートされ、各優先度内で重みによってランダムになります。
 //
-// LookupSRV constructs the DNS name to look up following RFC 2782.
-// That is, it looks up _service._proto.name. To accommodate services
-// publishing SRV records under non-standard names, if both service
-// and proto are empty strings, LookupSRV looks up name directly.
+// LookupSRVはRFC 2782に従って調べるDNS名を構築します。
+// つまり、_service._proto.nameを検索します。非標準の名前でSRVレコードを公開するサービスに対応するために、
+// serviceとprotoの両方が空の文字列の場合、LookupSRVは直接nameを検索します。
 //
-// The returned service names are validated to be properly
-// formatted presentation-format domain names. If the response contains
-// invalid names, those records are filtered out and an error
-// will be returned alongside the remaining results, if any.
+// 返されたサービス名は、適切な形式のプレゼンテーション形式のドメイン名であることが検証されます。
+// 応答に無効な名前が含まれている場合、これらのレコードはフィルタリングされ、エラーが返されます。
+// 残りの結果がある場合は、これらのエラーと一緒に返されます。
 func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err error)
 
-// LookupSRV tries to resolve an SRV query of the given service,
-// protocol, and domain name. The proto is "tcp" or "udp".
-// The returned records are sorted by priority and randomized
-// by weight within a priority.
+// LookupSRVは、指定されたサービス、プロトコル、ドメイン名のSRVクエリを解決しようとします。
+// プロトコルは「tcp」または「udp」です。
+// 返されるレコードは優先度でソートされ、優先度内でのウェイトによってランダムになります。
 //
-// LookupSRV constructs the DNS name to look up following RFC 2782.
-// That is, it looks up _service._proto.name. To accommodate services
-// publishing SRV records under non-standard names, if both service
-// and proto are empty strings, LookupSRV looks up name directly.
+// LookupSRVは、RFC 2782に従ってルックアップするためのDNS名を構築します。
+// つまり、_service._proto.nameをルックアップします。非標準の名前の下にSRVレコードを公開するサービスを収容するために、
+// serviceとprotoの両方が空の文字列の場合、LookupSRVは直接nameをルックアップします。
 //
-// The returned service names are validated to be properly
-// formatted presentation-format domain names. If the response contains
-// invalid names, those records are filtered out and an error
-// will be returned alongside the remaining results, if any.
+// 返されるサービス名は、正しくフォーマットされたプレゼンテーション形式のドメイン名であることが検証されます。
+// レスポンスに無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーが返されます。
+// 残りの結果がある場合、それらと一緒にエラーが返されます。
 func (r *Resolver) LookupSRV(ctx context.Context, service, proto, name string) (string, []*SRV, error)
 
-// LookupMX returns the DNS MX records for the given domain name sorted by preference.
+// LookupMXは指定されたドメイン名のDNS MXレコードを優先度に従ってソートして返します。
 //
-// The returned mail server names are validated to be properly
-// formatted presentation-format domain names. If the response contains
-// invalid names, those records are filtered out and an error
-// will be returned alongside the remaining results, if any.
+// 返されるメールサーバー名は、正しくフォーマットされた表示形式のドメイン名であることが検証されます。
+// レスポンスに無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーと共に残りの結果が返されます（もしあれば）。
 //
-// LookupMX uses context.Background internally; to specify the context, use
-// Resolver.LookupMX.
+// LookupMXは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、Resolver.LookupMXを使用してください。
 func LookupMX(name string) ([]*MX, error)
 
-// LookupMX returns the DNS MX records for the given domain name sorted by preference.
-//
-// The returned mail server names are validated to be properly
-// formatted presentation-format domain names. If the response contains
-// invalid names, those records are filtered out and an error
-// will be returned alongside the remaining results, if any.
+// LookupMXは、指定されたドメイン名のDNS MXレコードを優先度に基づいてソートして返します。
+// 返されるメールサーバー名は正しくフォーマットされたプレゼンテーション形式のドメイン名であることが検証されます。
+// レスポンスに無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーが返されます。
+// 残りの結果がある場合、それらとともにエラーが返されます。
 func (r *Resolver) LookupMX(ctx context.Context, name string) ([]*MX, error)
 
-// LookupNS returns the DNS NS records for the given domain name.
+// LookupNSは指定されたドメイン名のDNS NSレコードを返します。
 //
-// The returned name server names are validated to be properly
-// formatted presentation-format domain names. If the response contains
-// invalid names, those records are filtered out and an error
-// will be returned alongside the remaining results, if any.
+// 返されるネームサーバ名は、正しくフォーマットされた表示形式のドメイン名であることが検証されます。
+// 応答に無効な名前が含まれている場合、これらのレコードはフィルタリングされ、エラーが残りの結果と共に返されます。
 //
-// LookupNS uses context.Background internally; to specify the context, use
-// Resolver.LookupNS.
+// LookupNSは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、Resolver.LookupNSを使用します。
 func LookupNS(name string) ([]*NS, error)
 
-// LookupNS returns the DNS NS records for the given domain name.
+// LookupNSは指定されたドメイン名のDNS NSレコードを返します。
 //
-// The returned name server names are validated to be properly
-// formatted presentation-format domain names. If the response contains
-// invalid names, those records are filtered out and an error
-// will be returned alongside the remaining results, if any.
+// 返されたネームサーバの名前は、正しくフォーマットされた
+// プレゼンテーション形式のドメイン名であることが検証されます。
+// もしレスポンスに無効な名前が含まれている場合、それらのレコードは
+// フィルタリングされ、エラーが返されます。
+// 残りの結果がある場合、それらとともにエラーが返されます。
 func (r *Resolver) LookupNS(ctx context.Context, name string) ([]*NS, error)
 
-// LookupTXT returns the DNS TXT records for the given domain name.
+// LookupTXTは指定されたドメイン名のDNS TXTレコードを返します。
 //
-// LookupTXT uses context.Background internally; to specify the context, use
-// Resolver.LookupTXT.
+// LookupTXTは内部でcontext.Backgroundを使用します。コンテキストを指定するには、
+// Resolver.LookupTXTを使用してください。
 func LookupTXT(name string) ([]string, error)
 
-// LookupTXT returns the DNS TXT records for the given domain name.
+// LookupTXTは指定されたドメイン名のDNSのTXTレコードを返します。
 func (r *Resolver) LookupTXT(ctx context.Context, name string) ([]string, error)
 
-// LookupAddr performs a reverse lookup for the given address, returning a list
-// of names mapping to that address.
-//
-// The returned names are validated to be properly formatted presentation-format
-// domain names. If the response contains invalid names, those records are filtered
-// out and an error will be returned alongside the remaining results, if any.
-//
-// When using the host C library resolver, at most one result will be
-// returned. To bypass the host resolver, use a custom Resolver.
-//
-// LookupAddr uses context.Background internally; to specify the context, use
-// Resolver.LookupAddr.
+// LookupAddrは与えられたアドレスに対して逆引きを行い、そのアドレスにマッピングされる名前のリストを返します。
+// 返された名前は適切にフォーマットされたプレゼンテーション形式のドメイン名であることが検証されます。応答に無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーと一緒に残りの結果（ある場合）が返されます。
+// ホストCライブラリリゾルバを使用する場合、最大で1つの結果が返されます。ホストリゾルバをバイパスするには、カスタムリゾルバを使用してください。
+// LookupAddrは内部でcontext.Backgroundを使用します。コンテキストを指定するには、Resolver.LookupAddrを使用してください。
 func LookupAddr(addr string) (names []string, err error)
 
-// LookupAddr performs a reverse lookup for the given address, returning a list
-// of names mapping to that address.
+// LookupAddrは指定されたアドレスの逆引きを行い、そのアドレスにマッピングされる名前のリストを返します。
 //
-// The returned names are validated to be properly formatted presentation-format
-// domain names. If the response contains invalid names, those records are filtered
-// out and an error will be returned alongside the remaining results, if any.
+// 返された名前は適切なフォーマットのプレゼンテーション形式のドメイン名であることが検証されます。
+// もし回答に無効な名前が含まれている場合、それらのレコードはフィルタリングされ、
+// 残りの結果がある場合はエラーが返されます。
 func (r *Resolver) LookupAddr(ctx context.Context, addr string) ([]string, error)
