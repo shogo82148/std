@@ -2,14 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package ed25519 implements the Ed25519 signature algorithm. See
-// https://ed25519.cr.yp.to/.
+// Package ed25519はEd25519署名アルゴリズムを実装しています。詳しくは、https://ed25519.cr.yp.to/を参照してください。
 //
-// These functions are also compatible with the “Ed25519” function defined in
-// RFC 8032. However, unlike RFC 8032's formulation, this package's private key
-// representation includes a public key suffix to make multiple signing
-// operations with the same key more efficient. This package refers to the RFC
-// 8032 private key as the “seed”.
+// これらの関数はRFC 8032で定義されている「Ed25519」関数とも互換性があります。ただし、RFC 8032の定義とは異なり、このパッケージの秘密鍵表現には公開鍵の接尾辞が含まれており、同じ鍵での複数の署名操作を効率的に行うことができます。このパッケージでは、RFC 8032の秘密鍵を「seed」と呼んでいます。
 package ed25519
 
 import (
@@ -19,88 +14,72 @@ import (
 )
 
 const (
-	// PublicKeySize is the size, in bytes, of public keys as used in this package.
+	// PublicKeySizeは、このパッケージで使用される公開鍵のバイト単位のサイズです。
 	PublicKeySize = 32
-	// PrivateKeySize is the size, in bytes, of private keys as used in this package.
+	// PrivateKeySizeは、このパッケージで使用される秘密鍵のサイズ（バイト単位）です。
 	PrivateKeySize = 64
-	// SignatureSize is the size, in bytes, of signatures generated and verified by this package.
+	// SignatureSizeは、このパッケージで生成および検証される署名のサイズ（バイト単位）です。
 	SignatureSize = 64
-	// SeedSize is the size, in bytes, of private key seeds. These are the private key representations used by RFC 8032.
+	// SeedSizeは、RFC 8032で使用されるプライベートキーのシードのサイズ（バイト単位）です。
 	SeedSize = 32
 )
 
-// PublicKey is the type of Ed25519 public keys.
+// PublicKeyはEd25519公開鍵の型です。
 type PublicKey []byte
 
-// Equal reports whether pub and x have the same value.
+// Equalはpubとxが同じ値を持っているかどうかを報告します。
 func (pub PublicKey) Equal(x crypto.PublicKey) bool
 
-// PrivateKey is the type of Ed25519 private keys. It implements [crypto.Signer].
+// PrivateKeyはEd25519の秘密鍵の型です。[crypto.Signer]を実装しています。
 type PrivateKey []byte
 
-// Public returns the [PublicKey] corresponding to priv.
+// Publicはprivに対応する[PublicKey]を返します。
 func (priv PrivateKey) Public() crypto.PublicKey
 
-// Equal reports whether priv and x have the same value.
+// Equal は priv と x が同じ値を持っているかどうかを報告します。
 func (priv PrivateKey) Equal(x crypto.PrivateKey) bool
 
-// Seed returns the private key seed corresponding to priv. It is provided for
-// interoperability with RFC 8032. RFC 8032's private keys correspond to seeds
-// in this package.
+// Seedはprivに対応するプライベートキーシードを返します。RFC 8032との互換性のために提供されています。RFC 8032のプライベートキーはこのパッケージのシードに対応します。
 func (priv PrivateKey) Seed() []byte
 
-// Sign signs the given message with priv. rand is ignored and can be nil.
+// Signは与えられたメッセージをprivで署名します。randは無視され、nilであってもかまいません。
 //
-// If opts.HashFunc() is [crypto.SHA512], the pre-hashed variant Ed25519ph is used
-// and message is expected to be a SHA-512 hash, otherwise opts.HashFunc() must
-// be [crypto.Hash](0) and the message must not be hashed, as Ed25519 performs two
-// passes over messages to be signed.
+// もしopts.HashFunc()が[crypto.SHA512]の場合、事前ハッシュバリアントのEd25519phが使用され、
+// メッセージはSHA-512ハッシュであることが期待されます。それ以外の場合、opts.HashFunc()は[crypto.Hash](0)である必要があり、
+// メッセージはハッシュされていない状態である必要があります。なぜなら、Ed25519は署名されるメッセージに対して二回のパスを行うからです。
 //
-// A value of type [Options] can be used as opts, or crypto.Hash(0) or
-// crypto.SHA512 directly to select plain Ed25519 or Ed25519ph, respectively.
+// [Options]型の値、またはcrypto.Hash(0)またはcrypto.SHA512を直接使用して、
+// 純粋なEd25519またはEd25519phを選択することができます。
 func (priv PrivateKey) Sign(rand io.Reader, message []byte, opts crypto.SignerOpts) (signature []byte, err error)
 
-// Options can be used with [PrivateKey.Sign] or [VerifyWithOptions]
-// to select Ed25519 variants.
+// Optionsは[PrivateKey.Sign]または[VerifyWithOptions]と一緒に使われ、Ed25519のバリアントを選択するために使用できます。
 type Options struct {
-	// Hash can be zero for regular Ed25519, or crypto.SHA512 for Ed25519ph.
+	// Ed25519 の場合、ハッシュはゼロまたは Ed25519ph の場合は crypto.SHA512 になることがあります。
 	Hash crypto.Hash
 
-	// Context, if not empty, selects Ed25519ctx or provides the context string
-	// for Ed25519ph. It can be at most 255 bytes in length.
+	// Contextが空でない場合、Ed25519ctxを選択するかEd25519phのコンテキスト文字列を提供します。長さは最大255バイトです。
 	Context string
 }
 
-// HashFunc returns o.Hash.
+// HashFuncはo.Hashを返します。
 func (o *Options) HashFunc() crypto.Hash
 
-// GenerateKey generates a public/private key pair using entropy from rand.
-// If rand is nil, [crypto/rand.Reader] will be used.
+// GenerateKeyはrandからのエントロピーを使用して公開鍵/秘密鍵のペアを生成します。
+// randがnilの場合、[crypto/rand.Reader]が使用されます。
 //
-// The output of this function is deterministic, and equivalent to reading
-// [SeedSize] bytes from rand, and passing them to [NewKeyFromSeed].
+// この関数の出力は決定論的であり、randから[SeedSize]バイトを読み取り、[NewKeyFromSeed]に渡すことと等価です。
 func GenerateKey(rand io.Reader) (PublicKey, PrivateKey, error)
 
-// NewKeyFromSeed calculates a private key from a seed. It will panic if
-// len(seed) is not [SeedSize]. This function is provided for interoperability
-// with RFC 8032. RFC 8032's private keys correspond to seeds in this
-// package.
+// NewKeyFromSeedはシードから秘密鍵を計算します。もしseedの長さが[SeedSize]でない場合、パニックを発生させます。この関数はRFC 8032との互換性のために提供されています。RFC 8032の秘密鍵はこのパッケージのシードに対応します。
 func NewKeyFromSeed(seed []byte) PrivateKey
 
-// Sign signs the message with privateKey and returns a signature. It will
-// panic if len(privateKey) is not [PrivateKeySize].
+// SignはメッセージにprivateKeyで署名し、署名を返します。もしprivateKeyの長さが[PrivateKeySize]でない場合はパニックを起こします。
 func Sign(privateKey PrivateKey, message []byte) []byte
 
-// Verify reports whether sig is a valid signature of message by publicKey. It
-// will panic if len(publicKey) is not [PublicKeySize].
+// Verifyは、publicKeyによってメッセージのsigが有効な署名かどうかを検証します。
+// もしlen(publicKey)が[PublicKeySize]でない場合、パニックを引き起こします。
 func Verify(publicKey PublicKey, message, sig []byte) bool
 
-// VerifyWithOptions reports whether sig is a valid signature of message by
-// publicKey. A valid signature is indicated by returning a nil error. It will
-// panic if len(publicKey) is not [PublicKeySize].
-//
-// If opts.Hash is [crypto.SHA512], the pre-hashed variant Ed25519ph is used and
-// message is expected to be a SHA-512 hash, otherwise opts.Hash must be
-// [crypto.Hash](0) and the message must not be hashed, as Ed25519 performs two
-// passes over messages to be signed.
+// VerifyWithOptionsは、publicKeyによってメッセージのsigが有効な署名であるかどうかを報告します。有効な署名は、nilのエラーを返すことで示されます。len(publicKey)が[PublicKeySize]でない場合、パニックが発生します。
+// もしopts.Hashが[crypto.SHA512]である場合、Ed25519phとして事前にハッシュされたバリアントが使用され、messageはSHA-512ハッシュであることが想定されます。それ以外の場合、opts.Hashは[crypto.Hash](0)でなければならず、メッセージはハッシュされていない状態である必要があります。なぜなら、Ed25519は署名されるメッセージを2回処理するからです。
 func VerifyWithOptions(publicKey PublicKey, message, sig []byte, opts *Options) error
