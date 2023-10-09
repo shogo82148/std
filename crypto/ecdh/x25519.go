@@ -4,9 +4,8 @@
 
 package ecdh
 
-// X25519 returns a Curve which implements the X25519 function over Curve25519
-// (RFC 7748, Section 5).
+// X25519はCurve25519上でX25519関数を実装するCurveを返します
+// (RFC 7748、セクション5)。
 //
-// Multiple invocations of this function will return the same value, so it can
-// be used for equality checks and switch statements.
+// この関数の複数の呼び出しは同じ値を返すため、等価性チェックやスイッチ文に使用できます。
 func X25519() Curve
