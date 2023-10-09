@@ -9,142 +9,116 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
-// UDPAddr represents the address of a UDP end point.
+// UDPAddrはUDPエンドポイントのアドレスを表します。
 type UDPAddr struct {
 	IP   IP
 	Port int
 	Zone string
 }
 
-// AddrPort returns the UDPAddr a as a netip.AddrPort.
+// AddrPortはUDPAddr aをnetip.AddrPortとして返します。
 //
-// If a.Port does not fit in a uint16, it's silently truncated.
+// もしa.Portがuint16に収まらない場合、静かに切り捨てられます。
 //
-// If a is nil, a zero value is returned.
+// もしaがnilの場合、ゼロ値が返されます。
 func (a *UDPAddr) AddrPort() netip.AddrPort
 
-// Network returns the address's network name, "udp".
+// Networkはアドレスのネットワーク名、"udp"を返します。
 func (a *UDPAddr) Network() string
 
 func (a *UDPAddr) String() string
 
-// ResolveUDPAddr returns an address of UDP end point.
+// ResolveUDPAddr はUDPのエンドポイントのアドレスを返します。
 //
-// The network must be a UDP network name.
+// ネットワークはUDPのネットワーク名である必要があります。
 //
-// If the host in the address parameter is not a literal IP address or
-// the port is not a literal port number, ResolveUDPAddr resolves the
-// address to an address of UDP end point.
-// Otherwise, it parses the address as a pair of literal IP address
-// and port number.
-// The address parameter can use a host name, but this is not
-// recommended, because it will return at most one of the host name's
-// IP addresses.
+// アドレスパラメータのホストがIPアドレスのリテラルでない場合、または
+// ポート番号がリテラルのポート番号でない場合、ResolveUDPAddrは
+// UDPエンドポイントのアドレスに解決します。
+// それ以外の場合は、アドレスをリテラルのIPアドレスとポート番号のペアとして解析します。
+// アドレスパラメータはホスト名を使用することもできますが、これは
+// 推奨されません。なぜなら、ホスト名のIPアドレスのいずれか一つしか返さないからです。
 //
-// See func Dial for a description of the network and address
-// parameters.
+// ネットワークおよびアドレスパラメータの説明については、func Dialを参照してください。
 func ResolveUDPAddr(network, address string) (*UDPAddr, error)
 
-// UDPAddrFromAddrPort returns addr as a UDPAddr. If addr.IsValid() is false,
-// then the returned UDPAddr will contain a nil IP field, indicating an
-// address family-agnostic unspecified address.
+// UDPAddrFromAddrPortはaddrをUDPAddrとして返します。もしaddr.IsValid()がfalseであれば、返されるUDPAddrにはnilのIPフィールドが含まれ、アドレスファミリーに依存しない未指定のアドレスを示します。
 func UDPAddrFromAddrPort(addr netip.AddrPort) *UDPAddr
 
-// UDPConn is the implementation of the Conn and PacketConn interfaces
-// for UDP network connections.
+// UDPConnはUDPネットワーク接続のConnおよびPacketConnインターフェースの実装です。
 type UDPConn struct {
 	conn
 }
 
-// SyscallConn returns a raw network connection.
-// This implements the syscall.Conn interface.
+// SyscallConnは生のネットワーク接続を返します。
+// これはsyscall.Connインターフェースを実装しています。
 func (c *UDPConn) SyscallConn() (syscall.RawConn, error)
 
-// ReadFromUDP acts like ReadFrom but returns a UDPAddr.
+// ReadFromUDPはReadFromと同様の動作をしますが、UDPAddrを返します。
 func (c *UDPConn) ReadFromUDP(b []byte) (n int, addr *UDPAddr, err error)
 
-// ReadFrom implements the PacketConn ReadFrom method.
+// ReadFrom は PacketConn の ReadFrom メソッドを実装します。
 func (c *UDPConn) ReadFrom(b []byte) (int, Addr, error)
 
-// ReadFromUDPAddrPort acts like ReadFrom but returns a netip.AddrPort.
+// ReadFromUDPAddrPortはReadFromと同様の機能を提供しますが、netip.AddrPortを返します。
 //
-// If c is bound to an unspecified address, the returned
-// netip.AddrPort's address might be an IPv4-mapped IPv6 address.
-// Use netip.Addr.Unmap to get the address without the IPv6 prefix.
+// cが指定されていないアドレスにバインドされている場合、返される
+// netip.AddrPortのアドレスは、IPv4-mapped IPv6アドレスの可能性があります。
+// IPv6のプレフィックスなしのアドレスを取得するには、netip.Addr.Unmapを使用してください。
 func (c *UDPConn) ReadFromUDPAddrPort(b []byte) (n int, addr netip.AddrPort, err error)
 
-// ReadMsgUDP reads a message from c, copying the payload into b and
-// the associated out-of-band data into oob. It returns the number of
-// bytes copied into b, the number of bytes copied into oob, the flags
-// that were set on the message and the source address of the message.
+// ReadMsgUDPは、cからメッセージを読み込み、ペイロードをbにコピーし、サイドバンドデータをoobにコピーします。bにコピーされたバイト数、oobにコピーされたバイト数、メッセージに設定されたフラグ、およびメッセージのソースアドレスを返します。
 //
-// The packages golang.org/x/net/ipv4 and golang.org/x/net/ipv6 can be
-// used to manipulate IP-level socket options in oob.
+// パッケージgolang.org/x/net/ipv4およびgolang.org/x/net/ipv6は、oob内のIPレベルのソケットオプションを操作するために使用できます。
 func (c *UDPConn) ReadMsgUDP(b, oob []byte) (n, oobn, flags int, addr *UDPAddr, err error)
 
-// ReadMsgUDPAddrPort is like ReadMsgUDP but returns an netip.AddrPort instead of a UDPAddr.
+// ReadMsgUDPAddrPortは、UDPAddrではなくnetip.AddrPortを返すReadMsgUDPと同様の機能です。
 func (c *UDPConn) ReadMsgUDPAddrPort(b, oob []byte) (n, oobn, flags int, addr netip.AddrPort, err error)
 
-// WriteToUDP acts like WriteTo but takes a UDPAddr.
+// WriteToUDPはWriteToと同様の動作をしますが、UDPAddrを引数に取ります。
 func (c *UDPConn) WriteToUDP(b []byte, addr *UDPAddr) (int, error)
 
-// WriteToUDPAddrPort acts like WriteTo but takes a netip.AddrPort.
+// WriteToUDPAddrPortは、WriteToと同様に動作しますが、netip.AddrPortを受け取ります。
 func (c *UDPConn) WriteToUDPAddrPort(b []byte, addr netip.AddrPort) (int, error)
 
-// WriteTo implements the PacketConn WriteTo method.
+// WriteToはPacketConnのWriteToメソッドを実装します。
 func (c *UDPConn) WriteTo(b []byte, addr Addr) (int, error)
 
-// WriteMsgUDP writes a message to addr via c if c isn't connected, or
-// to c's remote address if c is connected (in which case addr must be
-// nil). The payload is copied from b and the associated out-of-band
-// data is copied from oob. It returns the number of payload and
-// out-of-band bytes written.
+// WriteMsgUDPは、cが接続されていない場合はcを介してaddrにメッセージを書き込み、
+// cが接続されている場合はcのリモートアドレスにメッセージを書き込みます（その場合、
+// addrはnilでなければなりません）。ペイロードはbからコピーされ、関連する
+// フラグデータはoobからコピーされます。ペイロードとフラグデータの書き込まれた
+// バイト数を返します。
 //
-// The packages golang.org/x/net/ipv4 and golang.org/x/net/ipv6 can be
-// used to manipulate IP-level socket options in oob.
+// パッケージgolang.org/x/net/ipv4およびgolang.org/x/net/ipv6を使用して、
+// oob内のIPレベルのソケットオプションを操作することができます。
 func (c *UDPConn) WriteMsgUDP(b, oob []byte, addr *UDPAddr) (n, oobn int, err error)
 
-// WriteMsgUDPAddrPort is like WriteMsgUDP but takes a netip.AddrPort instead of a UDPAddr.
+// WriteMsgUDPAddrPortはUDPAddrではなく、netip.AddrPortを受け取るWriteMsgUDPと同様のものです。
 func (c *UDPConn) WriteMsgUDPAddrPort(b, oob []byte, addr netip.AddrPort) (n, oobn int, err error)
 
-// DialUDP acts like Dial for UDP networks.
+// DialUDPはUDPネットワークのためにDialと同様の機能を提供します。
 //
-// The network must be a UDP network name; see func Dial for details.
+// ネットワークはUDPネットワークの名前でなければならず、詳細についてはfunc Dialを参照してください。
 //
-// If laddr is nil, a local address is automatically chosen.
-// If the IP field of raddr is nil or an unspecified IP address, the
-// local system is assumed.
+// もしladdrがnilの場合、自動的にローカルアドレスが選択されます。
+// もしraddrのIPフィールドがnilまたは未指定のIPアドレスの場合、ローカルシステムが仮定されます。
 func DialUDP(network string, laddr, raddr *UDPAddr) (*UDPConn, error)
 
-// ListenUDP acts like ListenPacket for UDP networks.
+// ListenUDPは、UDPネットワークに対してListenPacketと同様の機能を提供します。
 //
-// The network must be a UDP network name; see func Dial for details.
+// ネットワークはUDPネットワーク名でなければなりません。詳細については、func Dialを参照してください。
 //
-// If the IP field of laddr is nil or an unspecified IP address,
-// ListenUDP listens on all available IP addresses of the local system
-// except multicast IP addresses.
-// If the Port field of laddr is 0, a port number is automatically
-// chosen.
+// laddrのIPフィールドがnilまたは未指定のIPアドレスである場合、
+// ListenUDPは、マルチキャストIPアドレスを除く、ローカルシステムのすべての利用可能なIPアドレスでリスンします。
+// laddrのPortフィールドが0の場合、ポート番号が自動的に選択されます。
 func ListenUDP(network string, laddr *UDPAddr) (*UDPConn, error)
 
-// ListenMulticastUDP acts like ListenPacket for UDP networks but
-// takes a group address on a specific network interface.
-//
-// The network must be a UDP network name; see func Dial for details.
-//
-// ListenMulticastUDP listens on all available IP addresses of the
-// local system including the group, multicast IP address.
-// If ifi is nil, ListenMulticastUDP uses the system-assigned
-// multicast interface, although this is not recommended because the
-// assignment depends on platforms and sometimes it might require
-// routing configuration.
-// If the Port field of gaddr is 0, a port number is automatically
-// chosen.
-//
-// ListenMulticastUDP is just for convenience of simple, small
-// applications. There are golang.org/x/net/ipv4 and
-// golang.org/x/net/ipv6 packages for general purpose uses.
-//
-// Note that ListenMulticastUDP will set the IP_MULTICAST_LOOP socket option
-// to 0 under IPPROTO_IP, to disable loopback of multicast packets.
+// ListenMulticastUDPは、グループアドレスを指定したネットワークインターフェース上でのUDPネットワーク用のListenPacketのように動作します。
+// ネットワークはUDPネットワーク名である必要があります。詳細については、func Dialを参照してください。
+// ListenMulticastUDPは、グループのマルチキャストIPアドレスを含む、ローカルシステムの利用可能なすべてのIPアドレスでリッスンします。
+// ifiがnilの場合、ListenMulticastUDPはシステムが割り当てたマルチキャストインターフェースを使用しますが、これは推奨されません。割り当てはプラットフォームに依存し、時にはルーティングの設定が必要になる場合があります。
+// gaddrのPortフィールドが0の場合、ポート番号が自動的に選択されます。
+// ListenMulticastUDPは、単純で小規模なアプリケーションのための便利さのために提供されています。一般的な目的にはgolang.org/x/net/ipv4とgolang.org/x/net/ipv6パッケージがあります。
+// ListenMulticastUDPは、IPPROTO_IPのIP_MULTICAST_LOOPソケットオプションを0に設定して、マルチキャストパケットのループバックを無効にします。
 func ListenMulticastUDP(network string, ifi *Interface, gaddr *UDPAddr) (*UDPConn, error)

@@ -2,59 +2,50 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// IP address manipulations
+// IPアドレスの操作
 //
-// IPv4 addresses are 4 bytes; IPv6 addresses are 16 bytes.
-// An IPv4 address can be converted to an IPv6 address by
-// adding a canonical prefix (10 zeros, 2 0xFFs).
-// This library accepts either size of byte slice but always
-// returns 16-byte addresses.
+// IPv4アドレスは4バイトで、IPv6アドレスは16バイトです。
+// IPv4アドレスは正規のプレフィックス（10個のゼロ、2つの0xFF）を追加することで、IPv6アドレスに変換できます。
+// このライブラリはどちらのバイトスライスのサイズも受け付けますが、常に16バイトのアドレスを返します。
 
 package net
 
-// IP address lengths (bytes).
+// IPアドレスの長さ（バイト単位）。
 const (
 	IPv4len = 4
 	IPv6len = 16
 )
 
-// An IP is a single IP address, a slice of bytes.
-// Functions in this package accept either 4-byte (IPv4)
-// or 16-byte (IPv6) slices as input.
+// IPは単一のIPアドレス、バイトのスライスです。
+// このパッケージの関数は、4バイト（IPv4）または16バイト（IPv6）のスライスを入力として受け付けます。
 //
-// Note that in this documentation, referring to an
-// IP address as an IPv4 address or an IPv6 address
-// is a semantic property of the address, not just the
-// length of the byte slice: a 16-byte slice can still
-// be an IPv4 address.
+// このドキュメントでは、IPアドレスをIPv4アドレスまたはIPv6アドレスと呼ぶことは、アドレスの意味的な属性であり、単にバイトスライスの長さだけではありません：16バイトスライスもIPv4アドレスである可能性があります。
 type IP []byte
 
-// An IPMask is a bitmask that can be used to manipulate
-// IP addresses for IP addressing and routing.
+// IPMaskは、IPアドレスのアドレッシングとルーティングに使用できる
+// ビットマスクです。
 //
-// See type IPNet and func ParseCIDR for details.
+// 詳細については、型IPNetと関数ParseCIDRを参照してください。
 type IPMask []byte
 
-// An IPNet represents an IP network.
+// IPNetはIPネットワークを表します。
 type IPNet struct {
 	IP   IP
 	Mask IPMask
 }
 
-// IPv4 returns the IP address (in 16-byte form) of the
-// IPv4 address a.b.c.d.
+// IPv4は、IPv4アドレスa.b.c.dのIPアドレス（16バイト形式）を返します。
 func IPv4(a, b, c, d byte) IP
 
-// IPv4Mask returns the IP mask (in 4-byte form) of the
-// IPv4 mask a.b.c.d.
+// IPv4Maskは、IPv4マスクa.b.c.dのIPマスク（4バイト形式）を返します。
 func IPv4Mask(a, b, c, d byte) IPMask
 
-// CIDRMask returns an IPMask consisting of 'ones' 1 bits
-// followed by 0s up to a total length of 'bits' bits.
-// For a mask of this form, CIDRMask is the inverse of IPMask.Size.
+// CIDRMaskは、'ones'個の1ビットで構成されたIPMaskを返します。
+// その後、0ビットが 'bits'ビットの総長になるまで続きます。
+// この形式のマスクに対して、CIDRMaskはIPMask.Sizeの逆です。
 func CIDRMask(ones, bits int) IPMask
 
-// Well-known IPv4 addresses
+// 有名なIPv4アドレス
 var (
 	IPv4bcast     = IPv4(255, 255, 255, 255)
 	IPv4allsys    = IPv4(224, 0, 0, 1)
@@ -62,7 +53,7 @@ var (
 	IPv4zero      = IPv4(0, 0, 0, 0)
 )
 
-// Well-known IPv6 addresses
+// 有名なIPv6アドレス
 var (
 	IPv6zero                   = IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 	IPv6unspecified            = IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -72,115 +63,101 @@ var (
 	IPv6linklocalallrouters    = IP{0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x02}
 )
 
-// IsUnspecified reports whether ip is an unspecified address, either
-// the IPv4 address "0.0.0.0" or the IPv6 address "::".
+// IsUnspecified は、ipが特定されていないアドレスであるかどうかを報告します。
+// つまり、IPv4アドレスの "0.0.0.0" またはIPv6アドレス "::" です。
 func (ip IP) IsUnspecified() bool
 
-// IsLoopback reports whether ip is a loopback address.
+// IsLoopbackはipがループバックアドレスであるかどうかを報告します。
 func (ip IP) IsLoopback() bool
 
-// IsPrivate reports whether ip is a private address, according to
-// RFC 1918 (IPv4 addresses) and RFC 4193 (IPv6 addresses).
+// IsPrivateは、RFC 1918（IPv4アドレス）およびRFC 4193（IPv6アドレス）に基づいて、IPがプライベートアドレスかどうかを報告します。
 func (ip IP) IsPrivate() bool
 
-// IsMulticast reports whether ip is a multicast address.
+// IsMulticastは、ipがマルチキャストアドレスかどうかを報告します。
 func (ip IP) IsMulticast() bool
 
-// IsInterfaceLocalMulticast reports whether ip is
-// an interface-local multicast address.
+// IsInterfaceLocalMulticastは、ipがインターフェースローカルなマルチキャストアドレスかどうかを報告します。
 func (ip IP) IsInterfaceLocalMulticast() bool
 
-// IsLinkLocalMulticast reports whether ip is a link-local
-// multicast address.
+// IsLinkLocalMulticast は、与えられた IP アドレスがリンクローカルマルチキャストアドレスかどうかを報告します。
 func (ip IP) IsLinkLocalMulticast() bool
 
-// IsLinkLocalUnicast reports whether ip is a link-local
-// unicast address.
+// IsLinkLocalUnicast は、ip がリンクローカルユニキャストアドレスであるかどうかを報告します。
 func (ip IP) IsLinkLocalUnicast() bool
 
-// IsGlobalUnicast reports whether ip is a global unicast
-// address.
+// IsGlobalUnicastは、ipがグローバルユニキャストアドレスであるかどうかを報告します。
 //
-// The identification of global unicast addresses uses address type
-// identification as defined in RFC 1122, RFC 4632 and RFC 4291 with
-// the exception of IPv4 directed broadcast addresses.
-// It returns true even if ip is in IPv4 private address space or
-// local IPv6 unicast address space.
+// グローバルユニキャストアドレスの識別は、RFC 1122、RFC 4632、RFC 4291で定義されたアドレスタイプの識別を使用しますが、
+// IPv4の指示ブロードキャストアドレスは除外します。
+// ipがIPv4のプライベートアドレススペースまたはローカルIPv6ユニキャストアドレススペースにある場合でも、trueを返します。
 func (ip IP) IsGlobalUnicast() bool
 
-// To4 converts the IPv4 address ip to a 4-byte representation.
-// If ip is not an IPv4 address, To4 returns nil.
+// To4はIPv4アドレスを4バイトの表現に変換します。
+// もしipがIPv4アドレスでない場合、To4はnilを返します。
 func (ip IP) To4() IP
 
-// To16 converts the IP address ip to a 16-byte representation.
-// If ip is not an IP address (it is the wrong length), To16 returns nil.
+// To16はIPアドレスipを16バイトの表現に変換します。
+// ipがIPアドレスでない場合（長さが正しくない場合）、To16はnilを返します。
 func (ip IP) To16() IP
 
-// DefaultMask returns the default IP mask for the IP address ip.
-// Only IPv4 addresses have default masks; DefaultMask returns
-// nil if ip is not a valid IPv4 address.
+// DefaultMaskはIPアドレスipのデフォルトのマスクを返します。
+// IPv4アドレスのみがデフォルトマスクを持ちます。ipが有効なIPv4アドレスでない場合、DefaultMaskは
+// nilを返します。
 func (ip IP) DefaultMask() IPMask
 
-// Mask returns the result of masking the IP address ip with mask.
+// MaskはIPアドレスipをmaskでマスクした結果を返します。
 func (ip IP) Mask(mask IPMask) IP
 
-// String returns the string form of the IP address ip.
-// It returns one of 4 forms:
-//   - "<nil>", if ip has length 0
-//   - dotted decimal ("192.0.2.1"), if ip is an IPv4 or IP4-mapped IPv6 address
-//   - IPv6 conforming to RFC 5952 ("2001:db8::1"), if ip is a valid IPv6 address
-//   - the hexadecimal form of ip, without punctuation, if no other cases apply
+// StringはIPアドレスipの文字列形式を返します。
+// それは以下の4つの形式のいずれかを返します:
+//   - "<nil>", ipの長さが0の場合
+//   - ドット付きの10進表現 ("192.0.2.1"), ipがIPv4またはIP4-mapped IPv6アドレスの場合
+//   - RFC 5952に準拠したIPv6形式 ("2001:db8::1"), ipが有効なIPv6アドレスの場合
+//   - 上記の条件に当てはまらない場合は、ipの句読点を除いた16進数形式
 func (ip IP) String() string
 
-// MarshalText implements the encoding.TextMarshaler interface.
-// The encoding is the same as returned by String, with one exception:
-// When len(ip) is zero, it returns an empty slice.
+// MarshalTextはencoding.TextMarshalerインターフェースを実装します。
+// エンコードはStringで返されるものと同じですが、1つ例外があります：
+// len(ip)がゼロの場合、空のスライスを返します。
 func (ip IP) MarshalText() ([]byte, error)
 
-// UnmarshalText implements the encoding.TextUnmarshaler interface.
-// The IP address is expected in a form accepted by ParseIP.
+// UnmarshalTextはencoding.TextUnmarshalerインターフェースを実装します。
+// IPアドレスはParseIPで受け入れられる形式で指定することが期待されています。
 func (ip *IP) UnmarshalText(text []byte) error
 
-// Equal reports whether ip and x are the same IP address.
-// An IPv4 address and that same address in IPv6 form are
-// considered to be equal.
+// Equalは、ipとxが同じIPアドレスであるかどうかを報告します。
+// IPv4アドレスと同じアドレスを持つIPv6形式は
+// 同じものと見なされます。
 func (ip IP) Equal(x IP) bool
 
-// Size returns the number of leading ones and total bits in the mask.
-// If the mask is not in the canonical form--ones followed by zeros--then
-// Size returns 0, 0.
+// Sizeはマスクの先頭の1の数と合計のビット数を返します。
+// マスクが正規の形式でない場合、つまり、1が0に続く形式でない場合は、
+// Sizeは0, 0を返します。
 func (m IPMask) Size() (ones, bits int)
 
-// String returns the hexadecimal form of m, with no punctuation.
+// Stringは、句読点なしのmの16進数形式を返します。
 func (m IPMask) String() string
 
-// Contains reports whether the network includes ip.
+// Containsは、ネットワークが指定したIPを含んでいるかどうかを報告します。
 func (n *IPNet) Contains(ip IP) bool
 
-// Network returns the address's network name, "ip+net".
+// Networkはアドレスのネットワーク名、"ip+net"を返します。
 func (n *IPNet) Network() string
 
-// String returns the CIDR notation of n like "192.0.2.0/24"
-// or "2001:db8::/48" as defined in RFC 4632 and RFC 4291.
-// If the mask is not in the canonical form, it returns the
-// string which consists of an IP address, followed by a slash
-// character and a mask expressed as hexadecimal form with no
-// punctuation like "198.51.100.0/c000ff00".
+// Stringは、CIDR表記であるnの文字列を返します。例えば「192.0.2.0/24」やRFC 4632およびRFC 4291で定義されている「2001:db8::/48」です。
+// もしマスクが正規形式でない場合、IPアドレスに続いてスラッシュ文字とパンクチュエーションを含まない16進形式のマスクで表された文字列を返します。例えば「198.51.100.0/c000ff00」。
 func (n *IPNet) String() string
 
-// ParseIP parses s as an IP address, returning the result.
-// The string s can be in IPv4 dotted decimal ("192.0.2.1"), IPv6
-// ("2001:db8::68"), or IPv4-mapped IPv6 ("::ffff:192.0.2.1") form.
-// If s is not a valid textual representation of an IP address,
-// ParseIP returns nil.
+// ParseIPは文字列sをIPアドレスと解釈し、結果を返します。
+// 文字列sはIPv4点区切りの10進法（「192.0.2.1」）、IPv6（「2001:db8::68」）、またはIPv4-mapped IPv6形式（「::ffff:192.0.2.1」）で書かれている必要があります。
+// もしsが有効なIPアドレスのテキスト表現ではない場合、ParseIPはnilを返します。
 func ParseIP(s string) IP
 
-// ParseCIDR parses s as a CIDR notation IP address and prefix length,
-// like "192.0.2.0/24" or "2001:db8::/32", as defined in
-// RFC 4632 and RFC 4291.
+// ParseCIDRはCIDR表記のIPアドレスとプレフィックス長を含むsを解析します。
+// 例えば、"192.0.2.0/24"や"2001:db8::/32"のようなものです。
+// RFC 4632とRFC 4291で定義されています。
 //
-// It returns the IP address and the network implied by the IP and
-// prefix length.
-// For example, ParseCIDR("192.0.2.1/24") returns the IP address
-// 192.0.2.1 and the network 192.0.2.0/24.
+// IPアドレスとプレフィックス長によって暗示されるIPとネットワークを返します。
+// 例えば、ParseCIDR("192.0.2.1/24")はIPアドレスが
+// 192.0.2.1でネットワークが192.0.2.0/24を返します。
 func ParseCIDR(s string) (IP, *IPNet, error)
