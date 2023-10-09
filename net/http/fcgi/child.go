@@ -10,24 +10,18 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
-// ErrRequestAborted is returned by Read when a handler attempts to read the
-// body of a request that has been aborted by the web server.
+// ErrRequestAborted は、ウェブサーバーによって中止されたリクエストのボディを読み込もうとするハンドラがReadを呼び出した場合に返されます。
 var ErrRequestAborted = errors.New("fcgi: request aborted by web server")
 
-// ErrConnClosed is returned by Read when a handler attempts to read the body of
-// a request after the connection to the web server has been closed.
+// ErrConnClosedは、接続がウェブサーバーとの間で閉じられた後に、ハンドラがリクエストのボディを読み取ろうとした場合に、Readで返されます。
 var ErrConnClosed = errors.New("fcgi: connection to web server closed")
 
-// Serve accepts incoming FastCGI connections on the listener l, creating a new
-// goroutine for each. The goroutine reads requests and then calls handler
-// to reply to them.
-// If l is nil, Serve accepts connections from os.Stdin.
-// If handler is nil, http.DefaultServeMux is used.
+// Serveはリスナーlで受け入れた入力FastCGI接続を処理し、それぞれのために新しいゴルーチンを作成します。ゴルーチンはリクエストを読み取り、その後ハンドラを呼び出して応答します。
+// lがnilの場合、Serveはos.Stdinからの接続を受け入れます。
+// handlerがnilの場合、http.DefaultServeMuxが使用されます。
 func Serve(l net.Listener, handler http.Handler) error
 
-// ProcessEnv returns FastCGI environment variables associated with the request r
-// for which no effort was made to be included in the request itself - the data
-// is hidden in the request's context. As an example, if REMOTE_USER is set for a
-// request, it will not be found anywhere in r, but it will be included in
-// ProcessEnv's response (via r's context).
+// ProcessEnvは、リクエストrに関連するFastCGI環境変数を返します。
+// リクエスト自体に含まれるための努力がなされなかったデータは、リクエストのコンテキストに隠されています。
+// たとえば、リクエストに対してREMOTE_USERが設定されている場合、r内のどこにも見つけることはできませんが、ProcessEnvの応答（rのコンテキストを介して）に含まれます。
 func ProcessEnv(r *http.Request) map[string]string
