@@ -4,7 +4,7 @@
 
 package asn1
 
-// ASN.1 tags represent the type of the following object.
+// ASN.1のタグは、次のオブジェクトのタイプを表します。
 const (
 	TagBoolean         = 1
 	TagInteger         = 2
@@ -26,7 +26,7 @@ const (
 	TagBMPString       = 30
 )
 
-// ASN.1 class types represent the namespace of the tag.
+// ASN.1クラスタイプは、タグの名前空間を表します。
 const (
 	ClassUniversal       = 0
 	ClassApplication     = 1
