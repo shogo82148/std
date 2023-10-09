@@ -13,23 +13,23 @@ import (
 	"github.com/shogo82148/std/strings"
 )
 
-// This example demonstrates how to inspect the AST of a Go program.
+// この例は、GoプログラムのASTを検査する方法を示しています。
 func ExampleInspect() {
-	// src is the input for which we want to inspect the AST.
+	// srcはASTを検査したい入力です。
 	src := `
 package p
 const c = 1.0
 var X = f(3.14)*2 + c
 `
 
-	// Create the AST by parsing src.
-	fset := token.NewFileSet() // positions are relative to fset
+	// srcを解析してASTを作成する。
+	fset := token.NewFileSet() // ポジションはfsetに対して相対的です。
 	f, err := parser.ParseFile(fset, "src.go", src, 0)
 	if err != nil {
 		panic(err)
 	}
 
-	// Inspect the AST and print all identifiers and literals.
+	// AST を調査し、すべての識別子とリテラルを表示します。
 	ast.Inspect(f, func(n ast.Node) bool {
 		var s string
 		switch x := n.(type) {
@@ -55,9 +55,9 @@ var X = f(3.14)*2 + c
 	// src.go:4:21:	c
 }
 
-// This example shows what an AST looks like when printed for debugging.
+// この例では、デバッグ用に出力されるASTの形状を示しています。
 func ExamplePrint() {
-	// src is the input for which we want to print the AST.
+	// srcはASTを出力したい入力です。
 	src := `
 package main
 func main() {
@@ -65,14 +65,14 @@ func main() {
 }
 `
 
-	// Create the AST by parsing src.
-	fset := token.NewFileSet() // positions are relative to fset
+	// src を解析してASTを作成します。
+	fset := token.NewFileSet() // ポジションはfsetに対して相対的です。
 	f, err := parser.ParseFile(fset, "", src, 0)
 	if err != nil {
 		panic(err)
 	}
 
-	// Print the AST.
+	// ASTを出力する。
 	ast.Print(fset, f)
 
 	// Output:
@@ -140,12 +140,10 @@ func main() {
 	//     61  }
 }
 
-// This example illustrates how to remove a variable declaration
-// in a Go program while maintaining correct comment association
-// using an ast.CommentMap.
+// この例は、ast.CommentMapを使用して、Goプログラムの変数宣言を削除しながら正しいコメントの関連を保持する方法を示しています。
 func ExampleCommentMap() {
-	// src is the input for which we create the AST that we
-	// are going to manipulate.
+
+	// src は、私たちが操作するためのASTを作成する入力です。
 	src := `
 // This is the package comment.
 package main
@@ -162,19 +160,18 @@ func main() {
 }
 `
 
-	// Create the AST by parsing src.
-	fset := token.NewFileSet() // positions are relative to fset
+	// src をパースしてASTを作成する。
+	fset := token.NewFileSet() // positionsはfsetに対して相対的です。
 	f, err := parser.ParseFile(fset, "src.go", src, parser.ParseComments)
 	if err != nil {
 		panic(err)
 	}
 
-	// Create an ast.CommentMap from the ast.File's comments.
-	// This helps keeping the association between comments
-	// and AST nodes.
+	// ast.File のコメントから ast.CommentMap を作成します。
+	// これにより、コメントと AST ノードの関連付けが保持されます。
 	cmap := ast.NewCommentMap(fset, f, f.Comments)
 
-	// Remove the first variable declaration from the list of declarations.
+	// 最初の変数宣言を宣言リストから削除します。
 	for i, decl := range f.Decls {
 		if gen, ok := decl.(*ast.GenDecl); ok && gen.Tok == token.VAR {
 			copy(f.Decls[i:], f.Decls[i+1:])
@@ -183,12 +180,10 @@ func main() {
 		}
 	}
 
-	// Use the comment map to filter comments that don't belong anymore
-	// (the comments associated with the variable declaration), and create
-	// the new comments list.
+	// コメントマップを使用して、もはや必要でないコメント（変数宣言に関連するコメント）をフィルタリングし、新しいコメントリストを作成します。
 	f.Comments = cmap.Filter(f).Comments()
 
-	// Print the modified AST.
+	// 変更されたASTを出力します。
 	var buf strings.Builder
 	if err := format.Node(&buf, fset, f); err != nil {
 		panic(err)

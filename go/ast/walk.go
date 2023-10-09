@@ -4,22 +4,14 @@
 
 package ast
 
-// A Visitor's Visit method is invoked for each node encountered by Walk.
-// If the result visitor w is not nil, Walk visits each of the children
-// of node with the visitor w, followed by a call of w.Visit(nil).
+// Walk によって遭遇したノードごとに Visitor の Visit メソッドが呼び出されます。
+// もし結果の visitor w が nil でない場合、Walk はノードの各子ノードを visitor w と共に訪問し、その後に w.Visit(nil) の呼び出しを行います。
 type Visitor interface {
 	Visit(node Node) (w Visitor)
 }
 
-// Walk traverses an AST in depth-first order: It starts by calling
-// v.Visit(node); node must not be nil. If the visitor w returned by
-// v.Visit(node) is not nil, Walk is invoked recursively with visitor
-// w for each of the non-nil children of node, followed by a call of
-// w.Visit(nil).
+// WalkはASTを深さ優先でトラバースします。最初にv.Visit(node)を呼び出します。nodeはnilであってはいけません。v.Visit(node)から返されるビジターwがnilでない場合、Walkはnodeのnilでない子要素ごとに再帰的にビジターwを用いて呼び出され、その後にw.Visit(nil)が呼び出されます。
 func Walk(v Visitor, node Node)
 
-// Inspect traverses an AST in depth-first order: It starts by calling
-// f(node); node must not be nil. If f returns true, Inspect invokes f
-// recursively for each of the non-nil children of node, followed by a
-// call of f(nil).
+// InspectはASTを深さ優先順で走査します：まずf(node)を呼び出します。nodeはnilであってはなりません。fがtrueを返す場合、Inspectはnodeの非nilな子のそれぞれに対して再帰的にfを呼び出し、その後にf(nil)を呼び出します。
 func Inspect(node Node, f func(Node) bool)
