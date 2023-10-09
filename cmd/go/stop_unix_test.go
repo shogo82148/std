@@ -3,5 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build unix || (js && wasm)
+//go:build unix || (js && wasm)
 
 package main_test

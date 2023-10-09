@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Script-driven tests.
-// See testdata/script/README for an overview.
+// スクリプトによるテスト。
+// 詳細については、testdata/script/READMEを参照してください。
 
 //go:generate go test cmd/go -v -run=TestScript/README --fixreadme
 
