@@ -16,7 +16,7 @@ func ExampleWriter() {
 	w := bufio.NewWriter(os.Stdout)
 	fmt.Fprint(w, "Hello, ")
 	fmt.Fprint(w, "world!")
-	w.Flush() // Don't forget to flush!
+	w.Flush() // フラッシュするのを忘れないで！
 	// Output: Hello, world!
 }
 
