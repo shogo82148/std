@@ -2,15 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package parser implements a parser for Go source files. Input may be
-// provided in a variety of forms (see the various Parse* functions); the
-// output is an abstract syntax tree (AST) representing the Go source. The
-// parser is invoked through one of the Parse* functions.
-//
-// The parser accepts a larger language than is syntactically permitted by
-// the Go spec, for simplicity, and for improved robustness in the presence
-// of syntax errors. For instance, in method declarations, the receiver is
-// treated like an ordinary parameter list and thus may contain multiple
-// entries where the spec permits exactly one. Consequently, the corresponding
-// field in the AST (ast.FuncDecl.Recv) field is not restricted to one entry.
+// パッケージparserはGoのソースファイルのパーサを実装しています。入力はさまざまな形式で提供できます（Parse*関数を参照）。出力はGoソースを表す抽象構文木（AST）です。パーサはParse*関数のいずれかを経由して呼び出されます。
+// パーサは、Goの仕様で構文的に許可されていないより大きな言語を受け入れていますが、これは単純さと構文エラーの存在下での強靱性の向上のためです。たとえば、メソッド宣言では、レシーバは通常のパラメータリストのように扱われるため、複数のエントリが可能ですが、仕様では一つしか許可されていません。そのため、ASTの対応するフィールド（ast.FuncDecl.Recv）は一つに制限されていません。
 package parser
