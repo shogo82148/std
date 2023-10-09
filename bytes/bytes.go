@@ -105,17 +105,10 @@ func FieldsFunc(s []byte, f func(rune) bool) [][]byte
 // Join関数は、sの要素を連結して新しいバイトスライスを作成します。結果のスライスの要素間にはセパレーターsepが配置されます。
 func Join(s [][]byte, sep []byte) []byte
 
-<<<<<<< HEAD
-// HasPrefix reports whether the byte slice s begins with prefix.
+// HasPrefixは、バイトスライスsがprefixで始まるかどうかを報告します。
 func HasPrefix(s, prefix []byte) bool
 
-// HasSuffix reports whether the byte slice s ends with suffix.
-=======
-// HasPrefixは、バイトスライスsがprefixで始まるかどうかをテストします。
-func HasPrefix(s, prefix []byte) bool
-
-// HasSuffixは、バイトスライスsが接尾辞で終わっているかをテストします。
->>>>>>> release-branch.go1.21
+// HasSuffixは、バイトスライスsがsuffixで終わるかどうかを報告します。
 func HasSuffix(s, suffix []byte) bool
 
 // Map関数は、与えられたマッピング関数に基づいて、バイトスライスsのすべての文字が変更されたコピーを返します。
