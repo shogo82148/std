@@ -4,6 +4,6 @@
 
 package comment
 
-// Markdown returns a Markdown formatting of the Doc.
-// See the [Printer] documentation for ways to customize the Markdown output.
+// MarkdownはDocのMarkdown形式のフォーマットを返します。
+// Markdown出力をカスタマイズする方法については[Printer]のドキュメントを参照してください。
 func (p *Printer) Markdown(d *Doc) []byte

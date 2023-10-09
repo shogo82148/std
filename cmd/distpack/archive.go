@@ -9,13 +9,13 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// An Archive describes an archive to write: a collection of files.
-// Directories are implied by the files and not explicitly listed.
+// Archiveは、書き込むためのアーカイブを表します：ファイルの集合体です。
+// ディレクトリはファイルに含まれており、明示的にリストされていません。
 type Archive struct {
 	Files []File
 }
 
-// A File describes a single file to write to an archive.
+// Fileはアーカイブに書き込む単一のファイルを表します。
 type File struct {
 	Name string
 	Time time.Time
@@ -24,50 +24,54 @@ type File struct {
 	Src  string
 }
 
-// Info returns a FileInfo about the file, for use with tar.FileInfoHeader
-// and zip.FileInfoHeader.
+// Infoはファイルに関するFileInfoを返します。tar.FileInfoHeaderやzip.FileInfoHeaderと組み合わせて使用します。
 func (f *File) Info() fs.FileInfo
 
-// NewArchive returns a new Archive containing all the files in the directory dir.
-// The archive can be amended afterward using methods like Add and Filter.
+// NewArchiveはディレクトリdirに含まれるすべてのファイルを含む新しいアーカイブを返します。
+// アーカイブはAddやFilterなどのメソッドを使って後から修正することができます。
 func NewArchive(dir string) (*Archive, error)
 
-// Add adds a file with the given name and info to the archive.
-// The content of the file comes from the operating system file src.
-// After a sequence of one or more calls to Add,
-// the caller should invoke Sort to re-sort the archive's files.
+// Addは指定された名前と情報を持つファイルをアーカイブに追加します。
+// ファイルの内容はオペレーティングシステムのファイルsrcから取得します。
+// 1回以上Addを呼び出した後、アーカイブのファイルを再ソートするためにSortを呼び出す必要があります。
 func (a *Archive) Add(name, src string, info fs.FileInfo)
 
+<<<<<<< HEAD
 // Sort sorts the files in the archive.
 // It is only necessary to call Sort after calling Add or RenameGoMod.
 // NewArchive returns a sorted archive, and the other methods
 // preserve the sorting of the archive.
+=======
+// Sortはアーカイブ内のファイルをソートします。
+// AddまたはRenameGoModを呼び出した後にSortを呼び出す必要があります。
+// ArchiveDirはソートされたアーカイブを返し、他のメソッドは
+// アーカイブのソートを保持します。
+>>>>>>> release-branch.go1.21
 func (a *Archive) Sort()
 
-// Clone returns a copy of the Archive.
-// Method calls like Add and Filter invoked on the copy do not affect the original,
-// nor do calls on the original affect the copy.
+// CloneはArchiveのコピーを返します。
+// コピーに対して行われるAddやFilterなどのメソッド呼び出しは、元のデータに影響を与えません。
+// また、元のデータに対する呼び出しも、コピーには影響しません。
 func (a *Archive) Clone() *Archive
 
-// AddPrefix adds a prefix to all file names in the archive.
+// AddPrefixはアーカイブ内のすべてのファイル名に接頭辞を追加します。
 func (a *Archive) AddPrefix(prefix string)
 
-// Filter removes files from the archive for which keep(name) returns false.
+// Filterはkeep(name)がfalseを返すアーカイブからファイルを除外します。
 func (a *Archive) Filter(keep func(name string) bool)
 
-// SetMode changes the mode of every file in the archive
-// to be mode(name, m), where m is the file's current mode.
+// SetModeはアーカイブ内のすべてのファイルのモードを変更します
+// モードは(name, m)になります。ここで、mはファイルの現在のモードです。
 func (a *Archive) SetMode(mode func(name string, m fs.FileMode) fs.FileMode)
 
-// Remove removes files matching any of the patterns from the archive.
-// The patterns use the syntax of path.Match, with an extension of allowing
-// a leading **/ or trailing /**, which match any number of path elements
-// (including no path elements) before or after the main match.
+// Removeはアーカイブから任意のパターンにマッチするファイルを削除します。
+// パターンはpath.Matchの文法を使用しており、**/で始まるか/**で終わることができます。
+// これにより、メインのマッチングの前や後に任意のパス要素（パス要素がない場合も含む）がマッチします。
 func (a *Archive) Remove(patterns ...string)
 
-// SetTime sets the modification time of all files in the archive to t.
+// SetTimeはアーカイブ内のすべてのファイルの変更時刻をtに設定します。
 func (a *Archive) SetTime(t time.Time)
 
-// RenameGoMod renames the go.mod files in the archive to _go.mod,
-// for use with the module form, which cannot contain other go.mod files.
+// RenameGoModはアーカイブ内のgo.modファイルを_go.modに名前変更します。
+// モジュール形式では、他のgo.modファイルを含むことができないため、この名前変更が必要です。
 func (a *Archive) RenameGoMod()

@@ -8,33 +8,32 @@ import (
 	"github.com/shogo82148/std/crypto/x509"
 )
 
-// A SessionState is a resumable session.
+// SessionStateは再開可能なセッションです。
 type SessionState struct {
 
-	// Extra is ignored by crypto/tls, but is encoded by [SessionState.Bytes]
-	// and parsed by [ParseSessionState].
+	// Extraはcrypto/tlsによって無視されますが、[SessionState.Bytes]によってエンコードされ、[ParseSessionState]によって解析されます。
 	//
-	// This allows [Config.UnwrapSession]/[Config.WrapSession] and
-	// [ClientSessionCache] implementations to store and retrieve additional
-	// data alongside this session.
+	// これにより、[Config.UnwrapSession]/[Config.WrapSession]や[ClientSessionCache]の実装が、このセッションとともに追加のデータを格納および取得できるようになります。
 	//
+<<<<<<< HEAD
 	// To allow different layers in a protocol stack to share this field,
 	// applications must only append to it, not replace it, and must use entries
 	// that can be recognized even if out of order (for example, by starting
 	// with an id and version prefix).
+=======
+	// プロトコルスタックの異なるレイヤーがこのフィールドを共有するために、アプリケーションは追加するだけでなく、置き換えることなく、順不同でも認識できるエントリを使用する必要があります（例：idとバージョンのプレフィックスを付けるなど）。
+>>>>>>> release-branch.go1.21
 	Extra [][]byte
 
-	// EarlyData indicates whether the ticket can be used for 0-RTT in a QUIC
-	// connection. The application may set this to false if it is true to
-	// decline to offer 0-RTT even if supported.
+	// EarlyDataは、QUIC接続で0-RTTに使用できるかを示します。
+	// サポートされていても、アプリケーションが0-RTTを提供しないことを拒否する場合は、これをfalseに設定することができます。
 	EarlyData bool
 
 	version     uint16
 	isClient    bool
 	cipherSuite uint16
-	// createdAt is the generation time of the secret on the sever (which for
-	// TLS 1.0–1.2 might be earlier than the current session) and the time at
-	// which the ticket was received on the client.
+
+	// createdAtはサーバー上でのシークレットの生成時間（TLS 1.0-1.2の場合、現在のセッションよりも前かもしれません）およびクライアントでのチケット受信時間です。
 	createdAt         uint64
 	secret            []byte
 	extMasterSecret   bool
@@ -45,49 +44,39 @@ type SessionState struct {
 	verifiedChains    [][]*x509.Certificate
 	alpnProtocol      string
 
-	// Client-side TLS 1.3-only fields.
+	// クライアント側のTLS 1.3専用フィールド。
 	useBy  uint64
 	ageAdd uint32
 }
 
-// Bytes encodes the session, including any private fields, so that it can be
-// parsed by [ParseSessionState]. The encoding contains secret values critical
-// to the security of future and possibly past sessions.
+// Bytesはセッションをエンコードし、[ParseSessionState]によって解析できるようにします。エンコードには、将来のセッションのセキュリティに重要な秘密値が含まれている可能性があります。
 //
-// The specific encoding should be considered opaque and may change incompatibly
-// between Go versions.
+// 具体的なエンコーディングは不透明と見なされ、Goのバージョン間で非互換性がある可能性があります。
 func (s *SessionState) Bytes() ([]byte, error)
 
-// ParseSessionState parses a [SessionState] encoded by [SessionState.Bytes].
+// ParseSessionStateは[SessionState.Bytes]でエンコードされた[SessionState]を解析します。
 func ParseSessionState(data []byte) (*SessionState, error)
 
-// EncryptTicket encrypts a ticket with the Config's configured (or default)
-// session ticket keys. It can be used as a [Config.WrapSession] implementation.
+// EncryptTicketは、Configで設定された（またはデフォルトの）セッションチケットキーを使用してチケットを暗号化します。これは[Config.WrapSession]の実装として使用できます。
 func (c *Config) EncryptTicket(cs ConnectionState, ss *SessionState) ([]byte, error)
 
-// DecryptTicket decrypts a ticket encrypted by [Config.EncryptTicket]. It can
-// be used as a [Config.UnwrapSession] implementation.
+// DecryptTicketは[Config.EncryptTicket]によって暗号化されたチケットを復号化します。[Config.UnwrapSession]の実装として使用することができます。
 //
-// If the ticket can't be decrypted or parsed, DecryptTicket returns (nil, nil).
+// もしチケットを復号化または解析できない場合、DecryptTicketは(nil, nil)を返します。
 func (c *Config) DecryptTicket(identity []byte, cs ConnectionState) (*SessionState, error)
 
-// ClientSessionState contains the state needed by a client to
-// resume a previous TLS session.
+// ClientSessionState は、クライアントが前のTLSセッションを再開するために必要な状態を含んでいます。
 type ClientSessionState struct {
 	ticket  []byte
 	session *SessionState
 }
 
-// ResumptionState returns the session ticket sent by the server (also known as
-// the session's identity) and the state necessary to resume this session.
+// ResumptionStateは、サーバーが送信したセッションチケット（セッションの識別子としても知られている）と、このセッションを再開するために必要な状態を返します。
 //
-// It can be called by [ClientSessionCache.Put] to serialize (with
-// [SessionState.Bytes]) and store the session.
+// [ClientSessionCache.Put]によって呼び出され、セッションをシリアル化（[SessionState.Bytes]を使用）して保存することができます。
 func (cs *ClientSessionState) ResumptionState() (ticket []byte, state *SessionState, err error)
 
-// NewResumptionState returns a state value that can be returned by
-// [ClientSessionCache.Get] to resume a previous session.
+// NewResumptionStateは、前のセッションを再開するために[ClientSessionCache.Get]によって返されるstate値を返します。
 //
-// state needs to be returned by [ParseSessionState], and the ticket and session
-// state must have been returned by [ClientSessionState.ResumptionState].
+// stateは[ParseSessionState]によって返される必要があり、ticketとsessionの状態は[ClientSessionState.ResumptionState]によって返される必要があります。
 func NewResumptionState(ticket []byte, state *SessionState) (*ClientSessionState, error)

@@ -2,34 +2,32 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package sha256 implements the SHA224 and SHA256 hash algorithms as defined
-// in FIPS 180-4.
+// パッケージsha256は、FIPS 180-4で定義されたSHA224およびSHA256ハッシュアルゴリズムを実装しています。
 package sha256
 
 import (
 	"github.com/shogo82148/std/hash"
 )
 
-// The size of a SHA256 checksum in bytes.
+// SHA256のチェックサムのバイト数。
 const Size = 32
 
-// The size of a SHA224 checksum in bytes.
+// SHA224のチェックサムのサイズ（バイト単位）
 const Size224 = 28
 
-// The blocksize of SHA256 and SHA224 in bytes.
+// SHA256とSHA224のブロックサイズ（バイト単位）です。
 const BlockSize = 64
 
-// New returns a new hash.Hash computing the SHA256 checksum. The Hash
-// also implements encoding.BinaryMarshaler and
-// encoding.BinaryUnmarshaler to marshal and unmarshal the internal
-// state of the hash.
+// NewはSHA256ハッシュチェックサムを計算する新しいhash.Hashを返します。Hashは
+// encoding.BinaryMarshalerおよびencoding.BinaryUnmarshalerも実装しており、内部の
+// ハッシュの状態をマーシャリングおよびアンマーシャリングすることができます。
 func New() hash.Hash
 
-// New224 returns a new hash.Hash computing the SHA224 checksum.
+// New224はSHA224チェックサムを計算する新しいhash.Hashを返します。
 func New224() hash.Hash
 
-// Sum256 returns the SHA256 checksum of the data.
+// Sum256はdataのSHA256チェックサムを返します。
 func Sum256(data []byte) [Size]byte
 
-// Sum224 returns the SHA224 checksum of the data.
+// Sum224はデータのSHA224ハッシュ値を返します。
 func Sum224(data []byte) [Size224]byte

@@ -13,16 +13,16 @@ import (
 )
 
 func Example_complexNumbers() {
-	// Create the complex number 2.3 + 5i.
+	// 複素数2.3 + 5iを作成します。
 	ar := constant.MakeFloat64(2.3)
 	ai := constant.MakeImag(constant.MakeInt64(5))
 	a := constant.BinaryOp(ar, token.ADD, ai)
 
-	// Compute (2.3 + 5i) * 11.
+	// (2.3 + 5i) * 11を計算する。
 	b := constant.MakeUint64(11)
 	c := constant.BinaryOp(a, token.MUL, b)
 
-	// Convert c into a complex128.
+	// cをcomplex128に変換します。
 	Ar, exact := constant.Float64Val(constant.Real(c))
 	if !exact {
 		fmt.Printf("Could not represent real part %s exactly as float64\n", constant.Real(c))
@@ -71,8 +71,9 @@ func ExampleUnaryOp() {
 			vs[i] = constant.UnaryOp(token.SUB, v, 0)
 
 		case constant.Int:
-			// Use 16-bit precision.
-			// This would be equivalent to ^uint16(v).
+
+			// 16ビットの精度を使用します。
+			// これは^uint16(v)と等価です。
 			vs[i] = constant.UnaryOp(token.XOR, v, 16)
 		}
 	}
@@ -99,7 +100,7 @@ func ExampleCompare() {
 	}
 
 	sort.Slice(vs, func(i, j int) bool {
-		// Equivalent to vs[i] <= vs[j].
+		// vs[i] <= vs[j] と同等です。
 		return constant.Compare(vs[i], token.LEQ, vs[j])
 	})
 

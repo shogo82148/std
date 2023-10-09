@@ -2,13 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package aes implements AES encryption (formerly Rijndael), as defined in
-// U.S. Federal Information Processing Standards Publication 197.
+// パッケージaesは、U.S.連邦情報処理標準出版物197で定義されているAES暗号（以前はRijndaelとして知られていた）を実装しています。
 //
-// The AES operations in this package are not implemented using constant-time algorithms.
-// An exception is when running on systems with enabled hardware support for AES
-// that makes these operations constant-time. Examples include amd64 systems using AES-NI
-// extensions and s390x systems using Message-Security-Assist extensions.
-// On such systems, when the result of NewCipher is passed to cipher.NewGCM,
-// the GHASH operation used by GCM is also constant-time.
+// このパッケージのAES操作は、定数時間アルゴリズムを使用して実装されていません。
+// ただし、AESのハードウェアサポートが有効なシステムで実行される場合は例外です。
+// これらの操作は、AES-NI拡張を使用しているamd64システムや
+// Message-Security-Assist拡張を使用しているs390xシステムなどが該当します。
+// このようなシステムでは、NewCipherの結果がcipher.NewGCMに渡される場合、
+// GCMで使用されるGHASH操作も定数時間です。
 package aes

@@ -2,31 +2,28 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Objdump disassembles executable files.
+// Objdumpは実行可能ファイルを逆アセンブルします。
 //
-// Usage:
+// 使用法：
 //
 //	go tool objdump [-s symregexp] binary
 //
-// Objdump prints a disassembly of all text symbols (code) in the binary.
-// If the -s option is present, objdump only disassembles
-// symbols with names matching the regular expression.
+// Objdumpはバイナリのすべてのテキストシンボル（コード）の逆アセンブルを表示します。
+// -sオプションが指定されている場合、objdumpは正規表現に一致する名前のシンボルのみを逆アセンブルします。
 //
-// Alternate usage:
+// 代替の使用法：
 //
 //	go tool objdump binary start end
 //
-// In this mode, objdump disassembles the binary starting at the start address and
-// stopping at the end address. The start and end addresses are program
-// counters written in hexadecimal with optional leading 0x prefix.
-// In this mode, objdump prints a sequence of stanzas of the form:
+// このモードでは、objdumpは開始アドレスから終了アドレスまでのバイナリを逆アセンブルします。
+// 開始アドレスと終了アドレスは16進数形式で、オプションの0xプレフィックスを付けて書かれたプログラムカウンタです。
+// このモードでは、objdumpは次の形式の連続したアドレス範囲の逆アセンブルを出力します：
 //
 //	file:line
 //	 address: assembly
 //	 address: assembly
 //	 ...
 //
-// Each stanza gives the disassembly for a contiguous range of addresses
-// all mapped to the same original source file and line number.
-// This mode is intended for use by pprof.
+// 各節は、元のソースファイルと行番号にマップされた連続したアドレス範囲の逆アセンブルを示します。
+// このモードはpprofによる使用を想定しています。
 package main

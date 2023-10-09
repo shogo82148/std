@@ -8,8 +8,7 @@ import (
 	"github.com/shogo82148/std/context"
 )
 
-// QUICEncryptionLevel represents a QUIC encryption level used to transmit
-// handshake messages.
+// QUICEncryptionLevelは、ハンドシェイクメッセージを送信するために使用されるQUIC暗号化レベルを表します。
 type QUICEncryptionLevel int
 
 const (
@@ -21,125 +20,112 @@ const (
 
 func (l QUICEncryptionLevel) String() string
 
-// A QUICConn represents a connection which uses a QUIC implementation as the underlying
-// transport as described in RFC 9001.
+// QUICConnは、RFC 9001で説明されているように、基礎となるトランスポートとしてQUICの実装を使用する接続を表します。
 //
-// Methods of QUICConn are not safe for concurrent use.
+// QUICConnのメソッドは同時に使用することはできません。
 type QUICConn struct {
 	conn *Conn
 
 	sessionTicketSent bool
 }
 
-// A QUICConfig configures a QUICConn.
+// QUICConfigはQUICConnを設定します。
 type QUICConfig struct {
 	TLSConfig *Config
 }
 
-// A QUICEventKind is a type of operation on a QUIC connection.
+// QUICEventKindはQUIC接続上での操作の種類です。
 type QUICEventKind int
 
 const (
-	// QUICNoEvent indicates that there are no events available.
+	// QUICNoEventは利用可能なイベントが存在しないことを示します。
 	QUICNoEvent QUICEventKind = iota
 
-	// QUICSetReadSecret and QUICSetWriteSecret provide the read and write
-	// secrets for a given encryption level.
-	// QUICEvent.Level, QUICEvent.Data, and QUICEvent.Suite are set.
+	// QUICSetReadSecretとQUICSetWriteSecretは、特定の暗号化レベルの読み取りと書き込みの秘密情報を提供します。
+	// QUICEvent.Level、QUICEvent.Data、QUICEvent.Suiteが設定されます。
 	//
-	// Secrets for the Initial encryption level are derived from the initial
-	// destination connection ID, and are not provided by the QUICConn.
+	// Initial暗号化レベルの秘密情報は、最初の宛先接続IDから派生され、QUICConnによって提供されません。
 	QUICSetReadSecret
 	QUICSetWriteSecret
 
-	// QUICWriteData provides data to send to the peer in CRYPTO frames.
-	// QUICEvent.Data is set.
+	// QUICWriteDataはCRYPTOフレームでピアに送信するデータを提供します。
+	// QUICEvent.Dataが設定されています。
 	QUICWriteData
 
-	// QUICTransportParameters provides the peer's QUIC transport parameters.
-	// QUICEvent.Data is set.
+	// QUICTransportParametersは相手のQUICトランスポートパラメータを提供します。
+	// QUICEvent.Dataが設定されています。
 	QUICTransportParameters
 
-	// QUICTransportParametersRequired indicates that the caller must provide
-	// QUIC transport parameters to send to the peer. The caller should set
-	// the transport parameters with QUICConn.SetTransportParameters and call
-	// QUICConn.NextEvent again.
-	//
-	// If transport parameters are set before calling QUICConn.Start, the
-	// connection will never generate a QUICTransportParametersRequired event.
+	// QUICTransportParametersRequiredは、呼び出し元がピアに送信するためのQUICトランスポートパラメータを提供する必要があることを示します。呼び出し元は、QUICConn.SetTransportParametersを使用してトランスポートパラメータを設定し、QUICConn.NextEventを再度呼び出す必要があります。
+	// QUICConn.Startを呼び出す前にトランスポートパラメータが設定されている場合、接続は決してQUICTransportParametersRequiredイベントを生成しません。
 	QUICTransportParametersRequired
 
-	// QUICRejectedEarlyData indicates that the server rejected 0-RTT data even
-	// if we offered it. It's returned before QUICEncryptionLevelApplication
-	// keys are returned.
+	// QUICRejectedEarlyDataは、サーバーが私たちが提供したものであっても、0-RTTデータを拒否したことを示しています。これは、QUICEncryptionLevelApplicationのキーが返される前に返されます。
 	QUICRejectedEarlyData
 
-	// QUICHandshakeDone indicates that the TLS handshake has completed.
+	// QUICHandshakeDone は、TLS ハンドシェイクが完了したことを示します。
 	QUICHandshakeDone
 )
 
-// A QUICEvent is an event occurring on a QUIC connection.
+// QUICEventはQUIC接続で発生するイベントです。
 //
-// The type of event is specified by the Kind field.
-// The contents of the other fields are kind-specific.
+// イベントの種類はKindフィールドで指定されます。
+// 他のフィールドの内容は、種別によって異なります。
 type QUICEvent struct {
 	Kind QUICEventKind
 
-	// Set for QUICSetReadSecret, QUICSetWriteSecret, and QUICWriteData.
+	// QUICSetReadSecret、QUICSetWriteSecret、およびQUICWriteDataに対する設定。
 	Level QUICEncryptionLevel
 
-	// Set for QUICTransportParameters, QUICSetReadSecret, QUICSetWriteSecret, and QUICWriteData.
-	// The contents are owned by crypto/tls, and are valid until the next NextEvent call.
+	// QUICTransportParameters、QUICSetReadSecret、QUICSetWriteSecret、およびQUICWriteDataに設定します。
+	// この内容はcrypto/tlsによって所有され、次のNextEvent呼び出しまで有効です。
 	Data []byte
 
-	// Set for QUICSetReadSecret and QUICSetWriteSecret.
+	// QUICSetReadSecretおよびQUICSetWriteSecretに設定します。
 	Suite uint16
 }
 
-// QUICClient returns a new TLS client side connection using QUICTransport as the
-// underlying transport. The config cannot be nil.
+// QUICClientは、QUICTransportを基礎とした新しいTLSクライアント側接続を返します。設定はnilであってはなりません。
 //
-// The config's MinVersion must be at least TLS 1.3.
+// 設定のMinVersionは、少なくともTLS 1.3である必要があります。
 func QUICClient(config *QUICConfig) *QUICConn
 
-// QUICServer returns a new TLS server side connection using QUICTransport as the
-// underlying transport. The config cannot be nil.
+// QUICServerは、下層トランスポートとしてQUICTransportを使用した新しいTLSサーバーサイド接続を返します。設定はnilにできません。
 //
-// The config's MinVersion must be at least TLS 1.3.
+// 設定のMinVersionは、少なくともTLS 1.3である必要があります。
 func QUICServer(config *QUICConfig) *QUICConn
 
-// Start starts the client or server handshake protocol.
-// It may produce connection events, which may be read with NextEvent.
+// Startはクライアントまたはサーバーのハンドシェイクプロトコルを開始します。
+// 接続イベントを生成する場合があり、NextEventで読み取ることができます。
 //
-// Start must be called at most once.
+// Startは1度以上呼び出すことはできません。
 func (q *QUICConn) Start(ctx context.Context) error
 
-// NextEvent returns the next event occurring on the connection.
-// It returns an event with a Kind of QUICNoEvent when no events are available.
+// NextEventは接続で発生する次のイベントを返します。
+// イベントが利用できない場合は、KindがQUICNoEventのイベントを返します。
 func (q *QUICConn) NextEvent() QUICEvent
 
-// Close closes the connection and stops any in-progress handshake.
+// Closeは接続を閉じ、進行中のハンドシェイクを停止します。
 func (q *QUICConn) Close() error
 
-// HandleData handles handshake bytes received from the peer.
-// It may produce connection events, which may be read with NextEvent.
+// HandleDataはピアから受信したハンドシェイクバイトを処理します。
+// 接続イベントを生成することがあり、NextEventで読み取ることができます。
 func (q *QUICConn) HandleData(level QUICEncryptionLevel, data []byte) error
 
 type QUICSessionTicketOptions struct {
-	// EarlyData specifies whether the ticket may be used for 0-RTT.
+	// EarlyDataは0-RTTで使用できるかどうかを指定します。
 	EarlyData bool
 }
 
-// SendSessionTicket sends a session ticket to the client.
-// It produces connection events, which may be read with NextEvent.
-// Currently, it can only be called once.
+// SendSessionTicketはクライアントにセッションチケットを送信します。
+// これにより、接続イベントが生成され、NextEventで読み取ることができます。
+// 現在、一度しか呼び出すことはできません。
 func (q *QUICConn) SendSessionTicket(opts QUICSessionTicketOptions) error
 
-// ConnectionState returns basic TLS details about the connection.
+// ConnectionStateは接続に関する基本的なTLSの詳細を返します。
 func (q *QUICConn) ConnectionState() ConnectionState
 
-// SetTransportParameters sets the transport parameters to send to the peer.
+// SetTransportParametersはピアに送信するためのトランスポートパラメータを設定します。
 //
-// Server connections may delay setting the transport parameters until after
-// receiving the client's transport parameters. See QUICTransportParametersRequired.
+// サーバ接続では、クライアントのトランスポートパラメータを受信した後にトランスポートパラメータを設定することができます。QUICTransportParametersRequiredを参照してください。
 func (q *QUICConn) SetTransportParameters(params []byte)

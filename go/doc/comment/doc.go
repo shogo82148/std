@@ -3,34 +3,27 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package comment implements parsing and reformatting of Go doc comments,
-(documentation comments), which are comments that immediately precede
-a top-level declaration of a package, const, func, type, or var.
+パッケージコメントは、Goのドキュメントコメント（ドキュメンテーションコメント）を解析および再フォーマットするためのものです。
+パッケージ、const、func、type、またはvarのトップレベルの宣言の直前にあるコメントを指します。
 
-Go doc comment syntax is a simplified subset of Markdown that supports
-links, headings, paragraphs, lists (without nesting), and preformatted text blocks.
-The details of the syntax are documented at https://go.dev/doc/comment.
+Goのドキュメントコメントの構文は、リンク、見出し、段落、リスト（ネストなし）、および整形済みのテキストブロックをサポートする、
+Markdownの簡略化されたサブセットです。構文の詳細は、https://go.dev/doc/commentで文書化されています。
 
-To parse the text associated with a doc comment (after removing comment markers),
-use a [Parser]:
+（コメントマーカーを削除した後の）ドキュメントコメントに関連付けられたテキストを解析するには、[Parser]を使用します：
 
 	var p comment.Parser
 	doc := p.Parse(text)
 
-The result is a [*Doc].
-To reformat it as a doc comment, HTML, Markdown, or plain text,
-use a [Printer]:
+結果は、[*Doc]です。
+ドキュメントコメント、HTML、Markdown、またはプレーンテキストとして再フォーマットするには、[Printer]を使用します：
 
 	var pr comment.Printer
 	os.Stdout.Write(pr.Text(doc))
 
-The [Parser] and [Printer] types are structs whose fields can be
-modified to customize the operations.
-For details, see the documentation for those types.
+[Parser]と[Printer]の型は、その操作をカスタマイズするために変更できる構造体です。
+詳細については、それらの型のドキュメントを参照してください。
 
-Use cases that need additional control over reformatting can
-implement their own logic by inspecting the parsed syntax itself.
-See the documentation for [Doc], [Block], [Text] for an overview
-and links to additional types.
+再フォーマットに追加の制御が必要な使用例では、解析された構文自体を検査することで独自のロジックを実装できます。
+概要および追加の型へのリンクについては、[Doc]、[Block]、[Text]のドキュメントを参照してください。
 */
 package comment

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// TLS low level connection and record layer
+// TLSの低レベル接続とレコードレイヤー
 
 package tls
 
@@ -16,28 +16,26 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A Conn represents a secured connection.
-// It implements the net.Conn interface.
+// Connはセキュア接続を表します。
+// net.Connインターフェースを実装しています。
 type Conn struct {
-	// constant
+	// 定数
 	conn        net.Conn
 	isClient    bool
 	handshakeFn func(context.Context) error
 	quic        *quicState
 
-	// isHandshakeComplete is true if the connection is currently transferring
-	// application data (i.e. is not currently processing a handshake).
-	// isHandshakeComplete is true implies handshakeErr == nil.
+	// isHandshakeCompleteは、接続が現在アプリケーションデータを転送している場合（つまり、ハンドシェイク処理を行っていない場合）にtrueです。
+	// isHandshakeCompleteがtrueである場合、handshakeErr == nilとなります。
 	isHandshakeComplete atomic.Bool
-	// constant after handshake; protected by handshakeMutex
+	// ハンドシェイクの後の定数; ハンドシェイクミューテックスによって保護される
 	handshakeMutex sync.Mutex
 	handshakeErr   error
 	vers           uint16
 	haveVers       bool
 	config         *Config
-	// handshakes counts the number of handshakes performed on the
-	// connection so far. If renegotiation is disabled then this is either
-	// zero or one.
+
+	// handshakesはこれまでに接続で行われたハンドシェイクの回数を数えます。再交渉が無効化されている場合、これは0または1です。
 	handshakes       int
 	extMasterSecret  bool
 	didResume        bool
@@ -45,52 +43,46 @@ type Conn struct {
 	ocspResponse     []byte
 	scts             [][]byte
 	peerCertificates []*x509.Certificate
-	// activeCertHandles contains the cache handles to certificates in
-	// peerCertificates that are used to track active references.
+
+	// activeCertHandlesにはpeerCertificates内の証明書のキャッシュハンドルが格納されており、アクティブな参照を追跡するために使用されます。
 	activeCertHandles []*activeCert
-	// verifiedChains contains the certificate chains that we built, as
-	// opposed to the ones presented by the server.
+
+	// verifiedChainsには、私たちが構築した証明書チェーンが含まれています。
+	// これは、サーバーが提示した証明書チェーンとは異なります。
 	verifiedChains [][]*x509.Certificate
-	// serverName contains the server name indicated by the client, if any.
+	// serverName には、クライアントが指定したサーバー名が含まれています。
 	serverName string
-	// secureRenegotiation is true if the server echoed the secure
-	// renegotiation extension. (This is meaningless as a server because
-	// renegotiation is not supported in that case.)
+
+	// secureRenegotiation は、サーバーが安全な再ネゴシエーション拡張を返した場合は true です。
+	// これは、サーバーの場合には無意味であり、再ネゴシエーションはサポートされていません。
 	secureRenegotiation bool
-	// ekm is a closure for exporting keying material.
+	// ekmはキーマテリアルをエクスポートするためのクロージャです。
 	ekm func(label string, context []byte, length int) ([]byte, error)
-	// resumptionSecret is the resumption_master_secret for handling
-	// or sending NewSessionTicket messages.
+
+	// resumptionSecretは、処理または送信するための再開マスターシークレットです。または、NewSessionTicketメッセージを送信するためのものです。
 	resumptionSecret []byte
 
-	// ticketKeys is the set of active session ticket keys for this
-	// connection. The first one is used to encrypt new tickets and
-	// all are tried to decrypt tickets.
+	// ticketKeys は、この接続の有効なセッションチケットキーのセットです。
+	// 最初のキーは新しいチケットの暗号化に使用され、すべてのキーがデコードの試行に使用されます。
 	ticketKeys []ticketKey
 
-	// clientFinishedIsFirst is true if the client sent the first Finished
-	// message during the most recent handshake. This is recorded because
-	// the first transmitted Finished message is the tls-unique
-	// channel-binding value.
+	// clientFinishedIsFirst は、最新のハンドシェイク中にクライアントが最初のFinishedメッセージを送信した場合にtrueです。これは記録されます。最初に送信されたFinishedメッセージはtls-uniqueチャネルバインディング値です。
 	clientFinishedIsFirst bool
 
-	// closeNotifyErr is any error from sending the alertCloseNotify record.
+	// closeNotifyErrはalertCloseNotifyレコードの送信エラーです。
 	closeNotifyErr error
-	// closeNotifySent is true if the Conn attempted to send an
-	// alertCloseNotify record.
+
+	// closeNotifySent は、Conn が alertCloseNotify レコードを送信しようとした場合にtrueです。
 	closeNotifySent bool
 
-	// clientFinished and serverFinished contain the Finished message sent
-	// by the client or server in the most recent handshake. This is
-	// retained to support the renegotiation extension and tls-unique
-	// channel-binding.
+	// clientFinishedとserverFinishedには、最新のハンドシェイクでクライアントまたはサーバーが送信したFinishedメッセージが含まれています。これは、再ネゴシエーション拡張とtls-uniqueチャネルバインディングをサポートするために保持されます。
 	clientFinished [12]byte
 	serverFinished [12]byte
 
-	// clientProtocol is the negotiated ALPN protocol.
+	// clientProtocolは、ALPNプロトコルの協議結果です。
 	clientProtocol string
 
-	// input/output
+	// 入力/出力
 	in, out   halfConn
 	rawInput  bytes.Buffer
 	input     bytes.Reader
@@ -98,123 +90,103 @@ type Conn struct {
 	buffering bool
 	sendBuf   []byte
 
-	// bytesSent counts the bytes of application data sent.
-	// packetsSent counts packets.
+	// bytesSentは送信されたアプリケーションデータのバイト数をカウントします。
+	// packetsSentはパケットの数をカウントします。
 	bytesSent   int64
 	packetsSent int64
 
-	// retryCount counts the number of consecutive non-advancing records
-	// received by Conn.readRecord. That is, records that neither advance the
-	// handshake, nor deliver application data. Protected by in.Mutex.
+	// retryCount は Conn.readRecord によって受信された、連続して進展しないレコードの数をカウントします。つまり、ハンドシェイクを進行させず、またアプリケーションデータを送信しないレコードです。in.Mutex によって保護されています。
 	retryCount int
 
-	// activeCall indicates whether Close has been call in the low bit.
-	// the rest of the bits are the number of goroutines in Conn.Write.
+	// activeCallはCloseが呼び出されたかどうかを最下位ビットで示します。
+	// 残りのビット数はConn.Write内のゴルーチンの数です。
 	activeCall atomic.Int32
 
 	tmp [16]byte
 }
 
-// LocalAddr returns the local network address.
+// LocalAddrはローカルネットワークアドレスを返します。
 func (c *Conn) LocalAddr() net.Addr
 
-// RemoteAddr returns the remote network address.
+// RemoteAddrはリモートネットワークアドレスを返します。
 func (c *Conn) RemoteAddr() net.Addr
 
-// SetDeadline sets the read and write deadlines associated with the connection.
-// A zero value for t means Read and Write will not time out.
-// After a Write has timed out, the TLS state is corrupt and all future writes will return the same error.
+// SetDeadlineは接続に関連付けられた読み込みと書き込みのタイムアウトを設定します。
+// tのゼロ値は、読み取りと書き込みにタイムアウトが設定されていないことを意味します。
+// 書き込みがタイムアウトした後、TLSの状態が破損し、将来の書き込みは同じエラーを返します。
 func (c *Conn) SetDeadline(t time.Time) error
 
-// SetReadDeadline sets the read deadline on the underlying connection.
-// A zero value for t means Read will not time out.
+// SetReadDeadlineは基礎となる接続の読み込みの期限を設定します。
+// tのゼロ値は、Readがタイムアウトしないことを意味します。
 func (c *Conn) SetReadDeadline(t time.Time) error
 
-// SetWriteDeadline sets the write deadline on the underlying connection.
-// A zero value for t means Write will not time out.
-// After a Write has timed out, the TLS state is corrupt and all future writes will return the same error.
+// SetWriteDeadlineは、基礎となる接続に書き込みの期限を設定します。
+// tのゼロ値は、書き込みにタイムアウトが設定されていないことを意味します。
+// 書き込みがタイムアウトした後、TLSの状態が壊れるため、以降の書き込みは同じエラーを返します。
 func (c *Conn) SetWriteDeadline(t time.Time) error
 
-// NetConn returns the underlying connection that is wrapped by c.
-// Note that writing to or reading from this connection directly will corrupt the
-// TLS session.
+// NetConnはcによってラップされた基になる接続を返します。
+// ただし、この接続に直接書き込みまたは読み込みを行うと、TLSセッションが破損することに注意してください。
 func (c *Conn) NetConn() net.Conn
 
-// RecordHeaderError is returned when a TLS record header is invalid.
+// RecordHeaderError は、TLS レコードヘッダが無効な場合に返されます。
 type RecordHeaderError struct {
-	// Msg contains a human readable string that describes the error.
+	// Msgはエラーを説明する人が読みやすい文字列を含んでいます。
 	Msg string
-	// RecordHeader contains the five bytes of TLS record header that
-	// triggered the error.
+
+	// RecordHeaderには、エラーを引き起こしたTLSレコードヘッダの5バイトが含まれています。
 	RecordHeader [5]byte
-	// Conn provides the underlying net.Conn in the case that a client
-	// sent an initial handshake that didn't look like TLS.
-	// It is nil if there's already been a handshake or a TLS alert has
-	// been written to the connection.
+
+	// Connは、クライアントが初期ハンドシェイクを送信しているが、TLSのように見えない場合の基礎となるnet.Connを提供します。
+	// ハンドシェイクが既に行われているか、接続にTLSアラートが書き込まれている場合は、nilです。
 	Conn net.Conn
 }
 
 func (e RecordHeaderError) Error() string
 
-// Write writes data to the connection.
+// Writeは接続にデータを書き込みます。
 //
-// As Write calls Handshake, in order to prevent indefinite blocking a deadline
-// must be set for both Read and Write before Write is called when the handshake
-// has not yet completed. See SetDeadline, SetReadDeadline, and
-// SetWriteDeadline.
+// Handshakeを呼び出すため、無期限のブロッキングを防ぐために
+// ハンドシェイクが完了していない場合、Writeを呼び出す前に
+// ReadとWriteの両方に期限を設定する必要があります。
+// SetDeadline、SetReadDeadline、およびSetWriteDeadlineを参照してください。
 func (c *Conn) Write(b []byte) (int, error)
 
-// Read reads data from the connection.
+// Readは接続からデータを読み込みます。
 //
-// As Read calls Handshake, in order to prevent indefinite blocking a deadline
-// must be set for both Read and Write before Read is called when the handshake
-// has not yet completed. See SetDeadline, SetReadDeadline, and
-// SetWriteDeadline.
+// Handshakeを呼び出すため、ハンドシェイクがまだ完了していない場合、
+// Readが呼び出される前にReadとWriteの両方にデッドラインを設定する必要があります
+// 無制限のブロッキングを防ぐためです。SetDeadline、SetReadDeadline、および
+// SetWriteDeadlineを参照してください。
 func (c *Conn) Read(b []byte) (int, error)
 
-// Close closes the connection.
+// Closeは接続を閉じます。
 func (c *Conn) Close() error
 
-// CloseWrite shuts down the writing side of the connection. It should only be
-// called once the handshake has completed and does not call CloseWrite on the
-// underlying connection. Most callers should just use Close.
+// CloseWriteは接続の書き込み側をシャットダウンします。ハンドシェイクが完了した後に一度だけ呼び出され、基礎となる接続上でCloseWriteを呼び出しません。ほとんどの呼び出し元は単にCloseを使用すべきです。
 func (c *Conn) CloseWrite() error
 
-// Handshake runs the client or server handshake
-// protocol if it has not yet been run.
+// Handshakeはクライアントまたはサーバーのハンドシェイクプロトコルを実行します。
+// まだ実行されていない場合、ほとんどのこのパッケージの使用では、明示的にHandshakeを呼び出す必要はありません：最初のReadまたはWriteが自動的に呼び出します。
 //
-// Most uses of this package need not call Handshake explicitly: the
-// first Read or Write will call it automatically.
+// ハンドシェイクのキャンセルやタイムアウトの設定に関して制御するためには、HandshakeContextまたはDialerのDialContextメソッドを使用します。
 //
-// For control over canceling or setting a timeout on a handshake, use
-// HandshakeContext or the Dialer's DialContext method instead.
-//
-// In order to avoid denial of service attacks, the maximum RSA key size allowed
-// in certificates sent by either the TLS server or client is limited to 8192
-// bits. This limit can be overridden by setting tlsmaxrsasize in the GODEBUG
-// environment variable (e.g. GODEBUG=tlsmaxrsasize=4096).
+// サーバーまたはクライアントが送信する証明書のRSAキーサイズは、拒否サービス攻撃を防ぐために、8192ビットに制限されています。この制限は、GODEBUG環境変数（例：GODEBUG=tlsmaxrsasize=4096）のtlsmaxrsasizeを設定することで上書きすることができます。
 func (c *Conn) Handshake() error
 
-// HandshakeContext runs the client or server handshake
-// protocol if it has not yet been run.
+// HandshakeContextは、クライアントまたはサーバーのハンドシェイクプロトコルを実行します。
+// まだ実行されていない場合、提供されたコンテキストはnil以外である必要があります。
+// ハンドシェイクが完了する前にコンテキストがキャンセルされた場合、ハンドシェイクは中断され、エラーが返されます。
+// ハンドシェイクが完了すると、コンテキストのキャンセルは接続に影響を与えません。
 //
-// The provided Context must be non-nil. If the context is canceled before
-// the handshake is complete, the handshake is interrupted and an error is returned.
-// Once the handshake has completed, cancellation of the context will not affect the
-// connection.
-//
-// Most uses of this package need not call HandshakeContext explicitly: the
-// first Read or Write will call it automatically.
+// このパッケージのほとんどの使用では、明示的にHandshakeContextを呼び出す必要はありません：最初のReadまたはWriteが自動的に呼び出します。
 func (c *Conn) HandshakeContext(ctx context.Context) error
 
-// ConnectionState returns basic TLS details about the connection.
+// ConnectionState関数は、接続に関する基本的なTLSの詳細を返します。
 func (c *Conn) ConnectionState() ConnectionState
 
-// OCSPResponse returns the stapled OCSP response from the TLS server, if
-// any. (Only valid for client connections.)
+// OCSPResponseは、TLSサーバーからステープルされたOCSP応答を返します（クライアント接続の場合のみ有効）。
 func (c *Conn) OCSPResponse() []byte
 
-// VerifyHostname checks that the peer certificate chain is valid for
-// connecting to host. If so, it returns nil; if not, it returns an error
-// describing the problem.
+// VerifyHostnameは、ホストに接続するためのピア証明書チェーンが有効かどうかを確認します。有効であれば、nilを返します。そうでなければ、問題を説明するエラーを返します。
 func (c *Conn) VerifyHostname(host string) error

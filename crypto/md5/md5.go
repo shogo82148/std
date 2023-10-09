@@ -3,27 +3,26 @@
 // license that can be found in the LICENSE file.
 
 //go:generate go run gen.go -output md5block.go
+//go:generateコマンドを使用して、gen.goを実行し、md5block.goに出力します。
 
-// Package md5 implements the MD5 hash algorithm as defined in RFC 1321.
+// Package md5 は、RFC 1321で定義されたMD5ハッシュアルゴリズムを実装します。
 //
-// MD5 is cryptographically broken and should not be used for secure
-// applications.
+// MD5は暗号学的に破られており、安全なアプリケーションには使用されるべきではありません。
 package md5
 
 import (
 	"github.com/shogo82148/std/hash"
 )
 
-// The size of an MD5 checksum in bytes.
+// MD5チェックサムのバイト数。
 const Size = 16
 
-// The blocksize of MD5 in bytes.
+// MD5のブロックサイズ（バイト単位）。
 const BlockSize = 64
 
-// New returns a new hash.Hash computing the MD5 checksum. The Hash also
-// implements encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
-// marshal and unmarshal the internal state of the hash.
+// NewはMD5チェックサムを計算する新しいハッシュ.Hashを返します。ハッシュは
+// 最内部の状態をマーシャリングおよびアンマーシャリングするためにencoding.BinaryMarshalerとencoding.BinaryUnmarshalerも実装しています。
 func New() hash.Hash
 
-// Sum returns the MD5 checksum of the data.
+// Sum はデータのMD5ハッシュ値を返します。
 func Sum(data []byte) [Size]byte

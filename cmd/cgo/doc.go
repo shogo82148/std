@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 /*
 Cgo enables the creation of Go packages that call C code.
 
@@ -556,4 +557,6 @@ The following options are available when running cgo directly:
 		Put all generated files in directory.
 	-srcdir directory
 */
+=======
+>>>>>>> release-branch.go1.21
 package main

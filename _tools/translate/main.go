@@ -46,6 +46,9 @@ func main() {
 		if strings.HasPrefix(g.Text(), "Copyright ") {
 			continue
 		}
+		if strings.HasPrefix(g.Text(), "Output:") {
+			continue
+		}
 
 		input := ""
 		for _, c := range g.List {
@@ -109,8 +112,14 @@ func main() {
 		}
 		g.List = list
 	}
-	if err := format.Node(os.Stdout, fset, node); err != nil {
+
+	var buf bytes.Buffer
+	if err := format.Node(&buf, fset, node); err != nil {
 		log.Println(err)
+	}
+
+	if err := os.WriteFile(src, buf.Bytes(), 0644); err != nil {
+		log.Fatal(err)
 	}
 }
 

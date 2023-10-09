@@ -2,273 +2,241 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package bytes implements functions for the manipulation of byte slices.
-// It is analogous to the facilities of the [strings] package.
+// パッケージbytesはバイトスライスの操作のための関数を実装します。
+// これは[strings]パッケージの機能に類似しています。
 package bytes
 
 import (
 	"github.com/shogo82148/std/unicode"
 )
 
-// Equal reports whether a and b
-// are the same length and contain the same bytes.
-// A nil argument is equivalent to an empty slice.
+// Equalは、aとbが同じ長さで同じバイトを含むかどうかを報告します。
+// nilの引数は空のスライスと等価です。
 func Equal(a, b []byte) bool
 
-// Compare returns an integer comparing two byte slices lexicographically.
-// The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
-// A nil argument is equivalent to an empty slice.
+// Compare関数は2つのバイトスライスを辞書的に比較して整数を返します。
+// a == bの場合は0、a < bの場合は-1、a > bの場合は+1となります。
+// nilの引数は空スライスと同等です。
 func Compare(a, b []byte) int
 
-// Count counts the number of non-overlapping instances of sep in s.
-// If sep is an empty slice, Count returns 1 + the number of UTF-8-encoded code points in s.
+// Count は s において非重複の sep の出現回数を数えます。
+// もし sep が空のスライスなら、Count は s 中の UTF-8 エンコードされたコードポイントの数に 1 を加えた値を返します。
 func Count(s, sep []byte) int
 
-// Contains reports whether subslice is within b.
+// subsliceがb内に含まれているかどうかを報告します。
 func Contains(b, subslice []byte) bool
 
-// ContainsAny reports whether any of the UTF-8-encoded code points in chars are within b.
+// ContainsAnyは、chars内のUTF-8エンコードされたコードポイントのいずれかがb内に含まれているかどうかを報告します。
 func ContainsAny(b []byte, chars string) bool
 
-// ContainsRune reports whether the rune is contained in the UTF-8-encoded byte slice b.
+// ContainsRuneは、UTF-8でエンコードされたバイトスライスbにルーンが含まれているかどうかを報告します。
 func ContainsRune(b []byte, r rune) bool
 
-// ContainsFunc reports whether any of the UTF-8-encoded code points r within b satisfy f(r).
+// ContainsFuncは、UTF-8エンコードされたコードポイントの中で、bのどれかがf(r)を満たすかどうかを報告します。
 func ContainsFunc(b []byte, f func(rune) bool) bool
 
-// IndexByte returns the index of the first instance of c in b, or -1 if c is not present in b.
+// IndexByteはb内の最初のcのインスタンスのインデックスを返します。もしcがbに存在しない場合は、-1を返します。
 func IndexByte(b []byte, c byte) int
 
-// LastIndex returns the index of the last instance of sep in s, or -1 if sep is not present in s.
+// LastIndex関数は、s内のsepの最後のインスタンスのインデックスを返します。sepがs内に存在しない場合は、-1を返します。
 func LastIndex(s, sep []byte) int
 
-// LastIndexByte returns the index of the last instance of c in s, or -1 if c is not present in s.
+// LastIndexByteは、cがs内で最後に出現するインデックスを返します。cがs内に存在しない場合は-1を返します。
 func LastIndexByte(s []byte, c byte) int
 
-// IndexRune interprets s as a sequence of UTF-8-encoded code points.
-// It returns the byte index of the first occurrence in s of the given rune.
-// It returns -1 if rune is not present in s.
-// If r is utf8.RuneError, it returns the first instance of any
-// invalid UTF-8 byte sequence.
+// IndexRuneはsをUTF-8でエンコードされたコードポイントのシーケンスとして解釈します。
+// sの中で指定されたルーンの最初の出現のバイトインデックスを返します。
+// sにルーンが含まれていない場合は-1を返します。
+// rがutf8.RuneErrorである場合、無効なUTF-8バイトシーケンスの最初のインスタンスを返します。
 func IndexRune(s []byte, r rune) int
 
-// IndexAny interprets s as a sequence of UTF-8-encoded Unicode code points.
-// It returns the byte index of the first occurrence in s of any of the Unicode
-// code points in chars. It returns -1 if chars is empty or if there is no code
-// point in common.
+// IndexAnyはsをUTF-8エンコードされたUnicodeのコードポイントのシーケンスとして解釈します。
+// sの中でcharsのいずれかのUnicodeコードポイントの最初の出現のバイトインデックスを返します。
+// charsが空であるか、共通のコードポイントがない場合は-1を返します。
 func IndexAny(s []byte, chars string) int
 
-// LastIndexAny interprets s as a sequence of UTF-8-encoded Unicode code
-// points. It returns the byte index of the last occurrence in s of any of
-// the Unicode code points in chars. It returns -1 if chars is empty or if
-// there is no code point in common.
+// LastIndexAnyは、sをUTF-8でエンコードされたUnicodeコードポイントの
+// シーケンスとして解釈します。charsに含まれる任意のUnicodeコードポイントの
+// 最後の出現のバイトインデックスを返します。charsが空である場合や、
+// 共通のコードポイントが存在しない場合は、-1を返します。
 func LastIndexAny(s []byte, chars string) int
 
-// SplitN slices s into subslices separated by sep and returns a slice of
-// the subslices between those separators.
-// If sep is empty, SplitN splits after each UTF-8 sequence.
-// The count determines the number of subslices to return:
-//
-//	n > 0: at most n subslices; the last subslice will be the unsplit remainder.
-//	n == 0: the result is nil (zero subslices)
-//	n < 0: all subslices
-//
-// To split around the first instance of a separator, see Cut.
+// SplitNは、sをsepで区切り、そのセパレーターの間のサブスライスのスライスを返します。
+// sepが空の場合、SplitNは各UTF-8シーケンスの後に分割します。
+// countは返すサブスライスの数を決定します：
+// n> 0：最大でn個のサブスライス；最後のサブスライスは分割パートが含まれます。
+// n == 0：結果はnilです（ゼロのサブスライス）
+// n < 0：すべてのサブスライス
+// 最初のセパレーターの周りで分割するには、Cutを参照してください。
 func SplitN(s, sep []byte, n int) [][]byte
 
-// SplitAfterN slices s into subslices after each instance of sep and
-// returns a slice of those subslices.
-// If sep is empty, SplitAfterN splits after each UTF-8 sequence.
-// The count determines the number of subslices to return:
+// SplitAfterNはsをsepの各インスタンスの後ろでサブスライスに分割し、それらのサブスライスのスライスを返します。
+// sepが空である場合、SplitAfterNはUTF-8シーケンスの後ろで分割します。
+// countは返すサブスライスの数を決定します：
 //
-//	n > 0: at most n subslices; the last subslice will be the unsplit remainder.
-//	n == 0: the result is nil (zero subslices)
-//	n < 0: all subslices
+// n > 0：最大nのサブスライス；最後のサブスライスは分割されていない残りになります。
+// n == 0：結果はnilです（サブスライスはゼロ個）
+// n < 0：すべてのサブスライス
 func SplitAfterN(s, sep []byte, n int) [][]byte
 
-// Split slices s into all subslices separated by sep and returns a slice of
-// the subslices between those separators.
-// If sep is empty, Split splits after each UTF-8 sequence.
-// It is equivalent to SplitN with a count of -1.
+// Split関数は、sをsepで区切ったすべてのサブスライスから成るスライスを返します。
+// sepが空の場合、Split関数はUTF-8シーケンスごとに区切ります。
+// これは、SplitN関数にカウント-1を指定した場合と同等です。
 //
-// To split around the first instance of a separator, see Cut.
+// 最初の区切り文字で区切る場合は、Cut関数を参照してください。
 func Split(s, sep []byte) [][]byte
 
-// SplitAfter slices s into all subslices after each instance of sep and
-// returns a slice of those subslices.
-// If sep is empty, SplitAfter splits after each UTF-8 sequence.
-// It is equivalent to SplitAfterN with a count of -1.
+// SplitAfterは、sをsepの各インスタンスの後にスライスし、それらのサブスライスのスライスを返します。
+// sepが空の場合、UTF-8のシーケンスの後に分割します。
+// これは、countが-1のSplitAfterNと同等です。
 func SplitAfter(s, sep []byte) [][]byte
 
-// Fields interprets s as a sequence of UTF-8-encoded code points.
-// It splits the slice s around each instance of one or more consecutive white space
-// characters, as defined by unicode.IsSpace, returning a slice of subslices of s or an
-// empty slice if s contains only white space.
+// FieldsはUTF-8でエンコードされたコードポイントのシーケンスとしてsを解釈します。
+// それはunicode.IsSpaceによって定義される1つ以上の連続したホワイトスペース文字の各インスタンスを区切り、sのサブスライスのスライスまたは空のスライスを返します。sには空白だけが含まれる場合。
 func Fields(s []byte) [][]byte
 
-// FieldsFunc interprets s as a sequence of UTF-8-encoded code points.
-// It splits the slice s at each run of code points c satisfying f(c) and
-// returns a slice of subslices of s. If all code points in s satisfy f(c), or
-// len(s) == 0, an empty slice is returned.
+// FieldsFuncは、sをUTF-8でエンコードされたコードポイントのシーケンスとして解釈します。
+// それは、f(c)を満たすコードポイントcの連続を各ランでsを分割し、sのサブスライスのスライスを返します。
+// sのすべてのコードポイントがf(c)を満たすか、またはlen(s) == 0の場合、空のスライスが返されます。
 //
-// FieldsFunc makes no guarantees about the order in which it calls f(c)
-// and assumes that f always returns the same value for a given c.
+// FieldsFuncは、f(c)をどの順序で呼び出すかについて保証はなく、fは常に同じ値を返すと仮定しています。
 func FieldsFunc(s []byte, f func(rune) bool) [][]byte
 
-// Join concatenates the elements of s to create a new byte slice. The separator
-// sep is placed between elements in the resulting slice.
+// Join関数は、sの要素を連結して新しいバイトスライスを作成します。結果のスライスの要素間にはセパレーターsepが配置されます。
 func Join(s [][]byte, sep []byte) []byte
 
+<<<<<<< HEAD
 // HasPrefix reports whether the byte slice s begins with prefix.
 func HasPrefix(s, prefix []byte) bool
 
 // HasSuffix reports whether the byte slice s ends with suffix.
+=======
+// HasPrefixは、バイトスライスsがprefixで始まるかどうかをテストします。
+func HasPrefix(s, prefix []byte) bool
+
+// HasSuffixは、バイトスライスsが接尾辞で終わっているかをテストします。
+>>>>>>> release-branch.go1.21
 func HasSuffix(s, suffix []byte) bool
 
-// Map returns a copy of the byte slice s with all its characters modified
-// according to the mapping function. If mapping returns a negative value, the character is
-// dropped from the byte slice with no replacement. The characters in s and the
-// output are interpreted as UTF-8-encoded code points.
+// Map関数は、与えられたマッピング関数に基づいて、バイトスライスsのすべての文字が変更されたコピーを返します。
+// マッピング関数が負の値を返すと、文字は置換せずにバイトスライスから削除されます。
+// sと出力の文字はUTF-8エンコードされたコードポイントとして解釈されます。
 func Map(mapping func(r rune) rune, s []byte) []byte
 
-// Repeat returns a new byte slice consisting of count copies of b.
+// Repeat は、bのcount回のコピーからなる新しいバイトスライスを返します。
 //
-// It panics if count is negative or if the result of (len(b) * count)
-// overflows.
+// countが負数であるか、(len(b) * count)の結果がオーバーフローする場合、パニックが発生します。
 func Repeat(b []byte, count int) []byte
 
-// ToUpper returns a copy of the byte slice s with all Unicode letters mapped to
-// their upper case.
+// ToUpperは、すべてのUnicode文字を大文字に変換したバイトスライスsのコピーを返します。
 func ToUpper(s []byte) []byte
 
-// ToLower returns a copy of the byte slice s with all Unicode letters mapped to
-// their lower case.
+// ToLowerは、すべてのUnicodeの文字を小文字にマッピングしたバイトスライスsのコピーを返します。
 func ToLower(s []byte) []byte
 
-// ToTitle treats s as UTF-8-encoded bytes and returns a copy with all the Unicode letters mapped to their title case.
+// ToTitleはsをUTF-8でエンコードされたバイト列として扱い、すべてのUnicodeの文字をタイトルケースにマップしたコピーを返します。
 func ToTitle(s []byte) []byte
 
-// ToUpperSpecial treats s as UTF-8-encoded bytes and returns a copy with all the Unicode letters mapped to their
-// upper case, giving priority to the special casing rules.
+// ToUpperSpecialはsをUTF-8エンコードされたバイトとして扱い、すべてのUnicodeの文字をその大文字に変換したコピーを返します。特殊な大文字変換ルールを優先します。
 func ToUpperSpecial(c unicode.SpecialCase, s []byte) []byte
 
-// ToLowerSpecial treats s as UTF-8-encoded bytes and returns a copy with all the Unicode letters mapped to their
-// lower case, giving priority to the special casing rules.
+// ToLowerSpecialはUTF-8エンコードされたバイト列sを扱い、ユニコードの文字をすべて小文字に変換し、特殊なケースのルールを優先します。
 func ToLowerSpecial(c unicode.SpecialCase, s []byte) []byte
 
-// ToTitleSpecial treats s as UTF-8-encoded bytes and returns a copy with all the Unicode letters mapped to their
-// title case, giving priority to the special casing rules.
+// ToTitleSpecialはUTF-8でエンコードされたバイト列としてsを扱い、すべてのUnicode文字をタイトルケースにマッピングしたコピーを返します。特殊なケースのルールに優先します。
 func ToTitleSpecial(c unicode.SpecialCase, s []byte) []byte
 
-// ToValidUTF8 treats s as UTF-8-encoded bytes and returns a copy with each run of bytes
-// representing invalid UTF-8 replaced with the bytes in replacement, which may be empty.
+// ToValidUTF8は、sをUTF-8でエンコードされたバイトとして処理し、各バイトの連続が不正なUTF-8を表す場合に、置換バイト（空の場合もあります）で置き換えられたコピーを返します。
 func ToValidUTF8(s, replacement []byte) []byte
 
-// Title treats s as UTF-8-encoded bytes and returns a copy with all Unicode letters that begin
-// words mapped to their title case.
+// TitleはUTF-8でエンコードされたバイト列sをUnicodeの文字として扱い、単語の先頭にあるすべての文字をタイトルケースにマッピングしたコピーを返します。
 //
-// Deprecated: The rule Title uses for word boundaries does not handle Unicode
-// punctuation properly. Use golang.org/x/text/cases instead.
+// 廃止予定: Titleが単語の境界を処理する際、Unicodeの句読点を適切に扱えません。golang.org/x/text/casesを代わりに使用してください。
 func Title(s []byte) []byte
 
-// TrimLeftFunc treats s as UTF-8-encoded bytes and returns a subslice of s by slicing off
-// all leading UTF-8-encoded code points c that satisfy f(c).
+// TrimLeftFuncはUTF-8でエンコードされたバイト列sを処理し、f(c)を満たすすべての先頭のUTF-8エンコードされたコードポイントcを除いたsのサブスライスを返します。
 func TrimLeftFunc(s []byte, f func(r rune) bool) []byte
 
-// TrimRightFunc returns a subslice of s by slicing off all trailing
-// UTF-8-encoded code points c that satisfy f(c).
+// TrimRightFuncは、末尾にあるすべてのトレイリングUTF-8エンコードされたコードポイントcをスライスして、f（c）を満たすものを取り除いたsの部分スライスを返します。
 func TrimRightFunc(s []byte, f func(r rune) bool) []byte
 
-// TrimFunc returns a subslice of s by slicing off all leading and trailing
-// UTF-8-encoded code points c that satisfy f(c).
+// TrimFunc は、前方および後方のすべての先頭と末尾をスライスして、f(c) で指定された条件を満たすすべての UTF-8 エンコードされたコードポイント c を除去して、s のサブスライスを返します。
 func TrimFunc(s []byte, f func(r rune) bool) []byte
 
-// TrimPrefix returns s without the provided leading prefix string.
-// If s doesn't start with prefix, s is returned unchanged.
+// TrimPrefixは、指定されたプレフィックス文字列を先頭から除去したsを返します。
+// sがプレフィックスで始まらない場合、sは変更されずに返されます。
 func TrimPrefix(s, prefix []byte) []byte
 
-// TrimSuffix returns s without the provided trailing suffix string.
-// If s doesn't end with suffix, s is returned unchanged.
+// TrimSuffixは、指定された末尾の接尾辞文字列を除いたsを返します。
+// もしsが接尾辞で終わっていない場合はsは変更されずにそのまま返されます。
 func TrimSuffix(s, suffix []byte) []byte
 
-// IndexFunc interprets s as a sequence of UTF-8-encoded code points.
-// It returns the byte index in s of the first Unicode
-// code point satisfying f(c), or -1 if none do.
+// IndexFuncは、sをUTF-8エンコードされたコードポイントのシーケンスとして解釈します。
+// sの中でf(c)を満たす最初のUnicodeコードポイントのバイトインデックスを返します。
+// 該当するコードポイントがない場合は-1を返します。
 func IndexFunc(s []byte, f func(r rune) bool) int
 
-// LastIndexFunc interprets s as a sequence of UTF-8-encoded code points.
-// It returns the byte index in s of the last Unicode
-// code point satisfying f(c), or -1 if none do.
+// LastIndexFuncはsをUTF-8でエンコードされたコードポイントのシーケンスとして解釈します。
+// f(c)を満たす最後のUnicodeコードポイントのバイトインデックスを、f(c)を満たすものがない場合は-1を返します。
 func LastIndexFunc(s []byte, f func(r rune) bool) int
 
-// Trim returns a subslice of s by slicing off all leading and
-// trailing UTF-8-encoded code points contained in cutset.
+// Trimは、cutsetに含まれるすべての先頭と末尾のUTF-8エンコードされたコードポイントをスライスして、sのサブスライスを返します。
 func Trim(s []byte, cutset string) []byte
 
-// TrimLeft returns a subslice of s by slicing off all leading
-// UTF-8-encoded code points contained in cutset.
+// TrimLeftは、cutsetに含まれるすべての先行するUTF-8エンコードされたコードポイントを除去することによって、sの一部のサブスライスを返します。
 func TrimLeft(s []byte, cutset string) []byte
 
-// TrimRight returns a subslice of s by slicing off all trailing
-// UTF-8-encoded code points that are contained in cutset.
+// TrimRightは、cutsetに含まれるすべての末尾のUTF-8エンコードされたコードポイントを取り除いて、sの一部をサブスライスとして返します。
 func TrimRight(s []byte, cutset string) []byte
 
-// TrimSpace returns a subslice of s by slicing off all leading and
-// trailing white space, as defined by Unicode.
+// TrimSpaceは、Unicodeで定義されたように、sの先頭と末尾のすべての空白を取り除いた部分列を返します。
 func TrimSpace(s []byte) []byte
 
-// Runes interprets s as a sequence of UTF-8-encoded code points.
-// It returns a slice of runes (Unicode code points) equivalent to s.
+// RunesはUTF-8でエンコードされたコードポイントのシーケンスとしてsを解釈します。
+// sと同等のルーン（Unicodeのコードポイント）のスライスを返します。
 func Runes(s []byte) []rune
 
-// Replace returns a copy of the slice s with the first n
-// non-overlapping instances of old replaced by new.
-// If old is empty, it matches at the beginning of the slice
-// and after each UTF-8 sequence, yielding up to k+1 replacements
-// for a k-rune slice.
-// If n < 0, there is no limit on the number of replacements.
+// Replaceは、スライスsの最初のn個の重ならない
+// oldのインスタンスをnewで置き換えたスライスのコピーを返します。
+// oldが空の場合、スライスの先頭とUTF-8シーケンスの後に一致し、
+// kランスライスに対してk+1回の置換がされます。
+// nが負の場合、置換の数に制限はありません。
 func Replace(s, old, new []byte, n int) []byte
 
-// ReplaceAll returns a copy of the slice s with all
-// non-overlapping instances of old replaced by new.
-// If old is empty, it matches at the beginning of the slice
-// and after each UTF-8 sequence, yielding up to k+1 replacements
-// for a k-rune slice.
+// ReplaceAllは、スライスsのすべての非重複インスタンスをoldからnewに置き換えたスライスのコピーを返します。
+// oldが空の場合、スライスの先頭とUTF-8シーケンスの後に一致し、kランスライスに対してk+1回の置換が行われます。
 func ReplaceAll(s, old, new []byte) []byte
 
-// EqualFold reports whether s and t, interpreted as UTF-8 strings,
-// are equal under simple Unicode case-folding, which is a more general
-// form of case-insensitivity.
+// EqualFoldは、UTF-8文字列として解釈されたsとtが、単純なUnicodeの大文字小文字を区別しない比較で等しいかどうかを報告します。これは、大文字小文字を区別しない形式の一般的なUnicodeです。
 func EqualFold(s, t []byte) bool
 
-// Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.
+// Indexは、sの最初のsepのインスタンスのインデックスを返します。sepがsに存在しない場合は、-1を返します。
 func Index(s, sep []byte) int
 
-// Cut slices s around the first instance of sep,
-// returning the text before and after sep.
-// The found result reports whether sep appears in s.
-// If sep does not appear in s, cut returns s, nil, false.
+// 最初の「sep」のインスタンス周りのスライス「s」を切り取り、
+// sepの前と後のテキストを返します。
+// 見つかった結果は「sep」が「s」に現れるかどうかを報告します。
+// もし「sep」が「s」に現れない場合、cutは「s」とnil、falseを返します。
 //
-// Cut returns slices of the original slice s, not copies.
+// Cutは元のスライス「s」のスライスを返します、コピーではありません。
 func Cut(s, sep []byte) (before, after []byte, found bool)
 
-// Clone returns a copy of b[:len(b)].
-// The result may have additional unused capacity.
-// Clone(nil) returns nil.
+// Cloneはb[:len(b)]のコピーを返します。
+// 結果には余分な未使用の容量があるかもしれません。
+// Clone(nil)はnilを返します。
 func Clone(b []byte) []byte
 
-// CutPrefix returns s without the provided leading prefix byte slice
-// and reports whether it found the prefix.
-// If s doesn't start with prefix, CutPrefix returns s, false.
-// If prefix is the empty byte slice, CutPrefix returns s, true.
+// CutPrefixは与えられた先頭接頭辞のバイトスライスを取り除き、
+// 接頭辞が見つかったかどうかを報告します。
+// もしsが接頭辞で始まっていない場合、CutPrefixはs、falseを返します。
+// もし接頭辞が空のバイトスライスの場合、CutPrefixはs、trueを返します。
 //
-// CutPrefix returns slices of the original slice s, not copies.
+// CutPrefixは元のスライスsの断片を返します、コピーではありません。
 func CutPrefix(s, prefix []byte) (after []byte, found bool)
 
-// CutSuffix returns s without the provided ending suffix byte slice
-// and reports whether it found the suffix.
-// If s doesn't end with suffix, CutSuffix returns s, false.
-// If suffix is the empty byte slice, CutSuffix returns s, true.
+// CutSuffixは与えられた終了サフィックスのバイトスライスを除いたsを返し、そのサフィックスが見つかったかどうかを報告します。
+// もしsがサフィックスで終わらない場合、CutSuffixはs、falseを返します。
+// もしサフィックスが空のバイトスライスである場合、CutSuffixはs、trueを返します。
 //
-// CutSuffix returns slices of the original slice s, not copies.
+// CutSuffixは元のスライスsのスライスを返しますが、コピーではありません。
 func CutSuffix(s, suffix []byte) (before []byte, found bool)

@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Serving of pprof-like profiles.
+// pprofのようなプロファイルの提供。
 
 package main
 
-// Record represents one entry in pprof-like profiles.
+// Recordはpprofのようなプロファイルのエントリを表します。
 type Record struct {
 	stk  []*trace.Frame
 	n    uint64

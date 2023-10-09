@@ -11,44 +11,39 @@ import (
 type InvalidReason int
 
 const (
-	// NotAuthorizedToSign results when a certificate is signed by another
-	// which isn't marked as a CA certificate.
+
+	// NotAuthorizedToSignは、他のCA証明書としてマークされていない証明書によって署名された場合に発生する結果です。
 	NotAuthorizedToSign InvalidReason = iota
-	// Expired results when a certificate has expired, based on the time
-	// given in the VerifyOptions.
+
+	// VerifyOptionsで指定された時間に基づき、証明書が期限切れとなった結果を返します。
 	Expired
-	// CANotAuthorizedForThisName results when an intermediate or root
-	// certificate has a name constraint which doesn't permit a DNS or
-	// other name (including IP address) in the leaf certificate.
+
+	// CANotAuthorizedForThisNameは、中間またはルート証明書に、葉証明書でDNSまたはその他の名前（IPアドレスを含む）を許可しない制約がある場合に発生します。
 	CANotAuthorizedForThisName
-	// TooManyIntermediates results when a path length constraint is
-	// violated.
+
+	// TooManyIntermediatesは、パスの長さ制約が違反された場合に発生します。
 	TooManyIntermediates
-	// IncompatibleUsage results when the certificate's key usage indicates
-	// that it may only be used for a different purpose.
+
+	// IncompatibleUsageは、証明書のキーの使用法が異なる目的でのみ使用できることを示す場合に発生します。
 	IncompatibleUsage
-	// NameMismatch results when the subject name of a parent certificate
-	// does not match the issuer name in the child.
+
+	// NameMismatchは、親の証明書のサブジェクト名が子の発行者名と一致しない場合に発生します。
 	NameMismatch
-	// NameConstraintsWithoutSANs is a legacy error and is no longer returned.
+	// NameConstraintsWithoutSANsは、過去のエラーであり、もはや返されなくなりました。
 	NameConstraintsWithoutSANs
-	// UnconstrainedName results when a CA certificate contains permitted
-	// name constraints, but leaf certificate contains a name of an
-	// unsupported or unconstrained type.
+
+	// UnconstrainedNameは、CA証明書に許容される名前制約が含まれているが、
+	// リーフ証明書にはサポートされていないまたは制約のないタイプの名前が含まれている場合の結果です。
 	UnconstrainedName
-	// TooManyConstraints results when the number of comparison operations
-	// needed to check a certificate exceeds the limit set by
-	// VerifyOptions.MaxConstraintComparisions. This limit exists to
-	// prevent pathological certificates can consuming excessive amounts of
-	// CPU time to verify.
+
+	// TooManyConstraintsは、証明書を検証するために必要な比較操作の数が、VerifyOptions.MaxConstraintComparisonsで設定された制限を超える場合に発生します。この制限は、CPU時間の過剰な消費を防ぐために存在します。
 	TooManyConstraints
-	// CANotAuthorizedForExtKeyUsage results when an intermediate or root
-	// certificate does not permit a requested extended key usage.
+
+	// CANotAuthorizedForExtKeyUsage は、中間証明書またはルート証明書が要求された拡張キー使用法を許可しない場合に発生します。
 	CANotAuthorizedForExtKeyUsage
 )
 
-// CertificateInvalidError results when an odd error occurs. Users of this
-// library probably want to handle all these errors uniformly.
+// CertificateInvalidErrorは、奇妙なエラーが発生した場合に結果が返されます。このライブラリのユーザーはおそらく、これらのエラーを統一的に処理したいと考えるでしょう。
 type CertificateInvalidError struct {
 	Cert   *Certificate
 	Reason InvalidReason
@@ -57,8 +52,7 @@ type CertificateInvalidError struct {
 
 func (e CertificateInvalidError) Error() string
 
-// HostnameError results when the set of authorized names doesn't match the
-// requested name.
+// HostnameErrorは、許可された名前のセットが要求された名前と一致しない場合に発生します。
 type HostnameError struct {
 	Certificate *Certificate
 	Host        string
@@ -66,20 +60,20 @@ type HostnameError struct {
 
 func (h HostnameError) Error() string
 
-// UnknownAuthorityError results when the certificate issuer is unknown
+// UnknownAuthorityErrorは、証明書の発行者が不明な場合に発生します。
 type UnknownAuthorityError struct {
 	Cert *Certificate
-	// hintErr contains an error that may be helpful in determining why an
-	// authority wasn't found.
+
+	// hintErrには、権限が見つからなかった原因を特定するのに役立つかもしれないエラーが含まれています。
 	hintErr error
-	// hintCert contains a possible authority certificate that was rejected
-	// because of the error in hintErr.
+
+	// hintCertには、hintErrのエラーのために却下された可能性のある認証局の証明書が含まれています。
 	hintCert *Certificate
 }
 
 func (e UnknownAuthorityError) Error() string
 
-// SystemRootsError results when we fail to load the system root certificates.
+// システムのルート証明書の読み込みに失敗した場合、SystemRootsErrorが発生します。
 type SystemRootsError struct {
 	Err error
 }
@@ -88,78 +82,47 @@ func (se SystemRootsError) Error() string
 
 func (se SystemRootsError) Unwrap() error
 
-// VerifyOptions contains parameters for Certificate.Verify.
+// VerifyOptionsにはCertificate.Verifyのパラメータが含まれています。
 type VerifyOptions struct {
-	// DNSName, if set, is checked against the leaf certificate with
-	// Certificate.VerifyHostname or the platform verifier.
+
+	// DNSNameが設定されている場合は、Certificate.VerifyHostnameまたはプラットフォームの検証器で葉証明書と照合されます。
 	DNSName string
 
-	// Intermediates is an optional pool of certificates that are not trust
-	// anchors, but can be used to form a chain from the leaf certificate to a
-	// root certificate.
+	// Intermediatesは、信頼アンカーではないが、リーフ証明書からルート証明書までのチェーンを形成するために使用できるオプションの証明書のプールです。
 	Intermediates *CertPool
-	// Roots is the set of trusted root certificates the leaf certificate needs
-	// to chain up to. If nil, the system roots or the platform verifier are used.
+
+	// Rootsは、リーフ証明書がチェーンアップするために必要な信頼できるルート証明書のセットです。nilの場合、システムのルートまたはプラットフォームの検証器が使用されます。
 	Roots *CertPool
 
-	// CurrentTime is used to check the validity of all certificates in the
-	// chain. If zero, the current time is used.
+	// CurrentTimeは、チェーン内のすべての証明書の有効性を確認するために使用されます。
+	// ゼロの場合、現在の時刻が使用されます。
 	CurrentTime time.Time
 
-	// KeyUsages specifies which Extended Key Usage values are acceptable. A
-	// chain is accepted if it allows any of the listed values. An empty list
-	// means ExtKeyUsageServerAuth. To accept any key usage, include ExtKeyUsageAny.
+	// KeyUsagesは受け入れ可能な拡張キー利用法（Extended Key Usage）の値を指定します。リストされた値のいずれかを許可する場合、チェーンは受け入れられます。空のリストはExtKeyUsageServerAuthを意味します。どんなキー利用法でも受け入れる場合は、ExtKeyUsageAnyを含めてください。
 	KeyUsages []ExtKeyUsage
 
-	// MaxConstraintComparisions is the maximum number of comparisons to
-	// perform when checking a given certificate's name constraints. If
-	// zero, a sensible default is used. This limit prevents pathological
-	// certificates from consuming excessive amounts of CPU time when
-	// validating. It does not apply to the platform verifier.
+	// MaxConstraintComparisionsは、指定された証明書の名前制約をチェックする際に行う比較の最大数です。
+	// ゼロの場合、適切なデフォルト値が使用されます。この制限によって、病的な証明書が検証時に過剰なCPU時間を消費するのを防ぎます。
+	// この制限は、プラットフォームの検証ツールには適用されません。
 	MaxConstraintComparisions int
 }
 
-// Verify attempts to verify c by building one or more chains from c to a
-// certificate in opts.Roots, using certificates in opts.Intermediates if
-// needed. If successful, it returns one or more chains where the first
-// element of the chain is c and the last element is from opts.Roots.
-//
-// If opts.Roots is nil, the platform verifier might be used, and
-// verification details might differ from what is described below. If system
-// roots are unavailable the returned error will be of type SystemRootsError.
-//
-// Name constraints in the intermediates will be applied to all names claimed
-// in the chain, not just opts.DNSName. Thus it is invalid for a leaf to claim
-// example.com if an intermediate doesn't permit it, even if example.com is not
-// the name being validated. Note that DirectoryName constraints are not
-// supported.
-//
-// Name constraint validation follows the rules from RFC 5280, with the
-// addition that DNS name constraints may use the leading period format
-// defined for emails and URIs. When a constraint has a leading period
-// it indicates that at least one additional label must be prepended to
-// the constrained name to be considered valid.
-//
-// Extended Key Usage values are enforced nested down a chain, so an intermediate
-// or root that enumerates EKUs prevents a leaf from asserting an EKU not in that
-// list. (While this is not specified, it is common practice in order to limit
-// the types of certificates a CA can issue.)
-//
-// Certificates that use SHA1WithRSA and ECDSAWithSHA1 signatures are not supported,
-// and will not be used to build chains.
-//
-// Certificates other than c in the returned chains should not be modified.
-//
-// WARNING: this function doesn't do any revocation checking.
+// Verifyは、オプションのRootsの証明書を使用して、cからaの証明書までの1つ以上のチェーンを構築し、検証を試みます。成功すると、最初のチェーン要素はcで、最後の要素はopts.Rootsから来ます。
+// opts.Rootsがnilの場合、プラットフォームの検証プログラムが使用される可能性があります。この場合、検証の詳細は以下の説明と異なる場合があります。システムのルートが利用できない場合、返されるエラーはSystemRootsError型です。
+// 中間証明書の名前制約は、opts.DNSNameだけでなく、チェーン内で要求されるすべての名前に適用されます。したがって、中間証明書が許可しない場合でも、葉がexample.comを要求することは無効です。ただし、DirectoryName制約はサポートされていません。
+// 名前制約の検証は、RFC 5280の規則に従います。ただし、DNS名の制約は、電子メールやURIで定義された先頭のピリオド形式を使用できます。制約に先頭のピリオドがある場合、有効な制約名を構成するために少なくとも1つの追加のラベルが前置される必要があります。
+// 拡張キー使用（Extended Key Usage）の値は、チェーンが入れ子になった形で強制されます。したがって、EKUを列挙する中間証明書やルート証明書は、そのリストに含まれていないEKUを持つ葉がアサートすることを防ぎます。（これは明示されていませんが、CAが発行できる証明書の種類を制限するために一般的に行われています。）
+// SHA1WithRSAおよびECDSAWithSHA1の署名を使用する証明書はサポートされておらず、チェーンの構築には使用されません。
+// 返されるチェーンのc以外の証明書は変更しないでください。
+// 警告：この関数はリボケーション（証明書の失効チェック）を行いません。
 func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)
 
-// VerifyHostname returns nil if c is a valid certificate for the named host.
-// Otherwise it returns an error describing the mismatch.
+// VerifyHostnameは指定されたホストに対して、cが有効な証明書であればnilを返します。
+// それ以外の場合、ミスマッチを説明するエラーを返します。
 //
-// IP addresses can be optionally enclosed in square brackets and are checked
-// against the IPAddresses field. Other names are checked case insensitively
-// against the DNSNames field. If the names are valid hostnames, the certificate
-// fields can have a wildcard as the complete left-most label (e.g. *.example.com).
+// IPアドレスはオプションで角括弧で囲まれ、IPAddressesフィールドと照合されます。
+// それ以外の名前は、DNSNamesフィールドで大文字小文字を区別せずにチェックされます。
+// 名前が有効なホスト名である場合、証明書のフィールドにはワイルドカードが完全な左端のラベルとして含まれている場合があります（例: *.example.com）。
 //
-// Note that the legacy Common Name field is ignored.
+// レガシーのCommon Nameフィールドは無視されることに注意してください。
 func (c *Certificate) VerifyHostname(h string) error

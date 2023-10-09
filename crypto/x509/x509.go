@@ -2,22 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package x509 implements a subset of the X.509 standard.
+// パッケージx509はX.509規格の一部を実装しています。
 //
-// It allows parsing and generating certificates, certificate signing
-// requests, certificate revocation lists, and encoded public and private keys.
-// It provides a certificate verifier, complete with a chain builder.
+// 証明書、証明書署名要求、証明書失効リスト、エンコードされた公開および秘密鍵の解析および生成を可能にします。
+// チェーンビルダーを備えた証明書検証機能も提供します。
 //
-// The package targets the X.509 technical profile defined by the IETF (RFC
-// 2459/3280/5280), and as further restricted by the CA/Browser Forum Baseline
-// Requirements. There is minimal support for features outside of these
-// profiles, as the primary goal of the package is to provide compatibility
-// with the publicly trusted TLS certificate ecosystem and its policies and
-// constraints.
+// このパッケージはIETF（RFC 2459/3280/5280）によって定義されたX.509技術プロファイルを対象としており、CA/Browser Forum Baseline Requirementsによってさらに制限されています。
+// 主な目標は、公に信頼されるTLS証明書エコシステムとそのポリシーおよび制約との互換性を提供することであり、これらのプロファイル外の機能には最小限のサポートしかありません。
 //
-// On macOS and Windows, certificate verification is handled by system APIs, but
-// the package aims to apply consistent validation rules across operating
-// systems.
+// macOSおよびWindowsでは、証明書の検証はシステムAPIによって処理されますが、パッケージはオペレーティングシステム間で一貫した検証ルールを適用することを目指しています。
 package x509
 
 import (
@@ -32,25 +25,20 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ParsePKIXPublicKey parses a public key in PKIX, ASN.1 DER form. The encoded
-// public key is a SubjectPublicKeyInfo structure (see RFC 5280, Section 4.1).
-//
-// It returns a *rsa.PublicKey, *dsa.PublicKey, *ecdsa.PublicKey,
-// ed25519.PublicKey (not a pointer), or *ecdh.PublicKey (for X25519).
-// More types might be supported in the future.
-//
-// This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
+// ParsePKIXPublicKeyはPKIX、ASN.1 DER形式の公開鍵を解析します。エンコードされた公開鍵はSubjectPublicKeyInfo構造体です（RFC 5280、セクション4.1を参照）。
+// *rsa.PublicKey、*dsa.PublicKey、*ecdsa.PublicKey、ed25519.PublicKey（ポインタではない）、または*ecdh.PublicKey（X25519用）を返します。
+// 将来的にはさらに多くの種類がサポートされるかもしれません。
+// この種類の鍵は、一般的に「PUBLIC KEY」というタイプのPEMブロックでエンコードされます。
 func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 
-// MarshalPKIXPublicKey converts a public key to PKIX, ASN.1 DER form.
-// The encoded public key is a SubjectPublicKeyInfo structure
-// (see RFC 5280, Section 4.1).
+// MarshalPKIXPublicKeyは公開鍵をPKIX、ASN.1 DER形式に変換します。
+// エンコードされた公開鍵はSubjectPublicKeyInfo構造体です
+// （RFC 5280、セクション4.1を参照）。
 //
-// The following key types are currently supported: *rsa.PublicKey,
-// *ecdsa.PublicKey, ed25519.PublicKey (not a pointer), and *ecdh.PublicKey.
-// Unsupported key types result in an error.
+// 現在サポートされているキータイプは次のとおりです：*rsa.PublicKey、*ecdsa.PublicKey、ed25519.PublicKey（ポインタではありません）、*ecdh.PublicKey。
+// サポートされていないキータイプはエラーとなります。
 //
-// This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
+// この種類のキーは一般的には"type 'PUBLIC KEY'のPEMブロックでエンコードされます。
 func MarshalPKIXPublicKey(pub any) ([]byte, error)
 
 type SignatureAlgorithm int
@@ -90,8 +78,7 @@ const (
 
 func (algo PublicKeyAlgorithm) String() string
 
-// KeyUsage represents the set of actions that are valid for a given key. It's
-// a bitmap of the KeyUsage* constants.
+// KeyUsageは、与えられたキーに対して有効なアクションのセットを表します。これはKeyUsage*の定数のビットマップです。
 type KeyUsage int
 
 const (
@@ -106,8 +93,8 @@ const (
 	KeyUsageDecipherOnly
 )
 
-// ExtKeyUsage represents an extended set of actions that are valid for a given key.
-// Each of the ExtKeyUsage* constants define a unique action.
+// ExtKeyUsageは、与えられたキーに対して有効な拡張アクションのセットを表します。
+// ExtKeyUsage*の各定数は、ユニークなアクションを定義しています。
 type ExtKeyUsage int
 
 const (
@@ -127,7 +114,7 @@ const (
 	ExtKeyUsageMicrosoftKernelCodeSigning
 )
 
-// A Certificate represents an X.509 certificate.
+// CertificateはX.509証明書を表します。
 type Certificate struct {
 	Raw                     []byte
 	RawTBSCertificate       []byte
@@ -148,71 +135,51 @@ type Certificate struct {
 	NotBefore, NotAfter time.Time
 	KeyUsage            KeyUsage
 
-	// Extensions contains raw X.509 extensions. When parsing certificates,
-	// this can be used to extract non-critical extensions that are not
-	// parsed by this package. When marshaling certificates, the Extensions
-	// field is ignored, see ExtraExtensions.
+	// Extensionsには生のX.509拡張が含まれています。証明書を解析する際、
+	// このフィールドを使用して、このパッケージによって解析されない非致命的な拡張を抽出できます。証明書をマーシャリングする際、Extensionsフィールドは無視されます。ExtraExtensionsを参照してください。
 	Extensions []pkix.Extension
 
-	// ExtraExtensions contains extensions to be copied, raw, into any
-	// marshaled certificates. Values override any extensions that would
-	// otherwise be produced based on the other fields. The ExtraExtensions
-	// field is not populated when parsing certificates, see Extensions.
+	// ExtraExtensionsには、任意のマーシャル化された証明書にコピーして使用される、拡張機能が含まれています。値は、他のフィールドに基づいて生成される拡張機能を上書きします。証明書の解析時にはExtraExtensionsフィールドは埋められませんが、Extensionsを参照してください。
 	ExtraExtensions []pkix.Extension
 
-	// UnhandledCriticalExtensions contains a list of extension IDs that
-	// were not (fully) processed when parsing. Verify will fail if this
-	// slice is non-empty, unless verification is delegated to an OS
-	// library which understands all the critical extensions.
+	// UnhandledCriticalExtensionsは、解析時に（完全に）処理されなかった拡張IDのリストを含んでいます。このスライスが空でない場合、検証は失敗します。ただし、すべての重要な拡張を理解できるOSライブラリに検証が委任されている場合は除きます。
 	//
-	// Users can access these extensions using Extensions and can remove
-	// elements from this slice if they believe that they have been
-	// handled.
+	// ユーザーはExtensionsを使用してこれらの拡張にアクセスし、処理されたと信じられる要素をこのスライスから削除することができます。
 	UnhandledCriticalExtensions []asn1.ObjectIdentifier
 
 	ExtKeyUsage        []ExtKeyUsage
 	UnknownExtKeyUsage []asn1.ObjectIdentifier
 
-	// BasicConstraintsValid indicates whether IsCA, MaxPathLen,
-	// and MaxPathLenZero are valid.
+	// BasicConstraintsValidは、IsCA、MaxPathLen、およびMaxPathLenZeroが正常であるかどうかを示す。
 	BasicConstraintsValid bool
 	IsCA                  bool
 
-	// MaxPathLen and MaxPathLenZero indicate the presence and
-	// value of the BasicConstraints' "pathLenConstraint".
+	// MaxPathLen と MaxPathLenZero は BasicConstraints の "pathLenConstraint" の存在と値を指します。
 	//
-	// When parsing a certificate, a positive non-zero MaxPathLen
-	// means that the field was specified, -1 means it was unset,
-	// and MaxPathLenZero being true mean that the field was
-	// explicitly set to zero. The case of MaxPathLen==0 with MaxPathLenZero==false
-	// should be treated equivalent to -1 (unset).
+	// 証明書を解析する際に、正の非ゼロの MaxPathLen はフィールドが指定されたことを示し、-1 は指定されなかったことを示し、MaxPathLenZero が true の場合はフィールドが明示的にゼロに設定されたことを示します。MaxPathLen == 0 かつ MaxPathLenZero == false の場合は -1 と同等に扱われるべきです。
 	//
-	// When generating a certificate, an unset pathLenConstraint
-	// can be requested with either MaxPathLen == -1 or using the
-	// zero value for both MaxPathLen and MaxPathLenZero.
+	// 証明書を生成する際、未設定の pathLenConstraint は MaxPathLen == -1 または MaxPathLen と MaxPathLenZero の両方にゼロ値を使用することでリクエストすることができます。
 	MaxPathLen int
-	// MaxPathLenZero indicates that BasicConstraintsValid==true
-	// and MaxPathLen==0 should be interpreted as an actual
-	// maximum path length of zero. Otherwise, that combination is
-	// interpreted as MaxPathLen not being set.
+
+	// MaxPathLenZeroは、BasicConstraintsValid==trueであるとき、
+	// MaxPathLen==0は実際の最大パス長さが0であると解釈されることを示しています。
+	// それ以外の場合、この組み合わせはMaxPathLenが設定されていないと解釈されます。
 	MaxPathLenZero bool
 
 	SubjectKeyId   []byte
 	AuthorityKeyId []byte
 
-	// RFC 5280, 4.2.2.1 (Authority Information Access)
+	// RFC 5280、4.2.2.1（権限情報アクセス）
 	OCSPServer            []string
 	IssuingCertificateURL []string
 
-	// Subject Alternate Name values. (Note that these values may not be valid
-	// if invalid values were contained within a parsed certificate. For
-	// example, an element of DNSNames may not be a valid DNS domain name.)
+	// Subject Alternate Nameの値。（ただし、パースされた証明書に無効な値が含まれている場合、これらの値は有効ではない場合があります。例えば、DNSNamesの要素が有効なDNSドメイン名であるとは限りません。）
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
 	URIs           []*url.URL
 
-	// Name constraints
+	// 名前の制約
 	PermittedDNSDomainsCritical bool
 	PermittedDNSDomains         []string
 	ExcludedDNSDomains          []string
@@ -223,61 +190,53 @@ type Certificate struct {
 	PermittedURIDomains         []string
 	ExcludedURIDomains          []string
 
-	// CRL Distribution Points
+	// CRL配布ポイント
 	CRLDistributionPoints []string
 
 	PolicyIdentifiers []asn1.ObjectIdentifier
 }
 
-// ErrUnsupportedAlgorithm results from attempting to perform an operation that
-// involves algorithms that are not currently implemented.
+// ErrUnsupportedAlgorithmは、現在実装されていないアルゴリズムを使用して操作を実行しようとした結果です。
 var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorithm unimplemented")
 
-// An InsecureAlgorithmError indicates that the SignatureAlgorithm used to
-// generate the signature is not secure, and the signature has been rejected.
+// InsecureAlgorithmErrorは、署名の生成に使用されるSignatureAlgorithmが安全でないことを示し、署名が拒否されたことを示します。
 //
-// To temporarily restore support for SHA-1 signatures, include the value
-// "x509sha1=1" in the GODEBUG environment variable. Note that this option will
-// be removed in a future release.
+// SHA-1署名のサポートを一時的に復元するには、GODEBUG環境変数に値"x509sha1=1"を含めます。ただし、このオプションは将来のリリースで削除される予定です。
 type InsecureAlgorithmError SignatureAlgorithm
 
 func (e InsecureAlgorithmError) Error() string
 
-// ConstraintViolationError results when a requested usage is not permitted by
-// a certificate. For example: checking a signature when the public key isn't a
-// certificate signing key.
+// ConstraintViolationErrorは、証明書によって許可されていない要求された使用方法がある場合に発生します。例えば、公開キーが証明書署名キーではない場合に署名のチェックを行うことなどです。
 type ConstraintViolationError struct{}
 
 func (ConstraintViolationError) Error() string
 
 func (c *Certificate) Equal(other *Certificate) bool
 
-// CheckSignatureFrom verifies that the signature on c is a valid signature from parent.
+// CheckSignatureFromは、c上の署名が親からの有効な署名であるかを検証します。
 //
-// This is a low-level API that performs very limited checks, and not a full
-// path verifier. Most users should use [Certificate.Verify] instead.
+// これは非常に限定的なチェックを行う低レベルAPIであり、完全なパス検証ではありません。
+// ほとんどのユーザーは[Certificate.Verify]を使用するべきです。
 func (c *Certificate) CheckSignatureFrom(parent *Certificate) error
 
-// CheckSignature verifies that signature is a valid signature over signed from
-// c's public key.
+// CheckSignatureは署名がsigned fromの公開鍵の有効な署名であることを検証します。
 //
-// This is a low-level API that performs no validity checks on the certificate.
+// これは証明書に対して妥当性チェックを行わない低レベルのAPIです。
 //
-// [MD5WithRSA] signatures are rejected, while [SHA1WithRSA] and [ECDSAWithSHA1]
-// signatures are currently accepted.
+// [MD5WithRSA]の署名は拒否され、[SHA1WithRSA]と[ECDSAWithSHA1]の署名は現在受け入れられています。
 func (c *Certificate) CheckSignature(algo SignatureAlgorithm, signed, signature []byte) error
 
-// CheckCRLSignature checks that the signature in crl is from c.
+// CheckCRLSignatureは、crlの署名がcからのものであることをチェックします。
 //
-// Deprecated: Use RevocationList.CheckSignatureFrom instead.
+// 廃止予定：RevocationList.CheckSignatureFromを使用してください。
 func (c *Certificate) CheckCRLSignature(crl *pkix.CertificateList) error
 
 type UnhandledCriticalExtension struct{}
 
 func (h UnhandledCriticalExtension) Error() string
 
-// CreateCertificate creates a new X.509 v3 certificate based on a template.
-// The following members of template are currently used:
+// CreateCertificateは、テンプレートに基づいて新しいX.509 v3証明書を作成します。
+// 現在のテンプレートの以下のメンバーが使用されています：
 //
 //   - AuthorityKeyId
 //   - BasicConstraintsValid
@@ -312,45 +271,33 @@ func (h UnhandledCriticalExtension) Error() string
 //   - URIs
 //   - UnknownExtKeyUsage
 //
-// The certificate is signed by parent. If parent is equal to template then the
-// certificate is self-signed. The parameter pub is the public key of the
-// certificate to be generated and priv is the private key of the signer.
+// 証明書は親によって署名されます。親がテンプレートと等しい場合、証明書は自己署名です。pubパラメータは生成される証明書の公開鍵であり、privは署名者の秘密鍵です。
 //
-// The returned slice is the certificate in DER encoding.
+// 返されるスライスはDERエンコーディングされた証明書です。
 //
-// The currently supported key types are *rsa.PublicKey, *ecdsa.PublicKey and
-// ed25519.PublicKey. pub must be a supported key type, and priv must be a
-// crypto.Signer with a supported public key.
+// 現在サポートされている鍵のタイプは*rsa.PublicKey、*ecdsa.PublicKey、およびed25519.PublicKeyです。pubはサポートされている鍵のタイプである必要があり、privはサポートされている公開鍵を持つcrypto.Signerである必要があります。
 //
-// The AuthorityKeyId will be taken from the SubjectKeyId of parent, if any,
-// unless the resulting certificate is self-signed. Otherwise the value from
-// template will be used.
+// AuthorityKeyIdは、親のSubjectKeyIdから取得されます（存在する場合）、ただし証明書が自己署名でない場合はテンプレートの値が使用されます。
 //
-// If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
-// will be generated from the hash of the public key.
+// テンプレートのSubjectKeyIdが空で、テンプレートがCAである場合、SubjectKeyIdは公開鍵のハッシュから生成されます。
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
-// ParseCRL parses a CRL from the given bytes. It's often the case that PEM
-// encoded CRLs will appear where they should be DER encoded, so this function
-// will transparently handle PEM encoding as long as there isn't any leading
-// garbage.
-//
-// Deprecated: Use ParseRevocationList instead.
+// ParseCRLは指定されたバイトからCRLを解析します。PEMエンコードされたCRLがDERエンコードされるべき場所に表示されることがよくありますが、この関数は前方にゴミがない限り、PEMエンコーディングを透過的に処理します。
+// 廃止予定: 代わりにParseRevocationListを使用してください。
 func ParseCRL(crlBytes []byte) (*pkix.CertificateList, error)
 
-// ParseDERCRL parses a DER encoded CRL from the given bytes.
+// ParseDERCRLは与えられたバイトからDER形式でエンコードされたCRLをパースします。
 //
-// Deprecated: Use ParseRevocationList instead.
+// 非推奨: 代わりにParseRevocationListを使用してください。
 func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
 
-// CreateCRL returns a DER encoded CRL, signed by this Certificate, that
-// contains the given list of revoked certificates.
+// CreateCRLは、指定された失効した証明書のリストを含む、この証明書によって署名されたDERエンコードされたCRLを返します。
 //
-// Deprecated: this method does not generate an RFC 5280 conformant X.509 v2 CRL.
-// To generate a standards compliant CRL, use CreateRevocationList instead.
+// 廃止予定: このメソッドはRFC 5280準拠のX.509 v2 CRLを生成しません。
+// 標準に準拠したCRLを生成するためには、代わりにCreateRevocationListを使用してください。
 func (c *Certificate) CreateCRL(rand io.Reader, priv any, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
 
-// CertificateRequest represents a PKCS #10, certificate signature request.
+// CertificateRequestはPKCS #10、証明書署名リクエストを表します。
 type CertificateRequest struct {
 	Raw                      []byte
 	RawTBSCertificateRequest []byte
@@ -366,37 +313,31 @@ type CertificateRequest struct {
 
 	Subject pkix.Name
 
-	// Attributes contains the CSR attributes that can parse as
-	// pkix.AttributeTypeAndValueSET.
+	// Attributesには、以下のCSR属性が含まれています。pkix.AttributeTypeAndValueSETとして解析できます。
 	//
-	// Deprecated: Use Extensions and ExtraExtensions instead for parsing and
-	// generating the requestedExtensions attribute.
+	// 廃止予定: 解析および生成には、requestedExtensions属性の代わりにExtensionsおよびExtraExtensionsを使用してください。
 	Attributes []pkix.AttributeTypeAndValueSET
 
-	// Extensions contains all requested extensions, in raw form. When parsing
-	// CSRs, this can be used to extract extensions that are not parsed by this
-	// package.
+	// Extensionsは、すべてのリクエストされた拡張子を生の形式で保持しています。CSRを解析する際に、このパッケージで解析されない拡張子を抽出するために使用できます。
 	Extensions []pkix.Extension
 
-	// ExtraExtensions contains extensions to be copied, raw, into any CSR
-	// marshaled by CreateCertificateRequest. Values override any extensions
-	// that would otherwise be produced based on the other fields but are
-	// overridden by any extensions specified in Attributes.
+	// ExtraExtensionsは、任意のCSRにコピーされる拡張機能を含みます。
+	// CreateCertificateRequestによってマーシャリングされます。
+	// 値は他のフィールドに基づいて生成される拡張機能を上書きしますが、
+	// Attributesで指定された拡張機能によっては上書きされます。
 	//
-	// The ExtraExtensions field is not populated by ParseCertificateRequest,
-	// see Extensions instead.
+	// ExtraExtensionsフィールドはParseCertificateRequestでは使用されず、
+	// 代わりにExtensionsを参照してください。
 	ExtraExtensions []pkix.Extension
 
-	// Subject Alternate Name values.
+	// Subject Alternate Nameの値。
 	DNSNames       []string
 	EmailAddresses []string
 	IPAddresses    []net.IP
 	URIs           []*url.URL
 }
 
-// CreateCertificateRequest creates a new certificate request based on a
-// template. The following members of template are used:
-//
+// CreateCertificateRequestは、テンプレートを基に新しい証明書リクエストを作成します。テンプレートの以下のメンバーが使用されます：
 //   - SignatureAlgorithm
 //   - Subject
 //   - DNSNames
@@ -404,137 +345,105 @@ type CertificateRequest struct {
 //   - IPAddresses
 //   - URIs
 //   - ExtraExtensions
-//   - Attributes (deprecated)
+//   - Attributes (非推奨)
 //
-// priv is the private key to sign the CSR with, and the corresponding public
-// key will be included in the CSR. It must implement crypto.Signer and its
-// Public() method must return a *rsa.PublicKey or a *ecdsa.PublicKey or a
-// ed25519.PublicKey. (A *rsa.PrivateKey, *ecdsa.PrivateKey or
-// ed25519.PrivateKey satisfies this.)
-//
-// The returned slice is the certificate request in DER encoding.
+// privはCSRに署名するための秘密鍵であり、対応する公開鍵はCSRに含まれます。privはcrypto.Signerを実装しており、そのPublic()メソッドは*rsa.PublicKeyまたは*ecdsa.PublicKeyまたはed25519.PublicKeyを返さなければなりません。(*rsa.PrivateKey、*ecdsa.PrivateKey、またはed25519.PrivateKeyもこれを満たします。)
+// 返されるスライスはDERエンコードされた証明書リクエストです。
 func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv any) (csr []byte, err error)
 
-// ParseCertificateRequest parses a single certificate request from the
-// given ASN.1 DER data.
+// ParseCertificateRequestは与えられたASN.1 DERデータから単一の証明書リクエストを解析します。
 func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error)
 
-// CheckSignature reports whether the signature on c is valid.
+// CheckSignatureはcの署名が有効かどうかを報告します。
 func (c *CertificateRequest) CheckSignature() error
 
-// RevocationListEntry represents an entry in the revokedCertificates
-// sequence of a CRL.
+// RevocationListEntryは、CRLのrevokedCertificatesシーケンスのエントリを表します。
 type RevocationListEntry struct {
-	// Raw contains the raw bytes of the revokedCertificates entry. It is set when
-	// parsing a CRL; it is ignored when generating a CRL.
+
+	// Raw は revokedCertificates エントリの生のバイトを含んでいます。
+	// CRL を解析する際に設定され、CRL を生成する際には無視されます。
 	Raw []byte
 
-	// SerialNumber represents the serial number of a revoked certificate. It is
-	// both used when creating a CRL and populated when parsing a CRL. It must not
-	// be nil.
+	// SerialNumberは失効証明書のシリアル番号を表します。CRLを作成する際に使用され、
+	// CRLを解析する際にも設定されます。nilであってはいけません。
 	SerialNumber *big.Int
-	// RevocationTime represents the time at which the certificate was revoked. It
-	// is both used when creating a CRL and populated when parsing a CRL. It must
-	// not be the zero time.
+
+	// RevocationTimeは証明書の失効日時を表します。
+	// CRLを作成する際に使用され、CRLを解析する際に設定されます。
+	// ゼロの時間であってはなりません。
 	RevocationTime time.Time
-	// ReasonCode represents the reason for revocation, using the integer enum
-	// values specified in RFC 5280 Section 5.3.1. When creating a CRL, the zero
-	// value will result in the reasonCode extension being omitted. When parsing a
-	// CRL, the zero value may represent either the reasonCode extension being
-	// absent (which implies the default revocation reason of 0/Unspecified), or
-	// it may represent the reasonCode extension being present and explicitly
-	// containing a value of 0/Unspecified (which should not happen according to
-	// the DER encoding rules, but can and does happen anyway).
+
+	// ReasonCodeは、RFC 5280セクション5.3.1で指定された整数の列挙値を使用して、回復の理由を表します。CRLを作成する場合、ゼロ値はreasonCode拡張機能が省略される結果になります。CRLを解析する際、ゼロ値はreasonCode拡張機能が存在しないこと（0/Unspecifiedのデフォルト回収理由を意味する）を表すか、reasonCode拡張機能が存在し、明示的に0/Unspecifiedの値を含んでいることを表す可能性があります（これはDERエンコーディングルールによらないで発生する可能性がありますが、実際に発生することがあります）。
 	ReasonCode int
 
-	// Extensions contains raw X.509 extensions. When parsing CRL entries,
-	// this can be used to extract non-critical extensions that are not
-	// parsed by this package. When marshaling CRL entries, the Extensions
-	// field is ignored, see ExtraExtensions.
+	// Extensionsには生のX.509拡張が含まれています。CRLエントリを解析する際、
+	// このフィールドを使用して、このパッケージでパースされない非クリティカルな拡張を取得できます。
+	// CRLエントリをマーシャル化する際、Extensionsフィールドは無視されます。ExtraExtensionsを参照してください。
 	Extensions []pkix.Extension
-	// ExtraExtensions contains extensions to be copied, raw, into any
-	// marshaled CRL entries. Values override any extensions that would
-	// otherwise be produced based on the other fields. The ExtraExtensions
-	// field is not populated when parsing CRL entries, see Extensions.
+
+	// ExtraExtensionsには、任意のマーシャルされたCRLエントリにコピーするための拡張機能が含まれています。値は、他のフィールドに基づいて生成される拡張機能を上書きします。ExtraExtensionsフィールドは、CRLエントリの解析時には値が設定されません。Extensionsを参照してください。
 	ExtraExtensions []pkix.Extension
 }
 
-// RevocationList represents a Certificate Revocation List (CRL) as specified
-// by RFC 5280.
+// RevocationList は RFC 5280 で指定されている Certificate Revocation List (CRL) を表します。
 type RevocationList struct {
-	// Raw contains the complete ASN.1 DER content of the CRL (tbsCertList,
-	// signatureAlgorithm, and signatureValue.)
+
+	// Raw はCRL（tbsCertList、signatureAlgorithm、およびsignatureValue）の完全なASN.1 DERコンテンツを含んでいます。
 	Raw []byte
-	// RawTBSRevocationList contains just the tbsCertList portion of the ASN.1
-	// DER.
+
+	// RawTBSRevocationList はASN.1 DERのtbsCertList部分のみを含みます。
 	RawTBSRevocationList []byte
-	// RawIssuer contains the DER encoded Issuer.
+	// RawIssuerにはDERエンコードされた発行者が含まれています。
 	RawIssuer []byte
 
-	// Issuer contains the DN of the issuing certificate.
+	// Issuerには発行証明書のDNが含まれています。
 	Issuer pkix.Name
-	// AuthorityKeyId is used to identify the public key associated with the
-	// issuing certificate. It is populated from the authorityKeyIdentifier
-	// extension when parsing a CRL. It is ignored when creating a CRL; the
-	// extension is populated from the issuing certificate itself.
+
+	// AuthorityKeyIdは、発行証明書に関連付けられた公開鍵を識別するために使用されます。CRLを解析する際、authorityKeyIdentifier拡張から取得されます。CRLを作成する際には無視されます。拡張は発行証明書自体から取得されます。
 	AuthorityKeyId []byte
 
 	Signature []byte
-	// SignatureAlgorithm is used to determine the signature algorithm to be
-	// used when signing the CRL. If 0 the default algorithm for the signing
-	// key will be used.
+
+	// SignatureAlgorithmは、CRLを署名する際に使用する署名アルゴリズムを決定するために使用されます。
+	// もし0の場合、署名キーのデフォルトアルゴリズムが使用されます。
 	SignatureAlgorithm SignatureAlgorithm
 
-	// RevokedCertificateEntries represents the revokedCertificates sequence in
-	// the CRL. It is used when creating a CRL and also populated when parsing a
-	// CRL. When creating a CRL, it may be empty or nil, in which case the
-	// revokedCertificates ASN.1 sequence will be omitted from the CRL entirely.
+	// RevokedCertificateEntriesは、CRLのrevokedCertificatesシーケンスを表します。
+	// CRLを作成するときに使用され、CRLを解析するときにも入力されます。
+	// CRLを作成する際には、空またはnilである場合、revokedCertificates ASN.1シーケンスはCRLから完全に省略されます。
 	RevokedCertificateEntries []RevocationListEntry
 
-	// RevokedCertificates is used to populate the revokedCertificates
-	// sequence in the CRL if RevokedCertificateEntries is empty. It may be empty
-	// or nil, in which case an empty CRL will be created.
+	// RevokedCertificatesはRevokedCertificateEntriesが空の場合、
+	// CRL内のrevokedCertificatesシーケンスを埋めるために使用されます。
+	// RevokedCertificatesは空またはnilである場合、空のCRLが作成されます。
 	//
-	// Deprecated: Use RevokedCertificateEntries instead.
+	// Deprecated: 代わりにRevokedCertificateEntriesを使用してください。
 	RevokedCertificates []pkix.RevokedCertificate
 
-	// Number is used to populate the X.509 v2 cRLNumber extension in the CRL,
-	// which should be a monotonically increasing sequence number for a given
-	// CRL scope and CRL issuer. It is also populated from the cRLNumber
-	// extension when parsing a CRL.
+	// Numberは、CRL内のX.509 v2 cRLNumber拡張を埋めるために使用されます。
+	// これは特定のCRLスコープとCRL発行者に対して単調に増加するシーケンス番号である必要があります。
+	// また、CRLを解析する際には、cRLNumber拡張からも値が入力されます。
 	Number *big.Int
 
-	// ThisUpdate is used to populate the thisUpdate field in the CRL, which
-	// indicates the issuance date of the CRL.
+	// ThisUpdateはCRLのthisUpdateフィールドに格納されるために使用され、CRLの発行日を示します。
 	ThisUpdate time.Time
-	// NextUpdate is used to populate the nextUpdate field in the CRL, which
-	// indicates the date by which the next CRL will be issued. NextUpdate
-	// must be greater than ThisUpdate.
+
+	// NextUpdateはCRLのnextUpdateフィールドを埋めるために使用されます。これは次のCRLが発行される日付を示しています。NextUpdateはThisUpdateよりも大きくなければなりません。
 	NextUpdate time.Time
 
-	// Extensions contains raw X.509 extensions. When creating a CRL,
-	// the Extensions field is ignored, see ExtraExtensions.
+	// Extensionsは生のX.509拡張を含んでいます。CRLを作成する際は、
+	// Extensionsフィールドは無視されます。ExtraExtensionsを参照してください。
 	Extensions []pkix.Extension
 
-	// ExtraExtensions contains any additional extensions to add directly to
-	// the CRL.
+	// ExtraExtensionsには、CRLに直接追加する必要がある追加の拡張機能が含まれています。
 	ExtraExtensions []pkix.Extension
 }
 
-// CreateRevocationList creates a new X.509 v2 Certificate Revocation List,
-// according to RFC 5280, based on template.
-//
-// The CRL is signed by priv which should be the private key associated with
-// the public key in the issuer certificate.
-//
-// The issuer may not be nil, and the crlSign bit must be set in KeyUsage in
-// order to use it as a CRL issuer.
-//
-// The issuer distinguished name CRL field and authority key identifier
-// extension are populated using the issuer certificate. issuer must have
-// SubjectKeyId set.
+// CreateRevocationListは、テンプレートに基づいてRFC 5280に準拠した新しいX.509 v2証明書失効リストを作成します。
+// CRLは、privによって署名されます。これは、発行者証明書の公開キーに関連付けられた秘密キーである必要があります。
+// 発行者はnilではなく、キーカオ必須使用方法のcrlSignビットが設定されている必要があります。
+// 発行者の識別名CRLフィールドと権限キー識別子拡張は、発行者証明書を使用してポピュレートされます。発行者にはSubjectKeyIdが設定されている必要があります。
 func CreateRevocationList(rand io.Reader, template *RevocationList, issuer *Certificate, priv crypto.Signer) ([]byte, error)
 
-// CheckSignatureFrom verifies that the signature on rl is a valid signature
-// from issuer.
+// CheckSignatureFromは、rlの署名が発行元の有効な署名であることを確認します。
 func (rl *RevocationList) CheckSignatureFrom(parent *Certificate) error
