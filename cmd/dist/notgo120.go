@@ -2,21 +2,21 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Go 1.22 and later requires Go 1.20 as the bootstrap toolchain.
-// If cmd/dist is built using an earlier Go version, this file will be
-// included in the build and cause an error like:
+// Go 1.22以降では、ブートストラップツールチェインとしてGo 1.20が必要です。
+// もしcmd/distが以前のGoバージョンを使用してビルドされた場合、このファイルはビルドに含まれ、次のようなエラーが発生します：
 //
 // % GOROOT_BOOTSTRAP=$HOME/sdk/go1.16 ./make.bash
-// Building Go cmd/dist using /Users/rsc/sdk/go1.16. (go1.16 darwin/amd64)
-// found packages main (build.go) and building_Go_requires_Go_1_20_6_or_later (notgo120.go) in /Users/rsc/go/src/cmd/dist
+// /Users/rsc/sdk/go1.16を使用してGo cmd/distをビルドしています。(go1.16 darwin/amd64)
+// /Users/rsc/go/src/cmd/dist内のmain (build.go)とbuilding_Go_requires_Go_1_20_6_or_later (notgo120.go)というパッケージが見つかりました。
 // %
 //
-// which is the best we can do under the circumstances.
+// これが、現状では最善の方法です。
 //
-// See go.dev/issue/44505 for more background on
-// why Go moved on from Go 1.4 for bootstrap.
+// GoがブートストラップにGo 1.4から移行した背景については、go.dev/issue/44505を参照してください。
 
 //go:build !go1.20
+//go:build !go1.20
+// +build !go1.20
 // +build !go1.20
 
 package building_Go_requires_Go_1_20_6_or_later

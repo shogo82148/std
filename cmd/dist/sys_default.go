@@ -5,4 +5,7 @@
 //go:build !windows
 // +build !windows
 
+//ウィンドウズではない場合に使われるゴーのコメントです
+//ウィンドウズではない場合にビルドされます
+
 package main
