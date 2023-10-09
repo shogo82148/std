@@ -10,27 +10,26 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// NoBody is an io.ReadCloser with no bytes. Read always returns EOF
-// and Close always returns nil. It can be used in an outgoing client
-// request to explicitly signal that a request has zero bytes.
-// An alternative, however, is to simply set Request.Body to nil.
+// NoBodyはバイトを持たないio.ReadCloserです。Readは常にEOFを返し、
+// Closeは常にnilを返します。これは、リクエストがゼロバイトであることを
+// 明示的に示すために、送信元クライアントのリクエストで使用することができます。
+// ただし、代わりにRequest.Bodyをnilに設定することもできます。
 var NoBody = noBody{}
 
 var (
-	// verify that an io.Copy from NoBody won't require a buffer:
+	// NoBodyからのio.Copyがバッファを必要としないことを検証する
 	_ io.WriterTo   = NoBody
 	_ io.ReadCloser = NoBody
 )
 
 // PushOptionsは、Pusher.Pushのオプションを記述します。
 type PushOptions struct {
-	// Method specifies the HTTP method for the promised request.
-	// If set, it must be "GET" or "HEAD". Empty means "GET".
+
+	// Methodは要求されたリクエストのHTTPメソッドを指定します。
+	// 設定する場合、"GET"または"HEAD"でなければなりません。空は"GET"を意味します。
 	Method string
 
-	// Header specifies additional promised request headers. This cannot
-	// include HTTP/2 pseudo header fields like ":path" and ":scheme",
-	// which will be added automatically.
+	// Headerは追加の約束されたリクエストヘッダーを指定します。これには":path"や":scheme"などのHTTP/2疑似ヘッダーフィールドは含めることができませんが、これらは自動的に追加されます。
 	Header Header
 }
 
