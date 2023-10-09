@@ -24,7 +24,7 @@ var (
 	ErrInsecurePath    = errors.New("archive/tar: insecure file path")
 )
 
-// Type flags for Header.Typeflag.
+// Header.Typeflag のための型フラグ。
 const (
 	// Type '0' は通常のファイルを示します。
 	TypeReg = '0'
@@ -40,37 +40,36 @@ const (
 	TypeDir     = '5'
 	TypeFifo    = '6'
 
-	// Type '7' は予約されています。
+	// Type '7' is reserved.
 	TypeCont = '7'
 
-	// Type 'x' は、PAXフォーマットで、次のファイルにのみ関連するキー-値レコードを格納するために使用されます。
-	// このパッケージは、これらのタイプを透過的に処理します。
 	TypeXHeader = 'x'
 
-	// 'g' 型は、すべての後続ファイルに関連するキーと値のレコードを格納するために PAX 形式で使用されます。
-	// このパッケージは、このようなヘッダーの解析と構成のみをサポートしていますが、現在はファイル間でグローバル状態を永続化することはできません。
+	// 'g' type is used in PAX format to store key-value records associated with subsequent files.
+	// This package only supports parsing and configuration of such headers, but currently cannot persist global state across files.
 	TypeXGlobalHeader = 'g'
 
-	// 'S' 型は、GNU 形式でスパースファイルを示します。
+	// 'S' typeは、GNU形式でスパースファイルを示します。
 	TypeGNUSparse = 'S'
 
-	// 'L' 型と 'K' 型は、GNU 形式でメタファイルに使用されます。
-	// このメタファイルは、次のファイルのパスまたはリンク名を格納するために使用されます。
-	// このパッケージは、これらのタイプを透過的に処理します。
+	// 'L' type and 'K' type are used in the GNU format metafile.
+	// This metafile is used to store the path or link names of the following files.
+	// This package transparently handles these types.
 	TypeGNULongName = 'L'
 	TypeGNULongLink = 'K'
 )
 
-// Header は、tar アーカイブ内の単一のヘッダーを表します。
+// Headerは、tarアーカイブ内の単一のヘッダーを表します。
 // 一部のフィールドは、値が設定されていない場合があります。
 //
-// 将来の互換性のために、Reader.Next から Header を取得し、
-// いくつかの方法で変更し、Writer.WriteHeader に戻すユーザーは、
-// 新しい Header を作成し、保存する必要があるフィールドをコピーすることで行う必要があります。
+// 将来の互換性のために、Reader.NextからHeaderを取得し、
+// いくつかの方法で変更し、Writer.WriteHeaderに戻すユーザーは、
+// 新しいHeaderを作成し、保存する必要があるフィールドをコピーすることで行う必要があります。
 type Header struct {
-	// Typeflag is the type of header entry.
-	// The zero value is automatically promoted to either TypeReg or TypeDir
-	// depending on the presence of a trailing slash in Name.
+
+	// Typeflagはヘッダーエントリーのタイプです。
+	// ゼロ値は自動的にTypeRegまたはTypeDirに昇格されます
+	// Nameに末尾のスラッシュがあるかどうかによって決まります。
 	Typeflag byte
 
 	Name     string
@@ -83,11 +82,10 @@ type Header struct {
 	Uname string
 	Gname string
 
-	// If the Format is unspecified, then Writer.WriteHeader rounds ModTime
-	// to the nearest second and ignores the AccessTime and ChangeTime fields.
+	// Formatが指定されていない場合、Writer.WriteHeaderはModTimeを最も近い秒に切り捨て、AccessTimeおよびChangeTimeフィールドを無視します。
 	//
-	// To use AccessTime or ChangeTime, specify the Format as PAX or GNU.
-	// To use sub-second resolution, specify the Format as PAX.
+	// AccessTimeまたはChangeTimeを使用するには、FormatをPAXまたはGNUとして指定します。
+	// サブセカンドの解像度を使用するには、FormatをPAXとして指定します。
 	ModTime    time.Time
 	AccessTime time.Time
 	ChangeTime time.Time

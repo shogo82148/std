@@ -14,7 +14,7 @@ import (
 )
 
 func Example_minimal() {
-	// Create and add some files to the archive.
+	// アーカイブにいくつかのファイルを作成して追加します。
 	var buf bytes.Buffer
 	tw := tar.NewWriter(&buf)
 	var files = []struct {
@@ -41,12 +41,11 @@ func Example_minimal() {
 		log.Fatal(err)
 	}
 
-	// Open and iterate through the files in the archive.
 	tr := tar.NewReader(&buf)
 	for {
 		hdr, err := tr.Next()
 		if err == io.EOF {
-			break // End of archive
+			break // アーカイブの終わり
 		}
 		if err != nil {
 			log.Fatal(err)
