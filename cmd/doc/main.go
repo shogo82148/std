@@ -2,42 +2,34 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Doc (usually run as go doc) accepts zero, one or two arguments.
+// Doc (通常は go doc として実行される) は 0 個、1 個、または 2 個の引数を受け付けます。
 //
-// Zero arguments:
+// 0 個の引数:
 //
 //	go doc
 //
-// Show the documentation for the package in the current directory.
+// 現在のディレクトリに含まれるパッケージのドキュメントを表示します。
 //
-// One argument:
+// 1 個の引数:
 //
 //	go doc <pkg>
 //	go doc <sym>[.<methodOrField>]
 //	go doc [<pkg>.]<sym>[.<methodOrField>]
 //	go doc [<pkg>.][<sym>.]<methodOrField>
 //
-// The first item in this list that succeeds is the one whose documentation
-// is printed. If there is a symbol but no package, the package in the current
-// directory is chosen. However, if the argument begins with a capital
-// letter it is always assumed to be a symbol in the current directory.
+// 成功する最初の項目のドキュメントが表示されます。シンボルが指定されているがパッケージが指定されていない場合、現在のディレクトリのパッケージが選択されます。ただし、引数が大文字で始まる場合は常に現在のディレクトリのシンボルと見なされます。
 //
-// Two arguments:
+// 2 個の引数:
 //
 //	go doc <pkg> <sym>[.<methodOrField>]
 //
-// Show the documentation for the package, symbol, and method or field. The
-// first argument must be a full package path. This is similar to the
-// command-line usage for the godoc command.
+// パッケージ、シンボル、およびメソッドまたはフィールドのドキュメントを表示します。最初の引数は完全なパッケージパスである必要があります。これは godoc コマンドのコマンドライン使用法と似ています。
 //
-// For commands, unless the -cmd flag is present "go doc command"
-// shows only the package-level docs for the package.
+// コマンドの場合、-cmd フラグが存在しない限り、"go doc コマンド" はパッケージレベルのドキュメントのみ表示します。
 //
-// The -src flag causes doc to print the full source code for the symbol, such
-// as the body of a struct, function or method.
+// -src フラグを指定すると、doc は構造体、関数、またはメソッドの本体などのシンボルの全ソースコードを表示します。
 //
-// The -all flag causes doc to print all documentation for the package and
-// all its visible symbols. The argument must identify a package.
+// -all フラグを指定すると、doc はパッケージとその可視なシンボルのすべてのドキュメントを表示します。引数はパッケージを識別する必要があります。
 //
-// For complete documentation, run "go help doc".
+// 完全なドキュメントについては、「go help doc」を実行してください。
 package main
