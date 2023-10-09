@@ -51,15 +51,9 @@ type Reader struct {
 	multistream  bool
 }
 
-<<<<<<< HEAD
 // NewReader creates a new Reader reading the given reader.
 // If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.
-=======
-// NewReaderは、指定されたリーダーを読み取る新しいReaderを作成します。
-// もしrがio.ByteReaderを実装していない場合、
-// 復号器はrから必要以上のデータを読み取るかもしれません。
->>>>>>> release-branch.go1.21
 //
 // Readerを使用し終わった後は、呼び出し元の責任でCloseを呼び出す必要があります。
 //

@@ -13,24 +13,10 @@
 
 フラグ:
 
-<<<<<<< HEAD
-	-B note
-		Add an ELF_NT_GNU_BUILD_ID note when using ELF.
-		The value should start with 0x and be an even number of hex digits.
-		Alternatively, you can pass "gobuildid" in order to derive the
-		GNU build ID from the Go build ID.
-	-E entry
-		Set entry symbol name.
-	-H type
-		Set executable format type.
-		The default format is inferred from GOOS and GOARCH.
-		On Windows, -H windowsgui writes a "GUI binary" instead of a "console binary."
-	-I interpreter
-		Set the ELF dynamic linker to use.
-=======
-	-B メモ
-		ELFを使用している場合、ELF_NT_GNU_BUILD_IDノートを追加します。
-		値は0xで始まり、16進数の偶数桁でなければなりません。
+	- Bノート
+		ELFを使用する場合、ELF_NT_GNU_BUILD_IDノートを追加します。
+		値は0xで始まり、偶数桁の16進数である必要があります。
+		代わりに、GoビルドIDからGNUビルドIDを派生させるために「gobuildid」を渡すこともできます。
 	-E エントリ
 		エントリシンボル名を設定します。
 	-H タイプ
@@ -39,7 +25,6 @@
 		Windowsでは、-H windowsguiは「GUIバイナリ」ではなく「コンソールバイナリ」を書き込みます。
 	-I インタプリタ
 		使用するELFダイナミックリンカを設定します。
->>>>>>> release-branch.go1.21
 	-L dir1 -L dir2
 		$GOROOT/pkg/$GOOS_$GOARCHを参照した後、dir1、dir2などでインポートされたパッケージを検索します。
 	-R quantum

@@ -33,11 +33,7 @@ func (b BitString) At(i int) int
 // RightAlign はパディングビットが先頭にあるスライスを返します。スライスは BitString とメモリを共有する場合があります。
 func (b BitString) RightAlign() []byte
 
-<<<<<<< HEAD
 // NullRawValue is a [RawValue] with its Tag set to the ASN.1 NULL type tag (5).
-=======
-// NullRawValueは、ASN.1 NULLのタグ（5）が設定されたRawValueです。
->>>>>>> release-branch.go1.21
 var NullRawValue = RawValue{Tag: TagNull}
 
 // NullBytesには、DERエンコードされたASN.1 NULLタイプを表すバイトが含まれています。
@@ -76,7 +72,6 @@ type RawContent []byte
 // 構造体へのSEQUENCEの解析時、valにマッチするフィールドを持たないトレーリング要素は、
 // トレーリングデータではなくSEQUENCEの有効な要素と見なされないため、restには含まれません。
 //
-<<<<<<< HEAD
 //   - An ASN.1 INTEGER can be written to an int, int32, int64,
 //     or *[big.Int].
 //     If the encoded value does not fit in the Go type,
@@ -104,30 +99,6 @@ type RawContent []byte
 //   - An ASN.1 SEQUENCE or SET can be written to a struct
 //     if each of the elements in the sequence can be
 //     written to the corresponding element in the struct.
-=======
-// ASN.1 INTEGERはint、int32、int64、または*math/bigパッケージの*big.Intに書き込むことができます。
-// エンコードされた値がGoの型に収まらない場合、Unmarshalは解析エラーを返します。
-//
-// ASN.1 BIT STRINGはBitStringに書き込むことができます。
-//
-// ASN.1 OCTET STRINGは[]byteに書き込むことができます。
-//
-// ASN.1 OBJECT IDENTIFIERはObjectIdentifierに書き込むことができます。
-//
-// ASN.1 ENUMERATEDはEnumeratedに書き込むことができます。
-//
-// ASN.1 UTCTIMEまたはGENERALIZEDTIMEはtime.Timeに書き込むことができます。
-//
-// ASN.1 PrintableString、IA5String、またはNumericStringはstringに書き込むことができます。
-//
-// 上記のASN.1値はすべてinterface{}に書き込むことができます。
-// インターフェースに格納された値は、対応するGoの型を持ちます。
-// 整数の場合、その型はint64です。
-//
-// ASN.1 SEQUENCE OF xまたはSET OF xは、xをスライスの要素型に書き込むことができれば、スライスに書き込むことができます。
-//
-// ASN.1 SEQUENCEまたはSETは、各要素を構造体の対応する要素に書き込むことができれば、構造体に書き込むことができます。
->>>>>>> release-branch.go1.21
 //
 // 構造体フィールドに対する以下のタグにはUnmarshalに特別な意味があります。
 //

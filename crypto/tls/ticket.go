@@ -15,14 +15,10 @@ type SessionState struct {
 	//
 	// これにより、[Config.UnwrapSession]/[Config.WrapSession]や[ClientSessionCache]の実装が、このセッションとともに追加のデータを格納および取得できるようになります。
 	//
-<<<<<<< HEAD
 	// To allow different layers in a protocol stack to share this field,
 	// applications must only append to it, not replace it, and must use entries
 	// that can be recognized even if out of order (for example, by starting
 	// with an id and version prefix).
-=======
-	// プロトコルスタックの異なるレイヤーがこのフィールドを共有するために、アプリケーションは追加するだけでなく、置き換えることなく、順不同でも認識できるエントリを使用する必要があります（例：idとバージョンのプレフィックスを付けるなど）。
->>>>>>> release-branch.go1.21
 	Extra [][]byte
 
 	// EarlyDataは、QUIC接続で0-RTTに使用できるかを示します。

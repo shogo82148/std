@@ -53,19 +53,12 @@ type Reader interface {
 	io.ByteReader
 }
 
-<<<<<<< HEAD
 // NewReader returns a new ReadCloser that can be used
 // to read the uncompressed version of r.
 // If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.
 // The reader returns io.EOF after the final block in the DEFLATE stream has
 // been encountered. Any trailing data after the final block is ignored.
-=======
-// NewReaderは、rの非圧縮バージョンを読み取るために使用できる新しいReadCloserを返します。
-// rがio.ByteReaderも実装していない場合、解凍器はrから必要以上のデータを読み取る可能性があります。
-// リーダーは、DEFLATEストリームの最後のブロックがエンカウントされた後にio.EOFを返します。
-// 最後のブロックの後にある追加データは無視されます。
->>>>>>> release-branch.go1.21
 //
 // NewReaderによって返されるReadCloserは、Resetterも実装しています。
 func NewReader(r io.Reader) io.ReadCloser

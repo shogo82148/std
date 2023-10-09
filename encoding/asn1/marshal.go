@@ -6,12 +6,8 @@ package asn1
 
 // MarshalはvalのASN.1エンコーディングを返します。
 //
-<<<<<<< HEAD
 // In addition to the struct tags recognized by Unmarshal, the following can be
 // used:
-=======
-// Unmarshalに認識される構造体タグに加えて、以下のタグも使用できます：
->>>>>>> release-branch.go1.21
 //
 //	ia5:         文字列をASN.1のIA5String値としてエンコードします。
 //	omitempty:   空のスライスをスキップします。

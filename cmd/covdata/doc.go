@@ -13,14 +13,10 @@ Covdataは、アプリケーションや統合テストを実行することに�
 	covmeta.cce1b350af34b6d0fb59cc1725f0ee27
 	$
 
-<<<<<<< HEAD
 Run covdata via "go tool covdata <mode>", where 'mode' is a subcommand
 selecting a specific reporting, merging, or data manipulation operation.
 Descriptions on the various modes (run "go tool cover <mode> -help" for
 specifics on usage of a given mode):
-=======
-次のようにしてcovdataを実行します。"go tool covdata <モード>"と入力し、'モード'は、特定のレポート、マージ、またはデータ操作操作を選択するサブコマンドです。各モードの説明（指定されたモードの使用法の詳細については、"go tool cover <モード> -help"を実行してください）：
->>>>>>> release-branch.go1.21
 
 1. プロファイルされたパッケージごとのステートメントのカバー率を報告する：
 

@@ -18,11 +18,7 @@ import (
 // Base64エンコードされたバイト
 // -----END Type-----
 //
-<<<<<<< HEAD
 // where [Block.Headers] is a possibly empty sequence of Key: Value lines.
-=======
-// Headersはキー: 値の行からなる、可能性のある空のシーケンスです。
->>>>>>> release-branch.go1.21
 type Block struct {
 	Type    string
 	Headers map[string]string
@@ -37,13 +33,7 @@ func Encode(out io.Writer, b *Block) error
 
 // EncodeToMemoryはbのPEMエンコーディングを返します。
 //
-<<<<<<< HEAD
 // If b has invalid headers and cannot be encoded,
 // EncodeToMemory returns nil. If it is important to
 // report details about this error case, use [Encode] instead.
-=======
-// bに無効なヘッダーがある場合や、エンコードできない場合、
-// EncodeToMemoryはnilを返します。このエラーケースの詳細を報告することが重要な場合は、
-// 代わりにEncodeを使用してください。
->>>>>>> release-branch.go1.21
 func EncodeToMemory(b *Block) []byte

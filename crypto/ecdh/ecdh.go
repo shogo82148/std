@@ -60,12 +60,8 @@ type PrivateKey struct {
 	publicKeyOnce sync.Once
 }
 
-<<<<<<< HEAD
 // ECDH performs an ECDH exchange and returns the shared secret. The PrivateKey
 // and PublicKey must use the same curve.
-=======
-// ECDHはECDH交換を実行し、共有シークレットを返します。PrivateKeyとPublicKeyは同じ曲線を使用する必要があります。
->>>>>>> release-branch.go1.21
 //
 // NIST曲線の場合、これはSEC 1バージョン2.0セクション3.3.1で指定されたようにECDHを実行し、SEC 1バージョン2.0セクション2.3.5に従ってエンコードされたx座標を返します。結果は決して無限遠点ではありません。
 //

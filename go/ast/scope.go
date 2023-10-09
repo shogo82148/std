@@ -10,15 +10,11 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-<<<<<<< HEAD
 // A Scope maintains the set of named language entities declared
 // in the scope and a link to the immediately surrounding (outer)
 // scope.
 //
 // Deprecated: use the type checker [go/types] instead; see [Object].
-=======
-// Scopeはスコープ内で宣言された名前付きの言語エンティティの集合と、直接の周囲（外側）のスコープへのリンクを維持します。
->>>>>>> release-branch.go1.21
 type Scope struct {
 	Outer   *Scope
 	Objects map[string]*Object
@@ -43,7 +39,6 @@ func (s *Scope) String() string
 //
 // データフィールドには、オブジェクト固有のデータが含まれます：
 //
-<<<<<<< HEAD
 //	Kind    Data type         Data value
 //	Pkg     *Scope            package scope
 //	Con     int               iota for the respective declaration
@@ -60,11 +55,6 @@ func (s *Scope) String() string
 // and memory), and instead use the type checker [go/types] if object
 // resolution is desired. See the Defs, Uses, and Implicits fields of
 // the [types.Info] struct for details.
-=======
-//		種類   データ型         データの値
-//	 Pkg    *Scope           パッケージスコープ
-//	 Con    int              対応する宣言のiota
->>>>>>> release-branch.go1.21
 type Object struct {
 	Kind ObjKind
 	Name string

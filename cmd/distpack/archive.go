@@ -36,17 +36,10 @@ func NewArchive(dir string) (*Archive, error)
 // 1回以上Addを呼び出した後、アーカイブのファイルを再ソートするためにSortを呼び出す必要があります。
 func (a *Archive) Add(name, src string, info fs.FileInfo)
 
-<<<<<<< HEAD
 // Sort sorts the files in the archive.
 // It is only necessary to call Sort after calling Add or RenameGoMod.
 // NewArchive returns a sorted archive, and the other methods
 // preserve the sorting of the archive.
-=======
-// Sortはアーカイブ内のファイルをソートします。
-// AddまたはRenameGoModを呼び出した後にSortを呼び出す必要があります。
-// ArchiveDirはソートされたアーカイブを返し、他のメソッドは
-// アーカイブのソートを保持します。
->>>>>>> release-branch.go1.21
 func (a *Archive) Sort()
 
 // CloneはArchiveのコピーを返します。

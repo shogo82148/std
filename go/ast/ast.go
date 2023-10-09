@@ -673,15 +673,10 @@ func (f *File) Pos() token.Pos
 // （ファイル全体の終了位置にはFileEndを使用してください。）
 func (f *File) End() token.Pos
 
-<<<<<<< HEAD
 // A Package node represents a set of source files
 // collectively building a Go package.
 //
 // Deprecated: use the type checker [go/types] instead; see [Object].
-=======
-// パッケージノードは、Goパッケージを構築するために共に使用される
-// 一連のソースファイルを表します。
->>>>>>> release-branch.go1.21
 type Package struct {
 	Name    string
 	Scope   *Scope

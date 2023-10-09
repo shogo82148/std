@@ -75,7 +75,6 @@ func (r *Reader) Close() error
 // ResetはReaderの状態をクリアし、新しいReaderとして再利用するために使用されます。
 func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 
-<<<<<<< HEAD
 // NewReader creates a new io.ReadCloser.
 // Reads from the returned io.ReadCloser read and decompress data from r.
 // If r does not also implement [io.ByteReader],
@@ -85,15 +84,6 @@ func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 // The number of bits to use for literal codes, litWidth, must be in the
 // range [2,8] and is typically 8. It must equal the litWidth
 // used during compression.
-=======
-// NewReaderは新しいio.ReadCloserを作成します。
-// 返されたio.ReadCloserから読み取り、rからデータを複合します。
-// もしrがio.ByteReaderも実装していない場合、
-// 複合器はrから必要以上のデータを読み取るかもしれません。
-// 読み取りが終わったら、呼び出し元の責任でReadCloserをCloseする必要があります。
-// リテラルコードの使用するビット数であるlitWidthは、
-// [2,8]の範囲内でなければならず、通常は8です。これは圧縮時に使用されるlitWidthと一致する必要があります。
->>>>>>> release-branch.go1.21
 //
 // 返されたio.ReadCloserの基底型は、*Readerであることが保証されます。
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser
