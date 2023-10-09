@@ -21,7 +21,7 @@ func Example_writerReader() {
 	var buf bytes.Buffer
 	zw := gzip.NewWriter(&buf)
 
-	// Setting the Header fields is optional.
+	// ヘッダーフィールドの設定はオプションです。
 	zw.Name = "a-new-hope.txt"
 	zw.Comment = "an epic space opera by George Lucas"
 	zw.ModTime = time.Date(1977, time.May, 25, 0, 0, 0, 0, time.UTC)
@@ -131,19 +131,20 @@ func ExampleReader_Multistream() {
 }
 
 func Example_compressingReader() {
-	// This is an example of writing a compressing reader.
-	// This can be useful for an HTTP client body, as shown.
+
+	// これは圧縮リーダーを書く例です。
+	// これは、HTTPクライアントのリクエストボディに使用することができます。
 
 	const testdata = "the data to be compressed"
 
-	// This HTTP handler is just for testing purposes.
+	// このHTTPハンドラはテスト用です。
 	handler := http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		zr, err := gzip.NewReader(req.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		// Just output the data for the example.
+		// 例のデータを出力するだけ。
 		if _, err := io.Copy(os.Stdout, zr); err != nil {
 			log.Fatal(err)
 		}
@@ -151,23 +152,22 @@ func Example_compressingReader() {
 	ts := httptest.NewServer(handler)
 	defer ts.Close()
 
-	// The remainder is the example code.
+	// 残りは例示コードです。
 
-	// The data we want to compress, as an io.Reader
+	// 圧縮したいデータは、io.Readerとして表現されます。
 	dataReader := strings.NewReader(testdata)
 
-	// bodyReader is the body of the HTTP request, as an io.Reader.
-	// httpWriter is the body of the HTTP request, as an io.Writer.
+	// bodyReaderはHTTPリクエストの本文をio.Readerとして表します。
+	// httpWriterはHTTPリクエストの本文をio.Writerとして表します。
 	bodyReader, httpWriter := io.Pipe()
 
-	// Make sure that bodyReader is always closed, so that the
-	// goroutine below will always exit.
+	// bodyReaderが常に閉じられるようにすることで、以下のゴルーチンが常に終了するようにします。
 	defer bodyReader.Close()
 
-	// gzipWriter compresses data to httpWriter.
+	// gzipWriterはデータをhttpWriterに圧縮します。
 	gzipWriter := gzip.NewWriter(httpWriter)
 
-	// errch collects any errors from the writing goroutine.
+	// errchは書き込みゴルーチンからのエラーを集めます。
 	errch := make(chan error, 1)
 
 	go func() {
@@ -180,8 +180,8 @@ func Example_compressingReader() {
 			}
 		}
 
-		// Copy our data to gzipWriter, which compresses it to
-		// gzipWriter, which feeds it to bodyReader.
+		//  データをgzipWriterにコピーし、それを圧縮して
+		//  gzipWriterからbodyReaderに供給します。
 		if _, err := io.Copy(gzipWriter, dataReader); err != nil && err != io.ErrClosedPipe {
 			sendErr(err)
 		}
@@ -193,25 +193,24 @@ func Example_compressingReader() {
 		}
 	}()
 
-	// Send an HTTP request to the test server.
+	// テストサーバーにHTTPリクエストを送信します。
 	req, err := http.NewRequest("PUT", ts.URL, bodyReader)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Note that passing req to http.Client.Do promises that it
-	// will close the body, in this case bodyReader.
+	// reqをhttp.Client.Doに渡すと、bodyReaderが閉じることが保証されます。
 	resp, err := ts.Client().Do(req)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Check whether there was an error compressing the data.
+	// データの圧縮中にエラーが発生したかどうかを確認する。
 	if err := <-errch; err != nil {
 		log.Fatal(err)
 	}
 
-	// For this example we don't care about the response.
+	// この例では、レスポンスは気にしません。
 	resp.Body.Close()
 
 	// Output: the data to be compressed
