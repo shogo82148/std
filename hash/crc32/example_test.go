@@ -10,17 +10,13 @@ import (
 )
 
 func ExampleMakeTable() {
-	// In this package, the CRC polynomial is represented in reversed notation,
-	// or LSB-first representation.
+	// このパッケージでは、CRCポリノミアルは逆順記法、またはLSB-firstの表現で表されます。
 	//
-	// LSB-first representation is a hexadecimal number with n bits, in which the
-	// most significant bit represents the coefficient of x⁰ and the least significant
-	// bit represents the coefficient of xⁿ⁻¹ (the coefficient for xⁿ is implicit).
+	// LSB-first表現は、nビットの16進数であり、最上位ビットはx⁰の係数を表し、最下位ビットはxⁿ⁻¹（xⁿの係数は暗黙的に表される）の係数を表します。
 	//
-	// For example, CRC32-Q, as defined by the following polynomial,
+	// たとえば、以下のポリノミアルによって定義されるCRC32-Qは、次のような逆順記法を持ちます。
 	//	x³²+ x³¹+ x²⁴+ x²²+ x¹⁶+ x¹⁴+ x⁸+ x⁷+ x⁵+ x³+ x¹+ x⁰
-	// has the reversed notation 0b11010101100000101000001010000001, so the value
-	// that should be passed to MakeTable is 0xD5828281.
+	// したがって、MakeTableに渡すべき値は0xD5828281です。
 	crc32q := crc32.MakeTable(0xD5828281)
 	fmt.Printf("%08x\n", crc32.Checksum([]byte("Hello world"), crc32q))
 	// Output:
