@@ -4,25 +4,25 @@
 
 package types
 
-// A Struct represents a struct type.
+// Structはstruct型を表します。
 type Struct struct {
 	fields []*Var
 	tags   []string
 }
 
-// NewStruct returns a new struct with the given fields and corresponding field tags.
-// If a field with index i has a tag, tags[i] must be that tag, but len(tags) may be
-// only as long as required to hold the tag with the largest index i. Consequently,
-// if no field has a tag, tags may be nil.
+// NewStructは、指定されたフィールドと対応するフィールドタグを持つ新しい構造体を返します。
+// インデックスiを持つフィールドにタグがある場合、tags [i]はそのタグである必要がありますが、
+// tagsの長さは、最大インデックスiのタグを保持するために必要なだけの長さである場合があります。
+// したがって、フィールドにタグがない場合、tagsはnilである場合があります。
 func NewStruct(fields []*Var, tags []string) *Struct
 
-// NumFields returns the number of fields in the struct (including blank and embedded fields).
+// NumFieldsは、struct内のフィールドの数を返します（空白や埋め込まれたフィールドを含む）。
 func (s *Struct) NumFields() int
 
-// Field returns the i'th field for 0 <= i < NumFields().
+// Fieldは0 <= i < NumFields()という条件でi番目のフィールドを返します。
 func (s *Struct) Field(i int) *Var
 
-// Tag returns the i'th field tag for 0 <= i < NumFields().
+// Tagは0 <= i < NumFields()に対するi番目のフィールドタグを返します。
 func (s *Struct) Tag(i int) string
 
 func (t *Struct) Underlying() Type
