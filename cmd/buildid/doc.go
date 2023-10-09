@@ -3,17 +3,14 @@
 // license that can be found in the LICENSE file.
 
 /*
-Buildid displays or updates the build ID stored in a Go package or binary.
+Buildidは、Goパッケージまたはバイナリに格納されているビルドIDを表示または更新します。
 
-Usage:
+使用法：
 
-	go tool buildid [-w] file
+	go tool buildid [-w] ファイル
 
-By default, buildid prints the build ID found in the named file.
-If the -w option is given, buildid rewrites the build ID found in
-the file to accurately record a content hash of the file.
+デフォルトでは、buildidは指定したファイルに含まれるビルドIDを表示します。
+-wオプションが指定された場合、buildidはファイルに含まれるビルドIDを正確に記録するためのコンテンツのハッシュで上書きします。
 
-This tool is only intended for use by the go command or
-other build systems.
-*/
-package main
+このツールは、goコマンドまたは他のビルドシステムによってのみ使用することを想定しています。
+*/package main
