@@ -4,8 +4,8 @@
 
 package types
 
-// A Type represents a type of Go.
-// All types implement the Type interface.
+// TypeはGoの型を表します。
+// すべての型はTypeインターフェースを実装しています。
 type Type interface {
 	Underlying() Type
 
