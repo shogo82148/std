@@ -2,13 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Parse input AST and prepare Prog structure.
+// 入力ASTを解析し、Prog構造体を準備します。
 
 package main
 
-// ParseGo populates f with information learned from the Go source code
-// which was read from the named file. It gathers the C preamble
-// attached to the import "C" comment, a list of references to C.xxx,
-// a list of exported functions, and the actual AST, to be rewritten and
-// printed.
+// ParseGoは、指定されたファイルから読み込まれたGoソースコードから取得した情報でfを埋めます。
+// これには、import "C"コメントに付属しているCの前文、C.xxxへの参照のリスト、
+// エクスポートされた関数のリスト、および実際のASTが含まれ、書き直されて出力されます。
 func (f *File) ParseGo(abspath string, src []byte)
