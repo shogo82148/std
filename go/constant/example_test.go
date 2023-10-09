@@ -5,11 +5,11 @@
 package constant_test
 
 import (
-	"fmt"
-	"go/constant"
-	"go/token"
-	"math"
-	"sort"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/go/constant"
+	"github.com/shogo82148/std/go/token"
+	"github.com/shogo82148/std/math"
+	"github.com/shogo82148/std/sort"
 )
 
 func Example_complexNumbers() {

@@ -5,11 +5,11 @@
 package hash_test
 
 import (
-	"bytes"
-	"crypto/sha256"
-	"encoding"
-	"fmt"
-	"log"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/crypto/sha256"
+	"github.com/shogo82148/std/encoding"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
 )
 
 func Example_binaryMarshaler() {

@@ -5,10 +5,10 @@
 package fs_test
 
 import (
-	"fmt"
-	"io/fs"
-	"log"
-	"os"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io/fs"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/os"
 )
 
 func ExampleWalkDir() {

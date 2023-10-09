@@ -5,9 +5,9 @@
 package gob_test
 
 import (
-	"bytes"
-	"encoding/gob"
-	"fmt"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/encoding/gob"
+	"github.com/shogo82148/std/fmt"
 )
 
 // This example shows how to encode an interface value. The key

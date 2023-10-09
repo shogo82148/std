@@ -5,10 +5,10 @@
 package errors_test
 
 import (
-	"errors"
-	"fmt"
-	"io/fs"
-	"os"
+	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io/fs"
+	"github.com/shogo82148/std/os"
 )
 
 func Example() {

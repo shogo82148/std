@@ -5,10 +5,10 @@
 package httptrace_test
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"net/http/httptrace"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/net/http"
+	"github.com/shogo82148/std/net/http/httptrace"
 )
 
 func Example() {

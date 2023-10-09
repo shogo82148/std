@@ -5,11 +5,11 @@
 package slogtest_test
 
 import (
-	"bytes"
-	"encoding/json"
-	"log"
-	"log/slog"
-	"testing/slogtest"
+	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/encoding/json"
+	"github.com/shogo82148/std/log"
+	"github.com/shogo82148/std/log/slog"
+	"github.com/shogo82148/std/testing/slogtest"
 )
 
 // This example demonstrates one technique for testing a handler with this

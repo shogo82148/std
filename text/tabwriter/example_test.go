@@ -5,9 +5,9 @@
 package tabwriter_test
 
 import (
-	"fmt"
-	"os"
-	"text/tabwriter"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/text/tabwriter"
 )
 
 func ExampleWriter_Init() {
