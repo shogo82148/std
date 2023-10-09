@@ -16,29 +16,12 @@ import (
 	"github.com/shogo82148/std/os"
 )
 
-// RSA is able to encrypt only a very limited amount of data. In order
-// to encrypt reasonable amounts of data a hybrid scheme is commonly
-// used: RSA is used to encrypt a key for a symmetric primitive like
-// AES-GCM.
-//
-// Before encrypting, data is “padded” by embedding it in a known
-// structure. This is done for a number of reasons, but the most
-// obvious is to ensure that the value is large enough that the
-// exponentiation is larger than the modulus. (Otherwise it could be
-// decrypted with a square-root.)
-//
-// In these designs, when using PKCS #1 v1.5, it's vitally important to
-// avoid disclosing whether the received RSA message was well-formed
-// (that is, whether the result of decrypting is a correctly padded
-// message) because this leaks secret information.
-// DecryptPKCS1v15SessionKey is designed for this situation and copies
-// the decrypted, symmetric key (if well-formed) in constant-time over
-// a buffer that contains a random key. Thus, if the RSA result isn't
-// well-formed, the implementation uses a random key in constant time.
+// RSAは非常に限られた量のデータしか暗号化できません。したがって、合理的な量のデータを暗号化するためには、一般的にハイブリッド方式が使用されます。具体的には、RSAはAES-GCMのような対称プリミティブの鍵を暗号化するために使用されます。
+// 暗号化する前に、データは既知の構造に埋め込むことで「パディング」されます。これにはいくつかの理由がありますが、最も明らかな理由は、指数関数がモジュラスよりも大きい値になるようにするためです（そうしないと平方根で復号化できてしまいます）。
+// これらの設計では、PKCS #1 v1.5を使用する場合、受信したRSAメッセージが形式に適合しているか（つまり、復号化の結果が正しくパディングされたメッセージか）を漏らさないようにすることが重要です。そのためにDecryptPKCS1v15SessionKeyはこの状況に対応しており、復号化された対称鍵が適切な形式であれば、ランダムなキーを含むバッファ上で一定時間内に対称鍵をコピーします。したがって、RSAの結果が形式に適合していない場合は、実装が一定時間内にランダムなキーを使用します。
 func ExampleDecryptPKCS1v15SessionKey() {
-	// The hybrid scheme should use at least a 16-byte symmetric key. Here
-	// we read the random key that will be used if the RSA decryption isn't
-	// well-formed.
+
+	// ハイブリッド方式では、少なくとも16バイトの対称鍵を使用する必要があります。ここでは、RSA復号が正しく形成されていない場合に使用されるランダムな鍵を読み取ります。
 	key := make([]byte, 32)
 	if _, err := rand.Read(key); err != nil {
 		panic("RNG failure")
@@ -47,23 +30,20 @@ func ExampleDecryptPKCS1v15SessionKey() {
 	rsaCiphertext, _ := hex.DecodeString("aabbccddeeff")
 
 	if err := rsa.DecryptPKCS1v15SessionKey(nil, rsaPrivateKey, rsaCiphertext, key); err != nil {
-		// Any errors that result will be “public” – meaning that they
-		// can be determined without any secret information. (For
-		// instance, if the length of key is impossible given the RSA
-		// public key.)
+
+		// 発生したエラーは「公開される」ものであり、秘密情報なしでも判断できます。（例えば、RSA公開鍵の長さが不可能な場合など）
 		fmt.Fprintf(os.Stderr, "Error from RSA decryption: %s\n", err)
 		return
 	}
 
-	// Given the resulting key, a symmetric scheme can be used to decrypt a
-	// larger ciphertext.
+	// 与えられたキーを使用して、対称スキームを使ってより大きな暗号文を複合することができます。
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		panic("aes.NewCipher failed: " + err.Error())
 	}
 
-	// Since the key is random, using a fixed nonce is acceptable as the
-	// (key, nonce) pair will still be unique, as required.
+	// キーがランダムであるため、固定されたNonceを使用することは許容されます。
+	// (キー、Nonce)のペアは依然として一意である必要があります。
 	var zeroNonce [12]byte
 	aead, err := cipher.NewGCM(block)
 	if err != nil {
@@ -72,8 +52,8 @@ func ExampleDecryptPKCS1v15SessionKey() {
 	ciphertext, _ := hex.DecodeString("00112233445566")
 	plaintext, err := aead.Open(nil, zeroNonce[:], ciphertext, nil)
 	if err != nil {
-		// The RSA ciphertext was badly formed; the decryption will
-		// fail here because the AES-GCM key will be incorrect.
+
+		// RSAの暗号文の形式が不正です。AES-GCMの鍵が正しくないため、復号化はここで失敗します。
 		fmt.Fprintf(os.Stderr, "Error decrypting: %s\n", err)
 		return
 	}
@@ -84,11 +64,7 @@ func ExampleDecryptPKCS1v15SessionKey() {
 func ExampleSignPKCS1v15() {
 	message := []byte("message to be signed")
 
-	// Only small messages can be signed directly; thus the hash of a
-	// message, rather than the message itself, is signed. This requires
-	// that the hash function be collision resistant. SHA-256 is the
-	// least-strong hash function that should be used for this at the time
-	// of writing (2016).
+	// 直接署名できるのは小さなメッセージだけです。そのため、メッセージ自体ではなくそのハッシュを署名します。これにはハッシュ関数が衝突耐性がある必要があります。SHA-256は、執筆時点（2016年）では最も弱いハッシュ関数です。
 	hashed := sha256.Sum256(message)
 
 	signature, err := rsa.SignPKCS1v15(nil, rsaPrivateKey, crypto.SHA256, hashed[:])
@@ -104,11 +80,7 @@ func ExampleVerifyPKCS1v15() {
 	message := []byte("message to be signed")
 	signature, _ := hex.DecodeString("ad2766728615cc7a746cc553916380ca7bfa4f8983b990913bc69eb0556539a350ff0f8fe65ddfd3ebe91fe1c299c2fac135bc8c61e26be44ee259f2f80c1530")
 
-	// Only small messages can be signed directly; thus the hash of a
-	// message, rather than the message itself, is signed. This requires
-	// that the hash function be collision resistant. SHA-256 is the
-	// least-strong hash function that should be used for this at the time
-	// of writing (2016).
+	// 直接署名できるのは小さなメッセージのみです。そのため、メッセージ自体ではなく、メッセージのハッシュが署名されます。これには、ハッシュ関数が衝突耐性を持つ必要があります。SHA-256は、書かれた時点（2016年）で使用すべき最も安全なハッシュ関数です。
 	hashed := sha256.Sum256(message)
 
 	err := rsa.VerifyPKCS1v15(&rsaPrivateKey.PublicKey, crypto.SHA256, hashed[:], signature)
@@ -117,15 +89,14 @@ func ExampleVerifyPKCS1v15() {
 		return
 	}
 
-	// signature is a valid signature of message from the public key.
+	// シグネチャは公開鍵からのメッセージの有効な署名です。
 }
 
 func ExampleEncryptOAEP() {
 	secretMessage := []byte("send reinforcements, we're going to advance")
 	label := []byte("orders")
 
-	// crypto/rand.Reader is a good source of entropy for randomizing the
-	// encryption function.
+	// crypto/rand.Readerは暗号化関数のランダム化において十分なエントロピー源です。
 	rng := rand.Reader
 
 	ciphertext, err := rsa.EncryptOAEP(sha256.New(), rng, &test2048Key.PublicKey, secretMessage, label)
@@ -134,8 +105,7 @@ func ExampleEncryptOAEP() {
 		return
 	}
 
-	// Since encryption is a randomized function, ciphertext will be
-	// different each time.
+	// 暗号化はランダムな関数のため、暗号文は毎回異なるものとなります。
 	fmt.Printf("Ciphertext: %x\n", ciphertext)
 }
 
@@ -151,7 +121,6 @@ func ExampleDecryptOAEP() {
 
 	fmt.Printf("Plaintext: %s\n", string(plaintext))
 
-	// Remember that encryption only provides confidentiality. The
-	// ciphertext should be signed before authenticity is assumed and, even
-	// then, consider that messages might be reordered.
+	// 暗号化は機密性のみを提供することを覚えておいてください。
+	// メッセージが正当性を想定した前に、暗号文には署名する必要があります。さらに、メッセージは順序が変更される可能性も考慮してください。
 }
