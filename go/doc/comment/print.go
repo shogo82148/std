@@ -4,80 +4,66 @@
 
 package comment
 
-// A Printer is a doc comment printer.
-// The fields in the struct can be filled in before calling
-// any of the printing methods
-// in order to customize the details of the printing process.
+// Printerはドキュメントコメントのプリンターです。
+// 構造体のフィールドは、印刷の詳細をカスタマイズするために、
+// 印刷メソッドのいずれかを呼び出す前に埋めることができます。
 type Printer struct {
-	// HeadingLevel is the nesting level used for
-	// HTML and Markdown headings.
-	// If HeadingLevel is zero, it defaults to level 3,
-	// meaning to use <h3> and ###.
+
+	// HeadingLevelはHTMLとMarkdownの見出しに使用されるネストレベルです。
+	// HeadingLevelがゼロであれば、デフォルトでレベル3に設定され、<h3>と###が使用されます。
 	HeadingLevel int
 
-	// HeadingID is a function that computes the heading ID
-	// (anchor tag) to use for the heading h when generating
-	// HTML and Markdown. If HeadingID returns an empty string,
-	// then the heading ID is omitted.
-	// If HeadingID is nil, h.DefaultID is used.
+	// HeadingIDは、HTMLとMarkdownを生成する際に使用する見出しhの見出しID（アンカータグ）を計算する関数です。HeadingIDが空の文字列を返す場合、見出しIDは省略されます。HeadingIDがnilの場合、h.DefaultIDが使用されます。
 	HeadingID func(h *Heading) string
 
-	// DocLinkURL is a function that computes the URL for the given DocLink.
-	// If DocLinkURL is nil, then link.DefaultURL(p.DocLinkBaseURL) is used.
+	// DocLinkURLは、与えられたDocLinkのURLを計算する関数です。
+	// DocLinkURLがnilの場合、link.DefaultURL（p.DocLinkBaseURL）が使用されます。
 	DocLinkURL func(link *DocLink) string
 
-	// DocLinkBaseURL is used when DocLinkURL is nil,
-	// passed to [DocLink.DefaultURL] to construct a DocLink's URL.
-	// See that method's documentation for details.
+	// DocLinkBaseURLは、DocLinkURLがnilの場合に使用され、DocLinkのURLを構築するために[DocLink.DefaultURL]に渡されます。
+	// 詳細については、そのメソッドのドキュメントを参照してください。
 	DocLinkBaseURL string
 
-	// TextPrefix is a prefix to print at the start of every line
-	// when generating text output using the Text method.
+	// TextPrefixは、Textメソッドを使用してテキスト出力を生成する際に、
+	// 各行の先頭に表示するプレフィックスです。
 	TextPrefix string
 
-	// TextCodePrefix is the prefix to print at the start of each
-	// preformatted (code block) line when generating text output,
-	// instead of (not in addition to) TextPrefix.
-	// If TextCodePrefix is the empty string, it defaults to TextPrefix+"\t".
+	// TextCodePrefixは、テキスト出力を生成する際に各事前に書式設定された（コードブロック）行の先頭に印刷する接頭辞です。
+	// （TextPrefixに追加ではなく）。
+	// TextCodePrefixが空の文字列の場合、TextPrefix +"\t"がデフォルト値となります。
 	TextCodePrefix string
 
-	// TextWidth is the maximum width text line to generate,
-	// measured in Unicode code points,
-	// excluding TextPrefix and the newline character.
-	// If TextWidth is zero, it defaults to 80 minus the number of code points in TextPrefix.
-	// If TextWidth is negative, there is no limit.
+	// TextWidthは生成するテキスト行の最大幅であり、Unicodeのコードポイントで測定されます。
+	// TextPrefixと改行文字を除いたものです。
+	// TextWidthがゼロの場合、TextPrefixのコードポイント数を除いた80から始まります。
+	// TextWidthが負の場合、制限はありません。
 	TextWidth int
 }
 
-// DefaultURL constructs and returns the documentation URL for l,
-// using baseURL as a prefix for links to other packages.
+// DefaultURLは、baseURLをプレフィックスとして他のパッケージへのリンクのためにlのドキュメンテーションURLを構築して返します。
 //
-// The possible forms returned by DefaultURL are:
-//   - baseURL/ImportPath, for a link to another package
-//   - baseURL/ImportPath#Name, for a link to a const, func, type, or var in another package
-//   - baseURL/ImportPath#Recv.Name, for a link to a method in another package
-//   - #Name, for a link to a const, func, type, or var in this package
-//   - #Recv.Name, for a link to a method in this package
+// DefaultURLが返す可能性のある形式は以下の通りです：
+//   - baseURL/ImportPath、他のパッケージへのリンク
+//   - baseURL/ImportPath#Name、他のパッケージのconst、func、type、またはvarへのリンク
+//   - baseURL/ImportPath#Recv.Name、他のパッケージのメソッドへのリンク
+//   - #Name、このパッケージのconst、func、type、またはvarへのリンク
+//   - #Recv.Name、このパッケージのメソッドへのリンク
 //
-// If baseURL ends in a trailing slash, then DefaultURL inserts
-// a slash between ImportPath and # in the anchored forms.
-// For example, here are some baseURL values and URLs they can generate:
+// baseURLが末尾にスラッシュで終わる場合、アンカー形式のImportPathと#の間にスラッシュが挿入されます。
+// 例えば、以下はいくつかのbaseURL値とそれらが生成するURLの例です：
 //
-//	"/pkg/" → "/pkg/math/#Sqrt"
-//	"/pkg"  → "/pkg/math#Sqrt"
-//	"/"     → "/math/#Sqrt"
-//	""      → "/math#Sqrt"
+// "/pkg/" → "/pkg/math/#Sqrt"
+// "/pkg"  → "/pkg/math#Sqrt"
+// "/"     → "/math/#Sqrt"
+// ""      → "/math#Sqrt"
 func (l *DocLink) DefaultURL(baseURL string) string
 
-// DefaultID returns the default anchor ID for the heading h.
+// DefaultIDは見出しhのデフォルトのアンカーIDを返します。
 //
-// The default anchor ID is constructed by converting every
-// rune that is not alphanumeric ASCII to an underscore
-// and then adding the prefix “hdr-”.
-// For example, if the heading text is “Go Doc Comments”,
-// the default ID is “hdr-Go_Doc_Comments”.
+// デフォルトのアンカーIDは、全てのアルファベットや数字以外のASCIIのランを
+// アンダースコアに変換し、その前に「hdr-」の接頭辞を付けることで構築されます。
+// 例えば、見出しのテキストが「Go Doc Comments」の場合、デフォルトのIDは「hdr-Go_Doc_Comments」となります。
 func (h *Heading) DefaultID() string
 
-// Comment returns the standard Go formatting of the Doc,
-// without any comment markers.
+// Commentは、コメントマーカーなしでのDocの標準的なGoのフォーマットを返します。
 func (p *Printer) Comment(d *Doc) []byte
