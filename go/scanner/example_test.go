@@ -11,16 +11,16 @@ import (
 )
 
 func ExampleScanner_Scan() {
-	// src is the input that we want to tokenize.
+	// src はトークン化したい入力です。
 	src := []byte("cos(x) + 1i*sin(x) // Euler")
 
-	// Initialize the scanner.
+	// スキャナーを初期化する。
 	var s scanner.Scanner
-	fset := token.NewFileSet()                      // positions are relative to fset
-	file := fset.AddFile("", fset.Base(), len(src)) // register input "file"
-	s.Init(file, src, nil /* no error handler */, scanner.ScanComments)
+	fset := token.NewFileSet()                      // positionsはfsetに対して相対的です。
+	file := fset.AddFile("", fset.Base(), len(src)) // "file"という入力を登録する
+	s.Init(file, src, nil /* エラーハンドラーなし */, scanner.ScanComments)
 
-	// Repeated calls to Scan yield the token sequence found in the input.
+	// Scanの繰り返し呼び出しは、入力で見つかったトークンのシーケンスを返します。
 	for {
 		pos, tok, lit := s.Scan()
 		if tok == token.EOF {
