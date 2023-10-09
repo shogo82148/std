@@ -31,13 +31,9 @@ GOOSとGOARCHの環境変数によって目的のターゲットが設定され�
 	-debug
 		パースされる命令をダンプします。
 	-dynlink
-<<<<<<< HEAD
-		Support references to Go symbols defined in other shared libraries.
-	-e
-		No limit on number of errors reported.
-=======
 		他の共有ライブラリで定義されたGoシンボルへの参照をサポートします。
->>>>>>> release-branch.go1.21
+	-e
+		エラーの報告数に制限はありません。
 	-gensymabis
 		シンボルABI情報を出力ファイルに書き込みます。アセンブルを行いません。
 	-o ファイル
@@ -49,13 +45,9 @@ GOOSとGOARCHの環境変数によって目的のターゲットが設定され�
 	-spectre list
 		リスト（all、ret）のスペクトル緩和を有効にします。
 	-trimpath prefix
-<<<<<<< HEAD
-		Remove prefix from recorded source file paths.
-	-v
-		Print debug output.
-=======
 		記録されたソースファイルパスからプレフィックスを削除します。
->>>>>>> release-branch.go1.21
+	-v
+		デバッグ出力を表示します。
 
 入力言語:
 
