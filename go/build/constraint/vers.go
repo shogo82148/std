@@ -4,10 +4,10 @@
 
 package constraint
 
-// GoVersion returns the minimum Go version implied by a given build expression.
-// If the expression can be satisfied without any Go version tags, GoVersion returns an empty string.
+// GoVersionは与えられたビルド条件によって暗黙的に指定される最小のGoバージョンを返します。
+// 条件式にGoバージョンタグがない場合、GoVersionは空の文字列を返します。
 //
-// For example:
+// 例:
 //
 //	GoVersion(linux && go1.22) = "go1.22"
 //	GoVersion((linux && go1.22) || (windows && go1.20)) = "go1.20" => go1.20
@@ -15,11 +15,11 @@ package constraint
 //	GoVersion(linux || (windows && go1.22)) = ""
 //	GoVersion(!go1.22) = ""
 //
-// GoVersion assumes that any tag or negated tag may independently be true,
-// so that its analysis can be purely structural, without SAT solving.
-// “Impossible” subexpressions may therefore affect the result.
+// GoVersionは、任意のタグまたは否定されたタグが独立してtrueである可能性があると仮定しています。
+// そのため、解析はSATソルバーなしで純粋に構造的に行われます。
+//「不可能」とされる部分式は結果に影響する可能性があるためです。
 //
-// For example:
+// 例:
 //
 //	GoVersion((linux && !linux && go1.20) || go1.21) = "go1.20"
 func GoVersion(x Expr) string
