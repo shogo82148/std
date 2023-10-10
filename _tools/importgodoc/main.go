@@ -168,10 +168,17 @@ func godoc(path string) ([]byte, error) {
 					if spec.Doc != nil {
 						addComment(spec.Doc)
 					}
-					if st, ok := spec.Type.(*ast.StructType); ok {
-						for _, f := range st.Fields.List {
+					switch typ := spec.Type.(type) {
+					case *ast.StructType:
+						for _, f := range typ.Fields.List {
 							if f.Doc != nil {
 								comments = append(comments, f.Doc)
+							}
+						}
+					case *ast.InterfaceType:
+						for _, m := range typ.Methods.List {
+							if m.Doc != nil {
+								comments = append(comments, m.Doc)
 							}
 						}
 					}

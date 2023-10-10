@@ -3,18 +3,15 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package mail implements parsing of mail messages.
+パッケージメールは、メールメッセージの解析を実装しています。
 
-For the most part, this package follows the syntax as specified by RFC 5322 and
-extended by RFC 6532.
-Notable divergences:
-  - Obsolete address formats are not parsed, including addresses with
-    embedded route information.
-  - The full range of spacing (the CFWS syntax element) is not supported,
-    such as breaking addresses across lines.
-  - No unicode normalization is performed.
-  - The special characters ()[]:;@\, are allowed to appear unquoted in names.
-  - A leading From line is permitted, as in mbox format (RFC 4155).
+このパッケージのほとんどは、RFC 5322およびRFC 6532で指定された構文に従います。
+主な異なる点：
+  - 廃止されたアドレス形式は解析されません。これには、経路情報を埋め込んだアドレスも含まれます。
+  - スペーシング（CFWS構文要素）の完全範囲はサポートされておらず、アドレスを複数行にわたって分割することもありません。
+  - Unicodeの正規化は行われません。
+  - 特殊文字（）[]：; @ \は、名前でクォートされずに使用することが許可されています。
+  - 先頭のFrom行は、mbox形式（RFC 4155）と同様に許可されています。
 */
 package mail
 
@@ -25,68 +22,64 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A Message represents a parsed mail message.
+// メッセージは解析されたメールメッセージを表します。
 type Message struct {
 	Header Header
 	Body   io.Reader
 }
 
-// ReadMessage reads a message from r.
-// The headers are parsed, and the body of the message will be available
-// for reading from msg.Body.
+// ReadMessageはrからメッセージを読み取ります。
+// ヘッダーが解析され、メッセージの本文はmsg.Bodyから読み取れるようになります。
 func ReadMessage(r io.Reader) (msg *Message, err error)
 
-// ParseDate parses an RFC 5322 date string.
+// ParseDateはRFC 5322形式の日付文字列を解析します。
 func ParseDate(date string) (time.Time, error)
 
-// A Header represents the key-value pairs in a mail message header.
+// Headerはメールメッセージヘッダー内のキーと値のペアを表します。
 type Header map[string][]string
 
-// Get gets the first value associated with the given key.
-// It is case insensitive; CanonicalMIMEHeaderKey is used
-// to canonicalize the provided key.
-// If there are no values associated with the key, Get returns "".
-// To access multiple values of a key, or to use non-canonical keys,
-// access the map directly.
+// Getは指定されたキーに関連付けられた最初の値を取得します。
+// 大文字と小文字の区別はなく、CanonicalMIMEHeaderKeyが使用されます。
+// キーに関連付けられた値がない場合、Getは "" を返します。
+// キーの複数の値にアクセスする場合や、正準形でないキーを使用する場合は、
+// マップに直接アクセスしてください。
 func (h Header) Get(key string) string
 
 var ErrHeaderNotPresent = errors.New("mail: header not in message")
 
-// Date parses the Date header field.
+// Date ヘッダーフィールドをパースします。
 func (h Header) Date() (time.Time, error)
 
-// AddressList parses the named header field as a list of addresses.
+// AddressListは指定されたヘッダーフィールドをアドレスのリストとして解析します。
 func (h Header) AddressList(key string) ([]*Address, error)
 
-// Address represents a single mail address.
-// An address such as "Barry Gibbs <bg@example.com>" is represented
-// as Address{Name: "Barry Gibbs", Address: "bg@example.com"}.
+// Addressは1つのメールアドレスを表します。
+// "Barry Gibbs <bg@example.com>"のようなアドレスは、
+// Address{Name: "Barry Gibbs", Address: "bg@example.com"}として表されます。
 type Address struct {
 	Name    string
 	Address string
 }
 
-// ParseAddress parses a single RFC 5322 address, e.g. "Barry Gibbs <bg@example.com>"
+// ParseAddressは単一のRFC 5322アドレスを解析します。例：「Barry Gibbs <bg@example.com>」
 func ParseAddress(address string) (*Address, error)
 
-// ParseAddressList parses the given string as a list of addresses.
+// ParseAddressListは与えられた文字列をアドレスのリストとして解析します。
 func ParseAddressList(list string) ([]*Address, error)
 
-// An AddressParser is an RFC 5322 address parser.
+// AddressParserはRFC 5322形式のアドレスパーサーです。
 type AddressParser struct {
-	// WordDecoder optionally specifies a decoder for RFC 2047 encoded-words.
+	// WordDecoderはRFC 2047でエンコードされた単語のデコーダをオプションで指定します。
 	WordDecoder *mime.WordDecoder
 }
 
-// Parse parses a single RFC 5322 address of the
-// form "Gogh Fir <gf@example.com>" or "foo@example.com".
+// Parseは" Gogh Fir <gf@example.com>"または"foo@example.com"という形式の単一のRFC 5322アドレスを解析します。
 func (p *AddressParser) Parse(address string) (*Address, error)
 
-// ParseList parses the given string as a list of comma-separated addresses
-// of the form "Gogh Fir <gf@example.com>" or "foo@example.com".
+// ParseListは与えられた文字列をコンマで区切られたアドレスのリストとして解析します。
+// 形式は「Gogh Fir <gf@example.com>」または「foo@example.com」です。
 func (p *AddressParser) ParseList(list string) ([]*Address, error)
 
-// String formats the address as a valid RFC 5322 address.
-// If the address's name contains non-ASCII characters
-// the name will be rendered according to RFC 2047.
+// Stringはアドレスを有効なRFC 5322形式のアドレスとしてフォーマットします。
+// アドレスの名前に非ASCIIの文字が含まれている場合、名前はRFC 2047に従って表示されます。
 func (a *Address) String() string

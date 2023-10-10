@@ -8,23 +8,22 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// A Pipeline manages a pipelined in-order request/response sequence.
+// パイプラインは、順番にリクエストとレスポンスを管理するためのものです。
 //
-// To use a Pipeline p to manage multiple clients on a connection,
-// each client should run:
+// 接続上の複数のクライアントを管理するために、Pipeline p を使用する場合、
+// それぞれのクライアントは次のように実行する必要があります：
 //
-//	id := p.Next()	// take a number
+//	id := p.Next()	// 番号を取得する
 //
-//	p.StartRequest(id)	// wait for turn to send request
-//	«send request»
-//	p.EndRequest(id)	// notify Pipeline that request is sent
+//	p.StartRequest(id)	// リクエストを送信する順番を待つ
+//	«リクエストを送信する»
+//	p.EndRequest(id)	// リクエストの送信が完了したことをPipelineに通知する
 //
-//	p.StartResponse(id)	// wait for turn to read response
-//	«read response»
-//	p.EndResponse(id)	// notify Pipeline that response is read
+//	p.StartResponse(id)	// レスポンスを読み取る順番を待つ
+//	«レスポンスを読み取る»
+//	p.EndResponse(id)	// レスポンスの読み取りが完了したことをPipelineに通知する
 //
-// A pipelined server can use the same calls to ensure that
-// responses computed in parallel are written in the correct order.
+// パイプラインサーバーでも、同じ呼び出しを使用して、並列で計算されたレスポンスを正しい順序で書き込むことができます。
 type Pipeline struct {
 	mu       sync.Mutex
 	id       uint
@@ -32,21 +31,19 @@ type Pipeline struct {
 	response sequencer
 }
 
-// Next returns the next id for a request/response pair.
+// Nextはリクエスト/レスポンスのペアの次のIDを返します。
 func (p *Pipeline) Next() uint
 
-// StartRequest blocks until it is time to send (or, if this is a server, receive)
-// the request with the given id.
+// StartRequestは、指定したIDでリクエストを送信（または、サーバーの場合は受信）する時間になるまでブロックします。
 func (p *Pipeline) StartRequest(id uint)
 
-// EndRequest notifies p that the request with the given id has been sent
-// (or, if this is a server, received).
+// EndRequestは、与えられたIDを持つリクエストが送信されたことをpに通知します
+// (または、これがサーバーの場合は受信されました)。
 func (p *Pipeline) EndRequest(id uint)
 
-// StartResponse blocks until it is time to receive (or, if this is a server, send)
-// the request with the given id.
+// StartResponseは、指定したidのリクエストを受信する（または、サーバーの場合は送信する）時までブロックします。
 func (p *Pipeline) StartResponse(id uint)
 
-// EndResponse notifies p that the response with the given id has been received
-// (or, if this is a server, sent).
+// EndResponseは、指定されたIDのレスポンスが受信されたことをpに通知します
+// （または、サーバーの場合は送信されます）。
 func (p *Pipeline) EndResponse(id uint)

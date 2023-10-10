@@ -4,49 +4,37 @@
 
 package metrics
 
-// Description describes a runtime metric.
+// Descriptionはランタイムメトリクスを説明します。
 type Description struct {
-	// Name is the full name of the metric which includes the unit.
+
+	// Nameは単位を含むメトリクスのフルネームです。
 	//
-	// The format of the metric may be described by the following regular expression.
+	// メトリクスの形式は以下の正規表現で表されます。
 	//
 	// 	^(?P<name>/[^:]+):(?P<unit>[^:*/]+(?:[*/][^:*/]+)*)$
 	//
-	// The format splits the name into two components, separated by a colon: a path which always
-	// starts with a /, and a machine-parseable unit. The name may contain any valid Unicode
-	// codepoint in between / characters, but by convention will try to stick to lowercase
-	// characters and hyphens. An example of such a path might be "/memory/heap/free".
+	// この形式は、名前をコロンで区切られた2つのコンポーネントに分割します。1つは常に/で始まるパスであり、もう1つは機械で解釈可能な単位です。名前は/文字の間に任意の有効なUnicodeコードポイントを含むことができますが、慣例として小文字の英字とハイフンを使用することが推奨されています。このようなパスの例としては、"/memory/heap/free"があります。
 	//
-	// The unit is by convention a series of lowercase English unit names (singular or plural)
-	// without prefixes delimited by '*' or '/'. The unit names may contain any valid Unicode
-	// codepoint that is not a delimiter.
-	// Examples of units might be "seconds", "bytes", "bytes/second", "cpu-seconds",
-	// "byte*cpu-seconds", and "bytes/second/second".
+	// 単位は、*または/で区切られた接頭辞のない小文字の英語の単位名（単数形または複数形）の連続です。単位名には、区切り文字でない有効なUnicodeコードポイントを含めることができます。単位の例には、"seconds"、"bytes"、"bytes/second"、"cpu-seconds"、"byte*cpu-seconds"、および"bytes/second/second"があります。
 	//
-	// For histograms, multiple units may apply. For instance, the units of the buckets and
-	// the count. By convention, for histograms, the units of the count are always "samples"
-	// with the type of sample evident by the metric's name, while the unit in the name
-	// specifies the buckets' unit.
+	// ヒストグラムの場合、複数の単位が適用される場合があります。たとえば、バケットの単位とカウントの単位です。ヒストグラムの場合、カウントの単位は常に"samples"であり、サンプルのタイプはメトリクスの名前で明示されますが、名前の単位はバケットの単位を指定します。
 	//
-	// A complete name might look like "/memory/heap/free:bytes".
+	// 完全な名前の例としては、"/memory/heap/free:bytes"があります。
 	Name string
 
-	// Description is an English language sentence describing the metric.
+	// Descriptionはメトリックを説明する英文です。
 	Description string
 
-	// Kind is the kind of value for this metric.
+	// Kindはこのメトリックの値の種類です。
 	//
-	// The purpose of this field is to allow users to filter out metrics whose values are
-	// types which their application may not understand.
+	// このフィールドの目的は、アプリケーションが理解できない型の値を持つメトリックをフィルタリングできるようにすることです。
 	Kind ValueKind
 
-	// Cumulative is whether or not the metric is cumulative. If a cumulative metric is just
-	// a single number, then it increases monotonically. If the metric is a distribution,
-	// then each bucket count increases monotonically.
+	// Cumulativeはメトリクスが累積的かどうかを示します。累積メトリクスが単一の数値である場合、それは単調に増加します。メトリクスが分布である場合、各バケットのカウントが単調に増加します。
 	//
-	// This flag thus indicates whether or not it's useful to compute a rate from this value.
+	// したがって、このフラグはこの値からレートを計算することが有用かどうかを示します。
 	Cumulative bool
 }
 
-// All returns a slice of containing metric descriptions for all supported metrics.
+// Allは、サポートされているすべてのメトリックの説明を含むスライスを返します。
 func All() []Description

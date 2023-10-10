@@ -20,21 +20,20 @@ const (
 	VersionTLS12 = 0x0303
 	VersionTLS13 = 0x0304
 
-	// Deprecated: SSLv3 is cryptographically broken, and is no longer
-	// supported by this package. See golang.org/issue/32716.
+	// Deprecated: SSLv3は暗号的に破損しており、
+	// このパッケージではサポートされていません。golang.org/issue/32716を参照してください。
 	VersionSSL30 = 0x0300
 )
 
-// VersionName returns the name for the provided TLS version number
-// (e.g. "TLS 1.3"), or a fallback representation of the value if the
-// version is not implemented by this package.
+// VersionNameは提供されたTLSバージョン番号の名前（例："TLS 1.3"）を返します。
+// もしバージョンがこのパッケージで実装されていない場合は、値のフォールバック表現を返します。
 func VersionName(version uint16) string
 
-// CurveID is the type of a TLS identifier for an elliptic curve. See
+// CurveIDは楕円曲線のためのTLS識別子のタイプです。参照：
 // https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8.
 //
-// In TLS 1.3, this type is called NamedGroup, but at this time this library
-// only supports Elliptic Curve based groups. See RFC 8446, Section 4.2.7.
+// TLS 1.3では、このタイプはNamedGroupと呼ばれますが、現在のところ、
+// このライブラリは楕円曲線ベースのグループのみをサポートしています。RFC 8446、セクション4.2.7を参照してください。
 type CurveID uint16
 
 const (
@@ -44,610 +43,461 @@ const (
 	X25519    CurveID = 29
 )
 
-// ConnectionState records basic TLS details about the connection.
+// ConnectionStateは接続に関する基本的なTLSの詳細を記録します。
 type ConnectionState struct {
-	// Version is the TLS version used by the connection (e.g. VersionTLS12).
+	// Versionは接続で使用されるTLSバージョンです（例：VersionTLS12）。
 	Version uint16
 
-	// HandshakeComplete is true if the handshake has concluded.
+	// HandshakeComplete はハンドシェイクが完了している場合に true です。
 	HandshakeComplete bool
 
-	// DidResume is true if this connection was successfully resumed from a
-	// previous session with a session ticket or similar mechanism.
+	// DidResume は、この接続がセッションチケットや類似のメカニズムによって前のセッションから正常に再開された場合に true です。
 	DidResume bool
 
-	// CipherSuite is the cipher suite negotiated for the connection (e.g.
-	// TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_AES_128_GCM_SHA256).
+	// CipherSuiteは、接続のためにネゴシエートされた暗号スイートです（例： TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256、TLS_AES_128_GCM_SHA256）。
 	CipherSuite uint16
 
-	// NegotiatedProtocol is the application protocol negotiated with ALPN.
+	// NegotiatedProtocolはALPNで交渉されたアプリケーションプロトコルです。
 	NegotiatedProtocol string
 
-	// NegotiatedProtocolIsMutual used to indicate a mutual NPN negotiation.
+	// NegotiatedProtocolIsMutualは相互のNPN（Next Protocol Negotiation）交渉を示すために使われます。
 	//
-	// Deprecated: this value is always true.
+	// 廃止予定：この値は常にtrueです。
 	NegotiatedProtocolIsMutual bool
 
-	// ServerName is the value of the Server Name Indication extension sent by
-	// the client. It's available both on the server and on the client side.
+	// ServerNameはクライアントが送信するServer Name Indication拡張機能の値です。これはサーバーとクライアントの両方で利用できます。
 	ServerName string
 
-	// PeerCertificates are the parsed certificates sent by the peer, in the
-	// order in which they were sent. The first element is the leaf certificate
-	// that the connection is verified against.
+	// PeerCertificates は、ピアから送信された証明書が解析されたものであり、送信順に格納されています。最初の要素は、接続が検証されるリーフ証明書です。
 	//
-	// On the client side, it can't be empty. On the server side, it can be
-	// empty if Config.ClientAuth is not RequireAnyClientCert or
-	// RequireAndVerifyClientCert.
+	// クライアント側では空にすることはできません。サーバー側では、Config.ClientAuth が RequireAnyClientCert または RequireAndVerifyClientCert でない場合、空にすることができます。
 	//
-	// PeerCertificates and its contents should not be modified.
+	// PeerCertificates およびその内容は変更してはいけません。
 	PeerCertificates []*x509.Certificate
 
-	// VerifiedChains is a list of one or more chains where the first element is
-	// PeerCertificates[0] and the last element is from Config.RootCAs (on the
-	// client side) or Config.ClientCAs (on the server side).
+	// VerifiedChainsは、最初の要素がPeerCertificates[0]であり、最後の要素がConfig.RootCAs（クライアント側）またはConfig.ClientCAs（サーバー側）からの要素の1つ以上のチェーンのリストです。
 	//
-	// On the client side, it's set if Config.InsecureSkipVerify is false. On
-	// the server side, it's set if Config.ClientAuth is VerifyClientCertIfGiven
-	// (and the peer provided a certificate) or RequireAndVerifyClientCert.
+	// クライアント側では、Config.InsecureSkipVerifyがfalseの場合に設定されます。サーバー側では、Config.ClientAuthがVerifyClientCertIfGiven（かつピアが証明書を提供した場合）またはRequireAndVerifyClientCertである場合に設定されます。
 	//
-	// VerifiedChains and its contents should not be modified.
+	// VerifiedChainsおよびその内容は変更しないでください。
 	VerifiedChains [][]*x509.Certificate
 
-	// SignedCertificateTimestamps is a list of SCTs provided by the peer
-	// through the TLS handshake for the leaf certificate, if any.
+	// SignedCertificateTimestampsは、もしあれば、ピアからのTLSハンドシェイクによって提供されるリーフ証明書のSCTのリストです。
 	SignedCertificateTimestamps [][]byte
 
-	// OCSPResponse is a stapled Online Certificate Status Protocol (OCSP)
-	// response provided by the peer for the leaf certificate, if any.
+	// OCSPResponseは、ピアから提供される、必要に応じてリーフ証明書のステープル化されたオンライン証明書ステータスプロトコル（OCSP）レスポンスです。
 	OCSPResponse []byte
 
-	// TLSUnique contains the "tls-unique" channel binding value (see RFC 5929,
-	// Section 3). This value will be nil for TLS 1.3 connections and for
-	// resumed connections that don't support Extended Master Secret (RFC 7627).
+	// TLSUniqueには、"tls-unique"チャネルバインディングの値が格納されています（RFC 5929、セクション3を参照）。
+	// この値は、TLS 1.3接続や拡張されたマスターシークレット（RFC 7627）をサポートしていない再開接続ではnilになります。
 	TLSUnique []byte
 
-	// ekm is a closure exposed via ExportKeyingMaterial.
+	// ekmはExportKeyingMaterialを介して公開されるクロージャです。
 	ekm func(label string, context []byte, length int) ([]byte, error)
 }
 
-// ExportKeyingMaterial returns length bytes of exported key material in a new
-// slice as defined in RFC 5705. If context is nil, it is not used as part of
-// the seed. If the connection was set to allow renegotiation via
-// Config.Renegotiation, this function will return an error.
-//
-// There are conditions in which the returned values might not be unique to a
-// connection. See the Security Considerations sections of RFC 5705 and RFC 7627,
-// and https://mitls.org/pages/attacks/3SHAKE#channelbindings.
+// ExportKeyingMaterialは、RFC 5705で定義されているように、エクスポートされたキーマテリアルの長さのバイトを新しいスライスで返します。contextがnilの場合、シードの一部として使用されません。Config.Renegotiation経由で再協議が許可された接続の場合、この関数はエラーを返します。
+// 返された値が接続に固有でない場合、条件があります。RFC 5705およびRFC 7627のセキュリティに関する考慮事項セクション、およびhttps://mitls.org/pages/attacks/3SHAKE#channelbindingsを参照してください。
 func (cs *ConnectionState) ExportKeyingMaterial(label string, context []byte, length int) ([]byte, error)
 
-// ClientAuthType declares the policy the server will follow for
-// TLS Client Authentication.
+// ClientAuthTypeは、TLSクライアント認証に関するサーバーのポリシーを宣言します。
 type ClientAuthType int
 
 const (
-	// NoClientCert indicates that no client certificate should be requested
-	// during the handshake, and if any certificates are sent they will not
-	// be verified.
+
+	// NoClientCertはハンドシェイク中にクライアント証明書を要求しないことを示し、
+	// 送信された証明書があっても検証されないことを意味します。
 	NoClientCert ClientAuthType = iota
-	// RequestClientCert indicates that a client certificate should be requested
-	// during the handshake, but does not require that the client send any
-	// certificates.
+
+	// RequestClientCertは、ハンドシェイク中にクライアント証明書の要求を示しますが、クライアントが証明書を送信することは必要ありません。
 	RequestClientCert
-	// RequireAnyClientCert indicates that a client certificate should be requested
-	// during the handshake, and that at least one certificate is required to be
-	// sent by the client, but that certificate is not required to be valid.
+
+	// RequireAnyClientCertは、ハンドシェイク中にクライアント証明書を要求し、
+	// クライアントから少なくとも1つの証明書の送信が必要であることを示しますが、
+	// その証明書が有効である必要はありません。
 	RequireAnyClientCert
-	// VerifyClientCertIfGiven indicates that a client certificate should be requested
-	// during the handshake, but does not require that the client sends a
-	// certificate. If the client does send a certificate it is required to be
-	// valid.
+
+	// VerifyClientCertIfGivenは、ハンドシェイク中にクライアント証明書の要求をすることを示しますが、クライアントが証明書を送信する必要はありません。ただし、クライアントが証明書を送信する場合は、その証明書が有効であることが必要です。
 	VerifyClientCertIfGiven
-	// RequireAndVerifyClientCert indicates that a client certificate should be requested
-	// during the handshake, and that at least one valid certificate is required
-	// to be sent by the client.
+
+	// RequireAndVerifyClientCertは、ハンドシェイク中にクライアント証明書の要求が行われることを示し、クライアントが少なくとも1つの有効な証明書を送信する必要があることを示します。
 	RequireAndVerifyClientCert
 )
 
-// ClientSessionCache is a cache of ClientSessionState objects that can be used
-// by a client to resume a TLS session with a given server. ClientSessionCache
-// implementations should expect to be called concurrently from different
-// goroutines. Up to TLS 1.2, only ticket-based resumption is supported, not
-// SessionID-based resumption. In TLS 1.3 they were merged into PSK modes, which
-// are supported via this interface.
+// ClientSessionCacheは、クライアントが特定のサーバーとTLSセッションを再開するために使用できるClientSessionStateオブジェクトのキャッシュです。ClientSessionCacheの実装は、異なるゴルーチンから同時に呼び出されることを想定しています。TLS 1.2までは、SessionIDベースの再開ではなく、チケットベースの再開のみがサポートされています。TLS 1.3では、これらがPSKモードにマージされ、このインターフェースを介してサポートされています。
 type ClientSessionCache interface {
+	// Get searches for a ClientSessionState associated with the given key.
+	// On return, ok is true if one was found.
 	Get(sessionKey string) (session *ClientSessionState, ok bool)
 
+	// Put adds the ClientSessionState to the cache with the given key. It might
+	// get called multiple times in a connection if a TLS 1.3 server provides
+	// more than one session ticket. If called with a nil *ClientSessionState,
+	// it should remove the cache entry.
 	Put(sessionKey string, cs *ClientSessionState)
 }
 
-// SignatureScheme identifies a signature algorithm supported by TLS. See
-// RFC 8446, Section 4.2.3.
+// SignatureSchemeは、TLSでサポートされる署名アルゴリズムを識別します。RFC 8446、セクション4.2.3を参照してください。
 type SignatureScheme uint16
 
 const (
-	// RSASSA-PKCS1-v1_5 algorithms.
+	// RSASSA-PKCS1-v1_5 アルゴリズム。
 	PKCS1WithSHA256 SignatureScheme = 0x0401
 	PKCS1WithSHA384 SignatureScheme = 0x0501
 	PKCS1WithSHA512 SignatureScheme = 0x0601
 
-	// RSASSA-PSS algorithms with public key OID rsaEncryption.
+	// 公開キーOID rsaEncryption を使用した RSASSA-PSS アルゴリズム。
 	PSSWithSHA256 SignatureScheme = 0x0804
 	PSSWithSHA384 SignatureScheme = 0x0805
 	PSSWithSHA512 SignatureScheme = 0x0806
 
-	// ECDSA algorithms. Only constrained to a specific curve in TLS 1.3.
+	// ECDSAアルゴリズム。TLS 1.3では特定の曲線に制約される。
 	ECDSAWithP256AndSHA256 SignatureScheme = 0x0403
 	ECDSAWithP384AndSHA384 SignatureScheme = 0x0503
 	ECDSAWithP521AndSHA512 SignatureScheme = 0x0603
 
-	// EdDSA algorithms.
+	// EdDSAアルゴリズム。
 	Ed25519 SignatureScheme = 0x0807
 
-	// Legacy signature and hash algorithms for TLS 1.2.
+	// TLS 1.2用の旧バージョンの署名およびハッシュアルゴリズム。
 	PKCS1WithSHA1 SignatureScheme = 0x0201
 	ECDSAWithSHA1 SignatureScheme = 0x0203
 )
 
-// ClientHelloInfo contains information from a ClientHello message in order to
-// guide application logic in the GetCertificate and GetConfigForClient callbacks.
+// ClientHelloInfoには、GetCertificateおよびGetConfigForClientのコールバックにおいて、
+// アプリケーションロジックをガイドするためのClientHelloメッセージからの情報が含まれています。
 type ClientHelloInfo struct {
-	// CipherSuites lists the CipherSuites supported by the client (e.g.
-	// TLS_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256).
+
+	// CipherSuitesはクライアントがサポートするCipherSuitesをリストアップしています（例：TLS_AES_128_GCM_SHA256、TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256）。
 	CipherSuites []uint16
 
-	// ServerName indicates the name of the server requested by the client
-	// in order to support virtual hosting. ServerName is only set if the
-	// client is using SNI (see RFC 4366, Section 3.1).
+	// ServerNameは、クライアントがリクエストしたサーバーの名前を示します。
+	// 仮想ホスティングをサポートするために、クライアントがSNIを使用している場合にのみ、ServerNameが設定されます（RFC 4366、セクション3.1を参照）。
 	ServerName string
 
-	// SupportedCurves lists the elliptic curves supported by the client.
-	// SupportedCurves is set only if the Supported Elliptic Curves
-	// Extension is being used (see RFC 4492, Section 5.1.1).
+	// SupportedCurvesはクライアントでサポートされている楕円曲線をリストアップしています。
+	// SupportedCurvesは、サポートされている楕円曲線拡張が使用されている場合にのみ設定されます(RFC 4492、セクション5.1.1を参照)。
 	SupportedCurves []CurveID
 
-	// SupportedPoints lists the point formats supported by the client.
-	// SupportedPoints is set only if the Supported Point Formats Extension
-	// is being used (see RFC 4492, Section 5.1.2).
+	// SupportedPointsはクライアントがサポートするポイントフォーマットをリストアップしています。
+	// SupportedPointsは、サポートされているポイントフォーマット拡張が利用されている場合にのみ設定されます（RFC 4492、セクション5.1.2を参照）。
 	SupportedPoints []uint8
 
-	// SignatureSchemes lists the signature and hash schemes that the client
-	// is willing to verify. SignatureSchemes is set only if the Signature
-	// Algorithms Extension is being used (see RFC 5246, Section 7.4.1.4.1).
+	// SignatureSchemesは、クライアントが検証可能な署名とハッシュ方式のリストです。SignatureSchemesは、Signature Algorithms拡張が使用されている場合にのみ設定されます（RFC 5246、セクション7.4.1.4.1を参照）。
 	SignatureSchemes []SignatureScheme
 
-	// SupportedProtos lists the application protocols supported by the client.
-	// SupportedProtos is set only if the Application-Layer Protocol
-	// Negotiation Extension is being used (see RFC 7301, Section 3.1).
+	// SupportedProtosはクライアントがサポートしているアプリケーションプロトコルのリストです。
+	// SupportedProtosは、アプリケーション層プロトコルネゴシエーション拡張が使用されている場合にのみ設定されます（RFC 7301、セクション3.1を参照）。
 	//
-	// Servers can select a protocol by setting Config.NextProtos in a
-	// GetConfigForClient return value.
+	// サーバーは、GetConfigForClientの返り値でConfig.NextProtosを設定することでプロトコルを選択できます。
 	SupportedProtos []string
 
-	// SupportedVersions lists the TLS versions supported by the client.
-	// For TLS versions less than 1.3, this is extrapolated from the max
-	// version advertised by the client, so values other than the greatest
-	// might be rejected if used.
+	// SupportedVersions はクライアントでサポートされているTLSのバージョンをリストにします。
+	// TLSバージョン1.3未満では、これはクライアントがアドバタイズする最大のバージョンから予測されるため、最大の値以外の値は使用されると拒否される可能性があります。
 	SupportedVersions []uint16
 
-	// Conn is the underlying net.Conn for the connection. Do not read
-	// from, or write to, this connection; that will cause the TLS
-	// connection to fail.
+	// Connは接続の基礎となるnet.Connです。この接続から読み取ったり、書き込んだりしないでください。それはTLS接続の失敗を引き起こします。
 	Conn net.Conn
 
-	// config is embedded by the GetCertificate or GetConfigForClient caller,
-	// for use with SupportsCertificate.
+	// configはGetCertificateまたはGetConfigForClientの呼び出し元で埋め込まれ、
+	// SupportsCertificateと共に使用されます。
 	config *Config
 
-	// ctx is the context of the handshake that is in progress.
+	// ctxは進行中のハンドシェイクのコンテキストです。
 	ctx context.Context
 }
 
-// Context returns the context of the handshake that is in progress.
-// This context is a child of the context passed to HandshakeContext,
-// if any, and is canceled when the handshake concludes.
+// Contextは進行中のハンドシェイクのコンテキストを返します。
+// このコンテキストは、HandshakeContextに渡されたコンテキストの子孫であり、
+// ハンドシェイクが終了するとキャンセルされます。
 func (c *ClientHelloInfo) Context() context.Context
 
-// CertificateRequestInfo contains information from a server's
-// CertificateRequest message, which is used to demand a certificate and proof
-// of control from a client.
+// CertificateRequestInfo は、クライアントから証明書とコントロールの証明を要求するために使用される、
+// サーバーの CertificateRequest メッセージからの情報を含んでいます。
 type CertificateRequestInfo struct {
-	// AcceptableCAs contains zero or more, DER-encoded, X.501
-	// Distinguished Names. These are the names of root or intermediate CAs
-	// that the server wishes the returned certificate to be signed by. An
-	// empty slice indicates that the server has no preference.
+
+	// AcceptableCAsは、ゼロまたは複数のDERエンコードされたX.501の区別名を含んでいます。これらは、サーバーが返される証明書の署名元として望むルートまたは中間CAの名前です。空のスライスは、サーバーが好みを持たないことを示します。
 	AcceptableCAs [][]byte
 
-	// SignatureSchemes lists the signature schemes that the server is
-	// willing to verify.
+	// SignatureSchemesは、サーバーが検証を行いたい署名スキームをリストアップします。
 	SignatureSchemes []SignatureScheme
 
-	// Version is the TLS version that was negotiated for this connection.
+	// Versionは、この接続のために交渉されたTLSのバージョンです。
 	Version uint16
 
-	// ctx is the context of the handshake that is in progress.
+	// ctxは進行中のハンドシェイクのコンテキストです。
 	ctx context.Context
 }
 
-// Context returns the context of the handshake that is in progress.
-// This context is a child of the context passed to HandshakeContext,
-// if any, and is canceled when the handshake concludes.
+// Contextは進行中のハンドシェイクのコンテキストを返します。
+// このコンテキストは、HandshakeContextに渡されたコンテキストの子であり、
+// ハンドシェイクが終了するとキャンセルされます。
 func (c *CertificateRequestInfo) Context() context.Context
 
-// RenegotiationSupport enumerates the different levels of support for TLS
-// renegotiation. TLS renegotiation is the act of performing subsequent
-// handshakes on a connection after the first. This significantly complicates
-// the state machine and has been the source of numerous, subtle security
-// issues. Initiating a renegotiation is not supported, but support for
-// accepting renegotiation requests may be enabled.
-//
-// Even when enabled, the server may not change its identity between handshakes
-// (i.e. the leaf certificate must be the same). Additionally, concurrent
-// handshake and application data flow is not permitted so renegotiation can
-// only be used with protocols that synchronise with the renegotiation, such as
-// HTTPS.
-//
-// Renegotiation is not defined in TLS 1.3.
+// RenegotiationSupportは、TLS renegotiationのサポートレベルを列挙しています。TLS renegotiationとは、最初の接続の後に接続で追加のhandshakeを行うことです。これにより、ステートマシンが複雑化し、多くの微妙なセキュリティ上の問題の原因となっています。再交渉の開始はサポートされていませんが、再交渉リクエストの受け入れには対応している場合があります。
+// 有効にされていても、サーバーはハンドシェイク間で自身の識別情報を変更することはできません（つまり、リーフ証明書は同じである必要があります）。また、同時にハンドシェイクとアプリケーションデータのフローを行うことは許可されていないため、再交渉は、再交渉と同期するプロトコル（例：HTTPS）とのみ使用できます。
+// 再交渉はTLS 1.3で定義されていません。
 type RenegotiationSupport int
 
 const (
-	// RenegotiateNever disables renegotiation.
+	// RenegotiateNeverは再交渉を無効にします。
 	RenegotiateNever RenegotiationSupport = iota
 
-	// RenegotiateOnceAsClient allows a remote server to request
-	// renegotiation once per connection.
+	// RenegotiateOnceAsClientは、リモートサーバーに対して
+	// 接続ごとに再交渉を一度だけ要求することを可能にします。
 	RenegotiateOnceAsClient
 
-	// RenegotiateFreelyAsClient allows a remote server to repeatedly
-	// request renegotiation.
+	// RenegotiateFreelyAsClientは、リモートサーバーが繰り返し再交渉を要求できるようにします。
 	RenegotiateFreelyAsClient
 )
 
-// A Config structure is used to configure a TLS client or server.
-// After one has been passed to a TLS function it must not be
-// modified. A Config may be reused; the tls package will also not
-// modify it.
+// Config構造体はTLSクライアントやサーバーを設定するために使用されます。
+// ConfigがTLS関数に渡された後は変更しないでください。
+// Configは再利用することができますが、tlsパッケージ自体は変更しません。
 type Config struct {
-	// Rand provides the source of entropy for nonces and RSA blinding.
-	// If Rand is nil, TLS uses the cryptographic random reader in package
-	// crypto/rand.
-	// The Reader must be safe for use by multiple goroutines.
+
+	// RandはノンスやRSAブラインディングのエントロピーの源を提供します。
+	// もしRandがnilの場合、TLSはパッケージcrypto/randの暗号化されたランダムリーダーを使用します。
+	// このリーダーは複数のゴルーチンによる使用に安全である必要があります。
 	Rand io.Reader
 
-	// Time returns the current time as the number of seconds since the epoch.
-	// If Time is nil, TLS uses time.Now.
+	// Timeはエポックからの経過秒数として現在時刻を返します。
+	// Timeがnilの場合、TLSはtime.Nowを使用します。
 	Time func() time.Time
 
-	// Certificates contains one or more certificate chains to present to the
-	// other side of the connection. The first certificate compatible with the
-	// peer's requirements is selected automatically.
+	// Certificatesは、接続の相手側に提供する1つ以上の証明書チェーンを含んでいます。相手側の要件と互換性のある最初の証明書が自動的に選択されます。
 	//
-	// Server configurations must set one of Certificates, GetCertificate or
-	// GetConfigForClient. Clients doing client-authentication may set either
-	// Certificates or GetClientCertificate.
+	// サーバーの設定では、Certificates、GetCertificate、またはGetConfigForClientのいずれかを設定する必要があります。クライアント認証を行うクライアントは、CertificatesまたはGetClientCertificateのいずれかを設定することができます。
 	//
-	// Note: if there are multiple Certificates, and they don't have the
-	// optional field Leaf set, certificate selection will incur a significant
-	// per-handshake performance cost.
+	// 注意：複数のCertificatesがあり、オプションのLeafフィールドが設定されていない場合、証明書の選択には著しいハンドシェイクごとのパフォーマンスのコストがかかります。
 	Certificates []Certificate
 
-	// NameToCertificate maps from a certificate name to an element of
-	// Certificates. Note that a certificate name can be of the form
-	// '*.example.com' and so doesn't have to be a domain name as such.
+	// NameToCertificate は、証明書名を Certificates の要素にマッピングします。
+	// 証明書名は'*.example.com'のような形式であるため、必ずしもドメイン名である必要はありません。
 	//
-	// Deprecated: NameToCertificate only allows associating a single
-	// certificate with a given name. Leave this field nil to let the library
-	// select the first compatible chain from Certificates.
+	// Deprecated: NameToCertificate では、特定の名前に対して単一の証明書の関連付けしか許可されません。
+	// このフィールドを nil のままにしておくと、ライブラリが Certificates から最初の互換性のあるチェーンを選択します。
 	NameToCertificate map[string]*Certificate
 
-	// GetCertificate returns a Certificate based on the given
-	// ClientHelloInfo. It will only be called if the client supplies SNI
-	// information or if Certificates is empty.
+	// GetCertificateは与えられたClientHelloInfoに基づいて証明書を返します。
+	// クライアントがSNI情報を提供する場合またはCertificatesが空の場合のみ呼び出されます。
 	//
-	// If GetCertificate is nil or returns nil, then the certificate is
-	// retrieved from NameToCertificate. If NameToCertificate is nil, the
-	// best element of Certificates will be used.
+	// GetCertificateがnilであるかnilを返す場合、証明書はNameToCertificateから取得されます。
+	// NameToCertificateがnilの場合、Certificatesの最良の要素が使用されます。
 	//
-	// Once a Certificate is returned it should not be modified.
+	// 一度証明書が返されたら、変更しないでください。
 	GetCertificate func(*ClientHelloInfo) (*Certificate, error)
 
-	// GetClientCertificate, if not nil, is called when a server requests a
-	// certificate from a client. If set, the contents of Certificates will
-	// be ignored.
+	// GetClientCertificateは、クライアントが証明書を要求する場合に呼び出されます。
+	// 設定されている場合、Certificatesの内容は無視されます。
 	//
-	// If GetClientCertificate returns an error, the handshake will be
-	// aborted and that error will be returned. Otherwise
-	// GetClientCertificate must return a non-nil Certificate. If
-	// Certificate.Certificate is empty then no certificate will be sent to
-	// the server. If this is unacceptable to the server then it may abort
-	// the handshake.
+	// GetClientCertificateがエラーを返すと、ハンドシェイクは中止され、そのエラーが返されます。
+	// それ以外の場合、GetClientCertificateはnilではないCertificateを返さなければなりません。
+	// Certificate.Certificateが空である場合、サーバーには証明書は送信されません。
+	// サーバーがこれを受け入れられない場合、ハンドシェイクを中止することがあります。
 	//
-	// GetClientCertificate may be called multiple times for the same
-	// connection if renegotiation occurs or if TLS 1.3 is in use.
+	// GetClientCertificateは、再協議が発生するか、TLS 1.3が使用されている場合に、同じ接続に対して複数回呼び出される可能性があります。
 	//
-	// Once a Certificate is returned it should not be modified.
+	// 一度Certificateが返されたら、変更しないでください。
 	GetClientCertificate func(*CertificateRequestInfo) (*Certificate, error)
 
-	// GetConfigForClient, if not nil, is called after a ClientHello is
-	// received from a client. It may return a non-nil Config in order to
-	// change the Config that will be used to handle this connection. If
-	// the returned Config is nil, the original Config will be used. The
-	// Config returned by this callback may not be subsequently modified.
+	// GetConfigForClientは、クライアントからClientHelloが受信された後に呼び出されます。この接続を処理するために使用されるConfigを変更するために、非nilのConfigを返すことができます。返されたConfigがnilの場合、元のConfigが使用されます。このコールバックによって返されたConfigは、後で変更できません。
 	//
-	// If GetConfigForClient is nil, the Config passed to Server() will be
-	// used for all connections.
+	// GetConfigForClientがnilの場合、Server()に渡されたConfigがすべての接続に使用されます。
 	//
-	// If SessionTicketKey was explicitly set on the returned Config, or if
-	// SetSessionTicketKeys was called on the returned Config, those keys will
-	// be used. Otherwise, the original Config keys will be used (and possibly
-	// rotated if they are automatically managed).
+	// 返されたConfigに明示的にSessionTicketKeyが設定されている場合、または返されたConfigにSetSessionTicketKeysが呼び出された場合、これらのキーが使用されます。それ以外の場合、元のConfigキーが使用されます（自動的に管理される場合、回転する可能性もあります）。
 	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
 
-	// VerifyPeerCertificate, if not nil, is called after normal
-	// certificate verification by either a TLS client or server. It
-	// receives the raw ASN.1 certificates provided by the peer and also
-	// any verified chains that normal processing found. If it returns a
-	// non-nil error, the handshake is aborted and that error results.
-	//
-	// If normal verification fails then the handshake will abort before
-	// considering this callback. If normal verification is disabled (on the
-	// client when InsecureSkipVerify is set, or on a server when ClientAuth is
-	// RequestClientCert or RequireAnyClientCert), then this callback will be
-	// considered but the verifiedChains argument will always be nil. When
-	// ClientAuth is NoClientCert, this callback is not called on the server.
-	// rawCerts may be empty on the server if ClientAuth is RequestClientCert or
-	// VerifyClientCertIfGiven.
-	//
-	// This callback is not invoked on resumed connections, as certificates are
-	// not re-verified on resumption.
-	//
-	// verifiedChains and its contents should not be modified.
+	// VerifyPeerCertificate は、TLSクライアントまたはサーバーによる通常の証明書検証の後に呼び出されます（nilでない場合）。この関数は、ピアから提供された生のASN.1証明書と、通常の処理で検証されたチェーンを受け取ります。もしnon-nilのエラーを返す場合、ハンドシェイクは中断され、そのエラーが結果となります。
+	// 通常の検証に失敗した場合、このコールバックは検討される前にハンドシェイクが中断されます。通常の検証が無効になっている場合（InsecureSkipVerifyがクライアント側で設定されている場合、またはServerAuthがRequestClientCertまたはRequireAnyClientCertの場合）、このコールバックは考慮されますが、verifiedChains引数は常にnilになります。ClientAuthがNoClientCertの場合、このコールバックはサーバーで呼び出されません。rawCertsは、ClientAuthがRequestClientCertまたはVerifyClientCertIfGivenの場合には、サーバーで空になる可能性があります。
+	// このコールバックは再開された接続では呼び出されず、証明書は再検証されません。
+	// verifiedChainsとその内容は変更しないでください。
 	VerifyPeerCertificate func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error
 
-	// VerifyConnection, if not nil, is called after normal certificate
-	// verification and after VerifyPeerCertificate by either a TLS client
-	// or server. If it returns a non-nil error, the handshake is aborted
-	// and that error results.
-	//
-	// If normal verification fails then the handshake will abort before
-	// considering this callback. This callback will run for all connections,
-	// including resumptions, regardless of InsecureSkipVerify or ClientAuth
-	// settings.
+	// VerifyConnectionは、通常の証明書の検証とVerifyPeerCertificateの後に、TLSクライアントまたはサーバーによって呼び出されます（nilではない場合）。非nilのエラーが返された場合、ハンドシェイクは中止されます。
+	// 通常の検証が失敗した場合、このコールバックは考慮される前にハンドシェイクが中止されます。このコールバックは、InsecureSkipVerifyまたはClientAuthの設定に関係なく、再開を含むすべての接続で実行されます。
 	VerifyConnection func(ConnectionState) error
 
-	// RootCAs defines the set of root certificate authorities
-	// that clients use when verifying server certificates.
-	// If RootCAs is nil, TLS uses the host's root CA set.
+	// RootCAsは、クライアントがサーバー証明書を検証する際に使用するルート証明書機関のセットを定義します。
+	// RootCAsがnilの場合、TLSはホストのルートCAセットを使用します。
 	RootCAs *x509.CertPool
 
-	// NextProtos is a list of supported application level protocols, in
-	// order of preference. If both peers support ALPN, the selected
-	// protocol will be one from this list, and the connection will fail
-	// if there is no mutually supported protocol. If NextProtos is empty
-	// or the peer doesn't support ALPN, the connection will succeed and
-	// ConnectionState.NegotiatedProtocol will be empty.
+	// NextProtosはサポートされているアプリケーションレベルのプロトコルのリストで、
+	// 優先順位順に表示されます。両方のピアがALPNをサポートする場合、
+	// 選択されるプロトコルはこのリストから選ばれ、相互にサポートされるプロトコルがない場合は接続が失敗します。
+	// NextProtosが空であるか、ピアがALPNをサポートしていない場合、接続は成功し、
+	// ConnectionState.NegotiatedProtocolは空になります。
 	NextProtos []string
 
-	// ServerName is used to verify the hostname on the returned
-	// certificates unless InsecureSkipVerify is given. It is also included
-	// in the client's handshake to support virtual hosting unless it is
-	// an IP address.
+	// ServerNameは返された証明書のホスト名の検証に使用されます（InsecureSkipVerifyが指定されていない場合）。また、IPアドレスでない限り、クライアントのハンドシェイクに仮想ホスティングをサポートするために含まれます。
 	ServerName string
 
-	// ClientAuth determines the server's policy for
-	// TLS Client Authentication. The default is NoClientCert.
+	// ClientAuthは、TLSクライアント認証のサーバーポリシーを決定します。デフォルトはNoClientCertです。
 	ClientAuth ClientAuthType
 
-	// ClientCAs defines the set of root certificate authorities
-	// that servers use if required to verify a client certificate
-	// by the policy in ClientAuth.
+	// ClientCAsは、ClientAuthのポリシーに従って
+	// クライアント証明書の検証が必要な場合、
+	// サーバーが使用するルート証明機関のセットを定義します。
 	ClientCAs *x509.CertPool
 
-	// InsecureSkipVerify controls whether a client verifies the server's
-	// certificate chain and host name. If InsecureSkipVerify is true, crypto/tls
-	// accepts any certificate presented by the server and any host name in that
-	// certificate. In this mode, TLS is susceptible to machine-in-the-middle
-	// attacks unless custom verification is used. This should be used only for
-	// testing or in combination with VerifyConnection or VerifyPeerCertificate.
+	// InsecureSkipVerifyは、クライアントがサーバーの証明書チェーンとホスト名を検証するかどうかを制御します。
+	// InsecureSkipVerifyがtrueの場合、crypto/tlsパッケージは、サーバーが提示する証明書とその証明書内の任意のホスト名を受け入れます。
+	// このモードでは、カスタムな検証が使用されていない限り、TLSはマンインザミドル攻撃に対して脆弱です。
+	// これはテスト目的でのみ使用するか、VerifyConnectionまたはVerifyPeerCertificateと組み合わせて使用する必要があります。
 	InsecureSkipVerify bool
 
-	// CipherSuites is a list of enabled TLS 1.0–1.2 cipher suites. The order of
-	// the list is ignored. Note that TLS 1.3 ciphersuites are not configurable.
+	// CipherSuitesは有効なTLS 1.0-1.2の暗号化スイートのリストです。リストの順序は無視されます。注意事項として、TLS 1.3の暗号スイートは設定できません。
 	//
-	// If CipherSuites is nil, a safe default list is used. The default cipher
-	// suites might change over time.
+	// CipherSuitesがnilの場合、安全なデフォルトのリストが使用されます。デフォルトの暗号スイートは時間とともに変更される可能性があります。
 	CipherSuites []uint16
 
-	// PreferServerCipherSuites is a legacy field and has no effect.
+	// PreferServerCipherSuitesは古いフィールドであり、効果がありません。
 	//
-	// It used to control whether the server would follow the client's or the
-	// server's preference. Servers now select the best mutually supported
-	// cipher suite based on logic that takes into account inferred client
-	// hardware, server hardware, and security.
+	// かつて、このフィールドは、サーバーがクライアントの選好またはサーバーの選好に従うかどうかを制御していました。現在、サーバーは、推測されたクライアントのハードウェア、サーバーのハードウェア、およびセキュリティを考慮した論理に基づいて、最も相互にサポートされた暗号スイートを選択します。
 	//
-	// Deprecated: PreferServerCipherSuites is ignored.
+	// Deprecated: PreferServerCipherSuitesは無視されます。
 	PreferServerCipherSuites bool
 
-	// SessionTicketsDisabled may be set to true to disable session ticket and
-	// PSK (resumption) support. Note that on clients, session ticket support is
-	// also disabled if ClientSessionCache is nil.
+	// SessionTicketsDisabledがtrueに設定されると、セッションチケットおよびPSK（再開）のサポートが無効になります。クライアントでは、ClientSessionCacheがnilの場合もセッションチケットのサポートが無効になります。
 	SessionTicketsDisabled bool
 
-	// SessionTicketKey is used by TLS servers to provide session resumption.
-	// See RFC 5077 and the PSK mode of RFC 8446. If zero, it will be filled
-	// with random data before the first server handshake.
+	// SessionTicketKeyは、セッション再開を提供するためにTLSサーバーによって使用されます。
+	// RFC 5077およびRFC 8446のPSKモードを参照してください。ゼロの場合、最初のサーバーハンドシェイクの前にランダムデータで埋められます。
 	//
-	// Deprecated: if this field is left at zero, session ticket keys will be
-	// automatically rotated every day and dropped after seven days. For
-	// customizing the rotation schedule or synchronizing servers that are
-	// terminating connections for the same host, use SetSessionTicketKeys.
+	// 廃止: このフィールドがゼロのままになっている場合、セッションチケットキーは自動的に毎日回転され、7日後に削除されます。
+	// 回転スケジュールのカスタマイズや同じホストに対して接続を終了するサーバーの同期を行う場合は、SetSessionTicketKeysを使用してください。
 	SessionTicketKey [32]byte
 
-	// ClientSessionCache is a cache of ClientSessionState entries for TLS
-	// session resumption. It is only used by clients.
+	// ClientSessionCacheはTLSセッション再開のためのClientSessionStateエントリのキャッシュです。
+	// クライアント側でのみ使用されます。
 	ClientSessionCache ClientSessionCache
 
-	// UnwrapSession is called on the server to turn a ticket/identity
-	// previously produced by [WrapSession] into a usable session.
+	// UnwrapSessionは、[WrapSession]によって生成されたチケット/アイデンティティを、使用可能なセッションに変換するためにサーバー上で呼び出されます。
 	//
-	// UnwrapSession will usually either decrypt a session state in the ticket
-	// (for example with [Config.EncryptTicket]), or use the ticket as a handle
-	// to recover a previously stored state. It must use [ParseSessionState] to
-	// deserialize the session state.
+	// UnwrapSessionは通常、チケット内のセッション状態を復号化するか（たとえば、[Config.EncryptTicket]を使用して）、以前に保存された状態を回復するためにチケットを使用します。セッション状態を逆シリアル化するには、[ParseSessionState]を使用する必要があります。
 	//
-	// If UnwrapSession returns an error, the connection is terminated. If it
-	// returns (nil, nil), the session is ignored. crypto/tls may still choose
-	// not to resume the returned session.
+	// UnwrapSessionがエラーを返した場合、接続は終了されます。（nil、nil）を返す場合、セッションは無視されます。crypto/tlsは、それでも返されたセッションを再開しないこともあります。
 	UnwrapSession func(identity []byte, cs ConnectionState) (*SessionState, error)
 
-	// WrapSession is called on the server to produce a session ticket/identity.
+	// WrapSessionはサーバーで呼び出され、セッションのチケット/アイデンティティを生成します。
 	//
-	// WrapSession must serialize the session state with [SessionState.Bytes].
-	// It may then encrypt the serialized state (for example with
-	// [Config.DecryptTicket]) and use it as the ticket, or store the state and
-	// return a handle for it.
+	// WrapSessionはセッションの状態を[SessionState.Bytes]でシリアライズする必要があります。
+	// 次に、シリアライズされた状態を暗号化する（たとえば[Config.DecryptTicket]で）または状態を保存して
+	// ハンドルを返すことができます。
 	//
-	// If WrapSession returns an error, the connection is terminated.
+	// WrapSessionがエラーを返すと、接続は終了します。
 	//
-	// Warning: the return value will be exposed on the wire and to clients in
-	// plaintext. The application is in charge of encrypting and authenticating
-	// it (and rotating keys) or returning high-entropy identifiers. Failing to
-	// do so correctly can compromise current, previous, and future connections
-	// depending on the protocol version.
+	// 警告：返り値は平文でワイヤー上やクライアントに公開されます。
+	// アプリケーションはそれを暗号化し、認証する（およびキーをローテーションする）
+	// または高エントロピーの識別子を返すことが責任です。
+	// 正しく行わないと、現在の接続や以前の接続、将来の接続が妥協される可能性があります。
+	//
 	WrapSession func(ConnectionState, *SessionState) ([]byte, error)
 
-	// MinVersion contains the minimum TLS version that is acceptable.
+	// MinVersionには受け入れ可能な最小のTLSバージョンが含まれています。
 	//
-	// By default, TLS 1.2 is currently used as the minimum when acting as a
-	// client, and TLS 1.0 when acting as a server. TLS 1.0 is the minimum
-	// supported by this package, both as a client and as a server.
+	// デフォルトでは、クライアントとして動作する場合にはTLS 1.2が現在の最小バージョンとして使用され、サーバーとして動作する場合にはTLS 1.0が最小のバージョンとして使用されます。このパッケージでは、クライアントとしてもサーバーとしても、最小限にTLS 1.0がサポートされています。
 	//
-	// The client-side default can temporarily be reverted to TLS 1.0 by
-	// including the value "x509sha1=1" in the GODEBUG environment variable.
-	// Note that this option will be removed in Go 1.19 (but it will still be
-	// possible to set this field to VersionTLS10 explicitly).
+	// クライアント側のデフォルトは、GODEBUG環境変数に値"x509sha1=1"を含めることで一時的にTLS 1.0に戻すことができます。ただし、このオプションはGo 1.19で削除されます（ただし、このフィールドを明示的にVersionTLS10に設定することは引き続き可能です）。
 	MinVersion uint16
 
-	// MaxVersion contains the maximum TLS version that is acceptable.
+	// MaxVersionには許容される最大のTLSバージョンが含まれています。
 	//
-	// By default, the maximum version supported by this package is used,
-	// which is currently TLS 1.3.
+	// デフォルトでは、このパッケージでサポートされている最大バージョンが使用されます。
+	// 現在のバージョンはTLS 1.3です。
 	MaxVersion uint16
 
-	// CurvePreferences contains the elliptic curves that will be used in
-	// an ECDHE handshake, in preference order. If empty, the default will
-	// be used. The client will use the first preference as the type for
-	// its key share in TLS 1.3. This may change in the future.
+	// CurvePreferencesには、ECDHEハンドシェイクで使用される楕円曲線が好まれる順に含まれます。空の場合、デフォルトが使用されます。クライアントは、TLS 1.3でキーシェアのタイプとして最初の選択肢を使用します。将来的には、これは変更される可能性があります。
 	CurvePreferences []CurveID
 
-	// DynamicRecordSizingDisabled disables adaptive sizing of TLS records.
-	// When true, the largest possible TLS record size is always used. When
-	// false, the size of TLS records may be adjusted in an attempt to
-	// improve latency.
+	// DynamicRecordSizingDisabledはTLSレコードの適応的なサイズ調整を無効にします。
+	// trueの場合、常に最大のTLSレコードサイズが使用されます。falseの場合、
+	// TLSレコードのサイズはレイテンシを改善するために調整されることがあります。
 	DynamicRecordSizingDisabled bool
 
-	// Renegotiation controls what types of renegotiation are supported.
-	// The default, none, is correct for the vast majority of applications.
+	// Renegotiationは、再交渉がサポートされるタイプを制御します。
+	// デフォルトの「なし」は、ほとんどのアプリケーションにとって正しいです。
 	Renegotiation RenegotiationSupport
 
-	// KeyLogWriter optionally specifies a destination for TLS master secrets
-	// in NSS key log format that can be used to allow external programs
-	// such as Wireshark to decrypt TLS connections.
-	// See https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format.
-	// Use of KeyLogWriter compromises security and should only be
-	// used for debugging.
+	// KeyLogWriterは、TLSのマスターシークレットの宛先として使用できる、NSSキーログ形式の外部プログラム（Wiresharkなど）によるTLS接続の復号化を許可するためのオプションです。
+	// https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Formatを参照してください。
+	// KeyLogWriterの使用はセキュリティを損なう可能性があり、デバッグ目的のみに使用するべきです。
 	KeyLogWriter io.Writer
 
-	// mutex protects sessionTicketKeys and autoSessionTicketKeys.
+	// mutexはsessionTicketKeysとautoSessionTicketKeysを保護しています。
 	mutex sync.RWMutex
-	// sessionTicketKeys contains zero or more ticket keys. If set, it means
-	// the keys were set with SessionTicketKey or SetSessionTicketKeys. The
-	// first key is used for new tickets and any subsequent keys can be used to
-	// decrypt old tickets. The slice contents are not protected by the mutex
-	// and are immutable.
+
+	// sessionTicketKeysには、ゼロ個以上のチケットキーが含まれています。
+	// 設定されている場合、それはSessionTicketKeyまたはSetSessionTicketKeysでキーが設定されたことを意味します。
+	// 最初のキーは新しいチケットに使用され、後続のキーは古いチケットの復号に使用できます。
+	// スライスの内容はミューテックスで保護されず、変更不可です。
 	sessionTicketKeys []ticketKey
-	// autoSessionTicketKeys is like sessionTicketKeys but is owned by the
-	// auto-rotation logic. See Config.ticketKeys.
+
+	// autoSessionTicketKeysはsessionTicketKeysと似ていますが、自動回転ロジックによって所有されています。Config.ticketKeysを参照してください。
 	autoSessionTicketKeys []ticketKey
 }
 
-// Clone returns a shallow clone of c or nil if c is nil. It is safe to clone a Config that is
-// being used concurrently by a TLS client or server.
+// Cloneはcの浅いクローンを返します。cがnilの場合はnilを返します。TLSクライアントやサーバーによって
+// 同時に使用されているConfigをクローンすることは安全です。
 func (c *Config) Clone() *Config
 
-// SetSessionTicketKeys updates the session ticket keys for a server.
+// SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
 //
-// The first key will be used when creating new tickets, while all keys can be
-// used for decrypting tickets. It is safe to call this function while the
-// server is running in order to rotate the session ticket keys. The function
-// will panic if keys is empty.
+// 新しいチケットを作成する際に最初のキーが使用され、すべてのキーはチケットの解読に使用できます。
+// セッションチケットのキーをローテーションするために、この関数を実行しても問題ありません（サーバーが実行中である場合）。
+// 関数はキーが空の場合、パニックを発生させます。
 //
-// Calling this function will turn off automatic session ticket key rotation.
+// この関数を呼び出すと、自動的なセッションチケットキーのローテーションが無効になります。
 //
-// If multiple servers are terminating connections for the same host they should
-// all have the same session ticket keys. If the session ticket keys leaks,
-// previously recorded and future TLS connections using those keys might be
-// compromised.
+// 同じホストに接続を終了する複数のサーバーがある場合、すべてのサーバーは同じセッションチケットのキーを持つ必要があります。
+// セッションチケットのキーが漏洩した場合、以前に記録されたおよび将来のTLS接続でこれらのキーが使用される可能性があります。
+// これにより、接続が危険にさらされる可能性があります。
 func (c *Config) SetSessionTicketKeys(keys [][32]byte)
 
-// SupportsCertificate returns nil if the provided certificate is supported by
-// the client that sent the ClientHello. Otherwise, it returns an error
-// describing the reason for the incompatibility.
+// SupportsCertificateは、提供された証明書が
+// ClientHelloを送信したクライアントによってサポートされている場合にはnilを返します。そうでない場合は、互換性のない理由を説明するエラーを返します。
 //
-// If this ClientHelloInfo was passed to a GetConfigForClient or GetCertificate
-// callback, this method will take into account the associated Config. Note that
-// if GetConfigForClient returns a different Config, the change can't be
-// accounted for by this method.
+// このClientHelloInfoがGetConfigForClientまたはGetCertificateコールバックに渡された場合、このメソッドは関連するConfigを考慮に入れます。ただし、GetConfigForClientが異なるConfigを返す場合、このメソッドでは変更を考慮することができません。
 //
-// This function will call x509.ParseCertificate unless c.Leaf is set, which can
-// incur a significant performance cost.
+// c.Leafが設定されていない場合、この関数はx509.ParseCertificateを呼び出しますが、それはかなりのパフォーマンスコストを伴うことになります。
 func (chi *ClientHelloInfo) SupportsCertificate(c *Certificate) error
 
-// SupportsCertificate returns nil if the provided certificate is supported by
-// the server that sent the CertificateRequest. Otherwise, it returns an error
-// describing the reason for the incompatibility.
+// SupportsCertificateは、提供された証明書がCertificateRequestを送信したサーバーによってサポートされている場合はnilを返します。それ以外の場合、非互換性の理由を説明するエラーが返されます。
 func (cri *CertificateRequestInfo) SupportsCertificate(c *Certificate) error
 
-// BuildNameToCertificate parses c.Certificates and builds c.NameToCertificate
-// from the CommonName and SubjectAlternateName fields of each of the leaf
-// certificates.
-//
-// Deprecated: NameToCertificate only allows associating a single certificate
-// with a given name. Leave that field nil to let the library select the first
-// compatible chain from Certificates.
+// BuildNameToCertificateはc.Certificatesを解析し、各リーフ証明書のCommonNameとSubjectAlternateNameフィールドからc.NameToCertificateを構築します。
+// 廃止されました: NameToCertificateは特定の名前に対して単一の証明書の関連付けしか許可しません。そのフィールドをnilのままにしておき、ライブラリに最初に互換性のあるチェーンを選択させます。
 func (c *Config) BuildNameToCertificate()
 
-// A Certificate is a chain of one or more certificates, leaf first.
+// ボタン構造体は、最初にリーフ（最下位）のボタンから始まり、その上位にある1つ以上のボタンのチェーンです。
 type Certificate struct {
 	Certificate [][]byte
-	// PrivateKey contains the private key corresponding to the public key in
-	// Leaf. This must implement crypto.Signer with an RSA, ECDSA or Ed25519 PublicKey.
-	// For a server up to TLS 1.2, it can also implement crypto.Decrypter with
-	// an RSA PublicKey.
+
+	// PrivateKeyは、Leafの公開鍵に対応する秘密鍵を含んでいます。
+	// これは、RSA、ECDSA、またはEd25519 PublicKeyを使用してcrypto.Signerを実装する必要があります。
+	// TLS 1.2までのサーバーの場合、RSA PublicKeyを使用してcrypto.Decrypterも実装できます。
 	PrivateKey crypto.PrivateKey
-	// SupportedSignatureAlgorithms is an optional list restricting what
-	// signature algorithms the PrivateKey can be used for.
+
+	// SupportedSignatureAlgorithmsは、PrivateKeyが使用できる署名アルゴリズムを制限するオプションのリストです。
 	SupportedSignatureAlgorithms []SignatureScheme
-	// OCSPStaple contains an optional OCSP response which will be served
-	// to clients that request it.
+
+	// OCSPStapleには、リクエストするクライアントに提供されるオプションのOCSP応答が含まれています。
 	OCSPStaple []byte
-	// SignedCertificateTimestamps contains an optional list of Signed
-	// Certificate Timestamps which will be served to clients that request it.
+
+	// SignedCertificateTimestampsには、要求するクライアントに提供されるオプションの署名付き証明書タイムスタンプのリストが含まれています。
 	SignedCertificateTimestamps [][]byte
-	// Leaf is the parsed form of the leaf certificate, which may be initialized
-	// using x509.ParseCertificate to reduce per-handshake processing. If nil,
-	// the leaf certificate will be parsed as needed.
+
+	// Leafは、パースされたリーフ証明書の形式であり、x509.ParseCertificateを使用して初期化することができます。
+	// デフォルトではnilである場合、リーフ証明書は必要に応じてパースされます。
 	Leaf *x509.Certificate
 }
 
-// NewLRUClientSessionCache returns a ClientSessionCache with the given
-// capacity that uses an LRU strategy. If capacity is < 1, a default capacity
-// is used instead.
+// NewLRUClientSessionCacheは、与えられた容量を使用してLRU戦略を採用したClientSessionCacheを返します。容量が1未満の場合、代わりにデフォルトの容量が使用されます。
 func NewLRUClientSessionCache(capacity int) ClientSessionCache
 
-// CertificateVerificationError is returned when certificate verification fails during the handshake.
+// CertificateVerificationError は、ハンドシェイク中に証明書の検証が失敗した場合に返されます。
 type CertificateVerificationError struct {
-	// UnverifiedCertificates and its contents should not be modified.
+	// UnverifiedCertificatesおよびその内容は変更しないでください。
 	UnverifiedCertificates []*x509.Certificate
 	Err                    error
 }

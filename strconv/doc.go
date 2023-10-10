@@ -2,55 +2,52 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package strconv implements conversions to and from string representations
-// of basic data types.
+// パッケージ strconv は基本データ型の文字列表現への変換を実装します。
 //
-// # Numeric Conversions
+// # 数値の変換
 //
-// The most common numeric conversions are Atoi (string to int) and Itoa (int to string).
+// 最も一般的な数値の変換は Atoi (文字列から整数へ) と Itoa (整数から文字列へ) です。
 //
 //	i, err := strconv.Atoi("-42")
 //	s := strconv.Itoa(-42)
 //
-// These assume decimal and the Go int type.
+// これらは10進数とGoのint型を仮定しています。
 //
-// [ParseBool], [ParseFloat], [ParseInt], and [ParseUint] convert strings to values:
+// [ParseBool]、[ParseFloat]、[ParseInt]、および [ParseUint] は文字列を値に変換します：
 //
 //	b, err := strconv.ParseBool("true")
 //	f, err := strconv.ParseFloat("3.1415", 64)
 //	i, err := strconv.ParseInt("-42", 10, 64)
 //	u, err := strconv.ParseUint("42", 10, 64)
 //
-// The parse functions return the widest type (float64, int64, and uint64),
-// but if the size argument specifies a narrower width the result can be
-// converted to that narrower type without data loss:
+// パース関数は最も広い型（float64、int64、およびuint64）を返しますが、サイズ引数が
+// より狭い幅を指定している場合、結果はその狭い型にデータの損失なく変換できます：
 //
-//	s := "2147483647" // biggest int32
-//	i64, err := strconv.ParseInt(s, 10, 32)
-//	...
-//	i := int32(i64)
+// 	s := "2147483647" // 最大のint32
+// 	i64, err := strconv.ParseInt(s, 10, 32)
+// 	...
+// 	i := int32(i64)
 //
-// [FormatBool], [FormatFloat], [FormatInt], and [FormatUint] convert values to strings:
+// [FormatBool]、[FormatFloat]、[FormatInt]、および [FormatUint] は値を文字列に変換します：
 //
-//	s := strconv.FormatBool(true)
-//	s := strconv.FormatFloat(3.1415, 'E', -1, 64)
-//	s := strconv.FormatInt(-42, 16)
-//	s := strconv.FormatUint(42, 16)
+// 	s := strconv.FormatBool(true)
+// 	s := strconv.FormatFloat(3.1415, 'E', -1, 64)
+// 	s := strconv.FormatInt(-42, 16)
+// 	s := strconv.FormatUint(42, 16)
 //
-// [AppendBool], [AppendFloat], [AppendInt], and [AppendUint] are similar but
-// append the formatted value to a destination slice.
+// [AppendBool]、[AppendFloat]、[AppendInt]、および [AppendUint] は類似していますが、
+// フォーマットされた値を宛先スライスに追加します。
 //
-// # String Conversions
+// # 文字列の変換
 //
-// [Quote] and [QuoteToASCII] convert strings to quoted Go string literals.
-// The latter guarantees that the result is an ASCII string, by escaping
-// any non-ASCII Unicode with \u:
+// [Quote] および [QuoteToASCII] は文字列をクォートされたGo文字リテラルに変換します。
+// 後者は非ASCII Unicodeを \u でエスケープして、結果がASCII文字列であることを保証します：
 //
 //	q := strconv.Quote("Hello, 世界")
 //	q := strconv.QuoteToASCII("Hello, 世界")
 //
-// [QuoteRune] and [QuoteRuneToASCII] are similar but accept runes and
-// return quoted Go rune literals.
+// [QuoteRune] および [QuoteRuneToASCII] は類似していますが、runeを受け入れて、
+// クォートされたGo runeリテラルを返します。
 //
-// [Unquote] and [UnquoteChar] unquote Go string and rune literals.
+// [Unquote] および [UnquoteChar] はGo文字列およびruneリテラルのクォートを解除します。
 package strconv

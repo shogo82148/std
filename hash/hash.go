@@ -2,46 +2,55 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package hash provides interfaces for hash functions.
+//hash パッケージはハッシュ関数のためのインターフェースを提供します。
 package hash
 
 import "github.com/shogo82148/std/io"
 
-// Hash is the common interface implemented by all hash functions.
+// Hashはすべてのハッシュ関数で実装される共通のインターフェースです。
 //
-// Hash implementations in the standard library (e.g. hash/crc32 and
-// crypto/sha256) implement the encoding.BinaryMarshaler and
-// encoding.BinaryUnmarshaler interfaces. Marshaling a hash implementation
-// allows its internal state to be saved and used for additional processing
-// later, without having to re-write the data previously written to the hash.
-// The hash state may contain portions of the input in its original form,
-// which users are expected to handle for any possible security implications.
+// 標準ライブラリのハッシュ実装（例：hash/crc32およびcrypto/sha256）では、
+// encoding.BinaryMarshalerおよびencoding.BinaryUnmarshalerインターフェースが実装されます。
+// ハッシュ実装をマーシャリングすると、内部状態を保存し、後で追加の処理に使用することができます。
+// 以前にハッシュに書き込まれたデータを再度書き直すことなく、利用することができます。
+// ハッシュの状態には、入力の一部がそのまま含まれる場合がありますので、
+// ユーザーは可能なセキュリティの影響に対応することが期待されています。
 //
-// Compatibility: Any future changes to hash or crypto packages will endeavor
-// to maintain compatibility with state encoded using previous versions.
-// That is, any released versions of the packages should be able to
-// decode data written with any previously released version,
-// subject to issues such as security fixes.
-// See the Go compatibility document for background: https://golang.org/doc/go1compat
+// 互換性：ハッシュまたは暗号パッケージへの将来の変更は、
+// 以前のバージョンでエンコードされた状態を保持することを目指します。
+// つまり、パッケージのリリースバージョンは、
+// 以前のリリースバージョンで書かれたデータをデコードすることができるはずです。
+// ただし、セキュリティ修正などの問題により、異なる結果となる場合があります。
+// 背景については、Goの互換性文書を参照してください：https://golang.org/doc/go1compat
 type Hash interface {
+	// Write (via the embedded io.Writer interface) adds more data to the running hash.
+	// It never returns an error.
 	io.Writer
 
+	// Sum appends the current hash to b and returns the resulting slice.
+	// It does not change the underlying hash state.
 	Sum(b []byte) []byte
 
+	// Reset resets the Hash to its initial state.
 	Reset()
 
+	// Size returns the number of bytes Sum will return.
 	Size() int
 
+	// BlockSize returns the hash's underlying block size.
+	// The Write method must be able to accept any amount
+	// of data, but it may operate more efficiently if all writes
+	// are a multiple of the block size.
 	BlockSize() int
 }
 
-// Hash32 is the common interface implemented by all 32-bit hash functions.
+// Hash32はすべての32ビットハッシュ関数によって実装される共通インターフェースです。
 type Hash32 interface {
 	Hash
 	Sum32() uint32
 }
 
-// Hash64 is the common interface implemented by all 64-bit hash functions.
+// Hash64は、すべての64ビットハッシュ関数によって実装される共通のインタフェースです。
 type Hash64 interface {
 	Hash
 	Sum64() uint64

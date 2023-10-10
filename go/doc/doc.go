@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package doc extracts source code documentation from a Go AST.
+// Package doc はGo ASTからソースコードのドキュメンテーションを取得します。
 package doc
 
 import (
@@ -11,7 +11,7 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// Package is the documentation for an entire package.
+// Packageはパッケージ全体のドキュメントです。
 type Package struct {
 	Doc        string
 	Name       string
@@ -20,26 +20,24 @@ type Package struct {
 	Filenames  []string
 	Notes      map[string][]*Note
 
-	// Deprecated: For backward compatibility Bugs is still populated,
-	// but all new code should use Notes instead.
+	// 廃止予定: 後方互換性のためにBugsは引き続き使用されますが、新しいコードでは代わりにNotesを使用する必要があります。
 	Bugs []string
 
-	// declarations
+	// 宣言
 	Consts []*Value
 	Types  []*Type
 	Vars   []*Value
 	Funcs  []*Func
 
-	// Examples is a sorted list of examples associated with
-	// the package. Examples are extracted from _test.go files
-	// provided to NewFromFiles.
+	// Examplesはパッケージに関連付けられた例のソートされたリストです。
+	// これらの例はNewFromFilesに提供される_test.goファイルから抽出されます。
 	Examples []*Example
 
 	importByName map[string]string
 	syms         map[string]bool
 }
 
-// Value is the documentation for a (possibly grouped) var or const declaration.
+// Valueは（おそらくグループ化された）varまたはconstの宣言のためのドキュメントです。
 type Value struct {
 	Doc   string
 	Names []string
@@ -48,130 +46,110 @@ type Value struct {
 	order int
 }
 
-// Type is the documentation for a type declaration.
+// Typeは型宣言のためのドキュメントです。
 type Type struct {
 	Doc  string
 	Name string
 	Decl *ast.GenDecl
 
-	// associated declarations
+	// 関連する宣言
 	Consts  []*Value
 	Vars    []*Value
 	Funcs   []*Func
 	Methods []*Func
 
-	// Examples is a sorted list of examples associated with
-	// this type. Examples are extracted from _test.go files
-	// provided to NewFromFiles.
+	// Examplesは、この型に関連付けられた例のソートされたリストです。例は、NewFromFilesに提供される_test.goファイルから抽出されます。
 	Examples []*Example
 }
 
-// Func is the documentation for a func declaration.
+// Funcはfunc宣言のためのドキュメンテーションです。
 type Func struct {
 	Doc  string
 	Name string
 	Decl *ast.FuncDecl
 
-	// methods
-	// (for functions, these fields have the respective zero value)
+	// メソッド
+	// (関数の場合、これらのフィールドはそれぞれのゼロ値を持ちます)
 	Recv  string
 	Orig  string
 	Level int
 
-	// Examples is a sorted list of examples associated with this
-	// function or method. Examples are extracted from _test.go files
-	// provided to NewFromFiles.
+	// Examplesはこの関数またはメソッドに関連付けられた並べ替えられた例のリストです。例は、NewFromFilesに提供される_test.goファイルから抽出されます。
 	Examples []*Example
 }
 
-// A Note represents a marked comment starting with "MARKER(uid): note body".
-// Any note with a marker of 2 or more upper case [A-Z] letters and a uid of
-// at least one character is recognized. The ":" following the uid is optional.
-// Notes are collected in the Package.Notes map indexed by the notes marker.
+// Noteは"MARKER（uid）：ノートの本文"で始まるマークされたコメントを表します。
+// マーカーが2つ以上の大文字[A-Z]とuidが少なくとも1つの文字で構成されるノートは認識されます。
+// uidの後ろの":"はオプションです。
+// ノートはPackage.Notesマップに、ノートのマーカーをインデックスとして収集されます。
 type Note struct {
 	Pos, End token.Pos
 	UID      string
 	Body     string
 }
 
-// Mode values control the operation of New and NewFromFiles.
+// Modeの値は、NewとNewFromFilesの動作を制御します。
 type Mode int
 
 const (
-	// AllDecls says to extract documentation for all package-level
-	// declarations, not just exported ones.
+
+	// AllDeclsは、公開されているものだけでなく、すべてのパッケージレベルの宣言のドキュメントを抽出するよう指示します。
 	AllDecls Mode = 1 << iota
 
-	// AllMethods says to show all embedded methods, not just the ones of
-	// invisible (unexported) anonymous fields.
+	// AllMethodsは、見えない（非公開）無名フィールドのみでなく、すべての埋め込まれたメソッドを表示するように指定します。
 	AllMethods
 
-	// PreserveAST says to leave the AST unmodified. Originally, pieces of
-	// the AST such as function bodies were nil-ed out to save memory in
-	// godoc, but not all programs want that behavior.
+	// PreserveASTは、ASTを変更せずにそのまま保持することを指定します。もともと、godocでは、関数の本体などのASTの一部がnilになってメモリを節約していましたが、すべてのプログラムがその動作を望むわけではありません。
 	PreserveAST
 )
 
-// New computes the package documentation for the given package AST.
-// New takes ownership of the AST pkg and may edit or overwrite it.
-// To have the Examples fields populated, use NewFromFiles and include
-// the package's _test.go files.
+// Newは指定されたパッケージASTのパッケージドキュメントを計算します。
+// NewはAST pkgを所有し、編集または上書きすることができます。
+// Examplesフィールドが入力されている場合は、NewFromFilesを使用して
+// パッケージの_test.goファイルを含めてください。
 func New(pkg *ast.Package, importPath string, mode Mode) *Package
 
-// NewFromFiles computes documentation for a package.
+// NewFromFilesはパッケージのドキュメントを計算します。
 //
-// The package is specified by a list of *ast.Files and corresponding
-// file set, which must not be nil.
-// NewFromFiles uses all provided files when computing documentation,
-// so it is the caller's responsibility to provide only the files that
-// match the desired build context. "go/build".Context.MatchFile can
-// be used for determining whether a file matches a build context with
-// the desired GOOS and GOARCH values, and other build constraints.
-// The import path of the package is specified by importPath.
+// パッケージは*ast.Filesのリストと対応するファイルセットで指定されます。
+// ファイルセットはnilであってはなりません。
+// NewFromFilesはドキュメントを計算する際に提供されたすべてのファイルを使用しますので、
+// 呼び出し側は必要なビルドコンテキストに一致するファイルのみを提供する責任があります。
+// ファイルがビルドコンテキストに一致するかどうかを判断するためには、
+// "go/build".Context.MatchFileを使用できます。
+// この関数は、望ましいGOOSおよびGOARCHの値と他のビルド制約と一致するかどうかを判断します。
+// パッケージのインポートパスはimportPathで指定されます。
 //
-// Examples found in _test.go files are associated with the corresponding
-// type, function, method, or the package, based on their name.
-// If the example has a suffix in its name, it is set in the
-// Example.Suffix field. Examples with malformed names are skipped.
+// _test.goファイルに見つかった例は、それらの名前に基づいて対応する型、関数、メソッド、またはパッケージに関連付けられます。
+// もし例の名前に接尾辞がある場合、それはExample.Suffixフィールドに設定されます。
+// 名前が正しくない例はスキップされます。
 //
-// Optionally, a single extra argument of type Mode can be provided to
-// control low-level aspects of the documentation extraction behavior.
+// オプションとして、抽出の振る舞いの低レベルな側面を制御するためにMode型の単一の追加引数を指定することができます。
 //
-// NewFromFiles takes ownership of the AST files and may edit them,
-// unless the PreserveAST Mode bit is on.
+// NewFromFilesはASTファイルの所有権を持ち、それらを編集する場合があります。
+// ただし、PreserveASTモードビットがオンになっている場合は、編集しません。
 func NewFromFiles(fset *token.FileSet, files []*ast.File, importPath string, opts ...any) (*Package, error)
 
-// Parser returns a doc comment parser configured
-// for parsing doc comments from package p.
-// Each call returns a new parser, so that the caller may
-// customize it before use.
+// Parserは、パッケージpからドキュメントコメントを解析するために設定されたドキュメントコメントパーサーを返します。
+// 各呼び出しは新しいパーサーを返すため、呼び出し元は使用前にカスタマイズすることができます。
 func (p *Package) Parser() *comment.Parser
 
-// Printer returns a doc comment printer configured
-// for printing doc comments from package p.
-// Each call returns a new printer, so that the caller may
-// customize it before use.
+// Printerは、パッケージpからドキュメントコメントの印刷に設定されたドキュメントコメントプリンターを返します。
+// 各呼び出しは、新しいプリンターを返すため、呼び出し元は使用前にカスタマイズすることができます。
 func (p *Package) Printer() *comment.Printer
 
-// HTML returns formatted HTML for the doc comment text.
+// HTMLは、ドキュメントコメントテキストのフォーマットされたHTMLを返します。
 //
-// To customize details of the HTML, use [Package.Printer]
-// to obtain a [comment.Printer], and configure it
-// before calling its HTML method.
+// HTMLの詳細をカスタマイズするには、[Package.Printer]を使用して[comment.Printer]を取得し、そのHTMLメソッドを呼び出す前に設定します。
 func (p *Package) HTML(text string) []byte
 
-// Markdown returns formatted Markdown for the doc comment text.
+// MarkdownはドキュメントコメントテキストのフォーマットされたMarkdownを返します。
 //
-// To customize details of the Markdown, use [Package.Printer]
-// to obtain a [comment.Printer], and configure it
-// before calling its Markdown method.
+// Markdownの詳細をカスタマイズするには、[Package.Printer]を使用して[comment.Printer]を取得し、
+// そのMarkdownメソッドを呼び出す前に設定してください。
 func (p *Package) Markdown(text string) []byte
 
-// Text returns formatted text for the doc comment text,
-// wrapped to 80 Unicode code points and using tabs for
-// code block indentation.
+// Textは、ドキュメントコメントのテキストを80のユニコードコードポイントに折り返し、コードブロックのインデントにはタブを使用したフォーマット済みのテキストを返します。
 //
-// To customize details of the formatting, use [Package.Printer]
-// to obtain a [comment.Printer], and configure it
-// before calling its Text method.
+// フォーマットの詳細をカスタマイズするには、[Package.Printer]を使用して[comment.Printer]を取得し、そのTextメソッドを呼び出す前に設定してください。
 func (p *Package) Text(text string) []byte

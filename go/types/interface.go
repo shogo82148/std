@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// An Interface represents an interface type.
+// インターフェースはインターフェース型を表します。
 type Interface struct {
 	check     *Checker
 	methods   []*Func
@@ -20,73 +20,66 @@ type Interface struct {
 	tset *_TypeSet
 }
 
-// NewInterface returns a new interface for the given methods and embedded types.
-// NewInterface takes ownership of the provided methods and may modify their types
-// by setting missing receivers.
+// NewInterfaceは与えられたメソッドと埋め込まれた型に対して新しいインターフェースを返します。
+// NewInterfaceは提供されたメソッドの所有権を持ち、欠けているレシーバーを設定することでその型を変更する可能性があります。
 //
-// Deprecated: Use NewInterfaceType instead which allows arbitrary embedded types.
+// 廃止予定: 代わりに任意の埋め込まれた型を許可するNewInterfaceTypeを使用してください。
 func NewInterface(methods []*Func, embeddeds []*Named) *Interface
 
-// NewInterfaceType returns a new interface for the given methods and embedded
-// types. NewInterfaceType takes ownership of the provided methods and may
-// modify their types by setting missing receivers.
+// NewInterfaceTypeは、指定されたメソッドと埋め込み型に対して新しいインターフェースを返します。
+// NewInterfaceTypeは、提供されたメソッドの所有権を受け取り、抜けているレシーバを設定することで型を変更する場合があります。
 //
-// To avoid race conditions, the interface's type set should be computed before
-// concurrent use of the interface, by explicitly calling Complete.
+// レースコンディションを避けるために、インターフェースの型セットは、インターフェースの並行使用前にCompleteを明示的に呼び出すことで計算する必要があります。
 func NewInterfaceType(methods []*Func, embeddeds []Type) *Interface
 
-// MarkImplicit marks the interface t as implicit, meaning this interface
-// corresponds to a constraint literal such as ~T or A|B without explicit
-// interface embedding. MarkImplicit should be called before any concurrent use
-// of implicit interfaces.
+// MarkImplicitは、interface tを暗黙的にマークします。
+// これは、明示的なinterfaceの埋め込みなしに、~TやA|Bなどの制約リテラルに対応することを意味します。
+// MarkImplicitは、暗黙のinterfaceを同時使用する前に呼び出す必要があります。
 func (t *Interface) MarkImplicit()
 
-// NumExplicitMethods returns the number of explicitly declared methods of interface t.
+// NumExplicitMethods はインターフェース t の明示的に宣言されたメソッドの数を返します。
 func (t *Interface) NumExplicitMethods() int
 
-// ExplicitMethod returns the i'th explicitly declared method of interface t for 0 <= i < t.NumExplicitMethods().
-// The methods are ordered by their unique Id.
+// ExplicitMethodは0 <= i < t.NumExplicitMethods()に対して、インターフェースtのi番目に明示的に宣言されたメソッドを返します。
+// メソッドは一意のIdによって順序付けられます。
 func (t *Interface) ExplicitMethod(i int) *Func
 
-// NumEmbeddeds returns the number of embedded types in interface t.
+// NumEmbeddeds はインターフェース t 内の埋め込まれた型の数を返します。
 func (t *Interface) NumEmbeddeds() int
 
-// Embedded returns the i'th embedded defined (*Named) type of interface t for 0 <= i < t.NumEmbeddeds().
-// The result is nil if the i'th embedded type is not a defined type.
+// Embeddedは、0 <= i < t.NumEmbeddeds() の範囲でインターフェースtのi番目の埋め込まれた(*Named)型を返します。
+// i番目の埋め込まれた型が定義済みの型でない場合、結果はnilです。
 //
-// Deprecated: Use EmbeddedType which is not restricted to defined (*Named) types.
+// 非推奨: 定義済みの(*Named)型に制限されないEmbeddedTypeを使用してください。
 func (t *Interface) Embedded(i int) *Named
 
-// EmbeddedType returns the i'th embedded type of interface t for 0 <= i < t.NumEmbeddeds().
+// EmbeddedTypeは0 <= i < t.NumEmbeddeds()におけるインターフェースtのi番目の埋め込まれた型を返します。
 func (t *Interface) EmbeddedType(i int) Type
 
-// NumMethods returns the total number of methods of interface t.
+// NumMethodsはインターフェースtのメソッドの合計数を返します。
 func (t *Interface) NumMethods() int
 
-// Method returns the i'th method of interface t for 0 <= i < t.NumMethods().
-// The methods are ordered by their unique Id.
+// メソッドは、0 <= i < t.NumMethods() を満たす i の場合に、
+// インターフェース t の i 番目のメソッドを返します。
+// メソッドはそのユニークな ID によって順序づけされます。
 func (t *Interface) Method(i int) *Func
 
-// Empty reports whether t is the empty interface.
+// Emptyはtが空のインターフェースであるかどうかを報告します。
 func (t *Interface) Empty() bool
 
-// IsComparable reports whether each type in interface t's type set is comparable.
+// IsComparableはインターフェースtの型セットの各タイプが比較可能かどうかを報告します。
 func (t *Interface) IsComparable() bool
 
-// IsMethodSet reports whether the interface t is fully described by its method
-// set.
+// IsMethodSetは、インタフェースtがそのメソッドセットによって完全に記述されているかどうかを報告します。
 func (t *Interface) IsMethodSet() bool
 
-// IsImplicit reports whether the interface t is a wrapper for a type set literal.
+// IsImplicitは、インターフェースtが型セットリテラルのラッパーであるかどうかを報告します。
 func (t *Interface) IsImplicit() bool
 
-// Complete computes the interface's type set. It must be called by users of
-// NewInterfaceType and NewInterface after the interface's embedded types are
-// fully defined and before using the interface type in any way other than to
-// form other types. The interface must not contain duplicate methods or a
-// panic occurs. Complete returns the receiver.
+// Completeはインターフェースのタイプセットを計算します。これは、
+// NewInterfaceTypeとNewInterfaceのユーザーによって呼び出される必要があります。インターフェースの埋め込まれた型が完全に定義され、他の型を形成する以外の方法でインターフェースのタイプを使用する前に呼び出す必要があります。インターフェースに重複するメソッドが含まれている場合、パニックが発生します。Completeはレシーバーを返します。
 //
-// Interface types that have been completed are safe for concurrent use.
+// 完了済みのインターフェース型は、同時に使用することが安全です。
 func (t *Interface) Complete() *Interface
 
 func (t *Interface) Underlying() Type

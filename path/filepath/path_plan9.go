@@ -4,11 +4,11 @@
 
 package filepath
 
-// IsAbs reports whether the path is absolute.
+// IsAbsはパスが絶対パスであるかどうかを報告します。
 func IsAbs(path string) bool
 
-// HasPrefix exists for historical compatibility and should not be used.
+// HasPrefixは歴史的な互換性のために存在しており、使用するべきではありません。
 //
-// Deprecated: HasPrefix does not respect path boundaries and
-// does not ignore case when required.
+// Deprecated: HasPrefixはパスの境界を尊重せず、
+// 必要な場合に大文字と小文字を無視しません。
 func HasPrefix(p, prefix string) bool

@@ -3,39 +3,35 @@
 // license that can be found in the LICENSE file.
 
 /*
-Trace is a tool for viewing trace files.
+Traceはトレースファイルを表示するためのツールです。
 
-Trace files can be generated with:
+トレースファイルは以下で生成できます：
   - runtime/trace.Start
-  - net/http/pprof package
+  - net/http/pprofパッケージ
   - go test -trace
 
-Example usage:
-Generate a trace file with 'go test':
+使用例：
+'trace.out'というトレースファイルを'go test'で生成する：
 
 	go test -trace trace.out pkg
 
-View the trace in a web browser:
+ウェブブラウザでトレースを表示する：
 
 	go tool trace trace.out
 
-Generate a pprof-like profile from the trace:
+トレースからpprofのようなプロファイルを生成する：
 
 	go tool trace -pprof=TYPE trace.out > TYPE.pprof
 
-Supported profile types are:
-  - net: network blocking profile
-  - sync: synchronization blocking profile
-  - syscall: syscall blocking profile
-  - sched: scheduler latency profile
+サポートされているプロファイルのタイプ：
+  - net: ネットワークブロッキングプロファイル
+  - sync: 同期ブロッキングプロファイル
+  - syscall: システムコールブロッキングプロファイル
+  - sched: スケジューラのレイテンシプロファイル
 
-Then, you can use the pprof tool to analyze the profile:
+その後、プロファイルを分析するためにpprofツールを使用できます：
 
 	go tool pprof TYPE.pprof
 
-Note that while the various profiles available when launching
-'go tool trace' work on every browser, the trace viewer itself
-(the 'view trace' page) comes from the Chrome/Chromium project
-and is only actively tested on that browser.
-*/
-package main
+注意：'go tool trace'を起動した場合に利用可能なさまざまなプロファイルは、すべてのブラウザで動作しますが、トレースビューア自体（'view trace'ページ）はChrome/Chromiumプロジェクトから提供されており、そのブラウザでのみアクティブにテストされています。
+*/package main

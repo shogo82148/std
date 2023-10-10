@@ -4,9 +4,8 @@
 
 package runtime
 
-// Compiler is the name of the compiler toolchain that built the
-// running binary. Known toolchains are:
+// Compilerは、実行中のバイナリを構築したコンパイラツールチェーンの名前です。既知のツールチェーンは次のとおりです:
 //
-//	gc      Also known as cmd/compile.
-//	gccgo   The gccgo front end, part of the GCC compiler suite.
+// gc       cmd/compileとしても知られています。
+// gccgo    GCCコンパイラスイートの一部であるgccgoフロントエンドです。
 const Compiler = "gc"

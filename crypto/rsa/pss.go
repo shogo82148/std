@@ -10,45 +10,38 @@ import (
 )
 
 const (
-	// PSSSaltLengthAuto causes the salt in a PSS signature to be as large
-	// as possible when signing, and to be auto-detected when verifying.
+
+	// PSSSaltLengthAuto は、PSS署名におけるソルトをできるだけ大きくし、検証時には自動で検出されるようにします。
 	PSSSaltLengthAuto = 0
-	// PSSSaltLengthEqualsHash causes the salt length to equal the length
-	// of the hash used in the signature.
+
+	// PSSSaltLengthEqualsHash は、署名に使用されるハッシュの長さと同じ長さのソルトを使用します。
 	PSSSaltLengthEqualsHash = -1
 )
 
-// PSSOptions contains options for creating and verifying PSS signatures.
+// PSSOptionsはPSS署名の作成と検証のためのオプションを含んでいます。
 type PSSOptions struct {
-	// SaltLength controls the length of the salt used in the PSS signature. It
-	// can either be a positive number of bytes, or one of the special
-	// PSSSaltLength constants.
+
+	// SaltLengthはPSS署名で使用されるソルトの長さを制御します。
+	// それはバイト数の正数であるか、または特別なPSSSaltLengthの定数のいずれかです。
 	SaltLength int
 
-	// Hash is the hash function used to generate the message digest. If not
-	// zero, it overrides the hash function passed to SignPSS. It's required
-	// when using PrivateKey.Sign.
+	// Hashはメッセージダイジェストを生成するために使用されるハッシュ関数です。ゼロでない場合、SignPSSに渡されたハッシュ関数を上書きします。PrivateKey.Signを使用する場合には必須です。
 	Hash crypto.Hash
 }
 
-// HashFunc returns opts.Hash so that PSSOptions implements crypto.SignerOpts.
+// HashFunc は opts.Hash を返します。これにより、PSSOptions は crypto.SignerOpts を実装します。
 func (opts *PSSOptions) HashFunc() crypto.Hash
 
-// SignPSS calculates the signature of digest using PSS.
+// SignPSSはPSSを使用してダイジェストの署名を計算します。
 //
-// digest must be the result of hashing the input message using the given hash
-// function. The opts argument may be nil, in which case sensible defaults are
-// used. If opts.Hash is set, it overrides hash.
+// ダイジェストは、指定されたハッシュ関数を使用して入力メッセージをハッシュすることによって得られた結果である必要があります。
+// opts引数は、nilの場合、適切なデフォルト値が使用されます。opts.Hashが設定されている場合は、hashが上書きされます。
 //
-// The signature is randomized depending on the message, key, and salt size,
-// using bytes from rand. Most applications should use [crypto/rand.Reader] as
-// rand.
+// 署名は、メッセージ、キー、およびソルトサイズに応じてランダム化され、ランドからのバイトを使用します。
+// ほとんどのアプリケーションでは、[crypto/rand.Reader]をrandとして使用するべきです。
 func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, digest []byte, opts *PSSOptions) ([]byte, error)
 
-// VerifyPSS verifies a PSS signature.
+// VerifyPSSはPSS署名を検証します。
 //
-// A valid signature is indicated by returning a nil error. digest must be the
-// result of hashing the input message using the given hash function. The opts
-// argument may be nil, in which case sensible defaults are used. opts.Hash is
-// ignored.
+// エラーがnilである場合、有効な署名です。ダイジェストは入力メッセージを与えられたハッシュ関数を使用してハッシュした結果である必要があります。opts引数はnilである場合、適切なデフォルト値が使用されます。opts.Hashは無視されます。
 func VerifyPSS(pub *PublicKey, hash crypto.Hash, digest []byte, sig []byte, opts *PSSOptions) error
