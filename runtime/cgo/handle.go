@@ -4,19 +4,15 @@
 
 package cgo
 
-// Handle provides a way to pass values that contain Go pointers
-// (pointers to memory allocated by Go) between Go and C without
-// breaking the cgo pointer passing rules. A Handle is an integer
-// value that can represent any Go value. A Handle can be passed
-// through C and back to Go, and Go code can use the Handle to
-// retrieve the original Go value.
+// Handleは、Goで割り当てられたメモリのポインタ（Goのポインタ）を含む値を、
+// cgoのポインタ渡し規則を破ることなく、GoとCの間でやり取りするための手段を提供します。
+// Handleは、任意のGoの値を表すことができる整数値です。
+// Handleは、Cを介してGoに渡すことも、Goのコードで元のGoの値を取得するためにHandleを使用することもできます。
 //
-// The underlying type of Handle is guaranteed to fit in an integer type
-// that is large enough to hold the bit pattern of any pointer. The zero
-// value of a Handle is not valid, and thus is safe to use as a sentinel
-// in C APIs.
+// Handleの基になる型は、ポインタのビットパターンを保持できるだけの十分に大きな整数型に収まることが保証されています。
+// Handleのゼロ値は無効であり、CのAPIでセンチネルとして安全に使用することができます。
 //
-// For instance, on the Go side:
+// たとえば、Goの側では：
 //
 //	package main
 //
@@ -43,7 +39,7 @@ package cgo
 //		// Output: hello Go
 //	}
 //
-// and on the C side:
+// Cの側では：
 //
 //	#include <stdint.h> // for uintptr_t
 //
@@ -55,11 +51,9 @@ package cgo
 //	    MyGoPrint(handle);
 //	}
 //
-// Some C functions accept a void* argument that points to an arbitrary
-// data value supplied by the caller. It is not safe to coerce a cgo.Handle
-// (an integer) to a Go unsafe.Pointer, but instead we can pass the address
-// of the cgo.Handle to the void* parameter, as in this variant of the
-// previous example:
+// 特定のCの関数は、呼び出し元が提供した任意のデータの値を指すvoid*引数を受け入れます。
+// cgo.Handle（整数）をGoのunsafe.Pointerに強制変換することは安全ではありませんが、
+// 代わりにcgo.Handleのアドレスをvoid*パラメータに渡すことができます。次に示す前の例のバリアントでは、このようにします。
 //
 //	package main
 //
@@ -91,25 +85,22 @@ package cgo
 //	}
 type Handle uintptr
 
-// NewHandle returns a handle for a given value.
+// NewHandleは指定された値のハンドルを返します。
 //
-// The handle is valid until the program calls Delete on it. The handle
-// uses resources, and this package assumes that C code may hold on to
-// the handle, so a program must explicitly call Delete when the handle
-// is no longer needed.
+// このハンドルはprogramがそれに対してDeleteを呼び出すまで有効です。ハンドルはリソースを使用し、
+// このパッケージではCコードがハンドルを保持している可能性があるため、プログラムはハンドルが不要になったら
+// 明示的にDeleteを呼び出す必要があります。
 //
-// The intended use is to pass the returned handle to C code, which
-// passes it back to Go, which calls Value.
+// この関数の意図された使用方法は、返されたハンドルをCコードに渡し、
+// CコードがそれをGoに戻し、GoがValueを呼び出すことです。
 func NewHandle(v any) Handle
 
-// Value returns the associated Go value for a valid handle.
+// Valueは有効なハンドルに関連付けられたGoの値を返します。
 //
-// The method panics if the handle is invalid.
+// ハンドルが無効な場合、このメソッドはパニックを発生させます。
 func (h Handle) Value() any
 
-// Delete invalidates a handle. This method should only be called once
-// the program no longer needs to pass the handle to C and the C code
-// no longer has a copy of the handle value.
+// Deleteはハンドルを無効にします。このメソッドは、プログラムがもはやCにハンドルを渡す必要がなくなり、Cのコードがハンドルの値のコピーを持っていない場合にのみ呼び出すべきです。
 //
-// The method panics if the handle is invalid.
+// ハンドルが無効な場合、このメソッドはパニックを引き起こします。
 func (h Handle) Delete()
