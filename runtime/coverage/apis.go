@@ -8,42 +8,20 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// WriteMetaDir writes a coverage meta-data file for the currently
-// running program to the directory specified in 'dir'. An error will
-// be returned if the operation can't be completed successfully (for
-// example, if the currently running program was not built with
-// "-cover", or if the directory does not exist).
+// WriteMetaDirは現在実行中のプログラムのカバレッジのメタデータファイルを'dir'で指定されたディレクトリに書き込みます。操作が正常に完了できない場合にはエラーが返されます（たとえば、現在実行中のプログラムが"-cover"でビルドされていない場合、またはディレクトリが存在しない場合など）。
 func WriteMetaDir(dir string) error
 
-// WriteMeta writes the meta-data content (the payload that would
-// normally be emitted to a meta-data file) for the currently running
-// program to the writer 'w'. An error will be returned if the
-// operation can't be completed successfully (for example, if the
-// currently running program was not built with "-cover", or if a
-// write fails).
+// WriteMetaは、現在実行中のプログラムのメタデータコンテンツ（通常はメタデータファイルに出力されるペイロード）をライター 'w'に書き込みます。操作が正常に完了できない場合（例えば、現在実行中のプログラムが "-cover" でビルドされていない場合や書き込みに失敗した場合など）、エラーが返されます。
 func WriteMeta(w io.Writer) error
 
-// WriteCountersDir writes a coverage counter-data file for the
-// currently running program to the directory specified in 'dir'. An
-// error will be returned if the operation can't be completed
-// successfully (for example, if the currently running program was not
-// built with "-cover", or if the directory does not exist). The
-// counter data written will be a snapshot taken at the point of the
-// call.
+// WriteCountersDirは、現在実行中のプログラムのカバレッジカウンターデータファイルを'dir'で指定されたディレクトリに書き込みます。操作を正常に完了できない場合（たとえば、現在実行中のプログラムが'-cover'でビルドされていない場合や、ディレクトリが存在しない場合など）、エラーが返されます。書き込まれるカウンターデータは、呼び出し時のスナップショットとなります。
 func WriteCountersDir(dir string) error
 
-// WriteCounters writes coverage counter-data content for the
-// currently running program to the writer 'w'. An error will be
-// returned if the operation can't be completed successfully (for
-// example, if the currently running program was not built with
-// "-cover", or if a write fails). The counter data written will be a
-// snapshot taken at the point of the invocation.
+// WriteCountersは現在実行中のプログラムのカバレッジカウンターデータの内容をライター'w'に書き込みます。現在実行中のプログラムが"-cover"でビルドされていない場合や書き込みが失敗した場合など、操作が正常に完了できない場合はエラーが返されます。書き込まれるカウンターデータは、呼び出し時のスナップショットになります。
 func WriteCounters(w io.Writer) error
 
-// ClearCounters clears/resets all coverage counter variables in the
-// currently running program. It returns an error if the program in
-// question was not built with the "-cover" flag. Clearing of coverage
-// counters is also not supported for programs not using atomic
-// counter mode (see more detailed comments below for the rationale
-// here).
+// ClearCountersは現在実行中のプログラム内のカバレッジカウンタ変数をクリア/リセットします。
+// "-cover"フラグでビルドされたプログラムではない場合、エラーが返されます。
+// カウンタのクリアは、アトミックカウンタモードを使用しないプログラムに対してもサポートされていません
+// (詳細なコメントについては、下記を参照してください）。
 func ClearCounters() error
