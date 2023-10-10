@@ -4,13 +4,10 @@
 
 package reflect
 
-// VisibleFields returns all the visible fields in t, which must be a
-// struct type. A field is defined as visible if it's accessible
-// directly with a FieldByName call. The returned fields include fields
-// inside anonymous struct members and unexported fields. They follow
-// the same order found in the struct, with anonymous fields followed
-// immediately by their promoted fields.
+// VisibleFieldsはtの中のすべての可視フィールドを返します。tはstruct型である必要があります。
+// フィールドは、FieldByName呼び出しで直接アクセス可能ならば、可視として定義されます。
+// 返されるフィールドには、無名structメンバー内のフィールドと非公開フィールドが含まれます。
+// これらは、struct内で見つかった順序と同じ並び順になります。無名フィールドは、即座にそれに続く昇格フィールドが続きます。
 //
-// For each element e of the returned slice, the corresponding field
-// can be retrieved from a value v of type t by calling v.FieldByIndex(e.Index).
+// 返されるスライスの各要素eに対応するフィールドは、値vのタイプtからv.FieldByIndex(e.Index)を呼び出すことで取得できます。
 func VisibleFields(t Type) []StructField
