@@ -4,10 +4,6 @@
 
 package main
 
-// IsRuntimePackagePath examines 'pkgpath' and returns TRUE if it
-// belongs to the collection of "runtime-related" packages, including
-// "runtime" itself, "reflect", "syscall", and the
-// "runtime/internal/*" packages.
-//
-// Keep in sync with cmd/internal/objabi/path.go:IsRuntimePackagePath.
+// IsRuntimePackagePathは 'pkgpath' を調べ、それが「ランタイム関連」のパッケージコレクションに属している場合はTRUEを返します。これには、"runtime"自体、"reflect"、"syscall"、および"runtime/internal/*"パッケージが含まれます。
+// cmd/internal/objabi/path.goとの同期を維持してください。:IsRuntimePackagePath
 func IsRuntimePackagePath(pkgpath string) bool
