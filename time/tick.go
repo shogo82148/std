@@ -4,34 +4,23 @@
 
 package time
 
-// A Ticker holds a channel that delivers “ticks” of a clock
-// at intervals.
+// Tickerは、時計の間隔で "ticks" を配信するチャネルを保持します。
 type Ticker struct {
 	C <-chan Time
 	r runtimeTimer
 }
 
-// NewTicker returns a new Ticker containing a channel that will send
-// the current time on the channel after each tick. The period of the
-// ticks is specified by the duration argument. The ticker will adjust
-// the time interval or drop ticks to make up for slow receivers.
-// The duration d must be greater than zero; if not, NewTicker will
-// panic. Stop the ticker to release associated resources.
+// NewTickerは、各チック後にチャネルに現在の時刻を送信するチッカーを返します。チックの期間はduration引数で指定されます。チッカーは、遅い受信者のために時間間隔を調整するか、チックを削除します。 dの期間はゼロより大きくする必要があります。そうでない場合、NewTickerはパニックを起こします。チッカーを停止して関連するリソースを解放します。
 func NewTicker(d Duration) *Ticker
 
-// Stop turns off a ticker. After Stop, no more ticks will be sent.
-// Stop does not close the channel, to prevent a concurrent goroutine
-// reading from the channel from seeing an erroneous "tick".
+// Stopはティッカーを停止します。Stop後は、もうティックが送信されません。
+// Stopはチャネルを閉じないため、チャネルから読み取り中の並行ゴルーチンが誤った「ティック」を見ることを防ぎます。
 func (t *Ticker) Stop()
 
-// Reset stops a ticker and resets its period to the specified duration.
-// The next tick will arrive after the new period elapses. The duration d
-// must be greater than zero; if not, Reset will panic.
+// Resetはタイマーを停止し、指定された期間でタイマーをリセットします。
+// 新しい期間が経過すると、次のティックが到着します。期間dは0より大きくなければなりません。もしそうでない場合、Resetはパニックを引き起こします。
 func (t *Ticker) Reset(d Duration)
 
-// Tick is a convenience wrapper for NewTicker providing access to the ticking
-// channel only. While Tick is useful for clients that have no need to shut down
-// the Ticker, be aware that without a way to shut it down the underlying
-// Ticker cannot be recovered by the garbage collector; it "leaks".
-// Unlike NewTicker, Tick will return nil if d <= 0.
+// Tickは、ティッキングチャネルにのみアクセスを提供するためのNewTickerの便利なラッパーです。Tickerをシャットダウンする必要のないクライアントに便利ですが、シャットダウンの方法がないため、ガベージコレクタによって元のTickerは回収されません。"リーク"します。
+// NewTickerとは異なり、d <= 0の場合にはnilが返されます。
 func Tick(d Duration) <-chan Time
