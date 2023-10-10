@@ -8,11 +8,9 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// ExampleMultiKeys demonstrates a technique for sorting a struct type using different
-// sets of multiple fields in the comparison. We chain together "Less" functions, each of
-// which compares a single field.
+// ExampleMultiKeysは、比較に異なる複数のフィールドのセットを使用してstructタイプをソートするためのテクニックを示しています。各フィールドを比較する「Less」関数を連鎖させます。
 func Example_sortMultiKeys() {
-	// Closures that order the Change structure.
+	// Change構造体を順序付けるクロージャー。
 	user := func(c1, c2 *Change) bool {
 		return c1.user < c2.user
 	}
@@ -23,14 +21,14 @@ func Example_sortMultiKeys() {
 		return c1.lines < c2.lines
 	}
 	decreasingLines := func(c1, c2 *Change) bool {
-		return c1.lines > c2.lines // Note: > orders downwards.
+		return c1.lines > c2.lines // 注意：> は下方向に並べ替えます。
 	}
 
-	// Simple use: Sort by user.
+	// 簡単な使い方: ユーザーでソートする。
 	OrderedBy(user).Sort(changes)
 	fmt.Println("By user:", changes)
 
-	// More examples.
+	// もっと多くの例。
 	OrderedBy(user, increasingLines).Sort(changes)
 	fmt.Println("By user,<lines:", changes)
 
