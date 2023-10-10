@@ -4,33 +4,32 @@
 
 package debug
 
-// ReadBuildInfo returns the build information embedded
-// in the running binary. The information is available only
-// in binaries built with module support.
+// ReadBuildInfoは実行中のバイナリに埋め込まれたビルド情報を返します。
+// この情報はモジュールサポートでビルドされたバイナリでのみ利用可能です。
 func ReadBuildInfo() (info *BuildInfo, ok bool)
 
-// BuildInfo represents the build information read from a Go binary.
+// BuildInfoはGoバイナリから読み取られるビルド情報を表します。
 type BuildInfo struct {
-	// GoVersion is the version of the Go toolchain that built the binary
-	// (for example, "go1.19.2").
+
+	// GoVersionはバイナリをビルドしたGoツールチェーンのバージョンです
+	// （例: "go1.19.2").
 	GoVersion string
 
-	// Path is the package path of the main package for the binary
-	// (for example, "golang.org/x/tools/cmd/stringer").
+	// Pathはバイナリのメインパッケージのパッケージパスです
+	// （例：「golang.org/x/tools/cmd/stringer」）。
 	Path string
 
-	// Main describes the module that contains the main package for the binary.
+	// Mainはバイナリのmainパッケージを含むモジュールを説明します。
 	Main Module
 
-	// Deps describes all the dependency modules, both direct and indirect,
-	// that contributed packages to the build of this binary.
+	// Depsは、このバイナリのビルドに寄与したパッケージの直接および間接の依存モジュールをすべて説明します。
 	Deps []*Module
 
-	// Settings describes the build settings used to build the binary.
+	// Settingsはバイナリのビルドに使用されるビルド設定を記述しています。
 	Settings []BuildSetting
 }
 
-// A Module describes a single module included in a build.
+// Moduleはビルドに含まれる単一のモジュールを記述します。
 type Module struct {
 	Path    string
 	Version string
@@ -38,28 +37,29 @@ type Module struct {
 	Replace *Module
 }
 
-// A BuildSetting is a key-value pair describing one setting that influenced a build.
+// BuildSettingはビルドに影響を与える1つの設定を表すキーと値のペアです。
 //
-// Defined keys include:
+// 定義されたキーには以下のものがあります:
 //
-//   - -buildmode: the buildmode flag used (typically "exe")
-//   - -compiler: the compiler toolchain flag used (typically "gc")
-//   - CGO_ENABLED: the effective CGO_ENABLED environment variable
-//   - CGO_CFLAGS: the effective CGO_CFLAGS environment variable
-//   - CGO_CPPFLAGS: the effective CGO_CPPFLAGS environment variable
-//   - CGO_CXXFLAGS:  the effective CGO_CPPFLAGS environment variable
-//   - CGO_LDFLAGS: the effective CGO_CPPFLAGS environment variable
-//   - GOARCH: the architecture target
-//   - GOAMD64/GOARM/GO386/etc: the architecture feature level for GOARCH
-//   - GOOS: the operating system target
-//   - vcs: the version control system for the source tree where the build ran
-//   - vcs.revision: the revision identifier for the current commit or checkout
-//   - vcs.time: the modification time associated with vcs.revision, in RFC3339 format
-//   - vcs.modified: true or false indicating whether the source tree had local modifications
+//   - -buildmode: 使用されたビルドモードフラグ（通常は "exe"）
+//   - -compiler: 使用されたコンパイラツールチェインフラグ（通常は "gc"）
+//   - CGO_ENABLED: 有効なCGO_ENABLED環境変数
+//   - CGO_CFLAGS: 有効なCGO_CFLAGS環境変数
+//   - CGO_CPPFLAGS: 有効なCGO_CPPFLAGS環境変数
+//   - CGO_CXXFLAGS: 有効なCGO_CPPFLAGS環境変数
+//   - CGO_LDFLAGS: 有効なCGO_CPPFLAGS環境変数
+//   - GOARCH: アーキテクチャのターゲット
+//   - GOAMD64/GOARM/GO386/など: GOARCHのアーキテクチャ機能レベル
+//   - GOOS: オペレーティングシステムのターゲット
+//   - vcs: ビルドが実行されたソースツリーのバージョン管理システム
+//   - vcs.revision: 現在のコミットまたはチェックアウトのためのリビジョン識別子
+//   - vcs.time: vcs.revisionに関連付けられた変更時刻（RFC3339形式）
+//   - vcs.modified: ソースツリーにローカルの変更があるかどうかを示すtrueまたはfalseです
 type BuildSetting struct {
-	// Key and Value describe the build setting.
-	// Key must not contain an equals sign, space, tab, or newline.
-	// Value must not contain newlines ('\n').
+
+	// KeyとValueはビルド設定を説明します。
+	// Keyには等号、スペース、タブ、改行を含めることはできません。
+	// Valueには改行（'\n'）を含めることはできません。
 	Key, Value string
 }
 
