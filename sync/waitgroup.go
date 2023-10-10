@@ -8,16 +8,14 @@ import (
 	"github.com/shogo82148/std/sync/atomic"
 )
 
-// A WaitGroup waits for a collection of goroutines to finish.
-// The main goroutine calls Add to set the number of
-// goroutines to wait for. Then each of the goroutines
-// runs and calls Done when finished. At the same time,
-// Wait can be used to block until all goroutines have finished.
+// WaitGroupは、一連のゴルーチンの完了を待機します。
+// メインゴルーチンは、待機するゴルーチンの数を設定するためにAddを呼び出します。
+// それぞれのゴルーチンは実行され、終了時にDoneを呼び出します。
+// 同時に、全てのゴルーチンが終了するまでブロックするためにWaitを使用できます。
 //
-// A WaitGroup must not be copied after first use.
+// WaitGroupは、初回使用後にコピーしてはいけません。
 //
-// In the terminology of the Go memory model, a call to Done
-// “synchronizes before” the return of any Wait call that it unblocks.
+// Goのメモリモデルの用語である、Doneへの呼び出しは、それによってブロックが解除される任意のWait呼び出しの前に「同期します」。
 type WaitGroup struct {
 	noCopy noCopy
 
@@ -25,23 +23,19 @@ type WaitGroup struct {
 	sema  uint32
 }
 
-// Add adds delta, which may be negative, to the WaitGroup counter.
-// If the counter becomes zero, all goroutines blocked on Wait are released.
-// If the counter goes negative, Add panics.
+// AddはWaitGroupのカウンターにデルタを追加します。デルタは負であることもあります。
+// カウンターがゼロになると、Waitでブロックされているすべてのゴルーチンが解放されます。
+// カウンターが負になると、Addはパニックを発生させます。
 //
-// Note that calls with a positive delta that occur when the counter is zero
-// must happen before a Wait. Calls with a negative delta, or calls with a
-// positive delta that start when the counter is greater than zero, may happen
-// at any time.
-// Typically this means the calls to Add should execute before the statement
-// creating the goroutine or other event to be waited for.
-// If a WaitGroup is reused to wait for several independent sets of events,
-// new Add calls must happen after all previous Wait calls have returned.
-// See the WaitGroup example.
+// カウンターがゼロの状態で正のデルタで呼び出される場合は、Waitより前に実行される必要があることに注意してください。
+// 負のデルタで呼び出される場合や、カウンターがゼロより大きい状態で正のデルタで呼ばれる場合は、任意のタイミングで発生する場合があります。
+// 通常、これはAddの呼び出しは、ゴルーチンの作成または待機する他のイベントの直前に実行されるべきことを意味します。
+// WaitGroupが複数の独立したイベントセットを待機するために再利用される場合、新しいAdd呼び出しは以前のすべてのWait呼び出しが返された後に行われる必要があります。
+// WaitGroupの例を参照してください。
 func (wg *WaitGroup) Add(delta int)
 
-// Done decrements the WaitGroup counter by one.
+// DoneはWaitGroupのカウンターを1つ減らします。
 func (wg *WaitGroup) Done()
 
-// Wait blocks until the WaitGroup counter is zero.
+// Wait は WaitGroup カウンタがゼロになるまでブロックします。
 func (wg *WaitGroup) Wait()

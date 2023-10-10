@@ -2,52 +2,44 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package sync provides basic synchronization primitives such as mutual
-// exclusion locks. Other than the Once and WaitGroup types, most are intended
-// for use by low-level library routines. Higher-level synchronization is
-// better done via channels and communication.
+// パッケージsyncは相互排他ロックなどの基本的な同期プリミティブを提供します。OnceとWaitGroup以外の型は、低レベルのライブラリルーチンでの使用を意図しています。より高レベルな同期はチャネルと通信を介して行う方が良いです。
 //
-// Values containing the types defined in this package should not be copied.
+// このパッケージで定義された型を含む値は、コピーしないでください。
 package sync
 
-// A Mutex is a mutual exclusion lock.
-// The zero value for a Mutex is an unlocked mutex.
+// Mutexは相互排他ロックです。
+// Mutexのゼロ値はロックされていないMutexです。
 //
-// A Mutex must not be copied after first use.
+// Mutexは最初の使用後にコピーしてはいけません。
 //
-// In the terminology of the Go memory model,
-// the n'th call to Unlock “synchronizes before” the m'th call to Lock
-// for any n < m.
-// A successful call to TryLock is equivalent to a call to Lock.
-// A failed call to TryLock does not establish any “synchronizes before”
-// relation at all.
+// Goのメモリモデルの用語では、Unlockのn回目の呼び出しはm回目のLockの前に同期されます（n < m）。
+// TryLockの成功した呼び出しはLockの呼び出しと同等です。
+// TryLockの失敗した呼び出しはどのような「同期前の」関係も確立しません。
 type Mutex struct {
 	state int32
 	sema  uint32
 }
 
-// A Locker represents an object that can be locked and unlocked.
+// Lockerはロックおよびアンロックできるオブジェクトを表します。
 type Locker interface {
 	Lock()
 	Unlock()
 }
 
-// Lock locks m.
-// If the lock is already in use, the calling goroutine
-// blocks until the mutex is available.
+// Lock は m をロックします。
+// もし既にロックが使用中である場合、呼び出し元のゴルーチンは
+// ミューテックスが利用可能になるまでブロックされます。
 func (m *Mutex) Lock()
 
-// TryLock tries to lock m and reports whether it succeeded.
+// TryLock はmをロックしようとし、成功したかどうかを報告します。
 //
-// Note that while correct uses of TryLock do exist, they are rare,
-// and use of TryLock is often a sign of a deeper problem
-// in a particular use of mutexes.
+// TryLockの正しい使用方法が存在することに注意してくださいが、それらはまれであり、
+// TryLockの使用はしばしばミューテックスの特定の使用において深刻な問題の兆候です。
 func (m *Mutex) TryLock() bool
 
-// Unlock unlocks m.
-// It is a run-time error if m is not locked on entry to Unlock.
+// Unlockはmをアンロックします。
+// mがUnlockされる前にロックされていない場合、ランタイムエラーになります。
 //
-// A locked Mutex is not associated with a particular goroutine.
-// It is allowed for one goroutine to lock a Mutex and then
-// arrange for another goroutine to unlock it.
+// ロックされたMutexは特定のゴルーチンに関連付けられていません。
+// あるゴルーチンがMutexをロックし、別のゴルーチンがそれをアンロックするようにすることも許可されています。
 func (m *Mutex) Unlock()
