@@ -7,12 +7,34 @@ package cipher
 // AEADは関連データを含めた認証暗号化を提供する暗号モードです。手法の説明については、以下を参照してください。
 // https://en.wikipedia.org/wiki/Authenticated_encryption.
 type AEAD interface {
+	// NonceSize returns the size of the nonce that must be passed to Seal
+	// and Open.
 	NonceSize() int
 
+	// Overhead returns the maximum difference between the lengths of a
+	// plaintext and its ciphertext.
 	Overhead() int
 
+	// Seal encrypts and authenticates plaintext, authenticates the
+	// additional data and appends the result to dst, returning the updated
+	// slice. The nonce must be NonceSize() bytes long and unique for all
+	// time, for a given key.
+	//
+	// To reuse plaintext's storage for the encrypted output, use plaintext[:0]
+	// as dst. Otherwise, the remaining capacity of dst must not overlap plaintext.
 	Seal(dst, nonce, plaintext, additionalData []byte) []byte
 
+	// Open decrypts and authenticates ciphertext, authenticates the
+	// additional data and, if successful, appends the resulting plaintext
+	// to dst, returning the updated slice. The nonce must be NonceSize()
+	// bytes long and both it and the additional data must match the
+	// value passed to Seal.
+	//
+	// To reuse ciphertext's storage for the decrypted output, use ciphertext[:0]
+	// as dst. Otherwise, the remaining capacity of dst must not overlap plaintext.
+	//
+	// Even if the function fails, the contents of dst, up to its capacity,
+	// may be overwritten.
 	Open(dst, nonce, ciphertext, additionalData []byte) ([]byte, error)
 }
 
