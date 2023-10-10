@@ -26,11 +26,11 @@ func Example_openDBCLI() {
 	}
 	var err error
 
-	// Opening a driver typically will not attempt to connect to the database.
+	// ドライバを開く場合、通常、データベースへの接続は試みられません。
 	pool, err = sql.Open("driver-name", *dsn)
 	if err != nil {
-		// This will not be a connection error, but a DSN parse error or
-		// another initialization error.
+
+		// これは接続エラーではなく、DSN解析エラーや他の初期化エラーです。
 		log.Fatal("unable to use data source name", err)
 	}
 	defer pool.Close()

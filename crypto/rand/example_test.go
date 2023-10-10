@@ -10,8 +10,7 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// This example reads 10 cryptographically secure pseudorandom numbers from
-// rand.Reader and writes them to a byte slice.
+// この例は、rand.Readerから暗号的に安全な疑似乱数を10個読み込み、バイトスライスに書き込みます。
 func ExampleRead() {
 	c := 10
 	b := make([]byte, c)
@@ -20,7 +19,7 @@ func ExampleRead() {
 		fmt.Println("error:", err)
 		return
 	}
-	// The slice should now contain random bytes instead of only zeroes.
+	// スライスは、ゼロの代わりにランダムなバイトを含んでいるべきです。
 	fmt.Println(bytes.Equal(b, make([]byte, c)))
 
 	// Output:

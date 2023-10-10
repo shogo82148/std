@@ -6,20 +6,17 @@ package net
 
 import "github.com/shogo82148/std/os"
 
-// FileConn returns a copy of the network connection corresponding to
-// the open file f.
-// It is the caller's responsibility to close f when finished.
-// Closing c does not affect f, and closing f does not affect c.
+// FileConnは、開いているファイルfに対応するネットワーク接続のコピーを返します。
+// 使用が完了したら、呼び出し元の責任でfを閉じる必要があります。
+// cを閉じてもfには影響しませんし、fを閉じてもcには影響しません。
 func FileConn(f *os.File) (c Conn, err error)
 
-// FileListener returns a copy of the network listener corresponding
-// to the open file f.
-// It is the caller's responsibility to close ln when finished.
-// Closing ln does not affect f, and closing f does not affect ln.
+// FileListenerは、開いたファイルfに対応するネットワークリスナーのコピーを返します。
+// lnを使用後に閉じる責任は呼び出し元にあります。
+// lnを閉じるとfには影響しませんし、fを閉じるとlnにも影響しません。
 func FileListener(f *os.File) (ln Listener, err error)
 
-// FilePacketConn returns a copy of the packet network connection
-// corresponding to the open file f.
-// It is the caller's responsibility to close f when finished.
-// Closing c does not affect f, and closing f does not affect c.
+// FilePacketConn は、開いているファイル f に対応するパケットネットワーク接続のコピーを返します。
+// 使用が終わったら f を閉じるのは呼び出し元の責任です。
+// c を閉じても f には影響しませんし、f を閉じても c には影響しません。
 func FilePacketConn(f *os.File) (c PacketConn, err error)

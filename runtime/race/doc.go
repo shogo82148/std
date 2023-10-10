@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package race implements data race detection logic.
-// No public interface is provided.
-// For details about the race detector see
+// Package raceはデータ競合検出ロジックを実装しています。
+// パブリックなインターフェースは提供されていません。
+// レースディテクターの詳細については、以下を参照してください。
 // https://golang.org/doc/articles/race_detector.html
 package race

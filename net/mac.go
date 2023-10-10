@@ -4,13 +4,12 @@
 
 package net
 
-// A HardwareAddr represents a physical hardware address.
+// HardwareAddrは物理的なハードウェアアドレスを表します。
 type HardwareAddr []byte
 
 func (a HardwareAddr) String() string
 
-// ParseMAC parses s as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet
-// IP over InfiniBand link-layer address using one of the following formats:
+// ParseMACは、次のいずれかの形式で定義されたIEEE 802 MAC-48、EUI-48、EUI-64、または20オクテットのIP over InfiniBandリンク層アドレスとしてsを解析します：
 //
 //	00:00:5e:00:53:01
 //	02:00:5e:10:00:00:00:01

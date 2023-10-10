@@ -10,9 +10,7 @@ import (
 	"github.com/shogo82148/std/runtime/trace"
 )
 
-// Example demonstrates the use of the trace package to trace
-// the execution of a Go program. The trace output will be
-// written to the file trace.out
+// この例は、trace パッケージを使用して Go プログラムの実行をトレースする方法を示しています。トレースの出力は、ファイル trace.out に書き込まれます。
 func Example() {
 	f, err := os.Create("trace.out")
 	if err != nil {
@@ -29,6 +27,6 @@ func Example() {
 	}
 	defer trace.Stop()
 
-	// your program here
+	// ここにあなたのプログラムを書く
 	RunMyProgram()
 }

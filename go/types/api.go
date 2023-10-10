@@ -2,25 +2,21 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package types declares the data types and implements
-// the algorithms for type-checking of Go packages. Use
-// Config.Check to invoke the type checker for a package.
-// Alternatively, create a new type checker with NewChecker
-// and invoke it incrementally by calling Checker.Files.
+// typesパッケージは、Goパッケージの型チェックのためのアルゴリズムを実装し、
+// データ型を宣言します。Config.Checkを使用してパッケージの型チェッカーを呼び出すか、
+// 代わりにNewCheckerで新しい型チェッカーを作成し、Checker.Filesを呼び出して
+// インクリメンタルに呼び出すことができます。
 //
-// Type-checking consists of several interdependent phases:
+// 型チェックは、いくつかの相互依存するフェーズで構成されています。
 //
-// Name resolution maps each identifier (ast.Ident) in the program to the
-// language object (Object) it denotes.
-// Use Info.{Defs,Uses,Implicits} for the results of name resolution.
+// 名前解決は、プログラム内の各識別子（ast.Ident）を、それが示す言語オブジェクト（Object）にマップします。
+// 名前解決の結果には、Info.{Defs,Uses,Implicits}を使用します。
 //
-// Constant folding computes the exact constant value (constant.Value)
-// for every expression (ast.Expr) that is a compile-time constant.
-// Use Info.Types[expr].Value for the results of constant folding.
+// 定数畳み込みは、コンパイル時定数であるすべての式（ast.Expr）の正確な定数値（constant.Value）を計算します。
+// 定数畳み込みの結果には、Info.Types[expr].Valueを使用します。
 //
-// Type inference computes the type (Type) of every expression (ast.Expr)
-// and checks for compliance with the language specification.
-// Use Info.Types[expr].Type for the results of type inference.
+// 型推論は、すべての式（ast.Expr）の型（Type）を計算し、言語仕様に準拠しているかどうかをチェックします。
+// 型推論の結果には、Info.Types[expr].Typeを使用します。
 //
 // For a tutorial, see https://golang.org/s/types-tutorial.
 package types
@@ -31,31 +27,26 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// An Error describes a type-checking error; it implements the error interface.
-// A "soft" error is an error that still permits a valid interpretation of a
-// package (such as "unused variable"); "hard" errors may lead to unpredictable
-// behavior if ignored.
+// エラーは型チェックのエラーを示します。エラーインターフェースを実装します。
+// "ソフト"エラーは、パッケージの有効な解釈を許容するエラーです（例：「未使用の変数」）。
+// "ハード"エラーは無視した場合に予測不可能な動作につながる可能性があります。
 type Error struct {
 	Fset *token.FileSet
 	Pos  token.Pos
 	Msg  string
 	Soft bool
 
-	// go116code is a future API, unexported as the set of error codes is large
-	// and likely to change significantly during experimentation. Tools wishing
-	// to preview this feature may read go116code using reflection (see
-	// errorcodes_test.go), but beware that there is no guarantee of future
-	// compatibility.
+	// go116codeは将来のAPIであり、エラーコードのセットが大きいため、公開されていません。また、実験中に変更される可能性も高いです。この機能をプレビューしたいツールは、リフレクションを使用してgo116codeを読むことができます（errorcodes_test.goを参照）。ただし、将来の互換性は保証されていません。
 	go116code  Code
 	go116start token.Pos
 	go116end   token.Pos
 }
 
-// Error returns an error string formatted as follows:
+// Errorは以下の形式でフォーマットされたエラー文字列を返します:
 // filename:line:column: message
 func (err Error) Error() string
 
-// An ArgumentError holds an error associated with an argument index.
+// ArgumentErrorは引数のインデックスに関連するエラーを保持します。
 type ArgumentError struct {
 	Index int
 	Err   error
@@ -64,43 +55,56 @@ type ArgumentError struct {
 func (e *ArgumentError) Error() string
 func (e *ArgumentError) Unwrap() error
 
-// An Importer resolves import paths to Packages.
+// Importerは、インポートパスをパッケージに解決します。
 //
-// CAUTION: This interface does not support the import of locally
-// vendored packages. See https://golang.org/s/go15vendor.
-// If possible, external implementations should implement ImporterFrom.
+// 注意: このインターフェースは、ローカルにvendoredされたパッケージのインポートには対応していません。
+// 詳細は、https://golang.org/s/go15vendor を参照してください。
+// 可能であれば、外部の実装ではImporterFromを実装するべきです。
 type Importer interface {
+	// Import returns the imported package for the given import path.
+	// The semantics is like for ImporterFrom.ImportFrom except that
+	// dir and mode are ignored (since they are not present).
 	Import(path string) (*Package, error)
 }
 
-// ImportMode is reserved for future use.
+// ImportMode は将来の利用用途のために予約されています。
 type ImportMode int
 
-// An ImporterFrom resolves import paths to packages; it
-// supports vendoring per https://golang.org/s/go15vendor.
-// Use go/importer to obtain an ImporterFrom implementation.
+// ImporterFromは、インポートパスをパッケージに解決します。
+// https://golang.org/s/go15vendorに従い、ベンダリングをサポートします。
+// ImporterFromの実装を取得するには、go/importerを使用してください。
 type ImporterFrom interface {
+	// Importer is present for backward-compatibility. Calling
+	// Import(path) is the same as calling ImportFrom(path, "", 0);
+	// i.e., locally vendored packages may not be found.
+	// The types package does not call Import if an ImporterFrom
+	// is present.
 	Importer
 
+	// ImportFrom returns the imported package for the given import
+	// path when imported by a package file located in dir.
+	// If the import failed, besides returning an error, ImportFrom
+	// is encouraged to cache and return a package anyway, if one
+	// was created. This will reduce package inconsistencies and
+	// follow-on type checker errors due to the missing package.
+	// The mode value must be 0; it is reserved for future use.
+	// Two calls to ImportFrom with the same path and dir must
+	// return the same package.
 	ImportFrom(path, dir string, mode ImportMode) (*Package, error)
 }
 
-// A Config specifies the configuration for type checking.
-// The zero value for Config is a ready-to-use default configuration.
+// Configは型チェックの設定を指定します。
+// Configのゼロ値は、すぐに使用できるデフォルトの設定です。
 type Config struct {
-	// Context is the context used for resolving global identifiers. If nil, the
-	// type checker will initialize this field with a newly created context.
+
+	// Contextはグローバルな識別子を解決するために使用されるコンテキストです。nilの場合、
+	// 型チェッカーはこのフィールドを新たに作成されたコンテキストで初期化します。
 	Context *Context
 
-	// GoVersion describes the accepted Go language version. The string must
-	// start with a prefix of the form "go%d.%d" (e.g. "go1.20", "go1.21rc1", or
-	// "go1.21.0") or it must be empty; an empty string disables Go language
-	// version checks. If the format is invalid, invoking the type checker will
-	// result in an error.
+	// GoVersionは、受け入れられるGo言語のバージョンを説明します。文字列は、"go%d.%d"の形式の接頭辞で始まる必要があります（例："go1.20"、"go1.21rc1"、または"go1.21.0"）。または空である必要があります。空の文字列はGo言語のバージョンチェックを無効にします。フォーマットが無効な場合、型チェッカーを呼び出すとエラーが発生します。
 	GoVersion string
 
-	// If IgnoreFuncBodies is set, function bodies are not
-	// type-checked.
+	// IgnoreFuncBodies が設定されている場合、関数の本体は型チェックされません。
 	IgnoreFuncBodies bool
 
 	// If FakeImportC is set, `import "C"` (for packages requiring Cgo)
@@ -112,133 +116,90 @@ type Config struct {
 	//          Do not use casually!
 	FakeImportC bool
 
-	// If go115UsesCgo is set, the type checker expects the
-	// _cgo_gotypes.go file generated by running cmd/cgo to be
-	// provided as a package source file. Qualified identifiers
-	// referring to package C will be resolved to cgo-provided
-	// declarations within _cgo_gotypes.go.
+	// go115UsesCgoが設定されている場合、型チェッカーはcmd/cgoを実行して生成された_cgo_gotypes.goファイルを
+	// パッケージのソースファイルとして提供することを期待します。パッケージCを参照する修飾子の識別子は、
+	// _cgo_gotypes.go内のcgo提供の宣言に解決されます。
 	//
-	// It is an error to set both FakeImportC and go115UsesCgo.
+	// FakeImportCとgo115UsesCgoの両方を設定することはエラーです。
 	go115UsesCgo bool
 
-	// If _Trace is set, a debug trace is printed to stdout.
+	// もし _Trace が設定されている場合、デバッグトレースが標準出力に表示されます。
 	_Trace bool
 
-	// If Error != nil, it is called with each error found
-	// during type checking; err has dynamic type Error.
-	// Secondary errors (for instance, to enumerate all types
-	// involved in an invalid recursive type declaration) have
-	// error strings that start with a '\t' character.
-	// If Error == nil, type-checking stops with the first
-	// error found.
+	// もしError != nilなら、エラーが見つかるたびに呼び出されます
+	// タイプチェック中に見つかったエラーの動的な型はErrorです
+	// 二次エラー（例：無効な再帰型宣言に関わるすべての型を列挙する）は'\t'文字で始まるエラー文字列を持ちます
+	// もしError == nilなら、最初に見つかったエラーでタイプチェックは停止します。
 	Error func(err error)
 
-	// An importer is used to import packages referred to from
-	// import declarations.
-	// If the installed importer implements ImporterFrom, the type
-	// checker calls ImportFrom instead of Import.
-	// The type checker reports an error if an importer is needed
-	// but none was installed.
+	// インポート宣言から参照されるパッケージをインポートするためにインポーターが使われます。
+	// インストールされたインポーターがImporterFromを実装している場合、型チェッカーはImportFromを呼び出します。
+	// インポーターが必要ですがインストールされていない場合、型チェッカーはエラーを報告します。
 	Importer Importer
 
-	// If Sizes != nil, it provides the sizing functions for package unsafe.
-	// Otherwise SizesFor("gc", "amd64") is used instead.
+	// Sizesがnilでない場合、unsafeパッケージのサイズ計算関数が提供されます。
+	// それ以外の場合はSizesFor("gc", "amd64")が代わりに使用されます。
 	Sizes Sizes
 
-	// If DisableUnusedImportCheck is set, packages are not checked
-	// for unused imports.
+	// DisableUnusedImportCheckが設定されている場合、パッケージは未使用のインポートについてチェックされません。
 	DisableUnusedImportCheck bool
 
-	// If a non-empty _ErrorURL format string is provided, it is used
-	// to format an error URL link that is appended to the first line
-	// of an error message. ErrorURL must be a format string containing
-	// exactly one "%s" format, e.g. "[go.dev/e/%s]".
+	// もし空ではない_ErrorURLフォーマット文字列が提供された場合、それはエラーメッセージの最初の行に追加されるエラーURLリンクのフォーマットに使用されます。ErrorURLは、正確に1つの"%s"フォーマットを含むフォーマット文字列でなければなりません。例："[go.dev/e/%s]"。
 	_ErrorURL string
 }
 
-// Info holds result type information for a type-checked package.
-// Only the information for which a map is provided is collected.
-// If the package has type errors, the collected information may
-// be incomplete.
+// Infoは型チェック済みパッケージの結果タイプ情報を保持します。
+// マップが提供された情報のみ収集されます。
+// パッケージに型エラーがある場合、収集された情報は不完全である場合があります。
 type Info struct {
-	// Types maps expressions to their types, and for constant
-	// expressions, also their values. Invalid expressions are
-	// omitted.
+
+	// Typesは式をその型にマップし、定数式の値もマップします。無効な式は省略されます。
+	// （カッコで囲まれた）組み込み関数を示す識別子に対して、記録されるシグネチャは呼び出し側に特化されます：
+	// 呼び出し結果が定数でない場合、記録される型は引数ごとのシグネチャとなります。それ以外の場合、記録される型は無効です。
 	//
-	// For (possibly parenthesized) identifiers denoting built-in
-	// functions, the recorded signatures are call-site specific:
-	// if the call result is not a constant, the recorded type is
-	// an argument-specific signature. Otherwise, the recorded type
-	// is invalid.
-	//
-	// The Types map does not record the type of every identifier,
-	// only those that appear where an arbitrary expression is
-	// permitted. For instance, the identifier f in a selector
-	// expression x.f is found only in the Selections map, the
-	// identifier z in a variable declaration 'var z int' is found
-	// only in the Defs map, and identifiers denoting packages in
-	// qualified identifiers are collected in the Uses map.
+	// Typesマップはすべての識別子の型を記録するのではなく、任意の式が許される場所に現れる識別子のみを記録します。
+	// たとえば、セレクタ式x.fの中の識別子fはSelectionsマップにのみ存在し、変数宣言 'var z int' の中の識別子zはDefsマップにのみ存在し、
+	// 限定識別子内のパッケージを示す識別子はUsesマップに収集されます。
 	Types map[ast.Expr]TypeAndValue
 
-	// Instances maps identifiers denoting generic types or functions to their
-	// type arguments and instantiated type.
+	// インスタンス変数は、ジェネリックな型や関数を指定する識別子を、その型引数とインスタンス化された型とのマッピングする。
 	//
-	// For example, Instances will map the identifier for 'T' in the type
-	// instantiation T[int, string] to the type arguments [int, string] and
-	// resulting instantiated *Named type. Given a generic function
-	// func F[A any](A), Instances will map the identifier for 'F' in the call
-	// expression F(int(1)) to the inferred type arguments [int], and resulting
-	// instantiated *Signature.
+	// 例えば、T[int, string]という型のインスタンス化において、Tという識別子を[int, string]という型引数とインスタンス化された*Named型とのマッピングを行う。
+	// ジェネリックな関数func F[A any](A)が与えられた場合、Fという呼び出し式における識別子を推定された型引数[int]とインスタンス化された*Signatureにマッピングする。
 	//
-	// Invariant: Instantiating Uses[id].Type() with Instances[id].TypeArgs
-	// results in an equivalent of Instances[id].Type.
+	// 不変条件: Instantiating Uses[id].Type() with Instances[id].TypeArgs は Instances[id].Type と等価な結果を返す。
 	Instances map[*ast.Ident]Instance
 
-	// Defs maps identifiers to the objects they define (including
-	// package names, dots "." of dot-imports, and blank "_" identifiers).
-	// For identifiers that do not denote objects (e.g., the package name
-	// in package clauses, or symbolic variables t in t := x.(type) of
-	// type switch headers), the corresponding objects are nil.
+	// Defsは識別子を定義するオブジェクト（パッケージ名、ドットインポートの"."、ブランクの"_"識別子を含む）にマップします。
+	// オブジェクトを示さない識別子（例：パッケージ節のパッケージ名、または型スイッチヘッダーのt := x.(type)における記号変数t）の場合、対応するオブジェクトはnilです。
 	//
-	// For an embedded field, Defs returns the field *Var it defines.
+	// 埋め込まれたフィールドの場合、Defsはフィールド*Varを返します。
 	//
-	// Invariant: Defs[id] == nil || Defs[id].Pos() == id.Pos()
+	// 不変条件: Defs[id] == nil || Defs[id].Pos() == id.Pos()
 	Defs map[*ast.Ident]Object
 
-	// Uses maps identifiers to the objects they denote.
+	// マップは識別子をその指すオブジェクトに使用します。
 	//
-	// For an embedded field, Uses returns the *TypeName it denotes.
+	// 埋め込みフィールドの場合、Usesは指定された*TypeNameを返します。
 	//
-	// Invariant: Uses[id].Pos() != id.Pos()
+	// 不変条件: Uses[id].Pos() != id.Pos()
 	Uses map[*ast.Ident]Object
 
-	// Implicits maps nodes to their implicitly declared objects, if any.
-	// The following node and object types may appear:
+	// インプリシットは、ノードを暗黙的に宣言されたオブジェクトにマッピングします（オブジェクトがある場合）。
+	// 次のノードとオブジェクトのタイプが表示される場合があります：
 	//
-	//     node               declared object
+	//     ノード                   宣言されたオブジェクト
 	//
-	//     *ast.ImportSpec    *PkgName for imports without renames
-	//     *ast.CaseClause    type-specific *Var for each type switch case clause (incl. default)
-	//     *ast.Field         anonymous parameter *Var (incl. unnamed results)
-	//
+	//     *ast.ImportSpec    名前変更のないimportの場合は*PkgName
+	//     *ast.CaseClause    typeスイッチの各case節（デフォルトを含む）ごとのtype固有の*Var
+	//     *ast.Field         匿名パラメータ *Var（無名の結果を含む）
 	Implicits map[ast.Node]Object
 
-	// Selections maps selector expressions (excluding qualified identifiers)
-	// to their corresponding selections.
+	// Selectionsはセレクタ式（修飾子を除く）をその対応する選択肢にマッピングします。
 	Selections map[*ast.SelectorExpr]*Selection
 
-	// Scopes maps ast.Nodes to the scopes they define. Package scopes are not
-	// associated with a specific node but with all files belonging to a package.
-	// Thus, the package scope can be found in the type-checked Package object.
-	// Scopes nest, with the Universe scope being the outermost scope, enclosing
-	// the package scope, which contains (one or more) files scopes, which enclose
-	// function scopes which in turn enclose statement and function literal scopes.
-	// Note that even though package-level functions are declared in the package
-	// scope, the function scopes are embedded in the file scope of the file
-	// containing the function declaration.
-	//
-	// The following node types may appear in Scopes:
-	//
+	// Scopesはast.Nodeをその定義するスコープにマップします。パッケージスコープは特定のノードに関連付けられていませんが、パッケージに所属するすべてのファイルに関連付けられています。したがって、パッケージスコープは型チェックされたPackageオブジェクトに見つけることができます。スコープはネストされ、宇宙スコープが最も外側のスコープで、パッケージスコープを囲みます。パッケージスコープには（1つ以上の）ファイルスコープが含まれ、それらは関数スコープを囲みます。関数スコープはステートメントと関数リテラルのスコープを囲みます。注意すべきは、パッケージレベルの関数はパッケージスコープで宣言されますが、関数スコープは関数宣言を含むファイルスコープに埋め込まれているということです。
+	// 以下のノードのタイプがScopesに表示される可能性があります：
 	//     *ast.File
 	//     *ast.FuncType
 	//     *ast.TypeSpec
@@ -250,82 +211,64 @@ type Info struct {
 	//     *ast.CommClause
 	//     *ast.ForStmt
 	//     *ast.RangeStmt
-	//
 	Scopes map[ast.Node]*Scope
 
-	// InitOrder is the list of package-level initializers in the order in which
-	// they must be executed. Initializers referring to variables related by an
-	// initialization dependency appear in topological order, the others appear
-	// in source order. Variables without an initialization expression do not
-	// appear in this list.
+	// InitOrderはパッケージレベルの初期化子のリストであり、実行する必要がある順序で並んでいます。初期化依存関係に関連する変数を参照する初期化子は、トポロジカル順序で表示されます。他の初期化子はソース順序で表示されます。初期化式を持たない変数は、このリストに表示されません。
 	InitOrder []*Initializer
 }
 
-// TypeOf returns the type of expression e, or nil if not found.
-// Precondition: the Types, Uses and Defs maps are populated.
+// TypeOfは式eの型を返します。見つからない場合はnilを返します。
+// 前提条件：Types、Uses、Defsのマップが入力されていることが前提です。
 func (info *Info) TypeOf(e ast.Expr) Type
 
-// ObjectOf returns the object denoted by the specified id,
-// or nil if not found.
+// ObjectOfは、指定したidによって指示されたオブジェクトを返します。
+// 存在しない場合はnilを返します。
 //
-// If id is an embedded struct field, ObjectOf returns the field (*Var)
-// it defines, not the type (*TypeName) it uses.
+// idが埋め込み構造体フィールドである場合、ObjectOfはフィールド(*Var)を返します
+// それが定義する特定のフィールド(*TypeName)ではありません。
 //
-// Precondition: the Uses and Defs maps are populated.
+// 前提条件：UsesおよびDefsマップが入力されています。
 func (info *Info) ObjectOf(id *ast.Ident) Object
 
-// TypeAndValue reports the type and value (for constants)
-// of the corresponding expression.
+// TypeAndValueは対応する式の型と値（定数の場合）を報告します。
 type TypeAndValue struct {
 	mode  operandMode
 	Type  Type
 	Value constant.Value
 }
 
-// IsVoid reports whether the corresponding expression
-// is a function call without results.
+// IsVoid は、対応する式が結果のない関数呼び出しであるかどうかを報告します。
 func (tv TypeAndValue) IsVoid() bool
 
-// IsType reports whether the corresponding expression specifies a type.
+// IsTypeは、対応する式が型を指定しているかどうかを報告します。
 func (tv TypeAndValue) IsType() bool
 
-// IsBuiltin reports whether the corresponding expression denotes
-// a (possibly parenthesized) built-in function.
+// IsBuiltinは、対応する式が（たぶん括弧で囲まれた）組み込み関数を示しているかどうかを報告します。
 func (tv TypeAndValue) IsBuiltin() bool
 
-// IsValue reports whether the corresponding expression is a value.
-// Builtins are not considered values. Constant values have a non-
-// nil Value.
+// IsValueは、対応する式が値かどうかを報告します。
+// 組み込み関数は値とは見なされません。定数値はnon-nilのValueを持ちます。
 func (tv TypeAndValue) IsValue() bool
 
-// IsNil reports whether the corresponding expression denotes the
-// predeclared value nil.
+// IsNilは、対応する式が事前宣言された値nilを示しているかどうかを報告します。
 func (tv TypeAndValue) IsNil() bool
 
-// Addressable reports whether the corresponding expression
-// is addressable (https://golang.org/ref/spec#Address_operators).
+// Addressableは、対応する式がアドレス指定可能であるかどうかを報告します（https://golang.org/ref/spec#Address_operators）。
 func (tv TypeAndValue) Addressable() bool
 
-// Assignable reports whether the corresponding expression
-// is assignable to (provided a value of the right type).
+// Assignableは、対応する式が（適切な型の値が提供された場合に）代入可能かどうかを報告します。
 func (tv TypeAndValue) Assignable() bool
 
-// HasOk reports whether the corresponding expression may be
-// used on the rhs of a comma-ok assignment.
+// HasOkは、対応する式がコンマOK代入の右辺に使用できるかどうかを報告します。
 func (tv TypeAndValue) HasOk() bool
 
-// Instance reports the type arguments and instantiated type for type and
-// function instantiations. For type instantiations, Type will be of dynamic
-// type *Named. For function instantiations, Type will be of dynamic type
-// *Signature.
+// Instanceは、型と関数のインスタンス化のための型引数とインスタンス化された型を報告します。型のインスタンス化では、Typeは動的型*Namedになります。関数のインスタンス化では、Typeは動的型*Signatureになります。
 type Instance struct {
 	TypeArgs *TypeList
 	Type     Type
 }
 
-// An Initializer describes a package-level variable, or a list of variables in case
-// of a multi-valued initialization expression, and the corresponding initialization
-// expression.
+// イニシャライザは、パッケージレベルの変数、または複数の値を持つ初期化式の場合、変数のリストと対応する初期化式を表します。
 type Initializer struct {
 	Lhs []*Var
 	Rhs ast.Expr
@@ -333,58 +276,43 @@ type Initializer struct {
 
 func (init *Initializer) String() string
 
-// Check type-checks a package and returns the resulting package object and
-// the first error if any. Additionally, if info != nil, Check populates each
-// of the non-nil maps in the Info struct.
-//
-// The package is marked as complete if no errors occurred, otherwise it is
-// incomplete. See Config.Error for controlling behavior in the presence of
-// errors.
-//
-// The package is specified by a list of *ast.Files and corresponding
-// file set, and the package path the package is identified with.
-// The clean path must not be empty or dot (".").
+// Checkはパッケージの型チェックを行い、結果のパッケージオブジェクトと初めのエラー（もし存在すれば）を返します。さらに、infoがnilでない場合、CheckはInfo構造体の非nilのマップそれぞれを埋めます。
+// エラーが発生しなかった場合、パッケージは完全であるとマークされます。そうでなければ不完全です。エラーの存在に応じた動作の制御については、Config.Errorを参照してください。
+// パッケージはast.Filesのリストと対応するファイルセット、およびパッケージが識別されるパッケージパスで指定されます。クリーンパスは空またはドット（"."）ではないでしょう。
 func (conf *Config) Check(path string, fset *token.FileSet, files []*ast.File, info *Info) (*Package, error)
 
-// AssertableTo reports whether a value of type V can be asserted to have type T.
+// AssertableToは、型Vの値が型Tにアサートされることができるかどうかを報告します。
 //
-// The behavior of AssertableTo is unspecified in three cases:
-//   - if T is Typ[Invalid]
-//   - if V is a generalized interface; i.e., an interface that may only be used
-//     as a type constraint in Go code
-//   - if T is an uninstantiated generic type
+// AssertableToの動作は、3つのケースで未指定です：
+//   - TがTyp[Invalid]である場合
+//   - Vが一般化されたインタフェースである場合。つまり、Goコードで型制約としてのみ使用されるインタフェースである場合
+//   - Tが未実体化のジェネリック型である場合
 func AssertableTo(V *Interface, T Type) bool
 
-// AssignableTo reports whether a value of type V is assignable to a variable
-// of type T.
+// AssignableToは、型Vの値が型Tの変数に代入可能かどうかを報告します。
 //
-// The behavior of AssignableTo is unspecified if V or T is Typ[Invalid] or an
-// uninstantiated generic type.
+// AssignableToの動作は、VまたはTがTyp[Invalid]またはインスタンス化されていないジェネリック型の場合、指定されていません。
 func AssignableTo(V, T Type) bool
 
-// ConvertibleTo reports whether a value of type V is convertible to a value of
-// type T.
+// ConvertibleToは、型Vの値が型Tの値に変換可能かどうかを報告します。
 //
-// The behavior of ConvertibleTo is unspecified if V or T is Typ[Invalid] or an
-// uninstantiated generic type.
+// ConvertibleToの動作は、VまたはTがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、指定されていません。
 func ConvertibleTo(V, T Type) bool
 
-// Implements reports whether type V implements interface T.
+// Implementsは、型VがインターフェースTを実装しているかどうかを報告します。
 //
-// The behavior of Implements is unspecified if V is Typ[Invalid] or an uninstantiated
-// generic type.
+// VがTyp[Invalid]やインスタンス化されていないジェネリック型の場合、Implementsの動作は未指定です。
 func Implements(V Type, T *Interface) bool
 
-// Satisfies reports whether type V satisfies the constraint T.
+// Satisfiesは型Vが制約Tを満たすかどうかを報告します。
 //
-// The behavior of Satisfies is unspecified if V is Typ[Invalid] or an uninstantiated
-// generic type.
+// VがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、Satisfiesの動作は指定されていません。
 func Satisfies(V Type, T *Interface) bool
 
-// Identical reports whether x and y are identical types.
-// Receivers of Signature types are ignored.
+// Identicalはxとyが同じ型であるかどうかを返します。
+// Signature型のレシーバは無視されます。
 func Identical(x, y Type) bool
 
-// IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.
-// Receivers of Signature types are ignored.
+// IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
+// Signature型のレシーバーは無視されます。
 func IdenticalIgnoreTags(x, y Type) bool

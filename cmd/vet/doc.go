@@ -3,68 +3,61 @@
 // license that can be found in the LICENSE file.
 
 /*
-Vet examines Go source code and reports suspicious constructs, such as Printf
-calls whose arguments do not align with the format string. Vet uses heuristics
-that do not guarantee all reports are genuine problems, but it can find errors
-not caught by the compilers.
+VetはGoのソースコードを検査し、Printfのような呼び出しがフォーマット文字列と一致しない場合に疑わしい構造を報告します。Vetは完全な報告を保証するわけではないヒューリスティックを使用しているため、すべての報告が本当の問題ではないかもしれませんが、コンパイラでは見つからないエラーを見つけることができます。
 
-Vet is normally invoked through the go command.
-This command vets the package in the current directory:
+Vetは通常、goコマンドを通じて起動されます。
+現在のディレクトリのパッケージを検査するためには、以下のコマンドを使用します:
 
 	go vet
 
-whereas this one vets the packages whose path is provided:
+パスが指定されたパッケージを検査するためには、以下のコマンドを使用します:
 
 	go vet my/project/...
 
-Use "go help packages" to see other ways of specifying which packages to vet.
+パッケージを指定する他の方法については「go help packages」を参照してください。
 
-Vet's exit code is non-zero for erroneous invocation of the tool or if a
-problem was reported, and 0 otherwise. Note that the tool does not
-check every possible problem and depends on unreliable heuristics,
-so it should be used as guidance only, not as a firm indicator of
-program correctness.
+Vetの終了コードは、ツールの誤った呼び出しまたは問題が報告された場合に非ゼロであり、それ以外の場合は0です。ツールはすべての可能な問題をチェックせず、信頼性の低いヒューリスティックに依存しているため、プログラムの正確性の厳密な指標ではなく、ガイダンスとして使用する必要があります。
 
-To list the available checks, run "go tool vet help":
+利用可能なチェックをリストするには、「go tool vet help」と実行します:
 
-	asmdecl      report mismatches between assembly files and Go declarations
-	assign       check for useless assignments
-	atomic       check for common mistakes using the sync/atomic package
-	bools        check for common mistakes involving boolean operators
-	buildtag     check that +build tags are well-formed and correctly located
-	cgocall      detect some violations of the cgo pointer passing rules
-	composites   check for unkeyed composite literals
-	copylocks    check for locks erroneously passed by value
-	httpresponse check for mistakes using HTTP responses
-	loopclosure  check references to loop variables from within nested functions
-	lostcancel   check cancel func returned by context.WithCancel is called
-	nilfunc      check for useless comparisons between functions and nil
-	printf       check consistency of Printf format strings and arguments
-	shift        check for shifts that equal or exceed the width of the integer
-	slog         check for incorrect arguments to log/slog functions
-	stdmethods   check signature of methods of well-known interfaces
-	structtag    check that struct field tags conform to reflect.StructTag.Get
-	tests        check for common mistaken usages of tests and examples
-	unmarshal    report passing non-pointer or non-interface values to unmarshal
-	unreachable  check for unreachable code
-	unsafeptr    check for invalid conversions of uintptr to unsafe.Pointer
-	unusedresult check for unused results of calls to some functions
+	asmdecl      アセンブリファイルとGo宣言の不一致を報告する
+	assign       不要な代入をチェックする
+	atomic       sync/atomicパッケージを使用した一般的なミスをチェックする
+	bools        ブール演算子に関連する一般的なミスをチェックする
+	buildtag     正常に配置された+buildタグを確認する
+	cgocall      cgoのポインタ渡しルールの違反を検出する
+	composites   キーの指定されていない組み合わせリテラルをチェックする
+	copylocks    値によって誤って渡されたロックをチェックする
+	httpresponse HTTPレスポンスのミスをチェックする
+	loopclosure  ネストされた関数内からのループ変数への参照をチェックする
+	lostcancel   context.WithCancelが返すキャンセル関数が呼び出されたかをチェックする
+	nilfunc      関数とnilの無駄な比較をチェックする
+	printf       Printfのフォーマット文字列と引数の整合性をチェックする
+	shift        整数の幅と等しいかそれを上回るシフトをチェックする
+	slog         log/slog関数への不正な引数をチェックする
+	stdmethods   よく知られたインターフェースのメソッドのシグネチャをチェックする
+	structtag    構造体のフィールドタグがreflect.StructTag.Getに合致しているかをチェックする
+	tests        テストと例の一般的な誤った使用法をチェックする
+	unmarshal    ポインタでない値やインターフェースでない値がunmarshalに渡されていることを報告する
+	unreachable  到達不可能なコードをチェックする
+	unsafeptr    不正なuintptrからunsafe.Pointerへの変換をチェックする
+	unusedresult いくつかの関数呼び出しの未使用結果をチェックする
 
-For details and flags of a particular check, such as printf, run "go tool vet help printf".
+printfなどの特定のチェックの詳細とフラグについての情報は、「go tool vet help printf」と実行してください。
 
-By default, all checks are performed.
-If any flags are explicitly set to true, only those tests are run.
-Conversely, if any flag is explicitly set to false, only those tests are disabled.
-Thus -printf=true runs the printf check,
-and -printf=false runs all checks except the printf check.
+デフォルトでは、すべてのチェックが実行されます。
+フラグがtrueに明示的に設定されている場合、それらのテストのみが実行されます。
+逆に、フラグが明示的にfalseに設定されている場合、それらのテストは無効になります。
+したがって、-printf=trueはprintfチェックを実行し、
+-printf=falseはprintfチェック以外のすべてのチェックを実行します。
 
-For information on writing a new check, see golang.org/x/tools/go/analysis.
+新しいチェックの作成方法については、golang.org/x/tools/go/analysisを参照してください。
 
-Core flags:
+コアフラグ:
 
 	-c=N
-	  	display offending line plus N lines of surrounding context
+	  	エラーのある行とその周囲のN行を表示する
 	-json
-	  	emit analysis diagnostics (and errors) in JSON format
+	  	分析診断（およびエラー）をJSON形式で出力する
 */
 package main

@@ -12,37 +12,35 @@ import (
 
 func ExampleFrames() {
 	c := func() {
-		// Ask runtime.Callers for up to 10 PCs, including runtime.Callers itself.
+		// runtime.Callersを含めて最大10個のPCを要求します。
 		pc := make([]uintptr, 10)
 		n := runtime.Callers(0, pc)
 		if n == 0 {
-			// No PCs available. This can happen if the first argument to
-			// runtime.Callers is large.
+			// PC（プログラムカウンタ）が利用できません。これは、runtime.Callersの最初の引数が大きい場合に発生する可能性があります。
 			//
-			// Return now to avoid processing the zero Frame that would
-			// otherwise be returned by frames.Next below.
+			// frames.Next以下で返されるはずのゼロのフレームを処理しないため、ここでリターンします。
 			return
 		}
 
-		pc = pc[:n] // pass only valid pcs to runtime.CallersFrames
+		pc = pc[:n] // runtime.CallersFramesには有効なプログラムカウンタ（pcs）のみを渡してください。
 		frames := runtime.CallersFrames(pc)
 
-		// Loop to get frames.
-		// A fixed number of PCs can expand to an indefinite number of Frames.
+		// フレームを取得するためのループ。
+		// 固定数のPCが無限のフレームに拡張できます。
 		for {
 			frame, more := frames.Next()
 
-			// Process this frame.
+			// このフレームを処理します。
 			//
-			// To keep this example's output stable
-			// even if there are changes in the testing package,
-			// stop unwinding when we leave package runtime.
+			// この例の出力を安定させるために
+			// テストパッケージに変更があっても
+			// runtimeパッケージを抜けるとアンワインドを停止します。
 			if !strings.Contains(frame.File, "runtime/") {
 				break
 			}
 			fmt.Printf("- more:%v | %s\n", more, frame.Function)
 
-			// Check whether there are more frames to process after this one.
+			// このフレームの処理後にさらにフレームがあるかどうかを確認します。
 			if !more {
 				break
 			}

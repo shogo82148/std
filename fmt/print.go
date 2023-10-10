@@ -8,99 +8,88 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// State represents the printer state passed to custom formatters.
-// It provides access to the io.Writer interface plus information about
-// the flags and options for the operand's format specifier.
+// Stateはカスタムフォーマッタに渡されるプリンタの状態を表します。
+// io.Writerインターフェースへのアクセスと、オペランドのフォーマット指定子に関するフラグとオプションの情報を提供します。
 type State interface {
+	// Write is the function to call to emit formatted output to be printed.
 	Write(b []byte) (n int, err error)
-
+	// Width returns the value of the width option and whether it has been set.
 	Width() (wid int, ok bool)
-
+	// Precision returns the value of the precision option and whether it has been set.
 	Precision() (prec int, ok bool)
 
+	// Flag reports whether the flag c, a character, has been set.
 	Flag(c int) bool
 }
 
-// Formatter is implemented by any value that has a Format method.
-// The implementation controls how State and rune are interpreted,
-// and may call Sprint() or Fprint(f) etc. to generate its output.
+// Formatterは、Formatメソッドを持つ任意の値で実装されます。
+// 実装は、Stateとruneの解釈方法を制御し、Sprint()やFprint(f)などを呼び出して出力を生成することができます。
 type Formatter interface {
 	Format(f State, verb rune)
 }
 
-// Stringer is implemented by any value that has a String method,
-// which defines the “native” format for that value.
-// The String method is used to print values passed as an operand
-// to any format that accepts a string or to an unformatted printer
-// such as Print.
+// Stringerは、Stringメソッドを持つ任意の値によって実装されます。
+// このメソッドは、その値の「ネイティブ」フォーマットを定義します。
+// Stringメソッドは、文字列を受け入れる任意のフォーマットや、
+// Printのような書式のないプリンターにオペランドとして渡される値を表示するために使用されます。
 type Stringer interface {
 	String() string
 }
 
-// GoStringer is implemented by any value that has a GoString method,
-// which defines the Go syntax for that value.
-// The GoString method is used to print values passed as an operand
-// to a %#v format.
+// GoStringerは、GoStringメソッドを持つ任意の値で実装されており、
+// その値のGo構文を定義します。
+// GoStringメソッドは、%#vフォーマットに渡された値を出力するために使用されます。
 type GoStringer interface {
 	GoString() string
 }
 
-// FormatString returns a string representing the fully qualified formatting
-// directive captured by the State, followed by the argument verb. (State does not
-// itself contain the verb.) The result has a leading percent sign followed by any
-// flags, the width, and the precision. Missing flags, width, and precision are
-// omitted. This function allows a Formatter to reconstruct the original
-// directive triggering the call to Format.
+// FormatStringは、Stateによってキャプチャされた完全修飾のフォーマットディレクティブを表す文字列を返し、その後に引数の動詞が続きます。（State自体は動詞を含みません。）結果には、先頭にパーセント記号があり、その後にフラグ、幅、および精度が続きます。フラグ、幅、および精度のない場合は省略されます。この関数により、フォーマッタはFormatへの呼び出しをトリガーした元のディレクティブを再構築することができます。
 func FormatString(state State, verb rune) string
 
-// Fprintf formats according to a format specifier and writes to w.
-// It returns the number of bytes written and any write error encountered.
+// Fprintfはフォーマット指定子に従って書式を整え、wに書き込みます。
+// 書き込んだバイト数とエラーの有無を返します。
 func Fprintf(w io.Writer, format string, a ...any) (n int, err error)
 
-// Printf formats according to a format specifier and writes to standard output.
-// It returns the number of bytes written and any write error encountered.
+// Printfはフォーマット指定子に従ってフォーマットを行い、標準出力に書き込みます。
+// 書き込まれたバイト数とエラーがあれば、それらを返します。
 func Printf(format string, a ...any) (n int, err error)
 
-// Sprintf formats according to a format specifier and returns the resulting string.
+// Sprintfはフォーマット指定子に従ってフォーマットされた文字列を返します。
 func Sprintf(format string, a ...any) string
 
-// Appendf formats according to a format specifier, appends the result to the byte
-// slice, and returns the updated slice.
+// Appendfはフォーマット指定子に従ってフォーマットを行い、結果をバイトスライスに追加し、更新されたスライスを返します。
 func Appendf(b []byte, format string, a ...any) []byte
 
-// Fprint formats using the default formats for its operands and writes to w.
-// Spaces are added between operands when neither is a string.
-// It returns the number of bytes written and any write error encountered.
+// Fprint はオペランドのデフォルトのフォーマットを使用してwに書き込みます。
+// オペランドが文字列でない場合、間にスペースが追加されます。
+// 書き込まれたバイト数と発生した書き込みエラーが返されます。
 func Fprint(w io.Writer, a ...any) (n int, err error)
 
-// Print formats using the default formats for its operands and writes to standard output.
-// Spaces are added between operands when neither is a string.
-// It returns the number of bytes written and any write error encountered.
+// デフォルトの書式を使用して、オペランドの内容を表示し、標準出力に書き込みます。
+// オペランドがどちらも文字列でない場合は、オペランド間にスペースが追加されます。
+// 書き込まれたバイト数と発生した書き込みエラーが返されます。
 func Print(a ...any) (n int, err error)
 
-// Sprint formats using the default formats for its operands and returns the resulting string.
-// Spaces are added between operands when neither is a string.
+// Sprintは、オペランドのデフォルトのフォーマットを使用して結果の文字列を返します。
+// オペランドがどちらも文字列でない場合、オペランド間にスペースが追加されます。
 func Sprint(a ...any) string
 
-// Append formats using the default formats for its operands, appends the result to
-// the byte slice, and returns the updated slice.
+// Appendはオペランドのデフォルトフォーマットを使用して、フォーマットを行い、結果をバイトスライスに追加し、更新されたスライスを返します。
 func Append(b []byte, a ...any) []byte
 
-// Fprintln formats using the default formats for its operands and writes to w.
-// Spaces are always added between operands and a newline is appended.
-// It returns the number of bytes written and any write error encountered.
+// Fprintln はオペランドのデフォルト形式を使用してフォーマットし、w に書き込みます。
+// オペランドの間には常にスペースが追加され、改行が追加されます。
+// 書き込まれたバイト数と発生した書き込みエラーを返します。
 func Fprintln(w io.Writer, a ...any) (n int, err error)
 
-// Println formats using the default formats for its operands and writes to standard output.
-// Spaces are always added between operands and a newline is appended.
-// It returns the number of bytes written and any write error encountered.
+// Printlnは、オペランドのデフォルトのフォーマットを使用して整形し、標準出力に書き込みます。
+// オペランドとオペランドの間には常にスペースが追加され、改行が追加されます。
+// 書き込まれたバイト数とエラーの有無を返します。
 func Println(a ...any) (n int, err error)
 
-// Sprintln formats using the default formats for its operands and returns the resulting string.
-// Spaces are always added between operands and a newline is appended.
+// Sprintln はオペランドのデフォルトの書式を使用してフォーマットし、結果の文字列を返します。
+// オペランド間には常にスペースが追加され、改行が追加されます。
 func Sprintln(a ...any) string
 
-// Appendln formats using the default formats for its operands, appends the result
-// to the byte slice, and returns the updated slice. Spaces are always added
-// between operands and a newline is appended.
+// Appendln はオペランドのデフォルトの書式を使用してフォーマットし、結果をバイトスライスに追加し、更新されたスライスを返します。オペランド間には常にスペースが追加され、改行が追加されます。
 func Appendln(b []byte, a ...any) []byte

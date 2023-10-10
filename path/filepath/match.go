@@ -8,41 +8,33 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// ErrBadPattern indicates a pattern was malformed.
+// ErrBadPattern はパターンが不正であることを示します。
 var ErrBadPattern = errors.New("syntax error in pattern")
 
-// Match reports whether name matches the shell file name pattern.
-// The pattern syntax is:
+// Matchは、名前がシェルのファイル名パターンと一致するかどうかを報告します。
+// パターンの構文は次の通りです:
 //
 //	pattern:
 //		{ term }
 //	term:
-//		'*'         matches any sequence of non-Separator characters
-//		'?'         matches any single non-Separator character
+//		'*'         任意の非区切り文字のシーケンスに一致します
+//		'?'         任意の単一の非区切り文字に一致します
 //		'[' [ '^' ] { character-range } ']'
-//		            character class (must be non-empty)
-//		c           matches character c (c != '*', '?', '\\', '[')
-//		'\\' c      matches character c
+//		            キャラクタークラス（非空である必要があります）
+//		c           文字cに一致します（c != '*', '?', '\\', '['）
+//		'\\' c      文字cに一致します
 //
 //	character-range:
-//		c           matches character c (c != '\\', '-', ']')
-//		'\\' c      matches character c
-//		lo '-' hi   matches character c for lo <= c <= hi
+//		c           文字cに一致します（c != '\\', '-', ']'）
+//		'\\' c      文字cに一致します
+//		lo '-' hi   lo <= c <= hi の条件で文字cに一致します
 //
-// Match requires pattern to match all of name, not just a substring.
-// The only possible returned error is ErrBadPattern, when pattern
-// is malformed.
+// Matchは、パターンが名前全体ではなく、部分文字列ではないことを要求します。
+// 返される唯一の可能なエラーは、パターンが異常である場合のErrBadPatternです。
 //
-// On Windows, escaping is disabled. Instead, '\\' is treated as
-// path separator.
+// Windowsでは、エスケープは無効になっています。代わりに'\\'はパスセパレータとして扱われます。
 func Match(pattern, name string) (matched bool, err error)
 
-// Glob returns the names of all files matching pattern or nil
-// if there is no matching file. The syntax of patterns is the same
-// as in Match. The pattern may describe hierarchical names such as
-// /usr/*/bin/ed (assuming the Separator is '/').
-//
-// Glob ignores file system errors such as I/O errors reading directories.
-// The only possible returned error is ErrBadPattern, when pattern
-// is malformed.
+// Globは、パターンに一致するすべてのファイルの名前を返します。一致するファイルがない場合はnilを返します。パターンの構文はMatchと同じです。パターンには、/usr/*/bin/ed（セパレータが '/'と仮定）などの階層的な名前を記述することができます。
+// Globは、ディレクトリを読み込む際のI/Oエラーなどのファイルシステムのエラーを無視します。返される唯一の可能性のあるエラーは、パターンが不正な場合のErrBadPatternです。
 func Glob(pattern string) (matches []string, err error)

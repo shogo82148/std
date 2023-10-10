@@ -9,142 +9,127 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A Reader implements convenience methods for reading requests
-// or responses from a text protocol network connection.
+// Readerは、テキストプロトコルネットワーク接続からリクエストまたはレスポンスを読み取るための便利なメソッドを実装します。
 type Reader struct {
 	R   *bufio.Reader
 	dot *dotReader
 	buf []byte
 }
 
-// NewReader returns a new Reader reading from r.
+// NewReaderはrから読み取りを行う新しいReaderを返します。
 //
-// To avoid denial of service attacks, the provided bufio.Reader
-// should be reading from an io.LimitReader or similar Reader to bound
-// the size of responses.
+// サービス拒否攻撃を避けるために、提供されたbufio.Readerは
+// io.LimitReaderまたは同様のReaderから読み取るようになっている必要があります。
 func NewReader(r *bufio.Reader) *Reader
 
-// ReadLine reads a single line from r,
-// eliding the final \n or \r\n from the returned string.
+// ReadLineはrから1行だけ読み取り、返された文字列から最後の\nまたは\r\nを省略します。
 func (r *Reader) ReadLine() (string, error)
 
-// ReadLineBytes is like ReadLine but returns a []byte instead of a string.
+// ReadLineBytesは、文字列の代わりに[]byteを返すReadLineと同様の機能です。
 func (r *Reader) ReadLineBytes() ([]byte, error)
 
-// ReadContinuedLine reads a possibly continued line from r,
-// eliding the final trailing ASCII white space.
-// Lines after the first are considered continuations if they
-// begin with a space or tab character. In the returned data,
-// continuation lines are separated from the previous line
-// only by a single space: the newline and leading white space
-// are removed.
+// ReadContinuedLineは、rから可能性がある継続行を読み取ります。
+// 最後の余分なASCII空白は省略されます。
+// 最初の行以降の行は、スペースまたはタブ文字で始まる場合には、
+// 継続行と見なされます。返されるデータでは、
+// 継続行は前の行とスペース1つのみで区切られます：
+// 改行と先頭の空白は削除されます。
 //
-// For example, consider this input:
+// 例えば、次の入力を考えてみてください：
 //
 //	Line 1
 //	  continued...
 //	Line 2
 //
-// The first call to ReadContinuedLine will return "Line 1 continued..."
-// and the second will return "Line 2".
+// ReadContinuedLineの最初の呼び出しは「Line 1 continued...」を返し、
+// 2番目の呼び出しは「Line 2」を返します。
 //
-// Empty lines are never continued.
+// 空行は継続されません。
 func (r *Reader) ReadContinuedLine() (string, error)
 
-// ReadContinuedLineBytes is like ReadContinuedLine but
-// returns a []byte instead of a string.
+// ReadContinuedLineBytesは、ReadContinuedLineと同様ですが、
+// 文字列ではなく[]byteを返します。
 func (r *Reader) ReadContinuedLineBytes() ([]byte, error)
 
-// ReadCodeLine reads a response code line of the form
+// ReadCodeLineは、下記の形式の応答コード行を読み取ります：
 //
 //	code message
 //
-// where code is a three-digit status code and the message
-// extends to the rest of the line. An example of such a line is:
+// ここで、codeは3桁のステータスコードであり、messageは行の残りの部分に拡張されます。
+// このような行の例は次の通りです：
 //
 //	220 plan9.bell-labs.com ESMTP
 //
-// If the prefix of the status does not match the digits in expectCode,
-// ReadCodeLine returns with err set to &Error{code, message}.
-// For example, if expectCode is 31, an error will be returned if
-// the status is not in the range [310,319].
+// もしステータスのプレフィックスがexpectCodeの数字と一致しない場合、ReadCodeLineはerrを&Error{code, message}に設定して返します。
+// 例えば、expectCodeが31である場合、ステータスが[310,319]の範囲にない場合はエラーが返されます。
 //
-// If the response is multi-line, ReadCodeLine returns an error.
+// もし応答が複数行の場合、ReadCodeLineはエラーを返します。
 //
-// An expectCode <= 0 disables the check of the status code.
+// expectCodeが0以下の場合、ステータスコードのチェックは無効になります。
 func (r *Reader) ReadCodeLine(expectCode int) (code int, message string, err error)
 
-// ReadResponse reads a multi-line response of the form:
+// ReadResponseは以下の形式の複数行のレスポンスを読み込みます：
 //
-//	code-message line 1
-//	code-message line 2
+//	code-message 行1
+//	code-message 行2
 //	...
-//	code message line n
+//	code message 行n
 //
-// where code is a three-digit status code. The first line starts with the
-// code and a hyphen. The response is terminated by a line that starts
-// with the same code followed by a space. Each line in message is
-// separated by a newline (\n).
+// ここで、codeは3桁のステータスコードです。最初の行はcodeとハイフンで始まります。
+// レスポンスは、同じcodeの後にスペースが続く行で終了します。
+// メッセージ中の各行は改行（\n）で区切られます。
 //
-// See page 36 of RFC 959 (https://www.ietf.org/rfc/rfc959.txt) for
-// details of another form of response accepted:
+// 別の形式のレスポンスの詳細については、RFC 959（https://www.ietf.org/rfc/rfc959.txt）の
+// 36ページを参照してください：
 //
-//	code-message line 1
-//	message line 2
+//	code-message 行1
+//	message 行2
 //	...
-//	code message line n
+//	code message 行n
 //
-// If the prefix of the status does not match the digits in expectCode,
-// ReadResponse returns with err set to &Error{code, message}.
-// For example, if expectCode is 31, an error will be returned if
-// the status is not in the range [310,319].
+// ステータスのプレフィックスがexpectCodeの数字と一致しない場合、
+// ReadResponseはerrを設定した&Error{code, message}として返されます。
+// たとえば、expectCodeが31の場合、ステータスが[310、319]の範囲内でない場合、エラーが返されます。
 //
-// An expectCode <= 0 disables the check of the status code.
+// expectCode <= 0の場合、ステータスコードのチェックは無効になります。
 func (r *Reader) ReadResponse(expectCode int) (code int, message string, err error)
 
-// DotReader returns a new Reader that satisfies Reads using the
-// decoded text of a dot-encoded block read from r.
-// The returned Reader is only valid until the next call
-// to a method on r.
+// DotReaderは、rから読み込まれたドットエンコードされたブロックのデコードされたテキストを使用して、
+// Readsを満たす新しいReaderを返します。
+// 返されたReaderは、次にrのメソッドが呼び出されるまでの間のみ有効です。
 //
-// Dot encoding is a common framing used for data blocks
-// in text protocols such as SMTP.  The data consists of a sequence
-// of lines, each of which ends in "\r\n".  The sequence itself
-// ends at a line containing just a dot: ".\r\n".  Lines beginning
-// with a dot are escaped with an additional dot to avoid
-// looking like the end of the sequence.
+// ドットエンコーディングは、SMTPなどのテキストプロトコルで使用される一般的なフレーミングです。
+// データは、各行が"\r\n"で終わるシーケンスです。シーケンス自体は、単独のドット「.」の行で終了します：".\r\n"。
+// ドットで始まる行は、シーケンスの終わりのように見えないように追加のドットでエスケープされます。
 //
-// The decoded form returned by the Reader's Read method
-// rewrites the "\r\n" line endings into the simpler "\n",
-// removes leading dot escapes if present, and stops with error io.EOF
-// after consuming (and discarding) the end-of-sequence line.
+// ReaderのReadメソッドによって返されるデコードされた形式は、"\r\n"の行末をよりシンプルな"\n"に書き換え、
+// 先頭のドットエスケープを削除し、シーケンスの終了行を消費（および破棄）した後にエラーio.EOFで停止します。
 func (r *Reader) DotReader() io.Reader
 
-// ReadDotBytes reads a dot-encoding and returns the decoded data.
+// ReadDotBytesはドットエンコーディングを読み込み、デコードされたデータを返します。
 //
-// See the documentation for the DotReader method for details about dot-encoding.
+// ドットエンコーディングの詳細については、DotReaderメソッドのドキュメントを参照してください。
 func (r *Reader) ReadDotBytes() ([]byte, error)
 
-// ReadDotLines reads a dot-encoding and returns a slice
-// containing the decoded lines, with the final \r\n or \n elided from each.
+// ReadDotLines関数はドットエンコーディングを読み取り、各行から最後の\r\nまたは\nを省いたデコードされたスライスを返します。
 //
-// See the documentation for the DotReader method for details about dot-encoding.
+// dot-encodingの詳細についてはDotReaderメソッドのドキュメントを参照してください。
 func (r *Reader) ReadDotLines() ([]string, error)
 
-// ReadMIMEHeader reads a MIME-style header from r.
-// The header is a sequence of possibly continued Key: Value lines
-// ending in a blank line.
-// The returned map m maps CanonicalMIMEHeaderKey(key) to a
-// sequence of values in the same order encountered in the input.
+// ReadMIMEHeaderはrからMIME形式のヘッダーを読み取ります。
+// ヘッダーは、連続したキー：値行のシーケンスで、
+// 空行で終わる可能性があります。
+// 返されるマップmは、CanonicalMIMEHeaderKey(key)をキーとし、
+// 入力で遭遇した順に値のシーケンスをマッピングします。
 //
-// For example, consider this input:
+// 例えば、以下のような入力を考えてください：
 //
 //	My-Key: Value 1
 //	Long-Key: Even
 //	       Longer Value
 //	My-Key: Value 2
 //
-// Given that input, ReadMIMEHeader returns the map:
+// この入力が与えられた場合、ReadMIMEHeaderは以下のマップを返します：
 //
 //	map[string][]string{
 //		"My-Key": {"Value 1", "Value 2"},
@@ -152,12 +137,11 @@ func (r *Reader) ReadDotLines() ([]string, error)
 //	}
 func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 
-// CanonicalMIMEHeaderKey returns the canonical format of the
-// MIME header key s. The canonicalization converts the first
-// letter and any letter following a hyphen to upper case;
-// the rest are converted to lowercase. For example, the
-// canonical key for "accept-encoding" is "Accept-Encoding".
-// MIME header keys are assumed to be ASCII only.
-// If s contains a space or invalid header field bytes, it is
-// returned without modifications.
+// CanonicalMIMEHeaderKeyは、MIMEヘッダーキーsの正準形を返します。正準化は、
+// 最初の文字とハイフンの後に続くすべての文字を大文字に変換し、
+// 残りの文字は小文字に変換します。たとえば、
+// "accept-encoding"の正規キーは"Accept-Encoding"です。
+// MIMEヘッダーキーはASCIIのみとします。
+// sにスペースや無効なヘッダーフィールドバイトが含まれている場合、
+// 変更せずに返されます。
 func CanonicalMIMEHeaderKey(s string) string

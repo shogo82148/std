@@ -15,7 +15,7 @@ import (
 )
 
 func ExampleDial() {
-	// Connecting with a custom root-certificate set.
+	// カスタムルート証明書セットで接続する。
 
 	const rootPEM = `
 -- GlobalSign Root R2, valid until Dec 15, 2021
@@ -42,9 +42,8 @@ AfvDbbnvRG15RjF+Cv6pgsH/76tuIMRQyV+dTZsXjAzlAcmgQWpzU/qlULRuJQ/7
 TBj0/VLZjmmx6BEP3ojY+x1J96relc8geMJgEtslQIxq/H5COEBkEveegeGTLg==
 -----END CERTIFICATE-----`
 
-	// First, create the set of root certificates. For this example we only
-	// have one. It's also possible to omit this in order to use the
-	// default root set of the current operating system.
+	// まず、ルート証明書のセットを作成します。この例では、1つしかありません。
+	// もしくは、現在のオペレーティングシステムのデフォルトのルートセットを使用するために、これを省略することも可能です。
 	roots := x509.NewCertPool()
 	ok := roots.AppendCertsFromPEM([]byte(rootPEM))
 	if !ok {
@@ -61,22 +60,21 @@ TBj0/VLZjmmx6BEP3ojY+x1J96relc8geMJgEtslQIxq/H5COEBkEveegeGTLg==
 }
 
 func ExampleConfig_keyLogWriter() {
-	// Debugging TLS applications by decrypting a network traffic capture.
+	// ネットワークトラフィックキャプチャを復号化してTLSアプリケーションをデバッグする。
 
-	// WARNING: Use of KeyLogWriter compromises security and should only be
-	// used for debugging.
+	// 警告: KeyLogWriterの使用はセキュリティを損なう可能性があり、
+	// デバッグ目的でのみ使用すべきです。
 
-	// Dummy test HTTP server for the example with insecure random so output is
-	// reproducible.
+	// 再現性があるように、ダミーテストのためのHTTPサーバーです。セキュリティのないランダムを使用しているので、出力も同じになります。
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}))
 	server.TLS = &tls.Config{
-		Rand: zeroSource{}, // for example only; don't do this.
+		Rand: zeroSource{}, // この例はただのサンプルです。これは実際には行わないでください。
 	}
 	server.StartTLS()
 	defer server.Close()
 
-	// Typically the log would go to an open file:
-	// w, err := os.OpenFile("tls-secrets.txt", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+	// 通常、ログは開かれたファイルに保存されます：
+	// w、err：= os.OpenFile（"tls-secrets.txt"、os.O_WRONLY | os.O_CREATE | os.O_TRUNC、0600）
 	w := os.Stdout
 
 	client := &http.Client{
@@ -84,8 +82,8 @@ func ExampleConfig_keyLogWriter() {
 			TLSClientConfig: &tls.Config{
 				KeyLogWriter: w,
 
-				Rand:               zeroSource{}, // for reproducible output; don't do this.
-				InsecureSkipVerify: true,         // test server certificate is not trusted.
+				Rand:               zeroSource{}, // 再現可能な出力のために、これを行わないでください。
+				InsecureSkipVerify: true,         // テストサーバー証明書は信頼されていません。
 			},
 		},
 	}
@@ -95,9 +93,7 @@ func ExampleConfig_keyLogWriter() {
 	}
 	resp.Body.Close()
 
-	// The resulting file can be used with Wireshark to decrypt the TLS
-	// connection by setting (Pre)-Master-Secret log filename in SSL Protocol
-	// preferences.
+	// 生成されたファイルは、Wiresharkで使用することができ、SSLプロトコルの設定で(Pre)-Master-Secretログファイル名を指定することで、TLS接続を復号化できます。
 }
 
 func ExampleLoadX509KeyPair() {
@@ -173,15 +169,15 @@ EKTcWGekdmdDPsHloRNtsiCa697B2O9IFA==
 }
 
 func ExampleConfig_verifyConnection() {
-	// VerifyConnection can be used to replace and customize connection
-	// verification. This example shows a VerifyConnection implementation that
-	// will be approximately equivalent to what crypto/tls does normally to
-	// verify the peer's certificate.
 
-	// Client side configuration.
+	// VerifyConnection は、接続の検証を置き換え、カスタマイズするために使用できます。
+	// この例では、VerifyConnection の実装方法を示しており、通常 crypto/tls で行われるピアの証明書の検証とほぼ同等です。
+
+	// クライアント側の設定。
 	_ = &tls.Config{
-		// Set InsecureSkipVerify to skip the default validation we are
-		// replacing. This will not disable VerifyConnection.
+
+		// InsecureSkipVerifyを設定して、デフォルトの検証をスキップします。
+		// これによってVerifyConnectionは無効になりません。
 		InsecureSkipVerify: true,
 		VerifyConnection: func(cs tls.ConnectionState) error {
 			opts := x509.VerifyOptions{
@@ -196,11 +192,10 @@ func ExampleConfig_verifyConnection() {
 		},
 	}
 
-	// Server side configuration.
+	// サーバーサイドの設定。
 	_ = &tls.Config{
-		// Require client certificates (or VerifyConnection will run anyway and
-		// panic accessing cs.PeerCertificates[0]) but don't verify them with the
-		// default verifier. This will not disable VerifyConnection.
+
+		// クライアント証明書を要求する（VerifyConnection は引き続き実行され、cs.PeerCertificates[0] にアクセスできなくなるとパニックする)が、デフォルトの検証子で検証しない。これにより VerifyConnection は無効になりません。
 		ClientAuth: tls.RequireAnyClientCert,
 		VerifyConnection: func(cs tls.ConnectionState) error {
 			opts := x509.VerifyOptions{
@@ -216,6 +211,5 @@ func ExampleConfig_verifyConnection() {
 		},
 	}
 
-	// Note that when certificates are not handled by the default verifier
-	// ConnectionState.VerifiedChains will be nil.
+	// デフォルトの検証器で証明書が処理されていない場合、ConnectionState.VerifiedChains は nil になります。
 }

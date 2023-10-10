@@ -8,41 +8,32 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// A Pool is a set of temporary objects that may be individually saved and
-// retrieved.
+// プールとは個別に保存および取り出しが可能な一時オブジェクトのセットです。
 //
-// Any item stored in the Pool may be removed automatically at any time without
-// notification. If the Pool holds the only reference when this happens, the
-// item might be deallocated.
+// プールに保存されたアイテムは、通知なしにいつでも自動的に削除される可能性があります。
+// これが発生する際にプールが唯一の参照を保持している場合、そのアイテムは解放される可能性があります。
 //
-// A Pool is safe for use by multiple goroutines simultaneously.
+// プールは、複数のゴルーチンによる同時の使用に対して安全です。
 //
-// Pool's purpose is to cache allocated but unused items for later reuse,
-// relieving pressure on the garbage collector. That is, it makes it easy to
-// build efficient, thread-safe free lists. However, it is not suitable for all
-// free lists.
+// プールの目的は、割り当てされたが未使用のアイテムをキャッシュして後で再利用することで、
+// ガベージコレクタにかかる負荷を軽減することです。つまり、効率的かつスレッドセーフな無料リストを構築することを簡単にします。
+// ただし、プールはすべての無料リストに適しているわけではありません。
 //
-// An appropriate use of a Pool is to manage a group of temporary items
-// silently shared among and potentially reused by concurrent independent
-// clients of a package. Pool provides a way to amortize allocation overhead
-// across many clients.
+// プールの適切な使用例は、パッケージの独立した並行クライアント間で静に共有され、
+// 潜在的に再利用される一時アイテムのグループを管理することです。
+// プールは、多くのクライアント間で割り当てのオーバーヘッドを分散する方法を提供します。
 //
-// An example of good use of a Pool is in the fmt package, which maintains a
-// dynamically-sized store of temporary output buffers. The store scales under
-// load (when many goroutines are actively printing) and shrinks when
-// quiescent.
+// プールの良い使用例は、fmtパッケージにあります。これは一時的な出力バッファのサイズを動的に管理しています。
+// このストアは、負荷がかかった場合（多くのゴルーチンがアクティブに印刷している場合）に拡大し、静かな場合には縮小します。
 //
-// On the other hand, a free list maintained as part of a short-lived object is
-// not a suitable use for a Pool, since the overhead does not amortize well in
-// that scenario. It is more efficient to have such objects implement their own
-// free list.
+// 一方、短命なオブジェクトの一部として維持される無料リストは、プールには適していません。
+// なぜなら、このシナリオではオーバーヘッドを適切に分散させることができないからです。
+// このようなオブジェクトは、独自の無料リストを実装する方が効率的です。
 //
-// A Pool must not be copied after first use.
+// プールは、最初の使用後にコピーしないでください。
 //
-// In the terminology of the Go memory model, a call to Put(x) “synchronizes before”
-// a call to Get returning that same value x.
-// Similarly, a call to New returning x “synchronizes before”
-// a call to Get returning that same value x.
+// Goのメモリモデルの用語では、Put(x)の呼び出しは同じ値xを返すGet呼び出しよりも「前に同期します」。
+// 同様に、Newがxを返す「前に同期します」Get呼び出しが同じ値xを返します。
 type Pool struct {
 	noCopy noCopy
 
@@ -52,21 +43,17 @@ type Pool struct {
 	victim     unsafe.Pointer
 	victimSize uintptr
 
-	// New optionally specifies a function to generate
-	// a value when Get would otherwise return nil.
-	// It may not be changed concurrently with calls to Get.
+	// Newは、Getがnilを返す場合に値を生成するための関数を指定するオプションです。
+	// Getの呼び出しと同時に変更することはできません。
 	New func() any
 }
 
-// Put adds x to the pool.
+// xをプールに追加します。
 func (p *Pool) Put(x any)
 
-// Get selects an arbitrary item from the Pool, removes it from the
-// Pool, and returns it to the caller.
-// Get may choose to ignore the pool and treat it as empty.
-// Callers should not assume any relation between values passed to Put and
-// the values returned by Get.
+// GetはPoolからランダムなアイテムを選択し、Poolから削除して呼び出し元に返します。
+// Getはプールを無視して空として扱うことを選択する場合があります。
+// Putに渡された値とGetが返す値の間には、呼び出し元は何の関係も仮定すべきではありません。
 //
-// If Get would otherwise return nil and p.New is non-nil, Get returns
-// the result of calling p.New.
+// Getが通常nilを返す場合であり、p.Newがnilでない場合、Getはp.Newを呼び出した結果を返します。
 func (p *Pool) Get() any

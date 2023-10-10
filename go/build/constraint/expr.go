@@ -2,24 +2,31 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package constraint implements parsing and evaluation of build constraint lines.
-// See https://golang.org/cmd/go/#hdr-Build_constraints for documentation about build constraints themselves.
+// Package constraintはビルド制約行の解析と評価を実装しています。
+// ビルド制約自体のドキュメントについては、https://golang.org/cmd/go/#hdr-Build_constraintsを参照してください。
 //
-// This package parses both the original “// +build” syntax and the “//go:build” syntax that was added in Go 1.17.
-// See https://golang.org/design/draft-gobuild for details about the “//go:build” syntax.
+// このパッケージは、オリジナルの「// +build」構文と、Go 1.17で追加された「//go:build」構文の両方を解析します。
+// 「//go:build」構文の詳細については、https://golang.org/design/draft-gobuildを参照してください。
 package constraint
 
-// An Expr is a build tag constraint expression.
-// The underlying concrete type is *AndExpr, *OrExpr, *NotExpr, or *TagExpr.
+// Exprはビルドタグの制約式です。
+// 内部の具体的な型は*AndExpr、*OrExpr、*NotExpr、または*TagExprです。
 type Expr interface {
+	// String returns the string form of the expression,
+	// using the boolean syntax used in //go:build lines.
 	String() string
 
+	// Eval reports whether the expression evaluates to true.
+	// It calls ok(tag) as needed to find out whether a given build tag
+	// is satisfied by the current build configuration.
 	Eval(ok func(tag string) bool) bool
 
+	// The presence of an isExpr method explicitly marks the type as an Expr.
+	// Only implementations in this package should be used as Exprs.
 	isExpr()
 }
 
-// A TagExpr is an Expr for the single tag Tag.
+// TagExprは、単一のタグTagのためのExprです。
 type TagExpr struct {
 	Tag string
 }
@@ -28,7 +35,7 @@ func (x *TagExpr) Eval(ok func(tag string) bool) bool
 
 func (x *TagExpr) String() string
 
-// A NotExpr represents the expression !X (the negation of X).
+// NotExprは式!X（Xの否定）を表します。
 type NotExpr struct {
 	X Expr
 }
@@ -37,7 +44,7 @@ func (x *NotExpr) Eval(ok func(tag string) bool) bool
 
 func (x *NotExpr) String() string
 
-// An AndExpr represents the expression X && Y.
+// AndExprは式X && Yを表します。
 type AndExpr struct {
 	X, Y Expr
 }
@@ -46,7 +53,7 @@ func (x *AndExpr) Eval(ok func(tag string) bool) bool
 
 func (x *AndExpr) String() string
 
-// An OrExpr represents the expression X || Y.
+// OrExprはX || Yを表します。
 type OrExpr struct {
 	X, Y Expr
 }
@@ -55,7 +62,7 @@ func (x *OrExpr) Eval(ok func(tag string) bool) bool
 
 func (x *OrExpr) String() string
 
-// A SyntaxError reports a syntax error in a parsed build expression.
+// SyntaxErrorは解析されたビルド式の構文エラーを報告します。
 type SyntaxError struct {
 	Offset int
 	Err    string
@@ -63,18 +70,17 @@ type SyntaxError struct {
 
 func (e *SyntaxError) Error() string
 
-// Parse parses a single build constraint line of the form “//go:build ...” or “// +build ...”
-// and returns the corresponding boolean expression.
+// Parseは、形式「//go:build ...」または「// +build ...」の単一のビルド制約行を解析し、対応するブール式を返します。
 func Parse(line string) (Expr, error)
 
-// IsGoBuild reports whether the line of text is a “//go:build” constraint.
-// It only checks the prefix of the text, not that the expression itself parses.
+// IsGoBuildは、テキストの行が「//go:build」の制約であるかどうかを報告します。
+// これは、テキストのプレフィックスのみをチェックし、式自体の解析は行いません。
 func IsGoBuild(line string) bool
 
-// IsPlusBuild reports whether the line of text is a “// +build” constraint.
-// It only checks the prefix of the text, not that the expression itself parses.
+// IsPlusBuildはテキストの行が "// +build" 制約であるかどうかを報告します。
+// これはテキストの接頭辞のみをチェックし、式そのものの解析は行いません。
 func IsPlusBuild(line string) bool
 
-// PlusBuildLines returns a sequence of “// +build” lines that evaluate to the build expression x.
-// If the expression is too complex to convert directly to “// +build” lines, PlusBuildLines returns an error.
+// PlusBuildLinesはビルド式xに評価される「// +build」の行のシーケンスを返します。
+// 式が直接「// +build」の行に変換できるほど複雑でない場合、PlusBuildLinesはエラーを返します。
 func PlusBuildLines(x Expr) ([]string, error)

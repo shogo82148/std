@@ -16,15 +16,14 @@ import (
 func ExampleNode() {
 	const expr = "(6+2*3)/4"
 
-	// parser.ParseExpr parses the argument and returns the
-	// corresponding ast.Node.
+	// parser.ParseExprは引数を解析し、対応するast.Nodeを返します。
 	node, err := parser.ParseExpr(expr)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Create a FileSet for node. Since the node does not come
-	// from a real source file, fset will be empty.
+	// ノード用のFileSetを作成します。ノードは実際のソースファイルから
+	// 来ないため、fsetは空になります。
 	fset := token.NewFileSet()
 
 	var buf bytes.Buffer
