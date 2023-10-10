@@ -386,6 +386,7 @@ type SectionReader struct {
 	base  int64
 	off   int64
 	limit int64
+	n     int64
 }
 
 func (s *SectionReader) Read(p []byte) (n int, err error)
@@ -396,6 +397,12 @@ func (s *SectionReader) ReadAt(p []byte, off int64) (n int, err error)
 
 // Size returns the size of the section in bytes.
 func (s *SectionReader) Size() int64
+
+// Outer returns the underlying ReaderAt and offsets for the section.
+//
+// The returned values are the same that were passed to NewSectionReader
+// when the SectionReader was created.
+func (s *SectionReader) Outer() (r ReaderAt, off int64, n int64)
 
 // An OffsetWriter maps writes at offset base to offset base+off in the underlying writer.
 type OffsetWriter struct {
