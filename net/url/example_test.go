@@ -159,7 +159,7 @@ func ExampleURL() {
 }
 
 func ExampleURL_roundtrip() {
-	// Parse + String preserve the original encoding.
+	// Parse + Stringは元のエンコーディングを保持します。
 	u, err := url.Parse("https://example.com/foo%2fbar")
 	if err != nil {
 		log.Fatal(err)
