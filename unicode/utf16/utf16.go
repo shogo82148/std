@@ -2,31 +2,30 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package utf16 implements encoding and decoding of UTF-16 sequences.
+// Package utf16はUTF-16シーケンスのエンコードとデコードを実装します。
 package utf16
 
-// IsSurrogate reports whether the specified Unicode code point
-// can appear in a surrogate pair.
+// IsSurrogateは指定されたUnicodeコードポイントが
+// 代理ペアに現れることができるかどうかを報告します。
 func IsSurrogate(r rune) bool
 
-// DecodeRune returns the UTF-16 decoding of a surrogate pair.
-// If the pair is not a valid UTF-16 surrogate pair, DecodeRune returns
-// the Unicode replacement code point U+FFFD.
+// DecodeRune はサロゲートペアのUTF-16デコードを返します。
+// サロゲートペアが正しいUTF-16のサロゲートペアでない場合、
+// DecodeRune はUnicodeの代替コードポイントU+FFFDを返します。
 func DecodeRune(r1, r2 rune) rune
 
-// EncodeRune returns the UTF-16 surrogate pair r1, r2 for the given rune.
-// If the rune is not a valid Unicode code point or does not need encoding,
-// EncodeRune returns U+FFFD, U+FFFD.
+// EncodeRuneは与えられたルーンに対して、UTF-16サロゲートペアのr1、r2を返します。
+// もしルーンが有効なUnicodeコードポイントでない場合やエンコーディングが必要ではない場合、
+// EncodeRuneはU+FFFD、U+FFFDを返します。
 func EncodeRune(r rune) (r1, r2 rune)
 
-// Encode returns the UTF-16 encoding of the Unicode code point sequence s.
+// EncodeはUnicodeコードポイントの列sのUTF-16エンコーディングを返します。
 func Encode(s []rune) []uint16
 
-// AppendRune appends the UTF-16 encoding of the Unicode code point r
-// to the end of p and returns the extended buffer. If the rune is not
-// a valid Unicode code point, it appends the encoding of U+FFFD.
+// AppendRuneはUnicodeのコードポイントrのUTF-16エンコーディングを
+// pの末尾に追加し、拡張されたバッファを返します。コードポイントが有効な
+// Unicodeのコードポイントでない場合、U+FFFDのエンコーディングを追加します。
 func AppendRune(a []uint16, r rune) []uint16
 
-// Decode returns the Unicode code point sequence represented
-// by the UTF-16 encoding s.
+// DecodeはUTF-16エンコーディングsで表されるUnicodeのコードポイントのシーケンスを返します。
 func Decode(s []uint16) []rune
