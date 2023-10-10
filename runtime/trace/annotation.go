@@ -8,75 +8,67 @@ import (
 	"github.com/shogo82148/std/context"
 )
 
-// NewTask creates a task instance with the type taskType and returns
-// it along with a Context that carries the task.
-// If the input context contains a task, the new task is its subtask.
+// NewTaskはタスクの種類（taskType）でタスクインスタンスを作成し、
+// タスクを持つContextとともに返します。
+// もし入力のContextにタスクが含まれている場合、新しいタスクはそのサブタスクとなります。
 //
-// The taskType is used to classify task instances. Analysis tools
-// like the Go execution tracer may assume there are only a bounded
-// number of unique task types in the system.
+// タスクタイプはタスクインスタンスを分類するために使用されます。Go実行トレーサのような
+// 分析ツールは、システムに一意のタスクタイプが有限であると見なすことがあります。
 //
-// The returned Task's [Task.End] method is used to mark the task's end.
-// The trace tool measures task latency as the time between task creation
-// and when the End method is called, and provides the latency
-// distribution per task type.
-// If the End method is called multiple times, only the first
-// call is used in the latency measurement.
+// 返されるTaskの[Task.End]メソッドはタスクの終了をマークするために使用されます。
+// トレースツールは、タスクの作成とEndメソッドの呼び出しの間の時間をタスクのレイテンシとして測定し、
+// レイテンシの分布をタスクタイプごとに提供します。
+// Endメソッドが複数回呼び出された場合、レイテンシの測定には最初の呼び出しぶんのみ使用されます。
 //
-//	ctx, task := trace.NewTask(ctx, "awesomeTask")
-//	trace.WithRegion(ctx, "preparation", prepWork)
-//	// preparation of the task
-//	go func() {  // continue processing the task in a separate goroutine.
+// ctx、task := trace.NewTask(ctx, "awesomeTask")
+// trace.WithRegion(ctx, "preparation", prepWork)
+// // タスクの準備
+// go func() {  // 別のゴルーチンでタスクの処理を続ける。
+//
 //	    defer task.End()
 //	    trace.WithRegion(ctx, "remainingWork", remainingWork)
 //	}()
 func NewTask(pctx context.Context, taskType string) (ctx context.Context, task *Task)
 
-// Task is a data type for tracing a user-defined, logical operation.
+// Taskは、ユーザー定義の論理的な操作をトレースするためのデータ型です。
 type Task struct {
 	id uint64
 }
 
-// End marks the end of the operation represented by the [Task].
+// End は [Task] によって表される操作の終了を示します。
 func (t *Task) End()
 
-// Log emits a one-off event with the given category and message.
-// Category can be empty and the API assumes there are only a handful of
-// unique categories in the system.
+// Logは与えられたカテゴリとメッセージでワンオフのイベントを送信します。
+// カテゴリは空にすることができ、APIはシステム内に一握りのユニークなカテゴリしか存在しないと仮定します。
 func Log(ctx context.Context, category, message string)
 
-// Logf is like [Log], but the value is formatted using the specified format spec.
+// Logfは[Log]と似ていますが、値は指定されたフォーマット仕様を使用して整形されます。
 func Logf(ctx context.Context, category, format string, args ...any)
 
-// WithRegion starts a region associated with its calling goroutine, runs fn,
-// and then ends the region. If the context carries a task, the region is
-// associated with the task. Otherwise, the region is attached to the background
-// task.
-//
-// The regionType is used to classify regions, so there should be only a
-// handful of unique region types.
+// WithRegionは、呼び出し元のgoroutineに関連付けられた領域を開始し、fnを実行し、その後領域を終了します。もしコンテキストにタスクがある場合、領域はそのタスクに関連付けられます。そうでない場合、領域はバックグラウンドのタスクにアタッチされます。
+// regionTypeは領域を分類するために使用されるため、ユニークなregionTypeはごくわずかであるべきです。
 func WithRegion(ctx context.Context, regionType string, fn func())
 
-// StartRegion starts a region and returns it.
-// The returned Region's [Region.End] method must be called
-// from the same goroutine where the region was started.
-// Within each goroutine, regions must nest. That is, regions started
-// after this region must be ended before this region can be ended.
-// Recommended usage is
+// StartRegionはリージョンを開始して返します。
+// 戻り値となるリージョンの[Region.End]メソッドは、
+// リージョンを開始した同じゴルーチンから呼び出す必要があります。
+// 各ゴルーチン内では、リージョンはネストする必要があります。
+// つまり、このリージョンを終了する前に、このリージョンよりも後に開始されたリージョンを終了する必要があります。
+// 推奨される使用法は
 //
 //	defer trace.StartRegion(ctx, "myTracedRegion").End()
 func StartRegion(ctx context.Context, regionType string) *Region
 
-// Region is a region of code whose execution time interval is traced.
+// Regionは、実行時間の区間がトレースされるコードの領域です。
 type Region struct {
 	id         uint64
 	regionType string
 }
 
-// End marks the end of the traced code region.
+// Endはトレースされたコード領域の終わりを示します。
 func (r *Region) End()
 
-// IsEnabled reports whether tracing is enabled.
-// The information is advisory only. The tracing status
-// may have changed by the time this function returns.
+// IsEnabled はトレースが有効かどうかを報告します。
+// この情報はアドバイザリー(助言的)です。トレースの状態は
+// この関数が返るまでに変更されている可能性があります。
 func IsEnabled() bool
