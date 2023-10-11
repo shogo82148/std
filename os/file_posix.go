@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build unix || (js && wasm) || wasip1 || windows
-//go:build unix || (js && wasm) || wasip1 || windows
 
 package os
 
