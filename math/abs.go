@@ -4,9 +4,9 @@
 
 package math
 
-// Abs returns the absolute value of x.
+// Absはxの絶対値を返します。
 //
-// Special cases are:
+// 特殊な場合は以下のようになります:
 //
 //	Abs(±Inf) = +Inf
 //	Abs(NaN) = NaN
