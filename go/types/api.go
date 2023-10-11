@@ -260,10 +260,11 @@ type Info struct {
 	// appear in this list.
 	InitOrder []*Initializer
 
-	// _FileVersions maps a file's start position to the file's Go version.
-	// If the file doesn't specify a version and Config.GoVersion is not
-	// given, the reported version is the zero version (Major, Minor = 0, 0).
-	_FileVersions map[token.Pos]_Version
+	// _FileVersions maps a file to the file's Go version string.
+	// If the file doesn't specify a version and Config.GoVersion
+	// is not given, the reported version is the empty string.
+	// TODO(gri) should this be "go0.0" instead in that case?
+	_FileVersions map[*ast.File]string
 }
 
 // TypeOf returns the type of expression e, or nil if not found.
