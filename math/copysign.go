@@ -4,6 +4,5 @@
 
 package math
 
-// Copysign returns a value with the magnitude of f
-// and the sign of sign.
+// Copysign は f の絶対値と sign の符号を持つ値を返す。
 func Copysign(f, sign float64) float64
