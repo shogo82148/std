@@ -4,10 +4,9 @@
 
 package math
 
-// Hypot returns Sqrt(p*p + q*q), taking care to avoid
-// unnecessary overflow and underflow.
+// Hypotはp*p + q*qの平方根を返します。不必要なオーバーフローやアンダーフローを避けるように注意します。
 //
-// Special cases are:
+// 特殊な場合は以下の通りです:
 //
 //	Hypot(±Inf, q) = +Inf
 //	Hypot(p, ±Inf) = +Inf
