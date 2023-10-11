@@ -4,11 +4,9 @@
 
 package math
 
-// Atan2 returns the arc tangent of y/x, using
-// the signs of the two to determine the quadrant
-// of the return value.
+// Atan2は、y/xの逆正接を返します。戻り値の象限を決定するために、二つの符号を使用します。
 //
-// Special cases are (in order):
+// 特殊なケースは以下の通りです：
 //
 //	Atan2(y, NaN) = NaN
 //	Atan2(NaN, x) = NaN
