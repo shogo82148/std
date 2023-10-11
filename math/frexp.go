@@ -4,12 +4,11 @@
 
 package math
 
-// Frexp breaks f into a normalized fraction
-// and an integral power of two.
-// It returns frac and exp satisfying f == frac × 2**exp,
-// with the absolute value of frac in the interval [½, 1).
+// Frexpは、fを正規化された分数と2の整数冪に分解します。
+// それは、f == frac × 2**expを満たすfracとexpを返します。
+// fracの絶対値は[½, 1)の範囲にあります。
 //
-// Special cases are:
+// 特殊な場合は以下の通りです:
 //
 //	Frexp(±0) = ±0, 0
 //	Frexp(±Inf) = ±Inf, 0
