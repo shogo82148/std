@@ -10,28 +10,23 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
-// The only signal values guaranteed to be present in the os package on all
-// systems are os.Interrupt (send the process an interrupt) and os.Kill (force
-// the process to exit). On Windows, sending os.Interrupt to a process with
-// os.Process.Signal is not implemented; it will return an error instead of
-// sending a signal.
+// すべてのシステムのosパッケージで保証されている信号値は、os.Interrupt（プロセスに割り込みを送信する）とos.Kill（プロセスを強制的に終了する）のみです。Windowsでは、os.Process.Signalに対してos.Interruptを送信することは実装されていません。代わりにエラーが返されます。
 var (
 	Interrupt Signal = syscall.SIGINT
 	Kill      Signal = syscall.SIGKILL
 )
 
-// ProcessState stores information about a process, as reported by Wait.
+// ProcessStateはWaitによって報告されるプロセスの情報を格納します。
 type ProcessState struct {
 	pid    int
 	status syscall.WaitStatus
 	rusage *syscall.Rusage
 }
 
-// Pid returns the process id of the exited process.
+// Pidは終了したプロセスのプロセスIDを返します。
 func (p *ProcessState) Pid() int
 
 func (p *ProcessState) String() string
 
-// ExitCode returns the exit code of the exited process, or -1
-// if the process hasn't exited or was terminated by a signal.
+// ExitCodeは終了したプロセスの終了コードを返します。プロセスがまだ終了していない場合や、シグナルによって終了した場合は-1を返します。
 func (p *ProcessState) ExitCode() int
