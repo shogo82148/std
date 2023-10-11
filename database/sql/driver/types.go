@@ -21,7 +21,6 @@ package driver
 //   - by the sql package, for converting from a driver's Value type
 //     to a user's type in a scan.
 type ValueConverter interface {
-	// ConvertValue converts a value to a driver Value.
 	ConvertValue(v any) (Value, error)
 }
 
@@ -30,8 +29,6 @@ type ValueConverter interface {
 // Types implementing Valuer interface are able to convert
 // themselves to a driver Value.
 type Valuer interface {
-	// Value returns a driver Value.
-	// Value must not panic.
 	Value() (Value, error)
 }
 
