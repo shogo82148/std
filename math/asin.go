@@ -4,17 +4,17 @@
 
 package math
 
-// Asin returns the arcsine, in radians, of x.
+// Asinは、xの弧度法におけるアークサインを返します。
 //
-// Special cases are:
+// 特別なケースは次のとおりです：
 //
 //	Asin(±0) = ±0
 //	Asin(x) = NaN if x < -1 or x > 1
 func Asin(x float64) float64
 
-// Acos returns the arccosine, in radians, of x.
+// Acosは、xのarccosine（ラジアン単位）を返します。
 //
-// Special case is:
+// 特殊な場合は以下です：
 //
 //	Acos(x) = NaN if x < -1 or x > 1
 func Acos(x float64) float64

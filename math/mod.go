@@ -4,11 +4,10 @@
 
 package math
 
-// Mod returns the floating-point remainder of x/y.
-// The magnitude of the result is less than y and its
-// sign agrees with that of x.
+// Modはx/yの浮動小数点の余りを返します。
+// 結果の絶対値はyより小さく、符号はxと一致します。
 //
-// Special cases are:
+// 特殊なケースは次のとおりです:
 //
 //	Mod(±Inf, y) = NaN
 //	Mod(NaN, y) = NaN

@@ -4,9 +4,9 @@
 
 package math
 
-// Gamma returns the Gamma function of x.
+// Gammaはxのガンマ関数を返します。
 //
-// Special cases are:
+// 特殊な場合は以下の通りです:
 //
 //	Gamma(+Inf) = +Inf
 //	Gamma(+0) = +Inf
