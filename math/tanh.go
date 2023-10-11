@@ -4,9 +4,9 @@
 
 package math
 
-// Tanh returns the hyperbolic tangent of x.
+// Tanhはxの双曲線正接を返します。
 //
-// Special cases are:
+// 特殊な場合は次のとおりです：
 //
 //	Tanh(±0) = ±0
 //	Tanh(±Inf) = ±1
