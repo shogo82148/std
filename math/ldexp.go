@@ -4,10 +4,10 @@
 
 package math
 
-// Ldexp is the inverse of Frexp.
-// It returns frac × 2**exp.
+// LdexpはFrexpの逆です。
+// それはfrac × 2 ** expを返します。
 //
-// Special cases are:
+// 特別なケースは以下の通りです：
 //
 //	Ldexp(±0, exp) = ±0
 //	Ldexp(±Inf, exp) = ±Inf
