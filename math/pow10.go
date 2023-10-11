@@ -4,9 +4,9 @@
 
 package math
 
-// Pow10 returns 10**n, the base-10 exponential of n.
+// Pow10はnの10のn乗、つまり10の指数nを返します。
 //
-// Special cases are:
+// 特別な場合は以下の通りです:
 //
 //	Pow10(n) =    0 for n < -323
 //	Pow10(n) = +Inf for n > 308
