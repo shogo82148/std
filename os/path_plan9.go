@@ -9,5 +9,5 @@ const (
 	PathListSeparator = '\000'
 )
 
-// IsPathSeparator reports whether c is a directory separator character.
+// IsPathSeparatorは、文字cがディレクトリセパレータ文字かどうかを報告します。
 func IsPathSeparator(c uint8) bool
