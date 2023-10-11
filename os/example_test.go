@@ -25,13 +25,13 @@ func ExampleOpenFile() {
 }
 
 func ExampleOpenFile_append() {
-	// If the file doesn't exist, create it, or append to the file
+	// ファイルが存在しない場合は作成し、ファイルに追記する
 	f, err := os.OpenFile("access.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
 	if _, err := f.Write([]byte("appended some data\n")); err != nil {
-		f.Close() // ignore error; Write error takes precedence
+		f.Close() // エラーを無視する; エラーが優先される
 		log.Fatal(err)
 	}
 	if err := f.Close(); err != nil {
@@ -59,7 +59,7 @@ func ExampleFileMode() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("permissions: %#o\n", fi.Mode().Perm()) // 0400, 0777, etc.
+	fmt.Printf("permissions: %#o\n", fi.Mode().Perm()) // 0400、0777 など。
 	switch mode := fi.Mode(); {
 	case mode.IsRegular():
 		fmt.Println("regular file")
@@ -163,7 +163,7 @@ func ExampleMkdirTemp() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.RemoveAll(dir) // clean up
+	defer os.RemoveAll(dir) // クリーンアップ
 
 	file := filepath.Join(dir, "tmpfile")
 	if err := os.WriteFile(file, []byte("content"), 0666); err != nil {
@@ -176,10 +176,10 @@ func ExampleMkdirTemp_suffix() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.RemoveAll(logsDir) // clean up
+	defer os.RemoveAll(logsDir) // クリーンアップ
 
-	// Logs can be cleaned out earlier if needed by searching
-	// for all directories whose suffix ends in *-logs.
+	// ログは必要に応じて早期にクリーニングアウトできます
+	// *-logsで終わるすべてのディレクトリを検索してください。
 	globPattern := filepath.Join(os.TempDir(), "*-logs")
 	matches, err := filepath.Glob(globPattern)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleCreateTemp() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.Remove(f.Name()) // clean up
+	defer os.Remove(f.Name()) // クリーンアップ
 
 	if _, err := f.Write([]byte("content")); err != nil {
 		log.Fatal(err)
@@ -213,7 +213,7 @@ func ExampleCreateTemp_suffix() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.Remove(f.Name()) // clean up
+	defer os.Remove(f.Name()) // クリーンアップ
 
 	if _, err := f.Write([]byte("content")); err != nil {
 		f.Close()
