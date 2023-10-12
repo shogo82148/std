@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package unicode provides data and functions to test some properties of
-// Unicode code points.
+// unicodeパッケージは、Unicodeコードポイントのいくつかのプロパティをテストするためのデータと関数を提供します。
 package unicode
 
 const (
@@ -13,57 +12,49 @@ const (
 	MaxLatin1       = '\u00FF'
 )
 
-// RangeTable defines a set of Unicode code points by listing the ranges of
-// code points within the set. The ranges are listed in two slices
-// to save space: a slice of 16-bit ranges and a slice of 32-bit ranges.
-// The two slices must be in sorted order and non-overlapping.
-// Also, R32 should contain only values >= 0x10000 (1<<16).
+// RangeTableは、セット内のUnicodeコードポイントを範囲ごとにリストアップして定義します。
+// 範囲は2つのスライスにリストされます。16ビット範囲のスライスと32ビット範囲のスライスです。
+// 2つのスライスはソートされた順序で且つ重複しないようにする必要があります。
+// また、R32には値が0x10000（1<<16）以上のもののみ含まれるべきです。
 type RangeTable struct {
 	R16         []Range16
 	R32         []Range32
 	LatinOffset int
 }
 
-// Range16 represents of a range of 16-bit Unicode code points. The range runs from Lo to Hi
-// inclusive and has the specified stride.
+// Range16は16ビットのUnicodeコードポイントの範囲を表します。範囲はLoからHiまでの値を含み、指定されたストライドを持ちます。
 type Range16 struct {
 	Lo     uint16
 	Hi     uint16
 	Stride uint16
 }
 
-// Range32 represents of a range of Unicode code points and is used when one or
-// more of the values will not fit in 16 bits. The range runs from Lo to Hi
-// inclusive and has the specified stride. Lo and Hi must always be >= 1<<16.
+// Range32はUnicodeコードポイントの範囲を表し、16ビットに収まらない値が1つ以上含まれる場合に使用されます。この範囲はLoからHiまでの間（Hiも含む）で、指定されたストライドを持ちます。LoとHiは常に1<<16以上である必要があります。
 type Range32 struct {
 	Lo     uint32
 	Hi     uint32
 	Stride uint32
 }
 
-// CaseRange represents a range of Unicode code points for simple (one
-// code point to one code point) case conversion.
-// The range runs from Lo to Hi inclusive, with a fixed stride of 1. Deltas
-// are the number to add to the code point to reach the code point for a
-// different case for that character. They may be negative. If zero, it
-// means the character is in the corresponding case. There is a special
-// case representing sequences of alternating corresponding Upper and Lower
-// pairs. It appears with a fixed Delta of
+// CaseRangeは、単純な（1つのコードポイントから別のコードポイントへの）大文字小文字変換のためのUnicodeコードポイントの範囲を表します。
+// 範囲は、LoからHiまでの範囲で、固定のストライド1で実行されます。デルタは、その文字の異なるケースに到達するためにコードポイントに追加する数値です。デルタは負数になることもあります。ゼロの場合、対応するケースに文字があることを意味します。特別な場合として、交互に対応する大文字と小文字のペアのシーケンスを表すものがあります。これは、固定デルタの
 //
-//	{UpperLower, UpperLower, UpperLower}
+// {UpperLower、UpperLower、UpperLower}
 //
-// The constant UpperLower has an otherwise impossible delta value.
+// と表示されます。
+//
+// 定数UpperLowerには、通常ありえないデルタ値があります。
 type CaseRange struct {
 	Lo    uint32
 	Hi    uint32
 	Delta d
 }
 
-// SpecialCase represents language-specific case mappings such as Turkish.
-// Methods of SpecialCase customize (by overriding) the standard mappings.
+// SpecialCaseはトルコ語などの言語固有の大文字小文字マッピングを表します。
+// SpecialCaseのメソッドは、標準のマッピングをカスタマイズするために（オーバーライドすることによって）使用されます。
 type SpecialCase []CaseRange
 
-// Indices into the Delta arrays inside CaseRanges for case mapping.
+// CaseMapping 内の CaseRanges のデルタ配列への索引。
 const (
 	UpperCase = iota
 	LowerCase
@@ -71,62 +62,56 @@ const (
 	MaxCase
 )
 
-// If the Delta field of a CaseRange is UpperLower, it means
-// this CaseRange represents a sequence of the form (say)
-// Upper Lower Upper Lower.
+// もしCaseRangeのDeltaフィールドがUpperLowerであれば、
+// これは(Upper Lower Upper Lowerのような)シーケンスを表すことを意味します。
 const (
 	UpperLower = MaxRune + 1
 )
 
-// Is reports whether the rune is in the specified table of ranges.
+// 指定された範囲テーブル内にルーンが含まれているかどうかを報告します。
 func Is(rangeTab *RangeTable, r rune) bool
 
-// IsUpper reports whether the rune is an upper case letter.
+// IsUpperはルーンが大文字のアルファベットかどうかを報告します。
 func IsUpper(r rune) bool
 
-// IsLower reports whether the rune is a lower case letter.
+// IsLowerは、ルーンが小文字の文字かどうかを報告します。
 func IsLower(r rune) bool
 
-// IsTitle reports whether the rune is a title case letter.
+// IsTitleは、与えられたルーンがタイトルケースの文字であるかどうかを報告します。
 func IsTitle(r rune) bool
 
-// To maps the rune to the specified case: UpperCase, LowerCase, or TitleCase.
+// 指定されたケースに符文をマッピングします：大文字、小文字、またはタイトルケース。
 func To(_case int, r rune) rune
 
-// ToUpper maps the rune to upper case.
+// ToUpperはルーンを大文字にマッピングします。
 func ToUpper(r rune) rune
 
-// ToLower maps the rune to lower case.
+// ToLowerはルーン文字を小文字にマッピングします。
 func ToLower(r rune) rune
 
-// ToTitle maps the rune to title case.
+// ToTitleはルーンをタイトルケースにマッピングします。
 func ToTitle(r rune) rune
 
-// ToUpper maps the rune to upper case giving priority to the special mapping.
+// ToUpperはルーンを大文字にマッピングしますが、特別なマッピングに優先します。
 func (special SpecialCase) ToUpper(r rune) rune
 
-// ToTitle maps the rune to title case giving priority to the special mapping.
+// ToTitleはルーンをタイトルケースにマッピングし、特別なマッピングを優先します。
 func (special SpecialCase) ToTitle(r rune) rune
 
-// ToLower maps the rune to lower case giving priority to the special mapping.
+// ToLowerはルーンを小文字にマッピングしますが、特別なマッピングに優先します。
 func (special SpecialCase) ToLower(r rune) rune
 
-// SimpleFold iterates over Unicode code points equivalent under
-// the Unicode-defined simple case folding. Among the code points
-// equivalent to rune (including rune itself), SimpleFold returns the
-// smallest rune > r if one exists, or else the smallest rune >= 0.
-// If r is not a valid Unicode code point, SimpleFold(r) returns r.
+// SimpleFoldは、Unicodeが定義するシンプルな大文字小文字変換に基づいて、Unicodeコードポイントに相当するコードポイントを反復します。rune自体を含むruneに相当するコードポイントの中で、SimpleFoldは、存在する場合はrよりも大きい最小のruneを返し、存在しない場合は0以上の最小のruneを返します。rが有効なUnicodeコードポイントでない場合、SimpleFold(r)はrを返します。
+// 例えば：
 //
-// For example:
+// SimpleFold('A') = 'a'
+// SimpleFold('a') = 'A'
 //
-//	SimpleFold('A') = 'a'
-//	SimpleFold('a') = 'A'
+// SimpleFold('K') = 'k'
+// SimpleFold('k') = '\u212A' (ケルビン記号、K)
+// SimpleFold('\u212A') = 'K'
 //
-//	SimpleFold('K') = 'k'
-//	SimpleFold('k') = '\u212A' (Kelvin symbol, K)
-//	SimpleFold('\u212A') = 'K'
+// SimpleFold('1') = '1'
 //
-//	SimpleFold('1') = '1'
-//
-//	SimpleFold(-2) = -2
+// SimpleFold(-2) = -2
 func SimpleFold(r rune) rune
