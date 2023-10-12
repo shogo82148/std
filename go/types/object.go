@@ -168,7 +168,7 @@ func (obj *Func) Origin() *Func
 // Pkg returns the package to which the function belongs.
 //
 // The result is nil for methods of types in the Universe scope,
-// like [error.Error].
+// like method Error of the error built-in interface type.
 func (obj *Func) Pkg() *Package
 
 // A Label represents a declared label.
