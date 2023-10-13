@@ -65,26 +65,13 @@ type Reader struct {
 	toRead []byte
 }
 
-<<<<<<< HEAD
-// Readはio.Readerを実装し、基になるReaderから非圧縮バイトを読み取ります。
+// Readはio.Readerを実装し、基になる [Reader] から非圧縮バイトを読み取ります。
 func (r *Reader) Read(b []byte) (int, error)
 
-// CloseはReaderを閉じ、将来の読み込み操作に対してエラーを返します。
-// サブのio.Readerを閉じません。
+// Closeは [Reader] を閉じ、将来の読み込み操作に対してエラーを返します。
+// サブの [io.Reader] を閉じません。
 func (r *Reader) Close() error
 
-// ResetはReaderの状態をクリアし、新しいReaderとして再利用するために使用されます。
-=======
-// Read implements io.Reader, reading uncompressed bytes from its underlying [Reader].
-func (r *Reader) Read(b []byte) (int, error)
-
-// Close closes the [Reader] and returns an error for any future read operation.
-// It does not close the underlying [io.Reader].
-func (r *Reader) Close() error
-
-// Reset clears the [Reader]'s state and allows it to be reused again
-// as a new [Reader].
->>>>>>> upstream/master
 func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 
 // NewReader creates a new [io.ReadCloser].
@@ -97,10 +84,5 @@ func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 // range [2,8] and is typically 8. It must equal the litWidth
 // used during compression.
 //
-<<<<<<< HEAD
-// 返されたio.ReadCloserの基底型は、*Readerであることが保証されます。
-=======
-// It is guaranteed that the underlying type of the returned [io.ReadCloser]
-// is a *[Reader].
->>>>>>> upstream/master
+// 返された [io.ReadCloser] の基底型は、*[Reader] であることが保証されます。
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser
