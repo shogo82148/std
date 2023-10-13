@@ -86,49 +86,20 @@ func (b *Reader) UnreadRune() error
 // Bufferedは現在のバッファから読み取ることができるバイト数を返します。
 func (b *Reader) Buffered() int
 
-<<<<<<< HEAD
 // ReadSliceは入力内の最初のデリミタの出現まで読み取り、バッファ内のバイトを指すスライスを返します。
 // バイトは次の読み取り時には無効になります。
 // ReadSliceがデリミタを見つける前にエラーに遭遇した場合、バッファ内のすべてのデータとエラー自体（通常はio.EOF）を返します。
-// バッファがデリミタなしで満杯になると、ReadSliceはErrBufferFullエラーで失敗します。
+// バッファがデリミタなしで満杯になると、ReadSliceは [ErrBufferFull] エラーで失敗します。
 // ReadSliceから返されるデータは次のI/O操作によって上書きされるため、ほとんどのクライアントは
-// ReadBytesまたはReadStringを代わりに使用すべきです。
+// [Reader.ReadBytes] またはReadStringを代わりに使用すべきです。
 // ReadSliceは、lineの終了がデリミタでない場合にのみerr！= nilを返します。
 func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
 
-// ReadLineは低レベルの行読み取りプリミティブです。ほとんどの呼び出し元は、ReadBytes（'\n'）またはReadString（'\n'）を使用するか、Scannerを使用する必要があります。
+// ReadLineは低レベルの行読み取りプリミティブです。ほとんどの呼び出し元は、 [Reader.ReadBytes]('\n') または [Reader.ReadString]('\n') を使用するか、 [Scanner] を使用する必要があります。
+//
 // ReadLineは、改行文字を含まない1行だけを返そうとします。もし行がバッファーに対して長すぎる場合、isPrefixが設定され、行の先頭が返されます。それ以降の行は、将来の呼び出しで返されます。最後のフラグメントを返す際には、isPrefixはfalseになります。返されるバッファーは、次のReadLine呼び出しまでの間のみ有効です。ReadLineは、nilではない行を返すか、エラーを返すか、どちらかを返しますが、両方を返すことはありません。
-// ReadLineから返されるテキストには、行末の("\r\n"または"\n")は含まれません。入力が最後の行末で終わっている場合、特定の表示やエラーは与えられません。ReadLineの後にUnreadByteを呼び出すと、常に最後に読み取られたバイト（おそらく行末に属する文字）がアンリードされます。ただし、そのバイトがReadLineによって返された行の一部でない場合でもです。
-=======
-// ReadSlice reads until the first occurrence of delim in the input,
-// returning a slice pointing at the bytes in the buffer.
-// The bytes stop being valid at the next read.
-// If ReadSlice encounters an error before finding a delimiter,
-// it returns all the data in the buffer and the error itself (often io.EOF).
-// ReadSlice fails with error [ErrBufferFull] if the buffer fills without a delim.
-// Because the data returned from ReadSlice will be overwritten
-// by the next I/O operation, most clients should use
-// [Reader.ReadBytes] or ReadString instead.
-// ReadSlice returns err != nil if and only if line does not end in delim.
-func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
-
-// ReadLine is a low-level line-reading primitive. Most callers should use
-// [Reader.ReadBytes]('\n') or [Reader.ReadString]('\n') instead or use a [Scanner].
 //
-// ReadLine tries to return a single line, not including the end-of-line bytes.
-// If the line was too long for the buffer then isPrefix is set and the
-// beginning of the line is returned. The rest of the line will be returned
-// from future calls. isPrefix will be false when returning the last fragment
-// of the line. The returned buffer is only valid until the next call to
-// ReadLine. ReadLine either returns a non-nil line or it returns an error,
-// never both.
-//
-// The text returned from ReadLine does not include the line end ("\r\n" or "\n").
-// No indication or error is given if the input ends without a final line end.
-// Calling [Reader.UnreadByte] after ReadLine will always unread the last byte read
-// (possibly a character belonging to the line end) even if that byte is not
-// part of the line returned by ReadLine.
->>>>>>> upstream/master
+// ReadLineから返されるテキストには、行末の("\r\n"または"\n")は含まれません。入力が最後の行末で終わっている場合、特定の表示やエラーは与えられません。ReadLineの後に [Reader.UnreadByte] を呼び出すと、常に最後に読み取られたバイト（おそらく行末に属する文字）がアンリードされます。ただし、そのバイトがReadLineによって返された行の一部でない場合でもです。
 func (b *Reader) ReadLine() (line []byte, isPrefix bool, err error)
 
 // ReadBytesは入力内のデリミタの最初の出現まで読み取り、
@@ -145,30 +116,15 @@ func (b *Reader) ReadBytes(delim byte) ([]byte, error)
 // 単純な使用法の場合は、Scannerがより便利です。
 func (b *Reader) ReadString(delim byte) (string, error)
 
-<<<<<<< HEAD
 // WriteToはio.WriterToを実装します。
-// これは基礎となるReaderのReadメソッドを複数回呼び出すことがあります。
-// 基礎となるreaderがWriteToメソッドをサポートしている場合、
-// これはバッファリングせずに基礎となるWriteToを呼び出します。
+// これは基礎となる [Reader] の [Reader.Read] メソッドを複数回呼び出すことがあります。
+// 基礎となるreaderが [Reader.WriteTo] メソッドをサポートしている場合、
+// これはバッファリングせずに基礎となる [Reader.WriteTo] を呼び出します。
 func (b *Reader) WriteTo(w io.Writer) (n int64, err error)
 
-// Writerはio.Writerオブジェクトに対してバッファリングを行います。
-// Writerに書き込む際にエラーが発生した場合、以降のデータの受け入れや、Flushメソッドの呼び出しはエラーを返します。
-// 全てのデータが書き込まれた後、クライアントはFlushメソッドを呼び出して、全てのデータが基になるio.Writerに転送されることを保証する必要があります。
-=======
-// WriteTo implements io.WriterTo.
-// This may make multiple calls to the [Reader.Read] method of the underlying [Reader].
-// If the underlying reader supports the [Reader.WriteTo] method,
-// this calls the underlying [Reader.WriteTo] without buffering.
-func (b *Reader) WriteTo(w io.Writer) (n int64, err error)
-
-// Writer implements buffering for an [io.Writer] object.
-// If an error occurs writing to a [Writer], no more data will be
-// accepted and all subsequent writes, and [Writer.Flush], will return the error.
-// After all data has been written, the client should call the
-// [Writer.Flush] method to guarantee all data has been forwarded to
-// the underlying [io.Writer].
->>>>>>> upstream/master
+// Writerは [io.Writer] オブジェクトに対してバッファリングを行います。
+// [Writer] に書き込む際にエラーが発生した場合、以降のデータの受け入れや、 [Writer.Flush] メソッドの呼び出しはエラーを返します。
+// 全てのデータが書き込まれた後、クライアントは [Writer.Flush] メソッドを呼び出して、全てのデータが基になる [io.Writer] に転送されることを保証する必要があります。
 type Writer struct {
 	err error
 	buf []byte
@@ -176,61 +132,32 @@ type Writer struct {
 	wr  io.Writer
 }
 
-<<<<<<< HEAD
-// NewWriterSizeは、バッファのサイズが指定された最小値を持つ新しいWriterを返します。
-// 引数のio.Writerがすでに十分な大きさを持つWriterである場合、基になるWriterを返します。
+// NewWriterSizeは、バッファのサイズが指定された最小値を持つ新しい [Writer] を返します。
+// 引数のio.Writerがすでに十分な大きさを持つ [Writer] である場合、基になる [Writer] を返します。
 func NewWriterSize(w io.Writer, size int) *Writer
 
-// NewWriterは、バッファのデフォルトサイズを持つ新しいWriterを返します。
-// 引数のio.Writerが既に十分に大きなバッファサイズを持つWriterである場合、基になるWriterを返します。
-=======
-// NewWriterSize returns a new [Writer] whose buffer has at least the specified
-// size. If the argument io.Writer is already a [Writer] with large enough
-// size, it returns the underlying [Writer].
-func NewWriterSize(w io.Writer, size int) *Writer
-
-// NewWriter returns a new [Writer] whose buffer has the default size.
-// If the argument io.Writer is already a [Writer] with large enough buffer size,
-// it returns the underlying [Writer].
->>>>>>> upstream/master
+// NewWriterは、バッファのデフォルトサイズを持つ新しい [Writer] を返します。
+// 引数のio.Writerが既に十分に大きなバッファサイズを持つ [Writer] である場合、基になる [Writer] を返します。
 func NewWriter(w io.Writer) *Writer
 
 // Sizeはバイト単位で下層のバッファーのサイズを返します。
 func (b *Writer) Size() int
 
-<<<<<<< HEAD
 // Resetは、フラッシュされていないバッファデータを破棄し、エラーをクリアし、出力をwにリセットします。
-// Writerのゼロ値に対してResetを呼び出すと、内部バッファがデフォルトのサイズに初期化されます。
-// w.Reset(w)（つまり、Writerを自身にリセットすること）は何もしません。
+// [Writer] のゼロ値に対してResetを呼び出すと、内部バッファがデフォルトのサイズに初期化されます。
+// w.Reset(w)（つまり、[Writer] を自身にリセットすること）は何もしません。
 func (b *Writer) Reset(w io.Writer)
 
-// Flushはバッファされたデータを基になるio.Writerに書き込みます。
-=======
-// Reset discards any unflushed buffered data, clears any error, and
-// resets b to write its output to w.
-// Calling Reset on the zero value of [Writer] initializes the internal buffer
-// to the default size.
-// Calling w.Reset(w) (that is, resetting a [Writer] to itself) does nothing.
-func (b *Writer) Reset(w io.Writer)
-
-// Flush writes any buffered data to the underlying [io.Writer].
->>>>>>> upstream/master
+// Flushはバッファされたデータを基になる [io.Writer] に書き込みます。
 func (b *Writer) Flush() error
 
 // Available はバッファ内で未使用のバイト数を返します。
 func (b *Writer) Available() int
 
-<<<<<<< HEAD
-// AvailableBufferは、b.Available（）容量の空のバッファを返します。
+// AvailableBufferは、b.Available() 容量の空のバッファを返します。
 // このバッファは追加されることを意図しており、
-// 直後のWrite呼び出しに渡されます。
+// 直後の [Writer.Write] 呼び出しに渡されます。
 // このバッファは、b上の次の書き込み操作までの間のみ有効です。
-=======
-// AvailableBuffer returns an empty buffer with b.Available() capacity.
-// This buffer is intended to be appended to and
-// passed to an immediately succeeding [Writer.Write] call.
-// The buffer is only valid until the next write operation on b.
->>>>>>> upstream/master
 func (b *Writer) AvailableBuffer() []byte
 
 // Bufferedは現在のバッファに書き込まれたバイト数を返します。
@@ -252,31 +179,16 @@ func (b *Writer) WriteRune(r rune) (size int, err error)
 // もし書き込んだバイト数がsの長さよりも少ない場合、短い書き込みである理由を説明するエラーも返されます。
 func (b *Writer) WriteString(s string) (int, error)
 
-<<<<<<< HEAD
-// ReadFrom は io.ReaderFrom インターフェースを実装します。もし基礎となる書き込み先が ReadFrom メソッドをサポートしている場合、これは基礎となる ReadFrom を呼び出します。
+// ReadFrom は [io.ReaderFrom] インターフェースを実装します。もし基礎となる書き込み先が ReadFrom メソッドをサポートしている場合、これは基礎となる ReadFrom を呼び出します。
 // バッファされたデータと基礎となる ReadFrom がある場合、これはバッファを埋めてから ReadFrom を呼び出します。
 func (b *Writer) ReadFrom(r io.Reader) (n int64, err error)
 
-// ReadWriterはReaderとWriterへのポインタを保存します。
-// io.ReadWriterを実装します。
-=======
-// ReadFrom implements [io.ReaderFrom]. If the underlying writer
-// supports the ReadFrom method, this calls the underlying ReadFrom.
-// If there is buffered data and an underlying ReadFrom, this fills
-// the buffer and writes it before calling ReadFrom.
-func (b *Writer) ReadFrom(r io.Reader) (n int64, err error)
-
-// ReadWriter stores pointers to a [Reader] and a [Writer].
-// It implements [io.ReadWriter].
->>>>>>> upstream/master
+// ReadWriterは [Reader] と [Writer] へのポインタを保存します。
+// [io.ReadWriter] を実装します。
 type ReadWriter struct {
 	*Reader
 	*Writer
 }
 
-<<<<<<< HEAD
-// NewReadWriterはrとwにディスパッチする新しいReadWriterを割り当てます。
-=======
-// NewReadWriter allocates a new [ReadWriter] that dispatches to r and w.
->>>>>>> upstream/master
+// NewReadWriterはrとwにディスパッチする新しい [ReadWriter] を割り当てます。
 func NewReadWriter(r *Reader, w *Writer) *ReadWriter
