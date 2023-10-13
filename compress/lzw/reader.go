@@ -74,19 +74,19 @@ type Reader struct {
 	toRead []byte
 }
 
-// Read implements io.Reader, reading uncompressed bytes from its underlying Reader.
+// Read implements io.Reader, reading uncompressed bytes from its underlying [Reader].
 func (r *Reader) Read(b []byte) (int, error)
 
-// Close closes the Reader and returns an error for any future read operation.
-// It does not close the underlying io.Reader.
+// Close closes the [Reader] and returns an error for any future read operation.
+// It does not close the underlying [io.Reader].
 func (r *Reader) Close() error
 
-// Reset clears the Reader's state and allows it to be reused again
-// as a new Reader.
+// Reset clears the [Reader]'s state and allows it to be reused again
+// as a new [Reader].
 func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 
-// NewReader creates a new io.ReadCloser.
-// Reads from the returned io.ReadCloser read and decompress data from r.
+// NewReader creates a new [io.ReadCloser].
+// Reads from the returned [io.ReadCloser] read and decompress data from r.
 // If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.
 // It is the caller's responsibility to call Close on the ReadCloser when
@@ -95,6 +95,6 @@ func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 // range [2,8] and is typically 8. It must equal the litWidth
 // used during compression.
 //
-// It is guaranteed that the underlying type of the returned io.ReadCloser
-// is a *Reader.
+// It is guaranteed that the underlying type of the returned [io.ReadCloser]
+// is a *[Reader].
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser
