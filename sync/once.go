@@ -4,6 +4,10 @@
 
 package sync
 
+import (
+	"github.com/shogo82148/std/sync/atomic"
+)
+
 // Once is an object that will perform exactly one action.
 //
 // A Once must not be copied after first use.
@@ -17,7 +21,7 @@ type Once struct {
 	// The hot path is inlined at every call site.
 	// Placing done first allows more compact instructions on some architectures (amd64/386),
 	// and fewer instructions (to calculate offset) on other architectures.
-	done uint32
+	done atomic.Uint32
 	m    Mutex
 }
 

@@ -165,6 +165,12 @@ func (obj *Func) Scope() *Scope
 // For all other Funcs Origin returns the receiver.
 func (obj *Func) Origin() *Func
 
+// Pkg returns the package to which the function belongs.
+//
+// The result is nil for methods of types in the Universe scope,
+// like method Error of the error built-in interface type.
+func (obj *Func) Pkg() *Package
+
 // A Label represents a declared label.
 // Labels don't have a type.
 type Label struct {
