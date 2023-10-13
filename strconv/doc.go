@@ -23,17 +23,17 @@
 // パース関数は最も広い型（float64、int64、およびuint64）を返しますが、サイズ引数が
 // より狭い幅を指定している場合、結果はその狭い型にデータの損失なく変換できます：
 //
-// 	s := "2147483647" // 最大のint32
-// 	i64, err := strconv.ParseInt(s, 10, 32)
-// 	...
-// 	i := int32(i64)
+//	s := "2147483647" // 最大のint32
+//	i64, err := strconv.ParseInt(s, 10, 32)
+//	...
+//	i := int32(i64)
 //
 // [FormatBool]、[FormatFloat]、[FormatInt]、および [FormatUint] は値を文字列に変換します：
 //
-// 	s := strconv.FormatBool(true)
-// 	s := strconv.FormatFloat(3.1415, 'E', -1, 64)
-// 	s := strconv.FormatInt(-42, 16)
-// 	s := strconv.FormatUint(42, 16)
+//	s := strconv.FormatBool(true)
+//	s := strconv.FormatFloat(3.1415, 'E', -1, 64)
+//	s := strconv.FormatInt(-42, 16)
+//	s := strconv.FormatUint(42, 16)
 //
 // [AppendBool]、[AppendFloat]、[AppendInt]、および [AppendUint] は類似していますが、
 // フォーマットされた値を宛先スライスに追加します。
