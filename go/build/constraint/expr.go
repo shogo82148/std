@@ -12,17 +12,10 @@ package constraint
 // An Expr is a build tag constraint expression.
 // The underlying concrete type is *AndExpr, *OrExpr, *NotExpr, or *TagExpr.
 type Expr interface {
-	// String returns the string form of the expression,
-	// using the boolean syntax used in //go:build lines.
 	String() string
 
-	// Eval reports whether the expression evaluates to true.
-	// It calls ok(tag) as needed to find out whether a given build tag
-	// is satisfied by the current build configuration.
 	Eval(ok func(tag string) bool) bool
 
-	// The presence of an isExpr method explicitly marks the type as an Expr.
-	// Only implementations in this package should be used as Exprs.
 	isExpr()
 }
 

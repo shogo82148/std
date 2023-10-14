@@ -37,22 +37,20 @@ func NewLexer(name string) TokenReader
 // The underlying scanner elides all spaces except newline, so the input looks like a stream of
 // Tokens; original spacing is lost but we don't need it.
 type TokenReader interface {
-	// Next returns the next token.
 	Next() ScanToken
-	// The following methods all refer to the most recent token returned by Next.
-	// Text returns the original string representation of the token.
+
 	Text() string
-	// File reports the source file name of the token.
+
 	File() string
-	// Base reports the position base of the token.
+
 	Base() *src.PosBase
-	// SetBase sets the position base.
+
 	SetBase(*src.PosBase)
-	// Line reports the source line number of the token.
+
 	Line() int
-	// Col reports the source column number of the token.
+
 	Col() int
-	// Close does any teardown required.
+
 	Close()
 }
 

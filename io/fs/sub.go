@@ -8,7 +8,6 @@ package fs
 type SubFS interface {
 	FS
 
-	// Sub returns an FS corresponding to the subtree rooted at dir.
 	Sub(dir string) (FS, error)
 }
 

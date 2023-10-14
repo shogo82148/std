@@ -20,43 +20,14 @@ type OutputID [HashSize]byte
 
 // Cache is the interface as used by the cmd/go.
 type Cache interface {
-	// Get returns the cache entry for the provided ActionID.
-	// On miss, the error type should be of type *entryNotFoundError.
-	//
-	// After a success call to Get, OutputFile(Entry.OutputID) must
-	// exist on disk for until Close is called (at the end of the process).
 	Get(ActionID) (Entry, error)
 
-	// Put adds an item to the cache.
-	//
-	// The seeker is only used to seek to the beginning. After a call to Put,
-	// the seek position is not guaranteed to be in any particular state.
-	//
-	// As a special case, if the ReadSeeker is of type noVerifyReadSeeker,
-	// the verification from GODEBUG=goverifycache=1 is skipped.
-	//
-	// After a success call to Get, OutputFile(Entry.OutputID) must
-	// exist on disk for until Close is called (at the end of the process).
 	Put(ActionID, io.ReadSeeker) (_ OutputID, size int64, _ error)
 
-	// Close is called at the end of the go process. Implementations can do
-	// cache cleanup work at this phase, or wait for and report any errors from
-	// background cleanup work started earlier. Any cache trimming should in one
-	// process should not violate cause the invariants of this interface to be
-	// violated in another process. Namely, a cache trim from one process should
-	// not delete an ObjectID from disk that was recently Get or Put from
-	// another process. As a rule of thumb, don't trim things used in the last
-	// day.
 	Close() error
 
-	// OutputFile returns the path on disk where OutputID is stored.
-	//
-	// It's only called after a successful get or put call so it doesn't need
-	// to return an error; it's assumed that if the previous get or put succeeded,
-	// it's already on disk.
 	OutputFile(OutputID) string
 
-	// FuzzDir returns where fuzz files are stored.
 	FuzzDir() string
 }
 
