@@ -2,235 +2,190 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Memory statistics
+// メモリの統計情報
 
 package runtime
 
-// A MemStats records statistics about the memory allocator.
+// MemStatsはメモリアロケータに関する統計情報を記録します。
 type MemStats struct {
 
-	// Alloc is bytes of allocated heap objects.
+	// Allocは割り当てられたヒープオブジェクトのバイト数です。
 	//
-	// This is the same as HeapAlloc (see below).
+	// これはHeapAllocと同じです（以下を参照）。
 	Alloc uint64
 
-	// TotalAlloc is cumulative bytes allocated for heap objects.
+	// TotalAllocはヒープオブジェクトのために割り当てられた累積バイト数です。
 	//
-	// TotalAlloc increases as heap objects are allocated, but
-	// unlike Alloc and HeapAlloc, it does not decrease when
-	// objects are freed.
+	// TotalAllocはヒープオブジェクトが割り当てられると増加しますが、
+	// AllocとHeapAllocとは異なり、オブジェクトが解放されると減少しません。
 	TotalAlloc uint64
 
-	// Sys is the total bytes of memory obtained from the OS.
+	// SysはOSから取得したメモリの合計バイト数です。
 	//
-	// Sys is the sum of the XSys fields below. Sys measures the
-	// virtual address space reserved by the Go runtime for the
-	// heap, stacks, and other internal data structures. It's
-	// likely that not all of the virtual address space is backed
-	// by physical memory at any given moment, though in general
-	// it all was at some point.
+	// Sysは以下のXSysフィールドの合計です。SysはGoランタイムがヒープ、スタック、および他の内部データ構造に予約した仮想アドレススペースを計測します。ある時点では、仮想アドレススペースのすべてが物理メモリでバックアップされているわけではありませんが、一般的にはすべてバックアップされています。
 	Sys uint64
 
-	// Lookups is the number of pointer lookups performed by the
-	// runtime.
+	// Lookupsはランタイムによって実行されるポインターの参照の数です。
 	//
-	// This is primarily useful for debugging runtime internals.
+	// これは主にランタイム内部のデバッグに役立ちます。
 	Lookups uint64
 
-	// Mallocs is the cumulative count of heap objects allocated.
-	// The number of live objects is Mallocs - Frees.
+	// Mallocsはヒープオブジェクトの割り当て数の累積数です。
+	// 生存しているオブジェクトの数はMallocs - Freesです。
 	Mallocs uint64
 
-	// Frees is the cumulative count of heap objects freed.
+	// Frees はヒープオブジェクトが解放された累積数です。
 	Frees uint64
 
-	// HeapAlloc is bytes of allocated heap objects.
+	// HeapAllocは割り当てられたヒープオブジェクトのバイト数です。
 	//
-	// "Allocated" heap objects include all reachable objects, as
-	// well as unreachable objects that the garbage collector has
-	// not yet freed. Specifically, HeapAlloc increases as heap
-	// objects are allocated and decreases as the heap is swept
-	// and unreachable objects are freed. Sweeping occurs
-	// incrementally between GC cycles, so these two processes
-	// occur simultaneously, and as a result HeapAlloc tends to
-	// change smoothly (in contrast with the sawtooth that is
-	// typical of stop-the-world garbage collectors).
+	// "割り当てられた"ヒープオブジェクトには、到達可能なオブジェクト全体と、
+	// ガベージコレクタがまだ解放していない到達不能なオブジェクトが含まれます。
+	// 具体的には、ヒープオブジェクトが割り当てられるとHeapAllocは増加し、
+	// ヒープがスイープされて到達不能なオブジェクトが解放されるとHeapAllocは減少します。
+	// スイープはGCサイクル間に段階的に行われるため、
+	// これらの2つのプロセスは同時に発生し、その結果HeapAllocは滑らかに変化します
+	//（ストップ・ザ・ワールドのガベージコレクタの典型的なギザギザとは対照的です）。
 	HeapAlloc uint64
 
-	// HeapSys is bytes of heap memory obtained from the OS.
+	// HeapSysはOSから取得されたヒープメモリのバイト数です。
 	//
-	// HeapSys measures the amount of virtual address space
-	// reserved for the heap. This includes virtual address space
-	// that has been reserved but not yet used, which consumes no
-	// physical memory, but tends to be small, as well as virtual
-	// address space for which the physical memory has been
-	// returned to the OS after it became unused (see HeapReleased
-	// for a measure of the latter).
+	// HeapSysは、ヒープのために予約された仮想アドレス空間の量を測定します。
+	// これには、まだ使用されていないが予約されている仮想アドレス空間が含まれます。
+	// これは物理メモリを消費しませんが、通常は小さくなります。
+	// また、使用されなくなった後に物理メモリがOSに返された仮想アドレス空間も含まれます（後者の測定にはHeapReleasedを参照してください）。
 	//
-	// HeapSys estimates the largest size the heap has had.
+	// HeapSysは、ヒープが持っていた最大のサイズを推測します。
 	HeapSys uint64
 
-	// HeapIdle is bytes in idle (unused) spans.
+	// HeapIdleはアイドル状態（未使用）のスパンのバイト数です。
 	//
-	// Idle spans have no objects in them. These spans could be
-	// (and may already have been) returned to the OS, or they can
-	// be reused for heap allocations, or they can be reused as
-	// stack memory.
+	// アイドルスパンにはオブジェクトが含まれていません。これらのスパンは
+	// OSに返却されることができます（または既に返却されているかもしれません）し、ヒープの割り当てに再利用されることもあります。
+	// また、スタックメモリとして再利用されることもあります。
 	//
-	// HeapIdle minus HeapReleased estimates the amount of memory
-	// that could be returned to the OS, but is being retained by
-	// the runtime so it can grow the heap without requesting more
-	// memory from the OS. If this difference is significantly
-	// larger than the heap size, it indicates there was a recent
-	// transient spike in live heap size.
+	// HeapIdleからHeapReleasedを引いた値は、OSに返還できるメモリ量を見積もるものですが、
+	// ランタイムによって保持されているため、ヒープの拡張時にOSからの追加メモリ要求なしでヒープを成長させるために利用されています。
+	// もし、この差がヒープサイズよりもはるかに大きい場合、最近の一時的なライブヒープサイズの急増を示しています。
 	HeapIdle uint64
 
-	// HeapInuse is bytes in in-use spans.
+	// HeapInuseは使用中スパンのバイト数です。
 	//
-	// In-use spans have at least one object in them. These spans
-	// can only be used for other objects of roughly the same
-	// size.
+	// 使用中スパンには少なくとも1つのオブジェクトが含まれています。
+	// これらのスパンはおおよそ同じサイズの他のオブジェクトにのみ使用できます。
 	//
-	// HeapInuse minus HeapAlloc estimates the amount of memory
-	// that has been dedicated to particular size classes, but is
-	// not currently being used. This is an upper bound on
-	// fragmentation, but in general this memory can be reused
-	// efficiently.
+	// HeapInuseからHeapAllocを引いた値は、特定のサイズクラスに割り当てられたメモリの量を推定しますが、現在は使用されていません。
+	// これは断片化の上限であり、一般的にこのメモリは効率的に再利用できます。
 	HeapInuse uint64
 
-	// HeapReleased is bytes of physical memory returned to the OS.
+	// HeapReleasedはOSに返される物理メモリのバイト数です。
 	//
-	// This counts heap memory from idle spans that was returned
-	// to the OS and has not yet been reacquired for the heap.
+	// これは、ヒープに再取得される前に、アイドルスパンから返された
+	// ヒープメモリをカウントしています。
 	HeapReleased uint64
 
-	// HeapObjects is the number of allocated heap objects.
+	// HeapObjectsは割り当てられたヒープオブジェクトの数です。
 	//
-	// Like HeapAlloc, this increases as objects are allocated and
-	// decreases as the heap is swept and unreachable objects are
-	// freed.
+	// HeapAllocと同様に、オブジェクトが割り当てられると増加し、
+	// ヒープが掃引され、到達不能なオブジェクトが解放されると減少します。
 	HeapObjects uint64
 
-	// StackInuse is bytes in stack spans.
+	// StackInuse はスタックスパンのバイト数です。
 	//
-	// In-use stack spans have at least one stack in them. These
-	// spans can only be used for other stacks of the same size.
+	// 使用中のスタックスパンには少なくとも1つのスタックがあります。これらのスパンは同じサイズの他のスタックにしか使用できません。
 	//
-	// There is no StackIdle because unused stack spans are
-	// returned to the heap (and hence counted toward HeapIdle).
+	// StackIdle は存在しません。未使用のスタックスパンはヒープに戻されるため（そのため HeapIdle にカウントされます）。
 	StackInuse uint64
 
-	// StackSys is bytes of stack memory obtained from the OS.
+	// StackSysはOSから取得したスタックメモリのバイト数です。
 	//
-	// StackSys is StackInuse, plus any memory obtained directly
-	// from the OS for OS thread stacks.
+	// StackSysはStackInuseに加えて、OSスレッドスタック用に直接
+	// OSから取得したメモリです。
 	//
-	// In non-cgo programs this metric is currently equal to StackInuse
-	// (but this should not be relied upon, and the value may change in
-	// the future).
+	// cgoを使用しないプログラムでは、このメトリックは現在StackInuseと同じです
+	// （しかし、これに依存するべきではなく、値は将来変わる可能性があります）。
 	//
-	// In cgo programs this metric includes OS thread stacks allocated
-	// directly from the OS. Currently, this only accounts for one stack in
-	// c-shared and c-archive build modes and other sources of stacks from
-	// the OS (notably, any allocated by C code) are not currently measured.
-	// Note this too may change in the future.
+	// cgoを使用するプログラムでは、OSスレッドスタックも含まれます。
+	// 現在、c-sharedおよびc-archiveビルドモードでは1つのスタックのみを考慮し、
+	// 他のOSからのスタック（特にCコードによって割り当てられたスタック）は現在計測されていません。
+	// これも将来変更される可能性があります。
 	StackSys uint64
 
-	// MSpanInuse is bytes of allocated mspan structures.
+	// MSpanInuseは割り当てられたmspan構造体のバイト数です。
 	MSpanInuse uint64
 
-	// MSpanSys is bytes of memory obtained from the OS for mspan
-	// structures.
+	// MSpanSysは、mspan構造体のためにOSから取得したメモリのバイトです。
 	MSpanSys uint64
 
-	// MCacheInuse is bytes of allocated mcache structures.
+	// MCacheInuseは割り当てられたmcache構造体のバイト数です。
 	MCacheInuse uint64
 
-	// MCacheSys is bytes of memory obtained from the OS for
-	// mcache structures.
+	// MCacheSysは、mcache構造体のためにオペレーティングシステムから取得されたバイト数です。
 	MCacheSys uint64
 
-	// BuckHashSys is bytes of memory in profiling bucket hash tables.
 	BuckHashSys uint64
 
-	// GCSys is bytes of memory in garbage collection metadata.
+	// GCSysはゴミ回収メタデータのメモリのバイト数です。
 	GCSys uint64
 
-	// OtherSys is bytes of memory in miscellaneous off-heap
-	// runtime allocations.
+	// OtherSys は、さまざまなオフヒープランタイム割り当てのメモリのバイト数です。
 	OtherSys uint64
 
-	// NextGC is the target heap size of the next GC cycle.
+	// NextGCは次のGCサイクルのターゲットヒープサイズです。
 	//
-	// The garbage collector's goal is to keep HeapAlloc ≤ NextGC.
-	// At the end of each GC cycle, the target for the next cycle
-	// is computed based on the amount of reachable data and the
-	// value of GOGC.
+	// ガベージコレクタの目標は、HeapAlloc ≤ NextGCを維持することです。
+	// 各GCサイクルの終了時に、次のサイクルのターゲットは
+	// アクセス可能なデータの量とGOGCの値に基づいて計算されます。
 	NextGC uint64
 
-	// LastGC is the time the last garbage collection finished, as
-	// nanoseconds since 1970 (the UNIX epoch).
+	// LastGCは、最後のガベージコレクションが終了した時刻で、
+	// 1970年以降のUNIXエポックからの経過時間（ナノ秒単位）です。
 	LastGC uint64
 
-	// PauseTotalNs is the cumulative nanoseconds in GC
-	// stop-the-world pauses since the program started.
+	// PauseTotalNsは、プログラムが開始されてからのGCによる累積ナノ秒数です。
 	//
-	// During a stop-the-world pause, all goroutines are paused
-	// and only the garbage collector can run.
+	// ストップ・ザ・ワールド・ポーズ中には、すべてのゴルーチンが一時停止され、
+	// ガベージコレクタのみが実行されます。
 	PauseTotalNs uint64
 
-	// PauseNs is a circular buffer of recent GC stop-the-world
-	// pause times in nanoseconds.
+	// PauseNsは直近のGCのストップ・ザ・ワールドの一時停止時間（ナノ秒）の循環バッファです。
 	//
-	// The most recent pause is at PauseNs[(NumGC+255)%256]. In
-	// general, PauseNs[N%256] records the time paused in the most
-	// recent N%256th GC cycle. There may be multiple pauses per
-	// GC cycle; this is the sum of all pauses during a cycle.
+	// 最も直近の一時停止はPauseNs[(NumGC+255)%256]にあります。一般的に、PauseNs[N%256]は直近のN%256番目のGCサイクルでの一時停止時間を記録しています。1つのGCサイクルに複数の一時停止が存在する可能性があります。これはサイクル中のすべての一時停止の合計です。
 	PauseNs [256]uint64
 
-	// PauseEnd is a circular buffer of recent GC pause end times,
-	// as nanoseconds since 1970 (the UNIX epoch).
+	// PauseEndは最近のGCの一時停止終了時間の循環バッファで、1970年以降のナノ秒（UNIXエポック）で表されます。
 	//
-	// This buffer is filled the same way as PauseNs. There may be
-	// multiple pauses per GC cycle; this records the end of the
-	// last pause in a cycle.
+	// このバッファはPauseNsと同じ方法で埋められます。1つのGCサイクルに複数の一時停止がある場合があります。このバッファはサイクル内の最後の一時停止の終了を記録します。
 	PauseEnd [256]uint64
 
-	// NumGC is the number of completed GC cycles.
+	// NumGCは完了したGCサイクルの数です。
 	NumGC uint32
 
-	// NumForcedGC is the number of GC cycles that were forced by
-	// the application calling the GC function.
+	// NumForcedGC は、アプリケーションがGC関数を呼び出し、強制的に実行されたGCサイクルの回数です。
 	NumForcedGC uint32
 
-	// GCCPUFraction is the fraction of this program's available
-	// CPU time used by the GC since the program started.
+	// GCCPUFractionは、プログラム開始以来のGCによって使用された利用可能なCPU時間の割合です。
 	//
-	// GCCPUFraction is expressed as a number between 0 and 1,
-	// where 0 means GC has consumed none of this program's CPU. A
-	// program's available CPU time is defined as the integral of
-	// GOMAXPROCS since the program started. That is, if
-	// GOMAXPROCS is 2 and a program has been running for 10
-	// seconds, its "available CPU" is 20 seconds. GCCPUFraction
-	// does not include CPU time used for write barrier activity.
+	// GCCPUFractionは0から1の数値で表され、0はこのプログラムのCPUの使用が全くないことを意味します。
+	// プログラムの利用可能なCPU時間は、プログラム開始時からのGOMAXPROCSの積分と定義されます。
+	// つまり、GOMAXPROCSが2で、プログラムが10秒間実行されている場合、その「利用可能なCPU時間」は20秒です。
+	// GCCPUFractionには、書き込みバリアのアクティビティに使用されたCPU時間は含まれません。
 	//
-	// This is the same as the fraction of CPU reported by
-	// GODEBUG=gctrace=1.
+	// これは、GODEBUG=gctrace=1によって報告されるCPUの割合と同じです。
 	GCCPUFraction float64
 
-	// EnableGC indicates that GC is enabled. It is always true,
-	// even if GOGC=off.
+	// EnableGCはGCが有効であることを示します。常にtrueですが、
+	// GOGC=offの場合でも有効です。
 	EnableGC bool
 
-	// DebugGC is currently unused.
+	// DebugGC は現在使用されていません。
 	DebugGC bool
 
-	// BySize reports per-size class allocation statistics.
+	// BySizeは、サイズごとの割り当て統計を報告します。
 	//
-	// BySize[N] gives statistics for allocations of size S where
-	// BySize[N-1].Size < S ≤ BySize[N].Size.
+	// BySize[N]は、サイズSの割り当てに関する統計を提供します。ここで、BySize[N-1].Size < S ≤ BySize[N].Sizeです。
 	//
-	// This does not report allocations larger than BySize[60].Size.
+	// これは、BySize[60].Sizeより大きい割り当てを報告しません。
 	BySize [61]struct {
 		Size uint32
 
@@ -240,10 +195,8 @@ type MemStats struct {
 	}
 }
 
-// ReadMemStats populates m with memory allocator statistics.
+// ReadMemStatsはメモリアロケータ統計情報をmに書き込みます。
 //
-// The returned memory allocator statistics are up to date as of the
-// call to ReadMemStats. This is in contrast with a heap profile,
-// which is a snapshot as of the most recently completed garbage
-// collection cycle.
+// 返されるメモリアロケータ統計情報はReadMemStatsの呼び出し時点で最新のものです。
+// これは、ヒーププロファイルとは異なり、最新のガベージコレクションサイクルのスナップショットです。
 func ReadMemStats(m *MemStats)

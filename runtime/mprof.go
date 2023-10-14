@@ -2,137 +2,113 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Malloc profiling.
-// Patterned after tcmalloc's algorithms; shorter code.
+// マロックのプロファイリング。
+// tcmallocのアルゴリズムに基づいて作られたコードです。短いです。
 
 package runtime
 
-// SetBlockProfileRate controls the fraction of goroutine blocking events
-// that are reported in the blocking profile. The profiler aims to sample
-// an average of one blocking event per rate nanoseconds spent blocked.
+// SetBlockProfileRateは、ブロッキングイベントの割合を制御します。
+// プロファイラは、ブロックされた時間がrateナノ秒ごとに平均1つのブロッキングイベントをサンプリングすることを目指しています。
 //
-// To include every blocking event in the profile, pass rate = 1.
-// To turn off profiling entirely, pass rate <= 0.
+// プロファイルにすべてのブロッキングイベントを含めるには、rate = 1を渡します。
+// プロファイリングを完全にオフにするには、rate <= 0を渡します。
 func SetBlockProfileRate(rate int)
 
-// SetMutexProfileFraction controls the fraction of mutex contention events
-// that are reported in the mutex profile. On average 1/rate events are
-// reported. The previous rate is returned.
+// SetMutexProfileFractionは、mutexの衝突イベントのうち、
+// プロファイルに報告される割合を制御します。平均して1/rateのイベントが報告されます。
+// 以前のrateが返されます。
 //
-// To turn off profiling entirely, pass rate 0.
-// To just read the current rate, pass rate < 0.
-// (For n>1 the details of sampling may change.)
+// プロファイリングを完全に無効にするには、rateに0を渡します。
+// 現在のrateだけを読み取るには、rateに0より小さい値を渡します。
+// (n>1の場合、サンプリングの詳細が変更される場合があります。)
 func SetMutexProfileFraction(rate int) int
 
-// A StackRecord describes a single execution stack.
+// StackRecordは単一の実行スタックを説明します。
 type StackRecord struct {
 	Stack0 [32]uintptr
 }
 
-// Stack returns the stack trace associated with the record,
-// a prefix of r.Stack0.
+// Stackは、レコードに関連付けられたスタックトレースを返します。
+// これはr.Stack0のプレフィックスです。
 func (r *StackRecord) Stack() []uintptr
 
-// MemProfileRate controls the fraction of memory allocations
-// that are recorded and reported in the memory profile.
-// The profiler aims to sample an average of
-// one allocation per MemProfileRate bytes allocated.
-//
-// To include every allocated block in the profile, set MemProfileRate to 1.
-// To turn off profiling entirely, set MemProfileRate to 0.
-//
-// The tools that process the memory profiles assume that the
-// profile rate is constant across the lifetime of the program
-// and equal to the current value. Programs that change the
-// memory profiling rate should do so just once, as early as
-// possible in the execution of the program (for example,
-// at the beginning of main).
+// MemProfileRateは、メモリプロファイルに記録および報告されるメモリ割り当ての割合を制御します。
+// プロファイラは、MemProfileRateバイトあたり平均1回の割り当てをサンプリングすることを目指しています。
+// プロファイルにすべての割り当てブロックを含めるには、MemProfileRateを1に設定します。
+// プロファイリングを完全にオフにするには、MemProfileRateを0に設定します。
+// メモリプロファイルを処理するツールは、プロファイルの割合がプログラムの生存期間全体で一定であり、現在の値と等しいと想定しています。
+// メモリプロファイリングの割合を変更するプログラムは、できるだけ早く（たとえば、mainの開始時などに）1度だけ行う必要があります。
 var MemProfileRate int = 512 * 1024
 
-// A MemProfileRecord describes the live objects allocated
-// by a particular call sequence (stack trace).
+// MemProfileRecordは、特定の呼び出しシーケンス（スタックトレース）によって割り当てられた生きているオブジェクトを記述します。
 type MemProfileRecord struct {
 	AllocBytes, FreeBytes     int64
 	AllocObjects, FreeObjects int64
 	Stack0                    [32]uintptr
 }
 
-// InUseBytes returns the number of bytes in use (AllocBytes - FreeBytes).
+// InUseBytesは使用中のバイト数（AllocBytes - FreeBytes）を返します。
 func (r *MemProfileRecord) InUseBytes() int64
 
-// InUseObjects returns the number of objects in use (AllocObjects - FreeObjects).
+// InUseObjectsは使用中のオブジェクトの数を返します（AllocObjects - FreeObjects）。
 func (r *MemProfileRecord) InUseObjects() int64
 
-// Stack returns the stack trace associated with the record,
-// a prefix of r.Stack0.
+// Stackは、レコードに関連付けられたスタックトレースを返します。
+// r.Stack0のプレフィックスです。
 func (r *MemProfileRecord) Stack() []uintptr
 
-// MemProfile returns a profile of memory allocated and freed per allocation
-// site.
-//
-// MemProfile returns n, the number of records in the current memory profile.
-// If len(p) >= n, MemProfile copies the profile into p and returns n, true.
-// If len(p) < n, MemProfile does not change p and returns n, false.
-//
-// If inuseZero is true, the profile includes allocation records
-// where r.AllocBytes > 0 but r.AllocBytes == r.FreeBytes.
-// These are sites where memory was allocated, but it has all
-// been released back to the runtime.
-//
-// The returned profile may be up to two garbage collection cycles old.
-// This is to avoid skewing the profile toward allocations; because
-// allocations happen in real time but frees are delayed until the garbage
-// collector performs sweeping, the profile only accounts for allocations
-// that have had a chance to be freed by the garbage collector.
-//
-// Most clients should use the runtime/pprof package or
-// the testing package's -test.memprofile flag instead
-// of calling MemProfile directly.
+// MemProfileは、割り当てられたメモリと解放されたメモリのプロファイルを、割り当ての場所別に返します。
+// MemProfileは、現在のメモリプロファイルのレコード数であるnを返します。
+// もしlen(p) >= nであれば、MemProfileはプロファイルをpにコピーし、nとtrueを返します。
+// もしlen(p) < nであれば、MemProfileはpを変更せずに、nとfalseを返します。
+// inuseZeroがtrueの場合、プロファイルにはr.AllocBytes > 0 かつ r.AllocBytes == r.FreeBytesのアロケーションレコードが含まれます。
+// これは、メモリが割り当てられたがランタイムにすべて解放された場所です。
+// 返されるプロファイルは、最大で2つのガベージコレクションサイクル前のものです。
+// これは、プロファイルがアロケーションに偏った結果にならないようにするためです。
+// アロケーションはリアルタイムで発生しますが、解放はガベージコレクタがスイーピングを実行するまで遅延されるため、
+// プロファイルはガベージコレクタによって解放されるチャンスを持ったアロケーションのみをカウントします。
+// 多くのクライアントは、runtime/pprofパッケージまたはtestingパッケージの-test.memprofileフラグを直接呼び出す代わりに使用するべきです。
 func MemProfile(p []MemProfileRecord, inuseZero bool) (n int, ok bool)
 
-// BlockProfileRecord describes blocking events originated
-// at a particular call sequence (stack trace).
+// BlockProfileRecordは、特定の呼び出しシーケンス（スタックトレース）で発生したブロッキングイベントを記述します。
 type BlockProfileRecord struct {
 	Count  int64
 	Cycles int64
 	StackRecord
 }
 
-// BlockProfile returns n, the number of records in the current blocking profile.
-// If len(p) >= n, BlockProfile copies the profile into p and returns n, true.
-// If len(p) < n, BlockProfile does not change p and returns n, false.
+// BlockProfileは現在のブロッキングプロファイルのレコード数nを返します。
+// もしlen(p) >= nの場合、BlockProfileはプロファイルをpにコピーし、nとtrueを返します。
+// もしlen(p) < nの場合、BlockProfileはpを変更せずに、nとfalseを返します。
 //
-// Most clients should use the runtime/pprof package or
-// the testing package's -test.blockprofile flag instead
-// of calling BlockProfile directly.
+// ほとんどのクライアントは、runtime/pprofパッケージや
+// testingパッケージの-test.blockprofileフラグを使用して、
+// BlockProfileを直接呼び出す代わりに使用すべきです。
 func BlockProfile(p []BlockProfileRecord) (n int, ok bool)
 
-// MutexProfile returns n, the number of records in the current mutex profile.
-// If len(p) >= n, MutexProfile copies the profile into p and returns n, true.
-// Otherwise, MutexProfile does not change p, and returns n, false.
+// MutexProfileは現在のmutexプロファイルのレコード数であるnを返します。
+// もしlen(p) >= nならば、MutexProfileはプロファイルをpにコピーしてnとtrueを返します。
+// そうでなければ、MutexProfileはpを変更せずにnとfalseを返します。
 //
-// Most clients should use the runtime/pprof package
-// instead of calling MutexProfile directly.
+// ほとんどのクライアントは、MutexProfileを直接呼び出す代わりにruntime/pprofパッケージを使用するべきです。
 func MutexProfile(p []BlockProfileRecord) (n int, ok bool)
 
-// ThreadCreateProfile returns n, the number of records in the thread creation profile.
-// If len(p) >= n, ThreadCreateProfile copies the profile into p and returns n, true.
-// If len(p) < n, ThreadCreateProfile does not change p and returns n, false.
+// ThreadCreateProfileはスレッド作成プロファイル内のレコード数であるnを返します。
+// もし、len(p) >= nならば、ThreadCreateProfileはプロファイルをpにコピーしてn, trueを返します。
+// もし、len(p) < nならば、ThreadCreateProfileはpを変更せずにn, falseを返します。
 //
-// Most clients should use the runtime/pprof package instead
-// of calling ThreadCreateProfile directly.
+// 大抵のクライアントは直接ThreadCreateProfileを呼び出す代わりに、runtime/pprofパッケージを使用すべきです。
 func ThreadCreateProfile(p []StackRecord) (n int, ok bool)
 
-// GoroutineProfile returns n, the number of records in the active goroutine stack profile.
-// If len(p) >= n, GoroutineProfile copies the profile into p and returns n, true.
-// If len(p) < n, GoroutineProfile does not change p and returns n, false.
+// GoroutineProfileはアクティブなゴルーチンスタックプロファイルのレコード数であるnを返します。
+// もしlen(p)がn以上であれば、GoroutineProfileはプロファイルをpにコピーしnとtrueを返します。
+// もしlen(p)がn未満であれば、GoroutineProfileはpを変更せずにnとfalseを返します。
 //
-// Most clients should use the runtime/pprof package instead
-// of calling GoroutineProfile directly.
+// ほとんどのクライアントは直接GoroutineProfileを呼び出す代わりにruntime/pprofパッケージを使用するべきです。
 func GoroutineProfile(p []StackRecord) (n int, ok bool)
 
-// Stack formats a stack trace of the calling goroutine into buf
-// and returns the number of bytes written to buf.
-// If all is true, Stack formats stack traces of all other goroutines
-// into buf after the trace for the current goroutine.
+// Stackは呼び出し元のゴルーチンのスタックトレースをbufに書き込み、
+// bufに書き込まれたバイト数を返します。
+// allがtrueの場合、現在のゴルーチンのトレースの後に、
+// 他のすべてのゴルーチンのスタックトレースをbufに書き込みます。
 func Stack(buf []byte, all bool) int

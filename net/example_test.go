@@ -14,8 +14,8 @@ import (
 )
 
 func ExampleListener() {
-	// Listen on TCP port 2000 on all available unicast and
-	// anycast IP addresses of the local system.
+	// ローカルシステムの利用可能なすべてのユニキャストおよび
+	// IPv4マルチキャストアドレス上のTCPポート2000でリッスンします。
 	l, err := net.Listen("tcp", ":2000")
 	if err != nil {
 		log.Fatal(err)
@@ -27,13 +27,13 @@ func ExampleListener() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// Handle the connection in a new goroutine.
-		// The loop then returns to accepting, so that
-		// multiple connections may be served concurrently.
+		// 新しいgoroutineで接続を処理する。
+		// ループはその後、受け付けを再開するため、
+		// 複数の接続を同時に処理することが可能です。
 		go func(c net.Conn) {
-			// Echo all incoming data.
+			// すべての受信データをエコーします。
 			io.Copy(c, c)
-			// Shut down the connection.
+			// 接続をシャットダウンします。
 			c.Close()
 		}(conn)
 	}
@@ -56,15 +56,14 @@ func ExampleDialer() {
 }
 
 func ExampleDialer_unix() {
-	// DialUnix does not take a context.Context parameter. This example shows
-	// how to dial a Unix socket with a Context. Note that the Context only
-	// applies to the dial operation; it does not apply to the connection once
-	// it has been established.
+	// DialUnixはcontext.Contextパラメータを受け取りません。この例は、
+	// Contextを使用してUnixソケットにダイヤルする方法を示しています。ただし、
+	// Contextはダイヤル操作にのみ適用されます。接続が確立された後には適用されません。
 	var d net.Dialer
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	d.LocalAddr = nil // if you have a local addr, add it here
+	d.LocalAddr = nil // もしローカルのアドレスがあれば、ここに追加してください。
 	raddr := net.UnixAddr{Name: "/path/to/unix.sock", Net: "unix"}
 	conn, err := d.DialContext(ctx, "unix", raddr.String())
 	if err != nil {
@@ -296,12 +295,12 @@ func ExampleIP_IsUnspecified() {
 
 func ExampleIP_Mask() {
 	ipv4Addr := net.ParseIP("192.0.2.1")
-	// This mask corresponds to a /24 subnet for IPv4.
+	// このマスクはIPv4の/24サブネットに対応しています。
 	ipv4Mask := net.CIDRMask(24, 32)
 	fmt.Println(ipv4Addr.Mask(ipv4Mask))
 
 	ipv6Addr := net.ParseIP("2001:db8:a0b:12f0::1")
-	// This mask corresponds to a /32 subnet for IPv6.
+	// このマスクはIPv6の/32サブネットに対応しています。
 	ipv6Mask := net.CIDRMask(32, 128)
 	fmt.Println(ipv6Addr.Mask(ipv6Mask))
 
@@ -347,10 +346,10 @@ func ExampleIP_to4() {
 }
 
 func ExampleCIDRMask() {
-	// This mask corresponds to a /31 subnet for IPv4.
+	// このマスクはIPv4の/31サブネットに対応しています。
 	fmt.Println(net.CIDRMask(31, 32))
 
-	// This mask corresponds to a /64 subnet for IPv6.
+	// このマスクはIPv6の/64サブネットに対応しています。
 	fmt.Println(net.CIDRMask(64, 128))
 
 	// Output:
@@ -366,8 +365,8 @@ func ExampleIPv4Mask() {
 }
 
 func ExampleUDPConn_WriteTo() {
-	// Unlike Dial, ListenPacket creates a connection without any
-	// association with peers.
+	// Dialとは異なり、ListenPacketはピアとの関連付けなしで
+	// 接続を作成します。
 	conn, err := net.ListenPacket("udp", ":0")
 	if err != nil {
 		log.Fatal(err)
@@ -379,7 +378,7 @@ func ExampleUDPConn_WriteTo() {
 		log.Fatal(err)
 	}
 
-	// The connection can write data to the desired address.
+	// この接続は、指定したアドレスにデータを書き込むことができます。
 	_, err = conn.WriteTo([]byte("data"), dst)
 	if err != nil {
 		log.Fatal(err)

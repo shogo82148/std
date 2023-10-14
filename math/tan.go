@@ -4,9 +4,9 @@
 
 package math
 
-// Tan returns the tangent of the radian argument x.
+// Tanはラジアンの引数xの正接（タンジェント）を返します。
 //
-// Special cases are:
+// 特殊なケースは以下の通りです:
 //
 //	Tan(±0) = ±0
 //	Tan(±Inf) = NaN

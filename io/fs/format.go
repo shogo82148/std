@@ -4,18 +4,23 @@
 
 package fs
 
-// FormatFileInfo returns a formatted version of info for human readability.
-// Implementations of FileInfo can call this from a String method.
-// The output for a file named "hello.go", 100 bytes, mode 0o644, created
-// January 1, 1970 at noon is
+// FormatFileInfoは、人間が読みやすい形式に整形されたinfoのバージョンを返します。
+// FileInfoの実装は、Stringメソッドからこれを呼び出すことができます。
+// "hello.go"という名前のファイル、100バイト、モード0o644、作成日時は1970年1月1日の正午の場合、出力は次のようになります。
 //
-//	-rw-r--r-- 100 1970-01-01 12:00:00 hello.go
+// -rw-r--r-- 100 1970-01-01 12:00:00 hello.go
 func FormatFileInfo(info FileInfo) string
 
+<<<<<<< HEAD
 // FormatDirEntry returns a formatted version of dir for human readability.
 // Implementations of [DirEntry] can call this from a String method.
 // The outputs for a directory named subdir and a file named hello.go are:
+=======
+// FormatDirEntry は dir の人間が読みやすい形式のフォーマット済みバージョンを返します。
+// DirEntry の実装は、これを String メソッドから呼び出すことができます。
+// 名前が subdir のディレクトリと名前が hello.go のファイルの出力は次の通りです：
+>>>>>>> release-branch.go1.21
 //
-//	d subdir/
-//	- hello.go
+// d subdir/
+// - hello.go
 func FormatDirEntry(dir DirEntry) string

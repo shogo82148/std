@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// Public address sanitizer API.
+// パブリックアドレスサニタイザーAPI。
 func ASanRead(addr unsafe.Pointer, len int)
 
 func ASanWrite(addr unsafe.Pointer, len int)

@@ -12,168 +12,145 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// TCPAddr represents the address of a TCP end point.
+// TCPAddrはTCPエンドポイントのアドレスを表します。
 type TCPAddr struct {
 	IP   IP
 	Port int
 	Zone string
 }
 
-// AddrPort returns the TCPAddr a as a netip.AddrPort.
+// AddrPortはTCPAddr aをnetip.AddrPortとして返します。
 //
-// If a.Port does not fit in a uint16, it's silently truncated.
+// もしa.Portがuint16に収まらない場合、静かに切り捨てられます。
 //
-// If a is nil, a zero value is returned.
+// もしaがnilの場合、ゼロ値が返されます。
 func (a *TCPAddr) AddrPort() netip.AddrPort
 
-// Network returns the address's network name, "tcp".
+// Networkはアドレスのネットワーク名「tcp」を返します。
 func (a *TCPAddr) Network() string
 
 func (a *TCPAddr) String() string
 
-// ResolveTCPAddr returns an address of TCP end point.
+// ResolveTCPAddrはTCPエンドポイントのアドレスを返します。
 //
-// The network must be a TCP network name.
+// ネットワークはTCPのネットワーク名である必要があります。
 //
-// If the host in the address parameter is not a literal IP address or
-// the port is not a literal port number, ResolveTCPAddr resolves the
-// address to an address of TCP end point.
-// Otherwise, it parses the address as a pair of literal IP address
-// and port number.
-// The address parameter can use a host name, but this is not
-// recommended, because it will return at most one of the host name's
-// IP addresses.
+// アドレスパラメータのホストがリテラルIPアドレスでない場合や、
+// ポートがリテラルのポート番号でない場合、ResolveTCPAddrは
+// TCPエンドポイントのアドレスに解決します。
+// そうでなければ、アドレスをリテラルのIPアドレスとポート番号のペアとして解析します。
+// アドレスパラメータはホスト名を使用することもできますが、
+// ホスト名のIPアドレスの一つを最大で返すため、推奨されていません。
 //
-// See func Dial for a description of the network and address
-// parameters.
+// ネットワークとアドレスパラメータの詳細については、
+// func Dialの説明を参照してください。
 func ResolveTCPAddr(network, address string) (*TCPAddr, error)
 
-// TCPAddrFromAddrPort returns addr as a TCPAddr. If addr.IsValid() is false,
-// then the returned TCPAddr will contain a nil IP field, indicating an
-// address family-agnostic unspecified address.
+// TCPAddrFromAddrPortはaddrをTCPAddrとして返します。もしaddrがIsValid()がfalseである場合、
+// 返されるTCPAddrにはnilのIPフィールドが含まれ、アドレスファミリーに依存しない未指定のアドレスを示します。
 func TCPAddrFromAddrPort(addr netip.AddrPort) *TCPAddr
 
-// TCPConn is an implementation of the Conn interface for TCP network
-// connections.
+// TCPConnはTCPネットワーク接続のConnインターフェースの実装です。
 type TCPConn struct {
 	conn
 }
 
-// SyscallConn returns a raw network connection.
-// This implements the syscall.Conn interface.
+// SyscallConnは生のネットワーク接続を返します。
+// これはsyscall.Connインターフェースを実装しています。
 func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
 
-// ReadFrom implements the io.ReaderFrom ReadFrom method.
+// ReadFrom は io.ReaderFrom の ReadFrom メソッドを実装します。
 func (c *TCPConn) ReadFrom(r io.Reader) (int64, error)
 
-// CloseRead shuts down the reading side of the TCP connection.
-// Most callers should just use Close.
+// CloseReadはTCP接続の読み込み側をシャットダウンします。
+// ほとんどの呼び出し元は、単にCloseを使用するだけで十分です。
 func (c *TCPConn) CloseRead() error
 
-// CloseWrite shuts down the writing side of the TCP connection.
-// Most callers should just use Close.
+// CloseWrite は TCP 接続の書き込み側をシャットダウンします。
+// ほとんどの呼び出し元は Close を使用すべきです。
 func (c *TCPConn) CloseWrite() error
 
-// SetLinger sets the behavior of Close on a connection which still
-// has data waiting to be sent or to be acknowledged.
-//
-// If sec < 0 (the default), the operating system finishes sending the
-// data in the background.
-//
-// If sec == 0, the operating system discards any unsent or
-// unacknowledged data.
-//
-// If sec > 0, the data is sent in the background as with sec < 0.
-// On some operating systems including Linux, this may cause Close to block
-// until all data has been sent or discarded.
-// On some operating systems after sec seconds have elapsed any remaining
-// unsent data may be discarded.
+// SetLingerは、まだ送信または確認待ちのデータがある接続に対してCloseの振る舞いを設定します。
+// sec < 0（デフォルト）の場合、オペレーティングシステムはバックグラウンドでデータの送信を完了します。
+// sec == 0の場合、オペレーティングシステムは未送信または確認待ちのデータを破棄します。
+// sec > 0の場合、データはsec < 0と同様にバックグラウンドで送信されます。
+// Linuxを含む一部のオペレーティングシステムでは、これによりCloseが全てのデータの送信または破棄が完了するまでブロックする場合があります。
+// sec秒経過後、未送信のデータは破棄される可能性があります。
 func (c *TCPConn) SetLinger(sec int) error
 
-// SetKeepAlive sets whether the operating system should send
-// keep-alive messages on the connection.
+// SetKeepAliveは、オペレーティングシステムが接続に対して
+// keep-aliveメッセージを送信するかどうかを設定します。
 func (c *TCPConn) SetKeepAlive(keepalive bool) error
 
-// SetKeepAlivePeriod sets period between keep-alives.
+// SetKeepAlivePeriodは、Keep-Alive間の期間を設定します。
 func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error
 
-// SetNoDelay controls whether the operating system should delay
-// packet transmission in hopes of sending fewer packets (Nagle's
-// algorithm).  The default is true (no delay), meaning that data is
-// sent as soon as possible after a Write.
+// SetNoDelayは、パケットの送信を遅延させるかどうかを制御します。これにより、より少ないパケットで送信することが期待されます（Nagleのアルゴリズム）。デフォルト値はtrue（遅延なし）であり、Writeの後で可能な限りすぐにデータが送信されます。
 func (c *TCPConn) SetNoDelay(noDelay bool) error
 
-// MultipathTCP reports whether the ongoing connection is using MPTCP.
+// MultipathTCPは、現在の接続がMPTCPを使用しているかどうかを報告します。
 //
-// If Multipath TCP is not supported by the host, by the other peer or
-// intentionally / accidentally filtered out by a device in between, a
-// fallback to TCP will be done. This method does its best to check if
-// MPTCP is still being used or not.
+// ホスト、他のピア、またはその間にあるデバイスによってMultipath TCPがサポートされていない場合、
+// 意図的に/意図せずにフィルタリングされた場合、TCPへのフォールバックが行われます。
+// このメソッドは、MPTCPが使用されているかどうかを確認するために最善を尽くします。
 //
-// On Linux, more conditions are verified on kernels >= v5.16, improving
-// the results.
+// Linuxでは、カーネルのバージョンがv5.16以上の場合、さらに条件が検証され、結果が改善されます。
 func (c *TCPConn) MultipathTCP() (bool, error)
 
-// DialTCP acts like Dial for TCP networks.
+// DialTCPはTCPネットワークのためのDialのように振る舞います。
 //
-// The network must be a TCP network name; see func Dial for details.
+// ネットワークはTCPネットワーク名でなければなりません。詳細についてはfunc Dialを参照してください。
 //
-// If laddr is nil, a local address is automatically chosen.
-// If the IP field of raddr is nil or an unspecified IP address, the
-// local system is assumed.
+// laddrがnilの場合、自動的にローカルアドレスが選択されます。
+// raddrのIPフィールドがnilまたは未指定のIPアドレスの場合、ローカルシステムが使用されます。
 func DialTCP(network string, laddr, raddr *TCPAddr) (*TCPConn, error)
 
-// TCPListener is a TCP network listener. Clients should typically
-// use variables of type Listener instead of assuming TCP.
+// TCPListenerはTCPネットワークリスナーです。クライアントは通常、TCPを仮定する代わりにListener型の変数を使用するべきです。
 type TCPListener struct {
 	fd *netFD
 	lc ListenConfig
 }
 
-// SyscallConn returns a raw network connection.
-// This implements the syscall.Conn interface.
+// SyscallConn は生のネットワーク接続を返します。
+// これは syscall.Conn インターフェースを実装しています。
 //
-// The returned RawConn only supports calling Control. Read and
-// Write return an error.
+// 返された RawConn は Control の呼び出しのみをサポートします。
+// Read と Write はエラーを返します。
 func (l *TCPListener) SyscallConn() (syscall.RawConn, error)
 
-// AcceptTCP accepts the next incoming call and returns the new
-// connection.
+// AcceptTCPは次の着信呼び出しを受け入れ、新しい接続を返します。
 func (l *TCPListener) AcceptTCP() (*TCPConn, error)
 
 // Accept implements the Accept method in the Listener interface; it
 // waits for the next call and returns a generic Conn.
 func (l *TCPListener) Accept() (Conn, error)
 
-// Close stops listening on the TCP address.
-// Already Accepted connections are not closed.
+// Close は TCP アドレスのリスニングを停止します。
+// 既に受け入れられた接続は閉じられません。
 func (l *TCPListener) Close() error
 
-// Addr returns the listener's network address, a *TCPAddr.
-// The Addr returned is shared by all invocations of Addr, so
-// do not modify it.
+// Addrはリスナーのネットワークアドレス、*TCPAddrを返します。
+// 返されるAddrはAddrのすべての呼び出しで共有されるため、
+// 変更しないでください。
 func (l *TCPListener) Addr() Addr
 
-// SetDeadline sets the deadline associated with the listener.
-// A zero time value disables the deadline.
+// SetDeadlineはリスナーに関連付けられた締め切りを設定します。
+// ゼロの時刻値は締め切りを無効にします。
 func (l *TCPListener) SetDeadline(t time.Time) error
 
-// File returns a copy of the underlying os.File.
-// It is the caller's responsibility to close f when finished.
-// Closing l does not affect f, and closing f does not affect l.
+// File は元の os.File のコピーを返します。
+// 終了した後、f を閉じる責任は呼び出し元にあります。
+// l を閉じても f には影響を与えませんし、f を閉じても l には影響を与えません。
 //
-// The returned os.File's file descriptor is different from the
-// connection's. Attempting to change properties of the original
-// using this duplicate may or may not have the desired effect.
+// 返された os.File のファイルディスクリプタは、接続のものとは異なります。
+// この複製を使用して元のもののプロパティを変更しようとすると、
+// 望ましい効果が現れるかどうかは不明です。
 func (l *TCPListener) File() (f *os.File, err error)
 
-// ListenTCP acts like Listen for TCP networks.
+// ListenTCPはTCPネットワーク用のListenのように機能します。
 //
-// The network must be a TCP network name; see func Dial for details.
+// ネットワークはTCPネットワーク名でなければなりません。詳細はfunc Dialを参照してください。
 //
-// If the IP field of laddr is nil or an unspecified IP address,
-// ListenTCP listens on all available unicast and anycast IP addresses
-// of the local system.
-// If the Port field of laddr is 0, a port number is automatically
-// chosen.
+// laddrのIPフィールドがnilまたは未指定のIPアドレスの場合、ListenTCPはローカルシステムの利用可能なユニキャストおよびエニーキャストIPアドレスすべてでリスンします。
+// laddrのPortフィールドが0の場合、ポート番号は自動的に選択されます。
 func ListenTCP(network string, laddr *TCPAddr) (*TCPListener, error)

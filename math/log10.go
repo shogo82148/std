@@ -4,10 +4,10 @@
 
 package math
 
-// Log10 returns the decimal logarithm of x.
-// The special cases are the same as for Log.
+// Log10 は x の 10 を底とする対数（常用対数）を返します。
+// 特殊な場合は Log と同じです。
 func Log10(x float64) float64
 
-// Log2 returns the binary logarithm of x.
-// The special cases are the same as for Log.
+// Log2 は x の二進対数を返します。
+// 特殊な場合は Log と同じです。
 func Log2(x float64) float64

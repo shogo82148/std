@@ -11,8 +11,8 @@ import (
 )
 
 func Example() {
-	// Compile the expression once, usually at init time.
-	// Use raw strings to avoid having to quote the backslashes.
+	// 式を一度だけコンパイルする。通常は初期化時に行う。
+	// バックスラッシュを引用符で囲まないために、生文字列を使用する。
 	var validID = regexp.MustCompile(`^[a-z]+\[[0-9]+\]$`)
 
 	fmt.Println(validID.MatchString("adam[23]"))
@@ -156,7 +156,7 @@ func ExampleRegexp_FindAllStringSubmatch() {
 
 func ExampleRegexp_FindAllStringSubmatchIndex() {
 	re := regexp.MustCompile(`a(x*)b`)
-	// Indices:
+	// インデックス：
 	//    01234567   012345678
 	//    -ab-axb-   -axxb-ab-
 	fmt.Println(re.FindAllStringSubmatchIndex("-ab-", -1))
@@ -174,7 +174,8 @@ func ExampleRegexp_FindAllStringSubmatchIndex() {
 
 func ExampleRegexp_FindSubmatchIndex() {
 	re := regexp.MustCompile(`a(x*)b`)
-	// Indices:
+
+	// インデックス：
 	//    01234567   012345678
 	//    -ab-axb-   -axxb-ab-
 	fmt.Println(re.FindSubmatchIndex([]byte("-ab-")))
@@ -339,19 +340,19 @@ func ExampleRegexp_Expand() {
 	option3: value3
 `)
 
-	// Regex pattern captures "key: value" pair from the content.
+	// 正規表現パターンは、コンテンツから「key: value」のペアをキャプチャします。
 	pattern := regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 
-	// Template to convert "key: value" to "key=value" by
-	// referencing the values captured by the regex pattern.
+	// 正規表現パターンでキャプチャされた値を参照して、
+	// "key: value"を "key=value"に変換するためのテンプレート。
 	template := []byte("$key=$value\n")
 
 	result := []byte{}
 
-	// For each match of the regex in the content.
+	// 内容における正規表現の各マッチについて。
 	for _, submatches := range pattern.FindAllSubmatchIndex(content, -1) {
-		// Apply the captured submatches to the template and append the output
-		// to the result.
+
+		// キャプチャされたサブマッチをテンプレートに適用し、出力を結果に追加します。
 		result = pattern.Expand(result, template, content, submatches)
 	}
 	fmt.Println(string(result))
@@ -371,19 +372,17 @@ func ExampleRegexp_ExpandString() {
 	option3: value3
 `
 
-	// Regex pattern captures "key: value" pair from the content.
+	// 正規表現パターンは、コンテンツから "key: value" のペアをキャプチャします。
 	pattern := regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 
-	// Template to convert "key: value" to "key=value" by
-	// referencing the values captured by the regex pattern.
+	// 正規表現パターンによってキャプチャされた値を参照して、
+	// "key: value"を "key=value" に変換するためのテンプレート。
 	template := "$key=$value\n"
 
 	result := []byte{}
 
-	// For each match of the regex in the content.
 	for _, submatches := range pattern.FindAllStringSubmatchIndex(content, -1) {
-		// Apply the captured submatches to the template and append the output
-		// to the result.
+		// キャプチャされたサブマッチをテンプレートに適用し、出力を結果に追加します。
 		result = pattern.ExpandString(result, template, content, submatches)
 	}
 	fmt.Println(string(result))
@@ -399,7 +398,7 @@ func ExampleRegexp_FindIndex() {
 	option1: value1
 	option2: value2
 `)
-	// Regex pattern captures "key: value" pair from the content.
+	// 正規表現パターンは、コンテンツから「キー: 値」のペアをキャプチャします。
 	pattern := regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 
 	loc := pattern.FindIndex(content)
@@ -416,7 +415,7 @@ func ExampleRegexp_FindAllSubmatchIndex() {
 	option1: value1
 	option2: value2
 `)
-	// Regex pattern captures "key: value" pair from the content.
+	// 正規表現パターンはコンテンツから "key: value" のペアをキャプチャします。
 	pattern := regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 	allIndexes := pattern.FindAllSubmatchIndex(content, -1)
 	for _, loc := range allIndexes {

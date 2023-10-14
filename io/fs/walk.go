@@ -8,16 +8,13 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// SkipDir is used as a return value from WalkDirFuncs to indicate that
-// the directory named in the call is to be skipped. It is not returned
-// as an error by any function.
+// SkipDirはWalkDirFuncsからの戻り値として使用され、呼び出しで指定されたディレクトリがスキップされることを示します。これは、どの関数からもエラーとして返されません。
 var SkipDir = errors.New("skip this directory")
 
-// SkipAll is used as a return value from WalkDirFuncs to indicate that
-// all remaining files and directories are to be skipped. It is not returned
-// as an error by any function.
+// SkipAllは、WalkDirFuncsからの返り値として使用され、残りのすべてのファイルとディレクトリをスキップすることを示します。これは、どの関数からもエラーとして返されません。
 var SkipAll = errors.New("skip everything and stop the walk")
 
+<<<<<<< HEAD
 // WalkDirFunc is the type of the function called by [WalkDir] to visit
 // each file or directory.
 //
@@ -65,18 +62,52 @@ var SkipAll = errors.New("skip everything and stop the walk")
 //     files and directories respectively.
 //   - If a directory read fails, the function is called a second time
 //     for that directory to report the error.
+=======
+// WalkDirFuncはWalkDirによって各ファイルやディレクトリを訪れるために呼び出される関数の型です。
+//
+// path引数には、WalkDirの引数としてのパスが前置されます。
+// つまり、root引数が "dir" でWalkDirがそのディレクトリで "a" という名前のファイルを見つけた場合、
+// 引数が "dir/a" であるように歩行関数が呼び出されます。
+//
+// d引数は、指定されたパスのfs.DirEntryです。
+//
+// 関数によって返されるエラー結果は、WalkDirの進行方法を制御します。
+// 関数が特別な値SkipDirを返す場合、WalkDirは現在のディレクトリをスキップします（d.IsDir()がtrueであればパス、
+// そうでなければパスの親ディレクトリ）。
+// 関数が特別な値SkipAllを返す場合、WalkDirは残りのすべてのファイルおよびディレクトリをスキップします。
+// それ以外の場合、関数が非nilのエラーを返す場合、WalkDirは完全に停止し、そのエラーを返します。
+//
+// エラー引数は、パスに関連するエラーを報告し、WalkDirがそのディレクトリに入ろうとしないことを示します。
+// 関数はそのエラーを処理する方法を決定することができます。
+// エラーを返すと、WalkDirは木全体のツリーをかけるのをやめます。
+//
+// WalkDirは、2つのケースで非nilのerr引数を持って関数を呼び出します。
+//
+// まず、ルートディレクトリの初期fs.Statが失敗した場合、WalkDirは関数をpathがrootに設定され、
+// dがnilに設定され、errがfs.Statからのエラーに設定された状態で呼び出します。
+//
+// 2番目に、ディレクトリのReadDirメソッドが失敗した場合、WalkDirは関数をディレクトリのパスがpathに設定され、
+// dがディレクトリを記述するfs.DirEntryに設定され、errがReadDirからのエラーに設定された状態で呼び出します。
+// この2番目の場合、関数はディレクトリのパスで2回呼び出されます。
+// 最初の呼び出しは、ディレクトリの読み取りが試みられる前で、errがnilに設定されるため、関数にSkipDirまたはSkipAllを返すチャンスがあり、ReadDirを完全に回避します。
+// 2回目の呼び出しは、失敗したReadDirからのエラーを報告します。
+// （ReadDirが成功すると、2回目の呼び出しがありません。）
+//
+// WalkDirFuncとfilepath.WalkFuncの違いは次のとおりです：
+//
+//   - 2番目の引数の型がfs.DirEntryであること。
+//   - ディレクトリを読み取る前に関数が呼び出され、SkipDirまたはSkipAllがディレクトリの読み取りを完全にバイパスしたり、
+//     残りのすべてのファイルとディレクトリをスキップしたりするようにすること。
+//   - ディレクトリの読み取りが失敗した場合、そのディレクトリについてのエラーを報告するために、関数が2回呼び出されること。
+>>>>>>> release-branch.go1.21
 type WalkDirFunc func(path string, d DirEntry, err error) error
 
-// WalkDir walks the file tree rooted at root, calling fn for each file or
-// directory in the tree, including root.
+// WalkDirはルートにルートされたファイルツリーを走査し、各ファイルまたはディレクトリに対してfnを呼び出します。
 //
-// All errors that arise visiting files and directories are filtered by fn:
-// see the fs.WalkDirFunc documentation for details.
+// ファイルとディレクトリを訪れる中で発生するエラーは、fnによってフィルタリングされます：
+// 詳細については、fs.WalkDirFuncのドキュメントを参照してください。
 //
-// The files are walked in lexical order, which makes the output deterministic
-// but requires WalkDir to read an entire directory into memory before proceeding
-// to walk that directory.
+// ファイルは辞書式順に走査されますが、出力を決定論的にするために、WalkDirはディレクトリ全体をメモリに読み込んでから、そのディレクトリを走査する必要があります。
 //
-// WalkDir does not follow symbolic links found in directories,
-// but if root itself is a symbolic link, its target will be walked.
+// WalkDirはディレクトリ内で見つかったシンボリックリンクをたどりませんが、ルート自体がシンボリックリンクであれば、その対象が走査されます。
 func WalkDir(fsys FS, root string, fn WalkDirFunc) error

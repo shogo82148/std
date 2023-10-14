@@ -2,30 +2,24 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package os provides a platform-independent interface to operating system
-// functionality. The design is Unix-like, although the error handling is
-// Go-like; failing calls return values of type error rather than error numbers.
-// Often, more information is available within the error. For example,
-// if a call that takes a file name fails, such as Open or Stat, the error
-// will include the failing file name when printed and will be of type
-// *PathError, which may be unpacked for more information.
+// Package osは、オペレーティングシステムの機能に対するプラットフォーム非依存のインターフェースを提供します。
+// 設計はUnixライクですが、エラーハンドリングはGoのようです。失敗する呼び出しは、エラーナンバーではなくエラー型の値を返します。
+// エラーには、より詳細な情報が含まれることがよくあります。たとえば、ファイル名を受け取る呼び出し（OpenやStatなど）が失敗する場合、
+// エラーメッセージには失敗したファイル名が含まれ、その型は*PathErrorで、さらなる情報を抽出できます。
+// osインターフェースは、すべてのオペレーティングシステムで統一されたものとすることを意図しています。
+// 一般的に利用できない機能は、システム固有のパッケージsyscallに現れます。
+// 以下に、ファイルを開いて一部を読み込む簡単な例を示します。
 //
-// The os interface is intended to be uniform across all operating systems.
-// Features not generally available appear in the system-specific package syscall.
-//
-// Here is a simple example, opening a file and reading some of it.
-//
-//	file, err := os.Open("file.go") // For read access.
+//	file, err := os.Open("file.go") // 読み込みアクセス用。
 //	if err != nil {
 //		log.Fatal(err)
 //	}
 //
-// If the open fails, the error string will be self-explanatory, like
+// オープンが失敗した場合、エラーメッセージは自己説明的であるようになります。
 //
-//	open file.go: no such file or directory
+//	open file.go: ファイルまたはディレクトリが存在しません。
 //
-// The file's data can then be read into a slice of bytes. Read and
-// Write take their byte counts from the length of the argument slice.
+// ファイルのデータは、バイトのスライスに読み込むことができます。ReadとWriteは、引数のスライスの長さからバイト数を取得します。
 //
 //	data := make([]byte, 100)
 //	count, err := file.Read(data)
@@ -34,9 +28,7 @@
 //	}
 //	fmt.Printf("read %d bytes: %q\n", count, data[:count])
 //
-// Note: The maximum number of concurrent operations on a File may be limited by
-// the OS or the system. The number should be high, but exceeding it may degrade
-// performance or cause other issues.
+// 注意: File上の同時操作の最大数は、OSまたはシステムによって制限される場合があります。数は大きくするべきですが、それを超えるとパフォーマンスが低下したり他の問題が発生する可能性があります。
 package os
 
 import (
@@ -46,29 +38,27 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Name returns the name of the file as presented to Open.
+// NameはOpenに渡されたファイルの名前を返します。
 func (f *File) Name() string
 
-// Stdin, Stdout, and Stderr are open Files pointing to the standard input,
-// standard output, and standard error file descriptors.
+// Stdin、Stdout、およびStderrは、標準入力、標準出力、および標準エラーファイルディスクリプタを指すオープンファイルです。
 //
-// Note that the Go runtime writes to standard error for panics and crashes;
-// closing Stderr may cause those messages to go elsewhere, perhaps
-// to a file opened later.
+// Goランタイムは、パニックやクラッシュの場合には標準エラーに書き込みます。
+// Stderrを閉じると、それらのメッセージは他の場所に転送される可能性があります。
+// たとえば、後で開かれるファイルに転送されるかもしれません。
 var (
 	Stdin  = NewFile(uintptr(syscall.Stdin), "/dev/stdin")
 	Stdout = NewFile(uintptr(syscall.Stdout), "/dev/stdout")
 	Stderr = NewFile(uintptr(syscall.Stderr), "/dev/stderr")
 )
 
-// Flags to OpenFile wrapping those of the underlying system. Not all
-// flags may be implemented on a given system.
+// オープンファイル時に基になるシステムのものをラップするフラグ。すべてのフラグが与えられたシステム上で実装されているわけではありません。
 const (
-	// Exactly one of O_RDONLY, O_WRONLY, or O_RDWR must be specified.
+	// O_RDONLY、O_WRONLY、またはO_RDWRのいずれかを指定する必要があります。
 	O_RDONLY int = syscall.O_RDONLY
 	O_WRONLY int = syscall.O_WRONLY
 	O_RDWR   int = syscall.O_RDWR
-	// The remaining values may be or'ed in to control behavior.
+	// 残りの値はOrで結合して動作を制御できます。
 	O_APPEND int = syscall.O_APPEND
 	O_CREATE int = syscall.O_CREAT
 	O_EXCL   int = syscall.O_EXCL
@@ -76,17 +66,16 @@ const (
 	O_TRUNC  int = syscall.O_TRUNC
 )
 
-// Seek whence values.
+// 値を探す。
 //
-// Deprecated: Use io.SeekStart, io.SeekCurrent, and io.SeekEnd.
+// 廃止: io.SeekStart、io.SeekCurrent、io.SeekEnd を使用してください。
 const (
 	SEEK_SET int = 0
 	SEEK_CUR int = 1
 	SEEK_END int = 2
 )
 
-// LinkError records an error during a link or symlink or rename
-// system call and the paths that caused it.
+// LinkErrorはリンクやシンボリックリンク、リネームのシステムコール中に発生したエラーと、それによって引き起こされたパスを記録します。
 type LinkError struct {
 	Op  string
 	Old string
@@ -98,225 +87,173 @@ func (e *LinkError) Error() string
 
 func (e *LinkError) Unwrap() error
 
-// Read reads up to len(b) bytes from the File and stores them in b.
-// It returns the number of bytes read and any error encountered.
-// At end of file, Read returns 0, io.EOF.
+// ReadはFileから最大len(b)バイトを読み込み、bに格納します。
+// 読み込まれたバイト数とエラーがあればそれを返します。
+// ファイルの末尾では、Readは0とio.EOFを返します。
 func (f *File) Read(b []byte) (n int, err error)
 
-// ReadAt reads len(b) bytes from the File starting at byte offset off.
-// It returns the number of bytes read and the error, if any.
-// ReadAt always returns a non-nil error when n < len(b).
-// At end of file, that error is io.EOF.
+// ReadAt はオフセット off から始まる File から len(b) バイトを読み取ります。
+// 読み取ったバイト数とエラー（ある場合）を返します。
+// ReadAt は常に、n < len(b) の場合には非 nil のエラーを返します。
+// ファイルの終端では、そのエラーは io.EOF です。
 func (f *File) ReadAt(b []byte, off int64) (n int, err error)
 
-// ReadFrom implements io.ReaderFrom.
+// ReadFrom は io.ReaderFrom を実装します。
 func (f *File) ReadFrom(r io.Reader) (n int64, err error)
 
-// Write writes len(b) bytes from b to the File.
-// It returns the number of bytes written and an error, if any.
-// Write returns a non-nil error when n != len(b).
+// Writeはbからlen(b)バイトをFileに書き込みます。
+// 書き込まれたバイト数とエラー（ある場合）を返します。
+// n != len(b)の場合、Writeはnilでないエラーを返します。
 func (f *File) Write(b []byte) (n int, err error)
 
-// WriteAt writes len(b) bytes to the File starting at byte offset off.
-// It returns the number of bytes written and an error, if any.
-// WriteAt returns a non-nil error when n != len(b).
+// WriteAtはオフセットoffから始まるFileにlen(b)バイトを書き込みます。
+// 書き込まれたバイト数とエラー（ある場合）を返します。
+// n != len(b)の場合、WriteAtはnilでないエラーを返します。
 //
-// If file was opened with the O_APPEND flag, WriteAt returns an error.
+// ファイルがO_APPENDフラグで開かれている場合、WriteAtはエラーを返します。
 func (f *File) WriteAt(b []byte, off int64) (n int, err error)
 
-// Seek sets the offset for the next Read or Write on file to offset, interpreted
-// according to whence: 0 means relative to the origin of the file, 1 means
-// relative to the current offset, and 2 means relative to the end.
-// It returns the new offset and an error, if any.
-// The behavior of Seek on a file opened with O_APPEND is not specified.
+// Seekは、オフセットをオフセットに設定します。オフセットは、whenceによって解釈されます。
+// whenceの解釈は次のとおりです：0はファイルの原点に対する相対的なオフセット、1は現在のオフセットに対する相対的なオフセット、2は終端に対する相対的なオフセットを意味します。
+// エラーがあれば、新しいオフセットとエラーを返します。
+// O_APPENDで開かれたファイルに対するSeekの振る舞いは指定されていません。
 func (f *File) Seek(offset int64, whence int) (ret int64, err error)
 
-// WriteString is like Write, but writes the contents of string s rather than
-// a slice of bytes.
+// WriteStringはWriteと似ていますが、バイトのスライスではなく、文字列sの内容を書き込みます。
 func (f *File) WriteString(s string) (n int, err error)
 
-// Mkdir creates a new directory with the specified name and permission
-// bits (before umask).
-// If there is an error, it will be of type *PathError.
 func Mkdir(name string, perm FileMode) error
 
-// Chdir changes the current working directory to the named directory.
-// If there is an error, it will be of type *PathError.
+// Chdirは現在の作業ディレクトリを指定されたディレクトリに変更します。
+// エラーが発生した場合、*PathError型になります。
 func Chdir(dir string) error
 
-// Open opens the named file for reading. If successful, methods on
-// the returned file can be used for reading; the associated file
-// descriptor has mode O_RDONLY.
-// If there is an error, it will be of type *PathError.
+// Openは指定されたファイルを読み取り用に開きます。成功した場合、
+// 返されたファイルのメソッドを使用して読み取りができます。
+// 関連付けられたファイルディスクリプタはO_RDONLYのモードで持ちます。
+// エラーが発生した場合、*PathError型のエラーが返されます。
 func Open(name string) (*File, error)
 
-// Create creates or truncates the named file. If the file already exists,
-// it is truncated. If the file does not exist, it is created with mode 0666
-// (before umask). If successful, methods on the returned File can
-// be used for I/O; the associated file descriptor has mode O_RDWR.
-// If there is an error, it will be of type *PathError.
+// Createは指定されたファイルを作成または切り詰めます。ファイルが既に存在する場合、ファイルは切り詰められます。ファイルが存在しない場合、モード0666（umaskの前）で作成されます。成功した場合、返されたFileのメソッドを使用してI/Oを行うことができます。関連付けられたファイルディスクリプタはO_RDWRモードになります。エラーが発生した場合、*PathError型のエラーとなります。
 func Create(name string) (*File, error)
 
-// OpenFile is the generalized open call; most users will use Open
-// or Create instead. It opens the named file with specified flag
-// (O_RDONLY etc.). If the file does not exist, and the O_CREATE flag
-// is passed, it is created with mode perm (before umask). If successful,
-// methods on the returned File can be used for I/O.
-// If there is an error, it will be of type *PathError.
+// OpenFileは一般化されたオープンコールであり、ほとんどのユーザーは代わりにOpenまたはCreateを使用します。指定されたフラグ（O_RDONLYなど）で指定された名前のファイルを開きます。ファイルが存在しない場合、O_CREATEフラグが渡されると、モード許可（umask前）で作成されます。成功すると、返されたFileのメソッドを使用してI/Oが可能です。エラーが発生した場合、*PathErrorのタイプになります。
 func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
-// Rename renames (moves) oldpath to newpath.
-// If newpath already exists and is not a directory, Rename replaces it.
-// OS-specific restrictions may apply when oldpath and newpath are in different directories.
-// Even within the same directory, on non-Unix platforms Rename is not an atomic operation.
-// If there is an error, it will be of type *LinkError.
+// Renameはoldpathをnewpathに名前を変更（移動）します。
+// newpathが既に存在していてディレクトリではない場合、Renameはそれを置き換えます。
+// oldpathとnewpathが異なるディレクトリにある場合、OS固有の制限が適用される場合があります。
+// 同じディレクトリ内でも、非UnixプラットフォームではRenameはアトミックな操作ではありません。
+// エラーが発生した場合、それは*LinkErrorの型である可能性があります。
 func Rename(oldpath, newpath string) error
 
-// TempDir returns the default directory to use for temporary files.
+// TempDirは一時ファイルに使用するデフォルトのディレクトリを返します。
 //
-// On Unix systems, it returns $TMPDIR if non-empty, else /tmp.
-// On Windows, it uses GetTempPath, returning the first non-empty
-// value from %TMP%, %TEMP%, %USERPROFILE%, or the Windows directory.
-// On Plan 9, it returns /tmp.
+// Unixシステムでは、$TMPDIRが空でない場合はそれを返し、さもなくば/tmpを返します。
+// Windowsでは、GetTempPathを使用し、最初の空でない値を%TMP%、%TEMP%、%USERPROFILE%、またはWindowsディレクトリから返します。
+// Plan 9では、/tmpを返します。
 //
-// The directory is neither guaranteed to exist nor have accessible
-// permissions.
+// このディレクトリは、存在することやアクセス可能な許可を持っていることが保証されていません。
 func TempDir() string
 
-// UserCacheDir returns the default root directory to use for user-specific
-// cached data. Users should create their own application-specific subdirectory
-// within this one and use that.
-//
-// On Unix systems, it returns $XDG_CACHE_HOME as specified by
-// https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html if
-// non-empty, else $HOME/.cache.
-// On Darwin, it returns $HOME/Library/Caches.
-// On Windows, it returns %LocalAppData%.
-// On Plan 9, it returns $home/lib/cache.
-//
-// If the location cannot be determined (for example, $HOME is not defined),
-// then it will return an error.
+// UserCacheDirは、ユーザー固有のキャッシュデータのデフォルトのルートディレクトリを返します。ユーザーは、このディレクトリ内に独自のアプリケーション固有のサブディレクトリを作成し、それを使用する必要があります。
+// Unixシステムでは、これは$XDG_CACHE_HOME（https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.htmlで指定されています）が空でない場合には、$HOME/.cacheを返します。
+// Darwinでは、これは$HOME/Library/Cachesを返します。
+// Windowsでは、これは%LocalAppData%を返します。
+// Plan 9では、これは$home/lib/cacheを返します。
+// 位置を特定できない場合（たとえば、$HOMEが定義されていない場合）は、エラーが返されます。
 func UserCacheDir() (string, error)
 
-// UserConfigDir returns the default root directory to use for user-specific
-// configuration data. Users should create their own application-specific
-// subdirectory within this one and use that.
-//
-// On Unix systems, it returns $XDG_CONFIG_HOME as specified by
-// https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html if
-// non-empty, else $HOME/.config.
-// On Darwin, it returns $HOME/Library/Application Support.
-// On Windows, it returns %AppData%.
-// On Plan 9, it returns $home/lib.
-//
-// If the location cannot be determined (for example, $HOME is not defined),
-// then it will return an error.
+// UserConfigDirは、ユーザー固有の設定データに使用するデフォルトのルートディレクトリを返します。ユーザーは、このディレクトリ内に自分自身のアプリケーション固有のサブディレクトリを作成し、それを使用するべきです。
+// Unixシステムでは、$XDG_CONFIG_HOMEが空でない場合は、https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.htmlで指定されているようにそれを返し、それ以外の場合は$HOME/.configを返します。
+// Darwinでは、$HOME/Library/Application Supportを返します。
+// Windowsでは、%AppData%を返します。
+// Plan 9では、$home/libを返します。
+// 場所を特定できない場合（たとえば、$HOMEが定義されていない場合）は、エラーを返します。
 func UserConfigDir() (string, error)
 
-// UserHomeDir returns the current user's home directory.
+// UserHomeDirは現在のユーザーのホームディレクトリを返します。
 //
-// On Unix, including macOS, it returns the $HOME environment variable.
-// On Windows, it returns %USERPROFILE%.
-// On Plan 9, it returns the $home environment variable.
+// Unix（macOSを含む）では、$HOME環境変数を返します。
+// Windowsでは、%USERPROFILE%を返します。
+// Plan 9では、$home環境変数を返します。
 //
-// If the expected variable is not set in the environment, UserHomeDir
-// returns either a platform-specific default value or a non-nil error.
+// 環境変数に期待される変数が設定されていない場合、UserHomeDir
+// は、プラットフォーム固有のデフォルト値または非nilのエラーを返します。
 func UserHomeDir() (string, error)
 
-// Chmod changes the mode of the named file to mode.
-// If the file is a symbolic link, it changes the mode of the link's target.
-// If there is an error, it will be of type *PathError.
+// Chmodは指定されたファイルのモードを変更します。
+// もしファイルがシンボリックリンクであれば、リンクのターゲットのモードを変更します。
+// エラーが発生した場合は、*PathError型になります。
 //
-// A different subset of the mode bits are used, depending on the
-// operating system.
+// オペレーティングシステムによって使用されるモードビットのサブセットが異なります。
 //
-// On Unix, the mode's permission bits, ModeSetuid, ModeSetgid, and
-// ModeSticky are used.
+// Unixでは、モードのパーミッションビットであるModeSetuid、ModeSetgid、およびModeStickyが使用されます。
 //
-// On Windows, only the 0200 bit (owner writable) of mode is used; it
-// controls whether the file's read-only attribute is set or cleared.
-// The other bits are currently unused. For compatibility with Go 1.12
-// and earlier, use a non-zero mode. Use mode 0400 for a read-only
-// file and 0600 for a readable+writable file.
+// Windowsでは、モードの0200ビット（所有者書き込み可能）のみが使用されます。これにより、ファイルの読み取り専用属性が設定されるかクリアされるかが制御されます。
+// その他のビットは現在未使用です。Go 1.12以前との互換性を保つために、ゼロ以外のモードを使用してください。読み取り専用ファイルにはモード0400、読み書き可能なファイルにはモード0600を使用します。
 //
-// On Plan 9, the mode's permission bits, ModeAppend, ModeExclusive,
-// and ModeTemporary are used.
+// Plan 9では、モードのパーミッションビットであるModeAppend、ModeExclusive、およびModeTemporaryが使用されます。
 func Chmod(name string, mode FileMode) error
 
-// Chmod changes the mode of the file to mode.
-// If there is an error, it will be of type *PathError.
+// Chmodはファイルのモードをmodeに変更します。
+// エラーが発生した場合、それは*PathError型です。
 func (f *File) Chmod(mode FileMode) error
 
-// SetDeadline sets the read and write deadlines for a File.
-// It is equivalent to calling both SetReadDeadline and SetWriteDeadline.
+// SetDeadlineは、ファイルの読み取りと書き込みのデッドラインを設定します。
+// SetReadDeadlineおよびSetWriteDeadlineの両方を呼び出すのと同等です。
 //
-// Only some kinds of files support setting a deadline. Calls to SetDeadline
-// for files that do not support deadlines will return ErrNoDeadline.
-// On most systems ordinary files do not support deadlines, but pipes do.
+// デッドラインを設定できるファイルの種類には制限があります。デッドラインをサポートしないファイルにSetDeadlineを呼び出すと、ErrNoDeadlineが返されます。
+// ほとんどのシステムでは、通常のファイルはデッドラインをサポートしませんが、パイプはサポートします。
 //
-// A deadline is an absolute time after which I/O operations fail with an
-// error instead of blocking. The deadline applies to all future and pending
-// I/O, not just the immediately following call to Read or Write.
-// After a deadline has been exceeded, the connection can be refreshed
-// by setting a deadline in the future.
+// デッドラインは、I/Oのブロックではなく、エラーとなる絶対時刻です。デッドラインは、未来および保留中のすべてのI/Oに適用されます。ただし、即座に次のReadまたはWrite呼び出しに適用されるわけではありません。
+// デッドラインが超過された後は、将来のデッドラインを設定することで、接続をリフレッシュできます。
 //
-// If the deadline is exceeded a call to Read or Write or to other I/O
-// methods will return an error that wraps ErrDeadlineExceeded.
-// This can be tested using errors.Is(err, os.ErrDeadlineExceeded).
-// That error implements the Timeout method, and calling the Timeout
-// method will return true, but there are other possible errors for which
-// the Timeout will return true even if the deadline has not been exceeded.
+// デッドラインが超過されると、ReadまたはWriteまたは他のI/Oメソッドの呼び出しは、ErrDeadlineExceededをラップしたエラーを返します。
+// これは、errors.Is(err, os.ErrDeadlineExceeded)を使用してテストできます。
+// そのエラーにはTimeoutメソッドが実装されており、Timeoutメソッドを呼び出すとtrueが返ります。ただし、デッドラインが超過されていなくても、Timeoutがtrueを返す可能性がある他のエラーもあります。
 //
-// An idle timeout can be implemented by repeatedly extending
-// the deadline after successful Read or Write calls.
+// 成功したReadまたはWrite呼び出しの後、デッドラインを繰り返し延長することでアイドルタイムアウトを実装できます。
 //
-// A zero value for t means I/O operations will not time out.
+// tのゼロ値は、I/O操作がタイムアウトしないことを意味します。
 func (f *File) SetDeadline(t time.Time) error
 
-// SetReadDeadline sets the deadline for future Read calls and any
-// currently-blocked Read call.
-// A zero value for t means Read will not time out.
-// Not all files support setting deadlines; see SetDeadline.
+// SetReadDeadlineは、将来のRead呼び出しと現在ブロックされているRead呼び出しの締め切りを設定します。
+// tのゼロ値は、Readがタイムアウトしないことを意味します。
+// すべてのファイルが締め切りを設定できるわけではありません。SetDeadlineを参照してください。
 func (f *File) SetReadDeadline(t time.Time) error
 
-// SetWriteDeadline sets the deadline for any future Write calls and any
-// currently-blocked Write call.
-// Even if Write times out, it may return n > 0, indicating that
-// some of the data was successfully written.
-// A zero value for t means Write will not time out.
-// Not all files support setting deadlines; see SetDeadline.
+// SetWriteDeadlineは、将来のWrite呼び出しや現在ブロックされているWrite呼び出しの締め切りを設定します。
+// Writeがタイムアウトしても、n>0が返される場合があります。
+// これは、一部のデータが正常に書き込まれたことを示します。
+// tのゼロ値は、Writeがタイムアウトしないことを意味します。
+// すべてのファイルが締め切りを設定できるわけではありません。SetDeadlineを参照してください。
 func (f *File) SetWriteDeadline(t time.Time) error
 
-// SyscallConn returns a raw file.
-// This implements the syscall.Conn interface.
+// SyscallConnは生のファイルを返します。
+// これはsyscall.Connインターフェースを実装しています。
 func (f *File) SyscallConn() (syscall.RawConn, error)
 
-// DirFS returns a file system (an fs.FS) for the tree of files rooted at the directory dir.
+// DirFSはディレクトリdirをルートとするファイルツリーのファイルシステム（fs.FS）を返します。
 //
-// Note that DirFS("/prefix") only guarantees that the Open calls it makes to the
-// operating system will begin with "/prefix": DirFS("/prefix").Open("file") is the
-// same as os.Open("/prefix/file"). So if /prefix/file is a symbolic link pointing outside
-// the /prefix tree, then using DirFS does not stop the access any more than using
-// os.Open does. Additionally, the root of the fs.FS returned for a relative path,
-// DirFS("prefix"), will be affected by later calls to Chdir. DirFS is therefore not
-// a general substitute for a chroot-style security mechanism when the directory tree
-// contains arbitrary content.
+// ただし、DirFS("/prefix")は、オペレーティングシステムへのOpen呼び出しが常に"/prefix"で始まることを保証するだけです。
+// つまり、DirFS("/prefix").Open("file")はos.Open("/prefix/file")と同じです。
+// よって、/prefix/fileが/prefixツリーの外部を指すシンボリックリンクである場合、DirFSを使用してもos.Openを使用してもアクセスが止まるわけではありません。
+// また、相対パスの場合、fs.FSのルート（DirFS("prefix")で返されるもの）は、後続のChdir呼び出しの影響を受けます。
+// したがって、ディレクトリツリーに任意のコンテンツが含まれる場合、DirFSは一般的なchrootスタイルのセキュリティメカニズムの代替ではありません。
 //
-// The directory dir must not be "".
+// ディレクトリdirは空ではありません。
 //
-// The result implements [io/fs.StatFS], [io/fs.ReadFileFS] and
-// [io/fs.ReadDirFS].
+// 結果は[io/fs.StatFS]、[io/fs.ReadFileFS]、[io/fs.ReadDirFS]を実装しています。
 func DirFS(dir string) fs.FS
 
-// ReadFile reads the named file and returns the contents.
-// A successful call returns err == nil, not err == EOF.
-// Because ReadFile reads the whole file, it does not treat an EOF from Read
-// as an error to be reported.
+// ReadFileは指定されたファイルを読み込み、その内容を返します。
+// 成功した呼び出しはerr == nilを返します。 err == EOFではありません。
+// ReadFileはファイル全体を読み込むため、ReadからのEOFをエラーとして報告しません。
 func ReadFile(name string) ([]byte, error)
 
-// WriteFile writes data to the named file, creating it if necessary.
-// If the file does not exist, WriteFile creates it with permissions perm (before umask);
-// otherwise WriteFile truncates it before writing, without changing permissions.
-// Since WriteFile requires multiple system calls to complete, a failure mid-operation
-// can leave the file in a partially written state.
+// WriteFileはデータを指定されたファイルに書き込みます。必要に応じて新規作成されます。
+// ファイルが存在しない場合、WriteFileはパーミッションperm（umaskの前に）で作成します。
+// ファイルが存在する場合、WriteFileは書き込み前にファイルを切り詰め、パーミッションは変更しません。
+// WriteFileは複数のシステムコールが必要なため、途中で失敗するとファイルは一部だけ書き込まれた状態になる可能性があります。
 func WriteFile(name string, data []byte, perm FileMode) error

@@ -4,18 +4,18 @@
 
 package math
 
-// Erf returns the error function of x.
+// Erfはxの誤差関数を返します。
 //
-// Special cases are:
+// 特殊なケースは以下の通りです:
 //
 //	Erf(+Inf) = 1
 //	Erf(-Inf) = -1
 //	Erf(NaN) = NaN
 func Erf(x float64) float64
 
-// Erfc returns the complementary error function of x.
+// Erfcはxの補完誤差関数を返します。
 //
-// Special cases are:
+// 特別なケースは以下の通りです:
 //
 //	Erfc(+Inf) = 0
 //	Erfc(-Inf) = 2

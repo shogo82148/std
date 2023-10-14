@@ -4,6 +4,7 @@
 
 package time
 
+<<<<<<< HEAD
 // A Location maps time instants to the zone in use at that time.
 // Typically, the Location represents the collection of time offsets
 // in use in a geographical area. For many Locations the time offset varies
@@ -12,64 +13,63 @@ package time
 // Location is used to provide a time zone in a printed Time value and for
 // calculations involving intervals that may cross daylight savings time
 // boundaries.
+=======
+// Locationは時間インスタンスとその時点で使用されているタイムゾーンをマッピングします。
+// 通常、Locationは地理的な範囲で使用されている時間オフセットの集合を表します。
+// 多くの場所では、夏時間が使用されているかどうかによって時間オフセットが異なります。
+>>>>>>> release-branch.go1.21
 type Location struct {
 	name string
 	zone []zone
 	tx   []zoneTrans
 
-	// The tzdata information can be followed by a string that describes
-	// how to handle DST transitions not recorded in zoneTrans.
-	// The format is the TZ environment variable without a colon; see
-	// https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html.
-	// Example string, for America/Los_Angeles: PST8PDT,M3.2.0,M11.1.0
+	// tzdata情報の後に、zoneTransに記録されていないDSTの移行をどのように処理するかを説明する文字列が続く場合があります。
+	// フォーマットは、コロンを含まないTZ環境変数です。詳細は、以下を参照してください。
+	// https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html。
+	// 例として、America/Los_Angelesの場合は、PST8PDT,M3.2.0,M11.1.0となります。
 	extend string
 
-	// Most lookups will be for the current time.
-	// To avoid the binary search through tx, keep a
-	// static one-element cache that gives the correct
-	// zone for the time when the Location was created.
-	// if cacheStart <= t < cacheEnd,
-	// lookup can return cacheZone.
-	// The units for cacheStart and cacheEnd are seconds
-	// since January 1, 1970 UTC, to match the argument
-	// to lookup.
+	// ほとんどの検索は現在の時刻で行われます。
+	// txをバイナリサーチしないように、
+	// Locationが作成された時点の正しいタイムゾーンを
+	// 提供する静的な単一要素キャッシュを保持します。
+	// もし cacheStart <= t < cacheEnd であれば、
+	// キャッシュは cacheZone を返すことができます。
+	// cacheStart と cacheEnd の単位は、
+	// lookupへの引数と一致するように、
+	// 1970年1月1日UTCからの秒数です。
 	cacheStart int64
 	cacheEnd   int64
 	cacheZone  *zone
 }
 
-// UTC represents Universal Coordinated Time (UTC).
+// UTCは協定世界時（UTC）を表します。
 var UTC *Location = &utcLoc
 
-// Local represents the system's local time zone.
-// On Unix systems, Local consults the TZ environment
-// variable to find the time zone to use. No TZ means
-// use the system default /etc/localtime.
-// TZ="" means use UTC.
-// TZ="foo" means use file foo in the system timezone directory.
+// Local はシステムのローカルなタイムゾーンを表します。
+// Unix システムでは、Local は TZ 環境変数を参照して使用するタイムゾーンを見つけます。TZ が指定されていない場合は、システムのデフォルトの /etc/localtime を使用します。
+// TZ="" は UTC を使用します。
+// TZ="foo" はシステムのタイムゾーンディレクトリ内のファイル foo を使用します。
 var Local *Location = &localLoc
 
-// String returns a descriptive name for the time zone information,
-// corresponding to the name argument to LoadLocation or FixedZone.
+// Stringは、LoadLocationまたはFixedZoneのname引数に対応する、タイムゾーン情報の記述的な名前を返します。
 func (l *Location) String() string
 
-// FixedZone returns a Location that always uses
-// the given zone name and offset (seconds east of UTC).
+// FixedZoneは、常に指定されたタイムゾーン名とオフセット（UTCからの秒数）を使用するLocationを返します。
 func FixedZone(name string, offset int) *Location
 
-// LoadLocation returns the Location with the given name.
+// LoadLocationは指定された名前を持つLocationを返します。
 //
-// If the name is "" or "UTC", LoadLocation returns UTC.
-// If the name is "Local", LoadLocation returns Local.
+// 名前が""または"UTC"の場合、LoadLocationはUTCを返します。
+// 名前が"Local"の場合、LoadLocationはLocalを返します。
 //
-// Otherwise, the name is taken to be a location name corresponding to a file
-// in the IANA Time Zone database, such as "America/New_York".
+// それ以外の場合、名前はファイルに対応する場所の名前であり、
+// IANAタイムゾーンデータベースの中に存在します。例えば"America/New_York"です。
 //
-// LoadLocation looks for the IANA Time Zone database in the following
-// locations in order:
+// LoadLocationは以下の順序でIANAタイムゾーンデータベースを探します:
 //
-//   - the directory or uncompressed zip file named by the ZONEINFO environment variable
-//   - on a Unix system, the system standard installation location
+//   - ZONEINFO環境変数によって指定されたディレクトリまたは解凍されたzipファイル
+//   - Unixシステムでは、システムの標準インストール場所
 //   - $GOROOT/lib/time/zoneinfo.zip
-//   - the time/tzdata package, if it was imported
+//   - インポートされていた場合、time/tzdataパッケージ
 func LoadLocation(name string) (*Location, error)

@@ -2,28 +2,28 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// This file implements method sets.
+// このファイルはメソッドセットを実装します。
 
 package types
 
-// A MethodSet is an ordered set of concrete or abstract (interface) methods;
-// a method is a MethodVal selection, and they are ordered by ascending m.Obj().Id().
-// The zero value for a MethodSet is a ready-to-use empty method set.
+// MethodSetは具体的または抽象（インターフェース）メソッドの順序付けられたセットです。
+// メソッドはMethodVal選択であり、m.Obj().Id()によって昇順に並べられます。
+// MethodSetのゼロ値は使用準備完了の空のメソッドセットです。
 type MethodSet struct {
 	list []*Selection
 }
 
 func (s *MethodSet) String() string
 
-// Len returns the number of methods in s.
+// Lenはsのメソッドの数を返します。
 func (s *MethodSet) Len() int
 
-// At returns the i'th method in s for 0 <= i < s.Len().
+// Atは、0 <= i < s.Len()に対してsのi番目のメソッドを返します。
 func (s *MethodSet) At(i int) *Selection
 
-// Lookup returns the method with matching package and name, or nil if not found.
+// Lookupはパッケージと名前が一致するメソッドを返します。見つからない場合はnilを返します。
 func (s *MethodSet) Lookup(pkg *Package, name string) *Selection
 
-// NewMethodSet returns the method set for the given type T.
-// It always returns a non-nil method set, even if it is empty.
+// NewMethodSetは、指定された型Tのメソッドセットを返します。
+// 空であっても、必ず非nilのメソッドセットを返します。
 func NewMethodSet(T Type) *MethodSet

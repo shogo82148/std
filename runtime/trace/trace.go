@@ -112,11 +112,11 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Start enables tracing for the current program.
-// While tracing, the trace will be buffered and written to w.
-// Start returns an error if tracing is already enabled.
+// Start は現在のプログラムのトレースを有効にします。
+// トレース中は、トレースはバッファリングされ、w に書き込まれます。
+// トレースが既に有効になっている場合、Start はエラーを返します。
 func Start(w io.Writer) error
 
-// Stop stops the current tracing, if any.
-// Stop only returns after all the writes for the trace have completed.
+// Stopは現在のトレースを停止します（存在する場合）。
+// トレースのすべての書き込みが完了するまで、Stopは戻りません。
 func Stop()
