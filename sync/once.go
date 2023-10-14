@@ -4,35 +4,22 @@
 
 package sync
 
-<<<<<<< HEAD
 import (
 	"github.com/shogo82148/std/sync/atomic"
 )
 
-// Once is an object that will perform exactly one action.
-=======
 // Onceは正確に1つのアクションを実行するオブジェクトです。
->>>>>>> release-branch.go1.21
 //
 // Onceは最初の使用後にコピーしてはいけません。
 //
 // Goメモリモデルの用語では、fからの戻り値はonce.Do(f)の呼び出しの戻り値よりも前に同期します。
 type Once struct {
-<<<<<<< HEAD
 	// done indicates whether the action has been performed.
 	// It is first in the struct because it is used in the hot path.
 	// The hot path is inlined at every call site.
 	// Placing done first allows more compact instructions on some architectures (amd64/386),
 	// and fewer instructions (to calculate offset) on other architectures.
 	done atomic.Uint32
-=======
-	// doneはアクションが実行されたかどうかを示します。
-	// これはホットパスで使用されるため、structの最初に配置されています。
-	// ホットパスは各呼び出し箇所にインライン展開されます。
-	// doneを最初に配置することで、一部のアーキテクチャ（amd64/386）ではよりコンパクトな命令が可能になり、
-	// 他のアーキテクチャではオフセットを計算するための命令が少なくなります。
-	done uint32
->>>>>>> release-branch.go1.21
 	m    Mutex
 }
 
