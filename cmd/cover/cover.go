@@ -7,6 +7,10 @@ package main
 import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/token"
+	"github.com/shogo82148/std/internal/coverage"
+	"github.com/shogo82148/std/internal/coverage/encodemeta"
+
+	"github.com/shogo82148/std/cmd/internal/edit"
 )
 
 // Blockは解析で記録する基本ブロックに関する情報を表します。

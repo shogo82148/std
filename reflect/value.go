@@ -5,6 +5,7 @@
 package reflect
 
 import (
+	"github.com/shogo82148/std/internal/abi"
 	"github.com/shogo82148/std/unsafe"
 )
 

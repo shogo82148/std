@@ -9,7 +9,7 @@
 package netip
 
 import (
-	"github.com/shogo82148/std/net/netip/internal/intern"
+	"github.com/shogo82148/std/internal/intern"
 )
 
 // Addrは、[net.IP]または[net.IPAddr]に似た、スコープ付きアドレスを持つIPv4またはIPv6アドレスを表します。

@@ -6,6 +6,7 @@ package net
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/internal/singleflight"
 	"github.com/shogo82148/std/net/netip"
 )
 

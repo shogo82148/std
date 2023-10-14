@@ -8,6 +8,10 @@
 // https://golang.org/doc/articles/laws_of_reflection.html
 package reflect
 
+import (
+	"github.com/shogo82148/std/internal/abi"
+)
+
 // TypeはGoの型の表現です。
 //
 // すべてのメソッドがすべての種類の型に適用されるわけではありません。制限がある場合は、各メソッドのドキュメントに記載されています。

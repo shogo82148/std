@@ -215,7 +215,7 @@ func godoc(path string) ([]byte, error) {
 		imports = append(imports, v)
 	}
 	for _, imp := range imports {
-		if isInternal(imp) || !astutil.UsesImport(node, imp) {
+		if !astutil.UsesImport(node, imp) {
 			// 未使用のimport文を削除
 			astutil.DeleteImport(fset, node, imp)
 		} else {
@@ -232,7 +232,7 @@ func godoc(path string) ([]byte, error) {
 }
 
 func isSpecialDir(s string) bool {
-	return strings.HasPrefix(s, ".") || s == "testdata" || s == "internal" || s == "vendor"
+	return strings.HasPrefix(s, ".") || s == "testdata" || s == "vendor"
 }
 
 func includesExampleTest(node *ast.File) bool {
@@ -240,19 +240,6 @@ func includesExampleTest(node *ast.File) bool {
 		if d, ok := d.(*ast.FuncDecl); ok && d.Name != nil && strings.HasPrefix(d.Name.Name, "Example") {
 			return true
 		}
-	}
-	return false
-}
-
-func isInternal(path string) bool {
-	if strings.HasPrefix(path, "internal/") {
-		return true
-	}
-	if strings.HasSuffix(path, "/internal") {
-		return true
-	}
-	if strings.Contains(path, "/internal/") {
-		return true
 	}
 	return false
 }
@@ -273,6 +260,7 @@ func recvExported(d *ast.FuncDecl) bool {
 				if !ast.IsExported(typ.Name) {
 					return false
 				}
+			case *ast.IndexListExpr:
 			default:
 				log.Fatalf("unknown type: %T", typ)
 			}

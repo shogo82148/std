@@ -191,6 +191,11 @@ AIXではuid/gidが有効なuid/gidと一致するかどうかをチェックし
 */
 package runtime
 
+import (
+	"github.com/shogo82148/std/internal/goarch"
+	"github.com/shogo82148/std/internal/goos"
+)
+
 // Callerは、呼び出し元のゴルーチンのスタック上での関数呼び出しに関するファイルと行番号情報を報告します。
 // 引数skipは、上昇するスタックフレームの数であり、0はCallerの呼び出し元を識別します。
 // （歴史的な理由から、skipの意味はCallerとCallersで異なります。）
