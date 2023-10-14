@@ -48,30 +48,21 @@ func PathEscape(s string) string
 //
 // 全般的な形式は次のようになります：
 //
-//  [スキーム:][//[ユーザー情報@]ホスト][/パス][?クエリ][#フラグメント]
+//	[スキーム:][//[ユーザー情報@]ホスト][/パス][?クエリ][#フラグメント]
 //
 // スキームの後にスラッシュで始まらないURLは次のように解釈されます：
 //
-//  スキーム:透明部分[?クエリ][#フラグメント]
+//	スキーム:透明部分[?クエリ][#フラグメント]
 //
-<<<<<<< HEAD
-// The Host field contains the host and port subcomponents of the URL.
-// When the port is present, it is separated from the host with a colon.
-// When the host is an IPv6 address, it must be enclosed in square brackets:
-// "[fe80::1]:80". The [net.JoinHostPort] function combines a host and port
-// into a string suitable for the Host field, adding square brackets to
-// the host when necessary.
+// Hostフィールドには、URLのホストとポートのサブコンポーネントが含まれます。
+// ポートが存在する場合、コロンでホストから分離されます。
+// ホストがIPv6アドレスの場合、角括弧で囲む必要があります: "[fe80::1]:80"。
+// [net.JoinHostPort] 関数は、必要に応じてホストに角括弧を追加して、ホストとポートを文字列に結合します。
 //
-// Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.
-// A consequence is that it is impossible to tell which slashes in the Path were
-// slashes in the raw URL and which were %2f. This distinction is rarely important,
-// but when it is, the code should use the EscapedPath method, which preserves
-// the original encoding of Path.
-=======
-// パスのフィールドはデコード形式で保存されます：/%47%6f%2f は /Go/ となります。
-// このため、パス内のスラッシュが生のURL内のスラッシュなのか、%2fなのかを区別することは不可能です。
-// この区別はほとんど重要ではありませんが、重要な場合は、コードは元のパスのエンコードを保持するEscapedPathメソッドを使用する必要があります。
->>>>>>> release-branch.go1.21
+// Pathフィールドは、デコードされた形式で保存されます：/%47%6f%2fは/Go/になります。
+// 結果として、Path内のどのスラッシュが生のURL内のスラッシュであり、どのスラッシュが%2fであるかを区別することはできません。
+// この区別はほとんど重要ではありませんが、重要な場合は、コードはEscapedPathメソッドを使用する必要があります。
+// このメソッドは、Pathの元のエンコーディングを保持します。
 //
 // RawPathフィールドは、デフォルトのパスのエンコードがエスケープされたパスと異なる場合にのみ設定されるオプションのフィールドです。
 // 詳細については、EscapedPathメソッドを参照してください。
