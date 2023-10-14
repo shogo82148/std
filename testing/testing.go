@@ -366,11 +366,7 @@ import (
 
 // Initはテストフラグを登録します。これらのフラグは、テスト関数を実行する前に"go test"コマンドによって自動的に登録されるため、Initは、"go test"を使用せずにBenchmarkなどの関数を呼び出す場合にのみ必要です。
 //
-<<<<<<< HEAD
-// Init is not safe to call concurrently. It has no effect if it was already called.
-=======
-// Initは既に呼び出されている場合は何も影響を与えません。
->>>>>>> release-branch.go1.21
+// Initは並行して呼び出すことは安全ではありません。 すでに呼び出されている場合は、効果がありません。
 func Init()
 
 // Short は -test.short フラグが設定されているかどうかを報告します。
@@ -408,12 +404,6 @@ type TB interface {
 	Skipped() bool
 	TempDir() string
 
-<<<<<<< HEAD
-=======
-	// インターフェースの実装を防ぐための非公開メソッドで、
-	// これにより将来の追加によって Go 1 との互換性が
-	// 損なわれることを防ぎます。
->>>>>>> release-branch.go1.21
 	private()
 }
 
