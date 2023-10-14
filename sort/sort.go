@@ -4,11 +4,11 @@
 
 //go:generate go run gen_sort_variants.go
 
-// Package sort provides primitives for sorting slices and user-defined collections.
+// Package sort はスライスやユーザー定義のコレクションをソートするための基本機能を提供します。
 package sort
 
-// An implementation of Interface can be sorted by the routines in this package.
-// The methods refer to elements of the underlying collection by integer index.
+// このパッケージのルーチンによって、インタフェースの実装はソート可能です。
+// メソッドは、整数インデックスによって基礎コレクションの要素を参照します。
 type Interface interface {
 	Len() int
 
@@ -17,99 +17,94 @@ type Interface interface {
 	Swap(i, j int)
 }
 
-// Sort sorts data in ascending order as determined by the Less method.
-// It makes one call to data.Len to determine n and O(n*log(n)) calls to
-// data.Less and data.Swap. The sort is not guaranteed to be stable.
+// SortはLessメソッドによって決定される昇順でデータをソートします。
+// data.Lenを1回呼び出してnを決定し、O(n*log(n))回のdata.Lessとdata.Swapを呼び出します。ソートは安定するとは限りません。
 //
-// Note: in many situations, the newer slices.SortFunc function is more
-// ergonomic and runs faster.
+// 注意：多くの場合、よりエルゴノミックで高速なslices.SortFunc関数を使用する方が好ましいです。
 func Sort(data Interface)
 
-// Reverse returns the reverse order for data.
+// Reverseはdataの逆順を返します。
 func Reverse(data Interface) Interface
 
-// IsSorted reports whether data is sorted.
+// IsSortedはデータがソートされているかどうかを報告します。
 //
-// Note: in many situations, the newer slices.IsSortedFunc function is more
-// ergonomic and runs faster.
+// 注意：多くの場合、新しいslices.IsSortedFunc関数の方が使いやすく、高速です。
 func IsSorted(data Interface) bool
 
-// IntSlice attaches the methods of Interface to []int, sorting in increasing order.
+// IntSlice は、Interface のメソッドを []int にアタッチし、昇順でソートします。
 type IntSlice []int
 
 func (x IntSlice) Len() int
 func (x IntSlice) Less(i, j int) bool
 func (x IntSlice) Swap(i, j int)
 
-// Sort is a convenience method: x.Sort() calls Sort(x).
+// Sort は便利なメソッドです: x.Sort() は Sort(x) を呼び出します。
 func (x IntSlice) Sort()
 
-// Float64Slice implements Interface for a []float64, sorting in increasing order,
-// with not-a-number (NaN) values ordered before other values.
+// Float64Sliceは、[]float64のデータを増加順に並べ替えるためのインターフェースを実装します。
+// NaN（非数値）の値は他の値よりも前に並べます。
 type Float64Slice []float64
 
 func (x Float64Slice) Len() int
 
-// Less reports whether x[i] should be ordered before x[j], as required by the sort Interface.
-// Note that floating-point comparison by itself is not a transitive relation: it does not
-// report a consistent ordering for not-a-number (NaN) values.
-// This implementation of Less places NaN values before any others, by using:
+// Less関数は、ソートインターフェースの要件に従って、x[i]がx[j]の前に並べられるべきかどうかを報告します。
+// フロート比較自体は推移的な関係ではありませんことに注意してください：NaN（非数）の値については一貫した順序を報告しません。
+// このLess関数の実装では、NaN値を他の値よりも前に配置します：
 //
 //	x[i] < x[j] || (math.IsNaN(x[i]) && !math.IsNaN(x[j]))
 func (x Float64Slice) Less(i, j int) bool
 func (x Float64Slice) Swap(i, j int)
 
-// Sort is a convenience method: x.Sort() calls Sort(x).
+// Sortは便利なメソッドです：x.Sort()はSort(x)を呼び出します。
 func (x Float64Slice) Sort()
 
-// StringSlice attaches the methods of Interface to []string, sorting in increasing order.
+// StringSliceはInterfaceのメソッドを[]stringに追加し、昇順でソートします。
 type StringSlice []string
 
 func (x StringSlice) Len() int
 func (x StringSlice) Less(i, j int) bool
 func (x StringSlice) Swap(i, j int)
 
-// Sort is a convenience method: x.Sort() calls Sort(x).
+// Sort は利便性のためのメソッドです: x.Sort() は Sort(x) を呼び出します。
 func (x StringSlice) Sort()
 
-// Ints sorts a slice of ints in increasing order.
+// Intsはintのスライスを昇順にソートします。
 //
-// Note: as of Go 1.22, this function simply calls slices.Sort.
+// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
 func Ints(x []int)
 
-// Float64s sorts a slice of float64s in increasing order.
-// Not-a-number (NaN) values are ordered before other values.
+// Float64sはfloat64のスライスを昇順でソートします。
+// NaN(非数)の値は他の値よりも優先的に並べられます。
 //
-// Note: as of Go 1.22, this function simply calls slices.Sort.
+// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
 func Float64s(x []float64)
 
-// Strings sorts a slice of strings in increasing order.
+// Stringsは文字列のスライスを昇順でソートします。
 //
-// Note: as of Go 1.22, this function simply calls slices.Sort.
+// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
 func Strings(x []string)
 
-// IntsAreSorted reports whether the slice x is sorted in increasing order.
+// IntsAreSortedは、スライスxが昇順にソートされているかどうかを報告します。
 //
-// Note: as of Go 1.22, this function simply calls slices.IsSorted.
+// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
 func IntsAreSorted(x []int) bool
 
-// Float64sAreSorted reports whether the slice x is sorted in increasing order,
-// with not-a-number (NaN) values before any other values.
+// Float64sAreSortedは、スライスxが昇順に並んでいるか、NaN（非数値）の値が他の値の前にあるかどうかを報告します。
 //
-// Note: as of Go 1.22, this function simply calls slices.IsSorted.
+// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
 func Float64sAreSorted(x []float64) bool
 
-// StringsAreSorted reports whether the slice x is sorted in increasing order.
+// StringsAreSortedは、スライスxが昇順に並んでいるかどうかを報告します。
 //
-// Note: as of Go 1.22, this function simply calls slices.IsSorted.
+// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
 func StringsAreSorted(x []string) bool
 
-// Stable sorts data in ascending order as determined by the Less method,
-// while keeping the original order of equal elements.
+// Lessメソッドによって決定される昇順でデータを安定的にソートします。
+// 同じ要素の元の順序を保持します。
 //
-// It makes one call to data.Len to determine n, O(n*log(n)) calls to
-// data.Less and O(n*log(n)*log(n)) calls to data.Swap.
+// data.Lenを1回呼び出してnを決定し、data.LessをO(n*log(n))回呼び出し、
+// data.SwapをO(n*log(n)*log(n))回呼び出します。
 //
-// Note: in many situations, the newer slices.SortStableFunc function is more
-// ergonomic and runs faster.
+// 注意: 多くの場合、新しいslices.SortStableFunc関数の方が使いやすく、
+// より高速に実行されます。
 func Stable(data Interface)

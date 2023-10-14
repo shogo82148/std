@@ -21,13 +21,13 @@ import "github.com/shogo82148/std/sort"
 // for a type using the routines in this package.
 // Any type that implements it may be used as a
 // min-heap with the following invariants (established after
-// Init has been called or if the data is empty or sorted):
+// [Init] has been called or if the data is empty or sorted):
 //
 //	!h.Less(j, i) for 0 <= i < h.Len() and 2*i+1 <= j <= 2*i+2 and j < h.Len()
 //
-// Note that Push and Pop in this interface are for package heap's
+// Note that [Push] and [Pop] in this interface are for package heap's
 // implementation to call. To add and remove things from the heap,
-// use heap.Push and heap.Pop.
+// use [heap.Push] and [heap.Pop].
 type Interface interface {
 	sort.Interface
 	Push(x any)
@@ -46,7 +46,7 @@ func Push(h Interface, x any)
 
 // Pop removes and returns the minimum element (according to Less) from the heap.
 // The complexity is O(log n) where n = h.Len().
-// Pop is equivalent to Remove(h, 0).
+// Pop is equivalent to [Remove](h, 0).
 func Pop(h Interface) any
 
 // Remove removes and returns the element at index i from the heap.
@@ -55,6 +55,6 @@ func Remove(h Interface, i int) any
 
 // Fix re-establishes the heap ordering after the element at index i has changed its value.
 // Changing the value of the element at index i and then calling Fix is equivalent to,
-// but less expensive than, calling Remove(h, i) followed by a Push of the new value.
+// but less expensive than, calling [Remove](h, i) followed by a Push of the new value.
 // The complexity is O(log n) where n = h.Len().
 func Fix(h Interface, i int)

@@ -4,8 +4,7 @@
 
 package reflect
 
-// Swapper returns a function that swaps the elements in the provided
-// slice.
+// Swapperは、与えられたスライス内の要素を交換する関数を返します。
 //
-// Swapper panics if the provided interface is not a slice.
+// 与えられたインターフェースがスライスでない場合、Swapperはパニックを起こします。
 func Swapper(slice any) func(i, j int)

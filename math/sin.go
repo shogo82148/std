@@ -4,17 +4,17 @@
 
 package math
 
-// Cos returns the cosine of the radian argument x.
+// Cosは、ラジアンの引数xの余弦を返します。
 //
-// Special cases are:
+// 特殊な場合は:
 //
 //	Cos(±Inf) = NaN
 //	Cos(NaN) = NaN
 func Cos(x float64) float64
 
-// Sin returns the sine of the radian argument x.
+// Sinは、ラジアンの引数xの正弦を返します。
 //
-// Special cases are:
+// 特殊なケースは次の通りです：
 //
 //	Sin(±0) = ±0
 //	Sin(±Inf) = NaN

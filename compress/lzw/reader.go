@@ -65,18 +65,17 @@ type Reader struct {
 	toRead []byte
 }
 
-// Readはio.Readerを実装し、基になるReaderから非圧縮バイトを読み取ります。
+// Readはio.Readerを実装し、基になる [Reader] から非圧縮バイトを読み取ります。
 func (r *Reader) Read(b []byte) (int, error)
 
-// CloseはReaderを閉じ、将来の読み込み操作に対してエラーを返します。
-// サブのio.Readerを閉じません。
+// Closeは [Reader] を閉じ、将来の読み込み操作に対してエラーを返します。
+// サブの [io.Reader] を閉じません。
 func (r *Reader) Close() error
 
-// ResetはReaderの状態をクリアし、新しいReaderとして再利用するために使用されます。
 func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 
-// NewReader creates a new io.ReadCloser.
-// Reads from the returned io.ReadCloser read and decompress data from r.
+// NewReader creates a new [io.ReadCloser].
+// Reads from the returned [io.ReadCloser] read and decompress data from r.
 // If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.
 // It is the caller's responsibility to call Close on the ReadCloser when
@@ -85,5 +84,5 @@ func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 // range [2,8] and is typically 8. It must equal the litWidth
 // used during compression.
 //
-// 返されたio.ReadCloserの基底型は、*Readerであることが保証されます。
+// 返された [io.ReadCloser] の基底型は、*[Reader] であることが保証されます。
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser

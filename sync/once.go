@@ -4,41 +4,37 @@
 
 package sync
 
-// Once is an object that will perform exactly one action.
+import (
+	"github.com/shogo82148/std/sync/atomic"
+)
+
+// Onceは正確に1つのアクションを実行するオブジェクトです。
 //
-// A Once must not be copied after first use.
+// Onceは最初の使用後にコピーしてはいけません。
 //
-// In the terminology of the Go memory model,
-// the return from f “synchronizes before”
-// the return from any call of once.Do(f).
+// Goメモリモデルの用語では、fからの戻り値はonce.Do(f)の呼び出しの戻り値よりも前に同期します。
 type Once struct {
 	// done indicates whether the action has been performed.
 	// It is first in the struct because it is used in the hot path.
 	// The hot path is inlined at every call site.
 	// Placing done first allows more compact instructions on some architectures (amd64/386),
 	// and fewer instructions (to calculate offset) on other architectures.
-	done uint32
+	done atomic.Uint32
 	m    Mutex
 }
 
-// Do calls the function f if and only if Do is being called for the
-// first time for this instance of Once. In other words, given
+// Doは、Onceのインスタンスで最初にDoが呼び出された場合のみ、関数fを呼び出します。つまり、次のように与えられた場合、
 //
 //	var once Once
 //
-// if once.Do(f) is called multiple times, only the first call will invoke f,
-// even if f has a different value in each invocation. A new instance of
-// Once is required for each function to execute.
+// もしこのように複数回once.Do(f)が呼び出された場合、最初の呼び出しのみがfを実行し、
+// それぞれの呼び出しでfが異なる値を持っていても、その値に関係なく実行されます。各関数の実行には新しいOnceのインスタンスが必要です。
 //
-// Do is intended for initialization that must be run exactly once. Since f
-// is niladic, it may be necessary to use a function literal to capture the
-// arguments to a function to be invoked by Do:
+// Doは、一度だけ実行する必要のある初期化に使用されます。fは引数なしの関数ですので、Doによって呼び出される関数の引数を捕捉するために関数リテラルを使用する必要があるかもしれません：
 //
 //	config.once.Do(func() { config.init(filename) })
 //
-// Because no call to Do returns until the one call to f returns, if f causes
-// Do to be called, it will deadlock.
+// Doへの呼び出しがfの返り値が返されるまで戻らないため、fがDoの呼び出しを引き起こすとデッドロックが発生します。
 //
-// If f panics, Do considers it to have returned; future calls of Do return
-// without calling f.
+// fがパニックした場合、Doはそれを戻ったとみなします。その後のDoの呼び出しはfを呼び出さずに返ります。
 func (o *Once) Do(f func())

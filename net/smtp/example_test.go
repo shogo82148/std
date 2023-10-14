@@ -11,13 +11,13 @@ import (
 )
 
 func Example() {
-	// Connect to the remote SMTP server.
+	// リモートSMTPサーバーに接続する。
 	c, err := smtp.Dial("mail.example.com:25")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Set the sender and recipient first
+	// まず、送信者と受信者を設定します
 	if err := c.Mail("sender@example.org"); err != nil {
 		log.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	// Send the email body.
+	// メール本文を送信する。
 	wc, err := c.Data()
 	if err != nil {
 		log.Fatal(err)
@@ -39,7 +39,7 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	// Send the QUIT command and close the connection.
+	// QUITコマンドを送信し、接続を閉じます。
 	err = c.Quit()
 	if err != nil {
 		log.Fatal(err)
@@ -47,7 +47,7 @@ func Example() {
 }
 
 func ExamplePlainAuth() {
-	// hostname is used by PlainAuth to validate the TLS certificate.
+	// hostnameはPlainAuthによってTLS証明書の検証に使用されます。
 	hostname := "mail.example.com"
 	auth := smtp.PlainAuth("", "user@example.com", "password", hostname)
 
@@ -58,11 +58,11 @@ func ExamplePlainAuth() {
 }
 
 func ExampleSendMail() {
-	// Set up authentication information.
+	// 認証情報を設定する。
 	auth := smtp.PlainAuth("", "user@example.com", "password", "mail.example.com")
 
-	// Connect to the server, authenticate, set the sender and recipient,
-	// and send the email all in one step.
+	// サーバーに接続し、認証し、送信元と受信者を設定し、
+	// メールを一括で送信します。
 	to := []string{"recipient@example.net"}
 	msg := []byte("To: recipient@example.net\r\n" +
 		"Subject: discount Gophers!\r\n" +

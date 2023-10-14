@@ -90,7 +90,7 @@ func ExampleParseDuration() {
 	hours, _ := time.ParseDuration("10h")
 	complex, _ := time.ParseDuration("1h10m10s")
 	micro, _ := time.ParseDuration("1µs")
-	// The package also accepts the incorrect but common prefix u for micro.
+	// このパッケージでは、マイクロのための誤ったが一般的な接頭辞uも受け入れます。
 	micro2, _ := time.ParseDuration("1us")
 
 	fmt.Println(hours)
@@ -198,49 +198,47 @@ func ExampleNewTicker() {
 }
 
 func ExampleTime_Format() {
-	// Parse a time value from a string in the standard Unix format.
+	// 標準のUnix形式の文字列から時刻値を解析する。
 	t, err := time.Parse(time.UnixDate, "Wed Feb 25 11:06:39 PST 2015")
-	if err != nil { // Always check errors even if they should not happen.
+	if err != nil { // 必ずエラーを確認する。たとえそれが起こらないはずでも。
 		panic(err)
 	}
 
 	tz, err := time.LoadLocation("Asia/Shanghai")
-	if err != nil { // Always check errors even if they should not happen.
+	if err != nil { // 常にエラーチェックを行います。たとえ起こるべきでない場合でも。
 		panic(err)
 	}
 
-	// time.Time's Stringer method is useful without any format.
+	// time.TimeのStringerメソッドは、フォーマットなしでも便利です。
 	fmt.Println("default format:", t)
 
-	// Predefined constants in the package implement common layouts.
+	// パッケージ内の予め定義された定数は、共通のレイアウトを実装します。
 	fmt.Println("Unix format:", t.Format(time.UnixDate))
 
-	// The time zone attached to the time value affects its output.
+	// 時間値に付けられたタイムゾーンは出力に影響を与えます。
 	fmt.Println("Same, in UTC:", t.UTC().Format(time.UnixDate))
 
 	fmt.Println("in Shanghai with seconds:", t.In(tz).Format("2006-01-02T15:04:05 -070000"))
 
 	fmt.Println("in Shanghai with colon seconds:", t.In(tz).Format("2006-01-02T15:04:05 -07:00:00"))
 
-	// The rest of this function demonstrates the properties of the
-	// layout string used in the format.
+	// この関数の残りの部分は、フォーマットに使用されるレイアウト文字列の特性を示しています。
 
-	// The layout string used by the Parse function and Format method
-	// shows by example how the reference time should be represented.
-	// We stress that one must show how the reference time is formatted,
-	// not a time of the user's choosing. Thus each layout string is a
-	// representation of the time stamp,
-	//	Jan 2 15:04:05 2006 MST
-	// An easy way to remember this value is that it holds, when presented
-	// in this order, the values (lined up with the elements above):
-	//	  1 2  3  4  5    6  -7
-	// There are some wrinkles illustrated below.
+	// Parse関数とFormatメソッドで使用されるレイアウト文字列は、
+	// 参照時刻の表現方法を例示します。
+	// 強調することは、参照時刻のフォーマット方法を示す必要があるということであり、
+	// ユーザーが選択した時刻ではありません。そのため、各レイアウト文字列は
+	// 時刻スタンプの表現です。
+	// Jan 2 15:04:05 2006 MST
+	// この値を覚えるための簡単な方法は、この順序で表示されたときに、
+	// 上記の要素と一致する値を保持していることです。
+	// 1 2 3 4 5 6 -7
+	// 以下では、いくつかの例が示されています。
 
-	// Most uses of Format and Parse use constant layout strings such as
-	// the ones defined in this package, but the interface is flexible,
-	// as these examples show.
+	// FormatやParseのほとんどの使用例は、このパッケージで定義されているような定数のレイアウト文字列を使用しますが、
+	// これらの例が示すように、インタフェースは柔軟です。
 
-	// Define a helper function to make the examples' output look nice.
+	// 例の出力を見やすくするためのヘルパー関数を定義する。
 	do := func(name, layout, want string) {
 		got := t.Format(layout)
 		if want != got {
@@ -250,37 +248,29 @@ func ExampleTime_Format() {
 		fmt.Printf("%-16s %q gives %q\n", name, layout, got)
 	}
 
-	// Print a header in our output.
+	// 出力にヘッダーを表示します。
 	fmt.Printf("\nFormats:\n\n")
 
-	// Simple starter examples.
+	// シンプルなスターターの例。
 	do("Basic full date", "Mon Jan 2 15:04:05 MST 2006", "Wed Feb 25 11:06:39 PST 2015")
 	do("Basic short date", "2006/01/02", "2015/02/25")
 
-	// The hour of the reference time is 15, or 3PM. The layout can express
-	// it either way, and since our value is the morning we should see it as
-	// an AM time. We show both in one format string. Lower case too.
+	// 参照時刻の時は15、または午後3時です。レイアウトはどちらの形式でも表現できますが、私たちの値は朝の時間なので、AMとして表示する必要があります。両方を1つの書式文字列で表示します。小文字でも。
 	do("AM/PM", "3PM==3pm==15h", "11AM==11am==11h")
 
-	// When parsing, if the seconds value is followed by a decimal point
-	// and some digits, that is taken as a fraction of a second even if
-	// the layout string does not represent the fractional second.
-	// Here we add a fractional second to our time value used above.
 	t, err = time.Parse(time.UnixDate, "Wed Feb 25 11:06:39.1234 PST 2015")
 	if err != nil {
 		panic(err)
 	}
-	// It does not appear in the output if the layout string does not contain
-	// a representation of the fractional second.
+
+	// レイアウト文字列に少数秒の表現が含まれていない場合、出力には表示されません。
 	do("No fraction", time.UnixDate, "Wed Feb 25 11:06:39 PST 2015")
 
-	// Fractional seconds can be printed by adding a run of 0s or 9s after
-	// a decimal point in the seconds value in the layout string.
-	// If the layout digits are 0s, the fractional second is of the specified
-	// width. Note that the output has a trailing zero.
+	// 配列文字列の中で、秒数の値の小数点以下に0または9が連続していると、小数点以下の秒数が表示されます。
+	// レイアウトの桁が0の場合、指定された桁数の小数秒になります。ただし、出力には末尾に0が付きます。
 	do("0s for fraction", "15:04:05.00000", "11:06:39.12340")
 
-	// If the fraction in the layout is 9s, trailing zeros are dropped.
+	// レイアウト内の小数部が9sの場合、末尾のゼロは削除されます。
 	do("9s for fraction", "15:04:05.99999999", "11:06:39.1234")
 
 	// Output:
@@ -302,13 +292,13 @@ func ExampleTime_Format() {
 }
 
 func ExampleTime_Format_pad() {
-	// Parse a time value from a string in the standard Unix format.
+	// 標準のUnix形式の文字列から時間値を解析します。
 	t, err := time.Parse(time.UnixDate, "Sat Mar 7 11:06:39 PST 2015")
-	if err != nil { // Always check errors even if they should not happen.
+	if err != nil { // 必要ないと思われるかもしれないが、常にエラーをチェックしてください。
 		panic(err)
 	}
 
-	// Define a helper function to make the examples' output look nice.
+	// ヘルパー関数を定義して、例の出力を見やすくします。
 	do := func(name, layout, want string) {
 		got := t.Format(layout)
 		if want != got {
@@ -318,24 +308,22 @@ func ExampleTime_Format_pad() {
 		fmt.Printf("%-16s %q gives %q\n", name, layout, got)
 	}
 
-	// The predefined constant Unix uses an underscore to pad the day.
+	// 予定された定数 Unix は日を埋めるためにアンダースコアを使用します。
 	do("Unix", time.UnixDate, "Sat Mar  7 11:06:39 PST 2015")
 
-	// For fixed-width printing of values, such as the date, that may be one or
-	// two characters (7 vs. 07), use an _ instead of a space in the layout string.
-	// Here we print just the day, which is 2 in our layout string and 7 in our
-	// value.
+	// 固定幅で値をプリントするために、日付などの1文字または2文字になる可能性がある場合、レイアウト文字列の代わりにスペースの代わりに_を使用します。
+	// ここでは、レイアウト文字列では2で値は7の日を印刷しています。
 	do("No pad", "<2>", "<7>")
 
-	// An underscore represents a space pad, if the date only has one digit.
+	// アンダースコアはスペースのパッドを表します。日付が1桁の場合。
 	do("Spaces", "<_2>", "< 7>")
 
-	// A "0" indicates zero padding for single-digit values.
+	// "0"は一桁の値のゼロ埋めを示します。
 	do("Zeros", "<02>", "<07>")
 
-	// If the value is already the right width, padding is not used.
-	// For instance, the second (05 in the reference time) in our value is 39,
-	// so it doesn't need padding, but the minutes (04, 06) does.
+	// 値がすでに適切な幅である場合、パディングは使用されません。
+	// たとえば、値の2番目（リファレンス時刻の05）は39ですが、
+	// したがって、パディングは必要ありませんが、分の部分（04, 06）には必要です。
 	do("Suppressed pad", "04:05", "06:39")
 
 	// Output:
@@ -365,27 +353,22 @@ func ExampleTime_GoString() {
 }
 
 func ExampleParse() {
-	// See the example for Time.Format for a thorough description of how
-	// to define the layout string to parse a time.Time value; Parse and
-	// Format use the same model to describe their input and output.
 
-	// longForm shows by example how the reference time would be represented in
-	// the desired layout.
+	// Time.Formatの例を参照して、time.Time値を解析するためにレイアウト文字列を定義する方法の詳細を見てください。ParseとFormatは、入力と出力を記述するために同じモデルを使用します。
+
+	// longFormは、参照時刻がどのように所望のレイアウトで表されるかを例示します。
 	const longForm = "Jan 2, 2006 at 3:04pm (MST)"
 	t, _ := time.Parse(longForm, "Feb 3, 2013 at 7:54pm (PST)")
 	fmt.Println(t)
 
-	// shortForm is another way the reference time would be represented
-	// in the desired layout; it has no time zone present.
-	// Note: without explicit zone, returns time in UTC.
+	// shortFormは望ましいレイアウトで参照時刻が表されるもう一つの方法です。これにはタイムゾーンが存在しません。
+	// 注意：明示的なゾーンがない場合、時間はUTCで返されます。
 	const shortForm = "2006-Jan-02"
 	t, _ = time.Parse(shortForm, "2013-Feb-03")
 	fmt.Println(t)
 
-	// Some valid layouts are invalid time values, due to format specifiers
-	// such as _ for space padding and Z for zone information.
-	// For example the RFC3339 layout 2006-01-02T15:04:05Z07:00
-	// contains both Z and a time zone offset in order to handle both valid options:
+	// いくつかの有効なレイアウトは、スペースの埋め込みのための _ やゾーン情報のための Z などのフォーマット指定子によって無効な時間値となります。
+	// たとえば、RFC3339のレイアウト 2006-01-02T15:04:05Z07:00 は、有効なオプションの両方を扱うために、Z とタイムゾーンオフセットの両方を含んでいます。
 	// 2006-01-02T15:04:05Z
 	// 2006-01-02T15:04:05+07:00
 	t, _ = time.Parse(time.RFC3339, "2006-01-02T15:04:05Z")
@@ -393,7 +376,7 @@ func ExampleParse() {
 	t, _ = time.Parse(time.RFC3339, "2006-01-02T15:04:05+07:00")
 	fmt.Println(t)
 	_, err := time.Parse(time.RFC3339, time.RFC3339)
-	fmt.Println("error", err) // Returns an error as the layout is not a valid time value
+	fmt.Println("error", err) // レイアウトが有効な時間の値ではないため、エラーが返されます。
 
 	// Output:
 	// 2013-02-03 19:54:00 -0800 PST
@@ -406,12 +389,12 @@ func ExampleParse() {
 func ExampleParseInLocation() {
 	loc, _ := time.LoadLocation("Europe/Berlin")
 
-	// This will look for the name CEST in the Europe/Berlin time zone.
+	// これはEurope/Berlinの時刻帯でCESTという名前を探します。
 	const longForm = "Jan 2, 2006 at 3:04pm (MST)"
 	t, _ := time.ParseInLocation(longForm, "Jul 9, 2012 at 5:02am (CEST)", loc)
 	fmt.Println(t)
 
-	// Note: without explicit zone, returns time in given location.
+	// 注意：明示的なタイムゾーンがない場合、指定された場所の時間を返します。
 	const shortForm = "2006-Jan-02"
 	t, _ = time.ParseInLocation(shortForm, "2012-Jul-09", loc)
 	fmt.Println(t)
@@ -455,14 +438,14 @@ func ExampleUnixMilli() {
 }
 
 func ExampleTime_Unix() {
-	// 1 billion seconds of Unix, three ways.
-	fmt.Println(time.Unix(1e9, 0).UTC())     // 1e9 seconds
-	fmt.Println(time.Unix(0, 1e18).UTC())    // 1e18 nanoseconds
-	fmt.Println(time.Unix(2e9, -1e18).UTC()) // 2e9 seconds - 1e18 nanoseconds
+	// Unixの10億秒、3つの方法。
+	fmt.Println(time.Unix(1e9, 0).UTC())     // 1億秒
+	fmt.Println(time.Unix(0, 1e18).UTC())    // 1e18ナノ秒
+	fmt.Println(time.Unix(2e9, -1e18).UTC()) // 2e9 秒 - 1e18 ナノ秒
 
 	t := time.Date(2001, time.September, 9, 1, 46, 40, 0, time.UTC)
-	fmt.Println(t.Unix())     // seconds since 1970
-	fmt.Println(t.UnixNano()) // nanoseconds since 1970
+	fmt.Println(t.Unix())     // 1970年からの経過時間（秒）
+	fmt.Println(t.UnixNano()) // 1970 年以来のナノ秒
 
 	// Output:
 	// 2001-09-09 01:46:40 +0000 UTC
@@ -514,7 +497,7 @@ func ExampleTime_Truncate() {
 	for _, d := range trunc {
 		fmt.Printf("t.Truncate(%5s) = %s\n", d, t.Truncate(d).Format("15:04:05.999999999"))
 	}
-	// To round to the last midnight in the local timezone, create a new Date.
+	// ローカルタイムゾーンの最後の深夜に丸めるには、新しい日付を作成します。
 	midnight := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.Local)
 	_ = midnight
 
@@ -540,20 +523,19 @@ func ExampleLoadLocation() {
 }
 
 func ExampleLocation() {
-	// China doesn't have daylight saving. It uses a fixed 8 hour offset from UTC.
+	// 中国はサマータイムを実施していません。UTCから8時間の固定オフセットを使用しています。
 	secondsEastOfUTC := int((8 * time.Hour).Seconds())
 	beijing := time.FixedZone("Beijing Time", secondsEastOfUTC)
 
-	// If the system has a timezone database present, it's possible to load a location
-	// from that, e.g.:
-	//    newYork, err := time.LoadLocation("America/New_York")
+	// システムにタイムゾーンデータベースが存在する場合、その場所を読み込むことが可能です。例えば：
+	//    ニューヨーク、err := time.LoadLocation("America/New_York")
 
-	// Creating a time requires a location. Common locations are time.Local and time.UTC.
+	// 時間の作成には場所が必要です。一般的な場所にはtime.Localとtime.UTCがあります。
 	timeInUTC := time.Date(2009, 1, 1, 12, 0, 0, 0, time.UTC)
 	sameTimeInBeijing := time.Date(2009, 1, 1, 20, 0, 0, 0, beijing)
 
-	// Although the UTC clock time is 1200 and the Beijing clock time is 2000, Beijing is
-	// 8 hours ahead so the two dates actually represent the same instant.
+	// UTCの時計の時間が1200であり、北京の時計の時間が2000であるが、北京は8時間進んでいるため、
+	// 実際にはこの2つの日時は同じ瞬間を表しています。
 	timesAreEqual := timeInUTC.Equal(sameTimeInBeijing)
 	fmt.Println(timesAreEqual)
 
@@ -616,8 +598,8 @@ func ExampleTime_After() {
 	year2000 := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
 	year3000 := time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC)
 
-	isYear3000AfterYear2000 := year3000.After(year2000) // True
-	isYear2000AfterYear3000 := year2000.After(year3000) // False
+	isYear3000AfterYear2000 := year3000.After(year2000) // 本当
+	isYear2000AfterYear3000 := year2000.After(year3000) // 偽
 
 	fmt.Printf("year3000.After(year2000) = %v\n", isYear3000AfterYear2000)
 	fmt.Printf("year2000.After(year3000) = %v\n", isYear2000AfterYear3000)
@@ -631,8 +613,8 @@ func ExampleTime_Before() {
 	year2000 := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
 	year3000 := time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC)
 
-	isYear2000BeforeYear3000 := year2000.Before(year3000) // True
-	isYear3000BeforeYear2000 := year3000.Before(year2000) // False
+	isYear2000BeforeYear3000 := year2000.Before(year3000) // 真
+	isYear3000BeforeYear2000 := year3000.Before(year2000) // false
 
 	fmt.Printf("year2000.Before(year3000) = %v\n", isYear2000BeforeYear3000)
 	fmt.Printf("year3000.Before(year2000) = %v\n", isYear3000BeforeYear2000)
@@ -670,8 +652,7 @@ func ExampleTime_Equal() {
 	secondsEastOfUTC := int((8 * time.Hour).Seconds())
 	beijing := time.FixedZone("Beijing Time", secondsEastOfUTC)
 
-	// Unlike the equal operator, Equal is aware that d1 and d2 are the
-	// same instant but in different time zones.
+	// equal演算子とは異なり、Equalはd1とd2が同じ瞬間であることを時差が異なるものとして認識しています。
 	d1 := time.Date(2000, 2, 1, 12, 30, 0, 0, time.UTC)
 	d2 := time.Date(2000, 2, 1, 20, 30, 0, 0, beijing)
 

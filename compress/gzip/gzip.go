@@ -33,10 +33,10 @@ type Writer struct {
 	err         error
 }
 
-// NewWriterは新しいWriterを返します。
+// NewWriterは新しい [Writer] を返します。
 // 返されたWriterに書き込まれたデータは圧縮され、wに書き込まれます。
 //
-// Writerが終了したら、呼び出し元はCloseを呼ぶ責任があります。
+// [Writer] が終了したら、呼び出し元はCloseを呼ぶ責任があります。
 // 書き込みはバッファリングされ、Closeが呼ばれるまでフラッシュされない場合があります。
 //
 // Writer.Headerのフィールドを設定したい呼び出し元は、
@@ -44,19 +44,19 @@ type Writer struct {
 func NewWriter(w io.Writer) *Writer
 
 // NewWriterLevel関数は、デフォルトの圧縮レベルを仮定する代わりに、圧縮レベルを指定して
-// NewWriter関数と同様の処理を行います。
+// [NewWriter] 関数と同様の処理を行います。
 //
-// 圧縮レベルは、DefaultCompression、NoCompression、HuffmanOnly、またはBestSpeedからBestCompressionまでの
+// 圧縮レベルは、 [DefaultCompression] 、 [NoCompression] 、 [HuffmanOnly] 、または [BestSpeed] から [BestCompression] までの
 // いずれかの整数値を指定できます。レベルが有効である場合、返されるエラーはnilになります。
 func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 
-// ResetはWriter zの状態を破棄し、NewWriterまたはNewWriterLevelの元の状態と同等にし、
-// ただし、wに書き込むことができます。これにより、新しいWriterを割り当てる代わりに
-// Writerを再利用することができます。
+// Resetは [Writer] zの状態を破棄し、 [NewWriter] または [NewWriterLevel] の元の状態と同等にし、
+// ただし、wに書き込むことができます。これにより、新しい [Writer] を割り当てる代わりに
+// [Writer] を再利用することができます。
 func (z *Writer) Reset(w io.Writer)
 
-// Writeはpを圧縮された形式で基になるio.Writerに書き込みます。
-// 圧縮されたバイトは、Writerが閉じられるまで必ずフラッシュされるわけではありません。
+// Writeはpを圧縮された形式で基になる [io.Writer] に書き込みます。
+// 圧縮されたバイトは、 [Writer] が閉じられるまで必ずフラッシュされるわけではありません。
 func (z *Writer) Write(p []byte) (int, error)
 
 // Flushは、保留中の圧縮データを下位のライターに書き込むために使用されます。
@@ -66,6 +66,6 @@ func (z *Writer) Write(p []byte) (int, error)
 // zlibライブラリの用語では、FlushはZ_SYNC_FLUSHと同等です。
 func (z *Writer) Flush() error
 
-// Closeは、書き込まれていないデータを書き込み元のio.Writerにフラッシュし、GZIPのフッターを書き込んでWriterを閉じます。
-// これは、書き込み元のio.Writerを閉じません。
+// Closeは、書き込まれていないデータを書き込み元の [io.Writer] にフラッシュし、GZIPのフッターを書き込んで [Writer] を閉じます。
+// これは、書き込み元の [io.Writer] を閉じません。
 func (z *Writer) Close() error

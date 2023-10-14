@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package math provides basic constants and mathematical functions.
+// パッケージ math は基本的な定数と数学的な関数を提供します。
 //
-// This package does not guarantee bit-identical results across architectures.
+// このパッケージはアーキテクチャ間でビットが完全に同じ結果になることを保証しません。
 package math
 
-// Mathematical constants.
+// 数学定数。
 const (
 	E   = 2.71828182845904523536028747135266249775724709369995957496696763
 	Pi  = 3.14159265358979323846264338327950288419716939937510582097494459
@@ -24,9 +24,9 @@ const (
 	Log10E = 1 / Ln10
 )
 
-// Floating-point limit values.
-// Max is the largest finite value representable by the type.
-// SmallestNonzero is the smallest positive, non-zero value representable by the type.
+// 浮動小数点の制限値。
+// Max はその型で表現可能な最大の有限値です。
+// SmallestNonzero はその型で表現可能な最小の正の0以外の値です。
 const (
 	MaxFloat32             = 0x1p127 * (1 + (1 - 0x1p-23))
 	SmallestNonzeroFloat32 = 0x1p-126 * 0x1p-23
@@ -35,7 +35,7 @@ const (
 	SmallestNonzeroFloat64 = 0x1p-1022 * 0x1p-52
 )
 
-// Integer limit values.
+// 整数の上限値。
 const (
 	MaxInt    = 1<<(intSize-1) - 1
 	MinInt    = -1 << (intSize - 1)

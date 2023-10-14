@@ -2,30 +2,21 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package reflect implements run-time reflection, allowing a program to
-// manipulate objects with arbitrary types. The typical use is to take a value
-// with static type interface{} and extract its dynamic type information by
-// calling TypeOf, which returns a Type.
-//
-// A call to ValueOf returns a Value representing the run-time data.
-// Zero takes a Type and returns a Value representing a zero value
-// for that type.
-//
-// See "The Laws of Reflection" for an introduction to reflection in Go:
+// Package reflect はランタイムリフレクションを実装し、プログラムが任意の型のオブジェクトを操作できるようにします。典型的な使用方法は、静的型 interface{} の値を取り、TypeOf を呼び出してその動的な型情報を抽出することです。TypeOf は Type を返します。
+// ValueOf への呼び出しは、実行時データを表す Value を返します。Zero は Type を受け取り、その型のゼロ値を表す Value を返します。
+// Go におけるリフレクションの紹介については、「The Laws of Reflection」を参照してください：
 // https://golang.org/doc/articles/laws_of_reflection.html
 package reflect
 
-// Type is the representation of a Go type.
+import "github.com/shogo82148/std/internal/abi"
+
+// TypeはGoの型の表現です。
 //
-// Not all methods apply to all kinds of types. Restrictions,
-// if any, are noted in the documentation for each method.
-// Use the Kind method to find out the kind of type before
-// calling kind-specific methods. Calling a method
-// inappropriate to the kind of type causes a run-time panic.
+// すべてのメソッドがすべての種類の型に適用されるわけではありません。制限がある場合は、各メソッドのドキュメントに記載されています。
+// kind-specificメソッドを呼び出す前に型の種類を知るためにKindメソッドを使用してください。型の種類に適切でないメソッドを呼び出すと、ランタイムパニックが発生します。
 //
-// Type values are comparable, such as with the == operator,
-// so they can be used as map keys.
-// Two Type values are equal if they represent identical types.
+// Typeの値は比較可能であり、==演算子などで使用することができます。
+// 2つのTypeの値は、同一の型を表している場合に等しいとされます。
 type Type interface {
 	Align() int
 
@@ -89,8 +80,8 @@ type Type interface {
 	uncommon() *uncommonType
 }
 
-// A Kind represents the specific kind of type that a [Type] represents.
-// The zero Kind is not a valid kind.
+// Kindは、 [Type] が表す特定の種類の型を表します。
+// ゼロのKindは有効な種類ではありません。
 type Kind uint
 
 const (
@@ -123,28 +114,26 @@ const (
 	UnsafePointer
 )
 
-// Ptr is the old name for the [Pointer] kind.
+// Ptrは [Pointer] 種別の旧名称です。
 const Ptr = Pointer
 
-// ChanDir represents a channel type's direction.
+// ChanDirはチャネルの方向を表します。
 type ChanDir int
 
 const (
-	RecvDir ChanDir             = 1 << iota
+	RecvDir ChanDir = 1 << iota
 	SendDir
 	BothDir = RecvDir | SendDir
 )
 
-// Method represents a single method.
+// Methodは単一のメソッドを表します。
 type Method struct {
-	// Name is the method name.
+	// Nameはメソッド名です。
 	Name string
 
-	// PkgPath is the package path that qualifies a lower case (unexported)
-	// method name. It is empty for upper case (exported) method names.
-	// The combination of PkgPath and Name uniquely identifies a method
-	// in a method set.
-	// See https://golang.org/ref/spec#Uniqueness_of_identifiers
+	// PkgPathは、小文字（エクスポートされていない）のメソッド名を修飾するパッケージパスです。大文字（エクスポートされた）のメソッド名の場合は空です。
+	// PkgPathとNameの組み合わせは、メソッドセット内のメソッドを一意に識別します。
+	// https://golang.org/ref/spec#Uniqueness_of_identifiers を参照してください。
 	PkgPath string
 
 	Type  Type
@@ -152,22 +141,21 @@ type Method struct {
 	Index int
 }
 
-// IsExported reports whether the method is exported.
+// IsExportedはメソッドがエクスポートされているかどうかを報告します。
 func (m Method) IsExported() bool
 
-// String returns the name of k.
+// String は k の名前を返します。
 func (k Kind) String() string
 
 func (d ChanDir) String() string
 
-// A StructField describes a single field in a struct.
+// StructFieldはstruct内のフィールドを1つ記述します。
 type StructField struct {
-	// Name is the field name.
+	// Nameはフィールド名です。
 	Name string
 
-	// PkgPath is the package path that qualifies a lower case (unexported)
-	// field name. It is empty for upper case (exported) field names.
-	// See https://golang.org/ref/spec#Uniqueness_of_identifiers
+	// PkgPathは小文字（エクスポートされていない）のフィールド名を修飾するパッケージパスです。大文字（エクスポートされた）のフィールド名には空です。
+	// 詳細はhttps://golang.org/ref/spec#Uniqueness_of_identifiersを参照してください。
 	PkgPath string
 
 	Type      Type
@@ -177,92 +165,83 @@ type StructField struct {
 	Anonymous bool
 }
 
-// IsExported reports whether the field is exported.
+// IsExportedはフィールドがエクスポートされているかどうかを報告します。
 func (f StructField) IsExported() bool
 
-// A StructTag is the tag string in a struct field.
+// StructTagは、structフィールドのタグ文字列です。
 //
-// By convention, tag strings are a concatenation of
-// optionally space-separated key:"value" pairs.
-// Each key is a non-empty string consisting of non-control
-// characters other than space (U+0020 ' '), quote (U+0022 '"'),
-// and colon (U+003A ':').  Each value is quoted using U+0022 '"'
-// characters and Go string literal syntax.
+// 慣例として、タグ文字列はオプションでスペースで区切られたkey:"value"の連結です。
+// 各キーは、スペース（U+0020 ' '）、引用符（U+0022 '"'）、
+// コロン（U+003A ':'）以外の非制御文字で構成される空でない文字列です。
+// 各値は、U+0022 '"'文字とGoの文字列リテラル構文を使用して引用されます。
 type StructTag string
 
-// Get returns the value associated with key in the tag string.
-// If there is no such key in the tag, Get returns the empty string.
-// If the tag does not have the conventional format, the value
-// returned by Get is unspecified. To determine whether a tag is
-// explicitly set to the empty string, use Lookup.
+// Getはtag文字列内のキーに関連付けられた値を返します。
+// もしtag内にそのようなキーが存在しない場合、Getは空の文字列を返します。
+// もしtagが従来の形式を持っていない場合、Getが返す値は不特定です。
+// タグが明示的に空の文字列に設定されているかどうかを判断するには、Lookupを使用してください。
 func (tag StructTag) Get(key string) string
 
-// Lookup returns the value associated with key in the tag string.
-// If the key is present in the tag the value (which may be empty)
-// is returned. Otherwise the returned value will be the empty string.
-// The ok return value reports whether the value was explicitly set in
-// the tag string. If the tag does not have the conventional format,
-// the value returned by Lookup is unspecified.
+// Lookupは、タグ文字列内のキーに関連する値を返します。
+// キーがタグ内に存在する場合、その値（空かもしれません）が返されます。
+// キーがタグに明示的に設定されていない場合、返される値は空の文字列になります。
+// okの返り値は、値がタグ文字列に明示的に設定されているかどうかを報告します。
+// タグに通常の形式がない場合、Lookupによって返される値は指定されていません。
 func (tag StructTag) Lookup(key string) (value string, ok bool)
 
-// TypeOf returns the reflection [Type] that represents the dynamic type of i.
-// If i is a nil interface value, TypeOf returns nil.
+// TypeOfは、iの動的な型を表す反射 [Type] を返します。
+// もしiがnilのインターフェース値である場合、TypeOfはnilを返します。
 func TypeOf(i any) Type
 
-// PtrTo returns the pointer type with element t.
-// For example, if t represents type Foo, PtrTo(t) represents *Foo.
+// PtrToは、要素tを持つポインタ型を返します。
+// 例えば、もしtがFoo型を表すなら、PtrTo(t)は*Fooを表します。
 //
-// PtrTo is the old spelling of [PointerTo].
-// The two functions behave identically.
+// PtrToは [PointerTo] の古い綴りです。
+// これらの2つの関数は同じように動作します。
 //
-// Deprecated: Superseded by [PointerTo].
+// Deprecated: [PointerTo] によって置き換えられました。
 func PtrTo(t Type) Type
 
-// PointerTo returns the pointer type with element t.
-// For example, if t represents type Foo, PointerTo(t) represents *Foo.
+// PointerToは要素tを持つポインタ型を返します。
+// 例えば、もしtがFoo型を表すなら、PointerTo(t)は*Fooを表します。
 func PointerTo(t Type) Type
 
-// ChanOf returns the channel type with the given direction and element type.
-// For example, if t represents int, ChanOf(RecvDir, t) represents <-chan int.
+// ChanOfは指定された方向と要素の型を持つチャネル型を返します。
+// たとえば、tがintを表す場合、ChanOf(RecvDir, t)は<-chan intを表します。
 //
-// The gc runtime imposes a limit of 64 kB on channel element types.
-// If t's size is equal to or exceeds this limit, ChanOf panics.
+// gcのランタイムは、チャネルの要素型に64 kBの制限を課しています。
+// もしtのサイズがこの制限以上である場合、ChanOfはパニックを発生させます。
 func ChanOf(dir ChanDir, t Type) Type
 
-// MapOf returns the map type with the given key and element types.
-// For example, if k represents int and e represents string,
-// MapOf(k, e) represents map[int]string.
+// MapOfは与えられたキーと要素の型のマップタイプを返します。
+// 例えば、もしkがintを表し、eがstringを表すならば、MapOf(k, e)はmap[int]stringを表します。
 //
-// If the key type is not a valid map key type (that is, if it does
-// not implement Go's == operator), MapOf panics.
+// もしキーの型が有効なマップキータイプではない場合（つまり、Goの==演算子を実装していない場合）、MapOfはパニックを起こします。
 func MapOf(key, elem Type) Type
 
-// FuncOf returns the function type with the given argument and result types.
-// For example if k represents int and e represents string,
-// FuncOf([]Type{k}, []Type{e}, false) represents func(int) string.
+// FuncOfは与えられた引数と戻り値の型を持つ関数型を返します。
+// 例えば、kがintを表し、eがstringを表す場合、
+// FuncOf([]Type{k}, []Type{e}, false)はfunc(int) stringを表します。
 //
-// The variadic argument controls whether the function is variadic. FuncOf
-// panics if the in[len(in)-1] does not represent a slice and variadic is
-// true.
+// 可変引数の引数は、関数が可変引数かどうかを制御します。FuncOfは、
+// variadicがtrueであり、in[len(in)-1]がスライスを表していない場合にパニックを起こします。
 func FuncOf(in, out []Type, variadic bool) Type
 
-// SliceOf returns the slice type with element type t.
-// For example, if t represents int, SliceOf(t) represents []int.
+// SliceOfは要素の型がtのスライス型を返します。
+// 例えば、tがintを表す場合、SliceOf(t)は[]intを表します。
 func SliceOf(t Type) Type
 
-// StructOf returns the struct type containing fields.
-// The Offset and Index fields are ignored and computed as they would be
-// by the compiler.
+// StructOfはフィールドを含む構造体の型を返します。
+// OffsetとIndexのフィールドは無視され、コンパイラによって計算されます。
 //
-// StructOf currently does not support promoted methods of embedded fields
-// and panics if passed unexported StructFields.
+// StructOfは、現在、埋め込みフィールドの昇格メソッドをサポートしておらず、
+// エクスポートされていないStructFieldsが渡された場合にパニックを引き起こします。
 func StructOf(fields []StructField) Type
 
-// ArrayOf returns the array type with the given length and element type.
-// For example, if t represents int, ArrayOf(5, t) represents [5]int.
+// ArrayOfは、与えられた長さと要素の型を持つ配列型を返します。
+// 例えば、tがintを表す場合、ArrayOf(5, t)は[5]intを表します。
 //
-// If the resulting type would be larger than the available address space,
-// ArrayOf panics.
+// もし結果の型が利用可能なアドレススペースよりも大きくなる場合、ArrayOfはパニックを発生させます。
 func ArrayOf(length int, elem Type) Type
 
 // TypeFor returns the [Type] that represents the type argument T.

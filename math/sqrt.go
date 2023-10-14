@@ -4,9 +4,9 @@
 
 package math
 
-// Sqrt returns the square root of x.
+// Sqrtはxの平方根を返します。
 //
-// Special cases are:
+// 特殊な場合は次の通りです：
 //
 //	Sqrt(+Inf) = +Inf
 //	Sqrt(±0) = ±0

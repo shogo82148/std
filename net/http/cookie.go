@@ -20,9 +20,9 @@ type Cookie struct {
 	Expires    time.Time
 	RawExpires string
 
-	// MaxAge=0 means no 'Max-Age' attribute specified.
-	// MaxAge<0 means delete cookie now, equivalently 'Max-Age: 0'
-	// MaxAge>0 means Max-Age attribute present and given in seconds
+	// MaxAge=0は 'Max-Age'属性が指定されていないことを意味します。
+	// MaxAge<0は今すぐクッキーを削除することを意味し、'Max-Age: 0'と同等です。
+	// MaxAge>0はMax-Age属性が存在し、秒で指定されていることを意味します。
 	MaxAge   int
 	Secure   bool
 	HttpOnly bool

@@ -4,22 +4,20 @@
 
 package fs
 
-// ReadDirFS is the interface implemented by a file system
-// that provides an optimized implementation of ReadDir.
+// ReadDirFSは、 [ReadDir] の最適化された実装を提供するファイルシステムで実装されるインターフェースです。
 type ReadDirFS interface {
 	FS
 
 	ReadDir(name string) ([]DirEntry, error)
 }
 
-// ReadDir reads the named directory
-// and returns a list of directory entries sorted by filename.
+// ReadDirは指定されたディレクトリを読み取り、
+// ファイル名でソートされたディレクトリエントリのリストを返します。
 //
-// If fs implements ReadDirFS, ReadDir calls fs.ReadDir.
-// Otherwise ReadDir calls fs.Open and uses ReadDir and Close
-// on the returned file.
+// fsが [ReadDirFS] を実装している場合、ReadDirはfs.ReadDirを呼び出します。
+// そうでない場合、ReadDirはfs.Openを呼び出し、返されたファイルでReadDirとCloseを使用します。
 func ReadDir(fsys FS, name string) ([]DirEntry, error)
 
-// FileInfoToDirEntry returns a DirEntry that returns information from info.
-// If info is nil, FileInfoToDirEntry returns nil.
+// FileInfoToDirEntryは、infoから情報を返す [DirEntry] を返します。
+// もしinfoがnilの場合、FileInfoToDirEntryはnilを返します。
 func FileInfoToDirEntry(info FileInfo) DirEntry

@@ -4,9 +4,9 @@
 
 package math
 
-// Log returns the natural logarithm of x.
+// Logはxの自然対数を返します。
 //
-// Special cases are:
+// 特別なケースは以下の通りです:
 //
 //	Log(+Inf) = +Inf
 //	Log(0) = -Inf

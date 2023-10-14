@@ -20,7 +20,7 @@ var (
 )
 
 // gzipファイルは、圧縮ファイルに関するメタデータを示すヘッダーを格納しています。
-// そのヘッダーは、WriterおよびReaderの構造体のフィールドとして公開されています。
+// そのヘッダーは、 [Writer] および [Reader] の構造体のフィールドとして公開されています。
 //
 // 文字列はUTF-8でエンコードする必要があり、UnicodeのコードポイントU+0001からU+00FFのみを含むことができます。
 // これは、GZIPファイル形式の制約によるものです。
@@ -32,14 +32,16 @@ type Header struct {
 	OS      byte
 }
 
-// Readerは、gzip形式の圧縮ファイルから非圧縮データを取得するために読み取り可能なio.Readerです。
+// Readerは、gzip形式の圧縮ファイルから非圧縮データを取得するために読み取り可能な [io.Reader] です。
+//
 // 一般的に、gzipファイルはgzipファイルの連結であり、各ファイルには独自のヘッダがあります。
 // Readerから読み取ると、各非圧縮データの連結が返されます。
 // Readerのフィールドには最初のヘッダのみが記録されます。
+//
 // Gzipファイルには非圧縮データの長さとチェックサムが格納されています。
-// Readerは、非圧縮データの末尾に到達した場合、期待された長さやチェックサムがない場合にErrChecksumを返します。
-// クライアントは、Readによって返されるデータを受け取るまで、仮のものとして扱うべきです。
-// データの終端を示すio.EOFを受け取るまで。
+// [Reader.Read] は、非圧縮データの末尾に到達した場合、期待された長さやチェックサムがない場合に [ErrChecksum] を返します。
+// クライアントは、 [Reader.Read] によって返されるデータを受け取るまで、仮のものとして扱うべきです。
+// データの終端を示す [io.EOF] を受け取るまで。
 type Reader struct {
 	Header
 	r            flate.Reader
@@ -51,37 +53,37 @@ type Reader struct {
 	multistream  bool
 }
 
-// NewReader creates a new Reader reading the given reader.
+// NewReader creates a new [Reader] reading the given reader.
 // If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.
 //
-// Readerを使用し終わった後は、呼び出し元の責任でCloseを呼び出す必要があります。
+// [Reader] を使用し終わった後は、呼び出し元の責任でCloseを呼び出す必要があります。
 //
-// 返されるReaderのHeaderフィールドは有効です。
+// 返される [Reader] のHeaderフィールドは有効です。
 func NewReader(r io.Reader) (*Reader, error)
 
-// ResetはReader zの状態を破棄し、NewReaderからの元の状態の結果と同等にしますが、代わりにrから読み込みます。
-// これにより、新しいReaderを割り当てる代わりに、Readerを再利用することができます。
+// Resetは [Reader] zの状態を破棄し、 [NewReader] からの元の状態の結果と同等にしますが、代わりにrから読み込みます。
+// これにより、新しい [Reader] を割り当てる代わりに、 [Reader] を再利用することができます。
 func (z *Reader) Reset(r io.Reader) error
 
 // Multistreamは、リーダーがマルチストリームファイルに対応しているかどうかを制御します。
 //
-// 有効にすると（デフォルトでは有効）、リーダーは入力が各々個別にgzipされたデータストリームのシーケンスであることを期待し、
+// 有効にすると（デフォルトでは有効）、 [Reader] は入力が各々個別にgzipされたデータストリームのシーケンスであることを期待し、
 // 各データストリームにはヘッダとトレーラーがあり、EOFで終了します。
 // このため、gzipで連結されたシーケンスの連結とgzip化は同等と見なされます。これはgzipリーダーの標準的な動作です。
 //
 // Multistream(false)を呼び出すと、この動作を無効にできます。
 // 動作を無効にすることは、個々のgzipデータストリームを識別するファイル形式を読み込む場合や、
 // gzipデータストリームと他のデータストリームを混在させるファイル形式を読み込む場合に便利です。
-// このモードでは、リーダーがデータストリームの終端に達した場合、Readはio.EOFを返します。
-// 基底のリーダーはio.ByteReaderを実装している必要があり、gzipストリームの直後に位置を残しておくようになります。
+// このモードでは、 [Reader] がデータストリームの終端に達した場合、 [Reader.Read] は [io.EOF] を返します。
+// 基底のリーダーは [io.ByteReader] を実装している必要があり、gzipストリームの直後に位置を残しておくようになります。
 // 次のストリームを開始するには、z.Reset（r）を呼び出した後にz.Multistream(false)を呼び出します。
-// 次のストリームが存在しない場合、z.Reset（r）はio.EOFを返します。
+// 次のストリームが存在しない場合、z.Reset（r）は [io.EOF] を返します。
 func (z *Reader) Multistream(ok bool)
 
-// Readは、基になるReaderから圧縮されていないバイトを読み込むためにio.Readerを実装しています。
+// Readは、基になるReaderから圧縮されていないバイトを読み込むために [io.Reader] を実装しています。
 func (z *Reader) Read(p []byte) (n int, err error)
 
-// CloseはReaderを閉じます。ただし、基本となるio.Readerは閉じません。
-// GZIPのチェックサムを検証するためには、io.EOFまで完全に消費する必要があります。
+// CloseはReaderを閉じます。ただし、基本となる [io.Reader] は閉じません。
+// GZIPのチェックサムを検証するためには、 [io.EOF] まで完全に消費する必要があります。
 func (z *Reader) Close() error

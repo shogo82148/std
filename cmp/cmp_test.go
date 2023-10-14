@@ -5,9 +5,9 @@
 package cmp_test
 
 import (
-	"cmp"
-	"fmt"
-	"slices"
+	"github.com/shogo82148/std/cmp"
+	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/slices"
 )
 
 func ExampleOr() {

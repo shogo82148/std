@@ -8,25 +8,21 @@ import (
 	"github.com/shogo82148/std/sync/atomic"
 )
 
-// A RWMutex is a reader/writer mutual exclusion lock.
-// The lock can be held by an arbitrary number of readers or a single writer.
-// The zero value for a RWMutex is an unlocked mutex.
+// RWMutexは、読み込み/書き込み相互排他的なロックです。
+// ロックは任意の数の読み込み者または単一の書き込み者によって保持することができます。
+// RWMutexのゼロ値はロックされていないミューテックスです。
 //
-// A RWMutex must not be copied after first use.
+// RWMutexは、最初の使用後にコピーしてはいけません。
 //
-// If any goroutine calls Lock while the lock is already held by
-// one or more readers, concurrent calls to RLock will block until
-// the writer has acquired (and released) the lock, to ensure that
-// the lock eventually becomes available to the writer.
-// Note that this prohibits recursive read-locking.
+// もしロックが既に1つ以上のリーダーによって保持されている場合、
+// いずれかのゴルーチンがLockを呼び出すと、RLockへの並行呼び出しがライターがロックを取得（および解放）するまでブロックされます。
+// これにより、ロックが最終的にライターに利用可能になることが保証されます。
+// なお、これにより再帰的な読み込みロックが禁止されます。
 //
-// In the terminology of the Go memory model,
-// the n'th call to Unlock “synchronizes before” the m'th call to Lock
-// for any n < m, just as for Mutex.
-// For any call to RLock, there exists an n such that
-// the n'th call to Unlock “synchronizes before” that call to RLock,
-// and the corresponding call to RUnlock “synchronizes before”
-// the n+1'th call to Lock.
+// Goのメモリモデルの用語では、Unlockのn回目の呼び出しは、
+// 任意のn < mに対して、m回目のLockの呼び出しの前に同期化します（Mutexと同様）。
+// また、RLockの呼び出しに対して、n回目のUnlockの呼び出しがあるために
+// n+1回目のLockの呼び出しの前に同期化されます。
 type RWMutex struct {
 	w           Mutex
 	writerSem   uint32
@@ -35,46 +31,39 @@ type RWMutex struct {
 	readerWait  atomic.Int32
 }
 
-// RLock locks rw for reading.
+// RLockはrwの読み取りのためにロックします。
 //
-// It should not be used for recursive read locking; a blocked Lock
-// call excludes new readers from acquiring the lock. See the
-// documentation on the RWMutex type.
+// 再帰的な読み取りのために使用すべきではありません。ブロックされたLock呼び出しは、
+// 新しい読み取り者がロックを取得することを排除します。RWMutex型のドキュメントを参照してください。
 func (rw *RWMutex) RLock()
 
-// TryRLock tries to lock rw for reading and reports whether it succeeded.
+// TryRLockはrwを読み取りロックしようとし、成功したかどうかを報告します。
 //
-// Note that while correct uses of TryRLock do exist, they are rare,
-// and use of TryRLock is often a sign of a deeper problem
-// in a particular use of mutexes.
+// TryRLockの正しい使用方法は存在しますが、それらは稀であり、
+// TryRLockの使用はしばしばミューテックスの特定の使用法におけるより深刻な問題の兆候です。
 func (rw *RWMutex) TryRLock() bool
 
-// RUnlock undoes a single RLock call;
-// it does not affect other simultaneous readers.
-// It is a run-time error if rw is not locked for reading
-// on entry to RUnlock.
+// RUnlockは1回のRLock呼び出しを元に戻します。
+// 他の同時読み取りプロセスには影響しません。
+// RUnlockが呼び出される時にrwが読み取りロックされていない場合、ランタイムエラーが発生します。
 func (rw *RWMutex) RUnlock()
 
-// Lock locks rw for writing.
-// If the lock is already locked for reading or writing,
-// Lock blocks until the lock is available.
+// Lockはrwを書き込み用にロックします。
+// もし既に読み込みや書き込みのためにロックされている場合、
+// Lockは利用可能になるまでブロックします。
 func (rw *RWMutex) Lock()
 
-// TryLock tries to lock rw for writing and reports whether it succeeded.
+// TryLockは、rwを書き込み用にロックしようとし、成功したかどうかを報告します。
 //
-// Note that while correct uses of TryLock do exist, they are rare,
-// and use of TryLock is often a sign of a deeper problem
-// in a particular use of mutexes.
+// TryLockの正しい使用法は存在しますが、それらはまれであり、
+// mutexの特定の使用法におけるより深刻な問題の兆候であることが多いため、
+// TryLockの使用は避けるべきです。
 func (rw *RWMutex) TryLock() bool
 
-// Unlock unlocks rw for writing. It is a run-time error if rw is
-// not locked for writing on entry to Unlock.
+// Unlockは書き込みのためにrwをアンロックします。Unlockに入る前にrwが書き込み用にロックされていない場合、ランタイムエラーとなります。
 //
-// As with Mutexes, a locked RWMutex is not associated with a particular
-// goroutine. One goroutine may RLock (Lock) a RWMutex and then
-// arrange for another goroutine to RUnlock (Unlock) it.
+// Mutexと同様に、ロックされたRWMutexは特定のゴルーチンに関連付けられていません。あるゴルーチンがRWMutexをRLock（Lock）し、別のゴルーチンがRUnlock（Unlock）するようにすることができます。
 func (rw *RWMutex) Unlock()
 
-// RLocker returns a Locker interface that implements
-// the Lock and Unlock methods by calling rw.RLock and rw.RUnlock.
+// RLockerはLockerインターフェースを返します。このインターフェースは、rw.RLockとrw.RUnlockを呼び出してLockとUnlockメソッドを実装します。
 func (rw *RWMutex) RLocker() Locker

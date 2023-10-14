@@ -10,24 +10,22 @@ import (
 )
 
 func Example() {
-	// The zero Hash value is valid and ready to use; setting an
-	// initial seed is not necessary.
+	// ゼロのハッシュ値は有効で使用準備が整っています。初期シードの設定は必要ありません。
 	var h maphash.Hash
 
-	// Add a string to the hash, and print the current hash value.
+	// 文字列をハッシュに追加し、現在のハッシュ値を表示します。
 	h.WriteString("hello, ")
 	fmt.Printf("%#x\n", h.Sum64())
 
-	// Append additional data (in the form of a byte array).
+	// 追加データをバイト配列の形式で追加します。
 	h.Write([]byte{'w', 'o', 'r', 'l', 'd'})
 	fmt.Printf("%#x\n", h.Sum64())
 
-	// Reset discards all data previously added to the Hash, without
-	// changing its seed.
+	// Resetは、以前にハッシュに追加されたすべてのデータを破棄しますが、
+	// シードは変更しません。
 	h.Reset()
 
-	// Use SetSeed to create a new Hash h2 which will behave
-	// identically to h.
+	// 新しいハッシュh2を作成するために、SetSeedを使用し、hと完全に同じ動作をします。
 	var h2 maphash.Hash
 	h2.SetSeed(h.Seed())
 

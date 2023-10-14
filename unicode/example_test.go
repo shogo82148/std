@@ -9,11 +9,10 @@ import (
 	"github.com/shogo82148/std/unicode"
 )
 
-// Functions starting with "Is" can be used to inspect which table of range a
-// rune belongs to. Note that runes may fit into more than one range.
+// 「Is」で始まる関数は、runeがどの範囲のテーブルに属しているかを調べるために使用できます。ただし、runesは複数の範囲に当てはまる場合があることに注意してください。
 func Example_is() {
 
-	// constant with mixed type runes
+	// 異なる型のルーンを持つ定数
 	const mixed = "\b5Ὂg̀9! ℃ᾭG"
 	for _, c := range mixed {
 		fmt.Printf("For %q:\n", c)
@@ -117,7 +116,7 @@ func ExampleSimpleFold() {
 	fmt.Printf("%#U\n", unicode.SimpleFold('A'))      // 'a'
 	fmt.Printf("%#U\n", unicode.SimpleFold('a'))      // 'A'
 	fmt.Printf("%#U\n", unicode.SimpleFold('K'))      // 'k'
-	fmt.Printf("%#U\n", unicode.SimpleFold('k'))      // '\u212A' (Kelvin symbol, K)
+	fmt.Printf("%#U\n", unicode.SimpleFold('k'))      // '\u212A' (ケルビン記号、K)
 	fmt.Printf("%#U\n", unicode.SimpleFold('\u212A')) // 'K'
 	fmt.Printf("%#U\n", unicode.SimpleFold('1'))      // '1'
 
