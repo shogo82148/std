@@ -25,40 +25,22 @@ type FS interface {
 // パス名には、"."または".."または空の文字列を含めることはできませんが、ルートディレクトリが "."という特殊なケースを除いてはです。
 // パスはスラッシュで始まることや終わることはできません: "/x"や"x/"は無効です。
 //
-<<<<<<< HEAD
-// Note that paths are slash-separated on all systems, even Windows.
-// Paths containing other characters such as backslash and colon
-// are accepted as valid, but those characters must never be
-// interpreted by an [FS] implementation as path element separators.
-func ValidPath(name string) bool
-
-// A File provides access to a single file.
-// The File interface is the minimum implementation required of the file.
-// Directory files should also implement [ReadDirFile].
-// A file may implement [io.ReaderAt] or [io.Seeker] as optimizations.
-=======
 // なお、パスは全てのシステムでスラッシュで区切られます（Windowsでも）。
-// バックスラッシュやコロンなどの他の文字を含むパスも有効ですが、これらの文字は実装によっては絶対にパス要素の区切りとして解釈されるべきではありません。
+// バックスラッシュやコロンなどの他の文字を含むパスも有効ですが、これらの文字は [FS] の実装によっては絶対にパス要素の区切りとして解釈されるべきではありません。
 func ValidPath(name string) bool
 
 // Fileは単一のファイルへのアクセスを提供します。
 // Fileインターフェースはファイルに必要な最小限の実装です。
-// ディレクトリファイルはReadDirFileも実装する必要があります。
-// ファイルは最適化としてio.ReaderAtまたはio.Seekerを実装する場合があります。
->>>>>>> release-branch.go1.21
+// ディレクトリファイルは [ReadDirFile] も実装する必要があります。
+// ファイルは最適化として [io.ReaderAt] または [io.Seeker] を実装する場合があります。
 type File interface {
 	Stat() (FileInfo, error)
 	Read([]byte) (int, error)
 	Close() error
 }
 
-<<<<<<< HEAD
-// A DirEntry is an entry read from a directory
-// (using the ReadDir function or a [ReadDirFile]'s ReadDir method).
-=======
 // DirEntryはディレクトリから読み取られたエントリです
-// (ReadDir関数やReadDirFileのReadDirメソッドを使用して)。
->>>>>>> release-branch.go1.21
+// (ReadDir関数や [ReadDirFile] のReadDirメソッドを使用して)。
 type DirEntry interface {
 	Name() string
 
@@ -78,15 +60,9 @@ type ReadDirFile interface {
 	ReadDir(n int) ([]DirEntry, error)
 }
 
-<<<<<<< HEAD
-// Generic file system errors.
-// Errors returned by file systems can be tested against these errors
-// using [errors.Is].
-=======
 // 汎用ファイルシステムのエラー。
 // ファイルシステムから返されるエラーは、これらのエラーと比較してテストすることができます
-// errors.Is を使用して。
->>>>>>> release-branch.go1.21
+// [errors.Is] を使用して。
 var (
 	ErrInvalid    = errInvalid()
 	ErrPermission = errPermission()
@@ -105,33 +81,18 @@ type FileInfo interface {
 	Sys() any
 }
 
-<<<<<<< HEAD
-// A FileMode represents a file's mode and permission bits.
-// The bits have the same definition on all systems, so that
-// information about files can be moved from one system
-// to another portably. Not all bits apply to all systems.
-// The only required bit is [ModeDir] for directories.
-type FileMode uint32
-
-// The defined file mode bits are the most significant bits of the [FileMode].
-// The nine least-significant bits are the standard Unix rwxrwxrwx permissions.
-// The values of these bits should be considered part of the public API and
-// may be used in wire protocols or disk representations: they must not be
-// changed, although new bits might be added.
-=======
 // FileModeはファイルのモードとパーミッションビットを表します。
 // ビットの定義はすべてのシステムで同じであるため、
 // ファイルに関する情報をポータブルに他のシステムに移動することができます。
 // すべてのビットがすべてのシステムに適用されるわけではありません。
-// ディレクトリに対してはModeDirのみが必須です。
+// ディレクトリに対しては [ModeDir] のみが必須です。
 type FileMode uint32
 
-// 定義されたファイルモードビットは、FileModeの最も重要なビットです。
+// 定義されたファイルモードビットは、 [FileMode] の最も重要なビットです。
 // 9つの最も下位のビットは、標準のUnixのrwxrwxrwx権限です。
 // これらのビットの値は、パブリックAPIの一部と見なされ、
 // ワイヤープロトコルやディスク表現で使用される可能性があります。
 // これらのビットは変更しないでくださいが、新しいビットが追加されることはあります。
->>>>>>> release-branch.go1.21
 const (
 
 	// 単一の文字は、Stringメソッドのフォーマットで使用される省略形です。
