@@ -11,15 +11,9 @@ package fs
 // -rw-r--r-- 100 1970-01-01 12:00:00 hello.go
 func FormatFileInfo(info FileInfo) string
 
-<<<<<<< HEAD
-// FormatDirEntry returns a formatted version of dir for human readability.
-// Implementations of [DirEntry] can call this from a String method.
-// The outputs for a directory named subdir and a file named hello.go are:
-=======
 // FormatDirEntry は dir の人間が読みやすい形式のフォーマット済みバージョンを返します。
-// DirEntry の実装は、これを String メソッドから呼び出すことができます。
+// [DirEntry] の実装は、これを String メソッドから呼び出すことができます。
 // 名前が subdir のディレクトリと名前が hello.go のファイルの出力は次の通りです：
->>>>>>> release-branch.go1.21
 //
 // d subdir/
 // - hello.go
