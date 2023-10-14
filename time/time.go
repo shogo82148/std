@@ -33,21 +33,14 @@
 //
 // Goの==演算子は、時間の瞬間だけでなく、位置情報とモノトニッククロックの読み取り結果も比較します。Time型の等値テストについては、Time型のドキュメントを参照してください。
 //
-<<<<<<< HEAD
-// For debugging, the result of t.String does include the monotonic
-// clock reading if present. If t != u because of different monotonic clock readings,
-// that difference will be visible when printing t.String() and u.String().
+// デバッグ用に、t.Stringの結果には、存在する場合はモノトニッククロックの読み取りが含まれます。
+// t != uの場合、異なるモノトニッククロックの読み取りによって、t.String()とu.String()の出力に差異が見られます。
 //
-// # Timer Resolution
+// # タイマーの解像度
 //
-// Timer resolution varies depending on the Go runtime, the operating system
-// and the underlying hardware.
-// On Unix, the resolution is approximately 1ms.
-// On Windows, the default resolution is approximately 16ms, but
-// a higher resolution may be requested using [golang.org/x/sys/windows.TimeBeginPeriod].
-=======
-// デバッグのため、t.Stringの結果にはモノトニッククロックの読み取り結果が含まれます（存在する場合）。t != uが異なるモノトニッククロックの読み取り結果によるものであれば、t.String()とu.String()を表示した時にその差が見えます。
->>>>>>> release-branch.go1.21
+// タイマーの解像度は、Goランタイム、オペレーティングシステム、および基礎となるハードウェアによって異なります。
+// Unixでは、解像度は約1msです。
+// Windowsでは、デフォルトの解像度は約16msですが、 [golang.org/x/sys/windows.TimeBeginPeriod] を使用してより高い解像度を要求することができます。
 package time
 
 // Timeは納秒単位の精度で時刻を表します。
@@ -65,16 +58,8 @@ package time
 // Time型のゼロ値は、UTCでの1年1月1日00:00:00.000000000です。
 // この時刻は実際にはほとんど使われないため、IsZeroメソッドは明示的に初期化されていない時刻を検出するための簡単な方法です。
 //
-<<<<<<< HEAD
-// Each time has an associated Location. The methods Local, UTC, and In return a
-// Time with a specific Location. Changing the Location of a Time value with
-// these methods does not change the actual instant it represents, only the time
-// zone in which to interpret it.
-=======
-// 各TimeにはLocationが関連付けられており、Format、Hour、Yearメソッドなど、時刻の表示形式の計算時に参照されます。
-// メソッドLocal、UTC、Inは特定のLocationを持ったTimeを返します。
-// このようにして場所を変更すると、表示のみが変わり、指定された時刻の瞬間は変わらず、先の段落で説明される計算に影響を与えません。
->>>>>>> release-branch.go1.21
+// 各時刻には関連するLocationがあります。Local、UTC、およびInメソッドは、特定のLocationを持つTimeを返します。
+// これらのメソッドを使用してTime値のLocationを変更しても、それが表す実際の瞬間は変更されず、解釈するタイムゾーンのみが変更されます。
 //
 // GobEncode、MarshalBinary、MarshalJSON、MarshalTextメソッドによって保存されるTime値の表現には、Time.Locationのオフセットが格納されますが、
 // 場所の名前は格納されません。そのため、夏時間に関する情報が失われます。
@@ -280,24 +265,15 @@ func Until(t Time) Duration
 // 例えば、2011年1月1日にAddDate(-1, 2, 3)を適用すると、
 // 2010年3月4日が返されます。
 //
-<<<<<<< HEAD
-// Note that dates are fundamentally coupled to timezones, and calendrical
-// periods like days don't have fixed durations. AddDate uses the Location of
-// the Time value to determine these durations. That means that the same
-// AddDate arguments can produce a different shift in absolute time depending on
-// the base Time value and its Location. For example, AddDate(0, 0, 1) applied
-// to 12:00 on March 27 always returns 12:00 on March 28. At some locations and
-// in some years this is a 24 hour shift. In others it's a 23 hour shift due to
-// daylight savings time transitions.
+// 日付は基本的にタイムゾーンに結び付けられており、日などの暦期間には固定された期間がありません。
+// AddDateは、Time値のLocationを使用してこれらの期間を決定します。
+// つまり、同じAddDate引数でも、基本となるTime値とそのLocationに応じて、絶対時間のシフトが異なる場合があります。
+// たとえば、3月27日の12:00に適用されるAddDate(0、0、1)は常に3月28日の12:00を返します。
+// 一部の場所や年では、これは24時間のシフトです。他の場所や年では、夏時間の移行により23時間のシフトです。
 //
-// AddDate normalizes its result in the same way that Date does,
-// so, for example, adding one month to October 31 yields
-// December 1, the normalized form for November 31.
-=======
 // AddDateはDateと同じように結果を正規化します。
 // つまり、10月31日に1ヶ月を追加すると11月31日となり、
 // これは正規化されたフォームである12月1日になります。
->>>>>>> release-branch.go1.21
 func (t Time) AddDate(years int, months int, days int) Time
 
 // 現在のローカル時間を返します。
