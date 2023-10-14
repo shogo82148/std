@@ -8,7 +8,6 @@
 
 package types
 
-<<<<<<< HEAD
 // SelectionKind describes the kind of a selector expression x.f
 // (excluding qualified identifiers).
 //
@@ -44,10 +43,6 @@ package types
 // Consequently, any implicit field selections and * operations
 // inserted for "pointerness" are not evaluated until the function is
 // called, so a T.f or (*T).f expression never panics.
-=======
-// SelectionKindは、セレクタ式x.fの種類を記述します
-//（修飾子を含まない）。
->>>>>>> release-branch.go1.21
 type SelectionKind int
 
 const (
@@ -104,7 +99,6 @@ func (s *Selection) Type() Type
 // xからfに移動するために（xの型から）暗黙的にトラバースされる埋め込みの深さ0から始まります。
 func (s *Selection) Index() []int
 
-<<<<<<< HEAD
 // Indirect reports whether any pointer indirection was required to get from
 // x to f in x.f.
 //
@@ -112,9 +106,6 @@ func (s *Selection) Index() []int
 // MethodVal selection in which the receiver argument and parameter
 // both have type *T so there is no indirection.
 // Unfortunately, a fix is too risky.
-=======
-// Indirectは、xからfに移動する際にポインターの間接参照が必要だったかどうかを報告します。
->>>>>>> release-branch.go1.21
 func (s *Selection) Indirect() bool
 
 func (s *Selection) String() string
