@@ -12,7 +12,7 @@ GOARCH=amd64 go tool cgo -cdefs defs_netbsd.go defs_netbsd_amd64.go >defs_netbsd
 
 package runtime
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 const (
 	REG_RDI    = C._REG_RDI

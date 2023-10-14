@@ -4,7 +4,7 @@
 
 package gover
 
-import "github.com/shogo82148/std/golang.org/x/mod/modfile"
+import "golang.org/x/mod/modfile"
 
 const (
 	// narrowAllVersion is the Go version at which the

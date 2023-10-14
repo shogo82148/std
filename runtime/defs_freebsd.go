@@ -14,7 +14,7 @@ GOARCH=arm go tool cgo -cdefs defs_freebsd.go >defs_freebsd_arm.h
 
 package runtime
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 const (
 	EINTR     = C.EINTR
