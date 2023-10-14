@@ -7,6 +7,7 @@ package net
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/net/netip"
+	"golang.org/x/sync/singleflight"
 )
 
 // DefaultResolverは、パッケージレベルのLookup関数と指定されていないResolverを持つDialersによって使用されるリゾルバです。
@@ -70,13 +71,9 @@ var _ context.Context = (*onlyValuesCtx)(nil)
 // Resolver.LookupPortを使用してください。
 func LookupPort(network, service string) (port int, err error)
 
-<<<<<<< HEAD
-// LookupPort looks up the port for the given network and service.
-//
-// The network must be one of "tcp", "tcp4", "tcp6", "udp", "udp4", "udp6" or "ip".
-=======
 // LookupPortは、指定されたネットワークとサービスのポートを検索します。
->>>>>>> release-branch.go1.21
+//
+// networkは、"tcp"、"tcp4"、"tcp6"、"udp"、"udp4"、"udp6"、または"ip"のいずれかでなければなりません。
 func (r *Resolver) LookupPort(ctx context.Context, network, service string) (port int, err error)
 
 // LookupCNAMEは指定されたホストの正式な名前（カノニカル名）を返します。
