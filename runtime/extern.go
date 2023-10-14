@@ -191,44 +191,36 @@ AIXではuid/gidが有効なuid/gidと一致するかどうかをチェックし
 */
 package runtime
 
-// Caller reports file and line number information about function invocations on
-// the calling goroutine's stack. The argument skip is the number of stack frames
-// to ascend, with 0 identifying the caller of Caller.  (For historical reasons the
-// meaning of skip differs between Caller and Callers.) The return values report the
-// program counter, file name, and line number within the file of the corresponding
-// call. The boolean ok is false if it was not possible to recover the information.
+// Callerは、呼び出し元のゴルーチンのスタック上での関数呼び出しに関するファイルと行番号情報を報告します。
+// 引数skipは、上昇するスタックフレームの数であり、0はCallerの呼び出し元を識別します。
+// （歴史的な理由から、skipの意味はCallerとCallersで異なります。）
+// 戻り値は、対応する呼び出しのプログラムカウンタ、ファイル名、およびファイル内の行番号を報告します。
+// 情報を回復できなかった場合、ブール値okはfalseです。
 func Caller(skip int) (pc uintptr, file string, line int, ok bool)
 
-// Callers fills the slice pc with the return program counters of function invocations
-// on the calling goroutine's stack. The argument skip is the number of stack frames
-// to skip before recording in pc, with 0 identifying the frame for Callers itself and
-// 1 identifying the caller of Callers.
-// It returns the number of entries written to pc.
+// Callersは、呼び出し元のゴルーチンのスタック上での関数呼び出しの戻りプログラムカウンタを、スライスpcで埋めます。
+// 引数skipは、pcに記録する前にスキップするスタックフレームの数であり、0はCallers自体のフレームを識別し、1はCallersの呼び出し元を識別します。
+// pcに書き込まれたエントリ数を返します。
 //
-// To translate these PCs into symbolic information such as function
-// names and line numbers, use CallersFrames. CallersFrames accounts
-// for inlined functions and adjusts the return program counters into
-// call program counters. Iterating over the returned slice of PCs
-// directly is discouraged, as is using FuncForPC on any of the
-// returned PCs, since these cannot account for inlining or return
-// program counter adjustment.
+// これらのPCを関数名や行番号などのシンボル情報に変換するには、CallersFramesを使用します。
+// CallersFramesはインライン関数を考慮し、戻りプログラムカウンタを呼び出しプログラムカウンタに調整します。
+// 直接PCのスライスを反復処理することは推奨されていません。また、返されたPCのいずれかに対してFuncForPCを使用することも推奨されていません。
+// これらはインライン化や戻りプログラムカウンタの調整を考慮できないためです。
 func Callers(skip int, pc []uintptr) int
 
-// GOROOT returns the root of the Go tree. It uses the
-// GOROOT environment variable, if set at process start,
-// or else the root used during the Go build.
+// GOROOTは、Goツリーのルートを返します。プロセス開始時に設定されている場合はGOROOT環境変数を使用し、
+// それ以外の場合はGoビルド中に使用されたルートを使用します。
 func GOROOT() string
 
-// Version returns the Go tree's version string.
-// It is either the commit hash and date at the time of the build or,
-// when possible, a release tag like "go1.3".
+// Versionは、Goツリーのバージョン文字列を返します。
+// ビルド時のコミットハッシュと日付、または可能な場合は「go1.3」のようなリリースタグです。
 func Version() string
 
-// GOOS is the running program's operating system target:
-// one of darwin, freebsd, linux, and so on.
-// To view possible combinations of GOOS and GOARCH, run "go tool dist list".
+// GOOSは実行中のプログラムのオペレーティングシステムターゲットです。
+// darwin、freebsd、linuxなどのいずれかです。
+// GOOSとGOARCHの可能な組み合わせを表示するには、「go tool dist list」と入力してください。
 const GOOS string = goos.GOOS
 
-// GOARCH is the running program's architecture target:
-// one of 386, amd64, arm, s390x, and so on.
+// GOARCHは、実行中のプログラムのアーキテクチャターゲットです。
+// 386、amd64、arm、s390xなどのいずれかです。
 const GOARCH string = goarch.GOARCH
