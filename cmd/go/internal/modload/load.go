@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/cmd/go/internal/gover"
 	"github.com/shogo82148/std/cmd/go/internal/search"
 
-	"github.com/shogo82148/std/golang.org/x/mod/module"
+	"golang.org/x/mod/module"
 )
 
 // PackageOpts control the behavior of the LoadPackages function.

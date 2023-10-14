@@ -6,7 +6,7 @@
 
 package boring
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 type PrivateKeyECDSA struct {
 	key *C.GO_EC_KEY
