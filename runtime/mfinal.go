@@ -94,28 +94,26 @@ package runtime
 // to avoid read-write races.
 func SetFinalizer(obj any, finalizer any)
 
-// KeepAlive marks its argument as currently reachable.
-// This ensures that the object is not freed, and its finalizer is not run,
-// before the point in the program where KeepAlive is called.
+// KeepAliveは、引数を現在到達可能なものとしてマークします。
+// これにより、オブジェクトが解放されず、そのファイナライザが実行されないようになります。
+// KeepAliveが呼び出されたプログラムのポイントより前に。
 //
-// A very simplified example showing where KeepAlive is required:
+// KeepAliveが必要な場所を示す非常に簡単な例：
 //
 //	type File struct { d int }
 //	d, err := syscall.Open("/file/path", syscall.O_RDONLY, 0)
-//	// ... do something if err != nil ...
+//	// ... errがnilでない場合は何かを実行します ...
 //	p := &File{d}
 //	runtime.SetFinalizer(p, func(p *File) { syscall.Close(p.d) })
 //	var buf [10]byte
 //	n, err := syscall.Read(p.d, buf[:])
-//	// Ensure p is not finalized until Read returns.
+//	// Readが返るまで、pがファイナライズされないようにします。
 //	runtime.KeepAlive(p)
-//	// No more uses of p after this point.
+//	// このポイント以降、pを使用しないでください。
 //
-// Without the KeepAlive call, the finalizer could run at the start of
-// syscall.Read, closing the file descriptor before syscall.Read makes
-// the actual system call.
+// KeepAlive呼び出しがない場合、ファイナライザは syscall.Read の開始時に実行され、
+// 実際のシステムコールを行う前にファイルディスクリプタを閉じます。
 //
-// Note: KeepAlive should only be used to prevent finalizers from
-// running prematurely. In particular, when used with unsafe.Pointer,
-// the rules for valid uses of unsafe.Pointer still apply.
+// 注意：KeepAliveは、ファイナライザが予期せず実行されるのを防止するためにのみ使用する必要があります。
+// 特に、unsafe.Pointerと一緒に使用する場合は、unsafe.Pointerの有効な使用方法のルールが適用されます。
 func KeepAlive(x any)
