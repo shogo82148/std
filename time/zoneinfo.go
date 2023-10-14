@@ -4,20 +4,11 @@
 
 package time
 
-<<<<<<< HEAD
-// A Location maps time instants to the zone in use at that time.
-// Typically, the Location represents the collection of time offsets
-// in use in a geographical area. For many Locations the time offset varies
-// depending on whether daylight savings time is in use at the time instant.
+// Locationは、時間の瞬間をその時点で使用されているタイムゾーンにマップします。
+// 通常、Locationは、地理的な地域で使用される時間オフセットのコレクションを表します。
+// 多くのLocationでは、時間オフセットは、その時点で夏時間が使用されているかどうかによって異なります。
 //
-// Location is used to provide a time zone in a printed Time value and for
-// calculations involving intervals that may cross daylight savings time
-// boundaries.
-=======
-// Locationは時間インスタンスとその時点で使用されているタイムゾーンをマッピングします。
-// 通常、Locationは地理的な範囲で使用されている時間オフセットの集合を表します。
-// 多くの場所では、夏時間が使用されているかどうかによって時間オフセットが異なります。
->>>>>>> release-branch.go1.21
+// Locationは、印刷されたTime値でタイムゾーンを提供し、夏時間の境界をまたぐ可能性のある間隔に関する計算に使用されます。
 type Location struct {
 	name string
 	zone []zone
