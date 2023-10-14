@@ -66,7 +66,7 @@
 //
 //	func ShouldEnable(file string, line int) bool {
 //		if m == nil {
-//			return false
+//			return true
 //		}
 //		h := bisect.Hash(file, line)
 //		if m.ShouldPrint(h) {
@@ -83,12 +83,12 @@
 //
 //	func ShouldEnable(file string, line int) bool {
 //		if m == nil {
-//			return false
+//			return true
 //		}
 //		h := bisect.Hash(file, line)
 //		if m.ShouldPrint(h) {
 //			if m.MarkerOnly() {
-//				bisect.PrintMarker(os.Stderr)
+//				bisect.PrintMarker(os.Stderr, h)
 //			} else {
 //				fmt.Fprintf(os.Stderr, "%v %s:%d\n", bisect.Marker(h), file, line)
 //			}

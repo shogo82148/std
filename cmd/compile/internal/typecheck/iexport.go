@@ -234,13 +234,6 @@
 
 package typecheck
 
-// TparamExportName creates a unique name for type param in a method or a generic
-// type, using the specified unique prefix and the index of the type param. The index
-// is only used if the type param is blank, in which case the blank is replace by
-// "$<index>". A unique name is needed for later substitution in the compiler and
-// export/import that keeps blank type params associated with the correct constraint.
-func TparamExportName(prefix string, name string, index int) string
-
 // TparamName returns the real name of a type parameter, after stripping its
 // qualifying prefix and reverting blank-name encoding. See TparamExportName
 // for details.

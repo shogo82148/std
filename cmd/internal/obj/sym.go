@@ -63,7 +63,11 @@ func (ctxt *Link) Float32Sym(f float32) *LSym
 
 func (ctxt *Link) Float64Sym(f float64) *LSym
 
+func (ctxt *Link) Int32Sym(i int64) *LSym
+
 func (ctxt *Link) Int64Sym(i int64) *LSym
+
+func (ctxt *Link) Int128Sym(hi, lo int64) *LSym
 
 // GCLocalsSym generates a content-addressable sym containing data.
 func (ctxt *Link) GCLocalsSym(data []byte) *LSym

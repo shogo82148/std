@@ -5,8 +5,8 @@
 package base
 
 import (
+	"github.com/shogo82148/std/cmd/internal/cov/covcmd"
 	"github.com/shogo82148/std/flag"
-	"github.com/shogo82148/std/internal/coverage"
 )
 
 // Flag holds the parsed command-line flags.
@@ -79,6 +79,7 @@ type CmdFlags struct {
 	DwarfLocationLists *bool        "help:\"add location lists to DWARF in optimized mode\""
 	Dynlink            *bool        "help:\"support references to Go symbols defined in other shared libraries\""
 	EmbedCfg           func(string) "help:\"read go:embed configuration from `file`\""
+	Env                func(string) "help:\"add `definition` of the form key=value to environment\""
 	GenDwarfInl        int          "help:\"generate DWARF inline info records\""
 	GoVersion          string       "help:\"required version of the runtime\""
 	ImportCfg          func(string) "help:\"read import configuration from `file`\""
@@ -116,7 +117,7 @@ type CmdFlags struct {
 		ImportDirs   []string
 		ImportMap    map[string]string
 		PackageFile  map[string]string
-		CoverageInfo *coverage.CoverFixupConfig
+		CoverageInfo *covcmd.CoverFixupConfig
 		SpectreIndex bool
 
 		Instrumenting bool

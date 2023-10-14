@@ -107,13 +107,6 @@ func (e Edge) Index() int
 func (e Edge) String() string
 
 // BlockKind is the kind of SSA block.
-//
-//	  kind          controls        successors
-//	------------------------------------------
-//	  Exit      [return mem]                []
-//	 Plain                []            [next]
-//	    If   [boolean Value]      [then, else]
-//	 Defer             [mem]  [nopanic, panic]  (control opcode should be OpStaticCall to runtime.deferproc)
 type BlockKind int16
 
 // short form print
@@ -156,8 +149,7 @@ func (b *Block) CopyControls(from *Block)
 // predecessors and values are left unmodified.
 func (b *Block) Reset(kind BlockKind)
 
-// AddEdgeTo adds an edge from block b to block c. Used during building of the
-// SSA graph; do not use on an already-completed SSA graph.
+// AddEdgeTo adds an edge from block b to block c.
 func (b *Block) AddEdgeTo(c *Block)
 
 // LackingPos indicates whether b is a block whose position should be inherited

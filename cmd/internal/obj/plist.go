@@ -10,14 +10,14 @@ import (
 
 type Plist struct {
 	Firstpc *Prog
-	Curfn   interface{}
+	Curfn   Func
 }
 
 // ProgAlloc is a function that allocates Progs.
 // It is used to provide access to cached/bulk-allocated Progs to the assemblers.
 type ProgAlloc func() *Prog
 
-func Flushplist(ctxt *Link, plist *Plist, newprog ProgAlloc, myimportpath string)
+func Flushplist(ctxt *Link, plist *Plist, newprog ProgAlloc)
 
 func (ctxt *Link) InitTextSym(s *LSym, flag int, start src.XPos)
 

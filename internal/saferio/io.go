@@ -27,15 +27,13 @@ func ReadData(r io.Reader, n uint64) ([]byte, error)
 // by allocating all n bytes in cases where n is incorrect.
 func ReadDataAt(r io.ReaderAt, n uint64, off int64) ([]byte, error)
 
-// SliceCap returns the capacity to use when allocating a slice.
+// SliceCapWithSize returns the capacity to use when allocating a slice.
 // After the slice is allocated with the capacity, it should be
 // built using append. This will avoid allocating too much memory
 // if the capacity is large and incorrect.
 //
 // A negative result means that the value is always too big.
-//
-// The element type is described by passing a pointer to a value of that type.
-// This would ideally use generics, but this code is built with
-// the bootstrap compiler which need not support generics.
-// We use a pointer so that we can handle slices of interface type.
-func SliceCap(v any, c uint64) int
+func SliceCapWithSize(size, c uint64) int
+
+// SliceCap is like SliceCapWithSize but using generics.
+func SliceCap[E any](c uint64) int

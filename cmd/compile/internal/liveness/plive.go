@@ -21,15 +21,23 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/ssa"
 )
 
-// Map maps from *ssa.Value to LivenessIndex.
+// Map maps from *ssa.Value to StackMapIndex.
+// Also keeps track of unsafe ssa.Values and ssa.Blocks.
+// (unsafe = can't be interrupted during GC.)
 type Map struct {
-	Vals map[ssa.ID]objw.LivenessIndex
+	Vals         map[ssa.ID]objw.StackMapIndex
+	UnsafeVals   map[ssa.ID]bool
+	UnsafeBlocks map[ssa.ID]bool
 	// The set of live, pointer-containing variables at the DeferReturn
 	// call (only set when open-coded defers are used).
-	DeferReturn objw.LivenessIndex
+	DeferReturn objw.StackMapIndex
 }
 
-func (m Map) Get(v *ssa.Value) objw.LivenessIndex
+func (m Map) Get(v *ssa.Value) objw.StackMapIndex
+
+func (m Map) GetUnsafe(v *ssa.Value) bool
+
+func (m Map) GetUnsafeBlock(b *ssa.Block) bool
 
 // IsUnsafe indicates that all points in this function are
 // unsafe-points.

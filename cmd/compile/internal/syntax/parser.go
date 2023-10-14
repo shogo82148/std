@@ -3,3 +3,9 @@
 // license that can be found in the LICENSE file.
 
 package syntax
+
+// Unparen returns e with any enclosing parentheses stripped.
+func Unparen(x Expr) Expr
+
+// UnpackListExpr unpacks a *ListExpr into a []Expr.
+func UnpackListExpr(x Expr) []Expr

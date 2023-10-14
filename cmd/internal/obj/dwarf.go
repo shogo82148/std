@@ -20,17 +20,15 @@ const (
 	OPCODE_BASE = 11
 )
 
-func (s *LSym) Length(dwarfContext interface{}) int64
-
 // DwarfIntConst creates a link symbol for an integer constant with the
 // given name, type and value.
-func (ctxt *Link) DwarfIntConst(myimportpath, name, typename string, val int64)
+func (ctxt *Link) DwarfIntConst(name, typename string, val int64)
 
 // DwarfGlobal creates a link symbol containing a DWARF entry for
 // a global variable.
-func (ctxt *Link) DwarfGlobal(myimportpath, typename string, varSym *LSym)
+func (ctxt *Link) DwarfGlobal(typename string, varSym *LSym)
 
-func (ctxt *Link) DwarfAbstractFunc(curfn interface{}, s *LSym, myimportpath string)
+func (ctxt *Link) DwarfAbstractFunc(curfn Func, s *LSym)
 
 // This table is designed to aid in the creation of references between
 // DWARF subprogram DIEs.
@@ -76,9 +74,9 @@ type DwarfFixupTable struct {
 
 func NewDwarfFixupTable(ctxt *Link) *DwarfFixupTable
 
-func (ft *DwarfFixupTable) GetPrecursorFunc(s *LSym) interface{}
+func (ft *DwarfFixupTable) GetPrecursorFunc(s *LSym) Func
 
-func (ft *DwarfFixupTable) SetPrecursorFunc(s *LSym, fn interface{})
+func (ft *DwarfFixupTable) SetPrecursorFunc(s *LSym, fn Func)
 
 // Make a note of a child DIE reference: relocation 'ridx' within symbol 's'
 // is targeting child 'c' of DIE with symbol 'tgt'.

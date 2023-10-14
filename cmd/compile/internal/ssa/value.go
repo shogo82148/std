@@ -150,3 +150,6 @@ func (v *Value) LackingPos() bool
 // AutoVar returns a *Name and int64 representing the auto variable and offset within it
 // where v should be spilled.
 func AutoVar(v *Value) (*ir.Name, int64)
+
+// CanSSA reports whether values of type t can be represented as a Value.
+func CanSSA(t *types.Type) bool

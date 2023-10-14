@@ -32,8 +32,6 @@ func (n *CommClause) Format(s fmt.State, verb rune)
 
 func (n *CompLitExpr) Format(s fmt.State, verb rune)
 
-func (n *ConstExpr) Format(s fmt.State, verb rune)
-
 func (n *ConvExpr) Format(s fmt.State, verb rune)
 
 func (n *Decl) Format(s fmt.State, verb rune)
@@ -58,7 +56,7 @@ func (n *InlineMarkStmt) Format(s fmt.State, verb rune)
 
 func (n *InlinedCallExpr) Format(s fmt.State, verb rune)
 
-func (n *InstExpr) Format(s fmt.State, verb rune)
+func (n *InterfaceSwitchStmt) Format(s fmt.State, verb rune)
 
 func (n *JumpTableStmt) Format(s fmt.State, verb rune)
 
@@ -79,8 +77,6 @@ func (n *NilExpr) Format(s fmt.State, verb rune)
 func (n *ParenExpr) Format(s fmt.State, verb rune)
 
 func (n *RangeStmt) Format(s fmt.State, verb rune)
-
-func (n *RawOrigExpr) Format(s fmt.State, verb rune)
 
 func (n *ResultExpr) Format(s fmt.State, verb rune)
 

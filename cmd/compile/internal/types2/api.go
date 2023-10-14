@@ -277,6 +277,11 @@ type Info struct {
 	// in source order. Variables without an initialization expression do not
 	// appear in this list.
 	InitOrder []*Initializer
+
+	// FileVersions maps a file's position base to the file's Go version.
+	// If the file doesn't specify a version and Config.GoVersion is not
+	// given, the reported version is the zero version (Major, Minor = 0, 0).
+	FileVersions map[*syntax.PosBase]Version
 }
 
 // TypeOf returns the type of expression e, or nil if not found.
@@ -352,6 +357,12 @@ type Initializer struct {
 }
 
 func (init *Initializer) String() string
+
+// A Version represents a released Go version.
+type Version struct {
+	Major int
+	Minor int
+}
 
 // Check type-checks a package and returns the resulting package object and
 // the first error if any. Additionally, if info != nil, Check populates each

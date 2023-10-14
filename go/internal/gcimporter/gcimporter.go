@@ -15,8 +15,7 @@ import (
 // path based on package information provided by build.Import (using
 // the build.Default build.Context). A relative srcDir is interpreted
 // relative to the current working directory.
-// If no file was found, an empty filename is returned.
-func FindPkg(path, srcDir string) (filename, id string)
+func FindPkg(path, srcDir string) (filename, id string, err error)
 
 // Import imports a gc-generated package given its import path and srcDir, adds
 // the corresponding package object to the packages map, and returns the object.

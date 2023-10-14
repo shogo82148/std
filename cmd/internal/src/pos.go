@@ -73,9 +73,9 @@ func (p Pos) RelCol() uint
 // AbsFilename() returns the absolute filename recorded with the position's base.
 func (p Pos) AbsFilename() string
 
-// SymFilename() returns the absolute filename recorded with the position's base,
-// prefixed by FileSymPrefix to make it appropriate for use as a linker symbol.
-func (p Pos) SymFilename() string
+// FileIndex returns the file index of the position's base's absolute
+// filename within the PosTable that it was registered.
+func (p Pos) FileIndex() int
 
 func (p Pos) String() string
 
@@ -95,9 +95,9 @@ type PosBase struct {
 	pos         Pos
 	filename    string
 	absFilename string
-	symFilename string
 	line, col   uint
 	inl         int
+	fileIndex   int
 }
 
 // NewFileBase returns a new *PosBase for a file with the given (relative and
@@ -112,9 +112,9 @@ func NewFileBase(filename, absFilename string) *PosBase
 // at position pos.
 func NewLinePragmaBase(pos Pos, filename, absFilename string, line, col uint) *PosBase
 
-// NewInliningBase returns a copy of the old PosBase with the given inlining
-// index. If old == nil, the resulting PosBase has no filename.
-func NewInliningBase(old *PosBase, inlTreeIndex int) *PosBase
+// NewInliningBase returns a copy of the orig PosBase with the given inlining
+// index. If orig == nil, NewInliningBase panics.
+func NewInliningBase(orig *PosBase, inlTreeIndex int) *PosBase
 
 // Pos returns the position at which base is located.
 // If b == nil, the result is the zero position.
@@ -128,12 +128,14 @@ func (b *PosBase) Filename() string
 // If b == nil, the result is the empty string.
 func (b *PosBase) AbsFilename() string
 
+// FileSymPrefix is the linker symbol prefix that used to be used for
+// linker pseudo-symbols representing file names.
 const FileSymPrefix = "gofile.."
 
-// SymFilename returns the absolute filename recorded with the base,
-// prefixed by FileSymPrefix to make it appropriate for use as a linker symbol.
-// If b is nil, SymFilename returns FileSymPrefix + "??".
-func (b *PosBase) SymFilename() string
+// FileIndex returns the index of the base's absolute filename within
+// its PosTable's FileTable. It panics if it hasn't been registered
+// with a PosTable. If b == nil, the result is -1.
+func (b *PosBase) FileIndex() int
 
 // Line returns the line number recorded with the base.
 // If b == nil, the result is 0.

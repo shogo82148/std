@@ -8,6 +8,7 @@ package work
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/io/fs"
 
 	"github.com/shogo82148/std/cmd/go/internal/load"
 )
@@ -39,6 +40,9 @@ func BuildInstallFunc(b *Builder, ctx context.Context, a *Action) (err error)
 // The build of cmd/go running under its own test is forbidden from installing
 // to its original GOROOT. The var is exported so it can be set by TestMain.
 var AllowInstall = func(*Action) error { return nil }
+
+// copyFile is like 'cp src dst'.
+func (b *Builder) CopyFile(dst, src string, perm fs.FileMode, force bool) error
 
 // Showcmd prints the given command to standard output
 // for the implementation of -n or -x.

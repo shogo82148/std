@@ -10,15 +10,10 @@ import (
 	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
-func LookupRuntime(name string) *ir.Name
-
-// SubstArgTypes substitutes the given list of types for
-// successive occurrences of the "any" placeholder in the
-// type syntax expression n.Type.
-// The result of SubstArgTypes MUST be assigned back to old, e.g.
-//
-//	n.Left = SubstArgTypes(n.Left, t1, t2)
-func SubstArgTypes(old *ir.Name, types_ ...*types.Type) *ir.Name
+// LookupRuntime returns a function or variable declared in
+// _builtin/runtime.go. If types_ is non-empty, successive occurrences
+// of the "any" placeholder type will be substituted.
+func LookupRuntime(name string, types_ ...*types.Type) *ir.Name
 
 // AutoLabel generates a new Name node for use with
 // an automatically generated label.

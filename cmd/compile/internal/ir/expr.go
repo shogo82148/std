@@ -47,10 +47,15 @@ type BasicLit struct {
 	val constant.Value
 }
 
-func NewBasicLit(pos src.XPos, val constant.Value) Node
+// NewBasicLit returns an OLITERAL representing val with the given type.
+func NewBasicLit(pos src.XPos, typ *types.Type, val constant.Value) Node
 
 func (n *BasicLit) Val() constant.Value
 func (n *BasicLit) SetVal(val constant.Value)
+
+// NewConstExpr returns an OLITERAL representing val, copying the
+// position and type from orig.
+func NewConstExpr(val constant.Value, orig Node) Node
 
 // A BinaryExpr is a binary expression X Op Y,
 // or Op(X, Y) for builtin functions that do not become calls.
@@ -68,9 +73,9 @@ func (n *BinaryExpr) SetOp(op Op)
 // A CallExpr is a function call X(Args).
 type CallExpr struct {
 	miniExpr
-	origNode
-	X         Node
+	Fun       Node
 	Args      Nodes
+	DeferAt   Node
 	RType     Node `mknode:"-"`
 	KeepAlive []*Name
 	IsDDD     bool
@@ -93,7 +98,6 @@ type ClosureExpr struct {
 // Before type-checking, the type is Ntype.
 type CompLitExpr struct {
 	miniExpr
-	origNode
 	List     Nodes
 	RType    Node `mknode:"-"`
 	Prealloc *Name
@@ -109,17 +113,6 @@ func (n *CompLitExpr) Implicit() bool
 func (n *CompLitExpr) SetImplicit(b bool)
 
 func (n *CompLitExpr) SetOp(op Op)
-
-type ConstExpr struct {
-	miniExpr
-	origNode
-	val constant.Value
-}
-
-func NewConstExpr(val constant.Value, orig Node) Node
-
-func (n *ConstExpr) Sym() *types.Sym
-func (n *ConstExpr) Val() constant.Value
 
 // A ConvExpr is a conversion Type(X).
 // It may end up being a value or a type.
@@ -230,12 +223,11 @@ func NewMakeExpr(pos src.XPos, op Op, len, cap Node) *MakeExpr
 func (n *MakeExpr) SetOp(op Op)
 
 // A NilExpr represents the predefined untyped constant nil.
-// (It may be copied and assigned a type, though.)
 type NilExpr struct {
 	miniExpr
 }
 
-func NewNilExpr(pos src.XPos) *NilExpr
+func NewNilExpr(pos src.XPos, typ *types.Type) *NilExpr
 
 // A ParenExpr is a parenthesized expression (X).
 // It may end up being a value or a type.
@@ -248,15 +240,6 @@ func NewParenExpr(pos src.XPos, x Node) *ParenExpr
 
 func (n *ParenExpr) Implicit() bool
 func (n *ParenExpr) SetImplicit(b bool)
-
-// A RawOrigExpr represents an arbitrary Go expression as a string value.
-// When printed in diagnostics, the string value is written out exactly as-is.
-type RawOrigExpr struct {
-	miniExpr
-	Raw string
-}
-
-func NewRawOrigExpr(pos src.XPos, op Op, raw string) *RawOrigExpr
 
 // A ResultExpr represents a direct access to a result.
 type ResultExpr struct {
@@ -365,6 +348,9 @@ type TypeAssertExpr struct {
 	// Runtime type information provided by walkDotType for
 	// assertions from non-empty interface to concrete type.
 	ITab Node `mknode:"-"`
+
+	// An internal/abi.TypeAssert descriptor to pass to the runtime.
+	Descriptor *obj.LSym
 }
 
 func NewTypeAssertExpr(pos src.XPos, x Node, typ *types.Type) *TypeAssertExpr
@@ -412,26 +398,37 @@ func NewUnaryExpr(pos src.XPos, op Op, x Node) *UnaryExpr
 
 func (n *UnaryExpr) SetOp(op Op)
 
-// Probably temporary: using Implicit() flag to mark generic function nodes that
-// are called to make getGfInfo analysis easier in one pre-order pass.
-func (n *InstExpr) Implicit() bool
-func (n *InstExpr) SetImplicit(b bool)
-
-// An InstExpr is a generic function or type instantiation.
-type InstExpr struct {
-	miniExpr
-	X     Node
-	Targs []Ntype
-}
-
-func NewInstExpr(pos src.XPos, op Op, x Node, targs []Ntype) *InstExpr
-
 func IsZero(n Node) bool
 
 // lvalue etc
 func IsAddressable(n Node) bool
 
+// StaticValue analyzes n to find the earliest expression that always
+// evaluates to the same value as n, which might be from an enclosing
+// function.
+//
+// For example, given:
+//
+//	var x int = g()
+//	func() {
+//		y := x
+//		*p = int(y)
+//	}
+//
+// calling StaticValue on the "int(y)" expression returns the outer
+// "g()" expression.
 func StaticValue(n Node) Node
+
+// Reassigned takes an ONAME node, walks the function in which it is
+// defined, and returns a boolean indicating whether the name has any
+// assignments other than its declaration.
+// NB: global variables are always considered to be re-assigned.
+// TODO: handle initial declaration not including an assignment and
+// followed by a single assignment?
+func Reassigned(name *Name) bool
+
+// StaticCalleeName returns the ONAME/PFUNC for n, if known.
+func StaticCalleeName(n Node) *Name
 
 // IsIntrinsicCall reports whether the compiler back end will treat the call as an intrinsic operation.
 var IsIntrinsicCall = func(*CallExpr) bool { return false }
@@ -478,10 +475,16 @@ func ParamNames(ft *types.Type) []Node
 // The returned symbol will be marked as a function.
 func MethodSym(recv *types.Type, msym *types.Sym) *types.Sym
 
-// MethodSymSuffix is like methodsym, but allows attaching a
+// MethodSymSuffix is like MethodSym, but allows attaching a
 // distinguisher suffix. To avoid collisions, the suffix must not
 // start with a letter, number, or period.
 func MethodSymSuffix(recv *types.Type, msym *types.Sym, suffix string) *types.Sym
+
+// LookupMethodSelector returns the types.Sym of the selector for a method
+// named in local symbol name, as well as the types.Sym of the receiver.
+//
+// TODO(prattmic): this does not attempt to handle method suffixes (wrappers).
+func LookupMethodSelector(pkg *types.Pkg, name string) (typ, meth *types.Sym, err error)
 
 // MethodExprName returns the ONAME representing the method
 // referenced by expression n, which must be a method selector,

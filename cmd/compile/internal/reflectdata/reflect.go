@@ -13,8 +13,6 @@ import (
 	"github.com/shogo82148/std/cmd/internal/src"
 )
 
-func CountPTabs() int
-
 // Builds a type representing a Bucket structure for
 // the given map type. This type is not visible to users -
 // we include only enough information to generate a correct GC
@@ -36,13 +34,13 @@ const (
 // MapBucketType makes the map bucket type given the type of the map.
 func MapBucketType(t *types.Type) *types.Type
 
-// MapType builds a type representing a Hmap structure for the given map type.
+// MapType returns a type interchangeable with runtime.hmap.
 // Make sure this stays in sync with runtime/map.go.
-func MapType(t *types.Type) *types.Type
+func MapType() *types.Type
 
-// MapIterType builds a type representing an Hiter structure for the given map type.
+// MapIterType returns a type interchangeable with runtime.hiter.
 // Make sure this stays in sync with runtime/map.go.
-func MapIterType(t *types.Type) *types.Type
+func MapIterType() *types.Type
 
 // TrackSym returns the symbol for tracking use of field/method f, assumed
 // to be a member of struct/interface type t.
@@ -58,9 +56,6 @@ func TypeLinksymLookup(name string) *obj.LSym
 
 func TypeLinksym(t *types.Type) *obj.LSym
 
-// Deprecated: Use TypePtrAt instead.
-func TypePtr(t *types.Type) *ir.AddrExpr
-
 // TypePtrAt returns an expression that evaluates to the
 // *runtime._type value for t.
 func TypePtrAt(pos src.XPos, t *types.Type) *ir.AddrExpr
@@ -73,9 +68,6 @@ func TypePtrAt(pos src.XPos, t *types.Type) *ir.AddrExpr
 // it may sometimes, but not always, be a type that can't implement the specified
 // interface.
 func ITabLsym(typ, iface *types.Type) *obj.LSym
-
-// Deprecated: Use ITabAddrAt instead.
-func ITabAddr(typ, iface *types.Type) *ir.AddrExpr
 
 // ITabAddrAt returns an expression that evaluates to the
 // *runtime.itab value for concrete type typ implementing interface
@@ -91,9 +83,9 @@ func NeedRuntimeType(t *types.Type)
 
 func WriteRuntimeTypes()
 
-func WriteTabs()
+func WriteGCSymbols()
 
-func WriteImportStrings()
+func WritePluginTable()
 
 func WriteBasicTypes()
 
@@ -107,8 +99,6 @@ func GCSym(t *types.Type) (lsym *obj.LSym, useGCProg bool, ptrdata int64)
 // ZeroAddr returns the address of a symbol with at least
 // size bytes of zeros.
 func ZeroAddr(size int64) ir.Node
-
-func CollectPTabs()
 
 // NeedEmit reports whether typ is a type that we need to emit code
 // for (e.g., runtime type descriptors, method wrappers).

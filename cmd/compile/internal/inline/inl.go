@@ -36,7 +36,7 @@ import (
 func InlinePackage(p *pgo.Profile)
 
 // InlineDecls applies inlining to the given batch of declarations.
-func InlineDecls(p *pgo.Profile, decls []ir.Node, doInline bool)
+func InlineDecls(p *pgo.Profile, funcs []*ir.Func, doInline bool)
 
 // CanInline determines whether fn is inlineable.
 // If so, CanInline saves copies of fn.Body and fn.Dcl in fn.Inl.
@@ -57,7 +57,7 @@ var SSADumpInline = func(*ir.Func) {}
 
 // InlineCall allows the inliner implementation to be overridden.
 // If it returns nil, the function will not be inlined.
-var InlineCall = func(call *ir.CallExpr, fn *ir.Func, inlIndex int) *ir.InlinedCallExpr {
+var InlineCall = func(callerfn *ir.Func, call *ir.CallExpr, fn *ir.Func, inlIndex int) *ir.InlinedCallExpr {
 	base.Fatalf("inline.InlineCall not overridden")
 	panic("unreachable")
 }

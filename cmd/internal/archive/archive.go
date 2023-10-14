@@ -44,6 +44,7 @@ const (
 	EntryPkgDef EntryType = iota
 	EntryGoObj
 	EntryNativeObj
+	EntrySentinelNonObj
 )
 
 func (e *Entry) String() string

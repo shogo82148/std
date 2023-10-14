@@ -7,6 +7,10 @@
 // this package contains the shared code.
 package dwarf
 
+import (
+	"github.com/shogo82148/std/cmd/internal/src"
+)
+
 // InfoPrefix is the prefix for all the symbols containing DWARF info entries.
 const InfoPrefix = "go:info."
 
@@ -24,7 +28,6 @@ const AbstractFuncSuffix = "$abstract"
 
 // Sym represents a symbol.
 type Sym interface {
-	Length(dwarfContext interface{}) int64
 }
 
 // A Var represents a local variable or a function parameter.
@@ -69,15 +72,13 @@ type Range struct {
 // creating the DWARF subprogram DIE(s) for a function.
 type FnState struct {
 	Name          string
-	Importpath    string
 	Info          Sym
-	Filesym       Sym
 	Loc           Sym
 	Ranges        Sym
 	Absfn         Sym
 	StartPC       Sym
+	StartPos      src.Pos
 	Size          int64
-	StartLine     int32
 	External      bool
 	Scopes        []Scope
 	InlCalls      InlCalls
@@ -107,11 +108,8 @@ type InlCall struct {
 	// index into ctx.InlTree describing the call inlined here
 	InlIndex int
 
-	// Symbol of file containing inlined call site (really *obj.LSym).
-	CallFile Sym
-
-	// Line number of inlined call site.
-	CallLine uint32
+	// Position of the inlined call site.
+	CallPos src.Pos
 
 	// Dwarf abstract subroutine symbol (really *obj.LSym).
 	AbsFunSym Sym
@@ -133,6 +131,7 @@ type InlCall struct {
 // A Context specifies how to add data to a Sym.
 type Context interface {
 	PtrSize() int
+	Size(s Sym) int64
 	AddInt(s Sym, size int, i int64)
 	AddBytes(s Sym, b []byte)
 	AddAddress(s Sym, t interface{}, ofs int64)
@@ -143,7 +142,6 @@ type Context interface {
 	RecordDclReference(from Sym, to Sym, dclIdx int, inlIndex int)
 	RecordChildDieOffsets(s Sym, vars []*Var, offsets []int32)
 	AddString(s Sym, v string)
-	AddFileRef(s Sym, f interface{})
 	Logf(format string, args ...interface{})
 }
 

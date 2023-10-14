@@ -6,4 +6,4 @@
 // that can be used for debugging or information purposes.
 package sysinfo
 
-var CPU cpuInfo
+func CPUName() string

@@ -143,15 +143,12 @@ const (
 	OPTRLIT
 	OCONV
 	OCONVIFACE
-	OCONVIDATA
 	OCONVNOP
 	OCOPY
 	ODCL
 
 	// Used during parsing but don't last.
 	ODCLFUNC
-	ODCLCONST
-	ODCLTYPE
 
 	ODELETE
 	ODOT
@@ -200,7 +197,7 @@ const (
 	OOROR
 	OPANIC
 	OPRINT
-	OPRINTN
+	OPRINTLN
 	OPAREN
 	OSEND
 	OSLICE
@@ -220,9 +217,6 @@ const (
 	OREAL
 	OIMAG
 	OCOMPLEX
-	OALIGNOF
-	OOFFSETOF
-	OSIZEOF
 	OUNSAFEADD
 	OUNSAFESLICE
 	OUNSAFESLICEDATA
@@ -256,7 +250,6 @@ const (
 	// OTYPESW:  X := Y.(type) (appears as .Tag of OSWITCH)
 	//   X is nil if there is no type-switch variable
 	OTYPESW
-	OFUNCINST
 
 	// misc
 	// intermediate representation of an inlined call.  Uses Init (assignments
@@ -264,7 +257,7 @@ const (
 	// Body (body of the inlined function), and ReturnVars (list of
 	// return values)
 	OINLCALL
-	OEFACE
+	OMAKEFACE
 	OITAB
 	OIDATA
 	OSPTR
@@ -274,6 +267,7 @@ const (
 	OINLMARK
 	OLINKSYMOFFSET
 	OJUMPTABLE
+	OINTERFACESWITCH
 
 	// opcodes for generics
 	ODYNAMICDOTTYPE
@@ -293,10 +287,11 @@ const (
 // >, or >=).
 func (op Op) IsCmp() bool
 
-// Nodes is a pointer to a slice of *Node.
-// For fields that are not used in most nodes, this is used instead of
-// a slice to save space.
+// Nodes is a slice of Node.
 type Nodes []Node
+
+// ToNodes returns s as a slice of Nodes.
+func ToNodes[T Node](s []T) Nodes
 
 // Append appends entries to Nodes.
 func (n *Nodes) Append(a ...Node)
@@ -367,9 +362,7 @@ const (
 	RegisterParams
 )
 
-func AsNode(n types.Object) Node
-
-var BlankNode Node
+var BlankNode *Name
 
 func IsConst(n Node, ct constant.Kind) bool
 
@@ -381,8 +374,6 @@ func IsBlank(n Node) bool
 // IsMethod reports whether n is a method.
 // n must be a function or a method.
 func IsMethod(n Node) bool
-
-func HasNamedResults(fn *Func) bool
 
 // HasUniquePos reports whether n has a unique position that can be
 // used for reporting error messages.

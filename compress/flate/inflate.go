@@ -45,6 +45,8 @@ func (e *WriteError) Error() string
 // to switch to a new underlying [Reader]. This permits reusing a ReadCloser
 // instead of allocating a new one.
 type Resetter interface {
+	// Reset discards any buffered data and resets the Resetter as if it was
+	// newly initialized with the given reader.
 	Reset(r io.Reader, dict []byte) error
 }
 

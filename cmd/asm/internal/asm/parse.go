@@ -16,26 +16,27 @@ import (
 )
 
 type Parser struct {
-	lex              lex.TokenReader
-	lineNum          int
-	errorLine        int
-	errorCount       int
-	sawCode          bool
-	pc               int64
-	input            []lex.Token
-	inputPos         int
-	pendingLabels    []string
-	labels           map[string]*obj.Prog
-	toPatch          []Patch
-	addr             []obj.Addr
-	arch             *arch.Arch
-	ctxt             *obj.Link
-	firstProg        *obj.Prog
-	lastProg         *obj.Prog
-	dataAddr         map[string]int64
-	isJump           bool
-	compilingRuntime bool
-	errorWriter      io.Writer
+	lex           lex.TokenReader
+	lineNum       int
+	errorLine     int
+	errorCount    int
+	sawCode       bool
+	pc            int64
+	input         []lex.Token
+	inputPos      int
+	pendingLabels []string
+	labels        map[string]*obj.Prog
+	toPatch       []Patch
+	addr          []obj.Addr
+	arch          *arch.Arch
+	ctxt          *obj.Link
+	firstProg     *obj.Prog
+	lastProg      *obj.Prog
+	dataAddr      map[string]int64
+	isJump        bool
+	allowABI      bool
+	pkgPrefix     string
+	errorWriter   io.Writer
 }
 
 type Patch struct {
@@ -43,7 +44,7 @@ type Patch struct {
 	label string
 }
 
-func NewParser(ctxt *obj.Link, ar *arch.Arch, lexer lex.TokenReader, compilingRuntime bool) *Parser
+func NewParser(ctxt *obj.Link, ar *arch.Arch, lexer lex.TokenReader) *Parser
 
 func (p *Parser) Parse() (*obj.Prog, bool)
 

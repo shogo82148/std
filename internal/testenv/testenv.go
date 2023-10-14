@@ -29,10 +29,10 @@ func HasGoBuild() bool
 // If not, MustHaveGoBuild calls t.Skip with an explanation.
 func MustHaveGoBuild(t testing.TB)
 
-// HasGoRun reports whether the current system can run programs with “go run.”
+// HasGoRun reports whether the current system can run programs with “go run”.
 func HasGoRun() bool
 
-// MustHaveGoRun checks that the current system can run programs with “go run.”
+// MustHaveGoRun checks that the current system can run programs with “go run”.
 // If not, MustHaveGoRun calls t.Skip with an explanation.
 func MustHaveGoRun(t testing.TB)
 

@@ -50,22 +50,14 @@ type Progs struct {
 	Cache      []obj.Prog
 	CacheIndex int
 
-	NextLive LivenessIndex
-	PrevLive LivenessIndex
+	NextLive StackMapIndex
+	PrevLive StackMapIndex
+
+	NextUnsafe bool
+	PrevUnsafe bool
 }
 
-// LivenessIndex stores the liveness map information for a Value.
-type LivenessIndex struct {
-	StackMapIndex int
-
-	// IsUnsafePoint indicates that this is an unsafe-point.
-	//
-	// Note that it's possible for a call Value to have a stack
-	// map while also being an unsafe-point. This means it cannot
-	// be preempted at this instruction, but that a preemption or
-	// stack growth may happen in the called function.
-	IsUnsafePoint bool
-}
+type StackMapIndex int
 
 // StackMapDontCare indicates that the stack map index at a Value
 // doesn't matter.
@@ -73,14 +65,9 @@ type LivenessIndex struct {
 // This is a sentinel value that should never be emitted to the PCDATA
 // stream. We use -1000 because that's obviously never a valid stack
 // index (but -1 is).
-const StackMapDontCare = -1000
+const StackMapDontCare StackMapIndex = -1000
 
-// LivenessDontCare indicates that the liveness information doesn't
-// matter. Currently it is used in deferreturn liveness when we don't
-// actually need it. It should never be emitted to the PCDATA stream.
-var LivenessDontCare = LivenessIndex{StackMapDontCare, true}
-
-func (idx LivenessIndex) StackMapValid() bool
+func (s StackMapIndex) StackMapValid() bool
 
 func (pp *Progs) NewProg() *obj.Prog
 

@@ -67,13 +67,13 @@ func FPW(x uint32, y uint32) uint32
 
 func FPV(x uint32, y uint32) uint32
 
-func OP_RRR(op uint32, r1 uint32, r2 uint32, r3 uint32) uint32
+func OP_RRR(op uint32, r1 int16, r2 int16, r3 int16) uint32
 
-func OP_IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32
+func OP_IRR(op uint32, i uint32, r2 int16, r3 int16) uint32
 
-func OP_SRR(op uint32, s uint32, r2 uint32, r3 uint32) uint32
+func OP_SRR(op uint32, s uint32, r2 int16, r3 int16) uint32
 
-func OP_FRRR(op uint32, r1 uint32, r2 uint32, r3 uint32) uint32
+func OP_FRRR(op uint32, r1 int16, r2 int16, r3 int16) uint32
 
 func OP_JMP(op uint32, i uint32) uint32
 

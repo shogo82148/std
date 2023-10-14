@@ -82,7 +82,7 @@ func (a *AuxCall) RegsOfResult(which int64) []abi.RegIndex
 // If the call is to a method, the receiver is the first argument (i.e., index 0)
 func (a *AuxCall) RegsOfArg(which int64) []abi.RegIndex
 
-// NameOfResult returns the type of result which (indexed 0, 1, etc).
+// NameOfResult returns the ir.Name of result which (indexed 0, 1, etc).
 func (a *AuxCall) NameOfResult(which int64) *ir.Name
 
 // TypeOfResult returns the type of result which (indexed 0, 1, etc).
