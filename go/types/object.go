@@ -154,19 +154,14 @@ func (obj *Func) Scope() *Scope
 // インスタンス化中に作成された合成関数（具名型のメソッドや型引数に依存するインターフェースのメソッドなど）の場合、これはジェネリック（インスタンス化されていない）型の対応するFuncになります。その他のすべてのFuncに対して、Originはレシーバーを返します。
 func (obj *Func) Origin() *Func
 
-<<<<<<< HEAD
 // Pkg returns the package to which the function belongs.
 //
 // The result is nil for methods of types in the Universe scope,
 // like method Error of the error built-in interface type.
 func (obj *Func) Pkg() *Package
 
-// A Label represents a declared label.
-// Labels don't have a type.
-=======
 // Labelは宣言されたラベルを表します。
 // ラベルはタイプを持ちません。
->>>>>>> release-branch.go1.21
 type Label struct {
 	object
 	used bool
