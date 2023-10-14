@@ -5,6 +5,7 @@
 package reflect
 
 import (
+	"github.com/shogo82148/std/internal/abi"
 	"github.com/shogo82148/std/unsafe"
 )
 
@@ -427,7 +428,7 @@ func (v Value) CanUint() bool
 
 // Uintはvの基礎値をuint64として返します。
 // vのKindが [Uint] 、 [Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合にはパニックを発生させます。
-qfunc (v Value) Uint() uint64
+func (v Value) Uint() uint64
 
 // UnsafeAddrはvのデータへのポインタを、uintptrとして返します。
 // vがアドレス可能でない場合、panicします。
