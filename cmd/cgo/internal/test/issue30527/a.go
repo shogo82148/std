@@ -4,6 +4,6 @@
 
 package issue30527
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 func G(p **C.char)

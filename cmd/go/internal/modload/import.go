@@ -5,7 +5,7 @@
 package modload
 
 import (
-	"github.com/shogo82148/std/golang.org/x/mod/module"
+	"golang.org/x/mod/module"
 )
 
 type ImportMissingError struct {
