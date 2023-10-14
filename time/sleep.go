@@ -75,13 +75,7 @@ func (t *Timer) Reset(d Duration) bool
 // 効率が問題の場合は、代わりにNewTimerを使用し、タイマーが不要になった場合はTimer.Stopを呼び出してください。
 func After(d Duration) <-chan Time
 
-<<<<<<< HEAD
-// AfterFunc waits for the duration to elapse and then calls f
-// in its own goroutine. It returns a Timer that can
-// be used to cancel the call using its Stop method.
-// The returned Timer's C field is not used and will be nil.
-=======
 // AfterFuncは、指定した時間が経過した後、fを自身のゴルーチンで呼び出します。
 // Stopメソッドを使用して呼び出しをキャンセルするために使用できるTimerを返します。
->>>>>>> release-branch.go1.21
+// 返されたTimerのCフィールドは使用されず、nilになります。
 func AfterFunc(d Duration, f func()) *Timer
