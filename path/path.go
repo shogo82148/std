@@ -4,14 +4,9 @@
 
 // パッケージパスは、スラッシュで区切られたパスを操作するためのユーティリティルーチンを実装します。
 //
-<<<<<<< HEAD
-// The path package should only be used for paths separated by forward
-// slashes, such as the paths in URLs. This package does not deal with
-// Windows paths with drive letters or backslashes; to manipulate
-// operating system paths, use the [path/filepath] package.
-=======
-// pathパッケージは、URL内のパスなど、スラッシュで区切られたパスにのみ使用するべきです。このパッケージは、ドライブレターやバックスラッシュを含むWindowsパスを扱いません。オペレーティングシステムのパスを操作する場合は、path/filepathパッケージを使用してください。
->>>>>>> release-branch.go1.21
+// pathパッケージは、URLのパスなど、スラッシュで区切られたパスにのみ使用する必要があります。
+// このパッケージは、ドライブレターやバックスラッシュを含むWindowsパスに対処しません。
+// オペレーティングシステムのパスを操作するには、 [path/filepath] パッケージを使用してください。
 package path
 
 // Clean関数は、パスを純粋に字句処理して、最短のパス名に変換します。
