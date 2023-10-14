@@ -14,19 +14,10 @@ import (
 //
 // RWMutexは、最初の使用後にコピーしてはいけません。
 //
-<<<<<<< HEAD
-// If any goroutine calls Lock while the lock is already held by
-// one or more readers, concurrent calls to RLock will block until
-// the writer has acquired (and released) the lock, to ensure that
-// the lock eventually becomes available to the writer.
-// Note that this prohibits recursive read-locking.
-=======
-// ゴルーチンが読み込みのためにRWMutexを保持しており、他のゴルーチンが
-// Lockを呼び出す可能性がある場合、初期の読み込みロックが解放されるまで、
-// 他のゴルーチンは読み込みロックを獲得できることは期待できません。
-// 特に、再帰的な読み込みロックは禁止されています。これは、ロックが最終的に利用可能になるようにするためです。
-// ブロックされたLock呼び出しは、新しい読み込み者がロックを獲得するのを排除します。
->>>>>>> release-branch.go1.21
+// もしロックが既に1つ以上のリーダーによって保持されている場合、
+// いずれかのゴルーチンがLockを呼び出すと、RLockへの並行呼び出しがライターがロックを取得（および解放）するまでブロックされます。
+// これにより、ロックが最終的にライターに利用可能になることが保証されます。
+// なお、これにより再帰的な読み込みロックが禁止されます。
 //
 // Goのメモリモデルの用語では、Unlockのn回目の呼び出しは、
 // 任意のn < mに対して、m回目のLockの呼び出しの前に同期化します（Mutexと同様）。
