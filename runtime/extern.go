@@ -3,257 +3,191 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package runtime contains operations that interact with Go's runtime system,
-such as functions to control goroutines. It also includes the low-level type information
-used by the reflect package; see reflect's documentation for the programmable
-interface to the run-time type system.
+パッケージruntimeには、goroutineを制御するための関数など、Goのランタイムシステムとやり取りする操作が含まれています。
+また、reflectパッケージで使用されるランタイムタイプシステムのプログラマブルインターフェースに関するドキュメントについては、reflectのドキュメントを参照してください。
 
-# Environment Variables
+# 環境変数
 
-The following environment variables ($name or %name%, depending on the host
-operating system) control the run-time behavior of Go programs. The meanings
-and use may change from release to release.
+以下の環境変数（ホストオペレーティングシステムによっては$nameまたは%name%）は、Goプログラムのランタイム動作を制御します。意味や使用法はリリースごとに変更される可能性があります。
 
-The GOGC variable sets the initial garbage collection target percentage.
-A collection is triggered when the ratio of freshly allocated data to live data
-remaining after the previous collection reaches this percentage. The default
-is GOGC=100. Setting GOGC=off disables the garbage collector entirely.
-[runtime/debug.SetGCPercent] allows changing this percentage at run time.
+GOGC変数は、初期のガベージコレクションのターゲットパーセンテージを設定します。
+前回のコレクション後に残されたライブデータに対する新しく割り当てられたデータの比率がこのパーセンテージに達すると、コレクションがトリガーされます。
+デフォルトはGOGC=100です。GOGC=offに設定すると、ガベージコレクタが完全に無効になります。
+[runtime/debug.SetGCPercent] を使用すると、このパーセンテージを実行時に変更できます。
 
-The GOMEMLIMIT variable sets a soft memory limit for the runtime. This memory limit
-includes the Go heap and all other memory managed by the runtime, and excludes
-external memory sources such as mappings of the binary itself, memory managed in
-other languages, and memory held by the operating system on behalf of the Go
-program. GOMEMLIMIT is a numeric value in bytes with an optional unit suffix.
-The supported suffixes include B, KiB, MiB, GiB, and TiB. These suffixes
-represent quantities of bytes as defined by the IEC 80000-13 standard. That is,
-they are based on powers of two: KiB means 2^10 bytes, MiB means 2^20 bytes,
-and so on. The default setting is math.MaxInt64, which effectively disables the
-memory limit. [runtime/debug.SetMemoryLimit] allows changing this limit at run
-time.
+GOMEMLIMIT変数は、ランタイムのソフトメモリ制限を設定します。
+このメモリ制限には、Goヒープとランタイムによって管理されるすべてのその他のメモリが含まれますが、
+バイナリ自体のマッピング、他の言語で管理されるメモリ、およびGoプログラムの代わりにオペレーティングシステムに保持されるメモリなど、外部メモリソースは除外されます。
+GOMEMLIMITは、オプションの単位接尾辞を持つバイト単位の数値です。
+サポートされる接尾辞には、B、KiB、MiB、GiB、およびTiBが含まれます。
+これらの接尾辞は、IEC 80000-13標準で定義されるバイトの量を表します。
+つまり、2の累乗に基づいています：KiBは2^10バイトを意味し、MiBは2^20バイトを意味します。
+デフォルト設定はmath.MaxInt64であり、これによりメモリ制限が無効になります。
+[runtime/debug.SetMemoryLimit] を使用すると、この制限を実行時に変更できます。
 
-The GODEBUG variable controls debugging variables within the runtime.
-It is a comma-separated list of name=val pairs setting these named variables:
+GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
+これは、これらの名前付き変数を設定するname=valペアのカンマ区切りリストです。
 
-	allocfreetrace: setting allocfreetrace=1 causes every allocation to be
-	profiled and a stack trace printed on each object's allocation and free.
+	allocfreetrace: allocfreetrace=1を設定すると、すべての割り当てがプロファイルされ、各オブジェクトの割り当てと解放時にスタックトレースが出力されます。
 
-	clobberfree: setting clobberfree=1 causes the garbage collector to
-	clobber the memory content of an object with bad content when it frees
-	the object.
+	clobberfree: clobberfree=1を設定すると、ガベージコレクタがオブジェクトを解放するときに、オブジェクトのメモリ内容を悪い内容で上書きします。
 
-	cpu.*: cpu.all=off disables the use of all optional instruction set extensions.
-	cpu.extension=off disables use of instructions from the specified instruction set extension.
-	extension is the lower case name for the instruction set extension such as sse41 or avx
-	as listed in internal/cpu package. As an example cpu.avx=off disables runtime detection
-	and thereby use of AVX instructions.
+	cpu.*: cpu.all=offは、すべてのオプションの命令セット拡張機能の使用を無効にします。
+	cpu.extension=offは、指定された命令セット拡張機能からの命令の使用を無効にします。
+	拡張機能は、内部/cpuパッケージにリストされているsse41やavxなどの命令セット拡張機能の小文字の名前です。
+	例えば、cpu.avx=offは、AVX命令のランタイム検出とそれによる使用を無効にします。
 
-	cgocheck: setting cgocheck=0 disables all checks for packages
-	using cgo to incorrectly pass Go pointers to non-Go code.
-	Setting cgocheck=1 (the default) enables relatively cheap
-	checks that may miss some errors. A more complete, but slow,
-	cgocheck mode can be enabled using GOEXPERIMENT (which
-	requires a rebuild), see https://pkg.go.dev/internal/goexperiment for details.
+	cgocheck: cgocheck=0を設定すると、cgoを使用してGoポインタを非Goコードに誤って渡すパッケージのすべてのチェックが無効になります。
+	cgocheck=1（デフォルト）を設定すると、比較的安価なチェックが有効になりますが、一部のエラーを見逃す可能性があります。
+	より完全で遅いcgocheckモードは、GOEXPERIMENTを使用して有効にできます（再ビルドが必要です）。
+	詳細については、https://pkg.go.dev/internal/goexperiment を参照してください。
 
-	dontfreezetheworld: by default, the start of a fatal panic or throw
-	"freezes the world", preempting all threads to stop all running
-	goroutines, which makes it possible to traceback all goroutines, and
-	keeps their state close to the point of panic. Setting
-	dontfreezetheworld=1 disables this preemption, allowing goroutines to
-	continue executing during panic processing. Note that goroutines that
-	naturally enter the scheduler will still stop. This can be useful when
-	debugging the runtime scheduler, as freezetheworld perturbs scheduler
-	state and thus may hide problems.
+	dontfreezetheworld: デフォルトでは、致命的なパニックまたは例外の開始は「世界を凍結」し、実行中のすべてのスレッドをプリエンプトして、
+	実行中のすべてのgoroutineを停止します。これにより、すべてのgoroutineをトレースバックし、パニックの発生地点に近い状態を保持することができます。
+	dontfreezetheworld=1を設定すると、このプリエンプションが無効になり、パニック処理中にgoroutineが引き続き実行されるようになります。
+	ただし、スケジューラに自然に入るgoroutineは引き続き停止します。これは、スケジューラのランタイムデバッグ時に有用であり、
+	freezetheworldはスケジューラの状態を変更するため、問題を隠す可能性があるためです。
 
-	efence: setting efence=1 causes the allocator to run in a mode
-	where each object is allocated on a unique page and addresses are
-	never recycled.
+	efence: efence=1を設定すると、アロケータがユニークなページ上に各オブジェクトを割り当て、アドレスを再利用しないモードで実行されるようになります。
 
-	gccheckmark: setting gccheckmark=1 enables verification of the
-	garbage collector's concurrent mark phase by performing a
-	second mark pass while the world is stopped.  If the second
-	pass finds a reachable object that was not found by concurrent
-	mark, the garbage collector will panic.
+	gccheckmark: gccheckmark=1を設定すると、世界が停止している間に2回目のマークパスを実行して、ガベージコレクタの並列マークフェーズの検証を有効にします。
+	2回目のパスで並列マークで見つからなかった到達可能なオブジェクトが見つかった場合、ガベージコレクタはパニックを引き起こします。
 
-	gcpacertrace: setting gcpacertrace=1 causes the garbage collector to
-	print information about the internal state of the concurrent pacer.
+	go gcpacertrace: gcpacertrace=1を設定すると、ガベージコレクタが並列ペーサーの内部状態に関する情報を出力します。
 
-	gcshrinkstackoff: setting gcshrinkstackoff=1 disables moving goroutines
-	onto smaller stacks. In this mode, a goroutine's stack can only grow.
+	gcshrinkstackoff: gcshrinkstackoff=1を設定すると、ゴルーチンをより小さなスタックに移動しないようにできます。
+	このモードでは、ゴルーチンのスタックは成長するだけで、縮小されません。
 
-	gcstoptheworld: setting gcstoptheworld=1 disables concurrent garbage collection,
-	making every garbage collection a stop-the-world event. Setting gcstoptheworld=2
-	also disables concurrent sweeping after the garbage collection finishes.
+	gcstoptheworld: gcstoptheworld=1を設定すると、並列ガベージコレクションが無効になり、すべてのガベージコレクションがストップ・ザ・ワールドイベントになります。
+	gcstoptheworld=2を設定すると、ガベージコレクションが終了した後に並列スイープも無効になります。
 
-	gctrace: setting gctrace=1 causes the garbage collector to emit a single line to standard
-	error at each collection, summarizing the amount of memory collected and the
-	length of the pause. The format of this line is subject to change. Included in
-	the explanation below is also the relevant runtime/metrics metric for each field.
-	Currently, it is:
+	gctrace: gctrace=1を設定すると、ガベージコレクタが各コレクションで標準エラーに1行の要約を出力し、
+	回収されたメモリ量と一時停止の長さをまとめます。この行の形式は変更される可能性があります。
+	以下に説明するのは、各フィールドの関連するruntime/metricsメトリックも含まれています。現在の形式は次のとおりです。
 		gc # @#s #%: #+#+# ms clock, #+#/#/#+# ms cpu, #->#-># MB, # MB goal, # MB stacks, #MB globals, # P
-	where the fields are as follows:
-		gc #         the GC number, incremented at each GC
-		@#s          time in seconds since program start
-		#%           percentage of time spent in GC since program start
-		#+...+#      wall-clock/CPU times for the phases of the GC
-		#->#-># MB   heap size at GC start, at GC end, and live heap, or /gc/scan/heap:bytes
-		# MB goal    goal heap size, or /gc/heap/goal:bytes
-		# MB stacks  estimated scannable stack size, or /gc/scan/stack:bytes
-		# MB globals scannable global size, or /gc/scan/globals:bytes
-		# P          number of processors used, or /sched/gomaxprocs:threads
-	The phases are stop-the-world (STW) sweep termination, concurrent
-	mark and scan, and STW mark termination. The CPU times
-	for mark/scan are broken down in to assist time (GC performed in
-	line with allocation), background GC time, and idle GC time.
-	If the line ends with "(forced)", this GC was forced by a
-	runtime.GC() call.
+	フィールドは次のようになります。
+		# GC番号
+		@#s          プログラム開始以来の秒数
+		#%           プログラム開始以来のGCに費やされた時間の割合
+		#+...+#      GCフェーズのウォールクロック/CPU時間
+		#->#-># MB   GC開始時、GC終了時、およびライブヒープのヒープサイズ、または/gc/scan/heap:bytes
+		# MB goal    ゴールヒープサイズ、または/gc/heap/goal:bytes
+		# MB stacks  スキャン可能なスタックサイズの推定値、または/gc/scan/stack:bytes
+		# MB globals スキャン可能なグローバルサイズ、または/gc/scan/globals:bytes
+		# P          使用されたプロセッサの数、または/sched/gomaxprocs:threads
+	フェーズは、ストップ・ザ・ワールド（STW）スイープ終了、並列マーク・スキャン、およびSTWマーク終了です。
+	マーク/スキャンのCPU時間は、アシスト時間（割り当てと同時に実行されるGC）、
+	バックグラウンドGC時間、およびアイドルGC時間に分割されます。行が「(forced)」で終わる場合、
+	このGCはruntime.GC()呼び出しによって強制されました。
 
-	harddecommit: setting harddecommit=1 causes memory that is returned to the OS to
-	also have protections removed on it. This is the only mode of operation on Windows,
-	but is helpful in debugging scavenger-related issues on other platforms. Currently,
-	only supported on Linux.
+	harddecommit: harddecommit=1を設定すると、OSに返されるメモリに対しても保護が解除されるようになります。
+	これはWindowsでの唯一の動作モードですが、他のプラットフォームでのスキャベンジャー関連の問題のデバッグに役立ちます。
+	現在、Linuxのみでサポートされています。
 
-	inittrace: setting inittrace=1 causes the runtime to emit a single line to standard
-	error for each package with init work, summarizing the execution time and memory
-	allocation. No information is printed for inits executed as part of plugin loading
-	and for packages without both user defined and compiler generated init work.
-	The format of this line is subject to change. Currently, it is:
+	inittrace: inittrace=1を設定すると、ランタイムが、実行時間とメモリ割り当てを要約した、
+	各パッケージのinit作業ごとに標準エラーに1行の情報を出力します。
+	プラグインの読み込み時に実行されるinitsと、ユーザー定義とコンパイラ生成のinit作業の両方を持たないパッケージについては、
+	情報は出力されません。この行の形式は変更される可能性があります。現在の形式は次のとおりです。
 		init # @#ms, # ms clock, # bytes, # allocs
-	where the fields are as follows:
-		init #      the package name
-		@# ms       time in milliseconds when the init started since program start
-		# clock     wall-clock time for package initialization work
-		# bytes     memory allocated on the heap
-		# allocs    number of heap allocations
+	フィールドは次のようになります。
+		init #      パッケージ名
+		@# ms       プログラム開始以来、initが開始されたときのミリ秒単位の時間
+		# clock     パッケージ初期化作業のウォールクロック時間
+		# bytes     ヒープに割り当てられたメモリ
+		# allocs    ヒープ割り当ての数
 
-	madvdontneed: setting madvdontneed=0 will use MADV_FREE
-	instead of MADV_DONTNEED on Linux when returning memory to the
-	kernel. This is more efficient, but means RSS numbers will
-	drop only when the OS is under memory pressure. On the BSDs and
-	Illumos/Solaris, setting madvdontneed=1 will use MADV_DONTNEED instead
-	of MADV_FREE. This is less efficient, but causes RSS numbers to drop
-	more quickly.
+	madvdontneed: madvdontneed=0を設定すると、Linuxではメモリをカーネルに返すときにMADV_DONTNEEDの代わりにMADV_FREEを使用します。
+	これはより効率的ですが、OSがメモリ圧力下にある場合にのみRSS数が減少することを意味します。
+	BSDおよびIllumos/Solarisでは、madvdontneed=1を設定すると、MADV_FREEの代わりにMADV_DONTNEEDを使用します。
+	これはより効率的ではありませんが、RSS数がより速く減少するようになります。
 
-	memprofilerate: setting memprofilerate=X will update the value of runtime.MemProfileRate.
-	When set to 0 memory profiling is disabled.  Refer to the description of
-	MemProfileRate for the default value.
+	memprofilerate: memprofilerate=Xを設定すると、runtime.MemProfileRateの値が更新されます。
+	0に設定すると、メモリプロファイリングが無効になります。デフォルト値についてはMemProfileRateの説明を参照してください。
 
-	pagetrace: setting pagetrace=/path/to/file will write out a trace of page events
-	that can be viewed, analyzed, and visualized using the x/debug/cmd/pagetrace tool.
-	Build your program with GOEXPERIMENT=pagetrace to enable this functionality. Do not
-	enable this functionality if your program is a setuid binary as it introduces a security
-	risk in that scenario. Currently not supported on Windows, plan9 or js/wasm. Setting this
-	option for some applications can produce large traces, so use with care.
+	pagetrace: pagetrace=/path/to/fileを設定すると、ページイベントのトレースが書き出され、
+	x/debug/cmd/pagetraceツールを使用して表示、分析、および可視化できます。この機能を有効にするには、
+	プログラムをGOEXPERIMENT=pagetraceでビルドしてください。
+	この機能は、セットUIDバイナリの場合にセキュリティリスクを導入するため、
+	プログラムがセットUIDバイナリである場合はこの機能を有効にしないでください。
+	現在、Windows、plan9、js/wasmではサポートされていません。
+	一部のアプリケーションでこのオプションを設定すると、大きなトレースが生成される場合があるため、注意して使用してください。
 
-	invalidptr: invalidptr=1 (the default) causes the garbage collector and stack
-	copier to crash the program if an invalid pointer value (for example, 1)
-	is found in a pointer-typed location. Setting invalidptr=0 disables this check.
-	This should only be used as a temporary workaround to diagnose buggy code.
-	The real fix is to not store integers in pointer-typed locations.
+	invalidptr: invalidptr=1（デフォルト）は、ポインタ型の場所で無効なポインタ値（たとえば1）が見つかった場合、
+	ガベージコレクタとスタックコピープログラムをクラッシュさせます。invalidptr=0に設定すると、このチェックが無効になります。
+	これは、バグのあるコードを診断するための一時的なワークアラウンドとしてのみ使用する必要があります。
+	本当の修正は、整数をポインタ型の場所に格納しないことです。
 
-	sbrk: setting sbrk=1 replaces the memory allocator and garbage collector
-	with a trivial allocator that obtains memory from the operating system and
-	never reclaims any memory.
+	sbrk: sbrk=1を設定すると、メモリアロケータとガベージコレクタが置き換えられ、オペレーティングシステムからメモリを取得し、メモリを回収しない単純なアロケータになります。
 
-	scavtrace: setting scavtrace=1 causes the runtime to emit a single line to standard
-	error, roughly once per GC cycle, summarizing the amount of work done by the
-	scavenger as well as the total amount of memory returned to the operating system
-	and an estimate of physical memory utilization. The format of this line is subject
-	to change, but currently it is:
+	scavtrace: scavtrace=1を設定すると、ランタイムが、スキャベンジャーによって実行された作業量、
+	オペレーティングシステムに返された総メモリ量、および物理メモリ使用量の推定を要約した、標準エラーに1行の情報を出力します。
+	この行の形式は変更される可能性があります。現在の形式は次のとおりです。
 		scav # KiB work (bg), # KiB work (eager), # KiB total, #% util
-	where the fields are as follows:
-		# KiB work (bg)    the amount of memory returned to the OS in the background since
-		                   the last line
-		# KiB work (eager) the amount of memory returned to the OS eagerly since the last line
-		# KiB now          the amount of address space currently returned to the OS
-		#% util            the fraction of all unscavenged heap memory which is in-use
-	If the line ends with "(forced)", then scavenging was forced by a
-	debug.FreeOSMemory() call.
+	extern.goファイルから、フィールドは次のようになります。
+		# KiB work (bg)    前回の行以降にバックグラウンドでOSに返されたメモリ量
+		# KiB work (eager) 前回の行以降にイーガーモードでOSに返されたメモリ量
+		# KiB now          現在OSに返されているアドレス空間の量
+		#% util            スキャベンジングされていないヒープメモリのうち、使用中の割合
+	もし行が"(forced)"で終わる場合、スキャベンジングはdebug.FreeOSMemory()呼び出しによって強制されました。
 
-	scheddetail: setting schedtrace=X and scheddetail=1 causes the scheduler to emit
-	detailed multiline info every X milliseconds, describing state of the scheduler,
-	processors, threads and goroutines.
+	scheddetail: schedtrace=Xおよびscheddetail=1を設定すると、
+	スケジューラがXミリ秒ごとに詳細な複数行情報を出力し、スケジューラ、プロセッサ、スレッド、およびゴルーチンの状態を説明します。
 
-	schedtrace: setting schedtrace=X causes the scheduler to emit a single line to standard
-	error every X milliseconds, summarizing the scheduler state.
+	schedtrace: schedtrace=Xを設定すると、スケジューラがXミリ秒ごとに、スケジューラの状態を要約した1行を標準エラーに出力します。
 
-	tracebackancestors: setting tracebackancestors=N extends tracebacks with the stacks at
-	which goroutines were created, where N limits the number of ancestor goroutines to
-	report. This also extends the information returned by runtime.Stack. Ancestor's goroutine
-	IDs will refer to the ID of the goroutine at the time of creation; it's possible for this
-	ID to be reused for another goroutine. Setting N to 0 will report no ancestry information.
+	tracebackancestors: tracebackancestors=Nを設定すると、トレースバックに、ゴルーチンが作成されたスタックが追加されます。
+	Nは報告する祖先ゴルーチンの数を制限します。これにより、runtime.Stackが返す情報も拡張されます。
+	祖先のゴルーチンIDは、作成時のゴルーチンIDを参照します。このIDは、別のゴルーチンで再利用される可能性があります。Nを0に設定すると、祖先情報は報告されません。
 
-	tracefpunwindoff: setting tracefpunwindoff=1 forces the execution tracer to
-	use the runtime's default stack unwinder instead of frame pointer unwinding.
-	This increases tracer overhead, but could be helpful as a workaround or for
-	debugging unexpected regressions caused by frame pointer unwinding.
+	tracefpunwindoff: tracefpunwindoff=1を設定すると、実行トレーサーがフレームポインタアンワインディングの代わりに
+	ランタイムのデフォルトスタックアンワインダーを使用するようになります。これにより、トレーサーのオーバーヘッドが増加しますが、
+	フレームポインタアンワインディングによって引き起こされる予期しないリグレッションのワークアラウンドやデバッグに役立つ場合があります。
 
-	asyncpreemptoff: asyncpreemptoff=1 disables signal-based
-	asynchronous goroutine preemption. This makes some loops
-	non-preemptible for long periods, which may delay GC and
-	goroutine scheduling. This is useful for debugging GC issues
-	because it also disables the conservative stack scanning used
-	for asynchronously preempted goroutines.
+	asyncpreemptoff: asyncpreemptoff=1を設定すると、シグナルベースの非同期ゴルーチンプリエンプションが無効になります。
+	これにより、一部のループが長時間プリエンプションされなくなり、GCとゴルーチンスケジューリングが遅れる場合があります。
+	これは、非同期にプリエンプションされたゴルーチンに対して使用される保守的なスタックスキャンも無効にするため、GCの問題をデバッグするために役立ちます。
 
-The net and net/http packages also refer to debugging variables in GODEBUG.
-See the documentation for those packages for details.
+netおよびnet/httpパッケージも、GODEBUGのデバッグ変数を参照しています。
+詳細については、それらのパッケージのドキュメントを参照してください。
 
-The GOMAXPROCS variable limits the number of operating system threads that
-can execute user-level Go code simultaneously. There is no limit to the number of threads
-that can be blocked in system calls on behalf of Go code; those do not count against
-the GOMAXPROCS limit. This package's GOMAXPROCS function queries and changes
-the limit.
+GOMAXPROCS変数は、ユーザーレベルのGoコードを同時に実行できるオペレーティングシステムスレッドの数を制限します。
+Goコードの代わりにシステムコールでブロックされているスレッドの数に制限はありません。
+これらはGOMAXPROCSの制限には含まれません。このパッケージのGOMAXPROCS関数は、制限をクエリおよび変更します。
 
-The GORACE variable configures the race detector, for programs built using -race.
-See https://golang.org/doc/articles/race_detector.html for details.
+GORACE変数は、-raceを使用してビルドされたプログラムのレースディテクタを設定します。
+詳細については、https://golang.org/doc/articles/race_detector.html を参照してください。
 
-The GOTRACEBACK variable controls the amount of output generated when a Go
-program fails due to an unrecovered panic or an unexpected runtime condition.
-By default, a failure prints a stack trace for the current goroutine,
-eliding functions internal to the run-time system, and then exits with exit code 2.
-The failure prints stack traces for all goroutines if there is no current goroutine
-or the failure is internal to the run-time.
-GOTRACEBACK=none omits the goroutine stack traces entirely.
-GOTRACEBACK=single (the default) behaves as described above.
-GOTRACEBACK=all adds stack traces for all user-created goroutines.
-GOTRACEBACK=system is like “all” but adds stack frames for run-time functions
-and shows goroutines created internally by the run-time.
-GOTRACEBACK=crash is like “system” but crashes in an operating system-specific
-manner instead of exiting. For example, on Unix systems, the crash raises
-SIGABRT to trigger a core dump.
-GOTRACEBACK=wer is like “crash” but doesn't disable Windows Error Reporting (WER).
-For historical reasons, the GOTRACEBACK settings 0, 1, and 2 are synonyms for
-none, all, and system, respectively.
-The runtime/debug package's SetTraceback function allows increasing the
-amount of output at run time, but it cannot reduce the amount below that
-specified by the environment variable.
-See https://golang.org/pkg/runtime/debug/#SetTraceback.
+GOTRACEBACK変数は、Goプログラムが回復不能なパニックまたは予期しないランタイム条件によって失敗した場合に生成される出力量を制御します。
+デフォルトでは、失敗は現在のゴルーチンのスタックトレースを出力し、ランタイムシステム内部の関数を省略して、終了コード2で終了します。
+現在のゴルーチンが存在しない場合や、失敗がランタイム内部で発生した場合は、すべてのゴルーチンのスタックトレースが出力されます。
+GOTRACEBACK=noneは、ゴルーチンのスタックトレースを完全に省略します。
+GOTRACEBACK=single（デフォルト）は、上記の説明のように動作します。
+GOTRACEBACK=allは、すべてのユーザー作成ゴルーチンのスタックトレースを追加します。
+GOTRACEBACK=systemは、「all」と同様ですが、ランタイム関数のスタックフレームを追加します。
+extern.goファイルから、フィールドは次のようになります。
+ランタイムによって内部的に作成されたゴルーチンを表示します。
+GOTRACEBACK=crashは、「system」と同様ですが、OS固有の方法でクラッシュします。たとえば、Unixシステムでは、クラッシュはSIGABRTを発生させてコアダンプをトリガーします。
+GOTRACEBACK=werは、「crash」と同様ですが、Windows Error Reporting（WER）を無効にしません。
+歴史的な理由から、GOTRACEBACK設定0、1、および2は、それぞれnone、all、およびsystemの同義語です。
+runtime/debugパッケージのSetTraceback関数を使用すると、実行時に出力量を増やすことができますが、環境変数で指定された量を下回ることはできません。
+https://golang.org/pkg/runtime/debug/#SetTraceback を参照してください。
 
-The GOARCH, GOOS, GOPATH, and GOROOT environment variables complete
-the set of Go environment variables. They influence the building of Go programs
-(see https://golang.org/cmd/go and https://golang.org/pkg/go/build).
-GOARCH, GOOS, and GOROOT are recorded at compile time and made available by
-constants or functions in this package, but they do not influence the execution
-of the run-time system.
+GOARCH、GOOS、GOPATH、およびGOROOT環境変数は、Goプログラムのビルドに影響を与えます
+（https://golang.org/cmd/go および https://golang.org/pkg/go/build を参照）。
+GOARCH、GOOS、およびGOROOTは、コンパイル時に記録され、このパッケージの定数または関数によって利用可能になりますが、
+ランタイムシステムの実行には影響しません。
 
-# Security
+# セキュリティ
 
-On Unix platforms, Go's runtime system behaves slightly differently when a
-binary is setuid/setgid or executed with setuid/setgid-like properties, in order
-to prevent dangerous behaviors. On Linux this is determined by checking for the
-AT_SECURE flag in the auxiliary vector, on the BSDs and Solaris/Illumos it is
-determined by checking the issetugid syscall, and on AIX it is determined by
-checking if the uid/gid match the effective uid/gid.
+Unixプラットフォームでは、危険な動作を防止するために、バイナリがsetuid/setgidに設定されているか、
+setuid/setgidのようなプロパティで実行されている場合、Goのランタイムシステムはわずかに異なる動作をします。
+Linuxでは、補助ベクトルでAT_SECUREフラグをチェックし、BSDおよびSolaris/Illumosではissetugidシスコールをチェックし、
+AIXではuid/gidが有効なuid/gidと一致するかどうかをチェックします。
 
-When the runtime determines the binary is setuid/setgid-like, it does three main
-things:
-  - The standard input/output file descriptors (0, 1, 2) are checked to be open.
-    If any of them are closed, they are opened pointing at /dev/null.
-  - The value of the GOTRACEBACK environment variable is set to 'none'.
-  - When a signal is received that terminates the program, or the program
-    encounters an unrecoverable panic that would otherwise override the value
-    of GOTRACEBACK, the goroutine stack, registers, and other memory related
-    information are omitted.
+ランタイムがバイナリがsetuid/setgidのようであると判断した場合、次の3つの主な処理が行われます。
+  - 標準入出力ファイルディスクリプタ（0、1、2）が開いているかどうかを確認します。いずれかが閉じられている場合、/dev/nullを指すように開きます。
+  - GOTRACEBACK環境変数の値を'none'に設定します。
+  - プログラムを終了するシグナルが受信された場合、またはGOTRACEBACKの値を上書きする回復不能なパニックが発生した場合、ゴルーチンのスタック、レジスタ、およびその他のメモリ関連情報が省略されます。
 */
 package runtime
 
