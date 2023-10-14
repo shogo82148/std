@@ -21,24 +21,37 @@ type Object interface {
 	Exported() bool
 	Id() string
 
+	// String returns a human-readable string of the object.
 	String() string
 
+	// order reflects a package-level object's source order: if object
+	// a is before object b in the source, then a.order() < b.order().
+	// order returns a value > 0 for package-level objects; it returns
+	// 0 for all other objects (including objects in file scopes).
 	order() uint32
 
+	// color returns the object's color.
 	color() color
 
+	// setType sets the type of the object.
 	setType(Type)
 
+	// setOrder sets the order number of the object. It must be > 0.
 	setOrder(uint32)
 
+	// setColor sets the object's color. It must not be white.
 	setColor(color color)
 
+	// setParent sets the parent scope of the object.
 	setParent(*Scope)
 
+	// sameId reports whether obj.Id() and Id(pkg, name) are the same.
 	sameId(pkg *Package, name string) bool
 
+	// scopePos returns the start position of the scope of this Object
 	scopePos() syntax.Pos
 
+	// setScopePos sets the start position of the scope for this Object.
 	setScopePos(pos syntax.Pos)
 }
 

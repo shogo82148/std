@@ -64,6 +64,9 @@ func (e *ArgumentError) Unwrap() error
 // vendored packages. See https://golang.org/s/go15vendor.
 // If possible, external implementations should implement ImporterFrom.
 type Importer interface {
+	// Import returns the imported package for the given import path.
+	// The semantics is like for ImporterFrom.ImportFrom except that
+	// dir and mode are ignored (since they are not present).
 	Import(path string) (*Package, error)
 }
 
@@ -74,8 +77,22 @@ type ImportMode int
 // supports vendoring per https://golang.org/s/go15vendor.
 // Use go/importer to obtain an ImporterFrom implementation.
 type ImporterFrom interface {
+	// Importer is present for backward-compatibility. Calling
+	// Import(path) is the same as calling ImportFrom(path, "", 0);
+	// i.e., locally vendored packages may not be found.
+	// The types package does not call Import if an ImporterFrom
+	// is present.
 	Importer
 
+	// ImportFrom returns the imported package for the given import
+	// path when imported by a package file located in dir.
+	// If the import failed, besides returning an error, ImportFrom
+	// is encouraged to cache and return a package anyway, if one
+	// was created. This will reduce package inconsistencies and
+	// follow-on type checker errors due to the missing package.
+	// The mode value must be 0; it is reserved for future use.
+	// Two calls to ImportFrom with the same path and dir must
+	// return the same package.
 	ImportFrom(path, dir string, mode ImportMode) (*Package, error)
 }
 

@@ -25,12 +25,18 @@ type CommonType struct {
 // software evolves. For instance, it might make sense for GobEncode
 // to include a version number in the encoding.
 type GobEncoder interface {
+	// GobEncode returns a byte slice representing the encoding of the
+	// receiver for transmission to a GobDecoder, usually of the same
+	// concrete type.
 	GobEncode() ([]byte, error)
 }
 
 // GobDecoder is the interface describing data that provides its own
 // routine for decoding transmitted values sent by a GobEncoder.
 type GobDecoder interface {
+	// GobDecode overwrites the receiver, which must be a pointer,
+	// with the value represented by the byte slice, which was written
+	// by GobEncode, usually for the same concrete type.
 	GobDecode([]byte) error
 }
 

@@ -8,10 +8,19 @@ package types2
 
 // Sizes defines the sizing functions for package unsafe.
 type Sizes interface {
+	// Alignof returns the alignment of a variable of type T.
+	// Alignof must implement the alignment guarantees required by the spec.
+	// The result must be >= 1.
 	Alignof(T Type) int64
 
+	// Offsetsof returns the offsets of the given struct fields, in bytes.
+	// Offsetsof must implement the offset guarantees required by the spec.
+	// A negative entry in the result indicates that the struct is too large.
 	Offsetsof(fields []*Var) []int64
 
+	// Sizeof returns the size of a variable of type T.
+	// Sizeof must implement the size guarantees required by the spec.
+	// A negative result indicates that T is too large.
 	Sizeof(T Type) int64
 }
 

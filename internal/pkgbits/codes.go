@@ -9,8 +9,10 @@ package pkgbits
 // Code types are preferable for enum types, because they allow
 // Decoder to detect desyncs.
 type Code interface {
+	// Marker returns the SyncMarker for the Code's dynamic type.
 	Marker() SyncMarker
 
+	// Value returns the Code's ordinal value.
 	Value() int
 }
 

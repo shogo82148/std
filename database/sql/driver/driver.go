@@ -70,6 +70,15 @@ type NamedValue struct {
 // データベースドライバーは、コンテキストへのアクセスと、接続プールの名前の解析を一度だけ行うために、
 // 接続ごとに一度ずつではなく、DriverContextを実装することもできます。
 type Driver interface {
+	// Open returns a new connection to the database.
+	// The name is a string in a driver-specific format.
+	//
+	// Open may return a cached connection (one previously
+	// closed), but doing so is unnecessary; the sql package
+	// maintains a pool of idle connections for efficient re-use.
+	//
+	// The returned connection is only used by one goroutine at a
+	// time.
 	Open(name string) (Conn, error)
 }
 
@@ -78,6 +87,8 @@ type Driver interface {
 // これにより、接続ごとにDriverのOpenメソッドを呼び出すのではなく、名前を1回だけ解析することができ、
 // またper-Connコンテキストにアクセスすることもできます。
 type DriverContext interface {
+	// OpenConnector must parse the name in the same format that Driver.Open
+	// parses the name parameter.
 	OpenConnector(name string) (Connector, error)
 }
 
@@ -87,8 +98,24 @@ type DriverContext interface {
 //
 // コネクタがio.Closerを実装している場合、sqlパッケージのDB.CloseメソッドはCloseを呼び出し、エラー（あれば）を返します。
 type Connector interface {
+	// Connect returns a connection to the database.
+	// Connect may return a cached connection (one previously
+	// closed), but doing so is unnecessary; the sql package
+	// maintains a pool of idle connections for efficient re-use.
+	//
+	// The provided context.Context is for dialing purposes only
+	// (see net.DialContext) and should not be stored or used for
+	// other purposes. A default timeout should still be used
+	// when dialing as a connection pool may call Connect
+	// asynchronously to any query.
+	//
+	// The returned connection is only used by one goroutine at a
+	// time.
 	Connect(context.Context) (Conn, error)
 
+	// Driver returns the underlying Driver of the Connector,
+	// mainly to maintain compatibility with the Driver method
+	// on sql.DB.
 	Driver() Driver
 }
 
@@ -166,15 +193,33 @@ type QueryerContext interface {
 //
 // Connは状態を保持していると想定されています。
 type Conn interface {
+	// Prepare returns a prepared statement, bound to this connection.
 	Prepare(query string) (Stmt, error)
 
+	// Close invalidates and potentially stops any current
+	// prepared statements and transactions, marking this
+	// connection as no longer in use.
+	//
+	// Because the sql package maintains a free pool of
+	// connections and only calls Close when there's a surplus of
+	// idle connections, it shouldn't be necessary for drivers to
+	// do their own connection caching.
+	//
+	// Drivers must ensure all network calls made by Close
+	// do not block indefinitely (e.g. apply a timeout).
 	Close() error
 
+	// Begin starts and returns a new transaction.
+	//
+	// Deprecated: Drivers should implement ConnBeginTx instead (or additionally).
 	Begin() (Tx, error)
 }
 
 // ConnPrepareContextはコンテキストを使用してConnインターフェースを拡張します。
 type ConnPrepareContext interface {
+	// PrepareContext returns a prepared statement, bound to this connection.
+	// context is for the preparation of the statement,
+	// it must not store the context within the statement itself.
 	PrepareContext(ctx context.Context, query string) (Stmt, error)
 }
 
@@ -193,11 +238,26 @@ type TxOptions struct {
 
 // ConnBeginTxは、コンテキストとTxOptionsを追加してConnインタフェースを拡張します。
 type ConnBeginTx interface {
+	// BeginTx starts and returns a new transaction.
+	// If the context is canceled by the user the sql package will
+	// call Tx.Rollback before discarding and closing the connection.
+	//
+	// This must check opts.Isolation to determine if there is a set
+	// isolation level. If the driver does not support a non-default
+	// level and one is set or if there is a non-default isolation level
+	// that is not supported, an error must be returned.
+	//
+	// This must also check opts.ReadOnly to determine if the read-only
+	// value is true to either set the read-only transaction property if supported
+	// or return an error if it is not supported.
 	BeginTx(ctx context.Context, opts TxOptions) (Tx, error)
 }
 
 // SessionResetterは、Connによって実装される可能性があります。これにより、ドライバは接続に関連付けられたセッション状態をリセットし、悪い接続を通知することができます。
 type SessionResetter interface {
+	// ResetSession is called prior to executing a query on the connection
+	// if the connection has been used before. If the driver returns ErrBadConn
+	// the connection is discarded.
 	ResetSession(ctx context.Context) error
 }
 
@@ -205,34 +265,73 @@ type SessionResetter interface {
 //
 // 実装されている場合、ドライバーはクエリから基礎となるエラーを返すことができます。たとえ接続プールによって接続が破棄されるべきであってもです。
 type Validator interface {
+	// IsValid is called prior to placing the connection into the
+	// connection pool. The connection will be discarded if false is returned.
 	IsValid() bool
 }
 
 // Resultはクエリの実行結果です。
 type Result interface {
+	// LastInsertId returns the database's auto-generated ID
+	// after, for example, an INSERT into a table with primary
+	// key.
 	LastInsertId() (int64, error)
 
+	// RowsAffected returns the number of rows affected by the
+	// query.
 	RowsAffected() (int64, error)
 }
 
 // Stmtはプリペアドステートメントです。これはConnにバインドされており、複数のゴルーチンで同時に使用されません。
 type Stmt interface {
+	// Close closes the statement.
+	//
+	// As of Go 1.1, a Stmt will not be closed if it's in use
+	// by any queries.
+	//
+	// Drivers must ensure all network calls made by Close
+	// do not block indefinitely (e.g. apply a timeout).
 	Close() error
 
+	// NumInput returns the number of placeholder parameters.
+	//
+	// If NumInput returns >= 0, the sql package will sanity check
+	// argument counts from callers and return errors to the caller
+	// before the statement's Exec or Query methods are called.
+	//
+	// NumInput may also return -1, if the driver doesn't know
+	// its number of placeholders. In that case, the sql package
+	// will not sanity check Exec or Query argument counts.
 	NumInput() int
 
+	// Exec executes a query that doesn't return rows, such
+	// as an INSERT or UPDATE.
+	//
+	// Deprecated: Drivers should implement StmtExecContext instead (or additionally).
 	Exec(args []Value) (Result, error)
 
+	// Query executes a query that may return rows, such as a
+	// SELECT.
+	//
+	// Deprecated: Drivers should implement StmtQueryContext instead (or additionally).
 	Query(args []Value) (Rows, error)
 }
 
 // StmtExecContextはコンテキストを提供することにより、Stmtインターフェースを拡張します。
 type StmtExecContext interface {
+	// ExecContext executes a query that doesn't return rows, such
+	// as an INSERT or UPDATE.
+	//
+	// ExecContext must honor the context timeout and return when it is canceled.
 	ExecContext(ctx context.Context, args []NamedValue) (Result, error)
 }
 
 // StmtQueryContextはコンテキストを持つQueryを提供することにより、Stmtインターフェースを強化します。
 type StmtQueryContext interface {
+	// QueryContext executes a query that may return rows, such as a
+	// SELECT.
+	//
+	// QueryContext must honor the context timeout and return when it is canceled.
 	QueryContext(ctx context.Context, args []NamedValue) (Rows, error)
 }
 
@@ -246,21 +345,42 @@ var ErrRemoveArgument = errors.New("driver: remove argument from query")
 // CheckNamedValueがErrRemoveArgumentを返す場合、NamedValueは最終的なクエリ引数に含まれません。これはクエリ自体に特殊なオプションを渡すために使用される場合があります。
 // ErrSkipが返された場合、列コンバーターのエラーチェックパスが引数に使用されます。ドライバは、独自の特殊なケースを使い果たした後にErrSkipを返すことを望むかもしれません。
 type NamedValueChecker interface {
+	// CheckNamedValue is called before passing arguments to the driver
+	// and is called in place of any ColumnConverter. CheckNamedValue must do type
+	// validation and conversion as appropriate for the driver.
 	CheckNamedValue(*NamedValue) error
 }
 
 // ColumnConverterは、ステートメントが自身の列の型を認識しており、任意の型からドライバーのValueに変換できる場合、Stmtによってオプションで実装されることがあります。
 // 廃止予定 : ドライバーはNamedValueCheckerを実装する必要があります。
 type ColumnConverter interface {
+	// ColumnConverter returns a ValueConverter for the provided
+	// column index. If the type of a specific column isn't known
+	// or shouldn't be handled specially, DefaultValueConverter
+	// can be returned.
 	ColumnConverter(idx int) ValueConverter
 }
 
 // Rowsは実行されたクエリの結果に対するイテレータです。
 type Rows interface {
+	// Columns returns the names of the columns. The number of
+	// columns of the result is inferred from the length of the
+	// slice. If a particular column name isn't known, an empty
+	// string should be returned for that entry.
 	Columns() []string
 
+	// Close closes the rows iterator.
 	Close() error
 
+	// Next is called to populate the next row of data into
+	// the provided slice. The provided slice will be the same
+	// size as the Columns() are wide.
+	//
+	// Next should return io.EOF when there are no more rows.
+	//
+	// The dest should not be written to outside of Next. Care
+	// should be taken when closing Rows not to modify
+	// a buffer held in dest.
 	Next(dest []Value) error
 }
 
@@ -268,8 +388,14 @@ type Rows interface {
 type RowsNextResultSet interface {
 	Rows
 
+	// HasNextResultSet is called at the end of the current result set and
+	// reports whether there is another result set after the current one.
 	HasNextResultSet() bool
 
+	// NextResultSet advances the driver to the next result set even
+	// if there are remaining rows in the current result set.
+	//
+	// NextResultSet should return io.EOF when there are no more result sets.
 	NextResultSet() error
 }
 

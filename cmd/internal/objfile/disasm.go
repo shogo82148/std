@@ -58,5 +58,7 @@ func (d *Disasm) Print(w io.Writer, filter *regexp.Regexp, start, end uint64, pr
 func (d *Disasm) Decode(start, end uint64, relocs []Reloc, gnuAsm bool, f func(pc, size uint64, file string, line int, text string))
 
 type Liner interface {
+	// Given a pc, returns the corresponding file, line, and function data.
+	// If unknown, returns "",0,nil.
 	PCToLine(uint64) (string, int, *gosym.Func)
 }

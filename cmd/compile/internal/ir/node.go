@@ -16,20 +16,25 @@ import (
 
 // A Node is the abstract interface to an IR node.
 type Node interface {
+	// Formatting
 	Format(s fmt.State, verb rune)
 
+	// Source position.
 	Pos() src.XPos
 	SetPos(x src.XPos)
 
+	// For making copies. For Copy and SepCopy.
 	copy() Node
 
 	doChildren(func(Node) bool) bool
 	editChildren(func(Node) Node)
 	editChildrenWithHidden(func(Node) Node)
 
+	// Abstract graph structure, for generic traversals.
 	Op() Op
 	Init() Nodes
 
+	// Fields specific to certain Ops only.
 	Type() *types.Type
 	SetType(t *types.Type)
 	Name() *Name
@@ -37,9 +42,14 @@ type Node interface {
 	Val() constant.Value
 	SetVal(v constant.Value)
 
+	// Storage for analysis passes.
 	Esc() uint16
 	SetEsc(x uint16)
 
+	// Typecheck values:
+	//  0 means the node is not typechecked
+	//  1 means the node is completely typechecked
+	//  2 means typechecking of the node is in progress
 	Typecheck() uint8
 	SetTypecheck(x uint8)
 	NonNil() bool

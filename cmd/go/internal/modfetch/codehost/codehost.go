@@ -26,20 +26,48 @@ const (
 // A Repo must be safe for simultaneous use by multiple goroutines,
 // and callers must not modify returned values, which may be cached and shared.
 type Repo interface {
+	// CheckReuse checks whether the old origin information
+	// remains up to date. If so, whatever cached object it was
+	// taken from can be reused.
+	// The subdir gives subdirectory name where the module root is expected to be found,
+	// "" for the root or "sub/dir" for a subdirectory (no trailing slash).
 	CheckReuse(ctx context.Context, old *Origin, subdir string) error
 
+	// List lists all tags with the given prefix.
 	Tags(ctx context.Context, prefix string) (*Tags, error)
 
+	// Stat returns information about the revision rev.
+	// A revision can be any identifier known to the underlying service:
+	// commit hash, branch, tag, and so on.
 	Stat(ctx context.Context, rev string) (*RevInfo, error)
 
+	// Latest returns the latest revision on the default branch,
+	// whatever that means in the underlying implementation.
 	Latest(ctx context.Context) (*RevInfo, error)
 
+	// ReadFile reads the given file in the file tree corresponding to revision rev.
+	// It should refuse to read more than maxSize bytes.
+	//
+	// If the requested file does not exist it should return an error for which
+	// os.IsNotExist(err) returns true.
 	ReadFile(ctx context.Context, rev, file string, maxSize int64) (data []byte, err error)
 
+	// ReadZip downloads a zip file for the subdir subdirectory
+	// of the given revision to a new file in a given temporary directory.
+	// It should refuse to read more than maxSize bytes.
+	// It returns a ReadCloser for a streamed copy of the zip file.
+	// All files in the zip file are expected to be
+	// nested in a single top-level directory, whose name is not specified.
 	ReadZip(ctx context.Context, rev, subdir string, maxSize int64) (zip io.ReadCloser, err error)
 
+	// RecentTag returns the most recent tag on rev or one of its predecessors
+	// with the given prefix. allowed may be used to filter out unwanted versions.
 	RecentTag(ctx context.Context, rev, prefix string, allowed func(tag string) bool) (tag string, err error)
 
+	// DescendsFrom reports whether rev or any of its ancestors has the given tag.
+	//
+	// DescendsFrom must return true for any tag returned by RecentTag for the
+	// same revision.
 	DescendsFrom(ctx context.Context, rev, tag string) (bool, error)
 }
 
