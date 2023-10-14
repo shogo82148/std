@@ -13,6 +13,8 @@ package main
 import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/token"
+
+	"github.com/shogo82148/std/cmd/internal/edit"
 )
 
 // A Package collects information about the package we're going to write.

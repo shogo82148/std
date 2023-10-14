@@ -36,16 +36,24 @@ type Config struct {
 // Image is a finite rectangular grid of color.Color values taken from a color
 // model.
 type Image interface {
+	// ColorModel returns the Image's color model.
 	ColorModel() color.Model
-
+	// Bounds returns the domain for which At can return non-zero color.
+	// The bounds do not necessarily contain the point (0, 0).
 	Bounds() Rectangle
-
+	// At returns the color of the pixel at (x, y).
+	// At(Bounds().Min.X, Bounds().Min.Y) returns the upper-left pixel of the grid.
+	// At(Bounds().Max.X-1, Bounds().Max.Y-1) returns the lower-right one.
 	At(x, y int) color.Color
 }
 
 // RGBA64Image is an Image whose pixels can be converted directly to a
 // color.RGBA64.
 type RGBA64Image interface {
+	// RGBA64At returns the RGBA64 color of the pixel at (x, y). It is
+	// equivalent to calling At(x, y).RGBA() and converting the resulting
+	// 32-bit return values to a color.RGBA64, but it can avoid allocations
+	// from converting concrete color types to the color.Color interface type.
 	RGBA64At(x, y int) color.RGBA64
 	Image
 }
@@ -56,6 +64,7 @@ type RGBA64Image interface {
 // color model is not a color.Palette, then ColorIndexAt's behavior is
 // undefined.
 type PalettedImage interface {
+	// ColorIndexAt returns the palette index of the pixel at (x, y).
 	ColorIndexAt(x, y int) uint8
 	Image
 }

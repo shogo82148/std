@@ -5,6 +5,7 @@
 package main
 
 import (
+	"github.com/shogo82148/std/cmd/internal/archive"
 	"github.com/shogo82148/std/io/fs"
 )
 

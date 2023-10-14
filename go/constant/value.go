@@ -34,12 +34,20 @@ const (
 
 // A Value represents the value of a Go constant.
 type Value interface {
+	// Kind returns the value kind.
 	Kind() Kind
 
+	// String returns a short, quoted (human-readable) form of the value.
+	// For numeric values, the result may be an approximation;
+	// for String values the result may be a shortened string.
+	// Use ExactString for a string representing a value exactly.
 	String() string
 
+	// ExactString returns an exact, quoted (human-readable) form of the value.
+	// If the Value is of Kind String, use StringVal to obtain the unquoted string.
 	ExactString() string
 
+	// Prevent external implementations.
 	implementsValue()
 }
 
