@@ -8,7 +8,7 @@
 // https://golang.org/doc/articles/laws_of_reflection.html
 package reflect
 
-import "github.com/ethereum/go-ethereum/accounts/abi"
+import "github.com/shogo82148/std/internal/abi"
 
 // TypeはGoの型の表現です。
 //
