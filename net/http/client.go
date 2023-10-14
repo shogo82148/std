@@ -157,12 +157,7 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 //
 // If the returned error is nil, the Response will contain a non-nil Body that the user must close. If the Body is not closed without being fully read until EOF, the underlying RoundTripper of the Client (usually the Transport) may be unable to reuse the persistent TCP connection to the server for the next "keep-alive" request.
 //
-<<<<<<< HEAD
-// 非nilの場合、リクエストのBodyは、Transportによって、エラーが発生した場合でも閉じられます。
-// Doが返された後、Bodyは非同期に閉じられる可能性があります。
-=======
 // If the request Body is not nil, it will be closed by the underlying Transport. The same applies even in case of an error.
->>>>>>> release-branch.go1.21
 //
 // If an error occurs, any Response can be ignored. A non-nil Response and non-nil error are only returned if CheckRedirect fails, and even in that case, the returned Response.Body is already closed.
 //
