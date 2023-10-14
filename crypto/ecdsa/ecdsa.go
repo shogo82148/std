@@ -32,7 +32,7 @@ func (k *PublicKey) ECDH() (*ecdh.PublicKey, error)
 // Equal reports whether pub and x have the same value.
 //
 // Two keys are only considered to have the same value if they have the same Curve value.
-// Note that for example elliptic.P256() and elliptic.P256().Params() are different
+// Note that for example [elliptic.P256] and elliptic.P256().Params() are different
 // values, as the latter is a generic not constant time implementation.
 func (pub *PublicKey) Equal(x crypto.PublicKey) bool
 
@@ -44,7 +44,7 @@ type PrivateKey struct {
 
 // ECDH returns k as a [ecdh.PrivateKey]. It returns an error if the key is
 // invalid according to the definition of [ecdh.Curve.NewPrivateKey], or if the
-// Curve is not supported by crypto/ecdh.
+// Curve is not supported by [crypto/ecdh].
 func (k *PrivateKey) ECDH() (*ecdh.PrivateKey, error)
 
 // Public returns the public key corresponding to priv.
@@ -52,7 +52,7 @@ func (priv *PrivateKey) Public() crypto.PublicKey
 
 // Equal reports whether priv and x have the same value.
 //
-// See PublicKey.Equal for details on how Curve is compared.
+// See [PublicKey.Equal] for details on how Curve is compared.
 func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool
 
 // Sign signs digest with priv, reading randomness from rand. The opts argument
@@ -61,7 +61,7 @@ func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool
 //
 // This method implements crypto.Signer, which is an interface to support keys
 // where the private part is kept in, for example, a hardware module. Common
-// uses can use the SignASN1 function in this package directly.
+// uses can use the [SignASN1] function in this package directly.
 func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
 
 // GenerateKey generates a new ECDSA private key for the specified curve.

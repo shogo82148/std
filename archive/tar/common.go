@@ -139,7 +139,7 @@ type Header struct {
 // FileInfo returns an fs.FileInfo for the Header.
 func (h *Header) FileInfo() fs.FileInfo
 
-// FileInfoHeader creates a partially-populated Header from fi.
+// FileInfoHeader creates a partially-populated [Header] from fi.
 // If fi describes a symlink, FileInfoHeader records link as the link target.
 // If fi describes a directory, a slash is appended to the name.
 //

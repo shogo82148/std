@@ -26,14 +26,14 @@ const (
 // Table is a 256-word table representing the polynomial for efficient processing.
 type Table [256]uint64
 
-// MakeTable returns a Table constructed from the specified polynomial.
-// The contents of this Table must not be modified.
+// MakeTable returns a [Table] constructed from the specified polynomial.
+// The contents of this [Table] must not be modified.
 func MakeTable(poly uint64) *Table
 
 // New creates a new hash.Hash64 computing the CRC-64 checksum using the
-// polynomial represented by the Table. Its Sum method will lay the
+// polynomial represented by the [Table]. Its Sum method will lay the
 // value out in big-endian byte order. The returned Hash64 also
-// implements encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
+// implements [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to
 // marshal and unmarshal the internal state of the hash.
 func New(tab *Table) hash.Hash64
 
@@ -41,5 +41,5 @@ func New(tab *Table) hash.Hash64
 func Update(crc uint64, tab *Table, p []byte) uint64
 
 // Checksum returns the CRC-64 checksum of data
-// using the polynomial represented by the Table.
+// using the polynomial represented by the [Table].
 func Checksum(data []byte, tab *Table) uint64

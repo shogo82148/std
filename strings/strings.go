@@ -61,7 +61,7 @@ func LastIndexByte(s string, c byte) int
 //	n < 0: all substrings
 //
 // Edge cases for s and sep (for example, empty strings) are handled
-// as described in the documentation for Split.
+// as described in the documentation for [Split].
 //
 // To split around the first instance of a separator, see Cut.
 func SplitN(s, sep string, n int) []string
@@ -88,7 +88,7 @@ func SplitAfterN(s, sep string, n int) []string
 // If sep is empty, Split splits after each UTF-8 sequence. If both s
 // and sep are empty, Split returns an empty slice.
 //
-// It is equivalent to SplitN with a count of -1.
+// It is equivalent to [SplitN] with a count of -1.
 //
 // To split around the first instance of a separator, see Cut.
 func Split(s, sep string) []string
@@ -102,7 +102,7 @@ func Split(s, sep string) []string
 // If sep is empty, SplitAfter splits after each UTF-8 sequence. If
 // both s and sep are empty, SplitAfter returns an empty slice.
 //
-// It is equivalent to SplitAfterN with a count of -1.
+// It is equivalent to [SplitAfterN] with a count of -1.
 func SplitAfter(s, sep string) []string
 
 // Fields splits the string s around each instance of one or more consecutive white space
@@ -199,13 +199,13 @@ func Trim(s, cutset string) string
 // TrimLeft returns a slice of the string s with all leading
 // Unicode code points contained in cutset removed.
 //
-// To remove a prefix, use TrimPrefix instead.
+// To remove a prefix, use [TrimPrefix] instead.
 func TrimLeft(s, cutset string) string
 
 // TrimRight returns a slice of the string s, with all trailing
 // Unicode code points contained in cutset removed.
 //
-// To remove a suffix, use TrimSuffix instead.
+// To remove a suffix, use [TrimSuffix] instead.
 func TrimRight(s, cutset string) string
 
 // TrimSpace returns a slice of the string s, with all leading

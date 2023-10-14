@@ -25,12 +25,12 @@ import (
 	"github.com/shogo82148/std/hash"
 )
 
-// New returns a new HMAC hash using the given hash.Hash type and key.
-// New functions like sha256.New from crypto/sha256 can be used as h.
+// New returns a new HMAC hash using the given [hash.Hash] type and key.
+// New functions like sha256.New from [crypto/sha256] can be used as h.
 // h must return a new Hash every time it is called.
 // Note that unlike other hash implementations in the standard library,
-// the returned Hash does not implement encoding.BinaryMarshaler
-// or encoding.BinaryUnmarshaler.
+// the returned Hash does not implement [encoding.BinaryMarshaler]
+// or [encoding.BinaryUnmarshaler].
 func New(h func() hash.Hash, key []byte) hash.Hash
 
 // Equal compares two MACs for equality without leaking timing information.

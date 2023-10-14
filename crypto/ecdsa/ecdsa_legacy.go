@@ -13,7 +13,7 @@ import (
 // using the private key, priv. If the hash is longer than the bit-length of the
 // private key's curve order, the hash will be truncated to that length. It
 // returns the signature as a pair of integers. Most applications should use
-// SignASN1 instead of dealing directly with r, s.
+// [SignASN1] instead of dealing directly with r, s.
 func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
 
 // Verify verifies the signature in r, s of hash using the public key, pub. Its

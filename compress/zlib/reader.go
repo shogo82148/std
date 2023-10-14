@@ -50,7 +50,7 @@ type Resetter interface {
 // data than necessary from r.
 // It is the caller's responsibility to call Close on the ReadCloser when done.
 //
-// The ReadCloser returned by NewReader also implements [Resetter].
+// The [io.ReadCloser] returned by NewReader also implements [Resetter].
 func NewReader(r io.Reader) (io.ReadCloser, error)
 
 // NewReaderDict is like [NewReader] but uses a preset dictionary.

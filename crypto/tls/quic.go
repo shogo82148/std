@@ -31,7 +31,7 @@ type QUICConn struct {
 	sessionTicketSent bool
 }
 
-// A QUICConfig configures a QUICConn.
+// A QUICConfig configures a [QUICConn].
 type QUICConfig struct {
 	TLSConfig *Config
 }
@@ -109,20 +109,20 @@ func QUICClient(config *QUICConfig) *QUICConn
 func QUICServer(config *QUICConfig) *QUICConn
 
 // Start starts the client or server handshake protocol.
-// It may produce connection events, which may be read with NextEvent.
+// It may produce connection events, which may be read with [QUICConn.NextEvent].
 //
 // Start must be called at most once.
 func (q *QUICConn) Start(ctx context.Context) error
 
 // NextEvent returns the next event occurring on the connection.
-// It returns an event with a Kind of QUICNoEvent when no events are available.
+// It returns an event with a Kind of [QUICNoEvent] when no events are available.
 func (q *QUICConn) NextEvent() QUICEvent
 
 // Close closes the connection and stops any in-progress handshake.
 func (q *QUICConn) Close() error
 
 // HandleData handles handshake bytes received from the peer.
-// It may produce connection events, which may be read with NextEvent.
+// It may produce connection events, which may be read with [QUICConn.NextEvent].
 func (q *QUICConn) HandleData(level QUICEncryptionLevel, data []byte) error
 
 type QUICSessionTicketOptions struct {
@@ -131,7 +131,7 @@ type QUICSessionTicketOptions struct {
 }
 
 // SendSessionTicket sends a session ticket to the client.
-// It produces connection events, which may be read with NextEvent.
+// It produces connection events, which may be read with [QUICConn.NextEvent].
 // Currently, it can only be called once.
 func (q *QUICConn) SendSessionTicket(opts QUICSessionTicketOptions) error
 
@@ -141,5 +141,5 @@ func (q *QUICConn) ConnectionState() ConnectionState
 // SetTransportParameters sets the transport parameters to send to the peer.
 //
 // Server connections may delay setting the transport parameters until after
-// receiving the client's transport parameters. See QUICTransportParametersRequired.
+// receiving the client's transport parameters. See [QUICTransportParametersRequired].
 func (q *QUICConn) SetTransportParameters(params []byte)

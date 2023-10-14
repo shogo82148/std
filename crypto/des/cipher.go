@@ -15,8 +15,8 @@ type KeySizeError int
 
 func (k KeySizeError) Error() string
 
-// NewCipher creates and returns a new cipher.Block.
+// NewCipher creates and returns a new [cipher.Block].
 func NewCipher(key []byte) (cipher.Block, error)
 
-// NewTripleDESCipher creates and returns a new cipher.Block.
+// NewTripleDESCipher creates and returns a new [cipher.Block].
 func NewTripleDESCipher(key []byte) (cipher.Block, error)

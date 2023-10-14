@@ -26,8 +26,8 @@ type Index struct {
 	sa   ints
 }
 
-// New creates a new Index for data.
-// Index creation time is O(N) for N = len(data).
+// New creates a new [Index] for data.
+// [Index] creation time is O(N) for N = len(data).
 func New(data []byte) *Index
 
 // Read reads the index from r into x; x must not be nil.

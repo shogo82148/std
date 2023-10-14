@@ -4,7 +4,7 @@
 
 package ecdh
 
-// X25519 returns a Curve which implements the X25519 function over Curve25519
+// X25519 returns a [Curve] which implements the X25519 function over Curve25519
 // (RFC 7748, Section 5).
 //
 // Multiple invocations of this function will return the same value, so it can

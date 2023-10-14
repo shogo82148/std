@@ -6,7 +6,7 @@ package cipher
 
 import "github.com/shogo82148/std/io"
 
-// StreamReader wraps a Stream into an io.Reader. It calls XORKeyStream
+// StreamReader wraps a [Stream] into an [io.Reader]. It calls XORKeyStream
 // to process each slice of data which passes through.
 type StreamReader struct {
 	S Stream
@@ -15,10 +15,10 @@ type StreamReader struct {
 
 func (r StreamReader) Read(dst []byte) (n int, err error)
 
-// StreamWriter wraps a Stream into an io.Writer. It calls XORKeyStream
-// to process each slice of data which passes through. If any Write call
-// returns short then the StreamWriter is out of sync and must be discarded.
-// A StreamWriter has no internal buffering; Close does not need
+// StreamWriter wraps a [Stream] into an io.Writer. It calls XORKeyStream
+// to process each slice of data which passes through. If any [StreamWriter.Write]
+// call returns short then the StreamWriter is out of sync and must be discarded.
+// A StreamWriter has no internal buffering; [StreamWriter.Close] does not need
 // to be called to flush write data.
 type StreamWriter struct {
 	S   Stream

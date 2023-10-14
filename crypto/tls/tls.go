@@ -24,7 +24,7 @@ func Server(conn net.Conn, config *Config) *Conn
 func Client(conn net.Conn, config *Config) *Conn
 
 // NewListener creates a Listener which accepts connections from an inner
-// Listener and wraps each connection with Server.
+// Listener and wraps each connection with [Server].
 // The configuration config must be non-nil and must include
 // at least one certificate or else set GetCertificate.
 func NewListener(inner net.Listener, config *Config) net.Listener
@@ -41,10 +41,10 @@ func Listen(network, laddr string, config *Config) (net.Listener, error)
 // handshake as a whole.
 //
 // DialWithDialer interprets a nil configuration as equivalent to the zero
-// configuration; see the documentation of Config for the defaults.
+// configuration; see the documentation of [Config] for the defaults.
 //
 // DialWithDialer uses context.Background internally; to specify the context,
-// use Dialer.DialContext with NetDialer set to the desired dialer.
+// use [Dialer.DialContext] with NetDialer set to the desired dialer.
 func DialWithDialer(dialer *net.Dialer, network, addr string, config *Config) (*Conn, error)
 
 // Dial connects to the given network address using net.Dial
@@ -73,10 +73,10 @@ type Dialer struct {
 // Dial connects to the given network address and initiates a TLS
 // handshake, returning the resulting TLS connection.
 //
-// The returned Conn, if any, will always be of type *Conn.
+// The returned [Conn], if any, will always be of type *[Conn].
 //
 // Dial uses context.Background internally; to specify the context,
-// use DialContext.
+// use [Dialer.DialContext].
 func (d *Dialer) Dial(network, addr string) (net.Conn, error)
 
 // DialContext connects to the given network address and initiates a TLS
@@ -87,7 +87,7 @@ func (d *Dialer) Dial(network, addr string) (net.Conn, error)
 // connected, any expiration of the context will not affect the
 // connection.
 //
-// The returned Conn, if any, will always be of type *Conn.
+// The returned [Conn], if any, will always be of type *[Conn].
 func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error)
 
 // LoadX509KeyPair reads and parses a public/private key pair from a pair

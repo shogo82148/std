@@ -61,7 +61,7 @@ func (s *SessionState) Bytes() ([]byte, error)
 // ParseSessionState parses a [SessionState] encoded by [SessionState.Bytes].
 func ParseSessionState(data []byte) (*SessionState, error)
 
-// EncryptTicket encrypts a ticket with the Config's configured (or default)
+// EncryptTicket encrypts a ticket with the [Config]'s configured (or default)
 // session ticket keys. It can be used as a [Config.WrapSession] implementation.
 func (c *Config) EncryptTicket(cs ConnectionState, ss *SessionState) ([]byte, error)
 

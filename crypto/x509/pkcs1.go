@@ -8,24 +8,24 @@ import (
 	"github.com/shogo82148/std/crypto/rsa"
 )
 
-// ParsePKCS1PrivateKey parses an RSA private key in PKCS #1, ASN.1 DER form.
+// ParsePKCS1PrivateKey parses an [RSA] private key in PKCS #1, ASN.1 DER form.
 //
 // This kind of key is commonly encoded in PEM blocks of type "RSA PRIVATE KEY".
 func ParsePKCS1PrivateKey(der []byte) (*rsa.PrivateKey, error)
 
-// MarshalPKCS1PrivateKey converts an RSA private key to PKCS #1, ASN.1 DER form.
+// MarshalPKCS1PrivateKey converts an [RSA] private key to PKCS #1, ASN.1 DER form.
 //
 // This kind of key is commonly encoded in PEM blocks of type "RSA PRIVATE KEY".
-// For a more flexible key format which is not RSA specific, use
-// MarshalPKCS8PrivateKey.
+// For a more flexible key format which is not [RSA] specific, use
+// [MarshalPKCS8PrivateKey].
 func MarshalPKCS1PrivateKey(key *rsa.PrivateKey) []byte
 
-// ParsePKCS1PublicKey parses an RSA public key in PKCS #1, ASN.1 DER form.
+// ParsePKCS1PublicKey parses an [RSA] public key in PKCS #1, ASN.1 DER form.
 //
 // This kind of key is commonly encoded in PEM blocks of type "RSA PUBLIC KEY".
 func ParsePKCS1PublicKey(der []byte) (*rsa.PublicKey, error)
 
-// MarshalPKCS1PublicKey converts an RSA public key to PKCS #1, ASN.1 DER form.
+// MarshalPKCS1PublicKey converts an [RSA] public key to PKCS #1, ASN.1 DER form.
 //
 // This kind of key is commonly encoded in PEM blocks of type "RSA PUBLIC KEY".
 func MarshalPKCS1PublicKey(key *rsa.PublicKey) []byte

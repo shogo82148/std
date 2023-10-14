@@ -31,7 +31,7 @@ type PSSOptions struct {
 	Hash crypto.Hash
 }
 
-// HashFunc returns opts.Hash so that PSSOptions implements crypto.SignerOpts.
+// HashFunc returns opts.Hash so that [PSSOptions] implements [crypto.SignerOpts].
 func (opts *PSSOptions) HashFunc() crypto.Hash
 
 // SignPSS calculates the signature of digest using PSS.

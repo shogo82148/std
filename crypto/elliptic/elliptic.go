@@ -23,10 +23,10 @@ import (
 //
 // Note that the conventional point at infinity (0, 0) is not considered on the
 // curve, although it can be returned by Add, Double, ScalarMult, or
-// ScalarBaseMult (but not the Unmarshal or UnmarshalCompressed functions).
+// ScalarBaseMult (but not the [Unmarshal] or [UnmarshalCompressed] functions).
 //
-// Using Curve implementations besides those returned by P224(), P256(), P384(),
-// and P521() is deprecated.
+// Using Curve implementations besides those returned by [P224], [P256], [P384],
+// and [P521] is deprecated.
 type Curve interface {
 	Params() *CurveParams
 
@@ -44,7 +44,7 @@ type Curve interface {
 // GenerateKey returns a public/private key pair. The private key is
 // generated using the given reader, which must return random data.
 //
-// Deprecated: for ECDH, use the GenerateKey methods of the crypto/ecdh package;
+// Deprecated: for ECDH, use the GenerateKey methods of the [crypto/ecdh] package;
 // for ECDSA, use the GenerateKey function of the crypto/ecdsa package.
 func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err error)
 
@@ -64,7 +64,7 @@ func MarshalCompressed(curve Curve, x, y *big.Int) []byte
 // Assert that the known curves implement unmarshaler.
 var _ = []unmarshaler{p224, p256, p384, p521}
 
-// Unmarshal converts a point, serialized by Marshal, into an x, y pair. It is
+// Unmarshal converts a point, serialized by [Marshal], into an x, y pair. It is
 // an error if the point is not in uncompressed form, is not on the curve, or is
 // the point at infinity. On error, x = nil.
 //
@@ -72,13 +72,13 @@ var _ = []unmarshaler{p224, p256, p384, p521}
 // encoding equivalent to that of the NewPublicKey methods in crypto/ecdh.
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 
-// UnmarshalCompressed converts a point, serialized by MarshalCompressed, into
+// UnmarshalCompressed converts a point, serialized by [MarshalCompressed], into
 // an x, y pair. It is an error if the point is not in compressed form, is not
 // on the curve, or is the point at infinity. On error, x = nil.
 func UnmarshalCompressed(curve Curve, data []byte) (x, y *big.Int)
 
-// P224 returns a Curve which implements NIST P-224 (FIPS 186-3, section D.2.2),
-// also known as secp224r1. The CurveParams.Name of this Curve is "P-224".
+// P224 returns a [Curve] which implements NIST P-224 (FIPS 186-3, section D.2.2),
+// also known as secp224r1. The CurveParams.Name of this [Curve] is "P-224".
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
@@ -86,8 +86,8 @@ func UnmarshalCompressed(curve Curve, data []byte) (x, y *big.Int)
 // The cryptographic operations are implemented using constant-time algorithms.
 func P224() Curve
 
-// P256 returns a Curve which implements NIST P-256 (FIPS 186-3, section D.2.3),
-// also known as secp256r1 or prime256v1. The CurveParams.Name of this Curve is
+// P256 returns a [Curve] which implements NIST P-256 (FIPS 186-3, section D.2.3),
+// also known as secp256r1 or prime256v1. The CurveParams.Name of this [Curve] is
 // "P-256".
 //
 // Multiple invocations of this function will return the same value, so it can
@@ -96,8 +96,8 @@ func P224() Curve
 // The cryptographic operations are implemented using constant-time algorithms.
 func P256() Curve
 
-// P384 returns a Curve which implements NIST P-384 (FIPS 186-3, section D.2.4),
-// also known as secp384r1. The CurveParams.Name of this Curve is "P-384".
+// P384 returns a [Curve] which implements NIST P-384 (FIPS 186-3, section D.2.4),
+// also known as secp384r1. The CurveParams.Name of this [Curve] is "P-384".
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
@@ -105,8 +105,8 @@ func P256() Curve
 // The cryptographic operations are implemented using constant-time algorithms.
 func P384() Curve
 
-// P521 returns a Curve which implements NIST P-521 (FIPS 186-3, section D.2.5),
-// also known as secp521r1. The CurveParams.Name of this Curve is "P-521".
+// P521 returns a [Curve] which implements NIST P-521 (FIPS 186-3, section D.2.5),
+// also known as secp521r1. The CurveParams.Name of this [Curve] is "P-521".
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.

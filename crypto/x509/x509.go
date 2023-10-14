@@ -35,8 +35,8 @@ import (
 // ParsePKIXPublicKey parses a public key in PKIX, ASN.1 DER form. The encoded
 // public key is a SubjectPublicKeyInfo structure (see RFC 5280, Section 4.1).
 //
-// It returns a *rsa.PublicKey, *dsa.PublicKey, *ecdsa.PublicKey,
-// ed25519.PublicKey (not a pointer), or *ecdh.PublicKey (for X25519).
+// It returns a *[rsa.PublicKey], *[dsa.PublicKey], *[ecdsa.PublicKey],
+// [ed25519.PublicKey] (not a pointer), or *[ecdh.PublicKey] (for X25519).
 // More types might be supported in the future.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
@@ -46,8 +46,8 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 // The encoded public key is a SubjectPublicKeyInfo structure
 // (see RFC 5280, Section 4.1).
 //
-// The following key types are currently supported: *rsa.PublicKey,
-// *ecdsa.PublicKey, ed25519.PublicKey (not a pointer), and *ecdh.PublicKey.
+// The following key types are currently supported: *[rsa.PublicKey],
+// *[ecdsa.PublicKey], [ed25519.PublicKey] (not a pointer), and *[ecdh.PublicKey].
 // Unsupported key types result in an error.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
@@ -233,7 +233,7 @@ type Certificate struct {
 // involves algorithms that are not currently implemented.
 var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorithm unimplemented")
 
-// An InsecureAlgorithmError indicates that the SignatureAlgorithm used to
+// An InsecureAlgorithmError indicates that the [SignatureAlgorithm] used to
 // generate the signature is not secure, and the signature has been rejected.
 //
 // To temporarily restore support for SHA-1 signatures, include the value
@@ -269,7 +269,7 @@ func (c *Certificate) CheckSignature(algo SignatureAlgorithm, signed, signature 
 
 // CheckCRLSignature checks that the signature in crl is from c.
 //
-// Deprecated: Use RevocationList.CheckSignatureFrom instead.
+// Deprecated: Use [RevocationList.CheckSignatureFrom] instead.
 func (c *Certificate) CheckCRLSignature(crl *pkix.CertificateList) error
 
 type UnhandledCriticalExtension struct{}
@@ -335,19 +335,19 @@ func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv 
 // will transparently handle PEM encoding as long as there isn't any leading
 // garbage.
 //
-// Deprecated: Use ParseRevocationList instead.
+// Deprecated: Use [ParseRevocationList] instead.
 func ParseCRL(crlBytes []byte) (*pkix.CertificateList, error)
 
 // ParseDERCRL parses a DER encoded CRL from the given bytes.
 //
-// Deprecated: Use ParseRevocationList instead.
+// Deprecated: Use [ParseRevocationList] instead.
 func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
 
 // CreateCRL returns a DER encoded CRL, signed by this Certificate, that
 // contains the given list of revoked certificates.
 //
 // Deprecated: this method does not generate an RFC 5280 conformant X.509 v2 CRL.
-// To generate a standards compliant CRL, use CreateRevocationList instead.
+// To generate a standards compliant CRL, use [CreateRevocationList] instead.
 func (c *Certificate) CreateCRL(rand io.Reader, priv any, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
 
 // CertificateRequest represents a PKCS #10, certificate signature request.
@@ -459,7 +459,7 @@ type RevocationListEntry struct {
 	ExtraExtensions []pkix.Extension
 }
 
-// RevocationList represents a Certificate Revocation List (CRL) as specified
+// RevocationList represents a [Certificate] Revocation List (CRL) as specified
 // by RFC 5280.
 type RevocationList struct {
 	// Raw contains the complete ASN.1 DER content of the CRL (tbsCertList,
@@ -521,13 +521,13 @@ type RevocationList struct {
 	ExtraExtensions []pkix.Extension
 }
 
-// CreateRevocationList creates a new X.509 v2 Certificate Revocation List,
+// CreateRevocationList creates a new X.509 v2 [Certificate] Revocation List,
 // according to RFC 5280, based on template.
 //
 // The CRL is signed by priv which should be the private key associated with
 // the public key in the issuer certificate.
 //
-// The issuer may not be nil, and the crlSign bit must be set in KeyUsage in
+// The issuer may not be nil, and the crlSign bit must be set in [KeyUsage] in
 // order to use it as a CRL issuer.
 //
 // The issuer distinguished name CRL field and authority key identifier

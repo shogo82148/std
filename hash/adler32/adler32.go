@@ -22,8 +22,8 @@ const Size = 4
 
 // New returns a new hash.Hash32 computing the Adler-32 checksum. Its
 // Sum method will lay the value out in big-endian byte order. The
-// returned Hash32 also implements encoding.BinaryMarshaler and
-// encoding.BinaryUnmarshaler to marshal and unmarshal the internal
+// returned Hash32 also implements [encoding.BinaryMarshaler] and
+// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
 // state of the hash.
 func New() hash.Hash32
 

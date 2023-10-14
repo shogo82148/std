@@ -45,7 +45,7 @@ func (w *Writer) Write(p []byte) (n int, err error)
 // w's underlying writer.
 func (w *Writer) Close() error
 
-// Reset clears the[ Writer]'s state and allows it to be reused again
+// Reset clears the [Writer]'s state and allows it to be reused again
 // as a new [Writer].
 func (w *Writer) Reset(dst io.Writer, order Order, litWidth int)
 

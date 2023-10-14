@@ -113,10 +113,10 @@ type FileHeader struct {
 	ExternalAttrs uint32
 }
 
-// FileInfo returns an fs.FileInfo for the FileHeader.
+// FileInfo returns an fs.FileInfo for the [FileHeader].
 func (h *FileHeader) FileInfo() fs.FileInfo
 
-// FileInfoHeader creates a partially-populated FileHeader from an
+// FileInfoHeader creates a partially-populated [FileHeader] from an
 // fs.FileInfo.
 // Because fs.FileInfo's Name method returns only the base name of
 // the file it describes, it may be necessary to modify the Name field
@@ -126,19 +126,19 @@ func (h *FileHeader) FileInfo() fs.FileInfo
 func FileInfoHeader(fi fs.FileInfo) (*FileHeader, error)
 
 // ModTime returns the modification time in UTC using the legacy
-// ModifiedDate and ModifiedTime fields.
+// [ModifiedDate] and [ModifiedTime] fields.
 //
-// Deprecated: Use Modified instead.
+// Deprecated: Use [Modified] instead.
 func (h *FileHeader) ModTime() time.Time
 
-// SetModTime sets the Modified, ModifiedTime, and ModifiedDate fields
+// SetModTime sets the [Modified], [ModifiedTime], and [ModifiedDate] fields
 // to the given time in UTC.
 //
-// Deprecated: Use Modified instead.
+// Deprecated: Use [Modified] instead.
 func (h *FileHeader) SetModTime(t time.Time)
 
-// Mode returns the permission and mode bits for the FileHeader.
+// Mode returns the permission and mode bits for the [FileHeader].
 func (h *FileHeader) Mode() (mode fs.FileMode)
 
-// SetMode changes the permission and mode bits for the FileHeader.
+// SetMode changes the permission and mode bits for the [FileHeader].
 func (h *FileHeader) SetMode(mode fs.FileMode)

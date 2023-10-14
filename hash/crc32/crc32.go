@@ -39,24 +39,24 @@ const (
 // Table is a 256-word table representing the polynomial for efficient processing.
 type Table [256]uint32
 
-// IEEETable is the table for the IEEE polynomial.
+// IEEETable is the table for the [IEEE] polynomial.
 var IEEETable = simpleMakeTable(IEEE)
 
-// MakeTable returns a Table constructed from the specified polynomial.
-// The contents of this Table must not be modified.
+// MakeTable returns a [Table] constructed from the specified polynomial.
+// The contents of this [Table] must not be modified.
 func MakeTable(poly uint32) *Table
 
-// New creates a new hash.Hash32 computing the CRC-32 checksum using the
-// polynomial represented by the Table. Its Sum method will lay the
+// New creates a new [hash.Hash32] computing the CRC-32 checksum using the
+// polynomial represented by the [Table]. Its Sum method will lay the
 // value out in big-endian byte order. The returned Hash32 also
-// implements encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
+// implements [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to
 // marshal and unmarshal the internal state of the hash.
 func New(tab *Table) hash.Hash32
 
-// NewIEEE creates a new hash.Hash32 computing the CRC-32 checksum using
-// the IEEE polynomial. Its Sum method will lay the value out in
+// NewIEEE creates a new [hash.Hash32] computing the CRC-32 checksum using
+// the [IEEE] polynomial. Its Sum method will lay the value out in
 // big-endian byte order. The returned Hash32 also implements
-// encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to marshal
+// [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to marshal
 // and unmarshal the internal state of the hash.
 func NewIEEE() hash.Hash32
 
@@ -64,9 +64,9 @@ func NewIEEE() hash.Hash32
 func Update(crc uint32, tab *Table, p []byte) uint32
 
 // Checksum returns the CRC-32 checksum of data
-// using the polynomial represented by the Table.
+// using the polynomial represented by the [Table].
 func Checksum(data []byte, tab *Table) uint32
 
 // ChecksumIEEE returns the CRC-32 checksum of data
-// using the IEEE polynomial.
+// using the [IEEE] polynomial.
 func ChecksumIEEE(data []byte) uint32

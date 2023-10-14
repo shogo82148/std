@@ -10,7 +10,7 @@ import (
 )
 
 // Writer provides sequential writing of a tar archive.
-// Write.WriteHeader begins a new file with the provided Header,
+// [Writer.WriteHeader] begins a new file with the provided [Header],
 // and then Writer can be treated as an io.Writer to supply that file's data.
 type Writer struct {
 	w    io.Writer
@@ -31,7 +31,7 @@ func NewWriter(w io.Writer) *Writer
 // Flush finishes writing the current file's block padding.
 // The current file must be fully written before Flush can be called.
 //
-// This is unnecessary as the next call to WriteHeader or Close
+// This is unnecessary as the next call to [Writer.WriteHeader] or [Writer.Close]
 // will implicitly flush out the file's padding.
 func (tw *Writer) Flush() error
 
@@ -47,15 +47,15 @@ func (tw *Writer) WriteHeader(hdr *Header) error
 func (tw *Writer) AddFS(fsys fs.FS) error
 
 // Write writes to the current file in the tar archive.
-// Write returns the error ErrWriteTooLong if more than
-// Header.Size bytes are written after WriteHeader.
+// Write returns the error [ErrWriteTooLong] if more than
+// Header.Size bytes are written after [Writer.WriteHeader].
 //
-// Calling Write on special types like TypeLink, TypeSymlink, TypeChar,
-// TypeBlock, TypeDir, and TypeFifo returns (0, ErrWriteTooLong) regardless
-// of what the Header.Size claims.
+// Calling Write on special types like [TypeLink], [TypeSymlink], [TypeChar],
+// [TypeBlock], [TypeDir], and [TypeFifo] returns (0, [ErrWriteTooLong]) regardless
+// of what the [Header.Size] claims.
 func (tw *Writer) Write(b []byte) (int, error)
 
 // Close closes the tar archive by flushing the padding, and writing the footer.
-// If the current file (from a prior call to WriteHeader) is not fully written,
+// If the current file (from a prior call to [Writer.WriteHeader]) is not fully written,
 // then this returns an error.
 func (tw *Writer) Close() error

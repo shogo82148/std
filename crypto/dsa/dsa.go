@@ -59,7 +59,7 @@ const (
 func GenerateParameters(params *Parameters, rand io.Reader, sizes ParameterSizes) error
 
 // GenerateKey generates a public&private key pair. The Parameters of the
-// PrivateKey must already be valid (see GenerateParameters).
+// [PrivateKey] must already be valid (see [GenerateParameters]).
 func GenerateKey(priv *PrivateKey, rand io.Reader) error
 
 // Sign signs an arbitrary length hash (which should be the result of hashing a
@@ -71,7 +71,7 @@ func GenerateKey(priv *PrivateKey, rand io.Reader) error
 // to the byte-length of the subgroup. This function does not perform that
 // truncation itself.
 //
-// Be aware that calling Sign with an attacker-controlled PrivateKey may
+// Be aware that calling Sign with an attacker-controlled [PrivateKey] may
 // require an arbitrary amount of CPU.
 func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
 
