@@ -28,38 +28,23 @@ const (
 	AllErrors = SpuriousErrors
 )
 
-<<<<<<< HEAD
-// ParseFile parses the source code of a single Go source file and returns
-// the corresponding ast.File node. The source code may be provided via
-// the filename of the source file, or via the src parameter.
+// ParseFileは、単一のGoソースファイルのソースコードを解析し、対応するast.Fileノードを返します。
+// ソースコードは、ソースファイルのファイル名またはsrcパラメーターを介して提供できます。
 //
-// If src != nil, ParseFile parses the source from src and the filename is
-// only used when recording position information. The type of the argument
-// for the src parameter must be string, []byte, or io.Reader.
-// If src == nil, ParseFile parses the file specified by filename.
+// src != nilの場合、ParseFileはsrcからソースを解析し、ファイル名は位置情報を記録するときにのみ使用されます。
+// srcパラメーターの引数の型は、string、[]byte、またはio.Readerである必要があります。
+// src == nilの場合、ParseFileはfilenameで指定されたファイルを解析します。
 //
-// The mode parameter controls the amount of source text parsed and
-// other optional parser functionality. If the SkipObjectResolution
-// mode bit is set (recommended), the object resolution phase of
-// parsing will be skipped, causing File.Scope, File.Unresolved, and
-// all Ident.Obj fields to be nil. Those fields are deprecated; see
-// [ast.Object] for details.
+// modeパラメーターは、解析されるソーステキストの量とその他のオプションのパーサー機能を制御します。
+// SkipObjectResolutionモードビットが設定されている場合（推奨）、解析のオブジェクト解決フェーズがスキップされ、
+// File.Scope、File.Unresolved、およびすべてのIdent.Objフィールドがnilになります。
+// これらのフィールドは非推奨です。詳細については、 [ast.Object] を参照してください。
 //
-// Position information is recorded in the file set fset, which must not be
-// nil.
+// 位置情報は、nilであってはならないファイルセットfsetに記録されます。
 //
-// If the source couldn't be read, the returned AST is nil and the error
-// indicates the specific failure. If the source was read but syntax
-// errors were found, the result is a partial AST (with ast.Bad* nodes
-// representing the fragments of erroneous source code). Multiple errors
-// are returned via a scanner.ErrorList which is sorted by source position.
-=======
-// ParseFileは単一のGoソースファイルのソースコードを解析し、対応するast.Fileノードを返します。ソースコードはソースファイルのファイル名またはsrcパラメータを介して指定できます。
-// src != nilの場合、ParseFileはsrcからソースを解析し、ファイル名は位置情報の記録にのみ使用されます。srcパラメータの引数のタイプはstring、[]byte、またはio.Readerである必要があります。src == nilの場合、ParseFileはfilenameで指定されたファイルを解析します。
-// modeパラメータはソーステキストの解析量とその他のオプションのパーサ機能を制御します。SkipObjectResolutionモードビットがセットされている場合、解析のオブジェクト解決フェーズがスキップされ、File.Scope、File.Unresolved、およびすべてのIdent.Objフィールドはnilになります。
-// 位置情報はnilではないファイルセットfsetに記録されます。
-// ソースを読み取ることができなかった場合、返されるASTはnilであり、エラーには具体的な失敗が示されます。ソースが読み取られたが構文エラーが見つかった場合、結果は部分的なAST（ast.Bad*ノードがエラーソースコードのフラグメントを表す）です。複数のエラーはソース位置でソートされたscanner.ErrorListを介して返されます。
->>>>>>> release-branch.go1.21
+// ソースを読み込めなかった場合、返されるASTはnilであり、エラーは特定の失敗を示します。
+// ソースが読み込まれたが、構文エラーが見つかった場合、結果は部分的なAST（ast.Bad*ノードがエラーの断片を表す）です。
+// 複数のエラーは、ソース位置でソートされたscanner.ErrorListを介して返されます。
 func ParseFile(fset *token.FileSet, filename string, src any, mode Mode) (f *ast.File, err error)
 
 // ParseDirは、指定されたパスのディレクトリ内で拡張子が".go"で終わるすべてのファイルに対してParseFileを呼び出し、
