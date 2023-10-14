@@ -51,7 +51,7 @@ func (x Float64Slice) Len() int
 // フロート比較自体は推移的な関係ではありませんことに注意してください：NaN（非数）の値については一貫した順序を報告しません。
 // このLess関数の実装では、NaN値を他の値よりも前に配置します：
 //
-//  x[i] < x[j] || (math.IsNaN(x[i]) && !math.IsNaN(x[j]))
+//	x[i] < x[j] || (math.IsNaN(x[i]) && !math.IsNaN(x[j]))
 func (x Float64Slice) Less(i, j int) bool
 func (x Float64Slice) Swap(i, j int)
 
@@ -70,57 +70,33 @@ func (x StringSlice) Sort()
 
 // Intsはintのスライスを昇順にソートします。
 //
-<<<<<<< HEAD
-// Note: as of Go 1.22, this function simply calls slices.Sort.
-=======
-// 注意: より高速に動作する新しいslices.Sort関数を使用することを検討してください。
->>>>>>> release-branch.go1.21
+// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
 func Ints(x []int)
 
 // Float64sはfloat64のスライスを昇順でソートします。
 // NaN(非数)の値は他の値よりも優先的に並べられます。
 //
-<<<<<<< HEAD
-// Note: as of Go 1.22, this function simply calls slices.Sort.
-=======
-// 注意：より速く実行される新しいslices.Sort関数を使用することを検討してください。
->>>>>>> release-branch.go1.21
+// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
 func Float64s(x []float64)
 
 // Stringsは文字列のスライスを昇順でソートします。
 //
-<<<<<<< HEAD
-// Note: as of Go 1.22, this function simply calls slices.Sort.
-=======
-// 注意: より高速に動作する新しいslices.Sort関数の使用を検討してください。
->>>>>>> release-branch.go1.21
+// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
 func Strings(x []string)
 
 // IntsAreSortedは、スライスxが昇順にソートされているかどうかを報告します。
 //
-<<<<<<< HEAD
-// Note: as of Go 1.22, this function simply calls slices.IsSorted.
-=======
-// 注意: より速く実行する新しいslices.IsSorted関数を使用することを考慮してください。
->>>>>>> release-branch.go1.21
+// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
 func IntsAreSorted(x []int) bool
 
 // Float64sAreSortedは、スライスxが昇順に並んでいるか、NaN（非数値）の値が他の値の前にあるかどうかを報告します。
 //
-<<<<<<< HEAD
-// Note: as of Go 1.22, this function simply calls slices.IsSorted.
-=======
-// 注意: より新しいslices.IsSorted関数を使用することを検討してください。これはより高速に実行されます。
->>>>>>> release-branch.go1.21
+// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
 func Float64sAreSorted(x []float64) bool
 
 // StringsAreSortedは、スライスxが昇順に並んでいるかどうかを報告します。
 //
-<<<<<<< HEAD
-// Note: as of Go 1.22, this function simply calls slices.IsSorted.
-=======
-// 注意：より高速に動作するslices.IsSorted関数を使用することを検討してください。
->>>>>>> release-branch.go1.21
+// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
 func StringsAreSorted(x []string) bool
 
 // Lessメソッドによって決定される昇順でデータを安定的にソートします。
