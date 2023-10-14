@@ -12,7 +12,7 @@ GOARCH=amd64 go tool cgo -cdefs defs_linux.go defs1_linux.go >defs_linux_amd64.h
 
 package runtime
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 const (
 	EINTR  = C.EINTR

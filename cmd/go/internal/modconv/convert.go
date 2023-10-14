@@ -5,8 +5,8 @@
 package modconv
 
 import (
-	"github.com/shogo82148/std/golang.org/x/mod/modfile"
-	"github.com/shogo82148/std/golang.org/x/mod/module"
+	"golang.org/x/mod/modfile"
+	"golang.org/x/mod/module"
 )
 
 // ConvertLegacyConfig converts legacy config to modfile.

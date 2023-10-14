@@ -4,6 +4,6 @@
 
 package a
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 func F2(p *C.ST)

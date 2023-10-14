@@ -13,7 +13,7 @@ Input to cgo -godefs.  See also mkerrors.sh and mkall.sh
 
 package syscall
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 type Timespec C.struct_timespec
 

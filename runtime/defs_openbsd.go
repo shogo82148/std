@@ -16,7 +16,7 @@ GOARCH=mips64 go tool cgo -godefs defs_openbsd.go
 
 package runtime
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 const (
 	EINTR  = C.EINTR
