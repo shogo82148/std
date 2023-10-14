@@ -4,7 +4,11 @@
 
 package unix
 
-const AT_REMOVEDIR = 0x800
-const AT_SYMLINK_NOFOLLOW = 0x200
+const (
+	AT_EACCESS          = 0x100
+	AT_FDCWD            = -0x64
+	AT_REMOVEDIR        = 0x800
+	AT_SYMLINK_NOFOLLOW = 0x200
 
-const UTIME_OMIT = (1 << 30) - 2
+	UTIME_OMIT = (1 << 30) - 2
+)

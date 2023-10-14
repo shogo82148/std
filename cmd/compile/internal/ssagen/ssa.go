@@ -10,7 +10,6 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/liveness"
 	"github.com/shogo82148/std/cmd/compile/internal/objw"
 	"github.com/shogo82148/std/cmd/compile/internal/ssa"
-	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
 )
@@ -33,9 +32,6 @@ func AbiForBodylessFuncStackMap(fn *ir.Func) *abi.ABIConfig
 func InitTables()
 
 func IsIntrinsicCall(n *ir.CallExpr) bool
-
-// TypeOK reports whether variables of type t are SSA-able.
-func TypeOK(t *types.Type) bool
 
 // Branch is an unresolved branch.
 type Branch struct {

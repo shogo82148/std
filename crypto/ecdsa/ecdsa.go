@@ -26,9 +26,15 @@ func (k *PublicKey) ECDH() (*ecdh.PublicKey, error)
 
 // Equalは、pubとxが同じ値を持つかどうかを報告します。
 //
+<<<<<<< HEAD
 // 2つのキーは、同じCurve値を持っている場合にのみ同じ値と見なされます。
 // elliptic.P256()とelliptic.P256().Params()は異なる値です。
 // 後者は一般的な定数時間実装ではないためです。
+=======
+// Two keys are only considered to have the same value if they have the same Curve value.
+// Note that for example [elliptic.P256] and elliptic.P256().Params() are different
+// values, as the latter is a generic not constant time implementation.
+>>>>>>> upstream/master
 func (pub *PublicKey) Equal(x crypto.PublicKey) bool
 
 // PrivateKeyはECDSAの秘密鍵を表します。
@@ -37,7 +43,13 @@ type PrivateKey struct {
 	D *big.Int
 }
 
+<<<<<<< HEAD
 // ECDHは[ecdh.PrivateKey]としてkを返します。キーが[ecdh.Curve.NewPrivateKey]の定義に従って無効である場合や、Curveがcrypto/ecdhでサポートされていない場合はエラーを返します。
+=======
+// ECDH returns k as a [ecdh.PrivateKey]. It returns an error if the key is
+// invalid according to the definition of [ecdh.Curve.NewPrivateKey], or if the
+// Curve is not supported by [crypto/ecdh].
+>>>>>>> upstream/master
 func (k *PrivateKey) ECDH() (*ecdh.PrivateKey, error)
 
 // Publicはprivに対応する公開鍵を返します。
@@ -45,15 +57,25 @@ func (priv *PrivateKey) Public() crypto.PublicKey
 
 // Equalはprivとxが同じ値を持つかどうかを報告します。
 //
+<<<<<<< HEAD
 // Curveが比較される方法の詳細については、PublicKey.Equalを参照してください。
+=======
+// See [PublicKey.Equal] for details on how Curve is compared.
+>>>>>>> upstream/master
 func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool
 
 // privを使用してダイジェストに署名し、randからランダム性を読み取ります。opts引数
 // は現在は使用されていませんが、crypto.Signerインターフェースに準拠するために、
 // メッセージのダイジェストに使用されるハッシュ関数であるべきです。
 //
+<<<<<<< HEAD
 // このメソッドはcrypto.Signerを実装しており、たとえばハードウェアモジュールにプライベートパートが
 // 保持されているキーをサポートするインターフェースです。一般的にはこのパッケージのSignASN1関数を直接使用できます。
+=======
+// This method implements crypto.Signer, which is an interface to support keys
+// where the private part is kept in, for example, a hardware module. Common
+// uses can use the [SignASN1] function in this package directly.
+>>>>>>> upstream/master
 func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
 
 // GenerateKeyは指定された曲線の新しいECDSA秘密鍵を生成します。

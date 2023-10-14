@@ -6,6 +6,3 @@ package typecheck
 
 // InitUniverse initializes the universe block.
 func InitUniverse()
-
-// DeclareUniverse makes the universe block visible within the current package.
-func DeclareUniverse()

@@ -20,10 +20,8 @@ func (b *Buffer) WriteString(s string) (int, error)
 
 func (b *Buffer) WriteByte(c byte) error
 
-func (b *Buffer) WritePosInt(i int)
-
-// WritePosIntWidth writes non-negative integer i to the buffer, padded on the left
-// by zeroes to the given width. Use a width of 0 to omit padding.
-func (b *Buffer) WritePosIntWidth(i, width int)
-
 func (b *Buffer) String() string
+
+func (b *Buffer) Len() int
+
+func (b *Buffer) SetLen(n int)

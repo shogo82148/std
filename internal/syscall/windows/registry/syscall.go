@@ -5,5 +5,3 @@
 //go:build windows
 
 package registry
-
-func LoadRegLoadMUIString() error

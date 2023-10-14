@@ -140,9 +140,15 @@ type Header struct {
 // FileInfoは、Headerのfs.FileInfoを返します。
 func (h *Header) FileInfo() fs.FileInfo
 
+<<<<<<< HEAD
 // FileInfoHeaderは、fiから部分的に設定されたHeaderを作成します。
 // fiがシンボリックリンクを記述している場合、FileInfoHeaderはlinkをリンクターゲットとして記録します。
 // fiがディレクトリを記述している場合、名前にスラッシュが追加されます。
+=======
+// FileInfoHeader creates a partially-populated [Header] from fi.
+// If fi describes a symlink, FileInfoHeader records link as the link target.
+// If fi describes a directory, a slash is appended to the name.
+>>>>>>> upstream/master
 //
 // fs.FileInfoのNameメソッドは、
 // 記述するファイルのベース名のみを返すため、
@@ -153,8 +159,8 @@ func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 // これを[FileInfoHeader]に渡すことで、UID/GIDの解決をコントロールできます。
 type FileInfoNames interface {
 	fs.FileInfo
-
+	// Uname should translate a UID into a user name.
 	Uname(uid int) (string, error)
-
+	// Gname should translate a GID into a group name.
 	Gname(gid int) (string, error)
 }

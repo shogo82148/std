@@ -51,15 +51,10 @@ func RoundUp(o int64, r int64) int64
 // This is used to prevent data races in the back end.
 func CalcSize(t *Type)
 
-// CalcStructSize calculates the size of s,
-// filling in s.Width and s.Align,
+// CalcStructSize calculates the size of t,
+// filling in t.width, t.align, t.intRegs, and t.floatRegs,
 // even if size calculation is otherwise disabled.
-func CalcStructSize(s *Type)
-
-// RecalcSize is like CalcSize, but recalculates t's size even if it
-// has already been calculated before. It does not recalculate other
-// types.
-func RecalcSize(t *Type)
+func CalcStructSize(t *Type)
 
 func CheckSize(t *Type)
 

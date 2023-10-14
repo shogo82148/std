@@ -23,9 +23,7 @@ type Pkg struct {
 // the existing package name and the provided name must match.
 func NewPkg(path, name string) *Pkg
 
-// ImportedPkgList returns the list of directly imported packages.
-// The list is sorted by package path.
-func ImportedPkgList() []*Pkg
+func PkgMap() map[string]*Pkg
 
 func (pkg *Pkg) Lookup(name string) *Sym
 
@@ -37,6 +35,9 @@ func (pkg *Pkg) LookupBytes(name []byte) *Sym
 // LookupNum looks up the symbol starting with prefix and ending with
 // the decimal n. If prefix is too long, LookupNum panics.
 func (pkg *Pkg) LookupNum(prefix string, n int) *Sym
+
+// Selector looks up a selector identifier.
+func (pkg *Pkg) Selector(name string) *Sym
 
 func InternString(b []byte) string
 

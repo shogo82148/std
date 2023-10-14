@@ -93,6 +93,8 @@ func (mms *MainModuleSet) SetIndex(m module.Version, index *modFileIndex)
 
 func (mms *MainModuleSet) ModFile(m module.Version) *modfile.File
 
+func (mms *MainModuleSet) WorkFile() *modfile.WorkFile
+
 func (mms *MainModuleSet) Len() int
 
 // ModContainingCWD returns the main module containing the working directory,

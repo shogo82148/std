@@ -29,7 +29,11 @@ type QUICConn struct {
 	sessionTicketSent bool
 }
 
+<<<<<<< HEAD
 // QUICConfigはQUICConnを設定します。
+=======
+// A QUICConfig configures a [QUICConn].
+>>>>>>> upstream/master
 type QUICConfig struct {
 	TLSConfig *Config
 }
@@ -95,21 +99,36 @@ func QUICClient(config *QUICConfig) *QUICConn
 // 設定のMinVersionは、少なくともTLS 1.3である必要があります。
 func QUICServer(config *QUICConfig) *QUICConn
 
+<<<<<<< HEAD
 // Startはクライアントまたはサーバーのハンドシェイクプロトコルを開始します。
 // 接続イベントを生成する場合があり、NextEventで読み取ることができます。
+=======
+// Start starts the client or server handshake protocol.
+// It may produce connection events, which may be read with [QUICConn.NextEvent].
+>>>>>>> upstream/master
 //
 // Startは1度以上呼び出すことはできません。
 func (q *QUICConn) Start(ctx context.Context) error
 
+<<<<<<< HEAD
 // NextEventは接続で発生する次のイベントを返します。
 // イベントが利用できない場合は、KindがQUICNoEventのイベントを返します。
+=======
+// NextEvent returns the next event occurring on the connection.
+// It returns an event with a Kind of [QUICNoEvent] when no events are available.
+>>>>>>> upstream/master
 func (q *QUICConn) NextEvent() QUICEvent
 
 // Closeは接続を閉じ、進行中のハンドシェイクを停止します。
 func (q *QUICConn) Close() error
 
+<<<<<<< HEAD
 // HandleDataはピアから受信したハンドシェイクバイトを処理します。
 // 接続イベントを生成することがあり、NextEventで読み取ることができます。
+=======
+// HandleData handles handshake bytes received from the peer.
+// It may produce connection events, which may be read with [QUICConn.NextEvent].
+>>>>>>> upstream/master
 func (q *QUICConn) HandleData(level QUICEncryptionLevel, data []byte) error
 
 type QUICSessionTicketOptions struct {
@@ -117,9 +136,15 @@ type QUICSessionTicketOptions struct {
 	EarlyData bool
 }
 
+<<<<<<< HEAD
 // SendSessionTicketはクライアントにセッションチケットを送信します。
 // これにより、接続イベントが生成され、NextEventで読み取ることができます。
 // 現在、一度しか呼び出すことはできません。
+=======
+// SendSessionTicket sends a session ticket to the client.
+// It produces connection events, which may be read with [QUICConn.NextEvent].
+// Currently, it can only be called once.
+>>>>>>> upstream/master
 func (q *QUICConn) SendSessionTicket(opts QUICSessionTicketOptions) error
 
 // ConnectionStateは接続に関する基本的なTLSの詳細を返します。
@@ -127,5 +152,10 @@ func (q *QUICConn) ConnectionState() ConnectionState
 
 // SetTransportParametersはピアに送信するためのトランスポートパラメータを設定します。
 //
+<<<<<<< HEAD
 // サーバ接続では、クライアントのトランスポートパラメータを受信した後にトランスポートパラメータを設定することができます。QUICTransportParametersRequiredを参照してください。
+=======
+// Server connections may delay setting the transport parameters until after
+// receiving the client's transport parameters. See [QUICTransportParametersRequired].
+>>>>>>> upstream/master
 func (q *QUICConn) SetTransportParameters(params []byte)

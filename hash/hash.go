@@ -9,12 +9,22 @@ import "github.com/shogo82148/std/io"
 
 // Hashはすべてのハッシュ関数で実装される共通のインターフェースです。
 //
+<<<<<<< HEAD
 // 標準ライブラリのハッシュ実装（例：hash/crc32およびcrypto/sha256）では、
 // encoding.BinaryMarshalerおよびencoding.BinaryUnmarshalerインターフェースが実装されます。
 // ハッシュ実装をマーシャリングすると、内部状態を保存し、後で追加の処理に使用することができます。
 // 以前にハッシュに書き込まれたデータを再度書き直すことなく、利用することができます。
 // ハッシュの状態には、入力の一部がそのまま含まれる場合がありますので、
 // ユーザーは可能なセキュリティの影響に対応することが期待されています。
+=======
+// Hash implementations in the standard library (e.g. [hash/crc32] and
+// [crypto/sha256]) implement the [encoding.BinaryMarshaler] and
+// [encoding.BinaryUnmarshaler] interfaces. Marshaling a hash implementation
+// allows its internal state to be saved and used for additional processing
+// later, without having to re-write the data previously written to the hash.
+// The hash state may contain portions of the input in its original form,
+// which users are expected to handle for any possible security implications.
+>>>>>>> upstream/master
 //
 // 互換性：ハッシュまたは暗号パッケージへの将来の変更は、
 // 以前のバージョンでエンコードされた状態を保持することを目指します。
@@ -23,14 +33,24 @@ import "github.com/shogo82148/std/io"
 // ただし、セキュリティ修正などの問題により、異なる結果となる場合があります。
 // 背景については、Goの互換性文書を参照してください：https://golang.org/doc/go1compat
 type Hash interface {
+	// Write (via the embedded io.Writer interface) adds more data to the running hash.
+	// It never returns an error.
 	io.Writer
 
+	// Sum appends the current hash to b and returns the resulting slice.
+	// It does not change the underlying hash state.
 	Sum(b []byte) []byte
 
+	// Reset resets the Hash to its initial state.
 	Reset()
 
+	// Size returns the number of bytes Sum will return.
 	Size() int
 
+	// BlockSize returns the hash's underlying block size.
+	// The Write method must be able to accept any amount
+	// of data, but it may operate more efficiently if all writes
+	// are a multiple of the block size.
 	BlockSize() int
 }
 

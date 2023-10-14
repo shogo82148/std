@@ -456,6 +456,15 @@ const (
 	// macros
 	ACLEAR
 
+	// crypto
+	AKM
+	AKMC
+	AKLMD
+	AKIMD
+	AKDSA
+	AKMA
+	AKMCTR
+
 	// vector
 	AVA
 	AVAB

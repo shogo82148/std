@@ -36,6 +36,7 @@ func (d *HashDebug) SetInlineSuffixOnly(b bool) *HashDebug
 
 var FmaHash *HashDebug
 var LoopVarHash *HashDebug
+var PGOHash *HashDebug
 
 // DebugHashMatchPkgFunc reports whether debug variable Gossahash
 //
@@ -129,3 +130,10 @@ func (d *HashDebug) MatchPkgFunc(pkg, fn string, note func() string) bool
 // Note that the default answer for no environment variable (d == nil)
 // is "yes", do the thing.
 func (d *HashDebug) MatchPos(pos src.XPos, desc func() string) bool
+
+// MatchPosWithInfo is similar to MatchPos, but with additional information
+// that is included for hash computation, so it can distinguish multiple
+// matches on the same source location.
+// Note that the default answer for no environment variable (d == nil)
+// is "yes", do the thing.
+func (d *HashDebug) MatchPosWithInfo(pos src.XPos, info any, desc func() string) bool

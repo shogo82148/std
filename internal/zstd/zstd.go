@@ -52,8 +52,7 @@ type Reader struct {
 	huffmanTableBits int
 
 	// The window for back references.
-	windowSize int
-	window     []byte
+	window window
 
 	// A buffer available to hold a compressed block.
 	compressedBuf []byte

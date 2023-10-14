@@ -31,7 +31,12 @@ type AttributeTypeAndValue struct {
 	Value any
 }
 
+<<<<<<< HEAD
 // AttributeTypeAndValueSETは、RFC 2986（PKCS＃10）からのAttributeTypeAndValueシーケンスの集合を表す。
+=======
+// AttributeTypeAndValueSET represents a set of ASN.1 sequences of
+// [AttributeTypeAndValue] sequences from RFC 2986 (PKCS #10).
+>>>>>>> upstream/master
 type AttributeTypeAndValueSET struct {
 	Type  asn1.ObjectIdentifier
 	Value [][]AttributeTypeAndValue `asn1:"set"`
@@ -44,7 +49,14 @@ type Extension struct {
 	Value    []byte
 }
 
+<<<<<<< HEAD
 // NameはX.509の識別名を表します。これにはDNの一般的な要素のみが含まれます。なお、NameはX.509の構造の近似値です。正確な表現が必要な場合は、生のsubjectまたはissuerをRDNSequenceとしてasn1.Unmarshalしてください。
+=======
+// Name represents an X.509 distinguished name. This only includes the common
+// elements of a DN. Note that Name is only an approximation of the X.509
+// structure. If an accurate representation is needed, asn1.Unmarshal the raw
+// subject or issuer as an [RDNSequence].
+>>>>>>> upstream/master
 type Name struct {
 	Country, Organization, OrganizationalUnit []string
 	Locality, Province                        []string
@@ -60,6 +72,7 @@ type Name struct {
 	ExtraNames []AttributeTypeAndValue
 }
 
+<<<<<<< HEAD
 // FillFromRDNSequence は与えられた RDNSequence から n を埋めます。
 // 複数エントリの RDN は平坦化され、すべてのエントリは関連する n フィールドに追加され、グルーピングは保持されません。
 func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
@@ -73,6 +86,25 @@ func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
 // - 住所
 // - 郵便番号
 // 各ExtraNamesエントリは個別のRDNとしてエンコードされます。
+=======
+// FillFromRDNSequence populates n from the provided [RDNSequence].
+// Multi-entry RDNs are flattened, all entries are added to the
+// relevant n fields, and the grouping is not preserved.
+func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
+
+// ToRDNSequence converts n into a single [RDNSequence]. The following
+// attributes are encoded as multi-value RDNs:
+//
+//   - Country
+//   - Organization
+//   - OrganizationalUnit
+//   - Locality
+//   - Province
+//   - StreetAddress
+//   - PostalCode
+//
+// Each ExtraNames entry is encoded as an individual RDN.
+>>>>>>> upstream/master
 func (n Name) ToRDNSequence() (ret RDNSequence)
 
 // Stringはnの文字列形式を返します。ほぼ、RFC 2253の識別名の構文に従います。

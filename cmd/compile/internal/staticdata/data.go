@@ -27,6 +27,11 @@ func InitSliceBytes(nam *ir.Name, off int64, s string)
 // The symbol contains the string data, not a string header.
 func StringSym(pos src.XPos, s string) (data *obj.LSym)
 
+// StringSymNoCommon is like StringSym, but produces a symbol that is not content-
+// addressable. This symbol is not supposed to appear in the final binary, it is
+// only used to pass string arguments to the linker like R_USENAMEDMETHOD does.
+func StringSymNoCommon(s string) (data *obj.LSym)
+
 // FuncLinksym returns n·f, the function value symbol for n.
 func FuncLinksym(n *ir.Name) *obj.LSym
 

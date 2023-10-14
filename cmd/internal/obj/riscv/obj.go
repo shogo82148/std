@@ -34,9 +34,15 @@ func InvertBranch(as obj.As) obj.As
 // generate a full 32-bit constant.
 func Split32BitImmediate(imm int64) (low, high int64, err error)
 
-func EncodeJImmediate(imm int64) (int64, error)
+func EncodeBImmediate(imm int64) (int64, error)
+
+func EncodeCBImmediate(imm int64) (int64, error)
+
+func EncodeCJImmediate(imm int64) (int64, error)
 
 func EncodeIImmediate(imm int64) (int64, error)
+
+func EncodeJImmediate(imm int64) (int64, error)
 
 func EncodeSImmediate(imm int64) (int64, error)
 

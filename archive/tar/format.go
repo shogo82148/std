@@ -29,9 +29,16 @@ package tar
 //	sub-second times  |     no |       yes |        no
 //	sparse files      |     no |       yes |       yes
 //
+<<<<<<< HEAD
 // この表の上部は、ヘッダーフィールドを示しており、各フォーマットが各文字列フィールドに許可される最大バイト数と、
 // 各数値フィールドを格納するために使用される整数型を報告します
 // （タイムスタンプは、Unixエポックからの秒数として格納されます）。
+=======
+// The table's upper portion shows the [Header] fields, where each format reports
+// the maximum number of bytes allowed for each string field and
+// the integer type used to store each numeric field
+// (where timestamps are stored as the number of seconds since the Unix epoch).
+>>>>>>> upstream/master
 //
 // 表の下部は、各フォーマットの特殊な機能を示しています。
 // たとえば、サポートされる文字列エンコーディング、サブセカンドタイムスタンプのサポート、スパースファイルのサポートなどがあります。

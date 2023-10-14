@@ -44,11 +44,12 @@ type Optab struct {
 	a2    uint8
 	a3    uint8
 	a4    uint8
+	a5    uint8
 	type_ int8
 	size_ int8
 	param int16
 	flag  int8
-	scond uint16
+	scond uint8
 }
 
 func IsAtomicInstruction(as obj.As) bool
@@ -100,7 +101,6 @@ func MOVCONST(d int64, s int, rt int) uint32
 const (
 	// Optab.flag
 	LFROM = 1 << iota
-	LFROM128
 	LTO
 	NOTUSETMP
 	BRANCH14BITS

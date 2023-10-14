@@ -20,8 +20,14 @@ const Size = 16
 // MD5のブロックサイズ（バイト単位）。
 const BlockSize = 64
 
+<<<<<<< HEAD
 // NewはMD5チェックサムを計算する新しいハッシュ.Hashを返します。ハッシュは
 // 最内部の状態をマーシャリングおよびアンマーシャリングするためにencoding.BinaryMarshalerとencoding.BinaryUnmarshalerも実装しています。
+=======
+// New returns a new hash.Hash computing the MD5 checksum. The Hash also
+// implements [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to
+// marshal and unmarshal the internal state of the hash.
+>>>>>>> upstream/master
 func New() hash.Hash
 
 // Sum はデータのMD5ハッシュ値を返します。

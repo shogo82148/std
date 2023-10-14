@@ -3,3 +3,9 @@
 // license that can be found in the LICENSE file.
 
 package modcmd
+
+import (
+	"github.com/shogo82148/std/context"
+)
+
+func RunVendor(ctx context.Context, vendorE bool, vendorO string, args []string)

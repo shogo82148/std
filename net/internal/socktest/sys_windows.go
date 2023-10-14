@@ -8,9 +8,6 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
-// Socket wraps syscall.Socket.
-func (sw *Switch) Socket(family, sotype, proto int) (s syscall.Handle, err error)
-
 // WSASocket wraps syscall.WSASocket.
 func (sw *Switch) WSASocket(family, sotype, proto int32, protinfo *syscall.WSAProtocolInfo, group uint32, flags uint32) (s syscall.Handle, err error)
 

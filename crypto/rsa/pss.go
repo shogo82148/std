@@ -29,7 +29,11 @@ type PSSOptions struct {
 	Hash crypto.Hash
 }
 
+<<<<<<< HEAD
 // HashFunc は opts.Hash を返します。これにより、PSSOptions は crypto.SignerOpts を実装します。
+=======
+// HashFunc returns opts.Hash so that [PSSOptions] implements [crypto.SignerOpts].
+>>>>>>> upstream/master
 func (opts *PSSOptions) HashFunc() crypto.Hash
 
 // SignPSSはPSSを使用してダイジェストの署名を計算します。

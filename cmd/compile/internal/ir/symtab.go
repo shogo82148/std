@@ -6,65 +6,10 @@ package ir
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/types"
-	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
 // Syms holds known symbols.
-var Syms struct {
-	AssertE2I         *obj.LSym
-	AssertE2I2        *obj.LSym
-	AssertI2I         *obj.LSym
-	AssertI2I2        *obj.LSym
-	Asanread          *obj.LSym
-	Asanwrite         *obj.LSym
-	CgoCheckMemmove   *obj.LSym
-	CgoCheckPtrWrite  *obj.LSym
-	CheckPtrAlignment *obj.LSym
-	Deferproc         *obj.LSym
-	DeferprocStack    *obj.LSym
-	Deferreturn       *obj.LSym
-	Duffcopy          *obj.LSym
-	Duffzero          *obj.LSym
-	GCWriteBarrier    [8]*obj.LSym
-	Goschedguarded    *obj.LSym
-	Growslice         *obj.LSym
-	Memmove           *obj.LSym
-	Msanread          *obj.LSym
-	Msanwrite         *obj.LSym
-	Msanmove          *obj.LSym
-	Newobject         *obj.LSym
-	Newproc           *obj.LSym
-	Panicdivide       *obj.LSym
-	Panicshift        *obj.LSym
-	PanicdottypeE     *obj.LSym
-	PanicdottypeI     *obj.LSym
-	Panicnildottype   *obj.LSym
-	Panicoverflow     *obj.LSym
-	Raceread          *obj.LSym
-	Racereadrange     *obj.LSym
-	Racewrite         *obj.LSym
-	Racewriterange    *obj.LSym
-	WBZero            *obj.LSym
-	WBMove            *obj.LSym
-
-	SigPanic        *obj.LSym
-	Staticuint64s   *obj.LSym
-	Typedmemmove    *obj.LSym
-	Udiv            *obj.LSym
-	WriteBarrier    *obj.LSym
-	Zerobase        *obj.LSym
-	ARM64HasATOMICS *obj.LSym
-	ARMHasVFPv4     *obj.LSym
-	X86HasFMA       *obj.LSym
-	X86HasPOPCNT    *obj.LSym
-	X86HasSSE41     *obj.LSym
-
-	WasmDiv *obj.LSym
-
-	WasmTruncS *obj.LSym
-
-	WasmTruncU *obj.LSym
-}
+var Syms symsStruct
 
 // Pkgs holds known packages.
 var Pkgs struct {

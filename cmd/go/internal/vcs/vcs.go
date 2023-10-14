@@ -83,16 +83,6 @@ func (v *Cmd) TagSync(dir, tag string) error
 // equivalent to os.ErrNotExist.
 func FromDir(dir, srcRoot string, allowNesting bool) (repoDir string, vcsCmd *Cmd, err error)
 
-// CheckGOVCS checks whether the policy defined by the environment variable
-// GOVCS allows the given vcs command to be used with the given repository
-// root path. Note that root may not be a real package or module path; it's
-// the same as the root path in the go-import meta tag.
-func CheckGOVCS(vcs *Cmd, root string) error
-
-// CheckNested checks for an incorrectly-nested VCS-inside-VCS
-// situation for dir, checking parents up until srcRoot.
-func CheckNested(vcs *Cmd, dir, srcRoot string) error
-
 // RepoRoot describes the repository root for a tree of source code.
 type RepoRoot struct {
 	Repo     string
@@ -113,7 +103,7 @@ const (
 // version control system, and code repository to use.
 func RepoRootForImportPath(importPath string, mod ModuleMode, security web.SecurityMode) (*RepoRoot, error)
 
-// A ImportMismatchError is returned where metaImport/s are present
+// An ImportMismatchError is returned where metaImport/s are present
 // but none match our import path.
 type ImportMismatchError struct {
 	importPath string

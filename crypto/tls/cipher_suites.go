@@ -16,16 +16,30 @@ type CipherSuite struct {
 	Insecure bool
 }
 
+<<<<<<< HEAD
 // CipherSuitesは、このパッケージで現在実装されている暗号スイートのリストを返します。
 // ただし、セキュリティ上の問題があるものはInsecureCipherSuitesによって返されます。
+=======
+// CipherSuites returns a list of cipher suites currently implemented by this
+// package, excluding those with security issues, which are returned by
+// [InsecureCipherSuites].
+>>>>>>> upstream/master
 //
 // このリストはIDでソートされています。このパッケージによって選択されるデフォルトの暗号スイートが、
 // 静的なリストでは捉えることができないロジックに依存している場合があり、
 // この関数によって返されるものと一致しない場合があります。
 func CipherSuites() []*CipherSuite
 
+<<<<<<< HEAD
 // InsecureCipherSuitesは、現在このパッケージで実装されているセキュリティ上の問題を抱えた暗号スイートのリストを返します。
 // ほとんどのアプリケーションは、このリストに含まれる暗号スイートを使用すべきではありません。代わりに、CipherSuitesで返されるスイートのみを使用するべきです。
+=======
+// InsecureCipherSuites returns a list of cipher suites currently implemented by
+// this package and which have security issues.
+//
+// Most applications should not use the cipher suites in this list, and should
+// only use those returned by [CipherSuites].
+>>>>>>> upstream/master
 func InsecureCipherSuites() []*CipherSuite
 
 // CipherSuiteNameは渡された暗号スイートIDの標準名

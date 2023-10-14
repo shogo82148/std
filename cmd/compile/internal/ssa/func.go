@@ -6,7 +6,9 @@ package ssa
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/abi"
+	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
+	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
 )
 
@@ -80,14 +82,25 @@ type LocalSlotSplitKey struct {
 }
 
 // NewFunc returns a new, empty function object.
-// Caller must set f.Config and f.Cache before using f.
-func NewFunc(fe Frontend) *Func
+// Caller must reset cache before calling NewFunc.
+func (c *Config) NewFunc(fe Frontend, cache *Cache) *Func
 
 // NumBlocks returns an integer larger than the id of any Block in the Func.
 func (f *Func) NumBlocks() int
 
 // NumValues returns an integer larger than the id of any Value in the Func.
 func (f *Func) NumValues() int
+
+// NameABI returns the function name followed by comma and the ABI number.
+// This is intended for use with GOSSAFUNC and HTML dumps, and differs from
+// the linker's "<1>" convention because "<" and ">" require shell quoting
+// and are not legal file names (for use with GOSSADIR) on Windows.
+func (f *Func) NameABI() string
+
+// FuncNameABI returns n followed by a comma and the value of a.
+// This is a separate function to allow a single point encoding
+// of the format, which is used in places where there's not a Func yet.
+func FuncNameABI(n string, a obj.ABI) string
 
 func (f *Func) SplitString(name *LocalSlot) (*LocalSlot, *LocalSlot)
 
@@ -217,3 +230,6 @@ func (f *Func) Sdom() SparseTree
 // environment variable GOSSAHASH is set, in which case "it depends".
 // See [base.DebugHashMatch] for more information.
 func (f *Func) DebugHashMatch() bool
+
+// NewLocal returns a new anonymous local variable of the given type.
+func (f *Func) NewLocal(pos src.XPos, typ *types.Type) *ir.Name

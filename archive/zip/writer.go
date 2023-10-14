@@ -29,7 +29,11 @@ type Writer struct {
 	testHookCloseSizeOffset func(size, offset uint64)
 }
 
+<<<<<<< HEAD
 // NewWriter は、w に ZIP ファイルを書き込む新しい Writer を返します。
+=======
+// NewWriter returns a new [Writer] writing a zip file to w.
+>>>>>>> upstream/master
 func NewWriter(w io.Writer) *Writer
 
 // SetOffset は、zip データの開始オフセットを基になるライター内に設定します。
@@ -41,14 +45,20 @@ func (w *Writer) SetOffset(n int64)
 // Flush を呼び出す必要は通常ありません。Close を呼び出すだけで十分です。
 func (w *Writer) Flush() error
 
+<<<<<<< HEAD
 // SetComment は、中央ディレクトリのコメントフィールドを設定します。
 // Close を呼び出す前にのみ呼び出すことができます。
+=======
+// SetComment sets the end-of-central-directory comment field.
+// It can only be called before [Writer.Close].
+>>>>>>> upstream/master
 func (w *Writer) SetComment(comment string) error
 
 // Close は、中央ディレクトリを書き込むことで zip ファイルの書き込みを終了します。
 // 基になるライターを閉じません。
 func (w *Writer) Close() error
 
+<<<<<<< HEAD
 // Create は、指定された名前を使用してファイルを zip ファイルに追加します。
 // 返される Writer にファイルの内容を書き込む必要があります。
 // ファイルの内容は、Deflate メソッドを使用して圧縮されます。
@@ -80,6 +90,43 @@ func (w *Writer) Copy(f *File) error
 
 // RegisterCompressor は、特定のメソッド ID にカスタムの圧縮プログラムを登録または上書きします。
 // メソッドの圧縮プログラムが見つからない場合、Writer はパッケージレベルで圧縮プログラムを検索します。
+=======
+// Create adds a file to the zip file using the provided name.
+// It returns a [Writer] to which the file contents should be written.
+// The file contents will be compressed using the [Deflate] method.
+// The name must be a relative path: it must not start with a drive
+// letter (e.g. C:) or leading slash, and only forward slashes are
+// allowed. To create a directory instead of a file, add a trailing
+// slash to the name.
+// The file's contents must be written to the [io.Writer] before the next
+// call to [Writer.Create], [Writer.CreateHeader], or [Writer.Close].
+func (w *Writer) Create(name string) (io.Writer, error)
+
+// CreateHeader adds a file to the zip archive using the provided [FileHeader]
+// for the file metadata. [Writer] takes ownership of fh and may mutate
+// its fields. The caller must not modify fh after calling [Writer.CreateHeader].
+//
+// This returns a [Writer] to which the file contents should be written.
+// The file's contents must be written to the io.Writer before the next
+// call to [Writer.Create], [Writer.CreateHeader], [Writer.CreateRaw], or [Writer.Close].
+func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
+
+// CreateRaw adds a file to the zip archive using the provided [FileHeader] and
+// returns a [Writer] to which the file contents should be written. The file's
+// contents must be written to the io.Writer before the next call to [Writer.Create],
+// [Writer.CreateHeader], [Writer.CreateRaw], or [Writer.Close].
+//
+// In contrast to [Writer.CreateHeader], the bytes passed to Writer are not compressed.
+func (w *Writer) CreateRaw(fh *FileHeader) (io.Writer, error)
+
+// Copy copies the file f (obtained from a [Reader]) into w. It copies the raw
+// form directly bypassing decompression, compression, and validation.
+func (w *Writer) Copy(f *File) error
+
+// RegisterCompressor registers or overrides a custom compressor for a specific
+// method ID. If a compressor for a given method is not found, [Writer] will
+// default to looking up the compressor at the package level.
+>>>>>>> upstream/master
 func (w *Writer) RegisterCompressor(method uint16, comp Compressor)
 
 // AddFS adds the files from fs.FS to the archive.

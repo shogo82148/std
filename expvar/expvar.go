@@ -29,10 +29,13 @@ import (
 
 // Var is an abstract type for all exported variables.
 type Var interface {
+	// String returns a valid JSON value for the variable.
+	// Types with String methods that do not return valid JSON
+	// (such as time.Time) must not be used as a Var.
 	String() string
 }
 
-// Int is a 64-bit integer variable that satisfies the Var interface.
+// Int is a 64-bit integer variable that satisfies the [Var] interface.
 type Int struct {
 	i int64
 }
@@ -45,7 +48,7 @@ func (v *Int) Add(delta int64)
 
 func (v *Int) Set(value int64)
 
-// Float is a 64-bit float variable that satisfies the Var interface.
+// Float is a 64-bit float variable that satisfies the [Var] interface.
 type Float struct {
 	f atomic.Uint64
 }
@@ -60,14 +63,14 @@ func (v *Float) Add(delta float64)
 // Set sets v to value.
 func (v *Float) Set(value float64)
 
-// Map is a string-to-Var map variable that satisfies the Var interface.
+// Map is a string-to-Var map variable that satisfies the [Var] interface.
 type Map struct {
 	m      sync.Map
 	keysMu sync.RWMutex
 	keys   []string
 }
 
-// KeyValue represents a single entry in a Map.
+// KeyValue represents a single entry in a [Map].
 type KeyValue struct {
 	Key   string
 	Value Var
@@ -82,10 +85,10 @@ func (v *Map) Get(key string) Var
 
 func (v *Map) Set(key string, av Var)
 
-// Add adds delta to the *Int value stored under the given map key.
+// Add adds delta to the *[Int] value stored under the given map key.
 func (v *Map) Add(key string, delta int64)
 
-// AddFloat adds delta to the *Float value stored under the given map key.
+// AddFloat adds delta to the *[Float] value stored under the given map key.
 func (v *Map) AddFloat(key string, delta float64)
 
 // Delete deletes the given key from the map.
@@ -96,20 +99,20 @@ func (v *Map) Delete(key string)
 // but existing entries may be concurrently updated.
 func (v *Map) Do(f func(KeyValue))
 
-// String is a string variable, and satisfies the Var interface.
+// String is a string variable, and satisfies the [Var] interface.
 type String struct {
 	s atomic.Value
 }
 
 func (v *String) Value() string
 
-// String implements the Var interface. To get the unquoted string
-// use Value.
+// String implements the [Var] interface. To get the unquoted string
+// use [String.Value].
 func (v *String) String() string
 
 func (v *String) Set(value string)
 
-// Func implements Var by calling the function
+// Func implements [Var] by calling the function
 // and formatting the returned value using JSON.
 type Func func() any
 

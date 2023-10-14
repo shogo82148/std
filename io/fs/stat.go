@@ -8,6 +8,8 @@ package fs
 type StatFS interface {
 	FS
 
+	// Stat returns a FileInfo describing the file.
+	// If there is an error, it should be of type *PathError.
 	Stat(name string) (FileInfo, error)
 }
 

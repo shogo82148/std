@@ -46,7 +46,12 @@ func (w *Writer) Write(p []byte) (n int, err error)
 // Closeは [Writer] を閉じ、保留中の出力をフラッシュします。wの基になるライターは閉じません。
 func (w *Writer) Close() error
 
+<<<<<<< HEAD
 // Resetは [Writer] の状態をクリアし、新しい [Writer] として再利用できるようにします。
+=======
+// Reset clears the [Writer]'s state and allows it to be reused again
+// as a new [Writer].
+>>>>>>> upstream/master
 func (w *Writer) Reset(dst io.Writer, order Order, litWidth int)
 
 // NewWriterは新しい [io.WriteCloser] を作成します。

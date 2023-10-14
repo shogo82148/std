@@ -41,6 +41,7 @@
 package pgo
 
 import (
+	"github.com/shogo82148/std/cmd/compile/internal/base"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 )
 
@@ -55,7 +56,8 @@ import (
 // TODO(prattmic): Consider merging this data structure with Graph. This is
 // effectively a copy of Graph aggregated to line number and pointing to IR.
 type IRGraph struct {
-	// Nodes of the graph
+	// Nodes of the graph. Each node represents a function, keyed by linker
+	// symbol name.
 	IRNodes map[string]*IRNode
 }
 
@@ -69,7 +71,7 @@ type IRNode struct {
 
 	// Set of out-edges in the callgraph. The map uniquely identifies each
 	// edge based on the callsite and callee, for fast lookup.
-	OutEdges map[NodeMapKey]*IREdge
+	OutEdges map[NamedCallEdge]*IREdge
 }
 
 // Name returns the symbol name of this function.
@@ -84,21 +86,21 @@ type IREdge struct {
 	CallSiteOffset int
 }
 
-// NodeMapKey represents a hash key to identify unique call-edges in profile
-// and in IR. Used for deduplication of call edges found in profile.
-//
-// TODO(prattmic): rename to something more descriptive.
-type NodeMapKey struct {
+// NamedCallEdge identifies a call edge by linker symbol names and call site
+// offset.
+type NamedCallEdge struct {
 	CallerName     string
 	CalleeName     string
 	CallSiteOffset int
 }
 
-// Weights capture both node weight and edge weight.
-type Weights struct {
-	NFlat   int64
-	NCum    int64
-	EWeight int64
+// NamedEdgeMap contains all unique call edges in the profile and their
+// edge weight.
+type NamedEdgeMap struct {
+	Weight map[NamedCallEdge]int64
+
+	// ByWeight lists all keys in Weight, sorted by edge weight.
+	ByWeight []NamedCallEdge
 }
 
 // CallSiteInfo captures call-site information and its caller/callee.
@@ -111,15 +113,13 @@ type CallSiteInfo struct {
 // Profile contains the processed PGO profile and weighted call graph used for
 // PGO optimizations.
 type Profile struct {
-	// Aggregated NodeWeights and EdgeWeights across the profile. This
-	// helps us determine the percentage threshold for hot/cold
-	// partitioning.
-	TotalNodeWeight int64
-	TotalEdgeWeight int64
+	// Aggregated edge weights across the profile. This helps us determine
+	// the percentage threshold for hot/cold partitioning.
+	TotalWeight int64
 
-	// NodeMap contains all unique call-edges in the profile and their
-	// aggregated weight.
-	NodeMap map[NodeMapKey]*Weights
+	// EdgeMap contains all unique call edges in the profile and their
+	// edge weight.
+	NamedEdgeMap NamedEdgeMap
 
 	// WeightedCG represents the IRGraph built from profile, which we will
 	// update as part of inlining.
@@ -129,12 +129,15 @@ type Profile struct {
 // New generates a profile-graph from the profile.
 func New(profileFile string) (*Profile, error)
 
-// VisitIR traverses the body of each ir.Func and use NodeMap to determine if
-// we need to add an edge from ir.Func and any node in the ir.Func body.
-func (p *Profile) VisitIR(fn *ir.Func)
-
 // NodeLineOffset returns the line offset of n in fn.
 func NodeLineOffset(n ir.Node, fn *ir.Func) int
+
+// LookupMethodFunc looks up a method in export data. It is expected to be
+// overridden by package noder, to break a dependency cycle.
+var LookupMethodFunc = func(fullName string) (*ir.Func, error) {
+	base.Fatalf("pgo.LookupMethodFunc not overridden")
+	panic("unreachable")
+}
 
 // WeightInPercentage converts profile weights to a percentage.
 func WeightInPercentage(value int64, total int64) float64

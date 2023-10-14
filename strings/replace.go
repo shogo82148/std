@@ -17,9 +17,16 @@ type Replacer struct {
 	oldnew []string
 }
 
+<<<<<<< HEAD
 // NewReplacerは、古い文字列と新しい文字列のペアのリストから新しいReplacerを返します。
 // 置換は、対象文字列に現れる順序で実行され、重複するマッチングは行われません。
 // 古い文字列の比較は引数の順序で行われます。
+=======
+// NewReplacer returns a new [Replacer] from a list of old, new string
+// pairs. Replacements are performed in the order they appear in the
+// target string, without overlapping matches. The old string
+// comparisons are done in argument order.
+>>>>>>> upstream/master
 //
 // NewReplacerは、奇数の引数が与えられた場合にパニックを引き起こします。
 func NewReplacer(oldnew ...string) *Replacer

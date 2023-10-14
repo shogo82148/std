@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 )
 
-func Funcs(all []ir.Node)
+func Funcs(all []*ir.Func)
 
 // Batch performs escape analysis on a minimal batch of
 // functions.

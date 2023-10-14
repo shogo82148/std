@@ -16,6 +16,15 @@ import (
 // ファイルシステムは追加のインターフェース、例えばReadFileFSを実装することができます。
 // 追加の機能や最適化された機能を提供することができます。
 type FS interface {
+	// Open opens the named file.
+	//
+	// When Open returns an error, it should be of type *PathError
+	// with the Op field set to "open", the Path field set to name,
+	// and the Err field describing the problem.
+	//
+	// Open should reject attempts to open names that do not satisfy
+	// ValidPath(name), returning a *PathError with Err set to
+	// ErrInvalid or ErrNotExist.
 	Open(name string) (File, error)
 }
 
@@ -42,12 +51,24 @@ type File interface {
 // DirEntryはディレクトリから読み取られたエントリです
 // (ReadDir関数や [ReadDirFile] のReadDirメソッドを使用して)。
 type DirEntry interface {
+	// Name returns the name of the file (or subdirectory) described by the entry.
+	// This name is only the final element of the path (the base name), not the entire path.
+	// For example, Name would return "hello.go" not "home/gopher/hello.go".
 	Name() string
 
+	// IsDir reports whether the entry describes a directory.
 	IsDir() bool
 
+	// Type returns the type bits for the entry.
+	// The type bits are a subset of the usual FileMode bits, those returned by the FileMode.Type method.
 	Type() FileMode
 
+	// Info returns the FileInfo for the file or subdirectory described by the entry.
+	// The returned FileInfo may be from the time of the original directory read
+	// or from the time of the call to Info. If the file has been removed or renamed
+	// since the directory read, Info may return an error satisfying errors.Is(err, ErrNotExist).
+	// If the entry denotes a symbolic link, Info reports the information about the link itself,
+	// not the link's target.
 	Info() (FileInfo, error)
 }
 
@@ -57,6 +78,21 @@ type DirEntry interface {
 type ReadDirFile interface {
 	File
 
+	// ReadDir reads the contents of the directory and returns
+	// a slice of up to n DirEntry values in directory order.
+	// Subsequent calls on the same file will yield further DirEntry values.
+	//
+	// If n > 0, ReadDir returns at most n DirEntry structures.
+	// In this case, if ReadDir returns an empty slice, it will return
+	// a non-nil error explaining why.
+	// At the end of a directory, the error is io.EOF.
+	// (ReadDir must return io.EOF itself, not an error wrapping io.EOF.)
+	//
+	// If n <= 0, ReadDir returns all the DirEntry values from the directory
+	// in a single slice. In this case, if ReadDir succeeds (reads all the way
+	// to the end of the directory), it returns the slice and a nil error.
+	// If it encounters an error before the end of the directory,
+	// ReadDir returns the DirEntry list read until that point and a non-nil error.
 	ReadDir(n int) ([]DirEntry, error)
 }
 

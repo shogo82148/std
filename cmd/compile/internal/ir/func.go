@@ -52,18 +52,11 @@ type Func struct {
 	Nname    *Name
 	OClosure *ClosureExpr
 
-	// Extra entry code for the function. For example, allocate and initialize
-	// memory for escaping parameters.
-	Enter Nodes
-	Exit  Nodes
-
 	// ONAME nodes for all params/locals for this func/closure, does NOT
 	// include closurevars until transforming closures during walk.
 	// Names must be listed PPARAMs, PPARAMOUTs, then PAUTOs,
 	// with PPARAMs and PPARAMOUTs in order corresponding to the function signature.
-	// However, as anonymous or blank PPARAMs are not actually declared,
-	// they are omitted from Dcl.
-	// Anonymous and blank PPARAMOUTs are declared as ~rNN and ~bNN Names, respectively.
+	// Anonymous and blank params are declared as ~pNN (for PPARAMs) and ~rNN (for PPARAMOUTs).
 	Dcl []*Name
 
 	// ClosureVars lists the free variables that are used within a
@@ -92,10 +85,15 @@ type Func struct {
 
 	Inl *Inline
 
-	// Closgen tracks how many closures have been generated within
-	// this function. Used by closurename for creating unique
+	// funcLitGen and goDeferGen track how many closures have been
+	// created in this function for function literals and go/defer
+	// wrappers, respectively. Used by closureName for creating unique
 	// function names.
-	Closgen int32
+	//
+	// Tracking goDeferGen separately avoids wrappers throwing off
+	// function literal numbering (e.g., runtime/trace_test.TestTraceSymbolize.func11).
+	funcLitGen int32
+	goDeferGen int32
 
 	Label int32
 
@@ -143,7 +141,14 @@ type WasmImport struct {
 	Name   string
 }
 
-func NewFunc(pos src.XPos) *Func
+// NewFunc returns a new Func with the given name and type.
+//
+// fpos is the position of the "func" token, and npos is the position
+// of the name identifier.
+//
+// TODO(mdempsky): I suspect there's no need for separate fpos and
+// npos.
+func NewFunc(fpos, npos src.XPos, sym *types.Sym, typ *types.Type) *Func
 
 func (f *Func) Type() *types.Type
 func (f *Func) Sym() *types.Sym
@@ -154,12 +159,16 @@ func (f *Func) LinksymABI(abi obj.ABI) *obj.LSym
 type Inline struct {
 	Cost int32
 
-	// Copies of Func.Dcl and Func.Body for use during inlining. Copies are
-	// needed because the function's dcl/body may be changed by later compiler
-	// transformations. These fields are also populated when a function from
-	// another package is imported.
-	Dcl  []*Name
-	Body []Node
+	// Copy of Func.Dcl for use during inlining. This copy is needed
+	// because the function's Dcl may change from later compiler
+	// transformations. This field is also populated when a function
+	// from another package is imported and inlined.
+	Dcl     []*Name
+	HaveDcl bool
+
+	// Function properties, encoded as a string (these are used for
+	// making inlining decisions). See cmd/compile/internal/inline/inlheur.
+	Properties string
 
 	// CanDelayResults reports whether it's safe for the inliner to delay
 	// initializing the result parameters until immediately before the
@@ -189,32 +198,28 @@ func (f *Func) Dupok() bool
 func (f *Func) Wrapper() bool
 func (f *Func) ABIWrapper() bool
 func (f *Func) Needctxt() bool
-func (f *Func) ReflectMethod() bool
 func (f *Func) IsHiddenClosure() bool
 func (f *Func) IsDeadcodeClosure() bool
 func (f *Func) HasDefer() bool
 func (f *Func) NilCheckDisabled() bool
 func (f *Func) InlinabilityChecked() bool
-func (f *Func) ExportInline() bool
-func (f *Func) InstrumentBody() bool
+func (f *Func) NeverReturns() bool
 func (f *Func) OpenCodedDeferDisallowed() bool
-func (f *Func) ClosureCalled() bool
+func (f *Func) ClosureResultsLost() bool
 func (f *Func) IsPackageInit() bool
 
 func (f *Func) SetDupok(b bool)
 func (f *Func) SetWrapper(b bool)
 func (f *Func) SetABIWrapper(b bool)
 func (f *Func) SetNeedctxt(b bool)
-func (f *Func) SetReflectMethod(b bool)
 func (f *Func) SetIsHiddenClosure(b bool)
 func (f *Func) SetIsDeadcodeClosure(b bool)
 func (f *Func) SetHasDefer(b bool)
 func (f *Func) SetNilCheckDisabled(b bool)
 func (f *Func) SetInlinabilityChecked(b bool)
-func (f *Func) SetExportInline(b bool)
-func (f *Func) SetInstrumentBody(b bool)
+func (f *Func) SetNeverReturns(b bool)
 func (f *Func) SetOpenCodedDeferDisallowed(b bool)
-func (f *Func) SetClosureCalled(b bool)
+func (f *Func) SetClosureResultsLost(b bool)
 func (f *Func) SetIsPackageInit(b bool)
 
 func (f *Func) SetWBPos(pos src.XPos)
@@ -234,8 +239,9 @@ func PkgFuncName(f *Func) string
 // symbol table of the final linked binary.
 func LinkFuncName(f *Func) string
 
-// IsEqOrHashFunc reports whether f is type eq/hash function.
-func IsEqOrHashFunc(f *Func) bool
+// ParseLinkFuncName parsers a symbol name (as returned from LinkFuncName) back
+// to the package path and local symbol name.
+func ParseLinkFuncName(name string) (pkg, sym string, err error)
 
 var CurFunc *Func
 
@@ -246,9 +252,6 @@ func WithFunc(curfn *Func, do func())
 
 func FuncSymName(s *types.Sym) string
 
-// MarkFunc marks a node as a function.
-func MarkFunc(n *Name)
-
 // ClosureDebugRuntimeCheck applies boilerplate checks for debug flags
 // and compiling runtime.
 func ClosureDebugRuntimeCheck(clo *ClosureExpr)
@@ -257,17 +260,29 @@ func ClosureDebugRuntimeCheck(clo *ClosureExpr)
 // empty list of captured vars.
 func IsTrivialClosure(clo *ClosureExpr) bool
 
-// NewClosureFunc creates a new Func to represent a function literal.
-// If hidden is true, then the closure is marked hidden (i.e., as a
-// function literal contained within another function, rather than a
-// package-scope variable initialization expression).
-func NewClosureFunc(pos src.XPos, hidden bool) *Func
+// NewClosureFunc creates a new Func to represent a function literal
+// with the given type.
+//
+// fpos the position used for the underlying ODCLFUNC and ONAME,
+// whereas cpos is the position used for the OCLOSURE. They're
+// separate because in the presence of inlining, the OCLOSURE node
+// should have an inline-adjusted position, whereas the ODCLFUNC and
+// ONAME must not.
+//
+// outerfn is the enclosing function, if any. The returned function is
+// appending to pkg.Funcs.
+//
+// why is the reason we're generating this Func. It can be OCLOSURE
+// (for a normal function literal) or OGO or ODEFER (for wrapping a
+// call expression that has parameters or results).
+func NewClosureFunc(fpos, cpos src.XPos, why Op, typ *types.Type, outerfn *Func, pkg *Package) *Func
 
-// NameClosure generates a unique for the given function literal,
-// which must have appeared within outerfn.
-func NameClosure(clo *ClosureExpr, outerfn *Func)
+// IsFuncPCIntrinsic returns whether n is a direct call of internal/abi.FuncPCABIxxx functions.
+func IsFuncPCIntrinsic(n *CallExpr) bool
 
-// UseClosure checks that the given function literal has been setup
-// correctly, and then returns it as an expression.
-// It must be called after clo.Func.ClosureVars has been set.
-func UseClosure(clo *ClosureExpr, pkg *Package) Node
+// DeclareParams creates Names for all of the parameters in fn's
+// signature and adds them to fn.Dcl.
+//
+// If setNname is true, then it also sets types.Field.Nname for each
+// parameter.
+func (fn *Func) DeclareParams(setNname bool)

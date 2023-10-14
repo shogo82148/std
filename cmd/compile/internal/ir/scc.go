@@ -17,4 +17,4 @@ package ir
 // If recursive is false, the list consists of only a single function and its closures.
 // If recursive is true, the list may still contain only a single function,
 // if that function is itself recursive.
-func VisitFuncsBottomUp(list []Node, analyze func(list []*Func, recursive bool))
+func VisitFuncsBottomUp(list []*Func, analyze func(list []*Func, recursive bool))
