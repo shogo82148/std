@@ -15,6 +15,10 @@
 // https://golang.org/doc/articles/laws_of_reflection.html
 package reflect
 
+import (
+	"github.com/shogo82148/std/internal/abi"
+)
+
 // Type is the representation of a Go type.
 //
 // Not all methods apply to all kinds of types. Restrictions,
@@ -130,7 +134,7 @@ const Ptr = Pointer
 type ChanDir int
 
 const (
-	RecvDir ChanDir             = 1 << iota
+	RecvDir ChanDir = 1 << iota
 	SendDir
 	BothDir = RecvDir | SendDir
 )

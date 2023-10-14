@@ -27,6 +27,7 @@ package rsa
 
 import (
 	"github.com/shogo82148/std/crypto"
+	"github.com/shogo82148/std/crypto/internal/bigmod"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"

@@ -6,6 +6,7 @@ package http
 
 import (
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/net/http/internal"
 )
 
 // ErrLineTooLong is returned when reading request or response bodies

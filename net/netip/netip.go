@@ -11,6 +11,10 @@
 // and is comparable (supports == and being a map key).
 package netip
 
+import (
+	"github.com/shogo82148/std/internal/intern"
+)
+
 // Addr represents an IPv4 or IPv6 address (with or without a scoped
 // addressing zone), similar to [net.IP] or [net.IPAddr].
 //

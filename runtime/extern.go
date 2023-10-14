@@ -257,6 +257,11 @@ things:
 */
 package runtime
 
+import (
+	"github.com/shogo82148/std/internal/goarch"
+	"github.com/shogo82148/std/internal/goos"
+)
+
 // Caller reports file and line number information about function invocations on
 // the calling goroutine's stack. The argument skip is the number of stack frames
 // to ascend, with 0 identifying the caller of Caller.  (For historical reasons the

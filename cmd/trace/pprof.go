@@ -6,6 +6,10 @@
 
 package main
 
+import (
+	"github.com/shogo82148/std/internal/trace"
+)
+
 // Record represents one entry in pprof-like profiles.
 type Record struct {
 	stk  []*trace.Frame
