@@ -13,6 +13,8 @@ package main
 import (
 	"github.com/shogo82148/std/go/ast"
 	"github.com/shogo82148/std/go/token"
+
+	"github.com/shogo82148/std/cmd/internal/edit"
 )
 
 // パッケージは書く予定のパッケージに関する情報を集めます。

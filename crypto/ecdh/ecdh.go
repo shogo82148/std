@@ -7,6 +7,7 @@ package ecdh
 
 import (
 	"github.com/shogo82148/std/crypto"
+	"github.com/shogo82148/std/crypto/internal/boring"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/sync"
 )

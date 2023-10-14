@@ -6,6 +6,7 @@ package slog_test
 
 import (
 	"github.com/shogo82148/std/log/slog"
+	"github.com/shogo82148/std/log/slog/internal/slogtest"
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/time"
