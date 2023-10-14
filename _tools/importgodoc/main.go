@@ -213,7 +213,9 @@ func godoc(path string) ([]byte, error) {
 			astutil.DeleteImport(fset, node, imp)
 		} else {
 			// import文をgithub.com/shogo82148/stdに置き換える
-			astutil.RewriteImport(fset, node, imp, "github.com/shogo82148/std/"+imp)
+			if imp != "C" && !strings.HasPrefix(imp, "golang.org/") {
+				astutil.RewriteImport(fset, node, imp, "github.com/shogo82148/std/"+imp)
+			}
 		}
 	}
 

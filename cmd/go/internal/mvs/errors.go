@@ -5,7 +5,7 @@
 package mvs
 
 import (
-	"github.com/shogo82148/std/golang.org/x/mod/module"
+	"golang.org/x/mod/module"
 )
 
 // BuildListError decorates an error that occurred gathering requirements

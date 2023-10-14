@@ -5,7 +5,7 @@
 package modconv
 
 import (
-	"github.com/shogo82148/std/golang.org/x/mod/modfile"
+	"golang.org/x/mod/modfile"
 )
 
 func ParseGLOCKFILE(file string, data []byte) (*modfile.File, error)
