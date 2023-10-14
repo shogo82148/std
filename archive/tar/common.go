@@ -157,8 +157,8 @@ func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 // to control UID/GID resolution.
 type FileInfoNames interface {
 	fs.FileInfo
-	// Uname should translate a UID into a user name.
+
 	Uname(uid int) (string, error)
-	// Gname should translate a GID into a group name.
+
 	Gname(gid int) (string, error)
 }
