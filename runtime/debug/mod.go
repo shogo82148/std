@@ -41,37 +41,20 @@ type Module struct {
 //
 // 定義されたキーには以下のものがあります:
 //
-<<<<<<< HEAD
-//   - -buildmode: the buildmode flag used (typically "exe")
-//   - -compiler: the compiler toolchain flag used (typically "gc")
-//   - CGO_ENABLED: the effective CGO_ENABLED environment variable
-//   - CGO_CFLAGS: the effective CGO_CFLAGS environment variable
-//   - CGO_CPPFLAGS: the effective CGO_CPPFLAGS environment variable
-//   - CGO_CXXFLAGS:  the effective CGO_CXXFLAGS environment variable
-//   - CGO_LDFLAGS: the effective CGO_LDFLAGS environment variable
-//   - GOARCH: the architecture target
-//   - GOAMD64/GOARM/GO386/etc: the architecture feature level for GOARCH
-//   - GOOS: the operating system target
-//   - vcs: the version control system for the source tree where the build ran
-//   - vcs.revision: the revision identifier for the current commit or checkout
-//   - vcs.time: the modification time associated with vcs.revision, in RFC3339 format
-//   - vcs.modified: true or false indicating whether the source tree had local modifications
-=======
 //   - -buildmode: 使用されたビルドモードフラグ（通常は "exe"）
-//   - -compiler: 使用されたコンパイラツールチェインフラグ（通常は "gc"）
+//   - -compiler: 使用されたコンパイラツールチェーンフラグ（通常は "gc"）
 //   - CGO_ENABLED: 有効なCGO_ENABLED環境変数
 //   - CGO_CFLAGS: 有効なCGO_CFLAGS環境変数
 //   - CGO_CPPFLAGS: 有効なCGO_CPPFLAGS環境変数
-//   - CGO_CXXFLAGS: 有効なCGO_CPPFLAGS環境変数
-//   - CGO_LDFLAGS: 有効なCGO_CPPFLAGS環境変数
-//   - GOARCH: アーキテクチャのターゲット
-//   - GOAMD64/GOARM/GO386/など: GOARCHのアーキテクチャ機能レベル
-//   - GOOS: オペレーティングシステムのターゲット
+//   - CGO_CXXFLAGS: 有効なCGO_CXXFLAGS環境変数
+//   - CGO_LDFLAGS: 有効なCGO_LDFLAGS環境変数
+//   - GOARCH: アーキテクチャターゲット
+//   - GOAMD64/GOARM/GO386/etc: GOARCHのアーキテクチャ機能レベル
+//   - GOOS: オペレーティングシステムターゲット
 //   - vcs: ビルドが実行されたソースツリーのバージョン管理システム
-//   - vcs.revision: 現在のコミットまたはチェックアウトのためのリビジョン識別子
-//   - vcs.time: vcs.revisionに関連付けられた変更時刻（RFC3339形式）
-//   - vcs.modified: ソースツリーにローカルの変更があるかどうかを示すtrueまたはfalseです
->>>>>>> release-branch.go1.21
+//   - vcs.revision: 現在のコミットまたはチェックアウトのリビジョン識別子
+//   - vcs.time: vcs.revisionに関連付けられた修正時刻（RFC3339形式）
+//   - vcs.modified: ローカルの変更があるかどうかを示すtrueまたはfalse
 type BuildSetting struct {
 
 	// KeyとValueはビルド設定を説明します。
