@@ -8,9 +8,6 @@ package fs
 type GlobFS interface {
 	FS
 
-	// Glob returns the names of all files matching pattern,
-	// providing an implementation of the top-level
-	// Glob function.
 	Glob(pattern string) ([]string, error)
 }
 

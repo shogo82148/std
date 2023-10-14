@@ -15,14 +15,10 @@ import (
 // File implementations must be usable as map keys.
 // The usual implementation is *os.File.
 type File interface {
-	// Name returns the name of the file.
 	Name() string
 
-	// Fd returns a valid file descriptor.
-	// (If the File is an *os.File, it must not be closed.)
 	Fd() uintptr
 
-	// Stat returns the FileInfo structure describing file.
 	Stat() (fs.FileInfo, error)
 }
 

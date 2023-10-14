@@ -31,8 +31,6 @@ type RGBA64Image interface {
 
 // Quantizer produces a palette for an image.
 type Quantizer interface {
-	// Quantize appends up to cap(p) - len(p) colors to p and returns the
-	// updated palette suitable for converting m to a paletted image.
 	Quantize(p color.Palette, m image.Image) color.Palette
 }
 
@@ -52,8 +50,6 @@ func (op Op) Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point)
 
 // Drawer contains the Draw method.
 type Drawer interface {
-	// Draw aligns r.Min in dst with sp in src and then replaces the
-	// rectangle r in dst with the result of drawing src on dst.
 	Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point)
 }
 

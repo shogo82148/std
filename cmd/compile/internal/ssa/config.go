@@ -88,54 +88,36 @@ func NewTypes() *Types
 func (t *Types) SetTypPtrs()
 
 type Logger interface {
-	// Logf logs a message from the compiler.
 	Logf(string, ...interface{})
 
-	// Log reports whether logging is not a no-op
-	// some logging calls account for more than a few heap allocations.
 	Log() bool
 
-	// Fatal reports a compiler error and exits.
 	Fatalf(pos src.XPos, msg string, args ...interface{})
 
-	// Warnl writes compiler messages in the form expected by "errorcheck" tests
 	Warnl(pos src.XPos, fmt_ string, args ...interface{})
 
-	// Forwards the Debug flags from gc
 	Debug_checknil() bool
 }
 
 type Frontend interface {
 	Logger
 
-	// CanSSA reports whether variables of type t are SSA-able.
 	CanSSA(t *types.Type) bool
 
-	// StringData returns a symbol pointing to the given string's contents.
 	StringData(string) *obj.LSym
 
-	// Auto returns a Node for an auto variable of the given type.
-	// The SSA compiler uses this function to allocate space for spills.
 	Auto(src.XPos, *types.Type) *ir.Name
 
-	// Given the name for a compound type, returns the name we should use
-	// for the parts of that compound type.
 	SplitSlot(parent *LocalSlot, suffix string, offset int64, t *types.Type) LocalSlot
 
-	// AllocFrame assigns frame offsets to all live auto variables.
 	AllocFrame(f *Func)
 
-	// Syslook returns a symbol of the runtime function/variable with the
-	// given name.
 	Syslook(string) *obj.LSym
 
-	// UseWriteBarrier reports whether write barrier is enabled
 	UseWriteBarrier() bool
 
-	// MyImportPath provides the import name (roughly, the package) for the function being compiled.
 	MyImportPath() string
 
-	// Func returns the ir.Func of the function being compiled.
 	Func() *ir.Func
 }
 
