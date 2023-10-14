@@ -8,6 +8,8 @@
 // https://golang.org/doc/articles/laws_of_reflection.html
 package reflect
 
+import "github.com/ethereum/go-ethereum/accounts/abi"
+
 // TypeはGoの型の表現です。
 //
 // すべてのメソッドがすべての種類の型に適用されるわけではありません。制限がある場合は、各メソッドのドキュメントに記載されています。
@@ -78,13 +80,8 @@ type Type interface {
 	uncommon() *uncommonType
 }
 
-<<<<<<< HEAD
-// A Kind represents the specific kind of type that a [Type] represents.
-// The zero Kind is not a valid kind.
-=======
-// Kindは、Typeが表す特定の種類の型を表します。
+// Kindは、 [Type] が表す特定の種類の型を表します。
 // ゼロのKindは有効な種類ではありません。
->>>>>>> release-branch.go1.21
 type Kind uint
 
 const (
@@ -117,11 +114,7 @@ const (
 	UnsafePointer
 )
 
-<<<<<<< HEAD
-// Ptr is the old name for the [Pointer] kind.
-=======
-// PtrはPointer種別の旧名称です。
->>>>>>> release-branch.go1.21
+// Ptrは [Pointer] 種別の旧名称です。
 const Ptr = Pointer
 
 // ChanDirはチャネルの方向を表します。
@@ -196,27 +189,17 @@ func (tag StructTag) Get(key string) string
 // タグに通常の形式がない場合、Lookupによって返される値は指定されていません。
 func (tag StructTag) Lookup(key string) (value string, ok bool)
 
-<<<<<<< HEAD
-// TypeOf returns the reflection [Type] that represents the dynamic type of i.
-// If i is a nil interface value, TypeOf returns nil.
-=======
-// TypeOfは、iの動的な型を表す反射Typeを返します。
+// TypeOfは、iの動的な型を表す反射 [Type] を返します。
 // もしiがnilのインターフェース値である場合、TypeOfはnilを返します。
->>>>>>> release-branch.go1.21
 func TypeOf(i any) Type
 
 // PtrToは、要素tを持つポインタ型を返します。
 // 例えば、もしtがFoo型を表すなら、PtrTo(t)は*Fooを表します。
 //
-<<<<<<< HEAD
-// PtrTo is the old spelling of [PointerTo].
-// The two functions behave identically.
-//
-// Deprecated: Superseded by [PointerTo].
-=======
-// PtrToはPointerToの古い綴りです。
+// PtrToは [PointerTo] の古い綴りです。
 // これらの2つの関数は同じように動作します。
->>>>>>> release-branch.go1.21
+//
+// Deprecated: [PointerTo] によって置き換えられました。
 func PtrTo(t Type) Type
 
 // PointerToは要素tを持つポインタ型を返します。
@@ -251,14 +234,8 @@ func SliceOf(t Type) Type
 // StructOfはフィールドを含む構造体の型を返します。
 // OffsetとIndexのフィールドは無視され、コンパイラによって計算されます。
 //
-<<<<<<< HEAD
-// StructOf currently does not support promoted methods of embedded fields
-// and panics if passed unexported StructFields.
-=======
-// StructOfは現在、埋め込まれたフィールドに対してラッパーメソッドを生成せず、
-// 非公開のStructFieldsが渡された場合はパニックします。
-// これらの制限は将来のバージョンで解除される可能性があります。
->>>>>>> release-branch.go1.21
+// StructOfは、現在、埋め込みフィールドの昇格メソッドをサポートしておらず、
+// エクスポートされていないStructFieldsが渡された場合にパニックを引き起こします。
 func StructOf(fields []StructField) Type
 
 // ArrayOfは、与えられた長さと要素の型を持つ配列型を返します。
