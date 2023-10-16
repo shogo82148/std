@@ -59,11 +59,7 @@ type Reader struct {
 //
 // [Reader] を使用し終わった後は、呼び出し元の責任でCloseを呼び出す必要があります。
 //
-<<<<<<< HEAD
-// 返される [Reader] のHeaderフィールドは有効です。
-=======
-// The [Reader.Header] fields will be valid in the [Reader] returned.
->>>>>>> upstream/master
+// [Reader] によって返される [Reader.Header] フィールドは有効です。
 func NewReader(r io.Reader) (*Reader, error)
 
 // Resetは [Reader] zの状態を破棄し、 [NewReader] からの元の状態の結果と同等にしますが、代わりにrから読み込みます。
