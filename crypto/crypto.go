@@ -13,11 +13,7 @@ import (
 // Hashは別のパッケージで実装されている暗号ハッシュ関数を識別します。
 type Hash uint
 
-<<<<<<< HEAD
-// HashFunc は単に h の値を返すだけであり、Hash が SignerOpts を実装することを保証します。
-=======
-// HashFunc simply returns the value of h so that [Hash] implements [SignerOpts].
->>>>>>> upstream/master
+// HashFunc は単に h の値を返すだけであり、 [Hash] が [SignerOpts] を実装することを保証します。
 func (h Hash) HashFunc() Hash
 
 func (h Hash) String() string
@@ -80,13 +76,8 @@ type PublicKey any
 //	    Equal(x crypto.PrivateKey) bool
 //	}
 //
-<<<<<<< HEAD
-// また、SignerやDecrypterなどの特定の目的のインターフェースも実装しており、
+// また、 [Signer] や [Decrypter] などの特定の目的のインターフェースも実装しており、
 // アプリケーション内で型の安全性を向上させるために使用できます。
-=======
-// as well as purpose-specific interfaces such as [Signer] and [Decrypter], which
-// can be used for increased type safety within applications.
->>>>>>> upstream/master
 type PrivateKey any
 
 // Signerは、署名操作に使用される不透明な秘密鍵のインターフェースです。たとえば、ハードウェアモジュールに保存されているRSA鍵などがあります。
@@ -111,11 +102,7 @@ type Signer interface {
 	Sign(rand io.Reader, digest []byte, opts SignerOpts) (signature []byte, err error)
 }
 
-<<<<<<< HEAD
-// SignerOptsはSignerでの署名に対するオプションを含んでいます。
-=======
-// SignerOpts contains options for signing with a [Signer].
->>>>>>> upstream/master
+// SignerOptsは [Signer] での署名に対するオプションを含んでいます。
 type SignerOpts interface {
 	// HashFunc returns an identifier for the hash function used to produce
 	// the message passed to Signer.Sign, or else zero to indicate that no
