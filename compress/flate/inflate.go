@@ -62,11 +62,7 @@ type Reader interface {
 // The reader returns [io.EOF] after the final block in the DEFLATE stream has
 // been encountered. Any trailing data after the final block is ignored.
 //
-<<<<<<< HEAD
-// NewReaderによって返されるReadCloserは、 [Resetter] も実装しています。
-=======
-// The [io.ReadCloser] returned by NewReader also implements [Resetter].
->>>>>>> upstream/master
+// NewReaderによって返される [io.ReadCloser] は、 [Resetter] も実装しています。
 func NewReader(r io.Reader) io.ReadCloser
 
 // NewReaderDictは [NewReader] と同じようにリーダーを初期化しますが、
