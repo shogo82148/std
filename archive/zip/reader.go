@@ -38,25 +38,15 @@ type Reader struct {
 	fileList     []fileListEntry
 }
 
-<<<<<<< HEAD
-// ReadCloser は、不要になったときに閉じる必要がある Reader です。
-=======
-// A ReadCloser is a [Reader] that must be closed when no longer needed.
->>>>>>> upstream/master
+// ReadCloser は、不要になったときに閉じる必要がある [Reader] です。
 type ReadCloser struct {
 	f *os.File
 	Reader
 }
 
-<<<<<<< HEAD
 // File は、ZIP アーカイブ内の単一のファイルです。
-// ファイル情報は、埋め込み FileHeader にあります。
-// ファイルの内容は、Open を呼び出すことでアクセスできます。
-=======
-// A File is a single file in a ZIP archive.
-// The file information is in the embedded [FileHeader].
-// The file content can be accessed by calling [File.Open].
->>>>>>> upstream/master
+// ファイル情報は、埋め込み [FileHeader] にあります。
+// ファイルの内容は、 [File.Open] を呼び出すことでアクセスできます。
 type File struct {
 	FileHeader
 	zip          *Reader
@@ -75,36 +65,18 @@ type File struct {
 // ローカルでない名前を受け入れたいプログラムは、ErrInsecurePath エラーを無視して返されたリーダーを使用できます。
 func OpenReader(name string) (*ReadCloser, error)
 
-<<<<<<< HEAD
-// NewReader は、指定されたサイズを持つと想定される r から読み取る新しい Reader を返します。
+// NewReader は、指定されたサイズを持つと想定される r から読み取る新しい [Reader] を返します。
 //
 // アーカイブ内のファイルのいずれかが、[filepath.IsLocal] によって定義されるローカルでない名前
 // またはバックスラッシュを含む名前を使用している場合、
 // および GODEBUG 環境変数に `zipinsecurepath=0` が含まれている場合、
-// NewReader は ErrInsecurePath エラーを返すリーダーを返します。
+// NewReader は [ErrInsecurePath] エラーを返すリーダーを返します。
 // 将来の Go のバージョンでは、この動作がデフォルトで導入される可能性があります。
-// ローカルでない名前を受け入れたいプログラムは、ErrInsecurePath エラーを無視して返されたリーダーを使用できます。
+// ローカルでない名前を受け入れたいプログラムは、 [ErrInsecurePath] エラーを無視して返されたリーダーを使用できます。
 func NewReader(r io.ReaderAt, size int64) (*Reader, error)
 
 // RegisterDecompressor は、特定のメソッド ID にカスタムの解凍プログラムを登録または上書きします。
 // メソッドの解凍プログラムが見つからない場合、Reader はパッケージレベルで解凍プログラムを検索します。
-=======
-// NewReader returns a new [Reader] reading from r, which is assumed to
-// have the given size in bytes.
-//
-// If any file inside the archive uses a non-local name
-// (as defined by [filepath.IsLocal]) or a name containing backslashes
-// and the GODEBUG environment variable contains `zipinsecurepath=0`,
-// NewReader returns the reader with an [ErrInsecurePath] error.
-// A future version of Go may introduce this behavior by default.
-// Programs that want to accept non-local names can ignore
-// the [ErrInsecurePath] error and use the returned reader.
-func NewReader(r io.ReaderAt, size int64) (*Reader, error)
-
-// RegisterDecompressor registers or overrides a custom decompressor for a
-// specific method ID. If a decompressor for a given method is not found,
-// [Reader] will default to looking up the decompressor at the package level.
->>>>>>> upstream/master
 func (r *Reader) RegisterDecompressor(method uint16, dcomp Decompressor)
 
 // Close は、Zip ファイルを閉じ、I/O に使用できなくします。
@@ -112,20 +84,11 @@ func (rc *ReadCloser) Close() error
 
 // DataOffset は、ファイルの圧縮された可能性のあるデータのオフセットを、zip ファイルの先頭からの相対位置で返します。
 //
-<<<<<<< HEAD
-// ほとんどの呼び出し元は、データを透過的に解凍し、チェックサムを検証する Open を代わりに使用する必要があります。
+// ほとんどの呼び出し元は、データを透過的に解凍し、チェックサムを検証する [File.Open] を代わりに使用する必要があります。
 func (f *File) DataOffset() (offset int64, err error)
 
-// Open は、ファイルの内容にアクセスする ReadCloser を返します。
-// 複数のファイルを同時に読み取ることができます。
-=======
-// Most callers should instead use [File.Open], which transparently
-// decompresses data and verifies checksums.
-func (f *File) DataOffset() (offset int64, err error)
-
-// Open returns a [ReadCloser] that provides access to the [File]'s contents.
-// Multiple files may be read concurrently.
->>>>>>> upstream/master
+// Open は、ファイルの内容にアクセスする [ReadCloser] を返します。
+// 複数の [File] を同時に読み取ることができます。
 func (f *File) Open() (io.ReadCloser, error)
 
 // OpenRaw returns a [Reader] that provides access to the [File]'s contents without

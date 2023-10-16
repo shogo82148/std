@@ -14,33 +14,17 @@ import (
 // 各返されたライターは一度に1つのゴルーチンによってのみ使用されます。
 type Compressor func(w io.Writer) (io.WriteCloser, error)
 
-<<<<<<< HEAD
 // Decompressor は、r から読み取る新しい解凍リーダーを返します。
-// ReadCloser の Close メソッドは、関連するリソースを解放するために使用する必要があります。
+// [io.ReadCloser] の Close メソッドは、関連するリソースを解放するために使用する必要があります。
 // Decompressor 自体は、複数のゴルーチンから同時に呼び出されることができますが、
 // 各返されたリーダーは一度に1つのゴルーチンによってのみ使用されます。
 type Decompressor func(r io.Reader) io.ReadCloser
 
 // RegisterDecompressor は、特定のメソッド ID にカスタムの解凍プログラムを登録または上書きします。
 // メソッドの解凍プログラムが見つからない場合、Writer はパッケージレベルで解凍プログラムを検索します。
-// 一般的なメソッド Store と Deflate は組み込みです。
+// 一般的なメソッド [Store] と [Deflate] は組み込みです。
 func RegisterDecompressor(method uint16, dcomp Decompressor)
 
 // RegisterCompressor は、特定のメソッド ID にカスタムの圧縮プログラムを登録または上書きします。
-// 一般的なメソッド Store と Deflate は組み込みです。
-=======
-// A Decompressor returns a new decompressing reader, reading from r.
-// The [io.ReadCloser]'s Close method must be used to release associated resources.
-// The Decompressor itself must be safe to invoke from multiple goroutines
-// simultaneously, but each returned reader will be used only by
-// one goroutine at a time.
-type Decompressor func(r io.Reader) io.ReadCloser
-
-// RegisterDecompressor allows custom decompressors for a specified method ID.
-// The common methods [Store] and [Deflate] are built in.
-func RegisterDecompressor(method uint16, dcomp Decompressor)
-
-// RegisterCompressor registers custom compressors for a specified method ID.
-// The common methods [Store] and [Deflate] are built in.
->>>>>>> upstream/master
+// 一般的なメソッド [Store] と [Deflate] は組み込みです。
 func RegisterCompressor(method uint16, comp Compressor)
