@@ -99,12 +99,7 @@ type PrivateKey struct {
 //
 // NIST曲線の場合、これはSEC 1バージョン2.0セクション3.3.1で指定されたようにECDHを実行し、SEC 1バージョン2.0セクション2.3.5に従ってエンコードされたx座標を返します。結果は決して無限遠点ではありません。
 //
-<<<<<<< HEAD
-// X25519の場合、これはRFC 7748セクション6.1で指定されたようにECDHを実行します。結果が全て0値の場合、ECDHはエラーを返します。
-=======
-// For [X25519], this performs ECDH as specified in RFC 7748, Section 6.1. If
-// the result is the all-zero value, ECDH returns an error.
->>>>>>> upstream/master
+// [X25519] の場合、これはRFC 7748セクション6.1で指定されたようにECDHを実行します。結果が全て0値の場合、ECDHはエラーを返します。
 func (k *PrivateKey) ECDH(remote *PublicKey) ([]byte, error)
 
 // Bytesは、プライベートキーのエンコーディングのコピーを返します。
@@ -112,13 +107,8 @@ func (k *PrivateKey) Bytes() []byte
 
 // Equalは、xがkと同じ秘密鍵を表しているかどうかを返します。
 //
-<<<<<<< HEAD
 // ただし、異なるエンコーディングを持つ等価な秘密鍵が存在する場合があることに注意してください。
-// この場合、このチェックではfalseが返されますが、ECDHの入力としては同じように機能します。
-=======
-// Note that there can be equivalent private keys with different encodings which
-// would return false from this check but behave the same way as inputs to [ECDH].
->>>>>>> upstream/master
+// この場合、このチェックではfalseが返されますが、 [ECDH] の入力としては同じように機能します。
 //
 // このチェックは、キーのタイプと曲線が一致している限り、一定の時間で実行されます。
 func (k *PrivateKey) Equal(x crypto.PrivateKey) bool
@@ -127,10 +117,5 @@ func (k *PrivateKey) Curve() Curve
 
 func (k *PrivateKey) PublicKey() *PublicKey
 
-<<<<<<< HEAD
-// Publicは、すべての標準ライブラリの非公開キーの暗黙のインターフェースを実装します。crypto.PrivateKeyのドキュメントを参照してください。
-=======
-// Public implements the implicit interface of all standard library private
-// keys. See the docs of [crypto.PrivateKey].
->>>>>>> upstream/master
+// Publicは、すべての標準ライブラリの非公開キーの暗黙のインターフェースを実装します。 [crypto.PrivateKey] のドキュメントを参照してください。
 func (k *PrivateKey) Public() crypto.PublicKey
