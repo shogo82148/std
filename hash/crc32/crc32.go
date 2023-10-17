@@ -38,59 +38,28 @@ const (
 // Tableは、効率的な処理のための多項式を表す256ワードのテーブルです。
 type Table [256]uint32
 
-<<<<<<< HEAD
-// IEEETableはIEEEポリノミアルのテーブルです。
+// IEEETableは [IEEE] ポリノミアルのテーブルです。
 var IEEETable = simpleMakeTable(IEEE)
 
-// MakeTableは指定された多項式から構築されたTableを返します。
-// このTableの内容は変更してはいけません。
+// MakeTableは指定された多項式から構築された [Table] を返します。
+// この [Table] の内容は変更してはいけません。
 func MakeTable(poly uint32) *Table
 
-// NewはTableによって表現される多項式を使用してCRC-32チェックサムを計算する新しいhash.Hash32を作成します。
+// Newは [Table] によって表現される多項式を使用してCRC-32チェックサムを計算する新しい [hash.Hash32] を作成します。
 // そのSumメソッドはビッグエンディアンのバイト順で値を配置します。
-// 返されるHash32は、内部状態のマーシャリングとアンマーシャリングを実装するため、encoding.BinaryMarshalerとencoding.BinaryUnmarshalerも実装しています。
+// 返されるHash32は、内部状態のマーシャリングとアンマーシャリングを実装するため、 [encoding.BinaryMarshaler] と [encoding.BinaryUnmarshaler] も実装しています。
 func New(tab *Table) hash.Hash32
 
-// NewIEEEは、IEEE多項式を使用してCRC-32チェックサムを計算する新しいhash.Hash32を作成します。そのSumメソッドは、値をビッグエンディアンのバイト順でレイアウトします。
-// 返されるHash32は、encoding.BinaryMarshalerおよびencoding.BinaryUnmarshalerも実装しており、ハッシュの内部状態をマーシャルおよびアンマーシャルすることができます。
-=======
-// IEEETable is the table for the [IEEE] polynomial.
-var IEEETable = simpleMakeTable(IEEE)
-
-// MakeTable returns a [Table] constructed from the specified polynomial.
-// The contents of this [Table] must not be modified.
-func MakeTable(poly uint32) *Table
-
-// New creates a new [hash.Hash32] computing the CRC-32 checksum using the
-// polynomial represented by the [Table]. Its Sum method will lay the
-// value out in big-endian byte order. The returned Hash32 also
-// implements [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to
-// marshal and unmarshal the internal state of the hash.
-func New(tab *Table) hash.Hash32
-
-// NewIEEE creates a new [hash.Hash32] computing the CRC-32 checksum using
-// the [IEEE] polynomial. Its Sum method will lay the value out in
-// big-endian byte order. The returned Hash32 also implements
-// [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to marshal
-// and unmarshal the internal state of the hash.
->>>>>>> upstream/master
+// NewIEEEは、 [IEEE] 多項式を使用してCRC-32チェックサムを計算する新しい [hash.Hash32] を作成します。そのSumメソッドは、値をビッグエンディアンのバイト順でレイアウトします。
+// 返されるHash32は、 [encoding.BinaryMarshaler] および [encoding.BinaryUnmarshaler] も実装しており、ハッシュの内部状態をマーシャルおよびアンマーシャルすることができます。
 func NewIEEE() hash.Hash32
 
 // Updateはpのバイトをcrcに追加した結果を返します。
 func Update(crc uint32, tab *Table, p []byte) uint32
 
-<<<<<<< HEAD
-// ChecksumはTableで表されるポリノミアルを使用して、
+// Checksumは [Table] で表されるポリノミアルを使用して、
 // dataのCRC-32チェックサムを返します。
 func Checksum(data []byte, tab *Table) uint32
 
-// ChecksumIEEEは、IEEE多項式を使用してデータのCRC-32チェックサムを返します。
-=======
-// Checksum returns the CRC-32 checksum of data
-// using the polynomial represented by the [Table].
-func Checksum(data []byte, tab *Table) uint32
-
-// ChecksumIEEE returns the CRC-32 checksum of data
-// using the [IEEE] polynomial.
->>>>>>> upstream/master
+// ChecksumIEEEは、 [IEEE] 多項式を使用してデータのCRC-32チェックサムを返します。
 func ChecksumIEEE(data []byte) uint32
