@@ -30,23 +30,9 @@ func IsEncryptedPEMBlock(b *pem.Block) bool
 // IncorrectPasswordError は、不正なパスワードが検出された場合に返されます。
 var IncorrectPasswordError = errors.New("x509: decryption password incorrect")
 
-<<<<<<< HEAD
-// DecryptPEMBlockは、RFC 1423に従って暗号化されたPEMブロックと、それを暗号化するために使用されたパスワードを受け取り、復号化されたDER形式のバイトのスライスを返します。復号化に使用されるアルゴリズムは、DEK-Infoヘッダを調べて決定されます。DEK-Infoヘッダが存在しない場合、エラーが返されます。不正なパスワードが検出された場合、IncorrectPasswordErrorが返されます。フォーマットの不備のため、常に不正なパスワードを検出することはできません。これらの場合、エラーは返されませんが、復号化されたDERバイトはランダムなノイズになります。
-// 廃止されました：RFC 1423で指定されたレガシーなPEM暗号化はセキュリティの設計上の問題があります。暗号文を認証しないため、パディングオラクル攻撃に対して脆弱であり、攻撃者が平文を回復することができます。
-=======
-// DecryptPEMBlock takes a PEM block encrypted according to RFC 1423 and the
-// password used to encrypt it and returns a slice of decrypted DER encoded
-// bytes. It inspects the DEK-Info header to determine the algorithm used for
-// decryption. If no DEK-Info header is present, an error is returned. If an
-// incorrect password is detected an [IncorrectPasswordError] is returned. Because
-// of deficiencies in the format, it's not always possible to detect an
-// incorrect password. In these cases no error will be returned but the
-// decrypted DER bytes will be random noise.
+// DecryptPEMBlockは、RFC 1423に従って暗号化されたPEMブロックと、それを暗号化するために使用されたパスワードを受け取り、復号化されたDER形式のバイトのスライスを返します。復号化に使用されるアルゴリズムは、DEK-Infoヘッダを調べて決定されます。DEK-Infoヘッダが存在しない場合、エラーが返されます。不正なパスワードが検出された場合、 [IncorrectPasswordError] が返されます。フォーマットの不備のため、常に不正なパスワードを検出することはできません。これらの場合、エラーは返されませんが、復号化されたDERバイトはランダムなノイズになります。
 //
-// Deprecated: Legacy PEM encryption as specified in RFC 1423 is insecure by
-// design. Since it does not authenticate the ciphertext, it is vulnerable to
-// padding oracle attacks that can let an attacker recover the plaintext.
->>>>>>> upstream/master
+// Deprecated: RFC 1423で指定されたレガシーなPEM暗号化はセキュリティの設計上の問題があります。暗号文を認証しないため、パディングオラクル攻撃に対して脆弱であり、攻撃者が平文を回復することができます。
 func DecryptPEMBlock(b *pem.Block, password []byte) ([]byte, error)
 
 // EncryptPEMBlockは、指定されたアルゴリズムとパスワードで暗号化された指定されたDERエンコードされたデータを保持する指定されたタイプのPEMブロックを返します。

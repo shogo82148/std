@@ -45,12 +45,7 @@ func (s *CertPool) AppendCertsFromPEM(pemCerts []byte) (ok bool)
 
 // Subjectsはプール内のすべての証明書のDERエンコードされたサブジェクトのリストを返します。
 //
-<<<<<<< HEAD
-// 非推奨: sがSystemCertPoolから返された場合、Subjectsにはシステムルートは含まれません。
-=======
-// Deprecated: if s was returned by [SystemCertPool], Subjects
-// will not include the system roots.
->>>>>>> upstream/master
+// Deprecated: sが [SystemCertPool] から返された場合、Subjectsにはシステムルートは含まれません。
 func (s *CertPool) Subjects() [][]byte
 
 // Equalは、sとotherが等しいかどうかを報告します。
