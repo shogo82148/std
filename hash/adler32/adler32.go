@@ -19,18 +19,10 @@ import (
 // Adler-32チェックサムのバイト単位のサイズ。
 const Size = 4
 
-<<<<<<< HEAD
 // NewはAdler-32チェックサムを計算する新しいhash.Hash32を返します。
 // Sumメソッドは値をビッグエンディアンのバイト順で配置します。
-// 返されるHash32は、encoding.BinaryMarshalerとencoding.BinaryUnmarshalerも実装しており、
+// 返されるHash32は、 [encoding.BinaryMarshaler] と [encoding.BinaryUnmarshaler] も実装しており、
 // ハッシュの内部状態をマーシャリングおよびアンマーシャリングすることができます。
-=======
-// New returns a new hash.Hash32 computing the Adler-32 checksum. Its
-// Sum method will lay the value out in big-endian byte order. The
-// returned Hash32 also implements [encoding.BinaryMarshaler] and
-// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
-// state of the hash.
->>>>>>> upstream/master
 func New() hash.Hash32
 
 // ChecksumはdataのAdler-32チェックサムを返します。
