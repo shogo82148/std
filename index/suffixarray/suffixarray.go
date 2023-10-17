@@ -26,13 +26,8 @@ type Index struct {
 	sa   ints
 }
 
-<<<<<<< HEAD
-// Newはデータのために新しいインデックスを作成します。
-// インデックスの作成時間はO(N)であり、Nはdataの長さです。
-=======
-// New creates a new [Index] for data.
-// [Index] creation time is O(N) for N = len(data).
->>>>>>> upstream/master
+// Newはデータのために新しい [Index] を作成します。
+// [Index] の作成時間はO(N)であり、Nはdataの長さです。
 func New(data []byte) *Index
 
 // Readはrからインデックスをxに読み込む。xはnilであってはならない。
