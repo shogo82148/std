@@ -16,26 +16,26 @@ import (
 	"github.com/shogo82148/std/hash"
 )
 
-// New32は新しい32ビットFNV-1ハッシュ.Hashを返します。
+// New32は新しい32ビットFNV-1 [hash.Hash] を返します。
 // そのSumメソッドは値をビッグエンディアンのバイト順で配置します。
 func New32() hash.Hash32
 
-// New32aは32ビットのFNV-1aハッシュ.Hashを新たに作成します。
+// New32aは32ビットのFNV-1a [hash.Hash] を新たに作成します。
 // そのSumメソッドは値をビッグエンディアンバイト順で表示します。
 func New32a() hash.Hash32
 
-// New64は新しい64ビットのFNV-1ハッシュのhash.Hashを返します。
+// New64は新しい64ビットのFNV-1 [hash.Hash] を返します。
 // そのSumメソッドは値をビッグエンディアンのバイトオーダーで配置します。
 func New64() hash.Hash64
 
-// New64a は新しい64ビットのFNV-1aハッシュを返します。
+// New64a は新しい64ビットのFNV-1a [hash.Hash] を返します。
 // そのSumメソッドは値をビッグエンディアンのバイト順序で配置します。
 func New64a() hash.Hash64
 
-// New128は新しい128ビットのFNV-1ハッシュ.Hashを返します。
+// New128は新しい128ビットのFNV-1 [hash.Hash] を返します。
 // Sumメソッドは値をビッグエンディアンのバイトオーダーで配置します。
 func New128() hash.Hash
 
-// New128aは新しい128ビットのFNV-1aハッシュを返します。
+// New128aは新しい128ビットのFNV-1a [hash.Hash] を返します。
 // そのSumメソッドは値をビッグエンディアンのバイト順で配置します。
 func New128a() hash.Hash

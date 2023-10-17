@@ -15,7 +15,13 @@ func ImpersonateSelf(impersonationlevel uint32) (err error)
 
 func LookupPrivilegeValue(systemname *uint16, name *uint16, luid *LUID) (err error)
 
+func OpenSCManager(machineName *uint16, databaseName *uint16, access uint32) (handle syscall.Handle, err error)
+
+func OpenService(mgr syscall.Handle, serviceName *uint16, access uint32) (handle syscall.Handle, err error)
+
 func OpenThreadToken(h syscall.Handle, access uint32, openasself bool, token *syscall.Token) (err error)
+
+func QueryServiceStatus(hService syscall.Handle, lpServiceStatus *SERVICE_STATUS) (err error)
 
 func RevertToSelf() (err error)
 
@@ -42,6 +48,10 @@ func GetFinalPathNameByHandle(file syscall.Handle, filePath *uint16, filePathSiz
 func GetModuleFileName(module syscall.Handle, fn *uint16, len uint32) (n uint32, err error)
 
 func GetTempPath2(buflen uint32, buf *uint16) (n uint32, err error)
+
+func GetVolumeInformationByHandle(file syscall.Handle, volumeNameBuffer *uint16, volumeNameSize uint32, volumeNameSerialNumber *uint32, maximumComponentLength *uint32, fileSystemFlags *uint32, fileSystemNameBuffer *uint16, fileSystemNameSize uint32) (err error)
+
+func GetVolumeNameForVolumeMountPoint(volumeMountPoint *uint16, volumeName *uint16, bufferlength uint32) (err error)
 
 func LockFileEx(file syscall.Handle, flags uint32, reserved uint32, bytesLow uint32, bytesHigh uint32, overlapped *syscall.Overlapped) (err error)
 

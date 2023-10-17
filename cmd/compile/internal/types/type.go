@@ -6,6 +6,7 @@ package types
 
 import (
 	"github.com/shogo82148/std/cmd/internal/src"
+	"github.com/shogo82148/std/go/constant"
 )
 
 // Object represents an ir.Node, but without needing to import cmd/compile/internal/ir,
@@ -121,6 +122,25 @@ var (
 	UntypedComplex = newType(TIDEAL)
 )
 
+// UntypedTypes maps from a constant.Kind to its untyped Type
+// representation.
+var UntypedTypes = [...]*Type{
+	constant.Bool:    UntypedBool,
+	constant.String:  UntypedString,
+	constant.Int:     UntypedInt,
+	constant.Float:   UntypedFloat,
+	constant.Complex: UntypedComplex,
+}
+
+// DefaultKinds maps from a constant.Kind to its default Kind.
+var DefaultKinds = [...]Kind{
+	constant.Bool:    TBOOL,
+	constant.String:  TSTRING,
+	constant.Int:     TINT,
+	constant.Float:   TFLOAT64,
+	constant.Complex: TCOMPLEX128,
+}
+
 // A Type represents a Go type.
 //
 // There may be multiple unnamed types with identical structure. However, there must
@@ -129,7 +149,7 @@ var (
 // package.Lookup(name)) and checking sym.Def. If sym.Def is non-nil, the type
 // already exists at package scope and is available at sym.Def.(*ir.Name).Type().
 // Local types (which may have the same name as a package-level type) are
-// distinguished by the value of vargen.
+// distinguished by their vargen, which is embedded in their symbol name.
 type Type struct {
 	// extra contains extra etype-specific fields.
 	// As an optimization, those etype-specific structs which contain exactly
@@ -153,9 +173,9 @@ type Type struct {
 	width int64
 
 	// list of base methods (excluding embedding)
-	methods Fields
+	methods fields
 	// list of all methods (including embedding)
-	allMethods Fields
+	allMethods fields
 
 	// canonical OTYPE node for a named type (should be an ir.Name node with same sym)
 	obj Object
@@ -168,10 +188,10 @@ type Type struct {
 		slice *Type
 	}
 
-	vargen int32
-
 	kind  Kind
 	align uint8
+
+	intRegs, floatRegs uint8
 
 	flags bitset8
 
@@ -185,6 +205,14 @@ type Type struct {
 	// TODO(danscales): choose a better name.
 	rparams *[]*Type
 }
+
+// Registers returns the number of integer and floating-point
+// registers required to represent a parameter of this type under the
+// ABIInternal calling conventions.
+//
+// If t must be passed by memory, Registers returns (math.MaxUint8,
+// math.MaxUint8).
+func (t *Type) Registers() (uint8, uint8)
 
 func (*Type) CanBeAnSSAAux()
 
@@ -232,8 +260,6 @@ type Map struct {
 	Elem *Type
 
 	Bucket *Type
-	Hmap   *Type
-	Hiter  *Type
 }
 
 // MapType returns t's extra map-specific fields.
@@ -245,14 +271,14 @@ type Forward struct {
 	Embedlineno src.XPos
 }
 
-// ForwardType returns t's extra forward-type-specific fields.
-func (t *Type) ForwardType() *Forward
-
 // Func contains Type fields specific to func types.
 type Func struct {
-	Receiver *Type
-	Results  *Type
-	Params   *Type
+	allParams []*Field
+
+	startParams  int
+	startResults int
+
+	resultsTuple *Type
 
 	// Argwid is the total width of the function receiver, params, and results.
 	// It gets calculated via a temporary TFUNCARGS type.
@@ -260,30 +286,16 @@ type Func struct {
 	Argwid int64
 }
 
-// FuncType returns t's extra func-specific fields.
-func (t *Type) FuncType() *Func
-
 // StructType contains Type fields specific to struct types.
 type Struct struct {
-	fields Fields
+	fields fields
 
 	// Maps have three associated internal structs (see struct MapType).
 	// Map links such structs back to their map type.
 	Map *Type
 
-	Funarg Funarg
+	ParamTuple bool
 }
-
-// Funarg records the kind of function argument
-type Funarg uint8
-
-const (
-	FunargNone Funarg = iota
-	FunargRcvr
-	FunargParams
-	FunargResults
-	FunargTparams
-)
 
 // StructType returns t's extra struct-specific fields.
 func (t *Type) StructType() *Struct
@@ -312,9 +324,6 @@ type Chan struct {
 	Elem *Type
 	Dir  ChanDir
 }
-
-// ChanType returns t's extra channel-specific fields.
-func (t *Type) ChanType() *Chan
 
 type Tuple struct {
 	first  *Type
@@ -361,8 +370,7 @@ type Field struct {
 	Nname Object
 
 	// Offset in bytes of this field or method within its enclosing struct
-	// or interface Type.  Exception: if field is function receiver, arg or
-	// result, then this is BOGUS_FUNARG_OFFSET; types does not know the Abi.
+	// or interface Type. For parameters, this is BADWIDTH.
 	Offset int64
 }
 
@@ -377,31 +385,6 @@ func (f *Field) End() int64
 
 // IsMethod reports whether f represents a method rather than a struct field.
 func (f *Field) IsMethod() bool
-
-// Fields is a pointer to a slice of *Field.
-// This saves space in Types that do not have fields or methods
-// compared to a simple slice of *Field.
-type Fields struct {
-	s *[]*Field
-}
-
-// Len returns the number of entries in f.
-func (f *Fields) Len() int
-
-// Slice returns the entries in f as a slice.
-// Changes to the slice entries will be reflected in f.
-func (f *Fields) Slice() []*Field
-
-// Index returns the i'th element of Fields.
-// It panics if f does not have at least i+1 elements.
-func (f *Fields) Index(i int) *Field
-
-// Set sets f to a slice.
-// This takes ownership of the slice.
-func (f *Fields) Set(s []*Field)
-
-// Append appends entries to f.
-func (f *Fields) Append(s ...*Field)
 
 // NewArray returns a new fixed-length array Type.
 func NewArray(elem *Type, bound int64) *Type
@@ -441,9 +424,32 @@ func SubstAny(t *Type, types *[]*Type) *Type
 
 func (f *Field) Copy() *Field
 
-func (t *Type) Recvs() *Type
-func (t *Type) Params() *Type
-func (t *Type) Results() *Type
+// ResultTuple returns the result type of signature type t as a tuple.
+// This can be used as the type of multi-valued call expressions.
+func (t *Type) ResultsTuple() *Type
+
+// Recvs returns a slice of receiver parameters of signature type t.
+// The returned slice always has length 0 or 1.
+func (t *Type) Recvs() []*Field
+
+// Params returns a slice of regular parameters of signature type t.
+func (t *Type) Params() []*Field
+
+// Results returns a slice of result parameters of signature type t.
+func (t *Type) Results() []*Field
+
+// RecvsParamsResults returns a slice containing all of the
+// signature's parameters in receiver (if any), (normal) parameters,
+// and then results.
+func (t *Type) RecvParamsResults() []*Field
+
+// RecvParams returns a slice containing the signature's receiver (if
+// any) followed by its (normal) parameters.
+func (t *Type) RecvParams() []*Field
+
+// ParamsResults returns a slice containing the signature's (normal)
+// parameters followed by its results.
+func (t *Type) ParamsResults() []*Field
 
 func (t *Type) NumRecvs() int
 func (t *Type) NumParams() int
@@ -455,22 +461,11 @@ func (t *Type) IsVariadic() bool
 // Recv returns the receiver of function type t, if any.
 func (t *Type) Recv() *Field
 
-// RecvsParamsResults stores the accessor functions for a function Type's
-// receiver, parameters, and result parameters, in that order.
-// It can be used to iterate over all of a function's parameter lists.
-var RecvsParamsResults = [3]func(*Type) *Type{
-	(*Type).Recvs, (*Type).Params, (*Type).Results,
-}
+// Param returns the i'th parameter of signature type t.
+func (t *Type) Param(i int) *Field
 
-// RecvsParams is like RecvsParamsResults, but omits result parameters.
-var RecvsParams = [2]func(*Type) *Type{
-	(*Type).Recvs, (*Type).Params,
-}
-
-// ParamsResults is like RecvsParamsResults, but omits receiver parameters.
-var ParamsResults = [2]func(*Type) *Type{
-	(*Type).Params, (*Type).Results,
-}
+// Result returns the i'th result of signature type t.
+func (t *Type) Result(i int) *Field
 
 // Key returns the key type of map type t.
 func (t *Type) Key() *Type
@@ -491,31 +486,28 @@ func (t *Type) IsFuncArgStruct() bool
 // Methods returns a pointer to the base methods (excluding embedding) for type t.
 // These can either be concrete methods (for non-interface types) or interface
 // methods (for interface types).
-func (t *Type) Methods() *Fields
+func (t *Type) Methods() []*Field
 
 // AllMethods returns a pointer to all the methods (including embedding) for type t.
 // For an interface type, this is the set of methods that are typically iterated
 // over. For non-interface types, AllMethods() only returns a valid result after
 // CalcMethods() has been called at least once.
-func (t *Type) AllMethods() *Fields
+func (t *Type) AllMethods() []*Field
 
-// SetAllMethods sets the set of all methods (including embedding) for type t.
-// Use this method instead of t.AllMethods().Set(), which might call CalcSize() on
-// an uninitialized interface type.
+// SetMethods sets the direct method set for type t (i.e., *not*
+// including promoted methods from embedded types).
+func (t *Type) SetMethods(fs []*Field)
+
+// SetAllMethods sets the set of all methods for type t (i.e.,
+// including promoted methods from embedded types).
 func (t *Type) SetAllMethods(fs []*Field)
-
-// Fields returns the fields of struct type t.
-func (t *Type) Fields() *Fields
 
 // Field returns the i'th field of struct type t.
 func (t *Type) Field(i int) *Field
 
-// FieldSlice returns a slice of containing all fields of
+// Fields returns a slice of containing all fields of
 // a struct type t.
-func (t *Type) FieldSlice() []*Field
-
-// SetFields sets struct type t's fields to fields.
-func (t *Type) SetFields(fields []*Field)
+func (t *Type) Fields() []*Field
 
 // SetInterface sets the base methods of an interface type t.
 func (t *Type) SetInterface(methods []*Field)
@@ -689,14 +681,6 @@ func NewNamed(obj Object) *Type
 // Obj returns the canonical type name node for a named type t, nil for an unnamed type.
 func (t *Type) Obj() Object
 
-// SetVargen assigns a unique generation number to type t, which must
-// be a defined type declared within function scope. The generation
-// number is used to distinguish it from other similarly spelled
-// defined types from the same package.
-//
-// TODO(mdempsky): Come up with a better solution.
-func (t *Type) SetVargen()
-
 // SetUnderlying sets the underlying type of an incomplete type (i.e. type whose kind
 // is currently TFORW). SetUnderlying automatically updates any types that were waiting
 // for this type to be completed.
@@ -705,8 +689,6 @@ func (t *Type) SetUnderlying(underlying *Type)
 // NewInterface returns a new interface for the given methods and
 // embedded types. Embedded types are specified as fields with no Sym.
 func NewInterface(methods []*Field) *Type
-
-const BOGUS_FUNARG_OFFSET = -1000000000
 
 // NewSignature returns a new function type for the given receiver,
 // parameters, and results, any of which may be nil.
@@ -743,14 +725,13 @@ func IsInterfaceMethod(f *Type) bool
 // applicable to T receivers.
 func IsMethodApplicable(t *Type, m *Field) bool
 
-// IsRuntimePkg reports whether p is package runtime.
-func IsRuntimePkg(p *Pkg) bool
+// RuntimeSymName returns the name of s if it's in package "runtime"; otherwise
+// it returns "".
+func RuntimeSymName(s *Sym) string
 
-// IsReflectPkg reports whether p is package reflect.
-func IsReflectPkg(p *Pkg) bool
-
-// IsTypePkg reports whether p is pesudo package type.
-func IsTypePkg(p *Pkg) bool
+// ReflectSymName returns the name of s if it's in package "reflect"; otherwise
+// it returns "".
+func ReflectSymName(s *Sym) string
 
 // IsNoInstrumentPkg reports whether p is a package that
 // should not be instrumented.

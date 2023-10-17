@@ -51,12 +51,14 @@ const (
 // この関数は高速なマシンでも数秒かかる場合があります。
 func GenerateParameters(params *Parameters, rand io.Reader, sizes ParameterSizes) error
 
-// GenerateKey は公開鍵と秘密鍵のペアを生成します。PrivateKeyのパラメータはすでに有効である必要があります（GenerateParametersを参照してください）。
+// GenerateKey は公開鍵と秘密鍵のペアを生成します。PrivateKeyのパラメータはすでに有効である必要があります（ [GenerateParameters] を参照してください）。
 func GenerateKey(priv *PrivateKey, rand io.Reader) error
 
 // Signは、ハッシュ関数を使って（より大きなメッセージのハッシュ結果である必要があります）、秘密鍵privを使って任意の長さのハッシュに署名します。署名は2つの整数のペアとして返されます。秘密鍵のセキュリティはrandのエントロピーに依存します。
+//
 // なお、FIPS 186-3のセクション4.6では、ハッシュは部分群のバイト長に切り詰める必要があると指定されています。この関数自体ではその切り詰めを実行しません。
-// 注意してください。攻撃者の制御下にあるPrivateKeyを使用してSignを呼び出すことは、任意の量のCPUを必要とする場合があります。
+//
+// 注意してください。攻撃者の制御下にある [PrivateKey] を使用してSignを呼び出すことは、任意の量のCPUを必要とする場合があります。
 func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
 
 // Verifyは、公開鍵pubを使用してハッシュのr、sの署名を検証します。署名が有効かどうかを報告します。

@@ -19,7 +19,7 @@ func Server(conn net.Conn, config *Config) *Conn
 // ユーザーは、config に ServerName または InsecureSkipVerify のどちらかを設定する必要があります。config は nil であってはなりません。
 func Client(conn net.Conn, config *Config) *Conn
 
-// NewListenerは、内部Listenerからの接続を受け入れ、それぞれの接続をServerでラップするListenerを作成します。
+// NewListenerは、内部Listenerからの接続を受け入れ、それぞれの接続を [Server] でラップするListenerを作成します。
 // 設定configはnilではなく、少なくとも1つの証明書を含むか、それ以外の場合はGetCertificateを設定する必要があります。
 func NewListener(inner net.Listener, config *Config) net.Listener
 
@@ -32,11 +32,11 @@ func Listen(network, laddr string, config *Config) (net.Listener, error)
 // デッドラインは、接続とTLSハンドシェイク全体に適用されます。
 //
 // DialWithDialerは、nilの設定をゼロの設定として解釈します。
-// デフォルトの内容については、Configのドキュメントを参照してください。
+// デフォルトの内容については、 [Config] のドキュメントを参照してください。
 //
 // DialWithDialerは、内部的にcontext.Backgroundを使用します。
 // コンテキストを指定するには、NetDialerを必要なダイアラに設定した
-// Dialer.DialContextを使用してください。
+// [Dialer.DialContext] を使用してください。
 func DialWithDialer(dialer *net.Dialer, network, addr string, config *Config) (*Conn, error)
 
 // Dial関数は、net.Dialを使用して指定されたネットワークアドレスに接続し、
@@ -59,14 +59,14 @@ type Dialer struct {
 
 // Dialは指定されたネットワークアドレスに接続し、TLSハンドシェイクを開始し、結果のTLS接続を返します。
 //
-// 返されるConnは、もし存在する場合は常に*Conn型です。
+// 返される [Conn] は、もし存在する場合は常に *[Conn] 型です。
 //
 // 内部的にDialはcontext.Backgroundを使用しますが、コンテキストを指定するにはDialContextを使用してください。
 func (d *Dialer) Dial(network, addr string) (net.Conn, error)
 
 // DialContextは指定されたネットワークアドレスに接続し、TLSハンドシェイクを開始し、結果のTLS接続を返します。
 // 提供されたContextはnil以外である必要があります。接続が完了する前にContextが期限切れになった場合、エラーが返されます。接続成功後、Contextが期限切れになっても接続には影響しません。
-// 返されるConn（あれば）は常に*Conn型です。
+// 返される [Conn] （あれば）は常に *[Conn] 型です。
 func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error)
 
 // LoadX509KeyPairは、公開/秘密キーペアをペアのファイルから読み込んで解析します。

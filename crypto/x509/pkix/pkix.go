@@ -31,7 +31,7 @@ type AttributeTypeAndValue struct {
 	Value any
 }
 
-// AttributeTypeAndValueSETは、RFC 2986（PKCS＃10）からのAttributeTypeAndValueシーケンスの集合を表す。
+// AttributeTypeAndValueSETは、RFC 2986（PKCS＃10）からの [AttributeTypeAndValue] シーケンスの集合を表す。
 type AttributeTypeAndValueSET struct {
 	Type  asn1.ObjectIdentifier
 	Value [][]AttributeTypeAndValue `asn1:"set"`
@@ -44,7 +44,7 @@ type Extension struct {
 	Value    []byte
 }
 
-// NameはX.509の識別名を表します。これにはDNの一般的な要素のみが含まれます。なお、NameはX.509の構造の近似値です。正確な表現が必要な場合は、生のsubjectまたはissuerをRDNSequenceとしてasn1.Unmarshalしてください。
+// NameはX.509の識別名を表します。これにはDNの一般的な要素のみが含まれます。なお、NameはX.509の構造の近似値です。正確な表現が必要な場合は、生のsubjectまたはissuerを [RDNSequence] としてasn1.Unmarshalしてください。
 type Name struct {
 	Country, Organization, OrganizationalUnit []string
 	Locality, Province                        []string
@@ -60,18 +60,20 @@ type Name struct {
 	ExtraNames []AttributeTypeAndValue
 }
 
-// FillFromRDNSequence は与えられた RDNSequence から n を埋めます。
+// FillFromRDNSequence は与えられた [RDNSequence] から n を埋めます。
 // 複数エントリの RDN は平坦化され、すべてのエントリは関連する n フィールドに追加され、グルーピングは保持されません。
 func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
 
-// ToRDNSequenceはnを単一のRDNSequenceに変換します。次の属性は複数値のRDNとしてエンコードされます：
-// - 国
-// - 組織
-// - 組織単位
-// - 地域
-// - 県
-// - 住所
-// - 郵便番号
+// ToRDNSequenceはnを単一の[RDNSequence]に変換します。次の属性は複数値のRDNとしてエンコードされます：
+//
+//   - 国
+//   - 組織
+//   - 組織単位
+//   - 地域
+//   - 県
+//   - 住所
+//   - 郵便番号
+//
 // 各ExtraNamesエントリは個別のRDNとしてエンコードされます。
 func (n Name) ToRDNSequence() (ret RDNSequence)
 

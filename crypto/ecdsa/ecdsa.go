@@ -27,7 +27,7 @@ func (k *PublicKey) ECDH() (*ecdh.PublicKey, error)
 // Equalは、pubとxが同じ値を持つかどうかを報告します。
 //
 // 2つのキーは、同じCurve値を持っている場合にのみ同じ値と見なされます。
-// elliptic.P256()とelliptic.P256().Params()は異なる値です。
+// [elliptic.P256] とelliptic.P256().Params()は異なる値です。
 // 後者は一般的な定数時間実装ではないためです。
 func (pub *PublicKey) Equal(x crypto.PublicKey) bool
 
@@ -37,7 +37,7 @@ type PrivateKey struct {
 	D *big.Int
 }
 
-// ECDHは[ecdh.PrivateKey]としてkを返します。キーが[ecdh.Curve.NewPrivateKey]の定義に従って無効である場合や、Curveがcrypto/ecdhでサポートされていない場合はエラーを返します。
+// ECDHは [ecdh.PrivateKey] としてkを返します。キーが [ecdh.Curve.NewPrivateKey] の定義に従って無効である場合や、Curveが [crypto/ecdh] でサポートされていない場合はエラーを返します。
 func (k *PrivateKey) ECDH() (*ecdh.PrivateKey, error)
 
 // Publicはprivに対応する公開鍵を返します。
@@ -45,7 +45,7 @@ func (priv *PrivateKey) Public() crypto.PublicKey
 
 // Equalはprivとxが同じ値を持つかどうかを報告します。
 //
-// Curveが比較される方法の詳細については、PublicKey.Equalを参照してください。
+// Curveが比較される方法の詳細については、 [PublicKey.Equal] を参照してください。
 func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool
 
 // privを使用してダイジェストに署名し、randからランダム性を読み取ります。opts引数
@@ -53,7 +53,7 @@ func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool
 // メッセージのダイジェストに使用されるハッシュ関数であるべきです。
 //
 // このメソッドはcrypto.Signerを実装しており、たとえばハードウェアモジュールにプライベートパートが
-// 保持されているキーをサポートするインターフェースです。一般的にはこのパッケージのSignASN1関数を直接使用できます。
+// 保持されているキーをサポートするインターフェースです。一般的にはこのパッケージの [SignASN1] 関数を直接使用できます。
 func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
 
 // GenerateKeyは指定された曲線の新しいECDSA秘密鍵を生成します。

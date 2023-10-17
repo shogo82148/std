@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//hash パッケージはハッシュ関数のためのインターフェースを提供します。
+// hash パッケージはハッシュ関数のためのインターフェースを提供します。
 package hash
 
 import "github.com/shogo82148/std/io"
 
 // Hashはすべてのハッシュ関数で実装される共通のインターフェースです。
 //
-// 標準ライブラリのハッシュ実装（例：hash/crc32およびcrypto/sha256）では、
-// encoding.BinaryMarshalerおよびencoding.BinaryUnmarshalerインターフェースが実装されます。
+// 標準ライブラリのハッシュ実装（例： [hash/crc32] および [crypto/sha256] ）では、
+// [encoding.BinaryMarshaler] および [encoding.BinaryUnmarshaler] インターフェースが実装されます。
 // ハッシュ実装をマーシャリングすると、内部状態を保存し、後で追加の処理に使用することができます。
 // 以前にハッシュに書き込まれたデータを再度書き直すことなく、利用することができます。
 // ハッシュの状態には、入力の一部がそのまま含まれる場合がありますので、
@@ -23,14 +23,24 @@ import "github.com/shogo82148/std/io"
 // ただし、セキュリティ修正などの問題により、異なる結果となる場合があります。
 // 背景については、Goの互換性文書を参照してください：https://golang.org/doc/go1compat
 type Hash interface {
+	// Write (via the embedded io.Writer interface) adds more data to the running hash.
+	// It never returns an error.
 	io.Writer
 
+	// Sum appends the current hash to b and returns the resulting slice.
+	// It does not change the underlying hash state.
 	Sum(b []byte) []byte
 
+	// Reset resets the Hash to its initial state.
 	Reset()
 
+	// Size returns the number of bytes Sum will return.
 	Size() int
 
+	// BlockSize returns the hash's underlying block size.
+	// The Write method must be able to accept any amount
+	// of data, but it may operate more efficiently if all writes
+	// are a multiple of the block size.
 	BlockSize() int
 }
 

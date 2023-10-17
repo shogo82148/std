@@ -29,7 +29,7 @@ type QUICConn struct {
 	sessionTicketSent bool
 }
 
-// QUICConfigはQUICConnを設定します。
+// QUICConfigは [QUICConn] を設定します。
 type QUICConfig struct {
 	TLSConfig *Config
 }
@@ -96,20 +96,20 @@ func QUICClient(config *QUICConfig) *QUICConn
 func QUICServer(config *QUICConfig) *QUICConn
 
 // Startはクライアントまたはサーバーのハンドシェイクプロトコルを開始します。
-// 接続イベントを生成する場合があり、NextEventで読み取ることができます。
+// 接続イベントを生成する場合があり、 [QUICConn.NextEvent] で読み取ることができます。
 //
 // Startは1度以上呼び出すことはできません。
 func (q *QUICConn) Start(ctx context.Context) error
 
 // NextEventは接続で発生する次のイベントを返します。
-// イベントが利用できない場合は、KindがQUICNoEventのイベントを返します。
+// イベントが利用できない場合は、Kindが [QUICNoEvent] のイベントを返します。
 func (q *QUICConn) NextEvent() QUICEvent
 
 // Closeは接続を閉じ、進行中のハンドシェイクを停止します。
 func (q *QUICConn) Close() error
 
 // HandleDataはピアから受信したハンドシェイクバイトを処理します。
-// 接続イベントを生成することがあり、NextEventで読み取ることができます。
+// 接続イベントを生成することがあり、 [QUICConn.NextEvent] で読み取ることができます。
 func (q *QUICConn) HandleData(level QUICEncryptionLevel, data []byte) error
 
 type QUICSessionTicketOptions struct {
@@ -118,7 +118,7 @@ type QUICSessionTicketOptions struct {
 }
 
 // SendSessionTicketはクライアントにセッションチケットを送信します。
-// これにより、接続イベントが生成され、NextEventで読み取ることができます。
+// これにより、接続イベントが生成され、 [QUICConn.NextEvent] で読み取ることができます。
 // 現在、一度しか呼び出すことはできません。
 func (q *QUICConn) SendSessionTicket(opts QUICSessionTicketOptions) error
 
@@ -127,5 +127,5 @@ func (q *QUICConn) ConnectionState() ConnectionState
 
 // SetTransportParametersはピアに送信するためのトランスポートパラメータを設定します。
 //
-// サーバ接続では、クライアントのトランスポートパラメータを受信した後にトランスポートパラメータを設定することができます。QUICTransportParametersRequiredを参照してください。
+// サーバ接続では、クライアントのトランスポートパラメータを受信した後にトランスポートパラメータを設定することができます。 [QUICTransportParametersRequired] を参照してください。
 func (q *QUICConn) SetTransportParameters(params []byte)

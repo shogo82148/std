@@ -33,9 +33,6 @@ func Errorf(format string, args ...interface{})
 // ErrorfAt reports a formatted error message at pos.
 func ErrorfAt(pos src.XPos, code errors.Code, format string, args ...interface{})
 
-// ErrorfVers reports that a language feature (format, args) requires a later version of Go.
-func ErrorfVers(lang string, format string, args ...interface{})
-
 // UpdateErrorDot is a clumsy hack that rewrites the last error,
 // if it was "LINE: undefined: NAME", to be "LINE: undefined: NAME in EXPR".
 // It is used to give better error messages for dot (selector) expressions.

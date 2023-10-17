@@ -6,6 +6,6 @@
 
 package cipher
 
-// NewOFBは、ブロック暗号bを使用して暗号化または復号化するStreamを返します。
+// NewOFBは、ブロック暗号bを使用して暗号化または復号化する [Stream] を返します。
 // 初期化ベクトルivの長さは、bのブロックサイズと等しくなければなりません。
 func NewOFB(b Block, iv []byte) Stream

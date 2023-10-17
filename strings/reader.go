@@ -8,8 +8,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Readerは、文字列から読み取りを行うことで、io.Reader、io.ReaderAt、io.ByteReader、io.ByteScanner、
-// io.RuneReader、io.RuneScanner、io.Seeker、およびio.WriterToインターフェースを実装します。
+// Readerは、文字列から読み取りを行うことで、 [io.Reader] 、[io.ReaderAt] 、 [io.ByteReader] 、 [io.ByteScanner] 、
+// [io.RuneReader] 、 [io.RuneScanner] 、 [io.Seeker] 、および [io.WriterTo] インターフェースを実装します。
 // Readerのゼロ値は、空の文字列のReaderのように動作します。
 type Reader struct {
 	s        string
@@ -21,37 +21,37 @@ type Reader struct {
 func (r *Reader) Len() int
 
 // Sizeは、基礎となる文字列の元の長さを返します。
-// Sizeは、ReadAtを介して読み取ることができるバイト数です。
+// Sizeは、 [Reader.ReadAt] を介して読み取ることができるバイト数です。
 // 返される値は常に同じであり、他のメソッドの呼び出しに影響を受けません。
 func (r *Reader) Size() int64
 
-// Readは、io.Readerインターフェースを実装します。
+// Readは、 [io.Reader] インターフェースを実装します。
 func (r *Reader) Read(b []byte) (n int, err error)
 
-// ReadAtは、io.ReaderAtインターフェースを実装します。
+// ReadAtは、 [io.ReaderAt] インターフェースを実装します。
 func (r *Reader) ReadAt(b []byte, off int64) (n int, err error)
 
-// ReadByteは、io.ByteReaderインターフェースを実装します。
+// ReadByteは、 [io.ByteReader] インターフェースを実装します。
 func (r *Reader) ReadByte() (byte, error)
 
-// UnreadByteは、io.ByteScannerインターフェースを実装します。
+// UnreadByteは、 [io.ByteScanner] インターフェースを実装します。
 func (r *Reader) UnreadByte() error
 
-// ReadRuneは、io.RuneReaderインターフェースを実装します。
+// ReadRuneは、[io.RuneReader] インターフェースを実装します。
 func (r *Reader) ReadRune() (ch rune, size int, err error)
 
-// UnreadRuneは、io.RuneScannerインターフェースを実装します。
+// UnreadRuneは、 [io.RuneScanner] インターフェースを実装します。
 func (r *Reader) UnreadRune() error
 
-// Seekは、io.Seekerインターフェースを実装します。
+// Seekは、 [io.Seeker] インターフェースを実装します。
 func (r *Reader) Seek(offset int64, whence int) (int64, error)
 
-// WriteToは、io.WriterToインターフェースを実装します。
+// WriteToは、 [io.WriterTo] インターフェースを実装します。
 func (r *Reader) WriteTo(w io.Writer) (n int64, err error)
 
-// Resetは、Readerをsから読み取るようにリセットします。
+// Resetは、 [Reader] をsから読み取るようにリセットします。
 func (r *Reader) Reset(s string)
 
-// NewReaderは、sから読み取る新しいReaderを返します。
-// bytes.NewBufferStringに似ていますが、より効率的で書き込み不可能です。
+// NewReaderは、sから読み取る新しい [Reader] を返します。
+// [bytes.NewBufferString] に似ていますが、より効率的で書き込み不可能です。
 func NewReader(s string) *Reader

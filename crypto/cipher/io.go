@@ -6,7 +6,7 @@ package cipher
 
 import "github.com/shogo82148/std/io"
 
-// StreamReaderはStreamをio.Readerにラップします。それは各データスライスを通過する際にXORKeyStreamを呼び出して処理します。
+// StreamReaderは [Stream] を [io.Reader] にラップします。それは各データスライスを通過する際にXORKeyStreamを呼び出して処理します。
 type StreamReader struct {
 	S Stream
 	R io.Reader
@@ -14,10 +14,10 @@ type StreamReader struct {
 
 func (r StreamReader) Read(dst []byte) (n int, err error)
 
-// StreamWriterはStreamをio.Writerにラップします。それはXORKeyStreamを呼び出して
-// 通過するデータの各スライスを処理します。もしWrite呼び出しがshortを返す場合、
+// StreamWriterは [Stream] をio.Writerにラップします。それはXORKeyStreamを呼び出して
+// 通過するデータの各スライスを処理します。もし [StreamWriter.Write] 呼び出しがshortを返す場合、
 // StreamWriterは同期が取れておらず、破棄する必要があります。
-// StreamWriterには内部のバッファリングはなく、データを書き込むためにCloseを呼び出す必要はありません。
+// StreamWriterには内部のバッファリングはなく、データを書き込むために [StreamWriter.Close] を呼び出す必要はありません。
 type StreamWriter struct {
 	S   Stream
 	W   io.Writer

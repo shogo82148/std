@@ -60,7 +60,7 @@ func LastIndexByte(s string, c byte) int
 //	n == 0：結果はnil（部分文字列がゼロ個）
 //	n < 0：すべての部分文字列
 //
-// sとsepのエッジケース（空の文字列など）は、Splitのドキュメントで説明されているように処理されます。
+// sとsepのエッジケース（空の文字列など）は、 [Split] のドキュメントで説明されているように処理されます。
 //
 // 最初の区切り文字を基準に分割するには、Cutを参照してください。
 func SplitN(s, sep string, n int) []string
@@ -82,7 +82,7 @@ func SplitAfterN(s, sep string, n int) []string
 //
 // sepが空の場合、Splitは各UTF-8シーケンスの後に分割します。sとsepの両方が空の場合、Splitは空のスライスを返します。
 //
-// countが-1のSplitNと同等です。
+// countが-1の [SplitN] と同等です。
 //
 // 最初の区切り文字を基準に分割するには、Cutを参照してください。
 func Split(s, sep string) []string
@@ -93,7 +93,7 @@ func Split(s, sep string) []string
 //
 // sepが空の場合、SplitAfterは各UTF-8シーケンスの後に分割します。sとsepの両方が空の場合、SplitAfterは空のスライスを返します。
 //
-// countが-1のSplitAfterNと同等です。
+// countが-1の [SplitAfterN] と同等です。
 func SplitAfter(s, sep string) []string
 
 // Fieldsは、sをUnicode.IsSpaceによって定義される1つ以上の連続する空白文字の各インスタンスで分割し、sの部分文字列のスライスまたは空のスライスを返します。
@@ -169,12 +169,12 @@ func Trim(s, cutset string) string
 
 // TrimLeftは、cutsetに含まれるすべての先頭のUnicodeコードポイントを削除した文字列sのスライスを返します。
 //
-// 接頭辞を削除するには、代わりにTrimPrefixを使用してください。
+// 接頭辞を削除するには、代わりに [TrimPrefix] を使用してください。
 func TrimLeft(s, cutset string) string
 
 // TrimRightは、cutsetに含まれるすべての末尾のUnicodeコードポイントを削除した文字列sのスライスを返します。
 //
-// 接尾辞を削除するには、代わりにTrimSuffixを使用してください。
+// 接尾辞を削除するには、代わりに [TrimSuffix] を使用してください。
 func TrimRight(s, cutset string) string
 
 // TrimSpaceは、Unicodeで定義されるように、すべての先頭と末尾の空白を削除した文字列sのスライスを返します。

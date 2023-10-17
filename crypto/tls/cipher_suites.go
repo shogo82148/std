@@ -17,7 +17,7 @@ type CipherSuite struct {
 }
 
 // CipherSuitesは、このパッケージで現在実装されている暗号スイートのリストを返します。
-// ただし、セキュリティ上の問題があるものはInsecureCipherSuitesによって返されます。
+// ただし、セキュリティ上の問題があるものは [InsecureCipherSuites] によって返されます。
 //
 // このリストはIDでソートされています。このパッケージによって選択されるデフォルトの暗号スイートが、
 // 静的なリストでは捉えることができないロジックに依存している場合があり、
@@ -25,7 +25,7 @@ type CipherSuite struct {
 func CipherSuites() []*CipherSuite
 
 // InsecureCipherSuitesは、現在このパッケージで実装されているセキュリティ上の問題を抱えた暗号スイートのリストを返します。
-// ほとんどのアプリケーションは、このリストに含まれる暗号スイートを使用すべきではありません。代わりに、CipherSuitesで返されるスイートのみを使用するべきです。
+// ほとんどのアプリケーションは、このリストに含まれる暗号スイートを使用すべきではありません。代わりに、 [CipherSuites] で返されるスイートのみを使用するべきです。
 func InsecureCipherSuites() []*CipherSuite
 
 // CipherSuiteNameは渡された暗号スイートIDの標準名

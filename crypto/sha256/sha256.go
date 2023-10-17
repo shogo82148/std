@@ -19,7 +19,7 @@ const Size224 = 28
 const BlockSize = 64
 
 // NewはSHA256ハッシュチェックサムを計算する新しいhash.Hashを返します。Hashは
-// encoding.BinaryMarshalerおよびencoding.BinaryUnmarshalerも実装しており、内部の
+// [encoding.BinaryMarshaler] および [encoding.BinaryUnmarshaler] も実装しており、内部の
 // ハッシュの状態をマーシャリングおよびアンマーシャリングすることができます。
 func New() hash.Hash
 

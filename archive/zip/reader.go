@@ -38,15 +38,15 @@ type Reader struct {
 	fileList     []fileListEntry
 }
 
-// ReadCloser は、不要になったときに閉じる必要がある Reader です。
+// ReadCloser は、不要になったときに閉じる必要がある [Reader] です。
 type ReadCloser struct {
 	f *os.File
 	Reader
 }
 
 // File は、ZIP アーカイブ内の単一のファイルです。
-// ファイル情報は、埋め込み FileHeader にあります。
-// ファイルの内容は、Open を呼び出すことでアクセスできます。
+// ファイル情報は、埋め込み [FileHeader] にあります。
+// ファイルの内容は、 [File.Open] を呼び出すことでアクセスできます。
 type File struct {
 	FileHeader
 	zip          *Reader
@@ -65,14 +65,14 @@ type File struct {
 // ローカルでない名前を受け入れたいプログラムは、ErrInsecurePath エラーを無視して返されたリーダーを使用できます。
 func OpenReader(name string) (*ReadCloser, error)
 
-// NewReader は、指定されたサイズを持つと想定される r から読み取る新しい Reader を返します。
+// NewReader は、指定されたサイズを持つと想定される r から読み取る新しい [Reader] を返します。
 //
 // アーカイブ内のファイルのいずれかが、[filepath.IsLocal] によって定義されるローカルでない名前
 // またはバックスラッシュを含む名前を使用している場合、
 // および GODEBUG 環境変数に `zipinsecurepath=0` が含まれている場合、
-// NewReader は ErrInsecurePath エラーを返すリーダーを返します。
+// NewReader は [ErrInsecurePath] エラーを返すリーダーを返します。
 // 将来の Go のバージョンでは、この動作がデフォルトで導入される可能性があります。
-// ローカルでない名前を受け入れたいプログラムは、ErrInsecurePath エラーを無視して返されたリーダーを使用できます。
+// ローカルでない名前を受け入れたいプログラムは、 [ErrInsecurePath] エラーを無視して返されたリーダーを使用できます。
 func NewReader(r io.ReaderAt, size int64) (*Reader, error)
 
 // RegisterDecompressor は、特定のメソッド ID にカスタムの解凍プログラムを登録または上書きします。
@@ -84,14 +84,14 @@ func (rc *ReadCloser) Close() error
 
 // DataOffset は、ファイルの圧縮された可能性のあるデータのオフセットを、zip ファイルの先頭からの相対位置で返します。
 //
-// ほとんどの呼び出し元は、データを透過的に解凍し、チェックサムを検証する Open を代わりに使用する必要があります。
+// ほとんどの呼び出し元は、データを透過的に解凍し、チェックサムを検証する [File.Open] を代わりに使用する必要があります。
 func (f *File) DataOffset() (offset int64, err error)
 
-// Open は、ファイルの内容にアクセスする ReadCloser を返します。
-// 複数のファイルを同時に読み取ることができます。
+// Open は、ファイルの内容にアクセスする [ReadCloser] を返します。
+// 複数の [File] を同時に読み取ることができます。
 func (f *File) Open() (io.ReadCloser, error)
 
-// OpenRaw returns a Reader that provides access to the File's contents without
+// OpenRaw returns a [Reader] that provides access to the [File]'s contents without
 // decompression.
 func (f *File) OpenRaw() (io.Reader, error)
 

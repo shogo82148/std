@@ -14,6 +14,7 @@ type Node interface {
 	//    associated with that production; usually the left-most one
 	//    ('[' for IndexExpr, 'if' for IfStmt, etc.)
 	Pos() Pos
+	SetPos(Pos)
 	aNode()
 }
 
@@ -349,8 +350,9 @@ type (
 	}
 
 	CallStmt struct {
-		Tok  token
-		Call Expr
+		Tok     token
+		Call    Expr
+		DeferAt Expr
 		stmt
 	}
 

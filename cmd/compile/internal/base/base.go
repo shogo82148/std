@@ -28,24 +28,3 @@ const EnableTrace = false
 // current+observed behavior of the garbage collector, so if many people need
 // this feature, we should consider/propose a better way to accomplish it.
 func AdjustStartingHeap(requestedHeapGoal uint64)
-
-func Compiling(pkgs []string) bool
-
-// Do not instrument the following packages at all,
-// at best instrumentation would cause infinite recursion.
-var NoInstrumentPkgs = []string{
-	"runtime/internal/atomic",
-	"runtime/internal/math",
-	"runtime/internal/sys",
-	"runtime/internal/syscall",
-	"runtime",
-	"runtime/race",
-	"runtime/msan",
-	"runtime/asan",
-	"internal/cpu",
-	"internal/abi",
-}
-
-// Don't insert racefuncenter/racefuncexit into the following packages.
-// Memory accesses in the packages are either uninteresting or will cause false positives.
-var NoRacePkgs = []string{"sync", "sync/atomic"}

@@ -5,20 +5,9 @@
 package typecheck
 
 import (
-	"github.com/shogo82148/std/cmd/compile/internal/base"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/src"
-)
-
-// Function collecting autotmps generated during typechecking,
-// to be included in the package-level init function.
-var InitTodoFunc = ir.NewFunc(base.Pos)
-
-var TypecheckAllowed bool
-
-var (
-	NeedRuntimeType = func(*types.Type) {}
 )
 
 func AssignExpr(n ir.Node) ir.Node
@@ -32,15 +21,6 @@ func Call(pos src.XPos, callee ir.Node, args []ir.Node, dots bool) ir.Node
 
 func Callee(n ir.Node) ir.Node
 
-// Resolve resolves an ONONAME node to a definition, if any. If n is not an ONONAME node,
-// Resolve returns n unchanged. If n is an ONONAME node and not in the same package,
-// then n.Sym() is resolved using import data. Otherwise, Resolve returns
-// n.Sym().Def. An ONONAME node can be created using ir.NewIdent(), so an imported
-// symbol can be resolved via Resolve(ir.NewIdent(src.NoXPos, sym)).
-func Resolve(n ir.Node) (res ir.Node)
-
-func Func(fn *ir.Func)
-
 // RewriteNonNameCall replaces non-Name call expressions with temps,
 // rewriting f()(...) to t0 := f(); t0(...).
 func RewriteNonNameCall(n *ir.CallExpr)
@@ -53,7 +33,11 @@ func RewriteMultiValueCall(n ir.InitNode, call ir.Node)
 // the matching field or nil. If dostrcmp is 0, it matches the symbols. If
 // dostrcmp is 1, it matches by name exactly. If dostrcmp is 2, it matches names
 // with case folding.
-func Lookdot1(errnode ir.Node, s *types.Sym, t *types.Type, fs *types.Fields, dostrcmp int) *types.Field
+func Lookdot1(errnode ir.Node, s *types.Sym, t *types.Type, fs []*types.Field, dostrcmp int) *types.Field
+
+// NewMethodExpr returns an OMETHEXPR node representing method
+// expression "recv.sym".
+func NewMethodExpr(pos src.XPos, recv *types.Type, sym *types.Sym) *ir.SelectorExpr
 
 // Lookdot looks up field or method n.Sel in the type t and returns the matching
 // field. It transforms the op of node n to ODOTINTER or ODOTMETH, if appropriate.

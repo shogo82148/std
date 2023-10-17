@@ -222,7 +222,11 @@ const (
 
 const MB_ERR_INVALID_CHARS = 8
 
-const STYPE_DISKTREE = 0x00
+// Constants from lmshare.h
+const (
+	STYPE_DISKTREE  = 0x00
+	STYPE_TEMPORARY = 0x40000000
+)
 
 type SHARE_INFO_2 struct {
 	Netname     *uint16
@@ -245,6 +249,52 @@ const (
 	VOLUME_NAME_NT   = 0x2
 )
 
-func LoadGetFinalPathNameByHandle() error
-
 func ErrorLoadingGetTempPath2() error
+
+type FILE_ID_BOTH_DIR_INFO struct {
+	NextEntryOffset uint32
+	FileIndex       uint32
+	CreationTime    syscall.Filetime
+	LastAccessTime  syscall.Filetime
+	LastWriteTime   syscall.Filetime
+	ChangeTime      syscall.Filetime
+	EndOfFile       uint64
+	AllocationSize  uint64
+	FileAttributes  uint32
+	FileNameLength  uint32
+	EaSize          uint32
+	ShortNameLength uint32
+	ShortName       [12]uint16
+	FileID          uint64
+	FileName        [1]uint16
+}
+
+type FILE_FULL_DIR_INFO struct {
+	NextEntryOffset uint32
+	FileIndex       uint32
+	CreationTime    syscall.Filetime
+	LastAccessTime  syscall.Filetime
+	LastWriteTime   syscall.Filetime
+	ChangeTime      syscall.Filetime
+	EndOfFile       uint64
+	AllocationSize  uint64
+	FileAttributes  uint32
+	FileNameLength  uint32
+	EaSize          uint32
+	FileName        [1]uint16
+}
+
+type SERVICE_STATUS struct {
+	ServiceType             uint32
+	CurrentState            uint32
+	ControlsAccepted        uint32
+	Win32ExitCode           uint32
+	ServiceSpecificExitCode uint32
+	CheckPoint              uint32
+	WaitHint                uint32
+}
+
+const (
+	SERVICE_RUNNING      = 4
+	SERVICE_QUERY_STATUS = 4
+)

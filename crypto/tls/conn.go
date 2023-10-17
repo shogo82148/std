@@ -112,16 +112,16 @@ func (c *Conn) LocalAddr() net.Addr
 func (c *Conn) RemoteAddr() net.Addr
 
 // SetDeadlineは接続に関連付けられた読み込みと書き込みのタイムアウトを設定します。
-// tのゼロ値は、読み取りと書き込みにタイムアウトが設定されていないことを意味します。
+// tのゼロ値は、 [Conn.Read] と  [Conn.Write] がタイムアウトしないことを意味します。
 // 書き込みがタイムアウトした後、TLSの状態が破損し、将来の書き込みは同じエラーを返します。
 func (c *Conn) SetDeadline(t time.Time) error
 
 // SetReadDeadlineは基礎となる接続の読み込みの期限を設定します。
-// tのゼロ値は、Readがタイムアウトしないことを意味します。
+// tのゼロ値は、 [Conn.Read] がタイムアウトしないことを意味します。
 func (c *Conn) SetReadDeadline(t time.Time) error
 
 // SetWriteDeadlineは、基礎となる接続に書き込みの期限を設定します。
-// tのゼロ値は、書き込みにタイムアウトが設定されていないことを意味します。
+// tのゼロ値は、 [Conn.Write] がタイムアウトしないことを意味します。
 // 書き込みがタイムアウトした後、TLSの状態が壊れるため、以降の書き込みは同じエラーを返します。
 func (c *Conn) SetWriteDeadline(t time.Time) error
 
@@ -146,30 +146,30 @@ func (e RecordHeaderError) Error() string
 
 // Writeは接続にデータを書き込みます。
 //
-// Handshakeを呼び出すため、無期限のブロッキングを防ぐために
+// [Conn.Handshake] を呼び出すため、無期限のブロッキングを防ぐために
 // ハンドシェイクが完了していない場合、Writeを呼び出す前に
-// ReadとWriteの両方に期限を設定する必要があります。
-// SetDeadline、SetReadDeadline、およびSetWriteDeadlineを参照してください。
+// [Conn.Read] とWriteの両方に期限を設定する必要があります。
+// [Conn.SetDeadline] 、 [Conn.SetReadDeadline] 、および [Conn.SetWriteDeadline] を参照してください。
 func (c *Conn) Write(b []byte) (int, error)
 
 // Readは接続からデータを読み込みます。
 //
-// Handshakeを呼び出すため、ハンドシェイクがまだ完了していない場合、
-// Readが呼び出される前にReadとWriteの両方にデッドラインを設定する必要があります
-// 無制限のブロッキングを防ぐためです。SetDeadline、SetReadDeadline、および
-// SetWriteDeadlineを参照してください。
+// [Conn.Handshake] を呼び出すため、ハンドシェイクがまだ完了していない場合、
+// Readが呼び出される前にReadと [Conn.Write] の両方にデッドラインを設定する必要があります
+// 無制限のブロッキングを防ぐためです。
+// [Conn.SetDeadline] 、 [Conn.SetReadDeadline] 、および [Conn.SetWriteDeadline] を参照してください。
 func (c *Conn) Read(b []byte) (int, error)
 
 // Closeは接続を閉じます。
 func (c *Conn) Close() error
 
-// CloseWriteは接続の書き込み側をシャットダウンします。ハンドシェイクが完了した後に一度だけ呼び出され、基礎となる接続上でCloseWriteを呼び出しません。ほとんどの呼び出し元は単にCloseを使用すべきです。
+// CloseWriteは接続の書き込み側をシャットダウンします。ハンドシェイクが完了した後に一度だけ呼び出され、基礎となる接続上でCloseWriteを呼び出しません。ほとんどの呼び出し元は単に [Conn.Close] を使用すべきです。
 func (c *Conn) CloseWrite() error
 
 // Handshakeはクライアントまたはサーバーのハンドシェイクプロトコルを実行します。
-// まだ実行されていない場合、ほとんどのこのパッケージの使用では、明示的にHandshakeを呼び出す必要はありません：最初のReadまたはWriteが自動的に呼び出します。
+// まだ実行されていない場合、ほとんどのこのパッケージの使用では、明示的にHandshakeを呼び出す必要はありません：最初の [Conn.Read] または [Conn.Write] が自動的に呼び出します。
 //
-// ハンドシェイクのキャンセルやタイムアウトの設定に関して制御するためには、HandshakeContextまたはDialerのDialContextメソッドを使用します。
+// ハンドシェイクのキャンセルやタイムアウトの設定に関して制御するためには、 [Conn.HandshakeContext] または [Dialer] のDialContextメソッドを使用します。
 //
 // サーバーまたはクライアントが送信する証明書のRSAキーサイズは、拒否サービス攻撃を防ぐために、8192ビットに制限されています。この制限は、GODEBUG環境変数（例：GODEBUG=tlsmaxrsasize=4096）のtlsmaxrsasizeを設定することで上書きすることができます。
 func (c *Conn) Handshake() error
@@ -179,7 +179,7 @@ func (c *Conn) Handshake() error
 // ハンドシェイクが完了する前にコンテキストがキャンセルされた場合、ハンドシェイクは中断され、エラーが返されます。
 // ハンドシェイクが完了すると、コンテキストのキャンセルは接続に影響を与えません。
 //
-// このパッケージのほとんどの使用では、明示的にHandshakeContextを呼び出す必要はありません：最初のReadまたはWriteが自動的に呼び出します。
+// このパッケージのほとんどの使用では、明示的にHandshakeContextを呼び出す必要はありません：最初の [Conn.Read] または [Conn.Write] が自動的に呼び出します。
 func (c *Conn) HandshakeContext(ctx context.Context) error
 
 // ConnectionState関数は、接続に関する基本的なTLSの詳細を返します。

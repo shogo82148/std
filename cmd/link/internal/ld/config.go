@@ -24,7 +24,7 @@ const (
 // to the -buildmode flag.
 func (mode *BuildMode) Set(s string) error
 
-func (mode *BuildMode) String() string
+func (mode BuildMode) String() string
 
 // LinkMode indicates whether an external linker is used for the final link.
 type LinkMode uint8

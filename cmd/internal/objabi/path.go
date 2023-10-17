@@ -11,13 +11,6 @@ package objabi
 // little as possible.
 func PathToPrefix(s string) string
 
-// IsRuntimePackagePath examines 'pkgpath' and returns TRUE if it
-// belongs to the collection of "runtime-related" packages, including
-// "runtime" itself, "reflect", "syscall", and the
-// "runtime/internal/*" packages. The compiler and/or assembler in
-// some cases need to be aware of when they are building such a
-// package, for example to enable features such as ABI selectors in
-// assembly sources.
-//
-// Keep in sync with cmd/dist/build.go:IsRuntimePackagePath.
-func IsRuntimePackagePath(pkgpath string) bool
+// PrefixToPath is the inverse of PathToPrefix, replacing escape sequences with
+// the original character.
+func PrefixToPath(s string) (string, error)

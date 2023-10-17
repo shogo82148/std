@@ -6,7 +6,6 @@ package types
 
 import (
 	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/go/constant"
 )
 
 // BuiltinPkg is a fake package that declares the universe block.
@@ -20,9 +19,6 @@ var UnsafePkg *Pkg
 
 // BlankSym is the blank (_) symbol.
 var BlankSym *Sym
-
-// OrigSym returns the original symbol written by the user.
-func OrigSym(s *Sym) *Sym
 
 // numImport tracks how often a package with a given name is imported.
 // It is used to provide a better error message (by using the package
@@ -99,8 +95,6 @@ func (t *Type) NameString() string
 // SplitVargenSuffix returns name split into a base string and a ·N
 // suffix, if any.
 func SplitVargenSuffix(name string) (base, suffix string)
-
-func FmtConst(v constant.Value, sharp bool) string
 
 // TypeHash computes a hash value for type t to use in type switch statements.
 func TypeHash(t *Type) uint32

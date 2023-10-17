@@ -83,8 +83,5 @@ func (t *PosTable) XPos(pos Pos) XPos
 // If p cannot be translated via t, the function panics.
 func (t *PosTable) Pos(p XPos) Pos
 
-// FileIndex returns the index of the given filename(symbol) in the PosTable, or -1 if not found.
-func (t *PosTable) FileIndex(filename string) int
-
 // FileTable returns a slice of all files used to build this package.
 func (t *PosTable) FileTable() []string

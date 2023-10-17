@@ -6,9 +6,9 @@
 
 package cipher
 
-// NewCFBEncrypterは、与えられたブロックを使用して、暗号フィードバックモードで暗号化するストリームを返します。IVはブロックのブロックサイズと同じ長さでなければなりません。
+// NewCFBEncrypterは、与えられた [Block] を使用して、暗号フィードバックモードで暗号化する [Stream] を返します。IVはブロックの [Block] サイズと同じ長さでなければなりません。
 func NewCFBEncrypter(block Block, iv []byte) Stream
 
-// NewCFBDecrypterは、暗号フィードバックモードで復号化するStreamを返します。
-// ブロックとして指定されたものを使用します。IVはブロックのサイズと同じ長さでなければならない。
+// NewCFBDecrypterは、暗号フィードバックモードで復号化する [Stream] を返します。
+// [Block] として指定されたものを使用します。IVは [Block] のサイズと同じ長さでなければならない。
 func NewCFBDecrypter(block Block, iv []byte) Stream

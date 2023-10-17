@@ -38,7 +38,7 @@ type Name struct {
 	Embed     *[]Embed
 
 	// For a local variable (not param) or extern, the initializing assignment (OAS or OAS2).
-	// For a closure var, the ONAME node of the outer captured variable.
+	// For a closure var, the ONAME node of the original (outermost) captured variable.
 	// For the case-local variables of a type switch, the type switch guard (OTYPESW).
 	// For a range variable, the range statement (ORANGE)
 	// For a recv variable in a case of a select statement, the receive assignment (OSELRECV2)
@@ -50,77 +50,9 @@ type Name struct {
 
 	Heapaddr *Name
 
-	// ONAME closure linkage
-	// Consider:
-	//
-	//	func f() {
-	//		x := 1 // x1
-	//		func() {
-	//			use(x) // x2
-	//			func() {
-	//				use(x) // x3
-	//				--- parser is here ---
-	//			}()
-	//		}()
-	//	}
-	//
-	// There is an original declaration of x and then a chain of mentions of x
-	// leading into the current function. Each time x is mentioned in a new closure,
-	// we create a variable representing x for use in that specific closure,
-	// since the way you get to x is different in each closure.
-	//
-	// Let's number the specific variables as shown in the code:
-	// x1 is the original x, x2 is when mentioned in the closure,
-	// and x3 is when mentioned in the closure in the closure.
-	//
-	// We keep these linked (assume N > 1):
-	//
-	//   - x1.Defn = original declaration statement for x (like most variables)
-	//   - x1.Innermost = current innermost closure x (in this case x3), or nil for none
-	//   - x1.IsClosureVar() = false
-	//
-	//   - xN.Defn = x1, N > 1
-	//   - xN.IsClosureVar() = true, N > 1
-	//   - x2.Outer = nil
-	//   - xN.Outer = x(N-1), N > 2
-	//
-	//
-	// When we look up x in the symbol table, we always get x1.
-	// Then we can use x1.Innermost (if not nil) to get the x
-	// for the innermost known closure function,
-	// but the first reference in a closure will find either no x1.Innermost
-	// or an x1.Innermost with .Funcdepth < Funcdepth.
-	// In that case, a new xN must be created, linked in with:
-	//
-	//     xN.Defn = x1
-	//     xN.Outer = x1.Innermost
-	//     x1.Innermost = xN
-	//
-	// When we finish the function, we'll process its closure variables
-	// and find xN and pop it off the list using:
-	//
-	//     x1 := xN.Defn
-	//     x1.Innermost = xN.Outer
-	//
-	// We leave x1.Innermost set so that we can still get to the original
-	// variable quickly. Not shown here, but once we're
-	// done parsing a function and no longer need xN.Outer for the
-	// lexical x reference links as described above, funcLit
-	// recomputes xN.Outer as the semantic x reference link tree,
-	// even filling in x in intermediate closures that might not
-	// have mentioned it along the way to inner closures that did.
-	// See funcLit for details.
-	//
-	// During the eventual compilation, then, for closure variables we have:
-	//
-	//     xN.Defn = original variable
-	//     xN.Outer = variable captured in next outward scope
-	//                to make closure where xN appears
-	//
-	// Because of the sharding of pieces of the node, x.Defn means x.Name.Defn
-	// and x.Innermost/Outer means x.Name.Param.Innermost/Outer.
-	Innermost *Name
-	Outer     *Name
+	// Outer points to the immediately enclosing function's copy of this
+	// closure variable. If not a closure variable, then Outer is nil.
+	Outer *Name
 }
 
 // RecordFrameOffset records the frame offset for the name.
@@ -129,7 +61,14 @@ func (n *Name) RecordFrameOffset(offset int64)
 
 // NewNameAt returns a new ONAME Node associated with symbol s at position pos.
 // The caller is responsible for setting Curfn.
-func NewNameAt(pos src.XPos, sym *types.Sym) *Name
+func NewNameAt(pos src.XPos, sym *types.Sym, typ *types.Type) *Name
+
+// NewBuiltin returns a new Name representing a builtin function,
+// either predeclared or from package unsafe.
+func NewBuiltin(sym *types.Sym, op Op) *Name
+
+// NewLocal returns a new function-local variable with the given name and type.
+func (fn *Func) NewLocal(pos src.XPos, sym *types.Sym, typ *types.Type) *Name
 
 // NewDeclNameAt returns a new Name associated with symbol s at position pos.
 // The caller is responsible for setting Curfn.
@@ -144,9 +83,6 @@ func (n *Name) SetSym(x *types.Sym)
 func (n *Name) SubOp() Op
 func (n *Name) SetSubOp(x Op)
 func (n *Name) SetFunc(x *Func)
-func (n *Name) Offset() int64
-func (n *Name) SetOffset(x int64)
-
 func (n *Name) FrameOffset() int64
 func (n *Name) SetFrameOffset(x int64)
 
@@ -227,17 +163,6 @@ func NewClosureVar(pos src.XPos, fn *Func, n *Name) *Name
 // NewHiddenParam returns a new hidden parameter for fn with the given
 // name and type.
 func NewHiddenParam(pos src.XPos, fn *Func, sym *types.Sym, typ *types.Type) *Name
-
-// CaptureName returns a Name suitable for referring to n from within function
-// fn or from the package block if fn is nil. If n is a free variable declared
-// within a function that encloses fn, then CaptureName returns the closure
-// variable that refers to n within fn, creating it if necessary.
-// Otherwise, it simply returns n.
-func CaptureName(pos src.XPos, fn *Func, n *Name) *Name
-
-// FinishCaptureNames handles any work leftover from calling CaptureName
-// earlier. outerfn should be the function that immediately encloses fn.
-func FinishCaptureNames(pos src.XPos, outerfn, fn *Func)
 
 // SameSource reports whether two nodes refer to the same source
 // element.

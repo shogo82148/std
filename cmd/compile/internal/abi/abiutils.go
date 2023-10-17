@@ -5,7 +5,9 @@
 package abi
 
 import (
+	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
+	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
 // ABIParamResultInfo stores the results of processing a given
@@ -66,7 +68,7 @@ type RegIndex uint8
 // (as described above), not architected registers.
 type ABIParamAssignment struct {
 	Type      *types.Type
-	Name      types.Object
+	Name      *ir.Name
 	Registers []RegIndex
 	offset    int32
 }
@@ -101,43 +103,49 @@ type RegAmounts struct {
 // by the ABI rules for parameter passing and result returning.
 type ABIConfig struct {
 	// Do we need anything more than this?
-	offsetForLocals  int64
-	regAmounts       RegAmounts
-	regsForTypeCache map[*types.Type]int
+	offsetForLocals int64
+	regAmounts      RegAmounts
+	which           obj.ABI
 }
 
 // NewABIConfig returns a new ABI configuration for an architecture with
 // iRegsCount integer/pointer registers and fRegsCount floating point registers.
-func NewABIConfig(iRegsCount, fRegsCount int, offsetForLocals int64) *ABIConfig
+func NewABIConfig(iRegsCount, fRegsCount int, offsetForLocals int64, which uint8) *ABIConfig
 
-// Copy returns a copy of an ABIConfig for use in a function's compilation so that access to the cache does not need to be protected with a mutex.
-func (a *ABIConfig) Copy() *ABIConfig
+// Copy returns config.
+//
+// TODO(mdempsky): Remove.
+func (config *ABIConfig) Copy() *ABIConfig
+
+// Which returns the ABI number
+func (config *ABIConfig) Which() obj.ABI
 
 // LocalsOffset returns the architecture-dependent offset from SP for args and results.
 // In theory this is only used for debugging; it ought to already be incorporated into
 // results from the ABI-related methods
-func (a *ABIConfig) LocalsOffset() int64
+func (config *ABIConfig) LocalsOffset() int64
 
 // FloatIndexFor translates r into an index in the floating point parameter
 // registers.  If the result is negative, the input index was actually for the
 // integer parameter registers.
-func (a *ABIConfig) FloatIndexFor(r RegIndex) int64
+func (config *ABIConfig) FloatIndexFor(r RegIndex) int64
 
-// NumParamRegs returns the number of parameter registers used for a given type,
-// without regard for the number available.
-func (a *ABIConfig) NumParamRegs(t *types.Type) int
+// NumParamRegs returns the total number of registers used to
+// represent a parameter of the given type, which must be register
+// assignable.
+func (config *ABIConfig) NumParamRegs(typ *types.Type) int
 
-// ABIAnalyzeTypes takes an optional receiver type, arrays of ins and outs, and returns an ABIParamResultInfo,
+// ABIAnalyzeTypes takes slices of parameter and result types, and returns an ABIParamResultInfo,
 // based on the given configuration.  This is the same result computed by config.ABIAnalyze applied to the
 // corresponding method/function type, except that all the embedded parameter names are nil.
 // This is intended for use by ssagen/ssa.go:(*state).rtcall, for runtime functions that lack a parsed function type.
-func (config *ABIConfig) ABIAnalyzeTypes(rcvr *types.Type, ins, outs []*types.Type) *ABIParamResultInfo
+func (config *ABIConfig) ABIAnalyzeTypes(params, results []*types.Type) *ABIParamResultInfo
 
 // ABIAnalyzeFuncType takes a function type 'ft' and an ABI rules description
 // 'config' and analyzes the function to determine how its parameters
 // and results will be passed (in registers or on the stack), returning
 // an ABIParamResultInfo object that holds the results of the analysis.
-func (config *ABIConfig) ABIAnalyzeFuncType(ft *types.Func) *ABIParamResultInfo
+func (config *ABIConfig) ABIAnalyzeFuncType(ft *types.Type) *ABIParamResultInfo
 
 // ABIAnalyze returns the same result as ABIAnalyzeFuncType, but also
 // updates the offsets of all the receiver, input, and output fields.

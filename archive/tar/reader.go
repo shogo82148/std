@@ -26,7 +26,7 @@ type Reader struct {
 	err error
 }
 
-// NewReaderはrから読み取りを行う新しいReaderを作成します。
+// NewReaderはrから読み取りを行う新しい [Reader] を作成します。
 func NewReader(r io.Reader) *Reader
 
 // Nextはtarアーカイブ内の次のエントリに進みます。
@@ -36,19 +36,18 @@ func NewReader(r io.Reader) *Reader
 //
 // Nextが [filepath.IsLocal] によって定義されるローカルでない名前に遭遇し、
 // GODEBUG環境変数に`tarinsecurepath=0`が含まれている場合、
-// NextはErrInsecurePathエラーを持つヘッダを返します。
-// Goの将来のバージョンでは、この動作がデフォルトで導入される可能性があります。
-// ローカルでない名前を受け入れたいプログラムは、
-// ErrInsecurePathエラーを無視して返されたヘッダを使用できます。
+// Nextは[ErrInsecurePath]エラーを伴うヘッダーを返します。
+// 将来のGoのバージョンでは、この動作がデフォルトで導入される可能性があります。
+// ローカルでない名前を受け入れたいプログラムは、 [ErrInsecurePath] エラーを無視して返されたヘッダーを使用できます。
 func (tr *Reader) Next() (*Header, error)
 
-// Readはtarアーカイブ内の現在のファイルから読み取りを行います。
-// 次のファイルに進むためにNextが呼び出されるまで、
-// ファイルの終わりに達すると(0、io.EOF)を返します。
+// Read reads from the current file in the tar archive.
+// It returns (0, io.EOF) when it reaches the end of that file,
+// until [Next] is called to advance to the next file.
 //
 // 現在のファイルがスパースである場合、
 // 穴としてマークされた領域はNULバイトとして読み戻されます。
 //
-// TypeLink、TypeSymlink、TypeChar、TypeBlock、TypeDir、TypeFifoなどの特殊なタイプでReadを呼び出すと、
-// Header.Sizeが示す内容に関係なく、(0、io.EOF)が返されます。
+// [TypeLink] 、 [TypeSymlink] 、 [TypeChar] 、 [TypeBlock] 、 [TypeDir] 、 [TypeFifo] などの特殊なタイプでReadを呼び出すと、
+// [Header.Size] が示す内容に関係なく、(0, [io.EOF]) が返されます。
 func (tr *Reader) Read(b []byte) (int, error)

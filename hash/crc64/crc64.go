@@ -25,15 +25,15 @@ const (
 // Table は効率的な処理のための多項式を表す256単語のテーブルです。
 type Table [256]uint64
 
-// MakeTable は指定された多項式から構築されたTableを返します。
+// MakeTable は指定された多項式から構築された [Table] を返します。
 // このTableの内容は変更してはなりません。
 func MakeTable(poly uint64) *Table
 
-// NewはTableで表される多項式を使用してCRC-64チェックサムを計算する新しいhash.Hash64を作成します。Sumメソッドは値をビッグエンディアンのバイト順で並べます。返されるHash64は、内部状態をmarshalおよびunmarshalするためのencoding.BinaryMarshalerおよびencoding.BinaryUnmarshalerも実装しています。
+// Newは [Table] で表される多項式を使用してCRC-64チェックサムを計算する新しいhash.Hash64を作成します。Sumメソッドは値をビッグエンディアンのバイト順で並べます。返されるHash64は、内部状態をmarshalおよびunmarshalするための [encoding.BinaryMarshaler] および [encoding.BinaryUnmarshaler] も実装しています。
 func New(tab *Table) hash.Hash64
 
 // Updateはpのバイトをcrcに追加した結果を返します。
 func Update(crc uint64, tab *Table, p []byte) uint64
 
-// Checksum 関数は、Table が表す多項式を使って、データの CRC-64 チェックサムを返します。
+// Checksum 関数は、 [Table] が表す多項式を使って、データの CRC-64 チェックサムを返します。
 func Checksum(data []byte, tab *Table) uint64

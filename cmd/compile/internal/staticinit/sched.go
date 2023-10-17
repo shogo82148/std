@@ -29,6 +29,11 @@ type Schedule struct {
 
 	Plans map[ir.Node]*Plan
 	Temps map[ir.Node]*ir.Name
+
+	// seenMutation tracks whether we've seen an initialization
+	// expression that may have modified other package-scope variables
+	// within this package.
+	seenMutation bool
 }
 
 // StaticInit adds an initialization statement n to the schedule.
@@ -58,10 +63,8 @@ func AnySideEffects(n ir.Node) bool
 // reachable.
 func AddKeepRelocations()
 
-// OutlineMapInits walks through a list of init statements (candidates
-// for inclusion in the package "init" function) and returns an
-// updated list in which items corresponding to map variable
-// initializations have been replaced with calls to outline "map init"
-// functions (if legal/profitable). Return value is an updated list
-// and a list of any newly generated "map init" functions.
-func OutlineMapInits(stmts []ir.Node) ([]ir.Node, []*ir.Func)
+// OutlineMapInits replaces global map initializers with outlined
+// calls to separate "map init" functions (where possible and
+// profitable), to facilitate better dead-code elimination by the
+// linker.
+func OutlineMapInits(fn *ir.Func)

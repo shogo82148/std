@@ -26,7 +26,8 @@ import (
 )
 
 // ParsePKIXPublicKeyはPKIX、ASN.1 DER形式の公開鍵を解析します。エンコードされた公開鍵はSubjectPublicKeyInfo構造体です（RFC 5280、セクション4.1を参照）。
-// *rsa.PublicKey、*dsa.PublicKey、*ecdsa.PublicKey、ed25519.PublicKey（ポインタではない）、または*ecdh.PublicKey（X25519用）を返します。
+//
+// *[rsa.PublicKey] 、 *[dsa.PublicKey] 、 *[ecdsa.PublicKey] 、 [ed25519.PublicKey] （ポインタではない）、または *[ecdh.PublicKey] （X25519用）を返します。
 // 将来的にはさらに多くの種類がサポートされるかもしれません。
 // この種類の鍵は、一般的に「PUBLIC KEY」というタイプのPEMブロックでエンコードされます。
 func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
@@ -35,7 +36,7 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 // エンコードされた公開鍵はSubjectPublicKeyInfo構造体です
 // （RFC 5280、セクション4.1を参照）。
 //
-// 現在サポートされているキータイプは次のとおりです：*rsa.PublicKey、*ecdsa.PublicKey、ed25519.PublicKey（ポインタではありません）、*ecdh.PublicKey。
+// 現在サポートされているキータイプは次のとおりです： *[rsa.PublicKey] 、 *[ecdsa.PublicKey] 、 [ed25519.PublicKey] （ポインタではありません）、 *[ecdh.PublicKey] 。
 // サポートされていないキータイプはエラーとなります。
 //
 // この種類のキーは一般的には"type 'PUBLIC KEY'のPEMブロックでエンコードされます。
@@ -199,7 +200,7 @@ type Certificate struct {
 // ErrUnsupportedAlgorithmは、現在実装されていないアルゴリズムを使用して操作を実行しようとした結果です。
 var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorithm unimplemented")
 
-// InsecureAlgorithmErrorは、署名の生成に使用されるSignatureAlgorithmが安全でないことを示し、署名が拒否されたことを示します。
+// InsecureAlgorithmErrorは、署名の生成に使用される [SignatureAlgorithm] が安全でないことを示し、署名が拒否されたことを示します。
 //
 // SHA-1署名のサポートを一時的に復元するには、GODEBUG環境変数に値"x509sha1=1"を含めます。ただし、このオプションは将来のリリースで削除される予定です。
 type InsecureAlgorithmError SignatureAlgorithm
@@ -228,7 +229,7 @@ func (c *Certificate) CheckSignature(algo SignatureAlgorithm, signed, signature 
 
 // CheckCRLSignatureは、crlの署名がcからのものであることをチェックします。
 //
-// 廃止予定：RevocationList.CheckSignatureFromを使用してください。
+// Deprecated: [RevocationList.CheckSignatureFrom] を使用してください。
 func (c *Certificate) CheckCRLSignature(crl *pkix.CertificateList) error
 
 type UnhandledCriticalExtension struct{}
@@ -283,18 +284,19 @@ func (h UnhandledCriticalExtension) Error() string
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRLは指定されたバイトからCRLを解析します。PEMエンコードされたCRLがDERエンコードされるべき場所に表示されることがよくありますが、この関数は前方にゴミがない限り、PEMエンコーディングを透過的に処理します。
-// 廃止予定: 代わりにParseRevocationListを使用してください。
+//
+// Deprecated: 代わりに [ParseRevocationList] を使用してください。
 func ParseCRL(crlBytes []byte) (*pkix.CertificateList, error)
 
 // ParseDERCRLは与えられたバイトからDER形式でエンコードされたCRLをパースします。
 //
-// 非推奨: 代わりにParseRevocationListを使用してください。
+// Deprecated: 代わりに [ParseRevocationList] を使用してください。
 func ParseDERCRL(derBytes []byte) (*pkix.CertificateList, error)
 
 // CreateCRLは、指定された失効した証明書のリストを含む、この証明書によって署名されたDERエンコードされたCRLを返します。
 //
-// 廃止予定: このメソッドはRFC 5280準拠のX.509 v2 CRLを生成しません。
-// 標準に準拠したCRLを生成するためには、代わりにCreateRevocationListを使用してください。
+// Deprecated: このメソッドはRFC 5280準拠のX.509 v2 CRLを生成しません。
+// 標準に準拠したCRLを生成するためには、代わりに [CreateRevocationList] を使用してください。
 func (c *Certificate) CreateCRL(rand io.Reader, priv any, revokedCerts []pkix.RevokedCertificate, now, expiry time.Time) (crlBytes []byte, err error)
 
 // CertificateRequestはPKCS #10、証明書署名リクエストを表します。
@@ -385,7 +387,7 @@ type RevocationListEntry struct {
 	ExtraExtensions []pkix.Extension
 }
 
-// RevocationList は RFC 5280 で指定されている Certificate Revocation List (CRL) を表します。
+// RevocationList は RFC 5280 で指定されている [Certificate] Revocation List (CRL) を表します。
 type RevocationList struct {
 
 	// Raw はCRL（tbsCertList、signatureAlgorithm、およびsignatureValue）の完全なASN.1 DERコンテンツを含んでいます。
@@ -440,8 +442,11 @@ type RevocationList struct {
 }
 
 // CreateRevocationListは、テンプレートに基づいてRFC 5280に準拠した新しいX.509 v2証明書失効リストを作成します。
+//
 // CRLは、privによって署名されます。これは、発行者証明書の公開キーに関連付けられた秘密キーである必要があります。
-// 発行者はnilではなく、キーカオ必須使用方法のcrlSignビットが設定されている必要があります。
+//
+// 発行者はnilであってはならず、CRL発行者として使用するには [KeyUsage] でcrlSignビットを設定する必要があります。
+//
 // 発行者の識別名CRLフィールドと権限キー識別子拡張は、発行者証明書を使用してポピュレートされます。発行者にはSubjectKeyIdが設定されている必要があります。
 func CreateRevocationList(rand io.Reader, template *RevocationList, issuer *Certificate, priv crypto.Signer) ([]byte, error)
 

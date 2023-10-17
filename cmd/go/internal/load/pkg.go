@@ -140,9 +140,8 @@ type PackageInternal struct {
 	LocalPrefix       string
 	ExeName           string
 	FuzzInstrument    bool
-	CoverMode         string
+	Cover             CoverSetup
 	CoverVars         map[string]*CoverVar
-	CoverageCfg       string
 	OmitDebug         bool
 	GobinSubdir       bool
 	BuildInfo         *debug.BuildInfo
@@ -185,6 +184,13 @@ func (p *Package) Resolve(imports []string) []string
 type CoverVar struct {
 	File string
 	Var  string
+}
+
+// CoverSetup holds parameters related to coverage setup for a given package (covermode, etc).
+type CoverSetup struct {
+	Mode    string
+	Cfg     string
+	GenMeta bool
 }
 
 // A PackageError describes an error loading information about a package.
@@ -355,7 +361,7 @@ func ResolveEmbed(dir string, patterns []string) ([]string, error)
 func SafeArg(name string) bool
 
 // LinkerDeps returns the list of linker-induced dependencies for main package p.
-func LinkerDeps(p *Package) []string
+func LinkerDeps(p *Package) ([]string, error)
 
 // InternalGoFiles returns the list of Go files being built for the package,
 // using absolute paths.

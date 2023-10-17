@@ -41,14 +41,15 @@ var (
 	FlagD = flag.Bool("d", false, "disable dynamic executable")
 
 	FlagS = flag.Bool("s", false, "disable symbol table")
-	FlagW = flag.Bool("w", false, "disable DWARF generation")
 
 	FlagDebugTramp    = flag.Int("debugtramp", 0, "debug trampolines")
 	FlagDebugTextSize = flag.Int("debugtextsize", 0, "debug text section max size")
 
 	FlagStrictDups = flag.Int("strictdups", 0, "sanity check duplicate symbol contents during object file reading (1=warn 2=err).")
-	FlagRound      = flag.Int("R", -1, "set address rounding `quantum`")
+	FlagRound      = flag.Int64("R", -1, "set address rounding `quantum`")
 	FlagTextAddr   = flag.Int64("T", -1, "set the start address of text symbols")
+
+	FlagW = new(bool)
 )
 
 // Main is the main entry point for the linker code.

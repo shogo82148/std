@@ -20,6 +20,7 @@ type Checker struct {
 	pkg  *Package
 	*Info
 	version version
+	posVers map[*syntax.PosBase]version
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
@@ -39,7 +40,6 @@ type Checker struct {
 	// (initialized by Files, valid only for the duration of check.Files;
 	// maps and lists are allocated on demand)
 	files         []*syntax.File
-	posVers       map[*syntax.PosBase]version
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
 	recvTParamMap map[*syntax.Name]*TypeParam

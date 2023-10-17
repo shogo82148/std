@@ -18,10 +18,10 @@ type KeySizeError int
 
 func (k KeySizeError) Error() string
 
-// NewCipherは新しいCipherを作成し、返します。キーアーギュメントはRC4キーであり、少なくとも1バイト、最大256バイトである必要があります。
+// NewCipherは新しい [Cipher] を作成し、返します。キーアーギュメントはRC4キーであり、少なくとも1バイト、最大256バイトである必要があります。
 func NewCipher(key []byte) (*Cipher, error)
 
-// Resetはキーデータをゼロ化し、Cipherを使用できなくします。
+// Resetはキーデータをゼロ化し、 [Cipher] を使用できなくします。
 //
 // Deprecated: Resetはキーがプロセスのメモリから完全に削除されることを保証できません。
 func (c *Cipher) Reset()

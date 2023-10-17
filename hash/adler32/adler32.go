@@ -21,7 +21,7 @@ const Size = 4
 
 // NewはAdler-32チェックサムを計算する新しいhash.Hash32を返します。
 // Sumメソッドは値をビッグエンディアンのバイト順で配置します。
-// 返されるHash32は、encoding.BinaryMarshalerとencoding.BinaryUnmarshalerも実装しており、
+// 返されるHash32は、 [encoding.BinaryMarshaler] と [encoding.BinaryUnmarshaler] も実装しており、
 // ハッシュの内部状態をマーシャリングおよびアンマーシャリングすることができます。
 func New() hash.Hash32
 

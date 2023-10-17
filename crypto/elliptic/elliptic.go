@@ -18,25 +18,49 @@ import (
 //
 // 0, 0のような通常の無限遠点は、曲線上には考慮されていませんが、Add、Double、
 // ScalarMult、またはScalarBaseMultで返される場合があります
-// （ただし、UnmarshalまたはUnmarshalCompressed関数では返されません）。
+// （ただし、 [Unmarshal] または [UnmarshalCompressed] 関数では返されません）。
 //
-// P224（）、P256（）、P384（）、およびP521（）以外のCurve実装を使用することは非推奨です。
+// [P224] 、 [P256] 、 [P384] 、および [P521] 以外のCurve実装を使用することは非推奨です。
 type Curve interface {
+	// Params returns the parameters for the curve.
 	Params() *CurveParams
 
+	// IsOnCurve reports whether the given (x,y) lies on the curve.
+	//
+	// Deprecated: this is a low-level unsafe API. For ECDH, use the crypto/ecdh
+	// package. The NewPublicKey methods of NIST curves in crypto/ecdh accept
+	// the same encoding as the Unmarshal function, and perform on-curve checks.
 	IsOnCurve(x, y *big.Int) bool
 
+	// Add returns the sum of (x1,y1) and (x2,y2).
+	//
+	// Deprecated: this is a low-level unsafe API.
 	Add(x1, y1, x2, y2 *big.Int) (x, y *big.Int)
 
+	// Double returns 2*(x,y).
+	//
+	// Deprecated: this is a low-level unsafe API.
 	Double(x1, y1 *big.Int) (x, y *big.Int)
 
+	// ScalarMult returns k*(x,y) where k is an integer in big-endian form.
+	//
+	// Deprecated: this is a low-level unsafe API. For ECDH, use the crypto/ecdh
+	// package. Most uses of ScalarMult can be replaced by a call to the ECDH
+	// methods of NIST curves in crypto/ecdh.
 	ScalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int)
 
+	// ScalarBaseMult returns k*G, where G is the base point of the group
+	// and k is an integer in big-endian form.
+	//
+	// Deprecated: this is a low-level unsafe API. For ECDH, use the crypto/ecdh
+	// package. Most uses of ScalarBaseMult can be replaced by a call to the
+	// PrivateKey.PublicKey method in crypto/ecdh.
 	ScalarBaseMult(k []byte) (x, y *big.Int)
 }
 
 // GenerateKeyは公開鍵と秘密鍵のペアを生成します。秘密鍵は与えられたリーダーを使用して生成されますが、ランダムデータを返す必要があります。
-// 廃止予定: ECDHの場合はcrypto/ecdhパッケージのGenerateKeyメソッドを使用してください。
+//
+// Deprecated: ECDHの場合は [crypto/ecdh] パッケージのGenerateKeyメソッドを使用してください。
 // ECDSAの場合はcrypto/ecdsaパッケージのGenerateKey関数を使用してください。
 func GenerateKey(curve Curve, rand io.Reader) (priv []byte, x, y *big.Int, err error)
 
@@ -51,15 +75,16 @@ func MarshalCompressed(curve Curve, x, y *big.Int) []byte
 // 既知の曲線がunmarshalerを実装していることを確認します。
 var _ = []unmarshaler{p224, p256, p384, p521}
 
-// UnmarshalはMarshalによってシリアライズされたポイントをx、yのペアに変換します。非圧縮形式でない場合、曲線上にない場合、または無限遠点の場合はエラーです。エラーの場合、x = nilです。
-// 廃止予定：ECDHでは、crypto/ecdhパッケージを使用してください。この関数は、crypto/ecdhのNewPublicKeyメソッドで使用されるエンコーディングと同等のエンコーディングを受け入れます。
+// Unmarshalは [Marshal] によってシリアライズされたポイントをx、yのペアに変換します。非圧縮形式でない場合、曲線上にない場合、または無限遠点の場合はエラーです。エラーの場合、x = nilです。
+//
+// Deprecated: ECDHでは、crypto/ecdhパッケージを使用してください。この関数は、crypto/ecdhのNewPublicKeyメソッドで使用されるエンコーディングと同等のエンコーディングを受け入れます。
 func Unmarshal(curve Curve, data []byte) (x, y *big.Int)
 
-// UnmarshalCompressedはMarshalCompressedによって直列化された点を、xとyの組へと変換します。
+// UnmarshalCompressedは [MarshalCompressed] によって直列化された点を、xとyの組へと変換します。
 // 圧縮形式でない場合、曲線上にない場合、または無限遠点の場合はエラーです。 エラー時には、x = nil です。
 func UnmarshalCompressed(curve Curve, data []byte) (x, y *big.Int)
 
-// P224は、NIST P-224（FIPS 186-3、セクションD.2.2）で実装された曲線、またはsecp224r1としても知られています。この曲線のCurveParams.Nameは「P-224」です。
+// P224は、NIST P-224（FIPS 186-3、セクションD.2.2）で実装された [Curve] 、またはsecp224r1としても知られています。この [Curve] のCurveParams.Nameは「P-224」です。
 //
 // この関数の複数の呼び出しは同じ値を返すため、等価性のチェックやスイッチ文に使用することができます。
 //
@@ -67,22 +92,22 @@ func UnmarshalCompressed(curve Curve, data []byte) (x, y *big.Int)
 func P224() Curve
 
 // P256は、NIST P-256（FIPS 186-3、セクション D.2.3）またはsecp256r1またはprime256v1としても知られる、
-// "P-256"という名前のCurveParams.Nameを実装したCurveを返します。
+// "P-256"という名前のCurveParams.Nameを実装した [Curve] を返します。
 //
 // この関数を複数回呼び出しても同じ値が返されるため、等値チェックやswitch文で使用することができます。
 //
 // 暗号操作は定数時間アルゴリズムを使用して実装されています。
 func P256() Curve
 
-// P384はNIST P-384 (FIPS 186-3、セクションD.2.4)、別名secp384r1を実装するCurveを返します。このCurveのCurveParams.Nameは "P-384" です。
+// P384はNIST P-384 (FIPS 186-3、セクションD.2.4)、別名secp384r1を実装する [Curve] を返します。この [Curve] のCurveParams.Nameは "P-384" です。
 //
 // この関数の複数の呼び出しは同じ値を返すため、等しさのチェックやスイッチ文に使用できます。
 //
 // 暗号操作は一定時間アルゴリズムを使用して実装されています。
 func P384() Curve
 
-// P521は、NIST P-521（FIPS 186-3、セクションD.2.5）またはsecp521r1としても知られるカーブを返します。
-// このカーブのCurveParams.Nameは「P-521」です。
+// P521は、NIST P-521（FIPS 186-3、セクションD.2.5）またはsecp521r1としても知られる [Curve] を返します。
+// この [Curve] のCurveParams.Nameは「P-521」です。
 //
 // この関数を複数回呼び出しても同じ値が返されるため、等価性のチェックやswitch文に使用できます。
 //

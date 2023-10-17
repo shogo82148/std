@@ -12,11 +12,23 @@ import (
 	"github.com/shogo82148/std/cmd/internal/src"
 )
 
+// NewBool returns an OLITERAL representing b as an untyped boolean.
 func NewBool(pos src.XPos, b bool) Node
 
+// NewInt returns an OLITERAL representing v as an untyped integer.
 func NewInt(pos src.XPos, v int64) Node
 
+// NewString returns an OLITERAL representing s as an untyped string.
 func NewString(pos src.XPos, s string) Node
+
+// NewUintptr returns an OLITERAL representing v as a uintptr.
+func NewUintptr(pos src.XPos, v int64) Node
+
+// NewZero returns a zero value of the given type.
+func NewZero(pos src.XPos, typ *types.Type) Node
+
+// NewOne returns an OLITERAL representing 1 with the given type.
+func NewOne(pos src.XPos, typ *types.Type) Node
 
 const (
 	// Maximum size in bits for big.Ints before signaling

@@ -4,18 +4,18 @@
 
 // パッケージmaphashはバイト列上のハッシュ関数を提供します。
 // これらのハッシュ関数は、任意の文字列やバイト列を符号なし64ビット整数上の均一な分布にマッピングするために使用されることを意図しています。
-// ハッシュテーブルやデータ構造の異なるインスタンスごとに個別のSeedを使用する必要があります。
+// ハッシュテーブルやデータ構造の異なるインスタンスごとに個別の [Seed] を使用する必要があります。
 //
 // これらのハッシュ関数は、暗号的に安全ではありません。
 // (暗号的な使用には、crypto/sha256およびcrypto/sha512を参照してください。)
 package maphash
 
-// Seedは特定のハッシュ関数を選択するランダムな値です。
+// Seedは [Hash] によって計算されるハッシュ関数を選択するランダムな値です。
 // もし2つのHashが同じSeedを使う場合、任意の入力に対して同じハッシュ値を計算します。
 // もし2つのHashが異なるSeedを使う場合、任意の入力に対して異なるハッシュ値を計算する可能性が非常に高いです。
 //
-// SeedはMakeSeedを呼び出すことで初期化する必要があります。
-// ゼロSeedは初期化されておらず、HashのSetSeedメソッドで使用することはできません。
+// Seedは [MakeSeed] を呼び出すことで初期化する必要があります。
+// ゼロSeedは初期化されておらず、 [Hash] のSetSeedメソッドで使用することはできません。
 //
 // 各Seedの値は単一のプロセスに対してローカルであり、別のプロセスでシリアライズまたは再作成することはできません。
 type Seed struct {
@@ -51,9 +51,9 @@ func String(seed Seed, s string) uint64
 // 計算されたハッシュ値は、初期シードとHashオブジェクトに提供されたバイトのシーケンスにのみ依存し、
 // バイトの提供方法には依存しません。たとえば、以下の3つのシーケンス
 //
-//  h.Write([]byte{'f','o','o'})
-//  h.WriteByte('f'); h.WriteByte('o'); h.WriteByte('o')
-//  h.WriteString("foo")
+//	h.Write([]byte{'f','o','o'})
+//	h.WriteByte('f'); h.WriteByte('o'); h.WriteByte('o')
+//	h.WriteString("foo")
 //
 // はすべて同じ効果があります。
 //
@@ -71,24 +71,24 @@ type Hash struct {
 }
 
 // WriteByteは、hによってハッシュされるバイト列にbを追加します。
-// 失敗することはありません。エラーの結果は、io.ByteWriterの実装のためです。
+// 失敗することはありません。エラーの結果は、 [io.ByteWriter] の実装のためです。
 func (h *Hash) WriteByte(b byte) error
 
 // Writeはhによってハッシュされたバイトのシーケンスにbを追加します。
-// bのすべてを書き込み、失敗することはありません。countとerrorの結果はio.Writerを実装するためです。
+// bのすべてを書き込み、失敗することはありません。countとerrorの結果は [io.Writer] を実装するためです。
 func (h *Hash) Write(b []byte) (int, error)
 
 // WriteString は文字列 s のバイト列を h によってハッシュ化されたバイト列に追加します。
-// いつでも s のすべてを書き込み、失敗することはありません。count と error の結果は io.StringWriter の実装のためです。
+// いつでも s のすべてを書き込み、失敗することはありません。count と error の結果は [io.StringWriter] の実装のためです。
 func (h *Hash) WriteString(s string) (int, error)
 
 // Seedはhのシード値を返します。
 func (h *Hash) Seed() Seed
 
 // SetSeedは、hにseedを使用するように設定します。
-// seedはMakeSeedによって返されたか、別のハッシュのSeedメソッドによって返されたものでなければなりません。
-// 同じseedを持つ2つのハッシュオブジェクトは同じように振る舞います。
-// 異なるseedを持つ2つのハッシュオブジェクトは、非常に異なる振る舞いをする可能性があります。
+// seedは [MakeSeed] によって返されたか、別のハッシュのSeedメソッドによって返されたものでなければなりません。
+// 同じseedを持つ2つの [Hash] オブジェクトは同じように振る舞います。
+// 異なるseedを持つ2つの [Hash] オブジェクトは、非常に異なる振る舞いをする可能性があります。
 // この呼び出し前にhに追加されたすべてのバイトは破棄されます。
 func (h *Hash) SetSeed(seed Seed)
 
@@ -97,7 +97,7 @@ func (h *Hash) SetSeed(seed Seed)
 func (h *Hash) Reset()
 
 // Sum64はhの現在の64ビット値を返します。これは、hのシードと、hに追加されたバイトのシーケンスに依存します。
-// 最後のResetまたはSetSeedの呼び出しからの呼び出しを含みます。
+// 最後の [Hash.Reset] または [Hash.SetSeed] の呼び出しからの呼び出しを含みます。
 // Sum64の結果のすべてのビットはほぼ均等に一様に分布しており、独立しているため、
 // ビットマスキング、シフト、またはモジュラ演算で安全に縮小することができます。
 func (h *Hash) Sum64() uint64
@@ -106,8 +106,8 @@ func (h *Hash) Sum64() uint64
 func MakeSeed() Seed
 
 // Sumはハッシュの現在の64ビット値をbに追加します。
-// hash.Hashの実装のために存在します。
-// 直接の呼び出しでは、Sum64を使用する方が効率が良いです。
+// [hash.Hash] の実装のために存在します。
+// 直接の呼び出しでは、 [Hash.Sum64] を使用する方が効率が良いです。
 func (h *Hash) Sum(b []byte) []byte
 
 // Sizeはhのハッシュ値のサイズ、8バイトを返します。

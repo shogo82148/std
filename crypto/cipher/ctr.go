@@ -10,6 +10,6 @@
 
 package cipher
 
-// NewCTRは、指定されたブロックを使用して暗号化/復号化を行うStreamを返します。
-// ivの長さは、ブロックのブロックサイズと同じでなければなりません。
+// NewCTRは、指定された [Block] を使用して暗号化/復号化を行う [Stream] を返します。
+// ivの長さは、 [Block] のブロックサイズと同じでなければなりません。
 func NewCTR(block Block, iv []byte) Stream

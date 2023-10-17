@@ -126,8 +126,14 @@ const (
 
 // ClientSessionCacheは、クライアントが特定のサーバーとTLSセッションを再開するために使用できるClientSessionStateオブジェクトのキャッシュです。ClientSessionCacheの実装は、異なるゴルーチンから同時に呼び出されることを想定しています。TLS 1.2までは、SessionIDベースの再開ではなく、チケットベースの再開のみがサポートされています。TLS 1.3では、これらがPSKモードにマージされ、このインターフェースを介してサポートされています。
 type ClientSessionCache interface {
+	// Get searches for a ClientSessionState associated with the given key.
+	// On return, ok is true if one was found.
 	Get(sessionKey string) (session *ClientSessionState, ok bool)
 
+	// Put adds the ClientSessionState to the cache with the given key. It might
+	// get called multiple times in a connection if a TLS 1.3 server provides
+	// more than one session ticket. If called with a nil *ClientSessionState,
+	// it should remove the cache entry.
 	Put(sessionKey string, cs *ClientSessionState)
 }
 
@@ -432,7 +438,7 @@ type Config struct {
 }
 
 // Cloneはcの浅いクローンを返します。cがnilの場合はnilを返します。TLSクライアントやサーバーによって
-// 同時に使用されているConfigをクローンすることは安全です。
+// 同時に使用されている [Config] をクローンすることは安全です。
 func (c *Config) Clone() *Config
 
 // SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
@@ -451,7 +457,7 @@ func (c *Config) SetSessionTicketKeys(keys [][32]byte)
 // SupportsCertificateは、提供された証明書が
 // ClientHelloを送信したクライアントによってサポートされている場合にはnilを返します。そうでない場合は、互換性のない理由を説明するエラーを返します。
 //
-// このClientHelloInfoがGetConfigForClientまたはGetCertificateコールバックに渡された場合、このメソッドは関連するConfigを考慮に入れます。ただし、GetConfigForClientが異なるConfigを返す場合、このメソッドでは変更を考慮することができません。
+// この [ClientHelloInfo] がGetConfigForClientまたはGetCertificateコールバックに渡された場合、このメソッドは関連する [Config] を考慮に入れます。ただし、GetConfigForClientが異なる [Config] を返す場合、このメソッドでは変更を考慮することができません。
 //
 // c.Leafが設定されていない場合、この関数はx509.ParseCertificateを呼び出しますが、それはかなりのパフォーマンスコストを伴うことになります。
 func (chi *ClientHelloInfo) SupportsCertificate(c *Certificate) error
@@ -486,7 +492,7 @@ type Certificate struct {
 	Leaf *x509.Certificate
 }
 
-// NewLRUClientSessionCacheは、与えられた容量を使用してLRU戦略を採用したClientSessionCacheを返します。容量が1未満の場合、代わりにデフォルトの容量が使用されます。
+// NewLRUClientSessionCacheは、与えられた容量を使用してLRU戦略を採用した [ClientSessionCache] を返します。容量が1未満の場合、代わりにデフォルトの容量が使用されます。
 func NewLRUClientSessionCache(capacity int) ClientSessionCache
 
 // CertificateVerificationError は、ハンドシェイク中に証明書の検証が失敗した場合に返されます。

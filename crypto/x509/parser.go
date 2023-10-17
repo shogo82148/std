@@ -11,5 +11,5 @@ func ParseCertificate(der []byte) (*Certificate, error)
 // 証明書は、間にパディングがない形式で連結されている必要があります。
 func ParseCertificates(der []byte) ([]*Certificate, error)
 
-// ParseRevocationListは、与えられたASN.1 DERデータからX509 v2証明書失効リストをパースします。
+// ParseRevocationListは、与えられたASN.1 DERデータからX509 v2 [Certificate] 失効リストをパースします。
 func ParseRevocationList(der []byte) (*RevocationList, error)

@@ -39,6 +39,8 @@ var (
 // to switch to a new underlying Reader. This permits reusing a ReadCloser
 // instead of allocating a new one.
 type Resetter interface {
+	// Reset discards any buffered data and resets the Resetter as if it was
+	// newly initialized with the given reader.
 	Reset(r io.Reader, dict []byte) error
 }
 
@@ -48,7 +50,7 @@ type Resetter interface {
 // data than necessary from r.
 // It is the caller's responsibility to call Close on the ReadCloser when done.
 //
-// The ReadCloser returned by NewReader also implements [Resetter].
+// The [io.ReadCloser] returned by NewReader also implements [Resetter].
 func NewReader(r io.Reader) (io.ReadCloser, error)
 
 // NewReaderDict is like [NewReader] but uses a preset dictionary.

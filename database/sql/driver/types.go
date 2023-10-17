@@ -17,6 +17,7 @@ package driver
 //
 //   - sqlパッケージによって、スキャン中にドライバーのValue型からユーザーの型に変換します。
 type ValueConverter interface {
+	// ConvertValue converts a value to a driver Value.
 	ConvertValue(v any) (Value, error)
 }
 
@@ -24,6 +25,8 @@ type ValueConverter interface {
 //
 // Valuerインターフェースを実装する型は、自分自身をドライバの値に変換できます。
 type Valuer interface {
+	// Value returns a driver Value.
+	// Value must not panic.
 	Value() (Value, error)
 }
 

@@ -13,12 +13,13 @@ import (
 
 func DefaultLit(n ir.Node, t *types.Type) ir.Node
 
-// OrigConst returns an OLITERAL with orig n and value v.
-func OrigConst(n ir.Node, v constant.Value) ir.Node
-
-func OrigBool(n ir.Node, v bool) ir.Node
-
-func OrigInt(n ir.Node, v int64) ir.Node
+// ConvertVal converts v into a representation appropriate for t. If
+// no such representation exists, it returns constant.MakeUnknown()
+// instead.
+//
+// If explicit is true, then conversions from integer to string are
+// also allowed.
+func ConvertVal(v constant.Value, t *types.Type, explicit bool) constant.Value
 
 // IndexConst checks if Node n contains a constant expression
 // representable as a non-negative int and returns its value.

@@ -4,6 +4,8 @@
 
 package syntax
 
+type Token uint
+
 const (
 	_ token = iota
 )

@@ -4,7 +4,7 @@
 
 package strings
 
-// Builderは、Writeメソッドを使用して効率的に文字列を構築するために使用されます。
+// Builderは、 [Builder.Write] メソッドを使用して効率的に文字列を構築するために使用されます。
 // メモリのコピーを最小限に抑えます。ゼロ値はすぐに使用できます。
 // 非ゼロのBuilderをコピーしないでください。
 type Builder struct {
@@ -22,7 +22,7 @@ func (b *Builder) Len() int
 // 構築中の文字列に割り当てられた総スペースを含み、すでに書き込まれたバイトも含みます。
 func (b *Builder) Cap() int
 
-// Resetは、Builderを空にリセットします。
+// Resetは、 [Builder] を空にリセットします。
 func (b *Builder) Reset()
 
 // Growは、必要に応じてbの容量を拡張し、別のnバイトのスペースを保証します。

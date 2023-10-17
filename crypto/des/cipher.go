@@ -15,8 +15,8 @@ type KeySizeError int
 
 func (k KeySizeError) Error() string
 
-// NewCipherは新しいcipher.Blockを作成して返します。
+// NewCipherは新しい [cipher.Block] を作成して返します。
 func NewCipher(key []byte) (cipher.Block, error)
 
-// NewTripleDESCipher は新しい cipher.Block を作成して返します。
+// NewTripleDESCipher は新しい [cipher.Block] を作成して返します。
 func NewTripleDESCipher(key []byte) (cipher.Block, error)

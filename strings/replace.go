@@ -17,7 +17,7 @@ type Replacer struct {
 	oldnew []string
 }
 
-// NewReplacerは、古い文字列と新しい文字列のペアのリストから新しいReplacerを返します。
+// NewReplacerは、古い文字列と新しい文字列のペアのリストから新しい [Replacer] を返します。
 // 置換は、対象文字列に現れる順序で実行され、重複するマッチングは行われません。
 // 古い文字列の比較は引数の順序で行われます。
 //

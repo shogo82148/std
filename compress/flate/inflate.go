@@ -42,6 +42,8 @@ func (e *WriteError) Error() string
 
 // Resetterは [NewReader] または [NewReaderDict] が返すReadCloserをリセットし、新しい基になる [Reader] に切り替えます。これにより、新しいものを割り当てる代わりにReadCloserを再利用することができます。
 type Resetter interface {
+	// Reset discards any buffered data and resets the Resetter as if it was
+	// newly initialized with the given reader.
 	Reset(r io.Reader, dict []byte) error
 }
 
@@ -60,7 +62,7 @@ type Reader interface {
 // The reader returns [io.EOF] after the final block in the DEFLATE stream has
 // been encountered. Any trailing data after the final block is ignored.
 //
-// NewReaderによって返されるReadCloserは、 [Resetter] も実装しています。
+// NewReaderによって返される [io.ReadCloser] は、 [Resetter] も実装しています。
 func NewReader(r io.Reader) io.ReadCloser
 
 // NewReaderDictは [NewReader] と同じようにリーダーを初期化しますが、

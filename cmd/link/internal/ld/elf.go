@@ -52,8 +52,6 @@ const (
 	ELF32RELSIZE  = 8
 )
 
-var Elfstrdat []byte
-
 /*
  * Total amount of space to reserve at the start of the file
  * for Header, PHeaders, SHeaders, and interp.
@@ -92,7 +90,7 @@ type ELFArch struct {
 
 	Reloc1    func(*Link, *OutBuf, *loader.Loader, loader.Sym, loader.ExtReloc, int, int64) bool
 	RelocSize uint32
-	SetupPLT  func(ctxt *Link, plt, gotplt *loader.SymbolBuilder, dynamic loader.Sym)
+	SetupPLT  func(ctxt *Link, ldr *loader.Loader, plt, gotplt *loader.SymbolBuilder, dynamic loader.Sym)
 
 	// DynamicReadOnly can be set to true to make the .dynamic
 	// section read-only. By default it is writable.
