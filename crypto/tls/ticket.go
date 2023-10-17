@@ -53,12 +53,7 @@ func (s *SessionState) Bytes() ([]byte, error)
 // ParseSessionStateは[SessionState.Bytes]でエンコードされた[SessionState]を解析します。
 func ParseSessionState(data []byte) (*SessionState, error)
 
-<<<<<<< HEAD
-// EncryptTicketは、Configで設定された（またはデフォルトの）セッションチケットキーを使用してチケットを暗号化します。これは[Config.WrapSession]の実装として使用できます。
-=======
-// EncryptTicket encrypts a ticket with the [Config]'s configured (or default)
-// session ticket keys. It can be used as a [Config.WrapSession] implementation.
->>>>>>> upstream/master
+// EncryptTicketは、 [Config] で設定された（またはデフォルトの）セッションチケットキーを使用してチケットを暗号化します。これは [Config.WrapSession] の実装として使用できます。
 func (c *Config) EncryptTicket(cs ConnectionState, ss *SessionState) ([]byte, error)
 
 // DecryptTicketは[Config.EncryptTicket]によって暗号化されたチケットを復号化します。[Config.UnwrapSession]の実装として使用することができます。

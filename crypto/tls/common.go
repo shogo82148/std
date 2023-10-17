@@ -437,13 +437,8 @@ type Config struct {
 	autoSessionTicketKeys []ticketKey
 }
 
-<<<<<<< HEAD
 // Cloneはcの浅いクローンを返します。cがnilの場合はnilを返します。TLSクライアントやサーバーによって
-// 同時に使用されているConfigをクローンすることは安全です。
-=======
-// Clone returns a shallow clone of c or nil if c is nil. It is safe to clone a [Config] that is
-// being used concurrently by a TLS client or server.
->>>>>>> upstream/master
+// 同時に使用されている [Config] をクローンすることは安全です。
 func (c *Config) Clone() *Config
 
 // SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
@@ -462,14 +457,7 @@ func (c *Config) SetSessionTicketKeys(keys [][32]byte)
 // SupportsCertificateは、提供された証明書が
 // ClientHelloを送信したクライアントによってサポートされている場合にはnilを返します。そうでない場合は、互換性のない理由を説明するエラーを返します。
 //
-<<<<<<< HEAD
-// このClientHelloInfoがGetConfigForClientまたはGetCertificateコールバックに渡された場合、このメソッドは関連するConfigを考慮に入れます。ただし、GetConfigForClientが異なるConfigを返す場合、このメソッドでは変更を考慮することができません。
-=======
-// If this [ClientHelloInfo] was passed to a GetConfigForClient or GetCertificate
-// callback, this method will take into account the associated [Config]. Note that
-// if GetConfigForClient returns a different [Config], the change can't be
-// accounted for by this method.
->>>>>>> upstream/master
+// この [ClientHelloInfo] がGetConfigForClientまたはGetCertificateコールバックに渡された場合、このメソッドは関連する [Config] を考慮に入れます。ただし、GetConfigForClientが異なる [Config] を返す場合、このメソッドでは変更を考慮することができません。
 //
 // c.Leafが設定されていない場合、この関数はx509.ParseCertificateを呼び出しますが、それはかなりのパフォーマンスコストを伴うことになります。
 func (chi *ClientHelloInfo) SupportsCertificate(c *Certificate) error
@@ -504,13 +492,7 @@ type Certificate struct {
 	Leaf *x509.Certificate
 }
 
-<<<<<<< HEAD
-// NewLRUClientSessionCacheは、与えられた容量を使用してLRU戦略を採用したClientSessionCacheを返します。容量が1未満の場合、代わりにデフォルトの容量が使用されます。
-=======
-// NewLRUClientSessionCache returns a [ClientSessionCache] with the given
-// capacity that uses an LRU strategy. If capacity is < 1, a default capacity
-// is used instead.
->>>>>>> upstream/master
+// NewLRUClientSessionCacheは、与えられた容量を使用してLRU戦略を採用した [ClientSessionCache] を返します。容量が1未満の場合、代わりにデフォルトの容量が使用されます。
 func NewLRUClientSessionCache(capacity int) ClientSessionCache
 
 // CertificateVerificationError は、ハンドシェイク中に証明書の検証が失敗した場合に返されます。
