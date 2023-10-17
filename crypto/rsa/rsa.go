@@ -64,27 +64,12 @@ func (priv *PrivateKey) Public() crypto.PublicKey
 // Equalはprivとxが等価な値を持つかどうかを報告します。事前計算された値は無視されます。
 func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool
 
-<<<<<<< HEAD
-// privという秘密鍵を使用して、乱数をrandから読み取り、署名digestを生成します。optsが*PSSOptionsの場合、PSSアルゴリズムが使用されます。それ以外の場合は、PKCS #1 v1.5が使用されます。digestは、opts.HashFunc()を使用して入力メッセージのハッシュ値を計算した結果でなければなりません。
-// このメソッドはcrypto.Signerを実装しており、例えばハードウェアモジュールに保持される秘密部分をサポートするインターフェースです。一般的な使用法では、このパッケージ内のSign*関数を直接使用するべきです。
-func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
-
-// Decryptはprivで暗号文を復号化します。optsがnilまたは*PKCS1v15DecryptOptions型の場合、PKCS #1 v1.5 復号化が実行されます。それ以外の場合、optsは*OAEPOptions型でなければなりませんし、OAEP 復号化が行われます。
-=======
-// Sign signs digest with priv, reading randomness from rand. If opts is a
-// *[PSSOptions] then the PSS algorithm will be used, otherwise PKCS #1 v1.5 will
-// be used. digest must be the result of hashing the input message using
-// opts.HashFunc().
+// privという秘密鍵を使用して、乱数をrandから読み取り、署名digestを生成します。optsが *[PSSOptions] の場合、PSSアルゴリズムが使用されます。それ以外の場合は、PKCS #1 v1.5が使用されます。digestは、opts.HashFunc()を使用して入力メッセージのハッシュ値を計算した結果でなければなりません。
 //
-// This method implements [crypto.Signer], which is an interface to support keys
-// where the private part is kept in, for example, a hardware module. Common
-// uses should use the Sign* functions in this package directly.
+// このメソッドは [crypto.Signer] を実装しており、例えばハードウェアモジュールに保持される秘密部分をサポートするインターフェースです。一般的な使用法では、このパッケージ内のSign*関数を直接使用するべきです。
 func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
 
-// Decrypt decrypts ciphertext with priv. If opts is nil or of type
-// *[PKCS1v15DecryptOptions] then PKCS #1 v1.5 decryption is performed. Otherwise
-// opts must have type *[OAEPOptions] and OAEP decryption is done.
->>>>>>> upstream/master
+// Decryptはprivで暗号文を復号化します。optsがnilまたは *[PKCS1v15DecryptOptions] 型の場合、PKCS #1 v1.5 復号化が実行されます。それ以外の場合、optsは *[OAEPOptions] 型でなければなりませんし、OAEP 復号化が行われます。
 func (priv *PrivateKey) Decrypt(rand io.Reader, ciphertext []byte, opts crypto.DecrypterOpts) (plaintext []byte, err error)
 
 type PrecomputedValues struct {
@@ -127,24 +112,12 @@ func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 //
 // このパッケージではマルチプライムRSAのCRT最適化を実装していないため、2つ以上のプライムを持つキーのパフォーマンスは悪くなります。
 //
-<<<<<<< HEAD
-// Deprecated: 上記のセキュリティ、互換性、およびパフォーマンスの理由により、2つ以外のプライム数でこの関数を使用することはお勧めしません。代わりにGenerateKeyを使用してください。
-=======
-// Deprecated: The use of this function with a number of primes different from
-// two is not recommended for the above security, compatibility, and performance
-// reasons. Use [GenerateKey] instead.
->>>>>>> upstream/master
+// Deprecated: 上記のセキュリティ、互換性、およびパフォーマンスの理由により、2つ以外のプライム数でこの関数を使用することはお勧めしません。代わりに [GenerateKey] を使用してください。
 //
 // [On the Security of Multi-prime RSA]: http://www.cacr.math.uwaterloo.ca/techreports/2006/cacr2006-16.pdf
 func GenerateMultiPrimeKey(random io.Reader, nprimes int, bits int) (*PrivateKey, error)
 
-<<<<<<< HEAD
-// ErrMessageTooLong は、鍵のサイズに対して大きすぎるメッセージを暗号化または署名しようとした場合に返されます。SignPSSを使用する場合、塩のサイズが大きすぎる場合にも返されることがあります。
-=======
-// ErrMessageTooLong is returned when attempting to encrypt or sign a message
-// which is too large for the size of the key. When using [SignPSS], this can also
-// be returned if the size of the salt is too large.
->>>>>>> upstream/master
+// ErrMessageTooLong は、鍵のサイズに対して大きすぎるメッセージを暗号化または署名しようとした場合に返されます。 [SignPSS] を使用する場合、塩のサイズが大きすぎる場合にも返されることがあります。
 var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA key size")
 
 // EncryptOAEPはRSA-OAEPで与えられたメッセージを暗号化します。
@@ -186,11 +159,6 @@ func (priv *PrivateKey) Precompute()
 //
 // ランダムパラメータは旧式で無視され、nilであることができます。
 //
-<<<<<<< HEAD
 // ラベルパラメータは暗号化時に指定した値と一致する必要があります。
-// 詳細については、EncryptOAEPを参照してください。
-=======
-// The label parameter must match the value given when encrypting. See
-// [EncryptOAEP] for details.
->>>>>>> upstream/master
+// 詳細については、 [EncryptOAEP] を参照してください。
 func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)

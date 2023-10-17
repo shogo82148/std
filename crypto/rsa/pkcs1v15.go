@@ -9,12 +9,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-<<<<<<< HEAD
-// PKCS1v15DecryptOptionsは、crypto.Decrypterインターフェースを使用してPKCS #1 v1.5復号化にオプションを渡すためのものです。
-=======
-// PKCS1v15DecryptOptions is for passing options to PKCS #1 v1.5 decryption using
-// the [crypto.Decrypter] interface.
->>>>>>> upstream/master
+// PKCS1v15DecryptOptionsは、 [crypto.Decrypter] インターフェースを使用してPKCS #1 v1.5復号化にオプションを渡すためのものです。
 type PKCS1v15DecryptOptions struct {
 
 	// SessionKeyLenは、復号化されているセッションキーの長さです。
