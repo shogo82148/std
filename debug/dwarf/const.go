@@ -6,7 +6,7 @@
 
 package dwarf
 
-// An Attr identifies the attribute type in a DWARF Entry's Field.
+// An Attr identifies the attribute type in a DWARF [Entry.Field].
 type Attr uint32
 
 const (
@@ -138,7 +138,7 @@ const (
 
 func (a Attr) GoString() string
 
-// A Tag is the classification (the type) of an Entry.
+// A Tag is the classification (the type) of an [Entry].
 type Tag uint32
 
 const (

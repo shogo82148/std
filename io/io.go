@@ -35,7 +35,7 @@ var ErrShortBuffer = errors.New("short buffer")
 // because callers will test for EOF using ==.)
 // Functions should return EOF only to signal a graceful end of input.
 // If the EOF occurs unexpectedly in a structured data stream,
-// the appropriate error is either ErrUnexpectedEOF or some other error
+// the appropriate error is either [ErrUnexpectedEOF] or some other error
 // giving more detail.
 var EOF = errors.New("EOF")
 
@@ -43,9 +43,9 @@ var EOF = errors.New("EOF")
 // middle of reading a fixed-size block or data structure.
 var ErrUnexpectedEOF = errors.New("unexpected EOF")
 
-// ErrNoProgress is returned by some clients of a Reader when
+// ErrNoProgress is returned by some clients of a [Reader] when
 // many calls to Read have failed to return any data or error,
-// usually the sign of a broken Reader implementation.
+// usually the sign of a broken [Reader] implementation.
 var ErrNoProgress = errors.New("multiple Read calls return no data or error")
 
 // Reader is the interface that wraps the basic Read method.
@@ -108,9 +108,9 @@ type Closer interface {
 //
 // Seek sets the offset for the next Read or Write to offset,
 // interpreted according to whence:
-// SeekStart means relative to the start of the file,
-// SeekCurrent means relative to the current offset, and
-// SeekEnd means relative to the end
+// [SeekStart] means relative to the start of the file,
+// [SeekCurrent] means relative to the current offset, and
+// [SeekEnd] means relative to the end
 // (for example, offset = -2 specifies the penultimate byte of the file).
 // Seek returns the new offset relative to the start of the
 // file or an error, if any.
@@ -181,7 +181,7 @@ type ReadWriteSeeker interface {
 // The return value n is the number of bytes read.
 // Any error except EOF encountered during the read is also returned.
 //
-// The Copy function uses ReaderFrom if available.
+// The [Copy] function uses [ReaderFrom] if available.
 type ReaderFrom interface {
 	ReadFrom(r Reader) (n int64, err error)
 }
@@ -253,7 +253,7 @@ type WriterAt interface {
 // byte was consumed, and the returned byte value is undefined.
 //
 // ReadByte provides an efficient interface for byte-at-time
-// processing. A Reader that does not implement  ByteReader
+// processing. A [Reader] that does not implement  ByteReader
 // can be wrapped using bufio.NewReader to add this method.
 type ByteReader interface {
 	ReadByte() (byte, error)
@@ -265,7 +265,7 @@ type ByteReader interface {
 // UnreadByte causes the next call to ReadByte to return the last byte read.
 // If the last operation was not a successful call to ReadByte, UnreadByte may
 // return an error, unread the last byte read (or the byte prior to the
-// last-unread byte), or (in implementations that support the Seeker interface)
+// last-unread byte), or (in implementations that support the [Seeker] interface)
 // seek to one byte before the current offset.
 type ByteScanner interface {
 	ByteReader
@@ -292,7 +292,7 @@ type RuneReader interface {
 // UnreadRune causes the next call to ReadRune to return the last rune read.
 // If the last operation was not a successful call to ReadRune, UnreadRune may
 // return an error, unread the last rune read (or the rune prior to the
-// last-unread rune), or (in implementations that support the Seeker interface)
+// last-unread rune), or (in implementations that support the [Seeker] interface)
 // seek to the start of the rune before the current offset.
 type RuneScanner interface {
 	RuneReader
@@ -313,8 +313,8 @@ func WriteString(w Writer, s string) (n int, err error)
 // It returns the number of bytes copied and an error if fewer bytes were read.
 // The error is EOF only if no bytes were read.
 // If an EOF happens after reading fewer than min bytes,
-// ReadAtLeast returns ErrUnexpectedEOF.
-// If min is greater than the length of buf, ReadAtLeast returns ErrShortBuffer.
+// ReadAtLeast returns [ErrUnexpectedEOF].
+// If min is greater than the length of buf, ReadAtLeast returns [ErrShortBuffer].
 // On return, n >= min if and only if err == nil.
 // If r returns an error having read at least min bytes, the error is dropped.
 func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
@@ -323,7 +323,7 @@ func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
 // It returns the number of bytes copied and an error if fewer bytes were read.
 // The error is EOF only if no bytes were read.
 // If an EOF happens after reading some but not all the bytes,
-// ReadFull returns ErrUnexpectedEOF.
+// ReadFull returns [ErrUnexpectedEOF].
 // On return, n == len(buf) if and only if err == nil.
 // If r returns an error having read at least len(buf) bytes, the error is dropped.
 func ReadFull(r Reader, buf []byte) (n int, err error)
@@ -375,7 +375,7 @@ type LimitedReader struct {
 
 func (l *LimitedReader) Read(p []byte) (n int, err error)
 
-// NewSectionReader returns a SectionReader that reads from r
+// NewSectionReader returns a [SectionReader] that reads from r
 // starting at offset off and stops with EOF after n bytes.
 func NewSectionReader(r ReaderAt, off int64, n int64) *SectionReader
 
@@ -398,10 +398,10 @@ func (s *SectionReader) ReadAt(p []byte, off int64) (n int, err error)
 // Size returns the size of the section in bytes.
 func (s *SectionReader) Size() int64
 
-// Outer returns the underlying ReaderAt and offsets for the section.
+// Outer returns the underlying [ReaderAt] and offsets for the section.
 //
-// The returned values are the same that were passed to NewSectionReader
-// when the SectionReader was created.
+// The returned values are the same that were passed to [NewSectionReader]
+// when the [SectionReader] was created.
 func (s *SectionReader) Outer() (r ReaderAt, off int64, n int64)
 
 // An OffsetWriter maps writes at offset base to offset base+off in the underlying writer.
@@ -411,7 +411,7 @@ type OffsetWriter struct {
 	off  int64
 }
 
-// NewOffsetWriter returns an OffsetWriter that writes to w
+// NewOffsetWriter returns an [OffsetWriter] that writes to w
 // starting at offset off.
 func NewOffsetWriter(w WriterAt, off int64) *OffsetWriter
 
@@ -421,14 +421,14 @@ func (o *OffsetWriter) WriteAt(p []byte, off int64) (n int, err error)
 
 func (o *OffsetWriter) Seek(offset int64, whence int) (int64, error)
 
-// TeeReader returns a Reader that writes to w what it reads from r.
+// TeeReader returns a [Reader] that writes to w what it reads from r.
 // All reads from r performed through it are matched with
 // corresponding writes to w. There is no internal buffering -
 // the write must complete before the read completes.
 // Any error encountered while writing is reported as a read error.
 func TeeReader(r Reader, w Writer) Reader
 
-// Discard is a Writer on which all Write calls succeed
+// Discard is a [Writer] on which all Write calls succeed
 // without doing anything.
 var Discard Writer = discard{}
 
@@ -438,7 +438,7 @@ var _ ReaderFrom = discard{}
 
 // NopCloser returns a [ReadCloser] with a no-op Close method wrapping
 // the provided [Reader] r.
-// If r implements [WriterTo], the returned ReadCloser will implement WriterTo
+// If r implements [WriterTo], the returned [ReadCloser] will implement [WriterTo]
 // by forwarding calls to r.
 func NopCloser(r Reader) ReadCloser
 

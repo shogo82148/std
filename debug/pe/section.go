@@ -30,7 +30,7 @@ type Reloc struct {
 	Type             uint16
 }
 
-// SectionHeader is similar to SectionHeader32 with Name
+// SectionHeader is similar to [SectionHeader32] with Name
 // field replaced by Go string.
 type SectionHeader struct {
 	Name                 string

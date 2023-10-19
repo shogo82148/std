@@ -9,7 +9,7 @@
 package dwarf
 
 // A Type conventionally represents a pointer to any of the
-// specific Type structures (CharType, StructType, etc.).
+// specific Type structures ([CharType], [StructType], etc.).
 type Type interface {
 	Common() *CommonType
 	String() string
@@ -30,7 +30,7 @@ func (c *CommonType) Size() int64
 
 // A BasicType holds fields common to all basic types.
 //
-// See the documentation for StructField for more info on the interpretation of
+// See the documentation for [StructField] for more info on the interpretation of
 // the BitSize/BitOffset/DataBitOffset fields.
 type BasicType struct {
 	CommonType
@@ -224,7 +224,7 @@ func (t *StructType) Defn() string
 
 // An EnumType represents an enumerated type.
 // The only indication of its native integer type is its ByteSize
-// (inside CommonType).
+// (inside [CommonType]).
 type EnumType struct {
 	CommonType
 	EnumName string

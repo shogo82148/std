@@ -15,7 +15,7 @@ import (
 //
 // The FS interface is the minimum implementation required of the file system.
 // A file system may implement additional interfaces,
-// such as ReadFileFS, to provide additional or optimized functionality.
+// such as [ReadFileFS], to provide additional or optimized functionality.
 type FS interface {
 	Open(name string) (File, error)
 }
@@ -46,7 +46,7 @@ type File interface {
 }
 
 // A DirEntry is an entry read from a directory
-// (using the ReadDir function or a [ReadDirFile]'s ReadDir method).
+// (using the [ReadDir] function or a [ReadDirFile]'s ReadDir method).
 type DirEntry interface {
 	Name() string
 
@@ -78,7 +78,7 @@ var (
 	ErrClosed     = errClosed()
 )
 
-// A FileInfo describes a file and is returned by Stat.
+// A FileInfo describes a file and is returned by [Stat].
 type FileInfo interface {
 	Name() string
 	Size() int64
@@ -126,17 +126,17 @@ const (
 func (m FileMode) String() string
 
 // IsDir reports whether m describes a directory.
-// That is, it tests for the ModeDir bit being set in m.
+// That is, it tests for the [ModeDir] bit being set in m.
 func (m FileMode) IsDir() bool
 
 // IsRegular reports whether m describes a regular file.
 // That is, it tests that no mode type bits are set.
 func (m FileMode) IsRegular() bool
 
-// Perm returns the Unix permission bits in m (m & ModePerm).
+// Perm returns the Unix permission bits in m (m & [ModePerm]).
 func (m FileMode) Perm() FileMode
 
-// Type returns type bits in m (m & ModeType).
+// Type returns type bits in m (m & [ModeType]).
 func (m FileMode) Type() FileMode
 
 // PathError records an error and the operation and file path that caused it.
