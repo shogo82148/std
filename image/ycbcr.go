@@ -100,6 +100,6 @@ func (p *NYCbCrA) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *NYCbCrA) Opaque() bool
 
-// NewNYCbCrA returns a new NYCbCrA image with the given bounds and subsample
+// NewNYCbCrA returns a new [NYCbCrA] image with the given bounds and subsample
 // ratio.
 func NewNYCbCrA(r Rectangle, subsampleRatio YCbCrSubsampleRatio) *NYCbCrA

@@ -17,5 +17,5 @@ func Exp(x float64) float64
 
 // Exp2 returns 2**x, the base-2 exponential of x.
 //
-// Special cases are the same as Exp.
+// Special cases are the same as [Exp].
 func Exp2(x float64) float64

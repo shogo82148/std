@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build wasm || windows
-// +build wasm windows
 
 package ld

@@ -34,12 +34,12 @@ type Lookup func(path string) (io.ReadCloser, error)
 // will attempt to resolve imports in the $GOPATH workspace.
 func ForCompiler(fset *token.FileSet, compiler string, lookup Lookup) types.Importer
 
-// For calls ForCompiler with a new FileSet.
+// For calls [ForCompiler] with a new FileSet.
 //
-// Deprecated: Use ForCompiler, which populates a FileSet
+// Deprecated: Use [ForCompiler], which populates a FileSet
 // with the positions of objects created by the importer.
 func For(compiler string, lookup Lookup) types.Importer
 
 // Default returns an Importer for the compiler that built the running binary.
-// If available, the result implements types.ImporterFrom.
+// If available, the result implements [types.ImporterFrom].
 func Default() types.Importer

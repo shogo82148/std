@@ -137,7 +137,7 @@ type DocLink struct {
 }
 
 // A Parser is a doc comment parser.
-// The fields in the struct can be filled in before calling Parse
+// The fields in the struct can be filled in before calling [Parser.Parse]
 // in order to customize the details of the parsing process.
 type Parser struct {
 	// Words is a map of Go identifier words that
@@ -185,7 +185,7 @@ type Parser struct {
 }
 
 // DefaultLookupPackage is the default package lookup
-// function, used when [Parser].LookupPackage is nil.
+// function, used when [Parser.LookupPackage] is nil.
 // It recognizes names of the packages from the standard
 // library with single-element import paths, such as math,
 // which would otherwise be impossible to name.
@@ -194,7 +194,7 @@ type Parser struct {
 // lookup based on the imports used in the current package.
 func DefaultLookupPackage(name string) (importPath string, ok bool)
 
-// Parse parses the doc comment text and returns the *Doc form.
+// Parse parses the doc comment text and returns the *[Doc] form.
 // Comment markers (/* // and */) in the text must have already been removed.
 func (p *Parser) Parse(text string) *Doc
 

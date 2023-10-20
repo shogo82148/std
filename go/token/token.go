@@ -119,9 +119,9 @@ const (
 
 // String returns the string corresponding to the token tok.
 // For operators, delimiters, and keywords the string is the actual
-// token character sequence (e.g., for the token ADD, the string is
+// token character sequence (e.g., for the token [ADD], the string is
 // "+"). For all other tokens the string corresponds to the token
-// constant name (e.g. for the token IDENT, the string is "IDENT").
+// constant name (e.g. for the token [IDENT], the string is "IDENT").
 func (tok Token) String() string
 
 // A set of constants for precedence-based expression parsing.
@@ -140,7 +140,7 @@ const (
 // is LowestPrecedence.
 func (op Token) Precedence() int
 
-// Lookup maps an identifier to its keyword token or IDENT (if not a keyword).
+// Lookup maps an identifier to its keyword token or [IDENT] (if not a keyword).
 func Lookup(ident string) Token
 
 // IsLiteral returns true for tokens corresponding to identifiers

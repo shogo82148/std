@@ -38,12 +38,12 @@ func (p Point) Mod(r Rectangle) Point
 // Eq reports whether p and q are equal.
 func (p Point) Eq(q Point) bool
 
-// ZP is the zero Point.
+// ZP is the zero [Point].
 //
-// Deprecated: Use a literal image.Point{} instead.
+// Deprecated: Use a literal [image.Point] instead.
 var ZP Point
 
-// Pt is shorthand for Point{X, Y}.
+// Pt is shorthand for [Point]{X, Y}.
 func Pt(X, Y int) Point
 
 // A Rectangle contains the points with Min.X <= X < Max.X, Min.Y <= Y < Max.Y.
@@ -51,7 +51,7 @@ func Pt(X, Y int) Point
 // well-formed. A rectangle's methods always return well-formed outputs for
 // well-formed inputs.
 //
-// A Rectangle is also an Image whose bounds are the rectangle itself. At
+// A Rectangle is also an [Image] whose bounds are the rectangle itself. At
 // returns color.Opaque for points in the rectangle and color.Transparent
 // otherwise.
 type Rectangle struct {
@@ -105,24 +105,24 @@ func (r Rectangle) In(s Rectangle) bool
 // and maximum coordinates swapped if necessary so that it is well-formed.
 func (r Rectangle) Canon() Rectangle
 
-// At implements the Image interface.
+// At implements the [Image] interface.
 func (r Rectangle) At(x, y int) color.Color
 
-// RGBA64At implements the RGBA64Image interface.
+// RGBA64At implements the [RGBA64Image] interface.
 func (r Rectangle) RGBA64At(x, y int) color.RGBA64
 
-// Bounds implements the Image interface.
+// Bounds implements the [Image] interface.
 func (r Rectangle) Bounds() Rectangle
 
-// ColorModel implements the Image interface.
+// ColorModel implements the [Image] interface.
 func (r Rectangle) ColorModel() color.Model
 
-// ZR is the zero Rectangle.
+// ZR is the zero [Rectangle].
 //
-// Deprecated: Use a literal image.Rectangle{} instead.
+// Deprecated: Use a literal [image.Rectangle] instead.
 var ZR Rectangle
 
-// Rect is shorthand for Rectangle{Pt(x0, y0), Pt(x1, y1)}. The returned
+// Rect is shorthand for [Rectangle]{Pt(x0, y0), [Pt](x1, y1)}. The returned
 // rectangle has minimum and maximum coordinates swapped if necessary so that
 // it is well-formed.
 func Rect(x0, y0, x1, y1 int) Rectangle

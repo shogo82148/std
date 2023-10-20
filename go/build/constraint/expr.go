@@ -10,7 +10,7 @@
 package constraint
 
 // An Expr is a build tag constraint expression.
-// The underlying concrete type is *AndExpr, *OrExpr, *NotExpr, or *TagExpr.
+// The underlying concrete type is *[AndExpr], *[OrExpr], *[NotExpr], or *[TagExpr].
 type Expr interface {
 	String() string
 
@@ -19,7 +19,7 @@ type Expr interface {
 	isExpr()
 }
 
-// A TagExpr is an Expr for the single tag Tag.
+// A TagExpr is an [Expr] for the single tag Tag.
 type TagExpr struct {
 	Tag string
 }

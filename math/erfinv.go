@@ -14,7 +14,7 @@ package math
 //	Erfinv(NaN) = NaN
 func Erfinv(x float64) float64
 
-// Erfcinv returns the inverse of Erfc(x).
+// Erfcinv returns the inverse of [Erfc](x).
 //
 // Special cases are:
 //

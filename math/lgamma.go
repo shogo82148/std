@@ -4,7 +4,7 @@
 
 package math
 
-// Lgamma returns the natural logarithm and sign (-1 or +1) of Gamma(x).
+// Lgamma returns the natural logarithm and sign (-1 or +1) of [Gamma](x).
 //
 // Special cases are:
 //

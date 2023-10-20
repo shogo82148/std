@@ -78,6 +78,6 @@ func (l *DocLink) DefaultURL(baseURL string) string
 // the default ID is “hdr-Go_Doc_Comments”.
 func (h *Heading) DefaultID() string
 
-// Comment returns the standard Go formatting of the Doc,
+// Comment returns the standard Go formatting of the [Doc],
 // without any comment markers.
 func (p *Printer) Comment(d *Doc) []byte

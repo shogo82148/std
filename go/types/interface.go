@@ -45,16 +45,16 @@ func (t *Interface) MarkImplicit()
 func (t *Interface) NumExplicitMethods() int
 
 // ExplicitMethod returns the i'th explicitly declared method of interface t for 0 <= i < t.NumExplicitMethods().
-// The methods are ordered by their unique Id.
+// The methods are ordered by their unique [Id].
 func (t *Interface) ExplicitMethod(i int) *Func
 
 // NumEmbeddeds returns the number of embedded types in interface t.
 func (t *Interface) NumEmbeddeds() int
 
-// Embedded returns the i'th embedded defined (*Named) type of interface t for 0 <= i < t.NumEmbeddeds().
+// Embedded returns the i'th embedded defined (*[Named]) type of interface t for 0 <= i < t.NumEmbeddeds().
 // The result is nil if the i'th embedded type is not a defined type.
 //
-// Deprecated: Use EmbeddedType which is not restricted to defined (*Named) types.
+// Deprecated: Use [Interface.EmbeddedType] which is not restricted to defined (*[Named]) types.
 func (t *Interface) Embedded(i int) *Named
 
 // EmbeddedType returns the i'th embedded type of interface t for 0 <= i < t.NumEmbeddeds().
@@ -81,7 +81,7 @@ func (t *Interface) IsMethodSet() bool
 func (t *Interface) IsImplicit() bool
 
 // Complete computes the interface's type set. It must be called by users of
-// NewInterfaceType and NewInterface after the interface's embedded types are
+// [NewInterfaceType] and [NewInterface] after the interface's embedded types are
 // fully defined and before using the interface type in any way other than to
 // form other types. The interface must not contain duplicate methods or a
 // panic occurs. Complete returns the receiver.
