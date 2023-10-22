@@ -12,15 +12,9 @@ import (
 
 // FSは階層的なファイルシステムへのアクセスを提供します。
 //
-<<<<<<< HEAD
 // FSインターフェースはファイルシステムに必要な最小限の実装です。
-// ファイルシステムは追加のインターフェース、例えばReadFileFSを実装することができます。
+// ファイルシステムは追加のインターフェース、例えば [ReadFileFS] を実装することができます。
 // 追加の機能や最適化された機能を提供することができます。
-=======
-// The FS interface is the minimum implementation required of the file system.
-// A file system may implement additional interfaces,
-// such as [ReadFileFS], to provide additional or optimized functionality.
->>>>>>> upstream/master
 type FS interface {
 	Open(name string) (File, error)
 }
@@ -45,13 +39,8 @@ type File interface {
 	Close() error
 }
 
-<<<<<<< HEAD
 // DirEntryはディレクトリから読み取られたエントリです
-// (ReadDir関数や [ReadDirFile] のReadDirメソッドを使用して)。
-=======
-// A DirEntry is an entry read from a directory
-// (using the [ReadDir] function or a [ReadDirFile]'s ReadDir method).
->>>>>>> upstream/master
+// ([ReadDir] 関数や [ReadDirFile] のReadDirメソッドを使用して)。
 type DirEntry interface {
 	Name() string
 
@@ -82,11 +71,7 @@ var (
 	ErrClosed     = errClosed()
 )
 
-<<<<<<< HEAD
-// FileInfoはファイルを説明し、Statによって返されます。
-=======
-// A FileInfo describes a file and is returned by [Stat].
->>>>>>> upstream/master
+// FileInfoはファイルを説明し、[Stat] によって返されます。
 type FileInfo interface {
 	Name() string
 	Size() int64
@@ -133,30 +118,18 @@ const (
 
 func (m FileMode) String() string
 
-<<<<<<< HEAD
 // IsDirはmがディレクトリを記述しているかどうかを報告します。
-// つまり、m内のModeDirビットがセットされているかどうかをテストします。
-=======
-// IsDir reports whether m describes a directory.
-// That is, it tests for the [ModeDir] bit being set in m.
->>>>>>> upstream/master
+// つまり、m内の [ModeDir] ビットがセットされているかどうかをテストします。
 func (m FileMode) IsDir() bool
 
 // IsRegularはmが正規のファイルを記述しているかどうかを報告します。
 // つまり、モードのタイプビットが設定されていないかどうかをテストします。
 func (m FileMode) IsRegular() bool
 
-<<<<<<< HEAD
-// Permは、m（m＆ModePerm）のUnixパーミッションビットを返します。
+// Permは、m（m＆[ModePerm]）のUnixパーミッションビットを返します。
 func (m FileMode) Perm() FileMode
 
-// Typeはm（m＆ModeType）のタイプビットを返します。
-=======
-// Perm returns the Unix permission bits in m (m & [ModePerm]).
-func (m FileMode) Perm() FileMode
-
-// Type returns type bits in m (m & [ModeType]).
->>>>>>> upstream/master
+// Typeはm（m＆[ModeType]）のタイプビットを返します。
 func (m FileMode) Type() FileMode
 
 // PathErrorはエラーとそれを引き起こした操作とファイルパスを記録します。
