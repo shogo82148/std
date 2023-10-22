@@ -11,6 +11,7 @@ import (
 // ScanStateはカスタムスキャナーに渡されるスキャナーの状態を表します。
 // スキャナーは一文字ずつスキャンすることもでき、またScanStateに次のスペース区切りのトークンを見つけるように依頼することもできます。
 type ScanState interface {
+<<<<<<< HEAD
 	ReadRune() (r rune, size int, err error)
 
 	UnreadRune() error
@@ -21,6 +22,27 @@ type ScanState interface {
 
 	Width() (wid int, ok bool)
 
+=======
+	// ReadRuneは、入力から次のルーン（Unicodeコードポイント）を読み取ります。
+	// Scanln、Fscanln、またはSscanln中に呼び出された場合、ReadRune()は、最初の'\n'を返した後、または指定された幅を超えて読み取りを行った後にEOFを返します。
+	ReadRune() (r rune, size int, err error)
+	// UnreadRuneは、次のReadRune呼び出しで同じルーンを返します。
+	UnreadRune() error
+	// SkipSpaceは、入力内のスペースをスキップします。
+	// 操作に応じて、改行は適切に処理されます。
+	// 詳細については、パッケージのドキュメントを参照してください。
+	SkipSpace()
+	// Tokenは、skipSpaceがtrueの場合、入力内のスペースをスキップして、f(c)を満たすUnicodeコードポイントcのランを返します。
+	// fがnilの場合、!unicode.IsSpace(c)が使用されます。つまり、トークンにはスペース以外の文字が含まれます。
+	// 操作に応じて、改行は適切に処理されます。詳細については、パッケージのドキュメントを参照してください。
+	// 返されたスライスは、Tokenの次の呼び出し、ScanStateを入力として使用するScan関数の呼び出し、または呼び出し元のScanメソッドが返されたときに上書きされる可能性がある共有データを指します。
+	Token(skipSpace bool, f func(rune) bool) (token []byte, err error)
+	// Widthは、幅オプションの値とその設定状態を返します。
+	// 単位はUnicodeコードポイントです。
+	Width() (wid int, ok bool)
+	// ReadRuneはインターフェースによって実装されているため、スキャンルーチンからReadが呼び出されることはありません。
+	// また、ScanStateの有効な実装は、常にReadからエラーを返すことがあります。
+>>>>>>> release-branch.go1.21
 	Read(buf []byte) (n int, err error)
 }
 

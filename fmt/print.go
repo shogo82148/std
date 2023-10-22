@@ -11,12 +11,23 @@ import (
 // Stateはカスタムフォーマッタに渡されるプリンタの状態を表します。
 // io.Writerインターフェースへのアクセスと、オペランドのフォーマット指定子に関するフラグとオプションの情報を提供します。
 type State interface {
+<<<<<<< HEAD
 	Write(b []byte) (n int, err error)
 
 	Width() (wid int, ok bool)
 
 	Precision() (prec int, ok bool)
 
+=======
+	// Writeは、出力をフォーマットして印刷するために呼び出す関数です。
+	Write(b []byte) (n int, err error)
+	// Widthは、幅オプションの値とその設定状態を返します。
+	Width() (wid int, ok bool)
+	// Precisionは、精度オプションの値とその設定状態を返します。
+	Precision() (prec int, ok bool)
+
+	// Flagは、文字cが設定されているかどうかを報告します。
+>>>>>>> release-branch.go1.21
 	Flag(c int) bool
 }
 
