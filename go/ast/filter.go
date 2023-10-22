@@ -4,18 +4,10 @@
 
 package ast
 
-<<<<<<< HEAD
 // FileExportsは、GoのソースファイルのASTを現在の場所でトリムします。
 // エクスポートされたノードのみが残り、エクスポートされていないトップレベルの識別子とそれに関連する情報
 // （型、初期値、または関数本体など）は削除されます。エクスポートされた型の非エクスポートフィールドとメソッドも剥ぎ取られます。
-// File.Commentsリストは変更されません。
-=======
-// FileExports trims the AST for a Go source file in place such that
-// only exported nodes remain: all top-level identifiers which are not exported
-// and their associated information (such as type, initial value, or function
-// body) are removed. Non-exported fields and methods of exported types are
-// stripped. The [File.Comments] list is not changed.
->>>>>>> upstream/master
+// [File.Comments] リストは変更されません。
 //
 // FileExportsは、エクスポートされた宣言があるかどうかを報告します。
 func FileExports(src *File) bool
@@ -32,20 +24,8 @@ type Filter func(string) bool
 // FilterDeclは、フィルタリング後に残された宣言された名前があるかどうかを報告します。
 func FilterDecl(decl Decl, f Filter) bool
 
-<<<<<<< HEAD
-// FilterFileは、フィルタfを通過しない（構造体のフィールドやインターフェースのメソッド名を含むが、パラメータリストからは含まれない）トップレベルの宣言からすべての名前を削除することで、GoファイルのASTを修正します。もし宣言が空になった場合、宣言はASTから削除されます。Import宣言は必ず削除されます。File.Commentsのリストは変更されません。
+// FilterFileは、フィルタfを通過しない（構造体のフィールドやインターフェースのメソッド名を含むが、パラメータリストからは含まれない）トップレベルの宣言からすべての名前を削除することで、GoファイルのASTを修正します。もし宣言が空になった場合、宣言はASTから削除されます。Import宣言は必ず削除されます。[File.Comments] のリストは変更されません。
 // FilterFileは、フィルタリング後にトップレベルの宣言が残っているかどうかを報告します。
-=======
-// FilterFile trims the AST for a Go file in place by removing all
-// names from top-level declarations (including struct field and
-// interface method names, but not from parameter lists) that don't
-// pass through the filter f. If the declaration is empty afterwards,
-// the declaration is removed from the AST. Import declarations are
-// always removed. The [File.Comments] list is not changed.
-//
-// FilterFile reports whether there are any top-level declarations
-// left after filtering.
->>>>>>> upstream/master
 func FilterFile(src *File, f Filter) bool
 
 // FilterPackageは、フィルターfを通過しない（構造体フィールドやインターフェースメソッド名を含むが、パラメータリストからは除かれない）トップレベル宣言のすべての名前を削除することにより、GoパッケージのASTを修正します。 宣言がその後空になった場合、宣言はASTから削除されます。 pkg.Filesリストは変更されないため、ファイル名やトップレベルのパッケージコメントが失われることはありません。
@@ -53,11 +33,7 @@ func FilterFile(src *File, f Filter) bool
 // FilterPackageは、フィルタリング後にトップレベルの宣言が残っているかどうかを報告します。
 func FilterPackage(pkg *Package, f Filter) bool
 
-<<<<<<< HEAD
-// MergePackageFilesの動作を制御するMergeModeフラグ。
-=======
-// The MergeMode flags control the behavior of [MergePackageFiles].
->>>>>>> upstream/master
+// [MergePackageFiles] の動作を制御するMergeModeフラグ。
 type MergeMode uint
 
 const (
