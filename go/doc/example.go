@@ -24,17 +24,10 @@ type Example struct {
 	Order       int
 }
 
-<<<<<<< HEAD
 // ExamplesはtestFilesで見つかった例を、Nameフィールドでソートして返します。
 // Orderフィールドには、例が出現した順序が記録されます。
 // Suffixフィールドは、Examplesが直接呼び出された場合は値が入りませんが、
-// NewFromFilesによってtest.goファイルで見つかった例にのみ値が入ります。
-=======
-// Examples returns the examples found in testFiles, sorted by Name field.
-// The Order fields record the order in which the examples were encountered.
-// The Suffix field is not populated when Examples is called directly, it is
-// only populated by [NewFromFiles] for examples it finds in _test.go files.
->>>>>>> upstream/master
+// [NewFromFiles] によってtest.goファイルで見つかった例にのみ値が入ります。
 //
 // プレイ可能な例は、名前が"_test"で終わるパッケージにある必要があります。
 // 例は、次のいずれかの場合に「プレイ可能」です（Playフィールドが非nilである場合）：
