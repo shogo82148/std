@@ -4,15 +4,9 @@
 
 // パッケージembedは、実行中のGoプログラムに埋め込まれたファイルへのアクセスを提供します。
 //
-<<<<<<< HEAD
 // "embed"をインポートするGoソースファイルは、//go:embedディレクティブを使用して、
 // コンパイル時にパッケージディレクトリまたはサブディレクトリから読み取ったファイルの内容を
-// string、[]byte、またはFS型の変数で初期化できます。
-=======
-// Go source files that import "embed" can use the //go:embed directive
-// to initialize a variable of type string, []byte, or [FS] with the contents of
-// files read from the package directory or subdirectories at compile time.
->>>>>>> upstream/master
+// string、[]byte、または [FS] 型の変数で初期化できます。
 //
 // たとえば、hello.txtという名前のファイルを埋め込んで、その内容を実行時に表示する3つの方法を示します。
 //
@@ -48,12 +42,7 @@
 // ディレクティブは、単一の変数の宣言を含む行の直前にある必要があります。
 // ディレクティブと宣言の間には、空白行と'//'行コメントのみが許可されます。
 //
-<<<<<<< HEAD
-// 変数の型は、文字列型、バイト型のスライス、またはFS（またはFSのエイリアス）である必要があります。
-=======
-// The type of the variable must be a string type, or a slice of a byte type,
-// or [FS] (or an alias of [FS]).
->>>>>>> upstream/master
+// 変数の型は、文字列型、バイト型のスライス、または [FS] （または [FS] のエイリアス）である必要があります。
 //
 // 例：
 //
@@ -108,31 +97,17 @@
 // また、そのパターンは単一のファイルにのみ一致することができます。
 // stringまたは[]byteは、そのファイルの内容で初期化されます。
 //
-<<<<<<< HEAD
 // stringまたは[]byteを使用する場合でも、//go:embedディレクティブを使用するには、
 // "embed"をインポートする必要があります。
-// embed.FSを参照しないソースファイルでは、空のインポート（import _ "embed"）を使用してください。
-=======
-// The //go:embed directive requires importing "embed", even when using a string or []byte.
-// In source files that don't refer to [embed.FS], use a blank import (import _ "embed").
->>>>>>> upstream/master
+// [embed.FS] を参照しないソースファイルでは、空のインポート（import _ "embed"）を使用してください。
 //
 // # ファイルシステム
 //
-<<<<<<< HEAD
 // 単一のファイルを埋め込む場合、string型または[]byte型の変数が最適です。
-// FS型は、静的Webサーバーコンテンツのディレクトリなど、ファイルツリーを埋め込むことができます。
+// [FS] 型は、静的Webサーバーコンテンツのディレクトリなど、ファイルツリーを埋め込むことができます。
 //
-// FSは、io/fsパッケージのFSインターフェースを実装しているため、
-// net/http、text/template、html/templateを含むファイルシステムを理解するパッケージで使用できます。
-=======
-// For embedding a single file, a variable of type string or []byte is often best.
-// The [FS] type enables embedding a tree of files, such as a directory of static
-// web server content, as in the example above.
-//
-// FS implements the [io/fs] package's [FS] interface, so it can be used with any package that
-// understands file systems, including [net/http], [text/template], and [html/template].
->>>>>>> upstream/master
+// FSは、 [io/fs] パッケージの [FS] インターフェースを実装しているため、
+// [net/http]、[text/template]、[html/template] を含むファイルシステムを理解するパッケージで使用できます。
 //
 // たとえば、上記の例のcontent変数がある場合、次のように書くことができます。
 //
@@ -208,15 +183,9 @@ var (
 	_ fs.DirEntry = (*file)(nil)
 )
 
-<<<<<<< HEAD
-// Openは、指定されたファイルを読み取り用に開き、fs.Fileとして返します。
+// Openは、指定されたファイルを読み取り用に開き、 [fs.File] として返します。
 //
-// ファイルがディレクトリでない場合、返されたファイルはio.Seekerとio.ReaderAtを実装します。
-=======
-// Open opens the named file for reading and returns it as an [fs.File].
-//
-// The returned file implements [io.Seeker] and [io.ReaderAt] when the file is not a directory.
->>>>>>> upstream/master
+// ファイルがディレクトリでない場合、返されたファイルは [io.Seeker] と [io.ReaderAt] を実装します。
 func (f FS) Open(name string) (fs.File, error)
 
 // ReadDirは、指定されたディレクトリ全体を読み取り、返します。
