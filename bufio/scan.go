@@ -11,15 +11,10 @@ import (
 
 // Scannerは、改行で区切られたテキストの行のファイルなどのデータを読み取るための便利なインターフェースを提供します。Scanメソッドの連続した呼び出しにより、ファイルの「トークン」を順番にステップし、トークン間のバイトをスキップします。トークンの仕様は [SplitFunc] 型の分割関数によって定義されます。デフォルトの分割関数は、入力を行に分割し、行末の文字を取り除きます。[Scanner.Split] 関数は、ファイルを行、バイト、UTF-8エンコードされたルーン、スペースで区切られた単語にスキャンするために、このパッケージで定義されています。クライアントは代わりにカスタムの分割関数を提供することもできます。
 //
-<<<<<<< HEAD
-// スキャンは、EOF、最初のI/Oエラー、またはバッファに収まらない大きすぎるトークンで回復不可能に停止します。スキャンが停止すると、リーダーは最後のトークンを遥かに超えて進んでいる可能性があります。エラーハンドリングや大きなトークンの制御をより細かく制御する必要があるプログラム、またはリーダーで順次スキャンを実行する必要があるプログラムは、代わりに [bufio.Reader] を使用する必要があります。
-=======
-// Scanning stops unrecoverably at EOF, the first I/O error, or a token too
-// large to fit in the [Scanner.Buffer]. When a scan stops, the reader may have
-// advanced arbitrarily far past the last token. Programs that need more
-// control over error handling or large tokens, or must run sequential scans
-// on a reader, should use [bufio.Reader] instead.
->>>>>>> upstream/master
+// スキャンは、EOF、最初のI/Oエラー、または [Scanner.Buffer] に収まりきらないトークンで不可回復的に停止します。
+// スキャンが停止すると、リーダーは最後のトークンを超えて任意の距離を進めている可能性があります。
+// エラー処理や大きなトークンの制御が必要なプログラム、またはリーダーで連続的なスキャンを実行する必要があるプログラムは、
+// 代わりに [bufio.Reader] を使用する必要があります。
 type Scanner struct {
 	r            io.Reader
 	split        SplitFunc
