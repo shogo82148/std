@@ -2,18 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package base64 implements base64 encoding as specified by RFC 4648.
+// Package base64は、RFC 4648で指定されているように、base64エンコーディングを実装します。
 package base64
 
 import (
 	"github.com/shogo82148/std/io"
 )
 
-// An Encoding is a radix 64 encoding/decoding scheme, defined by a
-// 64-character alphabet. The most common encoding is the "base64"
-// encoding defined in RFC 4648 and used in MIME (RFC 2045) and PEM
-// (RFC 1421).  RFC 4648 also defines an alternate encoding, which is
-// the standard encoding with - and _ substituted for + and /.
+// Encodingは、64文字のアルファベットによって定義される基数64のエンコーディング/デコーディングスキームです。
+// 最も一般的なものは、RFC 4648で定義され、MIME（RFC 2045）およびPEM（RFC 1421）で使用される「base64」エンコーディングです。
+// RFC 4648は、+と/の代わりに-と_が使用された標準エンコーディングを定義しています。
 type Encoding struct {
 	encode    [64]byte
 	decodeMap [256]byte
@@ -26,88 +24,76 @@ const (
 	NoPadding  rune = -1
 )
 
-// NewEncoding returns a new padded Encoding defined by the given alphabet,
-// which must be a 64-byte string that does not contain the padding character
-// or CR / LF ('\r', '\n'). The alphabet is treated as sequence of byte values
-// without any special treatment for multi-byte UTF-8.
-// The resulting Encoding uses the default padding character ('='),
-// which may be changed or disabled via WithPadding.
+// NewEncodingは、与えられたアルファベットによって定義されるパディングされた新しいエンコーディングを返します。
+// アルファベットは、パディング文字またはCR / LF（'\r'、'\n'）を含まない64バイトの文字列でなければなりません。
+// アルファベットは、マルチバイトUTF-8に対する特別な処理なしに、バイト値のシーケンスとして扱われます。
+// 結果のエンコーディングは、デフォルトのパディング文字（'='）を使用します。
+// パディング文字はWithPaddingを介して変更または無効化できます。
 func NewEncoding(encoder string) *Encoding
 
-// WithPadding creates a new encoding identical to enc except
-// with a specified padding character, or NoPadding to disable padding.
-// The padding character must not be '\r' or '\n', must not
-// be contained in the encoding's alphabet and must be a rune equal or
-// below '\xff'.
-// Padding characters above '\x7f' are encoded as their exact byte value
-// rather than using the UTF-8 representation of the codepoint.
+// WithPaddingは、指定されたパディング文字またはNoPaddingを使用して、encと同一の新しいエンコーディングを作成します。
+// パディング文字は'\r'または'\n'ではなく、エンコーディングのアルファベットに含まれていない必要があり、'\xff'以下のルーンである必要があります。
+// '\x7f'より上のパディング文字は、コードポイントのUTF-8表現を使用する代わりに、その正確なバイト値としてエンコードされます。
 func (enc Encoding) WithPadding(padding rune) *Encoding
 
-// Strict creates a new encoding identical to enc except with
-// strict decoding enabled. In this mode, the decoder requires that
-// trailing padding bits are zero, as described in RFC 4648 section 3.5.
+// Strictは、RFC 4648セクション3.5で説明されているように、
+// 末尾のパディングビットがゼロであることを要求する厳密なデコードが有効になっているencと同一の新しいエンコーディングを作成します。
 //
-// Note that the input is still malleable, as new line characters
-// (CR and LF) are still ignored.
+// ただし、入力はまだ操作可能であり、改行文字（CRおよびLF）は引き続き無視されます。
 func (enc Encoding) Strict() *Encoding
 
-// StdEncoding is the standard base64 encoding, as defined in
-// RFC 4648.
+// StdEncodingは、RFC 4648で定義されている標準のbase64エンコーディングです。
 var StdEncoding = NewEncoding(encodeStd)
 
-// URLEncoding is the alternate base64 encoding defined in RFC 4648.
-// It is typically used in URLs and file names.
+// URLEncodingは、RFC 4648で定義されている代替のbase64エンコーディングです。
+// 通常、URLやファイル名で使用されます。
 var URLEncoding = NewEncoding(encodeURL)
 
-// RawStdEncoding is the standard raw, unpadded base64 encoding,
-// as defined in RFC 4648 section 3.2.
-// This is the same as StdEncoding but omits padding characters.
+// RawStdEncodingは、RFC 4648セクション3.2で定義されている標準の生の、パディングされていないbase64エンコーディングです。
+// これは、StdEncodingと同じですが、パディング文字が省略されています。
 var RawStdEncoding = StdEncoding.WithPadding(NoPadding)
 
-// RawURLEncoding is the unpadded alternate base64 encoding defined in RFC 4648.
-// It is typically used in URLs and file names.
-// This is the same as URLEncoding but omits padding characters.
+// RawURLEncodingは、RFC 4648で定義されているパディングされていない代替のbase64エンコーディングです。
+// 通常、URLやファイル名で使用されます。
+// これは、URLEncodingと同じですが、パディング文字が省略されています。
 var RawURLEncoding = URLEncoding.WithPadding(NoPadding)
 
-// Encode encodes src using the encoding enc, writing
-// EncodedLen(len(src)) bytes to dst.
+// Encodeは、エンコーディングencを使用してsrcをエンコードし、
+// EncodedLen(len(src))バイトをdstに書き込みます。
 //
-// The encoding pads the output to a multiple of 4 bytes,
-// so Encode is not appropriate for use on individual blocks
-// of a large data stream. Use NewEncoder() instead.
+// エンコーディングは、出力を4バイトの倍数にパディングするため、
+// 大量のデータストリームの個々のブロックにEncodeを使用することは適切ではありません。
+// 代わりにNewEncoder()を使用してください。
 func (enc *Encoding) Encode(dst, src []byte)
 
-// EncodeToString returns the base64 encoding of src.
+// EncodeToStringは、srcのbase64エンコーディングを返します。
 func (enc *Encoding) EncodeToString(src []byte) string
 
-// NewEncoder returns a new base64 stream encoder. Data written to
-// the returned writer will be encoded using enc and then written to w.
-// Base64 encodings operate in 4-byte blocks; when finished
-// writing, the caller must Close the returned encoder to flush any
-// partially written blocks.
+// NewEncoderは、新しいbase64ストリームエンコーダーを返します。
+// 返されたライターに書き込まれたデータはencを使用してエンコードされ、その後wに書き込まれます。
+// Base64エンコーディングは4バイトブロックで動作します。
+// 書き込みが完了したら、呼び出し元は、部分的に書き込まれたブロックをフラッシュするために返されたエンコーダーを閉じる必要があります。
 func NewEncoder(enc *Encoding, w io.Writer) io.WriteCloser
 
-// EncodedLen returns the length in bytes of the base64 encoding
-// of an input buffer of length n.
+// EncodedLenは、長さnの入力バッファのbase64エンコーディングのバイト数を返します。
 func (enc *Encoding) EncodedLen(n int) int
 
 type CorruptInputError int64
 
 func (e CorruptInputError) Error() string
 
-// DecodeString returns the bytes represented by the base64 string s.
+// DecodeStringは、base64文字列sによって表されるバイト列を返します。
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
 
-// Decode decodes src using the encoding enc. It writes at most
-// DecodedLen(len(src)) bytes to dst and returns the number of bytes
-// written. If src contains invalid base64 data, it will return the
-// number of bytes successfully written and CorruptInputError.
-// New line characters (\r and \n) are ignored.
+// Decodeは、エンコーディングencを使用してsrcをデコードし、
+// DecodedLen(len(src))バイトをdstに書き込みます。
+// srcに無効なbase64データが含まれている場合、
+// 書き込まれたバイト数とCorruptInputErrorを返します。
+// 改行文字（\rおよび\n）は無視されます。
 func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
 
-// NewDecoder constructs a new base64 stream decoder.
+// NewDecoderは、新しいbase64ストリームデコーダーを構築します。
 func NewDecoder(enc *Encoding, r io.Reader) io.Reader
 
-// DecodedLen returns the maximum length in bytes of the decoded data
-// corresponding to n bytes of base64-encoded data.
+// DecodedLenは、nバイトのbase64エンコードされたデータに対応するデコードされたデータの最大バイト数を返します。
 func (enc *Encoding) DecodedLen(n int) int
