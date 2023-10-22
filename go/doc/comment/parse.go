@@ -128,15 +128,9 @@ type DocLink struct {
 	Name       string
 }
 
-<<<<<<< HEAD
 // Parserはドキュメントコメントのパーサーです。
-// 構造体のフィールドは、Parseを呼び出す前に埋めることで、
+// 構造体のフィールドは、[Parser.Parse] を呼び出す前に埋めることで、
 // パースプロセスの詳細をカスタマイズすることができます。
-=======
-// A Parser is a doc comment parser.
-// The fields in the struct can be filled in before calling [Parser.Parse]
-// in order to customize the details of the parsing process.
->>>>>>> upstream/master
 type Parser struct {
 
 	// WordsはGo言語の識別子に対応する単語のマップであり、斜体にする必要があり、
@@ -174,26 +168,15 @@ type Parser struct {
 	LookupSym func(recv, name string) (ok bool)
 }
 
-<<<<<<< HEAD
-// DefaultLookupPackageは、[Parser].LookupPackageがnilの場合に使用されるデフォルトのパッケージルックアップ関数です。
+// DefaultLookupPackageは、[Parser.LookupPackage] がnilの場合に使用されるデフォルトのパッケージルックアップ関数です。
 // これは、単一要素のインポートパスを持つ標準ライブラリのパッケージ名を認識します。
 // それ以外の場合は、名前を付けることができません。
-=======
-// DefaultLookupPackage is the default package lookup
-// function, used when [Parser.LookupPackage] is nil.
-// It recognizes names of the packages from the standard
-// library with single-element import paths, such as math,
-// which would otherwise be impossible to name.
->>>>>>> upstream/master
 //
 // ただし、現在のパッケージで使用されているインポートに基づいたより洗練されたルックアップを提供するgo/docパッケージがあることに注意してください。
 func DefaultLookupPackage(name string) (importPath string, ok bool)
 
-<<<<<<< HEAD
-=======
 // Parse parses the doc comment text and returns the *[Doc] form.
 // Comment markers (/* // and */) in the text must have already been removed.
->>>>>>> upstream/master
 func (p *Parser) Parse(text string) *Doc
 
 const (
