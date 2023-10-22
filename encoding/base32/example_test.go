@@ -59,9 +59,8 @@ func ExampleNewEncoder() {
 	input := []byte("foo\x00bar")
 	encoder := base32.NewEncoder(base32.StdEncoding, os.Stdout)
 	encoder.Write(input)
-	// Must close the encoder when finished to flush any partial blocks.
-	// If you comment out the following line, the last partial block "r"
-	// won't be encoded.
+	// 部分的なブロックをフラッシュするために、終了時にエンコーダーを閉じる必要があります。
+	// 次の行のコメントを外すと、最後の部分ブロック「r」がエンコードされなくなります。
 	encoder.Close()
 	// Output:
 	// MZXW6ADCMFZA====
