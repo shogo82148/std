@@ -9,13 +9,8 @@
 // 「//go:build」構文の詳細については、https://golang.org/design/draft-gobuildを参照してください。
 package constraint
 
-<<<<<<< HEAD
 // Exprはビルドタグの制約式です。
-// 内部の具体的な型は*AndExpr、*OrExpr、*NotExpr、または*TagExprです。
-=======
-// An Expr is a build tag constraint expression.
-// The underlying concrete type is *[AndExpr], *[OrExpr], *[NotExpr], or *[TagExpr].
->>>>>>> upstream/master
+// 内部の具体的な型は*[AndExpr]、*[OrExpr]、*[NotExpr]、または*[TagExpr] です。
 type Expr interface {
 	String() string
 
@@ -24,11 +19,7 @@ type Expr interface {
 	isExpr()
 }
 
-<<<<<<< HEAD
-// TagExprは、単一のタグTagのためのExprです。
-=======
-// A TagExpr is an [Expr] for the single tag Tag.
->>>>>>> upstream/master
+// TagExprは、単一のタグTagのための [Expr] です。
 type TagExpr struct {
 	Tag string
 }
