@@ -162,13 +162,7 @@ Printfのような各関数に対して、フォーマットを取らないPrint
 3. オペランドがGoStringerインターフェースを実装している場合、
 %v動詞が#フラグとともに使用（%#v）され、それが呼び出されます。
 
-<<<<<<< HEAD
-If the format (which is implicitly %v for Println etc.) is valid
-for a string (%s %q %x %X), or is %v but not %#v,
-the following two rules apply:
-=======
-フォーマット（Printlnなどの暗黙的な%v）が文字列（％s％q％v％x％X）に対して有効である場合、次の2つのルールが適用されます。
->>>>>>> release-branch.go1.21
+フォーマット（Printlnなどの暗黙的な%v）が文字列（%s %q %x %X）に対して有効である場合、または%vであり、%#vではない場合、次の2つのルールが適用されます。
 
 4. オペランドがerrorインターフェースを実装している場合、Errorメソッドが呼び出され、
 オブジェクトが文字列に変換され、動詞に必要な形式でフォーマットされます（ある場合）。

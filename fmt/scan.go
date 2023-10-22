@@ -11,18 +11,6 @@ import (
 // ScanStateはカスタムスキャナーに渡されるスキャナーの状態を表します。
 // スキャナーは一文字ずつスキャンすることもでき、またScanStateに次のスペース区切りのトークンを見つけるように依頼することもできます。
 type ScanState interface {
-<<<<<<< HEAD
-	ReadRune() (r rune, size int, err error)
-
-	UnreadRune() error
-
-	SkipSpace()
-
-	Token(skipSpace bool, f func(rune) bool) (token []byte, err error)
-
-	Width() (wid int, ok bool)
-
-=======
 	// ReadRuneは、入力から次のルーン（Unicodeコードポイント）を読み取ります。
 	// Scanln、Fscanln、またはSscanln中に呼び出された場合、ReadRune()は、最初の'\n'を返した後、または指定された幅を超えて読み取りを行った後にEOFを返します。
 	ReadRune() (r rune, size int, err error)
@@ -42,7 +30,6 @@ type ScanState interface {
 	Width() (wid int, ok bool)
 	// ReadRuneはインターフェースによって実装されているため、スキャンルーチンからReadが呼び出されることはありません。
 	// また、ScanStateの有効な実装は、常にReadからエラーを返すことがあります。
->>>>>>> release-branch.go1.21
 	Read(buf []byte) (n int, err error)
 }
 
