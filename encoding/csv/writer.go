@@ -9,43 +9,42 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A Writer writes records using CSV encoding.
+// Writerは、CSVエンコーディングを使用してレコードを書き込みます。
 //
-// As returned by NewWriter, a Writer writes records terminated by a
-// newline and uses ',' as the field delimiter. The exported fields can be
-// changed to customize the details before the first call to Write or WriteAll.
+// NewWriterによって返された場合、Writerは改行で終わるレコードを書き込み、
+// フィールド区切り文字として「,」を使用します。
+// 最初のWriteまたはWriteAll呼び出しの前に、エクスポートされたフィールドをカスタマイズすることができます。
 //
-// Comma is the field delimiter.
+// Commaはフィールドの区切り文字です。
 //
-// If UseCRLF is true, the Writer ends each output line with \r\n instead of \n.
+// UseCRLFがtrueの場合、Writerは各出力行を\nではなく\r\nで終了します。
 //
-// The writes of individual records are buffered.
-// After all data has been written, the client should call the
-// Flush method to guarantee all data has been forwarded to
-// the underlying io.Writer.  Any errors that occurred should
-// be checked by calling the Error method.
+// 個々のレコードの書き込みはバッファリングされます。
+// すべてのデータが書き込まれた後、クライアントはFlushメソッドを呼び出して、
+// 基礎となるio.Writerにすべてのデータが転送されたことを保証する必要があります。
+// 発生したエラーは、Errorメソッドを呼び出して確認する必要があります。
 type Writer struct {
 	Comma   rune
 	UseCRLF bool
 	w       *bufio.Writer
 }
 
-// NewWriter returns a new Writer that writes to w.
+// NewWriterは、wに書き込む新しいWriterを返します。
 func NewWriter(w io.Writer) *Writer
 
-// Write writes a single CSV record to w along with any necessary quoting.
-// A record is a slice of strings with each string being one field.
-// Writes are buffered, so Flush must eventually be called to ensure
-// that the record is written to the underlying io.Writer.
+// Writeは、必要に応じてクォーティングを行い、単一のCSVレコードをwに書き込みます。
+// レコードは、各文字列が1つのフィールドである文字列のスライスです。
+// 書き込みはバッファリングされるため、レコードが基礎となるio.Writerに書き込まれることを保証するには、
+// 最終的にFlushを呼び出す必要があります。
 func (w *Writer) Write(record []string) error
 
-// Flush writes any buffered data to the underlying io.Writer.
-// To check if an error occurred during the Flush, call Error.
+// Flushは、バッファリングされたデータを基礎となるio.Writerに書き込みます。
+// Flush中にエラーが発生したかどうかを確認するには、Errorを呼び出します。
 func (w *Writer) Flush()
 
-// Error reports any error that has occurred during a previous Write or Flush.
+// Errorは、以前のWriteまたはFlush中に発生したエラーを報告します。
 func (w *Writer) Error() error
 
-// WriteAll writes multiple CSV records to w using Write and then calls Flush,
-// returning any error from the Flush.
+// WriteAllは、Writeを使用して複数のCSVレコードをwに書き込み、
+// Flushを呼び出してからFlushからのエラーを返します。
 func (w *Writer) WriteAll(records [][]string) error
