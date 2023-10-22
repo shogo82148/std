@@ -17,9 +17,5 @@ func Exp(x float64) float64
 
 // Exp2はxの2の累乗（2**x）を返します。
 //
-<<<<<<< HEAD
-// 特殊なケースはExpと同じです。
-=======
-// Special cases are the same as [Exp].
->>>>>>> upstream/master
+// 特殊なケースは [Exp] と同じです。
 func Exp2(x float64) float64

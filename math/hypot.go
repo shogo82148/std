@@ -4,12 +4,7 @@
 
 package math
 
-<<<<<<< HEAD
-// Hypotはp*p + q*qの平方根を返します。不必要なオーバーフローやアンダーフローを避けるように注意します。
-=======
-// Hypot returns [Sqrt](p*p + q*q), taking care to avoid
-// unnecessary overflow and underflow.
->>>>>>> upstream/master
+// Hypotは [Sqrt](p*p + q*q) を返します。不必要なオーバーフローやアンダーフローを避けるように注意します。
 //
 // 特殊な場合は以下の通りです:
 //
