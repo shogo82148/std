@@ -36,18 +36,19 @@
 // GOPATH=/home/user/gocode
 //
 // /home/user/gocode/
-//     src/
-//         foo/
-//             bar/               (パッケージ bar の Goコード)
-//                 x.go
-//             quux/              (メインパッケージの Goコード)
-//                 y.go
-//     bin/
-//         quux                   (インストールされたコマンド)
-//     pkg/
-//         linux_amd64/
-//             foo/
-//                 bar.a          (インストールされたパッケージオブジェクト)
+//
+//	src/
+//	    foo/
+//	        bar/               (パッケージ bar の Goコード)
+//	            x.go
+//	        quux/              (メインパッケージの Goコード)
+//	            y.go
+//	bin/
+//	    quux                   (インストールされたコマンド)
+//	pkg/
+//	    linux_amd64/
+//	        foo/
+//	            bar.a          (インストールされたパッケージオブジェクト)
 //
 // # ビルド制約
 //
@@ -79,12 +80,6 @@
 //
 // ソースコードには追加のGoコードが含まれる可能性があります。このコードはコンパイルされないが、godocなどのツールによって処理され、エンドユーザのドキュメンテーションとして役立つかもしれません。
 //
-<<<<<<< HEAD
 // "go build" およびその他のコマンドはバイナリオンリーパッケージをサポートしていません。
-// Import と ImportDir は、これらのコメントを含むパッケージのBinaryOnlyフラグを設定し、ツールやエラーメッセージで利用することができます。
-=======
-// "go build" and other commands no longer support binary-only-packages.
-// [Import] and [ImportDir] will still set the BinaryOnly flag in packages
-// containing these comments for use in tools and error messages.
->>>>>>> upstream/master
+// [Import] と [ImportDir] は、これらのコメントを含むパッケージのBinaryOnlyフラグを設定し、ツールやエラーメッセージで利用することができます。
 package build
