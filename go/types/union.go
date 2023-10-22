@@ -9,13 +9,8 @@ type Union struct {
 	terms []*Term
 }
 
-<<<<<<< HEAD
-// NewUnionは与えられた要素で新しいUnion型を返します。
+// NewUnionは与えられた要素で新しい [Union] 型を返します。
 // 空のUnionを作成することはエラーであり、構文的に不可能です。
-=======
-// NewUnion returns a new [Union] type with the given terms.
-// It is an error to create an empty union; they are syntactically not possible.
->>>>>>> upstream/master
 func NewUnion(terms []*Term) *Union
 
 func (u *Union) Len() int
@@ -24,11 +19,7 @@ func (u *Union) Term(i int) *Term
 func (u *Union) Underlying() Type
 func (u *Union) String() string
 
-<<<<<<< HEAD
-// TermはUnion内の項を表します。
-=======
-// A Term represents a term in a [Union].
->>>>>>> upstream/master
+// Termは [Union] 内の項を表します。
 type Term term
 
 // NewTermは新しいユニオン用語を返します。

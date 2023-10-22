@@ -40,29 +40,17 @@ func (t *Interface) MarkImplicit()
 // NumExplicitMethods はインターフェース t の明示的に宣言されたメソッドの数を返します。
 func (t *Interface) NumExplicitMethods() int
 
-<<<<<<< HEAD
 // ExplicitMethodは0 <= i < t.NumExplicitMethods()に対して、インターフェースtのi番目に明示的に宣言されたメソッドを返します。
-// メソッドは一意のIdによって順序付けられます。
-=======
-// ExplicitMethod returns the i'th explicitly declared method of interface t for 0 <= i < t.NumExplicitMethods().
-// The methods are ordered by their unique [Id].
->>>>>>> upstream/master
+// メソッドは一意の [Id] によって順序付けられます。
 func (t *Interface) ExplicitMethod(i int) *Func
 
 // NumEmbeddeds はインターフェース t 内の埋め込まれた型の数を返します。
 func (t *Interface) NumEmbeddeds() int
 
-<<<<<<< HEAD
-// Embeddedは、0 <= i < t.NumEmbeddeds() の範囲でインターフェースtのi番目の埋め込まれた(*Named)型を返します。
+// Embeddedは、0 <= i < t.NumEmbeddeds() の範囲でインターフェースtのi番目の埋め込まれた(*[Named])型を返します。
 // i番目の埋め込まれた型が定義済みの型でない場合、結果はnilです。
 //
-// 非推奨: 定義済みの(*Named)型に制限されないEmbeddedTypeを使用してください。
-=======
-// Embedded returns the i'th embedded defined (*[Named]) type of interface t for 0 <= i < t.NumEmbeddeds().
-// The result is nil if the i'th embedded type is not a defined type.
-//
-// Deprecated: Use [Interface.EmbeddedType] which is not restricted to defined (*[Named]) types.
->>>>>>> upstream/master
+// Deprecated: 定義済みの(*[Named])型に制限されない [Interface.EmbeddedType] を使用してください。
 func (t *Interface) Embedded(i int) *Named
 
 // EmbeddedTypeは0 <= i < t.NumEmbeddeds()におけるインターフェースtのi番目の埋め込まれた型を返します。
@@ -88,16 +76,8 @@ func (t *Interface) IsMethodSet() bool
 // IsImplicitは、インターフェースtが型セットリテラルのラッパーであるかどうかを報告します。
 func (t *Interface) IsImplicit() bool
 
-<<<<<<< HEAD
 // Completeはインターフェースのタイプセットを計算します。これは、
-// NewInterfaceTypeとNewInterfaceのユーザーによって呼び出される必要があります。インターフェースの埋め込まれた型が完全に定義され、他の型を形成する以外の方法でインターフェースのタイプを使用する前に呼び出す必要があります。インターフェースに重複するメソッドが含まれている場合、パニックが発生します。Completeはレシーバーを返します。
-=======
-// Complete computes the interface's type set. It must be called by users of
-// [NewInterfaceType] and [NewInterface] after the interface's embedded types are
-// fully defined and before using the interface type in any way other than to
-// form other types. The interface must not contain duplicate methods or a
-// panic occurs. Complete returns the receiver.
->>>>>>> upstream/master
+// [NewInterfaceType] と [NewInterface] のユーザーによって呼び出される必要があります。インターフェースの埋め込まれた型が完全に定義され、他の型を形成する以外の方法でインターフェースのタイプを使用する前に呼び出す必要があります。インターフェースに重複するメソッドが含まれている場合、パニックが発生します。Completeはレシーバーを返します。
 //
 // 完了済みのインターフェース型は、同時に使用することが安全です。
 func (t *Interface) Complete() *Interface

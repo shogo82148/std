@@ -11,13 +11,8 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-<<<<<<< HEAD
 // Checkerは型チェッカーの状態を維持します。
-// NewCheckerで作成する必要があります。
-=======
-// A Checker maintains the state of the type checker.
-// It must be created with [NewChecker].
->>>>>>> upstream/master
+// [NewChecker] で作成する必要があります。
 type Checker struct {
 
 	// パッケージの情報
@@ -68,13 +63,8 @@ type Checker struct {
 	indent int
 }
 
-<<<<<<< HEAD
-// NewCheckerは指定されたパッケージに対して新しいCheckerインスタンスを返します。
-// パッケージファイルは、checker.Filesを通じて段階的に追加することができます。
-=======
-// NewChecker returns a new [Checker] instance for a given package.
-// [Package] files may be added incrementally via checker.Files.
->>>>>>> upstream/master
+// NewCheckerは指定されたパッケージに対して新しい [Checker] インスタンスを返します。
+// [Package] ファイルは、checker.Filesを通じて段階的に追加することができます。
 func NewChecker(conf *Config, fset *token.FileSet, pkg *Package, info *Info) *Checker
 
 // Filesはチェッカーのパッケージの一部として提供されたファイルをチェックします。

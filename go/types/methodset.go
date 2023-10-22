@@ -6,15 +6,9 @@
 
 package types
 
-<<<<<<< HEAD
 // MethodSetは具体的または抽象（インターフェース）メソッドの順序付けられたセットです。
-// メソッドはMethodVal選択であり、m.Obj().Id()によって昇順に並べられます。
+// メソッドは [MethodVal] 選択であり、m.Obj().Id()によって昇順に並べられます。
 // MethodSetのゼロ値は使用準備完了の空のメソッドセットです。
-=======
-// A MethodSet is an ordered set of concrete or abstract (interface) methods;
-// a method is a [MethodVal] selection, and they are ordered by ascending m.Obj().Id().
-// The zero value for a MethodSet is a ready-to-use empty method set.
->>>>>>> upstream/master
 type MethodSet struct {
 	list []*Selection
 }

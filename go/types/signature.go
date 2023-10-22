@@ -20,17 +20,9 @@ type Signature struct {
 	variadic bool
 }
 
-<<<<<<< HEAD
 // NewSignatureは与えられたレシーバ、パラメータ、戻り値のための新しい関数型を返します。それぞれnilにすることもできます。もしvariadicがtrueに設定されている場合、関数は可変長引数を持ち、少なくとも1つのパラメータを持つ必要があります。また、最後のパラメータは無名のスライス型である必要があります。
-// 廃止されました: 代わりに型パラメータを使用できるNewSignatureTypeを使用してください。
-=======
-// NewSignature returns a new function type for the given receiver, parameters,
-// and results, either of which may be nil. If variadic is set, the function
-// is variadic, it must have at least one parameter, and the last parameter
-// must be of unnamed slice type.
 //
-// Deprecated: Use [NewSignatureType] instead which allows for type parameters.
->>>>>>> upstream/master
+// Deprecated: 代わりに型パラメータを使用できる [NewSignatureType] を使用してください。
 func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 
 // NewSignatureTypeは、与えられたレシーバ、レシーバタイプパラメータ、
