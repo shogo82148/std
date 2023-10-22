@@ -45,7 +45,7 @@ import (
 func (x *Float) Text(format byte, prec int) string
 
 // String formats x like x.Text('g', 10).
-// (String must be called explicitly, Float.Format does not support %s verb.)
+// (String must be called explicitly, [Float.Format] does not support %s verb.)
 func (x *Float) String() string
 
 // Append appends to buf the string form of the floating-point number x,
@@ -54,7 +54,7 @@ func (x *Float) Append(buf []byte, fmt byte, prec int) []byte
 
 var _ fmt.Formatter = &floatZero
 
-// Format implements fmt.Formatter. It accepts all the regular
+// Format implements [fmt.Formatter]. It accepts all the regular
 // formats for floating-point numbers ('b', 'e', 'E', 'f', 'F',
 // 'g', 'G', 'x') as well as 'p' and 'v'. See (*Float).Text for the
 // interpretation of 'p'. The 'v' format is handled like 'g'.

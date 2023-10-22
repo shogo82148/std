@@ -25,6 +25,7 @@ type Lookup func(path string) (io.ReadCloser, error)
 // Deprecated: もしlookupがnilの場合、後方互換性のためにインポータは$GOPATHワークスペースでインポートを解決しようとします。
 func ForCompiler(fset *token.FileSet, compiler string, lookup Lookup) types.Importer
 
+<<<<<<< HEAD
 // 新しいFileSetでForCompilerを呼び出します。
 //
 // Deprecated:  importerによって作成されたオブジェクトの位置を
@@ -33,4 +34,14 @@ func For(compiler string, lookup Lookup) types.Importer
 
 // Defaultは実行バイナリをビルドしたコンパイラのためのImporterを返します。
 // もし利用可能であれば、結果はtypes.ImporterFromを実装します。
+=======
+// For calls [ForCompiler] with a new FileSet.
+//
+// Deprecated: Use [ForCompiler], which populates a FileSet
+// with the positions of objects created by the importer.
+func For(compiler string, lookup Lookup) types.Importer
+
+// Default returns an Importer for the compiler that built the running binary.
+// If available, the result implements [types.ImporterFrom].
+>>>>>>> upstream/master
 func Default() types.Importer

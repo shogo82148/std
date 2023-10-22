@@ -116,9 +116,17 @@ const (
 	TILDE
 )
 
+<<<<<<< HEAD
 // Stringはtokに対応する文字列を返します。
 // 演算子、区切り文字、キーワードの場合、文字列は実際のトークン文字列です（たとえば、トークンADDの場合、文字列は"+"です）。
 // それ以外のすべてのトークンに対して、文字列はトークンの定数名に対応します（たとえば、トークンIDENTの場合、文字列は"IDENT"です）。
+=======
+// String returns the string corresponding to the token tok.
+// For operators, delimiters, and keywords the string is the actual
+// token character sequence (e.g., for the token [ADD], the string is
+// "+"). For all other tokens the string corresponds to the token
+// constant name (e.g. for the token [IDENT], the string is "IDENT").
+>>>>>>> upstream/master
 func (tok Token) String() string
 
 // 優先順位ベースの式の解析のための定数のセット。
@@ -136,7 +144,11 @@ const (
 // Precedenceは、バイナリ演算子opの演算子の優先度を返します。opがバイナリ演算子でない場合、結果はLowestPrecedenceになります。
 func (op Token) Precedence() int
 
+<<<<<<< HEAD
 // Lookupは識別子をキーワードトークンまたはIDENT（キーワードでない場合）にマップします。
+=======
+// Lookup maps an identifier to its keyword token or [IDENT] (if not a keyword).
+>>>>>>> upstream/master
 func Lookup(ident string) Token
 
 // IsLiteral は、識別子と基本型のリテラルに対応するトークンに対して true を返します。それ以外の場合は、false を返します。

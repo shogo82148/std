@@ -4,7 +4,11 @@
 
 package math
 
+<<<<<<< HEAD
 // LgammaはGamma(x)の自然対数と符号（-1または+1）を返します。
+=======
+// Lgamma returns the natural logarithm and sign (-1 or +1) of [Gamma](x).
+>>>>>>> upstream/master
 //
 // 特殊なケースは以下の通りです:
 //

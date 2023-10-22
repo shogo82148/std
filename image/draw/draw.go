@@ -19,10 +19,10 @@ type Image interface {
 	Set(x, y int, c color.Color)
 }
 
-// RGBA64Image extends both the Image and image.RGBA64Image interfaces with a
+// RGBA64Image extends both the [Image] and [image.RGBA64Image] interfaces with a
 // SetRGBA64 method to change a single pixel. SetRGBA64 is equivalent to
 // calling Set, but it can avoid allocations from converting concrete color
-// types to the color.Color interface type.
+// types to the [color.Color] interface type.
 type RGBA64Image interface {
 	image.RGBA64Image
 	Set(x, y int, c color.Color)
@@ -31,8 +31,6 @@ type RGBA64Image interface {
 
 // Quantizer produces a palette for an image.
 type Quantizer interface {
-	// Quantize appends up to cap(p) - len(p) colors to p and returns the
-	// updated palette suitable for converting m to a paletted image.
 	Quantize(p color.Palette, m image.Image) color.Palette
 }
 
@@ -46,22 +44,20 @@ const (
 	Src
 )
 
-// Draw implements the Drawer interface by calling the Draw function with this
-// Op.
+// Draw implements the [Drawer] interface by calling the Draw function with this
+// [Op].
 func (op Op) Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point)
 
-// Drawer contains the Draw method.
+// Drawer contains the [Draw] method.
 type Drawer interface {
-	// Draw aligns r.Min in dst with sp in src and then replaces the
-	// rectangle r in dst with the result of drawing src on dst.
 	Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point)
 }
 
-// FloydSteinberg is a Drawer that is the Src Op with Floyd-Steinberg error
+// FloydSteinberg is a [Drawer] that is the [Src] [Op] with Floyd-Steinberg error
 // diffusion.
 var FloydSteinberg Drawer = floydSteinberg{}
 
-// Draw calls DrawMask with a nil mask.
+// Draw calls [DrawMask] with a nil mask.
 func Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point, op Op)
 
 // DrawMask aligns r.Min in dst with sp in src and mp in mask and then replaces the rectangle r

@@ -90,14 +90,14 @@ type Section struct {
 // Even if the section is stored compressed in the ELF file,
 // Data returns uncompressed data.
 //
-// For an SHT_NOBITS section, Data always returns a non-nil error.
+// For an [SHT_NOBITS] section, Data always returns a non-nil error.
 func (s *Section) Data() ([]byte, error)
 
 // Open returns a new ReadSeeker reading the ELF section.
 // Even if the section is stored compressed in the ELF file,
 // the ReadSeeker reads uncompressed data.
 //
-// For an SHT_NOBITS section, all calls to the opened reader
+// For an [SHT_NOBITS] section, all calls to the opened reader
 // will return a non-nil error.
 func (s *Section) Open() io.ReadSeeker
 
@@ -151,11 +151,11 @@ type FormatError struct {
 
 func (e *FormatError) Error() string
 
-// Open opens the named file using os.Open and prepares it for use as an ELF binary.
+// Open opens the named file using [os.Open] and prepares it for use as an ELF binary.
 func Open(name string) (*File, error)
 
-// Close closes the File.
-// If the File was created using NewFile directly instead of Open,
+// Close closes the [File].
+// If the [File] was created using [NewFile] directly instead of [Open],
 // Close has no effect.
 func (f *File) Close() error
 
@@ -163,11 +163,11 @@ func (f *File) Close() error
 // given type, or nil if there is no such section.
 func (f *File) SectionByType(typ SectionType) *Section
 
-// NewFile creates a new File for accessing an ELF binary in an underlying reader.
+// NewFile creates a new [File] for accessing an ELF binary in an underlying reader.
 // The ELF binary is expected to start at position 0 in the ReaderAt.
 func NewFile(r io.ReaderAt) (*File, error)
 
-// ErrNoSymbols is returned by File.Symbols and File.DynamicSymbols
+// ErrNoSymbols is returned by [File.Symbols] and [File.DynamicSymbols]
 // if there is no such section in the File.
 var ErrNoSymbols = errors.New("no symbol section")
 
@@ -188,10 +188,10 @@ func (f *File) Symbols() ([]Symbol, error)
 // DynamicSymbols returns the dynamic symbol table for f. The symbols
 // will be listed in the order they appear in f.
 //
-// If f has a symbol version table, the returned Symbols will have
-// initialized Version and Library fields.
+// If f has a symbol version table, the returned [File.Symbols] will have
+// initialized [Version] and Library fields.
 //
-// For compatibility with Symbols, DynamicSymbols omits the null symbol at index 0.
+// For compatibility with [File.Symbols], [File.DynamicSymbols] omits the null symbol at index 0.
 // After retrieving the symbols as symtab, an externally supplied index x
 // corresponds to symtab[x-1], not symtab[x].
 func (f *File) DynamicSymbols() ([]Symbol, error)
@@ -216,8 +216,8 @@ func (f *File) ImportedLibraries() ([]string, error)
 // DynString returns the strings listed for the given tag in the file's dynamic
 // section.
 //
-// The tag must be one that takes string values: DT_NEEDED, DT_SONAME, DT_RPATH, or
-// DT_RUNPATH.
+// The tag must be one that takes string values: [DT_NEEDED], [DT_SONAME], [DT_RPATH], or
+// [DT_RUNPATH].
 func (f *File) DynString(tag DynTag) ([]string, error)
 
 // DynValue returns the values listed for the given tag in the file's dynamic

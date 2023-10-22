@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build compiler_bootstrap
-// +build compiler_bootstrap
 
 package strconv

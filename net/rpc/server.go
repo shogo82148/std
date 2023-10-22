@@ -198,7 +198,6 @@ type ServerCodec interface {
 	ReadRequestBody(any) error
 	WriteResponse(*Response, any) error
 
-	// Close can be called multiple times and must be idempotent.
 	Close() error
 }
 

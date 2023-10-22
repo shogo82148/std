@@ -22,10 +22,8 @@ import (
 type Builder struct {
 	WorkDir            string
 	actionCache        map[cacheKey]*Action
-	mkdirCache         map[string]bool
 	flagCache          map[[2]string]bool
 	gccCompilerIDCache map[string]cache.ActionID
-	Print              func(args ...any) (int, error)
 
 	IsCmdList           bool
 	NeedError           bool
@@ -36,8 +34,7 @@ type Builder struct {
 	objdirSeq int
 	pkgSeq    int
 
-	output    sync.Mutex
-	scriptDir string
+	backgroundSh *Shell
 
 	exec      sync.Mutex
 	readySema chan bool
@@ -86,6 +83,8 @@ type Action struct {
 	needBuild bool
 	vetCfg    *vetConfig
 	output    []byte
+
+	sh *Shell
 
 	// Execution state.
 	pending      int

@@ -19,7 +19,7 @@ type Encoder struct {
 }
 
 // EncoderBufferPool is an interface for getting and returning temporary
-// instances of the EncoderBuffer struct. This can be used to reuse buffers
+// instances of the [EncoderBuffer] struct. This can be used to reuse buffers
 // when encoding multiple images.
 type EncoderBufferPool interface {
 	Get() *EncoderBuffer
@@ -40,7 +40,7 @@ const (
 )
 
 // Encode writes the Image m to w in PNG format. Any Image may be
-// encoded, but images that are not image.NRGBA might be encoded lossily.
+// encoded, but images that are not [image.NRGBA] might be encoded lossily.
 func Encode(w io.Writer, m image.Image) error
 
 // Encode writes the Image m to w in PNG format.

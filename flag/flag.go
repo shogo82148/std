@@ -7,7 +7,11 @@ Package flagは、コマンドラインのフラグ解析を実装します。
 
 # 使用法
 
+<<<<<<< HEAD
 flag.String（）、Bool（）、Int（）などを使用してフラグを定義します。
+=======
+Define flags using [flag.String], [Bool], [Int], etc.
+>>>>>>> upstream/master
 
 これは、ポインタnFlagに格納された整数フラグ-nを宣言し、型*intを持つものです。
 
@@ -38,8 +42,14 @@ flag.String（）、Bool（）、Int（）などを使用してフラグを定�
 	ipの値は、*ipを出力します。
 	flagvarの値は、flagvarを出力します。
 
+<<<<<<< HEAD
 解析後、フラグに続く引数は、スライスflag.Args（）または個別にflag.Arg（i）として使用できます。
 引数は0からflag.NArg（）-1までインデックス付けされます。
+=======
+After parsing, the arguments following the flags are available as the
+slice [flag.Args] or individually as [flag.Arg](i).
+The arguments are indexed from 0 through [flag.NArg]-1.
+>>>>>>> upstream/master
 
 # コマンドラインフラグの句法
 
@@ -66,7 +76,16 @@ Unixシェルのワイルドカードである、Starは、「-」のコマン�
 
 期間フラグは、time.ParseDurationで有効な入力を受け入れます。
 
+<<<<<<< HEAD
 コマンドラインフラグのデフォルトセットは、トップレベルの関数によって制御されます。FlagSet型は、コマンドラインインターフェースのサブコマンドを実装するための独立したフラグセットを定義するために使用します。FlagSetのメソッドは、コマンドラインフラグセットのトップレベルの関数と同様です。
+=======
+The default set of command-line flags is controlled by
+top-level functions.  The [FlagSet] type allows one to define
+independent sets of flags, such as to implement subcommands
+in a command-line interface. The methods of [FlagSet] are
+analogous to the top-level functions for the command-line
+flag set.
+>>>>>>> upstream/master
 */
 package flag
 
@@ -88,33 +107,61 @@ var ErrHelp = errors.New("flag: help requested")
 // Valueがtrueを返すIsBoolFlag() boolメソッドを持つ場合、
 // コマンドラインパーサーは-nameを-name=trueと等価にし、次のコマンドライン引数を使用しないようにします。
 //
+<<<<<<< HEAD
 // flagが存在するごとに、Setメソッドがコマンドラインの順序で一度呼び出されます。
 // flagパッケージはゼロ値のレシーバ（nilポインタなど）でStringメソッドを呼び出す場合があります。
+=======
+// Set is called once, in command line order, for each flag present.
+// The flag package may call the [String] method with a zero-valued receiver,
+// such as a nil pointer.
+>>>>>>> upstream/master
 type Value interface {
 	String() string
 	Set(string) error
 }
 
+<<<<<<< HEAD
 // GetterはValueの内容を取得することを可能にするインターフェースです。
 // これはGo 1以降の互換性規則のために、Valueインターフェースの一部ではなく、ラップされています。
 // このパッケージで提供されるすべてのValue型は、Getterインターフェースを満たしますが、Funcによって使用される型は満たしません。
+=======
+// Getter is an interface that allows the contents of a [Value] to be retrieved.
+// It wraps the [Value] interface, rather than being part of it, because it
+// appeared after Go 1 and its compatibility rules. All [Value] types provided
+// by this package satisfy the [Getter] interface, except the type used by [Func].
+>>>>>>> upstream/master
 type Getter interface {
 	Value
 	Get() any
 }
 
+<<<<<<< HEAD
 // ErrorHandlingは、parseが失敗した場合にFlagSet.Parseの動作を定義します。
 type ErrorHandling int
 
 // これらの定数は、パースが失敗した場合にFlagSet.Parseが説明された動作をするようにします。
+=======
+// ErrorHandling defines how [FlagSet.Parse] behaves if the parse fails.
+type ErrorHandling int
+
+// These constants cause [FlagSet.Parse] to behave as described if the parse fails.
+>>>>>>> upstream/master
 const (
 	ContinueOnError ErrorHandling = iota
 	ExitOnError
 	PanicOnError
 )
 
+<<<<<<< HEAD
 // FlagSetは定義されたフラグの集合を表します。FlagSetのゼロ値は名前を持たず、ContinueOnErrorエラーハンドリングを持ちます。
 // フラグの名前はFlagSet内でユニークでなければなりません。既に使用されている名前でフラグを定義しようとすると、パニックが発生します。
+=======
+// A FlagSet represents a set of defined flags. The zero value of a FlagSet
+// has no name and has [ContinueOnError] error handling.
+//
+// [Flag] names must be unique within a FlagSet. An attempt to define a flag whose
+// name is already in use will cause a panic.
+>>>>>>> upstream/master
 type FlagSet struct {
 
 	// Usage はフラグの解析中にエラーが発生した場合に呼び出される関数です。
@@ -141,7 +188,12 @@ type Flag struct {
 	DefValue string
 }
 
+<<<<<<< HEAD
 // Output は使用方法やエラーメッセージのための出力先を返します。 output が設定されていない場合や nil に設定されている場合は、os.Stderr が返されます。
+=======
+// Output returns the destination for usage and error messages. [os.Stderr] is returned if
+// output was not set or was set to nil.
+>>>>>>> upstream/master
 func (f *FlagSet) Output() io.Writer
 
 // Nameはフラグセットの名前を返します。
@@ -150,8 +202,13 @@ func (f *FlagSet) Name() string
 // ErrorHandlingはフラグセットのエラーハンドリングの動作を返します。
 func (f *FlagSet) ErrorHandling() ErrorHandling
 
+<<<<<<< HEAD
 // SetOutputは使用法やエラーメッセージの出力先を設定します。
 // もしoutputがnilの場合、os.Stderrが使用されます。
+=======
+// SetOutput sets the destination for usage and error messages.
+// If output is nil, [os.Stderr] is used.
+>>>>>>> upstream/master
 func (f *FlagSet) SetOutput(output io.Writer)
 
 // VisitAllは辞書順にフラグを訪れ、それぞれについてfnを呼び出します。
@@ -169,10 +226,18 @@ func (f *FlagSet) Visit(fn func(*Flag))
 // 設定されたフラグのみを訪問します。
 func Visit(fn func(*Flag))
 
+<<<<<<< HEAD
 // Lookupは指定されたフラグの構造体を返します。存在しない場合はnilを返します。
 func (f *FlagSet) Lookup(name string) *Flag
 
 // Lookupは指定されたコマンドラインフラグのFlag構造体を返します。存在しない場合はnilを返します。
+=======
+// Lookup returns the [Flag] structure of the named flag, returning nil if none exists.
+func (f *FlagSet) Lookup(name string) *Flag
+
+// Lookup returns the [Flag] structure of the named command-line flag,
+// returning nil if none exists.
+>>>>>>> upstream/master
 func Lookup(name string) *Flag
 
 // Setは指定したフラグの値を設定します。
@@ -205,6 +270,7 @@ func (f *FlagSet) PrintDefaults()
 //	-I ディレクトリ
 //		ディレクトリを検索するincludeファイル。
 //
+<<<<<<< HEAD
 // フラグメッセージの出力先を変更するには、CommandLine.SetOutputを呼び出します。
 func PrintDefaults()
 
@@ -215,6 +281,20 @@ func PrintDefaults()
 // 出力のフォーマットや、それを制御する方法の詳細については、PrintDefaultsのドキュメントを参照してください。
 // カスタムのUsage関数ではプログラムを終了することも選択できますが、デフォルトでは終了は常に発生します。
 // なぜなら、コマンドラインのエラーハンドリングストラテジーはExitOnErrorに設定されているからです。
+=======
+// To change the destination for flag messages, call [CommandLine].SetOutput.
+func PrintDefaults()
+
+// Usage prints a usage message documenting all defined command-line flags
+// to [CommandLine]'s output, which by default is [os.Stderr].
+// It is called when an error occurs while parsing flags.
+// The function is a variable that may be changed to point to a custom function.
+// By default it prints a simple header and calls [PrintDefaults]; for details about the
+// format of the output and how to control it, see the documentation for [PrintDefaults].
+// Custom usage functions may choose to exit the program; by default exiting
+// happens anyway as the command line's error handling strategy is set to
+// [ExitOnError].
+>>>>>>> upstream/master
 var Usage = func() {
 	fmt.Fprintf(CommandLine.Output(), "Usage of %s:\n", os.Args[0])
 	PrintDefaults()
@@ -408,6 +488,7 @@ func (f *FlagSet) BoolFunc(name, usage string, fn func(string) error)
 // もしfnが非nilのエラーを返した場合、それはフラグの値のパースエラーとして扱われます。
 func BoolFunc(name, usage string, fn func(string) error)
 
+<<<<<<< HEAD
 // Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常、Valueという型の最初の引数で示され、Valueのユーザー定義の実装を保持します。例えば、呼び出し元は、Valueのメソッドを持つスライスにカンマ区切りの文字列を変換するフラグを作成することができます。特に、Setメソッドはカンマ区切りの文字列をスライスに分解します。
 func (f *FlagSet) Var(value Value, name string, usage string)
 
@@ -417,24 +498,63 @@ func Var(value Value, name string, usage string)
 // Parseは引数リストからフラグ定義を解析します。コマンド名は含まれていてはいけません。
 // FlagSet内のすべてのフラグが定義され、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
 // 返り値は、-helpまたは-hが設定されているが定義されていない場合、ErrHelpになります。
+=======
+// Var defines a flag with the specified name and usage string. The type and
+// value of the flag are represented by the first argument, of type [Value], which
+// typically holds a user-defined implementation of [Value]. For instance, the
+// caller could create a flag that turns a comma-separated string into a slice
+// of strings by giving the slice the methods of [Value]; in particular, [Set] would
+// decompose the comma-separated string into the slice.
+func (f *FlagSet) Var(value Value, name string, usage string)
+
+// Var defines a flag with the specified name and usage string. The type and
+// value of the flag are represented by the first argument, of type [Value], which
+// typically holds a user-defined implementation of [Value]. For instance, the
+// caller could create a flag that turns a comma-separated string into a slice
+// of strings by giving the slice the methods of [Value]; in particular, [Set] would
+// decompose the comma-separated string into the slice.
+func Var(value Value, name string, usage string)
+
+// Parse parses flag definitions from the argument list, which should not
+// include the command name. Must be called after all flags in the [FlagSet]
+// are defined and before flags are accessed by the program.
+// The return value will be [ErrHelp] if -help or -h were set but not defined.
+>>>>>>> upstream/master
 func (f *FlagSet) Parse(arguments []string) error
 
 // Parsedはf.Parseが呼ばれたかどうかを報告する。
 func (f *FlagSet) Parsed() bool
 
+<<<<<<< HEAD
 // Parseはos.Args[1:]からコマンドラインフラグを解析します。全てのフラグが定義された後、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
+=======
+// Parse parses the command-line flags from [os.Args][1:]. Must be called
+// after all flags are defined and before flags are accessed by the program.
+>>>>>>> upstream/master
 func Parse()
 
 // Parsedは、コマンドラインフラグが解析されたかどうかを示します。
 func Parsed() bool
 
+<<<<<<< HEAD
 // CommandLineはos.Argsから解析されたデフォルトのコマンドラインフラグのセットです。
 // BoolVar、Argなどのトップレベルの関数は、CommandLineのメソッドのラッパーです。
+=======
+// CommandLine is the default set of command-line flags, parsed from [os.Args].
+// The top-level functions such as [BoolVar], [Arg], and so on are wrappers for the
+// methods of CommandLine.
+>>>>>>> upstream/master
 var CommandLine = NewFlagSet(os.Args[0], ExitOnError)
 
 // NewFlagSetは指定された名前とエラーハンドリングプロパティを持つ新しい空のフラグセットを返します。名前が空でない場合、デフォルトの使用方法メッセージとエラーメッセージに表示されます。
 func NewFlagSet(name string, errorHandling ErrorHandling) *FlagSet
 
+<<<<<<< HEAD
 // Initはフラグセットの名前とエラーハンドリングプロパティを設定します。
 // デフォルトでは、ゼロ値のFlagSetは空の名前とContinueOnErrorのエラーハンドリングポリシーを使用します。
+=======
+// Init sets the name and error handling property for a flag set.
+// By default, the zero [FlagSet] uses an empty name and the
+// [ContinueOnError] error handling policy.
+>>>>>>> upstream/master
 func (f *FlagSet) Init(name string, errorHandling ErrorHandling)

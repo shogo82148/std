@@ -4,9 +4,16 @@
 
 package fs
 
+<<<<<<< HEAD
 // FormatFileInfoは、人間が読みやすい形式に整形されたinfoのバージョンを返します。
 // FileInfoの実装は、Stringメソッドからこれを呼び出すことができます。
 // "hello.go"という名前のファイル、100バイト、モード0o644、作成日時は1970年1月1日の正午の場合、出力は次のようになります。
+=======
+// FormatFileInfo returns a formatted version of info for human readability.
+// Implementations of [FileInfo] can call this from a String method.
+// The output for a file named "hello.go", 100 bytes, mode 0o644, created
+// January 1, 1970 at noon is
+>>>>>>> upstream/master
 //
 // -rw-r--r-- 100 1970-01-01 12:00:00 hello.go
 func FormatFileInfo(info FileInfo) string

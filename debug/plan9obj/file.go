@@ -73,19 +73,19 @@ type Sym struct {
 	Name  string
 }
 
-// Open opens the named file using os.Open and prepares it for use as a Plan 9 a.out binary.
+// Open opens the named file using [os.Open] and prepares it for use as a Plan 9 a.out binary.
 func Open(name string) (*File, error)
 
-// Close closes the File.
-// If the File was created using NewFile directly instead of Open,
+// Close closes the [File].
+// If the [File] was created using [NewFile] directly instead of [Open],
 // Close has no effect.
 func (f *File) Close() error
 
-// NewFile creates a new File for accessing a Plan 9 binary in an underlying reader.
+// NewFile creates a new [File] for accessing a Plan 9 binary in an underlying reader.
 // The Plan 9 binary is expected to start at position 0 in the ReaderAt.
 func NewFile(r io.ReaderAt) (*File, error)
 
-// ErrNoSymbols is returned by File.Symbols if there is no such section
+// ErrNoSymbols is returned by [File.Symbols] if there is no such section
 // in the File.
 var ErrNoSymbols = errors.New("no symbol section")
 

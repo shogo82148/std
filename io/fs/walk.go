@@ -34,8 +34,14 @@ var SkipAll = errors.New("skip everything and stop the walk")
 //
 // [WalkDir] は、2つのケースで非nilのerr引数を持って関数を呼び出します。
 //
+<<<<<<< HEAD
 // まず、ルートディレクトリの初期 [Stat] が失敗した場合、WalkDirは関数をpathがrootに設定され、
 // dがnilに設定され、errがfs.Statからのエラーに設定された状態で呼び出します。
+=======
+// First, if the initial [Stat] on the root directory fails, WalkDir
+// calls the function with path set to root, d set to nil, and err set to
+// the error from [fs.Stat].
+>>>>>>> upstream/master
 //
 // 2番目に、ディレクトリのReadDirメソッド（ [ReadDirFile] を参照）が失敗した場合、WalkDirは関数をディレクトリのパスがpathに設定され、
 // dがディレクトリを記述する [DirEntry] に設定され、errがReadDirからのエラーに設定された状態で呼び出します。
@@ -54,8 +60,13 @@ type WalkDirFunc func(path string, d DirEntry, err error) error
 
 // WalkDirはルートにルートされたファイルツリーを走査し、各ファイルまたはディレクトリに対してfnを呼び出します。
 //
+<<<<<<< HEAD
 // ファイルとディレクトリを訪れる中で発生するエラーは、fnによってフィルタリングされます：
 // 詳細については、fs.WalkDirFuncのドキュメントを参照してください。
+=======
+// All errors that arise visiting files and directories are filtered by fn:
+// see the [fs.WalkDirFunc] documentation for details.
+>>>>>>> upstream/master
 //
 // ファイルは辞書式順に走査されますが、出力を決定論的にするために、WalkDirはディレクトリ全体をメモリに読み込んでから、そのディレクトリを走査する必要があります。
 //

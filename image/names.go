@@ -19,8 +19,8 @@ var (
 	Opaque = NewUniform(color.Opaque)
 )
 
-// Uniform is an infinite-sized Image of uniform color.
-// It implements the color.Color, color.Model, and Image interfaces.
+// Uniform is an infinite-sized [Image] of uniform color.
+// It implements the [color.Color], [color.Model], and [Image] interfaces.
 type Uniform struct {
 	C color.Color
 }
@@ -40,5 +40,5 @@ func (c *Uniform) RGBA64At(x, y int) color.RGBA64
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (c *Uniform) Opaque() bool
 
-// NewUniform returns a new Uniform image of the given color.
+// NewUniform returns a new [Uniform] image of the given color.
 func NewUniform(c color.Color) *Uniform

@@ -38,8 +38,6 @@ type Reloc struct {
 }
 
 type RelocStringer interface {
-	// insnOffset is the offset of the instruction containing the relocation
-	// from the start of the symbol containing the relocation.
 	String(insnOffset uint64) string
 }
 

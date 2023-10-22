@@ -2,21 +2,41 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 // typesパッケージは、Goパッケージの型チェックのためのアルゴリズムを実装し、
 // データ型を宣言します。Config.Checkを使用してパッケージの型チェッカーを呼び出すか、
 // 代わりにNewCheckerで新しい型チェッカーを作成し、Checker.Filesを呼び出して
 // インクリメンタルに呼び出すことができます。
+=======
+// Package types declares the data types and implements
+// the algorithms for type-checking of Go packages. Use
+// [Config.Check] to invoke the type checker for a package.
+// Alternatively, create a new type checker with [NewChecker]
+// and invoke it incrementally by calling [Checker.Files].
+>>>>>>> upstream/master
 //
 // 型チェックは、いくつかの相互依存するフェーズで構成されています。
 //
+<<<<<<< HEAD
 // 名前解決は、プログラム内の各識別子（ast.Ident）を、それが示す言語オブジェクト（Object）にマップします。
 // 名前解決の結果には、Info.{Defs,Uses,Implicits}を使用します。
+=======
+// Name resolution maps each identifier (ast.Ident) in the program to the
+// language object ([Object]) it denotes.
+// Use [Info].{Defs,Uses,Implicits} for the results of name resolution.
+>>>>>>> upstream/master
 //
 // 定数畳み込みは、コンパイル時定数であるすべての式（ast.Expr）の正確な定数値（constant.Value）を計算します。
 // 定数畳み込みの結果には、Info.Types[expr].Valueを使用します。
 //
+<<<<<<< HEAD
 // 型推論は、すべての式（ast.Expr）の型（Type）を計算し、言語仕様に準拠しているかどうかをチェックします。
 // 型推論の結果には、Info.Types[expr].Typeを使用します。
+=======
+// [Type] inference computes the type ([Type]) of every expression ([ast.Expr])
+// and checks for compliance with the language specification.
+// Use [Info.Types][expr].Type for the results of type inference.
+>>>>>>> upstream/master
 //
 // For a tutorial, see https://golang.org/s/types-tutorial.
 package types
@@ -57,13 +77,16 @@ func (e *ArgumentError) Unwrap() error
 
 // Importerは、インポートパスをパッケージに解決します。
 //
+<<<<<<< HEAD
 // 注意: このインターフェースは、ローカルにvendoredされたパッケージのインポートには対応していません。
 // 詳細は、https://golang.org/s/go15vendor を参照してください。
 // 可能であれば、外部の実装ではImporterFromを実装するべきです。
+=======
+// CAUTION: This interface does not support the import of locally
+// vendored packages. See https://golang.org/s/go15vendor.
+// If possible, external implementations should implement [ImporterFrom].
+>>>>>>> upstream/master
 type Importer interface {
-	// Import returns the imported package for the given import path.
-	// The semantics is like for ImporterFrom.ImportFrom except that
-	// dir and mode are ignored (since they are not present).
 	Import(path string) (*Package, error)
 }
 
@@ -74,22 +97,8 @@ type ImportMode int
 // https://golang.org/s/go15vendorに従い、ベンダリングをサポートします。
 // ImporterFromの実装を取得するには、go/importerを使用してください。
 type ImporterFrom interface {
-	// Importer is present for backward-compatibility. Calling
-	// Import(path) is the same as calling ImportFrom(path, "", 0);
-	// i.e., locally vendored packages may not be found.
-	// The types package does not call Import if an ImporterFrom
-	// is present.
 	Importer
 
-	// ImportFrom returns the imported package for the given import
-	// path when imported by a package file located in dir.
-	// If the import failed, besides returning an error, ImportFrom
-	// is encouraged to cache and return a package anyway, if one
-	// was created. This will reduce package inconsistencies and
-	// follow-on type checker errors due to the missing package.
-	// The mode value must be 0; it is reserved for future use.
-	// Two calls to ImportFrom with the same path and dir must
-	// return the same package.
 	ImportFrom(path, dir string, mode ImportMode) (*Package, error)
 }
 
@@ -230,8 +239,13 @@ func (info *Info) TypeOf(e ast.Expr) Type
 // ObjectOfは、指定したidによって指示されたオブジェクトを返します。
 // 存在しない場合はnilを返します。
 //
+<<<<<<< HEAD
 // idが埋め込み構造体フィールドである場合、ObjectOfはフィールド(*Var)を返します
 // それが定義する特定のフィールド(*TypeName)ではありません。
+=======
+// If id is an embedded struct field, [Info.ObjectOf] returns the field (*[Var])
+// it defines, not the type (*[TypeName]) it uses.
+>>>>>>> upstream/master
 //
 // 前提条件：UsesおよびDefsマップが入力されています。
 func (info *Info) ObjectOf(id *ast.Ident) Object
@@ -268,7 +282,14 @@ func (tv TypeAndValue) Assignable() bool
 // HasOkは、対応する式がコンマOK代入の右辺に使用できるかどうかを報告します。
 func (tv TypeAndValue) HasOk() bool
 
+<<<<<<< HEAD
 // Instanceは、型と関数のインスタンス化のための型引数とインスタンス化された型を報告します。型のインスタンス化では、Typeは動的型*Namedになります。関数のインスタンス化では、Typeは動的型*Signatureになります。
+=======
+// Instance reports the type arguments and instantiated type for type and
+// function instantiations. For type instantiations, [Type] will be of dynamic
+// type *[Named]. For function instantiations, [Type] will be of dynamic type
+// *Signature.
+>>>>>>> upstream/master
 type Instance struct {
 	TypeArgs *TypeList
 	Type     Type
@@ -282,9 +303,23 @@ type Initializer struct {
 
 func (init *Initializer) String() string
 
+<<<<<<< HEAD
 // Checkはパッケージの型チェックを行い、結果のパッケージオブジェクトと初めのエラー（もし存在すれば）を返します。さらに、infoがnilでない場合、CheckはInfo構造体の非nilのマップそれぞれを埋めます。
 // エラーが発生しなかった場合、パッケージは完全であるとマークされます。そうでなければ不完全です。エラーの存在に応じた動作の制御については、Config.Errorを参照してください。
 // パッケージはast.Filesのリストと対応するファイルセット、およびパッケージが識別されるパッケージパスで指定されます。クリーンパスは空またはドット（"."）ではないでしょう。
+=======
+// Check type-checks a package and returns the resulting package object and
+// the first error if any. Additionally, if info != nil, Check populates each
+// of the non-nil maps in the [Info] struct.
+//
+// The package is marked as complete if no errors occurred, otherwise it is
+// incomplete. See [Config.Error] for controlling behavior in the presence of
+// errors.
+//
+// The package is specified by a list of *ast.Files and corresponding
+// file set, and the package path the package is identified with.
+// The clean path must not be empty or dot (".").
+>>>>>>> upstream/master
 func (conf *Config) Check(path string, fset *token.FileSet, files []*ast.File, info *Info) (*Package, error)
 
 // AssertableToは、型Vの値が型Tにアサートされることができるかどうかを報告します。
@@ -315,10 +350,19 @@ func Implements(V Type, T *Interface) bool
 // VがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、Satisfiesの動作は指定されていません。
 func Satisfies(V Type, T *Interface) bool
 
+<<<<<<< HEAD
 // Identicalはxとyが同じ型であるかどうかを返します。
 // Signature型のレシーバは無視されます。
 func Identical(x, y Type) bool
 
 // IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
 // Signature型のレシーバーは無視されます。
+=======
+// Identical reports whether x and y are identical types.
+// Receivers of [Signature] types are ignored.
+func Identical(x, y Type) bool
+
+// IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.
+// Receivers of [Signature] types are ignored.
+>>>>>>> upstream/master
 func IdenticalIgnoreTags(x, y Type) bool

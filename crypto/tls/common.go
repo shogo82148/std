@@ -126,14 +126,8 @@ const (
 
 // ClientSessionCacheは、クライアントが特定のサーバーとTLSセッションを再開するために使用できるClientSessionStateオブジェクトのキャッシュです。ClientSessionCacheの実装は、異なるゴルーチンから同時に呼び出されることを想定しています。TLS 1.2までは、SessionIDベースの再開ではなく、チケットベースの再開のみがサポートされています。TLS 1.3では、これらがPSKモードにマージされ、このインターフェースを介してサポートされています。
 type ClientSessionCache interface {
-	// Get searches for a ClientSessionState associated with the given key.
-	// On return, ok is true if one was found.
 	Get(sessionKey string) (session *ClientSessionState, ok bool)
 
-	// Put adds the ClientSessionState to the cache with the given key. It might
-	// get called multiple times in a connection if a TLS 1.3 server provides
-	// more than one session ticket. If called with a nil *ClientSessionState,
-	// it should remove the cache entry.
 	Put(sessionKey string, cs *ClientSessionState)
 }
 

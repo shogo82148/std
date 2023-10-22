@@ -201,10 +201,20 @@ type Directive struct {
 // "main"という名前のパッケージはコマンドとして扱われます。
 func (p *Package) IsCommand() bool
 
+<<<<<<< HEAD
 // ImportDirは、名前付きディレクトリで見つかったGoパッケージを処理するImportのようなものです。
 func (ctxt *Context) ImportDir(dir string, mode ImportMode) (*Package, error)
 
 // NoGoErrorは、ビルド可能なGoソースファイルが含まれていないディレクトリを説明するためにImportで使用されるエラーです。（テストファイル、ビルドタグによって非表示にされたファイルなどは含まれる可能性があります。）
+=======
+// ImportDir is like [Import] but processes the Go package found in
+// the named directory.
+func (ctxt *Context) ImportDir(dir string, mode ImportMode) (*Package, error)
+
+// NoGoError is the error used by [Import] to describe a directory
+// containing no buildable Go source files. (It may still contain
+// test files, files hidden by build tags, and so on.)
+>>>>>>> upstream/master
 type NoGoError struct {
 	Dir string
 }
@@ -229,10 +239,20 @@ func (e *MultiplePackageError) Error() string
 //   - _または.で始まるファイル（おそらくエディタの一時ファイル）
 //   - コンテキストで満たされないビルド制約を持つファイル
 //
+<<<<<<< HEAD
 // エラーが発生した場合、Importは非nilのエラーと部分的な情報を含む非nilの*Packageを返します。
 func (ctxt *Context) Import(path string, srcDir string, mode ImportMode) (*Package, error)
 
 // MatchFileは、指定されたディレクトリ内の指定された名前のファイルがコンテキストに一致し、そのディレクトリでImportDirによって作成されるパッケージに含まれるかどうかを報告します。
+=======
+// If an error occurs, Import returns a non-nil error and a non-nil
+// *[Package] containing partial information.
+func (ctxt *Context) Import(path string, srcDir string, mode ImportMode) (*Package, error)
+
+// MatchFile reports whether the file with the given name in the given directory
+// matches the context and would be included in a [Package] created by [ImportDir]
+// of that directory.
+>>>>>>> upstream/master
 //
 // MatchFileは、ファイルの名前を考慮し、ctxt.OpenFileを使用してファイルの内容の一部または全部を読み取ることがあります。
 func (ctxt *Context) MatchFile(dir, name string) (match bool, err error)

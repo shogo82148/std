@@ -8,8 +8,6 @@ package fs
 type ReadDirFS interface {
 	FS
 
-	// ReadDir reads the named directory
-	// and returns a list of directory entries sorted by filename.
 	ReadDir(name string) ([]DirEntry, error)
 }
 

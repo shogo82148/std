@@ -8,13 +8,6 @@ package color
 // Color can convert itself to alpha-premultiplied 16-bits per channel RGBA.
 // The conversion may be lossy.
 type Color interface {
-	// RGBA returns the alpha-premultiplied red, green, blue and alpha values
-	// for the color. Each value ranges within [0, 0xffff], but is represented
-	// by a uint32 so that multiplying by a blend factor up to 0xffff will not
-	// overflow.
-	//
-	// An alpha-premultiplied color component c has been scaled by alpha (a),
-	// so has valid values 0 <= c <= a.
 	RGBA() (r, g, b, a uint32)
 }
 
@@ -83,13 +76,13 @@ type Gray16 struct {
 
 func (c Gray16) RGBA() (r, g, b, a uint32)
 
-// Model can convert any Color to one from its own color model. The conversion
+// Model can convert any [Color] to one from its own color model. The conversion
 // may be lossy.
 type Model interface {
 	Convert(c Color) Color
 }
 
-// ModelFunc returns a Model that invokes f to implement the conversion.
+// ModelFunc returns a [Model] that invokes f to implement the conversion.
 func ModelFunc(f func(Color) Color) Model
 
 // Models for the standard color types.

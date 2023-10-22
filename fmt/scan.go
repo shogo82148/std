@@ -11,32 +11,16 @@ import (
 // ScanStateはカスタムスキャナーに渡されるスキャナーの状態を表します。
 // スキャナーは一文字ずつスキャンすることもでき、またScanStateに次のスペース区切りのトークンを見つけるように依頼することもできます。
 type ScanState interface {
-	// ReadRune reads the next rune (Unicode code point) from the input.
-	// If invoked during Scanln, Fscanln, or Sscanln, ReadRune() will
-	// return EOF after returning the first '\n' or when reading beyond
-	// the specified width.
 	ReadRune() (r rune, size int, err error)
-	// UnreadRune causes the next call to ReadRune to return the same rune.
+
 	UnreadRune() error
-	// SkipSpace skips space in the input. Newlines are treated appropriately
-	// for the operation being performed; see the package documentation
-	// for more information.
+
 	SkipSpace()
-	// Token skips space in the input if skipSpace is true, then returns the
-	// run of Unicode code points c satisfying f(c).  If f is nil,
-	// !unicode.IsSpace(c) is used; that is, the token will hold non-space
-	// characters. Newlines are treated appropriately for the operation being
-	// performed; see the package documentation for more information.
-	// The returned slice points to shared data that may be overwritten
-	// by the next call to Token, a call to a Scan function using the ScanState
-	// as input, or when the calling Scan method returns.
+
 	Token(skipSpace bool, f func(rune) bool) (token []byte, err error)
-	// Width returns the value of the width option and whether it has been set.
-	// The unit is Unicode code points.
+
 	Width() (wid int, ok bool)
-	// Because ReadRune is implemented by the interface, Read should never be
-	// called by the scanning routines and a valid implementation of
-	// ScanState may choose always to return an error from Read.
+
 	Read(buf []byte) (n int, err error)
 }
 

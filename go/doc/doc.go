@@ -88,7 +88,11 @@ type Note struct {
 	Body     string
 }
 
+<<<<<<< HEAD
 // Modeの値は、NewとNewFromFilesの動作を制御します。
+=======
+// Mode values control the operation of [New] and [NewFromFiles].
+>>>>>>> upstream/master
 type Mode int
 
 const (
@@ -103,10 +107,17 @@ const (
 	PreserveAST
 )
 
+<<<<<<< HEAD
 // Newは指定されたパッケージASTのパッケージドキュメントを計算します。
 // NewはAST pkgを所有し、編集または上書きすることができます。
 // Examplesフィールドが入力されている場合は、NewFromFilesを使用して
 // パッケージの_test.goファイルを含めてください。
+=======
+// New computes the package documentation for the given package AST.
+// New takes ownership of the AST pkg and may edit or overwrite it.
+// To have the [Examples] fields populated, use [NewFromFiles] and include
+// the package's _test.go files.
+>>>>>>> upstream/master
 func New(pkg *ast.Package, importPath string, mode Mode) *Package
 
 // NewFromFilesはパッケージのドキュメントを計算します。
@@ -120,11 +131,21 @@ func New(pkg *ast.Package, importPath string, mode Mode) *Package
 // この関数は、望ましいGOOSおよびGOARCHの値と他のビルド制約と一致するかどうかを判断します。
 // パッケージのインポートパスはimportPathで指定されます。
 //
+<<<<<<< HEAD
 // _test.goファイルに見つかった例は、それらの名前に基づいて対応する型、関数、メソッド、またはパッケージに関連付けられます。
 // もし例の名前に接尾辞がある場合、それはExample.Suffixフィールドに設定されます。
 // 名前が正しくない例はスキップされます。
 //
 // オプションとして、抽出の振る舞いの低レベルな側面を制御するためにMode型の単一の追加引数を指定することができます。
+=======
+// Examples found in _test.go files are associated with the corresponding
+// type, function, method, or the package, based on their name.
+// If the example has a suffix in its name, it is set in the
+// [Example.Suffix] field. [Examples] with malformed names are skipped.
+//
+// Optionally, a single extra argument of type [Mode] can be provided to
+// control low-level aspects of the documentation extraction behavior.
+>>>>>>> upstream/master
 //
 // NewFromFilesはASTファイルの所有権を持ち、それらを編集する場合があります。
 // ただし、PreserveASTモードビットがオンになっている場合は、編集しません。

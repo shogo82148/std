@@ -79,6 +79,12 @@
 //
 // ソースコードには追加のGoコードが含まれる可能性があります。このコードはコンパイルされないが、godocなどのツールによって処理され、エンドユーザのドキュメンテーションとして役立つかもしれません。
 //
+<<<<<<< HEAD
 // "go build" およびその他のコマンドはバイナリオンリーパッケージをサポートしていません。
 // Import と ImportDir は、これらのコメントを含むパッケージのBinaryOnlyフラグを設定し、ツールやエラーメッセージで利用することができます。
+=======
+// "go build" and other commands no longer support binary-only-packages.
+// [Import] and [ImportDir] will still set the BinaryOnly flag in packages
+// containing these comments for use in tools and error messages.
+>>>>>>> upstream/master
 package build

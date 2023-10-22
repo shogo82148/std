@@ -16,15 +16,12 @@ import (
 type Node interface {
 	Type() NodeType
 	String() string
-	// Copy does a deep copy of the Node and all its components.
-	// To avoid type assertions, some XxxNodes also have specialized
-	// CopyXxx methods that return *XxxNode.
+
 	Copy() Node
 	Position() Pos
-	// tree returns the containing *Tree.
-	// It is unexported so all implementations of Node are in this package.
+
 	tree() *Tree
-	// writeTo writes the String output to the builder.
+
 	writeTo(*strings.Builder)
 }
 

@@ -8,8 +8,14 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
+<<<<<<< HEAD
 // CommentMapはASTノードをそのノードに関連付けられたコメントグループのリストにマップします。
 // 関連付けについては、NewCommentMapの説明を参照してください。
+=======
+// A CommentMap maps an AST node to a list of comment groups
+// associated with it. See [NewCommentMap] for a description of
+// the association.
+>>>>>>> upstream/master
 type CommentMap map[Node][]*CommentGroup
 
 // NewCommentMapは、コメントリストのコメントグループをASTのノードと関連付けて新しいコメントマップを作成します。

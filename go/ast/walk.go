@@ -4,8 +4,14 @@
 
 package ast
 
+<<<<<<< HEAD
 // Walk によって遭遇したノードごとに Visitor の Visit メソッドが呼び出されます。
 // もし結果の visitor w が nil でない場合、Walk はノードの各子ノードを visitor w と共に訪問し、その後に w.Visit(nil) の呼び出しを行います。
+=======
+// A Visitor's Visit method is invoked for each node encountered by [Walk].
+// If the result visitor w is not nil, [Walk] visits each of the children
+// of node with the visitor w, followed by a call of w.Visit(nil).
+>>>>>>> upstream/master
 type Visitor interface {
 	Visit(node Node) (w Visitor)
 }

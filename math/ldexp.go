@@ -4,8 +4,13 @@
 
 package math
 
+<<<<<<< HEAD
 // LdexpはFrexpの逆です。
 // それはfrac × 2 ** expを返します。
+=======
+// Ldexp is the inverse of [Frexp].
+// It returns frac × 2**exp.
+>>>>>>> upstream/master
 //
 // 特別なケースは以下の通りです：
 //

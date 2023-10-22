@@ -12,7 +12,11 @@ import (
 	"github.com/shogo82148/std/reflect"
 )
 
+<<<<<<< HEAD
 // 出力を制御するために、FprintにFieldFilterを指定することができます。
+=======
+// A FieldFilter may be provided to [Fprint] to control the output.
+>>>>>>> upstream/master
 type FieldFilter func(name string, value reflect.Value) bool
 
 // NotNilFilterは、nilでないフィールド値に対してtrueを返します。
@@ -23,9 +27,16 @@ func NotNilFilter(_ string, v reflect.Value) bool
 // もしfset != nilなら、位置情報はそのファイルセットに対して相対的に解釈されます。
 // それ以外の場合は位置は整数値（ファイルセット固有のオフセット）として表示されます。
 //
+<<<<<<< HEAD
 // 非nilのFieldFilter fが提供された場合、出力を制御するために使用されます：
 // f(fieldname, fieldvalue)がtrueを返す構造体フィールドだけが出力されます。
 // それ以外のものは出力からフィルタリングされます。エクスポートされていない構造体フィールドは常に出力されません。
+=======
+// A non-nil [FieldFilter] f may be provided to control the output:
+// struct fields for which f(fieldname, fieldvalue) is true are
+// printed; all others are filtered from the output. Unexported
+// struct fields are never printed.
+>>>>>>> upstream/master
 func Fprint(w io.Writer, fset *token.FileSet, x any, f FieldFilter) error
 
 // Print関数は、nilのフィールドをスキップしてxを標準出力に出力します。

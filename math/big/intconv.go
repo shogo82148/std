@@ -28,7 +28,7 @@ func (x *Int) String() string
 
 var _ fmt.Formatter = intOne
 
-// Format implements fmt.Formatter. It accepts the formats
+// Format implements [fmt.Formatter]. It accepts the formats
 // 'b' (binary), 'o' (octal with 0 prefix), 'O' (octal with 0o prefix),
 // 'd' (decimal), 'x' (lowercase hexadecimal), and
 // 'X' (uppercase hexadecimal).
@@ -43,7 +43,7 @@ func (x *Int) Format(s fmt.State, ch rune)
 
 var _ fmt.Scanner = intOne
 
-// Scan is a support routine for fmt.Scanner; it sets z to the value of
+// Scan is a support routine for [fmt.Scanner]; it sets z to the value of
 // the scanned number. It accepts the formats 'b' (binary), 'o' (octal),
 // 'd' (decimal), 'x' (lowercase hexadecimal), and 'X' (uppercase hexadecimal).
 func (z *Int) Scan(s fmt.ScanState, ch rune) error
