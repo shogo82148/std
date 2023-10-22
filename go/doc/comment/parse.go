@@ -129,7 +129,7 @@ type DocLink struct {
 }
 
 // Parserはドキュメントコメントのパーサーです。
-// 構造体のフィールドは、Parseを呼び出す前に埋めることで、
+// 構造体のフィールドは、[Parser.Parse] を呼び出す前に埋めることで、
 // パースプロセスの詳細をカスタマイズすることができます。
 type Parser struct {
 
@@ -168,13 +168,15 @@ type Parser struct {
 	LookupSym func(recv, name string) (ok bool)
 }
 
-// DefaultLookupPackageは、[Parser].LookupPackageがnilの場合に使用されるデフォルトのパッケージルックアップ関数です。
+// DefaultLookupPackageは、[Parser.LookupPackage] がnilの場合に使用されるデフォルトのパッケージルックアップ関数です。
 // これは、単一要素のインポートパスを持つ標準ライブラリのパッケージ名を認識します。
 // それ以外の場合は、名前を付けることができません。
 //
 // ただし、現在のパッケージで使用されているインポートに基づいたより洗練されたルックアップを提供するgo/docパッケージがあることに注意してください。
 func DefaultLookupPackage(name string) (importPath string, ok bool)
 
+// Parse parses the doc comment text and returns the *[Doc] form.
+// Comment markers (/* // and */) in the text must have already been removed.
 func (p *Parser) Parse(text string) *Doc
 
 const (

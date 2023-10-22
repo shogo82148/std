@@ -20,7 +20,7 @@ const (
 )
 
 // Decode reads a GIF image from r and returns the first embedded
-// image as an image.Image.
+// image as an [image.Image].
 func Decode(r io.Reader) (image.Image, error)
 
 // GIF represents the possibly multiple images stored in a GIF file.

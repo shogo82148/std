@@ -94,7 +94,7 @@ func (t *Table) PCToFunc(pc uint64) *Func
 func (t *Table) PCToLine(pc uint64) (file string, line int, fn *Func)
 
 // LineToPC looks up the first program counter on the given line in
-// the named file. It returns UnknownPathError or UnknownLineError if
+// the named file. It returns [UnknownFileError] or [UnknownLineError] if
 // there is an error looking up this line.
 func (t *Table) LineToPC(file string, line int) (pc uint64, fn *Func, err error)
 

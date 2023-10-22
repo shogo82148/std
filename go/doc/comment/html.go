@@ -4,6 +4,6 @@
 
 package comment
 
-// HTMLはDocのHTML形式を返します。
+// HTMLは [Doc] のHTML形式を返します。
 // HTML出力をカスタマイズする方法については、[Printer]のドキュメントを参照してください。
 func (p *Printer) HTML(d *Doc) []byte

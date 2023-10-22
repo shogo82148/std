@@ -22,16 +22,8 @@ import (
 //
 // golang.org/x/net/publicsuffixパッケージには、公開サフィックスリストの実装があります。
 type PublicSuffixList interface {
-	// PublicSuffix returns the public suffix of domain.
-	//
-	// TODO: specify which of the caller and callee is responsible for IP
-	// addresses, for leading and trailing dots, for case sensitivity, and
-	// for IDN/Punycode.
 	PublicSuffix(domain string) string
 
-	// String returns a description of the source of this public suffix
-	// list. The description will typically contain something like a time
-	// stamp or version number.
 	String() string
 }
 

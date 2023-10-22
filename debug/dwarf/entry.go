@@ -22,7 +22,7 @@ type Entry struct {
 	Field    []Field
 }
 
-// A Field is a single attribute/value pair in an Entry.
+// A Field is a single attribute/value pair in an [Entry].
 //
 // A value can be one of several "attribute classes" defined by DWARF.
 // The Go types corresponding to each class are:
@@ -43,8 +43,8 @@ type Entry struct {
 //	macptr            int64          ClassMacPtr
 //	rangelistptr      int64          ClassRangeListPtr
 //
-// For unrecognized or vendor-defined attributes, Class may be
-// ClassUnknown.
+// For unrecognized or vendor-defined attributes, [Class] may be
+// [ClassUnknown].
 type Field struct {
 	Attr  Attr
 	Val   any
@@ -157,7 +157,7 @@ const (
 
 func (i Class) GoString() string
 
-// Val returns the value associated with attribute Attr in Entry,
+// Val returns the value associated with attribute [Attr] in [Entry],
 // or nil if there is no such attribute.
 //
 // A common idiom is to merge the check for nil return with
@@ -166,19 +166,19 @@ func (i Class) GoString() string
 //	v, ok := e.Val(AttrSibling).(int64)
 func (e *Entry) Val(a Attr) any
 
-// AttrField returns the Field associated with attribute Attr in
-// Entry, or nil if there is no such attribute.
+// AttrField returns the [Field] associated with attribute [Attr] in
+// [Entry], or nil if there is no such attribute.
 func (e *Entry) AttrField(a Attr) *Field
 
-// An Offset represents the location of an Entry within the DWARF info.
-// (See Reader.Seek.)
+// An Offset represents the location of an [Entry] within the DWARF info.
+// (See [Reader.Seek].)
 type Offset uint32
 
-// A Reader allows reading Entry structures from a DWARF “info” section.
-// The Entry structures are arranged in a tree. The Reader's Next function
+// A Reader allows reading [Entry] structures from a DWARF “info” section.
+// The [Entry] structures are arranged in a tree. The [Reader.Next] function
 // return successive entries from a pre-order traversal of the tree.
 // If an entry has children, its Children field will be true, and the children
-// follow, terminated by an Entry with Tag 0.
+// follow, terminated by an [Entry] with [Tag] 0.
 type Reader struct {
 	b            buf
 	d            *Data
@@ -190,7 +190,7 @@ type Reader struct {
 	cu           *Entry
 }
 
-// Reader returns a new Reader for Data.
+// Reader returns a new Reader for [Data].
 // The reader is positioned at byte offset 0 in the DWARF “info” section.
 func (d *Data) Reader() *Reader
 
@@ -201,24 +201,24 @@ func (r *Reader) AddressSize() int
 // ByteOrder returns the byte order in the current compilation unit.
 func (r *Reader) ByteOrder() binary.ByteOrder
 
-// Seek positions the Reader at offset off in the encoded entry stream.
+// Seek positions the [Reader] at offset off in the encoded entry stream.
 // Offset 0 can be used to denote the first entry.
 func (r *Reader) Seek(off Offset)
 
 // Next reads the next entry from the encoded entry stream.
 // It returns nil, nil when it reaches the end of the section.
 // It returns an error if the current offset is invalid or the data at the
-// offset cannot be decoded as a valid Entry.
+// offset cannot be decoded as a valid [Entry].
 func (r *Reader) Next() (*Entry, error)
 
 // SkipChildren skips over the child entries associated with
-// the last Entry returned by Next. If that Entry did not have
-// children or Next has not been called, SkipChildren is a no-op.
+// the last [Entry] returned by [Reader.Next]. If that [Entry] did not have
+// children or [Reader.Next] has not been called, SkipChildren is a no-op.
 func (r *Reader) SkipChildren()
 
-// SeekPC returns the Entry for the compilation unit that includes pc,
+// SeekPC returns the [Entry] for the compilation unit that includes pc,
 // and positions the reader to read the children of that unit.  If pc
-// is not covered by any unit, SeekPC returns ErrUnknownPC and the
+// is not covered by any unit, SeekPC returns [ErrUnknownPC] and the
 // position of the reader is undefined.
 //
 // Because compilation units can describe multiple regions of the
@@ -231,6 +231,6 @@ func (r *Reader) SkipChildren()
 func (r *Reader) SeekPC(pc uint64) (*Entry, error)
 
 // Ranges returns the PC ranges covered by e, a slice of [low,high) pairs.
-// Only some entry types, such as TagCompileUnit or TagSubprogram, have PC
+// Only some entry types, such as [TagCompileUnit] or [TagSubprogram], have PC
 // ranges; for others, this will return nil with no error.
 func (d *Data) Ranges(e *Entry) ([][2]uint64, error)

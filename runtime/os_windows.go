@@ -11,11 +11,6 @@ var (
 
 	_ stdFunction
 
-	// Following syscalls are only available on some Windows PCs.
-	// We will load syscalls, if available, before using them.
-
-	_ stdFunction
-
 	// These are from non-kernel32.dll, so we prefer to LoadLibraryEx them.
 
 	_ stdFunction

@@ -21,5 +21,5 @@ var IllegalPrefixes = []string{
 // Synopsisは、テキスト内の最初の文のクリーニングされたバージョンを返します。
 // その文は、最初のピリオドの後に空白が続き、正確に1つの大文字で始まっていない、または最初の段落区切りの直前に終わります。
 // 結果の文字列には、\n、\r、または\tの文字がなく、単語間には単一のスペースのみが使用されます。
-// テキストがIllegalPrefixesのいずれかで始まる場合、結果は空の文字列です。
+// テキストが [IllegalPrefixes] のいずれかで始まる場合、結果は空の文字列です。
 func (p *Package) Synopsis(text string) string

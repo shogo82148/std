@@ -17,7 +17,7 @@ import (
 // than Int values, and each unique Int value requires
 // its own unique *Int pointer. To "copy" an Int value,
 // an existing (or newly allocated) Int must be set to
-// a new value using the Int.Set method; shallow copies
+// a new value using the [Int.Set] method; shallow copies
 // of Ints are not supported and may lead to errors.
 //
 // Note that methods may leak the Int's value through timing side-channels.
@@ -45,23 +45,23 @@ func (z *Int) SetInt64(x int64) *Int
 // SetUint64 sets z to x and returns z.
 func (z *Int) SetUint64(x uint64) *Int
 
-// NewInt allocates and returns a new Int set to x.
+// NewInt allocates and returns a new [Int] set to x.
 func NewInt(x int64) *Int
 
 // Set sets z to x and returns z.
 func (z *Int) Set(x *Int) *Int
 
 // Bits provides raw (unchecked but fast) access to x by returning its
-// absolute value as a little-endian Word slice. The result and x share
+// absolute value as a little-endian [Word] slice. The result and x share
 // the same underlying array.
-// Bits is intended to support implementation of missing low-level Int
+// Bits is intended to support implementation of missing low-level [Int]
 // functionality outside this package; it should be avoided otherwise.
 func (x *Int) Bits() []Word
 
 // SetBits provides raw (unchecked but fast) access to z by setting its
-// value to abs, interpreted as a little-endian Word slice, and returning
+// value to abs, interpreted as a little-endian [Word] slice, and returning
 // z. The result and abs share the same underlying array.
-// SetBits is intended to support implementation of missing low-level Int
+// SetBits is intended to support implementation of missing low-level [Int]
 // functionality outside this package; it should be avoided otherwise.
 func (z *Int) SetBits(abs []Word) *Int
 
@@ -90,12 +90,12 @@ func (z *Int) Binomial(n, k int64) *Int
 
 // Quo sets z to the quotient x/y for y != 0 and returns z.
 // If y == 0, a division-by-zero run-time panic occurs.
-// Quo implements truncated division (like Go); see QuoRem for more details.
+// Quo implements truncated division (like Go); see [Int.QuoRem] for more details.
 func (z *Int) Quo(x, y *Int) *Int
 
 // Rem sets z to the remainder x%y for y != 0 and returns z.
 // If y == 0, a division-by-zero run-time panic occurs.
-// Rem implements truncated modulus (like Go); see QuoRem for more details.
+// Rem implements truncated modulus (like Go); see [Int.QuoRem] for more details.
 func (z *Int) Rem(x, y *Int) *Int
 
 // QuoRem sets z to the quotient x/y and r to the remainder x%y
@@ -113,12 +113,12 @@ func (z *Int) QuoRem(x, y, r *Int) (*Int, *Int)
 
 // Div sets z to the quotient x/y for y != 0 and returns z.
 // If y == 0, a division-by-zero run-time panic occurs.
-// Div implements Euclidean division (unlike Go); see DivMod for more details.
+// Div implements Euclidean division (unlike Go); see [Int.DivMod] for more details.
 func (z *Int) Div(x, y *Int) *Int
 
 // Mod sets z to the modulus x%y for y != 0 and returns z.
 // If y == 0, a division-by-zero run-time panic occurs.
-// Mod implements Euclidean modulus (unlike Go); see DivMod for more details.
+// Mod implements Euclidean modulus (unlike Go); see [Int.DivMod] for more details.
 func (z *Int) Mod(x, y *Int) *Int
 
 // DivMod sets z to the quotient x div y and m to the modulus x mod y
@@ -134,7 +134,7 @@ func (z *Int) Mod(x, y *Int) *Int
 // div and mod”. ACM Transactions on Programming Languages and
 // Systems (TOPLAS), 14(2):127-144, New York, NY, USA, 4/1992.
 // ACM press.)
-// See QuoRem for T-division and modulus (like Go).
+// See [Int.QuoRem] for T-division and modulus (like Go).
 func (z *Int) DivMod(x, y, m *Int) (*Int, *Int)
 
 // Cmp compares x and y and returns:
@@ -174,7 +174,7 @@ func (x *Int) Float64() (float64, Accuracy)
 // (not just a prefix) must be valid for success. If SetString fails,
 // the value of z is undefined but the returned value is nil.
 //
-// The base argument must be 0 or a value between 2 and MaxBase.
+// The base argument must be 0 or a value between 2 and [MaxBase].
 // For base 0, the number prefix determines the actual base: A prefix of
 // “0b” or “0B” selects base 2, “0”, “0o” or “0O” selects base 8,
 // and “0x” or “0X” selects base 16. Otherwise, the selected base is 10
@@ -199,7 +199,7 @@ func (z *Int) SetBytes(buf []byte) *Int
 
 // Bytes returns the absolute value of x as a big-endian byte slice.
 //
-// To use a fixed length slice, or a preallocated one, use FillBytes.
+// To use a fixed length slice, or a preallocated one, use [Int.FillBytes].
 func (x *Int) Bytes() []byte
 
 // FillBytes sets buf to the absolute value of x, storing it as a zero-extended
@@ -239,8 +239,8 @@ func (z *Int) GCD(x, y, a, b *Int) *Int
 
 // Rand sets z to a pseudo-random number in [0, n) and returns z.
 //
-// As this uses the math/rand package, it must not be used for
-// security-sensitive work. Use crypto/rand.Int instead.
+// As this uses the [math/rand] package, it must not be used for
+// security-sensitive work. Use [crypto/rand.Int] instead.
 func (z *Int) Rand(rnd *rand.Rand, n *Int) *Int
 
 // ModInverse sets z to the multiplicative inverse of g in the ring ℤ/nℤ

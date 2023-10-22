@@ -9,7 +9,7 @@ import (
 )
 
 // CommentMapはASTノードをそのノードに関連付けられたコメントグループのリストにマップします。
-// 関連付けについては、NewCommentMapの説明を参照してください。
+// 関連付けについては、[NewCommentMap] の説明を参照してください。
 type CommentMap map[Node][]*CommentGroup
 
 // NewCommentMapは、コメントリストのコメントグループをASTのノードと関連付けて新しいコメントマップを作成します。

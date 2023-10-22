@@ -65,5 +65,5 @@ func (l *DocLink) DefaultURL(baseURL string) string
 // 例えば、見出しのテキストが「Go Doc Comments」の場合、デフォルトのIDは「hdr-Go_Doc_Comments」となります。
 func (h *Heading) DefaultID() string
 
-// Commentは、コメントマーカーなしでのDocの標準的なGoのフォーマットを返します。
+// Commentは、コメントマーカーなしでの [Doc] の標準的なGoのフォーマットを返します。
 func (p *Printer) Comment(d *Doc) []byte

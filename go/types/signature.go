@@ -21,7 +21,8 @@ type Signature struct {
 }
 
 // NewSignatureは与えられたレシーバ、パラメータ、戻り値のための新しい関数型を返します。それぞれnilにすることもできます。もしvariadicがtrueに設定されている場合、関数は可変長引数を持ち、少なくとも1つのパラメータを持つ必要があります。また、最後のパラメータは無名のスライス型である必要があります。
-// 廃止されました: 代わりに型パラメータを使用できるNewSignatureTypeを使用してください。
+//
+// Deprecated: 代わりに型パラメータを使用できる [NewSignatureType] を使用してください。
 func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 
 // NewSignatureTypeは、与えられたレシーバ、レシーバタイプパラメータ、
@@ -36,7 +37,7 @@ func NewSignatureType(recv *Var, recvTypeParams, typeParams []*TypeParam, params
 // function. It is ignored when comparing signatures for identity.
 //
 // For an abstract method, Recv returns the enclosing interface either
-// as a *Named or an *Interface. Due to embedding, an interface may
+// as a *[Named] or an *[Interface]. Due to embedding, an interface may
 // contain methods whose receiver type is a different interface.
 func (s *Signature) Recv() *Var
 

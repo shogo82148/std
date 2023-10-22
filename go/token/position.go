@@ -32,7 +32,7 @@ func (pos *Position) IsValid() bool
 func (pos Position) String() string
 
 // Posはファイルセット内のソース位置のコンパクトなエンコーディングです。
-// より便利ながらもはるかに大きい表現のために、Positionに変換することができます。
+// より便利ながらもはるかに大きい表現のために、[Position] に変換することができます。
 //
 // 与えられたファイルに対するPosの値は、[base、base+size]の範囲内の数値です。
 // baseとsizeは、ファイルがファイルセットに追加される際に指定されます。
@@ -40,24 +40,24 @@ func (pos Position) String() string
 // したがって、ファイルベースオフセットは、ファイル内の最初のバイトを表すPosの値です。
 //
 // 特定のソースオフセット（バイト単位で測定される）のPos値を作成するには、
-// まずFileSet.AddFileを使用して対応するファイルを現在のファイルセットに追加し、
-// そのファイルのためにFile.Pos(offset)を呼び出します。
-// 特定のファイルセットfsetに対するPos値pを持つ場合、対応するPosition値はfset.Position(p)を呼び出すことで得られます。
+// まず [FileSet.AddFile] を使用して対応するファイルを現在のファイルセットに追加し、
+// そのファイルのために[File.Pos](offset)を呼び出します。
+// 特定のファイルセットfsetに対するPos値pを持つ場合、対応する [Position] 値はfset.Position(p)を呼び出すことで得られます。
 //
 // Pos値は通常の比較演算子を使って直接比較することができます：
 // 2つのPos値pとqが同じファイルにある場合、pとqを比較することは、対応するソースファイルのオフセットを比較することと等価です。
 // pとqが異なるファイルにある場合、qによって指定されるファイルがpによって指定されるファイルよりも前に対応するファイルセットに追加された場合、p < qはtrueです。
 type Pos int
 
-// Posのゼロ値はNoPosであり、ファイルおよび行情報は関連付けられていません。
-// また、NoPos.IsValid()はfalseです。NoPosは常に他のPos値よりも小さくなります。
-// NoPosに対応するPosition値はPositionのゼロ値です。
+// [Pos] のゼロ値はNoPosであり、ファイルおよび行情報は関連付けられていません。
+// また、NoPos.IsValid()はfalseです。NoPosは常に他の [Pos] 値よりも小さくなります。
+// NoPosに対応する [Position] 値は [Position] のゼロ値です。
 const NoPos Pos = 0
 
 // IsValid は位置が有効かどうかを報告します。
 func (p Pos) IsValid() bool
 
-// Fileは、FileSetに属するファイルのハンドルです。
+// Fileは、[FileSet] に属するファイルのハンドルです。
 // Fileには名前、サイズ、行オフセット表があります。
 type File struct {
 	name string
@@ -86,10 +86,10 @@ func (f *File) LineCount() int
 // 行オフセットは前の行のオフセットよりも大きく、ファイルのサイズよりも小さい必要があります。そうでない場合、行オフセットは無視されます。
 func (f *File) AddLine(offset int)
 
-// MergeLineは、次の行と行を結合します。これは、行の末尾の改行文字をスペースで置き換えることに似ています（残りのオフセットは変更されません）。行番号を取得するには、Position.Lineなどを参照してください。無効な行番号が指定された場合、MergeLineはパニックを起こします。
+// MergeLineは、次の行と行を結合します。これは、行の末尾の改行文字をスペースで置き換えることに似ています（残りのオフセットは変更されません）。行番号を取得するには、[Position.Line] などを参照してください。無効な行番号が指定された場合、MergeLineはパニックを起こします。
 func (f *File) MergeLine(line int)
 
-// LinesはSetLinesで指定された形式の効果的な行オフセットの表を返します。
+// Linesは [File.SetLines] で指定された形式の効果的な行オフセットの表を返します。
 // 呼び出し元は結果を変更してはいけません。
 func (f *File) Lines() []int
 
@@ -106,12 +106,12 @@ func (f *File) SetLines(lines []int) bool
 // 位置を変更する//lineコメントは無視されます。
 func (f *File) SetLinesForContent(content []byte)
 
-// LineStartは指定された行の開始位置のPos値を返します。
-// AddLineColumnInfoを使用して設定された代替の位置は無視されます。
+// LineStartは指定された行の開始位置の [Pos] 値を返します。
+// [File.AddLineColumnInfo] を使用して設定された代替の位置は無視されます。
 // LineStartは、1ベースの行番号が無効な場合にパニックを引き起こします。
 func (f *File) LineStart(line int) Pos
 
-// AddLineInfoは、Column = 1引数を持つAddLineColumnInfoと同様です。
+// AddLineInfoは、Column = 1引数を持つ [File.AddLineColumnInfo] と同様です。
 // Go 1.11より前のコードの後方互換性のためにここにあります。
 func (f *File) AddLineInfo(offset int, filename string, line int)
 
@@ -125,12 +125,12 @@ func (f *File) AddLineColumnInfo(offset int, filename string, line, column int)
 func (f *File) Pos(offset int) Pos
 
 // Offsetは与えられたファイル位置pのオフセットを返します。
-// pはそのファイル内で有効なPosの値でなければなりません。
+// pはそのファイル内で有効な [Pos] の値でなければなりません。
 // f.Offset(f.Pos(offset)) == offset。
 func (f *File) Offset(p Pos) int
 
 // Lineは与えられたファイル位置pの行番号を返します。
-// pはそのファイル内のPos値またはNoPosでなければなりません。
+// pはそのファイル内の [Pos] 値または [NoPos] でなければなりません。
 func (f *File) Line(p Pos) int
 
 // PositionForは、指定されたファイルの位置pに対するPositionの値を返します。
@@ -145,11 +145,11 @@ func (f *File) Position(p Pos) (pos Position)
 // FileSetはソースファイルの集合を表します。
 // ファイルセットのメソッドは同期されており、複数のゴルーチンが同時に呼び出すことができます。
 //
-// ファイルセット内の各ファイルのバイトオフセットは、異なる（整数）間隔、すなわち間隔[base、base+size]にマッピングされます。 baseはファイルの最初のバイトを表し、sizeは対応するファイルサイズです。 Pos値はそのような間隔内の値です。 Pos値が属する間隔を決定することで、ファイル、そのファイルのベース、そしてPos値が表しているバイトオフセット（位置）を計算することができます。
+// ファイルセット内の各ファイルのバイトオフセットは、異なる（整数）間隔、すなわち間隔[base、base+size]にマッピングされます。 [FileSet.Base] はファイルの最初のバイトを表し、sizeは対応するファイルサイズです。 [Pos] 値はそのような間隔内の値です。 [Pos] 値が属する間隔を決定することで、ファイル、そのファイルのベース、そして [Pos] 値が表しているバイトオフセット（位置）を計算することができます。
 //
-// 新しいファイルを追加する際には、ファイルベースが必要です。それはすでにファイルセット内の任意のファイルの間隔の終わりを過ぎた整数値である必要があります。便宜上、FileSet.Baseはそのような値を提供します。それは単純に最後に追加されたファイルのPos間隔の終わりの位置に+1した値です。後で間隔を拡張する必要がない場合は、FileSet.BaseをFileSet.AddFileの引数として使用する必要があります。
+// 新しいファイルを追加する際には、ファイルベースが必要です。それはすでにファイルセット内の任意のファイルの間隔の終わりを過ぎた整数値である必要があります。便宜上、 [FileSet.Base] はそのような値を提供します。それは単純に最後に追加されたファイルのPos間隔の終わりの位置に+1した値です。後で間隔を拡張する必要がない場合は、 [FileSet.Base] を [FileSet.AddFile] の引数として使用する必要があります。
 //
-// FileSetが不要な場合、FileはFileSetから削除することができます。これにより、長時間実行されるアプリケーションでメモリ使用量を削減することができます。
+// FileSetが不要な場合、 [File] はFileSetから削除することができます。これにより、長時間実行されるアプリケーションでメモリ使用量を削減することができます。
 type FileSet struct {
 	mutex sync.RWMutex
 	base  int
@@ -160,17 +160,17 @@ type FileSet struct {
 // NewFileSetは新しいファイルセットを作成します。
 func NewFileSet() *FileSet
 
-// Baseは、次のファイルを追加する際にAddFileに提供する必要がある最小のベースオフセットを返します。
+// Baseは、次のファイルを追加する際に [FileSet.AddFile] に提供する必要がある最小のベースオフセットを返します。
 func (s *FileSet) Base() int
 
-// AddFileは、指定されたファイル名、ベースオフセット、ファイルサイズを持つ新しいファイルをファイルセットsに追加し、ファイルを返します。複数のファイルは同じ名前を持つことができます。ベースオフセットは、FileSetのBase()より小さくはならず、サイズは負であってはいけません。特別なケースとして、負のベースが提供された場合、FileSetのBase()の現在の値が代わりに使用されます。
-// ファイルを追加すると、次のファイルのための最小ベース値として、ファイルセットのBase()の値はbase + size + 1に設定されます。与えられたファイルオフセットoffsに対するPos値pの関係は次のとおりです：
+// AddFileは、指定されたファイル名、ベースオフセット、ファイルサイズを持つ新しいファイルをファイルセットsに追加し、ファイルを返します。複数のファイルは同じ名前を持つことができます。ベースオフセットは、 [FileSet.Base] より小さくはならず、サイズは負であってはいけません。特別なケースとして、負のベースが提供された場合、 [FileSet.Base] の現在の値が代わりに使用されます。
+// ファイルを追加すると、次のファイルのための最小ベース値として、 [FileSet.Base] の値はbase + size + 1に設定されます。与えられたファイルオフセットoffsに対する [Pos] 値pの関係は次のとおりです：
 // int(p) = base + offs
-// ただし、offsは範囲[0、size]にあり、したがってpは範囲[base、base+size]にあります。便宜上、File.Posはファイル固有の位置値をファイルオフセットから作成するために使用できます。
+// ただし、offsは範囲[0、size]にあり、したがってpは範囲[base、base+size]にあります。便宜上、 [File.Pos] はファイル固有の位置値をファイルオフセットから作成するために使用できます。
 func (s *FileSet) AddFile(filename string, base, size int) *File
 
-// RemoveFileは、FileSetからファイルを削除し、その後のPos間隔のクエリが負の結果を返すようにします。
-// これにより、長寿命のFileSetのメモリ使用量が減少し、無制限のファイルストリームに遭遇した場合でも処理が可能になります。
+// RemoveFileは、 [FileSet] からファイルを削除し、その後の [Pos] 間隔のクエリが負の結果を返すようにします。
+// これにより、長寿命の [FileSet] のメモリ使用量が減少し、無制限のファイルストリームに遭遇した場合でも処理が可能になります。
 //
 // セットに属さないファイルを削除しても効果はありません。
 func (s *FileSet) RemoveFile(file *File)
@@ -179,15 +179,15 @@ func (s *FileSet) RemoveFile(file *File)
 func (s *FileSet) Iterate(f func(*File) bool)
 
 // File関数は、位置pを含むファイルを返します。
-// 該当するファイルが見つからない場合（たとえばp == NoPosの場合）、結果はnilです。
+// 該当するファイルが見つからない場合（たとえばp == [NoPos] の場合）、結果はnilです。
 func (s *FileSet) File(p Pos) (f *File)
 
-// PositionForは、ファイルセット内の位置pをPosition値に変換します。
+// PositionForは、ファイルセット内の [Pos] pを [Position] 値に変換します。
 // adjustedが設定されている場合、位置は位置変更を行うコメントによって調整される可能性があります。
 // そうでなければ、そのコメントは無視されます。
-// pはsまたはNoPosのPos値でなければなりません。
+// pはsまたは [NoPos] の [Pos] 値でなければなりません。
 func (s *FileSet) PositionFor(p Pos, adjusted bool) (pos Position)
 
-// Positionはファイルセット内のPos pをPosition値に変換します。
+// Positionはファイルセット内の [Pos] pをPosition値に変換します。
 // s.Position(p)を呼び出すことは、s.PositionFor(p, true)を呼び出すことと同じです。
 func (s *FileSet) Position(p Pos) (pos Position)

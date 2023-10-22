@@ -71,20 +71,8 @@ func NewEngine() *Engine
 
 // A Cmd is a command that is available to a script.
 type Cmd interface {
-	// Run begins running the command.
-	//
-	// If the command produces output or can be run in the background, run returns
-	// a WaitFunc that will be called to obtain the result of the command and
-	// update the engine's stdout and stderr buffers.
-	//
-	// Run itself and the returned WaitFunc may inspect and/or modify the State,
-	// but the State's methods must not be called concurrently after Run has
-	// returned.
-	//
-	// Run may retain and access the args slice until the WaitFunc has returned.
 	Run(s *State, args ...string) (WaitFunc, error)
 
-	// Usage returns the usage for the command, which the caller must not modify.
 	Usage() *CmdUsage
 }
 
@@ -114,14 +102,8 @@ type CmdUsage struct {
 
 // A Cond is a condition deciding whether a command should be run.
 type Cond interface {
-	// Eval reports whether the condition applies to the given State.
-	//
-	// If the condition's usage reports that it is a prefix,
-	// the condition must be used with a suffix.
-	// Otherwise, the passed-in suffix argument is always the empty string.
 	Eval(s *State, suffix string) (bool, error)
 
-	// Usage returns the usage for the condition, which the caller must not modify.
 	Usage() *CondUsage
 }
 

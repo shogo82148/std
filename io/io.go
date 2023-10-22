@@ -33,15 +33,15 @@ var ErrShortBuffer = errors.New("short buffer")
 // EOFをテストするために呼び出し元で==を使用するためです。）
 // 関数は、入力の優雅な終了を示すために、EOFのみを返すべきです。
 // もしEOFが構造化されたデータストリームで予期しない場所で発生した場合、
-// 適切なエラーはErrUnexpectedEOFまたはその他の詳細を示すエラーです。
+// 適切なエラーは [ErrUnexpectedEOF] またはその他の詳細を示すエラーです。
 var EOF = errors.New("EOF")
 
 // ErrUnexpectedEOFは、固定サイズのブロックまたはデータ構造の読み取り途中にEOFが出現したことを意味します。
 var ErrUnexpectedEOF = errors.New("unexpected EOF")
 
-// ErrNoProgressは、一部のReaderのクライアントがデータやエラーを返さずに、
+// ErrNoProgressは、一部の [Reader] のクライアントがデータやエラーを返さずに、
 // 複数回のRead呼び出しが失敗した場合に返されます。
-// 通常は、破損したReaderの実装を示しています。
+// 通常は、破損した [Reader] の実装を示しています。
 var ErrNoProgress = errors.New("multiple Read calls return no data or error")
 
 // Readerは基本的なReadメソッドをラップするインターフェースです。
@@ -79,9 +79,9 @@ type Closer interface {
 // Seekerは基本のSeekメソッドをラップするインターフェースです。
 // Seekは、オフセットを次のReadまたはWriteのために設定します。
 // whenceに従って解釈されます。
-// SeekStartはファイルの先頭を基準とします。
-// SeekCurrentは現在のオフセットを基準とします。
-// SeekEndは末尾を基準とします。
+// [SeekStart] はファイルの先頭を基準とします。
+// [SeekCurrent] は現在のオフセットを基準とします。
+// [SeekEnd] は末尾を基準とします。
 // (例えば、offset = -2はファイルの最後から1つ前のバイトを指定します)。
 // Seekは、ファイルの先頭を基準とした新たなオフセットまたはエラーを返します。
 // ファイルの先頭より前のオフセットにシークすることはエラーです。
@@ -149,7 +149,7 @@ type ReadWriteSeeker interface {
 // 返り値のnは読み取られたバイト数です。
 // 読み取り中にEOF以外のエラーも返されます。
 //
-// Copy関数はReaderFromが利用可能な場合に使用します。
+// [Copy] 関数は [ReaderFrom] が利用可能な場合に使用します。
 type ReaderFrom interface {
 	ReadFrom(r Reader) (n int64, err error)
 }
@@ -212,7 +212,7 @@ type WriterAt interface {
 // エラーが発生した場合、入力バイトは消費されず、返されるバイト値は未定義です。
 //
 // ReadByteはバイト単位の効率的な処理を提供します。
-// ByteReaderを実装していないReaderは、bufio.NewReaderを使用してこのメソッドを追加することができます。
+// ByteReaderを実装していない [Reader] は、bufio.NewReaderを使用してこのメソッドを追加することができます。
 type ByteReader interface {
 	ReadByte() (byte, error)
 }
@@ -222,7 +222,7 @@ type ByteReader interface {
 // UnreadByteは、次のReadByte呼び出しで最後に読み込まれたバイトを返します。
 // 最後の操作がReadByteへの成功した呼び出しでない場合、UnreadByteはエラーを返す可能性があります。
 // 最後に読み込まれたバイト（または最後に読み込まれていないバイトの前のバイト）を未読状態に戻すか、
-// （Seekerインターフェースをサポートする実装の場合）現在のオフセットの1バイト前にシークします。
+// （[Seeker] インターフェースをサポートする実装の場合）現在のオフセットの1バイト前にシークします。
 type ByteScanner interface {
 	ByteReader
 	UnreadByte() error
@@ -245,7 +245,7 @@ type RuneReader interface {
 //
 // UnreadRuneは次のReadRune呼び出しで最後に読み取られたルーンを返します。
 // もし最後の操作が成功したReadRune呼び出しでない場合、UnreadRuneはエラーを返す、最後に読み取られたルーン（または最後に未読となったルーンの前のルーン）を未読扱いにする、
-// または（Seekerインターフェースをサポートする実装の場合）現在のオフセットの直前のルーンの先頭にシークする可能性があります。
+// または（[Seeker] インターフェースをサポートする実装の場合）現在のオフセットの直前のルーンの先頭にシークする可能性があります。
 type RuneScanner interface {
 	RuneReader
 	UnreadRune() error
@@ -264,8 +264,8 @@ func WriteString(w Writer, s string) (n int, err error)
 // ReadAtLeastは、rからbufに少なくともminバイト読み取るまで読み取ります。
 // 読み取られたバイト数と、読み取りが少なかった場合のエラーを返します。
 // エラーがEOFの場合、読み取られたバイトがない場合のみです。
-// minバイト未満の読み取り後にEOFが発生した場合、ReadAtLeastはErrUnexpectedEOFを返します。
-// minがbufの長さよりも大きい場合、ReadAtLeastはErrShortBufferを返します。
+// minバイト未満の読み取り後にEOFが発生した場合、ReadAtLeastは [ErrUnexpectedEOF] を返します。
+// minがbufの長さよりも大きい場合、ReadAtLeastは [ErrShortBuffer] を返します。
 // 戻り値のn >= min if and only if err == nil。
 // rが少なくともminバイトを読み取った後にエラーが発生した場合、エラーは破棄されます。
 func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
@@ -273,7 +273,7 @@ func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
 // ReadFullはrからbufにちょうどlen(buf)バイト読み込みます。
 // 読み込まれたバイト数と、読み込まれたバイト数が少なかった場合のエラーが返されます。
 // エラーは、バイトが一つも読み込まれなかった場合にのみEOFです。
-// 一部のバイトが読み込まれた後にEOFが発生した場合、ReadFullはErrUnexpectedEOFを返します。
+// 一部のバイトが読み込まれた後にEOFが発生した場合、ReadFullは [ErrUnexpectedEOF] を返します。
 // 返り値では、n == len(buf)であるのはerr == nilの場合のみです。
 // rが少なくともlen(buf)バイトを読み込んだ後にエラーが発生した場合、そのエラーは無視されます。
 func ReadFull(r Reader, buf []byte) (n int, err error)
@@ -315,7 +315,7 @@ type LimitedReader struct {
 
 func (l *LimitedReader) Read(p []byte) (n int, err error)
 
-// NewSectionReaderは、rからオフセットoffで読み取りを開始し、nバイト後にEOFで停止するSectionReaderを返します。
+// NewSectionReaderは、rからオフセットoffで読み取りを開始し、nバイト後にEOFで停止する [SectionReader] を返します。
 func NewSectionReader(r ReaderAt, off int64, n int64) *SectionReader
 
 // SectionReaderは、元となる [ReaderAt] の一部に対してRead、Seek、ReadAtを実装します。
@@ -336,10 +336,10 @@ func (s *SectionReader) ReadAt(p []byte, off int64) (n int, err error)
 // Size はセクションのサイズをバイト単位で返します。
 func (s *SectionReader) Size() int64
 
-// Outer returns the underlying ReaderAt and offsets for the section.
+// Outer returns the underlying [ReaderAt] and offsets for the section.
 //
-// The returned values are the same that were passed to NewSectionReader
-// when the SectionReader was created.
+// The returned values are the same that were passed to [NewSectionReader]
+// when the [SectionReader] was created.
 func (s *SectionReader) Outer() (r ReaderAt, off int64, n int64)
 
 // OffsetWriterは、基準オフセットから基準オフセット+オフセットの範囲で下位のライターへの書き込みをマッピングします。
@@ -349,7 +349,7 @@ type OffsetWriter struct {
 	off  int64
 }
 
-// NewOffsetWriterは、オフセットoffから書き込むOffsetWriterを返します。
+// NewOffsetWriterは、オフセットoffから書き込む [OffsetWriter] を返します。
 func NewOffsetWriter(w WriterAt, off int64) *OffsetWriter
 
 func (o *OffsetWriter) Write(p []byte) (n int, err error)
@@ -358,7 +358,7 @@ func (o *OffsetWriter) WriteAt(p []byte, off int64) (n int, err error)
 
 func (o *OffsetWriter) Seek(offset int64, whence int) (int64, error)
 
-// TeeReaderは、rから読み取ったものをwに書き込むReaderを返します。
+// TeeReaderは、rから読み取ったものをwに書き込む [Reader] を返します。
 // これを通じて実行されるrからの全ての読み取りは、
 // 対応するwへの書き込みとマッチングされます。
 // 内部バッファリングはありません -
@@ -366,14 +366,14 @@ func (o *OffsetWriter) Seek(offset int64, whence int) (int64, error)
 // 書き込み中にエラーが発生した場合、読み取りエラーとして報告されます。
 func TeeReader(r Reader, w Writer) Reader
 
-// Discardは、何もせずにすべての書き込み呼び出しに成功するWriterです。
+// Discardは、何もせずにすべての書き込み呼び出しに成功する [Writer] です。
 var Discard Writer = discard{}
 
 // discardは、最適化としてReaderFromを実装しています。そのため、io.DiscardへのCopyに不要な作業を避けることができます。
 var _ ReaderFrom = discard{}
 
 // NopCloser は、提供された [Reader] r を包む、Close メソッドの動作がない [ReadCloser] を返します。
-// r が [WriterTo] を実装している場合、返された ReadCloser は WriterTo を実装し、
+// r が [WriterTo] を実装している場合、返された [ReadCloser] は [WriterTo] を実装し、
 // 呼び出しを r に転送します。
 func NopCloser(r Reader) ReadCloser
 

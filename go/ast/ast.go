@@ -35,7 +35,7 @@ type Decl interface {
 
 // Commentノードは、単一の//-スタイルまたは/*-スタイルのコメントを表します。
 //
-// Textフィールドには、ソースに存在した可能性のあるキャリッジリターン（\r）を含まないコメントテキストが含まれます。コメントの終了位置はlen（Text）を使用して計算されるため、End（）によって報告される位置は、キャリッジリターンを含むコメントの真のソース終了位置と一致しません。
+// Textフィールドには、ソースに存在した可能性のあるキャリッジリターン（\r）を含まないコメントテキストが含まれます。コメントの終了位置はlen（Text）を使用して計算されるため、[Comment.End] によって報告される位置は、キャリッジリターンを含むコメントの真のソース終了位置と一致しません。
 type Comment struct {
 	Slash token.Pos
 	Text  string
@@ -61,7 +61,7 @@ func (g *CommentGroup) End() token.Pos
 func (g *CommentGroup) Text() string
 
 // Fieldは、struct型のフィールド宣言リスト、インタフェース型のメソッドリスト、またはシグネチャのパラメータ/結果の宣言を表します。
-// Field.Namesは、無名のパラメータ（型のみを含むパラメータリスト）や埋め込まれたstructフィールドの場合はnilです。
+// [Field.Names] は、無名のパラメータ（型のみを含むパラメータリスト）や埋め込まれたstructフィールドの場合はnilです。
 // 後者の場合、フィールド名は型名です。
 type Field struct {
 	Doc     *CommentGroup
@@ -86,7 +86,7 @@ func (f *FieldList) Pos() token.Pos
 
 func (f *FieldList) End() token.Pos
 
-// NumFieldsはFieldListによって表されるパラメータまたは構造体のフィールドの数を返します。
+// NumFieldsは [FieldList] によって表されるパラメータまたは構造体のフィールドの数を返します。
 func (f *FieldList) NumFields() int
 
 // 式は、以下の具体的な式ノードを1つ以上含む木で表されます。
@@ -327,7 +327,7 @@ func (x *InterfaceType) End() token.Pos
 func (x *MapType) End() token.Pos
 func (x *ChanType) End() token.Pos
 
-// NewIdentは位置情報のない新しいIdentを作成します。
+// NewIdentは位置情報のない新しい [Ident] を作成します。
 // Goパーサー以外のコードで生成されたASTに便利です。
 func NewIdent(name string) *Ident
 
@@ -646,11 +646,11 @@ func (d *FuncDecl) End() token.Pos
 //
 // コメントを含むソースコードを正しく出力するために（パッケージgo/formatとgo/printerを使用して）特別な注意が必要です：
 // コメントは、位置に基づいてトークンの間に挿入されます。構文木ノードが削除または移動される場合、
-// その近くにある関連するコメントも削除（File.Commentsリストから）またはそれらの位置を更新して移動しなければなりません。
-// これらの操作の一部を容易にするために、CommentMapを使用することもできます。
+// その近くにある関連するコメントも削除（ [File.Comments] リストから）またはそれらの位置を更新して移動しなければなりません。
+// これらの操作の一部を容易にするために、[CommentMap] を使用することもできます。
 //
 // コメントがノードとどのように関連付けられるかは、操作するプログラムによる構文木の解釈に依存します：
-// DocとCommentコメント以外の残りのコメントは、「free-floating」です（#18593号、#20744号も参照）。
+// Docと [Comment] コメント以外の残りのコメントは、「free-floating」です（#18593号、#20744号も参照）。
 type File struct {
 	Doc     *CommentGroup
 	Package token.Pos

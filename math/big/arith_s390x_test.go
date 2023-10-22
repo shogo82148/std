@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build s390x && !math_big_pure_go
-// +build s390x,!math_big_pure_go
 
 package big

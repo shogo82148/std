@@ -29,7 +29,7 @@ type Config struct {
 }
 
 // CommentedNodeは、ASTノードと対応するコメントをまとめたものです。
-// これは、Fprint関数の引数として提供することができます。
+// これは、[Fprint] 関数の引数として提供することができます。
 type CommentedNode struct {
 	Node     any
 	Comments []*ast.CommentGroup
@@ -37,7 +37,7 @@ type CommentedNode struct {
 
 // Fprintは与えられた設定cfgに対して、ASTノードを出力に「きれいに表示」します。
 // 位置情報はファイルセットfsetを基準に解釈されます。
-// ノードの型は *ast.File、*CommentedNode、[]ast.Decl、[]ast.Stmt、または ast.Expr、ast.Decl、ast.Spec、ast.Stmtに互換性のあるものである必要があります。
+// ノードの型は *[ast.File]、*[CommentedNode]、[][ast.Decl]、[][ast.Stmt]、または [ast.Expr]、[ast.Decl]、[ast.Spec]、[ast.Stmt] に互換性のあるものである必要があります。
 func (cfg *Config) Fprint(output io.Writer, fset *token.FileSet, node any) error
 
 // FprintはASTノードを出力に「整形表示」します。

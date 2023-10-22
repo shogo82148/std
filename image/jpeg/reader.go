@@ -22,14 +22,14 @@ type UnsupportedError string
 
 func (e UnsupportedError) Error() string
 
-// Deprecated: Reader is not used by the image/jpeg package and should
+// Deprecated: Reader is not used by the [image/jpeg] package and should
 // not be used by others. It is kept for compatibility.
 type Reader interface {
 	io.ByteReader
 	io.Reader
 }
 
-// Decode reads a JPEG image from r and returns it as an image.Image.
+// Decode reads a JPEG image from r and returns it as an [image.Image].
 func Decode(r io.Reader) (image.Image, error)
 
 // DecodeConfig returns the color model and dimensions of a JPEG image without

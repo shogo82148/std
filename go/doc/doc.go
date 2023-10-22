@@ -88,7 +88,7 @@ type Note struct {
 	Body     string
 }
 
-// Modeの値は、NewとNewFromFilesの動作を制御します。
+// Modeの値は、[New] と [NewFromFiles] の動作を制御します。
 type Mode int
 
 const (
@@ -105,7 +105,7 @@ const (
 
 // Newは指定されたパッケージASTのパッケージドキュメントを計算します。
 // NewはAST pkgを所有し、編集または上書きすることができます。
-// Examplesフィールドが入力されている場合は、NewFromFilesを使用して
+// [Examples] フィールドが入力されている場合は、[NewFromFiles] を使用して
 // パッケージの_test.goファイルを含めてください。
 func New(pkg *ast.Package, importPath string, mode Mode) *Package
 
@@ -121,10 +121,10 @@ func New(pkg *ast.Package, importPath string, mode Mode) *Package
 // パッケージのインポートパスはimportPathで指定されます。
 //
 // _test.goファイルに見つかった例は、それらの名前に基づいて対応する型、関数、メソッド、またはパッケージに関連付けられます。
-// もし例の名前に接尾辞がある場合、それはExample.Suffixフィールドに設定されます。
-// 名前が正しくない例はスキップされます。
+// もし例の名前に接尾辞がある場合、それは [Example.Suffix] フィールドに設定されます。
+// 名前が正しくない [Example] はスキップされます。
 //
-// オプションとして、抽出の振る舞いの低レベルな側面を制御するためにMode型の単一の追加引数を指定することができます。
+// オプションとして、抽出の振る舞いの低レベルな側面を制御するために [Mode] 型の単一の追加引数を指定することができます。
 //
 // NewFromFilesはASTファイルの所有権を持ち、それらを編集する場合があります。
 // ただし、PreserveASTモードビットがオンになっている場合は、編集しません。

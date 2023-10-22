@@ -19,10 +19,10 @@ import (
 
 // Nodeはソースコードを標準的なgofmtスタイルに整形し、結果をdstに書き込みます。
 //
-// nodeの型は*ast.File、*printer.CommentedNode、[]ast.Decl、[]ast.Stmtのいずれかである必要があります。
-// もしくはast.Expr、ast.Decl、ast.Spec、ast.Stmtと互換性のある代入可能な型である必要があります。
+// nodeの型は*[ast.File]、*[printer.CommentedNode]、[][ast.Decl]、[][ast.Stmt] のいずれかである必要があります。
+// もしくは [ast.Expr]、[ast.Decl]、[ast.Spec]、[ast.Stmt] と互換性のある代入可能な型である必要があります。
 // Nodeはnodeを変更しません。部分的なソースファイルを表すノードの場合、
-// （例えば、nodeが*ast.Fileでない場合や*printer.CommentedNodeが*ast.Fileを包んでいない場合）インポートはソートされません。
+// （例えば、nodeが*[ast.File] でない場合や*[printer.CommentedNode] が*[ast.File] を包んでいない場合）インポートはソートされません。
 //
 // 関数は早期に（結果が完全に書き込まれる前に）戻って、
 // 正しくないASTのためにフォーマットエラーを返す場合があります。

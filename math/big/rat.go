@@ -13,7 +13,7 @@ package big
 // than Rat values, and each unique Rat value requires
 // its own unique *Rat pointer. To "copy" a Rat value,
 // an existing (or newly allocated) Rat must be set to
-// a new value using the Rat.Set method; shallow copies
+// a new value using the [Rat.Set] method; shallow copies
 // of Rats are not supported and may lead to errors.
 type Rat struct {
 	// To make zero values for Rat work w/o initialization,
@@ -24,7 +24,7 @@ type Rat struct {
 	a, b Int
 }
 
-// NewRat creates a new Rat with numerator a and denominator b.
+// NewRat creates a new [Rat] with numerator a and denominator b.
 func NewRat(a, b int64) *Rat
 
 // SetFloat64 sets z to exactly f and returns z.
@@ -91,8 +91,8 @@ func (x *Rat) Num() *Int
 
 // Denom returns the denominator of x; it is always > 0.
 // The result is a reference to x's denominator, unless
-// x is an uninitialized (zero value) Rat, in which case
-// the result is a new Int of value 1. (To initialize x,
+// x is an uninitialized (zero value) [Rat], in which case
+// the result is a new [Int] of value 1. (To initialize x,
 // any operation that sets x will do, including x.Set(x).)
 // If the result is a reference to x's denominator it
 // may change if a new value is assigned to x, and vice versa.

@@ -34,7 +34,7 @@ func Drivers() []string
 // NamedArgは名前付き引数です。NamedArg値は、QueryまたはExecの引数として使用でき、
 // SQLステートメントの対応する名前付きパラメータにバインドされます。
 //
-// NamedArg値をより簡潔に作成する方法については、Named関数を参照してください。
+// NamedArg値をより簡潔に作成する方法については、 [Named] 関数を参照してください。
 type NamedArg struct {
 	_NamedFieldsRequired struct{}
 
@@ -50,7 +50,7 @@ type NamedArg struct {
 	Value any
 }
 
-// Namedは、NamedArg値をより簡潔に作成する方法を提供します。
+// Namedは、 [NamedArg] 値をより簡潔に作成する方法を提供します。
 //
 // 使用例:
 //
@@ -64,7 +64,7 @@ type NamedArg struct {
 //	)
 func Named(name string, value any) NamedArg
 
-// IsolationLevelは、TxOptionsで使用されるトランザクション分離レベルです。
+// IsolationLevelは、 [TxOptions] で使用されるトランザクション分離レベルです。
 type IsolationLevel int
 
 // BeginTxでドライバーがサポートする可能性のあるさまざまな分離レベル。
@@ -87,7 +87,7 @@ func (i IsolationLevel) String() string
 
 var _ fmt.Stringer = LevelDefault
 
-// TxOptionsは、DB.BeginTxで使用されるトランザクションオプションを保持します。
+// TxOptionsは、 [DB.BeginTx] で使用されるトランザクションオプションを保持します。
 type TxOptions struct {
 	// Isolationはトランザクション分離レベルです。
 	// ゼロの場合、ドライバーまたはデータベースのデフォルトレベルが使用されます。
@@ -100,7 +100,7 @@ type TxOptions struct {
 type RawBytes []byte
 
 // NullStringは、nullである可能性がある文字列を表します。
-// NullStringはScannerインターフェースを実装するため、
+// NullStringは [Scanner] インターフェースを実装するため、
 // スキャン先として使用できます。
 //
 //	var s NullString
@@ -116,112 +116,112 @@ type NullString struct {
 	Valid  bool
 }
 
-// ScanはScannerインターフェースを実装します。
+// Scanは [Scanner] インターフェースを実装します。
 func (ns *NullString) Scan(value any) error
 
-// Valueは、driver.Valuerインターフェースを実装します。
+// Valueは、 [driver.Valuer] インターフェースを実装します。
 func (ns NullString) Value() (driver.Value, error)
 
 // NullInt64は、nullである可能性があるint64を表します。
 // NullInt64はScannerインターフェースを実装するため、
-// NullStringと同様にスキャン先として使用できます。
+// [NullString] と同様にスキャン先として使用できます。
 type NullInt64 struct {
 	Int64 int64
 	Valid bool
 }
 
-// ScanはScannerインターフェースを実装します。
+// Scanは [Scanner] インターフェースを実装します。
 func (n *NullInt64) Scan(value any) error
 
-// Valueは、driver.Valuerインターフェースを実装します。
+// Valueは、 [driver.Valuer] インターフェースを実装します。
 func (n NullInt64) Value() (driver.Value, error)
 
 // NullInt32は、nullである可能性があるint32を表します。
-// NullInt32はScannerインターフェースを実装するため、
+// NullInt32は [Scanner] インターフェースを実装するため、
 // NullStringと同様にスキャン先として使用できます。
 type NullInt32 struct {
 	Int32 int32
 	Valid bool
 }
 
-// ScanはScannerインターフェースを実装します。
+// Scanは [Scanner] インターフェースを実装します。
 func (n *NullInt32) Scan(value any) error
 
-// Valueは、driver.Valuerインターフェースを実装します。
+// Valueは、 [driver.Valuer] インターフェースを実装します。
 func (n NullInt32) Value() (driver.Value, error)
 
 // NullInt16は、nullである可能性があるint16を表します。
-// NullInt16はScannerインターフェースを実装するため、
-// NullStringと同様にスキャン先として使用できます。
+// NullInt16は [Scanner] インターフェースを実装するため、
+// [NullString] と同様にスキャン先として使用できます。
 type NullInt16 struct {
 	Int16 int16
 	Valid bool
 }
 
-// ScanはScannerインターフェースを実装します。
+// Scanは [Scanner] インターフェースを実装します。
 func (n *NullInt16) Scan(value any) error
 
-// Valueは、driver.Valuerインターフェースを実装します。
+// Valueは、 [driver.Valuer] インターフェースを実装します。
 func (n NullInt16) Value() (driver.Value, error)
 
 // NullByteは、nullである可能性があるバイトを表します。
-// NullByteはScannerインターフェースを実装するため、
-// NullStringと同様にスキャン先として使用できます。
+// NullByteは [Scanner] インターフェースを実装するため、
+// [NullString] と同様にスキャン先として使用できます。
 type NullByte struct {
 	Byte  byte
 	Valid bool
 }
 
-// ScanはScannerインターフェースを実装します。
+// Scanは [Scanner] インターフェースを実装します。
 func (n *NullByte) Scan(value any) error
 
-// Valueは、driver.Valuerインターフェースを実装します。
+// Valueは、 [driver.Valuer] インターフェースを実装します。
 func (n NullByte) Value() (driver.Value, error)
 
 // NullFloat64は、nullである可能性があるfloat64を表します。
-// NullFloat64はScannerインターフェースを実装するため、
-// NullStringと同様にスキャン先として使用できます。
+// NullFloat64は [Scanner] インターフェースを実装するため、
+// [NullString] と同様にスキャン先として使用できます。
 type NullFloat64 struct {
 	Float64 float64
 	Valid   bool
 }
 
-// ScanはScannerインターフェースを実装します。
+// Scanは [Scanner] インターフェースを実装します。
 func (n *NullFloat64) Scan(value any) error
 
-// Valueは、driver.Valuerインターフェースを実装します。
+// Valueは、 [driver.Valuer] インターフェースを実装します。
 func (n NullFloat64) Value() (driver.Value, error)
 
 // NullBoolは、nullである可能性があるboolを表します。
-// NullBoolはScannerインターフェースを実装するため、
-// NullStringと同様にスキャン先として使用できます。
+// NullBoolは [Scanner] インターフェースを実装するため、
+// [NullString] と同様にスキャン先として使用できます。
 type NullBool struct {
 	Bool  bool
 	Valid bool
 }
 
-// ScanはScannerインターフェースを実装します。
+// Scanは [Scanner] インターフェースを実装します。
 func (n *NullBool) Scan(value any) error
 
-// Valueは、driver.Valuerインターフェースを実装します。
+// Valueは、 [driver.Valuer] インターフェースを実装します。
 func (n NullBool) Value() (driver.Value, error)
 
-// NullTimeは、nullである可能性があるtime.Timeを表します。
-// NullTimeはScannerインターフェースを実装するため、
-// NullStringと同様にスキャン先として使用できます。
+// NullTimeは、nullである可能性がある [time.Time] を表します。
+// NullTimeは [Scanner] インターフェースを実装するため、
+// [NullString] と同様にスキャン先として使用できます。
 type NullTime struct {
 	Time  time.Time
 	Valid bool
 }
 
-// ScanはScannerインターフェースを実装します。
+// Scanは [Scanner] インターフェースを実装します。
 func (n *NullTime) Scan(value any) error
 
-// Valueは、driver.Valuerインターフェースを実装します。
+// Valueは、 [driver.Valuer] インターフェースを実装します。
 func (n NullTime) Value() (driver.Value, error)
 
 // Nullは、nullである可能性がある値を表します。
-// NullはScannerインターフェースを実装するため、
+// Nullは [Scanner] インターフェースを実装するため、
 // スキャン先として使用できます。
 //
 //	var s Null[string]
@@ -241,26 +241,8 @@ func (n *Null[T]) Scan(value any) error
 
 func (n Null[T]) Value() (driver.Value, error)
 
-// Scanner is an interface used by Scan.
+// Scanner is an interface used by [Scan].
 type Scanner interface {
-	// Scan assigns a value from a database driver.
-	//
-	// The src value will be of one of the following types:
-	//
-	//    int64
-	//    float64
-	//    bool
-	//    []byte
-	//    string
-	//    time.Time
-	//    nil - for NULL values
-	//
-	// An error should be returned if the value cannot be stored
-	// without loss of information.
-	//
-	// Reference types such as []byte are only valid until the next call to Scan
-	// and should not be retained. Their underlying memory is owned by the driver.
-	// If retention is necessary, copy their values before the next call to Scan.
 	Scan(src any) error
 }
 
@@ -285,7 +267,7 @@ type Out struct {
 }
 
 // ErrNoRowsは、QueryRowが行を返さない場合にScanによって返されます。
-// そのような場合、QueryRowはプレースホルダー*Row値を返し、
+// そのような場合、QueryRowはプレースホルダー *[Row] 値を返し、
 // このエラーはScanまで遅延されます。
 var ErrNoRows = errors.New("sql: no rows in result set")
 
@@ -294,9 +276,9 @@ var ErrNoRows = errors.New("sql: no rows in result set")
 //
 // sqlパッケージは、接続を自動的に作成および解放します。
 // また、アイドル接続のフリープールを維持します。
-// データベースが接続ごとの状態を持つ場合、そのような状態はトランザクション（Tx）または接続（Conn）内で信頼性が高く観察できます。
-// DB.Beginが呼び出されると、返されたTxは単一の接続にバインドされます。
-// トランザクションでCommitまたはRollbackが呼び出されると、そのトランザクションの接続がDBのアイドル接続プールに返されます。
+// データベースが接続ごとの状態を持つ場合、そのような状態はトランザクション（[Tx]）または接続（[Conn]）内で信頼性が高く観察できます。
+// DB.Beginが呼び出されると、返された [Tx] は単一の接続にバインドされます。
+// トランザクションでCommitまたはRollbackが呼び出されると、そのトランザクションの接続が [DB] のアイドル接続プールに返されます。
 // プールのサイズはSetMaxIdleConnsで制御できます。
 type DB struct {
 	// Total time waited for new connections.
@@ -337,27 +319,27 @@ type DB struct {
 
 // OpenDBは、コネクタを使用してデータベースを開き、ドライバーが文字列ベースのデータソース名をバイパスできるようにします。
 //
-// ほとんどのユーザーは、*DBを返すドライバー固有の接続ヘルパー関数を介してデータベースを開きます。
+// ほとんどのユーザーは、 *[DB] を返すドライバー固有の接続ヘルパー関数を介してデータベースを開きます。
 // Go標準ライブラリにはデータベースドライバーは含まれていません。サードパーティのドライバーのリストについては、https://golang.org/s/sqldriversを参照してください。
 //
 // OpenDBは、データベースへの接続を作成せずに引数を検証する場合があります。
 // データソース名が有効であることを確認するには、Pingを呼び出します。
 //
-// 返されたDBは、複数のゴルーチンによる同時使用に対して安全であり、アイドル接続のプールを維持します。
-// したがって、OpenDB関数は1回だけ呼び出す必要があります。DBを閉じる必要はほとんどありません。
+// 返された [DB] は、複数のゴルーチンによる同時使用に対して安全であり、アイドル接続のプールを維持します。
+// したがって、OpenDB関数は1回だけ呼び出す必要があります。 [DB] を閉じる必要はほとんどありません。
 func OpenDB(c driver.Connector) *DB
 
 // Openは、データベースドライバー名とドライバー固有のデータソース名で指定されたデータベースを開きます。
 // 通常、少なくともデータベース名と接続情報が含まれます。
 //
-// ほとんどのユーザーは、*DBを返すドライバー固有の接続ヘルパー関数を介してデータベースを開きます。
+// ほとんどのユーザーは、 *[DB] を返すドライバー固有の接続ヘルパー関数を介してデータベースを開きます。
 // Go標準ライブラリにはデータベースドライバーは含まれていません。サードパーティのドライバーのリストについては、https://golang.org/s/sqldriversを参照してください。
 //
 // Openは、データベースへの接続を作成せずに引数を検証する場合があります。
 // データソース名が有効であることを確認するには、Pingを呼び出します。
 //
-// 返されたDBは、複数のゴルーチンによる同時使用に対して安全であり、アイドル接続のプールを維持します。
-// したがって、Open関数は1回だけ呼び出す必要があります。DBを閉じる必要はほとんどありません。
+// 返された [DB] は、複数のゴルーチンによる同時使用に対して安全であり、アイドル接続のプールを維持します。
+// したがって、Open関数は1回だけ呼び出す必要があります。 [DB] を閉じる必要はほとんどありません。
 func Open(driverName, dataSourceName string) (*DB, error)
 
 // PingContextは、データベースへの接続がまだ有効であることを確認し、必要に応じて接続を確立します。
@@ -365,13 +347,13 @@ func (db *DB) PingContext(ctx context.Context) error
 
 // Pingは、データベースへの接続がまだ有効であることを確認し、必要に応じて接続を確立します。
 //
-// Pingは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、PingContextを使用してください。
+// Pingは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [PingContext] を使用してください。
 func (db *DB) Ping() error
 
 // Closeはデータベースを閉じ、新しいクエリの開始を防止します。
 // Closeは、サーバーで処理を開始したすべてのクエリが完了するのを待ってから終了します。
 //
-// DBハンドルは長期間生存し、多くのゴルーチンで共有されることを意図しているため、Closeすることはまれです。
+// [DB] ハンドルは長期間生存し、多くのゴルーチンで共有されることを意図しているため、 [DB] をCloseすることはまれです。
 func (db *DB) Close() error
 
 // SetMaxIdleConnsは、アイドル接続プール内の最大接続数を設定します。
@@ -429,7 +411,7 @@ func (db *DB) Stats() DBStats
 
 // PrepareContextは、後でのクエリまたは実行のためにプリペアドステートメントを作成します。
 // 返されたステートメントから複数のクエリまたは実行を同時に実行できます。
-// ステートメントが不要になったら、呼び出し元はステートメントのCloseメソッドを呼び出す必要があります。
+// ステートメントが不要になったら、呼び出し元はステートメントの [DB.Close] メソッドを呼び出す必要があります。
 //
 // 提供されたコンテキストは、ステートメントの実行ではなく、ステートメントの準備に使用されます。
 func (db *DB) PrepareContext(ctx context.Context, query string) (*Stmt, error)
@@ -438,7 +420,7 @@ func (db *DB) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 // 返されたステートメントから複数のクエリまたは実行を同時に実行できます。
 // ステートメントが不要になったら、呼び出し元はステートメントのCloseメソッドを呼び出す必要があります。
 //
-// Prepareは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、PrepareContextを使用してください。
+// Prepareは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DB.PrepareContext] を使用してください。
 func (db *DB) Prepare(query string) (*Stmt, error)
 
 // ExecContextは、行を返さないクエリを実行します。
@@ -448,7 +430,7 @@ func (db *DB) ExecContext(ctx context.Context, query string, args ...any) (Resul
 // Execは、行を返さないクエリを実行します。
 // argsは、クエリ内のプレースホルダーパラメーター用です。
 //
-// Execは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、ExecContextを使用してください。
+// Execは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DB.ExecContext] を使用してください。
 func (db *DB) Exec(query string, args ...any) (Result, error)
 
 // QueryContextは、通常はSELECTで返される行を返すクエリを実行します。
@@ -458,36 +440,36 @@ func (db *DB) QueryContext(ctx context.Context, query string, args ...any) (*Row
 // QueryContextは、通常はSELECTで返される行を返すクエリを実行します。
 // argsは、クエリ内のプレースホルダーパラメーター用です。
 //
-// QueryContextは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、QueryContextを使用してください。
+// QueryContextは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DB.QueryContext] を使用してください。
 func (db *DB) Query(query string, args ...any) (*Rows, error)
 
 // QueryRowContextは、最大1行を返すと予想されるクエリを実行します。
-// QueryRowContextは常にnil以外の値を返します。エラーはRowのScanメソッドが呼び出されるまで遅延されます。
-// クエリが行を選択しない場合、*RowのScanはErrNoRowsを返します。
-// そうでない場合、*RowのScanは最初に選択された行をスキャンし、残りを破棄します。
+// QueryRowContextは常にnil以外の値を返します。エラーは [Row] のScanメソッドが呼び出されるまで遅延されます。
+// クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
+// そうでない場合、 *[Row] のScanは最初に選択された行をスキャンし、残りを破棄します。
 func (db *DB) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // QueryRowは、最大1行を返すと予想されるクエリを実行します。
-// QueryRowは常にnil以外の値を返します。エラーはRowのScanメソッドが呼び出されるまで遅延されます。
-// クエリが行を選択しない場合、*RowのScanはErrNoRowsを返します。
+// QueryRowは常にnil以外の値を返します。エラーは [Row] のScanメソッドが呼び出されるまで遅延されます。
+// クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
 // そうでない場合、*RowのScanは最初に選択された行をスキャンし、残りを破棄します。
 //
-// QueryRowは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、QueryRowContextを使用してください。
+// QueryRowは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DBQueryRowContext] を使用してください。
 func (db *DB) QueryRow(query string, args ...any) *Row
 
 // BeginTxはトランザクションを開始します。
 //
 // 提供されたコンテキストは、トランザクションがコミットまたはロールバックされるまで使用されます。
 // コンテキストがキャンセルされると、sqlパッケージはトランザクションをロールバックします。
-// BeginTxに提供されたコンテキストがキャンセルされた場合、Tx.Commitはエラーを返します。
+// BeginTxに提供されたコンテキストがキャンセルされた場合、 [Tx.Commit] はエラーを返します。
 //
-// 提供されたTxOptionsはオプションであり、デフォルトを使用する場合はnilにすることができます。
+// 提供された [TxOptions] はオプションであり、デフォルトを使用する場合はnilにすることができます。
 // ドライバーがサポートしていない非デフォルトの分離レベルが使用された場合、エラーが返されます。
 func (db *DB) BeginTx(ctx context.Context, opts *TxOptions) (*Tx, error)
 
 // Beginはトランザクションを開始します。デフォルトの分離レベルはドライバーに依存します。
 //
-// Beginは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、BeginTxを使用してください。
+// Beginは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DB.BeginTx] を使用してください。
 func (db *DB) Begin() (*Tx, error)
 
 // Driverは、データベースの基礎となるドライバーを返します。
@@ -500,16 +482,16 @@ var ErrConnDone = errors.New("sql: connection is already closed")
 // Connは、接続が返されるか、ctxがキャンセルされるまでブロックされます。
 // 同じConnで実行されるクエリは、同じデータベースセッションで実行されます。
 //
-// 各Connは、Conn.Closeを呼び出して使用後にデータベースプールに返す必要があります。
+// 各Connは、 [Conn.Close] を呼び出して使用後にデータベースプールに返す必要があります。
 func (db *DB) Conn(ctx context.Context) (*Conn, error)
 
 // Connは、データベース接続プールではなく、単一のデータベース接続を表します。
-// 特定の理由がない限り、クエリはDBから実行することをお勧めします。
+// 特定の理由がない限り、クエリは [DB] から実行することをお勧めします。
 //
-// Connは、Closeを呼び出して接続をデータベースプールに返す必要があります。
-// 実行中のクエリと同時にCloseを呼び出すことができます。
+// Connは、 [Conn.Close] を呼び出して接続をデータベースプールに返す必要があります。
+// また、実行中のクエリと同時に呼び出すことができます。
 //
-// Closeの呼び出し後、接続に対するすべての操作はErrConnDoneで失敗します。
+// [Conn.Close] の呼び出し後、接続に対するすべての操作は [ErrConnDone] で失敗します。
 type Conn struct {
 	db *DB
 
@@ -544,14 +526,14 @@ func (c *Conn) ExecContext(ctx context.Context, query string, args ...any) (Resu
 func (c *Conn) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
 // QueryRowContextは、最大1行を返すと予想されるクエリを実行します。
-// QueryRowContextは常にnil以外の値を返します。エラーはRowのScanメソッドが呼び出されるまで遅延されます。
-// クエリが行を選択しない場合、*RowのScanはErrNoRowsを返します。
-// そうでない場合、*RowのScanは最初に選択された行をスキャンし、残りを破棄します。
+// QueryRowContextは常にnil以外の値を返します。エラーは [Row] のScanメソッドが呼び出されるまで遅延されます。
+// クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
+// そうでない場合、 *[Row] のScanは最初に選択された行をスキャンし、残りを破棄します。
 func (c *Conn) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // PrepareContextは、後でのクエリまたは実行のためにプリペアドステートメントを作成します。
 // 返されたステートメントから複数のクエリまたは実行を同時に実行できます。
-// ステートメントが不要になったら、呼び出し元はステートメントのCloseメソッドを呼び出す必要があります。
+// ステートメントが不要になったら、呼び出し元はステートメントの [Conn.Close] メソッドを呼び出す必要があります。
 //
 // 提供されたコンテキストは、ステートメントの実行ではなく、ステートメントの準備に使用されます。
 func (c *Conn) PrepareContext(ctx context.Context, query string) (*Stmt, error)
@@ -559,22 +541,21 @@ func (c *Conn) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 // Rawは、fを実行し、fの実行中に基礎となるドライバー接続を公開します。
 // driverConnは、fの外部で使用してはいけません。
 //
-// fが返り値としてdriver.ErrBadConn以外のエラーを返した場合、fが終了した後もConnは使用可能です。
-// Connを使用するには、Conn.Closeを呼び出す必要があります。
+// fが返り、errがdriver.ErrBadConnでない場合、 [Conn] は [Conn.Close] が呼び出されるまで使用可能です。
 func (c *Conn) Raw(f func(driverConn any) error) (err error)
 
 // BeginTxはトランザクションを開始します。
 //
 // 提供されたコンテキストは、トランザクションがコミットまたはロールバックされるまで使用されます。
 // コンテキストがキャンセルされると、sqlパッケージはトランザクションをロールバックします。
-// BeginTxに提供されたコンテキストがキャンセルされた場合、Tx.Commitはエラーを返します。
+// BeginTxに提供されたコンテキストがキャンセルされた場合、 [Tx.Commit] はエラーを返します。
 //
-// 提供されたTxOptionsはオプションであり、デフォルトを使用する場合はnilにすることができます。
+// 提供された [TxOptions] はオプションであり、デフォルトを使用する場合はnilにすることができます。
 // ドライバーがサポートしていない非デフォルトの分離レベルが使用された場合、エラーが返されます。
 func (c *Conn) BeginTx(ctx context.Context, opts *TxOptions) (*Tx, error)
 
 // Closeは、接続を接続プールに返します。
-// Closeの後に行われたすべての操作は、ErrConnDoneで返されます。
+// Closeの後に行われたすべての操作は、 [ErrConnDone] で返されます。
 // Closeは、他の操作と同時に安全に呼び出すことができ、
 // すべての他の操作が完了するまでブロックされます。
 // 使用されたコンテキストを最初にキャンセルしてから直接Closeを呼び出すことが役立つ場合があります。
@@ -582,11 +563,11 @@ func (c *Conn) Close() error
 
 // Txは、進行中のデータベーストランザクションです。
 //
-// トランザクションは、CommitまたはRollbackの呼び出しで終了する必要があります。
+// トランザクションは、 [Tx.Commit] または [Tx.Rollback] の呼び出しで終了する必要があります。
 //
-// CommitまたはRollbackの呼び出し後、トランザクション上のすべての操作はErrTxDoneで失敗します。
+// [Tx.Commit] または [Tx.Rollback] の呼び出し後、トランザクション上のすべての操作は [ErrTxDone] で失敗します。
 //
-// トランザクションのPrepareまたはStmtメソッドを呼び出して準備されたステートメントは、CommitまたはRollbackの呼び出しで閉じられます。
+// トランザクションの [Tx.Prepare] または [Tx.Stmt] メソッドを呼び出して準備されたステートメントは、 [Tx.Commit] または [Tx.Rollback] の呼び出しで閉じられます。
 type Tx struct {
 	db *DB
 
@@ -641,7 +622,7 @@ func (tx *Tx) Rollback() error
 //
 // 返されたステートメントはトランザクション内で動作し、トランザクションがコミットまたはロールバックされたときに閉じられます。
 //
-// このトランザクションで既存のプリペアドステートメントを使用するには、Tx.Stmtを参照してください。
+// このトランザクションで既存のプリペアドステートメントを使用するには、 [Tx.Stmt] を参照してください。
 //
 // 提供されたコンテキストは、ステートメントの実行ではなく、ステートメントの準備に使用されます。
 // 返されたステートメントはトランザクションコンテキストで実行されます。
@@ -651,9 +632,9 @@ func (tx *Tx) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 //
 // 返されたステートメントはトランザクション内で動作し、トランザクションがコミットまたはロールバックされたときに閉じられます。
 //
-// このトランザクションで既存のプリペアドステートメントを使用するには、Tx.Stmtを参照してください。
+// このトランザクションで既存のプリペアドステートメントを使用するには、 [Tx.Stmt] を参照してください。
 //
-// Prepareは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、PrepareContextを使用してください。
+// Prepareは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.PrepareContext] を使用してください。
 func (tx *Tx) Prepare(query string) (*Stmt, error)
 
 // StmtContextは、既存のステートメントからトランザクション固有のプリペアドステートメントを返します。
@@ -683,7 +664,7 @@ func (tx *Tx) StmtContext(ctx context.Context, stmt *Stmt) *Stmt
 //
 // 返されたステートメントはトランザクション内で動作し、トランザクションがコミットまたはロールバックされたときに閉じられます。
 //
-// Stmtは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、StmtContextを使用してください。
+// Stmtは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.StmtContext] を使用してください。
 func (tx *Tx) Stmt(stmt *Stmt) *Stmt
 
 // ExecContextは、行を返さないクエリを実行します。
@@ -693,7 +674,7 @@ func (tx *Tx) ExecContext(ctx context.Context, query string, args ...any) (Resul
 // Execは、行を返さないクエリを実行します。
 // 例えば、INSERTやUPDATEです。
 //
-// Execは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、ExecContextを使用してください。
+// Execは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.ExecContext] を使用してください。
 func (tx *Tx) Exec(query string, args ...any) (Result, error)
 
 // QueryContext executes a query that returns rows, typically a SELECT.
@@ -701,7 +682,7 @@ func (tx *Tx) QueryContext(ctx context.Context, query string, args ...any) (*Row
 
 // Queryは、通常はSELECTで返される行を返すクエリを実行します。
 //
-// Queryは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、QueryContextを使用してください。
+// Queryは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.QueryContext] を使用してください。
 func (tx *Tx) Query(query string, args ...any) (*Rows, error)
 
 // QueryRowContextは、最大1行を返すと予想されるクエリを実行します。
@@ -711,11 +692,11 @@ func (tx *Tx) Query(query string, args ...any) (*Rows, error)
 func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // QueryRowは、最大1行を返すと予想されるクエリを実行します。
-// QueryRowは常にnil以外の値を返します。エラーはRowのScanメソッドが呼び出されるまで遅延されます。
-// クエリが行を選択しない場合、*RowのScanはErrNoRowsを返します。
-// そうでない場合、*RowのScanは最初に選択された行をスキャンし、残りを破棄します。
+// QueryRowは常にnil以外の値を返します。エラーは [Row] のScanメソッドが呼び出されるまで遅延されます。
+// クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
+// そうでない場合、 *[Row] のScanは最初に選択された行をスキャンし、残りを破棄します。
 //
-// QueryRowは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、QueryRowContextを使用してください。
+// QueryRowは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.QueryRowContext] を使用してください。
 func (tx *Tx) QueryRow(query string, args ...any) *Row
 
 var (
@@ -726,9 +707,9 @@ var (
 // Stmtは、プリペアドステートメントです。
 // Stmtは、複数のゴルーチンによる同時使用に対して安全です。
 //
-// StmtがTxまたはConnで準備された場合、それは1つの基礎となる接続に永久にバインドされます。
-// TxまたはConnが閉じられると、Stmtは使用できなくなり、すべての操作がエラーを返します。
-// StmtがDBで準備された場合、それはDBの寿命の間使用可能です。
+// Stmtが [Tx] または [Conn] で準備された場合、それは1つの基礎となる接続に永久にバインドされます。
+// [Tx] または [Conn] が閉じられると、Stmtは使用できなくなり、すべての操作がエラーを返します。
+// Stmtが [DB] で準備された場合、それは [DB] の寿命の間使用可能です。
 // Stmtが新しい基礎となる接続で実行する必要がある場合、自動的に新しい接続で自己準備します。
 type Stmt struct {
 	// Immutable:
@@ -769,49 +750,49 @@ type Stmt struct {
 }
 
 // ExecContextは、指定された引数を使用してプリペアドステートメントを実行し、
-// ステートメントの影響を要約するResultを返します。
+// ステートメントの影響を要約する [Result] を返します。
 func (s *Stmt) ExecContext(ctx context.Context, args ...any) (Result, error)
 
 // Execは、指定された引数を使用してプリペアドステートメントを実行し、
-// ステートメントの影響を要約するResultを返します。
+// ステートメントの影響を要約する [Result] を返します。
 //
-// Execは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、ExecContextを使用してください。
+// Execは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Stmt.ExecContext] を使用してください。
 func (s *Stmt) Exec(args ...any) (Result, error)
 
 // QueryContextは、指定された引数を使用してプリペアドクエリステートメントを実行し、
-// クエリ結果を*Rowsとして返します。
+// クエリ結果を *[Rows] として返します。
 func (s *Stmt) QueryContext(ctx context.Context, args ...any) (*Rows, error)
 
 // Queryは、指定された引数を使用してプリペアドクエリステートメントを実行し、
 // クエリ結果を*Rowsとして返します。
 //
-// Queryは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、QueryContextを使用してください。
+// Queryは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Stmt.QueryContext] を使用してください。
 func (s *Stmt) Query(args ...any) (*Rows, error)
 
 // QueryRowContextは、指定された引数を使用してプリペアドクエリステートメントを実行し、
-// ステートメントの実行中にエラーが発生した場合、そのエラーは常にnil以外の*RowのScan呼び出しによって返されます。
-// クエリが行を選択しない場合、*RowのScanはErrNoRowsを返します。
-// そうでない場合、*RowのScanは最初に選択された行をスキャンし、残りを破棄します。
+// ステートメントの実行中にエラーが発生した場合、そのエラーは常にnil以外の *[Row] のScan呼び出しによって返されます。
+// クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
+// そうでない場合、 *[Row] のScanは最初に選択された行をスキャンし、残りを破棄します。
 func (s *Stmt) QueryRowContext(ctx context.Context, args ...any) *Row
 
 // QueryRowは、指定された引数を使用してプリペアドクエリステートメントを実行し、
-// ステートメントの実行中にエラーが発生した場合、そのエラーは常にnil以外の*RowのScan呼び出しによって返されます。
-// クエリが行を選択しない場合、*RowのScanはErrNoRowsを返します。
-// そうでない場合、*RowのScanは最初に選択された行をスキャンし、残りを破棄します。
+// ステートメントの実行中にエラーが発生した場合、そのエラーは常にnil以外の *[Row] のScan呼び出しによって返されます。
+// クエリが行を選択しない場合、*[Row] のScanは [ErrNoRows] を返します。
+// そうでない場合、*[Row] のScanは最初に選択された行をスキャンし、残りを破棄します。
 //
 // 使用例:
 //
 //	var name string
 //	err := nameByUseridStmt.QueryRow(id).Scan(&name)
 //
-// QueryRowは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、QueryRowContextを使用してください。
+// QueryRowは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Stmt.QueryRowContext] を使用してください。
 func (s *Stmt) QueryRow(args ...any) *Row
 
 // Closeはステートメントを閉じます。
 func (s *Stmt) Close() error
 
 // Rowsはクエリの結果です。そのカーソルは、結果セットの最初の行の前に開始します。
-// 行から行に進むには、Nextを使用してください。
+// 行から行に進むには、 [Rows.Next] を使用してください。
 type Rows struct {
 	dc          *driverConn
 	releaseConn func(error)
@@ -850,24 +831,24 @@ type Rows struct {
 	hitEOF bool
 }
 
-// Nextは、Scanメソッドで読み取る次の結果行を準備します。
+// Nextは、 [Rows.Scan] メソッドで読み取る次の結果行を準備します。
 // 成功した場合はtrue、次の結果行がない場合や準備中にエラーが発生した場合はfalseを返します。
-// 2つの場合を区別するには、Errを参照する必要があります。
+// 2つの場合を区別するには、 [Rows.Err] を参照する必要があります。
 //
-// 最初の呼び出しを含め、すべてのScan呼び出しは、Nextの呼び出しに先立っている必要があります。
+// 最初の呼び出しを含め、すべての [Rows.Scan] 呼び出しは、 [Rows.Next] の呼び出しに先立っている必要があります。
 func (rs *Rows) Next() bool
 
 // NextResultSetは、次の結果セットの読み取りの準備をします。
 // さらに結果セットがある場合はtrue、それ以外の場合はfalseを報告します。
 // または、それに進む際にエラーが発生した場合はfalseを報告します。
-// 2つの場合を区別するには、Errを参照する必要があります。
+// 2つの場合を区別するには、 [Rows.Err] を参照する必要があります。
 //
-// NextResultSetを呼び出した後、スキャンする前に常にNextメソッドを呼び出す必要があります。
+// NextResultSetを呼び出した後、スキャンする前に常に [Rows.Next] メソッドを呼び出す必要があります。
 // さらに結果セットがある場合、結果セットに行がない場合があります。
 func (rs *Rows) NextResultSet() bool
 
 // Errは、反復中に遭遇したエラー（ある場合）を返します。
-// 明示的または暗黙的なCloseの後にErrを呼び出すことができます。
+// 明示的または暗黙的な [Rows.Close] の後にErrを呼び出すことができます。
 func (rs *Rows) Err() error
 
 // Columnsは列名を返します。
@@ -898,7 +879,7 @@ type ColumnType struct {
 func (ci *ColumnType) Name() string
 
 // Lengthは、テキストやバイナリフィールドタイプなどの可変長カラムタイプのためのカラムタイプ長を返します。
-// タイプ長が無制限の場合、値はmath.MaxInt64になります（データベースの制限は引き続き適用されます）。
+// タイプ長が無制限の場合、値は [math.MaxInt64] になります（データベースの制限は引き続き適用されます）。
 // カラムタイプが可変長でない場合、例えばintの場合、またはドライバでサポートされていない場合、okはfalseになります。
 func (ci *ColumnType) Length() (length int64, ok bool)
 
@@ -906,7 +887,7 @@ func (ci *ColumnType) Length() (length int64, ok bool)
 // 適用できない場合やサポートされていない場合は、okがfalseになります。
 func (ci *ColumnType) DecimalSize() (precision, scale int64, ok bool)
 
-// ScanTypeは、Rows.Scanを使用してスキャンするために適したGo型を返します。
+// ScanTypeは、 [Rows.Scan] を使用してスキャンするために適したGo型を返します。
 // ドライバがこのプロパティをサポートしていない場合、ScanTypeは空のインターフェースの型を返します。
 func (ci *ColumnType) ScanType() reflect.Type
 
@@ -917,12 +898,12 @@ func (ci *ColumnType) Nullable() (nullable, ok bool)
 // DatabaseTypeNameは、列のデータベースシステム名を返します。
 // 空の文字列が返された場合、ドライバの型名はサポートされていません。
 // ドライバのデータ型のリストについては、ドライバのドキュメントを参照してください。
-// 長さ指定子は含まれません。
+// [ColumnType.Length] 指定子は含まれません。
 // 一般的な型名には、"VARCHAR"、"TEXT"、"NVARCHAR"、"DECIMAL"、"BOOL"、"INT"、"BIGINT"があります。
 func (ci *ColumnType) DatabaseTypeName() string
 
 // Scanは、現在の行の列をdestが指す値にコピーします。
-// destの数はRowsの列数と同じでなければなりません。
+// destの数は [Rows] の列数と同じでなければなりません。
 //
 // Scanは、データベースから読み取った列を、以下の共通のGoの型およびsqlパッケージで提供される特殊な型に変換します。
 //
@@ -933,32 +914,32 @@ func (ci *ColumnType) DatabaseTypeName() string
 //	*bool
 //	*float32, *float64
 //	*interface{}
-//	*RawBytes
-//	*Rows (カーソル値)
-//	Scannerを実装する任意の型（Scannerドキュメントを参照）
+//	*[RawBytes]
+//	*[Rows] (カーソル値)
+//	[Scanner] を実装する任意の型（Scannerドキュメントを参照）
 //
 // 最も単純な場合、ソース列の値の型が整数、ブール、または文字列型Tで、destが型*Tの場合、Scanは単にポインタを介して値を割り当てます。
 //
 // Scanは、文字列と数値型の間でも変換しますが、情報が失われない場合に限ります。Scanは、数値データベース列からスキャンされたすべての数値を*stringに文字列化しますが、数値型へのスキャンはオーバーフローのチェックが行われます。例えば、値が300のfloat64または値が"300"の文字列はuint16にスキャンできますが、uint8にはスキャンできません。ただし、float64(255)または"255"はuint8にスキャンできます。一部のfloat64数値を文字列に変換するスキャンは、文字列化すると情報が失われる場合があります。一般的には、浮動小数点列を*float64にスキャンします。
 //
-// dest引数の型が*[]byteの場合、Scanは対応するデータのコピーをその引数に保存します。コピーは呼び出し元が所有し、修正して無期限に保持できます。コピーを回避するには、代わりに*RawBytesの引数を使用します。RawBytesの使用制限については、RawBytesのドキュメントを参照してください。
+// dest引数の型が*[]byteの場合、Scanは対応するデータのコピーをその引数に保存します。コピーは呼び出し元が所有し、修正して無期限に保持できます。コピーを回避するには、代わりに *[RawBytes] の引数を使用します。RawBytesの使用制限については、 [RawBytes] のドキュメントを参照してください。
 //
 // 引数の型が*interface{}の場合、Scanは変換せずに基礎ドライバが提供する値をコピーします。[]byte型のソース値から*interface{}にスキャンする場合、スライスのコピーが作成され、呼び出し元が結果を所有します。
 //
 // time.Time型のソース値は、*time.Time、*interface{}、*string、または*[]byte型の値にスキャンできます。後者2つに変換する場合、time.RFC3339Nanoが使用されます。
 //
-// bool型のソース値は、*bool、*interface{}、*string、*[]byte、または*RawBytes型にスキャンできます。
+// bool型のソース値は、*bool、*interface{}、*string、*[]byte、または *[RawBytes] 型にスキャンできます。
 //
-// *boolにスキャンする場合、ソースはtrue、false、1、0、またはstrconv.ParseBoolで解析可能な文字列入力である必要があります。
+// *boolにスキャンする場合、ソースはtrue、false、1、0、または [strconv.ParseBool] で解析可能な文字列入力である必要があります。
 //
-// Scanは、クエリから返されたカーソル（例："select cursor(select * from my_table) from dual"）を、自体からスキャンできる*Rows値に変換できます。親の*Rowsが閉じられると、親の選択クエリはカーソル*Rowsを閉じます。
+// Scanは、クエリから返されたカーソル（例："select cursor(select * from my_table) from dual"）を、自体からスキャンできる *[Rows] 値に変換できます。親の *[Rows] が閉じられると、親の選択クエリはカーソル *[Rows] を閉じます。
 //
-// 最初の引数のいずれかがエラーを返すScannerを実装している場合、そのエラーは返されたエラーにラップされます。
+// 最初の引数のいずれかがエラーを返す [Scanner] を実装している場合、そのエラーは返されたエラーにラップされます。
 func (rs *Rows) Scan(dest ...any) error
 
-// Closeは、Rowsを閉じ、以降の列挙を防止します。
-// Nextがfalseを返し、さらに結果セットがない場合、Rowsは自動的に閉じられ、Errの結果を確認するだけで十分です。
-// Closeは冪等性があり、Errの結果に影響を与えません。
+// Closeは、 [Rows] を閉じ、以降の列挙を防止します。
+// [Rows.Next] がfalseを返し、さらに結果セットがない場合、 [Rows] は自動的に閉じられ、 [Rows.Err] の結果を確認するだけで十分です。
+// Closeは冪等性があり、 [Rows.Err] の結果に影響を与えません。
 func (rs *Rows) Close() error
 
 // Rowは、単一の行を選択するためにQueryRowを呼び出した結果です。
@@ -969,27 +950,19 @@ type Row struct {
 }
 
 // Scanは、一致する行から列をdestが指す値にコピーします。
-// 詳細については、Rows.Scanのドキュメントを参照してください。
+// 詳細については、 [Rows.Scan] のドキュメントを参照してください。
 // クエリに複数の行が一致する場合、Scanは最初の行を使用し、残りを破棄します。
-// クエリに一致する行がない場合、ScanはErrNoRowsを返します。
+// クエリに一致する行がない場合、Scanは [ErrNoRows] を返します。
 func (r *Row) Scan(dest ...any) error
 
-// Errは、Scanを呼び出さずにクエリエラーをチェックするための方法を提供します。
+// Errは、 [Row.Scan] を呼び出さずにクエリエラーをチェックするための方法を提供します。
 // Errは、クエリを実行する際に遭遇したエラー（ある場合）を返します。
-// このエラーがnilでない場合、このエラーはScanからも返されます。
+// このエラーがnilでない場合、このエラーは [Row.Scan] からも返されます。
 func (r *Row) Err() error
 
 // Resultは、実行されたSQLコマンドを要約します。
 type Result interface {
-	// LastInsertId returns the integer generated by the database
-	// in response to a command. Typically this will be from an
-	// "auto increment" column when inserting a new row. Not all
-	// databases support this feature, and the syntax of such
-	// statements varies.
 	LastInsertId() (int64, error)
 
-	// RowsAffected returns the number of rows affected by an
-	// update, insert, or delete. Not every database or database
-	// driver may support this.
 	RowsAffected() (int64, error)
 }

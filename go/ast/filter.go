@@ -7,7 +7,7 @@ package ast
 // FileExportsは、GoのソースファイルのASTを現在の場所でトリムします。
 // エクスポートされたノードのみが残り、エクスポートされていないトップレベルの識別子とそれに関連する情報
 // （型、初期値、または関数本体など）は削除されます。エクスポートされた型の非エクスポートフィールドとメソッドも剥ぎ取られます。
-// File.Commentsリストは変更されません。
+// [File.Comments] リストは変更されません。
 //
 // FileExportsは、エクスポートされた宣言があるかどうかを報告します。
 func FileExports(src *File) bool
@@ -24,7 +24,7 @@ type Filter func(string) bool
 // FilterDeclは、フィルタリング後に残された宣言された名前があるかどうかを報告します。
 func FilterDecl(decl Decl, f Filter) bool
 
-// FilterFileは、フィルタfを通過しない（構造体のフィールドやインターフェースのメソッド名を含むが、パラメータリストからは含まれない）トップレベルの宣言からすべての名前を削除することで、GoファイルのASTを修正します。もし宣言が空になった場合、宣言はASTから削除されます。Import宣言は必ず削除されます。File.Commentsのリストは変更されません。
+// FilterFileは、フィルタfを通過しない（構造体のフィールドやインターフェースのメソッド名を含むが、パラメータリストからは含まれない）トップレベルの宣言からすべての名前を削除することで、GoファイルのASTを修正します。もし宣言が空になった場合、宣言はASTから削除されます。Import宣言は必ず削除されます。[File.Comments] のリストは変更されません。
 // FilterFileは、フィルタリング後にトップレベルの宣言が残っているかどうかを報告します。
 func FilterFile(src *File, f Filter) bool
 
@@ -33,7 +33,7 @@ func FilterFile(src *File, f Filter) bool
 // FilterPackageは、フィルタリング後にトップレベルの宣言が残っているかどうかを報告します。
 func FilterPackage(pkg *Package, f Filter) bool
 
-// MergePackageFilesの動作を制御するMergeModeフラグ。
+// [MergePackageFiles] の動作を制御するMergeModeフラグ。
 type MergeMode uint
 
 const (

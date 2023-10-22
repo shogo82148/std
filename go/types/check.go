@@ -12,7 +12,7 @@ import (
 )
 
 // Checkerは型チェッカーの状態を維持します。
-// NewCheckerで作成する必要があります。
+// [NewChecker] で作成する必要があります。
 type Checker struct {
 
 	// パッケージの情報
@@ -63,8 +63,8 @@ type Checker struct {
 	indent int
 }
 
-// NewCheckerは指定されたパッケージに対して新しいCheckerインスタンスを返します。
-// パッケージファイルは、checker.Filesを通じて段階的に追加することができます。
+// NewCheckerは指定されたパッケージに対して新しい [Checker] インスタンスを返します。
+// [Package] ファイルは、checker.Filesを通じて段階的に追加することができます。
 func NewChecker(conf *Config, fset *token.FileSet, pkg *Package, info *Info) *Checker
 
 // Filesはチェッカーのパッケージの一部として提供されたファイルをチェックします。

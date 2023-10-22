@@ -7,7 +7,7 @@ Package flagは、コマンドラインのフラグ解析を実装します。
 
 # 使用法
 
-flag.String（）、Bool（）、Int（）などを使用してフラグを定義します。
+[flag.String]、[Bool]、[Int] などを使用してフラグを定義します。
 
 これは、ポインタnFlagに格納された整数フラグ-nを宣言し、型*intを持つものです。
 
@@ -38,8 +38,8 @@ flag.String（）、Bool（）、Int（）などを使用してフラグを定�
 	ipの値は、*ipを出力します。
 	flagvarの値は、flagvarを出力します。
 
-解析後、フラグに続く引数は、スライスflag.Args（）または個別にflag.Arg（i）として使用できます。
-引数は0からflag.NArg（）-1までインデックス付けされます。
+解析後、フラグに続く引数は、スライス [flag.Args] または個別に [flag.Arg](i) として使用できます。
+引数は0から [flag.NArg]-1 までインデックス付けされます。
 
 # コマンドラインフラグの句法
 
@@ -66,7 +66,7 @@ Unixシェルのワイルドカードである、Starは、「-」のコマン�
 
 期間フラグは、time.ParseDurationで有効な入力を受け入れます。
 
-コマンドラインフラグのデフォルトセットは、トップレベルの関数によって制御されます。FlagSet型は、コマンドラインインターフェースのサブコマンドを実装するための独立したフラグセットを定義するために使用します。FlagSetのメソッドは、コマンドラインフラグセットのトップレベルの関数と同様です。
+コマンドラインフラグのデフォルトセットは、トップレベルの関数によって制御されます。 [FlagSet] 型は、コマンドラインインターフェースのサブコマンドを実装するための独立したフラグセットを定義するために使用します。 [FlagSet] のメソッドは、コマンドラインフラグセットのトップレベルの関数と同様です。
 */
 package flag
 
@@ -89,32 +89,32 @@ var ErrHelp = errors.New("flag: help requested")
 // コマンドラインパーサーは-nameを-name=trueと等価にし、次のコマンドライン引数を使用しないようにします。
 //
 // flagが存在するごとに、Setメソッドがコマンドラインの順序で一度呼び出されます。
-// flagパッケージはゼロ値のレシーバ（nilポインタなど）でStringメソッドを呼び出す場合があります。
+// flagパッケージはゼロ値のレシーバ（nilポインタなど）で [String] メソッドを呼び出す場合があります。
 type Value interface {
 	String() string
 	Set(string) error
 }
 
-// GetterはValueの内容を取得することを可能にするインターフェースです。
-// これはGo 1以降の互換性規則のために、Valueインターフェースの一部ではなく、ラップされています。
-// このパッケージで提供されるすべてのValue型は、Getterインターフェースを満たしますが、Funcによって使用される型は満たしません。
+// Getterは [Value] の内容を取得することを可能にするインターフェースです。
+// これはGo 1以降の互換性規則のために、 [Value] インターフェースの一部ではなく、ラップされています。
+// このパッケージで提供されるすべての [Value] 型は、 [Getter] インターフェースを満たしますが、 [Func] によって使用される型は満たしません。
 type Getter interface {
 	Value
 	Get() any
 }
 
-// ErrorHandlingは、parseが失敗した場合にFlagSet.Parseの動作を定義します。
+// ErrorHandlingは、parseが失敗した場合に [FlagSet.Parse] の動作を定義します。
 type ErrorHandling int
 
-// これらの定数は、パースが失敗した場合にFlagSet.Parseが説明された動作をするようにします。
+// これらの定数は、パースが失敗した場合に [FlagSet.Parse] が説明された動作をするようにします。
 const (
 	ContinueOnError ErrorHandling = iota
 	ExitOnError
 	PanicOnError
 )
 
-// FlagSetは定義されたフラグの集合を表します。FlagSetのゼロ値は名前を持たず、ContinueOnErrorエラーハンドリングを持ちます。
-// フラグの名前はFlagSet内でユニークでなければなりません。既に使用されている名前でフラグを定義しようとすると、パニックが発生します。
+// FlagSetは定義されたフラグの集合を表します。FlagSetのゼロ値は名前を持たず、 [ContinueOnError] エラーハンドリングを持ちます。
+// [Flag] の名前はFlagSet内でユニークでなければなりません。既に使用されている名前でフラグを定義しようとすると、パニックが発生します。
 type FlagSet struct {
 
 	// Usage はフラグの解析中にエラーが発生した場合に呼び出される関数です。
@@ -141,7 +141,7 @@ type Flag struct {
 	DefValue string
 }
 
-// Output は使用方法やエラーメッセージのための出力先を返します。 output が設定されていない場合や nil に設定されている場合は、os.Stderr が返されます。
+// Output は使用方法やエラーメッセージのための出力先を返します。 output が設定されていない場合や nil に設定されている場合は、[os.Stderr] が返されます。
 func (f *FlagSet) Output() io.Writer
 
 // Nameはフラグセットの名前を返します。
@@ -151,7 +151,7 @@ func (f *FlagSet) Name() string
 func (f *FlagSet) ErrorHandling() ErrorHandling
 
 // SetOutputは使用法やエラーメッセージの出力先を設定します。
-// もしoutputがnilの場合、os.Stderrが使用されます。
+// もしoutputがnilの場合、[os.Stderr] が使用されます。
 func (f *FlagSet) SetOutput(output io.Writer)
 
 // VisitAllは辞書順にフラグを訪れ、それぞれについてfnを呼び出します。
@@ -169,10 +169,10 @@ func (f *FlagSet) Visit(fn func(*Flag))
 // 設定されたフラグのみを訪問します。
 func Visit(fn func(*Flag))
 
-// Lookupは指定されたフラグの構造体を返します。存在しない場合はnilを返します。
+// Lookupは指定された [Flag] 構造体を返します。存在しない場合はnilを返します。
 func (f *FlagSet) Lookup(name string) *Flag
 
-// Lookupは指定されたコマンドラインフラグのFlag構造体を返します。存在しない場合はnilを返します。
+// Lookupは指定されたコマンドラインフラグの [Flag] 構造体を返します。存在しない場合はnilを返します。
 func Lookup(name string) *Flag
 
 // Setは指定したフラグの値を設定します。
@@ -205,16 +205,16 @@ func (f *FlagSet) PrintDefaults()
 //	-I ディレクトリ
 //		ディレクトリを検索するincludeファイル。
 //
-// フラグメッセージの出力先を変更するには、CommandLine.SetOutputを呼び出します。
+// フラグメッセージの出力先を変更するには、 [CommandLine].SetOutputを呼び出します。
 func PrintDefaults()
 
-// Usageは、CommandLineの出力（デフォルトでos.Stderr）に、定義されたすべてのコマンドラインフラグに関する使用法メッセージを出力します。
+// Usageは、 [CommandLine] の出力（デフォルトで [os.Stderr]）に、定義されたすべてのコマンドラインフラグに関する使用法メッセージを出力します。
 // フラグの解析中にエラーが発生したときに呼び出されます。
 // この関数はカスタム関数を指すように変更できる変数です。
-// デフォルトでは、簡単なヘッダーが表示され、PrintDefaultsが呼び出されます。
-// 出力のフォーマットや、それを制御する方法の詳細については、PrintDefaultsのドキュメントを参照してください。
+// デフォルトでは、簡単なヘッダーが表示され、[PrintDefaults] が呼び出されます。
+// 出力のフォーマットや、それを制御する方法の詳細については、[PrintDefaults] のドキュメントを参照してください。
 // カスタムのUsage関数ではプログラムを終了することも選択できますが、デフォルトでは終了は常に発生します。
-// なぜなら、コマンドラインのエラーハンドリングストラテジーはExitOnErrorに設定されているからです。
+// なぜなら、コマンドラインのエラーハンドリングストラテジーは [ExitOnError] に設定されているからです。
 var Usage = func() {
 	fmt.Fprintf(CommandLine.Output(), "Usage of %s:\n", os.Args[0])
 	PrintDefaults()
@@ -408,33 +408,33 @@ func (f *FlagSet) BoolFunc(name, usage string, fn func(string) error)
 // もしfnが非nilのエラーを返した場合、それはフラグの値のパースエラーとして扱われます。
 func BoolFunc(name, usage string, fn func(string) error)
 
-// Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常、Valueという型の最初の引数で示され、Valueのユーザー定義の実装を保持します。例えば、呼び出し元は、Valueのメソッドを持つスライスにカンマ区切りの文字列を変換するフラグを作成することができます。特に、Setメソッドはカンマ区切りの文字列をスライスに分解します。
+// Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常、[Value] という型の最初の引数で示され、[Value] のユーザー定義の実装を保持します。例えば、呼び出し元は、[Value] のメソッドを持つスライスにカンマ区切りの文字列を変換するフラグを作成することができます。特に、[Set] メソッドはカンマ区切りの文字列をスライスに分解します。
 func (f *FlagSet) Var(value Value, name string, usage string)
 
-// Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常はValue型の最初の引数で表されます。このValue型は一般的に、ユーザー定義のValue型の実装を保持します。たとえば、呼び出し側は、値のメソッドを持つスライスにコンマ区切りの文字列を変換するフラグを作成することができます。特に、Setはコンマ区切りの文字列をスライスに分解します。
+// Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常は [Value] 型の最初の引数で表されます。この [Value] 型は一般的に、ユーザー定義の [Value] 型の実装を保持します。たとえば、呼び出し側は、値のメソッドを持つスライスにコンマ区切りの文字列を変換するフラグを作成することができます。特に、[Set] はコンマ区切りの文字列をスライスに分解します。
 func Var(value Value, name string, usage string)
 
 // Parseは引数リストからフラグ定義を解析します。コマンド名は含まれていてはいけません。
-// FlagSet内のすべてのフラグが定義され、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
-// 返り値は、-helpまたは-hが設定されているが定義されていない場合、ErrHelpになります。
+// [FlagSet] 内のすべてのフラグが定義され、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
+// 返り値は、-helpまたは-hが設定されているが定義されていない場合、 [ErrHelp] になります。
 func (f *FlagSet) Parse(arguments []string) error
 
 // Parsedはf.Parseが呼ばれたかどうかを報告する。
 func (f *FlagSet) Parsed() bool
 
-// Parseはos.Args[1:]からコマンドラインフラグを解析します。全てのフラグが定義された後、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
+// Parseは [os.Args][1:] からコマンドラインフラグを解析します。全てのフラグが定義された後、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
 func Parse()
 
 // Parsedは、コマンドラインフラグが解析されたかどうかを示します。
 func Parsed() bool
 
-// CommandLineはos.Argsから解析されたデフォルトのコマンドラインフラグのセットです。
-// BoolVar、Argなどのトップレベルの関数は、CommandLineのメソッドのラッパーです。
+// CommandLineは [os.Args] から解析されたデフォルトのコマンドラインフラグのセットです。
+// [BoolVar]、[Arg] などのトップレベルの関数は、CommandLineのメソッドのラッパーです。
 var CommandLine = NewFlagSet(os.Args[0], ExitOnError)
 
 // NewFlagSetは指定された名前とエラーハンドリングプロパティを持つ新しい空のフラグセットを返します。名前が空でない場合、デフォルトの使用方法メッセージとエラーメッセージに表示されます。
 func NewFlagSet(name string, errorHandling ErrorHandling) *FlagSet
 
 // Initはフラグセットの名前とエラーハンドリングプロパティを設定します。
-// デフォルトでは、ゼロ値のFlagSetは空の名前とContinueOnErrorのエラーハンドリングポリシーを使用します。
+// デフォルトでは、ゼロ値の [FlagSet] は空の名前と [ContinueOnError] のエラーハンドリングポリシーを使用します。
 func (f *FlagSet) Init(name string, errorHandling ErrorHandling)

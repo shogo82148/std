@@ -14,7 +14,7 @@ package math
 //	Erfinv(NaN) = NaN
 func Erfinv(x float64) float64
 
-// ErfcinvはErfc(x)の逆関数を返します。
+// Erfcinvは [Erfc](x)の逆関数を返します。
 //
 // 特殊な場合は以下の通りです:
 //

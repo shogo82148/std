@@ -3,20 +3,20 @@
 // license that can be found in the LICENSE file.
 
 // typesパッケージは、Goパッケージの型チェックのためのアルゴリズムを実装し、
-// データ型を宣言します。Config.Checkを使用してパッケージの型チェッカーを呼び出すか、
-// 代わりにNewCheckerで新しい型チェッカーを作成し、Checker.Filesを呼び出して
+// データ型を宣言します。[Config.Check] を使用してパッケージの型チェッカーを呼び出すか、
+// 代わりに [NewChecker] で新しい型チェッカーを作成し、[Checker.Files] を呼び出して
 // インクリメンタルに呼び出すことができます。
 //
 // 型チェックは、いくつかの相互依存するフェーズで構成されています。
 //
-// 名前解決は、プログラム内の各識別子（ast.Ident）を、それが示す言語オブジェクト（Object）にマップします。
-// 名前解決の結果には、Info.{Defs,Uses,Implicits}を使用します。
+// 名前解決は、プログラム内の各識別子（ast.Ident）を、それが示す言語オブジェクト（[Object]）にマップします。
+// 名前解決の結果には、[Info].{Defs,Uses,Implicits}を使用します。
 //
 // 定数畳み込みは、コンパイル時定数であるすべての式（ast.Expr）の正確な定数値（constant.Value）を計算します。
 // 定数畳み込みの結果には、Info.Types[expr].Valueを使用します。
 //
-// 型推論は、すべての式（ast.Expr）の型（Type）を計算し、言語仕様に準拠しているかどうかをチェックします。
-// 型推論の結果には、Info.Types[expr].Typeを使用します。
+// [Type] インタフェースは、すべての式（[ast.Expr]）の型（[Type]）を計算し、言語仕様に準拠しているかどうかをチェックします。
+// 型推論の結果には、[Info.Types][expr].Typeを使用します。
 //
 // For a tutorial, see https://golang.org/s/types-tutorial.
 package types
@@ -59,11 +59,8 @@ func (e *ArgumentError) Unwrap() error
 //
 // 注意: このインターフェースは、ローカルにvendoredされたパッケージのインポートには対応していません。
 // 詳細は、https://golang.org/s/go15vendor を参照してください。
-// 可能であれば、外部の実装ではImporterFromを実装するべきです。
+// 可能であれば、外部の実装では [ImporterFrom] を実装するべきです。
 type Importer interface {
-	// Import returns the imported package for the given import path.
-	// The semantics is like for ImporterFrom.ImportFrom except that
-	// dir and mode are ignored (since they are not present).
 	Import(path string) (*Package, error)
 }
 
@@ -74,22 +71,8 @@ type ImportMode int
 // https://golang.org/s/go15vendorに従い、ベンダリングをサポートします。
 // ImporterFromの実装を取得するには、go/importerを使用してください。
 type ImporterFrom interface {
-	// Importer is present for backward-compatibility. Calling
-	// Import(path) is the same as calling ImportFrom(path, "", 0);
-	// i.e., locally vendored packages may not be found.
-	// The types package does not call Import if an ImporterFrom
-	// is present.
 	Importer
 
-	// ImportFrom returns the imported package for the given import
-	// path when imported by a package file located in dir.
-	// If the import failed, besides returning an error, ImportFrom
-	// is encouraged to cache and return a package anyway, if one
-	// was created. This will reduce package inconsistencies and
-	// follow-on type checker errors due to the missing package.
-	// The mode value must be 0; it is reserved for future use.
-	// Two calls to ImportFrom with the same path and dir must
-	// return the same package.
 	ImportFrom(path, dir string, mode ImportMode) (*Package, error)
 }
 
@@ -230,8 +213,8 @@ func (info *Info) TypeOf(e ast.Expr) Type
 // ObjectOfは、指定したidによって指示されたオブジェクトを返します。
 // 存在しない場合はnilを返します。
 //
-// idが埋め込み構造体フィールドである場合、ObjectOfはフィールド(*Var)を返します
-// それが定義する特定のフィールド(*TypeName)ではありません。
+// idが埋め込み構造体フィールドである場合、[Info.ObjectOf] はフィールド(*[Var])を返します
+// それが定義する特定のフィールド(*[TypeName])ではありません。
 //
 // 前提条件：UsesおよびDefsマップが入力されています。
 func (info *Info) ObjectOf(id *ast.Ident) Object
@@ -268,7 +251,7 @@ func (tv TypeAndValue) Assignable() bool
 // HasOkは、対応する式がコンマOK代入の右辺に使用できるかどうかを報告します。
 func (tv TypeAndValue) HasOk() bool
 
-// Instanceは、型と関数のインスタンス化のための型引数とインスタンス化された型を報告します。型のインスタンス化では、Typeは動的型*Namedになります。関数のインスタンス化では、Typeは動的型*Signatureになります。
+// Instanceは、型と関数のインスタンス化のための型引数とインスタンス化された型を報告します。型のインスタンス化では、[Type] は動的型*[Named] になります。関数のインスタンス化では、[Type] は動的型*Signatureになります。
 type Instance struct {
 	TypeArgs *TypeList
 	Type     Type
@@ -282,8 +265,8 @@ type Initializer struct {
 
 func (init *Initializer) String() string
 
-// Checkはパッケージの型チェックを行い、結果のパッケージオブジェクトと初めのエラー（もし存在すれば）を返します。さらに、infoがnilでない場合、CheckはInfo構造体の非nilのマップそれぞれを埋めます。
-// エラーが発生しなかった場合、パッケージは完全であるとマークされます。そうでなければ不完全です。エラーの存在に応じた動作の制御については、Config.Errorを参照してください。
+// Checkはパッケージの型チェックを行い、結果のパッケージオブジェクトと初めのエラー（もし存在すれば）を返します。さらに、infoがnilでない場合、Checkは [Info] 構造体の非nilのマップそれぞれを埋めます。
+// エラーが発生しなかった場合、パッケージは完全であるとマークされます。そうでなければ不完全です。エラーの存在に応じた動作の制御については、[Config.Error] を参照してください。
 // パッケージはast.Filesのリストと対応するファイルセット、およびパッケージが識別されるパッケージパスで指定されます。クリーンパスは空またはドット（"."）ではないでしょう。
 func (conf *Config) Check(path string, fset *token.FileSet, files []*ast.File, info *Info) (*Package, error)
 
@@ -316,9 +299,9 @@ func Implements(V Type, T *Interface) bool
 func Satisfies(V Type, T *Interface) bool
 
 // Identicalはxとyが同じ型であるかどうかを返します。
-// Signature型のレシーバは無視されます。
+// [Signature] 型のレシーバは無視されます。
 func Identical(x, y Type) bool
 
 // IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
-// Signature型のレシーバーは無視されます。
+// [Signature] 型のレシーバーは無視されます。
 func IdenticalIgnoreTags(x, y Type) bool

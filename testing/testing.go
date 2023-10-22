@@ -404,9 +404,6 @@ type TB interface {
 	Skipped() bool
 	TempDir() string
 
-	// A private method to prevent users implementing the
-	// interface and so future additions to it will not
-	// violate Go 1 compatibility.
 	private()
 }
 

@@ -12,10 +12,8 @@ import "github.com/shogo82148/std/go/constant"
 // so we could depend on it from other packages without
 // introducing a circularity.)
 type Type interface {
-	// Underlying returns the underlying type of a type.
 	Underlying() Type
 
-	// String returns a string representation of a type.
 	String() string
 }
 

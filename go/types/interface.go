@@ -41,16 +41,16 @@ func (t *Interface) MarkImplicit()
 func (t *Interface) NumExplicitMethods() int
 
 // ExplicitMethodは0 <= i < t.NumExplicitMethods()に対して、インターフェースtのi番目に明示的に宣言されたメソッドを返します。
-// メソッドは一意のIdによって順序付けられます。
+// メソッドは一意の [Id] によって順序付けられます。
 func (t *Interface) ExplicitMethod(i int) *Func
 
 // NumEmbeddeds はインターフェース t 内の埋め込まれた型の数を返します。
 func (t *Interface) NumEmbeddeds() int
 
-// Embeddedは、0 <= i < t.NumEmbeddeds() の範囲でインターフェースtのi番目の埋め込まれた(*Named)型を返します。
+// Embeddedは、0 <= i < t.NumEmbeddeds() の範囲でインターフェースtのi番目の埋め込まれた(*[Named])型を返します。
 // i番目の埋め込まれた型が定義済みの型でない場合、結果はnilです。
 //
-// 非推奨: 定義済みの(*Named)型に制限されないEmbeddedTypeを使用してください。
+// Deprecated: 定義済みの(*[Named])型に制限されない [Interface.EmbeddedType] を使用してください。
 func (t *Interface) Embedded(i int) *Named
 
 // EmbeddedTypeは0 <= i < t.NumEmbeddeds()におけるインターフェースtのi番目の埋め込まれた型を返します。
@@ -77,7 +77,7 @@ func (t *Interface) IsMethodSet() bool
 func (t *Interface) IsImplicit() bool
 
 // Completeはインターフェースのタイプセットを計算します。これは、
-// NewInterfaceTypeとNewInterfaceのユーザーによって呼び出される必要があります。インターフェースの埋め込まれた型が完全に定義され、他の型を形成する以外の方法でインターフェースのタイプを使用する前に呼び出す必要があります。インターフェースに重複するメソッドが含まれている場合、パニックが発生します。Completeはレシーバーを返します。
+// [NewInterfaceType] と [NewInterface] のユーザーによって呼び出される必要があります。インターフェースの埋め込まれた型が完全に定義され、他の型を形成する以外の方法でインターフェースのタイプを使用する前に呼び出す必要があります。インターフェースに重複するメソッドが含まれている場合、パニックが発生します。Completeはレシーバーを返します。
 //
 // 完了済みのインターフェース型は、同時に使用することが安全です。
 func (t *Interface) Complete() *Interface

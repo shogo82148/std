@@ -24,7 +24,7 @@ type PipeReader struct{ pipe }
 func (r *PipeReader) Read(data []byte) (n int, err error)
 
 // Closeは、リーダーを閉じます。パイプの書き込み半分への後続の書き込みは、
-// エラーErrClosedPipeを返します。
+// エラー [ErrClosedPipe] を返します。
 func (r *PipeReader) Close() error
 
 // CloseWithErrorは、リーダーを閉じます。パイプの書き込み半分への後続の書き込みは、エラーerrを返します。
@@ -39,7 +39,7 @@ type PipeWriter struct{ r PipeReader }
 // データをパイプに書き込み、1つ以上のリーダーがすべてのデータを消費するか、
 // 読み取り側が閉じられるまでブロックします。
 // 読み取り側がエラーで閉じられた場合、そのエラーがerrとして返されます。
-// それ以外の場合、errはErrClosedPipeです。
+// それ以外の場合、errは [ErrClosedPipe] です。
 func (w *PipeWriter) Write(data []byte) (n int, err error)
 
 // Close closes the writer; subsequent reads from the
@@ -55,13 +55,13 @@ func (w *PipeWriter) Close() error
 func (w *PipeWriter) CloseWithError(err error) error
 
 // Pipe creates a synchronous in-memory pipe.
-// It can be used to connect code expecting an io.Reader
-// with code expecting an io.Writer.
+// It can be used to connect code expecting an [io.Reader]
+// with code expecting an [io.Writer].
 //
 // Reads and Writes on the pipe are matched one to one
 // except when multiple Reads are needed to consume a single Write.
-// That is, each Write to the PipeWriter blocks until it has satisfied
-// one or more Reads from the PipeReader that fully consume
+// That is, each Write to the [PipeWriter] blocks until it has satisfied
+// one or more Reads from the [PipeReader] that fully consume
 // the written data.
 // The data is copied directly from the Write to the corresponding
 // Read (or Reads); there is no internal buffering.

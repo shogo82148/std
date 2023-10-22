@@ -9,7 +9,7 @@ type Union struct {
 	terms []*Term
 }
 
-// NewUnionは与えられた要素で新しいUnion型を返します。
+// NewUnionは与えられた要素で新しい [Union] 型を返します。
 // 空のUnionを作成することはエラーであり、構文的に不可能です。
 func NewUnion(terms []*Term) *Union
 
@@ -19,7 +19,7 @@ func (u *Union) Term(i int) *Term
 func (u *Union) Underlying() Type
 func (u *Union) String() string
 
-// TermはUnion内の項を表します。
+// Termは [Union] 内の項を表します。
 type Term term
 
 // NewTermは新しいユニオン用語を返します。

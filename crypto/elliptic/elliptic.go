@@ -22,39 +22,16 @@ import (
 //
 // [P224] 、 [P256] 、 [P384] 、および [P521] 以外のCurve実装を使用することは非推奨です。
 type Curve interface {
-	// Params returns the parameters for the curve.
 	Params() *CurveParams
 
-	// IsOnCurve reports whether the given (x,y) lies on the curve.
-	//
-	// Deprecated: this is a low-level unsafe API. For ECDH, use the crypto/ecdh
-	// package. The NewPublicKey methods of NIST curves in crypto/ecdh accept
-	// the same encoding as the Unmarshal function, and perform on-curve checks.
 	IsOnCurve(x, y *big.Int) bool
 
-	// Add returns the sum of (x1,y1) and (x2,y2).
-	//
-	// Deprecated: this is a low-level unsafe API.
 	Add(x1, y1, x2, y2 *big.Int) (x, y *big.Int)
 
-	// Double returns 2*(x,y).
-	//
-	// Deprecated: this is a low-level unsafe API.
 	Double(x1, y1 *big.Int) (x, y *big.Int)
 
-	// ScalarMult returns k*(x,y) where k is an integer in big-endian form.
-	//
-	// Deprecated: this is a low-level unsafe API. For ECDH, use the crypto/ecdh
-	// package. Most uses of ScalarMult can be replaced by a call to the ECDH
-	// methods of NIST curves in crypto/ecdh.
 	ScalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int)
 
-	// ScalarBaseMult returns k*G, where G is the base point of the group
-	// and k is an integer in big-endian form.
-	//
-	// Deprecated: this is a low-level unsafe API. For ECDH, use the crypto/ecdh
-	// package. Most uses of ScalarBaseMult can be replaced by a call to the
-	// PrivateKey.PublicKey method in crypto/ecdh.
 	ScalarBaseMult(k []byte) (x, y *big.Int)
 }
 

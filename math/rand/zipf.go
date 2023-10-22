@@ -22,12 +22,12 @@ type Zipf struct {
 	hx0minusHxm  float64
 }
 
-// NewZipf returns a Zipf variate generator.
+// NewZipf returns a [Zipf] variate generator.
 // The generator generates values k ∈ [0, imax]
 // such that P(k) is proportional to (v + k) ** (-s).
 // Requirements: s > 1 and v >= 1.
 func NewZipf(r *Rand, s float64, v float64, imax uint64) *Zipf
 
-// Uint64 returns a value drawn from the Zipf distribution described
-// by the Zipf object.
+// Uint64 returns a value drawn from the [Zipf] distribution described
+// by the [Zipf] object.
 func (z *Zipf) Uint64() uint64

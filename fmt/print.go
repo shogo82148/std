@@ -11,14 +11,14 @@ import (
 // Stateはカスタムフォーマッタに渡されるプリンタの状態を表します。
 // io.Writerインターフェースへのアクセスと、オペランドのフォーマット指定子に関するフラグとオプションの情報を提供します。
 type State interface {
-	// Write is the function to call to emit formatted output to be printed.
+	// Writeは、出力をフォーマットして印刷するために呼び出す関数です。
 	Write(b []byte) (n int, err error)
-	// Width returns the value of the width option and whether it has been set.
+	// Widthは、幅オプションの値とその設定状態を返します。
 	Width() (wid int, ok bool)
-	// Precision returns the value of the precision option and whether it has been set.
+	// Precisionは、精度オプションの値とその設定状態を返します。
 	Precision() (prec int, ok bool)
 
-	// Flag reports whether the flag c, a character, has been set.
+	// Flagは、文字cが設定されているかどうかを報告します。
 	Flag(c int) bool
 }
 

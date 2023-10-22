@@ -19,6 +19,10 @@ func Uint32(s *obj.LSym, off int, v uint32) int
 
 func Uintptr(s *obj.LSym, off int, v uint64) int
 
+// Uvarint writes a varint v into s at offset off,
+// and returns the next unused offset.
+func Uvarint(s *obj.LSym, off int, v uint64) int
+
 func Bool(s *obj.LSym, off int, v bool) int
 
 // UintN writes an unsigned integer v of size wid bytes into s at offset off,

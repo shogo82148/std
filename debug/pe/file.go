@@ -32,15 +32,15 @@ type File struct {
 	closer io.Closer
 }
 
-// Open opens the named file using os.Open and prepares it for use as a PE binary.
+// Open opens the named file using [os.Open] and prepares it for use as a PE binary.
 func Open(name string) (*File, error)
 
-// Close closes the File.
-// If the File was created using NewFile directly instead of Open,
+// Close closes the [File].
+// If the [File] was created using [NewFile] directly instead of [Open],
 // Close has no effect.
 func (f *File) Close() error
 
-// NewFile creates a new File for accessing a PE binary in an underlying reader.
+// NewFile creates a new [File] for accessing a PE binary in an underlying reader.
 func NewFile(r io.ReaderAt) (*File, error)
 
 // Section returns the first section with the given name, or nil if no such

@@ -153,11 +153,15 @@ func OP_BCR(op uint32, bo uint32, bi uint32) uint32
 
 func OP_RLW(op uint32, a uint32, s uint32, sh uint32, mb uint32, me uint32) uint32
 
-func AOP_RLDIC(op uint32, a uint32, s uint32, sh uint32, m uint32) uint32
-
 func AOP_EXTSWSLI(op uint32, a uint32, s uint32, sh uint32) uint32
 
 func AOP_ISEL(op uint32, t uint32, a uint32, b uint32, bc uint32) uint32
+
+/* MD-form 2-register, 2 6-bit immediate operands */
+func AOP_MD(op uint32, a uint32, s uint32, sh uint32, m uint32) uint32
+
+/* MDS-form 3-register, 1 6-bit immediate operands. rsh argument is a register. */
+func AOP_MDS(op, to, from, rsh, m uint32) uint32
 
 func AOP_PFX_00_8LS(r, ie uint32) uint32
 

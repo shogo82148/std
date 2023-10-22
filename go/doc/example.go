@@ -27,7 +27,7 @@ type Example struct {
 // ExamplesはtestFilesで見つかった例を、Nameフィールドでソートして返します。
 // Orderフィールドには、例が出現した順序が記録されます。
 // Suffixフィールドは、Examplesが直接呼び出された場合は値が入りませんが、
-// NewFromFilesによってtest.goファイルで見つかった例にのみ値が入ります。
+// [NewFromFiles] によってtest.goファイルで見つかった例にのみ値が入ります。
 //
 // プレイ可能な例は、名前が"_test"で終わるパッケージにある必要があります。
 // 例は、次のいずれかの場合に「プレイ可能」です（Playフィールドが非nilである場合）：

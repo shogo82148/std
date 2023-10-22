@@ -4,11 +4,11 @@
 
 // Package image implements a basic 2-D image library.
 //
-// The fundamental interface is called Image. An Image contains colors, which
+// The fundamental interface is called [Image]. An [Image] contains colors, which
 // are described in the image/color package.
 //
-// Values of the Image interface are created either by calling functions such
-// as NewRGBA and NewPaletted, or by calling Decode on an io.Reader containing
+// Values of the [Image] interface are created either by calling functions such
+// as [NewRGBA] and [NewPaletted], or by calling [Decode] on an [io.Reader] containing
 // image data in a format such as GIF, JPEG or PNG. Decoding any particular
 // image format requires the prior registration of a decoder function.
 // Registration is typically automatic as a side effect of initializing that
@@ -26,14 +26,14 @@
 //
 // The image package can be used to parse arbitrarily large images, which can
 // cause resource exhaustion on machines which do not have enough memory to
-// store them. When operating on arbitrary images, DecodeConfig should be called
-// before Decode, so that the program can decide whether the image, as defined
+// store them. When operating on arbitrary images, [DecodeConfig] should be called
+// before [Decode], so that the program can decide whether the image, as defined
 // in the returned header, can be safely decoded with the available resources. A
-// call to Decode which produces an extremely large image, as defined in the
-// header returned by DecodeConfig, is not considered a security issue,
+// call to [Decode] which produces an extremely large image, as defined in the
+// header returned by [DecodeConfig], is not considered a security issue,
 // regardless of whether the image is itself malformed or not. A call to
-// DecodeConfig which returns a header which does not match the image returned
-// by Decode may be considered a security issue, and should be reported per the
+// [DecodeConfig] which returns a header which does not match the image returned
+// by [Decode] may be considered a security issue, and should be reported per the
 // [Go Security Policy](https://go.dev/security/policy).
 package image
 
@@ -47,43 +47,34 @@ type Config struct {
 	Width, Height int
 }
 
-// Image is a finite rectangular grid of color.Color values taken from a color
+// Image is a finite rectangular grid of [color.Color] values taken from a color
 // model.
 type Image interface {
-	// ColorModel returns the Image's color model.
 	ColorModel() color.Model
-	// Bounds returns the domain for which At can return non-zero color.
-	// The bounds do not necessarily contain the point (0, 0).
+
 	Bounds() Rectangle
-	// At returns the color of the pixel at (x, y).
-	// At(Bounds().Min.X, Bounds().Min.Y) returns the upper-left pixel of the grid.
-	// At(Bounds().Max.X-1, Bounds().Max.Y-1) returns the lower-right one.
+
 	At(x, y int) color.Color
 }
 
-// RGBA64Image is an Image whose pixels can be converted directly to a
+// RGBA64Image is an [Image] whose pixels can be converted directly to a
 // color.RGBA64.
 type RGBA64Image interface {
-	// RGBA64At returns the RGBA64 color of the pixel at (x, y). It is
-	// equivalent to calling At(x, y).RGBA() and converting the resulting
-	// 32-bit return values to a color.RGBA64, but it can avoid allocations
-	// from converting concrete color types to the color.Color interface type.
 	RGBA64At(x, y int) color.RGBA64
 	Image
 }
 
 // PalettedImage is an image whose colors may come from a limited palette.
-// If m is a PalettedImage and m.ColorModel() returns a color.Palette p,
+// If m is a PalettedImage and m.ColorModel() returns a [color.Palette] p,
 // then m.At(x, y) should be equivalent to p[m.ColorIndexAt(x, y)]. If m's
 // color model is not a color.Palette, then ColorIndexAt's behavior is
 // undefined.
 type PalettedImage interface {
-	// ColorIndexAt returns the palette index of the pixel at (x, y).
 	ColorIndexAt(x, y int) uint8
 	Image
 }
 
-// RGBA is an in-memory image whose At method returns color.RGBA values.
+// RGBA is an in-memory image whose At method returns [color.RGBA] values.
 type RGBA struct {
 	// Pix holds the image's pixels, in R, G, B, A order. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
@@ -121,10 +112,10 @@ func (p *RGBA) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *RGBA) Opaque() bool
 
-// NewRGBA returns a new RGBA image with the given bounds.
+// NewRGBA returns a new [RGBA] image with the given bounds.
 func NewRGBA(r Rectangle) *RGBA
 
-// RGBA64 is an in-memory image whose At method returns color.RGBA64 values.
+// RGBA64 is an in-memory image whose At method returns [color.RGBA64] values.
 type RGBA64 struct {
 	// Pix holds the image's pixels, in R, G, B, A order and big-endian format. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8].
@@ -158,10 +149,10 @@ func (p *RGBA64) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *RGBA64) Opaque() bool
 
-// NewRGBA64 returns a new RGBA64 image with the given bounds.
+// NewRGBA64 returns a new [RGBA64] image with the given bounds.
 func NewRGBA64(r Rectangle) *RGBA64
 
-// NRGBA is an in-memory image whose At method returns color.NRGBA values.
+// NRGBA is an in-memory image whose At method returns [color.NRGBA] values.
 type NRGBA struct {
 	// Pix holds the image's pixels, in R, G, B, A order. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
@@ -199,10 +190,10 @@ func (p *NRGBA) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *NRGBA) Opaque() bool
 
-// NewNRGBA returns a new NRGBA image with the given bounds.
+// NewNRGBA returns a new [NRGBA] image with the given bounds.
 func NewNRGBA(r Rectangle) *NRGBA
 
-// NRGBA64 is an in-memory image whose At method returns color.NRGBA64 values.
+// NRGBA64 is an in-memory image whose At method returns [color.NRGBA64] values.
 type NRGBA64 struct {
 	// Pix holds the image's pixels, in R, G, B, A order and big-endian format. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8].
@@ -240,10 +231,10 @@ func (p *NRGBA64) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *NRGBA64) Opaque() bool
 
-// NewNRGBA64 returns a new NRGBA64 image with the given bounds.
+// NewNRGBA64 returns a new [NRGBA64] image with the given bounds.
 func NewNRGBA64(r Rectangle) *NRGBA64
 
-// Alpha is an in-memory image whose At method returns color.Alpha values.
+// Alpha is an in-memory image whose At method returns [color.Alpha] values.
 type Alpha struct {
 	// Pix holds the image's pixels, as alpha values. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1].
@@ -281,10 +272,10 @@ func (p *Alpha) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Alpha) Opaque() bool
 
-// NewAlpha returns a new Alpha image with the given bounds.
+// NewAlpha returns a new [Alpha] image with the given bounds.
 func NewAlpha(r Rectangle) *Alpha
 
-// Alpha16 is an in-memory image whose At method returns color.Alpha16 values.
+// Alpha16 is an in-memory image whose At method returns [color.Alpha16] values.
 type Alpha16 struct {
 	// Pix holds the image's pixels, as alpha values in big-endian format. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2].
@@ -322,10 +313,10 @@ func (p *Alpha16) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Alpha16) Opaque() bool
 
-// NewAlpha16 returns a new Alpha16 image with the given bounds.
+// NewAlpha16 returns a new [Alpha16] image with the given bounds.
 func NewAlpha16(r Rectangle) *Alpha16
 
-// Gray is an in-memory image whose At method returns color.Gray values.
+// Gray is an in-memory image whose At method returns [color.Gray] values.
 type Gray struct {
 	// Pix holds the image's pixels, as gray values. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1].
@@ -363,10 +354,10 @@ func (p *Gray) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Gray) Opaque() bool
 
-// NewGray returns a new Gray image with the given bounds.
+// NewGray returns a new [Gray] image with the given bounds.
 func NewGray(r Rectangle) *Gray
 
-// Gray16 is an in-memory image whose At method returns color.Gray16 values.
+// Gray16 is an in-memory image whose At method returns [color.Gray16] values.
 type Gray16 struct {
 	// Pix holds the image's pixels, as gray values in big-endian format. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2].
@@ -404,10 +395,10 @@ func (p *Gray16) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Gray16) Opaque() bool
 
-// NewGray16 returns a new Gray16 image with the given bounds.
+// NewGray16 returns a new [Gray16] image with the given bounds.
 func NewGray16(r Rectangle) *Gray16
 
-// CMYK is an in-memory image whose At method returns color.CMYK values.
+// CMYK is an in-memory image whose At method returns [color.CMYK] values.
 type CMYK struct {
 	// Pix holds the image's pixels, in C, M, Y, K order. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
@@ -488,6 +479,6 @@ func (p *Paletted) SubImage(r Rectangle) Image
 // Opaque scans the entire image and reports whether it is fully opaque.
 func (p *Paletted) Opaque() bool
 
-// NewPaletted returns a new Paletted image with the given width, height and
+// NewPaletted returns a new [Paletted] image with the given width, height and
 // palette.
 func NewPaletted(r Rectangle, p color.Palette) *Paletted

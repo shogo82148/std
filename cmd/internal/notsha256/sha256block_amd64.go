@@ -3,6 +3,5 @@
 // license that can be found in the LICENSE file.
 
 //go:build !purego
-// +build !purego
 
 package notsha256

@@ -4,7 +4,7 @@
 
 package math
 
-// LdexpはFrexpの逆です。
+// Ldexpは [Frexp] の逆です。
 // それはfrac × 2 ** expを返します。
 //
 // 特別なケースは以下の通りです：

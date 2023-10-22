@@ -4,8 +4,8 @@
 
 package ast
 
-// Walk によって遭遇したノードごとに Visitor の Visit メソッドが呼び出されます。
-// もし結果の visitor w が nil でない場合、Walk はノードの各子ノードを visitor w と共に訪問し、その後に w.Visit(nil) の呼び出しを行います。
+// [Walk] によって遭遇したノードごとに Visitor の Visit メソッドが呼び出されます。
+// もし結果の visitor w が nil でない場合、[Walk] はノードの各子ノードを visitor w と共に訪問し、その後に w.Visit(nil) の呼び出しを行います。
 type Visitor interface {
 	Visit(node Node) (w Visitor)
 }

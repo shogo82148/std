@@ -17,7 +17,7 @@ package bits
 // UintSize is the size of a uint in bits.
 const UintSize = uintSize
 
-// LeadingZeros returns the number of leading zero bits in x; the result is UintSize for x == 0.
+// LeadingZeros returns the number of leading zero bits in x; the result is [UintSize] for x == 0.
 func LeadingZeros(x uint) int
 
 // LeadingZeros8 returns the number of leading zero bits in x; the result is 8 for x == 0.
@@ -32,7 +32,7 @@ func LeadingZeros32(x uint32) int
 // LeadingZeros64 returns the number of leading zero bits in x; the result is 64 for x == 0.
 func LeadingZeros64(x uint64) int
 
-// TrailingZeros returns the number of trailing zero bits in x; the result is UintSize for x == 0.
+// TrailingZeros returns the number of trailing zero bits in x; the result is [UintSize] for x == 0.
 func TrailingZeros(x uint) int
 
 // TrailingZeros8 returns the number of trailing zero bits in x; the result is 8 for x == 0.
@@ -62,7 +62,7 @@ func OnesCount32(x uint32) int
 // OnesCount64 returns the number of one bits ("population count") in x.
 func OnesCount64(x uint64) int
 
-// RotateLeft returns the value of x rotated left by (k mod UintSize) bits.
+// RotateLeft returns the value of x rotated left by (k mod [UintSize]) bits.
 // To rotate x right by k bits, call RotateLeft(x, -k).
 //
 // This function's execution time does not depend on the inputs.
@@ -229,11 +229,11 @@ func Div64(hi, lo, y uint64) (quo, rem uint64)
 func Rem(hi, lo, y uint) uint
 
 // Rem32 returns the remainder of (hi, lo) divided by y. Rem32 panics
-// for y == 0 (division by zero) but, unlike Div32, it doesn't panic
+// for y == 0 (division by zero) but, unlike [Div32], it doesn't panic
 // on a quotient overflow.
 func Rem32(hi, lo, y uint32) uint32
 
 // Rem64 returns the remainder of (hi, lo) divided by y. Rem64 panics
-// for y == 0 (division by zero) but, unlike Div64, it doesn't panic
+// for y == 0 (division by zero) but, unlike [Div64], it doesn't panic
 // on a quotient overflow.
 func Rem64(hi, lo, y uint64) uint64

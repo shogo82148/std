@@ -11,32 +11,25 @@ import (
 // ScanStateはカスタムスキャナーに渡されるスキャナーの状態を表します。
 // スキャナーは一文字ずつスキャンすることもでき、またScanStateに次のスペース区切りのトークンを見つけるように依頼することもできます。
 type ScanState interface {
-	// ReadRune reads the next rune (Unicode code point) from the input.
-	// If invoked during Scanln, Fscanln, or Sscanln, ReadRune() will
-	// return EOF after returning the first '\n' or when reading beyond
-	// the specified width.
+	// ReadRuneは、入力から次のルーン（Unicodeコードポイント）を読み取ります。
+	// Scanln、Fscanln、またはSscanln中に呼び出された場合、ReadRune()は、最初の'\n'を返した後、または指定された幅を超えて読み取りを行った後にEOFを返します。
 	ReadRune() (r rune, size int, err error)
-	// UnreadRune causes the next call to ReadRune to return the same rune.
+	// UnreadRuneは、次のReadRune呼び出しで同じルーンを返します。
 	UnreadRune() error
-	// SkipSpace skips space in the input. Newlines are treated appropriately
-	// for the operation being performed; see the package documentation
-	// for more information.
+	// SkipSpaceは、入力内のスペースをスキップします。
+	// 操作に応じて、改行は適切に処理されます。
+	// 詳細については、パッケージのドキュメントを参照してください。
 	SkipSpace()
-	// Token skips space in the input if skipSpace is true, then returns the
-	// run of Unicode code points c satisfying f(c).  If f is nil,
-	// !unicode.IsSpace(c) is used; that is, the token will hold non-space
-	// characters. Newlines are treated appropriately for the operation being
-	// performed; see the package documentation for more information.
-	// The returned slice points to shared data that may be overwritten
-	// by the next call to Token, a call to a Scan function using the ScanState
-	// as input, or when the calling Scan method returns.
+	// Tokenは、skipSpaceがtrueの場合、入力内のスペースをスキップして、f(c)を満たすUnicodeコードポイントcのランを返します。
+	// fがnilの場合、!unicode.IsSpace(c)が使用されます。つまり、トークンにはスペース以外の文字が含まれます。
+	// 操作に応じて、改行は適切に処理されます。詳細については、パッケージのドキュメントを参照してください。
+	// 返されたスライスは、Tokenの次の呼び出し、ScanStateを入力として使用するScan関数の呼び出し、または呼び出し元のScanメソッドが返されたときに上書きされる可能性がある共有データを指します。
 	Token(skipSpace bool, f func(rune) bool) (token []byte, err error)
-	// Width returns the value of the width option and whether it has been set.
-	// The unit is Unicode code points.
+	// Widthは、幅オプションの値とその設定状態を返します。
+	// 単位はUnicodeコードポイントです。
 	Width() (wid int, ok bool)
-	// Because ReadRune is implemented by the interface, Read should never be
-	// called by the scanning routines and a valid implementation of
-	// ScanState may choose always to return an error from Read.
+	// ReadRuneはインターフェースによって実装されているため、スキャンルーチンからReadが呼び出されることはありません。
+	// また、ScanStateの有効な実装は、常にReadからエラーを返すことがあります。
 	Read(buf []byte) (n int, err error)
 }
 
