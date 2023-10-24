@@ -77,14 +77,14 @@ func (l Level) MarshalText() ([]byte, error)
 func (l *Level) UnmarshalText(data []byte) error
 
 // Level returns the receiver.
-// It implements Leveler.
+// It implements [Leveler].
 func (l Level) Level() Level
 
-// A LevelVar is a Level variable, to allow a Handler level to change
+// A LevelVar is a [Level] variable, to allow a [Handler] level to change
 // dynamically.
-// It implements Leveler as well as a Set method,
+// It implements [Leveler] as well as a Set method,
 // and it is safe for use by multiple goroutines.
-// The zero LevelVar corresponds to LevelInfo.
+// The zero LevelVar corresponds to [LevelInfo].
 type LevelVar struct {
 	val atomic.Int64
 }
@@ -105,12 +105,12 @@ func (v *LevelVar) MarshalText() ([]byte, error)
 // by calling [Level.UnmarshalText].
 func (v *LevelVar) UnmarshalText(data []byte) error
 
-// A Leveler provides a Level value.
+// A Leveler provides a [Level] value.
 //
 // As Level itself implements Leveler, clients typically supply
-// a Level value wherever a Leveler is needed, such as in HandlerOptions.
+// a Level value wherever a Leveler is needed, such as in [HandlerOptions].
 // Clients who need to vary the level dynamically can provide a more complex
-// Leveler implementation such as *LevelVar.
+// Leveler implementation such as *[LevelVar].
 type Leveler interface {
 	Level() Level
 }

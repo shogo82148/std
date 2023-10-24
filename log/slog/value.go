@@ -28,7 +28,7 @@ type Value struct {
 	any any
 }
 
-// Kind is the kind of a Value.
+// Kind is the kind of a [Value].
 type Kind int
 
 const (
@@ -49,56 +49,56 @@ func (k Kind) String() string
 // Kind returns v's Kind.
 func (v Value) Kind() Kind
 
-// StringValue returns a new Value for a string.
+// StringValue returns a new [Value] for a string.
 func StringValue(value string) Value
 
-// IntValue returns a Value for an int.
+// IntValue returns a [Value] for an int.
 func IntValue(v int) Value
 
-// Int64Value returns a Value for an int64.
+// Int64Value returns a [Value] for an int64.
 func Int64Value(v int64) Value
 
-// Uint64Value returns a Value for a uint64.
+// Uint64Value returns a [Value] for a uint64.
 func Uint64Value(v uint64) Value
 
-// Float64Value returns a Value for a floating-point number.
+// Float64Value returns a [Value] for a floating-point number.
 func Float64Value(v float64) Value
 
-// BoolValue returns a Value for a bool.
+// BoolValue returns a [Value] for a bool.
 func BoolValue(v bool) Value
 
-// TimeValue returns a Value for a time.Time.
+// TimeValue returns a [Value] for a [time.Time].
 // It discards the monotonic portion.
 func TimeValue(v time.Time) Value
 
-// DurationValue returns a Value for a time.Duration.
+// DurationValue returns a [Value] for a [time.Duration].
 func DurationValue(v time.Duration) Value
 
-// GroupValue returns a new Value for a list of Attrs.
+// GroupValue returns a new [Value] for a list of Attrs.
 // The caller must not subsequently mutate the argument slice.
 func GroupValue(as ...Attr) Value
 
-// AnyValue returns a Value for the supplied value.
+// AnyValue returns a [Value] for the supplied value.
 //
 // If the supplied value is of type Value, it is returned
 // unmodified.
 //
 // Given a value of one of Go's predeclared string, bool, or
 // (non-complex) numeric types, AnyValue returns a Value of kind
-// String, Bool, Uint64, Int64, or Float64. The width of the
-// original numeric type is not preserved.
+// [KindString], [KindBool], [KindUint64], [KindInt64], or [KindFloat64].
+// The width of the original numeric type is not preserved.
 //
-// Given a time.Time or time.Duration value, AnyValue returns a Value of kind
-// KindTime or KindDuration. The monotonic time is not preserved.
+// Given a [time.Time] or [time.Duration] value, AnyValue returns a Value of kind
+// [KindTime] or [KindDuration]. The monotonic time is not preserved.
 //
 // For nil, or values of all other types, including named types whose
-// underlying type is numeric, AnyValue returns a value of kind KindAny.
+// underlying type is numeric, AnyValue returns a value of kind [KindAny].
 func AnyValue(v any) Value
 
 // Any returns v's value as an any.
 func (v Value) Any() any
 
-// String returns Value's value as a string, formatted like fmt.Sprint. Unlike
+// String returns Value's value as a string, formatted like [fmt.Sprint]. Unlike
 // the methods Int64, Float64, and so on, which panic if v is of the
 // wrong kind, String never panics.
 func (v Value) String() string
@@ -115,7 +115,7 @@ func (v Value) Uint64() uint64
 // if v is not a bool.
 func (v Value) Bool() bool
 
-// Duration returns v's value as a time.Duration. It panics
+// Duration returns v's value as a [time.Duration]. It panics
 // if v is not a time.Duration.
 func (v Value) Duration() time.Duration
 
@@ -123,7 +123,7 @@ func (v Value) Duration() time.Duration
 // if v is not a float64.
 func (v Value) Float64() float64
 
-// Time returns v's value as a time.Time. It panics
+// Time returns v's value as a [time.Time]. It panics
 // if v is not a time.Time.
 func (v Value) Time() time.Time
 
@@ -132,7 +132,7 @@ func (v Value) Time() time.Time
 func (v Value) LogValuer() LogValuer
 
 // Group returns v's value as a []Attr.
-// It panics if v's Kind is not KindGroup.
+// It panics if v's [Kind] is not [KindGroup].
 func (v Value) Group() []Attr
 
 // Equal reports whether v and w represent the same Go value.
@@ -146,11 +146,11 @@ type LogValuer interface {
 	LogValue() Value
 }
 
-// Resolve repeatedly calls LogValue on v while it implements LogValuer,
+// Resolve repeatedly calls LogValue on v while it implements [LogValuer],
 // and returns the result.
 // If v resolves to a group, the group's attributes' values are not recursively
 // resolved.
 // If the number of LogValue calls exceeds a threshold, a Value containing an
 // error is returned.
-// Resolve's return value is guaranteed not to be of Kind KindLogValuer.
+// Resolve's return value is guaranteed not to be of Kind [KindLogValuer].
 func (v Value) Resolve() (rv Value)

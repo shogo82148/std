@@ -9,13 +9,13 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// TextHandler is a Handler that writes Records to an io.Writer as a
+// TextHandler is a [Handler] that writes Records to an [io.Writer] as a
 // sequence of key=value pairs separated by spaces and followed by a newline.
 type TextHandler struct {
 	*commonHandler
 }
 
-// NewTextHandler creates a TextHandler that writes to w,
+// NewTextHandler creates a [TextHandler] that writes to w,
 // using the given options.
 // If opts is nil, the default options are used.
 func NewTextHandler(w io.Writer, opts *HandlerOptions) *TextHandler
@@ -24,13 +24,13 @@ func NewTextHandler(w io.Writer, opts *HandlerOptions) *TextHandler
 // The handler ignores records whose level is lower.
 func (h *TextHandler) Enabled(_ context.Context, level Level) bool
 
-// WithAttrs returns a new TextHandler whose attributes consists
+// WithAttrs returns a new [TextHandler] whose attributes consists
 // of h's attributes followed by attrs.
 func (h *TextHandler) WithAttrs(attrs []Attr) Handler
 
 func (h *TextHandler) WithGroup(name string) Handler
 
-// Handle formats its argument Record as a single line of space-separated
+// Handle formats its argument [Record] as a single line of space-separated
 // key=value items.
 //
 // If the Record's time is zero, the time is omitted.
@@ -50,7 +50,7 @@ func (h *TextHandler) WithGroup(name string) Handler
 // [HandlerOptions.ReplaceAttr].
 //
 // If a value implements [encoding.TextMarshaler], the result of MarshalText is
-// written. Otherwise, the result of fmt.Sprint is written.
+// written. Otherwise, the result of [fmt.Sprint] is written.
 //
 // Keys and values are quoted with [strconv.Quote] if they contain Unicode space
 // characters, non-printing characters, '"' or '='.

@@ -33,14 +33,14 @@ func Float64(key string, v float64) Attr
 // Bool returns an Attr for a bool.
 func Bool(key string, v bool) Attr
 
-// Time returns an Attr for a time.Time.
+// Time returns an Attr for a [time.Time].
 // It discards the monotonic portion.
 func Time(key string, v time.Time) Attr
 
-// Duration returns an Attr for a time.Duration.
+// Duration returns an Attr for a [time.Duration].
 func Duration(key string, v time.Duration) Attr
 
-// Group returns an Attr for a Group Value.
+// Group returns an Attr for a Group [Value].
 // The first argument is the key; the remaining arguments
 // are converted to Attrs as in [Logger.Log].
 //

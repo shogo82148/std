@@ -35,7 +35,7 @@ func Register(name string, driver driver.Driver)
 func Drivers() []string
 
 // A NamedArg is a named argument. NamedArg values may be used as
-// arguments to Query or Exec and bind to the corresponding named
+// arguments to [DB.Query] or [DB.Exec] and bind to the corresponding named
 // parameter in the SQL statement.
 //
 // For a more concise way to create NamedArg values, see
@@ -74,7 +74,7 @@ func Named(name string, value any) NamedArg
 // IsolationLevel is the transaction isolation level used in [TxOptions].
 type IsolationLevel int
 
-// Various isolation levels that drivers may support in BeginTx.
+// Various isolation levels that drivers may support in [DB.BeginTx].
 // If a driver does not support a given isolation level an error may be returned.
 //
 // See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.
@@ -103,8 +103,8 @@ type TxOptions struct {
 }
 
 // RawBytes is a byte slice that holds a reference to memory owned by
-// the database itself. After a Scan into a RawBytes, the slice is only
-// valid until the next call to Next, Scan, or Close.
+// the database itself. After a [Rows.Scan] into a RawBytes, the slice is only
+// valid until the next call to [Rows.Next], [Rows.Scan], or [Rows.Close].
 type RawBytes []byte
 
 // NullString represents a string that may be null.
@@ -249,7 +249,7 @@ func (n *Null[T]) Scan(value any) error
 
 func (n Null[T]) Value() (driver.Value, error)
 
-// Scanner is an interface used by [Scan].
+// Scanner is an interface used by [Rows.Scan].
 type Scanner interface {
 	Scan(src any) error
 }
@@ -275,8 +275,8 @@ type Out struct {
 	In bool
 }
 
-// ErrNoRows is returned by Scan when QueryRow doesn't return a
-// row. In such a case, QueryRow returns a placeholder *[Row] value that
+// ErrNoRows is returned by [Row.Scan] when [DB.QueryRow] doesn't return a
+// row. In such a case, QueryRow returns a placeholder [*Row] value that
 // defers this error until a Scan.
 var ErrNoRows = errors.New("sql: no rows in result set")
 
@@ -288,10 +288,10 @@ var ErrNoRows = errors.New("sql: no rows in result set")
 // also maintains a free pool of idle connections. If the database has
 // a concept of per-connection state, such state can be reliably observed
 // within a transaction ([Tx]) or connection ([Conn]). Once [DB.Begin] is called, the
-// returned [Tx] is bound to a single connection. Once Commit or
-// Rollback is called on the transaction, that transaction's
+// returned [Tx] is bound to a single connection. Once [Tx.Commit] or
+// [Tx.Rollback] is called on the transaction, that transaction's
 // connection is returned to [DB]'s idle connection pool. The pool size
-// can be controlled with SetMaxIdleConns.
+// can be controlled with [DB.SetMaxIdleConns].
 type DB struct {
 	// Total time waited for new connections.
 	waitDuration atomic.Int64
@@ -329,17 +329,17 @@ type DB struct {
 	stop func()
 }
 
-// OpenDB opens a database using a Connector, allowing drivers to
+// OpenDB opens a database using a [driver.Connector], allowing drivers to
 // bypass a string based data source name.
 //
 // Most users will open a database via a driver-specific connection
-// helper function that returns a *[DB]. No database drivers are included
+// helper function that returns a [*DB]. No database drivers are included
 // in the Go standard library. See https://golang.org/s/sqldrivers for
 // a list of third-party drivers.
 //
 // OpenDB may just validate its arguments without creating a connection
 // to the database. To verify that the data source name is valid, call
-// Ping.
+// [DB.Ping].
 //
 // The returned [DB] is safe for concurrent use by multiple goroutines
 // and maintains its own pool of idle connections. Thus, the OpenDB
@@ -352,13 +352,13 @@ func OpenDB(c driver.Connector) *DB
 // database name and connection information.
 //
 // Most users will open a database via a driver-specific connection
-// helper function that returns a *[DB]. No database drivers are included
+// helper function that returns a [*DB]. No database drivers are included
 // in the Go standard library. See https://golang.org/s/sqldrivers for
 // a list of third-party drivers.
 //
 // Open may just validate its arguments without creating a connection
 // to the database. To verify that the data source name is valid, call
-// Ping.
+// [DB.Ping].
 //
 // The returned [DB] is safe for concurrent use by multiple goroutines
 // and maintains its own pool of idle connections. Thus, the Open
@@ -374,7 +374,7 @@ func (db *DB) PingContext(ctx context.Context) error
 // establishing a connection if necessary.
 //
 // Ping uses [context.Background] internally; to specify the context, use
-// [PingContext].
+// [DB.PingContext].
 func (db *DB) Ping() error
 
 // Close closes the database and prevents new queries from starting.
@@ -444,7 +444,7 @@ func (db *DB) Stats() DBStats
 // PrepareContext creates a prepared statement for later queries or executions.
 // Multiple queries or executions may be run concurrently from the
 // returned statement.
-// The caller must call the statement's [DB.Close] method
+// The caller must call the statement's [*Stmt.Close] method
 // when the statement is no longer needed.
 //
 // The provided context is used for the preparation of the statement, not for the
@@ -454,7 +454,7 @@ func (db *DB) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 // Prepare creates a prepared statement for later queries or executions.
 // Multiple queries or executions may be run concurrently from the
 // returned statement.
-// The caller must call the statement's Close method
+// The caller must call the statement's [*Stmt.Close] method
 // when the statement is no longer needed.
 //
 // Prepare uses [context.Background] internally; to specify the context, use
@@ -486,16 +486,16 @@ func (db *DB) Query(query string, args ...any) (*Rows, error)
 // QueryRowContext executes a query that is expected to return at most one row.
 // QueryRowContext always returns a non-nil value. Errors are deferred until
 // [Row]'s Scan method is called.
-// If the query selects no rows, the *[Row]'s Scan will return [ErrNoRows].
-// Otherwise, the *[Row]'s Scan scans the first selected row and discards
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, [*Row.Scan] scans the first selected row and discards
 // the rest.
 func (db *DB) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // QueryRow executes a query that is expected to return at most one row.
 // QueryRow always returns a non-nil value. Errors are deferred until
 // [Row]'s Scan method is called.
-// If the query selects no rows, the *[Row]'s Scan will return [ErrNoRows].
-// Otherwise, the *[Row]'s Scan scans the first selected row and discards
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, [*Row.Scan] scans the first selected row and discards
 // the rest.
 //
 // QueryRow uses [context.Background] internally; to specify the context, use
@@ -581,16 +581,16 @@ func (c *Conn) QueryContext(ctx context.Context, query string, args ...any) (*Ro
 
 // QueryRowContext executes a query that is expected to return at most one row.
 // QueryRowContext always returns a non-nil value. Errors are deferred until
-// [Row]'s Scan method is called.
-// If the query selects no rows, the *[Row]'s Scan will return [ErrNoRows].
-// Otherwise, the *[Row]'s Scan scans the first selected row and discards
+// the [*Row.Scan] method is called.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
 // the rest.
 func (c *Conn) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // PrepareContext creates a prepared statement for later queries or executions.
 // Multiple queries or executions may be run concurrently from the
 // returned statement.
-// The caller must call the statement's [Conn.Close] method
+// The caller must call the statement's [*Stmt.Close] method
 // when the statement is no longer needed.
 //
 // The provided context is used for the preparation of the statement, not for the
@@ -600,7 +600,7 @@ func (c *Conn) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 // Raw executes f exposing the underlying driver connection for the
 // duration of f. The driverConn must not be used outside of f.
 //
-// Once f returns and err is not driver.ErrBadConn, the [Conn] will continue to be usable
+// Once f returns and err is not [driver.ErrBadConn], the [Conn] will continue to be usable
 // until [Conn.Close] is called.
 func (c *Conn) Raw(f func(driverConn any) error) (err error)
 
@@ -766,16 +766,16 @@ func (tx *Tx) Query(query string, args ...any) (*Rows, error)
 // QueryRowContext executes a query that is expected to return at most one row.
 // QueryRowContext always returns a non-nil value. Errors are deferred until
 // [Row]'s Scan method is called.
-// If the query selects no rows, the *[Row]'s Scan will return [ErrNoRows].
-// Otherwise, the *[Row]'s Scan scans the first selected row and discards
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
 // the rest.
 func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...any) *Row
 
 // QueryRow executes a query that is expected to return at most one row.
 // QueryRow always returns a non-nil value. Errors are deferred until
 // [Row]'s Scan method is called.
-// If the query selects no rows, the *[Row]'s Scan will return [ErrNoRows].
-// Otherwise, the *[Row]'s Scan scans the first selected row and discards
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
 // the rest.
 //
 // QueryRow uses [context.Background] internally; to specify the context, use
@@ -846,7 +846,7 @@ func (s *Stmt) ExecContext(ctx context.Context, args ...any) (Result, error)
 func (s *Stmt) Exec(args ...any) (Result, error)
 
 // QueryContext executes a prepared query statement with the given arguments
-// and returns the query results as a *[Rows].
+// and returns the query results as a [*Rows].
 func (s *Stmt) QueryContext(ctx context.Context, args ...any) (*Rows, error)
 
 // Query executes a prepared query statement with the given arguments
@@ -858,17 +858,17 @@ func (s *Stmt) Query(args ...any) (*Rows, error)
 
 // QueryRowContext executes a prepared query statement with the given arguments.
 // If an error occurs during the execution of the statement, that error will
-// be returned by a call to Scan on the returned *[Row], which is always non-nil.
-// If the query selects no rows, the *[Row]'s Scan will return [ErrNoRows].
-// Otherwise, the *[Row]'s Scan scans the first selected row and discards
+// be returned by a call to Scan on the returned [*Row], which is always non-nil.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
 // the rest.
 func (s *Stmt) QueryRowContext(ctx context.Context, args ...any) *Row
 
 // QueryRow executes a prepared query statement with the given arguments.
 // If an error occurs during the execution of the statement, that error will
-// be returned by a call to Scan on the returned *[Row], which is always non-nil.
-// If the query selects no rows, the *[Row]'s Scan will return [ErrNoRows].
-// Otherwise, the *[Row]'s Scan scans the first selected row and discards
+// be returned by a call to Scan on the returned [*Row], which is always non-nil.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
 // the rest.
 //
 // Example usage:
@@ -1014,9 +1014,9 @@ func (ci *ColumnType) DatabaseTypeName() string
 //	*bool
 //	*float32, *float64
 //	*interface{}
-//	*[RawBytes]
-//	*[Rows] (cursor value)
-//	any type implementing [Scanner] (see Scanner docs)
+//	*RawBytes
+//	*Rows (cursor value)
+//	any type implementing Scanner (see Scanner docs)
 //
 // In the most simple case, if the type of the value from the source
 // column is an integer, bool or string type T and dest is of type *T,
@@ -1035,7 +1035,7 @@ func (ci *ColumnType) DatabaseTypeName() string
 // If a dest argument has type *[]byte, Scan saves in that argument a
 // copy of the corresponding data. The copy is owned by the caller and
 // can be modified and held indefinitely. The copy can be avoided by
-// using an argument of type *[RawBytes] instead; see the documentation
+// using an argument of type [*RawBytes] instead; see the documentation
 // for [RawBytes] for restrictions on its use.
 //
 // If an argument has type *interface{}, Scan copies the value
@@ -1043,20 +1043,20 @@ func (ci *ColumnType) DatabaseTypeName() string
 // from a source value of type []byte to *interface{}, a copy of the
 // slice is made and the caller owns the result.
 //
-// Source values of type time.Time may be scanned into values of type
+// Source values of type [time.Time] may be scanned into values of type
 // *time.Time, *interface{}, *string, or *[]byte. When converting to
-// the latter two, time.RFC3339Nano is used.
+// the latter two, [time.RFC3339Nano] is used.
 //
 // Source values of type bool may be scanned into types *bool,
-// *interface{}, *string, *[]byte, or *[RawBytes].
+// *interface{}, *string, *[]byte, or [*RawBytes].
 //
 // For scanning into *bool, the source may be true, false, 1, 0, or
 // string inputs parseable by [strconv.ParseBool].
 //
 // Scan can also convert a cursor returned from a query, such as
 // "select cursor(select * from my_table) from dual", into a
-// *[Rows] value that can itself be scanned from. The parent
-// select query will close any cursor *[Rows] if the parent *[Rows] is closed.
+// [*Rows] value that can itself be scanned from. The parent
+// select query will close any cursor [*Rows] if the parent [*Rows] is closed.
 //
 // If any of the first arguments implementing [Scanner] returns an error,
 // that error will be wrapped in the returned error.
@@ -1068,7 +1068,7 @@ func (rs *Rows) Scan(dest ...any) error
 // result of [Rows.Err]. Close is idempotent and does not affect the result of [Rows.Err].
 func (rs *Rows) Close() error
 
-// Row is the result of calling QueryRow to select a single row.
+// Row is the result of calling [DB.QueryRow] to select a single row.
 type Row struct {
 	// One of these two will be non-nil:
 	err  error
