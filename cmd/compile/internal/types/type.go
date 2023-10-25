@@ -617,6 +617,10 @@ func (t *Type) FieldOff(i int) int64
 
 func (t *Type) FieldName(i int) string
 
+// OffsetOf reports the offset of the field of a struct.
+// The field is looked up by name.
+func (t *Type) OffsetOf(name string) int64
+
 func (t *Type) NumElem() int64
 
 const (
