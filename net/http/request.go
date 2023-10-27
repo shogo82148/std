@@ -66,16 +66,8 @@ var (
 // フィールドの意味は、クライアントとサーバーの使用方法でわずかに異なります。
 // 以下のフィールドに関する注意事項に加えて、Request.WriteおよびRoundTripperのドキュメントを参照してください。
 type Request struct {
-<<<<<<< HEAD
 	// Methodは、HTTPメソッド（GET、POST、PUTなど）を指定します。
 	// クライアントリクエストの場合、空の文字列はGETを意味します。
-	//
-	// GoのHTTPクライアントは、CONNECTメソッドでリクエストを送信することをサポートしていません。
-	// 詳細については、Transportのドキュメントを参照してください。
-=======
-	// Method specifies the HTTP method (GET, POST, PUT, etc.).
-	// For client requests, an empty string means GET.
->>>>>>> upstream/master
 	Method string
 
 	// URLは、サーバーリクエストの場合に要求されるURI（URI）を指定するか、
