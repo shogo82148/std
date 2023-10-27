@@ -74,39 +74,21 @@ func (s *Scanner) Bytes() []byte
 // Textは [Scanner.Scan] の呼び出しで生成された最新のトークンを、そのバイトを保持する新しく割り当てられた文字列として返します。
 func (s *Scanner) Text() string
 
-<<<<<<< HEAD
-// ErrFinalTokenは特別なシグナルエラー値です。これはSplit関数によって返され、エラーと一緒に配信されるトークンが最後のトークンであり、スキャンはこれ以上停止する必要があることを示します。
-// ErrFinalTokenがScanによって受け取られた後、エラーなしでスキャンが停止します。
-// この値は、処理を早めに停止したい場合や最終の空のトークンを配信する必要がある場合に役立ちます。同様の動作をカスタムエラー値で実現することもできますが、ここで提供することで整理された方法が提供されます。
+// ErrFinalTokenは、特別なセンチネルエラー値です。
+// スキャンをエラーなしで停止することを示すために、Split関数によって返されることを意図しています。
+// このエラーと一緒に配信されるトークンがnilでない場合、トークンは最後のトークンです。
+//
+// この値は、処理を早期に停止する必要がある場合や、最後の空のトークン（nilトークンとは異なる）を配信する必要がある場合に役立ちます。
+// カスタムエラー値で同じ動作を実現できますが、ここで提供することで整理されたコードになります。
 // この値の使用例については、emptyFinalTokenの例を参照してください。
 var ErrFinalToken = errors.New("final token")
 
-// Scanは [Scanner] を次のトークンに進め、それを [Scanner.Bytes] メソッドまたは [Scanner.Text] メソッドで利用できるようにします。入力の終わりまたはエラーによりスキャンが停止すると、falseを返します。
-// Scanがfalseを返した後、 [Scanner.Err] メソッドはスキャン中に発生したエラーを返しますが、もし [io.EOF] だった場合は、 [Scanner.Err] はnilを返します。
-// スプリット関数が入力を進めずに多くの空のトークンを返すと、Scanはパニックを起こします。これはスキャナーの共通のエラーモードです。
-=======
-// ErrFinalToken is a special sentinel error value. It is intended to be
-// returned by a Split function to indicate that the scanning should stop
-// with no error. If the token being delivered with this error is not nil,
-// the token is the last token.
-//
-// The value is useful to stop processing early or when it is necessary to
-// deliver a final empty token (which is different from a nil token).
-// One could achieve the same behavior with a custom error value but
-// providing one here is tidier.
-// See the emptyFinalToken example for a use of this value.
-var ErrFinalToken = errors.New("final token")
-
-// Scan advances the [Scanner] to the next token, which will then be
-// available through the [Scanner.Bytes] or [Scanner.Text] method. It returns false when
-// there are no more tokens, either by reaching the end of the input or an error.
-// After Scan returns false, the [Scanner.Err] method will return any error that
-// occurred during scanning, except that if it was [io.EOF], [Scanner.Err]
-// will return nil.
-// Scan panics if the split function returns too many empty
-// tokens without advancing the input. This is a common error mode for
-// scanners.
->>>>>>> upstream/master
+// Scanは、 [Scanner.Bytes] または [Scanner.Text] メソッドを介して利用可能な次のトークンに [Scanner] を進めます。
+// 入力の終わりに到達するかエラーが発生すると、falseを返します。
+// Scanがfalseを返した後、 [Scanner.Err] メソッドはスキャン中に発生したエラーを返しますが、
+// エラーが[io.EOF]の場合、 [Scanner.Err] はnilを返します。
+// スキャンが進まずに空のトークンを多数返す場合、スキャナーはpanicします。
+// これは、スキャナーの一般的なエラーモードです。
 func (s *Scanner) Scan() bool
 
 // Bufferは、スキャン中に使用する初期バッファと、割り当て可能な最大バッファサイズを設定します。
