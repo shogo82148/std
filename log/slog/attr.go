@@ -32,28 +32,15 @@ func Float64(key string, v float64) Attr
 // BoolはboolのAttrを返します。
 func Bool(key string, v bool) Attr
 
-<<<<<<< HEAD
-// Timeはtime.TimeのAttrを返します。
+// Timeは [time.Time] のAttrを返します。
 // monotonic部分は破棄されます。
 func Time(key string, v time.Time) Attr
 
-// Durationはtime.DurationのAttrを返します。
+// Durationは [time.Duration] のAttrを返します。
 func Duration(key string, v time.Duration) Attr
 
-// GroupはGroup ValueのAttrを返します。
-// 最初の引数はキーで、残りの引数は[Logger.Log]と同様にAttrsに変換されます。
-=======
-// Time returns an Attr for a [time.Time].
-// It discards the monotonic portion.
-func Time(key string, v time.Time) Attr
-
-// Duration returns an Attr for a [time.Duration].
-func Duration(key string, v time.Duration) Attr
-
-// Group returns an Attr for a Group [Value].
-// The first argument is the key; the remaining arguments
-// are converted to Attrs as in [Logger.Log].
->>>>>>> upstream/master
+// GroupはGroup [Value] のAttrを返します。
+// 最初の引数はキーで、残りの引数は [Logger.Log] と同様にAttrsに変換されます。
 //
 // Groupを使用して、ログ行の単一のキーの下に複数のキー-値ペアを収集するか、
 // LogValueの結果として単一の値を複数のAttrsとしてログに記録するために使用します。

@@ -9,46 +9,26 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-<<<<<<< HEAD
-// JSONHandlerは、レコードを行区切りのJSONオブジェクトとしてio.Writerに書き込むHandlerです。
-=======
-// JSONHandler is a [Handler] that writes Records to an [io.Writer] as
-// line-delimited JSON objects.
->>>>>>> upstream/master
+// JSONHandlerは、レコードを行区切りのJSONオブジェクトとして [io.Writer] に書き込む [Handler] です。
 type JSONHandler struct {
 	*commonHandler
 }
 
-<<<<<<< HEAD
 // NewJSONHandlerは、指定されたオプションを使用して、
-// wに書き込むJSONHandlerを作成します。
+// wに書き込む [JSONHandler] を作成します。
 // optsがnilの場合、デフォルトのオプションが使用されます。
-=======
-// NewJSONHandler creates a [JSONHandler] that writes to w,
-// using the given options.
-// If opts is nil, the default options are used.
->>>>>>> upstream/master
 func NewJSONHandler(w io.Writer, opts *HandlerOptions) *JSONHandler
 
 // Enabledは、ハンドラが指定されたレベルのレコードを処理するかどうかを報告します。
 // ハンドラは、レベルが低いレコードを無視します。
 func (h *JSONHandler) Enabled(_ context.Context, level Level) bool
 
-<<<<<<< HEAD
-// WithAttrsは、hの属性に続く属性で構成される新しいJSONHandlerを返します。
-=======
-// WithAttrs returns a new [JSONHandler] whose attributes consists
-// of h's attributes followed by attrs.
->>>>>>> upstream/master
+// WithAttrsは、hの属性に続く属性で構成される新しい [JSONHandler] を返します。
 func (h *JSONHandler) WithAttrs(attrs []Attr) Handler
 
 func (h *JSONHandler) WithGroup(name string) Handler
 
-<<<<<<< HEAD
-// Handleは、引数のRecordをJSONオブジェクトとして1行にフォーマットします。
-=======
-// Handle formats its argument [Record] as a JSON object on a single line.
->>>>>>> upstream/master
+// Handleは、引数の [Record] をJSONオブジェクトとして1行にフォーマットします。
 //
 // Recordの時間がゼロの場合、時間は省略されます。
 // そうでない場合、キーは "time" であり、値はjson.Marshalと同様に出力されます。
@@ -67,15 +47,9 @@ func (h *JSONHandler) WithGroup(name string) Handler
 // 値は、SetEscapeHTML(false)を使用して [encoding/json.Encoder] と同様にフォーマットされます。
 // ただし、2つの例外があります。
 //
-<<<<<<< HEAD
-// 1つ目は、Valueがerror型のAttrは、そのErrorメソッドを呼び出すことで文字列としてフォーマットされます。
-// エラーは、構造体、スライス、マップなどの他のデータ構造に埋め込まれたエラーではなく、Attrにのみこの特別な処理が適用されます。
-=======
-// First, an Attr whose Value is of type error is formatted as a string, by
-// calling its Error method. Only errors in Attrs receive this special treatment,
-// not errors embedded in structs, slices, maps or other data structures that
-// are processed by the [encoding/json] package.
->>>>>>> upstream/master
+// 最初に、値がエラー型であるAttrは、そのErrorメソッドを呼び出すことによって文字列としてフォーマットされます。
+// この特別な処理は、[encoding/json] パッケージによって処理される構造体、スライス、マップ、その他のデータ構造に埋め込まれたエラーではなく、
+// Attrs内のエラーのみが受け取ります。
 //
 // 2つ目は、エンコードの失敗がHandleからエラーを返すことはありません。
 // 代わりに、エラーメッセージが文字列としてフォーマットされます。

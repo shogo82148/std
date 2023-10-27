@@ -73,26 +73,14 @@ func (l Level) MarshalText() ([]byte, error)
 // たとえば、"Error-8"は "INFO" としてマーシャルされます。
 func (l *Level) UnmarshalText(data []byte) error
 
-<<<<<<< HEAD
 // Levelはレシーバーを返します。
-// Levelerを実装します。
+// [Leveler] を実装します。
 func (l Level) Level() Level
 
-// LevelVarは、Level変数を表し、Handlerレベルを動的に変更するために使用されます。
-// Levelerを実装すると同時に、Setメソッドも実装しており、
+// LevelVarは、[Level] 変数を表し、[Handler] レベルを動的に変更するために使用されます。
+// [Leveler] を実装すると同時に、Setメソッドも実装しており、
 // 複数のゴルーチンから使用することができます。
-// ゼロ値のLevelVarはLevelInfoに対応します。
-=======
-// Level returns the receiver.
-// It implements [Leveler].
-func (l Level) Level() Level
-
-// A LevelVar is a [Level] variable, to allow a [Handler] level to change
-// dynamically.
-// It implements [Leveler] as well as a Set method,
-// and it is safe for use by multiple goroutines.
-// The zero LevelVar corresponds to [LevelInfo].
->>>>>>> upstream/master
+// ゼロ値のLevelVarは [LevelInfo] に対応します。
 type LevelVar struct {
 	val atomic.Int64
 }
@@ -113,21 +101,12 @@ func (v *LevelVar) MarshalText() ([]byte, error)
 // [encoding.TextUnmarshaler] を実装します。
 func (v *LevelVar) UnmarshalText(data []byte) error
 
-<<<<<<< HEAD
-// Levelerは、Level値を提供します。
+// Levelerは、[Level] 値を提供します。
 //
 // Level自体がLevelerを実装しているため、
-// HandlerOptionsなど、Levelerが必要な場所では通常、Level値を提供します。
+// [HandlerOptions] など、Levelerが必要な場所では通常、Level値を提供します。
 // レベルを動的に変更する必要があるクライアントは、
-// *LevelVarなどのより複雑なLeveler実装を提供できます。
-=======
-// A Leveler provides a [Level] value.
-//
-// As Level itself implements Leveler, clients typically supply
-// a Level value wherever a Leveler is needed, such as in [HandlerOptions].
-// Clients who need to vary the level dynamically can provide a more complex
-// Leveler implementation such as *[LevelVar].
->>>>>>> upstream/master
+// *[LevelVar]などのより複雑なLeveler実装を提供できます。
 type Leveler interface {
 	Level() Level
 }

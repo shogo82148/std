@@ -9,46 +9,25 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-<<<<<<< HEAD
-// TextHandlerは、io.Writerにkey=valueペアのシーケンスと改行を続けて書き込むHandlerです。
-=======
-// TextHandler is a [Handler] that writes Records to an [io.Writer] as a
-// sequence of key=value pairs separated by spaces and followed by a newline.
->>>>>>> upstream/master
+// TextHandlerは、[io.Writer] にkey=valueペアのシーケンスと改行を続けて書き込むHandlerです。
 type TextHandler struct {
 	*commonHandler
 }
 
-<<<<<<< HEAD
-// NewTextHandlerは、指定されたオプションを使用して、wに書き込むTextHandlerを作成します。
+// NewTextHandlerは、指定されたオプションを使用して、wに書き込む [TextHandler] を作成します。
 // optsがnilの場合、デフォルトのオプションが使用されます。
-=======
-// NewTextHandler creates a [TextHandler] that writes to w,
-// using the given options.
-// If opts is nil, the default options are used.
->>>>>>> upstream/master
 func NewTextHandler(w io.Writer, opts *HandlerOptions) *TextHandler
 
 // Enabledは、ハンドラが指定されたレベルのレコードを処理するかどうかを報告します。
 // ハンドラは、レベルが低いレコードを無視します。
 func (h *TextHandler) Enabled(_ context.Context, level Level) bool
 
-<<<<<<< HEAD
-// WithAttrsは、hの属性に続くattrsで構成される新しいTextHandlerを返します。
-=======
-// WithAttrs returns a new [TextHandler] whose attributes consists
-// of h's attributes followed by attrs.
->>>>>>> upstream/master
+// WithAttrsは、hの属性に続くattrsで構成される新しい [TextHandler] を返します。
 func (h *TextHandler) WithAttrs(attrs []Attr) Handler
 
 func (h *TextHandler) WithGroup(name string) Handler
 
-<<<<<<< HEAD
-// Handleは、引数Recordをスペースで区切られたkey=valueの1行としてフォーマットします。
-=======
-// Handle formats its argument [Record] as a single line of space-separated
-// key=value items.
->>>>>>> upstream/master
+// Handleは、引数 [Record] をスペースで区切られたkey=valueの1行としてフォーマットします。
 //
 // Recordのtimeがゼロの場合、timeは省略されます。
 // そうでない場合、keyは"time"であり、RFC3339形式でミリ秒精度で出力されます。
@@ -64,13 +43,8 @@ func (h *TextHandler) WithGroup(name string) Handler
 // これらまたは他の属性を変更したり、出力から削除するには、
 // [HandlerOptions.ReplaceAttr] を使用します。
 //
-<<<<<<< HEAD
 // 値が [encoding.TextMarshaler] を実装している場合、MarshalTextの結果が書き込まれます。
-// そうでない場合、fmt.Sprintの結果が書き込まれます。
-=======
-// If a value implements [encoding.TextMarshaler], the result of MarshalText is
-// written. Otherwise, the result of [fmt.Sprint] is written.
->>>>>>> upstream/master
+// そうでない場合、[fmt.Sprint] の結果が書き込まれます。
 //
 // キーと値は、Unicodeスペース文字、非表示文字、'"'、'='を含む場合、 [strconv.Quote] で引用符で囲まれます。
 //
