@@ -31,8 +31,13 @@ type Handler interface {
 	WithGroup(name string) Handler
 }
 
+<<<<<<< HEAD
 // HandlerOptionsは、TextHandlerまたはJSONHandlerのオプションです。
 // ゼロ値のHandlerOptionsは、完全にデフォルト値で構成されています。
+=======
+// HandlerOptions are options for a [TextHandler] or [JSONHandler].
+// A zero HandlerOptions consists entirely of default values.
+>>>>>>> upstream/master
 type HandlerOptions struct {
 	// AddSource causes the handler to compute the source code position
 	// of the log statement and add a SourceKey attribute to the output.

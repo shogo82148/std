@@ -33,7 +33,15 @@ type Scanner struct {
 // 引数は、残りの未処理データの初期部分のサブストリングと、 [Reader] にもうデータがないことを報告するフラグであるatEOFです。
 // 戻り値は、入力を進めるためのバイト数と、ユーザーに返す次のトークン（あれば）、およびエラー（あれば）です。
 //
+<<<<<<< HEAD
 // 関数がエラーを返すと、スキャンは停止し、入力の一部が破棄される場合があります。エラーが [ErrFinalToken] である場合、スキャンはエラーなしで停止します。
+=======
+// Scanning stops if the function returns an error, in which case some of
+// the input may be discarded. If that error is [ErrFinalToken], scanning
+// stops with no error. A non-nil token delivered with [ErrFinalToken]
+// will be the last token, and a nil token with [ErrFinalToken]
+// immediately stops the scanning.
+>>>>>>> upstream/master
 //
 // それ以外の場合、スキャナは入力を進めます。トークンがnilでない場合、スキャナはユーザーにそれを返します。トークンがnilの場合、スキャナはさらにデータを読み込んでスキャンを続けます。もしデータがもうない場合（つまり、atEOFがtrueの場合）、スキャナは終了します。データがまだ完全なトークンを保持していない場合、例えば改行がない場合は、 [SplitFunc] は(0、nil、nil)を返して [Scanner] にデータをスライスに読み込んで再試行するように指示できます。
 //
@@ -71,6 +79,7 @@ func (s *Scanner) Bytes() []byte
 // Textは [Scanner.Scan] の呼び出しで生成された最新のトークンを、そのバイトを保持する新しく割り当てられた文字列として返します。
 func (s *Scanner) Text() string
 
+<<<<<<< HEAD
 // ErrFinalTokenは特別なシグナルエラー値です。これはSplit関数によって返され、エラーと一緒に配信されるトークンが最後のトークンであり、スキャンはこれ以上停止する必要があることを示します。
 // ErrFinalTokenがScanによって受け取られた後、エラーなしでスキャンが停止します。
 // この値は、処理を早めに停止したい場合や最終の空のトークンを配信する必要がある場合に役立ちます。同様の動作をカスタムエラー値で実現することもできますが、ここで提供することで整理された方法が提供されます。
@@ -80,6 +89,29 @@ var ErrFinalToken = errors.New("final token")
 // Scanは [Scanner] を次のトークンに進め、それを [Scanner.Bytes] メソッドまたは [Scanner.Text] メソッドで利用できるようにします。入力の終わりまたはエラーによりスキャンが停止すると、falseを返します。
 // Scanがfalseを返した後、 [Scanner.Err] メソッドはスキャン中に発生したエラーを返しますが、もし [io.EOF] だった場合は、 [Scanner.Err] はnilを返します。
 // スプリット関数が入力を進めずに多くの空のトークンを返すと、Scanはパニックを起こします。これはスキャナーの共通のエラーモードです。
+=======
+// ErrFinalToken is a special sentinel error value. It is intended to be
+// returned by a Split function to indicate that the scanning should stop
+// with no error. If the token being delivered with this error is not nil,
+// the token is the last token.
+//
+// The value is useful to stop processing early or when it is necessary to
+// deliver a final empty token (which is different from a nil token).
+// One could achieve the same behavior with a custom error value but
+// providing one here is tidier.
+// See the emptyFinalToken example for a use of this value.
+var ErrFinalToken = errors.New("final token")
+
+// Scan advances the [Scanner] to the next token, which will then be
+// available through the [Scanner.Bytes] or [Scanner.Text] method. It returns false when
+// there are no more tokens, either by reaching the end of the input or an error.
+// After Scan returns false, the [Scanner.Err] method will return any error that
+// occurred during scanning, except that if it was [io.EOF], [Scanner.Err]
+// will return nil.
+// Scan panics if the split function returns too many empty
+// tokens without advancing the input. This is a common error mode for
+// scanners.
+>>>>>>> upstream/master
 func (s *Scanner) Scan() bool
 
 // Bufferは、スキャン中に使用する初期バッファと、割り当て可能な最大バッファサイズを設定します。

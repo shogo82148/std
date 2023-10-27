@@ -31,8 +31,14 @@ func Register(name string, driver driver.Driver)
 // Driversは、登録されたドライバーの名前のソートされたリストを返します。
 func Drivers() []string
 
+<<<<<<< HEAD
 // NamedArgは名前付き引数です。NamedArg値は、QueryまたはExecの引数として使用でき、
 // SQLステートメントの対応する名前付きパラメータにバインドされます。
+=======
+// A NamedArg is a named argument. NamedArg values may be used as
+// arguments to [DB.Query] or [DB.Exec] and bind to the corresponding named
+// parameter in the SQL statement.
+>>>>>>> upstream/master
 //
 // NamedArg値をより簡潔に作成する方法については、 [Named] 関数を参照してください。
 type NamedArg struct {
@@ -67,8 +73,13 @@ func Named(name string, value any) NamedArg
 // IsolationLevelは、 [TxOptions] で使用されるトランザクション分離レベルです。
 type IsolationLevel int
 
+<<<<<<< HEAD
 // BeginTxでドライバーがサポートする可能性のあるさまざまな分離レベル。
 // ドライバーが特定の分離レベルをサポートしていない場合、エラーが返される場合があります。
+=======
+// Various isolation levels that drivers may support in [DB.BeginTx].
+// If a driver does not support a given isolation level an error may be returned.
+>>>>>>> upstream/master
 //
 // https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels を参照してください。
 const (
@@ -95,8 +106,14 @@ type TxOptions struct {
 	ReadOnly  bool
 }
 
+<<<<<<< HEAD
 // RawBytesは、データベース自体が所有するメモリへの参照を保持するバイトスライスです。
 // RawBytesにスキャンした後、スライスは次のNext、Scan、またはCloseの呼び出しまでのみ有効です。
+=======
+// RawBytes is a byte slice that holds a reference to memory owned by
+// the database itself. After a [Rows.Scan] into a RawBytes, the slice is only
+// valid until the next call to [Rows.Next], [Rows.Scan], or [Rows.Close].
+>>>>>>> upstream/master
 type RawBytes []byte
 
 // NullStringは、nullである可能性がある文字列を表します。
@@ -241,7 +258,7 @@ func (n *Null[T]) Scan(value any) error
 
 func (n Null[T]) Value() (driver.Value, error)
 
-// Scanner is an interface used by [Scan].
+// Scanner is an interface used by [Rows.Scan].
 type Scanner interface {
 	Scan(src any) error
 }
@@ -266,20 +283,37 @@ type Out struct {
 	In bool
 }
 
+<<<<<<< HEAD
 // ErrNoRowsは、QueryRowが行を返さない場合にScanによって返されます。
 // そのような場合、QueryRowはプレースホルダー *[Row] 値を返し、
 // このエラーはScanまで遅延されます。
+=======
+// ErrNoRows is returned by [Row.Scan] when [DB.QueryRow] doesn't return a
+// row. In such a case, QueryRow returns a placeholder [*Row] value that
+// defers this error until a Scan.
+>>>>>>> upstream/master
 var ErrNoRows = errors.New("sql: no rows in result set")
 
 // DBは、ゼロ個以上の基礎接続を表すデータベースハンドルです。
 // 複数のゴルーチンによる同時使用に対して安全です。
 //
+<<<<<<< HEAD
 // sqlパッケージは、接続を自動的に作成および解放します。
 // また、アイドル接続のフリープールを維持します。
 // データベースが接続ごとの状態を持つ場合、そのような状態はトランザクション（[Tx]）または接続（[Conn]）内で信頼性が高く観察できます。
 // DB.Beginが呼び出されると、返された [Tx] は単一の接続にバインドされます。
 // トランザクションでCommitまたはRollbackが呼び出されると、そのトランザクションの接続が [DB] のアイドル接続プールに返されます。
 // プールのサイズはSetMaxIdleConnsで制御できます。
+=======
+// The sql package creates and frees connections automatically; it
+// also maintains a free pool of idle connections. If the database has
+// a concept of per-connection state, such state can be reliably observed
+// within a transaction ([Tx]) or connection ([Conn]). Once [DB.Begin] is called, the
+// returned [Tx] is bound to a single connection. Once [Tx.Commit] or
+// [Tx.Rollback] is called on the transaction, that transaction's
+// connection is returned to [DB]'s idle connection pool. The pool size
+// can be controlled with [DB.SetMaxIdleConns].
+>>>>>>> upstream/master
 type DB struct {
 	// Total time waited for new connections.
 	waitDuration atomic.Int64
@@ -317,6 +351,7 @@ type DB struct {
 	stop func()
 }
 
+<<<<<<< HEAD
 // OpenDBは、コネクタを使用してデータベースを開き、ドライバーが文字列ベースのデータソース名をバイパスできるようにします。
 //
 // ほとんどのユーザーは、 *[DB] を返すドライバー固有の接続ヘルパー関数を介してデータベースを開きます。
@@ -324,6 +359,19 @@ type DB struct {
 //
 // OpenDBは、データベースへの接続を作成せずに引数を検証する場合があります。
 // データソース名が有効であることを確認するには、Pingを呼び出します。
+=======
+// OpenDB opens a database using a [driver.Connector], allowing drivers to
+// bypass a string based data source name.
+//
+// Most users will open a database via a driver-specific connection
+// helper function that returns a [*DB]. No database drivers are included
+// in the Go standard library. See https://golang.org/s/sqldrivers for
+// a list of third-party drivers.
+//
+// OpenDB may just validate its arguments without creating a connection
+// to the database. To verify that the data source name is valid, call
+// [DB.Ping].
+>>>>>>> upstream/master
 //
 // 返された [DB] は、複数のゴルーチンによる同時使用に対して安全であり、アイドル接続のプールを維持します。
 // したがって、OpenDB関数は1回だけ呼び出す必要があります。 [DB] を閉じる必要はほとんどありません。
@@ -332,11 +380,22 @@ func OpenDB(c driver.Connector) *DB
 // Openは、データベースドライバー名とドライバー固有のデータソース名で指定されたデータベースを開きます。
 // 通常、少なくともデータベース名と接続情報が含まれます。
 //
+<<<<<<< HEAD
 // ほとんどのユーザーは、 *[DB] を返すドライバー固有の接続ヘルパー関数を介してデータベースを開きます。
 // Go標準ライブラリにはデータベースドライバーは含まれていません。サードパーティのドライバーのリストについては、https://golang.org/s/sqldriversを参照してください。
 //
 // Openは、データベースへの接続を作成せずに引数を検証する場合があります。
 // データソース名が有効であることを確認するには、Pingを呼び出します。
+=======
+// Most users will open a database via a driver-specific connection
+// helper function that returns a [*DB]. No database drivers are included
+// in the Go standard library. See https://golang.org/s/sqldrivers for
+// a list of third-party drivers.
+//
+// Open may just validate its arguments without creating a connection
+// to the database. To verify that the data source name is valid, call
+// [DB.Ping].
+>>>>>>> upstream/master
 //
 // 返された [DB] は、複数のゴルーチンによる同時使用に対して安全であり、アイドル接続のプールを維持します。
 // したがって、Open関数は1回だけ呼び出す必要があります。 [DB] を閉じる必要はほとんどありません。
@@ -347,7 +406,12 @@ func (db *DB) PingContext(ctx context.Context) error
 
 // Pingは、データベースへの接続がまだ有効であることを確認し、必要に応じて接続を確立します。
 //
+<<<<<<< HEAD
 // Pingは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [PingContext] を使用してください。
+=======
+// Ping uses [context.Background] internally; to specify the context, use
+// [DB.PingContext].
+>>>>>>> upstream/master
 func (db *DB) Ping() error
 
 // Closeはデータベースを閉じ、新しいクエリの開始を防止します。
@@ -409,16 +473,32 @@ type DBStats struct {
 // Statsは、データベースの統計情報を返します。
 func (db *DB) Stats() DBStats
 
+<<<<<<< HEAD
 // PrepareContextは、後でのクエリまたは実行のためにプリペアドステートメントを作成します。
 // 返されたステートメントから複数のクエリまたは実行を同時に実行できます。
 // ステートメントが不要になったら、呼び出し元はステートメントの [DB.Close] メソッドを呼び出す必要があります。
+=======
+// PrepareContext creates a prepared statement for later queries or executions.
+// Multiple queries or executions may be run concurrently from the
+// returned statement.
+// The caller must call the statement's [*Stmt.Close] method
+// when the statement is no longer needed.
+>>>>>>> upstream/master
 //
 // 提供されたコンテキストは、ステートメントの実行ではなく、ステートメントの準備に使用されます。
 func (db *DB) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 
+<<<<<<< HEAD
 // Prepareは、後でのクエリまたは実行のためにプリペアドステートメントを作成します。
 // 返されたステートメントから複数のクエリまたは実行を同時に実行できます。
 // ステートメントが不要になったら、呼び出し元はステートメントのCloseメソッドを呼び出す必要があります。
+=======
+// Prepare creates a prepared statement for later queries or executions.
+// Multiple queries or executions may be run concurrently from the
+// returned statement.
+// The caller must call the statement's [*Stmt.Close] method
+// when the statement is no longer needed.
+>>>>>>> upstream/master
 //
 // Prepareは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DB.PrepareContext] を使用してください。
 func (db *DB) Prepare(query string) (*Stmt, error)
@@ -443,6 +523,7 @@ func (db *DB) QueryContext(ctx context.Context, query string, args ...any) (*Row
 // QueryContextは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DB.QueryContext] を使用してください。
 func (db *DB) Query(query string, args ...any) (*Rows, error)
 
+<<<<<<< HEAD
 // QueryRowContextは、最大1行を返すと予想されるクエリを実行します。
 // QueryRowContextは常にnil以外の値を返します。エラーは [Row] のScanメソッドが呼び出されるまで遅延されます。
 // クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
@@ -453,6 +534,22 @@ func (db *DB) QueryRowContext(ctx context.Context, query string, args ...any) *R
 // QueryRowは常にnil以外の値を返します。エラーは [Row] のScanメソッドが呼び出されるまで遅延されます。
 // クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
 // そうでない場合、*RowのScanは最初に選択された行をスキャンし、残りを破棄します。
+=======
+// QueryRowContext executes a query that is expected to return at most one row.
+// QueryRowContext always returns a non-nil value. Errors are deferred until
+// [Row]'s Scan method is called.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, [*Row.Scan] scans the first selected row and discards
+// the rest.
+func (db *DB) QueryRowContext(ctx context.Context, query string, args ...any) *Row
+
+// QueryRow executes a query that is expected to return at most one row.
+// QueryRow always returns a non-nil value. Errors are deferred until
+// [Row]'s Scan method is called.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, [*Row.Scan] scans the first selected row and discards
+// the rest.
+>>>>>>> upstream/master
 //
 // QueryRowは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [DBQueryRowContext] を使用してください。
 func (db *DB) QueryRow(query string, args ...any) *Row
@@ -525,6 +622,7 @@ func (c *Conn) ExecContext(ctx context.Context, query string, args ...any) (Resu
 // argsは、クエリ内のプレースホルダーパラメーター用です。
 func (c *Conn) QueryContext(ctx context.Context, query string, args ...any) (*Rows, error)
 
+<<<<<<< HEAD
 // QueryRowContextは、最大1行を返すと予想されるクエリを実行します。
 // QueryRowContextは常にnil以外の値を返します。エラーは [Row] のScanメソッドが呼び出されるまで遅延されます。
 // クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
@@ -534,6 +632,21 @@ func (c *Conn) QueryRowContext(ctx context.Context, query string, args ...any) *
 // PrepareContextは、後でのクエリまたは実行のためにプリペアドステートメントを作成します。
 // 返されたステートメントから複数のクエリまたは実行を同時に実行できます。
 // ステートメントが不要になったら、呼び出し元はステートメントの [Conn.Close] メソッドを呼び出す必要があります。
+=======
+// QueryRowContext executes a query that is expected to return at most one row.
+// QueryRowContext always returns a non-nil value. Errors are deferred until
+// the [*Row.Scan] method is called.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
+// the rest.
+func (c *Conn) QueryRowContext(ctx context.Context, query string, args ...any) *Row
+
+// PrepareContext creates a prepared statement for later queries or executions.
+// Multiple queries or executions may be run concurrently from the
+// returned statement.
+// The caller must call the statement's [*Stmt.Close] method
+// when the statement is no longer needed.
+>>>>>>> upstream/master
 //
 // 提供されたコンテキストは、ステートメントの実行ではなく、ステートメントの準備に使用されます。
 func (c *Conn) PrepareContext(ctx context.Context, query string) (*Stmt, error)
@@ -541,7 +654,12 @@ func (c *Conn) PrepareContext(ctx context.Context, query string) (*Stmt, error)
 // Rawは、fを実行し、fの実行中に基礎となるドライバー接続を公開します。
 // driverConnは、fの外部で使用してはいけません。
 //
+<<<<<<< HEAD
 // fが返り、errがdriver.ErrBadConnでない場合、 [Conn] は [Conn.Close] が呼び出されるまで使用可能です。
+=======
+// Once f returns and err is not [driver.ErrBadConn], the [Conn] will continue to be usable
+// until [Conn.Close] is called.
+>>>>>>> upstream/master
 func (c *Conn) Raw(f func(driverConn any) error) (err error)
 
 // BeginTxはトランザクションを開始します。
@@ -685,6 +803,7 @@ func (tx *Tx) QueryContext(ctx context.Context, query string, args ...any) (*Row
 // Queryは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.QueryContext] を使用してください。
 func (tx *Tx) Query(query string, args ...any) (*Rows, error)
 
+<<<<<<< HEAD
 // QueryRowContextは、最大1行を返すと予想されるクエリを実行します。
 // QueryRowContextは常にnil以外の値を返します。エラーはRowのScanメソッドが呼び出されるまで遅延されます。
 // クエリが行を選択しない場合、*RowのScanはErrNoRowsを返します。
@@ -695,6 +814,22 @@ func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...any) *R
 // QueryRowは常にnil以外の値を返します。エラーは [Row] のScanメソッドが呼び出されるまで遅延されます。
 // クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
 // そうでない場合、 *[Row] のScanは最初に選択された行をスキャンし、残りを破棄します。
+=======
+// QueryRowContext executes a query that is expected to return at most one row.
+// QueryRowContext always returns a non-nil value. Errors are deferred until
+// [Row]'s Scan method is called.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
+// the rest.
+func (tx *Tx) QueryRowContext(ctx context.Context, query string, args ...any) *Row
+
+// QueryRow executes a query that is expected to return at most one row.
+// QueryRow always returns a non-nil value. Errors are deferred until
+// [Row]'s Scan method is called.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
+// the rest.
+>>>>>>> upstream/master
 //
 // QueryRowは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Tx.QueryRowContext] を使用してください。
 func (tx *Tx) QueryRow(query string, args ...any) *Row
@@ -759,8 +894,13 @@ func (s *Stmt) ExecContext(ctx context.Context, args ...any) (Result, error)
 // Execは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Stmt.ExecContext] を使用してください。
 func (s *Stmt) Exec(args ...any) (Result, error)
 
+<<<<<<< HEAD
 // QueryContextは、指定された引数を使用してプリペアドクエリステートメントを実行し、
 // クエリ結果を *[Rows] として返します。
+=======
+// QueryContext executes a prepared query statement with the given arguments
+// and returns the query results as a [*Rows].
+>>>>>>> upstream/master
 func (s *Stmt) QueryContext(ctx context.Context, args ...any) (*Rows, error)
 
 // Queryは、指定された引数を使用してプリペアドクエリステートメントを実行し、
@@ -769,6 +909,7 @@ func (s *Stmt) QueryContext(ctx context.Context, args ...any) (*Rows, error)
 // Queryは、内部的に [context.Background] を使用します。コンテキストを指定するには、 [Stmt.QueryContext] を使用してください。
 func (s *Stmt) Query(args ...any) (*Rows, error)
 
+<<<<<<< HEAD
 // QueryRowContextは、指定された引数を使用してプリペアドクエリステートメントを実行し、
 // ステートメントの実行中にエラーが発生した場合、そのエラーは常にnil以外の *[Row] のScan呼び出しによって返されます。
 // クエリが行を選択しない場合、 *[Row] のScanは [ErrNoRows] を返します。
@@ -779,6 +920,22 @@ func (s *Stmt) QueryRowContext(ctx context.Context, args ...any) *Row
 // ステートメントの実行中にエラーが発生した場合、そのエラーは常にnil以外の *[Row] のScan呼び出しによって返されます。
 // クエリが行を選択しない場合、*[Row] のScanは [ErrNoRows] を返します。
 // そうでない場合、*[Row] のScanは最初に選択された行をスキャンし、残りを破棄します。
+=======
+// QueryRowContext executes a prepared query statement with the given arguments.
+// If an error occurs during the execution of the statement, that error will
+// be returned by a call to Scan on the returned [*Row], which is always non-nil.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
+// the rest.
+func (s *Stmt) QueryRowContext(ctx context.Context, args ...any) *Row
+
+// QueryRow executes a prepared query statement with the given arguments.
+// If an error occurs during the execution of the statement, that error will
+// be returned by a call to Scan on the returned [*Row], which is always non-nil.
+// If the query selects no rows, the [*Row.Scan] will return [ErrNoRows].
+// Otherwise, the [*Row.Scan] scans the first selected row and discards
+// the rest.
+>>>>>>> upstream/master
 //
 // 使用例:
 //
@@ -914,25 +1071,55 @@ func (ci *ColumnType) DatabaseTypeName() string
 //	*bool
 //	*float32, *float64
 //	*interface{}
+<<<<<<< HEAD
 //	*[RawBytes]
 //	*[Rows] (カーソル値)
 //	[Scanner] を実装する任意の型（Scannerドキュメントを参照）
+=======
+//	*RawBytes
+//	*Rows (cursor value)
+//	any type implementing Scanner (see Scanner docs)
+>>>>>>> upstream/master
 //
 // 最も単純な場合、ソース列の値の型が整数、ブール、または文字列型Tで、destが型*Tの場合、Scanは単にポインタを介して値を割り当てます。
 //
 // Scanは、文字列と数値型の間でも変換しますが、情報が失われない場合に限ります。Scanは、数値データベース列からスキャンされたすべての数値を*stringに文字列化しますが、数値型へのスキャンはオーバーフローのチェックが行われます。例えば、値が300のfloat64または値が"300"の文字列はuint16にスキャンできますが、uint8にはスキャンできません。ただし、float64(255)または"255"はuint8にスキャンできます。一部のfloat64数値を文字列に変換するスキャンは、文字列化すると情報が失われる場合があります。一般的には、浮動小数点列を*float64にスキャンします。
 //
+<<<<<<< HEAD
 // dest引数の型が*[]byteの場合、Scanは対応するデータのコピーをその引数に保存します。コピーは呼び出し元が所有し、修正して無期限に保持できます。コピーを回避するには、代わりに *[RawBytes] の引数を使用します。RawBytesの使用制限については、 [RawBytes] のドキュメントを参照してください。
+=======
+// If a dest argument has type *[]byte, Scan saves in that argument a
+// copy of the corresponding data. The copy is owned by the caller and
+// can be modified and held indefinitely. The copy can be avoided by
+// using an argument of type [*RawBytes] instead; see the documentation
+// for [RawBytes] for restrictions on its use.
+>>>>>>> upstream/master
 //
 // 引数の型が*interface{}の場合、Scanは変換せずに基礎ドライバが提供する値をコピーします。[]byte型のソース値から*interface{}にスキャンする場合、スライスのコピーが作成され、呼び出し元が結果を所有します。
 //
+<<<<<<< HEAD
 // time.Time型のソース値は、*time.Time、*interface{}、*string、または*[]byte型の値にスキャンできます。後者2つに変換する場合、time.RFC3339Nanoが使用されます。
 //
 // bool型のソース値は、*bool、*interface{}、*string、*[]byte、または *[RawBytes] 型にスキャンできます。
+=======
+// Source values of type [time.Time] may be scanned into values of type
+// *time.Time, *interface{}, *string, or *[]byte. When converting to
+// the latter two, [time.RFC3339Nano] is used.
+//
+// Source values of type bool may be scanned into types *bool,
+// *interface{}, *string, *[]byte, or [*RawBytes].
+>>>>>>> upstream/master
 //
 // *boolにスキャンする場合、ソースはtrue、false、1、0、または [strconv.ParseBool] で解析可能な文字列入力である必要があります。
 //
+<<<<<<< HEAD
 // Scanは、クエリから返されたカーソル（例："select cursor(select * from my_table) from dual"）を、自体からスキャンできる *[Rows] 値に変換できます。親の *[Rows] が閉じられると、親の選択クエリはカーソル *[Rows] を閉じます。
+=======
+// Scan can also convert a cursor returned from a query, such as
+// "select cursor(select * from my_table) from dual", into a
+// [*Rows] value that can itself be scanned from. The parent
+// select query will close any cursor [*Rows] if the parent [*Rows] is closed.
+>>>>>>> upstream/master
 //
 // 最初の引数のいずれかがエラーを返す [Scanner] を実装している場合、そのエラーは返されたエラーにラップされます。
 func (rs *Rows) Scan(dest ...any) error
@@ -942,7 +1129,11 @@ func (rs *Rows) Scan(dest ...any) error
 // Closeは冪等性があり、 [Rows.Err] の結果に影響を与えません。
 func (rs *Rows) Close() error
 
+<<<<<<< HEAD
 // Rowは、単一の行を選択するためにQueryRowを呼び出した結果です。
+=======
+// Row is the result of calling [DB.QueryRow] to select a single row.
+>>>>>>> upstream/master
 type Row struct {
 	// One of these two will be non-nil:
 	err  error

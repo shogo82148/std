@@ -194,9 +194,15 @@ slog.Info("hello", "count", 3)
 例えば、パスワードのような秘密情報を伏せたり、構造体のフィールドをグループ化したりすることができます。
 詳細については、 [LogValuer] の例を参照してください。
 
+<<<<<<< HEAD
 LogValueメソッドは、 [LogValuer] を実装している [Value] を返すことができます。
 [Value.Resolve] メソッドは、これらの場合に無限ループや無制限の再帰を回避するように注意して処理します。
 ハンドラの作者やその他の人々は、LogValueを直接呼び出す代わりに、Value.Resolveを使用したい場合があります。
+=======
+A LogValue method may return a Value that itself implements [LogValuer]. The [Value.Resolve]
+method handles these cases carefully, avoiding infinite loops and unbounded recursion.
+Handler authors and others may wish to use [Value.Resolve] instead of calling LogValue directly.
+>>>>>>> upstream/master
 
 # 出力メソッドのラッピング
 

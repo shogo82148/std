@@ -15,14 +15,24 @@ package driver
 //
 //   - データベースから取得された値をドライバーの [Value] 型のいずれかに変換します。
 //
+<<<<<<< HEAD
 //   - sqlパッケージによって、スキャン中にドライバーの [Value] 型からユーザーの型に変換します。
+=======
+//   - by the [database/sql] package, for converting from a driver's [Value] type
+//     to a user's type in a scan.
+>>>>>>> upstream/master
 type ValueConverter interface {
 	ConvertValue(v any) (Value, error)
 }
 
 // ValuerはValueメソッドを提供するインターフェースです。
 //
+<<<<<<< HEAD
 // Valuerインターフェースを実装する型は、自分自身をドライバの値に変換できます。
+=======
+// Types implementing Valuer interface are able to convert
+// themselves to a driver [Value].
+>>>>>>> upstream/master
 type Valuer interface {
 	Value() (Value, error)
 }
@@ -68,14 +78,32 @@ func (n NotNull) ConvertValue(v any) (Value, error)
 // IsValue はvが有効な [Value] パラメータータイプかどうかを報告します。
 func IsValue(v any) bool
 
+<<<<<<< HEAD
 // IsScanValueはIsValueと同等です。
 // 互換性のために存在します。
+=======
+// IsScanValue is equivalent to [IsValue].
+// It exists for compatibility.
+>>>>>>> upstream/master
 func IsScanValue(v any) bool
 
 // DefaultParameterConverterは、 [Stmt] が [ColumnConverter] を実装していない場合に使用される [ValueConverter] のデフォルト実装です。
 //
+<<<<<<< HEAD
 // DefaultParameterConverterは、引数がIsValue(arg)を満たす場合はその引数を直接返します。そうでない場合、引数が [Valuer] を実装している場合はそのValueメソッドを使用して [Value] を返します。代替として、提供された引数の基底の型を使用して [Value] に変換します。
 // 基底の整数型はint64に変換され、浮動小数点数はfloat64に変換され、bool型、string型、および[]byte型はそれ自体に変換されます。引数がnilポインタの場合、 [defaultConverter.ConvertValue] はnilのValueを返します。引数がnilではないポインタの場合、それは逆参照され、再帰的に [defaultConverter.ConvertValue] が呼び出されます。他の型はエラーです。
+=======
+// DefaultParameterConverter returns its argument directly if
+// IsValue(arg). Otherwise, if the argument implements [Valuer], its
+// Value method is used to return a [Value]. As a fallback, the provided
+// argument's underlying type is used to convert it to a [Value]:
+// underlying integer types are converted to int64, floats to float64,
+// bool, string, and []byte to themselves. If the argument is a nil
+// pointer, defaultConverter.ConvertValue returns a nil [Value].
+// If the argument is a non-nil pointer, it is dereferenced and
+// defaultConverter.ConvertValue is called recursively. Other types
+// are an error.
+>>>>>>> upstream/master
 var DefaultParameterConverter defaultConverter
 
 var _ ValueConverter = defaultConverter{}

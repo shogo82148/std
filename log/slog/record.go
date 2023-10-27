@@ -48,8 +48,13 @@ type Record struct {
 	back []Attr
 }
 
+<<<<<<< HEAD
 // NewRecordは、指定された引数からRecordを作成します。
 // Recordに属性を追加するには、 [Record.AddAttrs] を使用します。
+=======
+// NewRecord creates a [Record] from the given arguments.
+// Use [Record.AddAttrs] to add attributes to the Record.
+>>>>>>> upstream/master
 //
 // NewRecordは、 [Handler] をバックエンドとしてサポートするログAPIに使用することを想定しています。
 func NewRecord(t time.Time, level Level, msg string, pc uintptr) Record
@@ -59,6 +64,7 @@ func NewRecord(t time.Time, level Level, msg string, pc uintptr) Record
 // 互いに干渉しません。
 func (r Record) Clone() Record
 
+<<<<<<< HEAD
 // NumAttrsは、Recordの属性の数を返します。
 func (r Record) NumAttrs() int
 
@@ -73,6 +79,22 @@ func (r *Record) AddAttrs(attrs ...Attr)
 // Addは、[Logger.Log]で説明されているように、argsをAttrsに変換し、
 // RecordのAttrsリストにAttrsを追加します。
 // 空のグループは省略されます。
+=======
+// NumAttrs returns the number of attributes in the [Record].
+func (r Record) NumAttrs() int
+
+// Attrs calls f on each Attr in the [Record].
+// Iteration stops if f returns false.
+func (r Record) Attrs(f func(Attr) bool)
+
+// AddAttrs appends the given Attrs to the [Record]'s list of Attrs.
+// It omits empty groups.
+func (r *Record) AddAttrs(attrs ...Attr)
+
+// Add converts the args to Attrs as described in [Logger.Log],
+// then appends the Attrs to the [Record]'s list of Attrs.
+// It omits empty groups.
+>>>>>>> upstream/master
 func (r *Record) Add(args ...any)
 
 // Sourceは、ソースコードの行の場所を記述します。
