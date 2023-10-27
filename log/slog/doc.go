@@ -196,7 +196,7 @@ slog.Info("hello", "count", 3)
 
 LogValueメソッドは、 [LogValuer] を実装している [Value] を返すことができます。
 [Value.Resolve] メソッドは、これらの場合に無限ループや無制限の再帰を回避するように注意して処理します。
-ハンドラの作者やその他の人々は、LogValueを直接呼び出す代わりに、Value.Resolveを使用したい場合があります。
+ハンドラの作者やその他の人々は、LogValueを直接呼び出す代わりに、[Value.Resolve] を使用したい場合があります。
 
 # 出力メソッドのラッピング
 

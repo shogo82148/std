@@ -9,17 +9,17 @@ import (
 	"github.com/shogo82148/std/log"
 )
 
-// Defaultは、デフォルトのLoggerを返します。
+// Defaultは、デフォルトの [Logger] を返します。
 func Default() *Logger
 
-// SetDefaultは、lをデフォルトのLoggerに設定します。
-// この呼び出しの後、logパッケージのデフォルトLoggerからの出力（[log.Print]など）は、
-// lのHandlerを使用してLevelInfoでログに記録されます。
+// SetDefaultは、lをデフォルトの [Logger] に設定します。
+// この呼び出しの後、logパッケージのデフォルトLoggerからの出力（[log.Print] など）は、
+// lのHandlerを使用して [LevelInfo] でログに記録されます。
 func SetDefault(l *Logger)
 
 // Loggerは、各Log、Debug、Info、Warn、Errorメソッドの呼び出しについて、
 // 構造化された情報を記録します。
-// 各呼び出しに対して、Recordを作成し、Handlerに渡します。
+// 各呼び出しに対して、[Record] を作成し、[Handler] に渡します。
 //
 // 新しいLoggerを作成するには、[New]または"With"で始まるLoggerメソッドを呼び出します。
 type Logger struct {
@@ -43,13 +43,13 @@ func (l *Logger) WithGroup(name string) *Logger
 // Newは、指定された非nil Handlerを持つ新しいLoggerを作成します。
 func New(h Handler) *Logger
 
-// Withは、デフォルトのロガーでLogger.Withを呼び出します。
+// Withは、デフォルトのロガーで [Logger.With] を呼び出します。
 func With(args ...any) *Logger
 
 // Enabledは、lが指定されたコンテキストとレベルでログレコードを生成するかどうかを報告します。
 func (l *Logger) Enabled(ctx context.Context, level Level) bool
 
-// NewLogLoggerは、指定されたハンドラにRecordをディスパッチするための新しいlog.Loggerを返します。
+// NewLogLoggerは、指定されたハンドラにRecordをディスパッチするための新しい [log.Logger] を返します。
 // ロガーは、古いログAPIから新しい構造化ログハンドラへのブリッジとして機能します。
 func NewLogLogger(h Handler, level Level) *log.Logger
 
@@ -66,56 +66,56 @@ func (l *Logger) Log(ctx context.Context, level Level, msg string, args ...any)
 // LogAttrsは、Attrのみを受け入れるより効率的な[Logger.Log]のバージョンです。
 func (l *Logger) LogAttrs(ctx context.Context, level Level, msg string, attrs ...Attr)
 
-// Debugは、LevelDebugでログを記録します。
+// Debugは、[LevelDebug] でログを記録します。
 func (l *Logger) Debug(msg string, args ...any)
 
-// DebugContextは、指定されたコンテキストでLevelDebugでログを記録します。
+// DebugContextは、指定されたコンテキストで [LevelDebug] でログを記録します。
 func (l *Logger) DebugContext(ctx context.Context, msg string, args ...any)
 
-// Infoは、LevelInfoでログを記録します。
+// Infoは、[LevelInfo] でログを記録します。
 func (l *Logger) Info(msg string, args ...any)
 
-// InfoContextは、指定されたコンテキストでLevelInfoでログを記録します。
+// InfoContextは、指定されたコンテキストで [LevelInfo] でログを記録します。
 func (l *Logger) InfoContext(ctx context.Context, msg string, args ...any)
 
-// Warnは、LevelWarnでログを記録します。
+// Warnは、[LevelWarn] でログを記録します。
 func (l *Logger) Warn(msg string, args ...any)
 
-// WarnContextは、指定されたコンテキストでLevelWarnでログを記録します。
+// WarnContextは、指定されたコンテキストで [LevelWarn] でログを記録します。
 func (l *Logger) WarnContext(ctx context.Context, msg string, args ...any)
 
-// Errorは、LevelErrorでログを記録します。
+// Errorは、[LevelError] でログを記録します。
 func (l *Logger) Error(msg string, args ...any)
 
-// ErrorContextは、指定されたコンテキストでLevelErrorでログを記録します。
+// ErrorContextは、指定されたコンテキストで [LevelError] でログを記録します。
 func (l *Logger) ErrorContext(ctx context.Context, msg string, args ...any)
 
-// Debugは、デフォルトのロガーでLogger.Debugを呼び出します。
+// Debugは、デフォルトのロガーで [Logger.Debug] を呼び出します。
 func Debug(msg string, args ...any)
 
-// DebugContextは、デフォルトのロガーでLogger.DebugContextを呼び出します。
+// DebugContextは、デフォルトのロガーで [Logger.DebugContext] を呼び出します。
 func DebugContext(ctx context.Context, msg string, args ...any)
 
-// Infoは、デフォルトのロガーでLogger.Infoを呼び出します。
+// Infoは、デフォルトのロガーで [Logger.Info] を呼び出します。
 func Info(msg string, args ...any)
 
-// InfoContextは、デフォルトのロガーでLogger.InfoContextを呼び出します。
+// InfoContextは、デフォルトのロガーで [Logger.InfoContext] を呼び出します。
 func InfoContext(ctx context.Context, msg string, args ...any)
 
-// Warnは、デフォルトのロガーでLogger.Warnを呼び出します。
+// Warnは、デフォルトのロガーで [Logger.Warn] を呼び出します。
 func Warn(msg string, args ...any)
 
-// WarnContextは、デフォルトのロガーでLogger.WarnContextを呼び出します。
+// WarnContextは、デフォルトのロガーで [Logger.WarnContext] を呼び出します。
 func WarnContext(ctx context.Context, msg string, args ...any)
 
-// Errorは、デフォルトのロガーでLogger.Errorを呼び出します。
+// Errorは、デフォルトのロガーで [Logger.Error] を呼び出します。
 func Error(msg string, args ...any)
 
-// ErrorContextは、デフォルトのロガーでLogger.ErrorContextを呼び出します。
+// ErrorContextは、デフォルトのロガーで [Logger.ErrorContext] を呼び出します。
 func ErrorContext(ctx context.Context, msg string, args ...any)
 
-// Logは、デフォルトのロガーでLogger.Logを呼び出します。
+// Logは、デフォルトのロガーで [Logger.Log] を呼び出します。
 func Log(ctx context.Context, level Level, msg string, args ...any)
 
-// LogAttrsは、デフォルトのロガーでLogger.LogAttrsを呼び出します。
+// LogAttrsは、デフォルトのロガーで [Logger.LogAttrs] を呼び出します。
 func LogAttrs(ctx context.Context, level Level, msg string, attrs ...Attr)

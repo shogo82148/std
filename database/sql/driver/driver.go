@@ -4,7 +4,7 @@
 
 // Package driverは、package sqlによって使用されるデータベースドライバが実装するインターフェースを定義します。
 //
-// ほとんどのコードは、package sqlを使用するべきです。
+// ほとんどのコードは、[database/sql] パッケージを使用するべきです。
 //
 // ドライバのインターフェースは時間の経過とともに進化してきました。ドライバは [Connector] と [DriverContext] のインターフェースを実装する必要があります。
 // Connector.ConnectとDriver.Openメソッドは、決して [ErrBadConn] を返してはいけません。
@@ -23,8 +23,8 @@
 // [RowsColumnTypeScanType] 、 [RowsColumnTypeDatabaseTypeName] 、 [RowsColumnTypeLength] 、 [RowsColumnTypeNullable] 、および [RowsColumnTypePrecisionScale] 。
 // ある行の値は、Rows型を返すこともあり、それはデータベースカーソル値を表すことができます。
 //
-// 接続が使用後に接続プールに返される前に、実装されている場合にはIsValidが呼び出されます。
-// 別のクエリに再利用される前に、実装されている場合にはResetSessionが呼び出されます。
+// [Conn] が [Validator] を実装している場合には、接続が使用後に接続プールに返される前にIsValidメソッドが呼び出されます。
+// コネクションプールのエントリーが [SessionResetter] を実装している場合には、別のクエリに再利用される前にResetSessionが呼び出されます。
 // 接続が接続プールに返されないで直接再利用される場合は、再利用の前にResetSessionが呼び出されますが、IsValidは呼び出されません。
 package driver
 
@@ -73,17 +73,18 @@ type Driver interface {
 	Open(name string) (Conn, error)
 }
 
-// もし [Driver] が [DriverContext] を実装している場合、sql.DBはOpenConnectorを呼び出して [Connector] を取得し、
+// もし [Driver] が DriverContext を実装している場合、[database/sql.DB] はOpenConnectorを呼び出して [Connector] を取得し、
 // その [Connector] のConnectメソッドを呼び出して必要な接続を取得します。
 // これにより、接続ごとに [Driver] のOpenメソッドを呼び出すのではなく、名前を1回だけ解析することができ、
-// またper-Connコンテキストにアクセスすることもできます。
+// またper-[Conn] コンテキストにアクセスすることもできます。
 type DriverContext interface {
 	OpenConnector(name string) (Connector, error)
 }
 
 // コネクタは、固定の構成でドライバを表し、複数のゴルーチンで使用するための同等の接続を作成できます。
 //
-// コネクタは [database/sql.OpenDB] に渡すことができ、ドライバは独自のsql.DBコンストラクタを実装するため、また、 [DriverContext] のOpenConnectorメソッドによって返されることができます。これにより、ドライバはコンテキストへのアクセスとドライバ構成の繰り返し解析を避けることができます。
+// コネクタは [database/sql.OpenDB] に渡すことができ、ドライバは独自の [database/sql.DB] コンストラクタを実装するため、また、 [DriverContext] のOpenConnectorメソッドによって返されることができます。
+// これにより、ドライバはコンテキストへのアクセスとドライバ構成の繰り返し解析を避けることができます。
 //
 // コネクタが [io.Closer] を実装している場合、sqlパッケージの [database/sql.DB.Close] メソッドはCloseを呼び出し、エラー（あれば）を返します。
 type Connector interface {
@@ -95,14 +96,14 @@ type Connector interface {
 // ErrSkipは、一部のオプションのインタフェースメソッドによって、高速経路が利用できないことを実行時に示すために返される場合があります。sqlパッケージは、オプションのインタフェースが実装されていないかのように続行する必要があります。ErrSkipは、明示的に文書化されている場所でのみサポートされます。
 var ErrSkip = errors.New("driver: skip fast-path; continue as if unimplemented")
 
-// ErrBadConnは、ドライバが [driver.Conn] が不良な状態であることを示すために、
-// sqlパッケージに返すべきです（たとえば、サーバーが接続を早期に閉じたなど）。
-// また、sqlパッケージは新しい接続で再試行する必要があります。
+// ErrBadConnは、ドライバが driver.[Conn] が不良な状態であることを示すために、
+// [database/sql] パッケージに返すべきです（たとえば、サーバーが接続を早期に閉じたなど）。
+// また、[database/sql] パッケージは新しい接続で再試行する必要があります。
 //
 // 重複した操作を防ぐために、可能性がある場合には、ErrBadConnを返してはいけません。
 // データベースサーバーが操作を実行した可能性があっても、ErrBadConnは返してはいけません。
 //
-// エラーはerrors.Isを使用してチェックされます。エラーは
+// エラーは [errors.Is] を使用してチェックされます。エラーは
 // ErrBadConnをラップするか、Is(error) boolメソッドを実装することがあります。
 var ErrBadConn = errors.New("driver: bad connection")
 
@@ -115,9 +116,9 @@ type Pinger interface {
 	Ping(ctx context.Context) error
 }
 
-// ExecerはConnによって実装されるかもしれないオプションのインターフェースです。
+// Execerは [Conn] によって実装されるかもしれないオプションのインターフェースです。
 //
-// もし [Conn] が [ExecerContext] またはExecerのどちらの実装も持っていない場合、
+// もし [Conn] が [ExecerContext] または [Execer] のどちらの実装も持っていない場合、
 // [database/sql.DB.Exec] はまずクエリを準備し、ステートメントを実行し、そしてステートメントを閉じます。
 //
 // Execは [ErrSkip] を返す場合があります。
@@ -129,8 +130,8 @@ type Execer interface {
 
 // ExecerContextは [Conn] によって実装されるかもしれないオプションのインターフェースです。
 //
-// ConnがExecerContextを実装していない場合、sqlパッケージの [database/sql.DB.Exec] は [Execer] にフォールバックします。
-// もしConnがExecerも実装していない場合、 [database/sql.DB.Exec] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
+// [Conn] が [ExecerContext] を実装していない場合、[database/sql.DB.Exec] は [Execer] にフォールバックします。
+// もしConnがExecerも実装していない場合、[database/sql.DB.Exec] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
 //
 // ExecContextは [ErrSkip] を返すことがあります。
 //
@@ -141,7 +142,7 @@ type ExecerContext interface {
 
 // Queryerは [Conn] によって実装されるかもしれないオプションのインターフェースです。
 //
-// Connが [QueryerContext] でもQueryerでも実装していない場合、 [database/sql.DB.Query] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
+// [Conn] が [QueryerContext] も [Queryer] でも実装していない場合、 [database/sql.DB.Query] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
 //
 // Queryは [ErrSkip] を返すことがあります。
 //
@@ -150,7 +151,7 @@ type Queryer interface {
 	Query(query string, args []Value) (Rows, error)
 }
 
-// QueryerContextは、Connによって実装されるかもしれないオプションのインターフェースです。
+// QueryerContextは、[Conn] によって実装されるかもしれないオプションのインターフェースです。
 //
 // [Conn] がQueryerContextを実装していない場合、 [database/sql.DB.Query] は [Queryer] にフォールバックします。
 // もし、Connが [Queryer] を実装していない場合、 [database/sql.DB.Query] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
@@ -180,7 +181,7 @@ type ConnPrepareContext interface {
 
 // IsolationLevelは [TxOptions] に保存されるトランザクション分離レベルです。
 //
-// この型は、sql.IsolationLevelと一緒に定義された値と同じものと考えられるべきです。
+// この型は、[database/sql.IsolationLevel] と一緒に定義された値と同じものと考えられるべきです。
 type IsolationLevel int
 
 // TxOptionsはトランザクションのオプションを保持します。
@@ -237,13 +238,16 @@ type StmtQueryContext interface {
 }
 
 // ErrRemoveArgumentは、 [NamedValueChecker] から返されることがあります。
-// これは、sqlパッケージに対して引数をドライバのクエリインターフェースに渡さないよう指示するためです。
+// これは、[database/sql] パッケージに対して引数をドライバのクエリインターフェースに渡さないよう指示するためです。
 // クエリ固有のオプションやSQLクエリ引数ではない構造体を受け入れる場合に返します。
 var ErrRemoveArgument = errors.New("driver: remove argument from query")
 
-// NamedValueCheckerはConnまたはStmtによってオプションで実装されることがあります。これにより、ドライバはデフォルトのValuesタイプを超えたGoおよびデータベースのタイプを処理するための制御を提供します。
-// sqlパッケージは、値チェッカーを以下の順序でチェックし、最初に一致したもので停止します： [database/sql.Stmt.NamedValueChecker] 、 [Conn.NamedValueChecker] 、 [Stmt.ColumnConverter、DefaultParameterConverter] 。
+// NamedValueCheckerは [Conn] または [Stmt] によってオプションで実装されることがあります。これにより、ドライバはデフォルトの [Value] タイプを超えたGoおよびデータベースのタイプを処理するための制御を提供します。
+//
+// [database/sql] パッケージは、値チェッカーを以下の順序でチェックし、最初に一致したもので停止します： Stmt.NamedValueChecker、Conn.NamedValueChecker、Stmt.ColumnConverter、 [DefaultParameterConverter] 。
+//
 // CheckNamedValueが [ErrRemoveArgument] を返す場合、 [NamedValue] は最終的なクエリ引数に含まれません。これはクエリ自体に特殊なオプションを渡すために使用される場合があります。
+//
 // [ErrSkip] が返された場合、列コンバーターのエラーチェックパスが引数に使用されます。ドライバは、独自の特殊なケースを使い果たした後に [ErrSkip] を返すことを望むかもしれません。
 type NamedValueChecker interface {
 	CheckNamedValue(*NamedValue) error
@@ -288,13 +292,15 @@ type RowsColumnTypeDatabaseTypeName interface {
 	ColumnTypeDatabaseTypeName(index int) string
 }
 
-// RowsColumnTypeLengthは、 [Rows] によって実装されるかもしれません。カラムが可変長の場合、カラムタイプの長さを返す必要があります。カラムが可変長のタイプでない場合、okはfalseを返す必要があります。システムの制限以外で長さが制限されていない場合、math.MaxInt64を返す必要があります。以下は、さまざまなタイプの戻り値の例です：
-// TEXT（math.MaxInt64、true）
-// varchar(10)（10、true）
-// nvarchar(10)（10、true）
-// decimal（0、false）
-// int（0、false）
-// bytea(30)（30、true）
+// RowsColumnTypeLengthは、 [Rows] によって実装されるかもしれません。カラムが可変長の場合、カラムタイプの長さを返す必要があります。カラムが可変長のタイプでない場合、okはfalseを返す必要があります。
+// システムの制限以外で長さが制限されていない場合、[math.MaxInt64] を返す必要があります。以下は、さまざまなタイプの戻り値の例です：
+//
+//	TEXT          (math.MaxInt64, true)
+//	varchar(10)   (10, true)
+//	nvarchar(10)  (10, true)
+//	decimal       (0, false)
+//	int           (0, false)
+//	bytea(30)     (30, true)
 type RowsColumnTypeLength interface {
 	Rows
 	ColumnTypeLength(index int) (length int64, ok bool)

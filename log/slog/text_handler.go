@@ -9,12 +9,12 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// TextHandlerは、io.Writerにkey=valueペアのシーケンスと改行を続けて書き込むHandlerです。
+// TextHandlerは、[io.Writer] にkey=valueペアのシーケンスと改行を続けて書き込むHandlerです。
 type TextHandler struct {
 	*commonHandler
 }
 
-// NewTextHandlerは、指定されたオプションを使用して、wに書き込むTextHandlerを作成します。
+// NewTextHandlerは、指定されたオプションを使用して、wに書き込む [TextHandler] を作成します。
 // optsがnilの場合、デフォルトのオプションが使用されます。
 func NewTextHandler(w io.Writer, opts *HandlerOptions) *TextHandler
 
@@ -22,12 +22,12 @@ func NewTextHandler(w io.Writer, opts *HandlerOptions) *TextHandler
 // ハンドラは、レベルが低いレコードを無視します。
 func (h *TextHandler) Enabled(_ context.Context, level Level) bool
 
-// WithAttrsは、hの属性に続くattrsで構成される新しいTextHandlerを返します。
+// WithAttrsは、hの属性に続くattrsで構成される新しい [TextHandler] を返します。
 func (h *TextHandler) WithAttrs(attrs []Attr) Handler
 
 func (h *TextHandler) WithGroup(name string) Handler
 
-// Handleは、引数Recordをスペースで区切られたkey=valueの1行としてフォーマットします。
+// Handleは、引数 [Record] をスペースで区切られたkey=valueの1行としてフォーマットします。
 //
 // Recordのtimeがゼロの場合、timeは省略されます。
 // そうでない場合、keyは"time"であり、RFC3339形式でミリ秒精度で出力されます。
@@ -44,7 +44,7 @@ func (h *TextHandler) WithGroup(name string) Handler
 // [HandlerOptions.ReplaceAttr] を使用します。
 //
 // 値が [encoding.TextMarshaler] を実装している場合、MarshalTextの結果が書き込まれます。
-// そうでない場合、fmt.Sprintの結果が書き込まれます。
+// そうでない場合、[fmt.Sprint] の結果が書き込まれます。
 //
 // キーと値は、Unicodeスペース文字、非表示文字、'"'、'='を含む場合、 [strconv.Quote] で引用符で囲まれます。
 //

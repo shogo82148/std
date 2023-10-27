@@ -15,14 +15,14 @@ package driver
 //
 //   - データベースから取得された値をドライバーの [Value] 型のいずれかに変換します。
 //
-//   - sqlパッケージによって、スキャン中にドライバーの [Value] 型からユーザーの型に変換します。
+//   - [database/sql] パッケージによって、スキャン中にドライバーの [Value] 型からユーザーの型に変換します。
 type ValueConverter interface {
 	ConvertValue(v any) (Value, error)
 }
 
 // ValuerはValueメソッドを提供するインターフェースです。
 //
-// Valuerインターフェースを実装する型は、自分自身をドライバの値に変換できます。
+// Valuerインターフェースを実装する型は、自分自身をドライバの [Value] に変換できます。
 type Valuer interface {
 	Value() (Value, error)
 }
@@ -68,14 +68,17 @@ func (n NotNull) ConvertValue(v any) (Value, error)
 // IsValue はvが有効な [Value] パラメータータイプかどうかを報告します。
 func IsValue(v any) bool
 
-// IsScanValueはIsValueと同等です。
+// IsScanValueは [IsValue] と同等です。
 // 互換性のために存在します。
 func IsScanValue(v any) bool
 
 // DefaultParameterConverterは、 [Stmt] が [ColumnConverter] を実装していない場合に使用される [ValueConverter] のデフォルト実装です。
 //
-// DefaultParameterConverterは、引数がIsValue(arg)を満たす場合はその引数を直接返します。そうでない場合、引数が [Valuer] を実装している場合はそのValueメソッドを使用して [Value] を返します。代替として、提供された引数の基底の型を使用して [Value] に変換します。
-// 基底の整数型はint64に変換され、浮動小数点数はfloat64に変換され、bool型、string型、および[]byte型はそれ自体に変換されます。引数がnilポインタの場合、 [defaultConverter.ConvertValue] はnilのValueを返します。引数がnilではないポインタの場合、それは逆参照され、再帰的に [defaultConverter.ConvertValue] が呼び出されます。他の型はエラーです。
+// DefaultParameterConverterは、引数がIsValue(arg)を満たす場合はその引数を直接返します。
+// そうでない場合、引数が [Valuer] を実装している場合はそのValueメソッドを使用して [Value] を返します。
+// 代替として、提供された引数の基底の型を使用して [Value] に変換します。
+// 基底の整数型はint64に変換され、浮動小数点数はfloat64に変換され、bool型、string型、および[]byte型はそれ自体に変換されます。
+// 引数がnilポインタの場合、 defaultConverter.ConvertValue はnilのValueを返します。引数がnilではないポインタの場合、それは逆参照され、再帰的に defaultConverter.ConvertValue が呼び出されます。他の型はエラーです。
 var DefaultParameterConverter defaultConverter
 
 var _ ValueConverter = defaultConverter{}

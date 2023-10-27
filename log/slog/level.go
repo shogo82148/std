@@ -74,13 +74,13 @@ func (l Level) MarshalText() ([]byte, error)
 func (l *Level) UnmarshalText(data []byte) error
 
 // Levelはレシーバーを返します。
-// Levelerを実装します。
+// [Leveler] を実装します。
 func (l Level) Level() Level
 
-// LevelVarは、Level変数を表し、Handlerレベルを動的に変更するために使用されます。
-// Levelerを実装すると同時に、Setメソッドも実装しており、
+// LevelVarは、[Level] 変数を表し、[Handler] レベルを動的に変更するために使用されます。
+// [Leveler] を実装すると同時に、Setメソッドも実装しており、
 // 複数のゴルーチンから使用することができます。
-// ゼロ値のLevelVarはLevelInfoに対応します。
+// ゼロ値のLevelVarは [LevelInfo] に対応します。
 type LevelVar struct {
 	val atomic.Int64
 }
@@ -101,12 +101,12 @@ func (v *LevelVar) MarshalText() ([]byte, error)
 // [encoding.TextUnmarshaler] を実装します。
 func (v *LevelVar) UnmarshalText(data []byte) error
 
-// Levelerは、Level値を提供します。
+// Levelerは、[Level] 値を提供します。
 //
 // Level自体がLevelerを実装しているため、
-// HandlerOptionsなど、Levelerが必要な場所では通常、Level値を提供します。
+// [HandlerOptions] など、Levelerが必要な場所では通常、Level値を提供します。
 // レベルを動的に変更する必要があるクライアントは、
-// *LevelVarなどのより複雑なLeveler実装を提供できます。
+// *[LevelVar]などのより複雑なLeveler実装を提供できます。
 type Leveler interface {
 	Level() Level
 }

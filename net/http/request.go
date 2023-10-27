@@ -68,9 +68,6 @@ var (
 type Request struct {
 	// Methodは、HTTPメソッド（GET、POST、PUTなど）を指定します。
 	// クライアントリクエストの場合、空の文字列はGETを意味します。
-	//
-	// GoのHTTPクライアントは、CONNECTメソッドでリクエストを送信することをサポートしていません。
-	// 詳細については、Transportのドキュメントを参照してください。
 	Method string
 
 	// URLは、サーバーリクエストの場合に要求されるURI（URI）を指定するか、

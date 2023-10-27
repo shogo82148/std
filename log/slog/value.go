@@ -28,7 +28,7 @@ type Value struct {
 	any any
 }
 
-// KindはValueの種類です。
+// Kindは [Value] の種類です。
 type Kind int
 
 const (
@@ -49,54 +49,54 @@ func (k Kind) String() string
 // Kindは、Valueの種類を返します。
 func (v Value) Kind() Kind
 
-// StringValueは、文字列の新しいValueを返します。
+// StringValueは、文字列の新しい [Value] を返します。
 func StringValue(value string) Value
 
-// IntValueは、intのValueを返します。
+// IntValueは、intの [Value] を返します。
 func IntValue(v int) Value
 
-// Int64Valueは、int64のValueを返します。
+// Int64Valueは、int64の [Value] を返します。
 func Int64Value(v int64) Value
 
-// Uint64Valueは、uint64のValueを返します。
+// Uint64Valueは、uint64の [Value] を返します。
 func Uint64Value(v uint64) Value
 
-// Float64Valueは、浮動小数点数のValueを返します。
+// Float64Valueは、浮動小数点数の [Value] を返します。
 func Float64Value(v float64) Value
 
-// BoolValueは、boolのValueを返します。
+// BoolValueは、boolの [Value] を返します。
 func BoolValue(v bool) Value
 
-// TimeValueは、time.TimeのValueを返します。
+// TimeValueは、[time.Time] の [Value] を返します。
 // monotonic部分は破棄されます。
 func TimeValue(v time.Time) Value
 
-// DurationValueは、time.DurationのValueを返します。
+// DurationValueは、[time.Duration] の [Value] を返します。
 func DurationValue(v time.Duration) Value
 
-// GroupValueは、Attrのリストの新しいValueを返します。
+// GroupValueは、Attrのリストの新しい [Value] を返します。
 // 呼び出し元は、引数スライスを後で変更しないでください。
 func GroupValue(as ...Attr) Value
 
-// AnyValueは、提供された値のValueを返します。
+// AnyValueは、提供された値の [Value] を返します。
 //
 // 提供された値がValue型の場合、変更されずに返されます。
 //
 // Goの事前宣言されたstring、bool、または（非複素）数値型のいずれかの値が与えられた場合、
-// AnyValueは、String、Bool、Uint64、Int64、またはFloat64の種類のValueを返します。
+// AnyValueは、[KindString]、[KindBool]、[KindUint64]、[KindInt64]、または [KindFloat64] の種類のValueを返します。
 // 元の数値型の幅は保持されません。
 //
-// time.Timeまたはtime.Duration値が与えられた場合、AnyValueは、KindTimeまたはKindDurationのValueを返します。
+// [time.Time] または [time.Duration] 値が与えられた場合、AnyValueは、[KindTime] または [KindDuration] のValueを返します。
 // monotonic timeは保持されません。
 //
 // nil、または数値型の基礎型である名前付き型を含む、すべての他の型の値の場合、
-// AnyValueは、KindAnyの種類のValueを返します。
+// AnyValueは、[KindAny] の種類のValueを返します。
 func AnyValue(v any) Value
 
 // Anyは、vの値をanyとして返します。
 func (v Value) Any() any
 
-// Stringは、Valueの値をfmt.Sprintのようにフォーマットした文字列として返します。
+// Stringは、Valueの値を [fmt.Sprint] のようにフォーマットした文字列として返します。
 // Int64、Float64などのメソッドは、vが間違った種類の場合にpanicしますが、
 // Stringは決してpanicしません。
 func (v Value) String() string
@@ -110,20 +110,20 @@ func (v Value) Uint64() uint64
 // Boolは、vの値をboolとして返します。vがboolでない場合はpanicします。
 func (v Value) Bool() bool
 
-// Durationは、vの値をtime.Durationとして返します。vがtime.Durationでない場合はpanicします。
+// Durationは、vの値をtime.Durationとして返します。vが [time.Duration] でない場合はpanicします。
 func (a Value) Duration() time.Duration
 
 // Float64は、vの値をfloat64として返します。vがfloat64でない場合はpanicします。
 func (v Value) Float64() float64
 
-// Timeは、vの値をtime.Timeとして返します。vがtime.Timeでない場合はpanicします。
+// Timeは、vの値をtime.Timeとして返します。vが [time.Time] でない場合はpanicします。
 func (v Value) Time() time.Time
 
 // LogValuerは、vの値をLogValuerとして返します。vがLogValuerでない場合はpanicします。
 func (v Value) LogValuer() LogValuer
 
 // Groupは、vの値を[]Attrとして返します。
-// vのKindがKindGroupでない場合はpanicします。
+// vの [Kind] が [KindGroup] でない場合はpanicします。
 func (v Value) Group() []Attr
 
 // Equalは、vとwが同じGo値を表しているかどうかを報告します。
@@ -137,8 +137,8 @@ type LogValuer interface {
 	LogValue() Value
 }
 
-// Resolveは、vがLogValuerを実装している間、vのLogValueを繰り返し呼び出し、結果を返します。
+// Resolveは、vが [LogValuer] を実装している間、vのLogValueを繰り返し呼び出し、結果を返します。
 // vがグループに解決された場合、グループの属性の値は再帰的に解決されません。
 // LogValueの呼び出し回数が閾値を超えた場合、エラーを含むValueが返されます。
-// Resolveの戻り値は、KindLogValuerの種類ではないことが保証されています。
+// Resolveの戻り値は、[KindLogValuer] の種類ではないことが保証されています。
 func (v Value) Resolve() (rv Value)
