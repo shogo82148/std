@@ -33,15 +33,10 @@ type Scanner struct {
 // 引数は、残りの未処理データの初期部分のサブストリングと、 [Reader] にもうデータがないことを報告するフラグであるatEOFです。
 // 戻り値は、入力を進めるためのバイト数と、ユーザーに返す次のトークン（あれば）、およびエラー（あれば）です。
 //
-<<<<<<< HEAD
-// 関数がエラーを返すと、スキャンは停止し、入力の一部が破棄される場合があります。エラーが [ErrFinalToken] である場合、スキャンはエラーなしで停止します。
-=======
-// Scanning stops if the function returns an error, in which case some of
-// the input may be discarded. If that error is [ErrFinalToken], scanning
-// stops with no error. A non-nil token delivered with [ErrFinalToken]
-// will be the last token, and a nil token with [ErrFinalToken]
-// immediately stops the scanning.
->>>>>>> upstream/master
+// 関数がエラーを返した場合、スキャンは停止します。この場合、入力の一部が破棄される可能性があります。
+// エラーが [ErrFinalToken] である場合、スキャンはエラーなしで停止します。
+// [ErrFinalToken] と一緒に非nilトークンが配信される場合、最後のトークンとなり、
+// [ErrFinalToken] と一緒にnilトークンが配信される場合、スキャンが直ちに停止します。
 //
 // それ以外の場合、スキャナは入力を進めます。トークンがnilでない場合、スキャナはユーザーにそれを返します。トークンがnilの場合、スキャナはさらにデータを読み込んでスキャンを続けます。もしデータがもうない場合（つまり、atEOFがtrueの場合）、スキャナは終了します。データがまだ完全なトークンを保持していない場合、例えば改行がない場合は、 [SplitFunc] は(0、nil、nil)を返して [Scanner] にデータをスライスに読み込んで再試行するように指示できます。
 //
