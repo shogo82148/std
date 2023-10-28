@@ -32,6 +32,9 @@ func MustHaveExecPath(t testing.TB, path string)
 // CleanCmdEnv will fill cmd.Env with the environment, excluding certain
 // variables that could modify the behavior of the Go tools such as
 // GODEBUG and GOTRACEBACK.
+//
+// If the caller wants to set cmd.Dir, set it before calling this function,
+// so PWD will be set correctly in the environment.
 func CleanCmdEnv(cmd *exec.Cmd) *exec.Cmd
 
 // CommandContext is like exec.CommandContext, but:

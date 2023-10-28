@@ -11,21 +11,13 @@ var MaxLen int
 // PrimeRK is the prime base used in Rabin-Karp algorithm.
 const PrimeRK = 16777619
 
-// HashStrBytes returns the hash and the appropriate multiplicative
-// factor for use in Rabin-Karp algorithm.
-func HashStrBytes(sep []byte) (uint32, uint32)
-
 // HashStr returns the hash and the appropriate multiplicative
 // factor for use in Rabin-Karp algorithm.
-func HashStr(sep string) (uint32, uint32)
-
-// HashStrRevBytes returns the hash of the reverse of sep and the
-// appropriate multiplicative factor for use in Rabin-Karp algorithm.
-func HashStrRevBytes(sep []byte) (uint32, uint32)
+func HashStr[T string | []byte](sep T) (uint32, uint32)
 
 // HashStrRev returns the hash of the reverse of sep and the
 // appropriate multiplicative factor for use in Rabin-Karp algorithm.
-func HashStrRev(sep string) (uint32, uint32)
+func HashStrRev[T string | []byte](sep T) (uint32, uint32)
 
 // IndexRabinKarpBytes uses the Rabin-Karp search algorithm to return the index of the
 // first occurrence of substr in s, or -1 if not present.
