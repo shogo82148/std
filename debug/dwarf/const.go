@@ -6,7 +6,7 @@
 
 package dwarf
 
-// An Attr identifies the attribute type in a DWARF Entry's Field.
+// Attrは、DWARFエントリのフィールド内の属性タイプを識別します。
 type Attr uint32
 
 const (
@@ -69,7 +69,7 @@ const (
 	AttrVarParam       Attr = 0x4B
 	AttrVirtuality     Attr = 0x4C
 	AttrVtableElemLoc  Attr = 0x4D
-	// The following are new in DWARF 3.
+	// 以下はDWARF 3で新しくなったものです。
 	AttrAllocated     Attr = 0x4E
 	AttrAssociated    Attr = 0x4F
 	AttrDataLocation  Attr = 0x50
@@ -97,14 +97,14 @@ const (
 	AttrElemental     Attr = 0x66
 	AttrPure          Attr = 0x67
 	AttrRecursive     Attr = 0x68
-	// The following are new in DWARF 4.
+	// 以下はDWARF 4で新しくなったものです。
 	AttrSignature      Attr = 0x69
 	AttrMainSubprogram Attr = 0x6A
 	AttrDataBitOffset  Attr = 0x6B
 	AttrConstExpr      Attr = 0x6C
 	AttrEnumClass      Attr = 0x6D
 	AttrLinkageName    Attr = 0x6E
-	// The following are new in DWARF 5.
+	// 以下はDWARF 5で新しくなったものです。
 	AttrStringLengthBitSize  Attr = 0x6F
 	AttrStringLengthByteSize Attr = 0x70
 	AttrRank                 Attr = 0x71
@@ -138,7 +138,7 @@ const (
 
 func (a Attr) GoString() string
 
-// A Tag is the classification (the type) of an Entry.
+// Tagは、エントリの分類（タイプ）です。
 type Tag uint32
 
 const (
@@ -189,7 +189,7 @@ const (
 	TagVariantPart            Tag = 0x33
 	TagVariable               Tag = 0x34
 	TagVolatileType           Tag = 0x35
-	// The following are new in DWARF 3.
+	// 以下はDWARF 3で新しくなったものです。
 	TagDwarfProcedure  Tag = 0x36
 	TagRestrictType    Tag = 0x37
 	TagInterfaceType   Tag = 0x38
@@ -201,11 +201,11 @@ const (
 	TagMutableType     Tag = 0x3E
 	TagCondition       Tag = 0x3F
 	TagSharedType      Tag = 0x40
-	// The following are new in DWARF 4.
+	// 以下はDWARF 4で新しくなったものです。
 	TagTypeUnit            Tag = 0x41
 	TagRvalueReferenceType Tag = 0x42
 	TagTemplateAlias       Tag = 0x43
-	// The following are new in DWARF 5.
+	// 以下はDWARF 5で新しくなったものです。
 	TagCoarrayType       Tag = 0x44
 	TagGenericSubrange   Tag = 0x45
 	TagDynamicType       Tag = 0x46
