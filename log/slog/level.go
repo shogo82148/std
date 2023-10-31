@@ -12,6 +12,8 @@ import (
 // The higher the level, the more important or severe the event.
 type Level int
 
+// Names for common levels.
+//
 // Level numbers are inherently arbitrary,
 // but we picked them to satisfy three constraints.
 // Any system can map them to another numbering scheme if it wishes.
@@ -34,8 +36,6 @@ type Level int
 // Level range. OpenTelemetry also has the names TRACE and FATAL, which slog
 // does not. But those OpenTelemetry levels can still be represented as slog
 // Levels by using the appropriate integers.
-//
-// Names for common levels.
 const (
 	LevelDebug Level = -4
 	LevelInfo  Level = 0
