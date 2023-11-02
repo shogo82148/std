@@ -12,8 +12,16 @@ import (
 // レベルが高いほど、イベントはより重要または深刻です。
 type Level int
 
+<<<<<<< HEAD
 // レベル番号は本質的に任意ですが、3つの制約を満たすように選択しました。
 // 任意のシステムは、別の番号付けスキームにマップできます。
+=======
+// Names for common levels.
+//
+// Level numbers are inherently arbitrary,
+// but we picked them to satisfy three constraints.
+// Any system can map them to another numbering scheme if it wishes.
+>>>>>>> upstream/master
 //
 // まず、デフォルトのレベルをInfoにしたかったため、Levelsはintであり、
 // Infoはintのデフォルト値であるゼロです。
@@ -24,6 +32,7 @@ type Level int
 // ロガーの冗長性は、したがってイベントの深刻度の否定であり、
 // デフォルトの冗長性0は、INFO以上のすべてのイベントを受け入れます。
 //
+<<<<<<< HEAD
 // 3番目に、名前付きレベルを持つスキームを収容するために、レベル間に余裕が必要でした。
 // たとえば、Google Cloud Loggingは、InfoとWarnの間にNoticeレベルを定義しています。
 // これらの中間レベルはわずかであるため、数字の間のギャップは大きくする必要はありません。
@@ -34,6 +43,17 @@ type Level int
 // ただし、適切な整数を使用することで、これらのOpenTelemetryレベルをslog Levelsとして表すことができます。
 //
 // 一般的なレベルの名前。
+=======
+// Third, we wanted some room between levels to accommodate schemes with named
+// levels between ours. For example, Google Cloud Logging defines a Notice level
+// between Info and Warn. Since there are only a few of these intermediate
+// levels, the gap between the numbers need not be large. Our gap of 4 matches
+// OpenTelemetry's mapping. Subtracting 9 from an OpenTelemetry level in the
+// DEBUG, INFO, WARN and ERROR ranges converts it to the corresponding slog
+// Level range. OpenTelemetry also has the names TRACE and FATAL, which slog
+// does not. But those OpenTelemetry levels can still be represented as slog
+// Levels by using the appropriate integers.
+>>>>>>> upstream/master
 const (
 	LevelDebug Level = -4
 	LevelInfo  Level = 0

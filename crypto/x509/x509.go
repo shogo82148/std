@@ -194,7 +194,15 @@ type Certificate struct {
 	// CRL配布ポイント
 	CRLDistributionPoints []string
 
+	// PolicyIdentifiers contains asn1.ObjectIdentifiers, the components
+	// of which are limited to int32. If a certificate contains a policy which
+	// cannot be represented by asn1.ObjectIdentifier, it will not be included in
+	// PolicyIdentifiers, but will be present in Policies, which contains all parsed
+	// policy OIDs.
 	PolicyIdentifiers []asn1.ObjectIdentifier
+
+	// Policies contains all policy identifiers included in the certificate.
+	Policies []OID
 }
 
 // ErrUnsupportedAlgorithmは、現在実装されていないアルゴリズムを使用して操作を実行しようとした結果です。
