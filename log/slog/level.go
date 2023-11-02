@@ -12,6 +12,8 @@ import (
 // レベルが高いほど、イベントはより重要または深刻です。
 type Level int
 
+// 一般的なレベルの名前。
+//
 // レベル番号は本質的に任意ですが、3つの制約を満たすように選択しました。
 // 任意のシステムは、別の番号付けスキームにマップできます。
 //
@@ -32,8 +34,6 @@ type Level int
 // 対応するslog Level範囲に変換されます。
 // OpenTelemetryにはTRACEとFATALという名前がありますが、slogにはありません。
 // ただし、適切な整数を使用することで、これらのOpenTelemetryレベルをslog Levelsとして表すことができます。
-//
-// 一般的なレベルの名前。
 const (
 	LevelDebug Level = -4
 	LevelInfo  Level = 0

@@ -11,3 +11,4 @@ const CacheLinePadSize = 32
 // initialized.
 var HWCap uint
 var HWCap2 uint
+var Platform string

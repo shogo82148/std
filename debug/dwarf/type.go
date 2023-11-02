@@ -8,17 +8,16 @@
 
 package dwarf
 
-// A Type conventionally represents a pointer to any of the
-// specific Type structures ([CharType], [StructType], etc.).
+// Typeは、通常、特定のType構造体（[CharType]、[StructType] など）のいずれかへのポインタを表します。
 type Type interface {
 	Common() *CommonType
 	String() string
 	Size() int64
 }
 
-// A CommonType holds fields common to multiple types.
-// If a field is not known or not applicable for a given type,
-// the zero value is used.
+// CommonTypeは、複数の型で共通のフィールドを保持します。
+// フィールドが特定の型に対して不明または適用できない場合、
+// ゼロ値が使用されます。
 type CommonType struct {
 	ByteSize int64
 	Name     string
@@ -28,10 +27,9 @@ func (c *CommonType) Common() *CommonType
 
 func (c *CommonType) Size() int64
 
-// A BasicType holds fields common to all basic types.
+// BasicTypeは、すべての基本型に共通するフィールドを保持します。
 //
-// See the documentation for [StructField] for more info on the interpretation of
-// the BitSize/BitOffset/DataBitOffset fields.
+// BitSize / BitOffset / DataBitOffsetフィールドの解釈に関する詳細については、[StructField] のドキュメントを参照してください。
 type BasicType struct {
 	CommonType
 	BitSize       int64
@@ -43,52 +41,52 @@ func (b *BasicType) Basic() *BasicType
 
 func (t *BasicType) String() string
 
-// A CharType represents a signed character type.
+// CharTypeは、符号付き文字型を表します。
 type CharType struct {
 	BasicType
 }
 
-// A UcharType represents an unsigned character type.
+// UcharTypeは、符号なし文字型を表します。
 type UcharType struct {
 	BasicType
 }
 
-// An IntType represents a signed integer type.
+// IntTypeは、符号付き整数型を表します。
 type IntType struct {
 	BasicType
 }
 
-// A UintType represents an unsigned integer type.
+// UintTypeは、符号なし整数型を表します。
 type UintType struct {
 	BasicType
 }
 
-// A FloatType represents a floating point type.
+// FloatTypeは、浮動小数点数型を表します。
 type FloatType struct {
 	BasicType
 }
 
-// A ComplexType represents a complex floating point type.
+// ComplexTypeは、複素数の浮動小数点数型を表します。
 type ComplexType struct {
 	BasicType
 }
 
-// A BoolType represents a boolean type.
+// BoolTypeは、ブール型を表します。
 type BoolType struct {
 	BasicType
 }
 
-// An AddrType represents a machine address type.
+// AddrTypeは、マシンアドレス型を表します。
 type AddrType struct {
 	BasicType
 }
 
-// An UnspecifiedType represents an implicit, unknown, ambiguous or nonexistent type.
+// UnspecifiedTypeは、暗黙的な、不明な、曖昧な、または存在しない型を表します。
 type UnspecifiedType struct {
 	BasicType
 }
 
-// A QualType represents a type that has the C/C++ "const", "restrict", or "volatile" qualifier.
+// QualTypeは、C/C++の「const」、「restrict」、または「volatile」修飾子を持つ型を表します。
 type QualType struct {
 	CommonType
 	Qual string
@@ -99,7 +97,7 @@ func (t *QualType) String() string
 
 func (t *QualType) Size() int64
 
-// An ArrayType represents a fixed size array type.
+// ArrayTypeは、固定サイズの配列型を表します。
 type ArrayType struct {
 	CommonType
 	Type          Type
@@ -111,14 +109,14 @@ func (t *ArrayType) String() string
 
 func (t *ArrayType) Size() int64
 
-// A VoidType represents the C void type.
+// VoidTypeは、Cのvoid型を表します。
 type VoidType struct {
 	CommonType
 }
 
 func (t *VoidType) String() string
 
-// A PtrType represents a pointer type.
+// PtrTypeは、ポインタ型を表します。
 type PtrType struct {
 	CommonType
 	Type Type
@@ -126,7 +124,7 @@ type PtrType struct {
 
 func (t *PtrType) String() string
 
-// A StructType represents a struct, union, or C++ class type.
+// StructTypeは、構造体、共用体、またはC++クラス型を表します。
 type StructType struct {
 	CommonType
 	StructName string
@@ -135,37 +133,30 @@ type StructType struct {
 	Incomplete bool
 }
 
-// A StructField represents a field in a struct, union, or C++ class type.
+// StructFieldは、構造体、共用体、またはC++クラス型のフィールドを表します。
 //
-// # Bit Fields
+// # ビットフィールド
 //
-// The BitSize, BitOffset, and DataBitOffset fields describe the bit
-// size and offset of data members declared as bit fields in C/C++
-// struct/union/class types.
+// BitSize、BitOffset、DataBitOffsetフィールドは、C/C++のstruct/union/class型でビットフィールドとして宣言されたデータメンバーのビットサイズとオフセットを記述します。
 //
-// BitSize is the number of bits in the bit field.
+// BitSizeは、ビットフィールドのビット数です。
 //
-// DataBitOffset, if non-zero, is the number of bits from the start of
-// the enclosing entity (e.g. containing struct/class/union) to the
-// start of the bit field. This corresponds to the DW_AT_data_bit_offset
-// DWARF attribute that was introduced in DWARF 4.
+// DataBitOffsetが0以外の場合、それは、
+// ビットフィールドの開始位置から囲むエンティティ（例：含まれるstruct/class/union）の開始位置までのビット数です。
+// これは、DWARF 4で導入されたDW_AT_data_bit_offset DWARF属性に対応します。
 //
-// BitOffset, if non-zero, is the number of bits between the most
-// significant bit of the storage unit holding the bit field to the
-// most significant bit of the bit field. Here "storage unit" is the
-// type name before the bit field (for a field "unsigned x:17", the
-// storage unit is "unsigned"). BitOffset values can vary depending on
-// the endianness of the system. BitOffset corresponds to the
-// DW_AT_bit_offset DWARF attribute that was deprecated in DWARF 4 and
-// removed in DWARF 5.
+// BitOffsetが0以外の場合、それは、
+// ビットフィールドを保持するストレージユニットの最上位ビットからビットフィールドの最上位ビットまでのビット数です。
+// ここで「ストレージユニット」とは、ビットフィールドの前の型名です（フィールド「unsigned x：17」の場合、ストレージユニットは「unsigned」です）。
+// BitOffsetの値は、システムのエンディアンによって異なる場合があります。
+// BitOffsetは、DWARF 4で廃止され、DWARF 5で削除されたDW_AT_bit_offset DWARF属性に対応します。
 //
-// At most one of DataBitOffset and BitOffset will be non-zero;
-// DataBitOffset/BitOffset will only be non-zero if BitSize is
-// non-zero. Whether a C compiler uses one or the other
-// will depend on compiler vintage and command line options.
+// DataBitOffsetとBitOffsetのうち、最大1つだけが非ゼロになります。
+// DataBitOffset/BitOffsetは、BitSizeが非ゼロの場合にのみ非ゼロになります。
+// Cコンパイラがどちらを使用するかは、コンパイラのバージョンとコマンドラインオプションに依存します。
 //
-// Here is an example of C/C++ bit field use, along with what to
-// expect in terms of DWARF bit offset info. Consider this code:
+// 以下は、C/C++のビットフィールドの使用例と、DWARFビットオフセット情報の期待値の例です。
+// このコードを考えてみましょう。
 //
 //	struct S {
 //		int q;
@@ -175,8 +166,7 @@ type StructType struct {
 //		int n:8;
 //	} s;
 //
-// For the code above, one would expect to see the following for
-// DW_AT_bit_offset values (using GCC 8):
+// 上記のコードに対して、GCC 8を使用している場合、DW_AT_bit_offsetの値は次のようになることが期待されます。
 //
 //	       Little   |     Big
 //	       Endian   |    Endian
@@ -186,28 +176,20 @@ type StructType struct {
 //	"m":     16     |     11
 //	"n":     8      |     16
 //
-// Note that in the above the offsets are purely with respect to the
-// containing storage unit for j/k/m/n -- these values won't vary based
-// on the size of prior data members in the containing struct.
+// 上記のように、j/k/m/nの含まれるストレージユニットに対するオフセットのみが考慮されます。これらの値は、含まれる構造体の前のデータメンバーのサイズに基づいて変化することはありません。
 //
-// If the compiler emits DW_AT_data_bit_offset, the expected values
-// would be:
+// コンパイラがDW_AT_data_bit_offsetを出力する場合、期待される値は次のようになります。
 //
 //	"j":     32
 //	"k":     37
 //	"m":     43
 //	"n":     48
 //
-// Here the value 32 for "j" reflects the fact that the bit field is
-// preceded by other data members (recall that DW_AT_data_bit_offset
-// values are relative to the start of the containing struct). Hence
-// DW_AT_data_bit_offset values can be quite large for structs with
-// many fields.
+// ここで、"j"の値32は、ビットフィールドが他のデータメンバーに続くことを反映しています（DW_AT_data_bit_offset値は、含まれる構造体の開始位置を基準としています）。
+// したがって、DW_AT_data_bit_offset値は、多数のフィールドを持つ構造体ではかなり大きくなる可能性があります。
 //
-// DWARF also allow for the possibility of base types that have
-// non-zero bit size and bit offset, so this information is also
-// captured for base types, but it is worth noting that it is not
-// possible to trigger this behavior using mainstream languages.
+// DWARFは、ビットサイズとビットオフセットがゼロでない基本型の可能性も許容しているため、これらの情報は基本型に対してもキャプチャされます。
+// ただし、主流の言語を使用してこの動作をトリガーすることはできないことに注意する価値があります。
 type StructField struct {
 	Name          string
 	Type          Type
@@ -222,16 +204,15 @@ func (t *StructType) String() string
 
 func (t *StructType) Defn() string
 
-// An EnumType represents an enumerated type.
-// The only indication of its native integer type is its ByteSize
-// (inside [CommonType]).
+// EnumTypeは、列挙型を表します。
+// ネイティブの整数型の唯一の指標は、[CommonType] 内のByteSizeです。
 type EnumType struct {
 	CommonType
 	EnumName string
 	Val      []*EnumValue
 }
 
-// An EnumValue represents a single enumeration value.
+// EnumValueは、単一の列挙値を表します。
 type EnumValue struct {
 	Name string
 	Val  int64
@@ -239,7 +220,7 @@ type EnumValue struct {
 
 func (t *EnumType) String() string
 
-// A FuncType represents a function type.
+// FuncTypeは、関数の型を表します。
 type FuncType struct {
 	CommonType
 	ReturnType Type
@@ -248,14 +229,14 @@ type FuncType struct {
 
 func (t *FuncType) String() string
 
-// A DotDotDotType represents the variadic ... function parameter.
+// DotDotDotTypeは、可変長の...関数パラメータを表します。
 type DotDotDotType struct {
 	CommonType
 }
 
 func (t *DotDotDotType) String() string
 
-// A TypedefType represents a named type.
+// TypedefTypeは、名前付き型を表します。
 type TypedefType struct {
 	CommonType
 	Type Type
@@ -265,8 +246,7 @@ func (t *TypedefType) String() string
 
 func (t *TypedefType) Size() int64
 
-// An UnsupportedType is a placeholder returned in situations where we
-// encounter a type that isn't supported.
+// UnsupportedTypeは、サポートされていない型に遭遇した場合に返されるプレースホルダーです。
 type UnsupportedType struct {
 	CommonType
 	Tag Tag
@@ -274,5 +254,5 @@ type UnsupportedType struct {
 
 func (t *UnsupportedType) String() string
 
-// Type reads the type at off in the DWARF “info” section.
+// Typeは、DWARF「info」セクションのoffにある型を読み取ります。
 func (d *Data) Type(off Offset) (Type, error)
