@@ -6,11 +6,7 @@
 
 package dwarf
 
-<<<<<<< HEAD
-// An Attr identifies the attribute type in a DWARF [Entry.Field].
-=======
-// Attrは、DWARFエントリのフィールド内の属性タイプを識別します。
->>>>>>> release-branch.go1.21
+// Attrは、[Entry.Field] 内の属性タイプを識別します。
 type Attr uint32
 
 const (
@@ -142,11 +138,7 @@ const (
 
 func (a Attr) GoString() string
 
-<<<<<<< HEAD
-// A Tag is the classification (the type) of an [Entry].
-=======
-// Tagは、エントリの分類（タイプ）です。
->>>>>>> release-branch.go1.21
+// Tagは、[Entry] の分類（タイプ）です。
 type Tag uint32
 
 const (

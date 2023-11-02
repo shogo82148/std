@@ -8,17 +8,9 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-<<<<<<< HEAD
-// A LineReader reads a sequence of [LineEntry] structures from a DWARF
-// "line" section for a single compilation unit. LineEntries occur in
-// order of increasing PC and each [LineEntry] gives metadata for the
-// instructions from that [LineEntry]'s PC to just before the next
-// [LineEntry]'s PC. The last entry will have the [LineEntry.EndSequence] field set.
-=======
-// LineReaderは、単一のコンパイルユニットのDWARF「line」セクションからLineEntry構造体のシーケンスを読み取ります。
-// LineEntryは、PCの増加順に発生し、各LineEntryは、そのLineEntryのPCから次のLineEntryのPCの直前までの命令のメタデータを提供します。
-// 最後のエントリには、EndSequenceフィールドが設定されます。
->>>>>>> release-branch.go1.21
+// LineReaderは、単一のコンパイルユニットのDWARF「line」セクションから [LineEntry] 構造体のシーケンスを読み取ります。
+// [LineEntry] は、PCの増加順に発生し、各 [LineEntry] は、その [LineEntry] のPCから次の [LineEntry] のPCの直前までの命令のメタデータを提供します。
+// 最後のエントリには、[LineEntry.EndSequence] フィールドが設定されます。
 type LineReader struct {
 	buf buf
 
@@ -120,24 +112,13 @@ type LineFile struct {
 	Length int
 }
 
-<<<<<<< HEAD
-// LineReader returns a new reader for the line table of compilation
-// unit cu, which must be an [Entry] with tag [TagCompileUnit].
-=======
-// LineReaderは、TagCompileUnitを持つEntry cuの行テーブルのための新しいリーダーを返します。
->>>>>>> release-branch.go1.21
+// LineReaderは、[TagCompileUnit] を持つ [Entry] cuの行テーブルのための新しいリーダーを返します。
 //
 // このコンパイルユニットに行テーブルがない場合、nil、nilを返します。
 func (d *Data) LineReader(cu *Entry) (*LineReader, error)
 
-<<<<<<< HEAD
-// Next sets *entry to the next row in this line table and moves to
-// the next row. If there are no more entries and the line table is
-// properly terminated, it returns [io.EOF].
-=======
 // Nextは、この行テーブルの次の行を*entryに設定し、次の行に移動します。
-// もうエントリがなく、行テーブルが適切に終了している場合、io.EOFを返します。
->>>>>>> release-branch.go1.21
+// もうエントリがなく、行テーブルが適切に終了している場合、[io.EOF] を返します。
 //
 // 行は常にentry.Addressの増加順に並んでいますが、entry.Lineは前後に移動する場合があります。
 func (r *LineReader) Next(entry *LineEntry) error
@@ -157,30 +138,16 @@ type LineReaderPos struct {
 // Tellは、行テーブル内の現在の位置を返します。
 func (r *LineReader) Tell() LineReaderPos
 
-<<<<<<< HEAD
-// Seek restores the line table reader to a position returned by [LineReader.Tell].
+// Seekは、[LineReader.Tell] によって返された位置に行テーブルリーダーを復元します。
 //
-// The argument pos must have been returned by a call to [LineReader.Tell] on this
-// line table.
-=======
-// Seekは、Tellによって返された位置に行テーブルリーダーを復元します。
-//
-// 引数posは、この行テーブルのTell呼び出しによって返されたものである必要があります。
->>>>>>> release-branch.go1.21
+// 引数posは、この行テーブルの [LineReader.Tell] 呼び出しによって返されたものである必要があります。
 func (r *LineReader) Seek(pos LineReaderPos)
 
 // Resetは、行テーブルリーダーを行テーブルの先頭に再配置します。
 func (r *LineReader) Reset()
 
-<<<<<<< HEAD
-// Files returns the file name table of this compilation unit as of
-// the current position in the line table. The file name table may be
-// referenced from attributes in this compilation unit such as
-// [AttrDeclFile].
-=======
 // Filesは、現在の行テーブルの位置に基づいて、このコンパイルユニットのファイル名テーブルを返します。
-// ファイル名テーブルは、AttrDeclFileなどのこのコンパイルユニットの属性から参照される場合があります。
->>>>>>> release-branch.go1.21
+// ファイル名テーブルは、[AttrDeclFile] などのこのコンパイルユニットの属性から参照される場合があります。
 //
 // Entry 0は常にnilです。なぜなら、ファイルインデックス0は「ファイルなし」を表すからです。
 //
@@ -193,22 +160,12 @@ func (r *LineReader) Files() []*LineFile
 // ErrUnknownPCは、LineReader.ScanPCが行テーブルのエントリによってカバーされていないPCを検出した場合に返されるエラーです。
 var ErrUnknownPC = errors.New("ErrUnknownPC")
 
-<<<<<<< HEAD
-// SeekPC sets *entry to the [LineEntry] that includes pc and positions
-// the reader on the next entry in the line table. If necessary, this
-// will seek backwards to find pc.
-//
-// If pc is not covered by any entry in this line table, SeekPC
-// returns [ErrUnknownPC]. In this case, *entry and the final seek
-// position are unspecified.
-=======
-// SeekPCは、pcを含むLineEntryを*entryに設定し、
+// SeekPCは、pcを含む [LineEntry] を*entryに設定し、
 // 行テーブルの次のエントリに位置を設定します。
 // 必要に応じて、pcを検索するために後方にシークします。
 //
 // pcがこの行テーブルのエントリによってカバーされていない場合、
-// SeekPCはErrUnknownPCを返します。この場合、*entryと最終的なシーク位置は未指定です。
->>>>>>> release-branch.go1.21
+// SeekPCは [ErrUnknownPC] を返します。この場合、*entryと最終的なシーク位置は未指定です。
 //
 // DWARF行テーブルは、順次前方スキャンのみを許可します。
 // したがって、最悪の場合、これには行テーブルのサイズに比例する時間がかかります。

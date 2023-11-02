@@ -48,15 +48,8 @@ type Data struct {
 	unit        []unit
 }
 
-<<<<<<< HEAD
-// New returns a new [Data] object initialized from the given parameters.
-// Rather than calling this function directly, clients should typically use
-// the DWARF method of the File type of the appropriate package [debug/elf],
-// [debug/macho], or [debug/pe].
-=======
-// Newは、指定されたパラメータから初期化された新しいDataオブジェクトを返します。
-// この関数を直接呼び出す代わりに、クライアントは通常、適切なパッケージdebug/elf、debug/macho、またはdebug/peのFile型のDWARFメソッドを使用する必要があります。
->>>>>>> release-branch.go1.21
+// Newは、指定されたパラメータから初期化された新しい [Data] オブジェクトを返します。
+// この関数を直接呼び出す代わりに、クライアントは通常、適切なパッケージ [debug/elf]、[debug/macho]、または [debug/pe] のFile型のDWARFメソッドを使用する必要があります。
 //
 // []byte引数は、オブジェクトファイルの対応するデバッグセクションからのデータです。
 // たとえば、ELFオブジェクトの場合、abbrevは".debug_abbrev"セクションの内容です。

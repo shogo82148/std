@@ -8,12 +8,7 @@
 
 package dwarf
 
-<<<<<<< HEAD
-// A Type conventionally represents a pointer to any of the
-// specific Type structures ([CharType], [StructType], etc.).
-=======
-// Typeは、通常、特定のType構造体（CharType、StructTypeなど）のいずれかへのポインタを表します。
->>>>>>> release-branch.go1.21
+// Typeは、通常、特定のType構造体（[CharType]、[StructType] など）のいずれかへのポインタを表します。
 type Type interface {
 	Common() *CommonType
 	String() string
@@ -34,12 +29,7 @@ func (c *CommonType) Size() int64
 
 // BasicTypeは、すべての基本型に共通するフィールドを保持します。
 //
-<<<<<<< HEAD
-// See the documentation for [StructField] for more info on the interpretation of
-// the BitSize/BitOffset/DataBitOffset fields.
-=======
-// BitSize / BitOffset / DataBitOffsetフィールドの解釈に関する詳細については、StructFieldのドキュメントを参照してください。
->>>>>>> release-branch.go1.21
+// BitSize / BitOffset / DataBitOffsetフィールドの解釈に関する詳細については、[StructField] のドキュメントを参照してください。
 type BasicType struct {
 	CommonType
 	BitSize       int64
@@ -214,14 +204,8 @@ func (t *StructType) String() string
 
 func (t *StructType) Defn() string
 
-<<<<<<< HEAD
-// An EnumType represents an enumerated type.
-// The only indication of its native integer type is its ByteSize
-// (inside [CommonType]).
-=======
 // EnumTypeは、列挙型を表します。
-// ネイティブの整数型の唯一の指標は、CommonType内のByteSizeです。
->>>>>>> release-branch.go1.21
+// ネイティブの整数型の唯一の指標は、[CommonType] 内のByteSizeです。
 type EnumType struct {
 	CommonType
 	EnumName string
