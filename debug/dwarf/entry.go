@@ -14,7 +14,7 @@ import (
 	"github.com/shogo82148/std/encoding/binary"
 )
 
-// An entry is a sequence of attribute/value pairs.
+// エントリは、属性/値のペアのシーケンスです。
 type Entry struct {
 	Offset   Offset
 	Tag      Tag
@@ -22,12 +22,16 @@ type Entry struct {
 	Field    []Field
 }
 
+<<<<<<< HEAD
 // A Field is a single attribute/value pair in an [Entry].
+=======
+// Fieldは、Entry内の単一の属性/値ペアです。
+>>>>>>> release-branch.go1.21
 //
-// A value can be one of several "attribute classes" defined by DWARF.
-// The Go types corresponding to each class are:
+// 値は、DWARFによって定義されたいくつかの「属性クラス」のうちの1つです。
+// 各クラスに対応するGoの型は次のとおりです。
 //
-//	DWARF class       Go type        Class
+//	DWARFクラス       Goの型        クラス
 //	-----------       -------        -----
 //	address           uint64         ClassAddress
 //	block             []byte         ClassBlock
@@ -43,129 +47,119 @@ type Entry struct {
 //	macptr            int64          ClassMacPtr
 //	rangelistptr      int64          ClassRangeListPtr
 //
+<<<<<<< HEAD
 // For unrecognized or vendor-defined attributes, [Class] may be
 // [ClassUnknown].
+=======
+// 識別できないまたはベンダー定義の属性の場合、ClassはClassUnknownになります。
+>>>>>>> release-branch.go1.21
 type Field struct {
 	Attr  Attr
 	Val   any
 	Class Class
 }
 
-// A Class is the DWARF 4 class of an attribute value.
+// Classは、属性値のDWARF 4クラスです。
 //
-// In general, a given attribute's value may take on one of several
-// possible classes defined by DWARF, each of which leads to a
-// slightly different interpretation of the attribute.
+// 一般的に、特定の属性の値は、DWARFによって定義されたいくつかの可能なクラスのうちの1つを取ることができます。
+// それぞれのクラスは、属性のわずかに異なる解釈につながります。
 //
-// DWARF version 4 distinguishes attribute value classes more finely
-// than previous versions of DWARF. The reader will disambiguate
-// coarser classes from earlier versions of DWARF into the appropriate
-// DWARF 4 class. For example, DWARF 2 uses "constant" for constants
-// as well as all types of section offsets, but the reader will
-// canonicalize attributes in DWARF 2 files that refer to section
-// offsets to one of the Class*Ptr classes, even though these classes
-// were only defined in DWARF 3.
+// DWARFバージョン4は、以前のDWARFバージョンよりも属性値クラスを細かく区別します。
+// リーダーは、以前のDWARFバージョンの粗いクラスを、適切なDWARF 4クラスに明確に区別します。
+// たとえば、DWARF 2は、定数だけでなくすべてのタイプのセクションオフセットに対して「constant」を使用しますが、
+// リーダーは、セクションオフセットを参照するDWARF 2ファイルの属性を、Class*Ptrクラスの1つに正規化します。
+// これらのクラスは、DWARF 3でのみ定義されていたにもかかわらずです。
 type Class int
 
 const (
-	// ClassUnknown represents values of unknown DWARF class.
+	// ClassUnknownは、未知のDWARFクラスの値を表します。
 	ClassUnknown Class = iota
 
-	// ClassAddress represents values of type uint64 that are
-	// addresses on the target machine.
+	// ClassAddressは、ターゲットマシン上のアドレスであるuint64型の値を表します。
 	ClassAddress
 
-	// ClassBlock represents values of type []byte whose
-	// interpretation depends on the attribute.
+	// ClassBlockは、属性に依存する[]byte型の値を表します。
 	ClassBlock
 
-	// ClassConstant represents values of type int64 that are
-	// constants. The interpretation of this constant depends on
-	// the attribute.
+	// ClassConstantは、定数であるint64型の値を表します。
+	// この定数の解釈は、属性に依存します。
 	ClassConstant
 
-	// ClassExprLoc represents values of type []byte that contain
-	// an encoded DWARF expression or location description.
+	// ClassExprLocは、エンコードされたDWARF式またはロケーション記述を含む[]byte型の値を表します。
 	ClassExprLoc
 
-	// ClassFlag represents values of type bool.
+	// ClassFlagは、bool型の値を表します。
 	ClassFlag
 
-	// ClassLinePtr represents values that are an int64 offset
-	// into the "line" section.
+	// ClassLinePtrは、int64オフセットである値を表します。
+	// このオフセットは、"line"セクション内の位置を指します。
 	ClassLinePtr
 
-	// ClassLocListPtr represents values that are an int64 offset
-	// into the "loclist" section.
+	// ClassLocListPtrは、int64オフセットである値を表します。
+	// このオフセットは、"loclist"セクション内の位置を指します。
 	ClassLocListPtr
 
-	// ClassMacPtr represents values that are an int64 offset into
-	// the "mac" section.
+	// ClassMacPtrは、int64オフセットである値を表します。
+	// このオフセットは、"mac"セクション内の位置を指します。
 	ClassMacPtr
 
-	// ClassRangeListPtr represents values that are an int64 offset into
-	// the "rangelist" section.
+	// ClassRangeListPtrは、int64オフセットである値を表します。
+	// このオフセットは、"rangelist"セクション内の位置を指します。
 	ClassRangeListPtr
 
-	// ClassReference represents values that are an Offset offset
-	// of an Entry in the info section (for use with Reader.Seek).
-	// The DWARF specification combines ClassReference and
-	// ClassReferenceSig into class "reference".
+	// ClassReferenceは、infoセクション内のEntryのオフセットを表す値を表します。
+	// (Reader.Seekで使用するため)。
+	// DWARF仕様は、ClassReferenceとClassReferenceSigをクラス"reference"に結合します。
 	ClassReference
 
-	// ClassReferenceSig represents values that are a uint64 type
-	// signature referencing a type Entry.
+	// ClassReferenceSigは、型Entryを参照するuint64型のシグネチャを表す値を表します。
 	ClassReferenceSig
 
-	// ClassString represents values that are strings. If the
-	// compilation unit specifies the AttrUseUTF8 flag (strongly
-	// recommended), the string value will be encoded in UTF-8.
-	// Otherwise, the encoding is unspecified.
+	// ClassStringは、文字列を表す値を表します。
+	// コンパイルユニットがAttrUseUTF8フラグ（強く推奨）を指定している場合、
+	// 文字列値はUTF-8でエンコードされます。それ以外の場合、エンコーディングは未指定です。
 	ClassString
 
-	// ClassReferenceAlt represents values of type int64 that are
-	// an offset into the DWARF "info" section of an alternate
-	// object file.
+	// ClassReferenceAltは、代替オブジェクトファイルのDWARF "info"セクション内のオフセットを表すint64型の値を表します。
 	ClassReferenceAlt
 
-	// ClassStringAlt represents values of type int64 that are an
-	// offset into the DWARF string section of an alternate object
-	// file.
+	// ClassStringAltは、代替オブジェクトファイルのDWARF文字列セクション内のオフセットを表すint64型の値を表します。
 	ClassStringAlt
 
-	// ClassAddrPtr represents values that are an int64 offset
-	// into the "addr" section.
+	// ClassAddrPtrは、"addr"セクション内のint64オフセットである値を表します。
 	ClassAddrPtr
 
-	// ClassLocList represents values that are an int64 offset
-	// into the "loclists" section.
+	// ClassLocListは、"loclists"セクション内のint64オフセットである値を表します。
 	ClassLocList
 
-	// ClassRngList represents values that are a uint64 offset
-	// from the base of the "rnglists" section.
+	// ClassRngListは、"rnglists"セクションのベースからのuint64オフセットを表す値を表します。
 	ClassRngList
 
-	// ClassRngListsPtr represents values that are an int64 offset
-	// into the "rnglists" section. These are used as the base for
-	// ClassRngList values.
+	// ClassRngListsPtrは、"rnglists"セクション内のint64オフセットである値を表します。
+	// これらは、ClassRngList値のベースとして使用されます。
 	ClassRngListsPtr
 
-	// ClassStrOffsetsPtr represents values that are an int64
-	// offset into the "str_offsets" section.
+	// ClassStrOffsetsPtrは、"str_offsets"セクション内のint64オフセットである値を表します。
 	ClassStrOffsetsPtr
 )
 
 func (i Class) GoString() string
 
+<<<<<<< HEAD
 // Val returns the value associated with attribute [Attr] in [Entry],
 // or nil if there is no such attribute.
+=======
+// Valは、Entry内の属性Attrに関連付けられた値を返します。
+// そのような属性が存在しない場合は、nilを返します。
+>>>>>>> release-branch.go1.21
 //
-// A common idiom is to merge the check for nil return with
-// the check that the value has the expected dynamic type, as in:
+// 一般的なイディオムは、nilの返却値のチェックを、
+// 期待される動的型を持つ値のチェックと統合することです。例えば、以下のようになります。
 //
 //	v, ok := e.Val(AttrSibling).(int64)
 func (e *Entry) Val(a Attr) any
 
+<<<<<<< HEAD
 // AttrField returns the [Field] associated with attribute [Attr] in
 // [Entry], or nil if there is no such attribute.
 func (e *Entry) AttrField(a Attr) *Field
@@ -179,6 +173,21 @@ type Offset uint32
 // return successive entries from a pre-order traversal of the tree.
 // If an entry has children, its Children field will be true, and the children
 // follow, terminated by an [Entry] with [Tag] 0.
+=======
+// AttrFieldは、Entry内の属性Attrに関連付けられたFieldを返します。
+// そのような属性が存在しない場合は、nilを返します。
+func (e *Entry) AttrField(a Attr) *Field
+
+// Offsetは、DWARF情報内のEntryの位置を表します。
+// (Reader.Seekを参照してください。)
+type Offset uint32
+
+// Readerは、DWARF「info」セクションからEntry構造体を読み取ることを可能にします。
+// Entry構造体はツリー形式で配置されています。ReaderのNext関数は、
+// ツリーの先行順序の走査から連続するエントリを返します。
+// エントリに子がある場合、そのChildrenフィールドはtrueになり、子は
+// Tag 0のEntryで終了します。
+>>>>>>> release-branch.go1.21
 type Reader struct {
 	b            buf
 	d            *Data
@@ -190,17 +199,22 @@ type Reader struct {
 	cu           *Entry
 }
 
+<<<<<<< HEAD
 // Reader returns a new Reader for [Data].
 // The reader is positioned at byte offset 0 in the DWARF “info” section.
+=======
+// Readerは、Dataのための新しいReaderを返します。
+// このリーダーは、DWARF「info」セクションのバイトオフセット0に位置しています。
+>>>>>>> release-branch.go1.21
 func (d *Data) Reader() *Reader
 
-// AddressSize returns the size in bytes of addresses in the current compilation
-// unit.
+// AddressSizeは、現在のコンパイルユニットのアドレスのバイト数を返します。
 func (r *Reader) AddressSize() int
 
-// ByteOrder returns the byte order in the current compilation unit.
+// ByteOrderは、現在のコンパイルユニットのバイトオーダーを返します。
 func (r *Reader) ByteOrder() binary.ByteOrder
 
+<<<<<<< HEAD
 // Seek positions the [Reader] at offset off in the encoded entry stream.
 // Offset 0 can be used to denote the first entry.
 func (r *Reader) Seek(off Offset)
@@ -220,17 +234,40 @@ func (r *Reader) SkipChildren()
 // and positions the reader to read the children of that unit.  If pc
 // is not covered by any unit, SeekPC returns [ErrUnknownPC] and the
 // position of the reader is undefined.
+=======
+// Seekは、エンコードされたエントリストリーム内のオフセットoffにReaderを配置します。
+// オフセット0は最初のエントリを示すために使用できます。
+func (r *Reader) Seek(off Offset)
+
+// Nextは、エンコードされたエントリストリームから次のエントリを読み取ります。
+// セクションの終わりに達した場合、nil、nilを返します。
+// 現在のオフセットが無効であるか、オフセットのデータを有効なEntryとしてデコードできない場合、エラーを返します。
+func (r *Reader) Next() (*Entry, error)
+
+// SkipChildrenは、Nextによって返された最後のEntryに関連付けられた子エントリをスキップします。
+// そのEntryに子がない場合、またはNextが呼び出されていない場合、SkipChildrenは何もしません。
+func (r *Reader) SkipChildren()
+
+// SeekPCは、pcを含むコンパイルユニットのEntryを返し、
+// そのユニットの子を読み取るためにリーダーを配置します。
+// pcがどのユニットにも含まれていない場合、SeekPCはErrUnknownPCを返し、
+// リーダーの位置は未定義です。
+>>>>>>> release-branch.go1.21
 //
-// Because compilation units can describe multiple regions of the
-// executable, in the worst case SeekPC must search through all the
-// ranges in all the compilation units. Each call to SeekPC starts the
-// search at the compilation unit of the last call, so in general
-// looking up a series of PCs will be faster if they are sorted. If
-// the caller wishes to do repeated fast PC lookups, it should build
-// an appropriate index using the Ranges method.
+// コンパイルユニットが実行可能ファイルの複数の領域を記述できるため、
+// SeekPCは最悪の場合、すべてのコンパイルユニットのすべての範囲を検索する必要があります。
+// SeekPCの各呼び出しは、前回の呼び出しのコンパイルユニットから検索を開始するため、
+// 一般的には、PCをソートすると、連続する高速なPC検索を行う場合に効果的です。
+// 呼び出し元が繰り返し高速なPC検索を行いたい場合は、Rangesメソッドを使用して適切なインデックスを構築する必要があります。
 func (r *Reader) SeekPC(pc uint64) (*Entry, error)
 
+<<<<<<< HEAD
 // Ranges returns the PC ranges covered by e, a slice of [low,high) pairs.
 // Only some entry types, such as [TagCompileUnit] or [TagSubprogram], have PC
 // ranges; for others, this will return nil with no error.
+=======
+// Rangesは、eによってカバーされるPC範囲、つまり[low, high)のペアのスライスを返します。
+// TagCompileUnitやTagSubprogramなど、一部のエントリタイプのみがPC範囲を持っています。
+// それ以外の場合、エラーを返さずにnilを返します。
+>>>>>>> release-branch.go1.21
 func (d *Data) Ranges(e *Entry) ([][2]uint64, error)

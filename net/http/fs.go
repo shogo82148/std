@@ -61,27 +61,26 @@ type File interface {
 // *os.Fileはio.ReadSeekerインターフェースを実装していることに注意してください。
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
-// ServeFile replies to the request with the contents of the named
-// file or directory.
+// ServeFileは、指定された名前の
+// ファイルまたはディレクトリの内容でリクエストに応答します。
 //
-// If the provided file or directory name is a relative path, it is
-// interpreted relative to the current directory and may ascend to
-// parent directories. If the provided name is constructed from user
-// input, it should be sanitized before calling ServeFile.
+// 提供されたファイル名またはディレクトリ名が相対パスの場合、それは
+// 現在のディレクトリに対して相対的に解釈され、親ディレクトリに昇格することができます。
+// 提供された名前がユーザー入力から構築されている場合、ServeFileを呼び出す前に
+// サニタイズする必要があります。
 //
-// As a precaution, ServeFile will reject requests where r.URL.Path
-// contains a ".." path element; this protects against callers who
-// might unsafely use filepath.Join on r.URL.Path without sanitizing
-// it and then use that filepath.Join result as the name argument.
+// 予防措置として、ServeFileはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。
+// これは、r.URL.Pathをサニタイズせずにfilepath.Joinで安全でなく使用し、
+// その結果をname引数として使用する可能性のある呼び出し元に対する保護です。
 //
-// As another special case, ServeFile redirects any request where r.URL.Path
-// ends in "/index.html" to the same path, without the final
-// "index.html". To avoid such redirects either modify the path or
-// use ServeContent.
+// 別の特殊なケースとして、ServeFileはr.URL.Pathが
+// "/index.html"で終わる任意のリクエストを、最後の
+// "index.html"なしで同じパスにリダイレクトします。そのようなリダイレクトを避けるためには、
+// パスを変更するか、ServeContentを使用します。
 //
-// Outside of those two special cases, ServeFile does not use
-// r.URL.Path for selecting the file or directory to serve; only the
-// file or directory provided in the name argument is used.
+// それらの2つの特殊なケースの外では、ServeFileは
+// r.URL.Pathを使用して提供するファイルやディレクトリを選択しません。
+// 名前引数で提供されたファイルやディレクトリのみが使用されます。
 func ServeFile(w ResponseWriter, r *Request, name string)
 
 // ServeFileFSは、ファイルシステムfsysから指定されたファイルまたはディレクトリの内容でリクエストに応答します。
