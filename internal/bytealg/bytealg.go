@@ -20,8 +20,12 @@ func HashStr[T string | []byte](sep T) (uint32, uint32)
 func HashStrRev[T string | []byte](sep T) (uint32, uint32)
 
 // IndexRabinKarp uses the Rabin-Karp search algorithm to return the index of the
-// first occurrence of substr in s, or -1 if not present.
-func IndexRabinKarp[T string | []byte](s, substr T) int
+// first occurrence of sep in s, or -1 if not present.
+func IndexRabinKarp[T string | []byte](s, sep T) int
+
+// LastIndexRabinKarp uses the Rabin-Karp search algorithm to return the last index of the
+// occurrence of sep in s, or -1 if not present.
+func LastIndexRabinKarp[T string | []byte](s, sep T) int
 
 // MakeNoZero makes a slice of length and capacity n without zeroing the bytes.
 // It is the caller's responsibility to ensure uninitialized bytes
