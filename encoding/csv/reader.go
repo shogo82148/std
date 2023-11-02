@@ -53,13 +53,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-<<<<<<< HEAD
-// A ParseError is returned for parsing errors.
-// Line and column numbers are 1-indexed.
-=======
 // ParseErrorは、解析エラーの場合に返されます。
-// 行番号は1から始まり、列番号は0から始まります。
->>>>>>> release-branch.go1.21
+// 行番号と行番号は1から始まります。
 type ParseError struct {
 	StartLine int
 	Line      int
@@ -71,11 +66,7 @@ func (e *ParseError) Error() string
 
 func (e *ParseError) Unwrap() error
 
-<<<<<<< HEAD
-// These are the errors that can be returned in [ParseError.Err].
-=======
-// ParseError.Errで返される可能性のあるエラーです。
->>>>>>> release-branch.go1.21
+// [ParseError.Err] で返される可能性のあるエラーです。
 var (
 	ErrBareQuote  = errors.New("bare \" in non-quoted-field")
 	ErrQuote      = errors.New("extraneous or missing \" in quoted-field")
@@ -87,14 +78,8 @@ var (
 
 // Readerは、CSVエンコードされたファイルからレコードを読み取ります。
 //
-<<<<<<< HEAD
-// As returned by [NewReader], a Reader expects input conforming to RFC 4180.
-// The exported fields can be changed to customize the details before the
-// first call to [Reader.Read] or [Reader.ReadAll].
-=======
-// NewReaderによって返された場合、ReaderはRFC 4180に準拠した入力を想定しています。
-// 最初のReadまたはReadAll呼び出しの前に、エクスポートされたフィールドを変更して詳細をカスタマイズできます。
->>>>>>> release-branch.go1.21
+// [NewReader] によって返された場合、ReaderはRFC 4180に準拠した入力を想定しています。
+// 最初の [Reader.Read] または [Reader.ReadAll] 呼び出しの前に、エクスポートされたフィールドを変更して詳細をカスタマイズできます。
 //
 // Readerは、入力のすべての\r\nシーケンスをプレーンな\nに変換するため、
 // 複数行のフィールド値を含む場合でも、返されるデータが入力ファイルが使用する行末の規約に依存しないようにします。
@@ -166,36 +151,18 @@ type Reader struct {
 // NewReaderは、rから読み取る新しいReaderを返します。
 func NewReader(r io.Reader) *Reader
 
-<<<<<<< HEAD
-// Read reads one record (a slice of fields) from r.
-// If the record has an unexpected number of fields,
-// Read returns the record along with the error [ErrFieldCount].
-// If the record contains a field that cannot be parsed,
-// Read returns a partial record along with the parse error.
-// The partial record contains all fields read before the error.
-// If there is no data left to be read, Read returns nil, [io.EOF].
-// If [Reader.ReuseRecord] is true, the returned slice may be shared
-// between multiple calls to Read.
-func (r *Reader) Read() (record []string, err error)
-
-// FieldPos returns the line and column corresponding to
-// the start of the field with the given index in the slice most recently
-// returned by [Reader.Read]. Numbering of lines and columns starts at 1;
-// columns are counted in bytes, not runes.
-=======
 // Readはrから1つのレコード（フィールドのスライス）を読み込みます。
 // レコードに予期しない数のフィールドが含まれている場合、
-// ReadはエラーErrFieldCountとともにレコードを返します。
+// Readはエラー [ErrFieldCount] とともにレコードを返します。
 // パースできないフィールドが含まれている場合、
 // Readは部分的なレコードとパースエラーを返します。
 // 部分的なレコードには、エラーが発生する前に読み取られたすべてのフィールドが含まれます。
 // 読み取るデータがない場合、Readはnil、io.EOFを返します。
-// ReuseRecordがtrueの場合、返されるスライスは複数のRead呼び出し間で共有できます。
+// [Reader.ReuseRecord] がtrueの場合、返されるスライスは複数のRead呼び出し間で共有できます。
 func (r *Reader) Read() (record []string, err error)
 
 // FieldPosは、Readで最後に返されたスライス内の指定されたインデックスのフィールドの開始に対応する行と列を返します。
 // 行と列の番号付けは1から始まります。列はルーンではなくバイトで数えられます。
->>>>>>> release-branch.go1.21
 //
 // インデックスが範囲外で呼び出された場合、panicします。
 func (r *Reader) FieldPos(field int) (line, column int)
@@ -204,16 +171,8 @@ func (r *Reader) FieldPos(field int) (line, column int)
 // オフセットは、最後に読み取られた行の終わりと次の行の始まりの場所を示します。
 func (r *Reader) InputOffset() int64
 
-<<<<<<< HEAD
-// ReadAll reads all the remaining records from r.
-// Each record is a slice of fields.
-// A successful call returns err == nil, not err == [io.EOF]. Because ReadAll is
-// defined to read until EOF, it does not treat end of file as an error to be
-// reported.
-=======
 // ReadAllは、rから残りのすべてのレコードを読み込みます。
 // 各レコードはフィールドのスライスです。
-// 成功した呼び出しはerr == nilを返します。err == io.EOFではありません。
+// 成功した呼び出しはerr == nilを返します。err == [io.EOF] ではありません。
 // ReadAllはEOFまで読み込むように定義されているため、エラーとして扱いません。
->>>>>>> release-branch.go1.21
 func (r *Reader) ReadAll() (records [][]string, err error)
