@@ -15,7 +15,7 @@ func Unwrap(err error) error
 // Is reports whether any error in err's tree matches target.
 //
 // The tree consists of err itself, followed by the errors obtained by repeatedly
-// calling Unwrap. When err wraps multiple errors, Is examines err followed by a
+// calling [Unwrap]. When err wraps multiple errors, Is examines err followed by a
 // depth-first traversal of its children.
 //
 // An error is considered to match a target if it is equal to that target or if
@@ -28,14 +28,14 @@ func Unwrap(err error) error
 //
 // then Is(MyError{}, fs.ErrExist) returns true. See [syscall.Errno.Is] for
 // an example in the standard library. An Is method should only shallowly
-// compare err and the target and not call Unwrap on either.
+// compare err and the target and not call [Unwrap] on either.
 func Is(err, target error) bool
 
 // As finds the first error in err's tree that matches target, and if one is found, sets
 // target to that error value and returns true. Otherwise, it returns false.
 //
 // The tree consists of err itself, followed by the errors obtained by repeatedly
-// calling Unwrap. When err wraps multiple errors, As examines err followed by a
+// calling [Unwrap]. When err wraps multiple errors, As examines err followed by a
 // depth-first traversal of its children.
 //
 // An error matches target if the error's concrete value is assignable to the value
