@@ -132,12 +132,8 @@ var ErrSchemeMismatch = errors.New("http: server gave HTTP response to HTTPS cli
 // 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
 func Get(url string) (resp *Response, err error)
 
-// Getは、指定されたURLにGETを発行します。
-// Get sends a GET request to the specified URL.
-// レスポンスが次のリダイレクトコードの1つである場合、
-// If the response is one of the following redirect codes,
-// Getはリダイレクトに従います。最大10回のリダイレクトまで:
-// Get follows the redirect up to a maximum of 10 times:
+// Getは指定されたURLにGETを発行します。レスポンスが以下のリダイレクトコードのいずれかである場合、
+// Getはリダイレクトをフォローします。最大10回のリダイレクトが許可されます：
 //
 //	301 (Moved Permanently)
 //	302 (Found)
@@ -145,28 +141,24 @@ func Get(url string) (resp *Response, err error)
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
-// リダイレクトが多すぎる場合や、HTTPプロトコルエラーがあった場合はエラーが返されます。
-// If there are too many redirects or if there is an HTTP protocol error, an error will be returned.
-// 非2xxレスポンスはエラーを引き起こしません。
-// Non-2xx responses do not cause an error.
-// 任意の返されたエラーは*url.Error型です。url.ErrorのTimeoutメソッドは、
-// Any returned error is of type *url.Error. The Timeout method of url.Error reports true if the request times out.
-// errがnilの場合、respには常に非nilのresp.Bodyが含まれます。
-// If err is nil, resp will always contain a non-nil resp.Body.
-// 呼び出し元は、resp.Bodyの読み取りが完了したらresp.Bodyを閉じる必要があります。
-// The caller must close resp.Body when reading from it is complete.
-// カスタムヘッダーでリクエストを作成するには、NewRequestとClient.Doを使用します。
-// To create a request with custom headers, use NewRequest and Client.Do.
-// 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとClient.Doを使用します。
-// To create a request with a specified context.Context, use NewRequestWithContext and Client.Do.
+// リダイレクトが多すぎる場合やHTTPプロトコルエラーがあった場合にエラーが返されます。
+// 2xx以外のレスポンスはエラーを引き起こしません。
+// 返される任意のエラーは*url.Error型になります。
+// url.Error値のTimeoutメソッドは、リクエストがタイムアウトした場合にtrueを報告します。
+//
+// errがnilの場合、respは常に非nilのresp.Bodyを含みます。
+// 読み取りが完了したら、呼び出し元はresp.Bodyを閉じる必要があります。
+//
+// GetはDefaultClient.Getのラッパーです。
+//
+// カスタムヘッダーでリクエストを行うには、NewRequestと
+// DefaultClient.Doを使用します。
+//
+// 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
 func (c *Client) Get(url string) (resp *Response, err error)
 
-// ErrUseLastResponseは、Client.CheckRedirectフックによって返されることがあります。
-// リダイレクトの処理方法を制御するために使用されます。返された場合、次のリクエストは送信されず、
-// 最新のレスポンスがそのボディが閉じられていないまま返されます。
-// ErrUseLastResponseはClient.CheckRedirectフックによって返されることがあります。
-// これはリダイレクトの処理方法を制御するために使用されます。もしErrUseLastResponseが返された場合、次のリクエストは送信されず、
-// 最新のレスポンスがそのまま返されます。その時、最新のレスポンスのボディは閉じられていないままとなります。
+// ErrUseLastResponseは、Client.CheckRedirectフックによって返され、リダイレクトの処理方法を制御するために使用できます。
+// これが返されると、次のリクエストは送信されず、最も最近のレスポンスがそのボディが閉じられていない状態で返されます。
 var ErrUseLastResponse = errors.New("net/http: use last response")
 
 // DoはHTTPリクエストを送信し、クライアントの設定したポリシー（リダイレクト、クッキー、認証など）に従ってHTTPレスポンスを返します。
