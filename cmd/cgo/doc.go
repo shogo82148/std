@@ -363,6 +363,7 @@ runtime/cgo.Handle型は、GoとCの間で安全にGo値を渡すために使用
 したがって、Goコードがその中にポインタ値を格納する場合は、初期化されていないCメモリをGoコードに渡すことを避けてください。
 Cでメモリをゼロにしてから渡してください。
 
+<<<<<<< HEAD
 # 特別なケース
 
 Goでは通常、ポインタ型で表されるいくつかの特別なC型は、代わりにuintptrで表されます。
@@ -371,6 +372,16 @@ Goでは通常、ポインタ型で表されるいくつかの特別なC型は�
 1. Darwin上の*Ref型は、CoreFoundationのCFTypeRef型をルートとしています。
 
 2. JavaのJNIインターフェースからのオブジェクトタイプ：
+=======
+# Special cases
+
+A few special C types which would normally be represented by a pointer
+type in Go are instead represented by a uintptr. Those include:
+
+1. The *Ref types on Darwin, rooted at CoreFoundation's CFTypeRef type.
+
+2. The object types from Java's JNI interface:
+>>>>>>> upstream/master
 
 	jobject
 	jclass
