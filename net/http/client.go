@@ -81,32 +81,27 @@ var DefaultClient = &Client{}
 // RoundTripperは、指定されたRequestに対するResponseを取得するための単一のHTTPトランザクションを実行する能力を表すインターフェースです。
 //
 // RoundTripperは、複数のゴルーチンによる同時使用に対して安全である必要があります。
-// RoundTripperは、複数のゴルーチンによる同時使用に対して安全である必要があります。
 type RoundTripper interface {
-	// RoundTrip executes a single HTTP transaction, returning
-	// a Response for the provided Request.
+	// RoundTripは単一のHTTPトランザクションを実行し、
+	// 提供されたRequestのResponseを返します。
 	//
-	// RoundTrip should not attempt to interpret the response. In
-	// particular, RoundTrip must return err == nil if it obtained
-	// a response, regardless of the response's HTTP status code.
-	// A non-nil err should be reserved for failure to obtain a
-	// response. Similarly, RoundTrip should not attempt to
-	// handle higher-level protocol details such as redirects,
-	// authentication, or cookies.
+	// RoundTripはレスポンスを解釈しようとしてはなりません。特に、
+	// RoundTripはレスポンスを取得した場合、レスポンスのHTTPステータスコードに関係なく
+	// err == nilを返さなければなりません。非nilのerrはレスポンスの取得に失敗した場合に
+	// 予約されるべきです。同様に、RoundTripはリダイレクト、認証、またはクッキーなどの
+	// 高レベルのプロトコル詳細を処理しようとしてはなりません。
 	//
-	// RoundTrip should not modify the request, except for
-	// consuming and closing the Request's Body. RoundTrip may
-	// read fields of the request in a separate goroutine. Callers
-	// should not mutate or reuse the request until the Response's
-	// Body has been closed.
+	// RoundTripは、リクエストのBodyを消費して閉じる以外に、
+	// リクエストを変更してはなりません。RoundTripは、
+	// 別のgoroutineでリクエストのフィールドを読むことができます。呼び出し元は、
+	// レスポンスのBodyが閉じられるまで、リクエストを変更したり再利用したりしてはなりません。
 	//
-	// RoundTrip must always close the body, including on errors,
-	// but depending on the implementation may do so in a separate
-	// goroutine even after RoundTrip returns. This means that
-	// callers wanting to reuse the body for subsequent requests
-	// must arrange to wait for the Close call before doing so.
+	// RoundTripは常にボディを閉じる必要があります。これにはエラー時も含まれますが、
+	// 実装によっては、RoundTripが返った後でも別のgoroutineで行うことがあります。
+	// これは、後続のリクエストのボディを再利用したい呼び出し元は、
+	// それを行う前にClose呼び出しを待つように手配する必要があることを意味します。
 	//
-	// The Request's URL and Header fields must be initialized.
+	// RequestのURLとHeaderフィールドは初期化されていなければなりません。
 	RoundTrip(*Request) (*Response, error)
 }
 
