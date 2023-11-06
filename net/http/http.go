@@ -36,29 +36,23 @@ type PushOptions struct {
 // Pusherは、HTTP/2サーバープッシュをサポートするResponseWritersによって実装されるインターフェースです。
 // 詳細については、 https://tools.ietf.org/html/rfc7540#section-8.2 を参照してください。
 type Pusher interface {
-	// Push initiates an HTTP/2 server push. This constructs a synthetic
-	// request using the given target and options, serializes that request
-	// into a PUSH_PROMISE frame, then dispatches that request using the
-	// server's request handler. If opts is nil, default options are used.
+	// Pushは、HTTP/2サーバープッシュを開始します。これは、指定されたターゲットとオプションを使用して合成リクエストを構築し、
+	// そのリクエストをPUSH_PROMISEフレームにシリアライズし、そのリクエストをサーバーのリクエストハンドラを使用してディスパッチします。
+	// optsがnilの場合、デフォルトのオプションが使用されます。
 	//
-	// The target must either be an absolute path (like "/path") or an absolute
-	// URL that contains a valid host and the same scheme as the parent request.
-	// If the target is a path, it will inherit the scheme and host of the
-	// parent request.
+	// ターゲットは、絶対パス（"/path"のような）または親リクエストと同じスキームと有効なホストを含む絶対URLでなければなりません。
+	// ターゲットがパスの場合、親リクエストのスキームとホストを継承します。
 	//
-	// The HTTP/2 spec disallows recursive pushes and cross-authority pushes.
-	// Push may or may not detect these invalid pushes; however, invalid
-	// pushes will be detected and canceled by conforming clients.
+	// HTTP/2の仕様では、再帰的なプッシュとクロスオーソリティプッシュが禁止されています。
+	// Pushはこれらの無効なプッシュを検出するかもしれませんし、検出しないかもしれません。しかし、無効な
+	// プッシュは、準拠しているクライアントによって検出され、キャンセルされます。
 	//
-	// Handlers that wish to push URL X should call Push before sending any
-	// data that may trigger a request for URL X. This avoids a race where the
-	// client issues requests for X before receiving the PUSH_PROMISE for X.
+	// URL Xをプッシュしたいハンドラは、URL Xのリクエストをトリガーする可能性のあるデータを送信する前にPushを呼び出すべきです。
+	// これにより、クライアントがXのPUSH_PROMISEを受信する前にXのリクエストを発行するというレース条件を回避します。
 	//
-	// Push will run in a separate goroutine making the order of arrival
-	// non-deterministic. Any required synchronization needs to be implemented
-	// by the caller.
+	// Pushは別のゴルーチンで実行されるため、到着の順序は非決定的です。
+	// 必要な同期は呼び出し元によって実装する必要があります。
 	//
-	// Push returns ErrNotSupported if the client has disabled push or if push
-	// is not supported on the underlying connection.
+	// Pushは、クライアントがプッシュを無効にした場合、または基本となる接続でプッシュがサポートされていない場合、ErrNotSupportedを返します。
 	Push(target string, opts *PushOptions) error
 }
