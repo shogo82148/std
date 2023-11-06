@@ -59,69 +59,58 @@ type Handler interface {
 //
 // Handler.ServeHTTPメソッドが返された後に、ResponseWriterを使用することはできません。
 type ResponseWriter interface {
-	// Header returns the header map that will be sent by
-	// WriteHeader. The Header map also is the mechanism with which
-	// Handlers can set HTTP trailers.
+	// Headerは、WriteHeaderによって送信されるヘッダーマップを返します。
+	// ヘッダーマップはまた、ハンドラがHTTPトレイラーを設定するメカニズムでもあります。
 	//
-	// Changing the header map after a call to WriteHeader (or
-	// Write) has no effect unless the HTTP status code was of the
-	// 1xx class or the modified headers are trailers.
+	// WriteHeader（またはWrite）の呼び出し後にヘッダーマップを変更しても、
+	// HTTPステータスコードが1xxクラスであった場合、または変更されたヘッダーがトレイラーであった場合を除き、
+	// 影響はありません。
 	//
-	// There are two ways to set Trailers. The preferred way is to
-	// predeclare in the headers which trailers you will later
-	// send by setting the "Trailer" header to the names of the
-	// trailer keys which will come later. In this case, those
-	// keys of the Header map are treated as if they were
-	// trailers. See the example. The second way, for trailer
-	// keys not known to the Handler until after the first Write,
-	// is to prefix the Header map keys with the TrailerPrefix
-	// constant value. See TrailerPrefix.
+	// トレイラーを設定する方法は2つあります。推奨される方法は、
+	// ヘッダーで後で送信するトレイラーを事前に宣言することです。
+	// これは、"Trailer"ヘッダーを後で来るトレイラーキーの名前に設定することで行います。
+	// この場合、ヘッダーマップのキーはトレイラーであるかのように扱われます。例を参照してください。
+	// 2つ目の方法は、最初のWriteの後までハンドラーには未知のトレイラーキーについて、
+	// ヘッダーマップのキーにTrailerPrefix定数値をプレフィックスとして付けることです。
+	// TrailerPrefixを参照してください。
 	//
-	// To suppress automatic response headers (such as "Date"), set
-	// their value to nil.
+	// 自動的に設定されるレスポンスヘッダー（例えば "Date"）を抑制するには、
+	// その値をnilに設定します。
 	Header() Header
 
-	// Write writes the data to the connection as part of an HTTP reply.
+	// Writeは、HTTP応答の一部としてデータを接続に書き込みます。
 	//
-	// If WriteHeader has not yet been called, Write calls
-	// WriteHeader(http.StatusOK) before writing the data. If the Header
-	// does not contain a Content-Type line, Write adds a Content-Type set
-	// to the result of passing the initial 512 bytes of written data to
-	// DetectContentType. Additionally, if the total size of all written
-	// data is under a few KB and there are no Flush calls, the
-	// Content-Length header is added automatically.
+	// WriteHeaderがまだ呼び出されていない場合、Writeはデータを書き込む前に
+	// WriteHeader(http.StatusOK)を呼び出します。ヘッダーにContent-Type行が含まれていない場合、
+	// Writeは書き込まれたデータの最初の512バイトをDetectContentTypeに渡す結果に設定されたContent-Typeを追加します。
+	// さらに、書き込まれたすべてのデータの合計サイズが数KB以下でFlush呼び出しがない場合、
+	// Content-Lengthヘッダーが自動的に追加されます。
 	//
-	// Depending on the HTTP protocol version and the client, calling
-	// Write or WriteHeader may prevent future reads on the
-	// Request.Body. For HTTP/1.x requests, handlers should read any
-	// needed request body data before writing the response. Once the
-	// headers have been flushed (due to either an explicit Flusher.Flush
-	// call or writing enough data to trigger a flush), the request body
-	// may be unavailable. For HTTP/2 requests, the Go HTTP server permits
-	// handlers to continue to read the request body while concurrently
-	// writing the response. However, such behavior may not be supported
-	// by all HTTP/2 clients. Handlers should read before writing if
-	// possible to maximize compatibility.
+	// HTTPプロトコルのバージョンとクライアントによっては、
+	// WriteまたはWriteHeaderを呼び出すと、今後のRequest.Bodyの読み取りが防止される場合があります。
+	// HTTP/1.xのリクエストに対しては、ハンドラはレスポンスを書き込む前に必要なリクエストボディデータを読み取るべきです。
+	// ヘッダがフラッシュされると（明示的なFlusher.Flush呼び出しによるものか、フラッシュをトリガーするだけのデータを書き込むことによるものかは問わず）、
+	// リクエストボディは利用できなくなる可能性があります。HTTP/2のリクエストに対しては、GoのHTTPサーバーはハンドラがレスポンスを
+	// 並行して書き込みながらリクエストボディを読み続けることを許可します。しかし、そのような動作はすべてのHTTP/2クライアントでサポートされているわけではありません。
+	// 可能な限り互換性を最大化するために、ハンドラは書き込む前に読み取るべきです。
 	Write([]byte) (int, error)
 
-	// WriteHeader sends an HTTP response header with the provided
-	// status code.
+	// WriteHeaderは、提供されたステータスコードでHTTPレスポンスヘッダーを送信します。
 	//
-	// If WriteHeader is not called explicitly, the first call to Write
-	// will trigger an implicit WriteHeader(http.StatusOK).
-	// Thus explicit calls to WriteHeader are mainly used to
-	// send error codes or 1xx informational responses.
+	// WriteHeaderが明示的に呼び出されない場合、最初のWriteの呼び出しは
+	// 暗黙的なWriteHeader(http.StatusOK)をトリガーします。
+	// したがって、WriteHeaderへの明示的な呼び出しは主に、
+	// エラーコードや1xx情報応答を送信するために使用されます。
 	//
-	// The provided code must be a valid HTTP 1xx-5xx status code.
-	// Any number of 1xx headers may be written, followed by at most
-	// one 2xx-5xx header. 1xx headers are sent immediately, but 2xx-5xx
-	// headers may be buffered. Use the Flusher interface to send
-	// buffered data. The header map is cleared when 2xx-5xx headers are
-	// sent, but not with 1xx headers.
+	// 提供されるコードは、有効なHTTP 1xx-5xxのステータスコードでなければなりません。
+	// 任意の数の1xxヘッダーを書き込むことができ、その後に最大で
+	// 一つの2xx-5xxヘッダーが続きます。1xxヘッダーはすぐに送信されますが、2xx-5xx
+	// ヘッダーはバッファリングされる可能性があります。バッファリングされたデータを送信するには
+	// Flusherインターフェースを使用します。2xx-5xxヘッダーが
+	// 送信されるとヘッダーマップはクリアされますが、1xxヘッダーではクリアされません。
 	//
-	// The server will automatically send a 100 (Continue) header
-	// on the first read from the request body if the request has
-	// an "Expect: 100-continue" header.
+	// サーバーは、リクエストが "Expect: 100-continue" ヘッダーを持っている場合、
+	// リクエストボディからの最初の読み取り時に自動的に100（Continue）ヘッダーを送信します。
 	WriteHeader(statusCode int)
 }
 
