@@ -289,15 +289,10 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // AuthorityKeyIdは、親のSubjectKeyIdから取得されます（存在する場合）、ただし証明書が自己署名でない場合はテンプレートの値が使用されます。
 //
-<<<<<<< HEAD
 // テンプレートのSubjectKeyIdが空で、テンプレートがCAである場合、SubjectKeyIdは公開鍵のハッシュから生成されます。
-=======
-// If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
-// will be generated from the hash of the public key.
 //
-// If both PolicyIdentifiers and Policies are populated, any OID which appears
-// in both slices will only be added to the certificate policies extension once.
->>>>>>> upstream/master
+// PolicyIdentifiersとPoliciesの両方が入力されている場合、
+// 両方のスライスに表示される任意のOIDは、証明書ポリシー拡張に一度だけ追加されます。
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRLは指定されたバイトからCRLを解析します。PEMエンコードされたCRLがDERエンコードされるべき場所に表示されることがよくありますが、この関数は前方にゴミがない限り、PEMエンコーディングを透過的に処理します。
