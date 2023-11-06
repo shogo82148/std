@@ -75,7 +75,7 @@ type Client struct {
 	Timeout time.Duration
 }
 
-// DefaultClient is the default Client and is used for Get, Head, and Post.
+// DefaultClientはデフォルトのClientであり、Get、Head、およびPostに使用されます。
 var DefaultClient = &Client{}
 
 // RoundTripperは、指定されたRequestに対するResponseを取得するための単一のHTTPトランザクションを実行する能力を表すインターフェースです。
