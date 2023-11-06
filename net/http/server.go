@@ -155,27 +155,25 @@ type Hijacker interface {
 //
 // このメカニズムは、レスポンスが準備される前にクライアントが切断された場合、サーバー上の長時間の操作をキャンセルするために使用できます。
 //
-// 廃止予定: CloseNotifierインターフェースは、Goのコンテキストパッケージより前に実装されました。
+// Deprecated: CloseNotifierインターフェースは、Goのコンテキストパッケージより前に実装されました。
 // 新しいコードでは、Request.Contextを使用する必要があります。
 type CloseNotifier interface {
-	// CloseNotify returns a channel that receives at most a
-	// single value (true) when the client connection has gone
-	// away.
+	// CloseNotifyは、クライアント接続が切断されたときに最大で
+	// 一つの値（true）を受け取るチャネルを返します。
 	//
-	// CloseNotify may wait to notify until Request.Body has been
-	// fully read.
+	// CloseNotifyは、Request.Bodyが完全に読み取られるまで、
+	// 通知を待つ場合があります。
 	//
-	// After the Handler has returned, there is no guarantee
-	// that the channel receives a value.
+	// ハンドラが戻った後、チャネルが値を受け取ることが保証されていません。
 	//
-	// If the protocol is HTTP/1.1 and CloseNotify is called while
-	// processing an idempotent request (such a GET) while
-	// HTTP/1.1 pipelining is in use, the arrival of a subsequent
-	// pipelined request may cause a value to be sent on the
-	// returned channel. In practice HTTP/1.1 pipelining is not
-	// enabled in browsers and not seen often in the wild. If this
-	// is a problem, use HTTP/2 or only use CloseNotify on methods
-	// such as POST.
+	// プロトコルがHTTP/1.1で、CloseNotifyが
+	// 冪等なリクエスト（GETなど）の処理中に呼び出され、
+	// HTTP/1.1のパイプラインが使用されている場合、
+	// 続くパイプラインリクエストの到着により、
+	// 返されたチャネルに値が送信される可能性があります。
+	// 実際には、ブラウザではHTTP/1.1のパイプラインは有効になっておらず、
+	// 野生ではあまり見られません。これが問題である場合は、
+	// HTTP/2を使用するか、POSTなどのメソッドでのみCloseNotifyを使用します。
 	CloseNotify() <-chan bool
 }
 
