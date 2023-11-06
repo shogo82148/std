@@ -229,17 +229,17 @@ func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, 
 // 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
 func PostForm(url string, data url.Values) (resp *Response, err error)
 
-// PostForm function sends a POST request to the URL with the specified data key-value pairs encoded in the request body.
+// PostForm関数は、指定されたデータのキーと値のペアをリクエストボディにエンコードして、URLにPOSTリクエストを送信します。
 //
-// The Content-Type header is set to application/x-www-form-urlencoded.
-// To set other headers, use NewRequest and Client.Do.
+// Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
+// 他のヘッダーを設定するには、NewRequestとClient.Doを使用します。
 //
-// If err is nil, resp always contains a non-nil resp.Body.
-// The caller must close resp.Body after reading from it.
+// errがnilの場合、respは常に非nilのresp.Bodyを含みます。
+// 読み取り後、呼び出し元はresp.Bodyを閉じなければなりません。
 //
-// Refer to the documentation of Client.Do method for handling redirects.
+// リダイレクトの処理については、Client.Doメソッドのドキュメンテーションを参照してください。
 //
-// To create a request with the specified context.Context, use NewRequestWithContext and Client.Do.
+// 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとClient.Doを使用します。
 func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)
 
 // Head issues a HEAD request to the specified URL. If the response is one of the following redirect codes,
