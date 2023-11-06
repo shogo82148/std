@@ -106,7 +106,6 @@ type RoundTripper interface {
 }
 
 // ErrSchemeMismatchは、サーバーがHTTPSクライアントにHTTPレスポンスを返した場合に返されます。
-// ErrSchemeMismatch is returned when a server returns an HTTP response to an HTTPS client.
 var ErrSchemeMismatch = errors.New("http: server gave HTTP response to HTTPS client")
 
 // Getは、指定されたURLにGETを発行します。レスポンスが次のリダイレクトコードの1つである場合、
