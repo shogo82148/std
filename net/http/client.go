@@ -242,8 +242,8 @@ func PostForm(url string, data url.Values) (resp *Response, err error)
 // 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとClient.Doを使用します。
 func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)
 
-// Head issues a HEAD request to the specified URL. If the response is one of the following redirect codes,
-// Head will follow the redirection. Up to 10 redirects are allowed:
+// Headは、指定されたURLに対してHEADリクエストを発行します。レスポンスが以下のリダイレクトコードのいずれかである場合、
+// Headはリダイレクションをフォローします。最大10回のリダイレクトが許可されます：
 //
 //	301 (Moved Permanently)
 //	302 (Found)
@@ -251,9 +251,9 @@ func (c *Client) PostForm(url string, data url.Values) (resp *Response, err erro
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
-// Head is a wrapper for DefaultClient.Head.
+// HeadはDefaultClient.Headのラッパーです。
 //
-// To create a request with the specified context.Context, use NewRequestWithContext and DefaultClient.Do.
+// 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
 func Head(url string) (resp *Response, err error)
 
 // 指定されたURLにHEADリクエストを送信します。もしレスポンスが以下のいずれかのリダイレクトコードである場合、
@@ -268,10 +268,8 @@ func Head(url string) (resp *Response, err error)
 // 指定されたcontext.Contextを使用してリクエストを送信する場合は、NewRequestWithContextとClient.Doを使用してください。
 func (c *Client) Head(url string) (resp *Response, err error)
 
-// CloseIdleConnections closes idle connections on the Transport that were
-// previously connected but are now in the "keep-alive" state, meaning they are
-// idle. It does not interrupt the currently active connections.
+// CloseIdleConnectionsは、以前は接続されていたが現在は"keep-alive"状態、つまりアイドル状態にあるTransport上のアイドル接続を閉じます。
+// これは現在アクティブな接続を中断しません。
 //
-// If the Client's Transport does not have the CloseIdleConnections method,
-// this method does nothing.
+// クライアントのTransportにCloseIdleConnectionsメソッドがない場合、このメソッドは何もしません。
 func (c *Client) CloseIdleConnections()
