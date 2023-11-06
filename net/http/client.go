@@ -151,21 +151,21 @@ func (c *Client) Get(url string) (resp *Response, err error)
 // 最新のレスポンスがそのまま返されます。その時、最新のレスポンスのボディは閉じられていないままとなります。
 var ErrUseLastResponse = errors.New("net/http: use last response")
 
-// Do sends an HTTP request and returns an HTTP response according to the client's set policies (such as redirect, cookies, authentication, etc).
+// DoはHTTPリクエストを送信し、クライアントの設定したポリシー（リダイレクト、クッキー、認証など）に従ってHTTPレスポンスを返します。
 //
-// If triggered by a client policy (such as CheckRedirect), or if the HTTP transmission fails (due to network connection issues, etc), an error is returned. Non-2xx status codes do not cause an error.
+// クライアントポリシー（CheckRedirectなど）によってトリガーされた場合、またはHTTP転送が失敗した場合（ネットワーク接続の問題など）、エラーが返されます。2xx以外のステータスコードはエラーを引き起こしません。
 //
-// If the returned error is nil, the Response will contain a non-nil Body that the user must close. If the Body is not closed without being fully read until EOF, the underlying RoundTripper of the Client (usually the Transport) may be unable to reuse the persistent TCP connection to the server for the next "keep-alive" request.
+// 返されるエラーがnilの場合、Responseにはユーザーが閉じなければならない非nilのBodyが含まれます。BodyがEOFまで完全に読み取られずに閉じられない場合、クライアントの基本となるRoundTripper（通常はTransport）は、次の「keep-alive」リクエストのためにサーバーへの永続的なTCP接続を再利用できないかもしれません。
 //
-// If the request Body is not nil, it will be closed by the underlying Transport. The same applies even in case of an error.
+// リクエストのBodyがnilでない場合、それは基本となるTransportによって閉じられます。エラーが発生した場合も同様です。
 //
-// If an error occurs, any Response can be ignored. A non-nil Response and non-nil error are only returned if CheckRedirect fails, and even in that case, the returned Response.Body is already closed.
+// エラーが発生した場合、任意のResponseは無視できます。非nilのResponseと非nilのエラーは、CheckRedirectが失敗した場合にのみ返されます。その場合でも、返されたResponse.Bodyはすでに閉じられています。
 //
-// Normally, Get, Post, or PostForm are used instead of Do.
+// 通常、Doの代わりにGet、Post、またはPostFormが使用されます。
 //
-// If the server responds with a redirect, the Client first uses the CheckRedirect function to determine whether to follow the redirect. If allowed, a redirect of 301, 302, or 303 will cause a subsequent request with method GET (or HEAD if the original request was HEAD) and no body. A redirect of 307 or 308 will preserve the original HTTP method and body if the Request.GetBody function is defined. The NewRequest function automatically sets GetBody for common standard library body types.
+// サーバーがリダイレクトを返すと、Clientは最初にCheckRedirect関数を使用してリダイレクトをフォローするかどうかを決定します。許可されると、301、302、または303のリダイレクトは、メソッドがGET（元のリクエストがHEADだった場合はHEAD）でボディがない後続のリクエストを引き起こします。307または308のリダイレクトは、Request.GetBody関数が定義されている場合、元のHTTPメソッドとボディを保持します。NewRequest関数は、一般的な標準ライブラリボディタイプのGetBodyを自動的に設定します。
 //
-// All returned errors are of type *url.Error. The Timeout method of url.Error reports true if the request timed out.
+// すべての返されるエラーは*url.Error型です。url.ErrorのTimeoutメソッドは、リクエストがタイムアウトした場合にtrueを報告します。
 func (c *Client) Do(req *Request) (*Response, error)
 
 // Postは、指定されたURLに対してPOSTメソッドを送信します。
