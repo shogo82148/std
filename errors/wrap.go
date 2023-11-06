@@ -14,14 +14,8 @@ func Unwrap(err error) error
 
 // Isは、errのツリー内の任意のエラーがtargetに一致するかどうかを報告します。
 //
-<<<<<<< HEAD
-// ツリーは、err自体に続いて、Unwrapを繰り返し呼び出して得られたエラーで構成されています。
+// ツリーは、err自体に続いて、 [Unwrap] を繰り返し呼び出して得られたエラーで構成されています。
 // errが複数のエラーをラップしている場合、Isは、errに続いてその子の深さ優先のトラバースを行います。
-=======
-// The tree consists of err itself, followed by the errors obtained by repeatedly
-// calling [Unwrap]. When err wraps multiple errors, Is examines err followed by a
-// depth-first traversal of its children.
->>>>>>> upstream/master
 //
 // ターゲットに一致するエラーは、そのターゲットに等しい場合、または
 // Is(error) boolというメソッドを実装している場合、Is(target)がtrueを返す場合です。
@@ -31,29 +25,17 @@ func Unwrap(err error) error
 //
 //	func (m MyError) Is(target error) bool { return target == fs.ErrExist }
 //
-<<<<<<< HEAD
-// 例えば、MyError{}とfs.ErrExistを引数に渡すと、Is(MyError{}, fs.ErrExist)はtrueを返します。
+// 例えば、Is(MyError{}, fs.ErrExist)はtrueを返します。
 // 標準ライブラリの例については、 [syscall.Errno.Is] を参照してください。
-// Isメソッドは、errとターゲットを浅く比較し、Unwrapを呼び出さないようにする必要があります。
-=======
-// then Is(MyError{}, fs.ErrExist) returns true. See [syscall.Errno.Is] for
-// an example in the standard library. An Is method should only shallowly
-// compare err and the target and not call [Unwrap] on either.
->>>>>>> upstream/master
+// Isメソッドは、errとターゲットを浅く比較し、[Unwrap] を呼び出さないようにする必要があります。
 func Is(err, target error) bool
 
 // Asは、errのツリー内で最初にtargetに一致するエラーを検索し、
 // 一致するエラーが見つかった場合、targetをそのエラー値に設定してtrueを返します。
 // それ以外の場合、falseを返します。
 //
-<<<<<<< HEAD
-// ツリーは、err自体に続いて、Unwrapを繰り返し呼び出して得られたエラーで構成されています。
+// ツリーは、err自体に続いて、[Unwrap] を繰り返し呼び出して得られたエラーで構成されています。
 // errが複数のエラーをラップしている場合、Asは、errに続いてその子の深さ優先のトラバースを行います。
-=======
-// The tree consists of err itself, followed by the errors obtained by repeatedly
-// calling [Unwrap]. When err wraps multiple errors, As examines err followed by a
-// depth-first traversal of its children.
->>>>>>> upstream/master
 //
 // エラーがターゲットに一致する場合、エラーの具体的な値がtargetが指す値に代入可能であるか、
 // またはエラーがAs(interface{}) boolというメソッドを持ち、As(target)がtrueを返す場合です。
