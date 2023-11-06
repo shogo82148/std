@@ -132,25 +132,22 @@ type Flusher interface {
 // ResponseWriterラッパーもHijackerをサポートしていない場合があります。
 // ハンドラーは常にランタイムでこの機能をテストする必要があります。
 type Hijacker interface {
-	// Hijack lets the caller take over the connection.
-	// After a call to Hijack the HTTP server library
-	// will not do anything else with the connection.
+	// Hijackは、呼び出し元が接続を引き継ぐことを可能にします。
+	// Hijackの呼び出し後、HTTPサーバーライブラリは
+	// その接続に対して何も行いません。
 	//
-	// It becomes the caller's responsibility to manage
-	// and close the connection.
+	// 接続の管理とクローズは、呼び出し元の責任となります。
 	//
-	// The returned net.Conn may have read or write deadlines
-	// already set, depending on the configuration of the
-	// Server. It is the caller's responsibility to set
-	// or clear those deadlines as needed.
+	// 返されるnet.Connは、サーバーの設定により、
+	// すでに設定されている読み取りまたは書き込みの期限を持つ可能性があります。
+	// それらの期限を必要に応じて設定またはクリアするのは、呼び出し元の責任です。
 	//
-	// The returned bufio.Reader may contain unprocessed buffered
-	// data from the client.
+	// 返されるbufio.Readerには、クライアントからの未処理のバッファリングされた
+	// データが含まれている可能性があります。
 	//
-	// After a call to Hijack, the original Request.Body must not
-	// be used. The original Request's Context remains valid and
-	// is not canceled until the Request's ServeHTTP method
-	// returns.
+	// Hijackの呼び出し後、元のRequest.Bodyは使用してはなりません。
+	// 元のRequestのContextは有効であり、RequestのServeHTTPメソッドが
+	// 戻るまでキャンセルされません。
 	Hijack() (net.Conn, *bufio.ReadWriter, error)
 }
 
