@@ -5,10 +5,24 @@
 // Package gover implements support for Go toolchain versions like 1.21.0 and 1.21rc1.
 // (For historical reasons, Go does not use semver for its toolchains.)
 // This package provides the same basic analysis that golang.org/x/mod/semver does for semver.
-// It also provides some helpers for extracting versions from go.mod files
-// and for dealing with module.Versions that may use Go versions or semver
-// depending on the module path.
+//
+// The go/version package should be imported instead of this one when possible.
+// Note that this package works on "1.21" while go/version works on "go1.21".
 package gover
+
+// A Version is a parsed Go version: major[.Minor[.Patch]][kind[pre]]
+// The numbers are the original decimal strings to avoid integer overflows
+// and since there is very little actual math. (Probably overflow doesn't matter in practice,
+// but at the time this code was written, there was an existing test that used
+// go1.99999999999, which does not fit in an int on 32-bit platforms.
+// The "big decimal" representation avoids the problem entirely.)
+type Version struct {
+	Major string
+	Minor string
+	Patch string
+	Kind  string
+	Pre   string
+}
 
 // Compare returns -1, 0, or +1 depending on whether
 // x < y, x == y, or x > y, interpreted as toolchain versions.
@@ -36,18 +50,18 @@ func IsLang(x string) bool
 // Lang returns the Go language version. For example, Lang("1.2.3") == "1.2".
 func Lang(x string) string
 
-// IsPrerelease reports whether v denotes a Go prerelease version.
-func IsPrerelease(x string) bool
-
-// Prev returns the Go major release immediately preceding v,
-// or v itself if v is the first Go major release (1.0) or not a supported
-// Go version.
-//
-// Examples:
-//
-//	Prev("1.2") = "1.1"
-//	Prev("1.3rc4") = "1.2"
-func Prev(x string) string
-
 // IsValid reports whether the version x is valid.
 func IsValid(x string) bool
+
+// Parse parses the Go version string x into a version.
+// It returns the zero version if x is malformed.
+func Parse(x string) Version
+
+// CmpInt returns cmp.Compare(x, y) interpreting x and y as decimal numbers.
+// (Copied from golang.org/x/mod/semver's compareInt.)
+func CmpInt(x, y string) int
+
+// DecInt returns the decimal string decremented by 1, or the empty string
+// if the decimal is all zeroes.
+// (Copied from golang.org/x/mod/module's decDecimal.)
+func DecInt(decimal string) string

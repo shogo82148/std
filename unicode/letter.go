@@ -71,9 +71,9 @@ const (
 	MaxCase
 )
 
-// If the Delta field of a CaseRange is UpperLower, it means
+// If the Delta field of a [CaseRange] is UpperLower, it means
 // this CaseRange represents a sequence of the form (say)
-// Upper Lower Upper Lower.
+// [Upper] [Lower] [Upper] [Lower].
 const (
 	UpperLower = MaxRune + 1
 )
@@ -90,7 +90,7 @@ func IsLower(r rune) bool
 // IsTitle reports whether the rune is a title case letter.
 func IsTitle(r rune) bool
 
-// To maps the rune to the specified case: UpperCase, LowerCase, or TitleCase.
+// To maps the rune to the specified case: [UpperCase], [LowerCase], or [TitleCase].
 func To(_case int, r rune) rune
 
 // ToUpper maps the rune to upper case.
