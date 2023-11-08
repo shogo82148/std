@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 )
 
-func AnalyzeFunc(fn *ir.Func, canInline func(*ir.Func)) *FuncProps
+func AnalyzeFunc(fn *ir.Func, canInline func(*ir.Func), inlineMaxBudget int32) *FuncProps
 
 func UnitTesting() bool
 
@@ -17,4 +17,4 @@ func UnitTesting() bool
 // cached set of properties to the file given in 'dumpfile'. Used for
 // the "-d=dumpinlfuncprops=..." command line flag, intended for use
 // primarily in unit testing.
-func DumpFuncProps(fn *ir.Func, dumpfile string, canInline func(*ir.Func))
+func DumpFuncProps(fn *ir.Func, dumpfile string, canInline func(*ir.Func), inlineMaxBudget int32)
