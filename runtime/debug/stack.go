@@ -10,5 +10,5 @@ package debug
 func PrintStack()
 
 // Stack returns a formatted stack trace of the goroutine that calls it.
-// It calls runtime.Stack with a large enough buffer to capture the entire trace.
+// It calls [runtime.Stack] with a large enough buffer to capture the entire trace.
 func Stack() []byte

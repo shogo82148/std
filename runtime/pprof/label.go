@@ -13,12 +13,12 @@ type LabelSet struct {
 	list []label
 }
 
-// WithLabels returns a new context.Context with the given labels added.
+// WithLabels returns a new [context.Context] with the given labels added.
 // A label overwrites a prior label with the same key.
 func WithLabels(ctx context.Context, labels LabelSet) context.Context
 
 // Labels takes an even number of strings representing key-value pairs
-// and makes a LabelSet containing them.
+// and makes a [LabelSet] containing them.
 // A label overwrites a prior label with the same key.
 // Currently only the CPU and goroutine profiles utilize any labels
 // information.

@@ -10,7 +10,7 @@ import (
 
 // SetGoroutineLabels sets the current goroutine's labels to match ctx.
 // A new goroutine inherits the labels of the goroutine that created it.
-// This is a lower-level API than Do, which should be used instead when possible.
+// This is a lower-level API than [Do], which should be used instead when possible.
 func SetGoroutineLabels(ctx context.Context)
 
 // Do calls f with a copy of the parent context with the

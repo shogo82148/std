@@ -18,7 +18,7 @@ import (
 )
 
 // TestDeps is an implementation of the testing.testDeps interface,
-// suitable for passing to testing.MainStart.
+// suitable for passing to [testing.MainStart].
 type TestDeps struct{}
 
 func (TestDeps) MatchString(pat, str string) (result bool, err error)

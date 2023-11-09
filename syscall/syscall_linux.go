@@ -41,7 +41,7 @@ func EpollCreate(size int) (fd int, err error)
 
 func Faccessat(dirfd int, path string, mode uint32, flags int) (err error)
 
-func Fchmodat(dirfd int, path string, mode uint32, flags int) (err error)
+func Fchmodat(dirfd int, path string, mode uint32, flags int) error
 
 func Link(oldpath string, newpath string) (err error)
 

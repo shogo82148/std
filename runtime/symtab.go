@@ -5,7 +5,7 @@
 package runtime
 
 // Frames may be used to get function/file/line information for a
-// slice of PC values returned by Callers.
+// slice of PC values returned by [Callers].
 type Frames struct {
 	// callers is a slice of PCs that have not yet been expanded to frames.
 	callers []uintptr
@@ -62,9 +62,9 @@ type Frame struct {
 	funcInfo funcInfo
 }
 
-// CallersFrames takes a slice of PC values returned by Callers and
+// CallersFrames takes a slice of PC values returned by [Callers] and
 // prepares to return function/file/line information.
-// Do not change the slice until you are done with the Frames.
+// Do not change the slice until you are done with the [Frames].
 func CallersFrames(callers []uintptr) *Frames
 
 // Next returns a Frame representing the next call frame in the slice
@@ -83,7 +83,7 @@ type Func struct {
 	opaque struct{}
 }
 
-// FuncForPC returns a *Func describing the function that contains the
+// FuncForPC returns a *[Func] describing the function that contains the
 // given program counter address, or else nil.
 //
 // If pc represents multiple functions because of inlining, it returns

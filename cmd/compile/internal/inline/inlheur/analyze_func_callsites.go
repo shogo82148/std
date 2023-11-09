@@ -9,8 +9,8 @@ import (
 )
 
 // ScoreCalls assigns numeric scores to each of the callsites in
-// function 'fn'; the lower the score, the more helpful we think it
-// will be to inline.
+// function fn; the lower the score, the more helpful we think it will
+// be to inline.
 //
 // Unlike a lot of the other inline heuristics machinery, callsite
 // scoring can't be done as part of the CanInline call for a function,
