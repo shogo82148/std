@@ -29,4 +29,4 @@ type ModuleJSON struct {
 
 // DownloadModule runs 'go mod download' for m.Path@m.Version,
 // leaving the results (including any error) in m itself.
-func DownloadModule(ctx context.Context, m *ModuleJSON)
+func DownloadModule(ctx context.Context, m *ModuleJSON) error
