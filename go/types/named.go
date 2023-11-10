@@ -81,5 +81,6 @@ func (t *Named) SetUnderlying(underlying Type)
 // t must not have type arguments.
 func (t *Named) AddMethod(m *Func)
 
+// TODO(gri) Investigate if _Unalias can be moved to where underlying is set.
 func (t *Named) Underlying() Type
 func (t *Named) String() string

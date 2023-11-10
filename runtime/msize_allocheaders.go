@@ -2,4 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build goexperiment.allocheaders
+
+// Malloc small size classes.
+//
+// See malloc.go for overview.
+// See also mksizeclasses.go for how we decide what size classes to use.
+
 package runtime
