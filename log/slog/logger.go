@@ -9,12 +9,37 @@ import (
 	"github.com/shogo82148/std/log"
 )
 
+// SetLogLoggerLevel controls the level for the bridge to the [log] package.
+//
+// Before [SetDefault] is called, slog top-level logging functions call the default [log.Logger].
+// In that mode, SetLogLoggerLevel sets the minimum level for those calls.
+// By default, the minimum level is Info, so calls to [Debug]
+// (as well as top-level logging calls at lower levels)
+// will not be passed to the log.Logger. After calling
+//
+//	slog.SetLogLoggerLevel(slog.LevelDebug)
+//
+// calls to [Debug] will be passed to the log.Logger.
+//
+// After [SetDefault] is called, calls to the default [log.Logger] are passed to the
+// slog default handler. In that mode,
+// SetLogLoggerLevel sets the level at which those calls are logged.
+// That is, after calling
+//
+//	slog.SetLogLoggerLevel(slog.LevelDebug)
+//
+// A call to [log.Printf] will result in output at level [LevelDebug].
+//
+// SetLogLoggerLevel returns the previous value.
+func SetLogLoggerLevel(level Level) (oldLevel Level)
+
 // Default returns the default [Logger].
 func Default() *Logger
 
 // SetDefault makes l the default [Logger].
 // After this call, output from the log package's default Logger
-// (as with [log.Print], etc.) will be logged at [LevelInfo] using l's Handler.
+// (as with [log.Print], etc.) will be logged using l's Handler,
+// at a level controlled by [SetLogLoggerLevel].
 func SetDefault(l *Logger)
 
 // A Logger records structured information about each call to its
