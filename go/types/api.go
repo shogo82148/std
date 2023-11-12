@@ -286,6 +286,14 @@ func (info *Info) TypeOf(e ast.Expr) Type
 // Precondition: the Uses and Defs maps are populated.
 func (info *Info) ObjectOf(id *ast.Ident) Object
 
+// PkgNameOf returns the local package name defined by the import,
+// or nil if not found.
+//
+// For dot-imports, the package name is ".".
+//
+// Precondition: the Defs and Implicts maps are populated.
+func (info *Info) PkgNameOf(imp *ast.ImportSpec) *PkgName
+
 // TypeAndValue reports the type and value (for constants)
 // of the corresponding expression.
 type TypeAndValue struct {
