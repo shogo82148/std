@@ -127,9 +127,6 @@ type Config struct {
 	// DisableUnusedImportCheckが設定されている場合、パッケージは未使用のインポートについてチェックされません。
 	DisableUnusedImportCheck bool
 
-<<<<<<< HEAD
-	// もし空ではない_ErrorURLフォーマット文字列が提供された場合、それはエラーメッセージの最初の行に追加されるエラーURLリンクのフォーマットに使用されます。ErrorURLは、正確に1つの"%s"フォーマットを含むフォーマット文字列でなければなりません。例："[go.dev/e/%s]"。
-=======
 	// If EnableAlias is set, alias declarations produce an _Alias type.
 	// Otherwise the alias information is only in the type name, which
 	// points directly to the actual (aliased) type.
@@ -139,7 +136,6 @@ type Config struct {
 	// to format an error URL link that is appended to the first line
 	// of an error message. ErrorURL must be a format string containing
 	// exactly one "%s" format, e.g. "[go.dev/e/%s]".
->>>>>>> upstream/master
 	_ErrorURL string
 }
 
