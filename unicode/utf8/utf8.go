@@ -21,6 +21,7 @@ func FullRune(p []byte) bool
 // FullRuneInString は FullRune と似ていますが、入力は文字列です。
 func FullRuneInString(s string) bool
 
+<<<<<<< HEAD
 // DecodeRune関数は、pの最初のUTF-8エンコーディングを解読し、ルーンとそのバイト幅を返します。もしpが空の場合は（RuneError、0）を返します。それ以外の場合、もしエンコーディングが無効な場合は（RuneError、1）を返します。これらの結果は、正しい非空のUTF-8に対して不可能なものです。
 // エンコーディングが無効な場合は、正しくないUTF-8をエンコードしているか、範囲外のルーンをエンコードしているか、値の最短のUTF-8エンコーディングではない場合です。他の検証は行われません。
 func DecodeRune(p []byte) (r rune, size int)
@@ -35,12 +36,53 @@ func DecodeLastRune(p []byte) (r rune, size int)
 
 // DecodeLastRuneInStringはDecodeLastRuneと同様ですが、入力は文字列です。もしsが空の場合は(RuneError, 0)を返します。そうでない場合、エンコードが無効な場合は(RuneError, 1)を返します。これらの結果は、正しい、空でないUTF-8に対しては起こり得ない結果です。
 // エンコードが無効な場合とは、不正なUTF-8をエンコードしている場合、範囲外のルーンをエンコードしている場合、または最も短い可能なUTF-8エンコードではない場合を指します。他のバリデーションは行われません。
+=======
+// DecodeRune unpacks the first UTF-8 encoding in p and returns the rune and
+// its width in bytes. If p is empty it returns ([RuneError], 0). Otherwise, if
+// the encoding is invalid, it returns (RuneError, 1). Both are impossible
+// results for correct, non-empty UTF-8.
+//
+// An encoding is invalid if it is incorrect UTF-8, encodes a rune that is
+// out of range, or is not the shortest possible UTF-8 encoding for the
+// value. No other validation is performed.
+func DecodeRune(p []byte) (r rune, size int)
+
+// DecodeRuneInString is like [DecodeRune] but its input is a string. If s is
+// empty it returns ([RuneError], 0). Otherwise, if the encoding is invalid, it
+// returns (RuneError, 1). Both are impossible results for correct, non-empty
+// UTF-8.
+//
+// An encoding is invalid if it is incorrect UTF-8, encodes a rune that is
+// out of range, or is not the shortest possible UTF-8 encoding for the
+// value. No other validation is performed.
+func DecodeRuneInString(s string) (r rune, size int)
+
+// DecodeLastRune unpacks the last UTF-8 encoding in p and returns the rune and
+// its width in bytes. If p is empty it returns ([RuneError], 0). Otherwise, if
+// the encoding is invalid, it returns (RuneError, 1). Both are impossible
+// results for correct, non-empty UTF-8.
+//
+// An encoding is invalid if it is incorrect UTF-8, encodes a rune that is
+// out of range, or is not the shortest possible UTF-8 encoding for the
+// value. No other validation is performed.
+func DecodeLastRune(p []byte) (r rune, size int)
+
+// DecodeLastRuneInString is like [DecodeLastRune] but its input is a string. If
+// s is empty it returns ([RuneError], 0). Otherwise, if the encoding is invalid,
+// it returns (RuneError, 1). Both are impossible results for correct,
+// non-empty UTF-8.
+//
+// An encoding is invalid if it is incorrect UTF-8, encodes a rune that is
+// out of range, or is not the shortest possible UTF-8 encoding for the
+// value. No other validation is performed.
+>>>>>>> upstream/master
 func DecodeLastRuneInString(s string) (r rune, size int)
 
 // RuneLenはルーンをエンコードするために必要なバイト数を返します。
 // ルーンがUTF-8でエンコードすることができない場合は、-1を返します。
 func RuneLen(r rune) int
 
+<<<<<<< HEAD
 // EncodeRuneは、p（十分に大きくなければなりません）にルーンのUTF-8エンコードを書き込みます。
 // ルーンが範囲外の場合は、RuneErrorのエンコードを書き込みます。
 // 書き込まれたバイト数を返します。
@@ -49,12 +91,26 @@ func EncodeRune(p []byte, r rune) int
 // AppendRuneは、rのUTF-8エンコーディングをpの末尾に追加し、
 // 拡張されたバッファを返します。もしrが範囲外である場合、
 // RuneErrorのエンコーディングを追加します。
+=======
+// EncodeRune writes into p (which must be large enough) the UTF-8 encoding of the rune.
+// If the rune is out of range, it writes the encoding of [RuneError].
+// It returns the number of bytes written.
+func EncodeRune(p []byte, r rune) int
+
+// AppendRune appends the UTF-8 encoding of r to the end of p and
+// returns the extended buffer. If the rune is out of range,
+// it appends the encoding of [RuneError].
+>>>>>>> upstream/master
 func AppendRune(p []byte, r rune) []byte
 
 // RuneCount は p 内のルーンの数を返します。間違ったエンコーディングや短いエンコーディングは、1バイトの幅を持つ単一のルーンとして扱われます。
 func RuneCount(p []byte) int
 
+<<<<<<< HEAD
 // RuneCountInStringはRuneCountと同じですが、入力は文字列です。
+=======
+// RuneCountInString is like [RuneCount] but its input is a string.
+>>>>>>> upstream/master
 func RuneCountInString(s string) (n int)
 
 // RuneStartは、バイトが符号化された（おそらく無効な）ルーンの最初のバイトであるかどうかを報告します。2番目以降のバイトは常に上位2ビットが10に設定されます。

@@ -146,6 +146,11 @@ type Config struct {
 	// for unused imports.
 	DisableUnusedImportCheck bool
 
+	// If EnableAlias is set, alias declarations produce an _Alias type.
+	// Otherwise the alias information is only in the type name, which
+	// points directly to the actual (aliased) type.
+	_EnableAlias bool
+
 	// If a non-empty ErrorURL format string is provided, it is used
 	// to format an error URL link that is appended to the first line
 	// of an error message. ErrorURL must be a format string containing
@@ -261,10 +266,12 @@ type Info struct {
 	// appear in this list.
 	InitOrder []*Initializer
 
-	// FileVersions maps a file's position base to the file's Go version.
-	// If the file doesn't specify a version and Config.GoVersion is not
-	// given, the reported version is the zero version (Major, Minor = 0, 0).
-	FileVersions map[*syntax.PosBase]Version
+	// FileVersions maps a file to its Go version string.
+	// If the file doesn't specify a version, the reported
+	// string is Config.GoVersion.
+	// Version strings begin with “go”, like “go1.21”, and
+	// are suitable for use with the [go/version] package.
+	FileVersions map[*syntax.PosBase]string
 }
 
 // TypeOf returns the type of expression e, or nil if not found.
@@ -280,6 +287,14 @@ func (info *Info) TypeOf(e syntax.Expr) Type
 //
 // Precondition: the Uses and Defs maps are populated.
 func (info *Info) ObjectOf(id *syntax.Name) Object
+
+// PkgNameOf returns the local package name defined by the import,
+// or nil if not found.
+//
+// For dot-imports, the package name is ".".
+//
+// Precondition: the Defs and Implicts maps are populated.
+func (info *Info) PkgNameOf(imp *syntax.ImportDecl) *PkgName
 
 // TypeAndValue reports the type and value (for constants)
 // of the corresponding expression.
@@ -340,12 +355,6 @@ type Initializer struct {
 }
 
 func (init *Initializer) String() string
-
-// A Version represents a released Go version.
-type Version struct {
-	Major int
-	Minor int
-}
 
 // Check type-checks a package and returns the resulting package object and
 // the first error if any. Additionally, if info != nil, Check populates each

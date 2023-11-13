@@ -113,8 +113,16 @@ func SetTraceback(level string)
 // ガベージコレクタがほぼ連続的に実行される原因となるかもしれません。
 // ただし、アプリケーションは引き続き進行する可能性があります。
 //
+<<<<<<< HEAD
 // メモリ制限は常にGoランタイムによって尊重されるため、この動作を無効にするには制限を非常に高い値に設定します。
 // math.MaxInt64は制限を無効にするための規定値ですが、下位システムの利用可能なメモリよりもはるかに大きな値でも同様に機能します。
+=======
+// The memory limit is always respected by the Go runtime, so to
+// effectively disable this behavior, set the limit very high.
+// [math.MaxInt64] is the canonical value for disabling the limit,
+// but values much greater than the available memory on the underlying
+// system work just as well.
+>>>>>>> upstream/master
 //
 // 詳細なガイドと共に、ソフトメモリ制限について詳しく説明したガイドおよび
 // さまざまな一般的な使用例とシナリオについては、

@@ -8,6 +8,11 @@ package debug
 // PrintStackはruntime.Stackによって返されたスタックトレースを標準エラー出力に出力します。
 func PrintStack()
 
+<<<<<<< HEAD
 // Stackはそれを呼び出すgoroutineのフォーマットされたスタックトレースを返します。
 // runtime.Stackを呼び出して、トレース全体をキャプチャする十分に大きなバッファを使用します。
+=======
+// Stack returns a formatted stack trace of the goroutine that calls it.
+// It calls [runtime.Stack] with a large enough buffer to capture the entire trace.
+>>>>>>> upstream/master
 func Stack() []byte

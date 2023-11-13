@@ -59,9 +59,15 @@ type Plugin struct {
 	syms       map[string]any
 }
 
+<<<<<<< HEAD
 // OpenはGoプラグインを開きます。
 // もし既にパスが開かれている場合は、既存の*Pluginが返されます。
 // 複数のゴルーチンによる同時使用も安全です。
+=======
+// Open opens a Go plugin.
+// If a path has already been opened, then the existing *[Plugin] is returned.
+// It is safe for concurrent use by multiple goroutines.
+>>>>>>> upstream/master
 func Open(path string) (*Plugin, error)
 
 // Lookupは、プラグインpの中でsymNameという名前のシンボルを検索します。
@@ -82,8 +88,13 @@ func (p *Plugin) Lookup(symName string) (Symbol, error)
 //
 //	func F() { fmt.Printf("Hello, number %d\n", V) }
 //
+<<<<<<< HEAD
 // このプラグインはOpen関数を用いて読み込むことができ、その後エクスポートされたパッケージの
 // シンボルVとFにアクセスすることができます。
+=======
+// may be loaded with the [Open] function and then the exported package
+// symbols V and F can be accessed
+>>>>>>> upstream/master
 //
 //	p, err := plugin.Open("plugin_name.so")
 //	if err != nil {

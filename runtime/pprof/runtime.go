@@ -8,9 +8,15 @@ import (
 	"github.com/shogo82148/std/context"
 )
 
+<<<<<<< HEAD
 // SetGoroutineLabelsは現在のゴルーチンのラベルをctxと一致させます。
 // 新しいゴルーチンは、その作成元のゴルーチンのラベルを継承します。
 // これは、可能な場合は代わりに使用するべきDoよりも低レベルのAPIです。
+=======
+// SetGoroutineLabels sets the current goroutine's labels to match ctx.
+// A new goroutine inherits the labels of the goroutine that created it.
+// This is a lower-level API than [Do], which should be used instead when possible.
+>>>>>>> upstream/master
 func SetGoroutineLabels(ctx context.Context)
 
 // 親のコンテキストのコピーを使用して f を呼び出します。

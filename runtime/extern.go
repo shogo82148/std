@@ -3,8 +3,15 @@
 // license that can be found in the LICENSE file.
 
 /*
+<<<<<<< HEAD
 パッケージruntimeには、goroutineを制御するための関数など、Goのランタイムシステムとやり取りする操作が含まれています。
 また、reflectパッケージで使用されるランタイムタイプシステムのプログラマブルインターフェースに関するドキュメントについては、reflectのドキュメントを参照してください。
+=======
+Package runtime contains operations that interact with Go's runtime system,
+such as functions to control goroutines. It also includes the low-level type information
+used by the reflect package; see [reflect]'s documentation for the programmable
+interface to the run-time type system.
+>>>>>>> upstream/master
 
 # 環境変数
 
@@ -143,9 +150,22 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	ランタイムのデフォルトスタックアンワインダーを使用するようになります。これにより、トレーサーのオーバーヘッドが増加しますが、
 	フレームポインタアンワインディングによって引き起こされる予期しないリグレッションのワークアラウンドやデバッグに役立つ場合があります。
 
+<<<<<<< HEAD
 	asyncpreemptoff: asyncpreemptoff=1を設定すると、シグナルベースの非同期ゴルーチンプリエンプションが無効になります。
 	これにより、一部のループが長時間プリエンプションされなくなり、GCとゴルーチンスケジューリングが遅れる場合があります。
 	これは、非同期にプリエンプションされたゴルーチンに対して使用される保守的なスタックスキャンも無効にするため、GCの問題をデバッグするために役立ちます。
+=======
+	traceadvanceperiod: the approximate period in nanoseconds between trace generations. Only
+	applies if a program is built with GOEXPERIMENT=exectracer2. Used primarily for testing
+	and debugging the execution tracer.
+
+	asyncpreemptoff: asyncpreemptoff=1 disables signal-based
+	asynchronous goroutine preemption. This makes some loops
+	non-preemptible for long periods, which may delay GC and
+	goroutine scheduling. This is useful for debugging GC issues
+	because it also disables the conservative stack scanning used
+	for asynchronously preempted goroutines.
+>>>>>>> upstream/master
 
 netおよびnet/httpパッケージも、GODEBUGのデバッグ変数を参照しています。
 詳細については、それらのパッケージのドキュメントを参照してください。
@@ -207,10 +227,20 @@ func Caller(skip int) (pc uintptr, file string, line int, ok bool)
 // 引数skipは、pcに記録する前にスキップするスタックフレームの数であり、0はCallers自体のフレームを識別し、1はCallersの呼び出し元を識別します。
 // pcに書き込まれたエントリ数を返します。
 //
+<<<<<<< HEAD
 // これらのPCを関数名や行番号などのシンボル情報に変換するには、CallersFramesを使用します。
 // CallersFramesはインライン関数を考慮し、戻りプログラムカウンタを呼び出しプログラムカウンタに調整します。
 // 直接PCのスライスを反復処理することは推奨されていません。また、返されたPCのいずれかに対してFuncForPCを使用することも推奨されていません。
 // これらはインライン化や戻りプログラムカウンタの調整を考慮できないためです。
+=======
+// To translate these PCs into symbolic information such as function
+// names and line numbers, use [CallersFrames]. CallersFrames accounts
+// for inlined functions and adjusts the return program counters into
+// call program counters. Iterating over the returned slice of PCs
+// directly is discouraged, as is using [FuncForPC] on any of the
+// returned PCs, since these cannot account for inlining or return
+// program counter adjustment.
+>>>>>>> upstream/master
 func Callers(skip int, pc []uintptr) int
 
 // GOROOTは、Goツリーのルートを返します。プロセス開始時に設定されている場合はGOROOT環境変数を使用し、

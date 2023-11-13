@@ -13,6 +13,7 @@ type LabelSet struct {
 	list []label
 }
 
+<<<<<<< HEAD
 // WithLabelsは指定されたラベルが追加された新しいcontext.Contextを返します。
 // ラベルは同じキーを持つ以前のラベルを上書きします。
 func WithLabels(ctx context.Context, labels LabelSet) context.Context
@@ -21,6 +22,18 @@ func WithLabels(ctx context.Context, labels LabelSet) context.Context
 // ラベルは、同じキーを持つ以前のラベルを上書きします。
 // 現在、CPUプロファイルとゴルーチンプロファイルのみがラベル情報を利用しています。
 // 詳細は、https://golang.org/issue/23458を参照してください。
+=======
+// WithLabels returns a new [context.Context] with the given labels added.
+// A label overwrites a prior label with the same key.
+func WithLabels(ctx context.Context, labels LabelSet) context.Context
+
+// Labels takes an even number of strings representing key-value pairs
+// and makes a [LabelSet] containing them.
+// A label overwrites a prior label with the same key.
+// Currently only the CPU and goroutine profiles utilize any labels
+// information.
+// See https://golang.org/issue/23458 for details.
+>>>>>>> upstream/master
 func Labels(args ...string) LabelSet
 
 // Labelは与えられたキーに対応するラベルの値と、そのラベルが存在するかを示すブール値をctxから返します。

@@ -34,9 +34,7 @@ type CallSite struct {
 // with many calls that share the same auto-generated pos.
 type CallSiteTab map[*ir.CallExpr]*CallSite
 
-func GetCallSiteScore(ce *ir.CallExpr) (bool, int)
-
-func CallSiteTable() CallSiteTab
+func GetCallSiteScore(fn *ir.Func, call *ir.CallExpr) (int, bool)
 
 type CSPropBits uint32
 

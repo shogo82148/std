@@ -54,6 +54,7 @@ func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool { return false }
 // この関数の計算量は O(len(s) + len(v)) です。
 func Insert[S ~[]E, E any](s S, i int, v ...E) S { return nil }
 
+<<<<<<< HEAD
 // Delete は、s[i:j] の要素を削除し、変更されたスライスを返します。
 // s[i:j] が s の有効なスライスでない場合、Delete は panic を発生させます。
 // Delete は O(len(s)-j) であり、多数のアイテムを削除する必要がある場合は、
@@ -62,6 +63,16 @@ func Insert[S ~[]E, E any](s S, i int, v ...E) S { return nil }
 // これらの要素にポインタが含まれている場合は、参照するオブジェクトをガベージコレクションできるように、
 // これらの要素をゼロにすることを検討する必要があります。
 func Delete[S ~[]E, E any](s S, i, j int) S { return nil }
+=======
+// Delete removes the elements s[i:j] from s, returning the modified slice.
+// Delete panics if j > len(s) or s[i:j] is not a valid slice of s.
+// Delete is O(len(s)-j), so if many items must be deleted, it is better to
+// make a single call deleting them all together than to delete one at a time.
+// Delete might not modify the elements s[len(s)-(j-i):len(s)]. If those
+// elements contain pointers you might consider zeroing those elements so that
+// objects they reference can be garbage collected.
+func Delete[S ~[]E, E any](s S, i, j int) S
+>>>>>>> upstream/master
 
 // DeleteFunc は、del が true を返す要素を s から削除し、変更されたスライスを返します。
 // DeleteFunc が m 個の要素を削除すると、s[len(s)-m:len(s)] の要素を変更しない場合があります。
@@ -69,9 +80,16 @@ func Delete[S ~[]E, E any](s S, i, j int) S { return nil }
 // これらの要素をゼロにすることを検討する必要があります。
 func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S { return nil }
 
+<<<<<<< HEAD
 // Replace は、s[i:j] の要素を与えられた v で置き換え、変更されたスライスを返します。
 // s[i:j] が s の有効なスライスでない場合、Replace は panic を発生させます。
 func Replace[S ~[]E, E any](s S, i, j int, v ...E) S { return nil }
+=======
+// Replace replaces the elements s[i:j] by the given v, and returns the
+// modified slice.
+// Replace panics if j > len(s) or s[i:j] is not a valid slice of s.
+func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
+>>>>>>> upstream/master
 
 // Clone は、スライスのコピーを返します。
 // 要素は代入を使用してコピーされるため、これは浅いクローンです。

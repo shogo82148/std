@@ -40,7 +40,3 @@ func (pkg *Pkg) LookupNum(prefix string, n int) *Sym
 func (pkg *Pkg) Selector(name string) *Sym
 
 func InternString(b []byte) string
-
-// CleanroomDo invokes f in an environment with no preexisting packages.
-// For testing of import/export only.
-func CleanroomDo(f func())

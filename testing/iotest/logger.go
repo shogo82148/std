@@ -9,11 +9,11 @@ import (
 )
 
 // NewWriteLogger returns a writer that behaves like w except
-// that it logs (using log.Printf) each write to standard error,
+// that it logs (using [log.Printf]) each write to standard error,
 // printing the prefix and the hexadecimal data written.
 func NewWriteLogger(prefix string, w io.Writer) io.Writer
 
 // NewReadLogger returns a reader that behaves like r except
-// that it logs (using log.Printf) each read to standard error,
+// that it logs (using [log.Printf]) each read to standard error,
 // printing the prefix and the hexadecimal data read.
 func NewReadLogger(prefix string, r io.Reader) io.Reader

@@ -16,9 +16,18 @@ type InternalFuzzTarget struct {
 // フラズテストは生成された入力値を提供されたフラズターゲットに対して実行し、
 // テストされるコードに潜在的なバグを見つけて報告することができます。
 //
+<<<<<<< HEAD
 // フラズテストでは、デフォルトでシードコーパスが実行されます。これには(*F).Addで提供されたエントリや、testdata/fuzz/<FuzzTestName>ディレクトリのエントリが含まれています。
 // 必要なセットアップと(*F).Addへの呼び出しが行われた後、フラズテストは(*F).Fuzzを呼び出してフラズターゲットを提供する必要があります。
 // 例についてはtestingパッケージのドキュメントを参照し、詳細についてはF.FuzzおよびF.Addメソッドのドキュメントを参照してください。
+=======
+// A fuzz test runs the seed corpus by default, which includes entries provided
+// by (*F).Add and entries in the testdata/fuzz/<FuzzTestName> directory. After
+// any necessary setup and calls to (*F).Add, the fuzz test must then call
+// (*F).Fuzz to provide the fuzz target. See the testing package documentation
+// for an example, and see the [F.Fuzz] and [F.Add] method documentation for
+// details.
+>>>>>>> upstream/master
 //
 // *Fのメソッドは(*F).Fuzzの前にのみ呼び出すことができます。テストがフラズターゲットを実行している間は、(*T)のメソッドのみを使用することができます。
 // (*F).Fuzz関数内で許可されている*Fのメソッドは、(*F).Failedと(*F).Nameのみです。
@@ -70,6 +79,12 @@ func (f *F) Add(args ...any)
 // 可変の入力引数またはそれらのポインタは、後続の呼び出し中に変更される可能性があるため、保持してはいけません。
 // ffは、fuzzingエンジンによって提供された引数の基になるデータを変更してはいけません。
 //
+<<<<<<< HEAD
 // fuzzing中、F.Fuzzは問題が見つかるまで、時間切れ（-fuzztimeで設定）またはテストプロセスがシグナルによって中断されるまで、戻りません。
 // F.Fuzzは、F.SkipまたはF.Failが先に呼び出されない限り、正確に1回呼び出す必要があります。
+=======
+// When fuzzing, F.Fuzz does not return until a problem is found, time runs out
+// (set with -fuzztime), or the test process is interrupted by a signal. F.Fuzz
+// should be called exactly once, unless F.Skip or [F.Fail] is called beforehand.
+>>>>>>> upstream/master
 func (f *F) Fuzz(ff any)

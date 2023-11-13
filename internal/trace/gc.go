@@ -5,6 +5,7 @@
 package trace
 
 import (
+	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/time"
 )
 
@@ -48,6 +49,16 @@ const (
 // If the UtilPerProc flag is not given, this always returns a single
 // utilization function. Otherwise, it returns one function per P.
 func MutatorUtilization(events []*Event, flags UtilFlags) [][]MutatorUtil
+
+// MutatorUtilizationV2 returns a set of mutator utilization functions
+// for the given v2 trace, passed as an io.Reader. Each function will
+// always end with 0 utilization. The bounds of each function are implicit
+// in the first and last event; outside of these bounds each function is
+// undefined.
+//
+// If the UtilPerProc flag is not given, this always returns a single
+// utilization function. Otherwise, it returns one function per P.
+func MutatorUtilizationV2(trace io.Reader, flags UtilFlags) ([][]MutatorUtil, error)
 
 // An MMUCurve is the minimum mutator utilization curve across
 // multiple window sizes.

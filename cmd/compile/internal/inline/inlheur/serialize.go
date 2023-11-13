@@ -4,6 +4,6 @@
 
 package inlheur
 
-func (fp *FuncProps) SerializeToString() string
+func (funcProps *FuncProps) SerializeToString() string
 
 func DeserializeFromString(s string) *FuncProps

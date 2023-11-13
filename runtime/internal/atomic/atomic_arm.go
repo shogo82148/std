@@ -48,6 +48,24 @@ func Or(addr *uint32, v uint32)
 //go:nosplit
 func And(addr *uint32, v uint32)
 
+//go:nosplit
+func Or32(addr *uint32, v uint32) uint32
+
+//go:nosplit
+func And32(addr *uint32, v uint32) uint32
+
+//go:nosplit
+func Or64(addr *uint64, v uint64) uint64
+
+//go:nosplit
+func And64(addr *uint64, v uint64) uint64
+
+//go:nosplit
+func Oruintptr(addr *uintptr, v uintptr) uintptr
+
+//go:nosplit
+func Anduintptr(addr *uintptr, v uintptr) uintptr
+
 //go:noescape
 func Load(addr *uint32) uint32
 
