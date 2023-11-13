@@ -228,20 +228,15 @@ func (info *Info) TypeOf(e ast.Expr) Type
 // 前提条件：UsesおよびDefsマップが入力されています。
 func (info *Info) ObjectOf(id *ast.Ident) Object
 
-<<<<<<< HEAD
-// TypeAndValueは対応する式の型と値（定数の場合）を報告します。
-=======
-// PkgNameOf returns the local package name defined by the import,
-// or nil if not found.
+// PkgNameOfは、インポートによって定義されたローカルパッケージ名を返します。
+// 見つからない場合はnilを返します。
 //
-// For dot-imports, the package name is ".".
+// ドットインポートの場合、パッケージ名は"."です。
 //
-// Precondition: the Defs and Implicts maps are populated.
+// Precondition: DefsとImplictsのマップが設定されています。
 func (info *Info) PkgNameOf(imp *ast.ImportSpec) *PkgName
 
-// TypeAndValue reports the type and value (for constants)
-// of the corresponding expression.
->>>>>>> upstream/master
+// TypeAndValueは対応する式の型と値（定数の場合）を報告します。
 type TypeAndValue struct {
 	mode  operandMode
 	Type  Type
