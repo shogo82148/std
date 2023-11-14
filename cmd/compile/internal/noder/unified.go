@@ -11,8 +11,8 @@ import (
 // LookupMethodFunc returns the ir.Func for an arbitrary full symbol name if
 // that function exists in the set of available export data.
 //
-// This allows lookup of arbitrary methods that aren't otherwise referenced by
-// the local package and thus haven't been read yet.
+// This allows lookup of arbitrary functions and methods that aren't otherwise
+// referenced by the local package and thus haven't been read yet.
 //
 // TODO(prattmic): Does not handle instantiation of generic types. Currently
 // profiles don't contain the original type arguments, so we won't be able to
@@ -21,4 +21,4 @@ import (
 // TODO(prattmic): Hit rate of this function is usually fairly low, and errors
 // are only used when debug logging is enabled. Consider constructing cheaper
 // errors by default.
-func LookupMethodFunc(fullName string) (*ir.Func, error)
+func LookupFunc(fullName string) (*ir.Func, error)

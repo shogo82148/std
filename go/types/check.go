@@ -14,8 +14,12 @@ import (
 // A Checker maintains the state of the type checker.
 // It must be created with [NewChecker].
 type Checker struct {
-	// package information
-	// (initialized by NewChecker, valid for the life-time of checker)
+
+	// If EnableAlias is set, alias declarations produce an Alias type.
+	// Otherwise the alias information is only in the type name, which
+	// points directly to the actual (aliased) type.
+	enableAlias bool
+
 	conf *Config
 	ctxt *Context
 	fset *token.FileSet

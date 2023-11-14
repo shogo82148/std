@@ -132,9 +132,9 @@ func New(profileFile string) (*Profile, error)
 // NodeLineOffset returns the line offset of n in fn.
 func NodeLineOffset(n ir.Node, fn *ir.Func) int
 
-// LookupMethodFunc looks up a method in export data. It is expected to be
-// overridden by package noder, to break a dependency cycle.
-var LookupMethodFunc = func(fullName string) (*ir.Func, error) {
+// LookupFunc looks up a function or method in export data. It is expected to
+// be overridden by package noder, to break a dependency cycle.
+var LookupFunc = func(fullName string) (*ir.Func, error) {
 	base.Fatalf("pgo.LookupMethodFunc not overridden")
 	panic("unreachable")
 }
