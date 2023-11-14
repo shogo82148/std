@@ -78,6 +78,6 @@ func (t *Named) SetUnderlying(underlying Type)
 // tには型引数が含まれていてはいけません。
 func (t *Named) AddMethod(m *Func)
 
-// TODO(gri) Investigate if _Unalias can be moved to where underlying is set.
+// TODO(gri) Investigate if Unalias can be moved to where underlying is set.
 func (t *Named) Underlying() Type
 func (t *Named) String() string
