@@ -303,9 +303,17 @@ Below is the full list of supported metrics, ordered lexicographically.
 		package due to a non-default GODEBUG=tarinsecurepath=...
 		setting.
 
+	/godebug/non-default-behavior/tls10server:events
+		The number of non-default behaviors executed by the crypto/tls
+		package due to a non-default GODEBUG=tls10server=... setting.
+
 	/godebug/non-default-behavior/tlsmaxrsasize:events
 		The number of non-default behaviors executed by the crypto/tls
 		package due to a non-default GODEBUG=tlsmaxrsasize=... setting.
+
+	/godebug/non-default-behavior/tlsrsakex:events
+		The number of non-default behaviors executed by the crypto/tls
+		package due to a non-default GODEBUG=tlsrsakex=... setting.
 
 	/godebug/non-default-behavior/x509sha1:events
 		The number of non-default behaviors executed by the crypto/x509

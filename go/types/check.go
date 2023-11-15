@@ -25,8 +25,7 @@ type Checker struct {
 	fset *token.FileSet
 	pkg  *Package
 	*Info
-	version version
-	posVers map[token.Pos]version
+	version goVersion
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
@@ -46,6 +45,7 @@ type Checker struct {
 	// (initialized by Files, valid only for the duration of check.Files;
 	// maps and lists are allocated on demand)
 	files         []*ast.File
+	versions      map[*ast.File]string
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
 	recvTParamMap map[*ast.Ident]*TypeParam

@@ -23,8 +23,7 @@ type Checker struct {
 	ctxt *Context
 	pkg  *Package
 	*Info
-	version version
-	posVers map[*syntax.PosBase]version
+	version goVersion
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
@@ -44,6 +43,7 @@ type Checker struct {
 	// (initialized by Files, valid only for the duration of check.Files;
 	// maps and lists are allocated on demand)
 	files         []*syntax.File
+	versions      map[*syntax.PosBase]string
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
 	recvTParamMap map[*syntax.Name]*TypeParam

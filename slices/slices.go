@@ -65,24 +65,20 @@ func Insert[S ~[]E, E any](s S, i int, v ...E) S
 
 // Delete removes the elements s[i:j] from s, returning the modified slice.
 // Delete panics if j > len(s) or s[i:j] is not a valid slice of s.
-// Delete is O(len(s)-j), so if many items must be deleted, it is better to
+// Delete is O(len(s)-i), so if many items must be deleted, it is better to
 // make a single call deleting them all together than to delete one at a time.
-// Delete might not modify the elements s[len(s)-(j-i):len(s)]. If those
-// elements contain pointers you might consider zeroing those elements so that
-// objects they reference can be garbage collected.
+// Delete zeroes the elements s[len(s)-(j-i):len(s)].
 func Delete[S ~[]E, E any](s S, i, j int) S
 
 // DeleteFunc removes any elements from s for which del returns true,
 // returning the modified slice.
-// When DeleteFunc removes m elements, it might not modify the elements
-// s[len(s)-m:len(s)]. If those elements contain pointers you might consider
-// zeroing those elements so that objects they reference can be garbage
-// collected.
+// DeleteFunc zeroes the elements between the new length and the original length.
 func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S
 
 // Replace replaces the elements s[i:j] by the given v, and returns the
 // modified slice.
 // Replace panics if j > len(s) or s[i:j] is not a valid slice of s.
+// When len(v) < (j-i), Replace zeroes the elements between the new length and the original length.
 func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
 
 // Clone returns a copy of the slice.
@@ -93,13 +89,12 @@ func Clone[S ~[]E, E any](s S) S
 // This is like the uniq command found on Unix.
 // Compact modifies the contents of the slice s and returns the modified slice,
 // which may have a smaller length.
-// When Compact discards m elements in total, it might not modify the elements
-// s[len(s)-m:len(s)]. If those elements contain pointers you might consider
-// zeroing those elements so that objects they reference can be garbage collected.
+// Compact zeroes the elements between the new length and the original length.
 func Compact[S ~[]E, E comparable](s S) S
 
 // CompactFunc is like [Compact] but uses an equality function to compare elements.
 // For runs of elements that compare equal, CompactFunc keeps the first one.
+// CompactFunc zeroes the elements between the new length and the original length.
 func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S
 
 // Grow increases the slice's capacity, if necessary, to guarantee space for
