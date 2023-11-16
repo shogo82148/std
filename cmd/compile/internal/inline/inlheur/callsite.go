@@ -20,11 +20,13 @@ import (
 type CallSite struct {
 	Callee    *ir.Func
 	Call      *ir.CallExpr
+	parent    *CallSite
 	Assign    ir.Node
 	Flags     CSPropBits
 	Score     int
 	ScoreMask scoreAdjustTyp
 	ID        uint
+	aux       uint8
 }
 
 // CallSiteTab is a table of call sites, keyed by call expr.
@@ -33,8 +35,6 @@ type CallSite struct {
 // front end saturates column numbers at 255). We also wind up
 // with many calls that share the same auto-generated pos.
 type CallSiteTab map[*ir.CallExpr]*CallSite
-
-func GetCallSiteScore(fn *ir.Func, call *ir.CallExpr) (int, bool)
 
 type CSPropBits uint32
 

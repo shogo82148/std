@@ -21,8 +21,8 @@ func RevisitInlinability(fn *ir.Func, budgetForFunc func(*ir.Func) int32)
 func UnitTesting() bool
 
 // DumpFuncProps computes and caches function properties for the func
-// 'fn' and any closures it contains, or if fn is nil, it writes out the
-// cached set of properties to the file given in 'dumpfile'. Used for
-// the "-d=dumpinlfuncprops=..." command line flag, intended for use
+// 'fn', writing out a description of the previously computed set of
+// properties to the file given in 'dumpfile'. Used for the
+// "-d=dumpinlfuncprops=..." command line flag, intended for use
 // primarily in unit testing.
 func DumpFuncProps(fn *ir.Func, dumpfile string, canInline func(*ir.Func), inlineMaxBudget int32)
