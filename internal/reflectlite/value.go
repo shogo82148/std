@@ -31,8 +31,9 @@ import (
 // Using == on two Values does not compare the underlying values
 // they represent.
 type Value struct {
-	// typ holds the type of the value represented by a Value.
-	typ *abi.Type
+	// typ_ holds the type of the value represented by a Value.
+	// Access using the typ method to avoid escape of v.
+	typ_ *abi.Type
 
 	// Pointer-valued data or, if flagIndir is set, pointer to data.
 	// Valid when either flagIndir is set or typ.pointers() is true.

@@ -9,6 +9,12 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/pgo"
 )
 
+// SetupScoreAdjustments interprets the value of the -d=inlscoreadj
+// debugging option, if set. The value of this flag is expected to be
+// a series of "/"-separated clauses of the form adj1:value1. Example:
+// -d=inlscoreadj=inLoopAdj=0/passConstToIfAdj=-99
+func SetupScoreAdjustments()
+
 // ScoreCalls assigns numeric scores to each of the callsites in
 // function 'fn'; the lower the score, the more helpful we think it
 // will be to inline.
@@ -36,6 +42,19 @@ func ScoreCallsCleanup()
 // GetCallSiteScore returns the previously calculated score for call
 // within fn.
 func GetCallSiteScore(fn *ir.Func, call *ir.CallExpr) (int, bool)
+
+// BudgetExpansion returns the amount to relax/expand the base
+// inlining budget when the new inliner is turned on; the inliner
+// will add the returned value to the hairyness budget.
+//
+// Background: with the new inliner, the score for a given callsite
+// can be adjusted down by some amount due to heuristics, however we
+// won't know whether this is going to happen until much later after
+// the CanInline call. This function returns the amount to relax the
+// budget initially (to allow for a large score adjustment); later on
+// in RevisitInlinability we'll look at each individual function to
+// demote it if needed.
+func BudgetExpansion(maxBudget int32) int32
 
 // DumpInlCallSiteScores is invoked by the inliner if the debug flag
 // "-d=dumpinlcallsitescores" is set; it dumps out a human-readable
