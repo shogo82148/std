@@ -66,6 +66,9 @@ func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
 // ReadFrom implements the io.ReaderFrom ReadFrom method.
 func (c *TCPConn) ReadFrom(r io.Reader) (int64, error)
 
+// WriteTo implements the io.WriterTo WriteTo method.
+func (c *TCPConn) WriteTo(w io.Writer) (int64, error)
+
 // CloseRead shuts down the reading side of the TCP connection.
 // Most callers should just use Close.
 func (c *TCPConn) CloseRead() error

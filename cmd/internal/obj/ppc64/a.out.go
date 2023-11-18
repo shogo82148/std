@@ -403,7 +403,6 @@ const (
 	C_LOREG
 	C_XOREG
 	C_FPSCR
-	C_XER
 	C_LR
 	C_CTR
 	C_ANY

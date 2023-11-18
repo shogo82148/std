@@ -5,6 +5,7 @@
 package testing
 
 import (
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 )
 
@@ -141,7 +142,7 @@ func (b *B) Run(name string, f func(b *B)) bool
 
 // A PB is used by RunParallel for running parallel benchmarks.
 type PB struct {
-	globalN *uint64
+	globalN *atomic.Uint64
 	grain   uint64
 	cache   uint64
 	bN      uint64

@@ -34,7 +34,7 @@ type Var interface {
 
 // Int is a 64-bit integer variable that satisfies the [Var] interface.
 type Int struct {
-	i int64
+	i atomic.Int64
 }
 
 func (v *Int) Value() int64

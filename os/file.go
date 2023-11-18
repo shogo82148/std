@@ -124,6 +124,9 @@ func (f *File) Write(b []byte) (n int, err error)
 // If file was opened with the O_APPEND flag, WriteAt returns an error.
 func (f *File) WriteAt(b []byte, off int64) (n int, err error)
 
+// WriteTo implements io.WriterTo.
+func (f *File) WriteTo(w io.Writer) (n int64, err error)
+
 // Seek sets the offset for the next Read or Write on file to offset, interpreted
 // according to whence: 0 means relative to the origin of the file, 1 means
 // relative to the current offset, and 2 means relative to the end.

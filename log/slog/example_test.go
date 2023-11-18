@@ -6,7 +6,6 @@ package slog_test
 
 import (
 	"github.com/shogo82148/std/log/slog"
-	"github.com/shogo82148/std/log/slog/internal/slogtest"
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/time"
@@ -16,7 +15,16 @@ func ExampleGroup() {
 	r, _ := http.NewRequest("GET", "localhost", nil)
 	// ...
 
-	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: slogtest.RemoveTime}))
+	logger := slog.New(
+		slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+			ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+				if a.Key == slog.TimeKey && len(groups) == 0 {
+					return slog.Attr{}
+				}
+				return a
+			},
+		}),
+	)
 	logger.Info("finished",
 		slog.Group("req",
 			slog.String("method", r.Method),
