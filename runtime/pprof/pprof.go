@@ -126,34 +126,18 @@ func Lookup(name string) *Profile
 // Profilesは、名前でソートされたすべてのプロフィールのスライスを返します。
 func Profiles() []*Profile
 
-<<<<<<< HEAD
-// Nameはこのプロフィールの名前を返します。プロフィールを再取得するためにLookupに渡すことができます。
-=======
-// Name returns this profile's name, which can be passed to [Lookup] to reobtain the profile.
->>>>>>> upstream/master
+// Nameはこのプロフィールの名前を返します。プロフィールを再取得するために [Lookup] に渡すことができます。
 func (p *Profile) Name() string
 
 // Countは現在のプロファイル内の実行スタックの数を返します。
 func (p *Profile) Count() int
 
-<<<<<<< HEAD
 // Addは現在の実行スタックを、値と関連付けてプロファイルに追加します。
-// Addは値を内部のマップに保存するため、値はマップのキーとして使用するのに適しており、対応するRemove呼び出しまでガベージコレクトされません。
+// Addは値を内部のマップに保存するため、値はマップのキーとして使用するのに適しており、対応する [Profile.Remove] 呼び出しまでガベージコレクトされません。
 // Addはもしプロファイルにすでに値のスタックが含まれている場合、パニックを発生させます。
 //
-// skipパラメータはruntime.Callerのskipと同じ意味を持ち、スタックトレースが始まる場所を制御します。
+// skipパラメータは [runtime.Caller] のskipと同じ意味を持ち、スタックトレースが始まる場所を制御します。
 // skip=0を渡すと、Addを呼び出した関数からトレースが始まります。例えば、以下のような実行スタックがあるとします:
-=======
-// Add adds the current execution stack to the profile, associated with value.
-// Add stores value in an internal map, so value must be suitable for use as
-// a map key and will not be garbage collected until the corresponding
-// call to [Profile.Remove]. Add panics if the profile already contains a stack for value.
-//
-// The skip parameter has the same meaning as [runtime.Caller]'s skip
-// and controls where the stack trace begins. Passing skip=0 begins the
-// trace in the function calling Add. For example, given this
-// execution stack:
->>>>>>> upstream/master
 //
 //	Add
 //	rpc.NewClientから呼び出される
@@ -183,37 +167,22 @@ func (p *Profile) Remove(value any)
 // ゴルーチンのスタックをGoプログラムが回復不可能なパニックによって終了する際に使用する同じ形式で表示することを意味します。
 func (p *Profile) WriteTo(w io.Writer, debug int) error
 
-<<<<<<< HEAD
-// WriteHeapProfileは、Lookup("heap").WriteTo(w, 0)の略記です。
+// WriteHeapProfileは、[Lookup]("heap").WriteTo(w, 0)の略記です。
 // 後方互換性のために保持されています。
-=======
-// WriteHeapProfile is shorthand for [Lookup]("heap").WriteTo(w, 0).
-// It is preserved for backwards compatibility.
->>>>>>> upstream/master
 func WriteHeapProfile(w io.Writer) error
 
 // StartCPUProfileは現在のプロセスに対してCPUプロファイリングを有効にします。
 // プロファイリング中は、プロファイルがバッファリングされ、wに書き込まれます。
 // StartCPUProfileは、すでにプロファイリングが有効な場合にエラーを返します。
 //
-<<<<<<< HEAD
 // Unix系システムでは、-buildmode=c-archiveまたは-buildmode=c-sharedで
 // ビルドされたGoコードでは、デフォルトではStartCPUProfileは動作しません。
 // StartCPUProfileはSIGPROFシグナルを利用していますが、
 // そのシグナルはGoが使用するものではなく、
 // メインプログラムのSIGPROFシグナルハンドラ（あれば）に送信されます。
-// 関数os/signal.Notifyをsyscall.SIGPROFに対して呼び出すことで、
+// 関数 [os/signal.Notify] を [syscall.SIGPROF] に対して呼び出すことで、
 // それが動作するようにすることができますが、その場合、
 // メインプログラムで実行されているプロファイリングが壊れる可能性があります。
-=======
-// On Unix-like systems, StartCPUProfile does not work by default for
-// Go code built with -buildmode=c-archive or -buildmode=c-shared.
-// StartCPUProfile relies on the SIGPROF signal, but that signal will
-// be delivered to the main program's SIGPROF signal handler (if any)
-// not to the one used by Go. To make it work, call [os/signal.Notify]
-// for [syscall.SIGPROF], but note that doing so may break any profiling
-// being done by the main program.
->>>>>>> upstream/master
 func StartCPUProfile(w io.Writer) error
 
 // StopCPUProfileは現在のCPUプロファイルを停止します（もし存在する場合）。
