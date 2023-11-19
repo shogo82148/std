@@ -9,5 +9,5 @@ package debug
 func PrintStack()
 
 // Stackはそれを呼び出すgoroutineのフォーマットされたスタックトレースを返します。
-// runtime.Stackを呼び出して、トレース全体をキャプチャする十分に大きなバッファを使用します。
+// [runtime.Stack] を呼び出して、トレース全体をキャプチャする十分に大きなバッファを使用します。
 func Stack() []byte

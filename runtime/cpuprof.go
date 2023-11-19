@@ -22,7 +22,7 @@ func SetCPUProfileRate(hz int)
 // その形式を生成する方法が変更されたため、
 // この機能は削除されました。
 //
-// 非推奨: runtime/pprofパッケージ、
-// またはnet/http/pprofパッケージのハンドラ、
+// Deprecated: [runtime/pprof] パッケージ、
+// または [net/http/pprof] パッケージのハンドラ、
 // またはtestingパッケージの-test.cpuprofileフラグを代わりに使用してください。
 func CPUProfile() []byte

@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// ValueKindはメトリックの値のタグで、そのタイプを示します。
+// ValueKindはメトリックの [Value] のタグで、そのタイプを示します。
 type ValueKind int
 
 const (

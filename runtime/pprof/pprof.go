@@ -84,7 +84,7 @@ import (
 //	mutex        - stack traces of holders of contended mutexes
 //
 // These predefined profiles maintain themselves and panic on an explicit
-// Add or Remove method call.
+// [Profile.Add] or [Profile.Remove] method call.
 //
 // The heap profile reports statistics as of the most recently completed
 // garbage collection; it elides more recent allocation to avoid skewing
@@ -104,7 +104,7 @@ import (
 // the program began (including garbage-collected bytes).
 //
 // The CPU profile is not available as a Profile. It has a special API,
-// the StartCPUProfile and StopCPUProfile functions, because it streams
+// the [StartCPUProfile] and [StopCPUProfile] functions, because it streams
 // output to a writer during profiling.
 type Profile struct {
 	name  string
@@ -126,17 +126,17 @@ func Lookup(name string) *Profile
 // Profilesは、名前でソートされたすべてのプロフィールのスライスを返します。
 func Profiles() []*Profile
 
-// Nameはこのプロフィールの名前を返します。プロフィールを再取得するためにLookupに渡すことができます。
+// Nameはこのプロフィールの名前を返します。プロフィールを再取得するために [Lookup] に渡すことができます。
 func (p *Profile) Name() string
 
 // Countは現在のプロファイル内の実行スタックの数を返します。
 func (p *Profile) Count() int
 
 // Addは現在の実行スタックを、値と関連付けてプロファイルに追加します。
-// Addは値を内部のマップに保存するため、値はマップのキーとして使用するのに適しており、対応するRemove呼び出しまでガベージコレクトされません。
+// Addは値を内部のマップに保存するため、値はマップのキーとして使用するのに適しており、対応する [Profile.Remove] 呼び出しまでガベージコレクトされません。
 // Addはもしプロファイルにすでに値のスタックが含まれている場合、パニックを発生させます。
 //
-// skipパラメータはruntime.Callerのskipと同じ意味を持ち、スタックトレースが始まる場所を制御します。
+// skipパラメータは [runtime.Caller] のskipと同じ意味を持ち、スタックトレースが始まる場所を制御します。
 // skip=0を渡すと、Addを呼び出した関数からトレースが始まります。例えば、以下のような実行スタックがあるとします:
 //
 //	Add
@@ -167,7 +167,7 @@ func (p *Profile) Remove(value any)
 // ゴルーチンのスタックをGoプログラムが回復不可能なパニックによって終了する際に使用する同じ形式で表示することを意味します。
 func (p *Profile) WriteTo(w io.Writer, debug int) error
 
-// WriteHeapProfileは、Lookup("heap").WriteTo(w, 0)の略記です。
+// WriteHeapProfileは、[Lookup]("heap").WriteTo(w, 0)の略記です。
 // 後方互換性のために保持されています。
 func WriteHeapProfile(w io.Writer) error
 
@@ -180,7 +180,7 @@ func WriteHeapProfile(w io.Writer) error
 // StartCPUProfileはSIGPROFシグナルを利用していますが、
 // そのシグナルはGoが使用するものではなく、
 // メインプログラムのSIGPROFシグナルハンドラ（あれば）に送信されます。
-// 関数os/signal.Notifyをsyscall.SIGPROFに対して呼び出すことで、
+// 関数 [os/signal.Notify] を [syscall.SIGPROF] に対して呼び出すことで、
 // それが動作するようにすることができますが、その場合、
 // メインプログラムで実行されているプロファイリングが壊れる可能性があります。
 func StartCPUProfile(w io.Writer) error

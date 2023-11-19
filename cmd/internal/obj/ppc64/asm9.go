@@ -39,6 +39,11 @@ const (
 	PFX_R_PCREL = 1
 )
 
+const (
+	// The preferred hardware nop instruction.
+	NOP = 0x60000000
+)
+
 type Optab struct {
 	as    obj.As
 	a1    uint8

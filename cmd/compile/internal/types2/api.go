@@ -261,10 +261,12 @@ type Info struct {
 	// appear in this list.
 	InitOrder []*Initializer
 
-	// FileVersions maps a file's position base to the file's Go version.
-	// If the file doesn't specify a version and Config.GoVersion is not
-	// given, the reported version is the zero version (Major, Minor = 0, 0).
-	FileVersions map[*syntax.PosBase]Version
+	// FileVersions maps a file to its Go version string.
+	// If the file doesn't specify a version, the reported
+	// string is Config.GoVersion.
+	// Version strings begin with “go”, like “go1.21”, and
+	// are suitable for use with the [go/version] package.
+	FileVersions map[*syntax.PosBase]string
 }
 
 // TypeOf returns the type of expression e, or nil if not found.
@@ -280,6 +282,14 @@ func (info *Info) TypeOf(e syntax.Expr) Type
 //
 // Precondition: the Uses and Defs maps are populated.
 func (info *Info) ObjectOf(id *syntax.Name) Object
+
+// PkgNameOf returns the local package name defined by the import,
+// or nil if not found.
+//
+// For dot-imports, the package name is ".".
+//
+// Precondition: the Defs and Implicts maps are populated.
+func (info *Info) PkgNameOf(imp *syntax.ImportDecl) *PkgName
 
 // TypeAndValue reports the type and value (for constants)
 // of the corresponding expression.
@@ -341,12 +351,6 @@ type Initializer struct {
 
 func (init *Initializer) String() string
 
-// A Version represents a released Go version.
-type Version struct {
-	Major int
-	Minor int
-}
-
 // Check type-checks a package and returns the resulting package object and
 // the first error if any. Additionally, if info != nil, Check populates each
 // of the non-nil maps in the Info struct.
@@ -359,46 +363,3 @@ type Version struct {
 // file set, and the package path the package is identified with.
 // The clean path must not be empty or dot (".").
 func (conf *Config) Check(path string, files []*syntax.File, info *Info) (*Package, error)
-
-// AssertableTo reports whether a value of type V can be asserted to have type T.
-//
-// The behavior of AssertableTo is unspecified in three cases:
-//   - if T is Typ[Invalid]
-//   - if V is a generalized interface; i.e., an interface that may only be used
-//     as a type constraint in Go code
-//   - if T is an uninstantiated generic type
-func AssertableTo(V *Interface, T Type) bool
-
-// AssignableTo reports whether a value of type V is assignable to a variable
-// of type T.
-//
-// The behavior of AssignableTo is unspecified if V or T is Typ[Invalid] or an
-// uninstantiated generic type.
-func AssignableTo(V, T Type) bool
-
-// ConvertibleTo reports whether a value of type V is convertible to a value of
-// type T.
-//
-// The behavior of ConvertibleTo is unspecified if V or T is Typ[Invalid] or an
-// uninstantiated generic type.
-func ConvertibleTo(V, T Type) bool
-
-// Implements reports whether type V implements interface T.
-//
-// The behavior of Implements is unspecified if V is Typ[Invalid] or an uninstantiated
-// generic type.
-func Implements(V Type, T *Interface) bool
-
-// Satisfies reports whether type V satisfies the constraint T.
-//
-// The behavior of Satisfies is unspecified if V is Typ[Invalid] or an uninstantiated
-// generic type.
-func Satisfies(V Type, T *Interface) bool
-
-// Identical reports whether x and y are identical types.
-// Receivers of Signature types are ignored.
-func Identical(x, y Type) bool
-
-// IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.
-// Receivers of Signature types are ignored.
-func IdenticalIgnoreTags(x, y Type) bool

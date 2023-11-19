@@ -90,7 +90,7 @@ func BlockProfile(p []BlockProfileRecord) (n int, ok bool)
 // もしlen(p) >= nならば、MutexProfileはプロファイルをpにコピーしてnとtrueを返します。
 // そうでなければ、MutexProfileはpを変更せずにnとfalseを返します。
 //
-// ほとんどのクライアントは、MutexProfileを直接呼び出す代わりにruntime/pprofパッケージを使用するべきです。
+// ほとんどのクライアントは、MutexProfileを直接呼び出す代わりに [runtime/pprof] パッケージを使用するべきです。
 func MutexProfile(p []BlockProfileRecord) (n int, ok bool)
 
 // ThreadCreateProfileはスレッド作成プロファイル内のレコード数であるnを返します。
@@ -104,7 +104,7 @@ func ThreadCreateProfile(p []StackRecord) (n int, ok bool)
 // もしlen(p)がn以上であれば、GoroutineProfileはプロファイルをpにコピーしnとtrueを返します。
 // もしlen(p)がn未満であれば、GoroutineProfileはpを変更せずにnとfalseを返します。
 //
-// ほとんどのクライアントは直接GoroutineProfileを呼び出す代わりにruntime/pprofパッケージを使用するべきです。
+// ほとんどのクライアントは直接GoroutineProfileを呼び出す代わりに [runtime/pprof] パッケージを使用するべきです。
 func GoroutineProfile(p []StackRecord) (n int, ok bool)
 
 // Stackは呼び出し元のゴルーチンのスタックトレースをbufに書き込み、

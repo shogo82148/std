@@ -121,7 +121,7 @@ type Func struct {
 	NumDefers  int32
 	NumReturns int32
 
-	// nwbrCalls records the LSyms of functions called by this
+	// NWBRCalls records the LSyms of functions called by this
 	// function for go:nowritebarrierrec analysis. Only filled in
 	// if nowritebarrierrecCheck != nil.
 	NWBRCalls *[]SymAndPos
@@ -279,6 +279,24 @@ func NewClosureFunc(fpos, cpos src.XPos, why Op, typ *types.Type, outerfn *Func,
 
 // IsFuncPCIntrinsic returns whether n is a direct call of internal/abi.FuncPCABIxxx functions.
 func IsFuncPCIntrinsic(n *CallExpr) bool
+
+// IsIfaceOfFunc inspects whether n is an interface conversion from a direct
+// reference of a func. If so, it returns referenced Func; otherwise nil.
+//
+// This is only usable before walk.walkConvertInterface, which converts to an
+// OMAKEFACE.
+func IsIfaceOfFunc(n Node) *Func
+
+// FuncPC returns a uintptr-typed expression that evaluates to the PC of a
+// function as uintptr, as returned by internal/abi.FuncPC{ABI0,ABIInternal}.
+//
+// n should be a Node of an interface type, as is passed to
+// internal/abi.FuncPC{ABI0,ABIInternal}.
+//
+// TODO(prattmic): Since n is simply an interface{} there is no assertion that
+// it is actually a function at all. Perhaps we should emit a runtime type
+// assertion?
+func FuncPC(pos src.XPos, n Node, wantABI obj.ABI) Node
 
 // DeclareParams creates Names for all of the parameters in fn's
 // signature and adds them to fn.Dcl.

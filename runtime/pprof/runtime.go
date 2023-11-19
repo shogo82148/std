@@ -10,7 +10,7 @@ import (
 
 // SetGoroutineLabelsは現在のゴルーチンのラベルをctxと一致させます。
 // 新しいゴルーチンは、その作成元のゴルーチンのラベルを継承します。
-// これは、可能な場合は代わりに使用するべきDoよりも低レベルのAPIです。
+// これは、可能な場合は代わりに使用するべき [Do] よりも低レベルのAPIです。
 func SetGoroutineLabels(ctx context.Context)
 
 // 親のコンテキストのコピーを使用して f を呼び出します。

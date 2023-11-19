@@ -141,6 +141,37 @@ TODO: What about:
 With this rewrite the "return true" is not visible after yield returns,
 but maybe it should be?
 
+# Checking
+
+To permit checking that an iterator is well-behaved -- that is, that
+it does not call the loop body again after it has returned false or
+after the entire loop has exited (it might retain a copy of the body
+function, or pass it to another goroutine) -- each generated loop has
+its own #exitK flag that is checked before each iteration, and set both
+at any early exit and after the iteration completes.
+
+For example:
+
+	for x := range f {
+		...
+		if ... { break }
+		...
+	}
+
+becomes
+
+	{
+		var #exit1 bool
+		f(func(x T1) bool {
+			if #exit1 { runtime.panicrangeexit() }
+			...
+			if ... { #exit1 = true ; return false }
+			...
+			return true
+		})
+		#exit1 = true
+	}
+
 # Nested Loops
 
 So far we've only considered a single loop. If a function contains a
@@ -175,23 +206,30 @@ becomes
 			#r1 type1
 			#r2 type2
 		)
+		var #exit1 bool
 		f(func() {
+			if #exit1 { runtime.panicrangeexit() }
+			var #exit2 bool
 			g(func() {
+				if #exit2 { runtime.panicrangeexit() }
 				...
 				{
 					// return a, b
 					#r1, #r2 = a, b
 					#next = -2
+					#exit1, #exit2 = true, true
 					return false
 				}
 				...
 				return true
 			})
+			#exit2 = true
 			if #next < 0 {
 				return false
 			}
 			return true
 		})
+		#exit1 = true
 		if #next == -2 {
 			return #r1, #r2
 		}
@@ -205,7 +243,8 @@ return with a single check.
 For a labeled break or continue of an outer range-over-func, we
 use positive #next values. Any such labeled break or continue
 really means "do N breaks" or "do N breaks and 1 continue".
-We encode that as 2*N or 2*N+1 respectively.
+We encode that as perLoopStep*N or perLoopStep*N+1 respectively.
+
 Loops that might need to propagate a labeled break or continue
 add one or both of these to the #next checks:
 
@@ -239,30 +278,40 @@ becomes
 
 	{
 		var #next int
+		var #exit1 bool
 		f(func() {
+			if #exit1 { runtime.panicrangeexit() }
+			var #exit2 bool
 			g(func() {
+				if #exit2 { runtime.panicrangeexit() }
+				var #exit3 bool
 				h(func() {
+					if #exit3 { runtime.panicrangeexit() }
 					...
 					{
 						// break F
 						#next = 4
+						#exit1, #exit2, #exit3 = true, true, true
 						return false
 					}
 					...
 					{
 						// continue F
 						#next = 3
+						#exit2, #exit3 = true, true
 						return false
 					}
 					...
 					return true
 				})
+				#exit3 = true
 				if #next >= 2 {
 					#next -= 2
 					return false
 				}
 				return true
 			})
+			#exit2 = true
 			if #next >= 2 {
 				#next -= 2
 				return false
@@ -274,6 +323,7 @@ becomes
 			...
 			return true
 		})
+		#exit1 = true
 	}
 
 Note that the post-h checks only consider a break,
@@ -299,6 +349,7 @@ For example
 	Top: print("start\n")
 	for range f {
 		for range g {
+			...
 			for range h {
 				...
 				goto Top
@@ -312,28 +363,39 @@ becomes
 	Top: print("start\n")
 	{
 		var #next int
+		var #exit1 bool
 		f(func() {
+			if #exit1 { runtime.panicrangeexit() }
+			var #exit2 bool
 			g(func() {
+				if #exit2 { runtime.panicrangeexit() }
+				...
+				var #exit3 bool
 				h(func() {
+				if #exit3 { runtime.panicrangeexit() }
 					...
 					{
 						// goto Top
 						#next = -3
+						#exit1, #exit2, #exit3 = true, true, true
 						return false
 					}
 					...
 					return true
 				})
+				#exit3 = true
 				if #next < 0 {
 					return false
 				}
 				return true
 			})
+			#exit2 = true
 			if #next < 0 {
 				return false
 			}
 			return true
 		})
+		#exit1 = true
 		if #next == -3 {
 			#next = 0
 			goto Top

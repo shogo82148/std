@@ -113,6 +113,9 @@ func (f *File) Write(b []byte) (n int, err error)
 // ファイルがO_APPENDフラグで開かれている場合、WriteAtはエラーを返します。
 func (f *File) WriteAt(b []byte, off int64) (n int, err error)
 
+// WriteToは、io.WriterToのWriteToメソッドを実装します。
+func (f *File) WriteTo(w io.Writer) (n int64, err error)
+
 // Seekは、オフセットをオフセットに設定します。オフセットは、whenceによって解釈されます。
 // whenceの解釈は次のとおりです：0はファイルの原点に対する相対的なオフセット、1は現在のオフセットに対する相対的なオフセット、2は終端に対する相対的なオフセットを意味します。
 // エラーがあれば、新しいオフセットとエラーを返します。

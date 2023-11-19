@@ -13,14 +13,17 @@ import (
 // A Checker maintains the state of the type checker.
 // It must be created with NewChecker.
 type Checker struct {
-	// package information
-	// (initialized by NewChecker, valid for the life-time of checker)
+
+	// If enableAlias is set, alias declarations produce an Alias type.
+	// Otherwise the alias information is only in the type name, which
+	// points directly to the actual (aliased) type.
+	enableAlias bool
+
 	conf *Config
 	ctxt *Context
 	pkg  *Package
 	*Info
-	version version
-	posVers map[*syntax.PosBase]version
+	version goVersion
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
@@ -40,6 +43,7 @@ type Checker struct {
 	// (initialized by Files, valid only for the duration of check.Files;
 	// maps and lists are allocated on demand)
 	files         []*syntax.File
+	versions      map[*syntax.PosBase]string
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
 	recvTParamMap map[*syntax.Name]*TypeParam

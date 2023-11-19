@@ -127,7 +127,10 @@ type Config struct {
 	// DisableUnusedImportCheckが設定されている場合、パッケージは未使用のインポートについてチェックされません。
 	DisableUnusedImportCheck bool
 
-	// もし空ではない_ErrorURLフォーマット文字列が提供された場合、それはエラーメッセージの最初の行に追加されるエラーURLリンクのフォーマットに使用されます。ErrorURLは、正確に1つの"%s"フォーマットを含むフォーマット文字列でなければなりません。例："[go.dev/e/%s]"。
+	// If a non-empty _ErrorURL format string is provided, it is used
+	// to format an error URL link that is appended to the first line
+	// of an error message. ErrorURL must be a format string containing
+	// exactly one "%s" format, e.g. "[go.dev/e/%s]".
 	_ErrorURL string
 }
 
@@ -199,11 +202,12 @@ type Info struct {
 	// InitOrderはパッケージレベルの初期化子のリストであり、実行する必要がある順序で並んでいます。初期化依存関係に関連する変数を参照する初期化子は、トポロジカル順序で表示されます。他の初期化子はソース順序で表示されます。初期化式を持たない変数は、このリストに表示されません。
 	InitOrder []*Initializer
 
-	// _FileVersions maps a file to the file's Go version string.
-	// If the file doesn't specify a version and Config.GoVersion
-	// is not given, the reported version is the empty string.
-	// TODO(gri) should this be "go0.0" instead in that case?
-	_FileVersions map[*ast.File]string
+	// FileVersions maps a file to its Go version string.
+	// If the file doesn't specify a version, the reported
+	// string is Config.GoVersion.
+	// Version strings begin with “go”, like “go1.21”, and
+	// are suitable for use with the [go/version] package.
+	FileVersions map[*ast.File]string
 }
 
 // TypeOfは式eの型を返します。見つからない場合はnilを返します。
@@ -218,6 +222,14 @@ func (info *Info) TypeOf(e ast.Expr) Type
 //
 // 前提条件：UsesおよびDefsマップが入力されています。
 func (info *Info) ObjectOf(id *ast.Ident) Object
+
+// PkgNameOfは、インポートによって定義されたローカルパッケージ名を返します。
+// 見つからない場合はnilを返します。
+//
+// ドットインポートの場合、パッケージ名は"."です。
+//
+// Precondition: DefsとImplictsのマップが設定されています。
+func (info *Info) PkgNameOf(imp *ast.ImportSpec) *PkgName
 
 // TypeAndValueは対応する式の型と値（定数の場合）を報告します。
 type TypeAndValue struct {
@@ -269,39 +281,3 @@ func (init *Initializer) String() string
 // エラーが発生しなかった場合、パッケージは完全であるとマークされます。そうでなければ不完全です。エラーの存在に応じた動作の制御については、[Config.Error] を参照してください。
 // パッケージはast.Filesのリストと対応するファイルセット、およびパッケージが識別されるパッケージパスで指定されます。クリーンパスは空またはドット（"."）ではないでしょう。
 func (conf *Config) Check(path string, fset *token.FileSet, files []*ast.File, info *Info) (*Package, error)
-
-// AssertableToは、型Vの値が型Tにアサートされることができるかどうかを報告します。
-//
-// AssertableToの動作は、3つのケースで未指定です：
-//   - TがTyp[Invalid]である場合
-//   - Vが一般化されたインタフェースである場合。つまり、Goコードで型制約としてのみ使用されるインタフェースである場合
-//   - Tが未実体化のジェネリック型である場合
-func AssertableTo(V *Interface, T Type) bool
-
-// AssignableToは、型Vの値が型Tの変数に代入可能かどうかを報告します。
-//
-// AssignableToの動作は、VまたはTがTyp[Invalid]またはインスタンス化されていないジェネリック型の場合、指定されていません。
-func AssignableTo(V, T Type) bool
-
-// ConvertibleToは、型Vの値が型Tの値に変換可能かどうかを報告します。
-//
-// ConvertibleToの動作は、VまたはTがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、指定されていません。
-func ConvertibleTo(V, T Type) bool
-
-// Implementsは、型VがインターフェースTを実装しているかどうかを報告します。
-//
-// VがTyp[Invalid]やインスタンス化されていないジェネリック型の場合、Implementsの動作は未指定です。
-func Implements(V Type, T *Interface) bool
-
-// Satisfiesは型Vが制約Tを満たすかどうかを報告します。
-//
-// VがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、Satisfiesの動作は指定されていません。
-func Satisfies(V Type, T *Interface) bool
-
-// Identicalはxとyが同じ型であるかどうかを返します。
-// [Signature] 型のレシーバは無視されます。
-func Identical(x, y Type) bool
-
-// IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
-// [Signature] 型のレシーバーは無視されます。
-func IdenticalIgnoreTags(x, y Type) bool

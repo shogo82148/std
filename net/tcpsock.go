@@ -62,6 +62,9 @@ func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
 // ReadFrom は io.ReaderFrom の ReadFrom メソッドを実装します。
 func (c *TCPConn) ReadFrom(r io.Reader) (int64, error)
 
+// WriteToは、io.WriterToのWriteToメソッドを実装します。
+func (c *TCPConn) WriteTo(w io.Writer) (int64, error)
+
 // CloseReadはTCP接続の読み込み側をシャットダウンします。
 // ほとんどの呼び出し元は、単にCloseを使用するだけで十分です。
 func (c *TCPConn) CloseRead() error

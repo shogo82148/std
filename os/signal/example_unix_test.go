@@ -12,7 +12,6 @@ import (
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/os/signal"
-	"github.com/shogo82148/std/time"
 )
 
 // This example passes a context with a signal to tell a blocking function that
@@ -35,8 +34,8 @@ func ExampleNotifyContext() {
 	}
 
 	select {
-	case <-time.After(time.Second):
-		fmt.Println("missed signal")
+	case <-neverReady:
+		fmt.Println("ready")
 	case <-ctx.Done():
 		fmt.Println(ctx.Err()) // prints "context canceled"
 		stop()                 // stop receiving signal notifications as soon as possible.

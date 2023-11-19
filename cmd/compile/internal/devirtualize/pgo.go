@@ -44,8 +44,10 @@ type CallStat struct {
 // ProfileGuided performs call devirtualization of indirect calls based on
 // profile information.
 //
-// Specifically, it performs conditional devirtualization of interface calls
-// for the hottest callee. That is, it performs a transformation like:
+// Specifically, it performs conditional devirtualization of interface calls or
+// function value calls for the hottest callee.
+//
+// That is, for interface calls it performs a transformation like:
 //
 //	type Iface interface {
 //		Foo()
@@ -66,6 +68,24 @@ type CallStat struct {
 //			c.Foo()
 //		} else {
 //			i.Foo()
+//		}
+//	}
+//
+// For function value calls it performs a transformation like:
+//
+//	func Concrete() {}
+//
+//	func foo(fn func()) {
+//		fn()
+//	}
+//
+// to:
+//
+//	func foo(fn func()) {
+//		if internal/abi.FuncPCABIInternal(fn) == internal/abi.FuncPCABIInternal(Concrete) {
+//			Concrete()
+//		} else {
+//			fn()
 //		}
 //	}
 //

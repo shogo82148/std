@@ -60,7 +60,7 @@ type Plugin struct {
 }
 
 // OpenはGoプラグインを開きます。
-// もし既にパスが開かれている場合は、既存の*Pluginが返されます。
+// もし既にパスが開かれている場合は、既存の*[Plugin] が返されます。
 // 複数のゴルーチンによる同時使用も安全です。
 func Open(path string) (*Plugin, error)
 
@@ -82,7 +82,7 @@ func (p *Plugin) Lookup(symName string) (Symbol, error)
 //
 //	func F() { fmt.Printf("Hello, number %d\n", V) }
 //
-// このプラグインはOpen関数を用いて読み込むことができ、その後エクスポートされたパッケージの
+// このプラグインは [Open] 関数を用いて読み込むことができ、その後エクスポートされたパッケージの
 // シンボルVとFにアクセスすることができます。
 //
 //	p, err := plugin.Open("plugin_name.so")

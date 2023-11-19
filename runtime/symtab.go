@@ -4,7 +4,7 @@
 
 package runtime
 
-// Framesを使用すると、Callersが返すPC値のスライスのための関数/ファイル/行情報を取得できます。
+// Framesを使用すると、[Callers] が返すPC値のスライスのための関数/ファイル/行情報を取得できます。
 type Frames struct {
 	// callersはまだフレームに展開されていないPCのスライスです。
 	callers []uintptr
@@ -50,9 +50,9 @@ type Frame struct {
 	funcInfo funcInfo
 }
 
-// CallersFramesはCallersによって返されるPC値のスライスを受け取り、
+// CallersFramesは [Callers] によって返されるPC値のスライスを受け取り、
 // 関数/ファイル/行情報を返す準備をします。
-// Framesで終わるまでスライスを変更しないでください。
+// [Frames] で終わるまでスライスを変更しないでください。
 func CallersFrames(callers []uintptr) *Frames
 
 // Nextは、PC値のスライス内で次の呼び出しフレームを表すFrameを返します。
@@ -69,7 +69,7 @@ type Func struct {
 	opaque struct{}
 }
 
-// FuncForPCは、指定されたプログラムカウンターアドレスを含む関数を記述した*Funcを返します。もし複数の関数がインライン展開の影響で存在する場合は、最も内側の関数を示す*Funcを返しますが、最も外側の関数のエントリーも持っています。
+// FuncForPCは、指定されたプログラムカウンターアドレスを含む関数を記述した*[Func] を返します。もし複数の関数がインライン展開の影響で存在する場合は、最も内側の関数を示す*Funcを返しますが、最も外側の関数のエントリーも持っています。
 func FuncForPC(pc uintptr) *Func
 
 // Nameは関数の名前を返します。

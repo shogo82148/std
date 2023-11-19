@@ -15,15 +15,17 @@ import (
 // [NewChecker] で作成する必要があります。
 type Checker struct {
 
-	// パッケージの情報
-	// (NewCheckerによって初期化され、checkerの寿命の間有効)
+	// If EnableAlias is set, alias declarations produce an Alias type.
+	// Otherwise the alias information is only in the type name, which
+	// points directly to the actual (aliased) type.
+	enableAlias bool
+
 	conf *Config
 	ctxt *Context
 	fset *token.FileSet
 	pkg  *Package
 	*Info
-	version version
-	posVers map[token.Pos]version
+	version goVersion
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
@@ -42,6 +44,7 @@ type Checker struct {
 	// (Filesによって初期化され、check.Filesの間のみ有効です;
 	// マップとリストは必要に応じて割り当てられます)
 	files         []*ast.File
+	versions      map[*ast.File]string
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
 	recvTParamMap map[*ast.Ident]*TypeParam

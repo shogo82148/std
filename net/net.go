@@ -236,7 +236,11 @@ type DNSError struct {
 	Server      string
 	IsTimeout   bool
 	IsTemporary bool
-	IsNotFound  bool
+
+	// IsNotFound is set to true when the requested name does not
+	// contain any records of the requested type (data not found),
+	// or the name itself was not found (NXDOMAIN).
+	IsNotFound bool
 }
 
 func (e *DNSError) Error() string

@@ -62,8 +62,8 @@ const (
 	MaxCase
 )
 
-// もしCaseRangeのDeltaフィールドがUpperLowerであれば、
-// これは(Upper Lower Upper Lowerのような)シーケンスを表すことを意味します。
+// [CaseRange] のDeltaフィールドがUpperLowerである場合、
+// これはCaseRangeが（例えば） [Upper] [Lower] [Upper] [Lower] の形式のシーケンスを表していることを意味します。
 const (
 	UpperLower = MaxRune + 1
 )
@@ -80,7 +80,7 @@ func IsLower(r rune) bool
 // IsTitleは、与えられたルーンがタイトルケースの文字であるかどうかを報告します。
 func IsTitle(r rune) bool
 
-// 指定されたケースに符文をマッピングします：大文字、小文字、またはタイトルケース。
+// Toは、指定されたケース（[UpperCase]、[LowerCase]、または[TitleCase]）にルーンをマッピングします。
 func To(_case int, r rune) rune
 
 // ToUpperはルーンを大文字にマッピングします。

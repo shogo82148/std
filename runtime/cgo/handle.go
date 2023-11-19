@@ -52,7 +52,7 @@ package cgo
 //	}
 //
 // 特定のCの関数は、呼び出し元が提供した任意のデータの値を指すvoid*引数を受け入れます。
-// cgo.Handle（整数）をGoのunsafe.Pointerに強制変換することは安全ではありませんが、
+// [cgo.Handle]（整数）をGoの [unsafe.Pointer] に強制変換することは安全ではありませんが、
 // 代わりにcgo.Handleのアドレスをvoid*パラメータに渡すことができます。次に示す前の例のバリアントでは、このようにします。
 //
 //	package main

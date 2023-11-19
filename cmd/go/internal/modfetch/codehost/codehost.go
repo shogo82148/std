@@ -51,6 +51,8 @@ type Origin struct {
 	URL    string `json:",omitempty"`
 	Subdir string `json:",omitempty"`
 
+	Hash string `json:",omitempty"`
+
 	// If TagSum is non-empty, then the resolution of this module version
 	// depends on the set of tags present in the repo, specifically the tags
 	// of the form TagPrefix + a valid semver version.
@@ -67,8 +69,7 @@ type Origin struct {
 	// and the Hash is the Git object hash the ref maps to.
 	// Other VCS might choose differently, but the idea is that Ref is the name
 	// with a mutable meaning while Hash is a name with an immutable meaning.
-	Ref  string `json:",omitempty"`
-	Hash string `json:",omitempty"`
+	Ref string `json:",omitempty"`
 
 	// If RepoSum is non-empty, then the resolution of this module version
 	// failed due to the repo being available but the version not being present.
@@ -76,13 +77,6 @@ type Origin struct {
 	// For Git, this is a hash of all the refs and their hashes.
 	RepoSum string `json:",omitempty"`
 }
-
-// Checkable reports whether the Origin contains anything that can be checked.
-// If not, the Origin is purely informational and should fail a CheckReuse call.
-func (o *Origin) Checkable() bool
-
-// ClearCheckable clears the Origin enough to make Checkable return false.
-func (o *Origin) ClearCheckable()
 
 // A Tags describes the available tags in a code repository.
 type Tags struct {

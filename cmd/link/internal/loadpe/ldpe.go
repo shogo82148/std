@@ -138,12 +138,17 @@ const (
 	RedirectToDynImportGotToken = -2
 )
 
+// Symbols contains the symbols that can be loaded from a PE file.
+type Symbols struct {
+	Textp     []loader.Sym
+	Resources []loader.Sym
+	PData     loader.Sym
+	XData     loader.Sym
+}
+
 // Load loads the PE file pn from input.
-// Symbols from the object file are created via the loader 'l',
-// and a slice of the text symbols is returned.
-// If an .rsrc section or set of .rsrc$xx sections is found, its symbols are
-// returned as rsrc.
-func Load(l *loader.Loader, arch *sys.Arch, localSymVersion int, input *bio.Reader, pkg string, length int64, pn string) (textp []loader.Sym, rsrc []loader.Sym, err error)
+// Symbols from the object file are created via the loader 'l'.
+func Load(l *loader.Loader, arch *sys.Arch, localSymVersion int, input *bio.Reader, pkg string, length int64, pn string) (*Symbols, error)
 
 // PostProcessImports works to resolve inconsistencies with DLL import
 // symbols; it is needed when building with more "modern" C compilers
