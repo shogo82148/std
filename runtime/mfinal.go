@@ -25,27 +25,14 @@ package runtime
 // ファイナライザを持つブロックを含む循環構造がある場合、その循環はガベージコレクトされることは保証されず、
 // 依存関係を尊重する順序がないため、ファイナライザが実行されることも保証されません。
 //
-<<<<<<< HEAD
 // ファイナライザは、プログラムがobjが指し示すオブジェクトに到達できなくなった後、
 // 任意の時点で実行されるようにスケジュールされます。
 // プログラムが終了する前にファイナライザが実行されることは保証されていないため、
 // 通常、長時間実行されるプログラム中にオブジェクトに関連付けられた非メモリリソースを解放するためにのみ有用です。
-// たとえば、os.Fileオブジェクトは、プログラムがCloseを呼び出さずにos.Fileを破棄するときに、
+// たとえば、[os.File] オブジェクトは、プログラムがCloseを呼び出さずにos.Fileを破棄するときに、
 // 関連するオペレーティングシステムのファイルディスクリプタを閉じるためにファイナライザを使用できますが、
 // bufio.WriterのようなインメモリI/Oバッファをフラッシュするためにファイナライザに依存することは誤りです。
 // なぜなら、プログラムが終了するときにバッファがフラッシュされないためです。
-=======
-// The finalizer is scheduled to run at some arbitrary time after the
-// program can no longer reach the object to which obj points.
-// There is no guarantee that finalizers will run before a program exits,
-// so typically they are useful only for releasing non-memory resources
-// associated with an object during a long-running program.
-// For example, an [os.File] object could use a finalizer to close the
-// associated operating system file descriptor when a program discards
-// an os.File without calling Close, but it would be a mistake
-// to depend on a finalizer to flush an in-memory I/O buffer such as a
-// [bufio.Writer], because the buffer would not be flushed at program exit.
->>>>>>> upstream/master
 //
 // *objのサイズがゼロバイトの場合、ファイナライザが実行されることは保証されません。
 // なぜなら、メモリ内の他のゼロサイズのオブジェクトと同じアドレスを共有する可能性があるためです。
@@ -60,11 +47,10 @@ package runtime
 // そのような割り当て内の参照されなくなったオブジェクトのファイナライザは、常に参照されたオブジェクトと同じバッチに存在する場合、実行されない可能性があります。
 // 通常、このバッチ処理は、小さな（16バイト以下の）ポインタフリーオブジェクトに対してのみ行われます。
 //
-<<<<<<< HEAD
 // オブジェクトが到達不能になるとすぐにファイナライザが実行される場合があります。
 // ファイナライザを正しく使用するには、プログラムはオブジェクトが不要になるまで到達可能であることを保証する必要があります。
 // グローバル変数に格納されたオブジェクト、またはグローバル変数からポインタをトレースできるオブジェクトは到達可能です。
-// その他のオブジェクトについては、KeepAlive関数の呼び出しにオブジェクトを渡して、
+// その他のオブジェクトについては、[KeepAlive] 関数の呼び出しにオブジェクトを渡して、
 // オブジェクトが到達可能である必要がある関数内の最後のポイントをマークする必要があります。
 //
 // たとえば、pがファイルディスクリプタdを含むos.Fileのような構造体を指し示す場合、
@@ -73,25 +59,6 @@ package runtime
 // その瞬間にファイナライザが実行され、p.dを閉じ、syscall.Writeが閉じられたファイルディスクリプタ（または、
 // より悪い場合、別のgoroutineによって開かれた完全に異なるファイルディスクリプタ）に書き込もうとして失敗する可能性があります。
 // この問題を回避するには、syscall.Writeの呼び出し後にKeepAlive(p)を呼び出します。
-=======
-// A finalizer may run as soon as an object becomes unreachable.
-// In order to use finalizers correctly, the program must ensure that
-// the object is reachable until it is no longer required.
-// Objects stored in global variables, or that can be found by tracing
-// pointers from a global variable, are reachable. For other objects,
-// pass the object to a call of the [KeepAlive] function to mark the
-// last point in the function where the object must be reachable.
-//
-// For example, if p points to a struct, such as os.File, that contains
-// a file descriptor d, and p has a finalizer that closes that file
-// descriptor, and if the last use of p in a function is a call to
-// syscall.Write(p.d, buf, size), then p may be unreachable as soon as
-// the program enters [syscall.Write]. The finalizer may run at that moment,
-// closing p.d, causing syscall.Write to fail because it is writing to
-// a closed file descriptor (or, worse, to an entirely different
-// file descriptor opened by a different goroutine). To avoid this problem,
-// call KeepAlive(p) after the call to syscall.Write.
->>>>>>> upstream/master
 //
 // プログラムのすべてのファイナライザを、1つのgoroutineが順次実行します。
 // ファイナライザが長時間実行する必要がある場合は、新しいgoroutineを開始することで実行する必要があります。
@@ -122,19 +89,9 @@ func SetFinalizer(obj any, finalizer any)
 //	runtime.KeepAlive(p)
 //	// このポイント以降、pを使用しないでください。
 //
-<<<<<<< HEAD
-// KeepAlive呼び出しがない場合、ファイナライザは syscall.Read の開始時に実行され、
+// KeepAlive呼び出しがない場合、ファイナライザは [syscall.Read] の開始時に実行され、
 // 実際のシステムコールを行う前にファイルディスクリプタを閉じます。
 //
 // 注意：KeepAliveは、ファイナライザが予期せず実行されるのを防止するためにのみ使用する必要があります。
-// 特に、unsafe.Pointerと一緒に使用する場合は、unsafe.Pointerの有効な使用方法のルールが適用されます。
-=======
-// Without the KeepAlive call, the finalizer could run at the start of
-// [syscall.Read], closing the file descriptor before syscall.Read makes
-// the actual system call.
-//
-// Note: KeepAlive should only be used to prevent finalizers from
-// running prematurely. In particular, when used with [unsafe.Pointer],
-// the rules for valid uses of unsafe.Pointer still apply.
->>>>>>> upstream/master
+// 特に、[unsafe.Pointer] と一緒に使用する場合は、unsafe.Pointerの有効な使用方法のルールが適用されます。
 func KeepAlive(x any)

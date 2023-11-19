@@ -2,12 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-// Goの実行トレーサーです。
-// このトレーサーは、ゴルーチンの作成/ブロック/アンブロック、システムコールの入出力/ブロック、GCに関連するイベント、ヒープサイズの変更、プロセッサの開始/停止など、様々な実行イベントをキャプチャし、コンパクトな形式でバッファに書き込みます。
-// ほとんどのイベントには、正確なナノ秒単位のタイムスタンプとスタックトレースが記録されます。
-// 詳細については、https://golang.org/s/go15trace を参照してください。
-=======
 //go:build !goexperiment.exectracer2
 
 // Go execution tracer.
@@ -17,7 +11,6 @@
 // in a compact form. A precise nanosecond-precision timestamp and a stack
 // trace is captured for most events.
 // See https://golang.org/s/go15trace for more info.
->>>>>>> upstream/master
 
 package runtime
 

@@ -4,12 +4,7 @@
 
 package runtime
 
-<<<<<<< HEAD
-// Framesを使用すると、Callersが返すPC値のスライスのための関数/ファイル/行情報を取得できます。
-=======
-// Frames may be used to get function/file/line information for a
-// slice of PC values returned by [Callers].
->>>>>>> upstream/master
+// Framesを使用すると、[Callers] が返すPC値のスライスのための関数/ファイル/行情報を取得できます。
 type Frames struct {
 	// callersはまだフレームに展開されていないPCのスライスです。
 	callers []uintptr
@@ -55,15 +50,9 @@ type Frame struct {
 	funcInfo funcInfo
 }
 
-<<<<<<< HEAD
-// CallersFramesはCallersによって返されるPC値のスライスを受け取り、
+// CallersFramesは [Callers] によって返されるPC値のスライスを受け取り、
 // 関数/ファイル/行情報を返す準備をします。
-// Framesで終わるまでスライスを変更しないでください。
-=======
-// CallersFrames takes a slice of PC values returned by [Callers] and
-// prepares to return function/file/line information.
-// Do not change the slice until you are done with the [Frames].
->>>>>>> upstream/master
+// [Frames] で終わるまでスライスを変更しないでください。
 func CallersFrames(callers []uintptr) *Frames
 
 // Nextは、PC値のスライス内で次の呼び出しフレームを表すFrameを返します。
@@ -80,16 +69,7 @@ type Func struct {
 	opaque struct{}
 }
 
-<<<<<<< HEAD
-// FuncForPCは、指定されたプログラムカウンターアドレスを含む関数を記述した*Funcを返します。もし複数の関数がインライン展開の影響で存在する場合は、最も内側の関数を示す*Funcを返しますが、最も外側の関数のエントリーも持っています。
-=======
-// FuncForPC returns a *[Func] describing the function that contains the
-// given program counter address, or else nil.
-//
-// If pc represents multiple functions because of inlining, it returns
-// the *Func describing the innermost function, but with an entry of
-// the outermost function.
->>>>>>> upstream/master
+// FuncForPCは、指定されたプログラムカウンターアドレスを含む関数を記述した*[Func] を返します。もし複数の関数がインライン展開の影響で存在する場合は、最も内側の関数を示す*Funcを返しますが、最も外側の関数のエントリーも持っています。
 func FuncForPC(pc uintptr) *Func
 
 // Nameは関数の名前を返します。
