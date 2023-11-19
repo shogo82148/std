@@ -281,6 +281,7 @@ func (init *Initializer) String() string
 // エラーが発生しなかった場合、パッケージは完全であるとマークされます。そうでなければ不完全です。エラーの存在に応じた動作の制御については、[Config.Error] を参照してください。
 // パッケージはast.Filesのリストと対応するファイルセット、およびパッケージが識別されるパッケージパスで指定されます。クリーンパスは空またはドット（"."）ではないでしょう。
 func (conf *Config) Check(path string, fset *token.FileSet, files []*ast.File, info *Info) (*Package, error)
+<<<<<<< HEAD
 
 // AssertableToは、型Vの値が型Tにアサートされることができるかどうかを報告します。
 //
@@ -317,3 +318,5 @@ func Identical(x, y Type) bool
 // IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
 // [Signature] 型のレシーバーは無視されます。
 func IdenticalIgnoreTags(x, y Type) bool
+=======
+>>>>>>> upstream/master

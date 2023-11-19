@@ -8,22 +8,10 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 )
 
-// ScoreCalls assigns numeric scores to each of the callsites in
-// function fn; the lower the score, the more helpful we think it will
-// be to inline.
-//
-// Unlike a lot of the other inline heuristics machinery, callsite
-// scoring can't be done as part of the CanInline call for a function,
-// due to fact that we may be working on a non-trivial SCC. So for
-// example with this SCC:
-//
-//	func foo(x int) {           func bar(x int, f func()) {
-//	  if x != 0 {                  f()
-//	    bar(x, func(){})           foo(x-1)
-//	  }                         }
-//	}
-//
-// We don't want to perform scoring for the 'foo' call in "bar" until
-// after foo has been analyzed, but it's conceivable that CanInline
-// might visit bar before foo for this SCC.
-func ScoreCalls(fn *ir.Func)
+// UpdateCallsiteTable handles updating of callerfn's call site table
+// after an inlined has been carried out, e.g. the call at 'n' as been
+// turned into the inlined call expression 'ic' within function
+// callerfn. The chief thing of interest here is to make sure that any
+// call nodes within 'ic' are added to the call site table for
+// 'callerfn' and scored appropriately.
+func UpdateCallsiteTable(callerfn *ir.Func, n *ir.CallExpr, ic *ir.InlinedCallExpr)

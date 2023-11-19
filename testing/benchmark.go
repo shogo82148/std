@@ -5,6 +5,7 @@
 package testing
 
 import (
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 )
 
@@ -152,7 +153,7 @@ func (b *B) Run(name string, f func(b *B)) bool
 
 // PBはRunParallelによって並列ベンチマークの実行に使用されます。
 type PB struct {
-	globalN *uint64
+	globalN *atomic.Uint64
 	grain   uint64
 	cache   uint64
 	bN      uint64

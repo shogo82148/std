@@ -113,10 +113,21 @@ func (f *File) Write(b []byte) (n int, err error)
 // ファイルがO_APPENDフラグで開かれている場合、WriteAtはエラーを返します。
 func (f *File) WriteAt(b []byte, off int64) (n int, err error)
 
+<<<<<<< HEAD
 // Seekは、オフセットをオフセットに設定します。オフセットは、whenceによって解釈されます。
 // whenceの解釈は次のとおりです：0はファイルの原点に対する相対的なオフセット、1は現在のオフセットに対する相対的なオフセット、2は終端に対する相対的なオフセットを意味します。
 // エラーがあれば、新しいオフセットとエラーを返します。
 // O_APPENDで開かれたファイルに対するSeekの振る舞いは指定されていません。
+=======
+// WriteTo implements io.WriterTo.
+func (f *File) WriteTo(w io.Writer) (n int64, err error)
+
+// Seek sets the offset for the next Read or Write on file to offset, interpreted
+// according to whence: 0 means relative to the origin of the file, 1 means
+// relative to the current offset, and 2 means relative to the end.
+// It returns the new offset and an error, if any.
+// The behavior of Seek on a file opened with O_APPEND is not specified.
+>>>>>>> upstream/master
 func (f *File) Seek(offset int64, whence int) (ret int64, err error)
 
 // WriteStringはWriteと似ていますが、バイトのスライスではなく、文字列sの内容を書き込みます。

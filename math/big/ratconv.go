@@ -47,3 +47,19 @@ func (x *Rat) RatString() string
 // digits of precision after the radix point. The last digit is rounded to
 // nearest, with halves rounded away from zero.
 func (x *Rat) FloatString(prec int) string
+
+// FloatPrec returns the number n of non-repeating digits immediately
+// following the decimal point of the decimal representation of x.
+// The boolean result indicates whether a decimal representation of x
+// with that many fractional digits is exact or rounded.
+//
+// Examples:
+//
+//	x      n    exact    decimal representation n fractional digits
+//	0      0    true     0
+//	1      0    true     1
+//	1/2    1    true     0.5
+//	1/3    0    false    0       (0.333... rounded)
+//	1/4    2    true     0.25
+//	1/6    1    false    0.2     (0.166... rounded)
+func (x *Rat) FloatPrec() (n int, exact bool)

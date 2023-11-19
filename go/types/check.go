@@ -30,8 +30,7 @@ type Checker struct {
 	fset *token.FileSet
 	pkg  *Package
 	*Info
-	version version
-	posVers map[token.Pos]version
+	version goVersion
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
@@ -50,6 +49,7 @@ type Checker struct {
 	// (Filesによって初期化され、check.Filesの間のみ有効です;
 	// マップとリストは必要に応じて割り当てられます)
 	files         []*ast.File
+	versions      map[*ast.File]string
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
 	recvTParamMap map[*ast.Ident]*TypeParam

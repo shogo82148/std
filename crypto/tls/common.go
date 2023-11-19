@@ -342,7 +342,14 @@ type Config struct {
 
 	// CipherSuitesは有効なTLS 1.0-1.2の暗号化スイートのリストです。リストの順序は無視されます。注意事項として、TLS 1.3の暗号スイートは設定できません。
 	//
+<<<<<<< HEAD
 	// CipherSuitesがnilの場合、安全なデフォルトのリストが使用されます。デフォルトの暗号スイートは時間とともに変更される可能性があります。
+=======
+	// If CipherSuites is nil, a safe default list is used. The default cipher
+	// suites might change over time. In Go 1.22 RSA key exchange based cipher
+	// suites were removed from the default list, but can be re-added with the
+	// GODEBUG setting tlsrsakex=1.
+>>>>>>> upstream/master
 	CipherSuites []uint16
 
 	// PreferServerCipherSuitesは古いフィールドであり、効果がありません。
@@ -390,9 +397,17 @@ type Config struct {
 
 	// MinVersionには受け入れ可能な最小のTLSバージョンが含まれています。
 	//
+<<<<<<< HEAD
 	// デフォルトでは、クライアントとして動作する場合にはTLS 1.2が現在の最小バージョンとして使用され、サーバーとして動作する場合にはTLS 1.0が最小のバージョンとして使用されます。このパッケージでは、クライアントとしてもサーバーとしても、最小限にTLS 1.0がサポートされています。
 	//
 	// クライアント側のデフォルトは、GODEBUG環境変数に値"x509sha1=1"を含めることで一時的にTLS 1.0に戻すことができます。ただし、このオプションはGo 1.19で削除されます（ただし、このフィールドを明示的にVersionTLS10に設定することは引き続き可能です）。
+=======
+	// By default, TLS 1.2 is currently used as the minimum. TLS 1.0 is the
+	// minimum supported by this package.
+	//
+	// The server-side default can be reverted to TLS 1.0 by including the value
+	// "tls10server=1" in the GODEBUG environment variable.
+>>>>>>> upstream/master
 	MinVersion uint16
 
 	// MaxVersionには許容される最大のTLSバージョンが含まれています。

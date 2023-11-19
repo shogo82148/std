@@ -66,19 +66,24 @@ func Delete[S ~[]E, E any](s S, i, j int) S { return nil }
 =======
 // Delete removes the elements s[i:j] from s, returning the modified slice.
 // Delete panics if j > len(s) or s[i:j] is not a valid slice of s.
-// Delete is O(len(s)-j), so if many items must be deleted, it is better to
+// Delete is O(len(s)-i), so if many items must be deleted, it is better to
 // make a single call deleting them all together than to delete one at a time.
-// Delete might not modify the elements s[len(s)-(j-i):len(s)]. If those
-// elements contain pointers you might consider zeroing those elements so that
-// objects they reference can be garbage collected.
+// Delete zeroes the elements s[len(s)-(j-i):len(s)].
 func Delete[S ~[]E, E any](s S, i, j int) S
 >>>>>>> upstream/master
 
+<<<<<<< HEAD
 // DeleteFunc は、del が true を返す要素を s から削除し、変更されたスライスを返します。
 // DeleteFunc が m 個の要素を削除すると、s[len(s)-m:len(s)] の要素を変更しない場合があります。
 // これらの要素にポインタが含まれている場合は、参照するオブジェクトをガベージコレクションできるように、
 // これらの要素をゼロにすることを検討する必要があります。
 func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S { return nil }
+=======
+// DeleteFunc removes any elements from s for which del returns true,
+// returning the modified slice.
+// DeleteFunc zeroes the elements between the new length and the original length.
+func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S
+>>>>>>> upstream/master
 
 <<<<<<< HEAD
 // Replace は、s[i:j] の要素を与えられた v で置き換え、変更されたスライスを返します。
@@ -88,6 +93,7 @@ func Replace[S ~[]E, E any](s S, i, j int, v ...E) S { return nil }
 // Replace replaces the elements s[i:j] by the given v, and returns the
 // modified slice.
 // Replace panics if j > len(s) or s[i:j] is not a valid slice of s.
+// When len(v) < (j-i), Replace zeroes the elements between the new length and the original length.
 func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
 >>>>>>> upstream/master
 
@@ -95,6 +101,7 @@ func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
 // 要素は代入を使用してコピーされるため、これは浅いクローンです。
 func Clone[S ~[]E, E any](s S) S { return nil }
 
+<<<<<<< HEAD
 // Compact は、等しい要素の連続したランを単一のコピーに置き換えます。
 // これは、Unix で見つかる uniq コマンドのようです。
 // Compact はスライス s の内容を変更し、変更されたスライスを返します。
@@ -107,6 +114,19 @@ func Compact[S ~[]E, E comparable](s S) S { return nil }
 // CompactFunc は、等価性関数を使用して要素を比較する Compact です。
 // 等しい要素のランに対して、CompactFunc は最初の要素を保持します。
 func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S { return nil }
+=======
+// Compact replaces consecutive runs of equal elements with a single copy.
+// This is like the uniq command found on Unix.
+// Compact modifies the contents of the slice s and returns the modified slice,
+// which may have a smaller length.
+// Compact zeroes the elements between the new length and the original length.
+func Compact[S ~[]E, E comparable](s S) S
+
+// CompactFunc is like [Compact] but uses an equality function to compare elements.
+// For runs of elements that compare equal, CompactFunc keeps the first one.
+// CompactFunc zeroes the elements between the new length and the original length.
+func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S
+>>>>>>> upstream/master
 
 // Grow は、必要に応じてスライスの容量を増やし、別の n 要素のスペースを保証します。
 // Grow(n) の後、スライスには、別の割り当てなしで n 要素が追加できます。

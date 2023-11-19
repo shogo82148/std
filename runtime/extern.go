@@ -119,10 +119,26 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	現在、Windows、plan9、js/wasmではサポートされていません。
 	一部のアプリケーションでこのオプションを設定すると、大きなトレースが生成される場合があるため、注意して使用してください。
 
+<<<<<<< HEAD
 	invalidptr: invalidptr=1（デフォルト）は、ポインタ型の場所で無効なポインタ値（たとえば1）が見つかった場合、
 	ガベージコレクタとスタックコピープログラムをクラッシュさせます。invalidptr=0に設定すると、このチェックが無効になります。
 	これは、バグのあるコードを診断するための一時的なワークアラウンドとしてのみ使用する必要があります。
 	本当の修正は、整数をポインタ型の場所に格納しないことです。
+=======
+	profileruntimelocks: setting profileruntimelocks=1 includes call stacks related to
+	contention on runtime-internal locks in the "mutex" profile, subject to the
+	MutexProfileFraction setting. The call stacks will correspond to the unlock call that
+	released the lock. But instead of the value corresponding to the amount of contention that
+	call stack caused, it corresponds to the amount of time the caller of unlock had to wait
+	in its original call to lock. A future release is expected to align those and remove this
+	setting.
+
+	invalidptr: invalidptr=1 (the default) causes the garbage collector and stack
+	copier to crash the program if an invalid pointer value (for example, 1)
+	is found in a pointer-typed location. Setting invalidptr=0 disables this check.
+	This should only be used as a temporary workaround to diagnose buggy code.
+	The real fix is to not store integers in pointer-typed locations.
+>>>>>>> upstream/master
 
 	sbrk: sbrk=1を設定すると、メモリアロケータとガベージコレクタが置き換えられ、オペレーティングシステムからメモリを取得し、メモリを回収しない単純なアロケータになります。
 

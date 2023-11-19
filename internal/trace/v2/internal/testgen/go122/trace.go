@@ -24,11 +24,12 @@ func Main(f func(*Trace))
 // Otherwise, it performs no validation on the trace at all.
 type Trace struct {
 	// Trace data state.
-	ver    version.Version
-	names  map[string]event.Type
-	specs  []event.Spec
-	events []raw.Event
-	gens   []*Generation
+	ver             version.Version
+	names           map[string]event.Type
+	specs           []event.Spec
+	events          []raw.Event
+	gens            []*Generation
+	validTimestamps bool
 
 	// Expectation state.
 	bad      bool
@@ -49,6 +50,11 @@ func (t *Trace) ExpectSuccess()
 // of the names in Specs() result for the version that was passed to
 // this trace.
 func (t *Trace) RawEvent(typ event.Type, data []byte, args ...uint64)
+
+// DisableTimestamps makes the timestamps for all events generated after
+// this call zero. Raw events are exempted from this because the caller
+// has to pass their own timestamp into those events anyway.
+func (t *Trace) DisableTimestamps()
 
 // Generation creates a new trace generation.
 //

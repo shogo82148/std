@@ -48,9 +48,9 @@
 // is zeroed, so the GC just observes nil pointers.
 // Note that this "tiled" bitmap isn't stored anywhere; it is generated on-the-fly.
 //
-// For objects without their own span, the type metadata is stored in the last
-// word of the allocation slot. For objects with their own span, the type metadata
-// is stored in the mspan.
+// For objects without their own span, the type metadata is stored in the first
+// word before the object at the beginning of the allocation slot. For objects
+// with their own span, the type metadata is stored in the mspan.
 //
 // The bitmap for small unallocated objects in scannable spans is not maintained
 // (can be junk).
