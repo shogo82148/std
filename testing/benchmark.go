@@ -16,12 +16,7 @@ type InternalBenchmark struct {
 	F    func(b *B)
 }
 
-<<<<<<< HEAD
-// Bはベンチマークのタイミングを管理し、実行する繰り返し回数を指定するためにベンチマーク関数に渡される型です。
-=======
-// B is a type passed to [Benchmark] functions to manage benchmark
-// timing and to specify the number of iterations to run.
->>>>>>> upstream/master
+// Bはベンチマークのタイミングを管理し、実行する繰り返し回数を指定するために [Benchmark] 関数に渡される型です。
 //
 // ベンチマーク関数がリターンするか、またはFailNow、Fatal、Fatalf、SkipNow、Skip、Skipfのいずれかのメソッドを呼び出すことでベンチマークは終了します。これらのメソッドはベンチマーク関数を実行しているゴルーチンからのみ呼び出す必要があります。
 // ログやエラーのバリエーションといった他の報告用メソッドは、複数のゴルーチンから同時に呼び出すことができます。
@@ -52,13 +47,7 @@ type B struct {
 	extra map[string]float64
 }
 
-<<<<<<< HEAD
-// StartTimerはテストの計測を開始します。この関数はベンチマークが開始する前に自動的に呼び出されますが、StopTimerを呼び出した後に計測を再開するためにも使用することができます。
-=======
-// StartTimer starts timing a test. This function is called automatically
-// before a benchmark starts, but it can also be used to resume timing after
-// a call to [B.StopTimer].
->>>>>>> upstream/master
+// StartTimerはテストの計測を開始します。この関数はベンチマークが開始する前に自動的に呼び出されますが、[B.StopTimer] を呼び出した後に計測を再開するためにも使用することができます。
 func (b *B) StartTimer()
 
 // StopTimerはテストのタイミングを停止します。これは、計測したくない複雑な初期化を実行する間にタイマーを一時停止するために使用することができます。
@@ -77,15 +66,9 @@ func (b *B) SetBytes(n int64)
 // これは-test.benchmemを設定するのと同じ効果ですが、ReportAllocsを呼び出すベンチマーク関数にのみ影響します。
 func (b *B) ReportAllocs()
 
-<<<<<<< HEAD
 // Elapsedはベンチマークの計測された経過時間を返します。
-// Elapsedによって報告される期間は、StartTimer、StopTimer、ResetTimer
+// Elapsedによって報告される期間は、[B.StartTimer]、[B.StopTimer]、[B.ResetTimer]
 // によって計測される期間と一致します。
-=======
-// Elapsed returns the measured elapsed time of the benchmark.
-// The duration reported by Elapsed matches the one measured by
-// [B.StartTimer], [B.StopTimer], and [B.ResetTimer].
->>>>>>> upstream/master
 func (b *B) Elapsed() time.Duration
 
 // ReportMetricは報告されたベンチマーク結果に「n unit」を追加します。
@@ -122,21 +105,11 @@ func (r BenchmarkResult) AllocsPerOp() int64
 // これはr.MemBytes / r.Nで計算されます。
 func (r BenchmarkResult) AllocedBytesPerOp() int64
 
-<<<<<<< HEAD
-// Stringはベンチマークの結果の概要を返します。
-// これはhttps://golang.org/design/14313-benchmark-formatのベンチマーク結果行の形式に従います。
-// ベンチマーク名を含めないでください。
-// 追加のメトリクスは同じ名前の組み込みメトリクスを上書きします。
-// allocs/opやB/opはMemStringによって報告されるため、Stringには含まれません。
-=======
-// String returns a summary of the benchmark results.
-// It follows the benchmark result line format from
-// https://golang.org/design/14313-benchmark-format, not including the
-// benchmark name.
-// Extra metrics override built-in metrics of the same name.
-// String does not include allocs/op or B/op, since those are reported
-// by [BenchmarkResult.MemString].
->>>>>>> upstream/master
+// Stringは、ベンチマーク結果の概要を返します。
+// これは、https://golang.org/design/14313-benchmark-format からの
+// ベンチマーク結果行の形式に従いますが、ベンチマーク名は含まれません。
+// 追加のメトリクスは、同じ名前の組み込みメトリクスを上書きします。
+// Stringは、allocs/opやB/opを含みません。これらは [BenchmarkResult.MemString] によって報告されます。
 func (r BenchmarkResult) String() string
 
 // MemStringは、'go test'と同じ形式でr.AllocedBytesPerOpとr.AllocsPerOpを返します。
@@ -162,52 +135,31 @@ type PB struct {
 // Nextは、さらに実行するイテレーションがあるかどうかを返します。
 func (pb *PB) Next() bool
 
-<<<<<<< HEAD
-// RunParallelはベンチマークを並列で実行します。
-// 複数のゴルーチンを作成し、b.N回の反復をそれらのゴルーチンに分配します。
-// ゴルーチンの数はデフォルトでGOMAXPROCSになります。CPUにバウンドしていないベンチマークの並列処理を増やすためには、RunParallelの前にSetParallelismを呼び出してください。
+// RunParallelは、ベンチマークを並行して実行します。
+// 複数のゴルーチンを作成し、b.Nの反復をそれらの間で分散します。
+// ゴルーチンの数はデフォルトでGOMAXPROCSです。CPUに依存しないベンチマークの並列性を
+// 増加させるためには、RunParallelの前に[B.SetParallelism]を呼び出します。
 // RunParallelは通常、go test -cpuフラグと一緒に使用されます。
 //
-// body関数は各ゴルーチンで実行されます。これはゴルーチン固有の状態を設定し、pb.Nextがfalseを返すまで反復します。
-// StartTimer、StopTimer、ResetTimer関数は使用しないでください。これらはグローバルな影響を持ちます。また、Runも呼び出さないでください。
-=======
-// RunParallel runs a benchmark in parallel.
-// It creates multiple goroutines and distributes b.N iterations among them.
-// The number of goroutines defaults to GOMAXPROCS. To increase parallelism for
-// non-CPU-bound benchmarks, call [B.SetParallelism] before RunParallel.
-// RunParallel is usually used with the go test -cpu flag.
-//
-// The body function will be run in each goroutine. It should set up any
-// goroutine-local state and then iterate until pb.Next returns false.
-// It should not use the [B.StartTimer], [B.StopTimer], or [B.ResetTimer] functions,
-// because they have global effect. It should also not call [B.Run].
->>>>>>> upstream/master
+// body関数は各ゴルーチンで実行されます。それは任意の
+// ゴルーチンローカルの状態を設定し、その後pb.Nextがfalseを返すまで反復します。
+// それは[B.StartTimer]、[B.StopTimer]、または[B.ResetTimer]関数を
+// 使用すべきではありません、なぜならそれらはグローバルな影響を持つからです。また、[B.Run]を呼び出すべきでもありません。
 //
 // RunParallelは、ベンチマーク全体の壁時計時間（ns/op値）を報告します。これは並列ゴルーチンごとの壁時計時間またはCPU時間の合計ではありません。
 func (b *B) RunParallel(body func(*PB))
 
-<<<<<<< HEAD
-// SetParallelismはRunParallelが使用するゴルーチンの数をp*GOMAXPROCSに設定します。
-// 通常、CPUバウンドのベンチマークではSetParallelismを呼び出す必要はありません。
+// SetParallelismは、[B.RunParallel] によって使用されるゴルーチンの数をp*GOMAXPROCSに設定します。
+// CPUに依存するベンチマークでは、通常SetParallelismを呼び出す必要はありません。
 // pが1未満の場合、この呼び出しは効果がありません。
 func (b *B) SetParallelism(p int)
 
-// Benchmarkは単一の関数をベンチマークします。これは、"go test"コマンドを使用しないカスタムベンチマークの作成に役立ちます。
-// もしfがテストフラグに依存している場合は、Benchmarkを呼び出す前とflag.Parseを呼び出す前に、Initを使用してこれらのフラグを登録する必要があります。
-// もしfがRunを呼び出す場合、結果はRunを呼び出さないすべてのサブベンチマークをシーケンスで実行した場合の推定値となります。
-=======
-// SetParallelism sets the number of goroutines used by [B.RunParallel] to p*GOMAXPROCS.
-// There is usually no need to call SetParallelism for CPU-bound benchmarks.
-// If p is less than 1, this call will have no effect.
-func (b *B) SetParallelism(p int)
-
-// Benchmark benchmarks a single function. It is useful for creating
-// custom benchmarks that do not use the "go test" command.
+// Benchmarkは単一の関数をベンチマークします。これは、"go test"コマンドを使用しない
+// カスタムベンチマークを作成するのに便利です。
 //
-// If f depends on testing flags, then [Init] must be used to register
-// those flags before calling Benchmark and before calling [flag.Parse].
+// もしfがテストフラグに依存しているなら、Benchmarkを呼び出す前と
+// [flag.Parse] を呼び出す前に、それらのフラグを登録するために [Init] を使用する必要があります。
 //
-// If f calls Run, the result will be an estimate of running all its
-// subbenchmarks that don't call Run in sequence in a single benchmark.
->>>>>>> upstream/master
+// もしfがRunを呼び出すなら、結果は単一のベンチマーク内で連続して
+// Runを呼び出さないすべてのサブベンチマークを実行するための推定値になります。
 func Benchmark(f func(b *B)) BenchmarkResult
