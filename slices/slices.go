@@ -54,79 +54,39 @@ func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool { return false }
 // この関数の計算量は O(len(s) + len(v)) です。
 func Insert[S ~[]E, E any](s S, i int, v ...E) S { return nil }
 
-<<<<<<< HEAD
-// Delete は、s[i:j] の要素を削除し、変更されたスライスを返します。
-// s[i:j] が s の有効なスライスでない場合、Delete は panic を発生させます。
-// Delete は O(len(s)-j) であり、多数のアイテムを削除する必要がある場合は、
-// 1つずつ削除するよりも、まとめて削除する単一の呼び出しを作成する方が良いです。
-// Delete は、s[len(s)-(j-i):len(s)] の要素を変更しない場合があります。
-// これらの要素にポインタが含まれている場合は、参照するオブジェクトをガベージコレクションできるように、
-// これらの要素をゼロにすることを検討する必要があります。
+// Deleteは、sから要素s[i:j]を削除し、変更されたスライスを返します。
+// j > len(s)またはs[i:j]がsの有効なスライスでない場合、Deleteはパニックを引き起こします。
+// DeleteはO(len(s)-i)なので、多くのアイテムを削除する必要がある場合、
+// 一度に一つずつ削除するよりも、一度に全てを削除するための単一の呼び出しを行う方が良いです。
+// Deleteは要素s[len(s)-(j-i):len(s)]をゼロにします。
 func Delete[S ~[]E, E any](s S, i, j int) S { return nil }
-=======
-// Delete removes the elements s[i:j] from s, returning the modified slice.
-// Delete panics if j > len(s) or s[i:j] is not a valid slice of s.
-// Delete is O(len(s)-i), so if many items must be deleted, it is better to
-// make a single call deleting them all together than to delete one at a time.
-// Delete zeroes the elements s[len(s)-(j-i):len(s)].
-func Delete[S ~[]E, E any](s S, i, j int) S
->>>>>>> upstream/master
 
-<<<<<<< HEAD
-// DeleteFunc は、del が true を返す要素を s から削除し、変更されたスライスを返します。
-// DeleteFunc が m 個の要素を削除すると、s[len(s)-m:len(s)] の要素を変更しない場合があります。
-// これらの要素にポインタが含まれている場合は、参照するオブジェクトをガベージコレクションできるように、
-// これらの要素をゼロにすることを検討する必要があります。
+// DeleteFuncは、delがtrueを返すsの任意の要素を削除し、
+// 変更されたスライスを返します。
+// DeleteFuncは新しい長さと元の長さの間の要素をゼロにします。
 func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S { return nil }
-=======
-// DeleteFunc removes any elements from s for which del returns true,
-// returning the modified slice.
-// DeleteFunc zeroes the elements between the new length and the original length.
-func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S
->>>>>>> upstream/master
 
-<<<<<<< HEAD
-// Replace は、s[i:j] の要素を与えられた v で置き換え、変更されたスライスを返します。
-// s[i:j] が s の有効なスライスでない場合、Replace は panic を発生させます。
+// Replaceは、要素s[i:j]を与えられたvで置き換え、
+// 変更されたスライスを返します。
+// Replaceは、j > len(s)またはs[i:j]がsの有効なスライスでない場合、パニックを引き起こします。
+// len(v) < (j-i)の場合、Replaceは新しい長さと元の長さの間の要素をゼロにします。
 func Replace[S ~[]E, E any](s S, i, j int, v ...E) S { return nil }
-=======
-// Replace replaces the elements s[i:j] by the given v, and returns the
-// modified slice.
-// Replace panics if j > len(s) or s[i:j] is not a valid slice of s.
-// When len(v) < (j-i), Replace zeroes the elements between the new length and the original length.
-func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
->>>>>>> upstream/master
 
 // Clone は、スライスのコピーを返します。
 // 要素は代入を使用してコピーされるため、これは浅いクローンです。
 func Clone[S ~[]E, E any](s S) S { return nil }
 
-<<<<<<< HEAD
-// Compact は、等しい要素の連続したランを単一のコピーに置き換えます。
-// これは、Unix で見つかる uniq コマンドのようです。
-// Compact はスライス s の内容を変更し、変更されたスライスを返します。
-// 変更されたスライスの長さが短くなる場合があります。
-// Compact が合計で m 個の要素を破棄すると、s[len(s)-m:len(s)] の要素を変更しない場合があります。
-// これらの要素にポインタが含まれている場合は、参照するオブジェクトをガベージコレクションできるように、
-// これらの要素をゼロにすることを検討する必要があります。
+// Compactは、等しい要素の連続した実行を単一のコピーで置き換えます。
+// これはUnixにあるuniqコマンドのようなものです。
+// Compactはスライスsの内容を変更し、変更されたスライスを返します。
+// これはより小さい長さを持つ可能性があります。
+// Compactは新しい長さと元の長さの間の要素をゼロにします。
 func Compact[S ~[]E, E comparable](s S) S { return nil }
 
-// CompactFunc は、等価性関数を使用して要素を比較する Compact です。
-// 等しい要素のランに対して、CompactFunc は最初の要素を保持します。
+// CompactFuncは [Compact] と似ていますが、要素を比較するための等価性関数を使用します。
+// 等しいと比較される要素の連続について、CompactFuncは最初のものを保持します。
+// CompactFuncは新しい長さと元の長さの間の要素をゼロにします。
 func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S { return nil }
-=======
-// Compact replaces consecutive runs of equal elements with a single copy.
-// This is like the uniq command found on Unix.
-// Compact modifies the contents of the slice s and returns the modified slice,
-// which may have a smaller length.
-// Compact zeroes the elements between the new length and the original length.
-func Compact[S ~[]E, E comparable](s S) S
-
-// CompactFunc is like [Compact] but uses an equality function to compare elements.
-// For runs of elements that compare equal, CompactFunc keeps the first one.
-// CompactFunc zeroes the elements between the new length and the original length.
-func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S
->>>>>>> upstream/master
 
 // Grow は、必要に応じてスライスの容量を増やし、別の n 要素のスペースを保証します。
 // Grow(n) の後、スライスには、別の割り当てなしで n 要素が追加できます。
