@@ -8,11 +8,7 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-<<<<<<< HEAD
-// ValueKindはメトリックの値のタグで、そのタイプを示します。
-=======
-// ValueKind is a tag for a metric [Value] which indicates its type.
->>>>>>> upstream/master
+// ValueKindはメトリックの [Value] のタグで、そのタイプを示します。
 type ValueKind int
 
 const (
