@@ -15,16 +15,11 @@ import (
 // [NewChecker] で作成する必要があります。
 type Checker struct {
 
-<<<<<<< HEAD
-	// パッケージの情報
-	// (NewCheckerによって初期化され、checkerの寿命の間有効)
-=======
 	// If EnableAlias is set, alias declarations produce an Alias type.
 	// Otherwise the alias information is only in the type name, which
 	// points directly to the actual (aliased) type.
 	enableAlias bool
 
->>>>>>> upstream/master
 	conf *Config
 	ctxt *Context
 	fset *token.FileSet

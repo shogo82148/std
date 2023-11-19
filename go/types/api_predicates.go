@@ -8,45 +8,38 @@
 
 package types
 
-// AssertableTo reports whether a value of type V can be asserted to have type T.
+// AssertableToは、型Vの値が型Tにアサートされることができるかどうかを報告します。
 //
-// The behavior of AssertableTo is unspecified in three cases:
-//   - if T is Typ[Invalid]
-//   - if V is a generalized interface; i.e., an interface that may only be used
-//     as a type constraint in Go code
-//   - if T is an uninstantiated generic type
+// AssertableToの動作は、3つのケースで未指定です：
+//   - TがTyp[Invalid]である場合
+//   - Vが一般化されたインタフェースである場合。つまり、Goコードで型制約としてのみ使用されるインタフェースである場合
+//   - Tが未実体化のジェネリック型である場合
 func AssertableTo(V *Interface, T Type) bool
 
-// AssignableTo reports whether a value of type V is assignable to a variable
-// of type T.
+// AssignableToは、型Vの値が型Tの変数に代入可能かどうかを報告します。
 //
-// The behavior of AssignableTo is unspecified if V or T is Typ[Invalid] or an
-// uninstantiated generic type.
+// AssignableToの動作は、VまたはTがTyp[Invalid]またはインスタンス化されていないジェネリック型の場合、指定されていません。
 func AssignableTo(V, T Type) bool
 
-// ConvertibleTo reports whether a value of type V is convertible to a value of
-// type T.
+// ConvertibleToは、型Vの値が型Tの値に変換可能かどうかを報告します。
 //
-// The behavior of ConvertibleTo is unspecified if V or T is Typ[Invalid] or an
-// uninstantiated generic type.
+// ConvertibleToの動作は、VまたはTがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、指定されていません。
 func ConvertibleTo(V, T Type) bool
 
-// Implements reports whether type V implements interface T.
+// Implementsは、型VがインターフェースTを実装しているかどうかを報告します。
 //
-// The behavior of Implements is unspecified if V is Typ[Invalid] or an uninstantiated
-// generic type.
+// VがTyp[Invalid]やインスタンス化されていないジェネリック型の場合、Implementsの動作は未指定です。
 func Implements(V Type, T *Interface) bool
 
-// Satisfies reports whether type V satisfies the constraint T.
+// Satisfiesは型Vが制約Tを満たすかどうかを報告します。
 //
-// The behavior of Satisfies is unspecified if V is Typ[Invalid] or an uninstantiated
-// generic type.
+// VがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、Satisfiesの動作は指定されていません。
 func Satisfies(V Type, T *Interface) bool
 
-// Identical reports whether x and y are identical types.
-// Receivers of [Signature] types are ignored.
+// Identicalはxとyが同じ型であるかどうかを返します。
+// [Signature] 型のレシーバは無視されます。
 func Identical(x, y Type) bool
 
-// IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.
-// Receivers of [Signature] types are ignored.
+// IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
+// [Signature] 型のレシーバーは無視されます。
 func IdenticalIgnoreTags(x, y Type) bool
