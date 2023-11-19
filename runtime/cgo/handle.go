@@ -51,17 +51,9 @@ package cgo
 //	    MyGoPrint(handle);
 //	}
 //
-<<<<<<< HEAD
 // 特定のCの関数は、呼び出し元が提供した任意のデータの値を指すvoid*引数を受け入れます。
-// cgo.Handle（整数）をGoのunsafe.Pointerに強制変換することは安全ではありませんが、
+// [cgo.Handle]（整数）をGoの [unsafe.Pointer] に強制変換することは安全ではありませんが、
 // 代わりにcgo.Handleのアドレスをvoid*パラメータに渡すことができます。次に示す前の例のバリアントでは、このようにします。
-=======
-// Some C functions accept a void* argument that points to an arbitrary
-// data value supplied by the caller. It is not safe to coerce a [cgo.Handle]
-// (an integer) to a Go [unsafe.Pointer], but instead we can pass the address
-// of the cgo.Handle to the void* parameter, as in this variant of the
-// previous example:
->>>>>>> upstream/master
 //
 //	package main
 //
