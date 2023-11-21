@@ -32,7 +32,10 @@ type FuncDebug struct {
 	OptDcl []*ir.Name
 
 	// Filled in by the user. Translates Block and Value ID to PC.
-	GetPC func(ID, ID) int64
+	//
+	// NOTE: block is only used if value is BlockStart.ID or BlockEnd.ID.
+	// Otherwise, it is ignored.
+	GetPC func(block, value ID) int64
 }
 
 type BlockDebug struct {

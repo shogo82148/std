@@ -15,6 +15,6 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 )
 
-// Static devirtualizes calls within fn where possible when the concrete callee
+// StaticCall devirtualizes the given call if possible when the concrete callee
 // is available statically.
-func Static(fn *ir.Func)
+func StaticCall(call *ir.CallExpr)

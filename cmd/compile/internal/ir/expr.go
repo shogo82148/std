@@ -79,6 +79,7 @@ type CallExpr struct {
 	RType     Node `mknode:"-"`
 	KeepAlive []*Name
 	IsDDD     bool
+	GoDefer   bool
 	NoInline  bool
 }
 
@@ -173,7 +174,7 @@ type KeyExpr struct {
 
 func NewKeyExpr(pos src.XPos, key, value Node) *KeyExpr
 
-// A StructKeyExpr is an Field: Value composite literal key.
+// A StructKeyExpr is a Field: Value composite literal key.
 type StructKeyExpr struct {
 	miniExpr
 	Field *types.Field
