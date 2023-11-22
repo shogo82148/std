@@ -4,4 +4,4 @@
 
 // Serving of pprof-like profiles.
 
-package main
+package trace

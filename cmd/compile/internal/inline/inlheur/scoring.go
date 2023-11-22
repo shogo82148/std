@@ -15,6 +15,33 @@ import (
 // -d=inlscoreadj=inLoopAdj=0/passConstToIfAdj=-99
 func SetupScoreAdjustments()
 
+// LargestNegativeScoreAdjustment tries to estimate the largest possible
+// negative score adjustment that could be applied to a call of the
+// function with the specified props. Example:
+//
+//	func foo() {                  func bar(x int, p *int) int {
+//	   ...                          if x < 0 { *p = x }
+//	}                               return 99
+//	                              }
+//
+// Function 'foo' above on the left has no interesting properties,
+// thus as a result the most we'll adjust any call to is the value for
+// "call in loop". If the calculated cost of the function is 150, and
+// the in-loop adjustment is 5 (for example), then there is not much
+// point treating it as inlinable. On the other hand "bar" has a param
+// property (parameter "x" feeds unmodified to an "if" statement") and
+// a return property (always returns same constant) meaning that a
+// given call _could_ be rescored down as much as -35 points-- thus if
+// the size of "bar" is 100 (for example) then there is at least a
+// chance that scoring will enable inlining.
+func LargestNegativeScoreAdjustment(fn *ir.Func, props *FuncProps) int
+
+// LargestPositiveScoreAdjustment tries to estimate the largest possible
+// positive score adjustment that could be applied to a given callsite.
+// At the moment we don't have very many positive score adjustments, so
+// this is just hard-coded, not table-driven.
+func LargestPositiveScoreAdjustment(fn *ir.Func) int
+
 // ScoreCalls assigns numeric scores to each of the callsites in
 // function 'fn'; the lower the score, the more helpful we think it
 // will be to inline.

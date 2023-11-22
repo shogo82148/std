@@ -5,7 +5,6 @@
 package trace
 
 import (
-	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/time"
 )
 
@@ -58,7 +57,7 @@ func MutatorUtilization(events []*Event, flags UtilFlags) [][]MutatorUtil
 //
 // If the UtilPerProc flag is not given, this always returns a single
 // utilization function. Otherwise, it returns one function per P.
-func MutatorUtilizationV2(trace io.Reader, flags UtilFlags) ([][]MutatorUtil, error)
+func MutatorUtilizationV2(events []tracev2.Event, flags UtilFlags) [][]MutatorUtil
 
 // An MMUCurve is the minimum mutator utilization curve across
 // multiple window sizes.

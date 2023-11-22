@@ -4,16 +4,6 @@
 
 package main
 
-type Range struct {
-	Name      string
-	Start     int
-	End       int
-	StartTime int64
-	EndTime   int64
-}
-
-func (r Range) URL() string
-
 type NameArg struct {
 	Name string `json:"name"`
 }
