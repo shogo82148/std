@@ -187,24 +187,11 @@ type Transport struct {
 	// この時間には、リクエストヘッダーを送信する時間は含まれません。
 	ExpectContinueTimeout time.Duration
 
-<<<<<<< HEAD
 	// TLSNextProtoは、TLS ALPNプロトコルネゴシエーション後にTransportが代替プロトコル（HTTP/2など）に切り替える方法を指定します。
 	// Transportがプロトコル名が空でないTLS接続をダイアルし、TLSNextProtoにそのキーのマップエントリが含まれている場合（"h2"など）、
 	// リクエストの権限（"example.com"または"example.com:1234"など）とTLS接続でfuncが呼び出されます。
 	// この関数は、その後リクエストを処理するRoundTripperを返さなければなりません。
 	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的に有効になりません。
-=======
-	// TLSNextProto specifies how the Transport switches to an
-	// alternate protocol (such as HTTP/2) after a TLS ALPN
-	// protocol negotiation. If Transport dials a TLS connection
-	// with a non-empty protocol name and TLSNextProto contains a
-	// map entry for that key (such as "h2"), then the func is
-	// called with the request's authority (such as "example.com"
-	// or "example.com:1234") and the TLS connection. The function
-	// must return a RoundTripper that then handles the request.
-	// If TLSNextProto is not nil, HTTP/2 support is not enabled
-	// automatically.
->>>>>>> upstream/master
 	TLSNextProto map[string]func(authority string, c *tls.Conn) RoundTripper
 
 	// ProxyConnectHeaderは、CONNECTリクエスト中にプロキシに送信するヘッダーをオプションで指定します。
