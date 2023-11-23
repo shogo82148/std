@@ -28,15 +28,8 @@ type F struct {
 	fuzzContext *fuzzContext
 	testContext *testContext
 
-<<<<<<< HEAD
-	// inFuzzFn は、fuzz 関数が実行中である場合に true です。inFuzzFn が true の場合、ほとんどの F メソッドは呼び出すことができません。
-	inFuzzFn bool
-
-	// corpusはシードコーパスのエントリのセットで、F.Addで追加され、testdataから読み込まれます。
-=======
 	// corpus is a set of seed corpus entries, added with F.Add and loaded
 	// from testdata.
->>>>>>> upstream/master
 	corpus []corpusEntry
 
 	result     fuzzResult
