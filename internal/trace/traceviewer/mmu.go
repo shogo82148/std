@@ -1,4 +1,4 @@
-// Copyright 2017 The Go Authors. All rights reserved.
+// Copyright 2023 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -23,4 +23,13 @@
 // could potentially put confidence intervals on these estimates and
 // render this progressively as we refine the distributions.
 
-package main
+package traceviewer
+
+import (
+	"github.com/shogo82148/std/internal/trace"
+	"github.com/shogo82148/std/net/http"
+)
+
+type MutatorUtilFunc func(trace.UtilFlags) ([][]trace.MutatorUtil, error)
+
+func MMUHandlerFunc(ranges []Range, f MutatorUtilFunc) http.HandlerFunc

@@ -2,10 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package loadpe
+package trace
 
-const (
-	UNW_FLAG_EHANDLER  = 1 << 3
-	UNW_FLAG_UHANDLER  = 2 << 3
-	UNW_FLAG_CHAININFO = 4 << 3
-)
+var _ generator = &threadGenerator{}

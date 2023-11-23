@@ -32,11 +32,25 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/pgo"
 )
 
-// InlinePackage finds functions that can be inlined and clones them before walk expands them.
-func InlinePackage(p *pgo.Profile)
+// PGOInlinePrologue records the hot callsites from ir-graph.
+func PGOInlinePrologue(p *pgo.Profile, funcs []*ir.Func)
 
-// InlineDecls applies inlining to the given batch of declarations.
-func InlineDecls(p *pgo.Profile, funcs []*ir.Func, doInline bool)
+// CanInlineFuncs computes whether a batch of functions are inlinable.
+func CanInlineFuncs(funcs []*ir.Func, profile *pgo.Profile)
+
+// CanInlineSCC computes the inlinability of functions within an SCC
+// (strongly connected component).
+//
+// CanInlineSCC is designed to be used by ir.VisitFuncsBottomUp
+// callbacks.
+func CanInlineSCC(funcs []*ir.Func, recursive bool, profile *pgo.Profile)
+
+// GarbageCollectUnreferencedHiddenClosures makes a pass over all the
+// top-level (non-hidden-closure) functions looking for nested closure
+// functions that are reachable, then sweeps through the Target.Decls
+// list and marks any non-reachable hidden closure function as dead.
+// See issues #59404 and #59638 for more context.
+func GarbageCollectUnreferencedHiddenClosures()
 
 // CanInline determines whether fn is inlineable.
 // If so, CanInline saves copies of fn.Body and fn.Dcl in fn.Inl.
@@ -47,9 +61,14 @@ func CanInline(fn *ir.Func, profile *pgo.Profile)
 // inline regardless of cost or contents.
 func InlineImpossible(fn *ir.Func) string
 
-// InlineCalls/inlnode walks fn's statements and expressions and substitutes any
-// calls made to inlineable functions. This is the external entry point.
-func InlineCalls(fn *ir.Func, profile *pgo.Profile)
+// IsBigFunc reports whether fn is a "big" function.
+//
+// Note: The criteria for "big" is heuristic and subject to change.
+func IsBigFunc(fn *ir.Func) bool
+
+// TryInlineCall returns an inlined call expression for call, or nil
+// if inlining is not possible.
+func TryInlineCall(callerfn *ir.Func, call *ir.CallExpr, bigCaller bool, profile *pgo.Profile) *ir.InlinedCallExpr
 
 // SSADumpInline gives the SSA back end a chance to dump the function
 // when producing output for debugging the compiler itself.
@@ -64,3 +83,5 @@ var InlineCall = func(callerfn *ir.Func, call *ir.CallExpr, fn *ir.Func, inlInde
 
 // CalleeEffects appends any side effects from evaluating callee to init.
 func CalleeEffects(init *ir.Nodes, callee ir.Node)
+
+func PostProcessCallSites(profile *pgo.Profile)
