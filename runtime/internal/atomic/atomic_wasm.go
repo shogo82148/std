@@ -207,27 +207,3 @@ func Xaddint32(ptr *int32, delta int32) int32
 //go:nosplit
 //go:noinline
 func Xaddint64(ptr *int64, delta int64) int64
-
-//go:nosplit
-//go:noinline
-func And32(ptr *uint32, val uint32) uint32
-
-//go:nosplit
-//go:noinline
-func And64(ptr *uint64, val uint64) uint64
-
-//go:nosplit
-//go:noinline
-func Anduintptr(ptr *uintptr, val uintptr) uintptr
-
-//go:nosplit
-//go:noinline
-func Or32(ptr *uint32, val uint32) uint32
-
-//go:nosplit
-//go:noinline
-func Or64(ptr *uint64, val uint64) uint64
-
-//go:nosplit
-//go:noinline
-func Oruintptr(ptr *uintptr, val uintptr) uintptr

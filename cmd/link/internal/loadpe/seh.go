@@ -7,5 +7,5 @@ package loadpe
 const (
 	UNW_FLAG_EHANDLER  = 1 << 3
 	UNW_FLAG_UHANDLER  = 2 << 3
-	UNW_FLAG_CHAININFO = 3 << 3
+	UNW_FLAG_CHAININFO = 4 << 3
 )
