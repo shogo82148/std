@@ -67,6 +67,8 @@ type ParseResult struct {
 // Parse parses, post-processes and verifies the trace.
 func Parse(r io.Reader, bin string) (ParseResult, error)
 
+func ReadVersion(r io.Reader) (ver int, off int, err error)
+
 // ErrTimeOrder is returned by Parse when the trace contains
 // time stamps that do not respect actual event ordering.
 var ErrTimeOrder = fmt.Errorf("time stamps out of order")

@@ -96,8 +96,14 @@ type ConnectionState struct {
 	ekm func(label string, context []byte, length int) ([]byte, error)
 }
 
-// ExportKeyingMaterialは、RFC 5705で定義されているように、エクスポートされたキーマテリアルの長さのバイトを新しいスライスで返します。contextがnilの場合、シードの一部として使用されません。Config.Renegotiation経由で再協議が許可された接続の場合、この関数はエラーを返します。
-// 返された値が接続に固有でない場合、条件があります。RFC 5705およびRFC 7627のセキュリティに関する考慮事項セクション、およびhttps://mitls.org/pages/attacks/3SHAKE#channelbindingsを参照してください。
+// ExportKeyingMaterialは、RFC 5705で定義されているように、新しいスライスにlengthバイトの
+// エクスポートされた鍵マテリアルを返します。contextがnilの場合、それはシードの一部として使用されません。
+// 接続がConfig.Renegotiationを介して再交渉を許可するように設定されていた場合、または接続がTLS 1.3も
+// Extended Master Secretもサポートしていない場合、この関数はエラーを返します。
+//
+// Extended Master SecretまたはTLS 1.3なしでの鍵マテリアルのエクスポートは、
+// セキュリティ上の問題（RFC 5705とRFC 7627のセキュリティ考慮事項セクションを参照）により、
+// Go 1.22で無効化されましたが、GODEBUG設定tlsunsafeekm=1で再度有効化できます。
 func (cs *ConnectionState) ExportKeyingMaterial(label string, context []byte, length int) ([]byte, error)
 
 // ClientAuthTypeは、TLSクライアント認証に関するサーバーのポリシーを宣言します。

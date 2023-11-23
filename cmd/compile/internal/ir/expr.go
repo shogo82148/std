@@ -79,6 +79,7 @@ type CallExpr struct {
 	RType     Node `mknode:"-"`
 	KeepAlive []*Name
 	IsDDD     bool
+	GoDefer   bool
 	NoInline  bool
 }
 
@@ -173,7 +174,7 @@ type KeyExpr struct {
 
 func NewKeyExpr(pos src.XPos, key, value Node) *KeyExpr
 
-// A StructKeyExpr is an Field: Value composite literal key.
+// A StructKeyExpr is a Field: Value composite literal key.
 type StructKeyExpr struct {
 	miniExpr
 	Field *types.Field
@@ -425,6 +426,8 @@ func StaticValue(n Node) Node
 // NB: global variables are always considered to be re-assigned.
 // TODO: handle initial declaration not including an assignment and
 // followed by a single assignment?
+// NOTE: any changes made here should also be made in the corresponding
+// code in the ReassignOracle.Init method.
 func Reassigned(name *Name) bool
 
 // StaticCalleeName returns the ONAME/PFUNC for n, if known.

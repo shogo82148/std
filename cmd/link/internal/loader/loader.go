@@ -321,7 +321,7 @@ func (l *Loader) SetAttrShared(i Sym, v bool)
 // object files.
 func (l *Loader) AttrExternal(i Sym) bool
 
-// SetAttrExternal sets the "external" property for an host object
+// SetAttrExternal sets the "external" property for a host object
 // symbol (see AttrExternal).
 func (l *Loader) SetAttrExternal(i Sym, v bool)
 

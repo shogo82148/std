@@ -2,10 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package loadpe
+//go:build goexperiment.regabiargs
+
+package abi
 
 const (
-	UNW_FLAG_EHANDLER  = 1 << 3
-	UNW_FLAG_UHANDLER  = 2 << 3
-	UNW_FLAG_CHAININFO = 4 << 3
+
+	// R4 - R19
+	IntArgRegs = 16
+
+	// F0 - F15
+	FloatArgRegs = 16
+
+	EffectiveFloatRegSize = 8
 )
