@@ -14,14 +14,9 @@ func Unwrap(err error) error
 
 // Isは、errのツリー内の任意のエラーがtargetに一致するかどうかを報告します。
 //
-<<<<<<< HEAD
-// ツリーは、err自体に続いて、 [Unwrap] を繰り返し呼び出して得られたエラーで構成されています。
-// errが複数のエラーをラップしている場合、Isは、errに続いてその子の深さ優先のトラバースを行います。
-=======
-// The tree consists of err itself, followed by the errors obtained by repeatedly
-// calling its Unwrap() error or Unwrap() []error method. When err wraps multiple
-// errors, Is examines err followed by a depth-first traversal of its children.
->>>>>>> upstream/master
+// このツリーは、err自体と、その後に繰り返しUnwrap() errorまたはUnwrap() []errorメソッドを
+// 呼び出すことで得られるエラーで構成されています。errが複数のエラーをラップしている場合、
+// Isはerrとその子の深さ優先探索を順に調べます。
 //
 // ターゲットに一致するエラーは、そのターゲットに等しい場合、または
 // Is(error) boolというメソッドを実装している場合、Is(target)がtrueを返す場合です。
@@ -40,14 +35,9 @@ func Is(err, target error) bool
 // 一致するエラーが見つかった場合、targetをそのエラー値に設定してtrueを返します。
 // それ以外の場合、falseを返します。
 //
-<<<<<<< HEAD
-// ツリーは、err自体に続いて、[Unwrap] を繰り返し呼び出して得られたエラーで構成されています。
-// errが複数のエラーをラップしている場合、Asは、errに続いてその子の深さ優先のトラバースを行います。
-=======
-// The tree consists of err itself, followed by the errors obtained by repeatedly
-// calling its Unwrap() error or Unwrap() []error method. When err wraps multiple
-// errors, As examines err followed by a depth-first traversal of its children.
->>>>>>> upstream/master
+// このツリーは、err自体と、その後に繰り返しUnwrap() errorまたはUnwrap() []errorメソッドを
+// 呼び出すことで得られるエラーで構成されています。errが複数のエラーをラップしている場合、
+// Asはerrとその子の深さ優先探索を順に調べます。
 //
 // エラーがターゲットに一致する場合、エラーの具体的な値がtargetが指す値に代入可能であるか、
 // またはエラーがAs(interface{}) boolというメソッドを持ち、As(target)がtrueを返す場合です。
