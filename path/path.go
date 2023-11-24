@@ -51,8 +51,18 @@ func Base(path string) string
 // IsAbsはパスが絶対パスかどうかを報告します。
 func IsAbs(path string) bool
 
+<<<<<<< HEAD
 // Dirはパスの最後の要素以外のすべてを返します。通常はパスのディレクトリです。
 // Splitを使用して最後の要素を削除した後、パスはクリーン化され、末尾のスラッシュは削除されます。
 // パスが空の場合、Dirは "." を返します。
 // パスがスラッシュだけで構成され、スラッシュ以外のバイトが続く場合、Dirは単一のスラッシュを返します。それ以外の場合、返されるパスはスラッシュで終わりません。
+=======
+// Dir returns all but the last element of path, typically the path's directory.
+// After dropping the final element using [Split], the path is Cleaned and trailing
+// slashes are removed.
+// If the path is empty, Dir returns ".".
+// If the path consists entirely of slashes followed by non-slash bytes, Dir
+// returns a single slash. In any other case, the returned path does not end in a
+// slash.
+>>>>>>> upstream/master
 func Dir(path string) string

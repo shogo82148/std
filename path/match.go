@@ -18,6 +18,7 @@ var ErrBadPattern = errors.New("syntax error in pattern")
 //
 //	{ 要素 }
 //
+<<<<<<< HEAD
 // 要素:
 //
 //	'*'         非/の任意のシーケンスに一致します
@@ -35,4 +36,9 @@ var ErrBadPattern = errors.New("syntax error in pattern")
 //
 // Matchはパターンがname全体と一致する必要があります。部分一致ではありません。
 // 返される可能性のある唯一のエラーは、patternが正しくない場合のErrBadPatternです。
+=======
+// Match requires pattern to match all of name, not just a substring.
+// The only possible returned error is [ErrBadPattern], when pattern
+// is malformed.
+>>>>>>> upstream/master
 func Match(pattern, name string) (matched bool, err error)
