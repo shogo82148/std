@@ -29,29 +29,12 @@ var ErrBadPattern = errors.New("syntax error in pattern")
 //		'\\' c      文字cに一致します
 //		lo '-' hi   lo <= c <= hi の条件で文字cに一致します
 //
-<<<<<<< HEAD
 // Matchは、パターンが名前全体ではなく、部分文字列ではないことを要求します。
-// 返される唯一の可能なエラーは、パターンが異常である場合のErrBadPatternです。
-=======
-// Match requires pattern to match all of name, not just a substring.
-// The only possible returned error is [ErrBadPattern], when pattern
-// is malformed.
->>>>>>> upstream/master
+// 返される唯一の可能なエラーは、パターンが異常である場合の [ErrBadPattern] です。
 //
 // Windowsでは、エスケープは無効になっています。代わりに'\\'はパスセパレータとして扱われます。
 func Match(pattern, name string) (matched bool, err error)
 
-<<<<<<< HEAD
-// Globは、パターンに一致するすべてのファイルの名前を返します。一致するファイルがない場合はnilを返します。パターンの構文はMatchと同じです。パターンには、/usr/*/bin/ed（セパレータが '/'と仮定）などの階層的な名前を記述することができます。
-// Globは、ディレクトリを読み込む際のI/Oエラーなどのファイルシステムのエラーを無視します。返される唯一の可能性のあるエラーは、パターンが不正な場合のErrBadPatternです。
-=======
-// Glob returns the names of all files matching pattern or nil
-// if there is no matching file. The syntax of patterns is the same
-// as in [Match]. The pattern may describe hierarchical names such as
-// /usr/*/bin/ed (assuming the [Separator] is '/').
-//
-// Glob ignores file system errors such as I/O errors reading directories.
-// The only possible returned error is [ErrBadPattern], when pattern
-// is malformed.
->>>>>>> upstream/master
+// Globは、パターンに一致するすべてのファイルの名前を返します。一致するファイルがない場合はnilを返します。パターンの構文はMatchと同じです。パターンには、/usr/*/bin/ed（[Separator] が '/'と仮定）などの階層的な名前を記述することができます。
+// Globは、ディレクトリを読み込む際のI/Oエラーなどのファイルシステムのエラーを無視します。返される唯一の可能性のあるエラーは、パターンが不正な場合の [ErrBadPattern] です。
 func Glob(pattern string) (matches []string, err error)

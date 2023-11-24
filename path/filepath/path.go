@@ -22,21 +22,11 @@ const (
 // Cleanは、純粋な字句解析によってパスに相当する最短のパス名を返します。
 // 次の規則を適用し、処理できなくなるまで反復的に行います。
 //
-<<<<<<< HEAD
-//  1. 複数の区切り要素を単一の要素に置き換える。
+//  1. 複数の [Separator] 要素を単一の要素に置き換える。
 //  2. 各「.」パス名要素（カレントディレクトリ）を削除する。
 //  3. 各内部の「..」パス名要素（親ディレクトリ）を削除し、それに続く非「..」要素も削除する。
 //  4. ルートパスで始まる「..」要素を削除する：
 //     つまり、パスの先頭で "/.." を "/" に置き換える（セパレータが '/' であると仮定）。
-=======
-//  1. Replace multiple [Separator] elements with a single one.
-//  2. Eliminate each . path name element (the current directory).
-//  3. Eliminate each inner .. path name element (the parent directory)
-//     along with the non-.. element that precedes it.
-//  4. Eliminate .. elements that begin a rooted path:
-//     that is, replace "/.." by "/" at the beginning of a path,
-//     assuming Separator is '/'.
->>>>>>> upstream/master
 //
 // 返されるパスは、ルートディレクトリを表す場合のみスラッシュで終わります。
 // 例：Unixでは "/"、Windowsでは `C:\` などです。
@@ -70,42 +60,19 @@ func ToSlash(path string) string
 // FromSlash はスラッシュ（'/'）文字を区切り文字で置き換えた結果を返します。複数のスラッシュは複数の区切り文字に置き換えられます。
 func FromSlash(path string) string
 
-<<<<<<< HEAD
-// SplitListは、OS固有のListSeparatorで結合されたパスのリストを分割します。
+// SplitListは、OS固有の [ListSeparator] で結合されたパスのリストを分割します。
 // 通常、 PATHまたはGOPATH環境変数で見つかることがあります。
 // strings.Splitとは異なり、SplitListは空のスライスを返します。
 // 空の文字列が渡された場合。
 func SplitList(path string) []string
 
-// Splitは最後のセパレータの直後にあるパスを分割し、ディレクトリとファイル名の要素に分けます。
-// パスにセパレータがない場合、Splitは空のディレクトリとファイルを返します。
+// Splitは最後の [Separator] の直後にあるパスを分割し、ディレクトリとファイル名の要素に分けます。
+// パスにSeparatorがない場合、Splitは空のディレクトリとファイルを返します。
 // 返される値は path = dir + file という性質を持ちます。
 func Split(path string) (dir, file string)
 
-// Joinは、パスの要素をいくつでも指定して、OS固有のセパレータで区切って1つのパスに結合します。空の要素は無視されます。結果はクリーニングされます。ただし、引数リストが空であるか、そのすべての要素が空の場合、Joinは空の文字列を返します。
+// Joinは、パスの要素をいくつでも指定して、OS固有の [Separator] で区切って1つのパスに結合します。空の要素は無視されます。結果はクリーニングされます。ただし、引数リストが空であるか、そのすべての要素が空の場合、Joinは空の文字列を返します。
 // Windowsでは、最初の非空要素がUNCパスである場合にのみ結果はUNCパスになります。
-=======
-// SplitList splits a list of paths joined by the OS-specific [ListSeparator],
-// usually found in PATH or GOPATH environment variables.
-// Unlike strings.Split, SplitList returns an empty slice when passed an empty
-// string.
-func SplitList(path string) []string
-
-// Split splits path immediately following the final [Separator],
-// separating it into a directory and file name component.
-// If there is no Separator in path, Split returns an empty dir
-// and file set to path.
-// The returned values have the property that path = dir+file.
-func Split(path string) (dir, file string)
-
-// Join joins any number of path elements into a single path,
-// separating them with an OS specific [Separator]. Empty elements
-// are ignored. The result is Cleaned. However, if the argument
-// list is empty or all its elements are empty, Join returns
-// an empty string.
-// On Windows, the result will only be a UNC path if the first
-// non-empty element is a UNC path.
->>>>>>> upstream/master
 func Join(elem ...string) string
 
 // Extはpathで使用されるファイル名の拡張子を返します。
@@ -113,49 +80,24 @@ func Join(elem ...string) string
 // ドットがない場合は空です。
 func Ext(path string) string
 
-<<<<<<< HEAD
 // EvalSymlinksは、シンボリックリンクの評価後のパス名を返します。
 // pathが相対パスの場合、結果は現在のディレクトリを基準にし、
 // 絶対シンボリックリンクを持つコンポーネントが存在する場合を除きます。
-// EvalSymlinksは結果に対してCleanを呼び出します。
+// EvalSymlinksは結果に対して [Clean] を呼び出します。
 func EvalSymlinks(path string) (string, error)
 
 // Absはパスの絶対表現を返します。
 // パスが絶対でない場合、現在の作業ディレクトリと結合して絶対パスに変換されます。
 // 特定のファイルの絶対パス名が一意であることは保証されません。
-// Absは結果にCleanを呼び出します。
+// Absは結果に [Clean] を呼び出します。
 func Abs(path string) (string, error)
 
 // Relは、中間のセパレーターでbasepathと結合したときにtargpathと同等の相対パスを返します。
-// つまり、Join(basepath, Rel(basepath, targpath))はtargpathと同じです。
+// つまり、[Join](basepath, Rel(basepath, targpath))はtargpathと同じです。
 // 成功した場合、返されるパスは常にbasepathに対して相対的であり、
 // basepathとtargpathが要素を共有していなくても同じです。
 // targpathがbasepathに相対化できない場合や、現在の作業ディレクトリの情報が必要な場合はエラーが返されます。
-// Relは結果に対してCleanを呼び出します。
-=======
-// EvalSymlinks returns the path name after the evaluation of any symbolic
-// links.
-// If path is relative the result will be relative to the current directory,
-// unless one of the components is an absolute symbolic link.
-// EvalSymlinks calls [Clean] on the result.
-func EvalSymlinks(path string) (string, error)
-
-// Abs returns an absolute representation of path.
-// If the path is not absolute it will be joined with the current
-// working directory to turn it into an absolute path. The absolute
-// path name for a given file is not guaranteed to be unique.
-// Abs calls [Clean] on the result.
-func Abs(path string) (string, error)
-
-// Rel returns a relative path that is lexically equivalent to targpath when
-// joined to basepath with an intervening separator. That is,
-// [Join](basepath, Rel(basepath, targpath)) is equivalent to targpath itself.
-// On success, the returned path will always be relative to basepath,
-// even if basepath and targpath share no elements.
-// An error is returned if targpath can't be made relative to basepath or if
-// knowing the current working directory would be necessary to compute it.
-// Rel calls [Clean] on the result.
->>>>>>> upstream/master
+// Relは結果に対して [Clean] を呼び出します。
 func Rel(basepath, targpath string) (string, error)
 
 // SkipDirは、WalkFuncsからの返り値として使用され、呼び出し元で指定されたディレクトリをスキップすることを示します。これは、どの関数からもエラーとして返されません。
@@ -164,12 +106,7 @@ var SkipDir error = fs.SkipDir
 // SkipAllはWalkFuncsからの戻り値として使用され、残りのすべてのファイルとディレクトリをスキップすることを示します。これはエラーではなく、いかなる関数からも戻されません。
 var SkipAll error = fs.SkipAll
 
-<<<<<<< HEAD
-// WalkFuncは、Walkによって呼び出される関数の型です。この関数は、各ファイルやディレクトリを訪れるために呼び出されます。
-=======
-// WalkFunc is the type of the function called by [Walk] to visit each
-// file or directory.
->>>>>>> upstream/master
+// WalkFuncは、[Walk] によって呼び出される関数の型です。この関数は、各ファイルやディレクトリを訪れるために呼び出されます。
 //
 // path引数には、Walkの引数がプレフィックスとして含まれています。
 // つまり、root引数が「dir」として呼び出され、そのディレクトリに「a」という名前のファイルが見つかった場合、
@@ -181,19 +118,10 @@ var SkipAll error = fs.SkipAll
 //
 // info引数は、指定されたパスのfs.FileInfoです。
 //
-<<<<<<< HEAD
 // 関数が返すエラー結果によって、Walkの継続が制御されます。
-// 関数が特殊値SkipDirを返すと、Walkは現在のディレクトリ（info.IsDirがtrueの場合はpath、そうでない場合はpathの親ディレクトリ）をスキップします。
-// 関数が特殊値SkipAllを返すと、Walkは残りの全てのファイルとディレクトリをスキップします。
+// 関数が特殊値 [SkipDir] を返すと、Walkは現在のディレクトリ（info.IsDirがtrueの場合はpath、そうでない場合はpathの親ディレクトリ）をスキップします。
+// 関数が特殊値 [SkipAll] を返すと、Walkは残りの全てのファイルとディレクトリをスキップします。
 // さもなくば、関数が非nilのエラーを返すと、Walkは完全に停止し、そのエラーを返します。
-=======
-// The error result returned by the function controls how Walk continues.
-// If the function returns the special value [SkipDir], Walk skips the
-// current directory (path if info.IsDir() is true, otherwise path's
-// parent directory). If the function returns the special value [SkipAll],
-// Walk skips all remaining files and directories. Otherwise, if the function
-// returns a non-nil error, Walk stops entirely and returns that error.
->>>>>>> upstream/master
 //
 // err引数は、pathに関連するエラーを報告し、Walkがそのディレクトリに進まないことを示します。
 // 関数はそのエラーをどのように処理するかを決定できます。先述のように、エラーを返すと、
@@ -201,35 +129,18 @@ var SkipAll error = fs.SkipAll
 //
 // Walkは、2つの場合に、非nilのerr引数を持つ関数を呼び出します。
 //
-<<<<<<< HEAD
-// 第1に、ルートディレクトリまたはツリー内の任意のディレクトリまたはファイルのos.Lstatが失敗した場合、
+// 第1に、ルートディレクトリまたはツリー内の任意のディレクトリまたはファイルの [os.Lstat] が失敗した場合、
 // Walkは関数を呼び出し、パスをそのディレクトリまたはファイルのパスに設定し、infoをnilに設定し、errをos.Lstatからのエラーに設定します。
 //
 // 第2に、ディレクトリのReaddirnamesメソッドが失敗した場合、
-// Walkは関数を呼び出し、パスをディレクトリのパスに設定し、infoをディレクトリを説明するfs.FileInfoに設定し、errをReaddirnamesからのエラーに設定します。
-=======
-// First, if an [os.Lstat] on the root directory or any directory or file
-// in the tree fails, Walk calls the function with path set to that
-// directory or file's path, info set to nil, and err set to the error
-// from os.Lstat.
-//
-// Second, if a directory's Readdirnames method fails, Walk calls the
-// function with path set to the directory's path, info, set to an
-// [fs.FileInfo] describing the directory, and err set to the error from
-// Readdirnames.
->>>>>>> upstream/master
+// Walkは関数を呼び出し、パスをディレクトリのパスに設定し、infoをディレクトリを説明する [fs.FileInfo] に設定し、errをReaddirnamesからのエラーに設定します。
 type WalkFunc func(path string, info fs.FileInfo, err error) error
 
 // WalkDirは、ルートにあるファイルツリーを走査し、各ファイルやディレクトリに対してfnを呼び出します。
 // ツリー内のルートも含まれます。
 //
-<<<<<<< HEAD
 // ファイルやディレクトリの訪問中に発生するすべてのエラーは、fnによってフィルタリングされます：
-// 詳細については、fs.WalkDirFuncのドキュメントを参照してください。
-=======
-// All errors that arise visiting files and directories are filtered by fn:
-// see the [fs.WalkDirFunc] documentation for details.
->>>>>>> upstream/master
+// 詳細については、[fs.WalkDirFunc] のドキュメントを参照してください。
 //
 // ファイルは辞書順で走査されるため、出力が確定論的になりますが、WalkDirは
 // そのディレクトリの走査に進む前にディレクトリ全体をメモリに読み込む必要があります。
@@ -243,26 +154,16 @@ func WalkDir(root string, fn fs.WalkDirFunc) error
 // Walkはルートとなるファイルツリーを辿り、各ファイルまたはディレクトリに対してfnを呼び出します。
 // これにはルートも含まれます。
 //
-<<<<<<< HEAD
 // ファイルとディレクトリの訪問時に発生するエラーは、すべてfnによってフィルタリングされます。
-// 詳細についてはWalkFuncのドキュメントを参照してください。
-=======
-// All errors that arise visiting files and directories are filtered by fn:
-// see the [WalkFunc] documentation for details.
->>>>>>> upstream/master
+// 詳細については [WalkFunc] のドキュメントを参照してください。
 //
 // ファイルはレキシカルオーダーで走査されますが、これにより出力は決定論的になります。
 // ただし、走査するディレクトリの前にディレクトリ全体をメモリに読み込む必要があります。
 //
 // Walkはシンボリックリンクを辿りません。
 //
-<<<<<<< HEAD
-// WalkはGo 1.16で導入されたWalkDirよりも効率が低下します。
+// WalkはGo 1.16で導入された [WalkDir] よりも効率が低下します。
 // WalkDirでは、訪問するファイルまたはディレクトリごとにos.Lstatを呼び出すのを避けています。
-=======
-// Walk is less efficient than [WalkDir], introduced in Go 1.16,
-// which avoids calling os.Lstat on every visited file or directory.
->>>>>>> upstream/master
 func Walk(root string, fn WalkFunc) error
 
 // Baseはパスの最後の要素を返します。
@@ -271,20 +172,11 @@ func Walk(root string, fn WalkFunc) error
 // パスが完全にセパレーターで構成されている場合、Baseは単一のセパレーターを返します。
 func Base(path string) string
 
-<<<<<<< HEAD
 // Dirはパスの最後の要素以外のすべてを返します。通常はパスのディレクトリです。
-// 最後の要素を除いた後、DirはパスにCleanを呼び出し、末尾のスラッシュは除去されます。
+// 最後の要素を除いた後、Dirはパスに [Clean] を呼び出し、末尾のスラッシュは除去されます。
 // パスが空の場合、Dirは「.」を返します。
 // パスがセパレーターだけで構成されている場合、Dirは単一のセパレーターを返します。
 // 返されるパスは、ルートディレクトリでない限り、セパレーターで終了しません。
-=======
-// Dir returns all but the last element of path, typically the path's directory.
-// After dropping the final element, Dir calls [Clean] on the path and trailing
-// slashes are removed.
-// If the path is empty, Dir returns ".".
-// If the path consists entirely of separators, Dir returns a single separator.
-// The returned path does not end in a separator unless it is the root directory.
->>>>>>> upstream/master
 func Dir(path string) string
 
 // VolumeNameは先頭のボリューム名を返します。
