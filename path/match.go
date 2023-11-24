@@ -34,5 +34,5 @@ var ErrBadPattern = errors.New("syntax error in pattern")
 //	lo '-' hi   lo <= c <= hiの範囲の文字cに一致します
 //
 // Matchはパターンがname全体と一致する必要があります。部分一致ではありません。
-// 返される可能性のある唯一のエラーは、patternが正しくない場合のErrBadPatternです。
+// 返される可能性のある唯一のエラーは、patternが正しくない場合の [ErrBadPattern] です。
 func Match(pattern, name string) (matched bool, err error)

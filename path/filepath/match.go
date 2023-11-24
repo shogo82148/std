@@ -30,11 +30,11 @@ var ErrBadPattern = errors.New("syntax error in pattern")
 //		lo '-' hi   lo <= c <= hi の条件で文字cに一致します
 //
 // Matchは、パターンが名前全体ではなく、部分文字列ではないことを要求します。
-// 返される唯一の可能なエラーは、パターンが異常である場合のErrBadPatternです。
+// 返される唯一の可能なエラーは、パターンが異常である場合の [ErrBadPattern] です。
 //
 // Windowsでは、エスケープは無効になっています。代わりに'\\'はパスセパレータとして扱われます。
 func Match(pattern, name string) (matched bool, err error)
 
-// Globは、パターンに一致するすべてのファイルの名前を返します。一致するファイルがない場合はnilを返します。パターンの構文はMatchと同じです。パターンには、/usr/*/bin/ed（セパレータが '/'と仮定）などの階層的な名前を記述することができます。
-// Globは、ディレクトリを読み込む際のI/Oエラーなどのファイルシステムのエラーを無視します。返される唯一の可能性のあるエラーは、パターンが不正な場合のErrBadPatternです。
+// Globは、パターンに一致するすべてのファイルの名前を返します。一致するファイルがない場合はnilを返します。パターンの構文はMatchと同じです。パターンには、/usr/*/bin/ed（[Separator] が '/'と仮定）などの階層的な名前を記述することができます。
+// Globは、ディレクトリを読み込む際のI/Oエラーなどのファイルシステムのエラーを無視します。返される唯一の可能性のあるエラーは、パターンが不正な場合の [ErrBadPattern] です。
 func Glob(pattern string) (matches []string, err error)
