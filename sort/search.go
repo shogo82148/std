@@ -84,13 +84,13 @@ func Search(n int, f func(int) bool) int
 func Find(n int, cmp func(int) int) (i int, found bool)
 
 // SearchInts searches for x in a sorted slice of ints and returns the index
-// as specified by Search. The return value is the index to insert x if x is
+// as specified by [Search]. The return value is the index to insert x if x is
 // not present (it could be len(a)).
 // The slice must be sorted in ascending order.
 func SearchInts(a []int, x int) int
 
 // SearchFloat64s searches for x in a sorted slice of float64s and returns the index
-// as specified by Search. The return value is the index to insert x if x is not
+// as specified by [Search]. The return value is the index to insert x if x is not
 // present (it could be len(a)).
 // The slice must be sorted in ascending order.
 func SearchFloat64s(a []float64, x float64) int
@@ -101,11 +101,11 @@ func SearchFloat64s(a []float64, x float64) int
 // The slice must be sorted in ascending order.
 func SearchStrings(a []string, x string) int
 
-// Search returns the result of applying SearchInts to the receiver and x.
+// Search returns the result of applying [SearchInts] to the receiver and x.
 func (p IntSlice) Search(x int) int
 
-// Search returns the result of applying SearchFloat64s to the receiver and x.
+// Search returns the result of applying [SearchFloat64s] to the receiver and x.
 func (p Float64Slice) Search(x float64) int
 
-// Search returns the result of applying SearchStrings to the receiver and x.
+// Search returns the result of applying [SearchStrings] to the receiver and x.
 func (p StringSlice) Search(x string) int
