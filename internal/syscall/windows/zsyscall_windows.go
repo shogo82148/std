@@ -21,7 +21,7 @@ func RevertToSelf() (err error)
 
 func SetTokenInformation(tokenHandle syscall.Token, tokenInformationClass uint32, tokenInformation uintptr, tokenInformationLength uint32) (err error)
 
-func RtlGenRandom(buf []byte) (err error)
+func ProcessPrng(buf []byte) (err error)
 
 func GetAdaptersAddresses(family uint32, flags uint32, reserved uintptr, adapterAddresses *IpAdapterAddresses, sizePointer *uint32) (errcode error)
 
