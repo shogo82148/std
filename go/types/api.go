@@ -184,32 +184,23 @@ type Info struct {
 	// Selectionsはセレクタ式（修飾子を除く）をその対応する選択肢にマッピングします。
 	Selections map[*ast.SelectorExpr]*Selection
 
-<<<<<<< HEAD
-	// Scopesはast.Nodeをその定義するスコープにマップします。パッケージスコープは特定のノードに関連付けられていませんが、パッケージに所属するすべてのファイルに関連付けられています。したがって、パッケージスコープは型チェックされたPackageオブジェクトに見つけることができます。スコープはネストされ、宇宙スコープが最も外側のスコープで、パッケージスコープを囲みます。パッケージスコープには（1つ以上の）ファイルスコープが含まれ、それらは関数スコープを囲みます。関数スコープはステートメントと関数リテラルのスコープを囲みます。注意すべきは、パッケージレベルの関数はパッケージスコープで宣言されますが、関数スコープは関数宣言を含むファイルスコープに埋め込まれているということです。
-	// 以下のノードのタイプがScopesに表示される可能性があります：
-=======
-	// Scopes maps ast.Nodes to the scopes they define. Package scopes are not
-	// associated with a specific node but with all files belonging to a package.
-	// Thus, the package scope can be found in the type-checked Package object.
-	// Scopes nest, with the Universe scope being the outermost scope, enclosing
-	// the package scope, which contains (one or more) files scopes, which enclose
-	// function scopes which in turn enclose statement and function literal scopes.
-	// Note that even though package-level functions are declared in the package
-	// scope, the function scopes are embedded in the file scope of the file
-	// containing the function declaration.
+	// Scopesは、ast.Nodesをそれらが定義するスコープにマッピングします。パッケージスコープは特定のノードではなく、
+	// パッケージに属するすべてのファイルに関連付けられています。
+	// したがって、パッケージスコープは型チェックされたPackageオブジェクトで見つけることができます。
+	// スコープはネストし、Universeスコープが最も外側のスコープで、パッケージスコープを囲み、
+	// それには（1つ以上の）ファイルスコープが含まれ、それらは関数スコープを囲み、
+	// その順番でステートメントと関数リテラルスコープを囲みます。
+	// パッケージレベルの関数はパッケージスコープで宣言されますが、関数スコープは関数宣言を含むファイルの
+	// ファイルスコープに埋め込まれています。
 	//
-	// The Scope of a function contains the declarations of any
-	// type parameters, parameters, and named results, plus any
-	// local declarations in the body block.
-	// It is coextensive with the complete extent of the
-	// function's syntax ([*ast.FuncDecl] or [*ast.FuncLit]).
-	// The Scopes mapping does not contain an entry for the
-	// function body ([*ast.BlockStmt]); the function's scope is
-	// associated with the [*ast.FuncType].
+	// 関数のScopeには、型パラメータ、パラメータ、名前付き結果の宣言、および
+	// ボディブロックのローカル宣言が含まれます。
+	// それは関数の構文（[*ast.FuncDecl]または[*ast.FuncLit]）の完全な範囲と一致します。
+	// Scopesマッピングには、関数ボディ（[*ast.BlockStmt]）のエントリは含まれていません。
+	// 関数のスコープは[*ast.FuncType]に関連付けられています。
 	//
-	// The following node types may appear in Scopes:
+	// 以下のノードタイプがScopesに表示される可能性があります：
 	//
->>>>>>> upstream/master
 	//     *ast.File
 	//     *ast.FuncType
 	//     *ast.TypeSpec
