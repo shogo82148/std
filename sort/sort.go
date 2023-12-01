@@ -20,7 +20,7 @@ type Interface interface {
 // SortはLessメソッドによって決定される昇順でデータをソートします。
 // data.Lenを1回呼び出してnを決定し、O(n*log(n))回のdata.Lessとdata.Swapを呼び出します。ソートは安定するとは限りません。
 //
-// 注意：多くの場合、よりエルゴノミックで高速なslices.SortFunc関数を使用する方が好ましいです。
+// 注意：多くの場合、よりエルゴノミックで高速な [slices.SortFunc] 関数を使用する方が好ましいです。
 func Sort(data Interface)
 
 // Reverseはdataの逆順を返します。
@@ -28,7 +28,7 @@ func Reverse(data Interface) Interface
 
 // IsSortedはデータがソートされているかどうかを報告します。
 //
-// 注意：多くの場合、新しいslices.IsSortedFunc関数の方が使いやすく、高速です。
+// 注意：多くの場合、新しい [slices.IsSortedFunc] 関数の方が使いやすく、高速です。
 func IsSorted(data Interface) bool
 
 // IntSlice は、Interface のメソッドを []int にアタッチし、昇順でソートします。
@@ -70,33 +70,33 @@ func (x StringSlice) Sort()
 
 // Intsはintのスライスを昇順にソートします。
 //
-// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
+// 注意：Go 1.22以降、この関数は単に [slices.Sort] を呼び出すだけです。
 func Ints(x []int)
 
 // Float64sはfloat64のスライスを昇順でソートします。
 // NaN(非数)の値は他の値よりも優先的に並べられます。
 //
-// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
+// 注意：Go 1.22以降、この関数は単に [slices.Sort] を呼び出すだけです。
 func Float64s(x []float64)
 
 // Stringsは文字列のスライスを昇順でソートします。
 //
-// 注意：Go 1.22以降、この関数は単にslices.Sortを呼び出すだけです。
+// 注意：Go 1.22以降、この関数は単に [slices.Sort] を呼び出すだけです。
 func Strings(x []string)
 
 // IntsAreSortedは、スライスxが昇順にソートされているかどうかを報告します。
 //
-// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
+// 注意：Go 1.22以降、この関数は単に [slices.IsSorted] を呼び出すだけです。
 func IntsAreSorted(x []int) bool
 
 // Float64sAreSortedは、スライスxが昇順に並んでいるか、NaN（非数値）の値が他の値の前にあるかどうかを報告します。
 //
-// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
+// 注意：Go 1.22以降、この関数は単に [slices.IsSorted] を呼び出すだけです。
 func Float64sAreSorted(x []float64) bool
 
 // StringsAreSortedは、スライスxが昇順に並んでいるかどうかを報告します。
 //
-// 注意：Go 1.22以降、この関数は単にslices.IsSortedを呼び出すだけです。
+// 注意：Go 1.22以降、この関数は単に [slices.IsSorted] を呼び出すだけです。
 func StringsAreSorted(x []string) bool
 
 // Lessメソッドによって決定される昇順でデータを安定的にソートします。
