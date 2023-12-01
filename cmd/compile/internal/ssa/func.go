@@ -59,7 +59,7 @@ type Func struct {
 
 	// RegArgs is a slice of register-memory pairs that must be spilled and unspilled in the uncommon path of function entry.
 	RegArgs []Spill
-	// AuxCall describing parameters and results for this function.
+	// OwnAux describes parameters and results for this function.
 	OwnAux *AuxCall
 
 	freeValues *Value

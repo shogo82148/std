@@ -28,6 +28,10 @@ type F struct {
 	fuzzContext *fuzzContext
 	testContext *testContext
 
+	// inFuzzFn is true when the fuzz function is running. Most F methods cannot
+	// be called when inFuzzFn is true.
+	inFuzzFn bool
+
 	// corpus is a set of seed corpus entries, added with F.Add and loaded
 	// from testdata.
 	corpus []corpusEntry

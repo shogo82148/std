@@ -184,8 +184,32 @@ type Info struct {
 	// Selectionsはセレクタ式（修飾子を除く）をその対応する選択肢にマッピングします。
 	Selections map[*ast.SelectorExpr]*Selection
 
+<<<<<<< HEAD
 	// Scopesはast.Nodeをその定義するスコープにマップします。パッケージスコープは特定のノードに関連付けられていませんが、パッケージに所属するすべてのファイルに関連付けられています。したがって、パッケージスコープは型チェックされたPackageオブジェクトに見つけることができます。スコープはネストされ、宇宙スコープが最も外側のスコープで、パッケージスコープを囲みます。パッケージスコープには（1つ以上の）ファイルスコープが含まれ、それらは関数スコープを囲みます。関数スコープはステートメントと関数リテラルのスコープを囲みます。注意すべきは、パッケージレベルの関数はパッケージスコープで宣言されますが、関数スコープは関数宣言を含むファイルスコープに埋め込まれているということです。
 	// 以下のノードのタイプがScopesに表示される可能性があります：
+=======
+	// Scopes maps ast.Nodes to the scopes they define. Package scopes are not
+	// associated with a specific node but with all files belonging to a package.
+	// Thus, the package scope can be found in the type-checked Package object.
+	// Scopes nest, with the Universe scope being the outermost scope, enclosing
+	// the package scope, which contains (one or more) files scopes, which enclose
+	// function scopes which in turn enclose statement and function literal scopes.
+	// Note that even though package-level functions are declared in the package
+	// scope, the function scopes are embedded in the file scope of the file
+	// containing the function declaration.
+	//
+	// The Scope of a function contains the declarations of any
+	// type parameters, parameters, and named results, plus any
+	// local declarations in the body block.
+	// It is coextensive with the complete extent of the
+	// function's syntax ([*ast.FuncDecl] or [*ast.FuncLit]).
+	// The Scopes mapping does not contain an entry for the
+	// function body ([*ast.BlockStmt]); the function's scope is
+	// associated with the [*ast.FuncType].
+	//
+	// The following node types may appear in Scopes:
+	//
+>>>>>>> upstream/master
 	//     *ast.File
 	//     *ast.FuncType
 	//     *ast.TypeSpec
