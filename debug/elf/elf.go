@@ -44,7 +44,7 @@
 
 package elf
 
-// Indexes into the Header.Ident array.
+// Header.Ident 配列へのインデックス。
 const (
 	EI_CLASS      = 4
 	EI_DATA       = 5
@@ -55,10 +55,10 @@ const (
 	EI_NIDENT     = 16
 )
 
-// Initial magic number for ELF files.
+// ELFファイルの初期マジックナンバー。
 const ELFMAG = "\177ELF"
 
-// Version is found in Header.Ident[EI_VERSION] and Header.Version.
+// Versionは、Header.Ident[EI_VERSION]とHeader.Versionに存在します。
 type Version byte
 
 const (
@@ -69,7 +69,7 @@ const (
 func (i Version) String() string
 func (i Version) GoString() string
 
-// Class is found in Header.Ident[EI_CLASS] and Header.Class.
+// Classは、Header.Ident[EI_CLASS]とHeader.Classに存在します。
 type Class byte
 
 const (
@@ -81,7 +81,7 @@ const (
 func (i Class) String() string
 func (i Class) GoString() string
 
-// Data is found in Header.Ident[EI_DATA] and Header.Data.
+// Dataは、Header.Ident[EI_DATA]とHeader.Dataに存在します。
 type Data byte
 
 const (
@@ -93,7 +93,7 @@ const (
 func (i Data) String() string
 func (i Data) GoString() string
 
-// OSABI is found in Header.Ident[EI_OSABI] and Header.OSABI.
+// OSABIは、Header.Ident[EI_OSABI]とHeader.OSABIに存在します。
 type OSABI byte
 
 const (
@@ -122,7 +122,7 @@ const (
 func (i OSABI) String() string
 func (i OSABI) GoString() string
 
-// Type is found in Header.Type.
+// Typeは、Header.Typeに存在します。
 type Type uint16
 
 const (
@@ -140,7 +140,7 @@ const (
 func (i Type) String() string
 func (i Type) GoString() string
 
-// Machine is found in Header.Machine.
+// Machineは、Header.Machineに存在します。
 type Machine uint16
 
 const (
@@ -328,7 +328,7 @@ const (
 	EM_BPF           Machine = 247
 	EM_LOONGARCH     Machine = 258
 
-	/* Non-standard or deprecated. */
+	/* 非標準または非推奨。 */
 	EM_486         Machine = 6
 	EM_MIPS_RS4_BE Machine = 10
 	EM_ALPHA_STD   Machine = 41
@@ -338,7 +338,7 @@ const (
 func (i Machine) String() string
 func (i Machine) GoString() string
 
-// Special section indices.
+// 特別なセクションインデックス。
 type SectionIndex int
 
 const (
@@ -357,7 +357,7 @@ const (
 func (i SectionIndex) String() string
 func (i SectionIndex) GoString() string
 
-// Section type.
+// セクションのタイプ。
 type SectionType uint32
 
 const (
@@ -396,7 +396,7 @@ const (
 func (i SectionType) String() string
 func (i SectionType) GoString() string
 
-// Section flags.
+// セクションのフラグ。
 type SectionFlag uint32
 
 const (
@@ -418,7 +418,7 @@ const (
 func (i SectionFlag) String() string
 func (i SectionFlag) GoString() string
 
-// Section compression type.
+// セクションの圧縮タイプ。
 type CompressionType int
 
 const (
@@ -651,7 +651,7 @@ const (
 func (i DynTag) String() string
 func (i DynTag) GoString() string
 
-// DT_FLAGS values.
+// DT_FLAGSの値。
 type DynFlag int
 
 const (
@@ -667,91 +667,84 @@ const (
 func (i DynFlag) String() string
 func (i DynFlag) GoString() string
 
-// DT_FLAGS_1 values.
+// DT_FLAGS_1の値。
 type DynFlag1 uint32
 
 const (
-	// Indicates that all relocations for this object must be processed before
-	// returning control to the program.
+	// このオブジェクトのすべての再配置がプログラムの制御を返す前に処理される必要があることを示します。
 	DF_1_NOW DynFlag1 = 0x00000001
-	// Unused.
+	// 未使用。
 	DF_1_GLOBAL DynFlag1 = 0x00000002
-	// Indicates that the object is a member of a group.
+	// オブジェクトがグループのメンバーであることを示します。
 	DF_1_GROUP DynFlag1 = 0x00000004
-	// Indicates that the object cannot be deleted from a process.
+	// オブジェクトがプロセスから削除できないことを示します。
 	DF_1_NODELETE DynFlag1 = 0x00000008
-	// Meaningful only for filters. Indicates that all associated filtees be
-	// processed immediately.
+	// フィルターにのみ意味があります。すべての関連するフィルティーが
+	// 即座に処理されることを示します。
 	DF_1_LOADFLTR DynFlag1 = 0x00000010
-	// Indicates that this object's initialization section be run before any other
-	// objects loaded.
+	// このオブジェクトの初期化セクションが、他のどのオブジェクトよりも先に実行されることを示します。
 	DF_1_INITFIRST DynFlag1 = 0x00000020
-	// Indicates that the object cannot be added to a running process with dlopen.
+	// オブジェクトがdlopenを使用して実行中のプロセスに追加できないことを示します。
 	DF_1_NOOPEN DynFlag1 = 0x00000040
-	// Indicates the object requires $ORIGIN processing.
+	// オブジェクトが$ORIGIN処理を必要とすることを示します。
 	DF_1_ORIGIN DynFlag1 = 0x00000080
-	// Indicates that the object should use direct binding information.
+	// オブジェクトが直接バインディング情報を使用する必要があることを示します。
 	DF_1_DIRECT DynFlag1 = 0x00000100
-	// Unused.
+	// 未使用。
 	DF_1_TRANS DynFlag1 = 0x00000200
-	// Indicates that the objects symbol table is to interpose before all symbols
-	// except the primary load object, which is typically the executable.
+	// オブジェクトのシンボルテーブルが、通常は実行可能ファイルである主要なロードオブジェクトを除く
+	// すべてのシンボルの前に介在することを示します。
 	DF_1_INTERPOSE DynFlag1 = 0x00000400
-	// Indicates that the search for dependencies of this object ignores any
-	// default library search paths.
+	// このオブジェクトの依存関係の検索が、任意のデフォルトのライブラリ検索パスを無視することを示します。
 	DF_1_NODEFLIB DynFlag1 = 0x00000800
-	// Indicates that this object is not dumped by dldump. Candidates are objects
-	// with no relocations that might get included when generating alternative
-	// objects using.
+	// このオブジェクトがdldumpによってダンプされないことを示します。候補は、
+	// 代替オブジェクトを生成するときに含まれる可能性がある再配置のないオブジェクトです。
 	DF_1_NODUMP DynFlag1 = 0x00001000
-	// Identifies this object as a configuration alternative object generated by
-	// crle. Triggers the runtime linker to search for a configuration file $ORIGIN/ld.config.app-name.
+	// このオブジェクトがcrleによって生成された設定代替オブジェクトであることを識別します。
+	// ランタイムリンカーが設定ファイル$ORIGIN/ld.config.app-nameを検索するようにトリガーします。
 	DF_1_CONFALT DynFlag1 = 0x00002000
-	// Meaningful only for filtees. Terminates a filters search for any
-	// further filtees.
+	// フィルティーにのみ意味があります。フィルターがさらなるフィルティーを検索するのを終了します。
 	DF_1_ENDFILTEE DynFlag1 = 0x00004000
-	// Indicates that this object has displacement relocations applied.
+	// このオブジェクトに変位再配置が適用されていることを示します。
 	DF_1_DISPRELDNE DynFlag1 = 0x00008000
-	// Indicates that this object has displacement relocations pending.
+	// このオブジェクトには変位再配置が保留中であることを示します。
 	DF_1_DISPRELPND DynFlag1 = 0x00010000
-	// Indicates that this object contains symbols that cannot be directly
-	// bound to.
+	// このオブジェクトが直接バインドできないシンボルを含んでいることを示します。
 	DF_1_NODIRECT DynFlag1 = 0x00020000
-	// Reserved for internal use by the kernel runtime-linker.
+	// カーネルのランタイムリンカーによる内部使用のために予約されています。
 	DF_1_IGNMULDEF DynFlag1 = 0x00040000
-	// Reserved for internal use by the kernel runtime-linker.
+	// カーネルのランタイムリンカーによる内部使用のために予約されています。
 	DF_1_NOKSYMS DynFlag1 = 0x00080000
-	// Reserved for internal use by the kernel runtime-linker.
+	// カーネルのランタイムリンカーによる内部使用のために予約されています。
 	DF_1_NOHDR DynFlag1 = 0x00100000
-	// Indicates that this object has been edited or has been modified since the
-	// objects original construction by the link-editor.
+	// このオブジェクトがリンクエディタによる元の構築以降に編集されたか、
+	// または変更されたことを示します。
 	DF_1_EDITED DynFlag1 = 0x00200000
-	// Reserved for internal use by the kernel runtime-linker.
+	// カーネルのランタイムリンカーによる内部使用のために予約されています。
 	DF_1_NORELOC DynFlag1 = 0x00400000
-	// Indicates that the object contains individual symbols that should interpose
-	// before all symbols except the primary load object, which is typically the
-	// executable.
+	// オブジェクトが個々のシンボルを含んでおり、それらのシンボルは通常実行可能ファイルである
+	// 主要なロードオブジェクトを除くすべてのシンボルよりも前に介在するべきであることを示します。
 	DF_1_SYMINTPOSE DynFlag1 = 0x00800000
-	// Indicates that the executable requires global auditing.
+	// 実行可能ファイルがグローバル監査を必要とすることを示します。
 	DF_1_GLOBAUDIT DynFlag1 = 0x01000000
-	// Indicates that the object defines, or makes reference to singleton symbols.
+	// オブジェクトがシングルトンシンボルを定義するか、またはそれらを参照することを示します。
 	DF_1_SINGLETON DynFlag1 = 0x02000000
-	// Indicates that the object is a stub.
+	// オブジェクトがスタブであることを示します。
 	DF_1_STUB DynFlag1 = 0x04000000
-	// Indicates that the object is a position-independent executable.
+	// オブジェクトが位置独立型実行可能ファイルであることを示します。
 	DF_1_PIE DynFlag1 = 0x08000000
-	// Indicates that the object is a kernel module.
+	// オブジェクトがカーネルモジュールであることを示します。
 	DF_1_KMOD DynFlag1 = 0x10000000
-	// Indicates that the object is a weak standard filter.
+	// オブジェクトが弱い標準フィルターであることを示します。
 	DF_1_WEAKFILTER DynFlag1 = 0x20000000
-	// Unused.
+	// 未使用。
 	DF_1_NOCOMMON DynFlag1 = 0x40000000
 )
 
 func (i DynFlag1) String() string
 func (i DynFlag1) GoString() string
 
-// NType values; used in core files.
+// NTypeの値; コアファイルで使用されます。
 type NType int
 
 const (
@@ -812,7 +805,7 @@ const (
 func (i SymVis) String() string
 func (i SymVis) GoString() string
 
-// Relocation types for x86-64.
+// x86-64のための再配置タイプ。
 type R_X86_64 int
 
 const (
@@ -864,7 +857,7 @@ const (
 func (i R_X86_64) String() string
 func (i R_X86_64) GoString() string
 
-// Relocation types for AArch64 (aka arm64)
+// AArch64（別名 arm64）のための再配置タイプ。
 type R_AARCH64 int
 
 const (
@@ -1003,7 +996,7 @@ const (
 func (i R_AARCH64) String() string
 func (i R_AARCH64) GoString() string
 
-// Relocation types for Alpha.
+// Alphaのための再配置タイプ。
 type R_ALPHA int
 
 const (
@@ -1040,7 +1033,7 @@ const (
 func (i R_ALPHA) String() string
 func (i R_ALPHA) GoString() string
 
-// Relocation types for ARM.
+// ARMのための再配置タイプ。
 type R_ARM int
 
 const (
@@ -1193,7 +1186,7 @@ const (
 func (i R_ARM) String() string
 func (i R_ARM) GoString() string
 
-// Relocation types for 386.
+// 386のための再配置タイプ。
 type R_386 int
 
 const (
@@ -1244,7 +1237,7 @@ const (
 func (i R_386) String() string
 func (i R_386) GoString() string
 
-// Relocation types for MIPS.
+// MIPSのための再配置タイプ。
 type R_MIPS int
 
 const (
@@ -1302,7 +1295,7 @@ const (
 func (i R_MIPS) String() string
 func (i R_MIPS) GoString() string
 
-// Relocation types for LoongArch.
+// LoongArchのための再配置タイプ。
 type R_LARCH int
 
 const (
@@ -1400,12 +1393,12 @@ const (
 func (i R_LARCH) String() string
 func (i R_LARCH) GoString() string
 
-// Relocation types for PowerPC.
+// PowerPCのための再配置タイプ。
 //
-// Values that are shared by both R_PPC and R_PPC64 are prefixed with
-// R_POWERPC_ in the ELF standard. For the R_PPC type, the relevant
-// shared relocations have been renamed with the prefix R_PPC_.
-// The original name follows the value in a comment.
+// R_PPCとR_PPC64の両方で共有される値は、
+// ELF標準ではR_POWERPC_というプレフィックスが付けられています。R_PPCタイプの場合、関連する
+// 共有再配置はR_PPC_というプレフィックスで改名されています。
+// 元の名前は値の後のコメントに続きます。
 type R_PPC int
 
 const (
@@ -1491,12 +1484,12 @@ const (
 func (i R_PPC) String() string
 func (i R_PPC) GoString() string
 
-// Relocation types for 64-bit PowerPC or Power Architecture processors.
+// 64ビットPowerPCまたはPower Architectureプロセッサのための再配置タイプ。
 //
-// Values that are shared by both R_PPC and R_PPC64 are prefixed with
-// R_POWERPC_ in the ELF standard. For the R_PPC64 type, the relevant
-// shared relocations have been renamed with the prefix R_PPC64_.
-// The original name follows the value in a comment.
+// R_PPCとR_PPC64の両方で共有される値は、
+// ELF標準ではR_POWERPC_というプレフィックスが付けられています。R_PPC64タイプの場合、関連する
+// 共有再配置はR_PPC64_というプレフィックスで改名されています。
+// 元の名前は値の後のコメントに続きます。
 type R_PPC64 int
 
 const (
@@ -1666,7 +1659,7 @@ const (
 func (i R_PPC64) String() string
 func (i R_PPC64) GoString() string
 
-// Relocation types for RISC-V processors.
+// RISC-Vプロセッサのための再配置タイプ。
 type R_RISCV int
 
 const (
@@ -1729,7 +1722,7 @@ const (
 func (i R_RISCV) String() string
 func (i R_RISCV) GoString() string
 
-// Relocation types for s390x processors.
+// s390xプロセッサのための再配置タイプ。
 type R_390 int
 
 const (
@@ -1799,7 +1792,7 @@ const (
 func (i R_390) String() string
 func (i R_390) GoString() string
 
-// Relocation types for SPARC.
+// SPARCのための再配置タイプ。
 type R_SPARC int
 
 const (
@@ -1864,10 +1857,10 @@ const (
 func (i R_SPARC) String() string
 func (i R_SPARC) GoString() string
 
-// Magic number for the elf trampoline, chosen wisely to be an immediate value.
+// elfトランポリンのためのマジックナンバー。即値として賢明に選ばれます。
 const ARM_MAGIC_TRAMP_NUMBER = 0x5c000003
 
-// ELF32 File header.
+// ELF32 ファイルヘッダー。
 type Header32 struct {
 	Ident     [EI_NIDENT]byte
 	Type      uint16
@@ -1885,7 +1878,7 @@ type Header32 struct {
 	Shstrndx  uint16
 }
 
-// ELF32 Section header.
+// ELF32 セクションヘッダー。
 type Section32 struct {
 	Name      uint32
 	Type      uint32
@@ -1899,7 +1892,7 @@ type Section32 struct {
 	Entsize   uint32
 }
 
-// ELF32 Program header.
+// ELF32 プログラムヘッダー。
 type Prog32 struct {
 	Type   uint32
 	Off    uint32
@@ -1911,26 +1904,26 @@ type Prog32 struct {
 	Align  uint32
 }
 
-// ELF32 Dynamic structure. The ".dynamic" section contains an array of them.
+// ELF32 ダイナミック構造体。 ".dynamic"セクションには、これらの配列が含まれています。
 type Dyn32 struct {
 	Tag int32
 	Val uint32
 }
 
-// ELF32 Compression header.
+// ELF32 圧縮ヘッダー。
 type Chdr32 struct {
 	Type      uint32
 	Size      uint32
 	Addralign uint32
 }
 
-// ELF32 Relocations that don't need an addend field.
+// 追加フィールドが不要なELF32の再配置。
 type Rel32 struct {
 	Off  uint32
 	Info uint32
 }
 
-// ELF32 Relocations that need an addend field.
+// 追加フィールドが必要なELF32の再配置。
 type Rela32 struct {
 	Off    uint32
 	Info   uint32
@@ -1941,7 +1934,7 @@ func R_SYM32(info uint32) uint32
 func R_TYPE32(info uint32) uint32
 func R_INFO32(sym, typ uint32) uint32
 
-// ELF32 Symbol.
+// ELF32 シンボル。
 type Sym32 struct {
 	Name  uint32
 	Value uint32
@@ -1959,7 +1952,7 @@ func ST_INFO(bind SymBind, typ SymType) uint8
 
 func ST_VISIBILITY(other uint8) SymVis
 
-// ELF64 file header.
+// ELF64 ファイルヘッダー。
 type Header64 struct {
 	Ident     [EI_NIDENT]byte
 	Type      uint16
@@ -1977,7 +1970,7 @@ type Header64 struct {
 	Shstrndx  uint16
 }
 
-// ELF64 Section header.
+// ELF64 セクションヘッダー。
 type Section64 struct {
 	Name      uint32
 	Type      uint32
@@ -1991,7 +1984,7 @@ type Section64 struct {
 	Entsize   uint64
 }
 
-// ELF64 Program header.
+// ELF64 プログラムヘッダー。
 type Prog64 struct {
 	Type   uint32
 	Flags  uint32
@@ -2003,13 +1996,13 @@ type Prog64 struct {
 	Align  uint64
 }
 
-// ELF64 Dynamic structure. The ".dynamic" section contains an array of them.
+// ELF64 ダイナミック構造体。 ".dynamic"セクションには、これらの配列が含まれています。
 type Dyn64 struct {
 	Tag int64
 	Val uint64
 }
 
-// ELF64 Compression header.
+// ELF64 圧縮ヘッダー。
 type Chdr64 struct {
 	Type      uint32
 	_         uint32
@@ -2017,13 +2010,13 @@ type Chdr64 struct {
 	Addralign uint64
 }
 
-/* ELF64 relocations that don't need an addend field. */
+// 追加フィールドが不要なELF64の再配置。
 type Rel64 struct {
 	Off  uint64
 	Info uint64
 }
 
-/* ELF64 relocations that need an addend field. */
+// 追加フィールドが必要なELF64の再配置。
 type Rela64 struct {
 	Off    uint64
 	Info   uint64
@@ -2034,7 +2027,7 @@ func R_SYM64(info uint64) uint32
 func R_TYPE64(info uint64) uint32
 func R_INFO(sym, typ uint32) uint64
 
-// ELF64 symbol table entries.
+// ELF64 シンボルテーブルエントリ。
 type Sym64 struct {
 	Name  uint32
 	Info  uint8
