@@ -23,7 +23,7 @@ func Example_decodeConfig() {
 }
 
 func Example() {
-	// Decode the JPEG data. If reading from file, create a reader with
+	// JPEGデータをデコードします。ファイルから読み取る場合は、リーダーを作成します
 	//
 	// reader, err := os.Open("testdata/video-001.q50.420.jpeg")
 	// if err != nil {
@@ -37,17 +37,17 @@ func Example() {
 	}
 	bounds := m.Bounds()
 
-	// Calculate a 16-bin histogram for m's red, green, blue and alpha components.
+	// mの赤、緑、青、アルファ成分の16ビンヒストグラムを計算します。
 	//
-	// An image's bounds do not necessarily start at (0, 0), so the two loops start
-	// at bounds.Min.Y and bounds.Min.X. Looping over Y first and X second is more
-	// likely to result in better memory access patterns than X first and Y second.
+	// 画像の境界は必ずしも(0, 0)から始まるわけではないので、2つのループは
+	// bounds.Min.Yとbounds.Min.Xから始まります。Yを最初に、Xを次にループする方が、
+	// Xを最初に、Yを次にループするよりも、より良いメモリアクセスパターンになる可能性が高いです。
 	var histogram [16][4]int
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
 			r, g, b, a := m.At(x, y).RGBA()
-			// A color's RGBA method returns values in the range [0, 65535].
-			// Shifting by 12 reduces this to the range [0, 15].
+			// 色のRGBAメソッドは、範囲[0, 65535]の値を返します。
+			// これを12ビット右シフトすると、範囲が[0, 15]に縮小されます。
 			histogram[r>>12][0]++
 			histogram[g>>12][1]++
 			histogram[b>>12][2]++
@@ -55,7 +55,7 @@ func Example() {
 		}
 	}
 
-	// Print the results.
+	// 結果を表示します。
 	fmt.Printf("%-14s %6s %6s %6s %6s\n", "bin", "red", "green", "blue", "alpha")
 	for i, x := range histogram {
 		fmt.Printf("0x%04x-0x%04x: %6d %6d %6d %6d\n", i<<12, (i+1)<<12-1, x[0], x[1], x[2], x[3])
