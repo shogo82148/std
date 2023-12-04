@@ -27,56 +27,53 @@ import (
 	"github.com/shogo82148/std/image/color"
 )
 
-// Config holds an image's color model and dimensions.
+// Configは、画像のカラーモデルと寸法を保持します。
 type Config struct {
 	ColorModel    color.Model
 	Width, Height int
 }
 
-// Image is a finite rectangular grid of color.Color values taken from a color
-// model.
+// Imageは、カラーモデルから取得したcolor.Color値の有限の長方形グリッドです。
 type Image interface {
-	// ColorModel returns the Image's color model.
+	// ColorModelは、Imageのカラーモデルを返します。
 	ColorModel() color.Model
-	// Bounds returns the domain for which At can return non-zero color.
-	// The bounds do not necessarily contain the point (0, 0).
+	// Boundsは、Atがゼロ以外の色を返すことができる領域を返します。
+	// 境界は必ずしも点(0,0)を含むわけではありません。
 	Bounds() Rectangle
-	// At returns the color of the pixel at (x, y).
-	// At(Bounds().Min.X, Bounds().Min.Y) returns the upper-left pixel of the grid.
-	// At(Bounds().Max.X-1, Bounds().Max.Y-1) returns the lower-right one.
+	// Atは、(x, y)のピクセルの色を返します。
+	// At(Bounds().Min.X, Bounds().Min.Y)は、グリッドの左上のピクセルを返します。
+	// At(Bounds().Max.X-1, Bounds().Max.Y-1)は、右下のピクセルを返します。
 	At(x, y int) color.Color
 }
 
-// RGBA64Image is an Image whose pixels can be converted directly to a
-// color.RGBA64.
+// RGBA64Imageは、そのピクセルを直接color.RGBA64に変換できるImageです。
 type RGBA64Image interface {
-	// RGBA64At returns the RGBA64 color of the pixel at (x, y). It is
-	// equivalent to calling At(x, y).RGBA() and converting the resulting
-	// 32-bit return values to a color.RGBA64, but it can avoid allocations
-	// from converting concrete color types to the color.Color interface type.
+	// RGBA64Atは、(x, y)のピクセルのRGBA64色を返します。
+	// これはAt(x, y).RGBA()を呼び出し、結果の32ビットの戻り値をcolor.RGBA64に変換するのと同等ですが、
+	// 具体的な色の型をcolor.Colorインターフェース型に変換する際の割り当てを避けることができます。
 	RGBA64At(x, y int) color.RGBA64
 	Image
 }
 
-// PalettedImage is an image whose colors may come from a limited palette.
-// If m is a PalettedImage and m.ColorModel() returns a color.Palette p,
-// then m.At(x, y) should be equivalent to p[m.ColorIndexAt(x, y)]. If m's
-// color model is not a color.Palette, then ColorIndexAt's behavior is
-// undefined.
+// PalettedImageは、色が限定的なパレットから来る可能性がある画像です。
+// もしmがPalettedImageで、m.ColorModel()がcolor.Palette pを返すなら、
+// m.At(x, y)はp[m.ColorIndexAt(x, y)]と等価であるべきです。もしmの
+// カラーモデルがcolor.Paletteでないなら、ColorIndexAtの振る舞いは
+// 定義されていません。
 type PalettedImage interface {
-	// ColorIndexAt returns the palette index of the pixel at (x, y).
+	// ColorIndexAtは、(x, y)のピクセルのパレットインデックスを返します。
 	ColorIndexAt(x, y int) uint8
 	Image
 }
 
-// RGBA is an in-memory image whose At method returns color.RGBA values.
+// RGBAは、Atメソッドがcolor.RGBA値を返すインメモリイメージです。
 type RGBA struct {
-	// Pix holds the image's pixels, in R, G, B, A order. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
+	// Pixは、画像のピクセルをR, G, B, Aの順序で保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
 }
 
@@ -90,8 +87,7 @@ func (p *RGBA) RGBA64At(x, y int) color.RGBA64
 
 func (p *RGBA) RGBAAt(x, y int) color.RGBA
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *RGBA) PixOffset(x, y int) int
 
 func (p *RGBA) Set(x, y int, c color.Color)
@@ -100,24 +96,24 @@ func (p *RGBA) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *RGBA) SetRGBA(x, y int, c color.RGBA)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *RGBA) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *RGBA) Opaque() bool
 
-// NewRGBA returns a new RGBA image with the given bounds.
+// NewRGBAは、指定された境界を持つ新しいRGBAイメージを返します。
 func NewRGBA(r Rectangle) *RGBA
 
-// RGBA64 is an in-memory image whose At method returns color.RGBA64 values.
+// RGBA64は、Atメソッドがcolor.RGBA64値を返すインメモリイメージです。
 type RGBA64 struct {
-	// Pix holds the image's pixels, in R, G, B, A order and big-endian format. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8].
+	// Pixは、画像のピクセルをR, G, B, Aの順序で、ビッグエンディアン形式で保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
 }
 
@@ -129,32 +125,31 @@ func (p *RGBA64) At(x, y int) color.Color
 
 func (p *RGBA64) RGBA64At(x, y int) color.RGBA64
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *RGBA64) PixOffset(x, y int) int
 
 func (p *RGBA64) Set(x, y int, c color.Color)
 
 func (p *RGBA64) SetRGBA64(x, y int, c color.RGBA64)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *RGBA64) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *RGBA64) Opaque() bool
 
-// NewRGBA64 returns a new RGBA64 image with the given bounds.
+// NewRGBA64は、指定された境界を持つ新しいRGBA64イメージを返します。
 func NewRGBA64(r Rectangle) *RGBA64
 
-// NRGBA is an in-memory image whose At method returns color.NRGBA values.
+// NRGBAは、Atメソッドがcolor.NRGBA値を返すインメモリイメージです。
 type NRGBA struct {
-	// Pix holds the image's pixels, in R, G, B, A order. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
+	// Pixは、画像のピクセルをR, G, B, Aの順序で保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
 }
 
@@ -168,8 +163,7 @@ func (p *NRGBA) RGBA64At(x, y int) color.RGBA64
 
 func (p *NRGBA) NRGBAAt(x, y int) color.NRGBA
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *NRGBA) PixOffset(x, y int) int
 
 func (p *NRGBA) Set(x, y int, c color.Color)
@@ -178,24 +172,24 @@ func (p *NRGBA) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *NRGBA) SetNRGBA(x, y int, c color.NRGBA)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *NRGBA) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *NRGBA) Opaque() bool
 
-// NewNRGBA returns a new NRGBA image with the given bounds.
+// NewNRGBAは、指定された境界を持つ新しいNRGBAイメージを返します。
 func NewNRGBA(r Rectangle) *NRGBA
 
-// NRGBA64 is an in-memory image whose At method returns color.NRGBA64 values.
+// NRGBA64は、Atメソッドがcolor.NRGBA64値を返すインメモリイメージです。
 type NRGBA64 struct {
-	// Pix holds the image's pixels, in R, G, B, A order and big-endian format. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8].
+	// Pixは、画像のピクセルをR, G, B, Aの順序で、ビッグエンディアン形式で保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
 }
 
@@ -209,8 +203,7 @@ func (p *NRGBA64) RGBA64At(x, y int) color.RGBA64
 
 func (p *NRGBA64) NRGBA64At(x, y int) color.NRGBA64
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *NRGBA64) PixOffset(x, y int) int
 
 func (p *NRGBA64) Set(x, y int, c color.Color)
@@ -219,24 +212,24 @@ func (p *NRGBA64) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *NRGBA64) SetNRGBA64(x, y int, c color.NRGBA64)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *NRGBA64) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *NRGBA64) Opaque() bool
 
-// NewNRGBA64 returns a new NRGBA64 image with the given bounds.
+// NewNRGBA64は、指定された境界を持つ新しいNRGBA64イメージを返します。
 func NewNRGBA64(r Rectangle) *NRGBA64
 
-// Alpha is an in-memory image whose At method returns color.Alpha values.
+// Alphaは、Atメソッドがcolor.Alpha値を返すインメモリイメージです。
 type Alpha struct {
-	// Pix holds the image's pixels, as alpha values. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1].
+	// Pixは、画像のピクセルをアルファ値として保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
 }
 
@@ -250,8 +243,7 @@ func (p *Alpha) RGBA64At(x, y int) color.RGBA64
 
 func (p *Alpha) AlphaAt(x, y int) color.Alpha
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *Alpha) PixOffset(x, y int) int
 
 func (p *Alpha) Set(x, y int, c color.Color)
@@ -260,22 +252,22 @@ func (p *Alpha) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Alpha) SetAlpha(x, y int, c color.Alpha)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *Alpha) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Alpha) Opaque() bool
 
-// NewAlpha returns a new Alpha image with the given bounds.
+// NewAlphaは、指定された境界を持つ新しいAlphaイメージを返します。
 func NewAlpha(r Rectangle) *Alpha
 
-// Alpha16 is an in-memory image whose At method returns color.Alpha16 values.
+// Alpha16は、Atメソッドがcolor.Alpha16値を返すインメモリイメージです。
 type Alpha16 struct {
-	// Pix holds the image's pixels, as alpha values in big-endian format. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2].
+	// Pixは、画像のピクセルをアルファ値として、ビッグエンディアン形式で保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
 	// Rect is the image's bounds.
 	Rect Rectangle
@@ -291,8 +283,7 @@ func (p *Alpha16) RGBA64At(x, y int) color.RGBA64
 
 func (p *Alpha16) Alpha16At(x, y int) color.Alpha16
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *Alpha16) PixOffset(x, y int) int
 
 func (p *Alpha16) Set(x, y int, c color.Color)
@@ -301,24 +292,24 @@ func (p *Alpha16) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Alpha16) SetAlpha16(x, y int, c color.Alpha16)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *Alpha16) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Alpha16) Opaque() bool
 
-// NewAlpha16 returns a new Alpha16 image with the given bounds.
+// NewAlpha16は、指定された境界を持つ新しいAlpha16イメージを返します。
 func NewAlpha16(r Rectangle) *Alpha16
 
-// Gray is an in-memory image whose At method returns color.Gray values.
+// Grayは、Atメソッドがcolor.Gray値を返すインメモリイメージです。
 type Gray struct {
-	// Pix holds the image's pixels, as gray values. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1].
+	// Pixは、画像のピクセルをグレー値として保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
 }
 
@@ -332,8 +323,7 @@ func (p *Gray) RGBA64At(x, y int) color.RGBA64
 
 func (p *Gray) GrayAt(x, y int) color.Gray
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *Gray) PixOffset(x, y int) int
 
 func (p *Gray) Set(x, y int, c color.Color)
@@ -342,24 +332,24 @@ func (p *Gray) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Gray) SetGray(x, y int, c color.Gray)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *Gray) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Gray) Opaque() bool
 
-// NewGray returns a new Gray image with the given bounds.
+// NewGrayは、指定された境界を持つ新しいGrayイメージを返します。
 func NewGray(r Rectangle) *Gray
 
-// Gray16 is an in-memory image whose At method returns color.Gray16 values.
+// Gray16は、Atメソッドがcolor.Gray16値を返すインメモリイメージです。
 type Gray16 struct {
-	// Pix holds the image's pixels, as gray values in big-endian format. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2].
+	// Pixは、画像のピクセルをグレー値として、ビッグエンディアン形式で保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
 }
 
@@ -373,8 +363,7 @@ func (p *Gray16) RGBA64At(x, y int) color.RGBA64
 
 func (p *Gray16) Gray16At(x, y int) color.Gray16
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *Gray16) PixOffset(x, y int) int
 
 func (p *Gray16) Set(x, y int, c color.Color)
@@ -383,24 +372,24 @@ func (p *Gray16) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *Gray16) SetGray16(x, y int, c color.Gray16)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *Gray16) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Gray16) Opaque() bool
 
-// NewGray16 returns a new Gray16 image with the given bounds.
+// NewGray16は、指定された境界を持つ新しいGray16イメージを返します。
 func NewGray16(r Rectangle) *Gray16
 
-// CMYK is an in-memory image whose At method returns color.CMYK values.
+// CMYKは、Atメソッドがcolor.CMYK値を返すインメモリイメージです。
 type CMYK struct {
-	// Pix holds the image's pixels, in C, M, Y, K order. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4].
+	// Pixは、画像のピクセルをC, M, Y, Kの順序で保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
 }
 
@@ -414,8 +403,7 @@ func (p *CMYK) RGBA64At(x, y int) color.RGBA64
 
 func (p *CMYK) CMYKAt(x, y int) color.CMYK
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *CMYK) PixOffset(x, y int) int
 
 func (p *CMYK) Set(x, y int, c color.Color)
@@ -424,26 +412,26 @@ func (p *CMYK) SetRGBA64(x, y int, c color.RGBA64)
 
 func (p *CMYK) SetCMYK(x, y int, c color.CMYK)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *CMYK) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *CMYK) Opaque() bool
 
-// NewCMYK returns a new CMYK image with the given bounds.
+// NewCMYKは、指定された境界を持つ新しいCMYKイメージを返します。
 func NewCMYK(r Rectangle) *CMYK
 
-// Paletted is an in-memory image of uint8 indices into a given palette.
+// Palettedは、指定されたパレットへのuint8インデックスのインメモリイメージです。
 type Paletted struct {
-	// Pix holds the image's pixels, as palette indices. The pixel at
-	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1].
+	// Pixは、画像のピクセルをパレットインデックスとして保持します。ピクセルは
+	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1]で始まります。
 	Pix []uint8
-	// Stride is the Pix stride (in bytes) between vertically adjacent pixels.
+	// Strideは、垂直方向の隣接ピクセル間のPixストライド（バイト単位）です。
 	Stride int
-	// Rect is the image's bounds.
+	// Rectは、画像の境界です。
 	Rect Rectangle
-	// Palette is the image's palette.
+	// Paletteは、画像のパレットです。
 	Palette color.Palette
 }
 
@@ -455,8 +443,7 @@ func (p *Paletted) At(x, y int) color.Color
 
 func (p *Paletted) RGBA64At(x, y int) color.RGBA64
 
-// PixOffset returns the index of the first element of Pix that corresponds to
-// the pixel at (x, y).
+// PixOffsetは、(x, y)のピクセルに対応するPixの最初の要素のインデックスを返します。
 func (p *Paletted) PixOffset(x, y int) int
 
 func (p *Paletted) Set(x, y int, c color.Color)
@@ -467,13 +454,12 @@ func (p *Paletted) ColorIndexAt(x, y int) uint8
 
 func (p *Paletted) SetColorIndex(x, y int, index uint8)
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *Paletted) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Paletted) Opaque() bool
 
-// NewPaletted returns a new Paletted image with the given width, height and
-// palette.
+// NewPalettedは、指定された幅、高さ、およびパレットを持つ新しいPalettedイメージを返します。
 func NewPaletted(r Rectangle, p color.Palette) *Paletted
