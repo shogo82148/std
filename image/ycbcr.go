@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/image/color"
 )
 
-// YCbCrSubsampleRatio is the chroma subsample ratio used in a YCbCr image.
+// YCbCrSubsampleRatioは、YCbCr画像で使用されるクロマサブサンプル比率です。
 type YCbCrSubsampleRatio int
 
 const (
@@ -22,20 +22,18 @@ const (
 
 func (s YCbCrSubsampleRatio) String() string
 
-// YCbCr is an in-memory image of Y'CbCr colors. There is one Y sample per
-// pixel, but each Cb and Cr sample can span one or more pixels.
-// YStride is the Y slice index delta between vertically adjacent pixels.
-// CStride is the Cb and Cr slice index delta between vertically adjacent pixels
-// that map to separate chroma samples.
-// It is not an absolute requirement, but YStride and len(Y) are typically
-// multiples of 8, and:
+// YCbCrは、Y'CbCr色のインメモリイメージです。ピクセルごとに1つのYサンプルがありますが、
+// 各CbおよびCrサンプルは1つ以上のピクセルに跨ることができます。
+// YStrideは、垂直方向の隣接ピクセル間のYスライスインデックスデルタです。
+// CStrideは、別々のクロマサンプルにマップされる垂直方向の隣接ピクセル間のCbおよびCrスライスインデックスデルタです。
+// 絶対的な要件ではありませんが、通常、YStrideとlen(Y)は8の倍数です、そして：
 //
-//	For 4:4:4, CStride == YStride/1 && len(Cb) == len(Cr) == len(Y)/1.
-//	For 4:2:2, CStride == YStride/2 && len(Cb) == len(Cr) == len(Y)/2.
-//	For 4:2:0, CStride == YStride/2 && len(Cb) == len(Cr) == len(Y)/4.
-//	For 4:4:0, CStride == YStride/1 && len(Cb) == len(Cr) == len(Y)/2.
-//	For 4:1:1, CStride == YStride/4 && len(Cb) == len(Cr) == len(Y)/4.
-//	For 4:1:0, CStride == YStride/4 && len(Cb) == len(Cr) == len(Y)/8.
+//	4:4:4の場合、CStride == YStride/1 && len(Cb) == len(Cr) == len(Y)/1。
+//	4:2:2の場合、CStride == YStride/2 && len(Cb) == len(Cr) == len(Y)/2。
+//	4:2:0の場合、CStride == YStride/2 && len(Cb) == len(Cr) == len(Y)/4。
+//	4:4:0の場合、CStride == YStride/1 && len(Cb) == len(Cr) == len(Y)/2。
+//	4:1:1の場合、CStride == YStride/4 && len(Cb) == len(Cr) == len(Y)/4。
+//	4:1:0の場合、CStride == YStride/4 && len(Cb) == len(Cr) == len(Y)/8。
 type YCbCr struct {
 	Y, Cb, Cr      []uint8
 	YStride        int
@@ -54,27 +52,23 @@ func (p *YCbCr) RGBA64At(x, y int) color.RGBA64
 
 func (p *YCbCr) YCbCrAt(x, y int) color.YCbCr
 
-// YOffset returns the index of the first element of Y that corresponds to
-// the pixel at (x, y).
+// YOffsetは、(x, y)のピクセルに対応するYの最初の要素のインデックスを返します。
 func (p *YCbCr) YOffset(x, y int) int
 
-// COffset returns the index of the first element of Cb or Cr that corresponds
-// to the pixel at (x, y).
+// COffsetは、(x, y)のピクセルに対応するCbまたはCrの最初の要素のインデックスを返します。
 func (p *YCbCr) COffset(x, y int) int
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *YCbCr) SubImage(r Rectangle) Image
 
 func (p *YCbCr) Opaque() bool
 
-// NewYCbCr returns a new YCbCr image with the given bounds and subsample
-// ratio.
+// NewYCbCrは、指定された境界とサブサンプル比率を持つ新しいYCbCrイメージを返します。
 func NewYCbCr(r Rectangle, subsampleRatio YCbCrSubsampleRatio) *YCbCr
 
-// NYCbCrA is an in-memory image of non-alpha-premultiplied Y'CbCr-with-alpha
-// colors. A and AStride are analogous to the Y and YStride fields of the
-// embedded YCbCr.
+// NYCbCrAは、非アルファ乗算のY'CbCr-with-alpha色のインメモリイメージです。
+// AとAStrideは、埋め込まれたYCbCrのYとYStrideフィールドに対応します。
 type NYCbCrA struct {
 	YCbCr
 	A       []uint8
@@ -89,17 +83,15 @@ func (p *NYCbCrA) RGBA64At(x, y int) color.RGBA64
 
 func (p *NYCbCrA) NYCbCrAAt(x, y int) color.NYCbCrA
 
-// AOffset returns the index of the first element of A that corresponds to the
-// pixel at (x, y).
+// AOffsetは、(x, y)のピクセルに対応するAの最初の要素のインデックスを返します。
 func (p *NYCbCrA) AOffset(x, y int) int
 
-// SubImage returns an image representing the portion of the image p visible
-// through r. The returned value shares pixels with the original image.
+// SubImageは、rを通じて見える画像pの一部を表す画像を返します。
+// 返される値は、元の画像とピクセルを共有します。
 func (p *NYCbCrA) SubImage(r Rectangle) Image
 
-// Opaque scans the entire image and reports whether it is fully opaque.
+// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *NYCbCrA) Opaque() bool
 
-// NewNYCbCrA returns a new NYCbCrA image with the given bounds and subsample
-// ratio.
+// NewNYCbCrAは、指定された境界とサブサンプル比率を持つ新しいNYCbCrAイメージを返します。
 func NewNYCbCrA(r Rectangle, subsampleRatio YCbCrSubsampleRatio) *NYCbCrA
