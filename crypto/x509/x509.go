@@ -313,7 +313,6 @@ func (h UnhandledCriticalExtension) Error() string
 //   - PermittedIPRanges
 //   - PermittedURIDomains
 //   - PolicyIdentifiers
-//   - Policies
 //   - SerialNumber
 //   - SignatureAlgorithm
 //   - Subject
@@ -337,9 +336,6 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
 // will be generated from the hash of the public key.
-//
-// If both PolicyIdentifiers and Policies are populated, any OID which appears
-// in both slices will only be added to the certificate policies extension once.
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRL parses a CRL from the given bytes. It's often the case that PEM
