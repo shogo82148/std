@@ -175,6 +175,13 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 // If there is an error, it will be of type *LinkError.
 func Rename(oldpath, newpath string) error
 
+// Readlink returns the destination of the named symbolic link.
+// If there is an error, it will be of type *PathError.
+//
+// If the link destination is relative, Readlink returns the relative path
+// without resolving it to an absolute one.
+func Readlink(name string) (string, error)
+
 // TempDir returns the default directory to use for temporary files.
 //
 // On Unix systems, it returns $TMPDIR if non-empty, else /tmp.
