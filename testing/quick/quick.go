@@ -14,23 +14,12 @@ import (
 
 // Generatorは、自身の型のランダムな値を生成することができます。
 type Generator interface {
-<<<<<<< HEAD
-	Generate(rand *rand.Rand, size int) reflect.Value
-}
-
-// Value returns an arbitrary value of the given type.
-// If the type implements the [Generator] interface, that will be used.
-// Note: To create arbitrary values for structs, all the fields must be exported.
-=======
-	// Generateは、サイズをサイズヒントとして使用して、
-	// メソッドの型のランダムなインスタンスを返します。
 	Generate(rand *rand.Rand, size int) reflect.Value
 }
 
 // Valueは、指定された型の任意の値を返します。
-// もし型がGeneratorインターフェースを実装しているなら、それが使用されます。
+// もし型が [Generator] インターフェースを実装しているなら、それが使用されます。
 // 注意：構造体の任意の値を作成するためには、全てのフィールドがエクスポートされていなければなりません。
->>>>>>> release-branch.go1.21
 func Value(t reflect.Type, rand *rand.Rand) (value reflect.Value, ok bool)
 
 // Config構造体は、テストの実行オプションを含みます。
@@ -63,11 +52,7 @@ type CheckError struct {
 
 func (s *CheckError) Error() string
 
-<<<<<<< HEAD
-// A CheckEqualError is the result [CheckEqual] finding an error.
-=======
-// CheckEqualErrorは、CheckEqualがエラーを見つけた結果です。
->>>>>>> release-branch.go1.21
+// CheckEqualErrorは、[CheckEqual] がエラーを見つけた結果です。
 type CheckEqualError struct {
 	CheckError
 	Out1 []any
@@ -76,18 +61,10 @@ type CheckEqualError struct {
 
 func (s *CheckEqualError) Error() string
 
-<<<<<<< HEAD
-// Check looks for an input to f, any function that returns bool,
-// such that f returns false. It calls f repeatedly, with arbitrary
-// values for each argument. If f returns false on a given input,
-// Check returns that input as a *[CheckError].
-// For example:
-=======
 // Checkは、fがfalseを返すような入力を探します。fは、boolを返す任意の関数です。
 // fは、各引数に対して任意の値を使用して繰り返し呼び出されます。
-// もしfが特定の入力でfalseを返した場合、Checkはその入力を*CheckErrorとして返します。
+// もしfが特定の入力でfalseを返した場合、Checkはその入力を *[CheckError] として返します。
 // 例えば：
->>>>>>> release-branch.go1.21
 //
 //	func TestOddMultipleOfThree(t *testing.T) {
 //		f := func(x int) bool {
@@ -100,14 +77,7 @@ func (s *CheckEqualError) Error() string
 //	}
 func Check(f any, config *Config) error
 
-<<<<<<< HEAD
-// CheckEqual looks for an input on which f and g return different results.
-// It calls f and g repeatedly with arbitrary values for each argument.
-// If f and g return different answers, CheckEqual returns a *[CheckEqualError]
-// describing the input and the outputs.
-=======
 // CheckEqualは、fとgが異なる結果を返す入力を探します。
 // fとgは、各引数に対して任意の値を使用して繰り返し呼び出されます。
-// もしfとgが異なる答えを返した場合、CheckEqualはその入力と出力を記述する*CheckEqualErrorを返します。
->>>>>>> release-branch.go1.21
+// もしfとgが異なる答えを返した場合、CheckEqualはその入力と出力を記述する *[CheckEqualError] を返します。
 func CheckEqual(f, g any, config *Config) error
