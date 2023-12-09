@@ -4,34 +4,32 @@
 
 package atomic
 
-// A Value provides an atomic load and store of a consistently typed value.
-// The zero value for a Value returns nil from Load.
-// Once Store has been called, a Value must not be copied.
+// Valueは、一貫した型の値のアトミックなロードとストアを提供します。
+// Valueのゼロ値はLoadからnilを返します。
+// Storeが呼び出された後、Valueはコピーしてはなりません。
 //
-// A Value must not be copied after first use.
+// 最初の使用後、Valueはコピーしてはなりません。
 type Value struct {
 	v any
 }
 
-// Load returns the value set by the most recent Store.
-// It returns nil if there has been no call to Store for this Value.
+// Loadは、最も最近のStoreによって設定された値を返します。
+// このValueに対してStoreの呼び出しがない場合、nilを返します。
 func (v *Value) Load() (val any)
 
-// Store sets the value of the Value v to val.
-// All calls to Store for a given Value must use values of the same concrete type.
-// Store of an inconsistent type panics, as does Store(nil).
+// Storeは、Value vの値をvalに設定します。
+// 与えられたValueに対するStoreのすべての呼び出しは、同じ具体的な型の値を使用しなければなりません。
+// 不一致の型をStoreするとパニックを引き起こし、Store(nil)も同様です。
 func (v *Value) Store(val any)
 
-// Swap stores new into Value and returns the previous value. It returns nil if
-// the Value is empty.
+// Swapは新しい値をValueに格納し、前の値を返します。Valueが空の場合はnilを返します。
 //
-// All calls to Swap for a given Value must use values of the same concrete
-// type. Swap of an inconsistent type panics, as does Swap(nil).
+// 与えられたValueに対するSwapのすべての呼び出しは、同じ具体的な型の値を使用しなければなりません。
+// 不一致の型をSwapするとパニックを引き起こし、Swap(nil)も同様です。
 func (v *Value) Swap(new any) (old any)
 
-// CompareAndSwap executes the compare-and-swap operation for the Value.
+// CompareAndSwapは、Valueの比較交換操作を実行します。
 //
-// All calls to CompareAndSwap for a given Value must use values of the same
-// concrete type. CompareAndSwap of an inconsistent type panics, as does
-// CompareAndSwap(old, nil).
+// 与えられたValueに対するCompareAndSwapのすべての呼び出しは、同じ具体的な型の値を使用しなければなりません。
+// 不一致の型をCompareAndSwapするとパニックを引き起こし、CompareAndSwap(old, nil)も同様です。
 func (v *Value) CompareAndSwap(old, new any) (swapped bool)
