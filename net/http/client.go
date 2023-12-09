@@ -82,29 +82,6 @@ var DefaultClient = &Client{}
 //
 // RoundTripperは、複数のゴルーチンによる同時使用に対して安全である必要があります。
 type RoundTripper interface {
-<<<<<<< HEAD
-=======
-	// RoundTripは単一のHTTPトランザクションを実行し、
-	// 提供されたRequestのResponseを返します。
-	//
-	// RoundTripはレスポンスを解釈しようとしてはなりません。特に、
-	// RoundTripはレスポンスを取得した場合、レスポンスのHTTPステータスコードに関係なく
-	// err == nilを返さなければなりません。非nilのerrはレスポンスの取得に失敗した場合に
-	// 予約されるべきです。同様に、RoundTripはリダイレクト、認証、またはクッキーなどの
-	// 高レベルのプロトコル詳細を処理しようとしてはなりません。
-	//
-	// RoundTripは、リクエストのBodyを消費して閉じる以外に、
-	// リクエストを変更してはなりません。RoundTripは、
-	// 別のgoroutineでリクエストのフィールドを読むことができます。呼び出し元は、
-	// レスポンスのBodyが閉じられるまで、リクエストを変更したり再利用したりしてはなりません。
-	//
-	// RoundTripは常にボディを閉じる必要があります。これにはエラー時も含まれますが、
-	// 実装によっては、RoundTripが返った後でも別のgoroutineで行うことがあります。
-	// これは、後続のリクエストのボディを再利用したい呼び出し元は、
-	// それを行う前にClose呼び出しを待つように手配する必要があることを意味します。
-	//
-	// RequestのURLとHeaderフィールドは初期化されていなければなりません。
->>>>>>> release-branch.go1.21
 	RoundTrip(*Request) (*Response, error)
 }
 
