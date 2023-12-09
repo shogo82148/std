@@ -44,11 +44,30 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	より完全で遅いcgocheckモードは、GOEXPERIMENTを使用して有効にできます（再ビルドが必要です）。
 	詳細については、https://pkg.go.dev/internal/goexperiment を参照してください。
 
+<<<<<<< HEAD
 	dontfreezetheworld: デフォルトでは、致命的なパニックまたは例外の開始は「世界を凍結」し、実行中のすべてのスレッドをプリエンプトして、
 	実行中のすべてのgoroutineを停止します。これにより、すべてのgoroutineをトレースバックし、パニックの発生地点に近い状態を保持することができます。
 	dontfreezetheworld=1を設定すると、このプリエンプションが無効になり、パニック処理中にgoroutineが引き続き実行されるようになります。
 	ただし、スケジューラに自然に入るgoroutineは引き続き停止します。これは、スケジューラのランタイムデバッグ時に有用であり、
 	freezetheworldはスケジューラの状態を変更するため、問題を隠す可能性があるためです。
+=======
+	disablethp: setting disablethp=1 on Linux disables transparent huge pages for the heap.
+	It has no effect on other platforms. disablethp is meant for compatibility with versions
+	of Go before 1.21, which stopped working around a Linux kernel default that can result
+	in significant memory overuse. See https://go.dev/issue/64332. This setting will be
+	removed in a future release, so operators should tweak their Linux configuration to suit
+	their needs before then. See https://go.dev/doc/gc-guide#Linux_transparent_huge_pages.
+
+	dontfreezetheworld: by default, the start of a fatal panic or throw
+	"freezes the world", preempting all threads to stop all running
+	goroutines, which makes it possible to traceback all goroutines, and
+	keeps their state close to the point of panic. Setting
+	dontfreezetheworld=1 disables this preemption, allowing goroutines to
+	continue executing during panic processing. Note that goroutines that
+	naturally enter the scheduler will still stop. This can be useful when
+	debugging the runtime scheduler, as freezetheworld perturbs scheduler
+	state and thus may hide problems.
+>>>>>>> upstream/master
 
 	efence: efence=1を設定すると、アロケータがユニークなページ上に各オブジェクトを割り当て、アドレスを再利用しないモードで実行されるようになります。
 
@@ -114,10 +133,21 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	現在、Windows、plan9、js/wasmではサポートされていません。
 	一部のアプリケーションでこのオプションを設定すると、大きなトレースが生成される場合があるため、注意して使用してください。
 
+<<<<<<< HEAD
 	profileruntimelocks: profileruntimelocks=1を設定すると、"mutex"プロファイルにランタイム内部のロックに対する競合に関連する
 	コールスタックが含まれます。これはMutexProfileFraction設定に従います。コールスタックは、ロックを解放したunlock呼び出しに対応します。
 	しかし、その値はそのコールスタックが引き起こした競合の量に対応するのではなく、unlockの呼び出し元が元のロック呼び出しで待たなければならなかった時間に対応します。
 	将来のリリースでは、これらを揃えてこの設定を削除することが予想されます。
+=======
+	runtimecontentionstacks: setting runtimecontentionstacks=1 enables inclusion of call stacks
+	related to contention on runtime-internal locks in the "mutex" profile, subject to the
+	MutexProfileFraction setting. When runtimecontentionstacks=0, contention on
+	runtime-internal locks will report as "runtime._LostContendedRuntimeLock". When
+	runtimecontentionstacks=1, the call stacks will correspond to the unlock call that released
+	the lock. But instead of the value corresponding to the amount of contention that call
+	stack caused, it corresponds to the amount of time the caller of unlock had to wait in its
+	original call to lock. A future release is expected to align those and remove this setting.
+>>>>>>> upstream/master
 
 	invalidptr: invalidptr=1（デフォルト）は、無効なポインタ値（例えば、1）がポインタ型の位置に見つかった場合、
 	ガベージコレクタとスタックコピーアがプログラムをクラッシュさせます。invalidptr=0を設定すると、このチェックが無効になります。

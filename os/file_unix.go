@@ -43,7 +43,10 @@ func Link(oldname, newname string) error
 // もしoldnameが後でディレクトリとして作成された場合、シンボリックリンクは機能しません。
 // エラーが発生した場合は、*LinkError型のエラーになります。
 func Symlink(oldname, newname string) error
+<<<<<<< HEAD
 
 // Readlinkは指定されたシンボリックリンクの宛先を返します。
 // エラーがある場合、*PathError型で返されます。
 func Readlink(name string) (string, error)
+=======
+>>>>>>> upstream/master

@@ -150,7 +150,18 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 // エラーが発生した場合、それは*LinkErrorの型である可能性があります。
 func Rename(oldpath, newpath string) error
 
+<<<<<<< HEAD
 // TempDirは一時ファイルに使用するデフォルトのディレクトリを返します。
+=======
+// Readlink returns the destination of the named symbolic link.
+// If there is an error, it will be of type *PathError.
+//
+// If the link destination is relative, Readlink returns the relative path
+// without resolving it to an absolute one.
+func Readlink(name string) (string, error)
+
+// TempDir returns the default directory to use for temporary files.
+>>>>>>> upstream/master
 //
 // Unixシステムでは、$TMPDIRが空でない場合はそれを返し、さもなくば/tmpを返します。
 // Windowsでは、GetTempPathを使用し、最初の空でない値を%TMP%、%TEMP%、%USERPROFILE%、またはWindowsディレクトリから返します。

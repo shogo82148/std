@@ -34,6 +34,7 @@
 	-V
 		リンカのバージョンを表示して終了します。
 	-X importpath.name=value
+<<<<<<< HEAD
 		importpathの名前がvalueになる文字列変数の値を設定します。
 		これは、変数がソースコードで未初期化または定数の文字列式に初期化されている場合にのみ有効です。
 		イニシャライザが関数呼び出しを行うか、他の変数に参照がある場合、-Xは機能しません。
@@ -42,6 +43,17 @@
 		出力を逆アセンブルします。
 	-asan
 		C/C++のアドレスサニタイザーサポートをリンクします。
+=======
+		Set the value of the string variable in importpath named name to value.
+		This is only effective if the variable is declared in the source code either uninitialized
+		or initialized to a constant string expression. -X will not work if the initializer makes
+		a function call or refers to other variables.
+		Note that before Go 1.5 this option took two separate arguments.
+	-asan
+		Link with C/C++ address sanitizer support.
+	-aslr
+		Enable ASLR for buildmode=c-shared on windows (default true).
+>>>>>>> upstream/master
 	-buildid id
 		GoツールチェインのビルドIDとしてidを記録します。
 	-buildmode mode
@@ -53,12 +65,21 @@
 	-cpuprofile file
 		CPUプロファイルをfileに書き込みます。
 	-d
+<<<<<<< HEAD
 		動的実行可能ファイルの生成を無効にします。
 		出力されるコードはどちらの場合も同じです。このオプションは、動的ヘッダが含まれるかどうかだけを制御します。
 		動的ヘッダはデフォルトでオンになっており、動的ライブラリへの参照は必要ありませんが、
 		多くの共通のシステムツールは、ヘッダが存在することを前提としています。
 	-debugtramp int
 		トランポリンのデバッグ。
+=======
+		Disable generation of dynamic executables.
+		The emitted code is the same in either case; the option
+		controls only whether a dynamic header is included.
+		The dynamic header is on by default, even without any
+		references to dynamic libraries, because many common
+		system tools now assume the presence of the header.
+>>>>>>> upstream/master
 	-dumpdep
 		シンボル依存関係グラフをダンプします。
 	-extar ar
@@ -96,9 +117,13 @@
 	-memprofilerate rate
 		runtime.MemProfileRateをrateに設定します。
 	-msan
+<<<<<<< HEAD
 		C/C++のメモリサニタイザーサポートをリンクします。
 	-n
 		シンボルテーブルをダンプします。
+=======
+		Link with C/C++ memory sanitizer support.
+>>>>>>> upstream/master
 	-o file
 		出力をfileに書き込みます（デフォルトはa.out、Windowsではa.out.exe）。
 	-pluginpath path
@@ -108,6 +133,7 @@
 	-race
 		レース検出ライブラリとリンクします。
 	-s
+<<<<<<< HEAD
 		シンボルテーブルとデバッグ情報を省略します。
 	-shared
 		共有オブジェクトを生成します（-linkmode externalを含む; 実験的）。
@@ -116,6 +142,12 @@
 		一時ファイルは外部リンキングモードでのみ使用されます。
 	-u
 		安全でないパッケージを拒否します。
+=======
+		Omit the symbol table and debug information.
+	-tmpdir dir
+		Write temporary files to dir.
+		Temporary files are only used in external linking mode.
+>>>>>>> upstream/master
 	-v
 		リンカ操作のトレースを表示します。
 	-w
