@@ -2,24 +2,24 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package atomic provides low-level atomic memory primitives
-// useful for implementing synchronization algorithms.
+// パッケージatomicは、同期アルゴリズムの実装に役立つ
+// 低レベルのアトミックメモリプリミティブを提供します。
 //
-// These functions require great care to be used correctly.
-// Except for special, low-level applications, synchronization is better
-// done with channels or the facilities of the [sync] package.
-// Share memory by communicating;
-// don't communicate by sharing memory.
+// これらの関数は、正しく使用するためには非常に注意が必要です。
+// 特別な低レベルのアプリケーションを除き、同期はチャネルや[sync]パッケージの機能を
+// 使用して行う方が良いです。
+// メモリを共有するために通信を行い、
+// メモリを共有するために通信を行わないでください。
 //
-// The swap operation, implemented by the SwapT functions, is the atomic
-// equivalent of:
+// SwapT関数によって実装されるスワップ操作は、アトミックの
+// 相当するものです：
 //
 //	old = *addr
 //	*addr = new
 //	return old
 //
-// The compare-and-swap operation, implemented by the CompareAndSwapT
-// functions, is the atomic equivalent of:
+// CompareAndSwapT関数によって実装される比較交換操作は、アトミックの
+// 相当するものです：
 //
 //	if *addr == old {
 //		*addr = new
@@ -27,155 +27,153 @@
 //	}
 //	return false
 //
-// The add operation, implemented by the AddT functions, is the atomic
-// equivalent of:
+// AddT関数によって実装される加算操作は、アトミックの
+// 相当するものです：
 //
 //	*addr += delta
 //	return *addr
 //
-// The load and store operations, implemented by the LoadT and StoreT
-// functions, are the atomic equivalents of "return *addr" and
-// "*addr = val".
+// LoadTおよびStoreT関数によって実装されるロードおよびストア操作は、
+// "return *addr"および"*addr = val"のアトミック相当です。
 //
-// In the terminology of the Go memory model, if the effect of
-// an atomic operation A is observed by atomic operation B,
-// then A “synchronizes before” B.
-// Additionally, all the atomic operations executed in a program
-// behave as though executed in some sequentially consistent order.
-// This definition provides the same semantics as
-// C++'s sequentially consistent atomics and Java's volatile variables.
+// Goのメモリモデルの用語では、アトミック操作Aの効果が
+// アトミック操作Bによって観察される場合、AはBの前に「同期する」。
+// さらに、プログラムで実行されるすべてのアトミック操作は、
+// あたかも一貫した順序で実行されるかのように振る舞います。
+// この定義は、C++の一貫性のあるアトミックとJavaのvolatile変数と
+// 同じセマンティクスを提供します。
 package atomic
 
 import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// SwapInt32 atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Int32.Swap] instead.
+// SwapInt32はアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// より使いやすく、エラーが発生しにくい [Int32.Swap] の使用を検討してください。
 func SwapInt32(addr *int32, new int32) (old int32)
 
-// SwapInt64 atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Int64.Swap] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// SwapInt64はアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// より使いやすく、エラーが発生しにくい [Int64.Swap] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func SwapInt64(addr *int64, new int64) (old int64)
 
-// SwapUint32 atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Uint32.Swap] instead.
+// SwapUint32はアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// より使いやすく、エラーが発生しにくい [Uint32.Swap] の使用を検討してください。
 func SwapUint32(addr *uint32, new uint32) (old uint32)
 
-// SwapUint64 atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Uint64.Swap] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// SwapUint64はアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// より使いやすく、エラーが発生しにくい [Uint64.Swap] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func SwapUint64(addr *uint64, new uint64) (old uint64)
 
-// SwapUintptr atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Uintptr.Swap] instead.
+// SwapUintptrはアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// より使いやすく、エラーが発生しにくい [Uintptr.Swap] の使用を検討してください。
 func SwapUintptr(addr *uintptr, new uintptr) (old uintptr)
 
-// SwapPointer atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Pointer.Swap] instead.
+// SwapPointerはアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// より使いやすく、エラーが発生しにくい [Pointer.Swap] の使用を検討してください。
 func SwapPointer(addr *unsafe.Pointer, new unsafe.Pointer) (old unsafe.Pointer)
 
-// CompareAndSwapInt32 executes the compare-and-swap operation for an int32 value.
-// Consider using the more ergonomic and less error-prone [Int32.CompareAndSwap] instead.
+// CompareAndSwapInt32は、int32値のための比較交換操作を実行します。
+// より使いやすく、エラーが発生しにくい [Int32.CompareAndSwap] の使用を検討してください。
 func CompareAndSwapInt32(addr *int32, old, new int32) (swapped bool)
 
-// CompareAndSwapInt64 executes the compare-and-swap operation for an int64 value.
-// Consider using the more ergonomic and less error-prone [Int64.CompareAndSwap] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// CompareAndSwapInt64は、int64値のための比較交換操作を実行します。
+// より使いやすく、エラーが発生しにくい [Int64.CompareAndSwap] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func CompareAndSwapInt64(addr *int64, old, new int64) (swapped bool)
 
-// CompareAndSwapUint32 executes the compare-and-swap operation for a uint32 value.
-// Consider using the more ergonomic and less error-prone [Uint32.CompareAndSwap] instead.
+// CompareAndSwapUint32は、uint32値のための比較交換操作を実行します。
+// より使いやすく、エラーが発生しにくい [Uint32.CompareAndSwap] の使用を検討してください。
 func CompareAndSwapUint32(addr *uint32, old, new uint32) (swapped bool)
 
-// CompareAndSwapUint64 executes the compare-and-swap operation for a uint64 value.
-// Consider using the more ergonomic and less error-prone [Uint64.CompareAndSwap] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// CompareAndSwapUint64は、uint64値のための比較交換操作を実行します。
+// より使いやすく、エラーが発生しにくい [Uint64.CompareAndSwap] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func CompareAndSwapUint64(addr *uint64, old, new uint64) (swapped bool)
 
-// CompareAndSwapUintptr executes the compare-and-swap operation for a uintptr value.
-// Consider using the more ergonomic and less error-prone [Uintptr.CompareAndSwap] instead.
+// CompareAndSwapUintptrは、uintptr値のための比較交換操作を実行します。
+// より使いやすく、エラーが発生しにくい [Uintptr.CompareAndSwap] の使用を検討してください。
 func CompareAndSwapUintptr(addr *uintptr, old, new uintptr) (swapped bool)
 
-// CompareAndSwapPointer executes the compare-and-swap operation for a unsafe.Pointer value.
-// Consider using the more ergonomic and less error-prone [Pointer.CompareAndSwap] instead.
+// CompareAndSwapPointerは、unsafe.Pointer値のための比較交換操作を実行します。
+// より使いやすく、エラーが発生しにくい [Pointer.CompareAndSwap] の使用を検討してください。
 func CompareAndSwapPointer(addr *unsafe.Pointer, old, new unsafe.Pointer) (swapped bool)
 
-// AddInt32 atomically adds delta to *addr and returns the new value.
-// Consider using the more ergonomic and less error-prone [Int32.Add] instead.
+// AddInt32はアトミックにdeltaを*addrに加え、新しい値を返します。
+// より使いやすく、エラーが発生しにくい [Int32.Add] の使用を検討してください。
 func AddInt32(addr *int32, delta int32) (new int32)
 
-// AddUint32 atomically adds delta to *addr and returns the new value.
-// To subtract a signed positive constant value c from x, do AddUint32(&x, ^uint32(c-1)).
-// In particular, to decrement x, do AddUint32(&x, ^uint32(0)).
-// Consider using the more ergonomic and less error-prone [Uint32.Add] instead.
+// AddUint32はアトミックにdeltaを*addrに加え、新しい値を返します。
+// xから符号付き正の定数値cを減算するには、AddUint32(&x, ^uint32(c-1))を行います。
+// 特に、xをデクリメントするには、AddUint32(&x, ^uint32(0))を行います。
+// より使いやすく、エラーが発生しにくい [Uint32.Add] の使用を検討してください。
 func AddUint32(addr *uint32, delta uint32) (new uint32)
 
-// AddInt64 atomically adds delta to *addr and returns the new value.
-// Consider using the more ergonomic and less error-prone [Int64.Add] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// AddInt64はアトミックにdeltaを*addrに加え、新しい値を返します。
+// より使いやすく、エラーが発生しにくい [Int64.Add] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func AddInt64(addr *int64, delta int64) (new int64)
 
-// AddUint64 atomically adds delta to *addr and returns the new value.
-// To subtract a signed positive constant value c from x, do AddUint64(&x, ^uint64(c-1)).
-// In particular, to decrement x, do AddUint64(&x, ^uint64(0)).
-// Consider using the more ergonomic and less error-prone [Uint64.Add] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// AddUint64はアトミックにdeltaを*addrに加え、新しい値を返します。
+// xから符号付き正の定数値cを減算するには、AddUint64(&x, ^uint64(c-1))を行います。
+// 特に、xをデクリメントするには、AddUint64(&x, ^uint64(0))を行います。
+// より使いやすく、エラーが発生しにくい [Uint64.Add] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func AddUint64(addr *uint64, delta uint64) (new uint64)
 
-// AddUintptr atomically adds delta to *addr and returns the new value.
-// Consider using the more ergonomic and less error-prone [Uintptr.Add] instead.
+// AddUintptrはアトミックにdeltaを*addrに加え、新しい値を返します。
+// より使いやすく、エラーが発生しにくい [Uintptr.Add] の使用を検討してください。
 func AddUintptr(addr *uintptr, delta uintptr) (new uintptr)
 
-// LoadInt32 atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Int32.Load] instead.
+// LoadInt32はアトミックに*addrをロードします。
+// より使いやすく、エラーが発生しにくい [Int32.Load] の使用を検討してください。
 func LoadInt32(addr *int32) (val int32)
 
-// LoadInt64 atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Int64.Load] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// LoadInt64はアトミックに*addrをロードします。
+// より使いやすく、エラーが発生しにくい [Int64.Load] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func LoadInt64(addr *int64) (val int64)
 
-// LoadUint32 atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Uint32.Load] instead.
+// LoadUint32はアトミックに*addrをロードします。
+// より使いやすく、エラーが発生しにくい [Uint32.Load] の使用を検討してください。
 func LoadUint32(addr *uint32) (val uint32)
 
-// LoadUint64 atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Uint64.Load] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// LoadUint64はアトミックに*addrをロードします。
+// より使いやすく、エラーが発生しにくい [Uint64.Load] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func LoadUint64(addr *uint64) (val uint64)
 
-// LoadUintptr atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Uintptr.Load] instead.
+// LoadUintptrはアトミックに*addrをロードします。
+// より使いやすく、エラーが発生しにくい [Uintptr.Load] の使用を検討してください。
 func LoadUintptr(addr *uintptr) (val uintptr)
 
-// LoadPointer atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Pointer.Load] instead.
+// LoadPointerはアトミックに*addrをロードします。
+// より使いやすく、エラーが発生しにくい [Pointer.Load] の使用を検討してください。
 func LoadPointer(addr *unsafe.Pointer) (val unsafe.Pointer)
 
-// StoreInt32 atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Int32.Store] instead.
+// StoreInt32はアトミックにvalを*addrに格納します。
+// より使いやすく、エラーが発生しにくい [Int32.Store] の使用を検討してください。
 func StoreInt32(addr *int32, val int32)
 
-// StoreInt64 atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Int64.Store] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// StoreInt64はアトミックにvalを*addrに格納します。
+// より使いやすく、エラーが発生しにくい [Int64.Store] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func StoreInt64(addr *int64, val int64)
 
-// StoreUint32 atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Uint32.Store] instead.
+// StoreUint32はアトミックにvalを*addrに格納します。
+// より使いやすく、エラーが発生しにくい [Uint32.Store] の使用を検討してください。
 func StoreUint32(addr *uint32, val uint32)
 
-// StoreUint64 atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Uint64.Store] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// StoreUint64はアトミックにvalを*addrに格納します。
+// より使いやすく、エラーが発生しにくい [Uint64.Store] の使用を検討してください
+// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
 func StoreUint64(addr *uint64, val uint64)
 
-// StoreUintptr atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Uintptr.Store] instead.
+// StoreUintptrはアトミックにvalを*addrに格納します。
+// より使いやすく、エラーが発生しにくい [Uintptr.Store] の使用を検討してください。
 func StoreUintptr(addr *uintptr, val uintptr)
 
-// StorePointer atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Pointer.Store] instead.
+// StorePointerはアトミックにvalを*addrに格納します。
+// より使いやすく、エラーが発生しにくい [Pointer.Store] の使用を検討してください。
 func StorePointer(addr *unsafe.Pointer, val unsafe.Pointer)
