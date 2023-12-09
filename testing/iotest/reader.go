@@ -25,31 +25,17 @@ func DataErrReader(r io.Reader) io.Reader
 // ErrTimeoutは、偽のタイムアウトエラーです。
 var ErrTimeout = errors.New("timeout")
 
-<<<<<<< HEAD
-// TimeoutReader returns [ErrTimeout] on the second read
-// with no data. Subsequent calls to read succeed.
-func TimeoutReader(r io.Reader) io.Reader
-
-// ErrReader returns an [io.Reader] that returns 0, err from all Read calls.
-func ErrReader(err error) io.Reader
-
-// TestReader tests that reading from r returns the expected file content.
-// It does reads of different sizes, until EOF.
-// If r implements [io.ReaderAt] or [io.Seeker], TestReader also checks
-// that those operations behave as they should.
-=======
-// TimeoutReaderは、データなしの2回目の読み取りでErrTimeoutを返します。
+// TimeoutReaderは、データなしの2回目の読み取りで [ErrTimeout] を返します。
 // その後の読み取りの呼び出しは成功します。
 func TimeoutReader(r io.Reader) io.Reader
 
-// ErrReaderは、全てのRead呼び出しから0, errを返すio.Readerを返します。
+// ErrReaderは、全てのRead呼び出しから0, errを返す [io.Reader] を返します。
 func ErrReader(err error) io.Reader
 
 // TestReaderは、rからの読み取りが期待されるファイル内容を返すことをテストします。
 // EOFまで、異なるサイズの読み取りを行います。
-// もしrがio.ReaderAtまたはio.Seekerを実装しているなら、TestReaderはまた、
+// もしrが [io.ReaderAt] または [io.Seeker] を実装しているなら、TestReaderはまた、
 // それらの操作が適切に動作することも確認します。
->>>>>>> release-branch.go1.21
 //
 // TestReaderが何かしらの不適切な動作を見つけた場合、それら全てを報告するエラーを返します。
 // エラーテキストは複数行にわたります。
