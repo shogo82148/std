@@ -28,4 +28,3 @@ import (
 // もしHandlerが意図的にテストでチェックされる属性を削除するなら、
 // results関数はその欠如をチェックし、それを返すマップに追加すべきです。
 func TestHandler(h slog.Handler, results func() []map[string]any) error
-å
