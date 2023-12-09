@@ -93,10 +93,5 @@ func (p *NYCbCrA) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *NYCbCrA) Opaque() bool
 
-<<<<<<< HEAD
-// NewNYCbCrA returns a new [NYCbCrA] image with the given bounds and subsample
-// ratio.
-=======
-// NewNYCbCrAは、指定された境界とサブサンプル比率を持つ新しいNYCbCrAイメージを返します。
->>>>>>> release-branch.go1.21
+// NewNYCbCrAは、指定された境界とサブサンプル比率を持つ新しい [NYCbCrA] イメージを返します。
 func NewNYCbCrA(r Rectangle, subsampleRatio YCbCrSubsampleRatio) *NYCbCrA

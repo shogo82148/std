@@ -37,35 +37,20 @@ func (p Point) Mod(r Rectangle) Point
 // Eqは、pとqが等しいかどうかを報告します。
 func (p Point) Eq(q Point) bool
 
-<<<<<<< HEAD
-// ZP is the zero [Point].
+// ZPはゼロ [Point] です。
 //
-// Deprecated: Use a literal [image.Point] instead.
+// Deprecated: 代わりにリテラルの [image.Point] を使用してください。
 var ZP Point
 
-// Pt is shorthand for [Point]{X, Y}.
-=======
-// ZPはゼロポイントです。
-//
-// Deprecated: 代わりにリテラルのimage.Point{}を使用してください。
-var ZP Point
-
-// PtはPoint{X, Y}の省略形です。
->>>>>>> release-branch.go1.21
+// Ptは [Point]{X, Y}の省略形です。
 func Pt(X, Y int) Point
 
 // Rectangleは、Min.X <= X < Max.X、Min.Y <= Y < Max.Yの点を含みます。
 // Min.X <= Max.XおよびYについても同様に成り立つ場合、それは整形されています。
 // 点は常に整形されています。矩形のメソッドは、整形された入力に対して常に整形された出力を返します。
 //
-<<<<<<< HEAD
-// A Rectangle is also an [Image] whose bounds are the rectangle itself. At
-// returns color.Opaque for points in the rectangle and color.Transparent
-// otherwise.
-=======
-// Rectangleは、その境界が矩形自体であるImageでもあります。Atは、
+// Rectangleは、その境界が矩形自体である [Image] でもあります。Atは、
 // 矩形内の点に対してcolor.Opaqueを、それ以外の場合はcolor.Transparentを返します。
->>>>>>> release-branch.go1.21
 type Rectangle struct {
 	Min, Max Point
 }
@@ -116,46 +101,23 @@ func (r Rectangle) In(s Rectangle) bool
 // 正しく形成されています。
 func (r Rectangle) Canon() Rectangle
 
-<<<<<<< HEAD
-// At implements the [Image] interface.
+// Atは、[Image] インターフェースを実装します。
 func (r Rectangle) At(x, y int) color.Color
 
-// RGBA64At implements the [RGBA64Image] interface.
+// RGBA64Atは、[RGBA64Image] インターフェースを実装します。
 func (r Rectangle) RGBA64At(x, y int) color.RGBA64
 
-// Bounds implements the [Image] interface.
+// Boundsは、[Image] インターフェースを実装します。
 func (r Rectangle) Bounds() Rectangle
 
-// ColorModel implements the [Image] interface.
+// ColorModelは、[Image] インターフェースを実装します。
 func (r Rectangle) ColorModel() color.Model
 
-// ZR is the zero [Rectangle].
+// ZRはゼロ [Rectangle] です。
 //
-// Deprecated: Use a literal [image.Rectangle] instead.
+// Deprecated: 代わりにリテラルの [image.Rectangle] を使用してください。
 var ZR Rectangle
 
-// Rect is shorthand for [Rectangle]{Pt(x0, y0), [Pt](x1, y1)}. The returned
-// rectangle has minimum and maximum coordinates swapped if necessary so that
-// it is well-formed.
-=======
-// Atは、Imageインターフェースを実装します。
-func (r Rectangle) At(x, y int) color.Color
-
-// RGBA64Atは、RGBA64Imageインターフェースを実装します。
-func (r Rectangle) RGBA64At(x, y int) color.RGBA64
-
-// Boundsは、Imageインターフェースを実装します。
-func (r Rectangle) Bounds() Rectangle
-
-// ColorModelは、Imageインターフェースを実装します。
-func (r Rectangle) ColorModel() color.Model
-
-// ZRはゼロ矩形です。
-//
-// Deprecated: 代わりにリテラルのimage.Rectangle{}を使用してください。
-var ZR Rectangle
-
-// RectはRectangle{Pt(x0, y0), Pt(x1, y1)}の省略形です。返される
+// Rectは [Rectangle]{Pt(x0, y0), Pt(x1, y1)}の省略形です。返される
 // 矩形は、必要に応じて最小座標と最大座標が交換され、正しく形成されています。
->>>>>>> release-branch.go1.21
 func Rect(x0, y0, x1, y1 int) Rectangle

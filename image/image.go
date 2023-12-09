@@ -47,9 +47,7 @@ type Config struct {
 	Width, Height int
 }
 
-<<<<<<< HEAD
-// Image is a finite rectangular grid of [color.Color] values taken from a color
-// model.
+// Imageは、カラーモデルから取得した [color.Color] 値の有限の長方形グリッドです。
 type Image interface {
 	ColorModel() color.Model
 
@@ -58,58 +56,23 @@ type Image interface {
 	At(x, y int) color.Color
 }
 
-// RGBA64Image is an [Image] whose pixels can be converted directly to a
-// color.RGBA64.
+// RGBA64Imageは、そのピクセルを直接color.RGBA64に変換できる [Image] です。
 type RGBA64Image interface {
-=======
-// Imageは、カラーモデルから取得したcolor.Color値の有限の長方形グリッドです。
-type Image interface {
-	// ColorModelは、Imageのカラーモデルを返します。
-	ColorModel() color.Model
-	// Boundsは、Atがゼロ以外の色を返すことができる領域を返します。
-	// 境界は必ずしも点(0,0)を含むわけではありません。
-	Bounds() Rectangle
-	// Atは、(x, y)のピクセルの色を返します。
-	// At(Bounds().Min.X, Bounds().Min.Y)は、グリッドの左上のピクセルを返します。
-	// At(Bounds().Max.X-1, Bounds().Max.Y-1)は、右下のピクセルを返します。
-	At(x, y int) color.Color
-}
-
-// RGBA64Imageは、そのピクセルを直接color.RGBA64に変換できるImageです。
-type RGBA64Image interface {
-	// RGBA64Atは、(x, y)のピクセルのRGBA64色を返します。
-	// これはAt(x, y).RGBA()を呼び出し、結果の32ビットの戻り値をcolor.RGBA64に変換するのと同等ですが、
-	// 具体的な色の型をcolor.Colorインターフェース型に変換する際の割り当てを避けることができます。
->>>>>>> release-branch.go1.21
 	RGBA64At(x, y int) color.RGBA64
 	Image
 }
 
-<<<<<<< HEAD
-// PalettedImage is an image whose colors may come from a limited palette.
-// If m is a PalettedImage and m.ColorModel() returns a [color.Palette] p,
-// then m.At(x, y) should be equivalent to p[m.ColorIndexAt(x, y)]. If m's
-// color model is not a color.Palette, then ColorIndexAt's behavior is
-// undefined.
-type PalettedImage interface {
-=======
 // PalettedImageは、色が限定的なパレットから来る可能性がある画像です。
-// もしmがPalettedImageで、m.ColorModel()がcolor.Palette pを返すなら、
+// もしmがPalettedImageで、m.ColorModel()が [color.Palette] pを返すなら、
 // m.At(x, y)はp[m.ColorIndexAt(x, y)]と等価であるべきです。もしmの
 // カラーモデルがcolor.Paletteでないなら、ColorIndexAtの振る舞いは
 // 定義されていません。
 type PalettedImage interface {
-	// ColorIndexAtは、(x, y)のピクセルのパレットインデックスを返します。
->>>>>>> release-branch.go1.21
 	ColorIndexAt(x, y int) uint8
 	Image
 }
 
-<<<<<<< HEAD
-// RGBA is an in-memory image whose At method returns [color.RGBA] values.
-=======
-// RGBAは、Atメソッドがcolor.RGBA値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// RGBAは、Atメソッドが [color.RGBA] 値を返すインメモリイメージです。
 type RGBA struct {
 	// Pixは、画像のピクセルをR, G, B, Aの順序で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
@@ -146,17 +109,10 @@ func (p *RGBA) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *RGBA) Opaque() bool
 
-<<<<<<< HEAD
-// NewRGBA returns a new [RGBA] image with the given bounds.
+// NewRGBAは、指定された境界を持つ新しい [RGBA] イメージを返します。
 func NewRGBA(r Rectangle) *RGBA
 
-// RGBA64 is an in-memory image whose At method returns [color.RGBA64] values.
-=======
-// NewRGBAは、指定された境界を持つ新しいRGBAイメージを返します。
-func NewRGBA(r Rectangle) *RGBA
-
-// RGBA64は、Atメソッドがcolor.RGBA64値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// RGBA64は、Atメソッドが [color.RGBA64] 値を返すインメモリイメージです。
 type RGBA64 struct {
 	// Pixは、画像のピクセルをR, G, B, Aの順序で、ビッグエンディアン形式で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8]で始まります。
@@ -189,17 +145,10 @@ func (p *RGBA64) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *RGBA64) Opaque() bool
 
-<<<<<<< HEAD
-// NewRGBA64 returns a new [RGBA64] image with the given bounds.
+// NewRGBA64は、指定された境界を持つ新しい [RGBA64] イメージを返します。
 func NewRGBA64(r Rectangle) *RGBA64
 
-// NRGBA is an in-memory image whose At method returns [color.NRGBA] values.
-=======
-// NewRGBA64は、指定された境界を持つ新しいRGBA64イメージを返します。
-func NewRGBA64(r Rectangle) *RGBA64
-
-// NRGBAは、Atメソッドがcolor.NRGBA値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// NRGBAは、Atメソッドが [color.NRGBA] 値を返すインメモリイメージです。
 type NRGBA struct {
 	// Pixは、画像のピクセルをR, G, B, Aの順序で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
@@ -236,17 +185,10 @@ func (p *NRGBA) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *NRGBA) Opaque() bool
 
-<<<<<<< HEAD
-// NewNRGBA returns a new [NRGBA] image with the given bounds.
+// NewNRGBAは、指定された境界を持つ新しい [NRGBA] イメージを返します。
 func NewNRGBA(r Rectangle) *NRGBA
 
-// NRGBA64 is an in-memory image whose At method returns [color.NRGBA64] values.
-=======
-// NewNRGBAは、指定された境界を持つ新しいNRGBAイメージを返します。
-func NewNRGBA(r Rectangle) *NRGBA
-
-// NRGBA64は、Atメソッドがcolor.NRGBA64値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// NRGBA64は、Atメソッドが [color.NRGBA64] 値を返すインメモリイメージです。
 type NRGBA64 struct {
 	// Pixは、画像のピクセルをR, G, B, Aの順序で、ビッグエンディアン形式で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*8]で始まります。
@@ -283,17 +225,10 @@ func (p *NRGBA64) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *NRGBA64) Opaque() bool
 
-<<<<<<< HEAD
-// NewNRGBA64 returns a new [NRGBA64] image with the given bounds.
+// NewNRGBA64は、指定された境界を持つ新しい [NRGBA64] イメージを返します。
 func NewNRGBA64(r Rectangle) *NRGBA64
 
-// Alpha is an in-memory image whose At method returns [color.Alpha] values.
-=======
-// NewNRGBA64は、指定された境界を持つ新しいNRGBA64イメージを返します。
-func NewNRGBA64(r Rectangle) *NRGBA64
-
-// Alphaは、Atメソッドがcolor.Alpha値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// Alphaは、Atメソッドが [color.Alpha] 値を返すインメモリイメージです。
 type Alpha struct {
 	// Pixは、画像のピクセルをアルファ値として保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1]で始まります。
@@ -330,17 +265,10 @@ func (p *Alpha) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Alpha) Opaque() bool
 
-<<<<<<< HEAD
-// NewAlpha returns a new [Alpha] image with the given bounds.
+// NewAlphaは、指定された境界を持つ新しい [Alpha] イメージを返します。
 func NewAlpha(r Rectangle) *Alpha
 
-// Alpha16 is an in-memory image whose At method returns [color.Alpha16] values.
-=======
-// NewAlphaは、指定された境界を持つ新しいAlphaイメージを返します。
-func NewAlpha(r Rectangle) *Alpha
-
-// Alpha16は、Atメソッドがcolor.Alpha16値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// Alpha16は、Atメソッドが [color.Alpha16] 値を返すインメモリイメージです。
 type Alpha16 struct {
 	// Pixは、画像のピクセルをアルファ値として、ビッグエンディアン形式で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2]で始まります。
@@ -377,17 +305,10 @@ func (p *Alpha16) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Alpha16) Opaque() bool
 
-<<<<<<< HEAD
-// NewAlpha16 returns a new [Alpha16] image with the given bounds.
+// NewAlpha16は、指定された境界を持つ新しい [Alpha16] イメージを返します。
 func NewAlpha16(r Rectangle) *Alpha16
 
-// Gray is an in-memory image whose At method returns [color.Gray] values.
-=======
-// NewAlpha16は、指定された境界を持つ新しいAlpha16イメージを返します。
-func NewAlpha16(r Rectangle) *Alpha16
-
-// Grayは、Atメソッドがcolor.Gray値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// Grayは、Atメソッドが [color.Gray] 値を返すインメモリイメージです。
 type Gray struct {
 	// Pixは、画像のピクセルをグレー値として保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*1]で始まります。
@@ -424,17 +345,10 @@ func (p *Gray) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Gray) Opaque() bool
 
-<<<<<<< HEAD
-// NewGray returns a new [Gray] image with the given bounds.
+// NewGrayは、指定された境界を持つ新しい [Gray] イメージを返します。
 func NewGray(r Rectangle) *Gray
 
-// Gray16 is an in-memory image whose At method returns [color.Gray16] values.
-=======
-// NewGrayは、指定された境界を持つ新しいGrayイメージを返します。
-func NewGray(r Rectangle) *Gray
-
-// Gray16は、Atメソッドがcolor.Gray16値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// Gray16は、Atメソッドが [color.Gray16] 値を返すインメモリイメージです。
 type Gray16 struct {
 	// Pixは、画像のピクセルをグレー値として、ビッグエンディアン形式で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2]で始まります。
@@ -471,17 +385,10 @@ func (p *Gray16) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Gray16) Opaque() bool
 
-<<<<<<< HEAD
-// NewGray16 returns a new [Gray16] image with the given bounds.
+// NewGray16は、指定された境界を持つ新しい [Gray16] イメージを返します。
 func NewGray16(r Rectangle) *Gray16
 
-// CMYK is an in-memory image whose At method returns [color.CMYK] values.
-=======
-// NewGray16は、指定された境界を持つ新しいGray16イメージを返します。
-func NewGray16(r Rectangle) *Gray16
-
-// CMYKは、Atメソッドがcolor.CMYK値を返すインメモリイメージです。
->>>>>>> release-branch.go1.21
+// CMYKは、Atメソッドが [color.CMYK] 値を返すインメモリイメージです。
 type CMYK struct {
 	// Pixは、画像のピクセルをC, M, Y, Kの順序で保持します。ピクセルは
 	// (x, y)はPix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*4]で始まります。
@@ -560,10 +467,5 @@ func (p *Paletted) SubImage(r Rectangle) Image
 // Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
 func (p *Paletted) Opaque() bool
 
-<<<<<<< HEAD
-// NewPaletted returns a new [Paletted] image with the given width, height and
-// palette.
-=======
-// NewPalettedは、指定された幅、高さ、およびパレットを持つ新しいPalettedイメージを返します。
->>>>>>> release-branch.go1.21
+// NewPalettedは、指定された幅、高さ、およびパレットを持つ新しい [Paletted] イメージを返します。
 func NewPaletted(r Rectangle, p color.Palette) *Paletted
