@@ -2,16 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package syslog provides a simple interface to the system log
-// service. It can send messages to the syslog daemon using UNIX
-// domain sockets, UDP or TCP.
+// syslogパッケージは、システムログサービスへのシンプルなインターフェースを提供します。
+// UNIXドメインソケット、UDP、またはTCPを使用してsyslogデーモンにメッセージを送信することができます。
 //
-// Only one call to Dial is necessary. On write failures,
-// the syslog client will attempt to reconnect to the server
-// and write again.
+// Dialへの呼び出しは一度だけ必要です。書き込み失敗時、
+// syslogクライアントはサーバーへの再接続を試み、再度書き込みを行います。
 //
-// The syslog package is frozen and is not accepting new features.
-// Some external packages provide more functionality. See:
+// syslogパッケージは凍結されており、新たな機能は受け入れていません。
+// 一部の外部パッケージがより多くの機能を提供しています。参照：
 //
 //	https://godoc.org/?q=syslog
 package syslog

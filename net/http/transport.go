@@ -223,11 +223,12 @@ type Transport struct {
 	h2transport        h2Transport
 	tlsNextProtoWasNil bool
 
-	// ForceAttemptHTTP2 controls whether HTTP/2 is enabled when a non-zero
-	// Dial, DialTLS, or DialContext func or TLSClientConfig is provided.
-	// By default, use of any those fields conservatively disables HTTP/2.
-	// To use a custom dialer or TLS config and still attempt HTTP/2
-	// upgrades, set this to true.
+	// ForceAttemptHTTP2は、非ゼロの
+	// Dial, DialTLS, または DialContext 関数または TLSClientConfig が提供されたときに、
+	// HTTP/2が有効になるかどうかを制御します。
+	// デフォルトでは、これらのフィールドのいずれかの使用は、保守的にHTTP/2を無効にします。
+	// カスタムダイヤラーやTLS設定を使用しつつ、HTTP/2への
+	// アップグレードを試みるには、これをtrueに設定します。
 	ForceAttemptHTTP2 bool
 }
 

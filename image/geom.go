@@ -8,121 +8,116 @@ import (
 	"github.com/shogo82148/std/image/color"
 )
 
-// A Point is an X, Y coordinate pair. The axes increase right and down.
+// Pointは、X、Y座標のペアです。軸は右と下に増加します。
 type Point struct {
 	X, Y int
 }
 
-// String returns a string representation of p like "(3,4)".
+// Stringは、pの文字列表現を"(3,4)"のように返します。
 func (p Point) String() string
 
-// Add returns the vector p+q.
+// Addはベクトルp+qを返します。
 func (p Point) Add(q Point) Point
 
-// Sub returns the vector p-q.
+// Subはベクトルp-qを返します。
 func (p Point) Sub(q Point) Point
 
-// Mul returns the vector p*k.
+// Mulはベクトルp*kを返します。
 func (p Point) Mul(k int) Point
 
-// Div returns the vector p/k.
+// Divはベクトルp/kを返します。
 func (p Point) Div(k int) Point
 
-// In reports whether p is in r.
+// Inは、pがr内にあるかどうかを報告します。
 func (p Point) In(r Rectangle) bool
 
-// Mod returns the point q in r such that p.X-q.X is a multiple of r's width
-// and p.Y-q.Y is a multiple of r's height.
+// Modは、p.X-q.Xがrの幅の倍数で、p.Y-q.Yがrの高さの倍数となるような、r内の点qを返します。
 func (p Point) Mod(r Rectangle) Point
 
-// Eq reports whether p and q are equal.
+// Eqは、pとqが等しいかどうかを報告します。
 func (p Point) Eq(q Point) bool
 
-// ZP is the zero [Point].
+// ZPはゼロ [Point] です。
 //
-// Deprecated: Use a literal [image.Point] instead.
+// Deprecated: 代わりにリテラルの [image.Point] を使用してください。
 var ZP Point
 
-// Pt is shorthand for [Point]{X, Y}.
+// Ptは [Point]{X, Y}の省略形です。
 func Pt(X, Y int) Point
 
-// A Rectangle contains the points with Min.X <= X < Max.X, Min.Y <= Y < Max.Y.
-// It is well-formed if Min.X <= Max.X and likewise for Y. Points are always
-// well-formed. A rectangle's methods always return well-formed outputs for
-// well-formed inputs.
+// Rectangleは、Min.X <= X < Max.X、Min.Y <= Y < Max.Yの点を含みます。
+// Min.X <= Max.XおよびYについても同様に成り立つ場合、それは整形されています。
+// 点は常に整形されています。矩形のメソッドは、整形された入力に対して常に整形された出力を返します。
 //
-// A Rectangle is also an [Image] whose bounds are the rectangle itself. At
-// returns color.Opaque for points in the rectangle and color.Transparent
-// otherwise.
+// Rectangleは、その境界が矩形自体である [Image] でもあります。Atは、
+// 矩形内の点に対してcolor.Opaqueを、それ以外の場合はcolor.Transparentを返します。
 type Rectangle struct {
 	Min, Max Point
 }
 
-// String returns a string representation of r like "(3,4)-(6,5)".
+// Stringは、rの文字列表現を"(3,4)-(6,5)"のように返します。
 func (r Rectangle) String() string
 
-// Dx returns r's width.
+// Dxは、rの幅を返します。
 func (r Rectangle) Dx() int
 
-// Dy returns r's height.
+// Dyは、rの高さを返します。
 func (r Rectangle) Dy() int
 
-// Size returns r's width and height.
+// Sizeは、rの幅と高さを返します。
 func (r Rectangle) Size() Point
 
-// Add returns the rectangle r translated by p.
+// Addは、pによって移動された矩形rを返します。
 func (r Rectangle) Add(p Point) Rectangle
 
-// Sub returns the rectangle r translated by -p.
+// Subは、-pによって移動された矩形rを返します。
 func (r Rectangle) Sub(p Point) Rectangle
 
-// Inset returns the rectangle r inset by n, which may be negative. If either
-// of r's dimensions is less than 2*n then an empty rectangle near the center
-// of r will be returned.
+// Insetは、n（負の場合もあり）によって内側に移動された矩形rを返します。
+// rの寸法のいずれかが2*n未満の場合、rの中心近くの空の矩形が返されます。
 func (r Rectangle) Inset(n int) Rectangle
 
-// Intersect returns the largest rectangle contained by both r and s. If the
-// two rectangles do not overlap then the zero rectangle will be returned.
+// Intersectは、rとsの両方に含まれる最大の矩形を返します。もし
+// 二つの矩形が重ならない場合、ゼロ矩形が返されます。
 func (r Rectangle) Intersect(s Rectangle) Rectangle
 
-// Union returns the smallest rectangle that contains both r and s.
+// Unionは、rとsの両方を含む最小の矩形を返します。
 func (r Rectangle) Union(s Rectangle) Rectangle
 
-// Empty reports whether the rectangle contains no points.
+// Emptyは、矩形が点を含まないかどうかを報告します。
 func (r Rectangle) Empty() bool
 
-// Eq reports whether r and s contain the same set of points. All empty
-// rectangles are considered equal.
+// Eqは、rとsが同じ点の集合を含むかどうかを報告します。すべての空の
+// 矩形は等しいとみなされます。
 func (r Rectangle) Eq(s Rectangle) bool
 
-// Overlaps reports whether r and s have a non-empty intersection.
+// Overlapsは、rとsが非空の交差点を持つかどうかを報告します。
 func (r Rectangle) Overlaps(s Rectangle) bool
 
-// In reports whether every point in r is in s.
+// Inは、rのすべての点がs内にあるかどうかを報告します。
 func (r Rectangle) In(s Rectangle) bool
 
-// Canon returns the canonical version of r. The returned rectangle has minimum
-// and maximum coordinates swapped if necessary so that it is well-formed.
+// Canonは、rの正規化されたバージョンを返します。返される矩形は、必要に応じて最小座標と最大座標が交換され、
+// 正しく形成されています。
 func (r Rectangle) Canon() Rectangle
 
-// At implements the [Image] interface.
+// Atは、[Image] インターフェースを実装します。
 func (r Rectangle) At(x, y int) color.Color
 
-// RGBA64At implements the [RGBA64Image] interface.
+// RGBA64Atは、[RGBA64Image] インターフェースを実装します。
 func (r Rectangle) RGBA64At(x, y int) color.RGBA64
 
-// Bounds implements the [Image] interface.
+// Boundsは、[Image] インターフェースを実装します。
 func (r Rectangle) Bounds() Rectangle
 
-// ColorModel implements the [Image] interface.
+// ColorModelは、[Image] インターフェースを実装します。
 func (r Rectangle) ColorModel() color.Model
 
-// ZR is the zero [Rectangle].
+// ZRはゼロ [Rectangle] です。
 //
-// Deprecated: Use a literal [image.Rectangle] instead.
+// Deprecated: 代わりにリテラルの [image.Rectangle] を使用してください。
 var ZR Rectangle
 
-// Rect is shorthand for [Rectangle]{Pt(x0, y0), [Pt](x1, y1)}. The returned
-// rectangle has minimum and maximum coordinates swapped if necessary so that
-// it is well-formed.
+// Rectは [Rectangle]{Pt(x0, y0), Pt(x1, y1)}の省略形です。返される
+// 矩形は、必要に応じて最小座標と最大座標が交換され、正しく形成されています。
 func Rect(x0, y0, x1, y1 int) Rectangle

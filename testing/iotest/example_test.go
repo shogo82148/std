@@ -11,7 +11,7 @@ import (
 )
 
 func ExampleErrReader() {
-	// A reader that always returns a custom error.
+	// 常にカスタムエラーを返すリーダー。
 	r := iotest.ErrReader(errors.New("custom error"))
 	n, err := r.Read(nil)
 	fmt.Printf("n:   %d\nerr: %q\n", n, err)

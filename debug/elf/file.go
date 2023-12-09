@@ -3,15 +3,14 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package elf implements access to ELF object files.
+パッケージelfは、ELFオブジェクトファイルへのアクセスを実装します。
 
-# Security
+# セキュリティ
 
-This package is not designed to be hardened against adversarial inputs, and is
-outside the scope of https://go.dev/security/policy. In particular, only basic
-validation is done when parsing object files. As such, care should be taken when
-parsing untrusted inputs, as parsing malformed files may consume significant
-resources, or cause panics.
+このパッケージは敵対的な入力に対して強化されるように設計されておらず、
+https://go.dev/security/policy の範囲外です。特に、オブジェクトファイルを解析する際には基本的な
+検証のみが行われます。そのため、信頼できない入力を解析する際には注意が必要です。なぜなら、
+形式が不正なファイルを解析すると、大量のリソースを消費したり、パニックを引き起こす可能性があるからです。
 */
 package elf
 
@@ -22,7 +21,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A FileHeader represents an ELF file header.
+// FileHeaderはELFファイルヘッダーを表します。
 type FileHeader struct {
 	Class      Class
 	Data       Data
@@ -35,7 +34,7 @@ type FileHeader struct {
 	Entry      uint64
 }
 
-// A File represents an open ELF file.
+// Fileは開いているELFファイルを表します。
 type File struct {
 	FileHeader
 	Sections  []*Section
@@ -45,7 +44,7 @@ type File struct {
 	gnuVersym []byte
 }
 
-// A SectionHeader represents a single ELF section header.
+// SectionHeaderは単一のELFセクションヘッダーを表します。
 type SectionHeader struct {
 	Name      string
 	Type      SectionType
@@ -58,27 +57,25 @@ type SectionHeader struct {
 	Addralign uint64
 	Entsize   uint64
 
-	// FileSize is the size of this section in the file in bytes.
-	// If a section is compressed, FileSize is the size of the
-	// compressed data, while Size (above) is the size of the
-	// uncompressed data.
+	// FileSizeは、ファイル内のこのセクションのサイズをバイト単位で表します。
+	// セクションが圧縮されている場合、FileSizeは圧縮データのサイズであり、
+	// Size（上記）は非圧縮データのサイズです。
 	FileSize uint64
 }
 
-// A Section represents a single section in an ELF file.
+// Sectionは、ELFファイル内の単一のセクションを表します。
 type Section struct {
 	SectionHeader
 
-	// Embed ReaderAt for ReadAt method.
-	// Do not embed SectionReader directly
-	// to avoid having Read and Seek.
-	// If a client wants Read and Seek it must use
-	// Open() to avoid fighting over the seek offset
-	// with other clients.
+	// ReadAtメソッドのためにReaderAtを埋め込みます。
+	// ReadとSeekを避けるために、SectionReaderを直接埋め込まないでください。
+	// クライアントがReadとSeekを使用したい場合は、
+	// 他のクライアントとのシークオフセットの競合を避けるために
+	// Open()を使用する必要があります。
 	//
-	// ReaderAt may be nil if the section is not easily available
-	// in a random-access form. For example, a compressed section
-	// may have a nil ReaderAt.
+	// セクションがランダムアクセス形式で簡単に利用できない場合、
+	// ReaderAtはnilになる可能性があります。例えば、圧縮されたセクションは
+	// ReaderAtがnilになるかもしれません。
 	io.ReaderAt
 	sr *io.SectionReader
 
@@ -86,22 +83,22 @@ type Section struct {
 	compressionOffset int64
 }
 
-// Data reads and returns the contents of the ELF section.
-// Even if the section is stored compressed in the ELF file,
-// Data returns uncompressed data.
+// DataはELFセクションの内容を読み取り、返します。
+// セクションがELFファイル内で圧縮されて保存されていても、
+// Dataは非圧縮データを返します。
 //
-// For an [SHT_NOBITS] section, Data always returns a non-nil error.
+// [SHT_NOBITS] セクションの場合、Dataは常に非nilのエラーを返します。
 func (s *Section) Data() ([]byte, error)
 
-// Open returns a new ReadSeeker reading the ELF section.
-// Even if the section is stored compressed in the ELF file,
-// the ReadSeeker reads uncompressed data.
+// Openは、ELFセクションを読み取る新しいReadSeekerを返します。
+// セクションがELFファイル内で圧縮されて保存されていても、
+// ReadSeekerは非圧縮データを読み取ります。
 //
-// For an [SHT_NOBITS] section, all calls to the opened reader
-// will return a non-nil error.
+// [SHT_NOBITS] セクションの場合、開いたリーダーへのすべての呼び出しは
+// 非nilのエラーを返します。
 func (s *Section) Open() io.ReadSeeker
 
-// A ProgHeader represents a single ELF program header.
+// ProgHeaderは、単一のELFプログラムヘッダーを表します。
 type ProgHeader struct {
 	Type   ProgType
 	Flags  ProgFlag
@@ -113,32 +110,30 @@ type ProgHeader struct {
 	Align  uint64
 }
 
-// A Prog represents a single ELF program header in an ELF binary.
+// Progは、ELFバイナリ内の単一のELFプログラムヘッダーを表します。
 type Prog struct {
 	ProgHeader
 
-	// Embed ReaderAt for ReadAt method.
-	// Do not embed SectionReader directly
-	// to avoid having Read and Seek.
-	// If a client wants Read and Seek it must use
-	// Open() to avoid fighting over the seek offset
-	// with other clients.
+	// ReadAtメソッドのためにReaderAtを埋め込みます。
+	// ReadとSeekを避けるために、SectionReaderを直接埋め込まないでください。
+	// クライアントがReadとSeekを使用したい場合は、
+	// 他のクライアントとのシークオフセットの競合を避けるために
+	// Open()を使用する必要があります。
 	io.ReaderAt
 	sr *io.SectionReader
 }
 
-// Open returns a new ReadSeeker reading the ELF program body.
+// Openは、ELFプログラム本体を読み取る新しいReadSeekerを返します。
 func (p *Prog) Open() io.ReadSeeker
 
-// A Symbol represents an entry in an ELF symbol table section.
+// Symbolは、ELFシンボルテーブルセクションのエントリを表します。
 type Symbol struct {
 	Name        string
 	Info, Other byte
 	Section     SectionIndex
 	Value, Size uint64
 
-	// Version and Library are present only for the dynamic symbol
-	// table.
+	// VersionとLibraryは、動的シンボルテーブルにのみ存在します。
 	Version string
 	Library string
 }
@@ -151,49 +146,47 @@ type FormatError struct {
 
 func (e *FormatError) Error() string
 
-// Open opens the named file using [os.Open] and prepares it for use as an ELF binary.
+// Openは [os.Open] を使用して指定された名前のファイルを開き、ELFバイナリとしての使用を準備します。
 func Open(name string) (*File, error)
 
-// Close closes the [File].
-// If the [File] was created using [NewFile] directly instead of [Open],
-// Close has no effect.
+// Closeは [File] を閉じます。
+// [File] が [Open] ではなく [NewFile] を直接使用して作成された場合、
+// Closeは何も影響を与えません。
 func (f *File) Close() error
 
-// SectionByType returns the first section in f with the
-// given type, or nil if there is no such section.
+// SectionByTypeは、指定されたタイプを持つf内の最初のセクションを返します。
+// そのようなセクションがない場合はnilを返します。
 func (f *File) SectionByType(typ SectionType) *Section
 
-// NewFile creates a new [File] for accessing an ELF binary in an underlying reader.
-// The ELF binary is expected to start at position 0 in the ReaderAt.
+// NewFileは、基礎となるリーダー内のELFバイナリにアクセスするための新しい [File] を作成します。
+// ELFバイナリは、ReaderAtの位置0で開始することが期待されます。
 func NewFile(r io.ReaderAt) (*File, error)
 
-// ErrNoSymbols is returned by [File.Symbols] and [File.DynamicSymbols]
-// if there is no such section in the File.
+// ErrNoSymbolsは、[File.Symbols] と [File.DynamicSymbols] によって返されます。
+// ファイルにそのようなセクションがない場合に返されます。
 var ErrNoSymbols = errors.New("no symbol section")
 
-// Section returns a section with the given name, or nil if no such
-// section exists.
+// Sectionは、指定された名前を持つセクションを返します。
+// そのようなセクションがない場合はnilを返します。
 func (f *File) Section(name string) *Section
 
 func (f *File) DWARF() (*dwarf.Data, error)
 
-// Symbols returns the symbol table for f. The symbols will be listed in the order
-// they appear in f.
+// Symbolsは、fのシンボルテーブルを返します。シンボルは、f内に出現する順序でリストされます。
 //
-// For compatibility with Go 1.0, Symbols omits the null symbol at index 0.
-// After retrieving the symbols as symtab, an externally supplied index x
-// corresponds to symtab[x-1], not symtab[x].
+// Go 1.0との互換性のため、Symbolsはインデックス0のnullシンボルを省略します。
+// シンボルをsymtabとして取得した後、外部から供給されたインデックスxは
+// symtab[x]ではなく、symtab[x-1]に対応します。
 func (f *File) Symbols() ([]Symbol, error)
 
-// DynamicSymbols returns the dynamic symbol table for f. The symbols
-// will be listed in the order they appear in f.
+// DynamicSymbolsは、fの動的シンボルテーブルを返します。シンボルは、f内に出現する順序でリストされます。
 //
-// If f has a symbol version table, the returned [File.Symbols] will have
-// initialized [Version] and Library fields.
+// fがシンボルバージョンテーブルを持っている場合、返される [File.Symbols] は
+// 初期化された [Version] とLibraryフィールドを持ちます。
 //
-// For compatibility with [File.Symbols], [File.DynamicSymbols] omits the null symbol at index 0.
-// After retrieving the symbols as symtab, an externally supplied index x
-// corresponds to symtab[x-1], not symtab[x].
+// [File.Symbols] との互換性のため、[File.DynamicSymbols] はインデックス0のnullシンボルを省略します。
+// シンボルをsymtabとして取得した後、外部から供給されたインデックスxは
+// symtab[x]ではなく、symtab[x-1]に対応します。
 func (f *File) DynamicSymbols() ([]Symbol, error)
 
 type ImportedSymbol struct {
@@ -202,24 +195,20 @@ type ImportedSymbol struct {
 	Library string
 }
 
-// ImportedSymbols returns the names of all symbols
-// referred to by the binary f that are expected to be
-// satisfied by other libraries at dynamic load time.
-// It does not return weak symbols.
+// ImportedSymbolsは、動的ロード時に他のライブラリによって満たされることが期待される
+// バイナリfによって参照されるすべてのシンボルの名前を返します。
+// 弱いシンボルは返しません。
 func (f *File) ImportedSymbols() ([]ImportedSymbol, error)
 
-// ImportedLibraries returns the names of all libraries
-// referred to by the binary f that are expected to be
-// linked with the binary at dynamic link time.
+// ImportedLibrariesは、動的リンク時にバイナリとリンクされることが期待される
+// バイナリfによって参照されるすべてのライブラリの名前を返します。
 func (f *File) ImportedLibraries() ([]string, error)
 
-// DynString returns the strings listed for the given tag in the file's dynamic
-// section.
+// DynStringは、ファイルの動的セクションで指定されたタグにリストされている文字列を返します。
 //
-// The tag must be one that takes string values: [DT_NEEDED], [DT_SONAME], [DT_RPATH], or
-// [DT_RUNPATH].
+// タグは、文字列値を取るものでなければなりません：[DT_NEEDED]、[DT_SONAME]、[DT_RPATH]、または
+// [DT_RUNPATH]。
 func (f *File) DynString(tag DynTag) ([]string, error)
 
-// DynValue returns the values listed for the given tag in the file's dynamic
-// section.
+// DynValueは、ファイルの動的セクションで指定されたタグにリストされている値を返します。
 func (f *File) DynValue(tag DynTag) ([]uint64, error)

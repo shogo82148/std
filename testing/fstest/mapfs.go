@@ -9,26 +9,25 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// A MapFS is a simple in-memory file system for use in tests,
-// represented as a map from path names (arguments to Open)
-// to information about the files or directories they represent.
+// MapFSは、テストで使用するためのシンプルなメモリ内ファイルシステムであり、
+// パス名（Openへの引数）からそれらが表すファイルやディレクトリの情報へのマップとして表されます。
 //
-// The map need not include parent directories for files contained
-// in the map; those will be synthesized if needed.
-// But a directory can still be included by setting the [MapFile.Mode]'s [fs.ModeDir] bit;
-// this may be necessary for detailed control over the directory's [fs.FileInfo]
-// or to create an empty directory.
+// マップには、マップに含まれるファイルの親ディレクトリを含める必要はありません。
+// 必要に応じてそれらは合成されます。
+// しかし、[MapFile.Mode] の [fs.ModeDir] ビットを設定することで、ディレクトリをまだ含めることができます。
+// これは、ディレクトリの [fs.FileInfo] に対する詳細な制御が必要であるか、
+// 空のディレクトリを作成するために必要かもしれません。
 //
-// File system operations read directly from the map,
-// so that the file system can be changed by editing the map as needed.
-// An implication is that file system operations must not run concurrently
-// with changes to the map, which would be a race.
-// Another implication is that opening or reading a directory requires
-// iterating over the entire map, so a MapFS should typically be used with not more
-// than a few hundred entries or directory reads.
+// ファイルシステムの操作は、マップから直接読み取るため、
+// 必要に応じてマップを編集することでファイルシステムを変更できます。
+// その意味するところは、ファイルシステムの操作はマップの変更と同時に実行してはならず、
+// それはレース条件を引き起こす可能性があるということです。
+// 別の意味するところは、ディレクトリのオープンや読み取りには、
+// マップ全体を反復処理する必要があるため、MapFSは通常、
+// 数百エントリ以上またはディレクトリの読み取りを使用しないで使用する必要があります。
 type MapFS map[string]*MapFile
 
-// A MapFile describes a single file in a [MapFS].
+// MapFileは、[MapFS] 内の単一のファイルを説明します。
 type MapFile struct {
 	Data    []byte
 	Mode    fs.FileMode
@@ -39,7 +38,7 @@ type MapFile struct {
 var _ fs.FS = MapFS(nil)
 var _ fs.File = (*openMapFile)(nil)
 
-// Open opens the named file.
+// Openは、指定された名前のファイルを開きます。
 func (fsys MapFS) Open(name string) (fs.File, error)
 
 func (fsys MapFS) ReadFile(name string) ([]byte, error)

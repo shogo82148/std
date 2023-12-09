@@ -8,6 +8,7 @@
 package profile
 
 import (
+	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/io"
 )
 
@@ -118,6 +119,8 @@ type Function struct {
 // may be a gzip-compressed encoded protobuf or one of many legacy
 // profile formats which may be unsupported in the future.
 func Parse(r io.Reader) (*Profile, error)
+
+var ErrNoData = fmt.Errorf("empty input file")
 
 // Write writes the profile as a gzip-compressed marshaled protobuf.
 func (p *Profile) Write(w io.Writer) error

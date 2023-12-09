@@ -90,7 +90,7 @@ type Hijacker interface {
 //
 // このメカニズムは、レスポンスが準備される前にクライアントが切断された場合、サーバー上の長時間の操作をキャンセルするために使用できます。
 //
-// 廃止予定: CloseNotifierインターフェースは、Goのコンテキストパッケージより前に実装されました。
+// Deprecated: CloseNotifierインターフェースは、Goのコンテキストパッケージより前に実装されました。
 // 新しいコードでは、Request.Contextを使用する必要があります。
 type CloseNotifier interface {
 	CloseNotify() <-chan bool

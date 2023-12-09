@@ -72,10 +72,6 @@ func Link(oldname, newname string) error
 // エラーが発生した場合、*LinkErrorの型になります。
 func Symlink(oldname, newname string) error
 
-// Readlinkは指定されたシンボリックリンクの宛先を返します。
-// エラーが発生した場合、*PathError型になります。
-func Readlink(name string) (string, error)
-
 // Chownは指定されたファイルの数値化されたuidとgidを変更します。
 // ファイルがシンボリックリンクの場合、リンク先のuidとgidを変更します。
 // uidまたはgidが-1の場合、その値は変更されません。

@@ -150,6 +150,13 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 // エラーが発生した場合、それは*LinkErrorの型である可能性があります。
 func Rename(oldpath, newpath string) error
 
+// Readlinkは、指定されたシンボリックリンクの宛先を返します。
+// エラーがある場合、そのタイプは*PathErrorになります。
+//
+// リンク先が相対的な場合、Readlinkはそれを絶対パスに解決せずに
+// 相対パスを返します。
+func Readlink(name string) (string, error)
+
 // TempDirは一時ファイルに使用するデフォルトのディレクトリを返します。
 //
 // Unixシステムでは、$TMPDIRが空でない場合はそれを返し、さもなくば/tmpを返します。

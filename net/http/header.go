@@ -50,9 +50,9 @@ func (h Header) Clone() Header
 // ParseTimeは、HTTP/1.1で許可されている3つのフォーマットのうちの1つ、TimeFormat、time.RFC850、およびtime.ANSICをそれぞれ試して、時間ヘッダー（Date：ヘッダーなど）を解析します。
 func ParseTime(text string) (t time.Time, err error)
 
-// WriteSubset writes a header in wire format.
-// If exclude is not nil, keys where exclude[key] == true are not written.
-// Keys are not canonicalized before checking the exclude map.
+// WriteSubsetはワイヤーフォーマットでヘッダーを書き込みます。
+// excludeがnilでない場合、exclude[key] == trueのキーは書き込まれません。
+// excludeマップをチェックする前にキーは正規化されません。
 func (h Header) WriteSubset(w io.Writer, exclude map[string]bool) error
 
 // CanonicalHeaderKeyは、ヘッダーキーsの正規形式を返します。
