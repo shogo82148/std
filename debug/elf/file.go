@@ -87,24 +87,15 @@ type Section struct {
 // セクションがELFファイル内で圧縮されて保存されていても、
 // Dataは非圧縮データを返します。
 //
-<<<<<<< HEAD
-// For an [SHT_NOBITS] section, Data always returns a non-nil error.
-=======
-// SHT_NOBITSセクションの場合、Dataは常に非nilのエラーを返します。
->>>>>>> release-branch.go1.21
+// [SHT_NOBITS] セクションの場合、Dataは常に非nilのエラーを返します。
 func (s *Section) Data() ([]byte, error)
 
 // Openは、ELFセクションを読み取る新しいReadSeekerを返します。
 // セクションがELFファイル内で圧縮されて保存されていても、
 // ReadSeekerは非圧縮データを読み取ります。
 //
-<<<<<<< HEAD
-// For an [SHT_NOBITS] section, all calls to the opened reader
-// will return a non-nil error.
-=======
-// SHT_NOBITSセクションの場合、開いたリーダーへのすべての呼び出しは
+// [SHT_NOBITS] セクションの場合、開いたリーダーへのすべての呼び出しは
 // 非nilのエラーを返します。
->>>>>>> release-branch.go1.21
 func (s *Section) Open() io.ReadSeeker
 
 // ProgHeaderは、単一のELFプログラムヘッダーを表します。
@@ -155,42 +146,24 @@ type FormatError struct {
 
 func (e *FormatError) Error() string
 
-<<<<<<< HEAD
-// Open opens the named file using [os.Open] and prepares it for use as an ELF binary.
+// Openは [os.Open] を使用して指定された名前のファイルを開き、ELFバイナリとしての使用を準備します。
 func Open(name string) (*File, error)
 
-// Close closes the [File].
-// If the [File] was created using [NewFile] directly instead of [Open],
-// Close has no effect.
-=======
-// Openはos.Openを使用して指定された名前のファイルを開き、ELFバイナリとしての使用を準備します。
-func Open(name string) (*File, error)
-
-// CloseはFileを閉じます。
-// FileがOpenではなくNewFileを直接使用して作成された場合、
+// Closeは [File] を閉じます。
+// [File] が [Open] ではなく [NewFile] を直接使用して作成された場合、
 // Closeは何も影響を与えません。
->>>>>>> release-branch.go1.21
 func (f *File) Close() error
 
 // SectionByTypeは、指定されたタイプを持つf内の最初のセクションを返します。
 // そのようなセクションがない場合はnilを返します。
 func (f *File) SectionByType(typ SectionType) *Section
 
-<<<<<<< HEAD
-// NewFile creates a new [File] for accessing an ELF binary in an underlying reader.
-// The ELF binary is expected to start at position 0 in the ReaderAt.
-func NewFile(r io.ReaderAt) (*File, error)
-
-// ErrNoSymbols is returned by [File.Symbols] and [File.DynamicSymbols]
-// if there is no such section in the File.
-=======
-// NewFileは、基礎となるリーダー内のELFバイナリにアクセスするための新しいFileを作成します。
+// NewFileは、基礎となるリーダー内のELFバイナリにアクセスするための新しい [File] を作成します。
 // ELFバイナリは、ReaderAtの位置0で開始することが期待されます。
 func NewFile(r io.ReaderAt) (*File, error)
 
-// ErrNoSymbolsは、File.SymbolsとFile.DynamicSymbolsによって返されます。
+// ErrNoSymbolsは、[File.Symbols] と [File.DynamicSymbols] によって返されます。
 // ファイルにそのようなセクションがない場合に返されます。
->>>>>>> release-branch.go1.21
 var ErrNoSymbols = errors.New("no symbol section")
 
 // Sectionは、指定された名前を持つセクションを返します。
@@ -208,21 +181,12 @@ func (f *File) Symbols() ([]Symbol, error)
 
 // DynamicSymbolsは、fの動的シンボルテーブルを返します。シンボルは、f内に出現する順序でリストされます。
 //
-<<<<<<< HEAD
-// If f has a symbol version table, the returned [File.Symbols] will have
-// initialized [Version] and Library fields.
+// fがシンボルバージョンテーブルを持っている場合、返される [File.Symbols] は
+// 初期化された [Version] とLibraryフィールドを持ちます。
 //
-// For compatibility with [File.Symbols], [File.DynamicSymbols] omits the null symbol at index 0.
-// After retrieving the symbols as symtab, an externally supplied index x
-// corresponds to symtab[x-1], not symtab[x].
-=======
-// fがシンボルバージョンテーブルを持っている場合、返されるSymbolsは
-// 初期化されたVersionとLibraryフィールドを持ちます。
-//
-// Symbolsとの互換性のため、DynamicSymbolsはインデックス0のnullシンボルを省略します。
+// [File.Symbols] との互換性のため、[File.DynamicSymbols] はインデックス0のnullシンボルを省略します。
 // シンボルをsymtabとして取得した後、外部から供給されたインデックスxは
 // symtab[x]ではなく、symtab[x-1]に対応します。
->>>>>>> release-branch.go1.21
 func (f *File) DynamicSymbols() ([]Symbol, error)
 
 type ImportedSymbol struct {
@@ -242,13 +206,8 @@ func (f *File) ImportedLibraries() ([]string, error)
 
 // DynStringは、ファイルの動的セクションで指定されたタグにリストされている文字列を返します。
 //
-<<<<<<< HEAD
-// The tag must be one that takes string values: [DT_NEEDED], [DT_SONAME], [DT_RPATH], or
-// [DT_RUNPATH].
-=======
-// タグは、文字列値を取るものでなければなりません：DT_NEEDED、DT_SONAME、DT_RPATH、または
-// DT_RUNPATH。
->>>>>>> release-branch.go1.21
+// タグは、文字列値を取るものでなければなりません：[DT_NEEDED]、[DT_SONAME]、[DT_RPATH]、または
+// [DT_RUNPATH]。
 func (f *File) DynString(tag DynTag) ([]string, error)
 
 // DynValueは、ファイルの動的セクションで指定されたタグにリストされている値を返します。
