@@ -72,21 +72,10 @@ func Link(oldname, newname string) error
 // エラーが発生した場合、*LinkErrorの型になります。
 func Symlink(oldname, newname string) error
 
-<<<<<<< HEAD
-// Readlinkは指定されたシンボリックリンクの宛先を返します。
-// エラーが発生した場合、*PathError型になります。
-func Readlink(name string) (string, error)
-
 // Chownは指定されたファイルの数値化されたuidとgidを変更します。
 // ファイルがシンボリックリンクの場合、リンク先のuidとgidを変更します。
 // uidまたはgidが-1の場合、その値は変更されません。
 // エラーが発生した場合、*PathError型のエラーが返されます。
-=======
-// Chown changes the numeric uid and gid of the named file.
-// If the file is a symbolic link, it changes the uid and gid of the link's target.
-// A uid or gid of -1 means to not change that value.
-// If there is an error, it will be of type *PathError.
->>>>>>> upstream/master
 //
 // WindowsまたはPlan 9では、Chownは常にsyscall.EWINDOWSまたはEPLAN9エラーを返し、*PathErrorでラップされます。
 func Chown(name string, uid, gid int) error
