@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package quick implements utility functions to help with black box testing.
+// quickパッケージは、ブラックボックステストを支援するためのユーティリティ関数を実装します。
 //
-// The testing/quick package is frozen and is not accepting new features.
+// testing/quickパッケージは凍結されており、新たな機能は受け入れられません。
 package quick
 
 import (
@@ -12,45 +12,41 @@ import (
 	"github.com/shogo82148/std/reflect"
 )
 
-// A Generator can generate random values of its own type.
+// Generatorは、自身の型のランダムな値を生成することができます。
 type Generator interface {
-	// Generate returns a random instance of the type on which it is a
-	// method using the size as a size hint.
+	// Generateは、サイズをサイズヒントとして使用して、
+	// メソッドの型のランダムなインスタンスを返します。
 	Generate(rand *rand.Rand, size int) reflect.Value
 }
 
-// Value returns an arbitrary value of the given type.
-// If the type implements the Generator interface, that will be used.
-// Note: To create arbitrary values for structs, all the fields must be exported.
+// Valueは、指定された型の任意の値を返します。
+// もし型がGeneratorインターフェースを実装しているなら、それが使用されます。
+// 注意：構造体の任意の値を作成するためには、全てのフィールドがエクスポートされていなければなりません。
 func Value(t reflect.Type, rand *rand.Rand) (value reflect.Value, ok bool)
 
-// A Config structure contains options for running a test.
+// Config構造体は、テストの実行オプションを含みます。
 type Config struct {
-	// MaxCount sets the maximum number of iterations.
-	// If zero, MaxCountScale is used.
+	// MaxCountは、反復の最大回数を設定します。
+	// もしゼロなら、MaxCountScaleが使用されます。
 	MaxCount int
-	// MaxCountScale is a non-negative scale factor applied to the
-	// default maximum.
-	// A count of zero implies the default, which is usually 100
-	// but can be set by the -quickchecks flag.
+	// MaxCountScaleは、デフォルトの最大値に適用される非負のスケールファクターです。
+	// カウントがゼロの場合、デフォルト（通常は100）が適用されますが、
+	// -quickchecksフラグによって設定することもできます。
 	MaxCountScale float64
-	// Rand specifies a source of random numbers.
-	// If nil, a default pseudo-random source will be used.
+	// Randは、乱数のソースを指定します。
+	// もしnilなら、デフォルトの疑似乱数ソースが使用されます。
 	Rand *rand.Rand
-	// Values specifies a function to generate a slice of
-	// arbitrary reflect.Values that are congruent with the
-	// arguments to the function being tested.
-	// If nil, the top-level Value function is used to generate them.
+	// Valuesは、テスト対象の関数の引数と一致する任意のreflect.Valuesのスライスを生成する関数を指定します。
+	// もしnilなら、トップレベルのValue関数がそれらを生成するために使用されます。
 	Values func([]reflect.Value, *rand.Rand)
 }
 
-// A SetupError is the result of an error in the way that check is being
-// used, independent of the functions being tested.
+// SetupErrorは、テストされる関数に関係なく、checkの使用方法に関するエラーの結果です。
 type SetupError string
 
 func (s SetupError) Error() string
 
-// A CheckError is the result of Check finding an error.
+// CheckErrorは、Checkがエラーを見つけた結果です。
 type CheckError struct {
 	Count int
 	In    []any
@@ -58,7 +54,7 @@ type CheckError struct {
 
 func (s *CheckError) Error() string
 
-// A CheckEqualError is the result CheckEqual finding an error.
+// CheckEqualErrorは、CheckEqualがエラーを見つけた結果です。
 type CheckEqualError struct {
 	CheckError
 	Out1 []any
@@ -67,11 +63,10 @@ type CheckEqualError struct {
 
 func (s *CheckEqualError) Error() string
 
-// Check looks for an input to f, any function that returns bool,
-// such that f returns false. It calls f repeatedly, with arbitrary
-// values for each argument. If f returns false on a given input,
-// Check returns that input as a *CheckError.
-// For example:
+// Checkは、fがfalseを返すような入力を探します。fは、boolを返す任意の関数です。
+// fは、各引数に対して任意の値を使用して繰り返し呼び出されます。
+// もしfが特定の入力でfalseを返した場合、Checkはその入力を*CheckErrorとして返します。
+// 例えば：
 //
 //	func TestOddMultipleOfThree(t *testing.T) {
 //		f := func(x int) bool {
@@ -84,8 +79,7 @@ func (s *CheckEqualError) Error() string
 //	}
 func Check(f any, config *Config) error
 
-// CheckEqual looks for an input on which f and g return different results.
-// It calls f and g repeatedly with arbitrary values for each argument.
-// If f and g return different answers, CheckEqual returns a *CheckEqualError
-// describing the input and the outputs.
+// CheckEqualは、fとgが異なる結果を返す入力を探します。
+// fとgは、各引数に対して任意の値を使用して繰り返し呼び出されます。
+// もしfとgが異なる答えを返した場合、CheckEqualはその入力と出力を記述する*CheckEqualErrorを返します。
 func CheckEqual(f, g any, config *Config) error
