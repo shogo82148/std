@@ -12,19 +12,11 @@ import (
 // MapFSは、テストで使用するためのシンプルなメモリ内ファイルシステムであり、
 // パス名（Openへの引数）からそれらが表すファイルやディレクトリの情報へのマップとして表されます。
 //
-<<<<<<< HEAD
-// The map need not include parent directories for files contained
-// in the map; those will be synthesized if needed.
-// But a directory can still be included by setting the [MapFile.Mode]'s [fs.ModeDir] bit;
-// this may be necessary for detailed control over the directory's [fs.FileInfo]
-// or to create an empty directory.
-=======
 // マップには、マップに含まれるファイルの親ディレクトリを含める必要はありません。
 // 必要に応じてそれらは合成されます。
-// しかし、MapFile.ModeのModeDirビットを設定することで、ディレクトリをまだ含めることができます。
-// これは、ディレクトリのFileInfoに対する詳細な制御が必要であるか、
+// しかし、[MapFile.Mode] の [fs.ModeDir] ビットを設定することで、ディレクトリをまだ含めることができます。
+// これは、ディレクトリの [fs.FileInfo] に対する詳細な制御が必要であるか、
 // 空のディレクトリを作成するために必要かもしれません。
->>>>>>> release-branch.go1.21
 //
 // ファイルシステムの操作は、マップから直接読み取るため、
 // 必要に応じてマップを編集することでファイルシステムを変更できます。
@@ -35,11 +27,7 @@ import (
 // 数百エントリ以上またはディレクトリの読み取りを使用しないで使用する必要があります。
 type MapFS map[string]*MapFile
 
-<<<<<<< HEAD
-// A MapFile describes a single file in a [MapFS].
-=======
-// MapFileは、MapFS内の単一のファイルを説明します。
->>>>>>> release-branch.go1.21
+// MapFileは、[MapFS] 内の単一のファイルを説明します。
 type MapFile struct {
 	Data    []byte
 	Mode    fs.FileMode
