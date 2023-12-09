@@ -197,18 +197,11 @@ const (
 	// ErrJSTemplate: "...はJSテンプレートリテラル内に存在します"
 	// 例：
 	//     <script>var tmpl = `{{.Interp}}`</script>
-<<<<<<< HEAD
-	// Discussion:
-	//   Package html/template does not support actions inside of JS template
-	//   literals.
-	//
-	// Deprecated: ErrJSTemplate is no longer returned when an action is present
-	// in a JS template literal. Actions inside of JS template literals are now
-	// escaped as expected.
-=======
-	// 議論：
+	// 議論:
 	//   パッケージhtml/templateは、JSテンプレートリテラル内のアクションをサポートしていません。
->>>>>>> release-branch.go1.21
+	//
+	// Deprecated: JSテンプレートリテラル内にアクションが存在する場合、ErrJSTemplateはもはや返されません。
+	// JSテンプレートリテラル内のアクションは、現在予想通りにエスケープされます。
 	ErrJSTemplate
 )
 
