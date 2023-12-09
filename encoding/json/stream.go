@@ -28,13 +28,8 @@ type Decoder struct {
 // 要求されたJSON値を超えてrからデータを読み取る可能性があります。
 func NewDecoder(r io.Reader) *Decoder
 
-<<<<<<< HEAD
-// UseNumber causes the Decoder to unmarshal a number into an interface{} as a
-// [Number] instead of as a float64.
-=======
 // UseNumberは、Decoderに数値をfloat64ではなく、
-// Numberとしてinterface{}にアンマーシャルするよう指示します。
->>>>>>> release-branch.go1.21
+// [Number] としてinterface{}にアンマーシャルするよう指示します。
 func (dec *Decoder) UseNumber()
 
 // DisallowUnknownFieldsは、デコーダに、宛先が構造体であり、入力に宛先の
@@ -45,20 +40,11 @@ func (dec *Decoder) DisallowUnknownFields()
 // Decodeは、入力から次のJSONエンコードされた値を読み取り、
 // それをvが指す値に格納します。
 //
-<<<<<<< HEAD
-// See the documentation for [Unmarshal] for details about
-// the conversion of JSON into a Go value.
-func (dec *Decoder) Decode(v any) error
-
-// Buffered returns a reader of the data remaining in the Decoder's
-// buffer. The reader is valid until the next call to [Decoder.Decode].
-=======
-// JSONをGoの値に変換する詳細については、Unmarshalのドキュメンテーションを参照してください。
+// JSONをGoの値に変換する詳細については、[Unmarshal] のドキュメンテーションを参照してください。
 func (dec *Decoder) Decode(v any) error
 
 // Bufferedは、Decoderのバッファに残っているデータのリーダーを返します。
-// リーダーは次のDecode呼び出しまで有効です。
->>>>>>> release-branch.go1.21
+// リーダーは次の [Decoder.Decode] 呼び出しまで有効です。
 func (dec *Decoder) Buffered() io.Reader
 
 // Encoderは、JSON値を出力ストリームに書き込みます。
@@ -78,12 +64,7 @@ func NewEncoder(w io.Writer) *Encoder
 // Encodeは、vのJSONエンコーディングをストリームに書き込み、
 // その後に改行文字を追加します。
 //
-<<<<<<< HEAD
-// See the documentation for [Marshal] for details about the
-// conversion of Go values to JSON.
-=======
-// Goの値をJSONに変換する詳細については、Marshalのドキュメンテーションを参照してください。
->>>>>>> release-branch.go1.21
+// Goの値をJSONに変換する詳細については、[Marshal] のドキュメンテーションを参照してください。
 func (enc *Encoder) Encode(v any) error
 
 // SetIndentは、エンコーダに対して、次にエンコードされる各値を、パッケージレベルの関数Indent(dst, src, prefix, indent)で
@@ -98,15 +79,9 @@ func (enc *Encoder) SetIndent(prefix, indent string)
 // エスケープが出力の可読性を妨げる非HTML設定では、SetEscapeHTML(false)でこの動作を無効にします。
 func (enc *Encoder) SetEscapeHTML(on bool)
 
-<<<<<<< HEAD
-// RawMessage is a raw encoded JSON value.
-// It implements [Marshaler] and [Unmarshaler] and can
-// be used to delay JSON decoding or precompute a JSON encoding.
-=======
 // RawMessageは、生のエンコードされたJSON値です。
-// これはMarshalerとUnmarshalerを実装しており、
+// これは [Marshaler] と [Unmarshaler] を実装しており、
 // JSONのデコードを遅延させるか、JSONのエンコードを事前に計算するために使用できます。
->>>>>>> release-branch.go1.21
 type RawMessage []byte
 
 // MarshalJSONは、mのJSONエンコーディングとしてmを返します。
@@ -120,21 +95,12 @@ var _ Unmarshaler = (*RawMessage)(nil)
 
 // Tokenは、以下の型のいずれかの値を保持します:
 //
-<<<<<<< HEAD
-//   - [Delim], for the four JSON delimiters [ ] { }
-//   - bool, for JSON booleans
-//   - float64, for JSON numbers
-//   - [Number], for JSON numbers
-//   - string, for JSON string literals
-//   - nil, for JSON null
-=======
-//	Delim、JSONの4つの区切り文字 [ ] { } のため
-//	bool、JSONのブール値のため
-//	float64、JSONの数値のため
-//	Number、JSONの数値のため
-//	string、JSONの文字列リテラルのため
-//	nil、JSONのnullのため
->>>>>>> release-branch.go1.21
+//   - [Delim]、JSONの4つの区切り文字 [ ] { } のため
+//   - bool、JSONのブール値のため
+//   - float64、JSONの数値のため
+//   - [Number]、JSONの数値のため
+//   - string、JSONの文字列リテラルのため
+//   - nil、JSONのnullのため
 type Token any
 
 // Delimは、JSON配列またはオブジェクトの区切り文字であり、[ ] { }のいずれかです。
@@ -142,29 +108,17 @@ type Delim rune
 
 func (d Delim) String() string
 
-<<<<<<< HEAD
-// Token returns the next JSON token in the input stream.
-// At the end of the input stream, Token returns nil, [io.EOF].
-=======
 // Tokenは、入力ストリームの次のJSONトークンを返します。
-// 入力ストリームの終わりでは、Tokenはnil, io.EOFを返します。
->>>>>>> release-branch.go1.21
+// 入力ストリームの終わりでは、Tokenはnil, [io.EOF] を返します。
 //
 // Tokenは、返す区切り文字[ ] { }が適切にネストされ、
 // マッチしていることを保証します：もしTokenが入力で予期しない
 // 区切り文字に遭遇した場合、エラーを返します。
 //
-<<<<<<< HEAD
-// The input stream consists of basic JSON values—bool, string,
-// number, and null—along with delimiters [ ] { } of type [Delim]
-// to mark the start and end of arrays and objects.
-// Commas and colons are elided.
-=======
 // 入力ストリームは、基本的なJSON値—bool, string,
 // number, null—と、配列とオブジェクトの開始と終了を
-// マークするための区切り文字[ ] { }のタイプDelimで構成されています。
+// マークするための区切り文字[ ] { }のタイプ [Delim] で構成されています。
 // コンマとコロンは省略されます。
->>>>>>> release-branch.go1.21
 func (dec *Decoder) Token() (Token, error)
 
 // Moreは、解析中の現在の配列またはオブジェクトに別の要素があるかどうかを報告します。
