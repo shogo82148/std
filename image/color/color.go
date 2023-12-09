@@ -8,15 +8,6 @@ package color
 // Colorは、アルファ乗算済みの16ビットチャンネルRGBAに自身を変換できます。
 // この変換は損失を伴う可能性があります。
 type Color interface {
-<<<<<<< HEAD
-=======
-	// RGBAは、色のアルファ乗算済みの赤、緑、青、アルファ値を返します。
-	// 各値の範囲は[0, 0xffff]内ですが、uint32で表されているため、
-	// 0xffffまでのブレンドファクターを掛けてもオーバーフローしません。
-	//
-	// アルファ乗算済みの色成分cは、アルファ(a)によってスケーリングされているため、
-	// 0 <= c <= aの有効な値を持ちます。
->>>>>>> release-branch.go1.21
 	RGBA() (r, g, b, a uint32)
 }
 
@@ -83,21 +74,12 @@ type Gray16 struct {
 
 func (c Gray16) RGBA() (r, g, b, a uint32)
 
-<<<<<<< HEAD
-// Model can convert any [Color] to one from its own color model. The conversion
-// may be lossy.
-=======
-// Modelは、任意のColorを自身のカラーモデルのものに変換できます。この変換は損失を伴う可能性があります。
->>>>>>> release-branch.go1.21
+// Modelは、任意の [Color] を自身のカラーモデルのものに変換できます。この変換は損失を伴う可能性があります。
 type Model interface {
 	Convert(c Color) Color
 }
 
-<<<<<<< HEAD
-// ModelFunc returns a [Model] that invokes f to implement the conversion.
-=======
-// ModelFuncは、変換を実装するためにfを呼び出すModelを返します。
->>>>>>> release-branch.go1.21
+// ModelFuncは、変換を実装するためにfを呼び出す [Model] を返します。
 func ModelFunc(f func(Color) Color) Model
 
 // 標準のカラータイプのモデル。

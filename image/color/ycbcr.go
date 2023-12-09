@@ -26,11 +26,7 @@ type YCbCr struct {
 
 func (c YCbCr) RGBA() (uint32, uint32, uint32, uint32)
 
-<<<<<<< HEAD
-// YCbCrModel is the [Model] for Y'CbCr colors.
-=======
-// YCbCrModelはY'CbCr色のモデルです。
->>>>>>> release-branch.go1.21
+// YCbCrModelはY'CbCr色の [Model] です。
 var YCbCrModel Model = ModelFunc(yCbCrModel)
 
 // NYCbCrAは、アルファ非乗算のY'CbCr-with-alpha色を表し、
@@ -42,22 +38,13 @@ type NYCbCrA struct {
 
 func (c NYCbCrA) RGBA() (uint32, uint32, uint32, uint32)
 
-<<<<<<< HEAD
-// NYCbCrAModel is the [Model] for non-alpha-premultiplied Y'CbCr-with-alpha
-// colors.
-=======
-// NYCbCrAModelは、アルファ非乗算のY'CbCr-with-alpha色のモデルです。
->>>>>>> release-branch.go1.21
+// NYCbCrAModelは、アルファ非乗算のY'CbCr-with-alpha色の [Model] です。
 var NYCbCrAModel Model = ModelFunc(nYCbCrAModel)
 
 // RGBToCMYKは、RGBトリプルをCMYK四重奏に変換します。
 func RGBToCMYK(r, g, b uint8) (uint8, uint8, uint8, uint8)
 
-<<<<<<< HEAD
-// CMYKToRGB converts a [CMYK] quadruple to an RGB triple.
-=======
-// CMYKToRGBは、CMYK四重奏をRGBトリプルに変換します。
->>>>>>> release-branch.go1.21
+// CMYKToRGBは、[CMYK] 四重奏をRGBトリプルに変換します。
 func CMYKToRGB(c, m, y, k uint8) (uint8, uint8, uint8)
 
 // CMYKは、シアン、マゼンタ、イエロー、ブラックの各色に8ビットずつ持つ、完全に不透明なCMYK色を表します。
@@ -69,9 +56,5 @@ type CMYK struct {
 
 func (c CMYK) RGBA() (uint32, uint32, uint32, uint32)
 
-<<<<<<< HEAD
-// CMYKModel is the [Model] for CMYK colors.
-=======
-// CMYKModelはCMYK色のモデルです。
->>>>>>> release-branch.go1.21
+// CMYKModelはCMYK色の [Model] です。
 var CMYKModel Model = ModelFunc(cmykModel)
