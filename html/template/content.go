@@ -4,86 +4,81 @@
 
 package template
 
-// Strings of content from a trusted source.
+// 信頼できるソースからのコンテンツの文字列。
 type (
-	// CSS encapsulates known safe content that matches any of:
-	//   1. The CSS3 stylesheet production, such as `p { color: purple }`.
-	//   2. The CSS3 rule production, such as `a[href=~"https:"].foo#bar`.
-	//   3. CSS3 declaration productions, such as `color: red; margin: 2px`.
-	//   4. The CSS3 value production, such as `rgba(0, 0, 255, 127)`.
-	// See https://www.w3.org/TR/css3-syntax/#parsing and
-	// https://web.archive.org/web/20090211114933/http://w3.org/TR/css3-syntax#style
+	// CSSは、以下のいずれかに一致する既知の安全なコンテンツをカプセル化します：
+	//   1. CSS3のスタイルシートの生成、例えば `p { color: purple }`。
+	//   2. CSS3のルールの生成、例えば `a[href=~"https:"].foo#bar`。
+	//   3. CSS3の宣言の生成、例えば `color: red; margin: 2px`。
+	//   4. CSS3の値の生成、例えば `rgba(0, 0, 255, 127)`。
+	// https://www.w3.org/TR/css3-syntax/#parsing および
+	// https://web.archive.org/web/20090211114933/http://w3.org/TR/css3-syntax#style を参照してください。
 	//
-	// Use of this type presents a security risk:
-	// the encapsulated content should come from a trusted source,
-	// as it will be included verbatim in the template output.
+	// このタイプの使用はセキュリティリスクを伴います：
+	// カプセル化されたコンテンツは信頼できるソースから来るべきであり、
+	// それはテンプレートの出力にそのまま含まれます。
 	CSS string
 
-	// HTML encapsulates a known safe HTML document fragment.
-	// It should not be used for HTML from a third-party, or HTML with
-	// unclosed tags or comments. The outputs of a sound HTML sanitizer
-	// and a template escaped by this package are fine for use with HTML.
+	// HTMLは、既知の安全なHTMLドキュメントフラグメントをカプセル化します。
+	// それは、第三者からのHTMLや、閉じられていないタグやコメントが含まれるHTMLには使用すべきではありません。
+	// 信頼できるHTMLサニタイザの出力と、このパッケージによってエスケープされたテンプレートは、HTMLでの使用に適しています。
 	//
-	// Use of this type presents a security risk:
-	// the encapsulated content should come from a trusted source,
-	// as it will be included verbatim in the template output.
+	// このタイプの使用はセキュリティリスクを伴います：
+	// カプセル化されたコンテンツは信頼できるソースから来るべきであり、
+	// それはテンプレートの出力にそのまま含まれます。
 	HTML string
 
-	// HTMLAttr encapsulates an HTML attribute from a trusted source,
-	// for example, ` dir="ltr"`.
+	// HTMLAttrは、信頼できるソースからのHTML属性をカプセル化します。
+	// 例えば、` dir="ltr"`。
 	//
-	// Use of this type presents a security risk:
-	// the encapsulated content should come from a trusted source,
-	// as it will be included verbatim in the template output.
+	// このタイプの使用はセキュリティリスクを伴います：
+	// カプセル化されたコンテンツは信頼できるソースから来るべきであり、
+	// それはテンプレートの出力にそのまま含まれます。
 	HTMLAttr string
 
-	// JS encapsulates a known safe EcmaScript5 Expression, for example,
-	// `(x + y * z())`.
-	// Template authors are responsible for ensuring that typed expressions
-	// do not break the intended precedence and that there is no
-	// statement/expression ambiguity as when passing an expression like
-	// "{ foo: bar() }\n['foo']()", which is both a valid Expression and a
-	// valid Program with a very different meaning.
+	// JSは、例えば `(x + y * z())` のような、既知の安全なEcmaScript5の式をカプセル化します。
+	// テンプレートの作者は、型付けされた式が意図した優先順位を壊さないこと、そして
+	// "{ foo: bar() }\n['foo']()" のような式を渡すときのように、
+	// ステートメント/式の曖昧性がないことを確認する責任があります。
+	// これは、非常に異なる意味を持つ有効な式と有効なプログラムの両方です。
 	//
-	// Use of this type presents a security risk:
-	// the encapsulated content should come from a trusted source,
-	// as it will be included verbatim in the template output.
+	// このタイプの使用はセキュリティリスクを伴います：
+	// カプセル化されたコンテンツは信頼できるソースから来るべきであり、
+	// それはテンプレートの出力にそのまま含まれます。
 	//
-	// Using JS to include valid but untrusted JSON is not safe.
-	// A safe alternative is to parse the JSON with json.Unmarshal and then
-	// pass the resultant object into the template, where it will be
-	// converted to sanitized JSON when presented in a JavaScript context.
+	// 有効だが信頼できないJSONを含めるためにJSを使用することは安全ではありません。
+	// 安全な代替手段は、json.UnmarshalでJSONを解析し、
+	// 結果のオブジェクトをテンプレートに渡すことです。これは、JavaScriptのコンテキストで提示されるときに、
+	// サニタイズされたJSONに変換されます。
 	JS string
 
-	// JSStr encapsulates a sequence of characters meant to be embedded
-	// between quotes in a JavaScript expression.
-	// The string must match a series of StringCharacters:
-	//   StringCharacter :: SourceCharacter but not `\` or LineTerminator
+	// JSStrは、JavaScriptの式のクォートの間に埋め込むことを意図した一連の文字をカプセル化します。
+	// 文字列は一連のStringCharactersに一致しなければなりません：
+	//   StringCharacter :: SourceCharacter ただし `\` または LineTerminator は除く
 	//                    | EscapeSequence
-	// Note that LineContinuations are not allowed.
-	// JSStr("foo\\nbar") is fine, but JSStr("foo\\\nbar") is not.
+	// LineContinuationsは許可されていません。
+	// JSStr("foo\\nbar")は問題ありませんが、JSStr("foo\\\nbar")は許可されていません。
 	//
-	// Use of this type presents a security risk:
-	// the encapsulated content should come from a trusted source,
-	// as it will be included verbatim in the template output.
+	// このタイプの使用はセキュリティリスクを伴います：
+	// カプセル化されたコンテンツは信頼できるソースから来るべきであり、
+	// それはテンプレートの出力にそのまま含まれます。
 	JSStr string
 
-	// URL encapsulates a known safe URL or URL substring (see RFC 3986).
-	// A URL like `javascript:checkThatFormNotEditedBeforeLeavingPage()`
-	// from a trusted source should go in the page, but by default dynamic
-	// `javascript:` URLs are filtered out since they are a frequently
-	// exploited injection vector.
+	// URLは、既知の安全なURLまたはURL部分文字列（RFC 3986を参照）をカプセル化します。
+	// 信頼できるソースからの`javascript:checkThatFormNotEditedBeforeLeavingPage()`のようなURLは
+	// ページに含まれるべきですが、デフォルトでは動的な`javascript:` URLは、
+	// 頻繁に悪用されるインジェクションベクトルであるためフィルタリングされます。
 	//
-	// Use of this type presents a security risk:
-	// the encapsulated content should come from a trusted source,
-	// as it will be included verbatim in the template output.
+	// このタイプの使用はセキュリティリスクを伴います：
+	// カプセル化されたコンテンツは信頼できるソースから来るべきであり、
+	// それはテンプレートの出力にそのまま含まれます。
 	URL string
 
-	// Srcset encapsulates a known safe srcset attribute
-	// (see https://w3c.github.io/html/semantics-embedded-content.html#element-attrdef-img-srcset).
+	// Srcsetは、既知の安全なsrcset属性をカプセル化します
+	// (https://w3c.github.io/html/semantics-embedded-content.html#element-attrdef-img-srcset を参照)。
 	//
-	// Use of this type presents a security risk:
-	// the encapsulated content should come from a trusted source,
-	// as it will be included verbatim in the template output.
+	// このタイプの使用はセキュリティリスクを伴います：
+	// カプセル化されたコンテンツは信頼できるソースから来るべきであり、
+	// それはテンプレートの出力にそのまま含まれます。
 	Srcset string
 )

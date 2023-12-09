@@ -6,6 +6,6 @@ package iotest
 
 import "github.com/shogo82148/std/io"
 
-// TruncateWriter returns a Writer that writes to w
-// but stops silently after n bytes.
+// TruncateWriterは、wに書き込むWriterを返しますが、
+// nバイト後に静かに停止します。
 func TruncateWriter(w io.Writer, n int64) io.Writer

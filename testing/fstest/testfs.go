@@ -9,18 +9,18 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// TestFS tests a file system implementation.
-// It walks the entire tree of files in fsys,
-// opening and checking that each file behaves correctly.
-// It also checks that the file system contains at least the expected files.
-// As a special case, if no expected files are listed, fsys must be empty.
-// Otherwise, fsys must contain at least the listed files; it can also contain others.
-// The contents of fsys must not change concurrently with TestFS.
+// TestFSは、ファイルシステムの実装をテストします。
+// fsys内の全てのファイルツリーを走査し、
+// 各ファイルが正しく動作するかを開いて確認します。
+// また、ファイルシステムが少なくとも期待されるファイルを含んでいることも確認します。
+// 特別なケースとして、期待されるファイルが一つもリストされていない場合、fsysは空でなければなりません。
+// それ以外の場合、fsysは少なくともリストされたファイルを含んでいなければなりません。他のファイルも含むことができます。
+// fsysの内容は、TestFSと同時に変更してはなりません。
 //
-// If TestFS finds any misbehaviors, it returns an error reporting all of them.
-// The error text spans multiple lines, one per detected misbehavior.
+// TestFSが何かしらの不適切な動作を見つけた場合、それら全てを報告するエラーを返します。
+// エラーテキストは複数行にわたり、検出された不適切な動作ごとに1行ずつ存在します。
 //
-// Typical usage inside a test is:
+// テスト内での典型的な使用法は以下の通りです：
 //
 //	if err := fstest.TestFS(myFS, "file/that/should/be/present"); err != nil {
 //		t.Fatal(err)

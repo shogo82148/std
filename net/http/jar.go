@@ -14,7 +14,16 @@ import (
 //
 // net/http/cookiejarパッケージはCookieJarの実装を提供します。
 type CookieJar interface {
+<<<<<<< HEAD
 	SetCookies(u *url.URL, cookies []*Cookie)
 
+=======
+	// SetCookiesは、指定されたURLの応答でのクッキーの受け取りを処理します。
+	// ジャーのポリシーと実装により、クッキーを保存するかどうかを選択するかもしれませんし、しないかもしれません。
+	SetCookies(u *url.URL, cookies []*Cookie)
+
+	// Cookiesは、指定されたURLのリクエストで送信するクッキーを返します。
+	// 標準的なクッキー使用制限（RFC 6265など）を尊重するかどうかは、実装次第です。
+>>>>>>> release-branch.go1.21
 	Cookies(u *url.URL) []*Cookie
 }

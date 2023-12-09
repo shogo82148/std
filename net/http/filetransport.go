@@ -4,6 +4,7 @@
 
 package http
 
+<<<<<<< HEAD
 import (
 	"github.com/shogo82148/std/io/fs"
 )
@@ -12,6 +13,10 @@ import (
 // FileSystem. The returned RoundTripper ignores the URL host in its
 // incoming requests, as well as most other properties of the
 // request.
+=======
+// NewFileTransportは、提供されたFileSystemを提供する新しいRoundTripperを返します。
+// 返されたRoundTripperは、その入力リクエストのURLホストを無視し、リクエストの他のほとんどのプロパティも無視します。
+>>>>>>> release-branch.go1.21
 //
 // NewFileTransport の典型的な使用例は、Transport に "file" プロトコルを登録することです。
 // 例:

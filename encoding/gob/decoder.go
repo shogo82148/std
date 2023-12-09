@@ -10,13 +10,11 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// A Decoder manages the receipt of type and data information read from the
-// remote side of a connection.  It is safe for concurrent use by multiple
-// goroutines.
+// Decoderは、接続のリモート側から読み取られた型とデータ情報の受信を管理します。
+// 複数のゴルーチンによる並行使用が安全です。
 //
-// The Decoder does only basic sanity checking on decoded input sizes,
-// and its limits are not configurable. Take caution when decoding gob data
-// from untrusted sources.
+// Decoderは、デコードされた入力サイズに対して基本的な健全性チェックのみを行い、
+// その制限は設定可能ではありません。信頼できないソースからのgobデータをデコードする際は注意が必要です。
 type Decoder struct {
 	mutex        sync.Mutex
 	r            io.Reader
@@ -29,6 +27,7 @@ type Decoder struct {
 	err          error
 }
 
+<<<<<<< HEAD
 // NewDecoder returns a new decoder that reads from the [io.Reader].
 // If r does not also implement [io.ByteReader], it will be wrapped in a
 // [bufio.Reader].
@@ -49,4 +48,25 @@ func (dec *Decoder) Decode(e any) error
 // a non-nil pointer to data or be an assignable reflect.Value (v.CanSet())
 // If the input is at EOF, DecodeValue returns [io.EOF] and
 // does not modify v.
+=======
+// NewDecoderは、io.Readerから読み取る新しいデコーダを返します。
+// もしrがio.ByteReaderも実装していない場合、それはbufio.Readerでラップされます。
+func NewDecoder(r io.Reader) *Decoder
+
+// Decodeは、入力ストリームから次の値を読み取り、
+// 空のインターフェース値で表されるデータに格納します。
+// もしeがnilの場合、値は破棄されます。それ以外の場合、
+// eの下にある値は、受け取った次のデータ項目の
+// 正しい型へのポインタでなければなりません。
+// 入力がEOFにある場合、Decodeはio.EOFを返し、
+// eを変更しません。
+func (dec *Decoder) Decode(e any) error
+
+// DecodeValueは、入力ストリームから次の値を読み取ります。
+// もしvがゼロのreflect.Value（v.Kind() == Invalid）の場合、DecodeValueは値を破棄します。
+// それ以外の場合、値はvに格納されます。その場合、vは
+// 非nilのデータへのポインタを表すか、または代入可能なreflect.Value（v.CanSet()）でなければなりません。
+// 入力がEOFにある場合、DecodeValueはio.EOFを返し、
+// vを変更しません。
+>>>>>>> release-branch.go1.21
 func (dec *Decoder) DecodeValue(v reflect.Value) error

@@ -8,46 +8,46 @@ import (
 	"github.com/shogo82148/std/text/template/parse"
 )
 
-// Error describes a problem encountered during template Escaping.
+// Errorは、テンプレートのエスケープ処理中に遭遇した問題を説明します。
 type Error struct {
-	// ErrorCode describes the kind of error.
+	// ErrorCodeはエラーの種類を説明します。
 	ErrorCode ErrorCode
-	// Node is the node that caused the problem, if known.
-	// If not nil, it overrides Name and Line.
+	// Nodeは問題を引き起こしたノードです（もし分かる場合）。
+	// nilでない場合、NameとLineを上書きします。
 	Node parse.Node
-	// Name is the name of the template in which the error was encountered.
+	// Nameはエラーが発生したテンプレートの名前です。
 	Name string
-	// Line is the line number of the error in the template source or 0.
+	// Lineはテンプレートソース内のエラーの行番号、または0です。
 	Line int
-	// Description is a human-readable description of the problem.
+	// Descriptionは問題の人間が読める説明です。
 	Description string
 }
 
-// ErrorCode is a code for a kind of error.
+// ErrorCodeはエラーの種類を表すコードです。
 type ErrorCode int
 
-// We define codes for each error that manifests while escaping templates, but
-// escaped templates may also fail at runtime.
+// テンプレートをエスケープする際に現れる各エラーに対してコードを定義していますが、
+// エスケープされたテンプレートは実行時にも失敗する可能性があります。
 //
-// Output: "ZgotmplZ"
-// Example:
+// 出力: "ZgotmplZ"
+// 例：
 //
 //	<img src="{{.X}}">
-//	where {{.X}} evaluates to `javascript:...`
+//	ここで {{.X}} は `javascript:...` に評価されます
 //
-// Discussion:
+// 議論：
 //
-//	"ZgotmplZ" is a special value that indicates that unsafe content reached a
-//	CSS or URL context at runtime. The output of the example will be
+//	"ZgotmplZ" は、実行時に安全でないコンテンツがCSSまたはURLのコンテキストに到達したことを示す特別な値です。
+//	例の出力は
 //	  <img src="#ZgotmplZ">
-//	If the data comes from a trusted source, use content types to exempt it
-//	from filtering: URL(`javascript:...`).
+//	になります。
+//	データが信頼できるソースから来る場合は、フィルタリングから免除するためにコンテンツタイプを使用します：URL(`javascript:...`)。
 const (
-	// OK indicates the lack of an error.
+	// OKはエラーがないことを示します。
 	OK ErrorCode = iota
 
-	// ErrAmbigContext: "... appears in an ambiguous context within a URL"
-	// Example:
+	// ErrAmbigContext: "...はURL内の曖昧なコンテキストに現れます"
+	// 例：
 	//   <a href="
 	//      {{if .C}}
 	//        /path/
@@ -56,167 +56,148 @@ const (
 	//      {{end}}
 	//      {{.X}}
 	//   ">
-	// Discussion:
-	//   {{.X}} is in an ambiguous URL context since, depending on {{.C}},
-	//  it may be either a URL suffix or a query parameter.
-	//   Moving {{.X}} into the condition removes the ambiguity:
+	// 議論：
+	//   {{.X}}は曖昧なURLコンテキストにあります。なぜなら、{{.C}}によって、
+	//   URLの接尾辞かクエリパラメータのどちらかになる可能性があるからです。
+	//   {{.X}}を条件の中に移動すると曖昧さがなくなります：
 	//   <a href="{{if .C}}/path/{{.X}}{{else}}/search?q={{.X}}">
 	ErrAmbigContext
 
-	// ErrBadHTML: "expected space, attr name, or end of tag, but got ...",
-	//   "... in unquoted attr", "... in attribute name"
-	// Example:
+	// ErrBadHTML: "スペース、属性名、またはタグの終わりを期待していましたが、...が得られました",
+	//   "...は引用符で囲まれていない属性内にあります", "...は属性名内にあります"
+	// 例：
 	//   <a href = /search?q=foo>
 	//   <href=foo>
 	//   <form na<e=...>
 	//   <option selected<
-	// Discussion:
-	//   This is often due to a typo in an HTML element, but some runes
-	//   are banned in tag names, attribute names, and unquoted attribute
-	//   values because they can tickle parser ambiguities.
-	//   Quoting all attributes is the best policy.
+	// 議論：
+	//   これは、HTML要素のタイプミスが原因であることが多いですが、一部のルーンは、
+	//   パーサーの曖昧さを引き起こす可能性があるため、タグ名、属性名、引用符で囲まれていない属性値で禁止されています。
+	//   すべての属性を引用符で囲むのが最善の方針です。
 	ErrBadHTML
 
-	// ErrBranchEnd: "{{if}} branches end in different contexts"
-	// Example:
+	// ErrBranchEnd: "{{if}}の分岐が異なるコンテキストで終わります"
+	// 例：
 	//   {{if .C}}<a href="{{end}}{{.X}}
-	// Discussion:
-	//   Package html/template statically examines each path through an
-	//   {{if}}, {{range}}, or {{with}} to escape any following pipelines.
-	//   The example is ambiguous since {{.X}} might be an HTML text node,
-	//   or a URL prefix in an HTML attribute. The context of {{.X}} is
-	//   used to figure out how to escape it, but that context depends on
-	//   the run-time value of {{.C}} which is not statically known.
+	// 議論：
+	//   パッケージhtml/templateは、{{if}}、{{range}}、または{{with}}を通じて各パスを静的に調べ、
+	//   その後のパイプラインをエスケープします。例は曖昧です。なぜなら、{{.X}}はHTMLテキストノードであるか、
+	//   HTML属性のURLプレフィックスである可能性があるからです。{{.X}}のコンテキストは、それをどのようにエスケープするかを
+	//   理解するために使用されますが、そのコンテキストは実行時の{{.C}}の値に依存し、それは静的には知られていません。
 	//
-	//   The problem is usually something like missing quotes or angle
-	//   brackets, or can be avoided by refactoring to put the two contexts
-	//   into different branches of an if, range or with. If the problem
-	//   is in a {{range}} over a collection that should never be empty,
-	//   adding a dummy {{else}} can help.
+	//   問題は通常、引用符や角括弧が欠けているなどの問題であり、または、2つのコンテキストをif、range、withの
+	//   異なる分岐にリファクタリングすることで回避できます。問題が空であるべきではないコレクションに対する{{range}}にある場合、
+	//   ダミーの{{else}}を追加すると役立つことがあります。
 	ErrBranchEnd
 
-	// ErrEndContext: "... ends in a non-text context: ..."
-	// Examples:
+	// ErrEndContext: "...は非テキストコンテキストで終わります: ..."
+	// 例：
 	//   <div
-	//   <div title="no close quote>
+	//   <div title="閉じ引用符なし>
 	//   <script>f()
-	// Discussion:
-	//   Executed templates should produce a DocumentFragment of HTML.
-	//   Templates that end without closing tags will trigger this error.
-	//   Templates that should not be used in an HTML context or that
-	//   produce incomplete Fragments should not be executed directly.
+	// 議論：
+	//   実行されたテンプレートはHTMLのDocumentFragmentを生成するべきです。
+	//   閉じタグなしで終わるテンプレートはこのエラーを引き起こします。
+	//   HTMLコンテキストで使用すべきでないテンプレート、または不完全なFragmentを生成するテンプレートは、
+	//   直接実行すべきではありません。
 	//
 	//   {{define "main"}} <script>{{template "helper"}}</script> {{end}}
 	//   {{define "helper"}} document.write(' <div title=" ') {{end}}
 	//
-	//   "helper" does not produce a valid document fragment, so should
-	//   not be Executed directly.
+	//   "helper"は有効なドキュメントフラグメントを生成しないため、直接実行すべきではありません。
 	ErrEndContext
 
-	// ErrNoSuchTemplate: "no such template ..."
-	// Examples:
+	// ErrNoSuchTemplate: "そのようなテンプレートは存在しません ..."
+	// 例：
 	//   {{define "main"}}<div {{template "attrs"}}>{{end}}
 	//   {{define "attrs"}}href="{{.URL}}"{{end}}
-	// Discussion:
-	//   Package html/template looks through template calls to compute the
-	//   context.
-	//   Here the {{.URL}} in "attrs" must be treated as a URL when called
-	//   from "main", but you will get this error if "attrs" is not defined
-	//   when "main" is parsed.
+	// 議論：
+	//   パッケージhtml/templateはテンプレート呼び出しを見てコンテキストを計算します。
+	//   ここでは、"attrs"の{{.URL}}は"main"から呼び出されたときにURLとして扱われなければなりませんが、
+	//   "main"が解析されたときに"attrs"が定義されていない場合、このエラーが発生します。
 	ErrNoSuchTemplate
 
-	// ErrOutputContext: "cannot compute output context for template ..."
-	// Examples:
+	// ErrOutputContext: "テンプレート...の出力コンテキストを計算できません"
+	// 例：
 	//   {{define "t"}}{{if .T}}{{template "t" .T}}{{end}}{{.H}}",{{end}}
-	// Discussion:
-	//   A recursive template does not end in the same context in which it
-	//   starts, and a reliable output context cannot be computed.
-	//   Look for typos in the named template.
-	//   If the template should not be called in the named start context,
-	//   look for calls to that template in unexpected contexts.
-	//   Maybe refactor recursive templates to not be recursive.
+	// 議論：
+	//   再帰的なテンプレートは、開始したときと同じコンテキストで終わらないため、
+	//   信頼性のある出力コンテキストを計算することはできません。
+	//   名前付きテンプレートのタイプミスを探してみてください。
+	//   もしテンプレートが名前付きの開始コンテキストで呼び出されるべきでないなら、
+	//   予期しないコンテキストでそのテンプレートへの呼び出しを探してみてください。
+	//   再帰的なテンプレートを再帰的でないようにリファクタリングすることも考えてみてください。
 	ErrOutputContext
 
-	// ErrPartialCharset: "unfinished JS regexp charset in ..."
-	// Example:
+	// ErrPartialCharset: "未完成のJS正規表現文字セットが...に存在します"
+	// 例：
 	//     <script>var pattern = /foo[{{.Chars}}]/</script>
-	// Discussion:
-	//   Package html/template does not support interpolation into regular
-	//   expression literal character sets.
+	// 議論：
+	//   パッケージhtml/templateは、正規表現リテラルの文字セットへの補間をサポートしていません。
 	ErrPartialCharset
 
-	// ErrPartialEscape: "unfinished escape sequence in ..."
-	// Example:
+	// ErrPartialEscape: "未完成のエスケープシーケンスが...に存在します"
+	// 例：
 	//   <script>alert("\{{.X}}")</script>
-	// Discussion:
-	//   Package html/template does not support actions following a
-	//   backslash.
-	//   This is usually an error and there are better solutions; for
-	//   example
+	// 議論：
+	//   パッケージhtml/templateは、バックスラッシュの後に続くアクションをサポートしていません。
+	//   これは通常、エラーであり、より良い解決策があります。例えば、
 	//     <script>alert("{{.X}}")</script>
-	//   should work, and if {{.X}} is a partial escape sequence such as
-	//   "xA0", mark the whole sequence as safe content: JSStr(`\xA0`)
+	//   は動作するはずで、もし{{.X}}が"xA0"のような部分的なエスケープシーケンスであれば、
+	//   全体を安全なコンテンツとしてマークします：JSStr(`\xA0`)
 	ErrPartialEscape
 
-	// ErrRangeLoopReentry: "on range loop re-entry: ..."
-	// Example:
+	// ErrRangeLoopReentry: "範囲ループの再入時に: ..."
+	// 例：
 	//   <script>var x = [{{range .}}'{{.}},{{end}}]</script>
-	// Discussion:
-	//   If an iteration through a range would cause it to end in a
-	//   different context than an earlier pass, there is no single context.
-	//   In the example, there is missing a quote, so it is not clear
-	//   whether {{.}} is meant to be inside a JS string or in a JS value
-	//   context. The second iteration would produce something like
+	// 議論：
+	//   範囲を通じた反復が、以前のパスと異なるコンテキストで終わるような場合、単一のコンテキストは存在しません。
+	//   例では、引用符が欠けているため、{{.}}がJS文字列の内部にあるのか、JS値のコンテキストにあるのかが明確ではありません。
+	//   2回目の反復では、次のようなものが生成されます。
 	//
 	//     <script>var x = ['firstValue,'secondValue]</script>
 	ErrRangeLoopReentry
 
-	// ErrSlashAmbig: '/' could start a division or regexp.
-	// Example:
+	// ErrSlashAmbig: "'/'は除算または正規表現を開始する可能性があります"
+	// 例：
 	//   <script>
 	//     {{if .C}}var x = 1{{end}}
 	//     /-{{.N}}/i.test(x) ? doThis : doThat();
 	//   </script>
-	// Discussion:
-	//   The example above could produce `var x = 1/-2/i.test(s)...`
-	//   in which the first '/' is a mathematical division operator or it
-	//   could produce `/-2/i.test(s)` in which the first '/' starts a
-	//   regexp literal.
-	//   Look for missing semicolons inside branches, and maybe add
-	//   parentheses to make it clear which interpretation you intend.
+	// 議論：
+	//   上記の例では、最初の'/'が数学的な除算演算子である`var x = 1/-2/i.test(s)...`を生成するか、
+	//   最初の'/'が正規表現リテラルを開始する`/-2/i.test(s)`を生成する可能性があります。
+	//   分岐内のセミコロンが欠けていないか確認し、どちらの解釈を意図しているか明確にするために
+	//   括弧を追加することを検討してみてください。
 	ErrSlashAmbig
 
-	// ErrPredefinedEscaper: "predefined escaper ... disallowed in template"
-	// Example:
+	// ErrPredefinedEscaper: "テンプレートで禁止されている事前定義されたエスケーパー..."
+	// 例：
 	//   <div class={{. | html}}>Hello<div>
-	// Discussion:
-	//   Package html/template already contextually escapes all pipelines to
-	//   produce HTML output safe against code injection. Manually escaping
-	//   pipeline output using the predefined escapers "html" or "urlquery" is
-	//   unnecessary, and may affect the correctness or safety of the escaped
-	//   pipeline output in Go 1.8 and earlier.
+	// 議論：
+	//   パッケージhtml/templateは、すべてのパイプラインをコンテキストに応じてエスケープして、
+	//   コードインジェクションに対して安全なHTML出力を生成します。事前定義されたエスケーパー"html"または"urlquery"を
+	//   使用してパイプライン出力を手動でエスケープすることは不要であり、Go 1.8以前ではエスケープされたパイプライン出力の
+	//   正確さや安全性に影響を与える可能性があります。
 	//
-	//   In most cases, such as the given example, this error can be resolved by
-	//   simply removing the predefined escaper from the pipeline and letting the
-	//   contextual autoescaper handle the escaping of the pipeline. In other
-	//   instances, where the predefined escaper occurs in the middle of a
-	//   pipeline where subsequent commands expect escaped input, e.g.
+	//   ほとんどの場合、例えば上記の例のような場合、このエラーはパイプラインから事前定義されたエスケーパーを単純に削除し、
+	//   コンテキスト自動エスケーパーがパイプラインのエスケープを処理することで解決できます。他の場合、事前定義されたエスケーパーが
+	//   パイプラインの中間に存在し、後続のコマンドがエスケープされた入力を期待する場合、例えば
 	//     {{.X | html | makeALink}}
-	//   where makeALink does
+	//   ここでmakeALinkは
 	//     return `<a href="`+input+`">link</a>`
-	//   consider refactoring the surrounding template to make use of the
-	//   contextual autoescaper, i.e.
+	//   を行う場合、周囲のテンプレートをリファクタリングしてコンテキスト自動エスケーパーを利用するように考えてみてください。つまり、
 	//     <a href="{{.X}}">link</a>
 	//
-	//   To ease migration to Go 1.9 and beyond, "html" and "urlquery" will
-	//   continue to be allowed as the last command in a pipeline. However, if the
-	//   pipeline occurs in an unquoted attribute value context, "html" is
-	//   disallowed. Avoid using "html" and "urlquery" entirely in new templates.
+	//   Go 1.9以降への移行を容易にするために、"html"と"urlquery"はパイプラインの最後のコマンドとして引き続き許可されます。
+	//   ただし、パイプラインが引用符で囲まれていない属性値のコンテキストで発生する場合、"html"は禁止されます。
+	//   新しいテンプレートでは"html"と"urlquery"を全く使用しないようにしてください。
 	ErrPredefinedEscaper
 
-	// ErrJSTemplate: "... appears in a JS template literal"
-	// Example:
+	// ErrJSTemplate: "...はJSテンプレートリテラル内に存在します"
+	// 例：
 	//     <script>var tmpl = `{{.Interp}}`</script>
+<<<<<<< HEAD
 	// Discussion:
 	//   Package html/template does not support actions inside of JS template
 	//   literals.
@@ -224,6 +205,10 @@ const (
 	// Deprecated: ErrJSTemplate is no longer returned when an action is present
 	// in a JS template literal. Actions inside of JS template literals are now
 	// escaped as expected.
+=======
+	// 議論：
+	//   パッケージhtml/templateは、JSテンプレートリテラル内のアクションをサポートしていません。
+>>>>>>> release-branch.go1.21
 	ErrJSTemplate
 )
 
