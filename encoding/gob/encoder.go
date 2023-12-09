@@ -22,11 +22,7 @@ type Encoder struct {
 	err        error
 }
 
-<<<<<<< HEAD
-// NewEncoder returns a new encoder that will transmit on the [io.Writer].
-=======
-// NewEncoderは、io.Writer上で送信する新しいエンコーダを返します。
->>>>>>> release-branch.go1.21
+// NewEncoderは、[io.Writer] 上で送信する新しいエンコーダを返します。
 func NewEncoder(w io.Writer) *Encoder
 
 // Encodeは、空のインターフェース値で表されるデータ項目を送信します。

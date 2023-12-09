@@ -21,32 +21,16 @@ type CommonType struct {
 // 使用されるエンコーディングが安定していることを保証することは良い設計です。例えば、GobEncodeが
 // エンコーディングにバージョン番号を含めることは理にかなっているかもしれません。
 type GobEncoder interface {
-<<<<<<< HEAD
-=======
-	// GobEncodeは、通常は同じ具体的な型のGobDecoderに送信するための
-	// 受信者のエンコーディングを表すバイトスライスを返します。
->>>>>>> release-branch.go1.21
 	GobEncode() ([]byte, error)
 }
 
 // GobDecoderは、GobEncoderによって送信された値のデコーディングルーチンを提供するデータを
 // 描写するインターフェースです。
 type GobDecoder interface {
-<<<<<<< HEAD
 	GobDecode([]byte) error
 }
 
-// RegisterName is like [Register] but uses the provided name rather than the
-// type's default.
-=======
-	// GobDecodeは、受信者（ポインタでなければならない）を、
-	// バイトスライスによって表される値で上書きします。このバイトスライスは、
-	// 通常は同じ具体的な型のためにGobEncodeによって書き込まれます。
-	GobDecode([]byte) error
-}
-
-// RegisterNameはRegisterと同様ですが、型のデフォルトではなく提供された名前を使用します。
->>>>>>> release-branch.go1.21
+// RegisterNameは [Register] と同様ですが、型のデフォルトではなく提供された名前を使用します。
 func RegisterName(name string, value any)
 
 // Registerは、その型の値によって識別される型を、

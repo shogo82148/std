@@ -3,24 +3,13 @@
 // license that can be found in the LICENSE file.
 
 /*
-<<<<<<< HEAD
-Package gob manages streams of gobs - binary values exchanged between an
-[Encoder] (transmitter) and a [Decoder] (receiver). A typical use is transporting
-arguments and results of remote procedure calls (RPCs) such as those provided by
-[net/rpc].
-
-The implementation compiles a custom codec for each data type in the stream and
-is most efficient when a single [Encoder] is used to transmit a stream of values,
-amortizing the cost of compilation.
-=======
 gobパッケージは、gobのストリームを管理します - これは、
-エンコーダ（送信者）とデコーダ（受信者）間で交換されるバイナリ値です。
+[Encoder]（送信者）と [Decoder]（受信者）間で交換されるバイナリ値です。
 典型的な使用例は、リモートプロシージャコール（RPC）の引数と結果を転送することです。
-これは[net/rpc]によって提供されます。
+これは [net/rpc] によって提供されます。
 
 実装は、ストリーム内の各データ型に対してカスタムコーデックをコンパイルし、
-コンパイルのコストを分散させるために、単一のエンコーダが値のストリームを送信するときに最も効率的です。
->>>>>>> release-branch.go1.21
+コンパイルのコストを分散させるために、単一の [Encoder] が値のストリームを送信するときに最も効率的です。
 
 # 基本
 
@@ -30,19 +19,11 @@ gobのストリームは自己記述的です。ストリーム内の各デー�
 nilポインタは許可されていません、なぜならそれらには値がないからです。
 再帰的な型はうまく動作しますが、再帰的な値（サイクルを持つデータ）は問題となります。これは変わるかもしれません。
 
-<<<<<<< HEAD
-To use gobs, create an [Encoder] and present it with a series of data items as
-values or addresses that can be dereferenced to values. The [Encoder] makes sure
-all type information is sent before it is needed. At the receive side, a
-[Decoder] retrieves values from the encoded stream and unpacks them into local
-variables.
-=======
-gobを使用するには、エンコーダを作成し、それに一連のデータ項目を
-値または値に逆参照できるアドレスとして提示します。エンコーダは
+gobを使用するには、[Encoder] を作成し、それに一連のデータ項目を
+値または値に逆参照できるアドレスとして提示します。[Encoder] は
 すべての型情報が必要になる前に送信されることを確認します。受信側では、
-デコーダがエンコードされたストリームから値を取得し、それらをローカル
+[Decoder] がエンコードされたストリームから値を取得し、それらをローカル
 変数に展開します。
->>>>>>> release-branch.go1.21
 
 # 型と値
 
@@ -105,21 +86,11 @@ gobと実際のGoの値との間で必要なすべての間接参照と逆参照
 関数とチャネルはgobで送信されません。そのような値をトップレベルでエンコードしようとすると失敗します。
 chan型またはfunc型の構造体フィールドは、エクスポートされていないフィールドと全く同じように扱われ、無視されます。
 
-<<<<<<< HEAD
-Gob can encode a value of any type implementing the [GobEncoder] or
-[encoding.BinaryMarshaler] interfaces by calling the corresponding method,
-in that order of preference.
-
-Gob can decode a value of any type implementing the [GobDecoder] or
-[encoding.BinaryUnmarshaler] interfaces by calling the corresponding method,
-again in that order of preference.
-=======
-Gobは、GobEncoderまたはencoding.BinaryMarshalerインターフェースを実装する任意の型の値をエンコードできます。
+Gobは、[GobEncoder] または [encoding.BinaryMarshaler] インターフェースを実装する任意の型の値をエンコードできます。
 これは、その順序の優先度で対応するメソッドを呼び出すことによって行われます。
 
-Gobは、GobDecoderまたはencoding.BinaryUnmarshalerインターフェースを実装する任意の型の値をデコードできます。
+Gobは、[GobDecoder] または [encoding.BinaryUnmarshaler] インターフェースを実装する任意の型の値をデコードできます。
 これは、その順序の優先度で対応するメソッドを呼び出すことによって行われます。
->>>>>>> release-branch.go1.21
 
 # エンコーディングの詳細
 
@@ -147,21 +118,12 @@ Gobは、GobDecoderまたはencoding.BinaryUnmarshalerインターフェース�
 したがって、低ビットは符号ビットに類似していますが、それを補完ビットにすることで、
 最大の負の整数が特別なケースにならないことを保証します。例えば、-129=^128=(^256>>1)は(FE 01 01)としてエンコードされます。
 
-<<<<<<< HEAD
-Floating-point numbers are always sent as a representation of a float64 value.
-That value is converted to a uint64 using [math.Float64bits]. The uint64 is then
-byte-reversed and sent as a regular unsigned integer. The byte-reversal means the
-exponent and high-precision part of the mantissa go first. Since the low bits are
-often zero, this can save encoding bytes. For instance, 17.0 is encoded in only
-three bytes (FE 31 40).
-=======
 浮動小数点数は常にfloat64値の表現として送信されます。
-その値はmath.Float64bitsを使用してuint64に変換されます。そのuint64は
+その値は [math.Float64bits] を使用してuint64に変換されます。そのuint64は
 バイト反転され、通常の符号なし整数として送信されます。バイト反転により、
 指数とマンティッサの高精度部分が最初に来ます。低ビットはしばしばゼロなので、
 これによりエンコーディングバイトを節約できます。例えば、17.0は
 3バイト（FE 31 40）でエンコードされます。
->>>>>>> release-branch.go1.21
 
 文字列とバイトのスライスは、符号なしのカウントとその後に続くその値の
 未解釈のバイトとして送信されます。
@@ -187,52 +149,26 @@ three bytes (FE 31 40).
 送信された後、終端マークが構造体の終わりを示します。そのマークはデルタ=0の
 値で、表現は(00)です。
 
-<<<<<<< HEAD
-Interface types are not checked for compatibility; all interface types are
-treated, for transmission, as members of a single "interface" type, analogous to
-int or []byte - in effect they're all treated as interface{}. Interface values
-are transmitted as a string identifying the concrete type being sent (a name
-that must be pre-defined by calling [Register]), followed by a byte count of the
-length of the following data (so the value can be skipped if it cannot be
-stored), followed by the usual encoding of concrete (dynamic) value stored in
-the interface value. (A nil interface value is identified by the empty string
-and transmits no value.) Upon receipt, the decoder verifies that the unpacked
-concrete item satisfies the interface of the receiving variable.
-
-If a value is passed to [Encoder.Encode] and the type is not a struct (or pointer to struct,
-etc.), for simplicity of processing it is represented as a struct of one field.
-The only visible effect of this is to encode a zero byte after the value, just as
-after the last field of an encoded struct, so that the decode algorithm knows when
-the top-level value is complete.
-
-The representation of types is described below. When a type is defined on a given
-connection between an [Encoder] and [Decoder], it is assigned a signed integer type
-id. When [Encoder.Encode](v) is called, it makes sure there is an id assigned for
-the type of v and all its elements and then it sends the pair (typeid, encoded-v)
-where typeid is the type id of the encoded type of v and encoded-v is the gob
-encoding of the value v.
-=======
 インターフェース型は互換性がチェックされません。すべてのインターフェース型は、
 伝送のために、単一の "interface" 型のメンバーとして扱われます。これはintや[]byteに類似しています。
 効果的に、すべてが interface{} として扱われます。インターフェース値は、送信される具体的な型を
-識別する文字列として送信されます（この名前はRegisterを呼び出すことで事前に定義する必要があります）。
+識別する文字列として送信されます（この名前は [Register] を呼び出すことで事前に定義する必要があります）。
 次に、次のデータの長さのバイト数（値が格納できない場合に値をスキップできるように）、
 次にインターフェース値に格納されている具体的（動的）値の通常のエンコーディングが続きます。
 （nilのインターフェース値は空の文字列によって識別され、値は送信されません。）
 受信時に、デコーダは展開された具体的なアイテムが受信変数のインターフェースを満たしていることを確認します。
 
-値がEncodeに渡され、その型が構造体（または構造体へのポインタなど）でない場合、
+値が [Encoder.Encode] に渡され、その型が構造体（または構造体へのポインタなど）でない場合、
 処理の簡便性のために、それは1つのフィールドを持つ構造体として表現されます。
 これによる唯一の可視的な効果は、エンコードされた構造体の最後のフィールドの後と同様に、
 値の後にゼロバイトをエンコードすることで、デコードアルゴリズムがトップレベルの値が完了したことを知ることができます。
 
-型の表現については以下に説明します。型がEncoderとDecoderの間の特定の
+型の表現については以下に説明します。型が [Encoder] と [Decoder] の間の特定の
 接続で定義されると、それには符号付き整数型の
-idが割り当てられます。Encoder.Encode(v)が呼び出されると、vの型とそのすべての要素に
+idが割り当てられます。 [Encoder.Encode](v)が呼び出されると、vの型とそのすべての要素に
 idが割り当てられていることを確認し、次にペア(typeid, encoded-v)を送信します。
 ここで、typeidはvのエンコードされた型の型idであり、encoded-vは値vのgob
 エンコーディングです。
->>>>>>> release-branch.go1.21
 
 型を定義するために、エンコーダは未使用の正の型idを選択し、
 ペア(-type id, encoded-type)を送信します。ここで、encoded-typeはwireType
@@ -323,17 +259,9 @@ https://blog.golang.org/gobs-of-data
 
 # セキュリティ
 
-<<<<<<< HEAD
-This package is not designed to be hardened against adversarial inputs, and is
-outside the scope of https://go.dev/security/policy. In particular, the [Decoder]
-does only basic sanity checking on decoded input sizes, and its limits are not
-configurable. Care should be taken when decoding gob data from untrusted
-sources, which may consume significant resources.
-=======
 このパッケージは、敵対的な入力に対して強化されるように設計されていませんし、
-https://go.dev/security/policy の範囲外です。特に、Decoderはデコードされた入力サイズに対して
+https://go.dev/security/policy の範囲外です。特に、[Decoder] はデコードされた入力サイズに対して
 基本的な健全性チェックのみを行い、その制限は設定可能ではありません。信頼できない
 ソースからのgobデータをデコードする際には注意が必要であり、大量のリソースを消費する可能性があります。
->>>>>>> release-branch.go1.21
 */
 package gob
