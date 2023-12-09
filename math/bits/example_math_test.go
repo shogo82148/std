@@ -10,21 +10,21 @@ import (
 )
 
 func ExampleAdd32() {
-	// First number is 33<<32 + 12
+	// 最初の数は 33<<32 + 12
 	n1 := []uint32{33, 12}
-	// Second number is 21<<32 + 23
+	// 2番目の数は 21<<32 + 23
 	n2 := []uint32{21, 23}
-	// Add them together without producing carry.
+	// それらをキャリーを生成せずに合計します。
 	d1, carry := bits.Add32(n1[1], n2[1], 0)
 	d0, _ := bits.Add32(n1[0], n2[0], carry)
 	nsum := []uint32{d0, d1}
 	fmt.Printf("%v + %v = %v (carry bit was %v)\n", n1, n2, nsum, carry)
 
-	// First number is 1<<32 + 2147483648
+	// 最初の数は 1<<32 + 2147483648
 	n1 = []uint32{1, 0x80000000}
-	// Second number is 1<<32 + 2147483648
+	// 2番目の数は 1<<32 + 2147483648
 	n2 = []uint32{1, 0x80000000}
-	// Add them together producing carry.
+	// それらを合計してキャリーを生成します。
 	d1, carry = bits.Add32(n1[1], n2[1], 0)
 	d0, _ = bits.Add32(n1[0], n2[0], carry)
 	nsum = []uint32{d0, d1}
@@ -35,21 +35,21 @@ func ExampleAdd32() {
 }
 
 func ExampleAdd64() {
-	// First number is 33<<64 + 12
+	// 最初の数は 33<<64 + 12
 	n1 := []uint64{33, 12}
-	// Second number is 21<<64 + 23
+	// 2番目の数は 21<<64 + 23
 	n2 := []uint64{21, 23}
-	// Add them together without producing carry.
+	// それらをキャリーを生成せずに合計します。
 	d1, carry := bits.Add64(n1[1], n2[1], 0)
 	d0, _ := bits.Add64(n1[0], n2[0], carry)
 	nsum := []uint64{d0, d1}
 	fmt.Printf("%v + %v = %v (carry bit was %v)\n", n1, n2, nsum, carry)
 
-	// First number is 1<<64 + 9223372036854775808
+	// 最初の数は 1<<64 + 9223372036854775808
 	n1 = []uint64{1, 0x8000000000000000}
-	// Second number is 1<<64 + 9223372036854775808
+	// 2番目の数は 1<<64 + 9223372036854775808
 	n2 = []uint64{1, 0x8000000000000000}
-	// Add them together producing carry.
+	// それらを合計してキャリーを生成します。
 	d1, carry = bits.Add64(n1[1], n2[1], 0)
 	d0, _ = bits.Add64(n1[0], n2[0], carry)
 	nsum = []uint64{d0, d1}
@@ -60,21 +60,21 @@ func ExampleAdd64() {
 }
 
 func ExampleSub32() {
-	// First number is 33<<32 + 23
+	// 最初の数は 33<<32 + 23
 	n1 := []uint32{33, 23}
-	// Second number is 21<<32 + 12
+	// 2番目の数は 21<<32 + 12
 	n2 := []uint32{21, 12}
-	// Sub them together without producing carry.
+	// キャリーを生成せずにそれらを減算します。
 	d1, carry := bits.Sub32(n1[1], n2[1], 0)
 	d0, _ := bits.Sub32(n1[0], n2[0], carry)
 	nsum := []uint32{d0, d1}
 	fmt.Printf("%v - %v = %v (carry bit was %v)\n", n1, n2, nsum, carry)
 
-	// First number is 3<<32 + 2147483647
+	// 最初の数は 3<<32 + 2147483647
 	n1 = []uint32{3, 0x7fffffff}
-	// Second number is 1<<32 + 2147483648
+	// 2番目の数は 1<<32 + 2147483648
 	n2 = []uint32{1, 0x80000000}
-	// Sub them together producing carry.
+	// キャリーを生成してそれらを減算します。
 	d1, carry = bits.Sub32(n1[1], n2[1], 0)
 	d0, _ = bits.Sub32(n1[0], n2[0], carry)
 	nsum = []uint32{d0, d1}
@@ -85,21 +85,21 @@ func ExampleSub32() {
 }
 
 func ExampleSub64() {
-	// First number is 33<<64 + 23
+	// 最初の数は 33<<64 + 23
 	n1 := []uint64{33, 23}
-	// Second number is 21<<64 + 12
+	// 2番目の数は 21<<64 + 12
 	n2 := []uint64{21, 12}
-	// Sub them together without producing carry.
+	// キャリーを生成せずにそれらを減算します。
 	d1, carry := bits.Sub64(n1[1], n2[1], 0)
 	d0, _ := bits.Sub64(n1[0], n2[0], carry)
 	nsum := []uint64{d0, d1}
 	fmt.Printf("%v - %v = %v (carry bit was %v)\n", n1, n2, nsum, carry)
 
-	// First number is 3<<64 + 9223372036854775807
+	// 最初の数は 3<<64 + 9223372036854775807
 	n1 = []uint64{3, 0x7fffffffffffffff}
-	// Second number is 1<<64 + 9223372036854775808
+	// 2番目の数は 1<<64 + 9223372036854775808
 	n2 = []uint64{1, 0x8000000000000000}
-	// Sub them together producing carry.
+	// キャリーを生成してそれらを減算します。
 	d1, carry = bits.Sub64(n1[1], n2[1], 0)
 	d0, _ = bits.Sub64(n1[0], n2[0], carry)
 	nsum = []uint64{d0, d1}
@@ -110,20 +110,20 @@ func ExampleSub64() {
 }
 
 func ExampleMul32() {
-	// First number is 0<<32 + 12
+	// 最初の数は 0<<32 + 12
 	n1 := []uint32{0, 12}
-	// Second number is 0<<32 + 12
+	// 2番目の数は 0<<32 + 12
 	n2 := []uint32{0, 12}
-	// Multiply them together without producing overflow.
+	// オーバーフローを生成せずにそれらを掛け合わせます。
 	hi, lo := bits.Mul32(n1[1], n2[1])
 	nsum := []uint32{hi, lo}
 	fmt.Printf("%v * %v = %v\n", n1[1], n2[1], nsum)
 
-	// First number is 0<<32 + 2147483648
+	// 最初の数は 0<<32 + 2147483648
 	n1 = []uint32{0, 0x80000000}
-	// Second number is 0<<32 + 2
+	// 2番目の数は 0<<32 + 2
 	n2 = []uint32{0, 2}
-	// Multiply them together producing overflow.
+	// オーバーフローを生成するようにそれらを掛け合わせます。
 	hi, lo = bits.Mul32(n1[1], n2[1])
 	nsum = []uint32{hi, lo}
 	fmt.Printf("%v * %v = %v\n", n1[1], n2[1], nsum)
@@ -133,20 +133,20 @@ func ExampleMul32() {
 }
 
 func ExampleMul64() {
-	// First number is 0<<64 + 12
+	// 最初の数は 0<<64 + 12
 	n1 := []uint64{0, 12}
-	// Second number is 0<<64 + 12
+	// 2番目の数は 0<<64 + 12
 	n2 := []uint64{0, 12}
-	// Multiply them together without producing overflow.
+	// オーバーフローを生成せずにそれらを掛け合わせます。
 	hi, lo := bits.Mul64(n1[1], n2[1])
 	nsum := []uint64{hi, lo}
 	fmt.Printf("%v * %v = %v\n", n1[1], n2[1], nsum)
 
-	// First number is 0<<64 + 9223372036854775808
+	// 最初の数は 0<<64 + 9223372036854775808
 	n1 = []uint64{0, 0x8000000000000000}
-	// Second number is 0<<64 + 2
+	// 2番目の数は 0<<64 + 2
 	n2 = []uint64{0, 2}
-	// Multiply them together producing overflow.
+	// オーバーフローを生成するようにそれらを掛け合わせます。
 	hi, lo = bits.Mul64(n1[1], n2[1])
 	nsum = []uint64{hi, lo}
 	fmt.Printf("%v * %v = %v\n", n1[1], n2[1], nsum)
@@ -156,20 +156,20 @@ func ExampleMul64() {
 }
 
 func ExampleDiv32() {
-	// First number is 0<<32 + 6
+	// 最初の数は 0<<32 + 6
 	n1 := []uint32{0, 6}
-	// Second number is 0<<32 + 3
+	// 2番目の数は 0<<32 + 3
 	n2 := []uint32{0, 3}
-	// Divide them together.
+	// それらを割ります。
 	quo, rem := bits.Div32(n1[0], n1[1], n2[1])
 	nsum := []uint32{quo, rem}
 	fmt.Printf("[%v %v] / %v = %v\n", n1[0], n1[1], n2[1], nsum)
 
-	// First number is 2<<32 + 2147483648
+	// 最初の数は 2<<32 + 2147483648
 	n1 = []uint32{2, 0x80000000}
-	// Second number is 0<<32 + 2147483648
+	// 2番目の数は 0<<32 + 2147483648
 	n2 = []uint32{0, 0x80000000}
-	// Divide them together.
+	// それらを割ります。
 	quo, rem = bits.Div32(n1[0], n1[1], n2[1])
 	nsum = []uint32{quo, rem}
 	fmt.Printf("[%v %v] / %v = %v\n", n1[0], n1[1], n2[1], nsum)
@@ -179,20 +179,20 @@ func ExampleDiv32() {
 }
 
 func ExampleDiv64() {
-	// First number is 0<<64 + 6
+	// 最初の数は 0<<64 + 6
 	n1 := []uint64{0, 6}
-	// Second number is 0<<64 + 3
+	// 2番目の数は 0<<64 + 3
 	n2 := []uint64{0, 3}
-	// Divide them together.
+	// それらを割ります。
 	quo, rem := bits.Div64(n1[0], n1[1], n2[1])
 	nsum := []uint64{quo, rem}
 	fmt.Printf("[%v %v] / %v = %v\n", n1[0], n1[1], n2[1], nsum)
 
-	// First number is 2<<64 + 9223372036854775808
+	// 最初の数は 2<<64 + 9223372036854775808
 	n1 = []uint64{2, 0x8000000000000000}
-	// Second number is 0<<64 + 9223372036854775808
+	// 2番目の数は 0<<64 + 9223372036854775808
 	n2 = []uint64{0, 0x8000000000000000}
-	// Divide them together.
+	// それらを割ります。
 	quo, rem = bits.Div64(n1[0], n1[1], n2[1])
 	nsum = []uint64{quo, rem}
 	fmt.Printf("[%v %v] / %v = %v\n", n1[0], n1[1], n2[1], nsum)
