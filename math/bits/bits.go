@@ -15,11 +15,7 @@ package bits
 // UintSizeは、uintのビット単位のサイズです。
 const UintSize = uintSize
 
-<<<<<<< HEAD
-// LeadingZeros returns the number of leading zero bits in x; the result is [UintSize] for x == 0.
-=======
-// LeadingZerosは、xの先頭のゼロビットの数を返します。x == 0の場合、結果はUintSizeです。
->>>>>>> release-branch.go1.21
+// LeadingZerosは、xの先頭のゼロビットの数を返します。x == 0の場合、結果は [UintSize] です。
 func LeadingZeros(x uint) int
 
 // LeadingZeros8は、xの先頭のゼロビットの数を返します。x == 0の場合、結果は8です。
@@ -34,11 +30,7 @@ func LeadingZeros32(x uint32) int
 // LeadingZeros64は、xの先頭のゼロビットの数を返します。x == 0の場合、結果は64です。
 func LeadingZeros64(x uint64) int
 
-<<<<<<< HEAD
-// TrailingZeros returns the number of trailing zero bits in x; the result is [UintSize] for x == 0.
-=======
-// TrailingZerosは、xの末尾のゼロビットの数を返します。x == 0の場合、結果はUintSizeです。
->>>>>>> release-branch.go1.21
+// TrailingZerosは、xの末尾のゼロビットの数を返します。x == 0の場合、結果は [UintSize] です。
 func TrailingZeros(x uint) int
 
 // TrailingZeros8は、xの末尾のゼロビットの数を返します。x == 0の場合、結果は8です。
@@ -68,13 +60,8 @@ func OnesCount32(x uint32) int
 // OnesCount64は、xの1ビットの数（"ポピュレーションカウント"）を返します。
 func OnesCount64(x uint64) int
 
-<<<<<<< HEAD
-// RotateLeft returns the value of x rotated left by (k mod [UintSize]) bits.
-// To rotate x right by k bits, call RotateLeft(x, -k).
-=======
-// RotateLeftは、xを左に（k mod UintSize）ビット回転させた値を返します。
+// RotateLeftは、xを左に（k mod [UintSize]）ビット回転させた値を返します。
 // xをkビット右に回転させるには、RotateLeft(x, -k)を呼び出します。
->>>>>>> release-branch.go1.21
 //
 // この関数の実行時間は入力に依存しません。
 func RotateLeft(x uint, k int) uint
@@ -236,23 +223,12 @@ func Div64(hi, lo, y uint64) (quo, rem uint64)
 // 商のオーバーフローではパニックしません。
 func Rem(hi, lo, y uint) uint
 
-<<<<<<< HEAD
-// Rem32 returns the remainder of (hi, lo) divided by y. Rem32 panics
-// for y == 0 (division by zero) but, unlike [Div32], it doesn't panic
-// on a quotient overflow.
-func Rem32(hi, lo, y uint32) uint32
-
-// Rem64 returns the remainder of (hi, lo) divided by y. Rem64 panics
-// for y == 0 (division by zero) but, unlike [Div64], it doesn't panic
-// on a quotient overflow.
-=======
 // Rem32は、(hi, lo)をyで割った余りを返します。Rem32は
-// y == 0の場合（ゼロ除算）にパニックしますが、Div32とは異なり、
+// y == 0の場合（ゼロ除算）にパニックしますが、[Div32] とは異なり、
 // 商のオーバーフローではパニックしません。
 func Rem32(hi, lo, y uint32) uint32
 
 // Rem64は、(hi, lo)をyで割った余りを返します。Rem64は
-// y == 0の場合（ゼロ除算）にパニックしますが、Div64とは異なり、
+// y == 0の場合（ゼロ除算）にパニックしますが、[Div64] とは異なり、
 // 商のオーバーフローではパニックしません。
->>>>>>> release-branch.go1.21
 func Rem64(hi, lo, y uint64) uint64
