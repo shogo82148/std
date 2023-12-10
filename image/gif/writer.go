@@ -10,24 +10,24 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Options are the encoding parameters.
+// Optionsは、エンコーディングパラメータです。
 type Options struct {
-	// NumColors is the maximum number of colors used in the image.
-	// It ranges from 1 to 256.
+	// NumColorsは、画像で使用される色の最大数です。
+	// 1から256までの範囲です。
 	NumColors int
 
-	// Quantizer is used to produce a palette with size NumColors.
-	// palette.Plan9 is used in place of a nil Quantizer.
+	// Quantizerは、NumColorsのサイズを持つパレットを生成するために使用されます。
+	// Quantizerがnilの場合、代わりにpalette.Plan9が使用されます。
 	Quantizer draw.Quantizer
 
-	// Drawer is used to convert the source image to the desired palette.
-	// draw.FloydSteinberg is used in place of a nil Drawer.
+	// Drawerは、ソース画像を所望のパレットに変換するために使用されます。
+	// Drawerがnilの場合、代わりにdraw.FloydSteinbergが使用されます。
 	Drawer draw.Drawer
 }
 
-// EncodeAll writes the images in g to w in GIF format with the
-// given loop count and delay between frames.
+// EncodeAllは、指定されたループカウントとフレーム間の遅延で、
+// GIF形式のwにgの画像を書き込みます。
 func EncodeAll(w io.Writer, g *GIF) error
 
-// Encode writes the Image m to w in GIF format.
+// Encodeは、GIF形式で画像mをwに書き込みます。
 func Encode(w io.Writer, m image.Image, o *Options) error
