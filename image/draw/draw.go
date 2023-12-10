@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package draw provides image composition functions.
+// パッケージdrawは、画像合成関数を提供します。
 //
-// See "The Go image/draw package" for an introduction to this package:
+// このパッケージの紹介については、「Go image/drawパッケージ」を参照してください：
 // https://golang.org/doc/articles/image_draw.html
 package draw
 
@@ -13,53 +13,50 @@ import (
 	"github.com/shogo82148/std/image/color"
 )
 
-// Image is an image.Image with a Set method to change a single pixel.
+// Imageは、単一のピクセルを変更するSetメソッドを持つimage.Imageです。
 type Image interface {
 	image.Image
 	Set(x, y int, c color.Color)
 }
 
-// RGBA64Image extends both the [Image] and [image.RGBA64Image] interfaces with a
-// SetRGBA64 method to change a single pixel. SetRGBA64 is equivalent to
-// calling Set, but it can avoid allocations from converting concrete color
-// types to the [color.Color] interface type.
+// RGBA64Imageは、単一のピクセルを変更するSetRGBA64メソッドで、[Image] と [image.RGBA64Image] の
+// インターフェースを拡張します。SetRGBA64はSetを呼び出すのと同等ですが、具体的な色の
+// タイプを [color.Color] インターフェースタイプに変換する際の割り当てを避けることができます。
 type RGBA64Image interface {
 	image.RGBA64Image
 	Set(x, y int, c color.Color)
 	SetRGBA64(x, y int, c color.RGBA64)
 }
 
-// Quantizer produces a palette for an image.
+// Quantizerは、画像のパレットを生成します。
 type Quantizer interface {
 	Quantize(p color.Palette, m image.Image) color.Palette
 }
 
-// Op is a Porter-Duff compositing operator.
+// Opは、ポーター-ダフ合成演算子です。
 type Op int
 
 const (
-	// Over specifies ``(src in mask) over dst''.
+	// Overは ``(src in mask) over dst'' を指定します。
 	Over Op = iota
-	// Src specifies ``src in mask''.
+	// Srcは ``src in mask'' を指定します。
 	Src
 )
 
-// Draw implements the [Drawer] interface by calling the Draw function with this
-// [Op].
+// Drawは、この [Op] とともにDraw関数を呼び出すことで [Drawer] インターフェースを実装します。
 func (op Op) Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point)
 
-// Drawer contains the [Draw] method.
+// Drawerは [Draw] メソッドを含みます。
 type Drawer interface {
 	Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point)
 }
 
-// FloydSteinberg is a [Drawer] that is the [Src] [Op] with Floyd-Steinberg error
-// diffusion.
+// FloydSteinbergは、Floyd-Steinberg誤差拡散を持つ [Src] [Op] の [Drawer] です。
 var FloydSteinberg Drawer = floydSteinberg{}
 
-// Draw calls [DrawMask] with a nil mask.
+// Drawは、nilマスクで [DrawMask] を呼び出します。
 func Draw(dst Image, r image.Rectangle, src image.Image, sp image.Point, op Op)
 
-// DrawMask aligns r.Min in dst with sp in src and mp in mask and then replaces the rectangle r
-// in dst with the result of a Porter-Duff composition. A nil mask is treated as opaque.
+// DrawMaskは、dstのr.Minをsrcのspとmaskのmpに揃え、その後dstの矩形rを
+// ポーター-ダフ合成の結果で置き換えます。nilのマスクは不透明として扱われます。
 func DrawMask(dst Image, r image.Rectangle, src image.Image, sp image.Point, mask image.Image, mp image.Point, op Op)
