@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package jpeg implements a JPEG image decoder and encoder.
+// パッケージjpegは、JPEG画像のデコーダとエンコーダを実装します。
 //
-// JPEG is defined in ITU-T T.81: https://www.w3.org/Graphics/JPEG/itu-t81.pdf.
+// JPEGはITU-T T.81で定義されています：https://www.w3.org/Graphics/JPEG/itu-t81.pdf。
 package jpeg
 
 import (
@@ -12,26 +12,25 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A FormatError reports that the input is not a valid JPEG.
+// FormatErrorは、入力が有効なJPEGではないことを報告します。
 type FormatError string
 
 func (e FormatError) Error() string
 
-// An UnsupportedError reports that the input uses a valid but unimplemented JPEG feature.
+// UnsupportedErrorは、入力が有効だが未実装のJPEG機能を使用していることを報告します。
 type UnsupportedError string
 
 func (e UnsupportedError) Error() string
 
-// Deprecated: Reader is not used by the image/jpeg package and should
-// not be used by others. It is kept for compatibility.
+// Deprecated: Readerはimage/jpegパッケージによって使用されておらず、
+// 他の人によっても使用されるべきではありません。互換性のために保持されています。
 type Reader interface {
 	io.ByteReader
 	io.Reader
 }
 
-// Decode reads a JPEG image from r and returns it as an image.Image.
+// Decodeは、rからJPEG画像を読み取り、それをimage.Imageとして返します。
 func Decode(r io.Reader) (image.Image, error)
 
-// DecodeConfig returns the color model and dimensions of a JPEG image without
-// decoding the entire image.
+// DecodeConfigは、画像全体をデコードすることなく、JPEG画像のカラーモデルと寸法を返します。
 func DecodeConfig(r io.Reader) (image.Config, error)
