@@ -19,12 +19,7 @@ const (
 	DisposalPrevious   = 0x03
 )
 
-<<<<<<< HEAD
-// Decode reads a GIF image from r and returns the first embedded
-// image as an [image.Image].
-=======
-// Decodeは、rからGIF画像を読み取り、最初の埋め込み画像をimage.Imageとして返します。
->>>>>>> release-branch.go1.21
+// Decodeは、rからGIF画像を読み取り、最初の埋め込み画像を [image.Image] として返します。
 func Decode(r io.Reader) (image.Image, error)
 
 // GIFは、GIFファイルに保存されている可能性のある複数の画像を表します。
