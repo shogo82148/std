@@ -22,13 +22,8 @@ type UnsupportedError string
 
 func (e UnsupportedError) Error() string
 
-<<<<<<< HEAD
-// Decode reads a PNG image from r and returns it as an [image.Image].
-// The type of Image returned depends on the PNG contents.
-=======
-// Decodeは、rからPNG画像を読み取り、それをimage.Imageとして返します。
+// Decodeは、rからPNG画像を読み取り、それを [image.Image] として返します。
 // 返されるImageの型は、PNGの内容に依存します。
->>>>>>> release-branch.go1.21
 func Decode(r io.Reader) (image.Image, error)
 
 // DecodeConfigは、画像全体をデコードすることなく、PNG画像のカラーモデルと寸法を返します。
