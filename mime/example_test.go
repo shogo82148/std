@@ -34,9 +34,8 @@ func ExampleWordDecoder_Decode() {
 	dec.CharsetReader = func(charset string, input io.Reader) (io.Reader, error) {
 		switch charset {
 		case "x-case":
-			// Fake character set for example.
-			// Real use would integrate with packages such
-			// as code.google.com/p/go-charset
+			// 例のためのフェイクキャラクターセット。
+			// 実際の使用では、code.google.com/p/go-charsetのようなパッケージと統合します。
 			content, err := io.ReadAll(input)
 			if err != nil {
 				return nil, err
@@ -73,9 +72,8 @@ func ExampleWordDecoder_DecodeHeader() {
 	dec.CharsetReader = func(charset string, input io.Reader) (io.Reader, error) {
 		switch charset {
 		case "x-case":
-			// Fake character set for example.
-			// Real use would integrate with packages such
-			// as code.google.com/p/go-charset
+			// 例のためのフェイクキャラクターセット。
+			// 実際の使用では、code.google.com/p/go-charsetのようなパッケージと統合します。
 			content, err := io.ReadAll(input)
 			if err != nil {
 				return nil, err

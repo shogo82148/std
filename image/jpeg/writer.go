@@ -9,15 +9,20 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// DefaultQuality is the default quality encoding parameter.
+// DefaultQualityは、デフォルトの品質エンコーディングパラメータです。
 const DefaultQuality = 75
 
-// Options are the encoding parameters.
-// Quality ranges from 1 to 100 inclusive, higher is better.
+// Optionsは、エンコーディングパラメータです。
+// Qualityは1から100までの範囲で、高いほど良いです。
 type Options struct {
 	Quality int
 }
 
+<<<<<<< HEAD
 // Encode writes the Image m to w in JPEG 4:2:0 baseline format with the given
 // options. Default parameters are used if a nil *[Options] is passed.
+=======
+// Encodeは、与えられたオプションでJPEG 4:2:0ベースラインフォーマットでImage mをwに書き込みます。
+// nilの*Optionsが渡された場合、デフォルトのパラメータが使用されます。
+>>>>>>> release-branch.go1.21
 func Encode(w io.Writer, m image.Image, o *Options) error
