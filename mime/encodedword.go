@@ -8,35 +8,34 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A WordEncoder is an RFC 2047 encoded-word encoder.
+// WordEncoderは、RFC 2047のエンコードされたワードエンコーダです。
 type WordEncoder byte
 
 const (
-	// BEncoding represents Base64 encoding scheme as defined by RFC 2045.
+	// BEncodingは、RFC 2045によって定義されたBase64エンコーディングスキームを表します。
 	BEncoding = WordEncoder('b')
-	// QEncoding represents the Q-encoding scheme as defined by RFC 2047.
+	// QEncodingは、RFC 2047によって定義されたQ-エンコーディングスキームを表します。
 	QEncoding = WordEncoder('q')
 )
 
-// Encode returns the encoded-word form of s. If s is ASCII without special
-// characters, it is returned unchanged. The provided charset is the IANA
-// charset name of s. It is case insensitive.
+// Encodeは、sのエンコードされた単語形式を返します。もしsが特殊文字を含まないASCIIであれば、
+// それは変更されずに返されます。提供されたcharsetは、sのIANA
+// 文字セット名です。それは大文字と小文字を区別しません。
 func (e WordEncoder) Encode(charset, s string) string
 
-// A WordDecoder decodes MIME headers containing RFC 2047 encoded-words.
+// WordDecoderは、RFC 2047のエンコードされた単語を含むMIMEヘッダーをデコードします。
 type WordDecoder struct {
-	// CharsetReader, if non-nil, defines a function to generate
-	// charset-conversion readers, converting from the provided
-	// charset into UTF-8.
-	// Charsets are always lower-case. utf-8, iso-8859-1 and us-ascii charsets
-	// are handled by default.
-	// One of the CharsetReader's result values must be non-nil.
+	// CharsetReaderがnilでない場合、提供されたcharsetからUTF-8に変換する
+	// charset変換リーダーを生成する関数を定義します。
+	// Charsetは常に小文字です。utf-8、iso-8859-1、us-ascii charsetは
+	// デフォルトで処理されます。
+	// CharsetReaderの結果値のうちの1つは非nilでなければなりません。
 	CharsetReader func(charset string, input io.Reader) (io.Reader, error)
 }
 
-// Decode decodes an RFC 2047 encoded-word.
+// Decodeは、RFC 2047のエンコードされた単語をデコードします。
 func (d *WordDecoder) Decode(word string) (string, error)
 
-// DecodeHeader decodes all encoded-words of the given string. It returns an
-// error if and only if CharsetReader of d returns an error.
+// DecodeHeaderは、与えられた文字列のすべてのエンコードされた単語をデコードします。
+// dのCharsetReaderがエラーを返す場合にのみエラーを返します。
 func (d *WordDecoder) DecodeHeader(header string) (string, error)
