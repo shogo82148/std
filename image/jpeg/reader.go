@@ -22,23 +22,14 @@ type UnsupportedError string
 
 func (e UnsupportedError) Error() string
 
-<<<<<<< HEAD
-// Deprecated: Reader is not used by the [image/jpeg] package and should
-// not be used by others. It is kept for compatibility.
-=======
-// Deprecated: Readerはimage/jpegパッケージによって使用されておらず、
+// Deprecated: Readerは [image/jpeg] パッケージによって使用されておらず、
 // 他の人によっても使用されるべきではありません。互換性のために保持されています。
->>>>>>> release-branch.go1.21
 type Reader interface {
 	io.ByteReader
 	io.Reader
 }
 
-<<<<<<< HEAD
-// Decode reads a JPEG image from r and returns it as an [image.Image].
-=======
-// Decodeは、rからJPEG画像を読み取り、それをimage.Imageとして返します。
->>>>>>> release-branch.go1.21
+// Decodeは、rからJPEG画像を読み取り、それを [image.Image] として返します。
 func Decode(r io.Reader) (image.Image, error)
 
 // DecodeConfigは、画像全体をデコードすることなく、JPEG画像のカラーモデルと寸法を返します。
