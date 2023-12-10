@@ -22,21 +22,10 @@ type Zipf struct {
 	hx0minusHxm  float64
 }
 
-<<<<<<< HEAD
-// NewZipf returns a [Zipf] variate generator.
-// The generator generates values k ∈ [0, imax]
-// such that P(k) is proportional to (v + k) ** (-s).
-// Requirements: s > 1 and v >= 1.
-func NewZipf(r *Rand, s float64, v float64, imax uint64) *Zipf
-
-// Uint64 returns a value drawn from the [Zipf] distribution described
-// by the [Zipf] object.
-=======
-// NewZipfは、Zipf変量ジェネレータを返します。
+// NewZipfは、[Zipf] 変量ジェネレータを返します。
 // このジェネレータは、P(k)が(v + k) ** (-s)に比例するような値k ∈ [0, imax]を生成します。
 // 要件: s > 1 かつ v >= 1。
 func NewZipf(r *Rand, s float64, v float64, imax uint64) *Zipf
 
-// Uint64は、Zipfオブジェクトで記述されたZipf分布から抽出された値を返します。
->>>>>>> release-branch.go1.21
+// Uint64は、Zipfオブジェクトで記述された [Zipf] 分布から抽出された値を返します。
 func (z *Zipf) Uint64() uint64
