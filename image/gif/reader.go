@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package gif implements a GIF image decoder and encoder.
+// パッケージgifは、GIF画像のデコーダとエンコーダを実装します。
 //
-// The GIF specification is at https://www.w3.org/Graphics/GIF/spec-gif89a.txt.
+// GIFの仕様は https://www.w3.org/Graphics/GIF/spec-gif89a.txt にあります。
 package gif
 
 import (
@@ -12,51 +12,46 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Disposal Methods.
+// 廃棄方法。
 const (
 	DisposalNone       = 0x01
 	DisposalBackground = 0x02
 	DisposalPrevious   = 0x03
 )
 
-// Decode reads a GIF image from r and returns the first embedded
-// image as an image.Image.
+// Decodeは、rからGIF画像を読み取り、最初の埋め込み画像をimage.Imageとして返します。
 func Decode(r io.Reader) (image.Image, error)
 
-// GIF represents the possibly multiple images stored in a GIF file.
+// GIFは、GIFファイルに保存されている可能性のある複数の画像を表します。
 type GIF struct {
 	Image []*image.Paletted
 	Delay []int
-	// LoopCount controls the number of times an animation will be
-	// restarted during display.
-	// A LoopCount of 0 means to loop forever.
-	// A LoopCount of -1 means to show each frame only once.
-	// Otherwise, the animation is looped LoopCount+1 times.
+	// LoopCountは、表示中にアニメーションが再開される回数を制御します。
+	// LoopCountが0の場合、無限にループします。
+	// LoopCountが-1の場合、各フレームを一度だけ表示します。
+	// それ以外の場合、アニメーションはLoopCount+1回ループします。
 	LoopCount int
-	// Disposal is the successive disposal methods, one per frame. For
-	// backwards compatibility, a nil Disposal is valid to pass to EncodeAll,
-	// and implies that each frame's disposal method is 0 (no disposal
-	// specified).
+	// Disposalは、フレームごとの連続した廃棄方法です。後方互換性のために、
+	// nil DisposalはEncodeAllに渡すことが有効であり、それぞれのフレームの廃棄方法が
+	// 0（指定なしの廃棄）であることを意味します。
 	Disposal []byte
-	// Config is the global color table (palette), width and height. A nil or
-	// empty-color.Palette Config.ColorModel means that each frame has its own
-	// color table and there is no global color table. Each frame's bounds must
-	// be within the rectangle defined by the two points (0, 0) and
-	// (Config.Width, Config.Height).
+	// Configは、グローバルカラーテーブル（パレット）、幅、高さです。nilまたは
+	// 空のcolor.Palette Config.ColorModelは、各フレームが独自の
+	// カラーテーブルを持ち、グローバルカラーテーブルがないことを意味します。各フレームの範囲は、
+	// 二つの点 (0, 0) と (Config.Width, Config.Height) で定義される
+	// 矩形内になければなりません。
 	//
-	// For backwards compatibility, a zero-valued Config is valid to pass to
-	// EncodeAll, and implies that the overall GIF's width and height equals
-	// the first frame's bounds' Rectangle.Max point.
+	// 後方互換性のため、ゼロ値のConfigはEncodeAllに渡すことが有効であり、
+	// 全体のGIFの幅と高さが最初のフレームの範囲のRectangle.Max点と等しいことを意味します。
 	Config image.Config
-	// BackgroundIndex is the background index in the global color table, for
-	// use with the DisposalBackground disposal method.
+	// BackgroundIndexは、DisposalBackground廃棄方法で使用するための、
+	// グローバルカラーテーブル内の背景インデックスです。
 	BackgroundIndex byte
 }
 
-// DecodeAll reads a GIF image from r and returns the sequential frames
-// and timing information.
+// DecodeAllは、rからGIF画像を読み取り、連続するフレームとタイミング情報を返します。
 func DecodeAll(r io.Reader) (*GIF, error)
 
-// DecodeConfig returns the global color model and dimensions of a GIF image
-// without decoding the entire image.
+// DecodeConfigは、画像全体をデコードすることなく、GIF画像のグローバルカラーモデルと
+// 寸法を返します。
 func DecodeConfig(r io.Reader) (image.Config, error)
