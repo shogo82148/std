@@ -312,7 +312,8 @@ func (h UnhandledCriticalExtension) Error() string
 //   - PermittedEmailAddresses
 //   - PermittedIPRanges
 //   - PermittedURIDomains
-//   - PolicyIdentifiers
+//   - PolicyIdentifiers (see note below)
+//   - Policies (see note below)
 //   - SerialNumber
 //   - SignatureAlgorithm
 //   - Subject
@@ -336,6 +337,13 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
 // will be generated from the hash of the public key.
+//
+// The PolicyIdentifier and Policies fields are both used to marshal certificate
+// policy OIDs. By default, only the PolicyIdentifier is marshaled, but if the
+// GODEBUG setting "x509usepolicies" has the value "1", the Policies field will
+// be marshalled instead of the PolicyIdentifier field. The Policies field can
+// be used to marshal policy OIDs which have components that are larger than 31
+// bits.
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRL parses a CRL from the given bytes. It's often the case that PEM
