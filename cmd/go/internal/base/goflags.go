@@ -18,7 +18,7 @@ func GOFLAGS() []string
 func InitGOFLAGS()
 
 // SetFromGOFLAGS sets the flags in the given flag set using settings in $GOFLAGS.
-func SetFromGOFLAGS(flags *flag.FlagSet, ignoreErrors bool)
+func SetFromGOFLAGS(flags *flag.FlagSet)
 
 // InGOFLAGS returns whether GOFLAGS contains the given flag, such as "-mod".
 func InGOFLAGS(flag string) bool
