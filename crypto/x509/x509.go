@@ -289,19 +289,14 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // AuthorityKeyIdは、親のSubjectKeyIdから取得されます（存在する場合）、ただし証明書が自己署名でない場合はテンプレートの値が使用されます。
 //
-<<<<<<< HEAD
-// テンプレートのSubjectKeyIdが空で、テンプレートがCAである場合、SubjectKeyIdは公開鍵のハッシュから生成されます。
-=======
-// If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
-// will be generated from the hash of the public key.
+// テンプレートからのSubjectKeyIdが空で、テンプレートがCAである場合、SubjectKeyIdは
+// 公開鍵のハッシュから生成されます。
 //
-// The PolicyIdentifier and Policies fields are both used to marshal certificate
-// policy OIDs. By default, only the PolicyIdentifier is marshaled, but if the
-// GODEBUG setting "x509usepolicies" has the value "1", the Policies field will
-// be marshalled instead of the PolicyIdentifier field. The Policies field can
-// be used to marshal policy OIDs which have components that are larger than 31
-// bits.
->>>>>>> upstream/master
+// PolicyIdentifierとPoliciesフィールドは、両方とも証明書ポリシーOIDをマーシャルするために使用されます。
+// デフォルトでは、PolicyIdentifierのみがマーシャルされますが、
+// GODEBUG設定の"x509usepolicies"が"1"の値を持つ場合、Policiesフィールドが
+// PolicyIdentifierフィールドの代わりにマーシャルされます。Policiesフィールドは、
+// コンポーネントが31ビットより大きいポリシーOIDをマーシャルするために使用できます。
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRLは指定されたバイトからCRLを解析します。PEMエンコードされたCRLがDERエンコードされるべき場所に表示されることがよくありますが、この関数は前方にゴミがない限り、PEMエンコーディングを透過的に処理します。
