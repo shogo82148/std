@@ -4,7 +4,7 @@
 
 package cmplx
 
-// Polar returns the absolute value r and phase θ of x,
-// such that x = r * e**θi.
-// The phase is in the range [-Pi, Pi].
+// Polarはxの絶対値rと位相θを返します。
+// そのため、x = r * e**θiとなります。
+// 位相は範囲[-Pi, Pi]内にあります。
 func Polar(x complex128) (r, θ float64)
