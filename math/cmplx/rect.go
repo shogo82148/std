@@ -4,5 +4,5 @@
 
 package cmplx
 
-// Rect returns the complex number x with polar coordinates r, θ.
+// Rectは、極座標r, θを持つ複素数xを返します。
 func Rect(r, θ float64) complex128
