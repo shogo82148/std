@@ -325,6 +325,7 @@ func (p Prefix) IsValid() bool
 // IsSingleIPは、pが正確に1つのIPを含むかどうかを報告します。
 func (p Prefix) IsSingleIP() bool
 
+<<<<<<< HEAD
 // Compareは、2つのプレフィックスを比較して整数を返します。
 // p == p2の場合、結果は0になります。p < p2の場合は-1、p > p2の場合は+1になります。
 // プレフィックスは、まず有効性（有効でない場合は有効な前）、次にアドレスファミリ（IPv4はIPv6の前）、
@@ -335,6 +336,13 @@ func (p Prefix) Compare(p2 Prefix) int
 // 文字列は、RFC 4632およびRFC 4291で定義されたCIDR表記形式である場合があります。
 // 文字列は、"192.168.1.0/24"または"2001:db8::/32"のようになります。
 // IPv6ゾーンはプレフィックスで許可されていません。ゾーンが存在する場合は、エラーが返されます。
+=======
+// ParsePrefix parses s as an IP address prefix.
+// The string can be in the form "192.168.1.0/24" or "2001:db8::/32",
+// the CIDR notation defined in RFC 4632 and RFC 4291.
+// IPv6 zones are not permitted in prefixes, and an error will be returned if a
+// zone is present.
+>>>>>>> upstream/master
 //
 // マスクされたアドレスビットはゼロになりません。そのため、Maskedを使用してください。
 func ParsePrefix(s string) (Prefix, error)
