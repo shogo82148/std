@@ -6,5 +6,5 @@
 
 package big
 
-// MaxBase is the largest number base accepted for string conversions.
+// MaxBaseは、文字列変換に受け入れられる最大の数値基数です。
 const MaxBase = 10 + ('z' - 'a' + 1) + ('Z' - 'A' + 1)
