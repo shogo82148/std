@@ -4,20 +4,20 @@
 
 package cmplx
 
-// Asin returns the inverse sine of x.
+// Asinはxの逆正弦を返します。
 func Asin(x complex128) complex128
 
-// Asinh returns the inverse hyperbolic sine of x.
+// Asinhはxの逆双曲線正弦を返します。
 func Asinh(x complex128) complex128
 
-// Acos returns the inverse cosine of x.
+// Acosはxの逆余弦を返します。
 func Acos(x complex128) complex128
 
-// Acosh returns the inverse hyperbolic cosine of x.
+// Acoshはxの逆双曲線余弦を返します。
 func Acosh(x complex128) complex128
 
-// Atan returns the inverse tangent of x.
+// Atanはxの逆正接を返します。
 func Atan(x complex128) complex128
 
-// Atanh returns the inverse hyperbolic tangent of x.
+// Atanhはxの逆双曲線正接を返します。
 func Atanh(x complex128) complex128

@@ -4,6 +4,6 @@
 
 package cmplx
 
-// Phase returns the phase (also called the argument) of x.
-// The returned value is in the range [-Pi, Pi].
+// Phaseはxの位相（引数とも呼ばれる）を返します。
+// 返される値の範囲は[-Pi, Pi]です。
 func Phase(x complex128) float64

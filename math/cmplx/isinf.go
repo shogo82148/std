@@ -4,8 +4,8 @@
 
 package cmplx
 
-// IsInf reports whether either real(x) or imag(x) is an infinity.
+// IsInfは、real(x)またはimag(x)のいずれかが無限大であるかどうかを報告します。
 func IsInf(x complex128) bool
 
-// Inf returns a complex infinity, complex(+Inf, +Inf).
+// Infは複素数の無限大、complex(+Inf, +Inf)を返します。
 func Inf() complex128
