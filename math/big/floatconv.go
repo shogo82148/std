@@ -10,30 +10,27 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// SetString sets z to the value of s and returns z and a boolean indicating
-// success. s must be a floating-point number of the same format as accepted
-// by Parse, with base argument 0. The entire string (not just a prefix) must
-// be valid for success. If the operation failed, the value of z is undefined
-// but the returned value is nil.
+// SetStringは、zをsの値に設定し、zと成功を示すブール値を返します。
+// sは、基数引数0でParseによって受け入れられるのと同じ形式の浮動小数点数でなければなりません。
+// 成功するためには、文字列全体（プレフィックスだけでなく）が有効でなければなりません。
+// 操作が失敗した場合、zの値は未定義ですが、返される値はnilです。
 func (z *Float) SetString(s string) (*Float, bool)
 
-// Parse parses s which must contain a text representation of a floating-
-// point number with a mantissa in the given conversion base (the exponent
-// is always a decimal number), or a string representing an infinite value.
+// Parseは、指定された変換基数で仮数を持つ浮動小数点数のテキスト表現、
+// または無限大を表す文字列を含むsを解析します（指数は常に10進数です）。
 //
-// For base 0, an underscore character “_” may appear between a base
-// prefix and an adjacent digit, and between successive digits; such
-// underscores do not change the value of the number, or the returned
-// digit count. Incorrect placement of underscores is reported as an
-// error if there are no other errors. If base != 0, underscores are
-// not recognized and thus terminate scanning like any other character
-// that is not a valid radix point or digit.
+// 基数が0の場合、アンダースコア文字 "_" は基数のプレフィックスと隣接する数字の間、
+// または連続する数字の間に現れることがあります。そのようなアンダースコアは、
+// 数値の値や返される数字の数に変化を与えません。アンダースコアの配置が間違っている場合、
+// 他にエラーがない場合に限り、エラーとして報告されます。基数が0でない場合、
+// アンダースコアは認識されず、したがって、有効な基数点または数字でない他の任意の文字と同様に、
+// スキャンを終了します。
 //
-// It sets z to the (possibly rounded) value of the corresponding floating-
-// point value, and returns z, the actual base b, and an error err, if any.
-// The entire string (not just a prefix) must be consumed for success.
-// If z's precision is 0, it is changed to 64 before rounding takes effect.
-// The number must be of the form:
+// zを対応する浮動小数点値の（可能性のある丸められた）値に設定し、
+// z、実際の基数b、およびエラーerr（ある場合）を返します。
+// 成功するためには、文字列全体（プレフィックスだけでなく）が消費されなければなりません。
+// zの精度が0の場合、丸めが効く前に64に変更されます。
+// 数字は次の形式でなければなりません:
 //
 //	number    = [ sign ] ( float | "inf" | "Inf" ) .
 //	sign      = "+" | "-" .
@@ -45,34 +42,30 @@ func (z *Float) SetString(s string) (*Float, bool)
 //	digits    = digit { [ "_" ] digit } .
 //	digit     = "0" ... "9" | "a" ... "z" | "A" ... "Z" .
 //
-// The base argument must be 0, 2, 8, 10, or 16. Providing an invalid base
-// argument will lead to a run-time panic.
+// 基数引数は0、2、8、10、または16でなければなりません。無効な基数引数を提供すると、
+// 実行時にパニックが発生します。
 //
-// For base 0, the number prefix determines the actual base: A prefix of
-// “0b” or “0B” selects base 2, “0o” or “0O” selects base 8, and
-// “0x” or “0X” selects base 16. Otherwise, the actual base is 10 and
-// no prefix is accepted. The octal prefix "0" is not supported (a leading
-// "0" is simply considered a "0").
+// 基数が0の場合、数値のプレフィックスが実際の基数を決定します：プレフィックスが
+// "0b"または"0B"は基数2を選択し、"0o"または"0O"は基数8を選択し、
+// "0x"または"0X"は基数16を選択します。それ以外の場合、実際の基数は10であり、
+// プレフィックスは受け入れられません。8進数のプレフィックス"0"はサポートされていません（先頭の
+// "0"は単に"0"と見なされます）。
 //
-// A "p" or "P" exponent indicates a base 2 (rather than base 10) exponent;
-// for instance, "0x1.fffffffffffffp1023" (using base 0) represents the
-// maximum float64 value. For hexadecimal mantissae, the exponent character
-// must be one of 'p' or 'P', if present (an "e" or "E" exponent indicator
-// cannot be distinguished from a mantissa digit).
+// "p"または"P"の指数は、基数10ではなく基数2の指数を示します。
+// 例えば、"0x1.fffffffffffffp1023"（基数0を使用）は、最大のfloat64値を表します。
+// 16進数の仮数については、指数文字が存在する場合、'p'または'P'のいずれかでなければなりません
+// （"e"または"E"の指数指示子は、仮数の数字と区別できません）。
 //
-// The returned *Float f is nil and the value of z is valid but not
-// defined if an error is reported.
+// エラーが報告された場合、返される*Float fはnilで、zの値は有効ですが定義されていません。
 func (z *Float) Parse(s string, base int) (f *Float, b int, err error)
 
-// ParseFloat is like f.Parse(s, base) with f set to the given precision
-// and rounding mode.
+// ParseFloatは、指定された精度と丸めモードでfを設定した状態のf.Parse(s, base)と同じです。
 func ParseFloat(s string, base int, prec uint, mode RoundingMode) (f *Float, b int, err error)
 
 var _ fmt.Scanner = (*Float)(nil)
 
-// Scan is a support routine for fmt.Scanner; it sets z to the value of
-// the scanned number. It accepts formats whose verbs are supported by
-// fmt.Scan for floating point values, which are:
-// 'b' (binary), 'e', 'E', 'f', 'F', 'g' and 'G'.
-// Scan doesn't handle ±Inf.
+// Scanは、fmt.Scannerのサポートルーチンで、zをスキャンされた数値に設定します。
+// これは、浮動小数点値に対してfmt.Scanがサポートする動詞を持つ形式を受け入れます。それらは次のとおりです:
+// 'b'（バイナリ）、'e'、'E'、'f'、'F'、'g'、'G'。
+// Scanは±Infを処理しません。
 func (z *Float) Scan(s fmt.ScanState, ch rune) error
