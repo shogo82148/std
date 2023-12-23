@@ -7,4 +7,5 @@
 package types2
 
 // RangeKeyVal returns the key and value types for a range over typ.
+// Exported for use by the compiler (does not exist in go/types).
 func RangeKeyVal(typ Type) (Type, Type)

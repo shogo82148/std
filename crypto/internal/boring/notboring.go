@@ -38,6 +38,7 @@ func NewHMAC(h func() hash.Hash, key []byte) hash.Hash
 
 func NewAESCipher(key []byte) (cipher.Block, error)
 func NewGCMTLS(cipher.Block) (cipher.AEAD, error)
+func NewGCMTLS13(cipher.Block) (cipher.AEAD, error)
 
 type PublicKeyECDSA struct{ _ int }
 type PrivateKeyECDSA struct{ _ int }
