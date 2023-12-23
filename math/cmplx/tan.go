@@ -4,11 +4,11 @@
 
 package cmplx
 
-// Tan returns the tangent of x.
+// Tanはxの正接を返します。
 func Tan(x complex128) complex128
 
-// Tanh returns the hyperbolic tangent of x.
+// Tanhはxの双曲線正接を返します。
 func Tanh(x complex128) complex128
 
-// Cot returns the cotangent of x.
+// Cotはxの余接を返します。
 func Cot(x complex128) complex128
