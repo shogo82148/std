@@ -72,38 +72,21 @@ type Sym struct {
 	Name  string
 }
 
-<<<<<<< HEAD
-// Open opens the named file using [os.Open] and prepares it for use as a Plan 9 a.out binary.
-func Open(name string) (*File, error)
-
-// Close closes the [File].
-// If the [File] was created using [NewFile] directly instead of [Open],
-// Close has no effect.
-func (f *File) Close() error
-
-// NewFile creates a new [File] for accessing a Plan 9 binary in an underlying reader.
-// The Plan 9 binary is expected to start at position 0 in the ReaderAt.
-func NewFile(r io.ReaderAt) (*File, error)
-
-// ErrNoSymbols is returned by [File.Symbols] if there is no such section
-// in the File.
-=======
-// Openは、os.Openを使用して指定された名前のファイルを開き、
+// Openは、[os.Open] を使用して指定された名前のファイルを開き、
 // それをPlan 9 a.outバイナリとして使用するための準備をします。
 func Open(name string) (*File, error)
 
-// Closeは、Fileを閉じます。
-// FileがOpenではなくNewFileを直接使用して作成された場合、
+// Closeは、[File] を閉じます。
+// [File] が [Open] ではなく [NewFile] を直接使用して作成された場合、
 // Closeは何も影響を及ぼしません。
 func (f *File) Close() error
 
-// NewFileは、基礎となるリーダーでPlan 9バイナリにアクセスするための新しいFileを作成します。
+// NewFileは、基礎となるリーダーでPlan 9バイナリにアクセスするための新しい [File] を作成します。
 // Plan 9バイナリは、ReaderAtの位置0で開始することが期待されます。
 func NewFile(r io.ReaderAt) (*File, error)
 
 // ErrNoSymbolsは、File内にそのようなセクションがない場合に、
-// File.Symbolsによって返されるエラーです。
->>>>>>> release-branch.go1.21
+// [File.Symbols] によって返されるエラーです。
 var ErrNoSymbols = errors.New("no symbol section")
 
 // Symbolsは、fのシンボルテーブルを返します。
