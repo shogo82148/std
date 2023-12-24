@@ -3,31 +3,28 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package builtin provides documentation for Go's predeclared identifiers.
-The items documented here are not actually in package builtin
-but their descriptions here allow godoc to present documentation
-for the language's special identifiers.
+builtinパッケージは、Goの事前定義された識別子のドキュメンテーションを提供します。
+ここに文書化されている項目は実際にはbuiltinパッケージには存在しませんが、
+ここでの説明によりgodocは言語の特別な識別子のドキュメンテーションを提示することができます。
 */
 package builtin
 
-// Type is here for the purposes of documentation only. It is a stand-in
-// for any Go type, but represents the same type for any given function
-// invocation.
+// Typeは、ドキュメンテーションの目的のみでここに存在します。それは任意のGo型の代わりで、
+// しかし、任意の関数呼び出しに対して同じ型を表します。
 type Type int
 
-// Type1 is here for the purposes of documentation only. It is a stand-in
-// for any Go type, but represents the same type for any given function
-// invocation.
+// Type1は、ドキュメンテーションの目的のみでここに存在します。それは任意のGo型の代わりで、
+// しかし、任意の関数呼び出しに対して同じ型を表します。
 type Type1 int
 
-// IntegerType is here for the purposes of documentation only. It is a stand-in
-// for any integer type: int, uint, int8 etc.
+// IntegerTypeは、ドキュメンテーションの目的のみでここに存在します。それは任意の整数型の代わりで、
+// 例えば、int、uint、int8などを表します。
 type IntegerType int
 
-// FloatType is here for the purposes of documentation only. It is a stand-in
-// for either float type: float32 or float64.
+// FloatTypeは、ドキュメンテーションの目的のみでここに存在します。それは任意の浮動小数点型の代わりで、
+// 例えば、float32またはfloat64を表します。
 type FloatType float32
 
-// ComplexType is here for the purposes of documentation only. It is a
-// stand-in for either complex type: complex64 or complex128.
+// ComplexTypeは、ドキュメンテーションの目的のみでここに存在します。それは任意の複素数型の代わりで、
+// 例えば、complex64またはcomplex128を表します。
 type ComplexType complex64
