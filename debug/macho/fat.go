@@ -30,30 +30,16 @@ type FatArch struct {
 	*File
 }
 
-<<<<<<< HEAD
-// ErrNotFat is returned from [NewFatFile] or [OpenFat] when the file is not a
-// universal binary but may be a thin binary, based on its magic number.
-var ErrNotFat = &FormatError{0, "not a fat Mach-O file", nil}
-
-// NewFatFile creates a new [FatFile] for accessing all the Mach-O images in a
-// universal binary. The Mach-O binary is expected to start at position 0 in
-// the ReaderAt.
-func NewFatFile(r io.ReaderAt) (*FatFile, error)
-
-// OpenFat opens the named file using [os.Open] and prepares it for use as a Mach-O
-// universal binary.
-=======
 // ErrNotFatは、ファイルがユニバーサルバイナリではなく、
 // マジックナンバーに基づいてシンバイナリである可能性がある場合、
-// NewFatFileまたはOpenFatから返されます。
+// [NewFatFile] または [OpenFat] から返されます。
 var ErrNotFat = &FormatError{0, "not a fat Mach-O file", nil}
 
-// NewFatFileは、ユニバーサルバイナリ内のすべてのMach-Oイメージにアクセスするための新しいFatFileを作成します。
+// NewFatFileは、ユニバーサルバイナリ内のすべてのMach-Oイメージにアクセスするための新しい [FatFile] を作成します。
 // Mach-Oバイナリは、ReaderAtの位置0で開始することが期待されています。
 func NewFatFile(r io.ReaderAt) (*FatFile, error)
 
-// OpenFatは、os.Openを使用して指定されたファイルを開き、それをMach-Oユニバーサルバイナリとして使用するための準備をします。
->>>>>>> release-branch.go1.21
+// OpenFatは、[os.Open] を使用して指定されたファイルを開き、それをMach-Oユニバーサルバイナリとして使用するための準備をします。
 func OpenFat(name string) (*FatFile, error)
 
 func (ff *FatFile) Close() error
