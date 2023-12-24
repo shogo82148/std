@@ -57,5 +57,12 @@ const (
 	IMAGE_COMDAT_SELECT_LARGEST      = 6
 )
 
-å
+// COFFSymbolReadSectionDefAuxは、セクション定義シンボルの補助情報
+// （COMDAT情報を含む）のブロブを返します。ここで 'idx' は、
+// Fileの主要なCOFFSymbol配列内のセクションシンボルのインデックスです。
+// 戻り値は、適切なauxシンボル構造体へのポインタです。詳細については、以下を参照してください：
+//
+// 補助シンボル: https://docs.microsoft.com/ja-jp/windows/win32/debug/pe-format#auxiliary-symbol-records
+// COMDATセクション: https://docs.microsoft.com/ja-jp/windows/win32/debug/pe-format#comdat-sections-object-only
+// セクション定義の補助情報: https://docs.microsoft.com/ja-jp/windows/win32/debug/pe-format#auxiliary-format-5-section-definitions
 func (f *File) COFFSymbolReadSectionDefAux(idx int) (*COFFSymbolAuxFormat5, error)
