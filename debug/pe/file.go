@@ -3,15 +3,14 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package pe implements access to PE (Microsoft Windows Portable Executable) files.
+パッケージpeは、PE（Microsoft Windows Portable Executable）ファイルへのアクセスを実装します。
 
-# Security
+# セキュリティ
 
-This package is not designed to be hardened against adversarial inputs, and is
-outside the scope of https://go.dev/security/policy. In particular, only basic
-validation is done when parsing object files. As such, care should be taken when
-parsing untrusted inputs, as parsing malformed files may consume significant
-resources, or cause panics.
+このパッケージは、敵対的な入力に対して強化されるように設計されていませんし、
+https://go.dev/security/policy の範囲外です。特に、オブジェクトファイルを解析する際には基本的な
+検証のみが行われます。そのため、信頼できない入力を解析する際には注意が必要です。なぜなら、
+形式が不正なファイルを解析すると、大量のリソースを消費したり、パニックを引き起こす可能性があるからです。
 */
 package pe
 
@@ -20,7 +19,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A File represents an open PE file.
+// Fileは、開かれたPEファイルを表します。
 type File struct {
 	FileHeader
 	OptionalHeader any
@@ -32,19 +31,19 @@ type File struct {
 	closer io.Closer
 }
 
-// Open opens the named file using os.Open and prepares it for use as a PE binary.
+// Openは、os.Openを使用して指定されたファイルを開き、それをPEバイナリとして使用するための準備をします。
 func Open(name string) (*File, error)
 
-// Close closes the File.
-// If the File was created using NewFile directly instead of Open,
-// Close has no effect.
+// Closeは、Fileを閉じます。
+// FileがOpenではなくNewFileを直接使用して作成された場合、
+// Closeは何も影響を与えません。
 func (f *File) Close() error
 
-// NewFile creates a new File for accessing a PE binary in an underlying reader.
+// NewFileは、基礎となるリーダーでPEバイナリにアクセスするための新しいFileを作成します。
 func NewFile(r io.ReaderAt) (*File, error)
 
-// Section returns the first section with the given name, or nil if no such
-// section exists.
+// Sectionは、指定された名前の最初のセクションを返します。そのような
+// セクションが存在しない場合はnilを返します。
 func (f *File) Section(name string) *Section
 
 func (f *File) DWARF() (*dwarf.Data, error)
@@ -59,19 +58,17 @@ type ImportDirectory struct {
 	dll string
 }
 
-// ImportedSymbols returns the names of all symbols
-// referred to by the binary f that are expected to be
-// satisfied by other libraries at dynamic load time.
-// It does not return weak symbols.
+// ImportedSymbolsは、動的ロード時に他のライブラリによって満たされることが期待されている、
+// バイナリfが参照しているすべてのシンボルの名前を返します。
+// それは弱いシンボルを返しません。
 func (f *File) ImportedSymbols() ([]string, error)
 
-// ImportedLibraries returns the names of all libraries
-// referred to by the binary f that are expected to be
-// linked with the binary at dynamic link time.
+// ImportedLibrariesは、動的リンク時にバイナリとリンクされることが期待されている、
+// バイナリfが参照しているすべてのライブラリの名前を返します。
 func (f *File) ImportedLibraries() ([]string, error)
 
-// FormatError is unused.
-// The type is retained for compatibility.
+// FormatErrorは使用されていません。
+// この型は互換性のために保持されています。
 type FormatError struct {
 }
 
