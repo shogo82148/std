@@ -89,14 +89,8 @@ func (t *Table) PCToFunc(pc uint64) *Func
 // 情報がない場合は、fn == nilを返します。
 func (t *Table) PCToLine(pc uint64) (file string, line int, fn *Func)
 
-<<<<<<< HEAD
-// LineToPC looks up the first program counter on the given line in
-// the named file. It returns [UnknownFileError] or [UnknownLineError] if
-// there is an error looking up this line.
-=======
 // LineToPCは、指定されたファイルの指定された行で最初のプログラムカウンタを検索します。
-// この行を検索中にエラーが発生した場合、UnknownPathErrorまたはUnknownLineErrorを返します。
->>>>>>> release-branch.go1.21
+// この行を検索中にエラーが発生した場合、[UnknownPathError] または [UnknownLineError] を返します。
 func (t *Table) LineToPC(file string, line int) (pc uint64, fn *Func, err error)
 
 // LookupSymは、指定された名前を持つテキスト、データ、またはbssシンボルを返します。
