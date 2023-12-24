@@ -2,39 +2,38 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package gosym implements access to the Go symbol
-// and line number tables embedded in Go binaries generated
-// by the gc compilers.
+// gosymパッケージは、gcコンパイラによって生成されたGoバイナリに埋め込まれた
+// Goのシンボルと行番号のテーブルへのアクセスを実装します。
 package gosym
 
-// A Sym represents a single symbol table entry.
+// Symは、単一のシンボルテーブルエントリを表します。
 type Sym struct {
 	Value  uint64
 	Type   byte
 	Name   string
 	GoType uint64
-	// If this symbol is a function symbol, the corresponding Func
+	// このシンボルが関数シンボルである場合、対応するFunc
 	Func *Func
 
 	goVersion version
 }
 
-// Static reports whether this symbol is static (not visible outside its file).
+// Staticは、このシンボルが静的（ファイルの外部からは見えない）であるかどうかを報告します。
 func (s *Sym) Static() bool
 
-// PackageName returns the package part of the symbol name,
-// or the empty string if there is none.
+// PackageNameは、シンボル名のパッケージ部分を返します。
+// パッケージ部分がない場合は空の文字列を返します。
 func (s *Sym) PackageName() string
 
-// ReceiverName returns the receiver type name of this symbol,
-// or the empty string if there is none.  A receiver name is only detected in
-// the case that s.Name is fully-specified with a package name.
+// ReceiverNameは、このシンボルのレシーバタイプ名を返します。
+// レシーバ名がない場合は空の文字列を返します。レシーバ名は、
+// s.Nameがパッケージ名で完全に指定されている場合にのみ検出されます。
 func (s *Sym) ReceiverName() string
 
-// BaseName returns the symbol name without the package or receiver name.
+// BaseNameは、パッケージ名やレシーバ名を除いたシンボル名を返します。
 func (s *Sym) BaseName() string
 
-// A Func collects information about a single function.
+// Funcは、単一の関数に関する情報を収集します。
 type Func struct {
 	Entry uint64
 	*Sym
@@ -46,31 +45,28 @@ type Func struct {
 	Obj       *Obj
 }
 
-// An Obj represents a collection of functions in a symbol table.
+// Objは、シンボルテーブル内の一連の関数を表します。
 //
-// The exact method of division of a binary into separate Objs is an internal detail
-// of the symbol table format.
+// バイナリを別々のObjに分割する具体的な方法は、シンボルテーブル形式の内部詳細です。
 //
-// In early versions of Go each source file became a different Obj.
+// Goの初期のバージョンでは、各ソースファイルが異なるObjになりました。
 //
-// In Go 1 and Go 1.1, each package produced one Obj for all Go sources
-// and one Obj per C source file.
+// Go 1とGo 1.1では、各パッケージはすべてのGoソースに対して1つのObjを生成し、
+// Cソースファイルごとに1つのObjを生成しました。
 //
-// In Go 1.2, there is a single Obj for the entire program.
+// Go 1.2では、プログラム全体に対して単一のObjが存在します。
 type Obj struct {
-	// Funcs is a list of functions in the Obj.
+	// Funcsは、Obj内の関数のリストです。
 	Funcs []Func
 
-	// In Go 1.1 and earlier, Paths is a list of symbols corresponding
-	// to the source file names that produced the Obj.
-	// In Go 1.2, Paths is nil.
-	// Use the keys of Table.Files to obtain a list of source files.
+	// Go 1.1以前では、PathsはObjを生成したソースファイル名に対応するシンボルのリストです。
+	// Go 1.2では、Pathsはnilです。
+	// ソースファイルのリストを取得するには、Table.Filesのキーを使用します。
 	Paths []Sym
 }
 
-// Table represents a Go symbol table. It stores all of the
-// symbols decoded from the program and provides methods to translate
-// between symbols, names, and addresses.
+// TableはGoのシンボルテーブルを表します。プログラムからデコードされたすべての
+// シンボルを保存し、シンボル、名前、アドレス間の変換を行うメソッドを提供します。
 type Table struct {
 	Syms  []Sym
 	Funcs []Func
@@ -80,44 +76,47 @@ type Table struct {
 	go12line *LineTable
 }
 
-// NewTable decodes the Go symbol table (the ".gosymtab" section in ELF),
-// returning an in-memory representation.
-// Starting with Go 1.3, the Go symbol table no longer includes symbol data.
+// NewTableはGoのシンボルテーブル（ELFの".gosymtab"セクション）をデコードし、
+// メモリ内表現を返します。
+// Go 1.3以降、Goのシンボルテーブルにはシンボルデータが含まれなくなりました。
 func NewTable(symtab []byte, pcln *LineTable) (*Table, error)
 
-// PCToFunc returns the function containing the program counter pc,
-// or nil if there is no such function.
+// PCToFuncは、プログラムカウンタpcを含む関数を返します。
+// そのような関数がない場合はnilを返します。
 func (t *Table) PCToFunc(pc uint64) *Func
 
-// PCToLine looks up line number information for a program counter.
-// If there is no information, it returns fn == nil.
+// PCToLineは、プログラムカウンタに対する行番号情報を検索します。
+// 情報がない場合は、fn == nilを返します。
 func (t *Table) PCToLine(pc uint64) (file string, line int, fn *Func)
 
+<<<<<<< HEAD
 // LineToPC looks up the first program counter on the given line in
 // the named file. It returns [UnknownFileError] or [UnknownLineError] if
 // there is an error looking up this line.
+=======
+// LineToPCは、指定されたファイルの指定された行で最初のプログラムカウンタを検索します。
+// この行を検索中にエラーが発生した場合、UnknownPathErrorまたはUnknownLineErrorを返します。
+>>>>>>> release-branch.go1.21
 func (t *Table) LineToPC(file string, line int) (pc uint64, fn *Func, err error)
 
-// LookupSym returns the text, data, or bss symbol with the given name,
-// or nil if no such symbol is found.
+// LookupSymは、指定された名前を持つテキスト、データ、またはbssシンボルを返します。
+// そのようなシンボルが見つからない場合はnilを返します。
 func (t *Table) LookupSym(name string) *Sym
 
-// LookupFunc returns the text, data, or bss symbol with the given name,
-// or nil if no such symbol is found.
+// LookupFuncは、指定された名前を持つテキスト、データ、またはbssシンボルを返します。
+// そのようなシンボルが見つからない場合はnilを返します。
 func (t *Table) LookupFunc(name string) *Func
 
-// SymByAddr returns the text, data, or bss symbol starting at the given address.
+// SymByAddrは、指定されたアドレスで開始するテキスト、データ、またはbssシンボルを返します。
 func (t *Table) SymByAddr(addr uint64) *Sym
 
-// UnknownFileError represents a failure to find the specific file in
-// the symbol table.
+// UnknownFileErrorは、シンボルテーブル内で特定のファイルを見つけることができなかったことを表すエラーです。
 type UnknownFileError string
 
 func (e UnknownFileError) Error() string
 
-// UnknownLineError represents a failure to map a line to a program
-// counter, either because the line is beyond the bounds of the file
-// or because there is no code on the given line.
+// UnknownLineErrorは、行をプログラムカウンタにマッピングできなかったことを表すエラーです。
+// これは、行がファイルの範囲を超えているか、指定された行にコードがないためです。
 type UnknownLineError struct {
 	File string
 	Line int

@@ -13,19 +13,29 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// A LineTable is a data structure mapping program counters to line numbers.
+// LineTableは、プログラムカウンタを行番号にマッピングするデータ構造です。
 //
+<<<<<<< HEAD
 // In Go 1.1 and earlier, each function (represented by a [Func]) had its own LineTable,
 // and the line number corresponded to a numbering of all source lines in the
 // program, across all files. That absolute line number would then have to be
 // converted separately to a file name and line number within the file.
+=======
+// Go 1.1以前では、各関数（Funcによって表される）は独自のLineTableを持ち、
+// 行番号はプログラム内のすべてのソース行を通じての番号付けに対応していました。
+// その絶対行番号は、別途ファイル名とファイル内の行番号に変換する必要がありました。
+>>>>>>> release-branch.go1.21
 //
-// In Go 1.2, the format of the data changed so that there is a single LineTable
-// for the entire program, shared by all Funcs, and there are no absolute line
-// numbers, just line numbers within specific files.
+// Go 1.2では、データの形式が変更され、プログラム全体で単一のLineTableが存在し、
+// すべてのFuncが共有し、絶対行番号はなく、特定のファイル内の行番号のみが存在します。
 //
+<<<<<<< HEAD
 // For the most part, LineTable's methods should be treated as an internal
 // detail of the package; callers should use the methods on [Table] instead.
+=======
+// 大部分において、LineTableのメソッドはパッケージの内部詳細として扱うべきであり、
+// 呼び出し元は代わりにTableのメソッドを使用するべきです。
+>>>>>>> release-branch.go1.21
 type LineTable struct {
 	Data []byte
 	PC   uint64
@@ -58,19 +68,17 @@ type LineTable struct {
 	fileMap map[string]uint32
 }
 
-// PCToLine returns the line number for the given program counter.
+// PCToLineは、指定されたプログラムカウンタに対応する行番号を返します。
 //
-// Deprecated: Use Table's PCToLine method instead.
+// Deprecated: 代わりにTableのPCToLineメソッドを使用してください。
 func (t *LineTable) PCToLine(pc uint64) int
 
-// LineToPC returns the program counter for the given line number,
-// considering only program counters before maxpc.
+// LineToPCは、指定された行番号に対応するプログラムカウンタを返します。
+// ただし、maxpcより前のプログラムカウンタのみを考慮します。
 //
-// Deprecated: Use Table's LineToPC method instead.
+// Deprecated: 代わりにTableのLineToPCメソッドを使用してください。
 func (t *LineTable) LineToPC(line int, maxpc uint64) uint64
 
-// NewLineTable returns a new PC/line table
-// corresponding to the encoded data.
-// Text must be the start address of the
-// corresponding text segment.
+// NewLineTableは、エンコードされたデータに対応する新しいPC/行テーブルを返します。
+// Textは、対応するテキストセグメントの開始アドレスでなければなりません。
 func NewLineTable(data []byte, text uint64) *LineTable

@@ -6,6 +6,7 @@
 
 package big
 
+<<<<<<< HEAD
 // GobEncode implements the [encoding/gob.GobEncoder] interface.
 // The [Float] value and all its attributes (precision,
 // rounding mode, accuracy) are marshaled.
@@ -26,4 +27,22 @@ func (x *Float) MarshalText() (text []byte, err error)
 // The result is rounded per the precision and rounding mode of z.
 // If z's precision is 0, it is changed to 64 before rounding takes
 // effect.
+=======
+// GobEncodeは、gob.GobEncoderインターフェースを実装します。
+// Floatの値とそのすべての属性（精度、丸めモード、精度）がマーシャルされます。
+func (x *Float) GobEncode() ([]byte, error)
+
+// GobDecodeは、gob.GobDecoderインターフェースを実装します。
+// 結果は、zの精度と丸めモードに従って丸められます。
+// ただし、zの精度が0の場合、zは正確にデコードされた値に設定されます。
+func (z *Float) GobDecode(buf []byte) error
+
+// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
+// Floatの値のみが（全精度で）マーシャルされ、精度や精度などの他の属性は無視されます。
+func (x *Float) MarshalText() (text []byte, err error)
+
+// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+// 結果は、zの精度と丸めモードに従って丸められます。
+// ただし、zの精度が0の場合、丸めが効く前に64に変更されます。
+>>>>>>> release-branch.go1.21
 func (z *Float) UnmarshalText(text []byte) error

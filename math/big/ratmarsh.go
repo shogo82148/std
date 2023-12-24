@@ -6,6 +6,7 @@
 
 package big
 
+<<<<<<< HEAD
 // GobEncode implements the [encoding/gob.GobEncoder] interface.
 func (x *Rat) GobEncode() ([]byte, error)
 
@@ -16,4 +17,16 @@ func (z *Rat) GobDecode(buf []byte) error
 func (x *Rat) MarshalText() (text []byte, err error)
 
 // UnmarshalText implements the [encoding.TextUnmarshaler] interface.
+=======
+// GobEncodeは、gob.GobEncoderインターフェースを実装します。
+func (x *Rat) GobEncode() ([]byte, error)
+
+// GobDecodeは、gob.GobDecoderインターフェースを実装します。
+func (z *Rat) GobDecode(buf []byte) error
+
+// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
+func (x *Rat) MarshalText() (text []byte, err error)
+
+// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+>>>>>>> release-branch.go1.21
 func (z *Rat) UnmarshalText(text []byte) error

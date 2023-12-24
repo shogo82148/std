@@ -6,6 +6,7 @@
 
 package big
 
+<<<<<<< HEAD
 // GobEncode implements the [encoding/gob.GobEncoder] interface.
 func (x *Int) GobEncode() ([]byte, error)
 
@@ -22,4 +23,22 @@ func (z *Int) UnmarshalText(text []byte) error
 func (x *Int) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSON implements the [encoding/json.Unmarshaler] interface.
+=======
+// GobEncodeは、gob.GobEncoderインターフェースを実装します。
+func (x *Int) GobEncode() ([]byte, error)
+
+// GobDecodeは、gob.GobDecoderインターフェースを実装します。
+func (z *Int) GobDecode(buf []byte) error
+
+// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
+func (x *Int) MarshalText() (text []byte, err error)
+
+// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+func (z *Int) UnmarshalText(text []byte) error
+
+// MarshalJSONは、json.Marshalerインターフェースを実装します。
+func (x *Int) MarshalJSON() ([]byte, error)
+
+// UnmarshalJSONは、json.Unmarshalerインターフェースを実装します。
+>>>>>>> release-branch.go1.21
 func (z *Int) UnmarshalJSON(text []byte) error

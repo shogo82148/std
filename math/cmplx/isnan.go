@@ -4,9 +4,9 @@
 
 package cmplx
 
-// IsNaN reports whether either real(x) or imag(x) is NaN
-// and neither is an infinity.
+// IsNaNは、real(x)またはimag(x)のいずれかがNaN（非数）であり、
+// どちらも無限大でないかどうかを報告します。
 func IsNaN(x complex128) bool
 
-// NaN returns a complex “not-a-number” value.
+// NaNは複素数の「非数」値を返します。
 func NaN() complex128

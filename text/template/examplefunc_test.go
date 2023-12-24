@@ -15,18 +15,18 @@ import (
 // It installs the strings.Title function and uses it to
 // Make Title Text Look Good In Our Template's Output.
 func ExampleTemplate_func() {
-	// First we create a FuncMap with which to register the function.
+	// 最初に、関数を登録するためのFuncMapを作成します。
 	funcMap := template.FuncMap{
-		// The name "title" is what the function will be called in the template text.
+		// 名前 "title" は、テンプレートテキスト内で関数が呼ばれる名前です。
 		"title": strings.Title,
 	}
 
-	// A simple template definition to test our function.
-	// We print the input text several ways:
-	// - the original
-	// - title-cased
-	// - title-cased and then printed with %q
-	// - printed with %q and then title-cased.
+	// 関数をテストするためのシンプルなテンプレート定義。
+	// 入力テキストをいくつかの方法で出力します：
+	// - オリジナル
+	// - タイトルケース
+	// - タイトルケースにした後に %q で出力
+	// - %q で出力した後にタイトルケースにします。
 	const templateText = `
 Input: {{printf "%q" .}}
 Output 0: {{title .}}
@@ -34,13 +34,13 @@ Output 1: {{title . | printf "%q"}}
 Output 2: {{printf "%q" . | title}}
 `
 
-	// Create a template, add the function map, and parse the text.
+	// テンプレートを作成し、関数マップを追加し、テキストを解析します。
 	tmpl, err := template.New("titleTest").Funcs(funcMap).Parse(templateText)
 	if err != nil {
 		log.Fatalf("parsing: %s", err)
 	}
 
-	// Run the template to verify the output.
+	// テンプレートを実行して出力を確認します。
 	err = tmpl.Execute(os.Stdout, "the go programming language")
 	if err != nil {
 		log.Fatalf("execution: %s", err)

@@ -11,10 +11,10 @@ import (
 )
 
 func ExampleFloat_Add() {
-	// Operate on numbers of different precision.
+	// 異なる精度の数値で操作します。
 	var x, y, z big.Float
-	x.SetInt64(1000)          // x is automatically set to 64bit precision
-	y.SetFloat64(2.718281828) // y is automatically set to 53bit precision
+	x.SetInt64(1000)          // xは自動的に64ビット精度に設定されます
+	y.SetFloat64(2.718281828) // yは自動的に53ビット精度に設定されます
 	z.SetPrec(32)
 	z.Add(&x, &y)
 	fmt.Printf("x = %.10g (%s, prec = %d, acc = %s)\n", &x, x.Text('p', 0), x.Prec(), x.Acc())
@@ -27,10 +27,10 @@ func ExampleFloat_Add() {
 }
 
 func ExampleFloat_shift() {
-	// Implement Float "shift" by modifying the (binary) exponents directly.
+	// (二進数の)指数を直接修正することでFloat "shift"を実装します。
 	for s := -5; s <= 5; s++ {
 		x := big.NewFloat(0.5)
-		x.SetMantExp(x, x.MantExp(nil)+s) // shift x by s
+		x.SetMantExp(x, x.MantExp(nil)+s) // xをsだけシフトします
 		fmt.Println(x)
 	}
 	// Output:
@@ -122,8 +122,8 @@ func ExampleRoundingMode() {
 	for _, f64 := range operands {
 		fmt.Printf("%4g", f64)
 		for mode := big.ToNearestEven; mode <= big.ToPositiveInf; mode++ {
-			// sample operands above require 2 bits to represent mantissa
-			// set binary precision to 2 to round them to integer values
+			// 上記のサンプルオペランドは、仮数を表現するために2ビットを必要とします
+			// それらを整数値に丸めるために、二進数の精度を2に設定します
 			f := new(big.Float).SetPrec(2).SetMode(mode).SetFloat64(f64)
 			fmt.Printf("  %*g", len(mode.String()), f)
 		}
