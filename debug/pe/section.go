@@ -30,12 +30,7 @@ type Reloc struct {
 	Type             uint16
 }
 
-<<<<<<< HEAD
-// SectionHeader is similar to [SectionHeader32] with Name
-// field replaced by Go string.
-=======
-// SectionHeaderは、NameフィールドがGoの文字列に置き換えられたSectionHeader32と似ています。
->>>>>>> release-branch.go1.21
+// SectionHeaderは、NameフィールドがGoの文字列に置き換えられた [SectionHeader32] と似ています。
 type SectionHeader struct {
 	Name                 string
 	VirtualSize          uint32

@@ -31,27 +31,15 @@ type File struct {
 	closer io.Closer
 }
 
-<<<<<<< HEAD
-// Open opens the named file using [os.Open] and prepares it for use as a PE binary.
+// Openは、[os.Open] を使用して指定されたファイルを開き、それをPEバイナリとして使用するための準備をします。
 func Open(name string) (*File, error)
 
-// Close closes the [File].
-// If the [File] was created using [NewFile] directly instead of [Open],
-// Close has no effect.
-func (f *File) Close() error
-
-// NewFile creates a new [File] for accessing a PE binary in an underlying reader.
-=======
-// Openは、os.Openを使用して指定されたファイルを開き、それをPEバイナリとして使用するための準備をします。
-func Open(name string) (*File, error)
-
-// Closeは、Fileを閉じます。
-// FileがOpenではなくNewFileを直接使用して作成された場合、
+// Closeは、[File] を閉じます。
+// [File] が [Open] ではなく [NewFile] を直接使用して作成された場合、
 // Closeは何も影響を与えません。
 func (f *File) Close() error
 
 // NewFileは、基礎となるリーダーでPEバイナリにアクセスするための新しいFileを作成します。
->>>>>>> release-branch.go1.21
 func NewFile(r io.ReaderAt) (*File, error)
 
 // Sectionは、指定された名前の最初のセクションを返します。そのような

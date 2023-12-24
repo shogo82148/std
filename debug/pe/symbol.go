@@ -21,13 +21,8 @@ type COFFSymbol struct {
 // COFF文字列テーブルstに格納されます。
 func (sym *COFFSymbol) FullName(st StringTable) (string, error)
 
-<<<<<<< HEAD
-// Symbol is similar to [COFFSymbol] with Name field replaced
-// by Go string. Symbol also does not have NumberOfAuxSymbols.
-=======
 // Symbolは、NameフィールドがGoの文字列に置き換えられ、
-// NumberOfAuxSymbolsが存在しないCOFFSymbolと似ています。
->>>>>>> release-branch.go1.21
+// NumberOfAuxSymbolsが存在しない [COFFSymbol] と似ています。
 type Symbol struct {
 	Name          string
 	Value         uint32
@@ -62,18 +57,10 @@ const (
 	IMAGE_COMDAT_SELECT_LARGEST      = 6
 )
 
-<<<<<<< HEAD
-// COFFSymbolReadSectionDefAux returns a blob of auxiliary information
-// (including COMDAT info) for a section definition symbol. Here 'idx'
-// is the index of a section symbol in the main [COFFSymbol] array for
-// the File. Return value is a pointer to the appropriate aux symbol
-// struct. For more info, see:
-=======
 // COFFSymbolReadSectionDefAuxは、セクション定義シンボルの補助情報
 // （COMDAT情報を含む）のブロブを返します。ここで 'idx' は、
-// Fileの主要なCOFFSymbol配列内のセクションシンボルのインデックスです。
+// Fileの主要な [COFFSymbol] 配列内のセクションシンボルのインデックスです。
 // 戻り値は、適切なauxシンボル構造体へのポインタです。詳細については、以下を参照してください：
->>>>>>> release-branch.go1.21
 //
 // 補助シンボル: https://docs.microsoft.com/ja-jp/windows/win32/debug/pe-format#auxiliary-symbol-records
 // COMDATセクション: https://docs.microsoft.com/ja-jp/windows/win32/debug/pe-format#comdat-sections-object-only
