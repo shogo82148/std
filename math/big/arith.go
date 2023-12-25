@@ -10,5 +10,5 @@
 
 package big
 
-// A Word represents a single digit of a multi-precision unsigned integer.
+// Wordは、多精度符号なし整数の単一の桁を表します。
 type Word uint

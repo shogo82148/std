@@ -8,14 +8,14 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A FatFile is a Mach-O universal binary that contains at least one architecture.
+// FatFileは、少なくとも1つのアーキテクチャを含むMach-Oユニバーサルバイナリです。
 type FatFile struct {
 	Magic  uint32
 	Arches []FatArch
 	closer io.Closer
 }
 
-// A FatArchHeader represents a fat header for a specific image architecture.
+// FatArchHeaderは、特定のイメージアーキテクチャのためのファットヘッダーを表します。
 type FatArchHeader struct {
 	Cpu    Cpu
 	SubCpu uint32
@@ -24,23 +24,22 @@ type FatArchHeader struct {
 	Align  uint32
 }
 
-// A FatArch is a Mach-O File inside a FatFile.
+// FatArchは、FatFile内のMach-Oファイルです。
 type FatArch struct {
 	FatArchHeader
 	*File
 }
 
-// ErrNotFat is returned from [NewFatFile] or [OpenFat] when the file is not a
-// universal binary but may be a thin binary, based on its magic number.
+// ErrNotFatは、ファイルがユニバーサルバイナリではなく、
+// マジックナンバーに基づいてシンバイナリである可能性がある場合、
+// [NewFatFile] または [OpenFat] から返されます。
 var ErrNotFat = &FormatError{0, "not a fat Mach-O file", nil}
 
-// NewFatFile creates a new [FatFile] for accessing all the Mach-O images in a
-// universal binary. The Mach-O binary is expected to start at position 0 in
-// the ReaderAt.
+// NewFatFileは、ユニバーサルバイナリ内のすべてのMach-Oイメージにアクセスするための新しい [FatFile] を作成します。
+// Mach-Oバイナリは、ReaderAtの位置0で開始することが期待されています。
 func NewFatFile(r io.ReaderAt) (*FatFile, error)
 
-// OpenFat opens the named file using [os.Open] and prepares it for use as a Mach-O
-// universal binary.
+// OpenFatは、[os.Open] を使用して指定されたファイルを開き、それをMach-Oユニバーサルバイナリとして使用するための準備をします。
 func OpenFat(name string) (*FatFile, error)
 
 func (ff *FatFile) Close() error

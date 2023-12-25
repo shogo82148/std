@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// SectionHeader32 represents real PE COFF section header.
+// SectionHeader32は、実際のPE COFFセクションヘッダーを表します。
 type SectionHeader32 struct {
 	Name                 [8]uint8
 	VirtualSize          uint32
@@ -22,16 +22,15 @@ type SectionHeader32 struct {
 	Characteristics      uint32
 }
 
-// Reloc represents a PE COFF relocation.
-// Each section contains its own relocation list.
+// Relocは、PE COFFの再配置を表します。
+// 各セクションには独自の再配置リストが含まれています。
 type Reloc struct {
 	VirtualAddress   uint32
 	SymbolTableIndex uint32
 	Type             uint16
 }
 
-// SectionHeader is similar to [SectionHeader32] with Name
-// field replaced by Go string.
+// SectionHeaderは、NameフィールドがGoの文字列に置き換えられた [SectionHeader32] と似ています。
 type SectionHeader struct {
 	Name                 string
 	VirtualSize          uint32
@@ -45,7 +44,7 @@ type SectionHeader struct {
 	Characteristics      uint32
 }
 
-// Section provides access to PE COFF section.
+// Sectionは、PE COFFセクションへのアクセスを提供します。
 type Section struct {
 	SectionHeader
 	Relocs []Reloc
@@ -60,19 +59,19 @@ type Section struct {
 	sr *io.SectionReader
 }
 
-// Data reads and returns the contents of the PE section s.
+// Dataは、PEセクションsの内容を読み取り、返します。
 //
-// If s.Offset is 0, the section has no contents,
-// and Data will always return a non-nil error.
+// s.Offsetが0の場合、セクションには内容がなく、
+// Dataは常に非nilのエラーを返します。
 func (s *Section) Data() ([]byte, error)
 
-// Open returns a new ReadSeeker reading the PE section s.
+// Openは、PEセクションsを読み取る新しいReadSeekerを返します。
 //
-// If s.Offset is 0, the section has no contents, and all calls
-// to the returned reader will return a non-nil error.
+// s.Offsetが0の場合、セクションには内容がなく、
+// 返されたリーダーへのすべての呼び出しは非nilのエラーを返します。
 func (s *Section) Open() io.ReadSeeker
 
-// Section characteristics flags.
+// セクション特性フラグ。
 const (
 	IMAGE_SCN_CNT_CODE               = 0x00000020
 	IMAGE_SCN_CNT_INITIALIZED_DATA   = 0x00000040
