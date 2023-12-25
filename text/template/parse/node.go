@@ -16,13 +16,6 @@ import (
 type Node interface {
 	Type() NodeType
 	String() string
-<<<<<<< HEAD
-
-=======
-	// Copyは、Nodeとそのすべてのコンポーネントの深いコピーを行います。
-	// 型アサーションを避けるため、一部のXxxNodesには、*XxxNodeを返す
-	// 専用のCopyXxxメソッドもあります。
->>>>>>> release-branch.go1.21
 	Copy() Node
 	Position() Pos
 
