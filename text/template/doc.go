@@ -401,32 +401,17 @@ T3という3つ目のテンプレートを定義します。最後にT3を呼び
 
 	ONE TWO
 
-<<<<<<< HEAD
-By construction, a template may reside in only one association. If it's
-necessary to have a template addressable from multiple associations, the
-template definition must be parsed multiple times to create distinct *Template
-values, or must be copied with [Template.Clone] or [Template.AddParseTree].
-
-Parse may be called multiple times to assemble the various associated templates;
-see [ParseFiles], [ParseGlob], [Template.ParseFiles] and [Template.ParseGlob]
-for simple ways to parse related templates stored in files.
-
-A template may be executed directly or through [Template.ExecuteTemplate], which executes
-an associated template identified by name. To invoke our example above, we
-might write,
-=======
 構造上、テンプレートは一つの関連付けのみに存在することができます。もしテンプレートを
 複数の関連付けからアドレス可能にする必要がある場合、テンプレート定義は複数回パースされて
-異なる*Template値を作成するか、CloneまたはAddParseTreeメソッドでコピーされなければなりません。
+異なる*Template値を作成するか、[Template.Clone] または [Template.AddParseTree] メソッドでコピーされなければなりません。
 
 Parseは、関連する複数のテンプレートを組み立てるために複数回呼び出すことができます。
 関連するテンプレートがファイルに保存されている場合のパースを簡単に行うための
-ParseFilesやParseGlob関数やメソッドを参照してください。
+[ParseFiles]、[ParseGlob]、[Template.ParseFiles] および [Template.ParseGlob] を参照してください。
 
 テンプレートは直接実行するか、または名前で識別される関連付けられたテンプレートを実行する
 ExecuteTemplateを通じて実行することができます。上記の例を呼び出すために、私たちは
 以下のように書くかもしれません。
->>>>>>> release-branch.go1.21
 
 	err := tmpl.Execute(os.Stdout, "no data needed")
 	if err != nil {
