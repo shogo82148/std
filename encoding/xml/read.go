@@ -63,17 +63,10 @@ package xml
 //
 //   - タグ"-"を持つ構造体フィールドは、決してアンマーシャルされません。
 //
-<<<<<<< HEAD
-// If Unmarshal encounters a field type that implements the Unmarshaler
-// interface, Unmarshal calls its UnmarshalXML method to produce the value from
-// the XML element.  Otherwise, if the value implements
-// [encoding.TextUnmarshaler], Unmarshal calls that value's UnmarshalText method.
-=======
 // UnmarshalがUnmarshalerインターフェースを実装するフィールドタイプに遭遇した場合、
 // UnmarshalはそのUnmarshalXMLメソッドを呼び出してXML要素から値を生成します。
-// それ以外の場合、値がencoding.TextUnmarshalerを実装している場合、
+// それ以外の場合、値が [encoding.TextUnmarshaler] を実装している場合、
 // Unmarshalはその値のUnmarshalTextメソッドを呼び出します。
->>>>>>> release-branch.go1.21
 //
 // Unmarshalは、XML要素をstringまたは[]byteにマップします。これは、
 // その要素の文字データの連結をstringまたは[]byteに保存することで行います。
@@ -82,13 +75,8 @@ package xml
 // Unmarshalは、属性値をstringまたは[]byteにマップします。これは、
 // 値をstringまたはスライスに保存することで行います。
 //
-<<<<<<< HEAD
-// Unmarshal maps an attribute value to an [Attr] by saving the attribute,
-// including its name, in the Attr.
-=======
-// Unmarshalは、属性値をAttrにマップします。これは、
+// Unmarshalは、属性値を [Attr] にマップします。これは、
 // 名前を含む属性をAttrに保存することで行います。
->>>>>>> release-branch.go1.21
 //
 // Unmarshalは、スライスの長さを拡張し、要素または属性を新しく作成された値にマッピングすることで、
 // XML要素または属性値をスライスにマッピングします。
@@ -110,24 +98,13 @@ package xml
 // フィールドはそのゼロ値に設定されます。
 func Unmarshal(data []byte, v any) error
 
-<<<<<<< HEAD
-// Decode works like [Unmarshal], except it reads the decoder
-// stream to find the start element.
+// Decodeは [Unmarshal] と同様に動作しますが、開始要素を見つけるためにデコーダストリームを読みます。
 func (d *Decoder) Decode(v any) error
 
-// DecodeElement works like [Unmarshal] except that it takes
-// a pointer to the start XML element to decode into v.
-// It is useful when a client reads some raw XML tokens itself
-// but also wants to defer to [Unmarshal] for some elements.
-=======
-// DecodeはUnmarshalと同様に動作しますが、開始要素を見つけるためにデコーダストリームを読みます。
-func (d *Decoder) Decode(v any) error
-
-// DecodeElementはUnmarshalと同様に動作しますが、
+// DecodeElementは [Unmarshal] と同様に動作しますが、
 // vにデコードする開始XML要素へのポインタを取ります。
 // クライアントが自身でいくつかの生のXMLトークンを読み込むが、
-// 一部の要素についてはUnmarshalに委ねたい場合に便利です。
->>>>>>> release-branch.go1.21
+// 一部の要素については [Unmarshal] に委ねたい場合に便利です。
 func (d *Decoder) DecodeElement(v any, start *StartElement) error
 
 // UnmarshalErrorは、アンマーシャル処理中のエラーを表します。
@@ -152,18 +129,10 @@ type Unmarshaler interface {
 
 // UnmarshalerAttrは、自分自身のXML属性の説明をアンマーシャルできるオブジェクトが実装するインターフェースです。
 //
-<<<<<<< HEAD
-// UnmarshalXMLAttr decodes a single XML attribute.
-// If it returns an error, the outer call to [Unmarshal] stops and
-// returns that error.
-// UnmarshalXMLAttr is used only for struct fields with the
-// "attr" option in the field tag.
-=======
 // UnmarshalXMLAttrは単一のXML属性をデコードします。
-// エラーを返す場合、外部のUnmarshalへの呼び出しは停止し、
+// エラーを返す場合、外部の [Unmarshal] への呼び出しは停止し、
 // そのエラーを返します。
 // UnmarshalXMLAttrは、フィールドタグに"attr"オプションを持つ構造体フィールドのみで使用されます。
->>>>>>> release-branch.go1.21
 type UnmarshalerAttr interface {
 	UnmarshalXMLAttr(attr Attr) error
 }

@@ -19,18 +19,10 @@ type SyntaxError struct {
 
 func (e *SyntaxError) Error() string
 
-<<<<<<< HEAD
-// A Name represents an XML name (Local) annotated
-// with a name space identifier (Space).
-// In tokens returned by [Decoder.Token], the Space identifier
-// is given as a canonical URL, not the short prefix used
-// in the document being parsed.
-=======
 // Nameは、名前空間識別子（Space）で注釈付けされたXML名（Local）を表します。
-// Decoder.Tokenによって返されるトークンでは、Space識別子は
+// [Decoder.Token] によって返されるトークンでは、Space識別子は
 // パースされるドキュメントで使用される短いプレフィックスではなく、
 // 正規のURLとして与えられます。
->>>>>>> release-branch.go1.21
 type Name struct {
 	Space, Local string
 }
@@ -41,13 +33,8 @@ type Attr struct {
 	Value string
 }
 
-<<<<<<< HEAD
-// A Token is an interface holding one of the token types:
-// [StartElement], [EndElement], [CharData], [Comment], [ProcInst], or [Directive].
-=======
 // Tokenは、次のトークンタイプのいずれかを保持するインターフェースです：
-// StartElement、EndElement、CharData、Comment、ProcInst、またはDirective。
->>>>>>> release-branch.go1.21
+// [StartElement]、[EndElement]、[CharData]、[Comment]、[ProcInst]、または [Directive]。
 type Token any
 
 // StartElementは、XMLの開始要素を表します。
@@ -100,27 +87,15 @@ func (d Directive) Copy() Directive
 // CopyTokenは、Tokenのコピーを返します。
 func CopyToken(t Token) Token
 
-<<<<<<< HEAD
-// A TokenReader is anything that can decode a stream of XML tokens, including a
-// [Decoder].
-//
-// When Token encounters an error or end-of-file condition after successfully
-// reading a token, it returns the token. It may return the (non-nil) error from
-// the same call or return the error (and a nil token) from a subsequent call.
-// An instance of this general case is that a TokenReader returning a non-nil
-// token at the end of the token stream may return either io.EOF or a nil error.
-// The next Read should return nil, [io.EOF].
-=======
 // TokenReaderは、XMLトークンのストリームをデコードできるものを指します。
-// これには、Decoderも含まれます。
+// これには、[Decoder] も含まれます。
 //
 // Tokenがトークンの読み取りに成功した後にエラーまたはファイル終了の状態に遭遇した場合、
 // それはそのトークンを返します。それは同じ呼び出しから（非nilの）エラーを返すか、
 // 次の呼び出しからエラー（とnilトークン）を返すかもしれません。
 // この一般的なケースの一例は、トークンストリームの終わりで非nilのトークンを返すTokenReaderが、
 // io.EOFまたはnilエラーのどちらかを返す可能性があるということです。
-// 次のReadはnil, io.EOFを返すべきです。
->>>>>>> release-branch.go1.21
+// 次のReadはnil, [io.EOF] を返すべきです。
 //
 // Tokenの実装は、nilトークンとnilエラーを返すことを推奨されていません。
 // 呼び出し元はnil, nilの返り値を何も起こらなかったことを示すものとして扱うべきです。
@@ -195,71 +170,33 @@ type Decoder struct {
 	unmarshalDepth int
 }
 
-<<<<<<< HEAD
-// NewDecoder creates a new XML parser reading from r.
-// If r does not implement [io.ByteReader], NewDecoder will
-// do its own buffering.
-=======
 // NewDecoderは、rから読み取る新しいXMLパーサーを作成します。
-// もしrがio.ByteReaderを実装していない場合、NewDecoderは
+// もしrが [io.ByteReader] を実装していない場合、NewDecoderは
 // 自身でバッファリングを行います。
->>>>>>> release-branch.go1.21
 func NewDecoder(r io.Reader) *Decoder
 
 // NewTokenDecoderは、基礎となるトークンストリームを使用して新しいXMLパーサーを作成します。
 func NewTokenDecoder(t TokenReader) *Decoder
 
-<<<<<<< HEAD
-// Token returns the next XML token in the input stream.
-// At the end of the input stream, Token returns nil, [io.EOF].
-//
-// Slices of bytes in the returned token data refer to the
-// parser's internal buffer and remain valid only until the next
-// call to Token. To acquire a copy of the bytes, call [CopyToken]
-// or the token's Copy method.
-=======
 // Tokenは、入力ストリームの次のXMLトークンを返します。
-// 入力ストリームの終わりでは、Tokenはnil, io.EOFを返します。
+// 入力ストリームの終わりでは、Tokenはnil, [io.EOF] を返します。
 //
 // 返されたトークンデータのバイトスライスは、パーサーの内部バッファを参照し、
 // 次のTokenへの呼び出しまでのみ有効です。バイトのコピーを取得するには、
-// CopyTokenを呼び出すか、トークンのCopyメソッドを呼び出します。
->>>>>>> release-branch.go1.21
+// [CopyToken] を呼び出すか、トークンのCopyメソッドを呼び出します。
 //
 // Tokenは、<br>のような自己閉鎖要素を展開し、
 // 連続した呼び出しで返される別々の開始要素と終了要素にします。
 //
-<<<<<<< HEAD
-// Token guarantees that the [StartElement] and [EndElement]
-// tokens it returns are properly nested and matched:
-// if Token encounters an unexpected end element
-// or EOF before all expected end elements,
-// it will return an error.
-//
-// If [Decoder.CharsetReader] is called and returns an error,
-// the error is wrapped and returned.
-//
-// Token implements XML name spaces as described by
-// https://www.w3.org/TR/REC-xml-names/. Each of the
-// [Name] structures contained in the Token has the Space
-// set to the URL identifying its name space when known.
-// If Token encounters an unrecognized name space prefix,
-// it uses the prefix as the Space rather than report an error.
-func (d *Decoder) Token() (Token, error)
-
-// RawToken is like [Decoder.Token] but does not verify that
-// start and end elements match and does not translate
-// name space prefixes to their corresponding URLs.
-=======
-// Tokenは、返されるStartElementとEndElementトークンが適切にネストされ、
+// Tokenは、返される [StartElement] と [EndElement] トークンが適切にネストされ、
 // マッチしていることを保証します：もしTokenが予期しない終了要素や、
 // すべての予期される終了要素の前にEOFに遭遇した場合、エラーを返します。
 //
-// CharsetReaderが呼び出され、エラーを返す場合、
+// [Decoder.CharsetReader] が呼び出され、エラーを返す場合、
 // そのエラーはラップされて返されます。
 //
 // Tokenは、https://www.w3.org/TR/REC-xml-names/ で説明されているような
-// XML名前空間を実装します。Tokenに含まれる各Name構造体は、その名前空間を
+// XML名前空間を実装します。Tokenに含まれる各 [Name] 構造体は、その名前空間を
 // 識別するURLがわかっている場合にSpaceに設定されます。
 // もしTokenが認識できない名前空間プレフィックスに遭遇した場合、
 // エラーを報告する代わりにプレフィックスをSpaceとして使用します。
@@ -267,7 +204,6 @@ func (d *Decoder) Token() (Token, error)
 
 // RawTokenはTokenと同様ですが、開始要素と終了要素が一致することを検証せず、
 // 名前空間のプレフィックスを対応するURLに変換しません。
->>>>>>> release-branch.go1.21
 func (d *Decoder) RawToken() (Token, error)
 
 // InputOffsetは、現在のデコーダ位置の入力ストリームバイトオフセットを返します。
@@ -280,32 +216,18 @@ func (d *Decoder) InputPos() (line, column int)
 
 // HTMLEntityは、標準的なHTMLエンティティ文字の変換を含むエンティティマップです。
 //
-<<<<<<< HEAD
-// See the [Decoder.Strict] and [Decoder.Entity] fields' documentation.
-=======
-// Decoder.StrictとDecoder.Entityフィールドのドキュメンテーションを参照してください。
->>>>>>> release-branch.go1.21
+// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメンテーションを参照してください。
 var HTMLEntity map[string]string = htmlEntity
 
 // HTMLAutoCloseは、自動的に閉じるとみなすべきHTML要素のセットです。
 //
-<<<<<<< HEAD
-// See the [Decoder.Strict] and [Decoder.Entity] fields' documentation.
-=======
-// Decoder.StrictとDecoder.Entityフィールドのドキュメンテーションを参照してください。
->>>>>>> release-branch.go1.21
+// [Decoder.Strict] と [Decoder.Entity] フィールドのドキュメンテーションを参照してください。
 var HTMLAutoClose []string = htmlAutoClose
 
 // EscapeTextは、プレーンテキストデータsの適切にエスケープされたXML相当物をwに書き込みます。
 func EscapeText(w io.Writer, s []byte) error
 
-<<<<<<< HEAD
-// Escape is like [EscapeText] but omits the error return value.
-// It is provided for backwards compatibility with Go 1.0.
-// Code targeting Go 1.1 or later should use [EscapeText].
-=======
-// EscapeはEscapeTextと同様ですが、エラーの戻り値を省略します。
+// Escapeは [EscapeText] と同様ですが、エラーの戻り値を省略します。
 // これはGo 1.0との後方互換性のために提供されています。
-// Go 1.1以降を対象とするコードはEscapeTextを使用するべきです。
->>>>>>> release-branch.go1.21
+// Go 1.1以降を対象とするコードは [EscapeText] を使用するべきです。
 func Escape(w io.Writer, s []byte)
