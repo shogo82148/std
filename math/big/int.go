@@ -13,20 +13,11 @@ import (
 // Intは、符号付きの多倍長整数を表します。
 // Intのゼロ値は値0を表します。
 //
-<<<<<<< HEAD
-// Operations always take pointer arguments (*Int) rather
-// than Int values, and each unique Int value requires
-// its own unique *Int pointer. To "copy" an Int value,
-// an existing (or newly allocated) Int must be set to
-// a new value using the [Int.Set] method; shallow copies
-// of Ints are not supported and may lead to errors.
-=======
 // 操作は常にポインタ引数（*Int）を取り、
 // 各ユニークなInt値は自身のユニークな*Intポインタを必要とします。
 // Int値を「コピー」するには、既存の（または新しく割り当てられた）Intを
-// Int.Setメソッドを使用して新しい値に設定する必要があります。
+// [Int.Set] メソッドを使用して新しい値に設定する必要があります。
 // Intの浅いコピーはサポートされておらず、エラーを引き起こす可能性があります。
->>>>>>> release-branch.go1.21
 //
 // メソッドは、タイミングのサイドチャネルを通じてIntの値を漏らす可能性があることに注意してください。
 // このため、そして実装の範囲と複雑さのため、Intは暗号化操作を実装するのに適していません。
@@ -50,43 +41,24 @@ func (z *Int) SetInt64(x int64) *Int
 // SetUint64はzをxに設定し、zを返します。
 func (z *Int) SetUint64(x uint64) *Int
 
-<<<<<<< HEAD
-// NewInt allocates and returns a new [Int] set to x.
-=======
-// NewIntは新しいIntを割り当て、xに設定して返します。
->>>>>>> release-branch.go1.21
+// NewIntは新しい [Int] を割り当て、xに設定して返します。
 func NewInt(x int64) *Int
 
 // Setはzをxに設定し、zを返します。
 func (z *Int) Set(x *Int) *Int
 
-<<<<<<< HEAD
-// Bits provides raw (unchecked but fast) access to x by returning its
-// absolute value as a little-endian [Word] slice. The result and x share
-// the same underlying array.
-// Bits is intended to support implementation of missing low-level [Int]
-// functionality outside this package; it should be avoided otherwise.
-func (x *Int) Bits() []Word
-
-// SetBits provides raw (unchecked but fast) access to z by setting its
-// value to abs, interpreted as a little-endian [Word] slice, and returning
-// z. The result and abs share the same underlying array.
-// SetBits is intended to support implementation of missing low-level [Int]
-// functionality outside this package; it should be avoided otherwise.
-=======
-// Bitsは、xの絶対値をリトルエンディアンのWordスライスとして返すことで、
+// Bitsは、xの絶対値をリトルエンディアンの [Word] スライスとして返すことで、
 // xへの生の（チェックされていないが高速な）アクセスを提供します。結果とxは
 // 同じ基本配列を共有します。
-// Bitsは、このパッケージ外部で欠けている低レベルのInt機能の実装をサポートすることを目的としています。
+// Bitsは、このパッケージ外部で欠けている低レベルの [Int] 機能の実装をサポートすることを目的としています。
 // それ以外の場合は避けるべきです。
 func (x *Int) Bits() []Word
 
-// SetBitsは、zの値をリトルエンディアンのWordスライスとして解釈されるabsに設定し、
+// SetBitsは、zの値をリトルエンディアンの [Word] スライスとして解釈されるabsに設定し、
 // zを返すことで、zへの生の（チェックされていないが高速な）アクセスを提供します。
 // 結果とabsは同じ基本配列を共有します。
-// SetBitsは、このパッケージ外部で欠けている低レベルのInt機能の実装をサポートすることを目的としています。
+// SetBitsは、このパッケージ外部で欠けている低レベルの [Int] 機能の実装をサポートすることを目的としています。
 // それ以外の場合は避けるべきです。
->>>>>>> release-branch.go1.21
 func (z *Int) SetBits(abs []Word) *Int
 
 // Absはzを|x|（xの絶対値）に設定し、zを返します。
@@ -111,25 +83,14 @@ func (z *Int) MulRange(a, b int64) *Int
 // Binomialは、zを二項係数C(n, k)に設定し、zを返します。
 func (z *Int) Binomial(n, k int64) *Int
 
-<<<<<<< HEAD
-// Quo sets z to the quotient x/y for y != 0 and returns z.
-// If y == 0, a division-by-zero run-time panic occurs.
-// Quo implements truncated division (like Go); see [Int.QuoRem] for more details.
-func (z *Int) Quo(x, y *Int) *Int
-
-// Rem sets z to the remainder x%y for y != 0 and returns z.
-// If y == 0, a division-by-zero run-time panic occurs.
-// Rem implements truncated modulus (like Go); see [Int.QuoRem] for more details.
-=======
 // Quoは、y != 0の場合、zを商x/yに設定し、zを返します。
 // y == 0の場合、ゼロ除算のランタイムパニックが発生します。
-// Quoは切り捨て除算（Goと同様）を実装します。詳細はQuoRemを参照してください。
+// Quoは切り捨て除算（Goと同様）を実装します。詳細は [Int.QuoRem] を参照してください。
 func (z *Int) Quo(x, y *Int) *Int
 
 // Remは、y != 0の場合、zを余りx%yに設定し、zを返します。
 // y == 0の場合、ゼロ除算のランタイムパニックが発生します。
-// Remは切り捨てモジュラス（Goと同様）を実装します。詳細はQuoRemを参照してください。
->>>>>>> release-branch.go1.21
+// Remは切り捨てモジュラス（Goと同様）を実装します。詳細は [Int.QuoRem] を参照してください。
 func (z *Int) Rem(x, y *Int) *Int
 
 // QuoRemは、y != 0の場合、zを商x/yに、rを余りx%yに設定し、
@@ -145,25 +106,14 @@ func (z *Int) Rem(x, y *Int) *Int
 // ユークリッド除算とモジュラス（Goとは異なる）についてはDivModを参照してください。
 func (z *Int) QuoRem(x, y, r *Int) (*Int, *Int)
 
-<<<<<<< HEAD
-// Div sets z to the quotient x/y for y != 0 and returns z.
-// If y == 0, a division-by-zero run-time panic occurs.
-// Div implements Euclidean division (unlike Go); see [Int.DivMod] for more details.
-func (z *Int) Div(x, y *Int) *Int
-
-// Mod sets z to the modulus x%y for y != 0 and returns z.
-// If y == 0, a division-by-zero run-time panic occurs.
-// Mod implements Euclidean modulus (unlike Go); see [Int.DivMod] for more details.
-=======
 // Divは、y != 0の場合、zを商x/yに設定し、zを返します。
 // y == 0の場合、ゼロ除算のランタイムパニックが発生します。
-// Divはユークリッド除算を実装します（Goとは異なります）；詳細はDivModを参照してください。
+// Divはユークリッド除算を実装します（Goとは異なります）；詳細は [Int.DivMod] を参照してください。
 func (z *Int) Div(x, y *Int) *Int
 
 // Modは、y != 0の場合、zを余りx%yに設定し、zを返します。
 // y == 0の場合、ゼロ除算のランタイムパニックが発生します。
-// Modはユークリッドのモジュラスを実装します（Goとは異なります）；詳細はDivModを参照してください。
->>>>>>> release-branch.go1.21
+// Modはユークリッドのモジュラスを実装します（Goとは異なります）；詳細は [Int.DivMod] を参照してください。
 func (z *Int) Mod(x, y *Int) *Int
 
 // DivModは、y != 0の場合、zを商x div yに、mを余りx mod yに設定し、
@@ -178,13 +128,8 @@ func (z *Int) Mod(x, y *Int) *Int
 // （Raymond T. Boute, "The Euclidean definition of the functions
 // div and mod". ACM Transactions on Programming Languages and
 // Systems (TOPLAS), 14(2):127-144, New York, NY, USA, 4/1992.
-<<<<<<< HEAD
-// ACM press.)
-// See [Int.QuoRem] for T-division and modulus (like Go).
-=======
 // ACM press.を参照）
-// T-除算とモジュラス（Goと同様）についてはQuoRemを参照してください。
->>>>>>> release-branch.go1.21
+// T-除算とモジュラス（Goと同様）については [Int.QuoRem] を参照してください。
 func (z *Int) DivMod(x, y, m *Int) (*Int, *Int)
 
 // Cmpはxとyを比較し、次の値を返します:
@@ -224,19 +169,11 @@ func (x *Int) Float64() (float64, Accuracy)
 // が有効である必要があります。SetStringが失敗した場合、zの値は未定義ですが、
 // 返される値はnilです。
 //
-<<<<<<< HEAD
-// The base argument must be 0 or a value between 2 and [MaxBase].
-// For base 0, the number prefix determines the actual base: A prefix of
-// “0b” or “0B” selects base 2, “0”, “0o” or “0O” selects base 8,
-// and “0x” or “0X” selects base 16. Otherwise, the selected base is 10
-// and no prefix is accepted.
-=======
-// 基数引数は0または2からMaxBaseの間の値でなければなりません。
+// 基数引数は0または2から [MaxBase] の間の値でなければなりません。
 // 基数が0の場合、数値のプレフィックスが実際の基数を決定します：プレフィックスが
 // "0b"または"0B"は基数2を選択し、"0"、"0o"または"0O"は基数8を選択し、
 // "0x"または"0X"は基数16を選択します。それ以外の場合、選択された基数は10であり、
 // プレフィックスは受け付けられません。
->>>>>>> release-branch.go1.21
 //
 // 基数が36以下の場合、小文字と大文字は同じとみなされます：
 // 文字 'a' から 'z' と 'A' から 'Z' は、数字の値 10 から 35 を表します。
@@ -254,11 +191,7 @@ func (z *Int) SetBytes(buf []byte) *Int
 
 // Bytesは、xの絶対値をビッグエンディアンのバイトスライスとして返します。
 //
-<<<<<<< HEAD
-// To use a fixed length slice, or a preallocated one, use [Int.FillBytes].
-=======
-// 固定長のスライスや、事前に割り当てられたものを使用するには、FillBytesを使用します。
->>>>>>> release-branch.go1.21
+// 固定長のスライスや、事前に割り当てられたものを使用するには、[Int.FillBytes] を使用します。
 func (x *Int) Bytes() []byte
 
 // FillBytesは、bufをxの絶対値に設定し、それをゼロ拡張のビッグエンディアンのバイトスライスとして格納し、
@@ -296,13 +229,8 @@ func (z *Int) GCD(x, y, a, b *Int) *Int
 
 // Randは、zを[0, n)の範囲の擬似乱数に設定し、zを返します。
 //
-<<<<<<< HEAD
-// As this uses the [math/rand] package, it must not be used for
-// security-sensitive work. Use [crypto/rand.Int] instead.
-=======
-// これはmath/randパッケージを使用しているため、
-// セキュリティに敏感な作業には使用してはなりません。代わりにcrypto/rand.Intを使用してください。
->>>>>>> release-branch.go1.21
+// これは [math/rand] パッケージを使用しているため、
+// セキュリティに敏感な作業には使用してはなりません。代わりに [crypto/rand.Int] を使用してください。
 func (z *Int) Rand(rnd *rand.Rand, n *Int) *Int
 
 // ModInverseは、zを環ℤ/nℤにおけるgの乗法的逆数に設定し、zを返します。

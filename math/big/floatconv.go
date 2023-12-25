@@ -10,18 +10,10 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-<<<<<<< HEAD
-// SetString sets z to the value of s and returns z and a boolean indicating
-// success. s must be a floating-point number of the same format as accepted
-// by [Float.Parse], with base argument 0. The entire string (not just a prefix) must
-// be valid for success. If the operation failed, the value of z is undefined
-// but the returned value is nil.
-=======
 // SetStringは、zをsの値に設定し、zと成功を示すブール値を返します。
-// sは、基数引数0でParseによって受け入れられるのと同じ形式の浮動小数点数でなければなりません。
+// sは、基数引数0で [Float.Parse] によって受け入れられるのと同じ形式の浮動小数点数でなければなりません。
 // 成功するためには、文字列全体（プレフィックスだけでなく）が有効でなければなりません。
 // 操作が失敗した場合、zの値は未定義ですが、返される値はnilです。
->>>>>>> release-branch.go1.21
 func (z *Float) SetString(s string) (*Float, bool)
 
 // Parseは、指定された変換基数で仮数を持つ浮動小数点数のテキスト表現、
@@ -72,16 +64,8 @@ func ParseFloat(s string, base int, prec uint, mode RoundingMode) (f *Float, b i
 
 var _ fmt.Scanner = (*Float)(nil)
 
-<<<<<<< HEAD
-// Scan is a support routine for [fmt.Scanner]; it sets z to the value of
-// the scanned number. It accepts formats whose verbs are supported by
-// [fmt.Scan] for floating point values, which are:
-// 'b' (binary), 'e', 'E', 'f', 'F', 'g' and 'G'.
-// Scan doesn't handle ±Inf.
-=======
-// Scanは、fmt.Scannerのサポートルーチンで、zをスキャンされた数値に設定します。
-// これは、浮動小数点値に対してfmt.Scanがサポートする動詞を持つ形式を受け入れます。それらは次のとおりです:
+// Scanは、[fmt.Scanner] のサポートルーチンで、zをスキャンされた数値に設定します。
+// これは、浮動小数点値に対して [fmt.Scan] がサポートする動詞を持つ形式を受け入れます。それらは次のとおりです:
 // 'b'（バイナリ）、'e'、'E'、'f'、'F'、'g'、'G'。
 // Scanは±Infを処理しません。
->>>>>>> release-branch.go1.21
 func (z *Float) Scan(s fmt.ScanState, ch rune) error

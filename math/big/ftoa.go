@@ -41,13 +41,8 @@ import (
 // 'b'と'p'の形式では、prec値は無視されます。
 func (x *Float) Text(format byte, prec int) string
 
-<<<<<<< HEAD
-// String formats x like x.Text('g', 10).
-// (String must be called explicitly, [Float.Format] does not support %s verb.)
-=======
 // Stringはxをx.Text('g', 10)のようにフォーマットします。
-// (Stringは明示的に呼び出す必要があります、Float.Formatは%s動詞をサポートしていません。)
->>>>>>> release-branch.go1.21
+// (Stringは明示的に呼び出す必要があります、[Float.Format] は%s動詞をサポートしていません。)
 func (x *Float) String() string
 
 // Appendは、x.Textによって生成された浮動小数点数xの文字列形式をbufに追加し、
@@ -56,22 +51,10 @@ func (x *Float) Append(buf []byte, fmt byte, prec int) []byte
 
 var _ fmt.Formatter = &floatZero
 
-<<<<<<< HEAD
-// Format implements [fmt.Formatter]. It accepts all the regular
-// formats for floating-point numbers ('b', 'e', 'E', 'f', 'F',
-// 'g', 'G', 'x') as well as 'p' and 'v'. See (*Float).Text for the
-// interpretation of 'p'. The 'v' format is handled like 'g'.
-// Format also supports specification of the minimum precision
-// in digits, the output field width, as well as the format flags
-// '+' and ' ' for sign control, '0' for space or zero padding,
-// and '-' for left or right justification. See the fmt package
-// for details.
-=======
-// Formatはfmt.Formatterを実装します。通常の浮動小数点数のフォーマット('b', 'e', 'E', 'f', 'F',
+// Formatは [fmt.Formatter] を実装します。通常の浮動小数点数のフォーマット('b', 'e', 'E', 'f', 'F',
 // 'g', 'G', 'x')と同様に'p'と'v'も受け入れます。'p'の解釈については(*Float).Textを参照してください。
 // 'v'フォーマットは'g'のように扱われます。
 // Formatはまた、最小精度の指定、出力フィールドの幅、および符号制御のための'+'と' 'フラグ、
 // スペースまたはゼロパディングのための'0'、左または右の正当化のための'-'フラグもサポートしています。
 // 詳細はfmtパッケージを参照してください。
->>>>>>> release-branch.go1.21
 func (x *Float) Format(s fmt.State, format rune)

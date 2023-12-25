@@ -9,21 +9,12 @@ package big
 // Ratは、任意の精度の商a/bを表します。
 // Ratのゼロ値は値0を表します。
 //
-<<<<<<< HEAD
-// Operations always take pointer arguments (*Rat) rather
-// than Rat values, and each unique Rat value requires
-// its own unique *Rat pointer. To "copy" a Rat value,
-// an existing (or newly allocated) Rat must be set to
-// a new value using the [Rat.Set] method; shallow copies
-// of Rats are not supported and may lead to errors.
-=======
 // 操作は常にポインタ引数（*Rat）を取る
 // 代わりにRat値、そして各ユニークなRat値は
 // 自身のユニークな*Ratポインタが必要です。Rat値を「コピー」するには、
 // 既存の（または新しく割り当てられた）Ratを
-// Rat.Setメソッドを使用して新しい値に設定する必要があります。Ratsの浅いコピーは
+// [Rat.Set] メソッドを使用して新しい値に設定する必要があります。Ratsの浅いコピーは
 // サポートされておらず、エラーを引き起こす可能性があります。
->>>>>>> release-branch.go1.21
 type Rat struct {
 	// To make zero values for Rat work w/o initialization,
 	// a zero value of b (len(b) == 0) acts like b == 1. At
@@ -33,11 +24,7 @@ type Rat struct {
 	a, b Int
 }
 
-<<<<<<< HEAD
-// NewRat creates a new [Rat] with numerator a and denominator b.
-=======
-// NewRatは、分子aと分母bを持つ新しいRatを作成します。
->>>>>>> release-branch.go1.21
+// NewRatは、分子aと分母bを持つ新しい [Rat] を作成します。
 func NewRat(a, b int64) *Rat
 
 // SetFloat64は、zを正確にfに設定し、zを返します。
@@ -103,23 +90,13 @@ func (x *Rat) IsInt() bool
 // 分子の符号はxの符号に対応します。
 func (x *Rat) Num() *Int
 
-<<<<<<< HEAD
-// Denom returns the denominator of x; it is always > 0.
-// The result is a reference to x's denominator, unless
-// x is an uninitialized (zero value) [Rat], in which case
-// the result is a new [Int] of value 1. (To initialize x,
-// any operation that sets x will do, including x.Set(x).)
-// If the result is a reference to x's denominator it
-// may change if a new value is assigned to x, and vice versa.
-=======
 // Denomはxの分母を返します。これは常に> 0です。
 // 結果はxの分母への参照であり、
-// xが初期化されていない（ゼロ値の）Ratの場合、
-// 結果は値1の新しいIntになります。（xを初期化するには、
+// xが初期化されていない（ゼロ値の）[Rat] の場合、
+// 結果は値1の新しい [Int] になります。（xを初期化するには、
 // xを設定する任意の操作が適用できます、x.Set(x)を含む。）
 // 結果がxの分母への参照である場合、
 // 新しい値がxに割り当てられると変更される可能性があります。逆も同様です。
->>>>>>> release-branch.go1.21
 func (x *Rat) Denom() *Int
 
 // Cmpはxとyを比較し、以下を返します:

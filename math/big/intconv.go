@@ -27,20 +27,7 @@ func (x *Int) String() string
 
 var _ fmt.Formatter = intOne
 
-<<<<<<< HEAD
-// Format implements [fmt.Formatter]. It accepts the formats
-// 'b' (binary), 'o' (octal with 0 prefix), 'O' (octal with 0o prefix),
-// 'd' (decimal), 'x' (lowercase hexadecimal), and
-// 'X' (uppercase hexadecimal).
-// Also supported are the full suite of package fmt's format
-// flags for integral types, including '+' and ' ' for sign
-// control, '#' for leading zero in octal and for hexadecimal,
-// a leading "0x" or "0X" for "%#x" and "%#X" respectively,
-// specification of minimum digits precision, output field
-// width, space or zero padding, and '-' for left or right
-// justification.
-=======
-// Formatは、fmt.Formatterを実装します。次の形式を受け入れます
+// Formatは、[fmt.Formatter] を実装します。次の形式を受け入れます
 // 'b'（二進数）、'o'（0接頭辞付きの8進数）、'O'（0o接頭辞付きの8進数）、
 // 'd'（10進数）、'x'（小文字の16進数）、そして
 // 'X'（大文字の16進数）。
@@ -49,17 +36,10 @@ var _ fmt.Formatter = intOne
 // 幅、スペースまたはゼロパディング、そして左または右
 // 寄せのための'-'を含む、パッケージfmtの整数型のための完全な形式
 // フラグもサポートされています。
->>>>>>> release-branch.go1.21
 func (x *Int) Format(s fmt.State, ch rune)
 
 var _ fmt.Scanner = intOne
 
-<<<<<<< HEAD
-// Scan is a support routine for [fmt.Scanner]; it sets z to the value of
-// the scanned number. It accepts the formats 'b' (binary), 'o' (octal),
-// 'd' (decimal), 'x' (lowercase hexadecimal), and 'X' (uppercase hexadecimal).
-=======
-// Scanは、fmt.Scannerのサポートルーチンであり、zをスキャンされた数値に設定します。
+// Scanは、[fmt.Scanner] のサポートルーチンであり、zをスキャンされた数値に設定します。
 // 形式 'b'（二進数）、'o'（8進数）、'd'（10進数）、'x'（小文字の16進数）、'X'（大文字の16進数）を受け入れます。
->>>>>>> release-branch.go1.21
 func (z *Int) Scan(s fmt.ScanState, ch rune) error
