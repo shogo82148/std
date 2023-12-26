@@ -4,6 +4,6 @@
 
 package cmplx
 
-// Sqrt returns the square root of x.
-// The result r is chosen so that real(r) ≥ 0 and imag(r) has the same sign as imag(x).
+// Sqrtはxの平方根を返します。
+// 結果のrは、real(r) ≥ 0 かつ imag(r)がimag(x)と同じ符号になるように選ばれます。
 func Sqrt(x complex128) complex128
