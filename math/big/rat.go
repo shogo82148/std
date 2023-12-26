@@ -6,15 +6,15 @@
 
 package big
 
-// A Rat represents a quotient a/b of arbitrary precision.
-// The zero value for a Rat represents the value 0.
+// Ratは、任意の精度の商a/bを表します。
+// Ratのゼロ値は値0を表します。
 //
-// Operations always take pointer arguments (*Rat) rather
-// than Rat values, and each unique Rat value requires
-// its own unique *Rat pointer. To "copy" a Rat value,
-// an existing (or newly allocated) Rat must be set to
-// a new value using the [Rat.Set] method; shallow copies
-// of Rats are not supported and may lead to errors.
+// 操作は常にポインタ引数（*Rat）を取る
+// 代わりにRat値、そして各ユニークなRat値は
+// 自身のユニークな*Ratポインタが必要です。Rat値を「コピー」するには、
+// 既存の（または新しく割り当てられた）Ratを
+// [Rat.Set] メソッドを使用して新しい値に設定する必要があります。Ratsの浅いコピーは
+// サポートされておらず、エラーを引き起こす可能性があります。
 type Rat struct {
 	// To make zero values for Rat work w/o initialization,
 	// a zero value of b (len(b) == 0) acts like b == 1. At
@@ -24,96 +24,97 @@ type Rat struct {
 	a, b Int
 }
 
-// NewRat creates a new [Rat] with numerator a and denominator b.
+// NewRatは、分子aと分母bを持つ新しい [Rat] を作成します。
 func NewRat(a, b int64) *Rat
 
-// SetFloat64 sets z to exactly f and returns z.
-// If f is not finite, SetFloat returns nil.
+// SetFloat64は、zを正確にfに設定し、zを返します。
+// もしfが有限でない場合、SetFloatはnilを返します。
 func (z *Rat) SetFloat64(f float64) *Rat
 
-// Float32 returns the nearest float32 value for x and a bool indicating
-// whether f represents x exactly. If the magnitude of x is too large to
-// be represented by a float32, f is an infinity and exact is false.
-// The sign of f always matches the sign of x, even if f == 0.
+// Float32は、xに最も近いfloat32値と、
+// fがxを正確に表現しているかどうかを示すbool値を返します。
+// もしxの絶対値がfloat32で表現できる範囲を超えている場合、
+// fは無限大となり、exactはfalseとなります。
+// fの符号は、fが0であっても、常にxの符号と一致します。
 func (x *Rat) Float32() (f float32, exact bool)
 
-// Float64 returns the nearest float64 value for x and a bool indicating
-// whether f represents x exactly. If the magnitude of x is too large to
-// be represented by a float64, f is an infinity and exact is false.
-// The sign of f always matches the sign of x, even if f == 0.
+// Float64は、xに最も近いfloat64値と、
+// fがxを正確に表現しているかどうかを示すbool値を返します。
+// もしxの絶対値がfloat64で表現できる範囲を超えている場合、
+// fは無限大となり、exactはfalseとなります。
+// fの符号は、fが0であっても、常にxの符号と一致します。
 func (x *Rat) Float64() (f float64, exact bool)
 
-// SetFrac sets z to a/b and returns z.
-// If b == 0, SetFrac panics.
+// SetFracは、zをa/bに設定し、zを返します。
+// もしb == 0の場合、SetFracはパニックを引き起こします。
 func (z *Rat) SetFrac(a, b *Int) *Rat
 
-// SetFrac64 sets z to a/b and returns z.
-// If b == 0, SetFrac64 panics.
+// SetFrac64は、zをa/bに設定し、zを返します。
+// もしb == 0の場合、SetFrac64はパニックを引き起こします。
 func (z *Rat) SetFrac64(a, b int64) *Rat
 
-// SetInt sets z to x (by making a copy of x) and returns z.
+// SetIntは、zをxに設定します（xのコピーを作成します）そしてzを返します。
 func (z *Rat) SetInt(x *Int) *Rat
 
-// SetInt64 sets z to x and returns z.
+// SetInt64は、zをxに設定し、zを返します。
 func (z *Rat) SetInt64(x int64) *Rat
 
-// SetUint64 sets z to x and returns z.
+// SetUint64は、zをxに設定し、zを返します。
 func (z *Rat) SetUint64(x uint64) *Rat
 
-// Set sets z to x (by making a copy of x) and returns z.
+// Setは、zをxに設定します（xのコピーを作成します）そしてzを返します。
 func (z *Rat) Set(x *Rat) *Rat
 
-// Abs sets z to |x| (the absolute value of x) and returns z.
+// Absは、zを|x|に設定します（xの絶対値）そしてzを返します。
 func (z *Rat) Abs(x *Rat) *Rat
 
-// Neg sets z to -x and returns z.
+// Negは、zを-xに設定し、zを返します。
 func (z *Rat) Neg(x *Rat) *Rat
 
-// Inv sets z to 1/x and returns z.
-// If x == 0, Inv panics.
+// Invは、zを1/xに設定し、zを返します。
+// もしx == 0の場合、Invはパニックを引き起こします。
 func (z *Rat) Inv(x *Rat) *Rat
 
-// Sign returns:
+// Signは以下を返します:
 //
 //	-1 if x <  0
 //	 0 if x == 0
 //	+1 if x >  0
 func (x *Rat) Sign() int
 
-// IsInt reports whether the denominator of x is 1.
+// IsIntは、xの分母が1であるかどうかを報告します。
 func (x *Rat) IsInt() bool
 
-// Num returns the numerator of x; it may be <= 0.
-// The result is a reference to x's numerator; it
-// may change if a new value is assigned to x, and vice versa.
-// The sign of the numerator corresponds to the sign of x.
+// Numはxの分子を返します。これは0以下になる可能性があります。
+// 結果はxの分子への参照であり、xに新しい値が割り当てられると変更される可能性があります。逆も同様です。
+// 分子の符号はxの符号に対応します。
 func (x *Rat) Num() *Int
 
-// Denom returns the denominator of x; it is always > 0.
-// The result is a reference to x's denominator, unless
-// x is an uninitialized (zero value) [Rat], in which case
-// the result is a new [Int] of value 1. (To initialize x,
-// any operation that sets x will do, including x.Set(x).)
-// If the result is a reference to x's denominator it
-// may change if a new value is assigned to x, and vice versa.
+// Denomはxの分母を返します。これは常に> 0です。
+// 結果はxの分母への参照であり、
+// xが初期化されていない（ゼロ値の）[Rat] の場合、
+// 結果は値1の新しい [Int] になります。（xを初期化するには、
+// xを設定する任意の操作が適用できます、x.Set(x)を含む。）
+// 結果がxの分母への参照である場合、
+// 新しい値がxに割り当てられると変更される可能性があります。逆も同様です。
 func (x *Rat) Denom() *Int
 
-// Cmp compares x and y and returns:
+// Cmpはxとyを比較し、以下を返します:
 //
 //	-1 if x <  y
 //	 0 if x == y
 //	+1 if x >  y
 func (x *Rat) Cmp(y *Rat) int
 
-// Add sets z to the sum x+y and returns z.
+// Addはzをx+yの和に設定し、zを返します。
 func (z *Rat) Add(x, y *Rat) *Rat
 
-// Sub sets z to the difference x-y and returns z.
+// Subはzをx-yの差に設定し、zを返します。
 func (z *Rat) Sub(x, y *Rat) *Rat
 
-// Mul sets z to the product x*y and returns z.
+// Mulはzをx*yの積に設定し、zを返します。
 func (z *Rat) Mul(x, y *Rat) *Rat
 
-// Quo sets z to the quotient x/y and returns z.
-// If y == 0, Quo panics.
+// Quoはzをx/yの商に設定し、zを返します。
+// もしy == 0の場合、Quoはパニックを引き起こします。
 func (z *Rat) Quo(x, y *Rat) *Rat

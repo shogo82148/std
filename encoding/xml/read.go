@@ -4,165 +4,141 @@
 
 package xml
 
-// Unmarshal parses the XML-encoded data and stores the result in
-// the value pointed to by v, which must be an arbitrary struct,
-// slice, or string. Well-formed data that does not fit into v is
-// discarded.
+// Unmarshalは、XMLエンコードされたデータを解析し、結果を
+// vが指す値に格納します。vは任意の構造体、スライス、または文字列でなければなりません。
+// vに収まらない形式の良いデータは破棄されます。
 //
-// Because Unmarshal uses the reflect package, it can only assign
-// to exported (upper case) fields. Unmarshal uses a case-sensitive
-// comparison to match XML element names to tag values and struct
-// field names.
+// Unmarshalはreflectパッケージを使用するため、エクスポートされた（大文字の）フィールドにのみ割り当てることができます。
+// Unmarshalは、XML要素名をタグ値と構造体フィールド名にマッチさせるために、大文字と小文字を区別する比較を使用します。
 //
-// Unmarshal maps an XML element to a struct using the following rules.
-// In the rules, the tag of a field refers to the value associated with the
-// key 'xml' in the struct field's tag (see the example above).
+// Unmarshalは、以下のルールを使用してXML要素を構造体にマップします。
+// ルールでは、フィールドのタグは、構造体フィールドのタグに関連付けられた
+// 'xml'キーの値を指します（上記の例を参照してください）。
 //
-//   - If the struct has a field of type []byte or string with tag
-//     ",innerxml", Unmarshal accumulates the raw XML nested inside the
-//     element in that field. The rest of the rules still apply.
+//   - 構造体がタグが",innerxml"の[]byte型またはstring型のフィールドを持つ場合、
+//     Unmarshalはそのフィールドに要素内にネストされた生のXMLを蓄積します。
+//     他のルールは依然として適用されます。
 //
-//   - If the struct has a field named XMLName of type Name,
-//     Unmarshal records the element name in that field.
+//   - 構造体がName型のフィールドXMLNameを持つ場合、
+//     Unmarshalはそのフィールドに要素名を記録します。
 //
-//   - If the XMLName field has an associated tag of the form
-//     "name" or "namespace-URL name", the XML element must have
-//     the given name (and, optionally, name space) or else Unmarshal
-//     returns an error.
+//   - XMLNameフィールドが"名前"または"名前空間-URL 名前"の形式の関連タグを持つ場合、
+//     XML要素は指定された名前（およびオプションで名前空間）を持たなければならず、
+//     そうでない場合、Unmarshalはエラーを返します。
 //
-//   - If the XML element has an attribute whose name matches a
-//     struct field name with an associated tag containing ",attr" or
-//     the explicit name in a struct field tag of the form "name,attr",
-//     Unmarshal records the attribute value in that field.
+//   - XML要素が、",attr"を含む関連タグを持つ構造体フィールド名と一致する名前の属性、
+//     または"名前,attr"の形式の構造体フィールドタグの明示的な名前を持つ場合、
+//     Unmarshalはそのフィールドに属性値を記録します。
 //
-//   - If the XML element has an attribute not handled by the previous
-//     rule and the struct has a field with an associated tag containing
-//     ",any,attr", Unmarshal records the attribute value in the first
-//     such field.
+//   - XML要素が前のルールで処理されない属性を持ち、
+//     構造体が",any,attr"を含む関連タグを持つフィールドを持つ場合、
+//     Unmarshalは最初のそのようなフィールドに属性値を記録します。
 //
-//   - If the XML element contains character data, that data is
-//     accumulated in the first struct field that has tag ",chardata".
-//     The struct field may have type []byte or string.
-//     If there is no such field, the character data is discarded.
+//   - XML要素が文字データを含む場合、そのデータは
+//     タグが",chardata"の最初の構造体フィールドに蓄積されます。
+//     構造体フィールドは[]byte型またはstring型を持つことができます。
+//     そのようなフィールドがない場合、文字データは破棄されます。
 //
-//   - If the XML element contains comments, they are accumulated in
-//     the first struct field that has tag ",comment".  The struct
-//     field may have type []byte or string. If there is no such
-//     field, the comments are discarded.
+//   - XML要素がコメントを含む場合、それらは
+//     タグが",comment"の最初の構造体フィールドに蓄積されます。
+//     構造体フィールドは[]byte型またはstring型を持つことができます。
+//     そのようなフィールドがない場合、コメントは破棄されます。
 //
-//   - If the XML element contains a sub-element whose name matches
-//     the prefix of a tag formatted as "a" or "a>b>c", unmarshal
-//     will descend into the XML structure looking for elements with the
-//     given names, and will map the innermost elements to that struct
-//     field. A tag starting with ">" is equivalent to one starting
-//     with the field name followed by ">".
+//   - XML要素が、タグが"a"または"a>b>c"の形式のプレフィックスと一致する名前のサブ要素を含む場合、
+//     Unmarshalは指定された名前を持つ要素を探してXML構造に降りていき、
+//     最も内側の要素をその構造体フィールドにマップします。
+//     ">"で始まるタグは、フィールド名に続く">"で始まるタグと同等です。
 //
-//   - If the XML element contains a sub-element whose name matches
-//     a struct field's XMLName tag and the struct field has no
-//     explicit name tag as per the previous rule, unmarshal maps
-//     the sub-element to that struct field.
+//   - XML要素が、名前が構造体フィールドのXMLNameタグと一致し、
+//     前のルールに従って明示的な名前タグを持たないサブ要素を含む場合、
+//     Unmarshalはそのサブ要素をその構造体フィールドにマップします。
 //
-//   - If the XML element contains a sub-element whose name matches a
-//     field without any mode flags (",attr", ",chardata", etc), Unmarshal
-//     maps the sub-element to that struct field.
+//   - XML要素が、モードフラグ（",attr", ",chardata"など）を持たないフィールド名と一致する
+//     サブ要素を含む場合、Unmarshalはそのサブ要素をその構造体フィールドにマップします。
 //
-//   - If the XML element contains a sub-element that hasn't matched any
-//     of the above rules and the struct has a field with tag ",any",
-//     unmarshal maps the sub-element to that struct field.
+//   - XML要素が、上記のルールのいずれにも一致しないサブ要素を含み、
+//     構造体がタグ",any"のフィールドを持つ場合、Unmarshalはそのサブ要素をその構造体フィールドにマップします。
 //
-//   - An anonymous struct field is handled as if the fields of its
-//     value were part of the outer struct.
+//   - 匿名の構造体フィールドは、その値のフィールドが外部の構造体の一部であるかのように処理されます。
 //
-//   - A struct field with tag "-" is never unmarshaled into.
+//   - タグ"-"を持つ構造体フィールドは、決してアンマーシャルされません。
 //
-// If Unmarshal encounters a field type that implements the Unmarshaler
-// interface, Unmarshal calls its UnmarshalXML method to produce the value from
-// the XML element.  Otherwise, if the value implements
-// [encoding.TextUnmarshaler], Unmarshal calls that value's UnmarshalText method.
+// UnmarshalがUnmarshalerインターフェースを実装するフィールドタイプに遭遇した場合、
+// UnmarshalはそのUnmarshalXMLメソッドを呼び出してXML要素から値を生成します。
+// それ以外の場合、値が [encoding.TextUnmarshaler] を実装している場合、
+// Unmarshalはその値のUnmarshalTextメソッドを呼び出します。
 //
-// Unmarshal maps an XML element to a string or []byte by saving the
-// concatenation of that element's character data in the string or
-// []byte. The saved []byte is never nil.
+// Unmarshalは、XML要素をstringまたは[]byteにマップします。これは、
+// その要素の文字データの連結をstringまたは[]byteに保存することで行います。
+// 保存された[]byteは決してnilになりません。
 //
-// Unmarshal maps an attribute value to a string or []byte by saving
-// the value in the string or slice.
+// Unmarshalは、属性値をstringまたは[]byteにマップします。これは、
+// 値をstringまたはスライスに保存することで行います。
 //
-// Unmarshal maps an attribute value to an [Attr] by saving the attribute,
-// including its name, in the Attr.
+// Unmarshalは、属性値を [Attr] にマップします。これは、
+// 名前を含む属性をAttrに保存することで行います。
 //
-// Unmarshal maps an XML element or attribute value to a slice by
-// extending the length of the slice and mapping the element or attribute
-// to the newly created value.
+// Unmarshalは、スライスの長さを拡張し、要素または属性を新しく作成された値にマッピングすることで、
+// XML要素または属性値をスライスにマッピングします。
 //
-// Unmarshal maps an XML element or attribute value to a bool by
-// setting it to the boolean value represented by the string. Whitespace
-// is trimmed and ignored.
+// Unmarshalは、XML要素または属性値をboolにマッピングします。
+// これは、文字列で表されるブール値に設定することで行います。空白はトリムされ、無視されます。
 //
-// Unmarshal maps an XML element or attribute value to an integer or
-// floating-point field by setting the field to the result of
-// interpreting the string value in decimal. There is no check for
-// overflow. Whitespace is trimmed and ignored.
+// Unmarshalは、フィールドを文字列値を10進数で解釈した結果に設定することで、
+// XML要素または属性値を整数または浮動小数点フィールドにマッピングします。
+// オーバーフローのチェックはありません。空白はトリムされ、無視されます。
 //
-// Unmarshal maps an XML element to a Name by recording the element
-// name.
+// Unmarshalは、要素名を記録することで、XML要素をNameにマッピングします。
 //
-// Unmarshal maps an XML element to a pointer by setting the pointer
-// to a freshly allocated value and then mapping the element to that value.
+// Unmarshalは、ポインタを新しく割り当てられた値に設定し、その値に要素をマッピングすることで、
+// XML要素をポインタにマッピングします。
 //
-// A missing element or empty attribute value will be unmarshaled as a zero value.
-// If the field is a slice, a zero value will be appended to the field. Otherwise, the
-// field will be set to its zero value.
+// 要素が欠落しているか、属性値が空の場合、ゼロ値としてアンマーシャルされます。
+// フィールドがスライスの場合、ゼロ値がフィールドに追加されます。それ以外の場合、
+// フィールドはそのゼロ値に設定されます。
 func Unmarshal(data []byte, v any) error
 
-// Decode works like [Unmarshal], except it reads the decoder
-// stream to find the start element.
+// Decodeは [Unmarshal] と同様に動作しますが、開始要素を見つけるためにデコーダストリームを読みます。
 func (d *Decoder) Decode(v any) error
 
-// DecodeElement works like [Unmarshal] except that it takes
-// a pointer to the start XML element to decode into v.
-// It is useful when a client reads some raw XML tokens itself
-// but also wants to defer to [Unmarshal] for some elements.
+// DecodeElementは [Unmarshal] と同様に動作しますが、
+// vにデコードする開始XML要素へのポインタを取ります。
+// クライアントが自身でいくつかの生のXMLトークンを読み込むが、
+// 一部の要素については [Unmarshal] に委ねたい場合に便利です。
 func (d *Decoder) DecodeElement(v any, start *StartElement) error
 
-// An UnmarshalError represents an error in the unmarshaling process.
+// UnmarshalErrorは、アンマーシャル処理中のエラーを表します。
 type UnmarshalError string
 
 func (e UnmarshalError) Error() string
 
-// Unmarshaler is the interface implemented by objects that can unmarshal
-// an XML element description of themselves.
+// Unmarshalerは、自分自身のXML要素の説明をアンマーシャルできるオブジェクトが実装するインターフェースです。
 //
-// UnmarshalXML decodes a single XML element
-// beginning with the given start element.
-// If it returns an error, the outer call to Unmarshal stops and
-// returns that error.
-// UnmarshalXML must consume exactly one XML element.
-// One common implementation strategy is to unmarshal into
-// a separate value with a layout matching the expected XML
-// using d.DecodeElement, and then to copy the data from
-// that value into the receiver.
-// Another common strategy is to use d.Token to process the
-// XML object one token at a time.
-// UnmarshalXML may not use d.RawToken.
+// UnmarshalXMLは、与えられた開始要素で始まる単一のXML要素をデコードします。
+// エラーを返す場合、外部のUnmarshalへの呼び出しは停止し、
+// そのエラーを返します。
+// UnmarshalXMLは正確に一つのXML要素を消費しなければなりません。
+// 一般的な実装戦略の一つは、期待されるXMLに一致するレイアウトを持つ
+// 別の値にアンマーシャルし、そのデータをレシーバにコピーすることです。
+// もう一つの一般的な戦略は、d.Tokenを使用してXMLオブジェクトを
+// 一つずつトークンで処理することです。
+// UnmarshalXMLはd.RawTokenを使用してはなりません。
 type Unmarshaler interface {
 	UnmarshalXML(d *Decoder, start StartElement) error
 }
 
-// UnmarshalerAttr is the interface implemented by objects that can unmarshal
-// an XML attribute description of themselves.
+// UnmarshalerAttrは、自分自身のXML属性の説明をアンマーシャルできるオブジェクトが実装するインターフェースです。
 //
-// UnmarshalXMLAttr decodes a single XML attribute.
-// If it returns an error, the outer call to [Unmarshal] stops and
-// returns that error.
-// UnmarshalXMLAttr is used only for struct fields with the
-// "attr" option in the field tag.
+// UnmarshalXMLAttrは単一のXML属性をデコードします。
+// エラーを返す場合、外部の [Unmarshal] への呼び出しは停止し、
+// そのエラーを返します。
+// UnmarshalXMLAttrは、フィールドタグに"attr"オプションを持つ構造体フィールドのみで使用されます。
 type UnmarshalerAttr interface {
 	UnmarshalXMLAttr(attr Attr) error
 }
 
-// Skip reads tokens until it has consumed the end element
-// matching the most recent start element already consumed,
-// skipping nested structures.
-// It returns nil if it finds an end element matching the start
-// element; otherwise it returns an error describing the problem.
+// Skipは、最も最近消費された開始要素に一致する終了要素を消費するまでトークンを読み込みます。
+// ネストされた構造はスキップされます。
+// 開始要素に一致する終了要素を見つけた場合、nilを返します。
+// それ以外の場合は、問題を説明するエラーを返します。
 func (d *Decoder) Skip() error

@@ -3,15 +3,14 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package plan9obj implements access to Plan 9 a.out object files.
+plan9objパッケージは、Plan 9 a.outオブジェクトファイルへのアクセスを実装します。
 
-# Security
+# セキュリティ
 
-This package is not designed to be hardened against adversarial inputs, and is
-outside the scope of https://go.dev/security/policy. In particular, only basic
-validation is done when parsing object files. As such, care should be taken when
-parsing untrusted inputs, as parsing malformed files may consume significant
-resources, or cause panics.
+このパッケージは、敵対的な入力に対して強化されるように設計されていませんし、
+https://go.dev/security/policy の範囲外です。特に、オブジェクトファイルを解析する際には基本的な
+検証のみが行われます。そのため、信頼できない入力を解析する際には注意が必要です。なぜなら、
+不正なファイルを解析すると、大量のリソースを消費したり、パニックを引き起こす可能性があるからです。
 */
 package plan9obj
 
@@ -20,7 +19,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// A FileHeader represents a Plan 9 a.out file header.
+// FileHeaderは、Plan 9 a.outファイルヘッダーを表します。
 type FileHeader struct {
 	Magic       uint32
 	Bss         uint32
@@ -30,68 +29,69 @@ type FileHeader struct {
 	HdrSize     uint64
 }
 
-// A File represents an open Plan 9 a.out file.
+// Fileは、開いているPlan 9 a.outファイルを表します。
 type File struct {
 	FileHeader
 	Sections []*Section
 	closer   io.Closer
 }
 
-// A SectionHeader represents a single Plan 9 a.out section header.
-// This structure doesn't exist on-disk, but eases navigation
-// through the object file.
+// SectionHeaderは、単一のPlan 9 a.outセクションヘッダーを表します。
+// この構造体はディスク上には存在せず、オブジェクトファイルを通じた
+// ナビゲーションを容易にします。
 type SectionHeader struct {
 	Name   string
 	Size   uint32
 	Offset uint32
 }
 
-// A Section represents a single section in a Plan 9 a.out file.
+// Sectionは、Plan 9 a.outファイルの単一のセクションを表します。
 type Section struct {
 	SectionHeader
 
-	// Embed ReaderAt for ReadAt method.
-	// Do not embed SectionReader directly
-	// to avoid having Read and Seek.
-	// If a client wants Read and Seek it must use
-	// Open() to avoid fighting over the seek offset
-	// with other clients.
+	// ReadAtメソッドのためにReaderAtを埋め込みます。
+	// ReadとSeekを持つことを避けるために、
+	// SectionReaderを直接埋め込むことはありません。
+	// クライアントがReadとSeekを使用したい場合は、
+	// 他のクライアントとのシークオフセットの競合を避けるために
+	// Open()を使用する必要があります。
 	io.ReaderAt
 	sr *io.SectionReader
 }
 
-// Data reads and returns the contents of the Plan 9 a.out section.
+// Dataは、Plan 9 a.outセクションの内容を読み取り、返します。
 func (s *Section) Data() ([]byte, error)
 
-// Open returns a new ReadSeeker reading the Plan 9 a.out section.
+// Openは、Plan 9 a.outセクションを読み取る新しいReadSeekerを返します。
 func (s *Section) Open() io.ReadSeeker
 
-// A Symbol represents an entry in a Plan 9 a.out symbol table section.
+// Symは、Plan 9 a.outのシンボルテーブルセクションのエントリを表します。
 type Sym struct {
 	Value uint64
 	Type  rune
 	Name  string
 }
 
-// Open opens the named file using [os.Open] and prepares it for use as a Plan 9 a.out binary.
+// Openは、[os.Open] を使用して指定された名前のファイルを開き、
+// それをPlan 9 a.outバイナリとして使用するための準備をします。
 func Open(name string) (*File, error)
 
-// Close closes the [File].
-// If the [File] was created using [NewFile] directly instead of [Open],
-// Close has no effect.
+// Closeは、[File] を閉じます。
+// [File] が [Open] ではなく [NewFile] を直接使用して作成された場合、
+// Closeは何も影響を及ぼしません。
 func (f *File) Close() error
 
-// NewFile creates a new [File] for accessing a Plan 9 binary in an underlying reader.
-// The Plan 9 binary is expected to start at position 0 in the ReaderAt.
+// NewFileは、基礎となるリーダーでPlan 9バイナリにアクセスするための新しい [File] を作成します。
+// Plan 9バイナリは、ReaderAtの位置0で開始することが期待されます。
 func NewFile(r io.ReaderAt) (*File, error)
 
-// ErrNoSymbols is returned by [File.Symbols] if there is no such section
-// in the File.
+// ErrNoSymbolsは、File内にそのようなセクションがない場合に、
+// [File.Symbols] によって返されるエラーです。
 var ErrNoSymbols = errors.New("no symbol section")
 
-// Symbols returns the symbol table for f.
+// Symbolsは、fのシンボルテーブルを返します。
 func (f *File) Symbols() ([]Sym, error)
 
-// Section returns a section with the given name, or nil if no such
-// section exists.
+// Sectionは、指定された名前のセクションを返します。
+// そのようなセクションが存在しない場合はnilを返します。
 func (f *File) Section(name string) *Section

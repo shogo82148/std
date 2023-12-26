@@ -6,14 +6,14 @@
 
 package big
 
-// GobEncode implements the [encoding/gob.GobEncoder] interface.
+// GobEncodeは、[encoding/gob.GobEncoder] インターフェースを実装します。
 func (x *Rat) GobEncode() ([]byte, error)
 
-// GobDecode implements the [encoding/gob.GobDecoder] interface.
+// GobDecodeは、[encoding/gob.GobDecoder] インターフェースを実装します。
 func (z *Rat) GobDecode(buf []byte) error
 
-// MarshalText implements the [encoding.TextMarshaler] interface.
+// MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
 func (x *Rat) MarshalText() (text []byte, err error)
 
-// UnmarshalText implements the [encoding.TextUnmarshaler] interface.
+// UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
 func (z *Rat) UnmarshalText(text []byte) error
