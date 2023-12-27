@@ -82,7 +82,7 @@ func (w *Writer) Copy(f *File) error
 // メソッドの圧縮プログラムが見つからない場合、 [Writer] はパッケージレベルで圧縮プログラムを検索します。
 func (w *Writer) RegisterCompressor(method uint16, comp Compressor)
 
-// AddFS adds the files from fs.FS to the archive.
-// It walks the directory tree starting at the root of the filesystem
-// adding each file to the zip using deflate while maintaining the directory structure.
+// AddFSは、fs.FSからのファイルをアーカイブに追加します。
+// ファイルシステムのルートから始まるディレクトリツリーを走査し、
+// ディレクトリ構造を維持しながら、各ファイルをdeflateを使用してzipに追加します。
 func (w *Writer) AddFS(fsys fs.FS) error
