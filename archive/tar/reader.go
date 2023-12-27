@@ -41,9 +41,9 @@ func NewReader(r io.Reader) *Reader
 // ローカルでない名前を受け入れたいプログラムは、 [ErrInsecurePath] エラーを無視して返されたヘッダーを使用できます。
 func (tr *Reader) Next() (*Header, error)
 
-// Read reads from the current file in the tar archive.
-// It returns (0, io.EOF) when it reaches the end of that file,
-// until [Next] is called to advance to the next file.
+// Readはtarアーカイブの現在のファイルから読み取ります。
+// それはそのファイルの終わりに達するとき（0、io.EOF）を返します、
+// 次のファイルに進むために [Next] が呼び出されるまで。
 //
 // 現在のファイルがスパースである場合、
 // 穴としてマークされた領域はNULバイトとして読み戻されます。
