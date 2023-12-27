@@ -135,7 +135,7 @@ type Header struct {
 // fs.FileInfoのNameメソッドは、説明するファイルのベース名のみを返すため、
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
 //
-// fiが[FileInfoNames]を実装している場合、ヘッダーのGnameとUnameは、
+// fiが [FileInfoNames] を実装している場合、ヘッダーのGnameとUnameは、
 // インターフェースのメソッドによって提供されます。
 // FileInfoは、Headerのfs.FileInfoを返します。
 func (h *Header) FileInfo() fs.FileInfo
@@ -149,8 +149,8 @@ func (h *Header) FileInfo() fs.FileInfo
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 
-// FileInfoNamesは、UID/GIDを名前に変換するために[FileInfo]を拡張します。
-// これを[FileInfoHeader]に渡すことで、UID/GIDの解決をコントロールできます。
+// FileInfoNamesは、UID/GIDを名前に変換するために [FileInfo] を拡張します。
+// これを [FileInfoHeader] に渡すことで、UID/GIDの解決をコントロールできます。
 type FileInfoNames interface {
 	fs.FileInfo
 
