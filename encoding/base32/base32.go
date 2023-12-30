@@ -50,6 +50,10 @@ func (enc Encoding) WithPadding(padding rune) *Encoding
 // 代わりに [NewEncoder] を使用してください。
 func (enc *Encoding) Encode(dst, src []byte)
 
+// AppendEncodeは、base32でエンコードされたsrcをdstに追加し、
+// 拡張されたバッファを返します。
+func (enc *Encoding) AppendEncode(dst, src []byte) []byte
+
 // EncodeToStringは、srcのbase32エンコーディングを返します。
 func (enc *Encoding) EncodeToString(src []byte) string
 
@@ -72,6 +76,11 @@ func (e CorruptInputError) Error() string
 // 書き込まれたバイト数と [CorruptInputError] を返します。
 // 改行文字（\rおよび\n）は無視されます。
 func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
+
+// AppendDecodeは、base32でデコードされたsrcをdstに追加し、
+// 拡張されたバッファを返します。
+// 入力が不正な形式の場合、部分的にデコードされたsrcとエラーを返します。
+func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
 
 // DecodeStringは、base32文字列sによって表されるバイト列を返します。
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
