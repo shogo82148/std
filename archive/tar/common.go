@@ -68,9 +68,8 @@ const (
 // いくつかの方法で変更し、Writer.WriteHeader に戻すユーザーは、
 // 新しい Header を作成し、保存する必要があるフィールドをコピーすることで行う必要があります。
 type Header struct {
-	// Typeflag is the type of header entry.
-	// The zero value is automatically promoted to either TypeReg or TypeDir
-	// depending on the presence of a trailing slash in Name.
+	// Typeflagはヘッダーエントリのタイプです。
+	// ゼロ値は、Nameの末尾のスラッシュの有無に応じて、自動的にTypeRegまたはTypeDirに昇格します。
 	Typeflag byte
 
 	Name     string
@@ -83,11 +82,11 @@ type Header struct {
 	Uname string
 	Gname string
 
-	// If the Format is unspecified, then Writer.WriteHeader rounds ModTime
-	// to the nearest second and ignores the AccessTime and ChangeTime fields.
+	// Formatが指定されていない場合、Writer.WriteHeaderはModTimeを最も近い秒に丸め、
+	// AccessTimeとChangeTimeフィールドを無視します。
 	//
-	// To use AccessTime or ChangeTime, specify the Format as PAX or GNU.
-	// To use sub-second resolution, specify the Format as PAX.
+	// AccessTimeまたはChangeTimeを使用するには、FormatをPAXまたはGNUとして指定します。
+	// サブセカンドの解像度を使用するには、FormatをPAXとして指定します。
 	ModTime    time.Time
 	AccessTime time.Time
 	ChangeTime time.Time
@@ -95,47 +94,44 @@ type Header struct {
 	Devmajor int64
 	Devminor int64
 
-	// Xattrs stores extended attributes as PAX records under the
-	// "SCHILY.xattr." namespace.
+	// Xattrsは、"SCHILY.xattr."名前空間の下のPAXレコードとして拡張属性を保存します。
 	//
-	// The following are semantically equivalent:
+	// 以下は意味的に等価です：
 	//  h.Xattrs[key] = value
 	//  h.PAXRecords["SCHILY.xattr."+key] = value
 	//
-	// When Writer.WriteHeader is called, the contents of Xattrs will take
-	// precedence over those in PAXRecords.
+	// Writer.WriteHeaderが呼び出されると、Xattrsの内容がPAXRecordsのものよりも優先されます。
 	//
-	// Deprecated: Use PAXRecords instead.
+	// Deprecated: 代わりにPAXRecordsを使用してください。
 	Xattrs map[string]string
 
-	// PAXRecords is a map of PAX extended header records.
+	// PAXRecordsは、PAX拡張ヘッダーレコードのマップです。
 	//
-	// User-defined records should have keys of the following form:
+	// ユーザー定義のレコードは、次の形式のキーを持つべきです：
 	//	VENDOR.keyword
-	// Where VENDOR is some namespace in all uppercase, and keyword may
-	// not contain the '=' character (e.g., "GOLANG.pkg.version").
-	// The key and value should be non-empty UTF-8 strings.
+	// ここで、VENDORはすべて大文字の何らかの名前空間であり、keywordは
+	// '='文字を含んではなりません（例："GOLANG.pkg.version"）。
+	// キーと値は非空のUTF-8文字列でなければなりません。
 	//
-	// When Writer.WriteHeader is called, PAX records derived from the
-	// other fields in Header take precedence over PAXRecords.
+	// Writer.WriteHeaderが呼び出されると、Headerの他のフィールドから派生した
+	// PAXレコードは、PAXRecordsよりも優先されます。
 	PAXRecords map[string]string
 
-	// Format specifies the format of the tar header.
+	// Formatはtarヘッダーの形式を指定します。
 	//
-	// This is set by Reader.Next as a best-effort guess at the format.
-	// Since the Reader liberally reads some non-compliant files,
-	// it is possible for this to be FormatUnknown.
+	// これは、Reader.Nextによって形式の最善の推測として設定されます。
+	// Readerは一部の非準拠ファイルを寛大に読み取るため、
+	// これがFormatUnknownである可能性があります。
 	//
-	// If the format is unspecified when Writer.WriteHeader is called,
-	// then it uses the first format (in the order of USTAR, PAX, GNU)
-	// capable of encoding this Header (see Format).
+	// Writer.WriteHeaderが呼び出されたときに形式が指定されていない場合、
+	// このHeaderをエンコードできる最初の形式（USTAR、PAX、GNUの順）を使用します（Formatを参照）。
 	Format Format
 }
 
 // fs.FileInfoのNameメソッドは、説明するファイルのベース名のみを返すため、
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
 //
-// fiが[FileInfoNames]を実装している場合、ヘッダーのGnameとUnameは、
+// fiが [FileInfoNames] を実装している場合、ヘッダーのGnameとUnameは、
 // インターフェースのメソッドによって提供されます。
 // FileInfoは、Headerのfs.FileInfoを返します。
 func (h *Header) FileInfo() fs.FileInfo
@@ -149,8 +145,8 @@ func (h *Header) FileInfo() fs.FileInfo
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 
-// FileInfoNamesは、UID/GIDを名前に変換するために[FileInfo]を拡張します。
-// これを[FileInfoHeader]に渡すことで、UID/GIDの解決をコントロールできます。
+// FileInfoNamesは、UID/GIDを名前に変換するために [FileInfo] を拡張します。
+// これを [FileInfoHeader] に渡すことで、UID/GIDの解決をコントロールできます。
 type FileInfoNames interface {
 	fs.FileInfo
 

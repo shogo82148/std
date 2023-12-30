@@ -36,14 +36,14 @@ func NewReader(r io.Reader) *Reader
 //
 // Nextが [filepath.IsLocal] によって定義されるローカルでない名前に遭遇し、
 // GODEBUG環境変数に`tarinsecurepath=0`が含まれている場合、
-// Nextは[ErrInsecurePath]エラーを伴うヘッダーを返します。
+// Nextは [ErrInsecurePath] エラーを伴うヘッダーを返します。
 // 将来のGoのバージョンでは、この動作がデフォルトで導入される可能性があります。
 // ローカルでない名前を受け入れたいプログラムは、 [ErrInsecurePath] エラーを無視して返されたヘッダーを使用できます。
 func (tr *Reader) Next() (*Header, error)
 
-// Read reads from the current file in the tar archive.
-// It returns (0, io.EOF) when it reaches the end of that file,
-// until [Next] is called to advance to the next file.
+// Readはtarアーカイブの現在のファイルから読み取ります。
+// それはそのファイルの終わりに達するとき（0、io.EOF）を返します、
+// 次のファイルに進むために [Next] が呼び出されるまで。
 //
 // 現在のファイルがスパースである場合、
 // 穴としてマークされた領域はNULバイトとして読み戻されます。
