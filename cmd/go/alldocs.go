@@ -79,7 +79,6 @@
 //
 // パッケージをコンパイルするとき、buildは'_test.go'で終わるファイルを無視します。
 //
-<<<<<<< HEAD
 // When compiling a single main package, build writes the resulting
 // executable to an output file named after the last non-major-version
 // component of the package import path. The '.exe' suffix is added
@@ -90,13 +89,6 @@
 // When compiling a package from a list of .go files, the executable
 // is named after the first source file.
 // 'go build ed.go rx.go' writes 'ed' or 'ed.exe'.
-=======
-// 単一のmainパッケージをコンパイルするとき、buildは
-// 結果となる実行可能ファイルを最初のソースファイルの名前で出力ファイルに書き込みます
-// ('go build ed.go rx.go'は 'ed'または 'ed.exe'を書き込みます)
-// またはソースコードディレクトリ('go build unix/sam'は 'sam'または 'sam.exe'を書き込みます)。
-// '.exe'のサフィックスはWindowsの実行可能ファイルを書き込むときに追加されます。
->>>>>>> release-branch.go1.21
 //
 // 複数のパッケージをコンパイルするか、単一の非mainパッケージをコンパイルするとき、
 // buildはパッケージをコンパイルしますが、結果となるオブジェクトは破棄し、
@@ -1354,18 +1346,11 @@
 //
 // コマンドは以下の通りです：
 //
-<<<<<<< HEAD
-//	edit        edit go.work from tools or scripts
-//	init        initialize workspace file
-//	sync        sync workspace build list to modules
-//	use         add modules to workspace file
-//	vendor      make vendored copy of dependencies
-=======
 //	edit        ツールやスクリプトからgo.workを編集
 //	init        ワークスペースファイルを初期化
 //	sync        ワークスペースのビルドリストをモジュールに同期
 //	use         ワークスペースファイルにモジュールを追加
->>>>>>> release-branch.go1.21
+//	vendor      make vendored copy of dependencies
 //
 // コマンドについての詳細な情報は "go help work <コマンド>" を使用してください。
 //
