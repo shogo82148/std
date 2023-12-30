@@ -55,10 +55,9 @@ func (s *Scope) LookupParent(name string, pos token.Pos) (*Scope, Object)
 // そうでなければ、objを挿入し、オブジェクトの親スコープを設定し、nilを返します。
 func (s *Scope) Insert(obj Object) Object
 
-// Pos and End describe the scope's source code extent [pos, end).
-// The results are guaranteed to be valid only if the type-checked
-// AST has complete position information. The extent is undefined
-// for Universe and package scopes.
+// PosとEndは、スコープのソースコード範囲[pos, end)を記述します。
+// 結果は、型チェックされたASTが完全な位置情報を持っている場合にのみ有効であることが保証されます。
+// 範囲は、Universeとパッケージスコープでは未定義です。
 func (s *Scope) Pos() token.Pos
 func (s *Scope) End() token.Pos
 

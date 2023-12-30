@@ -6,28 +6,28 @@
 
 package types
 
-// An Alias represents an alias type.
-// Whether or not Alias types are created is controlled by the
-// gotypesalias setting with the GODEBUG environment variable.
-// For gotypesalias=1, alias declarations produce an Alias type.
-// Otherwise, the alias information is only in the type name,
-// which points directly to the actual (aliased) type.
+// Aliasは、エイリアス型を表します。
+// エイリアス型が作成されるかどうかは、
+// GODEBUG環境変数のgotypesalias設定によって制御されます。
+// gotypesalias=1の場合、エイリアス宣言はエイリアス型を生成します。
+// それ以外の場合、エイリアス情報は型名にのみ存在し、
+// 実際の（エイリアスされた）型を直接指します。
 type Alias struct {
 	obj     *TypeName
 	fromRHS Type
 	actual  Type
 }
 
-// NewAlias creates a new Alias type with the given type name and rhs.
-// rhs must not be nil.
+// NewAliasは、指定された型名とrhsを持つ新しいAlias型を作成します。
+// rhsはnilであってはなりません。
 func NewAlias(obj *TypeName, rhs Type) *Alias
 
 func (a *Alias) Obj() *TypeName
 func (a *Alias) Underlying() Type
 func (a *Alias) String() string
 
-// Unalias returns t if it is not an alias type;
-// otherwise it follows t's alias chain until it
-// reaches a non-alias type which is then returned.
-// Consequently, the result is never an alias type.
+// Unaliasは、tがエイリアス型でない場合はtを返し、
+// それ以外の場合はtのエイリアスチェーンを追跡して
+// エイリアスでない型に到達すると、その型を返します。
+// その結果、返される結果は決してエイリアス型ではありません。
 func Unalias(t Type) Type
