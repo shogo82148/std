@@ -154,7 +154,7 @@ type Request struct {
 	Close bool
 
 	// サーバーリクエストの場合、HostはURLが要求されるホストを指定します。
-	// HTTP/1（RFC 7230、セクション5.4による）の場合、これは「Host」ヘッダーの値またはURL自体で指定されたホスト名のいずれかです。
+	// HTTP/1（RFC 7230 Section 5.4 による）の場合、これは「Host」ヘッダーの値またはURL自体で指定されたホスト名のいずれかです。
 	// HTTP/2の場合、これは「:authority」疑似ヘッダーフィールドの値です。
 	// 形式は「host:port」にすることができます。
 	// 国際ドメイン名の場合、HostはPunycodeまたはUnicode形式である場合があります。
@@ -204,7 +204,7 @@ type Request struct {
 	// このフィールドはHTTPクライアントによって無視されます。
 	RemoteAddr string
 
-	// RequestURIは、クライアントがサーバーに送信したRequest-Line（RFC 7230、セクション3.1.1）の変更されていないリクエストターゲットです。
+	// RequestURIは、クライアントがサーバーに送信したRequest-Line（RFC 7230 Section 3.1.1）の変更されていないリクエストターゲットです。
 	// 通常、URLフィールドを代わりに使用する必要があります。
 	// HTTPクライアントリクエストでこのフィールドを設定することはエラーです。
 	RequestURI string
@@ -281,7 +281,7 @@ var ErrNoCookie = errors.New("http: named cookie not present")
 // 複数のクッキーが指定された名前に一致する場合、1つのクッキーのみが返されます。
 func (r *Request) Cookie(name string) (*Cookie, error)
 
-// AddCookieは、リクエストにクッキーを追加します。RFC 6265セクション5.4に従い、
+// AddCookieは、リクエストにクッキーを追加します。RFC 6265 Section 5.4 に従い、
 // AddCookieは1つ以上のCookieヘッダーフィールドを添付しません。つまり、すべてのクッキーが、
 // セミコロンで区切られた同じ行に書き込まれます。
 // AddCookieは、cの名前と値をサニタイズするだけで、すでにリクエストに存在するCookieヘッダーをサニタイズしません。
@@ -320,7 +320,7 @@ func (r *Request) Write(w io.Writer) error
 // WriteProxyは、r.Host または r.URL.Host を使用して、Hostヘッダーも書き込みます。
 func (r *Request) WriteProxy(w io.Writer) error
 
-// ParseHTTPVersionは、RFC 7230、セクション2.6に従ってHTTPバージョン文字列を解析します。
+// ParseHTTPVersionは、RFC 7230 Section 2.6 に従ってHTTPバージョン文字列を解析します。
 // "HTTP/1.0"は(1, 0, true)を返します。注意："HTTP/2"のようにマイナーバージョンがない文字列は無効です。
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
@@ -342,7 +342,7 @@ func NewRequest(method, url string, body io.Reader) (*Request, error)
 func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error)
 
 // BasicAuthは、リクエストがHTTP Basic認証を使用する場合、リクエストのAuthorizationヘッダーで提供されるユーザー名とパスワードを返します。
-// RFC 2617、セクション2を参照してください。
+// RFC 2617 Section 2 を参照してください。
 func (r *Request) BasicAuth() (username, password string, ok bool)
 
 // SetBasicAuthは、提供されたユーザー名とパスワードを使用して、HTTP Basic認証を使用するようにリクエストのAuthorizationヘッダーを設定します。
