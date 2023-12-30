@@ -91,8 +91,7 @@ func (f *File) DataOffset() (offset int64, err error)
 // 複数のファイルを同時に読み取ることができます。
 func (f *File) Open() (io.ReadCloser, error)
 
-// OpenRaw returns a Reader that provides access to the File's contents without
-// decompression.
+// OpenRawは、解凍せずに [File] の内容にアクセスを提供する [Reader] を返します。
 func (f *File) OpenRaw() (io.Reader, error)
 
 // Openは、fs.FS.Openのセマンティクスを使用して、ZIPアーカイブ内の指定されたファイルを開きます。
