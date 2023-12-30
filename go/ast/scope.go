@@ -10,11 +10,10 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// A Scope maintains the set of named language entities declared
-// in the scope and a link to the immediately surrounding (outer)
-// scope.
+// Scopeは、スコープ内で宣言された名前付き言語エンティティのセットと、
+// 直接囲む（外側の）スコープへのリンクを維持します。
 //
-// Deprecated: use the type checker [go/types] instead; see [Object].
+// Deprecated: 代わりに型チェッカー [go/types] を使用してください。詳細は [Object] を参照してください。
 type Scope struct {
 	Outer   *Scope
 	Objects map[string]*Object
@@ -43,18 +42,14 @@ func (s *Scope) String() string
 //	Pkg     *Scope            package scope
 //	Con     int               iota for the respective declaration
 //
-// Deprecated: The relationship between Idents and Objects cannot be
-// correctly computed without type information. For example, the
-// expression T{K: 0} may denote a struct, map, slice, or array
-// literal, depending on the type of T. If T is a struct, then K
-// refers to a field of T, whereas for the other types it refers to a
-// value in the environment.
+// Deprecated: IdentsとObjectsの関係は、型情報なしでは正しく計算できません。
+// 例えば、式T{K: 0}は、Tの型によって、構造体、マップ、スライス、または配列リテラルを表す可能性があります。
+// Tが構造体の場合、KはTのフィールドを参照しますが、他の型では環境内の値を参照します。
 //
-// New programs should set the [parser.SkipObjectResolution] parser
-// flag to disable syntactic object resolution (which also saves CPU
-// and memory), and instead use the type checker [go/types] if object
-// resolution is desired. See the Defs, Uses, and Implicits fields of
-// the [types.Info] struct for details.
+// 新しいプログラムは、[parser.SkipObjectResolution] パーサーフラグを設定して、
+// 構文的なオブジェクト解決を無効にするべきです（これによりCPUとメモリも節約されます）。
+// そして、オブジェクト解決が必要な場合は代わりに型チェッカー [go/types] を使用します。
+// 詳細は、[types.Info] 構造体のDefs、Uses、およびImplicitsフィールドを参照してください。
 type Object struct {
 	Kind ObjKind
 	Name string
