@@ -178,7 +178,7 @@ func RedirectHandler(url string, code int) Handler
 // それは、登録されたパターンのリストに対して、各受信リクエストのURLを一致させ、
 // URLに最も近いパターンのハンドラーを呼び出します。
 //
-// # パターン
+// # Patterns
 //
 // パターンは、リクエストのメソッド、ホスト、およびパスに一致することができます。
 // いくつかの例：
@@ -223,7 +223,7 @@ func RedirectHandler(url string, code int) Handler
 // したがって、パス "/a%2Fb/100%25" は、2つのセグメント "a/b" と "100%" を持つと見なされます。
 // パターン "/a%2fb/" はそれに一致しますが、パターン "/a/b/" は一致しません。
 //
-// # 優先順位
+// # Precedence
 //
 // リクエストに2つ以上のパターンが一致する場合、最も具体的なパターンが優先されます。
 // パターンP1がパターンP2よりも具体的である場合、P1はP2のリクエストの厳密なサブセットに一致するためです。
@@ -241,7 +241,7 @@ func RedirectHandler(url string, code int) Handler
 // 後者のパターンは異なるメソッドを使用する"/index.html"のすべてのリクエストに一致します。
 // パターンは競合します。
 //
-// # 末尾スラッシュのリダイレクト
+// # Trailing-slash redirection
 //
 // 末尾スラッシュまたは "..." ワイルドカードを使用して登録されたサブツリーのハンドラを持つServeMuxを考えてみてください。
 // ServeMuxが末尾スラッシュのないサブツリールートのリクエストを受信した場合、
@@ -250,11 +250,11 @@ func RedirectHandler(url string, code int) Handler
 // 例えば、"/images/"を登録すると、ServeMuxは"/images"のリクエストを"/images/"にリダイレクトします。
 // "/images"が別途登録されていない限りです。
 //
-// # リクエストのサニタイズ
+// # Request sanitizing
 //
 // ServeMuxは、URLリクエストパスとHostヘッダーをサニタイズし、ポート番号を削除し、.または..セグメントまたは重複したスラッシュを含むリクエストを同等のクリーンなURLにリダイレクトします。
 //
-// # 互換性
+// # Compatibility
 //
 // ServeMuxのパターン構文と一致動作は、Go 1.22で大幅に変更されました。
 // 古い動作を復元するには、GODEBUG環境変数を "httpmuxgo121=1" に設定します。
