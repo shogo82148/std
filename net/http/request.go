@@ -411,10 +411,8 @@ func (r *Request) PostFormValue(key string) string
 // 必要に応じて、FormFileはParseMultipartFormおよびParseFormを呼び出します。
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
 
-// PathValue returns the value for the named path wildcard in the ServeMux pattern
-// that matched the request.
-// It returns the empty string if the request was not matched against a pattern
-// or there is no such wildcard in the pattern.
+// PathValueは、リクエストに一致したServeMuxパターンの名前付きパスワイルドカードの値を返します。
+// リクエストがパターンに一致しなかった場合、またはパターンにそのようなワイルドカードがない場合、空の文字列を返します。
 func (r *Request) PathValue(name string) string
 
 func (r *Request) SetPathValue(name, value string)
