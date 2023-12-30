@@ -391,7 +391,7 @@ type RevocationListEntry struct {
 	// ゼロの時間であってはなりません。
 	RevocationTime time.Time
 
-	// ReasonCodeは、RFC 5280セクション5.3.1で指定された整数の列挙値を使用して、回復の理由を表します。CRLを作成する場合、ゼロ値はreasonCode拡張機能が省略される結果になります。CRLを解析する際、ゼロ値はreasonCode拡張機能が存在しないこと（0/Unspecifiedのデフォルト回収理由を意味する）を表すか、reasonCode拡張機能が存在し、明示的に0/Unspecifiedの値を含んでいることを表す可能性があります（これはDERエンコーディングルールによらないで発生する可能性がありますが、実際に発生することがあります）。
+	// ReasonCodeは、RFC 5280 Section 5.3.1 で指定された整数の列挙値を使用して、回復の理由を表します。CRLを作成する場合、ゼロ値はreasonCode拡張機能が省略される結果になります。CRLを解析する際、ゼロ値はreasonCode拡張機能が存在しないこと（0/Unspecifiedのデフォルト回収理由を意味する）を表すか、reasonCode拡張機能が存在し、明示的に0/Unspecifiedの値を含んでいることを表す可能性があります（これはDERエンコーディングルールによらないで発生する可能性がありますが、実際に発生することがあります）。
 	ReasonCode int
 
 	// Extensionsには生のX.509拡張が含まれています。CRLエントリを解析する際、

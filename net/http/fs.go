@@ -110,15 +110,13 @@ func FS(fsys fs.FS) FileSystem
 //
 //	http.Handle("/", http.FileServer(http.Dir("/tmp")))
 //
-// To use an fs.FS implementation, use http.FileServerFS instead.
+// fs.FSの実装を使用するには、代わりにhttp.FileServerFSを使用します。
 func FileServer(root FileSystem) Handler
 
-// FileServerFS returns a handler that serves HTTP requests
-// with the contents of the file system fsys.
+// FileServerFSは、ファイルシステムfsysの内容でHTTPリクエストを処理するハンドラを返します。
 //
-// As a special case, the returned file server redirects any request
-// ending in "/index.html" to the same path, without the final
-// "index.html".
+// 特別なケースとして、返されたファイルサーバーは、"/index.html"で終わる任意のリクエストを、
+// 最後の"index.html"なしの同じパスにリダイレクトします。
 //
 //	http.Handle("/", http.FileServerFS(fsys))
 func FileServerFS(root fs.FS) Handler

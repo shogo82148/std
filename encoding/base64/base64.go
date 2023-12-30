@@ -36,7 +36,7 @@ func NewEncoding(encoder string) *Encoding
 // '\x7f'より上のパディング文字は、コードポイントのUTF-8表現を使用する代わりに、その正確なバイト値としてエンコードされます。
 func (enc Encoding) WithPadding(padding rune) *Encoding
 
-// Strictは、RFC 4648セクション3.5で説明されているように、
+// Strictは、RFC 4648 Section 3.5 で説明されているように、
 // 末尾のパディングビットがゼロであることを要求する厳密なデコードが有効になっているencと同一の新しいエンコーディングを作成します。
 //
 // ただし、入力はまだ操作可能であり、改行文字（CRおよびLF）は引き続き無視されます。
@@ -49,7 +49,7 @@ var StdEncoding = NewEncoding(encodeStd)
 // 通常、URLやファイル名で使用されます。
 var URLEncoding = NewEncoding(encodeURL)
 
-// RawStdEncodingは、RFC 4648セクション3.2で定義されている標準の生の、パディングされていないbase64エンコーディングです。
+// RawStdEncodingは、RFC 4648 Section 3.2 で定義されている標準の生の、パディングされていないbase64エンコーディングです。
 // これは、[StdEncoding] と同じですが、パディング文字が省略されています。
 var RawStdEncoding = StdEncoding.WithPadding(NoPadding)
 

@@ -6,7 +6,7 @@ package http
 
 // 一般的なHTTPメソッド。
 //
-// 特に注記がない限り、これらはRFC 7231セクション4.3で定義されています。
+// 特に注記がない限り、これらはRFC 7231 Section 4.3 で定義されています。
 const (
 	MethodGet     = "GET"
 	MethodHead    = "HEAD"

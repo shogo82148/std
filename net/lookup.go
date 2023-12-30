@@ -26,7 +26,7 @@ type Resolver struct {
 	StrictErrors bool
 
 	// Dialは、Go言語の組み込みDNSリゾルバがTCPおよびUDP接続を作成するために使用する代替ダイラーをオプションで指定します。アドレスパラメーターのホストは常にリテラルIPアドレスであり、ホスト名ではありません。また、アドレスパラメーターのポートはリテラルポート番号であり、サービス名ではありません。
-	// 返されたConnがPacketConnでもある場合、送信および受信されるDNSメッセージはRFC 1035セクション4.2.1「UDP使用」に準拠する必要があります。
+	// 返されたConnがPacketConnでもある場合、送信および受信されるDNSメッセージはRFC 1035 Section 4.2.1 「UDP使用」に準拠する必要があります。
 	Dial func(ctx context.Context, network, address string) (Conn, error)
 
 	// lookupGroupは同じホストのルックアップをまとめてLookupIPAddr呼び出しをマージします。

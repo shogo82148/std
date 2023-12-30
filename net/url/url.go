@@ -205,7 +205,7 @@ func (u *URL) IsAbs() bool
 // ParseはレシーバのコンテキストでURLを解析します。提供されたURLは相対的または絶対的である可能性があります。Parseは解析の失敗時にはnil、errを返し、それ以外の場合はResolveReferenceと同じ値を返します。
 func (u *URL) Parse(ref string) (*URL, error)
 
-// ResolveReferenceは、RFC 3986セクション5.2に従って、絶対ベースURI uからURIリファレンスを絶対URIに解決します。URIリファレンスは相対または絶対のどちらでもかまいません。ResolveReferenceは常に新しいURLインスタンスを返しますが、返されたURLがベースまたはリファレンスと同じであってもです。refが絶対URLの場合、ResolveReferenceはbaseを無視してrefのコピーを返します。
+// ResolveReferenceは、RFC 3986 Section 5.2 に従って、絶対ベースURI uからURIリファレンスを絶対URIに解決します。URIリファレンスは相対または絶対のどちらでもかまいません。ResolveReferenceは常に新しいURLインスタンスを返しますが、返されたURLがベースまたはリファレンスと同じであってもです。refが絶対URLの場合、ResolveReferenceはbaseを無視してrefのコピーを返します。
 func (u *URL) ResolveReference(ref *URL) *URL
 
 // QueryはRawQueryを解析し、対応する値を返します。
