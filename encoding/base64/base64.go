@@ -66,6 +66,10 @@ var RawURLEncoding = URLEncoding.WithPadding(NoPadding)
 // 代わりに [NewEncoder] を使用してください。
 func (enc *Encoding) Encode(dst, src []byte)
 
+// AppendEncodeは、base64でエンコードされたsrcをdstに追加し、
+// 拡張されたバッファを返します。
+func (enc *Encoding) AppendEncode(dst, src []byte) []byte
+
 // EncodeToStringは、srcのbase64エンコーディングを返します。
 func (enc *Encoding) EncodeToString(src []byte) string
 
@@ -81,6 +85,11 @@ func (enc *Encoding) EncodedLen(n int) int
 type CorruptInputError int64
 
 func (e CorruptInputError) Error() string
+
+// AppendDecodeは、base64でデコードされたsrcをdstに追加し、
+// 拡張されたバッファを返します。
+// 入力が不正な形式の場合、部分的にデコードされたsrcとエラーを返します。
+func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
 
 // DecodeStringは、base64文字列sによって表されるバイト列を返します。
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
