@@ -35,76 +35,73 @@ const (
 //
 // [ZIP specification]: https://www.pkware.com/appnote
 type FileHeader struct {
-	// Name is the name of the file.
+	// Nameはファイルの名前です。
 	//
-	// It must be a relative path, not start with a drive letter (such as "C:"),
-	// and must use forward slashes instead of back slashes. A trailing slash
-	// indicates that this file is a directory and should have no data.
+	// それは相対パスでなければならず、ドライブレター（"C:"など）で始まってはならず、
+	// バックスラッシュの代わりにフォワードスラッシュを使用しなければなりません。末尾のスラッシュは
+	// このファイルがディレクトリであり、データを持つべきではないことを示します。
 	Name string
 
-	// Comment is any arbitrary user-defined string shorter than 64KiB.
+	// Commentは64KiB未満の任意のユーザー定義文字列です。
 	Comment string
 
-	// NonUTF8 indicates that Name and Comment are not encoded in UTF-8.
+	// NonUTF8は、NameとCommentがUTF-8でエンコードされていないことを示します。
 	//
-	// By specification, the only other encoding permitted should be CP-437,
-	// but historically many ZIP readers interpret Name and Comment as whatever
-	// the system's local character encoding happens to be.
+	// 仕様によれば、許可される他のエンコーディングはCP-437のみですが、
+	// 歴史的に多くのZIPリーダーはNameとCommentをシステムのローカル文字エンコーディングとして解釈します。
 	//
-	// This flag should only be set if the user intends to encode a non-portable
-	// ZIP file for a specific localized region. Otherwise, the Writer
-	// automatically sets the ZIP format's UTF-8 flag for valid UTF-8 strings.
+	// このフラグは、ユーザーが特定のローカライズされた地域の非ポータブルなZIPファイルをエンコードするつもりである場合にのみ設定するべきです。
+	// それ以外の場合、Writerは有効なUTF-8文字列のZIP形式のUTF-8フラグを自動的に設定します。
 	NonUTF8 bool
 
 	CreatorVersion uint16
 	ReaderVersion  uint16
 	Flags          uint16
 
-	// Method is the compression method. If zero, Store is used.
+	// Methodは圧縮方法です。ゼロの場合、Storeが使用されます。
 	Method uint16
 
-	// Modified is the modified time of the file.
+	// Modifiedはファイルの変更時間です。
 	//
-	// When reading, an extended timestamp is preferred over the legacy MS-DOS
-	// date field, and the offset between the times is used as the timezone.
-	// If only the MS-DOS date is present, the timezone is assumed to be UTC.
+	// 読み取り時には、レガシーなMS-DOSの日付フィールドよりも拡張タイムスタンプが優先され、
+	// 時間のオフセットがタイムゾーンとして使用されます。
+	// MS-DOSの日付のみが存在する場合、タイムゾーンはUTCとみなされます。
 	//
-	// When writing, an extended timestamp (which is timezone-agnostic) is
-	// always emitted. The legacy MS-DOS date field is encoded according to the
-	// location of the Modified time.
+	// 書き込み時には、タイムゾーンに依存しない拡張タイムスタンプが常に出力されます。
+	// レガシーなMS-DOSの日付フィールドは、Modified時間の位置に従ってエンコードされます。
 	Modified time.Time
 
-	// ModifiedTime is an MS-DOS-encoded time.
+	// ModifiedTimeはMS-DOSでエンコードされた時間です。
 	//
-	// Deprecated: Use Modified instead.
+	// Deprecated: 代わりにModifiedを使用してください。
 	ModifiedTime uint16
 
-	// ModifiedDate is an MS-DOS-encoded date.
+	// ModifiedDateはMS-DOSでエンコードされた日付です。
 	//
-	// Deprecated: Use Modified instead.
+	// Deprecated: 代わりにModifiedを使用してください。
 	ModifiedDate uint16
 
-	// CRC32 is the CRC32 checksum of the file content.
+	// CRC32は、ファイル内容のCRC32チェックサムです。
 	CRC32 uint32
 
-	// CompressedSize is the compressed size of the file in bytes.
-	// If either the uncompressed or compressed size of the file
-	// does not fit in 32 bits, CompressedSize is set to ^uint32(0).
+	// CompressedSizeは、ファイルの圧縮サイズ（バイト単位）です。
+	// ファイルの非圧縮または圧縮サイズが32ビットに収まらない場合、
+	// CompressedSizeは^uint32(0)に設定されます。
 	//
-	// Deprecated: Use CompressedSize64 instead.
+	// Deprecated: 代わりにCompressedSize64を使用してください。
 	CompressedSize uint32
 
-	// UncompressedSize is the compressed size of the file in bytes.
-	// If either the uncompressed or compressed size of the file
-	// does not fit in 32 bits, CompressedSize is set to ^uint32(0).
+	// UncompressedSizeは、ファイルの非圧縮サイズ（バイト単位）です。
+	// ファイルの非圧縮または圧縮サイズが32ビットに収まらない場合、
+	// CompressedSizeは^uint32(0)に設定されます。
 	//
-	// Deprecated: Use UncompressedSize64 instead.
+	// Deprecated: 代わりにUncompressedSize64を使用してください。
 	UncompressedSize uint32
 
-	// CompressedSize64 is the compressed size of the file in bytes.
+	// CompressedSize64は、ファイルの圧縮サイズ（バイト単位）です。
 	CompressedSize64 uint64
 
-	// UncompressedSize64 is the uncompressed size of the file in bytes.
+	// UncompressedSize64は、ファイルの非圧縮サイズ（バイト単位）です。
 	UncompressedSize64 uint64
 
 	Extra         []byte
