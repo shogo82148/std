@@ -9,26 +9,26 @@ import (
 	"github.com/shogo82148/std/log"
 )
 
-// SetLogLoggerLevelは、[log]パッケージへのブリッジのレベルを制御します。
+// SetLogLoggerLevelは、[log] パッケージへのブリッジのレベルを制御します。
 //
-// [SetDefault]が呼び出される前は、slogのトップレベルのログ関数はデフォルトの[log.Logger]を呼び出します。
+// [SetDefault] が呼び出される前は、slogのトップレベルのログ関数はデフォルトの [log.Logger] を呼び出します。
 // そのモードでは、SetLogLoggerLevelはそれらの呼び出しの最小レベルを設定します。
-// デフォルトでは、最小レベルはInfoなので、[Debug]への呼び出し
+// デフォルトでは、最小レベルはInfoなので、[Debug] への呼び出し
 // （およびより低いレベルでのトップレベルのログ呼び出し）
 // はlog.Loggerに渡されません。次の呼び出し後
 //
 //	slog.SetLogLoggerLevel(slog.LevelDebug)
 //
-// [Debug]への呼び出しはlog.Loggerに渡されます。
+// [Debug] への呼び出しはlog.Loggerに渡されます。
 //
-// [SetDefault]が呼び出された後、デフォルトの[log.Logger]への呼び出しは
+// [SetDefault] が呼び出された後、デフォルトの [log.Logger] への呼び出しは
 // slogのデフォルトハンドラーに渡されます。そのモードでは、
 // SetLogLoggerLevelはそれらの呼び出しがログに記録されるレベルを設定します。
 // つまり、次の呼び出し後
 //
 //	slog.SetLogLoggerLevel(slog.LevelDebug)
 //
-// [log.Printf]への呼び出しは、[LevelDebug]レベルでの出力を結果とします。
+// [log.Printf]への呼び出しは、[LevelDebug] レベルでの出力を結果とします。
 //
 // SetLogLoggerLevelは前の値を返します。
 func SetLogLoggerLevel(level Level) (oldLevel Level)
