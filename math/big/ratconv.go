@@ -39,18 +39,16 @@ func (x *Rat) RatString() string
 // 最後の桁は最も近いものに丸められ、半分はゼロから丸められます。
 func (x *Rat) FloatString(prec int) string
 
-// FloatPrec returns the number n of non-repeating digits immediately
-// following the decimal point of the decimal representation of x.
-// The boolean result indicates whether a decimal representation of x
-// with that many fractional digits is exact or rounded.
+// FloatPrecは、xの10進表現の小数点直後の非繰り返し数字の数nを返します。
+// ブール結果は、その多くの小数部分を持つxの10進表現が正確か丸められたかを示します。
 //
-// Examples:
+// 例：
 //
-//	x      n    exact    decimal representation n fractional digits
+//	x      n    exact    n桁の小数部分を持つ10進表現
 //	0      0    true     0
 //	1      0    true     1
 //	1/2    1    true     0.5
-//	1/3    0    false    0       (0.333... rounded)
+//	1/3    0    false    0       (0.333... は丸められます)
 //	1/4    2    true     0.25
-//	1/6    1    false    0.2     (0.166... rounded)
+//	1/6    1    false    0.2     (0.166... は丸められます)
 func (x *Rat) FloatPrec() (n int, exact bool)
