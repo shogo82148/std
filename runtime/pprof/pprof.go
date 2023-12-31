@@ -66,46 +66,41 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// A Profile is a collection of stack traces showing the call sequences
-// that led to instances of a particular event, such as allocation.
-// Packages can create and maintain their own profiles; the most common
-// use is for tracking resources that must be explicitly closed, such as files
-// or network connections.
+// Profileは、特定のイベント（例えば、割り当て）へのインスタンスにつながる呼び出しシーケンスを示すスタックトレースの集合です。
+// パッケージは自身のプロファイルを作成し、維持することができます。最も一般的な使用例は、
+// ファイルやネットワーク接続のような、明示的に閉じる必要があるリソースの追跡です。
 //
-// A Profile's methods can be called from multiple goroutines simultaneously.
+// プロファイルのメソッドは、複数のゴルーチンから同時に呼び出すことができます。
 //
-// Each Profile has a unique name. A few profiles are predefined:
+// 各プロファイルには一意の名前があります。いくつかのプロファイルは事前に定義されています：
 //
-//	goroutine    - stack traces of all current goroutines
-//	heap         - a sampling of memory allocations of live objects
-//	allocs       - a sampling of all past memory allocations
-//	threadcreate - stack traces that led to the creation of new OS threads
-//	block        - stack traces that led to blocking on synchronization primitives
-//	mutex        - stack traces of holders of contended mutexes
+//	goroutine    - 現在のすべてのゴルーチンのスタックトレース
+//	heap         - 生存しているオブジェクトのメモリ割り当てのサンプリング
+//	allocs       - 過去のすべてのメモリ割り当てのサンプリング
+//	threadcreate - 新しいOSスレッドの作成につながったスタックトレース
+//	block        - 同期プリミティブでのブロックにつながったスタックトレース
+//	mutex        - 競合するミューテックスの保持者のスタックトレース
 //
-// These predefined profiles maintain themselves and panic on an explicit
-// Add or Remove method call.
+// これらの事前定義されたプロファイルは自身を維持し、明示的な
+// AddまたはRemoveメソッド呼び出しでパニックします。
 //
-// The heap profile reports statistics as of the most recently completed
-// garbage collection; it elides more recent allocation to avoid skewing
-// the profile away from live data and toward garbage.
-// If there has been no garbage collection at all, the heap profile reports
-// all known allocations. This exception helps mainly in programs running
-// without garbage collection enabled, usually for debugging purposes.
+// ヒーププロファイルは、最も最近に完了したガベージコレクション時点の統計を報告します。
+// これは、プロファイルを生データからガベージに偏らせるのを避けるため、より最近の割り当てを省略します。
+// ガベージコレクションが一度も行われていない場合、ヒーププロファイルはすべての既知の割り当てを報告します。
+// この例外は主に、通常はデバッグ目的で、ガベージコレクションが有効になっていないプログラムで役立ちます。
 //
-// The heap profile tracks both the allocation sites for all live objects in
-// the application memory and for all objects allocated since the program start.
-// Pprof's -inuse_space, -inuse_objects, -alloc_space, and -alloc_objects
-// flags select which to display, defaulting to -inuse_space (live objects,
-// scaled by size).
+// ヒーププロファイルは、アプリケーションメモリ内のすべてのライブオブジェクトの割り当て場所と、
+// プログラム開始以降に割り当てられたすべてのオブジェクトを追跡します。
+// Pprofの -inuse_space、-inuse_objects、-alloc_space、および -alloc_objects
+// フラグは、表示するものを選択し、デフォルトは -inuse_space（ライブオブジェクト、サイズによってスケーリング）です。
 //
-// The allocs profile is the same as the heap profile but changes the default
-// pprof display to -alloc_space, the total number of bytes allocated since
-// the program began (including garbage-collected bytes).
+// allocsプロファイルはヒーププロファイルと同じですが、デフォルトの
+// pprof表示を -alloc_space（プログラム開始以降に割り当てられたバイト数の合計、
+// ガベージコレクションされたバイトを含む）に変更します。
 //
-// The CPU profile is not available as a Profile. It has a special API,
-// the StartCPUProfile and StopCPUProfile functions, because it streams
-// output to a writer during profiling.
+// CPUプロファイルはProfileとして利用できません。これは特別なAPIを持っており、
+// StartCPUProfileとStopCPUProfile関数があります。これはプロファイリング中に
+// 出力をライターにストリームします。
 type Profile struct {
 	name  string
 	mu    sync.Mutex
