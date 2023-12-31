@@ -54,11 +54,13 @@
 //
 //	go tool pprof cpu.prof
 //
-// pprofコマンドラインからは多くのコマンドが利用できます。
-// よく使用されるコマンドには、「top」（プログラムのホットスポットの要約を表示する）や、「web」（ホットスポットとその呼び出しグラフの対話型グラフを開く）があります。
-// すべてのpprofコマンドに関する情報については、「help」を使用してください。
-// pprofに関する詳細情報は、次を参照してください
-// https://github.com/google/pprof/blob/master/doc/README.md.
+// pprofコマンドラインからは多くのコマンドが利用可能です。
+// よく使われるコマンドには"top"があり、これはプログラムのホットスポットのサマリーを表示します。
+// "web"はホットスポットとその呼び出しグラフのインタラクティブなグラフを開きます。
+// すべてのpprofコマンドについての情報は"help"を使用してください。
+//
+// pprofについての詳細は、以下を参照してください。
+// https://github.com/google/pprof/blob/main/doc/README.md.
 package pprof
 
 import (
