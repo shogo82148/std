@@ -246,5 +246,7 @@ func StructOf(fields []StructField) Type
 // もし結果の型が利用可能なアドレススペースよりも大きくなる場合、ArrayOfはパニックを発生させます。
 func ArrayOf(length int, elem Type) Type
 
-// TypeFor returns the [Type] that represents the type argument T.
-func TypeFor[T any]() Type
+// TypeForは、型引数Tを表す [Type] を返します。
+func TypeFor[T any]() Type {
+	return nil
+}
