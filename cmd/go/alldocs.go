@@ -36,27 +36,27 @@
 //
 // 追加のヘルプトピック:
 //
-//	buildconstraint build constraints
-//	buildmode       build modes
-//	c               calling between Go and C
-//	cache           build and test caching
-//	environment     environment variables
-//	filetype        file types
-//	go.mod          the go.mod file
-//	gopath          GOPATH environment variable
-//	goproxy         module proxy protocol
-//	importpath      import path syntax
-//	modules         modules, module versions, and more
-//	module-auth     module authentication using go.sum
-//	packages        package lists and patterns
-//	private         configuration for downloading non-public code
-//	testflag        testing flags
-//	testfunc        testing functions
-//	vcs             controlling version control with GOVCS
+//	buildconstraint ビルド制約
+//	buildmode       ビルドモード
+//	c               GoとC間の呼び出し
+//	cache           ビルドとテストのキャッシュ
+//	environment     環境変数
+//	filetype        ファイルタイプ
+//	go.mod          go.modファイル
+//	gopath          GOPATH環境変数
+//	goproxy         モジュールプロキシプロトコル
+//	importpath      インポートパスの構文
+//	modules         モジュール、モジュールバージョンなど
+//	module-auth     go.sumを使用したモジュール認証
+//	packages        パッケージリストとパターン
+//	private         非公開コードのダウンロード設定
+//	testflag        テストフラグ
+//	testfunc        テスト関数
+//	vcs             GOVCSでバージョン管理を制御
 //
 // "go help <トピック>"を使用して、そのトピックに関する詳細情報を取得します。
 //
-// # バグレポートを開始する
+// # Start a bug report
 //
 // 使用法:
 //
@@ -65,7 +65,7 @@
 // Bugはデフォルトのブラウザを開き、新しいバグレポートを開始します。
 // レポートには、役立つシステム情報が含まれます。
 //
-// # パッケージと依存関係をコンパイルする
+// # Compile packages and dependencies
 //
 // 使用法:
 //
@@ -79,16 +79,16 @@
 //
 // パッケージをコンパイルするとき、buildは'_test.go'で終わるファイルを無視します。
 //
-// When compiling a single main package, build writes the resulting
-// executable to an output file named after the last non-major-version
-// component of the package import path. The '.exe' suffix is added
-// when writing a Windows executable.
-// So 'go build example/sam' writes 'sam' or 'sam.exe'.
-// 'go build example.com/foo/v2' writes 'foo' or 'foo.exe', not 'v2.exe'.
+// 単一のmainパッケージをコンパイルするとき、buildは結果の
+// 実行可能ファイルをパッケージインポートパスの最後の非メジャーバージョン
+// コンポーネントに基づいて名付けられた出力ファイルに書き込みます。Windows実行可能ファイルを
+// 書き込むときには'.exe'のサフィックスが追加されます。
+// したがって、'go build example/sam'は'sam'または'sam.exe'を書き込みます。
+// 'go build example.com/foo/v2'は'foo'または'foo.exe'を書き込み、'v2.exe'ではありません。
 //
-// When compiling a package from a list of .go files, the executable
-// is named after the first source file.
-// 'go build ed.go rx.go' writes 'ed' or 'ed.exe'.
+// .goファイルのリストからパッケージをコンパイルするとき、実行可能ファイルは
+// 最初のソースファイルに基づいて名付けられます。
+// 'go build ed.go rx.go'は'ed'または'ed.exe'を書き込みます。
 //
 // 複数のパッケージをコンパイルするか、単一の非mainパッケージをコンパイルするとき、
 // buildはパッケージをコンパイルしますが、結果となるオブジェクトは破棄し、
@@ -122,16 +122,15 @@
 //		linux/amd64、freebsd/amd64、darwin/amd64、darwin/arm64、windows/amd64、
 //		linux/ppc64le、およびlinux/arm64（48ビットVMAのみ）でのみサポートされています。
 //	-msan
-//		enable interoperation with memory sanitizer.
-//		Supported only on linux/amd64, linux/arm64, linux/loong64, freebsd/amd64
-//		and only with Clang/LLVM as the host C compiler.
-//		PIE build mode will be used on all platforms except linux/amd64.
+//		メモリサニタイザとの相互運用を有効にします。
+//		これはlinux/amd64、linux/arm64、linux/loong64、freebsd/amd64でのみサポートされており、
+//		ホストのCコンパイラとしてClang/LLVMを使用する場合に限ります。
+//		PIEビルドモードはlinux/amd64を除くすべてのプラットフォームで使用されます。
 //	-asan
-//		enable interoperation with address sanitizer.
-//		Supported only on linux/arm64, linux/amd64, linux/loong64.
-//		Supported on linux/amd64 or linux/arm64 and only with GCC 7 and higher
-//		or Clang/LLVM 9 and higher.
-//		And supported on linux/loong64 only with Clang/LLVM 16 and higher.
+//		アドレスサニタイザとの相互運用を有効にします。
+//		これはlinux/arm64、linux/amd64、linux/loong64でのみサポートされています。
+//		linux/amd64またはlinux/arm64では、GCC 7以上またはClang/LLVM 9以上でのみサポートされています。
+//		また、linux/loong64ではClang/LLVM 16以上でのみサポートされています。
 //	-cover
 //		コードカバレッジ計測を有効にします。
 //	-covermode set,count,atomic
@@ -258,7 +257,7 @@
 //
 // 参照してください: go install, go get, go clean.
 //
-// # オブジェクトファイルとキャッシュファイルを削除する
+// # Remove object files and cached files
 //
 // 使用法:
 //
@@ -307,7 +306,7 @@
 //
 // パッケージの指定についての詳細は、'go help packages'を参照してください。
 //
-// # パッケージまたはシンボルのドキュメンテーションを表示する
+// # Show documentation for package or symbol
 //
 // 使用法:
 //
@@ -412,7 +411,7 @@
 //	-u
 //		エクスポートされたシンボル、メソッド、フィールドだけでなく、エクスポートされていないもののドキュメンテーションも表示します。
 //
-// # Go環境情報を表示する
+// # Print Go environment information
 //
 // 使用法:
 //
@@ -434,7 +433,7 @@
 //
 // 環境変数についての詳細は、'go help environment'を参照してください。
 //
-// # 新しいAPIを使用するようにパッケージを更新する
+// # Update packages to use new APIs
 //
 // 使用法:
 //
@@ -453,7 +452,7 @@
 //
 // 参照してください: go fmt, go vet.
 //
-// # パッケージソースのGofmt（再フォーマット）
+// # Gofmt (reformat) package sources
 //
 // 使用法:
 //
@@ -475,7 +474,7 @@
 //
 // 参照してください: go fix, go vet.
 //
-// # ソースを処理してGoファイルを生成する
+// # Generate Go files by processing source
 //
 // 使用法:
 //
@@ -597,7 +596,7 @@
 //
 // パッケージの指定についての詳細は、'go help packages'を参照してください。
 //
-// # 現在のモジュールに依存関係を追加し、それらをインストールする
+// # Add dependencies to current module and install them
 //
 // 使用法:
 //
@@ -661,7 +660,7 @@
 //
 // 参照してください: go build, go install, go clean, go mod.
 //
-// # パッケージと依存関係をコンパイルしてインストールする
+// # Compile and install packages and dependencies
 //
 // 使用法:
 //
@@ -710,7 +709,7 @@
 //
 // 参照してください: go build, go get, go clean.
 //
-// # パッケージまたはモジュールをリストアップする
+// # List packages or modules
 //
 // 使用法:
 //
@@ -992,7 +991,7 @@
 //
 // モジュールについての詳細は、https://golang.org/ref/modを参照してください。
 //
-// # モジュールのメンテナンス
+// # Module maintenance
 //
 // Go modはモジュールの操作へのアクセスを提供します。
 //
@@ -1017,7 +1016,7 @@
 //
 // コマンドの詳細については、"go help mod <command>"を使用してください。
 //
-// # モジュールをローカルキャッシュにダウンロード
+// # Download modules to local cache
 //
 // 使用法：
 //
@@ -1067,7 +1066,7 @@
 //
 // バージョンクエリについての詳細は、https://golang.org/ref/mod#version-queries を参照してください。
 //
-// # ツールやスクリプトからgo.modを編集
+// # Edit go.mod from tools or scripts
 //
 // 使用法：
 //
@@ -1169,7 +1168,7 @@
 //
 // See https://golang.org/ref/mod#go-mod-edit for more about 'go mod edit'.
 //
-// # モジュール要求グラフの印刷
+// # Print module requirement graph
 //
 // 使用法：
 //
@@ -1186,7 +1185,7 @@
 //
 // 'go mod graph'についての詳細は、https://golang.org/ref/mod#go-mod-graph を参照してください。
 //
-// # 現在のディレクトリで新しいモジュールを初期化
+// # Initialize new module in current directory
 //
 // 使用法：
 //
@@ -1202,7 +1201,7 @@
 //
 // See https://golang.org/ref/mod#go-mod-init for more about 'go mod init'.
 //
-// # 不足しているモジュールの追加と使用されていないモジュールの削除
+// # Add missing and remove unused modules
 //
 // 使用法：
 //
@@ -1230,7 +1229,7 @@
 //
 // 'go mod tidy'についての詳細は、https://golang.org/ref/mod#go-mod-tidy を参照してください。
 //
-// # 依存関係のベンダー版のコピーを作成
+// # Make vendored copy of dependencies
 //
 // 使用法：
 //
@@ -1250,7 +1249,7 @@
 //
 // 'go mod vendor'についての詳細は、https://golang.org/ref/mod#go-mod-vendor を参照してください。
 //
-// # 依存関係が期待通りの内容であることを確認
+// # Verify dependencies have expected content
 //
 // 使用法：
 //
@@ -1263,7 +1262,7 @@
 //
 // 'go mod verify'についての詳細は、https://golang.org/ref/mod#go-mod-verify を参照してください。
 //
-// # パッケージまたはモジュールが必要な理由を説明
+// # Explain why packages or modules are needed
 //
 // 使用法：
 //
@@ -1294,7 +1293,7 @@
 //
 // 'go mod why'についての詳細は、https://golang.org/ref/mod#go-mod-why を参照してください。
 //
-// # ワークスペースのメンテナンス
+// # Workspace maintenance
 //
 // Workは、ワークスペースの操作へのアクセスを提供します。
 //
@@ -1354,7 +1353,7 @@
 //
 // コマンドについての詳細な情報は "go help work <コマンド>" を使用してください。
 //
-// # ツールやスクリプトからgo.workを編集
+// # Edit go.work from tools or scripts
 //
 // 使用法：
 //
@@ -1422,7 +1421,7 @@
 //
 // 詳細情報については、https://go.dev/ref/mod#workspaces のワークスペースリファレンスを参照してください。
 //
-// # ワークスペースファイルの初期化
+// # Initialize workspace file
 //
 // 使用法：
 //
@@ -1439,7 +1438,7 @@
 //
 // 詳細情報については、https://go.dev/ref/mod#workspaces のワークスペースリファレンスを参照してください。
 //
-// # ワークスペースのビルドリストをモジュールに同期
+// # Sync workspace build list to modules
 //
 // 使用法：
 //
@@ -1460,7 +1459,7 @@
 //
 // 詳細情報については、https://go.dev/ref/mod#workspaces のワークスペースリファレンスを参照してください。
 //
-// # ワークスペースファイルにモジュールを追加
+// # Add modules to workspace file
 //
 // 使用法：
 //
@@ -1485,24 +1484,21 @@
 //
 // # Make vendored copy of dependencies
 //
-// Usage:
+// 使用法:
 //
 //	go work vendor [-e] [-v] [-o outdir]
 //
-// Vendor resets the workspace's vendor directory to include all packages
-// needed to build and test all the workspace's packages.
-// It does not include test code for vendored packages.
+// Vendorは、ワークスペースのすべてのパッケージをビルドし、テストするために必要なすべてのパッケージを含むように
+// ワークスペースのベンダーディレクトリをリセットします。
+// ベンダードパッケージのテストコードは含まれません。
 //
-// The -v flag causes vendor to print the names of vendored
-// modules and packages to standard error.
+// -vフラグは、ベンダードモジュールとパッケージの名前を標準エラーに出力するようにvendorに指示します。
 //
-// The -e flag causes vendor to attempt to proceed despite errors
-// encountered while loading packages.
+// -eフラグは、パッケージのロード中にエラーが発生した場合でもvendorが処理を続行しようとするようにします。
 //
-// The -o flag causes vendor to create the vendor directory at the given
-// path instead of "vendor". The go command can only use a vendor directory
-// named "vendor" within the module root directory, so this flag is
-// primarily useful for other tools.
+// -oフラグは、vendorが"vendor"ではなく指定されたパスにベンダーディレクトリを作成するようにします。
+// goコマンドはモジュールのルートディレクトリ内の"vendor"という名前のベンダーディレクトリしか使用できないため、
+// このフラグは主に他のツールにとって有用です。
 //
 // # Compile and run Go program
 //
@@ -1546,7 +1542,7 @@
 //
 // 参照：go build.
 //
-// # パッケージのテスト
+// # Test packages
 //
 // 使用法：
 //
@@ -1656,7 +1652,7 @@
 //
 // 参照：go build, go vet.
 //
-// # 指定されたgoツールを実行
+// # Run specified go tool
 //
 // 使用法：
 //
@@ -1669,7 +1665,7 @@
 //
 // 各ツールコマンドの詳細については、'go doc cmd/<command>'を参照してください。
 //
-// # Goバージョンを表示
+// # Print Go version
 //
 // 使用法：
 //
@@ -1693,7 +1689,7 @@
 //
 // 参照：go doc runtime/debug.BuildInfo.
 //
-// # パッケージのおそらく間違いを報告
+// # Report likely mistakes in packages
 //
 // 使用法：
 //
@@ -1718,17 +1714,16 @@
 //
 // 参照：go fmt, go fix.
 //
-// # ビルド制約
+// # Build constraints
 //
 // ビルド制約、またはビルドタグとは、ファイルがパッケージに含まれるべき条件です。
 // ビルド制約は次のように始まる行コメントで与えられます：
 //
 //	//go:build
 //
-// Constraints may appear in any kind of source file (not just Go), but
-// they must appear near the top of the file, preceded
-// only by blank lines and other comments. These rules mean that in Go
-// files a build constraint must appear before the package clause.
+// 制約は任意の種類のソースファイル（Goだけでなく）に現れることができますが、
+// ファイルの先頭近く、空行や他のコメントだけが先行する位置に現れなければなりません。
+// これらのルールは、Goファイルではビルド制約がパッケージ句の前に現れなければならないことを意味します。
 //
 // ビルド制約とパッケージのドキュメンテーションを区別するために、
 // ビルド制約の後には空行を入れるべきです。
@@ -1831,7 +1826,7 @@
 // それは"// +build"プレフィックスでした。gofmtコマンドは、古い構文に遭遇すると、
 // 同等の//go:build制約を追加します。
 //
-// # ビルドモード
+// # Build modes
 //
 // 'go build'と'go install'コマンドは-buildmode引数を取り、
 // どの種類のオブジェクトファイルをビルドするかを示します。現在サポートされている値は以下の通りです：
@@ -1872,7 +1867,7 @@
 // AIXでは、-buildmode=c-archiveでビルドされたGoアーカイブを使用するCプログラムをリンクするときは、
 // Cコンパイラに-Wl,-bnoobjreorderを渡す必要があります。
 //
-// # GoとC間の呼び出し
+// # Calling between Go and C
 //
 // GoとC/C++コード間で呼び出しを行う方法は2つあります。
 //
@@ -1889,7 +1884,7 @@
 // コンパイラに渡します。CCまたはCXX環境変数を設定すると、それぞれ使用するCまたはC++
 // コンパイラを決定できます。
 //
-// # ビルドとテストのキャッシング
+// # Build and test caching
 //
 // goコマンドはビルドの出力をキャッシュして、将来のビルドで再利用します。
 // キャッシュデータのデフォルトの場所は、現在のオペレーティングシステムの標準ユーザーキャッシュディレクトリ内の
@@ -1926,7 +1921,7 @@
 // GODEBUG=gocachetest=1 を設定すると、goコマンドはキャッシュされたテスト結果を再利用するかどうかの
 // 決定についての詳細を出力します。
 //
-// # 環境変数
+// # Environment variables
 //
 // goコマンドとそれが呼び出すツールは、設定のために環境変数を参照します。
 // 環境変数が設定されていないか空の場合、goコマンドは適切なデフォルト設定を使用します。
@@ -2043,10 +2038,10 @@
 // アーキテクチャ固有の環境変数:
 //
 //	GOARM
-//		For GOARCH=arm, the ARM architecture for which to compile.
-//		Valid values are 5, 6, 7.
-//		The value can be followed by an option specifying how to implement floating point instructions.
-//		Valid options are ,softfloat (default for 5) and ,hardfloat (default for 6 and 7).
+//		GOARCH=armの場合、コンパイルするARMアーキテクチャ。
+//		有効な値は5、6、7です。
+//		値の後には、浮動小数点命令の実装方法を指定するオプションを続けることができます。
+//		有効なオプションは、softfloat（5のデフォルト）とhardfloat（6と7のデフォルト）です。
 //	GO386
 //		GOARCH=386の場合、浮動小数点命令の実装方法。
 //		有効な値はsse2（デフォルト）、softfloatです。
@@ -2117,7 +2112,7 @@
 //	GOVERSION
 //		インストールされているGoツリーのバージョン。runtime.Versionによって報告されます。
 //
-// # ファイルタイプ
+// # File types
 //
 // goコマンドは、各ディレクトリ内の制限された一連のファイルの内容を調べます。
 // それは、ファイル名の拡張子に基づいて調査するファイルを特定します。これらの拡張子は次のとおりです。
@@ -2149,7 +2144,7 @@
 // goコマンドは、空行または//-スタイルの行コメントでないファイルの最初の項目で
 // ビルド制約のスキャンを停止します。詳細はgo/buildパッケージのドキュメンテーションを参照してください。
 //
-// # go.modファイル
+// # The go.mod file
 //
 // モジュールのバージョンは、そのルートにgo.modファイルを持つソースファイルのツリーによって定義されます。
 // goコマンドが実行されると、現在のディレクトリとその親ディレクトリを順に探し、
@@ -2172,7 +2167,7 @@
 // 'go mod edit'を使用します。'go help mod edit'または
 // https://golang.org/ref/mod#go-mod-editを参照してください。
 //
-// # GOPATH環境変数
+// # GOPATH environment variable
 //
 // Goパスはインポート文を解決するために使用されます。
 // これはgo/buildパッケージによって実装され、そのパッケージで文書化されています。
@@ -2237,13 +2232,13 @@
 //
 // 例については、https://golang.org/doc/code.html を参照してください。
 //
-// # GOPATHとモジュール
+// # GOPATH and Modules
 //
 // モジュールを使用すると、GOPATHはインポートの解決にはもはや使用されません。
 // しかし、ダウンロードしたソースコード（GOPATH/pkg/mod内）と
 // コンパイルされたコマンド（GOPATH/bin内）を保存するためにまだ使用されます。
 //
-// # 内部ディレクトリ
+// # Internal Directories
 //
 // "internal"という名前のディレクトリ内またはその下のコードは、
 // "internal"の親でルート化されたディレクトリツリー内のコードのみがインポート可能です。
@@ -2271,7 +2266,7 @@
 //
 // 詳細は https://golang.org/s/go14internal を参照してください。
 //
-// # ベンダーディレクトリ
+// # Vendor Directories
 //
 // Go 1.6には、外部依存関係のローカルコピーを使用して、
 // それらの依存関係のインポートを満たすためのサポートが含まれています。
@@ -2332,13 +2327,13 @@
 // GOPROXYプロトコルの詳細については、
 // https://golang.org/ref/mod#goproxy-protocol を参照してください。
 //
-// # インポートパスの構文
+// # Import path syntax
 //
 // インポートパス（'go help packages'を参照）は、ローカルファイルシステムに保存されているパッケージを示します。
 // 一般的に、インポートパスは標準パッケージ（例："unicode/utf8"）またはワークスペースの一つに見つかるパッケージを示します
 // （詳細は 'go help gopath'を参照）。
 //
-// # 相対インポートパス
+// # Relative import paths
 //
 // ./または../で始まるインポートパスを相対パスと呼びます。
 // ツールチェーンは、2つの方法で相対パスをショートカットとしてサポートしています。
@@ -2359,7 +2354,7 @@
 // そのため、それらはビルドするたびに一から再ビルドされます。
 // 曖昧性を避けるため、Goプログラムはワークスペース内で相対インポートパスを使用することはできません。
 //
-// # リモートインポートパス
+// # Remote import paths
 //
 // 特定のインポートパスは、
 // リビジョン管理システムを使用してパッケージのソースコードを取得する方法も
@@ -2478,7 +2473,7 @@
 // このタグは、パスがexample.orgで始まるモジュールを、URL https://code.org/moduleproxyで利用可能なモジュールプロキシからフェッチすることを意味します。
 // プロキシプロトコルの詳細については、https://golang.org/ref/mod#goproxy-protocol を参照してください。
 //
-// # インポートパスのチェック
+// # Import path checking
 //
 // 上記で説明したカスタムインポートパス機能が
 // 既知のコードホスティングサイトにリダイレクトすると、
@@ -2503,7 +2498,7 @@
 //
 // 詳細は https://golang.org/s/go14customimport を参照してください。
 //
-// # モジュール、モジュールのバージョン、その他
+// # Modules, module versions, and more
 //
 // モジュールはGoが依存関係を管理する方法です。
 //
@@ -2525,7 +2520,7 @@
 // goコマンドのダウンロード動作は、GOPROXY、GOSUMDB、GOPRIVATEなどの環境変数を使用して設定することができます。
 // 詳細は 'go help environment' と https://golang.org/ref/mod#private-module-privacy を参照してください。
 //
-// # go.sumを使用したモジュール認証
+// # Module authentication using go.sum
 //
 // goコマンドがモジュールのzipファイルやgo.modファイルをモジュールキャッシュにダウンロードするとき、
 // それは暗号学的ハッシュを計算し、それを既知の値と比較して、ファイルが初めてダウンロードされてから変更されていないことを確認します。
@@ -2534,7 +2529,7 @@
 //
 // 詳細は、https://golang.org/ref/mod#authenticating を参照してください。
 //
-// # パッケージリストとパターン
+// # Package lists and patterns
 //
 // 多くのコマンドは一連のパッケージに適用されます：
 //
@@ -2603,7 +2598,7 @@
 // "."または"_"で始まるディレクトリ名とファイル名は、goツールによって無視されます。
 // また、"testdata"という名前のディレクトリも無視されます。
 //
-// # 非公開コードのダウンロード設定
+// # Configuration for downloading non-public code
 //
 // goコマンドはデフォルトで、公開Goモジュールミラーのproxy.golang.orgからモジュールをダウンロードします。
 // また、ソースに関係なくダウンロードしたモジュールを公開Goチェックサムデータベースのsum.golang.orgで検証するようにデフォルト設定されています。
@@ -2637,7 +2632,7 @@
 //
 // 詳細は、https://golang.org/ref/mod#private-modules を参照してください。
 //
-// # テストフラグ
+// # Testing flags
 //
 // 'go test'コマンドは、'go test'自体に適用されるフラグと、
 // 結果として得られるテストバイナリに適用されるフラグの両方を取ります。
@@ -2899,7 +2894,7 @@
 // 最初の例では、-xと2つ目の-vはテストバイナリにそのまま渡され、goコマンド自体には影響を与えません。
 // 2つ目の例では、引数mathはテストバイナリに渡され、パッケージリストとして解釈される代わりになります。
 //
-// # テスト関数
+// # Testing functions
 //
 // 'go test'コマンドは、テスト対象のパッケージに対応する"*_test.go"ファイル内にテスト、ベンチマーク、および例示関数を見つけることを期待しています。
 //
@@ -2955,7 +2950,7 @@
 //
 // 詳細情報については、testingパッケージのドキュメンテーションを参照してください。
 //
-// # GOVCSでバージョン管理を制御する
+// # Controlling version control with GOVCS
 //
 // 'go get'コマンドは、gitのようなバージョン管理コマンドを実行して、インポートされたコードをダウンロードすることができます。
 // この機能は、任意のサーバーからコードをインポートできる分散型のGoパッケージエコシステムにとって重要ですが、
