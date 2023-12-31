@@ -3,73 +3,68 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package user allows user account lookups by name or id.
+パッケージuserは、名前またはIDによるユーザーアカウントの検索を可能にします。
 
-For most Unix systems, this package has two internal implementations of
-resolving user and group ids to names, and listing supplementary group IDs.
-One is written in pure Go and parses /etc/passwd and /etc/group. The other
-is cgo-based and relies on the standard C library (libc) routines such as
-getpwuid_r, getgrnam_r, and getgrouplist.
+ほとんどのUnixシステムでは、このパッケージにはユーザーとグループのIDを名前に解決し、
+補足的なグループIDをリストアップするための2つの内部実装があります。
+一つは純粋なGoで書かれており、/etc/passwdと/etc/groupを解析します。
+もう一つはcgoベースで、getpwuid_r、getgrnam_r、getgrouplistなどの
+標準Cライブラリ(libc)のルーチンに依存しています。
 
-When cgo is available, and the required routines are implemented in libc
-for a particular platform, cgo-based (libc-backed) code is used.
-This can be overridden by using osusergo build tag, which enforces
-the pure Go implementation.
+cgoが利用可能で、特定のプラットフォームのlibcに必要なルーチンが実装されている場合、
+cgoベース（libcバックエンド）のコードが使用されます。
+これは、純粋なGoの実装を強制するosusergoビルドタグを使用することで上書きすることができます。
 */
 package user
 
-// User represents a user account.
+// Userはユーザーアカウントを表します。
 type User struct {
-	// Uid is the user ID.
-	// On POSIX systems, this is a decimal number representing the uid.
-	// On Windows, this is a security identifier (SID) in a string format.
-	// On Plan 9, this is the contents of /dev/user.
+	// UidはユーザーIDです。
+	// POSIXシステムでは、これはuidを表す10進数です。
+	// Windowsでは、これは文字列形式のセキュリティ識別子（SID）です。
+	// Plan 9では、これは/dev/userの内容です。
 	Uid string
-	// Gid is the primary group ID.
-	// On POSIX systems, this is a decimal number representing the gid.
-	// On Windows, this is a SID in a string format.
-	// On Plan 9, this is the contents of /dev/user.
+	// GidはプライマリグループIDです。
+	// POSIXシステムでは、これはgidを表す10進数です。
+	// Windowsでは、これは文字列形式のセキュリティ識別子（SID）です。
+	// Plan 9では、これは/dev/userの内容です。
 	Gid string
-	// Username is the login name.
+	// Usernameはログイン名です。
 	Username string
-	// Name is the user's real or display name.
-	// It might be blank.
-	// On POSIX systems, this is the first (or only) entry in the GECOS field
-	// list.
-	// On Windows, this is the user's display name.
-	// On Plan 9, this is the contents of /dev/user.
+	// Nameはユーザーの実名または表示名です。
+	// 空である可能性があります。
+	// POSIXシステムでは、これはGECOSフィールドリストの最初（または唯一）のエントリです。
+	// Windowsでは、これはユーザーの表示名です。
+	// Plan 9では、これは/dev/userの内容です。
 	Name string
-	// HomeDir is the path to the user's home directory (if they have one).
+	// HomeDirはユーザーのホームディレクトリへのパスです（もし存在する場合）。
 	HomeDir string
 }
 
-// Group represents a grouping of users.
+// Groupはユーザーのグループを表します。
 //
-// On POSIX systems Gid contains a decimal number representing the group ID.
+// POSIXシステムでは、GidはグループIDを表す10進数を含みます。
 type Group struct {
 	Gid  string
 	Name string
 }
 
-// UnknownUserIdError is returned by LookupId when a user cannot be found.
+// UnknownUserIdErrorは、ユーザーが見つからない場合にLookupIdによって返されるエラーです。
 type UnknownUserIdError int
 
 func (e UnknownUserIdError) Error() string
 
-// UnknownUserError is returned by Lookup when
-// a user cannot be found.
+// UnknownUserErrorは、ユーザーが見つからない場合にLookupによって返されるエラーです。
 type UnknownUserError string
 
 func (e UnknownUserError) Error() string
 
-// UnknownGroupIdError is returned by LookupGroupId when
-// a group cannot be found.
+// UnknownGroupIdErrorは、グループが見つからない場合にLookupGroupIdによって返されるエラーです。
 type UnknownGroupIdError string
 
 func (e UnknownGroupIdError) Error() string
 
-// UnknownGroupError is returned by LookupGroup when
-// a group cannot be found.
+// UnknownGroupErrorは、グループが見つからない場合にLookupGroupによって返されるエラーです。
 type UnknownGroupError string
 
 func (e UnknownGroupError) Error() string
