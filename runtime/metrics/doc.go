@@ -6,395 +6,334 @@
 //go:generate go test -run=Docs -generate
 
 /*
-Package metrics provides a stable interface to access implementation-defined
-metrics exported by the Go runtime. This package is similar to existing functions
-like [runtime.ReadMemStats] and [debug.ReadGCStats], but significantly more general.
+パッケージmetricsは、Goランタイムによってエクスポートされる実装定義の
+メトリクスにアクセスするための安定したインターフェースを提供します。このパッケージは、
+既存の関数である [runtime.ReadMemStats] や [debug.ReadGCStats] に似ていますが、
+かなり一般的です。
 
-The set of metrics defined by this package may evolve as the runtime itself
-evolves, and also enables variation across Go implementations, whose relevant
-metric sets may not intersect.
+このパッケージで定義されているメトリクスのセットは、ランタイム自体が進化するにつれて進化し、
+また、関連するメトリクスのセットが交差しない可能性のあるGoの実装間でのバリエーションを可能にします。
 
 # Interface
 
-Metrics are designated by a string key, rather than, for example, a field name in
-a struct. The full list of supported metrics is always available in the slice of
-Descriptions returned by All. Each Description also includes useful information
-about the metric.
+メトリクスは、例えば、構造体のフィールド名ではなく、文字列キーによって指定されます。
+サポートされているメトリクスの完全なリストは、常にAllによって返されるDescriptionsのスライスにあります。
+各Descriptionには、メトリクスに関する有用な情報も含まれています。
 
-Thus, users of this API are encouraged to sample supported metrics defined by the
-slice returned by All to remain compatible across Go versions. Of course, situations
-arise where reading specific metrics is critical. For these cases, users are
-encouraged to use build tags, and although metrics may be deprecated and removed,
-users should consider this to be an exceptional and rare event, coinciding with a
-very large change in a particular Go implementation.
+したがって、このAPIのユーザーは、Allが返すスライスによって定義されたサポートされているメトリクスをサンプリングすることを推奨します。
+これにより、Goのバージョン間での互換性が保たれます。もちろん、特定のメトリクスを読み取ることが重要な状況が生じることもあります。
+これらのケースでは、ユーザーはビルドタグを使用することを推奨します。メトリクスは非推奨となり削除されることもありますが、
+これは特定のGoの実装における非常に大きな変更と一致する、例外的で稀なイベントと考えてください。
 
-Each metric key also has a "kind" that describes the format of the metric's value.
-In the interest of not breaking users of this package, the "kind" for a given metric
-is guaranteed not to change. If it must change, then a new metric will be introduced
-with a new key and a new "kind."
+各メトリックキーには、メトリックの値の形式を説明する「種類」もあります。
+このパッケージのユーザーを壊さないために、特定のメトリックの「種類」は変更されないことが保証されています。
+それが変更しなければならない場合、新しいキーと新しい「種類」で新しいメトリックが導入されます。
 
 # Metric key format
 
-As mentioned earlier, metric keys are strings. Their format is simple and well-defined,
-designed to be both human and machine readable. It is split into two components,
-separated by a colon: a rooted path and a unit. The choice to include the unit in
-the key is motivated by compatibility: if a metric's unit changes, its semantics likely
-did also, and a new key should be introduced.
+前述の通り、メトリックキーは文字列です。その形式はシンプルで明確に定義されており、
+人間と機械の両方が読み取れるように設計されています。それは二つのコンポーネントに分割され、
+コロンで区切られています：ルート化されたパスと単位です。キーに単位を含める選択は、
+互換性によって動機づけられています：メトリックの単位が変更されると、そのセマンティクスも
+おそらく変更され、新しいキーが導入されるべきです。
 
-For more details on the precise definition of the metric key's path and unit formats, see
-the documentation of the Name field of the Description struct.
+メトリックキーのパスと単位の形式の詳細な定義については、
+Description構造体のNameフィールドのドキュメンテーションを参照してください。
 
 # A note about floats
 
-This package supports metrics whose values have a floating-point representation. In
-order to improve ease-of-use, this package promises to never produce the following
-classes of floating-point values: NaN, infinity.
+このパッケージは、値が浮動小数点表現を持つメトリクスをサポートしています。
+使いやすさを向上させるために、このパッケージはNaNや無限大といった
+浮動小数点数のクラスを生成しないことを約束します。
 
 # Supported metrics
 
-Below is the full list of supported metrics, ordered lexicographically.
+以下は、辞書順に並べたサポートされているメトリクスの完全なリストです。
 
 	/cgo/go-to-c-calls:calls
-		Count of calls made from Go to C by the current process.
+		現在のプロセスによってGoからCへ行われた呼び出しの数。
 
 	/cpu/classes/gc/mark/assist:cpu-seconds
-		Estimated total CPU time goroutines spent performing GC
-		tasks to assist the GC and prevent it from falling behind the
-		application. This metric is an overestimate, and not directly
-		comparable to system CPU time measurements. Compare only with
-		other /cpu/classes metrics.
+		GCがアプリケーションに遅れを取らないように、GCのタスクを実行するためにゴルーチンが費やした
+		CPU時間の推定総量。このメトリックは過大評価であり、システムのCPU時間の測定値とは直接比較できません。
+		他の/cpu/classesメトリックとのみ比較してください。
 
 	/cpu/classes/gc/mark/dedicated:cpu-seconds
-		Estimated total CPU time spent performing GC tasks on processors
-		(as defined by GOMAXPROCS) dedicated to those tasks. This metric
-		is an overestimate, and not directly comparable to system CPU
-		time measurements. Compare only with other /cpu/classes metrics.
+		GCのタスクに専用のプロセッサ（GOMAXPROCSによって定義）でGCのタスクを実行するために費やした
+		CPU時間の推定総量。このメトリックは過大評価であり、システムのCPU時間の測定値とは直接比較できません。
+		他の/cpu/classesメトリックとのみ比較してください。
 
 	/cpu/classes/gc/mark/idle:cpu-seconds
-		Estimated total CPU time spent performing GC tasks on spare CPU
-		resources that the Go scheduler could not otherwise find a use
-		for. This should be subtracted from the total GC CPU time to
-		obtain a measure of compulsory GC CPU time. This metric is an
-		overestimate, and not directly comparable to system CPU time
-		measurements. Compare only with other /cpu/classes metrics.
+		Goスケジューラが他の用途で使用できなかった余剰のCPUリソースでGCのタスクを実行するために費やした
+		CPU時間の推定総量。これはGCのCPU時間の合計から差し引くべきで、強制的なGCのCPU時間の尺度を得るためです。
+		このメトリックは過大評価であり、システムのCPU時間の測定値とは直接比較できません。
+		他の/cpu/classesメトリックとのみ比較してください。
 
 	/cpu/classes/gc/pause:cpu-seconds
-		Estimated total CPU time spent with the application paused by
-		the GC. Even if only one thread is running during the pause,
-		this is computed as GOMAXPROCS times the pause latency because
-		nothing else can be executing. This is the exact sum of samples
-		in /gc/pause:seconds if each sample is multiplied by GOMAXPROCS
-		at the time it is taken. This metric is an overestimate,
-		and not directly comparable to system CPU time measurements.
-		Compare only with other /cpu/classes metrics.
+		GCによってアプリケーションが一時停止されている間に費やされたCPU時間の推定総量。
+		一時停止中に実行されているスレッドが1つだけでも、他の何も実行できないため、
+		これはGOMAXPROCS倍の一時停止遅延として計算されます。これは、各サンプルが取得された時点で
+		GOMAXPROCSで乗算される場合の/gc/pause:secondsのサンプルの正確な合計です。
+		このメトリックは過大評価であり、システムのCPU時間の測定値とは直接比較できません。
+		他の/cpu/classesメトリックとのみ比較してください。
 
 	/cpu/classes/gc/total:cpu-seconds
-		Estimated total CPU time spent performing GC tasks. This metric
-		is an overestimate, and not directly comparable to system CPU
-		time measurements. Compare only with other /cpu/classes metrics.
-		Sum of all metrics in /cpu/classes/gc.
+		GCタスクの実行に費やされたCPU時間の推定総量。このメトリックは過大評価であり、
+		システムのCPU時間の測定値とは直接比較できません。他の/cpu/classesメトリックとのみ比較してください。
+		/cpu/classes/gc内のすべてのメトリックの合計。
 
 	/cpu/classes/idle:cpu-seconds
-		Estimated total available CPU time not spent executing
-		any Go or Go runtime code. In other words, the part of
-		/cpu/classes/total:cpu-seconds that was unused. This metric is
-		an overestimate, and not directly comparable to system CPU time
-		measurements. Compare only with other /cpu/classes metrics.
+		GoまたはGoランタイムコードの実行に使用されなかった利用可能なCPU時間の推定総量。
+		つまり、/cpu/classes/total:cpu-secondsの未使用部分です。このメトリックは過大評価であり、
+		システムのCPU時間の測定値とは直接比較できません。他の/cpu/classesメトリックとのみ比較してください。
 
 	/cpu/classes/scavenge/assist:cpu-seconds
-		Estimated total CPU time spent returning unused memory to the
-		underlying platform in response eagerly in response to memory
-		pressure. This metric is an overestimate, and not directly
-		comparable to system CPU time measurements. Compare only with
-		other /cpu/classes metrics.
+		メモリ圧力に対する応答として、使用されていないメモリを積極的に基盤となるプラットフォームに返すために費やした
+		CPU時間の推定総量。このメトリックは過大評価であり、システムのCPU時間の測定値とは直接比較できません。
+		他の/cpu/classesメトリックとのみ比較してください。
 
 	/cpu/classes/scavenge/background:cpu-seconds
-		Estimated total CPU time spent performing background tasks to
-		return unused memory to the underlying platform. This metric is
-		an overestimate, and not directly comparable to system CPU time
-		measurements. Compare only with other /cpu/classes metrics.
+		未使用のメモリを基盤となるプラットフォームに返すためのバックグラウンドタスクを実行するために費やした
+		CPU時間の推定総量。このメトリックは過大評価であり、システムのCPU時間の測定値とは直接比較できません。
+		他の/cpu/classesメトリックとのみ比較してください。
 
 	/cpu/classes/scavenge/total:cpu-seconds
-		Estimated total CPU time spent performing tasks that return
-		unused memory to the underlying platform. This metric is an
-		overestimate, and not directly comparable to system CPU time
-		measurements. Compare only with other /cpu/classes metrics.
-		Sum of all metrics in /cpu/classes/scavenge.
+		未使用のメモリを基盤となるプラットフォームに返すタスクを実行するために費やした
+		CPU時間の推定総量。このメトリックは過大評価であり、システムのCPU時間の測定値とは直接比較できません。
+		他の/cpu/classesメトリックとのみ比較してください。/cpu/classes/scavenge内のすべてのメトリックの合計。
 
 	/cpu/classes/total:cpu-seconds
-		Estimated total available CPU time for user Go code or the Go
-		runtime, as defined by GOMAXPROCS. In other words, GOMAXPROCS
-		integrated over the wall-clock duration this process has been
-		executing for. This metric is an overestimate, and not directly
-		comparable to system CPU time measurements. Compare only with
-		other /cpu/classes metrics. Sum of all metrics in /cpu/classes.
+		GOMAXPROCSによって定義された、ユーザーのGoコードまたはGoランタイムの利用可能なCPU時間の推定総量。
+		つまり、このプロセスが実行されている壁時計の期間をGOMAXPROCSで積分したものです。
+		このメトリックは過大評価であり、システムのCPU時間の測定値とは直接比較できません。
+		他の/cpu/classesメトリックとのみ比較してください。/cpu/classes内のすべてのメトリックの合計。
 
 	/cpu/classes/user:cpu-seconds
-		Estimated total CPU time spent running user Go code. This may
-		also include some small amount of time spent in the Go runtime.
-		This metric is an overestimate, and not directly comparable
-		to system CPU time measurements. Compare only with other
-		/cpu/classes metrics.
+		ユーザーのGoコードの実行に費やされたCPU時間の推定総量。これには、Goランタイムで費やされた
+		わずかな時間も含まれる可能性があります。このメトリックは過大評価であり、システムのCPU時間の測定値とは
+		直接比較できません。他の/cpu/classesメトリックとのみ比較してください。
 
 	/gc/cycles/automatic:gc-cycles
-		Count of completed GC cycles generated by the Go runtime.
+		Goランタイムによって生成された完了したGCサイクルの数。
 
 	/gc/cycles/forced:gc-cycles
-		Count of completed GC cycles forced by the application.
+		アプリケーションによって強制された完了したGCサイクルの数。
 
 	/gc/cycles/total:gc-cycles
-		Count of all completed GC cycles.
+		すべての完了したGCサイクルの数。
 
 	/gc/gogc:percent
-		Heap size target percentage configured by the user, otherwise
-		100. This value is set by the GOGC environment variable, and the
-		runtime/debug.SetGCPercent function.
+		ユーザーによって設定されたヒープサイズの目標パーセンテージ、それ以外の場合は
+		100。この値はGOGC環境変数とruntime/debug.SetGCPercent関数によって設定されます。
 
 	/gc/gomemlimit:bytes
-		Go runtime memory limit configured by the user, otherwise
-		math.MaxInt64. This value is set by the GOMEMLIMIT environment
-		variable, and the runtime/debug.SetMemoryLimit function.
+		ユーザーによって設定されたGoランタイムのメモリ制限、それ以外の場合は
+		math.MaxInt64。この値はGOMEMLIMIT環境変数とruntime/debug.SetMemoryLimit関数によって設定されます。
 
 	/gc/heap/allocs-by-size:bytes
-		Distribution of heap allocations by approximate size.
-		Bucket counts increase monotonically. Note that this does not
-		include tiny objects as defined by /gc/heap/tiny/allocs:objects,
-		only tiny blocks.
+		近似的なサイズ別のヒープ割り当ての分布。
+		バケットのカウントは単調に増加します。これには、/gc/heap/tiny/allocs:objectsによって定義された
+		小さなオブジェクトは含まれません、小さなブロックのみが含まれます。
 
 	/gc/heap/allocs:bytes
-		Cumulative sum of memory allocated to the heap by the
-		application.
+		アプリケーションによってヒープに割り当てられたメモリの累積合計。
 
 	/gc/heap/allocs:objects
-		Cumulative count of heap allocations triggered by the
-		application. Note that this does not include tiny objects as
-		defined by /gc/heap/tiny/allocs:objects, only tiny blocks.
+		アプリケーションによって引き起こされたヒープ割り当ての累積カウント。
+		これには、/gc/heap/tiny/allocs:objectsによって定義された小さなオブジェクトは含まれません、
+		小さなブロックのみが含まれます。
 
 	/gc/heap/frees-by-size:bytes
-		Distribution of freed heap allocations by approximate size.
-		Bucket counts increase monotonically. Note that this does not
-		include tiny objects as defined by /gc/heap/tiny/allocs:objects,
-		only tiny blocks.
+		近似的なサイズ別の解放されたヒープ割り当ての分布。
+		バケットのカウントは単調に増加します。これには、/gc/heap/tiny/allocs:objectsによって定義された
+		小さなオブジェクトは含まれません、小さなブロックのみが含まれます。
 
 	/gc/heap/frees:bytes
-		Cumulative sum of heap memory freed by the garbage collector.
+		ガベージコレクタによって解放されたヒープメモリの累積合計。
 
 	/gc/heap/frees:objects
-		Cumulative count of heap allocations whose storage was freed
-		by the garbage collector. Note that this does not include tiny
-		objects as defined by /gc/heap/tiny/allocs:objects, only tiny
-		blocks.
+		ガベージコレクタによってストレージが解放されたヒープ割り当ての累積カウント。
+		これには、/gc/heap/tiny/allocs:objectsによって定義された小さなオブジェクトは含まれません、
+		小さなブロックのみが含まれます。
 
 	/gc/heap/goal:bytes
-		Heap size target for the end of the GC cycle.
+		GCサイクルの終了時のヒープサイズの目標。
 
 	/gc/heap/live:bytes
-		Heap memory occupied by live objects that were marked by the
-		previous GC.
+		前回のGCによってマークされた生存オブジェクトが占めるヒープメモリ。
 
 	/gc/heap/objects:objects
-		Number of objects, live or unswept, occupying heap memory.
+		ヒープメモリを占有している、生存しているか未掃除のオブジェクトの数。
 
 	/gc/heap/tiny/allocs:objects
-		Count of small allocations that are packed together into blocks.
-		These allocations are counted separately from other allocations
-		because each individual allocation is not tracked by the
-		runtime, only their block. Each block is already accounted for
-		in allocs-by-size and frees-by-size.
+		ブロックにまとめられた小さな割り当ての数。
+		これらの割り当ては、各個別の割り当てがランタイムによって追跡されていないため、
+		他の割り当てとは別にカウントされます、ブロックのみが追跡されます。各ブロックはすでに
+		allocs-by-sizeとfrees-by-sizeで計算されています。
 
 	/gc/limiter/last-enabled:gc-cycle
-		GC cycle the last time the GC CPU limiter was enabled.
-		This metric is useful for diagnosing the root cause of an
-		out-of-memory error, because the limiter trades memory for CPU
-		time when the GC's CPU time gets too high. This is most likely
-		to occur with use of SetMemoryLimit. The first GC cycle is cycle
-		1, so a value of 0 indicates that it was never enabled.
+		GC CPUリミッターが最後に有効にされたGCサイクル。
+		このメトリックは、リミッターがGCのCPU時間が高すぎるときにメモリをCPU時間と交換するため、
+		メモリ不足エラーの根本原因を診断するのに役立ちます。これは、SetMemoryLimitの使用時に最も発生しやすいです。
+		最初のGCサイクルはサイクル1なので、値が0の場合はそれが一度も有効にされなかったことを示します。
 
 	/gc/pauses:seconds
-		Distribution of individual GC-related stop-the-world pause
-		latencies. Bucket counts increase monotonically.
+		個々のGC関連の世界停止一時停止の遅延の分布。
+		バケットのカウントは単調に増加します。
 
 	/gc/scan/globals:bytes
-		The total amount of global variable space that is scannable.
+		スキャン可能なグローバル変数スペースの総量。
 
 	/gc/scan/heap:bytes
-		The total amount of heap space that is scannable.
+		スキャン可能なヒープスペースの総量。
 
 	/gc/scan/stack:bytes
-		The number of bytes of stack that were scanned last GC cycle.
+		最後のGCサイクルでスキャンされたスタックのバイト数。
 
 	/gc/scan/total:bytes
-		The total amount space that is scannable. Sum of all metrics in
-		/gc/scan.
+		スキャン可能なスペースの総量。/gc/scan内のすべてのメトリックの合計。
 
 	/gc/stack/starting-size:bytes
-		The stack size of new goroutines.
+		新しいゴルーチンのスタックサイズ。
 
 	/godebug/non-default-behavior/execerrdot:events
-		The number of non-default behaviors executed by the os/exec
-		package due to a non-default GODEBUG=execerrdot=... setting.
+		非デフォルトのGODEBUG=execerrdot=...設定により、os/execパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/gocachehash:events
-		The number of non-default behaviors executed by the cmd/go
-		package due to a non-default GODEBUG=gocachehash=... setting.
+		非デフォルトのGODEBUG=gocachehash=...設定により、cmd/goパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/gocachetest:events
-		The number of non-default behaviors executed by the cmd/go
-		package due to a non-default GODEBUG=gocachetest=... setting.
+		非デフォルトのGODEBUG=gocachetest=...設定により、cmd/goパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/gocacheverify:events
-		The number of non-default behaviors executed by the cmd/go
-		package due to a non-default GODEBUG=gocacheverify=... setting.
+		非デフォルトのGODEBUG=gocacheverify=...設定により、cmd/goパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/http2client:events
-		The number of non-default behaviors executed by the net/http
-		package due to a non-default GODEBUG=http2client=... setting.
+		非デフォルトのGODEBUG=http2client=...設定により、net/httpパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/http2server:events
-		The number of non-default behaviors executed by the net/http
-		package due to a non-default GODEBUG=http2server=... setting.
+		非デフォルトのGODEBUG=http2server=...設定により、net/httpパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/installgoroot:events
-		The number of non-default behaviors executed by the go/build
-		package due to a non-default GODEBUG=installgoroot=... setting.
+		非デフォルトのGODEBUG=installgoroot=...設定により、go/buildパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/jstmpllitinterp:events
-		The number of non-default behaviors executed by
-		the html/template package due to a non-default
-		GODEBUG=jstmpllitinterp=... setting.
+		非デフォルトのGODEBUG=jstmpllitinterp=...設定により、html/templateパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/multipartmaxheaders:events
-		The number of non-default behaviors executed by
-		the mime/multipart package due to a non-default
-		GODEBUG=multipartmaxheaders=... setting.
+		非デフォルトのGODEBUG=multipartmaxheaders=...設定により、mime/multipartパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/multipartmaxparts:events
-		The number of non-default behaviors executed by
-		the mime/multipart package due to a non-default
-		GODEBUG=multipartmaxparts=... setting.
+		非デフォルトのGODEBUG=multipartmaxparts=...設定により、mime/multipartパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/multipathtcp:events
-		The number of non-default behaviors executed by the net package
-		due to a non-default GODEBUG=multipathtcp=... setting.
+		非デフォルトのGODEBUG=multipathtcp=...設定により、netパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/panicnil:events
-		The number of non-default behaviors executed by the runtime
-		package due to a non-default GODEBUG=panicnil=... setting.
+		非デフォルトのGODEBUG=panicnil=...設定により、ランタイムパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/randautoseed:events
-		The number of non-default behaviors executed by the math/rand
-		package due to a non-default GODEBUG=randautoseed=... setting.
+		非デフォルトのGODEBUG=randautoseed=...設定により、math/randパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/tarinsecurepath:events
-		The number of non-default behaviors executed by the archive/tar
-		package due to a non-default GODEBUG=tarinsecurepath=...
-		setting.
+		非デフォルトのGODEBUG=tarinsecurepath=...設定により、archive/tarパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/tlsmaxrsasize:events
-		The number of non-default behaviors executed by the crypto/tls
-		package due to a non-default GODEBUG=tlsmaxrsasize=... setting.
+		非デフォルトのGODEBUG=tlsmaxrsasize=...設定により、crypto/tlsパッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/x509sha1:events
-		The number of non-default behaviors executed by the crypto/x509
-		package due to a non-default GODEBUG=x509sha1=... setting.
+		非デフォルトのGODEBUG=x509sha1=...設定により、crypto/x509パッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/x509usefallbackroots:events
-		The number of non-default behaviors executed by the crypto/x509
-		package due to a non-default GODEBUG=x509usefallbackroots=...
-		setting.
+		非デフォルトのGODEBUG=x509usefallbackroots=...設定により、crypto/x509パッケージが実行した
+		非デフォルトの動作の数。
 
 	/godebug/non-default-behavior/zipinsecurepath:events
-		The number of non-default behaviors executed by the archive/zip
-		package due to a non-default GODEBUG=zipinsecurepath=...
-		setting.
+		非デフォルトのGODEBUG=zipinsecurepath=...設定により、archive/zipパッケージが実行した
+		非デフォルトの動作の数。
 
 	/memory/classes/heap/free:bytes
-		Memory that is completely free and eligible to be returned to
-		the underlying system, but has not been. This metric is the
-		runtime's estimate of free address space that is backed by
-		physical memory.
+		完全に空き、かつ基礎となるシステムに返すことが可能なメモリですが、まだ返されていません。
+		このメトリックは、物理メモリにバックアップされた空きアドレススペースのランタイムの推定値です。
 
 	/memory/classes/heap/objects:bytes
-		Memory occupied by live objects and dead objects that have not
-		yet been marked free by the garbage collector.
+		生存しているオブジェクトとまだガベージコレクタによってフリーマークされていない死んだオブジェクトが占有しているメモリ。
 
 	/memory/classes/heap/released:bytes
-		Memory that is completely free and has been returned to the
-		underlying system. This metric is the runtime's estimate of free
-		address space that is still mapped into the process, but is not
-		backed by physical memory.
+		完全に空き、かつ基礎となるシステムに返されたメモリ。このメトリックは、
+		まだプロセスにマップされているが物理メモリにバックアップされていない空きアドレススペースのランタイムの推定値です。
 
 	/memory/classes/heap/stacks:bytes
-		Memory allocated from the heap that is reserved for stack space,
-		whether or not it is currently in-use. Currently, this
-		represents all stack memory for goroutines. It also includes all
-		OS thread stacks in non-cgo programs. Note that stacks may be
-		allocated differently in the future, and this may change.
+		スタックスペースのためにヒープから割り当てられたメモリで、現在使用中であるかどうかに関わらず予約されています。
+		現在、これはすべてのゴルーチンのスタックメモリを表しています。また、非cgoプログラムのすべてのOSスレッドスタックも含まれます。
+		注意してください、将来的にスタックは異なる方法で割り当てられる可能性があり、これが変更されるかもしれません。
 
 	/memory/classes/heap/unused:bytes
-		Memory that is reserved for heap objects but is not currently
-		used to hold heap objects.
+		ヒープオブジェクト用に予約されているが、現在はヒープオブジェクトを保持するためには使用されていないメモリ。
 
 	/memory/classes/metadata/mcache/free:bytes
-		Memory that is reserved for runtime mcache structures, but not
-		in-use.
+		ランタイムmcache構造体のために予約されているが、使用中ではないメモリ。
 
 	/memory/classes/metadata/mcache/inuse:bytes
-		Memory that is occupied by runtime mcache structures that are
-		currently being used.
+		現在使用中のランタイムmcache構造体によって占有されているメモリ。
 
 	/memory/classes/metadata/mspan/free:bytes
-		Memory that is reserved for runtime mspan structures, but not
-		in-use.
+		ランタイムmspan構造体のために予約されているが、使用中ではないメモリ。
 
 	/memory/classes/metadata/mspan/inuse:bytes
-		Memory that is occupied by runtime mspan structures that are
-		currently being used.
+		現在使用中のランタイムmspan構造体によって占有されているメモリ。
 
 	/memory/classes/metadata/other:bytes
-		Memory that is reserved for or used to hold runtime metadata.
+		ランタイムメタデータを保持するために予約または使用されているメモリ。
 
 	/memory/classes/os-stacks:bytes
-		Stack memory allocated by the underlying operating system.
-		In non-cgo programs this metric is currently zero. This may
-		change in the future.In cgo programs this metric includes
-		OS thread stacks allocated directly from the OS. Currently,
-		this only accounts for one stack in c-shared and c-archive build
-		modes, and other sources of stacks from the OS are not measured.
-		This too may change in the future.
+		基礎となるオペレーティングシステムによって割り当てられたスタックメモリ。
+		非cgoプログラムでは、このメトリックは現在ゼロです。これは将来変更される可能性があります。
+		cgoプログラムでは、このメトリックにはOSから直接割り当てられたOSスレッドスタックが含まれます。
+		現在、これはc-sharedとc-archiveビルドモードの一つのスタックのみを計算し、
+		OSからの他のスタックソースは測定されていません。これも将来変更される可能性があります。
 
 	/memory/classes/other:bytes
-		Memory used by execution trace buffers, structures for debugging
-		the runtime, finalizer and profiler specials, and more.
+		実行トレースバッファ、ランタイムのデバッグ用の構造体、ファイナライザーとプロファイラーの特殊なもの、その他に使用されるメモリ。
 
 	/memory/classes/profiling/buckets:bytes
-		Memory that is used by the stack trace hash map used for
-		profiling.
+		プロファイリングに使用されるスタックトレースのハッシュマップに使用されるメモリ。
 
 	/memory/classes/total:bytes
-		All memory mapped by the Go runtime into the current process
-		as read-write. Note that this does not include memory mapped
-		by code called via cgo or via the syscall package. Sum of all
-		metrics in /memory/classes.
+		Goランタイムによって現在のプロセスに読み書き可能としてマップされたすべてのメモリ。
+		これには、cgo経由またはsyscallパッケージ経由で呼び出されたコードによってマップされたメモリは含まれません。
+		/memory/classes内のすべてのメトリックの合計。
 
 	/sched/gomaxprocs:threads
-		The current runtime.GOMAXPROCS setting, or the number of
-		operating system threads that can execute user-level Go code
-		simultaneously.
+		現在のruntime.GOMAXPROCS設定、または同時にユーザーレベルのGoコードを実行できる
+		オペレーティングシステムのスレッド数。
 
 	/sched/goroutines:goroutines
-		Count of live goroutines.
+		生存しているゴルーチンの数。
 
 	/sched/latencies:seconds
-		Distribution of the time goroutines have spent in the scheduler
-		in a runnable state before actually running. Bucket counts
-		increase monotonically.
+		実際に実行される前に、スケジューラ内でゴルーチンが実行可能な状態で過ごした時間の分布。
+		バケットの数は単調に増加します。
 
 	/sync/mutex/wait/total:seconds
-		Approximate cumulative time goroutines have spent blocked
-		on a sync.Mutex or sync.RWMutex. This metric is useful for
-		identifying global changes in lock contention. Collect a mutex
-		or block profile using the runtime/pprof package for more
-		detailed contention data.
+		ゴルーチンがsync.Mutexまたはsync.RWMutexでブロックされて過ごした累計時間の概算。
+		このメトリックは、ロック競合の全体的な変化を特定するのに役立ちます。
+		より詳細な競合データについては、runtime/pprofパッケージを使用してミューテックスまたはブロックプロファイルを収集します。
 */
 package metrics
