@@ -336,10 +336,10 @@ func (s *SectionReader) ReadAt(p []byte, off int64) (n int, err error)
 // Size はセクションのサイズをバイト単位で返します。
 func (s *SectionReader) Size() int64
 
-// Outer returns the underlying [ReaderAt] and offsets for the section.
+// Outerは、セクションの下位の [ReaderAt] とオフセットを返します。
 //
-// The returned values are the same that were passed to [NewSectionReader]
-// when the [SectionReader] was created.
+// 返される値は、[SectionReader] が作成されたときに
+// [NewSectionReader] に渡されたものと同じです。
 func (s *SectionReader) Outer() (r ReaderAt, off int64, n int64)
 
 // OffsetWriterは、基準オフセットから基準オフセット+オフセットの範囲で下位のライターへの書き込みをマッピングします。

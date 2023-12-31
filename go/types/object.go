@@ -122,13 +122,11 @@ func (obj *Var) Embedded() bool
 // IsFieldは、変数が構造体のフィールドであるかどうかを報告します。
 func (obj *Var) IsField() bool
 
-// Origin returns the canonical Var for its receiver, i.e. the Var object
-// recorded in Info.Defs.
+// Originは、そのレシーバのための正規のVar、つまりInfo.Defsに記録されたVarオブジェクトを返します。
 //
-// For synthetic Vars created during instantiation (such as struct fields or
-// function parameters that depend on type arguments), this will be the
-// corresponding Var on the generic (uninstantiated) type. For all other Vars
-// Origin returns the receiver.
+// インスタンス化中に作成された合成Var（型引数に依存する構造体フィールドや
+// 関数パラメータなど）については、これはジェネリック（インスタンス化されていない）型上の
+// 対応するVarになります。他のすべてのVarについて、Originはレシーバを返します。
 func (obj *Var) Origin() *Var
 
 // Funcは、宣言された関数、具体的なメソッド、または抽象（インターフェース）メソッドを表します。そのType()は常に*Signatureです。

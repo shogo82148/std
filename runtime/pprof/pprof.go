@@ -54,11 +54,13 @@
 //
 //	go tool pprof cpu.prof
 //
-// pprofコマンドラインからは多くのコマンドが利用できます。
-// よく使用されるコマンドには、「top」（プログラムのホットスポットの要約を表示する）や、「web」（ホットスポットとその呼び出しグラフの対話型グラフを開く）があります。
-// すべてのpprofコマンドに関する情報については、「help」を使用してください。
-// pprofに関する詳細情報は、次を参照してください
-// https://github.com/google/pprof/blob/master/doc/README.md.
+// pprofコマンドラインからは多くのコマンドが利用可能です。
+// よく使われるコマンドには"top"があり、これはプログラムのホットスポットのサマリーを表示します。
+// "web"はホットスポットとその呼び出しグラフのインタラクティブなグラフを開きます。
+// すべてのpprofコマンドについての情報は"help"を使用してください。
+//
+// pprofについての詳細は、以下を参照してください。
+// https://github.com/google/pprof/blob/main/doc/README.md.
 package pprof
 
 import (
@@ -66,86 +68,75 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// A Profile is a collection of stack traces showing the call sequences
-// that led to instances of a particular event, such as allocation.
-// Packages can create and maintain their own profiles; the most common
-// use is for tracking resources that must be explicitly closed, such as files
-// or network connections.
+// Profileは、特定のイベント（例えば、割り当て）へのインスタンスにつながる呼び出しシーケンスを示すスタックトレースの集合です。
+// パッケージは自身のプロファイルを作成し、維持することができます。最も一般的な使用例は、
+// ファイルやネットワーク接続のような、明示的に閉じる必要があるリソースの追跡です。
 //
-// A Profile's methods can be called from multiple goroutines simultaneously.
+// プロファイルのメソッドは、複数のゴルーチンから同時に呼び出すことができます。
 //
-// Each Profile has a unique name. A few profiles are predefined:
+// 各プロファイルには一意の名前があります。いくつかのプロファイルは事前に定義されています：
 //
-//	goroutine    - stack traces of all current goroutines
-//	heap         - a sampling of memory allocations of live objects
-//	allocs       - a sampling of all past memory allocations
-//	threadcreate - stack traces that led to the creation of new OS threads
-//	block        - stack traces that led to blocking on synchronization primitives
-//	mutex        - stack traces of holders of contended mutexes
+//	goroutine    - 現在のすべてのゴルーチンのスタックトレース
+//	heap         - 生存しているオブジェクトのメモリ割り当てのサンプリング
+//	allocs       - 過去のすべてのメモリ割り当てのサンプリング
+//	threadcreate - 新しいOSスレッドの作成につながったスタックトレース
+//	block        - 同期プリミティブでのブロックにつながったスタックトレース
+//	mutex        - 競合するミューテックスの保持者のスタックトレース
 //
-// These predefined profiles maintain themselves and panic on an explicit
-// [Profile.Add] or [Profile.Remove] method call.
+// これらの事前定義されたプロファイルは自己維持し、明示的な
+// [Profile.Add] または [Profile.Remove] メソッド呼び出しでパニックを起こします。
 //
-// The CPU profile is not available as a Profile. It has a special API,
-// the [StartCPUProfile] and [StopCPUProfile] functions, because it streams
-// output to a writer during profiling.
+// CPUプロファイルはProfileとして利用できません。これは特別なAPIを持っており、
+// [StartCPUProfile] と [StopCPUProfile] 関数があります。これはプロファイリング中に
+// 出力をライターにストリームします。
 //
 // # Heap profile
 //
-// The heap profile reports statistics as of the most recently completed
-// garbage collection; it elides more recent allocation to avoid skewing
-// the profile away from live data and toward garbage.
-// If there has been no garbage collection at all, the heap profile reports
-// all known allocations. This exception helps mainly in programs running
-// without garbage collection enabled, usually for debugging purposes.
+// ヒーププロファイルは、最も最近に完了したガベージコレクション時点の統計を報告します。
+// これは、プロファイルを生データからガベージに偏らせるのを避けるため、より最近の割り当てを省略します。
+// ガベージコレクションが一度も行われていない場合、ヒーププロファイルはすべての既知の割り当てを報告します。
+// この例外は主に、通常はデバッグ目的で、ガベージコレクションが有効になっていないプログラムで役立ちます。
 //
-// The heap profile tracks both the allocation sites for all live objects in
-// the application memory and for all objects allocated since the program start.
-// Pprof's -inuse_space, -inuse_objects, -alloc_space, and -alloc_objects
-// flags select which to display, defaulting to -inuse_space (live objects,
-// scaled by size).
+// ヒーププロファイルは、アプリケーションメモリ内のすべてのライブオブジェクトの割り当て場所と、
+// プログラム開始以降に割り当てられたすべてのオブジェクトを追跡します。
+// Pprofの -inuse_space、-inuse_objects、-alloc_space、および -alloc_objects
+// フラグは、表示するものを選択し、デフォルトは -inuse_space（ライブオブジェクト、サイズによってスケーリング）です。
 //
 // # Allocs profile
 //
-// The allocs profile is the same as the heap profile but changes the default
-// pprof display to -alloc_space, the total number of bytes allocated since
-// the program began (including garbage-collected bytes).
+// allocsプロファイルはheapプロファイルと同じですが、デフォルトの
+// pprof表示を -alloc_space（プログラムが開始してから割り当てられた
+// バイト数の合計（ガベージコレクションされたバイトを含む））に変更します。
 //
 // # Block profile
 //
-// The block profile tracks time spent blocked on synchronization primitives,
-// such as [sync.Mutex], [sync.RWMutex], [sync.WaitGroup], [sync.Cond], and
-// channel send/receive/select.
+// ブロックプロファイルは、[sync.Mutex]、[sync.RWMutex]、[sync.WaitGroup]、
+// [sync.Cond]、およびチャネルの送信/受信/選択などの同期プリミティブで
+// ブロックされた時間を追跡します。
 //
-// Stack traces correspond to the location that blocked (for example,
-// [sync.Mutex.Lock]).
+// スタックトレースは、ブロックした場所（例えば、[sync.Mutex.Lock]）に対応します。
 //
-// Sample values correspond to cumulative time spent blocked at that stack
-// trace, subject to time-based sampling specified by
-// [runtime.SetBlockProfileRate].
+// サンプル値は、そのスタックトレースでブロックされた累積時間に対応します。
+// これは [runtime.SetBlockProfileRate] で指定された時間ベースのサンプリングに従います。
 //
 // # Mutex profile
 //
-// The mutex profile tracks contention on mutexes, such as [sync.Mutex],
-// [sync.RWMutex], and runtime-internal locks.
+// ミューテックスプロファイルは、[sync.Mutex]、[sync.RWMutex]、およびランタイム内部のロックなど、
+// ミューテックスの競合を追跡します。
 //
-// Stack traces correspond to the end of the critical section causing
-// contention. For example, a lock held for a long time while other goroutines
-// are waiting to acquire the lock will report contention when the lock is
-// finally unlocked (that is, at [sync.Mutex.Unlock]).
+// スタックトレースは、競合を引き起こすクリティカルセクションの終わりに対応します。
+// 例えば、他のゴルーチンがロックを取得しようと待っている間に長時間保持されたロックは、
+// ロックが最終的に解除されたとき（つまり、[sync.Mutex.Unlock] で）に競合を報告します。
 //
-// Sample values correspond to the approximate cumulative time other goroutines
-// spent blocked waiting for the lock, subject to event-based sampling
-// specified by [runtime.SetMutexProfileFraction]. For example, if a caller
-// holds a lock for 1s while 5 other goroutines are waiting for the entire
-// second to acquire the lock, its unlock call stack will report 5s of
-// contention.
+// サンプル値は、他のゴルーチンがロックを待ってブロックされた約積算時間に対応します。
+// これは [runtime.SetMutexProfileFraction] で指定されたイベントベースのサンプリングに従います。
+// 例えば、呼び出し元がロックを1秒間保持している間に他の5つのゴルーチンがロックを取得するために
+// 完全に秒を待っている場合、そのアンロック呼び出しスタックは5秒間の競合を報告します。
 //
-// Runtime-internal locks are always reported at the location
-// "runtime._LostContendedRuntimeLock". More detailed stack traces for
-// runtime-internal locks can be obtained by setting
-// `GODEBUG=runtimecontentionstacks=1` (see package [runtime] docs for
-// caveats).
+// ランタイム内部のロックは常に"runtime._LostContendedRuntimeLock"の位置で報告されます。
+// ランタイム内部のロックのより詳細なスタックトレースは、
+// `GODEBUG=runtimecontentionstacks=1`を設定することで取得できます（注意事項については、
+// パッケージ [runtime] のドキュメントを参照してください）。
 type Profile struct {
 	name  string
 	mu    sync.Mutex
