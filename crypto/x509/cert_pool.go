@@ -51,9 +51,9 @@ func (s *CertPool) Subjects() [][]byte
 // Equalは、sとotherが等しいかどうかを報告します。
 func (s *CertPool) Equal(other *CertPool) bool
 
-// AddCertWithConstraint adds a certificate to the pool with the additional
-// constraint. When Certificate.Verify builds a chain which is rooted by cert,
-// it will additionally pass the whole chain to constraint to determine its
-// validity. If constraint returns a non-nil error, the chain will be discarded.
-// constraint may be called concurrently from multiple goroutines.
+// AddCertWithConstraintは、追加の制約を持つ証明書をプールに追加します。
+// Certificate.Verifyがcertによってルート化されたチェーンを構築するとき、
+// さらにその全体のチェーンを制約に渡してその有効性を判断します。
+// 制約が非nilのエラーを返すと、チェーンは破棄されます。
+// 制約は複数のゴルーチンから同時に呼び出される可能性があります。
 func (s *CertPool) AddCertWithConstraint(cert *Certificate, constraint func([]*Certificate) error)

@@ -4,28 +4,27 @@
 
 package user
 
-// Current returns the current user.
+// Currentは現在のユーザーを返します。
 //
-// The first call will cache the current user information.
-// Subsequent calls will return the cached value and will not reflect
-// changes to the current user.
+// 最初の呼び出しは現在のユーザー情報をキャッシュします。
+// その後の呼び出しはキャッシュされた値を返し、現在のユーザーへの変更は反映されません。
 func Current() (*User, error)
 
-// Lookup looks up a user by username. If the user cannot be found, the
-// returned error is of type UnknownUserError.
+// Lookupはユーザー名でユーザーを検索します。ユーザーが見つからない場合、
+// 返されるエラーのタイプはUnknownUserErrorです。
 func Lookup(username string) (*User, error)
 
-// LookupId looks up a user by userid. If the user cannot be found, the
-// returned error is of type UnknownUserIdError.
+// LookupIdはユーザーIDでユーザーを検索します。ユーザーが見つからない場合、
+// 返されるエラーのタイプはUnknownUserIdErrorです。
 func LookupId(uid string) (*User, error)
 
-// LookupGroup looks up a group by name. If the group cannot be found, the
-// returned error is of type UnknownGroupError.
+// LookupGroupは名前でグループを検索します。グループが見つからない場合、
+// 返されるエラーのタイプはUnknownGroupErrorです。
 func LookupGroup(name string) (*Group, error)
 
-// LookupGroupId looks up a group by groupid. If the group cannot be found, the
-// returned error is of type UnknownGroupIdError.
+// LookupGroupIdはグループIDでグループを検索します。グループが見つからない場合、
+// 返されるエラーのタイプはUnknownGroupIdErrorです。
 func LookupGroupId(gid string) (*Group, error)
 
-// GroupIds returns the list of group IDs that the user is a member of.
+// GroupIdsは、ユーザーがメンバーであるグループIDのリストを返します。
 func (u *User) GroupIds() ([]string, error)

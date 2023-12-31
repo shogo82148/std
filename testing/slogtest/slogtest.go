@@ -30,8 +30,8 @@ import (
 // results関数はその欠如をチェックし、それを返すマップに追加すべきです。
 func TestHandler(h slog.Handler, results func() []map[string]any) error
 
-// Run exercises a [slog.Handler] on the same test cases as [TestHandler], but
-// runs each case in a subtest. For each test case, it first calls newHandler to
-// get an instance of the handler under test, then runs the test case, then
-// calls result to get the result. If the test case fails, it calls t.Error.
+// Runは、[TestHandler]　と同じテストケースで　[slog.Handler]　を実行しますが、
+// 各ケースをサブテストで実行します。各テストケースでは、まずnewHandlerを呼び出して
+// テスト対象のハンドラのインスタンスを取得し、次にテストケースを実行し、
+// 次に結果を取得するためにresultを呼び出します。テストケースが失敗すると、t.Errorを呼び出します。
 func Run(t *testing.T, newHandler func(*testing.T) slog.Handler, result func(*testing.T) map[string]any)

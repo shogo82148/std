@@ -39,8 +39,8 @@ func ExampleCommand() {
 func ExampleCommand_environment() {
 	cmd := exec.Command("prog")
 	cmd.Env = append(os.Environ(),
-		"FOO=duplicate_value", // ignored
-		"FOO=actual_value",    // this value is used
+		"FOO=duplicate_value", // 無視されます
+		"FOO=actual_value",    // この値が使用されます
 	)
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
@@ -163,7 +163,7 @@ func ExampleCommandContext() {
 	defer cancel()
 
 	if err := exec.CommandContext(ctx, "sleep", "5").Run(); err != nil {
-		// This will fail after 100 milliseconds. The 5 second sleep
-		// will be interrupted.
+		// これは100ミリ秒後に失敗します。5秒間のスリープは
+		// 中断されます。
 	}
 }
