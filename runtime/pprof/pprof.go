@@ -81,19 +81,14 @@ import (
 //	block        - 同期プリミティブでのブロックにつながったスタックトレース
 //	mutex        - 競合するミューテックスの保持者のスタックトレース
 //
-<<<<<<< HEAD
-// These predefined profiles maintain themselves and panic on an explicit
-// [Profile.Add] or [Profile.Remove] method call.
+// これらの事前定義されたプロファイルは自己維持し、明示的な
+// [Profile.Add] または [Profile.Remove] メソッド呼び出しでパニックを起こします。
 //
-// The CPU profile is not available as a Profile. It has a special API,
-// the [StartCPUProfile] and [StopCPUProfile] functions, because it streams
-// output to a writer during profiling.
+// CPUプロファイルはProfileとして利用できません。これは特別なAPIを持っており、
+// [StartCPUProfile] と [StopCPUProfile] 関数があります。これはプロファイリング中に
+// 出力をライターにストリームします。
 //
 // # Heap profile
-=======
-// これらの事前定義されたプロファイルは自身を維持し、明示的な
-// AddまたはRemoveメソッド呼び出しでパニックします。
->>>>>>> release-branch.go1.21
 //
 // ヒーププロファイルは、最も最近に完了したガベージコレクション時点の統計を報告します。
 // これは、プロファイルを生データからガベージに偏らせるのを避けるため、より最近の割り当てを省略します。
@@ -105,57 +100,41 @@ import (
 // Pprofの -inuse_space、-inuse_objects、-alloc_space、および -alloc_objects
 // フラグは、表示するものを選択し、デフォルトは -inuse_space（ライブオブジェクト、サイズによってスケーリング）です。
 //
-<<<<<<< HEAD
 // # Allocs profile
 //
-// The allocs profile is the same as the heap profile but changes the default
-// pprof display to -alloc_space, the total number of bytes allocated since
-// the program began (including garbage-collected bytes).
+// allocsプロファイルはheapプロファイルと同じですが、デフォルトの
+// pprof表示を -alloc_space（プログラムが開始してから割り当てられた
+// バイト数の合計（ガベージコレクションされたバイトを含む））に変更します。
 //
 // # Block profile
 //
-// The block profile tracks time spent blocked on synchronization primitives,
-// such as [sync.Mutex], [sync.RWMutex], [sync.WaitGroup], [sync.Cond], and
-// channel send/receive/select.
+// ブロックプロファイルは、[sync.Mutex]、[sync.RWMutex]、[sync.WaitGroup]、
+// [sync.Cond]、およびチャネルの送信/受信/選択などの同期プリミティブで
+// ブロックされた時間を追跡します。
 //
-// Stack traces correspond to the location that blocked (for example,
-// [sync.Mutex.Lock]).
+// スタックトレースは、ブロックした場所（例えば、[sync.Mutex.Lock]）に対応します。
 //
-// Sample values correspond to cumulative time spent blocked at that stack
-// trace, subject to time-based sampling specified by
-// [runtime.SetBlockProfileRate].
+// サンプル値は、そのスタックトレースでブロックされた累積時間に対応します。
+// これは [runtime.SetBlockProfileRate] で指定された時間ベースのサンプリングに従います。
 //
 // # Mutex profile
 //
-// The mutex profile tracks contention on mutexes, such as [sync.Mutex],
-// [sync.RWMutex], and runtime-internal locks.
+// ミューテックスプロファイルは、[sync.Mutex]、[sync.RWMutex]、およびランタイム内部のロックなど、
+// ミューテックスの競合を追跡します。
 //
-// Stack traces correspond to the end of the critical section causing
-// contention. For example, a lock held for a long time while other goroutines
-// are waiting to acquire the lock will report contention when the lock is
-// finally unlocked (that is, at [sync.Mutex.Unlock]).
+// スタックトレースは、競合を引き起こすクリティカルセクションの終わりに対応します。
+// 例えば、他のゴルーチンがロックを取得しようと待っている間に長時間保持されたロックは、
+// ロックが最終的に解除されたとき（つまり、[sync.Mutex.Unlock] で）に競合を報告します。
 //
-// Sample values correspond to the approximate cumulative time other goroutines
-// spent blocked waiting for the lock, subject to event-based sampling
-// specified by [runtime.SetMutexProfileFraction]. For example, if a caller
-// holds a lock for 1s while 5 other goroutines are waiting for the entire
-// second to acquire the lock, its unlock call stack will report 5s of
-// contention.
+// サンプル値は、他のゴルーチンがロックを待ってブロックされた約積算時間に対応します。
+// これは [runtime.SetMutexProfileFraction] で指定されたイベントベースのサンプリングに従います。
+// 例えば、呼び出し元がロックを1秒間保持している間に他の5つのゴルーチンがロックを取得するために
+// 完全に秒を待っている場合、そのアンロック呼び出しスタックは5秒間の競合を報告します。
 //
-// Runtime-internal locks are always reported at the location
-// "runtime._LostContendedRuntimeLock". More detailed stack traces for
-// runtime-internal locks can be obtained by setting
-// `GODEBUG=runtimecontentionstacks=1` (see package [runtime] docs for
-// caveats).
-=======
-// allocsプロファイルはヒーププロファイルと同じですが、デフォルトの
-// pprof表示を -alloc_space（プログラム開始以降に割り当てられたバイト数の合計、
-// ガベージコレクションされたバイトを含む）に変更します。
-//
-// CPUプロファイルはProfileとして利用できません。これは特別なAPIを持っており、
-// StartCPUProfileとStopCPUProfile関数があります。これはプロファイリング中に
-// 出力をライターにストリームします。
->>>>>>> release-branch.go1.21
+// ランタイム内部のロックは常に"runtime._LostContendedRuntimeLock"の位置で報告されます。
+// ランタイム内部のロックのより詳細なスタックトレースは、
+// `GODEBUG=runtimecontentionstacks=1`を設定することで取得できます（注意事項については、
+// パッケージ [runtime] のドキュメントを参照してください）。
 type Profile struct {
 	name  string
 	mu    sync.Mutex
