@@ -534,4 +534,6 @@ func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, e
 // or there is no such wildcard in the pattern.
 func (r *Request) PathValue(name string) string
 
+// SetPathValue sets name to value, so that subsequent calls to r.PathValue(name)
+// return value.
 func (r *Request) SetPathValue(name, value string)
