@@ -415,4 +415,6 @@ func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, e
 // リクエストがパターンに一致しなかった場合、またはパターンにそのようなワイルドカードがない場合、空の文字列を返します。
 func (r *Request) PathValue(name string) string
 
+// SetPathValue sets name to value, so that subsequent calls to r.PathValue(name)
+// return value.
 func (r *Request) SetPathValue(name, value string)
