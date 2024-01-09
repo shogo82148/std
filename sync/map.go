@@ -8,14 +8,8 @@ import (
 	"github.com/shogo82148/std/sync/atomic"
 )
 
-<<<<<<< HEAD
-// MapはGoのmap[interface{}]interface{}に似ていますが、追加のロックや調整なしで複数のゴルーチンによる並行使用が安全です。
+// MapはGoのmap[any]anyに似ていますが、追加のロックや調整なしで複数のゴルーチンによる並行使用が安全です。
 // ロード、ストア、および削除は均等化された一定の時間で実行されます。
-=======
-// Map is like a Go map[any]any but is safe for concurrent use
-// by multiple goroutines without additional locking or coordination.
-// Loads, stores, and deletes run in amortized constant time.
->>>>>>> upstream/master
 //
 // Map型は特殊化されています。ほとんどのコードでは代わりに単純なGoのmapを使用すべきであり、
 // 型の安全性を向上させ、他の不変条件とマップのコンテンツを維持しやすくするために別個のロックや調整を行うべきです。
