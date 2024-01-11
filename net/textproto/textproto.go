@@ -7,20 +7,20 @@
 //
 // The package provides:
 //
-// Error, which represents a numeric error response from
+// [Error], which represents a numeric error response from
 // a server.
 //
-// Pipeline, to manage pipelined requests and responses
+// [Pipeline], to manage pipelined requests and responses
 // in a client.
 //
-// Reader, to read numeric response code lines,
+// [Reader], to read numeric response code lines,
 // key: value headers, lines wrapped with leading spaces
 // on continuation lines, and whole text blocks ending
 // with a dot on a line by itself.
 //
-// Writer, to write dot-encoded text blocks.
+// [Writer], to write dot-encoded text blocks.
 //
-// Conn, a convenient packaging of Reader, Writer, and Pipeline for use
+// [Conn], a convenient packaging of [Reader], [Writer], and [Pipeline] for use
 // with a single network connection.
 package textproto
 
@@ -43,8 +43,8 @@ type ProtocolError string
 func (p ProtocolError) Error() string
 
 // A Conn represents a textual network protocol connection.
-// It consists of a Reader and Writer to manage I/O
-// and a Pipeline to sequence concurrent requests on the connection.
+// It consists of a [Reader] and [Writer] to manage I/O
+// and a [Pipeline] to sequence concurrent requests on the connection.
 // These embedded types carry methods with them;
 // see the documentation of those types for details.
 type Conn struct {
@@ -54,14 +54,14 @@ type Conn struct {
 	conn io.ReadWriteCloser
 }
 
-// NewConn returns a new Conn using conn for I/O.
+// NewConn returns a new [Conn] using conn for I/O.
 func NewConn(conn io.ReadWriteCloser) *Conn
 
 // Close closes the connection.
 func (c *Conn) Close() error
 
-// Dial connects to the given address on the given network using net.Dial
-// and then returns a new Conn for the connection.
+// Dial connects to the given address on the given network using [net.Dial]
+// and then returns a new [Conn] for the connection.
 func Dial(network, addr string) (*Conn, error)
 
 // Cmd is a convenience method that sends a command after

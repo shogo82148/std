@@ -18,7 +18,7 @@ type ServerInfo struct {
 	Auth []string
 }
 
-// PlainAuth returns an Auth that implements the PLAIN authentication
+// PlainAuth returns an [Auth] that implements the PLAIN authentication
 // mechanism as defined in RFC 4616. The returned Auth uses the given
 // username and password to authenticate to host and act as identity.
 // Usually identity should be the empty string, to act as username.
@@ -28,7 +28,7 @@ type ServerInfo struct {
 // error, without sending the credentials.
 func PlainAuth(identity, username, password, host string) Auth
 
-// CRAMMD5Auth returns an Auth that implements the CRAM-MD5 authentication
+// CRAMMD5Auth returns an [Auth] that implements the CRAM-MD5 authentication
 // mechanism as defined in RFC 2195.
 // The returned Auth uses the given username and secret to authenticate
 // to the server using the challenge-response mechanism.

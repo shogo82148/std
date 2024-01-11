@@ -8,8 +8,8 @@ TCP/IP, UDP, domain name resolution, and Unix domain sockets.
 
 Although the package provides access to low-level networking
 primitives, most clients will need only the basic interface provided
-by the Dial, Listen, and Accept functions and the associated
-Conn and Listener interfaces. The crypto/tls package uses
+by the [Dial], [Listen], and Accept functions and the associated
+[Conn] and [Listener] interfaces. The crypto/tls package uses
 the same interfaces and similar Dial and Listen functions.
 
 The Dial function connects to a server:
@@ -39,7 +39,7 @@ The Listen function creates servers:
 # Name Resolution
 
 The method for resolving domain names, whether indirectly with functions like Dial
-or directly with functions like LookupHost and LookupAddr, varies by operating system.
+or directly with functions like [LookupHost] and [LookupAddr], varies by operating system.
 
 On Unix systems, the resolver has two options for resolving names.
 It can use a pure Go resolver that sends DNS requests directly to the servers
@@ -90,8 +90,8 @@ import (
 
 // Addr represents a network end point address.
 //
-// The two methods Network and String conventionally return strings
-// that can be passed as the arguments to Dial, but the exact form
+// The two methods [Addr.Network] and [Addr.String] conventionally return strings
+// that can be passed as the arguments to [Dial], but the exact form
 // and meaning of the strings is up to the implementation.
 type Addr interface {
 	Network() string
@@ -266,12 +266,12 @@ func (e *DNSError) Error() string
 
 // Timeout reports whether the DNS lookup is known to have timed out.
 // This is not always known; a DNS lookup may fail due to a timeout
-// and return a DNSError for which Timeout returns false.
+// and return a [DNSError] for which Timeout returns false.
 func (e *DNSError) Timeout() bool
 
 // Temporary reports whether the DNS error is known to be temporary.
 // This is not always known; a DNS lookup may fail due to a temporary
-// error and return a DNSError for which Temporary returns false.
+// error and return a [DNSError] for which Temporary returns false.
 func (e *DNSError) Temporary() bool
 
 // ErrClosed is the error returned by an I/O call on a network
@@ -295,7 +295,7 @@ var (
 
 // WriteTo writes contents of the buffers to w.
 //
-// WriteTo implements io.WriterTo for Buffers.
+// WriteTo implements [io.WriterTo] for [Buffers].
 //
 // WriteTo modifies the slice v as well as v[i] for 0 <= i < len(v),
 // but does not modify v[i][j] for any i, j.
@@ -303,7 +303,7 @@ func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
 
 // Read from the buffers.
 //
-// Read implements io.Reader for Buffers.
+// Read implements [io.Reader] for [Buffers].
 //
 // Read modifies the slice v as well as v[i] for 0 <= i < len(v),
 // but does not modify v[i][j] for any i, j.

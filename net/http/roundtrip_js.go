@@ -6,5 +6,5 @@
 
 package http
 
-// RoundTrip implements the RoundTripper interface using the WHATWG Fetch API.
+// RoundTrip implements the [RoundTripper] interface using the WHATWG Fetch API.
 func (t *Transport) RoundTrip(req *Request) (*Response, error)

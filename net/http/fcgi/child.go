@@ -22,7 +22,7 @@ var ErrConnClosed = errors.New("fcgi: connection to web server closed")
 // goroutine for each. The goroutine reads requests and then calls handler
 // to reply to them.
 // If l is nil, Serve accepts connections from os.Stdin.
-// If handler is nil, http.DefaultServeMux is used.
+// If handler is nil, [http.DefaultServeMux] is used.
 func Serve(l net.Listener, handler http.Handler) error
 
 // ProcessEnv returns FastCGI environment variables associated with the request r

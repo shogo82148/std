@@ -12,10 +12,10 @@ import (
 	"github.com/shogo82148/std/net/rpc"
 )
 
-// NewClientCodec returns a new rpc.ClientCodec using JSON-RPC on conn.
+// NewClientCodec returns a new [rpc.ClientCodec] using JSON-RPC on conn.
 func NewClientCodec(conn io.ReadWriteCloser) rpc.ClientCodec
 
-// NewClient returns a new rpc.Client to handle requests to the
+// NewClient returns a new [rpc.Client] to handle requests to the
 // set of services at the other end of the connection.
 func NewClient(conn io.ReadWriteCloser) *rpc.Client
 

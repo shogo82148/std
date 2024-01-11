@@ -18,7 +18,7 @@ var ErrLineTooLong = errors.New("header line too long")
 
 // NewChunkedReader returns a new chunkedReader that translates the data read from r
 // out of HTTP "chunked" format before returning it.
-// The chunkedReader returns io.EOF when the final 0-length chunk is read.
+// The chunkedReader returns [io.EOF] when the final 0-length chunk is read.
 //
 // NewChunkedReader is not needed by normal applications. The http package
 // automatically decodes chunking when reading response bodies.
@@ -37,9 +37,9 @@ func NewChunkedReader(r io.Reader) io.Reader
 // length, both of which are wrong.
 func NewChunkedWriter(w io.Writer) io.WriteCloser
 
-// FlushAfterChunkWriter signals from the caller of NewChunkedWriter
+// FlushAfterChunkWriter signals from the caller of [NewChunkedWriter]
 // that each chunk should be followed by a flush. It is used by the
-// http.Transport code to keep the buffering behavior for headers and
+// [net/http.Transport] code to keep the buffering behavior for headers and
 // trailers, but flush out chunks aggressively in the middle for
 // request bodies which may be generated slowly. See Issue 6574.
 type FlushAfterChunkWriter struct {

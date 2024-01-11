@@ -55,8 +55,8 @@ type Resolver struct {
 // LookupHost looks up the given host using the local resolver.
 // It returns a slice of that host's addresses.
 //
-// LookupHost uses context.Background internally; to specify the context, use
-// Resolver.LookupHost.
+// LookupHost uses [context.Background] internally; to specify the context, use
+// [Resolver.LookupHost].
 func LookupHost(host string) (addrs []string, err error)
 
 // LookupHost looks up the given host using the local resolver.
@@ -87,8 +87,8 @@ var _ context.Context = (*onlyValuesCtx)(nil)
 
 // LookupPort looks up the port for the given network and service.
 //
-// LookupPort uses context.Background internally; to specify the context, use
-// Resolver.LookupPort.
+// LookupPort uses [context.Background] internally; to specify the context, use
+// [Resolver.LookupPort].
 func LookupPort(network, service string) (port int, err error)
 
 // LookupPort looks up the port for the given network and service.
@@ -98,7 +98,7 @@ func (r *Resolver) LookupPort(ctx context.Context, network, service string) (por
 
 // LookupCNAME returns the canonical name for the given host.
 // Callers that do not care about the canonical name can call
-// LookupHost or LookupIP directly; both take care of resolving
+// [LookupHost] or [LookupIP] directly; both take care of resolving
 // the canonical name as part of the lookup.
 //
 // A canonical name is the final name after following zero
@@ -110,13 +110,13 @@ func (r *Resolver) LookupPort(ctx context.Context, network, service string) (por
 // The returned canonical name is validated to be a properly
 // formatted presentation-format domain name.
 //
-// LookupCNAME uses context.Background internally; to specify the context, use
-// Resolver.LookupCNAME.
+// LookupCNAME uses [context.Background] internally; to specify the context, use
+// [Resolver.LookupCNAME].
 func LookupCNAME(host string) (cname string, err error)
 
 // LookupCNAME returns the canonical name for the given host.
 // Callers that do not care about the canonical name can call
-// LookupHost or LookupIP directly; both take care of resolving
+// [LookupHost] or [LookupIP] directly; both take care of resolving
 // the canonical name as part of the lookup.
 //
 // A canonical name is the final name after following zero
@@ -129,7 +129,7 @@ func LookupCNAME(host string) (cname string, err error)
 // formatted presentation-format domain name.
 func (r *Resolver) LookupCNAME(ctx context.Context, host string) (string, error)
 
-// LookupSRV tries to resolve an SRV query of the given service,
+// LookupSRV tries to resolve an [SRV] query of the given service,
 // protocol, and domain name. The proto is "tcp" or "udp".
 // The returned records are sorted by priority and randomized
 // by weight within a priority.
@@ -145,7 +145,7 @@ func (r *Resolver) LookupCNAME(ctx context.Context, host string) (string, error)
 // will be returned alongside the remaining results, if any.
 func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err error)
 
-// LookupSRV tries to resolve an SRV query of the given service,
+// LookupSRV tries to resolve an [SRV] query of the given service,
 // protocol, and domain name. The proto is "tcp" or "udp".
 // The returned records are sorted by priority and randomized
 // by weight within a priority.
@@ -168,8 +168,8 @@ func (r *Resolver) LookupSRV(ctx context.Context, service, proto, name string) (
 // invalid names, those records are filtered out and an error
 // will be returned alongside the remaining results, if any.
 //
-// LookupMX uses context.Background internally; to specify the context, use
-// Resolver.LookupMX.
+// LookupMX uses [context.Background] internally; to specify the context, use
+// [Resolver.LookupMX].
 func LookupMX(name string) ([]*MX, error)
 
 // LookupMX returns the DNS MX records for the given domain name sorted by preference.
@@ -187,8 +187,8 @@ func (r *Resolver) LookupMX(ctx context.Context, name string) ([]*MX, error)
 // invalid names, those records are filtered out and an error
 // will be returned alongside the remaining results, if any.
 //
-// LookupNS uses context.Background internally; to specify the context, use
-// Resolver.LookupNS.
+// LookupNS uses [context.Background] internally; to specify the context, use
+// [Resolver.LookupNS].
 func LookupNS(name string) ([]*NS, error)
 
 // LookupNS returns the DNS NS records for the given domain name.
@@ -201,8 +201,8 @@ func (r *Resolver) LookupNS(ctx context.Context, name string) ([]*NS, error)
 
 // LookupTXT returns the DNS TXT records for the given domain name.
 //
-// LookupTXT uses context.Background internally; to specify the context, use
-// Resolver.LookupTXT.
+// LookupTXT uses [context.Background] internally; to specify the context, use
+// [Resolver.LookupTXT].
 func LookupTXT(name string) ([]string, error)
 
 // LookupTXT returns the DNS TXT records for the given domain name.
@@ -216,10 +216,10 @@ func (r *Resolver) LookupTXT(ctx context.Context, name string) ([]string, error)
 // out and an error will be returned alongside the remaining results, if any.
 //
 // When using the host C library resolver, at most one result will be
-// returned. To bypass the host resolver, use a custom Resolver.
+// returned. To bypass the host resolver, use a custom [Resolver].
 //
-// LookupAddr uses context.Background internally; to specify the context, use
-// Resolver.LookupAddr.
+// LookupAddr uses [context.Background] internally; to specify the context, use
+// [Resolver.LookupAddr].
 func LookupAddr(addr string) (names []string, err error)
 
 // LookupAddr performs a reverse lookup for the given address, returning a list

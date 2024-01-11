@@ -32,7 +32,7 @@ type IP []byte
 // An IPMask is a bitmask that can be used to manipulate
 // IP addresses for IP addressing and routing.
 //
-// See type IPNet and func ParseCIDR for details.
+// See type [IPNet] and func [ParseCIDR] for details.
 type IPMask []byte
 
 // An IPNet represents an IP network.
@@ -49,9 +49,9 @@ func IPv4(a, b, c, d byte) IP
 // IPv4 mask a.b.c.d.
 func IPv4Mask(a, b, c, d byte) IPMask
 
-// CIDRMask returns an IPMask consisting of 'ones' 1 bits
+// CIDRMask returns an [IPMask] consisting of 'ones' 1 bits
 // followed by 0s up to a total length of 'bits' bits.
-// For a mask of this form, CIDRMask is the inverse of IPMask.Size.
+// For a mask of this form, CIDRMask is the inverse of [IPMask.Size].
 func CIDRMask(ones, bits int) IPMask
 
 // Well-known IPv4 addresses
@@ -132,13 +132,13 @@ func (ip IP) Mask(mask IPMask) IP
 //   - the hexadecimal form of ip, without punctuation, if no other cases apply
 func (ip IP) String() string
 
-// MarshalText implements the encoding.TextMarshaler interface.
-// The encoding is the same as returned by String, with one exception:
+// MarshalText implements the [encoding.TextMarshaler] interface.
+// The encoding is the same as returned by [IP.String], with one exception:
 // When len(ip) is zero, it returns an empty slice.
 func (ip IP) MarshalText() ([]byte, error)
 
-// UnmarshalText implements the encoding.TextUnmarshaler interface.
-// The IP address is expected in a form accepted by ParseIP.
+// UnmarshalText implements the [encoding.TextUnmarshaler] interface.
+// The IP address is expected in a form accepted by [ParseIP].
 func (ip *IP) UnmarshalText(text []byte) error
 
 // Equal reports whether ip and x are the same IP address.

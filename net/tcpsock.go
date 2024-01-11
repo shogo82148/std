@@ -19,7 +19,7 @@ type TCPAddr struct {
 	Zone string
 }
 
-// AddrPort returns the TCPAddr a as a netip.AddrPort.
+// AddrPort returns the [TCPAddr] a as a [netip.AddrPort].
 //
 // If a.Port does not fit in a uint16, it's silently truncated.
 //
@@ -44,26 +44,26 @@ func (a *TCPAddr) String() string
 // recommended, because it will return at most one of the host name's
 // IP addresses.
 //
-// See func Dial for a description of the network and address
+// See func [Dial] for a description of the network and address
 // parameters.
 func ResolveTCPAddr(network, address string) (*TCPAddr, error)
 
-// TCPAddrFromAddrPort returns addr as a TCPAddr. If addr.IsValid() is false,
+// TCPAddrFromAddrPort returns addr as a [TCPAddr]. If addr.IsValid() is false,
 // then the returned TCPAddr will contain a nil IP field, indicating an
 // address family-agnostic unspecified address.
 func TCPAddrFromAddrPort(addr netip.AddrPort) *TCPAddr
 
-// TCPConn is an implementation of the Conn interface for TCP network
+// TCPConn is an implementation of the [Conn] interface for TCP network
 // connections.
 type TCPConn struct {
 	conn
 }
 
 // SyscallConn returns a raw network connection.
-// This implements the syscall.Conn interface.
+// This implements the [syscall.Conn] interface.
 func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
 
-// ReadFrom implements the io.ReaderFrom ReadFrom method.
+// ReadFrom implements the [io.ReaderFrom] ReadFrom method.
 func (c *TCPConn) ReadFrom(r io.Reader) (int64, error)
 
 // WriteTo implements the io.WriterTo WriteTo method.
@@ -117,7 +117,7 @@ func (c *TCPConn) SetNoDelay(noDelay bool) error
 // the results.
 func (c *TCPConn) MultipathTCP() (bool, error)
 
-// DialTCP acts like Dial for TCP networks.
+// DialTCP acts like [Dial] for TCP networks.
 //
 // The network must be a TCP network name; see func Dial for details.
 //
@@ -127,14 +127,14 @@ func (c *TCPConn) MultipathTCP() (bool, error)
 func DialTCP(network string, laddr, raddr *TCPAddr) (*TCPConn, error)
 
 // TCPListener is a TCP network listener. Clients should typically
-// use variables of type Listener instead of assuming TCP.
+// use variables of type [Listener] instead of assuming TCP.
 type TCPListener struct {
 	fd *netFD
 	lc ListenConfig
 }
 
 // SyscallConn returns a raw network connection.
-// This implements the syscall.Conn interface.
+// This implements the [syscall.Conn] interface.
 //
 // The returned RawConn only supports calling Control. Read and
 // Write return an error.
@@ -144,15 +144,15 @@ func (l *TCPListener) SyscallConn() (syscall.RawConn, error)
 // connection.
 func (l *TCPListener) AcceptTCP() (*TCPConn, error)
 
-// Accept implements the Accept method in the Listener interface; it
-// waits for the next call and returns a generic Conn.
+// Accept implements the Accept method in the [Listener] interface; it
+// waits for the next call and returns a generic [Conn].
 func (l *TCPListener) Accept() (Conn, error)
 
 // Close stops listening on the TCP address.
 // Already Accepted connections are not closed.
 func (l *TCPListener) Close() error
 
-// Addr returns the listener's network address, a *TCPAddr.
+// Addr returns the listener's network address, a [*TCPAddr].
 // The Addr returned is shared by all invocations of Addr, so
 // do not modify it.
 func (l *TCPListener) Addr() Addr
@@ -161,7 +161,7 @@ func (l *TCPListener) Addr() Addr
 // A zero time value disables the deadline.
 func (l *TCPListener) SetDeadline(t time.Time) error
 
-// File returns a copy of the underlying os.File.
+// File returns a copy of the underlying [os.File].
 // It is the caller's responsibility to close f when finished.
 // Closing l does not affect f, and closing f does not affect l.
 //
@@ -170,7 +170,7 @@ func (l *TCPListener) SetDeadline(t time.Time) error
 // using this duplicate may or may not have the desired effect.
 func (l *TCPListener) File() (f *os.File, err error)
 
-// ListenTCP acts like Listen for TCP networks.
+// ListenTCP acts like [Listen] for TCP networks.
 //
 // The network must be a TCP network name; see func Dial for details.
 //

@@ -12,32 +12,32 @@ import (
 // A Header represents the key-value pairs in an HTTP header.
 //
 // The keys should be in canonical form, as returned by
-// CanonicalHeaderKey.
+// [CanonicalHeaderKey].
 type Header map[string][]string
 
 // Add adds the key, value pair to the header.
 // It appends to any existing values associated with key.
 // The key is case insensitive; it is canonicalized by
-// CanonicalHeaderKey.
+// [CanonicalHeaderKey].
 func (h Header) Add(key, value string)
 
 // Set sets the header entries associated with key to the
 // single element value. It replaces any existing values
 // associated with key. The key is case insensitive; it is
-// canonicalized by textproto.CanonicalMIMEHeaderKey.
+// canonicalized by [textproto.CanonicalMIMEHeaderKey].
 // To use non-canonical keys, assign to the map directly.
 func (h Header) Set(key, value string)
 
 // Get gets the first value associated with the given key. If
 // there are no values associated with the key, Get returns "".
-// It is case insensitive; textproto.CanonicalMIMEHeaderKey is
+// It is case insensitive; [textproto.CanonicalMIMEHeaderKey] is
 // used to canonicalize the provided key. Get assumes that all
 // keys are stored in canonical form. To use non-canonical keys,
 // access the map directly.
 func (h Header) Get(key string) string
 
 // Values returns all values associated with the given key.
-// It is case insensitive; textproto.CanonicalMIMEHeaderKey is
+// It is case insensitive; [textproto.CanonicalMIMEHeaderKey] is
 // used to canonicalize the provided key. To use non-canonical
 // keys, access the map directly.
 // The returned slice is not a copy.
@@ -45,7 +45,7 @@ func (h Header) Values(key string) []string
 
 // Del deletes the values associated with key.
 // The key is case insensitive; it is canonicalized by
-// CanonicalHeaderKey.
+// [CanonicalHeaderKey].
 func (h Header) Del(key string)
 
 // Write writes a header in wire format.
@@ -56,7 +56,7 @@ func (h Header) Clone() Header
 
 // ParseTime parses a time header (such as the Date: header),
 // trying each of the three formats allowed by HTTP/1.1:
-// TimeFormat, time.RFC850, and time.ANSIC.
+// [TimeFormat], [time.RFC850], and [time.ANSIC].
 func ParseTime(text string) (t time.Time, err error)
 
 // WriteSubset writes a header in wire format.

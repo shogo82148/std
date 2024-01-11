@@ -28,7 +28,7 @@ var (
 // It is low-level, old, and unused by Go's current HTTP stack.
 // We should have deleted it before Go 1.
 //
-// Deprecated: Use the Server in package net/http instead.
+// Deprecated: Use the Server in package [net/http] instead.
 type ServerConn struct {
 	mu              sync.Mutex
 	c               net.Conn
@@ -45,19 +45,19 @@ type ServerConn struct {
 // It is low-level, old, and unused by Go's current HTTP stack.
 // We should have deleted it before Go 1.
 //
-// Deprecated: Use the Server in package net/http instead.
+// Deprecated: Use the Server in package [net/http] instead.
 func NewServerConn(c net.Conn, r *bufio.Reader) *ServerConn
 
-// Hijack detaches the ServerConn and returns the underlying connection as well
+// Hijack detaches the [ServerConn] and returns the underlying connection as well
 // as the read-side bufio which may have some left over data. Hijack may be
 // called before Read has signaled the end of the keep-alive logic. The user
-// should not call Hijack while Read or Write is in progress.
+// should not call Hijack while [ServerConn.Read] or [ServerConn.Write] is in progress.
 func (sc *ServerConn) Hijack() (net.Conn, *bufio.Reader)
 
-// Close calls Hijack and then also closes the underlying connection.
+// Close calls [ServerConn.Hijack] and then also closes the underlying connection.
 func (sc *ServerConn) Close() error
 
-// Read returns the next request on the wire. An ErrPersistEOF is returned if
+// Read returns the next request on the wire. An [ErrPersistEOF] is returned if
 // it is gracefully determined that there are no more requests (e.g. after the
 // first request on an HTTP/1.0 connection, or after a Connection:close on a
 // HTTP/1.1 connection).
@@ -69,14 +69,14 @@ func (sc *ServerConn) Pending() int
 
 // Write writes resp in response to req. To close the connection gracefully, set the
 // Response.Close field to true. Write should be considered operational until
-// it returns an error, regardless of any errors returned on the Read side.
+// it returns an error, regardless of any errors returned on the [ServerConn.Read] side.
 func (sc *ServerConn) Write(req *http.Request, resp *http.Response) error
 
 // ClientConn is an artifact of Go's early HTTP implementation.
 // It is low-level, old, and unused by Go's current HTTP stack.
 // We should have deleted it before Go 1.
 //
-// Deprecated: Use Client or Transport in package net/http instead.
+// Deprecated: Use Client or Transport in package [net/http] instead.
 type ClientConn struct {
 	mu              sync.Mutex
 	c               net.Conn
@@ -94,26 +94,26 @@ type ClientConn struct {
 // It is low-level, old, and unused by Go's current HTTP stack.
 // We should have deleted it before Go 1.
 //
-// Deprecated: Use the Client or Transport in package net/http instead.
+// Deprecated: Use the Client or Transport in package [net/http] instead.
 func NewClientConn(c net.Conn, r *bufio.Reader) *ClientConn
 
 // NewProxyClientConn is an artifact of Go's early HTTP implementation.
 // It is low-level, old, and unused by Go's current HTTP stack.
 // We should have deleted it before Go 1.
 //
-// Deprecated: Use the Client or Transport in package net/http instead.
+// Deprecated: Use the Client or Transport in package [net/http] instead.
 func NewProxyClientConn(c net.Conn, r *bufio.Reader) *ClientConn
 
-// Hijack detaches the ClientConn and returns the underlying connection as well
+// Hijack detaches the [ClientConn] and returns the underlying connection as well
 // as the read-side bufio which may have some left over data. Hijack may be
 // called before the user or Read have signaled the end of the keep-alive
-// logic. The user should not call Hijack while Read or Write is in progress.
+// logic. The user should not call Hijack while [ClientConn.Read] or ClientConn.Write is in progress.
 func (cc *ClientConn) Hijack() (c net.Conn, r *bufio.Reader)
 
-// Close calls Hijack and then also closes the underlying connection.
+// Close calls [ClientConn.Hijack] and then also closes the underlying connection.
 func (cc *ClientConn) Close() error
 
-// Write writes a request. An ErrPersistEOF error is returned if the connection
+// Write writes a request. An [ErrPersistEOF] error is returned if the connection
 // has been closed in an HTTP keep-alive sense. If req.Close equals true, the
 // keep-alive connection is logically closed after this request and the opposing
 // server is informed. An ErrUnexpectedEOF indicates the remote closed the
@@ -125,9 +125,9 @@ func (cc *ClientConn) Write(req *http.Request) error
 func (cc *ClientConn) Pending() int
 
 // Read reads the next response from the wire. A valid response might be
-// returned together with an ErrPersistEOF, which means that the remote
+// returned together with an [ErrPersistEOF], which means that the remote
 // requested that this be the last request serviced. Read can be called
-// concurrently with Write, but not with another Read.
+// concurrently with [ClientConn.Write], but not with another Read.
 func (cc *ClientConn) Read(req *http.Request) (resp *http.Response, err error)
 
 // Do is convenience method that writes a request and reads a response.
