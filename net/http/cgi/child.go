@@ -15,20 +15,10 @@ import (
 // 適用される場合、返された Request の Body は取得されます。
 func Request() (*http.Request, error)
 
-<<<<<<< HEAD
-// RequestFromMapはCGI変数からhttp.Requestを作成します。
+// RequestFromMapはCGI変数から [http.Request] を作成します。
 // 返されたRequestのBodyフィールドは入力されません。
 func RequestFromMap(params map[string]string) (*http.Request, error)
 
-// Serveは現在アクティブなCGIリクエストに提供されたHandlerを実行します。もし現在のCGI環境がない場合、エラーが返されます。提供されたハンドラーがnilの場合、http.DefaultServeMuxが使用されます。
-=======
-// RequestFromMap creates an [http.Request] from CGI variables.
-// The returned Request's Body field is not populated.
-func RequestFromMap(params map[string]string) (*http.Request, error)
-
-// Serve executes the provided [Handler] on the currently active CGI
-// request, if any. If there's no current CGI environment
-// an error is returned. The provided handler may be nil to use
-// [http.DefaultServeMux].
->>>>>>> upstream/master
+// Serveは現在アクティブなCGIリクエストに提供された [Handler] を実行します。
+// もし現在のCGI環境がない場合、エラーが返されます。提供されたハンドラーがnilの場合、[http.DefaultServeMux] が使用されます。
 func Serve(handler http.Handler) error
