@@ -41,21 +41,11 @@
 //
 //	go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
 //
-<<<<<<< HEAD
-// または、プログラムでruntime.SetBlockProfileRateを呼び出した後にブロッキングプロファイルのゴルーチンを表示する場合：
+// または、プログラムで [runtime.SetBlockProfileRate] を呼び出した後にブロッキングプロファイルのゴルーチンを表示する場合：
 //
 //	go tool pprof http://localhost:6060/debug/pprof/block
 //
-// または、プログラムでruntime.SetMutexProfileFractionを呼び出した後にコンテンデッドなミューテックスのホルダーを表示する場合：
-=======
-// Or to look at the goroutine blocking profile, after calling
-// [runtime.SetBlockProfileRate] in your program:
-//
-//	go tool pprof http://localhost:6060/debug/pprof/block
-//
-// Or to look at the holders of contended mutexes, after calling
-// [runtime.SetMutexProfileFraction] in your program:
->>>>>>> upstream/master
+// または、プログラムで [runtime.SetMutexProfileFraction] を呼び出した後にコンテンデッドなミューテックスのホルダーを表示する場合：
 //
 //	go tool pprof http://localhost:6060/debug/pprof/mutex
 //
