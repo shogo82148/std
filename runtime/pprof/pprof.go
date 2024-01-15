@@ -58,7 +58,7 @@
 // よく使用されるコマンドには、「top」（プログラムのホットスポットの要約を表示する）や、「web」（ホットスポットとその呼び出しグラフの対話型グラフを開く）があります。
 // すべてのpprofコマンドに関する情報については、「help」を使用してください。
 // pprofに関する詳細情報は、次を参照してください
-// https://github.com/google/pprof/blob/master/doc/README.md.
+// https://github.com/google/pprof/blob/main/doc/README.md.
 package pprof
 
 import (
