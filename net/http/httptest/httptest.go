@@ -10,12 +10,7 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
-<<<<<<< HEAD
-// NewRequestはテスト用に、http.Handlerに渡すことができる新しい受信サーバーリクエストを返します。
-=======
-// NewRequest returns a new incoming server Request, suitable
-// for passing to an [http.Handler] for testing.
->>>>>>> upstream/master
+// NewRequestはテスト用に、[http.Handler] に渡すことができる新しい受信サーバーリクエストを返します。
 //
 // targetはRFC 7230の「要求ターゲット」です。パスまたは絶対URLのいずれかを使用できます。targetが絶対URLの場合、URLからホスト名が使用されます。それ以外の場合は、"example.com"が使用されます。
 //
