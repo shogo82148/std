@@ -44,11 +44,20 @@ type Client struct {
 	helloError error
 }
 
+<<<<<<< HEAD
 // Dialはaddrに指定されたポート付きのSMTPサーバーに接続された新しいClientを返します。
 // addrは"mail.example.com:smtp"のような形式である必要があります。
 func Dial(addr string) (*Client, error)
 
 // NewClient は既存の接続とホストを使用して新しいクライアントを返します。認証時に使用するサーバー名です。
+=======
+// Dial returns a new [Client] connected to an SMTP server at addr.
+// The addr must include a port, as in "mail.example.com:smtp".
+func Dial(addr string) (*Client, error)
+
+// NewClient returns a new [Client] using an existing connection and host as a
+// server name to be used when authenticating.
+>>>>>>> upstream/master
 func NewClient(conn net.Conn, host string) (*Client, error)
 
 // Closeは接続をクローズします。
@@ -64,8 +73,14 @@ func (c *Client) Hello(localName string) error
 // この機能をサポートするのは、STARTTLS拡張機能を広告するサーバーのみです。
 func (c *Client) StartTLS(config *tls.Config) error
 
+<<<<<<< HEAD
 // TLSConnectionState はクライアントのTLS接続状態を返します。
 // StartTLS が成功しなかった場合、返り値はゼロ値になります。
+=======
+// TLSConnectionState returns the client's TLS connection state.
+// The return values are their zero values if [Client.StartTLS] did
+// not succeed.
+>>>>>>> upstream/master
 func (c *Client) TLSConnectionState() (state tls.ConnectionState, ok bool)
 
 // Verifyはサーバー上でメールアドレスの妥当性をチェックします。
@@ -79,6 +94,7 @@ func (c *Client) Verify(addr string) error
 // この機能は、AUTH拡張機能をサポートしているサーバーのみが広告しています。
 func (c *Client) Auth(a Auth) error
 
+<<<<<<< HEAD
 // Mailは提供されたメールアドレスを使用してサーバーにMAILコマンドを発行します。
 // サーバーが8BITMIME拡張をサポートしている場合、MailはBODY=8BITMIMEパラメータを追加します。
 // サーバーがSMTPUTF8拡張をサポートしている場合、MailはSMTPUTF8パラメータを追加します。
@@ -90,6 +106,24 @@ func (c *Client) Mail(from string) error
 func (c *Client) Rcpt(to string) error
 
 // DataはサーバーにDATAコマンドを送信し、メールのヘッダーと本文を書き込むために使用できるライターを返します。呼び出し元は、cの他のメソッドを呼び出す前にライターを閉じる必要があります。Dataの呼び出しは、一つ以上のRcptの呼び出しに先行する必要があります。
+=======
+// Mail issues a MAIL command to the server using the provided email address.
+// If the server supports the 8BITMIME extension, Mail adds the BODY=8BITMIME
+// parameter. If the server supports the SMTPUTF8 extension, Mail adds the
+// SMTPUTF8 parameter.
+// This initiates a mail transaction and is followed by one or more [Client.Rcpt] calls.
+func (c *Client) Mail(from string) error
+
+// Rcpt issues a RCPT command to the server using the provided email address.
+// A call to Rcpt must be preceded by a call to [Client.Mail] and may be followed by
+// a [Client.Data] call or another Rcpt call.
+func (c *Client) Rcpt(to string) error
+
+// Data issues a DATA command to the server and returns a writer that
+// can be used to write the mail headers and body. The caller should
+// close the writer before calling any more methods on c. A call to
+// Data must be preceded by one or more calls to [Client.Rcpt].
+>>>>>>> upstream/master
 func (c *Client) Data() (io.WriteCloser, error)
 
 // SendMailはaddrで指定されたサーバに接続し、可能な場合はTLSに切り替え、必要に応じてオプションのメカニズムaで認証し、fromからのアドレス、toへのアドレス、メッセージmsgを送信します。

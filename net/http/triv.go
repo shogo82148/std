@@ -19,7 +19,7 @@ type Counter struct {
 	n  int
 }
 
-// This makes Counter satisfy the expvar.Var interface, so we can export
+// This makes Counter satisfy the [expvar.Var] interface, so we can export
 // it directly.
 func (ctr *Counter) String() string
 

@@ -16,16 +16,28 @@ type Reader struct {
 	buf []byte
 }
 
+<<<<<<< HEAD
 // NewReaderはrから読み取りを行う新しいReaderを返します。
 //
 // サービス拒否攻撃を避けるために、提供されたbufio.Readerは
 // io.LimitReaderまたは同様のReaderから読み取るようになっている必要があります。
+=======
+// NewReader returns a new [Reader] reading from r.
+//
+// To avoid denial of service attacks, the provided [bufio.Reader]
+// should be reading from an [io.LimitReader] or similar Reader to bound
+// the size of responses.
+>>>>>>> upstream/master
 func NewReader(r *bufio.Reader) *Reader
 
 // ReadLineはrから1行だけ読み取り、返された文字列から最後の\nまたは\r\nを省略します。
 func (r *Reader) ReadLine() (string, error)
 
+<<<<<<< HEAD
 // ReadLineBytesは、文字列の代わりに[]byteを返すReadLineと同様の機能です。
+=======
+// ReadLineBytes is like [Reader.ReadLine] but returns a []byte instead of a string.
+>>>>>>> upstream/master
 func (r *Reader) ReadLineBytes() ([]byte, error)
 
 // ReadContinuedLineは、rから可能性がある継続行を読み取ります。
@@ -47,8 +59,13 @@ func (r *Reader) ReadLineBytes() ([]byte, error)
 // 空行は継続されません。
 func (r *Reader) ReadContinuedLine() (string, error)
 
+<<<<<<< HEAD
 // ReadContinuedLineBytesは、ReadContinuedLineと同様ですが、
 // 文字列ではなく[]byteを返します。
+=======
+// ReadContinuedLineBytes is like [Reader.ReadContinuedLine] but
+// returns a []byte instead of a string.
+>>>>>>> upstream/master
 func (r *Reader) ReadContinuedLineBytes() ([]byte, error)
 
 // ReadCodeLineは、下記の形式の応答コード行を読み取ります：
@@ -94,25 +111,44 @@ func (r *Reader) ReadCodeLine(expectCode int) (code int, message string, err err
 // expectCode <= 0の場合、ステータスコードのチェックは無効になります。
 func (r *Reader) ReadResponse(expectCode int) (code int, message string, err error)
 
+<<<<<<< HEAD
 // DotReaderは、rから読み込まれたドットエンコードされたブロックのデコードされたテキストを使用して、
 // Readsを満たす新しいReaderを返します。
 // 返されたReaderは、次にrのメソッドが呼び出されるまでの間のみ有効です。
+=======
+// DotReader returns a new [Reader] that satisfies Reads using the
+// decoded text of a dot-encoded block read from r.
+// The returned Reader is only valid until the next call
+// to a method on r.
+>>>>>>> upstream/master
 //
 // ドットエンコーディングは、SMTPなどのテキストプロトコルで使用される一般的なフレーミングです。
 // データは、各行が"\r\n"で終わるシーケンスです。シーケンス自体は、単独のドット「.」の行で終了します：".\r\n"。
 // ドットで始まる行は、シーケンスの終わりのように見えないように追加のドットでエスケープされます。
 //
+<<<<<<< HEAD
 // ReaderのReadメソッドによって返されるデコードされた形式は、"\r\n"の行末をよりシンプルな"\n"に書き換え、
 // 先頭のドットエスケープを削除し、シーケンスの終了行を消費（および破棄）した後にエラーio.EOFで停止します。
+=======
+// The decoded form returned by the Reader's Read method
+// rewrites the "\r\n" line endings into the simpler "\n",
+// removes leading dot escapes if present, and stops with error [io.EOF]
+// after consuming (and discarding) the end-of-sequence line.
+>>>>>>> upstream/master
 func (r *Reader) DotReader() io.Reader
 
 // ReadDotBytesはドットエンコーディングを読み込み、デコードされたデータを返します。
 //
+<<<<<<< HEAD
 // ドットエンコーディングの詳細については、DotReaderメソッドのドキュメントを参照してください。
+=======
+// See the documentation for the [Reader.DotReader] method for details about dot-encoding.
+>>>>>>> upstream/master
 func (r *Reader) ReadDotBytes() ([]byte, error)
 
 // ReadDotLines関数はドットエンコーディングを読み取り、各行から最後の\r\nまたは\nを省いたデコードされたスライスを返します。
 //
+<<<<<<< HEAD
 // dot-encodingの詳細についてはDotReaderメソッドのドキュメントを参照してください。
 func (r *Reader) ReadDotLines() ([]string, error)
 
@@ -121,6 +157,16 @@ func (r *Reader) ReadDotLines() ([]string, error)
 // 空行で終わる可能性があります。
 // 返されるマップmは、CanonicalMIMEHeaderKey(key)をキーとし、
 // 入力で遭遇した順に値のシーケンスをマッピングします。
+=======
+// See the documentation for the [Reader.DotReader] method for details about dot-encoding.
+func (r *Reader) ReadDotLines() ([]string, error)
+
+// ReadMIMEHeader reads a MIME-style header from r.
+// The header is a sequence of possibly continued Key: Value lines
+// ending in a blank line.
+// The returned map m maps [CanonicalMIMEHeaderKey](key) to a
+// sequence of values in the same order encountered in the input.
+>>>>>>> upstream/master
 //
 // 例えば、以下のような入力を考えてください：
 //

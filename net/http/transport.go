@@ -21,9 +21,17 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+<<<<<<< HEAD
 // DefaultTransportはTransportのデフォルト実装であり、DefaultClientによって使用されます。
 // 必要に応じてネットワーク接続を確立し、後続の呼び出しで再利用するためにキャッシュします。
 // 環境変数HTTP_PROXY、HTTPS_PROXY、およびNO_PROXY（またはその小文字バージョン）によって指示されたように、HTTPプロキシを使用します。
+=======
+// DefaultTransport is the default implementation of [Transport] and is
+// used by [DefaultClient]. It establishes network connections as needed
+// and caches them for reuse by subsequent calls. It uses HTTP proxies
+// as directed by the environment variables HTTP_PROXY, HTTPS_PROXY
+// and NO_PROXY (or the lowercase versions thereof).
+>>>>>>> upstream/master
 var DefaultTransport RoundTripper = &Transport{
 	Proxy: ProxyFromEnvironment,
 	DialContext: defaultTransportDialContext(&net.Dialer{
@@ -37,6 +45,7 @@ var DefaultTransport RoundTripper = &Transport{
 	ExpectContinueTimeout: 1 * time.Second,
 }
 
+<<<<<<< HEAD
 // DefaultMaxIdleConnsPerHostは、TransportのMaxIdleConnsPerHostのデフォルト値です。
 const DefaultMaxIdleConnsPerHost = 2
 
@@ -45,10 +54,24 @@ const DefaultMaxIdleConnsPerHost = 2
 // デフォルトでは、Transportは将来の再利用のために接続をキャッシュします。
 // これにより、多くのホストにアクセスする場合に多数のオープンな接続が残る可能性があります。
 // この動作は、TransportのCloseIdleConnectionsメソッドとMaxIdleConnsPerHostおよびDisableKeepAlivesフィールドを使用して管理できます。
+=======
+// DefaultMaxIdleConnsPerHost is the default value of [Transport]'s
+// MaxIdleConnsPerHost.
+const DefaultMaxIdleConnsPerHost = 2
+
+// Transport is an implementation of [RoundTripper] that supports HTTP,
+// HTTPS, and HTTP proxies (for either HTTP or HTTPS with CONNECT).
+//
+// By default, Transport caches connections for future re-use.
+// This may leave many open connections when accessing many hosts.
+// This behavior can be managed using [Transport.CloseIdleConnections] method
+// and the [Transport.MaxIdleConnsPerHost] and [Transport.DisableKeepAlives] fields.
+>>>>>>> upstream/master
 //
 // Transportは必要に応じて作成するのではなく、再利用する必要があります。
 // Transportは、複数のgoroutineによる同時使用に対して安全です。
 //
+<<<<<<< HEAD
 // Transportは、HTTPおよびHTTPSリクエストを行うための低レベルのプリミティブです。
 // クッキーやリダイレクトなどの高レベルの機能については、Clientを参照してください。
 //
@@ -67,6 +90,32 @@ const DefaultMaxIdleConnsPerHost = 2
 // リクエストを再試行します。HTTPリクエストは、HTTPメソッドがGET、HEAD、OPTIONS、またはTRACEである場合、
 // またはHeaderマップに「Idempotency-Key」または「X-Idempotency-Key」エントリが含まれている場合、冪等と見なされます。
 // 冪等性キーの値がゼロ長のスライスの場合、リクエストは冪等と見なされますが、ヘッダーはワイヤーに送信されません。
+=======
+// A Transport is a low-level primitive for making HTTP and HTTPS requests.
+// For high-level functionality, such as cookies and redirects, see [Client].
+//
+// Transport uses HTTP/1.1 for HTTP URLs and either HTTP/1.1 or HTTP/2
+// for HTTPS URLs, depending on whether the server supports HTTP/2,
+// and how the Transport is configured. The [DefaultTransport] supports HTTP/2.
+// To explicitly enable HTTP/2 on a transport, use golang.org/x/net/http2
+// and call ConfigureTransport. See the package docs for more about HTTP/2.
+//
+// Responses with status codes in the 1xx range are either handled
+// automatically (100 expect-continue) or ignored. The one
+// exception is HTTP status code 101 (Switching Protocols), which is
+// considered a terminal status and returned by [Transport.RoundTrip]. To see the
+// ignored 1xx responses, use the httptrace trace package's
+// ClientTrace.Got1xxResponse.
+//
+// Transport only retries a request upon encountering a network error
+// if the connection has been already been used successfully and if the
+// request is idempotent and either has no body or has its [Request.GetBody]
+// defined. HTTP requests are considered idempotent if they have HTTP methods
+// GET, HEAD, OPTIONS, or TRACE; or if their [Header] map contains an
+// "Idempotency-Key" or "X-Idempotency-Key" entry. If the idempotency key
+// value is a zero-length slice, the request is treated as idempotent but the
+// header is not sent on the wire.
+>>>>>>> upstream/master
 type Transport struct {
 	idleMu       sync.Mutex
 	closeIdle    bool
@@ -249,31 +298,57 @@ func (t *Transport) Clone() *Transport
 // 特別な場合として、req.URL.Hostが"localhost"（ポート番号ありまたはなし）の場合、nilのURLとnilのエラーが返されます。
 func ProxyFromEnvironment(req *Request) (*url.URL, error)
 
+<<<<<<< HEAD
 // ProxyURLは、常に同じURLを返すプロキシ関数（Transportで使用するため）を返します。
+=======
+// ProxyURL returns a proxy function (for use in a [Transport])
+// that always returns the same URL.
+>>>>>>> upstream/master
 func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 
 // ErrSkipAltProtocolは、Transport.RegisterProtocolによって定義されたセンチネルエラー値です。
 var ErrSkipAltProtocol = errors.New("net/http: skip alternate protocol")
 
+<<<<<<< HEAD
 // RegisterProtocolは、新しいプロトコルをスキームとともに登録します。
 // Transportは、指定されたスキームを使用してリクエストをrtに渡します。
 // HTTPリクエストのセマンティクスをシミュレートする責任は、rtにあります。
+=======
+// RegisterProtocol registers a new protocol with scheme.
+// The [Transport] will pass requests using the given scheme to rt.
+// It is rt's responsibility to simulate HTTP request semantics.
+>>>>>>> upstream/master
 //
 // RegisterProtocolは、他のパッケージが"ftp"や"file"などのプロトコルスキームの実装を提供するために使用できます。
 //
+<<<<<<< HEAD
 // rt.RoundTripがErrSkipAltProtocolを返す場合、Transportは、
 // 登録されたプロトコルのように扱わずに、その1つのリクエストに対して自身でRoundTripを処理します。
+=======
+// If rt.RoundTrip returns [ErrSkipAltProtocol], the Transport will
+// handle the [Transport.RoundTrip] itself for that one request, as if the
+// protocol were not registered.
+>>>>>>> upstream/master
 func (t *Transport) RegisterProtocol(scheme string, rt RoundTripper)
 
 // CloseIdleConnectionsは、以前のリクエストから接続されていたが、現在はアイドル状態になっている"keep-alive"状態の接続を閉じます。
 // 現在使用中の接続は中断しません。
 func (t *Transport) CloseIdleConnections()
 
+<<<<<<< HEAD
 // CancelRequestは、その接続を閉じることにより、進行中のリクエストをキャンセルします。
 // CancelRequestは、RoundTripが返された後にのみ呼び出す必要があります。
 //
 // Deprecated: 代わりに、キャンセル可能なコンテキストを持つリクエストを作成するためにRequest.WithContextを使用してください。
 // CancelRequestは、HTTP/2リクエストをキャンセルできません。
+=======
+// CancelRequest cancels an in-flight request by closing its connection.
+// CancelRequest should only be called after [Transport.RoundTrip] has returned.
+//
+// Deprecated: Use [Request.WithContext] to create a request with a
+// cancelable context instead. CancelRequest cannot cancel HTTP/2
+// requests.
+>>>>>>> upstream/master
 func (t *Transport) CancelRequest(req *Request)
 
 var _ io.ReaderFrom = (*persistConnWriter)(nil)

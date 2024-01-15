@@ -14,6 +14,7 @@ func (h MIMEHeader) Add(key, value string)
 // Setは、キーに関連付けられたヘッダーエントリを単一の要素"value"に設定します。既存の値は置き換えられます。
 func (h MIMEHeader) Set(key, value string)
 
+<<<<<<< HEAD
 // Getは与えられたキーに関連付けられた最初の値を取得します。
 // 大文字と小文字を区別しないです。CanonicalMIMEHeaderKeyが提供されたキーを正規化するために使用されます。
 // キーに関連付けられた値がない場合、Getは "" を返します。
@@ -24,6 +25,20 @@ func (h MIMEHeader) Get(key string) string
 // 大文字小文字を区別しません。CanonicalMIMEHeaderKeyを使って提供されたキーを正規化します。
 // 正規化されていないキーを使用する場合は、マップに直接アクセスしてください。
 // 返されるスライスはコピーされません。
+=======
+// Get gets the first value associated with the given key.
+// It is case insensitive; [CanonicalMIMEHeaderKey] is used
+// to canonicalize the provided key.
+// If there are no values associated with the key, Get returns "".
+// To use non-canonical keys, access the map directly.
+func (h MIMEHeader) Get(key string) string
+
+// Values returns all values associated with the given key.
+// It is case insensitive; [CanonicalMIMEHeaderKey] is
+// used to canonicalize the provided key. To use non-canonical
+// keys, access the map directly.
+// The returned slice is not a copy.
+>>>>>>> upstream/master
 func (h MIMEHeader) Values(key string) []string
 
 // Delはkeyに関連付けられた値を削除します。

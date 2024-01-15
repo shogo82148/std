@@ -9,7 +9,12 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
+<<<<<<< HEAD
 // ResponseRecorderはhttp.ResponseWriterの実装であり、テストで後で検査するためにその変更を記録します。
+=======
+// ResponseRecorder is an implementation of [http.ResponseWriter] that
+// records its mutations for later inspection in tests.
+>>>>>>> upstream/master
 type ResponseRecorder struct {
 	// CodeはWriteHeaderが設定したHTTPレスポンスコードです。
 	//
@@ -36,6 +41,7 @@ type ResponseRecorder struct {
 	wroteHeader bool
 }
 
+<<<<<<< HEAD
 // NewRecorderは初期化されたResponseRecorderを返します。
 func NewRecorder() *ResponseRecorder
 
@@ -44,11 +50,25 @@ func NewRecorder() *ResponseRecorder
 const DefaultRemoteAddr = "1.2.3.4"
 
 // Headerはhttp.ResponseWriterを実装します。ハンドラ内で変更するためにレスポンスヘッダーを返します。ハンドラが完了した後に書き込まれたヘッダーをテストするには、Resultメソッドを使用し、返されたResponse値のHeaderを確認してください。
+=======
+// NewRecorder returns an initialized [ResponseRecorder].
+func NewRecorder() *ResponseRecorder
+
+// DefaultRemoteAddr is the default remote address to return in RemoteAddr if
+// an explicit DefaultRemoteAddr isn't set on [ResponseRecorder].
+const DefaultRemoteAddr = "1.2.3.4"
+
+// Header implements [http.ResponseWriter]. It returns the response
+// headers to mutate within a handler. To test the headers that were
+// written after a handler completes, use the [ResponseRecorder.Result] method and see
+// the returned Response value's Header.
+>>>>>>> upstream/master
 func (rw *ResponseRecorder) Header() http.Header
 
 // Writeはhttp.ResponseWriterを実装します。buf内のデータは、rw.Bodyがnilでない場合にrw.Bodyに書き込まれます。
 func (rw *ResponseRecorder) Write(buf []byte) (int, error)
 
+<<<<<<< HEAD
 // WriteStringはio.StringWriterを実装します。strのデータは、nilでない場合はrw.Bodyに書き込まれます。
 func (rw *ResponseRecorder) WriteString(str string) (int, error)
 
@@ -56,6 +76,17 @@ func (rw *ResponseRecorder) WriteString(str string) (int, error)
 func (rw *ResponseRecorder) WriteHeader(code int)
 
 // Flushはhttp.Flusherを実装します。Flushが呼び出されたかどうかをテストするには、rw.Flushedを参照してください。
+=======
+// WriteString implements [io.StringWriter]. The data in str is written
+// to rw.Body, if not nil.
+func (rw *ResponseRecorder) WriteString(str string) (int, error)
+
+// WriteHeader implements [http.ResponseWriter].
+func (rw *ResponseRecorder) WriteHeader(code int)
+
+// Flush implements [http.Flusher]. To test whether Flush was
+// called, see rw.Flushed.
+>>>>>>> upstream/master
 func (rw *ResponseRecorder) Flush()
 
 // Resultはハンドラによって生成されたレスポンスを返します。
@@ -65,7 +96,12 @@ func (rw *ResponseRecorder) Flush()
 //
 // Response.Headerは、最初の書き込み呼び出し時またはこの呼び出し時のヘッダのスナップショットですが、ハンドラが書き込みを行っていない場合は呼び出し時のものになります。
 //
+<<<<<<< HEAD
 // Response.Bodyは非nilであり、Body.Read呼び出しはio.EOF以外のエラーを返さないことが保証されています。
+=======
+// The Response.Body is guaranteed to be non-nil and Body.Read call is
+// guaranteed to not return any error other than [io.EOF].
+>>>>>>> upstream/master
 //
 // Resultは、ハンドラの実行が完了した後にのみ呼び出す必要があります。
 func (rw *ResponseRecorder) Result() *http.Response

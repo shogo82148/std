@@ -100,10 +100,21 @@ func Abs(path string) (string, error)
 // Relは結果に対して [Clean] を呼び出します。
 func Rel(basepath, targpath string) (string, error)
 
+<<<<<<< HEAD
 // SkipDirは、WalkFuncsからの返り値として使用され、呼び出し元で指定されたディレクトリをスキップすることを示します。これは、どの関数からもエラーとして返されません。
 var SkipDir error = fs.SkipDir
 
 // SkipAllはWalkFuncsからの戻り値として使用され、残りのすべてのファイルとディレクトリをスキップすることを示します。これはエラーではなく、いかなる関数からも戻されません。
+=======
+// SkipDir is used as a return value from [WalkFunc] to indicate that
+// the directory named in the call is to be skipped. It is not returned
+// as an error by any function.
+var SkipDir error = fs.SkipDir
+
+// SkipAll is used as a return value from [WalkFunc] to indicate that
+// all remaining files and directories are to be skipped. It is not returned
+// as an error by any function.
+>>>>>>> upstream/master
 var SkipAll error = fs.SkipAll
 
 // WalkFuncは、[Walk] によって呼び出される関数の型です。この関数は、各ファイルやディレクトリを訪れるために呼び出されます。

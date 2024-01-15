@@ -10,8 +10,14 @@ import (
 	"github.com/shogo82148/std/net/http/internal"
 )
 
+<<<<<<< HEAD
 // NewChunkedReaderは、rから読み込まれたデータをHTTPの「チャンク」形式から変換して返す新しいchunkedReaderを返します。
 // chunkedReaderは、最後の長さ0のチャンクが読み込まれた時にio.EOFを返します。
+=======
+// NewChunkedReader returns a new chunkedReader that translates the data read from r
+// out of HTTP "chunked" format before returning it.
+// The chunkedReader returns [io.EOF] when the final 0-length chunk is read.
+>>>>>>> upstream/master
 //
 // NewChunkedReaderは通常のアプリケーションでは必要ありません。httpパッケージは、応答ボディを読み込む際に自動的にチャンクをデコードします。
 func NewChunkedReader(r io.Reader) io.Reader
