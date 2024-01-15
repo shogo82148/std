@@ -54,22 +54,11 @@
 //
 //	go tool pprof cpu.prof
 //
-<<<<<<< HEAD
 // pprofコマンドラインからは多くのコマンドが利用できます。
 // よく使用されるコマンドには、「top」（プログラムのホットスポットの要約を表示する）や、「web」（ホットスポットとその呼び出しグラフの対話型グラフを開く）があります。
 // すべてのpprofコマンドに関する情報については、「help」を使用してください。
 // pprofに関する詳細情報は、次を参照してください
-// https://github.com/google/pprof/blob/master/doc/README.md.
-=======
-// There are many commands available from the pprof command line.
-// Commonly used commands include "top", which prints a summary of the
-// top program hot-spots, and "web", which opens an interactive graph
-// of hot-spots and their call graphs. Use "help" for information on
-// all pprof commands.
-//
-// For more information about pprof, see
 // https://github.com/google/pprof/blob/main/doc/README.md.
->>>>>>> upstream/release-branch.go1.22
 package pprof
 
 import (
