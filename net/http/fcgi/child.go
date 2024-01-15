@@ -16,17 +16,9 @@ var ErrRequestAborted = errors.New("fcgi: request aborted by web server")
 // ErrConnClosedは、接続がウェブサーバーとの間で閉じられた後に、ハンドラがリクエストのボディを読み取ろうとした場合に、Readで返されます。
 var ErrConnClosed = errors.New("fcgi: connection to web server closed")
 
-<<<<<<< HEAD
 // Serveはリスナーlで受け入れた入力FastCGI接続を処理し、それぞれのために新しいゴルーチンを作成します。ゴルーチンはリクエストを読み取り、その後ハンドラを呼び出して応答します。
 // lがnilの場合、Serveはos.Stdinからの接続を受け入れます。
-// handlerがnilの場合、http.DefaultServeMuxが使用されます。
-=======
-// Serve accepts incoming FastCGI connections on the listener l, creating a new
-// goroutine for each. The goroutine reads requests and then calls handler
-// to reply to them.
-// If l is nil, Serve accepts connections from os.Stdin.
-// If handler is nil, [http.DefaultServeMux] is used.
->>>>>>> upstream/master
+// handlerがnilの場合、[http.DefaultServeMux] が使用されます。
 func Serve(l net.Listener, handler http.Handler) error
 
 // ProcessEnvは、リクエストrに関連するFastCGI環境変数を返します。
