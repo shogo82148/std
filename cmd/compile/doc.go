@@ -68,92 +68,86 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
 		コンパイルするための言語バージョンを設定します（-lang=go1.12など）。
 		デフォルトは現在のバージョンです。
 	-linkobj file
-<<<<<<< HEAD
-		リンカ固有のオブジェクトをファイルに書き込み、コンパイラ固有のオブジェクト
-		オブジェクトを通常の出力ファイル（-oで指定されたファ*/package main
-=======
-		Write linker-specific object to file and compiler-specific
-		object to usual output file (as specified by -o).
-		Without this flag, the -o output is a combination of both
-		linker and compiler input.
+		リンカー固有のオブジェクトをファイルに書き込み、コンパイラ固有の
+		オブジェクトを通常の出力ファイルに書き込みます（-oで指定されたもの）。
+		このフラグがない場合、-oの出力はリンカーとコンパイラの入力の両方の組み合わせです。
 	-m
-		Print optimization decisions. Higher values or repetition
-		produce more detail.
+		最適化の決定を印刷します。より高い値または繰り返しは、
+		より詳細な情報を提供します。
 	-memprofile file
-		Write memory profile for the compilation to file.
+		コンパイルのメモリプロファイルをファイルに書き込みます。
 	-memprofilerate rate
-		Set runtime.MemProfileRate for the compilation to rate.
+		コンパイルのruntime.MemProfileRateをrateに設定します。
 	-msan
-		Insert calls to C/C++ memory sanitizer.
+		C/C++メモリサニタイザへの呼び出しを挿入します。
 	-mutexprofile file
-		Write mutex profile for the compilation to file.
+		コンパイルのミューテックスプロファイルをファイルに書き込みます。
 	-nolocalimports
-		Disallow local (relative) imports.
+		ローカル（相対）インポートを禁止します。
 	-o file
-		Write object to file (default file.o or, with -pack, file.a).
+		オブジェクトをファイルに書き込みます（デフォルトはfile.oまたは、-packがある場合はfile.a）。
 	-p path
-		Set expected package import path for the code being compiled,
-		and diagnose imports that would cause a circular dependency.
+		コンパイルされるコードの予想されるパッケージインポートパスを設定し、
+		循環依存関係を引き起こすインポートを診断します。
 	-pack
-		Write a package (archive) file rather than an object file
+		オブジェクトファイルではなくパッケージ（アーカイブ）ファイルを書き込みます。
 	-race
-		Compile with race detector enabled.
+		レースディテクタを有効にしてコンパイルします。
 	-s
-		Warn about composite literals that can be simplified.
+		簡略化できる複合リテラルについて警告します。
 	-shared
-		Generate code that can be linked into a shared library.
+		共有ライブラリにリンクできるコードを生成します。
 	-spectre list
-		Enable spectre mitigations in list (all, index, ret).
+		リスト（all, index, ret）のスペクター緩和を有効にします。
 	-traceprofile file
-		Write an execution trace to file.
+		実行トレースをファイルに書き込みます。
 	-trimpath prefix
-		Remove prefix from recorded source file paths.
+		記録されたソースファイルパスからプレフィックスを削除します。
 
-Flags related to debugging information:
+デバッグ情報に関連するフラグ:
 
 	-dwarf
-		Generate DWARF symbols.
+		DWARFシンボルを生成します。
 	-dwarflocationlists
-		Add location lists to DWARF in optimized mode.
+		最適化モードでDWARFにロケーションリストを追加します。
 	-gendwarfinl int
-		Generate DWARF inline info records (default 2).
+		DWARFインライン情報レコードを生成します（デフォルトは2）。
 
-Flags to debug the compiler itself:
+コンパイラ自体をデバッグするためのフラグ:
 
 	-E
-		Debug symbol export.
+		シンボルエクスポートをデバッグします。
 	-K
-		Debug missing line numbers.
+		行番号が欠落していることをデバッグします。
 	-d list
-		Print debug information about items in list. Try -d help for further information.
+		リスト内のアイテムについてのデバッグ情報を表示します。詳細情報は -d help を試してみてください。
 	-live
-		Debug liveness analysis.
+		ライブネス分析をデバッグします。
 	-v
-		Increase debug verbosity.
+		デバッグの詳細度を増やします。
 	-%
-		Debug non-static initializers.
+		非静的初期化子をデバッグします。
 	-W
-		Debug parse tree after type checking.
+		型チェック後のパースツリーをデバッグします。
 	-f
-		Debug stack frames.
+		スタックフレームをデバッグします。
 	-i
-		Debug line number stack.
+		行番号スタックをデバッグします。
 	-j
-		Debug runtime-initialized variables.
+		ランタイムで初期化された変数をデバッグします。
 	-r
-		Debug generated wrappers.
+		生成されたラッパーをデバッグします。
 	-w
-		Debug type checking.
+		型チェックをデバッグします。
 
-Compiler Directives
+コンパイラディレクティブ
 
-The compiler accepts directives in the form of comments.
-To distinguish them from non-directive comments, directives
-require no space between the comment opening and the name of the directive. However, since
-they are comments, tools unaware of the directive convention or of a particular
-directive can skip over a directive like any other comment.
+コンパイラは、コメントの形式でディレクティブを受け入れます。
+ディレクティブと非ディレクティブコメントを区別するために、ディレクティブの名前とコメントの開始の間にはスペースが必要ありません。しかし、
+それらはコメントであるため、ディレクティブの規則や特定の
+ディレクティブを知らないツールは、他のコメントと同様にディレクティブをスキップできます。
 */
-// Line directives come in several forms:
+// ラインディレクティブはいくつかの形式があります：
 //
 // 	//line :line
 // 	//line :line:col
@@ -164,101 +158,88 @@ directive can skip over a directive like any other comment.
 // 	/*line filename:line*/
 // 	/*line filename:line:col*/
 //
-// In order to be recognized as a line directive, the comment must start with
-// //line or /*line followed by a space, and must contain at least one colon.
-// The //line form must start at the beginning of a line.
-// A line directive specifies the source position for the character immediately following
-// the comment as having come from the specified file, line and column:
-// For a //line comment, this is the first character of the next line, and
-// for a /*line comment this is the character position immediately following the closing */.
-// If no filename is given, the recorded filename is empty if there is also no column number;
-// otherwise it is the most recently recorded filename (actual filename or filename specified
-// by previous line directive).
-// If a line directive doesn't specify a column number, the column is "unknown" until
-// the next directive and the compiler does not report column numbers for that range.
-// The line directive text is interpreted from the back: First the trailing :ddd is peeled
-// off from the directive text if ddd is a valid number > 0. Then the second :ddd
-// is peeled off the same way if it is valid. Anything before that is considered the filename
-// (possibly including blanks and colons). Invalid line or column values are reported as errors.
+// ラインディレクティブとして認識されるためには、コメントは
+// //lineまたは/*lineに続くスペースで始まり、少なくとも一つのコロンを含んでいなければなりません。
+// //line形式は行の始まりでなければなりません。
+// ラインディレクティブは、コメントの直後の文字のソース位置を指定したファイル、行、列から来たものとして指定します：
+// //lineコメントの場合、これは次の行の最初の文字であり、
+// /*lineコメントの場合、これは閉じる*/の直後の文字位置です。
+// ファイル名が指定されていない場合、記録されたファイル名は列番号もない場合は空であり、
+// それ以外の場合は最近記録されたファイル名（実際のファイル名または前のラインディレクティブで指定されたファイル名）です。
+// ラインディレクティブが列番号を指定していない場合、列は"未知"であり、
+// 次のディレクティブまでコンパイラはその範囲の列番号を報告しません。
+// ラインディレクティブのテキストは後ろから解釈されます：まず、dddが有効な数値>0である場合、
+// ディレクティブテキストから末尾の:dddが剥がされます。次に、それが有効である場合、
+// 2番目の:dddが同じように剥がされます。それ以前のものはすべてファイル名と見なされます
+// （空白とコロンを含む可能性があります）。無効な行または列の値はエラーとして報告されます。
 //
-// Examples:
+// 例：
 //
-//	//line foo.go:10      the filename is foo.go, and the line number is 10 for the next line
-//	//line C:foo.go:10    colons are permitted in filenames, here the filename is C:foo.go, and the line is 10
-//	//line  a:100 :10     blanks are permitted in filenames, here the filename is " a:100 " (excluding quotes)
-//	/*line :10:20*/x      the position of x is in the current file with line number 10 and column number 20
-//	/*line foo: 10 */     this comment is recognized as invalid line directive (extra blanks around line number)
+//	//line foo.go:10      ファイル名はfoo.goで、次の行の行番号は10です
+//	//line C:foo.go:10    ファイル名にコロンが許可されています、ここではファイル名はC:foo.goで、行は10です
+//	//line  a:100 :10     ファイル名に空白が許可されています、ここではファイル名は " a:100 "（引用符を除く）
+//	/*line :10:20*/x      xの位置は現在のファイル内で、行番号は10、列番号は20です
+//	/*line foo: 10 */     このコメントは無効な行ディレクティブとして認識されます（行番号の周囲に余分な空白があります）
 //
-// Line directives typically appear in machine-generated code, so that compilers and debuggers
-// will report positions in the original input to the generator.
+// ラインディレクティブは通常、機械生成コードに現れるため、コンパイラやデバッガーは
+// ジェネレータへの元の入力の位置を報告します。
 /*
-The line directive is a historical special case; all other directives are of the form
-//go:name, indicating that they are defined by the Go toolchain.
-Each directive must be placed its own line, with only leading spaces and tabs
-allowed before the comment.
-Each directive applies to the Go code that immediately follows it,
-which typically must be a declaration.
+ラインディレクティブは歴史的な特殊なケースであり、他のすべてのディレクティブは
+//go:nameの形式で、それらがGoツールチェーンによって定義されていることを示しています。
+各ディレクティブは、その自身の行に配置されなければならず、コメントの前には先頭のスペースとタブのみが許可されます。
+各ディレクティブは、それに直後に続くGoコードに適用され、
+通常、それは宣言でなければなりません。
 
 	//go:noescape
 
-The //go:noescape directive must be followed by a function declaration without
-a body (meaning that the function has an implementation not written in Go).
-It specifies that the function does not allow any of the pointers passed as
-arguments to escape into the heap or into the values returned from the function.
-This information can be used during the compiler's escape analysis of Go code
-calling the function.
+//go:noescapeディレクティブは、本体を持たない関数宣言（つまり、関数の実装がGoで書かれていない）に続かなければなりません。
+これは、関数が引数として渡されたポインタをヒープに逃がしたり、関数から返される値に逃がしたりしないことを指定します。
+この情報は、関数を呼び出すGoコードのコンパイラのエスケープ解析中に使用できます。
 
 	//go:uintptrescapes
 
-The //go:uintptrescapes directive must be followed by a function declaration.
-It specifies that the function's uintptr arguments may be pointer values that
-have been converted to uintptr and must be on the heap and kept alive for the
-duration of the call, even though from the types alone it would appear that the
-object is no longer needed during the call. The conversion from pointer to
-uintptr must appear in the argument list of any call to this function. This
-directive is necessary for some low-level system call implementations and
-should be avoided otherwise.
+//go:uintptrescapesディレクティブは、関数宣言に続かなければなりません。
+これは、関数のuintptr引数がuintptrに変換されたポインタ値であり、
+呼び出しの期間中、型だけから見てオブジェクトが呼び出し中には必要ないように見える場合でも、
+ヒープ上に保持され、生き続ける必要があることを指定します。
+ポインタからuintptrへの変換は、この関数への任意の呼び出しの引数リストに現れなければなりません。
+このディレクティブは、一部の低レベルシステムコールの実装に必要であり、それ以外では避けるべきです。
 
 	//go:noinline
 
-The //go:noinline directive must be followed by a function declaration.
-It specifies that calls to the function should not be inlined, overriding
-the compiler's usual optimization rules. This is typically only needed
-for special runtime functions or when debugging the compiler.
+//go:noinlineディレクティブは、関数宣言に続かなければなりません。
+これは、関数への呼び出しがインライン化されないように指定します、これにより
+コンパイラの通常の最適化ルールが上書きされます。これは通常、特別なランタイム関数や
+コンパイラのデバッグ時にのみ必要とされます。
 
 	//go:norace
 
-The //go:norace directive must be followed by a function declaration.
-It specifies that the function's memory accesses must be ignored by the
-race detector. This is most commonly used in low-level code invoked
-at times when it is unsafe to call into the race detector runtime.
+//go:noraceディレクティブは、関数宣言に続かなければならなりません。
+これは、関数のメモリアクセスがレースディテクタによって無視されるべきであることを指定します。
+これは、レースディテクタランタイムに呼び出すことが安全でない時期に呼び出される低レベルのコードで最も一般的に使用されます。
 
 	//go:nosplit
 
-The //go:nosplit directive must be followed by a function declaration.
-It specifies that the function must omit its usual stack overflow check.
-This is most commonly used by low-level runtime code invoked
-at times when it is unsafe for the calling goroutine to be preempted.
+//go:nosplitディレクティブは、関数宣言に続かなければなりません。
+これは、関数が通常のスタックオーバーフローチェックを省略する必要があることを指定します。
+これは、呼び出し元のゴルーチンがプリエンプトされるのが安全でない時期に呼び出される低レベルのランタイムコードで最も一般的に使用されます。
 
 	//go:linkname localname [importpath.name]
 
-The //go:linkname directive conventionally precedes the var or func
-declaration named by ``localname``, though its position does not
-change its effect.
-This directive determines the object-file symbol used for a Go var or
-func declaration, allowing two Go symbols to alias the same
-object-file symbol, thereby enabling one package to access a symbol in
-another package even when this would violate the usual encapsulation
-of unexported declarations, or even type safety.
-For that reason, it is only enabled in files that have imported "unsafe".
+//go:linknameディレクティブは、通常、「localname」で指定されたvarまたはfunc
+宣言の前に配置されますが、その位置はその効果を変えません。
+このディレクティブは、Goのvarまたはfunc宣言に使用されるオブジェクトファイルシンボルを決定し、
+2つのGoシンボルが同じオブジェクトファイルシンボルをエイリアスとして使用できるようにします。
+これにより、一つのパッケージが、通常は未エクスポート宣言のカプセル化を侵害する、
+または型安全性を侵害する場合でも、別のパッケージのシンボルにアクセスできます。
+そのため、"unsafe"をインポートしているファイルでのみ有効になります。
 
-It may be used in two scenarios. Let's assume that package upper
-imports package lower, perhaps indirectly. In the first scenario,
-package lower defines a symbol whose object file name belongs to
-package upper. Both packages contain a linkname directive: package
-lower uses the two-argument form and package upper uses the
-one-argument form. In the example below, lower.f is an alias for the
-function upper.g:
+これは2つのシナリオで使用できます。パッケージupperがパッケージlowerを
+インポートしていると仮定しましょう、おそらく間接的に。最初のシナリオでは、
+パッケージlowerは、そのオブジェクトファイル名がパッケージupperに属するシンボルを定義します。
+両方のパッケージにはlinknameディレクティブが含まれています：パッケージlowerは
+2つの引数形式を使用し、パッケージupperは1つの引数形式を使用します。
+以下の例では、lower.fは関数upper.gのエイリアスです：
 
     package upper
     import _ "unsafe"
@@ -270,13 +251,11 @@ function upper.g:
     //go:linkname f upper.g
     func f() { ... }
 
-The linkname directive in package upper suppresses the usual error for
-a function that lacks a body. (That check may alternatively be
-suppressed by including a .s file, even an empty one, in the package.)
+パッケージupperのlinknameディレクティブは、本体を持たない関数に対する通常のエラーを抑制します。
+（そのチェックは、パッケージに.sファイル（空でも可）を含めることで、代わりに抑制することも可能です。）
 
-In the second scenario, package upper unilaterally creates an alias
-for a symbol in package lower. In the example below, upper.g is an alias
-for the function lower.f.
+二つ目のシナリオでは、パッケージupperが一方的にパッケージlowerのシンボルのエイリアスを作成します。
+以下の例では、upper.gは関数lower.fのエイリアスです。
 
     package upper
     import _ "unsafe"
@@ -286,22 +265,18 @@ for the function lower.f.
     package lower
     func f() { ... }
 
-The declaration of lower.f may also have a linkname directive with a
-single argument, f. This is optional, but helps alert the reader that
-the function is accessed from outside the package.
+lower.fの宣言には、単一の引数fを持つlinknameディレクティブも含まれているかもしれません。
+これはオプションですが、関数がパッケージの外部からアクセスされることを読者に警告するのに役立ちます。
 
 	//go:wasmimport importmodule importname
 
-The //go:wasmimport directive is wasm-only and must be followed by a
-function declaration.
-It specifies that the function is provided by a wasm module identified
-by ``importmodule`` and ``importname``.
+//go:wasmimportディレクティブはwasm専用で、関数宣言に続かなければなりません。
+これは、関数が``importmodule``と``importname``で識別されるwasmモジュールによって提供されることを指定します。
 
 	//go:wasmimport a_module f
 	func g()
 
-The types of parameters and return values to the Go function are translated to
-Wasm according to the following table:
+Go関数へのパラメータと戻り値の型は、以下の表に従ってWasmに変換されます：
 
     Go types        Wasm types
     int32, uint32   i32
@@ -310,8 +285,7 @@ Wasm according to the following table:
     float64         f64
     unsafe.Pointer  i32
 
-Any other parameter types are disallowed by the compiler.
+コンパイラによって、他のパラメータタイプは許可されていません。
 
 */
 package main
->>>>>>> upstream/master
