@@ -6,33 +6,15 @@
 //
 // このパッケージでは以下を提供します:
 //
-<<<<<<< HEAD
-// Errorは、サーバーからの数値エラーレスポンスを表します。
+// [Error] は、サーバーからの数値エラーレスポンスを表します。
 //
-// Pipelineは、クライアントでパイプライン化されたリクエストとレスポンスを管理するためのものです。
+// [Pipeline] は、クライアントでパイプライン化されたリクエストとレスポンスを管理するためのものです。
 //
-// Readerは、数値応答コードライン、キー: 値のヘッダ、先行スペースで折り返された行、独自の行にドットで終わる全文テキストブロックを読み取るためのものです。
+// [Reader] は、数値応答コードライン、キー: 値のヘッダ、先行スペースで折り返された行、独自の行にドットで終わる全文テキストブロックを読み取るためのものです。
 //
-// Writerは、ドットエンコードされたテキストブロックを書き込むためのものです。
+// [Writer] は、ドットエンコードされたテキストブロックを書き込むためのものです。
 //
-// Connは、単一のネットワーク接続で使用するための、Reader、Writer、およびPipelineの便利なパッケージングです。
-=======
-// [Error], which represents a numeric error response from
-// a server.
-//
-// [Pipeline], to manage pipelined requests and responses
-// in a client.
-//
-// [Reader], to read numeric response code lines,
-// key: value headers, lines wrapped with leading spaces
-// on continuation lines, and whole text blocks ending
-// with a dot on a line by itself.
-//
-// [Writer], to write dot-encoded text blocks.
-//
-// [Conn], a convenient packaging of [Reader], [Writer], and [Pipeline] for use
-// with a single network connection.
->>>>>>> upstream/master
+// [Conn] は、単一のネットワーク接続で使用するための、[Reader]、[Writer]、および [Pipeline] の便利なパッケージングです。
 package textproto
 
 import (
@@ -52,17 +34,9 @@ type ProtocolError string
 
 func (p ProtocolError) Error() string
 
-<<<<<<< HEAD
 // Connはテキストネットワークプロトコルの接続を表します。
-// それは、I/Oを管理するためのReaderとWriter、および接続上で並行リクエストをシーケンスするためのパイプラインで構成されています。
+// それは、I/Oを管理するための [Reader] と [Writer]、および接続上で並行リクエストをシーケンスするための [Pipeline] で構成されています。
 // これらの埋め込まれた型は、それらの型のドキュメントで詳細なメソッドを持っています。
-=======
-// A Conn represents a textual network protocol connection.
-// It consists of a [Reader] and [Writer] to manage I/O
-// and a [Pipeline] to sequence concurrent requests on the connection.
-// These embedded types carry methods with them;
-// see the documentation of those types for details.
->>>>>>> upstream/master
 type Conn struct {
 	Reader
 	Writer
@@ -70,22 +44,13 @@ type Conn struct {
 	conn io.ReadWriteCloser
 }
 
-<<<<<<< HEAD
-// NewConnはI/Oにconnを使用して新しいConnを返します。
-=======
-// NewConn returns a new [Conn] using conn for I/O.
->>>>>>> upstream/master
+// NewConnはI/Oにconnを使用して新しい [Conn] を返します。
 func NewConn(conn io.ReadWriteCloser) *Conn
 
 // Close は接続を閉じます。
 func (c *Conn) Close() error
 
-<<<<<<< HEAD
-// Dialは、net.Dialを使って指定されたネットワークの指定されたアドレスに接続し、接続のための新しいConnを返します。
-=======
-// Dial connects to the given address on the given network using [net.Dial]
-// and then returns a new [Conn] for the connection.
->>>>>>> upstream/master
+// Dialは、[net.Dial] を使って指定されたネットワークの指定されたアドレスに接続し、接続のための新しい [Conn] を返します。
 func Dial(network, addr string) (*Conn, error)
 
 // Cmdはパイプラインの順番を待ってからコマンドを送る便利なメソッドです。コマンドのテキストは、formatとargsを使用してフォーマットし、\r\nを追加した結果です。CmdはコマンドのIDを返し、StartResponseとEndResponseで使用します。

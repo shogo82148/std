@@ -15,11 +15,7 @@ type Writer struct {
 	dot *dotWriter
 }
 
-<<<<<<< HEAD
-// NewWriterはwに書き込む新しいWriterを返します。
-=======
-// NewWriter returns a new [Writer] writing to w.
->>>>>>> upstream/master
+// NewWriterはwに書き込む新しい [Writer] を返します。
 func NewWriter(w *bufio.Writer) *Writer
 
 // PrintfLineはフォーマットされた出力を\r\nに続けて書き込みます。
@@ -30,9 +26,5 @@ func (w *Writer) PrintfLine(format string, args ...any) error
 // DotWriterが閉じられるときに最後の .\r\n 行を追加します。
 // 次にwのメソッドを呼び出す前に、呼び出し元はDotWriterを閉じる必要があります。
 //
-<<<<<<< HEAD
-// dot-encodingの詳細については、ReaderのDotReaderメソッドのドキュメントを参照してください。
-=======
-// See the documentation for the [Reader.DotReader] method for details about dot-encoding.
->>>>>>> upstream/master
+// dot-encodingの詳細については、[Reader.DotReader] メソッドのドキュメントを参照してください。
 func (w *Writer) DotWriter() io.WriteCloser
