@@ -5,8 +5,8 @@
 package runtime
 
 // A Pinner is a set of Go objects each pinned to a fixed location in memory. The
-// [Pin] method pins one object, while [Unpin] unpins all pinned objects. See their
-// comments for more information.
+// [Pinner.Pin] method pins one object, while [Pinner.Unpin] unpins all pinned
+// objects. See their comments for more information.
 type Pinner struct {
 	*pinner
 }

@@ -17,7 +17,7 @@ func Breakpoint()
 // The calling goroutine will always execute in that thread,
 // and no other goroutine will execute in it,
 // until the calling goroutine has made as many calls to
-// UnlockOSThread as to LockOSThread.
+// [UnlockOSThread] as to LockOSThread.
 // If the calling goroutine exits without unlocking the thread,
 // the thread will be terminated.
 //
