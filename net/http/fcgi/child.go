@@ -18,7 +18,7 @@ var ErrConnClosed = errors.New("fcgi: connection to web server closed")
 
 // Serveはリスナーlで受け入れた入力FastCGI接続を処理し、それぞれのために新しいゴルーチンを作成します。ゴルーチンはリクエストを読み取り、その後ハンドラを呼び出して応答します。
 // lがnilの場合、Serveはos.Stdinからの接続を受け入れます。
-// handlerがnilの場合、http.DefaultServeMuxが使用されます。
+// handlerがnilの場合、[http.DefaultServeMux] が使用されます。
 func Serve(l net.Listener, handler http.Handler) error
 
 // ProcessEnvは、リクエストrに関連するFastCGI環境変数を返します。

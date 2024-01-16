@@ -9,7 +9,7 @@ import (
 	"github.com/shogo82148/std/net/rpc"
 )
 
-// NewServerCodecはconn上でJSON-RPCを使用する新しいrpc.ServerCodecを返します。
+// NewServerCodecはconn上でJSON-RPCを使用する新しい [rpc.ServerCodec] を返します。
 func NewServerCodec(conn io.ReadWriteCloser) rpc.ServerCodec
 
 // ServeConnは単一の接続でJSON-RPCサーバーを実行します。

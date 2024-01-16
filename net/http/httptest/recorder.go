@@ -9,7 +9,7 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
-// ResponseRecorderはhttp.ResponseWriterの実装であり、テストで後で検査するためにその変更を記録します。
+// ResponseRecorderは [http.ResponseWriter] の実装であり、テストで後で検査するためにその変更を記録します。
 type ResponseRecorder struct {
 	// CodeはWriteHeaderが設定したHTTPレスポンスコードです。
 	//
@@ -36,26 +36,26 @@ type ResponseRecorder struct {
 	wroteHeader bool
 }
 
-// NewRecorderは初期化されたResponseRecorderを返します。
+// NewRecorderは初期化された [ResponseRecorder] を返します。
 func NewRecorder() *ResponseRecorder
 
-// DefaultRemoteAddrは、ResponseRecorderに明示的なDefaultRemoteAddrが設定されていない場合に、
+// DefaultRemoteAddrは、[ResponseRecorder] に明示的なDefaultRemoteAddrが設定されていない場合に、
 // RemoteAddrで返すデフォルトのリモートアドレスです。
 const DefaultRemoteAddr = "1.2.3.4"
 
-// Headerはhttp.ResponseWriterを実装します。ハンドラ内で変更するためにレスポンスヘッダーを返します。ハンドラが完了した後に書き込まれたヘッダーをテストするには、Resultメソッドを使用し、返されたResponse値のHeaderを確認してください。
+// Headerは [http.ResponseWriter] を実装します。ハンドラ内で変更するためにレスポンスヘッダーを返します。ハンドラが完了した後に書き込まれたヘッダーをテストするには、[ResponseRecorder.Resultメソッド] を使用し、返されたResponse値のHeaderを確認してください。
 func (rw *ResponseRecorder) Header() http.Header
 
 // Writeはhttp.ResponseWriterを実装します。buf内のデータは、rw.Bodyがnilでない場合にrw.Bodyに書き込まれます。
 func (rw *ResponseRecorder) Write(buf []byte) (int, error)
 
-// WriteStringはio.StringWriterを実装します。strのデータは、nilでない場合はrw.Bodyに書き込まれます。
+// WriteStringは [io.StringWriter] を実装します。strのデータは、nilでない場合はrw.Bodyに書き込まれます。
 func (rw *ResponseRecorder) WriteString(str string) (int, error)
 
-// WriteHeaderはhttp.ResponseWriterを実装します。
+// WriteHeaderは [http.ResponseWriter] を実装します。
 func (rw *ResponseRecorder) WriteHeader(code int)
 
-// Flushはhttp.Flusherを実装します。Flushが呼び出されたかどうかをテストするには、rw.Flushedを参照してください。
+// Flushは [http.Flusher] を実装します。Flushが呼び出されたかどうかをテストするには、rw.Flushedを参照してください。
 func (rw *ResponseRecorder) Flush()
 
 // Resultはハンドラによって生成されたレスポンスを返します。
@@ -65,7 +65,7 @@ func (rw *ResponseRecorder) Flush()
 //
 // Response.Headerは、最初の書き込み呼び出し時またはこの呼び出し時のヘッダのスナップショットですが、ハンドラが書き込みを行っていない場合は呼び出し時のものになります。
 //
-// Response.Bodyは非nilであり、Body.Read呼び出しはio.EOF以外のエラーを返さないことが保証されています。
+// Response.Bodyは非nilであり、Body.Read呼び出しは [io.EOF] 以外のエラーを返さないことが保証されています。
 //
 // Resultは、ハンドラの実行が完了した後にのみ呼び出す必要があります。
 func (rw *ResponseRecorder) Result() *http.Response

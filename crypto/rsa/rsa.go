@@ -22,6 +22,10 @@ import (
 	"github.com/shogo82148/std/math/big"
 )
 
+// PublicKeyは、RSAキーの公開部分を表します。
+//
+// このライブラリでは、モジュラスNの値は秘密と見なされ、タイミングサイドチャネルを通じて漏洩することから保護されます。
+// しかし、指数Eの値やNの正確なビットサイズは同様に保護されていません。
 type PublicKey struct {
 	N *big.Int
 	E int

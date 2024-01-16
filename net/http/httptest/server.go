@@ -47,11 +47,11 @@ type Server struct {
 	client *http.Client
 }
 
-// NewServer は新しい Server を起動して返します。
+// NewServer は新しい [Server] を起動して返します。
 // 使用が終わったら、呼び出し元は Close を呼び出してシャットダウンする必要があります。
 func NewServer(handler http.Handler) *Server
 
-// NewUnstartedServerは新しいServerを返しますが、開始はしません。
+// NewUnstartedServerは新しい [Server] を返しますが、開始はしません。
 //
 // 設定を変更した後、呼び出し元はStartまたはStartTLSを呼び出す必要があります。
 //
@@ -64,7 +64,7 @@ func (s *Server) Start()
 // StartTLSは、NewUnstartedServerからサーバー上でTLSを開始します。
 func (s *Server) StartTLS()
 
-// NewTLSServerはTLSを使用して新しいサーバーを起動し、それを返します。
+// NewTLSServerはTLSを使用して新しい [Server] を起動し、それを返します。
 // 終了時には、呼び出し元はシャットダウンするためにCloseを呼び出す必要があります。
 func NewTLSServer(handler http.Handler) *Server
 
@@ -78,5 +78,5 @@ func (s *Server) CloseClientConnections()
 func (s *Server) Certificate() *x509.Certificate
 
 // Clientは、サーバーへのリクエストを行うために設定されたHTTPクライアントを返します。
-// サーバーのTLSテスト証明書を信頼するように設定されており、Server.Close時にアイドル接続をクローズします。
+// サーバーのTLSテスト証明書を信頼するように設定されており、[Server.Close] 時にアイドル接続をクローズします。
 func (s *Server) Client() *http.Client

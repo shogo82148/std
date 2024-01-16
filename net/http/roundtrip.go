@@ -6,10 +6,10 @@
 
 package http
 
-// RoundTripは、RoundTripperインターフェースを実装します。
+// RoundTripは、[RoundTripper] インターフェースを実装します。
 //
 // クッキーやリダイレクトの処理などのより高度なHTTPクライアントサポートについては、
-// Get、Post、およびClient型を参照してください。
+// [Get]、[Post]、および [Client] 型を参照してください。
 //
 // RoundTripインターフェースと同様に、RoundTripによって返されるエラータイプは未指定です。
 func (t *Transport) RoundTrip(req *Request) (*Response, error)

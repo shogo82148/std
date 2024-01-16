@@ -13,7 +13,7 @@ import (
 // Dialerはアドレスに接続するためのオプションを含んでいます。
 //
 // 各フィールドのゼロ値は、そのオプションなしでダイヤルすることと同等です。
-// Dialerのゼロ値でダイヤルすることは、単にDial関数を呼び出すのと同等です。
+// Dialerのゼロ値でダイヤルすることは、単に [Dial] 関数を呼び出すのと同等です。
 //
 // Dialerのメソッドを同時に呼び出しても安全です。
 type Dialer struct {
@@ -85,7 +85,7 @@ type Dialer struct {
 // このメソッドは、オペレーティングシステムがMPTCPをサポートしているかどうかをチェックしません。
 func (d *Dialer) MultipathTCP() bool
 
-// SetMultipathTCPは、オペレーティングシステムでサポートされている場合、DialメソッドがMPTCPを使用するかどうかを指示します。
+// SetMultipathTCPは、オペレーティングシステムでサポートされている場合、[Dial] メソッドがMPTCPを使用するかどうかを指示します。
 // このメソッドは、システムのデフォルトとGODEBUG=multipathtcp=...の設定を上書きします。
 //
 // ホストでMPTCPが利用できない場合やサーバーでサポートされていない場合、DialメソッドはTCPにフォールバックします。
@@ -103,7 +103,7 @@ func (d *Dialer) SetMultipathTCP(use bool)
 // ポートはリテラルのポート番号またはサービス名である必要があります。
 // ホストがリテラルのIPv6アドレスの場合、"[2001:db8::1]:80" または "[fe80::1%zone]:80" のように角括弧で囲む必要があります。
 // ゾーンは、RFC 4007で定義されているリテラルのIPv6アドレスのスコープを指定します。
-// 関数JoinHostPortとSplitHostPortは、この形式のホストとポートのペアを操作します。
+// 関数 [JoinHostPort] と [SplitHostPort] は、この形式のホストとポートのペアを操作します。
 // TCPを使用し、ホストが複数のIPアドレスに解決される場合、Dialは順番に各IPアドレスを試し、成功したものを使用します。
 //
 // 例:
@@ -132,7 +132,7 @@ func (d *Dialer) SetMultipathTCP(use bool)
 // UNIXネットワークの場合、アドレスはファイルシステムのパスである必要があります。
 func Dial(network, address string) (Conn, error)
 
-// DialTimeoutは、タイムアウトを設定してDialと同様の動作をします。
+// DialTimeoutは、タイムアウトを設定して [Dial] と同様の動作をします。
 //
 // 必要に応じて名前解決も含まれたタイムアウト処理が行われます。
 // TCPを使用している場合、アドレスパラメータのホストが複数のIPアドレスに解決される場合は、
@@ -145,7 +145,7 @@ func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
 //
 // ネットワークとアドレスの詳細は、func Dialの説明を参照してください。
 //
-// Dialは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、DialContextを使用してください。
+// Dialは内部的に [context.Background] を使用します。コンテキストを指定するには、[Dialer.DialContext] を使用してください。
 func (d *Dialer) Dial(network, address string) (Conn, error)
 
 // DialContextは、指定されたコンテキストを使用して、指定されたネットワーク上のアドレスに接続します。
@@ -155,7 +155,7 @@ func (d *Dialer) Dial(network, address string) (Conn, error)
 // TCPを使用し、アドレスパラメータのホストが複数のネットワークアドレスに解決される場合、ダイヤルタイムアウト（d.Timeoutまたはctxから）は、各連続したダイヤルに均等に分散されます。それぞれのダイヤルには、適切な接続時間の割合が与えられます。
 // 例えば、ホストが4つのIPアドレスを持ち、タイムアウトが1分の場合、次のアドレスを試す前に、各単一のアドレスへの接続には15秒の時間が与えられます。
 //
-// ネットワークやアドレスパラメータの説明については、func Dialを参照してください。
+// ネットワークやアドレスパラメータの説明については、[Dial] 関数を参照してください。
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
 
 // ListenConfig はアドレスのリッスンに関するオプションを含んでいます。
@@ -184,7 +184,7 @@ type ListenConfig struct {
 // このメソッドはオペレーティングシステムがMPTCPをサポートしているかどうかを確認しません。
 func (lc *ListenConfig) MultipathTCP() bool
 
-// SetMultipathTCPは、オペレーティングシステムがサポートしている場合、ListenメソッドがMPTCPを使用するかどうかを指示します。
+// SetMultipathTCPは、オペレーティングシステムがサポートしている場合、[Listen] メソッドがMPTCPを使用するかどうかを指示します。
 // このメソッドは、システムのデフォルトおよびGODEBUG=multipathtcp=...の設定を上書きします。
 //
 // ホスト上でMPTCPが利用できない場合、またはクライアントがサポートしていない場合、
@@ -209,11 +209,11 @@ func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address strin
 // IPv4のみを使用する場合は、ネットワークに"tcp4"を使用します。
 // アドレスにはホスト名を使用できますが、これは推奨されないため、ホストのIPアドレスの最大1つのリスナーが作成されます。
 // アドレスパラメータのポートが空または"0"の場合、例えば"127.0.0.1:"や"[::1]:0"のように、ポート番号が自動的に選択されます。
-// ListenerのAddrメソッドを使用して、選択されたポートを取得できます。
+// [Listener] の [Addr] メソッドを使用して、選択されたポートを取得できます。
 //
-// ネットワークおよびアドレスパラメータの説明については、func Dialを参照してください。
+// ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
 //
-// Listenは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、ListenConfig.Listenを使用してください。
+// Listenは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、[ListenConfig.Listen] を使用してください。
 func Listen(network, address string) (Listener, error)
 
 // ListenPacketはローカルネットワークアドレスでの通知を行います。
@@ -228,10 +228,10 @@ func Listen(network, address string) (Listener, error)
 // アドレスはホスト名を使用することもできますが、これは推奨されません。
 // なぜなら、それによってホストのIPアドレスのうちの最大で1つのリスナが作成されるからです。
 // アドレスパラメータのポートが空または「0」の場合、「127.0.0.1:」や「[::1]:0」といった形式で、ポート番号は自動的に選択されます。
-// PacketConnのLocalAddrメソッドを使用して選択されたポートを特定することができます。
+// [PacketConn] のLocalAddrメソッドを使用して選択されたポートを特定することができます。
 //
-// ネットワークおよびアドレスパラメータの説明については、func Dialを参照してください。
+// ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
 //
 // ListenPacketは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、
-// ListenConfig.ListenPacketを使用してください。
+// [ListenConfig.ListenPacket] を使用してください。
 func ListenPacket(network, address string) (PacketConn, error)

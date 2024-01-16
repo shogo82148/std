@@ -64,7 +64,7 @@ var (
 // Requestは、サーバーによって受信されたHTTPリクエストまたはクライアントによって送信されるHTTPリクエストを表します。
 //
 // フィールドの意味は、クライアントとサーバーの使用方法でわずかに異なります。
-// 以下のフィールドに関する注意事項に加えて、Request.WriteおよびRoundTripperのドキュメントを参照してください。
+// 以下のフィールドに関する注意事項に加えて、[Request.Write] および [RoundTripper] のドキュメントを参照してください。
 type Request struct {
 	// Methodは、HTTPメソッド（GET、POST、PUTなど）を指定します。
 	// クライアントリクエストの場合、空の文字列はGETを意味します。
@@ -240,7 +240,7 @@ type Request struct {
 	otherValues map[string]string
 }
 
-// Contextは、リクエストのコンテキストを返します。コンテキストを変更するには、CloneまたはWithContextを使用してください。
+// Contextは、リクエストのコンテキストを返します。コンテキストを変更するには、[Request.Clone] または [Request.WithContext] を使用してください。
 //
 // 返されるコンテキストは常にnilではありません。デフォルトでは、バックグラウンドコンテキストになります。
 //
@@ -253,8 +253,8 @@ func (r *Request) Context() context.Context
 //
 // 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
 //
-// コンテキストを持つ新しいリクエストを作成するには、NewRequestWithContextを使用します。
-// 新しいコンテキストを持つリクエストのディープコピーを作成するには、Request.Cloneを使用します。
+// コンテキストを持つ新しいリクエストを作成するには、[NewRequestWithContext] を使用します。
+// 新しいコンテキストを持つリクエストのディープコピーを作成するには、[Request.Clone] を使用します。
 func (r *Request) WithContext(ctx context.Context) *Request
 
 // Cloneは、そのコンテキストをctxに変更したrのディープコピーを返します。提供されたctxはnilであってはなりません。
@@ -277,12 +277,12 @@ func (r *Request) Cookies() []*Cookie
 // ErrNoCookieは、Cookieメソッドがクッキーを見つけられなかった場合にRequestによって返されます。
 var ErrNoCookie = errors.New("http: named cookie not present")
 
-// Cookieは、リクエストで提供された名前付きクッキーを返します。クッキーが見つからない場合はErrNoCookieを返します。
+// Cookieは、リクエストで提供された名前付きクッキーを返します。クッキーが見つからない場合は [ErrNoCookie] を返します。
 // 複数のクッキーが指定された名前に一致する場合、1つのクッキーのみが返されます。
 func (r *Request) Cookie(name string) (*Cookie, error)
 
 // AddCookieは、リクエストにクッキーを追加します。RFC 6265 Section 5.4 に従い、
-// AddCookieは1つ以上のCookieヘッダーフィールドを添付しません。つまり、すべてのクッキーが、
+// AddCookieは1つ以上の [Cookie] ヘッダーフィールドを添付しません。つまり、すべてのクッキーが、
 // セミコロンで区切られた同じ行に書き込まれます。
 // AddCookieは、cの名前と値をサニタイズするだけで、すでにリクエストに存在するCookieヘッダーをサニタイズしません。
 func (r *Request) AddCookie(c *Cookie)
@@ -290,7 +290,7 @@ func (r *Request) AddCookie(c *Cookie)
 // Refererは、リクエストで送信された場合に参照元のURLを返します。
 //
 // Refererは、HTTPの初期の日々からの誤りで、リクエスト自体で誤ってスペルがされています。
-// この値はHeader["Referer"]としてHeaderマップから取得することもできますが、
+// この値はHeader["Referer"]として [Header] マップから取得することもできますが、
 // メソッドとして利用可能にすることの利点は、代替の（正しい英語の）スペルreq.Referrer()を使用するプログラムをコンパイラが診断できるが、
 // Header["Referrer"]を使用するプログラムを診断できないことです。
 func (r *Request) Referer() string
@@ -311,12 +311,12 @@ func (r *Request) MultipartReader() (*multipart.Reader, error)
 //	TransferEncoding
 //	Body
 //
-// Bodyが存在し、Content-Lengthが0以下であり、TransferEncodingが "identity"に設定されていない場合、
+// Bodyが存在し、Content-Lengthが0以下であり、[Request.TransferEncoding] が "identity"に設定されていない場合、
 // Writeはヘッダーに "Transfer-Encoding: chunked"を追加します。Bodyは送信後に閉じられます。
 func (r *Request) Write(w io.Writer) error
 
-// WriteProxyは、Writeと似ていますが、HTTPプロキシが期待する形式でリクエストを書き込みます。
-// 特に、WriteProxyは、RFC 7230のセクション5.3に従って、スキームとホストを含む絶対URIでリクエストの最初のRequest-URI行を書き込みます。
+// WriteProxyは、[Request.Write] と似ていますが、HTTPプロキシが期待する形式でリクエストを書き込みます。
+// 特に、[Request.WriteProxy] は、RFC 7230のセクション5.3に従って、スキームとホストを含む絶対URIでリクエストの最初のRequest-URI行を書き込みます。
 // WriteProxyは、r.Host または r.URL.Host を使用して、Hostヘッダーも書き込みます。
 func (r *Request) WriteProxy(w io.Writer) error
 
@@ -324,21 +324,21 @@ func (r *Request) WriteProxy(w io.Writer) error
 // "HTTP/1.0"は(1, 0, true)を返します。注意："HTTP/2"のようにマイナーバージョンがない文字列は無効です。
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
-// NewRequestWithContextは、context.Backgroundを使用してNewRequestWithContextをラップします。
+// NewRequestWithContextは、[context.Background] を使用して [NewRequestWithContext] をラップします。
 func NewRequest(method, url string, body io.Reader) (*Request, error)
 
-// NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しいRequestを返します。
+// NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しい [Request] を返します。
 //
-// 提供されたbodyがio.Closerでも、返されたRequest.Bodyはbodyに設定され、ClientのDo、Post、PostForm、およびTransport.RoundTripによって（非同期に）閉じられます。
+// 提供されたbodyが [io.Closer] でも、返された [Request.Body] はbodyに設定され、ClientのDo、Post、PostForm、および [Transport.RoundTrip] によって（非同期に）閉じられます。
 //
-// NewRequestWithContextは、Client.Do または Transport.RoundTrip で使用するためのRequestを返します。
-// Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージのNewRequest関数を使用するか、
-// ReadRequestを使用するか、またはRequestフィールドを手動で更新します。送信元のクライアントリクエストの場合、
+// NewRequestWithContextは、[Client.Do] または [Transport.RoundTrip] で使用するためのRequestを返します。
+// Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージの [NewRequest] 関数を使用するか、
+// [ReadRequest] を使用するか、またはRequestフィールドを手動で更新します。送信元のクライアントリクエストの場合、
 // コンテキストはリクエストとその応答の全寿命を制御します：接続の取得、リクエストの送信、および応答ヘッダーとボディの読み取り。
 // 入力リクエストフィールドと出力リクエストフィールドの違いについては、Requestタイプのドキュメントを参照してください。
 //
-// bodyが *bytes.Buffer、 *bytes.Reader、または *strings.Readerの場合、返されたリクエストのContentLengthはその正確な値に設定されます（-1の代わりに）、
-// GetBodyが作成されます（307および308のリダイレクトがボディを再生できるように）、およびContentLengthが0の場合はBodyがNoBodyに設定されます。
+// bodyが [*bytes.Buffer]、 [*bytes.Reader]、または [*strings.Reader] の場合、返されたリクエストのContentLengthはその正確な値に設定されます（-1の代わりに）、
+// GetBodyが作成されます（307および308のリダイレクトがボディを再生できるように）、およびContentLengthが0の場合はBodyが [NoBody] に設定されます。
 func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error)
 
 // BasicAuthは、リクエストがHTTP Basic認証を使用する場合、リクエストのAuthorizationヘッダーで提供されるユーザー名とパスワードを返します。
@@ -349,21 +349,23 @@ func (r *Request) BasicAuth() (username, password string, ok bool)
 //
 // HTTP Basic認証では、提供されたユーザー名とパスワードは暗号化されません。 HTTPSリクエストでのみ使用することが一般的です。
 //
-// ユーザー名にはコロンを含めることはできません。一部のプロトコルでは、ユーザー名とパスワードを事前にエスケープする追加の要件がある場合があります。たとえば、OAuth2と一緒に使用する場合、両方の引数を最初にurl.QueryEscapeでURLエンコードする必要があります。
+// ユーザー名にはコロンを含めることはできません。一部のプロトコルでは、ユーザー名とパスワードを事前にエスケープする追加の要件がある場合があります。たとえば、OAuth2と一緒に使用する場合、両方の引数を最初に [url.QueryEscape] でURLエンコードする必要があります。
 func (r *Request) SetBasicAuth(username, password string)
 
 // ReadRequestは、bから受信したリクエストを読み取り、解析します。
 //
-// ReadRequestは、低レベルの関数であり、特殊なアプリケーションにのみ使用する必要があります。ほとんどのコードは、Serverを使用してリクエストを読み取り、Handlerインターフェイスを介して処理する必要があります。 ReadRequestは、HTTP / 1.xリクエストのみをサポートしています。 HTTP / 2の場合は、golang.org/x/net/http2を使用してください。
+// ReadRequestは、低レベルの関数であり、特殊なアプリケーションにのみ使用する必要があります。
+// ほとんどのコードは、[Server] を使用してリクエストを読み取り、[Handler] インターフェイスを介して処理する必要があります。
+// ReadRequestは、HTTP/1.xリクエストのみをサポートしています。 HTTP/2の場合は、golang.org/x/net/http2 を使用してください。
 func ReadRequest(b *bufio.Reader) (*Request, error)
 
-// MaxBytesReaderは、io.LimitReaderに似ていますが、着信リクエストボディのサイズを制限するために使用されます。
-// io.LimitReaderとは異なり、MaxBytesReaderの結果はReadCloserであり、制限を超えたReadに対して *MaxBytesError 型の非nilエラーを返し、Closeメソッドが呼び出されたときに基になるリーダーを閉じます。
+// MaxBytesReaderは、[io.LimitReader] に似ていますが、着信リクエストボディのサイズを制限するために使用されます。
+// io.LimitReaderとは異なり、MaxBytesReaderの結果はReadCloserであり、制限を超えたReadに対して [*MaxBytesError] 型の非nilエラーを返し、Closeメソッドが呼び出されたときに基になるリーダーを閉じます。
 //
-// MaxBytesReaderは、クライアントが誤ってまたは悪意を持って大きなリクエストを送信してサーバーのリソースを浪費することを防止します。可能であれば、ResponseWriterに制限に達した後に接続を閉じるように指示します。
+// MaxBytesReaderは、クライアントが誤ってまたは悪意を持って大きなリクエストを送信してサーバーのリソースを浪費することを防止します。可能であれば、[ResponseWriter] に制限に達した後に接続を閉じるように指示します。
 func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser
 
-// MaxBytesErrorは、MaxBytesReaderの読み取り制限を超えた場合にMaxBytesReaderによって返されます。
+// MaxBytesErrorは、[MaxBytesReader] の読み取り制限を超えた場合に [MaxBytesReader] によって返されます。
 type MaxBytesError struct {
 	Limit int64
 }
@@ -376,33 +378,33 @@ func (e *MaxBytesError) Error() string
 //
 // POST、PUT、およびPATCHリクエストの場合、それはまた、リクエストボディを読み取り、フォームとして解析し、その結果をr.PostFormとr.Formの両方に入れます。リクエストボディのパラメータは、r.FormのURLクエリ文字列値より優先されます。
 //
-// リクエストボディのサイズがすでにMaxBytesReaderによって制限されていない場合、サイズは10MBに制限されます。
+// リクエストボディのサイズがすでに [MaxBytesReader] によって制限されていない場合、サイズは10MBに制限されます。
 //
 // 他のHTTPメソッド、またはContent-Typeがapplication/x-www-form-urlencodedでない場合、リクエストボディは読み取られず、r.PostFormはnilでない空の値に初期化されます。
 //
-// ParseMultipartFormは自動的にParseFormを呼び出します。
+// [Request.ParseMultipartForm] は自動的にParseFormを呼び出します。
 // ParseFormは冪等です。
 func (r *Request) ParseForm() error
 
 // ParseMultipartFormは、リクエストボディをmultipart/form-dataとして解析します。
 // リクエストボディ全体が解析され、そのファイルパーツの最大maxMemoryバイトがメモリに格納され、残りは一時ファイルに格納されます。
-// ParseMultipartFormは必要に応じてParseFormを呼び出します。
+// ParseMultipartFormは必要に応じて [Request.ParseForm] を呼び出します。
 // ParseFormがエラーを返した場合、ParseMultipartFormはそれを返しますが、リクエストボディの解析を続けます。
 // ParseMultipartFormを1回呼び出した後、以降の呼び出しは効果がありません。
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
 // FormValueは、クエリの名前付きコンポーネントの最初の値を返します。
 // POST、PUT、およびPATCHのボディパラメータは、URLクエリ文字列の値より優先されます。
-// FormValueは、必要に応じてParseMultipartFormおよびParseFormを呼び出し、
+// FormValueは、必要に応じて [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
 // これらの関数によって返されるエラーを無視します。
 // キーが存在しない場合、FormValueは空の文字列を返します。
 // 同じキーの複数の値にアクセスするには、ParseFormを呼び出して、
-// 直接Request.Formを調べます。
+// 直接 [Request.Form] を調べます。
 func (r *Request) FormValue(key string) string
 
 // PostFormValueは、POST、PUT、またはPATCHリクエストボディの名前付きコンポーネントの最初の値を返します。
 // URLクエリパラメータは無視されます。
-// 必要に応じて、PostFormValueはParseMultipartFormおよびParseFormを呼び出し、
+// 必要に応じて、 [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
 // これらの関数によって返されるエラーを無視します。
 // キーが存在しない場合、PostFormValueは空の文字列を返します。
 func (r *Request) PostFormValue(key string) string
@@ -411,7 +413,7 @@ func (r *Request) PostFormValue(key string) string
 // 必要に応じて、FormFileはParseMultipartFormおよびParseFormを呼び出します。
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
 
-// PathValueは、リクエストに一致したServeMuxパターンの名前付きパスワイルドカードの値を返します。
+// PathValueは、リクエストに一致した [ServeMux] パターンの名前付きパスワイルドカードの値を返します。
 // リクエストがパターンに一致しなかった場合、またはパターンにそのようなワイルドカードがない場合、空の文字列を返します。
 func (r *Request) PathValue(name string) string
 

@@ -27,20 +27,21 @@ type InvalidHostError string
 
 func (e InvalidHostError) Error() string
 
-// QueryUnescapeはQueryEscapeの逆変換を行います
+// QueryUnescapeは [QueryEscape] の逆変換を行います
 // "%AB"のような形式の3バイトエンコードされた部分文字列を
 // 16進数でデコードされたバイト0xABに変換します
 // もし%の後に2桁の16進数が続かない場合、エラーが返されます。
 func QueryUnescape(s string) (string, error)
 
-// PathUnescapeはPathEscapeの逆の変換を行います。形式が"%AB"の各3バイトエンコードされた部分文字列をhexデコードされたバイト0xABに変換します。もし%の後に2桁の16進数が続かない場合、エラーが返されます。
+// PathUnescapeは [PathEscape] の逆の変換を行います。形式が"%AB"の各3バイトエンコードされた部分文字列をhexデコードされたバイト0xABに変換します。もし%の後に2桁の16進数が続かない場合、エラーが返されます。
 //
-// PathUnescapeはQueryUnescapeと同じですが、'+'を' '（スペース）に変換しない点が異なります。
+// PathUnescapeは [QueryUnescape] と同じですが、'+'を' '（スペース）に変換しない点が異なります。
 func PathUnescape(s string) (string, error)
 
+// QueryEscapeは、文字列を安全に [URL] クエリ内に配置できるようにエスケープします。
 func QueryEscape(s string) string
 
-// PathEscapeは、文字列を安全にURLパスセグメント内に配置できるようにエスケープします。
+// PathEscapeは、文字列を安全に [URL] パスセグメント内に配置できるようにエスケープします。
 // 必要に応じて特殊文字（/を含む）を%XXシーケンスで置き換えます。
 func PathEscape(s string) string
 
@@ -61,7 +62,7 @@ func PathEscape(s string) string
 //
 // Pathフィールドは、デコードされた形式で保存されます：/%47%6f%2fは/Go/になります。
 // 結果として、Path内のどのスラッシュが生のURL内のスラッシュであり、どのスラッシュが%2fであるかを区別することはできません。
-// この区別はほとんど重要ではありませんが、重要な場合は、コードはEscapedPathメソッドを使用する必要があります。
+// この区別はほとんど重要ではありませんが、重要な場合は、コードは [URL.EscapedPath] メソッドを使用する必要があります。
 // このメソッドは、Pathの元のエンコーディングを保持します。
 //
 // RawPathフィールドは、デフォルトのパスのエンコードがエスケープされたパスと異なる場合にのみ設定されるオプションのフィールドです。
@@ -82,17 +83,17 @@ type URL struct {
 	RawFragment string
 }
 
-// Userは、提供されたユーザー名を含むUserinfoを返します
+// Userは、提供されたユーザー名を含む [Userinfo] を返します
 // パスワードは設定されていません。
 func User(username string) *Userinfo
 
-// UserPasswordは提供されたユーザー名とパスワードを含むUserinfoを返します。
+// UserPasswordは提供されたユーザー名とパスワードを含む [Userinfo] を返します。
 // この機能は、レガシーウェブサイトでのみ使用するべきです。
 // RFC 2396は、この方法でUserinfoを解釈することを「推奨されない」と警告しています。
 // 「URIなどで平文で認証情報を渡すことは、ほとんどの場合セキュリティリスクとなっている」と述べています。
 func UserPassword(username, password string) *Userinfo
 
-// Userinfo型は、URLのユーザー名とパスワードの詳細を不変なカプセル化します。既存のUserinfo値には、ユーザー名が設定されていることが保証されています（RFC 2396で許可されているように、空にすることも可能です）、また、オプションでパスワードも持つことができます。
+// Userinfo型は、[URL] のユーザー名とパスワードの詳細を不変なカプセル化します。既存のUserinfo値には、ユーザー名が設定されていることが保証されています（RFC 2396で許可されているように、空にすることも可能です）、また、オプションでパスワードも持つことができます。
 type Userinfo struct {
 	username    string
 	password    string
@@ -108,14 +109,14 @@ func (u *Userinfo) Password() (string, bool)
 // Stringは「username [: password]」の標準形式でエンコードされたユーザー情報を返します。
 func (u *Userinfo) String() string
 
-// Parseは生のURLをURL構造に解析します。
+// Parseは生の url を [URL] 構造に解析します。
 //
 // URLは相対的なもの（ホストなしのパス）または絶対的なもの（スキームで始まる）である可能性があります。
 // スキームなしでホスト名とパスを解析しようとすることは無効ですが、解析の曖昧さにより、
 // エラーを返さない場合があります。
 func Parse(rawURL string) (*URL, error)
 
-// ParseRequestURIは生のURLをURL構造体に解析します。これは、URLがHTTPリクエストで受け取られたものであることを前提としており、urlは絶対URIまたは絶対パスとしてのみ解釈されます。
+// ParseRequestURIは生のURLを [URL] 構造体に解析します。これは、URLがHTTPリクエストで受け取られたものであることを前提としており、urlは絶対URIまたは絶対パスとしてのみ解釈されます。
 // 文字列urlには#fragmentの接尾辞がないことが前提とされています。
 // （ウェブブラウザはURLをウェブサーバーに送信する前に#fragmentを取り除きます。）
 func ParseRequestURI(rawURL string) (*URL, error)
@@ -124,7 +125,7 @@ func ParseRequestURI(rawURL string) (*URL, error)
 // 一般的には、任意のパスには複数のエスケープされた形式が存在します。
 // EscapedPathはu.RawPathがu.Pathの有効なエスケープである場合にはu.RawPathを返します。
 // そうでない場合、EscapedPathはu.RawPathを無視し、独自のエスケープ形式を計算します。
-// StringメソッドとRequestURIメソッドは、それぞれの結果を構築するためにEscapedPathを使用します。
+// [URL.String] メソッドと [URL.RequestURI] メソッドは、それぞれの結果を構築するためにEscapedPathを使用します。
 // 一般的に、コードはu.RawPathを直接読むのではなく、EscapedPathを呼び出すべきです。
 func (u *URL) EscapedPath() string
 
@@ -132,11 +133,11 @@ func (u *URL) EscapedPath() string
 // 一般的には、任意のフラグメントには複数のエスケープ形式が存在します。
 // u.Fragmentが有効なエスケープである場合、EscapedFragmentはu.RawFragmentを返します。
 // そうでない場合、EscapedFragmentはu.RawFragmentを無視し、独自のエスケープ形式を計算します。
-// Stringメソッドは、その結果を構築するためにEscapedFragmentを使用します。
+// [URL.String] メソッドは、その結果を構築するためにEscapedFragmentを使用します。
 // 一般的には、コードはu.RawFragmentを直接読む代わりにEscapedFragmentを呼び出すべきです。
 func (u *URL) EscapedFragment() string
 
-// StringはURLを有効なURL文字列に再構築します。
+// Stringは [URL] を有効なURL文字列に再構築します。
 // 結果の一般的な形式は次のいずれかです:
 //
 // scheme:opaque?query#fragment
@@ -159,7 +160,7 @@ func (u *URL) EscapedFragment() string
 //   - もしu.Fragmentが空なら、#fragmentは省略されます。
 func (u *URL) String() string
 
-// RedactedはStringと似ていますが、パスワードを「xxxxx」で置き換えます。
+// Redactedは [URL.String] と似ていますが、パスワードを「xxxxx」で置き換えます。
 // u.User内のパスワードのみが伏せられます。
 func (u *URL) Redacted() string
 
@@ -198,19 +199,19 @@ func ParseQuery(query string) (Values, error)
 // ("bar=baz&foo=quux")
 func (v Values) Encode() string
 
-// IsAbsはURLが絶対であるかどうかを報告します。
+// IsAbsは [URL] が絶対であるかどうかを報告します。
 // 絶対とは、空ではないスキームを持っていることを意味します。
 func (u *URL) IsAbs() bool
 
-// ParseはレシーバのコンテキストでURLを解析します。提供されたURLは相対的または絶対的である可能性があります。Parseは解析の失敗時にはnil、errを返し、それ以外の場合はResolveReferenceと同じ値を返します。
+// Parseはレシーバのコンテキストで [URL] を解析します。提供されたURLは相対的または絶対的である可能性があります。Parseは解析の失敗時にはnil、errを返し、それ以外の場合は [URL.ResolveReference] と同じ値を返します。
 func (u *URL) Parse(ref string) (*URL, error)
 
-// ResolveReferenceは、RFC 3986 Section 5.2 に従って、絶対ベースURI uからURIリファレンスを絶対URIに解決します。URIリファレンスは相対または絶対のどちらでもかまいません。ResolveReferenceは常に新しいURLインスタンスを返しますが、返されたURLがベースまたはリファレンスと同じであってもです。refが絶対URLの場合、ResolveReferenceはbaseを無視してrefのコピーを返します。
+// ResolveReferenceは、RFC 3986 Section 5.2 に従って、絶対ベースURI uからURIリファレンスを絶対URIに解決します。URIリファレンスは相対または絶対のどちらでもかまいません。ResolveReferenceは常に新しい [URL] インスタンスを返しますが、返されたURLがベースまたはリファレンスと同じであってもです。refが絶対URLの場合、ResolveReferenceはbaseを無視してrefのコピーを返します。
 func (u *URL) ResolveReference(ref *URL) *URL
 
 // QueryはRawQueryを解析し、対応する値を返します。
 // 不正な値の組み合わせは静かに破棄されます。
-// エラーをチェックするにはParseQueryを使用してください。
+// エラーをチェックするには [ParseQuery] を使用してください。
 func (u *URL) Query() Values
 
 // RequestURIは、uのHTTPリクエストで使用される、エンコードされたpath?queryまたはopaque?queryの文字列を返します。
@@ -232,10 +233,10 @@ func (u *URL) MarshalBinary() (text []byte, err error)
 func (u *URL) UnmarshalBinary(text []byte) error
 
 // JoinPath は、指定されたパス要素が既存のパスに結合され、
-// 結果のパスが "./" や "../" の要素を除去された新しいURLを返します。
+// 結果のパスが "./" や "../" の要素を除去された新しい [URL] を返します。
 // 連続する複数の / 文字のシーケンスは、単一の / に縮小されます。
 func (u *URL) JoinPath(elem ...string) *URL
 
-// JoinPathは、指定されたパス要素が結合されたURL文字列を返します。
+// JoinPathは、指定されたパス要素が結合された [URL] 文字列を返します。
 // ベースの既存パスと生成されたパスは、"./"や"../"要素が除去された状態でクリーンになります。
 func JoinPath(base string, elem ...string) (result string, err error)

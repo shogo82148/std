@@ -15,13 +15,13 @@ func (h MIMEHeader) Add(key, value string)
 func (h MIMEHeader) Set(key, value string)
 
 // Getは与えられたキーに関連付けられた最初の値を取得します。
-// 大文字と小文字を区別しないです。CanonicalMIMEHeaderKeyが提供されたキーを正規化するために使用されます。
+// 大文字と小文字を区別しないです。[CanonicalMIMEHeaderKey] が提供されたキーを正規化するために使用されます。
 // キーに関連付けられた値がない場合、Getは "" を返します。
 // 正規化されていないキーを使用する場合は、直接マップにアクセスしてください。
 func (h MIMEHeader) Get(key string) string
 
 // Valuesは与えられたキーに関連付けられたすべての値を返します。
-// 大文字小文字を区別しません。CanonicalMIMEHeaderKeyを使って提供されたキーを正規化します。
+// 大文字小文字を区別しません。[CanonicalMIMEHeaderKey] を使って提供されたキーを正規化します。
 // 正規化されていないキーを使用する場合は、マップに直接アクセスしてください。
 // 返されるスライスはコピーされません。
 func (h MIMEHeader) Values(key string) []string

@@ -16,14 +16,14 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ClientはHTTPクライアントです。ゼロ値(DefaultClient)は、DefaultTransportを使用する使用可能なクライアントです。
+// ClientはHTTPクライアントです。ゼロ値([DefaultClient])は、[DefaultTransport] を使用する使用可能なクライアントです。
 //
-// ClientのTransportには通常、内部状態(キャッシュされたTCP接続など)があるため、必要に応じて作成するのではなく、再利用する必要があります。
+// Clientの [Client.Transport] には通常、内部状態(キャッシュされたTCP接続など)があるため、必要に応じて作成するのではなく、再利用する必要があります。
 // Clientsは、複数のゴルーチンによる同時使用に対して安全です。
 //
-// Clientは、RoundTripper(Transportなど)よりも高レベルであり、クッキーやリダイレクトなどのHTTPの詳細も処理します。
+// Clientは、[RoundTripper]([Transport] など)よりも高レベルであり、クッキーやリダイレクトなどのHTTPの詳細も処理します。
 //
-// リダイレクトに従う場合、Clientは、初期リクエストに設定されたすべてのヘッダーを転送しますが、以下の場合は除外されます。
+// リダイレクトに従う場合、Clientは、初期 [Request] に設定されたすべてのヘッダーを転送しますが、以下の場合は除外されます。
 //
 //   - "Authorization"、"WWW-Authenticate"、および"Cookie"などの機密ヘッダーを、信頼できないターゲットに転送する場合。
 //     これらのヘッダーは、初期ドメインのサブドメインマッチまたは完全一致でないドメインにリダイレクトする場合は無視されます。
@@ -75,10 +75,10 @@ type Client struct {
 	Timeout time.Duration
 }
 
-// DefaultClientはデフォルトのClientであり、Get、Head、およびPostに使用されます。
+// DefaultClientはデフォルトの [Client] であり、[Get]、[Head]、および [Post] に使用されます。
 var DefaultClient = &Client{}
 
-// RoundTripperは、指定されたRequestに対するResponseを取得するための単一のHTTPトランザクションを実行する能力を表すインターフェースです。
+// RoundTripperは、指定された [Request] に対する [Response] を取得するための単一のHTTPトランザクションを実行する能力を表すインターフェースです。
 //
 // RoundTripperは、複数のゴルーチンによる同時使用に対して安全である必要があります。
 type RoundTripper interface {
@@ -99,7 +99,7 @@ var ErrSchemeMismatch = errors.New("http: server gave HTTP response to HTTPS cli
 //
 // リダイレクトが多すぎる場合や、HTTPプロトコルエラーがあった場合はエラーが返されます。
 // 非2xxレスポンスはエラーを引き起こしません。
-// 任意の返されたエラーは*url.Error型です。url.ErrorのTimeoutメソッドは、
+// 任意の返されたエラーは [*url.Error] 型です。url.ErrorのTimeoutメソッドは、
 // リクエストがタイムアウトした場合にtrueを報告します。
 //
 // errがnilの場合、respには常に非nilのresp.Bodyが含まれます。
@@ -107,13 +107,15 @@ var ErrSchemeMismatch = errors.New("http: server gave HTTP response to HTTPS cli
 //
 // Getは、DefaultClient.Getのラッパーです。
 //
-// カスタムヘッダーでリクエストを作成するには、NewRequestとDefaultClient.Doを使用します。
+// カスタムヘッダーを使用してリクエストを行うには、[NewRequest] と
+// DefaultClient.Do を使用します。
 //
-// 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
+// 指定したcontext.Contextを使用してリクエストを行うには、[NewRequestWithContext] と
+// DefaultClient.Do を使用します。
 func Get(url string) (resp *Response, err error)
 
-// Getは指定されたURLにGETを発行します。レスポンスが以下のリダイレクトコードのいずれかである場合、
-// Getはリダイレクトをフォローします。最大10回のリダイレクトが許可されます：
+// Getは指定されたURLにGETを発行します。もしレスポンスが以下のリダイレクトコードの一つである場合、
+// Getは [Client.CheckRedirect] 関数を呼び出した後にリダイレクトを追跡します：
 //
 //	301 (Moved Permanently)
 //	302 (Found)
@@ -121,20 +123,17 @@ func Get(url string) (resp *Response, err error)
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
-// リダイレクトが多すぎる場合やHTTPプロトコルエラーがあった場合にエラーが返されます。
-// 2xx以外のレスポンスはエラーを引き起こしません。
-// 返される任意のエラーは*url.Error型になります。
+// [Client.CheckRedirect] 関数が失敗した場合、またはHTTPプロトコルエラーがあった場合、エラーが返されます。
+// 非2xxのレスポンスはエラーを引き起こしません。返される任意のエラーは [*url.Error] 型になります。
 // url.Error値のTimeoutメソッドは、リクエストがタイムアウトした場合にtrueを報告します。
 //
 // errがnilの場合、respは常に非nilのresp.Bodyを含みます。
 // 読み取りが完了したら、呼び出し元はresp.Bodyを閉じる必要があります。
 //
-// GetはDefaultClient.Getのラッパーです。
+// カスタムヘッダーを使用してリクエストを行うには、[NewRequest] と [Client.Do] を使用します。
 //
-// カスタムヘッダーでリクエストを行うには、NewRequestと
-// DefaultClient.Doを使用します。
-//
-// 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
+// 指定したcontext.Contextを使用してリクエストを行うには、[NewRequestWithContext] と
+// Client.Do を使用します。
 func (c *Client) Get(url string) (resp *Response, err error)
 
 // ErrUseLastResponseは、Client.CheckRedirectフックによって返され、リダイレクトの処理方法を制御するために使用できます。
@@ -145,43 +144,43 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 //
 // クライアントポリシー（CheckRedirectなど）によってトリガーされた場合、またはHTTP転送が失敗した場合（ネットワーク接続の問題など）、エラーが返されます。2xx以外のステータスコードはエラーを引き起こしません。
 //
-// 返されるエラーがnilの場合、Responseにはユーザーが閉じなければならない非nilのBodyが含まれます。BodyがEOFまで完全に読み取られずに閉じられない場合、クライアントの基本となるRoundTripper（通常はTransport）は、次の「keep-alive」リクエストのためにサーバーへの永続的なTCP接続を再利用できないかもしれません。
+// 返されるエラーがnilの場合、[Response] にはユーザーが閉じなければならない非nilのBodyが含まれます。BodyがEOFまで完全に読み取られずに閉じられない場合、[Client] の基本となる [RoundTripper]（通常は [Transport]）は、次の「keep-alive」リクエストのためにサーバーへの永続的なTCP接続を再利用できないかもしれません。
 //
 // リクエストのBodyがnilでない場合、それは基本となるTransportによって閉じられます。エラーが発生した場合も同様です。
 //
-// エラーが発生した場合、任意のResponseは無視できます。非nilのResponseと非nilのエラーは、CheckRedirectが失敗した場合にのみ返されます。その場合でも、返されたResponse.Bodyはすでに閉じられています。
+// エラーが発生した場合、任意のResponseは無視できます。非nilのResponseと非nilのエラーは、CheckRedirectが失敗した場合にのみ返されます。その場合でも、返された [Response.Body] はすでに閉じられています。
 //
-// 通常、Doの代わりにGet、Post、またはPostFormが使用されます。
+// 通常、Doの代わりに [Get]、[Post]、または [PostForm] が使用されます。
 //
-// サーバーがリダイレクトを返すと、Clientは最初にCheckRedirect関数を使用してリダイレクトをフォローするかどうかを決定します。許可されると、301、302、または303のリダイレクトは、メソッドがGET（元のリクエストがHEADだった場合はHEAD）でボディがない後続のリクエストを引き起こします。307または308のリダイレクトは、Request.GetBody関数が定義されている場合、元のHTTPメソッドとボディを保持します。NewRequest関数は、一般的な標準ライブラリボディタイプのGetBodyを自動的に設定します。
+// サーバーがリダイレクトを返すと、Clientは最初にCheckRedirect関数を使用してリダイレクトをフォローするかどうかを決定します。許可されると、301、302、または303のリダイレクトは、メソッドがGET（元のリクエストがHEADだった場合はHEAD）でボディがない後続のリクエストを引き起こします。307または308のリダイレクトは、[Request.GetBody] 関数が定義されている場合、元のHTTPメソッドとボディを保持します。[NewRequest] 関数は、一般的な標準ライブラリボディタイプのGetBodyを自動的に設定します。
 //
-// すべての返されるエラーは*url.Error型です。url.ErrorのTimeoutメソッドは、リクエストがタイムアウトした場合にtrueを報告します。
+// すべての返されるエラーは [*url.Error] 型です。url.ErrorのTimeoutメソッドは、リクエストがタイムアウトした場合にtrueを報告します。
 func (c *Client) Do(req *Request) (*Response, error)
 
 // Postは、指定されたURLに対してPOSTメソッドを送信します。
 //
 // 呼び出し元は、resp.Bodyの読み込みが完了したらresp.Bodyを閉じる必要があります。
 //
-// もし提供されたBodyがio.Closerを実装している場合は、リクエストの後で閉じられます。
+// もし提供されたBodyが [io.Closer] を実装している場合は、リクエストの後で閉じられます。
 //
 // Postは、DefaultClient.Postのラッパーです。
 //
-// カスタムヘッダーを設定するには、NewRequestとDefaultClient.Doを使用します。
+// カスタムヘッダーを設定するには、[NewRequest] と DefaultClient.Do を使用します。
 //
-// リダイレクトの処理方法については、Client.Doメソッドのドキュメントを参照してください。
+// リダイレクトの処理方法については、[Client.Do] メソッドのドキュメントを参照してください。
 //
-// 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
+// 指定されたcontext.Contextでリクエストを作成するには、[NewRequestWithContext] と DefaultClient.Do を使用します。
 func Post(url, contentType string, body io.Reader) (resp *Response, err error)
 
 // Postは、指定されたURLにPOSTリクエストを送信します。
 //
 // 呼び出し元は、resp.Bodyの読み込みが完了したらresp.Bodyを閉じる必要があります。
 //
-// 提供されたBodyがio.Closerインターフェースを実装している場合、リクエストの後に閉じられます。
+// 提供されたBodyが [io.Closer] インターフェースを実装している場合、リクエストの後に閉じられます。
 //
-// カスタムヘッダーを設定するには、NewRequestとClient.Doを使用します。
+// カスタムヘッダーを設定するには、[NewRequest] と [Client.Do] を使用します。
 //
-// 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとClient.Doを使用します。
+// 指定されたcontext.Contextでリクエストを作成するには、[NewRequestWithContext] と [Client.Do] を使用します。
 //
 // リダイレクトの処理方法については、Client.Doメソッドのドキュメントを参照してください。
 func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, err error)
@@ -189,29 +188,29 @@ func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, 
 // PostFormは、データのキーと値がURLエンコードされたリクエストボディとして指定されたURLにPOSTを発行します。
 //
 // Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
-// 他のヘッダーを設定するには、NewRequestとDefaultClient.Doを使用します。
+// 他のヘッダーを設定するには、[NewRequest] と DefaultClient.Do を使用します。
 //
 // errがnilの場合、respには常に非nilのresp.Bodyが含まれます。
 // 呼び出し元は、resp.Bodyの読み取りが完了したらresp.Bodyを閉じる必要があります。
 //
 // PostFormは、DefaultClient.PostFormのラッパーです。
 //
-// リダイレクトの処理方法については、Client.Doメソッドのドキュメントを参照してください。
+// リダイレクトの処理方法については、[Client.Do] メソッドのドキュメントを参照してください。
 //
-// 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
+// 指定された [context.Context] でリクエストを作成するには、[NewRequestWithContext] とDefaultClient.Doを使用します。
 func PostForm(url string, data url.Values) (resp *Response, err error)
 
 // PostForm関数は、指定されたデータのキーと値のペアをリクエストボディにエンコードして、URLにPOSTリクエストを送信します。
 //
 // Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
-// 他のヘッダーを設定するには、NewRequestとClient.Doを使用します。
+// 他のヘッダーを設定するには、[NewRequest] と [Client.Do] を使用します。
 //
 // errがnilの場合、respは常に非nilのresp.Bodyを含みます。
 // 読み取り後、呼び出し元はresp.Bodyを閉じなければなりません。
 //
 // リダイレクトの処理については、Client.Doメソッドのドキュメンテーションを参照してください。
 //
-// 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとClient.Doを使用します。
+// 指定したcontext.Contextでリクエストを作成するには、[NewRequestWithContext] とClient.Doを使用します。
 func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)
 
 // Headは、指定されたURLに対してHEADリクエストを発行します。レスポンスが以下のリダイレクトコードのいずれかである場合、
@@ -225,11 +224,11 @@ func (c *Client) PostForm(url string, data url.Values) (resp *Response, err erro
 //
 // HeadはDefaultClient.Headのラッパーです。
 //
-// 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
+// 指定した [context.Context] でリクエストを作成するには、[NewRequestWithContext] と DefaultClient.Do を使用します。
 func Head(url string) (resp *Response, err error)
 
 // 指定されたURLにHEADリクエストを送信します。もしレスポンスが以下のいずれかのリダイレクトコードである場合、
-// Headメソッドはリダイレクトに従う前にClientのCheckRedirect関数を呼び出すことがあります。
+// Headメソッドはリダイレクトに従う前に [Client.CheckRedirect] 関数を呼び出すことがあります。
 //
 //	301 (Moved Permanently)
 //	302 (Found)
@@ -237,11 +236,11 @@ func Head(url string) (resp *Response, err error)
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
-// 指定されたcontext.Contextを使用してリクエストを送信する場合は、NewRequestWithContextとClient.Doを使用してください。
+// 指定された [context.Context] を使用してリクエストを送信する場合は、[NewRequestWithContext] と [Client.Do] を使用してください。
 func (c *Client) Head(url string) (resp *Response, err error)
 
-// CloseIdleConnectionsは、以前は接続されていたが現在は"keep-alive"状態、つまりアイドル状態にあるTransport上のアイドル接続を閉じます。
+// CloseIdleConnectionsは、以前は接続されていたが現在は"keep-alive"状態、つまりアイドル状態にある [Transport] 上のアイドル接続を閉じます。
 // これは現在アクティブな接続を中断しません。
 //
-// クライアントのTransportにCloseIdleConnectionsメソッドがない場合、このメソッドは何もしません。
+// [Client.Transport] に [Client.CloseIdleConnections] メソッドがない場合、このメソッドは何もしません。
 func (c *Client) CloseIdleConnections()

@@ -13,7 +13,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ProxyRequestは、ReverseProxyによって書き換えられるリクエストを含んでいます。
+// ProxyRequestは、[ReverseProxy] によって書き換えられるリクエストを含んでいます。
 type ProxyRequest struct {
 	In *http.Request
 
@@ -27,7 +27,7 @@ type ProxyRequest struct {
 // もしターゲットのパスが"/base"であり、受信したリクエストが"/dir"である場合、ターゲットリクエストは"/base/dir"となります。
 //
 // SetURLは、アウトバウンドのHostヘッダをターゲットのホストに合わせて書き換えます。
-// インバウンドのリクエストのHostヘッダを保持するために（NewSingleHostReverseProxyのデフォルトの動作）：
+// インバウンドのリクエストのHostヘッダを保持するために（[NewSingleHostReverseProxy] のデフォルトの動作）：
 //
 //	rewriteFunc := func(r *httputil.ProxyRequest) {
 //	    r.SetURL(url)
@@ -41,7 +41,9 @@ func (r *ProxyRequest) SetURL(target *url.URL)
 // - X-Forwarded-Hostヘッダーは、クライアントが要求したホスト名に設定されます。
 // - X-Forwarded-Protoヘッダーは、入力リクエストがTLS対応の接続で行われたかどうかに応じて、「http」または「https」に設定されます。
 //
-// 出力リクエストに既存のX-Forwarded-Forヘッダーが含まれている場合、SetXForwardedはクライアントのIPアドレスを追加します。SetXForwardedを呼び出す前に、入力リクエストのX-Forwarded-Forヘッダー（Director関数を使用してReverseProxyを使用している場合のデフォルト動作）をコピーして、入力リクエストのX-Forwarded-Forヘッダーに追加します：
+// 出力リクエストに既存のX-Forwarded-Forヘッダーが含まれている場合、SetXForwardedはクライアントのIPアドレスを追加します。
+// SetXForwardedを呼び出す前に、入力リクエストのX-Forwarded-Forヘッダー（Director関数を使用して [ReverseProxy] を使用している場合のデフォルト動作）をコピーして、
+// 入力リクエストのX-Forwarded-Forヘッダーに追加します：
 //
 //	rewriteFunc := func(r *httputil.ProxyRequest) {
 //	   r.Out.Header["X-Forwarded-For"] = r.In.Header["X-Forwarded-For"]
@@ -108,14 +110,15 @@ type ReverseProxy struct {
 	ErrorHandler func(http.ResponseWriter, *http.Request, error)
 }
 
-// BufferPoolはio.CopyBufferで使用するための一時的なバイトスライスを取得および返却するためのインターフェースです。
+// BufferPoolは [io.CopyBuffer] で使用するための一時的なバイトスライスを取得および返却するためのインターフェースです。
 type BufferPool interface {
 	Get() []byte
 	Put([]byte)
 }
 
-// NewSingleHostReverseProxyは、URLを指定されたスキーム、ホスト、およびベースパスにルーティングする新しいReverseProxyを返します。ターゲットのパスが"/base"であり、受信したリクエストが"/dir"である場合、ターゲットのリクエストは/base/dirになります。
+// NewSingleHostReverseProxyは、URLを指定されたスキーム、ホスト、およびベースパスにルーティングする新しい [ReverseProxy] を返します。ターゲットのパスが"/base"であり、受信したリクエストが"/dir"である場合、ターゲットのリクエストは/base/dirになります。
 // NewSingleHostReverseProxyは、Hostヘッダーを書き換えません。
+//
 // NewSingleHostReverseProxyが提供する以上のカスタマイズをするには、Rewrite関数を使用して直接ReverseProxyを使用してください。ProxyRequest SetURLメソッドを使用してアウトバウンドリクエストをルーティングすることができます（ただし、SetURLはデフォルトでアウトバウンドリクエストのHostヘッダーを書き換えます）。
 //
 //	proxy := &ReverseProxy{

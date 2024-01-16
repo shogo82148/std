@@ -74,13 +74,13 @@ func AddrFrom16(addr [16]byte) Addr
 // またはスコープ付きアドレスゾーンを持つIPv6（"fe80::1cc0:3e8c:119f:c2e1%ens18"）のいずれかである必要があります。
 func ParseAddr(s string) (Addr, error)
 
-// / MustParseAddrは、ParseAddr(s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
+// / MustParseAddrは、[ParseAddr](s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
 // ハードコードされた文字列を使用したテストで使用することを目的としています。
 func MustParseAddr(s string) Addr
 
 // AddrFromSliceは、4バイトまたは16バイトのバイトスライスをIPv4またはIPv6アドレスとして解析します。
-// net.IPは、[]byte引数として直接渡すことができます。
-// スライスの長さが4または16でない場合、Addr{}、falseを返します。
+// [net.IP] は、[]byte引数として直接渡すことができます。
+// スライスの長さが4または16でない場合、[Addr]{}、falseを返します。
 func AddrFromSlice(slice []byte) (ip Addr, ok bool)
 
 // IsValidは、Addrが初期化されたアドレス（ゼロのAddrではない）であるかどうかを報告します。
@@ -89,7 +89,7 @@ func AddrFromSlice(slice []byte) (ip Addr, ok bool)
 func (ip Addr) IsValid() bool
 
 // BitLenは、IPアドレスのビット数を返します。
-// IPv6の場合は128、IPv4の場合は32、ゼロのAddrの場合は0です。
+// IPv6の場合は128、IPv4の場合は32、ゼロの [Addr] の場合は0です。
 //
 // IPv4マップされたIPv6アドレスはIPv6アドレスと見なされるため、ビット長は128になります。
 func (ip Addr) BitLen() int
@@ -101,7 +101,7 @@ func (ip Addr) Zone() string
 // ip == ip2の場合、結果は0になります。
 // ip < ip2の場合、結果は-1になります。
 // ip > ip2の場合、結果は+1になります。
-// "less than"の定義は、Lessメソッドと同じです。
+// "less than"の定義は、[Addr.Less] メソッドと同じです。
 func (ip Addr) Compare(ip2 Addr) int
 
 // Lessは、ipがip2よりも前にソートされるかどうかを報告します。
@@ -111,7 +111,7 @@ func (ip Addr) Less(ip2 Addr) bool
 
 // Is4は、ipがIPv4アドレスであるかどうかを報告します。
 //
-// IPv4マップされたIPv6アドレスの場合、falseを返します。Addr.Unmapを参照してください。
+// IPv4マップされたIPv6アドレスの場合、falseを返します。[Addr.Unmap] を参照してください。
 func (ip Addr) Is4() bool
 
 // Is4In6は、ipがIPv4マップされたIPv6アドレスであるかどうかを報告します。
@@ -150,7 +150,7 @@ func (ip Addr) IsLinkLocalMulticast() bool
 //
 // リンクローカルアドレススペースを除く、現在のIANA割り当て2000::/3のグローバルユニキャストスペース外にあるIPv6アドレスに対してtrueを返します。
 // また、ipがIPv4プライベートアドレススペースまたはIPv6ユニークローカルアドレススペースにある場合でも、trueを返します。
-// ゼロのAddrの場合はfalseを返します。
+// ゼロの [Addr] の場合はfalseを返します。
 //
 // 参考文献については、RFC 1122、RFC 4291、およびRFC 4632を参照してください。
 func (ip Addr) IsGlobalUnicast() bool
@@ -158,28 +158,28 @@ func (ip Addr) IsGlobalUnicast() bool
 // IsPrivateは、RFC 1918（IPv4アドレス）およびRFC 4193（IPv6アドレス）に従って、
 // ipがプライベートアドレスであるかどうかを報告します。
 // つまり、ipが10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、またはfc00::/7のいずれかであるかどうかを報告します。
-// これは、net.IP.IsPrivateと同じです。
+// これは、[net.IP.IsPrivate] と同じです。
 func (ip Addr) IsPrivate() bool
 
 // IsUnspecifiedは、ipが未指定のアドレスであるかどうかを報告します。
 // IPv4アドレス"0.0.0.0"またはIPv6アドレス"::"のいずれかです。
 //
-// ただし、ゼロのAddrは未指定のアドレスではありません。
+// ただし、ゼロの [Addr] は未指定のアドレスではありません。
 func (ip Addr) IsUnspecified() bool
 
 // Prefixは、IPの上位bビットのみを保持し、指定された長さのPrefixを生成します。
-// ipがゼロのAddrの場合、Prefixは常にゼロのPrefixとnilエラーを返します。
+// ipがゼロの [Addr] の場合、Prefixは常にゼロのPrefixとnilエラーを返します。
 // それ以外の場合、bitsが負の場合またはip.BitLen()より大きい場合、Prefixはエラーを返します。
 func (ip Addr) Prefix(b int) (Prefix, error)
 
 // As16は、IPアドレスを16バイトの表現で返します。
 // IPv4アドレスはIPv4マップされたIPv6アドレスとして返されます。
-// ゾーンを持つIPv6アドレスは、ゾーンを除いた形式で返されます（ゾーンを取得するにはZoneメソッドを使用してください）。
+// ゾーンを持つIPv6アドレスは、ゾーンを除いた形式で返されます（ゾーンを取得するには [Addr.Zone] メソッドを使用してください）。
 // ゼロのAddrの場合は、すべてのバイトがゼロの値を返します。
 func (ip Addr) As16() (a16 [16]byte)
 
 // As4は、IPv4またはIPv4-in-IPv6アドレスを4バイトの表現で返します。
-// ipがゼロのAddrまたはIPv6アドレスの場合、As4はパニックを引き起こします。
+// ipがゼロの [Addr] またはIPv6アドレスの場合、As4はパニックを引き起こします。
 // 0.0.0.0はゼロのAddrではないことに注意してください。
 func (ip Addr) As4() (a4 [4]byte)
 
@@ -187,7 +187,7 @@ func (ip Addr) As4() (a4 [4]byte)
 func (ip Addr) AsSlice() []byte
 
 // Nextは、ipの次のアドレスを返します。
-// アドレスが存在しない場合、ゼロのAddrを返します。
+// アドレスが存在しない場合、ゼロの [Addr] を返します。
 func (ip Addr) Next() Addr
 
 // Prevは、ipの前のアドレスを返します。
@@ -197,40 +197,40 @@ func (ip Addr) Prev() Addr
 // Stringは、IPアドレスipの文字列形式を返します。
 // 返される形式は、次の5つのいずれかです。
 //
-//   - ゼロのAddrの場合は "invalid IP"
+//   - ゼロの [Addr] の場合は "invalid IP"
 //   - IPv4ドット付き10進数表記 ("192.0.2.1")
 //   - IPv6表記 ("2001:db8::1")
-//   - Is4In6の場合は "::ffff:1.2.3.4"
+//   - [Addr.Is4In6] の場合は "::ffff:1.2.3.4"
 //   - ゾーンを持つIPv6表記 ("fe80:db8::1%eth0")
 //
 // 注意：パッケージnetのIP.Stringメソッドとは異なり、
 // IPv4マップされたIPv6アドレスは、ドット区切りの4つ組の前に"::ffff:"の接頭辞が付きます。
 func (ip Addr) String() string
 
-// AppendToは、MarshalTextによって生成されたipのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
+// AppendToは、[Addr.MarshalText] によって生成されたipのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
 func (ip Addr) AppendTo(b []byte) []byte
 
-// StringExpandedは、Stringと同様ですが、IPv6アドレスは先頭にゼロを付けて"::"の圧縮を行わずに展開されます。
+// StringExpandedは、[Addr.String] と同様ですが、IPv6アドレスは先頭にゼロを付けて"::"の圧縮を行わずに展開されます。
 // たとえば、"2001:db8::1"は"2001:0db8:0000:0000:0000:0000:0000:0001"になります。
 func (ip Addr) StringExpanded() string
 
-// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
-// エンコーディングは、Stringが返すものと同じですが、1つの例外があります。
-// ipがゼロのAddrの場合、エンコーディングは空の文字列になります。
+// MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
+// エンコーディングは、[Addr.String] が返すものと同じですが、1つの例外があります。
+// ipがゼロの [Addr] の場合、エンコーディングは空の文字列になります。
 func (ip Addr) MarshalText() ([]byte, error)
 
-// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+// UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
 // IPアドレスは、ParseAddrで受け入れられる形式で指定する必要があります。
 //
-// textが空の場合、UnmarshalTextは*ipをゼロのAddrに設定し、エラーを返しません。
+// textが空の場合、UnmarshalTextは*ipをゼロの [Addr] に設定し、エラーを返しません。
 func (ip *Addr) UnmarshalText(text []byte) error
 
-// MarshalBinaryは、encoding.BinaryMarshalerインターフェースを実装します。
-// ゼロのAddrの場合は長さ0のスライスを返し、IPv4アドレスの場合は4バイトの形式を、
+// MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
+// ゼロの [Addr] の場合は長さ0のスライスを返し、IPv4アドレスの場合は4バイトの形式を、
 // IPv6アドレスの場合はゾーンを追加した16バイトの形式を返します。
 func (ip Addr) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinaryは、encoding.BinaryUnmarshalerインターフェースを実装します。
+// UnmarshalBinaryは、[encoding.BinaryUnmarshaler] インターフェースを実装します。
 // MarshalBinaryによって生成された形式のデータを想定しています。
 func (ip *Addr) UnmarshalBinary(b []byte) error
 
@@ -240,7 +240,7 @@ type AddrPort struct {
 	port uint16
 }
 
-// AddrPortFromは、提供されたIPとポート番号でAddrPortを返します。
+// AddrPortFromは、提供されたIPとポート番号で [AddrPort] を返します。
 // アロケーションは行いません。
 func AddrPortFrom(ip Addr, port uint16) AddrPort
 
@@ -250,12 +250,12 @@ func (p AddrPort) Addr() Addr
 // Portは、pのポート番号を返します。
 func (p AddrPort) Port() uint16
 
-// ParseAddrPortは、sをAddrPortとして解析します。
+// ParseAddrPortは、sを [AddrPort] として解析します。
 //
 // 名前解決は行われません。アドレスとポートの両方が数値である必要があります。
 func ParseAddrPort(s string) (AddrPort, error)
 
-// MustParseAddrPortは、ParseAddrPort(s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
+// MustParseAddrPortは、[ParseAddrPort](s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
 // テストでハードコードされた文字列を使用するために使用することを意図しています。
 func MustParseAddrPort(s string) AddrPort
 
@@ -270,29 +270,29 @@ func (p AddrPort) Compare(p2 AddrPort) int
 
 func (p AddrPort) String() string
 
-// AppendToは、MarshalTextによって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
+// AppendToは、[AddrPort.MarshalText] によって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
 func (p AddrPort) AppendTo(b []byte) []byte
 
-// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
-// エンコーディングは、Stringが返すものと同じですが、1つの例外があります。
-// p.Addr()がゼロのAddrの場合、エンコーディングは空の文字列になります。
+// MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
+// エンコーディングは、[AddrPort.String] が返すものと同じですが、1つの例外があります。
+// p.Addr()がゼロの [Addr] の場合、エンコーディングは空の文字列になります。
 func (p AddrPort) MarshalText() ([]byte, error)
 
-// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
-// AddrPortは、MarshalTextによって生成された形式のデータ、またはParseAddrPortで受け入れられる形式で指定する必要があります。
+// UnmarshalTextは、encoding.TextUnmarshaler インターフェースを実装します。
+// AddrPortは、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
 func (p *AddrPort) UnmarshalText(text []byte) error
 
-// MarshalBinaryは、encoding.BinaryMarshalerインターフェースを実装します。
-// これは、Addr.MarshalBinaryに、リトルエンディアンで表されたポートを追加したものを返します。
+// MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
+// これは、[Addr.MarshalBinary] に、リトルエンディアンで表されたポートを追加したものを返します。
 func (p AddrPort) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinaryは、encoding.BinaryUnmarshalerインターフェースを実装します。
-// これは、MarshalBinaryによって生成された形式のデータを想定しています。
+// UnmarshalBinaryは、[encoding.BinaryUnmarshaler] インターフェースを実装します。
+// これは、[AddrPort.MarshalBinary] によって生成された形式のデータを想定しています。
 func (p *AddrPort) UnmarshalBinary(b []byte) error
 
 // Prefixは、IPネットワークを表すIPアドレスプレフィックス（CIDR）です。
 //
-// Addr()の最初のBits()が指定されます。残りのビットは任意のアドレスに一致します。
+// [Addr]()の最初の [Prefix.Bits]()が指定されます。残りのビットは任意のアドレスに一致します。
 // Bits()の範囲は、IPv4の場合は[0,32]、IPv6の場合は[0,128]です。
 type Prefix struct {
 	ip Addr
@@ -302,11 +302,11 @@ type Prefix struct {
 	bitsPlusOne uint8
 }
 
-// PrefixFromは、指定されたIPアドレスとビットプレフィックス長でPrefixを返します。
+// PrefixFromは、指定されたIPアドレスとビットプレフィックス長で [Prefix] を返します。
 //
-// アロケーションは行いません。Addr.Prefixとは異なり、PrefixFromはipのホストビットをマスクしません。
+// アロケーションは行いません。[Addr.Prefix] とは異なり、[PrefixFrom] はipのホストビットをマスクしません。
 //
-// bitsが負の場合またはip.BitLenより大きい場合、Prefix.Bitsは無効な値-1を返します。
+// bitsが負の場合またはip.BitLenより大きい場合、[Prefix.Bits] は無効な値-1を返します。
 func PrefixFrom(ip Addr, bits int) Prefix
 
 // Addrは、pのIPアドレスを返します。
@@ -318,8 +318,8 @@ func (p Prefix) Addr() Addr
 func (p Prefix) Bits() int
 
 // IsValidは、p.Addr()に対してp.Bits()が有効な範囲であるかどうかを報告します。
-// p.Addr()がゼロのAddrの場合、IsValidはfalseを返します。
-// pがゼロのPrefixの場合、p.IsValid() == falseになることに注意してください。
+// p.Addr()がゼロの [Addr] の場合、IsValidはfalseを返します。
+// pがゼロの [Prefix] の場合、p.IsValid() == falseになることに注意してください。
 func (p Prefix) IsValid() bool
 
 // IsSingleIPは、pが正確に1つのIPを含むかどうかを報告します。
@@ -333,13 +333,13 @@ func (p Prefix) IsSingleIP() bool
 // マスクされたアドレスビットはゼロになりません。そのため、Maskedを使用してください。
 func ParsePrefix(s string) (Prefix, error)
 
-// MustParsePrefixは、ParsePrefix(s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
+// MustParsePrefixは、[ParsePrefix](s)を呼び出し、エラーが発生した場合にパニックを引き起こします。
 // テストでハードコードされた文字列を使用するために使用することを意図しています。
 func MustParsePrefix(s string) Prefix
 
 // Maskedは、pを正規形式で返します。p.Addr()の高位p.Bits()ビット以外はすべてマスクされます。
 //
-// pがゼロまたは無効な場合、MaskedはゼロのPrefixを返します。
+// pがゼロまたは無効な場合、Maskedはゼロの [Prefix] を返します。
 func (p Prefix) Masked() Prefix
 
 // Containsは、ネットワークpがipを含むかどうかを報告します。
@@ -356,25 +356,25 @@ func (p Prefix) Contains(ip Addr) bool
 // Containsメソッドと同様に、IPv4マップされたIPv6アドレスを持つプレフィックスは、IPv6マスクとして扱われます。
 func (p Prefix) Overlaps(o Prefix) bool
 
-// AppendToは、MarshalTextによって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
+// AppendToは、[Prefix.MarshalText] によって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
 func (p Prefix) AppendTo(b []byte) []byte
 
-// MarshalTextは、encoding.TextMarshalerインターフェースを実装します。
-// エンコーディングは、Stringが返すものと同じですが、1つの例外があります。
+// MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
+// エンコーディングは、[Prefix.String] が返すものと同じですが、1つの例外があります。
 // pがゼロ値の場合、エンコーディングは空の文字列になります。
 func (p Prefix) MarshalText() ([]byte, error)
 
-// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
-// IPアドレスは、ParsePrefixで受け入れられる形式で指定する必要があります。
+// UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
+// IPアドレスは、[ParsePrefix] で受け入れられる形式で指定する必要があります。
 // または、MarshalTextによって生成された形式である必要があります。
 func (p *Prefix) UnmarshalText(text []byte) error
 
-// MarshalBinaryは、encoding.BinaryMarshalerインターフェースを実装します。
-// これは、Addr.MarshalBinaryに、プレフィックスビットを表す追加のバイトを追加したものを返します。
+// MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
+// これは、[Addr.MarshalBinary] に、プレフィックスビットを表す追加のバイトを追加したものを返します。
 func (p Prefix) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinaryは、encoding.BinaryUnmarshalerインターフェースを実装します。
-// これは、MarshalBinaryによって生成された形式のデータを想定しています。
+// UnmarshalBinaryは、[encoding.BinaryUnmarshaler] インターフェースを実装します。
+// これは、[Prefix.MarshalBinary] によって生成された形式のデータを想定しています。
 func (p *Prefix) UnmarshalBinary(b []byte) error
 
 // Stringは、pのCIDR表記を返します: "<ip>/<bits>"。
