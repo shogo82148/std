@@ -35,6 +35,10 @@ import (
 )
 
 // A PublicKey represents the public part of an RSA key.
+//
+// The value of the modulus N is considered secret by this library and protected
+// from leaking through timing side-channels. However, neither the value of the
+// exponent E nor the precise bit size of N are similarly protected.
 type PublicKey struct {
 	N *big.Int
 	E int

@@ -15,7 +15,7 @@ type Frames struct {
 	frameStore [2]Frame
 }
 
-// Frame is the information returned by Frames for each call frame.
+// Frame is the information returned by [Frames] for each call frame.
 type Frame struct {
 	// PC is the program counter for the location in this frame.
 	// For a frame that calls another frame, this will be the
@@ -67,15 +67,15 @@ type Frame struct {
 // Do not change the slice until you are done with the [Frames].
 func CallersFrames(callers []uintptr) *Frames
 
-// Next returns a Frame representing the next call frame in the slice
+// Next returns a [Frame] representing the next call frame in the slice
 // of PC values. If it has already returned all call frames, Next
-// returns a zero Frame.
+// returns a zero [Frame].
 //
 // The more result indicates whether the next call to Next will return
-// a valid Frame. It does not necessarily indicate whether this call
+// a valid [Frame]. It does not necessarily indicate whether this call
 // returned one.
 //
-// See the Frames example for idiomatic usage.
+// See the [Frames] example for idiomatic usage.
 func (ci *Frames) Next() (frame Frame, more bool)
 
 // A Func represents a Go function in the running binary.

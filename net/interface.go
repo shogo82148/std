@@ -43,14 +43,14 @@ func Interfaces() ([]Interface, error)
 // addresses.
 //
 // The returned list does not identify the associated interface; use
-// Interfaces and Interface.Addrs for more detail.
+// Interfaces and [Interface.Addrs] for more detail.
 func InterfaceAddrs() ([]Addr, error)
 
 // InterfaceByIndex returns the interface specified by index.
 //
 // On Solaris, it returns one of the logical network interfaces
 // sharing the logical data link; for more precision use
-// InterfaceByName.
+// [InterfaceByName].
 func InterfaceByIndex(index int) (*Interface, error)
 
 // InterfaceByName returns the interface specified by name.

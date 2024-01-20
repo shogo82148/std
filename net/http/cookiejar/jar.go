@@ -58,16 +58,16 @@ type Jar struct {
 	nextSeqNum uint64
 }
 
-// New returns a new cookie jar. A nil *Options is equivalent to a zero
+// New returns a new cookie jar. A nil [*Options] is equivalent to a zero
 // Options.
 func New(o *Options) (*Jar, error)
 
-// Cookies implements the Cookies method of the http.CookieJar interface.
+// Cookies implements the Cookies method of the [http.CookieJar] interface.
 //
 // It returns an empty slice if the URL's scheme is not HTTP or HTTPS.
 func (j *Jar) Cookies(u *url.URL) (cookies []*http.Cookie)
 
-// SetCookies implements the SetCookies method of the http.CookieJar interface.
+// SetCookies implements the SetCookies method of the [http.CookieJar] interface.
 //
 // It does nothing if the URL's scheme is not HTTP or HTTPS.
 func (j *Jar) SetCookies(u *url.URL, cookies []*http.Cookie)

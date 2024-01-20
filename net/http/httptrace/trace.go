@@ -14,7 +14,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ContextClientTrace returns the ClientTrace associated with the
+// ContextClientTrace returns the [ClientTrace] associated with the
 // provided context. If none, it returns nil.
 func ContextClientTrace(ctx context.Context) *ClientTrace
 
@@ -147,7 +147,7 @@ type DNSDoneInfo struct {
 	Coalesced bool
 }
 
-// GotConnInfo is the argument to the ClientTrace.GotConn function and
+// GotConnInfo is the argument to the [ClientTrace.GotConn] function and
 // contains information about the obtained connection.
 type GotConnInfo struct {
 	// Conn is the connection that was obtained. It is owned by

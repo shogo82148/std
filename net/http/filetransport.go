@@ -8,13 +8,13 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// NewFileTransport returns a new RoundTripper, serving the provided
-// FileSystem. The returned RoundTripper ignores the URL host in its
+// NewFileTransport returns a new [RoundTripper], serving the provided
+// [FileSystem]. The returned RoundTripper ignores the URL host in its
 // incoming requests, as well as most other properties of the
 // request.
 //
 // The typical use case for NewFileTransport is to register the "file"
-// protocol with a Transport, as in:
+// protocol with a [Transport], as in:
 //
 //	t := &http.Transport{}
 //	t.RegisterProtocol("file", http.NewFileTransport(http.Dir("/")))
@@ -23,13 +23,13 @@ import (
 //	...
 func NewFileTransport(fs FileSystem) RoundTripper
 
-// NewFileTransportFS returns a new RoundTripper, serving the provided
+// NewFileTransportFS returns a new [RoundTripper], serving the provided
 // file system fsys. The returned RoundTripper ignores the URL host in its
 // incoming requests, as well as most other properties of the
 // request.
 //
 // The typical use case for NewFileTransportFS is to register the "file"
-// protocol with a Transport, as in:
+// protocol with a [Transport], as in:
 //
 //	fsys := os.DirFS("/")
 //	t := &http.Transport{}

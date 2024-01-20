@@ -17,10 +17,10 @@ type Reader struct {
 	buf []byte
 }
 
-// NewReader returns a new Reader reading from r.
+// NewReader returns a new [Reader] reading from r.
 //
-// To avoid denial of service attacks, the provided bufio.Reader
-// should be reading from an io.LimitReader or similar Reader to bound
+// To avoid denial of service attacks, the provided [bufio.Reader]
+// should be reading from an [io.LimitReader] or similar Reader to bound
 // the size of responses.
 func NewReader(r *bufio.Reader) *Reader
 
@@ -28,7 +28,7 @@ func NewReader(r *bufio.Reader) *Reader
 // eliding the final \n or \r\n from the returned string.
 func (r *Reader) ReadLine() (string, error)
 
-// ReadLineBytes is like ReadLine but returns a []byte instead of a string.
+// ReadLineBytes is like [Reader.ReadLine] but returns a []byte instead of a string.
 func (r *Reader) ReadLineBytes() ([]byte, error)
 
 // ReadContinuedLine reads a possibly continued line from r,
@@ -51,7 +51,7 @@ func (r *Reader) ReadLineBytes() ([]byte, error)
 // Empty lines are never continued.
 func (r *Reader) ReadContinuedLine() (string, error)
 
-// ReadContinuedLineBytes is like ReadContinuedLine but
+// ReadContinuedLineBytes is like [Reader.ReadContinuedLine] but
 // returns a []byte instead of a string.
 func (r *Reader) ReadContinuedLineBytes() ([]byte, error)
 
@@ -102,7 +102,7 @@ func (r *Reader) ReadCodeLine(expectCode int) (code int, message string, err err
 // An expectCode <= 0 disables the check of the status code.
 func (r *Reader) ReadResponse(expectCode int) (code int, message string, err error)
 
-// DotReader returns a new Reader that satisfies Reads using the
+// DotReader returns a new [Reader] that satisfies Reads using the
 // decoded text of a dot-encoded block read from r.
 // The returned Reader is only valid until the next call
 // to a method on r.
@@ -116,25 +116,25 @@ func (r *Reader) ReadResponse(expectCode int) (code int, message string, err err
 //
 // The decoded form returned by the Reader's Read method
 // rewrites the "\r\n" line endings into the simpler "\n",
-// removes leading dot escapes if present, and stops with error io.EOF
+// removes leading dot escapes if present, and stops with error [io.EOF]
 // after consuming (and discarding) the end-of-sequence line.
 func (r *Reader) DotReader() io.Reader
 
 // ReadDotBytes reads a dot-encoding and returns the decoded data.
 //
-// See the documentation for the DotReader method for details about dot-encoding.
+// See the documentation for the [Reader.DotReader] method for details about dot-encoding.
 func (r *Reader) ReadDotBytes() ([]byte, error)
 
 // ReadDotLines reads a dot-encoding and returns a slice
 // containing the decoded lines, with the final \r\n or \n elided from each.
 //
-// See the documentation for the DotReader method for details about dot-encoding.
+// See the documentation for the [Reader.DotReader] method for details about dot-encoding.
 func (r *Reader) ReadDotLines() ([]string, error)
 
 // ReadMIMEHeader reads a MIME-style header from r.
 // The header is a sequence of possibly continued Key: Value lines
 // ending in a blank line.
-// The returned map m maps CanonicalMIMEHeaderKey(key) to a
+// The returned map m maps [CanonicalMIMEHeaderKey](key) to a
 // sequence of values in the same order encountered in the input.
 //
 // For example, consider this input:

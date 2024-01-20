@@ -128,12 +128,12 @@ func Abs(path string) (string, error)
 // Rel calls [Clean] on the result.
 func Rel(basepath, targpath string) (string, error)
 
-// SkipDir is used as a return value from WalkFuncs to indicate that
+// SkipDir is used as a return value from [WalkFunc] to indicate that
 // the directory named in the call is to be skipped. It is not returned
 // as an error by any function.
 var SkipDir error = fs.SkipDir
 
-// SkipAll is used as a return value from WalkFuncs to indicate that
+// SkipAll is used as a return value from [WalkFunc] to indicate that
 // all remaining files and directories are to be skipped. It is not returned
 // as an error by any function.
 var SkipAll error = fs.SkipAll
