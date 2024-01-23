@@ -102,3 +102,5 @@ const (
 	// Like UnsafePointRestart1, but back to function entry if async preempted.
 	UnsafePointRestartAtEntry = -5
 )
+
+const MINFUNC = 16

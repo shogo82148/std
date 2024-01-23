@@ -5,30 +5,10 @@
 package reflectdata
 
 import (
-	"github.com/shogo82148/std/internal/abi"
-
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
-)
-
-// Builds a type representing a Bucket structure for
-// the given map type. This type is not visible to users -
-// we include only enough information to generate a correct GC
-// program for it.
-// Make sure this stays in sync with runtime/map.go.
-//
-//	A "bucket" is a "struct" {
-//	      tophash [BUCKETSIZE]uint8
-//	      keys [BUCKETSIZE]keyType
-//	      elems [BUCKETSIZE]elemType
-//	      overflow *bucket
-//	    }
-const (
-	BUCKETSIZE  = abi.MapBucketCount
-	MAXKEYSIZE  = abi.MapMaxKeyBytes
-	MAXELEMSIZE = abi.MapMaxElemBytes
 )
 
 // MapBucketType makes the map bucket type given the type of the map.
