@@ -87,4 +87,6 @@ func DestroyEnvironmentBlock(block *uint16) (err error)
 
 func GetProfilesDirectory(dir *uint16, dirLen *uint32) (err error)
 
+func WSAGetOverlappedResult(h syscall.Handle, o *syscall.Overlapped, bytes *uint32, wait bool, flags *uint32) (err error)
+
 func WSASocket(af int32, typ int32, protocol int32, protinfo *syscall.WSAProtocolInfo, group uint32, flags uint32) (handle syscall.Handle, err error)
