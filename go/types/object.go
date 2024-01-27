@@ -37,7 +37,7 @@ type Object interface {
 
 	setParent(*Scope)
 
-	sameId(pkg *Package, name string) bool
+	sameId(pkg *Package, name string, foldCase bool) bool
 
 	scopePos() token.Pos
 
