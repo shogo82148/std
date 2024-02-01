@@ -92,6 +92,7 @@ type NamedCallEdge struct {
 	CallerName     string
 	CalleeName     string
 	CallSiteOffset int
+	CallStartLine  int
 }
 
 // NamedEdgeMap contains all unique call edges in the profile and their
@@ -126,7 +127,7 @@ type Profile struct {
 	WeightedCG *IRGraph
 }
 
-// New generates a profile-graph from the profile.
+// New generates a profile-graph from the profile or pre-processed profile.
 func New(profileFile string) (*Profile, error)
 
 // NodeLineOffset returns the line offset of n in fn.

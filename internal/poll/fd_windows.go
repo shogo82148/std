@@ -160,3 +160,5 @@ func (fd *FD) WriteMsgInet4(p []byte, oob []byte, sa *syscall.SockaddrInet4) (in
 
 // WriteMsgInet6 is WriteMsg specialized for syscall.SockaddrInet6.
 func (fd *FD) WriteMsgInet6(p []byte, oob []byte, sa *syscall.SockaddrInet6) (int, int, error)
+
+func DupCloseOnExec(fd int) (int, string, error)

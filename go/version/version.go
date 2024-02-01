@@ -2,9 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package version provides operations on [Go versions].
+// Package version provides operations on [Go versions]
+// in [Go toolchain name syntax]: strings like
+// "go1.20", "go1.21.0", "go1.22rc2", and "go1.23.4-bigcorp".
 //
 // [Go versions]: https://go.dev/doc/toolchain#version
+// [Go toolchain name syntax]: https://go.dev/doc/toolchain#name
 package version
 
 // Lang returns the Go language version for version x.
@@ -26,8 +29,6 @@ func Lang(x string) string
 // valid versions and equal to each other.
 // The language version "go1.21" compares less than the
 // release candidate and eventual releases "go1.21rc1" and "go1.21.0".
-// Custom toolchain suffixes are ignored during comparison:
-// "go1.21.0" and "go1.21.0-bigcorp" are equal.
 func Compare(x, y string) int
 
 // IsValid reports whether the version x is valid.

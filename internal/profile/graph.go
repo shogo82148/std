@@ -15,11 +15,7 @@
 // Package graph represents a pprof profile as a directed graph.
 //
 // This package is a simplified fork of github.com/google/pprof/internal/graph.
-package graph
-
-import (
-	"github.com/shogo82148/std/internal/profile"
-)
+package profile
 
 // Options encodes the options for constructing a graph
 type Options struct {
@@ -140,12 +136,12 @@ type Edge struct {
 func (e *Edge) WeightValue() int64
 
 // NewGraph computes a graph from a profile.
-func NewGraph(prof *profile.Profile, o *Options) *Graph
+func NewGraph(prof *Profile, o *Options) *Graph
 
 // CreateNodes creates graph nodes for all locations in a profile. It
 // returns set of all nodes, plus a mapping of each location to the
 // set of corresponding nodes (one per location.Line).
-func CreateNodes(prof *profile.Profile, o *Options) (Nodes, locationMap)
+func CreateNodes(prof *Profile, o *Options) (Nodes, locationMap)
 
 // Sum adds the flat and cum values of a set of nodes.
 func (ns Nodes) Sum() (flat int64, cum int64)
