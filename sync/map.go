@@ -75,6 +75,9 @@ func (m *Map) Load(key any) (value any, ok bool)
 // Store sets the value for a key.
 func (m *Map) Store(key, value any)
 
+// Clear deletes all the entries, resulting in an empty Map.
+func (m *Map) Clear()
+
 // LoadOrStore returns the existing value for the key if present.
 // Otherwise, it stores and returns the given value.
 // The loaded result is true if the value was loaded, false if stored.
