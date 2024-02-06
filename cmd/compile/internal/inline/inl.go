@@ -33,7 +33,7 @@ import (
 )
 
 // PGOInlinePrologue records the hot callsites from ir-graph.
-func PGOInlinePrologue(p *pgo.Profile, funcs []*ir.Func)
+func PGOInlinePrologue(p *pgo.Profile)
 
 // CanInlineFuncs computes whether a batch of functions are inlinable.
 func CanInlineFuncs(funcs []*ir.Func, profile *pgo.Profile)
