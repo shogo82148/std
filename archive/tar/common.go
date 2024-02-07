@@ -140,24 +140,7 @@ func (h *Header) FileInfo() fs.FileInfo
 // fiがシンボリックリンクを記述している場合、FileInfoHeaderはlinkをリンクターゲットとして記録します。
 // fiがディレクトリを記述している場合、名前にスラッシュが追加されます。
 //
-<<<<<<< HEAD
 // fs.FileInfoのNameメソッドは、
 // 記述するファイルのベース名のみを返すため、
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
-
-// FileInfoNamesは、UID/GIDを名前に変換するために [FileInfo] を拡張します。
-// これを [FileInfoHeader] に渡すことで、UID/GIDの解決をコントロールできます。
-type FileInfoNames interface {
-	fs.FileInfo
-
-	Uname(uid int) (string, error)
-
-	Gname(gid int) (string, error)
-}
-=======
-// Since fs.FileInfo's Name method only returns the base name of
-// the file it describes, it may be necessary to modify Header.Name
-// to provide the full path name of the file.
-func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
->>>>>>> upstream/release-branch.go1.22
