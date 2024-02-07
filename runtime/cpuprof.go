@@ -12,8 +12,14 @@ package runtime
 // hz <= 0の場合、プロファイリングはオフになります。
 // プロファイラがオンの場合、レートを変更する前にオフにする必要があります。
 //
+<<<<<<< HEAD
 // ほとんどのクライアントは、runtime/pprofパッケージまたは
 // テストパッケージの-test.cpuprofileフラグを直接呼び出す代わりに使用するべきです。
+=======
+// Most clients should use the [runtime/pprof] package or
+// the [testing] package's -test.cpuprofile flag instead of calling
+// SetCPUProfileRate directly.
+>>>>>>> upstream/release-branch.go1.22
 func SetCPUProfileRate(hz int)
 
 // CPUProfileはパニックします。
@@ -22,7 +28,13 @@ func SetCPUProfileRate(hz int)
 // その形式を生成する方法が変更されたため、
 // この機能は削除されました。
 //
+<<<<<<< HEAD
 // Deprecated: [runtime/pprof] パッケージ、
 // または [net/http/pprof] パッケージのハンドラ、
 // またはtestingパッケージの-test.cpuprofileフラグを代わりに使用してください。
+=======
+// Deprecated: Use the [runtime/pprof] package,
+// or the handlers in the [net/http/pprof] package,
+// or the [testing] package's -test.cpuprofile flag instead.
+>>>>>>> upstream/release-branch.go1.22
 func CPUProfile() []byte

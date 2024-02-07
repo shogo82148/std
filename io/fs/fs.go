@@ -2,8 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 // Package fsはファイルシステムへの基本的なインターフェースを定義します。
 // ファイルシステムはホストオペレーティングシステムだけでなく、他のパッケージによっても提供されることがあります。
+=======
+// Package fs defines basic interfaces to a file system.
+// A file system can be provided by the host operating system
+// but also by other packages.
+//
+// See the [testing/fstest] package for support with testing
+// implementations of file systems.
+>>>>>>> upstream/release-branch.go1.22
 package fs
 
 import (
@@ -12,9 +21,18 @@ import (
 
 // FSは階層的なファイルシステムへのアクセスを提供します。
 //
+<<<<<<< HEAD
 // FSインターフェースはファイルシステムに必要な最小限の実装です。
 // ファイルシステムは追加のインターフェース、例えば [ReadFileFS] を実装することができます。
 // 追加の機能や最適化された機能を提供することができます。
+=======
+// The FS interface is the minimum implementation required of the file system.
+// A file system may implement additional interfaces,
+// such as [ReadFileFS], to provide additional or optimized functionality.
+//
+// [testing/fstest.TestFS] may be used to test implementations of an FS for
+// correctness.
+>>>>>>> upstream/release-branch.go1.22
 type FS interface {
 	Open(name string) (File, error)
 }

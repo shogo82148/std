@@ -17,6 +17,7 @@ GOGC変数は、初期のガベージコレクションのターゲットパー�
 デフォルトはGOGC=100です。GOGC=offに設定すると、ガベージコレクタが完全に無効になります。
 [runtime/debug.SetGCPercent] を使用すると、このパーセンテージを実行時に変更できます。
 
+<<<<<<< HEAD
 GOMEMLIMIT変数は、ランタイムのソフトメモリ制限を設定します。
 このメモリ制限には、Goヒープとランタイムによって管理されるすべてのその他のメモリが含まれますが、
 バイナリ自体のマッピング、他の言語で管理されるメモリ、およびGoプログラムの代わりにオペレーティングシステムに保持されるメモリなど、外部メモリソースは除外されます。
@@ -26,6 +27,19 @@ GOMEMLIMITは、オプションの単位接尾辞を持つバイト単位の数�
 つまり、2の累乗に基づいています：KiBは2^10バイトを意味し、MiBは2^20バイトを意味します。
 デフォルト設定はmath.MaxInt64であり、これによりメモリ制限が無効になります。
 [runtime/debug.SetMemoryLimit] を使用すると、この制限を実行時に変更できます。
+=======
+The GOMEMLIMIT variable sets a soft memory limit for the runtime. This memory limit
+includes the Go heap and all other memory managed by the runtime, and excludes
+external memory sources such as mappings of the binary itself, memory managed in
+other languages, and memory held by the operating system on behalf of the Go
+program. GOMEMLIMIT is a numeric value in bytes with an optional unit suffix.
+The supported suffixes include B, KiB, MiB, GiB, and TiB. These suffixes
+represent quantities of bytes as defined by the IEC 80000-13 standard. That is,
+they are based on powers of two: KiB means 2^10 bytes, MiB means 2^20 bytes,
+and so on. The default setting is [math.MaxInt64], which effectively disables the
+memory limit. [runtime/debug.SetMemoryLimit] allows changing this limit at run
+time.
+>>>>>>> upstream/release-branch.go1.22
 
 GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 これは、これらの名前付き変数を設定するname=valペアのカンマ区切りリストです。
@@ -124,6 +138,7 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	現在、Windows、plan9、js/wasmではサポートされていません。
 	一部のアプリケーションでこのオプションを設定すると、大きなトレースが生成される場合があるため、注意して使用してください。
 
+<<<<<<< HEAD
 	runtimecontentionstacks: runtimecontentionstacks=1を設定すると、"mutex"プロファイルに
 	runtime内部のロックの競合に関連する呼び出しスタックが含まれるようになります。これは
 	MutexProfileFraction設定に従います。runtimecontentionstacks=0の場合、
@@ -132,6 +147,19 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	しかし、その値はその呼び出しスタックが引き起こした競合の量に対応するのではなく、
 	unlockの呼び出し元が元のロック呼び出しで待たなければならなかった時間に対応します。
 	これらを揃えてこの設定を削除することが期待される未来のリリースがあります。
+=======
+	panicnil: setting panicnil=1 disables the runtime error when calling panic with nil
+	interface value or an untyped nil.
+
+	runtimecontentionstacks: setting runtimecontentionstacks=1 enables inclusion of call stacks
+	related to contention on runtime-internal locks in the "mutex" profile, subject to the
+	MutexProfileFraction setting. When runtimecontentionstacks=0, contention on
+	runtime-internal locks will report as "runtime._LostContendedRuntimeLock". When
+	runtimecontentionstacks=1, the call stacks will correspond to the unlock call that released
+	the lock. But instead of the value corresponding to the amount of contention that call
+	stack caused, it corresponds to the amount of time the caller of unlock had to wait in its
+	original call to lock. A future release is expected to align those and remove this setting.
+>>>>>>> upstream/release-branch.go1.22
 
 	invalidptr: invalidptr=1（デフォルト）は、無効なポインタ値（例えば、1）がポインタ型の位置に見つかった場合、
 	ガベージコレクタとスタックコピーアがプログラムをクラッシュさせます。invalidptr=0を設定すると、このチェックが無効になります。
@@ -171,6 +199,7 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	これにより、一部のループが長期間にわたって非事前停止可能になり、GCとゴルーチンのスケジューリングが遅延する可能性があります。
 	これは、非同期に事前停止されたゴルーチン用の保守的なスタックスキャンも無効にするため、GCの問題をデバッグするのに役立ちます。
 
+<<<<<<< HEAD
 netおよびnet/httpパッケージも、GODEBUGのデバッグ変数を参照しています。
 詳細については、それらのパッケージのドキュメントを参照してください。
 
@@ -200,6 +229,47 @@ GOARCH、GOOS、GOPATH、およびGOROOT環境変数は、Goプログラムの�
 （https://golang.org/cmd/go および https://golang.org/pkg/go/build を参照）。
 GOARCH、GOOS、およびGOROOTは、コンパイル時に記録され、このパッケージの定数または関数によって利用可能になりますが、
 ランタイムシステムの実行には影響しません。
+=======
+The [net] and [net/http] packages also refer to debugging variables in GODEBUG.
+See the documentation for those packages for details.
+
+The GOMAXPROCS variable limits the number of operating system threads that
+can execute user-level Go code simultaneously. There is no limit to the number of threads
+that can be blocked in system calls on behalf of Go code; those do not count against
+the GOMAXPROCS limit. This package's [GOMAXPROCS] function queries and changes
+the limit.
+
+The GORACE variable configures the race detector, for programs built using -race.
+See the [Race Detector article] for details.
+
+The GOTRACEBACK variable controls the amount of output generated when a Go
+program fails due to an unrecovered panic or an unexpected runtime condition.
+By default, a failure prints a stack trace for the current goroutine,
+eliding functions internal to the run-time system, and then exits with exit code 2.
+The failure prints stack traces for all goroutines if there is no current goroutine
+or the failure is internal to the run-time.
+GOTRACEBACK=none omits the goroutine stack traces entirely.
+GOTRACEBACK=single (the default) behaves as described above.
+GOTRACEBACK=all adds stack traces for all user-created goroutines.
+GOTRACEBACK=system is like “all” but adds stack frames for run-time functions
+and shows goroutines created internally by the run-time.
+GOTRACEBACK=crash is like “system” but crashes in an operating system-specific
+manner instead of exiting. For example, on Unix systems, the crash raises
+SIGABRT to trigger a core dump.
+GOTRACEBACK=wer is like “crash” but doesn't disable Windows Error Reporting (WER).
+For historical reasons, the GOTRACEBACK settings 0, 1, and 2 are synonyms for
+none, all, and system, respectively.
+The [runtime/debug.SetTraceback] function allows increasing the
+amount of output at run time, but it cannot reduce the amount below that
+specified by the environment variable.
+
+The GOARCH, GOOS, GOPATH, and GOROOT environment variables complete
+the set of Go environment variables. They influence the building of Go programs
+(see [cmd/go] and [go/build]).
+GOARCH, GOOS, and GOROOT are recorded at compile time and made available by
+constants or functions in this package, but they do not influence the execution
+of the run-time system.
+>>>>>>> upstream/release-branch.go1.22
 
 # セキュリティ
 
@@ -208,10 +278,24 @@ setuid/setgidのようなプロパティで実行されている場合、Goの�
 Linuxでは、補助ベクトルでAT_SECUREフラグをチェックし、BSDおよびSolaris/Illumosではissetugidシスコールをチェックし、
 AIXではuid/gidが有効なuid/gidと一致するかどうかをチェックします。
 
+<<<<<<< HEAD
 ランタイムがバイナリがsetuid/setgidのようであると判断した場合、次の3つの主な処理が行われます。
   - 標準入出力ファイルディスクリプタ（0、1、2）が開いているかどうかを確認します。いずれかが閉じられている場合、/dev/nullを指すように開きます。
   - GOTRACEBACK環境変数の値を'none'に設定します。
   - プログラムを終了するシグナルが受信された場合、またはGOTRACEBACKの値を上書きする回復不能なパニックが発生した場合、ゴルーチンのスタック、レジスタ、およびその他のメモリ関連情報が省略されます。
+=======
+When the runtime determines the binary is setuid/setgid-like, it does three main
+things:
+  - The standard input/output file descriptors (0, 1, 2) are checked to be open.
+    If any of them are closed, they are opened pointing at /dev/null.
+  - The value of the GOTRACEBACK environment variable is set to 'none'.
+  - When a signal is received that terminates the program, or the program
+    encounters an unrecoverable panic that would otherwise override the value
+    of GOTRACEBACK, the goroutine stack, registers, and other memory related
+    information are omitted.
+
+[Race Detector article]: https://go.dev/doc/articles/race_detector
+>>>>>>> upstream/release-branch.go1.22
 */
 package runtime
 
@@ -220,11 +304,20 @@ import (
 	"github.com/shogo82148/std/internal/goos"
 )
 
+<<<<<<< HEAD
 // Callerは、呼び出し元のゴルーチンのスタック上での関数呼び出しに関するファイルと行番号情報を報告します。
 // 引数skipは、上昇するスタックフレームの数であり、0はCallerの呼び出し元を識別します。
 // （歴史的な理由から、skipの意味はCallerとCallersで異なります。）
 // 戻り値は、対応する呼び出しのプログラムカウンタ、ファイル名、およびファイル内の行番号を報告します。
 // 情報を回復できなかった場合、ブール値okはfalseです。
+=======
+// Caller reports file and line number information about function invocations on
+// the calling goroutine's stack. The argument skip is the number of stack frames
+// to ascend, with 0 identifying the caller of Caller.  (For historical reasons the
+// meaning of skip differs between Caller and [Callers].) The return values report the
+// program counter, file name, and line number within the file of the corresponding
+// call. The boolean ok is false if it was not possible to recover the information.
+>>>>>>> upstream/release-branch.go1.22
 func Caller(skip int) (pc uintptr, file string, line int, ok bool)
 
 // Callersは、呼び出し元のゴルーチンのスタック上での関数呼び出しの戻りプログラムカウンタを、スライスpcで埋めます。

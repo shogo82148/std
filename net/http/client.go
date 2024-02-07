@@ -16,6 +16,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+<<<<<<< HEAD
 // ClientはHTTPクライアントです。ゼロ値(DefaultClient)は、DefaultTransportを使用する使用可能なクライアントです。
 //
 // ClientのTransportには通常、内部状態(キャッシュされたTCP接続など)があるため、必要に応じて作成するのではなく、再利用する必要があります。
@@ -24,6 +25,21 @@ import (
 // Clientは、RoundTripper(Transportなど)よりも高レベルであり、クッキーやリダイレクトなどのHTTPの詳細も処理します。
 //
 // リダイレクトに従う場合、Clientは、初期リクエストに設定されたすべてのヘッダーを転送しますが、以下の場合は除外されます。
+=======
+// A Client is an HTTP client. Its zero value ([DefaultClient]) is a
+// usable client that uses [DefaultTransport].
+//
+// The [Client.Transport] typically has internal state (cached TCP
+// connections), so Clients should be reused instead of created as
+// needed. Clients are safe for concurrent use by multiple goroutines.
+//
+// A Client is higher-level than a [RoundTripper] (such as [Transport])
+// and additionally handles HTTP details such as cookies and
+// redirects.
+//
+// When following redirects, the Client will forward all headers set on the
+// initial [Request] except:
+>>>>>>> upstream/release-branch.go1.22
 //
 //   - "Authorization"、"WWW-Authenticate"、および"Cookie"などの機密ヘッダーを、信頼できないターゲットに転送する場合。
 //     これらのヘッダーは、初期ドメインのサブドメインマッチまたは完全一致でないドメインにリダイレクトする場合は無視されます。
@@ -75,10 +91,18 @@ type Client struct {
 	Timeout time.Duration
 }
 
+<<<<<<< HEAD
 // DefaultClientはデフォルトのClientであり、Get、Head、およびPostに使用されます。
 var DefaultClient = &Client{}
 
 // RoundTripperは、指定されたRequestに対するResponseを取得するための単一のHTTPトランザクションを実行する能力を表すインターフェースです。
+=======
+// DefaultClient is the default [Client] and is used by [Get], [Head], and [Post].
+var DefaultClient = &Client{}
+
+// RoundTripper is an interface representing the ability to execute a
+// single HTTP transaction, obtaining the [Response] for a given [Request].
+>>>>>>> upstream/release-branch.go1.22
 //
 // RoundTripperは、複数のゴルーチンによる同時使用に対して安全である必要があります。
 type RoundTripper interface {
@@ -97,16 +121,24 @@ var ErrSchemeMismatch = errors.New("http: server gave HTTP response to HTTPS cli
 //	307（Temporary Redirect）
 //	308（Permanent Redirect）
 //
+<<<<<<< HEAD
 // リダイレクトが多すぎる場合や、HTTPプロトコルエラーがあった場合はエラーが返されます。
 // 非2xxレスポンスはエラーを引き起こしません。
 // 任意の返されたエラーは*url.Error型です。url.ErrorのTimeoutメソッドは、
 // リクエストがタイムアウトした場合にtrueを報告します。
+=======
+// An error is returned if there were too many redirects or if there
+// was an HTTP protocol error. A non-2xx response doesn't cause an
+// error. Any returned error will be of type [*url.Error]. The url.Error
+// value's Timeout method will report true if the request timed out.
+>>>>>>> upstream/release-branch.go1.22
 //
 // errがnilの場合、respには常に非nilのresp.Bodyが含まれます。
 // 呼び出し元は、resp.Bodyの読み取りが完了したらresp.Bodyを閉じる必要があります。
 //
 // Getは、DefaultClient.Getのラッパーです。
 //
+<<<<<<< HEAD
 // カスタムヘッダーでリクエストを作成するには、NewRequestとDefaultClient.Doを使用します。
 //
 // 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
@@ -114,6 +146,18 @@ func Get(url string) (resp *Response, err error)
 
 // Getは指定されたURLにGETを発行します。レスポンスが以下のリダイレクトコードのいずれかである場合、
 // Getはリダイレクトをフォローします。最大10回のリダイレクトが許可されます：
+=======
+// To make a request with custom headers, use [NewRequest] and
+// DefaultClient.Do.
+//
+// To make a request with a specified context.Context, use [NewRequestWithContext]
+// and DefaultClient.Do.
+func Get(url string) (resp *Response, err error)
+
+// Get issues a GET to the specified URL. If the response is one of the
+// following redirect codes, Get follows the redirect after calling the
+// [Client.CheckRedirect] function:
+>>>>>>> upstream/release-branch.go1.22
 //
 //	301 (Moved Permanently)
 //	302 (Found)
@@ -121,20 +165,35 @@ func Get(url string) (resp *Response, err error)
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
+<<<<<<< HEAD
 // リダイレクトが多すぎる場合やHTTPプロトコルエラーがあった場合にエラーが返されます。
 // 2xx以外のレスポンスはエラーを引き起こしません。
 // 返される任意のエラーは*url.Error型になります。
 // url.Error値のTimeoutメソッドは、リクエストがタイムアウトした場合にtrueを報告します。
+=======
+// An error is returned if the [Client.CheckRedirect] function fails
+// or if there was an HTTP protocol error. A non-2xx response doesn't
+// cause an error. Any returned error will be of type [*url.Error]. The
+// url.Error value's Timeout method will report true if the request
+// timed out.
+>>>>>>> upstream/release-branch.go1.22
 //
 // errがnilの場合、respは常に非nilのresp.Bodyを含みます。
 // 読み取りが完了したら、呼び出し元はresp.Bodyを閉じる必要があります。
 //
+<<<<<<< HEAD
 // GetはDefaultClient.Getのラッパーです。
 //
 // カスタムヘッダーでリクエストを行うには、NewRequestと
 // DefaultClient.Doを使用します。
 //
 // 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
+=======
+// To make a request with custom headers, use [NewRequest] and [Client.Do].
+//
+// To make a request with a specified context.Context, use [NewRequestWithContext]
+// and Client.Do.
+>>>>>>> upstream/release-branch.go1.22
 func (c *Client) Get(url string) (resp *Response, err error)
 
 // ErrUseLastResponseは、Client.CheckRedirectフックによって返され、リダイレクトの処理方法を制御するために使用できます。
@@ -145,10 +204,19 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 //
 // クライアントポリシー（CheckRedirectなど）によってトリガーされた場合、またはHTTP転送が失敗した場合（ネットワーク接続の問題など）、エラーが返されます。2xx以外のステータスコードはエラーを引き起こしません。
 //
+<<<<<<< HEAD
 // 返されるエラーがnilの場合、Responseにはユーザーが閉じなければならない非nilのBodyが含まれます。BodyがEOFまで完全に読み取られずに閉じられない場合、クライアントの基本となるRoundTripper（通常はTransport）は、次の「keep-alive」リクエストのためにサーバーへの永続的なTCP接続を再利用できないかもしれません。
+=======
+// If the returned error is nil, the [Response] will contain a non-nil
+// Body which the user is expected to close. If the Body is not both
+// read to EOF and closed, the [Client]'s underlying [RoundTripper]
+// (typically [Transport]) may not be able to re-use a persistent TCP
+// connection to the server for a subsequent "keep-alive" request.
+>>>>>>> upstream/release-branch.go1.22
 //
 // リクエストのBodyがnilでない場合、それは基本となるTransportによって閉じられます。エラーが発生した場合も同様です。
 //
+<<<<<<< HEAD
 // エラーが発生した場合、任意のResponseは無視できます。非nilのResponseと非nilのエラーは、CheckRedirectが失敗した場合にのみ返されます。その場合でも、返されたResponse.Bodyはすでに閉じられています。
 //
 // 通常、Doの代わりにGet、Post、またはPostFormが使用されます。
@@ -156,62 +224,130 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 // サーバーがリダイレクトを返すと、Clientは最初にCheckRedirect関数を使用してリダイレクトをフォローするかどうかを決定します。許可されると、301、302、または303のリダイレクトは、メソッドがGET（元のリクエストがHEADだった場合はHEAD）でボディがない後続のリクエストを引き起こします。307または308のリダイレクトは、Request.GetBody関数が定義されている場合、元のHTTPメソッドとボディを保持します。NewRequest関数は、一般的な標準ライブラリボディタイプのGetBodyを自動的に設定します。
 //
 // すべての返されるエラーは*url.Error型です。url.ErrorのTimeoutメソッドは、リクエストがタイムアウトした場合にtrueを報告します。
+=======
+// On error, any Response can be ignored. A non-nil Response with a
+// non-nil error only occurs when CheckRedirect fails, and even then
+// the returned [Response.Body] is already closed.
+//
+// Generally [Get], [Post], or [PostForm] will be used instead of Do.
+//
+// If the server replies with a redirect, the Client first uses the
+// CheckRedirect function to determine whether the redirect should be
+// followed. If permitted, a 301, 302, or 303 redirect causes
+// subsequent requests to use HTTP method GET
+// (or HEAD if the original request was HEAD), with no body.
+// A 307 or 308 redirect preserves the original HTTP method and body,
+// provided that the [Request.GetBody] function is defined.
+// The [NewRequest] function automatically sets GetBody for common
+// standard library body types.
+//
+// Any returned error will be of type [*url.Error]. The url.Error
+// value's Timeout method will report true if the request timed out.
+>>>>>>> upstream/release-branch.go1.22
 func (c *Client) Do(req *Request) (*Response, error)
 
 // Postは、指定されたURLに対してPOSTメソッドを送信します。
 //
 // 呼び出し元は、resp.Bodyの読み込みが完了したらresp.Bodyを閉じる必要があります。
 //
+<<<<<<< HEAD
 // もし提供されたBodyがio.Closerを実装している場合は、リクエストの後で閉じられます。
+=======
+// If the provided body is an [io.Closer], it is closed after the
+// request.
+>>>>>>> upstream/release-branch.go1.22
 //
 // Postは、DefaultClient.Postのラッパーです。
 //
+<<<<<<< HEAD
 // カスタムヘッダーを設定するには、NewRequestとDefaultClient.Doを使用します。
 //
 // リダイレクトの処理方法については、Client.Doメソッドのドキュメントを参照してください。
 //
 // 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
+=======
+// To set custom headers, use [NewRequest] and DefaultClient.Do.
+//
+// See the [Client.Do] method documentation for details on how redirects
+// are handled.
+//
+// To make a request with a specified context.Context, use [NewRequestWithContext]
+// and DefaultClient.Do.
+>>>>>>> upstream/release-branch.go1.22
 func Post(url, contentType string, body io.Reader) (resp *Response, err error)
 
 // Postは、指定されたURLにPOSTリクエストを送信します。
 //
 // 呼び出し元は、resp.Bodyの読み込みが完了したらresp.Bodyを閉じる必要があります。
 //
+<<<<<<< HEAD
 // 提供されたBodyがio.Closerインターフェースを実装している場合、リクエストの後に閉じられます。
 //
 // カスタムヘッダーを設定するには、NewRequestとClient.Doを使用します。
 //
 // 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとClient.Doを使用します。
+=======
+// If the provided body is an [io.Closer], it is closed after the
+// request.
+//
+// To set custom headers, use [NewRequest] and [Client.Do].
+//
+// To make a request with a specified context.Context, use [NewRequestWithContext]
+// and [Client.Do].
+>>>>>>> upstream/release-branch.go1.22
 //
 // リダイレクトの処理方法については、Client.Doメソッドのドキュメントを参照してください。
 func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, err error)
 
 // PostFormは、データのキーと値がURLエンコードされたリクエストボディとして指定されたURLにPOSTを発行します。
 //
+<<<<<<< HEAD
 // Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
 // 他のヘッダーを設定するには、NewRequestとDefaultClient.Doを使用します。
+=======
+// The Content-Type header is set to application/x-www-form-urlencoded.
+// To set other headers, use [NewRequest] and DefaultClient.Do.
+>>>>>>> upstream/release-branch.go1.22
 //
 // errがnilの場合、respには常に非nilのresp.Bodyが含まれます。
 // 呼び出し元は、resp.Bodyの読み取りが完了したらresp.Bodyを閉じる必要があります。
 //
 // PostFormは、DefaultClient.PostFormのラッパーです。
 //
+<<<<<<< HEAD
 // リダイレクトの処理方法については、Client.Doメソッドのドキュメントを参照してください。
 //
 // 指定されたcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
+=======
+// See the [Client.Do] method documentation for details on how redirects
+// are handled.
+//
+// To make a request with a specified [context.Context], use [NewRequestWithContext]
+// and DefaultClient.Do.
+>>>>>>> upstream/release-branch.go1.22
 func PostForm(url string, data url.Values) (resp *Response, err error)
 
 // PostForm関数は、指定されたデータのキーと値のペアをリクエストボディにエンコードして、URLにPOSTリクエストを送信します。
 //
+<<<<<<< HEAD
 // Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
 // 他のヘッダーを設定するには、NewRequestとClient.Doを使用します。
+=======
+// The Content-Type header is set to application/x-www-form-urlencoded.
+// To set other headers, use [NewRequest] and [Client.Do].
+>>>>>>> upstream/release-branch.go1.22
 //
 // errがnilの場合、respは常に非nilのresp.Bodyを含みます。
 // 読み取り後、呼び出し元はresp.Bodyを閉じなければなりません。
 //
 // リダイレクトの処理については、Client.Doメソッドのドキュメンテーションを参照してください。
 //
+<<<<<<< HEAD
 // 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとClient.Doを使用します。
+=======
+// To make a request with a specified context.Context, use [NewRequestWithContext]
+// and Client.Do.
+>>>>>>> upstream/release-branch.go1.22
 func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)
 
 // Headは、指定されたURLに対してHEADリクエストを発行します。レスポンスが以下のリダイレクトコードのいずれかである場合、
@@ -225,11 +361,21 @@ func (c *Client) PostForm(url string, data url.Values) (resp *Response, err erro
 //
 // HeadはDefaultClient.Headのラッパーです。
 //
+<<<<<<< HEAD
 // 指定したcontext.Contextでリクエストを作成するには、NewRequestWithContextとDefaultClient.Doを使用します。
 func Head(url string) (resp *Response, err error)
 
 // 指定されたURLにHEADリクエストを送信します。もしレスポンスが以下のいずれかのリダイレクトコードである場合、
 // Headメソッドはリダイレクトに従う前にClientのCheckRedirect関数を呼び出すことがあります。
+=======
+// To make a request with a specified [context.Context], use [NewRequestWithContext]
+// and DefaultClient.Do.
+func Head(url string) (resp *Response, err error)
+
+// Head issues a HEAD to the specified URL. If the response is one of the
+// following redirect codes, Head follows the redirect after calling the
+// [Client.CheckRedirect] function:
+>>>>>>> upstream/release-branch.go1.22
 //
 //	301 (Moved Permanently)
 //	302 (Found)
@@ -237,6 +383,7 @@ func Head(url string) (resp *Response, err error)
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
+<<<<<<< HEAD
 // 指定されたcontext.Contextを使用してリクエストを送信する場合は、NewRequestWithContextとClient.Doを使用してください。
 func (c *Client) Head(url string) (resp *Response, err error)
 
@@ -244,4 +391,17 @@ func (c *Client) Head(url string) (resp *Response, err error)
 // これは現在アクティブな接続を中断しません。
 //
 // クライアントのTransportにCloseIdleConnectionsメソッドがない場合、このメソッドは何もしません。
+=======
+// To make a request with a specified [context.Context], use [NewRequestWithContext]
+// and [Client.Do].
+func (c *Client) Head(url string) (resp *Response, err error)
+
+// CloseIdleConnections closes any connections on its [Transport] which
+// were previously connected from previous requests but are now
+// sitting idle in a "keep-alive" state. It does not interrupt any
+// connections currently in use.
+//
+// If [Client.Transport] does not have a [Client.CloseIdleConnections] method
+// then this method does nothing.
+>>>>>>> upstream/release-branch.go1.22
 func (c *Client) CloseIdleConnections()

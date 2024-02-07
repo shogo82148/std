@@ -43,12 +43,24 @@ const (
 	SameSiteNoneMode
 )
 
+<<<<<<< HEAD
 // SetCookieは、提供されたResponseWriterのヘッダーにSet-Cookieヘッダーを追加します。
 // 提供されたクッキーには有効な名前が必要です。無効なクッキーは黙って破棄される場合があります。
 func SetCookie(w ResponseWriter, cookie *Cookie)
 
 // Stringは、Cookieヘッダー（NameとValueのみが設定されている場合）またはSet-Cookie応答ヘッダー（他のフィールドが設定されている場合）で使用するためのクッキーのシリアル化を返します。
 // cがnilであるか、c.Nameが無効な場合、空の文字列が返されます。
+=======
+// SetCookie adds a Set-Cookie header to the provided [ResponseWriter]'s headers.
+// The provided cookie must have a valid Name. Invalid cookies may be
+// silently dropped.
+func SetCookie(w ResponseWriter, cookie *Cookie)
+
+// String returns the serialization of the cookie for use in a [Cookie]
+// header (if only Name and Value are set) or a Set-Cookie response
+// header (if other fields are set).
+// If c is nil or c.Name is invalid, the empty string is returned.
+>>>>>>> upstream/release-branch.go1.22
 func (c *Cookie) String() string
 
 // Validは、クッキーが有効かどうかを報告します。

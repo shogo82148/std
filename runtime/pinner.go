@@ -4,9 +4,15 @@
 
 package runtime
 
+<<<<<<< HEAD
 // Pinnerは、メモリ内の固定された場所に各Goオブジェクトが固定されたセットです。
 // [Pin]メソッドは1つのオブジェクトを固定し、[Unpin]メソッドはすべての固定されたオブジェクトを解除します。
 // 詳細については、それぞれのコメントを参照してください。
+=======
+// A Pinner is a set of Go objects each pinned to a fixed location in memory. The
+// [Pinner.Pin] method pins one object, while [Pinner.Unpin] unpins all pinned
+// objects. See their comments for more information.
+>>>>>>> upstream/release-branch.go1.22
 type Pinner struct {
 	*pinner
 }

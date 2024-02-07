@@ -47,11 +47,19 @@ type Server struct {
 	client *http.Client
 }
 
+<<<<<<< HEAD
 // NewServer は新しい Server を起動して返します。
 // 使用が終わったら、呼び出し元は Close を呼び出してシャットダウンする必要があります。
 func NewServer(handler http.Handler) *Server
 
 // NewUnstartedServerは新しいServerを返しますが、開始はしません。
+=======
+// NewServer starts and returns a new [Server].
+// The caller should call Close when finished, to shut it down.
+func NewServer(handler http.Handler) *Server
+
+// NewUnstartedServer returns a new [Server] but doesn't start it.
+>>>>>>> upstream/release-branch.go1.22
 //
 // 設定を変更した後、呼び出し元はStartまたはStartTLSを呼び出す必要があります。
 //
@@ -64,8 +72,13 @@ func (s *Server) Start()
 // StartTLSは、NewUnstartedServerからサーバー上でTLSを開始します。
 func (s *Server) StartTLS()
 
+<<<<<<< HEAD
 // NewTLSServerはTLSを使用して新しいサーバーを起動し、それを返します。
 // 終了時には、呼び出し元はシャットダウンするためにCloseを呼び出す必要があります。
+=======
+// NewTLSServer starts and returns a new [Server] using TLS.
+// The caller should call Close when finished, to shut it down.
+>>>>>>> upstream/release-branch.go1.22
 func NewTLSServer(handler http.Handler) *Server
 
 // Close はサーバーをシャットダウンし、このサーバーに対して保留中のすべてのリクエストが完了するまでブロックします。
@@ -77,6 +90,12 @@ func (s *Server) CloseClientConnections()
 // Certificateは、サーバーがTLSを使用していない場合はnil、それ以外の場合はサーバーが使用する証明書を返します。
 func (s *Server) Certificate() *x509.Certificate
 
+<<<<<<< HEAD
 // Clientは、サーバーへのリクエストを行うために設定されたHTTPクライアントを返します。
 // サーバーのTLSテスト証明書を信頼するように設定されており、Server.Close時にアイドル接続をクローズします。
+=======
+// Client returns an HTTP client configured for making requests to the server.
+// It is configured to trust the server's TLS test certificate and will
+// close its idle connections on [Server.Close].
+>>>>>>> upstream/release-branch.go1.22
 func (s *Server) Client() *http.Client

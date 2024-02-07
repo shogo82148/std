@@ -6,5 +6,9 @@
 
 package http
 
+<<<<<<< HEAD
 // RoundTripは、WHATWG Fetch APIを使用してRoundTripperインターフェースを実装します。
+=======
+// RoundTrip implements the [RoundTripper] interface using the WHATWG Fetch API.
+>>>>>>> upstream/release-branch.go1.22
 func (t *Transport) RoundTrip(req *Request) (*Response, error)

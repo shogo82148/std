@@ -50,15 +50,27 @@ type Jar struct {
 	nextSeqNum uint64
 }
 
+<<<<<<< HEAD
 // Newは新しいクッキージャーを返します。nilの*OptionsはゼロのOptionsと同等です。
 func New(o *Options) (*Jar, error)
 
 // Cookiesはhttp.CookieJarインターフェースのCookiesメソッドを実装しています。
+=======
+// New returns a new cookie jar. A nil [*Options] is equivalent to a zero
+// Options.
+func New(o *Options) (*Jar, error)
+
+// Cookies implements the Cookies method of the [http.CookieJar] interface.
+>>>>>>> upstream/release-branch.go1.22
 //
 // URLのスキームがHTTPまたはHTTPSでない場合、空のスライスを返します。
 func (j *Jar) Cookies(u *url.URL) (cookies []*http.Cookie)
 
+<<<<<<< HEAD
 // SetCookiesはhttp.CookieJarインターフェースのSetCookiesメソッドを実装します。
+=======
+// SetCookies implements the SetCookies method of the [http.CookieJar] interface.
+>>>>>>> upstream/release-branch.go1.22
 //
 // URLのスキームがHTTPまたはHTTPSでない場合、何もしません。
 func (j *Jar) SetCookies(u *url.URL, cookies []*http.Cookie)

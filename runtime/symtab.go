@@ -14,7 +14,11 @@ type Frames struct {
 	frameStore [2]Frame
 }
 
+<<<<<<< HEAD
 // Frameは各コールフレームごとにFramesによって返される情報です。
+=======
+// Frame is the information returned by [Frames] for each call frame.
+>>>>>>> upstream/release-branch.go1.22
 type Frame struct {
 
 	// PCはこのフレームの位置に対するプログラムカウンタです。
@@ -55,6 +59,7 @@ type Frame struct {
 // [Frames] で終わるまでスライスを変更しないでください。
 func CallersFrames(callers []uintptr) *Frames
 
+<<<<<<< HEAD
 // Nextは、PC値のスライス内で次の呼び出しフレームを表すFrameを返します。
 // すべての呼び出しフレームをすでに返した場合、NextはゼロのFrameを返します。
 //
@@ -62,6 +67,17 @@ func CallersFrames(callers []uintptr) *Frames
 // これが呼び出し元に一つ返されたかどうかを必ずしも示しません。
 //
 // 典型的な使用法については、Framesの例を参照してください。
+=======
+// Next returns a [Frame] representing the next call frame in the slice
+// of PC values. If it has already returned all call frames, Next
+// returns a zero [Frame].
+//
+// The more result indicates whether the next call to Next will return
+// a valid [Frame]. It does not necessarily indicate whether this call
+// returned one.
+//
+// See the [Frames] example for idiomatic usage.
+>>>>>>> upstream/release-branch.go1.22
 func (ci *Frames) Next() (frame Frame, more bool)
 
 // Funcは実行中のバイナリ内のGo関数を表します。

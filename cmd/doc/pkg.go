@@ -26,7 +26,7 @@ type Package struct {
 	buf         pkgBuffer
 }
 
-func (p *Package) ToText(w io.Writer, text, prefix, codePrefix string)
+func (pkg *Package) ToText(w io.Writer, text, prefix, codePrefix string)
 
 type PackageError string
 

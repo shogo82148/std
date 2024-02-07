@@ -4,7 +4,7 @@
 
 package ascii
 
-// EqualFold is strings.EqualFold, ASCII only. It reports whether s and t
+// EqualFold is [strings.EqualFold], ASCII only. It reports whether s and t
 // are equal, ASCII-case-insensitively.
 func EqualFold(s, t string) bool
 
