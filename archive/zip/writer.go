@@ -70,6 +70,10 @@ func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
 // [Writer.CreateHeader], [Writer.CreateRaw], or [Writer.Close].
 //
 // In contrast to [Writer.CreateHeader], the bytes passed to Writer are not compressed.
+//
+// CreateRaw's argument is stored in w. If the argument is a pointer to the embedded
+// [FileHeader] in a [File] obtained from a [Reader] created from in-memory data,
+// then w will refer to all of that memory.
 func (w *Writer) CreateRaw(fh *FileHeader) (io.Writer, error)
 
 // Copy copies the file f (obtained from a [Reader]) into w. It copies the raw
