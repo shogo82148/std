@@ -9,10 +9,11 @@ import "github.com/shogo82148/std/io"
 
 // Readerは暗号学的に安全な乱数生成器のグローバルで共有されたインスタンスです。
 //
-// Linux、FreeBSD、Dragonfly、NetBSD、Solarisでは、利用可能な場合はgetrandom(2)を使用し、それ以外の場合は/dev/urandomを使用します。
-// OpenBSDとmacOSでは、getentropy(2)を使用します。
+// Linux、FreeBSD、Dragonfly、NetBSD、Solarisでは、Readerは利用可能な場合はgetrandom(2)を使用し、
+// それ以外の場合は/dev/urandomを使用します。
+// OpenBSDとmacOSでは、Readerはgetentropy(2)を使用します。
 // 他のUnix系システムでは、Readerは/dev/urandomから読み取ります。
-// Windowsシステムでは、ReaderはRtlGenRandom APIを使用します。
+// Windowsシステムでは、ReaderはProcessPrng APIを使用します。
 // JS/Wasmでは、ReaderはWeb Crypto APIを使用します。
 // WASIP1/Wasmでは、Readerはwasi_snapshot_preview1からのrandom_getを使用します。
 var Reader io.Reader
