@@ -54,10 +54,10 @@ func Max[S ~[]E, E cmp.Ordered](x S) E
 // according to the cmp function, MaxFunc returns the first one.
 func MaxFunc[S ~[]E, E any](x S, cmp func(a, b E) int) E
 
-// BinarySearch searches for target in a sorted slice and returns the position
-// where target is found, or the position where target would appear in the
-// sort order; it also returns a bool saying whether the target is really found
-// in the slice. The slice must be sorted in increasing order.
+// BinarySearch searches for target in a sorted slice and returns the earliest
+// position where target is found, or the position where target would appear
+// in the sort order; it also returns a bool saying whether the target is
+// really found in the slice. The slice must be sorted in increasing order.
 func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool)
 
 // BinarySearchFunc works like [BinarySearch], but uses a custom comparison

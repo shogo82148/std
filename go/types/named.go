@@ -78,7 +78,8 @@ func (t *Named) Method(i int) *Func
 func (t *Named) SetUnderlying(underlying Type)
 
 // AddMethod adds method m unless it is already in the method list.
-// t must not have type arguments.
+// The method must be in the same package as t, and t must not have
+// type arguments.
 func (t *Named) AddMethod(m *Func)
 
 // TODO(gri) Investigate if Unalias can be moved to where underlying is set.
