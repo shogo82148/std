@@ -38,6 +38,9 @@ var UncommonType *types.Type
 var InterfaceSwitch *types.Type
 var TypeAssert *types.Type
 
+// Interface tables (itabs)
+var ITab *types.Type
+
 func Init()
 
 // A Cursor represents a typed location inside a static variable where we
@@ -53,6 +56,8 @@ func NewCursor(lsym *obj.LSym, off int64, t *types.Type) Cursor
 
 // WritePtr writes a pointer "target" to the component at the location specified by c.
 func (c Cursor) WritePtr(target *obj.LSym)
+
+func (c Cursor) WritePtrWeak(target *obj.LSym)
 
 func (c Cursor) WriteUintptr(val uint64)
 
@@ -81,6 +86,8 @@ func (c Cursor) Reloc() *obj.Reloc
 
 // Field selects the field with the given name from the struct pointed to by c.
 func (c Cursor) Field(name string) Cursor
+
+func (c Cursor) Elem(i int64) Cursor
 
 type ArrayCursor struct {
 	c Cursor
