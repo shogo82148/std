@@ -38,13 +38,6 @@ func PGOInlinePrologue(p *pgo.Profile)
 // CanInlineFuncs computes whether a batch of functions are inlinable.
 func CanInlineFuncs(funcs []*ir.Func, profile *pgo.Profile)
 
-// CanInlineSCC computes the inlinability of functions within an SCC
-// (strongly connected component).
-//
-// CanInlineSCC is designed to be used by ir.VisitFuncsBottomUp
-// callbacks.
-func CanInlineSCC(funcs []*ir.Func, recursive bool, profile *pgo.Profile)
-
 // GarbageCollectUnreferencedHiddenClosures makes a pass over all the
 // top-level (non-hidden-closure) functions looking for nested closure
 // functions that are reachable, then sweeps through the Target.Decls
