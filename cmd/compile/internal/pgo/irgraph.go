@@ -92,7 +92,6 @@ type NamedCallEdge struct {
 	CallerName     string
 	CalleeName     string
 	CallSiteOffset int
-	CallStartLine  int
 }
 
 // NamedEdgeMap contains all unique call edges in the profile and their

@@ -16,11 +16,4 @@ type NodeMapKey struct {
 	CallerName     string
 	CalleeName     string
 	CallSiteOffset int
-	CallStartLine  int
-}
-
-type Weights struct {
-	NFlat   int64
-	NCum    int64
-	EWeight int64
 }
