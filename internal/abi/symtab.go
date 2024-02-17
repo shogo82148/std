@@ -104,3 +104,5 @@ const (
 )
 
 const MINFUNC = 16
+
+const FuncTabBucketSize = 256 * MINFUNC

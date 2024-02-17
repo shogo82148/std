@@ -9,8 +9,7 @@ import (
 )
 
 const (
-	BUCKETSIZE    = 256 * abi.MINFUNC
 	SUBBUCKETS    = 16
-	SUBBUCKETSIZE = BUCKETSIZE / SUBBUCKETS
+	SUBBUCKETSIZE = abi.FuncTabBucketSize / SUBBUCKETS
 	NOIDX         = 0x7fffffff
 )
