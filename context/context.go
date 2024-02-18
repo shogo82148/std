@@ -102,7 +102,7 @@ type CancelFunc func()
 // or when the parent context's Done channel is closed, whichever happens first.
 //
 // Canceling this context releases resources associated with it, so code should
-// call cancel as soon as the operations running in this Context complete.
+// call cancel as soon as the operations running in this [Context] complete.
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
 
 // A CancelCauseFunc behaves like a [CancelFunc] but additionally sets the cancellation cause.
