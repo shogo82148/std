@@ -9,7 +9,11 @@ package strings
 // Do not copy a non-zero Builder.
 type Builder struct {
 	addr *Builder
-	buf  []byte
+
+	// External users should never get direct access to this buffer, since
+	// the slice at some point will be converted to a string using unsafe, also
+	// data between len(buf) and cap(buf) might be uninitialized.
+	buf []byte
 }
 
 // String returns the accumulated string.
