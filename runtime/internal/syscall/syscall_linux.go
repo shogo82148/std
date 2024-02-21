@@ -13,3 +13,5 @@ func EpollCreate1(flags int32) (fd int32, errno uintptr)
 func EpollWait(epfd int32, events []EpollEvent, maxev, waitms int32) (n int32, errno uintptr)
 
 func EpollCtl(epfd, op, fd int32, event *EpollEvent) (errno uintptr)
+
+func Eventfd(initval, flags int32) (fd int32, errno uintptr)

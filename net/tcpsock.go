@@ -59,6 +59,36 @@ type TCPConn struct {
 	conn
 }
 
+// KeepAliveConfig contains TCP keep-alive options.
+//
+// If the Idle, Interval, or Count fields are zero, a default value is chosen.
+// If a field is negative, the corresponding socket-level option will be left unchanged.
+//
+// Note that Windows doesn't support setting the KeepAliveIdle and KeepAliveInterval separately.
+// It's recommended to set both Idle and Interval to non-negative values on Windows if you
+// intend to customize the TCP keep-alive settings.
+// By contrast, if only one of Idle and Interval is set to a non-negative value, the other will
+// be set to the system default value, and ultimately, set both Idle and Interval to negative
+// values if you want to leave them unchanged.
+type KeepAliveConfig struct {
+	// If Enable is true, keep-alive probes are enabled.
+	Enable bool
+
+	// Idle is the time that the connection must be idle before
+	// the first keep-alive probe is sent.
+	// If zero, a default value of 15 seconds is used.
+	Idle time.Duration
+
+	// Interval is the time between keep-alive probes.
+	// If zero, a default value of 15 seconds is used.
+	Interval time.Duration
+
+	// Count is the maximum number of keep-alive probes that
+	// can go unanswered before dropping a connection.
+	// If zero, a default value of 9 is used.
+	Count int
+}
+
 // SyscallConn returns a raw network connection.
 // This implements the [syscall.Conn] interface.
 func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
@@ -97,7 +127,11 @@ func (c *TCPConn) SetLinger(sec int) error
 // keep-alive messages on the connection.
 func (c *TCPConn) SetKeepAlive(keepalive bool) error
 
-// SetKeepAlivePeriod sets period between keep-alives.
+// SetKeepAlivePeriod sets the idle duration the connection
+// needs to remain idle before TCP starts sending keepalive probes.
+//
+// Note that calling this method on Windows will reset the KeepAliveInterval
+// to the default system value, which is normally 1 second.
 func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error
 
 // SetNoDelay controls whether the operating system should delay
