@@ -18,7 +18,7 @@ var ErrProcessDone = errors.New("os: process already finished")
 // Process stores the information about a process created by StartProcess.
 type Process struct {
 	Pid    int
-	handle uintptr
+	handle atomic.Uintptr
 	isdone atomic.Bool
 	sigMu  sync.RWMutex
 }
@@ -69,10 +69,17 @@ func Getppid() int
 // The Process it returns can be used to obtain information
 // about the underlying operating system process.
 //
-// On Unix systems, FindProcess always succeeds and returns a Process
+// On Unix systems other than Linux, FindProcess always succeeds and returns a Process
 // for the given pid, regardless of whether the process exists. To test whether
 // the process actually exists, see whether p.Signal(syscall.Signal(0)) reports
 // an error.
+//
+// On Linux, FindProcess may either return ErrProcessGone for a non-existing
+// process (thus eliminating the need to use a signal to check if the process
+// exists), or work the same way as for other Unix systems, described above,
+// depending on the kernel version used and the system configuration. The old
+// behavior (of always succeeding) can be enforced by using GODEBUG setting
+// osfinderr=0.
 func FindProcess(pid int) (*Process, error)
 
 // StartProcess starts a new process with the program, arguments and attributes

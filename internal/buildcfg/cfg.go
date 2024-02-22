@@ -12,11 +12,11 @@
 package buildcfg
 
 import (
-	"github.com/shogo82148/std/runtime"
+	"github.com/shogo82148/std/os"
 )
 
 var (
-	GOROOT    = runtime.GOROOT()
+	GOROOT    = os.Getenv("GOROOT")
 	GOARCH    = envOr("GOARCH", defaultGOARCH)
 	GOOS      = envOr("GOOS", defaultGOOS)
 	GO386     = envOr("GO386", defaultGO386)
