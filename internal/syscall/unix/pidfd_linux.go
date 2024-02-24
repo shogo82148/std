@@ -7,5 +7,3 @@ package unix
 import "github.com/shogo82148/std/syscall"
 
 func PidFDSendSignal(pidfd uintptr, s syscall.Signal) error
-
-func PidFDOpen(pid, flags int) (uintptr, error)

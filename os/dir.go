@@ -66,3 +66,19 @@ func (f *File) ReadDir(n int) ([]DirEntry, error)
 // ReadDir returns the entries it was able to read before the error,
 // along with the error.
 func ReadDir(name string) ([]DirEntry, error)
+
+// CopyFS copies the file system fsys into the directory dir,
+// creating dir if necessary.
+//
+// Newly created directories and files have their default modes
+// where any bits from the file in fsys that are not part of the
+// standard read, write, and execute permissions will be zeroed
+// out, and standard read and write permissions are set for owner,
+// group, and others while retaining any existing execute bits from
+// the file in fsys.
+//
+// Symbolic links in fsys are not supported, a *PathError with Err set
+// to ErrInvalid is returned on symlink.
+//
+// Copying stops at and returns the first error encountered.
+func CopyFS(dir string, fsys fs.FS) error
