@@ -38,13 +38,8 @@ type Resolver struct {
 // LookupHostは、ローカルのリゾルバを使用して指定されたホストを検索します。
 // そのホストのアドレスのスライスを返します。
 //
-<<<<<<< HEAD
-// LookupHostは、内部的にcontext.Backgroundを使用します。コンテキストを指定するには、
-// Resolver.LookupHostを使用してください。
-=======
-// LookupHost uses [context.Background] internally; to specify the context, use
-// [Resolver.LookupHost].
->>>>>>> upstream/release-branch.go1.22
+// LookupHostは、内部的に [context.Background] を使用します。コンテキストを指定するには、
+// [Resolver.LookupHost] を使用してください。
 func LookupHost(host string) (addrs []string, err error)
 
 // LookupHostは、ローカルのリゾルバを使用して指定されたホストを検索します。
@@ -73,13 +68,8 @@ var _ context.Context = (*onlyValuesCtx)(nil)
 
 // LookupPortは指定されたネットワークとサービスに対するポートを調べます。
 //
-<<<<<<< HEAD
-// LookupPortは内部でcontext.Backgroundを使用します。コンテキストを指定するには、
-// Resolver.LookupPortを使用してください。
-=======
-// LookupPort uses [context.Background] internally; to specify the context, use
-// [Resolver.LookupPort].
->>>>>>> upstream/release-branch.go1.22
+// LookupPortは内部で [context.Background] を使用します。コンテキストを指定するには、
+// [Resolver.LookupPort] を使用してください。
 func LookupPort(network, service string) (port int, err error)
 
 // LookupPortは、指定されたネットワークとサービスのポートを検索します。
@@ -87,40 +77,22 @@ func LookupPort(network, service string) (port int, err error)
 // networkは、"tcp"、"tcp4"、"tcp6"、"udp"、"udp4"、"udp6"、または"ip"のいずれかでなければなりません。
 func (r *Resolver) LookupPort(ctx context.Context, network, service string) (port int, err error)
 
-<<<<<<< HEAD
 // LookupCNAMEは指定されたホストの正式な名前（カノニカル名）を返します。
-// カノニカル名に関心がない場合は、LookupHostまたはLookupIPを直接呼び出すことができます。
+// カノニカル名に関心がない場合は、[LookupHost] または [LookupIP] を直接呼び出すことができます。
 // どちらも、ルックアップの一部としてカノニカル名の解決を行います。
-=======
-// LookupCNAME returns the canonical name for the given host.
-// Callers that do not care about the canonical name can call
-// [LookupHost] or [LookupIP] directly; both take care of resolving
-// the canonical name as part of the lookup.
->>>>>>> upstream/release-branch.go1.22
 //
 // カノニカル名は、ゼロまたは複数のCNAMEレコードを辿った後の最終的な名前です。
 // hostにDNSの"CNAME"レコードが含まれていない場合でも、hostがアドレスレコードに解決されている限り、LookupCNAMEはエラーを返しません。
 //
 // 返されるカノニカル名は、正しくフォーマットされたプレゼンテーション形式のドメイン名であることが検証されます。
 //
-<<<<<<< HEAD
-// LookupCNAMEは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、Resolver.LookupCNAMEを使用してください。
+// LookupCNAMEは内部的に [context.Background] を使用します。コンテキストを指定するには、[Resolver.LookupCNAME] を使用してください。
 func LookupCNAME(host string) (cname string, err error)
 
 // LookupCNAMEは指定されたホストの正規名を返します。
 // 正規名に関心を持たない呼び出し元は、
-// LookupHostまたはLookupIPを直接呼び出すことができます。
+// [LookupHost] または [LookupIP] を直接呼び出すことができます。
 // 両者は名前解決の一環として正規名を処理します。
-=======
-// LookupCNAME uses [context.Background] internally; to specify the context, use
-// [Resolver.LookupCNAME].
-func LookupCNAME(host string) (cname string, err error)
-
-// LookupCNAME returns the canonical name for the given host.
-// Callers that do not care about the canonical name can call
-// [LookupHost] or [LookupIP] directly; both take care of resolving
-// the canonical name as part of the lookup.
->>>>>>> upstream/release-branch.go1.22
 //
 // 正規名は、ゼロ個以上のCNAMEレコードをたどった後の最終名です。
 // LookupCNAMEは、ホストがDNSの"CNAME"レコードを含まない場合でも、
@@ -129,16 +101,9 @@ func LookupCNAME(host string) (cname string, err error)
 // 返される正規名は、適切な形式のドメイン名であることが検証されます。
 func (r *Resolver) LookupCNAME(ctx context.Context, host string) (string, error)
 
-<<<<<<< HEAD
-// LookupSRVは、指定されたサービス、プロトコル、およびドメイン名のSRVクエリを解決しようとします。
+// LookupSRVは、指定されたサービス、プロトコル、およびドメイン名の [SRV] クエリを解決しようとします。
 // protoは「tcp」または「udp」です。
 // 返されるレコードは優先度に従ってソートされ、各優先度内で重みによってランダムになります。
-=======
-// LookupSRV tries to resolve an [SRV] query of the given service,
-// protocol, and domain name. The proto is "tcp" or "udp".
-// The returned records are sorted by priority and randomized
-// by weight within a priority.
->>>>>>> upstream/release-branch.go1.22
 //
 // LookupSRVはRFC 2782に従って調べるDNS名を構築します。
 // つまり、_service._proto.nameを検索します。非標準の名前でSRVレコードを公開するサービスに対応するために、
@@ -149,16 +114,9 @@ func (r *Resolver) LookupCNAME(ctx context.Context, host string) (string, error)
 // 残りの結果がある場合は、これらのエラーと一緒に返されます。
 func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err error)
 
-<<<<<<< HEAD
-// LookupSRVは、指定されたサービス、プロトコル、ドメイン名のSRVクエリを解決しようとします。
+// LookupSRVは、指定されたサービス、プロトコル、ドメイン名の [SRV] クエリを解決しようとします。
 // プロトコルは「tcp」または「udp」です。
 // 返されるレコードは優先度でソートされ、優先度内でのウェイトによってランダムになります。
-=======
-// LookupSRV tries to resolve an [SRV] query of the given service,
-// protocol, and domain name. The proto is "tcp" or "udp".
-// The returned records are sorted by priority and randomized
-// by weight within a priority.
->>>>>>> upstream/release-branch.go1.22
 //
 // LookupSRVは、RFC 2782に従ってルックアップするためのDNS名を構築します。
 // つまり、_service._proto.nameをルックアップします。非標準の名前の下にSRVレコードを公開するサービスを収容するために、
@@ -174,12 +132,7 @@ func (r *Resolver) LookupSRV(ctx context.Context, service, proto, name string) (
 // 返されるメールサーバー名は、正しくフォーマットされた表示形式のドメイン名であることが検証されます。
 // レスポンスに無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーと共に残りの結果が返されます（もしあれば）。
 //
-<<<<<<< HEAD
-// LookupMXは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、Resolver.LookupMXを使用してください。
-=======
-// LookupMX uses [context.Background] internally; to specify the context, use
-// [Resolver.LookupMX].
->>>>>>> upstream/release-branch.go1.22
+// LookupMXは内部的に [context.Background] を使用します。コンテキストを指定するには、[Resolver.LookupMX] を使用してください。
 func LookupMX(name string) ([]*MX, error)
 
 // LookupMXは、指定されたドメイン名のDNS MXレコードを優先度に基づいてソートして返します。
@@ -193,12 +146,7 @@ func (r *Resolver) LookupMX(ctx context.Context, name string) ([]*MX, error)
 // 返されるネームサーバ名は、正しくフォーマットされた表示形式のドメイン名であることが検証されます。
 // 応答に無効な名前が含まれている場合、これらのレコードはフィルタリングされ、エラーが残りの結果と共に返されます。
 //
-<<<<<<< HEAD
-// LookupNSは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、Resolver.LookupNSを使用します。
-=======
-// LookupNS uses [context.Background] internally; to specify the context, use
-// [Resolver.LookupNS].
->>>>>>> upstream/release-branch.go1.22
+// LookupNSは内部的に [context.Background] を使用します。コンテキストを指定するには、[Resolver.LookupNS] を使用します。
 func LookupNS(name string) ([]*NS, error)
 
 // LookupNSは指定されたドメイン名のDNS NSレコードを返します。
@@ -212,37 +160,17 @@ func (r *Resolver) LookupNS(ctx context.Context, name string) ([]*NS, error)
 
 // LookupTXTは指定されたドメイン名のDNS TXTレコードを返します。
 //
-<<<<<<< HEAD
-// LookupTXTは内部でcontext.Backgroundを使用します。コンテキストを指定するには、
-// Resolver.LookupTXTを使用してください。
-=======
-// LookupTXT uses [context.Background] internally; to specify the context, use
-// [Resolver.LookupTXT].
->>>>>>> upstream/release-branch.go1.22
+// LookupTXTは内部で [context.Background] を使用します。コンテキストを指定するには、
+// [Resolver.LookupTXT] を使用してください。
 func LookupTXT(name string) ([]string, error)
 
 // LookupTXTは指定されたドメイン名のDNSのTXTレコードを返します。
 func (r *Resolver) LookupTXT(ctx context.Context, name string) ([]string, error)
 
-<<<<<<< HEAD
 // LookupAddrは与えられたアドレスに対して逆引きを行い、そのアドレスにマッピングされる名前のリストを返します。
 // 返された名前は適切にフォーマットされたプレゼンテーション形式のドメイン名であることが検証されます。応答に無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーと一緒に残りの結果（ある場合）が返されます。
-// ホストCライブラリリゾルバを使用する場合、最大で1つの結果が返されます。ホストリゾルバをバイパスするには、カスタムリゾルバを使用してください。
-// LookupAddrは内部でcontext.Backgroundを使用します。コンテキストを指定するには、Resolver.LookupAddrを使用してください。
-=======
-// LookupAddr performs a reverse lookup for the given address, returning a list
-// of names mapping to that address.
-//
-// The returned names are validated to be properly formatted presentation-format
-// domain names. If the response contains invalid names, those records are filtered
-// out and an error will be returned alongside the remaining results, if any.
-//
-// When using the host C library resolver, at most one result will be
-// returned. To bypass the host resolver, use a custom [Resolver].
-//
-// LookupAddr uses [context.Background] internally; to specify the context, use
-// [Resolver.LookupAddr].
->>>>>>> upstream/release-branch.go1.22
+// ホストCライブラリリゾルバを使用する場合、最大で1つの結果が返されます。ホストリゾルバをバイパスするには、カスタム [Resolver] を使用してください。
+// LookupAddrは内部で [context.Background] を使用します。コンテキストを指定するには、[Resolver.LookupAddr] を使用してください。
 func LookupAddr(addr string) (names []string, err error)
 
 // LookupAddrは指定されたアドレスの逆引きを行い、そのアドレスにマッピングされる名前のリストを返します。

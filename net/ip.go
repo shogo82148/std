@@ -25,11 +25,7 @@ type IP []byte
 // IPMaskは、IPアドレスのアドレッシングとルーティングに使用できる
 // ビットマスクです。
 //
-<<<<<<< HEAD
-// 詳細については、型IPNetと関数ParseCIDRを参照してください。
-=======
-// See type [IPNet] and func [ParseCIDR] for details.
->>>>>>> upstream/release-branch.go1.22
+// 詳細については、型 [IPNet] と関数 [ParseCIDR] を参照してください。
 type IPMask []byte
 
 // IPNetはIPネットワークを表します。
@@ -44,15 +40,9 @@ func IPv4(a, b, c, d byte) IP
 // IPv4Maskは、IPv4マスクa.b.c.dのIPマスク（4バイト形式）を返します。
 func IPv4Mask(a, b, c, d byte) IPMask
 
-<<<<<<< HEAD
-// CIDRMaskは、'ones'個の1ビットで構成されたIPMaskを返します。
+// CIDRMaskは、'ones'個の1ビットで構成された [IPMask] を返します。
 // その後、0ビットが 'bits'ビットの総長になるまで続きます。
-// この形式のマスクに対して、CIDRMaskはIPMask.Sizeの逆です。
-=======
-// CIDRMask returns an [IPMask] consisting of 'ones' 1 bits
-// followed by 0s up to a total length of 'bits' bits.
-// For a mask of this form, CIDRMask is the inverse of [IPMask.Size].
->>>>>>> upstream/release-branch.go1.22
+// この形式のマスクに対して、CIDRMaskは [IPMask.Size] の逆です。
 func CIDRMask(ones, bits int) IPMask
 
 // 有名なIPv4アドレス
@@ -126,23 +116,13 @@ func (ip IP) Mask(mask IPMask) IP
 //   - 上記の条件に当てはまらない場合は、ipの句読点を除いた16進数形式
 func (ip IP) String() string
 
-<<<<<<< HEAD
-// MarshalTextはencoding.TextMarshalerインターフェースを実装します。
-// エンコードはStringで返されるものと同じですが、1つ例外があります：
+// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
+// エンコードは [IP.String] で返されるものと同じですが、1つ例外があります：
 // len(ip)がゼロの場合、空のスライスを返します。
 func (ip IP) MarshalText() ([]byte, error)
 
-// UnmarshalTextはencoding.TextUnmarshalerインターフェースを実装します。
-// IPアドレスはParseIPで受け入れられる形式で指定することが期待されています。
-=======
-// MarshalText implements the [encoding.TextMarshaler] interface.
-// The encoding is the same as returned by [IP.String], with one exception:
-// When len(ip) is zero, it returns an empty slice.
-func (ip IP) MarshalText() ([]byte, error)
-
-// UnmarshalText implements the [encoding.TextUnmarshaler] interface.
-// The IP address is expected in a form accepted by [ParseIP].
->>>>>>> upstream/release-branch.go1.22
+// UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。
+// IPアドレスは [ParseIP] で受け入れられる形式で指定することが期待されています。
 func (ip *IP) UnmarshalText(text []byte) error
 
 // Equalは、ipとxが同じIPアドレスであるかどうかを報告します。

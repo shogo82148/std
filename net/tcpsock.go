@@ -19,11 +19,7 @@ type TCPAddr struct {
 	Zone string
 }
 
-<<<<<<< HEAD
-// AddrPortはTCPAddr aをnetip.AddrPortとして返します。
-=======
-// AddrPort returns the [TCPAddr] a as a [netip.AddrPort].
->>>>>>> upstream/release-branch.go1.22
+// AddrPortは [TCPAddr] aを [netip.AddrPort] として返します。
 //
 // もしa.Portがuint16に収まらない場合、静かに切り捨てられます。
 //
@@ -46,46 +42,24 @@ func (a *TCPAddr) String() string
 // アドレスパラメータはホスト名を使用することもできますが、
 // ホスト名のIPアドレスの一つを最大で返すため、推奨されていません。
 //
-<<<<<<< HEAD
 // ネットワークとアドレスパラメータの詳細については、
-// func Dialの説明を参照してください。
+// func [Dial] の説明を参照してください。
 func ResolveTCPAddr(network, address string) (*TCPAddr, error)
 
-// TCPAddrFromAddrPortはaddrをTCPAddrとして返します。もしaddrがIsValid()がfalseである場合、
+// TCPAddrFromAddrPortはaddrを [TCPAddr] として返します。もしaddrがIsValid()がfalseである場合、
 // 返されるTCPAddrにはnilのIPフィールドが含まれ、アドレスファミリーに依存しない未指定のアドレスを示します。
 func TCPAddrFromAddrPort(addr netip.AddrPort) *TCPAddr
 
-// TCPConnはTCPネットワーク接続のConnインターフェースの実装です。
-=======
-// See func [Dial] for a description of the network and address
-// parameters.
-func ResolveTCPAddr(network, address string) (*TCPAddr, error)
-
-// TCPAddrFromAddrPort returns addr as a [TCPAddr]. If addr.IsValid() is false,
-// then the returned TCPAddr will contain a nil IP field, indicating an
-// address family-agnostic unspecified address.
-func TCPAddrFromAddrPort(addr netip.AddrPort) *TCPAddr
-
-// TCPConn is an implementation of the [Conn] interface for TCP network
-// connections.
->>>>>>> upstream/release-branch.go1.22
+// TCPConnはTCPネットワーク接続の [Conn] インターフェースの実装です。
 type TCPConn struct {
 	conn
 }
 
-<<<<<<< HEAD
 // SyscallConnは生のネットワーク接続を返します。
-// これはsyscall.Connインターフェースを実装しています。
+// これは [syscall.Conn] インターフェースを実装しています。
 func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
 
-// ReadFrom は io.ReaderFrom の ReadFrom メソッドを実装します。
-=======
-// SyscallConn returns a raw network connection.
-// This implements the [syscall.Conn] interface.
-func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
-
-// ReadFrom implements the [io.ReaderFrom] ReadFrom method.
->>>>>>> upstream/release-branch.go1.22
+// ReadFrom は [io.ReaderFrom] の ReadFrom メソッドを実装します。
 func (c *TCPConn) ReadFrom(r io.Reader) (int64, error)
 
 // WriteToは、io.WriterToのWriteToメソッドを実装します。
@@ -126,11 +100,7 @@ func (c *TCPConn) SetNoDelay(noDelay bool) error
 // Linuxでは、カーネルのバージョンがv5.16以上の場合、さらに条件が検証され、結果が改善されます。
 func (c *TCPConn) MultipathTCP() (bool, error)
 
-<<<<<<< HEAD
-// DialTCPはTCPネットワークのためのDialのように振る舞います。
-=======
-// DialTCP acts like [Dial] for TCP networks.
->>>>>>> upstream/release-branch.go1.22
+// DialTCPはTCPネットワークのための [Dial] のように振る舞います。
 //
 // ネットワークはTCPネットワーク名でなければなりません。詳細についてはfunc Dialを参照してください。
 //
@@ -138,24 +108,14 @@ func (c *TCPConn) MultipathTCP() (bool, error)
 // raddrのIPフィールドがnilまたは未指定のIPアドレスの場合、ローカルシステムが使用されます。
 func DialTCP(network string, laddr, raddr *TCPAddr) (*TCPConn, error)
 
-<<<<<<< HEAD
-// TCPListenerはTCPネットワークリスナーです。クライアントは通常、TCPを仮定する代わりにListener型の変数を使用するべきです。
-=======
-// TCPListener is a TCP network listener. Clients should typically
-// use variables of type [Listener] instead of assuming TCP.
->>>>>>> upstream/release-branch.go1.22
+// TCPListenerはTCPネットワークリスナーです。クライアントは通常、TCPを仮定する代わりに [Listener] 型の変数を使用するべきです。
 type TCPListener struct {
 	fd *netFD
 	lc ListenConfig
 }
 
-<<<<<<< HEAD
 // SyscallConn は生のネットワーク接続を返します。
-// これは syscall.Conn インターフェースを実装しています。
-=======
-// SyscallConn returns a raw network connection.
-// This implements the [syscall.Conn] interface.
->>>>>>> upstream/release-branch.go1.22
+// これは [syscall.Conn] インターフェースを実装しています。
 //
 // 返された RawConn は Control の呼び出しのみをサポートします。
 // Read と Write はエラーを返します。
@@ -172,41 +132,25 @@ func (l *TCPListener) Accept() (Conn, error)
 // 既に受け入れられた接続は閉じられません。
 func (l *TCPListener) Close() error
 
-<<<<<<< HEAD
-// Addrはリスナーのネットワークアドレス、*TCPAddrを返します。
+// Addrはリスナーのネットワークアドレス、[*TCPAddr] を返します。
 // 返されるAddrはAddrのすべての呼び出しで共有されるため、
 // 変更しないでください。
-=======
-// Addr returns the listener's network address, a [*TCPAddr].
-// The Addr returned is shared by all invocations of Addr, so
-// do not modify it.
->>>>>>> upstream/release-branch.go1.22
 func (l *TCPListener) Addr() Addr
 
 // SetDeadlineはリスナーに関連付けられた締め切りを設定します。
 // ゼロの時刻値は締め切りを無効にします。
 func (l *TCPListener) SetDeadline(t time.Time) error
 
-<<<<<<< HEAD
-// File は元の os.File のコピーを返します。
+// File は元の [os.File] のコピーを返します。
 // 終了した後、f を閉じる責任は呼び出し元にあります。
 // l を閉じても f には影響を与えませんし、f を閉じても l には影響を与えません。
-=======
-// File returns a copy of the underlying [os.File].
-// It is the caller's responsibility to close f when finished.
-// Closing l does not affect f, and closing f does not affect l.
->>>>>>> upstream/release-branch.go1.22
 //
 // 返された os.File のファイルディスクリプタは、接続のものとは異なります。
 // この複製を使用して元のもののプロパティを変更しようとすると、
 // 望ましい効果が現れるかどうかは不明です。
 func (l *TCPListener) File() (f *os.File, err error)
 
-<<<<<<< HEAD
-// ListenTCPはTCPネットワーク用のListenのように機能します。
-=======
-// ListenTCP acts like [Listen] for TCP networks.
->>>>>>> upstream/release-branch.go1.22
+// ListenTCPはTCPネットワーク用の [Listen] のように機能します。
 //
 // ネットワークはTCPネットワーク名でなければなりません。詳細はfunc Dialを参照してください。
 //

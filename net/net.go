@@ -5,15 +5,7 @@
 /*
 Package netは、TCP/IP、UDP、ドメイン名の解決、およびUnixドメインソケットなど、ネットワークI/Oのためのポータブルなインターフェースを提供します。
 
-<<<<<<< HEAD
-このパッケージは、低レベルのネットワーキングプリミティブへのアクセスを提供していますが、ほとんどのクライアントは、Dial、Listen、Accept関数と関連するConnとListenerインターフェースが提供する基本的なインターフェースだけを必要とします。crypto/tlsパッケージは、同じインターフェースと似たようなDialとListen関数を使用します。
-=======
-Although the package provides access to low-level networking
-primitives, most clients will need only the basic interface provided
-by the [Dial], [Listen], and Accept functions and the associated
-[Conn] and [Listener] interfaces. The crypto/tls package uses
-the same interfaces and similar Dial and Listen functions.
->>>>>>> upstream/release-branch.go1.22
+このパッケージは、低レベルのネットワーキングプリミティブへのアクセスを提供していますが、ほとんどのクライアントは、[Dial]、[Listen]、Accept関数と関連する [Conn] と [Listener] インターフェースが提供する基本的なインターフェースだけを必要とします。crypto/tlsパッケージは、同じインターフェースと似たようなDialとListen関数を使用します。
 
 Dial関数はサーバーに接続します：
 
@@ -41,12 +33,7 @@ Listen関数はサーバーを作成します：
 
 # ネーム解決
 
-<<<<<<< HEAD
-ネーム解決の方法は、間接的にDialのような関数を使うか、LookupHostやLookupAddrのような関数を直接使うかによって、オペレーティングシステムによって異なります。
-=======
-The method for resolving domain names, whether indirectly with functions like Dial
-or directly with functions like [LookupHost] and [LookupAddr], varies by operating system.
->>>>>>> upstream/release-branch.go1.22
+ネーム解決の方法は、間接的にDialのような関数を使うか、[LookupHost] や [LookupAddr] のような関数を直接使うかによって、オペレーティングシステムによって異なります。
 
 Unixシステムでは、名前を解決するための2つのオプションがあります。
 /etc/resolv.confにリストされているサーバーに直接DNSリクエストを送信する純粋なGoリゾルバを使用するか、
@@ -91,14 +78,8 @@ import (
 
 // Addrはネットワークのエンドポイントアドレスを表します。
 //
-<<<<<<< HEAD
-// 2つのメソッドNetworkおよびStringは、通常、Dialの引数として渡すことができる文字列を返しますが、
+// 2つのメソッド [Addr.Network] および [Addr.String] は、通常、[Dial] の引数として渡すことができる文字列を返しますが、
 // その文字列の形式や意味については実装次第です。
-=======
-// The two methods [Addr.Network] and [Addr.String] conventionally return strings
-// that can be passed as the arguments to [Dial], but the exact form
-// and meaning of the strings is up to the implementation.
->>>>>>> upstream/release-branch.go1.22
 type Addr interface {
 	Network() string
 	String() string
@@ -264,23 +245,12 @@ type DNSError struct {
 
 func (e *DNSError) Error() string
 
-<<<<<<< HEAD
 // TimeoutはDNSの検索がタイムアウトしたかどうかを報告します。
-// これは常に正確にはわかりません。DNSの検索はタイムアウトにより失敗する場合があり、Timeoutがfalseを返すDNSErrorが返されることがあります。
+// これは常に正確にはわかりません。DNSの検索はタイムアウトにより失敗する場合があり、Timeoutがfalseを返す [DNSError] が返されることがあります。
 func (e *DNSError) Timeout() bool
 
 // Temporaryは、DNSエラーが一時的であるかどうかを示す。
-// これは常にわかるわけではない。一時的なエラーによりDNS検索が失敗し、Temporaryがfalseを返す場合がある。
-=======
-// Timeout reports whether the DNS lookup is known to have timed out.
-// This is not always known; a DNS lookup may fail due to a timeout
-// and return a [DNSError] for which Timeout returns false.
-func (e *DNSError) Timeout() bool
-
-// Temporary reports whether the DNS error is known to be temporary.
-// This is not always known; a DNS lookup may fail due to a temporary
-// error and return a [DNSError] for which Temporary returns false.
->>>>>>> upstream/release-branch.go1.22
+// これは常にわかるわけではない。一時的なエラーによりDNS検索が失敗し、Temporaryがfalseを返す [DNSError] が返されることがあります。
 func (e *DNSError) Temporary() bool
 
 // ErrClosedは、既に閉じられたネットワーク接続またはI/Oが完了する前に他のゴルーチンによって閉じられたネットワーク接続上のI/O呼び出しによって返されるエラーです。これは他のエラーに包まれる場合があり、通常はerrors.Is(err, net.ErrClosed)を使用してテストする必要があります。
@@ -298,22 +268,14 @@ var (
 
 // WriteTo はバッファの内容を w に書き込みます。
 //
-<<<<<<< HEAD
-// WriteTo は、Buffeers の io.WriterTo を実装します。
-=======
-// WriteTo implements [io.WriterTo] for [Buffers].
->>>>>>> upstream/release-branch.go1.22
+// WriteTo は、[Buffers] に [io.WriterTo] を実装します。
 //
 // WriteTo は、0 <= i < len(v) の範囲の v[i] およびスライス v を変更しますが、v[i][j] (i, j は任意の値) は変更しません。
 func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
 
 // バッファから読み込む。
 //
-<<<<<<< HEAD
-// Read はバッファのために io.Reader を実装します。
-=======
-// Read implements [io.Reader] for [Buffers].
->>>>>>> upstream/release-branch.go1.22
+// Read は [Buffers] に [io.Reader] を実装します。
 //
 // Read はスライス v と v[i]（ただし、0 <= i < len(v)）を変更しますが、
 // v[i][j]（ただし、任意の i, j）は変更しません。
