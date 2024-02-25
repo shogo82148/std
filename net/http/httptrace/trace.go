@@ -13,12 +13,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-<<<<<<< HEAD
-// ContextClientTraceは与えられたコンテキストに関連付けられたClientTraceを返します。関連付けられていない場合はnilを返します。
-=======
-// ContextClientTrace returns the [ClientTrace] associated with the
-// provided context. If none, it returns nil.
->>>>>>> upstream/release-branch.go1.22
+// ContextClientTraceは与えられたコンテキストに関連付けられた [ClientTrace] を返します。関連付けられていない場合はnilを返します。
 func ContextClientTrace(ctx context.Context) *ClientTrace
 
 // WithClientTraceは提供された親コンテキストに基づいた新しいコンテキストを返します。返されたコンテキストを使用して行われるHTTPクライアントリクエストは、以前のフックに加えて、提供されたトレースフックを使用します。提供されたトレースで定義されたフックは最初に呼び出されます。
@@ -115,13 +110,8 @@ type DNSDoneInfo struct {
 	Coalesced bool
 }
 
-<<<<<<< HEAD
-// GotConnInfoはClientTrace.GotConn関数の引数であり、
+// GotConnInfoは [ClientTrace.GotConn] 関数の引数であり、
 // 取得した接続に関する情報を含んでいます。
-=======
-// GotConnInfo is the argument to the [ClientTrace.GotConn] function and
-// contains information about the obtained connection.
->>>>>>> upstream/release-branch.go1.22
 type GotConnInfo struct {
 
 	// Connは取得された接続です。これはhttp.Transportによって所有されており、ClientTraceのユーザーは読み書きやクローズを行ってはいけません。
