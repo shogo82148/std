@@ -5,11 +5,7 @@
 /*
 Package http は HTTP クライアントとサーバーの実装を提供します。
 
-<<<<<<< HEAD
-Get、Head、Post、PostForm は HTTP (または HTTPS) リクエストを行います:
-=======
-[Get], [Head], [Post], and [PostForm] make HTTP (or HTTPS) requests:
->>>>>>> upstream/release-branch.go1.22
+[Get]、[Head]、[Post]、[PostForm] は HTTP (または HTTPS) リクエストを行います:
 
 	resp, err := http.Get("http://example.com/")
 	...
@@ -30,12 +26,7 @@ Get、Head、Post、PostForm は HTTP (または HTTPS) リクエストを行い
 
 # Clients and Transports
 
-<<<<<<< HEAD
-HTTP クライアントヘッダー、リダイレクトポリシー、その他の設定を制御するには、Client を作成してください。
-=======
-For control over HTTP client headers, redirect policy, and other
-settings, create a [Client]:
->>>>>>> upstream/release-branch.go1.22
+HTTP クライアントヘッダー、リダイレクトポリシー、その他の設定を制御するには、[Client] を作成してください。
 
 	client := &http.Client{
 		CheckRedirect: redirectPolicyFunc,
@@ -50,12 +41,7 @@ settings, create a [Client]:
 	resp, err := client.Do(req)
 	// ...
 
-<<<<<<< HEAD
-プロキシ、TLS 設定、Keep-Alive、圧縮、その他の設定を制御するには、Transport を作成してください。
-=======
-For control over proxies, TLS configuration, keep-alives,
-compression, and other settings, create a [Transport]:
->>>>>>> upstream/release-branch.go1.22
+プロキシ、TLS 設定、Keep-Alive、圧縮、その他の設定を制御するには、[Transport] を作成してください。
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -69,15 +55,9 @@ compression, and other settings, create a [Transport]:
 
 # Servers
 
-<<<<<<< HEAD
 ListenAndServe は、指定されたアドレスとハンドラーで HTTP サーバーを開始します。
-ハンドラーは通常 nil で、DefaultServeMux を使用することを意味します。
-Handle と HandleFunc は、DefaultServeMux にハンドラーを追加します。
-=======
-ListenAndServe starts an HTTP server with a given address and handler.
-The handler is usually nil, which means to use [DefaultServeMux].
-[Handle] and [HandleFunc] add handlers to [DefaultServeMux]:
->>>>>>> upstream/release-branch.go1.22
+ハンドラーは通常 nil で、[DefaultServeMux] を使用することを意味します。
+[Handle] と [HandleFunc] は、[DefaultServeMux] にハンドラーを追加します。
 
 	http.Handle("/foo", fooHandler)
 
@@ -100,16 +80,7 @@ The handler is usually nil, which means to use [DefaultServeMux].
 
 # HTTP/2
 
-<<<<<<< HEAD
-Go 1.6 以降、HTTPS を使用する場合、http パッケージは HTTP/2 プロトコルの透過的なサポートを提供します。HTTP/2 を無効にする必要があるプログラムは、Transport.TLSNextProto (クライアント用) または Server.TLSNextProto (サーバー用) を nil でない空のマップに設定することで行えます。また、次の GODEBUG 設定が現在サポートされています。
-=======
-Starting with Go 1.6, the http package has transparent support for the
-HTTP/2 protocol when using HTTPS. Programs that must disable HTTP/2
-can do so by setting [Transport.TLSNextProto] (for clients) or
-[Server.TLSNextProto] (for servers) to a non-nil, empty
-map. Alternatively, the following GODEBUG settings are
-currently supported:
->>>>>>> upstream/release-branch.go1.22
+Go 1.6 以降、HTTPS を使用する場合、http パッケージは HTTP/2 プロトコルの透過的なサポートを提供します。HTTP/2 を無効にする必要があるプログラムは、[Transport.TLSNextProto] (クライアント用) または [Server.TLSNextProto] (サーバー用) を nil でない空のマップに設定することで行えます。また、次の GODEBUG 設定が現在サポートされています。
 
 	GODEBUG=http2client=0  # HTTP/2 クライアントサポートを無効にする
 	GODEBUG=http2server=0  # HTTP/2 サーバーサポートを無効にする
@@ -118,17 +89,6 @@ currently supported:
 
 HTTP/2 サポートを無効にする前に、問題がある場合は報告してください: https://golang.org/s/http2bug
 
-<<<<<<< HEAD
-http パッケージの Transport と Server は、単純な構成に対して自動的に HTTP/2 サポートを有効にします。より複雑な構成で HTTP/2 を有効にする、より低レベルの HTTP/2 機能を使用する、またはより新しいバージョンの Go の http2 パッケージを使用するには、直接 "golang.org/x/net/http2" をインポートし、その ConfigureTransport および/または ConfigureServer 関数を使用します。golang.org/x/net/http2 パッケージを使用して HTTP/2 を手動で設定する場合、net/http パッケージの組み込みの HTTP/2 サポートよりも優先されます。
-=======
-The http package's [Transport] and [Server] both automatically enable
-HTTP/2 support for simple configurations. To enable HTTP/2 for more
-complex configurations, to use lower-level HTTP/2 features, or to use
-a newer version of Go's http2 package, import "golang.org/x/net/http2"
-directly and use its ConfigureTransport and/or ConfigureServer
-functions. Manually configuring HTTP/2 via the golang.org/x/net/http2
-package takes precedence over the net/http package's built-in HTTP/2
-support.
->>>>>>> upstream/release-branch.go1.22
+http パッケージの [Transport] と [Server] は、単純な構成に対して自動的に HTTP/2 サポートを有効にします。より複雑な構成で HTTP/2 を有効にする、より低レベルの HTTP/2 機能を使用する、またはより新しいバージョンの Go の http2 パッケージを使用するには、直接 "golang.org/x/net/http2" をインポートし、その ConfigureTransport および/または ConfigureServer 関数を使用します。golang.org/x/net/http2 パッケージを使用して HTTP/2 を手動で設定する場合、net/http パッケージの組み込みの HTTP/2 サポートよりも優先されます。
 */
 package http
