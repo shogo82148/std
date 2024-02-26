@@ -162,10 +162,6 @@ type Arch struct {
 	ELF ELFArch
 }
 
-const (
-	MINFUNC = 16
-)
-
 // DynlinkingGo reports whether we are producing Go code that can live
 // in separate shared libraries linked together at runtime.
 func (ctxt *Link) DynlinkingGo() bool

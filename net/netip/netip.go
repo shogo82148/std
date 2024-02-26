@@ -83,7 +83,7 @@ func MustParseAddr(s string) Addr
 // スライスの長さが4または16でない場合、[Addr]{}、falseを返します。
 func AddrFromSlice(slice []byte) (ip Addr, ok bool)
 
-// IsValidは、Addrが初期化されたアドレス（ゼロのAddrではない）であるかどうかを報告します。
+// IsValidは、[Addr] が初期化されたアドレス（ゼロのAddrではない）であるかどうかを報告します。
 //
 // "0.0.0.0"と"::"の両方が有効な値であることに注意してください。
 func (ip Addr) IsValid() bool
@@ -220,7 +220,7 @@ func (ip Addr) StringExpanded() string
 func (ip Addr) MarshalText() ([]byte, error)
 
 // UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
-// IPアドレスは、ParseAddrで受け入れられる形式で指定する必要があります。
+// IPアドレスは、[ParseAddr] で受け入れられる形式で指定する必要があります。
 //
 // textが空の場合、UnmarshalTextは*ipをゼロの [Addr] に設定し、エラーを返しません。
 func (ip *Addr) UnmarshalText(text []byte) error
@@ -278,8 +278,8 @@ func (p AddrPort) AppendTo(b []byte) []byte
 // p.Addr()がゼロの [Addr] の場合、エンコーディングは空の文字列になります。
 func (p AddrPort) MarshalText() ([]byte, error)
 
-// UnmarshalTextは、encoding.TextUnmarshaler インターフェースを実装します。
-// AddrPortは、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
+// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+// [AddrPort] は、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
 func (p *AddrPort) UnmarshalText(text []byte) error
 
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
@@ -364,9 +364,9 @@ func (p Prefix) AppendTo(b []byte) []byte
 // pがゼロ値の場合、エンコーディングは空の文字列になります。
 func (p Prefix) MarshalText() ([]byte, error)
 
-// UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
-// IPアドレスは、[ParsePrefix] で受け入れられる形式で指定する必要があります。
-// または、MarshalTextによって生成された形式である必要があります。
+// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
+// IPアドレスは、[ParsePrefix]で受け入れられる形式で指定する必要があります。
+// または、[Prefix.MarshalText] によって生成された形式である必要があります。
 func (p *Prefix) UnmarshalText(text []byte) error
 
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。

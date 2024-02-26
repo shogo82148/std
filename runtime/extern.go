@@ -24,7 +24,7 @@ GOMEMLIMITは、オプションの単位接尾辞を持つバイト単位の数�
 サポートされる接尾辞には、B、KiB、MiB、GiB、およびTiBが含まれます。
 これらの接尾辞は、IEC 80000-13標準で定義されるバイトの量を表します。
 つまり、2の累乗に基づいています：KiBは2^10バイトを意味し、MiBは2^20バイトを意味します。
-デフォルト設定はmath.MaxInt64であり、これによりメモリ制限が無効になります。
+デフォルト設定は [math.MaxInt64] であり、これによりメモリ制限が無効になります。
 [runtime/debug.SetMemoryLimit] を使用すると、この制限を実行時に変更できます。
 
 GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
@@ -124,6 +124,17 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	現在、Windows、plan9、js/wasmではサポートされていません。
 	一部のアプリケーションでこのオプションを設定すると、大きなトレースが生成される場合があるため、注意して使用してください。
 
+	panicnil: panicnil=1を設定すると、nilのインターフェース値または型指定されていないnilを引数にpanicを呼び出したときのランタイムエラーが無効になります。
+
+	runtimecontentionstacks: runtimecontentionstacks=1を設定すると、"mutex"プロファイルに
+	ランタイム内部のロックに関連するコールスタックが含まれるようになります。これは
+	MutexProfileFraction設定に従います。runtimecontentionstacks=0の場合、
+	ランタイム内部のロックに対する競合は"runtime._LostContendedRuntimeLock"として報告されます。
+	runtimecontentionstacks=1の場合、コールスタックはロックを解放したunlock呼び出しに対応します。
+	しかし、その値はそのコールスタックが引き起こした競合の量に対応するのではなく、
+	unlockの呼び出し元が元のlock呼び出しで待たなければならなかった時間に対応します。
+	これらを揃えてこの設定を削除することが期待される未来のリリースがあります。
+
 	runtimecontentionstacks: runtimecontentionstacks=1を設定すると、"mutex"プロファイルに
 	runtime内部のロックの競合に関連する呼び出しスタックが含まれるようになります。これは
 	MutexProfileFraction設定に従います。runtimecontentionstacks=0の場合、
@@ -171,15 +182,15 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	これにより、一部のループが長期間にわたって非事前停止可能になり、GCとゴルーチンのスケジューリングが遅延する可能性があります。
 	これは、非同期に事前停止されたゴルーチン用の保守的なスタックスキャンも無効にするため、GCの問題をデバッグするのに役立ちます。
 
-netおよびnet/httpパッケージも、GODEBUGのデバッグ変数を参照しています。
+[net] および [net/http] パッケージも、GODEBUGのデバッグ変数を参照しています。
 詳細については、それらのパッケージのドキュメントを参照してください。
 
 GOMAXPROCS変数は、ユーザーレベルのGoコードを同時に実行できるオペレーティングシステムスレッドの数を制限します。
 Goコードの代わりにシステムコールでブロックされているスレッドの数に制限はありません。
-これらはGOMAXPROCSの制限には含まれません。このパッケージのGOMAXPROCS関数は、制限をクエリおよび変更します。
+これらはGOMAXPROCSの制限には含まれません。このパッケージの [GOMAXPROCS] 関数は、制限をクエリおよび変更します。
 
 GORACE変数は、-raceを使用してビルドされたプログラムのレースディテクタを設定します。
-詳細については、https://golang.org/doc/articles/race_detector.html を参照してください。
+詳細については、[Race Detector article] を参照してください。
 
 GOTRACEBACK変数は、Goプログラムが回復不能なパニックまたは予期しないランタイム条件によって失敗した場合に生成される出力量を制御します。
 デフォルトでは、失敗は現在のゴルーチンのスタックトレースを出力し、ランタイムシステム内部の関数を省略して、終了コード2で終了します。
@@ -194,10 +205,10 @@ GOTRACEBACK=crashは、「system」と同様ですが、OS固有の方法でク�
 GOTRACEBACK=werは、「crash」と同様ですが、Windows Error Reporting（WER）を無効にしません。
 歴史的な理由から、GOTRACEBACK設定0、1、および2は、それぞれnone、all、およびsystemの同義語です。
 runtime/debugパッケージのSetTraceback関数を使用すると、実行時に出力量を増やすことができますが、環境変数で指定された量を下回ることはできません。
-https://golang.org/pkg/runtime/debug/#SetTraceback を参照してください。
+[runtime/debug.SetTraceback] 関数を参照してください。
 
 GOARCH、GOOS、GOPATH、およびGOROOT環境変数は、Goプログラムのビルドに影響を与えます
-（https://golang.org/cmd/go および https://golang.org/pkg/go/build を参照）。
+（[cmd/go] および [go/build] を参照）。
 GOARCH、GOOS、およびGOROOTは、コンパイル時に記録され、このパッケージの定数または関数によって利用可能になりますが、
 ランタイムシステムの実行には影響しません。
 
@@ -212,6 +223,8 @@ AIXではuid/gidが有効なuid/gidと一致するかどうかをチェックし
   - 標準入出力ファイルディスクリプタ（0、1、2）が開いているかどうかを確認します。いずれかが閉じられている場合、/dev/nullを指すように開きます。
   - GOTRACEBACK環境変数の値を'none'に設定します。
   - プログラムを終了するシグナルが受信された場合、またはGOTRACEBACKの値を上書きする回復不能なパニックが発生した場合、ゴルーチンのスタック、レジスタ、およびその他のメモリ関連情報が省略されます。
+
+[Race Detector article]: https://go.dev/doc/articles/race_detector
 */
 package runtime
 
@@ -222,7 +235,7 @@ import (
 
 // Callerは、呼び出し元のゴルーチンのスタック上での関数呼び出しに関するファイルと行番号情報を報告します。
 // 引数skipは、上昇するスタックフレームの数であり、0はCallerの呼び出し元を識別します。
-// （歴史的な理由から、skipの意味はCallerとCallersで異なります。）
+// （歴史的な理由から、skipの意味はCallerと [Callers] で異なります。）
 // 戻り値は、対応する呼び出しのプログラムカウンタ、ファイル名、およびファイル内の行番号を報告します。
 // 情報を回復できなかった場合、ブール値okはfalseです。
 func Caller(skip int) (pc uintptr, file string, line int, ok bool)

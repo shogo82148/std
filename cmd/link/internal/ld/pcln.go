@@ -4,9 +4,12 @@
 
 package ld
 
+import (
+	"github.com/shogo82148/std/internal/abi"
+)
+
 const (
-	BUCKETSIZE    = 256 * MINFUNC
 	SUBBUCKETS    = 16
-	SUBBUCKETSIZE = BUCKETSIZE / SUBBUCKETS
+	SUBBUCKETSIZE = abi.FuncTabBucketSize / SUBBUCKETS
 	NOIDX         = 0x7fffffff
 )

@@ -41,6 +41,14 @@ func Reset()
 // .mod and .zip files.
 func HaveSum(mod module.Version) bool
 
+// RecordedSum returns the sum if the go.sum file contains an entry for mod.
+// The boolean reports true if an entry was found or
+// false if no entry found or two conflicting sums are found.
+// The entry's hash must be generated with a known hash algorithm.
+// mod.Version may have a "/go.mod" suffix to distinguish sums for
+// .mod and .zip files.
+func RecordedSum(mod module.Version) (sum string, ok bool)
+
 // Sum returns the checksum for the downloaded copy of the given module,
 // if present in the download cache.
 func Sum(ctx context.Context, mod module.Version) string

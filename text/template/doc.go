@@ -137,7 +137,14 @@ HTML出力を生成するには、[html/template] を参照してください。
 		パイプラインの値が空の場合、ドットは影響を受けず、T0が実行されます。
 		それ以外の場合、ドットはパイプラインの値に設定され、T1が実行されます。
 
-引数
+	{{with pipeline}} T1 {{else with pipeline}} T0 {{end}}
+		with-elseチェーンの見た目を簡単にするために、withのelseアクションは
+		直接別のwithを含めることができます。その効果は、以下のように書くのと
+		全く同じです。
+			{{with pipeline}} T1 {{else}}{{with pipeline}} T0 {{end}}{{end}}
+
+
+Arguments
 
 引数は、以下のいずれかによって示される単純な値です。
 

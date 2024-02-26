@@ -167,6 +167,7 @@ type Decoder struct {
 	line           int
 	linestart      int64
 	offset         int64
+	readNonWS      bool
 	unmarshalDepth int
 }
 

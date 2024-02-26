@@ -9,6 +9,18 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
+// InitWSA initiates the use of the Winsock DLL by the current process.
+// It is called from the net package at init time to avoid
+// loading ws2_32.dll when net is not used.
+var InitWSA = sync.OnceFunc(func() {
+	var d syscall.WSAData
+	e := syscall.WSAStartup(uint32(0x202), &d)
+	if e != nil {
+		initErr = e
+	}
+	checkSetFileCompletionNotificationModes()
+})
+
 // FD is a file descriptor. The net and os packages embed this type in
 // a larger type representing a network connection or OS file.
 type FD struct {
@@ -148,3 +160,5 @@ func (fd *FD) WriteMsgInet4(p []byte, oob []byte, sa *syscall.SockaddrInet4) (in
 
 // WriteMsgInet6 is WriteMsg specialized for syscall.SockaddrInet6.
 func (fd *FD) WriteMsgInet6(p []byte, oob []byte, sa *syscall.SockaddrInet6) (int, int, error)
+
+func DupCloseOnExec(fd int) (int, string, error)

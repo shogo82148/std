@@ -16,3 +16,6 @@ func UncommonSize() uint64
 
 // TFlagOff returns the offset of Type.TFlag for a compilation target with a given ptrSize
 func TFlagOff(ptrSize int) int
+
+// ITabTypeOff returns the offset of ITab.Type for a compilation target with a given ptrSize
+func ITabTypeOff(ptrSize int) int

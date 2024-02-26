@@ -68,14 +68,21 @@ func (t *Named) NumMethods() int
 // For an ordinary or instantiated type t, the receiver base type of this
 // method is the named type t. For an uninstantiated generic type t, each
 // method receiver is instantiated with its receiver type parameters.
+//
+// Methods are numbered deterministically: given the same list of source files
+// presented to the type checker, or the same sequence of NewMethod and AddMethod
+// calls, the mapping from method index to corresponding method remains the same.
+// But the specific ordering is not specified and must not be relied on as it may
+// change in the future.
 func (t *Named) Method(i int) *Func
 
 // SetUnderlyingは基本型を設定し、tを完全なものとしてマークします。
 // tには型引数を持っていてはいけません。
 func (t *Named) SetUnderlying(underlying Type)
 
-// AddMethodは、メソッドリスト内にメソッドmがない場合に追加します。
-// tには型引数が含まれていてはいけません。
+// AddMethodは、メソッドmがすでにメソッドリストに存在しない場合に追加します。
+// メソッドはtと同じパッケージに存在しなければならず、tは
+// 型引数を持っていてはなりません。
 func (t *Named) AddMethod(m *Func)
 
 // TODO(gri) Investigate if Unalias can be moved to where underlying is set.

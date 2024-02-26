@@ -85,7 +85,7 @@ type CancelFunc func()
 // 返されたコンテキストのDoneチャネルは、返されたキャンセル関数が呼び出されるか、
 // または親のコンテキストのDoneチャネルが閉じられたとき、より早く閉じられます。
 //
-// このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、コードはこのContextで実行される操作が完了したらすぐにcancelを呼び出す必要があります。
+// このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、コードはこの [Context] で実行される操作が完了したらすぐにcancelを呼び出す必要があります。
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
 
 // CancelCauseFunc [CancelFunc]と同様に動作しますが、キャンセルの原因を設定します。

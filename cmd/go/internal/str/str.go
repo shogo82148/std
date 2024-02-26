@@ -24,8 +24,5 @@ func ToFold(s string) string
 // It returns "", "" if there are no such strings.
 func FoldDup(list []string) (string, string)
 
-// Contains reports whether x contains s.
-func Contains(x []string, s string) bool
-
 // Uniq removes consecutive duplicate strings from ss.
 func Uniq(ss *[]string)

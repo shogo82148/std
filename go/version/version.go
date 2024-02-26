@@ -2,9 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージversionは、[Goのバージョン] に対する操作を提供します。
+// パッケージversionは、[Goツールチェーン名の構文] のような文字列、
+// つまり "go1.20"、"go1.21.0"、"go1.22rc2"、"go1.23.4-bigcorp"などの
+// [Goバージョン] に対する操作を提供します。
 //
-// [Goのバージョン]: https://go.dev/doc/toolchain#version
+// [Goバージョン]: https://go.dev/doc/toolchain#version
+// [Goツールチェーン名の構文]: https://go.dev/doc/toolchain#name
 package version
 
 // Langは、バージョンxのGo言語バージョンを返します。
@@ -25,8 +28,6 @@ func Lang(x string) string
 // 無効なバージョン、空文字列を含む、は有効なバージョンよりも小さく、
 // お互いに等しいと比較されます。
 // 言語バージョン"go1.21"はリリース候補および最終リリース"go1.21rc1"および"go1.21.0"よりも小さいと比較されます。
-// カスタムツールチェーンのサフィックスは比較中に無視されます：
-// "go1.21.0"と"go1.21.0-bigcorp"は等しいです。
 func Compare(x, y string) int
 
 // IsValidは、バージョンxが有効かどうかを報告します。

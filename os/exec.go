@@ -18,7 +18,7 @@ var ErrProcessDone = errors.New("os: process already finished")
 // ProcessはStartProcessによって作成されたプロセスに関する情報を格納します。
 type Process struct {
 	Pid    int
-	handle uintptr
+	handle atomic.Uintptr
 	isdone atomic.Bool
 	sigMu  sync.RWMutex
 }

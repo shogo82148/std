@@ -39,18 +39,23 @@ Unixシステムでは、名前を解決するための2つのオプションが
 /etc/resolv.confにリストされているサーバーに直接DNSリクエストを送信する純粋なGoリゾルバを使用するか、
 getaddrinfoやgetnameinfoなどのCライブラリのルーチンを呼び出すcgoベースのリゾルバを使用するか、です。
 
-デフォルトでは、ブロックされたDNSリクエストはゴルーチンのみを消費するため、純粋なGoリゾルバが使用されますが、
-ブロックされたC呼び出しはオペレーティングシステムのスレッドを消費します。
-cgoが利用可能な場合、さまざまな条件下でcgoベースのリゾルバが代わりに使用されます：
-直接DNSリクエストを行うことができないシステム（OS X）や、
-LOCALDOMAIN環境変数が存在する（空であっても）、
-RES_OPTIONSまたはHOSTALIASES環境変数が空でない、
-ASR_CONFIG環境変数が空でない（OpenBSDのみ）、
-/etc/resolv.confまたは/etc/nsswitch.confで、
-Goリゾルバが実装していない機能の使用が指定されている場合、
-検索対象となる名前が.localで終わるか、mDNS名である場合です。
+Unixでは、ブロックされたDNSリクエストがゴルーチンだけを消費するのに対し、
+ブロックされたC呼び出しがオペレーティングシステムのスレッドを消費するため、
+純粋なGoリゾルバがcgoリゾルバよりも優先されます。
+cgoが利用可能な場合、以下の様々な条件下でcgoベースのリゾルバが代わりに使用されます：
+プログラムが直接DNSリクエストを行うことを許可しないシステム（OS X）上、
+LOCALDOMAIN環境変数が存在する場合（空でも）、
+RES_OPTIONSまたはHOSTALIASES環境変数が空でない場合、
+ASR_CONFIG環境変数が空でない場合（OpenBSDのみ）、
+/etc/resolv.confまたは/etc/nsswitch.confがGoリゾルバが実装していない機能の使用を指定している場合、
+および、検索される名前が.localで終わるか、mDNS名である場合。
 
-リゾルバの判断は、GODEBUG環境変数（パッケージruntimeを参照）のnetdns値をgoまたはcgoに設定することで上書きすることもできます。例：
+すべてのシステム（Plan 9を除く）で、cgoリゾルバが使用されている場合、
+このパッケージは並行cgoルックアップ制限を適用して、システムがシステムスレッドを使い果たすのを防ぎます。
+現在、同時ルックアップは500に制限されています。
+
+リゾルバの決定は、GODEBUG環境変数のnetdns値をgoまたはcgoに設定することで
+上書きすることができます（パッケージruntimeを参照）。
 
 	export GODEBUG=netdns=go    # 純粋なGoリゾルバを強制する
 	export GODEBUG=netdns=cgo   # ネイティブリゾルバを強制する（cgo、win32）
@@ -270,14 +275,14 @@ var (
 
 // WriteTo はバッファの内容を w に書き込みます。
 //
-// WriteTo は、[Buffers] の [io.WriterTo] を実装します。
+// WriteTo は、[Buffers] に [io.WriterTo] を実装します。
 //
 // WriteTo は、0 <= i < len(v) の範囲の v[i] およびスライス v を変更しますが、v[i][j] (i, j は任意の値) は変更しません。
 func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
 
 // バッファから読み込む。
 //
-// Read は [Buffers] のために [io.Reader] を実装します。
+// Read は [Buffers] に [io.Reader] を実装します。
 //
 // Read はスライス v と v[i]（ただし、0 <= i < len(v)）を変更しますが、
 // v[i][j]（ただし、任意の i, j）は変更しません。

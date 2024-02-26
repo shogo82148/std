@@ -906,6 +906,8 @@
 //	    Retracted  []string      // 撤回情報（あれば）（-retractedまたは-uとともに）
 //	    Deprecated string        // 非推奨メッセージ（あれば）（-uとともに）
 //	    Error      *ModuleError  // モジュールの読み込みエラー
+//	    Sum        string        // パス、バージョンのチェックサム（go.sum内のように）
+//	    GoModSum   string        // go.modのチェックサム（go.sum内のように）
 //	    Origin     any           // モジュールの出所
 //	    Reuse      bool          // 古いモジュール情報の再利用は安全です
 //	}
@@ -1609,15 +1611,16 @@
 // go testはテストバイナリを再度実行する代わりに前回の出力を再表示します。これが発生すると、
 // go testはサマリーラインの経過時間の代わりに '(cached)' を印刷します。
 //
-// キャッシュに一致するルールは、実行が同じテストバイナリを含み、コマンドライン上のフラグが全て
-// 'キャッシュ可能'なテストフラグの制限されたセットから来るというものです。これらのフラグには
-// -benchtime, -cpu, -list, -parallel, -run, -short, -timeout, -failfast, そして -vが含まれます。
-// go testの実行がこのセット外の任意のテストフラグまたは非テストフラグを持つ場合、結果はキャッシュされません。
-// テストキャッシュを無効にするには、キャッシュ可能なフラグ以外の任意のテストフラグまたは引数を使用します。
-// テストキャッシュを明示的に無効にする慣用的な方法は、-count=1を使用することです。パッケージのソースルート内
-// （通常は$GOPATH）でファイルを開くテストや、環境変数を参照するテストは、ファイルと環境変数が変更されない
-// 未来の実行とのみ一致します。キャッシュされたテスト結果は全く時間がかからないとして扱われるため、
-// 成功したパッケージテスト結果は-timeout設定に関係なくキャッシュされ、再利用されます。
+// キャッシュ内の一致のルールは、同じテストバイナリが実行され、コマンドライン上のフラグがすべて
+// 'キャッシュ可能'なテストフラグの制限されたセットから来るというものです。これには、-benchtime、-cpu、
+// -list、-parallel、-run、-short、-timeout、-failfast、-fullpath、-vが含まれます。
+// go testの実行がこのセット外の任意のテストフラグまたは非テストフラグを持つ場合、
+// 結果はキャッシュされません。テストキャッシュを無効にするには、キャッシュ可能なフラグ以外の
+// 任意のテストフラグまたは引数を使用します。テストキャッシュを明示的に無効にする慣用的な方法は
+// -count=1を使用することです。パッケージのソースルート内（通常は$GOPATH）でファイルを開くテストや、
+// 環境変数を参照するテストは、ファイルと環境変数が変更されない未来の実行とのみ一致します。
+// キャッシュされたテスト結果はまったく時間がかからないとして扱われるため、成功したパッケージテスト結果は
+// -timeout設定に関係なくキャッシュされ、再利用されます。
 //
 // ビルドフラグに加えて、'go test'自体が処理するフラグは以下の通りです：
 //
@@ -1773,34 +1776,37 @@
 //
 // 定義されたアーキテクチャ機能のビルドタグは以下の通りです：
 //
-//   - GOARCH=386の場合、GO386=387とGO386=sse2は
-//     それぞれ386.387と386.sse2のビルドタグを設定します。
-//   - GOARCH=amd64の場合、GOAMD64=v1、v2、およびv3は
-//     amd64.v1、amd64.v2、およびamd64.v3の機能ビルドタグに対応します。
-//   - GOARCH=armの場合、GOARM=5、6、および7は
-//     arm.5、arm.6、およびarm.7の機能ビルドタグに対応します。
+//   - GOARCH=386の場合、GO386=387とGO386=sse2はそれぞれ
+//     386.387と386.sse2のビルドタグを設定します。
+//   - GOARCH=amd64の場合、GOAMD64=v1、v2、v3はそれぞれ
+//     amd64.v1、amd64.v2、amd64.v3の機能ビルドタグに対応します。
+//   - GOARCH=armの場合、GOARM=5、6、7はそれぞれ
+//     arm.5、arm.6、arm.7の機能ビルドタグに対応します。
 //   - GOARCH=mipsまたはmipsleの場合、
-//     GOMIPS=hardfloatとsoftfloatは
+//     GOMIPS=hardfloatとsoftfloatはそれぞれ
 //     mips.hardfloatとmips.softfloat
 //     （またはmipsle.hardfloatとmipsle.softfloat）の機能ビルドタグに対応します。
 //   - GOARCH=mips64またはmips64leの場合、
-//     GOMIPS64=hardfloatとsoftfloatは
+//     GOMIPS64=hardfloatとsoftfloatはそれぞれ
 //     mips64.hardfloatとmips64.softfloat
 //     （またはmips64le.hardfloatとmips64le.softfloat）の機能ビルドタグに対応します。
 //   - GOARCH=ppc64またはppc64leの場合、
-//     GOPPC64=power8、power9、およびpower10は
-//     ppc64.power8、ppc64.power9、およびppc64.power10
-//     （またはppc64le.power8、ppc64le.power9、およびppc64le.power10）
+//     GOPPC64=power8、power9、power10はそれぞれ
+//     ppc64.power8、ppc64.power9、ppc64.power10
+//     （またはppc64le.power8、ppc64le.power9、ppc64le.power10）
 //     の機能ビルドタグに対応します。
-//   - GOARCH=wasmの場合、GOWASM=satconvとsignextは
+//   - GOARCH=riscv64の場合、
+//     GORISCV64=rva20u64とrva22u64はそれぞれriscv64.rva20u64
+//     とriscv64.rva22u64のビルドタグに対応します。
+//   - GOARCH=wasmの場合、GOWASM=satconvとsignextはそれぞれ
 //     wasm.satconvとwasm.signextの機能ビルドタグに対応します。
 //
-// GOARCH=amd64、arm、ppc64、およびppc64leの場合、特定の機能レベルは
+// GOARCH=amd64、arm、ppc64、ppc64le、riscv64の場合、特定の機能レベルは
 // すべての前のレベルの機能ビルドタグも設定します。
 // 例えば、GOAMD64=v2はamd64.v1とamd64.v2の機能フラグを設定します。
-// これにより、たとえば、GOAMD64=v4が導入されたときでも、
-// v2の機能を使用するコードがコンパイルを続けることが保証されます。
-// 特定の機能レベルの欠如を処理するコードは、否定を使用する必要があります：
+// これにより、v2の機能を使用するコードは、たとえば、GOAMD64=v4が導入されたときでも
+// コンパイルを続けることが保証されます。
+// 特定の機能レベルの欠如を処理するコードは、否定を使用するべきです：
 //
 //	//go:build !amd64.v2
 //
@@ -2058,6 +2064,10 @@
 //	GOPPC64
 //		GOARCH=ppc64{,le}の場合、ターゲットISA（Instruction Set Architecture）。
 //		有効な値はpower8（デフォルト）、power9、power10です。
+//	GORISCV64
+//		GOARCH=riscv64の場合、コンパイルするRISC-Vユーザーモードアプリケーションプロファイル。
+//		有効な値はrva20u64（デフォルト）、rva22u64です。
+//		https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc を参照してください。
 //	GOWASM
 //		GOARCH=wasmの場合、使用する実験的なWebAssembly機能のカンマ区切りのリスト。
 //		有効な値はsatconv、signextです。
@@ -2079,10 +2089,6 @@
 //		現在有効な値については、src/internal/goexperiment/flags.goを参照してください。
 //		警告: この変数はGoツールチェーン自体の開発とテストのために提供されています。
 //		それ以外の目的での使用はサポートされていません。
-//	GOROOT_FINAL
-//		Goツリーがインストールされているルート、つまり、
-//		ビルドされた場所以外の場所にインストールされている場合。
-//		スタックトレースのファイル名はGOROOTからGOROOT_FINALに書き換えられます。
 //	GO_EXTLINK_ENABLED
 //		cgoを使用するコードと-linkmode=autoを使用するときに、
 //		リンカーが外部リンクモードを使用するかどうか。

@@ -69,4 +69,7 @@ func (t *LineTable) LineToPC(line int, maxpc uint64) uint64
 
 // NewLineTableは、エンコードされたデータに対応する新しいPC/行テーブルを返します。
 // Textは、対応するテキストセグメントの開始アドレスでなければなりません。
+// この値は、'runtime.text'シンボルに格納されている正確な値です。
+// この値は、バイナリがcgoを有効にしてビルドされた場合、
+// テキストセグメントの開始アドレスと異なる場合があります。
 func NewLineTable(data []byte, text uint64) *LineTable

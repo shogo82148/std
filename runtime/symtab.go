@@ -14,7 +14,7 @@ type Frames struct {
 	frameStore [2]Frame
 }
 
-// Frameは各コールフレームごとにFramesによって返される情報です。
+// Frameは各コールフレームごとに [Frames] によって返される情報です。
 type Frame struct {
 
 	// PCはこのフレームの位置に対するプログラムカウンタです。
@@ -55,13 +55,13 @@ type Frame struct {
 // [Frames] で終わるまでスライスを変更しないでください。
 func CallersFrames(callers []uintptr) *Frames
 
-// Nextは、PC値のスライス内で次の呼び出しフレームを表すFrameを返します。
-// すべての呼び出しフレームをすでに返した場合、NextはゼロのFrameを返します。
+// Nextは、PC値のスライス内で次の呼び出しフレームを表す [Frame] を返します。
+// すべての呼び出しフレームをすでに返した場合、Nextはゼロの [Frame] を返します。
 //
-// moreの結果は、次のNext呼び出しで有効なFrameが返されるかどうかを示します。
+// moreの結果は、次のNext呼び出しで有効な [Frame] が返されるかどうかを示します。
 // これが呼び出し元に一つ返されたかどうかを必ずしも示しません。
 //
-// 典型的な使用法については、Framesの例を参照してください。
+// 典型的な使用法については、[Frames] の例を参照してください。
 func (ci *Frames) Next() (frame Frame, more bool)
 
 // Funcは実行中のバイナリ内のGo関数を表します。

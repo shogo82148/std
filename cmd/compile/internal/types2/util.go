@@ -8,3 +8,10 @@
 // to be shared.
 
 package types2
+
+import (
+	"github.com/shogo82148/std/cmd/compile/internal/syntax"
+)
+
+// ExprString returns a string representation of x.
+func ExprString(x syntax.Node) string

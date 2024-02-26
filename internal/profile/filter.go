@@ -6,13 +6,6 @@
 
 package profile
 
-import "github.com/shogo82148/std/regexp"
-
-// FilterSamplesByName filters the samples in a profile and only keeps
-// samples where at least one frame matches focus but none match ignore.
-// Returns true is the corresponding regexp matched at least one sample.
-func (p *Profile) FilterSamplesByName(focus, ignore, hide *regexp.Regexp) (fm, im, hm bool)
-
 // TagMatch selects tags for filtering
 type TagMatch func(key, val string, nval int64) bool
 

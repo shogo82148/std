@@ -545,12 +545,12 @@ func (srv *Server) SetKeepAlivesEnabled(v bool)
 // [Serve] を呼び出して着信接続のリクエストを処理します。
 // 受け入れられた接続は、TCP keep-alivesを有効にするように構成されます。
 //
-// ハンドラは通常nilであり、その場合は[DefaultServeMux]が使用されます。
+// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
 // ListenAndServeは常に非nilのエラーを返します。
 func ListenAndServe(addr string, handler Handler) error
 
-// ListenAndServeTLSは、[ListenAndServe]と同じように動作しますが、HTTPS接続を想定しています。
+// ListenAndServeTLSは、[ListenAndServe] と同じように動作しますが、HTTPS接続を想定しています。
 // さらに、サーバーの証明書と一致する秘密鍵を含むファイルを提供する必要があります。
 // 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
 func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error

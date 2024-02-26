@@ -297,7 +297,7 @@ func (r *Request) Referer() string
 
 // MultipartReaderは、これがmultipart/form-dataまたはmultipart/mixed POSTリクエストである場合、MIMEマルチパートリーダーを返します。
 // それ以外の場合はnilとエラーを返します。
-// リクエストボディをストリームとして処理するために、ParseMultipartFormの代わりにこの関数を使用してください。
+// リクエストボディをストリームとして処理するために、[Request.ParseMultipartForm] の代わりにこの関数を使用してください。
 func (r *Request) MultipartReader() (*multipart.Reader, error)
 
 // Writeは、ワイヤフォーマットでHTTP/1.1リクエスト（ヘッダーとボディ）を書き込みます。
@@ -324,7 +324,7 @@ func (r *Request) WriteProxy(w io.Writer) error
 // "HTTP/1.0"は(1, 0, true)を返します。注意："HTTP/2"のようにマイナーバージョンがない文字列は無効です。
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
-// NewRequestWithContextは、[context.Background] を使用して [NewRequestWithContext] をラップします。
+// NewRequestは、[context.Background] を使用して [NewRequestWithContext] をラップします。
 func NewRequest(method, url string, body io.Reader) (*Request, error)
 
 // NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しい [Request] を返します。
@@ -394,23 +394,27 @@ func (r *Request) ParseForm() error
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
 // FormValueは、クエリの名前付きコンポーネントの最初の値を返します。
-// POST、PUT、およびPATCHのボディパラメータは、URLクエリ文字列の値より優先されます。
-// FormValueは、必要に応じて [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
-// これらの関数によって返されるエラーを無視します。
-// キーが存在しない場合、FormValueは空の文字列を返します。
-// 同じキーの複数の値にアクセスするには、ParseFormを呼び出して、
-// 直接 [Request.Form] を調べます。
+// 優先順位は以下の通りです：
+//  1. application/x-www-form-urlencoded形式のフォームボディ（POST、PUT、PATCHのみ）
+//  2. クエリパラメータ（常に）
+//  3. multipart/form-data形式のフォームボディ（常に）
+//
+// FormValueは必要に応じて [Request.ParseMultipartForm] と [Request.ParseForm] を呼び出し、
+// これらの関数が返すエラーは無視します。
+// キーが存在しない場合、FormValueは空文字列を返します。
+// 同じキーの複数の値にアクセスするには、ParseFormを呼び出し、
+// その後で [Request.Form] を直接調べます。
 func (r *Request) FormValue(key string) string
 
 // PostFormValueは、POST、PUT、またはPATCHリクエストボディの名前付きコンポーネントの最初の値を返します。
 // URLクエリパラメータは無視されます。
-// 必要に応じて、 [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
+// 必要に応じて、PostFormValueは [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
 // これらの関数によって返されるエラーを無視します。
 // キーが存在しない場合、PostFormValueは空の文字列を返します。
 func (r *Request) PostFormValue(key string) string
 
 // FormFileは、指定されたフォームキーの最初のファイルを返します。
-// 必要に応じて、FormFileはParseMultipartFormおよびParseFormを呼び出します。
+// 必要に応じて、FormFileは [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出します。
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
 
 // PathValueは、リクエストに一致した [ServeMux] パターンの名前付きパスワイルドカードの値を返します。

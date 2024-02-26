@@ -34,33 +34,31 @@ func ToolExeSuffix() string
 
 // These are general "build flags" used by build and other commands.
 var (
-	BuildA                 bool
-	BuildBuildmode         string
-	BuildBuildvcs          = "auto"
-	BuildContext           = defaultContext()
-	BuildMod               string
-	BuildModExplicit       bool
-	BuildModReason         string
-	BuildLinkshared        bool
-	BuildMSan              bool
-	BuildASan              bool
-	BuildCover             bool
-	BuildCoverMode         string
-	BuildCoverPkg          []string
-	BuildN                 bool
-	BuildO                 string
-	BuildP                 = runtime.GOMAXPROCS(0)
-	BuildPGO               string
-	BuildPkgdir            string
-	BuildRace              bool
-	BuildToolexec          []string
-	BuildToolchainName     string
-	BuildToolchainCompiler func() string
-	BuildToolchainLinker   func() string
-	BuildTrimpath          bool
-	BuildV                 bool
-	BuildWork              bool
-	BuildX                 bool
+	BuildA             bool
+	BuildBuildmode     string
+	BuildBuildvcs      = "auto"
+	BuildContext       = defaultContext()
+	BuildMod           string
+	BuildModExplicit   bool
+	BuildModReason     string
+	BuildLinkshared    bool
+	BuildMSan          bool
+	BuildASan          bool
+	BuildCover         bool
+	BuildCoverMode     string
+	BuildCoverPkg      []string
+	BuildN             bool
+	BuildO             string
+	BuildP             = runtime.GOMAXPROCS(0)
+	BuildPGO           string
+	BuildPkgdir        string
+	BuildRace          bool
+	BuildToolexec      []string
+	BuildToolchainName string
+	BuildTrimpath      bool
+	BuildV             bool
+	BuildWork          bool
+	BuildX             bool
 
 	ModCacheRW bool
 	ModFile    string
@@ -132,19 +130,18 @@ var (
 	GOROOTpkg string
 	GOROOTsrc string
 
-	GOROOT_FINAL string
-
 	GOBIN      = Getenv("GOBIN")
 	GOMODCACHE = envOr("GOMODCACHE", gopathDir("pkg/mod"))
 
 	// Used in envcmd.MkEnv and build ID computations.
-	GOARM    = envOr("GOARM", fmt.Sprint(buildcfg.GOARM))
-	GO386    = envOr("GO386", buildcfg.GO386)
-	GOAMD64  = envOr("GOAMD64", fmt.Sprintf("%s%d", "v", buildcfg.GOAMD64))
-	GOMIPS   = envOr("GOMIPS", buildcfg.GOMIPS)
-	GOMIPS64 = envOr("GOMIPS64", buildcfg.GOMIPS64)
-	GOPPC64  = envOr("GOPPC64", fmt.Sprintf("%s%d", "power", buildcfg.GOPPC64))
-	GOWASM   = envOr("GOWASM", fmt.Sprint(buildcfg.GOWASM))
+	GOARM     = envOr("GOARM", fmt.Sprint(buildcfg.GOARM))
+	GO386     = envOr("GO386", buildcfg.GO386)
+	GOAMD64   = envOr("GOAMD64", fmt.Sprintf("%s%d", "v", buildcfg.GOAMD64))
+	GOMIPS    = envOr("GOMIPS", buildcfg.GOMIPS)
+	GOMIPS64  = envOr("GOMIPS64", buildcfg.GOMIPS64)
+	GOPPC64   = envOr("GOPPC64", fmt.Sprintf("%s%d", "power", buildcfg.GOPPC64))
+	GORISCV64 = envOr("GORISCV64", fmt.Sprintf("rva%du64", buildcfg.GORISCV64))
+	GOWASM    = envOr("GOWASM", fmt.Sprint(buildcfg.GOWASM))
 
 	GOPROXY    = envOr("GOPROXY", "")
 	GOSUMDB    = envOr("GOSUMDB", "")

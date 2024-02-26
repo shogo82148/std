@@ -72,6 +72,9 @@ func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
 // 次の [Writer.Create] 、 [Writer.CreateHeader] 、 [Writer.CreateRaw] 、または [Writer.Close] を呼び出す前に、ファイルの内容を [io.Writer] に書き込む必要があります。
 //
 // [Writer.CreateHeader] とは異なり、Writer に渡されるバイトは圧縮されません。
+//
+// CreateRawの引数はwに格納されます。引数がメモリ内のデータから作成された [Reader] から取得した
+// [File] 内の埋め込まれた [FileHeader] へのポインタである場合、wはそのメモリ全体を参照します。
 func (w *Writer) CreateRaw(fh *FileHeader) (io.Writer, error)
 
 // Copy は、ファイル f（ [Reader] から取得された）を w にコピーします。

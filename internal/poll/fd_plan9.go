@@ -70,3 +70,5 @@ func (fd *FD) RawRead(f func(uintptr) bool) error
 
 // RawWrite invokes the user-defined function f for a write operation.
 func (fd *FD) RawWrite(f func(uintptr) bool) error
+
+func DupCloseOnExec(fd int) (int, string, error)

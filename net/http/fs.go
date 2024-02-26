@@ -46,7 +46,7 @@ type File interface {
 }
 
 // ServeContentは、提供されたReadSeekerの内容を使用してリクエストに応答します。
-// [io.Copy] よりもServeContentの主な利点は、Rangeリクエストを適切に処理し、
+// ServeContentの [io.Copy] に対する主な利点は、Rangeリクエストを適切に処理し、
 // MIMEタイプを設定し、If-Match、If-Unmodified-Since、If-None-Match、
 // If-Modified-Since、およびIf-Rangeリクエストを処理することです。
 //

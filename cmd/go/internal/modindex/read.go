@@ -20,7 +20,7 @@ type Module struct {
 
 var ErrNotIndexed = errors.New("not in module index")
 
-// GetPackage returns the IndexPackage for the package at the given path.
+// GetPackage returns the IndexPackage for the directory at the given path.
 // It will return ErrNotIndexed if the directory should be read without
 // using the index, for instance because the index is disabled, or the package
 // is not in a module.
@@ -49,8 +49,8 @@ func (rp *IndexPackage) IsDirWithGoFiles() (_ bool, err error)
 // ScanDir implements imports.ScanDir using the information in the index.
 func (rp *IndexPackage) ScanDir(tags map[string]bool) (sortedImports []string, sortedTestImports []string, err error)
 
-// IndexPackage holds the information needed to access information in the
-// index needed to load a package in a specific directory.
+// IndexPackage holds the information in the index
+// needed to load a package in a specific directory.
 type IndexPackage struct {
 	error error
 	dir   string

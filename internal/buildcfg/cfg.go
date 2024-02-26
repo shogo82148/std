@@ -12,23 +12,24 @@
 package buildcfg
 
 import (
-	"github.com/shogo82148/std/runtime"
+	"github.com/shogo82148/std/os"
 )
 
 var (
-	GOROOT   = runtime.GOROOT()
-	GOARCH   = envOr("GOARCH", defaultGOARCH)
-	GOOS     = envOr("GOOS", defaultGOOS)
-	GO386    = envOr("GO386", defaultGO386)
-	GOAMD64  = goamd64()
-	GOARM    = goarm()
-	GOMIPS   = gomips()
-	GOMIPS64 = gomips64()
-	GOPPC64  = goppc64()
-	GOWASM   = gowasm()
-	ToolTags = toolTags()
-	GO_LDSO  = defaultGO_LDSO
-	Version  = version
+	GOROOT    = os.Getenv("GOROOT")
+	GOARCH    = envOr("GOARCH", defaultGOARCH)
+	GOOS      = envOr("GOOS", defaultGOOS)
+	GO386     = envOr("GO386", defaultGO386)
+	GOAMD64   = goamd64()
+	GOARM     = goarm()
+	GOMIPS    = gomips()
+	GOMIPS64  = gomips64()
+	GOPPC64   = goppc64()
+	GORISCV64 = goriscv64()
+	GOWASM    = gowasm()
+	ToolTags  = toolTags()
+	GO_LDSO   = defaultGO_LDSO
+	Version   = version
 )
 
 // Error is one of the errors found (if any) in the build configuration.

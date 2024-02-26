@@ -13,10 +13,6 @@
 
 package ld
 
-import (
-	"github.com/shogo82148/std/internal/abi"
-)
-
 // https://sourceware.org/gdb/onlinedocs/gdb/dotdebug_005fgdb_005fscripts-section.html
 // Each entry inside .debug_gdb_scripts section begins with a non-null prefix
 // byte that specifies the kind of entry. The following entries are supported:
@@ -25,13 +21,6 @@ const (
 	GdbScriptSchemeFileId = 3
 	GdbScriptPythonTextId = 4
 	GdbScriptSchemeTextId = 6
-)
-
-// synthesizemaptypes is way too closely married to runtime/hashmap.c
-const (
-	MaxKeySize = abi.MapMaxKeyBytes
-	MaxValSize = abi.MapMaxElemBytes
-	BucketSize = abi.MapBucketCount
 )
 
 /*

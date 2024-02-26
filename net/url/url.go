@@ -38,7 +38,7 @@ func QueryUnescape(s string) (string, error)
 // PathUnescapeは [QueryUnescape] と同じですが、'+'を' '（スペース）に変換しない点が異なります。
 func PathUnescape(s string) (string, error)
 
-// QueryEscapeは、文字列を安全に [URL] クエリ内に配置できるようにエスケープします。
+// QueryEscapeは、文字列をエスケープして、安全に [URL] クエリ内に配置できるようにします。
 func QueryEscape(s string) string
 
 // PathEscapeは、文字列を安全に [URL] パスセグメント内に配置できるようにエスケープします。
@@ -109,7 +109,7 @@ func (u *Userinfo) Password() (string, bool)
 // Stringは「username [: password]」の標準形式でエンコードされたユーザー情報を返します。
 func (u *Userinfo) String() string
 
-// Parseは生の url を [URL] 構造に解析します。
+// Parseは生のURLを [URL] 構造に解析します。
 //
 // URLは相対的なもの（ホストなしのパス）または絶対的なもの（スキームで始まる）である可能性があります。
 // スキームなしでホスト名とパスを解析しようとすることは無効ですが、解析の曖昧さにより、
