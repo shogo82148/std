@@ -891,7 +891,6 @@
 // 今度はModule構造体に適用されます：
 //
 //	type Module struct {
-<<<<<<< HEAD
 //	    Path       string        // モジュールパス
 //	    Query      string        // このバージョンに対応するバージョンクエリ
 //	    Version    string        // モジュールバージョン
@@ -907,29 +906,10 @@
 //	    Retracted  []string      // 撤回情報（あれば）（-retractedまたは-uとともに）
 //	    Deprecated string        // 非推奨メッセージ（あれば）（-uとともに）
 //	    Error      *ModuleError  // モジュールの読み込みエラー
+//	    Sum        string        // パス、バージョンのチェックサム（go.sum内のように）
+//	    GoModSum   string        // go.modのチェックサム（go.sum内のように）
 //	    Origin     any           // モジュールの出所
 //	    Reuse      bool          // 古いモジュール情報の再利用は安全です
-=======
-//	    Path       string        // module path
-//	    Query      string        // version query corresponding to this version
-//	    Version    string        // module version
-//	    Versions   []string      // available module versions
-//	    Replace    *Module       // replaced by this module
-//	    Time       *time.Time    // time version was created
-//	    Update     *Module       // available update (with -u)
-//	    Main       bool          // is this the main module?
-//	    Indirect   bool          // module is only indirectly needed by main module
-//	    Dir        string        // directory holding local copy of files, if any
-//	    GoMod      string        // path to go.mod file describing module, if any
-//	    GoVersion  string        // go version used in module
-//	    Retracted  []string      // retraction information, if any (with -retracted or -u)
-//	    Deprecated string        // deprecation message, if any (with -u)
-//	    Error      *ModuleError  // error loading module
-//	    Sum        string        // checksum for path, version (as in go.sum)
-//	    GoModSum   string        // checksum for go.mod (as in go.sum)
-//	    Origin     any           // provenance of module
-//	    Reuse      bool          // reuse of old module info is safe
->>>>>>> upstream/master
 //	}
 //
 //	type ModuleError struct {
@@ -1631,31 +1611,16 @@
 // go testはテストバイナリを再度実行する代わりに前回の出力を再表示します。これが発生すると、
 // go testはサマリーラインの経過時間の代わりに '(cached)' を印刷します。
 //
-<<<<<<< HEAD
-// キャッシュに一致するルールは、実行が同じテストバイナリを含み、コマンドライン上のフラグが全て
-// 'キャッシュ可能'なテストフラグの制限されたセットから来るというものです。これらのフラグには
-// -benchtime, -cpu, -list, -parallel, -run, -short, -timeout, -failfast, そして -vが含まれます。
-// go testの実行がこのセット外の任意のテストフラグまたは非テストフラグを持つ場合、結果はキャッシュされません。
-// テストキャッシュを無効にするには、キャッシュ可能なフラグ以外の任意のテストフラグまたは引数を使用します。
-// テストキャッシュを明示的に無効にする慣用的な方法は、-count=1を使用することです。パッケージのソースルート内
-// （通常は$GOPATH）でファイルを開くテストや、環境変数を参照するテストは、ファイルと環境変数が変更されない
-// 未来の実行とのみ一致します。キャッシュされたテスト結果は全く時間がかからないとして扱われるため、
-// 成功したパッケージテスト結果は-timeout設定に関係なくキャッシュされ、再利用されます。
-=======
-// The rule for a match in the cache is that the run involves the same
-// test binary and the flags on the command line come entirely from a
-// restricted set of 'cacheable' test flags, defined as -benchtime, -cpu,
-// -list, -parallel, -run, -short, -timeout, -failfast, -fullpath and -v.
-// If a run of go test has any test or non-test flags outside this set,
-// the result is not cached. To disable test caching, use any test flag
-// or argument other than the cacheable flags. The idiomatic way to disable
-// test caching explicitly is to use -count=1. Tests that open files within
-// the package's source root (usually $GOPATH) or that consult environment
-// variables only match future runs in which the files and environment
-// variables are unchanged. A cached test result is treated as executing
-// in no time at all, so a successful package test result will be cached and
-// reused regardless of -timeout setting.
->>>>>>> upstream/master
+// キャッシュ内の一致のルールは、同じテストバイナリが実行され、コマンドライン上のフラグがすべて
+// 'キャッシュ可能'なテストフラグの制限されたセットから来るというものです。これには、-benchtime、-cpu、
+// -list、-parallel、-run、-short、-timeout、-failfast、-fullpath、-vが含まれます。
+// go testの実行がこのセット外の任意のテストフラグまたは非テストフラグを持つ場合、
+// 結果はキャッシュされません。テストキャッシュを無効にするには、キャッシュ可能なフラグ以外の
+// 任意のテストフラグまたは引数を使用します。テストキャッシュを明示的に無効にする慣用的な方法は
+// -count=1を使用することです。パッケージのソースルート内（通常は$GOPATH）でファイルを開くテストや、
+// 環境変数を参照するテストは、ファイルと環境変数が変更されない未来の実行とのみ一致します。
+// キャッシュされたテスト結果はまったく時間がかからないとして扱われるため、成功したパッケージテスト結果は
+// -timeout設定に関係なくキャッシュされ、再利用されます。
 //
 // ビルドフラグに加えて、'go test'自体が処理するフラグは以下の通りです：
 //
@@ -1811,69 +1776,37 @@
 //
 // 定義されたアーキテクチャ機能のビルドタグは以下の通りです：
 //
-<<<<<<< HEAD
-//   - GOARCH=386の場合、GO386=387とGO386=sse2は
-//     それぞれ386.387と386.sse2のビルドタグを設定します。
-//   - GOARCH=amd64の場合、GOAMD64=v1、v2、およびv3は
-//     amd64.v1、amd64.v2、およびamd64.v3の機能ビルドタグに対応します。
-//   - GOARCH=armの場合、GOARM=5、6、および7は
-//     arm.5、arm.6、およびarm.7の機能ビルドタグに対応します。
+//   - GOARCH=386の場合、GO386=387とGO386=sse2はそれぞれ
+//     386.387と386.sse2のビルドタグを設定します。
+//   - GOARCH=amd64の場合、GOAMD64=v1、v2、v3はそれぞれ
+//     amd64.v1、amd64.v2、amd64.v3の機能ビルドタグに対応します。
+//   - GOARCH=armの場合、GOARM=5、6、7はそれぞれ
+//     arm.5、arm.6、arm.7の機能ビルドタグに対応します。
 //   - GOARCH=mipsまたはmipsleの場合、
-//     GOMIPS=hardfloatとsoftfloatは
+//     GOMIPS=hardfloatとsoftfloatはそれぞれ
 //     mips.hardfloatとmips.softfloat
 //     （またはmipsle.hardfloatとmipsle.softfloat）の機能ビルドタグに対応します。
 //   - GOARCH=mips64またはmips64leの場合、
-//     GOMIPS64=hardfloatとsoftfloatは
+//     GOMIPS64=hardfloatとsoftfloatはそれぞれ
 //     mips64.hardfloatとmips64.softfloat
 //     （またはmips64le.hardfloatとmips64le.softfloat）の機能ビルドタグに対応します。
 //   - GOARCH=ppc64またはppc64leの場合、
-//     GOPPC64=power8、power9、およびpower10は
-//     ppc64.power8、ppc64.power9、およびppc64.power10
-//     （またはppc64le.power8、ppc64le.power9、およびppc64le.power10）
+//     GOPPC64=power8、power9、power10はそれぞれ
+//     ppc64.power8、ppc64.power9、ppc64.power10
+//     （またはppc64le.power8、ppc64le.power9、ppc64le.power10）
 //     の機能ビルドタグに対応します。
-//   - GOARCH=wasmの場合、GOWASM=satconvとsignextは
+//   - GOARCH=riscv64の場合、
+//     GORISCV64=rva20u64とrva22u64はそれぞれriscv64.rva20u64
+//     とriscv64.rva22u64のビルドタグに対応します。
+//   - GOARCH=wasmの場合、GOWASM=satconvとsignextはそれぞれ
 //     wasm.satconvとwasm.signextの機能ビルドタグに対応します。
 //
-// GOARCH=amd64、arm、ppc64、およびppc64leの場合、特定の機能レベルは
+// GOARCH=amd64、arm、ppc64、ppc64le、riscv64の場合、特定の機能レベルは
 // すべての前のレベルの機能ビルドタグも設定します。
 // 例えば、GOAMD64=v2はamd64.v1とamd64.v2の機能フラグを設定します。
-// これにより、たとえば、GOAMD64=v4が導入されたときでも、
-// v2の機能を使用するコードがコンパイルを続けることが保証されます。
-// 特定の機能レベルの欠如を処理するコードは、否定を使用する必要があります：
-=======
-//   - For GOARCH=386, GO386=387 and GO386=sse2
-//     set the 386.387 and 386.sse2 build tags, respectively.
-//   - For GOARCH=amd64, GOAMD64=v1, v2, and v3
-//     correspond to the amd64.v1, amd64.v2, and amd64.v3 feature build tags.
-//   - For GOARCH=arm, GOARM=5, 6, and 7
-//     correspond to the arm.5, arm.6, and arm.7 feature build tags.
-//   - For GOARCH=mips or mipsle,
-//     GOMIPS=hardfloat and softfloat
-//     correspond to the mips.hardfloat and mips.softfloat
-//     (or mipsle.hardfloat and mipsle.softfloat) feature build tags.
-//   - For GOARCH=mips64 or mips64le,
-//     GOMIPS64=hardfloat and softfloat
-//     correspond to the mips64.hardfloat and mips64.softfloat
-//     (or mips64le.hardfloat and mips64le.softfloat) feature build tags.
-//   - For GOARCH=ppc64 or ppc64le,
-//     GOPPC64=power8, power9, and power10 correspond to the
-//     ppc64.power8, ppc64.power9, and ppc64.power10
-//     (or ppc64le.power8, ppc64le.power9, and ppc64le.power10)
-//     feature build tags.
-//   - For GOARCH=riscv64,
-//     GORISCV64=rva20u64 and rva22u64 correspond to the riscv64.rva20u64
-//     and riscv64.rva22u64 build tags.
-//   - For GOARCH=wasm, GOWASM=satconv and signext
-//     correspond to the wasm.satconv and wasm.signext feature build tags.
-//
-// For GOARCH=amd64, arm, ppc64, ppc64le, and riscv64, a particular feature level
-// sets the feature build tags for all previous levels as well.
-// For example, GOAMD64=v2 sets the amd64.v1 and amd64.v2 feature flags.
-// This ensures that code making use of v2 features continues to compile
-// when, say, GOAMD64=v4 is introduced.
-// Code handling the absence of a particular feature level
-// should use a negation:
->>>>>>> upstream/master
+// これにより、v2の機能を使用するコードは、たとえば、GOAMD64=v4が導入されたときでも
+// コンパイルを続けることが保証されます。
+// 特定の機能レベルの欠如を処理するコードは、否定を使用するべきです：
 //
 //	//go:build !amd64.v2
 //
@@ -2129,17 +2062,12 @@
 //		GOARCH=mips64{,le}の場合、浮動小数点命令を使用するかどうか。
 //		有効な値はhardfloat（デフォルト）、softfloatです。
 //	GOPPC64
-<<<<<<< HEAD
 //		GOARCH=ppc64{,le}の場合、ターゲットISA（Instruction Set Architecture）。
 //		有効な値はpower8（デフォルト）、power9、power10です。
-=======
-//		For GOARCH=ppc64{,le}, the target ISA (Instruction Set Architecture).
-//		Valid values are power8 (default), power9, power10.
 //	GORISCV64
-//		For GOARCH=riscv64, the RISC-V user-mode application profile for which
-//		to compile. Valid values are rva20u64 (default), rva22u64.
-//		See https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc
->>>>>>> upstream/master
+//		GOARCH=riscv64の場合、コンパイルするRISC-Vユーザーモードアプリケーションプロファイル。
+//		有効な値はrva20u64（デフォルト）、rva22u64です。
+//		https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc を参照してください。
 //	GOWASM
 //		GOARCH=wasmの場合、使用する実験的なWebAssembly機能のカンマ区切りのリスト。
 //		有効な値はsatconv、signextです。
@@ -2156,23 +2084,11 @@
 //		設定されている場合、cgoなどのgccgoツールを見つける場所。
 //		デフォルトはgccgoの設定方法に基づいています。
 //	GOEXPERIMENT
-<<<<<<< HEAD
 //		有効化または無効化するツールチェーンの実験のカンマ区切りのリスト。
 //		利用可能な実験のリストは時間とともに任意に変更される可能性があります。
 //		現在有効な値については、src/internal/goexperiment/flags.goを参照してください。
 //		警告: この変数はGoツールチェーン自体の開発とテストのために提供されています。
 //		それ以外の目的での使用はサポートされていません。
-//	GOROOT_FINAL
-//		Goツリーがインストールされているルート、つまり、
-//		ビルドされた場所以外の場所にインストールされている場合。
-//		スタックトレースのファイル名はGOROOTからGOROOT_FINALに書き換えられます。
-=======
-//		Comma-separated list of toolchain experiments to enable or disable.
-//		The list of available experiments may change arbitrarily over time.
-//		See src/internal/goexperiment/flags.go for currently valid values.
-//		Warning: This variable is provided for the development and testing
-//		of the Go toolchain itself. Use beyond that purpose is unsupported.
->>>>>>> upstream/master
 //	GO_EXTLINK_ENABLED
 //		cgoを使用するコードと-linkmode=autoを使用するときに、
 //		リンカーが外部リンクモードを使用するかどうか。
