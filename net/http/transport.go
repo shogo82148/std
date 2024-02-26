@@ -55,11 +55,7 @@ const DefaultMaxIdleConnsPerHost = 2
 // Transportは、HTTP URLではHTTP/1.1を、HTTPS URLではHTTP/1.1またはHTTP/2を使用します。
 // これは、サーバーがHTTP/2をサポートしているかどうか、およびTransportの構成によって異なります。
 // [DefaultTransport] はHTTP/2をサポートしています。
-<<<<<<< HEAD
 // Transportで明示的にHTTP/2を有効にするには、golang.org/x/net/http2 を使用してConfigureTransportを呼び出します。
-=======
-// Transportで明示的にHTTP/2を有効にするには、golang.org/x/net/http2を使用してConfigureTransportを呼び出します。
->>>>>>> release-branch.go1.22
 // HTTP/2についての詳細については、パッケージのドキュメントを参照してください。
 //
 // ステータスコードが1xx範囲にあるレスポンスは、自動的に処理されます（100 expect-continue）。
@@ -274,11 +270,7 @@ func (t *Transport) RegisterProtocol(scheme string, rt RoundTripper)
 func (t *Transport) CloseIdleConnections()
 
 // CancelRequestは、その接続を閉じることにより、進行中のリクエストをキャンセルします。
-<<<<<<< HEAD
 // CancelRequestは、 [Transport.RoundTrip] が返された後にのみ呼び出す必要があります。
-=======
-// CancelRequestは、[Transport.RoundTrip] が返された後にのみ呼び出す必要があります。
->>>>>>> release-branch.go1.22
 //
 // Deprecated: 代わりに、キャンセル可能なコンテキストを持つリクエストを作成するために [Request.WithContext] を使用してください。
 // CancelRequestは、HTTP/2リクエストをキャンセルできません。

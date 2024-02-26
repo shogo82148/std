@@ -10,11 +10,7 @@ import (
 )
 
 // Headerは、HTTPヘッダー内のキーと値のペアを表します。
-<<<<<<< HEAD
 //
-=======
-
->>>>>>> release-branch.go1.22
 // キーは、[CanonicalHeaderKey] が返すように正規化された形式である必要があります。
 type Header map[string][]string
 

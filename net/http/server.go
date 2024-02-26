@@ -324,11 +324,7 @@ func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 //
 // ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
-<<<<<<< HEAD
 // TLS Config.NextProtosで"h2"が設定された [*tls.Conn] 接続を返すリスナーがある場合、HTTP/2サポートが有効になります。
-=======
-// TLS Config.NextProtosで"h2"が設定された [*tls.Conn] 接続を返すリスナーがある場合、HTTP / 2サポートが有効になります。
->>>>>>> release-branch.go1.22
 //
 // Serveは常にnilでないエラーを返します。
 func Serve(l net.Listener, handler Handler) error
@@ -439,7 +435,6 @@ type Server struct {
 //
 // Closeは、WebSocketsなどのハイジャックされた接続を閉じようとはせず（そしてそれらについては何も知りません）、試みません。
 //
-<<<<<<< HEAD
 // Closeは、[Server] の基礎となるListener(s)を閉じる際に返される任意のエラーを返します。
 func (srv *Server) Close() error
 
@@ -458,28 +453,6 @@ func (srv *Server) Close() error
 // Shutdownの呼び出し元は、長時間稼働する接続に対してシャットダウンを別途通知し、
 // 必要に応じてそれらが閉じるのを待つべきです。シャットダウン通知関数を登録する方法については、
 // [Server.RegisterOnShutdown] を参照してください。
-=======
-// Closeは、[Server] の基礎となるListenerの閉じる際に返されるエラーを返します。
-func (srv *Server) Close() error
-
-// Shutdown gracefully shuts down the server without interrupting any
-// active connections. Shutdown works by first closing all open
-// listeners, then closing all idle connections, and then waiting
-// indefinitely for connections to return to idle and then shut down.
-// If the provided context expires before the shutdown is complete,
-// Shutdown returns the context's error, otherwise it returns any
-// error returned from closing the [Server]'s underlying Listener(s).
-//
-// When Shutdown is called, [Serve], [ListenAndServe], and
-// [ListenAndServeTLS] immediately return [ErrServerClosed]. Make sure the
-// program doesn't exit and waits instead for Shutdown to return.
-//
-// Shutdown does not attempt to close nor wait for hijacked
-// connections such as WebSockets. The caller of Shutdown should
-// separately notify such long-lived connections of shutdown and wait
-// for them to close, if desired. See [Server.RegisterOnShutdown] for a way to
-// register shutdown notification functions.
->>>>>>> release-branch.go1.22
 //
 // Shutdownを呼び出した後、サーバーを再利用することはできません。Serveなどのメソッドを呼び出すと、ErrServerClosedが返されます。
 func (srv *Server) Shutdown(ctx context.Context) error
@@ -541,11 +514,7 @@ func AllowQuerySemicolons(h Handler) Handler
 // 返されるエラーは [ErrServerClosed] です。
 func (srv *Server) ListenAndServe() error
 
-<<<<<<< HEAD
 // ErrServerClosedは、[Server.Shutdown] または [Server.Close] の呼び出し後、[Server.Serve]、[ServeTLS]、[ListenAndServe]、および [ListenAndServeTLS] メソッドによって返されます。
-=======
-// ErrServerClosedは、ShutdownまたはCloseの呼び出し後、[Server.Serve]、[ServeTLS]、[ListenAndServe]、および [ListenAndServeTLS] メソッドによって返されます。
->>>>>>> release-branch.go1.22
 var ErrServerClosed = errors.New("http: Server closed")
 
 // Serveは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
@@ -596,7 +565,6 @@ func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
 //
 // srv.Addrが空白の場合、":https"が使用されます。
 //
-<<<<<<< HEAD
 // ListenAndServeTLSは常に非nilのエラーを返します。[Server.Shutdown] または
 // [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
 func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
@@ -612,23 +580,6 @@ func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 //
 // TimeoutHandlerは [Pusher] インターフェースをサポートしますが、
 // [Hijacker] または [Flusher] インターフェースはサポートしません。
-=======
-// ListenAndServeTLSは常に非nilのエラーを返します。[Server.Shutdown] または [Server.Close] の後、
-// 返されるエラーは [ErrServerClosed] です。
-func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
-
-// TimeoutHandler returns a [Handler] that runs h with the given time limit.
-//
-// The new Handler calls h.ServeHTTP to handle each request, but if a
-// call runs for longer than its time limit, the handler responds with
-// a 503 Service Unavailable error and the given message in its body.
-// (If msg is empty, a suitable default message will be sent.)
-// After such a timeout, writes by h to its [ResponseWriter] will return
-// [ErrHandlerTimeout].
-//
-// TimeoutHandler supports the [Pusher] interface but does not support
-// the [Hijacker] or [Flusher] interfaces.
->>>>>>> release-branch.go1.22
 func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 
 // ErrHandlerTimeout is returned on [ResponseWriter] Write calls
