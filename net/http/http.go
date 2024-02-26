@@ -10,10 +10,10 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// NoBodyはバイトを持たないio.ReadCloserです。Readは常にEOFを返し、
+// NoBodyはバイトを持たない [io.ReadCloser] です。Readは常にEOFを返し、
 // Closeは常にnilを返します。これは、リクエストがゼロバイトであることを
 // 明示的に示すために、送信元クライアントのリクエストで使用することができます。
-// ただし、代わりにRequest.Bodyをnilに設定することもできます。
+// ただし、代わりに [Request.Body] をnilに設定することもできます。
 var NoBody = noBody{}
 
 var (
@@ -22,7 +22,7 @@ var (
 	_ io.ReadCloser = NoBody
 )
 
-// PushOptionsは、Pusher.Pushのオプションを記述します。
+// PushOptionsは、[Pusher.Push] のオプションを記述します。
 type PushOptions struct {
 
 	// Methodは要求されたリクエストのHTTPメソッドを指定します。

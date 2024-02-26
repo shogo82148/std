@@ -15,9 +15,9 @@ import (
 // 適用される場合、返された Request の Body は取得されます。
 func Request() (*http.Request, error)
 
-// RequestFromMapはCGI変数からhttp.Requestを作成します。
+// RequestFromMapはCGI変数から [http.Request] を作成します。
 // 返されたRequestのBodyフィールドは入力されません。
 func RequestFromMap(params map[string]string) (*http.Request, error)
 
-// Serveは現在アクティブなCGIリクエストに提供されたHandlerを実行します。もし現在のCGI環境がない場合、エラーが返されます。提供されたハンドラーがnilの場合、http.DefaultServeMuxが使用されます。
+// Serveは現在アクティブなCGIリクエストに提供された [Handler] を実行します。もし現在のCGI環境がない場合、エラーが返されます。提供されたハンドラーがnilの場合、[http.DefaultServeMux] が使用されます。
 func Serve(handler http.Handler) error

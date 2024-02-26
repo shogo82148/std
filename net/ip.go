@@ -25,7 +25,7 @@ type IP []byte
 // IPMaskは、IPアドレスのアドレッシングとルーティングに使用できる
 // ビットマスクです。
 //
-// 詳細については、型IPNetと関数ParseCIDRを参照してください。
+// 詳細については、型 [IPNet] と関数 [ParseCIDR] を参照してください。
 type IPMask []byte
 
 // IPNetはIPネットワークを表します。
@@ -40,9 +40,9 @@ func IPv4(a, b, c, d byte) IP
 // IPv4Maskは、IPv4マスクa.b.c.dのIPマスク（4バイト形式）を返します。
 func IPv4Mask(a, b, c, d byte) IPMask
 
-// CIDRMaskは、'ones'個の1ビットで構成されたIPMaskを返します。
+// CIDRMaskは、'ones'個の1ビットで構成された [IPMask] を返します。
 // その後、0ビットが 'bits'ビットの総長になるまで続きます。
-// この形式のマスクに対して、CIDRMaskはIPMask.Sizeの逆です。
+// この形式のマスクに対して、CIDRMaskは [IPMask.Size] の逆です。
 func CIDRMask(ones, bits int) IPMask
 
 // 有名なIPv4アドレス
@@ -116,13 +116,13 @@ func (ip IP) Mask(mask IPMask) IP
 //   - 上記の条件に当てはまらない場合は、ipの句読点を除いた16進数形式
 func (ip IP) String() string
 
-// MarshalTextはencoding.TextMarshalerインターフェースを実装します。
-// エンコードはStringで返されるものと同じですが、1つ例外があります：
+// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
+// エンコードは [IP.String] で返されるものと同じですが、1つ例外があります：
 // len(ip)がゼロの場合、空のスライスを返します。
 func (ip IP) MarshalText() ([]byte, error)
 
-// UnmarshalTextはencoding.TextUnmarshalerインターフェースを実装します。
-// IPアドレスはParseIPで受け入れられる形式で指定することが期待されています。
+// UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。
+// IPアドレスは [ParseIP] で受け入れられる形式で指定することが期待されています。
 func (ip *IP) UnmarshalText(text []byte) error
 
 // Equalは、ipとxが同じIPアドレスであるかどうかを報告します。

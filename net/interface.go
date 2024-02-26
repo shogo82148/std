@@ -37,13 +37,13 @@ func Interfaces() ([]Interface, error)
 
 // InterfaceAddrsはシステムのユニキャストインターフェースのアドレスのリストを返します。
 //
-// 返されたリストは関連するインターフェースを識別しません。詳細についてはInterfacesとInterface.Addrsを使用してください。
+// 返されたリストは関連するインターフェースを識別しません。詳細についてはInterfacesと [Interface.Addrs] を使用してください。
 func InterfaceAddrs() ([]Addr, error)
 
 // InterfaceByIndex は、インデックスで指定されたインターフェースを返します。
 //
 // Solarisでは、論理データリンクを共有する論理ネットワークインターフェースのうちの1つを返しますが、より正確な情報が必要な場合は、
-// InterfaceByName を使用してください。
+// [InterfaceByName] を使用してください。
 func InterfaceByIndex(index int) (*Interface, error)
 
 // InterfaceByNameは、指定された名前で指定されたインターフェースを返します。

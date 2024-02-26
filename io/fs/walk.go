@@ -8,10 +8,14 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// SkipDirはWalkDirFuncsからの戻り値として使用され、呼び出しで指定されたディレクトリがスキップされることを示します。これは、どの関数からもエラーとして返されません。
+// SkipDirは、[WalkDirFunc] からの戻り値として使用され、
+// 呼び出しで名前が付けられたディレクトリをスキップすることを示します。
+// これはどの関数からもエラーとして返されません。
 var SkipDir = errors.New("skip this directory")
 
-// SkipAllは、WalkDirFuncsからの返り値として使用され、残りのすべてのファイルとディレクトリをスキップすることを示します。これは、どの関数からもエラーとして返されません。
+// SkipAllは、[WalkDirFunc] からの戻り値として使用され、
+// 残りのすべてのファイルとディレクトリをスキップすることを示します。
+// これはどの関数からもエラーとして返されません。
 var SkipAll = errors.New("skip everything and stop the walk")
 
 // WalkDirFuncは [WalkDir] によって各ファイルやディレクトリを訪れるために呼び出される関数の型です。

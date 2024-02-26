@@ -44,11 +44,11 @@ type Client struct {
 	helloError error
 }
 
-// Dialはaddrに指定されたポート付きのSMTPサーバーに接続された新しいClientを返します。
+// Dialはaddrに指定されたポート付きのSMTPサーバーに接続された新しい [Client] を返します。
 // addrは"mail.example.com:smtp"のような形式である必要があります。
 func Dial(addr string) (*Client, error)
 
-// NewClient は既存の接続とホストを使用して新しいクライアントを返します。認証時に使用するサーバー名です。
+// NewClient は既存の接続とホストを使用して新しい [Client] を返します。認証時に使用するサーバー名です。
 func NewClient(conn net.Conn, host string) (*Client, error)
 
 // Closeは接続をクローズします。
@@ -65,7 +65,7 @@ func (c *Client) Hello(localName string) error
 func (c *Client) StartTLS(config *tls.Config) error
 
 // TLSConnectionState はクライアントのTLS接続状態を返します。
-// StartTLS が成功しなかった場合、返り値はゼロ値になります。
+// [Client.StartTLS] が成功しなかった場合、返り値はゼロ値になります。
 func (c *Client) TLSConnectionState() (state tls.ConnectionState, ok bool)
 
 // Verifyはサーバー上でメールアドレスの妥当性をチェックします。
@@ -82,14 +82,14 @@ func (c *Client) Auth(a Auth) error
 // Mailは提供されたメールアドレスを使用してサーバーにMAILコマンドを発行します。
 // サーバーが8BITMIME拡張をサポートしている場合、MailはBODY=8BITMIMEパラメータを追加します。
 // サーバーがSMTPUTF8拡張をサポートしている場合、MailはSMTPUTF8パラメータを追加します。
-// これにより、メールのトランザクションが開始され、その後に1つ以上のRcpt呼び出しが続きます。
+// これにより、メールのトランザクションが開始され、その後に1つ以上の [Client.Rcpt] 呼び出しが続きます。
 func (c *Client) Mail(from string) error
 
 // Rcptは提供されたメールアドレスを使用してサーバーにRCPTコマンドを発行します。
-// Rcptの呼び出しは、Mailの呼び出しの前に行われなければならず、Dataの呼び出しまたは別のRcptの呼び出しの後に続く場合があります。
+// Rcptの呼び出しは、[Client.Mail] の呼び出しの前に行われなければならず、[Client.Data] の呼び出しまたは別のRcptの呼び出しの後に続く場合があります。
 func (c *Client) Rcpt(to string) error
 
-// DataはサーバーにDATAコマンドを送信し、メールのヘッダーと本文を書き込むために使用できるライターを返します。呼び出し元は、cの他のメソッドを呼び出す前にライターを閉じる必要があります。Dataの呼び出しは、一つ以上のRcptの呼び出しに先行する必要があります。
+// DataはサーバーにDATAコマンドを送信し、メールのヘッダーと本文を書き込むために使用できるライターを返します。呼び出し元は、cの他のメソッドを呼び出す前にライターを閉じる必要があります。Dataの呼び出しは、一つ以上の [Client.Rcpt] の呼び出しに先行する必要があります。
 func (c *Client) Data() (io.WriteCloser, error)
 
 // SendMailはaddrで指定されたサーバに接続し、可能な場合はTLSに切り替え、必要に応じてオプションのメカニズムaで認証し、fromからのアドレス、toへのアドレス、メッセージmsgを送信します。

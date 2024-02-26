@@ -15,9 +15,9 @@
 package runtime
 
 // StartTraceは現在のプロセスのトレースを有効にします。
-// トレース中はデータがバッファされ、ReadTraceを介して利用可能です。
+// トレース中はデータがバッファされ、[ReadTrace] を介して利用可能です。
 // トレースが既に有効化されている場合、StartTraceはエラーを返します。
-// ほとんどのクライアントはruntime/traceパッケージやtestingパッケージの-test.traceフラグを直接呼び出す代わりに使用するべきです。
+// ほとんどのクライアントは [runtime/trace] パッケージや [testing] パッケージの-test.traceフラグを直接呼び出す代わりに使用するべきです。
 func StartTrace() error
 
 // StopTraceは、以前に有効にされていた場合にトレースを停止します。

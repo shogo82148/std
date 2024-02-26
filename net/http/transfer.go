@@ -12,6 +12,6 @@ import (
 // ErrLineTooLongは、不正なチャンクエンコーディングでリクエストまたはレスポンスボディを読み取る場合に返されます。
 var ErrLineTooLong = internal.ErrLineTooLong
 
-// ErrBodyReadAfterCloseは、ボディが閉じられた後にRequestまたはResponseのボディを読み取る場合に返されます。
-// これは通常、HTTPハンドラがResponseWriterのWriteHeaderまたはWriteを呼び出した後にボディが読み取られた場合に発生します。
+// ErrBodyReadAfterCloseは、ボディが閉じられた後に [Request] または [Response] のボディを読み取る場合に返されます。
+// これは通常、HTTP [Handler] が [ResponseWriter] のWriteHeaderまたはWriteを呼び出した後にボディが読み取られた場合に発生します。
 var ErrBodyReadAfterClose = errors.New("http: invalid Read on closed Body")

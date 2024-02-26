@@ -11,7 +11,7 @@ import (
 )
 
 // NewChunkedReaderは、rから読み込まれたデータをHTTPの「チャンク」形式から変換して返す新しいchunkedReaderを返します。
-// chunkedReaderは、最後の長さ0のチャンクが読み込まれた時にio.EOFを返します。
+// chunkedReaderは、最後の長さ0のチャンクが読み込まれた時に [io.EOF] を返します。
 //
 // NewChunkedReaderは通常のアプリケーションでは必要ありません。httpパッケージは、応答ボディを読み込む際に自動的にチャンクをデコードします。
 func NewChunkedReader(r io.Reader) io.Reader

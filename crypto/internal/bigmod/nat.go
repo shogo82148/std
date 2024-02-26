@@ -118,8 +118,8 @@ func (x *Nat) Mul(y *Nat, m *Modulus) *Nat
 // to the size of m and overwritten. x must already be reduced modulo m.
 func (out *Nat) Exp(x *Nat, e []byte, m *Modulus) *Nat
 
-// ExpShort calculates out = x^e mod m.
+// ExpShortVarTime calculates out = x^e mod m.
 //
 // The output will be resized to the size of m and overwritten. x must already
-// be reduced modulo m. This leaks the exact bit size of the exponent.
-func (out *Nat) ExpShort(x *Nat, e uint, m *Modulus) *Nat
+// be reduced modulo m. This leaks the exponent through timing side-channels.
+func (out *Nat) ExpShortVarTime(x *Nat, e uint, m *Modulus) *Nat

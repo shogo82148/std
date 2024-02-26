@@ -16,7 +16,7 @@ import (
 
 // Responseは、HTTPリクエストからのレスポンスを表します。
 //
-// ClientとTransportは、レスポンスヘッダが受信された後、サーバーからResponsesを返します。
+// [Client] と [Transport] は、レスポンスヘッダが受信された後、サーバーからResponsesを返します。
 // レスポンスボディは、Bodyフィールドが読み取られるたびにオンデマンドでストリーミングされます。
 type Response struct {
 	Status     string
@@ -93,16 +93,16 @@ type Response struct {
 // Cookiesは、Set-Cookieヘッダーで設定されたCookieを解析して返します。
 func (r *Response) Cookies() []*Cookie
 
-// ErrNoLocationは、LocationメソッドがLocationヘッダーが存在しない場合に返されます。
+// ErrNoLocationは、[Response.Location] メソッドがLocationヘッダーが存在しない場合に返されます。
 var ErrNoLocation = errors.New("http: no Location header in response")
 
 // Locationは、レスポンスの「Location」ヘッダーのURLを返します。
-// 存在する場合、相対リダイレクトはレスポンスのリクエストに対して相対的に解決されます。
-// Locationヘッダーが存在しない場合、ErrNoLocationが返されます。
+// 存在する場合、相対リダイレクトは [Response.Request] に対して相対的に解決されます。
+// Locationヘッダーが存在しない場合、[ErrNoLocation] が返されます。
 func (r *Response) Location() (*url.URL, error)
 
 // ReadResponseは、rからHTTPレスポンスを読み取り、返します。
-// reqパラメータは、このResponseに対応するRequestをオプションで指定します。
+// reqパラメータは、この [Response] に対応する [Request] をオプションで指定します。
 // nilの場合、GETリクエストが想定されます。
 // クライアントは、resp.Bodyを読み取り終えたらresp.Body.Closeを呼び出す必要があります。
 // その呼び出しの後、クライアントはresp.Trailerを調べて、レスポンストレーラーに含まれるキー/値ペアを見つけることができます。

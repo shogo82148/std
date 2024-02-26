@@ -19,7 +19,7 @@ type TCPAddr struct {
 	Zone string
 }
 
-// AddrPortはTCPAddr aをnetip.AddrPortとして返します。
+// AddrPortは [TCPAddr] aを [netip.AddrPort] として返します。
 //
 // もしa.Portがuint16に収まらない場合、静かに切り捨てられます。
 //
@@ -43,23 +43,23 @@ func (a *TCPAddr) String() string
 // ホスト名のIPアドレスの一つを最大で返すため、推奨されていません。
 //
 // ネットワークとアドレスパラメータの詳細については、
-// func Dialの説明を参照してください。
+// func [Dial] の説明を参照してください。
 func ResolveTCPAddr(network, address string) (*TCPAddr, error)
 
-// TCPAddrFromAddrPortはaddrをTCPAddrとして返します。もしaddrがIsValid()がfalseである場合、
+// TCPAddrFromAddrPortはaddrを [TCPAddr] として返します。もしaddrがIsValid()がfalseである場合、
 // 返されるTCPAddrにはnilのIPフィールドが含まれ、アドレスファミリーに依存しない未指定のアドレスを示します。
 func TCPAddrFromAddrPort(addr netip.AddrPort) *TCPAddr
 
-// TCPConnはTCPネットワーク接続のConnインターフェースの実装です。
+// TCPConnはTCPネットワーク接続の [Conn] インターフェースの実装です。
 type TCPConn struct {
 	conn
 }
 
 // SyscallConnは生のネットワーク接続を返します。
-// これはsyscall.Connインターフェースを実装しています。
+// これは [syscall.Conn] インターフェースを実装しています。
 func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
 
-// ReadFrom は io.ReaderFrom の ReadFrom メソッドを実装します。
+// ReadFrom は [io.ReaderFrom] の ReadFrom メソッドを実装します。
 func (c *TCPConn) ReadFrom(r io.Reader) (int64, error)
 
 // WriteToは、io.WriterToのWriteToメソッドを実装します。
@@ -100,7 +100,7 @@ func (c *TCPConn) SetNoDelay(noDelay bool) error
 // Linuxでは、カーネルのバージョンがv5.16以上の場合、さらに条件が検証され、結果が改善されます。
 func (c *TCPConn) MultipathTCP() (bool, error)
 
-// DialTCPはTCPネットワークのためのDialのように振る舞います。
+// DialTCPはTCPネットワークのための [Dial] のように振る舞います。
 //
 // ネットワークはTCPネットワーク名でなければなりません。詳細についてはfunc Dialを参照してください。
 //
@@ -108,14 +108,14 @@ func (c *TCPConn) MultipathTCP() (bool, error)
 // raddrのIPフィールドがnilまたは未指定のIPアドレスの場合、ローカルシステムが使用されます。
 func DialTCP(network string, laddr, raddr *TCPAddr) (*TCPConn, error)
 
-// TCPListenerはTCPネットワークリスナーです。クライアントは通常、TCPを仮定する代わりにListener型の変数を使用するべきです。
+// TCPListenerはTCPネットワークリスナーです。クライアントは通常、TCPを仮定する代わりに [Listener] 型の変数を使用するべきです。
 type TCPListener struct {
 	fd *netFD
 	lc ListenConfig
 }
 
 // SyscallConn は生のネットワーク接続を返します。
-// これは syscall.Conn インターフェースを実装しています。
+// これは [syscall.Conn] インターフェースを実装しています。
 //
 // 返された RawConn は Control の呼び出しのみをサポートします。
 // Read と Write はエラーを返します。
@@ -124,15 +124,15 @@ func (l *TCPListener) SyscallConn() (syscall.RawConn, error)
 // AcceptTCPは次の着信呼び出しを受け入れ、新しい接続を返します。
 func (l *TCPListener) AcceptTCP() (*TCPConn, error)
 
-// Accept implements the Accept method in the Listener interface; it
-// waits for the next call and returns a generic Conn.
+// Accept implements the Accept method in the [Listener] interface; it
+// waits for the next call and returns a generic [Conn].
 func (l *TCPListener) Accept() (Conn, error)
 
 // Close は TCP アドレスのリスニングを停止します。
 // 既に受け入れられた接続は閉じられません。
 func (l *TCPListener) Close() error
 
-// Addrはリスナーのネットワークアドレス、*TCPAddrを返します。
+// Addrはリスナーのネットワークアドレス、[*TCPAddr] を返します。
 // 返されるAddrはAddrのすべての呼び出しで共有されるため、
 // 変更しないでください。
 func (l *TCPListener) Addr() Addr
@@ -141,7 +141,7 @@ func (l *TCPListener) Addr() Addr
 // ゼロの時刻値は締め切りを無効にします。
 func (l *TCPListener) SetDeadline(t time.Time) error
 
-// File は元の os.File のコピーを返します。
+// File は元の [os.File] のコピーを返します。
 // 終了した後、f を閉じる責任は呼び出し元にあります。
 // l を閉じても f には影響を与えませんし、f を閉じても l には影響を与えません。
 //
@@ -150,7 +150,7 @@ func (l *TCPListener) SetDeadline(t time.Time) error
 // 望ましい効果が現れるかどうかは不明です。
 func (l *TCPListener) File() (f *os.File, err error)
 
-// ListenTCPはTCPネットワーク用のListenのように機能します。
+// ListenTCPはTCPネットワーク用の [Listen] のように機能します。
 //
 // ネットワークはTCPネットワーク名でなければなりません。詳細はfunc Dialを参照してください。
 //

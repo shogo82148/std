@@ -43,11 +43,11 @@ const (
 	SameSiteNoneMode
 )
 
-// SetCookieは、提供されたResponseWriterのヘッダーにSet-Cookieヘッダーを追加します。
+// SetCookieは、提供された [ResponseWriter] のヘッダーにSet-Cookieヘッダーを追加します。
 // 提供されたクッキーには有効な名前が必要です。無効なクッキーは黙って破棄される場合があります。
 func SetCookie(w ResponseWriter, cookie *Cookie)
 
-// Stringは、Cookieヘッダー（NameとValueのみが設定されている場合）またはSet-Cookie応答ヘッダー（他のフィールドが設定されている場合）で使用するためのクッキーのシリアル化を返します。
+// Stringは、[Cookie] ヘッダー（NameとValueのみが設定されている場合）またはSet-Cookie応答ヘッダー（他のフィールドが設定されている場合）で使用するためのクッキーのシリアル化を返します。
 // cがnilであるか、c.Nameが無効な場合、空の文字列が返されます。
 func (c *Cookie) String() string
 

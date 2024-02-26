@@ -12,14 +12,14 @@ import (
 
 // ResponseControllerは、HTTPハンドラーがレスポンスを制御するために使用されます。
 //
-// Handler.ServeHTTPメソッドが返された後にResponseControllerを使用することはできません。
+// [Handler.ServeHTTP] メソッドが返された後にResponseControllerを使用することはできません。
 type ResponseController struct {
 	rw ResponseWriter
 }
 
-// NewResponseControllerは、リクエスト用のResponseControllerを作成します。
+// NewResponseControllerは、リクエスト用の [ResponseController] を作成します。
 //
-// ResponseWriterは、Handler.ServeHTTPメソッドに渡された元の値である必要があります。
+// ResponseWriterは、[Handler.ServeHTTP] メソッドに渡された元の値である必要があります。
 // または、元のResponseWriterを返すUnwrapメソッドを持っている必要があります。
 //
 // ResponseWriterが次のいずれかのメソッドを実装している場合、ResponseControllerは
@@ -33,7 +33,7 @@ type ResponseController struct {
 //	EnableFullDuplex() error
 //
 // ResponseWriterがメソッドをサポートしていない場合、ResponseControllerは
-// ErrNotSupportedに一致するエラーを返します。
+// [ErrNotSupported] に一致するエラーを返します。
 func NewResponseController(rw ResponseWriter) *ResponseController
 
 // Flushは、バッファリングされたデータをクライアントにフラッシュします。
@@ -58,8 +58,8 @@ func (c *ResponseController) SetReadDeadline(deadline time.Time) error
 // 期限が超過した後に書き込み期限を設定しても、期限は延長されません。
 func (c *ResponseController) SetWriteDeadline(deadline time.Time) error
 
-// EnableFullDuplexは、リクエストハンドラがRequest.Bodyからの読み取りを交互に行い、
-// ResponseWriterへの書き込みと交互に行うことを示します。
+// EnableFullDuplexは、リクエストハンドラが [Request.Body] からの読み取りを交互に行い、
+// [ResponseWriter] への書き込みと交互に行うことを示します。
 //
 // HTTP/1リクエストの場合、Go HTTPサーバーはデフォルトで、レスポンスの書き込みを開始する前に
 // リクエストボディの未読部分を消費し、ハンドラがリクエストから読み取りとレスポンスの書き込みを

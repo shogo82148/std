@@ -81,8 +81,8 @@ type BlockProfileRecord struct {
 // もしlen(p) >= nの場合、BlockProfileはプロファイルをpにコピーし、nとtrueを返します。
 // もしlen(p) < nの場合、BlockProfileはpを変更せずに、nとfalseを返します。
 //
-// ほとんどのクライアントは、runtime/pprofパッケージや
-// testingパッケージの-test.blockprofileフラグを使用して、
+// ほとんどのクライアントは、 [runtime/pprof] パッケージや
+// [testing] パッケージの-test.blockprofileフラグを使用して、
 // BlockProfileを直接呼び出す代わりに使用すべきです。
 func BlockProfile(p []BlockProfileRecord) (n int, ok bool)
 
