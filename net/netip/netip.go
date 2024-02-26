@@ -219,13 +219,8 @@ func (ip Addr) StringExpanded() string
 // ipがゼロの [Addr] の場合、エンコーディングは空の文字列になります。
 func (ip Addr) MarshalText() ([]byte, error)
 
-<<<<<<< HEAD
 // UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
-// IPアドレスは、ParseAddrで受け入れられる形式で指定する必要があります。
-=======
-// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
 // IPアドレスは、[ParseAddr] で受け入れられる形式で指定する必要があります。
->>>>>>> release-branch.go1.22
 //
 // textが空の場合、UnmarshalTextは*ipをゼロの [Addr] に設定し、エラーを返しません。
 func (ip *Addr) UnmarshalText(text []byte) error
@@ -283,13 +278,8 @@ func (p AddrPort) AppendTo(b []byte) []byte
 // p.Addr()がゼロの [Addr] の場合、エンコーディングは空の文字列になります。
 func (p AddrPort) MarshalText() ([]byte, error)
 
-<<<<<<< HEAD
-// UnmarshalTextは、encoding.TextUnmarshaler インターフェースを実装します。
-// AddrPortは、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
-=======
 // UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
 // [AddrPort] は、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
->>>>>>> release-branch.go1.22
 func (p *AddrPort) UnmarshalText(text []byte) error
 
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
@@ -374,15 +364,9 @@ func (p Prefix) AppendTo(b []byte) []byte
 // pがゼロ値の場合、エンコーディングは空の文字列になります。
 func (p Prefix) MarshalText() ([]byte, error)
 
-<<<<<<< HEAD
-// UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
-// IPアドレスは、[ParsePrefix] で受け入れられる形式で指定する必要があります。
-// または、MarshalTextによって生成された形式である必要があります。
-=======
 // UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
 // IPアドレスは、[ParsePrefix]で受け入れられる形式で指定する必要があります。
 // または、[Prefix.MarshalText] によって生成された形式である必要があります。
->>>>>>> release-branch.go1.22
 func (p *Prefix) UnmarshalText(text []byte) error
 
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
