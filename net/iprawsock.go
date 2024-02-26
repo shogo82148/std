@@ -29,11 +29,7 @@ func (a *IPAddr) String() string
 // アドレスパラメーターはホスト名を使用することもできますが、
 // これは推奨されません。なぜなら、ホスト名のIPアドレスのうち最大で1つしか返さないからです。
 //
-<<<<<<< HEAD
 // ネットワークとアドレスパラメーターの説明については、[Dial] 関数を参照してください。
-=======
-// ネットワークとアドレスパラメーターの説明については、func [Dial] を参照してください。
->>>>>>> release-branch.go1.22
 func ResolveIPAddr(network, address string) (*IPAddr, error)
 
 // IPConnはIPネットワーク接続の [Conn] および [PacketConn] インターフェースの実装です。

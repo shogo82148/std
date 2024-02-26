@@ -27,11 +27,7 @@ func (a *UnixAddr) String() string
 // ネットワークはUnixのネットワーク名である必要があります。
 //
 // ネットワークとアドレスのパラメータについての説明は、
-<<<<<<< HEAD
 // [Dial] 関数を参照してください。
-=======
-// func [Dial] を参照してください。
->>>>>>> release-branch.go1.22
 func ResolveUnixAddr(network, address string) (*UnixAddr, error)
 
 // UnixConnは、Unixドメインソケットへの接続のための [Conn] インターフェースの実装です。

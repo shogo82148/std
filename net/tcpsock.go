@@ -43,11 +43,7 @@ func (a *TCPAddr) String() string
 // ホスト名のIPアドレスの一つを最大で返すため、推奨されていません。
 //
 // ネットワークとアドレスパラメータの詳細については、
-<<<<<<< HEAD
 // [Dial] 関数の説明を参照してください。
-=======
-// func [Dial] の説明を参照してください。
->>>>>>> release-branch.go1.22
 func ResolveTCPAddr(network, address string) (*TCPAddr, error)
 
 // TCPAddrFromAddrPortはaddrを [TCPAddr] として返します。もしaddrがIsValid()がfalseである場合、
@@ -59,10 +55,6 @@ type TCPConn struct {
 	conn
 }
 
-<<<<<<< HEAD
-// SyscallConnは生のネットワーク接続を返します。
-// これは [syscall.Conn] インターフェースを実装しています。
-=======
 // KeepAliveConfig contains TCP keep-alive options.
 //
 // If the Idle, Interval, or Count fields are zero, a default value is chosen.
@@ -93,9 +85,8 @@ type KeepAliveConfig struct {
 	Count int
 }
 
-// SyscallConn returns a raw network connection.
-// This implements the [syscall.Conn] interface.
->>>>>>> upstream/master
+// SyscallConnは生のネットワーク接続を返します。
+// これは [syscall.Conn] インターフェースを実装しています。
 func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
 
 // ReadFrom は [io.ReaderFrom] の ReadFrom メソッドを実装します。
@@ -124,15 +115,11 @@ func (c *TCPConn) SetLinger(sec int) error
 // keep-aliveメッセージを送信するかどうかを設定します。
 func (c *TCPConn) SetKeepAlive(keepalive bool) error
 
-<<<<<<< HEAD
-// SetKeepAlivePeriodは、Keep-Alive間の期間を設定します。
-=======
 // SetKeepAlivePeriod sets the idle duration the connection
 // needs to remain idle before TCP starts sending keepalive probes.
 //
 // Note that calling this method on Windows will reset the KeepAliveInterval
 // to the default system value, which is normally 1 second.
->>>>>>> upstream/master
 func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error
 
 // SetNoDelayは、パケットの送信を遅延させるかどうかを制御します。これにより、より少ないパケットで送信することが期待されます（Nagleのアルゴリズム）。デフォルト値はtrue（遅延なし）であり、Writeの後で可能な限りすぐにデータが送信されます。

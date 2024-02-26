@@ -45,15 +45,6 @@ type Dialer struct {
 	// 負の値はFast Fallbackサポートを無効にします。
 	FallbackDelay time.Duration
 
-<<<<<<< HEAD
-	// KeepAliveはアクティブなネットワーク接続の間隔を示します。
-	// ゼロの場合、keep-aliveプローブはデフォルト値（現在は15秒）で送信されます。
-	// プロトコルやオペレーティングシステムがサポートしている場合、ネットワークプロトコルやオペレーティングシステムはkeep-aliveを無視します。
-	// ネガティブの場合、keep-aliveプローブは無効になります。
-	KeepAlive time.Duration
-
-	// Resolverはオプションで、代替のリゾルバを指定することができます。
-=======
 	// KeepAlive specifies the interval between keep-alive
 	// probes for an active network connection.
 	//
@@ -75,8 +66,7 @@ type Dialer struct {
 	// keep-alive probes are disabled.
 	KeepAliveConfig KeepAliveConfig
 
-	// Resolver optionally specifies an alternate resolver to use.
->>>>>>> upstream/master
+	// Resolverはオプションで、代替のリゾルバを指定することができます。
 	Resolver *Resolver
 
 	// Cancel is an optional channel whose closure indicates that
@@ -180,11 +170,7 @@ func (d *Dialer) Dial(network, address string) (Conn, error)
 // TCPを使用し、アドレスパラメータのホストが複数のネットワークアドレスに解決される場合、ダイヤルタイムアウト（d.Timeoutまたはctxから）は、各連続したダイヤルに均等に分散されます。それぞれのダイヤルには、適切な接続時間の割合が与えられます。
 // 例えば、ホストが4つのIPアドレスを持ち、タイムアウトが1分の場合、次のアドレスを試す前に、各単一のアドレスへの接続には15秒の時間が与えられます。
 //
-<<<<<<< HEAD
 // ネットワークやアドレスパラメータの説明については、[Dial] 関数を参照してください。
-=======
-// ネットワークやアドレスパラメータの説明については、func [Dial] を参照してください。
->>>>>>> release-branch.go1.22
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
 
 // ListenConfig はアドレスのリッスンに関するオプションを含んでいます。
@@ -198,15 +184,6 @@ type ListenConfig struct {
 	// Listenに渡すと、Control関数へは"tcp4"または"tcp6"が渡されます。
 	Control func(network, address string, c syscall.RawConn) error
 
-<<<<<<< HEAD
-	// KeepAliveは、このリスナーによって受け入れられたネットワーク接続のキープアライブ期間を指定します。
-	// ゼロの場合、プロトコルとオペレーティングシステムがサポートしている場合にキープアライブが有効になります。
-	// キープアライブをサポートしていないネットワークプロトコルやオペレーティングシステムは、このフィールドを無視します。
-	// マイナスの値の場合、キープアライブは無効になります。
-	KeepAlive time.Duration
-
-	// もしmptcpStatusがMultipath TCP（MPTCP）を許可する値に設定されている場合、ネットワークとして"tcp(4|6)"でListenを呼び出すと、オペレーティングシステムがサポートしている場合にはMPTCPが使用されます。
-=======
 	// KeepAlive specifies the keep-alive period for network
 	// connections accepted by this listener.
 	//
@@ -230,7 +207,6 @@ type ListenConfig struct {
 	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
 	// used, any call to Listen with "tcp(4|6)" as network will use MPTCP if
 	// supported by the operating system.
->>>>>>> upstream/master
 	mptcpStatus mptcpStatus
 }
 
@@ -266,11 +242,7 @@ func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address strin
 // アドレスパラメータのポートが空または"0"の場合、例えば"127.0.0.1:"や"[::1]:0"のように、ポート番号が自動的に選択されます。
 // [Listener] の [Addr] メソッドを使用して、選択されたポートを取得できます。
 //
-<<<<<<< HEAD
 // ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
-=======
-// ネットワークおよびアドレスパラメータの説明については、func [Dial] を参照してください。
->>>>>>> release-branch.go1.22
 //
 // Listenは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、[ListenConfig.Listen] を使用してください。
 func Listen(network, address string) (Listener, error)
@@ -289,11 +261,7 @@ func Listen(network, address string) (Listener, error)
 // アドレスパラメータのポートが空または「0」の場合、「127.0.0.1:」や「[::1]:0」といった形式で、ポート番号は自動的に選択されます。
 // [PacketConn] のLocalAddrメソッドを使用して選択されたポートを特定することができます。
 //
-<<<<<<< HEAD
 // ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
-=======
-// ネットワークおよびアドレスパラメータの説明については、func [Dial] を参照してください。
->>>>>>> release-branch.go1.22
 //
 // ListenPacketは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、
 // [ListenConfig.ListenPacket] を使用してください。

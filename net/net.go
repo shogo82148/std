@@ -39,38 +39,23 @@ Unixシステムでは、名前を解決するための2つのオプションが
 /etc/resolv.confにリストされているサーバーに直接DNSリクエストを送信する純粋なGoリゾルバを使用するか、
 getaddrinfoやgetnameinfoなどのCライブラリのルーチンを呼び出すcgoベースのリゾルバを使用するか、です。
 
-<<<<<<< HEAD
-デフォルトでは、ブロックされたDNSリクエストはゴルーチンのみを消費するため、純粋なGoリゾルバが使用されますが、
-ブロックされたC呼び出しはオペレーティングシステムのスレッドを消費します。
-cgoが利用可能な場合、さまざまな条件下でcgoベースのリゾルバが代わりに使用されます：
-直接DNSリクエストを行うことができないシステム（OS X）や、
-LOCALDOMAIN環境変数が存在する（空であっても）、
-RES_OPTIONSまたはHOSTALIASES環境変数が空でない、
-ASR_CONFIG環境変数が空でない（OpenBSDのみ）、
-/etc/resolv.confまたは/etc/nsswitch.confで、
-Goリゾルバが実装していない機能の使用が指定されている場合、
-検索対象となる名前が.localで終わるか、mDNS名である場合です。
+Unixでは、ブロックされたDNSリクエストがゴルーチンだけを消費するのに対し、
+ブロックされたC呼び出しがオペレーティングシステムのスレッドを消費するため、
+純粋なGoリゾルバがcgoリゾルバよりも優先されます。
+cgoが利用可能な場合、以下の様々な条件下でcgoベースのリゾルバが代わりに使用されます：
+プログラムが直接DNSリクエストを行うことを許可しないシステム（OS X）上、
+LOCALDOMAIN環境変数が存在する場合（空でも）、
+RES_OPTIONSまたはHOSTALIASES環境変数が空でない場合、
+ASR_CONFIG環境変数が空でない場合（OpenBSDのみ）、
+/etc/resolv.confまたは/etc/nsswitch.confがGoリゾルバが実装していない機能の使用を指定している場合、
+および、検索される名前が.localで終わるか、mDNS名である場合。
 
-リゾルバの判断は、GODEBUG環境変数（パッケージruntimeを参照）のnetdns値をgoまたはcgoに設定することで上書きすることもできます。例：
-=======
-On Unix the pure Go resolver is preferred over the cgo resolver, because a blocked DNS
-request consumes only a goroutine, while a blocked C call consumes an operating system thread.
-When cgo is available, the cgo-based resolver is used instead under a variety of
-conditions: on systems that do not let programs make direct DNS requests (OS X),
-when the LOCALDOMAIN environment variable is present (even if empty),
-when the RES_OPTIONS or HOSTALIASES environment variable is non-empty,
-when the ASR_CONFIG environment variable is non-empty (OpenBSD only),
-when /etc/resolv.conf or /etc/nsswitch.conf specify the use of features that the
-Go resolver does not implement, and when the name being looked up ends in .local
-or is an mDNS name.
+すべてのシステム（Plan 9を除く）で、cgoリゾルバが使用されている場合、
+このパッケージは並行cgoルックアップ制限を適用して、システムがシステムスレッドを使い果たすのを防ぎます。
+現在、同時ルックアップは500に制限されています。
 
-On all systems (except Plan 9), when the cgo resolver is being used
-this package applies a concurrent cgo lookup limit to prevent the system
-from running out of system threads. Currently, it is limited to 500 concurrent lookups.
-
-The resolver decision can be overridden by setting the netdns value of the
-GODEBUG environment variable (see package runtime) to go or cgo, as in:
->>>>>>> upstream/master
+リゾルバの決定は、GODEBUG環境変数のnetdns値をgoまたはcgoに設定することで
+上書きすることができます（パッケージruntimeを参照）。
 
 	export GODEBUG=netdns=go    # 純粋なGoリゾルバを強制する
 	export GODEBUG=netdns=cgo   # ネイティブリゾルバを強制する（cgo、win32）
@@ -265,7 +250,6 @@ type DNSError struct {
 
 func (e *DNSError) Error() string
 
-<<<<<<< HEAD
 // Timeoutは、DNSルックアップがタイムアウトしたことが確認されたかどうかを報告します。
 // これは常に確認できるわけではありません。DNSルックアップはタイムアウトにより失敗し、
 // Timeoutがfalseを返す [DNSError] を返すことがあります。
@@ -274,14 +258,6 @@ func (e *DNSError) Timeout() bool
 // Temporaryは、DNSエラーが一時的であることが確認されたかどうかを報告します。
 // これは常に確認できるわけではありません。DNSルックアップは一時的なエラーにより失敗し、
 // Temporaryがfalseを返す [DNSError] を返すことがあります。
-=======
-// TimeoutはDNSの検索がタイムアウトしたかどうかを報告します。
-// これは常に正確にはわかりません。DNSの検索はタイムアウトにより失敗する場合があり、Timeoutがfalseを返す [DNSError] が返されることがあります。
-func (e *DNSError) Timeout() bool
-
-// Temporaryは、DNSエラーが一時的であるかどうかを示す。
-// これは常にわかるわけではない。一時的なエラーによりDNS検索が失敗し、Temporaryがfalseを返す [DNSError] が返されることがあります。
->>>>>>> release-branch.go1.22
 func (e *DNSError) Temporary() bool
 
 // ErrClosedは、既に閉じられたネットワーク接続またはI/Oが完了する前に他のゴルーチンによって閉じられたネットワーク接続上のI/O呼び出しによって返されるエラーです。これは他のエラーに包まれる場合があり、通常はerrors.Is(err, net.ErrClosed)を使用してテストする必要があります。
@@ -299,22 +275,14 @@ var (
 
 // WriteTo はバッファの内容を w に書き込みます。
 //
-<<<<<<< HEAD
-// WriteTo は、[Buffers] の [io.WriterTo] を実装します。
-=======
 // WriteTo は、[Buffers] に [io.WriterTo] を実装します。
->>>>>>> release-branch.go1.22
 //
 // WriteTo は、0 <= i < len(v) の範囲の v[i] およびスライス v を変更しますが、v[i][j] (i, j は任意の値) は変更しません。
 func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
 
 // バッファから読み込む。
 //
-<<<<<<< HEAD
-// Read は [Buffers] のために [io.Reader] を実装します。
-=======
 // Read は [Buffers] に [io.Reader] を実装します。
->>>>>>> release-branch.go1.22
 //
 // Read はスライス v と v[i]（ただし、0 <= i < len(v)）を変更しますが、
 // v[i][j]（ただし、任意の i, j）は変更しません。
