@@ -273,16 +273,11 @@ String呼び出しのコストを支払うことを避けたい場合、
 
 これで、行が有効になっている場合にのみcomputeExpensiveValueが呼び出されます。
 
-<<<<<<< HEAD
-組み込みのハンドラは、各レコードが1つの塊で書き込まれることを保証するために、 [io.Writer.Write] を呼び出す前にロックを取得します。
-ユーザー定義のハンドラは、自分自身のロックを管理する責任があります。
-=======
-The built-in handlers acquire a lock before calling [io.Writer.Write]
-to ensure that exactly one [Record] is written at a time in its entirety.
-Although each log record has a timestamp,
-the built-in handlers do not use that time to sort the written records.
-User-defined handlers are responsible for their own locking and sorting.
->>>>>>> upstream/master
+組み込みのハンドラは、[io.Writer.Write] を呼び出す前にロックを取得して、
+一度に正確に一つの [Record] が完全に書き込まれることを保証します。
+各ログレコードにはタイムスタンプがありますが、
+組み込みのハンドラはその時間を使用して書き込まれたレコードをソートしません。
+ユーザー定義のハンドラは、自身のロックとソートを担当します。
 
 # ハンドラの作成
 
