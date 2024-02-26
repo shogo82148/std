@@ -14,18 +14,10 @@
 
 package runtime
 
-<<<<<<< HEAD
 // StartTraceは現在のプロセスのトレースを有効にします。
-// トレース中はデータがバッファされ、ReadTraceを介して利用可能です。
+// トレース中はデータがバッファされ、[ReadTrace] を介して利用可能です。
 // トレースが既に有効化されている場合、StartTraceはエラーを返します。
-// ほとんどのクライアントはruntime/traceパッケージやtestingパッケージの-test.traceフラグを直接呼び出す代わりに使用するべきです。
-=======
-// StartTrace enables tracing for the current process.
-// While tracing, the data will be buffered and available via [ReadTrace].
-// StartTrace returns an error if tracing is already enabled.
-// Most clients should use the [runtime/trace] package or the [testing] package's
-// -test.trace flag instead of calling StartTrace directly.
->>>>>>> upstream/release-branch.go1.22
+// ほとんどのクライアントは [runtime/trace] パッケージや [testing] パッケージの-test.traceフラグを直接呼び出す代わりに使用するべきです。
 func StartTrace() error
 
 // StopTraceは、以前に有効にされていた場合にトレースを停止します。
