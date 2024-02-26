@@ -5,15 +5,11 @@
 // debug パッケージには、プログラムが実行中に自己デバッグするための機能が含まれています。
 package debug
 
-<<<<<<< HEAD
-// PrintStackはruntime.Stackによって返されたスタックトレースを標準エラー出力に出力します。
-=======
 import (
 	"github.com/shogo82148/std/os"
 )
 
-// PrintStack prints to standard error the stack trace returned by runtime.Stack.
->>>>>>> upstream/master
+// PrintStackはruntime.Stackによって返されたスタックトレースを標準エラー出力に出力します。
 func PrintStack()
 
 // Stackはそれを呼び出すgoroutineのフォーマットされたスタックトレースを返します。
