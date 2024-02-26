@@ -12,20 +12,12 @@ Package fmtは、Cのprintfおよびscanfに類似した関数を使用してフ
 
 一般：
 
-<<<<<<< HEAD
 	%v	デフォルトのフォーマットでの値
 		構造体を印刷する場合、プラスフラグ（%+v）はフィールド名を追加します
 	%#v	値のGo構文表現
+		（浮動小数点の無限大とNaNは±InfとNaNとして印刷されます）
 	%T	値の型のGo構文表現
 	%%	リテラルのパーセント記号；値を消費しません
-=======
-	%v	the value in a default format
-		when printing structs, the plus flag (%+v) adds field names
-	%#v	a Go-syntax representation of the value
-		(floating-point infinities and NaNs print as ±Inf and NaN)
-	%T	a Go-syntax representation of the type of the value
-	%%	a literal percent sign; consumes no value
->>>>>>> upstream/master
 
 ブール値：
 
@@ -129,35 +121,19 @@ Package fmtは、Cのprintfおよびscanfに類似した関数を使用してフ
 
 その他のフラグ：
 
-<<<<<<< HEAD
-	'+'	数値の場合は常に符号を印刷します。%qの場合はASCIIのみの出力を保証します（%+q）
-	'-'	左詰めにするために右側にスペースを詰めます（フィールドを左詰めにします）
-	'#'	代替フォーマット：2進数の場合は先頭に0bを追加します（%#b）、8進数の場合は0を追加します（%#o）、
-		16進数の場合は0xまたは0Xを追加します（%#xまたは%#X）；%pの場合は0xを抑制します（%#p）；
-		%qの場合は、strconv.CanBackquoteがtrueを返す場合は生の（バッククォートで囲まれた）文字列を印刷します。
-		%e、%E、%f、%F、%g、および%Gの場合は常に小数点を印刷します。
-		%gおよび%Gの場合は末尾のゼロを削除しません。
-		%Uの場合は、印刷可能な場合はU+0078 'x'のように印刷します（%#U）。
-	' '	（スペース）数字の場合は符号が省略された場合にスペースを残します（% d）。
-		文字列またはスライスを16進数で印刷する場合は、バイト間にスペースを入れます（% x、% X）
-	'0'	スペースの代わりに先頭にゼロを詰めます。数値の場合、これによりパディングが符号の後に移動します。
-		文字列、バイトスライス、およびバイト配列には影響しません。
-=======
-	'+'	always print a sign for numeric values;
-		guarantee ASCII-only output for %q (%+q)
-	'-'	pad with spaces on the right rather than the left (left-justify the field)
-	'#'	alternate format: add leading 0b for binary (%#b), 0 for octal (%#o),
-		0x or 0X for hex (%#x or %#X); suppress 0x for %p (%#p);
-		for %q, print a raw (backquoted) string if strconv.CanBackquote
-		returns true;
-		always print a decimal point for %e, %E, %f, %F, %g and %G;
-		do not remove trailing zeros for %g and %G;
-		write e.g. U+0078 'x' if the character is printable for %U (%#U)
-	' '	(space) leave a space for elided sign in numbers (% d);
-		put spaces between bytes printing strings or slices in hex (% x, % X)
-	'0'	pad with leading zeros rather than spaces;
-		for numbers, this moves the padding after the sign
->>>>>>> upstream/master
+	'+'	数値の値に対して常に符号を表示します。
+		%q (%+q)の出力をASCIIのみに保証します。
+	'-'	左側ではなく右側にスペースでパディングします（フィールドを左揃えにします）。
+	'#'	代替フォーマット: 二進数(%#b)の場合は先頭に0bを追加、8進数(%#o)の場合は0を追加、
+		16進数(%#x または %#X)の場合は0xまたは0Xを追加します。%p (%#p)の0xを抑制します。
+		%qの場合、strconv.CanBackquoteがtrueを返す場合は生の（バッククォートされた）文字列を表示します。
+		%e、%E、%f、%F、%g、%Gに対して常に小数点を表示します。
+		%gと%Gの末尾のゼロを削除しません。
+		文字が印刷可能な場合は、例えばU+0078 'x'と表示します（%U (%#U)）。
+	' '	（スペース）数値の省略された符号のスペースを残します（% d）。
+		16進数で文字列やスライスを印刷するときにバイト間にスペースを入れます（% x、% X）。
+	'0'	スペースではなく先頭ゼロでパディングします。
+		数値の場合、これは符号の後にパディングを移動します。
 
 動詞がそれらを期待していない場合、フラグは無視されます。
 たとえば、代替の10進数フォーマットがないため、%#dと%dは同じように動作します。
