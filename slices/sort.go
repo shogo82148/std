@@ -55,19 +55,11 @@ func Max[S ~[]E, E cmp.Ordered](x S) E { var zero E; return zero }
 // cmp 関数によって複数の最大要素がある場合、MaxFunc は最初の要素を返します。
 func MaxFunc[S ~[]E, E any](x S, cmp func(a, b E) int) E { var zero E; return zero }
 
-<<<<<<< HEAD
 // BinarySearch は、ソートされたスライス内で target を検索し、target が見つかる位置、
 // またはソート順序で target が表示される位置を返します。
 // また、スライス内に target が本当に見つかったかどうかを示す bool も返します。
 // スライスは昇順にソートする必要があります。
 func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool) { return 0, false }
-=======
-// BinarySearch searches for target in a sorted slice and returns the earliest
-// position where target is found, or the position where target would appear
-// in the sort order; it also returns a bool saying whether the target is
-// really found in the slice. The slice must be sorted in increasing order.
-func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool)
->>>>>>> upstream/master
 
 // BinarySearchFunc は、カスタム比較関数を使用して [BinarySearch] と同様に動作します。
 // スライスは、cmp によって定義される増加順でソートする必要があります。
