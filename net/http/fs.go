@@ -46,14 +46,23 @@ type File interface {
 }
 
 // ServeContentは、提供されたReadSeekerの内容を使用してリクエストに応答します。
+<<<<<<< HEAD
 // [io.Copy] よりもServeContentの主な利点は、Rangeリクエストを適切に処理し、
+=======
+// ServeContentの [io.Copy] に対する主な利点は、Rangeリクエストを適切に処理し、
+>>>>>>> release-branch.go1.22
 // MIMEタイプを設定し、If-Match、If-Unmodified-Since、If-None-Match、
 // If-Modified-Since、およびIf-Rangeリクエストを処理することです。
 //
 // レスポンスのContent-Typeヘッダーが設定されていない場合、ServeContentは
 // 最初にnameのファイル拡張子からタイプを推測し、それが失敗した場合は、
+<<<<<<< HEAD
 // コンテンツの最初のブロックを読み取り、それを [DetectContentType] に渡すようにフォールバックします。
 // それ以外の場合、nameは使用されません。特に、nameは空にでき、レスポンスで送信されることはありません。
+=======
+// コンテンツの最初のブロックを読み取り、それを [DetectContentType] に渡すことでフォールバックします。
+// nameはそれ以外では使用されません。特に、空にすることができ、レスポンスで送信されることはありません。
+>>>>>>> release-branch.go1.22
 //
 // modtimeがゼロ時またはUnixエポックでない場合、ServeContentは応答のLast-Modifiedヘッダーに含めます。
 // リクエストにIf-Modified-Sinceヘッダーが含まれている場合、ServeContentはmodtimeを使用して、コンテンツを送信する必要があるかどうかを決定します。
@@ -102,9 +111,15 @@ func ServeFile(w ResponseWriter, r *Request, name string)
 // 名前引数で提供されたファイルまたはディレクトリのみが使用されます。
 func ServeFileFS(w ResponseWriter, r *Request, fsys fs.FS, name string)
 
+<<<<<<< HEAD
 // FSはfsysを [FileSystem] の実装に変換します。
 // これは [FileServer] と [NewFileTransport] で使用するためのものです。
 // fsysによって提供されるファイルは [io.Seeker] を実装しなければなりません。
+=======
+// FSは、io.Seekerを実装する必要があるfsysを [FileSystem] 実装に変換します。
+// [FileServer] および [NewFileTransport] で使用するためです。
+// fsysで提供されるファイルは、[io.Seeker] を実装する必要があります。
+>>>>>>> release-branch.go1.22
 func FS(fsys fs.FS) FileSystem
 
 // FileServerは、ルートでルートされたファイルシステムの内容でHTTPリクエストを処理するハンドラーを返します。

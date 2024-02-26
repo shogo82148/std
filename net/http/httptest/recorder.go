@@ -43,7 +43,11 @@ func NewRecorder() *ResponseRecorder
 // RemoteAddrで返すデフォルトのリモートアドレスです。
 const DefaultRemoteAddr = "1.2.3.4"
 
+<<<<<<< HEAD
 // Headerは [http.ResponseWriter] を実装します。ハンドラ内で変更するためにレスポンスヘッダーを返します。ハンドラが完了した後に書き込まれたヘッダーをテストするには、[ResponseRecorder.Resultメソッド] を使用し、返されたResponse値のHeaderを確認してください。
+=======
+// Headerは [http.ResponseWriter] を実装します。ハンドラ内で変更するためにレスポンスヘッダーを返します。ハンドラが完了した後に書き込まれたヘッダーをテストするには、[ResponseRecorder.Result] メソッドを使用し、返されたResponse値のHeaderを確認してください。
+>>>>>>> release-branch.go1.22
 func (rw *ResponseRecorder) Header() http.Header
 
 // Writeはhttp.ResponseWriterを実装します。buf内のデータは、rw.Bodyがnilでない場合にrw.Bodyに書き込まれます。

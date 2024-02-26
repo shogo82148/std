@@ -9,5 +9,5 @@ package types
 func AllowsGoVersion(major, minor int) bool
 
 // ParseLangFlag verifies that the -lang flag holds a valid value, and
-// exits if not. It initializes data used by langSupported.
+// exits if not. It initializes data used by AllowsGoVersion.
 func ParseLangFlag()

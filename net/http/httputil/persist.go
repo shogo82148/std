@@ -54,14 +54,22 @@ func (sc *ServerConn) Hijack() (net.Conn, *bufio.Reader)
 // Closeによって [ServerConn.Hijack] され、その後基礎となる接続も閉じます。
 func (sc *ServerConn) Close() error
 
+<<<<<<< HEAD
 // Readはワイヤ上の次のリクエストを返します。[ErrPersistEOF] は、優雅にもうリクエストがないことが確定した場合に返されます（例えば、HTTP/1.0接続の最初のリクエスト後、またはHTTP/1.1接続のConnection: close後など）。
+=======
+// Readはワイヤ上の次のリクエストを返します。 [ErrPersistEOF] は、優雅にもうリクエストがないことが確定した場合に返されます（例えば、HTTP/1.0接続の最初のリクエスト後、またはHTTP/1.1接続のConnection: close後など）。
+>>>>>>> release-branch.go1.22
 func (sc *ServerConn) Read() (*http.Request, error)
 
 // Pendingは、接続されたリクエストの未回答数を返します。
 func (sc *ServerConn) Pending() int
 
 // Writeはreqに応じたrespを書き込みます。接続を正常に終了させるためには、
+<<<<<<< HEAD
 // Response.Closeフィールドをtrueに設定してください。Writeは、[ServerConn.Read] 側で返される
+=======
+// Response.Closeフィールドをtrueに設定してください。Writeは、 [ServerConn.Read] 側で返される
+>>>>>>> release-branch.go1.22
 // すべてのエラーに関係なく、エラーが返されるまで操作可能であると見なされるべきです。
 func (sc *ServerConn) Write(req *http.Request, resp *http.Response) error
 
@@ -100,7 +108,11 @@ func NewProxyClientConn(c net.Conn, r *bufio.Reader) *ClientConn
 // Hijackは [ClientConn] を切り離し、基礎となる接続と読み込み側のbufioを返します。
 // また、左にデータが残っているかもしれない読み込み側のbufioも返します。
 // HijackはユーザーまたはReadがkeep-aliveロジックの終了をシグナルした前に呼び出すことができます。
+<<<<<<< HEAD
 // ユーザーは、[ClientConn.Read] または ClientConn.Writeが進行中の間にHijackを呼び出さないでください。
+=======
+// ユーザーは、[ClientConn.Read] またはWriteが進行中の間にHijackを呼び出さないでください。
+>>>>>>> release-branch.go1.22
 func (cc *ClientConn) Hijack() (c net.Conn, r *bufio.Reader)
 
 // Closeは [ClientConn.Hijack] を呼び出し、その後下層の接続も閉じます。

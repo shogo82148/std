@@ -297,7 +297,7 @@ func (r *Request) Referer() string
 
 // MultipartReaderは、これがmultipart/form-dataまたはmultipart/mixed POSTリクエストである場合、MIMEマルチパートリーダーを返します。
 // それ以外の場合はnilとエラーを返します。
-// リクエストボディをストリームとして処理するために、ParseMultipartFormの代わりにこの関数を使用してください。
+// リクエストボディをストリームとして処理するために、[Request.ParseMultipartForm] の代わりにこの関数を使用してください。
 func (r *Request) MultipartReader() (*multipart.Reader, error)
 
 // Writeは、ワイヤフォーマットでHTTP/1.1リクエスト（ヘッダーとボディ）を書き込みます。
@@ -324,7 +324,11 @@ func (r *Request) WriteProxy(w io.Writer) error
 // "HTTP/1.0"は(1, 0, true)を返します。注意："HTTP/2"のようにマイナーバージョンがない文字列は無効です。
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
+<<<<<<< HEAD
 // NewRequestWithContextは、[context.Background] を使用して [NewRequestWithContext] をラップします。
+=======
+// NewRequestは、[context.Background] を使用して [NewRequestWithContext] をラップします。
+>>>>>>> release-branch.go1.22
 func NewRequest(method, url string, body io.Reader) (*Request, error)
 
 // NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しい [Request] を返します。
@@ -332,7 +336,11 @@ func NewRequest(method, url string, body io.Reader) (*Request, error)
 // 提供されたbodyが [io.Closer] でも、返された [Request.Body] はbodyに設定され、ClientのDo、Post、PostForm、および [Transport.RoundTrip] によって（非同期に）閉じられます。
 //
 // NewRequestWithContextは、[Client.Do] または [Transport.RoundTrip] で使用するためのRequestを返します。
+<<<<<<< HEAD
 // Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージの [NewRequest] 関数を使用するか、
+=======
+// Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージのNewRequest関数を使用するか、
+>>>>>>> release-branch.go1.22
 // [ReadRequest] を使用するか、またはRequestフィールドを手動で更新します。送信元のクライアントリクエストの場合、
 // コンテキストはリクエストとその応答の全寿命を制御します：接続の取得、リクエストの送信、および応答ヘッダーとボディの読み取り。
 // 入力リクエストフィールドと出力リクエストフィールドの違いについては、Requestタイプのドキュメントを参照してください。
@@ -349,14 +357,22 @@ func (r *Request) BasicAuth() (username, password string, ok bool)
 //
 // HTTP Basic認証では、提供されたユーザー名とパスワードは暗号化されません。 HTTPSリクエストでのみ使用することが一般的です。
 //
+<<<<<<< HEAD
 // ユーザー名にはコロンを含めることはできません。一部のプロトコルでは、ユーザー名とパスワードを事前にエスケープする追加の要件がある場合があります。たとえば、OAuth2と一緒に使用する場合、両方の引数を最初に [url.QueryEscape] でURLエンコードする必要があります。
+=======
+// ユーザー名にはコロンを含めることはできません。一部のプロトコルでは、ユーザー名とパスワードを事前にエスケープする追加の要件がある場合があります。たとえば、OAuth2と一緒に使用する場合、両方の引数を最初に[url.QueryEscape] でURLエンコードする必要があります。
+>>>>>>> release-branch.go1.22
 func (r *Request) SetBasicAuth(username, password string)
 
 // ReadRequestは、bから受信したリクエストを読み取り、解析します。
 //
+<<<<<<< HEAD
 // ReadRequestは、低レベルの関数であり、特殊なアプリケーションにのみ使用する必要があります。
 // ほとんどのコードは、[Server] を使用してリクエストを読み取り、[Handler] インターフェイスを介して処理する必要があります。
 // ReadRequestは、HTTP/1.xリクエストのみをサポートしています。 HTTP/2の場合は、golang.org/x/net/http2 を使用してください。
+=======
+// ReadRequestは、低レベルの関数であり、特殊なアプリケーションにのみ使用する必要があります。ほとんどのコードは、[Server] を使用してリクエストを読み取り、[Handler] インターフェイスを介して処理する必要があります。 ReadRequestは、HTTP / 1.xリクエストのみをサポートしています。 HTTP / 2の場合は、golang.org/x/net/http2を使用してください。
+>>>>>>> release-branch.go1.22
 func ReadRequest(b *bufio.Reader) (*Request, error)
 
 // MaxBytesReaderは、[io.LimitReader] に似ていますが、着信リクエストボディのサイズを制限するために使用されます。
@@ -393,6 +409,7 @@ func (r *Request) ParseForm() error
 // ParseMultipartFormを1回呼び出した後、以降の呼び出しは効果がありません。
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
+<<<<<<< HEAD
 // FormValueは、クエリの名前付きコンポーネントの最初の値を返します。
 // POST、PUT、およびPATCHのボディパラメータは、URLクエリ文字列の値より優先されます。
 // FormValueは、必要に応じて [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
@@ -400,21 +417,45 @@ func (r *Request) ParseMultipartForm(maxMemory int64) error
 // キーが存在しない場合、FormValueは空の文字列を返します。
 // 同じキーの複数の値にアクセスするには、ParseFormを呼び出して、
 // 直接 [Request.Form] を調べます。
+=======
+// FormValue returns the first value for the named component of the query.
+// The precedence order:
+//  1. application/x-www-form-urlencoded form body (POST, PUT, PATCH only)
+//  2. query parameters (always)
+//  3. multipart/form-data form body (always)
+//
+// FormValue calls [Request.ParseMultipartForm] and [Request.ParseForm]
+// if necessary and ignores any errors returned by these functions.
+// If key is not present, FormValue returns the empty string.
+// To access multiple values of the same key, call ParseForm and
+// then inspect [Request.Form] directly.
+>>>>>>> release-branch.go1.22
 func (r *Request) FormValue(key string) string
 
 // PostFormValueは、POST、PUT、またはPATCHリクエストボディの名前付きコンポーネントの最初の値を返します。
 // URLクエリパラメータは無視されます。
+<<<<<<< HEAD
 // 必要に応じて、 [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
+=======
+// 必要に応じて、PostFormValueは [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
+>>>>>>> release-branch.go1.22
 // これらの関数によって返されるエラーを無視します。
 // キーが存在しない場合、PostFormValueは空の文字列を返します。
 func (r *Request) PostFormValue(key string) string
 
 // FormFileは、指定されたフォームキーの最初のファイルを返します。
-// 必要に応じて、FormFileはParseMultipartFormおよびParseFormを呼び出します。
+// 必要に応じて、FormFileは [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出します。
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
 
+<<<<<<< HEAD
 // PathValueは、リクエストに一致した [ServeMux] パターンの名前付きパスワイルドカードの値を返します。
 // リクエストがパターンに一致しなかった場合、またはパターンにそのようなワイルドカードがない場合、空の文字列を返します。
+=======
+// PathValue returns the value for the named path wildcard in the [ServeMux] pattern
+// that matched the request.
+// It returns the empty string if the request was not matched against a pattern
+// or there is no such wildcard in the pattern.
+>>>>>>> release-branch.go1.22
 func (r *Request) PathValue(name string) string
 
 // SetPathValue sets name to value, so that subsequent calls to r.PathValue(name)

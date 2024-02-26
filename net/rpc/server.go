@@ -161,6 +161,7 @@ var DefaultServer = NewServer()
 // クライアントは "Type.Method" の形式の文字列を使用して各メソッドにアクセスします。ここで、Typeはレシーバーの具体的な型です。
 func (server *Server) Register(rcvr any) error
 
+<<<<<<< HEAD
 // RegisterNameは、[Register] と似ていますが、レシーバの具体的な型の代わりに、指定された名前を使用して型を登録します。
 func (server *Server) RegisterName(name string, rcvr any) error
 
@@ -177,6 +178,25 @@ func (server *Server) ServeCodec(codec ServerCodec)
 
 // ServeRequestは [ServeCodec] と似ていますが、1つのリクエストを同期的に処理します。
 // 完了時にコーデックを閉じません。
+=======
+// RegisterNameは [Register] と同様ですが、レシーバーの具体的な型の代わりに提供された名前を型に使用します。
+func (server *Server) RegisterName(name string, rcvr any) error
+
+// ServeConnは、単一の接続上でサーバーを実行します。
+// ServeConnは、クライアントが切断するまで接続を提供するためにブロックします。
+// 呼び出し元は通常、goステートメントでServeConnを呼び出します。
+// ServeConnは、接続上でgobワイヤーフォーマット（パッケージgobを参照）を使用します。
+// 代替のコーデックを使用するには、[ServeCodec] を使用します。
+// 並行アクセスに関する情報については、[NewClient] のコメントを参照してください。
+func (server *Server) ServeConn(conn io.ReadWriteCloser)
+
+// ServeCodecは [ServeConn] と同様ですが、指定されたコーデックを使用して
+// リクエストをデコードし、レスポンスをエンコードします。
+func (server *Server) ServeCodec(codec ServerCodec)
+
+// ServeRequestは [ServeCodec] と似ていますが、単一のリクエストを同期的に提供します。
+// 完了時にコーデックを閉じることはありません。
+>>>>>>> release-branch.go1.22
 func (server *Server) ServeRequest(codec ServerCodec) error
 
 // Acceptはリスナー上で接続を受け入れ、各受信接続のリクエストを処理します。

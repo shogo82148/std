@@ -18,7 +18,11 @@ import (
 
 // ClientはHTTPクライアントです。ゼロ値([DefaultClient])は、[DefaultTransport] を使用する使用可能なクライアントです。
 //
+<<<<<<< HEAD
 // Clientの [Client.Transport] には通常、内部状態(キャッシュされたTCP接続など)があるため、必要に応じて作成するのではなく、再利用する必要があります。
+=======
+// [Client.Transport] には通常、内部状態(キャッシュされたTCP接続など)があるため、必要に応じて作成するのではなく、再利用する必要があります。
+>>>>>>> release-branch.go1.22
 // Clientsは、複数のゴルーチンによる同時使用に対して安全です。
 //
 // Clientは、[RoundTripper]([Transport] など)よりも高レベルであり、クッキーやリダイレクトなどのHTTPの詳細も処理します。
@@ -107,6 +111,7 @@ var ErrSchemeMismatch = errors.New("http: server gave HTTP response to HTTPS cli
 //
 // Getは、DefaultClient.Getのラッパーです。
 //
+<<<<<<< HEAD
 // カスタムヘッダーを使用してリクエストを行うには、[NewRequest] と
 // DefaultClient.Do を使用します。
 //
@@ -115,6 +120,14 @@ var ErrSchemeMismatch = errors.New("http: server gave HTTP response to HTTPS cli
 func Get(url string) (resp *Response, err error)
 
 // Getは指定されたURLにGETを発行します。もしレスポンスが以下のリダイレクトコードの一つである場合、
+=======
+// カスタムヘッダーでリクエストを作成するには、[NewRequest] とDefaultClient.Doを使用します。
+//
+// 指定されたcontext.Contextでリクエストを作成するには、[NewRequestWithContext] とDefaultClient.Doを使用します。
+func Get(url string) (resp *Response, err error)
+
+// Getは指定されたURLにGETを発行します。レスポンスが以下のリダイレクトコードのいずれかである場合、
+>>>>>>> release-branch.go1.22
 // Getは [Client.CheckRedirect] 関数を呼び出した後にリダイレクトを追跡します：
 //
 //	301 (Moved Permanently)
@@ -132,8 +145,15 @@ func Get(url string) (resp *Response, err error)
 //
 // カスタムヘッダーを使用してリクエストを行うには、[NewRequest] と [Client.Do] を使用します。
 //
+<<<<<<< HEAD
 // 指定したcontext.Contextを使用してリクエストを行うには、[NewRequestWithContext] と
 // Client.Do を使用します。
+=======
+// カスタムヘッダーでリクエストを行うには、[NewRequest] と
+// [Client.Do] を使用します。
+//
+// 指定したcontext.Contextでリクエストを作成するには、[NewRequestWithContext] と Client.Do を使用します。
+>>>>>>> release-branch.go1.22
 func (c *Client) Get(url string) (resp *Response, err error)
 
 // ErrUseLastResponseは、Client.CheckRedirectフックによって返され、リダイレクトの処理方法を制御するために使用できます。
@@ -144,7 +164,13 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 //
 // クライアントポリシー（CheckRedirectなど）によってトリガーされた場合、またはHTTP転送が失敗した場合（ネットワーク接続の問題など）、エラーが返されます。2xx以外のステータスコードはエラーを引き起こしません。
 //
+<<<<<<< HEAD
 // 返されるエラーがnilの場合、[Response] にはユーザーが閉じなければならない非nilのBodyが含まれます。BodyがEOFまで完全に読み取られずに閉じられない場合、[Client] の基本となる [RoundTripper]（通常は [Transport]）は、次の「keep-alive」リクエストのためにサーバーへの永続的なTCP接続を再利用できないかもしれません。
+=======
+// 返されるエラーがnilの場合、[Response] にはユーザーが閉じなければならない非nilのBodyが含まれます。
+// BodyがEOFまで完全に読み取られずに閉じられない場合、[Client] の基本となる [RoundTripper]（通常は [Transport]）は、
+// 次の「keep-alive」リクエストのためにサーバーへの永続的なTCP接続を再利用できないかもしれません。
+>>>>>>> release-branch.go1.22
 //
 // リクエストのBodyがnilでない場合、それは基本となるTransportによって閉じられます。エラーが発生した場合も同様です。
 //
@@ -165,11 +191,19 @@ func (c *Client) Do(req *Request) (*Response, error)
 //
 // Postは、DefaultClient.Postのラッパーです。
 //
+<<<<<<< HEAD
 // カスタムヘッダーを設定するには、[NewRequest] と DefaultClient.Do を使用します。
 //
 // リダイレクトの処理方法については、[Client.Do] メソッドのドキュメントを参照してください。
 //
 // 指定されたcontext.Contextでリクエストを作成するには、[NewRequestWithContext] と DefaultClient.Do を使用します。
+=======
+// カスタムヘッダーを設定するには、[NewRequest] と DefaultClient.Doを使用します。
+//
+// リダイレクトの処理方法については、[Client.Do] メソッドのドキュメントを参照してください。
+//
+// 指定されたcontext.Contextでリクエストを作成するには、[NewRequestWithContext] とDefaultClient.Doを使用します。
+>>>>>>> release-branch.go1.22
 func Post(url, contentType string, body io.Reader) (resp *Response, err error)
 
 // Postは、指定されたURLにPOSTリクエストを送信します。
@@ -188,7 +222,11 @@ func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, 
 // PostFormは、データのキーと値がURLエンコードされたリクエストボディとして指定されたURLにPOSTを発行します。
 //
 // Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
+<<<<<<< HEAD
 // 他のヘッダーを設定するには、[NewRequest] と DefaultClient.Do を使用します。
+=======
+// 他のヘッダーを設定するには、[NewRequest] とDefaultClient.Doを使用します。
+>>>>>>> release-branch.go1.22
 //
 // errがnilの場合、respには常に非nilのresp.Bodyが含まれます。
 // 呼び出し元は、resp.Bodyの読み取りが完了したらresp.Bodyを閉じる必要があります。
@@ -205,12 +243,16 @@ func PostForm(url string, data url.Values) (resp *Response, err error)
 // Content-Typeヘッダーはapplication/x-www-form-urlencodedに設定されます。
 // 他のヘッダーを設定するには、[NewRequest] と [Client.Do] を使用します。
 //
+<<<<<<< HEAD
 // errがnilの場合、respは常に非nilのresp.Bodyを含みます。
 // 読み取り後、呼び出し元はresp.Bodyを閉じなければなりません。
 //
 // リダイレクトの処理については、Client.Doメソッドのドキュメンテーションを参照してください。
 //
 // 指定したcontext.Contextでリクエストを作成するには、[NewRequestWithContext] とClient.Doを使用します。
+=======
+// 指定された [context.Context] でリクエストを作成するには、[NewRequestWithContext] とDefaultClient.Doを使用します。
+>>>>>>> release-branch.go1.22
 func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)
 
 // Headは、指定されたURLに対してHEADリクエストを発行します。レスポンスが以下のリダイレクトコードのいずれかである場合、
@@ -224,7 +266,11 @@ func (c *Client) PostForm(url string, data url.Values) (resp *Response, err erro
 //
 // HeadはDefaultClient.Headのラッパーです。
 //
+<<<<<<< HEAD
 // 指定した [context.Context] でリクエストを作成するには、[NewRequestWithContext] と DefaultClient.Do を使用します。
+=======
+// 指定した [context.Context] でリクエストを作成するには、[NewRequestWithContext] とDefaultClient.Doを使用します。
+>>>>>>> release-branch.go1.22
 func Head(url string) (resp *Response, err error)
 
 // 指定されたURLにHEADリクエストを送信します。もしレスポンスが以下のいずれかのリダイレクトコードである場合、
@@ -236,11 +282,19 @@ func Head(url string) (resp *Response, err error)
 //	307 (Temporary Redirect)
 //	308 (Permanent Redirect)
 //
+<<<<<<< HEAD
 // 指定された [context.Context] を使用してリクエストを送信する場合は、[NewRequestWithContext] と [Client.Do] を使用してください。
+=======
+// 指定された [context.Context] を使用してリクエストを送信する場合は、[NewRequestWithContext] と [Client.Do]を使用してください。
+>>>>>>> release-branch.go1.22
 func (c *Client) Head(url string) (resp *Response, err error)
 
 // CloseIdleConnectionsは、以前は接続されていたが現在は"keep-alive"状態、つまりアイドル状態にある [Transport] 上のアイドル接続を閉じます。
 // これは現在アクティブな接続を中断しません。
 //
+<<<<<<< HEAD
 // [Client.Transport] に [Client.CloseIdleConnections] メソッドがない場合、このメソッドは何もしません。
+=======
+// クライアントの [Transport] に [CloseIdleConnections] メソッドがない場合、このメソッドは何もしません。
+>>>>>>> release-branch.go1.22
 func (c *Client) CloseIdleConnections()

@@ -155,7 +155,11 @@ func (d *Dialer) Dial(network, address string) (Conn, error)
 // TCPを使用し、アドレスパラメータのホストが複数のネットワークアドレスに解決される場合、ダイヤルタイムアウト（d.Timeoutまたはctxから）は、各連続したダイヤルに均等に分散されます。それぞれのダイヤルには、適切な接続時間の割合が与えられます。
 // 例えば、ホストが4つのIPアドレスを持ち、タイムアウトが1分の場合、次のアドレスを試す前に、各単一のアドレスへの接続には15秒の時間が与えられます。
 //
+<<<<<<< HEAD
 // ネットワークやアドレスパラメータの説明については、[Dial] 関数を参照してください。
+=======
+// ネットワークやアドレスパラメータの説明については、func [Dial] を参照してください。
+>>>>>>> release-branch.go1.22
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
 
 // ListenConfig はアドレスのリッスンに関するオプションを含んでいます。
@@ -211,7 +215,11 @@ func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address strin
 // アドレスパラメータのポートが空または"0"の場合、例えば"127.0.0.1:"や"[::1]:0"のように、ポート番号が自動的に選択されます。
 // [Listener] の [Addr] メソッドを使用して、選択されたポートを取得できます。
 //
+<<<<<<< HEAD
 // ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
+=======
+// ネットワークおよびアドレスパラメータの説明については、func [Dial] を参照してください。
+>>>>>>> release-branch.go1.22
 //
 // Listenは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、[ListenConfig.Listen] を使用してください。
 func Listen(network, address string) (Listener, error)
@@ -230,7 +238,11 @@ func Listen(network, address string) (Listener, error)
 // アドレスパラメータのポートが空または「0」の場合、「127.0.0.1:」や「[::1]:0」といった形式で、ポート番号は自動的に選択されます。
 // [PacketConn] のLocalAddrメソッドを使用して選択されたポートを特定することができます。
 //
+<<<<<<< HEAD
 // ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
+=======
+// ネットワークおよびアドレスパラメータの説明については、func [Dial] を参照してください。
+>>>>>>> release-branch.go1.22
 //
 // ListenPacketは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、
 // [ListenConfig.ListenPacket] を使用してください。

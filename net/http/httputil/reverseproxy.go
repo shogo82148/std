@@ -41,9 +41,13 @@ func (r *ProxyRequest) SetURL(target *url.URL)
 // - X-Forwarded-Hostヘッダーは、クライアントが要求したホスト名に設定されます。
 // - X-Forwarded-Protoヘッダーは、入力リクエストがTLS対応の接続で行われたかどうかに応じて、「http」または「https」に設定されます。
 //
+<<<<<<< HEAD
 // 出力リクエストに既存のX-Forwarded-Forヘッダーが含まれている場合、SetXForwardedはクライアントのIPアドレスを追加します。
 // SetXForwardedを呼び出す前に、入力リクエストのX-Forwarded-Forヘッダー（Director関数を使用して [ReverseProxy] を使用している場合のデフォルト動作）をコピーして、
 // 入力リクエストのX-Forwarded-Forヘッダーに追加します：
+=======
+// 出力リクエストに既存のX-Forwarded-Forヘッダーが含まれている場合、SetXForwardedはクライアントのIPアドレスを追加します。SetXForwardedを呼び出す前に、入力リクエストのX-Forwarded-Forヘッダー（Director関数を使用して [ReverseProxy] を使用している場合のデフォルト動作）をコピーして、入力リクエストのX-Forwarded-Forヘッダーに追加します：
+>>>>>>> release-branch.go1.22
 //
 //	rewriteFunc := func(r *httputil.ProxyRequest) {
 //	   r.Out.Header["X-Forwarded-For"] = r.In.Header["X-Forwarded-For"]

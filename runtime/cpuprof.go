@@ -12,8 +12,8 @@ package runtime
 // hz <= 0の場合、プロファイリングはオフになります。
 // プロファイラがオンの場合、レートを変更する前にオフにする必要があります。
 //
-// ほとんどのクライアントは、runtime/pprofパッケージまたは
-// テストパッケージの-test.cpuprofileフラグを直接呼び出す代わりに使用するべきです。
+// ほとんどのクライアントは、[runtime/pprof] パッケージまたは
+// [testing] パッケージの-test.cpuprofileフラグを直接呼び出す代わりに使用するべきです。
 func SetCPUProfileRate(hz int)
 
 // CPUProfileはパニックします。
@@ -24,5 +24,5 @@ func SetCPUProfileRate(hz int)
 //
 // Deprecated: [runtime/pprof] パッケージ、
 // または [net/http/pprof] パッケージのハンドラ、
-// またはtestingパッケージの-test.cpuprofileフラグを代わりに使用してください。
+// または [testing] パッケージの-test.cpuprofileフラグを代わりに使用してください。
 func CPUProfile() []byte

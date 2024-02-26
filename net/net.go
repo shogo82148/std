@@ -245,6 +245,7 @@ type DNSError struct {
 
 func (e *DNSError) Error() string
 
+<<<<<<< HEAD
 // Timeoutは、DNSルックアップがタイムアウトしたことが確認されたかどうかを報告します。
 // これは常に確認できるわけではありません。DNSルックアップはタイムアウトにより失敗し、
 // Timeoutがfalseを返す [DNSError] を返すことがあります。
@@ -253,6 +254,14 @@ func (e *DNSError) Timeout() bool
 // Temporaryは、DNSエラーが一時的であることが確認されたかどうかを報告します。
 // これは常に確認できるわけではありません。DNSルックアップは一時的なエラーにより失敗し、
 // Temporaryがfalseを返す [DNSError] を返すことがあります。
+=======
+// TimeoutはDNSの検索がタイムアウトしたかどうかを報告します。
+// これは常に正確にはわかりません。DNSの検索はタイムアウトにより失敗する場合があり、Timeoutがfalseを返す [DNSError] が返されることがあります。
+func (e *DNSError) Timeout() bool
+
+// Temporaryは、DNSエラーが一時的であるかどうかを示す。
+// これは常にわかるわけではない。一時的なエラーによりDNS検索が失敗し、Temporaryがfalseを返す [DNSError] が返されることがあります。
+>>>>>>> release-branch.go1.22
 func (e *DNSError) Temporary() bool
 
 // ErrClosedは、既に閉じられたネットワーク接続またはI/Oが完了する前に他のゴルーチンによって閉じられたネットワーク接続上のI/O呼び出しによって返されるエラーです。これは他のエラーに包まれる場合があり、通常はerrors.Is(err, net.ErrClosed)を使用してテストする必要があります。
@@ -270,14 +279,22 @@ var (
 
 // WriteTo はバッファの内容を w に書き込みます。
 //
+<<<<<<< HEAD
 // WriteTo は、[Buffers] の [io.WriterTo] を実装します。
+=======
+// WriteTo は、[Buffers] に [io.WriterTo] を実装します。
+>>>>>>> release-branch.go1.22
 //
 // WriteTo は、0 <= i < len(v) の範囲の v[i] およびスライス v を変更しますが、v[i][j] (i, j は任意の値) は変更しません。
 func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
 
 // バッファから読み込む。
 //
+<<<<<<< HEAD
 // Read は [Buffers] のために [io.Reader] を実装します。
+=======
+// Read は [Buffers] に [io.Reader] を実装します。
+>>>>>>> release-branch.go1.22
 //
 // Read はスライス v と v[i]（ただし、0 <= i < len(v)）を変更しますが、
 // v[i][j]（ただし、任意の i, j）は変更しません。

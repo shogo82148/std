@@ -35,7 +35,11 @@ type ProtocolError string
 func (p ProtocolError) Error() string
 
 // Connはテキストネットワークプロトコルの接続を表します。
+<<<<<<< HEAD
 // それは、I/Oを管理するための [Reader] と [Writer]、および接続上で並行リクエストをシーケンスするための [Pipeline] で構成されています。
+=======
+// それは、I/Oを管理するための [Reader] と [Writer] 、および接続上で並行リクエストをシーケンスするための [Pipeline] で構成されています。
+>>>>>>> release-branch.go1.22
 // これらの埋め込まれた型は、それらの型のドキュメントで詳細なメソッドを持っています。
 type Conn struct {
 	Reader

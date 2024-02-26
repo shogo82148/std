@@ -43,7 +43,11 @@ func (a *TCPAddr) String() string
 // ホスト名のIPアドレスの一つを最大で返すため、推奨されていません。
 //
 // ネットワークとアドレスパラメータの詳細については、
+<<<<<<< HEAD
 // [Dial] 関数の説明を参照してください。
+=======
+// func [Dial] の説明を参照してください。
+>>>>>>> release-branch.go1.22
 func ResolveTCPAddr(network, address string) (*TCPAddr, error)
 
 // TCPAddrFromAddrPortはaddrを [TCPAddr] として返します。もしaddrがIsValid()がfalseである場合、
