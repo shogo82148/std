@@ -45,6 +45,6 @@ func InterfaceAddrs() ([]Addr, error)
 // Solarisでは、論理データリンクを共有する論理ネットワークインターフェースのうちの1つを返しますが、より正確な情報が必要な場合は、
 // [InterfaceByName] を使用してください。
 func InterfaceByIndex(index int) (*Interface, error)
- d
+
 // InterfaceByNameは、指定された名前で指定されたインターフェースを返します。
 func InterfaceByName(name string) (*Interface, error)
