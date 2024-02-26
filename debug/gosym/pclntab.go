@@ -67,17 +67,9 @@ func (t *LineTable) PCToLine(pc uint64) int
 // Deprecated: 代わりにTableのLineToPCメソッドを使用してください。
 func (t *LineTable) LineToPC(line int, maxpc uint64) uint64
 
-<<<<<<< HEAD
 // NewLineTableは、エンコードされたデータに対応する新しいPC/行テーブルを返します。
 // Textは、対応するテキストセグメントの開始アドレスでなければなりません。
-=======
-// NewLineTable returns a new PC/line table
-// corresponding to the encoded data.
-// Text must be the start address of the
-// corresponding text segment, with the exact
-// value stored in the 'runtime.text' symbol.
-// This value may differ from the start
-// address of the text segment if
-// binary was built with cgo enabled.
->>>>>>> upstream/master
+// この値は、'runtime.text'シンボルに格納されている正確な値です。
+// この値は、バイナリがcgoを有効にしてビルドされた場合、
+// テキストセグメントの開始アドレスと異なる場合があります。
 func NewLineTable(data []byte, text uint64) *LineTable
