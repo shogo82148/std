@@ -38,18 +38,12 @@
 //
 // # タイマーの解像度
 //
-<<<<<<< HEAD
-// タイマーの解像度は、Goランタイム、オペレーティングシステム、および基礎となるハードウェアによって異なります。
+// タイマーの解像度は、Goランタイム、オペレーティングシステム、
+// および基礎となるハードウェアによって異なります。
 // Unixでは、解像度は約1msです。
-// Windowsでは、デフォルトの解像度は約16msですが、 [golang.org/x/sys/windows.TimeBeginPeriod] を使用してより高い解像度を要求することができます。
-=======
-// Timer resolution varies depending on the Go runtime, the operating system
-// and the underlying hardware.
-// On Unix, the resolution is ~1ms.
-// On Windows version 1803 and newer, the resolution is ~0.5ms.
-// On older Windows versions, the default resolution is ~16ms, but
-// a higher resolution may be requested using [golang.org/x/sys/windows.TimeBeginPeriod].
->>>>>>> upstream/master
+// Windowsバージョン1803以降では、解像度は約0.5msです。
+// 古いWindowsバージョンでは、デフォルトの解像度は約16msですが、
+// [golang.org/x/sys/windows.TimeBeginPeriod] を使用して高解像度を要求することができます。
 package time
 
 // Timeは納秒単位の精度で時刻を表します。
