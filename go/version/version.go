@@ -2,21 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
 // パッケージversionは、[Goツールチェーン名の構文] のような文字列、
 // つまり "go1.20"、"go1.21.0"、"go1.22rc2"、"go1.23.4-bigcorp"などの
 // [Goバージョン] に対する操作を提供します。
 //
 // [Goバージョン]: https://go.dev/doc/toolchain#version
 // [Goツールチェーン名の構文]: https://go.dev/doc/toolchain#name
-=======
-// Package version provides operations on [Go versions]
-// in [Go toolchain name syntax]: strings like
-// "go1.20", "go1.21.0", "go1.22rc2", and "go1.23.4-bigcorp".
-//
-// [Go versions]: https://go.dev/doc/toolchain#version
-// [Go toolchain name syntax]: https://go.dev/doc/toolchain#name
->>>>>>> upstream/master
 package version
 
 // Langは、バージョンxのGo言語バージョンを返します。
@@ -31,22 +22,12 @@ package version
 //	Lang("1.21") = ""
 func Lang(x string) string
 
-<<<<<<< HEAD
 // Compareは、x < y、x == y、またはx > yの場合にそれぞれ-1、0、または+1を返します。
 // これはGoのバージョンとして解釈されます。
 // バージョンxとyは"go"プレフィックスで始まる必要があります："go1.21"であり、"1.21"ではありません。
 // 無効なバージョン、空文字列を含む、は有効なバージョンよりも小さく、
 // お互いに等しいと比較されます。
 // 言語バージョン"go1.21"はリリース候補および最終リリース"go1.21rc1"および"go1.21.0"よりも小さいと比較されます。
-=======
-// Compare returns -1, 0, or +1 depending on whether
-// x < y, x == y, or x > y, interpreted as Go versions.
-// The versions x and y must begin with a "go" prefix: "go1.21" not "1.21".
-// Invalid versions, including the empty string, compare less than
-// valid versions and equal to each other.
-// The language version "go1.21" compares less than the
-// release candidate and eventual releases "go1.21rc1" and "go1.21.0".
->>>>>>> upstream/master
 func Compare(x, y string) int
 
 // IsValidは、バージョンxが有効かどうかを報告します。
