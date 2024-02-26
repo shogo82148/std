@@ -5,11 +5,22 @@
 // 編集しないでください。このファイルはRE2ディストリビューションからmksyntaxgoによって生成されました。
 
 /*
+<<<<<<< HEAD
 パッケージ構文は正規表現を解析木に解析し、解析木をプログラムにコンパイルします。通常、正規表現のクライアントはこのパッケージではなく、regexpパッケージ（CompileやMatchなど）の機能を使用します。
+=======
+Package syntax parses regular expressions into parse trees and compiles
+parse trees into programs. Most clients of regular expressions will use the
+facilities of package [regexp] (such as [regexp.Compile] and [regexp.Match]) instead of this package.
+>>>>>>> upstream/master
 
 ＃ 構文
 
+<<<<<<< HEAD
 Perlフラグを使用して解析する場合、このパッケージが理解する正規表現の構文は次のとおりです。Parseに代替フラグを渡すことで、構文の一部を無効にすることもできます。
+=======
+The regular expression syntax understood by this package when parsing with the [Perl] flag is as follows.
+Parts of the syntax can be disabled by passing alternate flags to [Parse].
+>>>>>>> upstream/master
 
 単一の文字：
 
@@ -132,6 +143,10 @@ ASCII文字クラス：
 	[[:word:]]     単語の文字（== [0-9A-Za-z_]）
 	[[:xdigit:]]   16進数の数字（== [0-9A-Fa-f]）
 
+<<<<<<< HEAD
 Unicode文字クラスは、unicode.Categoriesおよびunicode.Scriptsのものです。
+=======
+Unicode character classes are those in [unicode.Categories] and [unicode.Scripts].
+>>>>>>> upstream/master
 */
 package syntax

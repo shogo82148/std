@@ -81,9 +81,15 @@ type BlockProfileRecord struct {
 // もしlen(p) >= nの場合、BlockProfileはプロファイルをpにコピーし、nとtrueを返します。
 // もしlen(p) < nの場合、BlockProfileはpを変更せずに、nとfalseを返します。
 //
+<<<<<<< HEAD
 // ほとんどのクライアントは、 [runtime/pprof] パッケージや
 // [testing] パッケージの-test.blockprofileフラグを使用して、
 // BlockProfileを直接呼び出す代わりに使用すべきです。
+=======
+// Most clients should use the [runtime/pprof] package or
+// the [testing] package's -test.blockprofile flag instead
+// of calling BlockProfile directly.
+>>>>>>> upstream/master
 func BlockProfile(p []BlockProfileRecord) (n int, ok bool)
 
 // MutexProfileは現在のmutexプロファイルのレコード数であるnを返します。

@@ -186,11 +186,20 @@ func (p *Profile) Remove(value any)
 // wへの書き込みがエラーを返す場合、WriteToはそのエラーを返します。
 // それ以外の場合、WriteToはnilを返します。
 //
+<<<<<<< HEAD
 // debugパラメータは追加の出力を有効にします。
 // debug=0を渡すと、https://github.com/google/pprof/tree/master/proto#overviewで
 // 説明されているgzip圧縮されたプロトコルバッファ形式で書き込まれます。
 // debug=1を渡すと、関数名と行番号をアドレスに変換したレガシーテキスト形式で書き込まれます。
 // これにより、プログラマがツールなしでプロファイルを読むことができます。
+=======
+// The debug parameter enables additional output.
+// Passing debug=0 writes the gzip-compressed protocol buffer described
+// in https://github.com/google/pprof/tree/main/proto#overview.
+// Passing debug=1 writes the legacy text format with comments
+// translating addresses to function names and line numbers, so that a
+// programmer can read the profile without tools.
+>>>>>>> upstream/master
 //
 // プリセットのプロファイルは、他のdebugの値に意味を割り当てることができます。
 // たとえば、"goroutine"プロファイルの場合、debug=2は、

@@ -39,6 +39,7 @@ Unixシステムでは、名前を解決するための2つのオプションが
 /etc/resolv.confにリストされているサーバーに直接DNSリクエストを送信する純粋なGoリゾルバを使用するか、
 getaddrinfoやgetnameinfoなどのCライブラリのルーチンを呼び出すcgoベースのリゾルバを使用するか、です。
 
+<<<<<<< HEAD
 デフォルトでは、ブロックされたDNSリクエストはゴルーチンのみを消費するため、純粋なGoリゾルバが使用されますが、
 ブロックされたC呼び出しはオペレーティングシステムのスレッドを消費します。
 cgoが利用可能な場合、さまざまな条件下でcgoベースのリゾルバが代わりに使用されます：
@@ -51,6 +52,25 @@ Goリゾルバが実装していない機能の使用が指定されている場
 検索対象となる名前が.localで終わるか、mDNS名である場合です。
 
 リゾルバの判断は、GODEBUG環境変数（パッケージruntimeを参照）のnetdns値をgoまたはcgoに設定することで上書きすることもできます。例：
+=======
+On Unix the pure Go resolver is preferred over the cgo resolver, because a blocked DNS
+request consumes only a goroutine, while a blocked C call consumes an operating system thread.
+When cgo is available, the cgo-based resolver is used instead under a variety of
+conditions: on systems that do not let programs make direct DNS requests (OS X),
+when the LOCALDOMAIN environment variable is present (even if empty),
+when the RES_OPTIONS or HOSTALIASES environment variable is non-empty,
+when the ASR_CONFIG environment variable is non-empty (OpenBSD only),
+when /etc/resolv.conf or /etc/nsswitch.conf specify the use of features that the
+Go resolver does not implement, and when the name being looked up ends in .local
+or is an mDNS name.
+
+On all systems (except Plan 9), when the cgo resolver is being used
+this package applies a concurrent cgo lookup limit to prevent the system
+from running out of system threads. Currently, it is limited to 500 concurrent lookups.
+
+The resolver decision can be overridden by setting the netdns value of the
+GODEBUG environment variable (see package runtime) to go or cgo, as in:
+>>>>>>> upstream/master
 
 	export GODEBUG=netdns=go    # 純粋なGoリゾルバを強制する
 	export GODEBUG=netdns=cgo   # ネイティブリゾルバを強制する（cgo、win32）

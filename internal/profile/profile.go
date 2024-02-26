@@ -115,9 +115,8 @@ type Function struct {
 	filenameX   int64
 }
 
-// Parse parses a profile and checks for its validity. The input
-// may be a gzip-compressed encoded protobuf or one of many legacy
-// profile formats which may be unsupported in the future.
+// Parse parses a profile and checks for its validity. The input must be an
+// encoded pprof protobuf, which may optionally be gzip-compressed.
 func Parse(r io.Reader) (*Profile, error)
 
 var ErrNoData = fmt.Errorf("empty input file")

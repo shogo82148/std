@@ -45,6 +45,7 @@ type Dialer struct {
 	// 負の値はFast Fallbackサポートを無効にします。
 	FallbackDelay time.Duration
 
+<<<<<<< HEAD
 	// KeepAliveはアクティブなネットワーク接続の間隔を示します。
 	// ゼロの場合、keep-aliveプローブはデフォルト値（現在は15秒）で送信されます。
 	// プロトコルやオペレーティングシステムがサポートしている場合、ネットワークプロトコルやオペレーティングシステムはkeep-aliveを無視します。
@@ -52,6 +53,30 @@ type Dialer struct {
 	KeepAlive time.Duration
 
 	// Resolverはオプションで、代替のリゾルバを指定することができます。
+=======
+	// KeepAlive specifies the interval between keep-alive
+	// probes for an active network connection.
+	//
+	// KeepAlive is ignored if KeepAliveConfig.Enable is true.
+	//
+	// If zero, keep-alive probes are sent with a default value
+	// (currently 15 seconds), if supported by the protocol and operating
+	// system. Network protocols or operating systems that do
+	// not support keep-alive ignore this field.
+	// If negative, keep-alive probes are disabled.
+	KeepAlive time.Duration
+
+	// KeepAliveConfig specifies the keep-alive probe configuration
+	// for an active network connection, when supported by the
+	// protocol and operating system.
+	//
+	// If KeepAliveConfig.Enable is true, keep-alive probes are enabled.
+	// If KeepAliveConfig.Enable is false and KeepAlive is negative,
+	// keep-alive probes are disabled.
+	KeepAliveConfig KeepAliveConfig
+
+	// Resolver optionally specifies an alternate resolver to use.
+>>>>>>> upstream/master
 	Resolver *Resolver
 
 	// Cancel is an optional channel whose closure indicates that
@@ -173,6 +198,7 @@ type ListenConfig struct {
 	// Listenに渡すと、Control関数へは"tcp4"または"tcp6"が渡されます。
 	Control func(network, address string, c syscall.RawConn) error
 
+<<<<<<< HEAD
 	// KeepAliveは、このリスナーによって受け入れられたネットワーク接続のキープアライブ期間を指定します。
 	// ゼロの場合、プロトコルとオペレーティングシステムがサポートしている場合にキープアライブが有効になります。
 	// キープアライブをサポートしていないネットワークプロトコルやオペレーティングシステムは、このフィールドを無視します。
@@ -180,6 +206,31 @@ type ListenConfig struct {
 	KeepAlive time.Duration
 
 	// もしmptcpStatusがMultipath TCP（MPTCP）を許可する値に設定されている場合、ネットワークとして"tcp(4|6)"でListenを呼び出すと、オペレーティングシステムがサポートしている場合にはMPTCPが使用されます。
+=======
+	// KeepAlive specifies the keep-alive period for network
+	// connections accepted by this listener.
+	//
+	// KeepAlive is ignored if KeepAliveConfig.Enable is true.
+	//
+	// If zero, keep-alive are enabled if supported by the protocol
+	// and operating system. Network protocols or operating systems
+	// that do not support keep-alive ignore this field.
+	// If negative, keep-alive are disabled.
+	KeepAlive time.Duration
+
+	// KeepAliveConfig specifies the keep-alive probe configuration
+	// for an active network connection, when supported by the
+	// protocol and operating system.
+	//
+	// If KeepAliveConfig.Enable is true, keep-alive probes are enabled.
+	// If KeepAliveConfig.Enable is false and KeepAlive is negative,
+	// keep-alive probes are disabled.
+	KeepAliveConfig KeepAliveConfig
+
+	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
+	// used, any call to Listen with "tcp(4|6)" as network will use MPTCP if
+	// supported by the operating system.
+>>>>>>> upstream/master
 	mptcpStatus mptcpStatus
 }
 

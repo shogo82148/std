@@ -59,8 +59,43 @@ type TCPConn struct {
 	conn
 }
 
+<<<<<<< HEAD
 // SyscallConnは生のネットワーク接続を返します。
 // これは [syscall.Conn] インターフェースを実装しています。
+=======
+// KeepAliveConfig contains TCP keep-alive options.
+//
+// If the Idle, Interval, or Count fields are zero, a default value is chosen.
+// If a field is negative, the corresponding socket-level option will be left unchanged.
+//
+// Note that Windows doesn't support setting the KeepAliveIdle and KeepAliveInterval separately.
+// It's recommended to set both Idle and Interval to non-negative values on Windows if you
+// intend to customize the TCP keep-alive settings.
+// By contrast, if only one of Idle and Interval is set to a non-negative value, the other will
+// be set to the system default value, and ultimately, set both Idle and Interval to negative
+// values if you want to leave them unchanged.
+type KeepAliveConfig struct {
+	// If Enable is true, keep-alive probes are enabled.
+	Enable bool
+
+	// Idle is the time that the connection must be idle before
+	// the first keep-alive probe is sent.
+	// If zero, a default value of 15 seconds is used.
+	Idle time.Duration
+
+	// Interval is the time between keep-alive probes.
+	// If zero, a default value of 15 seconds is used.
+	Interval time.Duration
+
+	// Count is the maximum number of keep-alive probes that
+	// can go unanswered before dropping a connection.
+	// If zero, a default value of 9 is used.
+	Count int
+}
+
+// SyscallConn returns a raw network connection.
+// This implements the [syscall.Conn] interface.
+>>>>>>> upstream/master
 func (c *TCPConn) SyscallConn() (syscall.RawConn, error)
 
 // ReadFrom は [io.ReaderFrom] の ReadFrom メソッドを実装します。
@@ -89,7 +124,15 @@ func (c *TCPConn) SetLinger(sec int) error
 // keep-aliveメッセージを送信するかどうかを設定します。
 func (c *TCPConn) SetKeepAlive(keepalive bool) error
 
+<<<<<<< HEAD
 // SetKeepAlivePeriodは、Keep-Alive間の期間を設定します。
+=======
+// SetKeepAlivePeriod sets the idle duration the connection
+// needs to remain idle before TCP starts sending keepalive probes.
+//
+// Note that calling this method on Windows will reset the KeepAliveInterval
+// to the default system value, which is normally 1 second.
+>>>>>>> upstream/master
 func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error
 
 // SetNoDelayは、パケットの送信を遅延させるかどうかを制御します。これにより、より少ないパケットで送信することが期待されます（Nagleのアルゴリズム）。デフォルト値はtrue（遅延なし）であり、Writeの後で可能な限りすぐにデータが送信されます。

@@ -12,11 +12,20 @@ Package fmtは、Cのprintfおよびscanfに類似した関数を使用してフ
 
 一般：
 
+<<<<<<< HEAD
 	%v	デフォルトのフォーマットでの値
 		構造体を印刷する場合、プラスフラグ（%+v）はフィールド名を追加します
 	%#v	値のGo構文表現
 	%T	値の型のGo構文表現
 	%%	リテラルのパーセント記号；値を消費しません
+=======
+	%v	the value in a default format
+		when printing structs, the plus flag (%+v) adds field names
+	%#v	a Go-syntax representation of the value
+		(floating-point infinities and NaNs print as ±Inf and NaN)
+	%T	a Go-syntax representation of the type of the value
+	%%	a literal percent sign; consumes no value
+>>>>>>> upstream/master
 
 ブール値：
 
@@ -120,6 +129,7 @@ Package fmtは、Cのprintfおよびscanfに類似した関数を使用してフ
 
 その他のフラグ：
 
+<<<<<<< HEAD
 	'+'	数値の場合は常に符号を印刷します。%qの場合はASCIIのみの出力を保証します（%+q）
 	'-'	左詰めにするために右側にスペースを詰めます（フィールドを左詰めにします）
 	'#'	代替フォーマット：2進数の場合は先頭に0bを追加します（%#b）、8進数の場合は0を追加します（%#o）、
@@ -132,6 +142,22 @@ Package fmtは、Cのprintfおよびscanfに類似した関数を使用してフ
 		文字列またはスライスを16進数で印刷する場合は、バイト間にスペースを入れます（% x、% X）
 	'0'	スペースの代わりに先頭にゼロを詰めます。数値の場合、これによりパディングが符号の後に移動します。
 		文字列、バイトスライス、およびバイト配列には影響しません。
+=======
+	'+'	always print a sign for numeric values;
+		guarantee ASCII-only output for %q (%+q)
+	'-'	pad with spaces on the right rather than the left (left-justify the field)
+	'#'	alternate format: add leading 0b for binary (%#b), 0 for octal (%#o),
+		0x or 0X for hex (%#x or %#X); suppress 0x for %p (%#p);
+		for %q, print a raw (backquoted) string if strconv.CanBackquote
+		returns true;
+		always print a decimal point for %e, %E, %f, %F, %g and %G;
+		do not remove trailing zeros for %g and %G;
+		write e.g. U+0078 'x' if the character is printable for %U (%#U)
+	' '	(space) leave a space for elided sign in numbers (% d);
+		put spaces between bytes printing strings or slices in hex (% x, % X)
+	'0'	pad with leading zeros rather than spaces;
+		for numbers, this moves the padding after the sign
+>>>>>>> upstream/master
 
 動詞がそれらを期待していない場合、フラグは無視されます。
 たとえば、代替の10進数フォーマットがないため、%#dと%dは同じように動作します。

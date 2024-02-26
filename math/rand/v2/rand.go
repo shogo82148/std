@@ -10,8 +10,14 @@
 // トップレベルの関数、例えば [Float64] や [Int] は、
 // 複数のゴルーチンによる並行使用が安全です。
 //
+<<<<<<< HEAD
 // このパッケージの出力は、どのようにシードされていても容易に予測可能かもしれません。セキュリティに敏感な作業に適した乱数については、
 // crypto/randパッケージを参照してください。
+=======
+// This package's outputs might be easily predictable regardless of how it's
+// seeded. For random numbers suitable for security-sensitive work, see the
+// [crypto/rand] package.
+>>>>>>> upstream/master
 package rand
 
 // Sourceは、範囲[0, 1<<64)内の一様に分布した

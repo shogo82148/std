@@ -119,6 +119,7 @@ func (f *File) AddLineInfo(offset int, filename string, line int)
 // AddLineColumnInfoは通常、//line filename:line:columnなどの行ディレクティブの代替位置情報を登録するために使用されます。
 func (f *File) AddLineColumnInfo(offset int, filename string, line, column int)
 
+<<<<<<< HEAD
 // Posは与えられたファイルオフセットのPos値を返します。
 // オフセットはf.Size()以下でなければなりません。
 // f.Pos(f.Offset(p)) == p。
@@ -127,12 +128,35 @@ func (f *File) Pos(offset int) Pos
 // Offsetは与えられたファイル位置pのオフセットを返します。
 // pはそのファイル内で有効な [Pos] の値でなければなりません。
 // f.Offset(f.Pos(offset)) == offset。
+=======
+// Pos returns the Pos value for the given file offset.
+//
+// If offset is negative, the result is the file's start
+// position; if the offset is too large, the result is
+// the file's end position (see also go.dev/issue/57490).
+//
+// The following invariant, though not true for Pos values
+// in general, holds for the result p:
+// f.Pos(f.Offset(p)) == p.
+func (f *File) Pos(offset int) Pos
+
+// Offset returns the offset for the given file position p.
+//
+// If p is before the file's start position (or if p is NoPos),
+// the result is 0; if p is past the file's end position, the
+// the result is the file size (see also go.dev/issue/57490).
+//
+// The following invariant, though not true for offset values
+// in general, holds for the result offset:
+// f.Offset(f.Pos(offset)) == offset
+>>>>>>> upstream/master
 func (f *File) Offset(p Pos) int
 
 // Lineは与えられたファイル位置pの行番号を返します。
 // pはそのファイル内の [Pos] 値または [NoPos] でなければなりません。
 func (f *File) Line(p Pos) int
 
+<<<<<<< HEAD
 // PositionForは、指定されたファイルの位置pに対するPositionの値を返します。
 // 位置を変更する可能性のある行コメントが設定されている場合、位置は調整されるかもしれません。そうでない場合は、コメントは無視されます。
 // pは、fまたはNoPosのPos値である必要があります。
@@ -140,6 +164,18 @@ func (f *File) PositionFor(p Pos, adjusted bool) (pos Position)
 
 // Positionは指定されたファイルの位置pに対するPositionの値を返します。
 // f.Position(p)を呼び出すことは、f.PositionFor(p, true)を呼び出すことと等価です。
+=======
+// PositionFor returns the Position value for the given file position p.
+// If p is out of bounds, it is adjusted to match the File.Offset behavior.
+// If adjusted is set, the position may be adjusted by position-altering
+// //line comments; otherwise those comments are ignored.
+// p must be a Pos value in f or NoPos.
+func (f *File) PositionFor(p Pos, adjusted bool) (pos Position)
+
+// Position returns the Position value for the given file position p.
+// If p is out of bounds, it is adjusted to match the File.Offset behavior.
+// Calling f.Position(p) is equivalent to calling f.PositionFor(p, true).
+>>>>>>> upstream/master
 func (f *File) Position(p Pos) (pos Position)
 
 // FileSetはソースファイルの集合を表します。

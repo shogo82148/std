@@ -10,24 +10,25 @@ import (
 )
 
 type ModulePublic struct {
-	Path       string        `json:",omitempty"`
-	Version    string        `json:",omitempty"`
-	Query      string        `json:",omitempty"`
-	Versions   []string      `json:",omitempty"`
-	Replace    *ModulePublic `json:",omitempty"`
-	Time       *time.Time    `json:",omitempty"`
-	Update     *ModulePublic `json:",omitempty"`
-	Main       bool          `json:",omitempty"`
-	Indirect   bool          `json:",omitempty"`
-	Dir        string        `json:",omitempty"`
-	GoMod      string        `json:",omitempty"`
-	GoVersion  string        `json:",omitempty"`
-	Retracted  []string      `json:",omitempty"`
-	Deprecated string        `json:",omitempty"`
-	Error      *ModuleError  `json:",omitempty"`
-
-	Origin *codehost.Origin `json:",omitempty"`
-	Reuse  bool             `json:",omitempty"`
+	Path       string           `json:",omitempty"`
+	Version    string           `json:",omitempty"`
+	Query      string           `json:",omitempty"`
+	Versions   []string         `json:",omitempty"`
+	Replace    *ModulePublic    `json:",omitempty"`
+	Time       *time.Time       `json:",omitempty"`
+	Update     *ModulePublic    `json:",omitempty"`
+	Main       bool             `json:",omitempty"`
+	Indirect   bool             `json:",omitempty"`
+	Dir        string           `json:",omitempty"`
+	GoMod      string           `json:",omitempty"`
+	GoVersion  string           `json:",omitempty"`
+	Retracted  []string         `json:",omitempty"`
+	Deprecated string           `json:",omitempty"`
+	Error      *ModuleError     `json:",omitempty"`
+	Sum        string           `json:",omitempty"`
+	GoModSum   string           `json:",omitempty"`
+	Origin     *codehost.Origin `json:",omitempty"`
+	Reuse      bool             `json:",omitempty"`
 }
 
 type ModuleError struct {

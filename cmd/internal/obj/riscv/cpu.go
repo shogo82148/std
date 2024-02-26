@@ -28,7 +28,9 @@
 
 package riscv
 
-import "github.com/shogo82148/std/cmd/internal/obj"
+import (
+	"github.com/shogo82148/std/cmd/internal/obj"
+)
 
 const (
 	// Base register numberings.
@@ -599,6 +601,14 @@ const (
 
 	// End marker
 	ALAST
+)
+
+const (
+	RM_RNE uint8 = iota
+	RM_RTZ
+	RM_RDN
+	RM_RUP
+	RM_RMM
 )
 
 // Instruction encoding masks.

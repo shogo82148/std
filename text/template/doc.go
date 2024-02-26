@@ -137,7 +137,18 @@ HTML出力を生成するには、[html/template] を参照してください。
 		パイプラインの値が空の場合、ドットは影響を受けず、T0が実行されます。
 		それ以外の場合、ドットはパイプラインの値に設定され、T1が実行されます。
 
+<<<<<<< HEAD
 引数
+=======
+	{{with pipeline}} T1 {{else with pipeline}} T0 {{end}}
+		To simplify the appearance of with-else chains, the else action
+		of a with may include another with directly; the effect is exactly
+		the same as writing
+			{{with pipeline}} T1 {{else}}{{with pipeline}} T0 {{end}}{{end}}
+
+
+Arguments
+>>>>>>> upstream/master
 
 引数は、以下のいずれかによって示される単純な値です。
 

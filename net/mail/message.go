@@ -5,6 +5,7 @@
 /*
 パッケージメールは、メールメッセージの解析を実装しています。
 
+<<<<<<< HEAD
 このパッケージのほとんどは、RFC 5322およびRFC 6532で指定された構文に従います。
 主な異なる点：
   - 廃止されたアドレス形式は解析されません。これには、経路情報を埋め込んだアドレスも含まれます。
@@ -12,6 +13,17 @@
   - Unicodeの正規化は行われません。
   - 特殊文字（）[]：; @ \は、名前でクォートされずに使用することが許可されています。
   - 先頭のFrom行は、mbox形式（RFC 4155）と同様に許可されています。
+=======
+For the most part, this package follows the syntax as specified by RFC 5322 and
+extended by RFC 6532.
+Notable divergences:
+  - Obsolete address formats are not parsed, including addresses with
+    embedded route information.
+  - The full range of spacing (the CFWS syntax element) is not supported,
+    such as breaking addresses across lines.
+  - No unicode normalization is performed.
+  - A leading From line is permitted, as in mbox format (RFC 4155).
+>>>>>>> upstream/master
 */
 package mail
 

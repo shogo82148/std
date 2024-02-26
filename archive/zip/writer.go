@@ -71,7 +71,15 @@ func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
 // ファイルの内容を書き込むための [Writer] を返します。
 // 次の [Writer.Create] 、 [Writer.CreateHeader] 、 [Writer.CreateRaw] 、または [Writer.Close] を呼び出す前に、ファイルの内容を [io.Writer] に書き込む必要があります。
 //
+<<<<<<< HEAD
 // [Writer.CreateHeader] とは異なり、Writer に渡されるバイトは圧縮されません。
+=======
+// In contrast to [Writer.CreateHeader], the bytes passed to Writer are not compressed.
+//
+// CreateRaw's argument is stored in w. If the argument is a pointer to the embedded
+// [FileHeader] in a [File] obtained from a [Reader] created from in-memory data,
+// then w will refer to all of that memory.
+>>>>>>> upstream/master
 func (w *Writer) CreateRaw(fh *FileHeader) (io.Writer, error)
 
 // Copy は、ファイル f（ [Reader] から取得された）を w にコピーします。

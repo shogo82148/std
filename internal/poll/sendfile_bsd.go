@@ -7,4 +7,4 @@
 package poll
 
 // SendFile wraps the sendfile system call.
-func SendFile(dstFD *FD, src int, pos, remain int64) (int64, error, bool)
+func SendFile(dstFD *FD, src int, pos, remain int64) (written int64, err error, handled bool)

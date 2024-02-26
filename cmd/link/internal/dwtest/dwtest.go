@@ -19,7 +19,7 @@ type Examiner struct {
 // Populate the Examiner using the DIEs read from rdr.
 func (ex *Examiner) Populate(rdr *dwarf.Reader) error
 
-func (e *Examiner) DIEs() []*dwarf.Entry
+func (ex *Examiner) DIEs() []*dwarf.Entry
 
 // For debugging new tests
 func (ex *Examiner) DumpEntry(idx int, dumpKids bool, ilevel int)

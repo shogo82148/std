@@ -48,6 +48,8 @@ func EncodeSImmediate(imm int64) (int64, error)
 
 func EncodeUImmediate(imm int64) (int64, error)
 
+func ParseSuffix(prog *obj.Prog, cond string) (err error)
+
 var LinkRISCV64 = obj.LinkArch{
 	Arch:           sys.ArchRISCV64,
 	Init:           buildop,

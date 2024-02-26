@@ -61,9 +61,18 @@ func (m *Map) Load(key any) (value any, ok bool)
 // Storeはキーの値を設定します。
 func (m *Map) Store(key, value any)
 
+<<<<<<< HEAD
 // LoadOrStore は、キーが存在する場合は既存の値を返します。
 // それ以外の場合は、指定された値を格納して返します。
 // 読み込まれた結果が true の場合、値は読み込まれ、false の場合は格納されました。
+=======
+// Clear deletes all the entries, resulting in an empty Map.
+func (m *Map) Clear()
+
+// LoadOrStore returns the existing value for the key if present.
+// Otherwise, it stores and returns the given value.
+// The loaded result is true if the value was loaded, false if stored.
+>>>>>>> upstream/master
 func (m *Map) LoadOrStore(key, value any) (actual any, loaded bool)
 
 // LoadAndDelete はキーに対応する値を削除し、もし値が存在する場合は以前の値を返します。

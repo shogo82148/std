@@ -12,10 +12,20 @@ func Gosched()
 // ブレークポイントはブレークポイントトラップを実行します。
 func Breakpoint()
 
+<<<<<<< HEAD
 // LockOSThreadは呼び出し側のゴルーチンを現在のオペレーティングシステムスレッドに接続します。
 // 呼び出し側のゴルーチンは常にそのスレッドで実行され、他のゴルーチンは実行されません。
 // それまでのLockOSThreadへの呼び出し回数と同じ数だけ、[UnlockOSThread] への呼び出しを行うまで、呼び出し側のゴルーチン以外は実行されません。
 // 呼び出し側のゴルーチンがスレッドのロックを解除せずに終了すると、スレッドは終了します。
+=======
+// LockOSThread wires the calling goroutine to its current operating system thread.
+// The calling goroutine will always execute in that thread,
+// and no other goroutine will execute in it,
+// until the calling goroutine has made as many calls to
+// [UnlockOSThread] as to LockOSThread.
+// If the calling goroutine exits without unlocking the thread,
+// the thread will be terminated.
+>>>>>>> upstream/master
 //
 // すべてのinit関数は起動時のスレッド上で実行されます。init関数からLockOSThreadを呼び出すと、main関数がそのスレッド上で呼び出されます。
 //
