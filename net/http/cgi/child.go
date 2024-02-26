@@ -19,10 +19,6 @@ func Request() (*http.Request, error)
 // 返されたRequestのBodyフィールドは入力されません。
 func RequestFromMap(params map[string]string) (*http.Request, error)
 
-<<<<<<< HEAD
 // Serveは現在アクティブなCGIリクエストに提供された [Handler] を実行します。
 // もし現在のCGI環境がない場合、エラーが返されます。提供されたハンドラーがnilの場合、[http.DefaultServeMux] が使用されます。
-=======
-// Serveは現在アクティブなCGIリクエストに提供された [Handler] を実行します。もし現在のCGI環境がない場合、エラーが返されます。提供されたハンドラーがnilの場合、[http.DefaultServeMux] が使用されます。
->>>>>>> release-branch.go1.22
 func Serve(handler http.Handler) error
