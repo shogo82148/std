@@ -33,7 +33,8 @@ type Sym interface {
 // A Var represents a local variable or a function parameter.
 type Var struct {
 	Name          string
-	Abbrev        int
+	Tag           int
+	WithLoclist   bool
 	IsReturnValue bool
 	IsInlFormal   bool
 	DictIndex     uint16
@@ -187,16 +188,6 @@ const (
 	DW_ABRV_INLINED_SUBROUTINE_RANGES
 	DW_ABRV_VARIABLE
 	DW_ABRV_INT_CONSTANT
-	DW_ABRV_AUTO
-	DW_ABRV_AUTO_LOCLIST
-	DW_ABRV_AUTO_ABSTRACT
-	DW_ABRV_AUTO_CONCRETE
-	DW_ABRV_AUTO_CONCRETE_LOCLIST
-	DW_ABRV_PARAM
-	DW_ABRV_PARAM_LOCLIST
-	DW_ABRV_PARAM_ABSTRACT
-	DW_ABRV_PARAM_CONCRETE
-	DW_ABRV_PARAM_CONCRETE_LOCLIST
 	DW_ABRV_LEXICAL_BLOCK_RANGES
 	DW_ABRV_LEXICAL_BLOCK_SIMPLE
 	DW_ABRV_STRUCTFIELD
@@ -217,7 +208,7 @@ const (
 	DW_ABRV_STRUCTTYPE
 	DW_ABRV_TYPEDECL
 	DW_ABRV_DICT_INDEX
-	DW_NABRV
+	DW_ABRV_PUTVAR_START
 )
 
 // Abbrevs returns the finalized abbrev array for the platform,

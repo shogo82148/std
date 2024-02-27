@@ -12,10 +12,10 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ErrProcessDone indicates a Process has finished.
+// ErrProcessDone indicates a [Process] has finished.
 var ErrProcessDone = errors.New("os: process already finished")
 
-// Process stores the information about a process created by StartProcess.
+// Process stores the information about a process created by [StartProcess].
 type Process struct {
 	Pid    int
 	handle atomic.Uintptr
@@ -66,7 +66,7 @@ func Getppid() int
 
 // FindProcess looks for a running process by its pid.
 //
-// The Process it returns can be used to obtain information
+// The [Process] it returns can be used to obtain information
 // about the underlying operating system process.
 //
 // On Unix systems, FindProcess always succeeds and returns a Process
@@ -76,39 +76,39 @@ func Getppid() int
 func FindProcess(pid int) (*Process, error)
 
 // StartProcess starts a new process with the program, arguments and attributes
-// specified by name, argv and attr. The argv slice will become os.Args in the
+// specified by name, argv and attr. The argv slice will become [os.Args] in the
 // new process, so it normally starts with the program name.
 //
 // If the calling goroutine has locked the operating system thread
-// with runtime.LockOSThread and modified any inheritable OS-level
+// with [runtime.LockOSThread] and modified any inheritable OS-level
 // thread state (for example, Linux or Plan 9 name spaces), the new
 // process will inherit the caller's thread state.
 //
-// StartProcess is a low-level interface. The os/exec package provides
+// StartProcess is a low-level interface. The [os/exec] package provides
 // higher-level interfaces.
 //
-// If there is an error, it will be of type *PathError.
+// If there is an error, it will be of type [*PathError].
 func StartProcess(name string, argv []string, attr *ProcAttr) (*Process, error)
 
-// Release releases any resources associated with the Process p,
+// Release releases any resources associated with the [Process] p,
 // rendering it unusable in the future.
-// Release only needs to be called if Wait is not.
+// Release only needs to be called if [Process.Wait] is not.
 func (p *Process) Release() error
 
-// Kill causes the Process to exit immediately. Kill does not wait until
+// Kill causes the [Process] to exit immediately. Kill does not wait until
 // the Process has actually exited. This only kills the Process itself,
 // not any other processes it may have started.
 func (p *Process) Kill() error
 
-// Wait waits for the Process to exit, and then returns a
+// Wait waits for the [Process] to exit, and then returns a
 // ProcessState describing its status and an error, if any.
 // Wait releases any resources associated with the Process.
 // On most operating systems, the Process must be a child
 // of the current process or an error will be returned.
 func (p *Process) Wait() (*ProcessState, error)
 
-// Signal sends a signal to the Process.
-// Sending Interrupt on Windows is not implemented.
+// Signal sends a signal to the [Process].
+// Sending [Interrupt] on Windows is not implemented.
 func (p *Process) Signal(sig Signal) error
 
 // UserTime returns the user CPU time of the exited process and its children.
@@ -128,12 +128,12 @@ func (p *ProcessState) Success() bool
 
 // Sys returns system-dependent exit information about
 // the process. Convert it to the appropriate underlying
-// type, such as syscall.WaitStatus on Unix, to access its contents.
+// type, such as [syscall.WaitStatus] on Unix, to access its contents.
 func (p *ProcessState) Sys() any
 
 // SysUsage returns system-dependent resource usage information about
 // the exited process. Convert it to the appropriate underlying
-// type, such as *syscall.Rusage on Unix, to access its contents.
+// type, such as [*syscall.Rusage] on Unix, to access its contents.
 // (On Unix, *syscall.Rusage matches struct rusage as defined in the
 // getrusage(2) manual page.)
 func (p *ProcessState) SysUsage() any

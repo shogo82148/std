@@ -338,7 +338,7 @@ func (re *Regexp) FindStringSubmatchIndex(s string) []int
 // return value of nil indicates no match.
 func (re *Regexp) FindReaderSubmatchIndex(r io.RuneReader) []int
 
-// FindAll is the 'All' version of Find; it returns a slice of all successive
+// FindAll is the 'All' version of [Regexp.Find]; it returns a slice of all successive
 // matches of the expression, as defined by the 'All' description in the
 // package comment.
 // A return value of nil indicates no match.

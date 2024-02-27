@@ -51,24 +51,24 @@ type Group struct {
 	Name string
 }
 
-// UnknownUserIdError is returned by LookupId when a user cannot be found.
+// UnknownUserIdError is returned by [LookupId] when a user cannot be found.
 type UnknownUserIdError int
 
 func (e UnknownUserIdError) Error() string
 
-// UnknownUserError is returned by Lookup when
+// UnknownUserError is returned by [Lookup] when
 // a user cannot be found.
 type UnknownUserError string
 
 func (e UnknownUserError) Error() string
 
-// UnknownGroupIdError is returned by LookupGroupId when
+// UnknownGroupIdError is returned by [LookupGroupId] when
 // a group cannot be found.
 type UnknownGroupIdError string
 
 func (e UnknownGroupIdError) Error() string
 
-// UnknownGroupError is returned by LookupGroup when
+// UnknownGroupError is returned by [LookupGroup] when
 // a group cannot be found.
 type UnknownGroupError string
 

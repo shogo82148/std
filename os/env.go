@@ -7,7 +7,7 @@
 package os
 
 // Expand replaces ${var} or $var in the string based on the mapping function.
-// For example, os.ExpandEnv(s) is equivalent to os.Expand(s, os.Getenv).
+// For example, [os.ExpandEnv](s) is equivalent to [os.Expand](s, [os.Getenv]).
 func Expand(s string, mapping func(string) string) string
 
 // ExpandEnv replaces ${var} or $var in the string according to the values
@@ -17,7 +17,7 @@ func ExpandEnv(s string) string
 
 // Getenv retrieves the value of the environment variable named by the key.
 // It returns the value, which will be empty if the variable is not present.
-// To distinguish between an empty value and an unset value, use LookupEnv.
+// To distinguish between an empty value and an unset value, use [LookupEnv].
 func Getenv(key string) string
 
 // LookupEnv retrieves the value of the environment variable named

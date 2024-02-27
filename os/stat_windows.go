@@ -4,6 +4,6 @@
 
 package os
 
-// Stat returns the FileInfo structure describing file.
-// If there is an error, it will be of type *PathError.
+// Stat returns the [FileInfo] structure describing file.
+// If there is an error, it will be of type [*PathError].
 func (file *File) Stat() (FileInfo, error)

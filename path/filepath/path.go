@@ -66,6 +66,16 @@ func Clean(path string) string
 // that may exist in the filesystem.
 func IsLocal(path string) bool
 
+// Localize converts a slash-separated path into an operating system path.
+// The input path must be a valid path as reported by [io/fs.ValidPath].
+//
+// Localize returns an error if the path cannot be represented by the operating system.
+// For example, the path a\b is rejected on Windows, on which \ is a separator
+// character and cannot be part of a filename.
+//
+// The path returned by Localize will always be local, as reported by IsLocal.
+func Localize(path string) (string, error)
+
 // ToSlash returns the result of replacing each separator character
 // in path with a slash ('/') character. Multiple separators are
 // replaced by multiple slashes.
@@ -74,6 +84,9 @@ func ToSlash(path string) string
 // FromSlash returns the result of replacing each slash ('/') character
 // in path with a separator character. Multiple slashes are replaced
 // by multiple separators.
+//
+// See also the Localize function, which converts a slash-separated path
+// as used by the io/fs package to an operating system path.
 func FromSlash(path string) string
 
 // SplitList splits a list of paths joined by the OS-specific [ListSeparator],

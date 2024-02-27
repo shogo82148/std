@@ -75,19 +75,19 @@ func (p *Prog) Prefix() (prefix string, complete bool)
 func (p *Prog) StartCond() EmptyOp
 
 // MatchRune reports whether the instruction matches (and consumes) r.
-// It should only be called when i.Op == InstRune.
+// It should only be called when i.Op == [InstRune].
 func (i *Inst) MatchRune(r rune) bool
 
 // MatchRunePos checks whether the instruction matches (and consumes) r.
 // If so, MatchRunePos returns the index of the matching rune pair
 // (or, when len(i.Rune) == 1, rune singleton).
 // If not, MatchRunePos returns -1.
-// MatchRunePos should only be called when i.Op == InstRune.
+// MatchRunePos should only be called when i.Op == [InstRune].
 func (i *Inst) MatchRunePos(r rune) int
 
 // MatchEmptyWidth reports whether the instruction matches
 // an empty string between the runes before and after.
-// It should only be called when i.Op == InstEmptyWidth.
+// It should only be called when i.Op == [InstEmptyWidth].
 func (i *Inst) MatchEmptyWidth(before rune, after rune) bool
 
 func (i *Inst) String() string

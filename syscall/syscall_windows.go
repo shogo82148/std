@@ -18,12 +18,12 @@ const InvalidHandle = ^Handle(0)
 // with a terminating NUL added. If s contains a NUL byte this
 // function panics instead of returning an error.
 //
-// Deprecated: Use UTF16FromString instead.
+// Deprecated: Use [UTF16FromString] instead.
 func StringToUTF16(s string) []uint16
 
 // UTF16FromString returns the UTF-16 encoding of the UTF-8 string
 // s, with a terminating NUL added. If s contains a NUL byte at any
-// location, it returns (nil, EINVAL). Unpaired surrogates
+// location, it returns (nil, [EINVAL]). Unpaired surrogates
 // are encoded using WTF-8.
 func UTF16FromString(s string) ([]uint16, error)
 
@@ -37,7 +37,7 @@ func UTF16ToString(s []uint16) string
 // contains a NUL byte this function panics instead of
 // returning an error.
 //
-// Deprecated: Use UTF16PtrFromString instead.
+// Deprecated: Use [UTF16PtrFromString] instead.
 func StringToUTF16Ptr(s string) *uint16
 
 // UTF16PtrFromString returns pointer to the UTF-16 encoding of
@@ -48,7 +48,7 @@ func UTF16PtrFromString(s string) (*uint16, error)
 
 // Errno is the Windows error number.
 //
-// Errno values can be tested against error values using errors.Is.
+// Errno values can be tested against error values using [errors.Is].
 // For example:
 //
 //	_, _, err := syscall.Syscall(...)
@@ -140,7 +140,7 @@ func LoadCancelIoEx() error
 func LoadSetFileCompletionNotificationModes() error
 
 // For testing: clients can set this flag to force
-// creation of IPv6 sockets to return EAFNOSUPPORT.
+// creation of IPv6 sockets to return [EAFNOSUPPORT].
 var SocketDisableIPv6 bool
 
 type RawSockaddrInet4 struct {
@@ -361,7 +361,7 @@ func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlap
 // decrementing until index 0 is enumerated.
 //
 // Successive calls to this API must happen on the same OS thread,
-// so call runtime.LockOSThread before calling this function.
+// so call [runtime.LockOSThread] before calling this function.
 func RegEnumKeyEx(key Handle, index uint32, name *uint16, nameLen *uint32, reserved *uint32, class *uint16, classLen *uint32, lastWriteTime *Filetime) (regerrno error)
 
 func GetStartupInfo(startupInfo *StartupInfo) error

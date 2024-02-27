@@ -9,11 +9,11 @@ package syscall
 // TimespecToNsec returns the time stored in ts as nanoseconds.
 func TimespecToNsec(ts Timespec) int64
 
-// NsecToTimespec converts a number of nanoseconds into a Timespec.
+// NsecToTimespec converts a number of nanoseconds into a [Timespec].
 func NsecToTimespec(nsec int64) Timespec
 
 // TimevalToNsec returns the time stored in tv as nanoseconds.
 func TimevalToNsec(tv Timeval) int64
 
-// NsecToTimeval converts a number of nanoseconds into a Timeval.
+// NsecToTimeval converts a number of nanoseconds into a [Timeval].
 func NsecToTimeval(nsec int64) Timeval
