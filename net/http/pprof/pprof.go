@@ -8,6 +8,7 @@
 // The package is typically only imported for the side effect of
 // registering its HTTP handlers.
 // The handled paths all begin with /debug/pprof/.
+// As of Go 1.22, all the paths must be requested with GET.
 //
 // To use pprof, link this package into your program:
 //

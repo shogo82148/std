@@ -8,4 +8,6 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 )
 
+// MakeWrappers constructs all wrapper methods needed for the target
+// compilation unit.
 func MakeWrappers(target *ir.Package)
