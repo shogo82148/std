@@ -14,6 +14,7 @@ package types
 // which points directly to the actual (aliased) type.
 type Alias struct {
 	obj     *TypeName
+	tparams *TypeParamList
 	fromRHS Type
 	actual  Type
 }

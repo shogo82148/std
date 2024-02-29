@@ -89,6 +89,14 @@ type Type interface {
 
 	Out(i int) Type
 
+	OverflowComplex(x complex128) bool
+
+	OverflowFloat(x float64) bool
+
+	OverflowInt(x int64) bool
+
+	OverflowUint(x uint64) bool
+
 	common() *abi.Type
 	uncommon() *uncommonType
 }
