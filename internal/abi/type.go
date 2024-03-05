@@ -135,6 +135,7 @@ func (t *Type) Kind() Kind
 
 func (t *Type) HasName() bool
 
+// Pointers reports whether t contains pointers.
 func (t *Type) Pointers() bool
 
 // IfaceIndir reports whether t is stored indirectly in an interface value.
