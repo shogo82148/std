@@ -50,6 +50,7 @@ type Var struct {
 	InlIndex        int32
 	ChildIndex      int32
 	IsInAbstract    bool
+	ClosureOffset   int64
 }
 
 // A Scope represents a lexical scope. All variables declared within a
@@ -168,8 +169,9 @@ const (
 	DW_AT_go_embedded_field = 0x2903
 	DW_AT_go_runtime_type   = 0x2904
 
-	DW_AT_go_package_name = 0x2905
-	DW_AT_go_dict_index   = 0x2906
+	DW_AT_go_package_name   = 0x2905
+	DW_AT_go_dict_index     = 0x2906
+	DW_AT_go_closure_offset = 0x2907
 
 	DW_AT_internal_location = 253
 )
