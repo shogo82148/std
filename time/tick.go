@@ -7,8 +7,8 @@ package time
 // A Ticker holds a channel that delivers “ticks” of a clock
 // at intervals.
 type Ticker struct {
-	C <-chan Time
-	r runtimeTimer
+	C          <-chan Time
+	initTicker bool
 }
 
 // NewTicker returns a new Ticker containing a channel that will send
