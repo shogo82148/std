@@ -6,11 +6,15 @@
 package httptest
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net/http"
 )
 
-// NewRequest returns a new incoming server Request, suitable
+// NewRequest wraps NewRequestWithContext using context.Background.
+func NewRequest(method, target string, body io.Reader) *http.Request
+
+// NewRequestWithContext returns a new incoming server Request, suitable
 // for passing to an [http.Handler] for testing.
 //
 // The target is the RFC 7230 "request-target": it may be either a
@@ -33,4 +37,4 @@ import (
 //
 // To generate a client HTTP request instead of a server request, see
 // the NewRequest function in the net/http package.
-func NewRequest(method, target string, body io.Reader) *http.Request
+func NewRequestWithContext(ctx context.Context, method, target string, body io.Reader) *http.Request

@@ -100,8 +100,9 @@ type Transport struct {
 	// request is aborted with the provided error.
 	//
 	// The proxy type is determined by the URL scheme. "http",
-	// "https", and "socks5" are supported. If the scheme is empty,
+	// "https", "socks5", and "socks5h" are supported. If the scheme is empty,
 	// "http" is assumed.
+	// "socks5" is treated the same as "socks5h".
 	//
 	// If the proxy URL contains a userinfo subcomponent,
 	// the proxy request will pass the username and password
@@ -289,7 +290,6 @@ func (t *Transport) Clone() *Transport
 //
 // The environment values may be either a complete URL or a
 // "host[:port]", in which case the "http" scheme is assumed.
-// The schemes "http", "https", and "socks5" are supported.
 // An error is returned if the value is a different form.
 //
 // A nil URL and nil error are returned if no proxy is defined in the
