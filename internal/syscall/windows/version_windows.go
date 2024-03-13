@@ -6,6 +6,8 @@ package windows
 
 import (
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/syscall"
+	"github.com/shogo82148/std/unsafe"
 )
 
 // SupportFullTCPKeepAlive indicates whether the current Windows version
@@ -28,6 +30,20 @@ var SupportTCPInitialRTONoSYNRetransmissions = sync.OnceValue(func() bool {
 // Unix Domain Sockets.
 // The minimal requirement is Windows 10.0.17063.
 var SupportUnixSocket = sync.OnceValue(func() bool {
-	major, _, build := version()
-	return major >= 10 && build >= 17063
+	var size uint32
+
+	_, _ = syscall.WSAEnumProtocols(nil, nil, &size)
+	n := int32(size) / int32(unsafe.Sizeof(syscall.WSAProtocolInfo{}))
+
+	buf := make([]syscall.WSAProtocolInfo, n)
+	n, err := syscall.WSAEnumProtocols(nil, &buf[0], &size)
+	if err != nil {
+		return false
+	}
+	for i := int32(0); i < n; i++ {
+		if buf[i].AddressFamily == syscall.AF_UNIX {
+			return true
+		}
+	}
+	return false
 })
