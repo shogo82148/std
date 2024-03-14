@@ -16,7 +16,16 @@ type Ticker struct {
 // ticks is specified by the duration argument. The ticker will adjust
 // the time interval or drop ticks to make up for slow receivers.
 // The duration d must be greater than zero; if not, NewTicker will
-// panic. Stop the ticker to release associated resources.
+// panic.
+//
+// Before Go 1.23, the garbage collector did not recover
+// tickers that had not yet expired or been stopped, so code often
+// immediately deferred t.Stop after calling NewTicker, to make
+// the ticker recoverable when it was no longer needed.
+// As of Go 1.23, the garbage collector can recover unreferenced
+// tickers, even if they haven't been stopped.
+// The Stop method is no longer necessary to help the garbage collector.
+// (Code may of course still want to call Stop to stop the ticker for other reasons.)
 func NewTicker(d Duration) *Ticker
 
 // Stop turns off a ticker. After Stop, no more ticks will be sent.
@@ -30,8 +39,14 @@ func (t *Ticker) Stop()
 func (t *Ticker) Reset(d Duration)
 
 // Tick is a convenience wrapper for NewTicker providing access to the ticking
-// channel only. While Tick is useful for clients that have no need to shut down
-// the Ticker, be aware that without a way to shut it down the underlying
-// Ticker cannot be recovered by the garbage collector; it "leaks".
-// Unlike NewTicker, Tick will return nil if d <= 0.
+// channel only. Unlike NewTicker, Tick will return nil if d <= 0.
+//
+// Before Go 1.23, this documentation warned that the underlying
+// Ticker would never be recovered by the garbage collector, and that
+// if efficiency was a concern, code should use NewTicker instead and
+// call Ticker.Stop when the ticker is no longer needed.
+// As of Go 1.23, the garbage collector can recover unreferenced
+// tickers, even if they haven't been stopped.
+// The Stop method is no longer necessary to help the garbage collector.
+// There is no longer any reason to prefer NewTicker when Tick will do.
 func Tick(d Duration) <-chan Time
