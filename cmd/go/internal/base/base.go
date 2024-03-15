@@ -9,8 +9,6 @@ package base
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/flag"
-
-	"golang.org/x/telemetry/counter"
 )
 
 // A Command is an implementation of a go command
@@ -97,8 +95,12 @@ func RunStdin(cmdline []string)
 // but here for reference by other packages.
 var Usage func()
 
+type Counter interface {
+	Inc()
+}
+
 // NewCounter registers a new counter. It must be called from an init function
 // or global variable initializer.
-func NewCounter(name string) *counter.Counter
+func NewCounter(name string) Counter
 
 func RegisteredCounterNames() []string

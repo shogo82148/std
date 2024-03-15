@@ -14,6 +14,9 @@ import (
 type Version uint32
 
 const (
+	Go111   Version = 11
+	Go119   Version = 19
+	Go121   Version = 21
 	Go122   Version = 22
 	Current         = Go122
 )
