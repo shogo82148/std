@@ -10,6 +10,9 @@ type Frames struct {
 	// callers is a slice of PCs that have not yet been expanded to frames.
 	callers []uintptr
 
+	// nextPC is a next PC to expand ahead of processing callers.
+	nextPC uintptr
+
 	// frames is a slice of Frames that have yet to be returned.
 	frames     []Frame
 	frameStore [2]Frame

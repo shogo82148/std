@@ -176,6 +176,10 @@
 // in most runs.
 package bisect
 
+import (
+	"github.com/shogo82148/std/sync/atomic"
+)
+
 // New creates and returns a new Matcher implementing the given pattern.
 // The pattern syntax is defined in the package doc comment.
 //
@@ -193,7 +197,7 @@ type Matcher struct {
 	quiet   bool
 	enable  bool
 	list    []cond
-	dedup   atomicPointerDedup
+	dedup   atomic.Pointer[dedup]
 }
 
 // MarkerOnly reports whether it is okay to print only the marker for
