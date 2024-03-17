@@ -1776,6 +1776,7 @@
 //
 // 定義されたアーキテクチャ機能のビルドタグは以下の通りです：
 //
+<<<<<<< HEAD
 //   - GOARCH=386の場合、GO386=387とGO386=sse2はそれぞれ
 //     386.387と386.sse2のビルドタグを設定します。
 //   - GOARCH=amd64の場合、GOAMD64=v1、v2、v3はそれぞれ
@@ -1800,6 +1801,34 @@
 //     とriscv64.rva22u64のビルドタグに対応します。
 //   - GOARCH=wasmの場合、GOWASM=satconvとsignextはそれぞれ
 //     wasm.satconvとwasm.signextの機能ビルドタグに対応します。
+=======
+//   - For GOARCH=386, GO386=387 and GO386=sse2
+//     set the 386.387 and 386.sse2 build tags, respectively.
+//   - For GOARCH=amd64, GOAMD64=v1, v2, and v3
+//     correspond to the amd64.v1, amd64.v2, and amd64.v3 feature build tags.
+//   - For GOARCH=arm, GOARM=5, 6, and 7
+//     correspond to the arm.5, arm.6, and arm.7 feature build tags.
+//   - For GOARCH=arm64, GOARM64=v8.{0-9} and v9.{0-5}
+//     correspond to the arm64.v8.{0-9} and arm64.v9.{0-5} feature build tags.
+//   - For GOARCH=mips or mipsle,
+//     GOMIPS=hardfloat and softfloat
+//     correspond to the mips.hardfloat and mips.softfloat
+//     (or mipsle.hardfloat and mipsle.softfloat) feature build tags.
+//   - For GOARCH=mips64 or mips64le,
+//     GOMIPS64=hardfloat and softfloat
+//     correspond to the mips64.hardfloat and mips64.softfloat
+//     (or mips64le.hardfloat and mips64le.softfloat) feature build tags.
+//   - For GOARCH=ppc64 or ppc64le,
+//     GOPPC64=power8, power9, and power10 correspond to the
+//     ppc64.power8, ppc64.power9, and ppc64.power10
+//     (or ppc64le.power8, ppc64le.power9, and ppc64le.power10)
+//     feature build tags.
+//   - For GOARCH=riscv64,
+//     GORISCV64=rva20u64 and rva22u64 correspond to the riscv64.rva20u64
+//     and riscv64.rva22u64 build tags.
+//   - For GOARCH=wasm, GOWASM=satconv and signext
+//     correspond to the wasm.satconv and wasm.signext feature build tags.
+>>>>>>> upstream/master
 //
 // GOARCH=amd64、arm、ppc64、ppc64le、riscv64の場合、特定の機能レベルは
 // すべての前のレベルの機能ビルドタグも設定します。
@@ -2044,10 +2073,24 @@
 // アーキテクチャ固有の環境変数:
 //
 //	GOARM
+<<<<<<< HEAD
 //		GOARCH=armの場合、コンパイルするARMアーキテクチャ。
 //		有効な値は5、6、7です。
 //		値の後には、浮動小数点命令の実装方法を指定するオプションを続けることができます。
 //		有効なオプションは、softfloat（5のデフォルト）とhardfloat（6と7のデフォルト）です。
+=======
+//		For GOARCH=arm, the ARM architecture for which to compile.
+//		Valid values are 5, 6, 7.
+//		The value can be followed by an option specifying how to implement floating point instructions.
+//		Valid options are ,softfloat (default for 5) and ,hardfloat (default for 6 and 7).
+//	GOARM64
+//		For GOARCH=arm64, the ARM64 architecture for which to compile.
+//		Valid values are v8.0 (default), v8.{1-9}, v9.{0-5}.
+//		The value can be followed by an option specifying extensions implemented by target hardware.
+//		Valid options are ,lse and ,crypto.
+//		Note that some extensions are enabled by default starting from a certain GOARM64 version;
+//		for example, lse is enabled by default starting from v8.1.
+>>>>>>> upstream/master
 //	GO386
 //		GOARCH=386の場合、浮動小数点命令の実装方法。
 //		有効な値はsse2（デフォルト）、softfloatです。
@@ -2798,7 +2841,12 @@
 // 以下のフラグも 'go test' によって認識され、実行中のテストをプロファイルするために使用できます:
 //
 //	-benchmem
+<<<<<<< HEAD
 //	    ベンチマークのメモリ割り当て統計を出力します。
+=======
+//	    Print memory allocation statistics for benchmarks.
+//	    Allocations made in C or using C.malloc are not counted.
+>>>>>>> upstream/master
 //
 //	-blockprofile block.out
 //	    すべてのテストが完了したときに、指定されたファイルにゴルーチンのブロックプロファイルを書き込みます。

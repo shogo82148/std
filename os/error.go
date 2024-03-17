@@ -10,7 +10,12 @@ import (
 
 // 一部の一般的なシステムコールエラーのポータブルな代替です。
 //
+<<<<<<< HEAD
 // このパッケージから返されるエラーは、errors.Is によってこれらのエラーと比較されることがあります。
+=======
+// Errors returned from this package may be tested against these errors
+// with [errors.Is].
+>>>>>>> upstream/master
 var (
 
 	// ErrInvalidは無効な引数を示します。
@@ -42,6 +47,7 @@ func (e *SyscallError) Unwrap() error
 // Timeoutは、このエラーがタイムアウトを表すかどうかを報告します。
 func (e *SyscallError) Timeout() bool
 
+<<<<<<< HEAD
 // NewSyscallErrorは、指定されたシステムコール名とエラーの詳細を持つ新しいSyscallErrorをエラーとして返します。
 // 便利な機能として、errがnilの場合、NewSyscallErrorはnilを返します。
 func NewSyscallError(syscall string, err error) error
@@ -59,11 +65,48 @@ func IsNotExist(err error) bool
 //
 // この関数はerrors.Isより前に存在しています。この関数はosパッケージが返すエラーのみをサポートしています。
 // 新しいコードではerrors.Is(err、fs.ErrPermission)を使用するべきです。
+=======
+// NewSyscallError returns, as an error, a new [SyscallError]
+// with the given system call name and error details.
+// As a convenience, if err is nil, NewSyscallError returns nil.
+func NewSyscallError(syscall string, err error) error
+
+// IsExist returns a boolean indicating whether the error is known to report
+// that a file or directory already exists. It is satisfied by [ErrExist] as
+// well as some syscall errors.
+//
+// This function predates [errors.Is]. It only supports errors returned by
+// the os package. New code should use errors.Is(err, fs.ErrExist).
+func IsExist(err error) bool
+
+// IsNotExist returns a boolean indicating whether the error is known to
+// report that a file or directory does not exist. It is satisfied by
+// [ErrNotExist] as well as some syscall errors.
+//
+// This function predates [errors.Is]. It only supports errors returned by
+// the os package. New code should use errors.Is(err, fs.ErrNotExist).
+func IsNotExist(err error) bool
+
+// IsPermission returns a boolean indicating whether the error is known to
+// report that permission is denied. It is satisfied by [ErrPermission] as well
+// as some syscall errors.
+//
+// This function predates [errors.Is]. It only supports errors returned by
+// the os package. New code should use errors.Is(err, fs.ErrPermission).
+>>>>>>> upstream/master
 func IsPermission(err error) bool
 
 // IsTimeoutは、エラーがタイムアウトが発生したことを報告することを示すかどうかを示すブール値を返します。
 //
+<<<<<<< HEAD
 // この関数は、errors.Isやエラーがタイムアウトを示すかどうかの概念よりも前から存在しています。たとえば、UnixのエラーコードEWOULDBLOCKは、
 // タイムアウトを示す場合と示さない場合があります。新しいコードでは、os.ErrDeadlineExceededなど、エラーが発生した呼び出しに適切な値を使用して
 // errors.Isを使用するべきです。
+=======
+// This function predates [errors.Is], and the notion of whether an
+// error indicates a timeout can be ambiguous. For example, the Unix
+// error EWOULDBLOCK sometimes indicates a timeout and sometimes does not.
+// New code should use errors.Is with a value appropriate to the call
+// returning the error, such as [os.ErrDeadlineExceeded].
+>>>>>>> upstream/master
 func IsTimeout(err error) bool

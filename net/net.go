@@ -39,6 +39,7 @@ Unixシステムでは、名前を解決するための2つのオプションが
 /etc/resolv.confにリストされているサーバーに直接DNSリクエストを送信する純粋なGoリゾルバを使用するか、
 getaddrinfoやgetnameinfoなどのCライブラリのルーチンを呼び出すcgoベースのリゾルバを使用するか、です。
 
+<<<<<<< HEAD
 Unixでは、ブロックされたDNSリクエストがゴルーチンだけを消費するのに対し、
 ブロックされたC呼び出しがオペレーティングシステムのスレッドを消費するため、
 純粋なGoリゾルバがcgoリゾルバよりも優先されます。
@@ -49,6 +50,17 @@ RES_OPTIONSまたはHOSTALIASES環境変数が空でない場合、
 ASR_CONFIG環境変数が空でない場合（OpenBSDのみ）、
 /etc/resolv.confまたは/etc/nsswitch.confがGoリゾルバが実装していない機能の使用を指定している場合、
 および、検索される名前が.localで終わるか、mDNS名である場合。
+=======
+On Unix the pure Go resolver is preferred over the cgo resolver, because a blocked DNS
+request consumes only a goroutine, while a blocked C call consumes an operating system thread.
+When cgo is available, the cgo-based resolver is used instead under a variety of
+conditions: on systems that do not let programs make direct DNS requests (OS X),
+when the LOCALDOMAIN environment variable is present (even if empty),
+when the RES_OPTIONS or HOSTALIASES environment variable is non-empty,
+when the ASR_CONFIG environment variable is non-empty (OpenBSD only),
+when /etc/resolv.conf or /etc/nsswitch.conf specify the use of features that the
+Go resolver does not implement.
+>>>>>>> upstream/master
 
 すべてのシステム（Plan 9を除く）で、cgoリゾルバが使用されている場合、
 このパッケージは並行cgoルックアップ制限を適用して、システムがシステムスレッドを使い果たすのを防ぎます。

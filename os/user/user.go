@@ -49,22 +49,41 @@ type Group struct {
 	Name string
 }
 
+<<<<<<< HEAD
 // UnknownUserIdErrorは、ユーザーが見つからない場合にLookupIdによって返されるエラーです。
+=======
+// UnknownUserIdError is returned by [LookupId] when a user cannot be found.
+>>>>>>> upstream/master
 type UnknownUserIdError int
 
 func (e UnknownUserIdError) Error() string
 
+<<<<<<< HEAD
 // UnknownUserErrorは、ユーザーが見つからない場合にLookupによって返されるエラーです。
+=======
+// UnknownUserError is returned by [Lookup] when
+// a user cannot be found.
+>>>>>>> upstream/master
 type UnknownUserError string
 
 func (e UnknownUserError) Error() string
 
+<<<<<<< HEAD
 // UnknownGroupIdErrorは、グループが見つからない場合にLookupGroupIdによって返されるエラーです。
+=======
+// UnknownGroupIdError is returned by [LookupGroupId] when
+// a group cannot be found.
+>>>>>>> upstream/master
 type UnknownGroupIdError string
 
 func (e UnknownGroupIdError) Error() string
 
+<<<<<<< HEAD
 // UnknownGroupErrorは、グループが見つからない場合にLookupGroupによって返されるエラーです。
+=======
+// UnknownGroupError is returned by [LookupGroup] when
+// a group cannot be found.
+>>>>>>> upstream/master
 type UnknownGroupError string
 
 func (e UnknownGroupError) Error() string

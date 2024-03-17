@@ -87,9 +87,16 @@ type Transport struct {
 	// Proxyは、指定されたRequestに対するプロキシを返す関数を指定します。
 	// 関数が非nilのエラーを返す場合、リクエストは提供されたエラーで中止されます。
 	//
+<<<<<<< HEAD
 	// プロキシのタイプは、URLスキームによって決定されます。
 	// "http"、"https"、および"socks5"がサポートされています。
 	// スキームが空の場合、"http"が想定されます。
+=======
+	// The proxy type is determined by the URL scheme. "http",
+	// "https", "socks5", and "socks5h" are supported. If the scheme is empty,
+	// "http" is assumed.
+	// "socks5" is treated the same as "socks5h".
+>>>>>>> upstream/master
 	//
 	// プロキシURLにuserinfoサブコンポーネントが含まれている場合、
 	// プロキシリクエストはProxy-Authorizationヘッダーでユーザー名とパスワードを渡します。
@@ -239,9 +246,15 @@ func (t *Transport) Clone() *Transport
 // 指定されたリクエストに使用するプロキシのURLを返します。
 // リクエストは、NO_PROXYによって除外されていない限り、スキームに一致する環境変数からプロキシを使用します。
 //
+<<<<<<< HEAD
 // 環境値は、完全なURLまたは"host[:port]"のいずれかである場合があります。この場合、"http"スキームが想定されます。
 // スキーム"http"、"https"、および"socks5"がサポートされています。
 // 値が異なる形式の場合は、エラーが返されます。
+=======
+// The environment values may be either a complete URL or a
+// "host[:port]", in which case the "http" scheme is assumed.
+// An error is returned if the value is a different form.
+>>>>>>> upstream/master
 //
 // 環境変数でプロキシが定義されていない場合、またはNO_PROXYによって指定されたリクエストにプロキシを使用しない場合、
 // nilのURLとnilのエラーが返されます。

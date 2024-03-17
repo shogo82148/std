@@ -4,8 +4,15 @@
 
 // パッケージpprofは、pprof可視化ツールが期待する形式で実行時プロファイリングデータをHTTPサーバー経由で提供します。
 //
+<<<<<<< HEAD
 // このパッケージは通常、そのHTTPハンドラを登録する副作用のためにのみインポートされます。
 // ハンドルされるパスはすべて/debug/pprof/で始まります。
+=======
+// The package is typically only imported for the side effect of
+// registering its HTTP handlers.
+// The handled paths all begin with /debug/pprof/.
+// As of Go 1.22, all the paths must be requested with GET.
+>>>>>>> upstream/master
 //
 // pprofを使用するためには、このパッケージをプログラムにリンクしてください：
 //

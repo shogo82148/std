@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 // Package osは、オペレーティングシステムの機能に対するプラットフォーム非依存のインターフェースを提供します。
 // 設計はUnixライクですが、エラーハンドリングはGoのようです。失敗する呼び出しは、エラーナンバーではなくエラー型の値を返します。
 // エラーには、より詳細な情報が含まれることがよくあります。たとえば、ファイル名を受け取る呼び出し（OpenやStatなど）が失敗する場合、
@@ -9,6 +10,15 @@
 // osインターフェースは、すべてのオペレーティングシステムで統一されたものとすることを意図しています。
 // 一般的に利用できない機能は、システム固有のパッケージsyscallに現れます。
 // 以下に、ファイルを開いて一部を読み込む簡単な例を示します。
+=======
+// Package os provides a platform-independent interface to operating system
+// functionality. The design is Unix-like, although the error handling is
+// Go-like; failing calls return values of type error rather than error numbers.
+// Often, more information is available within the error. For example,
+// if a call that takes a file name fails, such as [Open] or [Stat], the error
+// will include the failing file name when printed and will be of type
+// [*PathError], which may be unpacked for more information.
+>>>>>>> upstream/master
 //
 //	file, err := os.Open("file.go") // 読み込みアクセス用。
 //	if err != nil {

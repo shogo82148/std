@@ -13,12 +13,23 @@ import (
 // その二つ目の型はエラーです。その場合、もし二つ目の（エラー）戻り値が実行中に非nilに評価された場合、
 // 実行は終了し、Executeはそのエラーを返します。
 //
+<<<<<<< HEAD
 // Executeによって返されるエラーは、基礎となるエラーをラップします。それらをアンラップするには、errors.Asを呼び出します。
 //
 // テンプレートの実行が引数リストを持つ関数を呼び出すとき、そのリストは
 // 関数のパラメータタイプに割り当て可能でなければなりません。任意のタイプの引数に適用することを意図した
 // 関数は、interface{}型またはreflect.Value型のパラメータを使用できます。同様に、任意の
 // タイプの結果を返すことを意図した関数は、interface{}またはreflect.Valueを返すことができます。
+=======
+// Errors returned by Execute wrap the underlying error; call [errors.As] to
+// unwrap them.
+//
+// When template execution invokes a function with an argument list, that list
+// must be assignable to the function's parameter types. Functions meant to
+// apply to arguments of arbitrary type can use parameters of type interface{} or
+// of type [reflect.Value]. Similarly, functions meant to return a result of arbitrary
+// type can return interface{} or [reflect.Value].
+>>>>>>> upstream/master
 type FuncMap map[string]any
 
 // HTMLEscapeは、プレーンテキストデータbのエスケープされたHTML相当をwに書き込みます。

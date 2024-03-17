@@ -33,7 +33,8 @@ type Sym interface {
 // A Var represents a local variable or a function parameter.
 type Var struct {
 	Name          string
-	Abbrev        int
+	Tag           int
+	WithLoclist   bool
 	IsReturnValue bool
 	IsInlFormal   bool
 	DictIndex     uint16
@@ -49,6 +50,7 @@ type Var struct {
 	InlIndex        int32
 	ChildIndex      int32
 	IsInAbstract    bool
+	ClosureOffset   int64
 }
 
 // A Scope represents a lexical scope. All variables declared within a
@@ -167,8 +169,9 @@ const (
 	DW_AT_go_embedded_field = 0x2903
 	DW_AT_go_runtime_type   = 0x2904
 
-	DW_AT_go_package_name = 0x2905
-	DW_AT_go_dict_index   = 0x2906
+	DW_AT_go_package_name   = 0x2905
+	DW_AT_go_dict_index     = 0x2906
+	DW_AT_go_closure_offset = 0x2907
 
 	DW_AT_internal_location = 253
 )
@@ -187,16 +190,6 @@ const (
 	DW_ABRV_INLINED_SUBROUTINE_RANGES
 	DW_ABRV_VARIABLE
 	DW_ABRV_INT_CONSTANT
-	DW_ABRV_AUTO
-	DW_ABRV_AUTO_LOCLIST
-	DW_ABRV_AUTO_ABSTRACT
-	DW_ABRV_AUTO_CONCRETE
-	DW_ABRV_AUTO_CONCRETE_LOCLIST
-	DW_ABRV_PARAM
-	DW_ABRV_PARAM_LOCLIST
-	DW_ABRV_PARAM_ABSTRACT
-	DW_ABRV_PARAM_CONCRETE
-	DW_ABRV_PARAM_CONCRETE_LOCLIST
 	DW_ABRV_LEXICAL_BLOCK_RANGES
 	DW_ABRV_LEXICAL_BLOCK_SIMPLE
 	DW_ABRV_STRUCTFIELD
@@ -217,7 +210,7 @@ const (
 	DW_ABRV_STRUCTTYPE
 	DW_ABRV_TYPEDECL
 	DW_ABRV_DICT_INDEX
-	DW_NABRV
+	DW_ABRV_PUTVAR_START
 )
 
 // Abbrevs returns the finalized abbrev array for the platform,

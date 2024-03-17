@@ -33,6 +33,7 @@ const (
 	SkipFuncCheck
 )
 
+<<<<<<< HEAD
 // CopyはTreeのコピーを返します。パース状態は破棄されます。
 func (t *Tree) Copy() *Tree
 
@@ -40,6 +41,15 @@ func (t *Tree) Copy() *Tree
 // テンプレート名からparse.Treeへのマップを返します。トップレベルのテンプレートには
 // 指定された名前が付けられます。エラーが発生した場合、解析は停止し、
 // エラーと共に空のマップが返されます。
+=======
+// Copy returns a copy of the [Tree]. Any parsing state is discarded.
+func (t *Tree) Copy() *Tree
+
+// Parse returns a map from template name to [Tree], created by parsing the
+// templates described in the argument string. The top-level template will be
+// given the specified name. If an error is encountered, parsing stops and an
+// empty map is returned with the error.
+>>>>>>> upstream/master
 func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]any) (map[string]*Tree, error)
 
 // Newは、指定された名前を持つ新しいパースツリーを割り当てます。

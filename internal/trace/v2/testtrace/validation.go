@@ -13,6 +13,7 @@ type Validator struct {
 	ranges   map[trace.ResourceID][]string
 	tasks    map[trace.TaskID]string
 	seenSync bool
+	Go121    bool
 }
 
 // NewValidator creates a new Validator.

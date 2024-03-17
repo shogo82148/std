@@ -140,6 +140,27 @@ func (h *Header) FileInfo() fs.FileInfo
 // fiがシンボリックリンクを記述している場合、FileInfoHeaderはlinkをリンクターゲットとして記録します。
 // fiがディレクトリを記述している場合、名前にスラッシュが追加されます。
 //
+<<<<<<< HEAD
 // fs.FileInfoのNameメソッドは、それが記述するファイルのベース名のみを返すため、
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要があるかもしれません。
+=======
+// Since fs.FileInfo's Name method only returns the base name of
+// the file it describes, it may be necessary to modify Header.Name
+// to provide the full path name of the file.
+//
+// If fi implements [FileInfoNames]
+// Header.Gname and Header.Uname
+// are provided by the methods of the interface.
+>>>>>>> upstream/master
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
+
+// FileInfoNames extends [fs.FileInfo].
+// Passing an instance of this to [FileInfoHeader] permits the caller
+// to avoid a system-dependent name lookup by specifying the Uname and Gname directly.
+type FileInfoNames interface {
+	fs.FileInfo
+
+	Uname() (string, error)
+
+	Gname() (string, error)
+}

@@ -194,8 +194,13 @@ func RedirectHandler(url string, code int) Handler
 //
 //	[METHOD][HOST]/[PATH]
 //
+<<<<<<< HEAD
 // すべての3つの部分はオプションです。"/" は有効なパターンです。
 // METHODが存在する場合、後に単一のスペースが続く必要があります。
+=======
+// All three parts are optional; "/" is a valid pattern.
+// If METHOD is present, it must be followed by at least one space or tab.
+>>>>>>> upstream/master
 //
 // パターンのリテラル（ワイルドカードでない）部分は、リクエストの対応する部分と大文字小文字を区別して一致します。
 //
@@ -225,6 +230,7 @@ func RedirectHandler(url string, code int) Handler
 //
 // # Precedence
 //
+<<<<<<< HEAD
 // リクエストに2つ以上のパターンが一致する場合、最も具体的なパターンが優先されます。
 // パターンP1がパターンP2よりも具体的である場合、P1はP2のリクエストの厳密なサブセットに一致するためです。
 // つまり、P2はP1のすべてのリクエストとそれ以上に一致します。
@@ -232,6 +238,17 @@ func RedirectHandler(url string, code int) Handler
 // 1つの例外があります。後方互換性のために：
 // 2つのパターンが競合し、1つがホストを持っている場合、もう1つがホストを持っていない場合、ホストを持つパターンが優先されます。
 // [ServeMux.Handle] または [ServeMux.HandleFunc] で渡されたパターンが、すでに登録されている別のパターンと競合する場合、これらの関数はパニックを発生させます。
+=======
+// If two or more patterns match a request, then the most specific pattern takes precedence.
+// A pattern P1 is more specific than P2 if P1 matches a strict subset of P2’s requests;
+// that is, if P2 matches all the requests of P1 and more.
+// If neither is more specific, then the patterns conflict.
+// There is one exception to this rule, for backwards compatibility:
+// if two patterns would otherwise conflict and one has a host while the other does not,
+// then the pattern with the host takes precedence.
+// If a pattern passed to [ServeMux.Handle] or [ServeMux.HandleFunc] conflicts with
+// another pattern that is already registered, those functions panic.
+>>>>>>> upstream/master
 //
 // 一般的なルールの例として、"/images/thumbnails/"は"/images/"よりも具体的であり、両方とも登録できます。
 // 前者は"/images/thumbnails/"で始まるパスに一致し、後者は"/images/"サブツリー内の他のパスに一致します。

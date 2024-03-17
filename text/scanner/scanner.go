@@ -7,9 +7,16 @@
 // 既存のツールとの互換性のため、NUL文字は許可されていません。ソースの最初の文字が
 // UTF-8エンコードされたバイトオーダーマーク（BOM）である場合、それは破棄されます。
 //
+<<<<<<< HEAD
 // デフォルトでは、Scannerは空白とGoのコメントをスキップし、Go言語仕様によって定義されたすべての
 // リテラルを認識します。それは、それらのリテラルの一部のみを認識し、異なる識別子と空白文字を認識するように
 // カスタマイズすることができます。
+=======
+// By default, a [Scanner] skips white space and Go comments and recognizes all
+// literals as defined by the Go language specification. It may be
+// customized to recognize only a subset of those literals and to recognize
+// different identifier and white space characters.
+>>>>>>> upstream/master
 package scanner
 
 import (
@@ -31,6 +38,7 @@ func (pos *Position) IsValid() bool
 
 func (pos Position) String() string
 
+<<<<<<< HEAD
 // トークンの認識を制御するための事前定義されたモードビット。
 // 例えば、(Goの)識別子と整数のみを認識し、コメントをスキップするように
 // Scannerを設定するには、ScannerのModeフィールドを次のように設定します:
@@ -42,6 +50,19 @@ func (pos Position) String() string
 // それぞれの個々の文字（または可能性のあるサブトークン）を返します。
 // 例えば、モードがScanIdents（ScanStringsではない）の場合、文字列
 // "foo"はトークンシーケンス '"' Ident '"'としてスキャンされます。
+=======
+// Predefined mode bits to control recognition of tokens. For instance,
+// to configure a [Scanner] such that it only recognizes (Go) identifiers,
+// integers, and skips comments, set the Scanner's Mode field to:
+//
+//	ScanIdents | ScanInts | SkipComments
+//
+// With the exceptions of comments, which are skipped if SkipComments is
+// set, unrecognized tokens are not ignored. Instead, the scanner simply
+// returns the respective individual characters (or possibly sub-tokens).
+// For instance, if the mode is ScanIdents (not ScanStrings), the string
+// "foo" is scanned as the token sequence '"' [Ident] '"'.
+>>>>>>> upstream/master
 //
 // GoTokensを使用してScannerを設定すると、Goの識別子を含むすべてのGoリテラルトークンが受け入れられます。
 // コメントはスキップされます。
@@ -72,11 +93,19 @@ const (
 // TokenStringは、トークンまたはUnicode文字の印刷可能な文字列を返します。
 func TokenString(tok rune) string
 
+<<<<<<< HEAD
 // GoWhitespaceは、ScannerのWhitespaceフィールドのデフォルト値です。
 // その値はGoの空白文字を選択します。
 const GoWhitespace = 1<<'\t' | 1<<'\n' | 1<<'\r' | 1<<' '
 
 // Scannerは、io.ReaderからのUnicode文字とトークンの読み取りを実装します。
+=======
+// GoWhitespace is the default value for the [Scanner]'s Whitespace field.
+// Its value selects Go's white space characters.
+const GoWhitespace = 1<<'\t' | 1<<'\n' | 1<<'\r' | 1<<' '
+
+// A Scanner implements reading of Unicode characters and tokens from an [io.Reader].
+>>>>>>> upstream/master
 type Scanner struct {
 	// Input
 	src io.Reader
@@ -136,6 +165,7 @@ type Scanner struct {
 	Position
 }
 
+<<<<<<< HEAD
 // Initは新しいソースでScannerを初期化し、sを返します。
 // Errorはnilに設定され、ErrorCountは0に設定され、ModeはGoTokensに設定され、
 // WhitespaceはGoWhitespaceに設定されます。
@@ -165,4 +195,39 @@ func (s *Scanner) Pos() (pos Position)
 
 // TokenTextは、最近スキャンされたトークンに対応する文字列を返します。
 // Scanの呼び出し後、およびScanner.Errorの呼び出し中に有効です。
+=======
+// Init initializes a [Scanner] with a new source and returns s.
+// [Scanner.Error] is set to nil, [Scanner.ErrorCount] is set to 0, [Scanner.Mode] is set to [GoTokens],
+// and [Scanner.Whitespace] is set to [GoWhitespace].
+func (s *Scanner) Init(src io.Reader) *Scanner
+
+// Next reads and returns the next Unicode character.
+// It returns [EOF] at the end of the source. It reports
+// a read error by calling s.Error, if not nil; otherwise
+// it prints an error message to [os.Stderr]. Next does not
+// update the [Scanner.Position] field; use [Scanner.Pos]() to
+// get the current position.
+func (s *Scanner) Next() rune
+
+// Peek returns the next Unicode character in the source without advancing
+// the scanner. It returns [EOF] if the scanner's position is at the last
+// character of the source.
+func (s *Scanner) Peek() rune
+
+// Scan reads the next token or Unicode character from source and returns it.
+// It only recognizes tokens t for which the respective [Scanner.Mode] bit (1<<-t) is set.
+// It returns [EOF] at the end of the source. It reports scanner errors (read and
+// token errors) by calling s.Error, if not nil; otherwise it prints an error
+// message to [os.Stderr].
+func (s *Scanner) Scan() rune
+
+// Pos returns the position of the character immediately after
+// the character or token returned by the last call to [Scanner.Next] or [Scanner.Scan].
+// Use the [Scanner.Position] field for the start position of the most
+// recently scanned token.
+func (s *Scanner) Pos() (pos Position)
+
+// TokenText returns the string corresponding to the most recently scanned token.
+// Valid after calling [Scanner.Scan] and in calls of [Scanner.Error].
+>>>>>>> upstream/master
 func (s *Scanner) TokenText() string

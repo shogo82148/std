@@ -5,9 +5,10 @@
 // Package safefilepath manipulates operating-system file paths.
 package safefilepath
 
-// FromFS converts a slash-separated path into an operating-system path.
+// Localize is filepath.Localize.
 //
-// FromFS returns an error if the path cannot be represented by the operating
-// system. For example, paths containing '\' and ':' characters are rejected
-// on Windows.
-func FromFS(path string) (string, error)
+// It is implemented in this package to avoid a dependency cycle
+// between os and file/filepath.
+//
+// Tests for this function are in path/filepath.
+func Localize(path string) (string, error)

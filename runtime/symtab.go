@@ -9,7 +9,14 @@ type Frames struct {
 	// callersはまだフレームに展開されていないPCのスライスです。
 	callers []uintptr
 
+<<<<<<< HEAD
 	// frames はまだ返却されていない Frames のスライスです。
+=======
+	// nextPC is a next PC to expand ahead of processing callers.
+	nextPC uintptr
+
+	// frames is a slice of Frames that have yet to be returned.
+>>>>>>> upstream/master
 	frames     []Frame
 	frameStore [2]Frame
 }

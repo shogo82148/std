@@ -54,10 +54,34 @@ func Clean(path string) string
 // 特に、ファイルシステムに存在する可能性のあるシンボリックリンクの影響は考慮されません。
 func IsLocal(path string) bool
 
+<<<<<<< HEAD
 // ToSlashは、パス内の各区切り文字をスラッシュ('/')文字で置き換えた結果を返します。複数の区切り文字は複数のスラッシュに置き換えられます。
 func ToSlash(path string) string
 
 // FromSlash はスラッシュ（'/'）文字を区切り文字で置き換えた結果を返します。複数のスラッシュは複数の区切り文字に置き換えられます。
+=======
+// Localize converts a slash-separated path into an operating system path.
+// The input path must be a valid path as reported by [io/fs.ValidPath].
+//
+// Localize returns an error if the path cannot be represented by the operating system.
+// For example, the path a\b is rejected on Windows, on which \ is a separator
+// character and cannot be part of a filename.
+//
+// The path returned by Localize will always be local, as reported by IsLocal.
+func Localize(path string) (string, error)
+
+// ToSlash returns the result of replacing each separator character
+// in path with a slash ('/') character. Multiple separators are
+// replaced by multiple slashes.
+func ToSlash(path string) string
+
+// FromSlash returns the result of replacing each slash ('/') character
+// in path with a separator character. Multiple slashes are replaced
+// by multiple separators.
+//
+// See also the Localize function, which converts a slash-separated path
+// as used by the io/fs package to an operating system path.
+>>>>>>> upstream/master
 func FromSlash(path string) string
 
 // SplitListは、OS固有の [ListSeparator] で結合されたパスのリストを分割します。

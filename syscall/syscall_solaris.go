@@ -72,7 +72,7 @@ func Gethostname() (name string, err error)
 
 func UtimesNano(path string, ts []Timespec) error
 
-// FcntlFlock performs a fcntl syscall for the F_GETLK, F_SETLK or F_SETLKW command.
+// FcntlFlock performs a fcntl syscall for the [F_GETLK], [F_SETLK] or [F_SETLKW] command.
 func FcntlFlock(fd uintptr, cmd int, lk *Flock_t) error
 
 func Accept(fd int) (nfd int, sa Sockaddr, err error)

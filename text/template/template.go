@@ -8,9 +8,15 @@ import (
 	"github.com/shogo82148/std/text/template/parse"
 )
 
+<<<<<<< HEAD
 // Templateは、解析されたテンプレートの表現です。*parse.Tree
 // フィールドは、html/templateによる使用のためだけにエクスポートされており、
 // 他のすべてのクライアントによって未エクスポートとして扱われるべきです。
+=======
+// Template is the representation of a parsed template. The *parse.Tree
+// field is exported only for use by [html/template] and should be treated
+// as unexported by all other clients.
+>>>>>>> upstream/master
 type Template struct {
 	name string
 	*parse.Tree
@@ -34,11 +40,20 @@ func (t *Template) Name() string
 // 実行することができます。
 func (t *Template) New(name string) *Template
 
+<<<<<<< HEAD
 // Cloneは、関連付けられたすべてのテンプレートを含むテンプレートの複製を返します。
 // 実際の表現はコピーされませんが、関連付けられたテンプレートの名前空間はコピーされるため、
 // コピーでのさらなるParseの呼び出しは、コピーにテンプレートを追加しますが、元のテンプレートには追加しません。
 // Cloneは、共通のテンプレートを準備し、それらを他のテンプレートのバリアント定義とともに使用するために、
 // クローン作成後にバリアントを追加することで使用できます。
+=======
+// Clone returns a duplicate of the template, including all associated
+// templates. The actual representation is not copied, but the name space of
+// associated templates is, so further calls to [Template.Parse] in the copy will add
+// templates to the copy but not to the original. Clone can be used to prepare
+// common templates and use them with variant definitions for other templates
+// by adding the variants after the clone is made.
+>>>>>>> upstream/master
 func (t *Template) Clone() (*Template, error)
 
 // AddParseTreeは、引数のパースツリーをテンプレートtに関連付け、
@@ -51,11 +66,19 @@ func (t *Template) AddParseTree(name string, tree *parse.Tree) (*Template, error
 // Templatesは、tに関連付けられた定義済みテンプレートのスライスを返します。
 func (t *Template) Templates() []*Template
 
+<<<<<<< HEAD
 // Delimsは、指定された文字列にアクションデリミタを設定します。これは、
 // その後のParse、ParseFiles、またはParseGlobへの呼び出しで使用されます。
 // ネストしたテンプレート定義はこの設定を継承します。空のデリミタは、
 // 対応するデフォルト（{{または}}）を表します。
 // 戻り値はテンプレートなので、呼び出しはチェーンできます。
+=======
+// Delims sets the action delimiters to the specified strings, to be used in
+// subsequent calls to [Template.Parse], [Template.ParseFiles], or [Template.ParseGlob]. Nested template
+// definitions will inherit the settings. An empty delimiter stands for the
+// corresponding default: {{ or }}.
+// The return value is the template, so calls can be chained.
+>>>>>>> upstream/master
 func (t *Template) Delims(left, right string) *Template
 
 // Funcsは、引数のマップの要素をテンプレートの関数マップに追加します。

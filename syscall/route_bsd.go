@@ -48,13 +48,13 @@ type InterfaceAddrMessage struct {
 }
 
 // ParseRoutingMessage parses b as routing messages and returns the
-// slice containing the RoutingMessage interfaces.
+// slice containing the [RoutingMessage] interfaces.
 //
 // Deprecated: Use golang.org/x/net/route instead.
 func ParseRoutingMessage(b []byte) (msgs []RoutingMessage, err error)
 
 // ParseRoutingSockaddr parses msg's payload as raw sockaddrs and
-// returns the slice containing the Sockaddr interfaces.
+// returns the slice containing the [Sockaddr] interfaces.
 //
 // Deprecated: Use golang.org/x/net/route instead.
 func ParseRoutingSockaddr(msg RoutingMessage) ([]Sockaddr, error)

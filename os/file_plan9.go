@@ -8,10 +8,19 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+<<<<<<< HEAD
 // Fdは、開かれたファイルを参照する整数型のPlan 9ファイルディスクリプタを返します。
 // fがクローズされると、ファイルディスクリプタは無効になります。
 // fがガベージコレクションされると、ファイルディスクリプタをクローズするファイナライザが実行される可能性があります。
 // この場合、ランタイムのSetFinalizerに関する詳細は、ファイナライザがいつ実行されるかについての情報を参照してください。Unixシステムでは、これによってSetDeadlineメソッドが動作しなくなります。
+=======
+// Fd returns the integer Plan 9 file descriptor referencing the open file.
+// If f is closed, the file descriptor becomes invalid.
+// If f is garbage collected, a finalizer may close the file descriptor,
+// making it invalid; see [runtime.SetFinalizer] for more information on when
+// a finalizer might be run. On Unix systems this will cause the [File.SetDeadline]
+// methods to stop working.
+>>>>>>> upstream/master
 //
 // 代替案として、f.SyscallConnメソッドを参照してください。
 func (f *File) Fd() uintptr

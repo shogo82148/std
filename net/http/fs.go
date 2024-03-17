@@ -14,7 +14,13 @@ import (
 
 // Dirは、特定のディレクトリツリーに制限されたネイティブファイルシステムを使用して [FileSystem] を実装します。
 //
+<<<<<<< HEAD
 // [FileSystem.Open] メソッドは'/'で区切られたパスを取りますが、Dirの文字列値はURLではなくネイティブファイルシステム上のファイル名であるため、[filepath.Separator] で区切られます。これは必ずしも'/'ではありません。
+=======
+// While the [FileSystem.Open] method takes '/'-separated paths, a Dir's string
+// value is a directory path on the native file system, not a URL, so it is separated
+// by [filepath.Separator], which isn't necessarily '/'.
+>>>>>>> upstream/master
 //
 // Dirは、機密ファイルやディレクトリを公開する可能性があります。Dirは、ディレクトリツリーから外部を指すシンボリックリンクを追跡します。これは、ユーザーが任意のシンボリックリンクを作成できるディレクトリからサービスを提供する場合に特に危険です。Dirは、ピリオドで始まるファイルやディレクトリにもアクセスを許可します。これには、.gitのような機密ディレクトリや.htpasswdのような機密ファイルが含まれます。ピリオドで始まるファイルを除外するには、ファイル/ディレクトリをサーバーから削除するか、カスタムFileSystem実装を作成してください。
 //

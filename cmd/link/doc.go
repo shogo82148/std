@@ -42,6 +42,8 @@
 		C/C++アドレスサニタイザーサポートとリンクします。
 	-aslr
 		Enable ASLR for buildmode=c-shared on windows (default true).
+	-bindnow
+		Mark a dynamically linked ELF object for immediate function binding (default false).
 	-buildid id
 		GoツールチェインのビルドIDとしてidを記録します。
 	-buildmode mode

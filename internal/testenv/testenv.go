@@ -90,6 +90,11 @@ func CanInternalLink(withCgo bool) bool
 // If not, MustInternalLink calls t.Skip with an explanation.
 func MustInternalLink(t testing.TB, withCgo bool)
 
+// MustInternalLinkPIE checks whether the current system can link PIE binary using
+// internal linking.
+// If not, MustInternalLinkPIE calls t.Skip with an explanation.
+func MustInternalLinkPIE(t testing.TB)
+
 // MustHaveBuildMode reports whether the current system can build programs in
 // the given build mode.
 // If not, MustHaveBuildMode calls t.Skip with an explanation.

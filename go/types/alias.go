@@ -14,6 +14,7 @@ package types
 // 実際の（エイリアスされた）型を直接指します。
 type Alias struct {
 	obj     *TypeName
+	tparams *TypeParamList
 	fromRHS Type
 	actual  Type
 }
