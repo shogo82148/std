@@ -6,10 +6,13 @@ package types
 
 // AlgKind describes the kind of algorithms used for comparing and
 // hashing a Type.
-type AlgKind int
+type AlgKind int8
 
 const (
-	ANOEQ AlgKind = iota
+	AUNK   AlgKind = iota
+	ANOEQ
+	ANOALG
+	AMEM
 	AMEM0
 	AMEM8
 	AMEM16
@@ -23,18 +26,11 @@ const (
 	AFLOAT64
 	ACPLX64
 	ACPLX128
-
-	// Type can be compared/hashed as regular memory.
-	AMEM AlgKind = 100
-
-	// Type needs special comparison/hashing functions.
-	ASPECIAL AlgKind = -1
+	ASPECIAL
 )
 
 // AlgType returns the AlgKind used for comparing and hashing Type t.
-// If it returns ANOEQ, it also returns the component type of t that
-// makes it incomparable.
-func AlgType(t *Type) (AlgKind, *Type)
+func AlgType(t *Type) AlgKind
 
 // TypeHasNoAlg reports whether t does not have any associated hash/eq
 // algorithms because t, or some component of t, is marked Noalg.

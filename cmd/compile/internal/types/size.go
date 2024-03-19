@@ -45,7 +45,8 @@ var CalcSizeDisabled bool
 // RoundUp rounds o to a multiple of r, r is a power of 2.
 func RoundUp(o int64, r int64) int64
 
-// CalcSize calculates and stores the size and alignment for t.
+// CalcSize calculates and stores the size, alignment, eq/hash algorithm,
+// and ptrBytes for t.
 // If CalcSizeDisabled is set, and the size/alignment
 // have not already been calculated, it calls Fatal.
 // This is used to prevent data races in the back end.

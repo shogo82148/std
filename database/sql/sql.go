@@ -304,8 +304,7 @@ type DB struct {
 
 	mu           sync.Mutex
 	freeConn     []*driverConn
-	connRequests map[uint64]chan connRequest
-	nextRequest  uint64
+	connRequests connRequestSet
 	numOpen      int
 	// Used to signal the need for new connections
 	// a goroutine running connectionOpener() reads on this chan and
