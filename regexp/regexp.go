@@ -235,16 +235,9 @@ func (re *Regexp) FindStringSubmatchIndex(s string) []int
 // FindReaderSubmatchIndexは、 [io.RuneReader] によって読み取られたテキストの正規表現の最も左の一致と、そのサブエクスプレッションの一致（ある場合）を識別するインデックスのペアを保持するスライスを返します。パッケージコメントの'Submatch'と'Index'の説明で定義されています。nilの返り値は一致がないことを示します。
 func (re *Regexp) FindReaderSubmatchIndex(r io.RuneReader) []int
 
-<<<<<<< HEAD
-// FindAllはFindの 'All' バージョンであり、パッケージコメントで定義されている 'All' の説明に従って、
+// FindAllは [Regexp.Find] の 'All' バージョンであり、パッケージコメントで定義されている 'All' の説明に従って、
 // 式の全ての連続するマッチのスライスを返します。
 // nilの返り値はマッチがないことを示します。
-=======
-// FindAll is the 'All' version of [Regexp.Find]; it returns a slice of all successive
-// matches of the expression, as defined by the 'All' description in the
-// package comment.
-// A return value of nil indicates no match.
->>>>>>> upstream/master
 func (re *Regexp) FindAll(b []byte, n int) [][]byte
 
 // FindAllIndexは [Regexp.FindIndex] の「All」バージョンであり、
