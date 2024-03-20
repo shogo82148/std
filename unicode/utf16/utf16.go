@@ -19,15 +19,11 @@ func DecodeRune(r1, r2 rune) rune
 // EncodeRuneはU+FFFD、U+FFFDを返します。
 func EncodeRune(r rune) (r1, r2 rune)
 
-<<<<<<< HEAD
-// EncodeはUnicodeコードポイントの列sのUTF-16エンコーディングを返します。
-=======
 // RuneLen returns the number of 16-bit words in the UTF-16 encoding of the rune.
 // It returns -1 if the rune is not a valid value to encode in UTF-16.
 func RuneLen(r rune) int
 
-// Encode returns the UTF-16 encoding of the Unicode code point sequence s.
->>>>>>> upstream/master
+// EncodeはUnicodeコードポイントの列sのUTF-16エンコーディングを返します。
 func Encode(s []rune) []uint16
 
 // AppendRuneはUnicodeのコードポイントrのUTF-16エンコーディングを
