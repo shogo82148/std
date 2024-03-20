@@ -6,26 +6,15 @@
 
 package os
 
-<<<<<<< HEAD
-// Fdメソッドは、オープンされたファイルを参照する整数型のUnixファイルディスクリプタを返します。
-// fがクローズされると、ファイルディスクリプタは無効になります。
-// fがガベージコレクトされると、ファイナライザによってファイルディスクリプタがクローズされることがあります。
-// これにより、SetDeadlineメソッドが動作しなくなる可能性があります。
-// ファイルディスクリプタは再利用される可能性があるため、返されたファイルディスクリプタは
-// fのCloseメソッドを通じてのみクローズするか、ガベージコレクション時のファイナライザによってクローズされます。
-// そうでない場合、ガベージコレクション時にはファイナライザが同じ（再利用された）番号を持つ他のファイルディスクリプタをクローズする可能性があります。
-=======
-// Fd returns the integer Unix file descriptor referencing the open file.
-// If f is closed, the file descriptor becomes invalid.
-// If f is garbage collected, a finalizer may close the file descriptor,
-// making it invalid; see [runtime.SetFinalizer] for more information on when
-// a finalizer might be run. On Unix systems this will cause the [File.SetDeadline]
-// methods to stop working.
-// Because file descriptors can be reused, the returned file descriptor may
-// only be closed through the [File.Close] method of f, or by its finalizer during
-// garbage collection. Otherwise, during garbage collection the finalizer
-// may close an unrelated file descriptor with the same (reused) number.
->>>>>>> upstream/master
+// Fdは、開いているファイルを参照する整数型のUnixファイルディスクリプタを返します。
+// もしfが閉じている場合、ファイルディスクリプタは無効になります。
+// もしfがガベージコレクションされる場合、ファイナライザーがファイルディスクリプタを閉じる可能性があり、
+// それにより無効になります。ファイナライザーがいつ実行されるかの詳細については、
+// [runtime.SetFinalizer] を参照してください。Unixシステムでは、これにより [File.SetDeadline]
+// メソッドが動作しなくなります。
+// ファイルディスクリプタは再利用可能であるため、返されるファイルディスクリプタは、
+// fの [File.Close] メソッドを通じて、またはガベージコレクション中のそのファイナライザーによってのみ閉じることができます。
+// それ以外の場合、ガベージコレクション中にファイナライザーが同じ（再利用された）番号の無関係なファイルディスクリプタを閉じる可能性があります。
 //
 // 代替として、f.SyscallConnメソッドを参照してください。
 func (f *File) Fd() uintptr

@@ -31,12 +31,7 @@ func Getegid() int
 
 // Getgroupsは、呼び出し元が所属しているグループの数値IDの一覧を返します。
 //
-<<<<<<< HEAD
-// Windowsでは、syscall.EWINDOWSが返されます。代替手段については、os/userパッケージを参照してください。
-=======
-// On Windows, it returns [syscall.EWINDOWS]. See the [os/user] package
-// for a possible alternative.
->>>>>>> upstream/master
+// Windowsでは、[syscall.EWINDOWS] が返されます。代替手段については、[os/user] パッケージを参照してください。
 func Getgroups() ([]int, error)
 
 // Exitは指定されたステータスコードで現在のプログラムを終了させます。

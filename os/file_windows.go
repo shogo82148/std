@@ -4,20 +4,12 @@
 
 package os
 
-<<<<<<< HEAD
-// Fdは開いたファイルを参照するWindowsハンドルを返します。
-// fが閉じられた場合、ファイルディスクリプタは無効になります。
-// fがガベージコレクションされると、ファイナライザがファイルディスクリプタを閉じることがあります。
-// ファイナライザが実行されるタイミングについては、runtime.SetFinalizerの詳細情報を参照してください。
-// Unixシステムでは、これによりSetDeadlineメソッドが機能しなくなります。
-=======
-// Fd returns the Windows handle referencing the open file.
-// If f is closed, the file descriptor becomes invalid.
-// If f is garbage collected, a finalizer may close the file descriptor,
-// making it invalid; see [runtime.SetFinalizer] for more information on when
-// a finalizer might be run. On Unix systems this will cause the [File.SetDeadline]
-// methods to stop working.
->>>>>>> upstream/master
+// Fdは、開いているファイルを参照するWindowsハンドルを返します。
+// もしfが閉じている場合、ファイルディスクリプタは無効になります。
+// もしfがガベージコレクションされる場合、ファイナライザーがファイルディスクリプタを閉じる可能性があり、
+// それにより無効になります。ファイナライザーがいつ実行されるかの詳細については、
+// [runtime.SetFinalizer] を参照してください。Unixシステムでは、これにより [File.SetDeadline]
+// メソッドが動作しなくなります。
 func (file *File) Fd() uintptr
 
 // NewFileは指定したファイルディスクリプタと名前の新しいFileを返します。

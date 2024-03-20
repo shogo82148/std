@@ -12,17 +12,10 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-<<<<<<< HEAD
-// ErrProcessDone は、プロセスが終了したことを示します。
+// ErrProcessDone は、[Process] が終了したことを示します。
 var ErrProcessDone = errors.New("os: process already finished")
 
-// ProcessはStartProcessによって作成されたプロセスに関する情報を格納します。
-=======
-// ErrProcessDone indicates a [Process] has finished.
-var ErrProcessDone = errors.New("os: process already finished")
-
-// Process stores the information about a process created by [StartProcess].
->>>>>>> upstream/master
+// Processは [StartProcess] によって作成されたプロセスに関する情報を格納します。
 type Process struct {
 	Pid    int
 	handle atomic.Uintptr
@@ -66,78 +59,36 @@ func Getppid() int
 
 // FindProcessは、pidによって実行中のプロセスを検索します。
 //
-<<<<<<< HEAD
-// 返されるProcessは、基礎となるオペレーティングシステムのプロセスに関する情報を取得するために使用できます。
-=======
-// The [Process] it returns can be used to obtain information
-// about the underlying operating system process.
->>>>>>> upstream/master
+// 返される [Process] は、基礎となるオペレーティングシステムのプロセスに関する情報を取得するために使用できます。
 //
 // Unixシステムでは、FindProcessは常に成功し、プロセスが存在するかどうかに関わらず、指定されたpidのProcessを返します。
 // 実際にプロセスが存在するかどうかをテストするには、p.Signal(syscall.Signal(0))がエラーを報告するかどうかを確認してください。
 func FindProcess(pid int) (*Process, error)
 
-<<<<<<< HEAD
 // StartProcessは、name、argv、attrで指定されたプログラム、引数、属性で新しいプロセスを開始します。
-// argvスライスは新しいプロセスでos.Argsになるため、通常はプログラム名で始まります。
+// argvスライスは新しいプロセスで [os.Args] になるため、通常はプログラム名で始まります。
 //
-// 呼び出し元のgoroutineがruntime.LockOSThreadでオペレーティングシステムスレッドをロックし、継承可能なOSレベルのスレッド状態を変更した場合（例えば、LinuxやPlan 9の名前空間）、新しいプロセスは呼び出し元のスレッド状態を継承します。
+// 呼び出し元のgoroutineが [runtime.LockOSThread] でオペレーティングシステムスレッドをロックし、継承可能なOSレベルのスレッド状態を変更した場合（例えば、LinuxやPlan 9の名前空間）、新しいプロセスは呼び出し元のスレッド状態を継承します。
 //
-// StartProcessは低レベルなインターフェースです。os/execパッケージはより高レベルなインターフェースを提供します。
+// StartProcessは低レベルなインターフェースです。[os/exec] パッケージはより高レベルなインターフェースを提供します。
 //
-// エラーが発生した場合、*PathError型となります。
+// エラーが発生した場合、[*PathError] 型となります。
 func StartProcess(name string, argv []string, attr *ProcAttr) (*Process, error)
 
-// Releaseはプロセスpに関連付けられたリソースを解放し、将来使用できなくします。
-// Waitが呼び出されない場合にのみReleaseを呼び出す必要があります。
+// Releaseは [Process] pに関連付けられたリソースを解放し、将来使用できなくします。
+// [Process.Wait] が呼び出されない場合にのみReleaseを呼び出す必要があります。
 func (p *Process) Release() error
 
-// Killはプロセスを直ちに終了させます。Killはプロセスが実際に終了するのを待ちません。これによってプロセス自体のみを終了させるため、プロセスが起動した他のプロセスには影響を与えません。
+// Killは [Process] を直ちに終了させます。Killはプロセスが実際に終了するのを待ちません。これによってプロセス自体のみを終了させるため、プロセスが起動した他のプロセスには影響を与えません。
 func (p *Process) Kill() error
 
-// Waitはプロセスの終了を待ち、その後、状態とエラー（あれば）を示すProcessStateを返します。
+// Waitは [Process] の終了を待ち、その後、状態とエラー（あれば）を示すProcessStateを返します。
 // Waitはプロセスに関連するリソースを解放します。
 // ほとんどのオペレーティングシステムでは、プロセスは現在のプロセスの子であるか、エラーが返されます。
 func (p *Process) Wait() (*ProcessState, error)
 
-// SignalはProcessにシグナルを送信します。
-// Windowsでは中断を送信することは実装されていません。
-=======
-// StartProcess starts a new process with the program, arguments and attributes
-// specified by name, argv and attr. The argv slice will become [os.Args] in the
-// new process, so it normally starts with the program name.
-//
-// If the calling goroutine has locked the operating system thread
-// with [runtime.LockOSThread] and modified any inheritable OS-level
-// thread state (for example, Linux or Plan 9 name spaces), the new
-// process will inherit the caller's thread state.
-//
-// StartProcess is a low-level interface. The [os/exec] package provides
-// higher-level interfaces.
-//
-// If there is an error, it will be of type [*PathError].
-func StartProcess(name string, argv []string, attr *ProcAttr) (*Process, error)
-
-// Release releases any resources associated with the [Process] p,
-// rendering it unusable in the future.
-// Release only needs to be called if [Process.Wait] is not.
-func (p *Process) Release() error
-
-// Kill causes the [Process] to exit immediately. Kill does not wait until
-// the Process has actually exited. This only kills the Process itself,
-// not any other processes it may have started.
-func (p *Process) Kill() error
-
-// Wait waits for the [Process] to exit, and then returns a
-// ProcessState describing its status and an error, if any.
-// Wait releases any resources associated with the Process.
-// On most operating systems, the Process must be a child
-// of the current process or an error will be returned.
-func (p *Process) Wait() (*ProcessState, error)
-
-// Signal sends a signal to the [Process].
-// Sending [Interrupt] on Windows is not implemented.
->>>>>>> upstream/master
+// Signalは [Process] にシグナルを送信します。
+// Windowsでは [Interrupt] を送信することは実装されていません。
 func (p *Process) Signal(sig Signal) error
 
 // UserTimeは終了したプロセスおよびその子プロセスのユーザーCPU時間を返します。
@@ -155,23 +106,10 @@ func (p *ProcessState) Exited() bool
 // たとえば、Unixでは終了ステータス0で終了した場合などです。
 func (p *ProcessState) Success() bool
 
-<<<<<<< HEAD
 // Sysはプロセスに関するシステム依存の終了情報を返します。
 // それを適切な基礎となる型に変換して、その内容にアクセスします。
-// 例：Unixの場合、syscall.WaitStatusとして変換します。
+// 例：Unixの場合、[syscall.WaitStatus] として変換します。
 func (p *ProcessState) Sys() any
 
-// SysUsageは終了したプロセスのシステム依存のリソース使用状況情報を返します。それを適切な基に変換してください、例えばUnixでは*syscall.Rusage型など、その内容にアクセスするために。 (Unixでは、*syscall.Rusageはgetrusage(2)マニュアルページで定義されているstruct rusageに一致します。)
-=======
-// Sys returns system-dependent exit information about
-// the process. Convert it to the appropriate underlying
-// type, such as [syscall.WaitStatus] on Unix, to access its contents.
-func (p *ProcessState) Sys() any
-
-// SysUsage returns system-dependent resource usage information about
-// the exited process. Convert it to the appropriate underlying
-// type, such as [*syscall.Rusage] on Unix, to access its contents.
-// (On Unix, *syscall.Rusage matches struct rusage as defined in the
-// getrusage(2) manual page.)
->>>>>>> upstream/master
+// SysUsageは終了したプロセスのシステム依存のリソース使用状況情報を返します。それを適切な基に変換してください、例えばUnixでは [*syscall.Rusage] 型など、その内容にアクセスするために。 (Unixでは、*syscall.Rusageはgetrusage(2)マニュアルページで定義されているstruct rusageに一致します。)
 func (p *ProcessState) SysUsage() any
