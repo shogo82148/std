@@ -151,31 +151,17 @@ type IdentifierNode struct {
 	Ident string
 }
 
-<<<<<<< HEAD
-// NewIdentifierは、指定された識別子名を持つ新しいIdentifierNodeを返します。
+// NewIdentifierは、指定された識別子名を持つ新しい [IdentifierNode] を返します。
 func NewIdentifier(ident string) *IdentifierNode
 
-// SetPosは位置を設定します。NewIdentifierは公開メソッドなので、そのシグネチャを変更することはできません。
+// SetPosは位置を設定します。[NewIdentifier] は公開メソッドなので、そのシグネチャを変更することはできません。
 // 便宜上チェーン化されています。
 // TODO: いつか修正する？
 func (i *IdentifierNode) SetPos(pos Pos) *IdentifierNode
 
-// SetTreeは、ノードの親ツリーを設定します。NewIdentifierは公開メソッドなので、そのシグネチャを変更することはできません。
+// SetTreeは、ノードの親ツリーを設定します。[NewIdentifier] は公開メソッドなので、そのシグネチャを変更することはできません。
 // 便宜上チェーン化されています。
 // TODO: いつか修正する？
-=======
-// NewIdentifier returns a new [IdentifierNode] with the given identifier name.
-func NewIdentifier(ident string) *IdentifierNode
-
-// SetPos sets the position. [NewIdentifier] is a public method so we can't modify its signature.
-// Chained for convenience.
-// TODO: fix one day?
-func (i *IdentifierNode) SetPos(pos Pos) *IdentifierNode
-
-// SetTree sets the parent tree for the node. [NewIdentifier] is a public method so we can't modify its signature.
-// Chained for convenience.
-// TODO: fix one day?
->>>>>>> upstream/master
 func (i *IdentifierNode) SetTree(t *Tree) *IdentifierNode
 
 func (i *IdentifierNode) String() string
