@@ -102,3 +102,10 @@ func Reverse[S ~[]E, E any](s S) { return }
 
 // Concat は、渡されたスライスを連結した新しいスライスを返します。
 func Concat[S ~[]E, E any](slices ...S) S { return nil }
+
+// Repeat returns a new slice that repeats the provided slice the given number of times.
+// The result has length and capacity len(x) * count.
+// The result is never nil.
+// Repeat panics if count is negative or if the result of (len(x) * count)
+// overflows.
+func Repeat[S ~[]E, E any](x S, count int) S { return nil }

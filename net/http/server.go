@@ -370,10 +370,11 @@ type Server struct {
 	// 両方を使用することもできます。
 	ReadTimeout time.Duration
 
-	// ReadHeaderTimeoutは、リクエストヘッダーを読み取るために許可される時間です。
-	// ヘッダーを読み取った後、接続の読み取り期限がリセットされ、Handlerはボディに対して何が遅すぎるかを決定できます。
-	// ReadHeaderTimeoutがゼロの場合、ReadTimeoutの値が使用されます。
-	// 両方がゼロの場合、タイムアウトはありません。
+	// ReadHeaderTimeoutは、リクエストヘッダを読み取るために許される時間です。
+	// ヘッダを読み取った後、接続の読み取りデッドラインはリセットされ、
+	// ハンドラは本文にとって何が遅すぎると考えられるかを決定できます。
+	// もしゼロならば、ReadTimeoutの値が使用されます。
+	// もし負の値、またはゼロでReadTimeoutがゼロまたは負の値の場合、タイムアウトはありません。
 	ReadHeaderTimeout time.Duration
 
 	// WriteTimeoutは、レスポンスの書き込みがタイムアウトする前の最大時間です。
@@ -382,9 +383,9 @@ type Server struct {
 	// ゼロまたは負の値はタイムアウトがないことを意味します。
 	WriteTimeout time.Duration
 
-	// IdleTimeoutは、keep-aliveが有効な場合に次のリクエストを待機する最大時間です。
-	// IdleTimeoutがゼロの場合、ReadTimeoutの値が使用されます。
-	// 両方がゼロの場合、タイムアウトはありません。
+	// IdleTimeoutは、keep-alivesが有効な場合に次のリクエストを待つための最大時間です。
+	// もしゼロならば、ReadTimeoutの値が使用されます。
+	// もし負の値、またはゼロでReadTimeoutがゼロまたは負の値の場合、タイムアウトはありません。
 	IdleTimeout time.Duration
 
 	// MaxHeaderBytesは、リクエストヘッダーのキーと値、およびリクエストラインを解析するためにサーバーが読み取ることができる最大バイト数を制御します。
