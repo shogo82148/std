@@ -72,16 +72,10 @@ func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S { return nil }
 // len(v) < (j-i)の場合、Replaceは新しい長さと元の長さの間の要素をゼロにします。
 func Replace[S ~[]E, E any](s S, i, j int, v ...E) S { return nil }
 
-<<<<<<< HEAD
 // Clone は、スライスのコピーを返します。
 // 要素は代入を使用してコピーされるため、これは浅いクローンです。
+// 結果には追加の未使用の容量が含まれる可能性があります。
 func Clone[S ~[]E, E any](s S) S { return nil }
-=======
-// Clone returns a copy of the slice.
-// The elements are copied using assignment, so this is a shallow clone.
-// The result may have additional unused capacity.
-func Clone[S ~[]E, E any](s S) S
->>>>>>> upstream/master
 
 // Compactは、等しい要素の連続した実行を単一のコピーで置き換えます。
 // これはUnixにあるuniqコマンドのようなものです。
