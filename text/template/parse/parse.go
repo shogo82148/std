@@ -33,11 +33,11 @@ const (
 	SkipFuncCheck
 )
 
-// CopyはTreeのコピーを返します。パース状態は破棄されます。
+// Copyは [Tree] のコピーを返します。パース状態は破棄されます。
 func (t *Tree) Copy() *Tree
 
 // Parseは、引数の文字列で記述されたテンプレートを解析することで作成された、
-// テンプレート名からparse.Treeへのマップを返します。トップレベルのテンプレートには
+// テンプレート名から [Tree] へのマップを返します。トップレベルのテンプレートには
 // 指定された名前が付けられます。エラーが発生した場合、解析は停止し、
 // エラーと共に空のマップが返されます。
 func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]any) (map[string]*Tree, error)

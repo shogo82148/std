@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
-// UserTasksHandlerFunc returns a HandlerFunc that reports all regions found in the trace.
+// UserRegionsHandlerFunc returns a HandlerFunc that reports all regions found in the trace.
 func UserRegionsHandlerFunc(t *parsedTrace) http.HandlerFunc
 
 // UserRegionHandlerFunc returns a HandlerFunc that presents the details of the selected regions.

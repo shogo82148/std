@@ -94,3 +94,13 @@ func RunStdin(cmdline []string)
 // Usage is the usage-reporting function, filled in by package main
 // but here for reference by other packages.
 var Usage func()
+
+type Counter interface {
+	Inc()
+}
+
+// NewCounter registers a new counter. It must be called from an init function
+// or global variable initializer.
+func NewCounter(name string) Counter
+
+func RegisteredCounterNames() []string

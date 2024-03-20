@@ -7,7 +7,7 @@
 // 既存のツールとの互換性のため、NUL文字は許可されていません。ソースの最初の文字が
 // UTF-8エンコードされたバイトオーダーマーク（BOM）である場合、それは破棄されます。
 //
-// デフォルトでは、Scannerは空白とGoのコメントをスキップし、Go言語仕様によって定義されたすべての
+// デフォルトでは、[Scanner] は空白とGoのコメントをスキップし、Go言語仕様によって定義されたすべての
 // リテラルを認識します。それは、それらのリテラルの一部のみを認識し、異なる識別子と空白文字を認識するように
 // カスタマイズすることができます。
 package scanner
@@ -33,7 +33,7 @@ func (pos Position) String() string
 
 // トークンの認識を制御するための事前定義されたモードビット。
 // 例えば、(Goの)識別子と整数のみを認識し、コメントをスキップするように
-// Scannerを設定するには、ScannerのModeフィールドを次のように設定します:
+// [Scanner] を設定するには、ScannerのModeフィールドを次のように設定します:
 //
 //	ScanIdents | ScanInts | SkipComments
 //
@@ -41,7 +41,7 @@ func (pos Position) String() string
 // 認識されないトークンは無視されません。代わりに、スキャナは単に
 // それぞれの個々の文字（または可能性のあるサブトークン）を返します。
 // 例えば、モードがScanIdents（ScanStringsではない）の場合、文字列
-// "foo"はトークンシーケンス '"' Ident '"'としてスキャンされます。
+// "foo"はトークンシーケンス '"' [Ident] '"'としてスキャンされます。
 //
 // GoTokensを使用してScannerを設定すると、Goの識別子を含むすべてのGoリテラルトークンが受け入れられます。
 // コメントはスキップされます。
@@ -72,7 +72,7 @@ const (
 // TokenStringは、トークンまたはUnicode文字の印刷可能な文字列を返します。
 func TokenString(tok rune) string
 
-// GoWhitespaceは、ScannerのWhitespaceフィールドのデフォルト値です。
+// GoWhitespaceは、[Scanner] のWhitespaceフィールドのデフォルト値です。
 // その値はGoの空白文字を選択します。
 const GoWhitespace = 1<<'\t' | 1<<'\n' | 1<<'\r' | 1<<' '
 
@@ -136,33 +136,33 @@ type Scanner struct {
 	Position
 }
 
-// Initは新しいソースでScannerを初期化し、sを返します。
-// Errorはnilに設定され、ErrorCountは0に設定され、ModeはGoTokensに設定され、
-// WhitespaceはGoWhitespaceに設定されます。
+// Initは新しいソースで [Scanner] を初期化し、sを返します。
+// [Scanner.Error] はnilに設定され、[Scanner.ErrorCount] は0に設定され、[Scanner.Mode] は [GoTokens] に設定され、
+// [Scanner.Whitespace] は [GoWhitespace] に設定されます。
 func (s *Scanner) Init(src io.Reader) *Scanner
 
 // Nextは次のUnicode文字を読み取り、返します。
-// ソースの終わりでEOFを返します。読み取りエラーが発生した場合、
+// ソースの終わりで [EOF] を返します。読み取りエラーが発生した場合、
 // s.Errorがnilでない場合はs.Errorを呼び出して報告します。それ以外の場合は
-// os.Stderrにエラーメッセージを出力します。NextはScannerのPositionフィールドを
-// 更新しません。現在の位置を取得するには、Pos()を使用します。
+// [os.Stderr] にエラーメッセージを出力します。Nextは [Scanner.Position] フィールドを
+// 更新しません。現在の位置を取得するには、[Scanner.Pos]()を使用します。
 func (s *Scanner) Next() rune
 
 // Peekは、スキャナを進めずにソースの次のUnicode文字を返します。
-// スキャナの位置がソースの最後の文字にある場合、EOFを返します。
+// スキャナの位置がソースの最後の文字にある場合、[EOF] を返します。
 func (s *Scanner) Peek() rune
 
 // Scanは、ソースから次のトークンまたはUnicode文字を読み取り、それを返します。
-// それは、それぞれのModeビット（1<<-t）が設定されているトークンtのみを認識します。
-// ソースの終わりでEOFを返します。スキャナのエラー（読み取りエラーとトークンエラー）は、
+// それは、それぞれの [Scanner.Mode] ビット（1<<-t）が設定されているトークンtのみを認識します。
+// ソースの終わりで [EOF] を返します。スキャナのエラー（読み取りエラーとトークンエラー）は、
 // s.Errorがnilでない場合にはs.Errorを呼び出すことで報告します。それ以外の場合は、
-// os.Stderrにエラーメッセージを出力します。
+// [os.Stderr] にエラーメッセージを出力します。
 func (s *Scanner) Scan() rune
 
-// Posは、最後のNextまたはScanの呼び出しによって返された文字またはトークンの直後の文字の位置を返します。
-// 最近スキャンされたトークンの開始位置には、ScannerのPositionフィールドを使用します。
+// Posは、最後の [Scanner.Next] または [Scanner.Scan] の呼び出しによって返された文字またはトークンの直後の文字の位置を返します。
+// 最近スキャンされたトークンの開始位置には、Scannerの [Scanner.Position] フィールドを使用します。
 func (s *Scanner) Pos() (pos Position)
 
 // TokenTextは、最近スキャンされたトークンに対応する文字列を返します。
-// Scanの呼び出し後、およびScanner.Errorの呼び出し中に有効です。
+// [Scanner.Scan] の呼び出し後、および [Scanner.Error] の呼び出し中に有効です。
 func (s *Scanner) TokenText() string

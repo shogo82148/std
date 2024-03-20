@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージsyncは相互排他ロックなどの基本的な同期プリミティブを提供します。OnceとWaitGroup以外の型は、低レベルのライブラリルーチンでの使用を意図しています。より高レベルな同期はチャネルと通信を介して行う方が良いです。
+// パッケージsyncは相互排他ロックなどの基本的な同期プリミティブを提供します。[Once] と [WaitGroup] 以外の型は、低レベルのライブラリルーチンでの使用を意図しています。より高レベルな同期はチャネルと通信を介して行う方が良いです。
 //
 // このパッケージで定義された型を含む値は、コピーしないでください。
 package sync
@@ -12,8 +12,8 @@ package sync
 //
 // Mutexは最初の使用後にコピーしてはいけません。
 //
-// Goのメモリモデルの用語では、Unlockのn回目の呼び出しはm回目のLockの前に同期されます（n < m）。
-// TryLockの成功した呼び出しはLockの呼び出しと同等です。
+// Goのメモリモデルの用語では、[Mutex.Unlock] のn回目の呼び出しはm回目の [Mutex.Lock] の前に同期されます（n < m）。
+// [Mutex.TryLock] の成功した呼び出しはLockの呼び出しと同等です。
 // TryLockの失敗した呼び出しはどのような「同期前の」関係も確立しません。
 type Mutex struct {
 	state int32
@@ -40,6 +40,6 @@ func (m *Mutex) TryLock() bool
 // Unlockはmをアンロックします。
 // mがUnlockされる前にロックされていない場合、ランタイムエラーになります。
 //
-// ロックされたMutexは特定のゴルーチンに関連付けられていません。
+// ロックされた [Mutex] は特定のゴルーチンに関連付けられていません。
 // あるゴルーチンがMutexをロックし、別のゴルーチンがそれをアンロックするようにすることも許可されています。
 func (m *Mutex) Unlock()

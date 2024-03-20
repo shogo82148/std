@@ -29,7 +29,6 @@ type Checker struct {
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
-	valids  instanceLookup
 
 	// pkgPathMapはパッケージ名をインポートパスの集合にマッピングします。
 	// インポートグラフのどこかでその名前に対して見た異なるインポートパスの集合です。

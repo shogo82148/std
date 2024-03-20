@@ -9,13 +9,13 @@ import (
 )
 
 // WaitGroupは、一連のゴルーチンの完了を待機します。
-// メインゴルーチンは、待機するゴルーチンの数を設定するためにAddを呼び出します。
-// それぞれのゴルーチンは実行され、終了時にDoneを呼び出します。
-// 同時に、全てのゴルーチンが終了するまでブロックするためにWaitを使用できます。
+// メインゴルーチンは、待機するゴルーチンの数を設定するために [WaitGroup.Add] を呼び出します。
+// それぞれのゴルーチンは実行され、終了時に [WaitGroup.Done] を呼び出します。
+// 同時に、全てのゴルーチンが終了するまでブロックするために [WaitGroup.Wait] を使用できます。
 //
 // WaitGroupは、初回使用後にコピーしてはいけません。
 //
-// Goのメモリモデルの用語である、Doneへの呼び出しは、それによってブロックが解除される任意のWait呼び出しの前に「同期します」。
+// Goのメモリモデルの用語である、[WaitGroup.Done] への呼び出しは、それによってブロックが解除される任意のWait呼び出しの前に「同期します」。
 type WaitGroup struct {
 	noCopy noCopy
 
@@ -23,8 +23,8 @@ type WaitGroup struct {
 	sema  uint32
 }
 
-// AddはWaitGroupのカウンターにデルタを追加します。デルタは負であることもあります。
-// カウンターがゼロになると、Waitでブロックされているすべてのゴルーチンが解放されます。
+// Addは [WaitGroup] のカウンターにデルタを追加します。デルタは負であることもあります。
+// カウンターがゼロになると、[WaitGroup.Wait] でブロックされているすべてのゴルーチンが解放されます。
 // カウンターが負になると、Addはパニックを発生させます。
 //
 // カウンターがゼロの状態で正のデルタで呼び出される場合は、Waitより前に実行される必要があることに注意してください。
@@ -34,8 +34,8 @@ type WaitGroup struct {
 // WaitGroupの例を参照してください。
 func (wg *WaitGroup) Add(delta int)
 
-// DoneはWaitGroupのカウンターを1つ減らします。
+// Doneは [WaitGroup] のカウンターを1つ減らします。
 func (wg *WaitGroup) Done()
 
-// Wait は WaitGroup カウンタがゼロになるまでブロックします。
+// Wait は [WaitGroup] カウンタがゼロになるまでブロックします。
 func (wg *WaitGroup) Wait()

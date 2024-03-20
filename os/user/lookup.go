@@ -11,19 +11,19 @@ package user
 func Current() (*User, error)
 
 // Lookupはユーザー名でユーザーを検索します。ユーザーが見つからない場合、
-// 返されるエラーのタイプはUnknownUserErrorです。
+// 返されるエラーのタイプは [UnknownUserError] です。
 func Lookup(username string) (*User, error)
 
 // LookupIdはユーザーIDでユーザーを検索します。ユーザーが見つからない場合、
-// 返されるエラーのタイプはUnknownUserIdErrorです。
+// 返されるエラーのタイプは [UnknownUserIdError] です。
 func LookupId(uid string) (*User, error)
 
 // LookupGroupは名前でグループを検索します。グループが見つからない場合、
-// 返されるエラーのタイプはUnknownGroupErrorです。
+// 返されるエラーのタイプは [UnknownGroupError] です。
 func LookupGroup(name string) (*Group, error)
 
 // LookupGroupIdはグループIDでグループを検索します。グループが見つからない場合、
-// 返されるエラーのタイプはUnknownGroupIdErrorです。
+// 返されるエラーのタイプは [UnknownGroupIdError] です。
 func LookupGroupId(gid string) (*Group, error)
 
 // GroupIdsは、ユーザーがメンバーであるグループIDのリストを返します。

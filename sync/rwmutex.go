@@ -14,15 +14,18 @@ import (
 //
 // RWMutexは、最初の使用後にコピーしてはいけません。
 //
-// もしロックが既に1つ以上のリーダーによって保持されている場合、
-// いずれかのゴルーチンがLockを呼び出すと、RLockへの並行呼び出しがライターがロックを取得（および解放）するまでブロックされます。
-// これにより、ロックが最終的にライターに利用可能になることが保証されます。
-// なお、これにより再帰的な読み込みロックが禁止されます。
+// もし任意のゴルーチンが [RWMutex.Lock] を呼び出し、そのロックがすでに
+// 1つ以上のリーダーによって保持されている場合、並行する [RWMutex.RLock] への呼び出しは
+// ライターがロックを取得（そして解放）するまでブロックされます。これにより、
+// ロックが最終的にライターに利用可能になることを保証します。
+// これは再帰的な読み取りロックを禁止することに注意してください。
 //
-// Goのメモリモデルの用語では、Unlockのn回目の呼び出しは、
-// 任意のn < mに対して、m回目のLockの呼び出しの前に同期化します（Mutexと同様）。
-// また、RLockの呼び出しに対して、n回目のUnlockの呼び出しがあるために
-// n+1回目のLockの呼び出しの前に同期化されます。
+// Goのメモリモデルの用語では、
+// n番目の [RWMutex.Unlock] への呼び出しは、任意のn < mに対するm番目のLockへの呼び出しよりも
+// 「先に同期します」。これは [Mutex] と同様です。
+// RLockへの任意の呼び出しに対して、nが存在し、
+// n番目のUnlockへの呼び出しはそのRLockへの呼び出しよりも「先に同期します」、
+// そして対応する [RWMutex.RUnlock] への呼び出しも同様に「先に同期します」。
 type RWMutex struct {
 	w           Mutex
 	writerSem   uint32
@@ -34,7 +37,7 @@ type RWMutex struct {
 // RLockはrwの読み取りのためにロックします。
 //
 // 再帰的な読み取りのために使用すべきではありません。ブロックされたLock呼び出しは、
-// 新しい読み取り者がロックを取得することを排除します。RWMutex型のドキュメントを参照してください。
+// 新しい読み取り者がロックを取得することを排除します。[RWMutex] 型のドキュメントを参照してください。
 func (rw *RWMutex) RLock()
 
 // TryRLockはrwを読み取りロックしようとし、成功したかどうかを報告します。
@@ -43,7 +46,7 @@ func (rw *RWMutex) RLock()
 // TryRLockの使用はしばしばミューテックスの特定の使用法におけるより深刻な問題の兆候です。
 func (rw *RWMutex) TryRLock() bool
 
-// RUnlockは1回のRLock呼び出しを元に戻します。
+// RUnlockは1回の [RWMutex.RLock] 呼び出しを元に戻します。
 // 他の同時読み取りプロセスには影響しません。
 // RUnlockが呼び出される時にrwが読み取りロックされていない場合、ランタイムエラーが発生します。
 func (rw *RWMutex) RUnlock()
@@ -62,8 +65,8 @@ func (rw *RWMutex) TryLock() bool
 
 // Unlockは書き込みのためにrwをアンロックします。Unlockに入る前にrwが書き込み用にロックされていない場合、ランタイムエラーとなります。
 //
-// Mutexと同様に、ロックされたRWMutexは特定のゴルーチンに関連付けられていません。あるゴルーチンがRWMutexをRLock（Lock）し、別のゴルーチンがRUnlock（Unlock）するようにすることができます。
+// Mutexと同様に、ロックされた [RWMutex] は特定のゴルーチンに関連付けられていません。あるゴルーチンがRWMutexを [RWMutex.RLock]（[RWMutex.Lock]）し、別のゴルーチンが [RWMutex.RUnlock]（[RWMutex.Unlock]）するようにすることができます。
 func (rw *RWMutex) Unlock()
 
-// RLockerはLockerインターフェースを返します。このインターフェースは、rw.RLockとrw.RUnlockを呼び出してLockとUnlockメソッドを実装します。
+// RLockerは [Locker] インターフェースを返します。このインターフェースは、rw.RLockとrw.RUnlockを呼び出して [RWMutex.Lock] と [RWMutex.Unlock] メソッドを実装します。
 func (rw *RWMutex) RLocker() Locker

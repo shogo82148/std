@@ -27,7 +27,6 @@ type Checker struct {
 	nextID  uint64
 	objMap  map[Object]*declInfo
 	impMap  map[importKey]*Package
-	valids  instanceLookup
 
 	// pkgPathMap maps package names to the set of distinct import paths we've
 	// seen for that name, anywhere in the import graph. It is used for

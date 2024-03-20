@@ -2,8 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// expvarパッケージは、サーバー内の操作カウンターなどの公開変数に対する標準化されたインターフェースを提供します。
-// これらの変数は、/debug/varsでJSON形式でHTTP経由で公開されます。
+// expvarパッケージは、サーバー内の操作カウンターなどの公開変数への
+// 標準化されたインターフェースを提供します。これらの変数は、
+// /debug/varsでJSON形式でHTTP経由で公開されます。Go 1.22以降、
+// /debug/varsリクエストはGETを使用する必要があります。
 //
 // これらの公開変数を設定または変更する操作はアトミックです。
 //

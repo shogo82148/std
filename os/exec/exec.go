@@ -12,7 +12,7 @@
 // パイプライン、リダイレクションを処理しません。このパッケージは
 // Cの"exec"関数群のように振る舞います。グロブパターンを展開するには、
 // シェルを直接呼び出し、危険な入力をエスケープするか、
-// path/filepathパッケージのGlob関数を使用します。
+// [path/filepath] パッケージのGlob関数を使用します。
 // 環境変数を展開するには、osパッケージのExpandEnvを使用します。
 //
 // このパッケージの例はUnixシステムを前提としています。
@@ -21,7 +21,7 @@
 //
 // # Executables in the current directory
 //
-// 関数CommandとLookPathは、ホストオペレーティングシステムの規則に従って、
+// 関数 [Command] と [LookPath] は、ホストオペレーティングシステムの規則に従って、
 // 現在のパスにリストされたディレクトリでプログラムを探します。
 // オペレーティングシステムは何十年もの間、この検索に現在の
 // ディレクトリを含めてきました。これは時々暗黙的に、時々
@@ -31,10 +31,10 @@
 //
 // これらのセキュリティ問題を避けるために、Go 1.19から、このパッケージはプログラムを
 // 現在のディレクトリに対する暗黙的または明示的なパスエントリを使用して解決しません。
-// つまり、exec.LookPath("go")を実行すると、パスがどのように設定されていても、
+// つまり、[LookPath]("go")を実行すると、パスがどのように設定されていても、
 // Unixでは./go、Windowsでは.\go.exeを正常に返すことはありません。
 // 代わりに、通常のパスアルゴリズムがその答えをもたらす場合、
-// これらの関数はエラーerrを返し、errors.Is(err, ErrDot)を満たします。
+// これらの関数はエラーerrを返し、[errors.Is](err, [ErrDot])を満たします。
 //
 // 例えば、以下の2つのプログラムスニペットを考えてみてください：
 //
@@ -95,7 +95,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Errorは、LookPathがファイルを実行可能なものとして分類できなかったときに返されます。
+// Errorは、[LookPath] がファイルを実行可能なものとして分類できなかったときに返されます。
 type Error struct {
 	// Nameは、エラーが発生したファイル名です。
 	Name string
@@ -109,12 +109,12 @@ func (e *Error) Unwrap() error
 
 // ErrWaitDelayは、プロセスが成功したステータスコードで終了するが、
 // コマンドのWaitDelayが期限切れになる前にその出力パイプが閉じられない場合、
-// (*Cmd).Waitによって返されます。
+// [Cmd.Wait] によって返されます。
 var ErrWaitDelay = errors.New("exec: WaitDelay expired before I/O complete")
 
 // Cmdは、準備中または実行中の外部コマンドを表します。
 //
-// Cmdは、Run、Output、またはCombinedOutputメソッドを呼び出した後では再利用できません。
+// Cmdは、[Cmd.Run]、[Cmd.Output]、または [Cmd.CombinedOutput] メソッドを呼び出した後では再利用できません。
 type Cmd struct {
 	// Pathは、実行するコマンドのパスです。
 	//
@@ -288,11 +288,11 @@ type Cmd struct {
 }
 
 // Commandは、指定されたプログラムを
-// 与えられた引数で実行するためのCmd構造体を返します。
+// 与えられた引数で実行するための [Cmd] 構造体を返します。
 //
 // それは返される構造体の中でPathとArgsだけを設定します。
 //
-// nameにパスセパレータが含まれていない場合、CommandはLookPathを使用して
+// nameにパスセパレータが含まれていない場合、Commandは [LookPath] を使用して
 // 可能な場合にはnameを完全なパスに解決します。それ以外の場合、nameを
 // 直接Pathとして使用します。
 //
@@ -310,10 +310,10 @@ type Cmd struct {
 // Argsを空にすることができます。
 func Command(name string, arg ...string) *Cmd
 
-// CommandContextはCommandと同様ですが、contextが含まれています。
+// CommandContextは [Command] と同様ですが、contextが含まれています。
 //
 // 提供されたcontextは、コマンドが自身で完了する前にcontextがdoneになった場合、
-// プロセスを中断するために使用されます（cmd.Cancelまたはos.Process.Killを呼び出す）。
+// プロセスを中断するために使用されます（cmd.Cancelまたは [os.Process.Kill] を呼び出す）。
 //
 // CommandContextは、コマンドのCancel関数をそのProcessのKillメソッドを呼び出すように設定し、
 // WaitDelayは未設定のままにします。呼び出し元は、コマンドを開始する前にこれらのフィールドを
@@ -332,9 +332,9 @@ func (c *Cmd) String() string
 // ゼロの終了ステータスで終了した場合にはnilです。
 //
 // コマンドが開始されるが正常に完了しない場合、エラーは
-// *ExitError型です。他の状況では他のエラータイプが返される可能性があります。
+// [*ExitError] 型です。他の状況では他のエラータイプが返される可能性があります。
 //
-// 呼び出し元のgoroutineがruntime.LockOSThreadでオペレーティングシステムのスレッドをロックし、
+// 呼び出し元のgoroutineが [runtime.LockOSThread] でオペレーティングシステムのスレッドをロックし、
 // 継承可能なOSレベルのスレッド状態（例えば、LinuxやPlan 9の名前空間）を変更した場合、
 // 新しいプロセスは呼び出し元のスレッド状態を継承します。
 func (c *Cmd) Run() error
@@ -344,7 +344,7 @@ func (c *Cmd) Run() error
 // Startが成功すると、c.Processフィールドが設定されます。
 //
 // Startの成功した呼び出しの後、関連するシステムリソースを解放するために
-// Waitメソッドを呼び出す必要があります。
+// [Cmd.Wait] メソッドを呼び出す必要があります。
 func (c *Cmd) Start() error
 
 // ExitErrorは、コマンドによる成功しない終了を報告します。
@@ -368,16 +368,16 @@ func (e *ExitError) Error() string
 // Waitは、コマンドが終了するのを待ち、stdinへのコピーまたは
 // stdoutまたはstderrからのコピーが完了するのを待ちます。
 //
-// コマンドはStartによって開始されていなければなりません。
+// コマンドは [Cmd.Start] によって開始されていなければなりません。
 //
 // 返されるエラーは、コマンドが実行され、stdin、stdout、stderrのコピーに問題がなく、
 // ゼロの終了ステータスで終了した場合にはnilです。
 //
 // コマンドが実行に失敗するか、正常に完了しない場合、
-// エラーは*ExitError型です。I/O問題に対しては他のエラータイプが
+// エラーは [*ExitError] 型です。I/O問題に対しては他のエラータイプが
 // 返される可能性があります。
 //
-// c.Stdin、c.Stdout、c.Stderrのいずれかが*os.Fileでない場合、
+// c.Stdin、c.Stdout、c.Stderrのいずれかが [*os.File] でない場合、
 // Waitは、プロセスへのまたはプロセスからの対応するI/Oループのコピーが
 // 完了するのを待ちます。
 //
@@ -385,34 +385,34 @@ func (e *ExitError) Error() string
 func (c *Cmd) Wait() error
 
 // Outputはコマンドを実行し、その標準出力を返します。
-// 返されるエラーは通常、*ExitError型です。
-// c.Stderrがnilだった場合、OutputはExitError.Stderrを設定します。
+// 返されるエラーは通常、[*ExitError] 型です。
+// c.Stderrがnilだった場合、Outputは [ExitError.Stderr] を設定します。
 func (c *Cmd) Output() ([]byte, error)
 
 // CombinedOutputはコマンドを実行し、その標準出力と標準エラーを結合したものを返します。
 func (c *Cmd) CombinedOutput() ([]byte, error)
 
 // StdinPipeは、コマンドが開始されたときにコマンドの標準入力に接続されるパイプを返します。
-// パイプは、Waitがコマンドの終了を確認した後、自動的に閉じられます。
+// パイプは、[Cmd.Wait] がコマンドの終了を確認した後、自動的に閉じられます。
 // 呼び出し元は、パイプを早く閉じるためにCloseを呼び出すだけでよいです。
 // 例えば、実行されるコマンドが標準入力が閉じるまで終了しない場合、呼び出し元はパイプを閉じる必要があります。
 func (c *Cmd) StdinPipe() (io.WriteCloser, error)
 
 // StdoutPipeは、コマンドが開始されたときにコマンドの標準出力に接続されるパイプを返します。
 //
-// Waitは、コマンドの終了を確認した後にパイプを閉じるため、
+// [Cmd.Wait] は、コマンドの終了を確認した後にパイプを閉じるため、
 // ほとんどの呼び出し元は自分でパイプを閉じる必要はありません。
 // したがって、パイプからのすべての読み取りが完了する前にWaitを呼び出すことは誤りです。
-// 同様の理由で、StdoutPipeを使用しているときにRunを呼び出すことも誤りです。
+// 同様の理由で、StdoutPipeを使用しているときに [Cmd.Run] を呼び出すことも誤りです。
 // 一般的な使用法については、例を参照してください。
 func (c *Cmd) StdoutPipe() (io.ReadCloser, error)
 
 // StderrPipeは、コマンドが開始されたときにコマンドの標準エラーに接続されるパイプを返します。
 //
-// Waitは、コマンドの終了を確認した後にパイプを閉じるため、
+// [Cmd.Wait] は、コマンドの終了を確認した後にパイプを閉じるため、
 // ほとんどの呼び出し元は自分でパイプを閉じる必要はありません。
 // したがって、パイプからのすべての読み取りが完了する前にWaitを呼び出すことは誤りです。
-// 同様の理由で、StderrPipeを使用しているときにRunを呼び出すことも誤りです。
+// 同様の理由で、StderrPipeを使用しているときに [Cmd.Run] を呼び出すことも誤りです。
 // 一般的な使用法については、例を参照してください。
 func (c *Cmd) StderrPipe() (io.ReadCloser, error)
 

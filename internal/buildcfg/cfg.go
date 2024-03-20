@@ -22,6 +22,7 @@ var (
 	GO386     = envOr("GO386", defaultGO386)
 	GOAMD64   = goamd64()
 	GOARM     = goarm()
+	GOARM64   = goarm64()
 	GOMIPS    = gomips()
 	GOMIPS64  = gomips64()
 	GOPPC64   = goppc64()

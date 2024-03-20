@@ -151,15 +151,15 @@ type IdentifierNode struct {
 	Ident string
 }
 
-// NewIdentifierは、指定された識別子名を持つ新しいIdentifierNodeを返します。
+// NewIdentifierは、指定された識別子名を持つ新しい [IdentifierNode] を返します。
 func NewIdentifier(ident string) *IdentifierNode
 
-// SetPosは位置を設定します。NewIdentifierは公開メソッドなので、そのシグネチャを変更することはできません。
+// SetPosは位置を設定します。[NewIdentifier] は公開メソッドなので、そのシグネチャを変更することはできません。
 // 便宜上チェーン化されています。
 // TODO: いつか修正する？
 func (i *IdentifierNode) SetPos(pos Pos) *IdentifierNode
 
-// SetTreeは、ノードの親ツリーを設定します。NewIdentifierは公開メソッドなので、そのシグネチャを変更することはできません。
+// SetTreeは、ノードの親ツリーを設定します。[NewIdentifier] は公開メソッドなので、そのシグネチャを変更することはできません。
 // 便宜上チェーン化されています。
 // TODO: いつか修正する？
 func (i *IdentifierNode) SetTree(t *Tree) *IdentifierNode

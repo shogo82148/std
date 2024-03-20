@@ -61,7 +61,7 @@ func DecodeLastRune(p []byte) (r rune, size int)
 // それ以外の検証は行われません。
 func DecodeLastRuneInString(s string) (r rune, size int)
 
-// RuneLenはルーンをエンコードするために必要なバイト数を返します。
+// RuneLenはルーンをUTF-8でエンコードするために必要なバイト数を返します。
 // ルーンがUTF-8でエンコードすることができない場合は、-1を返します。
 func RuneLen(r rune) int
 

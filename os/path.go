@@ -13,5 +13,5 @@ func MkdirAll(path string, perm FileMode) error
 // RemoveAllはpathとその中に含まれるすべての子要素を削除します。
 // 削除できる範囲で削除を実行しますが、最初に出会ったエラーを返します。
 // パスが存在しない場合、RemoveAllはnil（エラーなし）を返します。
-// エラーがある場合、それは*PathError型のエラーです。
+// エラーがある場合、それは [*PathError] 型のエラーです。
 func RemoveAll(path string) error

@@ -5,7 +5,6 @@
 package windows
 
 import (
-	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/syscall"
 )
 
@@ -27,9 +26,3 @@ type TCP_INITIAL_RTO_PARAMETERS struct {
 	Rtt                   uint16
 	MaxSynRetransmissions uint8
 }
-
-var Support_TCP_INITIAL_RTO_NO_SYN_RETRANSMISSIONS = sync.OnceValue(func() bool {
-	var maj, min, build uint32
-	rtlGetNtVersionNumbers(&maj, &min, &build)
-	return maj >= 10 && build&0xffff >= 16299
-})

@@ -74,6 +74,7 @@ func Replace[S ~[]E, E any](s S, i, j int, v ...E) S { return nil }
 
 // Clone は、スライスのコピーを返します。
 // 要素は代入を使用してコピーされるため、これは浅いクローンです。
+// 結果には追加の未使用の容量が含まれる可能性があります。
 func Clone[S ~[]E, E any](s S) S { return nil }
 
 // Compactは、等しい要素の連続した実行を単一のコピーで置き換えます。

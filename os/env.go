@@ -7,7 +7,7 @@
 package os
 
 // Expandはマッピング関数に基づいて文字列内の${var}または$varを置き換えます。
-// 例えば、os.ExpandEnv(s)はos.Expand(s, os.Getenv)と同等です。
+// 例えば、[os.ExpandEnv](s)は[os.Expand](s, [os.Getenv])と同等です。
 func Expand(s string, mapping func(string) string) string
 
 // ExpandEnvは、文字列内の${var}または$varを現在の環境変数の値に応じて置換します。未定義の変数への参照は空文字列に置換されます。
@@ -15,7 +15,7 @@ func ExpandEnv(s string) string
 
 // Getenvはキーで指定された環境変数の値を取得します。
 // もし変数が存在しない場合、空の値が返されます。
-// 空の値と未設定の値を区別するためには、LookupEnvを使用してください。
+// 空の値と未設定の値を区別するためには、[LookupEnv] を使用してください。
 func Getenv(key string) string
 
 // LookupEnvは、キーで指定された環境変数の値を取得します。

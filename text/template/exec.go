@@ -35,13 +35,13 @@ func (t *Template) ExecuteTemplate(wr io.Writer, name string, data any) error
 // テンプレートは並行して安全に実行することができますが、並行実行がライターを共有する場合、
 // 出力が交互になる可能性があります。
 //
-// dataがreflect.Valueの場合、テンプレートはreflect.Valueが保持する具体的な
-// 値に適用されます。これはfmt.Printと同様です。
+// dataが [reflect.Value] の場合、テンプレートはreflect.Valueが保持する具体的な
+// 値に適用されます。これは [fmt.Print] と同様です。
 func (t *Template) Execute(wr io.Writer, data any) error
 
 // DefinedTemplatesは、定義されたテンプレートのリストを文字列として返します。
 // これは文字列 "; defined templates are: " で始まります。もし定義されたテンプレートがなければ、
-// 空の文字列を返します。こことhtml/templateでエラーメッセージを生成するために使用されます。
+// 空の文字列を返します。ここと [html/template] でエラーメッセージを生成するために使用されます。
 func (t *Template) DefinedTemplates() string
 
 // IsTrueは、値がその型のゼロでない「真」であるか、

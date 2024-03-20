@@ -49,22 +49,22 @@ type Group struct {
 	Name string
 }
 
-// UnknownUserIdErrorは、ユーザーが見つからない場合にLookupIdによって返されるエラーです。
+// UnknownUserIdErrorは、ユーザーが見つからない場合に [LookupId] によって返されるエラーです。
 type UnknownUserIdError int
 
 func (e UnknownUserIdError) Error() string
 
-// UnknownUserErrorは、ユーザーが見つからない場合にLookupによって返されるエラーです。
+// UnknownUserErrorは、ユーザーが見つからない場合に [Lookup] によって返されるエラーです。
 type UnknownUserError string
 
 func (e UnknownUserError) Error() string
 
-// UnknownGroupIdErrorは、グループが見つからない場合にLookupGroupIdによって返されるエラーです。
+// UnknownGroupIdErrorは、グループが見つからない場合に [LookupGroupId] によって返されるエラーです。
 type UnknownGroupIdError string
 
 func (e UnknownGroupIdError) Error() string
 
-// UnknownGroupErrorは、グループが見つからない場合にLookupGroupによって返されるエラーです。
+// UnknownGroupErrorは、グループが見つからない場合に [LookupGroup] によって返されるエラーです。
 type UnknownGroupError string
 
 func (e UnknownGroupError) Error() string

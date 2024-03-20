@@ -19,6 +19,8 @@ type Reader struct {
 	cpuSamples  []cpuSample
 	order       ordering
 	emittedSync bool
+
+	go121Events *oldTraceConverter
 }
 
 // NewReader creates a new trace reader.

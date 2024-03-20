@@ -9,7 +9,7 @@ import (
 )
 
 // Templateは、解析されたテンプレートの表現です。*parse.Tree
-// フィールドは、html/templateによる使用のためだけにエクスポートされており、
+// フィールドは、[html/template] による使用のためだけにエクスポートされており、
 // 他のすべてのクライアントによって未エクスポートとして扱われるべきです。
 type Template struct {
 	name string
@@ -36,7 +36,7 @@ func (t *Template) New(name string) *Template
 
 // Cloneは、関連付けられたすべてのテンプレートを含むテンプレートの複製を返します。
 // 実際の表現はコピーされませんが、関連付けられたテンプレートの名前空間はコピーされるため、
-// コピーでのさらなるParseの呼び出しは、コピーにテンプレートを追加しますが、元のテンプレートには追加しません。
+// コピーでのさらなる [Template.Parse] の呼び出しは、コピーにテンプレートを追加しますが、元のテンプレートには追加しません。
 // Cloneは、共通のテンプレートを準備し、それらを他のテンプレートのバリアント定義とともに使用するために、
 // クローン作成後にバリアントを追加することで使用できます。
 func (t *Template) Clone() (*Template, error)
@@ -52,7 +52,7 @@ func (t *Template) AddParseTree(name string, tree *parse.Tree) (*Template, error
 func (t *Template) Templates() []*Template
 
 // Delimsは、指定された文字列にアクションデリミタを設定します。これは、
-// その後のParse、ParseFiles、またはParseGlobへの呼び出しで使用されます。
+// その後の [Template.Parse]、[Template.ParseFiles]、または [Template.ParseGlob] への呼び出しで使用されます。
 // ネストしたテンプレート定義はこの設定を継承します。空のデリミタは、
 // 対応するデフォルト（{{または}}）を表します。
 // 戻り値はテンプレートなので、呼び出しはチェーンできます。

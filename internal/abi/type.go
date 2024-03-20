@@ -135,6 +135,7 @@ func (t *Type) Kind() Kind
 
 func (t *Type) HasName() bool
 
+// Pointers reports whether t contains pointers.
 func (t *Type) Pointers() bool
 
 // IfaceIndir reports whether t is stored indirectly in an interface value.
@@ -383,7 +384,7 @@ const (
 // The data is a stream of bytes, which contains the offsets and sizes of the
 // non-aggregate arguments or non-aggregate fields/elements of aggregate-typed
 // arguments, along with special "operators". Specifically,
-//   - for each non-aggrgate arg/field/element, its offset from FP (1 byte) and
+//   - for each non-aggregate arg/field/element, its offset from FP (1 byte) and
 //     size (1 byte)
 //   - special operators:
 //   - 0xff - end of sequence

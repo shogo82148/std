@@ -12,10 +12,10 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ErrProcessDone は、プロセスが終了したことを示します。
+// ErrProcessDone は、[Process] が終了したことを示します。
 var ErrProcessDone = errors.New("os: process already finished")
 
-// ProcessはStartProcessによって作成されたプロセスに関する情報を格納します。
+// Processは [StartProcess] によって作成されたプロセスに関する情報を格納します。
 type Process struct {
 	Pid    int
 	handle atomic.Uintptr
@@ -59,36 +59,36 @@ func Getppid() int
 
 // FindProcessは、pidによって実行中のプロセスを検索します。
 //
-// 返されるProcessは、基礎となるオペレーティングシステムのプロセスに関する情報を取得するために使用できます。
+// 返される [Process] は、基礎となるオペレーティングシステムのプロセスに関する情報を取得するために使用できます。
 //
 // Unixシステムでは、FindProcessは常に成功し、プロセスが存在するかどうかに関わらず、指定されたpidのProcessを返します。
 // 実際にプロセスが存在するかどうかをテストするには、p.Signal(syscall.Signal(0))がエラーを報告するかどうかを確認してください。
 func FindProcess(pid int) (*Process, error)
 
 // StartProcessは、name、argv、attrで指定されたプログラム、引数、属性で新しいプロセスを開始します。
-// argvスライスは新しいプロセスでos.Argsになるため、通常はプログラム名で始まります。
+// argvスライスは新しいプロセスで [os.Args] になるため、通常はプログラム名で始まります。
 //
-// 呼び出し元のgoroutineがruntime.LockOSThreadでオペレーティングシステムスレッドをロックし、継承可能なOSレベルのスレッド状態を変更した場合（例えば、LinuxやPlan 9の名前空間）、新しいプロセスは呼び出し元のスレッド状態を継承します。
+// 呼び出し元のgoroutineが [runtime.LockOSThread] でオペレーティングシステムスレッドをロックし、継承可能なOSレベルのスレッド状態を変更した場合（例えば、LinuxやPlan 9の名前空間）、新しいプロセスは呼び出し元のスレッド状態を継承します。
 //
-// StartProcessは低レベルなインターフェースです。os/execパッケージはより高レベルなインターフェースを提供します。
+// StartProcessは低レベルなインターフェースです。[os/exec] パッケージはより高レベルなインターフェースを提供します。
 //
-// エラーが発生した場合、*PathError型となります。
+// エラーが発生した場合、[*PathError] 型となります。
 func StartProcess(name string, argv []string, attr *ProcAttr) (*Process, error)
 
-// Releaseはプロセスpに関連付けられたリソースを解放し、将来使用できなくします。
-// Waitが呼び出されない場合にのみReleaseを呼び出す必要があります。
+// Releaseは [Process] pに関連付けられたリソースを解放し、将来使用できなくします。
+// [Process.Wait] が呼び出されない場合にのみReleaseを呼び出す必要があります。
 func (p *Process) Release() error
 
-// Killはプロセスを直ちに終了させます。Killはプロセスが実際に終了するのを待ちません。これによってプロセス自体のみを終了させるため、プロセスが起動した他のプロセスには影響を与えません。
+// Killは [Process] を直ちに終了させます。Killはプロセスが実際に終了するのを待ちません。これによってプロセス自体のみを終了させるため、プロセスが起動した他のプロセスには影響を与えません。
 func (p *Process) Kill() error
 
-// Waitはプロセスの終了を待ち、その後、状態とエラー（あれば）を示すProcessStateを返します。
+// Waitは [Process] の終了を待ち、その後、状態とエラー（あれば）を示すProcessStateを返します。
 // Waitはプロセスに関連するリソースを解放します。
 // ほとんどのオペレーティングシステムでは、プロセスは現在のプロセスの子であるか、エラーが返されます。
 func (p *Process) Wait() (*ProcessState, error)
 
-// SignalはProcessにシグナルを送信します。
-// Windowsでは中断を送信することは実装されていません。
+// Signalは [Process] にシグナルを送信します。
+// Windowsでは [Interrupt] を送信することは実装されていません。
 func (p *Process) Signal(sig Signal) error
 
 // UserTimeは終了したプロセスおよびその子プロセスのユーザーCPU時間を返します。
@@ -108,8 +108,8 @@ func (p *ProcessState) Success() bool
 
 // Sysはプロセスに関するシステム依存の終了情報を返します。
 // それを適切な基礎となる型に変換して、その内容にアクセスします。
-// 例：Unixの場合、syscall.WaitStatusとして変換します。
+// 例：Unixの場合、[syscall.WaitStatus] として変換します。
 func (p *ProcessState) Sys() any
 
-// SysUsageは終了したプロセスのシステム依存のリソース使用状況情報を返します。それを適切な基に変換してください、例えばUnixでは*syscall.Rusage型など、その内容にアクセスするために。 (Unixでは、*syscall.Rusageはgetrusage(2)マニュアルページで定義されているstruct rusageに一致します。)
+// SysUsageは終了したプロセスのシステム依存のリソース使用状況情報を返します。それを適切な基に変換してください、例えばUnixでは [*syscall.Rusage] 型など、その内容にアクセスするために。 (Unixでは、*syscall.Rusageはgetrusage(2)マニュアルページで定義されているstruct rusageに一致します。)
 func (p *ProcessState) SysUsage() any

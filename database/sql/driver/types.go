@@ -22,6 +22,11 @@ type ValueConverter interface {
 
 // ValuerはValueメソッドを提供するインターフェースです。
 //
+// [Value] メソッドが返すエラーは、database/sqlパッケージによってラップされます。
+// これにより、呼び出し元は [database/sql.Query]、[database/sql.Exec]、
+// [database/sql.QueryRow] などの操作後に、正確なエラーハンドリングのために
+// [errors.Is] を使用することができます。
+//
 // Valuerインターフェースを実装する型は、自分自身をドライバの [Value] に変換できます。
 type Valuer interface {
 	Value() (Value, error)

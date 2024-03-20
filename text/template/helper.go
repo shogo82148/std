@@ -17,7 +17,7 @@ import (
 //	var t = template.Must(template.New("name").Parse("text"))
 func Must(t *Template, err error) *Template
 
-// ParseFilesは新しいテンプレートを作成し、指定されたファイルからテンプレート定義を解析します。
+// ParseFilesは新しい [Template] を作成し、指定されたファイルからテンプレート定義を解析します。
 // 返されるテンプレートの名前は、最初のファイルのベース名と解析された内容を持つことになります。
 // ファイルは少なくとも1つ必要です。
 // エラーが発生した場合、解析は停止し、返される*Templateはnilになります。
@@ -40,12 +40,12 @@ func ParseFiles(filenames ...string) (*Template, error)
 // 最後に指定されたものが結果となります。
 func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 
-// ParseGlobは新しいテンプレートを作成し、パターンによって識別された
+// ParseGlobは新しい [Template] を作成し、パターンによって識別された
 // ファイルからテンプレート定義を解析します。ファイルはfilepath.Matchの
 // セマンティクスに従ってマッチし、パターンは少なくとも1つのファイルと
 // マッチしなければなりません。返されるテンプレートは、パターンによって
 // マッチした最初のファイルの（ベース）名と（解析された）内容を持つことになります。
-// ParseGlobは、パターンによってマッチしたファイルのリストでParseFilesを
+// ParseGlobは、パターンによってマッチしたファイルのリストで [ParseFiles] を
 // 呼び出すのと同等です。
 //
 // 異なるディレクトリにある同名の複数のファイルを解析するとき、
@@ -62,13 +62,13 @@ func ParseGlob(pattern string) (*Template, error)
 // 最後に指定されたものが結果となります。
 func (t *Template) ParseGlob(pattern string) (*Template, error)
 
-// ParseFSは、ParseFilesやParseGlobと似ていますが、ホストオペレーティングシステムの
+// ParseFSは、[Template.ParseFiles] や [Template.ParseGlob] と似ていますが、ホストオペレーティングシステムの
 // ファイルシステムの代わりにファイルシステムfsysから読み取ります。
 // それはグロブパターンのリストを受け入れます。
 // （ほとんどのファイル名は、自分自身のみにマッチするグロブパターンとして機能します。）
 func ParseFS(fsys fs.FS, patterns ...string) (*Template, error)
 
-// ParseFSは、ParseFilesやParseGlobと似ていますが、ホストオペレーティングシステムの
+// ParseFSは、[Template.ParseFiles] や [Template.ParseGlob] と似ていますが、ホストオペレーティングシステムの
 // ファイルシステムの代わりにファイルシステムfsysから読み取ります。
 // それはグロブパターンのリストを受け入れます。
 // （ほとんどのファイル名は、自分自身のみにマッチするグロブパターンとして機能します。）

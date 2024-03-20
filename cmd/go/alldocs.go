@@ -1776,29 +1776,31 @@
 //
 // 定義されたアーキテクチャ機能のビルドタグは以下の通りです：
 //
-//   - GOARCH=386の場合、GO386=387とGO386=sse2はそれぞれ
-//     386.387と386.sse2のビルドタグを設定します。
-//   - GOARCH=amd64の場合、GOAMD64=v1、v2、v3はそれぞれ
+//   - GOARCH=386の場合、GO386=387とGO386=sse2は
+//     それぞれ386.387と386.sse2のビルドタグを設定します。
+//   - GOARCH=amd64の場合、GOAMD64=v1、v2、v3は
 //     amd64.v1、amd64.v2、amd64.v3の機能ビルドタグに対応します。
-//   - GOARCH=armの場合、GOARM=5、6、7はそれぞれ
+//   - GOARCH=armの場合、GOARM=5、6、7は
 //     arm.5、arm.6、arm.7の機能ビルドタグに対応します。
+//   - GOARCH=arm64の場合、GOARM64=v8.{0-9}とv9.{0-5}は
+//     arm64.v8.{0-9}とarm64.v9.{0-5}の機能ビルドタグに対応します。
 //   - GOARCH=mipsまたはmipsleの場合、
-//     GOMIPS=hardfloatとsoftfloatはそれぞれ
+//     GOMIPS=hardfloatとsoftfloatは
 //     mips.hardfloatとmips.softfloat
 //     （またはmipsle.hardfloatとmipsle.softfloat）の機能ビルドタグに対応します。
 //   - GOARCH=mips64またはmips64leの場合、
-//     GOMIPS64=hardfloatとsoftfloatはそれぞれ
+//     GOMIPS64=hardfloatとsoftfloatは
 //     mips64.hardfloatとmips64.softfloat
 //     （またはmips64le.hardfloatとmips64le.softfloat）の機能ビルドタグに対応します。
 //   - GOARCH=ppc64またはppc64leの場合、
-//     GOPPC64=power8、power9、power10はそれぞれ
+//     GOPPC64=power8、power9、power10は
 //     ppc64.power8、ppc64.power9、ppc64.power10
 //     （またはppc64le.power8、ppc64le.power9、ppc64le.power10）
 //     の機能ビルドタグに対応します。
 //   - GOARCH=riscv64の場合、
-//     GORISCV64=rva20u64とrva22u64はそれぞれriscv64.rva20u64
+//     GORISCV64=rva20u64とrva22u64はriscv64.rva20u64
 //     とriscv64.rva22u64のビルドタグに対応します。
-//   - GOARCH=wasmの場合、GOWASM=satconvとsignextはそれぞれ
+//   - GOARCH=wasmの場合、GOWASM=satconvとsignextは
 //     wasm.satconvとwasm.signextの機能ビルドタグに対応します。
 //
 // GOARCH=amd64、arm、ppc64、ppc64le、riscv64の場合、特定の機能レベルは
@@ -2048,6 +2050,13 @@
 //		有効な値は5、6、7です。
 //		値の後には、浮動小数点命令の実装方法を指定するオプションを続けることができます。
 //		有効なオプションは、softfloat（5のデフォルト）とhardfloat（6と7のデフォルト）です。
+//	GOARM64
+//		GOARCH=arm64の場合、コンパイル対象のARM64アーキテクチャ。
+//		有効な値はv8.0（デフォルト）、v8.{1-9}、v9.{0-5}です。
+//		値の後には、ターゲットハードウェアが実装している拡張を指定するオプションを続けることができます。
+//		有効なオプションは、lseと、cryptoです。
+//		一部の拡張は、特定のGOARM64バージョンからデフォルトで有効になっていることに注意してください。
+//		例えば、lseはv8.1からデフォルトで有効になっています。
 //	GO386
 //		GOARCH=386の場合、浮動小数点命令の実装方法。
 //		有効な値はsse2（デフォルト）、softfloatです。
@@ -2799,6 +2808,7 @@
 //
 //	-benchmem
 //	    ベンチマークのメモリ割り当て統計を出力します。
+//	    Cで作成された割り当てやC.mallocを使用した割り当てはカウントされません。
 //
 //	-blockprofile block.out
 //	    すべてのテストが完了したときに、指定されたファイルにゴルーチンのブロックプロファイルを書き込みます。

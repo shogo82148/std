@@ -31,3 +31,18 @@ func ClosureType(clo *ir.ClosureExpr) *types.Type
 // needed in the closure for a OMETHVALUE node. The address of a variable of
 // the returned type can be cast to a func.
 func MethodValueType(n *ir.SelectorExpr) *types.Type
+
+// ClosureStructIter iterates through a slice of closure variables returning
+// their type and offset in the closure struct.
+type ClosureStructIter struct {
+	closureVars []*ir.Name
+	offset      int64
+	next        int
+}
+
+// NewClosureStructIter creates a new ClosureStructIter for closureVars.
+func NewClosureStructIter(closureVars []*ir.Name) *ClosureStructIter
+
+// Next returns the next name, type and offset of the next closure variable.
+// A nil name is returned after the last closure variable.
+func (iter *ClosureStructIter) Next() (n *ir.Name, typ *types.Type, offset int64)

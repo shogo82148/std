@@ -142,4 +142,18 @@ func (h *Header) FileInfo() fs.FileInfo
 //
 // fs.FileInfoのNameメソッドは、それが記述するファイルのベース名のみを返すため、
 // ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要があるかもしれません。
+//
+// fiが [FileInfoNames] を実装している場合、
+// Header.GnameとHeader.Unameはインターフェースのメソッドによって提供されます。
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
+
+// FileInfoNames extends [fs.FileInfo].
+// Passing an instance of this to [FileInfoHeader] permits the caller
+// to avoid a system-dependent name lookup by specifying the Uname and Gname directly.
+type FileInfoNames interface {
+	fs.FileInfo
+
+	Uname() (string, error)
+
+	Gname() (string, error)
+}
