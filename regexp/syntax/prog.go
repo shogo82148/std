@@ -69,37 +69,20 @@ func (p *Prog) Prefix() (prefix string, complete bool)
 // マッチが不可能な場合は、^EmptyOp(0)を返します。
 func (p *Prog) StartCond() EmptyOp
 
-<<<<<<< HEAD
 // MatchRune は指定した r に instruction が一致し、それを消費するかどうかを報告します。
-// i.Op == InstRune の場合にのみ呼び出すべきです。
+// i.Op == [InstRune] の場合にのみ呼び出すべきです。
 func (i *Inst) MatchRune(r rune) bool
 
 // MatchRunePosは、命令がrと一致しているかどうか（そして消費するかどうか）を確認します。
 // そうであれば、MatchRunePosは一致するルーンのペアのインデックスを返します
 // （または、len(i.Rune) == 1の場合、ルーンの単一要素）。
 // 一致しない場合、MatchRunePosは-1を返します。
-// MatchRunePosは、i.Op == InstRuneの場合のみ呼び出す必要があります。
+// MatchRunePosは、i.Op == [InstRune] の場合のみ呼び出す必要があります。
 func (i *Inst) MatchRunePos(r rune) int
 
 // MatchEmptyWidthは、runesの前と後の間に空の文字列が
 // マッチしているかどうかを報告します。
-// i.Op == InstEmptyWidthの場合にのみ呼び出すべきです。
-=======
-// MatchRune reports whether the instruction matches (and consumes) r.
-// It should only be called when i.Op == [InstRune].
-func (i *Inst) MatchRune(r rune) bool
-
-// MatchRunePos checks whether the instruction matches (and consumes) r.
-// If so, MatchRunePos returns the index of the matching rune pair
-// (or, when len(i.Rune) == 1, rune singleton).
-// If not, MatchRunePos returns -1.
-// MatchRunePos should only be called when i.Op == [InstRune].
-func (i *Inst) MatchRunePos(r rune) int
-
-// MatchEmptyWidth reports whether the instruction matches
-// an empty string between the runes before and after.
-// It should only be called when i.Op == [InstEmptyWidth].
->>>>>>> upstream/master
+// i.Op == [InstEmptyWidth] の場合にのみ呼び出すべきです。
 func (i *Inst) MatchEmptyWidth(before rune, after rune) bool
 
 func (i *Inst) String() string
