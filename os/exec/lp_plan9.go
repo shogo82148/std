@@ -16,13 +16,7 @@ var ErrNotFound = errors.New("executable file not found in $path")
 // パスは参照されません。
 // 成功すると、結果は絶対パスになります。
 //
-<<<<<<< HEAD
 // Goの古いバージョンでは、LookPathは現在のディレクトリに対する相対パスを返すことができました。
-// Go 1.19以降では、LookPathはそのパスとともに、errors.Is(err, ErrDot)を満たすエラーを返します。
+// Go 1.19以降では、LookPathはそのパスとともに、[errors.Is](err, [ErrDot])を満たすエラーを返します。
 // 詳細はパッケージのドキュメンテーションを参照してください。
-=======
-// In older versions of Go, LookPath could return a path relative to the current directory.
-// As of Go 1.19, LookPath will instead return that path along with an error satisfying
-// [errors.Is](err, [ErrDot]). See the package documentation for more details.
->>>>>>> upstream/master
 func LookPath(file string) (string, error)

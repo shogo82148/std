@@ -6,25 +6,14 @@
 // stdinとstdoutのリマップ、パイプを使用したI/Oの接続、その他の調整を
 // 簡単に行うことができます。
 //
-<<<<<<< HEAD
 // Cや他の言語からの"system"ライブラリ呼び出しとは異なり、
 // os/execパッケージは意図的にシステムシェルを呼び出さず、
 // グロブパターンを展開したり、シェルが通常行う他の展開、
 // パイプライン、リダイレクションを処理しません。このパッケージは
 // Cの"exec"関数群のように振る舞います。グロブパターンを展開するには、
 // シェルを直接呼び出し、危険な入力をエスケープするか、
-// path/filepathパッケージのGlob関数を使用します。
+// [path/filepath] パッケージのGlob関数を使用します。
 // 環境変数を展開するには、osパッケージのExpandEnvを使用します。
-=======
-// Unlike the "system" library call from C and other languages, the
-// os/exec package intentionally does not invoke the system shell and
-// does not expand any glob patterns or handle other expansions,
-// pipelines, or redirections typically done by shells. The package
-// behaves more like C's "exec" family of functions. To expand glob
-// patterns, either call the shell directly, taking care to escape any
-// dangerous input, or use the [path/filepath] package's Glob function.
-// To expand environment variables, use package os's ExpandEnv.
->>>>>>> upstream/master
 //
 // このパッケージの例はUnixシステムを前提としています。
 // これらはWindowsでは実行できないかもしれませんし、golang.org や godoc.org が使用する
@@ -32,8 +21,7 @@
 //
 // # Executables in the current directory
 //
-<<<<<<< HEAD
-// 関数CommandとLookPathは、ホストオペレーティングシステムの規則に従って、
+// 関数 [Command] と [LookPath] は、ホストオペレーティングシステムの規則に従って、
 // 現在のパスにリストされたディレクトリでプログラムを探します。
 // オペレーティングシステムは何十年もの間、この検索に現在の
 // ディレクトリを含めてきました。これは時々暗黙的に、時々
@@ -43,27 +31,10 @@
 //
 // これらのセキュリティ問題を避けるために、Go 1.19から、このパッケージはプログラムを
 // 現在のディレクトリに対する暗黙的または明示的なパスエントリを使用して解決しません。
-// つまり、exec.LookPath("go")を実行すると、パスがどのように設定されていても、
+// つまり、[LookPath]("go")を実行すると、パスがどのように設定されていても、
 // Unixでは./go、Windowsでは.\go.exeを正常に返すことはありません。
 // 代わりに、通常のパスアルゴリズムがその答えをもたらす場合、
-// これらの関数はエラーerrを返し、errors.Is(err, ErrDot)を満たします。
-=======
-// The functions [Command] and [LookPath] look for a program
-// in the directories listed in the current path, following the
-// conventions of the host operating system.
-// Operating systems have for decades included the current
-// directory in this search, sometimes implicitly and sometimes
-// configured explicitly that way by default.
-// Modern practice is that including the current directory
-// is usually unexpected and often leads to security problems.
-//
-// To avoid those security problems, as of Go 1.19, this package will not resolve a program
-// using an implicit or explicit path entry relative to the current directory.
-// That is, if you run [LookPath]("go"), it will not successfully return
-// ./go on Unix nor .\go.exe on Windows, no matter how the path is configured.
-// Instead, if the usual path algorithms would result in that answer,
-// these functions return an error err satisfying [errors.Is](err, [ErrDot]).
->>>>>>> upstream/master
+// これらの関数はエラーerrを返し、[errors.Is](err, [ErrDot])を満たします。
 //
 // 例えば、以下の2つのプログラムスニペットを考えてみてください：
 //
@@ -124,12 +95,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-<<<<<<< HEAD
-// Errorは、LookPathがファイルを実行可能なものとして分類できなかったときに返されます。
-=======
-// Error is returned by [LookPath] when it fails to classify a file as an
-// executable.
->>>>>>> upstream/master
+// Errorは、[LookPath] がファイルを実行可能なものとして分類できなかったときに返されます。
 type Error struct {
 	// Nameは、エラーが発生したファイル名です。
 	Name string
@@ -141,25 +107,14 @@ func (e *Error) Error() string
 
 func (e *Error) Unwrap() error
 
-<<<<<<< HEAD
 // ErrWaitDelayは、プロセスが成功したステータスコードで終了するが、
 // コマンドのWaitDelayが期限切れになる前にその出力パイプが閉じられない場合、
-// (*Cmd).Waitによって返されます。
-=======
-// ErrWaitDelay is returned by [Cmd.Wait] if the process exits with a
-// successful status code but its output pipes are not closed before the
-// command's WaitDelay expires.
->>>>>>> upstream/master
+// [Cmd.Wait] によって返されます。
 var ErrWaitDelay = errors.New("exec: WaitDelay expired before I/O complete")
 
 // Cmdは、準備中または実行中の外部コマンドを表します。
 //
-<<<<<<< HEAD
-// Cmdは、Run、Output、またはCombinedOutputメソッドを呼び出した後では再利用できません。
-=======
-// A Cmd cannot be reused after calling its [Cmd.Run], [Cmd.Output] or [Cmd.CombinedOutput]
-// methods.
->>>>>>> upstream/master
+// Cmdは、[Cmd.Run]、[Cmd.Output]、または [Cmd.CombinedOutput] メソッドを呼び出した後では再利用できません。
 type Cmd struct {
 	// Pathは、実行するコマンドのパスです。
 	//
@@ -332,25 +287,14 @@ type Cmd struct {
 	lookPathErr error
 }
 
-<<<<<<< HEAD
 // Commandは、指定されたプログラムを
-// 与えられた引数で実行するためのCmd構造体を返します。
-=======
-// Command returns the [Cmd] struct to execute the named program with
-// the given arguments.
->>>>>>> upstream/master
+// 与えられた引数で実行するための [Cmd] 構造体を返します。
 //
 // それは返される構造体の中でPathとArgsだけを設定します。
 //
-<<<<<<< HEAD
-// nameにパスセパレータが含まれていない場合、CommandはLookPathを使用して
+// nameにパスセパレータが含まれていない場合、Commandは [LookPath] を使用して
 // 可能な場合にはnameを完全なパスに解決します。それ以外の場合、nameを
 // 直接Pathとして使用します。
-=======
-// If name contains no path separators, Command uses [LookPath] to
-// resolve name to a complete path if possible. Otherwise it uses name
-// directly as Path.
->>>>>>> upstream/master
 //
 // 返されるCmdのArgsフィールドは、コマンド名に続くargの要素から構築されます。
 // したがって、argにはコマンド名自体を含めないでください。例えば、Command("echo", "hello")。
@@ -366,18 +310,10 @@ type Cmd struct {
 // Argsを空にすることができます。
 func Command(name string, arg ...string) *Cmd
 
-<<<<<<< HEAD
-// CommandContextはCommandと同様ですが、contextが含まれています。
+// CommandContextは [Command] と同様ですが、contextが含まれています。
 //
 // 提供されたcontextは、コマンドが自身で完了する前にcontextがdoneになった場合、
-// プロセスを中断するために使用されます（cmd.Cancelまたはos.Process.Killを呼び出す）。
-=======
-// CommandContext is like [Command] but includes a context.
-//
-// The provided context is used to interrupt the process
-// (by calling cmd.Cancel or [os.Process.Kill])
-// if the context becomes done before the command completes on its own.
->>>>>>> upstream/master
+// プロセスを中断するために使用されます（cmd.Cancelまたは [os.Process.Kill] を呼び出す）。
 //
 // CommandContextは、コマンドのCancel関数をそのProcessのKillメソッドを呼び出すように設定し、
 // WaitDelayは未設定のままにします。呼び出し元は、コマンドを開始する前にこれらのフィールドを
@@ -395,35 +331,20 @@ func (c *Cmd) String() string
 // 返されるエラーは、コマンドが実行され、stdin、stdout、stderrのコピーに問題がなく、
 // ゼロの終了ステータスで終了した場合にはnilです。
 //
-<<<<<<< HEAD
 // コマンドが開始されるが正常に完了しない場合、エラーは
-// *ExitError型です。他の状況では他のエラータイプが返される可能性があります。
+// [*ExitError] 型です。他の状況では他のエラータイプが返される可能性があります。
 //
-// 呼び出し元のgoroutineがruntime.LockOSThreadでオペレーティングシステムのスレッドをロックし、
+// 呼び出し元のgoroutineが [runtime.LockOSThread] でオペレーティングシステムのスレッドをロックし、
 // 継承可能なOSレベルのスレッド状態（例えば、LinuxやPlan 9の名前空間）を変更した場合、
 // 新しいプロセスは呼び出し元のスレッド状態を継承します。
-=======
-// If the command starts but does not complete successfully, the error is of
-// type [*ExitError]. Other error types may be returned for other situations.
-//
-// If the calling goroutine has locked the operating system thread
-// with [runtime.LockOSThread] and modified any inheritable OS-level
-// thread state (for example, Linux or Plan 9 name spaces), the new
-// process will inherit the caller's thread state.
->>>>>>> upstream/master
 func (c *Cmd) Run() error
 
 // Startは指定されたコマンドを開始しますが、その完了を待ちません。
 //
 // Startが成功すると、c.Processフィールドが設定されます。
 //
-<<<<<<< HEAD
 // Startの成功した呼び出しの後、関連するシステムリソースを解放するために
-// Waitメソッドを呼び出す必要があります。
-=======
-// After a successful call to Start the [Cmd.Wait] method must be called in
-// order to release associated system resources.
->>>>>>> upstream/master
+// [Cmd.Wait] メソッドを呼び出す必要があります。
 func (c *Cmd) Start() error
 
 // ExitErrorは、コマンドによる成功しない終了を報告します。
@@ -447,21 +368,16 @@ func (e *ExitError) Error() string
 // Waitは、コマンドが終了するのを待ち、stdinへのコピーまたは
 // stdoutまたはstderrからのコピーが完了するのを待ちます。
 //
-<<<<<<< HEAD
-// コマンドはStartによって開始されていなければなりません。
-=======
-// The command must have been started by [Cmd.Start].
->>>>>>> upstream/master
+// コマンドは [Cmd.Start] によって開始されていなければなりません。
 //
 // 返されるエラーは、コマンドが実行され、stdin、stdout、stderrのコピーに問題がなく、
 // ゼロの終了ステータスで終了した場合にはnilです。
 //
-<<<<<<< HEAD
 // コマンドが実行に失敗するか、正常に完了しない場合、
-// エラーは*ExitError型です。I/O問題に対しては他のエラータイプが
+// エラーは [*ExitError] 型です。I/O問題に対しては他のエラータイプが
 // 返される可能性があります。
 //
-// c.Stdin、c.Stdout、c.Stderrのいずれかが*os.Fileでない場合、
+// c.Stdin、c.Stdout、c.Stderrのいずれかが [*os.File] でない場合、
 // Waitは、プロセスへのまたはプロセスからの対応するI/Oループのコピーが
 // 完了するのを待ちます。
 //
@@ -469,75 +385,35 @@ func (e *ExitError) Error() string
 func (c *Cmd) Wait() error
 
 // Outputはコマンドを実行し、その標準出力を返します。
-// 返されるエラーは通常、*ExitError型です。
-// c.Stderrがnilだった場合、OutputはExitError.Stderrを設定します。
-=======
-// If the command fails to run or doesn't complete successfully, the
-// error is of type [*ExitError]. Other error types may be
-// returned for I/O problems.
-//
-// If any of c.Stdin, c.Stdout or c.Stderr are not an [*os.File], Wait also waits
-// for the respective I/O loop copying to or from the process to complete.
-//
-// Wait releases any resources associated with the [Cmd].
-func (c *Cmd) Wait() error
-
-// Output runs the command and returns its standard output.
-// Any returned error will usually be of type [*ExitError].
-// If c.Stderr was nil, Output populates [ExitError.Stderr].
->>>>>>> upstream/master
+// 返されるエラーは通常、[*ExitError] 型です。
+// c.Stderrがnilだった場合、Outputは [ExitError.Stderr] を設定します。
 func (c *Cmd) Output() ([]byte, error)
 
 // CombinedOutputはコマンドを実行し、その標準出力と標準エラーを結合したものを返します。
 func (c *Cmd) CombinedOutput() ([]byte, error)
 
-<<<<<<< HEAD
 // StdinPipeは、コマンドが開始されたときにコマンドの標準入力に接続されるパイプを返します。
-// パイプは、Waitがコマンドの終了を確認した後、自動的に閉じられます。
+// パイプは、[Cmd.Wait] がコマンドの終了を確認した後、自動的に閉じられます。
 // 呼び出し元は、パイプを早く閉じるためにCloseを呼び出すだけでよいです。
 // 例えば、実行されるコマンドが標準入力が閉じるまで終了しない場合、呼び出し元はパイプを閉じる必要があります。
-=======
-// StdinPipe returns a pipe that will be connected to the command's
-// standard input when the command starts.
-// The pipe will be closed automatically after [Cmd.Wait] sees the command exit.
-// A caller need only call Close to force the pipe to close sooner.
-// For example, if the command being run will not exit until standard input
-// is closed, the caller must close the pipe.
->>>>>>> upstream/master
 func (c *Cmd) StdinPipe() (io.WriteCloser, error)
 
 // StdoutPipeは、コマンドが開始されたときにコマンドの標準出力に接続されるパイプを返します。
 //
-<<<<<<< HEAD
-// Waitは、コマンドの終了を確認した後にパイプを閉じるため、
+// [Cmd.Wait] は、コマンドの終了を確認した後にパイプを閉じるため、
 // ほとんどの呼び出し元は自分でパイプを閉じる必要はありません。
 // したがって、パイプからのすべての読み取りが完了する前にWaitを呼び出すことは誤りです。
-// 同様の理由で、StdoutPipeを使用しているときにRunを呼び出すことも誤りです。
+// 同様の理由で、StdoutPipeを使用しているときに [Cmd.Run] を呼び出すことも誤りです。
 // 一般的な使用法については、例を参照してください。
-=======
-// [Cmd.Wait] will close the pipe after seeing the command exit, so most callers
-// need not close the pipe themselves. It is thus incorrect to call Wait
-// before all reads from the pipe have completed.
-// For the same reason, it is incorrect to call [Cmd.Run] when using StdoutPipe.
-// See the example for idiomatic usage.
->>>>>>> upstream/master
 func (c *Cmd) StdoutPipe() (io.ReadCloser, error)
 
 // StderrPipeは、コマンドが開始されたときにコマンドの標準エラーに接続されるパイプを返します。
 //
-<<<<<<< HEAD
-// Waitは、コマンドの終了を確認した後にパイプを閉じるため、
+// [Cmd.Wait] は、コマンドの終了を確認した後にパイプを閉じるため、
 // ほとんどの呼び出し元は自分でパイプを閉じる必要はありません。
 // したがって、パイプからのすべての読み取りが完了する前にWaitを呼び出すことは誤りです。
-// 同様の理由で、StderrPipeを使用しているときにRunを呼び出すことも誤りです。
+// 同様の理由で、StderrPipeを使用しているときに [Cmd.Run] を呼び出すことも誤りです。
 // 一般的な使用法については、例を参照してください。
-=======
-// [Cmd.Wait] will close the pipe after seeing the command exit, so most callers
-// need not close the pipe themselves. It is thus incorrect to call Wait
-// before all reads from the pipe have completed.
-// For the same reason, it is incorrect to use [Cmd.Run] when using StderrPipe.
-// See the StdoutPipe example for idiomatic usage.
->>>>>>> upstream/master
 func (c *Cmd) StderrPipe() (io.ReadCloser, error)
 
 // Environは、現在設定されている状態でコマンドが実行される環境のコピーを返します。
