@@ -41,56 +41,28 @@ import (
 // Writerは、すべてのUnicodeコードポイントが同じ幅を持つと仮定しています。
 // これは、一部のフォントでは真ではないかもしれません、または文字列が結合文字を含んでいる場合。
 //
-<<<<<<< HEAD
-// DiscardEmptyColumnsが設定されている場合、垂直（または「ソフト」）タブによって
+// [DiscardEmptyColumns] が設定されている場合、垂直（または「ソフト」）タブによって
 // 完全に終了する空の列は破棄されます。水平（または「ハード」）タブで終了する列は
 // このフラグの影響を受けません。
-=======
-// If [DiscardEmptyColumns] is set, empty columns that are terminated
-// entirely by vertical (or "soft") tabs are discarded. Columns
-// terminated by horizontal (or "hard") tabs are not affected by
-// this flag.
->>>>>>> upstream/master
 //
 // WriterがHTMLをフィルタリングするように設定されている場合、HTMLタグとエンティティは
 // そのまま通過します。タグとエンティティの幅は、フォーマットの目的でゼロ（タグ）と
 // 一（エンティティ）とみなされます。
 //
-<<<<<<< HEAD
-// テキストのセグメントは、Escape文字でそれを括ることでエスケープできます。
+// テキストのセグメントは、[Escape] 文字でそれを括ることでエスケープできます。
 // tabwriterはエスケープされたテキストセグメントをそのまま通過させます。
-// 特に、セグメント内のタブや改行は解釈しません。StripEscapeフラグが設定されている場合、
+// 特に、セグメント内のタブや改行は解釈しません。[StripEscape] フラグが設定されている場合、
 // Escape文字は出力から削除されます。それ以外の場合、それらもそのまま通過します。
 // フォーマットの目的で、エスケープされたテキストの幅は常にEscape文字を除いて計算されます。
 //
 // フォームフィード文字は改行のように機能しますが、現在の行のすべての列も終了します
-// （事実上Flushを呼び出します）。次の行のタブで終了するセルは新しい列を開始します。
+// （事実上 [Writer.Flush] を呼び出します）。次の行のタブで終了するセルは新しい列を開始します。
 // HTMLタグ内やエスケープされたテキストセグメント内で見つからない限り、
 // フォームフィード文字は出力で改行として表示されます。
 //
 // Writerは、適切な行の間隔が将来の行のセルに依存する可能性があるため、
 // 入力を内部的にバッファリングする必要があります。クライアントは、
-// Writeの呼び出しが終了したらFlushを呼び出す必要があります。
-=======
-// A segment of text may be escaped by bracketing it with [Escape]
-// characters. The tabwriter passes escaped text segments through
-// unchanged. In particular, it does not interpret any tabs or line
-// breaks within the segment. If the [StripEscape] flag is set, the
-// Escape characters are stripped from the output; otherwise they
-// are passed through as well. For the purpose of formatting, the
-// width of the escaped text is always computed excluding the Escape
-// characters.
-//
-// The formfeed character acts like a newline but it also terminates
-// all columns in the current line (effectively calling [Writer.Flush]). Tab-
-// terminated cells in the next line start new columns. Unless found
-// inside an HTML tag or inside an escaped text segment, formfeed
-// characters appear as newlines in the output.
-//
-// The Writer must buffer input internally, because proper spacing
-// of one line may depend on the cells in future lines. Clients must
-// call Flush when done calling [Writer.Write].
->>>>>>> upstream/master
+// [Writer.Write] の呼び出しが終了したらFlushを呼び出す必要があります。
 type Writer struct {
 	// configuration
 	output   io.Writer
@@ -134,13 +106,8 @@ const (
 	Debug
 )
 
-<<<<<<< HEAD
-// Writerは、Initへの呼び出しで初期化する必要があります。最初のパラメータ（output）は
+// [Writer] は、Initへの呼び出しで初期化する必要があります。最初のパラメータ（output）は
 // フィルタ出力を指定します。残りのパラメータはフォーマットを制御します：
-=======
-// A [Writer] must be initialized with a call to Init. The first parameter (output)
-// specifies the filter output. The remaining parameters control the formatting:
->>>>>>> upstream/master
 //
 //	minwidth	パディングを含む最小セル幅
 //	tabwidth	タブ文字の幅（相当するスペースの数）
@@ -161,27 +128,15 @@ func (b *Writer) Init(output io.Writer, minwidth, tabwidth, padding int, padchar
 // 値0xffは、有効なUTF-8シーケンスには現れないため選ばれました。
 const Escape = '\xff'
 
-<<<<<<< HEAD
-// Writeの最後の呼び出し後にFlushを呼び出す必要があります。これにより、
-// Writerにバッファリングされたデータがすべて出力に書き込まれます。終了時に不完全な
+// [Writer.Write] の最後の呼び出し後にFlushを呼び出す必要があります。これにより、
+// [Writer] にバッファリングされたデータがすべて出力に書き込まれます。終了時に不完全な
 // エスケープシーケンスは、フォーマットの目的で完全と見なされます。
-=======
-// Flush should be called after the last call to [Writer.Write] to ensure
-// that any data buffered in the [Writer] is written to output. Any
-// incomplete escape sequence at the end is considered
-// complete for formatting purposes.
->>>>>>> upstream/master
 func (b *Writer) Flush() error
 
 // Writeは、bufをライターbに書き込みます。
 // 返されるエラーは、基礎となる出力ストリームへの書き込み中に遭遇したものだけです。
 func (b *Writer) Write(buf []byte) (n int, err error)
 
-<<<<<<< HEAD
-// NewWriterは新しいtabwriter.Writerを割り当てて初期化します。
+// NewWriterは新しい [Writer] を割り当てて初期化します。
 // パラメータはInit関数と同じです。
-=======
-// NewWriter allocates and initializes a new [Writer].
-// The parameters are the same as for the Init function.
->>>>>>> upstream/master
 func NewWriter(output io.Writer, minwidth, tabwidth, padding int, padchar byte, flags uint) *Writer
