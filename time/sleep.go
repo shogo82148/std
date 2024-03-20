@@ -38,12 +38,8 @@ type Timer struct {
 // See the [NewTimer] documentation for more details.
 func (t *Timer) Stop() bool
 
-<<<<<<< HEAD
 // NewTimerは、少なくともdの期間経過後に、
 // そのチャネルに現在の時刻を送信する新しいTimerを作成します。
-=======
-// NewTimer creates a new Timer that will send
-// the current time on its channel after at least duration d.
 //
 // Before Go 1.23, the garbage collector did not recover
 // timers that had not yet expired or been stopped, so code often
@@ -65,39 +61,11 @@ func (t *Timer) Stop() bool
 // behaviors: when set, unexpired timers won't be garbage collected, and
 // channels will have buffered capacity. This setting may be removed
 // in Go 1.27 or later.
->>>>>>> upstream/master
 func NewTimer(d Duration) *Timer
 
 // Resetはタイマーを期間d後に期限切れにする。
 // タイマーがアクティブであった場合はtrue、期限切れまたは停止された場合はfalseを返す。
 //
-<<<<<<< HEAD
-// NewTimerで作成されたタイマーの場合、Resetは停止または期限切れのタイマーにのみ呼び出すべきです。チャネルが空になっている必要があります。
-//
-// プログラムがすでにt.Cから値を受け取っている場合、タイマーは期限切れであり、チャネルは空になっているため、t.Resetを直接使用できます。
-// しかし、まだt.Cから値を受け取っていない場合、タイマーは停止しなければならず、Stopがタイマーが停止される前に期限切れしたことを報告した場合は、
-// チャネルを明示的に空にする必要があります：
-//
-//	if !t.Stop() {
-//		<-t.C
-//	}
-//	t.Reset(d)
-//
-// これは、他の受信操作と同時に行うべきではありません。
-//
-// Resetの返り値を正しく使用することはできないことに注意してください。チャネルの空にする操作と新しいタイマーの期限切れとの競合状態があります。
-// 上記に説明したように、Resetは必ず停止または期限切れのチャネルに対して呼び出すべきです。返り値は、既存のプログラムとの互換性を保つために存在します。
-//
-// AfterFunc(d, f)で作成されたタイマーの場合、Resetはfが実行されるタイミングを再スケジュールするかどうかによってtrueまたはfalseを返します。
-// Resetがfalseを返す場合、Resetは前のfが完了するのを待たずにリターンせず、また後続のgoroutineが前のgoroutineと同時に実行されないことを保証しません。
-// 前のfが完了したかどうかを知る必要がある場合、明示的にfと調整する必要があります。
-func (t *Timer) Reset(d Duration) bool
-
-// durationが経過するのを待って、その後で現在の時刻を返されたチャネルに送信します。
-// これはNewTimer(d).Cと同等です。
-// ガベージコレクタによってTimerが回収されるのは、タイマーが発火するまでではありません。
-// 効率が問題の場合は、代わりにNewTimerを使用し、タイマーが不要になった場合はTimer.Stopを呼び出してください。
-=======
 // For a func-based timer created with AfterFunc(d, f), Reset either reschedules
 // when f will run, in which case Reset returns true, or schedules f
 // to run again, in which case it returns false.
@@ -127,7 +95,6 @@ func (t *Timer) Reset(d Duration) bool
 // NewTimer instead and call Timer.Stop if the timer is no longer needed.
 // As of Go 1.23, the garbage collector can recover unreferenced,
 // unstopped timers. There is no reason to prefer NewTimer when After will do.
->>>>>>> upstream/master
 func After(d Duration) <-chan Time
 
 // AfterFuncは、指定した時間が経過した後、fを自身のゴルーチンで呼び出します。
