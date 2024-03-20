@@ -23,12 +23,7 @@ type Once struct {
 	m    Mutex
 }
 
-<<<<<<< HEAD
-// Doは、Onceのインスタンスで最初にDoが呼び出された場合のみ、関数fを呼び出します。つまり、次のように与えられた場合、
-=======
-// Do calls the function f if and only if Do is being called for the
-// first time for this instance of [Once]. In other words, given
->>>>>>> upstream/master
+// Doは、[Once] のインスタンスで最初にDoが呼び出された場合のみ、関数fを呼び出します。つまり、次のように与えられた場合、
 //
 //	var once Once
 //

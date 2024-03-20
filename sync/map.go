@@ -15,40 +15,20 @@ import (
 // Map型は特殊化されています。ほとんどのコードでは代わりに単純なGoのmapを使用すべきであり、
 // 型の安全性を向上させ、他の不変条件とマップのコンテンツを維持しやすくするために別個のロックや調整を行うべきです。
 //
-<<<<<<< HEAD
 // Map型は2つの一般的な使用例に最適化されています：(1)特定のキーのエントリが一度しか書き込まれずに多くの回数読み取られる場合、
 // つまり成長のみのキャッシュ、または(2)複数のゴルーチンが交差しないキーのセットの読み取り、書き込み、上書きを行う場合。
-// これらの2つの場合において、Mapの使用は、別個のMutexやRWMutexとペアになったGoのマップと比較して、
+// これらの2つの場合において、Mapの使用は、別個の [Mutex] や [RWMutex] とペアになったGoのマップと比較して、
 // ロックの競合を大幅に減らすことができます。
-=======
-// The Map type is optimized for two common use cases: (1) when the entry for a given
-// key is only ever written once but read many times, as in caches that only grow,
-// or (2) when multiple goroutines read, write, and overwrite entries for disjoint
-// sets of keys. In these two cases, use of a Map may significantly reduce lock
-// contention compared to a Go map paired with a separate [Mutex] or [RWMutex].
->>>>>>> upstream/master
 //
 // ゼロ値のMapは空で使用準備ができています。Mapは最初の使用後にコピーされてはなりません。
 //
-<<<<<<< HEAD
 // Goメモリモデルの用語では、Mapは書き込み操作が行われたときにそれに続く読み取り操作を "書き込みより前に同期します"。
 // ここで、読み取りと書き込み操作は以下のように定義されます。
-// Load、LoadAndDelete、LoadOrStore、Swap、CompareAndSwap、CompareAndDeleteは読み取り操作です。
-// Delete、LoadAndDelete、Store、Swapは書き込み操作です。
-// LoadOrStoreは、loadedがfalseで返された場合に書き込み操作です。
-// CompareAndSwapは、swappedがtrueで返された場合に書き込み操作です。
-// CompareAndDeleteは、deletedがtrueで返された場合に書き込み操作です。
-=======
-// In the terminology of the Go memory model, Map arranges that a write operation
-// “synchronizes before” any read operation that observes the effect of the write, where
-// read and write operations are defined as follows.
-// [Map.Load], [Map.LoadAndDelete], [Map.LoadOrStore], [Map.Swap], [Map.CompareAndSwap],
-// and [Map.CompareAndDelete] are read operations;
-// [Map.Delete], [Map.LoadAndDelete], [Map.Store], and [Map.Swap] are write operations;
-// [Map.LoadOrStore] is a write operation when it returns loaded set to false;
-// [Map.CompareAndSwap] is a write operation when it returns swapped set to true;
-// and [Map.CompareAndDelete] is a write operation when it returns deleted set to true.
->>>>>>> upstream/master
+// [Map.Load]、[Map.LoadAndDelete]、[Map.LoadOrStore]、[Map.Swap]、[Map.CompareAndSwap]、[Map.CompareAndDelete] は読み取り操作です。
+// [Map.Delete]、[Map.LoadAndDelete]、[Map.Store]、[Map.Swap] は書き込み操作です。
+// [Map.LoadOrStore] は、loadedがfalseで返された場合に書き込み操作です。
+// [Map.CompareAndSwap] は、swappedがtrueで返された場合に書き込み操作です。
+// [Map.CompareAndDelete] は、deletedがtrueで返された場合に書き込み操作です。
 type Map struct {
 	mu Mutex
 

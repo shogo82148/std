@@ -8,27 +8,14 @@ import (
 	"github.com/shogo82148/std/sync/atomic"
 )
 
-<<<<<<< HEAD
 // WaitGroupは、一連のゴルーチンの完了を待機します。
-// メインゴルーチンは、待機するゴルーチンの数を設定するためにAddを呼び出します。
-// それぞれのゴルーチンは実行され、終了時にDoneを呼び出します。
-// 同時に、全てのゴルーチンが終了するまでブロックするためにWaitを使用できます。
-=======
-// A WaitGroup waits for a collection of goroutines to finish.
-// The main goroutine calls [WaitGroup.Add] to set the number of
-// goroutines to wait for. Then each of the goroutines
-// runs and calls [WaitGroup.Done] when finished. At the same time,
-// [WaitGroup.Wait] can be used to block until all goroutines have finished.
->>>>>>> upstream/master
+// メインゴルーチンは、待機するゴルーチンの数を設定するために [WaitGroup.Add] を呼び出します。
+// それぞれのゴルーチンは実行され、終了時に [WaitGroup.Done] を呼び出します。
+// 同時に、全てのゴルーチンが終了するまでブロックするために [WaitGroup.Wait] を使用できます。
 //
 // WaitGroupは、初回使用後にコピーしてはいけません。
 //
-<<<<<<< HEAD
-// Goのメモリモデルの用語である、Doneへの呼び出しは、それによってブロックが解除される任意のWait呼び出しの前に「同期します」。
-=======
-// In the terminology of the Go memory model, a call to [WaitGroup.Done]
-// “synchronizes before” the return of any Wait call that it unblocks.
->>>>>>> upstream/master
+// Goのメモリモデルの用語である、[WaitGroup.Done] への呼び出しは、それによってブロックが解除される任意のWait呼び出しの前に「同期します」。
 type WaitGroup struct {
 	noCopy noCopy
 
@@ -36,15 +23,9 @@ type WaitGroup struct {
 	sema  uint32
 }
 
-<<<<<<< HEAD
-// AddはWaitGroupのカウンターにデルタを追加します。デルタは負であることもあります。
-// カウンターがゼロになると、Waitでブロックされているすべてのゴルーチンが解放されます。
+// Addは [WaitGroup] のカウンターにデルタを追加します。デルタは負であることもあります。
+// カウンターがゼロになると、[WaitGroup.Wait] でブロックされているすべてのゴルーチンが解放されます。
 // カウンターが負になると、Addはパニックを発生させます。
-=======
-// Add adds delta, which may be negative, to the [WaitGroup] counter.
-// If the counter becomes zero, all goroutines blocked on [WaitGroup.Wait] are released.
-// If the counter goes negative, Add panics.
->>>>>>> upstream/master
 //
 // カウンターがゼロの状態で正のデルタで呼び出される場合は、Waitより前に実行される必要があることに注意してください。
 // 負のデルタで呼び出される場合や、カウンターがゼロより大きい状態で正のデルタで呼ばれる場合は、任意のタイミングで発生する場合があります。
@@ -53,15 +34,8 @@ type WaitGroup struct {
 // WaitGroupの例を参照してください。
 func (wg *WaitGroup) Add(delta int)
 
-<<<<<<< HEAD
-// DoneはWaitGroupのカウンターを1つ減らします。
+// Doneは [WaitGroup] のカウンターを1つ減らします。
 func (wg *WaitGroup) Done()
 
-// Wait は WaitGroup カウンタがゼロになるまでブロックします。
-=======
-// Done decrements the [WaitGroup] counter by one.
-func (wg *WaitGroup) Done()
-
-// Wait blocks until the [WaitGroup] counter is zero.
->>>>>>> upstream/master
+// Wait は [WaitGroup] カウンタがゼロになるまでブロックします。
 func (wg *WaitGroup) Wait()

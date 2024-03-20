@@ -32,15 +32,10 @@ import (
 //
 // プールは、最初の使用後にコピーしないでください。
 //
-<<<<<<< HEAD
-// Goのメモリモデルの用語では、Put(x)の呼び出しは同じ値xを返すGet呼び出しよりも「前に同期します」。
-// 同様に、Newがxを返す「前に同期します」Get呼び出しが同じ値xを返します。
-=======
-// In the terminology of the Go memory model, a call to Put(x) “synchronizes before”
-// a call to [Pool.Get] returning that same value x.
-// Similarly, a call to New returning x “synchronizes before”
-// a call to Get returning that same value x.
->>>>>>> upstream/master
+// Goのメモリモデルの用語では、Put(x)の呼び出しは、
+// 同じ値xを返す [Pool.Get] の呼び出しよりも「先に同期します」。
+// 同様に、Newがxを返す呼び出しは、
+// 同じ値xを返すGetの呼び出しよりも「先に同期します」。
 type Pool struct {
 	noCopy noCopy
 
@@ -58,17 +53,9 @@ type Pool struct {
 // xをプールに追加します。
 func (p *Pool) Put(x any)
 
-<<<<<<< HEAD
-// GetはPoolからランダムなアイテムを選択し、Poolから削除して呼び出し元に返します。
+// GetはPoolからランダムなアイテムを選択し、[Pool] から削除して呼び出し元に返します。
 // Getはプールを無視して空として扱うことを選択する場合があります。
-// Putに渡された値とGetが返す値の間には、呼び出し元は何の関係も仮定すべきではありません。
-=======
-// Get selects an arbitrary item from the [Pool], removes it from the
-// Pool, and returns it to the caller.
-// Get may choose to ignore the pool and treat it as empty.
-// Callers should not assume any relation between values passed to [Pool.Put] and
-// the values returned by Get.
->>>>>>> upstream/master
+// [Pool.Put] に渡された値とGetが返す値の間には、呼び出し元は何の関係も仮定すべきではありません。
 //
 // Getが通常nilを返す場合であり、p.Newがnilでない場合、Getはp.Newを呼び出した結果を返します。
 func (p *Pool) Get() any
