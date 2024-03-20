@@ -69,17 +69,10 @@ func (f *F) Add(args ...any)
 // ffは、(*F).Log、(*F).Error、(*F).Skipなどの*Fメソッドを呼び出してはなりません。代わりに、対応する*Tメソッドを使用してください。
 // (*F).Fuzz関数で許可される*Fメソッドは、(*F).Failedと(*F).Nameのみです。
 //
-<<<<<<< HEAD
-// この関数は高速かつ決定論的であるべきであり、その動作は共有状態に依存してはいけません。実行のたびに、実行その他の間に保持している
-// 可変の入力引数またはそれらのポインタは、後続の呼び出し中に変更される可能性があるため、保持してはいけません。
-// ffは、fuzzingエンジンによって提供された引数の基になるデータを変更してはいけません。
-=======
-// This function should be fast and deterministic, and its behavior should not
-// depend on shared state. No mutable input arguments, or pointers to them,
-// should be retained between executions of the fuzz function, as the memory
-// backing them may be mutated during a subsequent invocation. ff must not
-// modify the underlying data of the arguments provided by the fuzzing engine.
->>>>>>> upstream/master
+// この関数は高速で決定的であるべきであり、その振る舞いは共有状態に依存してはなりません。
+// 可変の入力引数、またはそれらへのポインターは、fuzz関数の実行間で保持されるべきではありません。
+// なぜなら、それらをバックアップするメモリは、後続の呼び出し中に変更される可能性があるからです。
+// ffは、fuzzingエンジンによって提供される引数の基礎となるデータを変更してはなりません。
 //
 // fuzzing中、F.Fuzzは問題が見つかるまで、時間切れ（-fuzztimeで設定）またはテストプロセスがシグナルによって中断されるまで、戻りません。
 // F.Fuzzは、F.Skipまたは [F.Fail] が先に呼び出されない限り、正確に1回呼び出す必要があります。
