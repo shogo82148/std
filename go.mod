@@ -4,7 +4,10 @@ go 1.21.1
 
 require (
 	golang.org/x/mod v0.16.0
+<<<<<<< HEAD
 	golang.org/x/sync v0.6.0
+=======
+>>>>>>> upstream/master
 	golang.org/x/telemetry v0.0.0-20240319204737-f4db1c7d8e43
 )
 

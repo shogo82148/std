@@ -194,6 +194,12 @@ type Type struct {
 	intRegs, floatRegs uint8
 
 	flags bitset8
+	alg   AlgKind
+
+	// size of prefix of object that contains all pointers. valid if Align > 0.
+	// Note that for pointers, this is always PtrSize even if the element type
+	// is NotInHeap. See size.go:PtrDataSize for details.
+	ptrBytes int64
 
 	// For defined (named) generic types, a pointer to the list of type params
 	// (in order) of this type that need to be instantiated. For instantiated
