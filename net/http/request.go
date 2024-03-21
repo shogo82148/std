@@ -343,6 +343,10 @@ func (r *Request) UserAgent() string
 // Cookies parses and returns the HTTP cookies sent with the request.
 func (r *Request) Cookies() []*Cookie
 
+// CookiesNamed parses and returns the named HTTP cookies sent with the request
+// or an empty slice if none matched.
+func (r *Request) CookiesNamed(name string) []*Cookie
+
 // ErrNoCookie is returned by Request's Cookie method when a cookie is not found.
 var ErrNoCookie = errors.New("http: named cookie not present")
 
