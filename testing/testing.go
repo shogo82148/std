@@ -411,6 +411,7 @@ type TB interface {
 	Logf(format string, args ...any)
 	Name() string
 	Setenv(key, value string)
+	SetGOMAXPROCS(n int)
 	Skip(args ...any)
 	SkipNow()
 	Skipf(format string, args ...any)
@@ -434,8 +435,9 @@ var _ TB = (*B)(nil)
 // may be called simultaneously from multiple goroutines.
 type T struct {
 	common
-	isEnvSet bool
-	context  *testContext
+	isEnvSet        bool
+	isGOMAXPROCSSet bool
+	context         *testContext
 }
 
 // Parallel signals that this test is to be run in parallel with (and only with)
@@ -451,6 +453,13 @@ func (t *T) Parallel()
 // Because Setenv affects the whole process, it cannot be used
 // in parallel tests or tests with parallel ancestors.
 func (t *T) Setenv(key, value string)
+
+// SetGOMAXPROCS calls runtime.GOMAXPROCS(n) and uses Cleanup to
+// restore the value of GOMAXPROCS after the test.
+//
+// Because GOMAXPROCS affects the whole process, it cannot be used
+// in parallel tests or tests with parallel ancestors.
+func (t *T) SetGOMAXPROCS(n int)
 
 // InternalTest is an internal type but exported because it is cross-package;
 // it is part of the implementation of the "go test" command.

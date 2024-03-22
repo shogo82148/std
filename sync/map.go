@@ -98,7 +98,7 @@ func (m *Map) Swap(key, value any) (previous any, loaded bool)
 // CompareAndSwap swaps the old and new values for key
 // if the value stored in the map is equal to old.
 // The old value must be of a comparable type.
-func (m *Map) CompareAndSwap(key, old, new any) bool
+func (m *Map) CompareAndSwap(key, old, new any) (swapped bool)
 
 // CompareAndDelete deletes the entry for key if its value is equal to old.
 // The old value must be of a comparable type.
