@@ -12,17 +12,9 @@
 
 悪意のある入力に対する保護として、このパッケージは処理するMIMEデータのサイズに制限を設けています。
 
-<<<<<<< HEAD
-Reader.NextPartとReader.NextRawPartは、パート内のヘッダーの数を10000に制限し、Reader.ReadFormはすべての
+[Reader.NextPart] と [Reader.NextRawPart] は、パート内のヘッダーの数を10000に制限し、[Reader.ReadForm] はすべての
 FileHeaders内のヘッダーの合計数を10000に制限します。
 これらの制限は、GODEBUG=multipartmaxheaders=<values>の設定で調整できます。
-=======
-[Reader.NextPart] and [Reader.NextRawPart] limit the number of headers in a
-part to 10000 and [Reader.ReadForm] limits the total number of headers in all
-FileHeaders to 10000.
-These limits may be adjusted with the GODEBUG=multipartmaxheaders=<values>
-setting.
->>>>>>> upstream/master
 
 さらに、Reader.ReadFormはフォーム内のパートの数を1000に制限します。
 この制限は、GODEBUG=multipartmaxparts=<value>の設定で調整できます。
@@ -61,28 +53,14 @@ type Part struct {
 // nameパラメータを返します。それ以外の場合は空文字列を返します。
 func (p *Part) FormName() string
 
-<<<<<<< HEAD
-// FileNameは、PartのContent-Dispositionヘッダーのfilenameパラメータを返します。
+// FileNameは、[Part] のContent-Dispositionヘッダーのfilenameパラメータを返します。
 // 空でない場合、filenameはfilepath.Base（プラットフォーム依存）を通過してから返されます。
 func (p *Part) FileName() string
 
-// NewReaderは、指定されたMIME境界を使用してrから読み取る新しいマルチパートReaderを作成します。
+// NewReaderは、指定されたMIME境界を使用してrから読み取る新しいマルチパート [Reader] を作成します。
 //
 // 境界は通常、メッセージの"Content-Type"ヘッダーの"boundary"パラメータから取得します。
-// そのようなヘッダーを解析するには、mime.ParseMediaTypeを使用します。
-=======
-// FileName returns the filename parameter of the [Part]'s Content-Disposition
-// header. If not empty, the filename is passed through filepath.Base (which is
-// platform dependent) before being returned.
-func (p *Part) FileName() string
-
-// NewReader creates a new multipart [Reader] reading from r using the
-// given MIME boundary.
-//
-// The boundary is usually obtained from the "boundary" parameter of
-// the message's "Content-Type" header. Use [mime.ParseMediaType] to
-// parse such headers.
->>>>>>> upstream/master
+// そのようなヘッダーを解析するには、[mime.ParseMediaType] を使用します。
 func NewReader(r io.Reader, boundary string) *Reader
 
 // Readは、ヘッダーの後と次のパート（存在する場合）が始まる前の、パートのボディを読み取ります。
@@ -105,29 +83,16 @@ type Reader struct {
 	dashBoundary     []byte
 }
 
-<<<<<<< HEAD
 // NextPartは、マルチパートの次のパートまたはエラーを返します。
-// パートがこれ以上ない場合、エラーio.EOFが返されます。
-=======
-// NextPart returns the next part in the multipart or an error.
-// When there are no more parts, the error [io.EOF] is returned.
->>>>>>> upstream/master
+// パートがこれ以上ない場合、エラー [io.EOF] が返されます。
 //
 // 特別なケースとして、"Content-Transfer-Encoding"ヘッダーの値が
 // "quoted-printable"である場合、そのヘッダーは代わりに隠され、
 // ボディはRead呼び出し中に透明にデコードされます。
 func (r *Reader) NextPart() (*Part, error)
 
-<<<<<<< HEAD
 // NextRawPartは、マルチパートの次のパートまたはエラーを返します。
-// パートがこれ以上ない場合、エラーio.EOFが返されます。
+// パートがこれ以上ない場合、エラー [io.EOF] が返されます。
 //
-// NextPartとは異なり、"Content-Transfer-Encoding: quoted-printable"に対する特別な処理はありません。
-=======
-// NextRawPart returns the next part in the multipart or an error.
-// When there are no more parts, the error [io.EOF] is returned.
-//
-// Unlike [Reader.NextPart], it does not have special handling for
-// "Content-Transfer-Encoding: quoted-printable".
->>>>>>> upstream/master
+// [Reader.NextPart] とは異なり、"Content-Transfer-Encoding: quoted-printable"に対する特別な処理はありません。
 func (r *Reader) NextRawPart() (*Part, error)
