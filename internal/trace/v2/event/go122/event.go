@@ -66,6 +66,11 @@ const (
 	EvUserRegionBegin
 	EvUserRegionEnd
 	EvUserLog
+
+	// Coroutines. Added in Go 1.23.
+	EvGoSwitch
+	EvGoSwitchDestroy
+	EvGoCreateBlocked
 )
 
 // EventString returns the name of a Go 1.22 event.

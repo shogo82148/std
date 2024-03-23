@@ -71,7 +71,7 @@ func (t *Template) DefinedTemplates() string
 // テキスト内の名前付きテンプレート定義 ({{define ...}}または{{block ...}}ステートメント) は、
 // tに関連付けられた追加のテンプレートを定義し、t自体の定義からは削除されます。
 //
-// テンプレートは、tまたは関連するテンプレートのExecuteが初めて使用される前に、
+// テンプレートは、tまたは関連するテンプレートの [Template.Execute] が初めて使用される前に、
 // Parseを連続して呼び出すことで再定義できます。
 // ボディが空白とコメントのみで構成されるテンプレート定義は空とみなされ、
 // 既存のテンプレートのボディを置き換えません。
@@ -87,8 +87,8 @@ func (t *Template) AddParseTree(name string, tree *parse.Tree) (*Template, error
 
 // Cloneは、テンプレートの複製を返します。これには、すべての関連テンプレートも含まれます。
 // 実際の表現はコピーされませんが、関連テンプレートの名前空間はコピーされるため、
-// コピーでのParseへのさらなる呼び出しは、コピーにテンプレートを追加しますが、元のテンプレートには追加しません。
-// Cloneは、共通のテンプレートを準備し、それらを他のテンプレートのバリアント定義とともに使用するために使用できます。
+// コピーでの [Template.Parse] へのさらなる呼び出しは、コピーにテンプレートを追加しますが、元のテンプレートには追加しません。
+// [Template.Clone] は、共通のテンプレートを準備し、それらを他のテンプレートのバリアント定義とともに使用するために使用できます。
 // バリアントは、クローンが作成された後に追加します。
 //
 // tがすでに実行されている場合、エラーを返します。
@@ -118,7 +118,7 @@ type FuncMap = template.FuncMap
 func (t *Template) Funcs(funcMap FuncMap) *Template
 
 // Delimsは、アクションのデリミタを指定された文字列に設定します。これは、
-// その後のParse、ParseFiles、またはParseGlobへの呼び出しで使用されます。ネストしたテンプレート
+// その後の [Template.Parse]、[ParseFiles]、または [ParseGlob] への呼び出しで使用されます。ネストしたテンプレート
 // 定義はこの設定を継承します。空のデリミタは、対応するデフォルトを表します: {{ または }}。
 // 戻り値はテンプレートなので、呼び出しはチェーンできます。
 func (t *Template) Delims(left, right string) *Template
@@ -127,17 +127,17 @@ func (t *Template) Delims(left, right string) *Template
 // もし該当するテンプレートがなければ、nilを返します。
 func (t *Template) Lookup(name string) *Template
 
-// Mustは、(*Template, error)を返す関数への呼び出しをラップし、
+// Mustは、([*Template], error)を返す関数への呼び出しをラップし、
 // エラーが非nilの場合にパニックを起こすヘルパーです。これは変数の初期化での使用を意図しています。
 // 例えば、
 //
 //	var t = template.Must(template.New("name").Parse("html"))
 func Must(t *Template, err error) *Template
 
-// ParseFilesは新しいテンプレートを作成し、
+// ParseFilesは新しい [Template] を作成し、
 // 指定されたファイルからテンプレート定義を解析します。返されるテンプレートの名前は、
 // 最初のファイルの（ベース）名と（解析された）内容になります。少なくとも一つのファイルが必要です。
-// エラーが発生した場合、解析は停止し、返される*Templateはnilになります。
+// エラーが発生した場合、解析は停止し、返される [*Template] はnilになります。
 //
 // 異なるディレクトリにある同じ名前の複数のファイルを解析するとき、
 // 最後に指定されたものが結果となります。
@@ -155,12 +155,12 @@ func ParseFiles(filenames ...string) (*Template, error)
 // ParseFilesは、tまたは関連するテンプレートがすでに実行されている場合、エラーを返します。
 func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 
-// ParseGlobは新しいテンプレートを作成し、パターンによって識別されたファイルから
+// ParseGlobは新しい [Template] を作成し、パターンによって識別されたファイルから
 // テンプレート定義を解析します。ファイルはfilepath.Matchのセマンティクスに従ってマッチし、
 // パターンは少なくとも一つのファイルとマッチしなければなりません。
 // 返されるテンプレートの名前は、パターンによって最初にマッチしたファイルの（ベース）名と
 // （解析された）内容になります。ParseGlobは、パターンにマッチしたファイルのリストで
-// ParseFilesを呼び出すのと同等です。
+// [ParseFiles] を呼び出すのと同等です。
 //
 // 異なるディレクトリにある同じ名前の複数のファイルを解析するとき、
 // 最後に指定されたものが結果となります。
@@ -182,13 +182,13 @@ func (t *Template) ParseGlob(pattern string) (*Template, error)
 // これはifやその他のアクションで使用される真実の定義です。
 func IsTrue(val any) (truth, ok bool)
 
-// ParseFSはParseFilesやParseGlobと似ていますが、ホストのオペレーティングシステムのファイルシステムではなく、
+// ParseFSは [ParseFiles] や [ParseGlob] と似ていますが、ホストのオペレーティングシステムのファイルシステムではなく、
 // ファイルシステムfsから読み取ります。
 // それはグロブパターンのリストを受け入れます。
 // （ほとんどのファイル名は、自分自身のみにマッチするグロブパターンとして機能することに注意してください。）
 func ParseFS(fs fs.FS, patterns ...string) (*Template, error)
 
-// ParseFSはParseFilesやParseGlobと似ていますが、ホストのオペレーティングシステムのファイルシステムではなく、
+// ParseFSは [Template.ParseFiles] や [Template.ParseGlob] と似ていますが、ホストのオペレーティングシステムのファイルシステムではなく、
 // ファイルシステムfsから読み取ります。
 // それはグロブパターンのリストを受け入れます。
 // （ほとんどのファイル名は、自分自身のみにマッチするグロブパターンとして機能することに注意してください。）

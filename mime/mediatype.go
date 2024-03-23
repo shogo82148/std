@@ -13,7 +13,7 @@ import (
 // 引数のいずれかが標準違反を引き起こす場合、FormatMediaTypeは空の文字列を返します。
 func FormatMediaType(t string, param map[string]string) string
 
-// ErrInvalidMediaParameterは、ParseMediaTypeによって
+// ErrInvalidMediaParameterは、[ParseMediaType] によって
 // メディアタイプの値が見つかったが、オプションのパラメータの解析でエラーがあった場合に返されます
 var ErrInvalidMediaParameter = errors.New("mime: invalid media parameter")
 
@@ -23,7 +23,7 @@ var ErrInvalidMediaParameter = errors.New("mime: invalid media parameter")
 // 成功すると、ParseMediaTypeは空白を削除して小文字に変換したメディアタイプと
 // nilでないマップを返します。
 // オプションのパラメータの解析でエラーがある場合、
-// メディアタイプとエラーErrInvalidMediaParameterが返されます。
+// メディアタイプとエラー [ErrInvalidMediaParameter] が返されます。
 // 返されるマップ、paramsは、小文字の属性から
 // ケースが保持された属性値へのマップです。
 func ParseMediaType(v string) (mediatype string, params map[string]string, err error)

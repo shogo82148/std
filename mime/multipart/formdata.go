@@ -16,12 +16,12 @@ var ErrMessageTooLarge = errors.New("multipart: message too large")
 // ReadFormは、パートのContent-Dispositionが"form-data"であるマルチパートメッセージ全体を解析します。
 // メモリには最大でmaxMemoryバイト + 10MB（非ファイルパート用に予約）を格納します。
 // メモリに格納できないファイルパートは、一時ファイルとしてディスクに格納されます。
-// すべての非ファイルパートをメモリに格納できない場合、ErrMessageTooLargeを返します。
+// すべての非ファイルパートをメモリに格納できない場合、[ErrMessageTooLarge] を返します。
 func (r *Reader) ReadForm(maxMemory int64) (*Form, error)
 
 // Formは解析されたマルチパートフォームです。
 // ファイルパートはメモリまたはディスクに保存され、
-// *FileHeaderのOpenメソッドを通じてアクセス可能です。
+// [*FileHeader] のOpenメソッドを通じてアクセス可能です。
 // Valueパートは文字列として保存されます。
 // 両方ともフィールド名でキー化されます。
 type Form struct {
@@ -29,7 +29,7 @@ type Form struct {
 	File  map[string][]*FileHeader
 }
 
-// RemoveAllは、Formに関連付けられた一時ファイルをすべて削除します。
+// RemoveAllは、[Form] に関連付けられた一時ファイルをすべて削除します。
 func (f *Form) RemoveAll() error
 
 // FileHeaderは、マルチパートリクエストのファイル部分を記述します。
@@ -44,7 +44,7 @@ type FileHeader struct {
 	tmpshared bool
 }
 
-// Openは、FileHeaderに関連付けられたFileを開き、それを返します。
+// Openは、[FileHeader] に関連付けられたFileを開き、それを返します。
 func (fh *FileHeader) Open() (File, error)
 
 // Fileは、マルチパートメッセージのファイル部分にアクセスするためのインターフェースです。

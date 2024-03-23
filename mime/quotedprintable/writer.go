@@ -6,7 +6,7 @@ package quotedprintable
 
 import "github.com/shogo82148/std/io"
 
-// Writerは、io.WriteCloserを実装するquoted-printableライターです。
+// Writerは、[io.WriteCloser] を実装するquoted-printableライターです。
 type Writer struct {
 	// バイナリモードでは、ライターの入力を純粋なバイナリとして扱い、
 	// 行末のバイトをバイナリデータとして処理します。
@@ -18,14 +18,14 @@ type Writer struct {
 	cr   bool
 }
 
-// NewWriterは、wに書き込む新しいWriterを返します。
+// NewWriterは、wに書き込む新しい [Writer] を返します。
 func NewWriter(w io.Writer) *Writer
 
 // Writeは、pをquoted-printableエンコーディングでエンコードし、それを
-// 基礎となるio.Writerに書き込みます。行の長さは76文字に制限されます。
-// エンコードされたバイトは、Writerが閉じられるまで必ずしもフラッシュされません。
+// 基礎となる [io.Writer] に書き込みます。行の長さは76文字に制限されます。
+// エンコードされたバイトは、[Writer] が閉じられるまで必ずしもフラッシュされません。
 func (w *Writer) Write(p []byte) (n int, err error)
 
-// CloseはWriterを閉じ、未書き込みのデータを基礎となるio.Writerにフラッシュしますが、
+// Closeは [Writer] を閉じ、未書き込みのデータを基礎となる [io.Writer] にフラッシュしますが、
 // 基礎となるio.Writerを閉じるわけではありません。
 func (w *Writer) Close() error

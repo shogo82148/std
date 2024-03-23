@@ -274,6 +274,10 @@ func (r *Request) UserAgent() string
 // Cookiesは、リクエストで送信されたHTTPクッキーを解析して返します。
 func (r *Request) Cookies() []*Cookie
 
+// CookiesNamed parses and returns the named HTTP cookies sent with the request
+// or an empty slice if none matched.
+func (r *Request) CookiesNamed(name string) []*Cookie
+
 // ErrNoCookieは、Cookieメソッドがクッキーを見つけられなかった場合にRequestによって返されます。
 var ErrNoCookie = errors.New("http: named cookie not present")
 

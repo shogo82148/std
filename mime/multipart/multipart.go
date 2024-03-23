@@ -12,7 +12,7 @@
 
 悪意のある入力に対する保護として、このパッケージは処理するMIMEデータのサイズに制限を設けています。
 
-Reader.NextPartとReader.NextRawPartは、パート内のヘッダーの数を10000に制限し、Reader.ReadFormはすべての
+[Reader.NextPart] と [Reader.NextRawPart] は、パート内のヘッダーの数を10000に制限し、[Reader.ReadForm] はすべての
 FileHeaders内のヘッダーの合計数を10000に制限します。
 これらの制限は、GODEBUG=multipartmaxheaders=<values>の設定で調整できます。
 
@@ -53,14 +53,14 @@ type Part struct {
 // nameパラメータを返します。それ以外の場合は空文字列を返します。
 func (p *Part) FormName() string
 
-// FileNameは、PartのContent-Dispositionヘッダーのfilenameパラメータを返します。
+// FileNameは、[Part] のContent-Dispositionヘッダーのfilenameパラメータを返します。
 // 空でない場合、filenameはfilepath.Base（プラットフォーム依存）を通過してから返されます。
 func (p *Part) FileName() string
 
-// NewReaderは、指定されたMIME境界を使用してrから読み取る新しいマルチパートReaderを作成します。
+// NewReaderは、指定されたMIME境界を使用してrから読み取る新しいマルチパート [Reader] を作成します。
 //
 // 境界は通常、メッセージの"Content-Type"ヘッダーの"boundary"パラメータから取得します。
-// そのようなヘッダーを解析するには、mime.ParseMediaTypeを使用します。
+// そのようなヘッダーを解析するには、[mime.ParseMediaType] を使用します。
 func NewReader(r io.Reader, boundary string) *Reader
 
 // Readは、ヘッダーの後と次のパート（存在する場合）が始まる前の、パートのボディを読み取ります。
@@ -84,7 +84,7 @@ type Reader struct {
 }
 
 // NextPartは、マルチパートの次のパートまたはエラーを返します。
-// パートがこれ以上ない場合、エラーio.EOFが返されます。
+// パートがこれ以上ない場合、エラー [io.EOF] が返されます。
 //
 // 特別なケースとして、"Content-Transfer-Encoding"ヘッダーの値が
 // "quoted-printable"である場合、そのヘッダーは代わりに隠され、
@@ -92,7 +92,7 @@ type Reader struct {
 func (r *Reader) NextPart() (*Part, error)
 
 // NextRawPartは、マルチパートの次のパートまたはエラーを返します。
-// パートがこれ以上ない場合、エラーio.EOFが返されます。
+// パートがこれ以上ない場合、エラー [io.EOF] が返されます。
 //
-// NextPartとは異なり、"Content-Transfer-Encoding: quoted-printable"に対する特別な処理はありません。
+// [Reader.NextPart] とは異なり、"Content-Transfer-Encoding: quoted-printable"に対する特別な処理はありません。
 func (r *Reader) NextRawPart() (*Part, error)

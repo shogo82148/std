@@ -83,7 +83,7 @@ func (m *Map) Swap(key, value any) (previous any, loaded bool)
 // CompareAndSwapは、キーの古い値と新しい値を交換します。
 // マップに格納されている値が古い値と等しい場合にのみ行われます。
 // 古い値は比較可能な型でなければなりません。
-func (m *Map) CompareAndSwap(key, old, new any) bool
+func (m *Map) CompareAndSwap(key, old, new any) (swapped bool)
 
 // CompareAndDeleteは、keyの値がoldと等しい場合、そのエントリを削除します。
 // oldの値は比較可能な型である必要があります。

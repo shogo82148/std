@@ -39,6 +39,26 @@ var Error error
 // Check exits the program with a fatal error if Error is non-nil.
 func Check()
 
+type Goarm64Features struct {
+	Version string
+	// Large Systems Extension
+	LSE bool
+	// ARM v8.0 Cryptographic Extension. It includes the following features:
+	// * FEAT_AES, which includes the AESD and AESE instructions.
+	// * FEAT_PMULL, which includes the PMULL, PMULL2 instructions.
+	// * FEAT_SHA1, which includes the SHA1* instructions.
+	// * FEAT_SHA256, which includes the SHA256* instructions.
+	Crypto bool
+}
+
+func (g Goarm64Features) String() string
+
+func ParseGoarm64(v string) (g Goarm64Features, e error)
+
+// Returns true if g supports giving ARM64 ISA
+// Note that this function doesn't accept / test suffixes (like ",lse" or ",crypto")
+func (g Goarm64Features) Supports(s string) bool
+
 func Getgoextlinkenabled() string
 
 // GOGOARCH returns the name and value of the GO$GOARCH setting.
