@@ -135,6 +135,7 @@ var (
 
 	// Used in envcmd.MkEnv and build ID computations.
 	GOARM     = envOr("GOARM", fmt.Sprint(buildcfg.GOARM))
+	GOARM64   = envOr("GOARM64", fmt.Sprint(buildcfg.GOARM64))
 	GO386     = envOr("GO386", buildcfg.GO386)
 	GOAMD64   = envOr("GOAMD64", fmt.Sprintf("%s%d", "v", buildcfg.GOAMD64))
 	GOMIPS    = envOr("GOMIPS", buildcfg.GOMIPS)

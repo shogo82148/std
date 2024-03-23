@@ -18,7 +18,8 @@ const (
 	Go119   Version = 19
 	Go121   Version = 21
 	Go122   Version = 22
-	Current         = Go122
+	Go123   Version = 23
+	Current         = Go123
 )
 
 // Specs returns the set of event.Specs for this version.

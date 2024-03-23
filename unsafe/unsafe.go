@@ -97,7 +97,11 @@ type IntegerType int
 //	u := unsafe.Pointer(nil)
 //	p := unsafe.Pointer(uintptr(u) + offset)
 //
+<<<<<<< HEAD
 // (4) syscall.Syscallを呼び出す際にPointerをuintptrに変換する場合。
+=======
+// (4) Conversion of a Pointer to a uintptr when calling [syscall.Syscall].
+>>>>>>> upstream/master
 //
 // パッケージsyscallのSyscall関数は、uintptrの引数を直接オペレーティングシステムに渡し、
 // その後、呼び出しの詳細によっては、一部の引数をポインタとして再解釈する場合があります。
@@ -118,7 +122,12 @@ type IntegerType int
 //	u := uintptr(unsafe.Pointer(p))
 //	syscall.Syscall(SYS_READ, uintptr(fd), u, uintptr(n))
 //
+<<<<<<< HEAD
 // (5) reflect.Value.Pointerやreflect.Value.UnsafeAddrの結果をuintptrからPointerに変換する場合。
+=======
+// (5) Conversion of the result of [reflect.Value.Pointer] or [reflect.Value.UnsafeAddr]
+// from uintptr to Pointer.
+>>>>>>> upstream/master
 //
 // パッケージreflectのValueのPointerとUnsafeAddrという名前のメソッドは、結果をunsafe.Pointerではなくuintptr型として返すため、
 // "unsafe"を最初にインポートせずに結果を任意の型に変更することを防いでいます。しかし、これは結果が壊れやすく、
@@ -133,11 +142,36 @@ type IntegerType int
 //	u := reflect.ValueOf(new(int)).Pointer()
 //	p := (*int)(unsafe.Pointer(u))
 //
+<<<<<<< HEAD
 // (6) reflect.SliceHeaderまたはreflect.StringHeaderのDataフィールドをPointerに変換するか、あるいはその逆。
+=======
+// (6) Conversion of a [reflect.SliceHeader] or [reflect.StringHeader] Data field to or from Pointer.
+>>>>>>> upstream/master
 //
 // 前のケースと同様に、reflectデータ構造のSliceHeaderとStringHeaderは、
 // Dataフィールドをuintptrとして宣言していますが、任意の型に結果を変更することを防いでいます。
 //
+<<<<<<< HEAD
+=======
+//	var s string
+//	hdr := (*reflect.StringHeader)(unsafe.Pointer(&s)) // case 1
+//	hdr.Data = uintptr(unsafe.Pointer(p))              // case 6 (this case)
+//	hdr.Len = n
+//
+// In this usage hdr.Data is really an alternate way to refer to the underlying
+// pointer in the string header, not a uintptr variable itself.
+//
+// In general, [reflect.SliceHeader] and [reflect.StringHeader] should be used
+// only as *reflect.SliceHeader and *reflect.StringHeader pointing at actual
+// slices or strings, never as plain structs.
+// A program should not declare or allocate variables of these struct types.
+//
+//	// INVALID: a directly-declared header will not hold Data as a reference.
+//	var hdr reflect.StringHeader
+//	hdr.Data = uintptr(unsafe.Pointer(p))
+//	hdr.Len = n
+//	s := *(*string)(unsafe.Pointer(&hdr)) // p possibly already lost
+>>>>>>> upstream/master
 type Pointer *ArbitraryType
 
 // Sizeofは、任意の型の式xを取り、仮想的な変数vがvar v = xとして宣言された場合のサイズ（バイト単位）を返します。
@@ -155,6 +189,7 @@ func Sizeof(x ArbitraryType) uintptr
 // （可変サイズの型の定義については、[Sizeof]の説明を参照してください。）
 func Offsetof(x ArbitraryType) uintptr
 
+<<<<<<< HEAD
 // Alignofは、任意のタイプの式xを取り、仮想の変数vがvar v = xとして宣言された場合の必要なアライメントを返します。
 // vのアドレスが常に0 mod mであるような最大の値mです。
 // これは、reflect.TypeOf(x).Align()が返す値と同じです。
@@ -170,6 +205,27 @@ func Alignof(x ArbitraryType) uintptr
 // 定数のlen引数はint型の値で表現可能でなければなりません。
 // もし無型定数である場合は、int型として扱われます。
 // Pointerの有効な使用法に関するルールは変わりません。
+=======
+// Alignof takes an expression x of any type and returns the required alignment
+// of a hypothetical variable v as if v was declared via var v = x.
+// It is the largest value m such that the address of v is always zero mod m.
+// It is the same as the value returned by [reflect.TypeOf](x).Align().
+// As a special case, if a variable s is of struct type and f is a field
+// within that struct, then Alignof(s.f) will return the required alignment
+// of a field of that type within a struct. This case is the same as the
+// value returned by [reflect.TypeOf](s.f).FieldAlign().
+// The return value of Alignof is a Go constant if the type of the argument
+// does not have variable size.
+// (See the description of [Sizeof] for a definition of variable sized types.)
+func Alignof(x ArbitraryType) uintptr
+
+// The function Add adds len to ptr and returns the updated pointer
+// [Pointer](uintptr(ptr) + uintptr(len)).
+// The len argument must be of integer type or an untyped constant.
+// A constant len argument must be representable by a value of type int;
+// if it is an untyped constant it is given type int.
+// The rules for valid uses of Pointer still apply.
+>>>>>>> upstream/master
 func Add(ptr Pointer, len IntegerType) Pointer
 
 // 関数Sliceは、ポインタptrで指定された配列の先頭から長さと容量がlenであるスライスを返します。

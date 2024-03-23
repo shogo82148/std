@@ -10,13 +10,18 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// SupportFullTCPKeepAlive indicates whether the current Windows version
-// supports the full TCP keep-alive configurations.
+// SupportTCPKeepAliveInterval indicates whether TCP_KEEPIDLE is supported.
 // The minimal requirement is Windows 10.0.16299.
-var SupportFullTCPKeepAlive = sync.OnceValue(func() bool {
-	major, _, build := version()
-	return major >= 10 && build >= 16299
-})
+func SupportTCPKeepAliveIdle() bool
+
+// SupportTCPKeepAliveInterval indicates whether TCP_KEEPINTVL is supported.
+// The minimal requirement is Windows 10.0.16299.
+func SupportTCPKeepAliveInterval() bool
+
+// SupportTCPKeepAliveCount indicates whether TCP_KEEPCNT is supported.
+// supports TCP_KEEPCNT.
+// The minimal requirement is Windows 10.0.15063.
+func SupportTCPKeepAliveCount() bool
 
 // SupportTCPInitialRTONoSYNRetransmissions indicates whether the current
 // Windows version supports the TCP_INITIAL_RTO_NO_SYN_RETRANSMISSIONS.
