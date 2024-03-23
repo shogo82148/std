@@ -97,11 +97,7 @@ type IntegerType int
 //	u := unsafe.Pointer(nil)
 //	p := unsafe.Pointer(uintptr(u) + offset)
 //
-<<<<<<< HEAD
-// (4) syscall.Syscallを呼び出す際にPointerをuintptrに変換する場合。
-=======
-// (4) Conversion of a Pointer to a uintptr when calling [syscall.Syscall].
->>>>>>> upstream/master
+// (4) [syscall.Syscall] を呼び出す際にPointerをuintptrに変換する場合。
 //
 // パッケージsyscallのSyscall関数は、uintptrの引数を直接オペレーティングシステムに渡し、
 // その後、呼び出しの詳細によっては、一部の引数をポインタとして再解釈する場合があります。
@@ -122,12 +118,7 @@ type IntegerType int
 //	u := uintptr(unsafe.Pointer(p))
 //	syscall.Syscall(SYS_READ, uintptr(fd), u, uintptr(n))
 //
-<<<<<<< HEAD
-// (5) reflect.Value.Pointerやreflect.Value.UnsafeAddrの結果をuintptrからPointerに変換する場合。
-=======
-// (5) Conversion of the result of [reflect.Value.Pointer] or [reflect.Value.UnsafeAddr]
-// from uintptr to Pointer.
->>>>>>> upstream/master
+// (5) [reflect.Value.Pointer] や [reflect.Value.UnsafeAddr] の結果をuintptrからPointerに変換する場合。
 //
 // パッケージreflectのValueのPointerとUnsafeAddrという名前のメソッドは、結果をunsafe.Pointerではなくuintptr型として返すため、
 // "unsafe"を最初にインポートせずに結果を任意の型に変更することを防いでいます。しかし、これは結果が壊れやすく、
@@ -142,17 +133,11 @@ type IntegerType int
 //	u := reflect.ValueOf(new(int)).Pointer()
 //	p := (*int)(unsafe.Pointer(u))
 //
-<<<<<<< HEAD
-// (6) reflect.SliceHeaderまたはreflect.StringHeaderのDataフィールドをPointerに変換するか、あるいはその逆。
-=======
-// (6) Conversion of a [reflect.SliceHeader] or [reflect.StringHeader] Data field to or from Pointer.
->>>>>>> upstream/master
+// (6) [reflect.SliceHeader] または [reflect.StringHeader] のDataフィールドをPointerに変換するか、あるいはその逆。
 //
 // 前のケースと同様に、reflectデータ構造のSliceHeaderとStringHeaderは、
 // Dataフィールドをuintptrとして宣言していますが、任意の型に結果を変更することを防いでいます。
 //
-<<<<<<< HEAD
-=======
 //	var s string
 //	hdr := (*reflect.StringHeader)(unsafe.Pointer(&s)) // case 1
 //	hdr.Data = uintptr(unsafe.Pointer(p))              // case 6 (this case)
@@ -171,7 +156,6 @@ type IntegerType int
 //	hdr.Data = uintptr(unsafe.Pointer(p))
 //	hdr.Len = n
 //	s := *(*string)(unsafe.Pointer(&hdr)) // p possibly already lost
->>>>>>> upstream/master
 type Pointer *ArbitraryType
 
 // Sizeofは、任意の型の式xを取り、仮想的な変数vがvar v = xとして宣言された場合のサイズ（バイト単位）を返します。
