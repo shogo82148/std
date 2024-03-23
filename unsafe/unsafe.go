@@ -173,43 +173,21 @@ func Sizeof(x ArbitraryType) uintptr
 // （可変サイズの型の定義については、[Sizeof]の説明を参照してください。）
 func Offsetof(x ArbitraryType) uintptr
 
-<<<<<<< HEAD
 // Alignofは、任意のタイプの式xを取り、仮想の変数vがvar v = xとして宣言された場合の必要なアライメントを返します。
 // vのアドレスが常に0 mod mであるような最大の値mです。
-// これは、reflect.TypeOf(x).Align()が返す値と同じです。
+// これは、[reflect.TypeOf](x).Align()が返す値と同じです。
 // 特殊なケースとして、変数sがstruct型であり、fがそのstruct内のフィールドである場合、Alignof(s.f)は、struct内のその型のフィールドの必要なアライメントを返します。
-// このケースは、reflect.TypeOf(s.f).FieldAlign()が返す値と同じです。
+// このケースは、[reflect.TypeOf](s.f).FieldAlign()が返す値と同じです。
 // Alignofの戻り値は、引数のタイプが可変サイズではない場合、Goの定数です。
 // （可変サイズの型の定義については、[Sizeof]の説明を参照してください。)
 func Alignof(x ArbitraryType) uintptr
 
 // 関数Addはlenをptrに加算し、更新されたポインタ
-// Pointer(uintptr(ptr) + uintptr(len)) を返します。
+// [Pointer](uintptr(ptr) + uintptr(len)) を返します。
 // len引数は整数型または無型定数である必要があります。
 // 定数のlen引数はint型の値で表現可能でなければなりません。
 // もし無型定数である場合は、int型として扱われます。
 // Pointerの有効な使用法に関するルールは変わりません。
-=======
-// Alignof takes an expression x of any type and returns the required alignment
-// of a hypothetical variable v as if v was declared via var v = x.
-// It is the largest value m such that the address of v is always zero mod m.
-// It is the same as the value returned by [reflect.TypeOf](x).Align().
-// As a special case, if a variable s is of struct type and f is a field
-// within that struct, then Alignof(s.f) will return the required alignment
-// of a field of that type within a struct. This case is the same as the
-// value returned by [reflect.TypeOf](s.f).FieldAlign().
-// The return value of Alignof is a Go constant if the type of the argument
-// does not have variable size.
-// (See the description of [Sizeof] for a definition of variable sized types.)
-func Alignof(x ArbitraryType) uintptr
-
-// The function Add adds len to ptr and returns the updated pointer
-// [Pointer](uintptr(ptr) + uintptr(len)).
-// The len argument must be of integer type or an untyped constant.
-// A constant len argument must be representable by a value of type int;
-// if it is an untyped constant it is given type int.
-// The rules for valid uses of Pointer still apply.
->>>>>>> upstream/master
 func Add(ptr Pointer, len IntegerType) Pointer
 
 // 関数Sliceは、ポインタptrで指定された配列の先頭から長さと容量がlenであるスライスを返します。
