@@ -36,11 +36,6 @@ type WordDecoder struct {
 // Decodeは、RFC 2047のエンコードされた単語をデコードします。
 func (d *WordDecoder) Decode(word string) (string, error)
 
-<<<<<<< HEAD
 // DecodeHeaderは、与えられた文字列のすべてのエンコードされた単語をデコードします。
-// dのCharsetReaderがエラーを返す場合にのみエラーを返します。
-=======
-// DecodeHeader decodes all encoded-words of the given string. It returns an
-// error if and only if WordDecoder.CharsetReader of d returns an error.
->>>>>>> upstream/master
+// dの WordDecoder.CharsetReader がエラーを返す場合にのみエラーを返します。
 func (d *WordDecoder) DecodeHeader(header string) (string, error)
