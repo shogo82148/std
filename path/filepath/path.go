@@ -67,12 +67,11 @@ func Localize(path string) (string, error)
 // ToSlashは、パス内の各区切り文字をスラッシュ('/')文字で置き換えた結果を返します。複数の区切り文字は複数のスラッシュに置き換えられます。
 func ToSlash(path string) string
 
-// FromSlash returns the result of replacing each slash ('/') character
-// in path with a separator character. Multiple slashes are replaced
-// by multiple separators.
+// FromSlashは、パス内の各スラッシュ('/')文字をセパレータ文字に置き換えた結果を返します。
+// 複数のスラッシュは複数のセパレータに置き換えられます。
 //
-// See also the Localize function, which converts a slash-separated path
-// as used by the io/fs package to an operating system path.
+// io/fsパッケージで使用されるスラッシュ区切りのパスをオペレーティングシステムのパスに変換する
+// Localize関数も参照してください。
 func FromSlash(path string) string
 
 // SplitListは、OS固有の [ListSeparator] で結合されたパスのリストを分割します。
