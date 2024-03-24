@@ -54,14 +54,14 @@ func Clean(path string) string
 // 特に、ファイルシステムに存在する可能性のあるシンボリックリンクの影響は考慮されません。
 func IsLocal(path string) bool
 
-// Localize converts a slash-separated path into an operating system path.
-// The input path must be a valid path as reported by [io/fs.ValidPath].
+// Localizeは、スラッシュ区切りのパスをオペレーティングシステムのパスに変換します。
+// 入力パスは、[io/fs.ValidPath] によって報告される有効なパスでなければなりません。
 //
-// Localize returns an error if the path cannot be represented by the operating system.
-// For example, the path a\b is rejected on Windows, on which \ is a separator
-// character and cannot be part of a filename.
+// Localizeは、パスがオペレーティングシステムによって表現できない場合にエラーを返します。
+// 例えば、Windowsではパスa\bは拒否されます。これは、\がセパレータ文字であり、
+// ファイル名の一部にはなり得ないからです。
 //
-// The path returned by Localize will always be local, as reported by IsLocal.
+// Localizeによって返されるパスは、IsLocalによって報告されるように、常にローカルになります。
 func Localize(path string) (string, error)
 
 // ToSlashは、パス内の各区切り文字をスラッシュ('/')文字で置き換えた結果を返します。複数の区切り文字は複数のスラッシュに置き換えられます。
