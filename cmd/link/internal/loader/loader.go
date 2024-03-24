@@ -103,8 +103,7 @@ func MakeBitmap(n int) Bitmap
 //     overwriting/overwritten symbols, the second (or later) appearance
 //     of the symbol gets the same global index as the first appearance.
 type Loader struct {
-	start       map[*oReader]Sym
-	objs        []objIdx
+	objs        []*oReader
 	extStart    Sym
 	builtinSyms []Sym
 
