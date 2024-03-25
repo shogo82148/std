@@ -274,8 +274,8 @@ func (r *Request) UserAgent() string
 // Cookiesは、リクエストで送信されたHTTPクッキーを解析して返します。
 func (r *Request) Cookies() []*Cookie
 
-// CookiesNamed parses and returns the named HTTP cookies sent with the request
-// or an empty slice if none matched.
+// CookiesNamedは、リクエストとともに送信された名前付きHTTPクッキーを解析し、
+// マッチするものがなければ空のスライスを返します。
 func (r *Request) CookiesNamed(name string) []*Cookie
 
 // ErrNoCookieは、Cookieメソッドがクッキーを見つけられなかった場合にRequestによって返されます。
