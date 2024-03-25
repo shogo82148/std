@@ -139,23 +139,23 @@ type IntegerType int
 // Dataフィールドをuintptrとして宣言していますが、任意の型に結果を変更することを防いでいます。
 //
 //	var s string
-//	hdr := (*reflect.StringHeader)(unsafe.Pointer(&s)) // case 1
-//	hdr.Data = uintptr(unsafe.Pointer(p))              // case 6 (this case)
+//	hdr := (*reflect.StringHeader)(unsafe.Pointer(&s)) // ケース1
+//	hdr.Data = uintptr(unsafe.Pointer(p))              // ケース6（このケース）
 //	hdr.Len = n
 //
-// In this usage hdr.Data is really an alternate way to refer to the underlying
-// pointer in the string header, not a uintptr variable itself.
+// この使用法では、hdr.Dataは実際にはuintptr変数自体ではなく、
+// 文字列ヘッダー内の基礎となるポインタを別の方法で参照するものです。
 //
-// In general, [reflect.SliceHeader] and [reflect.StringHeader] should be used
-// only as *reflect.SliceHeader and *reflect.StringHeader pointing at actual
-// slices or strings, never as plain structs.
-// A program should not declare or allocate variables of these struct types.
+// 一般的に、[reflect.SliceHeader] と [reflect.StringHeader] は、
+// 実際のスライスや文字列を指す*reflect.SliceHeaderと*reflect.StringHeaderとしてのみ使用すべきで、
+// 普通の構造体としては使用すべきではありません。
+// プログラムは、これらの構造体型の変数を宣言したり確保したりすべきではありません。
 //
-//	// INVALID: a directly-declared header will not hold Data as a reference.
+//	// 無効: 直接宣言されたヘッダーはDataを参照として保持しません。
 //	var hdr reflect.StringHeader
 //	hdr.Data = uintptr(unsafe.Pointer(p))
 //	hdr.Len = n
-//	s := *(*string)(unsafe.Pointer(&hdr)) // p possibly already lost
+//	s := *(*string)(unsafe.Pointer(&hdr)) // pはすでに失われている可能性があります
 type Pointer *ArbitraryType
 
 // Sizeofは、任意の型の式xを取り、仮想的な変数vがvar v = xとして宣言された場合のサイズ（バイト単位）を返します。
