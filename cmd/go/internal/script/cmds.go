@@ -91,7 +91,7 @@ func Replace() Cmd
 func Rm() Cmd
 
 // Sleep sleeps for the given Go duration or until the script's context is
-// cancelled, whichever happens first.
+// canceled, whichever happens first.
 func Sleep() Cmd
 
 // Stderr searches for a regular expression in the stderr buffer.

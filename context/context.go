@@ -139,7 +139,7 @@ func WithCancelCause(parent Context) (ctx Context, cancel CancelCauseFunc)
 func Cause(c Context) error
 
 // AfterFunc arranges to call f in its own goroutine after ctx is done
-// (cancelled or timed out).
+// (canceled or timed out).
 // If ctx is already done, AfterFunc calls f immediately in its own goroutine.
 //
 // Multiple calls to AfterFunc on a context operate independently;

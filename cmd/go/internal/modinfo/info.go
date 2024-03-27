@@ -37,7 +37,7 @@ type ModuleError struct {
 
 // UnmarshalJSON accepts both {"Err":"text"} and "text",
 // so that the output of go mod download -json can still
-// be unmarshalled into a ModulePublic during -reuse processing.
+// be unmarshaled into a ModulePublic during -reuse processing.
 func (e *ModuleError) UnmarshalJSON(data []byte) error
 
 func (m *ModulePublic) String() string
