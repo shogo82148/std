@@ -119,14 +119,8 @@ func WithCancelCause(parent Context) (ctx Context, cancel CancelCauseFunc)
 // cがまだキャンセルされていない場合、Causeはnilを返します。
 func Cause(c Context) error
 
-<<<<<<< HEAD
 // AfterFunc ctxが完了（キャンセルまたはタイムアウト）した後、fを独自のゴルーチンで呼び出すように設定します。
 // もしctxが既に完了している場合、AfterFuncは独自のゴルーチンで直ちにfを呼び出します。
-=======
-// AfterFunc arranges to call f in its own goroutine after ctx is done
-// (canceled or timed out).
-// If ctx is already done, AfterFunc calls f immediately in its own goroutine.
->>>>>>> upstream/master
 //
 // ContextでのAfterFuncの複数回の呼び出しは独立して動作し、1つが他を置き換えることはありません。
 //
