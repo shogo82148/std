@@ -38,11 +38,14 @@
 // //line directives that change line numbers in strange ways should be rare,
 // and failing PGO matching on these files is not too big of a loss.
 
-package pgo
+// Package pgoir assosciates a PGO profile with the IR of the current package
+// compilation.
+package pgoir
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/base"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
+	"github.com/shogo82148/std/cmd/internal/pgo"
 )
 
 // IRGraph is a call graph with nodes pointing to IRs of functions and edges
@@ -71,7 +74,7 @@ type IRNode struct {
 
 	// Set of out-edges in the callgraph. The map uniquely identifies each
 	// edge based on the callsite and callee, for fast lookup.
-	OutEdges map[NamedCallEdge]*IREdge
+	OutEdges map[pgo.NamedCallEdge]*IREdge
 }
 
 // Name returns the symbol name of this function.
@@ -86,23 +89,6 @@ type IREdge struct {
 	CallSiteOffset int
 }
 
-// NamedCallEdge identifies a call edge by linker symbol names and call site
-// offset.
-type NamedCallEdge struct {
-	CallerName     string
-	CalleeName     string
-	CallSiteOffset int
-}
-
-// NamedEdgeMap contains all unique call edges in the profile and their
-// edge weight.
-type NamedEdgeMap struct {
-	Weight map[NamedCallEdge]int64
-
-	// ByWeight lists all keys in Weight, sorted by edge weight.
-	ByWeight []NamedCallEdge
-}
-
 // CallSiteInfo captures call-site information and its caller/callee.
 type CallSiteInfo struct {
 	LineOffset int
@@ -113,13 +99,8 @@ type CallSiteInfo struct {
 // Profile contains the processed PGO profile and weighted call graph used for
 // PGO optimizations.
 type Profile struct {
-	// Aggregated edge weights across the profile. This helps us determine
-	// the percentage threshold for hot/cold partitioning.
-	TotalWeight int64
-
-	// NamedEdgeMap contains all unique call edges in the profile and their
-	// edge weight.
-	NamedEdgeMap NamedEdgeMap
+	// Profile is the base data from the raw profile, without IR attribution.
+	*pgo.Profile
 
 	// WeightedCG represents the IRGraph built from profile, which we will
 	// update as part of inlining.
@@ -138,9 +119,6 @@ var LookupFunc = func(fullName string) (*ir.Func, error) {
 	base.Fatalf("pgo.LookupMethodFunc not overridden")
 	panic("unreachable")
 }
-
-// WeightInPercentage converts profile weights to a percentage.
-func WeightInPercentage(value int64, total int64) float64
 
 // PrintWeightedCallGraphDOT prints IRGraph in DOT format.
 func (p *Profile) PrintWeightedCallGraphDOT(edgeThreshold float64)

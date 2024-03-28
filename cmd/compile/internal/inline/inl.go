@@ -29,14 +29,14 @@ package inline
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/base"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
-	"github.com/shogo82148/std/cmd/compile/internal/pgo"
+	"github.com/shogo82148/std/cmd/compile/internal/pgoir"
 )
 
 // PGOInlinePrologue records the hot callsites from ir-graph.
-func PGOInlinePrologue(p *pgo.Profile)
+func PGOInlinePrologue(p *pgoir.Profile)
 
 // CanInlineFuncs computes whether a batch of functions are inlinable.
-func CanInlineFuncs(funcs []*ir.Func, profile *pgo.Profile)
+func CanInlineFuncs(funcs []*ir.Func, profile *pgoir.Profile)
 
 // GarbageCollectUnreferencedHiddenClosures makes a pass over all the
 // top-level (non-hidden-closure) functions looking for nested closure
@@ -48,7 +48,7 @@ func GarbageCollectUnreferencedHiddenClosures()
 // CanInline determines whether fn is inlineable.
 // If so, CanInline saves copies of fn.Body and fn.Dcl in fn.Inl.
 // fn and fn.Body will already have been typechecked.
-func CanInline(fn *ir.Func, profile *pgo.Profile)
+func CanInline(fn *ir.Func, profile *pgoir.Profile)
 
 // InlineImpossible returns a non-empty reason string if fn is impossible to
 // inline regardless of cost or contents.
@@ -61,7 +61,7 @@ func IsBigFunc(fn *ir.Func) bool
 
 // TryInlineCall returns an inlined call expression for call, or nil
 // if inlining is not possible.
-func TryInlineCall(callerfn *ir.Func, call *ir.CallExpr, bigCaller bool, profile *pgo.Profile) *ir.InlinedCallExpr
+func TryInlineCall(callerfn *ir.Func, call *ir.CallExpr, bigCaller bool, profile *pgoir.Profile) *ir.InlinedCallExpr
 
 // SSADumpInline gives the SSA back end a chance to dump the function
 // when producing output for debugging the compiler itself.
@@ -77,4 +77,4 @@ var InlineCall = func(callerfn *ir.Func, call *ir.CallExpr, fn *ir.Func, inlInde
 // CalleeEffects appends any side effects from evaluating callee to init.
 func CalleeEffects(init *ir.Nodes, callee ir.Node)
 
-func PostProcessCallSites(profile *pgo.Profile)
+func PostProcessCallSites(profile *pgoir.Profile)

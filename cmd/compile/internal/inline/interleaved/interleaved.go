@@ -8,13 +8,13 @@ package interleaved
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
-	"github.com/shogo82148/std/cmd/compile/internal/pgo"
+	"github.com/shogo82148/std/cmd/compile/internal/pgoir"
 )
 
 // DevirtualizeAndInlinePackage interleaves devirtualization and inlining on
 // all functions within pkg.
-func DevirtualizeAndInlinePackage(pkg *ir.Package, profile *pgo.Profile)
+func DevirtualizeAndInlinePackage(pkg *ir.Package, profile *pgoir.Profile)
 
 // DevirtualizeAndInlineFunc interleaves devirtualization and inlining
 // on a single function.
-func DevirtualizeAndInlineFunc(fn *ir.Func, profile *pgo.Profile)
+func DevirtualizeAndInlineFunc(fn *ir.Func, profile *pgoir.Profile)
