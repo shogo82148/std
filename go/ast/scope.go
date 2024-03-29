@@ -74,10 +74,10 @@ func NewObj(kind ObjKind, name string) *Object
 // (obj.Decl may be nil or not correct).
 func (obj *Object) Pos() token.Pos
 
-// ObjKind describes what an object represents.
+// ObjKind describes what an [Object] represents.
 type ObjKind int
 
-// The list of possible Object kinds.
+// The list of possible [Object] kinds.
 const (
 	Bad ObjKind = iota
 	Pkg

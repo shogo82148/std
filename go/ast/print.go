@@ -15,8 +15,8 @@ import (
 // A FieldFilter may be provided to [Fprint] to control the output.
 type FieldFilter func(name string, value reflect.Value) bool
 
-// NotNilFilter returns true for field values that are not nil;
-// it returns false otherwise.
+// NotNilFilter is a [FieldFilter] that returns true for field values
+// that are not nil; it returns false otherwise.
 func NotNilFilter(_ string, v reflect.Value) bool
 
 // Fprint prints the (sub-)tree starting at AST node x to w.
