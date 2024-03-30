@@ -117,7 +117,6 @@ func (n *Name) InlFormal() bool
 func (n *Name) InlLocal() bool
 func (n *Name) OpenDeferSlot() bool
 func (n *Name) Libfuzzer8BitCounter() bool
-func (n *Name) CoverageCounter() bool
 func (n *Name) CoverageAuxVar() bool
 
 func (n *Name) SetNeedzero(b bool)
@@ -131,7 +130,6 @@ func (n *Name) SetInlFormal(b bool)
 func (n *Name) SetInlLocal(b bool)
 func (n *Name) SetOpenDeferSlot(b bool)
 func (n *Name) SetLibfuzzer8BitCounter(b bool)
-func (n *Name) SetCoverageCounter(b bool)
 func (n *Name) SetCoverageAuxVar(b bool)
 
 // OnStack reports whether variable n may reside on the stack.
