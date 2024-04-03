@@ -68,10 +68,17 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 // ServeFileは、指定された名前の
 // ファイルまたはディレクトリの内容でリクエストに応答します。
 //
+<<<<<<< HEAD
 // 提供されたファイル名またはディレクトリ名が相対パスの場合、それは
 // 現在のディレクトリに対して相対的に解釈され、親ディレクトリに昇格することができます。
 // 提供された名前がユーザー入力から構築されている場合、ServeFileを呼び出す前に
 // サニタイズする必要があります。
+=======
+// If the provided file or directory name is a relative path, it is
+// interpreted relative to the current directory and may ascend to
+// parent directories. If the provided name is constructed from user
+// input, it should be sanitized before calling [ServeFile].
+>>>>>>> upstream/master
 //
 // 予防措置として、ServeFileはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。
 // これは、r.URL.Pathをサニタイズせずに [filepath.Join] で安全でなく使用し、
@@ -89,6 +96,7 @@ func ServeFile(w ResponseWriter, r *Request, name string)
 
 // ServeFileFSは、ファイルシステムfsysから指定されたファイルまたはディレクトリの内容でリクエストに応答します。
 //
+<<<<<<< HEAD
 // 提供されたファイルまたはディレクトリ名が相対パスの場合、現在のディレクトリを基準に解釈され、親ディレクトリに移動することができます。
 // 提供された名前がユーザー入力から構築された場合、[ServeFile] を呼び出す前にサニタイズする必要があります。
 //
@@ -100,6 +108,24 @@ func ServeFile(w ResponseWriter, r *Request, name string)
 //
 // これら2つの特別な場合以外では、ServeFileはファイルまたはディレクトリを選択するためにr.URL.Pathを使用しません。
 // 名前引数で提供されたファイルまたはディレクトリのみが使用されます。
+=======
+// If the provided name is constructed from user input, it should be
+// sanitized before calling [ServeFileFS].
+//
+// As a precaution, ServeFileFS will reject requests where r.URL.Path
+// contains a ".." path element; this protects against callers who
+// might unsafely use [filepath.Join] on r.URL.Path without sanitizing
+// it and then use that filepath.Join result as the name argument.
+//
+// As another special case, ServeFileFS redirects any request where r.URL.Path
+// ends in "/index.html" to the same path, without the final
+// "index.html". To avoid such redirects either modify the path or
+// use [ServeContent].
+//
+// Outside of those two special cases, ServeFileFS does not use
+// r.URL.Path for selecting the file or directory to serve; only the
+// file or directory provided in the name argument is used.
+>>>>>>> upstream/master
 func ServeFileFS(w ResponseWriter, r *Request, fsys fs.FS, name string)
 
 // FSはfsysを [FileSystem] の実装に変換します。

@@ -66,10 +66,17 @@ func NewObj(kind ObjKind, name string) *Object
 // (obj.Declがnilであるか、正しくないかもしれません)。
 func (obj *Object) Pos() token.Pos
 
+<<<<<<< HEAD
 // ObjKindはオブジェクトが表すものを説明します。
 type ObjKind int
 
 // 可能なオブジェクトの種類のリスト。
+=======
+// ObjKind describes what an [Object] represents.
+type ObjKind int
+
+// The list of possible [Object] kinds.
+>>>>>>> upstream/master
 const (
 	Bad ObjKind = iota
 	Pkg

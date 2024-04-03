@@ -15,8 +15,13 @@ import (
 // 出力を制御するために、[Fprint] にFieldFilterを指定することができます。
 type FieldFilter func(name string, value reflect.Value) bool
 
+<<<<<<< HEAD
 // NotNilFilterは、nilでないフィールド値に対してtrueを返します。
 // それ以外の場合はfalseを返します。
+=======
+// NotNilFilter is a [FieldFilter] that returns true for field values
+// that are not nil; it returns false otherwise.
+>>>>>>> upstream/master
 func NotNilFilter(_ string, v reflect.Value) bool
 
 // FprintはASTノードxから始まる(サブ)ツリーをwに出力します。

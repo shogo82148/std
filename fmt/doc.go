@@ -116,11 +116,18 @@ Package fmtは、Cのprintfおよびscanfに類似した関数を使用してフ
 複素数の場合、幅と精度は2つの要素に独立に適用され、結果は括弧で囲まれます。
 したがって、1.2 + 3.4iに適用された％fは（1.200000 + 3.400000i）を生成します。
 
+<<<<<<< HEAD
 整数コードポイントまたはルーン文字列（[]rune型）を%qでフォーマットする場合、
 無効なUnicodeコードポイントは、strconv.QuoteRuneのようにUnicode置換文字U+FFFDに変更されます。
+=======
+When formatting a single integer code point or a rune string (type []rune)
+with %q, invalid Unicode code points are changed to the Unicode replacement
+character, U+FFFD, as in [strconv.QuoteRune].
+>>>>>>> upstream/master
 
 その他のフラグ：
 
+<<<<<<< HEAD
 	'+'	数値の値に対して常に符号を表示します。
 		%q (%+q)の出力をASCIIのみに保証します。
 	'-'	左側ではなく右側にスペースでパディングします（フィールドを左揃えにします）。
@@ -134,6 +141,22 @@ Package fmtは、Cのprintfおよびscanfに類似した関数を使用してフ
 		16進数で文字列やスライスを印刷するときにバイト間にスペースを入れます（% x、% X）。
 	'0'	スペースではなく先頭ゼロでパディングします。
 		数値の場合、これは符号の後にパディングを移動します。
+=======
+	'+'	always print a sign for numeric values;
+		guarantee ASCII-only output for %q (%+q)
+	'-'	pad with spaces on the right rather than the left (left-justify the field)
+	'#'	alternate format: add leading 0b for binary (%#b), 0 for octal (%#o),
+		0x or 0X for hex (%#x or %#X); suppress 0x for %p (%#p);
+		for %q, print a raw (backquoted) string if [strconv.CanBackquote]
+		returns true;
+		always print a decimal point for %e, %E, %f, %F, %g and %G;
+		do not remove trailing zeros for %g and %G;
+		write e.g. U+0078 'x' if the character is printable for %U (%#U)
+	' '	(space) leave a space for elided sign in numbers (% d);
+		put spaces between bytes printing strings or slices in hex (% x, % X)
+	'0'	pad with leading zeros rather than spaces;
+		for numbers, this moves the padding after the sign
+>>>>>>> upstream/master
 
 動詞がそれらを期待していない場合、フラグは無視されます。
 たとえば、代替の10進数フォーマットがないため、%#dと%dは同じように動作します。
@@ -155,6 +178,7 @@ Printfのような各関数に対して、フォーマットを取らないPrint
 特定のインターフェースを実装するオペランドには特別なフォーマットが適用されます。
 適用順序は次のとおりです。
 
+<<<<<<< HEAD
 1. オペランドがreflect.Valueである場合、オペランドは保持する具体的な値に置き換えられ、
 次のルールで印刷が続行されます。
 
@@ -165,6 +189,21 @@ Printfのような各関数に対して、フォーマットを取らないPrint
 %v動詞が#フラグとともに使用（%#v）され、それが呼び出されます。
 
 フォーマット（Printlnなどの暗黙的な%v）が文字列（%s %q %x %X）に対して有効である場合、または%vであり、%#vではない場合、次の2つのルールが適用されます。
+=======
+1. If the operand is a [reflect.Value], the operand is replaced by the
+concrete value that it holds, and printing continues with the next rule.
+
+2. If an operand implements the [Formatter] interface, it will
+be invoked. In this case the interpretation of verbs and flags is
+controlled by that implementation.
+
+3. If the %v verb is used with the # flag (%#v) and the operand
+implements the [GoStringer] interface, that will be invoked.
+
+If the format (which is implicitly %v for [Println] etc.) is valid
+for a string (%s %q %x %X), or is %v but not %#v,
+the following two rules apply:
+>>>>>>> upstream/master
 
 4. オペランドがerrorインターフェースを実装している場合、Errorメソッドが呼び出され、
 オブジェクトが文字列に変換され、動詞に必要な形式でフォーマットされます（ある場合）。
@@ -198,12 +237,22 @@ Printfのような各関数に対して、フォーマットを取らないPrint
 
 # 明示的な引数インデックス
 
+<<<<<<< HEAD
 Printf、Sprintf、およびFprintfでは、各フォーマット指定子が呼び出し時に渡された
 引数を順番にフォーマットすることがデフォルトの動作です。
 ただし、動詞の直前に[n]という表記がある場合、n番目の1から始まる引数が代わりに
 フォーマットされることを示します。 幅または精度の'*'の前に同じ表記がある場合、
 値を保持する引数インデックスが選択されます。 [n]の括弧式を処理した後、
 後続の動詞は、別の指示がない限り、引数n + 1、n + 2などを使用します。
+=======
+In [Printf], [Sprintf], and [Fprintf], the default behavior is for each
+formatting verb to format successive arguments passed in the call.
+However, the notation [n] immediately before the verb indicates that the
+nth one-indexed argument is to be formatted instead. The same notation
+before a '*' for a width or precision selects the argument index holding
+the value. After processing a bracketed expression [n], subsequent verbs
+will use arguments n+1, n+2, etc. unless otherwise directed.
+>>>>>>> upstream/master
 
 例えば、
 
@@ -258,6 +307,7 @@ fmtパッケージはパニックからエラーメッセージを再フォー�
 
 # スキャン
 
+<<<<<<< HEAD
 フォーマットされたテキストをスキャンして値を生成する、同様の関数群があります。
 Scan、Scanf、およびScanlnはos.Stdinから読み取ります。
 Fscan、Fscanf、およびFscanlnは指定されたio.Readerから読み取ります。
@@ -270,6 +320,22 @@ Scanln、Fscanln、およびSscanlnは、改行でスキャンを停止し、
 
 Scanf、Fscanf、およびSscanfは、Printfと同様のフォーマット文字列に従って引数を解析します。
 以下のテキストでは、「スペース」とは、改行以外の任意のUnicode空白文字を意味します。
+=======
+An analogous set of functions scans formatted text to yield
+values.  [Scan], [Scanf] and [Scanln] read from [os.Stdin]; [Fscan],
+[Fscanf] and [Fscanln] read from a specified [io.Reader]; [Sscan],
+[Sscanf] and [Sscanln] read from an argument string.
+
+[Scan], [Fscan], [Sscan] treat newlines in the input as spaces.
+
+[Scanln], [Fscanln] and [Sscanln] stop scanning at a newline and
+require that the items be followed by a newline or EOF.
+
+[Scanf], [Fscanf], and [Sscanf] parse the arguments according to a
+format string, analogous to that of [Printf]. In the text that
+follows, 'space' means any Unicode whitespace character
+except newline.
+>>>>>>> upstream/master
 
 フォーマット文字列では、%文字で導入された動詞が入力を消費して解析されます。
 これらの動詞については、以下で詳しく説明します。フォーマット以外の文字（%、スペース、
@@ -285,6 +351,7 @@ Scanf、Fscanf、およびSscanfは、Printfと同様のフォーマット文字
 Cでは、改行は他のスペースと同様に扱われ、フォーマット文字列内のスペースの実行が
 入力で消費するスペースが見つからない場合でもエラーは発生しません。
 
+<<<<<<< HEAD
 動詞はPrintfと同様に動作します。
 たとえば、%xは整数を16進数としてスキャンし、%vは値のデフォルト表現形式をスキャンします。
 Printfの動詞%pと%T、フラグ#と+は実装されていません。
@@ -292,6 +359,16 @@ Printfの動詞%pと%T、フラグ#と+は実装されていません。
 （%b %e %E %f %F %g %G %x %Xおよび%v）は同等であり、
 10進数と16進数の表記法の両方を受け入れます（たとえば、「2.3e + 7」、「0x4.5p-8」）
 および数字を区切るアンダースコア（たとえば、「3.14159_26535_89793」）。
+=======
+The verbs behave analogously to those of [Printf].
+For example, %x will scan an integer as a hexadecimal number,
+and %v will scan the default representation format for the value.
+The [Printf] verbs %p and %T and the flags # and + are not implemented.
+For floating-point and complex values, all valid formatting verbs
+(%b %e %E %f %F %g %G %x %X and %v) are equivalent and accept
+both decimal and hexadecimal notation (for example: "2.3e+7", "0x4.5p-8")
+and digit-separating underscores (for example: "3.14159_26535_89793").
+>>>>>>> upstream/master
 
 動詞によって処理される入力は、暗黙的にスペースで区切られます。
 %cを除くすべての動詞の実装は、残りの入力から先頭のスペースを破棄して開始し、
@@ -317,6 +394,7 @@ Printfの動詞%pと%T、フラグ#と+は実装されていません。
 それは通常の改行文字として扱われます。
 (\r\n は \n と同じ意味を持ちます。)
 
+<<<<<<< HEAD
 すべてのスキャン関数において、オペランドがScanメソッドを実装している場合、
 つまりScannerインターフェースを実装している場合、そのメソッドがそのオペランドのテキストをスキャンするために使用されます。
 また、スキャンされた引数の数が提供された引数の数よりも少ない場合、エラーが返されます。
@@ -332,5 +410,29 @@ Sscanfが使用した入力文字列の量を回復する方法はありませ�
 Fscanに提供されたリーダーがReadRuneを実装している場合、そのメソッドが文字を読み取るために使用されます。
 また、リーダーがUnreadRuneも実装している場合、そのメソッドが文字を保存し、連続した呼び出しでデータが失われないようにします。
 ReadRuneとUnreadRuneのメソッドを持たないリーダーにReadRuneとUnreadRuneのメソッドをアタッチするには、bufio.NewReaderを使用します。
+=======
+In all the scanning functions, if an operand implements method
+[Scan] (that is, it implements the [Scanner] interface) that
+method will be used to scan the text for that operand.  Also,
+if the number of arguments scanned is less than the number of
+arguments provided, an error is returned.
+
+All arguments to be scanned must be either pointers to basic
+types or implementations of the [Scanner] interface.
+
+Like [Scanf] and [Fscanf], [Sscanf] need not consume its entire input.
+There is no way to recover how much of the input string [Sscanf] used.
+
+Note: [Fscan] etc. can read one character (rune) past the input
+they return, which means that a loop calling a scan routine
+may skip some of the input.  This is usually a problem only
+when there is no space between input values.  If the reader
+provided to [Fscan] implements ReadRune, that method will be used
+to read characters.  If the reader also implements UnreadRune,
+that method will be used to save the character and successive
+calls will not lose data.  To attach ReadRune and UnreadRune
+methods to a reader without that capability, use
+[bufio.NewReader].
+>>>>>>> upstream/master
 */
 package fmt

@@ -8,8 +8,14 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+<<<<<<< HEAD
 // Stateはカスタムフォーマッタに渡されるプリンタの状態を表します。
 // io.Writerインターフェースへのアクセスと、オペランドのフォーマット指定子に関するフラグとオプションの情報を提供します。
+=======
+// State represents the printer state passed to custom formatters.
+// It provides access to the [io.Writer] interface plus information about
+// the flags and options for the operand's format specifier.
+>>>>>>> upstream/master
 type State interface {
 	// Writeは、出力をフォーマットして印刷するために呼び出す関数です。
 	Write(b []byte) (n int, err error)
@@ -22,16 +28,30 @@ type State interface {
 	Flag(c int) bool
 }
 
+<<<<<<< HEAD
 // Formatterは、Formatメソッドを持つ任意の値で実装されます。
 // 実装は、Stateとruneの解釈方法を制御し、Sprint()やFprint(f)などを呼び出して出力を生成することができます。
+=======
+// Formatter is implemented by any value that has a Format method.
+// The implementation controls how [State] and rune are interpreted,
+// and may call [Sprint] or [Fprint](f) etc. to generate its output.
+>>>>>>> upstream/master
 type Formatter interface {
 	Format(f State, verb rune)
 }
 
+<<<<<<< HEAD
 // Stringerは、Stringメソッドを持つ任意の値によって実装されます。
 // このメソッドは、その値の「ネイティブ」フォーマットを定義します。
 // Stringメソッドは、文字列を受け入れる任意のフォーマットや、
 // Printのような書式のないプリンターにオペランドとして渡される値を表示するために使用されます。
+=======
+// Stringer is implemented by any value that has a String method,
+// which defines the “native” format for that value.
+// The String method is used to print values passed as an operand
+// to any format that accepts a string or to an unformatted printer
+// such as [Print].
+>>>>>>> upstream/master
 type Stringer interface {
 	String() string
 }
@@ -43,7 +63,16 @@ type GoStringer interface {
 	GoString() string
 }
 
+<<<<<<< HEAD
 // FormatStringは、Stateによってキャプチャされた完全修飾のフォーマットディレクティブを表す文字列を返し、その後に引数の動詞が続きます。（State自体は動詞を含みません。）結果には、先頭にパーセント記号があり、その後にフラグ、幅、および精度が続きます。フラグ、幅、および精度のない場合は省略されます。この関数により、フォーマッタはFormatへの呼び出しをトリガーした元のディレクティブを再構築することができます。
+=======
+// FormatString returns a string representing the fully qualified formatting
+// directive captured by the [State], followed by the argument verb. ([State] does not
+// itself contain the verb.) The result has a leading percent sign followed by any
+// flags, the width, and the precision. Missing flags, width, and precision are
+// omitted. This function allows a [Formatter] to reconstruct the original
+// directive triggering the call to Format.
+>>>>>>> upstream/master
 func FormatString(state State, verb rune) string
 
 // Fprintfはフォーマット指定子に従って書式を整え、wに書き込みます。

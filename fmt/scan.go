@@ -33,10 +33,17 @@ type ScanState interface {
 	Read(buf []byte) (n int, err error)
 }
 
+<<<<<<< HEAD
 // Scannerは、値のスキャンメソッドを持つ任意の値によって実装されており、
 // 入力を値の表現形式でスキャンし、結果をレシーバに格納します。
 // 有用にするために、レシーバはポインタでなければなりません。
 // スキャンメソッドは、Scan、Scanf、またはScanlnの引数として実装するものです。
+=======
+// Scanner is implemented by any value that has a Scan method, which scans
+// the input for the representation of a value and stores the result in the
+// receiver, which must be a pointer to be useful. The Scan method is called
+// for any argument to [Scan], [Scanf], or [Scanln] that implements it.
+>>>>>>> upstream/master
 type Scanner interface {
 	Scan(state ScanState, verb rune) error
 }
@@ -44,8 +51,13 @@ type Scanner interface {
 // Scanは標準入力から読み取ったテキストをスキャンし、連続するスペースで区切られた値を連続した引数に格納します。改行はスペースとして扱われます。スキャンに成功したアイテムの数を返します。引数の数よりも少ない場合、errにはエラーの理由が報告されます。
 func Scan(a ...any) (n int, err error)
 
+<<<<<<< HEAD
 // ScanlnはScanに似ていますが、改行でスキャンを停止し、
 // 最後のアイテムの後には改行またはEOFが必要です。
+=======
+// Scanln is similar to [Scan], but stops scanning at a newline and
+// after the final item there must be a newline or EOF.
+>>>>>>> upstream/master
 func Scanln(a ...any) (n int, err error)
 
 // Scanfは標準入力から読み取ったテキストをスキャンし、形式に応じて連続したスペースで区切られた値を連続した引数に保存します。成功したスキャンのアイテム数を返します。引数の数よりも少ない場合、エラーが発生した理由がerrに報告されます。入力にある改行は、形式にある改行と一致する必要があります。ただし例外として、動詞%cは常に入力の次のルーンをスキャンします。それがスペース（またはタブなど）や改行であってもです。
@@ -54,7 +66,12 @@ func Scanf(format string, a ...any) (n int, err error)
 // Sscanは引数の文字列をスキャンし、連続するスペースで区切られた値を連続する引数に格納します。改行もスペースとして扱われます。正常にスキャンできたアイテムの数を返します。もし正常にスキャンされたアイテムの数が引数の数よりも少ない場合、errがその理由を報告します。
 func Sscan(str string, a ...any) (n int, err error)
 
+<<<<<<< HEAD
 // SscanlnはSscanに似ていますが、改行でスキャンを停止し、最後のアイテムの後には改行またはEOFが必要です。
+=======
+// Sscanln is similar to [Sscan], but stops scanning at a newline and
+// after the final item there must be a newline or EOF.
+>>>>>>> upstream/master
 func Sscanln(str string, a ...any) (n int, err error)
 
 // Sscanfは引数文字列をスキャンし、フォーマットによって決まる連続するスペースで区切られた値を連続した引数に格納します。正常に解析されたアイテムの数を返します。
@@ -64,7 +81,12 @@ func Sscanf(str string, format string, a ...any) (n int, err error)
 // Fscan は、r から読み取ったテキストをスキャンし、連続した空白で区切られた値を連続した引数に格納します。改行も空白としてカウントされます。成功したスキャンのアイテム数を返します。引数の数よりも少ない場合、err がなぜエラーが発生したのかを報告します。
 func Fscan(r io.Reader, a ...any) (n int, err error)
 
+<<<<<<< HEAD
 // FscanlnはFscanに似ていますが、改行でスキャンを終了し、最後の項目の後には改行かEOFが必要です。
+=======
+// Fscanln is similar to [Fscan], but stops scanning at a newline and
+// after the final item there must be a newline or EOF.
+>>>>>>> upstream/master
 func Fscanln(r io.Reader, a ...any) (n int, err error)
 
 // Fscanfはrから読み取ったテキストをスキャンし、

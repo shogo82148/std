@@ -6,7 +6,7 @@ package inlheur
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
-	"github.com/shogo82148/std/cmd/compile/internal/pgo"
+	"github.com/shogo82148/std/cmd/compile/internal/pgoir"
 )
 
 // SetupScoreAdjustments interprets the value of the -d=inlscoreadj
@@ -110,4 +110,4 @@ func BudgetExpansion(maxBudget int32) int32
 // of the function called, "CallerPos" is the position of the
 // callsite, and "ScoreFlags" is a digest of the specific properties
 // we used to make adjustments to callsite score via heuristics.
-func DumpInlCallSiteScores(profile *pgo.Profile, budgetCallback func(fn *ir.Func, profile *pgo.Profile) (int32, bool))
+func DumpInlCallSiteScores(profile *pgoir.Profile, budgetCallback func(fn *ir.Func, profile *pgoir.Profile) (int32, bool))

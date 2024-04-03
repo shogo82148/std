@@ -186,10 +186,18 @@ func (f StructField) IsExported() bool
 // 各値は、U+0022 '"'文字とGoの文字列リテラル構文を使用して引用されます。
 type StructTag string
 
+<<<<<<< HEAD
 // Getはtag文字列内のキーに関連付けられた値を返します。
 // もしtag内にそのようなキーが存在しない場合、Getは空の文字列を返します。
 // もしtagが従来の形式を持っていない場合、Getが返す値は不特定です。
 // タグが明示的に空の文字列に設定されているかどうかを判断するには、Lookupを使用してください。
+=======
+// Get returns the value associated with key in the tag string.
+// If there is no such key in the tag, Get returns the empty string.
+// If the tag does not have the conventional format, the value
+// returned by Get is unspecified. To determine whether a tag is
+// explicitly set to the empty string, use [StructTag.Lookup].
+>>>>>>> upstream/master
 func (tag StructTag) Get(key string) string
 
 // Lookupは、タグ文字列内のキーに関連する値を返します。

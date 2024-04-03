@@ -346,10 +346,20 @@ Goポインタを指すメモリにGoポインタを格納することはでき�
 Cコードによって呼び出されるGo関数は、Goポインタを取ることができますが、
 指すGoメモリ（およびそのメモリが指すGoメモリなど）がピン留めされていることを保証する必要があります。
 
+<<<<<<< HEAD
 これらのルールは、実行時に動的にチェックされます。チェックは、GODEBUG環境変数のcgocheck設定によって制御されます。
 デフォルトの設定はGODEBUG=cgocheck=1で、比較的安価な動的チェックが実装されています。
 これらのチェックは、GODEBUG=cgocheck=0を使用して完全に無効にすることができます。
 ポインタの処理の完全なチェックは、実行時間のコストがかかりますが、GODEBUG=cgocheck=2を使用して利用できます。
+=======
+These rules are checked dynamically at runtime. The checking is
+controlled by the cgocheck setting of the GODEBUG environment
+variable. The default setting is GODEBUG=cgocheck=1, which implements
+reasonably cheap dynamic checks. These checks may be disabled
+entirely using GODEBUG=cgocheck=0. Complete checking of pointer
+handling, at some cost in run time, is available by setting
+GOEXPERIMENT=cgocheck2 at build time.
+>>>>>>> upstream/master
 
 unsafeパッケージを使用することで、この強制を無効にすることができます。
 もちろん、Cコードが好きなことをすることを防ぐものは何もありません。
