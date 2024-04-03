@@ -649,18 +649,11 @@ func (d *FuncDecl) End() token.Pos
 // その近くにある関連するコメントも削除（ [File.Comments] リストから）またはそれらの位置を更新して移動しなければなりません。
 // これらの操作の一部を容易にするために、[CommentMap] を使用することもできます。
 //
-<<<<<<< HEAD
 // コメントがノードとどのように関連付けられるかは、操作するプログラムによる構文木の解釈に依存します：
-// Docと [Comment] コメント以外の残りのコメントは、「free-floating」です（#18593号、#20744号も参照）。
-=======
-// Whether and how a comment is associated with a node depends on the
-// interpretation of the syntax tree by the manipulating program: except for Doc
-// and [Comment] comments directly associated with nodes, the remaining comments
-// are "free-floating" (see also issues [#18593], [#20744]).
+// Docと [Comment] コメント以外の残りのコメントは、「free-floating」です（イシュー [#18593]、[#20744] も参照）。
 //
 // [#18593]: https://go.dev/issue/18593
 // [#20744]: https://go.dev/issue/20744
->>>>>>> upstream/master
 type File struct {
 	Doc     *CommentGroup
 	Package token.Pos
@@ -700,13 +693,8 @@ func (p *Package) End() token.Pos
 // IsGeneratedは、プログラムによって生成されたファイルか、手書きではないかを報告します。
 // https://go.dev/s/generatedcodeに記載されている特殊コメントを検出します。
 //
-<<<<<<< HEAD
-// 構文木は、ParseCommentsフラグを使用して解析されている必要があります。
+// 構文木は [parser.ParseComments] フラグを使用して解析されている必要があります。
 // 例：
-=======
-// The syntax tree must have been parsed with the [parser.ParseComments] flag.
-// Example:
->>>>>>> upstream/master
 //
 //	f, err := parser.ParseFile(fset, filename, src, parser.ParseComments|parser.PackageClauseOnly)
 //	if err != nil { ... }
