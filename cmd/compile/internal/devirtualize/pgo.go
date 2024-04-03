@@ -6,7 +6,7 @@ package devirtualize
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
-	"github.com/shogo82148/std/cmd/compile/internal/pgo"
+	"github.com/shogo82148/std/cmd/compile/internal/pgoir"
 )
 
 // CallStat summarizes a single call site.
@@ -91,4 +91,4 @@ type CallStat struct {
 //
 // The primary benefit of this transformation is enabling inlining of the
 // direct call.
-func ProfileGuided(fn *ir.Func, p *pgo.Profile)
+func ProfileGuided(fn *ir.Func, p *pgoir.Profile)

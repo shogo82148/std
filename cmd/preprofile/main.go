@@ -2,18 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Preprofile handles pprof files.
+// Preprofile creates an intermediate representation of a pprof profile for use
+// during PGO in the compiler. This transformation depends only on the profile
+// itself and is thus wasteful to perform in every invocation of the compiler.
 //
 // Usage:
 //
-//	go tool preprofile [-v] [-o output] [-i (pprof)input]
+//	go tool preprofile [-v] [-o output] -i input
 //
 //
 
 package main
-
-type NodeMapKey struct {
-	CallerName     string
-	CalleeName     string
-	CallSiteOffset int
-}

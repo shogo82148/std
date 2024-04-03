@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// Mustは、(*Template, error)を返す関数への呼び出しをラップし、
+// Mustは、([*Template], error)を返す関数への呼び出しをラップし、
 // エラーが非nilの場合にパニックを起こすヘルパーです。これは変数の
 // 初期化などで使用することを意図しています。
 //
@@ -31,7 +31,7 @@ func ParseFiles(filenames ...string) (*Template, error)
 // ParseFilesは指定されたファイルを解析し、結果となるテンプレートを
 // tと関連付けます。エラーが発生した場合、解析は停止し、返されるテンプレートはnilになります。
 // それ以外の場合はtです。ファイルは少なくとも1つ必要です。
-// ParseFilesによって作成されたテンプレートは、引数のファイルのベース名によって名付けられるため、
+// ParseFilesによって作成されたテンプレートは、引数のファイルのベース名によって名付けられるため（[filepath.Base] を参照）、
 // tは通常、ファイルの（ベース）名の1つを持つべきです。そうでない場合、tの
 // 内容によっては、t.Executeが失敗する可能性があります。その場合は、
 // t.ExecuteTemplateを使用して有効なテンプレートを実行します。
@@ -41,10 +41,10 @@ func ParseFiles(filenames ...string) (*Template, error)
 func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 
 // ParseGlobは新しい [Template] を作成し、パターンによって識別された
-// ファイルからテンプレート定義を解析します。ファイルはfilepath.Matchの
+// ファイルからテンプレート定義を解析します。ファイルは [filepath.Match] の
 // セマンティクスに従ってマッチし、パターンは少なくとも1つのファイルと
 // マッチしなければなりません。返されるテンプレートは、パターンによって
-// マッチした最初のファイルの（ベース）名と（解析された）内容を持つことになります。
+// マッチした最初のファイルの [filepath.Base] 名と（解析された）内容を持つことになります。
 // ParseGlobは、パターンによってマッチしたファイルのリストで [ParseFiles] を
 // 呼び出すのと同等です。
 //
@@ -53,10 +53,10 @@ func (t *Template) ParseFiles(filenames ...string) (*Template, error)
 func ParseGlob(pattern string) (*Template, error)
 
 // ParseGlobは、パターンによって識別されたファイルのテンプレート定義を解析し、
-// 結果となるテンプレートをtと関連付けます。ファイルはfilepath.Matchの
+// 結果となるテンプレートをtと関連付けます。ファイルは [filepath.Match] の
 // セマンティクスに従ってマッチし、パターンは少なくとも1つのファイルと
 // マッチしなければなりません。ParseGlobは、パターンによってマッチした
-// ファイルのリストでt.ParseFilesを呼び出すのと同等です。
+// ファイルのリストで [Template.ParseFiles] を呼び出すのと同等です。
 //
 // 異なるディレクトリにある同名の複数のファイルを解析するとき、
 // 最後に指定されたものが結果となります。
@@ -64,12 +64,12 @@ func (t *Template) ParseGlob(pattern string) (*Template, error)
 
 // ParseFSは、[Template.ParseFiles] や [Template.ParseGlob] と似ていますが、ホストオペレーティングシステムの
 // ファイルシステムの代わりにファイルシステムfsysから読み取ります。
-// それはグロブパターンのリストを受け入れます。
+// それはグロブパターンのリストを受け入れます（[path.Match] を参照）。
 // （ほとんどのファイル名は、自分自身のみにマッチするグロブパターンとして機能します。）
 func ParseFS(fsys fs.FS, patterns ...string) (*Template, error)
 
 // ParseFSは、[Template.ParseFiles] や [Template.ParseGlob] と似ていますが、ホストオペレーティングシステムの
 // ファイルシステムの代わりにファイルシステムfsysから読み取ります。
-// それはグロブパターンのリストを受け入れます。
+// それはグロブパターンのリストを受け入れます（[path.Match] を参照）。
 // （ほとんどのファイル名は、自分自身のみにマッチするグロブパターンとして機能します。）
 func (t *Template) ParseFS(fsys fs.FS, patterns ...string) (*Template, error)

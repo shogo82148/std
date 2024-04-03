@@ -66,10 +66,10 @@ func NewObj(kind ObjKind, name string) *Object
 // (obj.Declがnilであるか、正しくないかもしれません)。
 func (obj *Object) Pos() token.Pos
 
-// ObjKindはオブジェクトが表すものを説明します。
+// ObjKindは [Object] が表すものを説明します。
 type ObjKind int
 
-// 可能なオブジェクトの種類のリスト。
+// 可能な [Object] の種類のリスト。
 const (
 	Bad ObjKind = iota
 	Pkg

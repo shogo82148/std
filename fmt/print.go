@@ -9,7 +9,7 @@ import (
 )
 
 // Stateはカスタムフォーマッタに渡されるプリンタの状態を表します。
-// io.Writerインターフェースへのアクセスと、オペランドのフォーマット指定子に関するフラグとオプションの情報を提供します。
+// [io.Writer] インターフェースへのアクセスと、オペランドのフォーマット指定子に関するフラグとオプションの情報を提供します。
 type State interface {
 	// Writeは、出力をフォーマットして印刷するために呼び出す関数です。
 	Write(b []byte) (n int, err error)
@@ -23,7 +23,7 @@ type State interface {
 }
 
 // Formatterは、Formatメソッドを持つ任意の値で実装されます。
-// 実装は、Stateとruneの解釈方法を制御し、Sprint()やFprint(f)などを呼び出して出力を生成することができます。
+// 実装は、[State] とruneの解釈方法を制御し、[Sprint] や [Fprint](f)などを呼び出して出力を生成することができます。
 type Formatter interface {
 	Format(f State, verb rune)
 }
@@ -31,7 +31,7 @@ type Formatter interface {
 // Stringerは、Stringメソッドを持つ任意の値によって実装されます。
 // このメソッドは、その値の「ネイティブ」フォーマットを定義します。
 // Stringメソッドは、文字列を受け入れる任意のフォーマットや、
-// Printのような書式のないプリンターにオペランドとして渡される値を表示するために使用されます。
+// [Print] のような書式のないプリンターにオペランドとして渡される値を表示するために使用されます。
 type Stringer interface {
 	String() string
 }
@@ -43,7 +43,7 @@ type GoStringer interface {
 	GoString() string
 }
 
-// FormatStringは、Stateによってキャプチャされた完全修飾のフォーマットディレクティブを表す文字列を返し、その後に引数の動詞が続きます。（State自体は動詞を含みません。）結果には、先頭にパーセント記号があり、その後にフラグ、幅、および精度が続きます。フラグ、幅、および精度のない場合は省略されます。この関数により、フォーマッタはFormatへの呼び出しをトリガーした元のディレクティブを再構築することができます。
+// FormatStringは、[State] によってキャプチャされた完全修飾のフォーマットディレクティブを表す文字列を返し、その後に引数の動詞が続きます。（[State] 自体は動詞を含みません。）結果には、先頭にパーセント記号があり、その後にフラグ、幅、および精度が続きます。フラグ、幅、および精度のない場合は省略されます。この関数により、[Formatter] はFormatへの呼び出しをトリガーした元のディレクティブを再構築することができます。
 func FormatString(state State, verb rune) string
 
 // Fprintfはフォーマット指定子に従って書式を整え、wに書き込みます。

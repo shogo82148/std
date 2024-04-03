@@ -15,7 +15,7 @@ import (
 // 出力を制御するために、[Fprint] にFieldFilterを指定することができます。
 type FieldFilter func(name string, value reflect.Value) bool
 
-// NotNilFilterは、nilでないフィールド値に対してtrueを返します。
+// NotNilFilterは、フィールド値がnilでない場合にtrueを返す [FieldFilter] です。
 // それ以外の場合はfalseを返します。
 func NotNilFilter(_ string, v reflect.Value) bool
 

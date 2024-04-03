@@ -15,7 +15,7 @@ import (
 // kind-specificメソッドを呼び出す前に、値の種類を特定するためにKindメソッドを使用してください。型に適切でないメソッドを呼び出すと、ランタイムパニックが発生します。
 //
 // ゼロ値は何も表していません。
-// そのIsValidメソッドはfalseを返し、KindメソッドはInvalidを返し、Stringメソッドは"<invalid Value>"を返し、他のすべてのメソッドはパニックを発生させます。
+// その [Value.IsValid] メソッドはfalseを返し、Kindメソッドは [Invalid] を返し、Stringメソッドは"<invalid Value>"を返し、他のすべてのメソッドはパニックを発生させます。
 // ほとんどの関数やメソッドは無効な値を返さないでしょう。
 // もし返す場合は、そのドキュメントに条件が明示されています。
 //
@@ -183,12 +183,12 @@ func (v Value) Interface() (i any)
 func (v Value) InterfaceData() [2]uintptr
 
 // IsNilは引数vがnilであるかどうかを報告します。引数は
-// chan、func、interface、map、pointer、またはsliceの値である必要があります。そうでない場合、IsNilはパニックを引き起こします。注意点として、Go言語での通常のnilとの比較とは常に等しくありません。例えば、vが初期化されていないインターフェース変数iを使用してValueOfを呼び出した場合、i==nilはtrueとなりますが、v.IsNilはvがゼロ値であるためパニックを引き起こします。
+// chan、func、interface、map、pointer、またはsliceの値である必要があります。そうでない場合、IsNilはパニックを引き起こします。注意点として、Go言語での通常のnilとの比較とは常に等しくありません。例えば、vが初期化されていないインターフェース変数iを使用して [ValueOf] を呼び出した場合、i==nilはtrueとなりますが、v.IsNilはvがゼロ値であるためパニックを引き起こします。
 func (v Value) IsNil() bool
 
 // IsValidは、vが値を表すかどうかを報告します。
 // vがゼロ値の場合はfalseを返します。
-// IsValidがfalseを返す場合、Stringを除いた他のメソッドはすべてパニックします。
+// [Value.IsValid] がfalseを返す場合、Stringを除いた他のメソッドはすべてパニックします。
 // ほとんどの関数やメソッドは無効な値を返しません。
 // 無効な値を返す場合、そのドキュメントは明示的に条件を説明します。
 func (v Value) IsValid() bool
@@ -311,7 +311,7 @@ func (v Value) OverflowInt(x int64) bool
 func (v Value) OverflowUint(x uint64) bool
 
 // Pointerはvの値をuintptrとして返します。
-// vの種類が [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、または [UnsafePointer] でない場合はパニックが発生します。
+// vの種類が [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックが発生します。
 //
 // vの種類が [Func] の場合、返されるポインタは基礎となるコードポインタですが、
 // 単一の関数を一意に識別するために必要なものではありません。
@@ -320,6 +320,8 @@ func (v Value) OverflowUint(x uint64) bool
 // vの種類が [Slice] の場合、返されるポインタはスライスの最初の要素へのポインタです。
 // スライスがnilの場合、返される値は0です。
 // スライスが空で非nilの場合、返される値は0でない値です。
+//
+// vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
 //
 // 同等の結果を得るには、uintptr(Value.UnsafePointer())を使用することが推奨されます。
 func (v Value) Pointer() uintptr
@@ -384,7 +386,7 @@ func (v Value) SetMapIndex(key, elem Value)
 func (v Value) SetUint(x uint64)
 
 // SetPointerは、[unsafe.Pointer]の値であるvをxに設定します。
-// vの種類がUnsafePointerでない場合、パニックを起こします。
+// vの種類が [UnsafePointer] でない場合、パニックを起こします。
 func (v Value) SetPointer(x unsafe.Pointer)
 
 // SetStringはvの基礎となる値をxに設定します。
@@ -444,6 +446,8 @@ func (v Value) UnsafeAddr() uintptr
 //
 // vのKindが [Slice] の場合、返されるポインタはスライスの最初の要素へのポインタです。スライスがnilの場合、返される値もnilです。
 // スライスが空であるが非nilの場合、返される値は非nilです。
+//
+// vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
 func (v Value) UnsafePointer() unsafe.Pointer
 
 // StringHeaderは文字列のランタイム表現です。
@@ -509,12 +513,15 @@ const (
 
 // SelectCaseは、select操作内の1つのcaseを表します。
 // caseの種類は、Dir（通信の方向）に依存します。
+//
 // もしDirがSelectDefaultである場合、caseはデフォルトのcaseを表します。
 // ChanとSendはゼロ値でなければなりません。
+//
 // もしDirがSelectSendである場合、caseは送信操作を表します。
 // 通常、Chanの基礎となる値はチャネルであり、Sendの基礎となる値はチャネルの要素型に代入可能でなければなりません。
 // 特別な場合として、もしChanがゼロ値である場合、そのcaseは無視され、フィールドのSendも無視され、ゼロ値またはゼロ値でないどちらでもかまいません。
-// もしDirがSelectRecvである場合、caseは受信操作を表します。
+//
+// もしDirが [SelectRecv] である場合、caseは受信操作を表します。
 // 通常、Chanの基礎となる値はチャネルであり、Sendはゼロ値でなければなりません。
 // もしChanがゼロ値である場合、そのcaseは無視されますが、Sendはゼロ値でなければなりません。
 // 受信操作が選択されると、受信された値はSelectによって返されます。
@@ -534,6 +541,11 @@ func Select(cases []SelectCase) (chosen int, recv Value, recvOK bool)
 
 // MakeSliceは指定したスライスの型、長さ、容量の新しいゼロ初期化されたスライス値を作成します。
 func MakeSlice(typ Type, len, cap int) Value
+
+// SliceAtは、基礎となるデータがpで始まり、長さと容量がnと等しいスライスを表す [Value] を返します。
+//
+// これは [unsafe.Slice] のようなものです。
+func SliceAt(typ Type, p unsafe.Pointer, n int) Value
 
 // MakeChanは指定された型とバッファサイズで新しいチャネルを作成します。
 func MakeChan(typ Type, buffer int) Value
@@ -559,7 +571,7 @@ func ValueOf(i any) Value
 func Zero(typ Type) Value
 
 // Newは指定された型の新しいゼロ値へのポインタを表すValueを返します。
-// つまり、返されたValueのTypeはPointerTo(typ)です。
+// つまり、返されたValueのTypeは [PointerTo](typ)です。
 func New(typ Type) Value
 
 // NewAtは、pを指し示すポインタを使用して、指定された型の値へのポインタを表すValueを返します。

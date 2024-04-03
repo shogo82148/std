@@ -338,3 +338,5 @@ const (
 	SERVICE_RUNNING      = 4
 	SERVICE_QUERY_STATUS = 4
 )
+
+func FinalPath(h syscall.Handle, flags uint32) (string, error)

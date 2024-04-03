@@ -70,7 +70,7 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 //
 // 提供されたファイル名またはディレクトリ名が相対パスの場合、それは
 // 現在のディレクトリに対して相対的に解釈され、親ディレクトリに昇格することができます。
-// 提供された名前がユーザー入力から構築されている場合、ServeFileを呼び出す前に
+// 提供された名前がユーザー入力から構築されている場合、[ServeFile] を呼び出す前に
 // サニタイズする必要があります。
 //
 // 予防措置として、ServeFileはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。
@@ -89,16 +89,16 @@ func ServeFile(w ResponseWriter, r *Request, name string)
 
 // ServeFileFSは、ファイルシステムfsysから指定されたファイルまたはディレクトリの内容でリクエストに応答します。
 //
-// 提供されたファイルまたはディレクトリ名が相対パスの場合、現在のディレクトリを基準に解釈され、親ディレクトリに移動することができます。
-// 提供された名前がユーザー入力から構築された場合、[ServeFile] を呼び出す前にサニタイズする必要があります。
+// 提供された名前がユーザー入力から構築されている場合、
+// [ServeFileFS] を呼び出す前にサニタイズする必要があります。
 //
-// 予防措置として、ServeFileはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。
+// 予防措置として、ServeFileFSはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。
 // これにより、r.URL.Pathに [filepath.Join] を安全に使用せずにサニタイズせずに使用し、そのfilepath.Joinの結果を名前引数として使用する可能性がある呼び出し元を保護します。
 //
-// もう1つの特別な場合として、ServeFileはr.URL.Pathが"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。
+// もう1つの特別な場合として、ServeFileFSはr.URL.Pathが"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。
 // そのようなリダイレクトを回避するには、パスを変更するか、ServeContentを使用してください。
 //
-// これら2つの特別な場合以外では、ServeFileはファイルまたはディレクトリを選択するためにr.URL.Pathを使用しません。
+// これら2つの特別な場合以外では、ServeFileFSはファイルまたはディレクトリを選択するためにr.URL.Pathを使用しません。
 // 名前引数で提供されたファイルまたはディレクトリのみが使用されます。
 func ServeFileFS(w ResponseWriter, r *Request, fsys fs.FS, name string)
 
