@@ -14,18 +14,10 @@ import (
 // すべてのメソッドがすべての種類の値に適用されるわけではありません。制限事項がある場合は、各メソッドのドキュメントに記載されています。
 // kind-specificメソッドを呼び出す前に、値の種類を特定するためにKindメソッドを使用してください。型に適切でないメソッドを呼び出すと、ランタイムパニックが発生します。
 //
-<<<<<<< HEAD
 // ゼロ値は何も表していません。
-// そのIsValidメソッドはfalseを返し、KindメソッドはInvalidを返し、Stringメソッドは"<invalid Value>"を返し、他のすべてのメソッドはパニックを発生させます。
+// その [Value.IsValid] メソッドはfalseを返し、Kindメソッドは [Invalid] を返し、Stringメソッドは"<invalid Value>"を返し、他のすべてのメソッドはパニックを発生させます。
 // ほとんどの関数やメソッドは無効な値を返さないでしょう。
 // もし返す場合は、そのドキュメントに条件が明示されています。
-=======
-// The zero Value represents no value.
-// Its [Value.IsValid] method returns false, its Kind method returns [Invalid],
-// its String method returns "<invalid Value>", and all other methods panic.
-// Most functions and methods never return an invalid value.
-// If one does, its documentation states the conditions explicitly.
->>>>>>> upstream/master
 //
 // Valueは、基礎となるGoの値が同等の直接操作で並行に使用できる場合、複数のゴルーチンで同時に使用することができます。
 //
@@ -190,32 +182,15 @@ func (v Value) Interface() (i any)
 // 廃止予定: インターフェースの値のメモリ表現はInterfaceDataと互換性がありません。
 func (v Value) InterfaceData() [2]uintptr
 
-<<<<<<< HEAD
 // IsNilは引数vがnilであるかどうかを報告します。引数は
-// chan、func、interface、map、pointer、またはsliceの値である必要があります。そうでない場合、IsNilはパニックを引き起こします。注意点として、Go言語での通常のnilとの比較とは常に等しくありません。例えば、vが初期化されていないインターフェース変数iを使用してValueOfを呼び出した場合、i==nilはtrueとなりますが、v.IsNilはvがゼロ値であるためパニックを引き起こします。
+// chan、func、interface、map、pointer、またはsliceの値である必要があります。そうでない場合、IsNilはパニックを引き起こします。注意点として、Go言語での通常のnilとの比較とは常に等しくありません。例えば、vが初期化されていないインターフェース変数iを使用して [ValueOf] を呼び出した場合、i==nilはtrueとなりますが、v.IsNilはvがゼロ値であるためパニックを引き起こします。
 func (v Value) IsNil() bool
 
 // IsValidは、vが値を表すかどうかを報告します。
 // vがゼロ値の場合はfalseを返します。
-// IsValidがfalseを返す場合、Stringを除いた他のメソッドはすべてパニックします。
+// [Value.IsValid] がfalseを返す場合、Stringを除いた他のメソッドはすべてパニックします。
 // ほとんどの関数やメソッドは無効な値を返しません。
 // 無効な値を返す場合、そのドキュメントは明示的に条件を説明します。
-=======
-// IsNil reports whether its argument v is nil. The argument must be
-// a chan, func, interface, map, pointer, or slice value; if it is
-// not, IsNil panics. Note that IsNil is not always equivalent to a
-// regular comparison with nil in Go. For example, if v was created
-// by calling [ValueOf] with an uninitialized interface variable i,
-// i==nil will be true but v.IsNil will panic as v will be the zero
-// Value.
-func (v Value) IsNil() bool
-
-// IsValid reports whether v represents a value.
-// It returns false if v is the zero Value.
-// If [Value.IsValid] returns false, all other methods except String panic.
-// Most functions and methods never return an invalid Value.
-// If one does, its documentation states the conditions explicitly.
->>>>>>> upstream/master
 func (v Value) IsValid() bool
 
 // IsZeroは、vが自身の型のゼロ値であるかどうかを報告します。
@@ -335,13 +310,8 @@ func (v Value) OverflowInt(x int64) bool
 // vのKindが [Uint] 、 [Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合は、panicします。
 func (v Value) OverflowUint(x uint64) bool
 
-<<<<<<< HEAD
 // Pointerはvの値をuintptrとして返します。
-// vの種類が [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、または [UnsafePointer] でない場合はパニックが発生します。
-=======
-// Pointer returns v's value as a uintptr.
-// It panics if v's Kind is not [Chan], [Func], [Map], [Pointer], [Slice], [String], or [UnsafePointer].
->>>>>>> upstream/master
+// vの種類が [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックが発生します。
 //
 // vの種類が [Func] の場合、返されるポインタは基礎となるコードポインタですが、
 // 単一の関数を一意に識別するために必要なものではありません。
@@ -351,14 +321,9 @@ func (v Value) OverflowUint(x uint64) bool
 // スライスがnilの場合、返される値は0です。
 // スライスが空で非nilの場合、返される値は0でない値です。
 //
-<<<<<<< HEAD
-// 同等の結果を得るには、uintptr(Value.UnsafePointer())を使用することが推奨されます。
-=======
-// If v's Kind is [String], the returned pointer is to the first
-// element of the underlying bytes of string.
+// vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
 //
-// It's preferred to use uintptr(Value.UnsafePointer()) to get the equivalent result.
->>>>>>> upstream/master
+// 同等の結果を得るには、uintptr(Value.UnsafePointer())を使用することが推奨されます。
 func (v Value) Pointer() uintptr
 
 // Recv はチャネル v から値を受信して返します。
@@ -420,13 +385,8 @@ func (v Value) SetMapIndex(key, elem Value)
 // vの種類が [Uint] 、[Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合、または [Value.CanSet] がfalseの場合はパニックを起こします。
 func (v Value) SetUint(x uint64)
 
-<<<<<<< HEAD
 // SetPointerは、[unsafe.Pointer]の値であるvをxに設定します。
-// vの種類がUnsafePointerでない場合、パニックを起こします。
-=======
-// SetPointer sets the [unsafe.Pointer] value v to x.
-// It panics if v's Kind is not [UnsafePointer].
->>>>>>> upstream/master
+// vの種類が [UnsafePointer] でない場合、パニックを起こします。
 func (v Value) SetPointer(x unsafe.Pointer)
 
 // SetStringはvの基礎となる値をxに設定します。
@@ -484,17 +444,10 @@ func (v Value) UnsafeAddr() uintptr
 // vのKindが [Func] の場合、返されるポインタは基礎となるコードポインタですが、必ずしも単一の関数を一意に識別するためのものではありません。
 // 唯一の保証は、vがnil func Valueである場合にのみ結果がゼロであることです。
 //
-<<<<<<< HEAD
 // vのKindが [Slice] の場合、返されるポインタはスライスの最初の要素へのポインタです。スライスがnilの場合、返される値もnilです。
 // スライスが空であるが非nilの場合、返される値は非nilです。
-=======
-// If v's Kind is [Slice], the returned pointer is to the first
-// element of the slice. If the slice is nil the returned value
-// is nil.  If the slice is empty but non-nil the return value is non-nil.
 //
-// If v's Kind is [String], the returned pointer is to the first
-// element of the underlying bytes of string.
->>>>>>> upstream/master
+// vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
 func (v Value) UnsafePointer() unsafe.Pointer
 
 // StringHeaderは文字列のランタイム表現です。
@@ -558,36 +511,20 @@ const (
 	SelectDefault
 )
 
-<<<<<<< HEAD
 // SelectCaseは、select操作内の1つのcaseを表します。
 // caseの種類は、Dir（通信の方向）に依存します。
+//
 // もしDirがSelectDefaultである場合、caseはデフォルトのcaseを表します。
 // ChanとSendはゼロ値でなければなりません。
+//
 // もしDirがSelectSendである場合、caseは送信操作を表します。
 // 通常、Chanの基礎となる値はチャネルであり、Sendの基礎となる値はチャネルの要素型に代入可能でなければなりません。
 // 特別な場合として、もしChanがゼロ値である場合、そのcaseは無視され、フィールドのSendも無視され、ゼロ値またはゼロ値でないどちらでもかまいません。
-// もしDirがSelectRecvである場合、caseは受信操作を表します。
+//
+// もしDirが [SelectRecv] である場合、caseは受信操作を表します。
 // 通常、Chanの基礎となる値はチャネルであり、Sendはゼロ値でなければなりません。
 // もしChanがゼロ値である場合、そのcaseは無視されますが、Sendはゼロ値でなければなりません。
 // 受信操作が選択されると、受信された値はSelectによって返されます。
-=======
-// A SelectCase describes a single case in a select operation.
-// The kind of case depends on Dir, the communication direction.
-//
-// If Dir is SelectDefault, the case represents a default case.
-// Chan and Send must be zero Values.
-//
-// If Dir is SelectSend, the case represents a send operation.
-// Normally Chan's underlying value must be a channel, and Send's underlying value must be
-// assignable to the channel's element type. As a special case, if Chan is a zero Value,
-// then the case is ignored, and the field Send will also be ignored and may be either zero
-// or non-zero.
-//
-// If Dir is [SelectRecv], the case represents a receive operation.
-// Normally Chan's underlying value must be a channel and Send must be a zero Value.
-// If Chan is a zero Value, then the case is ignored, but Send must still be a zero Value.
-// When a receive operation is selected, the received Value is returned by Select.
->>>>>>> upstream/master
 type SelectCase struct {
 	Dir  SelectDir
 	Chan Value
@@ -605,17 +542,12 @@ func Select(cases []SelectCase) (chosen int, recv Value, recvOK bool)
 // MakeSliceは指定したスライスの型、長さ、容量の新しいゼロ初期化されたスライス値を作成します。
 func MakeSlice(typ Type, len, cap int) Value
 
-<<<<<<< HEAD
-// MakeChanは指定された型とバッファサイズで新しいチャネルを作成します。
-=======
-// SliceAt returns a [Value] representing a slice whose underlying
-// data starts at p, with length and capacity equal to n.
+// SliceAtは、基礎となるデータがpで始まり、長さと容量がnと等しいスライスを表す [Value] を返します。
 //
-// This is like [unsafe.Slice].
+// これは [unsafe.Slice] のようなものです。
 func SliceAt(typ Type, p unsafe.Pointer, n int) Value
 
-// MakeChan creates a new channel with the specified type and buffer size.
->>>>>>> upstream/master
+// MakeChanは指定された型とバッファサイズで新しいチャネルを作成します。
 func MakeChan(typ Type, buffer int) Value
 
 // MakeMapは指定された型の新しいマップを作成します。
@@ -638,13 +570,8 @@ func ValueOf(i any) Value
 // 返された値はアドレスを取ることも変更することもできません。
 func Zero(typ Type) Value
 
-<<<<<<< HEAD
 // Newは指定された型の新しいゼロ値へのポインタを表すValueを返します。
-// つまり、返されたValueのTypeはPointerTo(typ)です。
-=======
-// New returns a Value representing a pointer to a new zero value
-// for the specified type. That is, the returned Value's Type is [PointerTo](typ).
->>>>>>> upstream/master
+// つまり、返されたValueのTypeは [PointerTo](typ)です。
 func New(typ Type) Value
 
 // NewAtは、pを指し示すポインタを使用して、指定された型の値へのポインタを表すValueを返します。
