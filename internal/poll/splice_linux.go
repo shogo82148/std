@@ -9,6 +9,4 @@ package poll
 //
 // Splice gets a pipe buffer from the pool or creates a new one if needed, to serve as a buffer for the data transfer.
 // src and dst must both be stream-oriented sockets.
-//
-// If err != nil, sc is the system call which caused the error.
-func Splice(dst, src *FD, remain int64) (written int64, handled bool, sc string, err error)
+func Splice(dst, src *FD, remain int64) (written int64, handled bool, err error)
