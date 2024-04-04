@@ -70,4 +70,4 @@ type Checker struct {
 func NewChecker(conf *Config, pkg *Package, info *Info) *Checker
 
 // Files checks the provided files as part of the checker's package.
-func (check *Checker) Files(files []*syntax.File) error
+func (check *Checker) Files(files []*syntax.File) (err error)
