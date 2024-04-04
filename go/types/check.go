@@ -69,5 +69,5 @@ type Checker struct {
 // [Package] ファイルは、checker.Filesを通じて段階的に追加することができます。
 func NewChecker(conf *Config, fset *token.FileSet, pkg *Package, info *Info) *Checker
 
-// Filesはチェッカーのパッケージの一部として提供されたファイルをチェックします。
-func (check *Checker) Files(files []*ast.File) error
+// Filesは、チェッカーのパッケージの一部として提供されたファイルをチェックします。
+func (check *Checker) Files(files []*ast.File) (err error)

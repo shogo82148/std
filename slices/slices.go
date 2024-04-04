@@ -104,7 +104,7 @@ func Reverse[S ~[]E, E any](s S) { return }
 func Concat[S ~[]E, E any](slices ...S) S { return nil }
 
 // Repeatは、指定されたスライスを指定された回数だけ繰り返す新しいスライスを返します。
-// 結果の長さと容量はlen(x) * countです。
+// 結果の長さと容量は (len(x) * count) です。
 // 結果は決してnilになりません。
 // countが負の場合、または(len(x) * count)の結果がオーバーフローする場合、Repeatはパニックを起こします。
 func Repeat[S ~[]E, E any](x S, count int) S { return nil }

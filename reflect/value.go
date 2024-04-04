@@ -439,7 +439,7 @@ func (v Value) Uint() uint64
 func (v Value) UnsafeAddr() uintptr
 
 // UnsafePointerはvの値を [unsafe.Pointer] として返します。
-// vのKindが [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、または [UnsafePointer] でない場合はパニックを発生させます。
+// vのKindが [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックを発生させます。
 //
 // vのKindが [Func] の場合、返されるポインタは基礎となるコードポインタですが、必ずしも単一の関数を一意に識別するためのものではありません。
 // 唯一の保証は、vがnil func Valueである場合にのみ結果がゼロであることです。
