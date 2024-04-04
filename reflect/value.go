@@ -438,13 +438,8 @@ func (v Value) Uint() uint64
 // 同等の結果を得るためには、uintptr(Value.Addr().UnsafePointer())を使用することが推奨されます。
 func (v Value) UnsafeAddr() uintptr
 
-<<<<<<< HEAD
 // UnsafePointerはvの値を [unsafe.Pointer] として返します。
-// vのKindが [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、または [UnsafePointer] でない場合はパニックを発生させます。
-=======
-// UnsafePointer returns v's value as a [unsafe.Pointer].
-// It panics if v's Kind is not [Chan], [Func], [Map], [Pointer], [Slice], [String] or [UnsafePointer].
->>>>>>> upstream/master
+// vのKindが [Chan] 、 [Func] 、 [Map] 、 [Pointer] 、 [Slice] 、[String]、または [UnsafePointer] でない場合はパニックを発生させます。
 //
 // vのKindが [Func] の場合、返されるポインタは基礎となるコードポインタですが、必ずしも単一の関数を一意に識別するためのものではありません。
 // 唯一の保証は、vがnil func Valueである場合にのみ結果がゼロであることです。
