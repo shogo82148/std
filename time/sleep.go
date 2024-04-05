@@ -10,18 +10,18 @@ func Sleep(d Duration)
 
 // Timer型は単一のイベントを表します。
 // Timerが時間切れになると、現在の時間がCに送信されます。
-// ただし、TimerがAfterFuncによって作成された場合は除きます。
-// TimerはNewTimerまたはAfterFuncで作成する必要があります。
+// ただし、Timerが [AfterFunc] によって作成された場合は除きます。
+// Timerは [NewTimer] またはAfterFuncで作成する必要があります。
 type Timer struct {
 	C         <-chan Time
 	initTimer bool
 }
 
-// Stop prevents the Timer from firing.
+// Stop prevents the [Timer] from firing.
 // It returns true if the call stops the timer, false if the timer has already
 // expired or been stopped.
 //
-// For a func-based timer created with AfterFunc(d, f),
+// For a func-based timer created with [AfterFunc](d, f),
 // if t.Stop returns false, then the timer has already expired
 // and the function f has been started in its own goroutine;
 // Stop does not wait for f to complete before returning.
@@ -66,7 +66,7 @@ func NewTimer(d Duration) *Timer
 // Resetはタイマーを期間d後に期限切れにする。
 // タイマーがアクティブであった場合はtrue、期限切れまたは停止された場合はfalseを返す。
 //
-// For a func-based timer created with AfterFunc(d, f), Reset either reschedules
+// For a func-based timer created with [AfterFunc](d, f), Reset either reschedules
 // when f will run, in which case Reset returns true, or schedules f
 // to run again, in which case it returns false.
 // When Reset returns false, Reset neither waits for the prior f to
@@ -80,24 +80,24 @@ func NewTimer(d Duration) *Timer
 // to receive a time value corresponding to the previous timer settings;
 // if the program has not received from t.C already and the timer is
 // running, Reset is guaranteed to return true.
-// Before Go 1.23, the only safe way to use Reset was to Stop and
+// Before Go 1.23, the only safe way to use Reset was to [Stop] and
 // explicitly drain the timer first.
 // See the [NewTimer] documentation for more details.
 func (t *Timer) Reset(d Duration) bool
 
 // After waits for the duration to elapse and then sends the current time
 // on the returned channel.
-// It is equivalent to NewTimer(d).C.
+// It is equivalent to [NewTimer](d).C.
 //
 // Before Go 1.23, this documentation warned that the underlying
-// Timer would not be recovered by the garbage collector until the
+// [Timer] would not be recovered by the garbage collector until the
 // timer fired, and that if efficiency was a concern, code should use
-// NewTimer instead and call Timer.Stop if the timer is no longer needed.
+// NewTimer instead and call [Timer.Stop] if the timer is no longer needed.
 // As of Go 1.23, the garbage collector can recover unreferenced,
 // unstopped timers. There is no reason to prefer NewTimer when After will do.
 func After(d Duration) <-chan Time
 
 // AfterFuncは、指定した時間が経過した後、fを自身のゴルーチンで呼び出します。
-// Stopメソッドを使用して呼び出しをキャンセルするために使用できるTimerを返します。
+// Stopメソッドを使用して呼び出しをキャンセルするために使用できる [Timer] を返します。
 // 返されたTimerのCフィールドは使用されず、nilになります。
 func AfterFunc(d Duration, f func()) *Timer

@@ -7,3 +7,5 @@
 package bytealg
 
 func Compare(a, b []byte) int
+
+func CompareString(a, b string) int

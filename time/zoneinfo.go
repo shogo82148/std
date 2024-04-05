@@ -43,10 +43,10 @@ var UTC *Location = &utcLoc
 // TZ="foo" はシステムのタイムゾーンディレクトリ内のファイル foo を使用します。
 var Local *Location = &localLoc
 
-// Stringは、LoadLocationまたはFixedZoneのname引数に対応する、タイムゾーン情報の記述的な名前を返します。
+// Stringは、[LoadLocation] または [FixedZone] のname引数に対応する、タイムゾーン情報の記述的な名前を返します。
 func (l *Location) String() string
 
-// FixedZoneは、常に指定されたタイムゾーン名とオフセット（UTCからの秒数）を使用するLocationを返します。
+// FixedZoneは、常に指定されたタイムゾーン名とオフセット（UTCからの秒数）を使用する [Location] を返します。
 func FixedZone(name string, offset int) *Location
 
 // LoadLocationは指定された名前を持つLocationを返します。

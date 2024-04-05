@@ -30,5 +30,5 @@ package strconv
 // 特別な精度-1は、ParseFloatがfを正確に返すために必要な最小桁数を使用します。
 func FormatFloat(f float64, fmt byte, prec, bitSize int) string
 
-// AppendFloatは、FormatFloatによって生成された浮動小数点数fの文字列形式をdstに追加し、拡張されたバッファを返します。
+// AppendFloatは、[FormatFloat] によって生成された浮動小数点数fの文字列形式をdstに追加し、拡張されたバッファを返します。
 func AppendFloat(dst []byte, f float64, fmt byte, prec, bitSize int) []byte

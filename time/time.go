@@ -8,7 +8,7 @@
 //
 // # モノトニッククロック
 //
-// オペレーティングシステムは「壁掛け時計（wall clock）」と「モノトニッククロック（monotonic clock）」の2つを提供しています。壁掛け時計はクロック同期により変更される可能性がありますが、モノトニッククロックは変更されません。一般的なルールは、壁掛け時計は時刻を表示するために使用し、モノトニッククロックは時間を測定するために使用することです。このパッケージでは、time.Nowが返すTimeには壁掛け時計の読み取り結果とモノトニッククロックの読み取り結果の両方が含まれています。後の時刻表示操作は壁掛け時計の読み取り結果を使用し、後の時間測定操作（比較や差分の計算など）はモノトニッククロックの読み取り結果を使用します。
+// オペレーティングシステムは「壁掛け時計（wall clock）」と「モノトニッククロック（monotonic clock）」の2つを提供しています。壁掛け時計はクロック同期により変更される可能性がありますが、モノトニッククロックは変更されません。一般的なルールは、壁掛け時計は時刻を表示するために使用し、モノトニッククロックは時間を測定するために使用することです。このパッケージでは、[time.Now] が返すTimeには壁掛け時計の読み取り結果とモノトニッククロックの読み取り結果の両方が含まれています。後の時刻表示操作は壁掛け時計の読み取り結果を使用し、後の時間測定操作（比較や差分の計算など）はモノトニッククロックの読み取り結果を使用します。
 //
 // たとえ壁掛け時計が操作中に変更された場合でも、以下のコードは常に約20ミリ秒の経過時間を計算します。
 //
@@ -17,7 +17,7 @@
 //	t := time.Now()
 //	elapsed := t.Sub(start)
 //
-// time.Since(start)、time.Until(deadline)、time.Now().Before(deadline)などの他のイディオムも、壁掛け時計のリセットに対して同様に頑健です。
+// [time.Since](start)、[time.Until](deadline)、time.Now().Before(deadline)などの他のイディオムも、壁掛け時計のリセットに対して同様に頑健です。
 //
 // このセクションの残りの部分では、操作がモノトニッククロックを使用する方法の詳細を述べますが、これらの詳細を理解することはこのパッケージの使用には必要ありません。
 //
@@ -27,18 +27,18 @@
 //
 // 一部のシステムでは、コンピューターがスリープモードに入るとモノトニッククロックが停止することがあります。そのようなシステムでは、t.Sub(u)はtとuの間で経過した実際の時間を正確に反映しない場合があります。
 //
-// モノトニッククロックの読み取り結果には、現在のプロセスの外部では意味がありません。t.GobEncode、t.MarshalBinary、t.MarshalJSON、t.MarshalTextによって生成されるシリアル化された形式では、モノトニッククロックの読み取り結果は省略され、t.Formatはそれに対するフォーマットを提供しません。同様に、コンストラクタtime.Date、time.Parse、time.ParseInLocation、およびtime.Unix、およびアンマーシャラーt.GobDecode、t.UnmarshalBinary、t.UnmarshalJSON、およびt.UnmarshalTextは常にモノトニッククロックの読み取り結果のない時刻を作成します。
+// モノトニッククロックの読み取り結果には、現在のプロセスの外部では意味がありません。t.GobEncode、t.MarshalBinary、t.MarshalJSON、t.MarshalTextによって生成されるシリアル化された形式では、モノトニッククロックの読み取り結果は省略され、t.Formatはそれに対するフォーマットを提供しません。同様に、コンストラクタ [time.Date]、[time.Parse]、[time.ParseInLocation]、および [time.Unix]、およびアンマーシャラーt.GobDecode、t.UnmarshalBinary、t.UnmarshalJSON、およびt.UnmarshalTextは常にモノトニッククロックの読み取り結果のない時刻を作成します。
 //
-// モノトニッククロックの読み取り結果はTimeの値にのみ存在します。Durationの値やt.Unixおよび関連する関数が返すUnix時刻には含まれていません。
+// モノトニッククロックの読み取り結果は [Time] の値にのみ存在します。[Duration] の値やt.Unixおよび関連する関数が返すUnix時刻には含まれていません。
 //
-// Goの==演算子は、時間の瞬間だけでなく、位置情報とモノトニッククロックの読み取り結果も比較します。Time型の等値テストについては、Time型のドキュメントを参照してください。
+// Goの==演算子は、時間の瞬間だけでなく、[Location] とモノトニッククロックの読み取り結果も比較します。Time型の等値テストについては、Time型のドキュメントを参照してください。
 //
 // デバッグ用に、t.Stringの結果には、存在する場合はモノトニッククロックの読み取りが含まれます。
 // t != uの場合、異なるモノトニッククロックの読み取りによって、t.String()とu.String()の出力に差異が見られます。
 //
 // # タイマーの解像度
 //
-// タイマーの解像度は、Goランタイム、オペレーティングシステム、
+// [Timer] の解像度は、Goランタイム、オペレーティングシステム、
 // および基礎となるハードウェアによって異なります。
 // Unixでは、解像度は約1msです。
 // Windowsバージョン1803以降では、解像度は約0.5msです。
@@ -49,22 +49,22 @@ package time
 // Timeは納秒単位の精度で時刻を表します。
 //
 // Timeを使用するプログラムでは通常、値として保存し、渡すべきです。
-// つまり、時刻変数や構造体のフィールドは*time.Timeではなくtime.Timeの型であるべきです。
+// つまり、時刻変数や構造体のフィールドは*time.Timeではなく [time.Time] の型であるべきです。
 //
-// Timeの値は、GobDecode、UnmarshalBinary、UnmarshalJSON、UnmarshalTextメソッドを除いて、
+// Timeの値は、[Time.GobDecode]、[Time.UnmarshalBinary]、[Time.UnmarshalJSON]、[Time.UnmarshalText] メソッドを除いて、
 // 複数のゴルーチンで同時に使用できます。
 //
-// Timeの瞬間はBefore、After、Equalメソッドを使って比較することができます。
-// Subメソッドは2つの瞬間を引いてDurationを生成します。
-// AddメソッドはTimeとDurationを足してTimeを生成します。
+// Timeの瞬間は [Time.Before]、[Time.After]、[Time.Equal] メソッドを使って比較することができます。
+// [Time.Sub] メソッドは2つの瞬間を引いて [Duration] を生成します。
+// [Time.Add] メソッドはTimeとDurationを足してTimeを生成します。
 //
 // Time型のゼロ値は、UTCでの1年1月1日00:00:00.000000000です。
-// この時刻は実際にはほとんど使われないため、IsZeroメソッドは明示的に初期化されていない時刻を検出するための簡単な方法です。
+// この時刻は実際にはほとんど使われないため、[Time.IsZero] メソッドは明示的に初期化されていない時刻を検出するための簡単な方法です。
 //
-// 各時刻には関連するLocationがあります。Local、UTC、およびInメソッドは、特定のLocationを持つTimeを返します。
+// 各時刻には関連する [Location] があります。[Time.Local]、[Time.UTC]、および Time.In メソッドは、特定のLocationを持つTimeを返します。
 // これらのメソッドを使用してTime値のLocationを変更しても、それが表す実際の瞬間は変更されず、解釈するタイムゾーンのみが変更されます。
 //
-// GobEncode、MarshalBinary、MarshalJSON、MarshalTextメソッドによって保存されるTime値の表現には、Time.Locationのオフセットが格納されますが、
+// [Time.GobEncode]、[Time.MarshalBinary]、[Time.MarshalJSON]、[Time.MarshalText] メソッドによって保存されるTime値の表現には、[Time.Location] のオフセットが格納されますが、
 // 場所の名前は格納されません。そのため、夏時間に関する情報が失われます。
 //
 // 必要な「壁時計」の読み取りに加えて、Timeにはオプションのプロセスの単調な時計の読み取りが含まれることがあります。
@@ -194,7 +194,7 @@ type Duration int64
 // 共通の期間です。Dayやそれ以上の単位の定義はありません。
 // 夏時間ゾーンの移行時に混乱を避けるためです。
 //
-// Durationの単位数を数えるには、次のように割ります：
+// [Duration] の単位数を数えるには、次のように割ります：
 //
 //	second := time.Second
 //	fmt.Print(int64(second/time.Millisecond)) // 1000と出力されます
@@ -240,19 +240,19 @@ func (d Duration) Truncate(m Duration) Duration
 
 // Round関数は、dを最も近いmの倍数に丸めた結果を返します。
 // 半分の値の丸め方は、ゼロから離れるように丸めます。
-// 結果がDurationに格納できる最大（または最小）値を超える場合、
+// 結果が [Duration] に格納できる最大（または最小）値を超える場合、
 // Round関数は最大（または最小）のdurationを返します。
 // m <= 0の場合、Round関数はdをそのまま返します。
 func (d Duration) Round(m Duration) Duration
 
 // Absはdの絶対値を返します。
-// 特別なケースとして、math.MinInt64はmath.MaxInt64に変換されます。
+// 特別なケースとして、[math.MinInt64] は [math.MaxInt64] に変換されます。
 func (d Duration) Abs() Duration
 
 // Addは時間tにdを加えた時間を返します。
 func (t Time) Add(d Duration) Time
 
-// Subは期間t-uを返します。結果がDurationに格納できる最大値（または最小値）を超える場合、最大（または最小）の期間が返されます。
+// Subは期間t-uを返します。結果が [Duration] に格納できる最大値（または最小値）を超える場合、最大（または最小）の期間が返されます。
 // 期間dのt-dを計算するためには、t.Add(-d)を使用してください。
 func (t Time) Sub(u Time) Duration
 
@@ -331,22 +331,22 @@ func (t Time) GobEncode() ([]byte, error)
 // GobDecodeはgob.GobDecoderインターフェースを実装します。
 func (t *Time) GobDecode(data []byte) error
 
-// MarshalJSONはjson.Marshalerインターフェースを実装します。
+// MarshalJSONは [json.Marshaler] インターフェースを実装します。
 // 時刻はRFC 3339形式で引用符で囲まれた文字列です。秒未満の精度もあります。
 // タイムスタンプが有効なRFC 3339として表現できない場合
 // （例：年が範囲外の場合）、エラーが報告されます。
 func (t Time) MarshalJSON() ([]byte, error)
 
-// UnmarshalJSONはjson.Unmarshalerインターフェースを実装します。
+// UnmarshalJSONは [json.Unmarshaler] インターフェースを実装します。
 // 時刻はRFC 3339形式でクォートされた文字列である必要があります。
 func (t *Time) UnmarshalJSON(data []byte) error
 
-// MarshalTextはencoding.TextMarshalerインターフェースを実装します。
+// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
 // 時間はRFC 3339形式でサブ秒の精度でフォーマットされます。
 // タイムスタンプが有効なRFC 3339として表現できない場合（例：年が範囲外の場合）、エラーが報告されます。
 func (t Time) MarshalText() ([]byte, error)
 
-// UnmarshalTextはencoding.TextUnmarshalerインターフェースを実装します。
+// UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。
 // 時刻はRFC 3339形式である必要があります。
 func (t *Time) UnmarshalText(data []byte) error
 
