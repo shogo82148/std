@@ -50,10 +50,10 @@ var UTC *Location = &utcLoc
 var Local *Location = &localLoc
 
 // String returns a descriptive name for the time zone information,
-// corresponding to the name argument to LoadLocation or FixedZone.
+// corresponding to the name argument to [LoadLocation] or [FixedZone].
 func (l *Location) String() string
 
-// FixedZone returns a Location that always uses
+// FixedZone returns a [Location] that always uses
 // the given zone name and offset (seconds east of UTC).
 func FixedZone(name string, offset int) *Location
 

@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 )
 
-// LookupMethodFunc returns the ir.Func for an arbitrary full symbol name if
+// LookupFunc returns the ir.Func for an arbitrary full symbol name if
 // that function exists in the set of available export data.
 //
 // This allows lookup of arbitrary functions and methods that aren't otherwise

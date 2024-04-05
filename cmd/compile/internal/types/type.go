@@ -430,7 +430,7 @@ func SubstAny(t *Type, types *[]*Type) *Type
 
 func (f *Field) Copy() *Field
 
-// ResultTuple returns the result type of signature type t as a tuple.
+// ResultsTuple returns the result type of signature type t as a tuple.
 // This can be used as the type of multi-valued call expressions.
 func (t *Type) ResultsTuple() *Type
 
@@ -444,7 +444,7 @@ func (t *Type) Params() []*Field
 // Results returns a slice of result parameters of signature type t.
 func (t *Type) Results() []*Field
 
-// RecvsParamsResults returns a slice containing all of the
+// RecvParamsResults returns a slice containing all of the
 // signature's parameters in receiver (if any), (normal) parameters,
 // and then results.
 func (t *Type) RecvParamsResults() []*Field
