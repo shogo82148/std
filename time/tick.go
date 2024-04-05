@@ -10,19 +10,10 @@ type Ticker struct {
 	initTicker bool
 }
 
-<<<<<<< HEAD
-// NewTickerは、各ティック後にチャネル上の現在の時間を送信するチャネルを含む新しいTickerを返します。
+// NewTickerは、各ティック後にチャネル上の現在の時間を送信するチャネルを含む新しい [Ticker] を返します。
 // ティックの周期は、duration引数で指定されます。Tickerは、受信速度が遅い場合に時間間隔を調整したり、
 // ティックをドロップしたりします。duration dはゼロより大きくなければならず、そうでない場合、
 // NewTickerはパニックを起こします。
-=======
-// NewTicker returns a new [Ticker] containing a channel that will send
-// the current time on the channel after each tick. The period of the
-// ticks is specified by the duration argument. The ticker will adjust
-// the time interval or drop ticks to make up for slow receivers.
-// The duration d must be greater than zero; if not, NewTicker will
-// panic.
->>>>>>> upstream/master
 //
 // Go 1.23より前では、ガベージコレクタはまだ期限切れになっていないか停止していない
 // tickerを回収しなかったため、コードはしばしばNewTickerを呼び出した直後にt.Stopを即時に遅延させ、

@@ -8,17 +8,10 @@ package time
 // 負数またはゼロの期間は、Sleepがすぐに戻る原因となります。
 func Sleep(d Duration)
 
-<<<<<<< HEAD
 // Timer型は単一のイベントを表します。
 // Timerが時間切れになると、現在の時間がCに送信されます。
-// ただし、TimerがAfterFuncによって作成された場合は除きます。
-// TimerはNewTimerまたはAfterFuncで作成する必要があります。
-=======
-// The Timer type represents a single event.
-// When the Timer expires, the current time will be sent on C,
-// unless the Timer was created by [AfterFunc].
-// A Timer must be created with [NewTimer] or AfterFunc.
->>>>>>> upstream/master
+// ただし、Timerが [AfterFunc] によって作成された場合は除きます。
+// Timerは [NewTimer] またはAfterFuncで作成する必要があります。
 type Timer struct {
 	C         <-chan Time
 	initTimer bool
@@ -104,14 +97,7 @@ func (t *Timer) Reset(d Duration) bool
 // unstopped timers. There is no reason to prefer NewTimer when After will do.
 func After(d Duration) <-chan Time
 
-<<<<<<< HEAD
 // AfterFuncは、指定した時間が経過した後、fを自身のゴルーチンで呼び出します。
-// Stopメソッドを使用して呼び出しをキャンセルするために使用できるTimerを返します。
+// Stopメソッドを使用して呼び出しをキャンセルするために使用できる [Timer] を返します。
 // 返されたTimerのCフィールドは使用されず、nilになります。
-=======
-// AfterFunc waits for the duration to elapse and then calls f
-// in its own goroutine. It returns a [Timer] that can
-// be used to cancel the call using its Stop method.
-// The returned Timer's C field is not used and will be nil.
->>>>>>> upstream/master
 func AfterFunc(d Duration, f func()) *Timer
