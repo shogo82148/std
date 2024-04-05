@@ -4,15 +4,27 @@
 
 package time
 
+<<<<<<< HEAD
 // これらはTime.Formatとtime.Parseで使用するための事前定義されたレイアウトです。
 // これらのレイアウトで使用される参照時間は、特定のタイムスタンプです：
+=======
+// These are predefined layouts for use in [Time.Format] and [time.Parse].
+// The reference time used in these layouts is the specific time stamp:
+>>>>>>> upstream/master
 //
 // 01/02 03:04:05PM '06 -0700
 //
+<<<<<<< HEAD
 // (2006年1月2日15時04分05秒、GMTより7時間西のタイムゾーン)。
 // その値は、以下にリストされている定数であるLayoutとして記録されます。UNIX
 // タイムとしては、1136239445です。MSTはGMT-0700であるため、参照時間は
 // UNIXのdateコマンドで次のように表示されます：
+=======
+// (January 2, 15:04:05, 2006, in time zone seven hours west of GMT).
+// That value is recorded as the constant named [Layout], listed below. As a Unix
+// time, this is 1136239445. Since MST is GMT-0700, the reference would be
+// printed by the Unix date command as:
+>>>>>>> upstream/master
 //
 // Mon Jan 2 15:04:05 MST 2006
 //
@@ -20,6 +32,7 @@ package time
 //
 // Time.Formatの例では、レイアウト文字列の動作を詳しく説明しており、参考になります。
 //
+<<<<<<< HEAD
 // RFC822、RFC850、RFC1123のフォーマットは、ローカル時間にのみ適用する必要があります。
 // UTC時間に適用する場合、時差表示として「UTC」が使用されますが、厳密にはこれらのRFCでは
 // その場合に「GMT」の使用が必要です。
@@ -29,14 +42,35 @@ package time
 // time.Parseで使用する場合、これらはRFCで許可されているすべての時間形式を受け付けず、
 // 正式に定義されていない時間形式を受け入れます。
 // RFC3339Nano形式は秒の末尾のゼロを削除するため、フォーマット後に正しくソートされない場合があります。
+=======
+// Note that the [RFC822], [RFC850], and [RFC1123] formats should be applied
+// only to local times. Applying them to UTC times will use "UTC" as the
+// time zone abbreviation, while strictly speaking those RFCs require the
+// use of "GMT" in that case.
+// In general [RFC1123Z] should be used instead of [RFC1123] for servers
+// that insist on that format, and [RFC3339] should be preferred for new protocols.
+// [RFC3339], [RFC822], [RFC822Z], [RFC1123], and [RFC1123Z] are useful for formatting;
+// when used with time.Parse they do not accept all the time formats
+// permitted by the RFCs and they do accept time formats not formally defined.
+// The [RFC3339Nano] format removes trailing zeros from the seconds field
+// and thus may not sort correctly once formatted.
+>>>>>>> upstream/master
 //
 // ほとんどのプログラムは、FormatやParseに渡すための定義済みの定数の1つを使用できます。
 // カスタムレイアウト文字列を作成する場合以外は、このコメントの残りは無視してかまいません。
 //
+<<<<<<< HEAD
 // 独自のフォーマットを定義するには、参照時間があなたの方法でどのように
 // フォーマットされるかを書き出してください。ANSIC、StampMicro、Kitchenなどの
 // 定数の値を参照してください。モデルは、参照時間がどのようになっているかを実証し、
 // FormatとParseメソッドが一般的な時間値に同じ変換を適用できるようにすることです。
+=======
+// To define your own format, write down what the reference time would look like
+// formatted your way; see the values of constants like [ANSIC], [StampMicro] or
+// [Kitchen] for examples. The model is to demonstrate what the reference time
+// looks like so that the Format and Parse methods can apply the same
+// transformation to a general time value.
+>>>>>>> upstream/master
 //
 // 以下はレイアウト文字列のコンポーネントの概要です。各要素は参照時間の要素のフォーマットを
 // 例示しています。これらの値のみが認識されます。参照時間の一部として認識されないレイアウト文字列の
@@ -124,6 +158,7 @@ const (
 // t.Formatを使用してください。
 func (t Time) String() string
 
+<<<<<<< HEAD
 // GoStringはfmt.GoStringerを実装し、Goソースコードで表示されるようにtをフォーマットします。
 func (t Time) GoString() string
 
@@ -133,6 +168,22 @@ func (t Time) GoString() string
 func (t Time) Format(layout string) string
 
 // AppendFormatはFormatと似ていますが、テキスト表現をbに追加し、拡張されたバッファを返します。
+=======
+// GoString implements [fmt.GoStringer] and formats t to be printed in Go source
+// code.
+func (t Time) GoString() string
+
+// Format returns a textual representation of the time value formatted according
+// to the layout defined by the argument. See the documentation for the
+// constant called [Layout] to see how to represent the layout format.
+//
+// The executable example for [Time.Format] demonstrates the working
+// of the layout string in detail and is a good reference.
+func (t Time) Format(layout string) string
+
+// AppendFormat is like [Time.Format] but appends the textual
+// representation to b and returns the extended buffer.
+>>>>>>> upstream/master
 func (t Time) AppendFormat(b []byte, layout string) []byte
 
 // ParseErrorは時間文字列を解析する際の問題を記述します。
@@ -147,11 +198,21 @@ type ParseError struct {
 // ErrorはParseErrorの文字列表現を返します。
 func (e *ParseError) Error() string
 
+<<<<<<< HEAD
 // Parseは書式指定された文字列を解析し、それが表す時間の値を返します。
 // 解析するには、レイアウトとして提供された形式文字列（レイアウト）を使用して、
 // 第1引数として提供された解析可能な第2引数が必要です。
 //
 // Time.Formatの例はレイアウト文字列の動作を詳しく説明しており、参考となります。
+=======
+// Parse parses a formatted string and returns the time value it represents.
+// See the documentation for the constant called [Layout] to see how to
+// represent the format. The second argument must be parseable using
+// the format string (layout) provided as the first argument.
+//
+// The example for [Time.Format] demonstrates the working of the layout string
+// in detail and is a good reference.
+>>>>>>> upstream/master
 //
 // 解析（Parse）時には、レイアウトがその存在を示していなくても、入力には秒の次に少数秒
 // フィールドが直ちに続く場合があります。その場合、最大連続桁の直後にカンマまたは
@@ -170,6 +231,7 @@ func (e *ParseError) Error() string
 //
 // タイムゾーン指示がない場合、ParseはUTCで時間を返します。
 //
+<<<<<<< HEAD
 // -0700のようなタイムゾーンオフセットを持つ時間を解析する場合、オフセットが現在の場所（ローカル）で使用されている
 // タイムゾーンに対応している場合、Parseはその場所とタイムゾーンを使用して時間を返します。
 // そうでない場合は、与えられたゾーンオフセットで時間が固定された、架空の場所として時間を記録します。
@@ -180,6 +242,22 @@ func (e *ParseError) Error() string
 // 時間を記録します。この選択肢は、そのような時間をレイアウトの変更なしで解析および再フォーマットできますが、
 // 表現に使用される正確な瞬間は実際のゾーンオフセットによって異なります。
 // そのような問題を回避するためには、数値のゾーンオフセットを使用する時間レイアウトを使用するか、ParseInLocationを使用してください。
+=======
+// When parsing a time with a zone offset like -0700, if the offset corresponds
+// to a time zone used by the current location ([Local]), then Parse uses that
+// location and zone in the returned time. Otherwise it records the time as
+// being in a fabricated location with time fixed at the given zone offset.
+//
+// When parsing a time with a zone abbreviation like MST, if the zone abbreviation
+// has a defined offset in the current location, then that offset is used.
+// The zone abbreviation "UTC" is recognized as UTC regardless of location.
+// If the zone abbreviation is unknown, Parse records the time as being
+// in a fabricated location with the given zone abbreviation and a zero offset.
+// This choice means that such a time can be parsed and reformatted with the
+// same layout losslessly, but the exact instant used in the representation will
+// differ by the actual zone offset. To avoid such problems, prefer time layouts
+// that use a numeric zone offset, or use [ParseInLocation].
+>>>>>>> upstream/master
 func Parse(layout, value string) (Time, error)
 
 // ParseInLocationはParseと似ていますが、2つの重要な違いがあります。

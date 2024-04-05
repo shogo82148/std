@@ -26,7 +26,13 @@ func (e *NumError) Unwrap() error
 // IntSizeはintまたはuint値のビットサイズです。
 const IntSize = intSize
 
+<<<<<<< HEAD
 // ParseUintはParseIntと同じですが、符号の接頭辞は許可されていません。
+=======
+// ParseUint is like [ParseInt] but for unsigned numbers.
+//
+// A sign prefix is not permitted.
+>>>>>>> upstream/master
 func ParseUint(s string, base int, bitSize int) (uint64, error)
 
 // ParseIntは与えられた基数（0、2から36）とビットサイズ（0から64）で文字列sを解釈し、対応する値iを返します。
@@ -37,7 +43,17 @@ func ParseUint(s string, base int, bitSize int) (uint64, error)
 //
 // bitSize引数は結果が適合する必要のある整数型を指定します。ビットサイズ0、8、16、32、64はint、int8、int16、int32、int64に対応します。bitSizeが0未満または64を超える場合、エラーが返されます。
 //
+<<<<<<< HEAD
 // ParseIntが返すエラーは具体的な型*NumErrorを持ち、err.Num = sとなります。sが空であるか無効な数字を含んでいる場合、err.Err = ErrSyntaxとなり返される値は0です。sに対応する値を指定のサイズの符号付き整数で表現することができない場合、err.Err = ErrRangeとなり、返される値は適切なbitSizeと符号の最大の大きさの整数です。
+=======
+// The errors that ParseInt returns have concrete type [*NumError]
+// and include err.Num = s. If s is empty or contains invalid
+// digits, err.Err = [ErrSyntax] and the returned value is 0;
+// if the value corresponding to s cannot be represented by a
+// signed integer of the given size, err.Err = [ErrRange] and the
+// returned value is the maximum magnitude integer of the
+// appropriate bitSize and sign.
+>>>>>>> upstream/master
 //
 // [整数リテラル]: https://go.dev/ref/spec#Integer_literals
 func ParseInt(s string, base int, bitSize int) (i int64, err error)

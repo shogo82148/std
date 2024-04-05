@@ -8,6 +8,7 @@ import (
 	"github.com/shogo82148/std/cmp"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/slices"
+	"github.com/shogo82148/std/strings"
 )
 
 func ExampleOr() {
@@ -42,8 +43,8 @@ func ExampleOr_sort() {
 	// Sort by customer first, product second, and last by higher price
 	slices.SortFunc(orders, func(a, b Order) int {
 		return cmp.Or(
-			cmp.Compare(a.Customer, b.Customer),
-			cmp.Compare(a.Product, b.Product),
+			strings.Compare(a.Customer, b.Customer),
+			strings.Compare(a.Product, b.Product),
 			cmp.Compare(b.Price, a.Price),
 		)
 	})
