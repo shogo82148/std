@@ -6,11 +6,7 @@
 //
 // # 数値の変換
 //
-<<<<<<< HEAD
-// 最も一般的な数値の変換は Atoi (文字列から整数へ) と Itoa (整数から文字列へ) です。
-=======
-// The most common numeric conversions are [Atoi] (string to int) and [Itoa] (int to string).
->>>>>>> upstream/master
+// 最も一般的な数値の変換は [Atoi] (文字列から整数へ) と [Itoa] (整数から文字列へ) です。
 //
 //	i, err := strconv.Atoi("-42")
 //	s := strconv.Itoa(-42)
