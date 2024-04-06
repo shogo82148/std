@@ -17,8 +17,8 @@ import (
 // Otherwise, fsys must contain at least the listed files; it can also contain others.
 // The contents of fsys must not change concurrently with TestFS.
 //
-// If TestFS finds any misbehaviors, it returns an error reporting all of them.
-// The error text spans multiple lines, one per detected misbehavior.
+// If TestFS finds any misbehaviors, it returns either the first error or a
+// list of errors. Use [errors.Is] or [errors.As] to inspect.
 //
 // Typical usage inside a test is:
 //

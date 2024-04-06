@@ -71,6 +71,9 @@ const (
 	EvGoSwitch
 	EvGoSwitchDestroy
 	EvGoCreateBlocked
+
+	// GoStatus with stack.
+	EvGoStatusStack
 )
 
 // EventString returns the name of a Go 1.22 event.
