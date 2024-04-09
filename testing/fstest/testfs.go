@@ -17,8 +17,13 @@ import (
 // それ以外の場合、fsysは少なくともリストされたファイルを含んでいなければなりません。他のファイルも含むことができます。
 // fsysの内容は、TestFSと同時に変更してはなりません。
 //
+<<<<<<< HEAD
 // TestFSが何かしらの不適切な動作を見つけた場合、それら全てを報告するエラーを返します。
 // エラーテキストは複数行にわたり、検出された不適切な動作ごとに1行ずつ存在します。
+=======
+// If TestFS finds any misbehaviors, it returns either the first error or a
+// list of errors. Use [errors.Is] or [errors.As] to inspect.
+>>>>>>> upstream/master
 //
 // テスト内での典型的な使用法は以下の通りです：
 //

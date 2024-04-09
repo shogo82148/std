@@ -178,9 +178,21 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	traceadvanceperiod: トレース生成間のおおよその周期（ナノ秒単位）。GOEXPERIMENT=exectracer2でプログラムがビルドされている場合にのみ適用されます。
 	主に実行トレーサーのテストとデバッグに使用されます。
 
+<<<<<<< HEAD
 	asyncpreemptoff: asyncpreemptoff=1は、信号ベースの非同期ゴルーチンの事前停止を無効にします。
 	これにより、一部のループが長期間にわたって非事前停止可能になり、GCとゴルーチンのスケジューリングが遅延する可能性があります。
 	これは、非同期に事前停止されたゴルーチン用の保守的なスタックスキャンも無効にするため、GCの問題をデバッグするのに役立ちます。
+=======
+	tracecheckstackownership: setting tracecheckstackownership=1 enables a debug check in the
+	execution tracer to double-check stack ownership before taking a stack trace.
+
+	asyncpreemptoff: asyncpreemptoff=1 disables signal-based
+	asynchronous goroutine preemption. This makes some loops
+	non-preemptible for long periods, which may delay GC and
+	goroutine scheduling. This is useful for debugging GC issues
+	because it also disables the conservative stack scanning used
+	for asynchronously preempted goroutines.
+>>>>>>> upstream/master
 
 [net] および [net/http] パッケージも、GODEBUGのデバッグ変数を参照しています。
 詳細については、それらのパッケージのドキュメントを参照してください。

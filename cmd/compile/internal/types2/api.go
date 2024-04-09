@@ -372,3 +372,10 @@ func (init *Initializer) String() string
 // file set, and the package path the package is identified with.
 // The clean path must not be empty or dot (".").
 func (conf *Config) Check(path string, files []*syntax.File, info *Info) (*Package, error)
+
+// Rhs returns the type R on the right-hand side of an alias
+// declaration "type A = R", which may be another alias.
+//
+// TODO(adonovan): move to alias.go (common with go/types) once
+// proposal #66559 is accepted.
+func (a *Alias) Rhs() Type

@@ -37,8 +37,25 @@ func Implements(V Type, T *Interface) bool
 // VがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、Satisfiesの動作は指定されていません。
 func Satisfies(V Type, T *Interface) bool
 
+<<<<<<< HEAD
 // Identicalはxとyが同じ型であるかどうかを返します。
 // [Signature] 型のレシーバは無視されます。
+=======
+// Identical reports whether x and y are identical types.
+// Receivers of [Signature] types are ignored.
+//
+// Predicates such as [Identical], [Implements], and
+// [Satisfies] assume that both operands belong to a
+// consistent collection of symbols ([Object] values).
+// For example, two [Named] types can be identical only if their
+// [Named.Obj] methods return the same [TypeName] symbol.
+// A collection of symbols is consistent if, for each logical
+// package whose path is P, the creation of those symbols
+// involved at most one call to [NewPackage](P, ...).
+// To ensure consistency, use a single [Importer] for
+// all loaded packages and their dependencies.
+// For more information, see https://github.com/golang/go/issues/57497.
+>>>>>>> upstream/master
 func Identical(x, y Type) bool
 
 // IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
