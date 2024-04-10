@@ -39,6 +39,14 @@ func Satisfies(V Type, T *Interface) bool
 
 // Identicalはxとyが同じ型であるかどうかを返します。
 // [Signature] 型のレシーバは無視されます。
+//
+// [Identical]、[Implements]、[Satisfies] などの述語は、
+// 両方のオペランドが一貫したシンボルのコレクション（[Object] 値）に属していると仮定します。
+// 例えば、2つの [Named] 型は、それらの [Named.Obj] メソッドが同じ [TypeName] シンボルを返す場合にのみ同一となります。
+// シンボルのコレクションが一貫しているとは、パスがPである各論理パッケージについて、
+// それらのシンボルの作成には最大で一回の [NewPackage](P, ...)の呼び出しが関与していることを意味します。
+// 一貫性を確保するために、すべてのロードされたパッケージとその依存関係に対して単一の [Importer] を使用します。
+// 詳細は https://github.com/golang/go/issues/57497 を参照してください。
 func Identical(x, y Type) bool
 
 // IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
