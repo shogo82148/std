@@ -253,6 +253,7 @@ func (e *DNSConfigError) Temporary() bool
 
 // DNSError represents a DNS lookup error.
 type DNSError struct {
+	UnwrapErr   error
 	Err         string
 	Name        string
 	Server      string
@@ -264,6 +265,9 @@ type DNSError struct {
 	// or the name itself was not found (NXDOMAIN).
 	IsNotFound bool
 }
+
+// Unwrap returns e.UnwrapErr.
+func (e *DNSError) Unwrap() error
 
 func (e *DNSError) Error() string
 
