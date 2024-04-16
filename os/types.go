@@ -12,6 +12,8 @@ import (
 func Getpagesize() int
 
 // File represents an open file descriptor.
+//
+// The methods of File are safe for concurrent use.
 type File struct {
 	*file
 }
