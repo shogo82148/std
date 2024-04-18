@@ -47,6 +47,15 @@ const (
 	SameSiteNoneMode
 )
 
+// ParseCookie parses a Cookie header value and returns all the cookies
+// which were set in it. Since the same cookie name can appear multiple times
+// the returned Values can contain more than one value for a given key.
+func ParseCookie(line string) ([]*Cookie, error)
+
+// ParseSetCookie parses a Set-Cookie header value and returns a cookie.
+// It returns an error on syntax error.
+func ParseSetCookie(line string) (*Cookie, error)
+
 // SetCookie adds a Set-Cookie header to the provided [ResponseWriter]'s headers.
 // The provided cookie must have a valid Name. Invalid cookies may be
 // silently dropped.
