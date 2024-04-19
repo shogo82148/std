@@ -17,3 +17,6 @@ import "github.com/shogo82148/std/unsafe"
 //go:nosplit
 //go:nocheckptr
 func NoEscape(p unsafe.Pointer) unsafe.Pointer
+
+// Escape forces any pointers in x to escape to the heap.
+func Escape[T any](x T) T

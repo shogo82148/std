@@ -148,6 +148,9 @@ type Func struct {
 // the function's type.
 func NewFunc(pos token.Pos, pkg *Package, name string, sig *Signature) *Func
 
+// Signature returns the signature (type) of the function or method.
+func (obj *Func) Signature() *Signature
+
 // FullName returns the package- or receiver-type-qualified name of
 // function or method obj.
 func (obj *Func) FullName() string
