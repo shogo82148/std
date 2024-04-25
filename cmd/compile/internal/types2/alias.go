@@ -25,6 +25,10 @@ func (a *Alias) Obj() *TypeName
 func (a *Alias) Underlying() Type
 func (a *Alias) String() string
 
+// Rhs returns the type R on the right-hand side of an alias
+// declaration "type A = R", which may be another alias.
+func (a *Alias) Rhs() Type
+
 // Unalias returns t if it is not an alias type;
 // otherwise it follows t's alias chain until it
 // reaches a non-alias type which is then returned.
