@@ -6,9 +6,6 @@
 
 package filepath
 
-// IsAbs reports whether the path is absolute.
-func IsAbs(path string) bool
-
 // HasPrefix exists for historical compatibility and should not be used.
 //
 // Deprecated: HasPrefix does not respect path boundaries and
