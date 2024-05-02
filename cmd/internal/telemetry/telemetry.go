@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !cmd_go_bootstrap
+//go:build !cmd_go_bootstrap && !compiler_bootstrap
 
 // Package telemetry is a shim package around the golang.org/x/telemetry
 // and golang.org/x/telemetry/counter packages that has code build tagged
@@ -27,8 +27,16 @@ func Start()
 // It should only be called by cmd/go
 func StartWithUpload()
 
+// Inc increments the counter with the given name.
 func Inc(name string)
 
+// NewCounter returns a counter with the given name.
 func NewCounter(name string) *counter.Counter
 
+// NewStack returns a new stack counter with the given name and depth.
+func NewStackCounter(name string, depth int) *counter.StackCounter
+
+// CountFlags creates a counter for every flag that is set
+// and increments the counter. The name of the counter is
+// the concatenation of prefix and the flag name.
 func CountFlags(prefix string, flagSet flag.FlagSet)
