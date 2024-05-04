@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:generate go test cmd/go -v -run=^TestDocsUpToDate$ -fixdocs
-//go:generate go test cmd/go -v -run=^TestCounterNamesUpToDate$ -update
 
 package main
 

@@ -6,4 +6,19 @@
 // that can be used for debugging or information purposes.
 package sysinfo
 
-func CPUName() string
+import (
+	"github.com/shogo82148/std/internal/cpu"
+	"github.com/shogo82148/std/sync"
+)
+
+var CPUName = sync.OnceValue(func() string {
+	if name := cpu.Name(); name != "" {
+		return name
+	}
+
+	if name := osCpuInfoName(); name != "" {
+		return name
+	}
+
+	return ""
+})
