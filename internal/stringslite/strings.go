@@ -25,3 +25,5 @@ func CutSuffix(s, suffix string) (before string, found bool)
 func TrimPrefix(s, prefix string) string
 
 func TrimSuffix(s, suffix string) string
+
+func Clone(s string) string
