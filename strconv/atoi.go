@@ -4,7 +4,9 @@
 
 package strconv
 
-import "github.com/shogo82148/std/errors"
+import (
+	"github.com/shogo82148/std/errors"
+)
 
 // ErrRange indicates that a value is out of range for the target type.
 var ErrRange = errors.New("value out of range")
