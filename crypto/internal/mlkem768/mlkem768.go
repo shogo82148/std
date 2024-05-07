@@ -24,16 +24,33 @@ const (
 	SeedSize             = 32 + 32
 )
 
-// GenerateKey generates an encapsulation key and a corresponding decapsulation
-// key, drawing random bytes from crypto/rand.
-//
-// The decapsulation key must be kept secret.
-func GenerateKey() (encapsulationKey, decapsulationKey []byte, err error)
+// A DecapsulationKey is the secret key used to decapsulate a shared key from a
+// ciphertext. It includes various precomputed values.
+type DecapsulationKey struct {
+	dk [DecapsulationKeySize]byte
+	encryptionKey
+	decryptionKey
+}
 
-// NewKeyFromSeed deterministically generates an encapsulation key and a
-// corresponding decapsulation key from a 64-byte seed. The seed must be
-// uniformly random.
-func NewKeyFromSeed(seed []byte) (encapsulationKey, decapsulationKey []byte, err error)
+// Bytes returns the extended encoding of the decapsulation key, according to
+// FIPS 203 (DRAFT).
+func (dk *DecapsulationKey) Bytes() []byte
+
+// EncapsulationKey returns the public encapsulation key necessary to produce
+// ciphertexts.
+func (dk *DecapsulationKey) EncapsulationKey() []byte
+
+// GenerateKey generates a new decapsulation key, drawing random bytes from
+// crypto/rand. The decapsulation key must be kept secret.
+func GenerateKey() (*DecapsulationKey, error)
+
+// NewKeyFromSeed deterministically generates a decapsulation key from a 64-byte
+// seed in the "d || z" form. The seed must be uniformly random.
+func NewKeyFromSeed(seed []byte) (*DecapsulationKey, error)
+
+// NewKeyFromExtendedEncoding parses a decapsulation key from its FIPS 203
+// (DRAFT) extended encoding.
+func NewKeyFromExtendedEncoding(decapsulationKey []byte) (*DecapsulationKey, error)
 
 // Encapsulate generates a shared key and an associated ciphertext from an
 // encapsulation key, drawing random bytes from crypto/rand.
@@ -43,8 +60,7 @@ func NewKeyFromSeed(seed []byte) (encapsulationKey, decapsulationKey []byte, err
 func Encapsulate(encapsulationKey []byte) (ciphertext, sharedKey []byte, err error)
 
 // Decapsulate generates a shared key from a ciphertext and a decapsulation key.
-// If the decapsulation key or the ciphertext are not valid, Decapsulate returns
-// an error.
+// If the ciphertext is not valid, Decapsulate returns an error.
 //
 // The shared key must be kept secret.
-func Decapsulate(decapsulationKey, ciphertext []byte) (sharedKey []byte, err error)
+func Decapsulate(dk *DecapsulationKey, ciphertext []byte) (sharedKey []byte, err error)
