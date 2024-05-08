@@ -49,6 +49,9 @@ func (r *Rand) Int32() int32
 // Int returns a non-negative pseudo-random int.
 func (r *Rand) Int() int
 
+// Uint returns a pseudo-random uint.
+func (r *Rand) Uint() uint
+
 // Int64N returns, as an int64, a non-negative pseudo-random number in the half-open interval [0,n).
 // It panics if n <= 0.
 func (r *Rand) Int64N(n int64) int64
@@ -116,6 +119,9 @@ func Int32() int32
 
 // Int returns a non-negative pseudo-random int from the default Source.
 func Int() int
+
+// Uint returns a pseudo-random uint from the default Source.
+func Uint() uint
 
 // Int64N returns, as an int64, a pseudo-random number in the half-open interval [0,n)
 // from the default Source.
