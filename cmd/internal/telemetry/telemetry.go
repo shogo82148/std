@@ -40,3 +40,9 @@ func NewStackCounter(name string, depth int) *counter.StackCounter
 // and increments the counter. The name of the counter is
 // the concatenation of prefix and the flag name.
 func CountFlags(prefix string, flagSet flag.FlagSet)
+
+// CountFlagValue creates a counter for the flag value
+// if it is set and increments the counter. The name of the
+// counter is the concatenation of prefix, the flagName, ":",
+// and value.String() for the flag's value.
+func CountFlagValue(prefix string, flagSet flag.FlagSet, flagName string)

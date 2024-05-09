@@ -69,8 +69,13 @@ const (
 	// EventLog represents a runtime/trace.Log call.
 	EventLog
 
-	// Transitions in state for some resource.
+	// EventStateTransition represents a state change for some resource.
 	EventStateTransition
+
+	// EventExperimental is an experimental event that is unvalidated and exposed in a raw form.
+	// Users are expected to understand the format and perform their own validation. These events
+	// may always be safely ignored.
+	EventExperimental
 )
 
 // String returns a string form of the EventKind.
@@ -249,6 +254,42 @@ type StackFrame struct {
 	Line uint64
 }
 
+// ExperimentalEvent presents a raw view of an experimental event's arguments and thier names.
+type ExperimentalEvent struct {
+	// Name is the name of the event.
+	Name string
+
+	// ArgNames is the names of the event's arguments in order.
+	// This may refer to a globally shared slice. Copy before mutating.
+	ArgNames []string
+
+	// Args contains the event's arguments.
+	Args []uint64
+
+	// Data is additional unparsed data that is associated with the experimental event.
+	// Data is likely to be shared across many ExperimentalEvents, so callers that parse
+	// Data are encouraged to cache the parse result and look it up by the value of Data.
+	Data *ExperimentalData
+}
+
+// ExperimentalData represents some raw and unparsed sidecar data present in the trace that is
+// associated with certain kinds of experimental events. For example, this data may contain
+// tables needed to interpret ExperimentalEvent arguments, or the ExperimentEvent could just be
+// a placeholder for a differently encoded event that's actually present in the experimental data.
+type ExperimentalData struct {
+	// Batches contain the actual experimental data, along with metadata about each batch.
+	Batches []ExperimentalBatch
+}
+
+// ExperimentalBatch represents a packet of unparsed data along with metadata about that packet.
+type ExperimentalBatch struct {
+	// Thread is the ID of the thread that produced a packet of data.
+	Thread ThreadID
+
+	// Data is a packet of unparsed data all produced by one thread.
+	Data []byte
+}
+
 // Event represents a single event in the trace.
 type Event struct {
 	table *evTable
@@ -337,6 +378,11 @@ func (e Event) Log() Log
 //
 // Panics if Kind != EventStateTransition.
 func (e Event) StateTransition() StateTransition
+
+// Experimental returns a view of the raw event for an experimental event.
+//
+// Panics if Kind != EventExperimental.
+func (e Event) Experimental() ExperimentalEvent
 
 // String returns the event as a human-readable string.
 //

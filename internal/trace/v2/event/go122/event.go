@@ -72,8 +72,37 @@ const (
 	EvGoSwitchDestroy
 	EvGoCreateBlocked
 
-	// GoStatus with stack.
+	// GoStatus with stack. Added in Go 1.23.
 	EvGoStatusStack
+
+	// Batch event for an experimental batch with a custom format. Added in Go 1.23.
+	EvExperimentalBatch
+)
+
+// Experiments.
+const (
+	// AllocFree is the alloc-free events experiment.
+	AllocFree event.Experiment = 1 + iota
+)
+
+// Experimental events.
+const (
+	_ event.Type = 127 + iota
+
+	// Experimental heap span events. Added in Go 1.23.
+	EvSpan
+	EvSpanAlloc
+	EvSpanFree
+
+	// Experimental heap object events. Added in Go 1.23.
+	EvHeapObject
+	EvHeapObjectAlloc
+	EvHeapObjectFree
+
+	// Experimental goroutine stack events. Added in Go 1.23.
+	EvGoroutineStack
+	EvGoroutineStackAlloc
+	EvGoroutineStackFree
 )
 
 // EventString returns the name of a Go 1.22 event.
