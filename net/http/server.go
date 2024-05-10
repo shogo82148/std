@@ -186,6 +186,12 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 // It does not otherwise end the request; the caller should ensure no further
 // writes are done to w.
 // The error message should be plain text.
+//
+// Error deletes the Content-Length and Content-Encoding headers,
+// sets Content-Type to “text/plain; charset=utf-8”,
+// and sets X-Content-Type-Options to “nosniff”.
+// This configures the header properly for the error message,
+// in case the caller had set it up expecting a successful output.
 func Error(w ResponseWriter, error string, code int)
 
 // NotFound replies to the request with an HTTP 404 not found error.
