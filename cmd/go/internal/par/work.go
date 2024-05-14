@@ -64,30 +64,3 @@ func (c *Cache[K, V]) Do(key K, f func() V) V
 //
 // If the result for key is being computed, Get does not wait for the computation to finish.
 func (c *Cache[K, V]) Get(key K) (V, bool)
-
-// Clear removes all entries in the cache.
-//
-// Concurrent calls to Get may return old values. Concurrent calls to Do
-// may return old values or store results in entries that have been deleted.
-//
-// TODO(jayconrod): Delete this after the package cache clearing functions
-// in internal/load have been removed.
-func (c *Cache[K, V]) Clear()
-
-// Delete removes an entry from the map. It is safe to call Delete for an
-// entry that does not exist. Delete will return quickly, even if the result
-// for a key is still being computed; the computation will finish, but the
-// result won't be accessible through the cache.
-//
-// TODO(jayconrod): Delete this after the package cache clearing functions
-// in internal/load have been removed.
-func (c *Cache[K, V]) Delete(key K)
-
-// DeleteIf calls pred for each key in the map. If pred returns true for a key,
-// DeleteIf removes the corresponding entry. If the result for a key is
-// still being computed, DeleteIf will remove the entry without waiting for
-// the computation to finish. The result won't be accessible through the cache.
-//
-// TODO(jayconrod): Delete this after the package cache clearing functions
-// in internal/load have been removed.
-func (c *Cache[K, V]) DeleteIf(pred func(key K) bool)
