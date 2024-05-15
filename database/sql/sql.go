@@ -899,19 +899,8 @@ type Rows struct {
 	//
 	// closemu guards lasterr and closed.
 	closemu sync.RWMutex
-	closed  bool
 	lasterr error
-
-	// lastcols is only used in Scan, Next, and NextResultSet which are expected
-	// not to be called concurrently.
-	lastcols []driver.Value
-
-	// raw is a buffer for RawBytes that persists between Scan calls.
-	// This is used when the driver returns a mismatched type that requires
-	// a cloning allocation. For example, if the driver returns a *string and
-	// the user is scanning into a *RawBytes, we need to copy the string.
-	// The raw buffer here lets us reuse the memory for that copy across Scan calls.
-	raw []byte
+	closed  bool
 
 	// closemuScanHold is whether the previous call to Scan kept closemu RLock'ed
 	// without unlocking it. It does that when the user passes a *RawBytes scan
@@ -927,6 +916,17 @@ type Rows struct {
 	// returning. It's only used by Next and Err which are
 	// expected not to be called concurrently.
 	hitEOF bool
+
+	// lastcols is only used in Scan, Next, and NextResultSet which are expected
+	// not to be called concurrently.
+	lastcols []driver.Value
+
+	// raw is a buffer for RawBytes that persists between Scan calls.
+	// This is used when the driver returns a mismatched type that requires
+	// a cloning allocation. For example, if the driver returns a *string and
+	// the user is scanning into a *RawBytes, we need to copy the string.
+	// The raw buffer here lets us reuse the memory for that copy across Scan calls.
+	raw []byte
 }
 
 // Next prepares the next result row for reading with the [Rows.Scan] method. It
