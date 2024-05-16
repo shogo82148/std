@@ -86,6 +86,11 @@ func (t *Named) SetUnderlying(underlying Type)
 // type arguments.
 func (t *Named) AddMethod(m *Func)
 
-// TODO(gri) Investigate if Unalias can be moved to where underlying is set.
+// Underlying returns the [underlying type] of the named type t, resolving all
+// forwarding declarations. Underlying types are never Named, TypeParam, or
+// Alias types.
+//
+// [underlying type]: https://go.dev/ref/spec#Underlying_types.
 func (t *Named) Underlying() Type
+
 func (t *Named) String() string

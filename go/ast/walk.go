@@ -4,6 +4,10 @@
 
 package ast
 
+import (
+	"github.com/shogo82148/std/iter"
+)
+
 // A Visitor's Visit method is invoked for each node encountered by [Walk].
 // If the result visitor w is not nil, [Walk] visits each of the children
 // of node with the visitor w, followed by a call of w.Visit(nil).
@@ -23,3 +27,10 @@ func Walk(v Visitor, node Node)
 // recursively for each of the non-nil children of node, followed by a
 // call of f(nil).
 func Inspect(node Node, f func(Node) bool)
+
+// Preorder returns an iterator over all the nodes of the syntax tree
+// beneath (and including) the specified root, in depth-first
+// preorder.
+//
+// For greater control over the traversal of each subtree, use [Inspect].
+func Preorder(root Node) iter.Seq[Node]

@@ -30,6 +30,9 @@ type Block struct {
 	// After flagalloc, records whether flags are live at the end of the block.
 	FlagsLiveAtEnd bool
 
+	// A block that would be good to align (according to the optimizer's guesses)
+	Hotness Hotness
+
 	// Subsequent blocks, if any. The number and order depend on the block kind.
 	Succs []Edge
 
@@ -107,7 +110,7 @@ func (e Edge) Index() int
 func (e Edge) String() string
 
 // BlockKind is the kind of SSA block.
-type BlockKind int16
+type BlockKind uint8
 
 // short form print
 func (b *Block) String() string
@@ -170,4 +173,19 @@ const (
 	BranchUnlikely = BranchPrediction(-1)
 	BranchUnknown  = BranchPrediction(0)
 	BranchLikely   = BranchPrediction(+1)
+)
+
+type Hotness int8
+
+const (
+	// These values are arranged in what seems to be order of increasing alignment importance.
+	// Currently only a few are relevant.  Implicitly, they are all in a loop.
+	HotNotFlowIn Hotness = 1 << iota
+	HotInitial
+	HotPgo
+
+	HotNot                 = 0
+	HotInitialNotFlowIn    = HotInitial | HotNotFlowIn
+	HotPgoInitial          = HotPgo | HotInitial
+	HotPgoInitialNotFLowIn = HotPgo | HotInitial | HotNotFlowIn
 )

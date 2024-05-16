@@ -32,6 +32,10 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/pgoir"
 )
 
+func IsPgoHotFunc(fn *ir.Func, profile *pgoir.Profile) bool
+
+func HasPgoHotInline(fn *ir.Func) bool
+
 // PGOInlinePrologue records the hot callsites from ir-graph.
 func PGOInlinePrologue(p *pgoir.Profile)
 

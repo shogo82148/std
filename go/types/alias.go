@@ -15,7 +15,9 @@ package types
 // which points directly to the actual (aliased) type.
 type Alias struct {
 	obj     *TypeName
+	orig    *Alias
 	tparams *TypeParamList
+	targs   *TypeList
 	fromRHS Type
 	actual  Type
 }
@@ -25,8 +27,30 @@ type Alias struct {
 func NewAlias(obj *TypeName, rhs Type) *Alias
 
 func (a *Alias) Obj() *TypeName
-func (a *Alias) Underlying() Type
 func (a *Alias) String() string
+
+// Underlying returns the [underlying type] of the alias type a, which is the
+// underlying type of the aliased type. Underlying types are never Named,
+// TypeParam, or Alias types.
+//
+// [underlying type]: https://go.dev/ref/spec#Underlying_types.
+func (a *Alias) Underlying() Type
+
+// Origin returns the generic Alias type of which a is an instance.
+// If a is not an instance of a generic alias, Origin returns a.
+func (a *Alias) Origin() *Alias
+
+// TypeParams returns the type parameters of the alias type a, or nil.
+// A generic Alias and its instances have the same type parameters.
+func (a *Alias) TypeParams() *TypeParamList
+
+// SetTypeParams sets the type parameters of the alias type a.
+// The alias a must not have type arguments.
+func (a *Alias) SetTypeParams(tparams []*TypeParam)
+
+// TypeArgs returns the type arguments used to instantiate the Alias type.
+// If a is not an instance of a generic alias, the result is nil.
+func (a *Alias) TypeArgs() *TypeList
 
 // Rhs returns the type R on the right-hand side of an alias
 // declaration "type A = R", which may be another alias.
