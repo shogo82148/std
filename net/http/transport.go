@@ -86,7 +86,7 @@ type Transport struct {
 	idleLRU      connLRU
 
 	reqMu       sync.Mutex
-	reqCanceler map[cancelKey]func(error)
+	reqCanceler map[*Request]context.CancelCauseFunc
 
 	altMu    sync.Mutex
 	altProto atomic.Value
@@ -331,7 +331,7 @@ func (t *Transport) CloseIdleConnections()
 //
 // Deprecated: Use [Request.WithContext] to create a request with a
 // cancelable context instead. CancelRequest cannot cancel HTTP/2
-// requests.
+// requests. This may become a no-op in a future release of Go.
 func (t *Transport) CancelRequest(req *Request)
 
 var _ io.ReaderFrom = (*persistConnWriter)(nil)

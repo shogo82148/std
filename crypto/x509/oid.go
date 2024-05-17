@@ -13,8 +13,23 @@ type OID struct {
 	der []byte
 }
 
+// ParseOID parses a Object Identifier string, represented by ASCII numbers separated by dots.
+func ParseOID(oid string) (OID, error)
+
 // OIDFromInts creates a new OID using ints, each integer is a separate component.
 func OIDFromInts(oid []uint64) (OID, error)
+
+// MarshalText implements [encoding.TextMarshaler]
+func (o OID) MarshalText() ([]byte, error)
+
+// UnmarshalText implements [encoding.TextUnmarshaler]
+func (o *OID) UnmarshalText(text []byte) error
+
+// MarshalBinary implements [encoding.BinaryMarshaler]
+func (o OID) MarshalBinary() ([]byte, error)
+
+// UnmarshalBinary implements [encoding.BinaryUnmarshaler]
+func (o *OID) UnmarshalBinary(b []byte) error
 
 // Equal returns true when oid and other represents the same Object Identifier.
 func (oid OID) Equal(other OID) bool
