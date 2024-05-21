@@ -29,6 +29,11 @@ func (pos Pos) Base() *PosBase
 func (pos Pos) Line() uint
 func (pos Pos) Col() uint
 
+// FileBase returns the PosBase of the file containing pos,
+// skipping over intermediate PosBases from //line directives.
+// The result is nil if pos doesn't have a file base.
+func (pos Pos) FileBase() *PosBase
+
 func (pos Pos) RelFilename() string
 
 func (pos Pos) RelLine() uint

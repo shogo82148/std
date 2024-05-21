@@ -6,7 +6,9 @@
 
 package syscall
 
-import "github.com/shogo82148/std/errors"
+import (
+	"github.com/shogo82148/std/errors"
+)
 
 var (
 	ErrShortStat = errors.New("stat buffer too short")
