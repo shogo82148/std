@@ -17,6 +17,9 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// Cover indicates whether coverage is enabled.
+var Cover bool
+
 // TestDeps is an implementation of the testing.testDeps interface,
 // suitable for passing to [testing.MainStart].
 type TestDeps struct{}
@@ -61,3 +64,8 @@ func (TestDeps) CheckCorpus(vals []any, types []reflect.Type) error
 func (TestDeps) ResetCoverage()
 
 func (TestDeps) SnapshotCoverage()
+
+var CoverMode string
+var Covered string
+
+func (TestDeps) InitRuntimeCoverage() (mode string, tearDown func(string, string) (string, error), snapcov func() float64)

@@ -142,6 +142,13 @@ It is a comma-separated list of name=val pairs setting these named variables:
 	When set to 0 memory profiling is disabled.  Refer to the description of
 	MemProfileRate for the default value.
 
+	profstackdepth: profstackdepth=128 (the default) will set the maximum stack
+	depth used by all pprof profilers except for the CPU profiler to 128 frames.
+	Stack traces that exceed this limit will be truncated to the limit starting
+	from the leaf frame. Setting profstackdepth to any value above 1024 will
+	silently default to 1024. Future versions of Go may remove this limitation
+	and extend profstackdepth to apply to the CPU profiler and execution tracer.
+
 	pagetrace: setting pagetrace=/path/to/file will write out a trace of page events
 	that can be viewed, analyzed, and visualized using the x/debug/cmd/pagetrace tool.
 	Build your program with GOEXPERIMENT=pagetrace to enable this functionality. Do not
@@ -151,15 +158,6 @@ It is a comma-separated list of name=val pairs setting these named variables:
 
 	panicnil: setting panicnil=1 disables the runtime error when calling panic with nil
 	interface value or an untyped nil.
-
-	runtimecontentionstacks: setting runtimecontentionstacks=1 enables inclusion of call stacks
-	related to contention on runtime-internal locks in the "mutex" profile, subject to the
-	MutexProfileFraction setting. When runtimecontentionstacks=0, contention on
-	runtime-internal locks will report as "runtime._LostContendedRuntimeLock". When
-	runtimecontentionstacks=1, the call stacks will correspond to the unlock call that released
-	the lock. But instead of the value corresponding to the amount of contention that call
-	stack caused, it corresponds to the amount of time the caller of unlock had to wait in its
-	original call to lock. A future release is expected to align those and remove this setting.
 
 	invalidptr: invalidptr=1 (the default) causes the garbage collector and stack
 	copier to crash the program if an invalid pointer value (for example, 1)

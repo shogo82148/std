@@ -99,47 +99,31 @@ The return false breaks the loop. Then when f returns, the "check
 
 which causes the return we want.
 
-Return with arguments is more involved. We need somewhere to store the
-arguments while we break out of f, so we add them to the var
-declaration, like:
+Return with arguments is more involved, and has to deal with
+corner cases involving panic, defer, and recover.  The results
+of the enclosing function or closure are rewritten to give them
+names if they don't have them already, and the names are assigned
+at the return site.
 
-	{
-		var (
-			#next int
-			#r1 type1
-			#r2 type2
-		)
-		f(func(x T1) bool {
-			...
-			{
-				// return a, b
-				#r1, #r2 = a, b
-				#next = -2
-				return false
-			}
-			...
-			return true
-		})
-		if #next == -2 { return #r1, #r2 }
-	}
+	  func foo() (#rv1 A, #rv2 B) {
 
-TODO: What about:
-
-	func f() (x bool) {
-		for range g(&x) {
-			return true
+		{
+			var (
+				#next int
+			)
+			f(func(x T1) bool {
+				...
+				{
+					// return a, b
+					#rv1, #rv2 = a, b
+					#next = -1
+					return false
+				}
+				...
+				return true
+			})
+			if #next == -1 { return }
 		}
-	}
-
-	func g(p *bool) func(func() bool) {
-		return func(yield func() bool) {
-			yield()
-			// Is *p true or false here?
-		}
-	}
-
-With this rewrite the "return true" is not visible after yield returns,
-but maybe it should be?
 
 # Checking
 
@@ -147,8 +131,44 @@ To permit checking that an iterator is well-behaved -- that is, that
 it does not call the loop body again after it has returned false or
 after the entire loop has exited (it might retain a copy of the body
 function, or pass it to another goroutine) -- each generated loop has
-its own #exitK flag that is checked before each iteration, and set both
-at any early exit and after the iteration completes.
+its own #stateK variable that is used to check for permitted call
+patterns to the yield function for a loop body.
+
+The state values are:
+
+const DONE = 0      // body of loop has exited in a non-panic way
+const READY = 1     // body of loop has not exited yet, is not running
+const PANIC = 2     // body of loop is either currently running, or has panicked
+const EXHAUSTED = 3 // iterator function call, e.g. f(func(x t){...}), returned so the sequence is "exhausted".
+
+const MISSING_PANIC = 4 // used to report errors.
+
+The value of #stateK transitions
+(1) before calling the iterator function,
+
+	var #stateN = READY
+
+(2) after the iterator function call returns,
+
+	if #stateN == PANIC {
+		panic(runtime.panicrangestate(MISSING_PANIC))
+	}
+	#stateN = EXHAUSTED
+
+(3) at the beginning of the iteration of the loop body,
+
+	if #stateN != READY { runtime.panicrangestate(#stateN) }
+	#stateN = PANIC
+
+(4) when loop iteration continues, and
+
+	#stateN = READY
+	[return true]
+
+(5) when control flow exits the loop body.
+
+	#stateN = DONE
+	[return false]
 
 For example:
 
@@ -160,17 +180,23 @@ For example:
 
 becomes
 
-	{
-		var #exit1 bool
-		f(func(x T1) bool {
-			if #exit1 { runtime.panicrangeexit() }
-			...
-			if ... { #exit1 = true ; return false }
-			...
-			return true
-		})
-		#exit1 = true
-	}
+		{
+			var #state1 = READY
+			f(func(x T1) bool {
+				if #state1 != READY { runtime.panicrangestate(#state1) }
+				#state1 = PANIC
+				...
+				if ... { #state1 = DONE ; return false }
+				...
+				#state1 = READY
+				return true
+			})
+	        if #state1 == PANIC {
+	        	// the code for the loop body did not return normally
+	        	panic(runtime.panicrangestate(MISSING_PANIC))
+	        }
+			#state1 = EXHAUSTED
+		}
 
 # Nested Loops
 
@@ -203,65 +229,83 @@ becomes
 	{
 		var (
 			#next int
-			#r1 type1
-			#r2 type2
 		)
-		var #exit1 bool
-		f(func() {
-			if #exit1 { runtime.panicrangeexit() }
-			var #exit2 bool
-			g(func() {
-				if #exit2 { runtime.panicrangeexit() }
+		var #state1 = READY
+		f(func() bool {
+			if #state1 != READY { runtime.panicrangestate(#state1) }
+			#state1 = PANIC
+			var #state2 = READY
+			g(func() bool {
+				if #state2 != READY { runtime.panicrangestate(#state2) }
 				...
 				{
 					// return a, b
-					#r1, #r2 = a, b
-					#next = -2
-					#exit1, #exit2 = true, true
+					#rv1, #rv2 = a, b
+					#next = -1
+					#state2 = DONE
 					return false
 				}
 				...
+				#state2 = READY
 				return true
 			})
-			#exit2 = true
+	        if #state2 == PANIC {
+	        	panic(runtime.panicrangestate(MISSING_PANIC))
+	        }
+			#state2 = EXHAUSTED
 			if #next < 0 {
+				#state1 = DONE
 				return false
 			}
+			#state1 = READY
 			return true
 		})
-		#exit1 = true
-		if #next == -2 {
-			return #r1, #r2
+	    if #state1 == PANIC {
+	       	panic(runtime.panicrangestate(MISSING_PANIC))
+	    }
+		#state1 = EXHAUSTED
+		if #next == -1 {
+			return
 		}
 	}
-
-Note that the #next < 0 after the inner loop handles both kinds of
-return with a single check.
 
 # Labeled break/continue of range-over-func loops
 
 For a labeled break or continue of an outer range-over-func, we
-use positive #next values. Any such labeled break or continue
+use positive #next values.
+
+Any such labeled break or continue
 really means "do N breaks" or "do N breaks and 1 continue".
-We encode that as perLoopStep*N or perLoopStep*N+1 respectively.
+
+The positive #next value tells which level of loop N to target
+with a break or continue, where perLoopStep*N means break out of
+level N and perLoopStep*N-1 means continue into level N.  The
+outermost loop has level 1, therefore #next == perLoopStep means
+to break from the outermost loop, and #next == perLoopStep-1 means
+to continue the outermost loop.
 
 Loops that might need to propagate a labeled break or continue
 add one or both of these to the #next checks:
 
-	if #next >= 2 {
-		#next -= 2
-		return false
-	}
+	    // N == depth of this loop, one less than the one just exited.
+		if #next != 0 {
+		  if #next >= perLoopStep*N-1 { // break or continue this loop
+		  	if #next >= perLoopStep*N+1 { // error checking
+		  	   // TODO reason about what exactly can appear
+		  	   // here given full  or partial checking.
+	           runtime.panicrangestate(DONE)
+		  	}
+		  	rv := #next & 1 == 1 // code generates into #next&1
+			#next = 0
+			return rv
+		  }
+		  return false // or handle returns and gotos
+		}
 
-	if #next == 1 {
-		#next = 0
-		return true
-	}
+For example (with perLoopStep == 2)
 
-For example
-
-	F: for range f {
-		for range g {
+	F: for range f { // 1, 2
+		for range g { // 3, 4
 			for range h {
 				...
 				break F
@@ -278,52 +322,68 @@ becomes
 
 	{
 		var #next int
-		var #exit1 bool
-		f(func() {
-			if #exit1 { runtime.panicrangeexit() }
-			var #exit2 bool
-			g(func() {
-				if #exit2 { runtime.panicrangeexit() }
-				var #exit3 bool
-				h(func() {
-					if #exit3 { runtime.panicrangeexit() }
+		var #state1 = READY
+		f(func() { // 1,2
+			if #state1 != READY { runtime.panicrangestate(#state1) }
+			#state1 = PANIC
+			var #state2 = READY
+			g(func() { // 3,4
+				if #state2 != READY { runtime.panicrangestate(#state2) }
+				#state2 = PANIC
+				var #state3 = READY
+				h(func() { // 5,6
+					if #state3 != READY { runtime.panicrangestate(#state3) }
+					#state3 = PANIC
 					...
 					{
 						// break F
-						#next = 4
-						#exit1, #exit2, #exit3 = true, true, true
+						#next = 2
+						#state3 = DONE
 						return false
 					}
 					...
 					{
 						// continue F
-						#next = 3
-						#exit2, #exit3 = true, true
+						#next = 1
+						#state3 = DONE
 						return false
 					}
 					...
+					#state3 = READY
 					return true
 				})
-				#exit3 = true
-				if #next >= 2 {
-					#next -= 2
+				if #state3 == PANIC {
+					panic(runtime.panicrangestate(MISSING_PANIC))
+				}
+				#state3 = EXHAUSTED
+				if #next != 0 {
+					// no breaks or continues targeting this loop
+					#state2 = DONE
 					return false
 				}
 				return true
 			})
-			#exit2 = true
-			if #next >= 2 {
-				#next -= 2
+	    	if #state2 == PANIC {
+	       		panic(runtime.panicrangestate(MISSING_PANIC))
+	   		}
+			#state2 = EXHAUSTED
+			if #next != 0 { // just exited g, test for break/continue applied to f/F
+				if #next >= 1 {
+					if #next >= 3 { runtime.panicrangestate(DONE) } // error
+					rv := #next&1 == 1
+					#next = 0
+					return rv
+				}
+				#state1 = DONE
 				return false
-			}
-			if #next == 1 {
-				#next = 0
-				return true
 			}
 			...
 			return true
 		})
-		#exit1 = true
+	    if #state1 == PANIC {
+	       	panic(runtime.panicrangestate(MISSING_PANIC))
+	    }
+		#state1 = EXHAUSTED
 	}
 
 Note that the post-h checks only consider a break,
@@ -332,13 +392,13 @@ since no generated code tries to continue g.
 # Gotos and other labeled break/continue
 
 The final control flow translations are goto and break/continue of a
-non-range-over-func statement. In both cases, we may need to break out
-of one or more range-over-func loops before we can do the actual
+non-range-over-func statement. In both cases, we may need to break
+out of one or more range-over-func loops before we can do the actual
 control flow statement. Each such break/continue/goto L statement is
-assigned a unique negative #next value (below -2, since -1 and -2 are
-for the two kinds of return). Then the post-checks for a given loop
-test for the specific codes that refer to labels directly targetable
-from that block. Otherwise, the generic
+assigned a unique negative #next value (since -1 is return). Then
+the post-checks for a given loop test for the specific codes that
+refer to labels directly targetable from that block. Otherwise, the
+generic
 
 	if #next < 0 { return false }
 
@@ -363,39 +423,48 @@ becomes
 	Top: print("start\n")
 	{
 		var #next int
-		var #exit1 bool
+		var #state1 = READY
 		f(func() {
-			if #exit1 { runtime.panicrangeexit() }
-			var #exit2 bool
+			if #state1 != READY{ runtime.panicrangestate(#state1) }
+			#state1 = PANIC
+			var #state2 = READY
 			g(func() {
-				if #exit2 { runtime.panicrangeexit() }
+				if #state2 != READY { runtime.panicrangestate(#state2) }
+				#state2 = PANIC
 				...
-				var #exit3 bool
+				var #state3 bool = READY
 				h(func() {
-				if #exit3 { runtime.panicrangeexit() }
+					if #state3 != READY { runtime.panicrangestate(#state3) }
+					#state3 = PANIC
 					...
 					{
 						// goto Top
 						#next = -3
-						#exit1, #exit2, #exit3 = true, true, true
+						#state3 = DONE
 						return false
 					}
 					...
+					#state3 = READY
 					return true
 				})
-				#exit3 = true
 				if #next < 0 {
+					#state2 = DONE
 					return false
 				}
+				#state2 = READY
 				return true
 			})
-			#exit2 = true
+			if #state2 == PANIC {runtime.panicrangestate(MISSING_PANIC)}
+			#state2 = EXHAUSTED
 			if #next < 0 {
+				#state1 = DONE
 				return false
 			}
+			#state1 = READY
 			return true
 		})
-		#exit1 = true
+		if #state1 == PANIC {runtime.panicrangestate(MISSING_PANIC)}
+		#state1 = EXHAUSTED
 		if #next == -3 {
 			#next = 0
 			goto Top
@@ -461,5 +530,17 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/types2"
 )
 
+type State int
+
+const (
+	DONE = State(iota)
+	READY
+	PANIC
+	EXHAUSTED
+	MISSING_PANIC
+)
+
 // Rewrite rewrites all the range-over-funcs in the files.
-func Rewrite(pkg *types2.Package, info *types2.Info, files []*syntax.File)
+// It returns the set of function literals generated from rangefunc loop bodies.
+// This allows for rangefunc loop bodies to be distingushed by debuggers.
+func Rewrite(pkg *types2.Package, info *types2.Info, files []*syntax.File) map[*syntax.FuncLit]bool
