@@ -4,12 +4,18 @@
 
 package rand
 
-import "github.com/shogo82148/std/internal/chacha8rand"
+import (
+	"github.com/shogo82148/std/internal/chacha8rand"
+)
 
 // A ChaCha8 is a ChaCha8-based cryptographically strong
 // random number generator.
 type ChaCha8 struct {
 	state chacha8rand.State
+
+	// The last readLen bytes of readBuf are still to be consumed by Read.
+	readBuf [8]byte
+	readLen int
 }
 
 // NewChaCha8 returns a new ChaCha8 seeded with the given seed.
@@ -20,6 +26,14 @@ func (c *ChaCha8) Seed(seed [32]byte)
 
 // Uint64 returns a uniformly distributed random uint64 value.
 func (c *ChaCha8) Uint64() uint64
+
+// Read reads exactly len(p) bytes into p.
+// It always returns len(p) and a nil error.
+//
+// If calls to Read and Uint64 are interleaved, the order in which bits are
+// returned by the two is undefined, and Read may return bits generated before
+// the last call to Uint64.
+func (c *ChaCha8) Read(p []byte) (n int, err error)
 
 // UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
 func (c *ChaCha8) UnmarshalBinary(data []byte) error

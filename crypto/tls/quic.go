@@ -34,6 +34,13 @@ type QUICConn struct {
 // A QUICConfig configures a [QUICConn].
 type QUICConfig struct {
 	TLSConfig *Config
+
+	// EnableStoreSessionEvent may be set to true to enable the
+	// [QUICStoreSession] event for client connections.
+	// When this event is enabled, sessions are not automatically
+	// stored in the client session cache.
+	// The application should use [QUICConn.StoreSession] to store sessions.
+	EnableStoreSessionEvent bool
 }
 
 // A QUICEventKind is a type of operation on a QUIC connection.
@@ -72,10 +79,29 @@ const (
 	// QUICRejectedEarlyData indicates that the server rejected 0-RTT data even
 	// if we offered it. It's returned before QUICEncryptionLevelApplication
 	// keys are returned.
+	// This event only occurs on client connections.
 	QUICRejectedEarlyData
 
 	// QUICHandshakeDone indicates that the TLS handshake has completed.
 	QUICHandshakeDone
+
+	// QUICResumeSession indicates that a client is attempting to resume a previous session.
+	// [QUICEvent.SessionState] is set.
+	//
+	// For client connections, this event occurs when the session ticket is selected.
+	// For server connections, this event occurs when receiving the client's session ticket.
+	//
+	// The application may set [QUICEvent.SessionState.EarlyData] to false before the
+	// next call to [QUICConn.NextEvent] to decline 0-RTT even if the session supports it.
+	QUICResumeSession
+
+	// QUICStoreSession indicates that the server has provided state permitting
+	// the client to resume the session.
+	// [QUICEvent.SessionState] is set.
+	// The application should use [QUICConn.Store] session to store the [SessionState].
+	// The application may modify the [SessionState] before storing it.
+	// This event only occurs on client connections.
+	QUICStoreSession
 )
 
 // A QUICEvent is an event occurring on a QUIC connection.
@@ -94,6 +120,9 @@ type QUICEvent struct {
 
 	// Set for QUICSetReadSecret and QUICSetWriteSecret.
 	Suite uint16
+
+	// Set for QUICResumeSession and QUICStoreSession.
+	SessionState *SessionState
 }
 
 // QUICClient returns a new TLS client side connection using QUICTransport as the
@@ -128,12 +157,19 @@ func (q *QUICConn) HandleData(level QUICEncryptionLevel, data []byte) error
 type QUICSessionTicketOptions struct {
 	// EarlyData specifies whether the ticket may be used for 0-RTT.
 	EarlyData bool
+	Extra     [][]byte
 }
 
 // SendSessionTicket sends a session ticket to the client.
 // It produces connection events, which may be read with [QUICConn.NextEvent].
 // Currently, it can only be called once.
 func (q *QUICConn) SendSessionTicket(opts QUICSessionTicketOptions) error
+
+// StoreSession stores a session previously received in a QUICStoreSession event
+// in the ClientSessionCache.
+// The application may process additional events or modify the SessionState
+// before storing the session.
+func (q *QUICConn) StoreSession(session *SessionState) error
 
 // ConnectionState returns basic TLS details about the connection.
 func (q *QUICConn) ConnectionState() ConnectionState

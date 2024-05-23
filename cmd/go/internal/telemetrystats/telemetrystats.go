@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package abi
+//go:build !cmd_go_bootstrap
 
-// ZeroValSize is the size in bytes of runtime.zeroVal.
-const ZeroValSize = 1024
+package telemetrystats
+
+func Increment()

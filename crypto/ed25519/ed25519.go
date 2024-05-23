@@ -10,6 +10,9 @@
 // representation includes a public key suffix to make multiple signing
 // operations with the same key more efficient. This package refers to the RFC
 // 8032 private key as the “seed”.
+//
+// Operations involving private keys are implemented using constant-time
+// algorithms.
 package ed25519
 
 import (
@@ -93,6 +96,9 @@ func Sign(privateKey PrivateKey, message []byte) []byte
 
 // Verify reports whether sig is a valid signature of message by publicKey. It
 // will panic if len(publicKey) is not [PublicKeySize].
+//
+// The inputs are not considered confidential, and may leak through timing side
+// channels, or if an attacker has control of part of the inputs.
 func Verify(publicKey PublicKey, message, sig []byte) bool
 
 // VerifyWithOptions reports whether sig is a valid signature of message by
@@ -103,4 +109,7 @@ func Verify(publicKey PublicKey, message, sig []byte) bool
 // message is expected to be a SHA-512 hash, otherwise opts.Hash must be
 // [crypto.Hash](0) and the message must not be hashed, as Ed25519 performs two
 // passes over messages to be signed.
+//
+// The inputs are not considered confidential, and may leak through timing side
+// channels, or if an attacker has control of part of the inputs.
 func VerifyWithOptions(publicKey PublicKey, message, sig []byte, opts *Options) error

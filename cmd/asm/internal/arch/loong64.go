@@ -24,3 +24,5 @@ func IsLoong64MUL(op obj.As) bool
 // constant) is one of the RDTIMELW/RDTIMEHW/RDTIMED instructions that
 // require special handling.
 func IsLoong64RDTIME(op obj.As) bool
+
+func IsLoong64AMO(op obj.As) bool

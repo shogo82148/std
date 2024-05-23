@@ -30,11 +30,13 @@ const (
 // version is not implemented by this package.
 func VersionName(version uint16) string
 
-// CurveID is the type of a TLS identifier for an elliptic curve. See
+// CurveID is the type of a TLS identifier for a key exchange mechanism. See
 // https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8.
 //
-// In TLS 1.3, this type is called NamedGroup, but at this time this library
-// only supports Elliptic Curve based groups. See RFC 8446, Section 4.2.7.
+// In TLS 1.2, this registry used to support only elliptic curves. In TLS 1.3,
+// it was extended to other groups and renamed NamedGroup. See RFC 8446, Section
+// 4.2.7. It was then also extended to other mechanisms, such as hybrid
+// post-quantum KEMs.
 type CurveID uint16
 
 const (
@@ -109,6 +111,13 @@ type ConnectionState struct {
 
 	// ekm is a closure exposed via ExportKeyingMaterial.
 	ekm func(label string, context []byte, length int) ([]byte, error)
+
+	// testingOnlyDidHRR is true if a HelloRetryRequest was sent/received.
+	testingOnlyDidHRR bool
+
+	// testingOnlyCurveID is the selected CurveID, or zero if an RSA exchanges
+	// is performed.
+	testingOnlyCurveID CurveID
 }
 
 // ExportKeyingMaterial returns length bytes of exported key material in a new
@@ -459,7 +468,9 @@ type Config struct {
 	// If CipherSuites is nil, a safe default list is used. The default cipher
 	// suites might change over time. In Go 1.22 RSA key exchange based cipher
 	// suites were removed from the default list, but can be re-added with the
-	// GODEBUG setting tlsrsakex=1.
+	// GODEBUG setting tlsrsakex=1. In Go 1.23 3DES cipher suites were removed
+	// from the default list, but can be re-added with the GODEBUG setting
+	// tls3des=1.
 	CipherSuites []uint16
 
 	// PreferServerCipherSuites is a legacy field and has no effect.
@@ -539,6 +550,10 @@ type Config struct {
 	// an ECDHE handshake, in preference order. If empty, the default will
 	// be used. The client will use the first preference as the type for
 	// its key share in TLS 1.3. This may change in the future.
+	//
+	// From Go 1.23, the default includes the X25519Kyber768Draft00 hybrid
+	// post-quantum key exchange. To disable it, set CurvePreferences explicitly
+	// or use the GODEBUG=tlskyber=0 environment variable.
 	CurvePreferences []CurveID
 
 	// DynamicRecordSizingDisabled disables adaptive sizing of TLS records.

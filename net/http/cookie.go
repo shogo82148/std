@@ -25,12 +25,13 @@ type Cookie struct {
 	// MaxAge=0 means no 'Max-Age' attribute specified.
 	// MaxAge<0 means delete cookie now, equivalently 'Max-Age: 0'
 	// MaxAge>0 means Max-Age attribute present and given in seconds
-	MaxAge   int
-	Secure   bool
-	HttpOnly bool
-	SameSite SameSite
-	Raw      string
-	Unparsed []string
+	MaxAge      int
+	Secure      bool
+	HttpOnly    bool
+	SameSite    SameSite
+	Partitioned bool
+	Raw         string
+	Unparsed    []string
 }
 
 // SameSite allows a server to define a cookie attribute making it impossible for

@@ -48,6 +48,7 @@ type SessionState struct {
 	// Client-side TLS 1.3-only fields.
 	useBy  uint64
 	ageAdd uint32
+	ticket []byte
 }
 
 // Bytes encodes the session, including any private fields, so that it can be
@@ -74,7 +75,6 @@ func (c *Config) DecryptTicket(identity []byte, cs ConnectionState) (*SessionSta
 // ClientSessionState contains the state needed by a client to
 // resume a previous TLS session.
 type ClientSessionState struct {
-	ticket  []byte
 	session *SessionState
 }
 

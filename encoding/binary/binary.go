@@ -74,9 +74,9 @@ var BigEndian bigEndian
 // Read returns [io.ErrUnexpectedEOF].
 func Read(r io.Reader, order ByteOrder, data any) error
 
-// Decode binary data from buf into data according to the given byte order.
-//
-// Returns an error if buf is too small, otherwise the number of
+// Decode decodes binary data from buf into data according to
+// the given byte order.
+// It returns an error if buf is too small, otherwise the number of
 // bytes consumed from buf.
 func Decode(buf []byte, order ByteOrder, data any) (int, error)
 
@@ -90,18 +90,16 @@ func Decode(buf []byte, order ByteOrder, data any) (int, error)
 // with blank (_) field names.
 func Write(w io.Writer, order ByteOrder, data any) error
 
-// Encode the binary representation of data into buf according to the given byte order.
-//
-// Returns an error if the buffer is too short, otherwise the number of bytes
-// written into buf.
+// Encode encodes the binary representation of data into buf according to
+// the given byte order.
+// It returns an error if buf is too small, otherwise the number of
+// bytes written into buf.
 func Encode(buf []byte, order ByteOrder, data any) (int, error)
 
-// Append the binary representation of data to buf.
-//
+// Append appends the binary representation of data to buf.
 // buf may be nil, in which case a new buffer will be allocated.
 // See [Write] on which data are acceptable.
-//
-// Returns the (possibily extended) buffer containing data or an error.
+// It returns the (possibily extended) buffer containing data or an error.
 func Append(buf []byte, order ByteOrder, data any) ([]byte, error)
 
 // Size returns how many bytes [Write] would generate to encode the value v, which
