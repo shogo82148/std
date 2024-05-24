@@ -6,7 +6,8 @@ package testing_test
 
 import (
 	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/sort"
+	"github.com/shogo82148/std/cmp"
+	"github.com/shogo82148/std/slices"
 	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/testing"
 	"github.com/shogo82148/std/text/template"
@@ -37,9 +38,9 @@ func ExampleB_ReportMetric() {
 		var compares int64
 		for i := 0; i < b.N; i++ {
 			s := []int{5, 4, 3, 2, 1}
-			sort.Slice(s, func(i, j int) bool {
+			slices.SortFunc(s, func(a, b int) int {
 				compares++
-				return s[i] < s[j]
+				return cmp.Compare(a, b)
 			})
 		}
 		// This metric is per-operation, so divide by b.N and
@@ -59,12 +60,12 @@ func ExampleB_ReportMetric_parallel() {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				s := []int{5, 4, 3, 2, 1}
-				sort.Slice(s, func(i, j int) bool {
+				slices.SortFunc(s, func(a, b int) int {
 					// Because RunParallel runs the function many
 					// times in parallel, we must increment the
 					// counter atomically to avoid racing writes.
 					compares.Add(1)
-					return s[i] < s[j]
+					return cmp.Compare(a, b)
 				})
 			}
 		})

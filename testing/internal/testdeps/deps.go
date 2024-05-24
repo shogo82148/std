@@ -68,4 +68,14 @@ func (TestDeps) SnapshotCoverage()
 var CoverMode string
 var Covered string
 
+// These variables below are set at runtime (via code in testmain) to point
+// to the equivalent functions in package internal/coverage/cfile; doing
+// things this way allows us to have tests import internal/coverage/cfile
+// only when -cover is in effect (as opposed to importing for all tests).
+var (
+	CoverSnapshotFunc           func() float64
+	CoverProcessTestDirFunc     func(dir string, cfile string, cm string, cpkg string, w io.Writer) error
+	CoverMarkProfileEmittedFunc func(val bool)
+)
+
 func (TestDeps) InitRuntimeCoverage() (mode string, tearDown func(string, string) (string, error), snapcov func() float64)
