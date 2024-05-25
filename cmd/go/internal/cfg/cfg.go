@@ -159,7 +159,7 @@ var (
 
 // EnvOrAndChanged returns the environment variable value
 // and reports whether it differs from the default value.
-func EnvOrAndChanged(name, def string) (string, bool)
+func EnvOrAndChanged(name, def string) (v string, changed bool)
 
 var SumdbDir = gopathDir("pkg/sumdb")
 
