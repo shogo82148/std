@@ -99,6 +99,8 @@ func Seteuid(euid int) (err error)
 
 func Setgid(gid int) (err error)
 
+func Setuid(uid int) (err error)
+
 func Setpgid(pid int, pgid int) (err error)
 
 func Setpriority(which int, who int, prio int) (err error)
