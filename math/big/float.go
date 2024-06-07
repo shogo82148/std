@@ -235,9 +235,8 @@ func (z *Float) SetInf(signbit bool) *Float
 // exact (not rounded) result.
 func (z *Float) Set(x *Float) *Float
 
-// Copy sets z to x, with the same precision, rounding mode, and
-// accuracy as x, and returns z. x is not changed even if z and
-// x are the same.
+// Copy sets z to x, with the same precision, rounding mode, and accuracy as x.
+// Copy returns z. If x and z are identical, Copy is a no-op.
 func (z *Float) Copy(x *Float) *Float
 
 // Uint64 returns the unsigned integer resulting from truncating x

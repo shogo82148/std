@@ -55,8 +55,8 @@ func OverlayPath(path string) (string, bool)
 // Open opens the file at or overlaid on the given path.
 func Open(path string) (*os.File, error)
 
-// OpenFile opens the file at or overlaid on the given path with the flag and perm.
-func OpenFile(path string, flag int, perm os.FileMode) (*os.File, error)
+// ReadFile reads the file at or overlaid on the given path.
+func ReadFile(path string) ([]byte, error)
 
 // IsDirWithGoFiles reports whether dir is a directory containing Go files
 // either on disk or in the overlay.
