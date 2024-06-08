@@ -14,7 +14,7 @@ package sync
 //
 // A Cond must not be copied after first use.
 //
-// In the terminology of the Go memory model, Cond arranges that
+// In the terminology of [the Go memory model], Cond arranges that
 // a call to [Cond.Broadcast] or [Cond.Signal] “synchronizes before” any Wait call
 // that it unblocks.
 //
@@ -26,6 +26,7 @@ package sync
 // advanced concurrency patterns], as well as [Bryan Mills's talk on concurrency
 // patterns].
 //
+// [the Go memory model]: https://go.dev/ref/mem
 // [Roberto Clapis's series on advanced concurrency patterns]: https://blogtitle.github.io/categories/concurrency/
 // [Bryan Mills's talk on concurrency patterns]: https://drive.google.com/file/d/1nPdvhB0PutEJzdCq5ms6UI58dp50fcAN/view
 type Cond struct {

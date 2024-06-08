@@ -663,7 +663,8 @@ func (srv *Server) Serve(l net.Listener) error
 //
 // Files containing a certificate and matching private key for the
 // server must be provided if neither the [Server]'s
-// TLSConfig.Certificates nor TLSConfig.GetCertificate are populated.
+// TLSConfig.Certificates, TLSConfig.GetCertificate nor
+// config.GetConfigForClient are populated.
 // If the certificate is signed by a certificate authority, the
 // certFile should be the concatenation of the server's certificate,
 // any intermediates, and the CA's certificate.
