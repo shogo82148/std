@@ -62,6 +62,9 @@ type Func struct {
 	RegArgs []Spill
 	// OwnAux describes parameters and results for this function.
 	OwnAux *AuxCall
+	// CloSlot holds the compiler-synthesized name (".closureptr")
+	// where we spill the closure pointer for range func bodies.
+	CloSlot *ir.Name
 
 	freeValues *Value
 	freeBlocks *Block
