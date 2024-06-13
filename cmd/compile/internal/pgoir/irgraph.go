@@ -116,7 +116,16 @@ func NodeLineOffset(n ir.Node, fn *ir.Func) int
 // LookupFunc looks up a function or method in export data. It is expected to
 // be overridden by package noder, to break a dependency cycle.
 var LookupFunc = func(fullName string) (*ir.Func, error) {
-	base.Fatalf("pgo.LookupMethodFunc not overridden")
+	base.Fatalf("pgoir.LookupMethodFunc not overridden")
+	panic("unreachable")
+}
+
+// PostLookupCleanup performs any remaining cleanup operations needed
+// after a series of calls to LookupFunc, specifically reading in the
+// bodies of functions that may have been delayed due being encountered
+// in a stage where the reader's curfn state was not set up.
+var PostLookupCleanup = func() {
+	base.Fatalf("pgoir.PostLookupCleanup not overridden")
 	panic("unreachable")
 }
 

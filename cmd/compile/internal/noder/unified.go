@@ -22,3 +22,9 @@ import (
 // are only used when debug logging is enabled. Consider constructing cheaper
 // errors by default.
 func LookupFunc(fullName string) (*ir.Func, error)
+
+// PostLookupCleanup performs cleanup operations needed
+// after a series of calls to LookupFunc, specifically invoking
+// readBodies to post-process any funcs on the "todoBodies" list
+// that were added as a result of the lookup operations.
+func PostLookupCleanup()
