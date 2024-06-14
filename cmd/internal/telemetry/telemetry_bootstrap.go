@@ -8,8 +8,9 @@ package telemetry
 
 import "github.com/shogo82148/std/flag"
 
-func Start()
-func StartWithUpload()
+func OpenCounters()
+func MaybeParent()
+func MaybeChild()
 func Inc(name string)
 func NewCounter(name string) dummyCounter
 func NewStackCounter(name string, depth int) dummyCounter
