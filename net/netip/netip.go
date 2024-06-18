@@ -9,7 +9,7 @@
 package netip
 
 import (
-	"github.com/shogo82148/std/internal/intern"
+	"github.com/shogo82148/std/unique"
 )
 
 // Addrは、[net.IP]または[net.IPAddr]に似た、スコープ付きアドレスを持つIPv4またはIPv6アドレスを表します。
@@ -36,14 +36,8 @@ type Addr struct {
 	// bytewise processing.
 	addr uint128
 
-	// z is a combination of the address family and the IPv6 zone.
-	//
-	// nil means invalid IP address (for a zero Addr).
-	// z4 means an IPv4 address.
-	// z6noz means an IPv6 address without a zone.
-	//
-	// Otherwise it's the interned zone name string.
-	z *intern.Value
+	// Details about the address, wrapped up together and canonicalized.
+	z unique.Handle[addrDetail]
 }
 
 // IPv6LinkLocalAllNodesは、IPv6リンクローカル全ノードマルチキャストアドレスff02::1を返します。
