@@ -50,8 +50,8 @@ func (r *Reader) Seek(offset int64, whence int) (int64, error)
 // WriteToは [io.WriterTo] インターフェースを実装します。
 func (r *Reader) WriteTo(w io.Writer) (n int64, err error)
 
-// Resetは [Reader.Reader] をbからの読み取りにリセットします。
+// Resetは [Reader] をbからの読み取りにリセットします。
 func (r *Reader) Reset(b []byte)
 
-// NewReaderはbから読み込む新しい [Reader.Reader] を返す。
+// NewReaderはbから読み込む新しい [Reader] を返す。
 func NewReader(b []byte) *Reader
