@@ -129,6 +129,7 @@ const (
 	SymFlagItab
 	SymFlagDict
 	SymFlagPkgInit
+	SymFlagLinkname
 )
 
 // Returns the length of the name of the symbol.
@@ -154,6 +155,7 @@ func (s *Sym) UsedInIface() bool
 func (s *Sym) IsItab() bool
 func (s *Sym) IsDict() bool
 func (s *Sym) IsPkgInit() bool
+func (s *Sym) IsLinkname() bool
 
 func (s *Sym) SetName(x string, w *Writer)
 

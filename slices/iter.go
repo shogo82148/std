@@ -41,3 +41,10 @@ func SortedFunc[E any](seq iter.Seq[E], cmp func(E, E) int) []E
 // using the comparison function to compare elements.
 // It returns the new slice.
 func SortedStableFunc[E any](seq iter.Seq[E], cmp func(E, E) int) []E
+
+// Chunk returns an iterator over consecutive sub-slices of up to n elements of s.
+// All but the last sub-slice will have size n.
+// All sub-slices are clipped to have no capacity beyond the length.
+// If s is empty, the sequence is empty: there is no empty slice in the sequence.
+// Chunk panics if n is less than 1.
+func Chunk[Slice ~[]E, E any](s Slice, n int) iter.Seq[Slice]
