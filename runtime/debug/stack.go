@@ -30,8 +30,4 @@ type CrashOptions struct {
 // To disable this additional crash output, call SetCrashOutput(nil).
 // If called concurrently with a crash, some in-progress output may be written
 // to the old file even after an overriding SetCrashOutput returns.
-//
-// TODO(adonovan): the variadic ... is a short-term measure to avoid
-// breaking the call in x/telemetry; it will be removed before the
-// go1.23 freeze.
-func SetCrashOutput(f *os.File, opts ...CrashOptions) error
+func SetCrashOutput(f *os.File, opts CrashOptions) error

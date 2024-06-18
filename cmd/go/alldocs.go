@@ -27,6 +27,7 @@
 //	mod         モジュールのメンテナンス
 //	work        ワークスペースのメンテナンス
 //	run         Goのプログラムをコンパイルして実行する
+//	telemetry   テレメトリーデータと設定を管理します
 //	test        パッケージをテストする
 //	tool        指定されたgoツールを実行する
 //	version     Goのバージョンを表示する
@@ -415,7 +416,7 @@
 //
 // 使用法:
 //
-//	go env [-json] [-u] [-w] [var ...]
+//	go env [-json] [-changed] [-u] [-w] [var ...]
 //
 // EnvはGo環境情報を表示します。
 //
@@ -430,6 +431,9 @@
 //
 // -wフラグは、形式がNAME=VALUEの一つ以上の引数を必要とし、指定された環境変数のデフォルト設定を
 // 与えられた値に変更します。
+//
+// -changed フラグは、効果的な値が空の環境で以前に -w フラグを使用していない場合に得られる
+// デフォルト値と異なる設定のみを出力します。
 //
 // 環境変数についての詳細は、'go help environment'を参照してください。
 //
@@ -1569,6 +1573,38 @@
 // パッケージの指定についての詳細は、'go help packages'を参照してください。
 //
 // 参照：go build.
+//
+// # Manage telemetry data and settings
+//
+// Usage:
+//
+//	go telemetry [off|local|on]
+//
+// Telemetry is used to manage Go telemetry data and settings.
+//
+// Telemetry can be in one of three modes: off, local, or on.
+//
+// When telemetry is in local mode, counter data is written to the local file
+// system, but will not be uploaded to remote servers.
+//
+// When telemetry is off, local counter data is neither collected nor uploaded.
+//
+// When telemetry is on, telemetry data is written to the local file system
+// and periodically sent to https://telemetry.go.dev/. Uploaded data is used to
+// help improve the Go toolchain and related tools, and it will be published as
+// part of a public dataset.
+//
+// For more details, see https://telemetry.go.dev/privacy.
+// This data is collected in accordance with the Google Privacy Policy
+// (https://policies.google.com/privacy).
+//
+// To view the current telemetry mode, run "go telemetry".
+// To disable telemetry uploading, but keep local data collection, run
+// "go telemetry local".
+// To enable both collection and uploading, run “go telemetry on”.
+// To disable both collection and uploading, run "go telemetry off".
+//
+// See https://go.dev/doc/telemetry for more information on telemetry.
 //
 // # Test packages
 //

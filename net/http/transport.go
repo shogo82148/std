@@ -75,7 +75,7 @@ type Transport struct {
 	idleLRU      connLRU
 
 	reqMu       sync.Mutex
-	reqCanceler map[cancelKey]func(error)
+	reqCanceler map[*Request]context.CancelCauseFunc
 
 	altMu    sync.Mutex
 	altProto atomic.Value
@@ -275,6 +275,7 @@ func (t *Transport) CloseIdleConnections()
 //
 // Deprecated: 代わりに、キャンセル可能なコンテキストを持つリクエストを作成するために [Request.WithContext] を使用してください。
 // CancelRequestは、HTTP/2リクエストをキャンセルできません。
+// これは、Goの将来のリリースでno-opになる可能性があります。
 func (t *Transport) CancelRequest(req *Request)
 
 var _ io.ReaderFrom = (*persistConnWriter)(nil)

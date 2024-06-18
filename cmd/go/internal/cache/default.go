@@ -9,5 +9,6 @@ package cache
 func Default() Cache
 
 // DefaultDir returns the effective GOCACHE setting.
-// It returns "off" if the cache is disabled.
-func DefaultDir() string
+// It returns "off" if the cache is disabled,
+// and reports whether the effective value differs from GOCACHE.
+func DefaultDir() (string, bool)
