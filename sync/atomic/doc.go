@@ -126,6 +126,56 @@ func AddUint64(addr *uint64, delta uint64) (new uint64)
 // より使いやすく、エラーが発生しにくい [Uintptr.Add] の使用を検討してください。
 func AddUintptr(addr *uintptr, delta uintptr) (new uintptr)
 
+// AndInt32は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Int32.And] の使用を検討してください。
+func AndInt32(addr *int32, mask int32) (old int32)
+
+// AndUint32は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Uint32.And] の使用を検討してください。
+func AndUint32(addr *uint32, mask uint32) (old uint32)
+
+// AndInt64は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Int64.And] の使用を検討してください。
+func AndInt64(addr *int64, mask int64) (old int64)
+
+// AndUint64は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Uint64.And] の使用を検討してください。
+func AndUint64(addr *uint64, mask uint64) (old uint64)
+
+// AndUintptrは、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Uintptr.And] の使用を検討してください。
+func AndUintptr(addr *uintptr, mask uintptr) (old uintptr)
+
+// OrInt32 atomically performs a bitwise OR operation on *addr using the bitmask provided as mask
+// and returns the old value.
+// Consider using the more ergonomic and less error-prone [Int32.Or] instead.
+func OrInt32(addr *int32, mask int32) (old int32)
+
+// OrUint32は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のOR操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Uint32.Or] の使用を検討してください。
+func OrUint32(addr *uint32, mask uint32) (old uint32)
+
+// OrInt64は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のOR操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Int64.Or] の使用を検討してください。
+func OrInt64(addr *int64, mask int64) (old int64)
+
+// OrUint64は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のOR操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Uint64.Or] の使用を検討してください。
+func OrUint64(addr *uint64, mask uint64) (old uint64)
+
+// OrUintptrは、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のOR操作をアトミックに実行し、
+// 古い値を返します。
+// より使いやすく、エラーが発生しにくい [Uintptr.Or] の使用を検討してください。
+func OrUintptr(addr *uintptr, mask uintptr) (old uintptr)
+
 // LoadInt32はアトミックに*addrをロードします。
 // より使いやすく、エラーが発生しにくい [Int32.Load] の使用を検討してください。
 func LoadInt32(addr *int32) (val int32)
