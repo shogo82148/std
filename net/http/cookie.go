@@ -12,8 +12,9 @@ import (
 //
 // 詳細については、https://tools.ietf.org/html/rfc6265 を参照してください。
 type Cookie struct {
-	Name  string
-	Value string
+	Name   string
+	Value  string
+	Quoted bool
 
 	Path       string
 	Domain     string
