@@ -10,7 +10,7 @@ import "github.com/shogo82148/std/go/constant"
 // All types implement the Type interface.
 // (This type originally lived in types2. We moved it here
 // so we could depend on it from other packages without
-// introducing a circularity.)
+// introducing an import cycle.)
 type Type interface {
 	Underlying() Type
 

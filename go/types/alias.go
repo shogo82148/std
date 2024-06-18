@@ -15,7 +15,9 @@ package types
 // 実際の（エイリアスされた）型を直接指します。
 type Alias struct {
 	obj     *TypeName
+	orig    *Alias
 	tparams *TypeParamList
+	targs   *TypeList
 	fromRHS Type
 	actual  Type
 }
@@ -25,8 +27,29 @@ type Alias struct {
 func NewAlias(obj *TypeName, rhs Type) *Alias
 
 func (a *Alias) Obj() *TypeName
-func (a *Alias) Underlying() Type
 func (a *Alias) String() string
+
+// Underlyingは、エイリアス型aの [underlying type] を返します。これはエイリアスされた型の基底型です。
+// 基底型は、Named、TypeParam、Alias型ではありません。
+//
+// [underlying type]: https://go.dev/ref/spec#Underlying_types.
+func (a *Alias) Underlying() Type
+
+// Originは、aがインスタンスであるジェネリックエイリアス型を返します。
+// もしaがジェネリックエイリアスのインスタンスでない場合、Originはaを返します。
+func (a *Alias) Origin() *Alias
+
+// TypeParamsは、エイリアス型aの型パラメータを返します。またはnilを返します。
+// ジェネリックエイリアスとそのインスタンスは、同じ型パラメータを持ちます。
+func (a *Alias) TypeParams() *TypeParamList
+
+// SetTypeParamsは、エイリアス型aの型パラメータを設定します。
+// エイリアスaは、型引数を持っていてはいけません。
+func (a *Alias) SetTypeParams(tparams []*TypeParam)
+
+// TypeArgsは、エイリアス型をインスタンス化するために使用された型引数を返します。
+// もしaがジェネリックエイリアスのインスタンスでない場合、結果はnilです。
+func (a *Alias) TypeArgs() *TypeList
 
 // Rhsは、エイリアス宣言 "type A = R" の右辺にある型Rを返します。
 // これは別のエイリアスかもしれません。

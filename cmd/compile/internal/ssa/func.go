@@ -40,6 +40,7 @@ type Func struct {
 	laidout     bool
 	NoSplit     bool
 	dumpFileSeq uint8
+	IsPgoHot    bool
 
 	// when register allocation is done, maps value ids to locations
 	RegAlloc []Location

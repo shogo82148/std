@@ -218,6 +218,7 @@ const (
 	AJMP
 	ANOP
 	APCALIGN
+	APCALIGNMAX
 	APCDATA
 	ARET
 	AGETCALLERPC
@@ -634,6 +635,7 @@ type Link struct {
 	InParallel    bool
 	UseBASEntries bool
 	IsAsm         bool
+	Std           bool
 
 	// state for writing objects
 	Text []*LSym
@@ -644,6 +646,10 @@ type Link struct {
 	// add them to a separate list, sort at the end, and append it
 	// to Data.
 	constSyms []*LSym
+
+	// Windows SEH symbols are also data symbols that can be created
+	// concurrently.
+	SEHSyms []*LSym
 
 	// pkgIdx maps package path to index. The index is used for
 	// symbol reference in the object file.

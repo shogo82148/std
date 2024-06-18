@@ -110,6 +110,7 @@ const (
 	_
 	ObjFlagFromAssembly
 	ObjFlagUnlinkable
+	ObjFlagStd
 )
 
 // Sym.Flag
@@ -130,6 +131,7 @@ const (
 	SymFlagDict
 	SymFlagPkgInit
 	SymFlagLinkname
+	SymFlagABIWrapper
 )
 
 // Returns the length of the name of the symbol.
@@ -156,6 +158,7 @@ func (s *Sym) IsItab() bool
 func (s *Sym) IsDict() bool
 func (s *Sym) IsPkgInit() bool
 func (s *Sym) IsLinkname() bool
+func (s *Sym) ABIWrapper() bool
 
 func (s *Sym) SetName(x string, w *Writer)
 
@@ -445,3 +448,4 @@ func (r *Reader) Flags() uint32
 func (r *Reader) Shared() bool
 func (r *Reader) FromAssembly() bool
 func (r *Reader) Unlinkable() bool
+func (r *Reader) Std() bool
