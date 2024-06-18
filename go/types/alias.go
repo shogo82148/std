@@ -28,6 +28,10 @@ func (a *Alias) Obj() *TypeName
 func (a *Alias) Underlying() Type
 func (a *Alias) String() string
 
+// Rhsは、エイリアス宣言 "type A = R" の右辺にある型Rを返します。
+// これは別のエイリアスかもしれません。
+func (a *Alias) Rhs() Type
+
 // Unaliasは、tがエイリアス型でない場合はtを返し、
 // それ以外の場合はtのエイリアスチェーンを追跡して
 // エイリアスでない型に到達すると、その型を返します。
