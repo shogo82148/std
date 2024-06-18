@@ -13,12 +13,14 @@ import (
 // (stack-allocated) variables within a function can be safely
 // merged/overlapped, e.g. share a stack slot with some other auto).
 // An instance of MergeLocalsState is produced by MergeLocals() below
-// and then consumed in ssagen.AllocFrame. The map 'partition' contains
-// entries of the form <N,SL> where N is an *ir.Name and SL is a slice
-// holding the indices (within 'vars') of other variables that share the
-// same slot. For example, if a function contains five variables where
-// v1/v2/v3 are safe to overlap and v4/v5 are safe to overlap, the
-// MergeLocalsState content might look like
+// and then consumed in ssagen.AllocFrame. The map 'partition'
+// contains entries of the form <N,SL> where N is an *ir.Name and SL
+// is a slice holding the indices (within 'vars') of other variables
+// that share the same slot, specifically the slot of the first
+// element in the partition, which we'll call the "leader". For
+// example, if a function contains five variables where v1/v2/v3 are
+// safe to overlap and v4/v5 are safe to overlap, the MergeLocalsState
+// content might look like
 //
 //	vars: [v1, v2, v3, v4, v5]
 //	partition: v1 -> [1, 0, 2], v2 -> [1, 0, 2], v3 -> [1, 0, 2]
