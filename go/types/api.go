@@ -9,16 +9,17 @@
 //
 // 型チェックは、いくつかの相互依存するフェーズで構成されています。
 //
-// 名前解決は、プログラム内の各識別子（ast.Ident）を、それが示す言語オブジェクト（[Object]）にマップします。
-// 名前解決の結果には、[Info].{Defs,Uses,Implicits}を使用します。
+// 名前解決は、プログラム内の各識別子([ast.Ident])を、それが示すシンボル([Object])にマッピングします。
+// 識別子のシンボルを見つけるには、[Info] のDefsフィールドとUsesフィールド、または [Info.ObjectOf] メソッドを使用します。
+// そして、特定の他の種類の構文ノードのシンボルを見つけるには、[Info] のImplicitsフィールドを使用します。
 //
-// 定数畳み込みは、コンパイル時定数であるすべての式（ast.Expr）の正確な定数値（constant.Value）を計算します。
-// 定数畳み込みの結果には、Info.Types[expr].Valueを使用します。
+// 定数畳み込みは、コンパイル時定数であるすべての式([ast.Expr])の正確な定数値
+// ([constant.Value])を計算します。式の定数畳み込みの結果を見つけるには、[Info] のTypesフィールドを使用します。
 //
-// [Type] インタフェースは、すべての式（[ast.Expr]）の型（[Type]）を計算し、言語仕様に準拠しているかどうかをチェックします。
-// 型推論の結果には、[Info.Types][expr].Typeを使用します。
+// 型推論は、すべての式([ast.Expr])の型([Type])を計算し、言語仕様に準拠しているかをチェックします。
+// 型推論の結果については、[Info]のTypesフィールドを使用してください。
 //
-// For a tutorial, see https://golang.org/s/types-tutorial.
+// チュートリアルについては、https://go.dev/s/types-tutorial を参照してください。
 package types
 
 import (
