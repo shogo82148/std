@@ -4,4 +4,4 @@
 
 //go:build !windows
 
-package filepath
+package filepathlite

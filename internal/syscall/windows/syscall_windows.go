@@ -340,3 +340,14 @@ const (
 )
 
 func FinalPath(h syscall.Handle, flags uint32) (string, error)
+
+// QueryPerformanceCounter retrieves the current value of performance counter.
+//
+//go:linkname QueryPerformanceCounter
+func QueryPerformanceCounter() int64
+
+// QueryPerformanceFrequency retrieves the frequency of the performance counter.
+// The returned value is represented as counts per second.
+//
+//go:linkname QueryPerformanceFrequency
+func QueryPerformanceFrequency() int64
