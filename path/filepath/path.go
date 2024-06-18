@@ -100,6 +100,9 @@ func Ext(path string) string
 // EvalSymlinksは結果に対して [Clean] を呼び出します。
 func EvalSymlinks(path string) (string, error)
 
+// IsAbsはパスが絶対パスかどうかを報告します。
+func IsAbs(path string) bool
+
 // Absはパスの絶対表現を返します。
 // パスが絶対でない場合、現在の作業ディレクトリと結合して絶対パスに変換されます。
 // 特定のファイルの絶対パス名が一意であることは保証されません。

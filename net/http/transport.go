@@ -75,7 +75,7 @@ type Transport struct {
 	idleLRU      connLRU
 
 	reqMu       sync.Mutex
-	reqCanceler map[cancelKey]func(error)
+	reqCanceler map[*Request]context.CancelCauseFunc
 
 	altMu    sync.Mutex
 	altProto atomic.Value
@@ -83,6 +83,7 @@ type Transport struct {
 	connsPerHostMu   sync.Mutex
 	connsPerHost     map[connectMethodKey]int
 	connsPerHostWait map[connectMethodKey]wantConnQueue
+	dialsInProgress  wantConnQueue
 
 	// Proxyは、指定されたRequestに対するプロキシを返す関数を指定します。
 	// 関数が非nilのエラーを返す場合、リクエストは提供されたエラーで中止されます。
@@ -274,6 +275,7 @@ func (t *Transport) CloseIdleConnections()
 //
 // Deprecated: 代わりに、キャンセル可能なコンテキストを持つリクエストを作成するために [Request.WithContext] を使用してください。
 // CancelRequestは、HTTP/2リクエストをキャンセルできません。
+// これは、Goの将来のリリースでno-opになる可能性があります。
 func (t *Transport) CancelRequest(req *Request)
 
 var _ io.ReaderFrom = (*persistConnWriter)(nil)

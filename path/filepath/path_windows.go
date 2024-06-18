@@ -1,11 +1,4 @@
-// Copyright 2010 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
-
 package filepath
-
-// IsAbsはパスが絶対パスかどうかを報告します。
-func IsAbs(path string) (b bool)
 
 // HasPrefixは歴史的な互換性のために存在しており、使用するべきではありません。
 //

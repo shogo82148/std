@@ -149,6 +149,7 @@ var Anames = []string{
 	"JMP",
 	"NOP",
 	"PCALIGN",
+	"PCALIGNMAX",
 	"PCDATA",
 	"RET",
 	"GETCALLERPC",
@@ -157,3 +158,25 @@ var Anames = []string{
 }
 
 func Bool2int(b bool) int
+
+// AlignmentPadding bytes to add to align code as requested.
+// Alignment is restricted to powers of 2 between 8 and 2048 inclusive.
+//
+// pc_: current offset in function, in bytes
+// p:  a PCALIGN or PCALIGNMAX prog
+// ctxt: the context, for current function
+// cursym: current function being assembled
+// returns number of bytes of padding needed,
+// updates minimum alignment for the function.
+func AlignmentPadding(pc int32, p *Prog, ctxt *Link, cursym *LSym) int
+
+// AlignmentPaddingLength is the number of bytes to add to align code as requested.
+// Alignment is restricted to powers of 2 between 8 and 2048 inclusive.
+// This only computes the length and does not update the (missing parameter)
+// current function's own required alignment.
+//
+// pc: current offset in function, in bytes
+// p:  a PCALIGN or PCALIGNMAX prog
+// ctxt: the context, for current function
+// returns number of bytes of padding needed,
+func AlignmentPaddingLength(pc int32, p *Prog, ctxt *Link) int

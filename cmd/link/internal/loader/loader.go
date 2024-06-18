@@ -188,6 +188,7 @@ type Loader struct {
 const (
 	// Loader.flags
 	FlagStrictDups = 1 << iota
+	FlagCheckLinkname
 )
 
 func NewLoader(flags uint32, reporter *ErrorReporter) *Loader

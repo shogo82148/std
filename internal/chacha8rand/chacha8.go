@@ -4,7 +4,7 @@
 
 // Package chacha8rand implements a pseudorandom generator
 // based on ChaCha8. It is used by both runtime and math/rand/v2
-// and must have no dependencies.
+// and must have minimal dependencies.
 package chacha8rand
 
 // A State holds the state for a single random generator.

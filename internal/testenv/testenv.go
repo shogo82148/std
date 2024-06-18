@@ -141,3 +141,8 @@ func WriteImportcfg(t testing.TB, dstPath string, packageFiles map[string]string
 // SyscallIsNotSupported reports whether err may indicate that a system call is
 // not supported by the current platform or execution environment.
 func SyscallIsNotSupported(err error) bool
+
+// ParallelOn64Bit calls t.Parallel() unless there is a case that cannot be parallel.
+// This function should be used when it is necessary to avoid t.Parallel on
+// 32-bit machines, typically because the test uses lots of memory.
+func ParallelOn64Bit(t *testing.T)

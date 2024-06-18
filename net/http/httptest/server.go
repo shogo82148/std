@@ -79,4 +79,5 @@ func (s *Server) Certificate() *x509.Certificate
 
 // Clientは、サーバーへのリクエストを行うために設定されたHTTPクライアントを返します。
 // サーバーのTLSテスト証明書を信頼するように設定されており、[Server.Close] 時にアイドル接続をクローズします。
+// サーバーへのリクエストを送信するための基本URLとしてServer.URLを使用します。
 func (s *Server) Client() *http.Client

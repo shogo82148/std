@@ -108,6 +108,11 @@ func (mms *MainModuleSet) HighestReplaced() map[string]string
 // or the go.work file in workspace mode.
 func (mms *MainModuleSet) GoVersion() string
 
+// Godebugs returns the godebug lines set on the single module, in module mode,
+// or on the go.work file in workspace mode.
+// The caller must not modify the result.
+func (mms *MainModuleSet) Godebugs() []*modfile.Godebug
+
 // Toolchain returns the toolchain set on the single module, in module mode,
 // or the go.work file in workspace mode.
 func (mms *MainModuleSet) Toolchain() string
@@ -280,3 +285,5 @@ type WriteOpts struct {
 
 // WriteGoMod writes the current build list back to go.mod.
 func WriteGoMod(ctx context.Context, opts WriteOpts) error
+
+func CheckGodebug(verb, k, v string) error

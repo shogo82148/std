@@ -27,6 +27,7 @@
 //	mod         モジュールのメンテナンス
 //	work        ワークスペースのメンテナンス
 //	run         Goのプログラムをコンパイルして実行する
+//	telemetry   テレメトリーデータと設定を管理します
 //	test        パッケージをテストする
 //	tool        指定されたgoツールを実行する
 //	version     Goのバージョンを表示する
@@ -415,7 +416,7 @@
 //
 // 使用法:
 //
-//	go env [-json] [-u] [-w] [var ...]
+//	go env [-json] [-changed] [-u] [-w] [var ...]
 //
 // EnvはGo環境情報を表示します。
 //
@@ -430,6 +431,9 @@
 //
 // -wフラグは、形式がNAME=VALUEの一つ以上の引数を必要とし、指定された環境変数のデフォルト設定を
 // 与えられた値に変更します。
+//
+// -changed フラグは、効果的な値が空の環境で以前に -w フラグを使用していない場合に得られる
+// デフォルト値と異なる設定のみを出力します。
 //
 // 環境変数についての詳細は、'go help environment'を参照してください。
 //
@@ -1087,16 +1091,29 @@
 //
 // -moduleフラグは、モジュールのパスを変更します（go.modファイルのモジュール行）。
 //
-// -require=path@versionと-droprequire=pathフラグは、
-// 指定されたモジュールパスとバージョンに対する要求を追加し、削除します。
-// -requireはpath上の既存の要求をすべて上書きすることに注意してください。
-// これらのフラグは主に、モジュールグラフを理解するツールのためのものです。
-// ユーザーは'go get path@version'または'go get path@none'を好むべきです。
-// これらは、他のモジュールによって課される制約を満たすために必要な他のgo.modの調整も行います。
+// -godebug=key=value フラグは godebug key=value 行を追加し、
+// 与えられたキーを持つ既存の godebug 行を置き換えます。
 //
-// -exclude=path@versionと-dropexclude=path@versionフラグは、
-// 指定されたモジュールパスとバージョンに対する除外を追加し、削除します。
-// -exclude=path@versionは、その除外が既に存在する場合、何も操作を行いません。
+// -dropgodebug=key フラグは、与えられたキーを持つ既存の godebug 行を削除します。
+//
+// -require=path@version および -droprequire=path フラグは、
+// 与えられたモジュールパスとバージョンに対する要件を追加および削除します。
+// -require は path に対する既存の要件を上書きすることに注意してください。
+// これらのフラグは主にモジュールグラフを理解するツール用です。
+// ユーザーは 'go get path@version' または 'go get path@none' を好むべきです、
+// これは他のモジュールによって課された制約を満たすために必要な go.mod の調整を行います。
+//
+// -go=version フラグは、期待される Go 言語のバージョンを設定します。
+// このフラグは主に Go バージョンの依存関係を理解するツール用です。
+// ユーザーは 'go get go@version' を好むべきです。
+//
+// -toolchain=version フラグは使用する Go ツールチェーンを設定します。
+// このフラグは主に Go バージョンの依存関係を理解するツール用です。
+// ユーザーは 'go get toolchain@version' を好むべきです。
+//
+// -exclude=path@version および -dropexclude=path@version フラグは、
+// 与えられたモジュールパスとバージョンに対する除外を追加および削除します。
+// -exclude=path@version は、その除外が既に存在する場合は何も操作を行わないことに注意してください。
 //
 // -replace=old[@v]=new[@v]フラグは、指定されたモジュールパスとバージョンのペアの置換を追加します。
 // old@vの@vが省略された場合、左側にバージョンがない置換が追加され、oldモジュールパスのすべてのバージョンに適用されます。
@@ -1110,13 +1127,9 @@
 // バージョンは、"v1.2.3"のような単一のバージョンまたは"[v1.1.0,v1.1.9]"のような閉区間である可能性があります。
 // その撤回が既に存在する場合、-retract=versionは何も操作を行わないことに注意してください。
 //
-// -require、-droprequire、-exclude、-dropexclude、-replace、
-// -dropreplace、-retract、および -dropretractの編集フラグは繰り返すことができ、
-// 与えられた順序で変更が適用されます。
-//
-// -go=versionフラグは、期待されるGo言語のバージョンを設定します。
-//
-// -toolchain=nameフラグは、使用するGoツールチェーンを設定します。
+// -godebug, -dropgodebug, -require, -droprequire, -exclude, -dropexclude,
+// -replace, -dropreplace, -retract, および -dropretract の編集フラグは
+// 繰り返し使用することができ、与えられた順序で変更が適用されます。
 //
 // -printフラグは、最終的なgo.modをテキスト形式で印刷し、go.modに戻す代わりにそれを印刷します。
 //
@@ -1131,6 +1144,7 @@
 //		Module    ModPath
 //		Go        string
 //		Toolchain string
+//		Godebug   []Godebug
 //		Require   []Require
 //		Exclude   []Module
 //		Replace   []Replace
@@ -1142,9 +1156,14 @@
 //		Deprecated string
 //	}
 //
+//	type Godebug struct {
+//		Key   string
+//		Value string
+//	}
+//
 //	type Require struct {
-//		Path string
-//		Version string
+//		Path     string
+//		Version  string
 //		Indirect bool
 //	}
 //
@@ -1371,6 +1390,11 @@
 // この再フォーマットは、go.modファイルの使用や書き換えを伴う他の修正にも含まれます。
 // このフラグが必要な唯一の時期は、他のフラグが指定されていない場合、つまり 'go work edit -fmt' のような場合です。
 //
+// -godebug=key=value フラグは godebug key=value 行を追加し、
+// 与えられたキーを持つ既存の godebug 行を置き換えます。
+//
+// -dropgodebug=key フラグは、与えられたキーを持つ既存の godebug 行を削除します。
+//
 // -use=pathおよび-dropuse=pathフラグは、
 // go.workファイルのモジュールディレクトリのセットにuseディレクティブを追加および削除します。
 //
@@ -1402,8 +1426,14 @@
 //	type GoWork struct {
 //		Go        string
 //		Toolchain string
+//		Godebug   []Godebug
 //		Use       []Use
 //		Replace   []Replace
+//	}
+//
+//	type Godebug struct {
+//		Key   string
+//		Value string
 //	}
 //
 //	type Use struct {
@@ -1543,6 +1573,38 @@
 // パッケージの指定についての詳細は、'go help packages'を参照してください。
 //
 // 参照：go build.
+//
+// # Manage telemetry data and settings
+//
+// Usage:
+//
+//	go telemetry [off|local|on]
+//
+// Telemetry is used to manage Go telemetry data and settings.
+//
+// Telemetry can be in one of three modes: off, local, or on.
+//
+// When telemetry is in local mode, counter data is written to the local file
+// system, but will not be uploaded to remote servers.
+//
+// When telemetry is off, local counter data is neither collected nor uploaded.
+//
+// When telemetry is on, telemetry data is written to the local file system
+// and periodically sent to https://telemetry.go.dev/. Uploaded data is used to
+// help improve the Go toolchain and related tools, and it will be published as
+// part of a public dataset.
+//
+// For more details, see https://telemetry.go.dev/privacy.
+// This data is collected in accordance with the Google Privacy Policy
+// (https://policies.google.com/privacy).
+//
+// To view the current telemetry mode, run "go telemetry".
+// To disable telemetry uploading, but keep local data collection, run
+// "go telemetry local".
+// To enable both collection and uploading, run “go telemetry on”.
+// To disable both collection and uploading, run "go telemetry off".
+//
+// See https://go.dev/doc/telemetry for more information on telemetry.
 //
 // # Test packages
 //

@@ -247,23 +247,6 @@ func (s *ImportStack) Copy() []string
 
 func (s *ImportStack) Top() string
 
-// ClearPackageCache clears the in-memory package cache and the preload caches.
-// It is only for use by GOPATH-based "go get".
-// TODO(jayconrod): When GOPATH-based "go get" is removed, delete this function.
-func ClearPackageCache()
-
-// ClearPackageCachePartial clears packages with the given import paths from the
-// in-memory package cache and the preload caches. It is only for use by
-// GOPATH-based "go get".
-// TODO(jayconrod): When GOPATH-based "go get" is removed, delete this function.
-func ClearPackageCachePartial(args []string)
-
-// ReloadPackageNoFlags is like LoadImport but makes sure
-// not to use the package cache.
-// It is only for use by GOPATH-based "go get".
-// TODO(rsc): When GOPATH-based "go get" is removed, delete this function.
-func ReloadPackageNoFlags(arg string, stk *ImportStack) *Package
-
 // Mode flags for loadImport and download (in get.go).
 const (
 	// ResolveImport means that loadImport should do import path expansion.
@@ -285,18 +268,6 @@ const (
 	// that test dependencies should be fetched too.
 	GetTestDeps
 )
-
-// LoadImport scans the directory named by path, which must be an import path,
-// but possibly a local import path (an absolute file system path or one beginning
-// with ./ or ../). A local relative path is interpreted relative to srcDir.
-// It returns a *Package describing the package found in that directory.
-// LoadImport does not set tool flags and should only be used by
-// this package, as part of a bigger load operation, and by GOPATH-based "go get".
-// TODO(rsc): When GOPATH-based "go get" is removed, unexport this function.
-// The returned PackageError, if any, describes why parent is not allowed
-// to import the named package, with the error referring to importPos.
-// The PackageError can only be non-nil when parent is not nil.
-func LoadImport(ctx context.Context, opts PackageOpts, path, srcDir string, parent *Package, stk *ImportStack, importPos []token.Position, mode int) (*Package, *PackageError)
 
 // LoadPackage does Load import, but without a parent package load contezt
 func LoadPackage(ctx context.Context, opts PackageOpts, path, srcDir string, stk *ImportStack, importPos []token.Position, mode int) *Package

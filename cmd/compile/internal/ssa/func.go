@@ -40,6 +40,7 @@ type Func struct {
 	laidout     bool
 	NoSplit     bool
 	dumpFileSeq uint8
+	IsPgoHot    bool
 
 	// when register allocation is done, maps value ids to locations
 	RegAlloc []Location
@@ -233,3 +234,10 @@ func (f *Func) DebugHashMatch() bool
 
 // NewLocal returns a new anonymous local variable of the given type.
 func (f *Func) NewLocal(pos src.XPos, typ *types.Type) *ir.Name
+
+// IsMergeCandidate returns true if variable n could participate in
+// stack slot merging. For now we're restricting the set to things to
+// items larger than what CanSSA would allow (approximateky, we disallow things
+// marked as open defer slots so as to avoid complicating liveness
+// analysis.
+func IsMergeCandidate(n *ir.Name) bool

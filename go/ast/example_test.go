@@ -140,7 +140,43 @@ func main() {
 	//     61  }
 }
 
-// この例は、ast.CommentMapを使用して、Goプログラムの変数宣言を削除しながら正しいコメントの関連を保持する方法を示しています。
+func ExamplePreorder() {
+	src := `
+package p
+
+func f(x, y int) {
+	print(x + y)
+}
+`
+
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, "", src, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	// Print identifiers in order
+	for n := range ast.Preorder(f) {
+		id, ok := n.(*ast.Ident)
+		if !ok {
+			continue
+		}
+		fmt.Println(id.Name)
+	}
+
+	// Output:
+	// p
+	// f
+	// x
+	// y
+	// int
+	// print
+	// x
+	// y
+}
+
+// この例は、ast.CommentMapを使用して、Goプログラム内の変数宣言を削除しつつ、
+// 正しいコメントの関連付けを維持する方法を示しています。
 func ExampleCommentMap() {
 
 	// src は、私たちが操作するためのASTを作成する入力です。

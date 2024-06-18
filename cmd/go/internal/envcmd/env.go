@@ -13,7 +13,7 @@ import (
 )
 
 var CmdEnv = &base.Command{
-	UsageLine: "go env [-json] [-u] [-w] [var ...]",
+	UsageLine: "go env [-json] [-changed] [-u] [-w] [var ...]",
 	Short:     "print Go environment information",
 	Long: `
 Env prints Go environment information.
@@ -34,6 +34,10 @@ The -w flag requires one or more arguments of the
 form NAME=VALUE and changes the default settings
 of the named environment variables to the given values.
 
+The -changed flag prints only those settings whose effective
+value differs from the default value that would be obtained in
+an empty environment with no prior uses of the -w flag.
+
 For more about environment variables, see 'go help environment'.
 	`,
 }
@@ -48,4 +52,4 @@ func ExtraEnvVars() []cfg.EnvVar
 func ExtraEnvVarsCostly() []cfg.EnvVar
 
 // PrintEnv prints the environment variables to w.
-func PrintEnv(w io.Writer, env []cfg.EnvVar)
+func PrintEnv(w io.Writer, env []cfg.EnvVar, onlyChanged bool)

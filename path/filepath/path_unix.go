@@ -6,9 +6,6 @@
 
 package filepath
 
-// IsAbsはパスが絶対パスかどうかを報告します。
-func IsAbs(path string) bool
-
 // HasPrefixは歴史的な互換性のために存在しており、使用するべきではありません。
 //
 // Deprecated: HasPrefixはパスの境界を尊重せず、

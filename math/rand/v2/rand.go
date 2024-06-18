@@ -45,6 +45,9 @@ func (r *Rand) Int32() int32
 // Intは、非負の擬似乱数intを返します。
 func (r *Rand) Int() int
 
+// Uint は擬似乱数の uint を返します。
+func (r *Rand) Uint() uint
+
 // Int64Nは、半開放区間[0,n)内の非負の擬似乱数をint64として返します。
 // nが0以下の場合、パニックを引き起こします。
 func (r *Rand) Int64N(n int64) int64
@@ -105,6 +108,9 @@ func Int32() int32
 
 // Intは、デフォルトのSourceから非負の擬似乱数intを返します。
 func Int() int
+
+// Uint はデフォルトのソースから擬似乱数の uint を返します。
+func Uint() uint
 
 // Int64Nは、デフォルトのSourceから半開放区間[0,n)内の非負の擬似乱数をint64として返します。
 // nが0以下の場合、パニックを引き起こします。

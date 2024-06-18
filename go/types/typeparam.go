@@ -36,6 +36,10 @@ func (t *TypeParam) Constraint() Type
 // SetConstraintがレシーバを返すと、tは同時使用に安全です。
 func (t *TypeParam) SetConstraint(bound Type)
 
+// Underlying returns the [underlying type] of the type parameter t, which is
+// the underlying type of its constraint. This type is always an interface.
+//
+// [underlying type]: https://go.dev/ref/spec#Underlying_types.
 func (t *TypeParam) Underlying() Type
 
 func (t *TypeParam) String() string

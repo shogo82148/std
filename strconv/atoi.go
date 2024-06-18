@@ -4,7 +4,9 @@
 
 package strconv
 
-import "github.com/shogo82148/std/errors"
+import (
+	"github.com/shogo82148/std/errors"
+)
 
 // ErrRangeは、値が対象の型の範囲外であることを示します。
 var ErrRange = errors.New("value out of range")

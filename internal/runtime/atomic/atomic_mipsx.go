@@ -11,6 +11,8 @@
 //go:linkname Cas64
 //go:linkname Load64
 //go:linkname Store64
+//go:linkname Or64
+//go:linkname And64
 
 package atomic
 
@@ -32,6 +34,12 @@ func Load64(addr *uint64) (val uint64)
 
 //go:nosplit
 func Store64(addr *uint64, val uint64)
+
+//go:nosplit
+func Or64(addr *uint64, val uint64) (old uint64)
+
+//go:nosplit
+func And64(addr *uint64, val uint64) (old uint64)
 
 //go:noescape
 func Xadd(ptr *uint32, delta int32) uint32
@@ -71,6 +79,18 @@ func And(ptr *uint32, val uint32)
 
 //go:noescape
 func Or(ptr *uint32, val uint32)
+
+//go:noescape
+func And32(ptr *uint32, val uint32) uint32
+
+//go:noescape
+func Or32(ptr *uint32, val uint32) uint32
+
+//go:noescape
+func Anduintptr(ptr *uintptr, val uintptr) uintptr
+
+//go:noescape
+func Oruintptr(ptr *uintptr, val uintptr) uintptr
 
 //go:noescape
 func Store(ptr *uint32, val uint32)

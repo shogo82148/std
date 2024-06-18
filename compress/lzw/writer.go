@@ -13,19 +13,17 @@ import (
 type Writer struct {
 	// wは圧縮バイトが書き込まれるライターです。
 	w writer
-
-	// order, write, bits, nBits, and widthは、
-	// コードストリームをバイトストリームに変換するための状態です。
+	// litWidth is the width in bits of literal codes.
+	litWidth uint
+	// order, write, bits, nBits and width are the state for
+	// converting a code stream into a byte stream.
 	order Order
 	write func(*Writer, uint32) error
-	bits  uint32
 	nBits uint
 	width uint
-	// litWidthはリテラルコードのビット幅です。
-	litWidth uint
-
-	// hiは次のコード生成によって暗示されるコードです。
-	// overflowはhiがコードの幅を超えるコードです。
+	bits  uint32
+	// hi is the code implied by the next code emission.
+	// overflow is the code at which hi overflows the code width.
 	hi, overflow uint32
 
 	// savedCodeは最新のWrite呼び出しの終わりに蓄積されるコードです。

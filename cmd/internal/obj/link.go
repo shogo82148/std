@@ -218,6 +218,7 @@ const (
 	AJMP
 	ANOP
 	APCALIGN
+	APCALIGNMAX
 	APCDATA
 	ARET
 	AGETCALLERPC
@@ -512,6 +513,9 @@ const (
 
 	// PkgInit indicates this is a compiler-generated package init func.
 	AttrPkgInit
+
+	// Linkname indicates this is a go:linkname'd symbol.
+	AttrLinkname
 )
 
 func (a *Attribute) DuplicateOK() bool
@@ -533,6 +537,7 @@ func (a *Attribute) ContentAddressable() bool
 func (a *Attribute) ABIWrapper() bool
 func (a *Attribute) IsPcdata() bool
 func (a *Attribute) IsPkgInit() bool
+func (a *Attribute) IsLinkname() bool
 
 func (a *Attribute) Set(flag Attribute, value bool)
 
@@ -630,6 +635,7 @@ type Link struct {
 	InParallel    bool
 	UseBASEntries bool
 	IsAsm         bool
+	Std           bool
 
 	// state for writing objects
 	Text []*LSym
@@ -640,6 +646,10 @@ type Link struct {
 	// add them to a separate list, sort at the end, and append it
 	// to Data.
 	constSyms []*LSym
+
+	// Windows SEH symbols are also data symbols that can be created
+	// concurrently.
+	SEHSyms []*LSym
 
 	// pkgIdx maps package path to index. The index is used for
 	// symbol reference in the object file.

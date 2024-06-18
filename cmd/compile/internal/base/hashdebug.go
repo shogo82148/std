@@ -37,6 +37,7 @@ func (d *HashDebug) SetInlineSuffixOnly(b bool) *HashDebug
 var FmaHash *HashDebug
 var LoopVarHash *HashDebug
 var PGOHash *HashDebug
+var MergeLocalsHash *HashDebug
 
 // DebugHashMatchPkgFunc reports whether debug variable Gossahash
 //

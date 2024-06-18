@@ -12,6 +12,8 @@ import (
 	"github.com/shogo82148/std/cmd/go/internal/load"
 )
 
+const DefaultCFlags = "-O2 -g"
+
 // Do runs the action graph rooted at root.
 func (b *Builder) Do(ctx context.Context, root *Action)
 

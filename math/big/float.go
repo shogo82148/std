@@ -39,9 +39,9 @@ import (
 //
 // 望ましい精度を24または53に設定し、対応する丸めモード（通常は [ToNearestEven]）を使用すると、
 // Float操作は、正常（つまり、非正規化ではない）float32またはfloat64数に対応するオペランドに対して、
-// 対応するfloat32またはfloat64 IEEE-754算術と同じ結果を生成します。
+// 対応するfloat32またはfloat64 IEEE 754算術と同じ結果を生成します。
 // 指数のアンダーフローとオーバーフローは、Floatの指数がはるかに大きな範囲を持つため、
-// IEEE-754とは異なる値に対して0またはInfinityを導きます。
+// IEEE 754とは異なる値に対して0またはInfinityを導きます。
 //
 // Floatのゼロ（未初期化）値は使用準備が整っており、
 // 精度0と丸めモード [ToNearestEven] で数値+0.0を正確に表します。
@@ -61,7 +61,7 @@ type Float struct {
 	exp  int32
 }
 
-// ErrNaNパニックは、IEEE-754のルールに従ってNaNになる [Float] 操作によって引き起こされます。
+// ErrNaNパニックは、IEEE 754のルールに従ってNaNになる [Float] 操作によって引き起こされます。
 // ErrNaNはエラーインターフェースを実装します。
 type ErrNaN struct {
 	msg string

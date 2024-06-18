@@ -13,8 +13,23 @@ type OID struct {
 	der []byte
 }
 
+// ParseOIDは、ドットで区切られたASCII数字で表されるオブジェクト識別子文字列を解析します。
+func ParseOID(oid string) (OID, error)
+
 // OIDFromIntsは、整数を使用して新しいOIDを作成します。各整数は別々のコンポーネントです。
 func OIDFromInts(oid []uint64) (OID, error)
+
+// MarshalTextは [encoding.TextMarshaler] を実装します。
+func (o OID) MarshalText() ([]byte, error)
+
+// UnmarshalTextは [encoding.TextUnmarshaler] を実装します。
+func (o *OID) UnmarshalText(text []byte) error
+
+// MarshalBinary は [encoding.BinaryMarshaler] を実装します。
+func (o OID) MarshalBinary() ([]byte, error)
+
+// UnmarshalBinary は [encoding.BinaryUnmarshaler] を実装します。
+func (o *OID) UnmarshalBinary(b []byte) error
 
 // Equalは、oidとotherが同じオブジェクト識別子を表している場合にtrueを返します。
 func (oid OID) Equal(other OID) bool

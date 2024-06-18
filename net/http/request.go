@@ -228,6 +228,10 @@ type Request struct {
 	// Responseは、このリクエストが作成されたクライアントリダイレクト中にのみ設定されるリダイレクトレスポンスです。
 	Response *Response
 
+	// Pattern is the [ServeMux] pattern that matched the request.
+	// It is empty if the request was not matched against a pattern.
+	Pattern string
+
 	// ctx is either the client or server context. It should only
 	// be modified via copying the whole Request using Clone or WithContext.
 	// It is unexported to prevent people from using Context wrong
