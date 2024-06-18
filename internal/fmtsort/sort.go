@@ -12,16 +12,16 @@ import (
 	"github.com/shogo82148/std/reflect"
 )
 
-// SortedMap represents a map's keys and values. The keys and values are
-// aligned in index order: Value[i] is the value in the map corresponding to Key[i].
-type SortedMap struct {
-	Key   []reflect.Value
-	Value []reflect.Value
-}
+// SortedMap is a slice of KeyValue pairs that simplifies sorting
+// and iterating over map entries.
+//
+// Each KeyValue pair contains a map key and its corresponding value.
+type SortedMap []KeyValue
 
-func (o *SortedMap) Len() int
-func (o *SortedMap) Less(i, j int) bool
-func (o *SortedMap) Swap(i, j int)
+// KeyValue holds a single key and value pair found in a map.
+type KeyValue struct {
+	Key, Value reflect.Value
+}
 
 // Sort accepts a map and returns a SortedMap that has the same keys and
 // values but in a stable sorted order according to the keys, modulo issues
@@ -41,4 +41,4 @@ func (o *SortedMap) Swap(i, j int)
 //     Otherwise identical arrays compare by length.
 //   - interface values compare first by reflect.Type describing the concrete type
 //     and then by concrete value as described in the previous rules.
-func Sort(mapValue reflect.Value) *SortedMap
+func Sort(mapValue reflect.Value) SortedMap

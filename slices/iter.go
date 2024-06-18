@@ -17,7 +17,7 @@ func All[Slice ~[]E, E any](s Slice) iter.Seq2[int, E]
 // traversing it backward. The indexes range from len(s)-1 down to 0.
 func Backward[Slice ~[]E, E any](s Slice) iter.Seq2[int, E]
 
-// Values returns an iterator over the slice elements.
+// Values returns an iterator over the slice elements,
 // starting with s[0].
 func Values[Slice ~[]E, E any](s Slice) iter.Seq[E]
 
