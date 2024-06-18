@@ -83,6 +83,7 @@ type Transport struct {
 	connsPerHostMu   sync.Mutex
 	connsPerHost     map[connectMethodKey]int
 	connsPerHostWait map[connectMethodKey]wantConnQueue
+	dialsInProgress  wantConnQueue
 
 	// Proxyは、指定されたRequestに対するプロキシを返す関数を指定します。
 	// 関数が非nilのエラーを返す場合、リクエストは提供されたエラーで中止されます。

@@ -131,6 +131,9 @@ type TextOff int32
 // String returns the name of k.
 func (k Kind) String() string
 
+// TypeOf returns the abi.Type of some value.
+func TypeOf(a any) *Type
+
 func (t *Type) Kind() Kind
 
 func (t *Type) HasName() bool

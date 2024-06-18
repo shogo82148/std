@@ -43,6 +43,14 @@ const (
 	SameSiteNoneMode
 )
 
+// ParseCookieはCookieヘッダーの値を解析し、それに設定されていたすべてのクッキーを返します。
+// 同じクッキー名が複数回現れることがあるため、返されるValuesには、特定のキーに対して複数の値が含まれることがあります。
+func ParseCookie(line string) ([]*Cookie, error)
+
+// ParseSetCookieはSet-Cookieヘッダーの値を解析し、クッキーを返します。
+// 構文エラーがある場合はエラーを返します。
+func ParseSetCookie(line string) (*Cookie, error)
+
 // SetCookieは、提供された [ResponseWriter] のヘッダーにSet-Cookieヘッダーを追加します。
 // 提供されたクッキーには有効な名前が必要です。無効なクッキーは黙って破棄される場合があります。
 func SetCookie(w ResponseWriter, cookie *Cookie)
