@@ -86,6 +86,10 @@ type Type interface {
 
 	OverflowUint(x uint64) bool
 
+	CanSeq() bool
+
+	CanSeq2() bool
+
 	common() *abi.Type
 	uncommon() *uncommonType
 }

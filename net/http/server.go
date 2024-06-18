@@ -147,6 +147,12 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 // Errorは、指定されたエラーメッセージとHTTPコードでリクエストに応答します。
 // それ以外に、リクエストを終了しません。呼び出し元は、wに対してさらに書き込みが行われないようにする必要があります。
 // エラーメッセージはプレーンテキストである必要があります。
+//
+// ErrorはContent-LengthヘッダーとContent-Encodingヘッダーを削除し、
+// Content-Typeを"text/plain; charset=utf-8"に設定し、
+// X-Content-Type-Optionsを"nosniff"に設定します。
+// これにより、呼び出し元が成功した出力を期待して設定していた場合でも、
+// エラーメッセージ用にヘッダーが適切に設定されます。
 func Error(w ResponseWriter, error string, code int)
 
 // NotFoundは、HTTP 404 not foundエラーでリクエストに応答します。
