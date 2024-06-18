@@ -182,7 +182,7 @@ func (f *File) Symbols() ([]Symbol, error)
 // DynamicSymbolsは、fの動的シンボルテーブルを返します。シンボルは、f内に出現する順序でリストされます。
 //
 // fがシンボルバージョンテーブルを持っている場合、返される [File.Symbols] は
-// 初期化された [Version] とLibraryフィールドを持ちます。
+// 初期化されたVersionとLibraryフィールドを持ちます。
 //
 // [File.Symbols] との互換性のため、[File.DynamicSymbols] はインデックス0のnullシンボルを省略します。
 // シンボルをsymtabとして取得した後、外部から供給されたインデックスxは
