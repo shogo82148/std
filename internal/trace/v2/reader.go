@@ -15,6 +15,7 @@ type Reader struct {
 	lastTs      Time
 	gen         *generation
 	spill       *spilledBatch
+	spillErr    error
 	frontier    []*batchCursor
 	cpuSamples  []cpuSample
 	order       ordering
