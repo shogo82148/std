@@ -61,8 +61,20 @@ GODEBUG=netdns=1のような数値のnetdns設定は、リゾルバが自身の�
 特定のリゾルバを強制すると同時にデバッグ情報を出力するには、
 2つの設定をプラス記号で結合します。例：GODEBUG=netdns=go+1。
 
+<<<<<<< HEAD
 macOSでは、netパッケージを使用するGoコードが-buildmode=c-archiveでビルドされる場合、
 生成されたアーカイブをCプログラムにリンクする際に、Cコードをリンクするときに-lresolvを渡す必要があります。
+=======
+The Go resolver will send an EDNS0 additional header with a DNS request,
+to signal a willingness to accept a larger DNS packet size.
+This can reportedly cause sporadic failures with the DNS server run
+by some modems and routers. Setting GODEBUG=netedns0=0 will disable
+sending the additional header.
+
+On macOS, if Go code that uses the net package is built with
+-buildmode=c-archive, linking the resulting archive into a C program
+requires passing -lresolv when linking the C code.
+>>>>>>> upstream/release-branch.go1.22
 
 Plan 9では、リゾルバは常に/net/csと/net/dnsにアクセスします。
 
