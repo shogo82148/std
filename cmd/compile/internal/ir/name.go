@@ -118,6 +118,7 @@ func (n *Name) InlLocal() bool
 func (n *Name) OpenDeferSlot() bool
 func (n *Name) Libfuzzer8BitCounter() bool
 func (n *Name) CoverageAuxVar() bool
+func (n *Name) NonMergeable() bool
 
 func (n *Name) SetNeedzero(b bool)
 func (n *Name) SetAutoTemp(b bool)
@@ -131,6 +132,7 @@ func (n *Name) SetInlLocal(b bool)
 func (n *Name) SetOpenDeferSlot(b bool)
 func (n *Name) SetLibfuzzer8BitCounter(b bool)
 func (n *Name) SetCoverageAuxVar(b bool)
+func (n *Name) SetNonMergeable(b bool)
 
 // OnStack reports whether variable n may reside on the stack.
 func (n *Name) OnStack() bool
