@@ -788,6 +788,11 @@ const (
 	STT_HIOS    SymType = 12
 	STT_LOPROC  SymType = 13
 	STT_HIPROC  SymType = 15
+
+	/* Non-standard symbol types. */
+	STT_RELC      SymType = 8
+	STT_SRELC     SymType = 9
+	STT_GNU_IFUNC SymType = 10
 )
 
 func (i SymType) String() string

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build goexperiment.exectracer2
-
-// Trace event writing API for trace2runtime.go.
+// Trace goroutine and P status management.
 
 package runtime

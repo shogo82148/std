@@ -12,6 +12,8 @@ import (
 func Getpagesize() int
 
 // Fileはオープンされたファイルディスクリプタを表します。
+//
+// Fileのメソッドは並行使用に対して安全です。
 type File struct {
 	*file
 }
