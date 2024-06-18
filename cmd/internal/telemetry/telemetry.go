@@ -33,7 +33,7 @@ func Inc(name string)
 // NewCounter returns a counter with the given name.
 func NewCounter(name string) *counter.Counter
 
-// NewStack returns a new stack counter with the given name and depth.
+// NewStackCounter returns a new stack counter with the given name and depth.
 func NewStackCounter(name string, depth int) *counter.StackCounter
 
 // CountFlags creates a counter for every flag that is set

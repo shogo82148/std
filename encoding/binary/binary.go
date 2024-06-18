@@ -68,6 +68,11 @@ var BigEndian bigEndian
 // Readは [io.ErrUnexpectedEOF] を返します。
 func Read(r io.Reader, order ByteOrder, data any) error
 
+// 指定されたバイトオーダーに従ってbufからdataへバイナリデータをデコードします。
+//
+// bufが小さすぎる場合はエラーを返し、それ以外の場合はbufから消費されたバイト数を返します。
+func Decode(buf []byte, order ByteOrder, data any) (int, error)
+
 // Writeは、データのバイナリ表現をwに書き込みます。
 // データは、固定サイズの値または固定サイズの値のスライス、またはそのようなデータへのポインタである必要があります。
 // ブール値は1がtrue、0がfalseとして1バイトでエンコードされます。
@@ -75,6 +80,19 @@ func Read(r io.Reader, order ByteOrder, data any) error
 // データの連続するフィールドから読み取られます。
 // 構造体を書き込む場合、ブランク（_）フィールド名を持つフィールドのデータはゼロ値で書き込まれます。
 func Write(w io.Writer, order ByteOrder, data any) error
+
+// 指定されたバイトオーダーに従ってbufにdataのバイナリ表現をエンコードします。
+//
+// bufが短すぎる場合はエラーを返し、それ以外の場合はbufに書き込まれたバイト数を返します。
+func Encode(buf []byte, order ByteOrder, data any) (int, error)
+
+// dataのバイナリ表現をbufに追加します。
+//
+// bufはnilでも構いません。その場合、新しいバッファが割り当てられます。
+// どのようなdataが許容されるかについては[Write]を参照してください。
+//
+// dataを含む（可能性のある拡張された）バッファまたはエラーを返します。
+func Append(buf []byte, order ByteOrder, data any) ([]byte, error)
 
 // Sizeは、値vをエンコードするために [Write] が生成するバイト数を返します。
 // vは、固定サイズの値または固定サイズの値のスライス、またはそのようなデータへのポインタである必要があります。
