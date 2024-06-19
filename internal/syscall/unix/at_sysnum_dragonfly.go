@@ -10,5 +10,5 @@ const (
 	AT_REMOVEDIR        = 0x2
 	AT_SYMLINK_NOFOLLOW = 0x1
 
-	UTIME_OMIT = -0x1
+	UTIME_OMIT = -0x2
 )

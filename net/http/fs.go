@@ -77,11 +77,17 @@ type File interface {
 //
 // The content's Seek method must work: ServeContent uses
 // a seek to the end of the content to determine its size.
+// Note that [*os.File] implements the [io.ReadSeeker] interface.
 //
 // If the caller has set w's ETag header formatted per RFC 7232, section 2.3,
 // ServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.
 //
-// Note that [*os.File] implements the [io.ReadSeeker] interface.
+// If an error occurs when serving the request (for example, when
+// handling an invalid range request), ServeContent responds with an
+// error message. By default, ServeContent strips the Cache-Control,
+// Content-Encoding, ETag, and Last-Modified headers from error responses.
+// The GODEBUG setting httpservecontentkeepheaders=1 causes ServeContent
+// to preserve these headers.
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
 // ServeFile replies to the request with the contents of the named

@@ -9,10 +9,6 @@ package x509
 // Before Go 1.23, ParseCertificate accepted certificates with negative serial
 // numbers. This behavior can be restored by including "x509negativeserial=1" in
 // the GODEBUG environment variable.
-//
-// Before Go 1.23, ParseCertificate accepted certificates with serial numbers
-// longer than 20 octets. This behavior can be restored by including
-// "x509seriallength=1" in the GODEBUG environment variable.
 func ParseCertificate(der []byte) (*Certificate, error)
 
 // ParseCertificates parses one or more certificates from the given ASN.1 DER

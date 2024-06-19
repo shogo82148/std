@@ -36,6 +36,7 @@ var All = []Info{
 	{Name: "http2server", Package: "net/http"},
 	{Name: "httplaxcontentlength", Package: "net/http", Changed: 22, Old: "1"},
 	{Name: "httpmuxgo121", Package: "net/http", Changed: 22, Old: "1"},
+	{Name: "httpservecontentkeepheaders", Package: "net/http", Changed: 23, Old: "0"},
 	{Name: "installgoroot", Package: "go/build"},
 	{Name: "jstmpllitinterp", Package: "html/template", Opaque: true},
 
@@ -57,7 +58,6 @@ var All = []Info{
 	{Name: "winsymlink", Package: "os", Changed: 22, Old: "0"},
 	{Name: "x509keypairleaf", Package: "crypto/tls", Changed: 23, Old: "0"},
 	{Name: "x509negativeserial", Package: "crypto/x509", Changed: 23, Old: "1"},
-	{Name: "x509seriallength", Package: "crypto/x509", Changed: 23, Old: "1"},
 	{Name: "x509sha1", Package: "crypto/x509"},
 	{Name: "x509usefallbackroots", Package: "crypto/x509"},
 	{Name: "x509usepolicies", Package: "crypto/x509"},

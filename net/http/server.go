@@ -187,7 +187,7 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 // writes are done to w.
 // The error message should be plain text.
 //
-// Error deletes the Content-Length and Content-Encoding headers,
+// Error deletes the Content-Length header,
 // sets Content-Type to “text/plain; charset=utf-8”,
 // and sets X-Content-Type-Options to “nosniff”.
 // This configures the header properly for the error message,
