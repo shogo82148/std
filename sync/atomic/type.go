@@ -138,7 +138,7 @@ func (x *Uint32) And(mask uint32) (old uint32)
 
 // Or atomically performs a bitwise OR operation on x using the bitmask
 // provided as mask and returns the old value.
-func (x *Uint32) Or(mask uint32) (new uint32)
+func (x *Uint32) Or(mask uint32) (old uint32)
 
 // A Uint64 is an atomic uint64. The zero value is zero.
 type Uint64 struct {
@@ -168,7 +168,7 @@ func (x *Uint64) And(mask uint64) (old uint64)
 
 // Or atomically performs a bitwise OR operation on x using the bitmask
 // provided as mask and returns the old value.
-func (x *Uint64) Or(mask uint64) (new uint64)
+func (x *Uint64) Or(mask uint64) (old uint64)
 
 // A Uintptr is an atomic uintptr. The zero value is zero.
 type Uintptr struct {
