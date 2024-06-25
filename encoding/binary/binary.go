@@ -68,16 +68,8 @@ var BigEndian bigEndian
 // Readは [io.ErrUnexpectedEOF] を返します。
 func Read(r io.Reader, order ByteOrder, data any) error
 
-<<<<<<< HEAD
-// 指定されたバイトオーダーに従ってbufからdataへバイナリデータをデコードします。
-//
+// Decodeは、指定されたバイトオーダーに従って、bufからデータにバイナリデータをデコードします。
 // bufが小さすぎる場合はエラーを返し、それ以外の場合はbufから消費されたバイト数を返します。
-=======
-// Decode decodes binary data from buf into data according to
-// the given byte order.
-// It returns an error if buf is too small, otherwise the number of
-// bytes consumed from buf.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 func Decode(buf []byte, order ByteOrder, data any) (int, error)
 
 // Writeは、データのバイナリ表現をwに書き込みます。
@@ -88,30 +80,14 @@ func Decode(buf []byte, order ByteOrder, data any) (int, error)
 // 構造体を書き込む場合、ブランク（_）フィールド名を持つフィールドのデータはゼロ値で書き込まれます。
 func Write(w io.Writer, order ByteOrder, data any) error
 
-<<<<<<< HEAD
-// 指定されたバイトオーダーに従ってbufにdataのバイナリ表現をエンコードします。
-//
-// bufが短すぎる場合はエラーを返し、それ以外の場合はbufに書き込まれたバイト数を返します。
+// Encodeは、指定されたバイトオーダーに従って、データのバイナリ表現をbufにエンコードします。
+// bufが小さすぎる場合はエラーを返し、それ以外の場合はbufに書き込まれたバイト数を返します。
 func Encode(buf []byte, order ByteOrder, data any) (int, error)
 
-// dataのバイナリ表現をbufに追加します。
-//
+// Appendは、データのバイナリ表現をbufに追加します。
 // bufはnilでも構いません。その場合、新しいバッファが割り当てられます。
-// どのようなdataが許容されるかについては[Write]を参照してください。
-//
-// dataを含む（可能性のある拡張された）バッファまたはエラーを返します。
-=======
-// Encode encodes the binary representation of data into buf according to
-// the given byte order.
-// It returns an error if buf is too small, otherwise the number of
-// bytes written into buf.
-func Encode(buf []byte, order ByteOrder, data any) (int, error)
-
-// Append appends the binary representation of data to buf.
-// buf may be nil, in which case a new buffer will be allocated.
-// See [Write] on which data are acceptable.
-// It returns the (possibily extended) buffer containing data or an error.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
+// どのようなデータが受け入れられるかについては [Write] を参照してください。
+// データを含む（可能性のある拡張された）バッファまたはエラーを返します。
 func Append(buf []byte, order ByteOrder, data any) ([]byte, error)
 
 // Sizeは、値vをエンコードするために [Write] が生成するバイト数を返します。
