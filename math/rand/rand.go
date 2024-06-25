@@ -169,6 +169,7 @@ func Shuffle(n int, swap func(i, j int))
 // Readは、[Rand.Read] メソッドとは異なり、並行使用に安全です。
 //
 // Deprecated: ほとんどの使用ケースでは、[crypto/rand.Read] の方が適切です。
+// 決定論的なソースが必要な場合は、[math/rand/v2.ChaCha8.Read] を使用してください。
 func Read(p []byte) (n int, err error)
 
 // NormFloat64は、デフォルトの [Source] から、範囲

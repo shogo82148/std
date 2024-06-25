@@ -5,6 +5,9 @@
 // パッケージecdsaは、FIPS 186-4およびSEC 1、バージョン2.0で定義されている楕円曲線デジタル署名アルゴリズムを実装しています。
 //
 // このパッケージによって生成される署名は確定的ではありませんが、エントロピーは秘密鍵とメッセージと混合され、ランダム性源の故障の場合には同じレベルのセキュリティを実現します。
+//
+// 私有鍵を扱う操作は、[elliptic.P224]、[elliptic.P256]、[elliptic.P384]、または [elliptic.P521] によって返される
+// [elliptic.Curve]が使用される限り、定数時間アルゴリズムを使用して実装されています。
 package ecdsa
 
 import (
@@ -72,4 +75,6 @@ func SignASN1(rand io.Reader, priv *PrivateKey, hash []byte) ([]byte, error)
 
 // VerifyASN1は公開鍵pubを使用してハッシュのASN.1エンコードされた署名sigを検証します。
 // 返り値は署名が有効かどうかを示します。
+//
+// 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func VerifyASN1(pub *PublicKey, hash, sig []byte) bool

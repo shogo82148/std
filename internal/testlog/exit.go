@@ -12,4 +12,13 @@ package testlog
 func PanicOnExit0() bool
 
 // SetPanicOnExit0 sets panicOnExit0 to v.
+//
+// SetPanicOnExit0 should be an internal detail,
+// but alternate implementations of go test in other
+// build systems may need to access it using linkname.
+//
+// Do not remove or change the type signature.
+// See go.dev/issue/67401.
+//
+//go:linkname SetPanicOnExit0
 func SetPanicOnExit0(v bool)

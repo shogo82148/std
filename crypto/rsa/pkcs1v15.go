@@ -52,4 +52,6 @@ func SignPKCS1v15(random io.Reader, priv *PrivateKey, hash crypto.Hash, hashed [
 // sigは署名です。有効な署名の場合、nilエラーが返されます。
 // hashがゼロであれば、hashedは直接使用されます。
 // これは相互運用性以外の用途には適していません。
+//
+// 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func VerifyPKCS1v15(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte) error

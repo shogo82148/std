@@ -24,12 +24,13 @@ type Cookie struct {
 	// MaxAge=0は 'Max-Age'属性が指定されていないことを意味します。
 	// MaxAge<0は今すぐクッキーを削除することを意味し、'Max-Age: 0'と同等です。
 	// MaxAge>0はMax-Age属性が存在し、秒で指定されていることを意味します。
-	MaxAge   int
-	Secure   bool
-	HttpOnly bool
-	SameSite SameSite
-	Raw      string
-	Unparsed []string
+	MaxAge      int
+	Secure      bool
+	HttpOnly    bool
+	SameSite    SameSite
+	Partitioned bool
+	Raw         string
+	Unparsed    []string
 }
 
 // SameSiteは、サーバーがクッキー属性を定義して、ブラウザがクロスサイトリクエストと一緒にこのクッキーを送信できなくすることを可能にします。主な目的は、クロスオリジン情報漏洩のリスクを軽減し、クロスサイトリクエスト偽造攻撃に対する保護を提供することです。

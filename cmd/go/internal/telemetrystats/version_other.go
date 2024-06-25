@@ -2,4 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package sync
+//go:build !cmd_go_bootstrap && !unix && !windows
+
+package telemetrystats

@@ -5,6 +5,8 @@
 // Package ed25519はEd25519署名アルゴリズムを実装しています。詳しくは、https://ed25519.cr.yp.to/を参照してください。
 //
 // これらの関数はRFC 8032で定義されている「Ed25519」関数とも互換性があります。ただし、RFC 8032の定義とは異なり、このパッケージの秘密鍵表現には公開鍵の接尾辞が含まれており、同じ鍵での複数の署名操作を効率的に行うことができます。このパッケージでは、RFC 8032の秘密鍵を「seed」と呼んでいます。
+//
+// 私有鍵を扱う操作は、定数時間アルゴリズムを使用して実装されています。
 package ed25519
 
 import (
@@ -78,8 +80,13 @@ func Sign(privateKey PrivateKey, message []byte) []byte
 
 // Verifyは、publicKeyによってメッセージのsigが有効な署名かどうかを検証します。
 // もしlen(publicKey)が[PublicKeySize]でない場合、パニックを引き起こします。
+//
+// 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func Verify(publicKey PublicKey, message, sig []byte) bool
 
 // VerifyWithOptionsは、publicKeyによってメッセージのsigが有効な署名であるかどうかを報告します。有効な署名は、nilのエラーを返すことで示されます。len(publicKey)が[PublicKeySize]でない場合、パニックが発生します。
+//
 // もしopts.Hashが[crypto.SHA512]である場合、Ed25519phとして事前にハッシュされたバリアントが使用され、messageはSHA-512ハッシュであることが想定されます。それ以外の場合、opts.Hashは[crypto.Hash](0)でなければならず、メッセージはハッシュされていない状態である必要があります。なぜなら、Ed25519は署名されるメッセージを2回処理するからです。
+//
+// 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func VerifyWithOptions(publicKey PublicKey, message, sig []byte, opts *Options) error

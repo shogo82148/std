@@ -138,7 +138,7 @@ func (x *Uint32) And(mask uint32) (old uint32)
 
 // Orは、提供されたマスクとしてビットマスクを使用してx上でビット単位のOR操作をアトミックに実行し、
 // 古い値を返します。
-func (x *Uint32) Or(mask uint32) (new uint32)
+func (x *Uint32) Or(mask uint32) (old uint32)
 
 // Uint64はアトミックなuint64です。ゼロ値はゼロです。
 type Uint64 struct {
@@ -168,7 +168,7 @@ func (x *Uint64) And(mask uint64) (old uint64)
 
 // Orは、提供されたマスクとしてビットマスクを使用してx上でビット単位のOR操作をアトミックに実行し、
 // 古い値を返します。
-func (x *Uint64) Or(mask uint64) (new uint64)
+func (x *Uint64) Or(mask uint64) (old uint64)
 
 // Uintptrはアトミックなuintptrです。ゼロ値はゼロです。
 type Uintptr struct {

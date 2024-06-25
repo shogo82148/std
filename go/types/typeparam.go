@@ -16,9 +16,10 @@ type TypeParam struct {
 	bound Type
 }
 
-// NewTypeParamは新しいTypeParamを返します。Typeパラメータは、SetTypeParamsを呼び出してNamed型またはSignature型に設定することができます。複数の型に対してタイプパラメータを設定すると、パニックが発生します。
-// 制約引数はnilにすることもできますが、後でSetConstraintを介して設定することができます。制約が非nilの場合、完全に定義されている必要があります。
-func NewTypeParam(obj *TypeName, constraint Type) *TypeParam
+// NewTypeParamは新しいTypeParamを返します。型パラメータは、Named型に対してSetTypeParamsを呼び出すことによって設定できます。
+// 型パラメータを複数の型に設定するとパニックが発生します。
+//
+// 制約引数はnilにすることもできますが、後でSetConstraintを介して設定することができます。制約が非nilの場合、完全に定義されている必要があります。func NewTypeParam(obj *TypeName, constraint Type) *TypeParam
 
 // Obj は型パラメータ t の型名を返します。
 func (t *TypeParam) Obj() *TypeName

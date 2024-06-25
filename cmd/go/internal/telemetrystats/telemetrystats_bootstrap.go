@@ -2,4 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package sql
+//go:build cmd_go_bootstrap
+
+package telemetrystats
+
+func Increment()

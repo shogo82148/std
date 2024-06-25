@@ -148,7 +148,7 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 // それ以外に、リクエストを終了しません。呼び出し元は、wに対してさらに書き込みが行われないようにする必要があります。
 // エラーメッセージはプレーンテキストである必要があります。
 //
-// ErrorはContent-LengthヘッダーとContent-Encodingヘッダーを削除し、
+// ErrorはContent-Lengthヘッダーを削除し、
 // Content-Typeを"text/plain; charset=utf-8"に設定し、
 // X-Content-Type-Optionsを"nosniff"に設定します。
 // これにより、呼び出し元が成功した出力を期待して設定していた場合でも、
@@ -538,8 +538,9 @@ func (srv *Server) Serve(l net.Listener) error
 // ServeTLSは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
 // サービスgoroutineはTLSのセットアップを実行し、リクエストを読み取り、srv.Handlerを呼び出してそれに応答します。
 //
-// [Server] のTLSConfig.CertificatesまたはTLSConfig.GetCertificateがどちらも設定されていない場合、
-// サーバーの証明書と対応する秘密鍵が含まれるファイルを提供する必要があります。
+// サーバー用の証明書と一致する秘密鍵を含むファイルを提供する必要があります。これは、[Server] の
+// TLSConfig.Certificates、TLSConfig.GetCertificate、または
+// config.GetConfigForClientが設定されていない場合に必要です。
 // 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
 //
 // ServeTLSは常に非nilのエラーを返し、lを閉じます。

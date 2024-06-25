@@ -16,10 +16,12 @@ func Sort[S ~[]E, E cmp.Ordered](x S) {}
 
 // SortFunc は、cmp 関数によって決定される昇順でスライス x をソートします。
 // このソートは安定であることは保証されません。
-// cmp(a, b) は、a < b の場合は負の数、a > b の場合は正の数、a == b の場合はゼロを返す必要があります。
+// cmp(a, b)は、a < bの場合は負の数を、a > bの場合は正の数を、a == bまたはaとbが
+// 厳密な弱順序の意味で比較不可能な場合はゼロを返すべきです。
 //
 // SortFunc は、cmp が厳密な弱順序であることを要求します。
 // https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings を参照してください。
+// 関数は比較不可能なアイテムに対して0を返すべきです。
 func SortFunc[S ~[]E, E any](x S, cmp func(a, b E) int) {}
 
 // SortStableFunc は、cmp 関数によって決定される順序でスライス x をソートします。

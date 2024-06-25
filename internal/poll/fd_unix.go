@@ -120,7 +120,7 @@ func DupCloseOnExec(fd int) (int, string, error)
 // Dup duplicates the file descriptor.
 func (fd *FD) Dup() (int, string, error)
 
-// WaitWrite waits until data can be read from fd.
+// WaitWrite waits until data can be written to fd.
 func (fd *FD) WaitWrite() error
 
 // WriteOnce is for testing only. It makes a single write call.

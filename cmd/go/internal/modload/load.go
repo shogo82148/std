@@ -33,6 +33,11 @@ type PackageOpts struct {
 	// packages.
 	Tidy bool
 
+	// TidyDiff, if true, causes tidy not to modify go.mod or go.sum but
+	// instead print the necessary changes as a unified diff. It exits
+	// with a non-zero code if the diff is not empty.
+	TidyDiff bool
+
 	// TidyCompatibleVersion is the oldest Go version that must be able to
 	// reproducibly reload the requested packages.
 	//

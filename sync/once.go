@@ -12,7 +12,9 @@ import (
 //
 // Onceは最初の使用後にコピーしてはいけません。
 //
-// Goメモリモデルの用語では、fからの戻り値はonce.Do(f)の呼び出しの戻り値よりも前に同期します。
+// [the Go memory model] の用語では、fからの戻り値はonce.Do(f)の呼び出しの戻り値よりも前に同期します。
+//
+// [the Go memory model]: https://go.dev/ref/mem
 type Once struct {
 	// done indicates whether the action has been performed.
 	// It is first in the struct because it is used in the hot path.

@@ -26,7 +26,10 @@ type Alias struct {
 // rhsはnilであってはなりません。
 func NewAlias(obj *TypeName, rhs Type) *Alias
 
+// Obj returns the type name for the declaration defining the alias type a.
+// For instantiated types, this is same as the type name of the origin type.
 func (a *Alias) Obj() *TypeName
+
 func (a *Alias) String() string
 
 // Underlyingは、エイリアス型aの [underlying type] を返します。これはエイリアスされた型の基底型です。

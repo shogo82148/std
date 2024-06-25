@@ -2,4 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package runtime
+// This file holds test cases for individual issues
+// for which there is (currently) no better location.
+
+package syntax

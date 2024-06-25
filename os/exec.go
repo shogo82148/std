@@ -17,10 +17,50 @@ var ErrProcessDone = errors.New("os: process already finished")
 
 // Processは [StartProcess] によって作成されたプロセスに関する情報を格納します。
 type Process struct {
-	Pid    int
-	handle atomic.Uintptr
-	isdone atomic.Bool
-	sigMu  sync.RWMutex
+	Pid int
+
+	mode processMode
+
+	// State contains the atomic process state.
+	//
+	// In modePID, this consists only of the processStatus fields, which
+	// indicate if the process is done/released.
+	//
+	// In modeHandle, the lower bits also contain a reference count for the
+	// handle field.
+	//
+	// The Process itself initially holds 1 persistent reference. Any
+	// operation that uses the handle with a system call temporarily holds
+	// an additional transient reference. This prevents the handle from
+	// being closed prematurely, which could result in the OS allocating a
+	// different handle with the same value, leading to Process' methods
+	// operating on the wrong process.
+	//
+	// Release and Wait both drop the Process' persistent reference, but
+	// other concurrent references may delay actually closing the handle
+	// because they hold a transient reference.
+	//
+	// Regardless, we want new method calls to immediately treat the handle
+	// as unavailable after Release or Wait to avoid extending this delay.
+	// This is achieved by setting either processStatus flag when the
+	// Process' persistent reference is dropped. The only difference in the
+	// flags is the reason the handle is unavailable, which affects the
+	// errors returned by concurrent calls.
+	state atomic.Uint64
+
+	// Used only in modePID.
+	sigMu sync.RWMutex
+
+	// handle is the OS handle for process actions, used only in
+	// modeHandle.
+	//
+	// handle must be accessed only via the handleTransientAcquire method
+	// (or during closeHandle), not directly! handle is immutable.
+	//
+	// On Windows, it is a handle from OpenProcess.
+	// On Linux, it is a pidfd.
+	// It is unused on other GOOSes.
+	handle uintptr
 }
 
 // ProcAttrはStartProcessによって開始される新しいプロセスに適用される属性を保持します。

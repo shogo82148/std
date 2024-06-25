@@ -654,6 +654,8 @@
 //
 // -xフラグは、実行されるコマンドを出力します。これは、モジュールが直接リポジトリからダウンロードされるときにバージョン管理コマンドをデバッグするのに便利です。
 //
+// ビルドフラグの詳細については、「go help build」を参照してください。
+//
 // モジュールについての詳細は、https://golang.org/ref/mod を参照してください。
 //
 // 'go get'を使用して最小のGoバージョンと推奨されるGoツールチェーンを更新する方法についての詳細は、https://go.dev/doc/toolchain を参照してください。
@@ -1226,7 +1228,7 @@
 //
 // 使用法：
 //
-//	go mod tidy [-e] [-v] [-x] [-go=version] [-compat=version]
+//	go mod tidy [-e] [-v] [-x] [-diff] [-go=version] [-compat=version]
 //
 // Tidyは、go.modがモジュール内のソースコードと一致することを確認します。
 // 現在のモジュールのパッケージと依存関係をビルドするために必要なモジュールを追加し、
@@ -1236,6 +1238,10 @@
 // -vフラグは、tidyが削除されたモジュールについての情報を標準エラーに印刷するようにします。
 //
 // -eフラグは、パッケージのロード中にエラーが発生した場合でも、tidyが処理を続行しようとするようにします。
+//
+// -diffフラグは、tidyにgo.modやgo.sumを変更させずに、
+// 必要な変更を統合された差分として出力させます。差分が空でない場合、
+// 非ゼロのコードで終了します。
 //
 // -goフラグは、tidyがgo.modファイル内の'go'ディレクティブを指定されたバージョンに更新するようにします。
 // これにより、go.modファイル内で明示的な要件として保持されるモジュール依存関係が変更される可能性があります。
@@ -2138,7 +2144,7 @@
 //	GORISCV64
 //		GOARCH=riscv64の場合、コンパイルするRISC-Vユーザーモードアプリケーションプロファイル。
 //		有効な値はrva20u64（デフォルト）、rva22u64です。
-//		https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc を参照してください。
+//		https://github.com/riscv/riscv-profiles/blob/main/src/profiles.adoc を参照してください。
 //	GOWASM
 //		GOARCH=wasmの場合、使用する実験的なWebAssembly機能のカンマ区切りのリスト。
 //		有効な値はsatconv、signextです。

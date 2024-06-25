@@ -12,9 +12,11 @@ package sync
 //
 // Mutexは最初の使用後にコピーしてはいけません。
 //
-// Goのメモリモデルの用語では、[Mutex.Unlock] のn回目の呼び出しはm回目の [Mutex.Lock] の前に同期されます（n < m）。
+// [the Go memory model] の用語では、[Mutex.Unlock] のn回目の呼び出しはm回目の [Mutex.Lock] の前に同期されます（n < m）。
 // [Mutex.TryLock] の成功した呼び出しはLockの呼び出しと同等です。
 // TryLockの失敗した呼び出しはどのような「同期前の」関係も確立しません。
+//
+// [the Go memory model]: https://go.dev/ref/mem
 type Mutex struct {
 	state int32
 	sema  uint32

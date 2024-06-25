@@ -32,10 +32,12 @@ import (
 //
 // プールは、最初の使用後にコピーしないでください。
 //
-// Goのメモリモデルの用語では、Put(x)の呼び出しは、
+// [the Go memory model] の用語では、Put(x)の呼び出しは、
 // 同じ値xを返す [Pool.Get] の呼び出しよりも「先に同期します」。
 // 同様に、Newがxを返す呼び出しは、
 // 同じ値xを返すGetの呼び出しよりも「先に同期します」。
+//
+// [the Go memory model]: https://go.dev/ref/mem
 type Pool struct {
 	noCopy noCopy
 

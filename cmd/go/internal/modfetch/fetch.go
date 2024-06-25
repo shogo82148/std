@@ -63,6 +63,10 @@ var ErrGoSumDirty = errors.New("updates to go.sum needed, disabled by -mod=reado
 // have been marked for deletion with TrimGoSum.
 func WriteGoSum(ctx context.Context, keep map[module.Version]bool, readonly bool) error
 
+// TidyGoSum returns a tidy version of the go.sum file.
+// A missing go.sum file is treated as if empty.
+func TidyGoSum(keep map[module.Version]bool) (before, after []byte)
+
 // TrimGoSum trims go.sum to contain only the modules needed for reproducible
 // builds.
 //

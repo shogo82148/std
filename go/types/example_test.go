@@ -17,7 +17,7 @@ import (
 	"github.com/shogo82148/std/go/types"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/regexp"
-	"github.com/shogo82148/std/sort"
+	"github.com/shogo82148/std/slices"
 	"github.com/shogo82148/std/strings"
 )
 
@@ -197,14 +197,14 @@ func fib(x int) int {
 	}
 	var items []string
 	for obj, uses := range usesByObj {
-		sort.Strings(uses)
+		slices.Sort(uses)
 		item := fmt.Sprintf("%s:\n  defined at %s\n  used at %s",
 			types.ObjectString(obj, types.RelativeTo(pkg)),
 			fset.Position(obj.Pos()),
 			strings.Join(uses, ", "))
 		items = append(items, item)
 	}
-	sort.Strings(items) // 行：列によるソート、実質的には
+	slices.Sort(items) // 実質的には、行：列によるソート
 	fmt.Println(strings.Join(items, "\n"))
 	fmt.Println()
 
@@ -223,7 +223,7 @@ func fib(x int) int {
 			mode(tv), tvstr)
 		items = append(items, buf.String())
 	}
-	sort.Strings(items)
+	slices.Sort(items)
 	fmt.Println(strings.Join(items, "\n"))
 
 	// Output:

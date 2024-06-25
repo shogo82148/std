@@ -39,7 +39,9 @@ type Conn struct {
 	handshakes       int
 	extMasterSecret  bool
 	didResume        bool
+	didHRR           bool
 	cipherSuite      uint16
+	curveID          CurveID
 	ocspResponse     []byte
 	scts             [][]byte
 	peerCertificates []*x509.Certificate
@@ -61,6 +63,7 @@ type Conn struct {
 
 	// resumptionSecretは、処理または送信するための再開マスターシークレットです。または、NewSessionTicketメッセージを送信するためのものです。
 	resumptionSecret []byte
+	echAccepted      bool
 
 	// ticketKeys は、この接続の有効なセッションチケットキーのセットです。
 	// 最初のキーは新しいチケットの暗号化に使用され、すべてのキーがデコードの試行に使用されます。

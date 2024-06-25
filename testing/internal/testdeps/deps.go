@@ -17,6 +17,9 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// Cover indicates whether coverage is enabled.
+var Cover bool
+
 // TestDeps is an implementation of the testing.testDeps interface,
 // suitable for passing to [testing.MainStart].
 type TestDeps struct{}
@@ -61,3 +64,19 @@ func (TestDeps) CheckCorpus(vals []any, types []reflect.Type) error
 func (TestDeps) ResetCoverage()
 
 func (TestDeps) SnapshotCoverage()
+
+var CoverMode string
+var Covered string
+var CoverSelectedPackages []string
+
+// These variables below are set at runtime (via code in testmain) to point
+// to the equivalent functions in package internal/coverage/cfile; doing
+// things this way allows us to have tests import internal/coverage/cfile
+// only when -cover is in effect (as opposed to importing for all tests).
+var (
+	CoverSnapshotFunc           func() float64
+	CoverProcessTestDirFunc     func(dir string, cfile string, cm string, cpkg string, w io.Writer, selpkgs []string) error
+	CoverMarkProfileEmittedFunc func(val bool)
+)
+
+func (TestDeps) InitRuntimeCoverage() (mode string, tearDown func(string, string) (string, error), snapcov func() float64)

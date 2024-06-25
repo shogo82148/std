@@ -40,8 +40,10 @@ func (fm *Formatter) AddUnit(file string, fname string, isfnlit bool, unit cover
 // for repeatable/deterministic dumps).
 func (fm *Formatter) EmitTextual(w io.Writer) error
 
-// EmitPercent writes out a "percentage covered" string to the writer 'w'.
-func (fm *Formatter) EmitPercent(w io.Writer, covpkgs string, noteEmpty bool, aggregate bool) error
+// EmitPercent writes out a "percentage covered" string to the writer
+// 'w', selecting the set of packages in 'pkgs' and suffixing the
+// printed string with 'inpkgs'.
+func (fm *Formatter) EmitPercent(w io.Writer, pkgs []string, inpkgs string, noteEmpty bool, aggregate bool) error
 
 // EmitFuncs writes out a function-level summary to the writer 'w'. A
 // note on handling function literals: although we collect coverage

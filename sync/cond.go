@@ -10,7 +10,7 @@ package sync
 //
 // 最初の使用後にCondをコピーしてはいけません。
 //
-// Goのメモリモデルの用語では、Condは
+// [the Go memory model] の用語では、Condは
 // [Cond.Broadcast] または [Cond.Signal] の呼び出しが、それによってブロック解除される任意のWait呼び出しよりも
 // 「先に同期する」ように配置します。
 //
@@ -20,6 +20,7 @@ package sync
 // advanced concurrency patterns] と [Bryan Mills's talk on concurrency
 // patterns] を参照してください。
 //
+// [the Go memory model]: https://go.dev/ref/mem
 // [Roberto Clapis's series on advanced concurrency patterns]: https://blogtitle.github.io/categories/concurrency/
 // [Bryan Mills's talk on concurrency patterns]: https://drive.google.com/file/d/1nPdvhB0PutEJzdCq5ms6UI58dp50fcAN/view
 type Cond struct {

@@ -32,6 +32,13 @@ type QUICConn struct {
 // QUICConfigは [QUICConn] を設定します。
 type QUICConfig struct {
 	TLSConfig *Config
+
+	// EnableStoreSessionEvent may be set to true to enable the
+	// [QUICStoreSession] event for client connections.
+	// When this event is enabled, sessions are not automatically
+	// stored in the client session cache.
+	// The application should use [QUICConn.StoreSession] to store sessions.
+	EnableStoreSessionEvent bool
 }
 
 // QUICEventKindはQUIC接続上での操作の種類です。
@@ -61,10 +68,28 @@ const (
 	QUICTransportParametersRequired
 
 	// QUICRejectedEarlyDataは、サーバーが私たちが提供したものであっても、0-RTTデータを拒否したことを示しています。これは、QUICEncryptionLevelApplicationのキーが返される前に返されます。
+	// このイベントはクライアント接続でのみ発生します。
 	QUICRejectedEarlyData
 
 	// QUICHandshakeDone は、TLS ハンドシェイクが完了したことを示します。
 	QUICHandshakeDone
+
+	// QUICResumeSessionは、クライアントが以前のセッションを再開しようとしていることを示します。
+	// [QUICEvent.SessionState] が設定されます。
+	//
+	// クライアント接続の場合、このイベントはセッションチケットが選択されたときに発生します。
+	// サーバー接続の場合、このイベントはクライアントのセッションチケットを受信したときに発生します。
+	//
+	// アプリケーションは、セッションがそれをサポートしていても、0-RTTを拒否するために、次の [QUICConn.NextEvent] の呼び出し前に
+	// [QUICEvent.SessionState.EarlyData] をfalseに設定することができます。
+	QUICResumeSession
+
+	// QUICStoreSessionは、サーバーがセッションを再開するための状態をクライアントに提供したことを示します。
+	// [QUICEvent.SessionState] が設定されます。
+	// アプリケーションは [QUICConn.Store] セッションを使用して [SessionState] を保存するべきです。
+	// アプリケーションは保存する前に [SessionState] を変更することができます。
+	// このイベントはクライアント接続でのみ発生します。
+	QUICStoreSession
 )
 
 // QUICEventはQUIC接続で発生するイベントです。
@@ -83,6 +108,9 @@ type QUICEvent struct {
 
 	// QUICSetReadSecretおよびQUICSetWriteSecretに設定します。
 	Suite uint16
+
+	// Set for QUICResumeSession and QUICStoreSession.
+	SessionState *SessionState
 }
 
 // QUICClientは、QUICTransportを基礎とした新しいTLSクライアント側接続を返します。設定はnilであってはなりません。
@@ -115,12 +143,17 @@ func (q *QUICConn) HandleData(level QUICEncryptionLevel, data []byte) error
 type QUICSessionTicketOptions struct {
 	// EarlyDataは0-RTTで使用できるかどうかを指定します。
 	EarlyData bool
+	Extra     [][]byte
 }
 
 // SendSessionTicketはクライアントにセッションチケットを送信します。
 // これにより、接続イベントが生成され、 [QUICConn.NextEvent] で読み取ることができます。
 // 現在、一度しか呼び出すことはできません。
 func (q *QUICConn) SendSessionTicket(opts QUICSessionTicketOptions) error
+
+// StoreSessionは、QUICStoreSessionイベントで以前受け取ったセッションをClientSessionCacheに保存します。
+// アプリケーションは、セッションを保存する前に追加のイベントを処理したり、SessionStateを変更したりすることができます。
+func (q *QUICConn) StoreSession(session *SessionState) error
 
 // ConnectionStateは接続に関する基本的なTLSの詳細を返します。
 func (q *QUICConn) ConnectionState() ConnectionState

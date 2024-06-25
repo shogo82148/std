@@ -10,7 +10,8 @@
 //
 // このパッケージには2つのセットのインタフェースが含まれています。より抽象的なインタフェースが不要な場合は、v1.5 / OAEPでの暗号化/復号化、およびv1.5 / PSSでの署名/検証のための関数があります。公開鍵原則に対して抽象化する必要がある場合は、PrivateKey型がcryptoパッケージのDecrypterおよびSignerインタフェースを実装します。
 //
-// このパッケージの操作は、一部の操作を除いて、一定の時間アルゴリズムを使用して実装されています。[GenerateKey]、[PrivateKey.Precompute]、および[PrivateKey.Validate]を除くすべての他の操作は、関連する値のビットサイズのみ漏洩し、すべての値は選択したキーサイズに依存します。
+// 私有鍵を扱う操作は、[GenerateKey]、[PrivateKey.Precompute]、および
+// [PrivateKey.Validate] を除いて、定数時間アルゴリズムを使用して実装されています。
 package rsa
 
 import (

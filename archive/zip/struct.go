@@ -91,9 +91,9 @@ type FileHeader struct {
 	// Deprecated: 代わりにCompressedSize64を使用してください。
 	CompressedSize uint32
 
-	// UncompressedSizeは、ファイルの非圧縮サイズ（バイト単位）です。
-	// ファイルの非圧縮または圧縮サイズが32ビットに収まらない場合、
-	// CompressedSizeは^uint32(0)に設定されます。
+	// UncompressedSizeは、ファイルの圧縮されていないサイズをバイト単位で表します。
+	// ファイルの圧縮されていないサイズまたは圧縮されたサイズが32ビットに収まらない場合、
+	// UncompressedSizeは^uint32(0)に設定されます。
 	//
 	// Deprecated: 代わりにUncompressedSize64を使用してください。
 	UncompressedSize uint32

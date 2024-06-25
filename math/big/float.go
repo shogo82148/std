@@ -216,9 +216,8 @@ func (z *Float) SetInf(signbit bool) *Float
 // zの精度は正確な（丸められていない）結果に対する結果のエラーを報告します。
 func (z *Float) Set(x *Float) *Float
 
-// Copyは、zをxと同じ精度、丸めモード、および
-// 精度で設定し、zを返します。zと
-// xが同じであっても、xは変更されません。
+// Copyはzをxと同じ精度、丸めモード、およびxと同じ精度で設定します。
+// Copyはzを返します。xとzが同一である場合、Copyは何も操作しません。
 func (z *Float) Copy(x *Float) *Float
 
 // Uint64は、xをゼロに向かって切り捨てることによって得られる符号なし整数を返します。

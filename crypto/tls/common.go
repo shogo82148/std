@@ -29,11 +29,13 @@ const (
 // もしバージョンがこのパッケージで実装されていない場合は、値のフォールバック表現を返します。
 func VersionName(version uint16) string
 
-// CurveIDは楕円曲線のためのTLS識別子のタイプです。参照：
-// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8.
+// CurveIDは、鍵交換メカニズムのTLS識別子の型です。以下を参照してください。
+// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8
 //
-// TLS 1.3では、このタイプはNamedGroupと呼ばれますが、現在のところ、
-// このライブラリは楕円曲線ベースのグループのみをサポートしています。RFC 8446、セクション4.2.7を参照してください。
+// TLS 1.2では、このレジストリは楕円曲線のみをサポートしていました。TLS 1.3では、
+// 他のグループに拡張され、NamedGroupと改名されました。RFC 8446、セクション
+// 4.2.7を参照してください。その後、ハイブリッド
+// ポスト量子KEMなど、他のメカニズムにも拡張されました。
 type CurveID uint16
 
 const (
@@ -92,8 +94,20 @@ type ConnectionState struct {
 	// この値は、TLS 1.3接続や拡張されたマスターシークレット（RFC 7627）をサポートしていない再開接続ではnilになります。
 	TLSUnique []byte
 
+	// ECHAccepted indicates if Encrypted Client Hello was offered by the client
+	// and accepted by the server. Currently, ECH is supported only on the
+	// client side.
+	ECHAccepted bool
+
 	// ekmはExportKeyingMaterialを介して公開されるクロージャです。
 	ekm func(label string, context []byte, length int) ([]byte, error)
+
+	// testingOnlyDidHRR is true if a HelloRetryRequest was sent/received.
+	testingOnlyDidHRR bool
+
+	// testingOnlyCurveID is the selected CurveID, or zero if an RSA exchanges
+	// is performed.
+	testingOnlyCurveID CurveID
 }
 
 // ExportKeyingMaterialは、RFC 5705で定義されているように、新しいスライスにlengthバイトの
@@ -348,9 +362,9 @@ type Config struct {
 
 	// CipherSuitesは有効なTLS 1.0-1.2の暗号化スイートのリストです。リストの順序は無視されます。注意事項として、TLS 1.3の暗号スイートは設定できません。
 	//
-	// CipherSuitesがnilの場合、安全なデフォルトリストが使用されます。デフォルトの暗号スイートは
-	// 時間とともに変更される可能性があります。Go 1.22では、RSAキー交換ベースの暗号スイートが
-	// デフォルトリストから削除されましたが、GODEBUG設定のtlsrsakex=1で再追加できます。
+	// CipherSuitesがnilの場合、安全なデフォルトリストが使用されます。デフォルトの暗号スイートは時間とともに変更される可能性があります。
+	// Go 1.22では、RSA鍵交換ベースの暗号スイートがデフォルトリストから削除されましたが、GODEBUG設定tlsrsakex=1で再追加できます。
+	// Go 1.23では、3DES暗号スイートがデフォルトリストから削除されましたが、GODEBUG設定tls3des=1で再追加できます。
 	CipherSuites []uint16
 
 	// PreferServerCipherSuitesは古いフィールドであり、効果がありません。
@@ -412,6 +426,9 @@ type Config struct {
 	MaxVersion uint16
 
 	// CurvePreferencesには、ECDHEハンドシェイクで使用される楕円曲線が好まれる順に含まれます。空の場合、デフォルトが使用されます。クライアントは、TLS 1.3でキーシェアのタイプとして最初の選択肢を使用します。将来的には、これは変更される可能性があります。
+	//
+	// Go 1.23から、デフォルトにはX25519Kyber768Draft00ハイブリッドポスト量子鍵交換が含まれます。
+	// これを無効にするには、CurvePreferencesを明示的に設定するか、GODEBUG=tlskyber=0環境変数を使用します。
 	CurvePreferences []CurveID
 
 	// DynamicRecordSizingDisabledはTLSレコードの適応的なサイズ調整を無効にします。
@@ -427,6 +444,41 @@ type Config struct {
 	// https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Formatを参照してください。
 	// KeyLogWriterの使用はセキュリティを損なう可能性があり、デバッグ目的のみに使用するべきです。
 	KeyLogWriter io.Writer
+
+	// EncryptedClientHelloConfigList is a serialized ECHConfigList. If
+	// provided, clients will attempt to connect to servers using Encrypted
+	// Client Hello (ECH) using one of the provided ECHConfigs. Servers
+	// currently ignore this field.
+	//
+	// If the list contains no valid ECH configs, the handshake will fail
+	// and return an error.
+	//
+	// If EncryptedClientHelloConfigList is set, MinVersion, if set, must
+	// be VersionTLS13.
+	//
+	// When EncryptedClientHelloConfigList is set, the handshake will only
+	// succeed if ECH is sucessfully negotiated. If the server rejects ECH,
+	// an ECHRejectionError error will be returned, which may contain a new
+	// ECHConfigList that the server suggests using.
+	//
+	// How this field is parsed may change in future Go versions, if the
+	// encoding described in the final Encrypted Client Hello RFC changes.
+	EncryptedClientHelloConfigList []byte
+
+	// EncryptedClientHelloRejectionVerify, if not nil, is called when ECH is
+	// rejected, in order to verify the ECH provider certificate in the outer
+	// Client Hello. If it returns a non-nil error, the handshake is aborted and
+	// that error results.
+	//
+	// Unlike VerifyPeerCertificate and VerifyConnection, normal certificate
+	// verification will not be performed before calling
+	// EncryptedClientHelloRejectionVerify.
+	//
+	// If EncryptedClientHelloRejectionVerify is nil and ECH is rejected, the
+	// roots in RootCAs will be used to verify the ECH providers public
+	// certificate. VerifyPeerCertificate and VerifyConnection are not called
+	// when ECH is rejected, even if set, and InsecureSkipVerify is ignored.
+	EncryptedClientHelloRejectionVerify func(ConnectionState) error
 
 	// mutexはsessionTicketKeysとautoSessionTicketKeysを保護しています。
 	mutex sync.RWMutex

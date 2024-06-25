@@ -63,7 +63,7 @@ import (
 // マップがnilの場合、Unmarshalは新しいマップを割り当てます。それ以外の場合、Unmarshalは
 // 既存のマップを再利用し、既存のエントリを保持します。次に、UnmarshalはJSONオブジェクトから
 // キーと値のペアをマップに格納します。マップのキーの型は、任意の文字列型、整数、
-// [json.Unmarshaler] を実装するもの、または [encoding.TextUnmarshaler] を実装するものでなければなりません。
+// または [encoding.TextUnmarshaler] を実装するものでなければなりません。
 //
 // もしJSONエンコードされたデータに構文エラーが含まれている場合、Unmarshalは [SyntaxError] を返します。
 //

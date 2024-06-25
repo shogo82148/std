@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/sort"
+	"github.com/shogo82148/std/slices"
 	"github.com/shogo82148/std/strconv"
 	"github.com/shogo82148/std/unicode"
 )
@@ -165,11 +165,8 @@ func ExampleCompare_search() {
 	// Binary search to find a matching byte slice.
 	var needle []byte
 	var haystack [][]byte // Assume sorted
-	i := sort.Search(len(haystack), func(i int) bool {
-		// Return haystack[i] >= needle.
-		return bytes.Compare(haystack[i], needle) >= 0
-	})
-	if i < len(haystack) && bytes.Equal(haystack[i], needle) {
+	_, found := slices.BinarySearchFunc(haystack, needle, bytes.Compare)
+	if found {
 		// Found it!
 	}
 }

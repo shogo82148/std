@@ -22,13 +22,15 @@ import (
 //
 // ゼロ値のMapは空で使用準備ができています。Mapは最初の使用後にコピーされてはなりません。
 //
-// Goメモリモデルの用語では、Mapは書き込み操作が行われたときにそれに続く読み取り操作を "書き込みより前に同期します"。
+// [the Go memory model] の用語では、Mapは書き込み操作が行われたときにそれに続く読み取り操作を "書き込みより前に同期します"。
 // ここで、読み取りと書き込み操作は以下のように定義されます。
 // [Map.Load]、[Map.LoadAndDelete]、[Map.LoadOrStore]、[Map.Swap]、[Map.CompareAndSwap]、[Map.CompareAndDelete] は読み取り操作です。
 // [Map.Delete]、[Map.LoadAndDelete]、[Map.Store]、[Map.Swap] は書き込み操作です。
 // [Map.LoadOrStore] は、loadedがfalseで返された場合に書き込み操作です。
 // [Map.CompareAndSwap] は、swappedがtrueで返された場合に書き込み操作です。
 // [Map.CompareAndDelete] は、deletedがtrueで返された場合に書き込み操作です。
+//
+// [the Go memory model]: https://go.dev/ref/mem
 type Map struct {
 	mu Mutex
 

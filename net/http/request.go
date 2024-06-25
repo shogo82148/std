@@ -265,6 +265,8 @@ func (r *Request) WithContext(ctx context.Context) *Request
 //
 // 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
 //
+// CloneはBodyフィールドの浅いコピーのみを作成します。
+//
 // 新しいコンテキストを持つリクエストを作成するには、NewRequestWithContextを使用します。
 // コンテキストを変更せずに新しいリクエストを作成するには、Request.WithContextを使用します。
 func (r *Request) Clone(ctx context.Context) *Request
