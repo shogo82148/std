@@ -127,25 +127,14 @@ import (
 // 例えば、他のゴルーチンがロックを取得しようと待っている間に長時間保持されたロックは、
 // ロックが最終的に解除されたとき（つまり、[sync.Mutex.Unlock] で）に競合を報告します。
 //
-<<<<<<< HEAD
 // サンプル値は、他のゴルーチンがロックを待ってブロックされていた累積時間に相当し、
-// [runtime.SetMutexProfileFraction]によって指定されたイベントベースのサンプリングに従います。
+// [runtime.SetMutexProfileFraction] によって指定されたイベントベースのサンプリングに従います。
 // 例えば、ある呼び出し元がロックを1秒間保持していて、他の5つのゴルーチンがそのロックを獲得するために
 // その全秒を待っていた場合、そのアンロックのコールスタックは5秒の競合を報告します。
-=======
-// Sample values correspond to the approximate cumulative time other goroutines
-// spent blocked waiting for the lock, subject to event-based sampling
-// specified by [runtime.SetMutexProfileFraction]. For example, if a caller
-// holds a lock for 1s while 5 other goroutines are waiting for the entire
-// second to acquire the lock, its unlock call stack will report 5s of
-// contention.
 //
-// Runtime-internal locks are always reported at the location
-// "runtime._LostContendedRuntimeLock". More detailed stack traces for
-// runtime-internal locks can be obtained by setting
-// `GODEBUG=runtimecontentionstacks=1` (see package [runtime] docs for
-// caveats).
->>>>>>> 753e58fab98a4935390dc921ec196fd5158823bf
+// ランタイム内部のロックは常に "runtime._LostContendedRuntimeLock" の位置で報告されます。ランタイム内部のロックに対する
+// より詳細なスタックトレースは、`GODEBUG=runtimecontentionstacks=1` を設定することで取得できます（注意事項については
+// [runtime] パッケージのドキュメントを参照してください）。
 type Profile struct {
 	name  string
 	mu    sync.Mutex
