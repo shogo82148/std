@@ -1542,12 +1542,16 @@ const (
 	OpARM64LoweredAtomicCas64Variant
 	OpARM64LoweredAtomicCas32Variant
 	OpARM64LoweredAtomicAnd8
-	OpARM64LoweredAtomicAnd32
 	OpARM64LoweredAtomicOr8
+	OpARM64LoweredAtomicAnd64
+	OpARM64LoweredAtomicOr64
+	OpARM64LoweredAtomicAnd32
 	OpARM64LoweredAtomicOr32
 	OpARM64LoweredAtomicAnd8Variant
-	OpARM64LoweredAtomicAnd32Variant
 	OpARM64LoweredAtomicOr8Variant
+	OpARM64LoweredAtomicAnd64Variant
+	OpARM64LoweredAtomicOr64Variant
+	OpARM64LoweredAtomicAnd32Variant
 	OpARM64LoweredAtomicOr32Variant
 	OpARM64LoweredWB
 	OpARM64LoweredPanicBoundsA
@@ -3051,8 +3055,10 @@ const (
 	OpAtomicCompareAndSwap64
 	OpAtomicCompareAndSwapRel32
 	OpAtomicAnd8
-	OpAtomicAnd32
 	OpAtomicOr8
+	OpAtomicAnd64
+	OpAtomicAnd32
+	OpAtomicOr64
 	OpAtomicOr32
 	OpAtomicAdd32Variant
 	OpAtomicAdd64Variant
@@ -3061,8 +3067,10 @@ const (
 	OpAtomicCompareAndSwap32Variant
 	OpAtomicCompareAndSwap64Variant
 	OpAtomicAnd8Variant
-	OpAtomicAnd32Variant
 	OpAtomicOr8Variant
+	OpAtomicAnd64Variant
+	OpAtomicOr64Variant
+	OpAtomicAnd32Variant
 	OpAtomicOr32Variant
 	OpPubBarrier
 	OpClobber
