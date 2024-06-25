@@ -29,21 +29,13 @@ const (
 // もしバージョンがこのパッケージで実装されていない場合は、値のフォールバック表現を返します。
 func VersionName(version uint16) string
 
-<<<<<<< HEAD
-// CurveIDは楕円曲線のためのTLS識別子のタイプです。参照：
-// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8.
+// CurveIDは、鍵交換メカニズムのTLS識別子の型です。以下を参照してください。
+// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8
 //
-// TLS 1.3では、このタイプはNamedGroupと呼ばれますが、現在のところ、
-// このライブラリは楕円曲線ベースのグループのみをサポートしています。RFC 8446、セクション4.2.7を参照してください。
-=======
-// CurveID is the type of a TLS identifier for a key exchange mechanism. See
-// https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-8.
-//
-// In TLS 1.2, this registry used to support only elliptic curves. In TLS 1.3,
-// it was extended to other groups and renamed NamedGroup. See RFC 8446, Section
-// 4.2.7. It was then also extended to other mechanisms, such as hybrid
-// post-quantum KEMs.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
+// TLS 1.2では、このレジストリは楕円曲線のみをサポートしていました。TLS 1.3では、
+// 他のグループに拡張され、NamedGroupと改名されました。RFC 8446、セクション
+// 4.2.7を参照してください。その後、ハイブリッド
+// ポスト量子KEMなど、他のメカニズムにも拡張されました。
 type CurveID uint16
 
 const (
@@ -365,18 +357,9 @@ type Config struct {
 
 	// CipherSuitesは有効なTLS 1.0-1.2の暗号化スイートのリストです。リストの順序は無視されます。注意事項として、TLS 1.3の暗号スイートは設定できません。
 	//
-<<<<<<< HEAD
-	// CipherSuitesがnilの場合、安全なデフォルトリストが使用されます。デフォルトの暗号スイートは
-	// 時間とともに変更される可能性があります。Go 1.22では、RSAキー交換ベースの暗号スイートが
-	// デフォルトリストから削除されましたが、GODEBUG設定のtlsrsakex=1で再追加できます。
-=======
-	// If CipherSuites is nil, a safe default list is used. The default cipher
-	// suites might change over time. In Go 1.22 RSA key exchange based cipher
-	// suites were removed from the default list, but can be re-added with the
-	// GODEBUG setting tlsrsakex=1. In Go 1.23 3DES cipher suites were removed
-	// from the default list, but can be re-added with the GODEBUG setting
-	// tls3des=1.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
+	// CipherSuitesがnilの場合、安全なデフォルトリストが使用されます。デフォルトの暗号スイートは時間とともに変更される可能性があります。
+	// Go 1.22では、RSA鍵交換ベースの暗号スイートがデフォルトリストから削除されましたが、GODEBUG設定tlsrsakex=1で再追加できます。
+	// Go 1.23では、3DES暗号スイートがデフォルトリストから削除されましたが、GODEBUG設定tls3des=1で再追加できます。
 	CipherSuites []uint16
 
 	// PreferServerCipherSuitesは古いフィールドであり、効果がありません。
@@ -437,18 +420,10 @@ type Config struct {
 	// 現在のバージョンはTLS 1.3です。
 	MaxVersion uint16
 
-<<<<<<< HEAD
 	// CurvePreferencesには、ECDHEハンドシェイクで使用される楕円曲線が好まれる順に含まれます。空の場合、デフォルトが使用されます。クライアントは、TLS 1.3でキーシェアのタイプとして最初の選択肢を使用します。将来的には、これは変更される可能性があります。
-=======
-	// CurvePreferences contains the elliptic curves that will be used in
-	// an ECDHE handshake, in preference order. If empty, the default will
-	// be used. The client will use the first preference as the type for
-	// its key share in TLS 1.3. This may change in the future.
 	//
-	// From Go 1.23, the default includes the X25519Kyber768Draft00 hybrid
-	// post-quantum key exchange. To disable it, set CurvePreferences explicitly
-	// or use the GODEBUG=tlskyber=0 environment variable.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
+	// Go 1.23から、デフォルトにはX25519Kyber768Draft00ハイブリッドポスト量子鍵交換が含まれます。
+	// これを無効にするには、CurvePreferencesを明示的に設定するか、GODEBUG=tlskyber=0環境変数を使用します。
 	CurvePreferences []CurveID
 
 	// DynamicRecordSizingDisabledはTLSレコードの適応的なサイズ調整を無効にします。
