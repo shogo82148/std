@@ -59,19 +59,11 @@ import (
 // もしJSON配列がGoの配列より小さい場合、
 // 追加のGoの配列の要素はゼロ値に設定されます。
 //
-<<<<<<< HEAD
 // JSONオブジェクトをマップにアンマーシャルするために、Unmarshalは最初に使用するマップを確立します。
 // マップがnilの場合、Unmarshalは新しいマップを割り当てます。それ以外の場合、Unmarshalは
 // 既存のマップを再利用し、既存のエントリを保持します。次に、UnmarshalはJSONオブジェクトから
 // キーと値のペアをマップに格納します。マップのキーの型は、任意の文字列型、整数、
-// [json.Unmarshaler] を実装するもの、または [encoding.TextUnmarshaler] を実装するものでなければなりません。
-=======
-// To unmarshal a JSON object into a map, Unmarshal first establishes a map to
-// use. If the map is nil, Unmarshal allocates a new map. Otherwise Unmarshal
-// reuses the existing map, keeping existing entries. Unmarshal then stores
-// key-value pairs from the JSON object into the map. The map's key type must
-// either be any string type, an integer, or implement [encoding.TextUnmarshaler].
->>>>>>> 1fd6a6eca8d8190bce426579dfce02adf11c3af1
+// または [encoding.TextUnmarshaler] を実装するものでなければなりません。
 //
 // もしJSONエンコードされたデータに構文エラーが含まれている場合、Unmarshalは [SyntaxError] を返します。
 //
