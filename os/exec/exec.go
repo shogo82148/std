@@ -309,6 +309,10 @@ type Cmd struct {
 	// See https://go.dev/blog/path-security
 	// and https://go.dev/issue/43724 for more context.
 	lookPathErr error
+
+	// cachedLookExtensions caches the result of calling lookExtensions.
+	// This is only used on Windows.
+	cachedLookExtensions string
 }
 
 // Command returns the Cmd struct to execute the named program with
