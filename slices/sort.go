@@ -14,6 +14,7 @@ import (
 // 浮動小数点数をソートする場合、NaN は他の値の前に並べられます。
 func Sort[S ~[]E, E cmp.Ordered](x S) {}
 
+<<<<<<< HEAD
 // SortFunc は、cmp 関数によって決定される昇順でスライス x をソートします。
 // このソートは安定であることは保証されません。
 // cmp(a, b) は、a < b の場合は負の数、a > b の場合は正の数、a == b の場合はゼロを返す必要があります。
@@ -21,6 +22,18 @@ func Sort[S ~[]E, E cmp.Ordered](x S) {}
 // SortFunc は、cmp が厳密な弱順序であることを要求します。
 // https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings を参照してください。
 func SortFunc[S ~[]E, E any](x S, cmp func(a, b E) int) {}
+=======
+// SortFunc sorts the slice x in ascending order as determined by the cmp
+// function. This sort is not guaranteed to be stable.
+// cmp(a, b) should return a negative number when a < b, a positive number when
+// a > b and zero when a == b or a and b are incomparable in the sense of
+// a strict weak ordering.
+//
+// SortFunc requires that cmp is a strict weak ordering.
+// See https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings.
+// The function should return 0 for incomparable items.
+func SortFunc[S ~[]E, E any](x S, cmp func(a, b E) int)
+>>>>>>> 7fa1869ebf1c4723341e8b75cb7e83324b91a0ae
 
 // SortStableFunc は、cmp 関数によって決定される順序でスライス x をソートします。
 // このソートは安定であり、等しい要素の元の順序を維持します。
