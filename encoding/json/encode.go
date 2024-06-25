@@ -112,6 +112,7 @@ import (
 // Go 1.1より前では、匿名の構造体フィールドは無視されていました。現在のバージョンと以前のバージョンの両方で
 // 匿名の構造体フィールドを強制的に無視するには、フィールドにJSONタグ "-" を付けてください。
 //
+<<<<<<< HEAD
 // マップの値はJSONオブジェクトとしてエンコードされます。マップのキーの型は、
 // 文字列、整数型、または [encoding.TextMarshaler] を実装する必要があります。マップのキーは
 // ソートされ、上記の文字列値に対するUTF-8の強制に従って、以下のルールを適用して
@@ -119,6 +120,15 @@ import (
 //   - 任意の文字列型のキーは直接使用されます
 //   - [encoding.TextMarshalers] はマーシャルされます
 //   - 整数キーは文字列に変換されます
+=======
+// Map values encode as JSON objects. The map's key type must either be a
+// string, an integer type, or implement [encoding.TextMarshaler]. The map keys
+// are sorted and used as JSON object keys by applying the following rules,
+// subject to the UTF-8 coercion described for string values above:
+//   - keys of any string type are used directly
+//   - keys that implement [encoding.TextMarshaler] are marshaled
+//   - integer keys are converted to strings
+>>>>>>> 1fd6a6eca8d8190bce426579dfce02adf11c3af1
 //
 // ポインタ値は指している値としてエンコードされます。
 // nilポインタはnullのJSON値としてエンコードされます。

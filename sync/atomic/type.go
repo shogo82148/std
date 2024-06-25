@@ -136,9 +136,15 @@ func (x *Uint32) Add(delta uint32) (new uint32)
 // 古い値を返します。
 func (x *Uint32) And(mask uint32) (old uint32)
 
+<<<<<<< HEAD
 // Orは、提供されたマスクとしてビットマスクを使用してx上でビット単位のOR操作をアトミックに実行し、
 // 古い値を返します。
 func (x *Uint32) Or(mask uint32) (new uint32)
+=======
+// Or atomically performs a bitwise OR operation on x using the bitmask
+// provided as mask and returns the old value.
+func (x *Uint32) Or(mask uint32) (old uint32)
+>>>>>>> 1fd6a6eca8d8190bce426579dfce02adf11c3af1
 
 // Uint64はアトミックなuint64です。ゼロ値はゼロです。
 type Uint64 struct {
@@ -166,9 +172,15 @@ func (x *Uint64) Add(delta uint64) (new uint64)
 // 古い値を返します。
 func (x *Uint64) And(mask uint64) (old uint64)
 
+<<<<<<< HEAD
 // Orは、提供されたマスクとしてビットマスクを使用してx上でビット単位のOR操作をアトミックに実行し、
 // 古い値を返します。
 func (x *Uint64) Or(mask uint64) (new uint64)
+=======
+// Or atomically performs a bitwise OR operation on x using the bitmask
+// provided as mask and returns the old value.
+func (x *Uint64) Or(mask uint64) (old uint64)
+>>>>>>> 1fd6a6eca8d8190bce426579dfce02adf11c3af1
 
 // Uintptrはアトミックなuintptrです。ゼロ値はゼロです。
 type Uintptr struct {

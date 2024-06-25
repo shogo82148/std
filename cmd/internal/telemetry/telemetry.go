@@ -11,16 +11,6 @@
 // on Windows).
 package telemetry
 
-import (
-	"github.com/shogo82148/std/flag"
-
-	"golang.org/x/telemetry/counter"
-)
-
-// OpenCounters opens the counter files for writing if telemetry is supported
-// on the current platform (and does nothing otherwise).
-func OpenCounters()
-
 // MaybeParent does a once a day check to see if the weekly reports are
 // ready to be processed or uploaded, and if so, starts the telemetry child to
 // do so. It should only be called by cmd/go, and only after OpenCounters and MaybeChild
@@ -32,26 +22,6 @@ func MaybeParent()
 // called as the first thing in a program that uses telemetry.OpenCounters but cannot
 // call telemetry.OpenCounters immediately when it starts.
 func MaybeChild()
-
-// Inc increments the counter with the given name.
-func Inc(name string)
-
-// NewCounter returns a counter with the given name.
-func NewCounter(name string) *counter.Counter
-
-// NewStackCounter returns a new stack counter with the given name and depth.
-func NewStackCounter(name string, depth int) *counter.StackCounter
-
-// CountFlags creates a counter for every flag that is set
-// and increments the counter. The name of the counter is
-// the concatenation of prefix and the flag name.
-func CountFlags(prefix string, flagSet flag.FlagSet)
-
-// CountFlagValue creates a counter for the flag value
-// if it is set and increments the counter. The name of the
-// counter is the concatenation of prefix, the flagName, ":",
-// and value.String() for the flag's value.
-func CountFlagValue(prefix string, flagSet flag.FlagSet, flagName string)
 
 // Mode returns the current telemetry mode.
 //
