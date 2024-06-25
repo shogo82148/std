@@ -36,12 +36,24 @@
 // LoadTおよびStoreT関数によって実装されるロードおよびストア操作は、
 // "return *addr"および"*addr = val"のアトミック相当です。
 //
+<<<<<<< HEAD
 // Goのメモリモデルの用語では、アトミック操作Aの効果が
 // アトミック操作Bによって観察される場合、AはBの前に「同期する」。
 // さらに、プログラムで実行されるすべてのアトミック操作は、
 // あたかも一貫した順序で実行されるかのように振る舞います。
 // この定義は、C++の一貫性のあるアトミックとJavaのvolatile変数と
 // 同じセマンティクスを提供します。
+=======
+// In the terminology of [the Go memory model], if the effect of
+// an atomic operation A is observed by atomic operation B,
+// then A “synchronizes before” B.
+// Additionally, all the atomic operations executed in a program
+// behave as though executed in some sequentially consistent order.
+// This definition provides the same semantics as
+// C++'s sequentially consistent atomics and Java's volatile variables.
+//
+// [the Go memory model]: https://go.dev/ref/mem
+>>>>>>> 41b4a7d0008e48dd077e189fd86911de2b36d90d
 package atomic
 
 import (

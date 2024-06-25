@@ -654,7 +654,13 @@
 //
 // -xフラグは、実行されるコマンドを出力します。これは、モジュールが直接リポジトリからダウンロードされるときにバージョン管理コマンドをデバッグするのに便利です。
 //
+<<<<<<< HEAD
 // モジュールについての詳細は、https://golang.org/ref/mod を参照してください。
+=======
+// For more about build flags, see 'go help build'.
+//
+// For more about modules, see https://golang.org/ref/mod.
+>>>>>>> 41b4a7d0008e48dd077e189fd86911de2b36d90d
 //
 // 'go get'を使用して最小のGoバージョンと推奨されるGoツールチェーンを更新する方法についての詳細は、https://go.dev/doc/toolchain を参照してください。
 //

@@ -32,10 +32,19 @@ import (
 //
 // プールは、最初の使用後にコピーしないでください。
 //
+<<<<<<< HEAD
 // Goのメモリモデルの用語では、Put(x)の呼び出しは、
 // 同じ値xを返す [Pool.Get] の呼び出しよりも「先に同期します」。
 // 同様に、Newがxを返す呼び出しは、
 // 同じ値xを返すGetの呼び出しよりも「先に同期します」。
+=======
+// In the terminology of [the Go memory model], a call to Put(x) “synchronizes before”
+// a call to [Pool.Get] returning that same value x.
+// Similarly, a call to New returning x “synchronizes before”
+// a call to Get returning that same value x.
+//
+// [the Go memory model]: https://go.dev/ref/mem
+>>>>>>> 41b4a7d0008e48dd077e189fd86911de2b36d90d
 type Pool struct {
 	noCopy noCopy
 

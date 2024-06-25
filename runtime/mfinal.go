@@ -47,11 +47,23 @@ package runtime
 // そのような割り当て内の参照されなくなったオブジェクトのファイナライザは、常に参照されたオブジェクトと同じバッチに存在する場合、実行されない可能性があります。
 // 通常、このバッチ処理は、小さな（16バイト以下の）ポインタフリーオブジェクトに対してのみ行われます。
 //
+<<<<<<< HEAD
 // オブジェクトが到達不能になるとすぐにファイナライザが実行される場合があります。
 // ファイナライザを正しく使用するには、プログラムはオブジェクトが不要になるまで到達可能であることを保証する必要があります。
 // グローバル変数に格納されたオブジェクト、またはグローバル変数からポインタをトレースできるオブジェクトは到達可能です。
 // その他のオブジェクトについては、[KeepAlive] 関数の呼び出しにオブジェクトを渡して、
 // オブジェクトが到達可能である必要がある関数内の最後のポイントをマークする必要があります。
+=======
+// A finalizer may run as soon as an object becomes unreachable.
+// In order to use finalizers correctly, the program must ensure that
+// the object is reachable until it is no longer required.
+// Objects stored in global variables, or that can be found by tracing
+// pointers from a global variable, are reachable. A function argument or
+// receiver may become unreachable at the last point where the function
+// mentions it. To make an unreachable object reachable, pass the object
+// to a call of the [KeepAlive] function to mark the last point in the
+// function where the object must be reachable.
+>>>>>>> 41b4a7d0008e48dd077e189fd86911de2b36d90d
 //
 // たとえば、pがファイルディスクリプタdを含むos.Fileのような構造体を指し示す場合、
 // pにはdを閉じるファイナライザがあり、pの最後の使用がsyscall.Write(p.d、buf、size)の呼び出しである場合、

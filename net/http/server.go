@@ -538,9 +538,19 @@ func (srv *Server) Serve(l net.Listener) error
 // ServeTLSは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
 // サービスgoroutineはTLSのセットアップを実行し、リクエストを読み取り、srv.Handlerを呼び出してそれに応答します。
 //
+<<<<<<< HEAD
 // [Server] のTLSConfig.CertificatesまたはTLSConfig.GetCertificateがどちらも設定されていない場合、
 // サーバーの証明書と対応する秘密鍵が含まれるファイルを提供する必要があります。
 // 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
+=======
+// Files containing a certificate and matching private key for the
+// server must be provided if neither the [Server]'s
+// TLSConfig.Certificates, TLSConfig.GetCertificate nor
+// config.GetConfigForClient are populated.
+// If the certificate is signed by a certificate authority, the
+// certFile should be the concatenation of the server's certificate,
+// any intermediates, and the CA's certificate.
+>>>>>>> 41b4a7d0008e48dd077e189fd86911de2b36d90d
 //
 // ServeTLSは常に非nilのエラーを返し、lを閉じます。
 // [Server.Shutdown] または [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
