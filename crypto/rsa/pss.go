@@ -43,15 +43,7 @@ func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, digest []byte, 
 
 // VerifyPSSはPSS署名を検証します。
 //
-<<<<<<< HEAD
 // エラーがnilである場合、有効な署名です。ダイジェストは入力メッセージを与えられたハッシュ関数を使用してハッシュした結果である必要があります。opts引数はnilである場合、適切なデフォルト値が使用されます。opts.Hashは無視されます。
-=======
-// A valid signature is indicated by returning a nil error. digest must be the
-// result of hashing the input message using the given hash function. The opts
-// argument may be nil, in which case sensible defaults are used. opts.Hash is
-// ignored.
 //
-// The inputs are not considered confidential, and may leak through timing side
-// channels, or if an attacker has control of part of the inputs.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
+// 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func VerifyPSS(pub *PublicKey, hash crypto.Hash, digest []byte, sig []byte, opts *PSSOptions) error
