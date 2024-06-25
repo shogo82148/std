@@ -286,4 +286,8 @@ type WriteOpts struct {
 // WriteGoMod writes the current build list back to go.mod.
 func WriteGoMod(ctx context.Context, opts WriteOpts) error
 
+// UpdateGoModFromReqs returns a modified go.mod file using the current
+// requirements. It does not commit these changes to disk.
+func UpdateGoModFromReqs(ctx context.Context, opts WriteOpts) (before, after []byte, modFile *modfile.File, err error)
+
 func CheckGodebug(verb, k, v string) error

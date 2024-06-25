@@ -214,8 +214,15 @@ Code Effect Property:
 Least Surprise Property:
 "HTML、CSS、JavaScriptに精通し、コンテキストに応じた自動エスケープが行われることを知っている開発者（またはコードレビュアー）は、{{.}}を見て、どのようなサニタイゼーションが行われるかを正しく推測することができるべきです。"
 
+<<<<<<< HEAD
 最小驚きの原則の結果として、ECMAScript 6のテンプレートリテラル内のテンプレートアクションはデフォルトで無効になっています。
 これらのリテラル内での文字列補間の処理はかなり複雑で、それをサポートする明確な安全な方法がありません。
 ECMAScript 6のテンプレートリテラル内でテンプレートアクションを再度有効にするには、GODEBUG=jstmpllitinterp=1環境変数を使用します。
+=======
+Previously, ECMAScript 6 template literal were disabled by default, and could be
+enabled with the GODEBUG=jstmpllitinterp=1 environment variable. Template
+literals are now supported by default, and setting jstmpllitinterp has no
+effect.
+>>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 */
 package template

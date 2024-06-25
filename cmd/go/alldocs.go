@@ -1226,7 +1226,7 @@
 //
 // 使用法：
 //
-//	go mod tidy [-e] [-v] [-x] [-go=version] [-compat=version]
+//	go mod tidy [-e] [-v] [-x] [-diff] [-go=version] [-compat=version]
 //
 // Tidyは、go.modがモジュール内のソースコードと一致することを確認します。
 // 現在のモジュールのパッケージと依存関係をビルドするために必要なモジュールを追加し、
@@ -1237,9 +1237,21 @@
 //
 // -eフラグは、パッケージのロード中にエラーが発生した場合でも、tidyが処理を続行しようとするようにします。
 //
+<<<<<<< HEAD
 // -goフラグは、tidyがgo.modファイル内の'go'ディレクティブを指定されたバージョンに更新するようにします。
 // これにより、go.modファイル内で明示的な要件として保持されるモジュール依存関係が変更される可能性があります。
 // （Goバージョン1.17以降は、遅延モジュールロードをサポートするためにより多くの要件を保持します。）
+=======
+// The -diff flag causes tidy not to modify the files but instead print the
+// necessary changes as a unified diff. It exits with a non-zero code
+// if updates are needed.
+//
+// The -go flag causes tidy to update the 'go' directive in the go.mod
+// file to the given version, which may change which module dependencies
+// are retained as explicit requirements in the go.mod file.
+// (Go versions 1.17 and higher retain more requirements in order to
+// support lazy module loading.)
+>>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 //
 // -compatフラグは、指定されたメジャーGoリリースからの'go'コマンドがモジュールグラフを正常にロードするために
 // 必要な追加のチェックサムを保持し、そのバージョンの'go'コマンドが異なるモジュールバージョンからインポートされた

@@ -4,7 +4,18 @@
 
 // Package ed25519はEd25519署名アルゴリズムを実装しています。詳しくは、https://ed25519.cr.yp.to/を参照してください。
 //
+<<<<<<< HEAD
 // これらの関数はRFC 8032で定義されている「Ed25519」関数とも互換性があります。ただし、RFC 8032の定義とは異なり、このパッケージの秘密鍵表現には公開鍵の接尾辞が含まれており、同じ鍵での複数の署名操作を効率的に行うことができます。このパッケージでは、RFC 8032の秘密鍵を「seed」と呼んでいます。
+=======
+// These functions are also compatible with the “Ed25519” function defined in
+// RFC 8032. However, unlike RFC 8032's formulation, this package's private key
+// representation includes a public key suffix to make multiple signing
+// operations with the same key more efficient. This package refers to the RFC
+// 8032 private key as the “seed”.
+//
+// Operations involving private keys are implemented using constant-time
+// algorithms.
+>>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 package ed25519
 
 import (
@@ -76,10 +87,31 @@ func NewKeyFromSeed(seed []byte) PrivateKey
 // SignはメッセージにprivateKeyで署名し、署名を返します。もしprivateKeyの長さが[PrivateKeySize]でない場合はパニックを起こします。
 func Sign(privateKey PrivateKey, message []byte) []byte
 
+<<<<<<< HEAD
 // Verifyは、publicKeyによってメッセージのsigが有効な署名かどうかを検証します。
 // もしlen(publicKey)が[PublicKeySize]でない場合、パニックを引き起こします。
 func Verify(publicKey PublicKey, message, sig []byte) bool
 
 // VerifyWithOptionsは、publicKeyによってメッセージのsigが有効な署名であるかどうかを報告します。有効な署名は、nilのエラーを返すことで示されます。len(publicKey)が[PublicKeySize]でない場合、パニックが発生します。
 // もしopts.Hashが[crypto.SHA512]である場合、Ed25519phとして事前にハッシュされたバリアントが使用され、messageはSHA-512ハッシュであることが想定されます。それ以外の場合、opts.Hashは[crypto.Hash](0)でなければならず、メッセージはハッシュされていない状態である必要があります。なぜなら、Ed25519は署名されるメッセージを2回処理するからです。
+=======
+// Verify reports whether sig is a valid signature of message by publicKey. It
+// will panic if len(publicKey) is not [PublicKeySize].
+//
+// The inputs are not considered confidential, and may leak through timing side
+// channels, or if an attacker has control of part of the inputs.
+func Verify(publicKey PublicKey, message, sig []byte) bool
+
+// VerifyWithOptions reports whether sig is a valid signature of message by
+// publicKey. A valid signature is indicated by returning a nil error. It will
+// panic if len(publicKey) is not [PublicKeySize].
+//
+// If opts.Hash is [crypto.SHA512], the pre-hashed variant Ed25519ph is used and
+// message is expected to be a SHA-512 hash, otherwise opts.Hash must be
+// [crypto.Hash](0) and the message must not be hashed, as Ed25519 performs two
+// passes over messages to be signed.
+//
+// The inputs are not considered confidential, and may leak through timing side
+// channels, or if an attacker has control of part of the inputs.
+>>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 func VerifyWithOptions(publicKey PublicKey, message, sig []byte, opts *Options) error

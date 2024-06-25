@@ -43,6 +43,7 @@ type SessionState struct {
 	// クライアント側のTLS 1.3専用フィールド。
 	useBy  uint64
 	ageAdd uint32
+	ticket []byte
 }
 
 // Bytesはセッションをエンコードし、[ParseSessionState]によって解析できるようにします。エンコードには、将来のセッションのセキュリティに重要な秘密値が含まれている可能性があります。
@@ -63,7 +64,6 @@ func (c *Config) DecryptTicket(identity []byte, cs ConnectionState) (*SessionSta
 
 // ClientSessionState は、クライアントが前のTLSセッションを再開するために必要な状態を含んでいます。
 type ClientSessionState struct {
-	ticket  []byte
 	session *SessionState
 }
 

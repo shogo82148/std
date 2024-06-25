@@ -10,7 +10,8 @@ import "github.com/shogo82148/std/iter"
 // If v's kind is Func, it must be a function that has no results and
 // that takes a single argument of type func(T) bool for some type T.
 // If v's kind is Pointer, the pointer element type must have kind Array.
-// Otherwise v's kind must be Int, Int8, Int16, Int32, Int64, Uint, Uint8, Uint16, Uint32, Uint64, Uintptr,
+// Otherwise v's kind must be Int, Int8, Int16, Int32, Int64,
+// Uint, Uint8, Uint16, Uint32, Uint64, Uintptr,
 // Array, Chan, Map, Slice, or String.
 func (v Value) Seq() iter.Seq[Value]
 

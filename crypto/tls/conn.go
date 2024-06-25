@@ -39,7 +39,9 @@ type Conn struct {
 	handshakes       int
 	extMasterSecret  bool
 	didResume        bool
+	didHRR           bool
 	cipherSuite      uint16
+	curveID          CurveID
 	ocspResponse     []byte
 	scts             [][]byte
 	peerCertificates []*x509.Certificate

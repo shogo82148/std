@@ -35,9 +35,9 @@ func (ht *HashTrieMap[K, V]) LoadOrStore(key K, value V) (result V, loaded bool)
 // (even if the old value is the nil interface value).
 func (ht *HashTrieMap[K, V]) CompareAndDelete(key K, old V) (deleted bool)
 
-// Enumerate produces all key-value pairs in the map. The enumeration does
-// not represent any consistent snapshot of the map, but is guaranteed
-// to visit each unique key-value pair only once. It is safe to operate
-// on the tree during iteration. No particular enumeration order is
-// guaranteed.
-func (ht *HashTrieMap[K, V]) Enumerate(yield func(key K, value V) bool)
+// All returns an iter.Seq2 that produces all key-value pairs in the map.
+// The enumeration does not represent any consistent snapshot of the map,
+// but is guaranteed to visit each unique key-value pair only once. It is
+// safe to operate on the tree during iteration. No particular enumeration
+// order is guaranteed.
+func (ht *HashTrieMap[K, V]) All() func(yield func(K, V) bool)

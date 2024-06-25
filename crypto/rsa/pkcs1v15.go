@@ -47,9 +47,20 @@ func DecryptPKCS1v15SessionKey(random io.Reader, priv *PrivateKey, ciphertext []
 // この関数は決定的です。したがって、可能なメッセージのセットが小さい場合、攻撃者はメッセージから署名へのマップを作成し、署名されたメッセージを特定する可能性があります。いつものように、署名は真正さを提供し、機密性は提供しません。
 func SignPKCS1v15(random io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte) ([]byte, error)
 
+<<<<<<< HEAD
 // VerifyPKCS1v15は、RSA PKCS #1 v1.5の署名を検証します。
 // hashedは、入力メッセージを指定されたハッシュ関数でハッシュ化した結果で、
 // sigは署名です。有効な署名の場合、nilエラーが返されます。
 // hashがゼロであれば、hashedは直接使用されます。
 // これは相互運用性以外の用途には適していません。
+=======
+// VerifyPKCS1v15 verifies an RSA PKCS #1 v1.5 signature.
+// hashed is the result of hashing the input message using the given hash
+// function and sig is the signature. A valid signature is indicated by
+// returning a nil error. If hash is zero then hashed is used directly. This
+// isn't advisable except for interoperability.
+//
+// The inputs are not considered confidential, and may leak through timing side
+// channels, or if an attacker has control of part of the inputs.
+>>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 func VerifyPKCS1v15(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte) error

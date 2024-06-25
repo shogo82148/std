@@ -69,6 +69,7 @@ func (d *Dialer) Dial(network, addr string) (net.Conn, error)
 // 返される [Conn] （あれば）は常に *[Conn] 型です。
 func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error)
 
+<<<<<<< HEAD
 // LoadX509KeyPairは、公開/秘密キーペアをペアのファイルから読み込んで解析します。
 // ファイルにはPEMエンコードされたデータを含める必要があります。証明書ファイルには、
 // リーフ証明書に続く中間証明書を含めて、証明書チェーンを形成することができます。成功した場合、
@@ -76,4 +77,22 @@ func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Con
 func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
 
 // X509KeyPairは、一組のPEMエンコードされたデータから公開/秘密鍵のペアを解析します。成功した場合、Certificate.Leafはnilです。そのため、証明書の解析形式は保持されません。
+=======
+// LoadX509KeyPair reads and parses a public/private key pair from a pair of
+// files. The files must contain PEM encoded data. The certificate file may
+// contain intermediate certificates following the leaf certificate to form a
+// certificate chain. On successful return, Certificate.Leaf will be populated.
+//
+// Before Go 1.23 Certificate.Leaf was left nil, and the parsed certificate was
+// discarded. This behavior can be re-enabled by setting "x509keypairleaf=0"
+// in the GODEBUG environment variable.
+func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
+
+// X509KeyPair parses a public/private key pair from a pair of
+// PEM encoded data. On successful return, Certificate.Leaf will be populated.
+//
+// Before Go 1.23 Certificate.Leaf was left nil, and the parsed certificate was
+// discarded. This behavior can be re-enabled by setting "x509keypairleaf=0"
+// in the GODEBUG environment variable.
+>>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 func X509KeyPair(certPEMBlock, keyPEMBlock []byte) (Certificate, error)

@@ -29,6 +29,8 @@ const (
 	NOTUSETMP = 1 << iota
 )
 
+func IsAtomicInst(as obj.As) bool
+
 func OP(x uint32, y uint32) uint32
 
 func SP(x uint32, y uint32) uint32

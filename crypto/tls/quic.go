@@ -32,6 +32,13 @@ type QUICConn struct {
 // QUICConfigは [QUICConn] を設定します。
 type QUICConfig struct {
 	TLSConfig *Config
+
+	// EnableStoreSessionEvent may be set to true to enable the
+	// [QUICStoreSession] event for client connections.
+	// When this event is enabled, sessions are not automatically
+	// stored in the client session cache.
+	// The application should use [QUICConn.StoreSession] to store sessions.
+	EnableStoreSessionEvent bool
 }
 
 // QUICEventKindはQUIC接続上での操作の種類です。
@@ -60,11 +67,36 @@ const (
 	// QUICConn.Startを呼び出す前にトランスポートパラメータが設定されている場合、接続は決してQUICTransportParametersRequiredイベントを生成しません。
 	QUICTransportParametersRequired
 
+<<<<<<< HEAD
 	// QUICRejectedEarlyDataは、サーバーが私たちが提供したものであっても、0-RTTデータを拒否したことを示しています。これは、QUICEncryptionLevelApplicationのキーが返される前に返されます。
+=======
+	// QUICRejectedEarlyData indicates that the server rejected 0-RTT data even
+	// if we offered it. It's returned before QUICEncryptionLevelApplication
+	// keys are returned.
+	// This event only occurs on client connections.
+>>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 	QUICRejectedEarlyData
 
 	// QUICHandshakeDone は、TLS ハンドシェイクが完了したことを示します。
 	QUICHandshakeDone
+
+	// QUICResumeSession indicates that a client is attempting to resume a previous session.
+	// [QUICEvent.SessionState] is set.
+	//
+	// For client connections, this event occurs when the session ticket is selected.
+	// For server connections, this event occurs when receiving the client's session ticket.
+	//
+	// The application may set [QUICEvent.SessionState.EarlyData] to false before the
+	// next call to [QUICConn.NextEvent] to decline 0-RTT even if the session supports it.
+	QUICResumeSession
+
+	// QUICStoreSession indicates that the server has provided state permitting
+	// the client to resume the session.
+	// [QUICEvent.SessionState] is set.
+	// The application should use [QUICConn.Store] session to store the [SessionState].
+	// The application may modify the [SessionState] before storing it.
+	// This event only occurs on client connections.
+	QUICStoreSession
 )
 
 // QUICEventはQUIC接続で発生するイベントです。
@@ -83,6 +115,9 @@ type QUICEvent struct {
 
 	// QUICSetReadSecretおよびQUICSetWriteSecretに設定します。
 	Suite uint16
+
+	// Set for QUICResumeSession and QUICStoreSession.
+	SessionState *SessionState
 }
 
 // QUICClientは、QUICTransportを基礎とした新しいTLSクライアント側接続を返します。設定はnilであってはなりません。
@@ -115,6 +150,7 @@ func (q *QUICConn) HandleData(level QUICEncryptionLevel, data []byte) error
 type QUICSessionTicketOptions struct {
 	// EarlyDataは0-RTTで使用できるかどうかを指定します。
 	EarlyData bool
+	Extra     [][]byte
 }
 
 // SendSessionTicketはクライアントにセッションチケットを送信します。
@@ -122,7 +158,17 @@ type QUICSessionTicketOptions struct {
 // 現在、一度しか呼び出すことはできません。
 func (q *QUICConn) SendSessionTicket(opts QUICSessionTicketOptions) error
 
+<<<<<<< HEAD
 // ConnectionStateは接続に関する基本的なTLSの詳細を返します。
+=======
+// StoreSession stores a session previously received in a QUICStoreSession event
+// in the ClientSessionCache.
+// The application may process additional events or modify the SessionState
+// before storing the session.
+func (q *QUICConn) StoreSession(session *SessionState) error
+
+// ConnectionState returns basic TLS details about the connection.
+>>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
 func (q *QUICConn) ConnectionState() ConnectionState
 
 // SetTransportParametersはピアに送信するためのトランスポートパラメータを設定します。
