@@ -69,30 +69,17 @@ func (d *Dialer) Dial(network, addr string) (net.Conn, error)
 // 返される [Conn] （あれば）は常に *[Conn] 型です。
 func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error)
 
-<<<<<<< HEAD
-// LoadX509KeyPairは、公開/秘密キーペアをペアのファイルから読み込んで解析します。
-// ファイルにはPEMエンコードされたデータを含める必要があります。証明書ファイルには、
-// リーフ証明書に続く中間証明書を含めて、証明書チェーンを形成することができます。成功した場合、
-// Certificate.Leafはnilになります。これは、証明書の解析形式が保持されていないためです。
+// LoadX509KeyPairは、ペアのファイルから公開/秘密鍵ペアを読み込んで解析します。
+// ファイルにはPEMエンコードされたデータが含まれている必要があります。証明書ファイルには、
+// リーフ証明書に続く中間証明書が含まれている場合があり、証明書チェーンを形成します。
+// 成功時の戻り値では、Certificate.Leafが設定されます。
+//
+// Go 1.23以前ではCertificate.Leafはnilのままで、解析された証明書は破棄されました。
+// この挙動は、GODEBUG環境変数で"x509keypairleaf=0"を設定することで再度有効にすることができます。
 func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
 
-// X509KeyPairは、一組のPEMエンコードされたデータから公開/秘密鍵のペアを解析します。成功した場合、Certificate.Leafはnilです。そのため、証明書の解析形式は保持されません。
-=======
-// LoadX509KeyPair reads and parses a public/private key pair from a pair of
-// files. The files must contain PEM encoded data. The certificate file may
-// contain intermediate certificates following the leaf certificate to form a
-// certificate chain. On successful return, Certificate.Leaf will be populated.
+// X509KeyPairは、ペアのPEMエンコードされたデータから公開/秘密鍵ペアを解析します。成功時の戻り値では、Certificate.Leafが設定されます。
 //
-// Before Go 1.23 Certificate.Leaf was left nil, and the parsed certificate was
-// discarded. This behavior can be re-enabled by setting "x509keypairleaf=0"
-// in the GODEBUG environment variable.
-func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
-
-// X509KeyPair parses a public/private key pair from a pair of
-// PEM encoded data. On successful return, Certificate.Leaf will be populated.
-//
-// Before Go 1.23 Certificate.Leaf was left nil, and the parsed certificate was
-// discarded. This behavior can be re-enabled by setting "x509keypairleaf=0"
-// in the GODEBUG environment variable.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
+// Go 1.23以前ではCertificate.Leafはnilのままで、解析された証明書は破棄されました。この挙動は、GODEBUG環境変数で"x509keypairleaf=0"
+// を設定することで再度有効にすることができます。
 func X509KeyPair(certPEMBlock, keyPEMBlock []byte) (Certificate, error)
