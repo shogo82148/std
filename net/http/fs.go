@@ -58,26 +58,15 @@ type File interface {
 // modtimeがゼロ時またはUnixエポックでない場合、ServeContentは応答のLast-Modifiedヘッダーに含めます。
 // リクエストにIf-Modified-Sinceヘッダーが含まれている場合、ServeContentはmodtimeを使用して、コンテンツを送信する必要があるかどうかを決定します。
 //
-<<<<<<< HEAD
 // コンテンツのSeekメソッドは動作する必要があります。ServeContentは、コンテンツのサイズを決定するために、コンテンツの末尾にシークを使用します。
-=======
-// The content's Seek method must work: ServeContent uses
-// a seek to the end of the content to determine its size.
-// Note that [*os.File] implements the [io.ReadSeeker] interface.
->>>>>>> 88ffdff06e04c9473f9b6b2232fb367b17bd85ad
+// [*os.File] は [io.ReadSeeker] インターフェースを実装していることに注意してください。
 //
 // 呼び出し元がRFC 7232、セクション2.3に従ってフォーマットされたwのETagヘッダーを設定している場合、ServeContentはそれを使用して、If-Match、If-None-Match、またはIf-Rangeを使用するリクエストを処理します。
 //
-<<<<<<< HEAD
-// [*os.File] は [io.ReadSeeker] インターフェースを実装していることに注意してください。
-=======
-// If an error occurs when serving the request (for example, when
-// handling an invalid range request), ServeContent responds with an
-// error message. By default, ServeContent strips the Cache-Control,
-// Content-Encoding, ETag, and Last-Modified headers from error responses.
-// The GODEBUG setting httpservecontentkeepheaders=1 causes ServeContent
-// to preserve these headers.
->>>>>>> 88ffdff06e04c9473f9b6b2232fb367b17bd85ad
+// リクエストの処理中にエラーが発生した場合（例えば、無効な範囲リクエストを処理する際など）、
+// ServeContentはエラーメッセージで応答します。デフォルトでは、ServeContentはエラーレスポンスから
+// Cache-Control、Content-Encoding、ETag、およびLast-Modifiedヘッダーを削除します。
+// GODEBUG設定httpservecontentkeepheaders=1を使用すると、ServeContentはこれらのヘッダーを保持します。
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
 // ServeFileは、指定された名前の
