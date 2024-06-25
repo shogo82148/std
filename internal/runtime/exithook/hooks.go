@@ -22,10 +22,20 @@ type Hook struct {
 	RunOnFailure bool
 }
 
+var (
+
+	// runtime sets these for us
+	Gosched func()
+	Goid    func() uint64
+	Throw   func(string)
+)
+
 // Add adds a new exit hook.
 func Add(h Hook)
 
 // Run runs the exit hooks.
-// It returns an error if Run is already running or
-// if one of the hooks panics.
-func Run(code int) (err error)
+//
+// If an exit hook panics, Run will throw with the panic on the stack.
+// If an exit hook invokes exit in the same goroutine, the goroutine will throw.
+// If an exit hook invokes exit in another goroutine, that exit will block.
+func Run(code int)
