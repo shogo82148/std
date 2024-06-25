@@ -15,14 +15,9 @@ import (
 //
 // WaitGroupは、初回使用後にコピーしてはいけません。
 //
-<<<<<<< HEAD
-// Goのメモリモデルの用語である、[WaitGroup.Done] への呼び出しは、それによってブロックが解除される任意のWait呼び出しの前に「同期します」。
-=======
-// In the terminology of [the Go memory model], a call to [WaitGroup.Done]
-// “synchronizes before” the return of any Wait call that it unblocks.
+// [the Go memory model] の用語である、[WaitGroup.Done] への呼び出しは、それによってブロックが解除される任意のWait呼び出しの前に「同期します」。
 //
 // [the Go memory model]: https://go.dev/ref/mem
->>>>>>> 41b4a7d0008e48dd077e189fd86911de2b36d90d
 type WaitGroup struct {
 	noCopy noCopy
 

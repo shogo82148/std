@@ -20,24 +20,14 @@ import (
 // ロックが最終的にライターに利用可能になることを保証します。
 // これは再帰的な読み取りロックを禁止することに注意してください。
 //
-<<<<<<< HEAD
-// Goのメモリモデルの用語では、
+// [the Go memory model] の用語では、
 // n番目の [RWMutex.Unlock] への呼び出しは、任意のn < mに対するm番目のLockへの呼び出しよりも
 // 「先に同期します」。これは [Mutex] と同様です。
 // RLockへの任意の呼び出しに対して、nが存在し、
 // n番目のUnlockへの呼び出しはそのRLockへの呼び出しよりも「先に同期します」、
 // そして対応する [RWMutex.RUnlock] への呼び出しも同様に「先に同期します」。
-=======
-// In the terminology of [the Go memory model],
-// the n'th call to [RWMutex.Unlock] “synchronizes before” the m'th call to Lock
-// for any n < m, just as for [Mutex].
-// For any call to RLock, there exists an n such that
-// the n'th call to Unlock “synchronizes before” that call to RLock,
-// and the corresponding call to [RWMutex.RUnlock] “synchronizes before”
-// the n+1'th call to Lock.
 //
 // [the Go memory model]: https://go.dev/ref/mem
->>>>>>> 41b4a7d0008e48dd077e189fd86911de2b36d90d
 type RWMutex struct {
 	w           Mutex
 	writerSem   uint32
