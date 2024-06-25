@@ -67,14 +67,8 @@ const (
 	// QUICConn.Startを呼び出す前にトランスポートパラメータが設定されている場合、接続は決してQUICTransportParametersRequiredイベントを生成しません。
 	QUICTransportParametersRequired
 
-<<<<<<< HEAD
 	// QUICRejectedEarlyDataは、サーバーが私たちが提供したものであっても、0-RTTデータを拒否したことを示しています。これは、QUICEncryptionLevelApplicationのキーが返される前に返されます。
-=======
-	// QUICRejectedEarlyData indicates that the server rejected 0-RTT data even
-	// if we offered it. It's returned before QUICEncryptionLevelApplication
-	// keys are returned.
-	// This event only occurs on client connections.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
+	// このイベントはクライアント接続でのみ発生します。
 	QUICRejectedEarlyData
 
 	// QUICHandshakeDone は、TLS ハンドシェイクが完了したことを示します。
@@ -158,17 +152,11 @@ type QUICSessionTicketOptions struct {
 // 現在、一度しか呼び出すことはできません。
 func (q *QUICConn) SendSessionTicket(opts QUICSessionTicketOptions) error
 
-<<<<<<< HEAD
-// ConnectionStateは接続に関する基本的なTLSの詳細を返します。
-=======
-// StoreSession stores a session previously received in a QUICStoreSession event
-// in the ClientSessionCache.
-// The application may process additional events or modify the SessionState
-// before storing the session.
+// StoreSessionは、QUICStoreSessionイベントで以前受け取ったセッションをClientSessionCacheに保存します。
+// アプリケーションは、セッションを保存する前に追加のイベントを処理したり、SessionStateを変更したりすることができます。
 func (q *QUICConn) StoreSession(session *SessionState) error
 
-// ConnectionState returns basic TLS details about the connection.
->>>>>>> d32e3230aa4d4baa9384e050abcdef2da31fe8ae
+// ConnectionStateは接続に関する基本的なTLSの詳細を返します。
 func (q *QUICConn) ConnectionState() ConnectionState
 
 // SetTransportParametersはピアに送信するためのトランスポートパラメータを設定します。
