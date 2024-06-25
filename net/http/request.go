@@ -263,18 +263,12 @@ func (r *Request) WithContext(ctx context.Context) *Request
 
 // Cloneは、そのコンテキストをctxに変更したrのディープコピーを返します。提供されたctxはnilであってはなりません。
 //
-<<<<<<< HEAD
 // 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
+//
+// CloneはBodyフィールドの浅いコピーのみを作成します。
 //
 // 新しいコンテキストを持つリクエストを作成するには、NewRequestWithContextを使用します。
 // コンテキストを変更せずに新しいリクエストを作成するには、Request.WithContextを使用します。
-=======
-// Clone only makes a shallow copy of the Body field.
-//
-// For an outgoing client request, the context controls the entire
-// lifetime of a request and its response: obtaining a connection,
-// sending the request, and reading the response headers and body.
->>>>>>> b4eae4ce05a1ad218daef91782cf3a9fe406c8e7
 func (r *Request) Clone(ctx context.Context) *Request
 
 // ProtoAtLeastは、リクエストで使用されるHTTPプロトコルがmajor.minor以上であるかどうかを報告します。
