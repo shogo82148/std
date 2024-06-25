@@ -39,16 +39,9 @@ func Is(err, target error) bool
 // 呼び出すことで得られるエラーで構成されています。errが複数のエラーをラップしている場合、
 // Asはerrとその子の深さ優先探索を順に調べます。
 //
-<<<<<<< HEAD
 // エラーがターゲットに一致する場合、エラーの具体的な値がtargetが指す値に代入可能であるか、
-// またはエラーがAs(interface{}) boolというメソッドを持ち、As(target)がtrueを返す場合です。
+// またはエラーがAs(any) boolというメソッドを持ち、As(target)がtrueを返す場合です。
 // 後者の場合、Asメソッドはtargetを設定する責任があります。
-=======
-// An error matches target if the error's concrete value is assignable to the value
-// pointed to by target, or if the error has a method As(any) bool such that
-// As(target) returns true. In the latter case, the As method is responsible for
-// setting target.
->>>>>>> 0a15ed3d7c4effc91679034e6efd49923e17cef6
 //
 // エラータイプは、異なるエラータイプであるかのように扱うことができるように、Asメソッドを提供する場合があります。
 //
