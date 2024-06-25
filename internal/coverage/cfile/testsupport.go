@@ -12,7 +12,7 @@ import (
 // testmain code when "go test -cover" is in effect. It is not
 // intended to be used other than internally by the Go command's
 // generated code.
-func ProcessCoverTestDir(dir string, cfile string, cm string, cpkg string, w io.Writer) error
+func ProcessCoverTestDir(dir string, cfile string, cm string, cpkg string, w io.Writer, selpkgs []string) error
 
 // Snapshot returns a snapshot of coverage percentage at a moment of
 // time within a running test, so as to support the testing.Coverage()
