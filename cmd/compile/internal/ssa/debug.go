@@ -139,5 +139,8 @@ func (debugInfo *FuncDebug) PutLocationList(list []byte, ctxt *obj.Link, listSym
 // it constructs a 2-element location list: the first element holds
 // the input register, and the second element holds the stack location
 // of the param (the assumption being that when optimization is off,
-// each input param reg will be spilled in the prolog).
+// each input param reg will be spilled in the prolog). In addition
+// to the register params, here we also build location lists (where
+// appropriate for the ".closureptr" compiler-synthesized variable
+// needed by the debugger for range func bodies.
 func BuildFuncDebugNoOptimized(ctxt *obj.Link, f *Func, loggingEnabled bool, stackOffset func(LocalSlot) int32, rval *FuncDebug)
