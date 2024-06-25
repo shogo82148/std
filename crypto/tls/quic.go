@@ -74,22 +74,21 @@ const (
 	// QUICHandshakeDone は、TLS ハンドシェイクが完了したことを示します。
 	QUICHandshakeDone
 
-	// QUICResumeSession indicates that a client is attempting to resume a previous session.
-	// [QUICEvent.SessionState] is set.
+	// QUICResumeSessionは、クライアントが以前のセッションを再開しようとしていることを示します。
+	// [QUICEvent.SessionState] が設定されます。
 	//
-	// For client connections, this event occurs when the session ticket is selected.
-	// For server connections, this event occurs when receiving the client's session ticket.
+	// クライアント接続の場合、このイベントはセッションチケットが選択されたときに発生します。
+	// サーバー接続の場合、このイベントはクライアントのセッションチケットを受信したときに発生します。
 	//
-	// The application may set [QUICEvent.SessionState.EarlyData] to false before the
-	// next call to [QUICConn.NextEvent] to decline 0-RTT even if the session supports it.
+	// アプリケーションは、セッションがそれをサポートしていても、0-RTTを拒否するために、次の [QUICConn.NextEvent] の呼び出し前に
+	// [QUICEvent.SessionState.EarlyData] をfalseに設定することができます。
 	QUICResumeSession
 
-	// QUICStoreSession indicates that the server has provided state permitting
-	// the client to resume the session.
-	// [QUICEvent.SessionState] is set.
-	// The application should use [QUICConn.Store] session to store the [SessionState].
-	// The application may modify the [SessionState] before storing it.
-	// This event only occurs on client connections.
+	// QUICStoreSessionは、サーバーがセッションを再開するための状態をクライアントに提供したことを示します。
+	// [QUICEvent.SessionState] が設定されます。
+	// アプリケーションは [QUICConn.Store] セッションを使用して [SessionState] を保存するべきです。
+	// アプリケーションは保存する前に [SessionState] を変更することができます。
+	// このイベントはクライアント接続でのみ発生します。
 	QUICStoreSession
 )
 
