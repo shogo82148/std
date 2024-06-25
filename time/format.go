@@ -20,6 +20,7 @@ package time
 //
 // Time.Formatの例では、レイアウト文字列の動作を詳しく説明しており、参考になります。
 //
+<<<<<<< HEAD
 // [RFC822]、[RFC850]、[RFC1123] のフォーマットは、ローカル時間にのみ適用する必要があります。
 // UTC時間に適用する場合、時差表示として「UTC」が使用されますが、厳密にはこれらのRFCでは
 // その場合に「GMT」の使用が必要です。
@@ -29,6 +30,23 @@ package time
 // time.Parseで使用する場合、これらはRFCで許可されているすべての時間形式を受け付けず、
 // 正式に定義されていない時間形式を受け入れます。
 // [RFC3339Nano] 形式は秒の末尾のゼロを削除するため、フォーマット後に正しくソートされない場合があります。
+=======
+// Note that the [RFC822], [RFC850], and [RFC1123] formats should be applied
+// only to local times. Applying them to UTC times will use "UTC" as the
+// time zone abbreviation, while strictly speaking those RFCs require the
+// use of "GMT" in that case.
+// When using the [RFC1123] or [RFC1123Z] formats for parsing, note that these
+// formats define a leading zero for the day-in-month portion, which is not
+// strictly allowed by RFC 1123. This will result in an error when parsing
+// date strings that occur in the first 9 days of a given month.
+// In general [RFC1123Z] should be used instead of [RFC1123] for servers
+// that insist on that format, and [RFC3339] should be preferred for new protocols.
+// [RFC3339], [RFC822], [RFC822Z], [RFC1123], and [RFC1123Z] are useful for formatting;
+// when used with time.Parse they do not accept all the time formats
+// permitted by the RFCs and they do accept time formats not formally defined.
+// The [RFC3339Nano] format removes trailing zeros from the seconds field
+// and thus may not sort correctly once formatted.
+>>>>>>> 5a7802bdaba3fd26117711e13b4c7a4649d3f761
 //
 // ほとんどのプログラムは、FormatやParseに渡すための定義済みの定数の1つを使用できます。
 // カスタムレイアウト文字列を作成する場合以外は、このコメントの残りは無視してかまいません。

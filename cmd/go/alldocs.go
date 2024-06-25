@@ -2142,9 +2142,15 @@
 //		GOARCH=ppc64{,le}の場合、ターゲットISA（Instruction Set Architecture）。
 //		有効な値はpower8（デフォルト）、power9、power10です。
 //	GORISCV64
+<<<<<<< HEAD
 //		GOARCH=riscv64の場合、コンパイルするRISC-Vユーザーモードアプリケーションプロファイル。
 //		有効な値はrva20u64（デフォルト）、rva22u64です。
 //		https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc を参照してください。
+=======
+//		For GOARCH=riscv64, the RISC-V user-mode application profile for which
+//		to compile. Valid values are rva20u64 (default), rva22u64.
+//		See https://github.com/riscv/riscv-profiles/blob/main/src/profiles.adoc
+>>>>>>> 5a7802bdaba3fd26117711e13b4c7a4649d3f761
 //	GOWASM
 //		GOARCH=wasmの場合、使用する実験的なWebAssembly機能のカンマ区切りのリスト。
 //		有効な値はsatconv、signextです。
