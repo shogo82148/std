@@ -130,10 +130,27 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 
 	panicnil: panicnil=1を設定すると、nilのインターフェース値または型指定されていないnilを引数にpanicを呼び出したときのランタイムエラーが無効になります。
 
+<<<<<<< HEAD
 	invalidptr: invalidptr=1（デフォルト）は、無効なポインタ値（例えば、1）がポインタ型の場所に見つかった場合に、
 	ガベージコレクターとスタックコピー機がプログラムをクラッシュさせるようにします。invalidptr=0に設定すると、このチェックが無効になります。
 	これは、バグのあるコードを診断するための一時的な回避策としてのみ使用されるべきです。
 	本当の修正は、ポインタ型の場所に整数を格納しないことです。
+=======
+	runtimecontentionstacks: setting runtimecontentionstacks=1 enables inclusion of call stacks
+	related to contention on runtime-internal locks in the "mutex" profile, subject to the
+	MutexProfileFraction setting. When runtimecontentionstacks=0, contention on
+	runtime-internal locks will report as "runtime._LostContendedRuntimeLock". When
+	runtimecontentionstacks=1, the call stacks will correspond to the unlock call that released
+	the lock. But instead of the value corresponding to the amount of contention that call
+	stack caused, it corresponds to the amount of time the caller of unlock had to wait in its
+	original call to lock. A future release is expected to align those and remove this setting.
+
+	invalidptr: invalidptr=1 (the default) causes the garbage collector and stack
+	copier to crash the program if an invalid pointer value (for example, 1)
+	is found in a pointer-typed location. Setting invalidptr=0 disables this check.
+	This should only be used as a temporary workaround to diagnose buggy code.
+	The real fix is to not store integers in pointer-typed locations.
+>>>>>>> 753e58fab98a4935390dc921ec196fd5158823bf
 
 	sbrk: sbrk=1を設定すると、メモリアロケータとガベージコレクタが置き換えられ、オペレーティングシステムからメモリを取得し、メモリを回収しない単純なアロケータになります。
 
