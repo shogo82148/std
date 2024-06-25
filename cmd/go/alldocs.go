@@ -1237,14 +1237,9 @@
 //
 // -eフラグは、パッケージのロード中にエラーが発生した場合でも、tidyが処理を続行しようとするようにします。
 //
-<<<<<<< HEAD
-// -diffフラグは、tidyにファイルを変更させずに、必要な変更を統合されたdiffとして出力させます。
-// 更新が必要な場合は、0以外のコードで終了します。
-=======
-// The -diff flag causes tidy not to modify go.mod or go.sum but
-// instead print the necessary changes as a unified diff. It exits
-// with a non-zero code if the diff is not empty.
->>>>>>> 753e58fab98a4935390dc921ec196fd5158823bf
+// -diffフラグは、tidyにgo.modやgo.sumを変更させずに、
+// 必要な変更を統合された差分として出力させます。差分が空でない場合、
+// 非ゼロのコードで終了します。
 //
 // -goフラグは、tidyがgo.modファイル内の'go'ディレクティブを指定されたバージョンに更新するようにします。
 // これにより、go.modファイル内で明示的な要件として保持されるモジュール依存関係が変更される可能性があります。
