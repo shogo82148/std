@@ -114,6 +114,12 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	memprofilerate: memprofilerate=Xを設定すると、runtime.MemProfileRateの値が更新されます。
 	0に設定すると、メモリプロファイリングが無効になります。デフォルト値についてはMemProfileRateの説明を参照してください。
 
+	profstackdepth: profstackdepth=128（デフォルト）は、CPUプロファイラーを除くすべてのpprofプロファイラーによって使用される最大スタック
+	深さを128フレームに設定します。
+	この限界を超えるスタックトレースは、葉フレームから始まる限界まで切り捨てられます。profstackdepthを1024を超える任意の値に設定しても、
+	暗黙のうちに1024にデフォルト設定されます。将来のGoのバージョンでは、この制限が取り除かれ、profstackdepthがCPUプロファイラーと実行トレーサーにも
+	適用されるように拡張される可能性があります。
+
 	pagetrace: pagetrace=/path/to/fileを設定すると、ページイベントのトレースが書き出され、
 	x/debug/cmd/pagetraceツールを使用して表示、分析、および可視化できます。この機能を有効にするには、
 	プログラムをGOEXPERIMENT=pagetraceでビルドしてください。
@@ -124,28 +130,10 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 
 	panicnil: panicnil=1を設定すると、nilのインターフェース値または型指定されていないnilを引数にpanicを呼び出したときのランタイムエラーが無効になります。
 
-	runtimecontentionstacks: runtimecontentionstacks=1を設定すると、"mutex"プロファイルに
-	ランタイム内部のロックに関連するコールスタックが含まれるようになります。これは
-	MutexProfileFraction設定に従います。runtimecontentionstacks=0の場合、
-	ランタイム内部のロックに対する競合は"runtime._LostContendedRuntimeLock"として報告されます。
-	runtimecontentionstacks=1の場合、コールスタックはロックを解放したunlock呼び出しに対応します。
-	しかし、その値はそのコールスタックが引き起こした競合の量に対応するのではなく、
-	unlockの呼び出し元が元のlock呼び出しで待たなければならなかった時間に対応します。
-	これらを揃えてこの設定を削除することが期待される未来のリリースがあります。
-
-	runtimecontentionstacks: runtimecontentionstacks=1を設定すると、"mutex"プロファイルに
-	runtime内部のロックの競合に関連する呼び出しスタックが含まれるようになります。これは
-	MutexProfileFraction設定に従います。runtimecontentionstacks=0の場合、
-	runtime内部のロックの競合は "runtime._LostContendedRuntimeLock"として報告されます。
-	runtimecontentionstacks=1の場合、呼び出しスタックはロックを解放したunlock呼び出しに対応します。
-	しかし、その値はその呼び出しスタックが引き起こした競合の量に対応するのではなく、
-	unlockの呼び出し元が元のロック呼び出しで待たなければならなかった時間に対応します。
-	これらを揃えてこの設定を削除することが期待される未来のリリースがあります。
-
-	invalidptr: invalidptr=1（デフォルト）は、無効なポインタ値（例えば、1）がポインタ型の位置に見つかった場合、
-	ガベージコレクタとスタックコピーアがプログラムをクラッシュさせます。invalidptr=0を設定すると、このチェックが無効になります。
-	これはバグのあるコードを診断するための一時的な回避策としてのみ使用すべきです。
-	本当の修正は、整数をポインタ型の位置に格納しないことです。
+	invalidptr: invalidptr=1（デフォルト）は、無効なポインタ値（例えば、1）がポインタ型の場所に見つかった場合に、
+	ガベージコレクターとスタックコピー機がプログラムをクラッシュさせるようにします。invalidptr=0に設定すると、このチェックが無効になります。
+	これは、バグのあるコードを診断するための一時的な回避策としてのみ使用されるべきです。
+	本当の修正は、ポインタ型の場所に整数を格納しないことです。
 
 	sbrk: sbrk=1を設定すると、メモリアロケータとガベージコレクタが置き換えられ、オペレーティングシステムからメモリを取得し、メモリを回収しない単純なアロケータになります。
 

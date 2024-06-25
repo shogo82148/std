@@ -85,15 +85,19 @@ type Func struct {
 
 	Inl *Inline
 
-	// funcLitGen and goDeferGen track how many closures have been
-	// created in this function for function literals and go/defer
-	// wrappers, respectively. Used by closureName for creating unique
-	// function names.
-	//
+	// RangeParent, if non-nil, is the first non-range body function containing
+	// the closure for the body of a range function.
+	RangeParent *Func
+
+	// funcLitGen, rangeLitGen and goDeferGen track how many closures have been
+	// created in this function for function literals, range-over-func loops,
+	// and go/defer wrappers, respectively. Used by closureName for creating
+	// unique function names.
 	// Tracking goDeferGen separately avoids wrappers throwing off
 	// function literal numbering (e.g., runtime/trace_test.TestTraceSymbolize.func11).
-	funcLitGen int32
-	goDeferGen int32
+	funcLitGen  int32
+	rangeLitGen int32
+	goDeferGen  int32
 
 	Label int32
 
