@@ -78,5 +78,5 @@ func (rw *RWMutex) TryLock() bool
 func (rw *RWMutex) Unlock()
 
 // RLocker returns a [Locker] interface that implements
-// the [RWMutex.Lock] and [RWMutex.Unlock] methods by calling rw.RLock and rw.RUnlock.
+// the [Locker.Lock] and [Locker.Unlock] methods by calling rw.RLock and rw.RUnlock.
 func (rw *RWMutex) RLocker() Locker
