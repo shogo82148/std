@@ -311,8 +311,10 @@ type Cmd struct {
 	lookPathErr error
 
 	// cachedLookExtensions caches the result of calling lookExtensions.
+	// It is set when Command is called with an absolute path, letting it do
+	// the work of resolving the extension, so Start doesn't need to do it again.
 	// This is only used on Windows.
-	cachedLookExtensions string
+	cachedLookExtensions struct{ in, out string }
 }
 
 // Command returns the [Cmd] struct to execute the named program with
