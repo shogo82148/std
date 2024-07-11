@@ -47,7 +47,7 @@ func (e *SyscallError) Timeout() bool
 // As a convenience, if err is nil, NewSyscallError returns nil.
 func NewSyscallError(syscall string, err error) error
 
-// IsExist returns a boolean indicating whether the error is known to report
+// IsExist returns a boolean indicating whether its argument is known to report
 // that a file or directory already exists. It is satisfied by [ErrExist] as
 // well as some syscall errors.
 //
@@ -55,7 +55,7 @@ func NewSyscallError(syscall string, err error) error
 // the os package. New code should use errors.Is(err, fs.ErrExist).
 func IsExist(err error) bool
 
-// IsNotExist returns a boolean indicating whether the error is known to
+// IsNotExist returns a boolean indicating whether its argument is known to
 // report that a file or directory does not exist. It is satisfied by
 // [ErrNotExist] as well as some syscall errors.
 //
@@ -63,7 +63,7 @@ func IsExist(err error) bool
 // the os package. New code should use errors.Is(err, fs.ErrNotExist).
 func IsNotExist(err error) bool
 
-// IsPermission returns a boolean indicating whether the error is known to
+// IsPermission returns a boolean indicating whether its argument is known to
 // report that permission is denied. It is satisfied by [ErrPermission] as well
 // as some syscall errors.
 //
@@ -71,7 +71,7 @@ func IsNotExist(err error) bool
 // the os package. New code should use errors.Is(err, fs.ErrPermission).
 func IsPermission(err error) bool
 
-// IsTimeout returns a boolean indicating whether the error is known
+// IsTimeout returns a boolean indicating whether its argument is known
 // to report that a timeout occurred.
 //
 // This function predates [errors.Is], and the notion of whether an
