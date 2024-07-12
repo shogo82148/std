@@ -35,7 +35,7 @@ func IndexByte(s string, c byte) int
 
 // IndexRune returns the index of the first instance of the Unicode code point
 // r, or -1 if rune is not present in s.
-// If r is utf8.RuneError, it returns the first instance of any
+// If r is [utf8.RuneError], it returns the first instance of any
 // invalid UTF-8 byte sequence.
 func IndexRune(s string, r rune) int
 
@@ -63,7 +63,7 @@ func LastIndexByte(s string, c byte) int
 // Edge cases for s and sep (for example, empty strings) are handled
 // as described in the documentation for [Split].
 //
-// To split around the first instance of a separator, see Cut.
+// To split around the first instance of a separator, see [Cut].
 func SplitN(s, sep string, n int) []string
 
 // SplitAfterN slices s into substrings after each instance of sep and
@@ -90,7 +90,7 @@ func SplitAfterN(s, sep string, n int) []string
 //
 // It is equivalent to [SplitN] with a count of -1.
 //
-// To split around the first instance of a separator, see Cut.
+// To split around the first instance of a separator, see [Cut].
 func Split(s, sep string) []string
 
 // SplitAfter slices s into all substrings after each instance of sep and
@@ -106,7 +106,7 @@ func Split(s, sep string) []string
 func SplitAfter(s, sep string) []string
 
 // Fields splits the string s around each instance of one or more consecutive white space
-// characters, as defined by unicode.IsSpace, returning a slice of substrings of s or an
+// characters, as defined by [unicode.IsSpace], returning a slice of substrings of s or an
 // empty slice if s contains only white space.
 func Fields(s string) []string
 
