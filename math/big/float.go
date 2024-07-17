@@ -144,10 +144,9 @@ func (x *Float) Mode() RoundingMode
 func (x *Float) Acc() Accuracy
 
 // Sign returns:
-//
-//	-1 if x <   0
-//	 0 if x is ±0
-//	+1 if x >   0
+//   - -1 if x < 0;
+//   - 0 if x is ±0;
+//   - +1 if x > 0.
 func (x *Float) Sign() int
 
 // MantExp breaks x into its mantissa and exponent components
@@ -240,7 +239,7 @@ func (z *Float) Set(x *Float) *Float
 func (z *Float) Copy(x *Float) *Float
 
 // Uint64 returns the unsigned integer resulting from truncating x
-// towards zero. If 0 <= x <= math.MaxUint64, the result is [Exact]
+// towards zero. If 0 <= x <= [math.MaxUint64], the result is [Exact]
 // if x is an integer and [Below] otherwise.
 // The result is (0, [Above]) for x < 0, and ([math.MaxUint64], [Below])
 // for x > [math.MaxUint64].
@@ -317,8 +316,7 @@ func (z *Float) Mul(x, y *Float) *Float
 func (z *Float) Quo(x, y *Float) *Float
 
 // Cmp compares x and y and returns:
-//
-//	-1 if x <  y
-//	 0 if x == y (incl. -0 == 0, -Inf == -Inf, and +Inf == +Inf)
-//	+1 if x >  y
+//   - -1 if x < y;
+//   - 0 if x == y (incl. -0 == 0, -Inf == -Inf, and +Inf == +Inf);
+//   - +1 if x > y.
 func (x *Float) Cmp(y *Float) int

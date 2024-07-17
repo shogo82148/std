@@ -33,10 +33,9 @@ type Int struct {
 }
 
 // Sign returns:
-//
-//	-1 if x <  0
-//	 0 if x == 0
-//	+1 if x >  0
+//   - -1 if x < 0;
+//   - 0 if x == 0;
+//   - +1 if x > 0.
 func (x *Int) Sign() int
 
 // SetInt64 sets z to x and returns z.
@@ -108,7 +107,7 @@ func (z *Int) Rem(x, y *Int) *Int
 //	r = x - y*q
 //
 // (See Daan Leijen, “Division and Modulus for Computer Scientists”.)
-// See DivMod for Euclidean division and modulus (unlike Go).
+// See [DivMod] for Euclidean division and modulus (unlike Go).
 func (z *Int) QuoRem(x, y, r *Int) (*Int, *Int)
 
 // Div sets z to the quotient x/y for y != 0 and returns z.
@@ -138,17 +137,15 @@ func (z *Int) Mod(x, y *Int) *Int
 func (z *Int) DivMod(x, y, m *Int) (*Int, *Int)
 
 // Cmp compares x and y and returns:
-//
-//	-1 if x <  y
-//	 0 if x == y
-//	+1 if x >  y
+//   - -1 if x < y;
+//   - 0 if x == y;
+//   - +1 if x > y.
 func (x *Int) Cmp(y *Int) (r int)
 
 // CmpAbs compares the absolute values of x and y and returns:
-//
-//	-1 if |x| <  |y|
-//	 0 if |x| == |y|
-//	+1 if |x| >  |y|
+//   - -1 if |x| < |y|;
+//   - 0 if |x| == |y|;
+//   - +1 if |x| > |y|.
 func (x *Int) CmpAbs(y *Int) int
 
 // Int64 returns the int64 representation of x.
@@ -270,9 +267,10 @@ func (z *Int) Rsh(x *Int, n uint) *Int
 func (x *Int) Bit(i int) uint
 
 // SetBit sets z to x, with x's i'th bit set to b (0 or 1).
-// That is, if b is 1 SetBit sets z = x | (1 << i);
-// if b is 0 SetBit sets z = x &^ (1 << i). If b is not 0 or 1,
-// SetBit will panic.
+// That is,
+//   - if b is 1, SetBit sets z = x | (1 << i);
+//   - if b is 0, SetBit sets z = x &^ (1 << i);
+//   - if b is not 0 or 1, SetBit will panic.
 func (z *Int) SetBit(x *Int, i int, b uint) *Int
 
 // And sets z = x & y and returns z.

@@ -172,7 +172,8 @@ func (n *IPNet) String() string
 // The string s can be in IPv4 dotted decimal ("192.0.2.1"), IPv6
 // ("2001:db8::68"), or IPv4-mapped IPv6 ("::ffff:192.0.2.1") form.
 // If s is not a valid textual representation of an IP address,
-// ParseIP returns nil.
+// ParseIP returns nil. The returned address is always 16 bytes,
+// IPv4 addresses are returned in IPv4-mapped IPv6 form.
 func ParseIP(s string) IP
 
 // ParseCIDR parses s as a CIDR notation IP address and prefix length,

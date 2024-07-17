@@ -74,10 +74,9 @@ func (z *Rat) Neg(x *Rat) *Rat
 func (z *Rat) Inv(x *Rat) *Rat
 
 // Sign returns:
-//
-//	-1 if x <  0
-//	 0 if x == 0
-//	+1 if x >  0
+//   - -1 if x < 0;
+//   - 0 if x == 0;
+//   - +1 if x > 0.
 func (x *Rat) Sign() int
 
 // IsInt reports whether the denominator of x is 1.
@@ -99,10 +98,9 @@ func (x *Rat) Num() *Int
 func (x *Rat) Denom() *Int
 
 // Cmp compares x and y and returns:
-//
-//	-1 if x <  y
-//	 0 if x == y
-//	+1 if x >  y
+//   - -1 if x < y;
+//   - 0 if x == y;
+//   - +1 if x > y.
 func (x *Rat) Cmp(y *Rat) int
 
 // Add sets z to the sum x+y and returns z.

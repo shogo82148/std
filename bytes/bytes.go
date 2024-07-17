@@ -48,7 +48,7 @@ func LastIndexByte(s []byte, c byte) int
 // IndexRune interprets s as a sequence of UTF-8-encoded code points.
 // It returns the byte index of the first occurrence in s of the given rune.
 // It returns -1 if rune is not present in s.
-// If r is utf8.RuneError, it returns the first instance of any
+// If r is [utf8.RuneError], it returns the first instance of any
 // invalid UTF-8 byte sequence.
 func IndexRune(s []byte, r rune) int
 
@@ -68,22 +68,20 @@ func LastIndexAny(s []byte, chars string) int
 // the subslices between those separators.
 // If sep is empty, SplitN splits after each UTF-8 sequence.
 // The count determines the number of subslices to return:
+//   - n > 0: at most n subslices; the last subslice will be the unsplit remainder;
+//   - n == 0: the result is nil (zero subslices);
+//   - n < 0: all subslices.
 //
-//	n > 0: at most n subslices; the last subslice will be the unsplit remainder.
-//	n == 0: the result is nil (zero subslices)
-//	n < 0: all subslices
-//
-// To split around the first instance of a separator, see Cut.
+// To split around the first instance of a separator, see [Cut].
 func SplitN(s, sep []byte, n int) [][]byte
 
 // SplitAfterN slices s into subslices after each instance of sep and
 // returns a slice of those subslices.
 // If sep is empty, SplitAfterN splits after each UTF-8 sequence.
 // The count determines the number of subslices to return:
-//
-//	n > 0: at most n subslices; the last subslice will be the unsplit remainder.
-//	n == 0: the result is nil (zero subslices)
-//	n < 0: all subslices
+//   - n > 0: at most n subslices; the last subslice will be the unsplit remainder;
+//   - n == 0: the result is nil (zero subslices);
+//   - n < 0: all subslices.
 func SplitAfterN(s, sep []byte, n int) [][]byte
 
 // Split slices s into all subslices separated by sep and returns a slice of
@@ -91,7 +89,7 @@ func SplitAfterN(s, sep []byte, n int) [][]byte
 // If sep is empty, Split splits after each UTF-8 sequence.
 // It is equivalent to SplitN with a count of -1.
 //
-// To split around the first instance of a separator, see Cut.
+// To split around the first instance of a separator, see [Cut].
 func Split(s, sep []byte) [][]byte
 
 // SplitAfter slices s into all subslices after each instance of sep and
@@ -102,7 +100,7 @@ func SplitAfter(s, sep []byte) [][]byte
 
 // Fields interprets s as a sequence of UTF-8-encoded code points.
 // It splits the slice s around each instance of one or more consecutive white space
-// characters, as defined by unicode.IsSpace, returning a slice of subslices of s or an
+// characters, as defined by [unicode.IsSpace], returning a slice of subslices of s or an
 // empty slice if s contains only white space.
 func Fields(s []byte) [][]byte
 
