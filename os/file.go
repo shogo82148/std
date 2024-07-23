@@ -210,8 +210,8 @@ func TempDir() string
 // On Windows, it returns %LocalAppData%.
 // On Plan 9, it returns $home/lib/cache.
 //
-// If the location cannot be determined (for example, $HOME is not defined),
-// then it will return an error.
+// If the location cannot be determined (for example, $HOME is not defined) or
+// the path in $XDG_CACHE_HOME is relative, then it will return an error.
 func UserCacheDir() (string, error)
 
 // UserConfigDir returns the default root directory to use for user-specific
@@ -225,8 +225,8 @@ func UserCacheDir() (string, error)
 // On Windows, it returns %AppData%.
 // On Plan 9, it returns $home/lib.
 //
-// If the location cannot be determined (for example, $HOME is not defined),
-// then it will return an error.
+// If the location cannot be determined (for example, $HOME is not defined) or
+// the path in $XDG_CONFIG_HOME is relative, then it will return an error.
 func UserConfigDir() (string, error)
 
 // UserHomeDir returns the current user's home directory.
