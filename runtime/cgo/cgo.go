@@ -9,7 +9,7 @@ for details on using cgo.
 */
 package cgo
 
-import "github.com/shogo82148/std/runtime/internal/sys"
+import "github.com/shogo82148/std/internal/runtime/sys"
 
 // Incomplete is used specifically for the semantics of incomplete C types.
 type Incomplete struct {
