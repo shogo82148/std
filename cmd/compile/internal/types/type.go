@@ -320,7 +320,7 @@ type ChanArgs struct {
 	T *Type
 }
 
-// // FuncArgs contains Type fields specific to TFUNCARGS types.
+// FuncArgs contains Type fields specific to TFUNCARGS types.
 type FuncArgs struct {
 	T *Type
 }
