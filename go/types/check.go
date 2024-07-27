@@ -43,7 +43,6 @@ type Checker struct {
 	versions      map[*ast.File]string
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
-	recvTParamMap map[*ast.Ident]*TypeParam
 	brokenAliases map[*TypeName]bool
 	unionTypeSets map[*Union]*_TypeSet
 	mono          monoGraph

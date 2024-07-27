@@ -59,5 +59,5 @@ func (s *Signature) Results() *Tuple
 // Variadic reports whether the signature s is variadic.
 func (s *Signature) Variadic() bool
 
-func (t *Signature) Underlying() Type
-func (t *Signature) String() string
+func (s *Signature) Underlying() Type
+func (s *Signature) String() string
