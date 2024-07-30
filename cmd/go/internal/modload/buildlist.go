@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/sync/atomic"
 
 	"github.com/shogo82148/std/cmd/go/internal/mvs"
-	"github.com/shogo82148/std/cmd/go/internal/par"
+	"github.com/shogo82148/std/cmd/internal/par"
 
 	"golang.org/x/mod/module"
 )
