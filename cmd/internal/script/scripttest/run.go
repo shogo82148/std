@@ -24,7 +24,7 @@ type ToolReplacement struct {
 // is that we'll be called from the top level cmd/X dir for tool X,
 // and that instead of executing the install tool X we'll use the
 // test binary instead.
-func RunToolScriptTest(t *testing.T, repls []ToolReplacement, pattern string)
+func RunToolScriptTest(t *testing.T, repls []ToolReplacement, scriptsdir string, fixReadme bool)
 
 // RunTests kicks off one or more script-based tests using the
 // specified engine, running all test files that match pattern.

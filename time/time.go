@@ -154,6 +154,10 @@ type Time struct {
 	loc *Location
 }
 
+// IsZero reports whether t represents the zero time instant,
+// January 1, year 1, 00:00:00 UTC.
+func (t Time) IsZero() bool
+
 // After reports whether the time instant t is after u.
 func (t Time) After(u Time) bool
 
@@ -207,10 +211,6 @@ const (
 
 // String returns the English name of the day ("Sunday", "Monday", ...).
 func (d Weekday) String() string
-
-// IsZero reports whether t represents the zero time instant,
-// January 1, year 1, 00:00:00 UTC.
-func (t Time) IsZero() bool
 
 // Date returns the year, month, and day in which t occurs.
 func (t Time) Date() (year int, month Month, day int)
@@ -316,7 +316,8 @@ func (d Duration) Truncate(m Duration) Duration
 func (d Duration) Round(m Duration) Duration
 
 // Abs returns the absolute value of d.
-// As a special case, [math.MinInt64] is converted to [math.MaxInt64].
+// As a special case, Duration([math.MinInt64]) is converted to Duration([math.MaxInt64]),
+// reducing its magnitude by 1 nanosecond.
 func (d Duration) Abs() Duration
 
 // Add returns the time t+d.
@@ -427,13 +428,13 @@ func (t Time) GobEncode() ([]byte, error)
 // GobDecode implements the gob.GobDecoder interface.
 func (t *Time) GobDecode(data []byte) error
 
-// MarshalJSON implements the [json.Marshaler] interface.
+// MarshalJSON implements the [encoding/json.Marshaler] interface.
 // The time is a quoted string in the RFC 3339 format with sub-second precision.
 // If the timestamp cannot be represented as valid RFC 3339
 // (e.g., the year is out of range), then an error is reported.
 func (t Time) MarshalJSON() ([]byte, error)
 
-// UnmarshalJSON implements the [json.Unmarshaler] interface.
+// UnmarshalJSON implements the [encoding/json.Unmarshaler] interface.
 // The time must be a quoted string in the RFC 3339 format.
 func (t *Time) UnmarshalJSON(data []byte) error
 
