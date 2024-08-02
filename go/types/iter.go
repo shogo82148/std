@@ -43,7 +43,7 @@ func (s *Struct) Fields() iter.Seq[*Var]
 // Example: for v := range tuple.Variables() { ... }
 func (t *Tuple) Variables() iter.Seq[*Var]
 
-// MethodSet returns a go1.23 iterator over the methods of a method set.
+// Methods returns a go1.23 iterator over the methods of a method set.
 //
 // Example: for method := range s.Methods() { ... }
 func (s *MethodSet) Methods() iter.Seq[*Selection]

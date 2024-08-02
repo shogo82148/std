@@ -18,9 +18,10 @@ const Size = 20
 // The blocksize of SHA-1 in bytes.
 const BlockSize = 64
 
-// New returns a new hash.Hash computing the SHA1 checksum. The Hash also
-// implements [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to
-// marshal and unmarshal the internal state of the hash.
+// New512_224 returns a new [hash.Hash] computing the SHA1 checksum. The Hash
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
+// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
+// state of the hash.
 func New() hash.Hash
 
 // Sum returns the SHA-1 checksum of the data.

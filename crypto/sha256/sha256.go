@@ -19,13 +19,16 @@ const Size224 = 28
 // The blocksize of SHA256 and SHA224 in bytes.
 const BlockSize = 64
 
-// New returns a new hash.Hash computing the SHA256 checksum. The Hash
-// also implements [encoding.BinaryMarshaler] and
+// New returns a new [hash.Hash] computing the SHA256 checksum. The Hash
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
 // [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
 // state of the hash.
 func New() hash.Hash
 
-// New224 returns a new hash.Hash computing the SHA224 checksum.
+// New224 returns a new [hash.Hash] computing the SHA224 checksum. The Hash
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
+// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
+// state of the hash.
 func New224() hash.Hash
 
 // Sum256 returns the SHA256 checksum of the data.
