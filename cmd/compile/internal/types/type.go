@@ -265,7 +265,11 @@ type Map struct {
 	Key  *Type
 	Elem *Type
 
-	Bucket *Type
+	// GOEXPERIMENT=noswissmap fields
+	OldBucket *Type
+
+	// GOEXPERIMENT=swissmap fields
+	SwissBucket *Type
 }
 
 // MapType returns t's extra map-specific fields.

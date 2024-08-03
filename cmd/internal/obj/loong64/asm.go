@@ -31,8 +31,6 @@ const (
 
 func IsAtomicInst(as obj.As) bool
 
-func OP_TEN(x uint32, y uint32) uint32
-
 // r1 -> rk
 // r2 -> rj
 // r3 -> rd
