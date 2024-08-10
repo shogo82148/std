@@ -175,6 +175,8 @@ type Loader struct {
 	// CgoExports records cgo-exported symbols by SymName.
 	CgoExports map[string]Sym
 
+	WasmExports []Sym
+
 	flags uint32
 
 	strictDupMsgs int
@@ -555,6 +557,8 @@ func (l *Loader) Aux(i Sym, j int) Aux
 // import statement.
 // (https://webassembly.github.io/spec/core/syntax/modules.html#imports)
 func (l *Loader) WasmImportSym(fnSymIdx Sym) Sym
+
+func (l *Loader) WasmTypeSym(s Sym) Sym
 
 // SEHUnwindSym returns the auxiliary SEH unwind symbol associated with
 // a given function symbol.

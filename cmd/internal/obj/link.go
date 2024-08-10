@@ -302,6 +302,7 @@ type FuncInfo struct {
 	FuncInfoSym *LSym
 
 	WasmImport *WasmImport
+	WasmExport *WasmExport
 
 	sehUnwindInfoSym *LSym
 }
@@ -380,15 +381,27 @@ func (wi *WasmImport) Read(b []byte)
 // parameters and results translated into WASM types based on the Go function
 // declaration.
 type WasmFuncType struct {
-	// Params holds the imported function parameter fields.
+	// Params holds the function parameter fields.
 	Params []WasmField
-	// Results holds the imported function result fields.
+	// Results holds the function result fields.
 	Results []WasmField
 }
 
 func (ft *WasmFuncType) Write(w *bytes.Buffer)
 
 func (ft *WasmFuncType) Read(b []byte)
+
+// WasmExport represents a WebAssembly (WASM) exported function with
+// parameters and results translated into WASM types based on the Go function
+// declaration.
+type WasmExport struct {
+	WasmFuncType
+
+	WrappedSym *LSym
+	AuxSym     *LSym
+}
+
+func (we *WasmExport) CreateAuxSym()
 
 type WasmField struct {
 	Type WasmFieldType
