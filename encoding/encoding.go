@@ -25,9 +25,17 @@ type BinaryMarshaler interface {
 //
 // UnmarshalBinaryは、MarshalBinaryによって生成された形式をデコードできる必要があります。
 // UnmarshalBinaryは、データを保持したい場合はデータをコピーする必要があります。
-//処理を終えた後のデータを残したい場合は、データをコピーする必要があります。
+// 処理を終えた後のデータを残したい場合は、データをコピーする必要があります。
 type BinaryUnmarshaler interface {
 	UnmarshalBinary(data []byte) error
+}
+
+// BinaryAppender is the interface implemented by an object
+// that can append the binary representation of itself.
+// If a type implements both [BinaryAppender] and [BinaryMarshaler],
+// then v.MarshalBinary() must be semantically identical to v.AppendBinary(nil).
+type BinaryAppender interface {
+	AppendBinary(b []byte) ([]byte, error)
 }
 
 // TextMarshalerは、自身をテキスト形式にマーシャリングできるオブジェクトによって実装されるインターフェースです。
@@ -43,4 +51,12 @@ type TextMarshaler interface {
 // UnmarshalTextは、戻り値の後にテキストを保持する場合は、テキストをコピーする必要があります。
 type TextUnmarshaler interface {
 	UnmarshalText(text []byte) error
+}
+
+// TextAppender is the interface implemented by an object
+// that can append the textual representation of itself.
+// If a type implements both [TextAppender] and [TextMarshaler],
+// then v.MarshalText() must be semantically identical to v.AppendText(nil).
+type TextAppender interface {
+	AppendText(b []byte) ([]byte, error)
 }

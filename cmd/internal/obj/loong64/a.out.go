@@ -199,7 +199,6 @@ const (
 	C_LACON
 	C_LECON
 	C_DACON
-	C_STCON
 	C_SBRA
 	C_LBRA
 	C_SAUTO
@@ -289,9 +288,6 @@ const (
 	AMOVWD
 	AMOVWF
 
-	AMOVWL
-	AMOVWR
-
 	AMUL
 	AMULD
 	AMULF
@@ -346,8 +342,6 @@ const (
 
 	// 64-bit
 	AMOVV
-	AMOVVL
-	AMOVVR
 
 	ASLLV
 	ASRAV
