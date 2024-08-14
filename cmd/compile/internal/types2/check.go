@@ -41,7 +41,6 @@ type Checker struct {
 	versions      map[*syntax.PosBase]string
 	imports       []*PkgName
 	dotImportMap  map[dotImportKey]*PkgName
-	recvTParamMap map[*syntax.Name]*TypeParam
 	brokenAliases map[*TypeName]bool
 	unionTypeSets map[*Union]*_TypeSet
 	mono          monoGraph
