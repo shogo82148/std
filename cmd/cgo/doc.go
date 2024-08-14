@@ -137,10 +137,13 @@ C型__int128_tおよび__uint128_tは、[16]byteで表されます。
 Goで通常はポインタ型で表されるいくつかの特別なC型は、代わりにuintptrで表されます。
 詳細については、以下の特別なケースのセクションを参照してください。
 
-構造体、共用体、または列挙型に直接アクセスするには、
-C.struct_statのように、struct_、union_、またはenum_を接頭辞として付けます。
-
-C型Tのサイズは、C.sizeof_struct_statのように、C.sizeof_Tとして利用可能です。
+構造体、共用体、または列挙型に直接アクセスするには、C.struct_statのように、
+それにstruct_、union_、またはenum_をプレフィックスとして付けます。
+任意のC型Tのサイズは、C.sizeof_struct_statのように、C.sizeof_Tとして利用できます。
+これらの特別なプレフィックスは、「struct_」、「union_」、「enum_」、または「sizeof_」で始まる
+C識別子を直接参照する方法がないことを意味します。例えば、「struct_function」という名前の関数です。
+回避策として、前置きに「#define」を使用し、「#define c_struct_function struct_function」のようにし、
+Goコード内で「C.c_struct_function」と参照します。
 
 Goファイルで、特別な名前_GoString_のパラメータ型を持つC関数を宣言することができます。
 この関数は、通常のGo文字列値で呼び出すことができます。
