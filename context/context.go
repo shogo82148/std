@@ -137,9 +137,9 @@ func Cause(c Context) error
 // AfterFuncはそれを使用して呼び出しをスケジュールします。
 func AfterFunc(ctx Context, f func()) (stop func() bool)
 
-// WithoutCancel returns a copy of parent that is not canceled when parent is canceled.
-// The returned context returns no Deadline or Err, and its Done channel is nil.
-// Calling [Cause] on the returned context returns nil.
+// WithoutCancelは、親がキャンセルされたときにキャンセルされない親のコピーを返します。
+// 返されたコンテキストは、DeadlineやErrを返さず、Doneチャネルはnilです。
+// 返されたコンテキストで [Cause] を呼び出すとnilが返されます。
 func WithoutCancel(parent Context) Context
 
 // WithDeadlineは、親の期限をdよりも遅くならないように調整した親のコピーを返します。
