@@ -1792,10 +1792,12 @@
 //
 //	//go:build
 //
+// Build constraints can also be used to downgrade the language version
+// used to compile a file.
+//
 // 制約は任意の種類のソースファイル（Goだけでなく）に現れることができますが、
 // ファイルの先頭近く、空行や他のコメントだけが先行する位置に現れなければなりません。
-// これらのルールは、Goファイルではビルド制約がパッケージ句の前に現れなければならないことを意味します。
-//
+// これらのルールは、Goファイルではビルド制約がパッケージ句の前に現れなければならないことを意味します。//
 // ビルド制約とパッケージのドキュメンテーションを区別するために、
 // ビルド制約の後には空行を入れるべきです。
 //
@@ -1901,6 +1903,10 @@
 // Goのバージョン1.16以前では、ビルド制約には異なる構文が使用されていました。
 // それは"// +build"プレフィックスでした。gofmtコマンドは、古い構文に遭遇すると、
 // 同等の//go:build制約を追加します。
+//
+// In modules with a Go version of 1.21 or later, if a file's build constraint
+// has a term for a Go major release, the language version used when compiling
+// the file will be the minimum version implied by the build constraint.
 //
 // # Build modes
 //
