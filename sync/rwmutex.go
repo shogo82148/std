@@ -70,5 +70,5 @@ func (rw *RWMutex) TryLock() bool
 // Mutexと同様に、ロックされた [RWMutex] は特定のゴルーチンに関連付けられていません。あるゴルーチンがRWMutexを [RWMutex.RLock]（[RWMutex.Lock]）し、別のゴルーチンが [RWMutex.RUnlock]（[RWMutex.Unlock]）するようにすることができます。
 func (rw *RWMutex) Unlock()
 
-// RLockerは [Locker] インターフェースを返します。このインターフェースは、rw.RLockとrw.RUnlockを呼び出して [RWMutex.Lock] と [RWMutex.Unlock] メソッドを実装します。
+// RLockerは [Locker] インターフェースを返します。このインターフェースは、rw.RLockとrw.RUnlockを呼び出して [Locker.Lock] と [Locker.Unlock] メソッドを実装します。
 func (rw *RWMutex) RLocker() Locker
