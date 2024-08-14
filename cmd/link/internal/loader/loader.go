@@ -554,7 +554,7 @@ func (l *Loader) Aux(i Sym, j int) Aux
 // contains the information necessary for the linker to add a WebAssembly
 // import statement.
 // (https://webassembly.github.io/spec/core/syntax/modules.html#imports)
-func (l *Loader) WasmImportSym(fnSymIdx Sym) (Sym, bool)
+func (l *Loader) WasmImportSym(fnSymIdx Sym) Sym
 
 // SEHUnwindSym returns the auxiliary SEH unwind symbol associated with
 // a given function symbol.
