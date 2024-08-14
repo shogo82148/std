@@ -15,9 +15,9 @@ import "github.com/shogo82148/std/iter"
 // Array、Chan、Map、Slice、またはStringでなければなりません。
 func (v Value) Seq() iter.Seq[Value]
 
-// Seq2 returns an iter.Seq2[Value, Value] that loops over the elements of v.
-// If v's kind is Func, it must be a function that has no results and
-// that takes a single argument of type func(K, V) bool for some type K, V.
-// If v's kind is Pointer, the pointer element type must have kind Array.
-// Otherwise v's kind must be Array, Map, Slice, or String.
+// Seq2は、vの要素をループするiter.Seq2[Value, Value]を返します。
+// vの種類がFuncの場合、それは結果を持たず、
+// 型func(K, V) boolの単一の引数を取る関数でなければなりません。
+// vの種類がPointerの場合、ポインタ要素の型はArrayでなければなりません。
+// それ以外の場合、vの種類はArray、Map、Slice、またはStringでなければなりません。
 func (v Value) Seq2() iter.Seq2[Value, Value]
