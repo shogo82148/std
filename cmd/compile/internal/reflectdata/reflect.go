@@ -11,6 +11,17 @@ import (
 	"github.com/shogo82148/std/cmd/internal/src"
 )
 
+// MapBucketType makes the map bucket type given the type of the map.
+func MapBucketType(t *types.Type) *types.Type
+
+// MapType returns a type interchangeable with runtime.hmap.
+// Make sure this stays in sync with runtime/map.go.
+func MapType() *types.Type
+
+// MapIterType returns a type interchangeable with runtime.hiter.
+// Make sure this stays in sync with runtime/map.go.
+func MapIterType() *types.Type
+
 // TrackSym returns the symbol for tracking use of field/method f, assumed
 // to be a member of struct/interface type t.
 func TrackSym(t *types.Type, f *types.Field) *obj.LSym

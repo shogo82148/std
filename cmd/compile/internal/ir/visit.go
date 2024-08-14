@@ -89,13 +89,6 @@ package ir
 // by directly calling the ones provided by this package.
 func DoChildren(n Node, do func(Node) bool) bool
 
-// DoChildrenWithHidden is like DoChildren, but also visits
-// Node-typed fields tagged with `mknode:"-"`.
-//
-// TODO(mdempsky): Remove the `mknode:"-"` tags so this function can
-// go away.
-func DoChildrenWithHidden(n Node, do func(Node) bool) bool
-
 // Visit visits each non-nil node x in the IR tree rooted at n
 // in a depth-first preorder traversal, calling visit on each node visited.
 func Visit(n Node, visit func(Node))

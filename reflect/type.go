@@ -245,6 +245,14 @@ func PointerTo(t Type) Type
 // If t's size is equal to or exceeds this limit, ChanOf panics.
 func ChanOf(dir ChanDir, t Type) Type
 
+// MapOf returns the map type with the given key and element types.
+// For example, if k represents int and e represents string,
+// MapOf(k, e) represents map[int]string.
+//
+// If the key type is not a valid map key type (that is, if it does
+// not implement Go's == operator), MapOf panics.
+func MapOf(key, elem Type) Type
+
 // FuncOf returns the function type with the given argument and result types.
 // For example if k represents int and e represents string,
 // FuncOf([]Type{k}, []Type{e}, false) represents func(int) string.

@@ -63,6 +63,3 @@ type RevInfo struct {
 // A successful return does not guarantee that the module
 // has any defined versions.
 func Lookup(ctx context.Context, proxy, path string) Repo
-
-// LookupLocal will only use local VCS information to fetch the Repo.
-func LookupLocal(ctx context.Context, path string) Repo

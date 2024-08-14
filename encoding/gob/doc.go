@@ -193,13 +193,14 @@ pair (-type id, encoded-type) where encoded-type is the gob encoding of a wireTy
 description, constructed from these types:
 
 	type wireType struct {
-		ArrayT           *arrayType
-		SliceT           *sliceType
-		StructT          *structType
-		MapT             *mapType
+		ArrayT           *ArrayType
+		SliceT           *SliceType
+		StructT          *StructType
+		MapT             *MapType
 		GobEncoderT      *gobEncoderType
 		BinaryMarshalerT *gobEncoderType
 		TextMarshalerT   *gobEncoderType
+
 	}
 	type arrayType struct {
 		CommonType
@@ -216,7 +217,7 @@ description, constructed from these types:
 	}
 	type structType struct {
 		CommonType
-		Field []fieldType // the fields of the struct.
+		Field []*fieldType // the fields of the struct.
 	}
 	type fieldType struct {
 		Name string // the name of the field.

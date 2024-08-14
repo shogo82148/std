@@ -35,14 +35,6 @@ type BinaryUnmarshaler interface {
 	UnmarshalBinary(data []byte) error
 }
 
-// BinaryAppender is the interface implemented by an object
-// that can append the binary representation of itself.
-// If a type implements both [BinaryAppender] and [BinaryMarshaler],
-// then v.MarshalBinary() must be semantically identical to v.AppendBinary(nil).
-type BinaryAppender interface {
-	AppendBinary(b []byte) ([]byte, error)
-}
-
 // TextMarshaler is the interface implemented by an object that can
 // marshal itself into a textual form.
 //
@@ -59,12 +51,4 @@ type TextMarshaler interface {
 // after returning.
 type TextUnmarshaler interface {
 	UnmarshalText(text []byte) error
-}
-
-// TextAppender is the interface implemented by an object
-// that can append the textual representation of itself.
-// If a type implements both [TextAppender] and [TextMarshaler],
-// then v.MarshalText() must be semantically identical to v.AppendText(nil).
-type TextAppender interface {
-	AppendText(b []byte) ([]byte, error)
 }

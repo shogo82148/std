@@ -66,26 +66,6 @@ type LocalGroupUserInfo0 struct {
 	Name *uint16
 }
 
-const (
-	NERR_UserNotFound syscall.Errno = 2221
-	NERR_UserExists   syscall.Errno = 2224
-)
-
-const (
-	USER_PRIV_USER = 1
-)
-
-type UserInfo1 struct {
-	Name        *uint16
-	Password    *uint16
-	PasswordAge uint32
-	Priv        uint32
-	HomeDir     *uint16
-	Comment     *uint16
-	Flags       uint32
-	ScriptPath  *uint16
-}
-
 type UserInfo4 struct {
 	Name            *uint16
 	Password        *uint16

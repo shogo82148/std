@@ -30,7 +30,7 @@
 package vcweb
 
 import (
-	"github.com/shogo82148/std/cmd/internal/script"
+	"github.com/shogo82148/std/cmd/go/internal/script"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/sync"

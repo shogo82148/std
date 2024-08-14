@@ -28,8 +28,8 @@ type Decoder struct {
 // read data from r beyond the JSON values requested.
 func NewDecoder(r io.Reader) *Decoder
 
-// UseNumber causes the Decoder to unmarshal a number into an
-// interface value as a [Number] instead of as a float64.
+// UseNumber causes the Decoder to unmarshal a number into an interface{} as a
+// [Number] instead of as a float64.
 func (dec *Decoder) UseNumber()
 
 // DisallowUnknownFields causes the Decoder to return an error when the destination

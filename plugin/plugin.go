@@ -29,10 +29,6 @@
 //     macOS, making them unsuitable for applications intended to be
 //     portable.
 //
-//   - Plugins are poorly supported by the Go race detector. Even simple
-//     race conditions may not be automatically detected. See
-//     https://go.dev/issue/24245 for more information.
-//
 //   - Applications that use plugins may require careful configuration
 //     to ensure that the various parts of the program be made available
 //     in the correct location in the file system (or container image).

@@ -32,28 +32,16 @@ const (
 	BlockSize = 128
 )
 
-// New returns a new [hash.Hash] computing the SHA-512 checksum. The Hash
-// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
-// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
-// state of the hash.
+// New returns a new hash.Hash computing the SHA-512 checksum.
 func New() hash.Hash
 
-// New512_224 returns a new [hash.Hash] computing the SHA-512/224 checksum. The Hash
-// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
-// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
-// state of the hash.
+// New512_224 returns a new hash.Hash computing the SHA-512/224 checksum.
 func New512_224() hash.Hash
 
-// New512_256 returns a new [hash.Hash] computing the SHA-512/256 checksum. The Hash
-// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
-// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
-// state of the hash.
+// New512_256 returns a new hash.Hash computing the SHA-512/256 checksum.
 func New512_256() hash.Hash
 
-// New384 returns a new [hash.Hash] computing the SHA-384 checksum. The Hash
-// also implements [encoding.BinaryMarshaler], [encoding.AppendBinary] and
-// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
-// state of the hash.
+// New384 returns a new hash.Hash computing the SHA-384 checksum.
 func New384() hash.Hash
 
 // Sum512 returns the SHA512 checksum of the data.

@@ -486,7 +486,7 @@ func Parsed() bool
 // CommandLine is the default set of command-line flags, parsed from [os.Args].
 // The top-level functions such as [BoolVar], [Arg], and so on are wrappers for the
 // methods of CommandLine.
-var CommandLine *FlagSet
+var CommandLine = NewFlagSet(os.Args[0], ExitOnError)
 
 // NewFlagSet returns a new, empty flag set with the specified name and
 // error handling property. If the name is not empty, it will be printed

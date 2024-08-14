@@ -163,14 +163,10 @@ type in Go are instead represented by a uintptr.  See the Special
 cases section below.
 
 To access a struct, union, or enum type directly, prefix it with
-struct_, union_, or enum_, as in C.struct_stat. The size of any C type
-T is available as C.sizeof_T, as in C.sizeof_struct_stat. These
-special prefixes means that there is no way to directly reference a C
-identifier that starts with "struct_", "union_", "enum_", or
-"sizeof_", such as a function named "struct_function".
-A workaround is to use a "#define" in the preamble, as in
-"#define c_struct_function struct_function" and then in the
-Go code refer to "C.c_struct_function".
+struct_, union_, or enum_, as in C.struct_stat.
+
+The size of any C type T is available as C.sizeof_T, as in
+C.sizeof_struct_stat.
 
 A C function may be declared in the Go file with a parameter type of
 the special name _GoString_. This function may be called with an
@@ -347,12 +343,12 @@ determined by how the memory was allocated; it has nothing to do with
 the type of the pointer.
 
 Note that values of some Go types, other than the type's zero value,
-always include Go pointers. This is true of interface, channel, map,
-and function types. A pointer type may hold a Go pointer or a C pointer.
-Array, slice, string, and struct types may or may not include Go pointers,
-depending on their type and how they are constructed. All the discussion
-below about Go pointers applies not just to pointer types,
-but also to other types that include Go pointers.
+always include Go pointers. This is true of string, slice, interface,
+channel, map, and function types. A pointer type may hold a Go pointer
+or a C pointer. Array and struct types may or may not include Go
+pointers, depending on the element types. All the discussion below
+about Go pointers applies not just to pointer types, but also to other
+types that include Go pointers.
 
 All Go pointers passed to C must point to pinned Go memory. Go pointers
 passed as function arguments to C functions have the memory they point to

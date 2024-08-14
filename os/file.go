@@ -176,7 +176,6 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // Rename renames (moves) oldpath to newpath.
 // If newpath already exists and is not a directory, Rename replaces it.
-// If newpath already exists and is a directory, Rename returns an error.
 // OS-specific restrictions may apply when oldpath and newpath are in different directories.
 // Even within the same directory, on non-Unix platforms Rename is not an atomic operation.
 // If there is an error, it will be of type *LinkError.
@@ -211,8 +210,8 @@ func TempDir() string
 // On Windows, it returns %LocalAppData%.
 // On Plan 9, it returns $home/lib/cache.
 //
-// If the location cannot be determined (for example, $HOME is not defined) or
-// the path in $XDG_CACHE_HOME is relative, then it will return an error.
+// If the location cannot be determined (for example, $HOME is not defined),
+// then it will return an error.
 func UserCacheDir() (string, error)
 
 // UserConfigDir returns the default root directory to use for user-specific
@@ -226,8 +225,8 @@ func UserCacheDir() (string, error)
 // On Windows, it returns %AppData%.
 // On Plan 9, it returns $home/lib.
 //
-// If the location cannot be determined (for example, $HOME is not defined) or
-// the path in $XDG_CONFIG_HOME is relative, then it will return an error.
+// If the location cannot be determined (for example, $HOME is not defined),
+// then it will return an error.
 func UserConfigDir() (string, error)
 
 // UserHomeDir returns the current user's home directory.

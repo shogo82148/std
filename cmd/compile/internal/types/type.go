@@ -265,11 +265,7 @@ type Map struct {
 	Key  *Type
 	Elem *Type
 
-	// GOEXPERIMENT=noswissmap fields
-	OldBucket *Type
-
-	// GOEXPERIMENT=swissmap fields
-	SwissBucket *Type
+	Bucket *Type
 }
 
 // MapType returns t's extra map-specific fields.
@@ -324,7 +320,7 @@ type ChanArgs struct {
 	T *Type
 }
 
-// FuncArgs contains Type fields specific to TFUNCARGS types.
+// // FuncArgs contains Type fields specific to TFUNCARGS types.
 type FuncArgs struct {
 	T *Type
 }

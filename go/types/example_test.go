@@ -129,8 +129,9 @@ type I interface { m() byte }
 	celsius := pkg.Scope().Lookup("Celsius").Type()
 	for _, t := range []types.Type{celsius, types.NewPointer(celsius)} {
 		fmt.Printf("Method set of %s:\n", t)
-		for m := range types.NewMethodSet(t).Methods() {
-			fmt.Println(m)
+		mset := types.NewMethodSet(t)
+		for i := 0; i < mset.Len(); i++ {
+			fmt.Println(mset.At(i))
 		}
 		fmt.Println()
 	}

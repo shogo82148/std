@@ -4,10 +4,6 @@
 
 package bitvec
 
-import (
-	"github.com/shogo82148/std/cmd/internal/src"
-)
-
 // A BitVec is a bit vector.
 type BitVec struct {
 	N int32
@@ -22,7 +18,7 @@ type Bulk struct {
 	nword int32
 }
 
-func NewBulk(nbit int32, count int32, pos src.XPos) Bulk
+func NewBulk(nbit int32, count int32) Bulk
 
 func (b *Bulk) Next() BitVec
 

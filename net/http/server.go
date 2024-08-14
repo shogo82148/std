@@ -547,7 +547,7 @@ type Server struct {
 //
 // Close returns any error returned from closing the [Server]'s
 // underlying Listener(s).
-func (s *Server) Close() error
+func (srv *Server) Close() error
 
 // Shutdown gracefully shuts down the server without interrupting any
 // active connections. Shutdown works by first closing all open
@@ -569,14 +569,14 @@ func (s *Server) Close() error
 //
 // Once Shutdown has been called on a server, it may not be reused;
 // future calls to methods such as Serve will return ErrServerClosed.
-func (s *Server) Shutdown(ctx context.Context) error
+func (srv *Server) Shutdown(ctx context.Context) error
 
 // RegisterOnShutdown registers a function to call on [Server.Shutdown].
 // This can be used to gracefully shutdown connections that have
 // undergone ALPN protocol upgrade or that have been hijacked.
 // This function should start protocol-specific graceful shutdown,
 // but should not wait for shutdown to complete.
-func (s *Server) RegisterOnShutdown(f func())
+func (srv *Server) RegisterOnShutdown(f func())
 
 // A ConnState represents the state of a client connection to a server.
 // It's used by the optional [Server.ConnState] hook.
@@ -631,15 +631,15 @@ func (c ConnState) String() string
 // AllowQuerySemicolons should be invoked before [Request.ParseForm] is called.
 func AllowQuerySemicolons(h Handler) Handler
 
-// ListenAndServe listens on the TCP network address s.Addr and then
+// ListenAndServe listens on the TCP network address srv.Addr and then
 // calls [Serve] to handle requests on incoming connections.
 // Accepted connections are configured to enable TCP keep-alives.
 //
-// If s.Addr is blank, ":http" is used.
+// If srv.Addr is blank, ":http" is used.
 //
 // ListenAndServe always returns a non-nil error. After [Server.Shutdown] or [Server.Close],
 // the returned error is [ErrServerClosed].
-func (s *Server) ListenAndServe() error
+func (srv *Server) ListenAndServe() error
 
 // ErrServerClosed is returned by the [Server.Serve], [ServeTLS], [ListenAndServe],
 // and [ListenAndServeTLS] methods after a call to [Server.Shutdown] or [Server.Close].
@@ -647,7 +647,7 @@ var ErrServerClosed = errors.New("http: Server closed")
 
 // Serve accepts incoming connections on the Listener l, creating a
 // new service goroutine for each. The service goroutines read requests and
-// then call s.Handler to reply to them.
+// then call srv.Handler to reply to them.
 //
 // HTTP/2 support is only enabled if the Listener returns [*tls.Conn]
 // connections and they were configured with "h2" in the TLS
@@ -655,11 +655,11 @@ var ErrServerClosed = errors.New("http: Server closed")
 //
 // Serve always returns a non-nil error and closes l.
 // After [Server.Shutdown] or [Server.Close], the returned error is [ErrServerClosed].
-func (s *Server) Serve(l net.Listener) error
+func (srv *Server) Serve(l net.Listener) error
 
 // ServeTLS accepts incoming connections on the Listener l, creating a
 // new service goroutine for each. The service goroutines perform TLS
-// setup and then read requests, calling s.Handler to reply to them.
+// setup and then read requests, calling srv.Handler to reply to them.
 //
 // Files containing a certificate and matching private key for the
 // server must be provided if neither the [Server]'s
@@ -671,13 +671,13 @@ func (s *Server) Serve(l net.Listener) error
 //
 // ServeTLS always returns a non-nil error. After [Server.Shutdown] or [Server.Close], the
 // returned error is [ErrServerClosed].
-func (s *Server) ServeTLS(l net.Listener, certFile, keyFile string) error
+func (srv *Server) ServeTLS(l net.Listener, certFile, keyFile string) error
 
 // SetKeepAlivesEnabled controls whether HTTP keep-alives are enabled.
 // By default, keep-alives are always enabled. Only very
 // resource-constrained environments or servers in the process of
 // shutting down should disable them.
-func (s *Server) SetKeepAlivesEnabled(v bool)
+func (srv *Server) SetKeepAlivesEnabled(v bool)
 
 // ListenAndServe listens on the TCP network address addr and then calls
 // [Serve] with handler to handle requests on incoming connections.
@@ -695,7 +695,7 @@ func ListenAndServe(addr string, handler Handler) error
 // of the server's certificate, any intermediates, and the CA's certificate.
 func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
 
-// ListenAndServeTLS listens on the TCP network address s.Addr and
+// ListenAndServeTLS listens on the TCP network address srv.Addr and
 // then calls [ServeTLS] to handle requests on incoming TLS connections.
 // Accepted connections are configured to enable TCP keep-alives.
 //
@@ -706,11 +706,11 @@ func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
 // concatenation of the server's certificate, any intermediates, and
 // the CA's certificate.
 //
-// If s.Addr is blank, ":https" is used.
+// If srv.Addr is blank, ":https" is used.
 //
 // ListenAndServeTLS always returns a non-nil error. After [Server.Shutdown] or
 // [Server.Close], the returned error is [ErrServerClosed].
-func (s *Server) ListenAndServeTLS(certFile, keyFile string) error
+func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 
 // TimeoutHandler returns a [Handler] that runs h with the given time limit.
 //

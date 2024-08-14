@@ -37,5 +37,3 @@ func (s *SymABIs) GenABIWrappers()
 // adapt them to the Go calling convention. The body for this function is
 // generated in cmd/internal/obj/wasm/wasmobj.go
 func CreateWasmImportWrapper(fn *ir.Func) bool
-
-func GenWasmExportWrapper(wrapped *ir.Func)

@@ -44,8 +44,8 @@ import (
 //   - bool, for JSON booleans
 //   - float64, for JSON numbers
 //   - string, for JSON strings
-//   - []any, for JSON arrays
-//   - map[string]any, for JSON objects
+//   - []interface{}, for JSON arrays
+//   - map[string]interface{}, for JSON objects
 //   - nil for JSON null
 //
 // To unmarshal a JSON array into a slice, Unmarshal resets the slice length
