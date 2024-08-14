@@ -97,6 +97,10 @@ type Time struct {
 	loc *Location
 }
 
+// IsZero reports whether t represents the zero time instant,
+// January 1, year 1, 00:00:00 UTC.
+func (t Time) IsZero() bool
+
 // tがuより後の時刻であるかどうかを報告します。
 func (t Time) After(u Time) bool
 
@@ -149,9 +153,6 @@ const (
 
 // Stringは日の英語名（"Sunday", "Monday", ...）を返します。
 func (d Weekday) String() string
-
-// IsZero は t がゼロのタイムインスタント（西暦1年1月1日00:00:00 UTC）を表すかどうかを報告します。
-func (t Time) IsZero() bool
 
 // Dateはtが発生する年、月、日を返します。
 func (t Time) Date() (year int, month Month, day int)
@@ -250,7 +251,8 @@ func (d Duration) Truncate(m Duration) Duration
 func (d Duration) Round(m Duration) Duration
 
 // Absはdの絶対値を返します。
-// 特別なケースとして、[math.MinInt64] は [math.MaxInt64] に変換されます。
+// 特殊なケースとして、Duration([math.MinInt64])はDuration([math.MaxInt64])に変換され、
+// その大きさが1ナノ秒減少します。
 func (d Duration) Abs() Duration
 
 // Addは時間tにdを加えた時間を返します。
@@ -335,13 +337,13 @@ func (t Time) GobEncode() ([]byte, error)
 // GobDecodeはgob.GobDecoderインターフェースを実装します。
 func (t *Time) GobDecode(data []byte) error
 
-// MarshalJSONは [json.Marshaler] インターフェースを実装します。
+// MarshalJSONは [encoding/json.Marshaler] インターフェースを実装します。
 // 時刻はRFC 3339形式で引用符で囲まれた文字列です。秒未満の精度もあります。
 // タイムスタンプが有効なRFC 3339として表現できない場合
 // （例：年が範囲外の場合）、エラーが報告されます。
 func (t Time) MarshalJSON() ([]byte, error)
 
-// UnmarshalJSONは [json.Unmarshaler] インターフェースを実装します。
+// UnmarshalJSONは [encoding/json.Unmarshaler] インターフェースを実装します。
 // 時刻はRFC 3339形式でクォートされた文字列である必要があります。
 func (t *Time) UnmarshalJSON(data []byte) error
 

@@ -37,7 +37,7 @@ func IndexByte(s string, c byte) int
 
 // IndexRuneは、Unicodeコードポイントrの最初のインスタンスのインデックスを返します。
 // rがsに存在しない場合は-1を返します。
-// rがutf8.RuneErrorの場合、無効なUTF-8バイトシーケンスの最初のインスタンスを返します。
+// rが [utf8.RuneError] の場合、無効なUTF-8バイトシーケンスの最初のインスタンスを返します。
 func IndexRune(s string, r rune) int
 
 // IndexAnyは、sにcharsの任意のUnicodeコードポイントの最初のインスタンスのインデックスを返します。
@@ -56,22 +56,22 @@ func LastIndexByte(s string, c byte) int
 //
 // countは、返す部分文字列の数を決定します。
 //
-//	n > 0：最大n個の部分文字列。最後の部分文字列は区切り文字以降の残りの部分です。
-//	n == 0：結果はnil（部分文字列がゼロ個）
-//	n < 0：すべての部分文字列
+//   - n > 0：最大n個の部分文字列。最後の部分文字列は区切り文字以降の残りの部分です。
+//   - n == 0：結果はnil（部分文字列がゼロ個）
+//   - n < 0：すべての部分文字列
 //
 // sとsepのエッジケース（空の文字列など）は、 [Split] のドキュメントで説明されているように処理されます。
 //
-// 最初の区切り文字を基準に分割するには、Cutを参照してください。
+// 最初の区切り文字を基準に分割するには、[Cut] を参照してください。
 func SplitN(s, sep string, n int) []string
 
 // SplitAfterNは、sをsepの後にスライスし、それらの部分文字列のスライスを返します。
 //
 // countは、返す部分文字列の数を決定します。
 //
-//	n > 0：最大n個の部分文字列。最後の部分文字列は区切り文字以降の残りの部分です。
-//	n == 0：結果はnil（部分文字列がゼロ個）
-//	n < 0：すべての部分文字列
+//   - n > 0：最大n個の部分文字列。最後の部分文字列は区切り文字以降の残りの部分です。
+//   - n == 0：結果はnil（部分文字列がゼロ個）
+//   - n < 0：すべての部分文字列
 //
 // sとsepのエッジケース（空の文字列など）は、SplitAfterのドキュメントで説明されているように処理されます。
 func SplitAfterN(s, sep string, n int) []string
@@ -84,7 +84,7 @@ func SplitAfterN(s, sep string, n int) []string
 //
 // countが-1の [SplitN] と同等です。
 //
-// 最初の区切り文字を基準に分割するには、Cutを参照してください。
+// 最初の区切り文字を基準に分割するには、[Cut] を参照してください。
 func Split(s, sep string) []string
 
 // SplitAfterは、sをsepの後にスライスし、それらの部分文字列のスライスを返します。
@@ -96,7 +96,7 @@ func Split(s, sep string) []string
 // countが-1の [SplitAfterN] と同等です。
 func SplitAfter(s, sep string) []string
 
-// Fieldsは、sをUnicode.IsSpaceによって定義される1つ以上の連続する空白文字の各インスタンスで分割し、sの部分文字列のスライスまたは空のスライスを返します。
+// Fieldsは、sを [Unicode.IsSpace] によって定義される1つ以上の連続する空白文字の各インスタンスで分割し、sの部分文字列のスライスまたは空のスライスを返します。
 func Fields(s string) []string
 
 // FieldsFuncは、Unicodeコードポイントcがf(c)を満たす連続するランで文字列sを分割し、sのスライスの配列を返します。

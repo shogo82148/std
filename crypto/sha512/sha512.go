@@ -30,16 +30,28 @@ const (
 	BlockSize = 128
 )
 
-// NewはSHA-512チェックサムを計算する新しいhash.Hashを返します。
+// NewはSHA-512チェックサムを計算する新しい [hash.Hash] を返します。
+// このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
+// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
+// [encoding.BinaryUnmarshaler] も実装しています。
 func New() hash.Hash
 
-// New512_224は、SHA-512/224のチェックサムを計算する新しいhash.Hashを返します。
+// New512_224はSHA-512/224チェックサムを計算する新しい [hash.Hash] を返します。
+// このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
+// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
+// [encoding.BinaryUnmarshaler] も実装しています。
 func New512_224() hash.Hash
 
-// New512_256は、SHA-512/256のチェックサムを計算する新しいhash.Hashを返します。
+// New512_256はSHA-512/256チェックサムを計算する新しい [hash.Hash] を返します。
+// このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
+// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
+// [encoding.BinaryUnmarshaler] も実装しています。
 func New512_256() hash.Hash
 
-// New384は、SHA-384チェックサムを計算する新しいhash.Hashを返します。
+// New384 returns a new [hash.Hash] computing the SHA-384 checksum. The Hash
+// also implements [encoding.BinaryMarshaler], [encoding.AppendBinary] and
+// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
+// state of the hash.
 func New384() hash.Hash
 
 // Sum512は、データのSHA512ハッシュ値を返します。

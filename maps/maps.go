@@ -3,6 +3,9 @@
 // license that can be found in the LICENSE file.
 
 // mapsパッケージは、任意の型のマップに役立つさまざまな関数を定義します。
+//
+// このパッケージは、浮動小数点数のNaNのような非反射キー
+// (k != kとなるキー)に対する特別な処理を行いません。
 package maps
 
 // Equalは、2つのマップが同じキー/値のペアを含むかどうかを報告します。

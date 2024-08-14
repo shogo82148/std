@@ -97,7 +97,7 @@ type IntegerType int
 //	u := unsafe.Pointer(nil)
 //	p := unsafe.Pointer(uintptr(u) + offset)
 //
-// (4) [syscall.Syscall] を呼び出す際にPointerをuintptrに変換する場合。
+// (4) [syscall.Syscall] のような関数を呼び出す際にPointerをuintptrに変換する場合。
 //
 // パッケージsyscallのSyscall関数は、uintptrの引数を直接オペレーティングシステムに渡し、
 // その後、呼び出しの詳細によっては、一部の引数をポインタとして再解釈する場合があります。
@@ -219,7 +219,8 @@ func SliceData(slice []ArbitraryType) *ArbitraryType
 // 実行時に、lenが負であるか、またはptrがnilであり、かつlenがゼロでない場合には、
 // 実行時パニックが発生します。
 //
-// Goの文字列は不変であるため、Stringに渡されたバイトはその後変更してはなりません。
+// Goの文字列は不変であるため、返された文字列値が存在する限り、
+// Stringに渡されたバイトを変更してはなりません。
 func String(ptr *byte, len IntegerType) string
 
 // StringDataは、strの基礎バイトへのポインタを返します。

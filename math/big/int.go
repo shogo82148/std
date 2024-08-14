@@ -30,9 +30,9 @@ type Int struct {
 
 // Signは次の値を返します:
 //
-//	-1 は x <  0 の場合
-//	 0 は x == 0 の場合
-//	+1 は x >  0 の場合
+//   - -1 x <  0 の場合
+//   - 0 x == 0 の場合
+//   - +1 x >  0 の場合
 func (x *Int) Sign() int
 
 // SetInt64はzをxに設定し、zを返します。
@@ -103,7 +103,7 @@ func (z *Int) Rem(x, y *Int) *Int
 //	r = x - y*q
 //
 // （Daan Leijenの「コンピュータサイエンティストのための除算とモジュラス」を参照）
-// ユークリッド除算とモジュラス（Goとは異なる）についてはDivModを参照してください。
+// ユークリッド除算とモジュラス（Goとは異なる）については [DivMod] を参照してください。
 func (z *Int) QuoRem(x, y, r *Int) (*Int, *Int)
 
 // Divは、y != 0の場合、zを商x/yに設定し、zを返します。
@@ -134,16 +134,16 @@ func (z *Int) DivMod(x, y, m *Int) (*Int, *Int)
 
 // Cmpはxとyを比較し、次の値を返します:
 //
-//	-1 は x <  y の場合
-//	 0 は x == y の場合
-//	+1 は x >  y の場合
+//   - -1 x <  y の場合
+//   - 0 x == y の場合
+//   - +1 x >  y の場合
 func (x *Int) Cmp(y *Int) (r int)
 
 // CmpAbsはxとyの絶対値を比較し、次の値を返します:
 //
-//	-1 は |x| <  |y| の場合
-//	 0 は |x| == |y| の場合
-//	+1 は |x| >  |y| の場合
+//   - -1 |x| <  |y| の場合
+//   - 0 |x| == |y| の場合
+//   - +1 |x| >  |y| の場合
 func (x *Int) CmpAbs(y *Int) int
 
 // Int64はxのint64表現を返します。
@@ -258,10 +258,11 @@ func (z *Int) Rsh(x *Int, n uint) *Int
 // (x>>i)&1を返します。ビットインデックスiは0以上でなければなりません。
 func (x *Int) Bit(i int) uint
 
-// SetBitは、xのi番目のビットをb（0または1）に設定したxをzに設定します。
-// つまり、もしbが1なら、SetBitはz = x | (1 << i)を設定します。
-// もしbが0なら、SetBitはz = x &^ (1 << i)を設定します。もしbが0または1でない場合、
-// SetBitはパニックを起こします。
+// SetBitは、xのi番目のビットをb（0または1）に設定してzに代入します。
+// つまり、
+//   - bが1の場合、SetBitはz = x | (1 << i)に設定します。
+//   - bが0の場合、SetBitはz = x &^ (1 << i)に設定します。
+//   - bが0または1でない場合、SetBitはパニックを引き起こします。
 func (z *Int) SetBit(x *Int, i int, b uint) *Int
 
 // Andは、z = x & yを設定し、zを返します。

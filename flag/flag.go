@@ -430,7 +430,7 @@ func Parsed() bool
 
 // CommandLineは [os.Args] から解析されたデフォルトのコマンドラインフラグのセットです。
 // [BoolVar]、[Arg] などのトップレベルの関数は、CommandLineのメソッドのラッパーです。
-var CommandLine = NewFlagSet(os.Args[0], ExitOnError)
+var CommandLine *FlagSet
 
 // NewFlagSetは指定された名前とエラーハンドリングプロパティを持つ新しい空のフラグセットを返します。名前が空でない場合、デフォルトの使用方法メッセージとエラーメッセージに表示されます。
 func NewFlagSet(name string, errorHandling ErrorHandling) *FlagSet

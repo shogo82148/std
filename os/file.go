@@ -142,7 +142,10 @@ func Chdir(dir string) error
 // エラーが発生した場合、*PathError型のエラーが返されます。
 func Open(name string) (*File, error)
 
-// Createは指定されたファイルを作成または切り詰めます。ファイルが既に存在する場合、ファイルは切り詰められます。ファイルが存在しない場合、モード0666（umaskの前）で作成されます。成功した場合、返されたFileのメソッドを使用してI/Oを行うことができます。関連付けられたファイルディスクリプタはO_RDWRモードになります。エラーが発生した場合、*PathError型のエラーとなります。
+// Createは指定されたファイルを作成または切り詰めます。ファイルが既に存在する場合、ファイルは切り詰められます。
+// ファイルが存在しない場合、モード0o666（umaskの前）で作成されます。
+// 成功した場合、返されたFileのメソッドを使用してI/Oを行うことができます。
+// 関連付けられたファイルディスクリプタはO_RDWRモードになります。エラーが発生した場合、*PathError型のエラーとなります。
 func Create(name string) (*File, error)
 
 // OpenFileは一般化されたオープンコールであり、ほとんどのユーザーは代わりにOpenまたはCreateを使用します。指定されたフラグ（O_RDONLYなど）で指定された名前のファイルを開きます。ファイルが存在しない場合、O_CREATEフラグが渡されると、モード許可（umask前）で作成されます。成功すると、返されたFileのメソッドを使用してI/Oが可能です。エラーが発生した場合、*PathErrorのタイプになります。
@@ -150,6 +153,7 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // Renameはoldpathをnewpathに名前を変更（移動）します。
 // newpathが既に存在していてディレクトリではない場合、Renameはそれを置き換えます。
+// newpathが既に存在していてディレクトリである場合、Renameはエラーを返します。
 // oldpathとnewpathが異なるディレクトリにある場合、OS固有の制限が適用される場合があります。
 // 同じディレクトリ内でも、非UnixプラットフォームではRenameはアトミックな操作ではありません。
 // エラーが発生した場合、それは*LinkErrorの型である可能性があります。
@@ -171,20 +175,30 @@ func Readlink(name string) (string, error)
 // このディレクトリは、存在することやアクセス可能な許可を持っていることが保証されていません。
 func TempDir() string
 
-// UserCacheDirは、ユーザー固有のキャッシュデータのデフォルトのルートディレクトリを返します。ユーザーは、このディレクトリ内に独自のアプリケーション固有のサブディレクトリを作成し、それを使用する必要があります。
-// Unixシステムでは、これは$XDG_CACHE_HOME（https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.htmlで指定されています）が空でない場合には、$HOME/.cacheを返します。
-// Darwinでは、これは$HOME/Library/Cachesを返します。
-// Windowsでは、これは%LocalAppData%を返します。
-// Plan 9では、これは$home/lib/cacheを返します。
-// 位置を特定できない場合（たとえば、$HOMEが定義されていない場合）は、エラーが返されます。
+// UserCacheDirは、ユーザー固有のキャッシュデータに使用するデフォルトのルートディレクトリを返します。
+// ユーザーはこのディレクトリ内にアプリケーション固有のサブディレクトリを作成して使用する必要があります。
+//
+// Unixシステムでは、https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html で指定されている
+// $XDG_CACHE_HOMEが空でない場合はその値を返し、そうでない場合は$HOME/.cacheを返します。
+// Darwinでは、$HOME/Library/Cachesを返します。
+// Windowsでは、%LocalAppData%を返します。
+// Plan 9では、$home/lib/cacheを返します。
+//
+// 位置を特定できない場合（例えば、$HOMEが定義されていない場合）や、
+// $XDG_CACHE_HOMEのパスが相対パスである場合、エラーを返します。
 func UserCacheDir() (string, error)
 
-// UserConfigDirは、ユーザー固有の設定データに使用するデフォルトのルートディレクトリを返します。ユーザーは、このディレクトリ内に自分自身のアプリケーション固有のサブディレクトリを作成し、それを使用するべきです。
-// Unixシステムでは、$XDG_CONFIG_HOMEが空でない場合は、https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.htmlで指定されているようにそれを返し、それ以外の場合は$HOME/.configを返します。
+// UserConfigDirは、ユーザー固有の設定データに使用するデフォルトのルートディレクトリを返します。
+// ユーザーはこのディレクトリ内にアプリケーション固有のサブディレクトリを作成して使用する必要があります。
+//
+// Unixシステムでは、https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html で指定されている
+// $XDG_CONFIG_HOMEが空でない場合はその値を返し、そうでない場合は$HOME/.configを返します。
 // Darwinでは、$HOME/Library/Application Supportを返します。
 // Windowsでは、%AppData%を返します。
 // Plan 9では、$home/libを返します。
-// 場所を特定できない場合（たとえば、$HOMEが定義されていない場合）は、エラーを返します。
+//
+// 位置を特定できない場合（例えば、$HOMEが定義されていない場合）や、
+// $XDG_CONFIG_HOMEのパスが相対パスである場合、エラーを返します。
 func UserConfigDir() (string, error)
 
 // UserHomeDirは現在のユーザーのホームディレクトリを返します。
@@ -205,8 +219,11 @@ func UserHomeDir() (string, error)
 //
 // Unixでは、モードのパーミッションビットであるModeSetuid、ModeSetgid、およびModeStickyが使用されます。
 //
-// Windowsでは、モードの0200ビット（所有者書き込み可能）のみが使用されます。これにより、ファイルの読み取り専用属性が設定されるかクリアされるかが制御されます。
-// その他のビットは現在未使用です。Go 1.12以前との互換性を保つために、ゼロ以外のモードを使用してください。読み取り専用ファイルにはモード0400、読み書き可能なファイルにはモード0600を使用します。
+// Windowsでは、モードの0o200ビット（所有者書き込み可能）のみが使用されます。
+// これにより、ファイルの読み取り専用属性が設定されるかクリアされるかが制御されます。
+// その他のビットは現在未使用です。
+// Go 1.12以前との互換性を保つために、ゼロ以外のモードを使用してください。
+// 読み取り専用ファイルにはモード0o400、読み書き可能なファイルにはモード0o600を使用します。
 //
 // Plan 9では、モードのパーミッションビットであるModeAppend、ModeExclusive、およびModeTemporaryが使用されます。
 func Chmod(name string, mode FileMode) error

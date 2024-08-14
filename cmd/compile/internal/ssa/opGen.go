@@ -896,8 +896,14 @@ const (
 	OpAMD64CMPXCHGQlock
 	OpAMD64ANDBlock
 	OpAMD64ANDLlock
+	OpAMD64ANDQlock
 	OpAMD64ORBlock
 	OpAMD64ORLlock
+	OpAMD64ORQlock
+	OpAMD64LoweredAtomicAnd64
+	OpAMD64LoweredAtomicAnd32
+	OpAMD64LoweredAtomicOr64
+	OpAMD64LoweredAtomicOr32
 	OpAMD64PrefetchT0
 	OpAMD64PrefetchNTA
 	OpAMD64ANDNQ
@@ -1592,8 +1598,14 @@ const (
 	OpLOONG64NEGD
 	OpLOONG64SQRTD
 	OpLOONG64SQRTF
+	OpLOONG64FMINF
+	OpLOONG64FMIND
+	OpLOONG64FMAXF
+	OpLOONG64FMAXD
 	OpLOONG64MASKEQZ
 	OpLOONG64MASKNEZ
+	OpLOONG64ABSD
+	OpLOONG64FCOPYSGD
 	OpLOONG64SLLV
 	OpLOONG64SLLVconst
 	OpLOONG64SRLV
@@ -3056,22 +3068,26 @@ const (
 	OpAtomicCompareAndSwapRel32
 	OpAtomicAnd8
 	OpAtomicOr8
-	OpAtomicAnd64
 	OpAtomicAnd32
-	OpAtomicOr64
 	OpAtomicOr32
+	OpAtomicAnd64value
+	OpAtomicAnd32value
+	OpAtomicAnd8value
+	OpAtomicOr64value
+	OpAtomicOr32value
+	OpAtomicOr8value
 	OpAtomicAdd32Variant
 	OpAtomicAdd64Variant
 	OpAtomicExchange32Variant
 	OpAtomicExchange64Variant
 	OpAtomicCompareAndSwap32Variant
 	OpAtomicCompareAndSwap64Variant
-	OpAtomicAnd8Variant
-	OpAtomicOr8Variant
-	OpAtomicAnd64Variant
-	OpAtomicOr64Variant
-	OpAtomicAnd32Variant
-	OpAtomicOr32Variant
+	OpAtomicAnd64valueVariant
+	OpAtomicOr64valueVariant
+	OpAtomicAnd32valueVariant
+	OpAtomicOr32valueVariant
+	OpAtomicAnd8valueVariant
+	OpAtomicOr8valueVariant
 	OpPubBarrier
 	OpClobber
 	OpClobberReg

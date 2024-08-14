@@ -37,5 +37,5 @@ type WordDecoder struct {
 func (d *WordDecoder) Decode(word string) (string, error)
 
 // DecodeHeaderは、与えられた文字列のすべてのエンコードされた単語をデコードします。
-// dの WordDecoder.CharsetReader がエラーを返す場合にのみエラーを返します。
+// dの [WordDecoder.CharsetReader] がエラーを返す場合にのみエラーを返します。
 func (d *WordDecoder) DecodeHeader(header string) (string, error)

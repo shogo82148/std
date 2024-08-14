@@ -10,10 +10,8 @@
 // 構文の概要については、 [regexp/syntax] パッケージを参照してください。
 //
 // このパッケージによって提供される正規表現の実装は、入力のサイズに比例して線形の時間で実行されることが保証されています。
-// （これは、ほとんどのオープンソースの正規表現の実装が保証していない特性です。）この特性の詳細については、次を参照してください。
-//
-// https://swtch.com/~rsc/regexp/regexp1.html
-//
+// （これは、ほとんどのオープンソースの正規表現の実装が保証していない特性です。）この特性の詳細については、
+// https://swtch.com/~rsc/regexp/regexp1.html を参照してください。
 // またはオートマトン理論に関する書籍を参照してください。
 //
 // すべての文字はUTF-8でエンコードされたコードポイントです。
@@ -35,11 +33,12 @@
 // インデックスが負数であるか、テキストがnilの場合、サブ式は入力文字列内で一致するテキストがないことを意味します。
 // 'String'バージョンでは、空の文字列は一致がないか空の一致を意味します。
 //
-// RuneReaderから読み取られるテキストに適用できるメソッドのサブセットもあります：
+// また、[io.RuneReader] から読み取ったテキストに適用できるメソッドのサブセットもあります：
+// [Regexp.MatchReader]、[Regexp.FindReaderIndex]、[Regexp.FindReaderSubmatchIndex]。
 //
-// # MatchReader、FindReaderIndex、FindReaderSubmatchIndex
-//
-// このセットは増える可能性があります。正規表現の一致では、一致のために返されるテキストを超えたテキストを調べる必要がある場合があるため、RuneReaderからテキストを一致させるメソッドは、返される前に任意の深さまで入力を読み込む可能性があります。
+// このセットは増える可能性があります。正規表現のマッチングは、マッチによって返されるテキストを超えて
+// テキストを調べる必要がある場合があるため、[io.RuneReader] からテキストをマッチングするメソッドは、
+// 戻り値を返す前に入力を任意の長さまで読み取る可能性があります。
 //
 // （このパターンに一致しないいくつかの他のメソッドもあります。）
 package regexp
@@ -146,7 +145,7 @@ func (re *Regexp) MatchString(s string) bool
 // Matchは、バイトスライスbに正規表現reの一致が含まれているかどうかを報告します。
 func (re *Regexp) Match(b []byte) bool
 
-// MatchReaderは、RuneReaderによって返されるテキストに正規表現パターンの一致があるかどうかを報告します。
+// MatchReaderは、[io.RuneReader] によって返されるテキストに正規表現パターンの一致があるかどうかを報告します。
 // より複雑なクエリには [Compile] と完全な [Regexp] インターフェイスを使用する必要があります。
 func MatchReader(pattern string, r io.RuneReader) (matched bool, err error)
 
@@ -286,9 +285,9 @@ func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int
 //
 // countパラメータによって返す部分文字列の数が決まります:
 //
-//	n > 0: 最大でn個の部分文字列を返します。最後の部分文字列は分割されなかった残りの部分です。
-//	n == 0: 結果はnil（部分文字列なし）です。
-//	n < 0: 全ての部分文字列を返します。
+//   - n > 0: 最大でn個の部分文字列を返します。最後の部分文字列は分割されなかった残りの部分です。
+//   - n == 0: 結果はnil（部分文字列なし）です。
+//   - n < 0: 全ての部分文字列を返します。
 func (re *Regexp) Split(s string, n int) []string
 
 // MarshalTextは[encoding.TextMarshaler]を実装します。出力は

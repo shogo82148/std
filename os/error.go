@@ -46,22 +46,28 @@ func (e *SyscallError) Timeout() bool
 // 便利な機能として、errがnilの場合、NewSyscallErrorはnilを返します。
 func NewSyscallError(syscall string, err error) error
 
-// IsExistは、ファイルまたはディレクトリが既に存在することを報告する既知のエラーを示すブール値を返します。[ErrExist] で満たされるだけでなく、一部のシスコールエラーでも満たされます。
-// この関数はerrors.Isより前に存在しています。それはosパッケージによって返されるエラーのみをサポートしています。新しく書かれるコードでは、errors.Is(err, fs.ErrExist)を使用するべきです。
+// IsExistは、引数がファイルまたはディレクトリが既に存在することを報告するかどうかを示すブール値を返します。
+// これは[ErrExist]および一部のsyscallエラーによって満たされます。
+//
+// この関数は、[errors.Is] よりも前に存在していました。これは、osパッケージによって返されるエラーのみをサポートしています。
+// 新しいコードでは、errors.Is(err, fs.ErrExist)を使用するべきです。
 func IsExist(err error) bool
 
-// IsNotExistは、ファイルやディレクトリが存在しないことを報告することがわかっているエラーかどうかを示すブール値を返します。これは、ErrNotExistと一部のsyscallエラーに合致します。
-// この関数は、[errors.Is] よりも前に存在していました。これは、osパッケージによって返されるエラーのみをサポートしています。新しいコードでは、errors.Is(err, fs.ErrNotExist)を使用する必要があります。
+// IsNotExistは、引数がファイルまたはディレクトリが存在しないことを報告するかどうかを示すブール値を返します。
+// これは[ErrNotExist]および一部のsyscallエラーによって満たされます。
+//
+// この関数は、[errors.Is] よりも前に存在していました。これは、osパッケージによって返されるエラーのみをサポートしています。
+// 新しいコードでは、errors.Is(err, fs.ErrNotExist)を使用するべきです。
 func IsNotExist(err error) bool
 
-// IsPermissionは、エラーがパーミッションが拒否されたことを報告する既知のものであるかどうかを示すブール値を返します。
-// ErrPermissionだけでなく、一部のsyscallエラーも対応しています。
+// IsPermissionは、引数が許可が拒否されたことを報告するかどうかを示すブール値を返します。
+// これは[ErrPermission]および一部のsyscallエラーによって満たされます。
 //
 // この関数はerrors.Isより前に存在しています。この関数はosパッケージが返すエラーのみをサポートしています。
-// 新しいコードではerrors.Is(err、fs.ErrPermission)を使用するべきです。
+// 新しいコードでは、errors.Is(err、fs.ErrPermission)を使用するべきです。
 func IsPermission(err error) bool
 
-// IsTimeoutは、エラーがタイムアウトが発生したことを報告することを示すかどうかを示すブール値を返します。
+// IsTimeoutは、引数がタイムアウトが発生したことを報告するかどうかを示すブール値を返します。
 //
 // この関数は、[errors.Is] やエラーがタイムアウトを示すかどうかの概念よりも前から存在しています。たとえば、UnixのエラーコードEWOULDBLOCKは、
 // タイムアウトを示す場合と示さない場合があります。新しいコードでは、[os.ErrDeadlineExceeded] など、エラーが発生した呼び出しに適切な値を使用して
