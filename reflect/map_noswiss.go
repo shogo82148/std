@@ -14,10 +14,10 @@ package reflect
 // 実装していない場合）、MapOfはパニックを起こします。
 func MapOf(key, elem Type) Type
 
-// MapIndex returns the value associated with key in the map v.
-// It panics if v's Kind is not [Map].
-// It returns the zero Value if key is not found in the map or if v represents a nil map.
-// As in Go, the key's value must be assignable to the map's key type.
+// MapIndexは、マップv内のキーに関連付けられた値を返します。
+// vのKindが[Map]でない場合、パニックを起こします。
+// キーがマップ内に見つからない場合、またはvがnilマップを表す場合、ゼロ値を返します。
+// Goと同様に、キーの値はマップのキー型に代入可能でなければなりません。
 func (v Value) MapIndex(key Value) Value
 
 // MapKeys returns a slice containing all the keys present in the map,
