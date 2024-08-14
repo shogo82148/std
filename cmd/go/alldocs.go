@@ -1643,8 +1643,8 @@
 // そのテストソースファイルに対して実行し、重大な問題を特定します。もしgo vetが
 // 何か問題を見つけた場合、go testはそれらを報告し、テストバイナリを実行しません。
 // 使われるのは、デフォルトのgo vetチェックの高信頼度のサブセットだけです。
-// そのサブセットは次の通りです：atomic, bool, buildtags, directive, errorsas,
-// ifaceassert, nilfunc, printf, そして stringintconv。これらと他のvetテストの
+// そのサブセットは次の通りです：atomic、bool、buildtags、directive、errorsas、
+// ifaceassert、nilfunc、printf、そして stringintconv、そして test。これらと他のvetテストの
 // ドキュメンテーションは "go doc cmd/vet"を通じて見ることができます。
 // go vetの実行を無効にするには、-vet=offフラグを使用します。すべての
 // チェックを実行するには、-vet=allフラグを使用します。
