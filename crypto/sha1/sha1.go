@@ -17,7 +17,10 @@ const Size = 20
 // SHA-1のブロックサイズ（バイト単位）です。
 const BlockSize = 64
 
-// NewはSHA1チェックサムを計算する新しいhash.Hashを返します。Hashはまた、　[encoding.BinaryMarshaler]　と　[encoding.BinaryUnmarshaler]　を実装しており、ハッシュの内部状態をマーシャリングおよびアンマーシャリングすることができます。
+// New512_224はSHA1チェックサムを計算する新しい [hash.Hash] を返します。
+// このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
+// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
+// [encoding.BinaryUnmarshaler] も実装しています。
 func New() hash.Hash
 
 // SumはデータのSHA-1チェックサムを返します。
