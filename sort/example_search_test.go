@@ -7,6 +7,7 @@ package sort_test
 import (
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/sort"
+	"github.com/shogo82148/std/strings"
 )
 
 // この例は昇順でソートされたリストの検索を示しています。
@@ -38,6 +39,26 @@ func ExampleSearch_descendingOrder() {
 	}
 	// Output:
 	// found 6 at index 7 in [55 45 36 28 21 15 10 6 3 1]
+}
+
+// この例は、昇順にソートされたリスト内で文字列を検索する方法を示しています。
+func ExampleFind() {
+	a := []string{"apple", "banana", "lemon", "mango", "pear", "strawberry"}
+
+	for _, x := range []string{"banana", "orange"} {
+		i, found := sort.Find(len(a), func(i int) int {
+			return strings.Compare(x, a[i])
+		})
+		if found {
+			fmt.Printf("found %s at index %d\n", x, i)
+		} else {
+			fmt.Printf("%s not found, would insert at %d\n", x, i)
+		}
+	}
+
+	// Output:
+	// found banana at index 1
+	// orange not found, would insert at 4
 }
 
 // この例は、昇順に並べられたリストで float64 を検索する方法を示しています。

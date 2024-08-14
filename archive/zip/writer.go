@@ -56,6 +56,7 @@ func (w *Writer) Close() error
 // ドライブレター（例：C:）または先頭のスラッシュで始まることはできず、
 // スラッシュのみが許可されます。
 // ファイルではなくディレクトリを作成するには、名前の末尾にスラッシュを追加します。
+// 重複する名前は以前のエントリを上書きせず、ZIPファイルに追加されます。
 // 次の [Writer.Create] 、 [Writer.CreateHeader] 、または [Writer.Close] を呼び出す前に、ファイルの内容を [io.Writer] に書き込む必要があります。
 func (w *Writer) Create(name string) (io.Writer, error)
 
