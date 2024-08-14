@@ -147,7 +147,7 @@ func ToValidUTF8(s, replacement []byte) []byte
 
 // TitleはUTF-8でエンコードされたバイト列sをUnicodeの文字として扱い、単語の先頭にあるすべての文字をタイトルケースにマッピングしたコピーを返します。
 //
-// 廃止予定: Titleが単語の境界を処理する際、Unicodeの句読点を適切に扱えません。golang.org/x/text/casesを代わりに使用してください。
+// Deprecated: Titleが単語の境界を処理する際、Unicodeの句読点を適切に扱えません。golang.org/x/text/casesを代わりに使用してください。
 func Title(s []byte) []byte
 
 // TrimLeftFuncはUTF-8でエンコードされたバイト列sを処理し、f(c)を満たすすべての先頭のUTF-8エンコードされたコードポイントcを除いたsのサブスライスを返します。
