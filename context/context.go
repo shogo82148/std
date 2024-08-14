@@ -4,7 +4,7 @@
 
 // contextパッケージは、期限、キャンセルシグナル、および他のAPI境界やプロセス間を超えたリクエストスコープの値を伝達するContext型を定義します。
 //
-// サーバーへの入力リクエストは [Context] を作成し、サーバーへの出力呼び出しは[Context]を受け入れる必要があります。
+// サーバーへの入力リクエストは [Context] を作成し、サーバーへの出力呼び出しは [Context] を受け入れる必要があります。
 // それらの間の関数呼び出しのチェーンは、Contextを伝播させ、[WithCancel]、[WithDeadline]、[WithTimeout]、または [WithValue] を使用して作成された派生Contextで置き換えることができます。
 // Contextがキャンセルされると、それから派生したすべてのContextもキャンセルされます。
 //
@@ -35,7 +35,7 @@
 //
 // 同じContextは、異なるゴルーチンで実行される関数に渡すことができます。Contextは、複数のゴルーチンによる同時使用に対して安全です。
 //
-// サーバーでContextを使用する例のコードについては、https://blog.golang.org/contextを参照してください。
+// サーバーでContextを使用する例のコードについては、https://blog.golang.org/context を参照してください。
 package context
 
 import (
@@ -66,13 +66,13 @@ func (deadlineExceededError) Error() string { return "context deadline exceeded"
 // DeadlineExceeded コンテキストの期限が切れた場合に [Context.Err] が返すエラーです。
 var DeadlineExceeded error = deadlineExceededError{}
 
-// Backgroundは、非nilで空の[Context]を返します。キャンセルされることはなく、値も期限もありません。
+// Backgroundは、非nilで空の [Context] を返します。キャンセルされることはなく、値も期限もありません。
 // 通常、main関数、初期化、テスト、および着信リクエストのトップレベルContextとして使用されます。
 func Background() Context
 
 // TODO 非nilで空の [Context] を返します。
-// コードがどの[Context]を使用するか不明である場合や、まだ [Context] パラメータを受け入れるように拡張されていない
-// （周囲の関数がまだ[Context]を受け入れるように拡張されていない）場合に、コードは [context.TODO] を使用する必要があります。
+// コードがどの [Context] を使用するか不明である場合や、まだ [Context] パラメータを受け入れるように拡張されていない
+// （周囲の関数がまだ [Context] を受け入れるように拡張されていない）場合に、コードは [context.TODO] を使用する必要があります。
 func TODO() Context
 
 // CancelFunc 操作がその作業を中止するように指示します。
