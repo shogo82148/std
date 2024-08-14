@@ -144,3 +144,9 @@ func (debugInfo *FuncDebug) PutLocationList(list []byte, ctxt *obj.Link, listSym
 // appropriate for the ".closureptr" compiler-synthesized variable
 // needed by the debugger for range func bodies.
 func BuildFuncDebugNoOptimized(ctxt *obj.Link, f *Func, loggingEnabled bool, stackOffset func(LocalSlot) int32, rval *FuncDebug)
+
+// IsVarWantedForDebug returns true if the debug info for the node should
+// be generated.
+// For example, internal variables for range-over-func loops have little
+// value to users, so we don't generate debug info for them.
+func IsVarWantedForDebug(n ir.Node) bool
