@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package suffixarray は、インメモリの接尾辞配列を使用して対数時間での部分文字列検索を実装します。
+// suffixarrayパッケージは、インメモリの接尾辞配列を使用して対数時間での部分文字列検索を実装します。
 //
 // 使用例:
 //

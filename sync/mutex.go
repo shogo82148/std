@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージsyncは相互排他ロックなどの基本的な同期プリミティブを提供します。[Once] と [WaitGroup] 以外の型は、低レベルのライブラリルーチンでの使用を意図しています。より高レベルな同期はチャネルと通信を介して行う方が良いです。
+// syncパッケージは相互排他ロックなどの基本的な同期プリミティブを提供します。[Once] と [WaitGroup] 以外の型は、低レベルのライブラリルーチンでの使用を意図しています。より高レベルな同期はチャネルと通信を介して行う方が良いです。
 //
 // このパッケージで定義された型を含む値は、コピーしないでください。
 package sync

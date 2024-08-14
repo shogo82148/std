@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージhttptestは、HTTPテストのためのユーティリティを提供します。
+// httptestパッケージは、HTTPテストのためのユーティリティを提供します。
 package httptest
 
 import (

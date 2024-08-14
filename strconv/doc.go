@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージ strconv は基本データ型の文字列表現への変換を実装します。
+// strconv パッケージは基本データ型の文字列表現への変換を実装します。
 //
 // # 数値の変換
 //

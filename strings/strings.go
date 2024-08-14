@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package strings implements simple functions to manipulate UTF-8 encoded strings.
+// stringsパッケージは、UTF-8エンコードされた文字列を操作するための
+// シンプルな関数を実装します。
 //
-// For information about UTF-8 strings in Go, see https://blog.golang.org/strings.
+// GoにおけるUTF-8文字列の情報については、https://blog.golang.org/strings を参照してください。
 package strings
 
 import (

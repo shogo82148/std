@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package crc64は64ビットの巡回冗長検査（CRC-64）チェックサムを実装しています。
+// crc64パッケージは64ビットの巡回冗長検査（CRC-64）チェックサムを実装しています。
 // 詳細はhttps://en.wikipedia.org/wiki/Cyclic_redundancy_checkを参照してください。
 package crc64
 

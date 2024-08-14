@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージbytesはバイトスライスの操作のための関数を実装します。
-// これは[strings]パッケージの機能に類似しています。
+// bytesパッケージはバイトスライスの操作のための関数を実装します。
+// これは [strings] パッケージの機能に類似しています。
 package bytes
 
 import (
@@ -147,7 +147,7 @@ func ToValidUTF8(s, replacement []byte) []byte
 
 // TitleはUTF-8でエンコードされたバイト列sをUnicodeの文字として扱い、単語の先頭にあるすべての文字をタイトルケースにマッピングしたコピーを返します。
 //
-// 廃止予定: Titleが単語の境界を処理する際、Unicodeの句読点を適切に扱えません。golang.org/x/text/casesを代わりに使用してください。
+// Deprecated: Titleが単語の境界を処理する際、Unicodeの句読点を適切に扱えません。golang.org/x/text/casesを代わりに使用してください。
 func Title(s []byte) []byte
 
 // TrimLeftFuncはUTF-8でエンコードされたバイト列sを処理し、f(c)を満たすすべての先頭のUTF-8エンコードされたコードポイントcを除いたsのサブスライスを返します。

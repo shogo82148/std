@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package fmtは、Cのprintfおよびscanfに類似した関数を使用してフォーマットされたI/Oを実装します。
+fmtパッケージは、Cのprintfおよびscanfに類似した関数を使用してフォーマットされたI/Oを実装します。
 フォーマット'verbs'はCから派生していますが、よりシンプルです。
 
 # 印刷

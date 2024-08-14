@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package cipherは、低レベルのブロック暗号実装を包み込むことができる標準のブロック暗号モードを実装しています。
+// cipherパッケージは、低レベルのブロック暗号実装を包み込むことができる標準のブロック暗号モードを実装しています。
 // 詳細はhttps://csrc.nist.gov/groups/ST/toolkit/BCM/current_modes.html
 // およびNIST Special Publication 800-38Aを参照してください。
 package cipher

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージインポーターは、エクスポートデータのインポートを提供します。
+// importerパッケージは、エクスポートデータのインポートを提供します。
 package importer
 
 import (

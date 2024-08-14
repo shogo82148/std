@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージaesは、U.S.連邦情報処理標準出版物197で定義されているAES暗号（以前はRijndaelとして知られていた）を実装しています。
+// aesパッケージは、U.S.連邦情報処理標準出版物197で定義されているAES暗号（以前はRijndaelとして知られていた）を実装しています。
 //
 // このパッケージのAES操作は、定数時間アルゴリズムを使用して実装されていません。
 // ただし、AESのハードウェアサポートが有効なシステムで実行される場合は例外です。

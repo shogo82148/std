@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージdrawは、画像合成関数を提供します。
+// drawパッケージは、画像合成関数を提供します。
 //
 // このパッケージの紹介については、「Go image/drawパッケージ」を参照してください：
 // https://golang.org/doc/articles/image_draw.html

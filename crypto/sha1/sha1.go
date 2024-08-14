@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージsha1は、RFC 3174で定義されているSHA-1ハッシュアルゴリズムを実装しています。
+// sha1パッケージは、RFC 3174で定義されているSHA-1ハッシュアルゴリズムを実装しています。
 //
 // SHA-1は暗号学的に破られており、セキュアなアプリケーションには使用すべきではありません。
 package sha1

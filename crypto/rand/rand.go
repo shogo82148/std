@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package randは、暗号学的に安全な乱数生成器を実装しています。
+// randパッケージは、暗号学的に安全な乱数生成器を実装しています。
 package rand
 
 import "github.com/shogo82148/std/io"

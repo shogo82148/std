@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package urlはURLを解析し、クエリのエスケープを実装します。
+// urlパッケージはURLを解析し、クエリのエスケープを実装します。
 package url
 
 // Errorはエラーと、それが発生した操作とURLを報告します。

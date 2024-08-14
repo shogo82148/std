@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージrc4はBruce Schneierの「応用暗号化」で定義されている
+// rc4パッケージはBruce Schneierの「応用暗号化」で定義されている
 // RC4暗号を実装しています。
 //
 // RC4は暗号学的に脆弱であり、安全なアプリケーションには使用すべきではありません。

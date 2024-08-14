@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージtimeは時間を測定し表示する機能を提供します。
+// timeパッケージは時間を測定し表示する機能を提供します。
 //
 // 暦の計算は常にグレゴリオ暦を前提としており、閏秒は考慮しません。
 //

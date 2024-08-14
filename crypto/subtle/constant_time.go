@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package subtleは、暗号化コードでよく使用される関数を実装しますが、正しく使用するために注意深い考慮が必要です。
+// subtleパッケージは、暗号化コードでよく使用される関数を実装しますが、正しく使用するために注意深い考慮が必要です。
 package subtle
 
 // ConstantTimeCompareは、2つのスライスxとyが同じ内容を持つ場合は1を返し、そうでない場合は0を返します。実行時間はスライスの長さに依存し、内容には独立しています。xとyの長さが一致しない場合は、即座に0を返します。

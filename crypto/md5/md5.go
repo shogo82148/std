@@ -5,7 +5,7 @@
 //go:generate go run gen.go -output md5block.go
 //go:generateコマンドを使用して、gen.goを実行し、md5block.goに出力します。
 
-// Package md5 は、RFC 1321で定義されたMD5ハッシュアルゴリズムを実装します。
+// md5 パッケージは、RFC 1321で定義されたMD5ハッシュアルゴリズムを実装します。
 //
 // MD5は暗号学的に破られており、安全なアプリケーションには使用されるべきではありません。
 package md5

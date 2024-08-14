@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージpemは、プライバシー拡張メールで起源を持つPEMデータのエンコーディングを実装しています。現在最も一般的なPEMエンコーディングの使用法は、TLSキーと証明書です。RFC 1421を参照してください。
+// pemパッケージは、プライバシー拡張メールで起源を持つPEMデータのエンコーディングを実装しています。現在最も一般的なPEMエンコーディングの使用法は、TLSキーと証明書です。RFC 1421を参照してください。
 package pem
 
 import (

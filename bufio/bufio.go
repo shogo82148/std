@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package bufio はバッファードI/Oを実装しています。io.Readerまたはio.Writerオブジェクトをラップして、
+// bufioパッケージはバッファードI/Oを実装しています。io.Readerまたはio.Writerオブジェクトをラップして、
 // バッファリングやテキストI/Oのための支援を提供する別のオブジェクト（ReaderまたはWriter）を作成します。
 package bufio
 

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package fsはファイルシステムへの基本的なインターフェースを定義します。
+// fsパッケージはファイルシステムへの基本的なインターフェースを定義します。
 // ファイルシステムはホストオペレーティングシステムだけでなく、他のパッケージによっても提供されることがあります。
 //
 // ファイルシステムの実装のテストを支援するための [testing/fstest] パッケージを参照してください。

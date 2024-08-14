@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package gzip は RFC 1952 で指定されている gzip 形式の圧縮ファイルの読み書きを実装しています。
+// gzipパッケージは RFC 1952 で指定されている gzip 形式の圧縮ファイルの読み書きを実装しています。
 package gzip
 
 import (

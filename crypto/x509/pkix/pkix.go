@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージ pkix には、ASN.1 パースおよび X.509 証明書、CRL、OCSP のシリアル化に使用される共有の低レベルの構造体が含まれています。
+// pkix パッケージには、ASN.1 パースおよび X.509 証明書、CRL、OCSP のシリアル化に使用される共有の低レベルの構造体が含まれています。
 package pkix
 
 import (

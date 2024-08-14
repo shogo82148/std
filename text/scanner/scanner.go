@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージscannerは、UTF-8エンコードされたテキストのスキャナとトークナイザを提供します。
+// scannerパッケージは、UTF-8エンコードされたテキストのスキャナとトークナイザを提供します。
 // それはソースを提供するio.Readerを取り、その後、Scan関数を繰り返し呼び出すことでトークン化できます。
 // 既存のツールとの互換性のため、NUL文字は許可されていません。ソースの最初の文字が
 // UTF-8エンコードされたバイトオーダーマーク（BOM）である場合、それは破棄されます。

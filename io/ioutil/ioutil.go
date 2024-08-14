@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージioutilは、いくつかのI/Oユーティリティ関数を実装しています。
+// ioutilパッケージは、いくつかのI/Oユーティリティ関数を実装しています。
 //
 // Deprecated: Go 1.16以降、同じ機能はパッケージ [io] またはパッケージ [os] で提供されるようになり、
 // これらの実装が新しいコードで優先されるべきです。

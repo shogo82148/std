@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package buildinfoは、Goバイナリに埋め込まれた情報にアクセスするための機能を提供します。
+// buildinfoパッケージは、Goバイナリに埋め込まれた情報にアクセスするための機能を提供します。
 // これには、Goツールチェーンのバージョン、および使用されたモジュールのセット（モジュールモードでビルドされたバイナリの場合）が含まれます。
 //
 // ビルド情報は、現在実行中のバイナリでruntime/debug.ReadBuildInfoを使用して利用できます。

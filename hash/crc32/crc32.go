@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package crc32は32ビットの巡回冗長検査 (CRC-32) チェックサムを実装しています。
+// crc32パッケージは32ビットの巡回冗長検査 (CRC-32) チェックサムを実装しています。
 // 詳細はhttps://en.wikipedia.org/wiki/Cyclic_redundancy_checkを参照してください。
 //
 // 多項式は、LSBファースト形式、または反転表現としても表されます。

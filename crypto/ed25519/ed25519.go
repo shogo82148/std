@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package ed25519はEd25519署名アルゴリズムを実装しています。詳しくは、https://ed25519.cr.yp.to/を参照してください。
+// ed25519パッケージはEd25519署名アルゴリズムを実装しています。詳しくは、https://ed25519.cr.yp.to/を参照してください。
 //
 // これらの関数はRFC 8032で定義されている「Ed25519」関数とも互換性があります。ただし、RFC 8032の定義とは異なり、このパッケージの秘密鍵表現には公開鍵の接尾辞が含まれており、同じ鍵での複数の署名操作を効率的に行うことができます。このパッケージでは、RFC 8032の秘密鍵を「seed」と呼んでいます。
 //

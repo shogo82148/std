@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package sha512は、FIPS 180-4で定義されているSHA-384、SHA-512、SHA-512/224、およびSHA-512/256のハッシュアルゴリズムを実装しています。
+// sha512パッケージは、FIPS 180-4で定義されているSHA-384、SHA-512、SHA-512/224、およびSHA-512/256のハッシュアルゴリズムを実装しています。
 //
 // このパッケージによって返されるすべてのhash.Hash実装は、
 // encoding.BinaryMarshalerとencoding.BinaryUnmarshalerも実装しており、

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージjpegは、JPEG画像のデコーダとエンコーダを実装します。
+// jpegパッケージは、JPEG画像のデコーダとエンコーダを実装します。
 //
 // JPEGはITU-T T.81で定義されています：https://www.w3.org/Graphics/JPEG/itu-t81.pdf。
 package jpeg

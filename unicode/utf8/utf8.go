@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージutf8はUTF-8でエンコードされたテキストをサポートするための関数や定数を実装しています。ルーンとUTF-8バイトシーケンスの変換を行うための関数も含まれています。
+// utf8パッケージはUTF-8でエンコードされたテキストをサポートするための関数や定数を実装しています。ルーンとUTF-8バイトシーケンスの変換を行うための関数も含まれています。
 // 詳細はhttps://en.wikipedia.org/wiki/UTF-8を参照してください。
 package utf8
 

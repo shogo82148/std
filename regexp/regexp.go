@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package regexpは正規表現の検索を実装します。
+// regexpパッケージは正規表現の検索を実装します。
 //
 // 受け入れる正規表現の構文は、Perl、Python、および他の言語で使用される一般的な構文です。
 // より正確には、RE2が受け入れる構文であり、以下で説明されています。

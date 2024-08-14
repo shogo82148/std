@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package bzip2 implements bzip2 decompression.
+// bzip2パッケージは、bzip2の解凍を実装します。
 package bzip2
 
 import "github.com/shogo82148/std/io"

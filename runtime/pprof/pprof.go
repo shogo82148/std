@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package pprofは、pprof視覚化ツールで期待される形式でランタイムプロファイリングデータを書き込みます。
+// pprofパッケージは、pprof視覚化ツールで期待される形式でランタイムプロファイリングデータを書き込みます。
+//
 // # Goプログラムのプロファイリング
 //
 // Goプログラムをプロファイリングする最初のステップは、プロファイリングを有効にすることです。

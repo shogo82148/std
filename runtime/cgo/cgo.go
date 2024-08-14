@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package cgoは、cgoツールによって生成されたコードの実行時サポートを含んでいます。cgoの使用方法の詳細については、cgoコマンドのドキュメントを参照してください。
+cgoパッケージは、cgoツールによって生成されたコードの実行時サポートを含んでいます。cgoの使用方法の詳細については、cgoコマンドのドキュメントを参照してください。
 */
 package cgo
 

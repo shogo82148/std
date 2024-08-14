@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package zip は、ZIP アーカイブの読み書きをサポートします。
+zipパッケージは、ZIP アーカイブの読み書きをサポートします。
 
 詳細については、[ZIP specification] を参照してください。
 

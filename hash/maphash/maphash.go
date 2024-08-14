@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージmaphashはバイト列上のハッシュ関数を提供します。
+// maphashパッケージはバイト列上のハッシュ関数を提供します。
 // これらのハッシュ関数は、任意の文字列やバイト列を符号なし64ビット整数上の均一な分布にマッピングするために使用されることを意図しています。
 // ハッシュテーブルやデータ構造の異なるインスタンスごとに個別の [Seed] を使用する必要があります。
 //

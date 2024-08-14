@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package io は基本的なI/Oプリミティブに対するインターフェースを提供します。
+// ioパッケージは基本的なI/Oプリミティブに対するインターフェースを提供します。
 // その主な役割は、パッケージosなどの既存の実装を共有の公開インターフェースにラップすることで、
 // 機能を抽象化し、関連するプリミティブを提供することです。
 //

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージx509はX.509規格の一部を実装しています。
+// x509パッケージはX.509規格の一部を実装しています。
 //
 // 証明書、証明書署名要求、証明書失効リスト、エンコードされた公開および秘密鍵の解析および生成を可能にします。
 // チェーンビルダーを備えた証明書検証機能も提供します。

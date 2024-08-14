@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージembedは、実行中のGoプログラムに埋め込まれたファイルへのアクセスを提供します。
+// embedパッケージは、実行中のGoプログラムに埋め込まれたファイルへのアクセスを提供します。
 //
 // "embed"をインポートするGoソースファイルは、//go:embedディレクティブを使用して、
 // コンパイル時にパッケージディレクトリまたはサブディレクトリから読み取ったファイルの内容を

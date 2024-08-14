@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージsha256は、FIPS 180-4で定義されたSHA224およびSHA256ハッシュアルゴリズムを実装しています。
+// sha256パッケージは、FIPS 180-4で定義されたSHA224およびSHA256ハッシュアルゴリズムを実装しています。
 package sha256
 
 import (

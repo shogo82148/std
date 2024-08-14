@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package ast はGoのパッケージの構文木を表すために使用される型を宣言します。
+// astパッケージはGoのパッケージの構文木を表すために使用される型を宣言します。
 package ast
 
 import (

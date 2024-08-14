@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-パッケージelfは、ELFオブジェクトファイルへのアクセスを実装します。
+elfパッケージは、ELFオブジェクトファイルへのアクセスを実装します。
 
 # セキュリティ
 
