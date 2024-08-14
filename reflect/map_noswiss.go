@@ -6,12 +6,12 @@
 
 package reflect
 
-// MapOf returns the map type with the given key and element types.
-// For example, if k represents int and e represents string,
-// MapOf(k, e) represents map[int]string.
+// MapOfは、指定されたキーと要素の型を持つマップ型を返します。
+// 例えば、kがintを表し、eがstringを表す場合、
+// MapOf(k, e)はmap[int]stringを表します。
 //
-// If the key type is not a valid map key type (that is, if it does
-// not implement Go's == operator), MapOf panics.
+// キーの型が有効なマップキーの型でない場合（つまり、Goの==演算子を
+// 実装していない場合）、MapOfはパニックを起こします。
 func MapOf(key, elem Type) Type
 
 // MapIndex returns the value associated with key in the map v.
