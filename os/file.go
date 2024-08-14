@@ -153,6 +153,7 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // Renameはoldpathをnewpathに名前を変更（移動）します。
 // newpathが既に存在していてディレクトリではない場合、Renameはそれを置き換えます。
+// newpathが既に存在していてディレクトリである場合、Renameはエラーを返します。
 // oldpathとnewpathが異なるディレクトリにある場合、OS固有の制限が適用される場合があります。
 // 同じディレクトリ内でも、非UnixプラットフォームではRenameはアトミックな操作ではありません。
 // エラーが発生した場合、それは*LinkErrorの型である可能性があります。
