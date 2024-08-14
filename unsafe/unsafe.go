@@ -97,7 +97,7 @@ type IntegerType int
 //	u := unsafe.Pointer(nil)
 //	p := unsafe.Pointer(uintptr(u) + offset)
 //
-// (4) [syscall.Syscall] を呼び出す際にPointerをuintptrに変換する場合。
+// (4) [syscall.Syscall] のような関数を呼び出す際にPointerをuintptrに変換する場合。
 //
 // パッケージsyscallのSyscall関数は、uintptrの引数を直接オペレーティングシステムに渡し、
 // その後、呼び出しの詳細によっては、一部の引数をポインタとして再解釈する場合があります。
