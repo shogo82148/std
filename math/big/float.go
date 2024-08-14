@@ -135,9 +135,9 @@ func (x *Float) Acc() Accuracy
 
 // Signは以下を返します:
 //
-//	-1 は x <   0 の場合
-//	 0 は x が ±0 の場合
-//	+1 は x >   0 の場合
+//   - -1 x <   0 の場合
+//   - 0 x が ±0 の場合
+//   - +1 x >   0 の場合
 func (x *Float) Sign() int
 
 // MantExpはxをその仮数部と指数部に分解し、指数を返します。
@@ -221,7 +221,7 @@ func (z *Float) Set(x *Float) *Float
 func (z *Float) Copy(x *Float) *Float
 
 // Uint64は、xをゼロに向かって切り捨てることによって得られる符号なし整数を返します。
-// 0 <= x <= math.MaxUint64の場合、結果はxが整数の場合は [Exact] 、それ以外の場合は [Below] です。
+// 0 <= x <= [math.MaxUint64] の場合、結果はxが整数の場合は [Exact] 、それ以外の場合は [Below] です。
 // x < 0の場合、結果は(0, [Above])で、x > [math.MaxUint64] の場合は([math.MaxUint64], [Below])です。
 func (x *Float) Uint64() (uint64, Accuracy)
 
@@ -293,7 +293,7 @@ func (z *Float) Quo(x, y *Float) *Float
 
 // Cmpはxとyを比較し、次の値を返します:
 //
-//	-1 は x <  y
-//	 0 は x == y (これには -0 == 0, -Inf == -Inf, そして +Inf == +Inf も含まれます)
-//	+1 は x >  y
+//   - -1 x <  y
+//   - 0 x == y (これには -0 == 0, -Inf == -Inf, そして +Inf == +Inf も含まれます)
+//   - +1 x >  y
 func (x *Float) Cmp(y *Float) int

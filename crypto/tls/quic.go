@@ -33,12 +33,12 @@ type QUICConn struct {
 type QUICConfig struct {
 	TLSConfig *Config
 
-	// EnableStoreSessionEvent may be set to true to enable the
-	// [QUICStoreSession] event for client connections.
+	// EnableSessionEvents may be set to true to enable the
+	// [QUICStoreSession] and [QUICResumeSession] events for client connections.
 	// When this event is enabled, sessions are not automatically
 	// stored in the client session cache.
 	// The application should use [QUICConn.StoreSession] to store sessions.
-	EnableStoreSessionEvent bool
+	EnableSessionEvents bool
 }
 
 // QUICEventKindはQUIC接続上での操作の種類です。
@@ -86,7 +86,7 @@ const (
 
 	// QUICStoreSessionは、サーバーがセッションを再開するための状態をクライアントに提供したことを示します。
 	// [QUICEvent.SessionState] が設定されます。
-	// アプリケーションは [QUICConn.Store] セッションを使用して [SessionState] を保存するべきです。
+	// アプリケーションは [QUICConn.StoreSession] セッションを使用して [SessionState] を保存するべきです。
 	// アプリケーションは保存する前に [SessionState] を変更することができます。
 	// このイベントはクライアント接続でのみ発生します。
 	QUICStoreSession

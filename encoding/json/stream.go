@@ -28,8 +28,8 @@ type Decoder struct {
 // 要求されたJSON値を超えてrからデータを読み取る可能性があります。
 func NewDecoder(r io.Reader) *Decoder
 
-// UseNumberは、Decoderに数値をfloat64ではなく、
-// [Number] としてinterface{}にアンマーシャルするよう指示します。
+// UseNumberを使用すると、デコーダーは数値をfloat64としてではなく、
+// [Number] としてインターフェース値にアンマーシャルします。
 func (dec *Decoder) UseNumber()
 
 // DisallowUnknownFieldsは、デコーダに、宛先が構造体であり、入力に宛先の
@@ -61,8 +61,9 @@ type Encoder struct {
 // NewEncoderは、wに書き込む新しいエンコーダを返します。
 func NewEncoder(w io.Writer) *Encoder
 
-// Encodeは、vのJSONエンコーディングをストリームに書き込み、
-// その後に改行文字を追加します。
+// Encodeは、vのJSONエンコーディングをストリームに書き込みます。
+// 重要でない空白文字を省略し、
+// 改行文字で終わります。
 //
 // Goの値をJSONに変換する詳細については、[Marshal] のドキュメンテーションを参照してください。
 func (enc *Encoder) Encode(v any) error

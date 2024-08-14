@@ -265,7 +265,11 @@ type Map struct {
 	Key  *Type
 	Elem *Type
 
-	Bucket *Type
+	// GOEXPERIMENT=noswissmap fields
+	OldBucket *Type
+
+	// GOEXPERIMENT=swissmap fields
+	SwissBucket *Type
 }
 
 // MapType returns t's extra map-specific fields.
@@ -320,7 +324,7 @@ type ChanArgs struct {
 	T *Type
 }
 
-// // FuncArgs contains Type fields specific to TFUNCARGS types.
+// FuncArgs contains Type fields specific to TFUNCARGS types.
 type FuncArgs struct {
 	T *Type
 }
@@ -750,6 +754,9 @@ func IsNoInstrumentPkg(p *Pkg) bool
 // IsNoRacePkg reports whether p is a package that
 // should not be race instrumented.
 func IsNoRacePkg(p *Pkg) bool
+
+// IsRuntimePkg reports whether p is a runtime package.
+func IsRuntimePkg(p *Pkg) bool
 
 // ReceiverBaseType returns the underlying type, if any,
 // that owns methods with receiver parameter t.

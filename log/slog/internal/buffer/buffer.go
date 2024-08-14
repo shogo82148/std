@@ -5,7 +5,10 @@
 // Package buffer provides a pool-allocated byte buffer.
 package buffer
 
-// buffer adapted from go/src/fmt/print.go
+// Buffer is a byte buffer.
+//
+// This implementation is adapted from the unexported type buffer
+// in go/src/fmt/print.go.
 type Buffer []byte
 
 func New() *Buffer

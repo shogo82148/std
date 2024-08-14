@@ -210,6 +210,10 @@ type ClientHelloInfo struct {
 	// TLSバージョン1.3未満では、これはクライアントがアドバタイズする最大のバージョンから予測されるため、最大の値以外の値は使用されると拒否される可能性があります。
 	SupportedVersions []uint16
 
+	// Extensions lists the IDs of the extensions presented by the client
+	// in the client hello.
+	Extensions []uint16
+
 	// Connは接続の基礎となるnet.Connです。この接続から読み取ったり、書き込んだりしないでください。それはTLS接続の失敗を引き起こします。
 	Conn net.Conn
 

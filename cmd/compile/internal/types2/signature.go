@@ -32,7 +32,7 @@ func NewSignatureType(recv *Var, recvTypeParams, typeParams []*TypeParam, params
 // function. It is ignored when comparing signatures for identity.
 //
 // For an abstract method, Recv returns the enclosing interface either
-// as a *Named or an *Interface. Due to embedding, an interface may
+// as a *[Named] or an *[Interface]. Due to embedding, an interface may
 // contain methods whose receiver type is a different interface.
 func (s *Signature) Recv() *Var
 

@@ -77,9 +77,9 @@ func (z *Rat) Inv(x *Rat) *Rat
 
 // Signは以下を返します:
 //
-//	-1 if x <  0
-//	 0 if x == 0
-//	+1 if x >  0
+//   - -1 x <  0 の場合
+//   - 0 x == 0 の場合
+//   - +1 x >  0 の場合
 func (x *Rat) Sign() int
 
 // IsIntは、xの分母が1であるかどうかを報告します。
@@ -101,9 +101,9 @@ func (x *Rat) Denom() *Int
 
 // Cmpはxとyを比較し、以下を返します:
 //
-//	-1 if x <  y
-//	 0 if x == y
-//	+1 if x >  y
+//   - -1 x <  y の場合
+//   - 0 x == y の場合
+//   - +1 x >  y の場合
 func (x *Rat) Cmp(y *Rat) int
 
 // Addはzをx+yの和に設定し、zを返します。

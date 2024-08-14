@@ -50,6 +50,10 @@
 		ビルドモードを設定します（デフォルトはexe）。
 	-c
 		コールグラフをダンプします。
+	-checklinkname=value
+		If value is 0, all go:linkname directives are permitted.
+		If value is 1 (the default), only a known set of widely-used
+		linknames are permitted.
 	-compressdwarf
 		可能な場合はDWARFを圧縮します（デフォルトはtrue）。
 	-cpuprofile file

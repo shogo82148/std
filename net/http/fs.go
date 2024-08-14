@@ -92,6 +92,7 @@ func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time
 func ServeFile(w ResponseWriter, r *Request, name string)
 
 // ServeFileFSは、ファイルシステムfsysから指定されたファイルまたはディレクトリの内容でリクエストに応答します。
+// fsysによって提供されるファイルは [io.Seeker] を実装している必要があります。
 //
 // 提供された名前がユーザー入力から構築されている場合、
 // [ServeFileFS] を呼び出す前にサニタイズする必要があります。
@@ -123,6 +124,7 @@ func FS(fsys fs.FS) FileSystem
 func FileServer(root FileSystem) Handler
 
 // FileServerFSは、ファイルシステムfsysの内容でHTTPリクエストを処理するハンドラを返します。
+// fsysによって提供されるファイルは [io.Seeker] を実装している必要があります。
 //
 // 特別なケースとして、返されたファイルサーバーは、"/index.html"で終わる任意のリクエストを、
 // 最後の"index.html"なしの同じパスにリダイレクトします。

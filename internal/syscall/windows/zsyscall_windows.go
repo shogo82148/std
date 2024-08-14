@@ -11,7 +11,11 @@ var _ unsafe.Pointer
 
 func DuplicateTokenEx(hExistingToken syscall.Token, dwDesiredAccess uint32, lpTokenAttributes *syscall.SecurityAttributes, impersonationLevel uint32, tokenType TokenType, phNewToken *syscall.Token) (err error)
 
+func ImpersonateLoggedOnUser(token syscall.Token) (err error)
+
 func ImpersonateSelf(impersonationlevel uint32) (err error)
+
+func LogonUser(username *uint16, domain *uint16, password *uint16, logonType uint32, logonProvider uint32, token *syscall.Token) (err error)
 
 func LookupPrivilegeValue(systemname *uint16, name *uint16, luid *LUID) (err error)
 
@@ -76,6 +80,10 @@ func VirtualQuery(address uintptr, buffer *MemoryBasicInformation, length uintpt
 func NetShareAdd(serverName *uint16, level uint32, buf *byte, parmErr *uint16) (neterr error)
 
 func NetShareDel(serverName *uint16, netName *uint16, reserved uint32) (neterr error)
+
+func NetUserAdd(serverName *uint16, level uint32, buf *byte, parmErr *uint32) (neterr error)
+
+func NetUserDel(serverName *uint16, userName *uint16) (neterr error)
 
 func NetUserGetLocalGroups(serverName *uint16, userName *uint16, level uint32, flags uint32, buf **byte, prefMaxLen uint32, entriesRead *uint32, totalEntries *uint32) (neterr error)
 

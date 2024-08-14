@@ -34,7 +34,7 @@ func (b *Buffer) AvailableBuffer() []byte
 
 // Stringはバッファの未読部分の内容を文字列として返します。もし [Buffer] がnilポインタであれば、"<nil>"を返します。
 //
-// より効率的に文字列を構築するには、strings.Builder型を参照してください。
+// より効率的に文字列を構築するには、[strings.Builder] 型を参照してください。
 func (b *Buffer) String() string
 
 // Lenはバッファの未読部分のバイト数を返します。
@@ -66,15 +66,16 @@ func (b *Buffer) Write(p []byte) (n int, err error)
 // WriteStringは、必要に応じてバッファを拡張し、sの内容をバッファに追加します。戻り値nはsの長さであり、errは常にnilです。バッファが大きすぎる場合、WriteStringは [ErrTooLarge] とともにパニックを発生させます。
 func (b *Buffer) WriteString(s string) (n int, err error)
 
-// MinReadは [Buffer.ReadFrom] によってRead呼び出しに渡される最小のスライスサイズです。
-// [Buffer] は、rの内容を保持するために必要なものを超えて少なくともMinReadバイトを持っている限り、ReadFromは基礎となるバッファを拡大しません。
+// MinReadは、[Buffer.ReadFrom] によって [Buffer.Read] 呼び出しに渡される最小スライスサイズです。
+// [Buffer] がrの内容を保持するのに必要なバイト数を超えて少なくともMinReadバイトを持っている限り、
+// [Buffer.ReadFrom] は基礎となるバッファを拡張しません。
 const MinRead = 512
 
 // ReadFromは、rからEOFまでデータを読み取り、バッファに追加していきます。必要に応じてバッファのサイズが拡大されます。返り値nは読み取られたバイト数です。読み取り中にio.EOF以外のエラーが発生した場合、それも返されます。バッファがあまりに大きくなると、ReadFromは [ErrTooLarge] でパニックを引き起こします。
 func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error)
 
 // WriteTo はバッファが空になるかエラーが発生するまで、データを w に書き込みます。
-// 戻り値の n は書き込まれたバイト数です。この値は常に int に収まりますが、io.WriterTo インターフェースに合わせて int64 型です。書き込み中に発生したエラーも返されます。
+// 戻り値の n は書き込まれたバイト数です。この値は常に int に収まりますが、[io.WriterTo] インターフェースに合わせて int64 型です。書き込み中に発生したエラーも返されます。
 func (b *Buffer) WriteTo(w io.Writer) (n int64, err error)
 
 // WriteByteはバイトcをバッファに追加し、必要に応じてバッファを拡張します。
@@ -85,7 +86,7 @@ func (b *Buffer) WriteByte(c byte) error
 // WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをバッファに追加し、その長さと常にnilであるエラーを返します。エラーは常にnilですが、 [bufio.Writer] のWriteRuneとのマッチングのために含まれます。必要に応じてバッファは拡張されます。もしバッファがあまりにも大きくなった場合、WriteRuneは [ErrTooLarge] でパニックを起こします。
 func (b *Buffer) WriteRune(r rune) (n int, err error)
 
-// Readは、バッファから次のlen(p)バイトを読み取るか、バッファが空になるまで読み取ります。返り値nは読み取られたバイト数です。バッファに返すデータがない場合、errはio.EOFです（len(p)がゼロの場合を除く）；それ以外の場合、nilです。
+// Readは、バッファから次のlen(p)バイトを読み取るか、バッファが空になるまで読み取ります。返り値nは読み取られたバイト数です。バッファに返すデータがない場合、errは [io.EOF] です（len(p)がゼロの場合を除く）；それ以外の場合、nilです。
 func (b *Buffer) Read(p []byte) (n int, err error)
 
 // Nextは、バッファから次のnバイトを含むスライスを返し、
@@ -95,7 +96,7 @@ func (b *Buffer) Read(p []byte) (n int, err error)
 func (b *Buffer) Next(n int) []byte
 
 // ReadByte はバッファから次のバイトを読み込んで返します。
-// バイトが利用できない場合は、エラー io.EOF を返します。
+// バイトが利用できない場合は、エラー [io.EOF] を返します。
 func (b *Buffer) ReadByte() (byte, error)
 
 // ReadRuneはバッファから次のUTF-8エンコードされた
@@ -114,7 +115,7 @@ func (b *Buffer) UnreadByte() error
 // ReadBytesは入力の最初のdelimが現れるまで読み取り、
 // デリミタを含むデータを含むスライスを返します。
 // ReadBytesがデリミタを見つける前にエラーに遭遇した場合、
-// エラー自体（しばしばio.EOF）とエラー前に読み取ったデータを返します。
+// エラー自体（通常は [io.EOF]）とエラー前に読み取ったデータを返します。
 // 返されたデータの末尾がdelimで終わっていない場合、
 // ReadBytesはerr != nilを返します。
 func (b *Buffer) ReadBytes(delim byte) (line []byte, err error)
@@ -122,7 +123,7 @@ func (b *Buffer) ReadBytes(delim byte) (line []byte, err error)
 // ReadStringは入力の最初のデリミタが現れるまで読み取り、
 // デリミタを含むデータを含む文字列を返します。
 // ReadStringがデリミタを見つける前にエラーに遭遇する場合、
-// エラー自体（通常はio.EOF）とエラーが発生する前に読み取ったデータを返します。
+// エラー自体（通常は [io.EOF]）とエラーが発生する前に読み取ったデータを返します。
 // ReadStringは、返されるデータがdelimで終わっていない場合、err！= nilを返します。
 func (b *Buffer) ReadString(delim byte) (line string, err error)
 

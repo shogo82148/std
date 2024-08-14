@@ -151,6 +151,8 @@ func (n *IPNet) String() string
 // ParseIPは文字列sをIPアドレスと解釈し、結果を返します。
 // 文字列sはIPv4点区切りの10進法（「192.0.2.1」）、IPv6（「2001:db8::68」）、またはIPv4-mapped IPv6形式（「::ffff:192.0.2.1」）で書かれている必要があります。
 // もしsが有効なIPアドレスのテキスト表現ではない場合、ParseIPはnilを返します。
+// 返されるアドレスは常に16バイトであり、
+// IPv4アドレスはIPv4マップドIPv6形式で返されます。
 func ParseIP(s string) IP
 
 // ParseCIDRはCIDR表記のIPアドレスとプレフィックス長を含むsを解析します。

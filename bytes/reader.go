@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Readerはio.Reader、io.ReaderAt、io.WriterTo、io.Seeker、io.ByteScanner、io.RuneScannerのインターフェースを実装し、
+// Readerは [io.Reader]、[io.ReaderAt]、[io.WriterTo]、[io.Seeker]、[io.ByteScanner]、[io.RuneScanner] のインターフェースを実装し、
 // バイトスライスから読み取ります。
 // [Buffer] とは異なり、Readerは読み込み専用であり、シークをサポートします。
 // Readerのゼロ値は空のスライスのReaderのように動作します。

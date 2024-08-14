@@ -134,6 +134,14 @@ type RunError struct {
 
 func (e *RunError) Error() string
 
+type RunArgs struct {
+	cmdline []any
+	dir     string
+	local   bool
+	env     []string
+	stdin   io.Reader
+}
+
 // Run runs the command line in the given directory
 // (an empty dir means the current directory).
 // It returns the standard output and, for a non-zero exit,
@@ -141,4 +149,5 @@ func (e *RunError) Error() string
 // Standard error is unavailable for commands that exit successfully.
 func Run(ctx context.Context, dir string, cmdline ...any) ([]byte, error)
 
-func RunWithStdin(ctx context.Context, dir string, stdin io.Reader, cmdline ...any) ([]byte, error)
+// RunWithArgs is the same as Run but it also accepts additional arguments.
+func RunWithArgs(ctx context.Context, args RunArgs) ([]byte, error)
