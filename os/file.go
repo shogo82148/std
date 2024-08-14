@@ -171,20 +171,30 @@ func Readlink(name string) (string, error)
 // このディレクトリは、存在することやアクセス可能な許可を持っていることが保証されていません。
 func TempDir() string
 
-// UserCacheDirは、ユーザー固有のキャッシュデータのデフォルトのルートディレクトリを返します。ユーザーは、このディレクトリ内に独自のアプリケーション固有のサブディレクトリを作成し、それを使用する必要があります。
-// Unixシステムでは、これは$XDG_CACHE_HOME（https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.htmlで指定されています）が空でない場合には、$HOME/.cacheを返します。
-// Darwinでは、これは$HOME/Library/Cachesを返します。
-// Windowsでは、これは%LocalAppData%を返します。
-// Plan 9では、これは$home/lib/cacheを返します。
-// 位置を特定できない場合（たとえば、$HOMEが定義されていない場合）は、エラーが返されます。
+// UserCacheDirは、ユーザー固有のキャッシュデータに使用するデフォルトのルートディレクトリを返します。
+// ユーザーはこのディレクトリ内にアプリケーション固有のサブディレクトリを作成して使用する必要があります。
+//
+// Unixシステムでは、https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html で指定されている
+// $XDG_CACHE_HOMEが空でない場合はその値を返し、そうでない場合は$HOME/.cacheを返します。
+// Darwinでは、$HOME/Library/Cachesを返します。
+// Windowsでは、%LocalAppData%を返します。
+// Plan 9では、$home/lib/cacheを返します。
+//
+// 位置を特定できない場合（例えば、$HOMEが定義されていない場合）や、
+// $XDG_CACHE_HOMEのパスが相対パスである場合、エラーを返します。
 func UserCacheDir() (string, error)
 
-// UserConfigDirは、ユーザー固有の設定データに使用するデフォルトのルートディレクトリを返します。ユーザーは、このディレクトリ内に自分自身のアプリケーション固有のサブディレクトリを作成し、それを使用するべきです。
-// Unixシステムでは、$XDG_CONFIG_HOMEが空でない場合は、https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.htmlで指定されているようにそれを返し、それ以外の場合は$HOME/.configを返します。
+// UserConfigDirは、ユーザー固有の設定データに使用するデフォルトのルートディレクトリを返します。
+// ユーザーはこのディレクトリ内にアプリケーション固有のサブディレクトリを作成して使用する必要があります。
+//
+// Unixシステムでは、https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html で指定されている
+// $XDG_CONFIG_HOMEが空でない場合はその値を返し、そうでない場合は$HOME/.configを返します。
 // Darwinでは、$HOME/Library/Application Supportを返します。
 // Windowsでは、%AppData%を返します。
 // Plan 9では、$home/libを返します。
-// 場所を特定できない場合（たとえば、$HOMEが定義されていない場合）は、エラーを返します。
+//
+// 位置を特定できない場合（例えば、$HOMEが定義されていない場合）や、
+// $XDG_CONFIG_HOMEのパスが相対パスである場合、エラーを返します。
 func UserConfigDir() (string, error)
 
 // UserHomeDirは現在のユーザーのホームディレクトリを返します。

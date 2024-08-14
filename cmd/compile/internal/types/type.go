@@ -751,6 +751,9 @@ func IsNoInstrumentPkg(p *Pkg) bool
 // should not be race instrumented.
 func IsNoRacePkg(p *Pkg) bool
 
+// IsRuntimePkg reports whether p is a runtime package.
+func IsRuntimePkg(p *Pkg) bool
+
 // ReceiverBaseType returns the underlying type, if any,
 // that owns methods with receiver parameter t.
 // The result is either a named type or an anonymous struct.

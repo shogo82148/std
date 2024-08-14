@@ -202,8 +202,6 @@ func (f *Func) Dupok() bool
 func (f *Func) Wrapper() bool
 func (f *Func) ABIWrapper() bool
 func (f *Func) Needctxt() bool
-func (f *Func) IsHiddenClosure() bool
-func (f *Func) IsDeadcodeClosure() bool
 func (f *Func) HasDefer() bool
 func (f *Func) NilCheckDisabled() bool
 func (f *Func) InlinabilityChecked() bool
@@ -216,8 +214,6 @@ func (f *Func) SetDupok(b bool)
 func (f *Func) SetWrapper(b bool)
 func (f *Func) SetABIWrapper(b bool)
 func (f *Func) SetNeedctxt(b bool)
-func (f *Func) SetIsHiddenClosure(b bool)
-func (f *Func) SetIsDeadcodeClosure(b bool)
 func (f *Func) SetHasDefer(b bool)
 func (f *Func) SetNilCheckDisabled(b bool)
 func (f *Func) SetInlinabilityChecked(b bool)
@@ -227,6 +223,8 @@ func (f *Func) SetClosureResultsLost(b bool)
 func (f *Func) SetIsPackageInit(b bool)
 
 func (f *Func) SetWBPos(pos src.XPos)
+
+func (f *Func) IsClosure() bool
 
 // FuncName returns the name (without the package) of the function f.
 func FuncName(f *Func) string
@@ -273,7 +271,7 @@ func IsTrivialClosure(clo *ClosureExpr) bool
 // should have an inline-adjusted position, whereas the ODCLFUNC and
 // ONAME must not.
 //
-// outerfn is the enclosing function, if any. The returned function is
+// outerfn is the enclosing function. The returned function is
 // appending to pkg.Funcs.
 //
 // why is the reason we're generating this Func. It can be OCLOSURE
