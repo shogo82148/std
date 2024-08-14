@@ -328,22 +328,22 @@ func ExampleTitle() {
 	// この例をToTitleの例と比較してください。
 	fmt.Println(strings.Title("her royal highness"))
 	fmt.Println(strings.Title("loud noises"))
-	fmt.Println(strings.Title("хлеб"))
+	fmt.Println(strings.Title("брат"))
 	// Output:
 	// Her Royal Highness
 	// Loud Noises
-	// Хлеб
+	// Брат
 }
 
 func ExampleToTitle() {
 	// この例をToTitleの例と比較してください。
 	fmt.Println(strings.ToTitle("her royal highness"))
 	fmt.Println(strings.ToTitle("loud noises"))
-	fmt.Println(strings.ToTitle("хлеб"))
+	fmt.Println(strings.ToTitle("брат"))
 	// Output:
 	// HER ROYAL HIGHNESS
 	// LOUD NOISES
-	// ХЛЕБ
+	// БРАТ
 }
 
 func ExampleToTitleSpecial() {
