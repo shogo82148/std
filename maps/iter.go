@@ -6,23 +6,20 @@ package maps
 
 import "github.com/shogo82148/std/iter"
 
-// All returns an iterator over key-value pairs from m.
-// The iteration order is not specified and is not guaranteed
-// to be the same from one call to the next.
+// Allは、mからキーと値のペアを反復するイテレータを返します。
+// イテレーションの順序は指定されておらず、呼び出しごとに同じであることは保証されません。
 func All[Map ~map[K]V, K comparable, V any](m Map) iter.Seq2[K, V]
 
-// Keys returns an iterator over keys in m.
-// The iteration order is not specified and is not guaranteed
-// to be the same from one call to the next.
+// Keysは、m内のキーを反復するイテレータを返します。
+// イテレーションの順序は指定されておらず、呼び出しごとに同じであることは保証されません。
 func Keys[Map ~map[K]V, K comparable, V any](m Map) iter.Seq[K]
 
-// Values returns an iterator over values in m.
-// The iteration order is not specified and is not guaranteed
-// to be the same from one call to the next.
+// Valuesは、m内の値を反復するイテレータを返します。
+// イテレーションの順序は指定されておらず、呼び出しごとに同じであることは保証されません。
 func Values[Map ~map[K]V, K comparable, V any](m Map) iter.Seq[V]
 
-// Insert adds the key-value pairs from seq to m.
-// If a key in seq already exists in m, its value will be overwritten.
+// Insertは、seqからmにキーと値のペアを追加します。
+// seq内のキーがすでにmに存在する場合、その値は上書きされます。
 func Insert[Map ~map[K]V, K comparable, V any](m Map, seq iter.Seq2[K, V])
 
 // Collect collects key-value pairs from seq into a new map
