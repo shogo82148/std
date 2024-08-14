@@ -28,8 +28,8 @@ type Decoder struct {
 // 要求されたJSON値を超えてrからデータを読み取る可能性があります。
 func NewDecoder(r io.Reader) *Decoder
 
-// UseNumberは、Decoderに数値をfloat64ではなく、
-// [Number] としてinterface{}にアンマーシャルするよう指示します。
+// UseNumberを使用すると、デコーダーは数値をfloat64としてではなく、
+// [Number] としてインターフェース値にアンマーシャルします。
 func (dec *Decoder) UseNumber()
 
 // DisallowUnknownFieldsは、デコーダに、宛先が構造体であり、入力に宛先の
