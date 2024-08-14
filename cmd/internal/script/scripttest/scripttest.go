@@ -6,7 +6,7 @@
 package scripttest
 
 import (
-	"github.com/shogo82148/std/cmd/go/internal/script"
+	"github.com/shogo82148/std/cmd/internal/script"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/testing"
 )
