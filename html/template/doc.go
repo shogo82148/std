@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-パッケージテンプレート（html/template）は、コードインジェクションに対して安全なHTML出力を生成するための
+templateパッケージ（html/template）は、コードインジェクションに対して安全なHTML出力を生成するための
 データ駆動型テンプレートを実装します。それは [text/template] と同じインターフェースを提供し、出力がHTMLの場合は
 [text/template] の代わりに使用すべきです。
 

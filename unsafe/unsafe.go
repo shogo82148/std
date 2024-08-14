@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package unsafeは、Go言語のプログラムの型の安全性を無視する操作を含んでいます。
+unsafeパッケージは、Go言語のプログラムの型の安全性を無視する操作を含んでいます。
 
 unsafeをインポートするパッケージは非可搬性があり、Go 1の互換性ガイドラインで保護されていません。
 */package unsafe

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package utf16はUTF-16シーケンスのエンコードとデコードを実装します。
+// utf16パッケージはUTF-16シーケンスのエンコードとデコードを実装します。
 package utf16
 
 // IsSurrogateは指定されたUnicodeコードポイントが

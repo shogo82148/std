@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージパスは、スラッシュで区切られたパスを操作するためのユーティリティルーチンを実装します。
+// pathパッケージは、スラッシュで区切られたパスを操作するためのユーティリティルーチンを実装します。
 //
 // pathパッケージは、URLのパスなど、スラッシュで区切られたパスにのみ使用する必要があります。
 // このパッケージは、ドライブレターやバックスラッシュを含むWindowsパスに対処しません。

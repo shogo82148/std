@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package base64は、RFC 4648で指定されているように、base64エンコーディングを実装します。
+// base64パッケージは、RFC 4648で指定されているように、base64エンコーディングを実装します。
 package base64
 
 import (

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージtokenは、Goプログラミング言語の字句トークンとトークンに対する基本的な操作（印刷、述語）を定義する定数を表します。
+// tokenパッケージは、Goプログラミング言語の字句トークンとトークンに対する基本的な操作（印刷、述語）を定義する定数を表します。
 package token
 
 // TokenはGoプログラミング言語の字句トークンの集合です。

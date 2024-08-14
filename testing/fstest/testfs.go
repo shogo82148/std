@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package fstest implements support for testing implementations and users of file systems.
+// fstestパッケージは、ファイルシステムの実装およびユーザーのテストをサポートする機能を実装します。
 package fstest
 
 import (

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package ascii85はbtoaツールやAdobeのPostScriptおよびPDFドキュメント形式で使用されているascii85データエンコーディングを実装しています。
+// ascii85パッケージはbtoaツールやAdobeのPostScriptおよびPDFドキュメント形式で使用されているascii85データエンコーディングを実装しています。
 package ascii85
 
 import (

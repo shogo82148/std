@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package rsaは、PKCS #1およびRFC 8017で指定されたRSA暗号化を実装します。
+// rsaパッケージは、PKCS #1およびRFC 8017で指定されたRSA暗号化を実装します。
 //
 // RSAは、このパッケージで使用される単一の基本操作であり、公開鍵暗号化または公開鍵署名のいずれかを実装するために使用されます。
 //

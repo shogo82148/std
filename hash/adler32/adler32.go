@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package adler32はAdler-32チェックサムを実装しています。
+// adler32パッケージはAdler-32チェックサムを実装しています。
 //
 // これはRFC 1950で定義されています：
 //

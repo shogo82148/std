@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージプラグインは、Goプラグインの読み込みとシンボルの解決を実装します。
+// pluginパッケージは、Goプラグインの読み込みとシンボルの解決を実装します。
 //
 // プラグインは、エクスポートされた関数と変数を持つGo mainパッケージであり、
 // 次のようにビルドされたものです：

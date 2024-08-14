@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージrandは、シミュレーションなどのタスクに適した擬似乱数生成器を実装しますが、
+// randパッケージは、シミュレーションなどのタスクに適した擬似乱数生成器を実装しますが、
 // セキュリティに敏感な作業には使用しないでください。
 //
 // 乱数は[Source]によって生成され、通常は [Rand] でラップされます。

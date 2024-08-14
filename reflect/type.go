@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package reflect はランタイムリフレクションを実装し、プログラムが任意の型のオブジェクトを操作できるようにします。典型的な使用方法は、静的型 interface{} の値を取り、TypeOf を呼び出してその動的な型情報を抽出することです。TypeOf は Type を返します。
+// reflect パッケージはランタイムリフレクションを実装し、プログラムが任意の型のオブジェクトを操作できるようにします。典型的な使用方法は、静的型 interface{} の値を取り、TypeOf を呼び出してその動的な型情報を抽出することです。TypeOf は Type を返します。
 // ValueOf への呼び出しは、実行時データを表す Value を返します。Zero は Type を受け取り、その型のゼロ値を表す Value を返します。
 // Go におけるリフレクションの紹介については、「The Laws of Reflection」を参照してください：
 // https://golang.org/doc/articles/laws_of_reflection.html

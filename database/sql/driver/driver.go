@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package driverは、package sqlによって使用されるデータベースドライバが実装するインターフェースを定義します。
+// driverパッケージは、package sqlによって使用されるデータベースドライバが実装するインターフェースを定義します。
 //
 // ほとんどのコードは、[database/sql] パッケージを使用するべきです。
 //

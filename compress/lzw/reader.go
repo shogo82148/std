@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージ lzw は、T. A. Welchによって述べられた「高性能データ圧縮のためのテクニック」という文書で説明されている、Lempel-Ziv-Welch圧縮データフォーマットを実装します。
+// lzwパッケージ は、T. A. Welchによって述べられた「高性能データ圧縮のためのテクニック」という文書で説明されている、Lempel-Ziv-Welch圧縮データフォーマットを実装します。
 //
 // 特に、これはGIFおよびPDFファイル形式で使用されるLZWを実装しており、可変幅コード（最大12ビット）および最初の2つの非文字コードはクリアコードとEOFコードを意味します。
 //

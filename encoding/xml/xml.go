@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package xml implements a simple XML 1.0 parser that
-// understands XML name spaces.
+// xmlパッケージは、XML名前空間を理解する
+// シンプルなXML 1.0パーサーを実装します。
 package xml
 
 import (

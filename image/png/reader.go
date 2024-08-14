@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージpngは、PNG画像のデコーダとエンコーダを実装します。
+// pngパッケージは、PNG画像のデコーダとエンコーダを実装します。
 //
 // PNGの仕様は https://www.w3.org/TR/PNG/ にあります。
 package png

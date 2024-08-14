@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージ math は基本的な定数と数学的な関数を提供します。
+// mathパッケージは基本的な定数と数学的な関数を提供します。
 //
 // このパッケージはアーキテクチャ間でビットが完全に同じ結果になることを保証しません。
 package math

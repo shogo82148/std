@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージpprofは、pprof可視化ツールが期待する形式で実行時プロファイリングデータをHTTPサーバー経由で提供します。
+// pprofパッケージは、pprof可視化ツールが期待する形式で実行時プロファイリングデータをHTTPサーバー経由で提供します。
 //
 // このパッケージは通常、そのHTTPハンドラを登録する副作用のためにのみインポートされます。
 // ハンドルされるパスはすべて/debug/pprof/で始まります。

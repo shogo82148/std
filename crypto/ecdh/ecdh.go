@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージecdhはNIST曲線とCurve25519上での楕円曲線ディフィー・ヘルマンを実装します。
+// ecdhパッケージはNIST曲線とCurve25519上での楕円曲線ディフィー・ヘルマンを実装します。
 package ecdh
 
 import (

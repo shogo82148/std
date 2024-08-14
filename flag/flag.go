@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package flagは、コマンドラインのフラグ解析を実装します。
+flagパッケージは、コマンドラインのフラグ解析を実装します。
 
 # 使用法
 

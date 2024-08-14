@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package http は HTTP クライアントとサーバーの実装を提供します。
+httpパッケージは HTTP クライアントとサーバーの実装を提供します。
 
 [Get]、[Head]、[Post]、[PostForm] は HTTP (または HTTPS) リクエストを行います:
 

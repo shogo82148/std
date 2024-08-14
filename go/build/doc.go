@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージ build はGoのパッケージに関する情報を収集します。
+// buildパッケージはGoのパッケージに関する情報を収集します。
 //
 // # Go Path
 //

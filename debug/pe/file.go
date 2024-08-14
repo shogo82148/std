@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-パッケージpeは、PE（Microsoft Windows Portable Executable）ファイルへのアクセスを実装します。
+peパッケージは、PE（Microsoft Windows Portable Executable）ファイルへのアクセスを実装します。
 
 # セキュリティ
 

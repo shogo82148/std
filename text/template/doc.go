@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-パッケージtemplateは、テキスト出力を生成するためのデータ駆動型テンプレートを実装します。
+templateパッケージは、テキスト出力を生成するためのデータ駆動型テンプレートを実装します。
 
 HTML出力を生成するには、[html/template] を参照してください。
 これはこのパッケージと同じインターフェースを持ち、

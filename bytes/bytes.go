@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージbytesはバイトスライスの操作のための関数を実装します。
-// これは[strings]パッケージの機能に類似しています。
+// bytesパッケージはバイトスライスの操作のための関数を実装します。
+// これは [strings] パッケージの機能に類似しています。
 package bytes
 
 import (

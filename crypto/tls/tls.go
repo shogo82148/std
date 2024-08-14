@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージtlsは、RFC 5246で指定されているTLS 1.2と、RFC 8446で指定されているTLS 1.3を部分的に実装しています。
+// tlsパッケージは、RFC 5246で指定されているTLS 1.2と、RFC 8446で指定されているTLS 1.3を部分的に実装しています。
 package tls
 
 import (

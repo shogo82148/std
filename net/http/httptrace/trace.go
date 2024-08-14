@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージhttptraceは、HTTPクライアントリクエスト内のイベントをトレースするメカニズムを提供します。
+// httptraceパッケージは、HTTPクライアントリクエスト内のイベントをトレースするメカニズムを提供します。
 package httptrace
 
 import (

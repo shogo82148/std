@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージnetipは、小さな値型であるIPアドレス型を定義します。
+// netipパッケージは、小さな値型であるIPアドレス型を定義します。
 // この[Addr]型をベースに、パッケージは [AddrPort] （IPアドレスとポート）と [Prefix] （IPアドレスとビット長のプレフィックス）も定義します。
 //
 // [net.IP] 型と比較して、 [Addr] 型はメモリを少なく使用し、不変であり、比較可能（==およびマップキーとしてサポート）です。

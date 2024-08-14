@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージatomicは、同期アルゴリズムの実装に役立つ
+// atomicパッケージは、同期アルゴリズムの実装に役立つ
 // 低レベルのアトミックメモリプリミティブを提供します。
 //
 // これらの関数は、正しく使用するためには非常に注意が必要です。

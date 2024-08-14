@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージformatはGoソースコードの標準的なフォーマットを実装します。
+// formatパッケージはGoソースコードの標準的なフォーマットを実装します。
 //
 // Goソースコードのフォーマットは時間とともに変化するため、
 // 一貫したフォーマットに依存するツールは、このパッケージを使う代わりに特定のバージョンのgofmtバイナリを実行する必要があります。

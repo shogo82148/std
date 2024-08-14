@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージecdsaは、FIPS 186-4およびSEC 1、バージョン2.0で定義されている楕円曲線デジタル署名アルゴリズムを実装しています。
+// ecdsaパッケージは、FIPS 186-4およびSEC 1、バージョン2.0で定義されている楕円曲線デジタル署名アルゴリズムを実装しています。
 //
 // このパッケージによって生成される署名は確定的ではありませんが、エントロピーは秘密鍵とメッセージと混合され、ランダム性源の故障の場合には同じレベルのセキュリティを実現します。
 //

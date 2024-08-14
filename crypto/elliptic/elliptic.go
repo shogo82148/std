@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージellipticは、素数体上の標準的なNIST P-224、P-256、P-384、およびP-521楕円曲線を実装しています。
+// ellipticパッケージは、素数体上の標準的なNIST P-224、P-256、P-384、およびP-521楕円曲線を実装しています。
 //
 // このパッケージの直接使用は非推奨であり、[P224]、[P256]、[P384]、[P521]の値は[crypto/ecdsa]を使用するために必要です。その他のほとんどの用途は、効率的かつ安全な[crypto/ecdh]または低レベルな機能のためのサードパーティのモジュールに移行する必要があります。
 package elliptic

@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package netは、TCP/IP、UDP、ドメイン名の解決、およびUnixドメインソケットなど、ネットワークI/Oのためのポータブルなインターフェースを提供します。
+netパッケージは、TCP/IP、UDP、ドメイン名の解決、およびUnixドメインソケットなど、ネットワークI/Oのためのポータブルなインターフェースを提供します。
 
 このパッケージは、低レベルのネットワーキングプリミティブへのアクセスを提供していますが、ほとんどのクライアントは、[Dial]、[Listen]、Accept関数と関連する [Conn] と [Listener] インターフェースが提供する基本的なインターフェースだけを必要とします。crypto/tlsパッケージは、同じインターフェースと似たようなDialとListen関数を使用します。
 

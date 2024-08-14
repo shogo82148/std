@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package filepathは、ファイル名パスを操作するためのユーティリティ関数を実装しています。
+// filepathパッケージは、ファイル名パスを操作するためのユーティリティ関数を実装しています。
 // これは、対象のオペレーティングシステムで定義されたファイルパスと互換性のある方法で行います。
 //
 // filepathパッケージは、オペレーティングシステムに応じてスラッシュまたはバックスラッシュを使用します。

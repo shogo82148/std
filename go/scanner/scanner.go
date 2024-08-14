@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package scannerはGo言語のソーステキストのためのスキャナを実装します。
+// scannerパッケージはGo言語のソーステキストのためのスキャナを実装します。
 // ソースとして[]byteを受け取り、Scanメソッドへの繰り返し呼び出しを通じてトークン化します。
 package scanner
 

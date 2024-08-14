@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージdsaは、FIPS 186-3で定義されたデジタル署名アルゴリズムを実装します。
+// dsaパッケージは、FIPS 186-3で定義されたデジタル署名アルゴリズムを実装します。
 //
 // このパッケージのDSA操作は、定数時間アルゴリズムを使用して実装されていません。
 //

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージ csv は、カンマ区切り値(CSV)ファイルの読み書きを行います。
+// csvパッケージは、カンマ区切り値(CSV)ファイルの読み書きを行います。
 // 多くの種類のCSVファイルがありますが、このパッケージはRFC 4180で説明されている形式をサポートしています。
 // ただし、[Writer] はデフォルトで改行文字としてCRLFではなくLFを使用します。
 //

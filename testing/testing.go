@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージtestingはGoパッケージの自動テストをサポートします。
+// testingパッケージはGoパッケージの自動テストをサポートします。
 // これは"go test"コマンドと一緒に使用することを意図しています。"go test"コマンドは以下の形式の関数を自動的に実行します。
 //
 //	func TestXxx(*testing.T)

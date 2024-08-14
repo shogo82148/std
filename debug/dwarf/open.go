@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-パッケージdwarfは、実行可能ファイルからロードされたDWARFデバッグ情報へのアクセスを提供します。
+dwarfパッケージは、実行可能ファイルからロードされたDWARFデバッグ情報へのアクセスを提供します。
 これは、DWARF 2.0標準で定義されています。
 http://dwarfstd.org/doc/dwarf-2.0.0.pdf
 

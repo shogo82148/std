@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージquotedprintableは、RFC 2045で指定されているquoted-printableエンコーディングを実装します。
+// quotedprintableパッケージは、RFC 2045で指定されているquoted-printableエンコーディングを実装します。
 package quotedprintable
 
 import (

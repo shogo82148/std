@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージfnvは、 Glenn Fowler、Landon Curt Noll、およびPhong Voによって作成された
+// fnvパッケージは、 Glenn Fowler、Landon Curt Noll、およびPhong Voによって作成された
 // FNV-1およびFNV-1aという非暗号化ハッシュ関数を実装しています。
 // 詳細は、以下を参照してください。
 // https://en.wikipedia.org/wiki/Fowler-Noll-Vo_hash_function.

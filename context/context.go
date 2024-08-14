@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package context は、期限、キャンセルシグナル、および他のAPI境界やプロセス間を超えたリクエストスコープの値を伝達するContext型を定義します。
+// contextパッケージは、期限、キャンセルシグナル、および他のAPI境界やプロセス間を超えたリクエストスコープの値を伝達するContext型を定義します。
 //
 // サーバーへの入力リクエストは [Context] を作成し、サーバーへの出力呼び出しは[Context]を受け入れる必要があります。
 // それらの間の関数呼び出しのチェーンは、Contextを伝播させ、[WithCancel]、[WithDeadline]、[WithTimeout]、または [WithValue] を使用して作成された派生Contextで置き換えることができます。

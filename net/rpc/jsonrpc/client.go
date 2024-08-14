@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package jsonrpc はRPCパッケージのためのJSON-RPC 1.0のClientCodecとServerCodecを実装します。
+// jsonrpcパッケージはRPCパッケージのためのJSON-RPC 1.0のClientCodecとServerCodecを実装します。
 // JSON-RPC 2.0のサポートについては、 https://godoc.org/?q=json-rpc+2.0 を参照してください。
 package jsonrpc
 
