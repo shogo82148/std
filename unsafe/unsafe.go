@@ -219,7 +219,8 @@ func SliceData(slice []ArbitraryType) *ArbitraryType
 // 実行時に、lenが負であるか、またはptrがnilであり、かつlenがゼロでない場合には、
 // 実行時パニックが発生します。
 //
-// Goの文字列は不変であるため、Stringに渡されたバイトはその後変更してはなりません。
+// Goの文字列は不変であるため、返された文字列値が存在する限り、
+// Stringに渡されたバイトを変更してはなりません。
 func String(ptr *byte, len IntegerType) string
 
 // StringDataは、strの基礎バイトへのポインタを返します。
