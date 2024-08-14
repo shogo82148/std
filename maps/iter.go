@@ -22,6 +22,6 @@ func Values[Map ~map[K]V, K comparable, V any](m Map) iter.Seq[V]
 // seq内のキーがすでにmに存在する場合、その値は上書きされます。
 func Insert[Map ~map[K]V, K comparable, V any](m Map, seq iter.Seq2[K, V])
 
-// Collect collects key-value pairs from seq into a new map
-// and returns it.
+// Collectは、seqからキーと値のペアを収集して新しいマップに格納し、
+// それを返します。
 func Collect[K comparable, V any](seq iter.Seq2[K, V]) map[K]V
