@@ -12,8 +12,8 @@ jobs:
       matrix:
         branch:
           - master
-          - release-branch.go1.21
           - release-branch.go1.22
+          - release-branch.go1.23
     permissions:
       contents: write
 
