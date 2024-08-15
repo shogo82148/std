@@ -65,8 +65,12 @@ func (l Level) MarshalJSON() ([]byte, error)
 // output. For example, "Error-8" would marshal as "INFO".
 func (l *Level) UnmarshalJSON(data []byte) error
 
-// MarshalText implements [encoding.TextMarshaler]
+// AppendText implements [encoding.TextAppender]
 // by calling [Level.String].
+func (l Level) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements [encoding.TextMarshaler]
+// by calling [Level.AppendText].
 func (l Level) MarshalText() ([]byte, error)
 
 // UnmarshalText implements [encoding.TextUnmarshaler].
@@ -97,8 +101,12 @@ func (v *LevelVar) Set(l Level)
 
 func (v *LevelVar) String() string
 
+// AppendText implements [encoding.TextAppender]
+// by calling [Level.AppendText].
+func (v *LevelVar) AppendText(b []byte) ([]byte, error)
+
 // MarshalText implements [encoding.TextMarshaler]
-// by calling [Level.MarshalText].
+// by calling [LevelVar.AppendText].
 func (v *LevelVar) MarshalText() ([]byte, error)
 
 // UnmarshalText implements [encoding.TextUnmarshaler]
