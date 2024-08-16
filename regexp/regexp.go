@@ -401,12 +401,18 @@ func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int
 //   - n < 0: all substrings.
 func (re *Regexp) Split(s string, n int) []string
 
-// MarshalText implements [encoding.TextMarshaler]. The output
+// AppendText implements [encoding.TextAppender]. The output
 // matches that of calling the [Regexp.String] method.
 //
 // Note that the output is lossy in some cases: This method does not indicate
 // POSIX regular expressions (i.e. those compiled by calling [CompilePOSIX]), or
 // those for which the [Regexp.Longest] method has been called.
+func (re *Regexp) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements [encoding.TextMarshaler]. The output
+// matches that of calling the [Regexp.AppendText] method.
+//
+// See [Regexp.AppendText] for more information.
 func (re *Regexp) MarshalText() ([]byte, error)
 
 // UnmarshalText implements [encoding.TextUnmarshaler] by calling

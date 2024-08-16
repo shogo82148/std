@@ -12,6 +12,9 @@ func (x *Rat) GobEncode() ([]byte, error)
 // GobDecode implements the [encoding/gob.GobDecoder] interface.
 func (z *Rat) GobDecode(buf []byte) error
 
+// AppendText implements the [encoding.TextAppender] interface.
+func (x *Rat) AppendText(b []byte) ([]byte, error)
+
 // MarshalText implements the [encoding.TextMarshaler] interface.
 func (x *Rat) MarshalText() (text []byte, err error)
 

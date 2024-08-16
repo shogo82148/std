@@ -12,6 +12,9 @@ func (x *Int) GobEncode() ([]byte, error)
 // GobDecode implements the [encoding/gob.GobDecoder] interface.
 func (z *Int) GobDecode(buf []byte) error
 
+// AppendText implements the [encoding.TextAppender] interface.
+func (x *Int) AppendText(b []byte) (text []byte, err error)
+
 // MarshalText implements the [encoding.TextMarshaler] interface.
 func (x *Int) MarshalText() (text []byte, err error)
 

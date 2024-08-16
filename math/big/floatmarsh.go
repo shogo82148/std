@@ -17,6 +17,11 @@ func (x *Float) GobEncode() ([]byte, error)
 // to the decoded value.
 func (z *Float) GobDecode(buf []byte) error
 
+// AppendText implements the [encoding.TextAppender] interface.
+// Only the [Float] value is marshaled (in full precision), other
+// attributes such as precision or accuracy are ignored.
+func (x *Float) AppendText(b []byte) ([]byte, error)
+
 // MarshalText implements the [encoding.TextMarshaler] interface.
 // Only the [Float] value is marshaled (in full precision), other
 // attributes such as precision or accuracy are ignored.
