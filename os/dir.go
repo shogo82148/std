@@ -74,8 +74,9 @@ func ReadDir(name string) ([]DirEntry, error)
 // from the source, and directories are created with mode 0o777
 // (before umask).
 //
-// CopyFS will not overwrite existing files, and returns an error
-// if a file name in fsys already exists in the destination.
+// CopyFS will not overwrite existing files. If a file name in fsys
+// already exists in the destination, CopyFS will return an error
+// such that errors.Is(err, fs.ErrExist) will be true.
 //
 // Symbolic links in fsys are not supported. A *PathError with Err set
 // to ErrInvalid is returned when copying from a symbolic link.

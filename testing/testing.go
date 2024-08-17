@@ -412,6 +412,7 @@ type TB interface {
 	Logf(format string, args ...any)
 	Name() string
 	Setenv(key, value string)
+	Chdir(dir string)
 	Skip(args ...any)
 	SkipNow()
 	Skipf(format string, args ...any)
@@ -435,8 +436,8 @@ var _ TB = (*B)(nil)
 // may be called simultaneously from multiple goroutines.
 type T struct {
 	common
-	isEnvSet bool
-	context  *testContext
+	denyParallel bool
+	context      *testContext
 }
 
 // Parallel signals that this test is to be run in parallel with (and only with)
@@ -452,6 +453,14 @@ func (t *T) Parallel()
 // Because Setenv affects the whole process, it cannot be used
 // in parallel tests or tests with parallel ancestors.
 func (t *T) Setenv(key, value string)
+
+// Chdir calls os.Chdir(dir) and uses Cleanup to restore the current
+// working directory to its original value after the test. On Unix, it
+// also sets PWD environment variable for the duration of the test.
+//
+// Because Chdir affects the whole process, it cannot be used
+// in parallel tests or tests with parallel ancestors.
+func (t *T) Chdir(dir string)
 
 // InternalTest is an internal type but exported because it is cross-package;
 // it is part of the implementation of the "go test" command.
