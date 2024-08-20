@@ -129,6 +129,9 @@ func (r *Rand) Read(p []byte) (n int, err error)
 // a random value. Programs that call Seed with a known value to get
 // a specific sequence of results should use New(NewSource(seed)) to
 // obtain a local random generator.
+//
+// As of Go 1.24 [Seed] is a no-op. To restore the previous behavior set
+// GODEBUG=randseednop=0.
 func Seed(seed int64)
 
 // Int63 returns a non-negative pseudo-random 63-bit integer as an int64
