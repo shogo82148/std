@@ -318,6 +318,11 @@ func Callers(skip int, pc []uintptr) int
 // GOROOT returns the root of the Go tree. It uses the
 // GOROOT environment variable, if set at process start,
 // or else the root used during the Go build.
+//
+// Deprecated: The root used during the Go build will not be
+// meaningful if the binary is copied to another machine.
+// Use the system path to locate the “go” binary, and use
+// “go env GOROOT” to find its GOROOT.
 func GOROOT() string
 
 // Version returns the Go tree's version string.

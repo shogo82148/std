@@ -54,8 +54,8 @@
 // On some systems the monotonic clock will stop if the computer goes to sleep.
 // On such a system, t.Sub(u) may not accurately reflect the actual
 // time that passed between t and u. The same applies to other functions and
-// methods that subtract times, such as [Since], [Until], [Before], [After],
-// [Add], [Sub], [Equal] and [Compare]. In some cases, you may need to strip
+// methods that subtract times, such as [Since], [Until], [Time.Before], [Time.After],
+// [Time.Add], [Time.Equal] and [Time.Compare]. In some cases, you may need to strip
 // the monotonic clock to get accurate results.
 //
 // Because the monotonic clock reading has no meaning outside
@@ -113,9 +113,9 @@ package time
 // these methods does not change the actual instant it represents, only the time
 // zone in which to interpret it.
 //
-// Representations of a Time value saved by the [Time.GobEncode], [Time.MarshalBinary],
-// [Time.MarshalJSON], and [Time.MarshalText] methods store the [Time.Location]'s offset, but not
-// the location name. They therefore lose information about Daylight Saving Time.
+// Representations of a Time value saved by the [Time.GobEncode], [Time.MarshalBinary], [Time.AppendBinary],
+// [Time.MarshalJSON], [Time.MarshalText] and [Time.AppendText] methods store the [Time.Location]'s offset,
+// but not the location name. They therefore lose information about Daylight Saving Time.
 //
 // In addition to the required “wall clock” reading, a Time may contain an optional
 // reading of the current process's monotonic clock, to provide additional precision
@@ -416,10 +416,13 @@ func (t Time) UnixMicro() int64
 // location associated with t.
 func (t Time) UnixNano() int64
 
-// MarshalBinary implements the encoding.BinaryMarshaler interface.
+// AppendBinary implements the [encoding.BinaryAppender] interface.
+func (t Time) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements the [encoding.BinaryMarshaler] interface.
 func (t Time) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
+// UnmarshalBinary implements the [encoding.BinaryUnmarshaler] interface.
 func (t *Time) UnmarshalBinary(data []byte) error
 
 // GobEncode implements the gob.GobEncoder interface.
@@ -438,10 +441,16 @@ func (t Time) MarshalJSON() ([]byte, error)
 // The time must be a quoted string in the RFC 3339 format.
 func (t *Time) UnmarshalJSON(data []byte) error
 
-// MarshalText implements the [encoding.TextMarshaler] interface.
+// AppendText implements the [encoding.TextAppender] interface.
 // The time is formatted in RFC 3339 format with sub-second precision.
 // If the timestamp cannot be represented as valid RFC 3339
-// (e.g., the year is out of range), then an error is reported.
+// (e.g., the year is out of range), then an error is returned.
+func (t Time) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements the [encoding.TextMarshaler] interface. The output
+// matches that of calling the [Time.AppendText] method.
+//
+// See [Time.AppendText] for more information.
 func (t Time) MarshalText() ([]byte, error)
 
 // UnmarshalText implements the [encoding.TextUnmarshaler] interface.

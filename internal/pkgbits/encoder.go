@@ -13,6 +13,9 @@ import (
 // A PkgEncoder provides methods for encoding a package's Unified IR
 // export data.
 type PkgEncoder struct {
+	// version of the bitstream.
+	version Version
+
 	// elems holds the bitstream for previously encoded elements.
 	elems [numRelocs][]string
 
@@ -137,3 +140,6 @@ func (w *Encoder) Strings(ss []string)
 // Value encodes and writes a constant.Value into the element
 // bitstream.
 func (w *Encoder) Value(val constant.Value)
+
+// Version reports the version of the bitstream.
+func (w *Encoder) Version() Version
