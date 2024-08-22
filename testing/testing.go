@@ -439,7 +439,7 @@ var _ TB = (*B)(nil)
 type T struct {
 	common
 	denyParallel bool
-	context      *testContext
+	tstate       *testState
 }
 
 // Parallel signals that this test is to be run in parallel with (and only with)

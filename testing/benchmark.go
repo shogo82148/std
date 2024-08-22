@@ -32,7 +32,7 @@ type InternalBenchmark struct {
 type B struct {
 	common
 	importPath       string
-	context          *benchContext
+	bstate           *benchState
 	N                int
 	previousN        int
 	previousDuration time.Duration

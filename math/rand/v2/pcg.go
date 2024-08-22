@@ -17,10 +17,13 @@ func NewPCG(seed1, seed2 uint64) *PCG
 // Seed resets the PCG to behave the same way as NewPCG(seed1, seed2).
 func (p *PCG) Seed(seed1, seed2 uint64)
 
-// MarshalBinary implements the encoding.BinaryMarshaler interface.
+// AppendBinary implements the [encoding.BinaryAppender] interface.
+func (p *PCG) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements the [encoding.BinaryMarshaler] interface.
 func (p *PCG) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
+// UnmarshalBinary implements the [encoding.BinaryUnmarshaler] interface.
 func (p *PCG) UnmarshalBinary(data []byte) error
 
 // Uint64 return a uniformly-distributed random uint64 value.

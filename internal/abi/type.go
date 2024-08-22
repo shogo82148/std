@@ -134,6 +134,9 @@ func (k Kind) String() string
 // TypeOf returns the abi.Type of some value.
 func TypeOf(a any) *Type
 
+// TypeFor returns the abi.Type for a type parameter.
+func TypeFor[T any]() *Type
+
 func (t *Type) Kind() Kind
 
 func (t *Type) HasName() bool

@@ -28,8 +28,8 @@ type InternalFuzzTarget struct {
 // that are allowed in the (*F).Fuzz function are (*F).Failed and (*F).Name.
 type F struct {
 	common
-	fuzzContext *fuzzContext
-	testContext *testContext
+	fstate *fuzzState
+	tstate *testState
 
 	// inFuzzFn is true when the fuzz function is running. Most F methods cannot
 	// be called when inFuzzFn is true.

@@ -107,7 +107,7 @@ func (w *Encoder) Len(x int)
 // Int encodes and writes an int value into the element bitstream.
 func (w *Encoder) Int(x int)
 
-// Len encodes and writes a uint value into the element bitstream.
+// Uint encodes and writes a uint value into the element bitstream.
 func (w *Encoder) Uint(x uint)
 
 // Reloc encodes and writes a relocation for the given (section,

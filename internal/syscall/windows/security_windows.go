@@ -123,3 +123,7 @@ type UserInfo4 struct {
 //
 //go:linkname GetSystemDirectory
 func GetSystemDirectory() string
+
+// GetUserName retrieves the user name of the current thread
+// in the specified format.
+func GetUserName(format uint32) (string, error)

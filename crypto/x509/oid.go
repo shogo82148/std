@@ -19,11 +19,17 @@ func ParseOID(oid string) (OID, error)
 // OIDFromInts creates a new OID using ints, each integer is a separate component.
 func OIDFromInts(oid []uint64) (OID, error)
 
+// AppendText implements [encoding.TextAppender]
+func (o OID) AppendText(b []byte) ([]byte, error)
+
 // MarshalText implements [encoding.TextMarshaler]
 func (o OID) MarshalText() ([]byte, error)
 
 // UnmarshalText implements [encoding.TextUnmarshaler]
 func (o *OID) UnmarshalText(text []byte) error
+
+// AppendBinary implements [encoding.BinaryAppender]
+func (o OID) AppendBinary(b []byte) ([]byte, error)
 
 // MarshalBinary implements [encoding.BinaryMarshaler]
 func (o OID) MarshalBinary() ([]byte, error)
