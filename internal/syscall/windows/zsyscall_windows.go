@@ -51,6 +51,8 @@ func GetFinalPathNameByHandle(file syscall.Handle, filePath *uint16, filePathSiz
 
 func GetModuleFileName(module syscall.Handle, fn *uint16, len uint32) (n uint32, err error)
 
+func GetModuleHandle(modulename *uint16) (handle syscall.Handle, err error)
+
 func GetTempPath2(buflen uint32, buf *uint16) (n uint32, err error)
 
 func GetVolumeInformationByHandle(file syscall.Handle, volumeNameBuffer *uint16, volumeNameSize uint32, volumeNameSerialNumber *uint32, maximumComponentLength *uint32, fileSystemFlags *uint32, fileSystemNameBuffer *uint16, fileSystemNameSize uint32) (err error)

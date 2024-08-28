@@ -39,6 +39,13 @@ var Error error
 // Check exits the program with a fatal error if Error is non-nil.
 func Check()
 
+type GoarmFeatures struct {
+	Version   int
+	SoftFloat bool
+}
+
+func (g GoarmFeatures) String() string
+
 type Goarm64Features struct {
 	Version string
 	// Large Systems Extension
