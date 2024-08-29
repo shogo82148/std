@@ -39,7 +39,7 @@ func (pw *PkgEncoder) SyncMarkers() bool
 // export data files, but can help diagnosing desync errors in
 // higher-level Unified IR reader/writer code. If syncFrames is
 // negative, then sync markers are omitted entirely.
-func NewPkgEncoder(syncFrames int) PkgEncoder
+func NewPkgEncoder(version Version, syncFrames int) PkgEncoder
 
 // DumpTo writes the package's encoded data to out0 and returns the
 // package fingerprint.
