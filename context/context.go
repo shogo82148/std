@@ -97,9 +97,10 @@ func TODO() Context
 // After the first call, subsequent calls to a CancelFunc do nothing.
 type CancelFunc func()
 
-// WithCancel returns a copy of parent with a new Done channel. The returned
-// context's Done channel is closed when the returned cancel function is called
-// or when the parent context's Done channel is closed, whichever happens first.
+// WithCancel returns a derived context that points to the parent context
+// but has a new Done channel. The returned context's Done channel is closed
+// when the returned cancel function is called or when the parent context's
+// Done channel is closed, whichever happens first.
 //
 // Canceling this context releases resources associated with it, so code should
 // call cancel as soon as the operations running in this [Context] complete.
@@ -158,17 +159,18 @@ func Cause(c Context) error
 // AfterFunc will use it to schedule the call.
 func AfterFunc(ctx Context, f func()) (stop func() bool)
 
-// WithoutCancel returns a copy of parent that is not canceled when parent is canceled.
+// WithoutCancel returns a derived context that points to the parent context
+// and is not canceled when parent is canceled.
 // The returned context returns no Deadline or Err, and its Done channel is nil.
 // Calling [Cause] on the returned context returns nil.
 func WithoutCancel(parent Context) Context
 
-// WithDeadline returns a copy of the parent context with the deadline adjusted
-// to be no later than d. If the parent's deadline is already earlier than d,
-// WithDeadline(parent, d) is semantically equivalent to parent. The returned
-// [Context.Done] channel is closed when the deadline expires, when the returned
-// cancel function is called, or when the parent context's Done channel is
-// closed, whichever happens first.
+// WithDeadline returns a derived context that points to the parent context
+// but has the deadline adjusted to be no later than d. If the parent's
+// deadline is already earlier than d, WithDeadline(parent, d) is semantically
+// equivalent to parent. The returned [Context.Done] channel is closed when
+// the deadline expires, when the returned cancel function is called,
+// or when the parent context's Done channel is closed, whichever happens first.
 //
 // Canceling this context releases resources associated with it, so code should
 // call cancel as soon as the operations running in this [Context] complete.
@@ -196,8 +198,8 @@ func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
 // not set the cause.
 func WithTimeoutCause(parent Context, timeout time.Duration, cause error) (Context, CancelFunc)
 
-// WithValue returns a copy of parent in which the value associated with key is
-// val.
+// WithValue returns a derived context that points to the parent Context.
+// In the derived context, the value associated with key is val.
 //
 // Use context Values only for request-scoped data that transits processes and
 // APIs, not for passing optional parameters to functions.

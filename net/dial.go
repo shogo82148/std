@@ -117,7 +117,7 @@ type Dialer struct {
 	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
 	// used, any call to Dial with "tcp(4|6)" as network will use MPTCP if
 	// supported by the operating system.
-	mptcpStatus mptcpStatus
+	mptcpStatus mptcpStatusDial
 }
 
 // MultipathTCP reports whether MPTCP will be used.
@@ -258,7 +258,7 @@ type ListenConfig struct {
 	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
 	// used, any call to Listen with "tcp(4|6)" as network will use MPTCP if
 	// supported by the operating system.
-	mptcpStatus mptcpStatus
+	mptcpStatus mptcpStatusListen
 }
 
 // MultipathTCP reports whether MPTCP will be used.

@@ -24,6 +24,12 @@ import (
 // for the resulting error.
 func MustHaveExec(t testing.TB)
 
+// Executable is a wrapper around [MustHaveExec] and [os.Executable].
+// It returns the path name for the executable that started the current process,
+// or skips the test if the current system can't start new processes,
+// or fails the test if the path can not be obtained.
+func Executable(t testing.TB) string
+
 // MustHaveExecPath checks that the current system can start the named executable
 // using os.StartProcess or (more commonly) exec.Command.
 // If not, MustHaveExecPath calls t.Skip with an explanation.

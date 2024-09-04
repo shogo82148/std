@@ -4,16 +4,5 @@
 
 package types
 
-// MethodsByName sorts methods by name.
-type MethodsByName []*Field
-
-func (x MethodsByName) Len() int
-func (x MethodsByName) Swap(i, j int)
-func (x MethodsByName) Less(i, j int) bool
-
-// EmbeddedsByName sorts embedded types by name.
-type EmbeddedsByName []*Field
-
-func (x EmbeddedsByName) Len() int
-func (x EmbeddedsByName) Swap(i, j int)
-func (x EmbeddedsByName) Less(i, j int) bool
+// MethodsByNameCmp sorts methods by name.
+func MethodsByNameCmp(x, y *Field) int

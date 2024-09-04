@@ -98,7 +98,7 @@ func (sb *SymbolBuilder) AddRelocs(n int) Relocs
 // (to set other fields).
 func (sb *SymbolBuilder) AddRel(typ objabi.RelocType) (Reloc, int)
 
-// Sort relocations by offset.
+// SortRelocs Sort relocations by offset.
 func (sb *SymbolBuilder) SortRelocs()
 
 func (sb *SymbolBuilder) Reachable() bool
