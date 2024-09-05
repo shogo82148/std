@@ -323,9 +323,6 @@ func (s NameSet) Has(n *Name) bool
 // Add adds n to s.
 func (s *NameSet) Add(n *Name)
 
-// Sorted returns s sorted according to less.
-func (s NameSet) Sorted(less func(*Name, *Name) bool) []*Name
-
 type PragmaFlag uint16
 
 const (
