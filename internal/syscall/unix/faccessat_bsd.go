@@ -5,5 +5,3 @@
 //go:build dragonfly || freebsd || netbsd || (openbsd && mips64)
 
 package unix
-
-func Eaccess(path string, mode uint32) error

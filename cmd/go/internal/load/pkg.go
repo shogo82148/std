@@ -199,7 +199,6 @@ type PackageError struct {
 	Pos              string
 	Err              error
 	IsImportCycle    bool
-	Hard             bool
 	alwaysPrintStack bool
 }
 
