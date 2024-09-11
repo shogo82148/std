@@ -232,6 +232,7 @@ func (f *Func) SetIsPackageInit(b bool)
 
 func (f *Func) SetWBPos(pos src.XPos)
 
+// IsClosure reports whether f is a function literal that captures at least one value.
 func (f *Func) IsClosure() bool
 
 // FuncName returns the name (without the package) of the function f.
@@ -265,10 +266,6 @@ func FuncSymName(s *types.Sym) string
 // ClosureDebugRuntimeCheck applies boilerplate checks for debug flags
 // and compiling runtime.
 func ClosureDebugRuntimeCheck(clo *ClosureExpr)
-
-// IsTrivialClosure reports whether closure clo has an
-// empty list of captured vars.
-func IsTrivialClosure(clo *ClosureExpr) bool
 
 // NewClosureFunc creates a new Func to represent a function literal
 // with the given type.
