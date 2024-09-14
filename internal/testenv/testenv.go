@@ -63,8 +63,9 @@ func GOROOT(t testing.TB) string
 // GoTool reports the path to the Go tool.
 func GoTool() (string, error)
 
-// HasSrc reports whether the entire source tree is available under GOROOT.
-func HasSrc() bool
+// MustHaveSource checks that the entire source tree is available under GOROOT.
+// If not, it calls t.Skip with an explanation.
+func MustHaveSource(t testing.TB)
 
 // HasExternalNetwork reports whether the current system can use
 // external (non-localhost) networks.
