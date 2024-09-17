@@ -268,7 +268,6 @@ const (
 	// arch-specific opcodes
 	OTAILCALL
 	OGETG
-	OGETCALLERPC
 	OGETCALLERSP
 
 	OEND

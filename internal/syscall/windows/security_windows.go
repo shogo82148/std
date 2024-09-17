@@ -127,3 +127,12 @@ func GetSystemDirectory() string
 // GetUserName retrieves the user name of the current thread
 // in the specified format.
 func GetUserName(format uint32) (string, error)
+
+type TOKEN_GROUPS struct {
+	GroupCount uint32
+	Groups     [1]SID_AND_ATTRIBUTES
+}
+
+func (g *TOKEN_GROUPS) AllGroups() []SID_AND_ATTRIBUTES
+
+func GetTokenGroups(t syscall.Token) (*TOKEN_GROUPS, error)
