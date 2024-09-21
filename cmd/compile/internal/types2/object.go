@@ -9,9 +9,15 @@ import (
 	"github.com/shogo82148/std/go/constant"
 )
 
-// An Object describes a named language entity such as a package,
-// constant, type, variable, function (incl. methods), or label.
-// All objects implement the Object interface.
+// An Object is a named language entity.
+// An Object may be a constant ([Const]), type name ([TypeName]),
+// variable or struct field ([Var]), function or method ([Func]),
+// imported package ([PkgName]), label ([Label]),
+// built-in function ([Builtin]),
+// or the predeclared identifier 'nil' ([Nil]).
+//
+// The environment, which is structured as a tree of Scopes,
+// maps each name to the unique Object that it denotes.
 type Object interface {
 	Parent() *Scope
 	Pos() syntax.Pos
@@ -75,7 +81,11 @@ func NewConst(pos syntax.Pos, pkg *Package, name string, typ Type, val constant.
 // Val returns the constant's value.
 func (obj *Const) Val() constant.Value
 
-// A TypeName represents a name for a (defined or alias) type.
+// A TypeName is an [Object] that represents a type with a name:
+// a defined type ([Named]),
+// an alias type ([Alias]),
+// a type parameter ([TypeParam]),
+// or a predeclared type such as int or error.
 type TypeName struct {
 	object
 }

@@ -52,6 +52,9 @@ type B struct {
 	netBytes  uint64
 	// Extra metrics collected by ReportMetric.
 	extra map[string]float64
+	// Remaining iterations of Loop() to be executed in benchFunc.
+	// See issue #61515.
+	loopN int
 }
 
 // StartTimer starts timing a test. This function is called automatically
@@ -93,6 +96,13 @@ func (b *B) Elapsed() time.Duration
 // (such as "allocs/op"), ReportMetric will override that metric.
 // Setting "ns/op" to 0 will suppress that built-in metric.
 func (b *B) ReportMetric(n float64, unit string)
+
+// Loop returns true until b.N calls has been made to it.
+//
+// A benchmark should either use Loop or contain an explicit loop from 0 to b.N, but not both.
+// After the benchmark finishes, b.N will contain the total number of calls to op, so the benchmark
+// may use b.N to compute other average metrics.
+func (b *B) Loop() bool
 
 // BenchmarkResult contains the results of a benchmark run.
 type BenchmarkResult struct {

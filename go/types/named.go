@@ -12,6 +12,17 @@ import (
 )
 
 // A Named represents a named (defined) type.
+//
+// A declaration such as:
+//
+//	type S struct { ... }
+//
+// creates a defined type whose underlying type is a struct,
+// and binds this type to the object S, a [TypeName].
+// Use [Named.Underlying] to access the underlying type.
+// Use [Named.Obj] to obtain the object S.
+//
+// Before type aliases (Go 1.9), the spec called defined types "named types".
 type Named struct {
 	check *Checker
 	obj   *TypeName
