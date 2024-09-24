@@ -132,6 +132,11 @@ func (ip IP) Mask(mask IPMask) IP
 //   - the hexadecimal form of ip, without punctuation, if no other cases apply
 func (ip IP) String() string
 
+// AppendText implements the [encoding.TextAppender] interface.
+// The encoding is the same as returned by [IP.String], with one exception:
+// When len(ip) is zero, it appends nothing.
+func (ip IP) AppendText(b []byte) ([]byte, error)
+
 // MarshalText implements the [encoding.TextMarshaler] interface.
 // The encoding is the same as returned by [IP.String], with one exception:
 // When len(ip) is zero, it returns an empty slice.
