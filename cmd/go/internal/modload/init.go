@@ -59,6 +59,8 @@ type MainModuleSet struct {
 
 	modFiles map[module.Version]*modfile.File
 
+	tools map[string]bool
+
 	modContainingCWD module.Version
 
 	workFile *modfile.WorkFile
@@ -78,6 +80,10 @@ func (mms *MainModuleSet) PathPrefix(m module.Version) string
 // fields are empty strings.
 // Callers should not modify the returned slice.
 func (mms *MainModuleSet) Versions() []module.Version
+
+// Tools returns the tools defined by all the main modules.
+// The key is the absolute package path of the tool.
+func (mms *MainModuleSet) Tools() map[string]bool
 
 func (mms *MainModuleSet) Contains(path string) bool
 
@@ -277,6 +283,9 @@ func AllowMissingModuleImports()
 type WriteOpts struct {
 	DropToolchain     bool
 	ExplicitToolchain bool
+
+	AddTools  []string
+	DropTools []string
 
 	// TODO(bcmills): Make 'go mod tidy' update the go version in the Requirements
 	// instead of writing directly to the modfile.File
