@@ -3022,11 +3022,7 @@ const (
 	OpIMake
 	OpITab
 	OpIData
-	OpStructMake0
-	OpStructMake1
-	OpStructMake2
-	OpStructMake3
-	OpStructMake4
+	OpStructMake
 	OpStructSelect
 	OpArrayMake0
 	OpArrayMake1
