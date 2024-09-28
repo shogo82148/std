@@ -15,6 +15,7 @@ import (
 type Cmd struct {
 	Name      string
 	Cmd       string
+	Env       []string
 	RootNames []rootName
 
 	CreateCmd   []string
