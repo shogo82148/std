@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// MaybeReadByte reads a single byte from r with ~50% probability. This is used
+// MaybeReadByte reads a single byte from r with 50% probability. This is used
 // to ensure that callers do not depend on non-guaranteed behaviour, e.g.
 // assuming that rsa.GenerateKey is deterministic w.r.t. a given random stream.
 //
