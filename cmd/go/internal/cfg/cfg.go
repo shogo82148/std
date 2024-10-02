@@ -155,6 +155,7 @@ var (
 	GONOSUMDB, GONOSUMDBChanged = EnvOrAndChanged("GONOSUMDB", GOPRIVATE)
 	GOINSECURE                  = Getenv("GOINSECURE")
 	GOVCS                       = Getenv("GOVCS")
+	GOAUTH, GOAUTHChanged       = EnvOrAndChanged("GOAUTH", "netrc")
 )
 
 // EnvOrAndChanged returns the environment variable value
