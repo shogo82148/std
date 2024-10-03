@@ -86,6 +86,17 @@ import (
 //	// Field appears in JSON as key "-".
 //	Field int `json:"-,"`
 //
+// The "omitzero" option specifies that the field should be omitted
+// from the encoding if the field has a zero value, according to rules:
+//
+// 1) If the field type has an "IsZero() bool" method, that will be used to
+// determine whether the value is zero.
+//
+// 2) Otherwise, the value is zero if it is the zero value for its type.
+//
+// If both "omitempty" and "omitzero" are specified, the field will be omitted
+// if the value is either empty or zero (or both).
+//
 // The "string" option signals that a field is stored as JSON inside a
 // JSON-encoded string. It applies only to fields of string, floating point,
 // integer, or boolean types. This extra level of encoding is sometimes used

@@ -347,11 +347,10 @@ func RedirectHandler(url string, code int) Handler
 //     This change mostly affects how paths with %2F escapes adjacent to slashes are treated.
 //     See https://go.dev/issue/21955 for details.
 type ServeMux struct {
-	mu       sync.RWMutex
-	tree     routingNode
-	index    routingIndex
-	patterns []*pattern
-	mux121   serveMux121
+	mu     sync.RWMutex
+	tree   routingNode
+	index  routingIndex
+	mux121 serveMux121
 }
 
 // NewServeMux allocates and returns a new [ServeMux].
