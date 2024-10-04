@@ -114,7 +114,9 @@ func (ip Addr) Less(ip2 Addr) bool
 // It returns false for IPv4-mapped IPv6 addresses. See [Addr.Unmap].
 func (ip Addr) Is4() bool
 
-// Is4In6 reports whether ip is an IPv4-mapped IPv6 address.
+// Is4In6 reports whether ip is an "IPv4-mapped IPv6 address"
+// as defined by RFC 4291.
+// That is, it reports whether ip is in ::ffff:0:0/96.
 func (ip Addr) Is4In6() bool
 
 // Is6 reports whether ip is an IPv6 address, including IPv4-mapped
