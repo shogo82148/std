@@ -352,3 +352,11 @@ func QueryPerformanceCounter() int64
 //
 //go:linkname QueryPerformanceFrequency
 func QueryPerformanceFrequency() int64
+
+// NTStatus corresponds with NTSTATUS, error values returned by ntdll.dll and
+// other native functions.
+type NTStatus uint32
+
+func (s NTStatus) Errno() syscall.Errno
+
+func (s NTStatus) Error() string

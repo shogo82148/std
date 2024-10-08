@@ -2174,6 +2174,7 @@ const (
 	OpPPC64LoweredAtomicLoadPtr
 	OpPPC64LoweredAtomicAdd32
 	OpPPC64LoweredAtomicAdd64
+	OpPPC64LoweredAtomicExchange8
 	OpPPC64LoweredAtomicExchange32
 	OpPPC64LoweredAtomicExchange64
 	OpPPC64LoweredAtomicCas64

@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build wasip1
+
 package unix
 
 const (
@@ -11,3 +13,9 @@ const (
 	// Its value must match syscall/fs_wasip1.go
 	UTIME_OMIT = -0x2
 )
+
+func Openat(dirfd int, path string, flags int, perm uint32) (int, error)
+
+func Readlinkat(dirfd int, path string, buf []byte) (int, error)
+
+func Mkdirat(dirfd int, path string, mode uint32) error

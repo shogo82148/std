@@ -34,3 +34,6 @@ type DynamicType struct {
 }
 
 func NewDynamicType(pos src.XPos, rtype Node) *DynamicType
+
+// ToStatic returns static type of dt if it is actually static.
+func (dt *DynamicType) ToStatic() Node
