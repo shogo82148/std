@@ -1537,8 +1537,10 @@ const (
 	OpARM64STLRW
 	OpARM64LoweredAtomicExchange64
 	OpARM64LoweredAtomicExchange32
+	OpARM64LoweredAtomicExchange8
 	OpARM64LoweredAtomicExchange64Variant
 	OpARM64LoweredAtomicExchange32Variant
+	OpARM64LoweredAtomicExchange8Variant
 	OpARM64LoweredAtomicAdd64
 	OpARM64LoweredAtomicAdd32
 	OpARM64LoweredAtomicAdd64Variant
@@ -3095,6 +3097,7 @@ const (
 	OpAtomicOr8value
 	OpAtomicAdd32Variant
 	OpAtomicAdd64Variant
+	OpAtomicExchange8Variant
 	OpAtomicExchange32Variant
 	OpAtomicExchange64Variant
 	OpAtomicCompareAndSwap32Variant
