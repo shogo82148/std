@@ -8,5 +8,9 @@
 //  v5.3: pidfd_open syscall, clone3 syscall;
 //  v5.4: P_PIDFD idtype support for waitid syscall;
 //  v5.6: pidfd_getfd syscall.
+//
+// N.B. Alternative Linux implementations may not follow this ordering. e.g.,
+// QEMU user mode 7.2 added pidfd_open, but CLONE_PIDFD was not added until
+// 8.0.
 
 package os
