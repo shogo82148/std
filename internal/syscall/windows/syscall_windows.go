@@ -360,3 +360,13 @@ type NTStatus uint32
 func (s NTStatus) Errno() syscall.Errno
 
 func (s NTStatus) Error() string
+
+// x/sys/windows/mkerrors.bash can generate a complete list of NTStatus codes.
+//
+// At the moment, we only need a couple, so just put them here manually.
+// If this list starts getting long, we should consider generating the full set.
+const (
+	STATUS_FILE_IS_A_DIRECTORY       NTStatus = 0xC00000BA
+	STATUS_NOT_A_DIRECTORY           NTStatus = 0xC0000103
+	STATUS_REPARSE_POINT_ENCOUNTERED NTStatus = 0xC000050B
+)

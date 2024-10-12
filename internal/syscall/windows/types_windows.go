@@ -4,7 +4,9 @@
 
 package windows
 
-import "github.com/shogo82148/std/syscall"
+import (
+	"github.com/shogo82148/std/syscall"
+)
 
 // Socket related.
 const (
