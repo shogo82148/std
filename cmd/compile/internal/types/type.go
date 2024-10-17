@@ -252,7 +252,7 @@ type Map struct {
 	OldBucket *Type
 
 	// GOEXPERIMENT=swissmap fields
-	SwissBucket *Type
+	SwissGroup *Type
 }
 
 // MapType returns t's extra map-specific fields.

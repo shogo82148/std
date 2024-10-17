@@ -6,7 +6,7 @@
 package maps
 
 import (
-	"github.com/shogo82148/std/internal/runtime/maps/internal/abi"
+	"github.com/shogo82148/std/internal/abi"
 	"github.com/shogo82148/std/unsafe"
 )
 

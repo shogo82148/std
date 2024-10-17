@@ -6,6 +6,10 @@
 
 package reflect
 
+import (
+	"github.com/shogo82148/std/internal/runtime/maps"
+)
+
 // MapOf returns the map type with the given key and element types.
 // For example, if k represents int and e represents string,
 // MapOf(k, e) represents map[int]string.
@@ -30,7 +34,7 @@ func (v Value) MapKeys() []Value
 // See [Value.MapRange].
 type MapIter struct {
 	m     Value
-	hiter hiter
+	hiter maps.Iter
 }
 
 // Key returns the key of iter's current map entry.

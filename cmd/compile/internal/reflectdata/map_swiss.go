@@ -8,11 +8,11 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 )
 
-// SwissMapBucketType makes the map bucket type given the type of the map.
-func SwissMapBucketType(t *types.Type) *types.Type
+// SwissMapGroupType makes the map slot group type given the type of the map.
+func SwissMapGroupType(t *types.Type) *types.Type
 
-// SwissMapType returns a type interchangeable with runtime.hmap.
-// Make sure this stays in sync with runtime/map.go.
+// SwissMapType returns a type interchangeable with internal/runtime/maps.Map.
+// Make sure this stays in sync with internal/runtime/maps/map.go.
 func SwissMapType() *types.Type
 
 // SwissMapIterType returns a type interchangeable with runtime.hiter.
