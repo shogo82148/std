@@ -2,6 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// This file implements support functionality for iimport.go.
+// This file implements support functionality for ureader.go.
 
 package gcimporter
