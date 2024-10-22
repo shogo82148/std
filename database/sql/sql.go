@@ -240,6 +240,8 @@ func (n NullTime) Value() (driver.Value, error)
 //	} else {
 //	   // NULL value
 //	}
+//
+// T should be one of the types accepted by [driver.Value].
 type Null[T any] struct {
 	V     T
 	Valid bool

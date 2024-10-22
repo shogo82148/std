@@ -10,30 +10,36 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-func NewTable(mt *abi.SwissMapType, capacity uint64) *table
+// Ensure the max capacity fits in uint16, used for capacity and growthLeft
+// below.
+var _ = uint16(maxTableCapacity)
 
 type Iter struct {
 	key  unsafe.Pointer
 	elem unsafe.Pointer
 	typ  *abi.SwissMapType
-	tab  *table
+	m    *Map
 
-	// Snapshot of the groups at iteration initialization time. If the
-	// table resizes during iteration, we continue to iterate over the old
-	// groups.
-	//
-	// If the table grows we must consult the updated table to observe
-	// changes, though we continue to use the snapshot to determine order
-	// and avoid duplicating results.
-	groups groupsReference
+	// Randomize iteration order by starting iteration at a random slot
+	// offset. The offset into the directory uses a separate offset, as it
+	// must adjust when the directory grows.
+	groupSlotOffset uint64
+	dirOffset       uint64
 
-	// Copy of Table.clearSeq at iteration initialization time. Used to
+	// Snapshot of Map.clearSeq at iteration initialization time. Used to
 	// detect clear during iteration.
 	clearSeq uint64
 
-	// Randomize iteration order by starting iteration at a random slot
-	// offset.
-	offset uint64
+	// Value of Map.globalDepth during the last call to Next. Used to
+	// detect directory grow during iteration.
+	globalDepth uint8
+
+	// dirIdx is the current directory index, prior to adjustment by
+	// dirOffset.
+	dirIdx int
+
+	// tab is the table at dirIdx during the previous call to Next.
+	tab *table
 
 	// TODO: these could be merged into a single counter (and pre-offset
 	// with offset).
@@ -42,7 +48,7 @@ type Iter struct {
 }
 
 // Init initializes Iter for iteration.
-func (it *Iter) Init(typ *abi.SwissMapType, t *table)
+func (it *Iter) Init(typ *abi.SwissMapType, m *Map)
 
 func (it *Iter) Initialized() bool
 
