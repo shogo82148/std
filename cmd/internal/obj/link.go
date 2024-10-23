@@ -625,6 +625,7 @@ type Auto struct {
 type RegSpill struct {
 	Addr           Addr
 	Reg            int16
+	Reg2           int16
 	Spill, Unspill As
 }
 
