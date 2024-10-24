@@ -26,7 +26,7 @@ import (
 )
 
 // New returns a new HMAC hash using the given [hash.Hash] type and key.
-// New functions like sha256.New from [crypto/sha256] can be used as h.
+// New functions like [crypto/sha256.New] can be used as h.
 // h must return a new Hash every time it is called.
 // Note that unlike other hash implementations in the standard library,
 // the returned Hash does not implement [encoding.BinaryMarshaler]

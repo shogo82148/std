@@ -46,8 +46,6 @@ var (
 	STACK_SIZE = _INP + INP_SIZE
 )
 
-type VecFunc func(a, b VecPhysical)
-
 // Pointers for memoizing Data section symbols
 var K256Ptr *Mem
 

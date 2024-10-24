@@ -63,6 +63,13 @@ type BuildSetting struct {
 	Key, Value string
 }
 
+// String returns a string representation of a [BuildInfo].
 func (bi *BuildInfo) String() string
 
+// ParseBuildInfo parses the string returned by [*BuildInfo.String],
+// restoring the original BuildInfo,
+// except that the GoVersion field is not set.
+// Programs should normally not call this function,
+// but instead call [ReadBuildInfo], [debug/buildinfo.ReadFile],
+// or [debug/buildinfo.Read].
 func ParseBuildInfo(data string) (bi *BuildInfo, err error)
