@@ -318,7 +318,7 @@ const (
 //
 // As well as some pseudo-mnemonics (e.g. MOV) used only in the assembler.
 //
-// See also "The RISC-V Instruction Set Manual" at https://riscv.org/specifications/.
+// See also "The RISC-V Instruction Set Manual" at https://riscv.org/technical/specifications/.
 //
 // If you modify this table, you MUST run 'go generate' to regenerate anames.go!
 const (
@@ -372,7 +372,7 @@ const (
 	AFENCETSO
 	APAUSE
 
-	// 5.2: Integer Computational Instructions (RV64I)
+	// 4.2: Integer Computational Instructions (RV64I)
 	AADDIW
 	ASLLIW
 	ASRLIW
@@ -383,16 +383,34 @@ const (
 	ASUBW
 	ASRAW
 
-	// 5.3: Load and Store Instructions (RV64I)
+	// 4.3: Load and Store Instructions (RV64I)
 	ALD
 	ASD
 
-	// 7.1: Multiplication Operations
+	// 7.1: CSR Instructions (Zicsr)
+	ACSRRW
+	ACSRRS
+	ACSRRC
+	ACSRRWI
+	ACSRRSI
+	ACSRRCI
+
+	// 8.1: Base Counters and Timers (Zicntr)
+	ARDCYCLE
+	ARDCYCLEH
+	ARDTIME
+	ARDTIMEH
+	ARDINSTRET
+	ARDINSTRETH
+
+	// 13.1: Multiplication Operations
 	AMUL
 	AMULH
 	AMULHU
 	AMULHSU
 	AMULW
+
+	// 13.2: Division Operations
 	ADIV
 	ADIVU
 	AREM
@@ -402,13 +420,13 @@ const (
 	AREMW
 	AREMUW
 
-	// 8.2: Load-Reserved/Store-Conditional Instructions
+	// 14.2: Load-Reserved/Store-Conditional Instructions (Zalrsc)
 	ALRD
 	ASCD
 	ALRW
 	ASCW
 
-	// 8.3: Atomic Memory Operations
+	// 14.4: Atomic Memory Operations (Zaamo)
 	AAMOSWAPD
 	AAMOADDD
 	AAMOANDD
@@ -428,15 +446,7 @@ const (
 	AAMOMINW
 	AAMOMINUW
 
-	// 10.1: Base Counters and Timers
-	ARDCYCLE
-	ARDCYCLEH
-	ARDTIME
-	ARDTIMEH
-	ARDINSTRET
-	ARDINSTRETH
-
-	// 11.2: Floating-Point Control and Status Register
+	// 20.2: Floating-Point Control and Status Register
 	AFRCSR
 	AFSCSR
 	AFRRM
@@ -446,11 +456,11 @@ const (
 	AFSRMI
 	AFSFLAGSI
 
-	// 11.5: Single-Precision Load and Store Instructions
+	// 20.5: Single-Precision Load and Store Instructions
 	AFLW
 	AFSW
 
-	// 11.6: Single-Precision Floating-Point Computational Instructions
+	// 20.6: Single-Precision Floating-Point Computational Instructions
 	AFADDS
 	AFSUBS
 	AFMULS
@@ -463,7 +473,7 @@ const (
 	AFNMADDS
 	AFNMSUBS
 
-	// 11.7: Single-Precision Floating-Point Conversion and Move Instructions
+	// 20.7: Single-Precision Floating-Point Conversion and Move Instructions
 	AFCVTWS
 	AFCVTLS
 	AFCVTSW
@@ -480,19 +490,19 @@ const (
 	AFMVXW
 	AFMVWX
 
-	// 11.8: Single-Precision Floating-Point Compare Instructions
+	// 20.8: Single-Precision Floating-Point Compare Instructions
 	AFEQS
 	AFLTS
 	AFLES
 
-	// 11.9: Single-Precision Floating-Point Classify Instruction
+	// 20.9: Single-Precision Floating-Point Classify Instruction
 	AFCLASSS
 
-	// 12.3: Double-Precision Load and Store Instructions
+	// 21.3: Double-Precision Load and Store Instructions
 	AFLD
 	AFSD
 
-	// 12.4: Double-Precision Floating-Point Computational Instructions
+	// 21.4: Double-Precision Floating-Point Computational Instructions
 	AFADDD
 	AFSUBD
 	AFMULD
@@ -505,7 +515,7 @@ const (
 	AFNMADDD
 	AFNMSUBD
 
-	// 12.5: Double-Precision Floating-Point Conversion and Move Instructions
+	// 21.5: Double-Precision Floating-Point Conversion and Move Instructions
 	AFCVTWD
 	AFCVTLD
 	AFCVTDW
@@ -522,19 +532,19 @@ const (
 	AFMVXD
 	AFMVDX
 
-	// 12.6: Double-Precision Floating-Point Compare Instructions
+	// 21.6: Double-Precision Floating-Point Compare Instructions
 	AFEQD
 	AFLTD
 	AFLED
 
-	// 12.7: Double-Precision Floating-Point Classify Instruction
+	// 21.7: Double-Precision Floating-Point Classify Instruction
 	AFCLASSD
 
-	// 13.1 Quad-Precision Load and Store Instructions
+	// 22.1 Quad-Precision Load and Store Instructions
 	AFLQ
 	AFSQ
 
-	// 13.2: Quad-Precision Computational Instructions
+	// 22.2: Quad-Precision Computational Instructions
 	AFADDQ
 	AFSUBQ
 	AFMULQ
@@ -547,7 +557,7 @@ const (
 	AFNMADDQ
 	AFNMSUBQ
 
-	// 13.3 Quad-Precision Convert and Move Instructions
+	// 22.3 Quad-Precision Convert and Move Instructions
 	AFCVTWQ
 	AFCVTLQ
 	AFCVTSQ
@@ -564,40 +574,15 @@ const (
 	AFSGNJNQ
 	AFSGNJXQ
 
-	// 13.4 Quad-Precision Floating-Point Compare Instructions
+	// 22.4 Quad-Precision Floating-Point Compare Instructions
 	AFEQQ
 	AFLEQ
 	AFLTQ
 
-	// 13.5 Quad-Precision Floating-Point Classify Instruction
+	// 22.5 Quad-Precision Floating-Point Classify Instruction
 	AFCLASSQ
 
-	// 3.1.9: Instructions to Access CSRs
-	ACSRRW
-	ACSRRS
-	ACSRRC
-	ACSRRWI
-	ACSRRSI
-	ACSRRCI
-
-	// 3.2.1: Environment Call and Breakpoint
-	AECALL
-	ASCALL
-	AEBREAK
-	ASBREAK
-
-	// 3.2.2: Trap-Return Instructions
-	AMRET
-	ASRET
-	ADRET
-
-	// 3.2.3: Wait for Interrupt
-	AWFI
-
-	// 4.2.1: Supervisor Memory-Management Fence Instruction
-	ASFENCEVMA
-
-	// 1.1: Address Generation Instructions (Zba)
+	// 28.4.1: Address Generation Instructions (Zba)
 	AADDUW
 	ASH1ADD
 	ASH1ADDUW
@@ -607,7 +592,7 @@ const (
 	ASH3ADDUW
 	ASLLIUW
 
-	// 1.2: Basic Bit Manipulation (Zbb)
+	// 28.4.2: Basic Bit Manipulation (Zbb)
 	AANDN
 	AORN
 	AXNOR
@@ -625,7 +610,7 @@ const (
 	ASEXTH
 	AZEXTH
 
-	// 1.3: Bitwise Rotation (Zbb)
+	// 28.4.3: Bitwise Rotation (Zbb)
 	AROL
 	AROLW
 	AROR
@@ -635,7 +620,7 @@ const (
 	AORCB
 	AREV8
 
-	// 1.5: Single-bit Instructions (Zbs)
+	// 28.4.4: Single-bit Instructions (Zbs)
 	ABCLR
 	ABCLRI
 	ABEXT
@@ -1131,6 +1116,23 @@ const (
 	AVMV2RV
 	AVMV4RV
 	AVMV8RV
+
+	// 3.3.1: Environment Call and Breakpoint
+	AECALL
+	ASCALL
+	AEBREAK
+	ASBREAK
+
+	// 3.3.2: Trap-Return Instructions
+	AMRET
+	ASRET
+	ADRET
+
+	// 3.3.3: Wait for Interrupt
+	AWFI
+
+	// 10.2: Supervisor Memory-Management Fence Instruction
+	ASFENCEVMA
 
 	// The escape hatch. Inserts a single 32-bit word.
 	AWORD
