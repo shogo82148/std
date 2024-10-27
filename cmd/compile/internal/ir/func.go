@@ -71,6 +71,9 @@ type Func struct {
 	// Populated during walk.
 	Closures []*Func
 
+	// Parent of a closure
+	ClosureParent *Func
+
 	// Parents records the parent scope of each scope within a
 	// function. The root scope (0) has no parent, so the i'th
 	// scope's parent is stored at Parents[i-1].
