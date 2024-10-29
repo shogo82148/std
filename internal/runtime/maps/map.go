@@ -12,7 +12,7 @@ import (
 
 type Map struct {
 	// The number of filled slots (i.e. the number of elements in all
-	// tables).
+	// tables). Excludes deleted slots.
 	used uint64
 
 	// Type of this map.
@@ -28,13 +28,34 @@ type Map struct {
 	// TODO(prattmic): Populate this on table initialization.
 	seed uintptr
 
-	// The directory of tables. The length of this slice is
-	// `1 << globalDepth`. Multiple entries may point to the same table.
-	// See top-level comment for more details.
-	directory []*table
+	// The directory of tables.
+	//
+	// Normally dirPtr points to an array of table pointers
+	//
+	// dirPtr *[dirLen]*table
+	//
+	// The length (dirLen) of this array is `1 << globalDepth`. Multiple
+	// entries may point to the same table. See top-level comment for more
+	// details.
+	//
+	// Small map optimization: if the map always contained
+	// abi.SwissMapGroupSlots or fewer entries, it fits entirely in a
+	// single group. In that case dirPtr points directly to a single group.
+	//
+	// dirPtr *group
+	//
+	// In this case, dirLen is 0. used counts the number of used slots in
+	// the group. Note that small maps never have deleted slots (as there
+	// is no probe sequence to maintain).
+	dirPtr unsafe.Pointer
+	dirLen int
 
 	// The number of bits to use in table directory lookups.
 	globalDepth uint8
+
+	// The number of bits to shift out of the hash for directory lookups.
+	// On 64-bit systems, this is 64 - globalDepth.
+	globalShift uint8
 
 	// clearSeq is a sequence counter of calls to Clear. It is used to
 	// detect map clears during iteration.

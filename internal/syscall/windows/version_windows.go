@@ -10,6 +10,10 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
+// Version retrieves the major, minor, and build version numbers
+// of the current Windows OS from the RtlGetVersion API.
+func Version() (major, minor, build uint32)
+
 // SupportTCPKeepAliveInterval indicates whether TCP_KEEPIDLE is supported.
 // The minimal requirement is Windows 10.0.16299.
 func SupportTCPKeepAliveIdle() bool
@@ -27,7 +31,7 @@ func SupportTCPKeepAliveCount() bool
 // Windows version supports the TCP_INITIAL_RTO_NO_SYN_RETRANSMISSIONS.
 // The minimal requirement is Windows 10.0.16299.
 var SupportTCPInitialRTONoSYNRetransmissions = sync.OnceValue(func() bool {
-	major, _, build := version()
+	major, _, build := Version()
 	return major >= 10 && build >= 16299
 })
 

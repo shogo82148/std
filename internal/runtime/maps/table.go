@@ -23,8 +23,8 @@ type Iter struct {
 	// Randomize iteration order by starting iteration at a random slot
 	// offset. The offset into the directory uses a separate offset, as it
 	// must adjust when the directory grows.
-	groupSlotOffset uint64
-	dirOffset       uint64
+	entryOffset uint64
+	dirOffset   uint64
 
 	// Snapshot of Map.clearSeq at iteration initialization time. Used to
 	// detect clear during iteration.
@@ -39,12 +39,13 @@ type Iter struct {
 	dirIdx int
 
 	// tab is the table at dirIdx during the previous call to Next.
-	tab *table
+	tab        *table
+	groupSmall groupReference
 
-	// TODO: these could be merged into a single counter (and pre-offset
-	// with offset).
-	groupIdx uint64
-	slotIdx  uint32
+	// entryIdx is the current entry index, prior to adjustment by entryOffset.
+	// The lower 3 bits of the index are the slot index, and the upper bits
+	// are the group index.
+	entryIdx uint64
 }
 
 // Init initializes Iter for iteration.

@@ -36,10 +36,10 @@ func StoreRel(addr *uint32, v uint32)
 //go:noescape
 func StoreReluintptr(addr *uintptr, v uintptr)
 
-//go:nosplit
+//go:noescape
 func Or8(addr *uint8, v uint8)
 
-//go:nosplit
+//go:noescape
 func And8(addr *uint8, v uint8)
 
 //go:nosplit
