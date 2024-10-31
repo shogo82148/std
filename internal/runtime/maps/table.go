@@ -39,8 +39,10 @@ type Iter struct {
 	dirIdx int
 
 	// tab is the table at dirIdx during the previous call to Next.
-	tab        *table
-	groupSmall groupReference
+	tab *table
+
+	// group is the group at entryIdx during the previous call to Next.
+	group groupReference
 
 	// entryIdx is the current entry index, prior to adjustment by entryOffset.
 	// The lower 3 bits of the index are the slot index, and the upper bits

@@ -16,6 +16,14 @@ const (
 
 	// Number of slots in a group.
 	SwissMapGroupSlots = 1 << SwissMapGroupSlotsBits
+
+	// Maximum key or elem size to keep inline (instead of mallocing per element).
+	// Must fit in a uint8.
+	SwissMapMaxKeyBytes  = 128
+	SwissMapMaxElemBytes = 128
+
+	// Value of control word with all empty slots.
+	SwissMapCtrlEmpty = bitsetLSB * uint64(ctrlEmpty)
 )
 
 type SwissMapType struct {
@@ -34,8 +42,14 @@ type SwissMapType struct {
 const (
 	SwissMapNeedKeyUpdate = 1 << iota
 	SwissMapHashMightPanic
+	SwissMapIndirectKey
+	SwissMapIndirectElem
 )
 
 func (mt *SwissMapType) NeedKeyUpdate() bool
 
 func (mt *SwissMapType) HashMightPanic() bool
+
+func (mt *SwissMapType) IndirectKey() bool
+
+func (mt *SwissMapType) IndirectElem() bool

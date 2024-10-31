@@ -369,8 +369,6 @@ const (
 
 	// 2.7: Memory Ordering Instructions
 	AFENCE
-	AFENCETSO
-	APAUSE
 
 	// 4.2: Integer Computational Instructions (RV64I)
 	AADDIW
@@ -394,14 +392,6 @@ const (
 	ACSRRWI
 	ACSRRSI
 	ACSRRCI
-
-	// 8.1: Base Counters and Timers (Zicntr)
-	ARDCYCLE
-	ARDCYCLEH
-	ARDTIME
-	ARDTIMEH
-	ARDINSTRET
-	ARDINSTRETH
 
 	// 13.1: Multiplication Operations
 	AMUL
@@ -445,16 +435,6 @@ const (
 	AAMOMAXUW
 	AAMOMINW
 	AAMOMINUW
-
-	// 20.2: Floating-Point Control and Status Register
-	AFRCSR
-	AFSCSR
-	AFRRM
-	AFSRM
-	AFRFLAGS
-	AFSFLAGS
-	AFSRMI
-	AFSFLAGSI
 
 	// 20.5: Single-Precision Load and Store Instructions
 	AFLW
@@ -1151,15 +1131,15 @@ const (
 	ABNEZ
 	AFABSD
 	AFABSS
+	AFNED
 	AFNEGD
 	AFNEGS
-	AFNED
 	AFNES
 	AMOV
 	AMOVB
 	AMOVBU
-	AMOVF
 	AMOVD
+	AMOVF
 	AMOVH
 	AMOVHU
 	AMOVW
@@ -1167,6 +1147,9 @@ const (
 	ANEG
 	ANEGW
 	ANOT
+	ARDCYCLE
+	ARDINSTRET
+	ARDTIME
 	ASEQZ
 	ASNEZ
 

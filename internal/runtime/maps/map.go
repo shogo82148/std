@@ -16,7 +16,6 @@ type Map struct {
 	used uint64
 
 	// seed is the hash seed, computed as a unique random number per map.
-	// TODO(prattmic): Populate this on table initialization.
 	seed uintptr
 
 	// The directory of tables.
@@ -48,12 +47,25 @@ type Map struct {
 	// On 64-bit systems, this is 64 - globalDepth.
 	globalShift uint8
 
+	// writing is a flag that is toggled (XOR 1) while the map is being
+	// written. Normally it is set to 1 when writing, but if there are
+	// multiple concurrent writers, then toggling increases the probability
+	// that both sides will detect the race.
+	writing uint8
+
 	// clearSeq is a sequence counter of calls to Clear. It is used to
 	// detect map clears during iteration.
 	clearSeq uint64
 }
 
-func NewMap(mt *abi.SwissMapType, capacity uint64) *Map
+// If m is non-nil, it should be used rather than allocating.
+//
+// maxAlloc should be runtime.maxAlloc.
+//
+// TODO(prattmic): Put maxAlloc somewhere accessible.
+func NewMap(mt *abi.SwissMapType, hint uintptr, m *Map, maxAlloc uintptr) *Map
+
+func NewEmptyMap() *Map
 
 func (m *Map) Used() uint64
 

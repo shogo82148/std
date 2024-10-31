@@ -11,8 +11,11 @@ import (
 )
 
 func RaceRead(addr unsafe.Pointer)
+
 func RaceWrite(addr unsafe.Pointer)
+
 func RaceReadRange(addr unsafe.Pointer, len int)
+
 func RaceWriteRange(addr unsafe.Pointer, len int)
 
 func RaceErrors() int
