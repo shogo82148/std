@@ -107,7 +107,7 @@ func (z *Int) Rem(x, y *Int) *Int
 //	r = x - y*q
 //
 // (See Daan Leijen, “Division and Modulus for Computer Scientists”.)
-// See [DivMod] for Euclidean division and modulus (unlike Go).
+// See [Int.DivMod] for Euclidean division and modulus (unlike Go).
 func (z *Int) QuoRem(x, y, r *Int) (*Int, *Int)
 
 // Div sets z to the quotient x/y for y != 0 and returns z.
