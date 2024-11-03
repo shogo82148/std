@@ -31,6 +31,8 @@ const (
 
 func IsAtomicInst(as obj.As) bool
 
+func OP_RRRR(op uint32, r1 uint32, r2 uint32, r3 uint32, r4 uint32) uint32
+
 // r1 -> rk
 // r2 -> rj
 // r3 -> rd
