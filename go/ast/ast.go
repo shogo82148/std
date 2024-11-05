@@ -727,11 +727,15 @@ type File struct {
 }
 
 // Pos returns the position of the package declaration.
-// (Use FileStart for the start of the entire file.)
+// It may be invalid, for example in an empty file.
+//
+// (Use FileStart for the start of the entire file. It is always valid.)
 func (f *File) Pos() token.Pos
 
 // End returns the end of the last declaration in the file.
-// (Use FileEnd for the end of the entire file.)
+// It may be invalid, for example in an empty file.
+//
+// (Use FileEnd for the end of the entire file. It is always valid.)
 func (f *File) End() token.Pos
 
 // A Package node represents a set of source files
