@@ -13,4 +13,4 @@ import (
 // as specified by the GOAUTH environment variable.
 // It returns whether any matching credentials were found.
 // req must use HTTPS or this function will panic.
-func AddCredentials(req *http.Request) bool
+func AddCredentials(client *http.Client, req *http.Request, prefix string) bool

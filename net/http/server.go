@@ -531,6 +531,13 @@ type Server struct {
 	// See https://go.dev/issue/67813.
 	HTTP2 *HTTP2Config
 
+	// Protocols is the set of protocols accepted by the server.
+	//
+	// If Protocols is nil, the default is usually HTTP/1 and HTTP/2.
+	// If TLSNextProto is non-nil and does not contain an "h2" entry,
+	// the default is HTTP/1 only.
+	Protocols *Protocols
+
 	inShutdown atomic.Bool
 
 	disableKeepAlives atomic.Bool

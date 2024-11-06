@@ -11,6 +11,32 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
+// Protocols is a set of HTTP protocols.
+//
+// The supported protocols are:
+//
+//   - HTTP1 is the HTTP/1.0 and HTTP/1.1 protocols.
+//     HTTP1 is supported on both unsecured TCP and secured TLS connections.
+//
+//   - HTTP2 is the HTTP/2 protcol over a TLS connection.
+type Protocols struct {
+	bits uint8
+}
+
+// HTTP1 reports whether p includes HTTP/1.
+func (p Protocols) HTTP1() bool
+
+// SetHTTP1 adds or removes HTTP/1 from p.
+func (p *Protocols) SetHTTP1(ok bool)
+
+// HTTP2 reports whether p includes HTTP/2.
+func (p Protocols) HTTP2() bool
+
+// SetHTTP2 adds or removes HTTP/2 from p.
+func (p *Protocols) SetHTTP2(ok bool)
+
+func (p Protocols) String() string
+
 // NoBody is an [io.ReadCloser] with no bytes. Read always returns EOF
 // and Close always returns nil. It can be used in an outgoing client
 // request to explicitly signal that a request has zero bytes.
