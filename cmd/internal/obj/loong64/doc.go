@@ -8,7 +8,7 @@ GNU LoongArch64 syntax, but we can still follow the general rules to map between
 
 # Instructions mnemonics mapping rules
 
-1. Bit widths represented by various instruction suffixes
+1. Bit widths represented by various instruction suffixes and prefixes
 V (vlong)     = 64 bit
 WU (word)     = 32 bit unsigned
 W (word)      = 32 bit
@@ -18,6 +18,18 @@ B (byte)      = 8 bit
 BU            = 8 bit unsigned
 F (float)     = 32 bit float
 D (double)    = 64 bit float
+
+V  (LSX)      = 128 bit
+XV (LASX)     = 256 bit
+
+Examples:
+
+	MOVB  (R2), R3  // Load 8 bit memory data into R3 register
+	MOVH  (R2), R3  // Load 16 bit memory data into R3 register
+	MOVW  (R2), R3  // Load 32 bit memory data into R3 register
+	MOVV  (R2), R3  // Load 64 bit memory data into R3 register
+	VMOVQ  (R2), V1 // Load 128 bit memory data into V1 register
+	XVMOVQ (R2), X1 // Load 256 bit memory data into X1 register
 
 2. Align directive
 Go asm supports the PCALIGN directive, which indicates that the next instruction should
@@ -49,6 +61,10 @@ start:
 1. All generial-prupose register names are written as Rn.
 
 2. All floating-point register names are written as Fn.
+
+3. All LSX register names are written as Vn.
+
+4. All LASX register names are written as Xn.
 
 # Argument mapping rules
 
@@ -88,5 +104,29 @@ Examples:
 	MOVB R6, (R4)(R5)  <=>  stx.b R6, R5, R5
 	MOVV R6, (R4)(R5)  <=>  stx.d R6, R5, R5
 	MOVV F6, (R4)(R5)  <=>  fstx.d F6, R5, R5
+
+# Special instruction encoding definition and description on LoongArch
+
+ 1. DBAR hint encoding for LA664(Loongson 3A6000) and later micro-architectures, paraphrased
+    from the Linux kernel implementation: https://git.kernel.org/torvalds/c/e031a5f3f1ed
+
+    - Bit4: ordering or completion (0: completion, 1: ordering)
+    - Bit3: barrier for previous read (0: true, 1: false)
+    - Bit2: barrier for previous write (0: true, 1: false)
+    - Bit1: barrier for succeeding read (0: true, 1: false)
+    - Bit0: barrier for succeeding write (0: true, 1: false)
+    - Hint 0x700: barrier for "read after read" from the same address
+
+    Traditionally, on microstructures that do not support dbar grading such as LA464
+    (Loongson 3A5000, 3C5000) all variants are treated as “dbar 0” (full barrier).
+
+2. Notes on using atomic operation instructions
+
+  - AM*_DB.W[U]/V[U] instructions such as AMSWAPDBW not only complete the corresponding
+    atomic operation sequence, but also implement the complete full data barrier function.
+
+  - When using the AM*_.W[U]/D[U] instruction, registers rd and rj cannot be the same,
+    otherwise an exception is triggered, and rd and rk cannot be the same, otherwise
+    the execution result is uncertain.
 */
 package loong64

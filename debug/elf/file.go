@@ -38,11 +38,12 @@ type FileHeader struct {
 // A File represents an open ELF file.
 type File struct {
 	FileHeader
-	Sections  []*Section
-	Progs     []*Prog
-	closer    io.Closer
-	gnuNeed   []verneed
-	gnuVersym []byte
+	Sections    []*Section
+	Progs       []*Prog
+	closer      io.Closer
+	dynVers     []DynamicVersion
+	dynVerNeeds []DynamicVersionNeed
+	gnuVersym   []byte
 }
 
 // A SectionHeader represents a single ELF section header.
@@ -134,11 +135,16 @@ func (p *Prog) Open() io.ReadSeeker
 type Symbol struct {
 	Name        string
 	Info, Other byte
+
+	// These fields are used for symbol versioning
+	// and are present only for the dynamic symbol table.
+	VersionIndex int16
+	VersionFlags SymbolVersionFlag
+
 	Section     SectionIndex
 	Value, Size uint64
 
-	// Version and Library are present only for the dynamic symbol
-	// table.
+	// These fields are present only for the dynamic symbol table.
 	Version string
 	Library string
 }
@@ -207,6 +213,41 @@ type ImportedSymbol struct {
 // satisfied by other libraries at dynamic load time.
 // It does not return weak symbols.
 func (f *File) ImportedSymbols() ([]ImportedSymbol, error)
+
+type SymbolVersionFlag byte
+
+const (
+	VerFlagNone   SymbolVersionFlag = 0x0
+	VerFlagLocal  SymbolVersionFlag = 0x1
+	VerFlagGlobal SymbolVersionFlag = 0x2
+	VerFlagHidden SymbolVersionFlag = 0x4
+)
+
+// DynamicVersion is a version defined by a dynamic object.
+type DynamicVersion struct {
+	Version uint16
+	Flags   DynamicVersionFlag
+	Index   uint16
+	Deps    []string
+}
+
+type DynamicVersionNeed struct {
+	Version uint16
+	Name    string
+	Needs   []DynamicVersionDep
+}
+
+type DynamicVersionDep struct {
+	Flags DynamicVersionFlag
+	Other uint16
+	Dep   string
+}
+
+// DynamicVersions returns version information for a dynamic object.
+func (f *File) DynamicVersions() ([]DynamicVersion, error)
+
+// DynamicVersionNeeds returns version dependencies for a dynamic object.
+func (f *File) DynamicVersionNeeds() ([]DynamicVersionNeed, error)
 
 // ImportedLibraries returns the names of all libraries
 // referred to by the binary f that are expected to be

@@ -1720,8 +1720,9 @@ const (
 	OpLOONG64LoweredAtomicStore8
 	OpLOONG64LoweredAtomicStore32
 	OpLOONG64LoweredAtomicStore64
-	OpLOONG64LoweredAtomicStorezero32
-	OpLOONG64LoweredAtomicStorezero64
+	OpLOONG64LoweredAtomicStore8Variant
+	OpLOONG64LoweredAtomicStore32Variant
+	OpLOONG64LoweredAtomicStore64Variant
 	OpLOONG64LoweredAtomicExchange32
 	OpLOONG64LoweredAtomicExchange64
 	OpLOONG64LoweredAtomicAdd32
@@ -3129,6 +3130,9 @@ const (
 	OpAtomicOr64value
 	OpAtomicOr32value
 	OpAtomicOr8value
+	OpAtomicStore8Variant
+	OpAtomicStore32Variant
+	OpAtomicStore64Variant
 	OpAtomicAdd32Variant
 	OpAtomicAdd64Variant
 	OpAtomicExchange8Variant

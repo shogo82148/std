@@ -2062,3 +2062,12 @@ type Sym64 struct {
 }
 
 const Sym64Size = 24
+
+// Dynamic version flags.
+type DynamicVersionFlag uint16
+
+const (
+	VER_FLG_BASE DynamicVersionFlag = 0x1
+	VER_FLG_WEAK DynamicVersionFlag = 0x2
+	VER_FLG_INFO DynamicVersionFlag = 0x4
+)
