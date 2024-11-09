@@ -18,4 +18,6 @@ import (
 //
 // If size is non-negative, it's the number of bytes of export data
 // still available to read from r.
+//
+// This function should only be used in tests.
 func FindExportData(r *bufio.Reader) (hdr string, size int, err error)
