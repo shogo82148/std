@@ -80,6 +80,7 @@ var ARM64 struct {
 // The struct is padded to avoid false sharing.
 var Loong64 struct {
 	_         CacheLinePad
+	HasLSX    bool
 	HasCRC32  bool
 	HasLAMCAS bool
 	HasLAM_BH bool
