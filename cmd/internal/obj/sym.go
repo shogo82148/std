@@ -77,7 +77,7 @@ func (ctxt *Link) GCLocalsSym(data []byte) *LSym
 // in which case all the symbols are non-package (for now).
 func (ctxt *Link) NumberSyms()
 
-// StaticNamePref is the prefix the front end applies to static temporary
+// StaticNamePrefix is the prefix the front end applies to static temporary
 // variables. When turned into LSyms, these can be tagged as static so
 // as to avoid inserting them into the linker's name lookup tables.
-const StaticNamePref = ".stmp_"
+const StaticNamePrefix = ".stmp_"

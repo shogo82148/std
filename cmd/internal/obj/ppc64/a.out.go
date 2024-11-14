@@ -366,6 +366,7 @@ const (
 	C_COND_SO
 )
 
+//go:generate go run ../mkcnames.go -i a.out.go -o anames9.go -p ppc64
 const (
 	C_NONE     = iota
 	C_REGP

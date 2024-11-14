@@ -22,3 +22,6 @@ func IsLoong64MUL(op obj.As) bool
 func IsLoong64RDTIME(op obj.As) bool
 
 func IsLoong64AMO(op obj.As) bool
+
+// Loong64RegisterExtension constructs an Loong64 register with extension or arrangement.
+func Loong64RegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error
