@@ -84,6 +84,7 @@ const (
 	ETXTBSY         Errno = 74
 	EXDEV           Errno = 75
 	ENOTCAPABLE     Errno = 76
+	EBADFD          Errno = 77
 	// needed by src/net/error_unix_test.go
 	EOPNOTSUPP = ENOTSUP
 )

@@ -87,3 +87,7 @@ const (
 	// and line of the log call. The associated value is a *[Source].
 	SourceKey = "source"
 )
+
+// DiscardHandler discards all log output.
+// DiscardHandler.Enabled returns false for all Levels.
+var DiscardHandler Handler = discardHandler{}

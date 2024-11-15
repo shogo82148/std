@@ -19,7 +19,7 @@ var (
 	GOROOT    = os.Getenv("GOROOT")
 	GOARCH    = envOr("GOARCH", defaultGOARCH)
 	GOOS      = envOr("GOOS", defaultGOOS)
-	GO386     = envOr("GO386", defaultGO386)
+	GO386     = envOr("GO386", DefaultGO386)
 	GOAMD64   = goamd64()
 	GOARM     = goarm()
 	GOARM64   = goarm64()

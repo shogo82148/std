@@ -138,14 +138,14 @@ var (
 	GOMODCACHE, GOMODCACHEChanged = EnvOrAndChanged("GOMODCACHE", gopathDir("pkg/mod"))
 
 	// Used in envcmd.MkEnv and build ID computations.
-	GOARM64   = EnvOrAndChanged("GOARM64", fmt.Sprint(buildcfg.GOARM64))
-	GOARM     = EnvOrAndChanged("GOARM", fmt.Sprint(buildcfg.GOARM))
-	GO386     = EnvOrAndChanged("GO386", buildcfg.GO386)
-	GOAMD64   = EnvOrAndChanged("GOAMD64", fmt.Sprintf("%s%d", "v", buildcfg.GOAMD64))
-	GOMIPS    = EnvOrAndChanged("GOMIPS", buildcfg.GOMIPS)
-	GOMIPS64  = EnvOrAndChanged("GOMIPS64", buildcfg.GOMIPS64)
-	GOPPC64   = EnvOrAndChanged("GOPPC64", fmt.Sprintf("%s%d", "power", buildcfg.GOPPC64))
-	GORISCV64 = EnvOrAndChanged("GORISCV64", fmt.Sprintf("rva%du64", buildcfg.GORISCV64))
+	GOARM64   = EnvOrAndChanged("GOARM64", buildcfg.DefaultGOARM64)
+	GOARM     = EnvOrAndChanged("GOARM", buildcfg.DefaultGOARM)
+	GO386     = EnvOrAndChanged("GO386", buildcfg.DefaultGO386)
+	GOAMD64   = EnvOrAndChanged("GOAMD64", buildcfg.DefaultGOAMD64)
+	GOMIPS    = EnvOrAndChanged("GOMIPS", buildcfg.DefaultGOMIPS)
+	GOMIPS64  = EnvOrAndChanged("GOMIPS64", buildcfg.DefaultGOMIPS64)
+	GOPPC64   = EnvOrAndChanged("GOPPC64", buildcfg.DefaultGOPPC64)
+	GORISCV64 = EnvOrAndChanged("GORISCV64", buildcfg.DefaultGORISCV64)
 	GOWASM    = EnvOrAndChanged("GOWASM", fmt.Sprint(buildcfg.GOWASM))
 
 	GOPROXY, GOPROXYChanged     = EnvOrAndChanged("GOPROXY", "")
