@@ -11,9 +11,17 @@ var _ unsafe.Pointer
 
 func DuplicateTokenEx(hExistingToken syscall.Token, dwDesiredAccess uint32, lpTokenAttributes *syscall.SecurityAttributes, impersonationLevel uint32, tokenType TokenType, phNewToken *syscall.Token) (err error)
 
+func GetSidIdentifierAuthority(sid *syscall.SID) (idauth *SID_IDENTIFIER_AUTHORITY)
+
+func GetSidSubAuthority(sid *syscall.SID, subAuthorityIdx uint32) (subAuth *uint32)
+
+func GetSidSubAuthorityCount(sid *syscall.SID) (count *uint8)
+
 func ImpersonateLoggedOnUser(token syscall.Token) (err error)
 
 func ImpersonateSelf(impersonationlevel uint32) (err error)
+
+func IsValidSid(sid *syscall.SID) (valid bool)
 
 func LogonUser(username *uint16, domain *uint16, password *uint16, logonType uint32, logonProvider uint32, token *syscall.Token) (err error)
 

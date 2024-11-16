@@ -8,6 +8,10 @@ package checktest
 
 var NOPTRDATA int = 1
 
+// The linkname here disables asan registration of this global,
+// because asan gets mad about rodata globals.
+//
+//go:linkname RODATA crypto/internal/fips/check/checktest.RODATA
 var RODATA int32
 
 // DATA needs to have both a pointer and an int so that _some_ of it gets
