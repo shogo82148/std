@@ -120,6 +120,7 @@ In addition to the build flags, the flags handled by 'go test' itself are:
 	-json
 	    Convert test output to JSON suitable for automated processing.
 	    See 'go doc test2json' for the encoding details.
+	    Also emits build output in JSON. See 'go help buildjson'.
 
 	-o file
 	    Compile the test binary to the named file.

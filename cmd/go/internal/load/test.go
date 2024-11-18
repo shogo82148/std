@@ -25,9 +25,10 @@ type TestCover struct {
 }
 
 // TestPackagesFor is like TestPackagesAndErrors but it returns
-// an error if the test packages or their dependencies have errors.
+// the package containing an error if the test packages or
+// their dependencies have errors.
 // Only test packages without errors are returned.
-func TestPackagesFor(ctx context.Context, opts PackageOpts, p *Package, cover *TestCover) (pmain, ptest, pxtest *Package, err error)
+func TestPackagesFor(ctx context.Context, opts PackageOpts, p *Package, cover *TestCover) (pmain, ptest, pxtest, perr *Package)
 
 // TestPackagesAndErrors returns three packages:
 //   - pmain, the package main corresponding to the test binary (running tests in ptest and pxtest).

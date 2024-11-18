@@ -89,7 +89,7 @@ type Action struct {
 	// Execution state.
 	pending      int
 	priority     int
-	Failed       bool
+	Failed       *Action
 	json         *actionJSON
 	nonGoOverlay map[string]string
 	traceSpan    *trace.Span

@@ -34,31 +34,34 @@ func ToolExeSuffix() string
 
 // These are general "build flags" used by build and other commands.
 var (
-	BuildA             bool
-	BuildBuildmode     string
-	BuildBuildvcs      = "auto"
-	BuildContext       = defaultContext()
-	BuildMod           string
-	BuildModExplicit   bool
-	BuildModReason     string
-	BuildLinkshared    bool
-	BuildMSan          bool
-	BuildASan          bool
-	BuildCover         bool
-	BuildCoverMode     string
-	BuildCoverPkg      []string
-	BuildN             bool
-	BuildO             string
-	BuildP             = runtime.GOMAXPROCS(0)
-	BuildPGO           string
-	BuildPkgdir        string
-	BuildRace          bool
-	BuildToolexec      []string
-	BuildToolchainName string
-	BuildTrimpath      bool
-	BuildV             bool
-	BuildWork          bool
-	BuildX             bool
+	BuildA                 bool
+	BuildBuildmode         string
+	BuildBuildvcs          = "auto"
+	BuildContext           = defaultContext()
+	BuildMod               string
+	BuildModExplicit       bool
+	BuildModReason         string
+	BuildLinkshared        bool
+	BuildMSan              bool
+	BuildASan              bool
+	BuildCover             bool
+	BuildCoverMode         string
+	BuildCoverPkg          []string
+	BuildJSON              bool
+	BuildN                 bool
+	BuildO                 string
+	BuildP                 = runtime.GOMAXPROCS(0)
+	BuildPGO               string
+	BuildPkgdir            string
+	BuildRace              bool
+	BuildToolexec          []string
+	BuildToolchainName     string
+	BuildToolchainCompiler func() string
+	BuildToolchainLinker   func() string
+	BuildTrimpath          bool
+	BuildV                 bool
+	BuildWork              bool
+	BuildX                 bool
 
 	ModCacheRW bool
 	ModFile    string

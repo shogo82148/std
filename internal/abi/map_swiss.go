@@ -32,10 +32,11 @@ type SwissMapType struct {
 	Elem  *Type
 	Group *Type
 	// function for hashing keys (ptr to key, seed) -> hash
-	Hasher   func(unsafe.Pointer, uintptr) uintptr
-	SlotSize uintptr
-	ElemOff  uintptr
-	Flags    uint32
+	Hasher    func(unsafe.Pointer, uintptr) uintptr
+	GroupSize uintptr
+	SlotSize  uintptr
+	ElemOff   uintptr
+	Flags     uint32
 }
 
 // Flag values

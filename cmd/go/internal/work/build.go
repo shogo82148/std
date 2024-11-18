@@ -126,6 +126,9 @@ and test commands:
 		or, if set explicitly, has _race appended to it. Likewise for the -msan
 		and -asan flags. Using a -buildmode option that requires non-default compile
 		flags has a similar effect.
+	-json
+		Emit build output in JSON suitable for automated processing.
+		See 'go help buildjson' for the encoding details.
 	-ldflags '[pattern=]arg list'
 		arguments to pass on each go tool link invocation.
 	-linkshared
@@ -227,6 +230,8 @@ const (
 	OmitModFlag       BuildFlagMask = 1 << iota
 	OmitModCommonFlags
 	OmitVFlag
+	OmitBuildOnlyFlags
+	OmitJSONFlag
 )
 
 // AddBuildFlags adds the flags common to the build, clean, get,
