@@ -65,11 +65,11 @@ func (sym *Sym) Linksym() *obj.LSym
 // of (*ir.Name).Sym().LinksymABI(abi).
 func (sym *Sym) LinksymABI(abi obj.ABI) *obj.LSym
 
-// Less reports whether symbol a is ordered before symbol b.
+// CompareSyms return the ordering of a and b, as for [cmp.Compare].
 //
 // Symbols are ordered exported before non-exported, then by name, and
 // finally (for non-exported symbols) by package path.
-func (a *Sym) Less(b *Sym) bool
+func CompareSyms(a, b *Sym) int
 
 // IsExported reports whether name is an exported Go symbol (that is,
 // whether it begins with an upper-case letter).

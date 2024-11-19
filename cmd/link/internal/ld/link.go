@@ -42,6 +42,16 @@ type Shlib struct {
 	Hash []byte
 	Deps []string
 	File *elf.File
+	// For every symbol defined in the shared library, record its address
+	// in the original shared library address space.
+	symAddr map[string]uint64
+	// For relocations in the shared library, map from the address
+	// (in the shared library address space) at which that
+	// relocation applies to the target symbol.  We only keep
+	// track of a single kind of relocation: a standard absolute
+	// address relocation with no addend. These were R_ADDR
+	// relocations when the shared library was built.
+	relocTarget map[uint64]string
 }
 
 // Link holds the context for writing object code from a compiler

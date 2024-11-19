@@ -379,6 +379,9 @@ func (f *Field) End() int64
 // IsMethod reports whether f represents a method rather than a struct field.
 func (f *Field) IsMethod() bool
 
+// CompareFields compares two Field values by name.
+func CompareFields(a, b *Field) int
+
 // NewArray returns a new fixed-length array Type.
 func NewArray(elem *Type, bound int64) *Type
 

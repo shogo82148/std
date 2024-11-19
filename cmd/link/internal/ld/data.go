@@ -66,5 +66,10 @@ func (p *GCProg) End(size int64)
 
 func (p *GCProg) AddSym(s loader.Sym)
 
+// Add to the gc program the ptr bits for the type typ at
+// byte offset off in the region being described.
+// The type must have a pointer in it.
+func (p *GCProg) AddType(off int64, typ loader.Sym)
+
 // add a trampoline with symbol s (to be laid down after the current function)
 func (ctxt *Link) AddTramp(s *loader.SymbolBuilder)
