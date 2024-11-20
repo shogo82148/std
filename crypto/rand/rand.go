@@ -20,6 +20,9 @@ import (
 //   - On Windows, Reader uses the ProcessPrng API.
 //   - On js/wasm, Reader uses the Web Crypto API.
 //   - On wasip1/wasm, Reader uses random_get.
+//
+// In FIPS 140-3 mode, the output passes through an SP 800-90A Rev. 1
+// Deterministric Random Bit Generator (DRBG).
 var Reader io.Reader
 
 // Read fills b with cryptographically secure random bytes. It never returns an

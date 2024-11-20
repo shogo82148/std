@@ -1747,6 +1747,8 @@ const (
 	OpLOONG64LoweredAtomicAdd64
 	OpLOONG64LoweredAtomicCas32
 	OpLOONG64LoweredAtomicCas64
+	OpLOONG64LoweredAtomicCas64Variant
+	OpLOONG64LoweredAtomicCas32Variant
 	OpLOONG64LoweredAtomicAnd32
 	OpLOONG64LoweredAtomicOr32
 	OpLOONG64LoweredAtomicAnd32value

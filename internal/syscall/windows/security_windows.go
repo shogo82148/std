@@ -155,3 +155,12 @@ const (
 var SECURITY_NT_AUTHORITY = SID_IDENTIFIER_AUTHORITY{
 	Value: [6]byte{0, 0, 0, 0, 0, 5},
 }
+
+//go:nocheckptr
+func GetSidIdentifierAuthority(sid *syscall.SID) SID_IDENTIFIER_AUTHORITY
+
+//go:nocheckptr
+func GetSidSubAuthority(sid *syscall.SID, subAuthorityIdx uint32) uint32
+
+//go:nocheckptr
+func GetSidSubAuthorityCount(sid *syscall.SID) uint8

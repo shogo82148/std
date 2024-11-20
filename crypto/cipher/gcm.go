@@ -1,21 +1,8 @@
-// Copyright 2013 The Go Authors. All rights reserved.
+// Copyright 2024 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package cipher
-
-// AEAD is a cipher mode providing authenticated encryption with associated
-// data. For a description of the methodology, see
-// https://en.wikipedia.org/wiki/Authenticated_encryption.
-type AEAD interface {
-	NonceSize() int
-
-	Overhead() int
-
-	Seal(dst, nonce, plaintext, additionalData []byte) []byte
-
-	Open(dst, nonce, ciphertext, additionalData []byte) ([]byte, error)
-}
 
 // NewGCM returns the given 128-bit, block cipher wrapped in Galois Counter Mode
 // with the standard nonce length.
@@ -43,3 +30,15 @@ func NewGCMWithNonceSize(cipher Block, size int) (AEAD, error)
 // cryptosystem that uses non-standard tag lengths. All other users should use
 // [NewGCM], which is more resistant to misuse.
 func NewGCMWithTagSize(cipher Block, tagSize int) (AEAD, error)
+
+// NewGCMWithRandomNonce returns the given cipher wrapped in Galois Counter
+// Mode, with randomly-generated nonces. The cipher must have been created by
+// [aes.NewCipher].
+//
+// It generates a random 96-bit nonce, which is prepended to the ciphertext by Seal,
+// and is extracted from the ciphertext by Open. The NonceSize of the AEAD is zero,
+// while the Overhead is 28 bytes (the combination of nonce size and tag size).
+//
+// A given key MUST NOT be used to encrypt more than 2^32 messages, to limit the
+// risk of a random nonce collision to negligible levels.
+func NewGCMWithRandomNonce(cipher Block) (AEAD, error)

@@ -21,7 +21,7 @@ const Size = 16
 const BlockSize = 64
 
 // New returns a new [hash.Hash] computing the MD5 checksum. The Hash
-// also implements [encoding.BinaryMarshaler], [encoding.AppendBinary] and
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
 // [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
 // state of the hash.
 func New() hash.Hash

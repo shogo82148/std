@@ -17,7 +17,6 @@ package ed25519
 
 import (
 	"github.com/shogo82148/std/crypto"
-
 	"github.com/shogo82148/std/io"
 )
 

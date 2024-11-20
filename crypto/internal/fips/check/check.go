@@ -12,7 +12,30 @@
 // after the check has completed.)
 package check
 
+import (
+	"github.com/shogo82148/std/unsafe"
+)
+
 // Enabled reports whether verification was enabled.
 // If Enabled returns true, then verification succeeded,
 // because if it failed the binary would have panicked at init time.
 func Enabled() bool
+
+var Verified bool
+
+// Supported reports whether the current GOOS/GOARCH is Supported at all.
+func Supported() bool
+
+// Linkinfo holds the go:fipsinfo symbol prepared by the linker.
+// See cmd/link/internal/ld/fips.go for details.
+//
+//go:linkname Linkinfo go:fipsinfo
+var Linkinfo struct {
+	Magic [16]byte
+	Sum   [32]byte
+	Self  uintptr
+	Sects [4]struct {
+		Start unsafe.Pointer
+		End   unsafe.Pointer
+	}
+}

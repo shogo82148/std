@@ -20,6 +20,11 @@ var ErrToolchain = errors.New("internal error: invalid operation on toolchain mo
 // corresponding to the root of the module's file tree.
 func Download(ctx context.Context, mod module.Version) (dir string, err error)
 
+// Unzip is like Download but is given the explicit zip file to use,
+// rather than downloading it. This is used for the GOFIPS140 zip files,
+// which ship in the Go distribution itself.
+func Unzip(ctx context.Context, mod module.Version, zipfile string) (dir string, err error)
+
 // DownloadZip downloads the specific module version to the
 // local zip cache and returns the name of the zip file.
 func DownloadZip(ctx context.Context, mod module.Version) (zipfile string, err error)

@@ -30,6 +30,7 @@ var (
 	GOWASM    = gowasm()
 	ToolTags  = toolTags()
 	GO_LDSO   = defaultGO_LDSO
+	GOFIPS140 = gofips140()
 	Version   = version
 )
 

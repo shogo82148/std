@@ -19,6 +19,10 @@ type HMAC struct {
 	// copy of the key, but rather the marshaled state of outer/inner after
 	// opad/ipad has been fed into it.
 	marshaled bool
+
+	// forHKDF and keyLen are stored to inform the service indicator decision.
+	forHKDF bool
+	keyLen  int
 }
 
 func (h *HMAC) Sum(in []byte) []byte
@@ -32,3 +36,6 @@ func (h *HMAC) Reset()
 
 // New returns a new HMAC hash using the given [fips.Hash] type and key.
 func New[H fips.Hash](h func() H, key []byte) *HMAC
+
+// MarkAsUsedInHKDF records that this HMAC instance is used as part of HKDF.
+func MarkAsUsedInHKDF(h *HMAC)
