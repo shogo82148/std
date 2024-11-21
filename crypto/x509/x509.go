@@ -244,10 +244,6 @@ var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorit
 
 // An InsecureAlgorithmError indicates that the [SignatureAlgorithm] used to
 // generate the signature is not secure, and the signature has been rejected.
-//
-// To temporarily restore support for SHA-1 signatures, include the value
-// "x509sha1=1" in the GODEBUG environment variable. Note that this option will
-// be removed in a future release.
 type InsecureAlgorithmError SignatureAlgorithm
 
 func (e InsecureAlgorithmError) Error() string

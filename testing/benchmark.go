@@ -52,7 +52,8 @@ type B struct {
 	netBytes  uint64
 	// Extra metrics collected by ReportMetric.
 	extra map[string]float64
-	// Remaining iterations of Loop() to be executed in benchFunc.
+	// For Loop() to be executed in benchFunc.
+	// Loop() has its own control logic that skips the loop scaling.
 	// See issue #61515.
 	loopN int
 }

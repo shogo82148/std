@@ -118,4 +118,7 @@ type Flags struct {
 
 	// SyncHashTrieMap enables the HashTrieMap sync.Map implementation.
 	SyncHashTrieMap bool
+
+	// Synctest enables the testing/synctest package.
+	Synctest bool
 }

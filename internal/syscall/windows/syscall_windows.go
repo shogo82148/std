@@ -29,6 +29,7 @@ const (
 	ERROR_LOCK_FAILED            syscall.Errno = 167
 	ERROR_NO_TOKEN               syscall.Errno = 1008
 	ERROR_NO_UNICODE_TRANSLATION syscall.Errno = 1113
+	ERROR_CANT_ACCESS_FILE       syscall.Errno = 1920
 )
 
 const (
@@ -367,6 +368,8 @@ func (s NTStatus) Error() string
 // If this list starts getting long, we should consider generating the full set.
 const (
 	STATUS_FILE_IS_A_DIRECTORY       NTStatus = 0xC00000BA
+	STATUS_DIRECTORY_NOT_EMPTY       NTStatus = 0xC0000101
 	STATUS_NOT_A_DIRECTORY           NTStatus = 0xC0000103
+	STATUS_CANNOT_DELETE             NTStatus = 0xC0000121
 	STATUS_REPARSE_POINT_ENCOUNTERED NTStatus = 0xC000050B
 )

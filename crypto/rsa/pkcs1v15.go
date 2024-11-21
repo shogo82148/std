@@ -5,7 +5,6 @@
 package rsa
 
 import (
-	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/io"
 )
 
@@ -79,27 +78,3 @@ func DecryptPKCS1v15(random io.Reader, priv *PrivateKey, ciphertext []byte) ([]b
 //   - [1] RFC 3218, Preventing the Million Message Attack on CMS,
 //     https://www.rfc-editor.org/rfc/rfc3218.html
 func DecryptPKCS1v15SessionKey(random io.Reader, priv *PrivateKey, ciphertext []byte, key []byte) error
-
-// SignPKCS1v15 calculates the signature of hashed using
-// RSASSA-PKCS1-V1_5-SIGN from RSA PKCS #1 v1.5.  Note that hashed must
-// be the result of hashing the input message using the given hash
-// function. If hash is zero, hashed is signed directly. This isn't
-// advisable except for interoperability.
-//
-// The random parameter is legacy and ignored, and it can be nil.
-//
-// This function is deterministic. Thus, if the set of possible
-// messages is small, an attacker may be able to build a map from
-// messages to signatures and identify the signed messages. As ever,
-// signatures provide authenticity, not confidentiality.
-func SignPKCS1v15(random io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte) ([]byte, error)
-
-// VerifyPKCS1v15 verifies an RSA PKCS #1 v1.5 signature.
-// hashed is the result of hashing the input message using the given hash
-// function and sig is the signature. A valid signature is indicated by
-// returning a nil error. If hash is zero then hashed is used directly. This
-// isn't advisable except for interoperability.
-//
-// The inputs are not considered confidential, and may leak through timing side
-// channels, or if an attacker has control of part of the inputs.
-func VerifyPKCS1v15(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte) error

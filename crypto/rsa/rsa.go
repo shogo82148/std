@@ -26,9 +26,8 @@ package rsa
 
 import (
 	"github.com/shogo82148/std/crypto"
-	"github.com/shogo82148/std/crypto/internal/fips/bigmod"
+	"github.com/shogo82148/std/crypto/internal/fips140/rsa"
 	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/math/big"
 )
@@ -114,7 +113,7 @@ type PrecomputedValues struct {
 	// complexity.
 	CRTValues []CRTValue
 
-	n, p, q *bigmod.Modulus
+	fips *rsa.PrivateKey
 }
 
 // CRTValue contains the precomputed Chinese remainder theorem values.
@@ -161,26 +160,6 @@ func GenerateMultiPrimeKey(random io.Reader, nprimes int, bits int) (*PrivateKey
 // be returned if the size of the salt is too large.
 var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA key size")
 
-// EncryptOAEP encrypts the given message with RSA-OAEP.
-//
-// OAEP is parameterised by a hash function that is used as a random oracle.
-// Encryption and decryption of a given message must use the same hash function
-// and sha256.New() is a reasonable choice.
-//
-// The random parameter is used as a source of entropy to ensure that
-// encrypting the same message twice doesn't result in the same ciphertext.
-// Most applications should use [crypto/rand.Reader] as random.
-//
-// The label parameter may contain arbitrary data that will not be encrypted,
-// but which gives important context to the message. For example, if a given
-// public key is used to encrypt two types of messages then distinct label
-// values could be used to ensure that a ciphertext for one purpose cannot be
-// used for another by an attacker. If not required it can be empty.
-//
-// The message must be no longer than the length of the public modulus minus
-// twice the hash length, minus a further 2.
-func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
-
 // ErrDecryption represents a failure to decrypt a message.
 // It is deliberately vague to avoid adaptive attacks.
 var ErrDecryption = errors.New("crypto/rsa: decryption error")
@@ -192,15 +171,3 @@ var ErrVerification = errors.New("crypto/rsa: verification error")
 // Precompute performs some calculations that speed up private key operations
 // in the future.
 func (priv *PrivateKey) Precompute()
-
-// DecryptOAEP decrypts ciphertext using RSA-OAEP.
-//
-// OAEP is parameterised by a hash function that is used as a random oracle.
-// Encryption and decryption of a given message must use the same hash function
-// and sha256.New() is a reasonable choice.
-//
-// The random parameter is legacy and ignored, and it can be nil.
-//
-// The label parameter must match the value given when encrypting. See
-// [EncryptOAEP] for details.
-func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)

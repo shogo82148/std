@@ -969,6 +969,13 @@ const (
 	OpAMD64SHRXLloadidx8
 	OpAMD64SHRXQloadidx1
 	OpAMD64SHRXQloadidx8
+	OpAMD64PUNPCKLBW
+	OpAMD64PSHUFLW
+	OpAMD64PSHUFBbroadcast
+	OpAMD64VPBROADCASTB
+	OpAMD64PSIGNB
+	OpAMD64PCMPEQB
+	OpAMD64PMOVMSKB
 
 	OpARMADD
 	OpARMADDconst
@@ -1743,6 +1750,7 @@ const (
 	OpLOONG64LoweredAtomicStore64Variant
 	OpLOONG64LoweredAtomicExchange32
 	OpLOONG64LoweredAtomicExchange64
+	OpLOONG64LoweredAtomicExchange8Variant
 	OpLOONG64LoweredAtomicAdd32
 	OpLOONG64LoweredAtomicAdd64
 	OpLOONG64LoweredAtomicCas32
