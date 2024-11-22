@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// ExampleSortKeys demonstrates a technique for sorting a struct type using programmable sort criteria.
+// Example_sortKeys demonstrates a technique for sorting a struct type using programmable sort criteria.
 func Example_sortKeys() {
 	// Closures that order the Planet structure.
 	name := func(p1, p2 *Planet) bool {

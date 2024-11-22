@@ -533,6 +533,10 @@ type Server struct {
 
 	// Protocols is the set of protocols accepted by the server.
 	//
+	// If Protocols includes UnencryptedHTTP2, the server will accept
+	// unencrypted HTTP/2 connections. The server can serve both
+	// HTTP/1 and unencrypted HTTP/2 on the same address and port.
+	//
 	// If Protocols is nil, the default is usually HTTP/1 and HTTP/2.
 	// If TLSNextProto is non-nil and does not contain an "h2" entry,
 	// the default is HTTP/1 only.

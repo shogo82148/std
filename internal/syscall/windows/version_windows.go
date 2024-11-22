@@ -14,7 +14,7 @@ import (
 // of the current Windows OS from the RtlGetVersion API.
 func Version() (major, minor, build uint32)
 
-// SupportTCPKeepAliveInterval indicates whether TCP_KEEPIDLE is supported.
+// SupportTCPKeepAliveIdle indicates whether TCP_KEEPIDLE is supported.
 // The minimal requirement is Windows 10.0.16299.
 func SupportTCPKeepAliveIdle() bool
 

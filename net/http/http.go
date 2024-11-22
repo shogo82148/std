@@ -19,6 +19,8 @@ import (
 //     HTTP1 is supported on both unsecured TCP and secured TLS connections.
 //
 //   - HTTP2 is the HTTP/2 protcol over a TLS connection.
+//
+//   - UnencryptedHTTP2 is the HTTP/2 protocol over an unsecured TCP connection.
 type Protocols struct {
 	bits uint8
 }
@@ -34,6 +36,12 @@ func (p Protocols) HTTP2() bool
 
 // SetHTTP2 adds or removes HTTP/2 from p.
 func (p *Protocols) SetHTTP2(ok bool)
+
+// UnencryptedHTTP2 reports whether p includes unencrypted HTTP/2.
+func (p Protocols) UnencryptedHTTP2() bool
+
+// SetUnencryptedHTTP2 adds or removes unencrypted HTTP/2 from p.
+func (p *Protocols) SetUnencryptedHTTP2(ok bool)
 
 func (p Protocols) String() string
 

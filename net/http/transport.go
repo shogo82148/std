@@ -286,6 +286,9 @@ type Transport struct {
 
 	// Protocols is the set of protocols supported by the transport.
 	//
+	// If Protocols includes UnencryptedHTTP2 and does not include HTTP1,
+	// the transport will use unencrypted HTTP/2 for requests for http:// URLs.
+	//
 	// If Protocols is nil, the default is usually HTTP/1 only.
 	// If ForceAttemptHTTP2 is true, or if TLSNextProto contains an "h2" entry,
 	// the default is HTTP/1 and HTTP/2.

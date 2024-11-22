@@ -71,6 +71,8 @@ type Action struct {
 
 	TryCache func(*Builder, *Action) bool
 
+	CacheExecutable bool
+
 	// Generated files, directories.
 	Objdir   string
 	Target   string

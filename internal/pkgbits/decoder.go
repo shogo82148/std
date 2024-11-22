@@ -125,7 +125,7 @@ func (r *Decoder) Bool() bool
 // Int64 decodes and returns an int64 value from the element bitstream.
 func (r *Decoder) Int64() int64
 
-// Int64 decodes and returns a uint64 value from the element bitstream.
+// Uint64 decodes and returns a uint64 value from the element bitstream.
 func (r *Decoder) Uint64() uint64
 
 // Len decodes and returns a non-negative int value from the element bitstream.

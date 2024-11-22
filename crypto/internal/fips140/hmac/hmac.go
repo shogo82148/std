@@ -37,5 +37,5 @@ func (h *HMAC) Reset()
 // New returns a new HMAC hash using the given [fips140.Hash] type and key.
 func New[H fips140.Hash](h func() H, key []byte) *HMAC
 
-// MarkAsUsedInHKDF records that this HMAC instance is used as part of HKDF.
-func MarkAsUsedInHKDF(h *HMAC)
+// MarkAsUsedInKDF records that this HMAC instance is used as part of a KDF.
+func MarkAsUsedInKDF(h *HMAC)

@@ -151,7 +151,7 @@ var (
 	GORISCV64 = EnvOrAndChanged("GORISCV64", buildcfg.DefaultGORISCV64)
 	GOWASM    = EnvOrAndChanged("GOWASM", fmt.Sprint(buildcfg.GOWASM))
 
-	GOFIPS140, GOFIPS140Changed = EnvOrAndChanged("GOFIPS140", buildcfg.GOFIPS140)
+	GOFIPS140, GOFIPS140Changed = EnvOrAndChanged("GOFIPS140", buildcfg.DefaultGOFIPS140)
 	GOPROXY, GOPROXYChanged     = EnvOrAndChanged("GOPROXY", "")
 	GOSUMDB, GOSUMDBChanged     = EnvOrAndChanged("GOSUMDB", "")
 	GOPRIVATE                   = Getenv("GOPRIVATE")
