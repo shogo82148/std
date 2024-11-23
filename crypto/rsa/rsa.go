@@ -20,8 +20,23 @@
 // Decrypter and Signer interfaces from the crypto package.
 //
 // Operations involving private keys are implemented using constant-time
-// algorithms, except for [GenerateKey], [PrivateKey.Precompute], and
-// [PrivateKey.Validate].
+// algorithms, except for [GenerateKey] and [PrivateKey.Precompute].
+//
+// # Minimum key size
+//
+// [GenerateKey] returns an error if a key of less than 1024 bits is requested,
+// and all Sign, Verify, Encrypt, and Decrypt methods return an error if used
+// with a key smaller than 1024 bits. Such keys are insecure and should not be
+// used.
+//
+// The `rsa1024min=0` GODEBUG setting suppresses this error, but we recommend
+// doing so only in tests, if necessary. Tests can use [testing.T.Setenv] or
+// include `//go:debug rsa1024min=0` in a `_test.go` source file to set it.
+//
+// Alternatively, see the [GenerateKey (TestKey)] example for a pregenerated
+// test-only 2048-bit key.
+//
+// [GenerateKey (TestKey)]: #example-GenerateKey-TestKey
 package rsa
 
 import (
@@ -129,9 +144,14 @@ func (priv *PrivateKey) Validate() error
 
 // GenerateKey generates a random RSA private key of the given bit size.
 //
+// If bits is less than 1024, [GenerateKey] returns an error. See the "[Minimum
+// key size]" section for further details.
+//
 // Most applications should use [crypto/rand.Reader] as rand. Note that the
 // returned key does not depend deterministically on the bytes read from rand,
 // and may change between calls and/or between versions.
+//
+// [Minimum key size]: #hdr-Minimum_key_size
 func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 
 // GenerateMultiPrimeKey generates a multi-prime RSA keypair of the given bit

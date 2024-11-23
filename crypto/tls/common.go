@@ -40,10 +40,11 @@ func VersionName(version uint16) string
 type CurveID uint16
 
 const (
-	CurveP256 CurveID = 23
-	CurveP384 CurveID = 24
-	CurveP521 CurveID = 25
-	X25519    CurveID = 29
+	CurveP256      CurveID = 23
+	CurveP384      CurveID = 24
+	CurveP521      CurveID = 25
+	X25519         CurveID = 29
+	X25519MLKEM768 CurveID = 4588
 )
 
 // ConnectionState records basic TLS details about the connection.
@@ -217,9 +218,12 @@ type ClientHelloInfo struct {
 	// client is using SNI (see RFC 4366, Section 3.1).
 	ServerName string
 
-	// SupportedCurves lists the elliptic curves supported by the client.
-	// SupportedCurves is set only if the Supported Elliptic Curves
-	// Extension is being used (see RFC 4492, Section 5.1.1).
+	// SupportedCurves lists the key exchange mechanisms supported by the
+	// client. It was renamed to "supported groups" in TLS 1.3, see RFC 8446,
+	// Section 4.2.7 and [CurveID].
+	//
+	// SupportedCurves may be nil in TLS 1.2 and lower if the Supported Elliptic
+	// Curves Extension is not being used (see RFC 4492, Section 5.1.1).
 	SupportedCurves []CurveID
 
 	// SupportedPoints lists the point formats supported by the client.
@@ -555,14 +559,15 @@ type Config struct {
 	// which is currently TLS 1.3.
 	MaxVersion uint16
 
-	// CurvePreferences contains the elliptic curves that will be used in
-	// an ECDHE handshake, in preference order. If empty, the default will
-	// be used. The client will use the first preference as the type for
-	// its key share in TLS 1.3. This may change in the future.
+	// CurvePreferences contains a set of supported key exchange mechanisms.
+	// The name refers to elliptic curves for legacy reasons, see [CurveID].
+	// The order of the list is ignored, and key exchange mechanisms are chosen
+	// from this list using an internal preference order. If empty, the default
+	// will be used.
 	//
-	// From Go 1.23, the default includes the X25519Kyber768Draft00 hybrid
+	// From Go 1.24, the default includes the [X25519MLKEM768] hybrid
 	// post-quantum key exchange. To disable it, set CurvePreferences explicitly
-	// or use the GODEBUG=tlskyber=0 environment variable.
+	// or use the GODEBUG=tlsmlkem=0 environment variable.
 	CurvePreferences []CurveID
 
 	// DynamicRecordSizingDisabled disables adaptive sizing of TLS records.

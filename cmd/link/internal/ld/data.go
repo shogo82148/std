@@ -34,6 +34,7 @@ package ld
 import (
 	"github.com/shogo82148/std/cmd/internal/gcprog"
 	"github.com/shogo82148/std/cmd/link/internal/loader"
+	"github.com/shogo82148/std/cmd/link/internal/sym"
 )
 
 // FoldSubSymbolOffset computes the offset of symbol s to its top-level outer
@@ -72,4 +73,4 @@ func (p *GCProg) AddSym(s loader.Sym)
 func (p *GCProg) AddType(off int64, typ loader.Sym)
 
 // add a trampoline with symbol s (to be laid down after the current function)
-func (ctxt *Link) AddTramp(s *loader.SymbolBuilder)
+func (ctxt *Link) AddTramp(s *loader.SymbolBuilder, typ sym.SymKind)

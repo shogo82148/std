@@ -38,6 +38,11 @@ func (x *Nat) SetBytes(b []byte, m *Modulus) (*Nat, error)
 // The output will be resized to the size of m and overwritten.
 func (x *Nat) SetOverflowingBytes(b []byte, m *Modulus) (*Nat, error)
 
+// SetUint assigns x = y, and returns an error if y >= m.
+//
+// The output will be resized to the size of m and overwritten.
+func (x *Nat) SetUint(y uint, m *Modulus) (*Nat, error)
+
 // Equal returns 1 if x == y, and 0 otherwise.
 //
 // Both operands must have the same announced length.
@@ -48,10 +53,8 @@ func (x *Nat) IsZero() choice
 
 // Modulus is used for modular arithmetic, precomputing relevant constants.
 //
-// Moduli are assumed to be odd numbers. Moduli can also leak the exact
-// number of bits needed to store their value, and are stored without padding.
-//
-// Their actual value is still kept secret.
+// A Modulus can leak the exact number of bits needed to store its value
+// and is stored without padding. Its actual value is still kept secret.
 type Modulus struct {
 	// The underlying natural number for this modulus.
 	//
@@ -59,14 +62,17 @@ type Modulus struct {
 	// other natural number being used.
 	nat     *Nat
 	leading int
-	m0inv   uint
-	rr      *Nat
+
+	// If m is even, the following fields are not set.
+	odd   bool
+	m0inv uint
+	rr    *Nat
 }
 
 // NewModulus creates a new Modulus from a slice of big-endian bytes.
 //
-// The value must be odd. The number of significant bits (and nothing else) is
-// leaked through timing side-channels.
+// The number of significant bits and whether the modulus is even is leaked
+// through timing side-channels.
 func NewModulus(b []byte) (*Modulus, error)
 
 // Size returns the size of m in bytes.
@@ -112,10 +118,14 @@ func (x *Nat) Mul(y *Nat, m *Modulus) *Nat
 //
 // The exponent e is represented in big-endian order. The output will be resized
 // to the size of m and overwritten. x must already be reduced modulo m.
+//
+// m must be odd, or Exp will panic.
 func (out *Nat) Exp(x *Nat, e []byte, m *Modulus) *Nat
 
 // ExpShortVarTime calculates out = x^e mod m.
 //
 // The output will be resized to the size of m and overwritten. x must already
 // be reduced modulo m. This leaks the exponent through timing side-channels.
+//
+// m must be odd, or ExpShortVarTime will panic.
 func (out *Nat) ExpShortVarTime(x *Nat, e uint, m *Modulus) *Nat

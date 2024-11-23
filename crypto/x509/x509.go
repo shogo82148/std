@@ -22,6 +22,7 @@ package x509
 
 import (
 	"github.com/shogo82148/std/crypto"
+
 	"github.com/shogo82148/std/crypto/x509/pkix"
 	"github.com/shogo82148/std/encoding/asn1"
 	"github.com/shogo82148/std/errors"
@@ -231,11 +232,89 @@ type Certificate struct {
 	// cannot be represented by asn1.ObjectIdentifier, it will not be included in
 	// PolicyIdentifiers, but will be present in Policies, which contains all parsed
 	// policy OIDs.
+	// See CreateCertificate for context about how this field and the Policies field
+	// interact.
 	PolicyIdentifiers []asn1.ObjectIdentifier
 
 	// Policies contains all policy identifiers included in the certificate.
+	// See CreateCertificate for context about how this field and the PolicyIdentifiers field
+	// interact.
 	// In Go 1.22, encoding/gob cannot handle and ignores this field.
 	Policies []OID
+
+	// InhibitAnyPolicy and InhibitAnyPolicyZero indicate the presence and value
+	// of the inhibitAnyPolicy extension.
+	//
+	// The value of InhibitAnyPolicy indicates the number of additional
+	// certificates in the path after this certificate that may use the
+	// anyPolicy policy OID to indicate a match with any other policy.
+	//
+	// When parsing a certificate, a positive non-zero InhibitAnyPolicy means
+	// that the field was specified, -1 means it was unset, and
+	// InhibitAnyPolicyZero being true mean that the field was explicitly set to
+	// zero. The case of InhibitAnyPolicy==0 with InhibitAnyPolicyZero==false
+	// should be treated equivalent to -1 (unset).
+	InhibitAnyPolicy int
+	// InhibitAnyPolicyZero indicates that InhibitAnyPolicy==0 should be
+	// interpreted as an actual maximum path length of zero. Otherwise, that
+	// combination is interpreted as InhibitAnyPolicy not being set.
+	InhibitAnyPolicyZero bool
+
+	// InhibitPolicyMapping and InhibitPolicyMappingZero indicate the presence
+	// and value of the inhibitPolicyMapping field of the policyConstraints
+	// extension.
+	//
+	// The value of InhibitPolicyMapping indicates the number of additional
+	// certificates in the path after this certificate that may use policy
+	// mapping.
+	//
+	// When parsing a certificate, a positive non-zero InhibitPolicyMapping
+	// means that the field was specified, -1 means it was unset, and
+	// InhibitPolicyMappingZero being true mean that the field was explicitly
+	// set to zero. The case of InhibitPolicyMapping==0 with
+	// InhibitPolicyMappingZero==false should be treated equivalent to -1
+	// (unset).
+	InhibitPolicyMapping int
+	// InhibitPolicyMappingZero indicates that InhibitPolicyMapping==0 should be
+	// interpreted as an actual maximum path length of zero. Otherwise, that
+	// combination is interpreted as InhibitAnyPolicy not being set.
+	InhibitPolicyMappingZero bool
+
+	// RequireExplicitPolicy and RequireExplicitPolicyZero indicate the presence
+	// and value of the requireExplicitPolicy field of the policyConstraints
+	// extension.
+	//
+	// The value of RequireExplicitPolicy indicates the number of additional
+	// certificates in the path after this certificate before an explicit policy
+	// is required for the rest of the path. When an explicit policy is required,
+	// each subsequent certificate in the path must contain a required policy OID,
+	// or a policy OID which has been declared as equivalent through the policy
+	// mapping extension.
+	//
+	// When parsing a certificate, a positive non-zero RequireExplicitPolicy
+	// means that the field was specified, -1 means it was unset, and
+	// RequireExplicitPolicyZero being true mean that the field was explicitly
+	// set to zero. The case of RequireExplicitPolicy==0 with
+	// RequireExplicitPolicyZero==false should be treated equivalent to -1
+	// (unset).
+	RequireExplicitPolicy int
+	// RequireExplicitPolicyZero indicates that RequireExplicitPolicy==0 should be
+	// interpreted as an actual maximum path length of zero. Otherwise, that
+	// combination is interpreted as InhibitAnyPolicy not being set.
+	RequireExplicitPolicyZero bool
+
+	// PolicyMappings contains a list of policy mappings included in the certificate.
+	PolicyMappings []PolicyMapping
+}
+
+// PolicyMapping represents a policy mapping entry in the policyMappings extension.
+type PolicyMapping struct {
+	// IssuerDomainPolicy contains a policy OID the issuing certificate considers
+	// equivalent to SubjectDomainPolicy in the subject certificate.
+	IssuerDomainPolicy OID
+	// SubjectDomainPolicy contains a OID the issuing certificate considers
+	// equivalent to IssuerDomainPolicy in the subject certificate.
+	SubjectDomainPolicy OID
 }
 
 // ErrUnsupportedAlgorithm results from attempting to perform an operation that
@@ -335,10 +414,13 @@ func (h UnhandledCriticalExtension) Error() string
 // If SubjectKeyId from template is empty and the template is a CA, SubjectKeyId
 // will be generated from the hash of the public key.
 //
-// The PolicyIdentifier and Policies fields are both used to marshal certificate
-// policy OIDs. By default, only the PolicyIdentifier is marshaled, but if the
-// GODEBUG setting "x509usepolicies" has the value "1", the Policies field will
-// be marshaled instead of the PolicyIdentifier field. The Policies field can
+// If template.SerialNumber is nil, a serial number will be generated which
+// conforms to RFC 5280, Section 4.1.2.2 using entropy from rand.
+//
+// The PolicyIdentifier and Policies fields can both be used to marshal certificate
+// policy OIDs. By default, only the Policies is marshaled, but if the
+// GODEBUG setting "x509usepolicies" has the value "0", the PolicyIdentifiers field will
+// be marshaled instead of the Policies field. This changed in Go 1.24. The Policies field can
 // be used to marshal policy OIDs which have components that are larger than 31
 // bits.
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)

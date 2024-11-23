@@ -6,10 +6,15 @@
 
 package js
 
+import (
+	"github.com/shogo82148/std/internal/synctest"
+)
+
 // Func is a wrapped Go function to be called by JavaScript.
 type Func struct {
 	Value
-	id    uint32
+	bubble *synctest.Bubble
+	id     uint32
 }
 
 // FuncOf returns a function to be used by JavaScript.

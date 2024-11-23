@@ -45,6 +45,8 @@ const (
 	// CANotAuthorizedForExtKeyUsage results when an intermediate or root
 	// certificate does not permit a requested extended key usage.
 	CANotAuthorizedForExtKeyUsage
+	// NoValidChains results when there are no valid chains to return.
+	NoValidChains
 )
 
 // CertificateInvalidError results when an odd error occurs. Users of this
@@ -117,6 +119,23 @@ type VerifyOptions struct {
 	// certificates from consuming excessive amounts of CPU time when
 	// validating. It does not apply to the platform verifier.
 	MaxConstraintComparisions int
+
+	// CertificatePolicies specifies which certificate policy OIDs are
+	// acceptable during policy validation. An empty CertificatePolices
+	// field implies any valid policy is acceptable.
+	CertificatePolicies []OID
+
+	// inhibitPolicyMapping indicates if policy mapping should be allowed
+	// during path validation.
+	inhibitPolicyMapping bool
+
+	// requireExplicitPolicy indidicates if explicit policies must be present
+	// for each certificate being validated.
+	requireExplicitPolicy bool
+
+	// inhibitAnyPolicy indicates if the anyPolicy policy should be
+	// processed if present in a certificate being validated.
+	inhibitAnyPolicy bool
 }
 
 // Verify attempts to verify c by building one or more chains from c to a

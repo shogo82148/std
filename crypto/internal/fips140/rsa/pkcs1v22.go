@@ -27,7 +27,7 @@ func VerifyPSSWithSaltLength(pub *PublicKey, hash fips140.Hash, digest []byte, s
 // EncryptOAEP encrypts the given message with RSAES-OAEP.
 //
 // In FIPS mode, random is ignored and can be nil.
-func EncryptOAEP(hash fips140.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
+func EncryptOAEP(hash, mgfHash fips140.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
 
 // DecryptOAEP decrypts ciphertext using RSAES-OAEP.
 func DecryptOAEP(hash, mgfHash fips140.Hash, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)

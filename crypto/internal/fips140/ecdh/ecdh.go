@@ -5,57 +5,57 @@
 package ecdh
 
 import (
+	"github.com/shogo82148/std/crypto/internal/fips140/nistec"
 	"github.com/shogo82148/std/io"
 )
 
-// GenerateKeyP224 generates a random P-224 private key for ECDH.
+type PrivateKey struct {
+	pub PublicKey
+	d   []byte
+}
+
+func (priv *PrivateKey) Bytes() []byte
+
+func (priv *PrivateKey) PublicKey() *PublicKey
+
+type PublicKey struct {
+	curve curveID
+	q     []byte
+}
+
+func (pub *PublicKey) Bytes() []byte
+
+type Curve[P Point[P]] struct {
+	curve    curveID
+	newPoint func() P
+	N        []byte
+}
+
+// Point is a generic constraint for the [nistec] Point types.
+type Point[P any] interface {
+	*nistec.P224Point | *nistec.P256Point | *nistec.P384Point | *nistec.P521Point
+	Bytes() []byte
+	BytesX() ([]byte, error)
+	SetBytes([]byte) (P, error)
+	ScalarMult(P, []byte) (P, error)
+	ScalarBaseMult([]byte) (P, error)
+}
+
+func P224() *Curve[*nistec.P224Point]
+
+func P256() *Curve[*nistec.P256Point]
+
+func P384() *Curve[*nistec.P384Point]
+
+func P521() *Curve[*nistec.P521Point]
+
+// GenerateKey generates a new ECDSA private key pair for the specified curve.
 //
-// If FIPS mode is disabled, privateKey is generated from rand. If FIPS mode is
-// enabled, rand is ignored and the key pair is generated using the approved
-// DRBG (and the function runs considerably slower).
-func GenerateKeyP224(rand io.Reader) (privateKey, publicKey []byte, err error)
+// In FIPS mode, rand is ignored.
+func GenerateKey[P Point[P]](c *Curve[P], rand io.Reader) (*PrivateKey, error)
 
-// GenerateKeyP256 generates a random P-256 private key for ECDH.
-//
-// If FIPS mode is disabled, privateKey is generated from rand. If FIPS mode is
-// enabled, rand is ignored and the key pair is generated using the approved
-// DRBG (and the function runs considerably slower).
-func GenerateKeyP256(rand io.Reader) (privateKey, publicKey []byte, err error)
+func NewPrivateKey[P Point[P]](c *Curve[P], key []byte) (*PrivateKey, error)
 
-// GenerateKeyP384 generates a random P-384 private key for ECDH.
-//
-// If FIPS mode is disabled, privateKey is generated from rand. If FIPS mode is
-// enabled, rand is ignored and the key pair is generated using the approved
-// DRBG (and the function runs considerably slower).
-func GenerateKeyP384(rand io.Reader) (privateKey, publicKey []byte, err error)
+func NewPublicKey[P Point[P]](c *Curve[P], key []byte) (*PublicKey, error)
 
-// GenerateKeyP521 generates a random P-521 private key for ECDH.
-//
-// If FIPS mode is disabled, privateKey is generated from rand. If FIPS mode is
-// enabled, rand is ignored and the key pair is generated using the approved
-// DRBG (and the function runs considerably slower).
-func GenerateKeyP521(rand io.Reader) (privateKey, publicKey []byte, err error)
-
-func ImportKeyP224(privateKey []byte) (publicKey []byte, err error)
-
-func ImportKeyP256(privateKey []byte) (publicKey []byte, err error)
-
-func ImportKeyP384(privateKey []byte) (publicKey []byte, err error)
-
-func ImportKeyP521(privateKey []byte) (publicKey []byte, err error)
-
-func CheckPublicKeyP224(publicKey []byte) error
-
-func CheckPublicKeyP256(publicKey []byte) error
-
-func CheckPublicKeyP384(publicKey []byte) error
-
-func CheckPublicKeyP521(publicKey []byte) error
-
-func ECDHP224(privateKey, publicKey []byte) ([]byte, error)
-
-func ECDHP256(privateKey, publicKey []byte) ([]byte, error)
-
-func ECDHP384(privateKey, publicKey []byte) ([]byte, error)
-
-func ECDHP521(privateKey, publicKey []byte) ([]byte, error)
+func ECDH[P Point[P]](c *Curve[P], k *PrivateKey, peer *PublicKey) ([]byte, error)

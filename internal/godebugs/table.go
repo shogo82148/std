@@ -50,11 +50,12 @@ var All = []Info{
 	{Name: "panicnil", Package: "runtime", Changed: 21, Old: "1"},
 	{Name: "randautoseed", Package: "math/rand"},
 	{Name: "randseednop", Package: "math/rand", Changed: 24, Old: "0"},
+	{Name: "rsa1024min", Package: "crypto/rsa", Changed: 24, Old: "0"},
 	{Name: "tarinsecurepath", Package: "archive/tar"},
 	{Name: "tls10server", Package: "crypto/tls", Changed: 22, Old: "1"},
 	{Name: "tls3des", Package: "crypto/tls", Changed: 23, Old: "1"},
-	{Name: "tlskyber", Package: "crypto/tls", Changed: 23, Old: "0", Opaque: true},
 	{Name: "tlsmaxrsasize", Package: "crypto/tls"},
+	{Name: "tlsmlkem", Package: "crypto/tls", Changed: 24, Old: "0", Opaque: true},
 	{Name: "tlsrsakex", Package: "crypto/tls", Changed: 22, Old: "1"},
 	{Name: "tlsunsafeekm", Package: "crypto/tls", Changed: 22, Old: "1"},
 	{Name: "winreadlinkvolume", Package: "os", Changed: 22, Old: "0"},
@@ -62,7 +63,7 @@ var All = []Info{
 	{Name: "x509keypairleaf", Package: "crypto/tls", Changed: 23, Old: "0"},
 	{Name: "x509negativeserial", Package: "crypto/x509", Changed: 23, Old: "1"},
 	{Name: "x509usefallbackroots", Package: "crypto/x509"},
-	{Name: "x509usepolicies", Package: "crypto/x509"},
+	{Name: "x509usepolicies", Package: "crypto/x509", Changed: 24, Old: "0"},
 	{Name: "zipinsecurepath", Package: "archive/zip"},
 }
 
