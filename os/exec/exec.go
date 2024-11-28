@@ -437,7 +437,9 @@ func (c *Cmd) Wait() error
 
 // Output runs the command and returns its standard output.
 // Any returned error will usually be of type [*ExitError].
-// If c.Stderr was nil, Output populates [ExitError.Stderr].
+// If c.Stderr was nil and the returned error is of type
+// [*ExitError], Output populates the Stderr field of the
+// returned error.
 func (c *Cmd) Output() ([]byte, error)
 
 // CombinedOutput runs the command and returns its combined standard
