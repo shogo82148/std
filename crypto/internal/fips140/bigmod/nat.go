@@ -22,7 +22,7 @@ func NewNat() *Nat
 // Bytes returns x as a zero-extended big-endian byte slice. The size of the
 // slice will match the size of m.
 //
-// x must have the same size as m and it must be reduced modulo m.
+// x must have the same size as m and it must be less than or equal to m.
 func (x *Nat) Bytes(m *Modulus) []byte
 
 // SetBytes assigns x = b, where b is a slice of big-endian bytes.
@@ -38,10 +38,10 @@ func (x *Nat) SetBytes(b []byte, m *Modulus) (*Nat, error)
 // The output will be resized to the size of m and overwritten.
 func (x *Nat) SetOverflowingBytes(b []byte, m *Modulus) (*Nat, error)
 
-// SetUint assigns x = y, and returns an error if y >= m.
+// SetUint assigns x = y.
 //
-// The output will be resized to the size of m and overwritten.
-func (x *Nat) SetUint(y uint, m *Modulus) (*Nat, error)
+// The output will be resized to a single limb and overwritten.
+func (x *Nat) SetUint(y uint) *Nat
 
 // Equal returns 1 if x == y, and 0 otherwise.
 //
@@ -50,6 +50,26 @@ func (x *Nat) Equal(y *Nat) choice
 
 // IsZero returns 1 if x == 0, and 0 otherwise.
 func (x *Nat) IsZero() choice
+
+// IsOne returns 1 if x == 1, and 0 otherwise.
+func (x *Nat) IsOne() choice
+
+// IsMinusOne returns 1 if x == -1 mod m, and 0 otherwise.
+//
+// The length of x must be the same as the modulus. x must already be reduced
+// modulo m.
+func (x *Nat) IsMinusOne(m *Modulus) choice
+
+// IsOdd returns 1 if x is odd, and 0 otherwise.
+func (x *Nat) IsOdd() choice
+
+// TrailingZeroBitsVarTime returns the number of trailing zero bits in x.
+func (x *Nat) TrailingZeroBitsVarTime() uint
+
+// ShiftRightVarTime sets x = x >> n.
+//
+// The announced length of x is unchanged.
+func (x *Nat) ShiftRightVarTime(n uint) *Nat
 
 // Modulus is used for modular arithmetic, precomputing relevant constants.
 //
@@ -69,11 +89,16 @@ type Modulus struct {
 	rr    *Nat
 }
 
-// NewModulus creates a new Modulus from a slice of big-endian bytes.
+// NewModulus creates a new Modulus from a slice of big-endian bytes. The
+// modulus must be greater than one.
 //
 // The number of significant bits and whether the modulus is even is leaked
 // through timing side-channels.
 func NewModulus(b []byte) (*Modulus, error)
+
+// NewModulusProduct creates a new Modulus from the product of two numbers
+// represented as big-endian byte slices. The result must be greater than one.
+func NewModulusProduct(a, b []byte) (*Modulus, error)
 
 // Size returns the size of m in bytes.
 func (m *Modulus) Size() int
@@ -81,7 +106,7 @@ func (m *Modulus) Size() int
 // BitLen returns the size of m in bits.
 func (m *Modulus) BitLen() int
 
-// Nat returns m as a Nat. The return value must not be written to.
+// Nat returns m as a Nat.
 func (m *Modulus) Nat() *Nat
 
 // Mod calculates out = x mod m.
@@ -101,6 +126,11 @@ func (x *Nat) ExpandFor(m *Modulus) *Nat
 // The length of both operands must be the same as the modulus. Both operands
 // must already be reduced modulo m.
 func (x *Nat) Sub(y *Nat, m *Modulus) *Nat
+
+// SubOne computes x = x - 1 mod m.
+//
+// The length of x must be the same as the modulus.
+func (x *Nat) SubOne(m *Modulus) *Nat
 
 // Add computes x = x + y mod m.
 //
@@ -129,3 +159,11 @@ func (out *Nat) Exp(x *Nat, e []byte, m *Modulus) *Nat
 //
 // m must be odd, or ExpShortVarTime will panic.
 func (out *Nat) ExpShortVarTime(x *Nat, e uint, m *Modulus) *Nat
+
+// InverseVarTime calculates x = a⁻¹ mod m and returns (x, true) if a is
+// invertible. Otherwise, InverseVarTime returns (x, false) and x is not
+// modified.
+//
+// a must be reduced modulo m, but doesn't need to have the same size. The
+// output will be resized to the size of m and overwritten.
+func (x *Nat) InverseVarTime(a *Nat, m *Modulus) (*Nat, bool)

@@ -20,7 +20,8 @@
 // Decrypter and Signer interfaces from the crypto package.
 //
 // Operations involving private keys are implemented using constant-time
-// algorithms, except for [GenerateKey] and [PrivateKey.Precompute].
+// algorithms, except for [GenerateKey] and for some operations involving
+// deprecated multi-prime keys.
 //
 // # Minimum key size
 //
@@ -140,6 +141,8 @@ type CRTValue struct {
 
 // Validate performs basic sanity checks on the key.
 // It returns nil if the key is valid, or else an error describing a problem.
+//
+// It runs faster on valid keys if run after [Precompute].
 func (priv *PrivateKey) Validate() error
 
 // GenerateKey generates a random RSA private key of the given bit size.
@@ -189,5 +192,5 @@ var ErrDecryption = errors.New("crypto/rsa: decryption error")
 var ErrVerification = errors.New("crypto/rsa: verification error")
 
 // Precompute performs some calculations that speed up private key operations
-// in the future.
+// in the future. It is safe to run on non-validated private keys.
 func (priv *PrivateKey) Precompute()

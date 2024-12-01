@@ -40,15 +40,22 @@ func (priv *PrivateKey) PublicKey() *PublicKey
 //
 // All values are in big-endian byte slice format, and may have leading zeros
 // or be shorter if leading zeroes were trimmed.
-//
-// N, e, d, P, and Q are required. dP, dQ, and qInv can be nil and will be
-// precomputed if missing.
-func NewPrivateKey(N []byte, e int, d, P, Q, dP, dQ, qInv []byte) (*PrivateKey, error)
+func NewPrivateKey(N []byte, e int, d, P, Q []byte) (*PrivateKey, error)
+
+// NewPrivateKeyWithPrecomputation creates a new RSA private key from the given
+// parameters, which include precomputed CRT values.
+func NewPrivateKeyWithPrecomputation(N []byte, e int, d, P, Q, dP, dQ, qInv []byte) (*PrivateKey, error)
 
 // NewPrivateKeyWithoutCRT creates a new RSA private key from the given parameters.
 //
 // This is meant for deprecated multi-prime keys, and is not FIPS 140 compliant.
 func NewPrivateKeyWithoutCRT(N []byte, e int, d []byte) (*PrivateKey, error)
+
+// Export returns the key parameters in big-endian byte slice format.
+//
+// P, Q, dP, dQ, and qInv may be nil if the key was created with
+// NewPrivateKeyWithoutCRT.
+func (priv *PrivateKey) Export() (N []byte, e int, d, P, Q, dP, dQ, qInv []byte)
 
 // Encrypt performs the RSA public key operation.
 func Encrypt(pub *PublicKey, plaintext []byte) ([]byte, error)
