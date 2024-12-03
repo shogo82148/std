@@ -32,6 +32,9 @@ type PrivateKey struct {
 	dP   []byte
 	dQ   []byte
 	qInv *bigmod.Nat
+	// fipsApproved is false if this key does not comply with FIPS 186-5 or
+	// SP 800-56B Rev. 2.
+	fipsApproved bool
 }
 
 func (priv *PrivateKey) PublicKey() *PublicKey

@@ -71,6 +71,12 @@ func (x *Nat) TrailingZeroBitsVarTime() uint
 // The announced length of x is unchanged.
 func (x *Nat) ShiftRightVarTime(n uint) *Nat
 
+// BitLenVarTime returns the actual size of x in bits.
+//
+// The actual size of x (but nothing more) leaks through timing side-channels.
+// Note that this is ordinarily secret, as opposed to the announced size of x.
+func (x *Nat) BitLenVarTime() int
+
 // Modulus is used for modular arithmetic, precomputing relevant constants.
 //
 // A Modulus can leak the exact number of bits needed to store its value
@@ -80,8 +86,7 @@ type Modulus struct {
 	//
 	// This will be stored without any padding, and shouldn't alias with any
 	// other natural number being used.
-	nat     *Nat
-	leading int
+	nat *Nat
 
 	// If m is even, the following fields are not set.
 	odd   bool
