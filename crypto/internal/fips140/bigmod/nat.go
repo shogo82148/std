@@ -46,21 +46,31 @@ func (x *Nat) SetUint(y uint) *Nat
 // Equal returns 1 if x == y, and 0 otherwise.
 //
 // Both operands must have the same announced length.
+//
+//go:norace
 func (x *Nat) Equal(y *Nat) choice
 
 // IsZero returns 1 if x == 0, and 0 otherwise.
+//
+//go:norace
 func (x *Nat) IsZero() choice
 
 // IsOne returns 1 if x == 1, and 0 otherwise.
+//
+//go:norace
 func (x *Nat) IsOne() choice
 
 // IsMinusOne returns 1 if x == -1 mod m, and 0 otherwise.
 //
 // The length of x must be the same as the modulus. x must already be reduced
 // modulo m.
+//
+//go:norace
 func (x *Nat) IsMinusOne(m *Modulus) choice
 
 // IsOdd returns 1 if x is odd, and 0 otherwise.
+//
+//go:norace
 func (x *Nat) IsOdd() choice
 
 // TrailingZeroBitsVarTime returns the number of trailing zero bits in x.
@@ -69,6 +79,8 @@ func (x *Nat) TrailingZeroBitsVarTime() uint
 // ShiftRightVarTime sets x = x >> n.
 //
 // The announced length of x is unchanged.
+//
+//go:norace
 func (x *Nat) ShiftRightVarTime(n uint) *Nat
 
 // BitLenVarTime returns the actual size of x in bits.
