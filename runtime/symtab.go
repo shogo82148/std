@@ -93,16 +93,6 @@ type Func struct {
 // If pc represents multiple functions because of inlining, it returns
 // the *Func describing the innermost function, but with an entry of
 // the outermost function.
-//
-// For completely unclear reasons, even though they can import runtime,
-// some widely used packages access this using linkname.
-// Notable members of the hall of shame include:
-//   - gitee.com/quant1x/gox
-//
-// Do not remove or change the type signature.
-// See go.dev/issue/67401.
-//
-//go:linkname FuncForPC
 func FuncForPC(pc uintptr) *Func
 
 // Name returns the name of the function.
