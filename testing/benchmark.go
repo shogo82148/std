@@ -103,6 +103,22 @@ func (b *B) ReportMetric(n float64, unit string)
 // A benchmark should either use Loop or contain an explicit loop from 0 to b.N, but not both.
 // After the benchmark finishes, b.N will contain the total number of calls to op, so the benchmark
 // may use b.N to compute other average metrics.
+//
+// The parameters and results of function calls inside the body of "for b.Loop() {...}" are guaranteed
+// not to be optimized away.
+// Also, the local loop scaling for b.Loop ensures the benchmark function containing the loop will only
+// be executed once, i.e. for such construct:
+//
+//	testing.Benchmark(func(b *testing.B) {
+//			...(setup)
+//			for b.Loop() {
+//				...(benchmark logic)
+//			}
+//			...(clean-up)
+//	}
+//
+// The ...(setup) and ...(clean-up) logic will only be executed once.
+// Also benchtime=Nx (N>1) will result in exactly N executions instead of N+1 for b.N style loops.
 func (b *B) Loop() bool
 
 // BenchmarkResult contains the results of a benchmark run.

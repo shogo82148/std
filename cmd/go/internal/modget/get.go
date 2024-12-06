@@ -11,7 +11,7 @@ import (
 
 var CmdGet = &base.Command{
 
-	UsageLine: "go get [-t] [-u] [-v] [-tool] [build flags] [packages]",
+	UsageLine: "go get [-t] [-u] [-tool] [build flags] [packages]",
 	Short:     "add dependencies to current module and install them",
 	Long: `
 Get resolves its command-line arguments to packages at specific module versions,

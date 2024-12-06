@@ -29,6 +29,8 @@ func (x *Nat) Bytes(m *Modulus) []byte
 // SetBytes returns an error if b >= m.
 //
 // The output will be resized to the size of m and overwritten.
+//
+//go:norace
 func (x *Nat) SetBytes(b []byte, m *Modulus) (*Nat, error)
 
 // SetOverflowingBytes assigns x = b, where b is a slice of big-endian bytes.
@@ -69,8 +71,6 @@ func (x *Nat) IsOne() choice
 func (x *Nat) IsMinusOne(m *Modulus) choice
 
 // IsOdd returns 1 if x is odd, and 0 otherwise.
-//
-//go:norace
 func (x *Nat) IsOdd() choice
 
 // TrailingZeroBitsVarTime returns the number of trailing zero bits in x.
@@ -115,6 +115,8 @@ func NewModulus(b []byte) (*Modulus, error)
 
 // NewModulusProduct creates a new Modulus from the product of two numbers
 // represented as big-endian byte slices. The result must be greater than one.
+//
+//go:norace
 func NewModulusProduct(a, b []byte) (*Modulus, error)
 
 // Size returns the size of m in bytes.
@@ -131,6 +133,8 @@ func (m *Modulus) Nat() *Nat
 // This works regardless how large the value of x is.
 //
 // The output will be resized to the size of m and overwritten.
+//
+//go:norace
 func (out *Nat) Mod(x *Nat, m *Modulus) *Nat
 
 // ExpandFor ensures x has the right size to work with operations modulo m.
@@ -142,6 +146,8 @@ func (x *Nat) ExpandFor(m *Modulus) *Nat
 //
 // The length of both operands must be the same as the modulus. Both operands
 // must already be reduced modulo m.
+//
+//go:norace
 func (x *Nat) Sub(y *Nat, m *Modulus) *Nat
 
 // SubOne computes x = x - 1 mod m.
@@ -153,12 +159,16 @@ func (x *Nat) SubOne(m *Modulus) *Nat
 //
 // The length of both operands must be the same as the modulus. Both operands
 // must already be reduced modulo m.
+//
+//go:norace
 func (x *Nat) Add(y *Nat, m *Modulus) *Nat
 
 // Mul calculates x = x * y mod m.
 //
 // The length of both operands must be the same as the modulus. Both operands
 // must already be reduced modulo m.
+//
+//go:norace
 func (x *Nat) Mul(y *Nat, m *Modulus) *Nat
 
 // Exp calculates out = x^e mod m.
@@ -167,6 +177,8 @@ func (x *Nat) Mul(y *Nat, m *Modulus) *Nat
 // to the size of m and overwritten. x must already be reduced modulo m.
 //
 // m must be odd, or Exp will panic.
+//
+//go:norace
 func (out *Nat) Exp(x *Nat, e []byte, m *Modulus) *Nat
 
 // ExpShortVarTime calculates out = x^e mod m.
@@ -183,4 +195,6 @@ func (out *Nat) ExpShortVarTime(x *Nat, e uint, m *Modulus) *Nat
 //
 // a must be reduced modulo m, but doesn't need to have the same size. The
 // output will be resized to the size of m and overwritten.
+//
+//go:norace
 func (x *Nat) InverseVarTime(a *Nat, m *Modulus) (*Nat, bool)
