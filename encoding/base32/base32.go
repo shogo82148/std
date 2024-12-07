@@ -90,9 +90,12 @@ func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
 // AppendDecode appends the base32 decoded src to dst
 // and returns the extended buffer.
 // If the input is malformed, it returns the partially decoded src and an error.
+// New line characters (\r and \n) are ignored.
 func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
 
 // DecodeString returns the bytes represented by the base32 string s.
+// If the input is malformed, it returns the partially decoded data and
+// [CorruptInputError]. New line characters (\r and \n) are ignored.
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
 
 // NewDecoder constructs a new base32 stream decoder.

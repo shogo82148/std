@@ -102,9 +102,12 @@ func (e CorruptInputError) Error() string
 // AppendDecode appends the base64 decoded src to dst
 // and returns the extended buffer.
 // If the input is malformed, it returns the partially decoded src and an error.
+// New line characters (\r and \n) are ignored.
 func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
 
 // DecodeString returns the bytes represented by the base64 string s.
+// If the input is malformed, it returns the partially decoded data and
+// [CorruptInputError]. New line characters (\r and \n) are ignored.
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
 
 // Decode decodes src using the encoding enc. It writes at most
