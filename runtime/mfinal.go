@@ -16,6 +16,9 @@ package runtime
 //
 // SetFinalizer(obj, nil) clears any finalizer associated with obj.
 //
+// New Go code should consider using [AddCleanup] instead, which is much
+// less error-prone than SetFinalizer.
+//
 // The argument obj must be a pointer to an object allocated by calling
 // new, by taking the address of a composite literal, or by taking the
 // address of a local variable.
