@@ -18,16 +18,12 @@ const Size224 = 28
 // SHA256とSHA224のブロックサイズ（バイト単位）です。
 const BlockSize = 64
 
-// NewはSHA256チェックサムを計算する新しい [hash.Hash] を返します。
+// NewはSHA256チェックサムを計算する新しいhash.Hashを返します。
 // このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
-// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
-// [encoding.BinaryUnmarshaler] も実装しています。
+// [encoding.BinaryMarshaler] および [encoding.BinaryUnmarshaler] も実装しています。
 func New() hash.Hash
 
-// New224はSHA224チェックサムを計算する新しい [hash.Hash] を返します。
-// このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
-// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
-// [encoding.BinaryUnmarshaler] も実装しています。
+// New224はSHA224チェックサムを計算する新しいhash.Hashを返します。
 func New224() hash.Hash
 
 // Sum256はdataのSHA256チェックサムを返します。

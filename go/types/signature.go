@@ -56,5 +56,5 @@ func (s *Signature) Results() *Tuple
 // Variadicは、シグネチャsが可変長引数であるかどうかを報告します。
 func (s *Signature) Variadic() bool
 
-func (s *Signature) Underlying() Type
-func (s *Signature) String() string
+func (t *Signature) Underlying() Type
+func (t *Signature) String() string

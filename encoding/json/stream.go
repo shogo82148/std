@@ -29,7 +29,7 @@ type Decoder struct {
 func NewDecoder(r io.Reader) *Decoder
 
 // UseNumberを使用すると、デコーダーは数値をfloat64としてではなく、
-// [Number] としてインターフェース値にアンマーシャルします。
+// [Number] として interface{} にアンマーシャルします。
 func (dec *Decoder) UseNumber()
 
 // DisallowUnknownFieldsは、デコーダに、宛先が構造体であり、入力に宛先の

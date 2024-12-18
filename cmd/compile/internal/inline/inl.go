@@ -42,6 +42,13 @@ func PGOInlinePrologue(p *pgoir.Profile)
 // CanInlineFuncs computes whether a batch of functions are inlinable.
 func CanInlineFuncs(funcs []*ir.Func, profile *pgoir.Profile)
 
+// GarbageCollectUnreferencedHiddenClosures makes a pass over all the
+// top-level (non-hidden-closure) functions looking for nested closure
+// functions that are reachable, then sweeps through the Target.Decls
+// list and marks any non-reachable hidden closure function as dead.
+// See issues #59404 and #59638 for more context.
+func GarbageCollectUnreferencedHiddenClosures()
+
 // CanInline determines whether fn is inlineable.
 // If so, CanInline saves copies of fn.Body and fn.Dcl in fn.Inl.
 // fn and fn.Body will already have been typechecked.

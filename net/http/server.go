@@ -445,7 +445,7 @@ type Server struct {
 // Closeは、WebSocketsなどのハイジャックされた接続を閉じようとはせず（そしてそれらについては何も知りません）、試みません。
 //
 // Closeは、[Server] の基礎となるListener(s)を閉じる際に返される任意のエラーを返します。
-func (s *Server) Close() error
+func (srv *Server) Close() error
 
 // Shutdownは、アクティブな接続を中断することなく、サーバーを正常にシャットダウンします。
 // Shutdownは、まずすべてのオープンなリスナーを閉じ、次にすべてのアイドル状態の接続を閉じ、
@@ -464,12 +464,12 @@ func (s *Server) Close() error
 // [Server.RegisterOnShutdown] を参照してください。
 //
 // Shutdownを呼び出した後、サーバーを再利用することはできません。Serveなどのメソッドを呼び出すと、ErrServerClosedが返されます。
-func (s *Server) Shutdown(ctx context.Context) error
+func (srv *Server) Shutdown(ctx context.Context) error
 
 // RegisterOnShutdownは、[Server.Shutdown] 時に呼び出す関数を登録します。
 // これは、ALPNプロトコルアップグレードを受けた接続やハイジャックされた接続を優雅にシャットダウンするために使用できます。
 // この関数は、プロトコル固有の優雅なシャットダウンを開始する必要がありますが、シャットダウンが完了するのを待つ必要はありません。
-func (s *Server) RegisterOnShutdown(f func())
+func (srv *Server) RegisterOnShutdown(f func())
 
 // ConnStateは、サーバーへのクライアント接続の状態を表します。
 // これは、オプションの [Server.ConnState] フックによって使用されます。
@@ -521,19 +521,19 @@ func AllowQuerySemicolons(h Handler) Handler
 //
 // ListenAndServeは常に非nilのエラーを返します。[Server.Shutdown] または [Server.Close] の後、
 // 返されるエラーは [ErrServerClosed] です。
-func (s *Server) ListenAndServe() error
+func (srv *Server) ListenAndServe() error
 
 // ErrServerClosedは、[Server.Shutdown] または [Server.Close] の呼び出し後、[Server.Serve]、[ServeTLS]、[ListenAndServe]、および [ListenAndServeTLS] メソッドによって返されます。
 var ErrServerClosed = errors.New("http: Server closed")
 
 // Serveは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、s.Handlerを呼び出してそれに応答します。
+// サービスgoroutineはリクエストを読み取り、srv.Handlerを呼び出してそれに応答します。
 //
 // Listenerが [*tls.Conn] 接続を返し、TLS Config.NextProtosで「h2」が構成されている場合、HTTP/2サポートが有効になります。
 //
 // Serveは常に非nilのエラーを返し、lを閉じます。
 // [Server.Shutdown] または [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
-func (s *Server) Serve(l net.Listener) error
+func (srv *Server) Serve(l net.Listener) error
 
 // ServeTLSは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
 // サービスgoroutineはTLSのセットアップを実行し、リクエストを読み取り、s.Handlerを呼び出してそれに応答します。
@@ -545,11 +545,11 @@ func (s *Server) Serve(l net.Listener) error
 //
 // ServeTLSは常に非nilのエラーを返し、lを閉じます。
 // [Server.Shutdown] または [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
-func (s *Server) ServeTLS(l net.Listener, certFile, keyFile string) error
+func (srv *Server) ServeTLS(l net.Listener, certFile, keyFile string) error
 
 // SetKeepAlivesEnabledは、HTTP keep-alivesが有効かどうかを制御します。
 // デフォルトでは、keep-alivesは常に有効になっています。非常にリソースが制限された環境またはシャットダウン中のサーバーのみ、それらを無効にする必要があります。
-func (s *Server) SetKeepAlivesEnabled(v bool)
+func (srv *Server) SetKeepAlivesEnabled(v bool)
 
 // ListenAndServeは、TCPネットワークアドレスaddrでリッスンし、
 // [Serve] を呼び出して着信接続のリクエストを処理します。
@@ -565,7 +565,7 @@ func ListenAndServe(addr string, handler Handler) error
 // 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
 func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
 
-// ListenAndServeTLSは、TCPネットワークアドレスs.Addrでリッスンし、
+// ListenAndServeTLSは、TCPネットワークアドレスsrv.Addrでリッスンし、
 // [ServeTLS] を呼び出して着信TLS接続のリクエストを処理します。
 // 受け入れられた接続は、TCP keep-alivesを有効にするように構成されます。
 //
@@ -573,11 +573,11 @@ func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
 // サーバーの証明書と対応する秘密鍵が含まれるファイルを提供する必要があります。
 // 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
 //
-// s.Addrが空白の場合、":https"が使用されます。
+// srv.Addrが空白の場合、":https"が使用されます。
 //
 // ListenAndServeTLSは常に非nilのエラーを返します。[Server.Shutdown] または
 // [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
-func (s *Server) ListenAndServeTLS(certFile, keyFile string) error
+func (srv *Server) ListenAndServeTLS(certFile, keyFile string) error
 
 // TimeoutHandlerは、指定された時間制限でhを実行する [Handler] を返します。
 //

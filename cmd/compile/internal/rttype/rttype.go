@@ -23,8 +23,7 @@ var ArrayType *types.Type
 var ChanType *types.Type
 var FuncType *types.Type
 var InterfaceType *types.Type
-var OldMapType *types.Type
-var SwissMapType *types.Type
+var MapType *types.Type
 var PtrType *types.Type
 var SliceType *types.Type
 var StructType *types.Type

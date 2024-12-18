@@ -131,8 +131,6 @@ type SockaddrNetlink struct {
 	raw    RawSockaddrNetlink
 }
 
-func Accept(fd int) (nfd int, sa Sockaddr, err error)
-
 func Accept4(fd int, flags int) (nfd int, sa Sockaddr, err error)
 
 func Getsockname(fd int) (sa Sockaddr, err error)

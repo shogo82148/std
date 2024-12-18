@@ -16,7 +16,7 @@ type UDPAddr struct {
 	Zone string
 }
 
-// AddrPortは [UDPAddr] aを [netip.AddrPort] として返します。
+// AddrPortは UDPAddr a を netip.AddrPort として返します。
 //
 // もしa.Portがuint16に収まらない場合、静かに切り捨てられます。
 //
@@ -39,10 +39,10 @@ func (a *UDPAddr) String() string
 // アドレスパラメータはホスト名を使用することもできますが、これは
 // 推奨されません。なぜなら、ホスト名のIPアドレスのいずれか一つしか返さないからです。
 //
-// ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
+// ネットワークおよびアドレスパラメータの説明については、Dial 関数を参照してください。
 func ResolveUDPAddr(network, address string) (*UDPAddr, error)
 
-// UDPAddrFromAddrPortはaddrを [UDPAddr] として返します。
+// UDPAddrFromAddrPortはaddrを UDPAddr として返します。
 // もしaddr.IsValid()がfalseであれば、返されるUDPAddrにはnilのIPフィールドが含まれ、
 // アドレスファミリーに依存しない未指定のアドレスを示します。
 func UDPAddrFromAddrPort(addr netip.AddrPort) *UDPAddr
@@ -53,13 +53,13 @@ type UDPConn struct {
 }
 
 // SyscallConnは生のネットワーク接続を返します。
-// これは [syscall.Conn] インターフェースを実装しています。
+// これは syscall.Conn インターフェースを実装しています。
 func (c *UDPConn) SyscallConn() (syscall.RawConn, error)
 
-// ReadFromUDPは [UDPConn.ReadFrom] と同様の動作をしますが、UDPAddrを返します。
+// ReadFromUDPは ReadFrom と同様の動作をしますが、UDPAddrを返します。
 func (c *UDPConn) ReadFromUDP(b []byte) (n int, addr *UDPAddr, err error)
 
-// ReadFrom は [PacketConn] の ReadFrom メソッドを実装します。
+// ReadFrom は PacketConn の ReadFrom メソッドを実装します。
 func (c *UDPConn) ReadFrom(b []byte) (int, Addr, error)
 
 // ReadFromUDPAddrPortはReadFromと同様の機能を提供しますが、[netip.AddrPort] を返します。
@@ -71,7 +71,7 @@ func (c *UDPConn) ReadFromUDPAddrPort(b []byte) (n int, addr netip.AddrPort, err
 
 // ReadMsgUDPは、cからメッセージを読み込み、ペイロードをbにコピーし、サイドバンドデータをoobにコピーします。bにコピーされたバイト数、oobにコピーされたバイト数、メッセージに設定されたフラグ、およびメッセージのソースアドレスを返します。
 //
-// パッケージ [golang.org/x/net/ipv4] および [golang.org/x/net/ipv6] は、oob内のIPレベルのソケットオプションを操作するために使用できます。
+// パッケージ golang.org/x/net/ipv4 および golang.org/x/net/ipv6 は、oob内のIPレベルのソケットオプションを操作するために使用できます。
 func (c *UDPConn) ReadMsgUDP(b, oob []byte) (n, oobn, flags int, addr *UDPAddr, err error)
 
 // ReadMsgUDPAddrPortは [UDPConn.WriteTo] と同様に動作しますが、[UDPAddr] の代わりに [netip.AddrPort] を返します。
@@ -92,11 +92,11 @@ func (c *UDPConn) WriteTo(b []byte, addr Addr) (int, error)
 // フラグデータはoobからコピーされます。ペイロードとフラグデータの書き込まれた
 // バイト数を返します。
 //
-// パッケージ [golang.org/x/net/ipv4] および [golang.org/x/net/ipv6] を使用して、
+// パッケージ golang.org/x/net/ipv4 および golang.org/x/net/ipv6 を使用して、
 // oob内のIPレベルのソケットオプションを操作することができます。
 func (c *UDPConn) WriteMsgUDP(b, oob []byte, addr *UDPAddr) (n, oobn int, err error)
 
-// WriteMsgUDPAddrPortは [UDPConn.WriteMsgUDP] と同様に動作しますが、[UDPAddr] の代わりに [netip.AddrPort] を受け取ります。
+// WriteMsgUDPAddrPortは WriteMsgUDP と同様に動作しますが、UDPAddr の代わりに netip.AddrPort を受け取ります。
 func (c *UDPConn) WriteMsgUDPAddrPort(b, oob []byte, addr netip.AddrPort) (n, oobn int, err error)
 
 // DialUDPはUDPネットワークのために [Dial] と同様の機能を提供します。
@@ -107,19 +107,19 @@ func (c *UDPConn) WriteMsgUDPAddrPort(b, oob []byte, addr netip.AddrPort) (n, oo
 // もしraddrのIPフィールドがnilまたは未指定のIPアドレスの場合、ローカルシステムが仮定されます。
 func DialUDP(network string, laddr, raddr *UDPAddr) (*UDPConn, error)
 
-// ListenUDPは、UDPネットワークに対して [ListenPacket] と同様の機能を提供します。
+// ListenUDPは、UDPネットワークに対して ListenPacket と同様の機能を提供します。
 //
-// ネットワークはUDPネットワーク名でなければなりません。詳細については、[Dial] 関数を参照してください。
+// ネットワークはUDPネットワーク名でなければなりません。詳細については、Dial 関数を参照してください。
 //
 // laddrのIPフィールドがnilまたは未指定のIPアドレスである場合、
 // ListenUDPは、マルチキャストIPアドレスを除く、ローカルシステムのすべての利用可能なIPアドレスでリスンします。
 // laddrのPortフィールドが0の場合、ポート番号が自動的に選択されます。
 func ListenUDP(network string, laddr *UDPAddr) (*UDPConn, error)
 
-// ListenMulticastUDPは、UDPネットワークに対して [ListenPacket] と同様に動作しますが、
+// ListenMulticastUDPは、UDPネットワークに対して ListenPacket と同様に動作しますが、
 // 特定のネットワークインターフェース上のグループアドレスを受け取ります。
 //
-// ネットワークはUDPネットワーク名でなければなりません。詳細については、[Dial] 関数を参照してください。
+// ネットワークはUDPネットワーク名でなければなりません。詳細については、Dial 関数を参照してください。
 //
 // ListenMulticastUDPは、グループのマルチキャストIPアドレスを含む、
 // ローカルシステムのすべての利用可能なIPアドレスでリッスンします。
@@ -129,7 +129,7 @@ func ListenUDP(network string, laddr *UDPAddr) (*UDPConn, error)
 // gaddrのPortフィールドが0の場合、ポート番号は自動的に選択されます。
 //
 // ListenMulticastUDPは、シンプルで小さなアプリケーションのための便利な関数です。
-// 一般的な用途には、[golang.org/x/net/ipv4] および [golang.org/x/net/ipv6] パッケージがあります。
+// 一般的な用途には、golang.org/x/net/ipv4 および golang.org/x/net/ipv6 パッケージがあります。
 //
 // ListenMulticastUDPは、IPPROTO_IPの下でIP_MULTICAST_LOOPソケットオプションを0に設定し、
 // マルチキャストパケットのループバックを無効にすることに注意してください。

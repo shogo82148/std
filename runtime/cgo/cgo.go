@@ -7,7 +7,7 @@ cgoパッケージは、cgoツールによって生成されたコードの実�
 */
 package cgo
 
-import "github.com/shogo82148/std/internal/runtime/sys"
+import "github.com/shogo82148/std/runtime/internal/sys"
 
 // Incompleteは不完全なCの型のセマンティクスに特に使われます。
 type Incomplete struct {

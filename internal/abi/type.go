@@ -220,8 +220,8 @@ func (t *Type) Elem() *Type
 // StructType returns t cast to a *StructType, or nil if its tag does not match.
 func (t *Type) StructType() *StructType
 
-// MapType returns t cast to a *OldMapType or *SwissMapType, or nil if its tag does not match.
-func (t *Type) MapType() *mapType
+// MapType returns t cast to a *MapType, or nil if its tag does not match.
+func (t *Type) MapType() *MapType
 
 // ArrayType returns t cast to a *ArrayType, or nil if its tag does not match.
 func (t *Type) ArrayType() *ArrayType
@@ -252,6 +252,31 @@ func (t *Type) NumMethod() int
 
 // NumMethod returns the number of interface methods in the type's method set.
 func (t *InterfaceType) NumMethod() int
+
+type MapType struct {
+	Type
+	Key    *Type
+	Elem   *Type
+	Bucket *Type
+	// function for hashing keys (ptr to key, seed) -> hash
+	Hasher     func(unsafe.Pointer, uintptr) uintptr
+	KeySize    uint8
+	ValueSize  uint8
+	BucketSize uint16
+	Flags      uint32
+}
+
+// Note: flag values must match those used in the TMAP case
+// in ../cmd/compile/internal/reflectdata/reflect.go:writeType.
+func (mt *MapType) IndirectKey() bool
+
+func (mt *MapType) IndirectElem() bool
+
+func (mt *MapType) ReflexiveKey() bool
+
+func (mt *MapType) NeedKeyUpdate() bool
+
+func (mt *MapType) HashMightPanic() bool
 
 func (t *Type) Key() *Type
 

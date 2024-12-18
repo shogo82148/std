@@ -25,4 +25,4 @@ func (e *VCSError) Error() string
 
 func (e *VCSError) Unwrap() error
 
-func NewRepo(ctx context.Context, vcs, remote string, local bool) (Repo, error)
+func NewRepo(ctx context.Context, vcs, remote string) (Repo, error)

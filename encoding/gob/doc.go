@@ -175,13 +175,14 @@ idが割り当てられていることを確認し、次にペア(typeid, encode
 記述のgobエンコーディングで、これらの型から構築されます:
 
 	type wireType struct {
-		ArrayT           *arrayType
-		SliceT           *sliceType
-		StructT          *structType
-		MapT             *mapType
+		ArrayT           *ArrayType
+		SliceT           *SliceType
+		StructT          *StructType
+		MapT             *MapType
 		GobEncoderT      *gobEncoderType
 		BinaryMarshalerT *gobEncoderType
 		TextMarshalerT   *gobEncoderType
+
 	}
 	type arrayType struct {
 		CommonType
@@ -198,7 +199,7 @@ idが割り当てられていることを確認し、次にペア(typeid, encode
 	}
 	type structType struct {
 		CommonType
-		Field []fieldType // the fields of the struct.
+		Field []*fieldType // the fields of the struct.
 	}
 	type fieldType struct {
 		Name string // the name of the field.

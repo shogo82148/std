@@ -20,10 +20,9 @@ const Size = 16
 // MD5のブロックサイズ（バイト単位）。
 const BlockSize = 64
 
-// NewはMD5チェックサムを計算する新しい [hash.Hash] を返します。
+// NewはMD5チェックサムを計算する新しいhash.Hashを返します。
 // このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
-// [encoding.BinaryMarshaler]、[encoding.AppendBinary]、および
-// [encoding.BinaryUnmarshaler] も実装しています。
+// [encoding.BinaryMarshaler]および[encoding.BinaryUnmarshaler]も実装しています。
 func New() hash.Hash
 
 // Sum はデータのMD5ハッシュ値を返します。
