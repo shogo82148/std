@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/os"
 )
 
-func ExampleDiscardHandler() {
+func Example_discardHandler() {
 	// A slog.TextHandler can output log messages.
 	logger1 := slog.New(slog.NewTextHandler(
 		os.Stdout,

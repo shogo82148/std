@@ -14,7 +14,7 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 //export ReturnIntLong
 func ReturnIntLong() (int, C.long)

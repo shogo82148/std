@@ -13,6 +13,9 @@ import (
 const (
 	// PSSSaltLengthAuto causes the salt in a PSS signature to be as large
 	// as possible when signing, and to be auto-detected when verifying.
+	//
+	// When signing in FIPS 140-3 mode, the salt length is capped at the length
+	// of the hash function used in the signature.
 	PSSSaltLengthAuto = 0
 	// PSSSaltLengthEqualsHash causes the salt length to equal the length
 	// of the hash used in the signature.

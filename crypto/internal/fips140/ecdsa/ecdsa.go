@@ -59,12 +59,10 @@ func NewPrivateKey[P Point[P]](c *Curve[P], D, Q []byte) (*PrivateKey, error)
 func NewPublicKey[P Point[P]](c *Curve[P], Q []byte) (*PublicKey, error)
 
 // GenerateKey generates a new ECDSA private key pair for the specified curve.
-//
-// In FIPS mode, rand is ignored.
 func GenerateKey[P Point[P]](c *Curve[P], rand io.Reader) (*PrivateKey, error)
 
 // Signature is an ECDSA signature, where r and s are represented as big-endian
-// fixed-length byte slices.
+// byte slices of the same length as the curve order.
 type Signature struct {
 	R, S []byte
 }
@@ -73,8 +71,6 @@ type Signature struct {
 // the hash function H) using the private key, priv. If the hash is longer than
 // the bit-length of the private key's curve order, the hash will be truncated
 // to that length.
-//
-// The signature is randomized. If FIPS mode is enabled, rand is ignored.
 func Sign[P Point[P], H fips140.Hash](c *Curve[P], h func() H, priv *PrivateKey, rand io.Reader, hash []byte) (*Signature, error)
 
 // SignDeterministic signs a hash (which shall be the result of hashing a

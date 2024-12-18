@@ -6,7 +6,7 @@
 
 package boring
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 type PublicKeyECDH struct {
 	curve string

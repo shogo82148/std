@@ -12,6 +12,7 @@ import (
 )
 
 // Protocols is a set of HTTP protocols.
+// The zero value is an empty set of protocols.
 //
 // The supported protocols are:
 //

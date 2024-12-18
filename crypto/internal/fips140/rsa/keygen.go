@@ -9,7 +9,5 @@ import (
 )
 
 // GenerateKey generates a new RSA key pair of the given bit size.
-// bits must be at least 128.
-//
-// When operating in FIPS mode, rand is ignored.
+// bits must be at least 32.
 func GenerateKey(rand io.Reader, bits int) (*PrivateKey, error)

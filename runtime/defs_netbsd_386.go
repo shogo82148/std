@@ -12,7 +12,7 @@ GOARCH=386 go tool cgo -cdefs defs_netbsd.go defs_netbsd_386.go >defs_netbsd_386
 
 package runtime
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 const (
 	REG_GS     = C._REG_GS

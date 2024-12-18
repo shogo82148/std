@@ -12,7 +12,7 @@ import (
 	"github.com/shogo82148/std/cmd/go/internal/mvs"
 	"github.com/shogo82148/std/cmd/internal/par"
 
-	"golang.org/x/mod/module"
+	"github.com/shogo82148/std/golang.org/x/mod/module"
 )
 
 // A Requirements represents a logically-immutable set of root module requirements.

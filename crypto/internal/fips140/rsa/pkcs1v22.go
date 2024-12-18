@@ -14,8 +14,6 @@ import (
 func PSSMaxSaltLength(pub *PublicKey, hash fips140.Hash) (int, error)
 
 // SignPSS calculates the signature of hashed using RSASSA-PSS.
-//
-// In FIPS mode, rand is ignored and can be nil.
 func SignPSS(rand io.Reader, priv *PrivateKey, hash fips140.Hash, hashed []byte, saltLength int) ([]byte, error)
 
 // VerifyPSS verifies sig with RSASSA-PSS automatically detecting the salt length.
@@ -25,8 +23,6 @@ func VerifyPSS(pub *PublicKey, hash fips140.Hash, digest []byte, sig []byte) err
 func VerifyPSSWithSaltLength(pub *PublicKey, hash fips140.Hash, digest []byte, sig []byte, saltLength int) error
 
 // EncryptOAEP encrypts the given message with RSAES-OAEP.
-//
-// In FIPS mode, random is ignored and can be nil.
 func EncryptOAEP(hash, mgfHash fips140.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
 
 // DecryptOAEP decrypts ciphertext using RSAES-OAEP.

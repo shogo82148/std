@@ -17,7 +17,7 @@ type InternalBenchmark struct {
 }
 
 // B is a type passed to [Benchmark] functions to manage benchmark
-// timing and to specify the number of iterations to run.
+// timing and control the number of iterations.
 //
 // A benchmark ends when its Benchmark function returns or calls any of the methods
 // FailNow, Fatal, Fatalf, SkipNow, Skip, or Skipf. Those methods must be called
@@ -64,8 +64,7 @@ type B struct {
 func (b *B) StartTimer()
 
 // StopTimer stops timing a test. This can be used to pause the timer
-// while performing complex initialization that you don't
-// want to measure.
+// while performing steps that you don't want to measure.
 func (b *B) StopTimer()
 
 // ResetTimer zeroes the elapsed benchmark time and memory allocation counters
@@ -98,27 +97,39 @@ func (b *B) Elapsed() time.Duration
 // Setting "ns/op" to 0 will suppress that built-in metric.
 func (b *B) ReportMetric(n float64, unit string)
 
-// Loop returns true until b.N calls has been made to it.
+// Loop returns true as long as the benchmark should continue running.
 //
-// A benchmark should either use Loop or contain an explicit loop from 0 to b.N, but not both.
-// After the benchmark finishes, b.N will contain the total number of calls to op, so the benchmark
-// may use b.N to compute other average metrics.
+// A typical benchmark is structured like:
 //
-// The parameters and results of function calls inside the body of "for b.Loop() {...}" are guaranteed
-// not to be optimized away.
-// Also, the local loop scaling for b.Loop ensures the benchmark function containing the loop will only
-// be executed once, i.e. for such construct:
-//
-//	testing.Benchmark(func(b *testing.B) {
-//			...(setup)
-//			for b.Loop() {
-//				...(benchmark logic)
-//			}
-//			...(clean-up)
+//	func Benchmark(b *testing.B) {
+//		... setup ...
+//		for b.Loop() {
+//			... code to measure ...
+//		}
+//		... cleanup ...
 //	}
 //
-// The ...(setup) and ...(clean-up) logic will only be executed once.
-// Also benchtime=Nx (N>1) will result in exactly N executions instead of N+1 for b.N style loops.
+// Loop resets the benchmark timer the first time it is called in a benchmark,
+// so any setup performed prior to starting the benchmark loop does not count
+// toward the benchmark measurement. Likewise, when it returns false, it stops
+// the timer so cleanup code is not measured.
+//
+// The compiler never optimizes away calls to functions within the body of a
+// "for b.Loop() { ... }" loop. This prevents surprises that can otherwise occur
+// if the compiler determines that the result of a benchmarked function is
+// unused. The loop must be written in exactly this form, and this only applies
+// to calls syntactically between the curly braces of the loop. Optimizations
+// are performed as usual in any functions called by the loop.
+//
+// After Loop returns false, b.N contains the total number of iterations that
+// ran, so the benchmark may use b.N to compute other average metrics.
+//
+// Prior to the introduction of Loop, benchmarks were expected to contain an
+// explicit loop from 0 to b.N. Benchmarks should either use Loop or contain a
+// loop to b.N, but not both. Loop offers more automatic management of the
+// benchmark timer, and runs each benchmark function only once per measurement,
+// whereas b.N-based benchmarks must run the benchmark function (and any
+// associated setup and cleanup) several times.
 func (b *B) Loop() bool
 
 // BenchmarkResult contains the results of a benchmark run.

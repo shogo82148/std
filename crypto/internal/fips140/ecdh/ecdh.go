@@ -50,8 +50,6 @@ func P384() *Curve[*nistec.P384Point]
 func P521() *Curve[*nistec.P521Point]
 
 // GenerateKey generates a new ECDSA private key pair for the specified curve.
-//
-// In FIPS mode, rand is ignored.
 func GenerateKey[P Point[P]](c *Curve[P], rand io.Reader) (*PrivateKey, error)
 
 func NewPrivateKey[P Point[P]](c *Curve[P], key []byte) (*PrivateKey, error)

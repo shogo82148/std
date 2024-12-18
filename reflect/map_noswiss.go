@@ -40,6 +40,7 @@ func (iter *MapIter) Key() Value
 // It is equivalent to v.Set(iter.Key()), but it avoids allocating a new Value.
 // As in Go, the key must be assignable to v's type and
 // must not be derived from an unexported field.
+// It panics if [Value.CanSet] returns false.
 func (v Value) SetIterKey(iter *MapIter)
 
 // Value returns the value of iter's current map entry.
@@ -49,6 +50,7 @@ func (iter *MapIter) Value() Value
 // It is equivalent to v.Set(iter.Value()), but it avoids allocating a new Value.
 // As in Go, the value must be assignable to v's type and
 // must not be derived from an unexported field.
+// It panics if [Value.CanSet] returns false.
 func (v Value) SetIterValue(iter *MapIter)
 
 // Next advances the map iterator and reports whether there is another

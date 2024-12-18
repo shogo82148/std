@@ -4,6 +4,6 @@
 
 package issue52611a
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 func GetX2(foo *C.struct_Foo) int32

@@ -13,7 +13,7 @@ Input to cgo -godefs.  See also mkerrors.sh and mkall.sh
 
 package syscall
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 const (
 	PathMax = C.PATH_MAX

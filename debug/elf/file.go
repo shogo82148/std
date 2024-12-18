@@ -136,10 +136,13 @@ type Symbol struct {
 	Name        string
 	Info, Other byte
 
-	// These fields are used for symbol versioning
-	// and are present only for the dynamic symbol table.
-	VersionIndex int16
-	VersionFlags SymbolVersionFlag
+	// HasVersion reports whether the symbol has any version information.
+	// This will only be true for the dynamic symbol table.
+	HasVersion bool
+	// VersionIndex is the symbol's version index.
+	// Use the methods of the [VersionIndex] type to access it.
+	// This field is only meaningful if HasVersion is true.
+	VersionIndex VersionIndex
 
 	Section     SectionIndex
 	Value, Size uint64
@@ -214,32 +217,53 @@ type ImportedSymbol struct {
 // It does not return weak symbols.
 func (f *File) ImportedSymbols() ([]ImportedSymbol, error)
 
-type SymbolVersionFlag byte
+// VersionIndex is the type of a [Symbol] version index.
+type VersionIndex uint16
 
-const (
-	VerFlagNone   SymbolVersionFlag = 0x0
-	VerFlagLocal  SymbolVersionFlag = 0x1
-	VerFlagGlobal SymbolVersionFlag = 0x2
-	VerFlagHidden SymbolVersionFlag = 0x4
-)
+// IsHidden reports whether the symbol is hidden within the version.
+// This means that the symbol can only be seen by specifying the exact version.
+func (vi VersionIndex) IsHidden() bool
+
+// Index returns the version index.
+// If this is the value 0, it means that the symbol is local,
+// and is not visible externally.
+// If this is the value 1, it means that the symbol is in the base version,
+// and has no specific version; it may or may not match a
+// [DynamicVersion.Index] in the slice returned by [File.DynamicVersions].
+// Other values will match either [DynamicVersion.Index]
+// in the slice returned by [File.DynamicVersions],
+// or [DynamicVersionDep.Index] in the Needs field
+// of the elements of the slice returned by [File.DynamicVersionNeeds].
+// In general, a defined symbol will have an index referring
+// to DynamicVersions, and an undefined symbol will have an index
+// referring to some version in DynamicVersionNeeds.
+func (vi VersionIndex) Index() uint16
 
 // DynamicVersion is a version defined by a dynamic object.
+// This describes entries in the ELF SHT_GNU_verdef section.
+// We assume that the vd_version field is 1.
+// Note that the name of the version appears here;
+// it is not in the first Deps entry as it is in the ELF file.
 type DynamicVersion struct {
-	Version uint16
-	Flags   DynamicVersionFlag
-	Index   uint16
-	Deps    []string
+	Name  string
+	Index uint16
+	Flags DynamicVersionFlag
+	Deps  []string
 }
 
+// DynamicVersionNeed describes a shared library needed by a dynamic object,
+// with a list of the versions needed from that shared library.
+// This describes entries in the ELF SHT_GNU_verneed section.
+// We assume that the vn_version field is 1.
 type DynamicVersionNeed struct {
-	Version uint16
-	Name    string
-	Needs   []DynamicVersionDep
+	Name  string
+	Needs []DynamicVersionDep
 }
 
+// DynamicVersionDep is a version needed from some shared library.
 type DynamicVersionDep struct {
 	Flags DynamicVersionFlag
-	Other uint16
+	Index uint16
 	Dep   string
 }
 

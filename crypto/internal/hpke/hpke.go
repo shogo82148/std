@@ -9,7 +9,7 @@ import (
 	"github.com/shogo82148/std/crypto/cipher"
 	"github.com/shogo82148/std/crypto/ecdh"
 
-	"golang.org/x/crypto/chacha20poly1305"
+	"github.com/shogo82148/std/golang.org/x/crypto/chacha20poly1305"
 )
 
 type KemID uint16

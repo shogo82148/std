@@ -5,3 +5,7 @@
 package fips140
 
 var Enabled bool
+
+func Name() string
+
+func Version() string

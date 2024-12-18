@@ -2,20 +2,25 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package objfile
+// Package disasm provides disassembly routines.
+//
+// It is broken out from cmd/internal/objfile so tools that don't need
+// disassembling don't need to depend on x/arch disassembler code.
+package disasm
 
 import (
 	"github.com/shogo82148/std/container/list"
-	"github.com/shogo82148/std/debug/gosym"
 	"github.com/shogo82148/std/encoding/binary"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/regexp"
+
+	"github.com/shogo82148/std/cmd/internal/objfile"
 )
 
 // Disasm is a disassembler for a given File.
 type Disasm struct {
-	syms      []Sym
-	pcln      Liner
+	syms      []objfile.Sym
+	pcln      objfile.Liner
 	text      []byte
 	textStart uint64
 	textEnd   uint64
@@ -24,8 +29,8 @@ type Disasm struct {
 	byteOrder binary.ByteOrder
 }
 
-// Disasm returns a disassembler for the file f.
-func (e *Entry) Disasm() (*Disasm, error)
+// DisasmForFile returns a disassembler for the file f.
+func DisasmForFile(f *objfile.File) (*Disasm, error)
 
 // CachedFile contains the content of a file split into lines.
 type CachedFile struct {
@@ -55,8 +60,4 @@ func (fc *FileCache) Line(filename string, line int) ([]byte, error)
 func (d *Disasm) Print(w io.Writer, filter *regexp.Regexp, start, end uint64, printCode bool, gnuAsm bool)
 
 // Decode disassembles the text segment range [start, end), calling f for each instruction.
-func (d *Disasm) Decode(start, end uint64, relocs []Reloc, gnuAsm bool, f func(pc, size uint64, file string, line int, text string))
-
-type Liner interface {
-	PCToLine(uint64) (string, int, *gosym.Func)
-}
+func (d *Disasm) Decode(start, end uint64, relocs []objfile.Reloc, gnuAsm bool, f func(pc, size uint64, file string, line int, text string))

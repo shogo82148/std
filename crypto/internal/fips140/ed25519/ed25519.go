@@ -6,7 +6,6 @@ package ed25519
 
 import (
 	"github.com/shogo82148/std/crypto/internal/fips140/edwards25519"
-	"github.com/shogo82148/std/io"
 )
 
 type PrivateKey struct {
@@ -30,11 +29,7 @@ type PublicKey struct {
 func (pub *PublicKey) Bytes() []byte
 
 // GenerateKey generates a new Ed25519 private key pair.
-//
-// In FIPS mode, rand is ignored. Otherwise, the output of this function is
-// deterministic, and equivalent to reading 32 bytes from rand, and passing them
-// to [NewKeyFromSeed].
-func GenerateKey(rand io.Reader) (*PrivateKey, error)
+func GenerateKey() (*PrivateKey, error)
 
 func NewPrivateKeyFromSeed(seed []byte) (*PrivateKey, error)
 

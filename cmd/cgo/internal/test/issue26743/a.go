@@ -4,6 +4,6 @@
 
 package issue26743
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 var V1 = C.C1(0)
