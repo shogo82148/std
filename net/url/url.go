@@ -230,8 +230,6 @@ func (u *URL) Port() string
 
 func (u *URL) MarshalBinary() (text []byte, err error)
 
-func (u *URL) AppendBinary(b []byte) ([]byte, error)
-
 func (u *URL) UnmarshalBinary(text []byte) error
 
 // JoinPath は、指定されたパス要素が既存のパスに結合され、

@@ -18,10 +18,4 @@ type WasmImport struct {
 	Name   string
 }
 
-// WasmExport stores metadata associated with the //go:wasmexport pragma
-type WasmExport struct {
-	Pos  syntax.Pos
-	Name string
-}
-
 func Renameinit() *types.Sym

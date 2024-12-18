@@ -25,6 +25,8 @@ type Decoder struct {
 	freeList     *decoderState
 	countBuf     []byte
 	err          error
+	// ignoreDepth tracks the depth of recursively parsed ignored fields
+	ignoreDepth int
 }
 
 // NewDecoderは、[io.Reader] から読み取る新しいデコーダを返します。

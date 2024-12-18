@@ -153,7 +153,6 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // Renameはoldpathをnewpathに名前を変更（移動）します。
 // newpathが既に存在していてディレクトリではない場合、Renameはそれを置き換えます。
-// newpathが既に存在していてディレクトリである場合、Renameはエラーを返します。
 // oldpathとnewpathが異なるディレクトリにある場合、OS固有の制限が適用される場合があります。
 // 同じディレクトリ内でも、非UnixプラットフォームではRenameはアトミックな操作ではありません。
 // エラーが発生した場合、それは*LinkErrorの型である可能性があります。
@@ -184,8 +183,7 @@ func TempDir() string
 // Windowsでは、%LocalAppData%を返します。
 // Plan 9では、$home/lib/cacheを返します。
 //
-// 位置を特定できない場合（例えば、$HOMEが定義されていない場合）や、
-// $XDG_CACHE_HOMEのパスが相対パスである場合、エラーを返します。
+// 位置を特定できない場合（例えば、$HOMEが定義されていない場合）、エラーを返します。
 func UserCacheDir() (string, error)
 
 // UserConfigDirは、ユーザー固有の設定データに使用するデフォルトのルートディレクトリを返します。
@@ -197,8 +195,7 @@ func UserCacheDir() (string, error)
 // Windowsでは、%AppData%を返します。
 // Plan 9では、$home/libを返します。
 //
-// 位置を特定できない場合（例えば、$HOMEが定義されていない場合）や、
-// $XDG_CONFIG_HOMEのパスが相対パスである場合、エラーを返します。
+// 位置を特定できない場合（例えば、$HOMEが定義されていない場合）、エラーを返します。
 func UserConfigDir() (string, error)
 
 // UserHomeDirは現在のユーザーのホームディレクトリを返します。

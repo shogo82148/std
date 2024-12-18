@@ -4,9 +4,7 @@
 
 package event
 
-// Type indicates an event's type from which its arguments and semantics can be
-// derived. Its representation matches the wire format's representation of the event
-// types that precede all event data.
+// Type is the common in-memory representation of the low-leve
 type Type uint8
 
 // Spec is a specification for a trace event. It contains sufficient information

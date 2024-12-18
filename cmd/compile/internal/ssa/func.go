@@ -231,7 +231,7 @@ func (f *Func) Sdom() SparseTree
 //	base.DebugHashMatch(this function's package.name)
 //
 // for use in bug isolation.  The return value is true unless
-// environment variable GOCOMPILEDEBUG=gossahash=X is set, in which case "it depends on X".
+// environment variable GOSSAHASH is set, in which case "it depends".
 // See [base.DebugHashMatch] for more information.
 func (f *Func) DebugHashMatch() bool
 

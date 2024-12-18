@@ -76,6 +76,14 @@ func (s *Scope) Insert(obj Object) Object
 // will be set to s after resolve is called.
 func (s *Scope) InsertLazy(name string, resolve func() Object) bool
 
+// Squash merges s with its parent scope p by adding all
+// objects of s to p, adding all children of s to the
+// children of p, and removing s from p's children.
+// The function f is called for each object obj in s which
+// has an object alt in p. s should be discarded after
+// having been squashed.
+func (s *Scope) Squash(err func(obj, alt Object))
+
 // Pos and End describe the scope's source code extent [pos, end).
 // The results are guaranteed to be valid only if the type-checked
 // AST has complete position information. The extent is undefined

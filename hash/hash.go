@@ -10,7 +10,7 @@ import "github.com/shogo82148/std/io"
 // Hashはすべてのハッシュ関数で実装される共通のインターフェースです。
 //
 // 標準ライブラリのハッシュ実装（例：[hash/crc32] や [crypto/sha256]）は、
-// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
+// [encoding.BinaryMarshaler]、および
 // [encoding.BinaryUnmarshaler] インターフェースを実装しています。
 // ハッシュ実装をマーシャリングすることで、その内部状態を保存し、
 // 後で追加の処理に使用することができます。これにより、ハッシュに以前に書き込まれたデータを

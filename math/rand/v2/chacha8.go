@@ -8,8 +8,8 @@ import (
 	"github.com/shogo82148/std/internal/chacha8rand"
 )
 
-// A ChaCha8 is a ChaCha8-based cryptographically strong
-// random number generator.
+// ChaCha8は、ChaCha8ベースの暗号的に強力な
+// 乱数生成器です。
 type ChaCha8 struct {
 	state chacha8rand.State
 
@@ -18,25 +18,25 @@ type ChaCha8 struct {
 	readLen int
 }
 
-// NewChaCha8 returns a new ChaCha8 seeded with the given seed.
+// NewChaCha8は、指定されたシードで初期化された新しいChaCha8を返します。
 func NewChaCha8(seed [32]byte) *ChaCha8
 
-// Seed resets the ChaCha8 to behave the same way as NewChaCha8(seed).
+// Seedは、ChaCha8をNewChaCha8(seed)と同じように動作するようにリセットします。
 func (c *ChaCha8) Seed(seed [32]byte)
 
-// Uint64 returns a uniformly distributed random uint64 value.
+// Uint64は、一様に分布したランダムなuint64値を返します。
 func (c *ChaCha8) Uint64() uint64
 
-// Read reads exactly len(p) bytes into p.
-// It always returns len(p) and a nil error.
+// Readは、pに正確にlen(p)バイトを読み込みます。
+// 常にlen(p)とnilエラーを返します。
 //
-// If calls to Read and Uint64 are interleaved, the order in which bits are
-// returned by the two is undefined, and Read may return bits generated before
-// the last call to Uint64.
+// ReadとUint64の呼び出しが交互に行われる場合、
+// 両者によって返されるビットの順序は未定義であり、
+// Readは最後のUint64の呼び出し前に生成されたビットを返すことがあります。
 func (c *ChaCha8) Read(p []byte) (n int, err error)
 
-// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
+// UnmarshalBinaryはencoding.BinaryUnmarshalerインターフェースを実装します。
 func (c *ChaCha8) UnmarshalBinary(data []byte) error
 
-// MarshalBinary implements the encoding.BinaryMarshaler interface.
+// MarshalBinaryはencoding.BinaryMarshalerインターフェースを実装します。
 func (c *ChaCha8) MarshalBinary() ([]byte, error)

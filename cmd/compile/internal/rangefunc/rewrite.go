@@ -536,5 +536,5 @@ type State int
 
 // Rewrite rewrites all the range-over-funcs in the files.
 // It returns the set of function literals generated from rangefunc loop bodies.
-// This allows for rangefunc loop bodies to be distinguished by debuggers.
+// This allows for rangefunc loop bodies to be distingushed by debuggers.
 func Rewrite(pkg *types2.Package, info *types2.Info, files []*syntax.File) map[*syntax.FuncLit]bool

@@ -209,6 +209,71 @@ func (v Value) Kind() Kind
 // vの種類が [Array] 、 [Chan] 、 [Map] 、 [Slice] 、 [String] 、または [Array] のポインタでない場合、パニックを発生させます。
 func (v Value) Len() int
 
+// MapIndexは、マップv内のキーに関連付けられた値を返します。
+// vのKindが [Map] でない場合、パニックを起こします。
+// キーがマップ内に見つからない場合、またはvがnilマップを表す場合、ゼロ値を返します。
+// Goと同様に、キーの値はマップのキー型に代入可能でなければなりません。
+func (v Value) MapIndex(key Value) Value
+
+// MapKeysは、マップに存在するすべてのキーを含むスライスを返します。
+// 順序は指定されていません。
+// vのKindが [Map] でない場合、パニックを起こします。
+// vがnilマップを表す場合、空のスライスを返します。
+func (v Value) MapKeys() []Value
+
+// MapIterは、マップを範囲指定して反復するためのイテレータです。
+// 詳細は [Value.MapRange] を参照してください。
+type MapIter struct {
+	m     Value
+	hiter hiter
+}
+
+// Keyは、iterの現在のマップエントリのキーを返します。
+func (iter *MapIter) Key() Value
+
+// SetIterKeyは、iterの現在のマップエントリのキーをvに割り当てます。
+// これはv.Set(iter.Key())と同等ですが、新しいValueを割り当てることを避けます。
+// Goと同様に、キーはvの型に代入可能でなければならず、
+// 非公開フィールドから派生したものであってはなりません。
+func (v Value) SetIterKey(iter *MapIter)
+
+// Valueは、iterの現在のマップエントリの値を返します。
+func (iter *MapIter) Value() Value
+
+// SetIterValueは、iterの現在のマップエントリの値をvに割り当てます。
+// これはv.Set(iter.Value())と同等ですが、新しいValueを割り当てることを避けます。
+// Goと同様に、値はvの型に代入可能でなければならず、
+// 非公開フィールドから派生したものであってはなりません。
+func (v Value) SetIterValue(iter *MapIter)
+
+// Nextはマップイテレータを進め、次のエントリがあるかどうかを報告します。
+// iterが終了した場合、falseを返します。
+// その後の [MapIter.Key]、[MapIter.Value]、または [MapIter.Next] の呼び出しはパニックを引き起こします。
+func (iter *MapIter) Next() bool
+
+// Resetは、iterをvを反復するように変更します。
+// vのKindが [Map] でない場合、またはvがゼロ値でない場合、パニックを起こします。
+// Reset(Value{})は、iterがどのマップも参照しないようにします。
+// これにより、以前に反復されたマップがガベージコレクションされる可能性があります。
+func (iter *MapIter) Reset(v Value)
+
+// MapRangeはマップの範囲イテレータを返します。
+// vのKindが [Map] でない場合、パニックを起こします。
+//
+// イテレータを進めるには [MapIter.Next] を呼び出し、各エントリにアクセスするには [MapIter.Key]/[MapIter.Value] を呼び出します。
+// イテレータが終了した場合、[MapIter.Next] はfalseを返します。
+// MapRangeはrangeステートメントと同じイテレーションセマンティクスに従います。
+//
+// 例:
+//
+//	iter := reflect.ValueOf(m).MapRange()
+//	for iter.Next() {
+//		k := iter.Key()
+//		v := iter.Value()
+//		...
+//	}
+func (v Value) MapRange() *MapIter
+
 // メソッドは、vのi番目のメソッドに対応する関数値を返します。
 // 返された関数に対するCallの引数には、レシーバを含めないでください。
 // 返された関数は常にvをレシーバとして使用します。
@@ -308,6 +373,14 @@ func (v Value) SetLen(n int)
 // vの種類が [Slice] でない場合や、nがスライスの長さより小さく、
 // スライスの容量よりも大きい場合は、パニックを引き起こします。
 func (v Value) SetCap(n int)
+
+// SetMapIndexは、マップv内のキーに関連付けられた要素をelemに設定します。
+// vのKindが [Map] でない場合、パニックを起こします。
+// elemがゼロ値の場合、SetMapIndexはマップからキーを削除します。
+// それ以外の場合、vがnilマップを保持している場合、SetMapIndexはパニックを起こします。
+// Goと同様に、キーの要素はマップのキー型に代入可能でなければならず、
+// 要素の値はマップの要素型に代入可能でなければなりません。
+func (v Value) SetMapIndex(key, elem Value)
 
 // SetUintはvの基になる値をxに設定します。
 // vの種類が [Uint] 、[Uintptr] 、 [Uint8] 、 [Uint16] 、 [Uint32] 、または [Uint64] でない場合、または [Value.CanSet] がfalseの場合はパニックを起こします。

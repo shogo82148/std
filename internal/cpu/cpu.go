@@ -35,7 +35,6 @@ var X86 struct {
 	HasBMI1      bool
 	HasBMI2      bool
 	HasERMS      bool
-	HasFSRM      bool
 	HasFMA       bool
 	HasOSXSAVE   bool
 	HasPCLMULQDQ bool
@@ -71,7 +70,6 @@ var ARM64 struct {
 	HasCRC32   bool
 	HasATOMICS bool
 	HasCPUID   bool
-	HasDIT     bool
 	IsNeoverse bool
 	_          CacheLinePad
 }
