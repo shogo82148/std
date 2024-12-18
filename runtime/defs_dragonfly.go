@@ -12,7 +12,7 @@ GOARCH=amd64 go tool cgo -cdefs defs_dragonfly.go >defs_dragonfly_amd64.h
 
 package runtime
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 const (
 	EINTR     = C.EINTR

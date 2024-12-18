@@ -16,7 +16,7 @@ GOARCH=arm go tool cgo -cdefs defs_netbsd.go defs_netbsd_arm.go >defs_netbsd_arm
 
 package runtime
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 const (
 	EINTR  = C.EINTR

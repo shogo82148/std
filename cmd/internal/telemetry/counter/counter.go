@@ -9,7 +9,7 @@ package counter
 import (
 	"github.com/shogo82148/std/flag"
 
-	"github.com/shogo82148/std/golang.org/x/telemetry/counter"
+	"golang.org/x/telemetry/counter"
 )
 
 func OpenCalled() bool

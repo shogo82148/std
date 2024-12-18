@@ -6,7 +6,7 @@
 
 package boring
 
-import "github.com/shogo82148/std/C"
+import "C"
 import (
 	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/hash"

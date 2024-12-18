@@ -10,7 +10,7 @@ import (
 
 	"github.com/shogo82148/std/cmd/go/internal/base"
 
-	"github.com/shogo82148/std/golang.org/x/mod/module"
+	"golang.org/x/mod/module"
 )
 
 var ErrToolchain = errors.New("internal error: invalid operation on toolchain module")
