@@ -4,6 +4,6 @@
 
 package issue26743
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 var V2 C.uint

@@ -12,7 +12,7 @@ GOARCH=amd64 cgo -cdefs defs.go defs1.go >amd64/defs.h
 
 package runtime
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 const (
 	O_RDONLY    = C.O_RDONLY

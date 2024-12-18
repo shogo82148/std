@@ -13,7 +13,7 @@ cgo -cdefs defs_arm.c >arm/defs.h
 
 package runtime
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 const (
 	PROT_NONE  = C.PROT_NONE

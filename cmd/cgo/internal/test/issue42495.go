@@ -4,7 +4,7 @@
 
 package cgotest
 
-import "github.com/shogo82148/std/C"
+import "C"
 
 //export Issue42495A
 func Issue42495A(C.T42495A)

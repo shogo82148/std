@@ -7,7 +7,7 @@ package modfetch
 import (
 	"github.com/shogo82148/std/context"
 
-	"github.com/shogo82148/std/golang.org/x/mod/module"
+	"golang.org/x/mod/module"
 )
 
 func CachePath(ctx context.Context, m module.Version, suffix string) (string, error)
