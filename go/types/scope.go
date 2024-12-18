@@ -5,7 +5,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルはスコープを実装しています。
+// This file implements Scopes.
 
 package types
 
@@ -14,7 +14,10 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// スコープはオブジェクトのセットを保持し、それが含まれる（親）スコープと含まれる（子）スコープへのリンクを維持します。オブジェクトは名前で挿入および検索することができます。Scopeのゼロ値は使用可能な空のスコープです。
+// A Scope maintains a set of objects and links to its containing
+// (parent) and contained (children) scopes. Objects may be inserted
+// and looked up by name. The zero value for Scope is a ready-to-use
+// empty scope.
 type Scope struct {
 	parent   *Scope
 	children []*Scope
@@ -25,59 +28,42 @@ type Scope struct {
 	isFunc   bool
 }
 
-// NewScopeは、指定された親スコープに含まれる新しい空のスコープを返します（存在する場合）。コメントはデバッグ用です。
+// NewScope returns a new, empty scope contained in the given parent
+// scope, if any. The comment is for debugging only.
 func NewScope(parent *Scope, pos, end token.Pos, comment string) *Scope
 
-// Parentはスコープの含まれる（親）スコープを返します。
+// Parent returns the scope's containing (parent) scope.
 func (s *Scope) Parent() *Scope
 
-// Lenはスコープ要素の数を返します。
+// Len returns the number of scope elements.
 func (s *Scope) Len() int
 
-// Namesはスコープ内の要素名をソートされた順序で返します。
+// Names returns the scope's element names in sorted order.
 func (s *Scope) Names() []string
 
-// NumChildrenはsにネストされたスコープの数を返します。
+// NumChildren returns the number of scopes nested in s.
 func (s *Scope) NumChildren() int
 
-// Childは0 <= i < NumChildren()の範囲でi番目の子スコープを返します。
+// Child returns the i'th child scope for 0 <= i < NumChildren().
 func (s *Scope) Child(i int) *Scope
 
-// Lookupは、名前が与えられたスコープs内のオブジェクトを返します。
-// オブジェクトが存在する場合はそのオブジェクトを返し、存在しない場合はnilを返します。
+// Lookup returns the object in scope s with the given name if such an
+// object exists; otherwise the result is nil.
 func (s *Scope) Lookup(name string) Object
 
-// LookupParentは、sから始まるスコープの親チェーンをたどり、Lookup（name）が非nilのオブジェクトを返すスコープを見つけ、そのスコープとオブジェクトを返します。有効な位置posが指定された場合、posで宣言されたかそれ以前のオブジェクトのみが考慮されます。このようなスコープとオブジェクトが存在しない場合、結果は（nil、nil）です。
-// obj.Parent()は、オブジェクトがスコープに挿入され、すでにその時点で親があった場合に、返されたスコープと異なるかもしれないことに注意してください（Insertを参照）。これは、スコープがそれらをエクスポートしたパッケージのスコープであるドットインポートされたオブジェクトにのみ起こり得ます。
-func (s *Scope) LookupParent(name string, pos token.Pos) (*Scope, Object)
-
-// Insertはオブジェクトobjをスコープsに挿入します。
-// もしsが同じ名前の代替オブジェクトaltを既に含んでいる場合、Insertはsを変更せずにaltを返します。
-// そうでなければ、objを挿入し、オブジェクトの親スコープを設定し、nilを返します。
+// Insert attempts to insert an object obj into scope s.
+// If s already contains an alternative object alt with
+// the same name, Insert leaves s unchanged and returns alt.
+// Otherwise it inserts obj, sets the object's parent scope
+// if not already set, and returns nil.
 func (s *Scope) Insert(obj Object) Object
 
-// PosとEndは、スコープのソースコード範囲[pos, end)を記述します。
-// 結果は、型チェックされたASTが完全な位置情報を持っている場合にのみ有効であることが保証されます。
-// 範囲は、Universeとパッケージスコープでは未定義です。
-func (s *Scope) Pos() token.Pos
-func (s *Scope) End() token.Pos
-
-// Containsは、posがスコープの範囲内にあるかどうかを報告します。
-// 結果は、型チェック済みのASTに完全な位置情報がある場合にのみ有効です。
-func (s *Scope) Contains(pos token.Pos) bool
-
-// Innermostは、posを含む最も内側（子）のスコープを返します。
-// posがどのスコープにも含まれていない場合、結果はnilになります。
-// Universeスコープの場合も結果はnilです。
-// 結果は、型チェック済みのASTに完全な位置情報がある場合にのみ有効です。
-func (s *Scope) Innermost(pos token.Pos) *Scope
-
-// WriteToは、スコープの文字列表現をwに書き込みます。
-// スコープ要素は名前でソートされます。
-// インデントのレベルはn >= 0で制御され、
-// インデントなしの場合はn == 0です。
-// recurseが設定されている場合は、ネストされた（子）スコープも書き込みます。
+// WriteTo writes a string representation of the scope to w,
+// with the scope elements sorted by name.
+// The level of indentation is controlled by n >= 0, with
+// n == 0 for no indentation.
+// If recurse is set, it also writes nested (children) scopes.
 func (s *Scope) WriteTo(w io.Writer, n int, recurse bool)
 
-// Stringはデバッグ用のスコープの文字列表現を返します。
+// String returns a string representation of the scope, for debugging.
 func (s *Scope) String() string

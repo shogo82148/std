@@ -5,6 +5,7 @@
 package trace
 
 import (
+	"github.com/shogo82148/std/iter"
 	"github.com/shogo82148/std/time"
 )
 
@@ -231,7 +232,7 @@ type Stack struct {
 }
 
 // Frames is an iterator over the frames in a Stack.
-func (s Stack) Frames(yield func(f StackFrame) bool) bool
+func (s Stack) Frames() iter.Seq[StackFrame]
 
 // NoStack is a sentinel value that can be compared against any Stack value, indicating
 // a lack of a stack trace.
@@ -254,7 +255,7 @@ type StackFrame struct {
 	Line uint64
 }
 
-// ExperimentalEvent presents a raw view of an experimental event's arguments and thier names.
+// ExperimentalEvent presents a raw view of an experimental event's arguments and their names.
 type ExperimentalEvent struct {
 	// Name is the name of the event.
 	Name string

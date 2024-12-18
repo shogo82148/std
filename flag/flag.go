@@ -3,70 +3,82 @@
 // license that can be found in the LICENSE file.
 
 /*
-flagパッケージは、コマンドラインのフラグ解析を実装します。
+Package flag implements command-line flag parsing.
 
-# 使用法
+# Usage
 
-[flag.String]、[Bool]、[Int] などを使用してフラグを定義します。
+Define flags using [flag.String], [Bool], [Int], etc.
 
-これは、ポインタnFlagに格納された整数フラグ-nを宣言し、型*intを持つものです。
+This declares an integer flag, -n, stored in the pointer nFlag, with type *int:
 
 	import "flag"
-	var nFlag = flag.Int（"n"、1234、"フラグnのヘルプメッセージ"）
+	var nFlag = flag.Int("n", 1234, "help message for flag n")
 
-好きな場合、Var（）関数を使用してフラグを変数にバインドすることもできます。
+If you like, you can bind the flag to a variable using the Var() functions.
 
 	var flagvar int
-	func init（）{
-		flag.IntVar（&flagvar、"flagname"、1234、"フラグ名のヘルプメッセージ"）
+	func init() {
+		flag.IntVar(&flagvar, "flagname", 1234, "help message for flagname")
 	}
 
-または、フラグを値インターフェースを満たすカスタムフラグに作成し、次にフラグ解析と結びつけることもできます（ポインタレシーバを使用）。
+Or you can create custom flags that satisfy the Value interface (with
+pointer receivers) and couple them to flag parsing by
 
-	flag.Var（&flagVal、「名前」、「flagnameのヘルプメッセージ」）
+	flag.Var(&flagVal, "name", "help message for flagname")
 
-そのようなフラグの場合、デフォルト値は変数の初期値そのままです。
+For such flags, the default value is just the initial value of the variable.
 
-すべてのフラグが定義された後、次を呼び出して
+After all flags are defined, call
 
-	flag.Parse（）
+	flag.Parse()
 
-定義されたフラグをコマンドラインで解析します。
+to parse the command line into the defined flags.
 
-その後、フラグを直接使用できます。フラグ自体を使用している場合、それらはすべてポインタです。変数にバインドする場合、値です。
+Flags may then be used directly. If you're using the flags themselves,
+they are all pointers; if you bind to variables, they're values.
 
-	ipの値は、*ipを出力します。
-	flagvarの値は、flagvarを出力します。
+	fmt.Println("ip has value ", *ip)
+	fmt.Println("flagvar has value ", flagvar)
 
-解析後、フラグに続く引数は、スライス [flag.Args] または個別に [flag.Arg](i) として使用できます。
-引数は0から [flag.NArg]-1 までインデックス付けされます。
+After parsing, the arguments following the flags are available as the
+slice [flag.Args] or individually as [flag.Arg](i).
+The arguments are indexed from 0 through [flag.NArg]-1.
 
-# コマンドラインフラグの句法
+# Command line flag syntax
 
-次の形式が許可されています。
+The following forms are permitted:
 
 	-flag
-	--flag   // ダブルダッシュも許可されています
+	--flag   // double dashes are also permitted
 	-flag=x
-	-flag x  // ブールフラグ以外
+	-flag x  // non-boolean flags only
 
-1つまたは2つのダッシュを使用できます。それらは同等です。
-最後の形式は、0、falseなどという名前のファイルがある場合にはブールフラグでは許可されていません。
+One or two dashes may be used; they are equivalent.
+The last form is not permitted for boolean flags because the
+meaning of the command
 
 	cmd -x *
 
-Unixシェルのワイルドカードである、Starは、「-」のコマンドの意味が変わるため、ブールフラグをオフにするには、-flag=false形式を使用する必要があります。
+where * is a Unix shell wildcard, will change if there is a file
+called 0, false, etc. You must use the -flag=false form to turn
+off a boolean flag.
 
-フラグ解析は、最初の非フラグ引数（「-」は非フラグ引数です）または終端子「--」の直前で停止します。
+Flag parsing stops just before the first non-flag argument
+("-" is a non-flag argument) or after the terminator "--".
 
-整数フラグは、1234、0664、0x1234などを受け入れ、負の値にすることもできます。
-ブールフラグは以下のどれかです：
+Integer flags accept 1234, 0664, 0x1234 and may be negative.
+Boolean flags may be:
 
 	1, 0, t, f, T, F, true, false, TRUE, FALSE, True, False
 
-期間フラグは、time.ParseDurationで有効な入力を受け入れます。
+Duration flags accept any input valid for time.ParseDuration.
 
-コマンドラインフラグのデフォルトセットは、トップレベルの関数によって制御されます。 [FlagSet] 型は、コマンドラインインターフェースのサブコマンドを実装するための独立したフラグセットを定義するために使用します。 [FlagSet] のメソッドは、コマンドラインフラグセットのトップレベルの関数と同様です。
+The default set of command-line flags is controlled by
+top-level functions.  The [FlagSet] type allows one to define
+independent sets of flags, such as to implement subcommands
+in a command-line interface. The methods of [FlagSet] are
+analogous to the top-level functions for the command-line
+flag set.
 */
 package flag
 
@@ -79,48 +91,55 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ErrHelpは、-helpまたは-hフラグが呼び出されたが、そのようなフラグが定義されていない場合に返されるエラーです。
+// ErrHelp is the error returned if the -help or -h flag is invoked
+// but no such flag is defined.
 var ErrHelp = errors.New("flag: help requested")
 
-// Valueはフラグに格納されている動的な値へのインターフェースです。
-// （デフォルト値は文字列で表されます。）
+// Value is the interface to the dynamic value stored in a flag.
+// (The default value is represented as a string.)
 //
-// Valueがtrueを返すIsBoolFlag() boolメソッドを持つ場合、
-// コマンドラインパーサーは-nameを-name=trueと等価にし、次のコマンドライン引数を使用しないようにします。
+// If a Value has an IsBoolFlag() bool method returning true,
+// the command-line parser makes -name equivalent to -name=true
+// rather than using the next command-line argument.
 //
-// flagが存在するごとに、Setメソッドがコマンドラインの順序で一度呼び出されます。
-// flagパッケージはゼロ値のレシーバ（nilポインタなど）で [String] メソッドを呼び出す場合があります。
+// Set is called once, in command line order, for each flag present.
+// The flag package may call the [String] method with a zero-valued receiver,
+// such as a nil pointer.
 type Value interface {
 	String() string
 	Set(string) error
 }
 
-// Getterは [Value] の内容を取得することを可能にするインターフェースです。
-// これはGo 1以降の互換性規則のために、 [Value] インターフェースの一部ではなく、ラップされています。
-// このパッケージで提供されるすべての [Value] 型は、 [Getter] インターフェースを満たしますが、 [Func] によって使用される型は満たしません。
+// Getter is an interface that allows the contents of a [Value] to be retrieved.
+// It wraps the [Value] interface, rather than being part of it, because it
+// appeared after Go 1 and its compatibility rules. All [Value] types provided
+// by this package satisfy the [Getter] interface, except the type used by [Func].
 type Getter interface {
 	Value
 	Get() any
 }
 
-// ErrorHandlingは、parseが失敗した場合に [FlagSet.Parse] の動作を定義します。
+// ErrorHandling defines how [FlagSet.Parse] behaves if the parse fails.
 type ErrorHandling int
 
-// これらの定数は、パースが失敗した場合に [FlagSet.Parse] が説明された動作をするようにします。
+// These constants cause [FlagSet.Parse] to behave as described if the parse fails.
 const (
 	ContinueOnError ErrorHandling = iota
 	ExitOnError
 	PanicOnError
 )
 
-// FlagSetは定義されたフラグの集合を表します。FlagSetのゼロ値は名前を持たず、 [ContinueOnError] エラーハンドリングを持ちます。
-// [Flag] の名前はFlagSet内でユニークでなければなりません。既に使用されている名前でフラグを定義しようとすると、パニックが発生します。
+// A FlagSet represents a set of defined flags. The zero value of a FlagSet
+// has no name and has [ContinueOnError] error handling.
+//
+// [Flag] names must be unique within a FlagSet. An attempt to define a flag whose
+// name is already in use will cause a panic.
 type FlagSet struct {
-
-	// Usage はフラグの解析中にエラーが発生した場合に呼び出される関数です。
-	// このフィールドは、カスタムのエラーハンドラを指すように変更できる関数（メソッドではありません）です。
-	// Usage が呼び出された後に何が起こるかは、ErrorHandling の設定に依存します。
-	// コマンドラインでは ExitOnError がデフォルトであり、Usage の呼び出し後にプログラムが終了します。
+	// Usage is the function called when an error occurs while parsing flags.
+	// The field is a function (not a method) that may be changed to point to
+	// a custom error handler. What happens after Usage is called depends
+	// on the ErrorHandling setting; for the command line, this defaults
+	// to ExitOnError, which exits the program after calling Usage.
 	Usage func()
 
 	name          string
@@ -133,7 +152,7 @@ type FlagSet struct {
 	undef         map[string]string
 }
 
-// Flagはフラグの状態を表します。
+// A Flag represents the state of a flag.
 type Flag struct {
 	Name     string
 	Usage    string
@@ -141,300 +160,340 @@ type Flag struct {
 	DefValue string
 }
 
-// Output は使用方法やエラーメッセージのための出力先を返します。 output が設定されていない場合や nil に設定されている場合は、[os.Stderr] が返されます。
+// Output returns the destination for usage and error messages. [os.Stderr] is returned if
+// output was not set or was set to nil.
 func (f *FlagSet) Output() io.Writer
 
-// Nameはフラグセットの名前を返します。
+// Name returns the name of the flag set.
 func (f *FlagSet) Name() string
 
-// ErrorHandlingはフラグセットのエラーハンドリングの動作を返します。
+// ErrorHandling returns the error handling behavior of the flag set.
 func (f *FlagSet) ErrorHandling() ErrorHandling
 
-// SetOutputは使用法やエラーメッセージの出力先を設定します。
-// もしoutputがnilの場合、[os.Stderr] が使用されます。
+// SetOutput sets the destination for usage and error messages.
+// If output is nil, [os.Stderr] is used.
 func (f *FlagSet) SetOutput(output io.Writer)
 
-// VisitAllは辞書順にフラグを訪れ、それぞれについてfnを呼び出します。
-// 設定されていないフラグも含めて、すべてのフラグを訪れます。
+// VisitAll visits the flags in lexicographical order, calling fn for each.
+// It visits all flags, even those not set.
 func (f *FlagSet) VisitAll(fn func(*Flag))
 
-// VisitAllはコマンドラインフラグを辞書順に訪れ、それぞれに対してfnを呼び出します。設定されていないフラグも含めて、すべてのフラグを訪れます。
+// VisitAll visits the command-line flags in lexicographical order, calling
+// fn for each. It visits all flags, even those not set.
 func VisitAll(fn func(*Flag))
 
-// Visitは辞書順にフラグを訪れ、それぞれに対してfnを呼び出します。
-// 設定されているフラグのみを訪れます。
+// Visit visits the flags in lexicographical order, calling fn for each.
+// It visits only those flags that have been set.
 func (f *FlagSet) Visit(fn func(*Flag))
 
-// Visitは辞書順でコマンドラインフラグを訪問し、各フラグに対してfnを呼び出します。
-// 設定されたフラグのみを訪問します。
+// Visit visits the command-line flags in lexicographical order, calling fn
+// for each. It visits only those flags that have been set.
 func Visit(fn func(*Flag))
 
-// Lookupは指定された [Flag] 構造体を返します。存在しない場合はnilを返します。
+// Lookup returns the [Flag] structure of the named flag, returning nil if none exists.
 func (f *FlagSet) Lookup(name string) *Flag
 
-// Lookupは指定されたコマンドラインフラグの [Flag] 構造体を返します。存在しない場合はnilを返します。
+// Lookup returns the [Flag] structure of the named command-line flag,
+// returning nil if none exists.
 func Lookup(name string) *Flag
 
-// Setは指定したフラグの値を設定します。
+// Set sets the value of the named flag.
 func (f *FlagSet) Set(name, value string) error
 
-// Setは名前付きのコマンドラインフラグの値を設定します。
+// Set sets the value of the named command-line flag.
 func Set(name, value string) error
 
-// UnquoteUsageは、フラグの使用法の場所から引用符で囲まれた名前を取り出し、
-// それとその引用符を取り除いた使用法を返します。
-// "a `name` to show"と与えられた場合、("name", "a name to show")を返します。
-// もし引用符がない場合、その名前はフラグの値の型の教養された推測であり、もしフラグがブール値であれば空の文字列です。
+// UnquoteUsage extracts a back-quoted name from the usage
+// string for a flag and returns it and the un-quoted usage.
+// Given "a `name` to show" it returns ("name", "a name to show").
+// If there are no back quotes, the name is an educated guess of the
+// type of the flag's value, or the empty string if the flag is boolean.
 func UnquoteUsage(flag *Flag) (name string, usage string)
 
-// PrintDefaultsは、設定されていない限り、標準エラー出力に、セット内のすべての定義されたコマンドラインフラグのデフォルト値を表示します。詳細については、グローバル関数PrintDefaultsのドキュメントを参照してください。
+// PrintDefaults prints, to standard error unless configured otherwise, the
+// default values of all defined command-line flags in the set. See the
+// documentation for the global function PrintDefaults for more information.
 func (f *FlagSet) PrintDefaults()
 
-// PrintDefaultsは、標準エラー出力に、設定がない場合はデフォルトの設定を表示する使用方法メッセージを出力します。
-// 整数値のフラグxに対して、デフォルトの出力形式は次のようになります。
+// PrintDefaults prints, to standard error unless configured otherwise,
+// a usage message showing the default settings of all defined
+// command-line flags.
+// For an integer valued flag x, the default output has the form
 //
 //	-x int
-//		xの使用方法メッセージ（デフォルト 7）
+//		usage-message-for-x (default 7)
 //
-// 使用方法メッセージは、boolフラグ以外の場合には別の行に表示されます。boolフラグの場合は、型は省略され、フラグ名が1バイトの場合は使用方法メッセージが同じ行に表示されます。デフォルト値が型のゼロ値である場合、カッコ内のデフォルトは省略されます。ここではintと表示されていますが、フラグの使用方法文字列にバッククォートで囲まれた名前を記述することで、リストされる型を変更することができます。メッセージ中の最初のこのような項目が、メッセージ内で表示される引数の名前として扱われ、メッセージが表示される際にはバッククォートが剥がされます。例えば、以下のようにすると、
+// The usage message will appear on a separate line for anything but
+// a bool flag with a one-byte name. For bool flags, the type is
+// omitted and if the flag name is one byte the usage message appears
+// on the same line. The parenthetical default is omitted if the
+// default is the zero value for the type. The listed type, here int,
+// can be changed by placing a back-quoted name in the flag's usage
+// string; the first such item in the message is taken to be a parameter
+// name to show in the message and the back quotes are stripped from
+// the message when displayed. For instance, given
 //
-//	flag.String("I", "", "includeファイルを検索する`ディレクトリ`")
+//	flag.String("I", "", "search `directory` for include files")
 //
-// 出力は次のようになります。
+// the output will be
 //
-//	-I ディレクトリ
-//		ディレクトリを検索するincludeファイル。
+//	-I directory
+//		search directory for include files.
 //
-// フラグメッセージの出力先を変更するには、 [CommandLine].SetOutputを呼び出します。
+// To change the destination for flag messages, call [CommandLine].SetOutput.
 func PrintDefaults()
 
-// Usageは、 [CommandLine] の出力（デフォルトで [os.Stderr]）に、定義されたすべてのコマンドラインフラグに関する使用法メッセージを出力します。
-// フラグの解析中にエラーが発生したときに呼び出されます。
-// この関数はカスタム関数を指すように変更できる変数です。
-// デフォルトでは、簡単なヘッダーが表示され、[PrintDefaults] が呼び出されます。
-// 出力のフォーマットや、それを制御する方法の詳細については、[PrintDefaults] のドキュメントを参照してください。
-// カスタムのUsage関数ではプログラムを終了することも選択できますが、デフォルトでは終了は常に発生します。
-// なぜなら、コマンドラインのエラーハンドリングストラテジーは [ExitOnError] に設定されているからです。
+// Usage prints a usage message documenting all defined command-line flags
+// to [CommandLine]'s output, which by default is [os.Stderr].
+// It is called when an error occurs while parsing flags.
+// The function is a variable that may be changed to point to a custom function.
+// By default it prints a simple header and calls [PrintDefaults]; for details about the
+// format of the output and how to control it, see the documentation for [PrintDefaults].
+// Custom usage functions may choose to exit the program; by default exiting
+// happens anyway as the command line's error handling strategy is set to
+// [ExitOnError].
 var Usage = func() {
 	fmt.Fprintf(CommandLine.Output(), "Usage of %s:\n", os.Args[0])
 	PrintDefaults()
 }
 
-// NFlagは設定されているフラグの数を返します。
+// NFlag returns the number of flags that have been set.
 func (f *FlagSet) NFlag() int
 
-// NFlagは設定されたコマンドラインフラグの数を返します。
+// NFlag returns the number of command-line flags that have been set.
 func NFlag() int
 
-// Argはi番目の引数を返します。Arg(0)はフラグが処理された後の最初の残りの引数です。存在しない要素が要求された場合、Argは空の文字列を返します。
+// Arg returns the i'th argument. Arg(0) is the first remaining argument
+// after flags have been processed. Arg returns an empty string if the
+// requested element does not exist.
 func (f *FlagSet) Arg(i int) string
 
-// Argはi番目のコマンドライン引数を返します。Arg(0)は、フラグが処理された後の最初の残りの引数です。要求された要素が存在しない場合、Argは空の文字列を返します。
+// Arg returns the i'th command-line argument. Arg(0) is the first remaining argument
+// after flags have been processed. Arg returns an empty string if the
+// requested element does not exist.
 func Arg(i int) string
 
-// NArgはフラグ処理後に残る引数の数です。
+// NArg is the number of arguments remaining after flags have been processed.
 func (f *FlagSet) NArg() int
 
-// NArgは、フラグが処理された後の残りの引数の数です。
+// NArg is the number of arguments remaining after flags have been processed.
 func NArg() int
 
-// Argsはフラグ以外の引数を返します。
+// Args returns the non-flag arguments.
 func (f *FlagSet) Args() []string
 
-// Argsはフラグではないコマンドライン引数を返します。
+// Args returns the non-flag command-line arguments.
 func Args() []string
 
-// BoolVarは指定された名前、デフォルト値、および使用法の文字列を持つboolフラグを定義します。
-// 引数pはフラグの値を格納するためのbool変数を指すポインタです。
+// BoolVar defines a bool flag with specified name, default value, and usage string.
+// The argument p points to a bool variable in which to store the value of the flag.
 func (f *FlagSet) BoolVar(p *bool, name string, value bool, usage string)
 
-// BoolVarは指定された名前、デフォルト値、および使用方法のあるboolフラグを定義します。
-// 引数pは、フラグの値を格納するbool変数を指すポインタです。
+// BoolVar defines a bool flag with specified name, default value, and usage string.
+// The argument p points to a bool variable in which to store the value of the flag.
 func BoolVar(p *bool, name string, value bool, usage string)
 
-// Boolは、指定した名前、デフォルト値、使用法の説明でboolフラグを定義します。
-// 戻り値は、フラグの値を格納するbool変数のアドレスです。
+// Bool defines a bool flag with specified name, default value, and usage string.
+// The return value is the address of a bool variable that stores the value of the flag.
 func (f *FlagSet) Bool(name string, value bool, usage string) *bool
 
-// Boolは指定された名前、デフォルト値、使用方法の文字列を持つboolフラグを定義します。
-// 返り値はフラグの値を格納するbool変数のアドレスです。
+// Bool defines a bool flag with specified name, default value, and usage string.
+// The return value is the address of a bool variable that stores the value of the flag.
 func Bool(name string, value bool, usage string) *bool
 
-// IntVarは指定された名前、デフォルト値、使用法の文字列を持つintフラグを定義します。
-// 引数pはフラグの値を格納するint変数を指すポインタです。
+// IntVar defines an int flag with specified name, default value, and usage string.
+// The argument p points to an int variable in which to store the value of the flag.
 func (f *FlagSet) IntVar(p *int, name string, value int, usage string)
 
-// IntVarは指定された名前、デフォルト値、使用方法の文字列を持つintフラグを定義します。
-// 引数pはフラグの値を格納するint変数を指すポインタです。
+// IntVar defines an int flag with specified name, default value, and usage string.
+// The argument p points to an int variable in which to store the value of the flag.
 func IntVar(p *int, name string, value int, usage string)
 
-// Intは指定された名前、デフォルト値、使用法の文字列を持つintフラグを定義します。
-// 返り値は、フラグの値を格納するint変数のアドレスです。
+// Int defines an int flag with specified name, default value, and usage string.
+// The return value is the address of an int variable that stores the value of the flag.
 func (f *FlagSet) Int(name string, value int, usage string) *int
 
-// Intは指定した名前、デフォルト値、使用方法の文字列を持つintフラグを定義します。
-// 返り値は、フラグの値を格納するint変数のアドレスです。
+// Int defines an int flag with specified name, default value, and usage string.
+// The return value is the address of an int variable that stores the value of the flag.
 func Int(name string, value int, usage string) *int
 
-// Int64Varは指定された名前、デフォルト値、使用方法の文字列を持つint64フラグを定義します。
-// 引数pは、フラグの値を格納するint64変数を指すポインタです。
+// Int64Var defines an int64 flag with specified name, default value, and usage string.
+// The argument p points to an int64 variable in which to store the value of the flag.
 func (f *FlagSet) Int64Var(p *int64, name string, value int64, usage string)
 
-// Int64Varは、指定された名前、デフォルト値、使用方法の文字列を持つint64フラグを定義します。
-// 引数pは、フラグの値を格納するためのint64変数を指すポインタです。
+// Int64Var defines an int64 flag with specified name, default value, and usage string.
+// The argument p points to an int64 variable in which to store the value of the flag.
 func Int64Var(p *int64, name string, value int64, usage string)
 
-// Int64は、指定された名前、デフォルト値、および使用法の文字列を持つint64フラグを定義します。
-// 戻り値は、フラグの値を格納するint64変数のアドレスです。
+// Int64 defines an int64 flag with specified name, default value, and usage string.
+// The return value is the address of an int64 variable that stores the value of the flag.
 func (f *FlagSet) Int64(name string, value int64, usage string) *int64
 
-// Int64は指定された名前、デフォルト値、使用方法の文字列を持つint64フラグを定義します。
-// 返り値は、フラグの値を保持するint64変数のアドレスです。
+// Int64 defines an int64 flag with specified name, default value, and usage string.
+// The return value is the address of an int64 variable that stores the value of the flag.
 func Int64(name string, value int64, usage string) *int64
 
-// UintVarは、指定された名前、デフォルト値、および使用方法の文字列を持つuintフラグを定義します。
-// 引数pは、フラグの値を格納するuint変数を指すポインタです。
+// UintVar defines a uint flag with specified name, default value, and usage string.
+// The argument p points to a uint variable in which to store the value of the flag.
 func (f *FlagSet) UintVar(p *uint, name string, value uint, usage string)
 
-// UintVarは指定された名前、デフォルト値、および使用法の文字列でuintフラグを定義します。
-// 引数pは、フラグの値を格納するuint変数を指すポインタです。
+// UintVar defines a uint flag with specified name, default value, and usage string.
+// The argument p points to a uint variable in which to store the value of the flag.
 func UintVar(p *uint, name string, value uint, usage string)
 
-// Uintは指定した名前、デフォルトの値、および使用方法の文字列を持つuintフラグを定義します。
-// 戻り値は、フラグの値を格納するuint変数のアドレスです。
+// Uint defines a uint flag with specified name, default value, and usage string.
+// The return value is the address of a uint variable that stores the value of the flag.
 func (f *FlagSet) Uint(name string, value uint, usage string) *uint
 
-// Uintは指定された名前、デフォルト値、使用法の文字列を持つuintフラグを定義します。
-// 返り値は、フラグの値を格納するuint変数のアドレスです。
+// Uint defines a uint flag with specified name, default value, and usage string.
+// The return value is the address of a uint variable that stores the value of the flag.
 func Uint(name string, value uint, usage string) *uint
 
-// Uint64Varは、指定された名前、デフォルト値、使用方法の文字列を持つuint64フラグを定義します。
-// 引数pは、フラグの値を格納するためのuint64変数を指すポインタです。
+// Uint64Var defines a uint64 flag with specified name, default value, and usage string.
+// The argument p points to a uint64 variable in which to store the value of the flag.
 func (f *FlagSet) Uint64Var(p *uint64, name string, value uint64, usage string)
 
-// Uint64Varは指定された名前、デフォルト値、および使用法の文字列でuint64フラグを定義します。
-// 引数pはフラグの値を格納するためのuint64変数を指すポインタです。
+// Uint64Var defines a uint64 flag with specified name, default value, and usage string.
+// The argument p points to a uint64 variable in which to store the value of the flag.
 func Uint64Var(p *uint64, name string, value uint64, usage string)
 
-// Uint64は指定された名前、デフォルト値、使用法のテキストでuint64のフラグを定義します。
-// 返り値は、フラグの値を保持するuint64変数のアドレスです。
+// Uint64 defines a uint64 flag with specified name, default value, and usage string.
+// The return value is the address of a uint64 variable that stores the value of the flag.
 func (f *FlagSet) Uint64(name string, value uint64, usage string) *uint64
 
-// Uint64は指定された名前、デフォルト値、使用法の文字列を持つuint64フラグを定義します。
-// 返り値は、フラグの値を格納するuint64変数のアドレスです。
+// Uint64 defines a uint64 flag with specified name, default value, and usage string.
+// The return value is the address of a uint64 variable that stores the value of the flag.
 func Uint64(name string, value uint64, usage string) *uint64
 
-// StringVarは指定された名前、デフォルト値、および使用法の文字列を持つ文字列フラグを定義します。
-// 引数pは、フラグの値を格納するための文字列変数を指すポインタです。
+// StringVar defines a string flag with specified name, default value, and usage string.
+// The argument p points to a string variable in which to store the value of the flag.
 func (f *FlagSet) StringVar(p *string, name string, value string, usage string)
 
-// StringVarは、指定された名前、デフォルト値、使用法の文字列を持つ文字列フラグを定義します。
-// 引数pは、フラグの値を格納する文字列変数を指すポインタです。
+// StringVar defines a string flag with specified name, default value, and usage string.
+// The argument p points to a string variable in which to store the value of the flag.
 func StringVar(p *string, name string, value string, usage string)
 
-// Stringは、指定された名前、デフォルト値、および使用法の文字列で文字列フラグを定義します。
-// 返り値は、フラグの値を格納する文字列変数のアドレスです。
+// String defines a string flag with specified name, default value, and usage string.
+// The return value is the address of a string variable that stores the value of the flag.
 func (f *FlagSet) String(name string, value string, usage string) *string
 
-// Stringは指定された名前、デフォルト値、使用方法のストリングフラグを定義します。
-// 返り値は、フラグの値を保存する文字列変数のアドレスです。
+// String defines a string flag with specified name, default value, and usage string.
+// The return value is the address of a string variable that stores the value of the flag.
 func String(name string, value string, usage string) *string
 
-// Float64Varは、指定した名前、デフォルト値、使用法の文字列を持つfloat64フラグを定義します。
-// 引数pは、フラグの値を格納するfloat64変数を指すポインタです。
+// Float64Var defines a float64 flag with specified name, default value, and usage string.
+// The argument p points to a float64 variable in which to store the value of the flag.
 func (f *FlagSet) Float64Var(p *float64, name string, value float64, usage string)
 
-// Float64Varは指定された名前、デフォルト値、使用法の文字列を持つfloat64フラグを定義します。
-// 引数pはフラグの値を保存するためのfloat64変数を指すポインタです。
+// Float64Var defines a float64 flag with specified name, default value, and usage string.
+// The argument p points to a float64 variable in which to store the value of the flag.
 func Float64Var(p *float64, name string, value float64, usage string)
 
-// Float64は指定された名前、デフォルト値、使用方法の文字列を持つfloat64フラグを定義します。
-// 返り値は、フラグの値を格納するfloat64変数のアドレスです。
+// Float64 defines a float64 flag with specified name, default value, and usage string.
+// The return value is the address of a float64 variable that stores the value of the flag.
 func (f *FlagSet) Float64(name string, value float64, usage string) *float64
 
-// Float64は指定された名前、デフォルト値、および使用法の文字列を持つfloat64フラグを定義します。
-// 戻り値は、フラグの値を格納するfloat64変数のアドレスです。
+// Float64 defines a float64 flag with specified name, default value, and usage string.
+// The return value is the address of a float64 variable that stores the value of the flag.
 func Float64(name string, value float64, usage string) *float64
 
-// DurationVarは、指定された名前、デフォルト値、使用方法を持つtime.Durationフラグを定義します。
-// 引数pは、フラグの値を保存するためのtime.Duration変数を指すポインタです。
-// このフラグは、time.ParseDurationで受け入れ可能な値を受け入れます。
+// DurationVar defines a time.Duration flag with specified name, default value, and usage string.
+// The argument p points to a time.Duration variable in which to store the value of the flag.
+// The flag accepts a value acceptable to time.ParseDuration.
 func (f *FlagSet) DurationVar(p *time.Duration, name string, value time.Duration, usage string)
 
-// DurationVarは、指定された名前、デフォルト値、使用方法の文字列を持つtime.Durationフラグを定義します。
-// 引数pは、フラグの値を格納するためのtime.Duration変数を指すポインタです。
-// フラグはtime.ParseDurationで受け入れ可能な値を受け付けます。
+// DurationVar defines a time.Duration flag with specified name, default value, and usage string.
+// The argument p points to a time.Duration variable in which to store the value of the flag.
+// The flag accepts a value acceptable to time.ParseDuration.
 func DurationVar(p *time.Duration, name string, value time.Duration, usage string)
 
-// Durationは指定された名前、デフォルト値、および使用法の文字列を持つtime.Durationフラグを定義します。
-// 戻り値は、フラグの値を格納するtime.Duration変数のアドレスです。
-// このフラグは、time.ParseDurationが受け入れ可能な値を受け入れます。
+// Duration defines a time.Duration flag with specified name, default value, and usage string.
+// The return value is the address of a time.Duration variable that stores the value of the flag.
+// The flag accepts a value acceptable to time.ParseDuration.
 func (f *FlagSet) Duration(name string, value time.Duration, usage string) *time.Duration
 
-// Durationは指定された名前、デフォルト値、および使用法の文字列を持つtime.Durationフラグを定義します。
-// 戻り値は、flagの値を格納するtime.Duration変数のアドレスです。
-// このフラグは、time.ParseDurationで受け入れ可能な値を受け入れます。
+// Duration defines a time.Duration flag with specified name, default value, and usage string.
+// The return value is the address of a time.Duration variable that stores the value of the flag.
+// The flag accepts a value acceptable to time.ParseDuration.
 func Duration(name string, value time.Duration, usage string) *time.Duration
 
-// TextVarは指定された名前、デフォルト値、使用方法のフラグを定義します。
-// 引数pは値を保持する変数へのポインタでなければならず、pはencoding.TextUnmarshalerを実装していなければなりません。
-// フラグが使用された場合、フラグの値はpのUnmarshalTextメソッドに渡されます。
-// デフォルト値の型はpの型と同じである必要があります。
+// TextVar defines a flag with a specified name, default value, and usage string.
+// The argument p must be a pointer to a variable that will hold the value
+// of the flag, and p must implement encoding.TextUnmarshaler.
+// If the flag is used, the flag value will be passed to p's UnmarshalText method.
+// The type of the default value must be the same as the type of p.
 func (f *FlagSet) TextVar(p encoding.TextUnmarshaler, name string, value encoding.TextMarshaler, usage string)
 
-// TextVarは指定された名前、デフォルト値、使用方法を持つフラグを定義します。
-// 引数pは値を保持する変数へのポインタでなければならず、pはencoding.TextUnmarshalerを実装しなければなりません。
-// フラグが使用される場合、フラグの値はpのUnmarshalTextメソッドに渡されます。
-// デフォルト値の型はpの型と同じでなければなりません。
+// TextVar defines a flag with a specified name, default value, and usage string.
+// The argument p must be a pointer to a variable that will hold the value
+// of the flag, and p must implement encoding.TextUnmarshaler.
+// If the flag is used, the flag value will be passed to p's UnmarshalText method.
+// The type of the default value must be the same as the type of p.
 func TextVar(p encoding.TextUnmarshaler, name string, value encoding.TextMarshaler, usage string)
 
-// Funcは指定された名前と使用方法の文字列でフラグを定義します。
-// フラグが見つかるたびに、fnがフラグの値で呼び出されます。
-// fnが非nilのエラーを返す場合、それはフラグ値の解析エラーとして扱われます。
+// Func defines a flag with the specified name and usage string.
+// Each time the flag is seen, fn is called with the value of the flag.
+// If fn returns a non-nil error, it will be treated as a flag value parsing error.
 func (f *FlagSet) Func(name, usage string, fn func(string) error)
 
-// Funcは指定された名前と使用法の文字列を持つフラグを定義します。
-// フラグが見つかるたびに、fnがフラグの値で呼び出されます。
-// もしfnが非nilのエラーを返す場合、それはフラグ値の解析エラーとして扱われます。
+// Func defines a flag with the specified name and usage string.
+// Each time the flag is seen, fn is called with the value of the flag.
+// If fn returns a non-nil error, it will be treated as a flag value parsing error.
 func Func(name, usage string, fn func(string) error)
 
-// BoolFuncは値を必要とせず、指定された名前と使用方法の文字列でフラグを定義します。
-// フラグが見つかる度に、fnがフラグの値と一緒に呼び出されます。
-// もしfnが非nilのエラーを返した場合、それはフラグ値の解析エラーとして扱われます。
+// BoolFunc defines a flag with the specified name and usage string without requiring values.
+// Each time the flag is seen, fn is called with the value of the flag.
+// If fn returns a non-nil error, it will be treated as a flag value parsing error.
 func (f *FlagSet) BoolFunc(name, usage string, fn func(string) error)
 
-// BoolFuncは値を必要とせず、指定した名前と使用方法のフラグを定義します。
-// フラグが表示されるたびに、fnがフラグの値で呼び出されます。
-// もしfnが非nilのエラーを返した場合、それはフラグの値のパースエラーとして扱われます。
+// BoolFunc defines a flag with the specified name and usage string without requiring values.
+// Each time the flag is seen, fn is called with the value of the flag.
+// If fn returns a non-nil error, it will be treated as a flag value parsing error.
 func BoolFunc(name, usage string, fn func(string) error)
 
-// Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常、[Value] という型の最初の引数で示され、[Value] のユーザー定義の実装を保持します。例えば、呼び出し元は、[Value] のメソッドを持つスライスにカンマ区切りの文字列を変換するフラグを作成することができます。特に、[Set] メソッドはカンマ区切りの文字列をスライスに分解します。
+// Var defines a flag with the specified name and usage string. The type and
+// value of the flag are represented by the first argument, of type [Value], which
+// typically holds a user-defined implementation of [Value]. For instance, the
+// caller could create a flag that turns a comma-separated string into a slice
+// of strings by giving the slice the methods of [Value]; in particular, [Set] would
+// decompose the comma-separated string into the slice.
 func (f *FlagSet) Var(value Value, name string, usage string)
 
-// Varは指定された名前と使用方法のフラグを定義します。フラグの型と値は、通常は [Value] 型の最初の引数で表されます。この [Value] 型は一般的に、ユーザー定義の [Value] 型の実装を保持します。たとえば、呼び出し側は、値のメソッドを持つスライスにコンマ区切りの文字列を変換するフラグを作成することができます。特に、[Set] はコンマ区切りの文字列をスライスに分解します。
+// Var defines a flag with the specified name and usage string. The type and
+// value of the flag are represented by the first argument, of type [Value], which
+// typically holds a user-defined implementation of [Value]. For instance, the
+// caller could create a flag that turns a comma-separated string into a slice
+// of strings by giving the slice the methods of [Value]; in particular, [Set] would
+// decompose the comma-separated string into the slice.
 func Var(value Value, name string, usage string)
 
-// Parseは引数リストからフラグ定義を解析します。コマンド名は含まれていてはいけません。
-// [FlagSet] 内のすべてのフラグが定義され、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
-// 返り値は、-helpまたは-hが設定されているが定義されていない場合、 [ErrHelp] になります。
+// Parse parses flag definitions from the argument list, which should not
+// include the command name. Must be called after all flags in the [FlagSet]
+// are defined and before flags are accessed by the program.
+// The return value will be [ErrHelp] if -help or -h were set but not defined.
 func (f *FlagSet) Parse(arguments []string) error
 
-// Parsedはf.Parseが呼ばれたかどうかを報告する。
+// Parsed reports whether f.Parse has been called.
 func (f *FlagSet) Parsed() bool
 
-// Parseは [os.Args][1:] からコマンドラインフラグを解析します。全てのフラグが定義された後、プログラムによってフラグにアクセスされる前に呼び出す必要があります。
+// Parse parses the command-line flags from [os.Args][1:]. Must be called
+// after all flags are defined and before flags are accessed by the program.
 func Parse()
 
-// Parsedは、コマンドラインフラグが解析されたかどうかを示します。
+// Parsed reports whether the command-line flags have been parsed.
 func Parsed() bool
 
-// CommandLineは [os.Args] から解析されたデフォルトのコマンドラインフラグのセットです。
-// [BoolVar]、[Arg] などのトップレベルの関数は、CommandLineのメソッドのラッパーです。
+// CommandLine is the default set of command-line flags, parsed from [os.Args].
+// The top-level functions such as [BoolVar], [Arg], and so on are wrappers for the
+// methods of CommandLine.
 var CommandLine *FlagSet
 
-// NewFlagSetは指定された名前とエラーハンドリングプロパティを持つ新しい空のフラグセットを返します。名前が空でない場合、デフォルトの使用方法メッセージとエラーメッセージに表示されます。
+// NewFlagSet returns a new, empty flag set with the specified name and
+// error handling property. If the name is not empty, it will be printed
+// in the default usage message and in error messages.
 func NewFlagSet(name string, errorHandling ErrorHandling) *FlagSet
 
-// Initはフラグセットの名前とエラーハンドリングプロパティを設定します。
-// デフォルトでは、ゼロ値の [FlagSet] は空の名前と [ContinueOnError] のエラーハンドリングポリシーを使用します。
+// Init sets the name and error handling property for a flag set.
+// By default, the zero [FlagSet] uses an empty name and the
+// [ContinueOnError] error handling policy.
 func (f *FlagSet) Init(name string, errorHandling ErrorHandling)

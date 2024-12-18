@@ -13,29 +13,29 @@ import (
 	"github.com/shogo82148/std/cmd/internal/edit"
 )
 
-// Blockは解析で記録する基本ブロックに関する情報を表します。
-// 注：基本ブロックの定義は制御構造に基づいています。&&や||は分割しません。
-// 分割することはできますが、重要ではないと思われますので、手間をかける価値はありません。
+// Block represents the information about a basic block to be recorded in the analysis.
+// Note: Our definition of basic block is based on control structures; we don't break
+// apart && and ||. We could but it doesn't seem important enough to bother.
 type Block struct {
 	startByte token.Pos
 	endByte   token.Pos
 	numStmt   int
 }
 
-// パッケージはパッケージ固有の状態を保持します。
+// Package holds package-specific state.
 type Package struct {
 	mdb            *encodemeta.CoverageMetaDataBuilder
 	counterLengths []int
 }
 
-// 関数は関数特有の状態を持ちます。
+// Function holds func-specific state.
 type Func struct {
 	units      []coverage.CoverableUnit
 	counterVar string
 }
 
-// Fileはパーサーで使用されるファイルの状態のラッパーです。
-// 基本的なパースツリーウォーカーは、このタイプのメソッドです。
+// File is a wrapper for the state of a file used in the parser.
+// The basic parse tree walker is a method of this type.
 type File struct {
 	fset    *token.FileSet
 	name    string
@@ -48,5 +48,5 @@ type File struct {
 	pkg     *Package
 }
 
-// Visitはast.Visitorインターフェースを実装します。
+// Visit implements the ast.Visitor interface.
 func (f *File) Visit(node ast.Node) ast.Visitor

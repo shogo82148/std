@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Goブートストラップバージョンを使用してツールチェーンをビルドします。
+// Build toolchain using Go bootstrap version.
 //
-// 一般的な戦略は、必要なソースファイルを新しいGOPATHワークスペースにコピーし、
-// 適切にインポートパスを調整して、
-// Goブートストラップツールチェーンのコマンドを使用してそれらのソースをビルドし、
-// 次にバイナリをコピーすることです。
+// The general strategy is to copy the source files we need into
+// a new GOPATH workspace, adjust import paths appropriately,
+// invoke the Go bootstrap toolchains go command to build those sources,
+// and then copy the binaries back.
 
 package main

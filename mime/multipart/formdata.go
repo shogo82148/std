@@ -10,29 +10,33 @@ import (
 	"github.com/shogo82148/std/net/textproto"
 )
 
-// ErrMessageTooLargeは、メッセージフォームデータが処理するには大きすぎる場合、ReadFormによって返されます。
+// ErrMessageTooLarge is returned by ReadForm if the message form
+// data is too large to be processed.
 var ErrMessageTooLarge = errors.New("multipart: message too large")
 
-// ReadFormは、パートのContent-Dispositionが"form-data"であるマルチパートメッセージ全体を解析します。
-// メモリには最大でmaxMemoryバイト + 10MB（非ファイルパート用に予約）を格納します。
-// メモリに格納できないファイルパートは、一時ファイルとしてディスクに格納されます。
-// すべての非ファイルパートをメモリに格納できない場合、[ErrMessageTooLarge] を返します。
+// ReadForm parses an entire multipart message whose parts have
+// a Content-Disposition of "form-data".
+// It stores up to maxMemory bytes + 10MB (reserved for non-file parts)
+// in memory. File parts which can't be stored in memory will be stored on
+// disk in temporary files.
+// It returns [ErrMessageTooLarge] if all non-file parts can't be stored in
+// memory.
 func (r *Reader) ReadForm(maxMemory int64) (*Form, error)
 
-// Formは解析されたマルチパートフォームです。
-// ファイルパートはメモリまたはディスクに保存され、
-// [*FileHeader] のOpenメソッドを通じてアクセス可能です。
-// Valueパートは文字列として保存されます。
-// 両方ともフィールド名でキー化されます。
+// Form is a parsed multipart form.
+// Its File parts are stored either in memory or on disk,
+// and are accessible via the [*FileHeader]'s Open method.
+// Its Value parts are stored as strings.
+// Both are keyed by field name.
 type Form struct {
 	Value map[string][]string
 	File  map[string][]*FileHeader
 }
 
-// RemoveAllは、[Form] に関連付けられた一時ファイルをすべて削除します。
+// RemoveAll removes any temporary files associated with a [Form].
 func (f *Form) RemoveAll() error
 
-// FileHeaderは、マルチパートリクエストのファイル部分を記述します。
+// A FileHeader describes a file part of a multipart request.
 type FileHeader struct {
 	Filename string
 	Header   textproto.MIMEHeader
@@ -44,12 +48,12 @@ type FileHeader struct {
 	tmpshared bool
 }
 
-// Openは、[FileHeader] に関連付けられたFileを開き、それを返します。
+// Open opens and returns the [FileHeader]'s associated File.
 func (fh *FileHeader) Open() (File, error)
 
-// Fileは、マルチパートメッセージのファイル部分にアクセスするためのインターフェースです。
-// その内容はメモリに保存されるか、またはディスクに保存されます。
-// ディスクに保存されている場合、Fileの基礎となる具体的な型は*os.Fileになります。
+// File is an interface to access the file part of a multipart message.
+// Its contents may be either stored in memory or on disk.
+// If stored on disk, the File's underlying concrete type will be an *os.File.
 type File interface {
 	io.Reader
 	io.ReaderAt

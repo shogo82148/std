@@ -4,14 +4,14 @@
 
 package cmplx
 
-// Sinはxの正弦を返します。
+// Sin returns the sine of x.
 func Sin(x complex128) complex128
 
-// Sinhはxの双曲線正弦を返します。
+// Sinh returns the hyperbolic sine of x.
 func Sinh(x complex128) complex128
 
-// Cosはxの余弦を返します。
+// Cos returns the cosine of x.
 func Cos(x complex128) complex128
 
-// Coshはxの双曲線余弦を返します。
+// Cosh returns the hyperbolic cosine of x.
 func Cosh(x complex128) complex128

@@ -10,8 +10,6 @@ func Lchown(path string, uid int, gid int) (err error)
 
 func Lstat(path string, stat *Stat_t) (err error)
 
-func Getrlimit(resource int, rlim *Rlimit) (err error)
-
 func Seek(fd int, offset int64, whence int) (newoffset int64, err error)
 
 func Listen(s int, n int) (err error)

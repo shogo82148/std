@@ -4,10 +4,10 @@
 
 package math
 
-// Log1pは引数xの1を加えたものの自然対数を返します。
-// xがゼロに近い場合、 [Log](1 + x)よりも正確です。
+// Log1p returns the natural logarithm of 1 plus its argument x.
+// It is more accurate than [Log](1 + x) when x is near zero.
 //
-// 特殊な場合は次のとおりです：
+// Special cases are:
 //
 //	Log1p(+Inf) = +Inf
 //	Log1p(±0) = ±0

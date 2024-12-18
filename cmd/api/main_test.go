@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このパッケージは、一連のGoパッケージのエクスポートされたAPIを計算します。
-// これは単なるテストであり、コマンドでも実用的にインポートできるパッケージでもありません。
+// This package computes the exported API of a set of Go packages.
+// It is only a test, not a command, nor a usefully importable package.
 
 package main

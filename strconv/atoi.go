@@ -8,13 +8,13 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// ErrRangeは、値が対象の型の範囲外であることを示します。
+// ErrRange indicates that a value is out of range for the target type.
 var ErrRange = errors.New("value out of range")
 
-// ErrSyntaxは、値がターゲットの型の正しい構文ではないことを示します。
+// ErrSyntax indicates that a value does not have the right syntax for the target type.
 var ErrSyntax = errors.New("invalid syntax")
 
-// NumErrorは変換に失敗したことを記録します。
+// A NumError records a failed conversion.
 type NumError struct {
 	Func string
 	Num  string
@@ -25,24 +25,40 @@ func (e *NumError) Error() string
 
 func (e *NumError) Unwrap() error
 
-// IntSizeはintまたはuint値のビットサイズです。
+// IntSize is the size in bits of an int or uint value.
 const IntSize = intSize
 
-// ParseUintは [ParseInt] と同じですが、符号の接頭辞は許可されていません。
+// ParseUint is like [ParseInt] but for unsigned numbers.
+//
+// A sign prefix is not permitted.
 func ParseUint(s string, base int, bitSize int) (uint64, error)
 
-// ParseIntは与えられた基数（0、2から36）とビットサイズ（0から64）で文字列sを解釈し、対応する値iを返します。
+// ParseInt interprets a string s in the given base (0, 2 to 36) and
+// bit size (0 to 64) and returns the corresponding value i.
 //
-// 文字列は先頭に符号 "+" または "-" を持つことができます。
+// The string may begin with a leading sign: "+" or "-".
 //
-// 基数引数が0の場合、真の基数は符号の後に続く文字列の接頭辞で推測されます（存在する場合）："0b"の場合は2、"0"または"0o"の場合は8、"0x"の場合は16、それ以外の場合は10です。また、基数0の場合だけアンダースコア文字が許可されます。これはGoの構文で定義されている[整数リテラル]です。
+// If the base argument is 0, the true base is implied by the string's
+// prefix following the sign (if present): 2 for "0b", 8 for "0" or "0o",
+// 16 for "0x", and 10 otherwise. Also, for argument base 0 only,
+// underscore characters are permitted as defined by the Go syntax for
+// [integer literals].
 //
-// bitSize引数は結果が適合する必要のある整数型を指定します。ビットサイズ0、8、16、32、64はint、int8、int16、int32、int64に対応します。bitSizeが0未満または64を超える場合、エラーが返されます。
+// The bitSize argument specifies the integer type
+// that the result must fit into. Bit sizes 0, 8, 16, 32, and 64
+// correspond to int, int8, int16, int32, and int64.
+// If bitSize is below 0 or above 64, an error is returned.
 //
-// ParseIntが返すエラーは具体的な型 [*NumError] を持ち、err.Num = sとなります。sが空であるか無効な数字を含んでいる場合、err.Err = [ErrSyntax] となり返される値は0です。sに対応する値を指定のサイズの符号付き整数で表現することができない場合、err.Err = [ErrRange] となり、返される値は適切なbitSizeと符号の最大の大きさの整数です。
+// The errors that ParseInt returns have concrete type [*NumError]
+// and include err.Num = s. If s is empty or contains invalid
+// digits, err.Err = [ErrSyntax] and the returned value is 0;
+// if the value corresponding to s cannot be represented by a
+// signed integer of the given size, err.Err = [ErrRange] and the
+// returned value is the maximum magnitude integer of the
+// appropriate bitSize and sign.
 //
-// [整数リテラル]: https://go.dev/ref/spec#Integer_literals
+// [integer literals]: https://go.dev/ref/spec#Integer_literals
 func ParseInt(s string, base int, bitSize int) (i int64, err error)
 
-// AtoiはParseInt(s, 10, 0)と同じであり、int型に変換されます。
+// Atoi is equivalent to ParseInt(s, 10, 0), converted to type int.
 func Atoi(s string) (int, error)

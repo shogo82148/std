@@ -2,40 +2,44 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// astパッケージはGoのパッケージの構文木を表すために使用される型を宣言します。
+// Package ast declares the types used to represent syntax trees for Go
+// packages.
 package ast
 
 import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// すべてのノードタイプはNodeインターフェースを実装します。
+// All node types implement the Node interface.
 type Node interface {
 	Pos() token.Pos
 	End() token.Pos
 }
 
-// すべての式のノードは、Exprインターフェースを実装しています。
+// All expression nodes implement the Expr interface.
 type Expr interface {
 	Node
 	exprNode()
 }
 
-// すべてのステートメントノードは、Stmtインターフェースを実装しています。
+// All statement nodes implement the Stmt interface.
 type Stmt interface {
 	Node
 	stmtNode()
 }
 
-// すべての宣言ノードはDeclインターフェースを実装します。
+// All declaration nodes implement the Decl interface.
 type Decl interface {
 	Node
 	declNode()
 }
 
-// Commentノードは、単一の//-スタイルまたは/*-スタイルのコメントを表します。
+// A Comment node represents a single //-style or /*-style comment.
 //
-// Textフィールドには、ソースに存在した可能性のあるキャリッジリターン（\r）を含まないコメントテキストが含まれます。コメントの終了位置はlen（Text）を使用して計算されるため、[Comment.End] によって報告される位置は、キャリッジリターンを含むコメントの真のソース終了位置と一致しません。
+// The Text field contains the comment text without carriage returns (\r) that
+// may have been present in the source. Because a comment's end position is
+// computed using len(Text), the position reported by [Comment.End] does not match the
+// true source end position for comments containing carriage returns.
 type Comment struct {
 	Slash token.Pos
 	Text  string
@@ -44,7 +48,8 @@ type Comment struct {
 func (c *Comment) Pos() token.Pos
 func (c *Comment) End() token.Pos
 
-// CommentGroupは、他のトークンや空の行がないコメントのシーケンスを表します。
+// A CommentGroup represents a sequence of comments
+// with no other tokens and no empty lines between.
 type CommentGroup struct {
 	List []*Comment
 }
@@ -52,17 +57,19 @@ type CommentGroup struct {
 func (g *CommentGroup) Pos() token.Pos
 func (g *CommentGroup) End() token.Pos
 
-// Textはコメントのテキストを返します。
-// コメントマーカー(//、/*、および*/)、行コメントの最初のスペース、および
-// 先行および後続の空行は除去されます。
-// "//line"や"//go:noinline"のようなコメントディレクティブも削除されます。
-// 複数の空行は1つに減らされ、行の末尾のスペースはトリムされます。
-// 結果が空でない場合、改行で終わります。
+// Text returns the text of the comment.
+// Comment markers (//, /*, and */), the first space of a line comment, and
+// leading and trailing empty lines are removed.
+// Comment directives like "//line" and "//go:noinline" are also removed.
+// Multiple empty lines are reduced to one, and trailing space on lines is trimmed.
+// Unless the result is empty, it is newline-terminated.
 func (g *CommentGroup) Text() string
 
-// Fieldは、struct型のフィールド宣言リスト、インタフェース型のメソッドリスト、またはシグネチャのパラメータ/結果の宣言を表します。
-// [Field.Names] は、無名のパラメータ（型のみを含むパラメータリスト）や埋め込まれたstructフィールドの場合はnilです。
-// 後者の場合、フィールド名は型名です。
+// A Field represents a Field declaration list in a struct type,
+// a method list in an interface type, or a parameter/result declaration
+// in a signature.
+// [Field.Names] is nil for unnamed parameters (parameter lists which only contain types)
+// and embedded struct fields. In the latter case, the field name is the type name.
 type Field struct {
 	Doc     *CommentGroup
 	Names   []*Ident
@@ -75,7 +82,8 @@ func (f *Field) Pos() token.Pos
 
 func (f *Field) End() token.Pos
 
-// FieldList は、かっこ、中かっこ、又は角かっこで囲まれたフィールドのリストを表します。
+// A FieldList represents a list of Fields, enclosed by parentheses,
+// curly braces, or square brackets.
 type FieldList struct {
 	Opening token.Pos
 	List    []*Field
@@ -86,44 +94,61 @@ func (f *FieldList) Pos() token.Pos
 
 func (f *FieldList) End() token.Pos
 
-// NumFieldsは [FieldList] によって表されるパラメータまたは構造体のフィールドの数を返します。
+// NumFields returns the number of parameters or struct fields represented by a [FieldList].
 func (f *FieldList) NumFields() int
 
-// 式は、以下の具体的な式ノードを1つ以上含む木で表されます。
+// An expression is represented by a tree consisting of one
+// or more of the following concrete expression nodes.
 type (
-
-	// BadExprノードは、正しい式ノードを作成できない構文エラーを含む式のプレースホルダーです。
+	// A BadExpr node is a placeholder for an expression containing
+	// syntax errors for which a correct expression node cannot be
+	// created.
+	//
 	BadExpr struct {
 		From, To token.Pos
 	}
 
-	// Identノードは、識別子を表します。
+	// An Ident node represents an identifier.
 	Ident struct {
 		NamePos token.Pos
 		Name    string
 		Obj     *Object
 	}
 
-	// Ellipsis（省略符）ノードは、パラメータリスト内の "..." 型または配列型の "..." 長さを表します。
+	// An Ellipsis node stands for the "..." type in a
+	// parameter list or the "..." length in an array type.
+	//
 	Ellipsis struct {
 		Ellipsis token.Pos
 		Elt      Expr
 	}
 
-	// BasicLitノードは基本型のリテラルを表します。
+	// A BasicLit node represents a literal of basic type.
+	//
+	// Note that for the CHAR and STRING kinds, the literal is stored
+	// with its quotes. For example, for a double-quoted STRING, the
+	// first and the last rune in the Value field will be ". The
+	// [strconv.Unquote] and [strconv.UnquoteChar] functions can be
+	// used to unquote STRING and CHAR values, respectively.
+	//
+	// For raw string literals (Kind == token.STRING && Value[0] == '`'),
+	// the Value field contains the string text without carriage returns (\r) that
+	// may have been present in the source. Because the end position is
+	// computed using len(Value), the position reported by [BasicLit.End] does not match the
+	// true source end position for raw string literals containing carriage returns.
 	BasicLit struct {
 		ValuePos token.Pos
 		Kind     token.Token
 		Value    string
 	}
 
-	// FuncLitノードは関数リテラルを表します。
+	// A FuncLit node represents a function literal.
 	FuncLit struct {
 		Type *FuncType
 		Body *BlockStmt
 	}
 
-	// CompositeLitノードは複合リテラルを表します。
+	// A CompositeLit node represents a composite literal.
 	CompositeLit struct {
 		Type       Expr
 		Lbrace     token.Pos
@@ -132,20 +157,20 @@ type (
 		Incomplete bool
 	}
 
-	// ParenExprノードは、括弧で囲まれた式を表します。
+	// A ParenExpr node represents a parenthesized expression.
 	ParenExpr struct {
 		Lparen token.Pos
 		X      Expr
 		Rparen token.Pos
 	}
 
-	// SelectorExprノードは、セレクターに続く式を表します。
+	// A SelectorExpr node represents an expression followed by a selector.
 	SelectorExpr struct {
 		X   Expr
 		Sel *Ident
 	}
 
-	// IndexExprノードは、インデックスに続く式を表します。
+	// An IndexExpr node represents an expression followed by an index.
 	IndexExpr struct {
 		X      Expr
 		Lbrack token.Pos
@@ -153,7 +178,8 @@ type (
 		Rbrack token.Pos
 	}
 
-	// IndexListExprノードは、複数のインデックスで続く式を表します。
+	// An IndexListExpr node represents an expression followed by multiple
+	// indices.
 	IndexListExpr struct {
 		X       Expr
 		Lbrack  token.Pos
@@ -161,7 +187,7 @@ type (
 		Rbrack  token.Pos
 	}
 
-	// SliceExprノードはスライスのインデックスが続いた式を表します。
+	// A SliceExpr node represents an expression followed by slice indices.
 	SliceExpr struct {
 		X      Expr
 		Lbrack token.Pos
@@ -172,7 +198,9 @@ type (
 		Rbrack token.Pos
 	}
 
-	// TypeAssertExprノードは、式の後に型アサーションが続くことを表します。
+	// A TypeAssertExpr node represents an expression followed by a
+	// type assertion.
+	//
 	TypeAssertExpr struct {
 		X      Expr
 		Lparen token.Pos
@@ -181,7 +209,6 @@ type (
 	}
 
 	// A CallExpr node represents an expression followed by an argument list.
-	// CallExprノードは、式の後に引数リストが続くことを表します。
 	CallExpr struct {
 		Fun      Expr
 		Lparen   token.Pos
@@ -190,22 +217,24 @@ type (
 		Rparen   token.Pos
 	}
 
-	// StarExprノードは、"*" Expressionの形式の式を表します。
-	// 意味的には、単項"*"式またはポインタータイプのいずれかになります。
+	// A StarExpr node represents an expression of the form "*" Expression.
+	// Semantically it could be a unary "*" expression, or a pointer type.
+	//
 	StarExpr struct {
 		Star token.Pos
 		X    Expr
 	}
 
-	// UnaryExprノードは単項式を表します。
-	// 単項の "*" 式はStarExprノードを介して表されます。
+	// A UnaryExpr node represents a unary expression.
+	// Unary "*" expressions are represented via StarExpr nodes.
+	//
 	UnaryExpr struct {
 		OpPos token.Pos
 		Op    token.Token
 		X     Expr
 	}
 
-	// BinaryExprノードはバイナリ式を表します。
+	// A BinaryExpr node represents a binary expression.
 	BinaryExpr struct {
 		X     Expr
 		OpPos token.Pos
@@ -213,7 +242,9 @@ type (
 		Y     Expr
 	}
 
-	// KeyValueExprノードは、コンポジットリテラル内の(key: value)のペアを表します。
+	// A KeyValueExpr node represents (key : value) pairs
+	// in composite literals.
+	//
 	KeyValueExpr struct {
 		Key   Expr
 		Colon token.Pos
@@ -221,6 +252,8 @@ type (
 	}
 )
 
+// The direction of a channel type is indicated by a bit
+// mask including one or both of the following constants.
 type ChanDir int
 
 const (
@@ -228,23 +261,25 @@ const (
 	RECV
 )
 
-// 型は、次の型固有の式ノードの1つ以上からなるツリーで表されます。
+// A type is represented by a tree consisting of one
+// or more of the following type-specific expression
+// nodes.
 type (
-	// ArrayTypeノードは、配列またはスライスの型を表します。
+	// An ArrayType node represents an array or slice type.
 	ArrayType struct {
 		Lbrack token.Pos
 		Len    Expr
 		Elt    Expr
 	}
 
-	// StructTypeノードはstruct型を表します。
+	// A StructType node represents a struct type.
 	StructType struct {
 		Struct     token.Pos
 		Fields     *FieldList
 		Incomplete bool
 	}
 
-	// FuncTypeノードは関数の型を表します。
+	// A FuncType node represents a function type.
 	FuncType struct {
 		Func       token.Pos
 		TypeParams *FieldList
@@ -252,21 +287,21 @@ type (
 		Results    *FieldList
 	}
 
-	// InterfaceTypeノードは、インターフェースの型を表します。
+	// An InterfaceType node represents an interface type.
 	InterfaceType struct {
 		Interface  token.Pos
 		Methods    *FieldList
 		Incomplete bool
 	}
 
-	// MapType ノードはマップ型を表します。
+	// A MapType node represents a map type.
 	MapType struct {
 		Map   token.Pos
 		Key   Expr
 		Value Expr
 	}
 
-	// ChanTypeノードは、チャネルの型を表します。
+	// A ChanType node represents a channel type.
 	ChanType struct {
 		Begin token.Pos
 		Arrow token.Pos
@@ -327,66 +362,74 @@ func (x *InterfaceType) End() token.Pos
 func (x *MapType) End() token.Pos
 func (x *ChanType) End() token.Pos
 
-// NewIdentは位置情報のない新しい [Ident] を作成します。
-// Goパーサー以外のコードで生成されたASTに便利です。
+// NewIdent creates a new [Ident] without position.
+// Useful for ASTs generated by code other than the Go parser.
 func NewIdent(name string) *Ident
 
-// IsExportedは、名前が大文字で始まるかどうかを報告します。
+// IsExported reports whether name starts with an upper-case letter.
 func IsExported(name string) bool
 
-// IsExported は、id が大文字で始まるかどうかを報告します。
+// IsExported reports whether id starts with an upper-case letter.
 func (id *Ident) IsExported() bool
 
 func (id *Ident) String() string
 
-// 文は、以下の具象文ノードの1つ以上からなるツリーで表されます。
+// A statement is represented by a tree consisting of one
+// or more of the following concrete statement nodes.
 type (
-
-	// BadStmtノードは、構文エラーを含むステートメントのプレースホルダーであり、
-	// 正しいステートメントノードを作成することができません。
+	// A BadStmt node is a placeholder for statements containing
+	// syntax errors for which no correct statement nodes can be
+	// created.
+	//
 	BadStmt struct {
 		From, To token.Pos
 	}
 
-	// DeclStmtノードは、文リスト内の宣言を表します。
+	// A DeclStmt node represents a declaration in a statement list.
 	DeclStmt struct {
 		Decl Decl
 	}
 
-	// EmptyStmtノードは、空の文を表します。
-	// 空の文の「位置」は、直後の（明示的または暗黙の）セミコロンの位置です。
+	// An EmptyStmt node represents an empty statement.
+	// The "position" of the empty statement is the position
+	// of the immediately following (explicit or implicit) semicolon.
+	//
 	EmptyStmt struct {
 		Semicolon token.Pos
 		Implicit  bool
 	}
 
-	// LabeledStmtノードは、ラベル付き文を表します。
+	// A LabeledStmt node represents a labeled statement.
 	LabeledStmt struct {
 		Label *Ident
 		Colon token.Pos
 		Stmt  Stmt
 	}
 
-	// ExprStmtノードは、文リストの中で単独での式を表します。
+	// An ExprStmt node represents a (stand-alone) expression
+	// in a statement list.
+	//
 	ExprStmt struct {
 		X Expr
 	}
 
-	// SendStmtノードは、送信文を表します。
+	// A SendStmt node represents a send statement.
 	SendStmt struct {
 		Chan  Expr
 		Arrow token.Pos
 		Value Expr
 	}
 
-	// IncDecStmtノードは、増分または減分文を表します。
+	// An IncDecStmt node represents an increment or decrement statement.
 	IncDecStmt struct {
 		X      Expr
 		TokPos token.Pos
 		Tok    token.Token
 	}
 
-	// AssignStmt ノードは、代入または短い変数宣言を表します。
+	// An AssignStmt node represents an assignment or
+	// a short variable declaration.
+	//
 	AssignStmt struct {
 		Lhs    []Expr
 		TokPos token.Pos
@@ -394,39 +437,41 @@ type (
 		Rhs    []Expr
 	}
 
-	// GoStmtノードは、go文を表します。
+	// A GoStmt node represents a go statement.
 	GoStmt struct {
 		Go   token.Pos
 		Call *CallExpr
 	}
 
-	// DeferStmtノードは、defer文を表します。
+	// A DeferStmt node represents a defer statement.
 	DeferStmt struct {
 		Defer token.Pos
 		Call  *CallExpr
 	}
 
-	// ReturnStmtノードは、return文を表します。
+	// A ReturnStmt node represents a return statement.
 	ReturnStmt struct {
 		Return  token.Pos
 		Results []Expr
 	}
 
-	// BranchStmtノードはbreak、continue、goto、またはfallthroughステートメントを表します。
+	// A BranchStmt node represents a break, continue, goto,
+	// or fallthrough statement.
+	//
 	BranchStmt struct {
 		TokPos token.Pos
 		Tok    token.Token
 		Label  *Ident
 	}
 
-	// BlockStmtノードは中括弧で囲まれた文リストを表します。
+	// A BlockStmt node represents a braced statement list.
 	BlockStmt struct {
 		Lbrace token.Pos
 		List   []Stmt
 		Rbrace token.Pos
 	}
 
-	// IfStmtノードはif文を表します。
+	// An IfStmt node represents an if statement.
 	IfStmt struct {
 		If   token.Pos
 		Init Stmt
@@ -435,7 +480,7 @@ type (
 		Else Stmt
 	}
 
-	// CaseClauseは式や型switch文のケースを表します。
+	// A CaseClause represents a case of an expression or type switch statement.
 	CaseClause struct {
 		Case  token.Pos
 		List  []Expr
@@ -443,7 +488,7 @@ type (
 		Body  []Stmt
 	}
 
-	// SwitchStmtノードは、式を使ったスイッチ文を表します。
+	// A SwitchStmt node represents an expression switch statement.
 	SwitchStmt struct {
 		Switch token.Pos
 		Init   Stmt
@@ -451,7 +496,7 @@ type (
 		Body   *BlockStmt
 	}
 
-	// TypeSwitchStmtノードは、型スイッチ文を表します。
+	// A TypeSwitchStmt node represents a type switch statement.
 	TypeSwitchStmt struct {
 		Switch token.Pos
 		Init   Stmt
@@ -459,7 +504,7 @@ type (
 		Body   *BlockStmt
 	}
 
-	// CommClauseノードは、select文のcaseを表します。
+	// A CommClause node represents a case of a select statement.
 	CommClause struct {
 		Case  token.Pos
 		Comm  Stmt
@@ -467,13 +512,13 @@ type (
 		Body  []Stmt
 	}
 
-	// SelectStmtノードは、select文を表します。
+	// A SelectStmt node represents a select statement.
 	SelectStmt struct {
 		Select token.Pos
 		Body   *BlockStmt
 	}
 
-	// ForStmt は for 文を表します。
+	// A ForStmt represents a for statement.
 	ForStmt struct {
 		For  token.Pos
 		Init Stmt
@@ -482,7 +527,7 @@ type (
 		Body *BlockStmt
 	}
 
-	// RangeStmtはrange節を持つfor文を表します。
+	// A RangeStmt represents a for statement with a range clause.
 	RangeStmt struct {
 		For        token.Pos
 		Key, Value Expr
@@ -546,15 +591,16 @@ func (s *SelectStmt) End() token.Pos
 func (s *ForStmt) End() token.Pos
 func (s *RangeStmt) End() token.Pos
 
-// Spec ノードは、単一の（括弧で囲まれていない）import、定数、型、または変数の宣言を表します。
+// A Spec node represents a single (non-parenthesized) import,
+// constant, type, or variable declaration.
 type (
-	// Spec型は、*ImportSpec、*ValueSpec、および*TypeSpecのいずれかを表します。
+	// The Spec type stands for any of *ImportSpec, *ValueSpec, and *TypeSpec.
 	Spec interface {
 		Node
 		specNode()
 	}
 
-	// ImportSpecノードは1つのパッケージのインポートを表します。
+	// An ImportSpec node represents a single package import.
 	ImportSpec struct {
 		Doc     *CommentGroup
 		Name    *Ident
@@ -563,8 +609,9 @@ type (
 		EndPos  token.Pos
 	}
 
-	// ValueSpecノードは定数または変数宣言を表します。
-	// (ConstSpecまたはVarSpecプロダクション)。
+	// A ValueSpec node represents a constant or variable declaration
+	// (ConstSpec or VarSpec production).
+	//
 	ValueSpec struct {
 		Doc     *CommentGroup
 		Names   []*Ident
@@ -573,7 +620,7 @@ type (
 		Comment *CommentGroup
 	}
 
-	// TypeSpecノードは、型の宣言を表します (TypeSpecの生成)。
+	// A TypeSpec node represents a type declaration (TypeSpec production).
 	TypeSpec struct {
 		Doc        *CommentGroup
 		Name       *Ident
@@ -595,22 +642,27 @@ func (s *ValueSpec) End() token.Pos
 
 func (s *TypeSpec) End() token.Pos
 
-// 宣言は次の宣言ノードのいずれかによって表されます。
+// A declaration is represented by one of the following declaration nodes.
 type (
-
-	// BadDeclノードは、正しい宣言ノードを作成できない構文エラーを含む宣言のプレースホルダです。
+	// A BadDecl node is a placeholder for a declaration containing
+	// syntax errors for which a correct declaration node cannot be
+	// created.
+	//
 	BadDecl struct {
 		From, To token.Pos
 	}
 
-	// GenDeclノード（ジェネリック宣言ノード）は、import、constant、type、またはvariableの宣言を表します。有効なLparenの位置（Lparen.IsValid()）は、括弧で囲まれた宣言を示します。
+	// A GenDecl node (generic declaration node) represents an import,
+	// constant, type or variable declaration. A valid Lparen position
+	// (Lparen.IsValid()) indicates a parenthesized declaration.
 	//
-	// Tokの値とSpecs要素の型の関係：
+	// Relationship between Tok value and Specs element type:
 	//
 	//	token.IMPORT  *ImportSpec
 	//	token.CONST   *ValueSpec
 	//	token.TYPE    *TypeSpec
 	//	token.VAR     *ValueSpec
+	//
 	GenDecl struct {
 		Doc    *CommentGroup
 		TokPos token.Pos
@@ -620,7 +672,7 @@ type (
 		Rparen token.Pos
 	}
 
-	// FuncDeclノードは関数宣言を表します。
+	// A FuncDecl node represents a function declaration.
 	FuncDecl struct {
 		Doc  *CommentGroup
 		Recv *FieldList
@@ -639,18 +691,24 @@ func (d *GenDecl) End() token.Pos
 
 func (d *FuncDecl) End() token.Pos
 
-// FileノードはGoのソースファイルを表します。
+// A File node represents a Go source file.
 //
-// Commentsリストには、出現順にソースファイル内のすべてのコメントが含まれており、
-// DocとCommentフィールドを介して他のノードから指し示されるコメントも含まれます。
+// The Comments list contains all comments in the source file in order of
+// appearance, including the comments that are pointed to from other nodes
+// via Doc and Comment fields.
 //
-// コメントを含むソースコードを正しく出力するために（パッケージgo/formatとgo/printerを使用して）特別な注意が必要です：
-// コメントは、位置に基づいてトークンの間に挿入されます。構文木ノードが削除または移動される場合、
-// その近くにある関連するコメントも削除（ [File.Comments] リストから）またはそれらの位置を更新して移動しなければなりません。
-// これらの操作の一部を容易にするために、[CommentMap] を使用することもできます。
+// For correct printing of source code containing comments (using packages
+// go/format and go/printer), special care must be taken to update comments
+// when a File's syntax tree is modified: For printing, comments are interspersed
+// between tokens based on their position. If syntax tree nodes are
+// removed or moved, relevant comments in their vicinity must also be removed
+// (from the [File.Comments] list) or moved accordingly (by updating their
+// positions). A [CommentMap] may be used to facilitate some of these operations.
 //
-// コメントがノードとどのように関連付けられるかは、操作するプログラムによる構文木の解釈に依存します：
-// Docと [Comment] コメント以外の残りのコメントは、「free-floating」です（イシュー [#18593]、[#20744] も参照）。
+// Whether and how a comment is associated with a node depends on the
+// interpretation of the syntax tree by the manipulating program: except for Doc
+// and [Comment] comments directly associated with nodes, the remaining comments
+// are "free-floating" (see also issues [#18593], [#20744]).
 //
 // [#18593]: https://go.dev/issue/18593
 // [#20744]: https://go.dev/issue/20744
@@ -668,12 +726,16 @@ type File struct {
 	GoVersion          string
 }
 
-// Posはパッケージ宣言の位置を返します。
-// （ファイル全体の開始位置にはFileStartを使用してください。）
+// Pos returns the position of the package declaration.
+// It may be invalid, for example in an empty file.
+//
+// (Use FileStart for the start of the entire file. It is always valid.)
 func (f *File) Pos() token.Pos
 
-// Endはファイル中の最後の宣言の終了位置を返します。
-// （ファイル全体の終了位置にはFileEndを使用してください。）
+// End returns the end of the last declaration in the file.
+// It may be invalid, for example in an empty file.
+//
+// (Use FileEnd for the end of the entire file. It is always valid.)
 func (f *File) End() token.Pos
 
 // A Package node represents a set of source files
@@ -690,11 +752,12 @@ type Package struct {
 func (p *Package) Pos() token.Pos
 func (p *Package) End() token.Pos
 
-// IsGeneratedは、プログラムによって生成されたファイルか、手書きではないかを報告します。
-// https://go.dev/s/generatedcodeに記載されている特殊コメントを検出します。
+// IsGenerated reports whether the file was generated by a program,
+// not handwritten, by detecting the special comment described
+// at https://go.dev/s/generatedcode.
 //
-// 構文木は [parser.ParseComments] フラグを使用して解析されている必要があります。
-// 例：
+// The syntax tree must have been parsed with the [parser.ParseComments] flag.
+// Example:
 //
 //	f, err := parser.ParseFile(fset, filename, src, parser.ParseComments|parser.PackageClauseOnly)
 //	if err != nil { ... }

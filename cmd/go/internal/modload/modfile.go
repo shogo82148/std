@@ -8,8 +8,8 @@ import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/errors"
 
-	"golang.org/x/mod/modfile"
-	"golang.org/x/mod/module"
+	"github.com/shogo82148/std/golang.org/x/mod/modfile"
+	"github.com/shogo82148/std/golang.org/x/mod/module"
 )
 
 // ReadModFile reads and parses the mod file at gomod. ReadModFile properly applies the

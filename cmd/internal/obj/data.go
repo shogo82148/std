@@ -77,4 +77,5 @@ func (s *LSym) WriteString(ctxt *Link, off int64, siz int, str string)
 // WriteBytes writes a slice of bytes into s at offset off.
 func (s *LSym) WriteBytes(ctxt *Link, off int64, b []byte) int64
 
-func Addrel(s *LSym) *Reloc
+// AddRel adds the relocation rel to s.
+func (s *LSym) AddRel(ctxt *Link, rel Reloc)

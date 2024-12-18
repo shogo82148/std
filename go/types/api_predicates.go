@@ -9,46 +9,57 @@
 
 package types
 
-// AssertableToは、型Vの値が型Tにアサートされることができるかどうかを報告します。
+// AssertableTo reports whether a value of type V can be asserted to have type T.
 //
-// AssertableToの動作は、3つのケースで未指定です：
-//   - TがTyp[Invalid]である場合
-//   - Vが一般化されたインタフェースである場合。つまり、Goコードで型制約としてのみ使用されるインタフェースである場合
-//   - Tが未実体化のジェネリック型である場合
+// The behavior of AssertableTo is unspecified in three cases:
+//   - if T is Typ[Invalid]
+//   - if V is a generalized interface; i.e., an interface that may only be used
+//     as a type constraint in Go code
+//   - if T is an uninstantiated generic type
 func AssertableTo(V *Interface, T Type) bool
 
-// AssignableToは、型Vの値が型Tの変数に代入可能かどうかを報告します。
+// AssignableTo reports whether a value of type V is assignable to a variable
+// of type T.
 //
-// AssignableToの動作は、VまたはTがTyp[Invalid]またはインスタンス化されていないジェネリック型の場合、指定されていません。
+// The behavior of AssignableTo is unspecified if V or T is Typ[Invalid] or an
+// uninstantiated generic type.
 func AssignableTo(V, T Type) bool
 
-// ConvertibleToは、型Vの値が型Tの値に変換可能かどうかを報告します。
+// ConvertibleTo reports whether a value of type V is convertible to a value of
+// type T.
 //
-// ConvertibleToの動作は、VまたはTがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、指定されていません。
+// The behavior of ConvertibleTo is unspecified if V or T is Typ[Invalid] or an
+// uninstantiated generic type.
 func ConvertibleTo(V, T Type) bool
 
-// Implementsは、型VがインターフェースTを実装しているかどうかを報告します。
+// Implements reports whether type V implements interface T.
 //
-// VがTyp[Invalid]やインスタンス化されていないジェネリック型の場合、Implementsの動作は未指定です。
+// The behavior of Implements is unspecified if V is Typ[Invalid] or an uninstantiated
+// generic type.
 func Implements(V Type, T *Interface) bool
 
-// Satisfiesは型Vが制約Tを満たすかどうかを報告します。
+// Satisfies reports whether type V satisfies the constraint T.
 //
-// VがTyp[Invalid]またはインスタンス化されていないジェネリック型である場合、Satisfiesの動作は指定されていません。
+// The behavior of Satisfies is unspecified if V is Typ[Invalid] or an uninstantiated
+// generic type.
 func Satisfies(V Type, T *Interface) bool
 
-// Identicalはxとyが同じ型であるかどうかを返します。
-// [Signature] 型のレシーバは無視されます。
+// Identical reports whether x and y are identical types.
+// Receivers of [Signature] types are ignored.
 //
-// [Identical]、[Implements]、[Satisfies] などの述語は、
-// 両方のオペランドが一貫したシンボルのコレクション（[Object] 値）に属していると仮定します。
-// 例えば、2つの [Named] 型は、それらの [Named.Obj] メソッドが同じ [TypeName] シンボルを返す場合にのみ同一となります。
-// シンボルのコレクションが一貫しているとは、パスがPである各論理パッケージについて、
-// それらのシンボルの作成には最大で一回の [NewPackage](P, ...)の呼び出しが関与していることを意味します。
-// 一貫性を確保するために、すべてのロードされたパッケージとその依存関係に対して単一の [Importer] を使用します。
-// 詳細は https://github.com/golang/go/issues/57497 を参照してください。
+// Predicates such as [Identical], [Implements], and
+// [Satisfies] assume that both operands belong to a
+// consistent collection of symbols ([Object] values).
+// For example, two [Named] types can be identical only if their
+// [Named.Obj] methods return the same [TypeName] symbol.
+// A collection of symbols is consistent if, for each logical
+// package whose path is P, the creation of those symbols
+// involved at most one call to [NewPackage](P, ...).
+// To ensure consistency, use a single [Importer] for
+// all loaded packages and their dependencies.
+// For more information, see https://github.com/golang/go/issues/57497.
 func Identical(x, y Type) bool
 
-// IdenticalIgnoreTagsは、タグを無視した場合にxとyが同じ型であるかどうかを報告します。
-// [Signature] 型のレシーバーは無視されます。
+// IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.
+// Receivers of [Signature] types are ignored.
 func IdenticalIgnoreTags(x, y Type) bool

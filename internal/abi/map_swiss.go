@@ -11,38 +11,46 @@ import (
 // Map constants common to several packages
 // runtime/runtime-gdb.py:MapTypePrinter contains its own copy
 const (
-	// Maximum number of key/elem pairs a bucket can hold.
-	SwissMapBucketCountBits = 3
-	SwissMapBucketCount     = 1 << SwissMapBucketCountBits
+	// Number of bits in the group.slot count.
+	SwissMapGroupSlotsBits = 3
+
+	// Number of slots in a group.
+	SwissMapGroupSlots = 1 << SwissMapGroupSlotsBits
 
 	// Maximum key or elem size to keep inline (instead of mallocing per element).
 	// Must fit in a uint8.
-	// Note: fast map functions cannot handle big elems (bigger than MapMaxElemBytes).
 	SwissMapMaxKeyBytes  = 128
 	SwissMapMaxElemBytes = 128
+
+	// Value of control word with all empty slots.
+	SwissMapCtrlEmpty = bitsetLSB * uint64(ctrlEmpty)
 )
 
 type SwissMapType struct {
 	Type
-	Key    *Type
-	Elem   *Type
-	Bucket *Type
+	Key   *Type
+	Elem  *Type
+	Group *Type
 	// function for hashing keys (ptr to key, seed) -> hash
-	Hasher     func(unsafe.Pointer, uintptr) uintptr
-	KeySize    uint8
-	ValueSize  uint8
-	BucketSize uint16
-	Flags      uint32
+	Hasher    func(unsafe.Pointer, uintptr) uintptr
+	GroupSize uintptr
+	SlotSize  uintptr
+	ElemOff   uintptr
+	Flags     uint32
 }
 
-// Note: flag values must match those used in the TMAP case
-// in ../cmd/compile/internal/reflectdata/reflect.go:writeType.
-func (mt *SwissMapType) IndirectKey() bool
-
-func (mt *SwissMapType) IndirectElem() bool
-
-func (mt *SwissMapType) ReflexiveKey() bool
+// Flag values
+const (
+	SwissMapNeedKeyUpdate = 1 << iota
+	SwissMapHashMightPanic
+	SwissMapIndirectKey
+	SwissMapIndirectElem
+)
 
 func (mt *SwissMapType) NeedKeyUpdate() bool
 
 func (mt *SwissMapType) HashMightPanic() bool
+
+func (mt *SwissMapType) IndirectKey() bool
+
+func (mt *SwissMapType) IndirectElem() bool

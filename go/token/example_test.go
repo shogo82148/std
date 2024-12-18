@@ -41,24 +41,23 @@ func ok(pos p) bool {
 		return
 	}
 
-	// f内の各宣言の場所と種類を表示する。
+	// Print the location and kind of each declaration in f.
 	for _, decl := range f.Decls {
-
-		// ファイルセットを通じてファイル名、行番号、列番号を取得します。
-		// 相対位置と絶対位置の両方を取得します。
-		// 相対位置は、直前の行ディレクティブに対する相対的な位置です。
-		// 絶対位置はソース内の正確な位置です。
+		// Get the filename, line, and column back via the file set.
+		// We get both the relative and absolute position.
+		// The relative position is relative to the last line directive.
+		// The absolute position is the exact position in the source.
 		pos := decl.Pos()
 		relPosition := fset.Position(pos)
 		absPosition := fset.PositionFor(pos, false)
 
-		// エラーが発生した場合は、FuncDeclまたはGenDeclのいずれかであるため、終了します。
+		// Either a FuncDecl or GenDecl, since we exit on error.
 		kind := "func"
 		if gen, ok := decl.(*ast.GenDecl); ok {
 			kind = gen.Tok.String()
 		}
 
-		// もし相対位置と絶対位置が異なる場合は、両方を表示する。
+		// If the relative and absolute positions differ, show both.
 		fmtPosition := relPosition.String()
 		if relPosition != absPosition {
 			fmtPosition += "[" + absPosition.String() + "]"

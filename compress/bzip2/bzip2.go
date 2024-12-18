@@ -2,12 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// bzip2パッケージは、bzip2の解凍を実装します。
+// Package bzip2 implements bzip2 decompression.
 package bzip2
 
 import "github.com/shogo82148/std/io"
 
-// StructuralErrorは、bzip2データが構文的に無効であることが判明した場合に返されます。
+// A StructuralError is returned when the bzip2 data is found to be
+// syntactically invalid.
 type StructuralError string
 
 func (s StructuralError) Error() string

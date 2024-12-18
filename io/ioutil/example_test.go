@@ -59,18 +59,19 @@ func ExampleTempDir_suffix() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.RemoveAll(logsDir) // クリーンアップ
+	defer os.RemoveAll(logsDir) // clean up
 
-	// ログは、*-logsで終わるサフィックスを持つすべてのディレクトリを検索することで、必要に応じて早期にクリーンアップできます。
+	// Logs can be cleaned out earlier if needed by searching
+	// for all directories whose suffix ends in *-logs.
 	globPattern := filepath.Join(parentDir, "*-logs")
 	matches, err := filepath.Glob(globPattern)
 	if err != nil {
-		log.Fatalf("%qのマッチングに失敗しました: %v", globPattern, err)
+		log.Fatalf("Failed to match %q: %v", globPattern, err)
 	}
 
 	for _, match := range matches {
 		if err := os.RemoveAll(match); err != nil {
-			log.Printf("%qの削除に失敗しました: %v", match, err)
+			log.Printf("Failed to remove %q: %v", match, err)
 		}
 	}
 }
@@ -82,7 +83,7 @@ func ExampleTempFile() {
 		log.Fatal(err)
 	}
 
-	defer os.Remove(tmpfile.Name()) // クリーンアップ
+	defer os.Remove(tmpfile.Name()) // clean up
 
 	if _, err := tmpfile.Write(content); err != nil {
 		log.Fatal(err)
@@ -99,7 +100,7 @@ func ExampleTempFile_suffix() {
 		log.Fatal(err)
 	}
 
-	defer os.Remove(tmpfile.Name()) // クリーンアップ
+	defer os.Remove(tmpfile.Name()) // clean up
 
 	if _, err := tmpfile.Write(content); err != nil {
 		tmpfile.Close()

@@ -3,79 +3,100 @@
 // license that can be found in the LICENSE file.
 
 /*
-GofmtはGoプログラムの書式設定を行います。
-インデントにはタブを使用し、整列にはスペースを使用します。
-整列は、エディタが固定幅フォントを使用していることを前提としています。
+Gofmt formats Go programs.
+It uses tabs for indentation and blanks for alignment.
+Alignment assumes that an editor is using a fixed-width font.
 
-明示的なパスのない場合、標準入力を処理します。 ファイルが指定された場合は、そのファイルに対して操作を行います。 ディレクトリが指定された場合は、そのディレクトリ内のすべての.goファイルに対して再帰的に操作を行います。 (ピリオドで始まるファイルは無視されます。)
-デフォルトでは、gofmtは再フォーマットされたソースを標準出力に出力します。
+Without an explicit path, it processes the standard input.  Given a file,
+it operates on that file; given a directory, it operates on all .go files in
+that directory, recursively.  (Files starting with a period are ignored.)
+By default, gofmt prints the reformatted sources to standard output.
 
-使用方法:
+Usage:
 
 	gofmt [flags] [path ...]
 
-フラグは次のとおりです:
+The flags are:
 
 	-d
-		再フォーマットされたソースを標準出力に出力しないでください。
-		もしファイルの書式がgofmtと異なる場合は、差分を標準出力に表示します。
+		Do not print reformatted sources to standard output.
+		If a file's formatting is different than gofmt's, print diffs
+		to standard output.
 	-e
-		すべての (不正なものも含む) エラーを表示します。
+		Print all (including spurious) errors.
 	-l
-		再フォーマットされたソースを標準出力に出力しないでください。
-		もしファイルの書式がgofmtと異なる場合は、ファイル名を標準出力に表示します。
+		Do not print reformatted sources to standard output.
+		If a file's formatting is different from gofmt's, print its name
+		to standard output.
 	-r rule
-		書式変更を行う前にソースに修正ルールを適用します。
+		Apply the rewrite rule to the source before reformatting.
 	-s
-		コードを簡略化しようとします (修正ルールの適用後、必要な場合)。
+		Try to simplify code (after applying the rewrite rule, if any).
 	-w
-		再フォーマットされたソースを標準出力に出力しないでください。
-		もしファイルの書式がgofmtと異なる場合は、gofmtのバージョンで上書きします。 上書き中にエラーが発生した場合、元のファイルは自動バックアップから復元されます。
+		Do not print reformatted sources to standard output.
+		If a file's formatting is different from gofmt's, overwrite it
+		with gofmt's version. If an error occurred during overwriting,
+		the original file is restored from an automatic backup.
 
-デバッグサポート:
+Debugging support:
 
 	-cpuprofile filename
-		指定されたファイルにCPUプロファイルを書き込みます。
+		Write cpu profile to the specified file.
 
--rフラグで指定された書式変更ルールは、次の形式の文字列である必要があります:
+The rewrite rule specified with the -r flag must be a string of the form:
 
 	pattern -> replacement
 
-パターンとリプレースメントの両方は、有効なGo式でなければなりません。
-パターンでは、一文字の小文字識別子は任意の部分式に一致するワイルドカードとして機能し、リプレースメントで同じ識別子に置き換えられます。
+Both pattern and replacement must be valid Go expressions.
+In the pattern, single-character lowercase identifiers serve as
+wildcards matching arbitrary sub-expressions; those expressions
+will be substituted for the same identifiers in the replacement.
 
-gofmtは標準入力から読み込む場合、フルのGoプログラムまたはプログラムのフラグメントのいずれかを受け入れます。 プログラムのフラグメントは、文法的に有効な宣言リスト、文リスト、または式でなければなりません。 このようなフラグメントを書式設定する場合、gofmtは先頭のインデント、先頭と末尾のスペースを保持するため、Goプログラムの個々のセクションをパイプを通じてgofmtに渡すことで書式設定できます。
+When gofmt reads from standard input, it accepts either a full Go program
+or a program fragment.  A program fragment must be a syntactically
+valid declaration list, statement list, or expression.  When formatting
+such a fragment, gofmt preserves leading indentation as well as leading
+and trailing spaces, so that individual sections of a Go program can be
+formatted by piping them through gofmt.
 
-# 例
+# Examples
 
-不要な括弧をチェックするためのファイル:
+To check files for unnecessary parentheses:
 
 	gofmt -r '(a) -> a' -l *.go
 
-括弧を削除するためのコマンド:
+To remove the parentheses:
 
 	gofmt -r '(a) -> a' -w *.go
 
-パッケージツリーを明示的なスライスの上限から暗黙的な上限に変換するコマンド:
+To convert the package tree from explicit slice upper bounds to implicit ones:
 
 	gofmt -r 'α[β:len(α)] -> α[β:]' -w $GOROOT/src
 
-# simplifyコマンド
+# The simplify command
 
--sオプションで実行すると、gofmtは可能な限り以下のソース変換を行います。
+When invoked with -s gofmt will make the following source transformations where possible.
 
-	[]T{T{}, T{}}
-	という形式の配列、スライス、またはマップのコンポジットリテラルは次のように簡略化されます:
+	An array, slice, or map composite literal of the form:
+		[]T{T{}, T{}}
+	will be simplified to:
 		[]T{{}, {}}
 
-	以下の形式のスライス式は次のように簡略化されます:
-		s[a:len(s)] -> s[a:]
+	A slice expression of the form:
+		s[a:len(s)]
+	will be simplified to:
+		s[a:]
 
-	以下の形式の範囲式は次のように簡略化されます:
-		for x, _ = range v {...} -> for x = range v {...}
+	A range of the form:
+		for x, _ = range v {...}
+	will be simplified to:
+		for x = range v {...}
 
-	以下の形式の範囲式は次のように簡略化されます:
-		for _ = range v {...} -> for range v {...}
+	A range of the form:
+		for _ = range v {...}
+	will be simplified to:
+		for range v {...}
 
-これにより、以前のGoのバージョンと互換性のない変更が生じる場合があります。
-*/package main
+This may result in changes that are incompatible with earlier versions of Go.
+*/
+package main

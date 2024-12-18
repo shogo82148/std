@@ -2,17 +2,18 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// mimeパッケージはMIME仕様の一部を実装します。
+// Package mime implements parts of the MIME spec.
 package mime
 
-// TypeByExtensionは、ファイル拡張子extに関連付けられたMIMEタイプを返します。
-// 拡張子extは、".html"のように先頭にドットを付けて開始する必要があります。
-// extが関連付けられたタイプを持っていない場合、TypeByExtensionは""を返します。
+// TypeByExtension returns the MIME type associated with the file extension ext.
+// The extension ext should begin with a leading dot, as in ".html".
+// When ext has no associated type, TypeByExtension returns "".
 //
-// 拡張子は、最初に大文字と小文字を区別して検索され、次に大文字と小文字を区別せずに検索されます。
+// Extensions are looked up first case-sensitively, then case-insensitively.
 //
-// 組み込みのテーブルは小さいですが、unixではローカルシステムのMIME-infoデータベースや
-// mime.typesファイルによって補強されます（もし以下の名前の一つ以上で利用可能な場合）:
+// The built-in table is small but on unix it is augmented by the local
+// system's MIME-info database or mime.types file(s) if available under one or
+// more of these names:
 //
 //	/usr/local/share/mime/globs2
 //	/usr/share/mime/globs2
@@ -20,16 +21,18 @@ package mime
 //	/etc/apache2/mime.types
 //	/etc/apache/mime.types
 //
-// Windowsでは、MIMEタイプはレジストリから抽出されます。
+// On Windows, MIME types are extracted from the registry.
 //
-// テキストタイプは、デフォルトでcharsetパラメータが"utf-8"に設定されています。
+// Text types have the charset parameter set to "utf-8" by default.
 func TypeByExtension(ext string) string
 
-// ExtensionsByTypeは、MIMEタイプtypに関連付けられていると知られている拡張子を返します。
-// 返される拡張子は、".html"のように先頭にドットが付いて始まります。
-// typが関連付けられた拡張子を持っていない場合、ExtensionsByTypeはnilスライスを返します。
+// ExtensionsByType returns the extensions known to be associated with the MIME
+// type typ. The returned extensions will each begin with a leading dot, as in
+// ".html". When typ has no associated extensions, ExtensionsByType returns an
+// nil slice.
 func ExtensionsByType(typ string) ([]string, error)
 
-// AddExtensionTypeは、拡張子extに関連付けられたMIMEタイプをtypに設定します。
-// 拡張子は、".html"のように先頭にドットを付けて開始する必要があります。
+// AddExtensionType sets the MIME type associated with
+// the extension ext to typ. The extension should begin with
+// a leading dot, as in ".html".
 func AddExtensionType(ext, typ string) error

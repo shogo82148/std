@@ -132,7 +132,7 @@ func (e *Emitter) HeapGoal(ts time.Duration, v uint64)
 // Err returns an error if the emitter is in an invalid state.
 func (e *Emitter) Err() error
 
-// OptionalEvent emits ev if it's within the time range of of the consumer, i.e.
+// OptionalEvent emits ev if it's within the time range of the consumer, i.e.
 // the selected trace split range.
 func (e *Emitter) OptionalEvent(ev *format.Event)
 

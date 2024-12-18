@@ -2,47 +2,51 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// csvパッケージは、カンマ区切り値(CSV)ファイルの読み書きを行います。
-// 多くの種類のCSVファイルがありますが、このパッケージはRFC 4180で説明されている形式をサポートしています。
-// ただし、[Writer] はデフォルトで改行文字としてCRLFではなくLFを使用します。
+// Package csv reads and writes comma-separated values (CSV) files.
+// There are many kinds of CSV files; this package supports the format
+// described in RFC 4180, except that [Writer] uses LF
+// instead of CRLF as newline character by default.
 //
-// CSVファイルには、レコードごとに1つ以上のフィールドを含むゼロ以上のレコードが含まれています。
-// 各レコードは改行文字で区切られます。最後のレコードはオプションで改行文字に続くことができます。
+// A csv file contains zero or more records of one or more fields per record.
+// Each record is separated by the newline character. The final record may
+// optionally be followed by a newline character.
 //
 //	field1,field2,field3
 //
-// 空白はフィールドの一部と見なされます。
+// White space is considered part of a field.
 //
-// 改行文字の前のキャリッジリターンは、静かに削除されます。
+// Carriage returns before newline characters are silently removed.
 //
-// 空行は無視されます。空白文字のみで構成される行（末尾の改行文字を除く）は、空行と見なされません。
+// Blank lines are ignored. A line with only whitespace characters (excluding
+// the ending newline character) is not considered a blank line.
 //
-// クォート文字 "で始まり、終わるフィールドは、クォートフィールドと呼ばれます。
-// 開始と終了の引用符はフィールドの一部ではありません。
+// Fields which start and stop with the quote character " are called
+// quoted-fields. The beginning and ending quote are not part of the
+// field.
 //
-// ソース：
+// The source:
 //
 //	normal string,"quoted-field"
 //
-// は、次のフィールドを生成します。
+// results in the fields
 //
 //	{`normal string`, `quoted-field`}
 //
-// クォートフィールド内の引用符の後に2番目の引用符が続く場合、
-// 1つの引用符として扱われます。
+// Within a quoted-field a quote character followed by a second quote
+// character is considered a single quote.
 //
 //	"the ""word"" is true","a ""quoted-field"""
 //
-// の結果は次のとおりです。
+// results in
 //
 //	{`the "word" is true`, `a "quoted-field"`}
 //
-// 改行とカンマは、クォートフィールド内に含めることができます。
+// Newlines and commas may be included in a quoted-field
 //
 //	"Multi-line
 //	field","comma is ,"
 //
-// の結果は次のとおりです。
+// results in
 //
 //	{`Multi-line
 //	field`, `comma is ,`}
@@ -54,8 +58,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// ParseErrorは、解析エラーの場合に返されます。
-// 行番号と行番号は1から始まります。
+// A ParseError is returned for parsing errors.
+// Line and column numbers are 1-indexed.
 type ParseError struct {
 	StartLine int
 	Line      int
@@ -67,57 +71,63 @@ func (e *ParseError) Error() string
 
 func (e *ParseError) Unwrap() error
 
-// [ParseError.Err] で返される可能性のあるエラーです。
+// These are the errors that can be returned in [ParseError.Err].
 var (
 	ErrBareQuote  = errors.New("bare \" in non-quoted-field")
 	ErrQuote      = errors.New("extraneous or missing \" in quoted-field")
 	ErrFieldCount = errors.New("wrong number of fields")
 
-	// Deprecated: ErrTrailingComma はもう使用されません。
+	// Deprecated: ErrTrailingComma is no longer used.
 	ErrTrailingComma = errors.New("extra delimiter at end of line")
 )
 
-// Readerは、CSVエンコードされたファイルからレコードを読み取ります。
+// A Reader reads records from a CSV-encoded file.
 //
-// [NewReader] によって返された場合、ReaderはRFC 4180に準拠した入力を想定しています。
-// 最初の [Reader.Read] または [Reader.ReadAll] 呼び出しの前に、エクスポートされたフィールドを変更して詳細をカスタマイズできます。
+// As returned by [NewReader], a Reader expects input conforming to RFC 4180.
+// The exported fields can be changed to customize the details before the
+// first call to [Reader.Read] or [Reader.ReadAll].
 //
-// Readerは、入力のすべての\r\nシーケンスをプレーンな\nに変換するため、
-// 複数行のフィールド値を含む場合でも、返されるデータが入力ファイルが使用する行末の規約に依存しないようにします。
+// The Reader converts all \r\n sequences in its input to plain \n,
+// including in multiline field values, so that the returned data does
+// not depend on which line-ending convention an input file uses.
 type Reader struct {
-	// Commaはフィールドの区切り文字です。
-	// NewReaderによってカンマ（','）に設定されます。
-	// Commaは有効なルーンである必要があり、\r、\n、
-	// またはUnicode置換文字（0xFFFD）であってはなりません。
+	// Comma is the field delimiter.
+	// It is set to comma (',') by NewReader.
+	// Comma must be a valid rune and must not be \r, \n,
+	// or the Unicode replacement character (0xFFFD).
 	Comma rune
 
-	// Commentが0でない場合、Comment文字はコメント文字です。
-	// 先行する空白がないComment文字で始まる行は無視されます。
-	// 先行する空白がある場合、TrimLeadingSpaceがtrueであっても、Comment文字はフィールドの一部になります。
-	// Commentは有効なルーンである必要があり、\r、\n、
-	// またはUnicode置換文字（0xFFFD）であってはなりません。
-	// また、Commaと等しくてはなりません。
+	// Comment, if not 0, is the comment character. Lines beginning with the
+	// Comment character without preceding whitespace are ignored.
+	// With leading whitespace the Comment character becomes part of the
+	// field, even if TrimLeadingSpace is true.
+	// Comment must be a valid rune and must not be \r, \n,
+	// or the Unicode replacement character (0xFFFD).
+	// It must also not be equal to Comma.
 	Comment rune
 
-	// FieldsPerRecordは、レコードごとに期待されるフィールド数です。
-	// FieldsPerRecordが正の場合、Readは各レコードが指定されたフィールド数を持つことを要求します。
-	// FieldsPerRecordが0の場合、Readは最初のレコードのフィールド数に設定し、
-	// 以降のレコードは同じフィールド数を持つ必要があります。
-	// FieldsPerRecordが負の場合、チェックは行われず、レコードは可変長のフィールド数を持つ場合があります。
+	// FieldsPerRecord is the number of expected fields per record.
+	// If FieldsPerRecord is positive, Read requires each record to
+	// have the given number of fields. If FieldsPerRecord is 0, Read sets it to
+	// the number of fields in the first record, so that future records must
+	// have the same field count. If FieldsPerRecord is negative, no check is
+	// made and records may have a variable number of fields.
 	FieldsPerRecord int
 
-	// LazyQuotesがtrueの場合、引用符は引用符で囲まれていないフィールドに表示される場合があります。
+	// If LazyQuotes is true, a quote may appear in an unquoted field and a
+	// non-doubled quote may appear in a quoted field.
 	LazyQuotes bool
 
-	// TrimLeadingSpaceがtrueの場合、フィールドの先頭の空白は無視されます。
-	// これは、フィールド区切り文字であるCommaが空白である場合でも行われます。
+	// If TrimLeadingSpace is true, leading white space in a field is ignored.
+	// This is done even if the field delimiter, Comma, is white space.
 	TrimLeadingSpace bool
 
-	// ReuseRecordは、パフォーマンスのために、Readの呼び出しが前回の呼び出しの返されたスライスのバッキング配列を共有するスライスを返すかどうかを制御します。
-	// デフォルトでは、Readの各呼び出しは、呼び出し元が所有する新しく割り当てられたメモリを返します。
+	// ReuseRecord controls whether calls to Read may return a slice sharing
+	// the backing array of the previous call's returned slice for performance.
+	// By default, each call to Read returns newly allocated memory owned by the caller.
 	ReuseRecord bool
 
-	// Deprecated: TrailingComma はもう使用されません。
+	// Deprecated: TrailingComma is no longer used.
 	TrailingComma bool
 
 	r *bufio.Reader
@@ -149,31 +159,36 @@ type Reader struct {
 	lastRecord []string
 }
 
-// NewReaderは、rから読み取る新しいReaderを返します。
+// NewReader returns a new Reader that reads from r.
 func NewReader(r io.Reader) *Reader
 
-// Readはrから1つのレコード（フィールドのスライス）を読み込みます。
-// レコードに予期しない数のフィールドが含まれている場合、
-// Readはエラー [ErrFieldCount] とともにレコードを返します。
-// パースできないフィールドが含まれている場合、
-// Readは部分的なレコードとパースエラーを返します。
-// 部分的なレコードには、エラーが発生する前に読み取られたすべてのフィールドが含まれます。
-// 読み取るデータがない場合、Readはnil、io.EOFを返します。
-// [Reader.ReuseRecord] がtrueの場合、返されるスライスは複数のRead呼び出し間で共有できます。
+// Read reads one record (a slice of fields) from r.
+// If the record has an unexpected number of fields,
+// Read returns the record along with the error [ErrFieldCount].
+// If the record contains a field that cannot be parsed,
+// Read returns a partial record along with the parse error.
+// The partial record contains all fields read before the error.
+// If there is no data left to be read, Read returns nil, [io.EOF].
+// If [Reader.ReuseRecord] is true, the returned slice may be shared
+// between multiple calls to Read.
 func (r *Reader) Read() (record []string, err error)
 
-// FieldPosは、Readで最後に返されたスライス内の指定されたインデックスのフィールドの開始に対応する行と列を返します。
-// 行と列の番号付けは1から始まります。列はルーンではなくバイトで数えられます。
+// FieldPos returns the line and column corresponding to
+// the start of the field with the given index in the slice most recently
+// returned by [Reader.Read]. Numbering of lines and columns starts at 1;
+// columns are counted in bytes, not runes.
 //
-// インデックスが範囲外で呼び出された場合、panicします。
+// If this is called with an out-of-bounds index, it panics.
 func (r *Reader) FieldPos(field int) (line, column int)
 
-// InputOffsetは、現在のリーダーの位置の入力ストリームバイトオフセットを返します。
-// オフセットは、最後に読み取られた行の終わりと次の行の始まりの場所を示します。
+// InputOffset returns the input stream byte offset of the current reader
+// position. The offset gives the location of the end of the most recently
+// read row and the beginning of the next row.
 func (r *Reader) InputOffset() int64
 
-// ReadAllは、rから残りのすべてのレコードを読み込みます。
-// 各レコードはフィールドのスライスです。
-// 成功した呼び出しはerr == nilを返します。err == [io.EOF] ではありません。
-// ReadAllはEOFまで読み込むように定義されているため、エラーとして扱いません。
+// ReadAll reads all the remaining records from r.
+// Each record is a slice of fields.
+// A successful call returns err == nil, not err == [io.EOF]. Because ReadAll is
+// defined to read until EOF, it does not treat end of file as an error to be
+// reported.
 func (r *Reader) ReadAll() (records [][]string, err error)

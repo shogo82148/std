@@ -4,9 +4,9 @@
 
 package math
 
-// Powはx**y、yのxを底とした指数を返します。
+// Pow returns x**y, the base-x exponential of y.
 //
-// 特殊な場合は以下の通りです：
+// Special cases are (in order):
 //
 //	Pow(x, ±0) = 1 for any x
 //	Pow(1, y) = 1 for any y

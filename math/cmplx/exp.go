@@ -4,5 +4,5 @@
 
 package cmplx
 
-// Expはe**xを返します。これはxの底eの指数です。
+// Exp returns e**x, the base-e exponential of x.
 func Exp(x complex128) complex128

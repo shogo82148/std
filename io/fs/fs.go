@@ -2,49 +2,57 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// fsパッケージはファイルシステムへの基本的なインターフェースを定義します。
-// ファイルシステムはホストオペレーティングシステムだけでなく、他のパッケージによっても提供されることがあります。
+// Package fs defines basic interfaces to a file system.
+// A file system can be provided by the host operating system
+// but also by other packages.
 //
-// ファイルシステムの実装のテストを支援するための [testing/fstest] パッケージを参照してください。
+// See the [testing/fstest] package for support with testing
+// implementations of file systems.
 package fs
 
 import (
 	"github.com/shogo82148/std/time"
 )
 
-// FSは階層的なファイルシステムへのアクセスを提供します。
+// An FS provides access to a hierarchical file system.
 //
-// FSインターフェースはファイルシステムに必要な最小限の実装です。
-// ファイルシステムは追加のインターフェース、例えば [ReadFileFS] を実装することができます。
-// 追加の機能や最適化された機能を提供することができます。
+// The FS interface is the minimum implementation required of the file system.
+// A file system may implement additional interfaces,
+// such as [ReadFileFS], to provide additional or optimized functionality.
 //
-// [testing/fstest.TestFS] は、FSの実装の正確さをテストするために使用できます。
+// [testing/fstest.TestFS] may be used to test implementations of an FS for
+// correctness.
 type FS interface {
 	Open(name string) (File, error)
 }
 
-// ValidPathは与えられたパス名がOpenの呼び出しに使用するために有効かどうかを報告します。
+// ValidPath reports whether the given path name
+// is valid for use in a call to Open.
 //
-// Openに渡されるパス名はUTF-8でエンコードされた、ルートなしのスラッシュで区切られたパス要素のシーケンス（例: "x/y/z"）です。
-// パス名には、"."または".."または空の文字列を含めることはできませんが、ルートディレクトリが "."という特殊なケースを除いてはです。
-// パスはスラッシュで始まることや終わることはできません: "/x"や"x/"は無効です。
+// Path names passed to open are UTF-8-encoded,
+// unrooted, slash-separated sequences of path elements, like “x/y/z”.
+// Path names must not contain an element that is “.” or “..” or the empty string,
+// except for the special case that the name "." may be used for the root directory.
+// Paths must not start or end with a slash: “/x” and “x/” are invalid.
 //
-// なお、パスは全てのシステムでスラッシュで区切られます（Windowsでも）。
-// バックスラッシュやコロンなどの他の文字を含むパスも有効ですが、これらの文字は [FS] の実装によっては絶対にパス要素の区切りとして解釈されるべきではありません。
+// Note that paths are slash-separated on all systems, even Windows.
+// Paths containing other characters such as backslash and colon
+// are accepted as valid, but those characters must never be
+// interpreted by an [FS] implementation as path element separators.
 func ValidPath(name string) bool
 
-// Fileは単一のファイルへのアクセスを提供します。
-// Fileインターフェースはファイルに必要な最小限の実装です。
-// ディレクトリファイルは [ReadDirFile] も実装する必要があります。
-// ファイルは最適化として [io.ReaderAt] または [io.Seeker] を実装する場合があります。
+// A File provides access to a single file.
+// The File interface is the minimum implementation required of the file.
+// Directory files should also implement [ReadDirFile].
+// A file may implement [io.ReaderAt] or [io.Seeker] as optimizations.
 type File interface {
 	Stat() (FileInfo, error)
 	Read([]byte) (int, error)
 	Close() error
 }
 
-// DirEntryはディレクトリから読み取られたエントリです
-// ([ReadDir] 関数や [ReadDirFile] のReadDirメソッドを使用して)。
+// A DirEntry is an entry read from a directory
+// (using the [ReadDir] function or a [ReadDirFile]'s ReadDir method).
 type DirEntry interface {
 	Name() string
 
@@ -55,18 +63,19 @@ type DirEntry interface {
 	Info() (FileInfo, error)
 }
 
-// ReadDirFileは、ReadDirメソッドを使用してエントリを読み取ることができるディレクトリファイルです。
-// すべてのディレクトリファイルは、このインターフェースを実装する必要があります。
-// （任意のファイルがこのインターフェースを実装することも許可されていますが、非ディレクトリの場合はReadDirがエラーを返すべきです。）
+// A ReadDirFile is a directory file whose entries can be read with the ReadDir method.
+// Every directory file should implement this interface.
+// (It is permissible for any file to implement this interface,
+// but if so ReadDir should return an error for non-directories.)
 type ReadDirFile interface {
 	File
 
 	ReadDir(n int) ([]DirEntry, error)
 }
 
-// 汎用ファイルシステムのエラー。
-// ファイルシステムから返されるエラーは、これらのエラーと比較してテストすることができます
-// [errors.Is] を使用して。
+// Generic file system errors.
+// Errors returned by file systems can be tested against these errors
+// using [errors.Is].
 var (
 	ErrInvalid    = errInvalid()
 	ErrPermission = errPermission()
@@ -75,7 +84,7 @@ var (
 	ErrClosed     = errClosed()
 )
 
-// FileInfoはファイルを説明し、[Stat] によって返されます。
+// A FileInfo describes a file and is returned by [Stat].
 type FileInfo interface {
 	Name() string
 	Size() int64
@@ -85,21 +94,21 @@ type FileInfo interface {
 	Sys() any
 }
 
-// FileModeはファイルのモードとパーミッションビットを表します。
-// ビットの定義はすべてのシステムで同じであるため、
-// ファイルに関する情報をポータブルに他のシステムに移動することができます。
-// すべてのビットがすべてのシステムに適用されるわけではありません。
-// ディレクトリに対しては [ModeDir] のみが必須です。
+// A FileMode represents a file's mode and permission bits.
+// The bits have the same definition on all systems, so that
+// information about files can be moved from one system
+// to another portably. Not all bits apply to all systems.
+// The only required bit is [ModeDir] for directories.
 type FileMode uint32
 
-// 定義されたファイルモードビットは、 [FileMode] の最も重要なビットです。
-// 9つの最も下位のビットは、標準のUnixのrwxrwxrwx権限です。
-// これらのビットの値は、パブリックAPIの一部と見なされ、
-// ワイヤープロトコルやディスク表現で使用される可能性があります。
-// これらのビットは変更しないでくださいが、新しいビットが追加されることはあります。
+// The defined file mode bits are the most significant bits of the [FileMode].
+// The nine least-significant bits are the standard Unix rwxrwxrwx permissions.
+// The values of these bits should be considered part of the public API and
+// may be used in wire protocols or disk representations: they must not be
+// changed, although new bits might be added.
 const (
-
-	// 単一の文字は、Stringメソッドのフォーマットで使用される省略形です。
+	// The single letters are the abbreviations
+	// used by the String method's formatting.
 	ModeDir FileMode = 1 << (32 - 1 - iota)
 	ModeAppend
 	ModeExclusive
@@ -114,7 +123,7 @@ const (
 	ModeSticky
 	ModeIrregular
 
-	// タイプビットのマスク。通常のファイルでは、全く設定されません。
+	// Mask for the type bits. For regular files, none will be set.
 	ModeType = ModeDir | ModeSymlink | ModeNamedPipe | ModeSocket | ModeDevice | ModeCharDevice | ModeIrregular
 
 	ModePerm FileMode = 0777
@@ -122,21 +131,21 @@ const (
 
 func (m FileMode) String() string
 
-// IsDirはmがディレクトリを記述しているかどうかを報告します。
-// つまり、m内の [ModeDir] ビットがセットされているかどうかをテストします。
+// IsDir reports whether m describes a directory.
+// That is, it tests for the [ModeDir] bit being set in m.
 func (m FileMode) IsDir() bool
 
-// IsRegularはmが正規のファイルを記述しているかどうかを報告します。
-// つまり、モードのタイプビットが設定されていないかどうかをテストします。
+// IsRegular reports whether m describes a regular file.
+// That is, it tests that no mode type bits are set.
 func (m FileMode) IsRegular() bool
 
-// Permは、m（m＆[ModePerm]）のUnixパーミッションビットを返します。
+// Perm returns the Unix permission bits in m (m & [ModePerm]).
 func (m FileMode) Perm() FileMode
 
-// Typeはm（m＆[ModeType]）のタイプビットを返します。
+// Type returns type bits in m (m & [ModeType]).
 func (m FileMode) Type() FileMode
 
-// PathErrorはエラーとそれを引き起こした操作とファイルパスを記録します。
+// PathError records an error and the operation and file path that caused it.
 type PathError struct {
 	Op   string
 	Path string
@@ -147,5 +156,5 @@ func (e *PathError) Error() string
 
 func (e *PathError) Unwrap() error
 
-// Timeoutは、このエラーがタイムアウトを示すかどうかを報告します。
+// Timeout reports whether this error represents a timeout.
 func (e *PathError) Timeout() bool

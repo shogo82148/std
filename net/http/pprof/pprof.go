@@ -2,94 +2,104 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// pprofパッケージは、pprof可視化ツールが期待する形式で実行時プロファイリングデータをHTTPサーバー経由で提供します。
+// Package pprof serves via its HTTP server runtime profiling data
+// in the format expected by the pprof visualization tool.
 //
-// このパッケージは通常、そのHTTPハンドラを登録する副作用のためにのみインポートされます。
-// ハンドルされるパスはすべて/debug/pprof/で始まります。
-// Go 1.22以降、すべてのパスはGETでリクエストする必要があります。
+// The package is typically only imported for the side effect of
+// registering its HTTP handlers.
+// The handled paths all begin with /debug/pprof/.
+// As of Go 1.22, all the paths must be requested with GET.
 //
-// pprofを使用するためには、このパッケージをプログラムにリンクしてください：
+// To use pprof, link this package into your program:
 //
 //	import _ "net/http/pprof"
 //
-// アプリケーションがすでにHTTPサーバーを実行していない場合、サーバーを起動する必要があります。
-// "net/http"と"log"をインポートし、次のコードをメイン関数に追加してください：
+// If your application is not already running an http server, you
+// need to start one. Add "net/http" and "log" to your imports and
+// the following code to your main function:
 //
 //	go func() {
-//	    log.Println(http.ListenAndServe("localhost:6060", nil))
+//		log.Println(http.ListenAndServe("localhost:6060", nil))
 //	}()
 //
-// デフォルトでは、このパッケージで定義されている[Cmdline]、[Profile]、[Symbol]、[Trace]プロファイル
-// に加えて[runtime/pprof.Profile]にリストされているすべてのプロファイルが使用可能です（[Handler]経由）。
-// DefaultServeMuxを使用していない場合は、使用しているmuxにハンドラを登録する必要があります。
+// By default, all the profiles listed in [runtime/pprof.Profile] are
+// available (via [Handler]), in addition to the [Cmdline], [Profile], [Symbol],
+// and [Trace] profiles defined in this package.
+// If you are not using DefaultServeMux, you will have to register handlers
+// with the mux you are using.
 //
-// ＃ パラメータ
+// # Parameters
 //
-// パラメータはGETクエリパラメータを介して渡すことができます：
+// Parameters can be passed via GET query params:
 //
-//   - debug=N（すべてのプロファイル）：応答形式：N = 0：バイナリ（デフォルト）、N> 0：プレーンテキスト
-//   - gc=N（ヒーププロファイル）：N> 0：プロファイリング前にガベージコレクションを実行
-//   - seconds=N（allocs、block、goroutine、heap、mutex、threadcreateプロファイル）：デルタプロファイルを返す
-//   - seconds=N（cpu（profile）、トレースプロファイル）：指定された期間のプロファイル
+//   - debug=N (all profiles): response format: N = 0: binary (default), N > 0: plaintext
+//   - gc=N (heap profile): N > 0: run a garbage collection cycle before profiling
+//   - seconds=N (allocs, block, goroutine, heap, mutex, threadcreate profiles): return a delta profile
+//   - seconds=N (cpu (profile), trace profiles): profile for the given duration
 //
-// ＃ 使用例
+// # Usage examples
 //
-// ヒーププロファイルを表示するためにpprofツールを使用する場合：
+// Use the pprof tool to look at the heap profile:
 //
 //	go tool pprof http://localhost:6060/debug/pprof/heap
 //
-// または30秒のCPUプロファイルを表示する場合：
+// Or to look at a 30-second CPU profile:
 //
 //	go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
 //
-// または、プログラムで [runtime.SetBlockProfileRate] を呼び出した後にブロッキングプロファイルのゴルーチンを表示する場合：
+// Or to look at the goroutine blocking profile, after calling
+// [runtime.SetBlockProfileRate] in your program:
 //
 //	go tool pprof http://localhost:6060/debug/pprof/block
 //
-// または、プログラムで [runtime.SetMutexProfileFraction] を呼び出した後にコンテンデッドなミューテックスのホルダーを表示する場合：
+// Or to look at the holders of contended mutexes, after calling
+// [runtime.SetMutexProfileFraction] in your program:
 //
 //	go tool pprof http://localhost:6060/debug/pprof/mutex
 //
-// このパッケージはまた、「go tool trace」コマンドに対応する実行トレースデータを提供するハンドラもエクスポートしています。
-// 5秒の実行トレースを収集するには：
+// The package also exports a handler that serves execution trace data
+// for the "go tool trace" command. To collect a 5-second execution trace:
 //
 //	curl -o trace.out http://localhost:6060/debug/pprof/trace?seconds=5
 //	go tool trace trace.out
 //
-// 使用可能なプロファイルをすべて表示するには、ブラウザでhttp://localhost:6060/debug/pprof/を開いてください。
+// To view all available profiles, open http://localhost:6060/debug/pprof/
+// in your browser.
 //
-// 機能の詳細については、次のURLをご覧ください：
-// https://blog.golang.org/2011/06/profiling-go-programs.html。
+// For a study of the facility in action, visit
+// https://blog.golang.org/2011/06/profiling-go-programs.html.
 package pprof
 
 import (
 	"github.com/shogo82148/std/net/http"
 )
 
-// Cmdlineは実行中のプログラムのコマンドラインをNULバイトで区切られた引数として返します。
-// このパッケージの初期化は/debug/pprof/cmdlineとして登録されます。
+// Cmdline responds with the running program's
+// command line, with arguments separated by NUL bytes.
+// The package initialization registers it as /debug/pprof/cmdline.
 func Cmdline(w http.ResponseWriter, r *http.Request)
 
-// Profile は、pprofの形式でCPUプロファイルを応答します。
-// プロファイリングは、秒数が指定されたGETパラメータで指定された期間、または指定されていない場合は30秒間続きます。
-// パッケージの初期化により、/debug/pprof/profile として登録されます。
+// Profile responds with the pprof-formatted cpu profile.
+// Profiling lasts for duration specified in seconds GET parameter, or for 30 seconds if not specified.
+// The package initialization registers it as /debug/pprof/profile.
 func Profile(w http.ResponseWriter, r *http.Request)
 
-// Traceはバイナリ形式の実行トレースで応答します。
-// トレースは、秒数が指定されていない場合は1秒間、指定されている場合はGETパラメータで指定された時間の間続きます。
-// パッケージの初期化により、/debug/pprof/traceとして登録されます。
+// Trace responds with the execution trace in binary form.
+// Tracing lasts for duration specified in seconds GET parameter, or for 1 second if not specified.
+// The package initialization registers it as /debug/pprof/trace.
 func Trace(w http.ResponseWriter, r *http.Request)
 
-// Symbolはリクエストにリストされたプログラムカウンターを検索し、
-// プログラムカウンターと関数名のマッピングを返す。
-// パッケージの初期化では、それを/debug/pprof/symbolとして登録します。
+// Symbol looks up the program counters listed in the request,
+// responding with a table mapping program counters to function names.
+// The package initialization registers it as /debug/pprof/symbol.
 func Symbol(w http.ResponseWriter, r *http.Request)
 
-// Handlerは、指定したプロファイルを提供するHTTPハンドラを返します。
-// 使用可能なプロファイルは[runtime/pprof.Profile]で見つけることができます。
+// Handler returns an HTTP handler that serves the named profile.
+// Available profiles can be found in [runtime/pprof.Profile].
 func Handler(name string) http.Handler
 
-// Indexはリクエストで指定されたpprof形式のプロファイルで応答します。
-// たとえば、"/debug/pprof/heap"は"heap"プロファイルを提供します。
-// Indexは"/debug/pprof/"へのリクエストに対して利用可能なプロファイルをリストしたHTMLページで応答します。
+// Index responds with the pprof-formatted profile named by the request.
+// For example, "/debug/pprof/heap" serves the "heap" profile.
+// Index responds to a request for "/debug/pprof/" with an HTML page
+// listing the available profiles.
 func Index(w http.ResponseWriter, r *http.Request)

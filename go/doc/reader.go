@@ -4,5 +4,5 @@
 
 package doc
 
-// IsPredeclaredは、sが事前に宣言された識別子であるかどうかを報告します。
+// IsPredeclared reports whether s is a predeclared identifier.
 func IsPredeclared(s string) bool

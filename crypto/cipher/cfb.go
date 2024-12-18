@@ -2,13 +2,28 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// CFB（Cipher Feedback）モード。
+// CFB (Cipher Feedback) Mode.
 
 package cipher
 
-// NewCFBEncrypterは、与えられた [Block] を使用して、暗号フィードバックモードで暗号化する [Stream] を返します。IVはブロックの [Block] サイズと同じ長さでなければなりません。
+// NewCFBEncrypter returns a [Stream] which encrypts with cipher feedback mode,
+// using the given [Block]. The iv must be the same length as the [Block]'s block
+// size.
+//
+// Deprecated: CFB mode is not authenticated, which generally enables active
+// attacks to manipulate and recover the plaintext. It is recommended that
+// applications use [AEAD] modes instead. The standard library implementation of
+// CFB is also unoptimized and not validated as part of the FIPS 140-3 module.
+// If an unauthenticated [Stream] mode is required, use [NewCTR] instead.
 func NewCFBEncrypter(block Block, iv []byte) Stream
 
-// NewCFBDecrypterは、暗号フィードバックモードで復号化する [Stream] を返します。
-// [Block] として指定されたものを使用します。IVは [Block] のサイズと同じ長さでなければならない。
+// NewCFBDecrypter returns a [Stream] which decrypts with cipher feedback mode,
+// using the given [Block]. The iv must be the same length as the [Block]'s block
+// size.
+//
+// Deprecated: CFB mode is not authenticated, which generally enables active
+// attacks to manipulate and recover the plaintext. It is recommended that
+// applications use [AEAD] modes instead. The standard library implementation of
+// CFB is also unoptimized and not validated as part of the FIPS 140-3 module.
+// If an unauthenticated [Stream] mode is required, use [NewCTR] instead.
 func NewCFBDecrypter(block Block, iv []byte) Stream

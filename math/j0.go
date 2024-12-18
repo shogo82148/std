@@ -4,18 +4,18 @@
 
 package math
 
-// J0は第1種のゼロ次ベッセル関数を返します。
+// J0 returns the order-zero Bessel function of the first kind.
 //
-// 特殊な場合は次の通りです:
+// Special cases are:
 //
 //	J0(±Inf) = 0
 //	J0(0) = 1
 //	J0(NaN) = NaN
 func J0(x float64) float64
 
-// Y0は第二種ベッセル関数のゼロ次の値を返します。
+// Y0 returns the order-zero Bessel function of the second kind.
 //
-// 特殊なケースは以下の通りです：
+// Special cases are:
 //
 //	Y0(+Inf) = 0
 //	Y0(0) = -Inf

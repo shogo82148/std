@@ -7,29 +7,29 @@
 
 package types
 
-// Chanはチャネルの型を表します。
+// A Chan represents a channel type.
 type Chan struct {
 	dir  ChanDir
 	elem Type
 }
 
-// ChanDirの値は、チャネルの方向を示します。
+// A ChanDir value indicates a channel direction.
 type ChanDir int
 
-// チャネルの方向は、次の定数のいずれかで示されます。
+// The direction of a channel is indicated by one of these constants.
 const (
 	SendRecv ChanDir = iota
 	SendOnly
 	RecvOnly
 )
 
-// NewChanは指定された方向と要素の型のための新しいチャネル型を返します。
+// NewChan returns a new channel type for the given direction and element type.
 func NewChan(dir ChanDir, elem Type) *Chan
 
-// Dir 関数は、チャネル c の方向を返します。
+// Dir returns the direction of channel c.
 func (c *Chan) Dir() ChanDir
 
-// Elem はチャネル c の要素の型を返します。
+// Elem returns the element type of channel c.
 func (c *Chan) Elem() Type
 
 func (c *Chan) Underlying() Type

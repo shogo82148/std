@@ -8,12 +8,13 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// NewFileTransportは、提供された [FileSystem] を提供する新しい [RoundTripper] を返します。
-// 返されたRoundTripperは、その入力リクエストのURLホストを無視します。また、リクエストの
-// 他のほとんどのプロパティも無視します。
+// NewFileTransport returns a new [RoundTripper], serving the provided
+// [FileSystem]. The returned RoundTripper ignores the URL host in its
+// incoming requests, as well as most other properties of the
+// request.
 //
-// NewFileTransport の典型的な使用例は、[Transport] に "file" プロトコルを登録することです。
-// 例:
+// The typical use case for NewFileTransport is to register the "file"
+// protocol with a [Transport], as in:
 //
 //	t := &http.Transport{}
 //	t.RegisterProtocol("file", http.NewFileTransport(http.Dir("/")))

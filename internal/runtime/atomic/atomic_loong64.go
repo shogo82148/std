@@ -6,7 +6,9 @@
 
 package atomic
 
-import "github.com/shogo82148/std/unsafe"
+import (
+	"github.com/shogo82148/std/unsafe"
+)
 
 //go:noescape
 func Xadd(ptr *uint32, delta int32) uint32
@@ -16,6 +18,9 @@ func Xadd64(ptr *uint64, delta int64) uint64
 
 //go:noescape
 func Xadduintptr(ptr *uintptr, delta uintptr) uintptr
+
+//go:noescape
+func Xchg8(ptr *uint8, new uint8) uint8
 
 //go:noescape
 func Xchg(ptr *uint32, new uint32) uint32

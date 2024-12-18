@@ -19,7 +19,7 @@ var (
 	GOROOT    = os.Getenv("GOROOT")
 	GOARCH    = envOr("GOARCH", defaultGOARCH)
 	GOOS      = envOr("GOOS", defaultGOOS)
-	GO386     = envOr("GO386", defaultGO386)
+	GO386     = envOr("GO386", DefaultGO386)
 	GOAMD64   = goamd64()
 	GOARM     = goarm()
 	GOARM64   = goarm64()
@@ -30,6 +30,7 @@ var (
 	GOWASM    = gowasm()
 	ToolTags  = toolTags()
 	GO_LDSO   = defaultGO_LDSO
+	GOFIPS140 = gofips140()
 	Version   = version
 )
 
@@ -38,6 +39,13 @@ var Error error
 
 // Check exits the program with a fatal error if Error is non-nil.
 func Check()
+
+type GoarmFeatures struct {
+	Version   int
+	SoftFloat bool
+}
+
+func (g GoarmFeatures) String() string
 
 type Goarm64Features struct {
 	Version string

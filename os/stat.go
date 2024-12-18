@@ -4,14 +4,16 @@
 
 package os
 
-// Statは指定されたファイルに関する [FileInfo] を返します。
-// エラーが発生した場合、[*PathError] の型です。
+// Stat returns a [FileInfo] describing the named file.
+// If there is an error, it will be of type [*PathError].
 func Stat(name string) (FileInfo, error)
 
-// Lstatは、名前付きファイルに関する [FileInfo] を返します。
-// ファイルがシンボリックリンクである場合、返されるFileInfoはシンボリックリンクを説明します。
-// Lstatは、リンクをたどる試みをしません。
-// エラーがある場合、[*PathError] 型になります。
+// Lstat returns a [FileInfo] describing the named file.
+// If the file is a symbolic link, the returned FileInfo
+// describes the symbolic link. Lstat makes no attempt to follow the link.
+// If there is an error, it will be of type [*PathError].
 //
-// Windowsでは、ファイルが他の名前付きエンティティ（シンボリックリンクやマウントされたフォルダなど）の代替となるリパースポイントである場合、返されるFileInfoはリパースポイントを説明し、解決しようとしません。
+// On Windows, if the file is a reparse point that is a surrogate for another
+// named entity (such as a symbolic link or mounted folder), the returned
+// FileInfo describes the reparse point, and makes no attempt to resolve it.
 func Lstat(name string) (FileInfo, error)

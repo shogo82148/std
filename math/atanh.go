@@ -4,9 +4,9 @@
 
 package math
 
-// Atanhはxの逆双曲線正接を返します。
+// Atanh returns the inverse hyperbolic tangent of x.
 //
-// 特別な場合は次のとおりです：
+// Special cases are:
 //
 //	Atanh(1) = +Inf
 //	Atanh(±0) = ±0

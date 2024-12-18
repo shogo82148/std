@@ -8,10 +8,10 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// WriterはLZWコンプレッサーです。データの圧縮形式を
-// 下層のライターに書き込みます（ [NewWriter] を参照）。
+// Writer is an LZW compressor. It writes the compressed form of the data
+// to an underlying writer (see [NewWriter]).
 type Writer struct {
-	// wは圧縮バイトが書き込まれるライターです。
+	// w is the writer that compressed bytes are written to.
 	w writer
 	// litWidth is the width in bits of literal codes.
 	litWidth uint
@@ -25,33 +25,37 @@ type Writer struct {
 	// hi is the code implied by the next code emission.
 	// overflow is the code at which hi overflows the code width.
 	hi, overflow uint32
-
-	// savedCodeは最新のWrite呼び出しの終わりに蓄積されるコードです。
-	// もしWrite呼び出しがなかった場合、invalidCodeと等しいです。
+	// savedCode is the accumulated code at the end of the most recent Write
+	// call. It is equal to invalidCode if there was no such call.
 	savedCode uint32
-
-	// err は書き込み中に最初に発生したエラーです。ライターをクローズすると、
-	// 以降の書き込み呼び出しは errClosed を返します。
+	// err is the first error encountered during writing. Closing the writer
+	// will make any future Write calls return errClosed
 	err error
-
-	// tableは20ビットのキーから12ビットの値へのハッシュテーブルです。各テーブルエントリにはkey<<12|valが含まれており、衝突は線形探査法によって解決されます。キーは12ビットのコード接頭辞と8ビットのバイト接尾辞で構成されます。値は12ビットのコードです。
+	// table is the hash table from 20-bit keys to 12-bit values. Each table
+	// entry contains key<<12|val and collisions resolve by linear probing.
+	// The keys consist of a 12-bit code prefix and an 8-bit byte suffix.
+	// The values are a 12-bit code.
 	table [tableSize]uint32
 }
 
-// Writeはpの圧縮された表現をwの基になるライターに書き込みます。
+// Write writes a compressed representation of p to w's underlying writer.
 func (w *Writer) Write(p []byte) (n int, err error)
 
-// Closeは [Writer] を閉じ、保留中の出力をフラッシュします。wの基になるライターは閉じません。
+// Close closes the [Writer], flushing any pending output. It does not close
+// w's underlying writer.
 func (w *Writer) Close() error
 
-// Resetは [Writer] の状態をクリアし、新しい [Writer] として再利用できるようにします。
+// Reset clears the [Writer]'s state and allows it to be reused again
+// as a new [Writer].
 func (w *Writer) Reset(dst io.Writer, order Order, litWidth int)
 
-// NewWriterは新しい [io.WriteCloser] を作成します。
-// 返された [io.WriteCloser] に書き込まれたデータは圧縮され、wに書き込まれます。
-// 書き込みが完了した場合、呼び出し元の責任で [io.WriteCloser] をCloseする必要があります。
-// リテラルコードに使用するビット数であるlitWidthは、範囲[2,8]内でなければなりませんが、通常は8です。
-// 入力バイトは1<<litWidth未満でなければなりません。
+// NewWriter creates a new [io.WriteCloser].
+// Writes to the returned [io.WriteCloser] are compressed and written to w.
+// It is the caller's responsibility to call Close on the WriteCloser when
+// finished writing.
+// The number of bits to use for literal codes, litWidth, must be in the
+// range [2,8] and is typically 8. Input bytes must be less than 1<<litWidth.
 //
-// 返された [io.WriteCloser] の基になる型が [*Writer] であることが保証されます。
+// It is guaranteed that the underlying type of the returned [io.WriteCloser]
+// is a *[Writer].
 func NewWriter(w io.Writer, order Order, litWidth int) io.WriteCloser

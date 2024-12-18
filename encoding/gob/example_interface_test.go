@@ -10,22 +10,24 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// この例では、インターフェース値のエンコード方法を示します。通常の型との主な違いは、
-// インターフェースを実装する具体的な型を登録することです。
+// This example shows how to encode an interface value. The key
+// distinction from regular types is to register the concrete type that
+// implements the interface.
 func Example_interface() {
-	var network bytes.Buffer // ネットワークの代わり。
+	var network bytes.Buffer // Stand-in for the network.
 
-	// エンコーダとデコーダ（通常はエンコーダとは別のマシン上）に具体的な型を登録する必要があります。
-	// それぞれの端では、これがどの具体的な型がインターフェースを実装して送信されているかをエンジンに伝えます。
+	// We must register the concrete type for the encoder and decoder (which would
+	// normally be on a separate machine from the encoder). On each end, this tells the
+	// engine which concrete type is being sent that implements the interface.
 	gob.Register(Point{})
 
-	// エンコーダを作成し、いくつかの値を送信します。
+	// Create an encoder and send some values.
 	enc := gob.NewEncoder(&network)
 	for i := 1; i <= 3; i++ {
 		interfaceEncode(enc, Point{3 * i, 4 * i})
 	}
 
-	// デコーダを作成し、いくつかの値を受信します。
+	// Create a decoder and receive some values.
 	dec := gob.NewDecoder(&network)
 	for i := 1; i <= 3; i++ {
 		result := interfaceDecode(dec)

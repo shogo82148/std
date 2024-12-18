@@ -109,11 +109,11 @@ func ExampleEncodeRune() {
 
 func ExampleEncodeRune_outOfRange() {
 	runes := []rune{
-		// 0未満、範囲外です。
+		// Less than 0, out of range.
 		-1,
-		// 0x10FFFF より大きいため、範囲外です。
+		// Greater than 0x10FFFF, out of range.
 		0x110000,
-		// ユニコードの置換文字。
+		// The Unicode replacement character.
 		utf8.RuneError,
 	}
 	for i, c := range runes {
@@ -128,7 +128,7 @@ func ExampleEncodeRune_outOfRange() {
 }
 
 func ExampleFullRune() {
-	buf := []byte{228, 184, 150} // こんにちは
+	buf := []byte{228, 184, 150} // 世
 	fmt.Println(utf8.FullRune(buf))
 	fmt.Println(utf8.FullRune(buf[:2]))
 	// Output:

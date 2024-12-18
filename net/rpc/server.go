@@ -3,39 +3,55 @@
 // license that can be found in the LICENSE file.
 
 /*
-rpcパッケージは、オブジェクトのエクスポートされたメソッドに、ネットワークやその他のI/O接続を通じてアクセスする機能を提供します。サーバーはオブジェクトを登録し、オブジェクトのタイプ名に基づいてサービスとして表示されるようにします。登録後、オブジェクトのエクスポートされたメソッドはリモートからアクセス可能になります。サーバーは、異なるタイプの複数のオブジェクト（サービス）を登録することができますが、同じタイプの複数のオブジェクトを登録することはエラーです。
+Package rpc provides access to the exported methods of an object across a
+network or other I/O connection.  A server registers an object, making it visible
+as a service with the name of the type of the object.  After registration, exported
+methods of the object will be accessible remotely.  A server may register multiple
+objects (services) of different types but it is an error to register multiple
+objects of the same type.
 
-以下の条件を満たすメソッドのみがリモートアクセス可能になります。それ以外のメソッドは無視されます：
+Only methods that satisfy these criteria will be made available for remote access;
+other methods will be ignored:
 
-  - メソッドの型がエクスポートされていること。
-  - メソッドがエクスポートされていること。
-  - メソッドが2つの引数を持ち、両方の引数がエクスポートされている（または組み込み）型であること。
-  - メソッドの2番目の引数がポインタであること。
-  - メソッドが戻り値としてerror型を持つこと。
+  - the method's type is exported.
+  - the method is exported.
+  - the method has two arguments, both exported (or builtin) types.
+  - the method's second argument is a pointer.
+  - the method has return type error.
 
-要するに、メソッドは次のようなスキーマである必要があります。
+In effect, the method must look schematically like
 
 	func (t *T) MethodName(argType T1, replyType *T2) error
 
-ここで、T1とT2はencoding/gobでマーシャリングできる型です。
-これらの要件は、異なるコーデックが使用されている場合でも適用されます。
-（将来的には、カスタムコーデックに対してこれらの要件は緩和されるかもしれません。）
+where T1 and T2 can be marshaled by encoding/gob.
+These requirements apply even if a different codec is used.
+(In the future, these requirements may soften for custom codecs.)
 
-メソッドの最初の引数は呼び出し元から提供される引数を表し、
-2番目の引数は呼び出し元に返される結果パラメータを表します。
-メソッドの戻り値がnilでない場合、それはクライアントが [errors.New] によって作成されたかのようにクライアントが確認する文字列として送り返されます。
-エラーが返された場合、応答パラメータはクライアントに送り返されません。
+The method's first argument represents the arguments provided by the caller; the
+second argument represents the result parameters to be returned to the caller.
+The method's return value, if non-nil, is passed back as a string that the client
+sees as if created by [errors.New].  If an error is returned, the reply parameter
+will not be sent back to the client.
 
-サーバーは、[ServeConn] を呼び出すことによって単一の接続上のリクエストを処理することができます。また、通常はネットワークリスナーを作成し、[Accept] を呼び出すか、HTTPリスナーの場合は [HandleHTTP] と [http.Serve] を呼び出します。
+The server may handle requests on a single connection by calling [ServeConn].  More
+typically it will create a network listener and call [Accept] or, for an HTTP
+listener, [HandleHTTP] and [http.Serve].
 
-サービスを使用するためには、クライアントは接続を確立し、その後、接続上で [NewClient] を呼び出します。[Dial]（[DialHTTP]）という便利な関数は、生のネットワーク接続（HTTP接続）に対して両方の手順を実行します。結果として得られる [Client] オブジェクトには、サービスとメソッドを指定するための2つのメソッド、[Call] とGoがあり、引数を含むポインタと結果パラメータを受け取るポインタを指定します。
+A client wishing to use the service establishes a connection and then invokes
+[NewClient] on the connection.  The convenience function [Dial] ([DialHTTP]) performs
+both steps for a raw network connection (an HTTP connection).  The resulting
+[Client] object has two methods, [Call] and Go, that specify the service and method to
+call, a pointer containing the arguments, and a pointer to receive the result
+parameters.
 
-Callメソッドは、リモート呼び出しが完了するまで待機し、
-Goメソッドは非同期に呼び出しを開始し、Call構造体のDoneチャネルを使用して完了をシグナルします。
+The Call method waits for the remote call to complete while the Go method
+launches the call asynchronously and signals completion using the Call
+structure's Done channel.
 
-明示的なコーデックが設定されていない場合、データの転送には [encoding/gob] パッケージが使用されます。
+Unless an explicit codec is set up, package [encoding/gob] is used to
+transport the data.
 
-以下にシンプルな例を示します。サーバーはArithタイプのオブジェクトをエクスポートしたい場合です。
+Here is a simple example.  A server wishes to export an object of type Arith:
 
 	package server
 
@@ -65,7 +81,7 @@ Goメソッドは非同期に呼び出しを開始し、Call構造体のDoneチ�
 		return nil
 	}
 
-サーバーの呼び出し（HTTPサービスの場合）：
+The server calls (for HTTP service):
 
 	arith := new(Arith)
 	rpc.Register(arith)
@@ -76,16 +92,17 @@ Goメソッドは非同期に呼び出しを開始し、Call構造体のDoneチ�
 	}
 	go http.Serve(l, nil)
 
-この時点で、クライアントは"Arith"というサービスとそのメソッド"Arith.Multiply"、"Arith.Divide"を見ることができます。呼び出すためには、クライアントはまずサーバーにダイヤルします。
+At this point, clients can see a service "Arith" with methods "Arith.Multiply" and
+"Arith.Divide".  To invoke one, a client first dials the server:
 
 	client, err := rpc.DialHTTP("tcp", serverAddress + ":1234")
 	if err != nil {
 		log.Fatal("dialing:", err)
 	}
 
-そして、リモート呼び出しを行うことができます。
+Then it can make a remote call:
 
-	// 同期呼び出し
+	// Synchronous call
 	args := &server.Args{7,8}
 	var reply int
 	err = client.Call("Arith.Multiply", args, &reply)
@@ -94,17 +111,18 @@ Goメソッドは非同期に呼び出しを開始し、Call構造体のDoneチ�
 	}
 	fmt.Printf("Arith: %d*%d=%d", args.A, args.B, reply)
 
-または
+or
 
-	// 非同期呼び出し
+	// Asynchronous call
 	quotient := new(Quotient)
 	divCall := client.Go("Arith.Divide", args, quotient, nil)
-	replyCall := <-divCall.Done	// divCallと等しい
-	// エラーをチェックし、出力などを行います。
+	replyCall := <-divCall.Done	// will be equal to divCall
+	// check errors, print, etc.
 
-サーバーの実装では、クライアントのためのシンプルで型セーフなラッパーを提供することがよくあります。
+A server implementation will often provide a simple, type-safe wrapper for the
+client.
 
-net/rpcパッケージは凍結されており、新しい機能は受け付けていません。
+The net/rpc package is frozen and is not accepting new features.
 */
 package rpc
 
@@ -116,19 +134,23 @@ import (
 )
 
 const (
-	// HandleHTTPで使用されるデフォルト値
+	// Defaults used by HandleHTTP
 	DefaultRPCPath   = "/_goRPC_"
 	DefaultDebugPath = "/debug/rpc"
 )
 
-// RequestはRPC呼び出しの前に書かれるヘッダーです。内部で使用されますが、ネットワークトラフィックを分析する際などデバッグの支援のためにここで記述されています。
+// Request is a header written before every RPC call. It is used internally
+// but documented here as an aid to debugging, such as when analyzing
+// network traffic.
 type Request struct {
 	ServiceMethod string
 	Seq           uint64
 	next          *Request
 }
 
-// Responseは、すべてのRPCの戻り値の前に書かれるヘッダです。内部で使用されますが、ネットワークトラフィックを分析する際など、デバッグの支援としてここで文書化されています。
+// Response is a header written before every RPC return. It is used internally
+// but documented here as an aid to debugging, such as when analyzing
+// network traffic.
 type Response struct {
 	ServiceMethod string
 	Seq           uint64
@@ -136,7 +158,7 @@ type Response struct {
 	next          *Response
 }
 
-// ServerはRPCサーバーを表します。
+// Server represents an RPC Server.
 type Server struct {
 	serviceMap sync.Map
 	reqLock    sync.Mutex
@@ -145,55 +167,66 @@ type Server struct {
 	freeResp   *Response
 }
 
-// NewServerは新しい [Server] を返します。
+// NewServer returns a new [Server].
 func NewServer() *Server
 
-// DefaultServerは [*Server] のデフォルトインスタンスです。
+// DefaultServer is the default instance of [*Server].
 var DefaultServer = NewServer()
 
-// Registerは、以下の条件を満たすレシーバーのメソッドのセットをサーバーに公開します：
-//   - エクスポートされた型のエクスポートされたメソッド
-//   - 2つの引数、両方がエクスポートされた型
-//   - 2番目の引数がポインタであること
-//   - エラー型の1つの戻り値
+// Register publishes in the server the set of methods of the
+// receiver value that satisfy the following conditions:
+//   - exported method of exported type
+//   - two arguments, both of exported type
+//   - the second argument is a pointer
+//   - one return value, of type error
 //
-// レシーバーがエクスポートされた型でないか、適切なメソッドがない場合は、エラーを返します。また、エラーをパッケージlogを使用してログに記録します。
-// クライアントは "Type.Method" の形式の文字列を使用して各メソッドにアクセスします。ここで、Typeはレシーバーの具体的な型です。
+// It returns an error if the receiver is not an exported type or has
+// no suitable methods. It also logs the error using package log.
+// The client accesses each method using a string of the form "Type.Method",
+// where Type is the receiver's concrete type.
 func (server *Server) Register(rcvr any) error
 
-// RegisterNameは [Register] と同様ですが、レシーバーの具体的な型の代わりに提供された名前を型に使用します。
+// RegisterName is like [Register] but uses the provided name for the type
+// instead of the receiver's concrete type.
 func (server *Server) RegisterName(name string, rcvr any) error
 
-// ServeConnは、単一の接続上でサーバーを実行します。
-// ServeConnは、クライアントが切断するまで接続を提供するためにブロックします。
-// 呼び出し元は通常、goステートメントでServeConnを呼び出します。
-// ServeConnは、接続上でgobワイヤーフォーマット（パッケージgobを参照）を使用します。
-// 代替のコーデックを使用するには、[ServeCodec] を使用します。
-// 並行アクセスに関する情報については、[NewClient] のコメントを参照してください。
+// ServeConn runs the server on a single connection.
+// ServeConn blocks, serving the connection until the client hangs up.
+// The caller typically invokes ServeConn in a go statement.
+// ServeConn uses the gob wire format (see package gob) on the
+// connection. To use an alternate codec, use [ServeCodec].
+// See [NewClient]'s comment for information about concurrent access.
 func (server *Server) ServeConn(conn io.ReadWriteCloser)
 
-// ServeCodecは [ServeConn] と同様ですが、指定されたコーデックを使用して
-// リクエストをデコードし、レスポンスをエンコードします。
+// ServeCodec is like [ServeConn] but uses the specified codec to
+// decode requests and encode responses.
 func (server *Server) ServeCodec(codec ServerCodec)
 
-// ServeRequestは [ServeCodec] と似ていますが、単一のリクエストを同期的に提供します。
-// 完了時にコーデックを閉じることはありません。
+// ServeRequest is like [ServeCodec] but synchronously serves a single request.
+// It does not close the codec upon completion.
 func (server *Server) ServeRequest(codec ServerCodec) error
 
-// Acceptはリスナー上で接続を受け入れ、各受信接続のリクエストを処理します。
-// Acceptはリスナーがnon-nilのエラーを返すまでブロックされます。通常、呼び出し元はgoステートメントでAcceptを呼び出します。
+// Accept accepts connections on the listener and serves requests
+// for each incoming connection. Accept blocks until the listener
+// returns a non-nil error. The caller typically invokes Accept in a
+// go statement.
 func (server *Server) Accept(lis net.Listener)
 
-// Registerはレシーバのメソッドを [DefaultServer] に登録します。
+// Register publishes the receiver's methods in the [DefaultServer].
 func Register(rcvr any) error
 
-// RegisterNameは、レシーバの具体的な型ではなく、与えられた名前を型として使用します。[Register] と同様の動作です。
+// RegisterName is like [Register] but uses the provided name for the type
+// instead of the receiver's concrete type.
 func RegisterName(name string, rcvr any) error
 
-// ServerCodecはRPCセッションのサーバー側でのRPCリクエストの読み取りとRPCレスポンスの書き込みを実装します。
-// サーバーは [ServerCodec.ReadRequestHeader] と [ServerCodec.ReadRequestBody] をペアで呼び出して接続からリクエストを読み取り、[ServerCodec.WriteResponse] を呼び出してレスポンスを書き込みます。
-// サーバーは接続が終了したら [ServerCodec.Close] を呼び出します。ReadRequestBodyはnilの引数で呼び出されることがあり、リクエストの本文を読み取って破棄するためのものです。
-// 同時アクセスに関する情報については、[NewClient] のコメントを参照してください。
+// A ServerCodec implements reading of RPC requests and writing of
+// RPC responses for the server side of an RPC session.
+// The server calls [ServerCodec.ReadRequestHeader] and [ServerCodec.ReadRequestBody] in pairs
+// to read requests from the connection, and it calls [ServerCodec.WriteResponse] to
+// write a response back. The server calls [ServerCodec.Close] when finished with the
+// connection. ReadRequestBody may be called with a nil
+// argument to force the body of the request to be read and discarded.
+// See [NewClient]'s comment for information about concurrent access.
 type ServerCodec interface {
 	ReadRequestHeader(*Request) error
 	ReadRequestBody(any) error
@@ -202,33 +235,36 @@ type ServerCodec interface {
 	Close() error
 }
 
-// ServeConnは [DefaultServer] を単一の接続上で実行します。
-// ServeConnは、クライアントが切断するまで接続を処理するまでブロックします。
-// 通常、呼び出し元はgo文でServeConnを呼び出します。
-// ServeConnは、接続上でgobワイヤーフォーマット（パッケージgobを参照）を使用します。
-// 別のコーデックを使用するには、[ServeCodec] を使用してください。
-// 同時アクセスに関する情報については、[NewClient] のコメントを参照してください。
+// ServeConn runs the [DefaultServer] on a single connection.
+// ServeConn blocks, serving the connection until the client hangs up.
+// The caller typically invokes ServeConn in a go statement.
+// ServeConn uses the gob wire format (see package gob) on the
+// connection. To use an alternate codec, use [ServeCodec].
+// See [NewClient]'s comment for information about concurrent access.
 func ServeConn(conn io.ReadWriteCloser)
 
-// ServeCodecは [ServeConn] と似ていますが、指定されたコーデックを使用して
-// リクエストをデコードし、レスポンスをエンコードします。
+// ServeCodec is like [ServeConn] but uses the specified codec to
+// decode requests and encode responses.
 func ServeCodec(codec ServerCodec)
 
-// ServeRequest は [ServeCodec] に似ていますが、単一のリクエストを同期的に処理します。
-// 処理が完了してもコーデックを閉じません。
+// ServeRequest is like [ServeCodec] but synchronously serves a single request.
+// It does not close the codec upon completion.
 func ServeRequest(codec ServerCodec) error
 
-// Acceptはリスナー上で接続を受け付け、各受信された接続に対して [DefaultServer] にリクエストを処理します。
-// Acceptはブロックします。通常、呼び出し元はgo文でそれを呼び出します。
+// Accept accepts connections on the listener and serves requests
+// to [DefaultServer] for each incoming connection.
+// Accept blocks; the caller typically invokes it in a go statement.
 func Accept(lis net.Listener)
 
-// ServeHTTPはRPCリクエストに答えるための [http.Handler] を実装します。
+// ServeHTTP implements an [http.Handler] that answers RPC requests.
 func (server *Server) ServeHTTP(w http.ResponseWriter, req *http.Request)
 
-// HandleHTTPはrpcPathでRPCメッセージのためのHTTPハンドラを登録し、debugPathではデバッグハンドラを登録します。
-// 通常はGoステートメント内で [http.Serve]()を呼び出す必要があります。
+// HandleHTTP registers an HTTP handler for RPC messages on rpcPath,
+// and a debugging handler on debugPath.
+// It is still necessary to invoke [http.Serve](), typically in a go statement.
 func (server *Server) HandleHTTP(rpcPath, debugPath string)
 
-// HandleHTTPはRPCメッセージのためのHTTPハンドラを [DefaultServer] に登録し、[DefaultRPCPath] にデバッグハンドラを登録します。
-// 通常はgoステートメントで [http.Serve]()を呼び出す必要があります。
+// HandleHTTP registers an HTTP handler for RPC messages to [DefaultServer]
+// on [DefaultRPCPath] and a debugging handler on [DefaultDebugPath].
+// It is still necessary to invoke [http.Serve](), typically in a go statement.
 func HandleHTTP()

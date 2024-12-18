@@ -4,55 +4,63 @@
 
 package unicode
 
-// GraphicRangesはUnicodeに基づいてグラフィック文字のセットを定義します。
+// GraphicRanges defines the set of graphic characters according to Unicode.
 var GraphicRanges = []*RangeTable{
 	L, M, N, P, S, Zs,
 }
 
-// PrintRangesはGoによる印刷可能な文字のセットを定義します。
-// ASCIIスペース、U+0020は別途扱われます。
+// PrintRanges defines the set of printable characters according to Go.
+// ASCII space, U+0020, is handled separately.
 var PrintRanges = []*RangeTable{
 	L, M, N, P, S,
 }
 
-// IsGraphicはUnicodeによってグラフィックとして定義されたルーンかどうかを報告します。
-// これには、カテゴリ [L]、[M]、[N]、[P]、[S]、[Zs] の文字が含まれます。
+// IsGraphic reports whether the rune is defined as a Graphic by Unicode.
+// Such characters include letters, marks, numbers, punctuation, symbols, and
+// spaces, from categories [L], [M], [N], [P], [S], [Zs].
 func IsGraphic(r rune) bool
 
-// IsPrintは、Goによって印字可能として定義されているルーンかどうかを報告します。これには文字、マーク、数字、句読点、記号、およびASCIIスペース文字が含まれます。これはカテゴリ [L]、[M]、[N]、[P]、[S]、およびASCIIスペース文字と同じ分類です（ただし、唯一のスペース文字はASCIIスペース、U+0020です）。IsGraphicとは異なり、この区分にはASCIIスペース文字のみが含まれています。
+// IsPrint reports whether the rune is defined as printable by Go. Such
+// characters include letters, marks, numbers, punctuation, symbols, and the
+// ASCII space character, from categories [L], [M], [N], [P], [S] and the ASCII space
+// character. This categorization is the same as [IsGraphic] except that the
+// only spacing character is ASCII space, U+0020.
 func IsPrint(r rune) bool
 
-// IsOneOfは、ルーンがいずれかの範囲のメンバーであるかどうかを報告します。
-// 関数"In"はより良いシグネチャを提供し、IsOneOfよりも使われるべきです。
+// IsOneOf reports whether the rune is a member of one of the ranges.
+// The function "In" provides a nicer signature and should be used in preference to IsOneOf.
 func IsOneOf(ranges []*RangeTable, r rune) bool
 
-// ランジのいずれかのメンバーかどうかを報告する。
+// In reports whether the rune is a member of one of the ranges.
 func In(r rune, ranges ...*RangeTable) bool
 
-// IsControlはルーンが制御文字であるかどうかを報告します。
-// [C] ([Other])のUnicodeカテゴリにはサロゲートなど、より多くのコードポイントが含まれています。
-// それらをテストするには [Is](C, r)を使用してください。
+// IsControl reports whether the rune is a control character.
+// The [C] ([Other]) Unicode category includes more code points
+// such as surrogates; use [Is](C, r) to test for them.
 func IsControl(r rune) bool
 
-// IsLetterはルーンが文字（カテゴリー [L]）であるかどうかを報告します。
+// IsLetter reports whether the rune is a letter (category [L]).
 func IsLetter(r rune) bool
 
-// IsMarkは、ルーンがマーク文字（カテゴリー [M]）であるかどうかを報告します。
+// IsMark reports whether the rune is a mark character (category [M]).
 func IsMark(r rune) bool
 
-// IsNumberはルーンが数字（カテゴリー [N]）であるかどうかを報告します。
+// IsNumber reports whether the rune is a number (category [N]).
 func IsNumber(r rune) bool
 
-// IsPunctはruneがUnicodeの句読点（カテゴリー [P]）であるかどうかを報告します。
+// IsPunct reports whether the rune is a Unicode punctuation character
+// (category [P]).
 func IsPunct(r rune) bool
 
-// IsSpaceは、UnicodeのWhite Spaceプロパティによって定義された空白文字であるかどうかを報告します。
-// これには、Latin-1スペースに次の文字が含まれます。
+// IsSpace reports whether the rune is a space character as defined
+// by Unicode's White Space property; in the Latin-1 space
+// this is
 //
-// '\t'、'\n'、'\v'、'\f'、'\r'、' '、U+0085（NEL）、U+00A0（NBSP）。
+//	'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL), U+00A0 (NBSP).
 //
-// スペーシング文字の他の定義は、カテゴリZおよびプロパティ [Pattern_White_Space] によって設定されています。
+// Other definitions of spacing characters are set by category
+// Z and property [Pattern_White_Space].
 func IsSpace(r rune) bool
 
-// IsSymbolはルーンが記号の文字であるかどうかを報告します。
+// IsSymbol reports whether the rune is a symbolic character.
 func IsSymbol(r rune) bool

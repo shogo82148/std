@@ -8,8 +8,5 @@
 //
 // Usage:
 //
-//	go tool preprofile [-v] [-o output] -i input
-//
-//
-
+//	go tool preprofile [-V] [-o output] -i input
 package main

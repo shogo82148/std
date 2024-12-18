@@ -2,14 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// カウンタ (CTR) モード。
+// Counter (CTR) mode.
 
-// CTRは、ブロック暗号をインクリメントするカウンタを暗号化し、結果として得られるデータストリームを入力とXOR演算することで、ストリーム暗号へ変換します。
+// CTR converts a block cipher into a stream cipher by
+// repeatedly encrypting an incrementing counter and
+// xoring the resulting stream of data with the input.
 
-// NIST SP 800-38A、pp 13-15を参照してください。
+// See NIST SP 800-38A, pp 13-15
 
 package cipher
 
-// NewCTRは、指定された [Block] を使用して暗号化/復号化を行う [Stream] を返します。
-// ivの長さは、 [Block] のブロックサイズと同じでなければなりません。
+// NewCTR returns a [Stream] which encrypts/decrypts using the given [Block] in
+// counter mode. The length of iv must be the same as the [Block]'s block size.
 func NewCTR(block Block, iv []byte) Stream

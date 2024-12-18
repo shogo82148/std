@@ -8,12 +8,9 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-type fileReader struct{}
-type block struct{}
-
-// Readerはtarアーカイブの内容に順次アクセスするためのものです。
-// Reader.Next はアーカイブ内の次のファイル（最初のファイルを含む）に進み、
-// その後、Readerはファイルのデータにアクセスするためのio.Readerとして扱うことができます。
+// Reader provides sequential access to the contents of a tar archive.
+// Reader.Next advances to the next file in the archive (including the first),
+// and then Reader can be treated as an io.Reader to access the file's data.
 type Reader struct {
 	r    io.Reader
 	pad  int64
@@ -26,28 +23,30 @@ type Reader struct {
 	err error
 }
 
-// NewReaderはrから読み取りを行う新しい [Reader] を作成します。
+// NewReader creates a new [Reader] reading from r.
 func NewReader(r io.Reader) *Reader
 
-// Nextはtarアーカイブ内の次のエントリに進みます。
-// Header.Sizeは次のファイルの読み取り可能なバイト数を決定します。
-// 現在のファイルに残っているデータは自動的に破棄されます。
-// アーカイブの末尾に達した場合、Nextはエラーio.EOFを返します。
+// Next advances to the next entry in the tar archive.
+// The Header.Size determines how many bytes can be read for the next file.
+// Any remaining data in the current file is automatically discarded.
+// At the end of the archive, Next returns the error io.EOF.
 //
-// Nextが [filepath.IsLocal] によって定義されるローカルでない名前に遭遇し、
-// GODEBUG環境変数に`tarinsecurepath=0`が含まれている場合、
-// Nextは [ErrInsecurePath] エラーを伴うヘッダーを返します。
-// 将来のGoのバージョンでは、この動作がデフォルトで導入される可能性があります。
-// ローカルでない名前を受け入れたいプログラムは、 [ErrInsecurePath] エラーを無視して返されたヘッダーを使用できます。
+// If Next encounters a non-local name (as defined by [filepath.IsLocal])
+// and the GODEBUG environment variable contains `tarinsecurepath=0`,
+// Next returns the header with an [ErrInsecurePath] error.
+// A future version of Go may introduce this behavior by default.
+// Programs that want to accept non-local names can ignore
+// the [ErrInsecurePath] error and use the returned header.
 func (tr *Reader) Next() (*Header, error)
 
-// Readはtarアーカイブの現在のファイルから読み取ります。
-// それはそのファイルの終わりに達するとき（0、io.EOF）を返します、
-// 次のファイルに進むために [Next] が呼び出されるまで。
+// Read reads from the current file in the tar archive.
+// It returns (0, io.EOF) when it reaches the end of that file,
+// until [Next] is called to advance to the next file.
 //
-// 現在のファイルがスパースである場合、
-// 穴としてマークされた領域はNULバイトとして読み戻されます。
+// If the current file is sparse, then the regions marked as a hole
+// are read back as NUL-bytes.
 //
-// [TypeLink] 、 [TypeSymlink] 、 [TypeChar] 、 [TypeBlock] 、 [TypeDir] 、 [TypeFifo] などの特殊なタイプでReadを呼び出すと、
-// [Header.Size] が示す内容に関係なく、(0, [io.EOF]) が返されます。
+// Calling Read on special types like [TypeLink], [TypeSymlink], [TypeChar],
+// [TypeBlock], [TypeDir], and [TypeFifo] returns (0, [io.EOF]) regardless of what
+// the [Header.Size] claims.
 func (tr *Reader) Read(b []byte) (int, error)

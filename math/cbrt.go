@@ -4,9 +4,9 @@
 
 package math
 
-// Cbrtはxの立方根を返します。
+// Cbrt returns the cube root of x.
 //
-// 特殊なケースは次の通りです:
+// Special cases are:
 //
 //	Cbrt(±0) = ±0
 //	Cbrt(±Inf) = ±Inf

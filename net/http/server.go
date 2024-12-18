@@ -19,45 +19,64 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// HTTPサーバーで使用されるエラー。
+// Errors used by the HTTP server.
 var (
-	// ErrBodyNotAllowedは、HTTPメソッドまたはレスポンスコードがボディを許可しない場合に、ResponseWriter.Write呼び出しによって返されます。
+	// ErrBodyNotAllowed is returned by ResponseWriter.Write calls
+	// when the HTTP method or response code does not permit a
+	// body.
 	ErrBodyNotAllowed = errors.New("http: request method or response status code does not allow body")
 
-	// ErrHijackedは、Hijackerインターフェースを使用して基礎となる接続がハイジャックされた場合に、ResponseWriter.Write呼び出しによって返されます。
-	// ハイジャックされた接続でのゼロバイト書き込みは、他の副作用なしにErrHijackedを返します。
+	// ErrHijacked is returned by ResponseWriter.Write calls when
+	// the underlying connection has been hijacked using the
+	// Hijacker interface. A zero-byte write on a hijacked
+	// connection will return ErrHijacked without any other side
+	// effects.
 	ErrHijacked = errors.New("http: connection has been hijacked")
 
-	// ErrContentLengthは、Handlerが宣言されたサイズを持つContent-Lengthレスポンスヘッダーを設定し、宣言されたバイト数よりも多くのバイトを書き込もうとした場合に、ResponseWriter.Write呼び出しによって返されます。
+	// ErrContentLength is returned by ResponseWriter.Write calls
+	// when a Handler set a Content-Length response header with a
+	// declared size and then attempted to write more bytes than
+	// declared.
 	ErrContentLength = errors.New("http: wrote more than the declared Content-Length")
 
-	// Deprecated: ErrWriteAfterFlushは、net/httpパッケージの何も返さなくなったため、もはや返されません。
-	// 呼び出し元は、この変数に対してエラーを比較するべきではありません。
+	// Deprecated: ErrWriteAfterFlush is no longer returned by
+	// anything in the net/http package. Callers should not
+	// compare errors against this variable.
 	ErrWriteAfterFlush = errors.New("unused")
 )
 
-// Handlerは、HTTPリクエストに応答します。
+// A Handler responds to an HTTP request.
 //
-// [Handler.ServeHTTP] は、応答ヘッダーとデータを [ResponseWriter] に書き込んでから返す必要があります。
-// 返すことで、リクエストが完了したことを示します。
-// ServeHTTPの呼び出しの完了後または同時に、 [ResponseWriter] を使用するか、[Request.Body]から読み取ることはできません。
+// [Handler.ServeHTTP] should write reply headers and data to the [ResponseWriter]
+// and then return. Returning signals that the request is finished; it
+// is not valid to use the [ResponseWriter] or read from the
+// [Request.Body] after or concurrently with the completion of the
+// ServeHTTP call.
 //
-// HTTPクライアントソフトウェア、HTTPプロトコルバージョン、およびクライアントとGoサーバーの間の中間者によっては、
-// [ResponseWriter]に書き込んだ後に [Request.Body] から読み取ることができない場合があります。
-// 注意深いハンドラーは、最初に [Request.Body] を読み取り、その後に応答する必要があります。
+// Depending on the HTTP client software, HTTP protocol version, and
+// any intermediaries between the client and the Go server, it may not
+// be possible to read from the [Request.Body] after writing to the
+// [ResponseWriter]. Cautious handlers should read the [Request.Body]
+// first, and then reply.
 //
-// ボディを読み取る以外の場合、ハンドラーは提供されたRequestを変更してはいけません。
+// Except for reading the body, handlers should not modify the
+// provided Request.
 //
-// ServeHTTPがパニックを起こすと、サーバー（ServeHTTPの呼び出し元）は、パニックの影響がアクティブなリクエストに限定されたものであると仮定します。
-// サーバーはパニックを回復し、サーバーエラーログにスタックトレースを記録し、ネットワーク接続を閉じるか、HTTP/2 RST_STREAMを送信します。
-// クライアントが中断された応答を見るが、サーバーがエラーをログに記録しないように、 [ErrAbortHandler] の値でパニックを発生させることで、ハンドラーを中止できます。
+// If ServeHTTP panics, the server (the caller of ServeHTTP) assumes
+// that the effect of the panic was isolated to the active request.
+// It recovers the panic, logs a stack trace to the server error log,
+// and either closes the network connection or sends an HTTP/2
+// RST_STREAM, depending on the HTTP protocol. To abort a handler so
+// the client sees an interrupted response but the server doesn't log
+// an error, panic with the value [ErrAbortHandler].
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
 }
 
-// ResponseWriterインターフェースは、HTTPハンドラーがHTTPレスポンスを構築するために使用されます。
+// A ResponseWriter interface is used by an HTTP handler to
+// construct an HTTP response.
 //
-// [Handler.ServeHTTP] が返された後に、ResponseWriter を使用することはできません。
+// A ResponseWriter may not be used after [Handler.ServeHTTP] has returned.
 type ResponseWriter interface {
 	Header() Header
 
@@ -66,364 +85,462 @@ type ResponseWriter interface {
 	WriteHeader(statusCode int)
 }
 
-// Flusherインターフェースは、HTTPハンドラーがバッファリングされたデータをクライアントにフラッシュすることを許可するResponseWriterによって実装されます。
+// The Flusher interface is implemented by ResponseWriters that allow
+// an HTTP handler to flush buffered data to the client.
 //
-// デフォルトのHTTP/1.xおよびHTTP/2 [ResponseWriter] 実装は [Flusher] をサポートしていますが、ResponseWriterラッパーはサポートしていない場合があります。
-// ハンドラーは常にランタイムでこの機能をテストする必要があります。
+// The default HTTP/1.x and HTTP/2 [ResponseWriter] implementations
+// support [Flusher], but ResponseWriter wrappers may not. Handlers
+// should always test for this ability at runtime.
 //
-// FlushをサポートするResponseWriterであっても、クライアントがHTTPプロキシを介して接続されている場合、
-// バッファリングされたデータがレスポンスが完了するまでクライアントに到達しない場合があります。
+// Note that even for ResponseWriters that support Flush,
+// if the client is connected through an HTTP proxy,
+// the buffered data may not reach the client until the response
+// completes.
 type Flusher interface {
 	Flush()
 }
 
-// Hijackerインターフェースは、HTTPハンドラーが接続を引き継ぐことを許可するResponseWriterによって実装されます。
+// The Hijacker interface is implemented by ResponseWriters that allow
+// an HTTP handler to take over the connection.
 //
-// HTTP/1.x接続のデフォルト [ResponseWriter] はHijackerをサポートしていますが、HTTP/2接続は意図的にサポートしていません。
-// ResponseWriterラッパーもHijackerをサポートしていない場合があります。
-// ハンドラーは常にランタイムでこの機能をテストする必要があります。
+// The default [ResponseWriter] for HTTP/1.x connections supports
+// Hijacker, but HTTP/2 connections intentionally do not.
+// ResponseWriter wrappers may also not support Hijacker. Handlers
+// should always test for this ability at runtime.
 type Hijacker interface {
 	Hijack() (net.Conn, *bufio.ReadWriter, error)
 }
 
-// CloseNotifierインターフェースは、基礎となる接続が切断されたときに検出できるResponseWriterによって実装されます。
+// The CloseNotifier interface is implemented by ResponseWriters which
+// allow detecting when the underlying connection has gone away.
 //
-// このメカニズムは、レスポンスが準備される前にクライアントが切断された場合、サーバー上の長時間の操作をキャンセルするために使用できます。
+// This mechanism can be used to cancel long operations on the server
+// if the client has disconnected before the response is ready.
 //
-// Deprecated: CloseNotifierインターフェースは、Goのコンテキストパッケージより前に実装されました。
-// 新しいコードでは、[Request.Context] を使用する必要があります。
+// Deprecated: the CloseNotifier interface predates Go's context package.
+// New code should use [Request.Context] instead.
 type CloseNotifier interface {
 	CloseNotify() <-chan bool
 }
 
 var (
-	// ServerContextKeyは、コンテキストキーです。
-	// HTTPハンドラーでContext.Valueと一緒に使用して、ハンドラーを開始したサーバーにアクセスできます。
-	// 関連する値の型は*Serverです。
+	// ServerContextKey is a context key. It can be used in HTTP
+	// handlers with Context.Value to access the server that
+	// started the handler. The associated value will be of
+	// type *Server.
 	ServerContextKey = &contextKey{"http-server"}
 
-	// LocalAddrContextKeyは、コンテキストキーです。
-	// HTTPハンドラーでContext.Valueと一緒に使用して、接続が到着したローカルアドレスにアクセスできます。
-	// 関連する値の型はnet.Addrです。
+	// LocalAddrContextKey is a context key. It can be used in
+	// HTTP handlers with Context.Value to access the local
+	// address the connection arrived on.
+	// The associated value will be of type net.Addr.
 	LocalAddrContextKey = &contextKey{"local-addr"}
 )
 
-// TrailerPrefixは、[ResponseWriter.Header] マップのキーに対するマジックプレフィックスで、
-// 存在する場合は、マップエントリが実際にはレスポンストレーラーであることを示します。
-// プレフィックスは、ServeHTTP呼び出しが終了し、値がトレーラーに送信された後に削除されます。
+// TrailerPrefix is a magic prefix for [ResponseWriter.Header] map keys
+// that, if present, signals that the map entry is actually for
+// the response trailers, and not the response headers. The prefix
+// is stripped after the ServeHTTP call finishes and the values are
+// sent in the trailers.
 //
-// このメカニズムは、ヘッダーが書き込まれる前には不明なトレーラーにのみ使用することができます。
-// トレーラーのセットが固定されている場合、またはヘッダーが書き込まれる前に既知の場合、通常のGoトレーラーメカニズムが推奨されます。
+// This mechanism is intended only for trailers that are not known
+// prior to the headers being written. If the set of trailers is fixed
+// or known before the header is written, the normal Go trailers mechanism
+// is preferred:
 //
 //	https://pkg.go.dev/net/http#ResponseWriter
 //	https://pkg.go.dev/net/http#example-ResponseWriter-Trailers
 const TrailerPrefix = "Trailer:"
 
-// DefaultMaxHeaderBytesは、HTTPリクエストのヘッダーの許容される最大サイズです。
-// これは、[Server.MaxHeaderBytes] を設定することで上書きできます。
+// DefaultMaxHeaderBytes is the maximum permitted size of the headers
+// in an HTTP request.
+// This can be overridden by setting [Server.MaxHeaderBytes].
 const DefaultMaxHeaderBytes = 1 << 20
 
-// TimeFormatは、HTTPヘッダーで時間を生成するときに使用する時間形式です。
-// [time.RFC1123] のようですが、タイムゾーンとしてGMTがハードコードされています。
-// フォーマットされる時間はUTCである必要があります。
+// TimeFormat is the time format to use when generating times in HTTP
+// headers. It is like [time.RFC1123] but hard-codes GMT as the time
+// zone. The time being formatted must be in UTC for Format to
+// generate the correct format.
 //
-// この時間形式を解析するには、[ParseTime] を参照してください。
+// For parsing this time format, see [ParseTime].
 const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
 var _ closeWriter = (*net.TCPConn)(nil)
 
-// ErrAbortHandlerは、ハンドラーを中止するためのセンチネルパニック値です。
-// ServeHTTPからのパニックはすべて、クライアントへの応答を中止しますが、
-// ErrAbortHandlerでパニックすると、サーバーのエラーログにスタックトレースを記録しないようにすることができます。
+// ErrAbortHandler is a sentinel panic value to abort a handler.
+// While any panic from ServeHTTP aborts the response to the client,
+// panicking with ErrAbortHandler also suppresses logging of a stack
+// trace to the server's error log.
 var ErrAbortHandler = errors.New("net/http: abort Handler")
 
-// HandlerFunc型は、HTTPハンドラーとして通常の関数を使用できるようにするためのアダプタです。
-// fが適切なシグネチャを持つ関数である場合、HandlerFunc(f)はfを呼び出す [Handler] です。
+// The HandlerFunc type is an adapter to allow the use of
+// ordinary functions as HTTP handlers. If f is a function
+// with the appropriate signature, HandlerFunc(f) is a
+// [Handler] that calls f.
 type HandlerFunc func(ResponseWriter, *Request)
 
-// ServeHTTPは、f(w, r) を呼び出します。
+// ServeHTTP calls f(w, r).
 func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 
-// Errorは、指定されたエラーメッセージとHTTPコードでリクエストに応答します。
-// それ以外に、リクエストを終了しません。呼び出し元は、wに対してさらに書き込みが行われないようにする必要があります。
-// エラーメッセージはプレーンテキストである必要があります。
+// Error replies to the request with the specified error message and HTTP code.
+// It does not otherwise end the request; the caller should ensure no further
+// writes are done to w.
+// The error message should be plain text.
 //
-// ErrorはContent-Lengthヘッダーを削除し、
-// Content-Typeを"text/plain; charset=utf-8"に設定し、
-// X-Content-Type-Optionsを"nosniff"に設定します。
-// これにより、呼び出し元が成功した出力を期待して設定していた場合でも、
-// エラーメッセージ用にヘッダーが適切に設定されます。
+// Error deletes the Content-Length header,
+// sets Content-Type to “text/plain; charset=utf-8”,
+// and sets X-Content-Type-Options to “nosniff”.
+// This configures the header properly for the error message,
+// in case the caller had set it up expecting a successful output.
 func Error(w ResponseWriter, error string, code int)
 
-// NotFoundは、HTTP 404 not foundエラーでリクエストに応答します。
+// NotFound replies to the request with an HTTP 404 not found error.
 func NotFound(w ResponseWriter, r *Request)
 
-// NotFoundHandlerは、各リクエストに「404ページが見つかりません」という応答を返す単純なリクエストハンドラーを返します。
+// NotFoundHandler returns a simple request handler
+// that replies to each request with a “404 page not found” reply.
 func NotFoundHandler() Handler
 
-// StripPrefixは、リクエストURLのPath（および設定されている場合はRawPath）から指定された接頭辞を削除し、ハンドラーhを呼び出してHTTPリクエストを処理するハンドラーを返します。
-// prefixで始まらないパスのリクエストには、HTTP 404 not foundエラーで応答します。
-// 接頭辞は完全に一致する必要があります。リクエストの接頭辞にエスケープされた文字が含まれている場合、応答もHTTP 404 not foundエラーになります。
+// StripPrefix returns a handler that serves HTTP requests by removing the
+// given prefix from the request URL's Path (and RawPath if set) and invoking
+// the handler h. StripPrefix handles a request for a path that doesn't begin
+// with prefix by replying with an HTTP 404 not found error. The prefix must
+// match exactly: if the prefix in the request contains escaped characters
+// the reply is also an HTTP 404 not found error.
 func StripPrefix(prefix string, h Handler) Handler
 
-// Redirectは、リクエストに対してurlにリダイレクトする応答を返します。
-// urlは、リクエストパスに対する相対パスである場合があります。
+// Redirect replies to the request with a redirect to url,
+// which may be a path relative to the request path.
 //
-// 提供されたコードは通常、[StatusMovedPermanently]、[StatusFound]、または [StatusSeeOther] の3xx範囲にあります。
+// The provided code should be in the 3xx range and is usually
+// [StatusMovedPermanently], [StatusFound] or [StatusSeeOther].
 //
-// Content-Typeヘッダーが設定されていない場合、[Redirect] はそれを"text/html; charset=utf-8"に設定し、小さなHTML本文を書き込みます。
-// Content-Typeヘッダーを任意の値、nilを含む任意の値に設定すると、その動作が無効になります。
+// If the Content-Type header has not been set, [Redirect] sets it
+// to "text/html; charset=utf-8" and writes a small HTML body.
+// Setting the Content-Type header to any value, including nil,
+// disables that behavior.
 func Redirect(w ResponseWriter, r *Request, url string, code int)
 
-// RedirectHandlerは、受信した各リクエストを、指定されたステータスコードを使用して、指定されたURLにリダイレクトするリクエストハンドラーを返します。
+// RedirectHandler returns a request handler that redirects
+// each request it receives to the given url using the given
+// status code.
 //
-// 提供されたコードは通常、[StatusMovedPermanently]、[StatusFound]、または [StatusSeeOther] の3xx範囲にあります。
+// The provided code should be in the 3xx range and is usually
+// [StatusMovedPermanently], [StatusFound] or [StatusSeeOther].
 func RedirectHandler(url string, code int) Handler
 
-// ServeMuxは、HTTPリクエストマルチプレクサーです。
-// それは、登録されたパターンのリストに対して、各受信リクエストのURLを一致させ、
-// URLに最も近いパターンのハンドラーを呼び出します。
+// ServeMux is an HTTP request multiplexer.
+// It matches the URL of each incoming request against a list of registered
+// patterns and calls the handler for the pattern that
+// most closely matches the URL.
 //
 // # Patterns
 //
-// パターンは、リクエストのメソッド、ホスト、およびパスに一致することができます。
-// いくつかの例：
+// Patterns can match the method, host and path of a request.
+// Some examples:
 //
-//   - "/index.html" は、任意のホストとメソッドに対してパス "/index.html" に一致します。
-//   - "GET /static/" は、"/static/" で始まるGETリクエストに一致します。
-//   - "example.com/" は、ホスト "example.com" への任意のリクエストに一致します。
-//   - "example.com/{$}" は、ホストが "example.com" でパスが "/" のリクエストに一致します。
-//   - "/b/{bucket}/o/{objectname...}" は、最初のセグメントが "b" で、3番目のセグメントが "o" のパスに一致します。
-//     "bucket" は2番目のセグメントを示し、"objectname" はパスの残りを示します。
+//   - "/index.html" matches the path "/index.html" for any host and method.
+//   - "GET /static/" matches a GET request whose path begins with "/static/".
+//   - "example.com/" matches any request to the host "example.com".
+//   - "example.com/{$}" matches requests with host "example.com" and path "/".
+//   - "/b/{bucket}/o/{objectname...}" matches paths whose first segment is "b"
+//     and whose third segment is "o". The name "bucket" denotes the second
+//     segment and "objectname" denotes the remainder of the path.
 //
-// 一般的に、パターンは以下のようになります。
+// In general, a pattern looks like
 //
-//	[METHOD][HOST]/[PATH]
+//	[METHOD ][HOST]/[PATH]
 //
-// すべての3つの部分はオプションです。"/" は有効なパターンです。
-// METHODが存在する場合、後に単一のスペースもしくはタブが続く必要があります。
+// All three parts are optional; "/" is a valid pattern.
+// If METHOD is present, it must be followed by at least one space or tab.
 //
-// パターンのリテラル（ワイルドカードでない）部分は、リクエストの対応する部分と大文字小文字を区別して一致します。
+// Literal (that is, non-wildcard) parts of a pattern match
+// the corresponding parts of a request case-sensitively.
 //
-// メソッドのないパターンはすべてのメソッドに一致します。メソッドがGETの場合、GETとHEADの両方のリクエストに一致します。
-// それ以外の場合、メソッドは完全に一致する必要があります。
+// A pattern with no method matches every method. A pattern
+// with the method GET matches both GET and HEAD requests.
+// Otherwise, the method must match exactly.
 //
-// ホストのないパターンはすべてのホストに一致します。ホストがあるパターンは、そのホストのURLにのみ一致します。
+// A pattern with no host matches every host.
+// A pattern with a host matches URLs on that host only.
 //
-// パスには、{NAME}または{NAME...}のワイルドカードセグメントを含めることができます。
-// 例えば、"/b/{bucket}/o/{objectname...}" です。
-// ワイルドカード名は有効なGo識別子でなければなりません。
-// ワイルドカードは完全なパスセグメントでなければなりません。つまり、スラッシュに続き、スラッシュまたは文字列の終わりに続く必要があります。
-// 例えば、"/b_{bucket}" は有効なパターンではありません。
+// A path can include wildcard segments of the form {NAME} or {NAME...}.
+// For example, "/b/{bucket}/o/{objectname...}".
+// The wildcard name must be a valid Go identifier.
+// Wildcards must be full path segments: they must be preceded by a slash and followed by
+// either a slash or the end of the string.
+// For example, "/b_{bucket}" is not a valid pattern.
 //
-// 通常、ワイルドカードはリクエストURLの次のリテラルスラッシュ（%2Fではない）で終わる、単一のパスセグメントにのみ一致します。
-// ただし、"..."が存在する場合、ワイルドカードは、スラッシュを含むURLパスの残り全体に一致します。
-// （したがって、"..."ワイルドカードはパターンの末尾以外に現れることはできません。）
-// ワイルドカードの一致は、ワイルドカードの名前を指定して [Request.PathValue] を呼び出すことで取得できます。
-// パスの末尾にスラッシュがある場合、匿名の "..." ワイルドカードとして機能します。
+// Normally a wildcard matches only a single path segment,
+// ending at the next literal slash (not %2F) in the request URL.
+// But if the "..." is present, then the wildcard matches the remainder of the URL path, including slashes.
+// (Therefore it is invalid for a "..." wildcard to appear anywhere but at the end of a pattern.)
+// The match for a wildcard can be obtained by calling [Request.PathValue] with the wildcard's name.
+// A trailing slash in a path acts as an anonymous "..." wildcard.
 //
-// 特別なワイルドカード {$} は、URLの末尾にのみ一致します。
-// 例えば、パターン "/{$}" はパス "/" にのみ一致し、パターン "/" はすべてのパスに一致します。
+// The special wildcard {$} matches only the end of the URL.
+// For example, the pattern "/{$}" matches only the path "/",
+// whereas the pattern "/" matches every path.
 //
-// 一致には、パターンパスと受信リクエストパスの両方が、セグメントごとにエスケープされていない状態で使用されます。
-// したがって、パス "/a%2Fb/100%25" は、2つのセグメント "a/b" と "100%" を持つと見なされます。
-// パターン "/a%2fb/" はそれに一致しますが、パターン "/a/b/" は一致しません。
+// For matching, both pattern paths and incoming request paths are unescaped segment by segment.
+// So, for example, the path "/a%2Fb/100%25" is treated as having two segments, "a/b" and "100%".
+// The pattern "/a%2fb/" matches it, but the pattern "/a/b/" does not.
 //
 // # Precedence
 //
-// 2つ以上のパターンがリクエストに一致する場合、最も具体的なパターンが優先されます。
-// パターンP1がP2よりも具体的であるとは、P1がP2のリクエストの厳密なサブセットに一致する場合を指します。
-// つまり、P2がP1のすべてのリクエストに一致し、それ以上に一致する場合です。
-// もし、どちらも具体的でない場合、そのパターンは競合します。
-// このルールには、後方互換性のための1つの例外があります：
-// 2つのパターンがそれ以外の場合に競合し、1つはホストを持ち、もう1つは持っていない場合、
-// ホストを持つパターンが優先されます。
-// [ServeMux.Handle]または[ServeMux.HandleFunc]に渡されるパターンが
-// すでに登録されている他のパターンと競合する場合、それらの関数はパニックを引き起こします。
+// If two or more patterns match a request, then the most specific pattern takes precedence.
+// A pattern P1 is more specific than P2 if P1 matches a strict subset of P2’s requests;
+// that is, if P2 matches all the requests of P1 and more.
+// If neither is more specific, then the patterns conflict.
+// There is one exception to this rule, for backwards compatibility:
+// if two patterns would otherwise conflict and one has a host while the other does not,
+// then the pattern with the host takes precedence.
+// If a pattern passed to [ServeMux.Handle] or [ServeMux.HandleFunc] conflicts with
+// another pattern that is already registered, those functions panic.
 //
-// 一般的なルールの例として、"/images/thumbnails/"は"/images/"よりも具体的であり、両方とも登録できます。
-// 前者は"/images/thumbnails/"で始まるパスに一致し、後者は"/images/"サブツリー内の他のパスに一致します。
+// As an example of the general rule, "/images/thumbnails/" is more specific than "/images/",
+// so both can be registered.
+// The former matches paths beginning with "/images/thumbnails/"
+// and the latter will match any other path in the "/images/" subtree.
 //
-// 別の例として、パターン"GET /"と"/index.html"を考えてみてください。
-// 両方が"/index.html"のGETリクエストに一致しますが、前者のパターンはすべての他のGETおよびHEADリクエストに一致し、
-// 後者のパターンは異なるメソッドを使用する"/index.html"のすべてのリクエストに一致します。
-// パターンは競合します。
+// As another example, consider the patterns "GET /" and "/index.html":
+// both match a GET request for "/index.html", but the former pattern
+// matches all other GET and HEAD requests, while the latter matches any
+// request for "/index.html" that uses a different method.
+// The patterns conflict.
 //
 // # Trailing-slash redirection
 //
-// 末尾スラッシュまたは "..." ワイルドカードを使用して登録されたサブツリーのハンドラを持つ [ServeMux] を考えてみてください。
-// ServeMuxが末尾スラッシュのないサブツリールートのリクエストを受信した場合、
-// 末尾スラッシュを追加してリクエストをリダイレクトします。
-// この動作は、末尾スラッシュまたは "..." ワイルドカードを使用しないパスの別個の登録によって上書きできます。
-// 例えば、"/images/"を登録すると、ServeMuxは"/images"のリクエストを"/images/"にリダイレクトします。
-// "/images"が別途登録されていない限りです。
+// Consider a [ServeMux] with a handler for a subtree, registered using a trailing slash or "..." wildcard.
+// If the ServeMux receives a request for the subtree root without a trailing slash,
+// it redirects the request by adding the trailing slash.
+// This behavior can be overridden with a separate registration for the path without
+// the trailing slash or "..." wildcard. For example, registering "/images/" causes ServeMux
+// to redirect a request for "/images" to "/images/", unless "/images" has
+// been registered separately.
 //
 // # Request sanitizing
 //
-// ServeMuxは、URLリクエストパスとHostヘッダーをサニタイズし、ポート番号を削除し、.または..セグメントまたは重複したスラッシュを含むリクエストを同等のクリーンなURLにリダイレクトします。
+// ServeMux also takes care of sanitizing the URL request path and the Host
+// header, stripping the port number and redirecting any request containing . or
+// .. segments or repeated slashes to an equivalent, cleaner URL.
+// Escaped path elements such as "%2e" for "." and "%2f" for "/" are preserved
+// and aren't considered separators for request routing.
 //
 // # Compatibility
 //
-// ServeMuxのパターン構文と一致動作は、Go 1.22で大幅に変更されました。
-// 古い動作を復元するには、GODEBUG環境変数を "httpmuxgo121=1" に設定します。
-// この設定は、プログラムの起動時に1回だけ読み取られます。実行中の変更は無視されます。
+// The pattern syntax and matching behavior of ServeMux changed significantly
+// in Go 1.22. To restore the old behavior, set the GODEBUG environment variable
+// to "httpmuxgo121=1". This setting is read once, at program startup; changes
+// during execution will be ignored.
 //
-// 互換性のない変更には以下が含まれます。
-//   - ワイルドカードは1.21では通常のリテラルパスセグメントでした。
-//     例えば、パターン "/{x}" は1.21ではそのパスのみに一致しますが、1.22では1つのセグメントのパスに一致します。
-//   - 1.21では、既存のパターンと競合しない限り、パターンは拒否されませんでした。
-//     1.22では、構文的に無効なパターンは [ServeMux.Handle] および [ServeMux.HandleFunc] でパニックを引き起こします。
-//     例えば、1.21では、パターン "/{" と "/a{x}" はそれ自身に一致しますが、1.22では無効であり、登録時にパニックを引き起こします。
-//   - 1.22では、パターンの各セグメントがエスケープ解除されますが、1.21ではそうではありませんでした。
-//     例えば、1.22ではパターン "/%61" はパス "/a" ("%61"は "a"のURLエスケープシーケンス) に一致しますが、
-//     1.21ではパス "/%2561" のみに一致します（"%25"はパーセント記号のエスケープです）。
-//   - パターンをパスに一致させる場合、1.22ではパスの各セグメントがエスケープ解除されますが、1.21ではパス全体がエスケープ解除されます。
-//     この変更は、スラッシュに隣接する%2Fエスケープを持つパスがどのように処理されるかに影響します。
-//     詳細については、https://go.dev/issue/21955 を参照してください。
+// The backwards-incompatible changes include:
+//   - Wildcards are just ordinary literal path segments in 1.21.
+//     For example, the pattern "/{x}" will match only that path in 1.21,
+//     but will match any one-segment path in 1.22.
+//   - In 1.21, no pattern was rejected, unless it was empty or conflicted with an existing pattern.
+//     In 1.22, syntactically invalid patterns will cause [ServeMux.Handle] and [ServeMux.HandleFunc] to panic.
+//     For example, in 1.21, the patterns "/{"  and "/a{x}" match themselves,
+//     but in 1.22 they are invalid and will cause a panic when registered.
+//   - In 1.22, each segment of a pattern is unescaped; this was not done in 1.21.
+//     For example, in 1.22 the pattern "/%61" matches the path "/a" ("%61" being the URL escape sequence for "a"),
+//     but in 1.21 it would match only the path "/%2561" (where "%25" is the escape for the percent sign).
+//   - When matching patterns to paths, in 1.22 each segment of the path is unescaped; in 1.21, the entire path is unescaped.
+//     This change mostly affects how paths with %2F escapes adjacent to slashes are treated.
+//     See https://go.dev/issue/21955 for details.
 type ServeMux struct {
-	mu       sync.RWMutex
-	tree     routingNode
-	index    routingIndex
-	patterns []*pattern
-	mux121   serveMux121
+	mu     sync.RWMutex
+	tree   routingNode
+	index  routingIndex
+	mux121 serveMux121
 }
 
-// NewServeMuxは、新しい [ServeMux] を割り当てて返します。
+// NewServeMux allocates and returns a new [ServeMux].
 func NewServeMux() *ServeMux
 
-// DefaultServeMuxは、[Serve] によって使用されるデフォルトの [ServeMux] です。
+// DefaultServeMux is the default [ServeMux] used by [Serve].
 var DefaultServeMux = &defaultServeMux
 
-// Handlerは、r.Method、r.Host、およびr.URL.Pathを参照して、
-// 指定されたリクエストに使用するハンドラーを返します。
-// 常にnilでないハンドラーを返します。
-// パスが正規形式でない場合、ハンドラーは正規パスにリダイレクトする内部生成ハンドラーになります。
-// ホストにポートが含まれている場合、ハンドラーの一致時には無視されます。
+// Handler returns the handler to use for the given request,
+// consulting r.Method, r.Host, and r.URL.Path. It always returns
+// a non-nil handler. If the path is not in its canonical form, the
+// handler will be an internally-generated handler that redirects
+// to the canonical path. If the host contains a port, it is ignored
+// when matching handlers.
 //
-// CONNECTリクエストでは、パスとホストは変更されずに使用されます。
+// The path and host are used unchanged for CONNECT requests.
 //
-// Handlerは、リクエストに一致する登録済みのパターン、または内部で生成されたリダイレクトの場合はリダイレクトをたどった後に一致するパスを返します。
+// Handler also returns the registered pattern that matches the
+// request or, in the case of internally-generated redirects,
+// the path that will match after following the redirect.
 //
-// リクエストに適用される登録済みハンドラーがない場合、
-// Handlerは「ページが見つかりません」というハンドラーと空のパターンを返します。
+// If there is no registered handler that applies to the request,
+// Handler returns a “page not found” handler and an empty pattern.
 func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 
-// ServeHTTPは、リクエストURLに最も近いパターンを持つハンドラにリクエストをディスパッチします。
+// ServeHTTP dispatches the request to the handler whose
+// pattern most closely matches the request URL.
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
-// Handleは、指定されたパターンのハンドラを登録します。
-// 登録済みのパターンと競合する場合、Handleはパニックを発生させます。
+// Handle registers the handler for the given pattern.
+// If the given pattern conflicts, with one that is already registered, Handle
+// panics.
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
-// HandleFuncは、指定されたパターンのハンドラ関数を登録します。
-// 登録済みのパターンと競合する場合、HandleFuncはパニックを発生させます。
+// HandleFunc registers the handler function for the given pattern.
+// If the given pattern conflicts, with one that is already registered, HandleFunc
+// panics.
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
-// Handleは、[DefaultServeMux]に指定されたパターンのハンドラを登録します。
-// [ServeMux]のドキュメントには、パターンの一致方法が説明されています。
+// Handle registers the handler for the given pattern in [DefaultServeMux].
+// The documentation for [ServeMux] explains how patterns are matched.
 func Handle(pattern string, handler Handler)
 
-// HandleFuncは、[DefaultServeMux]に指定されたパターンのハンドラ関数を登録します。
-// [ServeMux]のドキュメントには、パターンの一致方法が説明されています。
+// HandleFunc registers the handler function for the given pattern in [DefaultServeMux].
+// The documentation for [ServeMux] explains how patterns are matched.
 func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
-// Serveは、リスナーlに対して着信HTTP接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、その後handlerを呼び出して応答します。
+// Serve accepts incoming HTTP connections on the listener l,
+// creating a new service goroutine for each. The service goroutines
+// read requests and then call handler to reply to them.
 //
-// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
+// The handler is typically nil, in which case [DefaultServeMux] is used.
 //
-// TLS Config.NextProtosで"h2"が設定された [*tls.Conn] 接続を返すリスナーがある場合、HTTP/2サポートが有効になります。
+// HTTP/2 support is only enabled if the Listener returns [*tls.Conn]
+// connections and they were configured with "h2" in the TLS
+// Config.NextProtos.
 //
-// Serveは常にnilでないエラーを返します。
+// Serve always returns a non-nil error.
 func Serve(l net.Listener, handler Handler) error
 
-// ServeTLSは、リスナーlに対して着信HTTPS接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、その後handlerを呼び出して応答します。
+// ServeTLS accepts incoming HTTPS connections on the listener l,
+// creating a new service goroutine for each. The service goroutines
+// read requests and then call handler to reply to them.
 //
-// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
+// The handler is typically nil, in which case [DefaultServeMux] is used.
 //
-// さらに、サーバーの証明書と対応する秘密鍵を含むファイルを提供する必要があります。
-// 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
+// Additionally, files containing a certificate and matching private key
+// for the server must be provided. If the certificate is signed by a
+// certificate authority, the certFile should be the concatenation
+// of the server's certificate, any intermediates, and the CA's certificate.
 //
-// ServeTLSは常にnilでないエラーを返します。
+// ServeTLS always returns a non-nil error.
 func ServeTLS(l net.Listener, handler Handler, certFile, keyFile string) error
 
-// Serverは、HTTPサーバーを実行するためのパラメータを定義します。
-// Serverのゼロ値は有効な構成です。
+// A Server defines parameters for running an HTTP server.
+// The zero value for Server is a valid configuration.
 type Server struct {
-	// Addrは、サーバーがリッスンするためのTCPアドレスをオプションで指定します。
-	// 形式は「host:port」です。空の場合、「:http」（ポート80）が使用されます。
-	// サービス名はRFC 6335で定義され、IANAによって割り当てられます。
-	// アドレスの形式の詳細については、net.Dialを参照してください。
+	// Addr optionally specifies the TCP address for the server to listen on,
+	// in the form "host:port". If empty, ":http" (port 80) is used.
+	// The service names are defined in RFC 6335 and assigned by IANA.
+	// See net.Dial for details of the address format.
 	Addr string
 
 	Handler Handler
 
-	// DisableGeneralOptionsHandlerがtrueの場合、"OPTIONS *"リクエストをHandlerに渡します。
-	// それ以外の場合、200 OKとContent-Length: 0で応答します。
+	// DisableGeneralOptionsHandler, if true, passes "OPTIONS *" requests to the Handler,
+	// otherwise responds with 200 OK and Content-Length: 0.
 	DisableGeneralOptionsHandler bool
 
-	// TLSConfigは、ServeTLSとListenAndServeTLSで使用するためのTLS構成をオプションで提供します。
-	// この値はServeTLSとListenAndServeTLSによってクローンされるため、tls.Config.SetSessionTicketKeysなどのメソッドを使用して構成を変更することはできません。
-	// SetSessionTicketKeysを使用するには、TLSリスナーを使用してServer.Serveを使用します。
+	// TLSConfig optionally provides a TLS configuration for use
+	// by ServeTLS and ListenAndServeTLS. Note that this value is
+	// cloned by ServeTLS and ListenAndServeTLS, so it's not
+	// possible to modify the configuration with methods like
+	// tls.Config.SetSessionTicketKeys. To use
+	// SetSessionTicketKeys, use Server.Serve with a TLS Listener
+	// instead.
 	TLSConfig *tls.Config
 
-	// ReadTimeoutは、ボディを含むリクエスト全体を読み取るための最大時間です。
-	// ゼロまたは負の値はタイムアウトがないことを意味します。
+	// ReadTimeout is the maximum duration for reading the entire
+	// request, including the body. A zero or negative value means
+	// there will be no timeout.
 	//
-	// ReadTimeoutは、ハンドラが各リクエストボディの許容可能な締め切りまたはアップロードレートを決定することを許可しないため、
-	// 大抵のユーザーはReadHeaderTimeoutを使用することを好むでしょう。
-	// 両方を使用することもできます。
+	// Because ReadTimeout does not let Handlers make per-request
+	// decisions on each request body's acceptable deadline or
+	// upload rate, most users will prefer to use
+	// ReadHeaderTimeout. It is valid to use them both.
 	ReadTimeout time.Duration
 
-	// ReadHeaderTimeoutは、リクエストヘッダを読み取るために許される時間です。
-	// ヘッダを読み取った後、接続の読み取りデッドラインはリセットされ、
-	// ハンドラは本文にとって何が遅すぎると考えられるかを決定できます。
-	// もしゼロならば、ReadTimeoutの値が使用されます。
-	// もし負の値、またはゼロでReadTimeoutがゼロまたは負の値の場合、タイムアウトはありません。
+	// ReadHeaderTimeout is the amount of time allowed to read
+	// request headers. The connection's read deadline is reset
+	// after reading the headers and the Handler can decide what
+	// is considered too slow for the body. If zero, the value of
+	// ReadTimeout is used. If negative, or if zero and ReadTimeout
+	// is zero or negative, there is no timeout.
 	ReadHeaderTimeout time.Duration
 
-	// WriteTimeoutは、レスポンスの書き込みがタイムアウトする前の最大時間です。
-	// 新しいリクエストヘッダーが読み取られるたびにリセットされます。
-	// ReadTimeoutと同様に、ハンドラがリクエストごとに決定を下すことを許可しません。
-	// ゼロまたは負の値はタイムアウトがないことを意味します。
+	// WriteTimeout is the maximum duration before timing out
+	// writes of the response. It is reset whenever a new
+	// request's header is read. Like ReadTimeout, it does not
+	// let Handlers make decisions on a per-request basis.
+	// A zero or negative value means there will be no timeout.
 	WriteTimeout time.Duration
 
-	// IdleTimeoutは、keep-alivesが有効な場合に次のリクエストを待つための最大時間です。
-	// もしゼロならば、ReadTimeoutの値が使用されます。
-	// もし負の値、またはゼロでReadTimeoutがゼロまたは負の値の場合、タイムアウトはありません。
+	// IdleTimeout is the maximum amount of time to wait for the
+	// next request when keep-alives are enabled. If zero, the value
+	// of ReadTimeout is used. If negative, or if zero and ReadTimeout
+	// is zero or negative, there is no timeout.
 	IdleTimeout time.Duration
 
-	// MaxHeaderBytesは、リクエストヘッダーのキーと値、およびリクエストラインを解析するためにサーバーが読み取ることができる最大バイト数を制御します。
-	// リクエストボディのサイズには影響しません。
-	// ゼロの場合、DefaultMaxHeaderBytesが使用されます。
+	// MaxHeaderBytes controls the maximum number of bytes the
+	// server will read parsing the request header's keys and
+	// values, including the request line. It does not limit the
+	// size of the request body.
+	// If zero, DefaultMaxHeaderBytes is used.
 	MaxHeaderBytes int
 
-	// TLSNextProtoは、ALPNプロトコルアップグレードが発生した場合に提供されたTLS接続の所有権を引き継ぐための関数をオプションで指定します。
-	// マップキーはネゴシエートされたプロトコル名です。
-	// Handler引数はHTTPリクエストを処理するために使用され、RequestのTLSとRemoteAddrを初期化します（設定されていない場合）。
-	// 関数が返されると、接続は自動的に閉じられます。
-	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的に有効になりません。
+	// TLSNextProto optionally specifies a function to take over
+	// ownership of the provided TLS connection when an ALPN
+	// protocol upgrade has occurred. The map key is the protocol
+	// name negotiated. The Handler argument should be used to
+	// handle HTTP requests and will initialize the Request's TLS
+	// and RemoteAddr if not already set. The connection is
+	// automatically closed when the function returns.
+	// If TLSNextProto is not nil, HTTP/2 support is not enabled
+	// automatically.
 	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)
 
-	// ConnStateは、クライアント接続の状態が変化したときに呼び出されるオプションのコールバック関数を指定します。
-	// 詳細については、ConnState型と関連する定数を参照してください。
+	// ConnState specifies an optional callback function that is
+	// called when a client connection changes state. See the
+	// ConnState type and associated constants for details.
 	ConnState func(net.Conn, ConnState)
 
-	// ErrorLogは、接続の受け入れ時のエラー、ハンドラの予期しない動作、および
-	// FileSystemの基礎となるエラーに対するオプションのロガーを指定します。
-	// nilの場合、ログはlogパッケージの標準ロガーを使用して行われます。
+	// ErrorLog specifies an optional logger for errors accepting
+	// connections, unexpected behavior from handlers, and
+	// underlying FileSystem errors.
+	// If nil, logging is done via the log package's standard logger.
 	ErrorLog *log.Logger
 
-	// BaseContextは、このサーバーの着信リクエストのベースコンテキストを返すオプションの関数を指定します。
-	// 提供されたListenerは、リクエストを開始する特定のリスナーです。
-	// BaseContextがnilの場合、デフォルトはcontext.Background()です。
-	// nilでない場合、非nilのコンテキストを返す必要があります。
+	// BaseContext optionally specifies a function that returns
+	// the base context for incoming requests on this server.
+	// The provided Listener is the specific Listener that's
+	// about to start accepting requests.
+	// If BaseContext is nil, the default is context.Background().
+	// If non-nil, it must return a non-nil context.
 	BaseContext func(net.Listener) context.Context
 
-	// ConnContextは、新しい接続cに使用されるコンテキストを変更するオプションの関数を指定します。
-	// 提供されたctxはBaseContextから派生し、ServerContextKeyの値を持ちます。
+	// ConnContext optionally specifies a function that modifies
+	// the context used for a new connection c. The provided ctx
+	// is derived from the base context and has a ServerContextKey
+	// value.
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
+
+	// HTTP2 configures HTTP/2 connections.
+	//
+	// This field does not yet have any effect.
+	// See https://go.dev/issue/67813.
+	HTTP2 *HTTP2Config
+
+	// Protocols is the set of protocols accepted by the server.
+	//
+	// If Protocols includes UnencryptedHTTP2, the server will accept
+	// unencrypted HTTP/2 connections. The server can serve both
+	// HTTP/1 and unencrypted HTTP/2 on the same address and port.
+	//
+	// If Protocols is nil, the default is usually HTTP/1 and HTTP/2.
+	// If TLSNextProto is non-nil and does not contain an "h2" entry,
+	// the default is HTTP/1 only.
+	Protocols *Protocols
 
 	inShutdown atomic.Bool
 
@@ -439,157 +556,191 @@ type Server struct {
 	listenerGroup sync.WaitGroup
 }
 
-// Closeは、すべてのアクティブなnet.Listenerと、[StateNew]、[StateActive]、または [StateIdle] の状態にある接続をすぐに閉じます。
-// 優雅なシャットダウンには、[Server.Shutdown] を使用してください。
+// Close immediately closes all active net.Listeners and any
+// connections in state [StateNew], [StateActive], or [StateIdle]. For a
+// graceful shutdown, use [Server.Shutdown].
 //
-// Closeは、WebSocketsなどのハイジャックされた接続を閉じようとはせず（そしてそれらについては何も知りません）、試みません。
+// Close does not attempt to close (and does not even know about)
+// any hijacked connections, such as WebSockets.
 //
-// Closeは、[Server] の基礎となるListener(s)を閉じる際に返される任意のエラーを返します。
+// Close returns any error returned from closing the [Server]'s
+// underlying Listener(s).
 func (s *Server) Close() error
 
-// Shutdownは、アクティブな接続を中断することなく、サーバーを正常にシャットダウンします。
-// Shutdownは、まずすべてのオープンなリスナーを閉じ、次にすべてのアイドル状態の接続を閉じ、
-// そして接続がアイドル状態に戻ってから無期限に待機し、その後シャットダウンします。
-// 提供されたコンテキストがシャットダウンが完了する前に期限切れになった場合、
-// Shutdownはコンテキストのエラーを返します。それ以外の場合は、[Server] の基礎となる
-// Listener(s)を閉じる際に返される任意のエラーを返します。
+// Shutdown gracefully shuts down the server without interrupting any
+// active connections. Shutdown works by first closing all open
+// listeners, then closing all idle connections, and then waiting
+// indefinitely for connections to return to idle and then shut down.
+// If the provided context expires before the shutdown is complete,
+// Shutdown returns the context's error, otherwise it returns any
+// error returned from closing the [Server]'s underlying Listener(s).
 //
-// Shutdownが呼び出されると、[Serve]、[ListenAndServe]、および
-// [ListenAndServeTLS] はすぐに [ErrServerClosed] を返します。プログラムが
-// 終了せず、代わりにShutdownが返るのを待つことを確認してください。
+// When Shutdown is called, [Serve], [ListenAndServe], and
+// [ListenAndServeTLS] immediately return [ErrServerClosed]. Make sure the
+// program doesn't exit and waits instead for Shutdown to return.
 //
-// Shutdownは、WebSocketsのようなハイジャックされた接続を閉じたり、それらを待つことは試みません。
-// Shutdownの呼び出し元は、長時間稼働する接続に対してシャットダウンを別途通知し、
-// 必要に応じてそれらが閉じるのを待つべきです。シャットダウン通知関数を登録する方法については、
-// [Server.RegisterOnShutdown] を参照してください。
+// Shutdown does not attempt to close nor wait for hijacked
+// connections such as WebSockets. The caller of Shutdown should
+// separately notify such long-lived connections of shutdown and wait
+// for them to close, if desired. See [Server.RegisterOnShutdown] for a way to
+// register shutdown notification functions.
 //
-// Shutdownを呼び出した後、サーバーを再利用することはできません。Serveなどのメソッドを呼び出すと、ErrServerClosedが返されます。
+// Once Shutdown has been called on a server, it may not be reused;
+// future calls to methods such as Serve will return ErrServerClosed.
 func (s *Server) Shutdown(ctx context.Context) error
 
-// RegisterOnShutdownは、[Server.Shutdown] 時に呼び出す関数を登録します。
-// これは、ALPNプロトコルアップグレードを受けた接続やハイジャックされた接続を優雅にシャットダウンするために使用できます。
-// この関数は、プロトコル固有の優雅なシャットダウンを開始する必要がありますが、シャットダウンが完了するのを待つ必要はありません。
+// RegisterOnShutdown registers a function to call on [Server.Shutdown].
+// This can be used to gracefully shutdown connections that have
+// undergone ALPN protocol upgrade or that have been hijacked.
+// This function should start protocol-specific graceful shutdown,
+// but should not wait for shutdown to complete.
 func (s *Server) RegisterOnShutdown(f func())
 
-// ConnStateは、サーバーへのクライアント接続の状態を表します。
-// これは、オプションの [Server.ConnState] フックによって使用されます。
+// A ConnState represents the state of a client connection to a server.
+// It's used by the optional [Server.ConnState] hook.
 type ConnState int
 
 const (
-	// StateNewは、すぐにリクエストを送信することが期待される新しい接続を表します。
-	// 接続はこの状態で開始し、StateActiveまたはStateClosedに移行します。
+	// StateNew represents a new connection that is expected to
+	// send a request immediately. Connections begin at this
+	// state and then transition to either StateActive or
+	// StateClosed.
 	StateNew ConnState = iota
 
-	// StateActiveは、1バイト以上のリクエストを読み取った接続を表します。
-	// StateActiveのServer.ConnStateフックは、リクエストがハンドラに入る前に発生し、
-	// リクエストが処理されるまで再び発生しません。
-	// リクエストが処理された後、状態はStateClosed、StateHijacked、またはStateIdleに移行します。
-	// HTTP/2の場合、StateActiveはゼロから1つのアクティブなリクエストに移行するときに発生し、
-	// すべてのアクティブなリクエストが完了するまでにしか移行しません。
-	// つまり、ConnStateはリクエストごとの作業に使用できません。
-	// ConnStateは接続の全体的な状態のみを示します。
+	// StateActive represents a connection that has read 1 or more
+	// bytes of a request. The Server.ConnState hook for
+	// StateActive fires before the request has entered a handler
+	// and doesn't fire again until the request has been
+	// handled. After the request is handled, the state
+	// transitions to StateClosed, StateHijacked, or StateIdle.
+	// For HTTP/2, StateActive fires on the transition from zero
+	// to one active request, and only transitions away once all
+	// active requests are complete. That means that ConnState
+	// cannot be used to do per-request work; ConnState only notes
+	// the overall state of the connection.
 	StateActive
 
-	// StateIdleは、リクエストの処理が完了し、新しいリクエストを待機しているkeep-alive状態の接続を表します。
-	// 接続はStateIdleからStateActiveまたはStateClosedに移行します。
+	// StateIdle represents a connection that has finished
+	// handling a request and is in the keep-alive state, waiting
+	// for a new request. Connections transition from StateIdle
+	// to either StateActive or StateClosed.
 	StateIdle
 
-	// StateHijackedは、ハイジャックされた接続を表します。
-	// これは終端状態です。StateClosedに移行しません。
+	// StateHijacked represents a hijacked connection.
+	// This is a terminal state. It does not transition to StateClosed.
 	StateHijacked
 
-	// StateClosedは、閉じられた接続を表します。
-	// これは終端状態です。ハイジャックされた接続はStateClosedに移行しません。
+	// StateClosed represents a closed connection.
+	// This is a terminal state. Hijacked connections do not
+	// transition to StateClosed.
 	StateClosed
 )
 
 func (c ConnState) String() string
 
-// AllowQuerySemicolonsは、URLクエリ内のエスケープされていないセミコロンをアンパサンドに変換し、ハンドラhを呼び出すハンドラを返します。
+// AllowQuerySemicolons returns a handler that serves requests by converting any
+// unescaped semicolons in the URL query to ampersands, and invoking the handler h.
 //
-// これにより、Go 1.17以前のクエリパラメータをセミコロンとアンパサンドの両方で分割する動作が復元されます（golang.org/issue/25192 を参照）。
-// ただし、この動作は多くのプロキシと一致せず、不一致がセキュリティ上の問題を引き起こす可能性があります。
+// This restores the pre-Go 1.17 behavior of splitting query parameters on both
+// semicolons and ampersands. (See golang.org/issue/25192). Note that this
+// behavior doesn't match that of many proxies, and the mismatch can lead to
+// security issues.
 //
-// AllowQuerySemicolonsは、[Request.ParseForm] が呼び出される前に呼び出す必要があります。
+// AllowQuerySemicolons should be invoked before [Request.ParseForm] is called.
 func AllowQuerySemicolons(h Handler) Handler
 
-// ListenAndServeは、TCPネットワークアドレスs.Addrでリッスンし、
-// [Serve] を呼び出して着信接続のリクエストを処理します。
-// 受け入れられた接続は、TCP keep-alivesを有効にするように構成されます。
+// ListenAndServe listens on the TCP network address s.Addr and then
+// calls [Serve] to handle requests on incoming connections.
+// Accepted connections are configured to enable TCP keep-alives.
 //
-// s.Addrが空白の場合、":http"が使用されます。
+// If s.Addr is blank, ":http" is used.
 //
-// ListenAndServeは常に非nilのエラーを返します。[Server.Shutdown] または [Server.Close] の後、
-// 返されるエラーは [ErrServerClosed] です。
+// ListenAndServe always returns a non-nil error. After [Server.Shutdown] or [Server.Close],
+// the returned error is [ErrServerClosed].
 func (s *Server) ListenAndServe() error
 
-// ErrServerClosedは、[Server.Shutdown] または [Server.Close] の呼び出し後、[Server.Serve]、[ServeTLS]、[ListenAndServe]、および [ListenAndServeTLS] メソッドによって返されます。
+// ErrServerClosed is returned by the [Server.Serve], [ServeTLS], [ListenAndServe],
+// and [ListenAndServeTLS] methods after a call to [Server.Shutdown] or [Server.Close].
 var ErrServerClosed = errors.New("http: Server closed")
 
-// Serveは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはリクエストを読み取り、s.Handlerを呼び出してそれに応答します。
+// Serve accepts incoming connections on the Listener l, creating a
+// new service goroutine for each. The service goroutines read requests and
+// then call s.Handler to reply to them.
 //
-// Listenerが [*tls.Conn] 接続を返し、TLS Config.NextProtosで「h2」が構成されている場合、HTTP/2サポートが有効になります。
+// HTTP/2 support is only enabled if the Listener returns [*tls.Conn]
+// connections and they were configured with "h2" in the TLS
+// Config.NextProtos.
 //
-// Serveは常に非nilのエラーを返し、lを閉じます。
-// [Server.Shutdown] または [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
+// Serve always returns a non-nil error and closes l.
+// After [Server.Shutdown] or [Server.Close], the returned error is [ErrServerClosed].
 func (s *Server) Serve(l net.Listener) error
 
-// ServeTLSは、Listener lで着信接続を受け入れ、それぞれに新しいサービスgoroutineを作成します。
-// サービスgoroutineはTLSのセットアップを実行し、リクエストを読み取り、s.Handlerを呼び出してそれに応答します。
+// ServeTLS accepts incoming connections on the Listener l, creating a
+// new service goroutine for each. The service goroutines perform TLS
+// setup and then read requests, calling s.Handler to reply to them.
 //
-// サーバー用の証明書と一致する秘密鍵を含むファイルを提供する必要があります。これは、[Server] の
-// TLSConfig.Certificates、TLSConfig.GetCertificate、または
-// config.GetConfigForClientが設定されていない場合に必要です。
-// 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
+// Files containing a certificate and matching private key for the
+// server must be provided if neither the [Server]'s
+// TLSConfig.Certificates, TLSConfig.GetCertificate nor
+// config.GetConfigForClient are populated.
+// If the certificate is signed by a certificate authority, the
+// certFile should be the concatenation of the server's certificate,
+// any intermediates, and the CA's certificate.
 //
-// ServeTLSは常に非nilのエラーを返し、lを閉じます。
-// [Server.Shutdown] または [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
+// ServeTLS always returns a non-nil error. After [Server.Shutdown] or [Server.Close], the
+// returned error is [ErrServerClosed].
 func (s *Server) ServeTLS(l net.Listener, certFile, keyFile string) error
 
-// SetKeepAlivesEnabledは、HTTP keep-alivesが有効かどうかを制御します。
-// デフォルトでは、keep-alivesは常に有効になっています。非常にリソースが制限された環境またはシャットダウン中のサーバーのみ、それらを無効にする必要があります。
+// SetKeepAlivesEnabled controls whether HTTP keep-alives are enabled.
+// By default, keep-alives are always enabled. Only very
+// resource-constrained environments or servers in the process of
+// shutting down should disable them.
 func (s *Server) SetKeepAlivesEnabled(v bool)
 
-// ListenAndServeは、TCPネットワークアドレスaddrでリッスンし、
-// [Serve] を呼び出して着信接続のリクエストを処理します。
-// 受け入れられた接続は、TCP keep-alivesを有効にするように構成されます。
+// ListenAndServe listens on the TCP network address addr and then calls
+// [Serve] with handler to handle requests on incoming connections.
+// Accepted connections are configured to enable TCP keep-alives.
 //
-// ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
+// The handler is typically nil, in which case [DefaultServeMux] is used.
 //
-// ListenAndServeは常に非nilのエラーを返します。
+// ListenAndServe always returns a non-nil error.
 func ListenAndServe(addr string, handler Handler) error
 
-// ListenAndServeTLSは、[ListenAndServe] と同じように動作しますが、HTTPS接続を想定しています。
-// さらに、サーバーの証明書と一致する秘密鍵を含むファイルを提供する必要があります。
-// 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
+// ListenAndServeTLS acts identically to [ListenAndServe], except that it
+// expects HTTPS connections. Additionally, files containing a certificate and
+// matching private key for the server must be provided. If the certificate
+// is signed by a certificate authority, the certFile should be the concatenation
+// of the server's certificate, any intermediates, and the CA's certificate.
 func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
 
-// ListenAndServeTLSは、TCPネットワークアドレスs.Addrでリッスンし、
-// [ServeTLS] を呼び出して着信TLS接続のリクエストを処理します。
-// 受け入れられた接続は、TCP keep-alivesを有効にするように構成されます。
+// ListenAndServeTLS listens on the TCP network address s.Addr and
+// then calls [ServeTLS] to handle requests on incoming TLS connections.
+// Accepted connections are configured to enable TCP keep-alives.
 //
-// [Server] のTLSConfig.CertificatesまたはTLSConfig.GetCertificateがどちらも設定されていない場合、
-// サーバーの証明書と対応する秘密鍵が含まれるファイルを提供する必要があります。
-// 証明書が認証局によって署名されている場合、certFileはサーバーの証明書、中間証明書、およびCAの証明書を連結したものである必要があります。
+// Filenames containing a certificate and matching private key for the
+// server must be provided if neither the [Server]'s TLSConfig.Certificates
+// nor TLSConfig.GetCertificate are populated. If the certificate is
+// signed by a certificate authority, the certFile should be the
+// concatenation of the server's certificate, any intermediates, and
+// the CA's certificate.
 //
-// s.Addrが空白の場合、":https"が使用されます。
+// If s.Addr is blank, ":https" is used.
 //
-// ListenAndServeTLSは常に非nilのエラーを返します。[Server.Shutdown] または
-// [Server.Close] の後、返されるエラーは [ErrServerClosed] です。
+// ListenAndServeTLS always returns a non-nil error. After [Server.Shutdown] or
+// [Server.Close], the returned error is [ErrServerClosed].
 func (s *Server) ListenAndServeTLS(certFile, keyFile string) error
 
-// TimeoutHandlerは、指定された時間制限でhを実行する [Handler] を返します。
+// TimeoutHandler returns a [Handler] that runs h with the given time limit.
 //
-// 新しいHandlerは、各リクエストを処理するためにh.ServeHTTPを呼び出しますが、
-// 呼び出しがその時間制限を超えて実行されると、ハンドラは503 Service Unavailableエラーと
-// そのボディ内の指定されたメッセージで応答します。
-// （もしmsgが空であれば、適切なデフォルトメッセージが送信されます。）
-// そのようなタイムアウトの後、hによるその [ResponseWriter] への書き込みは
-// [ErrHandlerTimeout] を返します。
+// The new Handler calls h.ServeHTTP to handle each request, but if a
+// call runs for longer than its time limit, the handler responds with
+// a 503 Service Unavailable error and the given message in its body.
+// (If msg is empty, a suitable default message will be sent.)
+// After such a timeout, writes by h to its [ResponseWriter] will return
+// [ErrHandlerTimeout].
 //
-// TimeoutHandlerは [Pusher] インターフェースをサポートしますが、
-// [Hijacker] または [Flusher] インターフェースはサポートしません。
+// TimeoutHandler supports the [Pusher] interface but does not support
+// the [Hijacker] or [Flusher] interfaces.
 func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
 
 // ErrHandlerTimeout is returned on [ResponseWriter] Write calls
@@ -598,5 +749,5 @@ var ErrHandlerTimeout = errors.New("http: Handler timeout")
 
 var _ Pusher = (*timeoutWriter)(nil)
 
-// MaxBytesHandlerは、[ResponseWriter] と [Request.Body] をMaxBytesReaderでラップしてhを実行する [Handler] を返します。
+// MaxBytesHandler returns a [Handler] that runs h with its [ResponseWriter] and [Request.Body] wrapped by a MaxBytesReader.
 func MaxBytesHandler(h Handler, n int64) Handler

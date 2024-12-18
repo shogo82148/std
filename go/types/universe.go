@@ -5,21 +5,24 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルは、宇宙のスコープとunsafeパッケージを設定します。
+// This file sets up the universe scope and the unsafe package.
 
 package types
 
-// UniverseスコープにはGoのすべての事前宣言されたオブジェクトが含まれています。
-// これはネストされたスコープチェーンの最外側のスコープです。
+// The Universe scope contains all predeclared objects of Go.
+// It is the outermost scope of any chain of nested scopes.
 var Universe *Scope
 
-// Unsafeパッケージは、importパス"unsafe"のインポータによって返されるパッケージです。
+// The Unsafe package is the package returned by an importer
+// for the import path "unsafe".
 var Unsafe *Package
 
-// Typは、それぞれのBasicKindによってインデックス付けされた事前宣言された*Basic型を含んでいます。
+// Typ contains the predeclared *Basic types indexed by their
+// corresponding BasicKind.
 //
-// Typ[Byte]の*Basic型は、名前が「uint8」になります。
-// 「byte」という特定のエイリアスの基本型を取得するには、Universe.Lookup("byte").Type()を使用します（また、「rune」に対しても同様です）。
+// The *Basic type for Typ[Byte] will have the name "uint8".
+// Use Universe.Lookup("byte").Type() to obtain the specific
+// alias basic type named "byte" (and analogous for "rune").
 var Typ = []*Basic{
 	Invalid: {Invalid, 0, "invalid type"},
 
@@ -51,6 +54,7 @@ var Typ = []*Basic{
 	UntypedNil:     {UntypedNil, IsUntyped, "untyped nil"},
 }
 
-// DefPredeclaredTestFuncsは、assertとtraceのビルトイン関数を定義します。
-// これらのビルトイン関数は、このパッケージのデバッグとテストのために作られています。
+// DefPredeclaredTestFuncs defines the assert and trace built-ins.
+// These built-ins are intended for debugging and testing of this
+// package only.
 func DefPredeclaredTestFuncs()

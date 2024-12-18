@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// pkix パッケージには、ASN.1 パースおよび X.509 証明書、CRL、OCSP のシリアル化に使用される共有の低レベルの構造体が含まれています。
+// Package pkix contains shared, low level structures used for ASN.1 parsing
+// and serialization of X.509 certificates, CRL and OCSP.
 package pkix
 
 import (
@@ -11,7 +12,8 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// AlgorithmIdentifierは、同名のASN.1構造を表します。RFC 5280のセクション4.1.1.2を参照してください。
+// AlgorithmIdentifier represents the ASN.1 structure of the same name. See RFC
+// 5280, section 4.1.1.2.
 type AlgorithmIdentifier struct {
 	Algorithm  asn1.ObjectIdentifier
 	Parameters asn1.RawValue `asn1:"optional"`
@@ -19,82 +21,97 @@ type AlgorithmIdentifier struct {
 
 type RDNSequence []RelativeDistinguishedNameSET
 
-// Stringは、シーケンスrの文字列表現を返します。
-// おおよそRFC 2253の特定名の構文に従います。
+// String returns a string representation of the sequence r,
+// roughly following the RFC 2253 Distinguished Names syntax.
 func (r RDNSequence) String() string
 
 type RelativeDistinguishedNameSET []AttributeTypeAndValue
 
-// AttributeTypeAndValueは、RFC 5280、セクション4.1.2.4で同名のASN.1構造体を反映しています。
+// AttributeTypeAndValue mirrors the ASN.1 structure of the same name in
+// RFC 5280, Section 4.1.2.4.
 type AttributeTypeAndValue struct {
 	Type  asn1.ObjectIdentifier
 	Value any
 }
 
-// AttributeTypeAndValueSETは、RFC 2986（PKCS＃10）からの [AttributeTypeAndValue] シーケンスの集合を表す。
+// AttributeTypeAndValueSET represents a set of ASN.1 sequences of
+// [AttributeTypeAndValue] sequences from RFC 2986 (PKCS #10).
 type AttributeTypeAndValueSET struct {
 	Type  asn1.ObjectIdentifier
 	Value [][]AttributeTypeAndValue `asn1:"set"`
 }
 
-// Extensionは同名のASN.1構造を表します。RFC 5280、セクション4.2を参照してください。
+// Extension represents the ASN.1 structure of the same name. See RFC
+// 5280, section 4.2.
 type Extension struct {
 	Id       asn1.ObjectIdentifier
 	Critical bool `asn1:"optional"`
 	Value    []byte
 }
 
-// NameはX.509の識別名を表します。これにはDNの一般的な要素のみが含まれます。なお、NameはX.509の構造の近似値です。正確な表現が必要な場合は、生のsubjectまたはissuerを [RDNSequence] としてasn1.Unmarshalしてください。
+// Name represents an X.509 distinguished name. This only includes the common
+// elements of a DN. Note that Name is only an approximation of the X.509
+// structure. If an accurate representation is needed, asn1.Unmarshal the raw
+// subject or issuer as an [RDNSequence].
 type Name struct {
 	Country, Organization, OrganizationalUnit []string
 	Locality, Province                        []string
 	StreetAddress, PostalCode                 []string
 	SerialNumber, CommonName                  string
 
-	// Namesにはすべての解析された属性が含まれています。識別名を解析する際に、
-	// このフィールドを使用して、このパッケージでは解析されない非標準の属性を抽出できます。
-	// RDNSequencesに統合する際には、Namesフィールドは無視されますが、ExtraNamesを参照してください。
+	// Names contains all parsed attributes. When parsing distinguished names,
+	// this can be used to extract non-standard attributes that are not parsed
+	// by this package. When marshaling to RDNSequences, the Names field is
+	// ignored, see ExtraNames.
 	Names []AttributeTypeAndValue
 
-	// ExtraNamesには、マーシャリングされる任意の識別名にコピーされる属性が含まれています。値は、同じOIDを持つ属性を上書きします。ExtraNamesフィールドは、パース時には埋め込まれません。Namesを参照してください。
+	// ExtraNames contains attributes to be copied, raw, into any marshaled
+	// distinguished names. Values override any attributes with the same OID.
+	// The ExtraNames field is not populated when parsing, see Names.
 	ExtraNames []AttributeTypeAndValue
 }
 
-// FillFromRDNSequence は与えられた [RDNSequence] から n を埋めます。
-// 複数エントリの RDN は平坦化され、すべてのエントリは関連する n フィールドに追加され、グルーピングは保持されません。
+// FillFromRDNSequence populates n from the provided [RDNSequence].
+// Multi-entry RDNs are flattened, all entries are added to the
+// relevant n fields, and the grouping is not preserved.
 func (n *Name) FillFromRDNSequence(rdns *RDNSequence)
 
-// ToRDNSequenceはnを単一の[RDNSequence]に変換します。次の属性は複数値のRDNとしてエンコードされます：
+// ToRDNSequence converts n into a single [RDNSequence]. The following
+// attributes are encoded as multi-value RDNs:
 //
-//   - 国
-//   - 組織
-//   - 組織単位
-//   - 地域
-//   - 県
-//   - 住所
-//   - 郵便番号
+//   - Country
+//   - Organization
+//   - OrganizationalUnit
+//   - Locality
+//   - Province
+//   - StreetAddress
+//   - PostalCode
 //
-// 各ExtraNamesエントリは個別のRDNとしてエンコードされます。
+// Each ExtraNames entry is encoded as an individual RDN.
 func (n Name) ToRDNSequence() (ret RDNSequence)
 
-// Stringはnの文字列形式を返します。ほぼ、RFC 2253の識別名の構文に従います。
+// String returns the string form of n, roughly following
+// the RFC 2253 Distinguished Names syntax.
 func (n Name) String() string
 
-// CertificateListは同名のASN.1構造を表します。RFC 5280、セクション5.1を参照してください。署名を検証するためにCertificate.CheckCRLSignatureを使用します。
+// CertificateList represents the ASN.1 structure of the same name. See RFC
+// 5280, section 5.1. Use Certificate.CheckCRLSignature to verify the
+// signature.
 //
-// 廃止予定: 代わりにx509.RevocationListを使用するべきです。
+// Deprecated: x509.RevocationList should be used instead.
 type CertificateList struct {
 	TBSCertList        TBSCertificateList
 	SignatureAlgorithm AlgorithmIdentifier
 	SignatureValue     asn1.BitString
 }
 
-// HasExpiredは、certListがこの時点で更新されるべきかどうかを報告します。
+// HasExpired reports whether certList should have been updated by now.
 func (certList *CertificateList) HasExpired(now time.Time) bool
 
-// TBSCertificateListは、同じ名前のASN.1構造を表します。RFC 5280、セクション5.1を参照してください。
+// TBSCertificateList represents the ASN.1 structure of the same name. See RFC
+// 5280, section 5.1.
 //
-// 廃止予定：代わりにx509.RevocationListを使用するべきです。
+// Deprecated: x509.RevocationList should be used instead.
 type TBSCertificateList struct {
 	Raw                 asn1.RawContent
 	Version             int `asn1:"optional,default:0"`
@@ -106,7 +123,8 @@ type TBSCertificateList struct {
 	Extensions          []Extension          `asn1:"tag:0,optional,explicit"`
 }
 
-// RevokedCertificateは同名のASN.1構造を表します。詳細はRFC 5280のセクション5.1を参照してください。
+// RevokedCertificate represents the ASN.1 structure of the same name. See RFC
+// 5280, section 5.1.
 type RevokedCertificate struct {
 	SerialNumber   *big.Int
 	RevocationTime time.Time

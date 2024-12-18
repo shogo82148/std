@@ -6,7 +6,7 @@ package pe
 
 const COFFSymbolSize = 18
 
-// COFFSymbolは、単一のCOFFシンボルテーブルレコードを表します。
+// COFFSymbol represents single COFF symbol table record.
 type COFFSymbol struct {
 	Name               [8]uint8
 	Value              uint32
@@ -16,13 +16,13 @@ type COFFSymbol struct {
 	NumberOfAuxSymbols uint8
 }
 
-// FullNameは、シンボルsymの実際の名前を見つけます。通常、名前は
-// sym.Nameに格納されますが、それが8文字より長い場合、代わりに
-// COFF文字列テーブルstに格納されます。
+// FullName finds real name of symbol sym. Normally name is stored
+// in sym.Name, but if it is longer then 8 characters, it is stored
+// in COFF string table st instead.
 func (sym *COFFSymbol) FullName(st StringTable) (string, error)
 
-// Symbolは、NameフィールドがGoの文字列に置き換えられ、
-// NumberOfAuxSymbolsが存在しない [COFFSymbol] と似ています。
+// Symbol is similar to [COFFSymbol] with Name field replaced
+// by Go string. Symbol also does not have NumberOfAuxSymbols.
 type Symbol struct {
 	Name          string
 	Value         uint32
@@ -31,11 +31,14 @@ type Symbol struct {
 	StorageClass  uint8
 }
 
-// COFFSymbolAuxFormat5は、セクション定義シンボルに付随するauxシンボルの予想される形式を説明します。
-// PEフォーマットは、関数定義のためのフォーマット1、.beおよび.efシンボルのためのフォーマット2など、
-// いくつかの異なるauxシンボルフォーマットを定義します。フォーマット5は、セクション定義に関連する追加情報を保持し、
-// 再配置の数+行番号、およびCOMDAT情報を含みます。ここで何が起こっているのかについての詳細は、
-// https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#auxiliary-format-5-section-definitions を参照してください。
+// COFFSymbolAuxFormat5 describes the expected form of an aux symbol
+// attached to a section definition symbol. The PE format defines a
+// number of different aux symbol formats: format 1 for function
+// definitions, format 2 for .be and .ef symbols, and so on. Format 5
+// holds extra info associated with a section definition, including
+// number of relocations + line numbers, as well as COMDAT info. See
+// https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#auxiliary-format-5-section-definitions
+// for more on what's going on here.
 type COFFSymbolAuxFormat5 struct {
 	Size           uint32
 	NumRelocs      uint16
@@ -46,8 +49,8 @@ type COFFSymbolAuxFormat5 struct {
 	_              [3]uint8
 }
 
-// これらの定数は、AuxFormat5の 'Selection'
-// フィールドの可能な値を構成します。
+// These constants make up the possible values for the 'Selection'
+// field in an AuxFormat5.
 const (
 	IMAGE_COMDAT_SELECT_NODUPLICATES = 1
 	IMAGE_COMDAT_SELECT_ANY          = 2
@@ -57,12 +60,13 @@ const (
 	IMAGE_COMDAT_SELECT_LARGEST      = 6
 )
 
-// COFFSymbolReadSectionDefAuxは、セクション定義シンボルの補助情報
-// （COMDAT情報を含む）のブロブを返します。ここで 'idx' は、
-// Fileの主要な [COFFSymbol] 配列内のセクションシンボルのインデックスです。
-// 戻り値は、適切なauxシンボル構造体へのポインタです。詳細については、以下を参照してください：
+// COFFSymbolReadSectionDefAux returns a blob of auxiliary information
+// (including COMDAT info) for a section definition symbol. Here 'idx'
+// is the index of a section symbol in the main [COFFSymbol] array for
+// the File. Return value is a pointer to the appropriate aux symbol
+// struct. For more info, see:
 //
-// 補助シンボル: https://docs.microsoft.com/ja-jp/windows/win32/debug/pe-format#auxiliary-symbol-records
-// COMDATセクション: https://docs.microsoft.com/ja-jp/windows/win32/debug/pe-format#comdat-sections-object-only
-// セクション定義の補助情報: https://docs.microsoft.com/ja-jp/windows/win32/debug/pe-format#auxiliary-format-5-section-definitions
+// auxiliary symbols: https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#auxiliary-symbol-records
+// COMDAT sections: https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#comdat-sections-object-only
+// auxiliary info for section definitions: https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#auxiliary-format-5-section-definitions
 func (f *File) COFFSymbolReadSectionDefAux(idx int) (*COFFSymbolAuxFormat5, error)

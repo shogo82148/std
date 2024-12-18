@@ -15,19 +15,19 @@ import (
 )
 
 func ExampleWriter() {
-	// アーカイブを書き込むためのバッファを作成します。
+	// Create a buffer to write our archive to.
 	buf := new(bytes.Buffer)
 
-	// 新しい zip アーカイブを作成します。
+	// Create a new zip archive.
 	w := zip.NewWriter(buf)
 
-	// アーカイブにいくつかのファイルを追加します。
+	// Add some files to the archive.
 	var files = []struct {
 		Name, Body string
 	}{
-		{"readme.txt", "このアーカイブにはいくつかのテキストファイルが含まれています。"},
+		{"readme.txt", "This archive contains some text files."},
 		{"gopher.txt", "Gopher names:\nGeorge\nGeoffrey\nGonzo"},
-		{"todo.txt", "動物取扱業免許を取得する。\nもっと例を書く。"},
+		{"todo.txt", "Get animal handling licence.\nWrite more examples."},
 	}
 	for _, file := range files {
 		f, err := w.Create(file.Name)
@@ -40,7 +40,7 @@ func ExampleWriter() {
 		}
 	}
 
-	// Close でエラーを確認することを忘れないでください。
+	// Make sure to check the error on Close.
 	err := w.Close()
 	if err != nil {
 		log.Fatal(err)
@@ -48,14 +48,15 @@ func ExampleWriter() {
 }
 
 func ExampleReader() {
-	// 読み取り用に zip アーカイブを開きます。
+	// Open a zip archive for reading.
 	r, err := zip.OpenReader("testdata/readme.zip")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer r.Close()
 
-	// アーカイブ内のファイルを反復処理し、その内容の一部を出力します。
+	// Iterate through the files in the archive,
+	// printing some of their contents.
 	for _, f := range r.File {
 		fmt.Printf("Contents of %s:\n", f.Name)
 		rc, err := f.Open()
@@ -75,18 +76,18 @@ func ExampleReader() {
 }
 
 func ExampleWriter_RegisterCompressor() {
-	// デフォルトの Deflate 圧縮プログラムを、より高い圧縮レベルのカスタム圧縮プログラムで上書きします。
+	// Override the default Deflate compressor with a higher compression level.
 
-	// アーカイブを書き込むためのバッファを作成します。
+	// Create a buffer to write our archive to.
 	buf := new(bytes.Buffer)
 
-	// 新しい zip アーカイブを作成します。
+	// Create a new zip archive.
 	w := zip.NewWriter(buf)
 
-	// カスタムの Deflate 圧縮プログラムを登録します。
+	// Register a custom Deflate compressor.
 	w.RegisterCompressor(zip.Deflate, func(out io.Writer) (io.WriteCloser, error) {
 		return flate.NewWriter(out, flate.BestCompression)
 	})
 
-	// ファイルを w に追加します。
+	// Proceed to add files to w.
 }

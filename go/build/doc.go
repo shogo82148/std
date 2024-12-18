@@ -2,84 +2,97 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// buildパッケージはGoのパッケージに関する情報を収集します。
+// Package build gathers information about Go packages.
 //
 // # Go Path
 //
-// Goパスは、Goのソースコードが含まれているディレクトリツリーのリストです。
-// これは、標準のGoツリーで見つからないインポートを解決するために参照されます。
-// デフォルトのパスは、GOPATH環境変数の値であり、オペレーティングシステムに適したパスリストとして解釈されます
-// (Unixでは変数はコロンで区切られた文字列であり、
-// Windowsではセミコロンで区切られた文字列、
-// Plan 9ではリストです)。
+// The Go path is a list of directory trees containing Go source code.
+// It is consulted to resolve imports that cannot be found in the standard
+// Go tree. The default path is the value of the GOPATH environment
+// variable, interpreted as a path list appropriate to the operating system
+// (on Unix, the variable is a colon-separated string;
+// on Windows, a semicolon-separated string;
+// on Plan 9, a list).
 //
-// Goパスにリストされている各ディレクトリには、指定された構造が必要です：
+// Each directory listed in the Go path must have a prescribed structure:
 //
-// src/ディレクトリにはソースコードが格納されます。'src'以下のパスがインポートパスまたは実行可能ファイル名を決定します。
+// The src/ directory holds source code. The path below 'src' determines
+// the import path or executable name.
 //
-// pkg/ディレクトリにはインストールされたパッケージオブジェクトが格納されます。
-// Goツリーと同様に、各ターゲットオペレーティングシステムと
-// アーキテクチャのペアに対して、pkgのサブディレクトリがあります
-// (pkg/GOOS_GOARCH)。
+// The pkg/ directory holds installed package objects.
+// As in the Go tree, each target operating system and
+// architecture pair has its own subdirectory of pkg
+// (pkg/GOOS_GOARCH).
 //
-// DIRがGoパスにリストされているディレクトリである場合、DIR/src/foo/barにソースがあるパッケージは「foo/bar」としてインポートされ、
-// 「DIR/pkg/GOOS_GOARCH/foo/bar.a」(またはgccgoの場合は「DIR/pkg/gccgo/foo/libbar.a」)にコンパイルされた形式でインストールされます。
+// If DIR is a directory listed in the Go path, a package with
+// source in DIR/src/foo/bar can be imported as "foo/bar" and
+// has its compiled form installed to "DIR/pkg/GOOS_GOARCH/foo/bar.a"
+// (or, for gccgo, "DIR/pkg/gccgo/foo/libbar.a").
 //
-// bin/ディレクトリにはコンパイルされたコマンドが格納されます。
-// 各コマンドは、ソースディレクトリを使用して命名されますが、
-// パス全体ではなく最終要素のみを使用します。つまり、
-// DIR/src/foo/quuxのソースであるコマンドはDIR/bin/quuxにインストールされます。DIR/bin/foo/quuxではなく、foo/が取り除かれます。
-// そのため、PATHにDIR/binを追加することで、インストールされたコマンドにアクセスできます。
+// The bin/ directory holds compiled commands.
+// Each command is named for its source directory, but only
+// using the final element, not the entire path. That is, the
+// command with source in DIR/src/foo/quux is installed into
+// DIR/bin/quux, not DIR/bin/foo/quux. The foo/ is stripped
+// so that you can add DIR/bin to your PATH to get at the
+// installed commands.
 //
-// 以下にディレクトリレイアウトの例を示します：
+// Here's an example directory layout:
 //
-// GOPATH=/home/user/gocode
+//	GOPATH=/home/user/gocode
 //
-// /home/user/gocode/
-//
-//	src/
-//	    foo/
-//	        bar/               (パッケージ bar の Goコード)
-//	            x.go
-//	        quux/              (メインパッケージの Goコード)
-//	            y.go
-//	bin/
-//	    quux                   (インストールされたコマンド)
-//	pkg/
-//	    linux_amd64/
+//	/home/user/gocode/
+//	    src/
 //	        foo/
-//	            bar.a          (インストールされたパッケージオブジェクト)
+//	            bar/               (go code in package bar)
+//	                x.go
+//	            quux/              (go code in package main)
+//	                y.go
+//	    bin/
+//	        quux                   (installed command)
+//	    pkg/
+//	        linux_amd64/
+//	            foo/
+//	                bar.a          (installed package object)
 //
-// # ビルド制約
+// # Build Constraints
 //
-// ビルド制約、またはビルドタグとも呼ばれるものは、
-// パッケージに含めるべきファイルの条件です。ビルド制約は、次の行コメントによって与えられます。
+// A build constraint, also known as a build tag, is a condition under which a
+// file should be included in the package. Build constraints are given by a
+// line comment that begins
 //
 //	//go:build
 //
-// ビルド制約は、ファイル名の一部にもなることがあります
-// (例えば、source_windows.go は、対象の
-// オペレーティングシステムがwindowsの場合のみ含まれます)。
+// Build constraints may also be part of a file's name
+// (for example, source_windows.go will only be included if the target
+// operating system is windows).
 //
-// 詳細は 'go help buildconstraint'
-// (https://golang.org/cmd/go/#hdr-Build_constraints) を参照してください。
+// See 'go help buildconstraint'
+// (https://golang.org/cmd/go/#hdr-Build_constraints) for details.
 //
-// # バイナリのみのパッケージ
+// # Binary-Only Packages
 //
-// Go 1.12 およびそれ以前では、
-// パッケージをソースコードなしでバイナリ形式で配布することが可能でした。
-// パッケージには、ビルド制約で除外されないソースファイルと
-// 「//go:binary-only-package」というコメントが含まれていました。ビルド制約と同様に、このコメントはファイルの先頭に配置され、空行と他の行コメントだけが前にあること、コメントの後には空行があることで、パッケージのドキュメンテーションと区別されます。
-// ビルド制約とは異なり、このコメントは非テストのGoソースファイルでのみ認識されます。
+// In Go 1.12 and earlier, it was possible to distribute packages in binary
+// form without including the source code used for compiling the package.
+// The package was distributed with a source file not excluded by build
+// constraints and containing a "//go:binary-only-package" comment. Like a
+// build constraint, this comment appeared at the top of a file, preceded
+// only by blank lines and other line comments and with a blank line
+// following the comment, to separate it from the package documentation.
+// Unlike build constraints, this comment is only recognized in non-test
+// Go source files.
 //
-// バイナリのみのパッケージの最小のソースコードは以下のようになります：
+// The minimal source code for a binary-only package was therefore:
 //
 //	//go:binary-only-package
 //
 //	package mypkg
 //
-// ソースコードには追加のGoコードが含まれる可能性があります。このコードはコンパイルされないが、godocなどのツールによって処理され、エンドユーザのドキュメンテーションとして役立つかもしれません。
+// The source code could include additional Go code. That code was never
+// compiled but would be processed by tools like godoc and might be useful
+// as end-user documentation.
 //
-// "go build" およびその他のコマンドはバイナリオンリーパッケージをサポートしていません。
-// [Import] と [ImportDir] は、これらのコメントを含むパッケージのBinaryOnlyフラグを設定し、ツールやエラーメッセージで利用することができます。
+// "go build" and other commands no longer support binary-only-packages.
+// [Import] and [ImportDir] will still set the BinaryOnly flag in packages
+// containing these comments for use in tools and error messages.
 package build

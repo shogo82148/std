@@ -12,7 +12,7 @@
 
 package macho
 
-// FileHeaderは、Mach-Oファイルヘッダーを表します。
+// A FileHeader represents a Mach-O file header.
 type FileHeader struct {
 	Magic  uint32
 	Cpu    Cpu
@@ -29,7 +29,7 @@ const (
 	MagicFat uint32 = 0xcafebabe
 )
 
-// Typeは、Mach-Oファイルのタイプを表します。例えば、オブジェクトファイル、実行可能ファイル、または動的ライブラリなどです。
+// A Type is the Mach-O file type, e.g. an object file, executable, or dynamic library.
 type Type uint32
 
 const (
@@ -42,7 +42,7 @@ const (
 func (t Type) String() string
 func (t Type) GoString() string
 
-// Cpuは、Mach-OのCPUタイプを表します。
+// A Cpu is a Mach-O cpu type.
 type Cpu uint32
 
 const (
@@ -57,7 +57,7 @@ const (
 func (i Cpu) String() string
 func (i Cpu) GoString() string
 
-// LoadCmdは、Mach-Oのロードコマンドです。
+// A LoadCmd is a Mach-O load command.
 type LoadCmd uint32
 
 const (
@@ -76,7 +76,7 @@ func (i LoadCmd) String() string
 func (i LoadCmd) GoString() string
 
 type (
-	// Segment32は、32ビットMach-Oのセグメントロードコマンドです。
+	// A Segment32 is a 32-bit Mach-O segment load command.
 	Segment32 struct {
 		Cmd     LoadCmd
 		Len     uint32
@@ -91,7 +91,7 @@ type (
 		Flag    uint32
 	}
 
-	// Segment64は、64ビットMach-Oのセグメントロードコマンドです。
+	// A Segment64 is a 64-bit Mach-O segment load command.
 	Segment64 struct {
 		Cmd     LoadCmd
 		Len     uint32
@@ -106,7 +106,7 @@ type (
 		Flag    uint32
 	}
 
-	// SymtabCmdは、Mach-Oのシンボルテーブルコマンドです。
+	// A SymtabCmd is a Mach-O symbol table command.
 	SymtabCmd struct {
 		Cmd     LoadCmd
 		Len     uint32
@@ -116,7 +116,7 @@ type (
 		Strsize uint32
 	}
 
-	// DysymtabCmdは、Mach-Oの動的シンボルテーブルコマンドです。
+	// A DysymtabCmd is a Mach-O dynamic symbol table command.
 	DysymtabCmd struct {
 		Cmd            LoadCmd
 		Len            uint32
@@ -140,7 +140,7 @@ type (
 		Nlocrel        uint32
 	}
 
-	// DylibCmdは、Mach-Oの動的ライブラリロードコマンドです。
+	// A DylibCmd is a Mach-O load dynamic library command.
 	DylibCmd struct {
 		Cmd            LoadCmd
 		Len            uint32
@@ -150,14 +150,14 @@ type (
 		CompatVersion  uint32
 	}
 
-	// RpathCmdは、Mach-Oのrpathコマンドです。
+	// A RpathCmd is a Mach-O rpath command.
 	RpathCmd struct {
 		Cmd  LoadCmd
 		Len  uint32
 		Path uint32
 	}
 
-	// Threadは、Mach-Oのスレッド状態コマンドです。
+	// A Thread is a Mach-O thread state command.
 	Thread struct {
 		Cmd  LoadCmd
 		Len  uint32
@@ -195,7 +195,7 @@ const (
 	FlagAppExtensionSafe      uint32 = 0x2000000
 )
 
-// Section32は、32ビットMach-Oセクションヘッダーです。
+// A Section32 is a 32-bit Mach-O section header.
 type Section32 struct {
 	Name     [16]byte
 	Seg      [16]byte
@@ -210,7 +210,7 @@ type Section32 struct {
 	Reserve2 uint32
 }
 
-// Section64は、64ビットMach-Oセクションヘッダーです。
+// A Section64 is a 64-bit Mach-O section header.
 type Section64 struct {
 	Name     [16]byte
 	Seg      [16]byte
@@ -226,7 +226,7 @@ type Section64 struct {
 	Reserve3 uint32
 }
 
-// Nlist32は、Mach-O 32ビットのシンボルテーブルエントリです。
+// An Nlist32 is a Mach-O 32-bit symbol table entry.
 type Nlist32 struct {
 	Name  uint32
 	Type  uint8
@@ -235,7 +235,7 @@ type Nlist32 struct {
 	Value uint32
 }
 
-// Nlist64は、Mach-O 64ビットのシンボルテーブルエントリです。
+// An Nlist64 is a Mach-O 64-bit symbol table entry.
 type Nlist64 struct {
 	Name  uint32
 	Type  uint8
@@ -244,7 +244,7 @@ type Nlist64 struct {
 	Value uint64
 }
 
-// Regs386は、Mach-O 386のレジスタ構造体です。
+// Regs386 is the Mach-O 386 register structure.
 type Regs386 struct {
 	AX    uint32
 	BX    uint32
@@ -264,7 +264,7 @@ type Regs386 struct {
 	GS    uint32
 }
 
-// RegsAMD64は、Mach-O AMD64のレジスタ構造体です。
+// RegsAMD64 is the Mach-O AMD64 register structure.
 type RegsAMD64 struct {
 	AX    uint64
 	BX    uint64

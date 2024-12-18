@@ -8,21 +8,29 @@ import (
 	"github.com/shogo82148/std/iter"
 )
 
-// VisitorのVisitメソッドは、[Walk] によって遭遇した各ノードに対して呼び出されます。
-// 結果のビジターwがnilでない場合、[Walk] はノードの各子に対してビジターwで訪問し、
-// その後にw.Visit(nil)を呼び出します。
+// A Visitor's Visit method is invoked for each node encountered by [Walk].
+// If the result visitor w is not nil, [Walk] visits each of the children
+// of node with the visitor w, followed by a call of w.Visit(nil).
 type Visitor interface {
 	Visit(node Node) (w Visitor)
 }
 
-// WalkはASTを深さ優先でトラバースします。最初にv.Visit(node)を呼び出します。nodeはnilであってはいけません。v.Visit(node)から返されるビジターwがnilでない場合、Walkはnodeのnilでない子要素ごとに再帰的にビジターwを用いて呼び出され、その後にw.Visit(nil)が呼び出されます。
+// Walk traverses an AST in depth-first order: It starts by calling
+// v.Visit(node); node must not be nil. If the visitor w returned by
+// v.Visit(node) is not nil, Walk is invoked recursively with visitor
+// w for each of the non-nil children of node, followed by a call of
+// w.Visit(nil).
 func Walk(v Visitor, node Node)
 
-// InspectはASTを深さ優先順で走査します：まずf(node)を呼び出します。nodeはnilであってはなりません。fがtrueを返す場合、Inspectはnodeの非nilな子のそれぞれに対して再帰的にfを呼び出し、その後にf(nil)を呼び出します。
+// Inspect traverses an AST in depth-first order: It starts by calling
+// f(node); node must not be nil. If f returns true, Inspect invokes f
+// recursively for each of the non-nil children of node, followed by a
+// call of f(nil).
 func Inspect(node Node, f func(Node) bool)
 
-// Preorderは、指定されたルート以下（ルートを含む）の構文木のすべてのノードに対するイテレータを返します。
-// これは深さ優先のプレオーダーで行われます。
+// Preorder returns an iterator over all the nodes of the syntax tree
+// beneath (and including) the specified root, in depth-first
+// preorder.
 //
-// 各サブツリーの走査をより細かく制御するには、[Inspect] を使用します。
+// For greater control over the traversal of each subtree, use [Inspect].
 func Preorder(root Node) iter.Seq[Node]

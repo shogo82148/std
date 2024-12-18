@@ -10,7 +10,8 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// この例では、複数のURLを同時にフェッチし、WaitGroupを使用して、すべてのフェッチが完了するまでブロックします。
+// This example fetches several URLs concurrently,
+// using a WaitGroup to block until all the fetches are complete.
 func ExampleWaitGroup() {
 	var wg sync.WaitGroup
 	var urls = []string{
@@ -19,17 +20,17 @@ func ExampleWaitGroup() {
 		"http://www.example.com/",
 	}
 	for _, url := range urls {
-		// WaitGroup のカウンターをインクリメントする。
+		// Increment the WaitGroup counter.
 		wg.Add(1)
-		// URLを取得するために、ゴルーチンを起動します。
+		// Launch a goroutine to fetch the URL.
 		go func(url string) {
-			// ゴルーチンが完了したら、カウンタを減らす。
+			// Decrement the counter when the goroutine completes.
 			defer wg.Done()
-			// URLを取得する。
+			// Fetch the URL.
 			http.Get(url)
 		}(url)
 	}
-	// すべてのHTTPフェッチが完了するまで待ちます。
+	// Wait for all HTTP fetches to complete.
 	wg.Wait()
 }
 

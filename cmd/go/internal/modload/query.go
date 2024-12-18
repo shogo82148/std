@@ -9,7 +9,7 @@ import (
 
 	"github.com/shogo82148/std/cmd/go/internal/modfetch"
 
-	"golang.org/x/mod/module"
+	"github.com/shogo82148/std/golang.org/x/mod/module"
 )
 
 // Query looks up a revision of a given module given a version query string.

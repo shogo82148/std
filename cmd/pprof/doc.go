@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// PprofはGoプログラムのプロファイルを解釈して表示します。
+// Pprof interprets and displays profiles of Go programs.
 //
-// 基本的な使用方法:
+// Basic usage:
 //
-//  go tool pprof バイナリプロファイル
+//	go tool pprof binary profile
 //
-// 詳細な使用方法については:
+// For detailed usage information:
 //
-//  go tool pprof -h
+//	go tool pprof -h
 //
-// 具体例については、https://blog.golang.org/profiling-go-programsを参照してください。
+// For an example, see https://blog.golang.org/profiling-go-programs.
 package main

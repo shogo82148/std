@@ -4,88 +4,102 @@
 
 package time
 
-// これらは [Time.Format] と [time.Parse] で使用するための事前定義されたレイアウトです。
-// これらのレイアウトで使用される参照時間は、特定のタイムスタンプです：
+// These are predefined layouts for use in [Time.Format] and [time.Parse].
+// The reference time used in these layouts is the specific time stamp:
 //
-// 01/02 03:04:05PM '06 -0700
+//	01/02 03:04:05PM '06 -0700
 //
-// (2006年1月2日15時04分05秒、GMTより7時間西のタイムゾーン)。
-// その値は、以下にリストされている定数である [Layout] として記録されます。UNIX
-// タイムとしては、1136239445です。MSTはGMT-0700であるため、参照時間は
-// UNIXのdateコマンドで次のように表示されます：
+// (January 2, 15:04:05, 2006, in time zone seven hours west of GMT).
+// That value is recorded as the constant named [Layout], listed below. As a Unix
+// time, this is 1136239445. Since MST is GMT-0700, the reference would be
+// printed by the Unix date command as:
 //
-// Mon Jan 2 15:04:05 MST 2006
+//	Mon Jan 2 15:04:05 MST 2006
 //
-// 月の数字を日の前に置くアメリカの慣習を採用していることは、歴史的な誤りです。
+// It is a regrettable historic error that the date uses the American convention
+// of putting the numerical month before the day.
 //
-// Time.Formatの例では、レイアウト文字列の動作を詳しく説明しており、参考になります。
+// The example for Time.Format demonstrates the working of the layout string
+// in detail and is a good reference.
 //
-// [RFC822]、[RFC850]、[RFC1123] のフォーマットは、ローカル時間にのみ適用する必要があります。
-// UTC時間に適用する場合、時差表示として「UTC」が使用されますが、厳密にはこれらのRFCでは
-// その場合に「GMT」の使用が必要です。
-// [RFC1123] または [RFC1123Z] 形式を解析に使用する場合、これらの形式が月内の日付部分に先行するゼロを定義していることに注意してください。
-// これはRFC 1123によって厳密には許可されていません。これにより、特定の月の最初の9日間に発生する日付文字列を解析する際にエラーが発生します。
-// 一般に、[RFC1123] の代わりに [RFC1123Z] を使用するべきです。
-// また、新しいプロトコルには [RFC3339] を優先すべきです。
-// [RFC3339]、[RFC822]、[RFC822Z]、[RFC1123]、[RFC1123Z] は、フォーマット用途に有用です。
-// time.Parseで使用する場合、これらはRFCで許可されているすべての時間形式を受け付けず、
-// 正式に定義されていない時間形式を受け入れます。
-// [RFC3339Nano] 形式は秒の末尾のゼロを削除するため、フォーマット後に正しくソートされない場合があります。
+// Note that the [RFC822], [RFC850], and [RFC1123] formats should be applied
+// only to local times. Applying them to UTC times will use "UTC" as the
+// time zone abbreviation, while strictly speaking those RFCs require the
+// use of "GMT" in that case.
+// When using the [RFC1123] or [RFC1123Z] formats for parsing, note that these
+// formats define a leading zero for the day-in-month portion, which is not
+// strictly allowed by RFC 1123. This will result in an error when parsing
+// date strings that occur in the first 9 days of a given month.
+// In general [RFC1123Z] should be used instead of [RFC1123] for servers
+// that insist on that format, and [RFC3339] should be preferred for new protocols.
+// [RFC3339], [RFC822], [RFC822Z], [RFC1123], and [RFC1123Z] are useful for formatting;
+// when used with time.Parse they do not accept all the time formats
+// permitted by the RFCs and they do accept time formats not formally defined.
+// The [RFC3339Nano] format removes trailing zeros from the seconds field
+// and thus may not sort correctly once formatted.
 //
-// ほとんどのプログラムは、FormatやParseに渡すための定義済みの定数の1つを使用できます。
-// カスタムレイアウト文字列を作成する場合以外は、このコメントの残りは無視してかまいません。
+// Most programs can use one of the defined constants as the layout passed to
+// Format or Parse. The rest of this comment can be ignored unless you are
+// creating a custom layout string.
 //
-// 独自のフォーマットを定義するには、参照時間があなたの方法でどのように
-// フォーマットされるかを書き出してください。[ANSIC]、[StampMicro]、[Kitchen]などの
-// 定数の値を参照してください。モデルは、参照時間がどのようになっているかを実証し、
-// FormatとParseメソッドが一般的な時間値に同じ変換を適用できるようにすることです。
+// To define your own format, write down what the reference time would look like
+// formatted your way; see the values of constants like [ANSIC], [StampMicro] or
+// [Kitchen] for examples. The model is to demonstrate what the reference time
+// looks like so that the Format and Parse methods can apply the same
+// transformation to a general time value.
 //
-// 以下はレイアウト文字列のコンポーネントの概要です。各要素は参照時間の要素のフォーマットを
-// 例示しています。これらの値のみが認識されます。参照時間の一部として認識されないレイアウト文字列の
-// テキストは、Formatでそのまま出力され、Parseの入力にそのまま表示されると予想されます。
+// Here is a summary of the components of a layout string. Each element shows by
+// example the formatting of an element of the reference time. Only these values
+// are recognized. Text in the layout string that is not recognized as part of
+// the reference time is echoed verbatim during Format and expected to appear
+// verbatim in the input to Parse.
 //
-// 年: "2006" "06"
-// 月: "Jan" "January" "01" "1"
-// 曜日: "Mon" "Monday"
-// 月の日にち: "2" "_2" "02"
-// 年の日にち: "__2" "002"
-// 時: "15" "3" "03" (PMまたはAM)
-// 分: "4" "04"
-// 秒: "5" "05"
-// AM/PMマーク: "PM"
+//	Year: "2006" "06"
+//	Month: "Jan" "January" "01" "1"
+//	Day of the week: "Mon" "Monday"
+//	Day of the month: "2" "_2" "02"
+//	Day of the year: "__2" "002"
+//	Hour: "15" "3" "03" (PM or AM)
+//	Minute: "4" "04"
+//	Second: "5" "05"
+//	AM/PM mark: "PM"
 //
-// 数値のタイムゾーンオフセットは以下のようにフォーマットされます：
+// Numeric time zone offsets format as follows:
 //
-// "-0700" ±hhmm
-// "-07:00" ±hh:mm
-// "-07" ±hh
-// "-070000" ±hhmmss
-// "-07:00:00" ±hh:mm:ss
+//	"-0700"     ±hhmm
+//	"-07:00"    ±hh:mm
+//	"-07"       ±hh
+//	"-070000"   ±hhmmss
+//	"-07:00:00" ±hh:mm:ss
 //
-// フォーマット内の符号をZに置き換えると、UTCゾーンのオフセットではなく
-// ZがプリントされるISO 8601の動作になります。
-// したがって：
+// Replacing the sign in the format with a Z triggers
+// the ISO 8601 behavior of printing Z instead of an
+// offset for the UTC zone. Thus:
 //
-// "Z0700" Zまたは±hhmm
-// "Z07:00" Zまたは±hh:mm
-// "Z07" Zまたは±hh
-// "Z070000" Zまたは±hhmmss
-// "Z07:00:00" Zまたは±hh:mm:ss
+//	"Z0700"      Z or ±hhmm
+//	"Z07:00"     Z or ±hh:mm
+//	"Z07"        Z or ±hh
+//	"Z070000"    Z or ±hhmmss
+//	"Z07:00:00"  Z or ±hh:mm:ss
 //
-// フォーマット文字列内では、"_2"と"__2"の下線は、次の数字が複数桁である場合に
-// 数字に置き換えられる可能性のあるスペースを表します。
-// これにより、固定桁のUNIXタイムフォーマットとの互換性が保たれます。先頭のゼロは
-// ゼロパディングされた値を表します。
+// Within the format string, the underscores in "_2" and "__2" represent spaces
+// that may be replaced by digits if the following number has multiple digits,
+// for compatibility with fixed-width Unix time formats. A leading zero represents
+// a zero-padded value.
 //
-// フォーマット002は空白でパディングされ、ゼロでパディングされた3文字の年の日を表します。
-// パディングされていない年の日フォーマットはありません。
+// The formats __2 and 002 are space-padded and zero-padded
+// three-character day of year; there is no unpadded day of year format.
 //
-// カンマまたは小数点の後にゼロが1つ以上続く場合、指定した小数桁数で出力される小数秒を表します。
-// カンマまたは小数点の後に9が1つ以上続く場合、指定した小数桁数で出力され、末尾のゼロは削除されます。
-// たとえば、「15:04:05,000」または「15:04:05.000」はミリ秒の精度でフォーマットまたは解析します。
+// A comma or decimal point followed by one or more zeros represents
+// a fractional second, printed to the given number of decimal places.
+// A comma or decimal point followed by one or more nines represents
+// a fractional second, printed to the given number of decimal places, with
+// trailing zeros removed.
+// For example "15:04:05,000" or "15:04:05.000" formats or parses with
+// millisecond precision.
 //
-// いくつかの有効なレイアウトは、space paddingのようなフォーマットやzone情報のZのような
-// フォーマットのため、time.Parseには無効な時間値です。
+// Some valid layouts are invalid time values for time.Parse, due to formats
+// such as _ for space padding and Z for zone information.
 const (
 	Layout      = "01/02 03:04:05PM '06 -0700"
 	ANSIC       = "Mon Jan _2 15:04:05 2006"
@@ -99,7 +113,7 @@ const (
 	RFC3339     = "2006-01-02T15:04:05Z07:00"
 	RFC3339Nano = "2006-01-02T15:04:05.999999999Z07:00"
 	Kitchen     = "3:04PM"
-	// 便利なタイムスタンプ。
+	// Handy time stamps.
 	Stamp      = "Jan _2 15:04:05"
 	StampMilli = "Jan _2 15:04:05.000"
 	StampMicro = "Jan _2 15:04:05.000000"
@@ -113,31 +127,36 @@ const (
 	_ = iota
 )
 
-// Stringはフォーマット文字列を使用して書式付けされた時間を返します
+// String returns the time formatted using the format string
 //
 //	"2006-01-02 15:04:05.999999999 -0700 MST"
 //
-// もし時間が単調なクロック読み取りを持っている場合、返される文字列は
-// "m=±<value>"という最後のフィールドを含みます。ここで、valueは
-// 単調なクロック読み取りを秒で表した10進数です。
+// If the time has a monotonic clock reading, the returned string
+// includes a final field "m=±<value>", where value is the monotonic
+// clock reading formatted as a decimal number of seconds.
 //
-// 返される文字列はデバッグ用途であり、安定したシリアライズされた表現には
-// t.MarshalText、t.MarshalBinary、または明示的なフォーマット文字列を使用した
-// t.Formatを使用してください。
+// The returned string is meant for debugging; for a stable serialized
+// representation, use t.MarshalText, t.MarshalBinary, or t.Format
+// with an explicit format string.
 func (t Time) String() string
 
-// GoStringは [fmt.GoStringer] を実装し、Goソースコードで表示されるようにtをフォーマットします。
+// GoString implements [fmt.GoStringer] and formats t to be printed in Go source
+// code.
 func (t Time) GoString() string
 
-// Formatは、引数で定義されたレイアウトに従って、時刻値のテキスト表現を返します。レイアウトフォーマットの表現方法については、[Layout] という定数のドキュメントを参照してください。
+// Format returns a textual representation of the time value formatted according
+// to the layout defined by the argument. See the documentation for the
+// constant called [Layout] to see how to represent the layout format.
 //
-// [Time.Format] の実行可能な例は、レイアウト文字列の詳細な動作を示しており、参考になります。
+// The executable example for [Time.Format] demonstrates the working
+// of the layout string in detail and is a good reference.
 func (t Time) Format(layout string) string
 
-// AppendFormatは [Time.Format] と似ていますが、テキスト表現をbに追加し、拡張されたバッファを返します。
+// AppendFormat is like [Time.Format] but appends the textual
+// representation to b and returns the extended buffer.
 func (t Time) AppendFormat(b []byte, layout string) []byte
 
-// ParseErrorは時間文字列を解析する際の問題を記述します。
+// ParseError describes a problem parsing a time string.
 type ParseError struct {
 	Layout     string
 	Value      string
@@ -146,54 +165,63 @@ type ParseError struct {
 	Message    string
 }
 
-// ErrorはParseErrorの文字列表現を返します。
+// Error returns the string representation of a ParseError.
 func (e *ParseError) Error() string
 
-// Parseは書式指定された文字列を解析し、それが表す時間の値を返します。
-// 解析するには、レイアウトとして提供された形式文字列（[Layout]）を使用して、
-// 第1引数として提供された解析可能な第2引数が必要です。
+// Parse parses a formatted string and returns the time value it represents.
+// See the documentation for the constant called [Layout] to see how to
+// represent the format. The second argument must be parseable using
+// the format string (layout) provided as the first argument.
 //
-// [Time.Format] の例はレイアウト文字列の動作を詳しく説明しており、参考となります。
+// The example for [Time.Format] demonstrates the working of the layout string
+// in detail and is a good reference.
 //
-// 解析（Parse）時には、レイアウトがその存在を示していなくても、入力には秒の次に少数秒
-// フィールドが直ちに続く場合があります。その場合、最大連続桁の直後にカンマまたは
-// 小数点が続くものを少数秒として解析します。少数秒はナノ秒まで切り捨てられます。
+// When parsing (only), the input may contain a fractional second
+// field immediately after the seconds field, even if the layout does not
+// signify its presence. In that case either a comma or a decimal point
+// followed by a maximal series of digits is parsed as a fractional second.
+// Fractional seconds are truncated to nanosecond precision.
 //
-// レイアウトから省略された要素はゼロであるか、ゼロが不可能な場合は1であるとみなされます。
-// したがって、"3:04pm"を解析すると、年0月1日15:04:00 UTCに対応する時間が返されます
-// （年が0のため、この時間はゼロ時刻より前です）。
-// 年は0000〜9999の範囲内である必要があります。曜日は構文チェックされますが、
-// それ以外は無視されます。
+// Elements omitted from the layout are assumed to be zero or, when
+// zero is impossible, one, so parsing "3:04pm" returns the time
+// corresponding to Jan 1, year 0, 15:04:00 UTC (note that because the year is
+// 0, this time is before the zero Time).
+// Years must be in the range 0000..9999. The day of the week is checked
+// for syntax but it is otherwise ignored.
 //
-// 2桁の年06を指定するレイアウトの場合、値NN >= 69は19NNとして扱われ、
-// 値NN < 69は20NNとして扱われます。
+// For layouts specifying the two-digit year 06, a value NN >= 69 will be treated
+// as 19NN and a value NN < 69 will be treated as 20NN.
 //
-// このコメントの残りの部分は、タイムゾーンの処理方法について説明しています。
+// The remainder of this comment describes the handling of time zones.
 //
-// タイムゾーン指示がない場合、ParseはUTCで時間を返します。
+// In the absence of a time zone indicator, Parse returns a time in UTC.
 //
-// -0700のようなタイムゾーンオフセットを持つ時間を解析する場合、オフセットが現在の場所（[Local]）で使用されている
-// タイムゾーンに対応している場合、Parseはその場所とタイムゾーンを使用して時間を返します。
-// そうでない場合は、与えられたゾーンオフセットで時間が固定された、架空の場所として時間を記録します。
+// When parsing a time with a zone offset like -0700, if the offset corresponds
+// to a time zone used by the current location ([Local]), then Parse uses that
+// location and zone in the returned time. Otherwise it records the time as
+// being in a fabricated location with time fixed at the given zone offset.
 //
-// MSTのようなタイムゾーン省略形を持つ時間を解析する場合、現在の場所で定義されたオフセットがある場合、それを使用します。
-// "UTC"というタイムゾーン省略形は、場所に関係なくUTCとして認識されます。
-// タイムゾーン省略形が不明な場合、Parseは与えられたゾーン省略形とゼロオフセットの架空の場所に
-// 時間を記録します。この選択肢は、そのような時間をレイアウトの変更なしで解析および再フォーマットできますが、
-// 表現に使用される正確な瞬間は実際のゾーンオフセットによって異なります。
-// そのような問題を回避するためには、数値のゾーンオフセットを使用する時間レイアウトを使用するか、[ParseInLocation] を使用してください。
+// When parsing a time with a zone abbreviation like MST, if the zone abbreviation
+// has a defined offset in the current location, then that offset is used.
+// The zone abbreviation "UTC" is recognized as UTC regardless of location.
+// If the zone abbreviation is unknown, Parse records the time as being
+// in a fabricated location with the given zone abbreviation and a zero offset.
+// This choice means that such a time can be parsed and reformatted with the
+// same layout losslessly, but the exact instant used in the representation will
+// differ by the actual zone offset. To avoid such problems, prefer time layouts
+// that use a numeric zone offset, or use [ParseInLocation].
 func Parse(layout, value string) (Time, error)
 
-// ParseInLocationはParseと似ていますが、2つの重要な違いがあります。
-// まず、タイムゾーン情報がない場合、Parseは時間をUTCとして解釈しますが、
-// ParseInLocationは指定された場所の時間として解釈します。
-// さらに、ゾーンオフセットや略語が与えられた場合、Parseはそれをローカルの場所と照合しようとしますが、
-// ParseInLocationは指定された場所を使用します。
+// ParseInLocation is like Parse but differs in two important ways.
+// First, in the absence of time zone information, Parse interprets a time as UTC;
+// ParseInLocation interprets the time as in the given location.
+// Second, when given a zone offset or abbreviation, Parse tries to match it
+// against the Local location; ParseInLocation uses the given location.
 func ParseInLocation(layout, value string, loc *Location) (Time, error)
 
-// ParseDurationは期間文字列を解析します。
-// 期間文字列は、可能性のある符号付きの連続した
-// 小数点数、オプションの小数部および単位接尾辞からなります。
-// 例： "300ms"、"-1.5h"、または "2h45m"。
-// 有効な時間単位は「ns」、「us」（または「µs」）、「ms」、「s」、「m」、「h」です。
+// ParseDuration parses a duration string.
+// A duration string is a possibly signed sequence of
+// decimal numbers, each with optional fraction and a unit suffix,
+// such as "300ms", "-1.5h" or "2h45m".
+// Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
 func ParseDuration(s string) (Duration, error)

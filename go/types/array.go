@@ -7,21 +7,21 @@
 
 package types
 
-// Arrayは配列型を表します。
+// An Array represents an array type.
 type Array struct {
 	len  int64
 	elem Type
 }
 
-// NewArrayは指定された要素の型と長さに対して新しい配列型を返します。
-// 負の長さは未知の長さを示します。
+// NewArray returns a new array type for the given element type and length.
+// A negative length indicates an unknown length.
 func NewArray(elem Type, len int64) *Array
 
-// Lenは配列aの長さを返します。
-// 負の結果は、不明な長さを示します。
+// Len returns the length of array a.
+// A negative result indicates an unknown length.
 func (a *Array) Len() int64
 
-// Elemは配列aの要素型を返します。
+// Elem returns element type of array a.
 func (a *Array) Elem() Type
 
 func (a *Array) Underlying() Type

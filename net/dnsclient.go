@@ -4,7 +4,7 @@
 
 package net
 
-// SRVは単一のDNS SRVレコードを表します。
+// An SRV represents a single DNS SRV record.
 type SRV struct {
 	Target   string
 	Port     uint16
@@ -12,13 +12,13 @@ type SRV struct {
 	Weight   uint16
 }
 
-// MXは単一のDNS MXレコードを表します。
+// An MX represents a single DNS MX record.
 type MX struct {
 	Host string
 	Pref uint16
 }
 
-// NSは単一のDNS NSレコードを表します。
+// An NS represents a single DNS NS record.
 type NS struct {
 	Host string
 }

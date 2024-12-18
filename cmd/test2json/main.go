@@ -2,82 +2,94 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Test2jsonは、go testの出力を機械可読のJSONストリームに変換します。
+// Test2json converts go test output to a machine-readable JSON stream.
 //
-// 使用方法:
+// Usage:
 //
 //	go tool test2json [-p pkg] [-t] [./pkg.test -test.v=test2json]
 //
-// Test2jsonは、指定されたテストコマンドを実行し、その出力をJSONに変換します。
-// コマンドが指定されていない場合、test2jsonは標準入力からテストの出力を予期します。
-// 対応するJSONイベントのストリームを標準出力に書き込みます。
-// 入出力の不要なバッファリングは行われないため、テストの状態の "ライブ更新" のために
-// JSONストリームを読み取ることができます。
+// Test2json runs the given test command and converts its output to JSON;
+// with no command specified, test2json expects test output on standard input.
+// It writes a corresponding stream of JSON events to standard output.
+// There is no unnecessary input or output buffering, so that
+// the JSON stream can be read for “live updates” of test status.
 //
-// -pフラグは、各テストイベントで報告されるパッケージを設定します。
+// The -p flag sets the package reported in each test event.
 //
-// -tフラグは、各テストイベントにタイムスタンプを追加するようリクエストします。
+// The -t flag requests that time stamps be added to each test event.
 //
-// テストは、-test.v=test2jsonで呼び出す必要があります。-test.vのみを使用することもできます
-// （または -test.v=true）、しかし、より低い信頼性の結果となります。
+// The test should be invoked with -test.v=test2json. Using only -test.v
+// (or -test.v=true) is permissible but produces lower fidelity results.
 //
-// "go test -json"コマンドはtest2jsonを正しく呼び出すことに対応しているため、
-// "go tool test2json"は、テストバイナリが"go test"とは別に実行される場合にのみ必要です。
-// 可能な限り"go test -json"を使用してください。
+// Note that "go test -json" takes care of invoking test2json correctly,
+// so "go tool test2json" is only needed when a test binary is being run
+// separately from "go test". Use "go test -json" whenever possible.
 //
-// また、test2jsonは単一のテストバイナリの出力を変換するためのものであることに注意してください。
-// 複数のパッケージを実行する"go test"コマンドの出力を変換するには、再び"go test -json"を使用してください。
+// Note also that test2json is only intended for converting a single test
+// binary's output. To convert the output of a "go test" command that
+// runs multiple packages, again use "go test -json".
 //
-// # 出力フォーマット
+// # Output Format
 //
-// JSONストリームは、改行で区切られたTestEventオブジェクトのシーケンスで、
-// Goの構造体に対応します：
+// The JSON stream is a newline-separated sequence of TestEvent objects
+// corresponding to the Go struct:
 //
 //	type TestEvent struct {
-//		Time    time.Time // RFC3339形式の文字列としてエンコードされます
-//		Action  string
-//		Package string
-//		Test    string
-//		Elapsed float64 // 秒単位
-//		Output  string
+//		Time        time.Time // encodes as an RFC3339-format string
+//		Action      string
+//		Package     string
+//		Test        string
+//		Elapsed     float64 // seconds
+//		Output      string
+//		FailedBuild string
 //	}
 //
-// Timeフィールドはイベントが発生した時刻を保持しています。
-// キャッシュされたテスト結果には、通常は省略されます。
+// The Time field holds the time the event happened.
+// It is conventionally omitted for cached test results.
 //
-// Actionフィールドは、固定のアクションの説明の1つです：
+// The Action field is one of a fixed set of action descriptions:
 //
-//	start  - テストバイナリが実行される直前
-//	run    - テストが実行開始される
-//	pause  - テストが一時停止される
-//	cont   - テストが実行再開される
-//	pass   - テストにパスする
-//	bench  - ベンチマークがログ出力を行うが、失敗はしない
-//	fail   - テストまたはベンチマークが失敗する
-//	output - テストが出力を行う
-//	skip   - テストがスキップされるか、パッケージにテストが含まれていない
+//	start  - the test binary is about to be executed
+//	run    - the test has started running
+//	pause  - the test has been paused
+//	cont   - the test has continued running
+//	pass   - the test passed
+//	bench  - the benchmark printed log output but did not fail
+//	fail   - the test or benchmark failed
+//	output - the test printed output
+//	skip   - the test was skipped or the package contained no tests
 //
-// JSONストリームは常に "start" イベントで始まります。
+// Every JSON stream begins with a "start" event.
 //
-// Packageフィールドが存在する場合、テストされているパッケージを指定します。
-// goコマンドが- jsonモードで並列テストを実行する場合、異なるテストのイベントが交互に現れます。
-// Packageフィールドにより、読み手はそれらを区別できます。
+// The Package field, if present, specifies the package being tested.
+// When the go command runs parallel tests in -json mode, events from
+// different tests are interlaced; the Package field allows readers to
+// separate them.
 //
-// Testフィールドが存在する場合、イベントを引き起こしたテスト、例、またはベンチマーク関数を指定します。
-// パッケージ全体のテストの場合、Testは設定されません。
+// The Test field, if present, specifies the test, example, or benchmark
+// function that caused the event. Events for the overall package test
+// do not set Test.
 //
-// Elapsedフィールドは、"pass"と"fail"のイベントに設定されます。
-// パスまたは失敗した特定のテストまたはパッケージ全体のテストの経過時間を示します。
+// The Elapsed field is set for "pass" and "fail" events. It gives the time
+// elapsed for the specific test or the overall package test that passed or failed.
 //
-// OutputフィールドはAction == "output"の場合に設定され、テストの出力の一部です
-// （標準出力と標準エラーを結合したもの）。出力は変更されず、テストからの無効なUTF-8出力は、
-// 置換文字を使用して有効なUTF-8に変換されます。この例外を除いて、
-// Outputフィールドのすべての出力イベントの連結がテストの実行の正確な出力です。
+// The Output field is set for Action == "output" and is a portion of the test's output
+// (standard output and standard error merged together). The output is
+// unmodified except that invalid UTF-8 output from a test is coerced
+// into valid UTF-8 by use of replacement characters. With that one exception,
+// the concatenation of the Output fields of all output events is the exact
+// output of the test execution.
 //
-// ベンチマークが実行されると、通常はタイミング結果を示す1行の出力が生成されます。
-// その行は、Action == "output"かつTestフィールドが存在しないイベントで報告されます。
-// ベンチマークが出力を記録したり失敗を報告した場合
-// （たとえば、b.Logやb.Errorを使用することによって）、その追加の出力は
-// ベンチマーク名が設定されたイベントのシーケンスとして報告され、最後のイベントは
-// Action == "bench"または"fail"です。ベンチマークにはAction == "pause"のイベントはありません。
+// The FailedBuild field is set for Action == "fail" if the test failure was
+// caused by a build failure. It contains the package ID of the package that
+// failed to build. This matches the ImportPath field of the "go list" output,
+// as well as the BuildEvent.ImportPath field as emitted by "go build -json".
+//
+// When a benchmark runs, it typically produces a single line of output
+// giving timing results. That line is reported in an event with Action == "output"
+// and no Test field. If a benchmark logs output or reports a failure
+// (for example, by using b.Log or b.Error), that extra output is reported
+// as a sequence of events with Test set to the benchmark name, terminated
+// by a final event with Action == "bench" or "fail".
+// Benchmarks have no events with Action == "pause".
 package main

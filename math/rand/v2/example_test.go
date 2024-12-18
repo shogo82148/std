@@ -6,7 +6,6 @@ package rand_test
 
 import (
 	"github.com/shogo82148/std/fmt"
-	"github.com/shogo82148/std/math/rand/v2"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/strings"
 	"github.com/shogo82148/std/text/tabwriter"
@@ -39,44 +38,45 @@ func Example() {
 	fmt.Println("Magic 8-Ball says:", answers[rand.IntN(len(answers))])
 }
 
-// この例は、*Randの各メソッドの使用を示しています。
-// グローバル関数の使用は、レシーバなしで同じです。
+// This example shows the use of each of the methods on a *Rand.
+// The use of the global functions is the same, without the receiver.
 func Example_rand() {
-	// ジェネレータを作成し、シードを設定します。
-	// 通常、固定されていないシードを使用するべきです。例えば、Uint64(), Uint64()のようなものです。
-	// 固定シードを使用すると、毎回同じ出力が生成されます。
+	// Create and seed the generator.
+	// Typically a non-fixed seed should be used, such as Uint64(), Uint64().
+	// Using a fixed seed will produce the same output on every run.
 	r := rand.New(rand.NewPCG(1, 2))
 
-	// ここでのtabwriterは、私たちが整列した出力を生成するのを助けてくれます。
+	// The tabwriter here helps us generate aligned output.
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
 	defer w.Flush()
 	show := func(name string, v1, v2, v3 any) {
 		fmt.Fprintf(w, "%s\t%v\t%v\t%v\n", name, v1, v2, v3)
 	}
 
-	// Float32とFloat64の値は[0, 1)の範囲内にあります。
+	// Float32 and Float64 values are in [0, 1).
 	show("Float32", r.Float32(), r.Float32(), r.Float32())
 	show("Float64", r.Float64(), r.Float64(), r.Float64())
 
-	// ExpFloat64の値は平均が1ですが、指数関数的に減衰します。
+	// ExpFloat64 values have an average of 1 but decay exponentially.
 	show("ExpFloat64", r.ExpFloat64(), r.ExpFloat64(), r.ExpFloat64())
 
-	// NormFloat64の値は平均が0で、標準偏差が1です。
+	// NormFloat64 values have an average of 0 and a standard deviation of 1.
 	show("NormFloat64", r.NormFloat64(), r.NormFloat64(), r.NormFloat64())
 
-	// Int32、Int64、およびUint32は指定された幅の値を生成します。
-	// Intメソッド（ここでは示されていません）は'int'のサイズに応じてInt32またはInt64のように動作します。
+	// Int32, Int64, and Uint32 generate values of the given width.
+	// The Int method (not shown) is like either Int32 or Int64
+	// depending on the size of 'int'.
 	show("Int32", r.Int32(), r.Int32(), r.Int32())
 	show("Int64", r.Int64(), r.Int64(), r.Int64())
 	show("Uint32", r.Uint32(), r.Uint32(), r.Uint32())
 
-	// IntN、Int32N、およびInt64Nは、出力がn未満になるように制限します。
-	// これらは、r.Int()%nを使用するよりも慎重に行います。
+	// IntN, Int32N, and Int64N limit their output to be < n.
+	// They do so more carefully than using r.Int()%n.
 	show("IntN(10)", r.IntN(10), r.IntN(10), r.IntN(10))
 	show("Int32N(10)", r.Int32N(10), r.Int32N(10), r.Int32N(10))
 	show("Int64N(10)", r.Int64N(10), r.Int64N(10), r.Int64N(10))
 
-	// Permは、数値[0, n)のランダムな順列を生成します。
+	// Perm generates a random permutation of the numbers [0, n).
 	show("Perm", r.Perm(5), r.Perm(5), r.Perm(5))
 	// Output:
 	// Float32     0.95955694          0.8076733            0.8135684
@@ -103,10 +103,10 @@ func ExamplePerm() {
 }
 
 func ExampleN() {
-	// 半開放区間[0, 100)内のint64を出力します。
+	// Print an int64 in the half-open interval [0, 100).
 	fmt.Println(rand.N(int64(100)))
 
-	// 0から100ミリ秒の間のランダムな期間スリープします。
+	// Sleep for a random duration between 0 and 100 milliseconds.
 	time.Sleep(rand.N(100 * time.Millisecond))
 }
 
@@ -121,7 +121,7 @@ func ExampleShuffle() {
 func ExampleShuffle_slicesInUnison() {
 	numbers := []byte("12345")
 	letters := []byte("ABCDE")
-	// 数字をシャッフルし、同時にlettersの対応するエントリを交換します。
+	// Shuffle numbers, swapping corresponding entries in letters at the same time.
 	rand.Shuffle(len(numbers), func(i, j int) {
 		numbers[i], numbers[j] = numbers[j], numbers[i]
 		letters[i], letters[j] = letters[j], letters[i]

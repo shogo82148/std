@@ -10,7 +10,7 @@
 
 package cgotest
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 import (
 	"github.com/shogo82148/std/testing"

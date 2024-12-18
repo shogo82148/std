@@ -4,7 +4,7 @@
 
 package base
 
-// Tool returns the path to the named tool (for example, "vet").
+// Tool returns the path to the named builtin tool (for example, "vet").
 // If the tool cannot be found, Tool exits the process.
 func Tool(toolName string) string
 

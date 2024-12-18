@@ -88,7 +88,7 @@ func GetExitStatus() int
 // If the command fails, Run reports the error using Errorf.
 func Run(cmdargs ...any)
 
-// RunStdin is like run but connects Stdin.
+// RunStdin is like run but connects Stdin. It retries if it encounters an ETXTBSY.
 func RunStdin(cmdline []string)
 
 // Usage is the usage-reporting function, filled in by package main

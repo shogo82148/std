@@ -4,28 +4,34 @@
 
 package sort
 
-// Sliceは与えられたless関数に基づいてスライスxをソートします。
-// xがスライスでない場合はパニックを起こします。
+// Slice sorts the slice x given the provided less function.
+// It panics if x is not a slice.
 //
-// このソートは安定していることは保証されません：等しい要素は
-// 元の順序から逆になる場合があります。
-// 安定したソートをするには、[SliceStable] を使用してください。
+// The sort is not guaranteed to be stable: equal elements
+// may be reversed from their original order.
+// For a stable sort, use [SliceStable].
 //
-// less関数は、Interface型のLessメソッドと同じ要件を満たす必要があります。
+// The less function must satisfy the same requirements as
+// the Interface type's Less method.
 //
-// 注意：多くの場合、より新しい [slices.SortFunc] 関数の方が操作性が高く、実行速度も速くなります。
+// Note: in many situations, the newer [slices.SortFunc] function is more
+// ergonomic and runs faster.
 func Slice(x any, less func(i, j int) bool)
 
-// SliceStableは、与えられた比較関数を使用してスライスxをソートし、等しい要素を元の順序で保持します。
-// xがスライスでない場合、パニックを起こします。
+// SliceStable sorts the slice x using the provided less
+// function, keeping equal elements in their original order.
+// It panics if x is not a slice.
 //
-// less関数は、Interface型のLessメソッドと同じ要件を満たす必要があります。
+// The less function must satisfy the same requirements as
+// the Interface type's Less method.
 //
-// 注意：多くの場合、より新しい [slices.SortStableFunc] 関数の方が操作性が高く、実行速度も速くなります。
+// Note: in many situations, the newer [slices.SortStableFunc] function is more
+// ergonomic and runs faster.
 func SliceStable(x any, less func(i, j int) bool)
 
-// SliceIsSortedは、提供されたless関数に従ってスライスxがソートされているかどうかを報告します。
-// xがスライスでない場合、panicします。
+// SliceIsSorted reports whether the slice x is sorted according to the provided less function.
+// It panics if x is not a slice.
 //
-// 注意：多くの場合、より新しい [slices.IsSortedFunc] 関数の方が操作性が高く、実行速度も速くなります。
+// Note: in many situations, the newer [slices.IsSortedFunc] function is more
+// ergonomic and runs faster.
 func SliceIsSorted(x any, less func(i, j int) bool) bool

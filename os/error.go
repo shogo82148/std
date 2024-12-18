@@ -8,13 +8,13 @@ import (
 	"github.com/shogo82148/std/io/fs"
 )
 
-// 一部の一般的なシステムコールエラーのポータブルな代替です。
+// Portable analogs of some common system call errors.
 //
-// このパッケージから返されるエラーは、[errors.Is] によってこれらのエラーと比較されることがあります。
+// Errors returned from this package may be tested against these errors
+// with [errors.Is].
 var (
-
-	// ErrInvalidは無効な引数を示します。
-	// Fileのメソッドは、レシーバーがnilの場合にこのエラーを返します。
+	// ErrInvalid indicates an invalid argument.
+	// Methods on File will return this error when the receiver is nil.
 	ErrInvalid = fs.ErrInvalid
 
 	ErrPermission = fs.ErrPermission
@@ -26,10 +26,10 @@ var (
 	ErrDeadlineExceeded = errDeadlineExceeded()
 )
 
-// PathErrorはエラーメッセージとそれを引き起こした操作とファイルパスを記録します。
+// PathError records an error and the operation and file path that caused it.
 type PathError = fs.PathError
 
-// SyscallErrorは特定のシステムコールからのエラーを記録します。
+// SyscallError records an error from a specific system call.
 type SyscallError struct {
 	Syscall string
 	Err     error
@@ -39,37 +39,44 @@ func (e *SyscallError) Error() string
 
 func (e *SyscallError) Unwrap() error
 
-// Timeoutは、このエラーがタイムアウトを表すかどうかを報告します。
+// Timeout reports whether this error represents a timeout.
 func (e *SyscallError) Timeout() bool
 
-// NewSyscallErrorは、指定されたシステムコール名とエラーの詳細を持つ新しい [SyscallError] をエラーとして返します。
-// 便利な機能として、errがnilの場合、NewSyscallErrorはnilを返します。
+// NewSyscallError returns, as an error, a new [SyscallError]
+// with the given system call name and error details.
+// As a convenience, if err is nil, NewSyscallError returns nil.
 func NewSyscallError(syscall string, err error) error
 
-// IsExistは、引数がファイルまたはディレクトリが既に存在することを報告するかどうかを示すブール値を返します。
-// これは[ErrExist]および一部のsyscallエラーによって満たされます。
+// IsExist returns a boolean indicating whether its argument is known to report
+// that a file or directory already exists. It is satisfied by [ErrExist] as
+// well as some syscall errors.
 //
-// この関数は、[errors.Is] よりも前に存在していました。これは、osパッケージによって返されるエラーのみをサポートしています。
-// 新しいコードでは、errors.Is(err, fs.ErrExist)を使用するべきです。
+// This function predates [errors.Is]. It only supports errors returned by
+// the os package. New code should use errors.Is(err, fs.ErrExist).
 func IsExist(err error) bool
 
-// IsNotExistは、引数がファイルまたはディレクトリが存在しないことを報告するかどうかを示すブール値を返します。
-// これは[ErrNotExist]および一部のsyscallエラーによって満たされます。
+// IsNotExist returns a boolean indicating whether its argument is known to
+// report that a file or directory does not exist. It is satisfied by
+// [ErrNotExist] as well as some syscall errors.
 //
-// この関数は、[errors.Is] よりも前に存在していました。これは、osパッケージによって返されるエラーのみをサポートしています。
-// 新しいコードでは、errors.Is(err, fs.ErrNotExist)を使用するべきです。
+// This function predates [errors.Is]. It only supports errors returned by
+// the os package. New code should use errors.Is(err, fs.ErrNotExist).
 func IsNotExist(err error) bool
 
-// IsPermissionは、引数が許可が拒否されたことを報告するかどうかを示すブール値を返します。
-// これは[ErrPermission]および一部のsyscallエラーによって満たされます。
+// IsPermission returns a boolean indicating whether its argument is known to
+// report that permission is denied. It is satisfied by [ErrPermission] as well
+// as some syscall errors.
 //
-// この関数はerrors.Isより前に存在しています。この関数はosパッケージが返すエラーのみをサポートしています。
-// 新しいコードでは、errors.Is(err、fs.ErrPermission)を使用するべきです。
+// This function predates [errors.Is]. It only supports errors returned by
+// the os package. New code should use errors.Is(err, fs.ErrPermission).
 func IsPermission(err error) bool
 
-// IsTimeoutは、引数がタイムアウトが発生したことを報告するかどうかを示すブール値を返します。
+// IsTimeout returns a boolean indicating whether its argument is known
+// to report that a timeout occurred.
 //
-// この関数は、[errors.Is] やエラーがタイムアウトを示すかどうかの概念よりも前から存在しています。たとえば、UnixのエラーコードEWOULDBLOCKは、
-// タイムアウトを示す場合と示さない場合があります。新しいコードでは、[os.ErrDeadlineExceeded] など、エラーが発生した呼び出しに適切な値を使用して
-// errors.Isを使用するべきです。
+// This function predates [errors.Is], and the notion of whether an
+// error indicates a timeout can be ambiguous. For example, the Unix
+// error EWOULDBLOCK sometimes indicates a timeout and sometimes does not.
+// New code should use errors.Is with a value appropriate to the call
+// returning the error, such as [os.ErrDeadlineExceeded].
 func IsTimeout(err error) bool

@@ -4,22 +4,24 @@
 
 package runtime
 
-// Pinnerは、メモリ内の固定された場所に各Goオブジェクトが固定されたセットです。
-// [Pinner.Pin]メソッドは1つのオブジェクトを固定し、[Pinner.Unpin]メソッドはすべての固定されたオブジェクトを解除します。
-// 詳細については、それぞれのコメントを参照してください。
+// A Pinner is a set of Go objects each pinned to a fixed location in memory. The
+// [Pinner.Pin] method pins one object, while [Pinner.Unpin] unpins all pinned
+// objects. See their comments for more information.
 type Pinner struct {
 	*pinner
 }
 
-// PinはGoオブジェクトをピン留めし、[Pinner.Unpin] メソッドが呼び出されるまで、
-// ガベージコレクタによって移動または解放されるのを防ぎます。
+// Pin pins a Go object, preventing it from being moved or freed by the garbage
+// collector until the [Pinner.Unpin] method has been called.
 //
-// 固定されたオブジェクトへのポインタは、Cメモリに直接格納されるか、C関数に渡されるGoメモリに含まれることができます。
-// 固定されたオブジェクト自体がGoオブジェクトへのポインタを含む場合、これらのオブジェクトがCコードからアクセスされる場合は、別途固定する必要があります。
+// A pointer to a pinned object can be directly stored in C memory or can be
+// contained in Go memory passed to C functions. If the pinned object itself
+// contains pointers to Go objects, these objects must be pinned separately if they
+// are going to be accessed from C code.
 //
-// 引数は、任意の型のポインタまたは [unsafe.Pointer] である必要があります。
-// 非Goポインタに対してPinを呼び出すことは安全であり、その場合、Pinは何もしません。
+// The argument must be a pointer of any type or an [unsafe.Pointer].
+// It's safe to call Pin on non-Go pointers, in which case Pin will do nothing.
 func (p *Pinner) Pin(pointer any)
 
-// Unpinは [Pinner] のすべてのピン留めされたオブジェクトを解除します。
+// Unpin unpins all pinned objects of the [Pinner].
 func (p *Pinner) Unpin()

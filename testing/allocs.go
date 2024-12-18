@@ -4,11 +4,13 @@
 
 package testing
 
-// AllocsPerRunは、関数fの呼び出し中に行われる平均的な割り当ての数を返します。
-// 返り値はfloat64型ですが、常に整数値になります。
+// AllocsPerRun returns the average number of allocations during calls to f.
+// Although the return value has type float64, it will always be an integral value.
 //
-// 割り当ての数を計算するために、まず関数はウォームアップとして一度実行されます。
-// 指定された回数の実行における平均的な割り当ての数が測定され、返されます。
+// To compute the number of allocations, the function will first be run once as
+// a warm-up. The average number of allocations over the specified number of
+// runs will then be measured and returned.
 //
-// AllocsPerRunは、計測中にGOMAXPROCSを1に設定し、戻る前に元に戻します。
+// AllocsPerRun sets GOMAXPROCS to 1 during its measurement and will restore
+// it before returning.
 func AllocsPerRun(runs int, f func()) (avg float64)

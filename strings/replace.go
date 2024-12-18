@@ -9,23 +9,24 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// Replacerは、置換物のリストで文字列を置換します。
-// 複数のゴルーチンによる同時使用に対して安全です。
+// Replacer replaces a list of strings with replacements.
+// It is safe for concurrent use by multiple goroutines.
 type Replacer struct {
 	once   sync.Once
 	r      replacer
 	oldnew []string
 }
 
-// NewReplacerは、古い文字列と新しい文字列のペアのリストから新しい [Replacer] を返します。
-// 置換は、対象文字列に現れる順序で実行され、重複するマッチングは行われません。
-// 古い文字列の比較は引数の順序で行われます。
+// NewReplacer returns a new [Replacer] from a list of old, new string
+// pairs. Replacements are performed in the order they appear in the
+// target string, without overlapping matches. The old string
+// comparisons are done in argument order.
 //
-// NewReplacerは、奇数の引数が与えられた場合にパニックを引き起こします。
+// NewReplacer panics if given an odd number of arguments.
 func NewReplacer(oldnew ...string) *Replacer
 
-// Replaceは、すべての置換を実行したsのコピーを返します。
+// Replace returns a copy of s with all replacements performed.
 func (r *Replacer) Replace(s string) string
 
-// WriteStringは、すべての置換を実行したsをwに書き込みます。
+// WriteString writes s to w with all replacements performed.
 func (r *Replacer) WriteString(w io.Writer, s string) (n int, err error)

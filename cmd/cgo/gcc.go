@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// gccのデバッグ出力を解析して、Prog内のRefにCタイプのアノテーションを付ける。
-// デバッグ出力をGoのタイプに変換する。
+// Annotate Ref in Prog with C types by parsing gcc debug output.
+// Conversion of debug output to Go types.
 
 package main
 
@@ -13,16 +13,20 @@ package main
 //  2. parse the nocallback and noescape directives.
 func (f *File) ProcessCgoDirectives()
 
-// Translateは、インポートされたパッケージCへの参照を削除し、
-// 対応するGoの型、関数、変数への参照に置き換えて、f.AST（元のGoの入力）を書き換えます。
+// Translate rewrites f.AST, the original Go input, to remove
+// references to the imported package C, replacing them with
+// references to the equivalent Go types, functions, and variables.
 func (p *Package) Translate(f *File)
 
-// Stringは現在の型の表現を返します。フォーマット引数はこのメソッド内で組み立てられるため、可変な値の変更が考慮されます。
+// String returns the current type representation. Format arguments
+// are assembled within this method so that any changes in mutable
+// values are taken into account.
 func (tr *TypeRepr) String() string
 
+// Empty reports whether the result of String would be "".
 func (tr *TypeRepr) Empty() bool
 
-// Setは型の表現を変更します。
-// fargsが指定されている場合、reprはfmt.Sprintfのフォーマットとして使用されます。
-// それ以外の場合、reprは処理されずに型の表現として使用されます。
+// Set modifies the type representation.
+// If fargs are provided, repr is used as a format for fmt.Sprintf.
+// Otherwise, repr is used unprocessed as the type representation.
 func (tr *TypeRepr) Set(repr string, fargs ...interface{})

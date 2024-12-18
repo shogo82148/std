@@ -4,9 +4,9 @@
 
 package cmplx
 
-// Powはx**y、すなわちyの底xの指数を返します。
-// [math.Pow] との一般的な互換性のために：
+// Pow returns x**y, the base-x exponential of y.
+// For generalized compatibility with [math.Pow]:
 //
-//	Pow(0, ±0)は1+0iを返します
-//	real(c)<0の場合のPow(0, c)は、imag(c)がゼロの場合はInf+0iを返し、それ以外の場合はInf+Inf iを返します。
+//	Pow(0, ±0) returns 1+0i
+//	Pow(0, c) for real(c)<0 returns Inf+0i if imag(c) is zero, otherwise Inf+Inf i.
 func Pow(x, y complex128) complex128

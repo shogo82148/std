@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルはスコープとそれに含まれるオブジェクトを実装しています。
+// This file implements scopes and the objects they contain.
 
 package ast
 
@@ -10,46 +10,54 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// Scopeは、スコープ内で宣言された名前付き言語エンティティのセットと、
-// 直接囲む（外側の）スコープへのリンクを維持します。
+// A Scope maintains the set of named language entities declared
+// in the scope and a link to the immediately surrounding (outer)
+// scope.
 //
-// Deprecated: 代わりに型チェッカー [go/types] を使用してください。詳細は [Object] を参照してください。
+// Deprecated: use the type checker [go/types] instead; see [Object].
 type Scope struct {
 	Outer   *Scope
 	Objects map[string]*Object
 }
 
-// NewScopeは外部スコープにネストされた新しいスコープを作成します。
+// NewScope creates a new scope nested in the outer scope.
 func NewScope(outer *Scope) *Scope
 
-// Lookupは、与えられた名前のオブジェクトがスコープsに存在すればそのオブジェクトを返します。見つからない場合はnilを返します。外部のスコープは無視されます。
+// Lookup returns the object with the given name if it is
+// found in scope s, otherwise it returns nil. Outer scopes
+// are ignored.
 func (s *Scope) Lookup(name string) *Object
 
-// Insertは名前付きオブジェクトobjをスコープsに挿入しようとします。
-// もしスコープに同じ名前のオブジェクトaltが既に存在する場合、
-// Insertはスコープを変更せずにaltを返します。そうでなければ、
-// objを挿入し、nilを返します。
+// Insert attempts to insert a named object obj into the scope s.
+// If the scope already contains an object alt with the same name,
+// Insert leaves the scope unchanged and returns alt. Otherwise
+// it inserts obj and returns nil.
 func (s *Scope) Insert(obj *Object) (alt *Object)
 
-// デバッグサポート
+// Debugging support
 func (s *Scope) String() string
 
-// オブジェクトは、パッケージ、定数、型、変数、関数（メソッドを含む）、またはラベルなど、名前付きの言語エンティティを表します。
+// An Object describes a named language entity such as a package,
+// constant, type, variable, function (incl. methods), or label.
 //
-// データフィールドには、オブジェクト固有のデータが含まれます：
+// The Data fields contains object-specific data:
 //
 //	Kind    Data type         Data value
 //	Pkg     *Scope            package scope
 //	Con     int               iota for the respective declaration
 //
-// Deprecated: IdentsとObjectsの関係は、型情報なしでは正しく計算できません。
-// 例えば、式T{K: 0}は、Tの型によって、構造体、マップ、スライス、または配列リテラルを表す可能性があります。
-// Tが構造体の場合、KはTのフィールドを参照しますが、他の型では環境内の値を参照します。
+// Deprecated: The relationship between Idents and Objects cannot be
+// correctly computed without type information. For example, the
+// expression T{K: 0} may denote a struct, map, slice, or array
+// literal, depending on the type of T. If T is a struct, then K
+// refers to a field of T, whereas for the other types it refers to a
+// value in the environment.
 //
-// 新しいプログラムは、[parser.SkipObjectResolution] パーサーフラグを設定して、
-// 構文的なオブジェクト解決を無効にするべきです（これによりCPUとメモリも節約されます）。
-// そして、オブジェクト解決が必要な場合は代わりに型チェッカー [go/types] を使用します。
-// 詳細は、[types.Info] 構造体のDefs、Uses、およびImplicitsフィールドを参照してください。
+// New programs should set the [parser.SkipObjectResolution] parser
+// flag to disable syntactic object resolution (which also saves CPU
+// and memory), and instead use the type checker [go/types] if object
+// resolution is desired. See the Defs, Uses, and Implicits fields of
+// the [types.Info] struct for details.
 type Object struct {
 	Kind ObjKind
 	Name string
@@ -58,18 +66,18 @@ type Object struct {
 	Type any
 }
 
-// NewObjは指定された種類と名前の新しいオブジェクトを作成します。
+// NewObj creates a new object of a given kind and name.
 func NewObj(kind ObjKind, name string) *Object
 
-// Posはオブジェクト名の宣言のソース位置を計算します。
-// 結果は計算できない場合は無効な位置になる可能性があります
-// (obj.Declがnilであるか、正しくないかもしれません)。
+// Pos computes the source position of the declaration of an object name.
+// The result may be an invalid position if it cannot be computed
+// (obj.Decl may be nil or not correct).
 func (obj *Object) Pos() token.Pos
 
-// ObjKindは [Object] が表すものを説明します。
+// ObjKind describes what an [Object] represents.
 type ObjKind int
 
-// 可能な [Object] の種類のリスト。
+// The list of possible [Object] kinds.
 const (
 	Bad ObjKind = iota
 	Pkg

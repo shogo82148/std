@@ -4,18 +4,18 @@
 
 package math
 
-// Logbはxの二進指数を返します。
+// Logb returns the binary exponent of x.
 //
-// 特殊なケースは次の通りです：
+// Special cases are:
 //
 //	Logb(±Inf) = +Inf
 //	Logb(0) = -Inf
 //	Logb(NaN) = NaN
 func Logb(x float64) float64
 
-// Ilogbはxのバイナリ指数を整数として返します。
+// Ilogb returns the binary exponent of x as an integer.
 //
-// 特殊なケースは以下の通りです:
+// Special cases are:
 //
 //	Ilogb(±Inf) = MaxInt32
 //	Ilogb(0) = MinInt32

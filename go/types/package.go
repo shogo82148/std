@@ -7,7 +7,7 @@
 
 package types
 
-// パッケージはGoのパッケージを説明します。
+// A Package describes a Go package.
 type Package struct {
 	path      string
 	name      string
@@ -19,41 +19,51 @@ type Package struct {
 	goVersion string
 }
 
-// NewPackageは、指定されたパッケージのパスと名前に対して新しいPackageを返します。
-// このパッケージは完全ではなく、明示的なインポートは含まれていません。
+// NewPackage returns a new Package for the given package path and name.
+// The package is not complete and contains no explicit imports.
 func NewPackage(path, name string) *Package
 
-// Pathはパッケージのパスを返します。
+// Path returns the package path.
 func (pkg *Package) Path() string
 
-// Nameはパッケージ名を返します。
+// Name returns the package name.
 func (pkg *Package) Name() string
 
-// SetNameはパッケージ名を設定します。
+// SetName sets the package name.
 func (pkg *Package) SetName(name string)
 
-// GoVersionはこのパッケージで必要な最小のGoバージョンを返します。
-// もし最小バージョンが分からない場合、GoVersionは空文字列を返します。
-// 各ソースファイルは、[go/ast.File.GoVersion]フィールドに報告されるよう、異なる最小Goバージョンを指定することができます。
+// GoVersion returns the minimum Go version required by this package.
+// If the minimum version is unknown, GoVersion returns the empty string.
+// Individual source files may specify a different minimum Go version,
+// as reported in the [go/ast.File.GoVersion] field.
 func (pkg *Package) GoVersion() string
 
-// Scopeは、パッケージレベルで宣言されたオブジェクト（TypeNames、Consts、Vars、およびFuncs）を保持する（完全または不完全な）パッケージスコープを返します。
-// nilのpkgレシーバーの場合、ScopeはUniverseスコープを返します。
+// Scope returns the (complete or incomplete) package scope
+// holding the objects declared at package level (TypeNames,
+// Consts, Vars, and Funcs).
+// For a nil pkg receiver, Scope returns the Universe scope.
 func (pkg *Package) Scope() *Scope
 
-// パッケージは、そのスコープに（少なくとも）すべての公開オブジェクトが含まれている場合は完全であり、それ以外の場合は不完全です。
+// A package is complete if its scope contains (at least) all
+// exported objects; otherwise it is incomplete.
 func (pkg *Package) Complete() bool
 
-// MarkCompleteはパッケージを完了としてマークします。
+// MarkComplete marks a package as complete.
 func (pkg *Package) MarkComplete()
 
-// Importsは、pkgによって直接インポートされたパッケージのリストを返します。リストはソース順に並んでいます。
-// pkgがエクスポートデータからロードされた場合、Importsにはpkgが参照しているパッケージレベルのオブジェクトを提供するパッケージが含まれます。これは、pkgのソースコードに直接インポートされたパッケージのセットよりも多くまたは少ない場合があります。
-// pkgがcgoを使用し、FakeImportC構成オプションが有効になっている場合、インポートリストには偽の「C」パッケージが含まれている可能性があります。
+// Imports returns the list of packages directly imported by
+// pkg; the list is in source order.
+//
+// If pkg was loaded from export data, Imports includes packages that
+// provide package-level objects referenced by pkg. This may be more or
+// less than the set of packages directly imported by pkg's source code.
+//
+// If pkg uses cgo and the FakeImportC configuration option
+// was enabled, the imports list may contain a fake "C" package.
 func (pkg *Package) Imports() []*Package
 
-// SetImportsは、明示的にインポートされるパッケージのリストを設定します。
-// リストの要素が一意であることは、呼び出し元の責任です。
+// SetImports sets the list of explicitly imported packages to list.
+// It is the caller's responsibility to make sure list elements are unique.
 func (pkg *Package) SetImports(list []*Package)
 
 func (pkg *Package) String() string

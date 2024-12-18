@@ -2,47 +2,59 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// 反射を利用した深い等値のテスト
+// Deep equality test via reflection
 
 package reflect
 
-// DeepEqualは、xとyが「深く等しい」という条件であるかどうかを報告します。
-// 同一の型の2つの値は、次のどちらかの場合に深く等しいと見なされます。
-// 異なる型の値は、決して深く等しくありません。
+// DeepEqual reports whether x and y are “deeply equal,” defined as follows.
+// Two values of identical type are deeply equal if one of the following cases applies.
+// Values of distinct types are never deeply equal.
 //
-// 配列の値は、それぞれの要素が深く等しい場合に深く等しいと見なされます。
+// Array values are deeply equal when their corresponding elements are deeply equal.
 //
-// 構造体の値は、対応するフィールド（公開されたものと非公開のもの）が深く等しい場合に深く等しいと見なされます。
+// Struct values are deeply equal if their corresponding fields,
+// both exported and unexported, are deeply equal.
 //
-// 関数の値は、どちらもnilの場合には深く等しく、それ以外の場合は深く等しくありません。
+// Func values are deeply equal if both are nil; otherwise they are not deeply equal.
 //
-// インタフェースの値は、深く等しい具体的な値を保持している場合に深く等しいと見なされます。
+// Interface values are deeply equal if they hold deeply equal concrete values.
 //
-// マップの値は、次のすべてが真である場合に深く等しいと見なされます：
-// どちらもnilまたはどちらも非nilであり、長さが同じであり、
-// 同じマップオブジェクトであるか、または対応するキー（Goの等値性を使用して一致する）が深く等しい値にマップされている場合。
+// Map values are deeply equal when all of the following are true:
+// they are both nil or both non-nil, they have the same length,
+// and either they are the same map object or their corresponding keys
+// (matched using Go equality) map to deeply equal values.
 //
-// ポインタの値は、Goの==演算子を使用して等しければ、深く等しいと見なされます。
-// または、深く等しい値を指している場合も深く等しくなります。
+// Pointer values are deeply equal if they are equal using Go's == operator
+// or if they point to deeply equal values.
 //
-// スライスの値は、次のすべてが真である場合に深く等しいと見なされます：
-// どちらもnilまたはどちらも非nilであり、長さが同じであり、
-// 同じ基礎配列の同じ初期エントリを指しているか（つまり、&x[0] == &y[0]）または対応する要素（長さまで）が深く等しい場合。
-// 非nilの空のスライスとnilのスライス（例：[]byte{}と[]byte(nil)）は深く等しくありません。
+// Slice values are deeply equal when all of the following are true:
+// they are both nil or both non-nil, they have the same length,
+// and either they point to the same initial entry of the same underlying array
+// (that is, &x[0] == &y[0]) or their corresponding elements (up to length) are deeply equal.
+// Note that a non-nil empty slice and a nil slice (for example, []byte{} and []byte(nil))
+// are not deeply equal.
 //
-// 他の値 - 数値、ブール値、文字列、およびチャネル - は、Goの==演算子を使用して等しい場合に深く等しいです。
+// Other values - numbers, bools, strings, and channels - are deeply equal
+// if they are equal using Go's == operator.
 //
-// 一般的には、DeepEqualはGoの==演算子の再帰的な緩和です。
-// ただし、このアイデアは一貫性のないもので実装することは不可能です。
-// 具体的には、値が自身に等しくない場合があります。
-// これは、func型であるため（一般的には比較できない）または浮動小数点NaN値であるためです
-// または、そのような値を含む配列、構造体、またはインタフェースであるためです。
-// 一方、ポインタの値は常に自身に等しく、それらがまたはそのような問題のある値を指している場合でも等しいため、
-// それらはGoの==演算子を使用して等しいため、その条件さえ満たせば、その内容に関係なく深く等しいと見なされます。
-// DeepEqualは、同じスライスまたは同じマップである場合、
-// コンテンツに関係なく深く等しいと見なされるように定義されています。
+// In general DeepEqual is a recursive relaxation of Go's == operator.
+// However, this idea is impossible to implement without some inconsistency.
+// Specifically, it is possible for a value to be unequal to itself,
+// either because it is of func type (uncomparable in general)
+// or because it is a floating-point NaN value (not equal to itself in floating-point comparison),
+// or because it is an array, struct, or interface containing
+// such a value.
+// On the other hand, pointer values are always equal to themselves,
+// even if they point at or contain such problematic values,
+// because they compare equal using Go's == operator, and that
+// is a sufficient condition to be deeply equal, regardless of content.
+// DeepEqual has been defined so that the same short-cut applies
+// to slices and maps: if x and y are the same slice or the same map,
+// they are deeply equal regardless of content.
 //
-// DeepEqualはデータ値をトラバースする中で、サイクルを検出することがあります。
-// DeepEqualが以前に比較したポインタの値を2回目以降比較するとき、それらを指す値を検査せずに等しいと見なします。
-// これにより、DeepEqualが終了することが保証されます。
+// As DeepEqual traverses the data values it may find a cycle. The
+// second and subsequent times that DeepEqual compares two pointer
+// values that have been compared before, it treats the values as
+// equal rather than examining the values to which they point.
+// This ensures that DeepEqual terminates.
 func DeepEqual(x, y any) bool

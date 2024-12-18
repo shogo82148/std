@@ -35,8 +35,11 @@ func (c *ChaCha8) Uint64() uint64
 // the last call to Uint64.
 func (c *ChaCha8) Read(p []byte) (n int, err error)
 
-// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.
+// UnmarshalBinary implements the [encoding.BinaryUnmarshaler] interface.
 func (c *ChaCha8) UnmarshalBinary(data []byte) error
 
-// MarshalBinary implements the encoding.BinaryMarshaler interface.
+// AppendBinary implements the [encoding.BinaryAppender] interface.
+func (c *ChaCha8) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements the [encoding.BinaryMarshaler] interface.
 func (c *ChaCha8) MarshalBinary() ([]byte, error)

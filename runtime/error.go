@@ -4,14 +4,14 @@
 
 package runtime
 
-// Error インターフェースはランタイムエラーを識別します。
+// The Error interface identifies a run time error.
 type Error interface {
 	error
 
 	RuntimeError()
 }
 
-// TypeAssertionErrorは、型アサーションの失敗を説明します。
+// A TypeAssertionError explains a failed type assertion.
 type TypeAssertionError struct {
 	_interface    *_type
 	concrete      *_type

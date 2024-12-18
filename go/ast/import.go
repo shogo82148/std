@@ -8,6 +8,6 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// SortImportsはfのimportブロック内の連続したimport行をソートします。
-// データの損失なしに重複するimportを削除することも可能です。
+// SortImports sorts runs of consecutive import lines in import blocks in f.
+// It also removes duplicate imports when it is possible to do so without data loss.
 func SortImports(fset *token.FileSet, f *File)

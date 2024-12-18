@@ -76,6 +76,17 @@ var ARM64 struct {
 	_          CacheLinePad
 }
 
+// The booleans in Loong64 contain the correspondingly named cpu feature bit.
+// The struct is padded to avoid false sharing.
+var Loong64 struct {
+	_         CacheLinePad
+	HasLSX    bool
+	HasCRC32  bool
+	HasLAMCAS bool
+	HasLAM_BH bool
+	_         CacheLinePad
+}
+
 var MIPS64X struct {
 	_      CacheLinePad
 	HasMSA bool

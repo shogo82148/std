@@ -4,8 +4,8 @@
 
 package pe
 
-// StringTableは、COFFの文字列テーブルです。
+// StringTable is a COFF string table.
 type StringTable []byte
 
-// Stringは、オフセットstartでCOFF文字列テーブルstから文字列を抽出します。
+// String extracts string from COFF string table st at offset start.
 func (st StringTable) String(start uint32) (string, error)

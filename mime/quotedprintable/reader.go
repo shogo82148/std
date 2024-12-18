@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// quotedprintableパッケージは、RFC 2045で指定されているquoted-printableエンコーディングを実装します。
+// Package quotedprintable implements quoted-printable encoding as specified by
+// RFC 2045.
 package quotedprintable
 
 import (
@@ -10,15 +11,15 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Readerは、quoted-printableデコーダーです。
+// Reader is a quoted-printable decoder.
 type Reader struct {
 	br   *bufio.Reader
 	rerr error
 	line []byte
 }
 
-// NewReaderは、rからデコードするquoted-printableリーダーを返します。
+// NewReader returns a quoted-printable reader, decoding from r.
 func NewReader(r io.Reader) *Reader
 
-// Readは、基礎となるリーダーからquoted-printableデータを読み取り、デコードします。
+// Read reads and decodes quoted-printable data from the underlying reader.
 func (r *Reader) Read(p []byte) (n int, err error)

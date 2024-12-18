@@ -4,18 +4,23 @@
 
 package ecdh
 
-// P256は、NIST P-256 (FIPS 186-3, セクション D.2.3)、またはsecp256r1またはprime256v1としても知られる曲線を実装する [Curve] を返します。
+// P256 returns a [Curve] which implements NIST P-256 (FIPS 186-3, section D.2.3),
+// also known as secp256r1 or prime256v1.
 //
-// この関数の複数の呼び出しは、等値チェックやスイッチ文に使用できる同じ値を返します。
+// Multiple invocations of this function will return the same value, which can
+// be used for equality checks and switch statements.
 func P256() Curve
 
-// P384は、NIST P-384（FIPS 186-3、セクション D.2.4）またはsecp384r1としても知られる
-// 曲線を実装する [Curve] を返します。
+// P384 returns a [Curve] which implements NIST P-384 (FIPS 186-3, section D.2.4),
+// also known as secp384r1.
 //
-// この関数の複数回呼び出しでは、同じ値が返され、等価性のチェックやswitch文に使用できます。
+// Multiple invocations of this function will return the same value, which can
+// be used for equality checks and switch statements.
 func P384() Curve
 
-// P521は、NIST P-521（FIPS 186-3、セクションD.2.5）で定義されている、secp521r1としても知られる曲線を実装する [Curve] を返します。
+// P521 returns a [Curve] which implements NIST P-521 (FIPS 186-3, section D.2.5),
+// also known as secp521r1.
 //
-// この関数の複数の呼び出しは、同じ値を返します。これは、等値比較やスイッチ文で使用することができます。
+// Multiple invocations of this function will return the same value, which can
+// be used for equality checks and switch statements.
 func P521() Curve

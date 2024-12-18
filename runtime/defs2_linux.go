@@ -16,7 +16,7 @@ file.  Sigh.
 
 package runtime
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 const (
 	EINTR  = C.EINTR

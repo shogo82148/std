@@ -8,16 +8,18 @@ package palette
 
 import "github.com/shogo82148/std/image/color"
 
-// Plan9は、24ビットRGB空間を4×4×4の細分化に分割する256色のパレットです。
-// [WebSafe] と比較して、アイデアは色キューブをより少ないセルに切り分けることで色解像度を減らし、
-// 余分なスペースを使用して強度解像度を増加させることです。これにより、
-// 16のグレイシェード（各4サンプルの4つのグレイサブキューブ）、
-// 各プライマリとセカンダリカラーの13のシェード（4つのサンプルと黒を持つ3つのサブキューブ）、
-// そして色キューブの残りをカバーする合理的な色の選択が得られます。
-// その利点は、連続した色調のより良い表現です。
+// Plan9 is a 256-color palette that partitions the 24-bit RGB space
+// into 4×4×4 subdivision, with 4 shades in each subcube. Compared to the
+// [WebSafe], the idea is to reduce the color resolution by dicing the
+// color cube into fewer cells, and to use the extra space to increase the
+// intensity resolution. This results in 16 gray shades (4 gray subcubes with
+// 4 samples in each), 13 shades of each primary and secondary color (3
+// subcubes with 4 samples plus black) and a reasonable selection of colors
+// covering the rest of the color cube. The advantage is better representation
+// of continuous tones.
 //
-// このパレットはPlan 9オペレーティングシステムで使用されており、
-// https://9p.io/magic/man2html/6/color で説明されています。
+// This palette was used in the Plan 9 Operating System, described at
+// https://9p.io/magic/man2html/6/color
 var Plan9 = []color.Color{
 	color.RGBA{0x00, 0x00, 0x00, 0xff},
 	color.RGBA{0x00, 0x00, 0x44, 0xff},
@@ -277,10 +279,10 @@ var Plan9 = []color.Color{
 	color.RGBA{0xff, 0xff, 0xff, 0xff},
 }
 
-// WebSafeは、初期のNetscape Navigatorによって普及した216色のパレットです。
-// これはNetscape Color Cubeとも呼ばれています。
+// WebSafe is a 216-color palette that was popularized by early versions
+// of Netscape Navigator. It is also known as the Netscape Color Cube.
 //
-// 詳細は https://en.wikipedia.org/wiki/Web_colors#Web-safe_colors を参照してください。
+// See https://en.wikipedia.org/wiki/Web_colors#Web-safe_colors for details.
 var WebSafe = []color.Color{
 	color.RGBA{0x00, 0x00, 0x00, 0xff},
 	color.RGBA{0x00, 0x00, 0x33, 0xff},

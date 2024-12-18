@@ -2,104 +2,126 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build !goexperiment.synchashtriemap
+
 package sync
 
 import (
 	"github.com/shogo82148/std/sync/atomic"
 )
 
-// MapはGoのmap[any]anyと似ていますが、追加のロックや調整なしで
-// 複数のゴルーチンから同時に使用しても安全です。
-// ロード、ストア、削除は平均定数時間で実行されます。
+// Map is like a Go map[any]any but is safe for concurrent use
+// by multiple goroutines without additional locking or coordination.
+// Loads, stores, and deletes run in amortized constant time.
 //
-// Map型は特殊化されています。ほとんどのコードでは代わりに単純なGoのmapを使用すべきであり、
-// 型の安全性を向上させ、他の不変条件とマップのコンテンツを維持しやすくするために別個のロックや調整を行うべきです。
+// The Map type is specialized. Most code should use a plain Go map instead,
+// with separate locking or coordination, for better type safety and to make it
+// easier to maintain other invariants along with the map content.
 //
-// Map型は2つの一般的な使用例に最適化されています：(1)特定のキーのエントリが一度しか書き込まれずに多くの回数読み取られる場合、
-// つまり成長のみのキャッシュ、または(2)複数のゴルーチンが交差しないキーのセットの読み取り、書き込み、上書きを行う場合。
-// これらの2つの場合において、Mapの使用は、別個の [Mutex] や [RWMutex] とペアになったGoのマップと比較して、
-// ロックの競合を大幅に減らすことができます。
+// The Map type is optimized for two common use cases: (1) when the entry for a given
+// key is only ever written once but read many times, as in caches that only grow,
+// or (2) when multiple goroutines read, write, and overwrite entries for disjoint
+// sets of keys. In these two cases, use of a Map may significantly reduce lock
+// contention compared to a Go map paired with a separate [Mutex] or [RWMutex].
 //
-// ゼロ値のMapは空で使用準備ができています。Mapは最初の使用後にコピーされてはなりません。
+// The zero Map is empty and ready for use. A Map must not be copied after first use.
 //
-// [the Go memory model] の用語では、Mapは書き込み操作が行われたときにそれに続く読み取り操作を "書き込みより前に同期します"。
-// ここで、読み取りと書き込み操作は以下のように定義されます。
-// [Map.Load]、[Map.LoadAndDelete]、[Map.LoadOrStore]、[Map.Swap]、[Map.CompareAndSwap]、[Map.CompareAndDelete] は読み取り操作です。
-// [Map.Delete]、[Map.LoadAndDelete]、[Map.Store]、[Map.Swap] は書き込み操作です。
-// [Map.LoadOrStore] は、loadedがfalseで返された場合に書き込み操作です。
-// [Map.CompareAndSwap] は、swappedがtrueで返された場合に書き込み操作です。
-// [Map.CompareAndDelete] は、deletedがtrueで返された場合に書き込み操作です。
+// In the terminology of [the Go memory model], Map arranges that a write operation
+// “synchronizes before” any read operation that observes the effect of the write, where
+// read and write operations are defined as follows.
+// [Map.Load], [Map.LoadAndDelete], [Map.LoadOrStore], [Map.Swap], [Map.CompareAndSwap],
+// and [Map.CompareAndDelete] are read operations;
+// [Map.Delete], [Map.LoadAndDelete], [Map.Store], and [Map.Swap] are write operations;
+// [Map.LoadOrStore] is a write operation when it returns loaded set to false;
+// [Map.CompareAndSwap] is a write operation when it returns swapped set to true;
+// and [Map.CompareAndDelete] is a write operation when it returns deleted set to true.
 //
 // [the Go memory model]: https://go.dev/ref/mem
 type Map struct {
+	_ noCopy
+
 	mu Mutex
 
-	// readには、muを保持している場合とそうでない場合の両方で、
-	// 同時アクセスが安全なマップの内容の一部が含まれています。
+	// read contains the portion of the map's contents that are safe for
+	// concurrent access (with or without mu held).
 	//
-	// readフィールド自体は常に安全に読み込むことができますが、
-	// muを保持しているときにのみ保存することができます。
+	// The read field itself is always safe to load, but must only be stored with
+	// mu held.
 	//
-	// readに保存されているエントリは、muなしで同時に更新することができますが、
-	// 以前に削除されたエントリの更新には、そのエントリをdirtyマップにコピーし、
-	// muを保持してunexpungedする必要があります。
+	// Entries stored in read may be updated concurrently without mu, but updating
+	// a previously-expunged entry requires that the entry be copied to the dirty
+	// map and unexpunged with mu held.
 	read atomic.Pointer[readOnly]
 
-	// dirtyには、muの保持が必要なマップの内容の一部が含まれています。dirtyマップがすばやく読み取り用マップに昇格できるようにするため、読み取り用マップの非削除エントリもすべて含まれています。
-	// 削除されたエントリはdirtyマップに保存されません。クリーンマップの削除されたエントリは、新しい値を格納する前に未削除にされてdirtyマップに追加する必要があります。
-	// dirtyマップがnilの場合、マップへの次の書き込みでは、クリーンマップのステールエントリを省略して浅いコピーを作成して初期化します。
+	// dirty contains the portion of the map's contents that require mu to be
+	// held. To ensure that the dirty map can be promoted to the read map quickly,
+	// it also includes all of the non-expunged entries in the read map.
+	//
+	// Expunged entries are not stored in the dirty map. An expunged entry in the
+	// clean map must be unexpunged and added to the dirty map before a new value
+	// can be stored to it.
+	//
+	// If the dirty map is nil, the next write to the map will initialize it by
+	// making a shallow copy of the clean map, omitting stale entries.
 	dirty map[any]*entry
 
-	// misses は、読み込みマップが最後に更新されて以降、キーが存在するかどうかを確認するために mu ロックが必要な読み込み回数を数えます。
+	// misses counts the number of loads since the read map was last updated that
+	// needed to lock mu to determine whether the key was present.
 	//
-	// 十分な数のミスが発生し、汚れたマップのコピーのコストをカバーできるようになると、汚れたマップは読み込みマップに昇格します（修正されていない状態で）。
+	// Once enough misses have occurred to cover the cost of copying the dirty
+	// map, the dirty map will be promoted to the read map (in the unamended
+	// state) and the next store to the map will make a new dirty copy.
 	misses int
 }
 
-// Loadは、キーに対応するマップ内の値を返します。もし値が存在しない場合はnilを返します。
-// okの結果は、値がマップ内で見つかったかどうかを示します。
+// Load returns the value stored in the map for a key, or nil if no
+// value is present.
+// The ok result indicates whether value was found in the map.
 func (m *Map) Load(key any) (value any, ok bool)
 
-// Storeはキーの値を設定します。
+// Store sets the value for a key.
 func (m *Map) Store(key, value any)
 
-// Clearはすべてのエントリを削除し、結果として空のMapになります。
+// Clear deletes all the entries, resulting in an empty Map.
 func (m *Map) Clear()
 
-// LoadOrStore は、キーが存在する場合は既存の値を返します。
-// それ以外の場合は、指定された値を格納して返します。
-// 読み込まれた結果が true の場合、値は読み込まれ、false の場合は格納されました。
+// LoadOrStore returns the existing value for the key if present.
+// Otherwise, it stores and returns the given value.
+// The loaded result is true if the value was loaded, false if stored.
 func (m *Map) LoadOrStore(key, value any) (actual any, loaded bool)
 
-// LoadAndDelete はキーに対応する値を削除し、もし値が存在する場合は以前の値を返します。
-// 読み込まれた結果はキーが存在するかどうかを報告します。
+// LoadAndDelete deletes the value for a key, returning the previous value if any.
+// The loaded result reports whether the key was present.
 func (m *Map) LoadAndDelete(key any) (value any, loaded bool)
 
-// Deleteは指定されたキーの値を削除します。
+// Delete deletes the value for a key.
 func (m *Map) Delete(key any)
 
-// Swapはキーの値を入れ替え、以前の値（あれば）を返します。
-// 読み込まれた結果は、キーが存在するかどうかを報告します。
+// Swap swaps the value for a key and returns the previous value if any.
+// The loaded result reports whether the key was present.
 func (m *Map) Swap(key, value any) (previous any, loaded bool)
 
-// CompareAndSwapは、キーの古い値と新しい値を交換します。
-// マップに格納されている値が古い値と等しい場合にのみ行われます。
-// 古い値は比較可能な型でなければなりません。
+// CompareAndSwap swaps the old and new values for key
+// if the value stored in the map is equal to old.
+// The old value must be of a comparable type.
 func (m *Map) CompareAndSwap(key, old, new any) (swapped bool)
 
-// CompareAndDeleteは、keyの値がoldと等しい場合、そのエントリを削除します。
-// oldの値は比較可能な型である必要があります。
+// CompareAndDelete deletes the entry for key if its value is equal to old.
+// The old value must be of a comparable type.
 //
-// マップにkeyの現在の値がない場合、CompareAndDeleteはfalseを返します（oldの値がnilインターフェース値であっても）。
+// If there is no current value for key in the map, CompareAndDelete
+// returns false (even if the old value is the nil interface value).
 func (m *Map) CompareAndDelete(key, old any) (deleted bool)
 
-// Rangeはマップ内の各キーと値に対して順番にfを呼び出します。
-// もしfがfalseを返す場合、Rangeは繰り返しを停止します。
+// Range calls f sequentially for each key and value present in the map.
+// If f returns false, range stops the iteration.
 //
-// RangeはMapの内容に一貫したスナップショットに必ずしも対応していません：
-// 各キーは複数回訪れませんが、任意のキーの値が同時に格納または削除される場合（fによっても含まれます）、
-// RangeはRange呼び出し中の任意の時点からのそのキーのマッピングを反映することがあります。
-// Rangeはレシーバー上の他のメソッドをブロックしません。f自体もmの任意のメソッドを呼び出すことができます。
+// Range does not necessarily correspond to any consistent snapshot of the Map's
+// contents: no key will be visited more than once, but if the value for any key
+// is stored or deleted concurrently (including by f), Range may reflect any
+// mapping for that key from any point during the Range call. Range does not
+// block other methods on the receiver; even f itself may call any method on m.
 //
-// fが一定回数の呼び出し後にfalseを返す場合でも、Rangeはマップ内の要素数の数に比例するO(N)の可能性があります。
+// Range may be O(N) with the number of elements in the map even if f returns
+// false after a constant number of calls.
 func (m *Map) Range(f func(key, value any) bool)

@@ -14,7 +14,7 @@ import (
 )
 
 func ExampleNew() {
-	// クッキーを提供するためのサーバを開始する。
+	// Start a server to give us cookies.
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if cookie, err := r.Cookie("Flavor"); err != nil {
 			http.SetCookie(w, &http.Cookie{Name: "Flavor", Value: "Chocolate Chip"})
@@ -30,7 +30,7 @@ func ExampleNew() {
 		log.Fatal(err)
 	}
 
-	// cookiejarのすべてのユーザーは、"golang.org/x/net/publicsuffix"をインポートする必要があります。
+	// All users of cookiejar should import "golang.org/x/net/publicsuffix"
 	jar, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	if err != nil {
 		log.Fatal(err)

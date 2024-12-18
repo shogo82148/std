@@ -4,11 +4,13 @@
 
 package big
 
-// Sqrtは、zをxの四捨五入した平方根に設定し、それを返します。
+// Sqrt sets z to the rounded square root of x, and returns it.
 //
-// もしzの精度が0なら、操作前にxの精度に変更されます。丸めはzの精度と
-// 丸めモードに従って行われますが、zの精度は計算されません。具体的には、
-// z.Acc()の結果は未定義です。
+// If z's precision is 0, it is changed to x's precision before the
+// operation. Rounding is performed according to z's precision and
+// rounding mode, but z's accuracy is not computed. Specifically, the
+// result of z.Acc() is undefined.
 //
-// もしz < 0なら、関数はパニックを引き起こします。その場合、zの値は未定義です。
+// The function panics if z < 0. The value of z is undefined in that
+// case.
 func (z *Float) Sqrt(x *Float) *Float

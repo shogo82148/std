@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// httptestパッケージは、HTTPテストのためのユーティリティを提供します。
+// Package httptest provides utilities for HTTP testing.
 package httptest
 
 import (
@@ -11,24 +11,30 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
-// NewRequestは、context.Backgroundを使用してNewRequestWithContextをラップします。
+// NewRequest wraps NewRequestWithContext using context.Background.
 func NewRequest(method, target string, body io.Reader) *http.Request
 
-// NewRequestWithContextは、新しい着信サーバーリクエストを返します。
-// これはテストのために [http.Handler] に渡すのに適しています。
+// NewRequestWithContext returns a new incoming server Request, suitable
+// for passing to an [http.Handler] for testing.
 //
-// targetはRFC 7230の「要求ターゲット」です。パスまたは絶対URLのいずれかを使用できます。targetが絶対URLの場合、URLからホスト名が使用されます。それ以外の場合は、"example.com"が使用されます。
+// The target is the RFC 7230 "request-target": it may be either a
+// path or an absolute URL. If target is an absolute URL, the host name
+// from the URL is used. Otherwise, "example.com" is used.
 //
-// targetのスキームが「https」の場合、TLSフィールドは非nilのダミー値に設定されます。
+// The TLS field is set to a non-nil dummy value if target has scheme
+// "https".
 //
-// Request.Protoは常にHTTP/1.1です。
+// The Request.Proto is always HTTP/1.1.
 //
-// 空のメソッドは「GET」を意味します。
+// An empty method means "GET".
 //
-// 指定されたbodyはnilである場合があります。bodyが*bytes.Reader、*strings.Reader、または*bytes.Bufferの型の場合、Request.ContentLengthが設定されます。
+// The provided body may be nil. If the body is of type *bytes.Reader,
+// *strings.Reader, or *bytes.Buffer, the Request.ContentLength is
+// set.
 //
-// NewRequestはエラー時にパニックを発生させます。テストではパニックが許容されるため、使用の便宜上です。
+// NewRequest panics on error for ease of use in testing, where a
+// panic is acceptable.
 //
-// サーバーリクエストの代わりにクライアントHTTPリクエストを生成するには、
-// net/httpパッケージのNewRequest関数を参照してください。
+// To generate a client HTTP request instead of a server request, see
+// the NewRequest function in the net/http package.
 func NewRequestWithContext(ctx context.Context, method, target string, body io.Reader) *http.Request

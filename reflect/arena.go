@@ -8,7 +8,7 @@ package reflect
 
 import "github.com/shogo82148/std/arena"
 
-// ArenaNewは、指定された型の新しいゼロ値へのポインタを表す [Value] を返し、
-// 提供されたアリーナ内にそのためのストレージを割り当てます。つまり、
-// 返されるValueのTypeは [PointerTo](typ)です。
+// ArenaNew returns a [Value] representing a pointer to a new zero value for the
+// specified type, allocating storage for it in the provided arena. That is,
+// the returned Value's Type is [PointerTo](typ).
 func ArenaNew(a *arena.Arena, typ Type) Value

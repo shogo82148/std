@@ -32,35 +32,38 @@ func ExampleKind() {
 }
 
 func ExampleMakeFunc() {
-	// swapはMakeFuncに渡される実装です。
-	// 事前に型を知らなくてもコードを書くことができるように、
-	// reflect.Valuesを使用して動作する必要があります。
+	// swap is the implementation passed to MakeFunc.
+	// It must work in terms of reflect.Values so that it is possible
+	// to write code without knowing beforehand what the types
+	// will be.
 	swap := func(in []reflect.Value) []reflect.Value {
 		return []reflect.Value{in[1], in[0]}
 	}
 
-	// makeSwapは、fptrがnil関数へのポインタであることを期待しています。
-	// それは、MakeFuncで作成された新しい関数にそのポインタを設定します。
-	// 関数が呼び出されると、reflectは引数をValuesに変換し、swapを呼び出し、swapの結果スライスを新しい関数の返り値として変換します。
+	// makeSwap expects fptr to be a pointer to a nil function.
+	// It sets that pointer to a new function created with MakeFunc.
+	// When the function is invoked, reflect turns the arguments
+	// into Values, calls swap, and then turns swap's result slice
+	// into the values returned by the new function.
 	makeSwap := func(fptr any) {
-		// fptrは関数へのポインタです。
-		// リフレクト値として関数値自体（おそらくnil）を取得し、
-		// その型をクエリできるようにするために値を設定します。
+		// fptr is a pointer to a function.
+		// Obtain the function value itself (likely nil) as a reflect.Value
+		// so that we can query its type and then set the value.
 		fn := reflect.ValueOf(fptr).Elem()
 
-		// 適切な型の関数を作成します。
+		// Make a function of the right type.
 		v := reflect.MakeFunc(fn.Type(), swap)
 
-		// fnを表す値に割り当てる。
+		// Assign it to the value fn represents.
 		fn.Set(v)
 	}
 
-	// int型のためのswap関数を作成して呼び出す。
+	// Make and call a swap function for ints.
 	var intSwap func(int, int) (int, int)
 	makeSwap(&intSwap)
 	fmt.Println(intSwap(0, 1))
 
-	// float64型のスワップ関数を作成して呼び出す。
+	// Make and call a swap function for float64s.
 	var floatSwap func(float64, float64) (float64, float64)
 	makeSwap(&floatSwap)
 	fmt.Println(floatSwap(2.72, 3.14))
@@ -113,8 +116,9 @@ func ExampleStructTag_Lookup() {
 }
 
 func ExampleTypeOf() {
-	// インターフェース型は静的な型付けにしか使用されませんので、
-	// インターフェース型Fooの反射Typeを見つけるための一般的な方法は、*Fooの値を使用するというものです。
+	// As interface types are only used for static typing, a
+	// common idiom to find the reflection Type for an interface
+	// type Foo is to use a *Foo value.
 	writerType := reflect.TypeOf((*io.Writer)(nil)).Elem()
 
 	fileType := reflect.TypeOf((*os.File)(nil))
@@ -164,7 +168,9 @@ func ExampleStructOf() {
 }
 
 func ExampleValue_FieldByIndex() {
-	// この例は、昇格されたフィールドの名前がその他のフィールドによって隠される場合のケースを示しています。FieldByNameは機能しないため、代わりにFieldByIndexを使用する必要があります。
+	// This example shows a case in which the name of a promoted field
+	// is hidden by another field: FieldByName will not work, so
+	// FieldByIndex must be used instead.
 	type user struct {
 		firstName string
 		lastName  string

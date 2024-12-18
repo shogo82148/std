@@ -16,12 +16,11 @@ import (
 )
 
 func ExampleNewGCM_encrypt() {
-
-	// 安全な場所から秘密鍵を読み込み、複数のSeal/Open呼び出しで再利用します。
-	//（もちろん、実際の用途にはこの例の鍵を使用しないでください。）
-	// パスフレーズを鍵に変換したい場合は、bcryptやscryptのような適切な
-	// パッケージを使用してください。
-	// デコードされた鍵は16バイト（AES-128）または32バイト（AES-256）である必要があります。
+	// Load your secret key from a safe place and reuse it across multiple
+	// Seal/Open calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
+	// When decoded the key should be 16 bytes (AES-128) or 32 (AES-256).
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
 	plaintext := []byte("exampleplaintext")
 
@@ -30,7 +29,7 @@ func ExampleNewGCM_encrypt() {
 		panic(err.Error())
 	}
 
-	// 同じキーで2^32以上のランダムなノンスを使用しないでください。繰り返しのリスクがあるためです。
+	// Never use more than 2^32 random nonces with a given key because of the risk of a repeat.
 	nonce := make([]byte, 12)
 	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
 		panic(err.Error())
@@ -46,11 +45,11 @@ func ExampleNewGCM_encrypt() {
 }
 
 func ExampleNewGCM_decrypt() {
-
-	// 安全な場所から秘密のキーを読み込み、複数のSeal/Open呼び出し間で再利用してください。
-	// （もちろん、実際の用途にはこの例のキーを使用しないでください。）
-	// パスフレーズをキーに変換したい場合は、bcryptやscryptなどの適切なパッケージを使用してください。
-	// キーをデコードすると、16バイト（AES-128）または32バイト（AES-256）である必要があります。
+	// Load your secret key from a safe place and reuse it across multiple
+	// Seal/Open calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
+	// When decoded the key should be 16 bytes (AES-128) or 32 (AES-256).
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
 	ciphertext, _ := hex.DecodeString("c3aaa29f002ca75870806e44086700f62ce4d43e902b3888e23ceff797a7a471")
 	nonce, _ := hex.DecodeString("64a9433eae7ccceee2fc0eda")
@@ -75,10 +74,10 @@ func ExampleNewGCM_decrypt() {
 }
 
 func ExampleNewCBCDecrypter() {
-
-	// 安全な場所から秘密鍵を読み込んで、複数の NewCipher 呼び出し間で再利用してください。
-	// （もちろん、実際の用途にはこの例の鍵を使用しないでください。）
-	// パスフレーズを鍵に変換したい場合は、bcrypt や scrypt のような適切なパッケージを使用してください。
+	// Load your secret key from a safe place and reuse it across multiple
+	// NewCipher calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
 	key, _ := hex.DecodeString("6368616e676520746869732070617373")
 	ciphertext, _ := hex.DecodeString("73c86d43a9d700a253a96c85b0f6b03ac9792e0e757f869cca306bd3cba1c62b")
 
@@ -87,39 +86,48 @@ func ExampleNewCBCDecrypter() {
 		panic(err)
 	}
 
-	// IVは一意である必要がありますが、セキュリティは必要ありません。
-	// そのため、しばしば暗号文の先頭に含まれます。
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
 	if len(ciphertext) < aes.BlockSize {
 		panic("ciphertext too short")
 	}
 	iv := ciphertext[:aes.BlockSize]
 	ciphertext = ciphertext[aes.BlockSize:]
 
-	// CBCモードは常に完全なブロックで動作します。
+	// CBC mode always works in whole blocks.
 	if len(ciphertext)%aes.BlockSize != 0 {
 		panic("ciphertext is not a multiple of the block size")
 	}
 
 	mode := cipher.NewCBCDecrypter(block, iv)
 
-	// CryptBlocks は、引数が同じであればその場で処理されます。
+	// CryptBlocks can work in-place if the two arguments are the same.
 	mode.CryptBlocks(ciphertext, ciphertext)
 
-	// もし元の平文の長さがブロックの倍数でない場合、暗号化する際に追加する必要があるパディングがこの時点で削除されます。例としては、https://tools.ietf.org/html/rfc5246#section-6.2.3.2 を参照してください。ただし、パディングオラクルを作成しないために、暗号文を複合化する前に必ず認証すること（つまり、crypto/hmacを使用すること）が非常に重要です。
+	// If the original plaintext lengths are not a multiple of the block
+	// size, padding would have to be added when encrypting, which would be
+	// removed at this point. For an example, see
+	// https://tools.ietf.org/html/rfc5246#section-6.2.3.2. However, it's
+	// critical to note that ciphertexts must be authenticated (i.e. by
+	// using crypto/hmac) before being decrypted in order to avoid creating
+	// a padding oracle.
 
 	fmt.Printf("%s\n", ciphertext)
 	// Output: exampleplaintext
 }
 
 func ExampleNewCBCEncrypter() {
-
-	// 安全な場所から秘密の鍵をロードし、複数の NewCipher 呼び出しで再利用します。
-	// (もちろん、実際の目的にはこの例の鍵を使用しないでください。)
-	// もしパスフレーズを鍵に変換したい場合は、bcrypt や scrypt のような適切なパッケージを使用してください。
+	// Load your secret key from a safe place and reuse it across multiple
+	// NewCipher calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
 	key, _ := hex.DecodeString("6368616e676520746869732070617373")
 	plaintext := []byte("exampleplaintext")
 
-	// CBCモードでは、平文はブロック単位で処理されるため、次の完全なブロックまでパディングする必要がある場合があります。このようなパディングの例については、次を参照してください：https://tools.ietf.org/html/rfc5246#section-6.2.3.2。ここでは、平文が既に正しい長さであると仮定します。
+	// CBC mode works on blocks so plaintexts may need to be padded to the
+	// next whole block. For an example of such padding, see
+	// https://tools.ietf.org/html/rfc5246#section-6.2.3.2. Here we'll
+	// assume that the plaintext is already of the correct length.
 	if len(plaintext)%aes.BlockSize != 0 {
 		panic("plaintext is not a multiple of the block size")
 	}
@@ -129,8 +137,8 @@ func ExampleNewCBCEncrypter() {
 		panic(err)
 	}
 
-	// IVはユニークである必要がありますが、セキュリティは求められません。
-	// そのため、一般的には暗号文の先頭に含めることがあります。
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
@@ -140,16 +148,18 @@ func ExampleNewCBCEncrypter() {
 	mode := cipher.NewCBCEncrypter(block, iv)
 	mode.CryptBlocks(ciphertext[aes.BlockSize:], plaintext)
 
-	// 暗号文は、安全にするために暗号化されるだけでなく、
-	// (つまり、crypto/hmacを使用することによって)認証されている必要があることを忘れないことが重要です。
+	// It's important to remember that ciphertexts must be authenticated
+	// (i.e. by using crypto/hmac) as well as being encrypted in order to
+	// be secure.
 
 	fmt.Printf("%x\n", ciphertext)
 }
 
 func ExampleNewCFBDecrypter() {
-
-	// 安全な場所から秘密キーを読み込み、複数のNewCipher呼び出しで再利用してください。
-	// （もちろん、実際にはこの例のキーを使用しないでください。）パスフレーズをキーに変換したい場合は、bcryptやscryptなど適切なパッケージを使用してください。
+	// Load your secret key from a safe place and reuse it across multiple
+	// NewCipher calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
 	key, _ := hex.DecodeString("6368616e676520746869732070617373")
 	ciphertext, _ := hex.DecodeString("7dd015f06bec7f1b8f6559dad89f4131da62261786845100056b353194ad")
 
@@ -158,7 +168,8 @@ func ExampleNewCFBDecrypter() {
 		panic(err)
 	}
 
-	// IVは一意である必要がありますが、安全性は問われません。したがって、通常は暗号文の先頭に含まれます。
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
 	if len(ciphertext) < aes.BlockSize {
 		panic("ciphertext too short")
 	}
@@ -167,15 +178,17 @@ func ExampleNewCFBDecrypter() {
 
 	stream := cipher.NewCFBDecrypter(block, iv)
 
-	// もし2つの引数が同じ場合、XORKeyStreamはインプレースで動作することができます。
+	// XORKeyStream can work in-place if the two arguments are the same.
 	stream.XORKeyStream(ciphertext, ciphertext)
 	fmt.Printf("%s", ciphertext)
 	// Output: some plaintext
 }
 
 func ExampleNewCFBEncrypter() {
-
-	// 安全な場所から秘密鍵を読み込み、複数の NewCipher 呼び出しで再利用してください。 （明らかに、実際の何かのためにこの例の鍵を使用しないでください）。 パスフレーズを鍵に変換したい場合は、bcrypt や scrypt のような適切なパッケージを使用してください。
+	// Load your secret key from a safe place and reuse it across multiple
+	// NewCipher calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
 	key, _ := hex.DecodeString("6368616e676520746869732070617373")
 	plaintext := []byte("some plaintext")
 
@@ -184,7 +197,8 @@ func ExampleNewCFBEncrypter() {
 		panic(err)
 	}
 
-	// IVは一意である必要がありますが、安全である必要はありません。したがって、一般的には、暗号文の先頭にIVを含めることがあります。
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
@@ -194,15 +208,17 @@ func ExampleNewCFBEncrypter() {
 	stream := cipher.NewCFBEncrypter(block, iv)
 	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
 
-	// 暗号文は、安全性を確保するために、暗号化だけでなく、認証（crypto/hmac の使用によって）も行われる必要があることを覚えておくことが重要です。
+	// It's important to remember that ciphertexts must be authenticated
+	// (i.e. by using crypto/hmac) as well as being encrypted in order to
+	// be secure.
 	fmt.Printf("%x\n", ciphertext)
 }
 
 func ExampleNewCTR() {
-
-	// 安全な場所から秘密キーを読み込み、複数のNewCipher呼び出しで再利用します。
-	// （もちろん、実際の用途にはこの例のキーを使用しないでください。）
-	// パスフレーズをキーに変換したい場合は、bcryptやscryptのような適切なパッケージを使用してください。
+	// Load your secret key from a safe place and reuse it across multiple
+	// NewCipher calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
 	key, _ := hex.DecodeString("6368616e676520746869732070617373")
 	plaintext := []byte("some plaintext")
 
@@ -211,7 +227,8 @@ func ExampleNewCTR() {
 		panic(err)
 	}
 
-	// IVは一意である必要がありますが、セキュリティは必要ありません。そのため、一般的には暗号文の先頭に含まれます。
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
@@ -221,9 +238,12 @@ func ExampleNewCTR() {
 	stream := cipher.NewCTR(block, iv)
 	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
 
-	// 暗号文は安全にするために、暗号化するだけでなく、認証（つまりcrypto/hmacを使用すること）することも重要であることを忘れないようにする必要があります。
+	// It's important to remember that ciphertexts must be authenticated
+	// (i.e. by using crypto/hmac) as well as being encrypted in order to
+	// be secure.
 
-	// CTR モードは暗号化と復号化の両方に同じですので、NewCTR を使ってその暗号文を復号化することもできます。
+	// CTR mode is the same for both encryption and decryption, so we can
+	// also decrypt that ciphertext with NewCTR.
 
 	plaintext2 := make([]byte, len(plaintext))
 	stream = cipher.NewCTR(block, iv)
@@ -234,9 +254,10 @@ func ExampleNewCTR() {
 }
 
 func ExampleNewOFB() {
-
-	// 安全な場所から秘密鍵を読み込み、複数の NewCipher 呼び出しで再利用します。
-	//（もちろん、実際の用途にはこの例の鍵を使用しないでください。）もしパスフレーズを鍵に変換したい場合は、bcrypt や scrypt のような適切なパッケージを使用してください。
+	// Load your secret key from a safe place and reuse it across multiple
+	// NewCipher calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
 	key, _ := hex.DecodeString("6368616e676520746869732070617373")
 	plaintext := []byte("some plaintext")
 
@@ -245,8 +266,8 @@ func ExampleNewOFB() {
 		panic(err)
 	}
 
-	// IVは一意である必要がありますが、セキュリティは必要ありません。そのため、一般的には
-	// 暗号文の先頭に含まれています。
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
@@ -256,9 +277,12 @@ func ExampleNewOFB() {
 	stream := cipher.NewOFB(block, iv)
 	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
 
-	// 暗号文だけでなく、(crypto/hmacを使用して)認証も行われる必要があることを覚えておくことは重要です。これによってセキュリティが確保されます。
+	// It's important to remember that ciphertexts must be authenticated
+	// (i.e. by using crypto/hmac) as well as being encrypted in order to
+	// be secure.
 
-	// OFBモードは暗号化と復号化の両方において同じですので、NewOFBを使ってその暗号文を復号化することも可能です。
+	// OFB mode is the same for both encryption and decryption, so we can
+	// also decrypt that ciphertext with NewOFB.
 
 	plaintext2 := make([]byte, len(plaintext))
 	stream = cipher.NewOFB(block, iv)
@@ -269,9 +293,10 @@ func ExampleNewOFB() {
 }
 
 func ExampleStreamReader() {
-
-	// 安全な場所から秘密の鍵をロードし、複数の NewCipher 呼び出しで再利用してください。
-	// （もちろん、これは実際には使用しないでください。）パスフレーズを鍵に変換したい場合は、bcrypt や scrypt のような適切なパッケージを使用してください。
+	// Load your secret key from a safe place and reuse it across multiple
+	// NewCipher calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
 	key, _ := hex.DecodeString("6368616e676520746869732070617373")
 
 	encrypted, _ := hex.DecodeString("cf0495cc6f75dafc23948538e79904a9")
@@ -282,27 +307,30 @@ func ExampleStreamReader() {
 		panic(err)
 	}
 
-	// もしキーがそれぞれの暗号文ごとにユニークである場合、ゼロの初期化ベクトル（IV）を使用しても問題ありません。
+	// If the key is unique for each ciphertext, then it's ok to use a zero
+	// IV.
 	var iv [aes.BlockSize]byte
 	stream := cipher.NewOFB(block, iv[:])
 
 	reader := &cipher.StreamReader{S: stream, R: bReader}
-	// 入力を出力ストリームにコピーし、逐次復号化する。
+	// Copy the input to the output stream, decrypting as we go.
 	if _, err := io.Copy(os.Stdout, reader); err != nil {
 		panic(err)
 	}
 
-	// この例では、暗号化されたデータの認証を省略しているため、単純化されています。実際にこのようにStreamReaderを使用する場合、攻撃者は出力の任意のビットを反転させることができます。
+	// Note that this example is simplistic in that it omits any
+	// authentication of the encrypted data. If you were actually to use
+	// StreamReader in this manner, an attacker could flip arbitrary bits in
+	// the output.
 
 	// Output: some secret text
 }
 
 func ExampleStreamWriter() {
-
-	// 安全な場所から秘密キーを読み込み、複数の NewCipher 呼び出しで再利用します。
-	// （もちろん、実際の用途でこの例のキーを使用しないでください。）
-	// もしパスフレーズをキーに変換したい場合は、bcrypt や scrypt のような
-	// 適切なパッケージを使用してください。
+	// Load your secret key from a safe place and reuse it across multiple
+	// NewCipher calls. (Obviously don't use this example key for anything
+	// real.) If you want to convert a passphrase to a key, use a suitable
+	// package like bcrypt or scrypt.
 	key, _ := hex.DecodeString("6368616e676520746869732070617373")
 
 	bReader := bytes.NewReader([]byte("some secret text"))
@@ -312,19 +340,23 @@ func ExampleStreamWriter() {
 		panic(err)
 	}
 
-	// キーが各暗号文ごとにユニークな場合、ゼロのIVを使用することは問題ありません。
+	// If the key is unique for each ciphertext, then it's ok to use a zero
+	// IV.
 	var iv [aes.BlockSize]byte
 	stream := cipher.NewOFB(block, iv[:])
 
 	var out bytes.Buffer
 
 	writer := &cipher.StreamWriter{S: stream, W: &out}
-	// 入力を出力バッファにコピーし、進行中に暗号化します。
+	// Copy the input to the output buffer, encrypting as we go.
 	if _, err := io.Copy(writer, bReader); err != nil {
 		panic(err)
 	}
 
-	// この例は暗号化されたデータの認証を省略して簡略化しています。実際にStreamReaderをこのように使用する場合、攻撃者が復号化された結果内の任意のビットを反転させる可能性があります。
+	// Note that this example is simplistic in that it omits any
+	// authentication of the encrypted data. If you were actually to use
+	// StreamReader in this manner, an attacker could flip arbitrary bits in
+	// the decrypted result.
 
 	fmt.Printf("%x\n", out.Bytes())
 	// Output: cf0495cc6f75dafc23948538e79904a9

@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/strings"
 )
 
-// この例は昇順でソートされたリストの検索を示しています。
+// This example demonstrates searching a list sorted in ascending order.
 func ExampleSearch() {
 	a := []int{1, 3, 6, 10, 15, 21, 28, 36, 45, 55}
 	x := 6
@@ -25,8 +25,9 @@ func ExampleSearch() {
 	// found 6 at index 2 in [1 3 6 10 15 21 28 36 45 55]
 }
 
-// この例では、降順でソートされたリストを検索する方法が示されています。
-// アプローチは昇順でリストを検索するのと同じですが、条件が逆転しています。
+// This example demonstrates searching a list sorted in descending order.
+// The approach is the same as searching a list in ascending order,
+// but with the condition inverted.
 func ExampleSearch_descendingOrder() {
 	a := []int{55, 45, 36, 28, 21, 15, 10, 6, 3, 1}
 	x := 6
@@ -41,7 +42,7 @@ func ExampleSearch_descendingOrder() {
 	// found 6 at index 7 in [55 45 36 28 21 15 10 6 3 1]
 }
 
-// この例は、昇順にソートされたリスト内で文字列を検索する方法を示しています。
+// This example demonstrates finding a string in a list sorted in ascending order.
 func ExampleFind() {
 	a := []string{"apple", "banana", "lemon", "mango", "pear", "strawberry"}
 
@@ -61,7 +62,7 @@ func ExampleFind() {
 	// orange not found, would insert at 4
 }
 
-// この例は、昇順に並べられたリストで float64 を検索する方法を示しています。
+// This example demonstrates searching for float64 in a list sorted in ascending order.
 func ExampleSearchFloat64s() {
 	a := []float64{1.0, 2.0, 3.3, 4.6, 6.1, 7.2, 8.0}
 
@@ -77,7 +78,7 @@ func ExampleSearchFloat64s() {
 	// 0.5 not found, can be inserted at index 0 in [1 2 3.3 4.6 6.1 7.2 8]
 }
 
-// この例では、昇順に並べられたリスト内でintを検索する方法を示しています。
+// This example demonstrates searching for int in a list sorted in ascending order.
 func ExampleSearchInts() {
 	a := []int{1, 2, 3, 4, 6, 7, 8}
 
@@ -91,4 +92,21 @@ func ExampleSearchInts() {
 	// Output:
 	// found 2 at index 1 in [1 2 3 4 6 7 8]
 	// 5 not found, can be inserted at index 4 in [1 2 3 4 6 7 8]
+}
+
+// This example demonstrates searching for string in a list sorted in ascending order.
+func ExampleSearchStrings() {
+	a := []string{"apple", "banana", "cherry", "date", "fig", "grape"}
+
+	x := "banana"
+	i := sort.SearchStrings(a, x)
+	fmt.Printf("found %s at index %d in %v\n", x, i, a)
+
+	x = "coconut"
+	i = sort.SearchStrings(a, x)
+	fmt.Printf("%s not found, can be inserted at index %d in %v\n", x, i, a)
+
+	// Output:
+	// found banana at index 1 in [apple banana cherry date fig grape]
+	// coconut not found, can be inserted at index 3 in [apple banana cherry date fig grape]
 }

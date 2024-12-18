@@ -9,7 +9,7 @@ import (
 	"github.com/shogo82148/std/testing"
 )
 
-// AddToolChainConditions accepts a script.Cond map and adds into it a
+// AddToolChainScriptConditions accepts a [script.Cond] map and adds into it a
 // set of commonly used conditions for doing toolchains testing,
 // including whether the platform supports cgo, a buildmode condition,
 // support for GOEXPERIMENT testing, etc. Callers must also pass in

@@ -77,8 +77,11 @@ type ProgRequest struct {
 	// ActionID is non-nil for get and puts.
 	ActionID []byte `json:",omitempty"`
 
-	// ObjectID is set for Type "put" and "output-file".
-	ObjectID []byte `json:",omitempty"`
+	// OutputID is set for Type "put".
+	//
+	// Prior to Go 1.24, when GOCACHEPROG was still an experiment, this was
+	// accidentally named ObjectID. It was renamed to OutputID in Go 1.24.
+	OutputID []byte `json:",omitempty"`
 
 	// Body is the body for "put" requests. It's sent after the JSON object
 	// as a base64-encoded JSON string when BodySize is non-zero.
@@ -90,6 +93,14 @@ type ProgRequest struct {
 
 	// BodySize is the number of bytes of Body. If zero, the body isn't written.
 	BodySize int64 `json:",omitempty"`
+
+	// ObjectID is the accidental spelling of OutputID that was used prior to Go
+	// 1.24.
+	//
+	// Deprecated: use OutputID. This field is only populated temporarily for
+	// backwards compatibility with Go 1.23 and earlier when
+	// GOEXPERIMENT=gocacheprog is set. It will be removed in Go 1.25.
+	ObjectID []byte `json:",omitempty"`
 }
 
 // ProgResponse is the JSON response from the child process to cmd/go.

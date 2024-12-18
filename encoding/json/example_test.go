@@ -53,7 +53,7 @@ func ExampleUnmarshal() {
 	// [{Name:Platypus Order:Monotremata} {Name:Quoll Order:Dasyuromorphia}]
 }
 
-// この例では、Decoderを使用して一連の異なるJSON値をデコードします。
+// This example uses a Decoder to decode a stream of distinct JSON values.
 func ExampleDecoder() {
 	const jsonStream = `
 	{"Name": "Ed", "Text": "Knock knock."}
@@ -83,7 +83,7 @@ func ExampleDecoder() {
 	// Ed: Go fmt yourself!
 }
 
-// この例では、Decoderを使用して一連の異なるJSON値をデコードします。
+// This example uses a Decoder to decode a stream of distinct JSON values.
 func ExampleDecoder_Token() {
 	const jsonStream = `
 	{"Message": "Hello", "Array": [1, 2, 3], "Null": null, "Number": 1.234}
@@ -120,7 +120,7 @@ func ExampleDecoder_Token() {
 	// json.Delim: }
 }
 
-// この例では、Decoderを使用してJSONオブジェクトのストリーミング配列をデコードします。
+// This example uses a Decoder to decode a streaming array of JSON objects.
 func ExampleDecoder_Decode_stream() {
 	const jsonStream = `
 	[
@@ -136,17 +136,17 @@ func ExampleDecoder_Decode_stream() {
 	}
 	dec := json.NewDecoder(strings.NewReader(jsonStream))
 
-	// 開き括弧を読み込む
+	// read open bracket
 	t, err := dec.Token()
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("%T: %v\n", t, t)
 
-	// 配列が値を含んでいる間
+	// while the array contains values
 	for dec.More() {
 		var m Message
-		// 配列の値（Message）をデコードする
+		// decode an array value (Message)
 		err := dec.Decode(&m)
 		if err != nil {
 			log.Fatal(err)
@@ -155,7 +155,7 @@ func ExampleDecoder_Decode_stream() {
 		fmt.Printf("%v: %v\n", m.Name, m.Text)
 	}
 
-	// 閉じ括弧を読み込む
+	// read closing bracket
 	t, err = dec.Token()
 	if err != nil {
 		log.Fatal(err)
@@ -172,11 +172,11 @@ func ExampleDecoder_Decode_stream() {
 	// json.Delim: ]
 }
 
-// この例では、RawMessageを使用してJSONメッセージの一部の解析を遅延させます。
+// This example uses RawMessage to delay parsing part of a JSON message.
 func ExampleRawMessage_unmarshal() {
 	type Color struct {
 		Space string
-		Point json.RawMessage // カラースペースがわかるまでの解析を遅延させます
+		Point json.RawMessage // delay parsing until we know the color space
 	}
 	type RGB struct {
 		R uint8
@@ -218,7 +218,7 @@ func ExampleRawMessage_unmarshal() {
 	// RGB &{98 218 255}
 }
 
-// この例では、RawMessageを使用して、マーシャル中に事前に計算されたJSONを使用します。
+// This example uses RawMessage to use a precomputed JSON during marshal.
 func ExampleRawMessage_marshal() {
 	h := json.RawMessage(`{"precomputed": true}`)
 

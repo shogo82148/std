@@ -8,9 +8,9 @@ import (
 	"github.com/shogo82148/std/text/template/parse"
 )
 
-// Templateは、解析されたテンプレートの表現です。*parse.Tree
-// フィールドは、[html/template] による使用のためだけにエクスポートされており、
-// 他のすべてのクライアントによって未エクスポートとして扱われるべきです。
+// Template is the representation of a parsed template. The *parse.Tree
+// field is exported only for use by [html/template] and should be treated
+// as unexported by all other clients.
 type Template struct {
 	name string
 	*parse.Tree
@@ -19,63 +19,65 @@ type Template struct {
 	rightDelim string
 }
 
-// Newは、指定された名前を持つ新しい未定義のテンプレートを割り当てます。
+// New allocates a new, undefined template with the given name.
 func New(name string) *Template
 
-// Nameはテンプレートの名前を返します。
+// Name returns the name of the template.
 func (t *Template) Name() string
 
-// Newは、与えられたテンプレートと同じデリミタを持つ新しい未定義のテンプレートを割り当てます。
-// この関連付けは推移的で、一つのテンプレートが{{template}}アクションで別のテンプレートを
-// 呼び出すことを可能にします。
+// New allocates a new, undefined template associated with the given one and with the same
+// delimiters. The association, which is transitive, allows one template to
+// invoke another with a {{template}} action.
 //
-// 関連付けられたテンプレートは基礎となるデータを共有するため、テンプレートの構築は
-// 並行して安全に行うことはできません。テンプレートが構築されたら、それらは並行して
-// 実行することができます。
+// Because associated templates share underlying data, template construction
+// cannot be done safely in parallel. Once the templates are constructed, they
+// can be executed in parallel.
 func (t *Template) New(name string) *Template
 
-// Cloneは、関連付けられたすべてのテンプレートを含むテンプレートの複製を返します。
-// 実際の表現はコピーされませんが、関連付けられたテンプレートの名前空間はコピーされるため、
-// コピーでのさらなる [Template.Parse] の呼び出しは、コピーにテンプレートを追加しますが、元のテンプレートには追加しません。
-// Cloneは、共通のテンプレートを準備し、それらを他のテンプレートのバリアント定義とともに使用するために、
-// クローン作成後にバリアントを追加することで使用できます。
+// Clone returns a duplicate of the template, including all associated
+// templates. The actual representation is not copied, but the name space of
+// associated templates is, so further calls to [Template.Parse] in the copy will add
+// templates to the copy but not to the original. Clone can be used to prepare
+// common templates and use them with variant definitions for other templates
+// by adding the variants after the clone is made.
 func (t *Template) Clone() (*Template, error)
 
-// AddParseTreeは、引数のパースツリーをテンプレートtに関連付け、
-// それに指定された名前を付けます。テンプレートがまだ定義されていない場合、
-// このツリーがその定義となります。すでに定義されていてその名前を持っている場合、
-// 既存の定義が置き換えられます。それ以外の場合は、新しいテンプレートが作成され、
-// 定義され、返されます。
+// AddParseTree associates the argument parse tree with the template t, giving
+// it the specified name. If the template has not been defined, this tree becomes
+// its definition. If it has been defined and already has that name, the existing
+// definition is replaced; otherwise a new template is created, defined, and returned.
 func (t *Template) AddParseTree(name string, tree *parse.Tree) (*Template, error)
 
-// Templatesは、tに関連付けられた定義済みテンプレートのスライスを返します。
+// Templates returns a slice of defined templates associated with t.
 func (t *Template) Templates() []*Template
 
-// Delimsは、指定された文字列にアクションデリミタを設定します。これは、
-// その後の [Template.Parse]、[Template.ParseFiles]、または [Template.ParseGlob] への呼び出しで使用されます。
-// ネストしたテンプレート定義はこの設定を継承します。空のデリミタは、
-// 対応するデフォルト（{{または}}）を表します。
-// 戻り値はテンプレートなので、呼び出しはチェーンできます。
+// Delims sets the action delimiters to the specified strings, to be used in
+// subsequent calls to [Template.Parse], [Template.ParseFiles], or [Template.ParseGlob]. Nested template
+// definitions will inherit the settings. An empty delimiter stands for the
+// corresponding default: {{ or }}.
+// The return value is the template, so calls can be chained.
 func (t *Template) Delims(left, right string) *Template
 
-// Funcsは、引数のマップの要素をテンプレートの関数マップに追加します。
-// これはテンプレートが解析される前に呼び出す必要があります。
-// マップの値が適切な戻り値型を持つ関数でない場合、または名前がテンプレート内の関数として
-// 文法的に使用できない場合、パニックを起こします。
-// マップの要素を上書きすることは合法です。戻り値はテンプレートなので、呼び出しはチェーンできます。
+// Funcs adds the elements of the argument map to the template's function map.
+// It must be called before the template is parsed.
+// It panics if a value in the map is not a function with appropriate return
+// type or if the name cannot be used syntactically as a function in a template.
+// It is legal to overwrite elements of the map. The return value is the template,
+// so calls can be chained.
 func (t *Template) Funcs(funcMap FuncMap) *Template
 
-// Lookupは、tに関連付けられた指定された名前のテンプレートを返します。
-// そのようなテンプレートがないか、テンプレートが定義を持っていない場合はnilを返します。
+// Lookup returns the template with the given name that is associated with t.
+// It returns nil if there is no such template or the template has no definition.
 func (t *Template) Lookup(name string) *Template
 
-// Parseは、テキストをtのテンプレートボディとして解析します。
-// テキスト内の名前付きテンプレート定義（{{define ...}}または{{block ...}}ステートメント）は、
-// tに関連付けられた追加のテンプレートを定義し、t自体の定義からは削除されます。
+// Parse parses text as a template body for t.
+// Named template definitions ({{define ...}} or {{block ...}} statements) in text
+// define additional templates associated with t and are removed from the
+// definition of t itself.
 //
-// テンプレートは、Parseへの連続した呼び出しで再定義することができます。
-// 本文が空白とコメントのみで構成されるテンプレート定義は空とみなされ、
-// 既存のテンプレートの本文を置き換えません。
-// これにより、Parseを使用して新しい名前付きテンプレート定義を追加し、
-// メインのテンプレート本文を上書きすることなく行うことができます。
+// Templates can be redefined in successive calls to Parse.
+// A template definition with a body containing only white space and comments
+// is considered empty and will not replace an existing template's body.
+// This allows using Parse to add new named template definitions without
+// overwriting the main template body.
 func (t *Template) Parse(text string) (*Template, error)

@@ -2,221 +2,259 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// stringsパッケージは、UTF-8エンコードされた文字列を操作するための
-// シンプルな関数を実装します。
+// Package strings implements simple functions to manipulate UTF-8 encoded strings.
 //
-// GoにおけるUTF-8文字列の情報については、https://blog.golang.org/strings を参照してください。
+// For information about UTF-8 strings in Go, see https://blog.golang.org/strings.
 package strings
 
 import (
 	"github.com/shogo82148/std/unicode"
 )
 
-// Countは、s内の重複しないsubstrのインスタンス数を数えます。
-// substrが空の文字列の場合、Countはs内のUnicodeコードポイントの数に1を加えたものを返します。
+// Count counts the number of non-overlapping instances of substr in s.
+// If substr is an empty string, Count returns 1 + the number of Unicode code points in s.
 func Count(s, substr string) int
 
-// Containsは、substrがs内に含まれているかどうかを報告します。
+// Contains reports whether substr is within s.
 func Contains(s, substr string) bool
 
-// ContainsAnyは、chars内の任意のUnicodeコードポイントがs内に含まれているかどうかを報告します。
+// ContainsAny reports whether any Unicode code points in chars are within s.
 func ContainsAny(s, chars string) bool
 
-// ContainsRuneは、Unicodeコードポイントrがs内に含まれているかどうかを報告します。
+// ContainsRune reports whether the Unicode code point r is within s.
 func ContainsRune(s string, r rune) bool
 
-// ContainsFuncは、s内の任意のUnicodeコードポイントrがf(r)を満たすかどうかを報告します。
+// ContainsFunc reports whether any Unicode code points r within s satisfy f(r).
 func ContainsFunc(s string, f func(rune) bool) bool
 
-// LastIndexは、s内のsubstrの最後のインスタンスのインデックスを返します。
-// substrがs内に存在しない場合は-1を返します。
+// LastIndex returns the index of the last instance of substr in s, or -1 if substr is not present in s.
 func LastIndex(s, substr string) int
 
-// IndexByteは、s内の最初のcのインスタンスのインデックスを返します。
-// cがsに存在しない場合は-1を返します。
+// IndexByte returns the index of the first instance of c in s, or -1 if c is not present in s.
 func IndexByte(s string, c byte) int
 
-// IndexRuneは、Unicodeコードポイントrの最初のインスタンスのインデックスを返します。
-// rがsに存在しない場合は-1を返します。
-// rが [utf8.RuneError] の場合、無効なUTF-8バイトシーケンスの最初のインスタンスを返します。
+// IndexRune returns the index of the first instance of the Unicode code point
+// r, or -1 if rune is not present in s.
+// If r is [utf8.RuneError], it returns the first instance of any
+// invalid UTF-8 byte sequence.
 func IndexRune(s string, r rune) int
 
-// IndexAnyは、sにcharsの任意のUnicodeコードポイントの最初のインスタンスのインデックスを返します。
-// charsのUnicodeコードポイントがsに存在しない場合は-1を返します。
+// IndexAny returns the index of the first instance of any Unicode code point
+// from chars in s, or -1 if no Unicode code point from chars is present in s.
 func IndexAny(s, chars string) int
 
-// LastIndexAnyは、sにcharsの任意のUnicodeコードポイントの最後のインスタンスのインデックスを返します。
-// charsのUnicodeコードポイントがsに存在しない場合は-1を返します。
+// LastIndexAny returns the index of the last instance of any Unicode code
+// point from chars in s, or -1 if no Unicode code point from chars is
+// present in s.
 func LastIndexAny(s, chars string) int
 
-// LastIndexByteは、sの最後のインスタンスのインデックスを返します。
-// cがsに存在しない場合は-1を返します。
+// LastIndexByte returns the index of the last instance of c in s, or -1 if c is not present in s.
 func LastIndexByte(s string, c byte) int
 
-// SplitNは、sをsepで区切った部分文字列のスライスを返します。
+// SplitN slices s into substrings separated by sep and returns a slice of
+// the substrings between those separators.
 //
-// countは、返す部分文字列の数を決定します。
+// The count determines the number of substrings to return:
+//   - n > 0: at most n substrings; the last substring will be the unsplit remainder;
+//   - n == 0: the result is nil (zero substrings);
+//   - n < 0: all substrings.
 //
-//   - n > 0：最大n個の部分文字列。最後の部分文字列は区切り文字以降の残りの部分です。
-//   - n == 0：結果はnil（部分文字列がゼロ個）
-//   - n < 0：すべての部分文字列
+// Edge cases for s and sep (for example, empty strings) are handled
+// as described in the documentation for [Split].
 //
-// sとsepのエッジケース（空の文字列など）は、 [Split] のドキュメントで説明されているように処理されます。
-//
-// 最初の区切り文字を基準に分割するには、[Cut] を参照してください。
+// To split around the first instance of a separator, see [Cut].
 func SplitN(s, sep string, n int) []string
 
-// SplitAfterNは、sをsepの後にスライスし、それらの部分文字列のスライスを返します。
+// SplitAfterN slices s into substrings after each instance of sep and
+// returns a slice of those substrings.
 //
-// countは、返す部分文字列の数を決定します。
+// The count determines the number of substrings to return:
+//   - n > 0: at most n substrings; the last substring will be the unsplit remainder;
+//   - n == 0: the result is nil (zero substrings);
+//   - n < 0: all substrings.
 //
-//   - n > 0：最大n個の部分文字列。最後の部分文字列は区切り文字以降の残りの部分です。
-//   - n == 0：結果はnil（部分文字列がゼロ個）
-//   - n < 0：すべての部分文字列
-//
-// sとsepのエッジケース（空の文字列など）は、SplitAfterのドキュメントで説明されているように処理されます。
+// Edge cases for s and sep (for example, empty strings) are handled
+// as described in the documentation for [SplitAfter].
 func SplitAfterN(s, sep string, n int) []string
 
-// Splitは、sをsepで区切り、それらの区切り文字の間の部分文字列のスライスを返します。
+// Split slices s into all substrings separated by sep and returns a slice of
+// the substrings between those separators.
 //
-// sがsepを含まず、sepが空でない場合、Splitは長さ1のスライスを返します。その唯一の要素はsです。
+// If s does not contain sep and sep is not empty, Split returns a
+// slice of length 1 whose only element is s.
 //
-// sepが空の場合、Splitは各UTF-8シーケンスの後に分割します。sとsepの両方が空の場合、Splitは空のスライスを返します。
+// If sep is empty, Split splits after each UTF-8 sequence. If both s
+// and sep are empty, Split returns an empty slice.
 //
-// countが-1の [SplitN] と同等です。
+// It is equivalent to [SplitN] with a count of -1.
 //
-// 最初の区切り文字を基準に分割するには、[Cut] を参照してください。
+// To split around the first instance of a separator, see [Cut].
 func Split(s, sep string) []string
 
-// SplitAfterは、sをsepの後にスライスし、それらの部分文字列のスライスを返します。
+// SplitAfter slices s into all substrings after each instance of sep and
+// returns a slice of those substrings.
 //
-// sがsepを含まず、sepが空でない場合、SplitAfterは長さ1のスライスを返します。その唯一の要素はsです。
+// If s does not contain sep and sep is not empty, SplitAfter returns
+// a slice of length 1 whose only element is s.
 //
-// sepが空の場合、SplitAfterは各UTF-8シーケンスの後に分割します。sとsepの両方が空の場合、SplitAfterは空のスライスを返します。
+// If sep is empty, SplitAfter splits after each UTF-8 sequence. If
+// both s and sep are empty, SplitAfter returns an empty slice.
 //
-// countが-1の [SplitAfterN] と同等です。
+// It is equivalent to [SplitAfterN] with a count of -1.
 func SplitAfter(s, sep string) []string
 
-// Fieldsは、sを [Unicode.IsSpace] によって定義される1つ以上の連続する空白文字の各インスタンスで分割し、sの部分文字列のスライスまたは空のスライスを返します。
+// Fields splits the string s around each instance of one or more consecutive white space
+// characters, as defined by [unicode.IsSpace], returning a slice of substrings of s or an
+// empty slice if s contains only white space.
 func Fields(s string) []string
 
-// FieldsFuncは、Unicodeコードポイントcがf(c)を満たす連続するランで文字列sを分割し、sのスライスの配列を返します。
-// sのすべてのコードポイントがf(c)を満たすか、文字列が空の場合、空のスライスが返されます。
+// FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
+// and returns an array of slices of s. If all code points in s satisfy f(c) or the
+// string is empty, an empty slice is returned.
 //
-// FieldsFuncは、f(c)を呼び出す順序について保証せず、fが常に同じ値を返すことを前提としています。
+// FieldsFunc makes no guarantees about the order in which it calls f(c)
+// and assumes that f always returns the same value for a given c.
 func FieldsFunc(s string, f func(rune) bool) []string
 
-// Joinは、最初の引数の要素を連結して単一の文字列を作成します。区切り文字列sepは、結果の文字列の要素間に配置されます。
+// Join concatenates the elements of its first argument to create a single string. The separator
+// string sep is placed between elements in the resulting string.
 func Join(elems []string, sep string) string
 
-// HasPrefixは、文字列sがprefixで始まるかどうかを報告します。
+// HasPrefix reports whether the string s begins with prefix.
 func HasPrefix(s, prefix string) bool
 
-// HasSuffixは、文字列sがsuffixで終わるかどうかを報告します。
+// HasSuffix reports whether the string s ends with suffix.
 func HasSuffix(s, suffix string) bool
 
-// Mapは、マッピング関数に従ってすべての文字を変更した文字列sのコピーを返します。
-// マッピング関数が負の値を返す場合、文字は置換されずに文字列から削除されます。
+// Map returns a copy of the string s with all its characters modified
+// according to the mapping function. If mapping returns a negative value, the character is
+// dropped from the string with no replacement.
 func Map(mapping func(rune) rune, s string) string
 
-// Repeatは、文字列sのcount個のコピーからなる新しい文字列を返します。
+// Repeat returns a new string consisting of count copies of the string s.
 //
-// countが負の場合、または（len(s) * count）の結果がオーバーフローする場合、パニックが発生します。
+// It panics if count is negative or if the result of (len(s) * count)
+// overflows.
 func Repeat(s string, count int) string
 
-// ToUpperは、すべてのUnicode文字を大文字にマップしたsを返します。
+// ToUpper returns s with all Unicode letters mapped to their upper case.
 func ToUpper(s string) string
 
-// ToLowerは、すべてのUnicode文字を小文字にマップしたsを返します。
+// ToLower returns s with all Unicode letters mapped to their lower case.
 func ToLower(s string) string
 
-// ToTitleは、すべてのUnicode文字をUnicodeタイトルケースにマップしたsのコピーを返します。
+// ToTitle returns a copy of the string s with all Unicode letters mapped to
+// their Unicode title case.
 func ToTitle(s string) string
 
-// ToUpperSpecialは、Unicode文字をすべて、cで指定されたケースマッピングを使用して大文字にマップしたsのコピーを返します。
+// ToUpperSpecial returns a copy of the string s with all Unicode letters mapped to their
+// upper case using the case mapping specified by c.
 func ToUpperSpecial(c unicode.SpecialCase, s string) string
 
-// ToLowerSpecialは、Unicode文字をすべて、cで指定されたケースマッピングを使用して小文字にマップしたsのコピーを返します。
+// ToLowerSpecial returns a copy of the string s with all Unicode letters mapped to their
+// lower case using the case mapping specified by c.
 func ToLowerSpecial(c unicode.SpecialCase, s string) string
 
-// ToTitleSpecialは、Unicode文字をすべて、特別なケースルールに優先してUnicodeタイトルケースにマップしたsのコピーを返します。
+// ToTitleSpecial returns a copy of the string s with all Unicode letters mapped to their
+// Unicode title case, giving priority to the special casing rules.
 func ToTitleSpecial(c unicode.SpecialCase, s string) string
 
-// ToValidUTF8は、無効なUTF-8バイトシーケンスのランを置換文字列で置き換えたsのコピーを返します。置換文字列は空にすることができます。
+// ToValidUTF8 returns a copy of the string s with each run of invalid UTF-8 byte sequences
+// replaced by the replacement string, which may be empty.
 func ToValidUTF8(s, replacement string) string
 
-// Titleは、単語の先頭を表すすべてのUnicode文字をUnicodeタイトルケースにマップしたsのコピーを返します。
+// Title returns a copy of the string s with all Unicode letters that begin words
+// mapped to their Unicode title case.
 //
-// Deprecated: Titleが単語の境界に使用するルールは、Unicode句読点を適切に処理しません。代わりに、golang.org/x/text/casesを使用してください。
+// Deprecated: The rule Title uses for word boundaries does not handle Unicode
+// punctuation properly. Use golang.org/x/text/cases instead.
 func Title(s string) string
 
-// TrimLeftFuncは、f(c)がtrueを返す最初のUnicodeコードポイントcを含まないように、文字列sの先頭からすべてのUnicodeコードポイントcを削除したスライスを返します。
+// TrimLeftFunc returns a slice of the string s with all leading
+// Unicode code points c satisfying f(c) removed.
 func TrimLeftFunc(s string, f func(rune) bool) string
 
-// TrimRightFuncは、f(c)がtrueを返す最後のUnicodeコードポイントcを含まないように、文字列sの末尾からすべてのUnicodeコードポイントcを削除したスライスを返します。
+// TrimRightFunc returns a slice of the string s with all trailing
+// Unicode code points c satisfying f(c) removed.
 func TrimRightFunc(s string, f func(rune) bool) string
 
-// TrimFuncは、f(c)がtrueを返す最初と最後のUnicodeコードポイントcを含まないように、文字列sの先頭と末尾からすべてのUnicodeコードポイントcを削除したスライスを返します。
+// TrimFunc returns a slice of the string s with all leading
+// and trailing Unicode code points c satisfying f(c) removed.
 func TrimFunc(s string, f func(rune) bool) string
 
-// IndexFuncは、f(c)がtrueを返す最初のUnicodeコードポイントのインデックスを返します。見つからない場合は-1を返します。
+// IndexFunc returns the index into s of the first Unicode
+// code point satisfying f(c), or -1 if none do.
 func IndexFunc(s string, f func(rune) bool) int
 
-// LastIndexFuncは、f(c)がtrueを返す最後のUnicodeコードポイントのインデックスを返します。見つからない場合は-1を返します。
+// LastIndexFunc returns the index into s of the last
+// Unicode code point satisfying f(c), or -1 if none do.
 func LastIndexFunc(s string, f func(rune) bool) int
 
-// Trimは、cutsetに含まれるすべての先頭と末尾のUnicodeコードポイントを削除した文字列sのスライスを返します。
+// Trim returns a slice of the string s with all leading and
+// trailing Unicode code points contained in cutset removed.
 func Trim(s, cutset string) string
 
-// TrimLeftは、cutsetに含まれるすべての先頭のUnicodeコードポイントを削除した文字列sのスライスを返します。
+// TrimLeft returns a slice of the string s with all leading
+// Unicode code points contained in cutset removed.
 //
-// 接頭辞を削除するには、代わりに [TrimPrefix] を使用してください。
+// To remove a prefix, use [TrimPrefix] instead.
 func TrimLeft(s, cutset string) string
 
-// TrimRightは、cutsetに含まれるすべての末尾のUnicodeコードポイントを削除した文字列sのスライスを返します。
+// TrimRight returns a slice of the string s, with all trailing
+// Unicode code points contained in cutset removed.
 //
-// 接尾辞を削除するには、代わりに [TrimSuffix] を使用してください。
+// To remove a suffix, use [TrimSuffix] instead.
 func TrimRight(s, cutset string) string
 
-// TrimSpaceは、Unicodeで定義されるように、すべての先頭と末尾の空白を削除した文字列sのスライスを返します。
+// TrimSpace returns a slice of the string s, with all leading
+// and trailing white space removed, as defined by Unicode.
 func TrimSpace(s string) string
 
-// TrimPrefixは、指定された接頭辞文字列を除いたsを返します。
-// sが接頭辞で始まらない場合、sは変更されずにそのまま返されます。
+// TrimPrefix returns s without the provided leading prefix string.
+// If s doesn't start with prefix, s is returned unchanged.
 func TrimPrefix(s, prefix string) string
 
-// TrimSuffixは、指定された接尾辞文字列を除いたsを返します。
-// sが接尾辞で終わらない場合、sは変更されずにそのまま返されます。
+// TrimSuffix returns s without the provided trailing suffix string.
+// If s doesn't end with suffix, s is returned unchanged.
 func TrimSuffix(s, suffix string) string
 
-// Replaceは、古いものの最初のn個の重複しないインスタンスが新しいものに置き換えられた文字列sのコピーを返します。
-// oldが空の場合、文字列の先頭と各UTF-8シーケンスの後に一致し、kルーン文字列に対してk+1の置換が生成されます。
-// n < 0の場合、置換の数に制限はありません。
+// Replace returns a copy of the string s with the first n
+// non-overlapping instances of old replaced by new.
+// If old is empty, it matches at the beginning of the string
+// and after each UTF-8 sequence, yielding up to k+1 replacements
+// for a k-rune string.
+// If n < 0, there is no limit on the number of replacements.
 func Replace(s, old, new string, n int) string
 
-// ReplaceAllは、古いもののすべての重複しないインスタンスが新しいものに置き換えられた文字列sのコピーを返します。
-// oldが空の場合、文字列の先頭と各UTF-8シーケンスの後に一致し、kルーン文字列に対してk+1の置換が生成されます。
+// ReplaceAll returns a copy of the string s with all
+// non-overlapping instances of old replaced by new.
+// If old is empty, it matches at the beginning of the string
+// and after each UTF-8 sequence, yielding up to k+1 replacements
+// for a k-rune string.
 func ReplaceAll(s, old, new string) string
 
-// EqualFoldは、UTF-8文字列として解釈されたsとtが、単純なUnicodeの大文字小文字を区別しない比較において等しいかどうかを報告します。
-// これは、大文字小文字を区別しない形式の大文字小文字を区別しない性質です。
+// EqualFold reports whether s and t, interpreted as UTF-8 strings,
+// are equal under simple Unicode case-folding, which is a more general
+// form of case-insensitivity.
 func EqualFold(s, t string) bool
 
-// Indexは、s内のsubstrの最初のインスタンスのインデックスを返します。substrがsに存在しない場合は-1を返します。
+// Index returns the index of the first instance of substr in s, or -1 if substr is not present in s.
 func Index(s, substr string) int
 
-// 最初の sep のインスタンスを中心に s をスライスし、
-// sep の前と後のテキストを返します。
-// found は、sep が s に現れるかどうかを報告します。
-// sep が s に現れない場合、cut は s、""、false を返します。
+// Cut slices s around the first instance of sep,
+// returning the text before and after sep.
+// The found result reports whether sep appears in s.
+// If sep does not appear in s, cut returns s, "", false.
 func Cut(s, sep string) (before, after string, found bool)
 
-// CutPrefix は、指定された先頭接頭辞文字列を除いた s を返し、接頭辞が見つかったかどうかを報告します。
-// s が prefix で始まらない場合、CutPrefix は s、false を返します。
-// prefix が空の文字列の場合、CutPrefix は s、true を返します。
+// CutPrefix returns s without the provided leading prefix string
+// and reports whether it found the prefix.
+// If s doesn't start with prefix, CutPrefix returns s, false.
+// If prefix is the empty string, CutPrefix returns s, true.
 func CutPrefix(s, prefix string) (after string, found bool)
 
-// CutSuffix は、指定された末尾接尾辞文字列を除いた s を返し、接尾辞が見つかったかどうかを報告します。
-// s が suffix で終わらない場合、CutSuffix は s、false を返します。
-// suffix が空の文字列の場合、CutSuffix は s、true を返します。
+// CutSuffix returns s without the provided ending suffix string
+// and reports whether it found the suffix.
+// If s doesn't end with suffix, CutSuffix returns s, false.
+// If suffix is the empty string, CutSuffix returns s, true.
 func CutSuffix(s, suffix string) (before string, found bool)

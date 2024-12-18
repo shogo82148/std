@@ -13,18 +13,47 @@ import (
 	"github.com/shogo82148/std/text/template"
 )
 
+func ExampleB_Loop() {
+	simpleFunc := func(i int) int {
+		return i + 1
+	}
+	n := 0
+	testing.Benchmark(func(b *testing.B) {
+		// Unlike "for i := range N {...}" style loops, this
+		// setup logic will only be executed once, so simpleFunc
+		// will always get argument 1.
+		n++
+		// It behaves just like "for i := range N {...}", except with keeping
+		// function call parameters and results alive.
+		for b.Loop() {
+			// This function call, if was in a normal loop, will be optimized away
+			// completely, first by inlining, then by dead code elimination.
+			// In a b.Loop loop, the compiler ensures that this function is not optimized away.
+			simpleFunc(n)
+		}
+		// This clean-up will only be executed once, so after the benchmark, the user
+		// will see n == 2.
+		n++
+		// Use b.ReportMetric as usual just like what a user may do after
+		// b.N loop.
+	})
+	// We can expect n == 2 here.
+
+	// The return value of the above Benchmark could be used just like
+	// a b.N loop benchmark as well.
+}
+
 func ExampleB_RunParallel() {
-	// 1つのオブジェクトに対してtext/template.Template.Executeの並列ベンチマーク。
+	// Parallel benchmark for text/template.Template.Execute on a single object.
 	testing.Benchmark(func(b *testing.B) {
 		templ := template.Must(template.New("test").Parse("Hello, {{.}}!"))
-
-		// RunParallelはGOMAXPROCSのゴルーチンを作成し、
-		// それらに作業を分散させます。
+		// RunParallel will create GOMAXPROCS goroutines
+		// and distribute work among them.
 		b.RunParallel(func(pb *testing.PB) {
-			// 各goroutineは独自のbytes.Bufferを持っています。
+			// Each goroutine has its own bytes.Buffer.
 			var buf bytes.Buffer
 			for pb.Next() {
-				// ループ本体はすべてのゴルーチンを通じて合計で b.N 回実行されます。
+				// The loop body is executed b.N times total across all goroutines.
 				buf.Reset()
 				templ.Execute(&buf, "World")
 			}
@@ -33,7 +62,8 @@ func ExampleB_RunParallel() {
 }
 
 func ExampleB_ReportMetric() {
-	// これは特定のアルゴリズム（この場合はソート）に関連するカスタムベンチマークメトリックを報告します。
+	// This reports a custom benchmark metric relevant to a
+	// specific algorithm (in this case, sorting).
 	testing.Benchmark(func(b *testing.B) {
 		var compares int64
 		for i := 0; i < b.N; i++ {
@@ -43,36 +73,41 @@ func ExampleB_ReportMetric() {
 				return cmp.Compare(a, b)
 			})
 		}
-		// このメトリックは操作ごとのものなので、b.Nで割り、"/op"単位で報告してください。
+		// This metric is per-operation, so divide by b.N and
+		// report it as a "/op" unit.
 		b.ReportMetric(float64(compares)/float64(b.N), "compares/op")
-
-		// このメトリックは時間当たりの値ですので、b.Elapsed で割り、
-		// "/ns" 単位として報告してください。
+		// This metric is per-time, so divide by b.Elapsed and
+		// report it as a "/ns" unit.
 		b.ReportMetric(float64(compares)/float64(b.Elapsed().Nanoseconds()), "compares/ns")
 	})
 }
 
 func ExampleB_ReportMetric_parallel() {
-	// これは特定のアルゴリズム（この場合はソート）に関連するカスタムベンチマークメトリックを並列で報告します。
+	// This reports a custom benchmark metric relevant to a
+	// specific algorithm (in this case, sorting) in parallel.
 	testing.Benchmark(func(b *testing.B) {
 		var compares atomic.Int64
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				s := []int{5, 4, 3, 2, 1}
 				slices.SortFunc(s, func(a, b int) int {
-					// RunParallelは関数を並列で多くの回数実行するため、競合する書き込みを避けるためにカウンターを原子的にインクリメントする必要があります。
+					// Because RunParallel runs the function many
+					// times in parallel, we must increment the
+					// counter atomically to avoid racing writes.
 					compares.Add(1)
 					return cmp.Compare(a, b)
 				})
 			}
 		})
 
-		// 注意：すべての並列呼び出しが完了した後に、各メトリックを1回だけ報告してください。
+		// NOTE: Report each metric once, after all of the parallel
+		// calls have completed.
 
-		// このメトリックは操作ごとに計測されるため、b.Nで割り、"/op"単位で報告してください。
+		// This metric is per-operation, so divide by b.N and
+		// report it as a "/op" unit.
 		b.ReportMetric(float64(compares.Load())/float64(b.N), "compares/op")
-
-		// このメトリックは時間に対してのものなので、b.Elapsedで割り算して、"/ns"の単位で報告します。
+		// This metric is per-time, so divide by b.Elapsed and
+		// report it as a "/ns" unit.
 		b.ReportMetric(float64(compares.Load())/float64(b.Elapsed().Nanoseconds()), "compares/ns")
 	})
 }

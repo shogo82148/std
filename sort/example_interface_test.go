@@ -18,14 +18,17 @@ func Example() {
 	}
 
 	fmt.Println(people)
-
-	// スライスをソートする方法は2つあります。最初に、ByAgeなどのスライス型のためのメソッドセットを定義し、sort.Sortを呼び出すことができます。この最初の例では、その技術を使用しています。
+	// There are two ways to sort a slice. First, one can define
+	// a set of methods for the slice type, as with ByAge, and
+	// call sort.Sort. In this first example we use that technique.
 	sort.Sort(ByAge(people))
 	fmt.Println(people)
 
-	// もう一つの方法は、カスタムのLess関数を使用してsort.Sliceを利用することです。
-	// これはクロージャとして提供することができます。この場合、メソッドは必要ありません。
-	// (存在する場合は無視されます。) ここでは逆順で再ソートします：クロージャとByAge.Lessを比較します。
+	// The other way is to use sort.Slice with a custom Less
+	// function, which can be provided as a closure. In this
+	// case no methods are needed. (And if they exist, they
+	// are ignored.) Here we re-sort in reverse order: compare
+	// the closure with ByAge.Less.
 	sort.Slice(people, func(i, j int) bool {
 		return people[i].Age > people[j].Age
 	})

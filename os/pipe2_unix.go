@@ -6,6 +6,6 @@
 
 package os
 
-// Pipe は接続された一対のファイルを返します。r からの読み取りは w に書き込まれます。
-// ファイルとエラーを返します。
+// Pipe returns a connected pair of Files; reads from r return bytes written to w.
+// It returns the files and an error, if any.
 func Pipe() (r *File, w *File, err error)

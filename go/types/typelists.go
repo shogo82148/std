@@ -7,22 +7,22 @@
 
 package types
 
-// TypeParamListは型パラメータのリストを保持します。
+// TypeParamList holds a list of type parameters.
 type TypeParamList struct{ tparams []*TypeParam }
 
-// Lenはリスト内の型パラメーターの数を返します。
-// nilなレシーバーでも安全に呼び出すことができます。
+// Len returns the number of type parameters in the list.
+// It is safe to call on a nil receiver.
 func (l *TypeParamList) Len() int
 
-// Atはリスト内のi番目の型パラメータを返します。
+// At returns the i'th type parameter in the list.
 func (l *TypeParamList) At(i int) *TypeParam
 
-// TypeListは型のリストを保持します。
+// TypeList holds a list of types.
 type TypeList struct{ types []Type }
 
-// Lenはリスト内の要素数を返します。
-// nilの受信側で呼び出しても安全です。
+// Len returns the number of types in the list.
+// It is safe to call on a nil receiver.
 func (l *TypeList) Len() int
 
-// Atはリスト内のi番目のタイプを返します。
+// At returns the i'th type in the list.
 func (l *TypeList) At(i int) Type

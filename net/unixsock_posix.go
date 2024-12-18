@@ -6,13 +6,12 @@
 
 package net
 
-// SetUnlinkOnCloseは、リスナーがクローズされたときに基礎となるソケットファイルを
-// ファイルシステムから削除するかどうかを設定します。
+// SetUnlinkOnClose sets whether the underlying socket file should be removed
+// from the file system when the listener is closed.
 //
-// デフォルトの動作では、ソケットファイルは、package netによって作成された場合にのみ
-// アンリンクされます。つまり、リスナーや基礎となるソケットファイルが
-// ListenまたはListenUnixの呼び出しによって作成された場合、デフォルトでは
-// リスナーをクローズするとソケットファイルが削除されます。
-// ただし、リスナーが既存のソケットファイルを使用するためにFileListenerを呼び出して作成された場合、
-// デフォルトではリスナーをクローズしてもソケットファイルは削除されません。
+// The default behavior is to unlink the socket file only when package net created it.
+// That is, when the listener and the underlying socket file were created by a call to
+// Listen or ListenUnix, then by default closing the listener will remove the socket file.
+// but if the listener was created by a call to FileListener to use an already existing
+// socket file, then by default closing the listener will not remove the socket file.
 func (l *UnixListener) SetUnlinkOnClose(unlink bool)

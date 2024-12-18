@@ -7,8 +7,8 @@ package des_test
 import "github.com/shogo82148/std/crypto/des"
 
 func ExampleNewTripleDESCipher() {
-
-	// NewTripleDESCipherは、最初の8バイトを16バイトのキーの複製として使用することで、EDE2が必要な場合にも使用することができます。
+	// NewTripleDESCipher can also be used when EDE2 is required by
+	// duplicating the first 8 bytes of the 16-byte key.
 	ede2Key := []byte("example key 1234")
 
 	var tripleDESKey []byte
@@ -20,5 +20,6 @@ func ExampleNewTripleDESCipher() {
 		panic(err)
 	}
 
-	// 暗号化と復号化にcipher.Blockを使用する方法は、crypto/cipherを参照してください。
+	// See crypto/cipher for how to use a cipher.Block for encryption and
+	// decryption.
 }

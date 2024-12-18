@@ -3,14 +3,15 @@
 // license that can be found in the LICENSE file.
 
 /*
-machoパッケージは、Mach-Oオブジェクトファイルへのアクセスを実装します。
+Package macho implements access to Mach-O object files.
 
-# セキュリティ
+# Security
 
-このパッケージは、敵対的な入力に対して強化されるように設計されていません、そして
-https://go.dev/security/policy の範囲外です。特に、オブジェクトファイルを解析する際には基本的な
-検証のみが行われます。そのため、信頼できない入力を解析する際には注意が必要です、なぜなら、
-不正なファイルを解析すると、大量のリソースを消費するか、パニックを引き起こす可能性があります。
+This package is not designed to be hardened against adversarial inputs, and is
+outside the scope of https://go.dev/security/policy. In particular, only basic
+validation is done when parsing object files. As such, care should be taken when
+parsing untrusted inputs, as parsing malformed files may consume significant
+resources, or cause panics.
 */
 package macho
 
@@ -20,7 +21,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Fileは、開かれたMach-Oファイルを表します。
+// A File represents an open Mach-O file.
 type File struct {
 	FileHeader
 	ByteOrder binary.ByteOrder
@@ -33,17 +34,17 @@ type File struct {
 	closer io.Closer
 }
 
-// Loadは、任意のMach-Oロードコマンドを表します。
+// A Load represents any Mach-O load command.
 type Load interface {
 	Raw() []byte
 }
 
-// LoadBytesは、Mach-Oロードコマンドの解釈されていないバイトを表します。
+// A LoadBytes is the uninterpreted bytes of a Mach-O load command.
 type LoadBytes []byte
 
 func (b LoadBytes) Raw() []byte
 
-// SegmentHeaderは、Mach-O 32ビットまたは64ビットのロードセグメントコマンドのヘッダーです。
+// A SegmentHeader is the header for a Mach-O 32-bit or 64-bit load segment command.
 type SegmentHeader struct {
 	Cmd     LoadCmd
 	Len     uint32
@@ -58,24 +59,25 @@ type SegmentHeader struct {
 	Flag    uint32
 }
 
-// Segmentは、Mach-O 32ビットまたは64ビットのロードセグメントコマンドを表します。
+// A Segment represents a Mach-O 32-bit or 64-bit load segment command.
 type Segment struct {
 	LoadBytes
 	SegmentHeader
 
-	// ReadAtメソッドのためにReaderAtを埋め込みます。
-	// ReadとSeekを避けるために、SectionReaderを直接埋め込まないでください。
-	// クライアントがReadとSeekを使用したい場合は、
-	// 他のクライアントとのシークオフセットの競合を避けるために
-	// Open()を使用する必要があります。
+	// Embed ReaderAt for ReadAt method.
+	// Do not embed SectionReader directly
+	// to avoid having Read and Seek.
+	// If a client wants Read and Seek it must use
+	// Open() to avoid fighting over the seek offset
+	// with other clients.
 	io.ReaderAt
 	sr *io.SectionReader
 }
 
-// Dataはセグメントの内容を読み取り、返します。
+// Data reads and returns the contents of the segment.
 func (s *Segment) Data() ([]byte, error)
 
-// Openは、セグメントを読み取る新しいReadSeekerを返します。
+// Open returns a new ReadSeeker reading the segment.
 func (s *Segment) Open() io.ReadSeeker
 
 type SectionHeader struct {
@@ -90,13 +92,13 @@ type SectionHeader struct {
 	Flags  uint32
 }
 
-// Relocは、Mach-Oの再配置を表します。
+// A Reloc represents a Mach-O relocation.
 type Reloc struct {
 	Addr  uint32
 	Value uint32
-	// Scattered == false かつ Extern == true の場合、Valueはシンボル番号です。
-	// Scattered == false かつ Extern == false の場合、Valueはセクション番号です。
-	// Scattered == true の場合、Valueはこの再配置が参照する値です。
+	// when Scattered == false && Extern == true, Value is the symbol number.
+	// when Scattered == false && Extern == false, Value is the section number.
+	// when Scattered == true, Value is the value that this reloc refers to.
 	Type      uint8
 	Len       uint8
 	Pcrel     bool
@@ -108,22 +110,23 @@ type Section struct {
 	SectionHeader
 	Relocs []Reloc
 
-	// ReadAtメソッドのためにReaderAtを埋め込みます。
-	// ReadとSeekを避けるために、SectionReaderを直接埋め込まないでください。
-	// クライアントがReadとSeekを使用したい場合は、
-	// 他のクライアントとのシークオフセットの競合を避けるために
-	// Open()を使用する必要があります。
+	// Embed ReaderAt for ReadAt method.
+	// Do not embed SectionReader directly
+	// to avoid having Read and Seek.
+	// If a client wants Read and Seek it must use
+	// Open() to avoid fighting over the seek offset
+	// with other clients.
 	io.ReaderAt
 	sr *io.SectionReader
 }
 
-// Dataは、Mach-Oセクションの内容を読み取り、返します。
+// Data reads and returns the contents of the Mach-O section.
 func (s *Section) Data() ([]byte, error)
 
-// Openは、Mach-Oセクションを読み取る新しいReadSeekerを返します。
+// Open returns a new ReadSeeker reading the Mach-O section.
 func (s *Section) Open() io.ReadSeeker
 
-// Dylibは、Mach-Oの動的ライブラリロードコマンドを表します。
+// A Dylib represents a Mach-O load dynamic library command.
 type Dylib struct {
 	LoadBytes
 	Name           string
@@ -132,7 +135,7 @@ type Dylib struct {
 	CompatVersion  uint32
 }
 
-// Symtabは、Mach-Oのシンボルテーブルコマンドを表します。
+// A Symtab represents a Mach-O symbol table command.
 type Symtab struct {
 	LoadBytes
 	SymtabCmd
@@ -146,13 +149,13 @@ type Dysymtab struct {
 	IndirectSyms []uint32
 }
 
-// Rpathは、Mach-O rpathコマンドを表します。
+// A Rpath represents a Mach-O rpath command.
 type Rpath struct {
 	LoadBytes
 	Path string
 }
 
-// Symbolは、Mach-O 32ビットまたは64ビットのシンボルテーブルエントリです。
+// A Symbol is a Mach-O 32-bit or 64-bit symbol table entry.
 type Symbol struct {
 	Name  string
 	Type  uint8
@@ -161,8 +164,8 @@ type Symbol struct {
 	Value uint64
 }
 
-// FormatErrorは、データがオブジェクトファイルの正しい形式でない場合、
-// 一部の操作によって返されます。
+// FormatError is returned by some operations if the data does
+// not have the correct format for an object file.
 type FormatError struct {
 	off int64
 	msg string
@@ -171,32 +174,34 @@ type FormatError struct {
 
 func (e *FormatError) Error() string
 
-// Openは、[os.Open] を使用して指定されたファイルを開き、それをMach-Oバイナリとして使用するための準備をします。
+// Open opens the named file using [os.Open] and prepares it for use as a Mach-O binary.
 func Open(name string) (*File, error)
 
-// Closeは、[File] を閉じます。
-// [File] が [Open] ではなく [NewFile] を直接使用して作成された場合、
-// Closeは何も影響を与えません。
+// Close closes the [File].
+// If the [File] was created using [NewFile] directly instead of [Open],
+// Close has no effect.
 func (f *File) Close() error
 
-// NewFileは、基礎となるリーダーでMach-Oバイナリにアクセスするための新しいFileを作成します。
-// Mach-Oバイナリは、ReaderAtの位置0で開始することが期待されています。
+// NewFile creates a new [File] for accessing a Mach-O binary in an underlying reader.
+// The Mach-O binary is expected to start at position 0 in the ReaderAt.
 func NewFile(r io.ReaderAt) (*File, error)
 
-// Segmentは、指定された名前の最初のSegmentを返します。そのようなセグメントが存在しない場合はnilを返します。
+// Segment returns the first Segment with the given name, or nil if no such segment exists.
 func (f *File) Segment(name string) *Segment
 
-// Sectionは、指定された名前の最初のセクションを返します。そのような
-// セクションが存在しない場合はnilを返します。
+// Section returns the first section with the given name, or nil if no such
+// section exists.
 func (f *File) Section(name string) *Section
 
-// DWARFは、Mach-OファイルのDWARFデバッグ情報を返します。
+// DWARF returns the DWARF debug information for the Mach-O file.
 func (f *File) DWARF() (*dwarf.Data, error)
 
-// ImportedSymbolsは、バイナリfが参照しているすべてのシンボルの名前を返します。
-// これらは、動的ロード時に他のライブラリによって満たされることが期待されています。
+// ImportedSymbols returns the names of all symbols
+// referred to by the binary f that are expected to be
+// satisfied by other libraries at dynamic load time.
 func (f *File) ImportedSymbols() ([]string, error)
 
-// ImportedLibrariesは、バイナリfが参照しているすべてのライブラリのパスを返します。
-// これらは、動的リンク時にバイナリとリンクされることが期待されています。
+// ImportedLibraries returns the paths of all libraries
+// referred to by the binary f that are expected to be
+// linked with the binary at dynamic link time.
 func (f *File) ImportedLibraries() ([]string, error)

@@ -4,13 +4,13 @@
 
 package types
 
-// Unionは、インタフェースに埋め込まれた項のユニオンを表します。
+// A Union represents a union of terms embedded in an interface.
 type Union struct {
 	terms []*Term
 }
 
-// NewUnionは与えられた要素で新しい [Union] 型を返します。
-// 空のUnionを作成することはエラーであり、構文的に不可能です。
+// NewUnion returns a new [Union] type with the given terms.
+// It is an error to create an empty union; they are syntactically not possible.
 func NewUnion(terms []*Term) *Union
 
 func (u *Union) Len() int
@@ -19,10 +19,10 @@ func (u *Union) Term(i int) *Term
 func (u *Union) Underlying() Type
 func (u *Union) String() string
 
-// Termは [Union] 内の項を表します。
+// A Term represents a term in a [Union].
 type Term term
 
-// NewTermは新しいユニオン用語を返します。
+// NewTerm returns a new union term.
 func NewTerm(tilde bool, typ Type) *Term
 
 func (t *Term) Tilde() bool

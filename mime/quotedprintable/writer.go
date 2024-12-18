@@ -6,10 +6,10 @@ package quotedprintable
 
 import "github.com/shogo82148/std/io"
 
-// Writerは、[io.WriteCloser] を実装するquoted-printableライターです。
+// A Writer is a quoted-printable writer that implements [io.WriteCloser].
 type Writer struct {
-	// バイナリモードでは、ライターの入力を純粋なバイナリとして扱い、
-	// 行末のバイトをバイナリデータとして処理します。
+	// Binary mode treats the writer's input as pure binary and processes end of
+	// line bytes as binary data.
 	Binary bool
 
 	w    io.Writer
@@ -18,14 +18,14 @@ type Writer struct {
 	cr   bool
 }
 
-// NewWriterは、wに書き込む新しい [Writer] を返します。
+// NewWriter returns a new [Writer] that writes to w.
 func NewWriter(w io.Writer) *Writer
 
-// Writeは、pをquoted-printableエンコーディングでエンコードし、それを
-// 基礎となる [io.Writer] に書き込みます。行の長さは76文字に制限されます。
-// エンコードされたバイトは、[Writer] が閉じられるまで必ずしもフラッシュされません。
+// Write encodes p using quoted-printable encoding and writes it to the
+// underlying [io.Writer]. It limits line length to 76 characters. The encoded
+// bytes are not necessarily flushed until the [Writer] is closed.
 func (w *Writer) Write(p []byte) (n int, err error)
 
-// Closeは [Writer] を閉じ、未書き込みのデータを基礎となる [io.Writer] にフラッシュしますが、
-// 基礎となるio.Writerを閉じるわけではありません。
+// Close closes the [Writer], flushing any unwritten data to the underlying
+// [io.Writer], but does not close the underlying io.Writer.
 func (w *Writer) Close() error

@@ -419,6 +419,10 @@ const (
 	WasmF32
 	WasmF64
 	WasmPtr
+
+	// bool is not really a wasm type, but we allow it on wasmimport/wasmexport
+	// function parameters/results. 32-bit on Wasm side, 8-bit on Go side.
+	WasmBool
 )
 
 type InlMark struct {
@@ -625,6 +629,7 @@ type Auto struct {
 type RegSpill struct {
 	Addr           Addr
 	Reg            int16
+	Reg2           int16
 	Spill, Unspill As
 }
 
@@ -662,7 +667,7 @@ type Link struct {
 	Imports            []goobj.ImportedPkg
 	DiagFunc           func(string, ...interface{})
 	DiagFlush          func()
-	DebugInfo          func(fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
+	DebugInfo          func(ctxt *Link, fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
 	GenAbstractFunc    func(fn *LSym)
 	Errors             int
 

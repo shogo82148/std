@@ -56,9 +56,14 @@ func InlineImpossible(fn *ir.Func) string
 // Note: The criteria for "big" is heuristic and subject to change.
 func IsBigFunc(fn *ir.Func) bool
 
+// InlineCallTarget returns the resolved-for-inlining target of a call.
+// It does not necessarily guarantee that the target can be inlined, though
+// obvious exclusions are applied.
+func InlineCallTarget(callerfn *ir.Func, call *ir.CallExpr, profile *pgoir.Profile) *ir.Func
+
 // TryInlineCall returns an inlined call expression for call, or nil
 // if inlining is not possible.
-func TryInlineCall(callerfn *ir.Func, call *ir.CallExpr, bigCaller bool, profile *pgoir.Profile) *ir.InlinedCallExpr
+func TryInlineCall(callerfn *ir.Func, call *ir.CallExpr, bigCaller bool, profile *pgoir.Profile, closureCalledOnce bool) *ir.InlinedCallExpr
 
 // SSADumpInline gives the SSA back end a chance to dump the function
 // when producing output for debugging the compiler itself.

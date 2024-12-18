@@ -8,31 +8,28 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// ErrBadPatternは、パターンが不正であることを示します。
+// ErrBadPattern indicates a pattern was malformed.
 var ErrBadPattern = errors.New("syntax error in pattern")
 
-// Matchはnameがシェルパターンと一致するかどうかを判定します。
-// パターンの構文は以下のようになります：
+// Match reports whether name matches the shell pattern.
+// The pattern syntax is:
 //
-// パターン:
+//	pattern:
+//		{ term }
+//	term:
+//		'*'         matches any sequence of non-/ characters
+//		'?'         matches any single non-/ character
+//		'[' [ '^' ] { character-range } ']'
+//		            character class (must be non-empty)
+//		c           matches character c (c != '*', '?', '\\', '[')
+//		'\\' c      matches character c
 //
-//	{ 要素 }
+//	character-range:
+//		c           matches character c (c != '\\', '-', ']')
+//		'\\' c      matches character c
+//		lo '-' hi   matches character c for lo <= c <= hi
 //
-// 要素:
-//
-//	'*'         非/の任意のシーケンスに一致します
-//	'?'         非/の任意の1文字に一致します
-//	'[' [ '^' ] { 文字範囲 } ']'
-//	           文字のクラス（空でなければならない）
-//	c           文字cに一致します（c != '*', '?', '\\', '['）
-//	'\\' c      文字cに一致します
-//
-// 文字範囲:
-//
-//	c           文字cに一致します（c != '\\', '-', ']')
-//	'\\' c      文字cに一致します
-//	lo '-' hi   lo <= c <= hiの範囲の文字cに一致します
-//
-// Matchはパターンがname全体と一致する必要があります。部分一致ではありません。
-// 返される可能性のある唯一のエラーは、patternが正しくない場合の [ErrBadPattern] です。
+// Match requires pattern to match all of name, not just a substring.
+// The only possible returned error is [ErrBadPattern], when pattern
+// is malformed.
 func Match(pattern, name string) (matched bool, err error)

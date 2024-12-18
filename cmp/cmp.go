@@ -2,16 +2,19 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージcmpは、順序付けられた値を比較するための型と関数に関連するものを提供します。
+// Package cmp provides types and functions related to comparing
+// ordered values.
 package cmp
 
-// Ordered < <= >= >演算子をサポートする任意の順序付けられた型を許可する制約です。
-// もし将来のGoリリースで新しい順序付けられた型が追加された場合、
-// この制約はそれらを含めるように変更されます。
+// Ordered is a constraint that permits any ordered type: any type
+// that supports the operators < <= >= >.
+// If future releases of Go add new ordered types,
+// this constraint will be modified to include them.
 //
-// 浮動小数点型にはNaN（「非数」）値が含まれる場合があります。
-// NaN値と他の値、NaNであろうとなかろうと、比較演算子（==、<など）は常にfalseを報告します。
-// NaN値を比較する一貫した方法については、 [Compare] 関数を参照してください。
+// Note that floating-point types may contain NaN ("not-a-number") values.
+// An operator such as == or < will always report false when
+// comparing a NaN value with any other value, NaN or not.
+// See the [Compare] function for a consistent way to compare NaN values.
 type Ordered interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 |
 		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr |
@@ -19,21 +22,21 @@ type Ordered interface {
 		~string
 }
 
-// Less xがyより小さい場合にtrueを報告します。
-// 浮動小数点型にはNaN（「非数」）値が含まれる場合があります。
-// NaN値は、任意の非NaN値よりも小さいと見なされ、-0.0は0.0より小さくありません（等しいです）。
-func Less[T Ordered](x, y T) bool { return false }
+// Less reports whether x is less than y.
+// For floating-point types, a NaN is considered less than any non-NaN,
+// and -0.0 is not less than (is equal to) 0.0.
+func Less[T Ordered](x, y T) bool
 
-// Compareは、
+// Compare returns
 //
-//	xがyより小さい場合は-1、
-//	xがyと等しい場合は0、
-//	xがyより大きい場合は+1を返します。
+//	-1 if x is less than y,
+//	 0 if x equals y,
+//	+1 if x is greater than y.
 //
-// 浮動小数点型にはNaN（「非数」）値が含まれる場合があります。
-// NaN値は、任意の非NaN値よりも小さいと見なされ、NaN値はNaN値と等しく、-0.0は0.0と等しいです。
-func Compare[T Ordered](x, y T) int { return 0 }
+// For floating-point types, a NaN is considered less than any non-NaN,
+// a NaN is considered equal to a NaN, and -0.0 is equal to 0.0.
+func Compare[T Ordered](x, y T) int
 
-// Orは、ゼロ値でない最初の引数を返します。
-// 引数が非ゼロでない場合、ゼロ値を返します。
-func Or[T comparable](vals ...T) T { return vals[0] }
+// Or returns the first of its arguments that is not equal to the zero value.
+// If no argument is non-zero, it returns the zero value.
+func Or[T comparable](vals ...T) T

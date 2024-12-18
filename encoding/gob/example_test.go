@@ -11,16 +11,17 @@ import (
 	"github.com/shogo82148/std/log"
 )
 
-// この例は、パッケージの基本的な使用方法を示しています: エンコーダを作成し、
-// いくつかの値を送信し、デコーダでそれらを受信します。
+// This example shows the basic usage of the package: Create an encoder,
+// transmit some values, receive them with a decoder.
 func Example_basic() {
-	// エンコーダとデコーダを初期化します。通常、encとdecはネットワーク接続にバインドされ、
-	// エンコーダとデコーダは別々のプロセスで実行されます。
-	var network bytes.Buffer        // ネットワーク接続の代わり
-	enc := gob.NewEncoder(&network) // ネットワークに書き込みます。
-	dec := gob.NewDecoder(&network) // ネットワークから読み取ります。
+	// Initialize the encoder and decoder. Normally enc and dec would be
+	// bound to network connections and the encoder and decoder would
+	// run in different processes.
+	var network bytes.Buffer        // Stand-in for a network connection
+	enc := gob.NewEncoder(&network) // Will write to network.
+	dec := gob.NewDecoder(&network) // Will read from network.
 
-	// いくつかの値をエンコード（送信）します。
+	// Encode (send) some values.
 	err := enc.Encode(P{3, 4, 5, "Pythagoras"})
 	if err != nil {
 		log.Fatal("encode error:", err)
@@ -30,7 +31,7 @@ func Example_basic() {
 		log.Fatal("encode error:", err)
 	}
 
-	// 値をデコード（受信）し、印刷します。
+	// Decode (receive) and print the values.
 	var q Q
 	err = dec.Decode(&q)
 	if err != nil {

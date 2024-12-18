@@ -90,9 +90,10 @@ func ExampleEncoder() {
 	//   </person>
 }
 
-// この例では、XMLの一部をあらかじめ設定されたフィールドを持つ値にアンマーシャルする方法を示しています。
-// Phoneフィールドが変更されず、XMLの<Company>要素が無視されることに注意してください。
-// また、Groupsフィールドは、そのタグに提供された要素パスを考慮して割り当てられます。
+// This example demonstrates unmarshaling an XML excerpt into a value with
+// some preset fields. Note that the Phone field isn't modified and that
+// the XML <Company> element is ignored. Also, the Groups field is assigned
+// considering the element path provided in its tag.
 func ExampleUnmarshal() {
 	type Email struct {
 		Where string `xml:"where,attr"`

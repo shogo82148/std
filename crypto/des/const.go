@@ -2,7 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// desパッケージは米国連邦情報処理標準パブリケーション46-3で定義された、
-// データ暗号化標準（DES）とトリプルデータ暗号化アルゴリズム（TDEA）を実装しています。
-// DESは暗号学的に破れており、安全なアプリケーションには使用しないでください。
+// Package des implements the Data Encryption Standard (DES) and the
+// Triple Data Encryption Algorithm (TDEA) as defined
+// in U.S. Federal Information Processing Standards Publication 46-3.
+//
+// DES is cryptographically broken and should not be used for secure
+// applications.
 package des

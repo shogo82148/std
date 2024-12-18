@@ -12,10 +12,11 @@ import (
 	"github.com/shogo82148/std/testing/slogtest"
 )
 
-// この例は、このパッケージを使用してハンドラをテストする一つの手法を示しています。
-// ハンドラには [bytes.Buffer] が書き込み用に与えられ、結果の出力の各行が解析されます。
-// JSON出力の場合、[encoding/json.Unmarshal] はmap[string]anyへのポインタを与えると、
-// 望ましい形式の結果を生成します。
+// This example demonstrates one technique for testing a handler with this
+// package. The handler is given a [bytes.Buffer] to write to, and each line
+// of the resulting output is parsed.
+// For JSON output, [encoding/json.Unmarshal] produces a result in the desired
+// format when given a pointer to a map[string]any.
 func Example_parsing() {
 	var buf bytes.Buffer
 	h := slog.NewJSONHandler(&buf, nil)
@@ -28,7 +29,7 @@ func Example_parsing() {
 			}
 			var m map[string]any
 			if err := json.Unmarshal(line, &m); err != nil {
-				panic(err) // 実際のテストでは、t.Fatalを使用します。
+				panic(err) // In a real test, use t.Fatal.
 			}
 			ms = append(ms, m)
 		}

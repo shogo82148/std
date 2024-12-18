@@ -11,16 +11,28 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// Namedは名前付き（定義された）型を表します。
+// A Named represents a named (defined) type.
+//
+// A declaration such as:
+//
+//	type S struct { ... }
+//
+// creates a defined type whose underlying type is a struct,
+// and binds this type to the object S, a [TypeName].
+// Use [Named.Underlying] to access the underlying type.
+// Use [Named.Obj] to obtain the object S.
+//
+// Before type aliases (Go 1.9), the spec called defined types "named types".
 type Named struct {
 	check *Checker
 	obj   *TypeName
 
-	// fromRHS はこの *Named 型が派生元となる宣言の右辺値の型（サイクルの報告用）を保持します。
-	// validType のみで使用されるため、同期化は必要ありません。
+	// fromRHS holds the type (on RHS of declaration) this *Named type is derived
+	// from (for cycle reporting). Only used by validType, and therefore does not
+	// require synchronization.
 	fromRHS Type
 
-	// インスタンス化された型に関する情報; それ以外はnil
+	// information for instantiated types; nil otherwise
 	inst *instance
 
 	mu         sync.Mutex
@@ -28,40 +40,42 @@ type Named struct {
 	underlying Type
 	tparams    *TypeParamList
 
-	// この型に宣言されたメソッド（この型のメソッドセットではない）
-	// シグネチャは遅延してチェックされます。
-	// インスタンス化されていない型の場合、これは完全なメソッドのリストです。インスタンス化された型の場合、
-	// メソッドは最初にアクセスされたときに個別に展開されます。
+	// methods declared for this type (not the method set of this type)
+	// Signatures are type-checked lazily.
+	// For non-instantiated types, this is a fully populated list of methods. For
+	// instantiated types, methods are individually expanded when they are first
+	// accessed.
 	methods []*Func
 
-	// loaderは型パラメータ、基底型、およびメソッドを遅延読み込みするために提供されるかもしれません。
+	// loader may be provided to lazily load type parameters, underlying type, and methods.
 	loader func(*Named) (tparams []*TypeParam, underlying Type, methods []*Func)
 }
 
-// NewNamedは、与えられた型名、基礎型、および関連するメソッドに対して新しい名前付き型を返します。
-// もし与えられた型名のオブジェクトがまだ型を持っていない場合、その型は返された名前付き型に設定されます。
-// 基礎型は*Namedではない必要があります。
+// NewNamed returns a new named type for the given type name, underlying type, and associated methods.
+// If the given type name obj doesn't have a type yet, its type is set to the returned named type.
+// The underlying type must not be a *Named.
 func NewNamed(obj *TypeName, underlying Type, methods []*Func) *Named
 
-// Objは、名前tで定義された宣言の型名を返します。インスタンス化された型の場合、これは元の型の型名と同じです。
+// Obj returns the type name for the declaration defining the named type t. For
+// instantiated types, this is same as the type name of the origin type.
 func (t *Named) Obj() *TypeName
 
-// Originは、指定された型tがインスタンス化されたジェネリック型を返します。
-// tがインスタンス化されていない型の場合は、結果はtとなります。
+// Origin returns the generic type from which the named type t is
+// instantiated. If t is not an instantiated type, the result is t.
 func (t *Named) Origin() *Named
 
-// TypeParams は、名前付きの型 t の型パラメーターを返します。返り値は nil です。
-// (元々) ジェネリック型である場合、インスタンス化されているかどうかに関わらず、結果は非 nil です。
+// TypeParams returns the type parameters of the named type t, or nil.
+// The result is non-nil for an (originally) generic type even if it is instantiated.
 func (t *Named) TypeParams() *TypeParamList
 
-// SetTypeParamsは名前付き型tの型パラメータを設定します。
-// tには型引数を持っていてはいけません。
+// SetTypeParams sets the type parameters of the named type t.
+// t must not have type arguments.
 func (t *Named) SetTypeParams(tparams []*TypeParam)
 
-// TypeArgsは、名前付きの型tをインスタンス化するために使用される型引数を返します。
+// TypeArgs returns the type arguments used to instantiate the named type t.
 func (t *Named) TypeArgs() *TypeList
 
-// NumMethodsはtに定義された明示的なメソッドの数を返します。
+// NumMethods returns the number of explicit methods defined for t.
 func (t *Named) NumMethods() int
 
 // Method returns the i'th method of named type t for 0 <= i < t.NumMethods().
@@ -77,13 +91,13 @@ func (t *Named) NumMethods() int
 // change in the future.
 func (t *Named) Method(i int) *Func
 
-// SetUnderlyingは基本型を設定し、tを完全なものとしてマークします。
-// tには型引数を持っていてはいけません。
+// SetUnderlying sets the underlying type and marks t as complete.
+// t must not have type arguments.
 func (t *Named) SetUnderlying(underlying Type)
 
-// AddMethodは、メソッドmがすでにメソッドリストに存在しない場合に追加します。
-// メソッドはtと同じパッケージに存在しなければならず、tは
-// 型引数を持っていてはなりません。
+// AddMethod adds method m unless it is already in the method list.
+// The method must be in the same package as t, and t must not have
+// type arguments.
 func (t *Named) AddMethod(m *Func)
 
 // Underlying returns the [underlying type] of the named type t, resolving all

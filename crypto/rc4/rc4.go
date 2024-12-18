@@ -2,13 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// rc4パッケージはBruce Schneierの「応用暗号化」で定義されている
-// RC4暗号を実装しています。
+// Package rc4 implements RC4 encryption, as defined in Bruce Schneier's
+// Applied Cryptography.
 //
-// RC4は暗号学的に脆弱であり、安全なアプリケーションには使用すべきではありません。
+// RC4 is cryptographically broken and should not be used for secure
+// applications.
 package rc4
 
-// Cipherは特定のキーを使用したRC4のインスタンスです。
+// A Cipher is an instance of RC4 using a particular key.
 type Cipher struct {
 	s    [256]uint32
 	i, j uint8
@@ -18,14 +19,16 @@ type KeySizeError int
 
 func (k KeySizeError) Error() string
 
-// NewCipherは新しい [Cipher] を作成し、返します。キーアーギュメントはRC4キーであり、少なくとも1バイト、最大256バイトである必要があります。
+// NewCipher creates and returns a new [Cipher]. The key argument should be the
+// RC4 key, at least 1 byte and at most 256 bytes.
 func NewCipher(key []byte) (*Cipher, error)
 
-// Resetはキーデータをゼロ化し、 [Cipher] を使用できなくします。
+// Reset zeros the key data and makes the [Cipher] unusable.
 //
-// Deprecated: Resetはキーがプロセスのメモリから完全に削除されることを保証できません。
+// Deprecated: Reset can't guarantee that the key will be entirely removed from
+// the process's memory.
 func (c *Cipher) Reset()
 
-// XORKeyStreamは、キーストリームを使用してsrcとXOR演算した結果をdstに設定します。
-// Dstとsrcは完全に重なるか、まったく重ならない必要があります。
+// XORKeyStream sets dst to the result of XORing src with the key stream.
+// Dst and src must overlap entirely or not at all.
 func (c *Cipher) XORKeyStream(dst, src []byte)

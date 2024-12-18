@@ -11,18 +11,18 @@ import (
 	"github.com/shogo82148/std/log"
 )
 
-// この例では、カスタムのエンコーディングとデコーディングメソッドを実装した値を伝送します。
+// This example transmits a value that implements the custom encoding and decoding methods.
 func Example_encodeDecode() {
-	var network bytes.Buffer // ネットワークの代わり。
+	var network bytes.Buffer // Stand-in for the network.
 
-	// エンコーダを作成し、値を送信します。
+	// Create an encoder and send a value.
 	enc := gob.NewEncoder(&network)
 	err := enc.Encode(Vector{3, 4, 5})
 	if err != nil {
 		log.Fatal("encode:", err)
 	}
 
-	// デコーダを作成し、値を受信します。
+	// Create a decoder and receive a value.
 	dec := gob.NewDecoder(&network)
 	var v Vector
 	err = dec.Decode(&v)

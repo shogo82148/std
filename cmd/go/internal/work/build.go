@@ -89,10 +89,11 @@ and test commands:
 		Sets -cover.
 	-coverpkg pattern1,pattern2,pattern3
 		For a build that targets package 'main' (e.g. building a Go
-		executable), apply coverage analysis to each package matching
-		the patterns. The default is to apply coverage analysis to
-		packages in the main Go module. See 'go help packages' for a
-		description of package patterns.  Sets -cover.
+		executable), apply coverage analysis to each package whose
+		import path matches the patterns. The default is to apply
+		coverage analysis to packages in the main Go module. See
+		'go help packages' for a description of package patterns.
+		Sets -cover.
 	-v
 		print the names of packages as they are compiled.
 	-work
@@ -125,6 +126,9 @@ and test commands:
 		or, if set explicitly, has _race appended to it. Likewise for the -msan
 		and -asan flags. Using a -buildmode option that requires non-default compile
 		flags has a similar effect.
+	-json
+		Emit build output in JSON suitable for automated processing.
+		See 'go help buildjson' for the encoding details.
 	-ldflags '[pattern=]arg list'
 		arguments to pass on each go tool link invocation.
 	-linkshared
@@ -226,6 +230,8 @@ const (
 	OmitModFlag       BuildFlagMask = 1 << iota
 	OmitModCommonFlags
 	OmitVFlag
+	OmitBuildOnlyFlags
+	OmitJSONFlag
 )
 
 // AddBuildFlags adds the flags common to the build, clean, get,

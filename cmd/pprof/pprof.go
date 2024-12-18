@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// pprofはprofile.dataの視覚化ツールです。これは、github.com/google/pprofで提供されている上流バージョンをベースにしており、Goディストリビューション固有の細かな修正が加えられています。これらのパッケージへの修正がある場合は、アップストリームへの反映を検討してください。
+// pprof is a tool for visualization of profile.data. It is based on
+// the upstream version at github.com/google/pprof, with minor
+// modifications specific to the Go distribution. Please consider
+// upstreaming any modifications to these packages.
 
 package main

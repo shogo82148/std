@@ -2,15 +2,18 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// tzdata パッケージは、タイムゾーンデータベースの埋め込みコピーを提供します。
-// このパッケージがプログラムのどこかでインポートされている場合、
-// タイムパッケージがシステム上の tzdata ファイルを見つけられない場合、
-// この埋め込み情報を使用します。
+// Package tzdata provides an embedded copy of the timezone database.
+// If this package is imported anywhere in the program, then if
+// the time package cannot find tzdata files on the system,
+// it will use this embedded information.
 //
-// このパッケージをインポートすると、プログラムのサイズが約 450 KB 増加します。
+// Importing this package will increase the size of a program by about
+// 450 KB.
 //
-// このパッケージは、通常、プログラムのメインパッケージによってインポートされるべきです。
-// ライブラリは通常、プログラムにタイムゾーンデータベースを含めるかどうかを決定すべきではありません。
+// This package should normally be imported by a program's main package,
+// not by a library. Libraries normally shouldn't decide whether to
+// include the timezone database in a program.
 //
-// このパッケージは、-tags timetzdata でビルドすると自動的にインポートされます。
+// This package will be automatically imported if you build with
+// -tags timetzdata.
 package tzdata

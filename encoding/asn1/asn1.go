@@ -2,58 +2,65 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージasn1は、ITU-T Rec X.690で定義されたDERエンコードされたASN.1データ構造の解析を実装します。
-// また、「ASN.1、BER、およびDERのサブセットの素人向けガイド」も参照してください。
-// http://luca.ntop.org/Teaching/Appunti/asn1.html。
+// Package asn1 implements parsing of DER-encoded ASN.1 data structures,
+// as defined in ITU-T Rec X.690.
+//
+// See also “A Layman's Guide to a Subset of ASN.1, BER, and DER,”
+// http://luca.ntop.org/Teaching/Appunti/asn1.html.
 package asn1
 
-// StructuralErrorは、ASN.1データが有効であることを示していますが、それを受け取るGoの型が一致していません。
+// A StructuralError suggests that the ASN.1 data is valid, but the Go type
+// which is receiving it doesn't match.
 type StructuralError struct {
 	Msg string
 }
 
 func (e StructuralError) Error() string
 
-// SyntaxErrorは、ASN.1データが無効であることを示唆しています。
+// A SyntaxError suggests that the ASN.1 data is invalid.
 type SyntaxError struct {
 	Msg string
 }
 
 func (e SyntaxError) Error() string
 
-// BitStringは、ASN.1 BIT STRINGタイプを使用したい場合に使用する構造体です。ビット文字列は、メモリ上で最も近いバイトまでパディングされ、有効なビット数が記録されます。パディングビットはゼロになります。
+// BitString is the structure to use when you want an ASN.1 BIT STRING type. A
+// bit string is padded up to the nearest byte in memory and the number of
+// valid bits is recorded. Padding bits will be zero.
 type BitString struct {
 	Bytes     []byte
 	BitLength int
 }
 
-// Atは、指定されたインデックスのビットを返します。インデックスが範囲外の場合は0を返します。
+// At returns the bit at the given index. If the index is out of range it
+// returns 0.
 func (b BitString) At(i int) int
 
-// RightAlign はパディングビットが先頭にあるスライスを返します。スライスは BitString とメモリを共有する場合があります。
+// RightAlign returns a slice where the padding bits are at the beginning. The
+// slice may share memory with the BitString.
 func (b BitString) RightAlign() []byte
 
 // NullRawValue is a [RawValue] with its Tag set to the ASN.1 NULL type tag (5).
 var NullRawValue = RawValue{Tag: TagNull}
 
-// NullBytesには、DERエンコードされたASN.1 NULLタイプを表すバイトが含まれています。
+// NullBytes contains bytes representing the DER-encoded ASN.1 NULL type.
 var NullBytes = []byte{TagNull, 0}
 
-// ObjectIdentifierは、ASN.1オブジェクト識別子を表します。
+// An ObjectIdentifier represents an ASN.1 OBJECT IDENTIFIER.
 type ObjectIdentifier []int
 
-// Equalはoiとotherが同じ識別子を表しているかどうかを報告します。
+// Equal reports whether oi and other represent the same identifier.
 func (oi ObjectIdentifier) Equal(other ObjectIdentifier) bool
 
 func (oi ObjectIdentifier) String() string
 
-// Enumerated（列挙型）はプレーンなintで表されます。
+// An Enumerated is represented as a plain int.
 type Enumerated int
 
-// フラグは任意のデータを受け入れ、存在する場合にはtrueに設定されます。
+// A Flag accepts any data and is set to true if present.
 type Flag bool
 
-// RawValueは、復号化されていないASN.1オブジェクトを表します。
+// A RawValue represents an undecoded ASN.1 object.
 type RawValue struct {
 	Class, Tag int
 	IsCompound bool
@@ -61,16 +68,22 @@ type RawValue struct {
 	FullBytes  []byte
 }
 
-// RawContentは、未デコードのDERデータが構造体にとって保存される必要があることを示すために使用されます。使用するには、構造体の最初のフィールドはこの型でなければなりません。他のフィールドがこの型であることはエラーです。
+// RawContent is used to signal that the undecoded, DER data needs to be
+// preserved for a struct. To use it, the first field of the struct must have
+// this type. It's an error for any of the other fields to have this type.
 type RawContent []byte
 
-// UnmarshalはDER形式のASN.1データ構造bを解析し、reflectパッケージを使用してvalで指定された任意の値を埋める。
-// Unmarshalはreflectパッケージを使用するため、書き込まれる構造体は大文字のフィールド名を使用する必要がある。
-// valがnilまたはポインタでない場合、Unmarshalはエラーを返す。
+// Unmarshal parses the DER-encoded ASN.1 data structure b
+// and uses the reflect package to fill in an arbitrary value pointed at by val.
+// Because Unmarshal uses the reflect package, the structs
+// being written to must use upper case field names. If val
+// is nil or not a pointer, Unmarshal returns an error.
 //
-// bを解析した後、valに埋めるために使用されなかったバイトはrestとして返される。
-// 構造体へのSEQUENCEの解析時、valにマッチするフィールドを持たないトレーリング要素は、
-// トレーリングデータではなくSEQUENCEの有効な要素と見なされないため、restには含まれません。
+// After parsing b, any bytes that were leftover and not used to fill
+// val will be returned in rest. When parsing a SEQUENCE into a struct,
+// any trailing elements of the SEQUENCE that do not have matching
+// fields in val will not be included in rest, as these are considered
+// valid elements of the SEQUENCE and not trailing data.
 //
 //   - An ASN.1 INTEGER can be written to an int, int32, int64,
 //     or *[big.Int].
@@ -100,33 +113,37 @@ type RawContent []byte
 //     if each of the elements in the sequence can be
 //     written to the corresponding element in the struct.
 //
-// 構造体フィールドに対する以下のタグにはUnmarshalに特別な意味があります。
+// The following tags on struct fields have special meaning to Unmarshal:
 //
-//	applicationはAPPLICATIONタグが使用されていることを指定します
-//	privateはPRIVATEタグが使用されていることを指定します
-//	default:xはオプションの整数フィールドのデフォルト値を設定します（オプションも指定されている場合のみ使用）
-//	explicitは暗黙のタグを追加の明示的なタグでラップすることを指定します
-//	optionalはフィールドをASN.1 OPTIONALとしてマークします
-//	setはSEQUENCEではなくSET型を期待します
-//	tag:xはASN.1タグ番号を指定します。これはASN.1 CONTEXT SPECIFICであるということを意味します。
+//	application specifies that an APPLICATION tag is used
+//	private     specifies that a PRIVATE tag is used
+//	default:x   sets the default value for optional integer fields (only used if optional is also present)
+//	explicit    specifies that an additional, explicit tag wraps the implicit one
+//	optional    marks the field as ASN.1 OPTIONAL
+//	set         causes a SET, rather than a SEQUENCE type to be expected
+//	tag:x       specifies the ASN.1 tag number; implies ASN.1 CONTEXT SPECIFIC
 //
-// IMPLICITタグを持つASN.1値を文字列フィールドにデコードする場合、
-// UnmarshalはデフォルトでPrintableStringになります。これは'@'や'&'などの文字をサポートしません。
-// 他のエンコーディングを強制するには、次のタグを使用します:
+// When decoding an ASN.1 value with an IMPLICIT tag into a string field,
+// Unmarshal will default to a PrintableString, which doesn't support
+// characters such as '@' and '&'. To force other encodings, use the following
+// tags:
 //
-//	ia5は文字列をASN.1 IA5String値として復元します
-//	numericは文字列をASN.1 NumericString値として復元します
-//	utf8は文字列をASN.1 UTF8String値として復元します
+//	ia5     causes strings to be unmarshaled as ASN.1 IA5String values
+//	numeric causes strings to be unmarshaled as ASN.1 NumericString values
+//	utf8    causes strings to be unmarshaled as ASN.1 UTF8String values
 //
-// 構造体の最初のフィールドの型がRawContentの場合、構造体の生のASN1コンテンツがそれに保存されます。
+// If the type of the first field of a structure is RawContent then the raw
+// ASN1 contents of the struct will be stored in it.
 //
-// スライスの型名が"SET"で終わる場合、これは"set"タグが設定されたように扱われます。これにより、
-// タイプがSEQUENCEではなくSET OF xと解釈されます。これは、
-// 構造体タグが付けられないネストしたスライスで使用することができます。
+// If the name of a slice type ends with "SET" then it's treated as if
+// the "set" tag was set on it. This results in interpreting the type as a
+// SET OF x rather than a SEQUENCE OF x. This can be used with nested slices
+// where a struct tag cannot be given.
 //
-// 他のASN.1の型はサポートされていません; 遭遇すると、
-// Unmarshalは解析エラーを返します。
+// Other ASN.1 types are not supported; if it encounters them,
+// Unmarshal returns a parse error.
 func Unmarshal(b []byte, val any) (rest []byte, err error)
 
-// UnmarshalWithParamsでは、トップレベルの要素にフィールドパラメータを指定することができます。パラメータの形式は、フィールドタグと同じです。
+// UnmarshalWithParams allows field parameters to be specified for the
+// top-level element. The form of the params is the same as the field tags.
 func UnmarshalWithParams(b []byte, val any, params string) (rest []byte, err error)

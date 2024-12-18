@@ -4,6 +4,6 @@
 
 package syntax
 
-// Compileは正規表現を実行するためのプログラムにコンパイルします。
-// 正規表現はすでに簡素化されている必要があります（re.Simplifyから戻されたもの）。
+// Compile compiles the regexp into a program to be executed.
+// The regexp should have been simplified already (returned from re.Simplify).
 func Compile(re *Regexp) (*Prog, error)

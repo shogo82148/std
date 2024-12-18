@@ -44,12 +44,16 @@ const (
 	Sxxx SymKind = iota
 	// Executable instructions
 	STEXT
+	STEXTFIPS
 	// Read only static data
 	SRODATA
+	SRODATAFIPS
 	// Static data that does not contain any pointers
 	SNOPTRDATA
+	SNOPTRDATAFIPS
 	// Static data
 	SDATA
+	SDATAFIPS
 	// Statically data that is initially all 0s
 	SBSS
 	// Statically data that is initially all 0s and does not contain pointers
@@ -74,3 +78,13 @@ const (
 
 	SSEHUNWINDINFO
 )
+
+// IsText reports whether t is one of the text kinds.
+func (t SymKind) IsText() bool
+
+// IsDATA reports whether t is one of the DATA kinds (SDATA or SDATAFIPS,
+// excluding NOPTRDATA, RODATA, BSS, and so on).
+func (t SymKind) IsDATA() bool
+
+// IsFIPS reports whether t is one fo the FIPS kinds.
+func (t SymKind) IsFIPS() bool

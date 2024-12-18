@@ -13,16 +13,16 @@ import (
 func ExampleWriter_Init() {
 	w := new(tabwriter.Writer)
 
-	// タブストップ8でタブ区切りの列にフォーマットします。
+	// Format in tab-separated columns with a tab stop of 8.
 	w.Init(os.Stdout, 0, 8, 0, '\t', 0)
 	fmt.Fprintln(w, "a\tb\tc\td\t.")
 	fmt.Fprintln(w, "123\t12345\t1234567\t123456789\t.")
 	fmt.Fprintln(w)
 	w.Flush()
 
-	// 最小幅5のスペースで区切られた列に右揃えでフォーマットします。
-	// そして少なくとも1つの空白のパディング（よって、より広い列のエントリーが
-	// お互いに触れないようにします）。
+	// Format right-aligned in space-separated columns of minimal width 5
+	// and at least one blank of padding (so wider column entries do not
+	// touch each other).
 	w.Init(os.Stdout, 5, 0, 1, ' ', tabwriter.AlignRight)
 	fmt.Fprintln(w, "a\tb\tc\td\t.")
 	fmt.Fprintln(w, "123\t12345\t1234567\t123456789\t.")
@@ -38,8 +38,8 @@ func ExampleWriter_Init() {
 }
 
 func Example_elastic() {
-	// bとdがどちらも各行の2番目のセルに表示されているにもかかわらず、
-	// 異なる列に属していることに注目してください。
+	// Observe how the b's and the d's, despite appearing in the
+	// second cell of each line, belong to different columns.
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, '.', tabwriter.AlignRight|tabwriter.Debug)
 	fmt.Fprintln(w, "a\tb\tc")
 	fmt.Fprintln(w, "aa\tbb\tcc")
@@ -55,13 +55,13 @@ func Example_elastic() {
 }
 
 func Example_trailingTab() {
-	// 3行目には末尾のタブがないことに注意してください。
-	// したがって、その最終セルは整列した列の一部ではありません。
+	// Observe that the third line has no trailing tab,
+	// so its final cell is not part of an aligned column.
 	const padding = 3
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, padding, '-', tabwriter.AlignRight|tabwriter.Debug)
 	fmt.Fprintln(w, "a\tb\taligned\t")
 	fmt.Fprintln(w, "aa\tbb\taligned\t")
-	fmt.Fprintln(w, "aaa\tbbb\tunaligned") // 末尾にタブがない
+	fmt.Fprintln(w, "aaa\tbbb\tunaligned") // no trailing tab
 	fmt.Fprintln(w, "aaaa\tbbbb\taligned\t")
 	w.Flush()
 

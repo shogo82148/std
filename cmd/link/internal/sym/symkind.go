@@ -43,6 +43,10 @@ type SymKind uint8
 const (
 	Sxxx SymKind = iota
 	STEXT
+	STEXTFIPSSTART
+	STEXTFIPS
+	STEXTFIPSEND
+	STEXTEND
 	SELFRXSECT
 	SMACHOPLT
 
@@ -53,6 +57,10 @@ const (
 	SGOFUNC
 	SGCBITS
 	SRODATA
+	SRODATAFIPSSTART
+	SRODATAFIPS
+	SRODATAFIPSEND
+	SRODATAEND
 	SFUNCTAB
 
 	SELFROSECT
@@ -87,14 +95,23 @@ const (
 	// Writable sections.
 	SFirstWritable
 	SBUILDINFO
+	SFIPSINFO
 	SELFSECT
 	SMACHO
 	SMACHOGOT
 	SWINDOWS
 	SELFGOT
 	SNOPTRDATA
+	SNOPTRDATAFIPSSTART
+	SNOPTRDATAFIPS
+	SNOPTRDATAFIPSEND
+	SNOPTRDATAEND
 	SINITARR
 	SDATA
+	SDATAFIPSSTART
+	SDATAFIPS
+	SDATAFIPSEND
+	SDATAEND
 	SXCOFFTOC
 	SBSS
 	SNOPTRBSS
@@ -135,9 +152,13 @@ const (
 var AbiSymKindToSymKind = [...]SymKind{
 	objabi.Sxxx:                    Sxxx,
 	objabi.STEXT:                   STEXT,
+	objabi.STEXTFIPS:               STEXTFIPS,
 	objabi.SRODATA:                 SRODATA,
+	objabi.SRODATAFIPS:             SRODATAFIPS,
 	objabi.SNOPTRDATA:              SNOPTRDATA,
+	objabi.SNOPTRDATAFIPS:          SNOPTRDATAFIPS,
 	objabi.SDATA:                   SDATA,
+	objabi.SDATAFIPS:               SDATAFIPS,
 	objabi.SBSS:                    SBSS,
 	objabi.SNOPTRBSS:               SNOPTRBSS,
 	objabi.STLSBSS:                 STLSBSS,
@@ -166,6 +187,10 @@ var ReadOnly = []SymKind{
 	SGOFUNC,
 	SGCBITS,
 	SRODATA,
+	SRODATAFIPSSTART,
+	SRODATAFIPS,
+	SRODATAFIPSEND,
+	SRODATAEND,
 	SFUNCTAB,
 }
 
@@ -181,7 +206,19 @@ var RelROMap = map[SymKind]SymKind{
 	SFUNCTAB:  SFUNCTABRELRO,
 }
 
-// IsData returns true if the type is a data type.
+// IsText returns true if t is a text type.
+func (t SymKind) IsText() bool
+
+// IsData returns true if t is any kind of data type.
 func (t SymKind) IsData() bool
+
+// IsDATA returns true if t is one of the SDATA types.
+func (t SymKind) IsDATA() bool
+
+// IsRODATA returns true if t is one of the SRODATA types.
+func (t SymKind) IsRODATA() bool
+
+// IsNOPTRDATA returns true if t is one of the SNOPTRDATA types.
+func (t SymKind) IsNOPTRDATA() bool
 
 func (t SymKind) IsDWARF() bool

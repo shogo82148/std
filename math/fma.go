@@ -4,6 +4,6 @@
 
 package math
 
-// FMAは、一度の丸めのみを使用して計算されたx * y + zを返します。
-// （つまり、FMAはx、y、およびzの融合乗算-加算結果を返します。）
+// FMA returns x * y + z, computed with only one rounding.
+// (That is, FMA returns the fused multiply-add of x, y, and z.)
 func FMA(x, y, z float64) float64

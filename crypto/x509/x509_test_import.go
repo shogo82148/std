@@ -4,5 +4,7 @@
 
 //go:build ignore
 
-// このファイルは、最小限のインポートのプログラムでも、ハッシュ関数の不足によるエラーなしに証明書に署名できることを確認するために、x509テストによって実行されます。
+// This file is run by the x509 tests to ensure that a program with minimal
+// imports can sign certificates without errors resulting from missing hash
+// functions.
 package main

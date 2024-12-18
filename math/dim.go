@@ -4,34 +4,36 @@
 
 package math
 
-// Dim関数は、x-yまたは0のうちの大きい方を返します。
+// Dim returns the maximum of x-y or 0.
 //
-// 特別なケースは以下の通りです:
+// Special cases are:
 //
 //	Dim(+Inf, +Inf) = NaN
 //	Dim(-Inf, -Inf) = NaN
 //	Dim(x, NaN) = Dim(NaN, x) = NaN
 func Dim(x, y float64) float64
 
-// Maxはxとyのうち大きい方を返します。
+// Max returns the larger of x or y.
 //
-// 特殊なケースは以下の通りです:
+// Special cases are:
 //
 //	Max(x, +Inf) = Max(+Inf, x) = +Inf
 //	Max(x, NaN) = Max(NaN, x) = NaN
 //	Max(+0, ±0) = Max(±0, +0) = +0
 //	Max(-0, -0) = -0
 //
-// なお、これはNaNと+Infの場合に組み込み関数maxとは異なります。
+// Note that this differs from the built-in function max when called
+// with NaN and +Inf.
 func Max(x, y float64) float64
 
-// Min関数は、xとyのうち小さい方を返します。
+// Min returns the smaller of x or y.
 //
-// 特殊な場合は以下の通りです：
+// Special cases are:
 //
 //	Min(x, -Inf) = Min(-Inf, x) = -Inf
 //	Min(x, NaN) = Min(NaN, x) = NaN
 //	Min(-0, ±0) = Min(±0, -0) = -0
 //
-// 注意：これは、NaNと-Infを引数にして呼び出すと、組み込みのmin関数とは異なる結果になります。
+// Note that this differs from the built-in function min when called
+// with NaN and -Inf.
 func Min(x, y float64) float64

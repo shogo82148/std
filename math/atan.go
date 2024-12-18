@@ -4,9 +4,9 @@
 
 package math
 
-// Atanはxのアークタンジェント（ラジアン）を返します。
+// Atan returns the arctangent, in radians, of x.
 //
-// 特殊なケースは以下の通りです:
+// Special cases are:
 //
 //	Atan(±0) = ±0
 //	Atan(±Inf) = ±Pi/2

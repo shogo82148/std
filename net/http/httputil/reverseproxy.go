@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// HTTP逆プロキシハンドラ
+// HTTP reverse proxy handler
 
 package httputil
 
@@ -13,120 +13,186 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ProxyRequestは、[ReverseProxy] によって書き換えられるリクエストを含んでいます。
+// A ProxyRequest contains a request to be rewritten by a [ReverseProxy].
 type ProxyRequest struct {
+	// In is the request received by the proxy.
+	// The Rewrite function must not modify In.
 	In *http.Request
 
-	// Outはプロキシに送信されるリクエストです。
-	// Rewrite関数はこのリクエストを変更または置換する場合があります。
-	// Rewriteが呼び出される前に、ホップバイホップのヘッダーはこのリクエストから削除されます。
+	// Out is the request which will be sent by the proxy.
+	// The Rewrite function may modify or replace this request.
+	// Hop-by-hop headers are removed from this request
+	// before Rewrite is called.
 	Out *http.Request
 }
 
-// SetURLは、ターゲットに指定されたスキーム、ホスト、およびベースパスに従って、アウトバウンドリクエストをルーティングします。
-// もしターゲットのパスが"/base"であり、受信したリクエストが"/dir"である場合、ターゲットリクエストは"/base/dir"となります。
+// SetURL routes the outbound request to the scheme, host, and base path
+// provided in target. If the target's path is "/base" and the incoming
+// request was for "/dir", the target request will be for "/base/dir".
 //
-// SetURLは、アウトバウンドのHostヘッダをターゲットのホストに合わせて書き換えます。
-// インバウンドのリクエストのHostヘッダを保持するために（[NewSingleHostReverseProxy] のデフォルトの動作）：
+// SetURL rewrites the outbound Host header to match the target's host.
+// To preserve the inbound request's Host header (the default behavior
+// of [NewSingleHostReverseProxy]):
 //
 //	rewriteFunc := func(r *httputil.ProxyRequest) {
-//	    r.SetURL(url)
-//	    r.Out.Host = r.In.Host
+//		r.SetURL(url)
+//		r.Out.Host = r.In.Host
 //	}
 func (r *ProxyRequest) SetURL(target *url.URL)
 
-// SetXForwardedは、出力リクエストのX-Forwarded-For、X-Forwarded-Host、およびX-Forwarded-Protoヘッダーを設定します。
+// SetXForwarded sets the X-Forwarded-For, X-Forwarded-Host, and
+// X-Forwarded-Proto headers of the outbound request.
 //
-// - X-Forwarded-Forヘッダーは、クライアントのIPアドレスに設定されます。
-// - X-Forwarded-Hostヘッダーは、クライアントが要求したホスト名に設定されます。
-// - X-Forwarded-Protoヘッダーは、入力リクエストがTLS対応の接続で行われたかどうかに応じて、「http」または「https」に設定されます。
+//   - The X-Forwarded-For header is set to the client IP address.
+//   - The X-Forwarded-Host header is set to the host name requested
+//     by the client.
+//   - The X-Forwarded-Proto header is set to "http" or "https", depending
+//     on whether the inbound request was made on a TLS-enabled connection.
 //
-// 出力リクエストに既存のX-Forwarded-Forヘッダーが含まれている場合、SetXForwardedはクライアントのIPアドレスを追加します。
-// SetXForwardedを呼び出す前に、入力リクエストのX-Forwarded-Forヘッダー（Director関数を使用して [ReverseProxy] を使用している場合のデフォルト動作）をコピーして、
-// 入力リクエストのX-Forwarded-Forヘッダーに追加します：
+// If the outbound request contains an existing X-Forwarded-For header,
+// SetXForwarded appends the client IP address to it. To append to the
+// inbound request's X-Forwarded-For header (the default behavior of
+// [ReverseProxy] when using a Director function), copy the header
+// from the inbound request before calling SetXForwarded:
 //
 //	rewriteFunc := func(r *httputil.ProxyRequest) {
-//	   r.Out.Header["X-Forwarded-For"] = r.In.Header["X-Forwarded-For"]
-//	   r.SetXForwarded()
+//		r.Out.Header["X-Forwarded-For"] = r.In.Header["X-Forwarded-For"]
+//		r.SetXForwarded()
 //	}
 func (r *ProxyRequest) SetXForwarded()
 
-// ReverseProxyは、受信したリクエストを別のサーバーに送信し、レスポンスをクライアントにプロキシするHTTPハンドラです。
+// ReverseProxy is an HTTP Handler that takes an incoming request and
+// sends it to another server, proxying the response back to the
+// client.
 //
-// もし基礎となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、1xxのレスポンスはクライアントに転送されます。
+// 1xx responses are forwarded to the client if the underlying
+// transport supports ClientTrace.Got1xxResponse.
 type ReverseProxy struct {
-
-	// Rewriteは、リクエストを変更してTransportを使用して送信される新しいリクエストに変換する関数でなければなりません。
-	// そのレスポンスは、元のクライアントに変更せずにコピーされます。
-	// Rewriteは、戻る後に提供されたProxyRequestまたはその内容にアクセスしてはいけません。
+	// Rewrite must be a function which modifies
+	// the request into a new request to be sent
+	// using Transport. Its response is then copied
+	// back to the original client unmodified.
+	// Rewrite must not access the provided ProxyRequest
+	// or its contents after returning.
 	//
-	// Forwarded、X-Forwarded、X-Forwarded-Host、およびX-Forwarded-Protoヘッダーは、
-	// Rewriteが呼び出される前に送信リクエストから削除されます。また、ProxyRequest.SetXForwardedメソッドも参照してください。
+	// The Forwarded, X-Forwarded, X-Forwarded-Host,
+	// and X-Forwarded-Proto headers are removed from the
+	// outbound request before Rewrite is called. See also
+	// the ProxyRequest.SetXForwarded method.
 	//
-	// 解析できないクエリパラメータは、Rewriteが呼び出される前に送信リクエストから削除されます。
-	// Rewrite関数は、インバウンドURLのRawQueryをアウトバウンドURLにコピーして、元のパラメータ文字列を保持することがあります。
-	// 注意：これは、プロキシのクエリパラメータの解釈がダウンストリームサーバーと一致しない場合にセキュリティの問題を引き起こす可能性があります。
+	// Unparsable query parameters are removed from the
+	// outbound request before Rewrite is called.
+	// The Rewrite function may copy the inbound URL's
+	// RawQuery to the outbound URL to preserve the original
+	// parameter string. Note that this can lead to security
+	// issues if the proxy's interpretation of query parameters
+	// does not match that of the downstream server.
 	//
-	// RewriteまたはDirectorのいずれか一つのみ設定できます。
+	// At most one of Rewrite or Director may be set.
 	Rewrite func(*ProxyRequest)
 
-	// Director（ディレクター）は、リクエストを変更して新しいリクエストをTransport（トランスポート）を使用して送信します。そのレスポンスは、元のクライアントに変更せずにコピーされます。Directorは、戻った後に提供されたリクエストにアクセスしてはいけません。
-	// デフォルトでは、X-Forwarded-ForヘッダーはクライアントのIPアドレスの値に設定されます。もし既にX-Forwarded-Forヘッダーが存在する場合、クライアントのIPは既存の値に追加されます。ただし、特殊なケースとして、リクエストのRequest.Headerマップにヘッダーが存在しているが、値がnilである場合（Director関数によって設定された場合など）、X-Forwarded-Forヘッダーは変更されません。
-	// IPスプーフィングを防ぐために、クライアントまたは信頼できないプロキシから送られてきたプリエクスティングのX-Forwarded-Forヘッダーを削除するようにしてください。
-	// ディレクターが戻った後にリクエストからホップバイホップヘッダーが削除されます。これにより、ディレクターが追加したヘッダーも削除される可能性があります。リクエストの変更を保持するためには、リライト関数を使用してください。
-	// ディレクターが戻った後、リクエストのRequest.Formが設定されている場合は、解析できないクエリパラメータが送信先のリクエストから削除されます。
-	// RewriteまたはDirectorのうち、最大1つが設定できます。
+	// Director is a function which modifies
+	// the request into a new request to be sent
+	// using Transport. Its response is then copied
+	// back to the original client unmodified.
+	// Director must not access the provided Request
+	// after returning.
+	//
+	// By default, the X-Forwarded-For header is set to the
+	// value of the client IP address. If an X-Forwarded-For
+	// header already exists, the client IP is appended to the
+	// existing values. As a special case, if the header
+	// exists in the Request.Header map but has a nil value
+	// (such as when set by the Director func), the X-Forwarded-For
+	// header is not modified.
+	//
+	// To prevent IP spoofing, be sure to delete any pre-existing
+	// X-Forwarded-For header coming from the client or
+	// an untrusted proxy.
+	//
+	// Hop-by-hop headers are removed from the request after
+	// Director returns, which can remove headers added by
+	// Director. Use a Rewrite function instead to ensure
+	// modifications to the request are preserved.
+	//
+	// Unparsable query parameters are removed from the outbound
+	// request if Request.Form is set after Director returns.
+	//
+	// At most one of Rewrite or Director may be set.
 	Director func(*http.Request)
 
-	// プロキシリクエストを実行するために使用されるトランスポートです。
-	// nil の場合、http.DefaultTransport が使用されます。
+	// The transport used to perform proxy requests.
+	// If nil, http.DefaultTransport is used.
 	Transport http.RoundTripper
 
-	// FlushIntervalは、レスポンスボディをクライアントにコピーする際のフラッシュ間隔を指定します。
-	// ゼロの場合、定期的なフラッシュは行われません。
-	// 負の値は、クライアントへの各書き込みの直後にすぐにフラッシュすることを意味します。
-	// FlushIntervalは、ReverseProxyがストリーミングレスポンスとしてレスポンスを認識するか、またはContentLengthが-1の場合は無視されます。
-	// このようなレスポンスの場合、書き込みはすぐにクライアントにフラッシュされます。
+	// FlushInterval specifies the flush interval
+	// to flush to the client while copying the
+	// response body.
+	// If zero, no periodic flushing is done.
+	// A negative value means to flush immediately
+	// after each write to the client.
+	// The FlushInterval is ignored when ReverseProxy
+	// recognizes a response as a streaming response, or
+	// if its ContentLength is -1; for such responses, writes
+	// are flushed to the client immediately.
 	FlushInterval time.Duration
 
-	// ErrorLogは、リクエストをプロキシする際に発生したエラーのオプションのロガーを指定します。
-	// nilの場合、ログはlogパッケージの標準ロガーを使用して行われます。
+	// ErrorLog specifies an optional logger for errors
+	// that occur when attempting to proxy the request.
+	// If nil, logging is done via the log package's standard logger.
 	ErrorLog *log.Logger
 
-	// BufferPoolは、io.CopyBufferがHTTPのレスポンスボディをコピーする際に使用するバイトスライスを取得するためのオプションのバッファプールを指定します。
+	// BufferPool optionally specifies a buffer pool to
+	// get byte slices for use by io.CopyBuffer when
+	// copying HTTP response bodies.
 	BufferPool BufferPool
 
-	// ModifyResponseはオプションの関数であり、バックエンドからのレスポンスを変更する役割を持ちます。
-	// この関数は、バックエンドからのレスポンスがある場合に呼び出されます（HTTPのステータスコードに関係なく）。
-	// バックエンドに到達できない場合は、オプションのErrorHandlerが呼び出され、ModifyResponseは呼び出されません。
+	// ModifyResponse is an optional function that modifies the
+	// Response from the backend. It is called if the backend
+	// returns a response at all, with any HTTP status code.
+	// If the backend is unreachable, the optional ErrorHandler is
+	// called without any call to ModifyResponse.
 	//
-	// ModifyResponseがエラーを返す場合、それに対してErrorHandlerが呼び出されます。
-	// ErrorHandlerがnilの場合は、デフォルトの実装が使用されます。
+	// If ModifyResponse returns an error, ErrorHandler is called
+	// with its error value. If ErrorHandler is nil, its default
+	// implementation is used.
 	ModifyResponse func(*http.Response) error
 
-	// ErrorHandlerは、バックエンドに到達したエラーやModifyResponseからのエラーを処理するオプションの関数です。
+	// ErrorHandler is an optional function that handles errors
+	// reaching the backend or errors from ModifyResponse.
 	//
-	// nilの場合、デフォルトでは提供されたエラーをログに記録し、502 Status Bad Gatewayレスポンスを返します。
+	// If nil, the default is to log the provided error and return
+	// a 502 Status Bad Gateway response.
 	ErrorHandler func(http.ResponseWriter, *http.Request, error)
 }
 
-// BufferPoolは [io.CopyBuffer] で使用するための一時的なバイトスライスを取得および返却するためのインターフェースです。
+// A BufferPool is an interface for getting and returning temporary
+// byte slices for use by [io.CopyBuffer].
 type BufferPool interface {
 	Get() []byte
 	Put([]byte)
 }
 
-// NewSingleHostReverseProxyは、URLを指定されたスキーム、ホスト、およびベースパスにルーティングする新しい [ReverseProxy] を返します。ターゲットのパスが"/base"であり、受信したリクエストが"/dir"である場合、ターゲットのリクエストは/base/dirになります。
-// NewSingleHostReverseProxyは、Hostヘッダーを書き換えません。
+// NewSingleHostReverseProxy returns a new [ReverseProxy] that routes
+// URLs to the scheme, host, and base path provided in target. If the
+// target's path is "/base" and the incoming request was for "/dir",
+// the target request will be for /base/dir.
 //
-// NewSingleHostReverseProxyが提供する以上のカスタマイズをするには、Rewrite関数を使用して直接ReverseProxyを使用してください。ProxyRequest SetURLメソッドを使用してアウトバウンドリクエストをルーティングすることができます（ただし、SetURLはデフォルトでアウトバウンドリクエストのHostヘッダーを書き換えます）。
+// NewSingleHostReverseProxy does not rewrite the Host header.
+//
+// To customize the ReverseProxy behavior beyond what
+// NewSingleHostReverseProxy provides, use ReverseProxy directly
+// with a Rewrite function. The ProxyRequest SetURL method
+// may be used to route the outbound request. (Note that SetURL,
+// unlike NewSingleHostReverseProxy, rewrites the Host header
+// of the outbound request by default.)
 //
 //	proxy := &ReverseProxy{
-//			Rewrite: func(r *ProxyRequest) {
-//				r.SetURL(target)
-//				r.Out.Host = r.In.Host // 必要に応じて
-//			},
-//		}
+//		Rewrite: func(r *ProxyRequest) {
+//			r.SetURL(target)
+//			r.Out.Host = r.In.Host // if desired
+//		},
+//	}
 func NewSingleHostReverseProxy(target *url.URL) *ReverseProxy
 
 func (p *ReverseProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request)

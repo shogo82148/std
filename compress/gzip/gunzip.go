@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// gzipパッケージは RFC 1952 で指定されている gzip 形式の圧縮ファイルの読み書きを実装しています。
+// Package gzip implements reading and writing of gzip format compressed files,
+// as specified in RFC 1952.
 package gzip
 
 import (
@@ -13,17 +14,17 @@ import (
 )
 
 var (
-	// ErrChecksum は、無効なチェックサムを持つGZIPデータを読み取る際に返されます。
+	// ErrChecksum is returned when reading GZIP data that has an invalid checksum.
 	ErrChecksum = errors.New("gzip: invalid checksum")
-	// ErrHeader は無効なヘッダーを持つ GZIP データを読み取る際に返されます。
+	// ErrHeader is returned when reading GZIP data that has an invalid header.
 	ErrHeader = errors.New("gzip: invalid header")
 )
 
-// gzipファイルは、圧縮ファイルに関するメタデータを示すヘッダーを格納しています。
-// そのヘッダーは、 [Writer] および [Reader] の構造体のフィールドとして公開されています。
+// The gzip file stores a header giving metadata about the compressed file.
+// That header is exposed as the fields of the [Writer] and [Reader] structs.
 //
-// 文字列はUTF-8でエンコードする必要があり、UnicodeのコードポイントU+0001からU+00FFのみを含むことができます。
-// これは、GZIPファイル形式の制約によるものです。
+// Strings must be UTF-8 encoded and may only contain Unicode code points
+// U+0001 through U+00FF, due to limitations of the GZIP file format.
 type Header struct {
 	Comment string
 	Extra   []byte
@@ -32,16 +33,20 @@ type Header struct {
 	OS      byte
 }
 
-// Readerは、gzip形式の圧縮ファイルから非圧縮データを取得するために読み取り可能な [io.Reader] です。
+// A Reader is an [io.Reader] that can be read to retrieve
+// uncompressed data from a gzip-format compressed file.
 //
-// 一般的に、gzipファイルはgzipファイルの連結であり、各ファイルには独自のヘッダがあります。
-// Readerから読み取ると、各非圧縮データの連結が返されます。
-// Readerのフィールドには最初のヘッダのみが記録されます。
+// In general, a gzip file can be a concatenation of gzip files,
+// each with its own header. Reads from the Reader
+// return the concatenation of the uncompressed data of each.
+// Only the first header is recorded in the Reader fields.
 //
-// Gzipファイルには非圧縮データの長さとチェックサムが格納されています。
-// [Reader.Read] は、非圧縮データの末尾に到達した場合、期待された長さやチェックサムがない場合に [ErrChecksum] を返します。
-// クライアントは、 [Reader.Read] によって返されるデータを受け取るまで、仮のものとして扱うべきです。
-// データの終端を示す [io.EOF] を受け取るまで。
+// Gzip files store a length and checksum of the uncompressed data.
+// The Reader will return an [ErrChecksum] when [Reader.Read]
+// reaches the end of the uncompressed data if it does not
+// have the expected length or checksum. Clients should treat data
+// returned by [Reader.Read] as tentative until they receive the [io.EOF]
+// marking the end of the data.
 type Reader struct {
 	Header
 	r            flate.Reader
@@ -57,33 +62,38 @@ type Reader struct {
 // If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.
 //
-// [Reader] を使用し終わった後は、呼び出し元の責任でCloseを呼び出す必要があります。
+// It is the caller's responsibility to call Close on the [Reader] when done.
 //
-// [Reader] によって返される [Reader.Header] フィールドは有効です。
+// The [Reader.Header] fields will be valid in the [Reader] returned.
 func NewReader(r io.Reader) (*Reader, error)
 
-// Resetは [Reader] zの状態を破棄し、 [NewReader] からの元の状態の結果と同等にしますが、代わりにrから読み込みます。
-// これにより、新しい [Reader] を割り当てる代わりに、 [Reader] を再利用することができます。
+// Reset discards the [Reader] z's state and makes it equivalent to the
+// result of its original state from [NewReader], but reading from r instead.
+// This permits reusing a [Reader] rather than allocating a new one.
 func (z *Reader) Reset(r io.Reader) error
 
-// Multistreamは、リーダーがマルチストリームファイルに対応しているかどうかを制御します。
+// Multistream controls whether the reader supports multistream files.
 //
-// 有効にすると（デフォルトでは有効）、 [Reader] は入力が各々個別にgzipされたデータストリームのシーケンスであることを期待し、
-// 各データストリームにはヘッダとトレーラーがあり、EOFで終了します。
-// このため、gzipで連結されたシーケンスの連結とgzip化は同等と見なされます。これはgzipリーダーの標準的な動作です。
+// If enabled (the default), the [Reader] expects the input to be a sequence
+// of individually gzipped data streams, each with its own header and
+// trailer, ending at EOF. The effect is that the concatenation of a sequence
+// of gzipped files is treated as equivalent to the gzip of the concatenation
+// of the sequence. This is standard behavior for gzip readers.
 //
-// Multistream(false)を呼び出すと、この動作を無効にできます。
-// 動作を無効にすることは、個々のgzipデータストリームを識別するファイル形式を読み込む場合や、
-// gzipデータストリームと他のデータストリームを混在させるファイル形式を読み込む場合に便利です。
-// このモードでは、 [Reader] がデータストリームの終端に達した場合、 [Reader.Read] は [io.EOF] を返します。
-// 基底のリーダーは [io.ByteReader] を実装している必要があり、gzipストリームの直後に位置を残しておくようになります。
-// 次のストリームを開始するには、z.Reset（r）を呼び出した後にz.Multistream(false)を呼び出します。
-// 次のストリームが存在しない場合、z.Reset（r）は [io.EOF] を返します。
+// Calling Multistream(false) disables this behavior; disabling the behavior
+// can be useful when reading file formats that distinguish individual gzip
+// data streams or mix gzip data streams with other data streams.
+// In this mode, when the [Reader] reaches the end of the data stream,
+// [Reader.Read] returns [io.EOF]. The underlying reader must implement [io.ByteReader]
+// in order to be left positioned just after the gzip stream.
+// To start the next stream, call z.Reset(r) followed by z.Multistream(false).
+// If there is no next stream, z.Reset(r) will return [io.EOF].
 func (z *Reader) Multistream(ok bool)
 
-// Readは、基になるReaderから圧縮されていないバイトを読み込むために [io.Reader] を実装しています。
+// Read implements [io.Reader], reading uncompressed bytes from its underlying [Reader].
 func (z *Reader) Read(p []byte) (n int, err error)
 
-// CloseはReaderを閉じます。ただし、基本となる [io.Reader] は閉じません。
-// GZIPのチェックサムを検証するためには、 [io.EOF] まで完全に消費する必要があります。
+// Close closes the [Reader]. It does not close the underlying [io.Reader].
+// In order for the GZIP checksum to be verified, the reader must be
+// fully consumed until the [io.EOF].
 func (z *Reader) Close() error

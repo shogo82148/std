@@ -15,7 +15,7 @@ func ExampleAbs() {
 	// Output: 5.0
 }
 
-// ExampleExpはオイラーの公式を計算します。
+// ExampleExp computes Euler's identity.
 func ExampleExp() {
 	fmt.Printf("%.1f", cmplx.Exp(1i*math.Pi)+1)
 	// Output: (0.0+0.0i)

@@ -2,30 +2,40 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// driverパッケージは、package sqlによって使用されるデータベースドライバが実装するインターフェースを定義します。
+// Package driver defines interfaces to be implemented by database
+// drivers as used by package sql.
 //
-// ほとんどのコードは、[database/sql] パッケージを使用するべきです。
+// Most code should use the [database/sql] package.
 //
-// ドライバのインターフェースは時間の経過とともに進化してきました。ドライバは [Connector] と [DriverContext] のインターフェースを実装する必要があります。
-// Connector.ConnectとDriver.Openメソッドは、決して [ErrBadConn] を返してはいけません。
-// [ErrBadConn] は、 [Validator] 、 [SessionResetter] 、または接続が既に無効な（閉じられたなど）状態にある場合にのみ返されるべきです。
+// The driver interface has evolved over time. Drivers should implement
+// [Connector] and [DriverContext] interfaces.
+// The Connector.Connect and Driver.Open methods should never return [ErrBadConn].
+// [ErrBadConn] should only be returned from [Validator], [SessionResetter], or
+// a query method if the connection is already in an invalid (e.g. closed) state.
 //
-// すべての [Conn] の実装は、以下のインターフェースを実装する必要があります：
-// [Pinger] 、 [SessionResetter] 、および [Validator] 。
+// All [Conn] implementations should implement the following interfaces:
+// [Pinger], [SessionResetter], and [Validator].
 //
-// 名前付きパラメータやコンテキストがサポートされている場合、ドライバの [Conn] は以下を実装する必要があります：
-// [ExecerContext] 、 [QueryerContext] 、 [ConnPrepareContext] 、および [ConnBeginTx] 。
+// If named parameters or context are supported, the driver's [Conn] should implement:
+// [ExecerContext], [QueryerContext], [ConnPrepareContext], and [ConnBeginTx].
 //
-// カスタムデータ型をサポートするためには、 [NamedValueChecker] を実装します。 [NamedValueChecker] は、CheckNamedValueから [ErrRemoveArgument] を返すことで、クエリごとのオプションをパラメータとして受け入れることも可能にします。
+// To support custom data types, implement [NamedValueChecker]. [NamedValueChecker]
+// also allows queries to accept per-query options as a parameter by returning
+// [ErrRemoveArgument] from CheckNamedValue.
 //
-// 複数の結果セットがサポートされている場合、 [Rows] は [RowsNextResultSet] を実装する必要があります。
-// ドライバが返された結果に含まれる型を説明する方法を知っている場合、以下のインターフェースを実装する必要があります：
-// [RowsColumnTypeScanType] 、 [RowsColumnTypeDatabaseTypeName] 、 [RowsColumnTypeLength] 、 [RowsColumnTypeNullable] 、および [RowsColumnTypePrecisionScale] 。
-// ある行の値は、Rows型を返すこともあり、それはデータベースカーソル値を表すことができます。
+// If multiple result sets are supported, [Rows] should implement [RowsNextResultSet].
+// If the driver knows how to describe the types present in the returned result
+// it should implement the following interfaces: [RowsColumnTypeScanType],
+// [RowsColumnTypeDatabaseTypeName], [RowsColumnTypeLength], [RowsColumnTypeNullable],
+// and [RowsColumnTypePrecisionScale]. A given row value may also return a [Rows]
+// type, which may represent a database cursor value.
 //
-// [Conn] が [Validator] を実装している場合には、接続が使用後に接続プールに返される前にIsValidメソッドが呼び出されます。
-// コネクションプールのエントリーが [SessionResetter] を実装している場合には、別のクエリに再利用される前にResetSessionが呼び出されます。
-// 接続が接続プールに返されないで直接再利用される場合は、再利用の前にResetSessionが呼び出されますが、IsValidは呼び出されません。
+// If a [Conn] implements [Validator], then the IsValid method is called
+// before returning the connection to the connection pool. If an entry in the
+// connection pool implements [SessionResetter], then ResetSession
+// is called before reusing the connection for another query. If a connection is
+// never returned to the connection pool but is immediately reused, then
+// ResetSession is called prior to reuse but IsValid is not called.
 package driver
 
 import (
@@ -34,8 +44,9 @@ import (
 	"github.com/shogo82148/std/reflect"
 )
 
-// Valueは、ドライバが扱える必要がある値です。
-// nil、データベースドライバの [NamedValueChecker] インターフェースで扱われる型、または次のいずれかの型のインスタンスです：
+// Value is a value that drivers must be able to handle.
+// It is either nil, a type handled by a database driver's [NamedValueChecker]
+// interface, or an instance of one of these types:
 //
 //	int64
 //	float64
@@ -44,128 +55,155 @@ import (
 //	string
 //	time.Time
 //
-// ドライバがカーソルをサポートしている場合、返されたValueはこのパッケージの [Rows] インターフェースも実装する場合があります。
-// これは、ユーザが "select cursor(select * from my_table) from dual" のようなカーソルを選択した場合に使用されます。
-// セレクトの [Rows] がクローズされると、カーソルの [Rows] もクローズされます。
+// If the driver supports cursors, a returned Value may also implement the [Rows] interface
+// in this package. This is used, for example, when a user selects a cursor
+// such as "select cursor(select * from my_table) from dual". If the [Rows]
+// from the select is closed, the cursor [Rows] will also be closed.
 type Value any
 
-// NamedValueは値の名前と値を保持します。
+// NamedValue holds both the value name and value.
 type NamedValue struct {
-
-	// もし Name が空でなければ、パラメータの識別子に使用されるべきであり、
-	// 順序位置ではないです。
+	// If the Name is not empty it should be used for the parameter identifier and
+	// not the ordinal position.
 	//
-	// Name にはシンボルのプレフィックスはつきません。
+	// Name will not have a symbol prefix.
 	Name string
 
-	// パラメータの序数位置は常に1から始まります。
+	// Ordinal position of the parameter starting from one and is always set.
 	Ordinal int
 
-	// Valueはパラメーターの値です。
+	// Value is the parameter value.
 	Value Value
 }
 
-// Driverはデータベースドライバーによって実装される必要があるインターフェースです。
+// Driver is the interface that must be implemented by a database
+// driver.
 //
-// データベースドライバーは、コンテキストへのアクセスと、接続プールの名前の解析を一度だけ行うために、
-// 接続ごとに一度ずつではなく、 [DriverContext] を実装することもできます。
+// Database drivers may implement [DriverContext] for access
+// to contexts and to parse the name only once for a pool of connections,
+// instead of once per connection.
 type Driver interface {
 	Open(name string) (Conn, error)
 }
 
-// もし [Driver] が DriverContext を実装している場合、[database/sql.DB] はOpenConnectorを呼び出して [Connector] を取得し、
-// その [Connector] のConnectメソッドを呼び出して必要な接続を取得します。
-// これにより、接続ごとに [Driver] のOpenメソッドを呼び出すのではなく、名前を1回だけ解析することができ、
-// またper-[Conn] コンテキストにアクセスすることもできます。
+// If a [Driver] implements DriverContext, then [database/sql.DB] will call
+// OpenConnector to obtain a [Connector] and then invoke
+// that [Connector]'s Connect method to obtain each needed connection,
+// instead of invoking the [Driver]'s Open method for each connection.
+// The two-step sequence allows drivers to parse the name just once
+// and also provides access to per-[Conn] contexts.
 type DriverContext interface {
 	OpenConnector(name string) (Connector, error)
 }
 
-// コネクタは、固定の構成でドライバを表し、複数のゴルーチンで使用するための同等の接続を作成できます。
+// A Connector represents a driver in a fixed configuration
+// and can create any number of equivalent Conns for use
+// by multiple goroutines.
 //
-// コネクタは [database/sql.OpenDB] に渡すことができ、ドライバは独自の [database/sql.DB] コンストラクタを実装するため、また、 [DriverContext] のOpenConnectorメソッドによって返されることができます。
-// これにより、ドライバはコンテキストへのアクセスとドライバ構成の繰り返し解析を避けることができます。
+// A Connector can be passed to [database/sql.OpenDB], to allow drivers
+// to implement their own [database/sql.DB] constructors, or returned by
+// [DriverContext]'s OpenConnector method, to allow drivers
+// access to context and to avoid repeated parsing of driver
+// configuration.
 //
-// コネクタが [io.Closer] を実装している場合、sqlパッケージの [database/sql.DB.Close] メソッドはCloseを呼び出し、エラー（あれば）を返します。
+// If a Connector implements [io.Closer], the [database/sql.DB.Close]
+// method will call the Close method and return error (if any).
 type Connector interface {
 	Connect(context.Context) (Conn, error)
 
 	Driver() Driver
 }
 
-// ErrSkipは、一部のオプションのインタフェースメソッドによって、高速経路が利用できないことを実行時に示すために返される場合があります。sqlパッケージは、オプションのインタフェースが実装されていないかのように続行する必要があります。ErrSkipは、明示的に文書化されている場所でのみサポートされます。
+// ErrSkip may be returned by some optional interfaces' methods to
+// indicate at runtime that the fast path is unavailable and the sql
+// package should continue as if the optional interface was not
+// implemented. ErrSkip is only supported where explicitly
+// documented.
 var ErrSkip = errors.New("driver: skip fast-path; continue as if unimplemented")
 
-// ErrBadConnは、ドライバが driver.[Conn] が不良な状態であることを示すために、
-// [database/sql] パッケージに返すべきです（たとえば、サーバーが接続を早期に閉じたなど）。
-// また、[database/sql] パッケージは新しい接続で再試行する必要があります。
+// ErrBadConn should be returned by a driver to signal to the [database/sql]
+// package that a driver.[Conn] is in a bad state (such as the server
+// having earlier closed the connection) and the [database/sql] package should
+// retry on a new connection.
 //
-// 重複した操作を防ぐために、可能性がある場合には、ErrBadConnを返してはいけません。
-// データベースサーバーが操作を実行した可能性があっても、ErrBadConnは返してはいけません。
+// To prevent duplicate operations, ErrBadConn should NOT be returned
+// if there's a possibility that the database server might have
+// performed the operation. Even if the server sends back an error,
+// you shouldn't return ErrBadConn.
 //
-// エラーは [errors.Is] を使用してチェックされます。エラーは
-// ErrBadConnをラップするか、Is(error) boolメソッドを実装することがあります。
+// Errors will be checked using [errors.Is]. An error may
+// wrap ErrBadConn or implement the Is(error) bool method.
 var ErrBadConn = errors.New("driver: bad connection")
 
-// Pingerは [Conn] によって実装される可能性のあるオプションのインターフェースです。
+// Pinger is an optional interface that may be implemented by a [Conn].
 //
-// [Conn] がPingerを実装していない場合、 [database/sql.DB.Ping] および [database/sql.DB.PingContext] は少なくとも1つの [Conn] が利用可能かどうかを確認します。
+// If a [Conn] does not implement Pinger, the [database/sql.DB.Ping] and
+// [database/sql.DB.PingContext] will check if there is at least one [Conn] available.
 //
-// Conn.Pingが [ErrBadConn] を返す場合、 [database/sql.DB.Ping] および [database/sql.DB.PingContext] は [Conn] をプールから削除します。
+// If Conn.Ping returns [ErrBadConn], [database/sql.DB.Ping] and [database/sql.DB.PingContext] will remove
+// the [Conn] from pool.
 type Pinger interface {
 	Ping(ctx context.Context) error
 }
 
-// Execerは [Conn] によって実装されるかもしれないオプションのインターフェースです。
+// Execer is an optional interface that may be implemented by a [Conn].
 //
-// もし [Conn] が [ExecerContext] または [Execer] のどちらの実装も持っていない場合、
-// [database/sql.DB.Exec] はまずクエリを準備し、ステートメントを実行し、そしてステートメントを閉じます。
+// If a [Conn] implements neither [ExecerContext] nor [Execer],
+// the [database/sql.DB.Exec] will first prepare a query, execute the statement,
+// and then close the statement.
 //
-// Execは [ErrSkip] を返す場合があります。
+// Exec may return [ErrSkip].
 //
-// Deprecated: ドライバは代わりに [ExecerContext] を実装するべきです。
+// Deprecated: Drivers should implement [ExecerContext] instead.
 type Execer interface {
 	Exec(query string, args []Value) (Result, error)
 }
 
-// ExecerContextは [Conn] によって実装されるかもしれないオプションのインターフェースです。
+// ExecerContext is an optional interface that may be implemented by a [Conn].
 //
-// [Conn] が [ExecerContext] を実装していない場合、[database/sql.DB.Exec] は [Execer] にフォールバックします。
-// もしConnがExecerも実装していない場合、[database/sql.DB.Exec] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
+// If a [Conn] does not implement [ExecerContext], the [database/sql.DB.Exec]
+// will fall back to [Execer]; if the Conn does not implement Execer either,
+// [database/sql.DB.Exec] will first prepare a query, execute the statement, and then
+// close the statement.
 //
-// ExecContextは [ErrSkip] を返すことがあります。
+// ExecContext may return [ErrSkip].
 //
-// ExecContextはコンテキストのタイムアウトを尊重し、コンテキストがキャンセルされたら返ります。
+// ExecContext must honor the context timeout and return when the context is canceled.
 type ExecerContext interface {
 	ExecContext(ctx context.Context, query string, args []NamedValue) (Result, error)
 }
 
-// Queryerは [Conn] によって実装されるかもしれないオプションのインターフェースです。
+// Queryer is an optional interface that may be implemented by a [Conn].
 //
-// [Conn] が [QueryerContext] も [Queryer] でも実装していない場合、 [database/sql.DB.Query] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
+// If a [Conn] implements neither [QueryerContext] nor [Queryer],
+// the [database/sql.DB.Query] will first prepare a query, execute the statement,
+// and then close the statement.
 //
-// Queryは [ErrSkip] を返すことがあります。
+// Query may return [ErrSkip].
 //
-// Deprecated: ドライバは代わりに [QueryerContext] を実装するべきです。
+// Deprecated: Drivers should implement [QueryerContext] instead.
 type Queryer interface {
 	Query(query string, args []Value) (Rows, error)
 }
 
-// QueryerContextは、[Conn] によって実装されるかもしれないオプションのインターフェースです。
+// QueryerContext is an optional interface that may be implemented by a [Conn].
 //
-// [Conn] がQueryerContextを実装していない場合、 [database/sql.DB.Query] は [Queryer] にフォールバックします。
-// もし、Connが [Queryer] を実装していない場合、 [database/sql.DB.Query] はまずクエリを準備し、ステートメントを実行してからステートメントを閉じます。
+// If a [Conn] does not implement QueryerContext, the [database/sql.DB.Query]
+// will fall back to [Queryer]; if the [Conn] does not implement [Queryer] either,
+// [database/sql.DB.Query] will first prepare a query, execute the statement, and then
+// close the statement.
 //
-// QueryContextは [ErrSkip] を返す場合があります。
+// QueryContext may return [ErrSkip].
 //
-// QueryContextはコンテキストのタイムアウトに従う必要があり、コンテキストがキャンセルされた場合にreturnします。
+// QueryContext must honor the context timeout and return when the context is canceled.
 type QueryerContext interface {
 	QueryContext(ctx context.Context, query string, args []NamedValue) (Rows, error)
 }
 
-// Connはデータベースへの接続です。同時に複数のゴルーチンで使用されません。
+// Conn is a connection to a database. It is not used concurrently
+// by multiple goroutines.
 //
-// Connは状態を保持していると想定されています。
+// Conn is assumed to be stateful.
 type Conn interface {
 	Prepare(query string) (Stmt, error)
 
@@ -174,49 +212,54 @@ type Conn interface {
 	Begin() (Tx, error)
 }
 
-// ConnPrepareContextはコンテキストを使用して [Conn] インターフェースを拡張します。
+// ConnPrepareContext enhances the [Conn] interface with context.
 type ConnPrepareContext interface {
 	PrepareContext(ctx context.Context, query string) (Stmt, error)
 }
 
-// IsolationLevelは [TxOptions] に保存されるトランザクション分離レベルです。
+// IsolationLevel is the transaction isolation level stored in [TxOptions].
 //
-// この型は、[database/sql.IsolationLevel] と一緒に定義された値と同じものと考えられるべきです。
+// This type should be considered identical to [database/sql.IsolationLevel] along
+// with any values defined on it.
 type IsolationLevel int
 
-// TxOptionsはトランザクションのオプションを保持します。
+// TxOptions holds the transaction options.
 //
-// この型は [database/sql.TxOptions] と同一と見なされるべきです。
+// This type should be considered identical to [database/sql.TxOptions].
 type TxOptions struct {
 	Isolation IsolationLevel
 	ReadOnly  bool
 }
 
-// ConnBeginTxは、コンテキストと [TxOptions] を追加して [Conn] インタフェースを拡張します。
+// ConnBeginTx enhances the [Conn] interface with context and [TxOptions].
 type ConnBeginTx interface {
 	BeginTx(ctx context.Context, opts TxOptions) (Tx, error)
 }
 
-// SessionResetterは、 [Conn] によって実装される可能性があります。これにより、ドライバは接続に関連付けられたセッション状態をリセットし、悪い接続を通知することができます。
+// SessionResetter may be implemented by [Conn] to allow drivers to reset the
+// session state associated with the connection and to signal a bad connection.
 type SessionResetter interface {
 	ResetSession(ctx context.Context) error
 }
 
-// Validatorは、 [Conn] によって実装されることがあります。これにより、ドライバーは接続が有効であるか、破棄すべきかを示すことができます。
+// Validator may be implemented by [Conn] to allow drivers to
+// signal if a connection is valid or if it should be discarded.
 //
-// 実装されている場合、ドライバーはクエリから基礎となるエラーを返すことができます。たとえ接続プールによって接続が破棄されるべきであってもです。
+// If implemented, drivers may return the underlying error from queries,
+// even if the connection should be discarded by the connection pool.
 type Validator interface {
 	IsValid() bool
 }
 
-// Resultはクエリの実行結果です。
+// Result is the result of a query execution.
 type Result interface {
 	LastInsertId() (int64, error)
 
 	RowsAffected() (int64, error)
 }
 
-// Stmtはプリペアドステートメントです。これは [Conn] にバインドされており、複数のゴルーチンで同時に使用されません。
+// Stmt is a prepared statement. It is bound to a [Conn] and not
+// used by multiple goroutines concurrently.
 type Stmt interface {
 	Close() error
 
@@ -227,39 +270,51 @@ type Stmt interface {
 	Query(args []Value) (Rows, error)
 }
 
-// StmtExecContextはコンテキストを提供することにより、 [Stmt] インターフェースを拡張します。
+// StmtExecContext enhances the [Stmt] interface by providing Exec with context.
 type StmtExecContext interface {
 	ExecContext(ctx context.Context, args []NamedValue) (Result, error)
 }
 
-// StmtQueryContextはコンテキストを持つQueryを提供することにより、 [Stmt] インターフェースを強化します。
+// StmtQueryContext enhances the [Stmt] interface by providing Query with context.
 type StmtQueryContext interface {
 	QueryContext(ctx context.Context, args []NamedValue) (Rows, error)
 }
 
-// ErrRemoveArgumentは、 [NamedValueChecker] から返されることがあります。
-// これは、[database/sql] パッケージに対して引数をドライバのクエリインターフェースに渡さないよう指示するためです。
-// クエリ固有のオプションやSQLクエリ引数ではない構造体を受け入れる場合に返します。
+// ErrRemoveArgument may be returned from [NamedValueChecker] to instruct the
+// [database/sql] package to not pass the argument to the driver query interface.
+// Return when accepting query specific options or structures that aren't
+// SQL query arguments.
 var ErrRemoveArgument = errors.New("driver: remove argument from query")
 
-// NamedValueCheckerは [Conn] または [Stmt] によってオプションで実装されることがあります。これにより、ドライバはデフォルトの [Value] タイプを超えたGoおよびデータベースのタイプを処理するための制御を提供します。
+// NamedValueChecker may be optionally implemented by [Conn] or [Stmt]. It provides
+// the driver more control to handle Go and database types beyond the default
+// [Value] types allowed.
 //
-// [database/sql] パッケージは、値チェッカーを以下の順序でチェックし、最初に一致したもので停止します： Stmt.NamedValueChecker、Conn.NamedValueChecker、Stmt.ColumnConverter、 [DefaultParameterConverter] 。
+// The [database/sql] package checks for value checkers in the following order,
+// stopping at the first found match: Stmt.NamedValueChecker, Conn.NamedValueChecker,
+// Stmt.ColumnConverter, [DefaultParameterConverter].
 //
-// CheckNamedValueが [ErrRemoveArgument] を返す場合、 [NamedValue] は最終的なクエリ引数に含まれません。これはクエリ自体に特殊なオプションを渡すために使用される場合があります。
+// If CheckNamedValue returns [ErrRemoveArgument], the [NamedValue] will not be included in
+// the final query arguments. This may be used to pass special options to
+// the query itself.
 //
-// [ErrSkip] が返された場合、列コンバーターのエラーチェックパスが引数に使用されます。ドライバは、独自の特殊なケースを使い果たした後に [ErrSkip] を返すことを望むかもしれません。
+// If [ErrSkip] is returned the column converter error checking
+// path is used for the argument. Drivers may wish to return [ErrSkip] after
+// they have exhausted their own special cases.
 type NamedValueChecker interface {
 	CheckNamedValue(*NamedValue) error
 }
 
-// ColumnConverterは、ステートメントが自身の列の型を認識しており、任意の型からドライバーの [Value] に変換できる場合、Stmtによってオプションで実装されることがあります。
-// Deprecated: ドライバーは [NamedValueChecker] を実装する必要があります。
+// ColumnConverter may be optionally implemented by [Stmt] if the
+// statement is aware of its own columns' types and can convert from
+// any type to a driver [Value].
+//
+// Deprecated: Drivers should implement [NamedValueChecker].
 type ColumnConverter interface {
 	ColumnConverter(idx int) ValueConverter
 }
 
-// Rowsは実行されたクエリの結果に対するイテレータです。
+// Rows is an iterator over an executed query's results.
 type Rows interface {
 	Columns() []string
 
@@ -268,7 +323,8 @@ type Rows interface {
 	Next(dest []Value) error
 }
 
-// RowsNextResultSetは、ドライバに次の結果セットに進むようにシグナルを送る方法を提供するために [Rows] インターフェースを拡張しています。
+// RowsNextResultSet extends the [Rows] interface by providing a way to signal
+// the driver to advance to the next result set.
 type RowsNextResultSet interface {
 	Rows
 
@@ -277,23 +333,29 @@ type RowsNextResultSet interface {
 	NextResultSet() error
 }
 
-// RowsColumnTypeScanTypeは、 [Rows] によって実装されるかもしれません。スキャンに使用できる値の型を返す必要があります。例えば、データベースのカラムタイプが「bigint」の場合、これは「 [reflect.TypeOf](int64(0)) 」を返すべきです。
+// RowsColumnTypeScanType may be implemented by [Rows]. It should return
+// the value type that can be used to scan types into. For example, the database
+// column type "bigint" this should return "[reflect.TypeOf](int64(0))".
 type RowsColumnTypeScanType interface {
 	Rows
 	ColumnTypeScanType(index int) reflect.Type
 }
 
-// RowsColumnTypeDatabaseTypeNameは [Rows] によって実装されるかもしれません。長さを除いたデータベースシステムのタイプ名を返す必要があります。タイプ名は大文字であるべきです。
-// 返される型の例: "VARCHAR", "NVARCHAR", "VARCHAR2", "CHAR", "TEXT",
+// RowsColumnTypeDatabaseTypeName may be implemented by [Rows]. It should return the
+// database system type name without the length. Type names should be uppercase.
+// Examples of returned types: "VARCHAR", "NVARCHAR", "VARCHAR2", "CHAR", "TEXT",
 // "DECIMAL", "SMALLINT", "INT", "BIGINT", "BOOL", "[]BIGINT", "JSONB", "XML",
-// "TIMESTAMP"。
+// "TIMESTAMP".
 type RowsColumnTypeDatabaseTypeName interface {
 	Rows
 	ColumnTypeDatabaseTypeName(index int) string
 }
 
-// RowsColumnTypeLengthは、 [Rows] によって実装されるかもしれません。カラムが可変長の場合、カラムタイプの長さを返す必要があります。カラムが可変長のタイプでない場合、okはfalseを返す必要があります。
-// システムの制限以外で長さが制限されていない場合、[math.MaxInt64] を返す必要があります。以下は、さまざまなタイプの戻り値の例です：
+// RowsColumnTypeLength may be implemented by [Rows]. It should return the length
+// of the column type if the column is a variable length type. If the column is
+// not a variable length type ok should return false.
+// If length is not limited other than system limits, it should return [math.MaxInt64].
+// The following are examples of returned values for various types:
 //
 //	TEXT          (math.MaxInt64, true)
 //	varchar(10)   (10, true)
@@ -306,15 +368,18 @@ type RowsColumnTypeLength interface {
 	ColumnTypeLength(index int) (length int64, ok bool)
 }
 
-// RowsColumnTypeNullableは、 [Rows] によって実装される可能性があります。カラムがnullである可能性がある場合は、nullableの値をtrueにする必要があります。カラムがnullでないことが確認されている場合は、falseにする必要があります。
-// カラムのヌラビリティが不明な場合は、okをfalseにしてください。
+// RowsColumnTypeNullable may be implemented by [Rows]. The nullable value should
+// be true if it is known the column may be null, or false if the column is known
+// to be not nullable.
+// If the column nullability is unknown, ok should be false.
 type RowsColumnTypeNullable interface {
 	Rows
 	ColumnTypeNullable(index int) (nullable, ok bool)
 }
 
-// RowsColumnTypePrecisionScaleは [Rows] によって実装されるかもしれません。それはデシマル型の精度とスケールを返すべきです。該当しない場合、okはfalseであるべきです。
-// 以下に、さまざまな型の戻り値の例を示します:
+// RowsColumnTypePrecisionScale may be implemented by [Rows]. It should return
+// the precision and scale for decimal types. If not applicable, ok should be false.
+// The following are examples of returned values for various types:
 //
 //	decimal(38, 4)    (38, 4, true)
 //	int               (0, 0, false)
@@ -324,13 +389,14 @@ type RowsColumnTypePrecisionScale interface {
 	ColumnTypePrecisionScale(index int) (precision, scale int64, ok bool)
 }
 
-// Txはトランザクションです。
+// Tx is a transaction.
 type Tx interface {
 	Commit() error
 	Rollback() error
 }
 
-// RowsAffectedは、行数を変更するINSERTまたはUPDATE操作に対する [Result] を実装します。
+// RowsAffected implements [Result] for an INSERT or UPDATE operation
+// which mutates a number of rows.
 type RowsAffected int64
 
 var _ Result = RowsAffected(0)
@@ -339,7 +405,9 @@ func (RowsAffected) LastInsertId() (int64, error)
 
 func (v RowsAffected) RowsAffected() (int64, error)
 
-// ResultNoRowsは、DDLコマンド（CREATE TABLEなど）が成功した場合にドライバーが返すための事前定義された [Result] です。これは、LastInsertIdと [RowsAffected] の両方に対してエラーを返します。
+// ResultNoRows is a pre-defined [Result] for drivers to return when a DDL
+// command (such as a CREATE TABLE) succeeds. It returns an error for both
+// LastInsertId and [RowsAffected].
 var ResultNoRows noRows
 
 var _ Result = noRows{}

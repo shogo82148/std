@@ -4,9 +4,9 @@
 
 package math
 
-// Lgammaは [Gamma](x)の自然対数と符号（-1または+1）を返します。
+// Lgamma returns the natural logarithm and sign (-1 or +1) of [Gamma](x).
 //
-// 特殊なケースは以下の通りです:
+// Special cases are:
 //
 //	Lgamma(+Inf) = +Inf
 //	Lgamma(0) = +Inf

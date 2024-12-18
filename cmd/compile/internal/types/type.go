@@ -200,16 +200,6 @@ type Type struct {
 	// Note that for pointers, this is always PtrSize even if the element type
 	// is NotInHeap. See size.go:PtrDataSize for details.
 	ptrBytes int64
-
-	// For defined (named) generic types, a pointer to the list of type params
-	// (in order) of this type that need to be instantiated. For instantiated
-	// generic types, this is the targs used to instantiate them. These targs
-	// may be typeparams (for re-instantiated types such as Value[T2]) or
-	// concrete types (for fully instantiated types such as Value[int]).
-	// rparams is only set for named types that are generic or are fully
-	// instantiated from a generic type, and is otherwise set to nil.
-	// TODO(danscales): choose a better name.
-	rparams *[]*Type
 }
 
 // Registers returns the number of integer and floating-point
@@ -228,11 +218,13 @@ func (t *Type) Deferwidth() bool
 func (t *Type) Recur() bool
 func (t *Type) IsShape() bool
 func (t *Type) HasShape() bool
+func (t *Type) IsFullyInstantiated() bool
 
 func (t *Type) SetNotInHeap(b bool)
 func (t *Type) SetNoalg(b bool)
 func (t *Type) SetDeferwidth(b bool)
 func (t *Type) SetRecur(b bool)
+func (t *Type) SetIsFullyInstantiated(b bool)
 
 // Should always do SetHasShape(true) when doing SetIsShape(true).
 func (t *Type) SetIsShape(b bool)
@@ -251,15 +243,6 @@ func (t *Type) Underlying() *Type
 // This should only be used for diagnostics.
 func (t *Type) Pos() src.XPos
 
-func (t *Type) RParams() []*Type
-
-func (t *Type) SetRParams(rparams []*Type)
-
-// IsFullyInstantiated reports whether t is a fully instantiated generic type; i.e. an
-// instantiated generic type where all type arguments are non-generic or fully
-// instantiated generic types.
-func (t *Type) IsFullyInstantiated() bool
-
 // Map contains Type fields specific to maps.
 type Map struct {
 	Key  *Type
@@ -269,7 +252,7 @@ type Map struct {
 	OldBucket *Type
 
 	// GOEXPERIMENT=swissmap fields
-	SwissBucket *Type
+	SwissGroup *Type
 }
 
 // MapType returns t's extra map-specific fields.
@@ -395,6 +378,9 @@ func (f *Field) End() int64
 
 // IsMethod reports whether f represents a method rather than a struct field.
 func (f *Field) IsMethod() bool
+
+// CompareFields compares two Field values by name.
+func CompareFields(a, b *Field) int
 
 // NewArray returns a new fixed-length array Type.
 func NewArray(elem *Type, bound int64) *Type

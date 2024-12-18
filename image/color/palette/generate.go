@@ -4,5 +4,5 @@
 
 //go:generate go run gen.go -output palette.go
 
-// paletteパッケージは、標準的なカラーパレットを提供します。
+// Package palette provides standard color palettes.
 package palette

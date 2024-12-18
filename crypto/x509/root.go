@@ -4,7 +4,17 @@
 
 package x509
 
-// SetFallbackRootsは、カスタムのルートが指定されておらず、プラットフォームの検証者またはシステム証明書プールが利用できない場合（たとえばルート証明書バンドルが存在しないコンテナ内部）に、証明書の検証中に使用するルートを設定します。rootsがnilの場合、SetFallbackRootsはパニックを引き起こします。
-// SetFallbackRootsは1回しか呼び出すことができず、複数回呼び出した場合はパニックを引き起こします。
-// GODEBUG=x509usefallbackroots=1を設定することで、システム証明書プールが存在していても、すべてのプラットフォームでフォールバックの動作を強制することができます（ただし、WindowsとmacOSでは、これによりプラットフォーム検証APIの使用が無効になり、純粋なGoの検証者が使用されます）。SetFallbackRootsを呼び出さずにx509usefallbackroots=1を設定しても効果はありません。
+// SetFallbackRoots sets the roots to use during certificate verification, if no
+// custom roots are specified and a platform verifier or a system certificate
+// pool is not available (for instance in a container which does not have a root
+// certificate bundle). SetFallbackRoots will panic if roots is nil.
+//
+// SetFallbackRoots may only be called once, if called multiple times it will
+// panic.
+//
+// The fallback behavior can be forced on all platforms, even when there is a
+// system certificate pool, by setting GODEBUG=x509usefallbackroots=1 (note that
+// on Windows and macOS this will disable usage of the platform verification
+// APIs and cause the pure Go verifier to be used). Setting
+// x509usefallbackroots=1 without calling SetFallbackRoots has no effect.
 func SetFallbackRoots(roots *CertPool)

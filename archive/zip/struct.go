@@ -3,17 +3,19 @@
 // license that can be found in the LICENSE file.
 
 /*
-zipパッケージは、ZIP アーカイブの読み書きをサポートします。
+Package zip provides support for reading and writing ZIP archives.
 
-詳細については、[ZIP specification] を参照してください。
+See the [ZIP specification] for details.
 
-このパッケージはディスクスパニングをサポートしていません。
+This package does not support disk spanning.
 
-ZIP64 についての注意点:
+A note about ZIP64:
 
-後方互換性を保つために、FileHeader には 32 ビットと 64 ビットの両方の Size フィールドがあります。
-64 ビットフィールドには常に正しい値が含まれ、通常のアーカイブでは両方のフィールドが同じ値になります。
-ZIP64 形式が必要なファイルの場合、32 ビットフィールドは 0xffffffff になり、代わりに 64 ビットフィールドを使用する必要があります。
+To be backwards compatible the FileHeader has both 32 and 64 bit Size
+fields. The 64 bit fields will always contain the correct value and
+for normal archives both fields will be the same. For files requiring
+the ZIP64 format the 32 bit fields will be 0xffffffff and the 64 bit
+fields must be used instead.
 
 [ZIP specification]: https://support.pkware.com/pkzip/appnote
 */
@@ -24,111 +26,119 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// 圧縮方式
+// Compression methods.
 const (
 	Store   uint16 = 0
 	Deflate uint16 = 8
 )
 
-// FileHeader は、ZIP ファイル内のファイルを説明します。
-// 詳細については、[ZIP specification] を参照してください。
+// FileHeader describes a file within a ZIP file.
+// See the [ZIP specification] for details.
 //
 // [ZIP specification]: https://support.pkware.com/pkzip/appnote
 type FileHeader struct {
-	// Nameはファイルの名前です。
+	// Name is the name of the file.
 	//
-	// それは相対パスでなければならず、ドライブレター（"C:"など）で始まってはならず、
-	// バックスラッシュの代わりにフォワードスラッシュを使用しなければなりません。末尾のスラッシュは
-	// このファイルがディレクトリであり、データを持つべきではないことを示します。
+	// It must be a relative path, not start with a drive letter (such as "C:"),
+	// and must use forward slashes instead of back slashes. A trailing slash
+	// indicates that this file is a directory and should have no data.
 	Name string
 
-	// Commentは64KiB未満の任意のユーザー定義文字列です。
+	// Comment is any arbitrary user-defined string shorter than 64KiB.
 	Comment string
 
-	// NonUTF8は、NameとCommentがUTF-8でエンコードされていないことを示します。
+	// NonUTF8 indicates that Name and Comment are not encoded in UTF-8.
 	//
-	// 仕様によれば、許可される他のエンコーディングはCP-437のみですが、
-	// 歴史的に多くのZIPリーダーはNameとCommentをシステムのローカル文字エンコーディングとして解釈します。
+	// By specification, the only other encoding permitted should be CP-437,
+	// but historically many ZIP readers interpret Name and Comment as whatever
+	// the system's local character encoding happens to be.
 	//
-	// このフラグは、ユーザーが特定のローカライズされた地域の非ポータブルなZIPファイルをエンコードするつもりである場合にのみ設定するべきです。
-	// それ以外の場合、Writerは有効なUTF-8文字列のZIP形式のUTF-8フラグを自動的に設定します。
+	// This flag should only be set if the user intends to encode a non-portable
+	// ZIP file for a specific localized region. Otherwise, the Writer
+	// automatically sets the ZIP format's UTF-8 flag for valid UTF-8 strings.
 	NonUTF8 bool
 
 	CreatorVersion uint16
 	ReaderVersion  uint16
 	Flags          uint16
 
-	// Methodは圧縮方法です。ゼロの場合、Storeが使用されます。
+	// Method is the compression method. If zero, Store is used.
 	Method uint16
 
-	// Modifiedはファイルの変更時間です。
+	// Modified is the modified time of the file.
 	//
-	// 読み取り時には、レガシーなMS-DOSの日付フィールドよりも拡張タイムスタンプが優先され、
-	// 時間のオフセットがタイムゾーンとして使用されます。
-	// MS-DOSの日付のみが存在する場合、タイムゾーンはUTCとみなされます。
+	// When reading, an extended timestamp is preferred over the legacy MS-DOS
+	// date field, and the offset between the times is used as the timezone.
+	// If only the MS-DOS date is present, the timezone is assumed to be UTC.
 	//
-	// 書き込み時には、タイムゾーンに依存しない拡張タイムスタンプが常に出力されます。
-	// レガシーなMS-DOSの日付フィールドは、Modified時間の位置に従ってエンコードされます。
+	// When writing, an extended timestamp (which is timezone-agnostic) is
+	// always emitted. The legacy MS-DOS date field is encoded according to the
+	// location of the Modified time.
 	Modified time.Time
 
-	// ModifiedTimeはMS-DOSでエンコードされた時間です。
+	// ModifiedTime is an MS-DOS-encoded time.
 	//
-	// Deprecated: 代わりにModifiedを使用してください。
+	// Deprecated: Use Modified instead.
 	ModifiedTime uint16
 
-	// ModifiedDateはMS-DOSでエンコードされた日付です。
+	// ModifiedDate is an MS-DOS-encoded date.
 	//
-	// Deprecated: 代わりにModifiedを使用してください。
+	// Deprecated: Use Modified instead.
 	ModifiedDate uint16
 
-	// CRC32は、ファイル内容のCRC32チェックサムです。
+	// CRC32 is the CRC32 checksum of the file content.
 	CRC32 uint32
 
-	// CompressedSizeは、ファイルの圧縮サイズ（バイト単位）です。
-	// ファイルの非圧縮または圧縮サイズが32ビットに収まらない場合、
-	// CompressedSizeは^uint32(0)に設定されます。
+	// CompressedSize is the compressed size of the file in bytes.
+	// If either the uncompressed or compressed size of the file
+	// does not fit in 32 bits, CompressedSize is set to ^uint32(0).
 	//
-	// Deprecated: 代わりにCompressedSize64を使用してください。
+	// Deprecated: Use CompressedSize64 instead.
 	CompressedSize uint32
 
-	// UncompressedSizeは、ファイルの圧縮されていないサイズをバイト単位で表します。
-	// ファイルの圧縮されていないサイズまたは圧縮されたサイズが32ビットに収まらない場合、
-	// UncompressedSizeは^uint32(0)に設定されます。
+	// UncompressedSize is the uncompressed size of the file in bytes.
+	// If either the uncompressed or compressed size of the file
+	// does not fit in 32 bits, UncompressedSize is set to ^uint32(0).
 	//
-	// Deprecated: 代わりにUncompressedSize64を使用してください。
+	// Deprecated: Use UncompressedSize64 instead.
 	UncompressedSize uint32
 
-	// CompressedSize64は、ファイルの圧縮サイズ（バイト単位）です。
+	// CompressedSize64 is the compressed size of the file in bytes.
 	CompressedSize64 uint64
 
-	// UncompressedSize64は、ファイルの非圧縮サイズ（バイト単位）です。
+	// UncompressedSize64 is the uncompressed size of the file in bytes.
 	UncompressedSize64 uint64
 
 	Extra         []byte
 	ExternalAttrs uint32
 }
 
-// FileInfo は、[FileHeader] の fs.FileInfo を返します。
+// FileInfo returns an fs.FileInfo for the [FileHeader].
 func (h *FileHeader) FileInfo() fs.FileInfo
 
-// FileInfoHeaderは、fs.FileInfoから部分的に設定された [FileHeader] を作成します。
-// fs.FileInfoのNameメソッドは、記述するファイルのベース名のみを返すため、
-// ファイルの完全なパス名を提供するために、返されたヘッダーのNameフィールドを変更する必要がある場合があります。
-// 圧縮が必要な場合は、呼び出し元はFileHeader.Methodフィールドを設定する必要があります。デフォルトでは設定されていません。
+// FileInfoHeader creates a partially-populated [FileHeader] from an
+// fs.FileInfo.
+// Because fs.FileInfo's Name method returns only the base name of
+// the file it describes, it may be necessary to modify the Name field
+// of the returned header to provide the full path name of the file.
+// If compression is desired, callers should set the FileHeader.Method
+// field; it is unset by default.
 func FileInfoHeader(fi fs.FileInfo) (*FileHeader, error)
 
-// ModTime は、旧来の ModifiedDate および [ModifiedTime] フィールドを使用して、UTC での変更時刻を返します。
+// ModTime returns the modification time in UTC using the legacy
+// [ModifiedDate] and [ModifiedTime] fields.
 //
-// Deprecated: 代わりに [Modified] を使用してください。
+// Deprecated: Use [Modified] instead.
 func (h *FileHeader) ModTime() time.Time
 
-// SetModTime は、与えられた時刻を UTC で指定して、 [Modified] 、 [ModifiedTime] 、および [ModifiedDate] フィールドを設定します。
+// SetModTime sets the [Modified], [ModifiedTime], and [ModifiedDate] fields
+// to the given time in UTC.
 //
-// Deprecated: 代わりに [Modified] を使用してください。
+// Deprecated: Use [Modified] instead.
 func (h *FileHeader) SetModTime(t time.Time)
 
-// Mode は、 [FileHeader] のパーミッションとモードビットを返します。
+// Mode returns the permission and mode bits for the [FileHeader].
 func (h *FileHeader) Mode() (mode fs.FileMode)
 
-// SetMode は、 [FileHeader] のパーミッションとモードビットを変更します。
+// SetMode changes the permission and mode bits for the [FileHeader].
 func (h *FileHeader) SetMode(mode fs.FileMode)

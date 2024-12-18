@@ -4,9 +4,9 @@
 
 package math
 
-// Asinhはxの逆双曲線正弦を返します。
+// Asinh returns the inverse hyperbolic sine of x.
 //
-// 特殊なケースは：
+// Special cases are:
 //
 //	Asinh(±0) = ±0
 //	Asinh(±Inf) = ±Inf

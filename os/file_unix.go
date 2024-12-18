@@ -6,42 +6,50 @@
 
 package os
 
-// Fdは、開いているファイルを参照する整数型のUnixファイルディスクリプタを返します。
-// もしfが閉じている場合、ファイルディスクリプタは無効になります。
-// もしfがガベージコレクションされる場合、ファイナライザーがファイルディスクリプタを閉じる可能性があり、
-// それにより無効になります。ファイナライザーがいつ実行されるかの詳細については、
-// [runtime.SetFinalizer] を参照してください。Unixシステムでは、これにより [File.SetDeadline]
-// メソッドが動作しなくなります。
-// ファイルディスクリプタは再利用可能であるため、返されるファイルディスクリプタは、
-// fの [File.Close] メソッドを通じて、またはガベージコレクション中のそのファイナライザーによってのみ閉じることができます。
-// それ以外の場合、ガベージコレクション中にファイナライザーが同じ（再利用された）番号の無関係なファイルディスクリプタを閉じる可能性があります。
+// Fd returns the integer Unix file descriptor referencing the open file.
+// If f is closed, the file descriptor becomes invalid.
+// If f is garbage collected, a finalizer may close the file descriptor,
+// making it invalid; see [runtime.SetFinalizer] for more information on when
+// a finalizer might be run. On Unix systems this will cause the [File.SetDeadline]
+// methods to stop working.
+// Because file descriptors can be reused, the returned file descriptor may
+// only be closed through the [File.Close] method of f, or by its finalizer during
+// garbage collection. Otherwise, during garbage collection the finalizer
+// may close an unrelated file descriptor with the same (reused) number.
 //
-// 代替として、f.SyscallConnメソッドを参照してください。
+// As an alternative, see the f.SyscallConn method.
 func (f *File) Fd() uintptr
 
-// NewFileは指定されたファイルディスクリプタと名前で新しいFileを返します。
-// fdが有効なファイルディスクリプタでない場合、返される値はnilになります。
-// Unixシステムでは、ファイルディスクリプタが非同期モードの場合、NewFileはSetDeadlineメソッドが動作するポーラブルなFileを返そうとします。
+// NewFile returns a new File with the given file descriptor and
+// name. The returned value will be nil if fd is not a valid file
+// descriptor. On Unix systems, if the file descriptor is in
+// non-blocking mode, NewFile will attempt to return a pollable File
+// (one for which the SetDeadline methods work).
 //
-// NewFileに渡した後、fdはFdメソッドのコメントで説明されている条件の下で無効になり、同じ制約が適用されます。
+// After passing it to NewFile, fd may become invalid under the same
+// conditions described in the comments of the Fd method, and the same
+// constraints apply.
 func NewFile(fd uintptr, name string) *File
 
-// DevNullはオペレーティングシステムの「nullデバイス」の名前です。
-// Unix-likeなシステムでは、"/dev/null"です。Windowsでは、"NUL"です。
+// DevNull is the name of the operating system's “null device.”
+// On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
 const DevNull = "/dev/null"
 
+// Truncate changes the size of the named file.
+// If the file is a symbolic link, it changes the size of the link's target.
+// If there is an error, it will be of type *PathError.
 func Truncate(name string, size int64) error
 
-// Removeは指定したファイルまたは(空の)ディレクトリを削除します。
-// エラーが発生した場合、*PathError型のエラーとなります。
+// Remove removes the named file or (empty) directory.
+// If there is an error, it will be of type *PathError.
 func Remove(name string) error
 
-// Link は newname を oldname ファイルのハードリンクとして作成します。
-// エラーがある場合、*LinkError 型になります。
+// Link creates newname as a hard link to the oldname file.
+// If there is an error, it will be of type *LinkError.
 func Link(oldname, newname string) error
 
-// Symlinkはnewnameをoldnameへのシンボリックリンクとして作成します。
-// Windowsでは、存在しないoldnameへのシンボリックリンクはファイルのシンボリックリンクとして作成されます。
-// もしoldnameが後でディレクトリとして作成された場合、シンボリックリンクは機能しません。
-// エラーが発生した場合は、*LinkError型のエラーになります。
+// Symlink creates newname as a symbolic link to oldname.
+// On Windows, a symlink to a non-existent oldname creates a file symlink;
+// if oldname is later created as a directory the symlink will not work.
+// If there is an error, it will be of type *LinkError.
 func Symlink(oldname, newname string) error

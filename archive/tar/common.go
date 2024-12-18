@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// tarパッケージは、tarアーカイブへのアクセスを実装します。
+// Package tar implements access to tar archives.
 //
-// テープアーカイブ（tar）は、ストリーミング方式で読み書きできるファイル形式で、
-// 一連のファイルを格納するために使用されます。
-// このパッケージは、GNUおよびBSD tarツールによって生成されたものを含め、
-// このフォーマットのほとんどのバリエーションをカバーすることを目的としています。
+// Tape archives (tar) are a file format for storing a sequence of files that
+// can be read and written in a streaming manner.
+// This package aims to cover most variations of the format,
+// including those produced by GNU and BSD tar tools.
 package tar
 
 import (
@@ -26,13 +26,13 @@ var (
 
 // Type flags for Header.Typeflag.
 const (
-	// Type '0' は通常のファイルを示します。
+	// Type '0' indicates a regular file.
 	TypeReg = '0'
 
-	// Deprecated: 非推奨：かわりにTypeRegを使用してください。
+	// Deprecated: Use TypeReg instead.
 	TypeRegA = '\x00'
 
-	// Type '1'から'6'は、ヘッダーのみのフラグであり、データ本体を持たない場合があります。
+	// Type '1' to '6' are header-only flags and may not have a data body.
 	TypeLink    = '1'
 	TypeSymlink = '2'
 	TypeChar    = '3'
@@ -40,36 +40,41 @@ const (
 	TypeDir     = '5'
 	TypeFifo    = '6'
 
-	// Type '7' は予約されています。
+	// Type '7' is reserved.
 	TypeCont = '7'
 
-	// Type 'x' は、PAXフォーマットで、次のファイルにのみ関連するキー-値レコードを格納するために使用されます。
-	// このパッケージは、これらのタイプを透過的に処理します。
+	// Type 'x' is used by the PAX format to store key-value records that
+	// are only relevant to the next file.
+	// This package transparently handles these types.
 	TypeXHeader = 'x'
 
-	// 'g' 型は、すべての後続ファイルに関連するキーと値のレコードを格納するために PAX 形式で使用されます。
-	// このパッケージは、このようなヘッダーの解析と構成のみをサポートしていますが、現在はファイル間でグローバル状態を永続化することはできません。
+	// Type 'g' is used by the PAX format to store key-value records that
+	// are relevant to all subsequent files.
+	// This package only supports parsing and composing such headers,
+	// but does not currently support persisting the global state across files.
 	TypeXGlobalHeader = 'g'
 
-	// 'S' 型は、GNU 形式でスパースファイルを示します。
+	// Type 'S' indicates a sparse file in the GNU format.
 	TypeGNUSparse = 'S'
 
-	// 'L' 型と 'K' 型は、GNU 形式でメタファイルに使用されます。
-	// このメタファイルは、次のファイルのパスまたはリンク名を格納するために使用されます。
-	// このパッケージは、これらのタイプを透過的に処理します。
+	// Types 'L' and 'K' are used by the GNU format for a meta file
+	// used to store the path or link name for the next file.
+	// This package transparently handles these types.
 	TypeGNULongName = 'L'
 	TypeGNULongLink = 'K'
 )
 
-// Header は、tar アーカイブ内の単一のヘッダーを表します。
-// 一部のフィールドは、値が設定されていない場合があります。
+// A Header represents a single header in a tar archive.
+// Some fields may not be populated.
 //
-// 将来の互換性のために、Reader.Next から Header を取得し、
-// いくつかの方法で変更し、Writer.WriteHeader に戻すユーザーは、
-// 新しい Header を作成し、保存する必要があるフィールドをコピーすることで行う必要があります。
+// For forward compatibility, users that retrieve a Header from Reader.Next,
+// mutate it in some ways, and then pass it back to Writer.WriteHeader
+// should do so by creating a new Header and copying the fields
+// that they are interested in preserving.
 type Header struct {
-	// Typeflagはヘッダーエントリのタイプです。
-	// ゼロ値は、Nameの末尾のスラッシュの有無に応じて、自動的にTypeRegまたはTypeDirに昇格します。
+	// Typeflag is the type of header entry.
+	// The zero value is automatically promoted to either TypeReg or TypeDir
+	// depending on the presence of a trailing slash in Name.
 	Typeflag byte
 
 	Name     string
@@ -82,11 +87,11 @@ type Header struct {
 	Uname string
 	Gname string
 
-	// Formatが指定されていない場合、Writer.WriteHeaderはModTimeを最も近い秒に丸め、
-	// AccessTimeとChangeTimeフィールドを無視します。
+	// If the Format is unspecified, then Writer.WriteHeader rounds ModTime
+	// to the nearest second and ignores the AccessTime and ChangeTime fields.
 	//
-	// AccessTimeまたはChangeTimeを使用するには、FormatをPAXまたはGNUとして指定します。
-	// サブセカンドの解像度を使用するには、FormatをPAXとして指定します。
+	// To use AccessTime or ChangeTime, specify the Format as PAX or GNU.
+	// To use sub-second resolution, specify the Format as PAX.
 	ModTime    time.Time
 	AccessTime time.Time
 	ChangeTime time.Time
@@ -94,57 +99,57 @@ type Header struct {
 	Devmajor int64
 	Devminor int64
 
-	// Xattrsは、"SCHILY.xattr."名前空間の下のPAXレコードとして拡張属性を保存します。
+	// Xattrs stores extended attributes as PAX records under the
+	// "SCHILY.xattr." namespace.
 	//
-	// 以下は意味的に等価です：
+	// The following are semantically equivalent:
 	//  h.Xattrs[key] = value
 	//  h.PAXRecords["SCHILY.xattr."+key] = value
 	//
-	// Writer.WriteHeaderが呼び出されると、Xattrsの内容がPAXRecordsのものよりも優先されます。
+	// When Writer.WriteHeader is called, the contents of Xattrs will take
+	// precedence over those in PAXRecords.
 	//
-	// Deprecated: 代わりにPAXRecordsを使用してください。
+	// Deprecated: Use PAXRecords instead.
 	Xattrs map[string]string
 
-	// PAXRecordsは、PAX拡張ヘッダーレコードのマップです。
+	// PAXRecords is a map of PAX extended header records.
 	//
-	// ユーザー定義のレコードは、次の形式のキーを持つべきです：
+	// User-defined records should have keys of the following form:
 	//	VENDOR.keyword
-	// ここで、VENDORはすべて大文字の何らかの名前空間であり、keywordは
-	// '='文字を含んではなりません（例："GOLANG.pkg.version"）。
-	// キーと値は非空のUTF-8文字列でなければなりません。
+	// Where VENDOR is some namespace in all uppercase, and keyword may
+	// not contain the '=' character (e.g., "GOLANG.pkg.version").
+	// The key and value should be non-empty UTF-8 strings.
 	//
-	// Writer.WriteHeaderが呼び出されると、Headerの他のフィールドから派生した
-	// PAXレコードは、PAXRecordsよりも優先されます。
+	// When Writer.WriteHeader is called, PAX records derived from the
+	// other fields in Header take precedence over PAXRecords.
 	PAXRecords map[string]string
 
-	// Formatはtarヘッダーの形式を指定します。
+	// Format specifies the format of the tar header.
 	//
-	// これは、Reader.Nextによって形式の最善の推測として設定されます。
-	// Readerは一部の非準拠ファイルを寛大に読み取るため、
-	// これがFormatUnknownである可能性があります。
+	// This is set by Reader.Next as a best-effort guess at the format.
+	// Since the Reader liberally reads some non-compliant files,
+	// it is possible for this to be FormatUnknown.
 	//
-	// Writer.WriteHeaderが呼び出されたときに形式が指定されていない場合、
-	// このHeaderをエンコードできる最初の形式（USTAR、PAX、GNUの順）を使用します（Formatを参照）。
+	// If the format is unspecified when Writer.WriteHeader is called,
+	// then it uses the first format (in the order of USTAR, PAX, GNU)
+	// capable of encoding this Header (see Format).
 	Format Format
 }
 
-// fs.FileInfoのNameメソッドは、説明するファイルのベース名のみを返すため、
-// ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要がある場合があります。
-//
-// fiが [FileInfoNames] を実装している場合、ヘッダーのGnameとUnameは、
-// インターフェースのメソッドによって提供されます。
-// FileInfoは、Headerのfs.FileInfoを返します。
+// FileInfo returns an fs.FileInfo for the Header.
 func (h *Header) FileInfo() fs.FileInfo
 
-// FileInfoHeaderは、fiから部分的に設定された [Header] を作成します。
-// fiがシンボリックリンクを記述している場合、FileInfoHeaderはlinkをリンクターゲットとして記録します。
-// fiがディレクトリを記述している場合、名前にスラッシュが追加されます。
+// FileInfoHeader creates a partially-populated [Header] from fi.
+// If fi describes a symlink, FileInfoHeader records link as the link target.
+// If fi describes a directory, a slash is appended to the name.
 //
-// fs.FileInfoのNameメソッドは、それが記述するファイルのベース名のみを返すため、
-// ファイルの完全なパス名を提供するためにHeader.Nameを変更する必要があるかもしれません。
+// Since fs.FileInfo's Name method only returns the base name of
+// the file it describes, it may be necessary to modify Header.Name
+// to provide the full path name of the file.
 //
-// fiが [FileInfoNames] を実装している場合、
-// Header.GnameとHeader.Unameはインターフェースのメソッドによって提供されます。
+// If fi implements [FileInfoNames]
+// Header.Gname and Header.Uname
+// are provided by the methods of the interface.
 func FileInfoHeader(fi fs.FileInfo, link string) (*Header, error)
 
 // FileInfoNames extends [fs.FileInfo].

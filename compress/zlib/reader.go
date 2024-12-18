@@ -3,17 +3,19 @@
 // license that can be found in the LICENSE file.
 
 /*
-zlibパッケージは、RFC 1950で指定されているように、zlib形式の圧縮データの読み書きを実装します。
+Package zlib implements reading and writing of zlib format compressed data,
+as specified in RFC 1950.
 
-この実装は、読み取り中に解凍するフィルターと、書き込み中に圧縮するフィルターを提供します。
-たとえば、圧縮されたデータをバッファに書き込むには：
+The implementation provides filters that uncompress during reading
+and compress during writing.  For example, to write compressed data
+to a buffer:
 
 	var b bytes.Buffer
 	w := zlib.NewWriter(&b)
 	w.Write([]byte("hello, world\n"))
 	w.Close()
 
-そして、そのデータを読み戻すには：
+and to read that data back:
 
 	r, err := zlib.NewReader(&b)
 	io.Copy(os.Stdout, r)
@@ -27,11 +29,11 @@ import (
 )
 
 var (
-	// ErrChecksumは、無効なチェックサムを持つZLIBデータを読み取る場合に返されます。
+	// ErrChecksum is returned when reading ZLIB data that has an invalid checksum.
 	ErrChecksum = errors.New("zlib: invalid checksum")
-	// ErrDictionaryは、無効な辞書を持つZLIBデータを読み取る場合に返されます。
+	// ErrDictionary is returned when reading ZLIB data that has an invalid dictionary.
 	ErrDictionary = errors.New("zlib: invalid dictionary")
-	// ErrHeaderは、無効なヘッダーを持つZLIBデータを読み取る場合に返されます。
+	// ErrHeader is returned when reading ZLIB data that has an invalid header.
 	ErrHeader = errors.New("zlib: invalid header")
 )
 

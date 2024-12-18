@@ -7,15 +7,15 @@
 
 package types
 
-// Sliceはスライス型を表します。
+// A Slice represents a slice type.
 type Slice struct {
 	elem Type
 }
 
-// NewSliceは与えられた要素タイプ用の新しいスライスタイプを返します。
+// NewSlice returns a new slice type for the given element type.
 func NewSlice(elem Type) *Slice
 
-// Elemはスライスsの要素の型を返します。
+// Elem returns the element type of slice s.
 func (s *Slice) Elem() Type
 
 func (s *Slice) Underlying() Type

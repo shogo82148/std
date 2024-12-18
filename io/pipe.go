@@ -11,35 +11,38 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// ErrClosedPipeは、クローズされたパイプに対する読み取りまたは書き込み操作で使用されるエラーです。
+// ErrClosedPipe is the error used for read or write operations on a closed pipe.
 var ErrClosedPipe = errors.New("io: read/write on closed pipe")
 
-// PipeReaderは、パイプの読み取り側です。
+// A PipeReader is the read half of a pipe.
 type PipeReader struct{ pipe }
 
-// Readは、標準のReadインターフェースを実装します。
-// パイプからデータを読み取り、ライターが到着するか、書き込み側が閉じられるまでブロックします。
-// 書き込み側がエラーで閉じられた場合、そのエラーがerrとして返されます。
-// それ以外の場合、errはEOFです。
+// Read implements the standard Read interface:
+// it reads data from the pipe, blocking until a writer
+// arrives or the write end is closed.
+// If the write end is closed with an error, that error is
+// returned as err; otherwise err is EOF.
 func (r *PipeReader) Read(data []byte) (n int, err error)
 
-// Closeは、リーダーを閉じます。パイプの書き込み半分への後続の書き込みは、
-// エラー [ErrClosedPipe] を返します。
+// Close closes the reader; subsequent writes to the
+// write half of the pipe will return the error [ErrClosedPipe].
 func (r *PipeReader) Close() error
 
-// CloseWithErrorは、リーダーを閉じます。パイプの書き込み半分への後続の書き込みは、エラーerrを返します。
+// CloseWithError closes the reader; subsequent writes
+// to the write half of the pipe will return the error err.
 //
-// CloseWithErrorは、以前にエラーが存在する場合、前のエラーを上書きせず、常にnilを返します。
+// CloseWithError never overwrites the previous error if it exists
+// and always returns nil.
 func (r *PipeReader) CloseWithError(err error) error
 
-// PipeWriterは、パイプの書き込み側です。
+// A PipeWriter is the write half of a pipe.
 type PipeWriter struct{ r PipeReader }
 
-// Writeは、標準のWriteインターフェースを実装します。
-// データをパイプに書き込み、1つ以上のリーダーがすべてのデータを消費するか、
-// 読み取り側が閉じられるまでブロックします。
-// 読み取り側がエラーで閉じられた場合、そのエラーがerrとして返されます。
-// それ以外の場合、errは [ErrClosedPipe] です。
+// Write implements the standard Write interface:
+// it writes data to the pipe, blocking until one or more readers
+// have consumed all the data or the read end is closed.
+// If the read end is closed with an error, that err is
+// returned as err; otherwise err is [ErrClosedPipe].
 func (w *PipeWriter) Write(data []byte) (n int, err error)
 
 // Close closes the writer; subsequent reads from the

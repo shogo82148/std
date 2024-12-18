@@ -6,20 +6,29 @@
 
 package big
 
-// GobEncodeは、[encoding/gob.GobEncoder] インターフェースを実装します。
-// [Float] の値とそのすべての属性（精度、丸めモード、精度）がマーシャルされます。
+// GobEncode implements the [encoding/gob.GobEncoder] interface.
+// The [Float] value and all its attributes (precision,
+// rounding mode, accuracy) are marshaled.
 func (x *Float) GobEncode() ([]byte, error)
 
-// GobDecodeは、[encoding/gob.GobDecoder] インターフェースを実装します。
-// 結果は、zの精度と丸めモードに従って丸められます。
-// ただし、zの精度が0の場合、zは正確にデコードされた値に設定されます。
+// GobDecode implements the [encoding/gob.GobDecoder] interface.
+// The result is rounded per the precision and rounding mode of
+// z unless z's precision is 0, in which case z is set exactly
+// to the decoded value.
 func (z *Float) GobDecode(buf []byte) error
 
-// MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
-// [Float] の値のみが（全精度で）マーシャルされ、精度や精度などの他の属性は無視されます。
+// AppendText implements the [encoding.TextAppender] interface.
+// Only the [Float] value is marshaled (in full precision), other
+// attributes such as precision or accuracy are ignored.
+func (x *Float) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements the [encoding.TextMarshaler] interface.
+// Only the [Float] value is marshaled (in full precision), other
+// attributes such as precision or accuracy are ignored.
 func (x *Float) MarshalText() (text []byte, err error)
 
-// UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
-// 結果は、zの精度と丸めモードに従って丸められます。
-// ただし、zの精度が0の場合、丸めが効く前に64に変更されます。
+// UnmarshalText implements the [encoding.TextUnmarshaler] interface.
+// The result is rounded per the precision and rounding mode of z.
+// If z's precision is 0, it is changed to 64 before rounding takes
+// effect.
 func (z *Float) UnmarshalText(text []byte) error

@@ -9,51 +9,61 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// TextHandlerは、[io.Writer] にkey=valueペアのシーケンスと改行を続けて書き込むHandlerです。
+// TextHandler is a [Handler] that writes Records to an [io.Writer] as a
+// sequence of key=value pairs separated by spaces and followed by a newline.
 type TextHandler struct {
 	*commonHandler
 }
 
-// NewTextHandlerは、指定されたオプションを使用して、wに書き込む [TextHandler] を作成します。
-// optsがnilの場合、デフォルトのオプションが使用されます。
+// NewTextHandler creates a [TextHandler] that writes to w,
+// using the given options.
+// If opts is nil, the default options are used.
 func NewTextHandler(w io.Writer, opts *HandlerOptions) *TextHandler
 
-// Enabledは、ハンドラが指定されたレベルのレコードを処理するかどうかを報告します。
-// ハンドラは、レベルが低いレコードを無視します。
+// Enabled reports whether the handler handles records at the given level.
+// The handler ignores records whose level is lower.
 func (h *TextHandler) Enabled(_ context.Context, level Level) bool
 
-// WithAttrsは、hの属性に続くattrsで構成される新しい [TextHandler] を返します。
+// WithAttrs returns a new [TextHandler] whose attributes consists
+// of h's attributes followed by attrs.
 func (h *TextHandler) WithAttrs(attrs []Attr) Handler
 
 func (h *TextHandler) WithGroup(name string) Handler
 
-// Handleは、引数 [Record] をスペースで区切られたkey=valueの1行としてフォーマットします。
+// Handle formats its argument [Record] as a single line of space-separated
+// key=value items.
 //
-// Recordのtimeがゼロの場合、timeは省略されます。
-// そうでない場合、keyは"time"であり、RFC3339形式でミリ秒精度で出力されます。
+// If the Record's time is zero, the time is omitted.
+// Otherwise, the key is "time"
+// and the value is output in RFC3339 format with millisecond precision.
 //
-// Recordのlevelがゼロの場合、levelは省略されます。
-// そうでない場合、keyは"level"であり、 [Level.String] の値が出力されます。
+// If the Record's level is zero, the level is omitted.
+// Otherwise, the key is "level"
+// and the value of [Level.String] is output.
 //
-// AddSourceオプションが設定されており、ソース情報が利用可能な場合、
-// keyは"source"であり、値はFILE:LINEとして出力されます。
+// If the AddSource option is set and source information is available,
+// the key is "source" and the value is output as FILE:LINE.
 //
-// メッセージのkeyは"msg"です。
+// The message's key is "msg".
 //
-// これらまたは他の属性を変更したり、出力から削除するには、
-// [HandlerOptions.ReplaceAttr] を使用します。
+// To modify these or other attributes, or remove them from the output, use
+// [HandlerOptions.ReplaceAttr].
 //
-// 値が [encoding.TextMarshaler] を実装している場合、MarshalTextの結果が書き込まれます。
-// そうでない場合、[fmt.Sprint] の結果が書き込まれます。
+// If a value implements [encoding.TextMarshaler], the result of MarshalText is
+// written. Otherwise, the result of [fmt.Sprint] is written.
 //
-// キーと値は、Unicodeスペース文字、非表示文字、'"'、'='を含む場合、 [strconv.Quote] で引用符で囲まれます。
+// Keys and values are quoted with [strconv.Quote] if they contain Unicode space
+// characters, non-printing characters, '"' or '='.
 //
-// グループ内のキーは、ドットで区切られたコンポーネント（キーまたはグループ名）で構成されます。
-// さらにエスケープは行われません。
-// したがって、キー"a.b.c"から、2つのグループ"a"と"b"とキー"c"があるか、
-// 単一のグループ"a.b"とキー"c"があるか、単一のグループ"a"とキー"b.c"があるかを判断する方法はありません。
-// コンポーネント内にドットがある場合でも、キーのグループ構造を再構築する必要がある場合は、
-// [HandlerOptions.ReplaceAttr] を使用して、その情報をキーにエンコードします。
+// Keys inside groups consist of components (keys or group names) separated by
+// dots. No further escaping is performed.
+// Thus there is no way to determine from the key "a.b.c" whether there
+// are two groups "a" and "b" and a key "c", or a single group "a.b" and a key "c",
+// or single group "a" and a key "b.c".
+// If it is necessary to reconstruct the group structure of a key
+// even in the presence of dots inside components, use
+// [HandlerOptions.ReplaceAttr] to encode that information in the key.
 //
-// Handleの各呼び出しは、io.Writer.Writeへの単一のシリアル化された呼び出しの結果を返します。
+// Each call to Handle results in a single serialized call to
+// io.Writer.Write.
 func (h *TextHandler) Handle(_ context.Context, r Record) error

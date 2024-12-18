@@ -4,8 +4,8 @@
 
 package cmplx
 
-// Logはxの自然対数を返します。
+// Log returns the natural logarithm of x.
 func Log(x complex128) complex128
 
-// Log10はxの10を底とする対数を返します。
+// Log10 returns the decimal logarithm of x.
 func Log10(x complex128) complex128

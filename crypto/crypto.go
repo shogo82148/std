@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// cryptoパッケージは一般的な暗号定数を収集します。
+// Package crypto collects common cryptographic constants.
 package crypto
 
 import (
@@ -10,10 +10,11 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Hashは別のパッケージで実装されている暗号ハッシュ関数を識別します。
+// Hash identifies a cryptographic hash function that is implemented in another
+// package.
 type Hash uint
 
-// HashFunc は単に h の値を返すだけであり、 [Hash] が [SignerOpts] を実装することを保証します。
+// HashFunc simply returns the value of h so that [Hash] implements [SignerOpts].
 func (h Hash) HashFunc() Hash
 
 func (h Hash) String() string
@@ -40,59 +41,65 @@ const (
 	BLAKE2b_512
 )
 
-// Sizeは与えられたハッシュ関数から生成されるダイジェストの長さ（バイト単位）を返します。
-// この関数は、対象のハッシュ関数がプログラムにリンクされている必要はありません。
+// Size returns the length, in bytes, of a digest resulting from the given hash
+// function. It doesn't require that the hash function in question be linked
+// into the program.
 func (h Hash) Size() int
 
-// Newは指定されたハッシュ関数を計算する新しいhash.Hashを返します。ハッシュ関数がバイナリにリンクされていない場合、Newはパニックを発生させます。
+// New returns a new hash.Hash calculating the given hash function. New panics
+// if the hash function is not linked into the binary.
 func (h Hash) New() hash.Hash
 
-// Availableは、与えられたハッシュ関数がバイナリにリンクされているかどうかを示します。
+// Available reports whether the given hash function is linked into the binary.
 func (h Hash) Available() bool
 
-// RegisterHash は与えられたハッシュ関数の新しいインスタンスを返す関数を登録します。
-// これはハッシュ関数を実装するパッケージの init 関数から呼び出されることを意図しています。
+// RegisterHash registers a function that returns a new instance of the given
+// hash function. This is intended to be called from the init function in
+// packages that implement hash functions.
 func RegisterHash(h Hash, f func() hash.Hash)
 
-// PublicKeyは未指定のアルゴリズムを使用して公開鍵を表します。
+// PublicKey represents a public key using an unspecified algorithm.
 //
-// このタイプは、後方互換性のための空のインターフェースですが、
-// 標準ライブラリのすべての公開鍵タイプは、以下のインターフェースを実装しています。
+// Although this type is an empty interface for backwards compatibility reasons,
+// all public key types in the standard library implement the following interface
 //
 //	interface{
 //	    Equal(x crypto.PublicKey) bool
 //	}
 //
-// アプリケーション内での型安全性向上のために使用することができます。
+// which can be used for increased type safety within applications.
 type PublicKey any
 
-// PrivateKeyは不特定のアルゴリズムを使用して秘密鍵を表します。
+// PrivateKey represents a private key using an unspecified algorithm.
 //
-// この型は、後方互換性のために空のインターフェースとして定義されていますが、
-// 標準ライブラリのすべての秘密鍵タイプは以下のインターフェースを実装します。
+// Although this type is an empty interface for backwards compatibility reasons,
+// all private key types in the standard library implement the following interface
 //
 //	interface{
 //	    Public() crypto.PublicKey
 //	    Equal(x crypto.PrivateKey) bool
 //	}
 //
-// また、 [Signer] や [Decrypter] などの特定の目的のインターフェースも実装しており、
-// アプリケーション内で型の安全性を向上させるために使用できます。
+// as well as purpose-specific interfaces such as [Signer] and [Decrypter], which
+// can be used for increased type safety within applications.
 type PrivateKey any
 
-// Signerは、署名操作に使用される不透明な秘密鍵のインターフェースです。たとえば、ハードウェアモジュールに保存されているRSA鍵などがあります。
+// Signer is an interface for an opaque private key that can be used for
+// signing operations. For example, an RSA key kept in a hardware module.
 type Signer interface {
 	Public() PublicKey
 
 	Sign(rand io.Reader, digest []byte, opts SignerOpts) (signature []byte, err error)
 }
 
-// SignerOptsは [Signer] での署名に対するオプションを含んでいます。
+// SignerOpts contains options for signing with a [Signer].
 type SignerOpts interface {
 	HashFunc() Hash
 }
 
-// Decrypterは、非対称復号化操作に使用できる不透明な秘密鍵のインターフェースです。例えば、ハードウェアモジュールに保管されるRSA鍵があります。
+// Decrypter is an interface for an opaque private key that can be used for
+// asymmetric decryption operations. An example would be an RSA key
+// kept in a hardware module.
 type Decrypter interface {
 	Public() PublicKey
 

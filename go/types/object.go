@@ -12,8 +12,15 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// Objectは、パッケージ、定数、型、変数、関数（メソッドを含む）、またはラベルなどの名前付きの言語エンティティを表します。
-// すべてのオブジェクトはObjectインターフェースを実装しています。
+// An Object is a named language entity.
+// An Object may be a constant ([Const]), type name ([TypeName]),
+// variable or struct field ([Var]), function or method ([Func]),
+// imported package ([PkgName]), label ([Label]),
+// built-in function ([Builtin]),
+// or the predeclared identifier 'nil' ([Nil]).
+//
+// The environment, which is structured as a tree of Scopes,
+// maps each name to the unique Object that it denotes.
 type Object interface {
 	Parent() *Scope
 	Pos() token.Pos
@@ -44,55 +51,61 @@ type Object interface {
 	setScopePos(pos token.Pos)
 }
 
-// Idが公開されていれば、そのままの名前を返します。それ以外の場合は、
-// パッケージのパスで修飾された名前を返します。
+// Id returns name if it is exported, otherwise it
+// returns the name qualified with the package path.
 func Id(pkg *Package, name string) string
 
-// PkgNameはインポートされたGoパッケージを表します。
-// PkgNameには型はありません。
+// A PkgName represents an imported Go package.
+// PkgNames don't have a type.
 type PkgName struct {
 	object
 	imported *Package
 	used     bool
 }
 
-// NewPkgNameは、インポートされたパッケージを表す新しいPkgNameオブジェクトを返します。
-// 残りの引数は、全てのオブジェクトで見つかった属性を設定します。
+// NewPkgName returns a new PkgName object representing an imported package.
+// The remaining arguments set the attributes found with all Objects.
 func NewPkgName(pos token.Pos, pkg *Package, name string, imported *Package) *PkgName
 
-// Importedはインポートされたパッケージを返します。
-// これはインポート文を含むパッケージとは異なります。
+// Imported returns the package that was imported.
+// It is distinct from Pkg(), which is the package containing the import statement.
 func (obj *PkgName) Imported() *Package
 
-// Constは宣言された定数を表します。
+// A Const represents a declared constant.
 type Const struct {
 	object
 	val constant.Value
 }
 
-// NewConstは値valを持つ新しい定数を返します。
-// 残りの引数は、すべてのオブジェクトで見つかる属性を設定します。
+// NewConst returns a new constant with value val.
+// The remaining arguments set the attributes found with all Objects.
 func NewConst(pos token.Pos, pkg *Package, name string, typ Type, val constant.Value) *Const
 
-// Valは定数の値を返します。
+// Val returns the constant's value.
 func (obj *Const) Val() constant.Value
 
-// TypeNameは(定義済みまたはエイリアスの)型の名前を表します。
+// A TypeName is an [Object] that represents a type with a name:
+// a defined type ([Named]),
+// an alias type ([Alias]),
+// a type parameter ([TypeParam]),
+// or a predeclared type such as int or error.
 type TypeName struct {
 	object
 }
 
-// NewTypeNameは、与えられたtypを指定する新しい型名を返します。
-// 残りの引数は、すべてのオブジェクトで見つかった属性を設定します。
+// NewTypeName returns a new type name denoting the given typ.
+// The remaining arguments set the attributes found with all Objects.
 //
-// typ引数は、定義済み（Named）タイプまたはエイリアスタイプである場合も可能です。
-// また、nilである場合も、TypeNameを引数として使用でき、
-// 副作用としてTypeNameのタイプがNewNamedに設定されます。
+// The typ argument may be a defined (Named) type or an alias type.
+// It may also be nil such that the returned TypeName can be used as
+// argument for NewNamed, which will set the TypeName's type as a side-
+// effect.
 func NewTypeName(pos token.Pos, pkg *Package, name string, typ Type) *TypeName
 
-// IsAliasは、objが型のエイリアス名であるかどうかを報告します。
+// IsAlias reports whether obj is an alias name for a type.
 func (obj *TypeName) IsAlias() bool
 
+// A Variable represents a declared variable (including function parameters and results, and struct fields).
 type Var struct {
 	object
 	embedded bool
@@ -101,59 +114,69 @@ type Var struct {
 	origin   *Var
 }
 
-// NewVarは新しい変数を返します。
-// 引数はすべてのオブジェクトで見つかった属性を設定します。
+// NewVar returns a new variable.
+// The arguments set the attributes found with all Objects.
 func NewVar(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
-// NewParam は関数のパラメータを表す新しい変数を返します。
+// NewParam returns a new variable representing a function parameter.
 func NewParam(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
-// NewFieldは、構造体のフィールドを表す新しい変数を返します。
-// 埋め込まれたフィールドの場合、名前はフィールドがアクセス可能な
-// 非修飾の型名です。
+// NewField returns a new variable representing a struct field.
+// For embedded fields, the name is the unqualified type name
+// under which the field is accessible.
 func NewField(pos token.Pos, pkg *Package, name string, typ Type, embedded bool) *Var
 
-// Anonymousは変数が埋め込まれたフィールドかどうかを示します。
-// Embeddedと同様ですが、後方互換性のために存在します。
+// Anonymous reports whether the variable is an embedded field.
+// Same as Embedded; only present for backward-compatibility.
 func (obj *Var) Anonymous() bool
 
-// Embeddedは変数が埋め込まれたフィールドかどうかを示します。
+// Embedded reports whether the variable is an embedded field.
 func (obj *Var) Embedded() bool
 
-// IsFieldは、変数が構造体のフィールドであるかどうかを報告します。
+// IsField reports whether the variable is a struct field.
 func (obj *Var) IsField() bool
 
-// Originは、そのレシーバのための正規のVar、つまりInfo.Defsに記録されたVarオブジェクトを返します。
+// Origin returns the canonical Var for its receiver, i.e. the Var object
+// recorded in Info.Defs.
 //
-// インスタンス化中に作成された合成Var（型引数に依存する構造体フィールドや
-// 関数パラメータなど）については、これはジェネリック（インスタンス化されていない）型上の
-// 対応するVarになります。他のすべてのVarについて、Originはレシーバを返します。
+// For synthetic Vars created during instantiation (such as struct fields or
+// function parameters that depend on type arguments), this will be the
+// corresponding Var on the generic (uninstantiated) type. For all other Vars
+// Origin returns the receiver.
 func (obj *Var) Origin() *Var
 
-// Funcは、宣言された関数、具体的なメソッド、または抽象（インターフェース）メソッドを表します。そのType()は常に*Signatureです。
-// 抽象メソッドは、埋め込みにより多くのインターフェースに所属することがあります。
+// A Func represents a declared function, concrete method, or abstract
+// (interface) method. Its Type() is always a *Signature.
+// An abstract method may belong to many interfaces due to embedding.
 type Func struct {
 	object
 	hasPtrRecv_ bool
 	origin      *Func
 }
 
-// NewFuncは与えられたシグネチャを持つ新しい関数を返します。これは関数の型を表します。
+// NewFunc returns a new function with the given signature, representing
+// the function's type.
 func NewFunc(pos token.Pos, pkg *Package, name string, sig *Signature) *Func
 
 // Signature returns the signature (type) of the function or method.
 func (obj *Func) Signature() *Signature
 
-// FullNameは関数またはメソッドobjのパッケージ名またはレシーバー型名で修飾された名前を返します。
+// FullName returns the package- or receiver-type-qualified name of
+// function or method obj.
 func (obj *Func) FullName() string
 
-// Scopeは関数の本体ブロックのスコープを返します。
-// 結果は、インポートされたまたはインスタンス化された関数やメソッドに対してはnilです
-// （ただし、インスタンス化された関数にアクセスするメカニズムもありません）。
+// Scope returns the scope of the function's body block.
+// The result is nil for imported or instantiated functions and methods
+// (but there is also no mechanism to get to an instantiated function).
 func (obj *Func) Scope() *Scope
 
-// Originは、レシーバーの正確なFunc、つまりInfo.Defsに記録されたFuncオブジェクトを返します。
-// インスタンス化中に作成された合成関数（具名型のメソッドや型引数に依存するインターフェースのメソッドなど）の場合、これはジェネリック（インスタンス化されていない）型の対応するFuncになります。その他のすべてのFuncに対して、Originはレシーバーを返します。
+// Origin returns the canonical Func for its receiver, i.e. the Func object
+// recorded in Info.Defs.
+//
+// For synthetic functions created during instantiation (such as methods on an
+// instantiated Named type or interface methods that depend on type arguments),
+// this will be the corresponding Func on the generic (uninstantiated) type.
+// For all other Funcs Origin returns the receiver.
 func (obj *Func) Origin() *Func
 
 // Pkg returns the package to which the function belongs.
@@ -162,30 +185,31 @@ func (obj *Func) Origin() *Func
 // like method Error of the error built-in interface type.
 func (obj *Func) Pkg() *Package
 
-// Labelは宣言されたラベルを表します。
-// ラベルはタイプを持ちません。
+// A Label represents a declared label.
+// Labels don't have a type.
 type Label struct {
 	object
 	used bool
 }
 
-// NewLabel は新しいラベルを返します。
+// NewLabel returns a new label.
 func NewLabel(pos token.Pos, pkg *Package, name string) *Label
 
-// Builtinは組み込み関数を表します。
-// 組み込み関数には有効な型はありません。
+// A Builtin represents a built-in function.
+// Builtins don't have a valid type.
 type Builtin struct {
 	object
 	id builtinId
 }
 
-// Nilは、事前宣言された値であるnilを表します。
+// Nil represents the predeclared value nil.
 type Nil struct {
 	object
 }
 
-// ObjectStringはobjの文字列形式を返します。
-// Qualifierはパッケージレベルのオブジェクトの印刷を制御し、nilである可能性があります。
+// ObjectString returns the string form of obj.
+// The Qualifier controls the printing of
+// package-level objects, and may be nil.
 func ObjectString(obj Object, qf Qualifier) string
 
 func (obj *PkgName) String() string

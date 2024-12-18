@@ -4,7 +4,8 @@
 
 package syntax
 
-// エラーは正規表現の解析に失敗し、問題のある表現を示します。
+// An Error describes a failure to parse a regular expression
+// and gives the offending expression.
 type Error struct {
 	Code ErrorCode
 	Expr string
@@ -12,14 +13,14 @@ type Error struct {
 
 func (e *Error) Error() string
 
-// 「ErrorCode」は正規表現の解析に失敗したことを説明します。
+// An ErrorCode describes a failure to parse a regular expression.
 type ErrorCode string
 
 const (
-	// 予期しないエラー
+	// Unexpected error
 	ErrInternalError ErrorCode = "regexp/syntax: internal error"
 
-	// パースエラー
+	// Parse errors
 	ErrInvalidCharClass      ErrorCode = "invalid character class"
 	ErrInvalidCharRange      ErrorCode = "invalid character class range"
 	ErrInvalidEscape         ErrorCode = "invalid escape sequence"
@@ -39,11 +40,11 @@ const (
 
 func (e ErrorCode) String() string
 
-// Flagsはパーサーの動作を制御し、正規表現のコンテキストに関する情報を記録します。
+// Flags control the behavior of the parser and record information about regexp context.
 type Flags uint16
 
 const (
-	FoldCase Flags = 1 << iota
+	FoldCase      Flags = 1 << iota
 	Literal
 	ClassNL
 	DotNL
@@ -60,5 +61,7 @@ const (
 	POSIX Flags = 0
 )
 
-// Parseは指定されたフラグによって制御された正規表現文字列sを解析し、正規表現の解析木を返します。構文はトップレベルのコメントに記載されています。
+// Parse parses a regular expression string s, controlled by the specified
+// Flags, and returns a regular expression parse tree. The syntax is
+// described in the top-level comment.
 func Parse(s string, flags Flags) (*Regexp, error)

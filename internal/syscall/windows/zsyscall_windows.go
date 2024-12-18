@@ -15,6 +15,8 @@ func ImpersonateLoggedOnUser(token syscall.Token) (err error)
 
 func ImpersonateSelf(impersonationlevel uint32) (err error)
 
+func IsValidSid(sid *syscall.SID) (valid bool)
+
 func LogonUser(username *uint16, domain *uint16, password *uint16, logonType uint32, logonProvider uint32, token *syscall.Token) (err error)
 
 func LookupPrivilegeValue(systemname *uint16, name *uint16, luid *LUID) (err error)
@@ -51,6 +53,8 @@ func GetFinalPathNameByHandle(file syscall.Handle, filePath *uint16, filePathSiz
 
 func GetModuleFileName(module syscall.Handle, fn *uint16, len uint32) (n uint32, err error)
 
+func GetModuleHandle(modulename *uint16) (handle syscall.Handle, err error)
+
 func GetTempPath2(buflen uint32, buf *uint16) (n uint32, err error)
 
 func GetVolumeInformationByHandle(file syscall.Handle, volumeNameBuffer *uint16, volumeNameSize uint32, volumeNameSerialNumber *uint32, maximumComponentLength *uint32, fileSystemFlags *uint32, fileSystemNameBuffer *uint16, fileSystemNameSize uint32) (err error)
@@ -86,6 +90,12 @@ func NetUserAdd(serverName *uint16, level uint32, buf *byte, parmErr *uint32) (n
 func NetUserDel(serverName *uint16, userName *uint16) (neterr error)
 
 func NetUserGetLocalGroups(serverName *uint16, userName *uint16, level uint32, flags uint32, buf **byte, prefMaxLen uint32, entriesRead *uint32, totalEntries *uint32) (neterr error)
+
+func NtCreateFile(handle *syscall.Handle, access uint32, oa *OBJECT_ATTRIBUTES, iosb *IO_STATUS_BLOCK, allocationSize *int64, attributes uint32, share uint32, disposition uint32, options uint32, eabuffer uintptr, ealength uint32) (ntstatus error)
+
+func NtOpenFile(handle *syscall.Handle, access uint32, oa *OBJECT_ATTRIBUTES, iosb *IO_STATUS_BLOCK, share uint32, options uint32) (ntstatus error)
+
+func NtSetInformationFile(handle syscall.Handle, iosb *IO_STATUS_BLOCK, inBuffer uintptr, inBufferLen uint32, class uint32) (ntstatus error)
 
 func GetProcessMemoryInfo(handle syscall.Handle, memCounters *PROCESS_MEMORY_COUNTERS, cb uint32) (err error)
 

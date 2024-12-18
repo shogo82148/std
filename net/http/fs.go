@@ -12,31 +12,43 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Dirは、特定のディレクトリツリーに制限されたネイティブファイルシステムを使用して [FileSystem] を実装します。
+// A Dir implements [FileSystem] using the native file system restricted to a
+// specific directory tree.
 //
-// [FileSystem.Open] メソッドは'/'で区切られたパスを取りますが、Dirの文字列値はURLではなくネイティブファイルシステム上のディレクトリーパスであるため、[filepath.Separator] で区切られます。これは必ずしも'/'ではありません。
+// While the [FileSystem.Open] method takes '/'-separated paths, a Dir's string
+// value is a directory path on the native file system, not a URL, so it is separated
+// by [filepath.Separator], which isn't necessarily '/'.
 //
-// Dirは、機密ファイルやディレクトリを公開する可能性があります。Dirは、ディレクトリツリーから外部を指すシンボリックリンクを追跡します。これは、ユーザーが任意のシンボリックリンクを作成できるディレクトリからサービスを提供する場合に特に危険です。Dirは、ピリオドで始まるファイルやディレクトリにもアクセスを許可します。これには、.gitのような機密ディレクトリや.htpasswdのような機密ファイルが含まれます。ピリオドで始まるファイルを除外するには、ファイル/ディレクトリをサーバーから削除するか、カスタムFileSystem実装を作成してください。
+// Note that Dir could expose sensitive files and directories. Dir will follow
+// symlinks pointing out of the directory tree, which can be especially dangerous
+// if serving from a directory in which users are able to create arbitrary symlinks.
+// Dir will also allow access to files and directories starting with a period,
+// which could expose sensitive directories like .git or sensitive files like
+// .htpasswd. To exclude files with a leading period, remove the files/directories
+// from the server or create a custom FileSystem implementation.
 //
-// 空のDirは"."として扱われます。
+// An empty Dir is treated as ".".
 type Dir string
 
-// Openは、[os.Open] を使用して、ディレクトリdにルートされ、相対的なファイルを読み取るために [FileSystem] を実装します。
+// Open implements [FileSystem] using [os.Open], opening files for reading rooted
+// and relative to the directory d.
 func (d Dir) Open(name string) (File, error)
 
-// FileSystemは、名前付きファイルのコレクションへのアクセスを実装します。
-// ファイルパスの要素は、ホストオペレーティングシステムの規約に関係なく、スラッシュ（'/'、U+002F）で区切られます。
-// FileSystemを [Handler] に変換するには、[FileServer] 関数を参照してください。
+// A FileSystem implements access to a collection of named files.
+// The elements in a file path are separated by slash ('/', U+002F)
+// characters, regardless of host operating system convention.
+// See the [FileServer] function to convert a FileSystem to a [Handler].
 //
-// このインターフェースは、[fs.FS] インターフェースより前に存在しており、代わりに使用できます。
-// [FS] アダプター関数は、fs.FSをFileSystemに変換します。
+// This interface predates the [fs.FS] interface, which can be used instead:
+// the [FS] adapter function converts an fs.FS to a FileSystem.
 type FileSystem interface {
 	Open(name string) (File, error)
 }
 
-// [FileSystem] のOpenメソッドによって返され、[FileServer] 実装によって提供されるファイルです。
+// A File is returned by a [FileSystem]'s Open method and can be
+// served by the [FileServer] implementation.
 //
-// メソッドは、 [*os.File] と同じ動作をする必要があります。
+// The methods should behave the same as those on an [*os.File].
 type File interface {
 	io.Closer
 	io.Reader
@@ -45,89 +57,111 @@ type File interface {
 	Stat() (fs.FileInfo, error)
 }
 
-// ServeContentは、提供されたReadSeekerの内容を使用してリクエストに応答します。
-// ServeContentの [io.Copy] に対する主な利点は、Rangeリクエストを適切に処理し、
-// MIMEタイプを設定し、If-Match、If-Unmodified-Since、If-None-Match、
-// If-Modified-Since、およびIf-Rangeリクエストを処理することです。
+// ServeContent replies to the request using the content in the
+// provided ReadSeeker. The main benefit of ServeContent over [io.Copy]
+// is that it handles Range requests properly, sets the MIME type, and
+// handles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,
+// and If-Range requests.
 //
-// レスポンスのContent-Typeヘッダーが設定されていない場合、ServeContentは
-// 最初にnameのファイル拡張子からタイプを推測し、それが失敗した場合は、
-// コンテンツの最初のブロックを読み取り、それを [DetectContentType] に渡すようにフォールバックします。
-// それ以外の場合、nameは使用されません。特に、nameは空にでき、レスポンスで送信されることはありません。
+// If the response's Content-Type header is not set, ServeContent
+// first tries to deduce the type from name's file extension and,
+// if that fails, falls back to reading the first block of the content
+// and passing it to [DetectContentType].
+// The name is otherwise unused; in particular it can be empty and is
+// never sent in the response.
 //
-// modtimeがゼロ時またはUnixエポックでない場合、ServeContentは応答のLast-Modifiedヘッダーに含めます。
-// リクエストにIf-Modified-Sinceヘッダーが含まれている場合、ServeContentはmodtimeを使用して、コンテンツを送信する必要があるかどうかを決定します。
+// If modtime is not the zero time or Unix epoch, ServeContent
+// includes it in a Last-Modified header in the response. If the
+// request includes an If-Modified-Since header, ServeContent uses
+// modtime to decide whether the content needs to be sent at all.
 //
-// コンテンツのSeekメソッドは動作する必要があります。ServeContentは、コンテンツのサイズを決定するために、コンテンツの末尾にシークを使用します。
-// [*os.File] は [io.ReadSeeker] インターフェースを実装していることに注意してください。
+// The content's Seek method must work: ServeContent uses
+// a seek to the end of the content to determine its size.
+// Note that [*os.File] implements the [io.ReadSeeker] interface.
 //
-// 呼び出し元がRFC 7232、セクション2.3に従ってフォーマットされたwのETagヘッダーを設定している場合、ServeContentはそれを使用して、If-Match、If-None-Match、またはIf-Rangeを使用するリクエストを処理します。
+// If the caller has set w's ETag header formatted per RFC 7232, section 2.3,
+// ServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.
 //
-// リクエストの処理中にエラーが発生した場合（例えば、無効な範囲リクエストを処理する際など）、
-// ServeContentはエラーメッセージで応答します。デフォルトでは、ServeContentはエラーレスポンスから
-// Cache-Control、Content-Encoding、ETag、およびLast-Modifiedヘッダーを削除します。
-// GODEBUG設定httpservecontentkeepheaders=1を使用すると、ServeContentはこれらのヘッダーを保持します。
+// If an error occurs when serving the request (for example, when
+// handling an invalid range request), ServeContent responds with an
+// error message. By default, ServeContent strips the Cache-Control,
+// Content-Encoding, ETag, and Last-Modified headers from error responses.
+// The GODEBUG setting httpservecontentkeepheaders=1 causes ServeContent
+// to preserve these headers.
 func ServeContent(w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)
 
-// ServeFileは、指定された名前の
-// ファイルまたはディレクトリの内容でリクエストに応答します。
+// ServeFile replies to the request with the contents of the named
+// file or directory.
 //
-// 提供されたファイル名またはディレクトリ名が相対パスの場合、それは
-// 現在のディレクトリに対して相対的に解釈され、親ディレクトリに昇格することができます。
-// 提供された名前がユーザー入力から構築されている場合、[ServeFile] を呼び出す前に
-// サニタイズする必要があります。
+// If the provided file or directory name is a relative path, it is
+// interpreted relative to the current directory and may ascend to
+// parent directories. If the provided name is constructed from user
+// input, it should be sanitized before calling [ServeFile].
 //
-// 予防措置として、ServeFileはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。
-// これは、r.URL.Pathをサニタイズせずに [filepath.Join] で安全でなく使用し、
-// その結果をname引数として使用する可能性のある呼び出し元に対する保護です。
+// As a precaution, ServeFile will reject requests where r.URL.Path
+// contains a ".." path element; this protects against callers who
+// might unsafely use [filepath.Join] on r.URL.Path without sanitizing
+// it and then use that filepath.Join result as the name argument.
 //
-// 別の特殊なケースとして、ServeFileはr.URL.Pathが
-// "/index.html"で終わる任意のリクエストを、最後の
-// "index.html"なしで同じパスにリダイレクトします。そのようなリダイレクトを避けるためには、
-// パスを変更するか、[ServeContent] を使用します。
+// As another special case, ServeFile redirects any request where r.URL.Path
+// ends in "/index.html" to the same path, without the final
+// "index.html". To avoid such redirects either modify the path or
+// use [ServeContent].
 //
-// それらの2つの特殊なケースの外では、ServeFileは
-// r.URL.Pathを使用して提供するファイルやディレクトリを選択しません。
-// 名前引数で提供されたファイルやディレクトリのみが使用されます。
+// Outside of those two special cases, ServeFile does not use
+// r.URL.Path for selecting the file or directory to serve; only the
+// file or directory provided in the name argument is used.
 func ServeFile(w ResponseWriter, r *Request, name string)
 
-// ServeFileFSは、ファイルシステムfsysから指定されたファイルまたはディレクトリの内容でリクエストに応答します。
-// fsysによって提供されるファイルは [io.Seeker] を実装している必要があります。
+// ServeFileFS replies to the request with the contents
+// of the named file or directory from the file system fsys.
+// The files provided by fsys must implement [io.Seeker].
 //
-// 提供された名前がユーザー入力から構築されている場合、
-// [ServeFileFS] を呼び出す前にサニタイズする必要があります。
+// If the provided name is constructed from user input, it should be
+// sanitized before calling [ServeFileFS].
 //
-// 予防措置として、ServeFileFSはr.URL.Pathに".."パス要素が含まれているリクエストを拒否します。
-// これにより、r.URL.Pathに [filepath.Join] を安全に使用せずにサニタイズせずに使用し、そのfilepath.Joinの結果を名前引数として使用する可能性がある呼び出し元を保護します。
+// As a precaution, ServeFileFS will reject requests where r.URL.Path
+// contains a ".." path element; this protects against callers who
+// might unsafely use [filepath.Join] on r.URL.Path without sanitizing
+// it and then use that filepath.Join result as the name argument.
 //
-// もう1つの特別な場合として、ServeFileFSはr.URL.Pathが"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。
-// そのようなリダイレクトを回避するには、パスを変更するか、ServeContentを使用してください。
+// As another special case, ServeFileFS redirects any request where r.URL.Path
+// ends in "/index.html" to the same path, without the final
+// "index.html". To avoid such redirects either modify the path or
+// use [ServeContent].
 //
-// これら2つの特別な場合以外では、ServeFileFSはファイルまたはディレクトリを選択するためにr.URL.Pathを使用しません。
-// 名前引数で提供されたファイルまたはディレクトリのみが使用されます。
+// Outside of those two special cases, ServeFileFS does not use
+// r.URL.Path for selecting the file or directory to serve; only the
+// file or directory provided in the name argument is used.
 func ServeFileFS(w ResponseWriter, r *Request, fsys fs.FS, name string)
 
-// FSはfsysを [FileSystem] の実装に変換します。
-// これは [FileServer] と [NewFileTransport] で使用するためのものです。
-// fsysによって提供されるファイルは [io.Seeker] を実装しなければなりません。
+// FS converts fsys to a [FileSystem] implementation,
+// for use with [FileServer] and [NewFileTransport].
+// The files provided by fsys must implement [io.Seeker].
 func FS(fsys fs.FS) FileSystem
 
-// FileServerは、ルートでルートされたファイルシステムの内容でHTTPリクエストを処理するハンドラーを返します。
+// FileServer returns a handler that serves HTTP requests
+// with the contents of the file system rooted at root.
 //
-// 特別な場合として、返されたファイルサーバーは、"/index.html"で終わるリクエストを、最後の"index.html"を除いた同じパスにリダイレクトします。
+// As a special case, the returned file server redirects any request
+// ending in "/index.html" to the same path, without the final
+// "index.html".
 //
-// オペレーティングシステムのファイルシステム実装を使用するには、[http.Dir] を使用してください。
+// To use the operating system's file system implementation,
+// use [http.Dir]:
 //
 //	http.Handle("/", http.FileServer(http.Dir("/tmp")))
 //
-// [fs.FS] の実装を使用するには、代わりに [http.FileServerFS] を使用します。
+// To use an [fs.FS] implementation, use [http.FileServerFS] instead.
 func FileServer(root FileSystem) Handler
 
-// FileServerFSは、ファイルシステムfsysの内容でHTTPリクエストを処理するハンドラを返します。
-// fsysによって提供されるファイルは [io.Seeker] を実装している必要があります。
+// FileServerFS returns a handler that serves HTTP requests
+// with the contents of the file system fsys.
+// The files provided by fsys must implement [io.Seeker].
 //
-// 特別なケースとして、返されたファイルサーバーは、"/index.html"で終わる任意のリクエストを、
-// 最後の"index.html"なしの同じパスにリダイレクトします。
+// As a special case, the returned file server redirects any request
+// ending in "/index.html" to the same path, without the final
+// "index.html".
 //
 //	http.Handle("/", http.FileServerFS(fsys))
 func FileServerFS(root fs.FS) Handler

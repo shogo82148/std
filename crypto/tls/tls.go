@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// tlsパッケージは、RFC 5246で指定されているTLS 1.2と、RFC 8446で指定されているTLS 1.3を部分的に実装しています。
+// Package tls partially implements TLS 1.2, as specified in RFC 5246,
+// and TLS 1.3, as specified in RFC 8446.
 package tls
 
 import (
@@ -10,76 +11,99 @@ import (
 	"github.com/shogo82148/std/net"
 )
 
-// Serverは、基礎となるトランスポートとしてconnを使用して新しいTLSサーバーサイド接続を返します。
-// configの設定は、非nilであり、少なくとも1つの証明書を含んでいるか、またはGetCertificateを設定している必要があります。
+// Server returns a new TLS server side connection
+// using conn as the underlying transport.
+// The configuration config must be non-nil and must include
+// at least one certificate or else set GetCertificate.
 func Server(conn net.Conn, config *Config) *Conn
 
-// Client は、基礎となるトランスポートとして conn を使用して
-// 新しい TLS クライアント側の接続を返します。
-// ユーザーは、config に ServerName または InsecureSkipVerify のどちらかを設定する必要があります。config は nil であってはなりません。
+// Client returns a new TLS client side connection
+// using conn as the underlying transport.
+// The config cannot be nil: users must set either ServerName or
+// InsecureSkipVerify in the config.
 func Client(conn net.Conn, config *Config) *Conn
 
-// NewListenerは、内部Listenerからの接続を受け入れ、それぞれの接続を [Server] でラップするListenerを作成します。
-// 設定configはnilではなく、少なくとも1つの証明書を含むか、それ以外の場合はGetCertificateを設定する必要があります。
+// NewListener creates a Listener which accepts connections from an inner
+// Listener and wraps each connection with [Server].
+// The configuration config must be non-nil and must include
+// at least one certificate or else set GetCertificate.
 func NewListener(inner net.Listener, config *Config) net.Listener
 
-// Listenは、net.Listenを使用して、指定されたネットワークアドレスで接続を受け入れるTLSリスナーを作成します。
-// 設定（config）は、nil以外である必要があり、少なくとも1つの証明書を含んでいるか、GetCertificateを設定している必要があります。
+// Listen creates a TLS listener accepting connections on the
+// given network address using net.Listen.
+// The configuration config must be non-nil and must include
+// at least one certificate or else set GetCertificate.
 func Listen(network, laddr string, config *Config) (net.Listener, error)
 
-// DialWithDialerは、dialer.Dialを使用して指定されたネットワークアドレスに接続し、
-// TLSハンドシェイクを開始し、結果のTLS接続を返します。dialerで指定されたタイムアウトや
-// デッドラインは、接続とTLSハンドシェイク全体に適用されます。
+// DialWithDialer connects to the given network address using dialer.Dial and
+// then initiates a TLS handshake, returning the resulting TLS connection. Any
+// timeout or deadline given in the dialer apply to connection and TLS
+// handshake as a whole.
 //
-// DialWithDialerは、nilの設定をゼロの設定として解釈します。
-// デフォルトの内容については、 [Config] のドキュメントを参照してください。
+// DialWithDialer interprets a nil configuration as equivalent to the zero
+// configuration; see the documentation of [Config] for the defaults.
 //
-// DialWithDialerは、内部的にcontext.Backgroundを使用します。
-// コンテキストを指定するには、NetDialerを必要なダイアラに設定した
-// [Dialer.DialContext] を使用してください。
+// DialWithDialer uses context.Background internally; to specify the context,
+// use [Dialer.DialContext] with NetDialer set to the desired dialer.
 func DialWithDialer(dialer *net.Dialer, network, addr string, config *Config) (*Conn, error)
 
-// Dial関数は、net.Dialを使用して指定されたネットワークアドレスに接続し、
-// 次にTLSハンドシェイクを開始して、結果として得られるTLSコネクションを返します。
-// Dialはnilのconfigurationをゼロのconfigurationと同等だと解釈します。
-// デフォルトの設定については、Configのドキュメンテーションを参照してください。
+// Dial connects to the given network address using net.Dial
+// and then initiates a TLS handshake, returning the resulting
+// TLS connection.
+// Dial interprets a nil configuration as equivalent to
+// the zero configuration; see the documentation of Config
+// for the defaults.
 func Dial(network, addr string, config *Config) (*Conn, error)
 
-// Dialerは、設定と基礎となる接続のためのダイアラーを使用してTLS接続をダイアルします。
+// Dialer dials TLS connections given a configuration and a Dialer for the
+// underlying connection.
 type Dialer struct {
-
-	// NetDialerはTLS接続の基礎となるTCP接続に使用するオプションのダイアラです。
-	// nilのNetDialerはnet.Dialerのゼロ値と同じです。
+	// NetDialer is the optional dialer to use for the TLS connections'
+	// underlying TCP connections.
+	// A nil NetDialer is equivalent to the net.Dialer zero value.
 	NetDialer *net.Dialer
 
-	// Config は新しい接続に使用するTLSの設定です。
-	// nilの設定はゼロと同等であり、デフォルトの設定についてはConfigのドキュメントを参照してください。
+	// Config is the TLS configuration to use for new connections.
+	// A nil configuration is equivalent to the zero
+	// configuration; see the documentation of Config for the
+	// defaults.
 	Config *Config
 }
 
-// Dialは指定されたネットワークアドレスに接続し、TLSハンドシェイクを開始し、結果のTLS接続を返します。
+// Dial connects to the given network address and initiates a TLS
+// handshake, returning the resulting TLS connection.
 //
-// 返される [Conn] は、もし存在する場合は常に *[Conn] 型です。
+// The returned [Conn], if any, will always be of type *[Conn].
 //
-// 内部的にDialはcontext.Backgroundを使用しますが、コンテキストを指定するにはDialContextを使用してください。
+// Dial uses context.Background internally; to specify the context,
+// use [Dialer.DialContext].
 func (d *Dialer) Dial(network, addr string) (net.Conn, error)
 
-// DialContextは指定されたネットワークアドレスに接続し、TLSハンドシェイクを開始し、結果のTLS接続を返します。
-// 提供されたContextはnil以外である必要があります。接続が完了する前にContextが期限切れになった場合、エラーが返されます。接続成功後、Contextが期限切れになっても接続には影響しません。
-// 返される [Conn] （あれば）は常に *[Conn] 型です。
+// DialContext connects to the given network address and initiates a TLS
+// handshake, returning the resulting TLS connection.
+//
+// The provided Context must be non-nil. If the context expires before
+// the connection is complete, an error is returned. Once successfully
+// connected, any expiration of the context will not affect the
+// connection.
+//
+// The returned [Conn], if any, will always be of type *[Conn].
 func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error)
 
-// LoadX509KeyPairは、ペアのファイルから公開/秘密鍵ペアを読み込んで解析します。
-// ファイルにはPEMエンコードされたデータが含まれている必要があります。証明書ファイルには、
-// リーフ証明書に続く中間証明書が含まれている場合があり、証明書チェーンを形成します。
-// 成功時の戻り値では、Certificate.Leafが設定されます。
+// LoadX509KeyPair reads and parses a public/private key pair from a pair of
+// files. The files must contain PEM encoded data. The certificate file may
+// contain intermediate certificates following the leaf certificate to form a
+// certificate chain. On successful return, Certificate.Leaf will be populated.
 //
-// Go 1.23以前ではCertificate.Leafはnilのままで、解析された証明書は破棄されました。
-// この挙動は、GODEBUG環境変数で"x509keypairleaf=0"を設定することで再度有効にすることができます。
+// Before Go 1.23 Certificate.Leaf was left nil, and the parsed certificate was
+// discarded. This behavior can be re-enabled by setting "x509keypairleaf=0"
+// in the GODEBUG environment variable.
 func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
 
-// X509KeyPairは、ペアのPEMエンコードされたデータから公開/秘密鍵ペアを解析します。成功時の戻り値では、Certificate.Leafが設定されます。
+// X509KeyPair parses a public/private key pair from a pair of
+// PEM encoded data. On successful return, Certificate.Leaf will be populated.
 //
-// Go 1.23以前ではCertificate.Leafはnilのままで、解析された証明書は破棄されました。この挙動は、GODEBUG環境変数で"x509keypairleaf=0"
-// を設定することで再度有効にすることができます。
+// Before Go 1.23 Certificate.Leaf was left nil, and the parsed certificate was
+// discarded. This behavior can be re-enabled by setting "x509keypairleaf=0"
+// in the GODEBUG environment variable.
 func X509KeyPair(certPEMBlock, keyPEMBlock []byte) (Certificate, error)

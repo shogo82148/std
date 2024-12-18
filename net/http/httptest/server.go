@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// サーバーの実装
+// Implementation of Server
 
 package httptest
 
@@ -14,70 +14,77 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// Serverは、エンドツーエンドのHTTPテストで使用するために、
-// ローカルループバックインターフェース上のシステムが選んだポートでリッスンするHTTPサーバーです。
+// A Server is an HTTP server listening on a system-chosen port on the
+// local loopback interface, for use in end-to-end HTTP tests.
 type Server struct {
 	URL      string
 	Listener net.Listener
 
-	// EnableHTTP2は、サーバー上でHTTP/2が有効かどうかを制御します。
-	// NewUnstartedServerを呼び出すときとServer.StartTLSを呼び出すときの間に設定する必要があります。
+	// EnableHTTP2 controls whether HTTP/2 is enabled
+	// on the server. It must be set between calling
+	// NewUnstartedServer and calling Server.StartTLS.
 	EnableHTTP2 bool
 
-	// TLSはオプションのTLS構成であり、新しい構成でポピュレートされます
-	// TLSが開始された後に。 StartTLSが呼び出される前に開始されていないサーバーに設定されている場合、既存のフィールドは新しい構成にコピーされます。
+	// TLS is the optional TLS configuration, populated with a new config
+	// after TLS is started. If set on an unstarted server before StartTLS
+	// is called, existing fields are copied into the new config.
 	TLS *tls.Config
 
-	// NewUnstartedServer を呼び出した後、Start または StartTLS を実行する前に、Config を変更することができます。
+	// Config may be changed after calling NewUnstartedServer and
+	// before Start or StartTLS.
 	Config *http.Server
 
-	// certificate はTLS設定の証明書の解析バージョンです。存在する場合にのみ使用されます。
+	// certificate is a parsed version of the TLS config certificate, if present.
 	certificate *x509.Certificate
 
-	// wgはこのサーバー上の未処理のHTTPリクエストの数をカウントします。
-	// Closeはすべてのリクエストが終了するまでブロックします。
+	// wg counts the number of outstanding HTTP requests on this server.
+	// Close blocks until all requests are finished.
 	wg sync.WaitGroup
 
 	mu     sync.Mutex
 	closed bool
 	conns  map[net.Conn]http.ConnState
 
-	// client はサーバーとの通信用に設定されています。
-	// Close が呼び出されると、自動的にトランスポートが閉じられます。
+	// client is configured for use with the server.
+	// Its transport is automatically closed when Close is called.
 	client *http.Client
 }
 
-// NewServer は新しい [Server] を起動して返します。
-// 使用が終わったら、呼び出し元は Close を呼び出してシャットダウンする必要があります。
+// NewServer starts and returns a new [Server].
+// The caller should call Close when finished, to shut it down.
 func NewServer(handler http.Handler) *Server
 
-// NewUnstartedServerは新しい [Server] を返しますが、開始はしません。
+// NewUnstartedServer returns a new [Server] but doesn't start it.
 //
-// 設定を変更した後、呼び出し元はStartまたはStartTLSを呼び出す必要があります。
+// After changing its configuration, the caller should call Start or
+// StartTLS.
 //
-// 使用し終えたらCloseを呼び出してシャットダウンする必要があります。
+// The caller should call Close when finished, to shut it down.
 func NewUnstartedServer(handler http.Handler) *Server
 
-// Start はNewUnstartedServerからサーバーを起動します。
+// Start starts a server from NewUnstartedServer.
 func (s *Server) Start()
 
-// StartTLSは、NewUnstartedServerからサーバー上でTLSを開始します。
+// StartTLS starts TLS on a server from NewUnstartedServer.
 func (s *Server) StartTLS()
 
-// NewTLSServerはTLSを使用して新しい [Server] を起動し、それを返します。
-// 終了時には、呼び出し元はシャットダウンするためにCloseを呼び出す必要があります。
+// NewTLSServer starts and returns a new [Server] using TLS.
+// The caller should call Close when finished, to shut it down.
 func NewTLSServer(handler http.Handler) *Server
 
-// Close はサーバーをシャットダウンし、このサーバーに対して保留中のすべてのリクエストが完了するまでブロックします。
+// Close shuts down the server and blocks until all outstanding
+// requests on this server have completed.
 func (s *Server) Close()
 
-// CloseClientConnectionsはテストサーバーへのすべてのオープン中のHTTP接続を閉じます。
+// CloseClientConnections closes any open HTTP connections to the test Server.
 func (s *Server) CloseClientConnections()
 
-// Certificateは、サーバーがTLSを使用していない場合はnil、それ以外の場合はサーバーが使用する証明書を返します。
+// Certificate returns the certificate used by the server, or nil if
+// the server doesn't use TLS.
 func (s *Server) Certificate() *x509.Certificate
 
-// Clientは、サーバーへのリクエストを行うために設定されたHTTPクライアントを返します。
-// サーバーのTLSテスト証明書を信頼するように設定されており、[Server.Close] 時にアイドル接続をクローズします。
-// サーバーへのリクエストを送信するための基本URLとしてServer.URLを使用します。
+// Client returns an HTTP client configured for making requests to the server.
+// It is configured to trust the server's TLS test certificate and will
+// close its idle connections on [Server.Close].
+// Use Server.URL as the base URL to send requests to the server.
 func (s *Server) Client() *http.Client

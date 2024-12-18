@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// GCStatsは最近のガベージコレクションに関する情報を収集します。
+// GCStats collect information about recent garbage collections.
 type GCStats struct {
 	LastGC         time.Time
 	NumGC          int64
@@ -18,116 +18,156 @@ type GCStats struct {
 	PauseQuantiles []time.Duration
 }
 
-// ReadGCStatsはゴミ収集に関する統計情報をstatsに読み込みます。
-// 一時停止履歴のエントリ数はシステムに依存します。
-// stats.Pauseスライスは十分に大きければ再利用され、そうでなければ再割り当てされます。
-// ReadGCStatsはstats.Pauseスライスの容量をフルに使用する可能性があります。
-// もしstats.PauseQuantilesが空でない場合、ReadGCStatsは一時停止時間の分布を要約した
-// 分位数をstats.PauseQuantilesに埋め込みます。
-// 例えば、len(stats.PauseQuantiles)が5の場合、最小値、25%、50%、75%、最大値の一時停止時間が埋め込まれます。
+// ReadGCStats reads statistics about garbage collection into stats.
+// The number of entries in the pause history is system-dependent;
+// stats.Pause slice will be reused if large enough, reallocated otherwise.
+// ReadGCStats may use the full capacity of the stats.Pause slice.
+// If stats.PauseQuantiles is non-empty, ReadGCStats fills it with quantiles
+// summarizing the distribution of pause time. For example, if
+// len(stats.PauseQuantiles) is 5, it will be filled with the minimum,
+// 25%, 50%, 75%, and maximum pause times.
 func ReadGCStats(stats *GCStats)
 
-// SetGCPercentはガベージコレクションの目標パーセンテージを設定します：
-// 前回のコレクション後に残ったデータの生存データに対する最新割り当てデータの比率が
-// このパーセンテージに達した時にコレクションがトリガーされます。
-// SetGCPercentは以前の設定を返します。
-// 初期設定は起動時のGOGC環境変数の値、または変数が設定されていない場合は100です。
-// この設定はメモリ制限を維持するために効果的に減少させることができます。
-// マイナスのパーセンテージは、メモリ制限が達成されない限り、ガベージコレクションを
-// 実質的に無効にします。
-// 詳細については、SetMemoryLimitを参照してください。
+// SetGCPercent sets the garbage collection target percentage:
+// a collection is triggered when the ratio of freshly allocated data
+// to live data remaining after the previous collection reaches this percentage.
+// SetGCPercent returns the previous setting.
+// The initial setting is the value of the GOGC environment variable
+// at startup, or 100 if the variable is not set.
+// This setting may be effectively reduced in order to maintain a memory
+// limit.
+// A negative percentage effectively disables garbage collection, unless
+// the memory limit is reached.
+// See SetMemoryLimit for more details.
 func SetGCPercent(percent int) int
 
-// FreeOSMemoryはガベージコレクションを強制的に行い、可能なだけ多くのメモリをオペレーティングシステムに返す試みをします。
-// (これが呼ばれなくても、ランタイムはバックグラウンドで徐々にメモリをオペレーティングシステムに返します。)
+// FreeOSMemory forces a garbage collection followed by an
+// attempt to return as much memory to the operating system
+// as possible. (Even if this is not called, the runtime gradually
+// returns memory to the operating system in a background task.)
 func FreeOSMemory()
 
-// SetMaxStackは、個々のゴルーチンスタックが使用可能なメモリの最大量を設定します。
-// スタックを成長させながらこの制限を超える場合、プログラムはクラッシュします。
-// SetMaxStackは、前の設定を返します。
-// 初期設定は、64ビットシステムでは1GB、32ビットシステムでは250MBです。
-// SetMaxStackに提供される値に関係なく、システムによって設定された最大スタック制限がある場合があります。
+// SetMaxStack sets the maximum amount of memory that
+// can be used by a single goroutine stack.
+// If any goroutine exceeds this limit while growing its stack,
+// the program crashes.
+// SetMaxStack returns the previous setting.
+// The initial setting is 1 GB on 64-bit systems, 250 MB on 32-bit systems.
+// There may be a system-imposed maximum stack limit regardless
+// of the value provided to SetMaxStack.
 //
-// SetMaxStackは、無限再帰に入るゴルーチンによって引き起こされるダメージを制限するために主に役立ちます。
-// これは将来のスタックの成長のみを制限します。
+// SetMaxStack is useful mainly for limiting the damage done by
+// goroutines that enter an infinite recursion. It only limits future
+// stack growth.
 func SetMaxStack(bytes int) int
 
-// SetMaxThreadsはGoプログラムが使用できるオペレーティングシステムの最大スレッド数を設定します。これ以上のスレッドを使用しようとすると、プログラムはクラッシュします。
-// SetMaxThreadsは前の設定を返します。
-// 初期設定は10,000スレッドです。
+// SetMaxThreads sets the maximum number of operating system
+// threads that the Go program can use. If it attempts to use more than
+// this many, the program crashes.
+// SetMaxThreads returns the previous setting.
+// The initial setting is 10,000 threads.
 //
-// 制限はオペレーティングシステムのスレッド数を制御しますが、ゴルーチンの数を制御しません。Goプログラムは、既存のすべてのスレッドがシステムコール、CGOコールにブロックされているか、runtime.LockOSThreadの使用により他のゴルーチンにロックされている場合にのみ新しいスレッドを作成します。
+// The limit controls the number of operating system threads, not the number
+// of goroutines. A Go program creates a new thread only when a goroutine
+// is ready to run but all the existing threads are blocked in system calls, cgo calls,
+// or are locked to other goroutines due to use of runtime.LockOSThread.
 //
-// SetMaxThreadsは、無制限の数のスレッドを作成するプログラムによる被害を制限するために主に役立ちます。アイデアは、プログラムがオペレーティングシステムをダウンさせる前にプログラム自体をダウンさせることです。
+// SetMaxThreads is useful mainly for limiting the damage done by
+// programs that create an unbounded number of threads. The idea is
+// to take down the program before it takes down the operating system.
 func SetMaxThreads(threads int) int
 
-// SetPanicOnFaultは、プログラムが予期しない（非nil）アドレスでの障害が発生した場合、ランタイムの動作を制御します。
-// このような障害は通常、ランタイムのメモリ破損などのバグによって引き起こされるため、デフォルトの応答はプログラムをクラッシュさせることです。
-// メモリマップドファイルやメモリの安全でない操作を行うプログラムは、非nilアドレスでの障害を劇的な状況で引き起こすかもしれません。
-// SetPanicOnFaultは、そのようなプログラムがクラッシュではなくパニックのみを要求できるようにします。
-// ランタイムがパニックするときにランタイムがパニックするruntime.Errorには、追加のメソッドが存在する場合があります：
-// Addr() uintptr
-// もしAddrメソッドが存在する場合、それは障害を引き起こしたメモリアドレスを返します。
-// Addrの結果はベストエフォートであり、結果の信頼性はプラットフォームに依存する可能性があります。
-// SetPanicOnFaultは現在のゴルーチンにのみ適用されます。
-// それは前の設定を返します。
+// SetPanicOnFault controls the runtime's behavior when a program faults
+// at an unexpected (non-nil) address. Such faults are typically caused by
+// bugs such as runtime memory corruption, so the default response is to crash
+// the program. Programs working with memory-mapped files or unsafe
+// manipulation of memory may cause faults at non-nil addresses in less
+// dramatic situations; SetPanicOnFault allows such programs to request
+// that the runtime trigger only a panic, not a crash.
+// The runtime.Error that the runtime panics with may have an additional method:
+//
+//	Addr() uintptr
+//
+// If that method exists, it returns the memory address which triggered the fault.
+// The results of Addr are best-effort and the veracity of the result
+// may depend on the platform.
+// SetPanicOnFault applies only to the current goroutine.
+// It returns the previous setting.
 func SetPanicOnFault(enabled bool) bool
 
-// WriteHeapDumpはヒープとその中のオブジェクトの説明を指定されたファイルディスクリプタに書き込みます。
+// WriteHeapDump writes a description of the heap and the objects in
+// it to the given file descriptor.
 //
-// WriteHeapDumpはヒープダンプが完全に書き込まれるまですべてのゴルーチンの実行を一時停止します。したがって、ファイルディスクリプタは、同じGoプロセスのもう一方のエンドがあるパイプやソケットに接続してはいけません。代わりに、一時ファイルまたはネットワークソケットを使用してください。
+// WriteHeapDump suspends the execution of all goroutines until the heap
+// dump is completely written.  Thus, the file descriptor must not be
+// connected to a pipe or socket whose other end is in the same Go
+// process; instead, use a temporary file or network socket.
 //
-// ヒープダンプの形式はhttps://golang.org/s/go15heapdumpで定義されています。
+// The heap dump format is defined at https://golang.org/s/go15heapdump.
 func WriteHeapDump(fd uintptr)
 
-// SetTracebackは、ランタイムがパニックや内部ランタイムエラーによる終了前に出力するトレースバックの詳細度を設定します。
-// level引数は、GOTRACEBACK環境変数と同じ値を受け取ります。例えば、SetTraceback("all")は、プログラムがクラッシュしたときにすべてのゴルーチンを出力することを保証します。
-// 詳細については、パッケージランタイムのドキュメントを参照してください。
-// SetTracebackが環境変数よりも低いレベルで呼び出された場合、呼び出しは無視されます。
+// SetTraceback sets the amount of detail printed by the runtime in
+// the traceback it prints before exiting due to an unrecovered panic
+// or an internal runtime error.
+// The level argument takes the same values as the GOTRACEBACK
+// environment variable. For example, SetTraceback("all") ensure
+// that the program prints all goroutines when it crashes.
+// See the package runtime documentation for details.
+// If SetTraceback is called with a level lower than that of the
+// environment variable, the call is ignored.
 func SetTraceback(level string)
 
-// SetMemoryLimitはランタイムにソフトメモリ制限を提供します。
+// SetMemoryLimit provides the runtime with a soft memory limit.
 //
-// ランタイムは、ガベージコレクションの頻度の調整やメモリをより積極的に
-// 下位システムに返却するなど、このメモリ制限を尊重するためにいくつかの
-// プロセスを実行します。この制限は、GOGC=off (または、SetGCPercent(-1)が実行された場合も)であっても尊重されます。
+// The runtime undertakes several processes to try to respect this
+// memory limit, including adjustments to the frequency of garbage
+// collections and returning memory to the underlying system more
+// aggressively. This limit will be respected even if GOGC=off (or,
+// if SetGCPercent(-1) is executed).
 //
-// 入力制限はバイト単位で提供され、Goランタイムによってマップされた、管理された、リリースされていないすべてのメモリを含みます。特に、
-// Goバイナリによって使用されるスペースや、Go以外のメモリ(プロセスの
-// 代わりに下位システムによって管理されるメモリや、同じプロセス内の
-// 非Goコードによって管理されるメモリなど)は考慮されません。除外される
-// メモリソースの例には、プロセスのために保持されたOSカーネルメモリ、
-// Cコードによって割り当てられたメモリ、syscall.Mmapによってマップされた
-// メモリ(それはGoランタイムによって管理されていないため)が含まれます。
+// The input limit is provided as bytes, and includes all memory
+// mapped, managed, and not released by the Go runtime. Notably, it
+// does not account for space used by the Go binary and memory
+// external to Go, such as memory managed by the underlying system
+// on behalf of the process, or memory managed by non-Go code inside
+// the same process. Examples of excluded memory sources include: OS
+// kernel memory held on behalf of the process, memory allocated by
+// C code, and memory mapped by syscall.Mmap (because it is not
+// managed by the Go runtime).
 //
-// より具体的には、次の式が制限としてランタイムが維持しようとする値を
-// 正確に反映しています：
+// More specifically, the following expression accurately reflects
+// the value the runtime attempts to maintain as the limit:
 //
 //	runtime.MemStats.Sys - runtime.MemStats.HeapReleased
 //
-// またはruntime/metricsパッケージを使用して：
+// or in terms of the runtime/metrics package:
 //
 //	/memory/classes/total:bytes - /memory/classes/heap/released:bytes
 //
-// ゼロの制限やGoランタイムによって使用されるメモリ量よりも低い制限は、
-// ガベージコレクタがほぼ連続的に実行される原因となるかもしれません。
-// ただし、アプリケーションは引き続き進行する可能性があります。
+// A zero limit or a limit that's lower than the amount of memory
+// used by the Go runtime may cause the garbage collector to run
+// nearly continuously. However, the application may still make
+// progress.
 //
-// メモリ制限は常にGoランタイムによって尊重されますので、
-// この挙動を効果的に無効にするには、制限を非常に高く設定します。
-// [math.MaxInt64] は制限を無効にするための標準的な値ですが、
-// 制限値が基礎となるシステムの利用可能なメモリよりもはるかに大きい場合でも、
-// 同様に機能します。
+// The memory limit is always respected by the Go runtime, so to
+// effectively disable this behavior, set the limit very high.
+// [math.MaxInt64] is the canonical value for disabling the limit,
+// but values much greater than the available memory on the underlying
+// system work just as well.
 //
-// 詳細なガイドと共に、ソフトメモリ制限について詳しく説明したガイドおよび
-// さまざまな一般的な使用例とシナリオについては、
-// https://go.dev/doc/gc-guideを参照してください。
+// See https://go.dev/doc/gc-guide for a detailed guide explaining
+// the soft memory limit in more detail, as well as a variety of common
+// use-cases and scenarios.
 //
-// 初期設定はmath.MaxInt64ですが、GOMEMLIMIT環境変数が設定されている場合は、初期設定を提供します。GOMEMLIMITは、バイト単位の数値で、
-// オプションの単位接尾辞を持ちます。サポートされる接尾辞には、B、KiB、
-// MiB、GiB、TiBがあります。これらの接尾辞は、IEC 80000-13規格で定義されるバイトの数量を表します。つまり、KiBは2^10バイトを、
-// MiBは2^20バイトを意味し、それ以降も同様です。
+// The initial setting is math.MaxInt64 unless the GOMEMLIMIT
+// environment variable is set, in which case it provides the initial
+// setting. GOMEMLIMIT is a numeric value in bytes with an optional
+// unit suffix. The supported suffixes include B, KiB, MiB, GiB, and
+// TiB. These suffixes represent quantities of bytes as defined by
+// the IEC 80000-13 standard. That is, they are based on powers of
+// two: KiB means 2^10 bytes, MiB means 2^20 bytes, and so on.
 //
-// SetMemoryLimitは以前に設定されたメモリ制限を返します。
-// 負の入力は制限を調整せず、現在設定されたメモリ制限を取得することができます。
+// SetMemoryLimit returns the previously set memory limit.
+// A negative input does not adjust the limit, and allows for
+// retrieval of the currently set memory limit.
 func SetMemoryLimit(limit int64) int64

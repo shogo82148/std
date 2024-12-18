@@ -4,9 +4,10 @@
 
 package math
 
-// Modfは整数部分と小数部分の浮動小数点数を返します。両方の値はfと同じ符号を持ちます。
+// Modf returns integer and fractional floating-point numbers
+// that sum to f. Both values have the same sign as f.
 //
-// 特殊なケースは以下の通りです：
+// Special cases are:
 //
 //	Modf(±Inf) = ±Inf, NaN
 //	Modf(NaN) = NaN, NaN

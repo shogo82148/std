@@ -4,27 +4,30 @@
 
 package metrics
 
-// Float64Histogramはfloat64値の分布を表します。
+// Float64Histogram represents a distribution of float64 values.
 type Float64Histogram struct {
-
-	// Countsには、各ヒストグラムバケットの重みが格納されています。
+	// Counts contains the weights for each histogram bucket.
 	//
-	// バケット数Nが与えられた場合、Count[n]は範囲[bucket[n]、bucket[n+1])の重みです。
-	// ただし、0 <= n < N。
+	// Given N buckets, Count[n] is the weight of the range
+	// [bucket[n], bucket[n+1]), for 0 <= n < N.
 	Counts []uint64
 
-	// Buckets はヒストグラムのバケットの境界を含み、増加する順序で格納します。
+	// Buckets contains the boundaries of the histogram buckets, in increasing order.
 	//
-	// Buckets[0] は最小バケットの包括的な下限であり、
-	// Buckets[len(Buckets)-1] は最大バケットの排他的な上限です。
-	// したがって、len(Buckets)-1 個のカウントがあります。さらに、len(Buckets) != 1 は常に成り立ちます。
-	// なぜならば、少なくとも 2 つの境界が必要で、0 個の境界を使用して 0 個のバケットを記述するためです。
+	// Buckets[0] is the inclusive lower bound of the minimum bucket while
+	// Buckets[len(Buckets)-1] is the exclusive upper bound of the maximum bucket.
+	// Hence, there are len(Buckets)-1 counts. Furthermore, len(Buckets) != 1, always,
+	// since at least two boundaries are required to describe one bucket (and 0
+	// boundaries are used to describe 0 buckets).
 	//
-	// Buckets[0] には値 -Inf を許可し、Buckets[len(Buckets)-1] には値 Inf を許可します。
+	// Buckets[0] is permitted to have value -Inf and Buckets[len(Buckets)-1] is
+	// permitted to have value Inf.
 	//
-	// 特定のメトリック名に対して、Buckets の値はプログラムの終了まで呼び出しの間変わらないことが保証されています。
+	// For a given metric name, the value of Buckets is guaranteed not to change
+	// between calls until program exit.
 	//
-	// このスライスの値は、他の Float64Histograms の Buckets フィールドとエイリアスを持つことが許可されているため、
-	// 内部の値は読み取ることしかできません。変更する必要がある場合は、ユーザーがコピーを作成する必要があります。
+	// This slice value is permitted to alias with other Float64Histograms' Buckets
+	// fields, so the values within should only ever be read. If they need to be
+	// modified, the user must make a copy.
 	Buckets []float64
 }

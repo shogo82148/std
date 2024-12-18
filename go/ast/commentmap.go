@@ -8,28 +8,40 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// CommentMapはASTノードをそのノードに関連付けられたコメントグループのリストにマップします。
-// 関連付けについては、[NewCommentMap] の説明を参照してください。
+// A CommentMap maps an AST node to a list of comment groups
+// associated with it. See [NewCommentMap] for a description of
+// the association.
 type CommentMap map[Node][]*CommentGroup
 
-// NewCommentMapは、コメントリストのコメントグループをASTのノードと関連付けて新しいコメントマップを作成します。
-// コメントグループgは、ノードnと関連付けられます。以下の条件を満たす場合です：
-//   - gは、nの終了する行と同じ行で開始します。
-//   - gは、nの直後の行で始まり、gと次のノードの間に少なくとも1つの空行がある場合。
-//   - gは、nよりも前に開始され、前のルールを介してnの前のノードに関連付けられていない場合。
+// NewCommentMap creates a new comment map by associating comment groups
+// of the comments list with the nodes of the AST specified by node.
 //
-// NewCommentMapは、コメントグループを「最大の」ノードに関連付けようとします。たとえば、コメントが代入文の後に続く行コメントの場合、コメントは代入文全体ではなく、代入文の最後のオペランドに関連づけられます。
+// A comment group g is associated with a node n if:
+//
+//   - g starts on the same line as n ends
+//   - g starts on the line immediately following n, and there is
+//     at least one empty line after g and before the next node
+//   - g starts before n and is not associated to the node before n
+//     via the previous rules
+//
+// NewCommentMap tries to associate a comment group to the "largest"
+// node possible: For instance, if the comment is a line comment
+// trailing an assignment, the comment is associated with the entire
+// assignment rather than just the last operand in the assignment.
 func NewCommentMap(fset *token.FileSet, node Node, comments []*CommentGroup) CommentMap
 
-// Updateはコメントマップ内の古いノードを新しいノードで置き換え、新しいノードを返します。
-// 古いノードに関連付けられていたコメントは、新しいノードに関連付けられます。
+// Update replaces an old node in the comment map with the new node
+// and returns the new node. Comments that were associated with the
+// old node are associated with the new node.
 func (cmap CommentMap) Update(old, new Node) Node
 
-// Filterはnodeによって指定されたASTに対応するノードが存在する場合、cmapのエントリのみで構成される新しいコメントマップを返します。
+// Filter returns a new comment map consisting of only those
+// entries of cmap for which a corresponding node exists in
+// the AST specified by node.
 func (cmap CommentMap) Filter(node Node) CommentMap
 
-// Commentsはコメントマップ内のコメントグループのリストを返します。
-// 結果はソースの順にソートされます。
+// Comments returns the list of comment groups in the comment map.
+// The result is sorted in source order.
 func (cmap CommentMap) Comments() []*CommentGroup
 
 func (cmap CommentMap) String() string

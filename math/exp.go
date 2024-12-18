@@ -4,18 +4,18 @@
 
 package math
 
-// Expはe**x、つまりxの自然対数の底eによる指数関数です。
+// Exp returns e**x, the base-e exponential of x.
 //
-// 特殊な場合は次の通りです:
+// Special cases are:
 //
 //	Exp(+Inf) = +Inf
 //	Exp(NaN) = NaN
 //
-// 非常に大きな値は0または+Infにオーバーフローします。
-// 非常に小さい値は1にアンダーフローします。
+// Very large values overflow to 0 or +Inf.
+// Very small values underflow to 1.
 func Exp(x float64) float64
 
-// Exp2はxの2の累乗（2**x）を返します。
+// Exp2 returns 2**x, the base-2 exponential of x.
 //
-// 特殊なケースは [Exp] と同じです。
+// Special cases are the same as [Exp].
 func Exp2(x float64) float64

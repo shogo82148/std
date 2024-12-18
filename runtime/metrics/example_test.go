@@ -10,69 +10,70 @@ import (
 )
 
 func ExampleRead_readingOneMetric() {
-	// 読み取りたいメトリックの名前。
+	// Name of the metric we want to read.
 	const myMetric = "/memory/classes/heap/free:bytes"
 
-	// メトリクスのサンプルを作成します。
+	// Create a sample for the metric.
 	sample := make([]metrics.Sample, 1)
 	sample[0].Name = myMetric
 
-	// メトリックをサンプリングする。
+	// Sample the metric.
 	metrics.Read(sample)
 
-	// メトリックが実際にサポートされているか確認します。
-	// もしサポートされていなければ、結果の値は常にKindBadになります。
+	// Check if the metric is actually supported.
+	// If it's not, the resulting value will always have
+	// kind KindBad.
 	if sample[0].Value.Kind() == metrics.KindBad {
 		panic(fmt.Sprintf("metric %q no longer supported", myMetric))
 	}
 
-	// 結果を処理する。
+	// Handle the result.
 	//
-	// メトリックに特定の Kind を想定することは問題ありません。
-	// それらは変更されないことが保証されています。
+	// It's OK to assume a particular Kind for a metric;
+	// they're guaranteed not to change.
 	freeBytes := sample[0].Value.Uint64()
 
 	fmt.Printf("free but not released memory: %d\n", freeBytes)
 }
 
 func ExampleRead_readingAllMetrics() {
-	// すべてのサポートされているメトリクスの説明を取得する。
+	// Get descriptions for all supported metrics.
 	descs := metrics.All()
 
-	// 各メトリックのサンプルを作成します。
+	// Create a sample for each metric.
 	samples := make([]metrics.Sample, len(descs))
 	for i := range samples {
 		samples[i].Name = descs[i].Name
 	}
 
-	// メトリクスをサンプリングします。可能な場合、サンプルスライスを再利用してください！
+	// Sample the metrics. Re-use the samples slice if you can!
 	metrics.Read(samples)
 
-	// すべての結果を繰り返す。
+	// Iterate over all results.
 	for _, sample := range samples {
-		// 名前と値を取り出す。
+		// Pull out the name and value.
 		name, value := sample.Name, sample.Value
 
-		// 各サンプルを処理する。
+		// Handle each sample.
 		switch value.Kind() {
 		case metrics.KindUint64:
 			fmt.Printf("%s: %d\n", name, value.Uint64())
 		case metrics.KindFloat64:
 			fmt.Printf("%s: %f\n", name, value.Float64())
 		case metrics.KindFloat64Histogram:
-			// ヒストグラムはかなり大きくなるかもしれませんので、この例のために
-			// 中央値のざっくりした推定値を取り出しましょう。
+			// The histogram may be quite large, so let's just pull out
+			// a crude estimate for the median for the sake of this example.
 			fmt.Printf("%s: %f\n", name, medianBucket(value.Float64Histogram()))
 		case metrics.KindBad:
-			// これは起きてはいけないはずです。なぜなら、すべてのメトリクスは構築されているからです。
+			// This should never happen because all metrics are supported
+			// by construction.
 			panic("bug in runtime/metrics package!")
 		default:
-
-			// 新しいメトリクスが追加されると、これが発生する可能性があります。
+			// This may happen as new metrics get added.
 			//
-			// ここでは、安全策として、単にそれをログに記録しておくことで、
-			// 現時点では無視します。
-			// 最悪の場合、一時的に新しいメトリクスの情報を見逃すかもしれませんが、
+			// The safest thing to do here is to simply log it somewhere
+			// as something to look into, but ignore it for now.
+			// In the worst case, you might temporarily miss out on a new metric.
 			fmt.Printf("%s: unexpected metric Kind: %v\n", name, value.Kind())
 		}
 	}

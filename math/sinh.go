@@ -4,18 +4,18 @@
 
 package math
 
-// Sinhはxの双曲線正弦を返します。
+// Sinh returns the hyperbolic sine of x.
 //
-// 特殊なケースは以下の通りです：
+// Special cases are:
 //
 //	Sinh(±0) = ±0
 //	Sinh(±Inf) = ±Inf
 //	Sinh(NaN) = NaN
 func Sinh(x float64) float64
 
-// Coshはxの双曲線余弦を返します。
+// Cosh returns the hyperbolic cosine of x.
 //
-// 特殊なケースは以下の通りです:
+// Special cases are:
 //
 //	Cosh(±0) = 1
 //	Cosh(±Inf) = +Inf

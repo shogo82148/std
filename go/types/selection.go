@@ -5,57 +5,62 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルは選択操作を実装しています。
+// This file implements Selections.
 
 package types
 
-// SelectionKindは、セレクタ式x.fの種類を記述します
-// （修飾識別子は除く）。
+// SelectionKind describes the kind of a selector expression x.f
+// (excluding qualified identifiers).
 //
-// xがstructまたは*structの場合、セレクタ式x.fは
-// 一連の選択操作x.a.b.c.fを表す可能性があります。SelectionKindは
-// 最終的な（明示的な）操作の種類を記述します。すべての
-// 以前の（暗黙的な）操作は常にフィールド選択です。
-// Indicesの各要素は、暗黙的なフィールド（a、b、c）を
-// フィールド選択オペランドのstruct型のインデックスで指定します。
+// If x is a struct or *struct, a selector expression x.f may denote a
+// sequence of selection operations x.a.b.c.f. The SelectionKind
+// describes the kind of the final (explicit) operation; all the
+// previous (implicit) operations are always field selections.
+// Each element of Indices specifies an implicit field (a, b, c)
+// by its index in the struct type of the field selection operand.
 //
-// FieldVal操作の場合、最終的な選択はSelection.Objで指定されたフィールドを参照します。
+// For a FieldVal operation, the final selection refers to the field
+// specified by Selection.Obj.
 //
-// MethodVal操作の場合、最終的な選択はメソッドを参照します。
-// メソッドの宣言されたレシーバの"ポインタ性"が、暗黙のフィールド
-// 選択後の実効レシーバと一致しない場合、&または*操作が暗黙的に
-// レシーバ変数または値に適用されます。
-// したがって、fがポインタレシーバを必要とするがx.a.b.cが非ポインタ変数である場合、
-// x.fは(&x.a.b.c).fを表します。また、fが非ポインタレシーバを必要とするが
-// x.a.b.cがポインタ値である場合、x.fは(*x.a.b.c).fを表します。
+// For a MethodVal operation, the final selection refers to a method.
+// If the "pointerness" of the method's declared receiver does not
+// match that of the effective receiver after implicit field
+// selection, then an & or * operation is implicitly applied to the
+// receiver variable or value.
+// So, x.f denotes (&x.a.b.c).f when f requires a pointer receiver but
+// x.a.b.c is a non-pointer variable; and it denotes (*x.a.b.c).f when
+// f requires a non-pointer receiver but x.a.b.c is a pointer value.
 //
-// 暗黙的または明示的なフィールド選択、または"ポインタ性"のために挿入された*操作による
-// すべてのポインタ間接参照は、nilポインタに適用されるとパニックを引き起こします。
-// したがって、メソッド呼び出しx.f()は、関数呼び出しの前にパニックを引き起こす可能性があります。
+// All pointer indirections, whether due to implicit or explicit field
+// selections or * operations inserted for "pointerness", panic if
+// applied to a nil pointer, so a method call x.f() may panic even
+// before the function call.
 //
-// 対照的に、MethodExpr操作T.fは基本的に以下の形式の関数リテラルと等価です：
+// By contrast, a MethodExpr operation T.f is essentially equivalent
+// to a function literal of the form:
 //
 //	func(x T, args) (results) { return x.f(args) }
 //
-// その結果、"ポインタ性"のために挿入された任意の暗黙的なフィールド選択と*操作は、
-// 関数が呼び出されるまで評価されません。したがって、T.fまたは(*T).fの式は決してパニックしません。
+// Consequently, any implicit field selections and * operations
+// inserted for "pointerness" are not evaluated until the function is
+// called, so a T.f or (*T).f expression never panics.
 type SelectionKind int
 
 const (
-	FieldVal SelectionKind = iota
+	FieldVal   SelectionKind = iota
 	MethodVal
 	MethodExpr
 )
 
-// Selection（セレクション）は、セレクタ式 x.f を表します。
-// 次の宣言に対して：
+// A Selection describes a selector expression x.f.
+// For the declarations:
 //
 //	type T struct{ x int; E }
 //	type E struct{}
 //	func (e E) m() {}
 //	var p *T
 //
-// 以下の関係が存在します：
+// the following relations exist:
 //
 //	Selector    Kind          Recv    Obj    Type       Index     Indirect
 //
@@ -70,44 +75,48 @@ type Selection struct {
 	indirect bool
 }
 
-// Kindは選択の種類を返します。
+// Kind returns the selection kind.
 func (s *Selection) Kind() SelectionKind
 
-// Recvはx.fの型を返します。
+// Recv returns the type of x in x.f.
 func (s *Selection) Recv() Type
 
-// Obj は x.f によって指定されたオブジェクトを返します。フィールドの選択には *Var を、それ以外の場合は *Func を返します。
+// Obj returns the object denoted by x.f; a *Var for
+// a field selection, and a *Func in all other cases.
 func (s *Selection) Obj() Object
 
-// Typeはx.fの型を返しますが、fの型とは異なる場合があります。
-// 詳細はSelectionを参照してください。
+// Type returns the type of x.f, which may be different from the type of f.
+// See Selection for more information.
 func (s *Selection) Type() Type
 
-// Index はxからfへのパスを記述します。
-// 最後のindexエントリは、fを宣言している型のフィールドまたはメソッドのindexです。
-// 以下のいずれかです:
+// Index describes the path from x to f in x.f.
+// The last index entry is the field or method index of the type declaring f;
+// either:
 //
-//  1. 名前付き型の宣言されたメソッドのリスト
-//  2. インターフェース型のメソッドのリスト
-//  3. 構造体型のフィールドのリスト
+//  1. the list of declared methods of a named type; or
+//  2. the list of methods of an interface type; or
+//  3. the list of fields of a struct type.
 //
-// より早いindexエントリは、埋め込まれたフィールドのindexであり、
-// xからfに移動するために（xの型から）暗黙的にトラバースされる埋め込みの深さ0から始まります。
+// The earlier index entries are the indices of the embedded fields implicitly
+// traversed to get from (the type of) x to f, starting at embedding depth 0.
 func (s *Selection) Index() []int
 
-// Indirectは、x.fでxからfへ移動するためにポインタ間接参照が必要だったかどうかを報告します。
+// Indirect reports whether any pointer indirection was required to get from
+// x to f in x.f.
 //
-// 注意：レシーバ引数とパラメータの両方が型*Tを持つMethodVal選択で、
-// 間接参照がないにもかかわらず、Indirectが誤ってtrueを返す（Go issue #8353）ことがあります。
-// 残念ながら、修正はリスクが高すぎます。
+// Beware: Indirect spuriously returns true (Go issue #8353) for a
+// MethodVal selection in which the receiver argument and parameter
+// both have type *T so there is no indirection.
+// Unfortunately, a fix is too risky.
 func (s *Selection) Indirect() bool
 
 func (s *Selection) String() string
 
-// SelectionStringはsの文字列形式を返します。
-// Qualifierはパッケージレベルのオブジェクトの出力を制御し、nilである場合もあります。
+// SelectionString returns the string form of s.
+// The Qualifier controls the printing of
+// package-level objects, and may be nil.
 //
-// 例：
+// Examples:
 //
 //	"field (T) f int"
 //	"method (T) f(X) Y"

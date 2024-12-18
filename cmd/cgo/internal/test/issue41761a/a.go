@@ -4,7 +4,7 @@
 
 package issue41761a
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 type T struct {
 	X *C.S41761

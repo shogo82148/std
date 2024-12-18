@@ -4,17 +4,17 @@
 
 package math
 
-// Jnは、第一種ベッセル関数のn次の順序を返します。
+// Jn returns the order-n Bessel function of the first kind.
 //
-// 特殊なケースは次の通りです：
+// Special cases are:
 //
 //	Jn(n, ±Inf) = 0
 //	Jn(n, NaN) = NaN
 func Jn(n int, x float64) float64
 
-// Ynは第二種ベッセル関数のn番目の順序を返します。
+// Yn returns the order-n Bessel function of the second kind.
 //
-// 特殊な場合は次の通りです：
+// Special cases are:
 //
 //	Yn(n, +Inf) = 0
 //	Yn(n ≥ 0, 0) = -Inf

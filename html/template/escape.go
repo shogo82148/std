@@ -8,24 +8,26 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// HTMLEscapeは、プレーンテキストデータbのエスケープされたHTML相当をwに書き込みます。
+// HTMLEscape writes to w the escaped HTML equivalent of the plain text data b.
 func HTMLEscape(w io.Writer, b []byte)
 
-// HTMLEscapeStringは、プレーンテキストデータsのエスケープされたHTML相当を返します。
+// HTMLEscapeString returns the escaped HTML equivalent of the plain text data s.
 func HTMLEscapeString(s string) string
 
-// HTMLEscaperは、その引数のテキスト表現のエスケープされたHTML相当を返します。
+// HTMLEscaper returns the escaped HTML equivalent of the textual
+// representation of its arguments.
 func HTMLEscaper(args ...any) string
 
-// JSEscapeは、プレーンテキストデータbのエスケープされたJavaScript相当をwに書き込みます。
+// JSEscape writes to w the escaped JavaScript equivalent of the plain text data b.
 func JSEscape(w io.Writer, b []byte)
 
-// JSEscapeStringは、プレーンテキストデータsのエスケープされたJavaScript相当を返します。
+// JSEscapeString returns the escaped JavaScript equivalent of the plain text data s.
 func JSEscapeString(s string) string
 
-// JSEscaperは、その引数のテキスト表現のエスケープされたJavaScript相当を返します。
+// JSEscaper returns the escaped JavaScript equivalent of the textual
+// representation of its arguments.
 func JSEscaper(args ...any) string
 
-// URLQueryEscaperは、その引数のテキスト表現のエスケープされた値を、
-// URLクエリに埋め込むのに適した形式で返します。
+// URLQueryEscaper returns the escaped value of the textual representation of
+// its arguments in a form suitable for embedding in a URL query.
 func URLQueryEscaper(args ...any) string

@@ -4,18 +4,19 @@
 
 package asn1
 
-// MarshalはvalのASN.1エンコーディングを返します。
+// Marshal returns the ASN.1 encoding of val.
 //
 // In addition to the struct tags recognized by Unmarshal, the following can be
 // used:
 //
-//	ia5:         文字列をASN.1のIA5String値としてエンコードします。
-//	omitempty:   空のスライスをスキップします。
-//	printable:   文字列をASN.1のPrintableString値としてエンコードします。
-//	utf8:        文字列をASN.1のUTF8String値としてエンコードします。
-//	utc:         time.TimeをASN.1のUTCTime値としてエンコードします。
-//	generalized: time.TimeをASN.1のGeneralizedTime値としてエンコードします。
+//	ia5:         causes strings to be marshaled as ASN.1, IA5String values
+//	omitempty:   causes empty slices to be skipped
+//	printable:   causes strings to be marshaled as ASN.1, PrintableString values
+//	utf8:        causes strings to be marshaled as ASN.1, UTF8String values
+//	utc:         causes time.Time to be marshaled as ASN.1, UTCTime values
+//	generalized: causes time.Time to be marshaled as ASN.1, GeneralizedTime values
 func Marshal(val any) ([]byte, error)
 
-// MarshalWithParamsは、トップレベルの要素にフィールドパラメータを指定することを可能にします。パラメータの形式は、フィールドタグと同じです。
+// MarshalWithParams allows field parameters to be specified for the
+// top-level element. The form of the params is the same as the field tags.
 func MarshalWithParams(val any, params string) ([]byte, error)

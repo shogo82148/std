@@ -10,14 +10,15 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// ServerErrorは、RPC接続のリモート側から返されたエラーを表します。
+// ServerError represents an error that has been returned from
+// the remote side of the RPC connection.
 type ServerError string
 
 func (e ServerError) Error() string
 
 var ErrShutdown = errors.New("connection is shut down")
 
-// CallはアクティブなRPCを表します。
+// Call represents an active RPC.
 type Call struct {
 	ServiceMethod string
 	Args          any
@@ -26,9 +27,10 @@ type Call struct {
 	Done          chan *Call
 }
 
-// ClientはRPCクライアントを表します。
-// 単一のクライアントに関連付けられている複数の保留中の呼び出しがあり、
-// クライアントは同時に複数のゴルーチンによって使用される場合があります。
+// Client represents an RPC Client.
+// There may be multiple outstanding Calls associated
+// with a single Client, and a Client may be used by
+// multiple goroutines simultaneously.
 type Client struct {
 	codec ClientCodec
 
@@ -42,12 +44,15 @@ type Client struct {
 	shutdown bool
 }
 
-// ClientCodecは、RPCセッションのクライアント側において、RPCリクエストの書き込みとRPCレスポンスの読み取りを実装します。
-// クライアントは [ClientCodec.WriteRequest] を呼び出して接続にリクエストを書き込み、
-// [ClientCodec.ReadResponseHeader] と [ClientCodec.ReadResponseBody] をペアで呼び出してレスポンスを読み込みます。
-// 接続が終了したら、クライアントは [ClientCodec.Close] を呼び出します。
-// ReadResponseBodyは、nilの引数で呼び出されることがあり、レスポンスの本文を読み取り、その後破棄するように強制することができます。
-// 同時アクセスに関する情報については、[NewClient] のコメントを参照してください。
+// A ClientCodec implements writing of RPC requests and
+// reading of RPC responses for the client side of an RPC session.
+// The client calls [ClientCodec.WriteRequest] to write a request to the connection
+// and calls [ClientCodec.ReadResponseHeader] and [ClientCodec.ReadResponseBody] in pairs
+// to read responses. The client calls [ClientCodec.Close] when finished with the
+// connection. ReadResponseBody may be called with a nil
+// argument to force the body of the response to be read and then
+// discarded.
+// See [NewClient]'s comment for information about concurrent access.
 type ClientCodec interface {
 	WriteRequest(*Request, any) error
 	ReadResponseHeader(*Response) error
@@ -56,26 +61,34 @@ type ClientCodec interface {
 	Close() error
 }
 
-// NewClientは、接続先のサービスセットに対するリクエストを処理するための新しい [Client] を返します。
-// 接続の書き込み側にはバッファが追加されるため、ヘッダとペイロードがまとめて送信されます。
+// NewClient returns a new [Client] to handle requests to the
+// set of services at the other end of the connection.
+// It adds a buffer to the write side of the connection so
+// the header and payload are sent as a unit.
 //
-// 接続の読み込み側と書き込み側はそれぞれ独立してシリアライズされるため、相互ロックは必要ありません。ただし、各半分は同時にアクセスされる可能性があるため、connの実装は同時読み取りや同時書き込みに対して保護する必要があります。
+// The read and write halves of the connection are serialized independently,
+// so no interlocking is required. However each half may be accessed
+// concurrently so the implementation of conn should protect against
+// concurrent reads or concurrent writes.
 func NewClient(conn io.ReadWriteCloser) *Client
 
-// NewClientWithCodecは、指定されたコーデックを使用してリクエストをエンコードし、レスポンスをデコードする [NewClient] と同様です。
+// NewClientWithCodec is like [NewClient] but uses the specified
+// codec to encode requests and decode responses.
 func NewClientWithCodec(codec ClientCodec) *Client
 
-// DialHTTPは、デフォルトのHTTP RPCパスで待ち受けている、指定されたネットワークアドレスのHTTP RPCサーバーに接続します。
+// DialHTTP connects to an HTTP RPC server at the specified network address
+// listening on the default HTTP RPC path.
 func DialHTTP(network, address string) (*Client, error)
 
-// DialHTTPPathは指定したネットワークアドレスとパスでHTTP RPCサーバに接続します。
+// DialHTTPPath connects to an HTTP RPC server
+// at the specified network address and path.
 func DialHTTPPath(network, address, path string) (*Client, error)
 
-// Dialは指定されたネットワークアドレスのRPCサーバに接続します。
+// Dial connects to an RPC server at the specified network address.
 func Dial(network, address string) (*Client, error)
 
-// Closeは基礎となるコーデックのCloseメソッドを呼び出します。接続がすでに
-// シャットダウン中の場合、[ErrShutdown] が返されます。
+// Close calls the underlying codec's Close method. If the connection is already
+// shutting down, [ErrShutdown] is returned.
 func (client *Client) Close() error
 
 // Go invokes the function asynchronously. It returns the [Call] structure representing
@@ -84,5 +97,5 @@ func (client *Client) Close() error
 // If non-nil, done must be buffered or Go will deliberately crash.
 func (client *Client) Go(serviceMethod string, args any, reply any, done chan *Call) *Call
 
-// Callは指定された関数を呼び出し、その完了を待ち、エラー状態を返します。
+// Call invokes the named function, waits for it to complete, and returns its error status.
 func (client *Client) Call(serviceMethod string, args any, reply any) error

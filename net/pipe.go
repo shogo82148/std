@@ -4,8 +4,9 @@
 
 package net
 
-// Pipeは同期的な、インメモリ、フルダプレックスのネットワーク接続を作成します。
-// 両端は [Conn] インターフェースを実装しています。
-// 一方の端での読み取りは、もう一方の端での書き込みと一致し、データを直接コピーします。
-// 内部バッファリングはありません。
+// Pipe creates a synchronous, in-memory, full duplex
+// network connection; both ends implement the [Conn] interface.
+// Reads on one end are matched with writes on the other,
+// copying data directly between the two; there is no internal
+// buffering.
 func Pipe() (Conn, Conn)

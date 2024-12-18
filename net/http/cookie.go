@@ -8,9 +8,10 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Cookieは、HTTP応答のSet-CookieヘッダーまたはHTTPリクエストのCookieヘッダーで送信されるHTTPクッキーを表します。
+// A Cookie represents an HTTP cookie as sent in the Set-Cookie header of an
+// HTTP response or the Cookie header of an HTTP request.
 //
-// 詳細については、https://tools.ietf.org/html/rfc6265 を参照してください。
+// See https://tools.ietf.org/html/rfc6265 for details.
 type Cookie struct {
 	Name   string
 	Value  string
@@ -21,9 +22,9 @@ type Cookie struct {
 	Expires    time.Time
 	RawExpires string
 
-	// MaxAge=0は 'Max-Age'属性が指定されていないことを意味します。
-	// MaxAge<0は今すぐクッキーを削除することを意味し、'Max-Age: 0'と同等です。
-	// MaxAge>0はMax-Age属性が存在し、秒で指定されていることを意味します。
+	// MaxAge=0 means no 'Max-Age' attribute specified.
+	// MaxAge<0 means delete cookie now, equivalently 'Max-Age: 0'
+	// MaxAge>0 means Max-Age attribute present and given in seconds
 	MaxAge      int
 	Secure      bool
 	HttpOnly    bool
@@ -33,9 +34,12 @@ type Cookie struct {
 	Unparsed    []string
 }
 
-// SameSiteは、サーバーがクッキー属性を定義して、ブラウザがクロスサイトリクエストと一緒にこのクッキーを送信できなくすることを可能にします。主な目的は、クロスオリジン情報漏洩のリスクを軽減し、クロスサイトリクエスト偽造攻撃に対する保護を提供することです。
+// SameSite allows a server to define a cookie attribute making it impossible for
+// the browser to send this cookie along with cross-site requests. The main
+// goal is to mitigate the risk of cross-origin information leakage, and provide
+// some protection against cross-site request forgery attacks.
 //
-// 詳細については、https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00 を参照してください。
+// See https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00 for details.
 type SameSite int
 
 const (
@@ -45,21 +49,25 @@ const (
 	SameSiteNoneMode
 )
 
-// ParseCookieはCookieヘッダーの値を解析し、それに設定されていたすべてのクッキーを返します。
-// 同じクッキー名が複数回現れることがあるため、返されるValuesには、特定のキーに対して複数の値が含まれることがあります。
+// ParseCookie parses a Cookie header value and returns all the cookies
+// which were set in it. Since the same cookie name can appear multiple times
+// the returned Values can contain more than one value for a given key.
 func ParseCookie(line string) ([]*Cookie, error)
 
-// ParseSetCookieはSet-Cookieヘッダーの値を解析し、クッキーを返します。
-// 構文エラーがある場合はエラーを返します。
+// ParseSetCookie parses a Set-Cookie header value and returns a cookie.
+// It returns an error on syntax error.
 func ParseSetCookie(line string) (*Cookie, error)
 
-// SetCookieは、提供された [ResponseWriter] のヘッダーにSet-Cookieヘッダーを追加します。
-// 提供されたクッキーには有効な名前が必要です。無効なクッキーは黙って破棄される場合があります。
+// SetCookie adds a Set-Cookie header to the provided [ResponseWriter]'s headers.
+// The provided cookie must have a valid Name. Invalid cookies may be
+// silently dropped.
 func SetCookie(w ResponseWriter, cookie *Cookie)
 
-// Stringは、[Cookie] ヘッダー（NameとValueのみが設定されている場合）またはSet-Cookie応答ヘッダー（他のフィールドが設定されている場合）で使用するためのクッキーのシリアル化を返します。
-// cがnilであるか、c.Nameが無効な場合、空の文字列が返されます。
+// String returns the serialization of the cookie for use in a [Cookie]
+// header (if only Name and Value are set) or a Set-Cookie response
+// header (if other fields are set).
+// If c is nil or c.Name is invalid, the empty string is returned.
 func (c *Cookie) String() string
 
-// Validは、クッキーが有効かどうかを報告します。
+// Valid reports whether the cookie is valid.
 func (c *Cookie) Valid() error

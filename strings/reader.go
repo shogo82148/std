@@ -8,50 +8,53 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Readerは、文字列から読み取りを行うことで、 [io.Reader] 、[io.ReaderAt] 、 [io.ByteReader] 、 [io.ByteScanner] 、
-// [io.RuneReader] 、 [io.RuneScanner] 、 [io.Seeker] 、および [io.WriterTo] インターフェースを実装します。
-// Readerのゼロ値は、空の文字列のReaderのように動作します。
+// A Reader implements the [io.Reader], [io.ReaderAt], [io.ByteReader], [io.ByteScanner],
+// [io.RuneReader], [io.RuneScanner], [io.Seeker], and [io.WriterTo] interfaces by reading
+// from a string.
+// The zero value for Reader operates like a Reader of an empty string.
 type Reader struct {
 	s        string
 	i        int64
 	prevRune int
 }
 
-// Lenは、文字列の未読部分のバイト数を返します。
+// Len returns the number of bytes of the unread portion of the
+// string.
 func (r *Reader) Len() int
 
-// Sizeは、基礎となる文字列の元の長さを返します。
-// Sizeは、 [Reader.ReadAt] を介して読み取ることができるバイト数です。
-// 返される値は常に同じであり、他のメソッドの呼び出しに影響を受けません。
+// Size returns the original length of the underlying string.
+// Size is the number of bytes available for reading via [Reader.ReadAt].
+// The returned value is always the same and is not affected by calls
+// to any other method.
 func (r *Reader) Size() int64
 
-// Readは、 [io.Reader] インターフェースを実装します。
+// Read implements the [io.Reader] interface.
 func (r *Reader) Read(b []byte) (n int, err error)
 
-// ReadAtは、 [io.ReaderAt] インターフェースを実装します。
+// ReadAt implements the [io.ReaderAt] interface.
 func (r *Reader) ReadAt(b []byte, off int64) (n int, err error)
 
-// ReadByteは、 [io.ByteReader] インターフェースを実装します。
+// ReadByte implements the [io.ByteReader] interface.
 func (r *Reader) ReadByte() (byte, error)
 
-// UnreadByteは、 [io.ByteScanner] インターフェースを実装します。
+// UnreadByte implements the [io.ByteScanner] interface.
 func (r *Reader) UnreadByte() error
 
-// ReadRuneは、[io.RuneReader] インターフェースを実装します。
+// ReadRune implements the [io.RuneReader] interface.
 func (r *Reader) ReadRune() (ch rune, size int, err error)
 
-// UnreadRuneは、 [io.RuneScanner] インターフェースを実装します。
+// UnreadRune implements the [io.RuneScanner] interface.
 func (r *Reader) UnreadRune() error
 
-// Seekは、 [io.Seeker] インターフェースを実装します。
+// Seek implements the [io.Seeker] interface.
 func (r *Reader) Seek(offset int64, whence int) (int64, error)
 
-// WriteToは、 [io.WriterTo] インターフェースを実装します。
+// WriteTo implements the [io.WriterTo] interface.
 func (r *Reader) WriteTo(w io.Writer) (n int64, err error)
 
-// Resetは、 [Reader] をsから読み取るようにリセットします。
+// Reset resets the [Reader] to be reading from s.
 func (r *Reader) Reset(s string)
 
-// NewReaderは、sから読み取る新しい [Reader] を返します。
-// [bytes.NewBufferString] に似ていますが、より効率的で書き込み不可能です。
+// NewReader returns a new [Reader] reading from s.
+// It is similar to [bytes.NewBufferString] but more efficient and non-writable.
 func NewReader(s string) *Reader

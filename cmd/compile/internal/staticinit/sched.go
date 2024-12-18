@@ -47,7 +47,6 @@ var MapInitToVar map[*ir.Func]*ir.Name
 func (s *Schedule) StaticAssign(l *ir.Name, loff int64, r ir.Node, typ *types.Type) bool
 
 // StaticName returns a name backed by a (writable) static data symbol.
-// Use readonlystaticname for read-only node.
 func StaticName(t *types.Type) *ir.Name
 
 // StaticLoc returns the static address of n, if n has one, or else nil.

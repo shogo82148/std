@@ -5,7 +5,7 @@
 package gover
 
 import (
-	"golang.org/x/mod/module"
+	"github.com/shogo82148/std/golang.org/x/mod/module"
 )
 
 // IsToolchain reports whether the module path corresponds to the

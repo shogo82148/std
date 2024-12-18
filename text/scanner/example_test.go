@@ -52,7 +52,7 @@ func Example_isIdentRune() {
 	s.Init(strings.NewReader(src))
 	s.Filename = "percent"
 
-	// 先頭の '%' を識別子の一部として扱う
+	// treat leading '%' as part of an identifier
 	s.IsIdentRune = func(ch rune, i int) bool {
 		return ch == '%' && i == 0 || unicode.IsLetter(ch) || unicode.IsDigit(ch) && i > 0
 	}
@@ -88,7 +88,7 @@ its entirety.
 	var s scanner.Scanner
 	s.Init(strings.NewReader(src))
 	s.Filename = "comments"
-	s.Mode ^= scanner.SkipComments // コメントをスキップしない
+	s.Mode ^= scanner.SkipComments // don't skip comments
 
 	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
 		txt := s.TokenText()
@@ -116,10 +116,10 @@ da	db	dc	dd`
 	var (
 		col, row int
 		s        scanner.Scanner
-		tsv      [4][4]string // 上記の例に十分な大きさ
+		tsv      [4][4]string // large enough for example above
 	)
 	s.Init(strings.NewReader(src))
-	s.Whitespace ^= 1<<'\t' | 1<<'\n' // タブと改行をスキップしない
+	s.Whitespace ^= 1<<'\t' | 1<<'\n' // don't skip tabs and new lines
 
 	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
 		switch tok {

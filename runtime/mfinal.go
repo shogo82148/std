@@ -6,93 +6,121 @@
 
 package runtime
 
-// SetFinalizerは、objに関連付けられたファイナライザを提供されたファイナライザ関数に設定します。
-// ガベージコレクタが関連付けられたファイナライザを持つ到達不能なブロックを見つけると、
-// 関連付けをクリアし、別のゴルーチンでfinalizer(obj)を実行します。
-// これにより、objは再び到達可能になりますが、関連付けられたファイナライザはなくなります。
-// SetFinalizerが再度呼び出されない限り、次にガベージコレクタがobjが到達不能であることを検出した場合、objは解放されます。
+// SetFinalizer sets the finalizer associated with obj to the provided
+// finalizer function. When the garbage collector finds an unreachable block
+// with an associated finalizer, it clears the association and runs
+// finalizer(obj) in a separate goroutine. This makes obj reachable again,
+// but now without an associated finalizer. Assuming that SetFinalizer
+// is not called again, the next time the garbage collector sees
+// that obj is unreachable, it will free obj.
 //
-// SetFinalizer(obj, nil)は、objに関連付けられたファイナライザをクリアします。
+// SetFinalizer(obj, nil) clears any finalizer associated with obj.
 //
-// 引数objは、newを呼び出すことによって割り当てられたオブジェクトへのポインタ、
-// 複合リテラルのアドレスを取得することによって、またはローカル変数のアドレスを取得することによって割り当てられたオブジェクトへのポインタである必要があります。
-// 引数finalizerは、objの型に割り当てることができる単一の引数を取る関数であり、任意の無視される戻り値を持つことができます。
-// これらのいずれかがtrueでない場合、SetFinalizerはプログラムを中止する可能性があります。
+// New Go code should consider using [AddCleanup] instead, which is much
+// less error-prone than SetFinalizer.
 //
-// ファイナライザは依存関係の順序で実行されます。
-// AがBを指し示し、両方にファイナライザがあり、それらが到達不能である場合、Aのファイナライザのみが実行されます。
-// Aが解放された後、Bのファイナライザが実行されます。
-// ファイナライザを持つブロックを含む循環構造がある場合、その循環はガベージコレクトされることは保証されず、
-// 依存関係を尊重する順序がないため、ファイナライザが実行されることも保証されません。
+// The argument obj must be a pointer to an object allocated by calling
+// new, by taking the address of a composite literal, or by taking the
+// address of a local variable.
+// The argument finalizer must be a function that takes a single argument
+// to which obj's type can be assigned, and can have arbitrary ignored return
+// values. If either of these is not true, SetFinalizer may abort the
+// program.
 //
-// ファイナライザは、プログラムがobjが指し示すオブジェクトに到達できなくなった後、
-// 任意の時点で実行されるようにスケジュールされます。
-// プログラムが終了する前にファイナライザが実行されることは保証されていないため、
-// 通常、長時間実行されるプログラム中にオブジェクトに関連付けられた非メモリリソースを解放するためにのみ有用です。
-// たとえば、[os.File] オブジェクトは、プログラムがCloseを呼び出さずにos.Fileを破棄するときに、
-// 関連するオペレーティングシステムのファイルディスクリプタを閉じるためにファイナライザを使用できますが、
-// bufio.WriterのようなインメモリI/Oバッファをフラッシュするためにファイナライザに依存することは誤りです。
-// なぜなら、プログラムが終了するときにバッファがフラッシュされないためです。
+// Finalizers are run in dependency order: if A points at B, both have
+// finalizers, and they are otherwise unreachable, only the finalizer
+// for A runs; once A is freed, the finalizer for B can run.
+// If a cyclic structure includes a block with a finalizer, that
+// cycle is not guaranteed to be garbage collected and the finalizer
+// is not guaranteed to run, because there is no ordering that
+// respects the dependencies.
 //
-// *objのサイズがゼロバイトの場合、ファイナライザが実行されることは保証されません。
-// なぜなら、メモリ内の他のゼロサイズのオブジェクトと同じアドレスを共有する可能性があるためです。
-// 詳細については、https://go.dev/ref/spec#Size_and_alignment_guarantees を参照してください。
+// The finalizer is scheduled to run at some arbitrary time after the
+// program can no longer reach the object to which obj points.
+// There is no guarantee that finalizers will run before a program exits,
+// so typically they are useful only for releasing non-memory resources
+// associated with an object during a long-running program.
+// For example, an [os.File] object could use a finalizer to close the
+// associated operating system file descriptor when a program discards
+// an os.File without calling Close, but it would be a mistake
+// to depend on a finalizer to flush an in-memory I/O buffer such as a
+// [bufio.Writer], because the buffer would not be flushed at program exit.
 //
-// パッケージレベルの変数の初期化子で割り当てられたオブジェクトに対して、
-// ファイナライザが実行されることは保証されません。
-// このようなオブジェクトはヒープに割り当てられるのではなく、リンカによって割り当てられる可能性があります。
+// It is not guaranteed that a finalizer will run if the size of *obj is
+// zero bytes, because it may share same address with other zero-size
+// objects in memory. See https://go.dev/ref/spec#Size_and_alignment_guarantees.
 //
-// ファイナライザがオブジェクトが参照されなくなってから任意の時間が経過した後に実行される可能性があるため、
-// ランタイムは、オブジェクトを単一の割り当てスロットにまとめるスペース節約の最適化を実行できます。
-// そのような割り当て内の参照されなくなったオブジェクトのファイナライザは、常に参照されたオブジェクトと同じバッチに存在する場合、実行されない可能性があります。
-// 通常、このバッチ処理は、小さな（16バイト以下の）ポインタフリーオブジェクトに対してのみ行われます。
+// It is not guaranteed that a finalizer will run for objects allocated
+// in initializers for package-level variables. Such objects may be
+// linker-allocated, not heap-allocated.
 //
-// ファイナライザは、オブジェクトが到達不能になるとすぐに実行される可能性があります。
-// ファイナライザを正しく使用するためには、プログラムはオブジェクトが不要になるまで到達可能であることを保証する必要があります。
-// グローバル変数に格納されたオブジェクトや、グローバル変数からポインタをたどって見つけることができるオブジェクトは到達可能です。
-// 関数の引数やレシーバは、関数がそれを最後に言及する時点で到達不能になる可能性があります。
-// 到達不能なオブジェクトを到達可能にするためには、そのオブジェクトを [KeepAlive] 関数の呼び出しに渡して、
-// 関数内でオブジェクトが到達可能でなければならない最後の時点をマークします。
+// Note that because finalizers may execute arbitrarily far into the future
+// after an object is no longer referenced, the runtime is allowed to perform
+// a space-saving optimization that batches objects together in a single
+// allocation slot. The finalizer for an unreferenced object in such an
+// allocation may never run if it always exists in the same batch as a
+// referenced object. Typically, this batching only happens for tiny
+// (on the order of 16 bytes or less) and pointer-free objects.
 //
-// たとえば、pがファイルディスクリプタdを含むos.Fileのような構造体を指し示す場合、
-// pにはdを閉じるファイナライザがあり、pの最後の使用がsyscall.Write(p.d、buf、size)の呼び出しである場合、
-// プログラムがsyscall.Writeに入るとすぐにpが到達不能になる可能性があります。
-// その瞬間にファイナライザが実行され、p.dを閉じ、syscall.Writeが閉じられたファイルディスクリプタ（または、
-// より悪い場合、別のgoroutineによって開かれた完全に異なるファイルディスクリプタ）に書き込もうとして失敗する可能性があります。
-// この問題を回避するには、syscall.Writeの呼び出し後にKeepAlive(p)を呼び出します。
+// A finalizer may run as soon as an object becomes unreachable.
+// In order to use finalizers correctly, the program must ensure that
+// the object is reachable until it is no longer required.
+// Objects stored in global variables, or that can be found by tracing
+// pointers from a global variable, are reachable. A function argument or
+// receiver may become unreachable at the last point where the function
+// mentions it. To make an unreachable object reachable, pass the object
+// to a call of the [KeepAlive] function to mark the last point in the
+// function where the object must be reachable.
 //
-// プログラムのすべてのファイナライザを、1つのgoroutineが順次実行します。
-// ファイナライザが長時間実行する必要がある場合は、新しいgoroutineを開始することで実行する必要があります。
+// For example, if p points to a struct, such as os.File, that contains
+// a file descriptor d, and p has a finalizer that closes that file
+// descriptor, and if the last use of p in a function is a call to
+// syscall.Write(p.d, buf, size), then p may be unreachable as soon as
+// the program enters [syscall.Write]. The finalizer may run at that moment,
+// closing p.d, causing syscall.Write to fail because it is writing to
+// a closed file descriptor (or, worse, to an entirely different
+// file descriptor opened by a different goroutine). To avoid this problem,
+// call KeepAlive(p) after the call to syscall.Write.
 //
-// Goのメモリモデルの用語で、SetFinalizer(x、f)の呼び出しは、
-// ファイナライザ呼び出しf(x)の前に「同期」します。
-// ただし、KeepAlive(x)またはxの他の使用がf(x)の前に「同期」されることは保証されていないため、
-// 一般的には、ファイナライザがxの可変状態にアクセスする必要がある場合は、ミューテックスまたは他の同期メカニズムを使用する必要があります。
-// たとえば、x内の時折変更される可変フィールドを検査するファイナライザを考えてみましょう。
-// xが到達不能になり、ファイナライザが呼び出される前に、メインプログラムで時折変更される場合。
-// メインプログラムでの変更とファイナライザでの検査は、読み書き競合を回避するために、ミューテックスやアトミック更新などの適切な同期を使用する必要があります。
+// A single goroutine runs all finalizers for a program, sequentially.
+// If a finalizer must run for a long time, it should do so by starting
+// a new goroutine.
+//
+// In the terminology of the Go memory model, a call
+// SetFinalizer(x, f) “synchronizes before” the finalization call f(x).
+// However, there is no guarantee that KeepAlive(x) or any other use of x
+// “synchronizes before” f(x), so in general a finalizer should use a mutex
+// or other synchronization mechanism if it needs to access mutable state in x.
+// For example, consider a finalizer that inspects a mutable field in x
+// that is modified from time to time in the main program before x
+// becomes unreachable and the finalizer is invoked.
+// The modifications in the main program and the inspection in the finalizer
+// need to use appropriate synchronization, such as mutexes or atomic updates,
+// to avoid read-write races.
 func SetFinalizer(obj any, finalizer any)
 
-// KeepAliveは、引数を現在到達可能なものとしてマークします。
-// これにより、オブジェクトが解放されず、そのファイナライザが実行されないようになります。
-// KeepAliveが呼び出されたプログラムのポイントより前に。
+// KeepAlive marks its argument as currently reachable.
+// This ensures that the object is not freed, and its finalizer is not run,
+// before the point in the program where KeepAlive is called.
 //
-// KeepAliveが必要な場所を示す非常に簡単な例：
+// A very simplified example showing where KeepAlive is required:
 //
 //	type File struct { d int }
 //	d, err := syscall.Open("/file/path", syscall.O_RDONLY, 0)
-//	// ... errがnilでない場合は何かを実行します ...
+//	// ... do something if err != nil ...
 //	p := &File{d}
 //	runtime.SetFinalizer(p, func(p *File) { syscall.Close(p.d) })
 //	var buf [10]byte
 //	n, err := syscall.Read(p.d, buf[:])
-//	// Readが返るまで、pがファイナライズされないようにします。
+//	// Ensure p is not finalized until Read returns.
 //	runtime.KeepAlive(p)
-//	// このポイント以降、pを使用しないでください。
+//	// No more uses of p after this point.
 //
-// KeepAlive呼び出しがない場合、ファイナライザは [syscall.Read] の開始時に実行され、
-// 実際のシステムコールを行う前にファイルディスクリプタを閉じます。
+// Without the KeepAlive call, the finalizer could run at the start of
+// [syscall.Read], closing the file descriptor before syscall.Read makes
+// the actual system call.
 //
-// 注意：KeepAliveは、ファイナライザが予期せず実行されるのを防止するためにのみ使用する必要があります。
-// 特に、[unsafe.Pointer] と一緒に使用する場合は、unsafe.Pointerの有効な使用方法のルールが適用されます。
+// Note: KeepAlive should only be used to prevent finalizers from
+// running prematurely. In particular, when used with [unsafe.Pointer],
+// the rules for valid uses of unsafe.Pointer still apply.
 func KeepAlive(x any)

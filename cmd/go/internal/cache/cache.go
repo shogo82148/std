@@ -91,6 +91,11 @@ func (c *DiskCache) Trim() error
 // It may read file twice. The content of file must not change between the two passes.
 func (c *DiskCache) Put(id ActionID, file io.ReadSeeker) (OutputID, int64, error)
 
+// PutExecutable is used to store the output as the output for the action ID into a
+// file with the given base name, with the executable mode bit set.
+// It may read file twice. The content of file must not change between the two passes.
+func (c *DiskCache) PutExecutable(id ActionID, name string, file io.ReadSeeker) (OutputID, int64, error)
+
 // PutNoVerify is like Put but disables the verify check
 // when GODEBUG=goverifycache=1 is set.
 // It is meant for data that is OK to cache but that we expect to vary slightly from run to run,

@@ -159,7 +159,7 @@ func ExampleURL() {
 }
 
 func ExampleURL_roundtrip() {
-	// Parse + Stringは元のエンコーディングを保持します。
+	// Parse + String preserve the original encoding.
 	u, err := url.Parse("https://example.com/foo%2fbar")
 	if err != nil {
 		log.Fatal(err)
@@ -249,6 +249,18 @@ func ExampleURL_IsAbs() {
 	// Output:
 	// false
 	// true
+}
+
+func ExampleURL_JoinPath() {
+	u, err := url.Parse("https://example.com/foo/bar")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(u.JoinPath("baz", "qux"))
+
+	// Output:
+	// https://example.com/foo/bar/baz/qux
 }
 
 func ExampleURL_MarshalBinary() {

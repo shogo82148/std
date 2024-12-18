@@ -195,11 +195,10 @@ type CoverSetup struct {
 
 // A PackageError describes an error loading information about a package.
 type PackageError struct {
-	ImportStack      []string
+	ImportStack      ImportStack
 	Pos              string
 	Err              error
 	IsImportCycle    bool
-	Hard             bool
 	alwaysPrintStack bool
 }
 
@@ -234,18 +233,29 @@ var (
 
 func ImportErrorf(path, format string, args ...any) ImportPathError
 
+type ImportInfo struct {
+	Pkg string
+	Pos *token.Position
+}
+
 // An ImportStack is a stack of import paths, possibly with the suffix " (test)" appended.
 // The import path of a test package is the import path of the corresponding
 // non-test package with the suffix "_test" added.
-type ImportStack []string
+type ImportStack []ImportInfo
 
-func (s *ImportStack) Push(p string)
+func NewImportInfo(pkg string, pos *token.Position) ImportInfo
+
+func (s *ImportStack) Push(p ImportInfo)
 
 func (s *ImportStack) Pop()
 
-func (s *ImportStack) Copy() []string
+func (s *ImportStack) Copy() ImportStack
 
-func (s *ImportStack) Top() string
+func (s *ImportStack) Pkgs() []string
+
+func (s *ImportStack) PkgsWithPos() []string
+
+func (s *ImportStack) Top() (ImportInfo, bool)
 
 // Mode flags for loadImport and download (in get.go).
 const (
@@ -269,7 +279,7 @@ const (
 	GetTestDeps
 )
 
-// LoadPackage does Load import, but without a parent package load contezt
+// LoadPackage does Load import, but without a parent package load context
 func LoadPackage(ctx context.Context, opts PackageOpts, path, srcDir string, stk *ImportStack, importPos []token.Position, mode int) *Package
 
 // ResolveImportPath returns the true meaning of path when it appears in parent.

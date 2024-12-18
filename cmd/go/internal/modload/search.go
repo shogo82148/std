@@ -9,7 +9,7 @@ import (
 
 	"github.com/shogo82148/std/cmd/go/internal/search"
 
-	"golang.org/x/mod/module"
+	"github.com/shogo82148/std/golang.org/x/mod/module"
 )
 
 // MatchInModule identifies the packages matching the given pattern within the

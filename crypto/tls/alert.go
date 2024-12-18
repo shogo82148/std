@@ -4,10 +4,10 @@
 
 package tls
 
-// AlertErrorはTLSアラートです。
+// An AlertError is a TLS alert.
 //
-// QUICトランスポートを使用する場合、QUICConnのメソッドは
-// TLSアラートを送信する代わりにAlertErrorをラップしたエラーを返します。
+// When using a QUIC transport, QUICConn methods will return an error
+// which wraps AlertError rather than sending a TLS alert.
 type AlertError uint8
 
 func (e AlertError) Error() string

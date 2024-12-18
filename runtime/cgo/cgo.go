@@ -3,13 +3,15 @@
 // license that can be found in the LICENSE file.
 
 /*
-cgoパッケージは、cgoツールによって生成されたコードの実行時サポートを含んでいます。cgoの使用方法の詳細については、cgoコマンドのドキュメントを参照してください。
+Package cgo contains runtime support for code generated
+by the cgo tool.  See the documentation for the cgo command
+for details on using cgo.
 */
 package cgo
 
 import "github.com/shogo82148/std/internal/runtime/sys"
 
-// Incompleteは不完全なCの型のセマンティクスに特に使われます。
+// Incomplete is used specifically for the semantics of incomplete C types.
 type Incomplete struct {
 	_ sys.NotInHeap
 }

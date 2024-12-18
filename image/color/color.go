@@ -2,87 +2,90 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// colorパッケージは基本的な色ライブラリを実装します。
+// Package color implements a basic color library.
 package color
 
-// Colorは、アルファ乗算済みの16ビットチャンネルRGBAに自身を変換できます。
-// この変換は損失を伴う可能性があります。
+// Color can convert itself to alpha-premultiplied 16-bits per channel RGBA.
+// The conversion may be lossy.
 type Color interface {
 	RGBA() (r, g, b, a uint32)
 }
 
-// RGBAは、伝統的な32ビットのアルファ乗算済みカラーを表し、赤、緑、青、アルファそれぞれが8ビットです。
+// RGBA represents a traditional 32-bit alpha-premultiplied color, having 8
+// bits for each of red, green, blue and alpha.
 //
-// アルファ乗算済みの色成分Cは、アルファ(A)によってスケーリングされているため、
-// 0 <= C <= Aの有効な値を持ちます。
+// An alpha-premultiplied color component C has been scaled by alpha (A), so
+// has valid values 0 <= C <= A.
 type RGBA struct {
 	R, G, B, A uint8
 }
 
 func (c RGBA) RGBA() (r, g, b, a uint32)
 
-// RGBA64は、64ビットのアルファ乗算済みカラーを表し、赤、緑、青、アルファそれぞれが16ビットです。
+// RGBA64 represents a 64-bit alpha-premultiplied color, having 16 bits for
+// each of red, green, blue and alpha.
 //
-// アルファ乗算済みの色成分Cは、アルファ(A)によってスケーリングされているため、
-// 0 <= C <= Aの有効な値を持ちます。
+// An alpha-premultiplied color component C has been scaled by alpha (A), so
+// has valid values 0 <= C <= A.
 type RGBA64 struct {
 	R, G, B, A uint16
 }
 
 func (c RGBA64) RGBA() (r, g, b, a uint32)
 
-// NRGBAは、アルファ非乗算の32ビットカラーを表します。
+// NRGBA represents a non-alpha-premultiplied 32-bit color.
 type NRGBA struct {
 	R, G, B, A uint8
 }
 
 func (c NRGBA) RGBA() (r, g, b, a uint32)
 
-// NRGBA64は、アルファ非乗算の64ビットカラーを表し、
-// 赤、緑、青、アルファそれぞれが16ビットです。
+// NRGBA64 represents a non-alpha-premultiplied 64-bit color,
+// having 16 bits for each of red, green, blue and alpha.
 type NRGBA64 struct {
 	R, G, B, A uint16
 }
 
 func (c NRGBA64) RGBA() (r, g, b, a uint32)
 
-// Alphaは、8ビットのアルファカラーを表します。
+// Alpha represents an 8-bit alpha color.
 type Alpha struct {
 	A uint8
 }
 
 func (c Alpha) RGBA() (r, g, b, a uint32)
 
-// Alpha16は、16ビットのアルファカラーを表します。
+// Alpha16 represents a 16-bit alpha color.
 type Alpha16 struct {
 	A uint16
 }
 
 func (c Alpha16) RGBA() (r, g, b, a uint32)
 
-// Grayは、8ビットのグレースケールカラーを表します。
+// Gray represents an 8-bit grayscale color.
 type Gray struct {
 	Y uint8
 }
 
 func (c Gray) RGBA() (r, g, b, a uint32)
 
-// Gray16は、16ビットのグレースケールカラーを表します。
+// Gray16 represents a 16-bit grayscale color.
 type Gray16 struct {
 	Y uint16
 }
 
 func (c Gray16) RGBA() (r, g, b, a uint32)
 
-// Modelは、任意の [Color] を自身のカラーモデルのものに変換できます。この変換は損失を伴う可能性があります。
+// Model can convert any [Color] to one from its own color model. The conversion
+// may be lossy.
 type Model interface {
 	Convert(c Color) Color
 }
 
-// ModelFuncは、変換を実装するためにfを呼び出す [Model] を返します。
+// ModelFunc returns a [Model] that invokes f to implement the conversion.
 func ModelFunc(f func(Color) Color) Model
 
-// 標準のカラータイプのモデル。
+// Models for the standard color types.
 var (
 	RGBAModel    Model = ModelFunc(rgbaModel)
 	RGBA64Model  Model = ModelFunc(rgba64Model)
@@ -94,16 +97,17 @@ var (
 	Gray16Model  Model = ModelFunc(gray16Model)
 )
 
-// Paletteは色のパレットです。
+// Palette is a palette of colors.
 type Palette []Color
 
-// Convertは、ユークリッドのR,G,B空間でcに最も近いパレット色を返します。
+// Convert returns the palette color closest to c in Euclidean R,G,B space.
 func (p Palette) Convert(c Color) Color
 
-// Indexは、ユークリッドのR,G,B,A空間でcに最も近いパレット色のインデックスを返します。
+// Index returns the index of the palette color closest to c in Euclidean
+// R,G,B,A space.
 func (p Palette) Index(c Color) int
 
-// 標準的な色。
+// Standard colors.
 var (
 	Black       = Gray16{0}
 	White       = Gray16{0xffff}

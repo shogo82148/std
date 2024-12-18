@@ -9,26 +9,27 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Encoderは、PNG画像のエンコーディングを設定します。
+// Encoder configures encoding PNG images.
 type Encoder struct {
 	CompressionLevel CompressionLevel
 
-	// BufferPoolは、画像をエンコードする際に一時的な
-	// EncoderBuffersを取得するためのバッファプールをオプションで指定します。
+	// BufferPool optionally specifies a buffer pool to get temporary
+	// EncoderBuffers when encoding an image.
 	BufferPool EncoderBufferPool
 }
 
-// EncoderBufferPoolは、一時的な [EncoderBuffer] 構造体のインスタンスを取得し、
-// 返すためのインターフェースです。これは、複数の画像をエンコードする際にバッファを再利用するために使用できます。
+// EncoderBufferPool is an interface for getting and returning temporary
+// instances of the [EncoderBuffer] struct. This can be used to reuse buffers
+// when encoding multiple images.
 type EncoderBufferPool interface {
 	Get() *EncoderBuffer
 	Put(*EncoderBuffer)
 }
 
-// EncoderBufferは、PNG画像のエンコーディングに使用されるバッファを保持します。
+// EncoderBuffer holds the buffers used for encoding PNG images.
 type EncoderBuffer encoder
 
-// CompressionLevelは、圧縮レベルを示します。
+// CompressionLevel indicates the compression level.
 type CompressionLevel int
 
 const (
@@ -38,9 +39,9 @@ const (
 	BestCompression    CompressionLevel = -3
 )
 
-// Encodeは、画像mをPNG形式でwに書き込みます。任意の画像をエンコードできますが、
-// [image.NRGBA] でない画像は、損失を伴ってエンコードされる可能性があります。
+// Encode writes the Image m to w in PNG format. Any Image may be
+// encoded, but images that are not [image.NRGBA] might be encoded lossily.
 func Encode(w io.Writer, m image.Image) error
 
-// Encodeは、画像mをPNG形式でwに書き込みます。
+// Encode writes the Image m to w in PNG format.
 func (enc *Encoder) Encode(w io.Writer, m image.Image) error

@@ -2,21 +2,22 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// tokenパッケージは、Goプログラミング言語の字句トークンとトークンに対する基本的な操作（印刷、述語）を定義する定数を表します。
+// Package token defines constants representing the lexical tokens of the Go
+// programming language and basic operations on tokens (printing, predicates).
 package token
 
-// TokenはGoプログラミング言語の字句トークンの集合です。
+// Token is the set of lexical tokens of the Go programming language.
 type Token int
 
-// トークンのリスト。
+// The list of tokens.
 const (
-	// 特別なトークン
+	// Special tokens
 	ILLEGAL Token = iota
 	EOF
 	COMMENT
 
-	// 識別子と基本型のリテラル
-	// (これらのトークンはリテラルのクラスを表します)
+	// Identifiers and basic type literals
+	// (these tokens stand for classes of literals)
 	IDENT
 	INT
 	FLOAT
@@ -24,7 +25,7 @@ const (
 	CHAR
 	STRING
 
-	// オペレータと区切り文字
+	// Operators and delimiters
 	ADD
 	SUB
 	MUL
@@ -81,7 +82,7 @@ const (
 	SEMICOLON
 	COLON
 
-	// キーワード
+	// Keywords
 	BREAK
 	CASE
 	CHAN
@@ -112,18 +113,22 @@ const (
 	TYPE
 	VAR
 
-	// 追加のトークン、特別な方法で処理される
+	// additional tokens, handled in an ad-hoc manner
 	TILDE
 )
 
-// Stringはtokに対応する文字列を返します。
-// 演算子、区切り文字、キーワードの場合、文字列は実際のトークン文字列です（たとえば、トークン [ADD] の場合、文字列は"+"です）。
-// それ以外のすべてのトークンに対して、文字列はトークンの定数名に対応します（たとえば、トークン [IDENT] の場合、文字列は"IDENT"です）。
+// String returns the string corresponding to the token tok.
+// For operators, delimiters, and keywords the string is the actual
+// token character sequence (e.g., for the token [ADD], the string is
+// "+"). For all other tokens the string corresponds to the token
+// constant name (e.g. for the token [IDENT], the string is "IDENT").
 func (tok Token) String() string
 
-// 優先順位ベースの式の解析のための定数のセット。
-// 非演算子は最低の優先度を持ち、1から始まる演算子が続きます。
-// 最高の優先度はセレクタ、インデックス、その他の演算子や区切り記号トークンのための「キャッチオール」優先度として機能します。
+// A set of constants for precedence-based expression parsing.
+// Non-operators have lowest precedence, followed by operators
+// starting with precedence 1 up to unary operators. The highest
+// precedence serves as "catch-all" precedence for selector,
+// indexing, and other operator and delimiter tokens.
 const (
 	LowestPrec  = 0
 	UnaryPrec   = 6
@@ -133,28 +138,30 @@ const (
 // Precedence returns the operator precedence of the binary
 // operator op. If op is not a binary operator, the result
 // is LowestPrecedence.
-// Precedenceは、バイナリ演算子opの演算子の優先度を返します。opがバイナリ演算子でない場合、結果はLowestPrecedenceになります。
 func (op Token) Precedence() int
 
-// Lookupは識別子をキーワードトークンまたは [IDENT]（キーワードでない場合）にマップします。
+// Lookup maps an identifier to its keyword token or [IDENT] (if not a keyword).
 func Lookup(ident string) Token
 
-// IsLiteral は、識別子と基本型のリテラルに対応するトークンに対して true を返します。それ以外の場合は、false を返します。
+// IsLiteral returns true for tokens corresponding to identifiers
+// and basic type literals; it returns false otherwise.
 func (tok Token) IsLiteral() bool
 
-// IsOperatorはオペレーターや区切り記号に対応するトークンに対してtrueを返し、
-// それ以外の場合はfalseを返します。
+// IsOperator returns true for tokens corresponding to operators and
+// delimiters; it returns false otherwise.
 func (tok Token) IsOperator() bool
 
-// IsKeywordはキーワードに対応するトークンに対してtrueを返し、それ以外の場合はfalseを返します。
+// IsKeyword returns true for tokens corresponding to keywords;
+// it returns false otherwise.
 func (tok Token) IsKeyword() bool
 
-// IsExported は、name が大文字で始まるかどうかを報告します。
+// IsExported reports whether name starts with an upper-case letter.
 func IsExported(name string) bool
 
-// IsKeywordは、nameがGoのキーワード（"func"や"return"など）であるかどうかを報告します。
+// IsKeyword reports whether name is a Go keyword, such as "func" or "return".
 func IsKeyword(name string) bool
 
-// IsIdentifierは、nameがGoの識別子であるかどうかを報告します。つまり、
-// 最初の文字が数字でない、文字、数字、アンダースコアで構成された空でない文字列です。キーワードは識別子ではありません。
+// IsIdentifier reports whether name is a Go identifier, that is, a non-empty
+// string made up of letters, digits, and underscores, where the first character
+// is not a digit. Keywords are not identifiers.
 func IsIdentifier(name string) bool

@@ -14,8 +14,8 @@ import (
 )
 
 func ExampleDecode() {
-	// この例では、PNG画像のみをデコードできるpng.Decodeを使用しています。
-	// 任意の登録済み画像フォーマットをスニフし、デコードできる一般的なimage.Decodeの使用を検討してください。
+	// This example uses png.Decode which can only decode PNG images.
+	// Consider using the general image.Decode as it can sniff and decode any registered image format.
 	img, err := png.Decode(gopherPNG())
 	if err != nil {
 		log.Fatal(err)
@@ -39,7 +39,7 @@ func ExampleDecode() {
 func ExampleEncode() {
 	const width, height = 256, 256
 
-	// 与えられた幅と高さのカラー画像を作成します。
+	// Create a colored image of the given width and height.
 	img := image.NewNRGBA(image.Rect(0, 0, width, height))
 
 	for y := 0; y < height; y++ {

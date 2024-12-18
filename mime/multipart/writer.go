@@ -9,45 +9,49 @@ import (
 	"github.com/shogo82148/std/net/textproto"
 )
 
-// Writerはマルチパートメッセージを生成します。
+// A Writer generates multipart messages.
 type Writer struct {
 	w        io.Writer
 	boundary string
 	lastpart *part
 }
 
-// NewWriterは、ランダムな境界を持つ新しいマルチパート [Writer] を返し、wに書き込みます。
+// NewWriter returns a new multipart [Writer] with a random boundary,
+// writing to w.
 func NewWriter(w io.Writer) *Writer
 
-// Boundaryは [Writer] の境界を返します。
+// Boundary returns the [Writer]'s boundary.
 func (w *Writer) Boundary() string
 
-// SetBoundaryは、[Writer] のデフォルトのランダムに生成された
-// 境界セパレータを明示的な値で上書きします。
+// SetBoundary overrides the [Writer]'s default randomly-generated
+// boundary separator with an explicit value.
 //
-// SetBoundaryはパートが作成される前に呼び出す必要があり、特定のASCII文字のみを
-// 含むことができ、非空であり、最大で70バイトの長さでなければなりません。
+// SetBoundary must be called before any parts are created, may only
+// contain certain ASCII characters, and must be non-empty and
+// at most 70 bytes long.
 func (w *Writer) SetBoundary(boundary string) error
 
-// FormDataContentTypeは、この [Writer] のBoundaryを持つHTTP
-// multipart/form-dataのContent-Typeを返します。
+// FormDataContentType returns the Content-Type for an HTTP
+// multipart/form-data with this [Writer]'s Boundary.
 func (w *Writer) FormDataContentType() string
 
-// CreatePartは、提供されたヘッダーを持つ新しいマルチパートセクションを作成します。
-// パートのボディは、返された [Writer] に書き込むべきです。
-// CreatePartを呼び出した後、以前のパートにはもう書き込むことができません。
+// CreatePart creates a new multipart section with the provided
+// header. The body of the part should be written to the returned
+// [Writer]. After calling CreatePart, any previous part may no longer
+// be written to.
 func (w *Writer) CreatePart(header textproto.MIMEHeader) (io.Writer, error)
 
-// CreateFormFileは、[Writer.CreatePart] の便利なラッパーです。これは、
-// 提供されたフィールド名とファイル名で新しいform-dataヘッダーを作成します。
+// CreateFormFile is a convenience wrapper around [Writer.CreatePart]. It creates
+// a new form-data header with the provided field name and file name.
 func (w *Writer) CreateFormFile(fieldname, filename string) (io.Writer, error)
 
-// CreateFormFieldは、与えられたフィールド名を使用してヘッダーを作成し、
-// [Writer.CreatePart] を呼び出します。
+// CreateFormField calls [Writer.CreatePart] with a header using the
+// given field name.
 func (w *Writer) CreateFormField(fieldname string) (io.Writer, error)
 
-// WriteFieldは [Writer.CreateFormField] を呼び出し、その後で与えられた値を書き込みます。
+// WriteField calls [Writer.CreateFormField] and then writes the given value.
 func (w *Writer) WriteField(fieldname, value string) error
 
-// Closeはマルチパートメッセージを終了し、終了境界線を出力に書き込みます。
+// Close finishes the multipart message and writes the trailing
+// boundary end line to the output.
 func (w *Writer) Close() error

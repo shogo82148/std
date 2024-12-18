@@ -10,24 +10,32 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Dialerはアドレスに接続するためのオプションを含んでいます。
+// A Dialer contains options for connecting to an address.
 //
-// 各フィールドのゼロ値は、そのオプションなしでダイヤルすることと同等です。
-// Dialerのゼロ値でダイヤルすることは、単に [Dial] 関数を呼び出すのと同等です。
+// The zero value for each field is equivalent to dialing
+// without that option. Dialing with the zero value of Dialer
+// is therefore equivalent to just calling the [Dial] function.
 //
-// Dialerのメソッドを同時に呼び出しても安全です。
+// It is safe to call Dialer's methods concurrently.
 type Dialer struct {
-
-	// Timeoutはダイヤルが接続の完了を待つ最大時間です。Deadlineも設定されている場合、より早く失敗する可能性があります。
-	// デフォルトはタイムアウトなしです。
-	// TCPを使用して複数のIPアドレスを持つホスト名にダイヤルする場合、タイムアウトはそれらの間で分割される場合があります。
-	// タイムアウトの有無にかかわらず、オペレーティングシステムは独自の早期タイムアウトを課す場合があります。たとえば、TCPのタイムアウトは通常約3分です。
+	// Timeout is the maximum amount of time a dial will wait for
+	// a connect to complete. If Deadline is also set, it may fail
+	// earlier.
+	//
+	// The default is no timeout.
+	//
+	// When using TCP and dialing a host name with multiple IP
+	// addresses, the timeout may be divided between them.
+	//
+	// With or without a timeout, the operating system may impose
+	// its own earlier timeout. For instance, TCP timeouts are
+	// often around 3 minutes.
 	Timeout time.Duration
 
-	// Deadlineは、ダイヤルが失敗する絶対的な時間です。
-	// Timeoutが設定されている場合、それよりも早く失敗することがあります。
-	// ゼロは期限がないことを意味し、またはオペレーティングシステムに依存することもあります。
-	// (Timeoutオプションと同様に)
+	// Deadline is the absolute point in time after which dials
+	// will fail. If Timeout is set, it may fail earlier.
+	// Zero means no deadline, or dependent on the operating system
+	// as with the Timeout option.
 	Deadline time.Time
 
 	// LocalAddr is the local address to use when dialing an
@@ -36,13 +44,23 @@ type Dialer struct {
 	// If nil, a local address is automatically chosen.
 	LocalAddr Addr
 
-	// DualStackは以前からRFC 6555 Fast Fallback、または「Happy Eyeballs」として知られる機能をサポートしており、IPv6が誤設定されていて正しく動作していない場合にはIPv4がすぐに試されます。
-	// 廃止予定：Fast Fallbackはデフォルトで有効になっています。無効にするには、FallbackDelayを負の値に設定してください。
+	// DualStack previously enabled RFC 6555 Fast Fallback
+	// support, also known as "Happy Eyeballs", in which IPv4 is
+	// tried soon if IPv6 appears to be misconfigured and
+	// hanging.
+	//
+	// Deprecated: Fast Fallback is enabled by default. To
+	// disable, set FallbackDelay to a negative value.
 	DualStack bool
 
-	// FallbackDelayは、RFC 6555 Fast Fallback接続を作成する前に待機する時間の長さを指定します。つまり、IPv6が成功するまで待機する時間であり、IPv6の設定が誤っていると仮定し、IPv4に切り替える前に待機する時間です。
-	// ゼロの場合、デフォルトの遅延時間は300msです。
-	// 負の値はFast Fallbackサポートを無効にします。
+	// FallbackDelay specifies the length of time to wait before
+	// spawning a RFC 6555 Fast Fallback connection. That is, this
+	// is the amount of time to wait for IPv6 to succeed before
+	// assuming that IPv6 is misconfigured and falling back to
+	// IPv4.
+	//
+	// If zero, a default delay of 300ms is used.
+	// A negative value disables Fast Fallback support.
 	FallbackDelay time.Duration
 
 	// KeepAlive specifies the interval between keep-alive
@@ -66,7 +84,7 @@ type Dialer struct {
 	// keep-alive probes are disabled.
 	KeepAliveConfig KeepAliveConfig
 
-	// Resolverはオプションで、代替のリゾルバを指定することができます。
+	// Resolver optionally specifies an alternate resolver to use.
 	Resolver *Resolver
 
 	// Cancel is an optional channel whose closure indicates that
@@ -76,112 +94,151 @@ type Dialer struct {
 	// Deprecated: Use DialContext instead.
 	Cancel <-chan struct{}
 
-	// Controlがnilでない場合、ネットワーク接続の作成後に、実際にダイアルする前に呼び出されます。
+	// If Control is not nil, it is called after creating the network
+	// connection but before actually dialing.
 	//
-	// Control関数に渡されるネットワークとアドレスのパラメータは、必ずしもDialに渡されるものとは限りません。たとえば、Dialに「tcp」を渡すと、Control関数は「tcp4」または「tcp6」で呼び出されます。
+	// Network and address parameters passed to Control function are not
+	// necessarily the ones passed to Dial. Calling Dial with TCP networks
+	// will cause the Control function to be called with "tcp4" or "tcp6",
+	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
+	// and other known networks are passed as-is.
 	//
-	// ControlContextがnilでない場合、Controlは無視されます。
+	// Control is ignored if ControlContext is not nil.
 	Control func(network, address string, c syscall.RawConn) error
 
-	// ControlContextがnilでない場合、ネットワークの接続を作成する前に呼び出されます。
+	// If ControlContext is not nil, it is called after creating the network
+	// connection but before actually dialing.
 	//
-	// ControlContext関数に渡されるネットワークおよびアドレスのパラメータは、必ずしもDialに渡されたものではありません。
-	// 例えば、Dialに"tcp"を渡すと、ControlContext関数は "tcp4" または "tcp6" とともに呼び出されます。
+	// Network and address parameters passed to ControlContext function are not
+	// necessarily the ones passed to Dial. Calling Dial with TCP networks
+	// will cause the ControlContext function to be called with "tcp4" or "tcp6",
+	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
+	// and other known networks are passed as-is.
 	//
-	// ControlContextがnilでない場合、Controlは無視されます。
+	// If ControlContext is not nil, Control is ignored.
 	ControlContext func(ctx context.Context, network, address string, c syscall.RawConn) error
 
-	// もしmptcpStatusがMPTCPを許可する値に設定されている場合、"tcp(4|6)"というネットワークを使用するDialの呼び出しは、オペレーティングシステムでサポートされていればMPTCPを使用します。
-	mptcpStatus mptcpStatus
+	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
+	// used, any call to Dial with "tcp(4|6)" as network will use MPTCP if
+	// supported by the operating system.
+	mptcpStatus mptcpStatusDial
 }
 
-// MultipathTCPはMPTCPを使用するかどうかを報告します。
+// MultipathTCP reports whether MPTCP will be used.
 //
-// このメソッドは、オペレーティングシステムがMPTCPをサポートしているかどうかをチェックしません。
+// This method doesn't check if MPTCP is supported by the operating
+// system or not.
 func (d *Dialer) MultipathTCP() bool
 
-// SetMultipathTCPは、オペレーティングシステムでサポートされている場合、[Dial] メソッドがMPTCPを使用するかどうかを指示します。
-// このメソッドは、システムのデフォルトとGODEBUG=multipathtcp=...の設定を上書きします。
+// SetMultipathTCP directs the [Dial] methods to use, or not use, MPTCP,
+// if supported by the operating system. This method overrides the
+// system default and the GODEBUG=multipathtcp=... setting if any.
 //
-// ホストでMPTCPが利用できない場合やサーバーでサポートされていない場合、DialメソッドはTCPにフォールバックします。
+// If MPTCP is not available on the host or not supported by the server,
+// the Dial methods will fall back to TCP.
 func (d *Dialer) SetMultipathTCP(use bool)
 
-// Dialは指定されたネットワークのアドレスに接続します。
+// Dial connects to the address on the named network.
 //
-// 知られているネットワークは "tcp", "tcp4" (IPv4のみ), "tcp6" (IPv6のみ),
-// "udp", "udp4" (IPv4のみ), "udp6" (IPv6のみ), "ip", "ip4"
-// (IPv4のみ), "ip6" (IPv6のみ), "unix", "unixgram" および
-// "unixpacket" です。
+// Known networks are "tcp", "tcp4" (IPv4-only), "tcp6" (IPv6-only),
+// "udp", "udp4" (IPv4-only), "udp6" (IPv6-only), "ip", "ip4"
+// (IPv4-only), "ip6" (IPv6-only), "unix", "unixgram" and
+// "unixpacket".
 //
-// TCPとUDPのネットワークの場合、アドレスは "ホスト:ポート" の形式で指定します。
-// ホストはリテラルのIPアドレスであるか、IPアドレスに解決できるホスト名である必要があります。
-// ポートはリテラルのポート番号またはサービス名である必要があります。
-// ホストがリテラルのIPv6アドレスの場合、"[2001:db8::1]:80" または "[fe80::1%zone]:80" のように角括弧で囲む必要があります。
-// ゾーンは、RFC 4007で定義されているリテラルのIPv6アドレスのスコープを指定します。
-// 関数 [JoinHostPort] と [SplitHostPort] は、この形式のホストとポートのペアを操作します。
-// TCPを使用し、ホストが複数のIPアドレスに解決される場合、Dialは順番に各IPアドレスを試し、成功したものを使用します。
+// For TCP and UDP networks, the address has the form "host:port".
+// The host must be a literal IP address, or a host name that can be
+// resolved to IP addresses.
+// The port must be a literal port number or a service name.
+// If the host is a literal IPv6 address it must be enclosed in square
+// brackets, as in "[2001:db8::1]:80" or "[fe80::1%zone]:80".
+// The zone specifies the scope of the literal IPv6 address as defined
+// in RFC 4007.
+// The functions [JoinHostPort] and [SplitHostPort] manipulate a pair of
+// host and port in this form.
+// When using TCP, and the host resolves to multiple IP addresses,
+// Dial will try each IP address in order until one succeeds.
 //
-// 例:
+// Examples:
 //
-// Dial("tcp", "golang.org:http")
-// Dial("tcp", "192.0.2.1:http")
-// Dial("tcp", "198.51.100.1:80")
-// Dial("udp", "[2001:db8::1]:domain")
-// Dial("udp", "[fe80::1%lo0]:53")
-// Dial("tcp", ":80")
+//	Dial("tcp", "golang.org:http")
+//	Dial("tcp", "192.0.2.1:http")
+//	Dial("tcp", "198.51.100.1:80")
+//	Dial("udp", "[2001:db8::1]:domain")
+//	Dial("udp", "[fe80::1%lo0]:53")
+//	Dial("tcp", ":80")
 //
-// IPネットワークの場合、ネットワークは "ip", "ip4" または "ip6" の後にコロンとリテラルのプロトコル番号またはプロトコル名が続き、
-// アドレスは "ホスト" の形式となります。ホストはリテラルのIPアドレスまたはゾーン付きのリテラルのIPv6アドレスである必要があります。
-// "0" や "255" などの広く知られていないプロトコル番号の場合、各オペレーティングシステムによって動作が異なることによります。
+// For IP networks, the network must be "ip", "ip4" or "ip6" followed
+// by a colon and a literal protocol number or a protocol name, and
+// the address has the form "host". The host must be a literal IP
+// address or a literal IPv6 address with zone.
+// It depends on each operating system how the operating system
+// behaves with a non-well known protocol number such as "0" or "255".
 //
-// 例:
+// Examples:
 //
-// Dial("ip4:1", "192.0.2.1")
-// Dial("ip6:ipv6-icmp", "2001:db8::1")
-// Dial("ip6:58", "fe80::1%lo0")
+//	Dial("ip4:1", "192.0.2.1")
+//	Dial("ip6:ipv6-icmp", "2001:db8::1")
+//	Dial("ip6:58", "fe80::1%lo0")
 //
-// TCP、UDP、およびIPネットワークの場合、ホストが空白またはリテラルの未指定IPアドレスの場合、
-// すなわち ":80", "0.0.0.0:80" または "[::]:80" などの場合、TCPおよびUDPでは、
-// ""、"0.0.0.0" または "::" などの場合、IPでは、ローカルシステムが仮定されます。
+// For TCP, UDP and IP networks, if the host is empty or a literal
+// unspecified IP address, as in ":80", "0.0.0.0:80" or "[::]:80" for
+// TCP and UDP, "", "0.0.0.0" or "::" for IP, the local system is
+// assumed.
 //
-// UNIXネットワークの場合、アドレスはファイルシステムのパスである必要があります。
+// For Unix networks, the address must be a file system path.
 func Dial(network, address string) (Conn, error)
 
-// DialTimeoutは、タイムアウトを設定して [Dial] と同様の動作をします。
+// DialTimeout acts like [Dial] but takes a timeout.
 //
-// 必要に応じて名前解決も含まれたタイムアウト処理が行われます。
-// TCPを使用している場合、アドレスパラメータのホストが複数のIPアドレスに解決される場合は、
-// タイムアウトは各連続したダイヤルに均等に分散され、それぞれが適切な時間の一部を接続に割り当てます。
+// The timeout includes name resolution, if required.
+// When using TCP, and the host in the address parameter resolves to
+// multiple IP addresses, the timeout is spread over each consecutive
+// dial, such that each is given an appropriate fraction of the time
+// to connect.
 //
-// ネットワークとアドレスパラメータの詳細については、func Dialを参照してください。
+// See func Dial for a description of the network and address
+// parameters.
 func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
 
-// Dialは指定されたネットワーク上のアドレスに接続します。
+// Dial connects to the address on the named network.
 //
-// ネットワークとアドレスの詳細は、func Dialの説明を参照してください。
+// See func Dial for a description of the network and address
+// parameters.
 //
-// Dialは内部的に [context.Background] を使用します。コンテキストを指定するには、[Dialer.DialContext] を使用してください。
+// Dial uses [context.Background] internally; to specify the context, use
+// [Dialer.DialContext].
 func (d *Dialer) Dial(network, address string) (Conn, error)
 
-// DialContextは、指定されたコンテキストを使用して、指定されたネットワーク上のアドレスに接続します。
+// DialContext connects to the address on the named network using
+// the provided context.
 //
-// 提供されたコンテキストは、nilでない必要があります。接続が完了する前にコンテキストが期限切れになると、エラーが返されます。接続が成功した後、コンテキストの期限切れは接続に影響しません。
+// The provided Context must be non-nil. If the context expires before
+// the connection is complete, an error is returned. Once successfully
+// connected, any expiration of the context will not affect the
+// connection.
 //
-// TCPを使用し、アドレスパラメータのホストが複数のネットワークアドレスに解決される場合、ダイヤルタイムアウト（d.Timeoutまたはctxから）は、各連続したダイヤルに均等に分散されます。それぞれのダイヤルには、適切な接続時間の割合が与えられます。
-// 例えば、ホストが4つのIPアドレスを持ち、タイムアウトが1分の場合、次のアドレスを試す前に、各単一のアドレスへの接続には15秒の時間が与えられます。
+// When using TCP, and the host in the address parameter resolves to multiple
+// network addresses, any dial timeout (from d.Timeout or ctx) is spread
+// over each consecutive dial, such that each is given an appropriate
+// fraction of the time to connect.
+// For example, if a host has 4 IP addresses and the timeout is 1 minute,
+// the connect to each single address will be given 15 seconds to complete
+// before trying the next one.
 //
-// ネットワークやアドレスパラメータの説明については、[Dial] 関数を参照してください。
+// See func [Dial] for a description of the network and address
+// parameters.
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
 
-// ListenConfig はアドレスのリッスンに関するオプションを含んでいます。
+// ListenConfig contains options for listening to an address.
 type ListenConfig struct {
-
-	// Controlがnilでない場合、ネットワーク接続を作成した後、
-	// オペレーティングシステムにバインドする前に呼び出されます。
+	// If Control is not nil, it is called after creating the network
+	// connection but before binding it to the operating system.
 	//
-	// Controlメソッドに渡されるネットワークとアドレスのパラメータは、
-	// 必ずしもListenに渡されるものとは限りません。例えば、"tcp"を
-	// Listenに渡すと、Control関数へは"tcp4"または"tcp6"が渡されます。
+	// Network and address parameters passed to Control function are not
+	// necessarily the ones passed to Listen. Calling Listen with TCP networks
+	// will cause the Control function to be called with "tcp4" or "tcp6",
+	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
+	// and other known networks are passed as-is.
 	Control func(network, address string, c syscall.RawConn) error
 
 	// KeepAlive specifies the keep-alive period for network
@@ -207,62 +264,87 @@ type ListenConfig struct {
 	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
 	// used, any call to Listen with "tcp(4|6)" as network will use MPTCP if
 	// supported by the operating system.
-	mptcpStatus mptcpStatus
+	mptcpStatus mptcpStatusListen
 }
 
-// MultipathTCPはMPTCPが使用されるかどうかを報告します。
+// MultipathTCP reports whether MPTCP will be used.
 //
-// このメソッドはオペレーティングシステムがMPTCPをサポートしているかどうかを確認しません。
+// This method doesn't check if MPTCP is supported by the operating
+// system or not.
 func (lc *ListenConfig) MultipathTCP() bool
 
-// SetMultipathTCPは、オペレーティングシステムがサポートしている場合、[Listen] メソッドがMPTCPを使用するかどうかを指示します。
-// このメソッドは、システムのデフォルトおよびGODEBUG=multipathtcp=...の設定を上書きします。
+// SetMultipathTCP directs the [Listen] method to use, or not use, MPTCP,
+// if supported by the operating system. This method overrides the
+// system default and the GODEBUG=multipathtcp=... setting if any.
 //
-// ホスト上でMPTCPが利用できない場合、またはクライアントがサポートしていない場合、
-// ListenメソッドはTCPにフォールバックします。
+// If MPTCP is not available on the host or not supported by the client,
+// the Listen method will fall back to TCP.
 func (lc *ListenConfig) SetMultipathTCP(use bool)
 
-// Listenはローカルネットワークアドレスでアナウンスします。
+// Listen announces on the local network address.
 //
-// ネットワークおよびアドレスの詳細については、func Listenを参照してください。
+// See func Listen for a description of the network and address
+// parameters.
+//
+// The ctx argument is used while resolving the address on which to listen;
+// it does not affect the returned Listener.
 func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Listener, error)
 
-// ListenPacketはローカルネットワークアドレスでアナウンスします。
+// ListenPacket announces on the local network address.
 //
-// ネットワークとアドレスのパラメーターの説明については、func ListenPacketを参照してください。
+// See func ListenPacket for a description of the network and address
+// parameters.
+//
+// The ctx argument is used while resolving the address on which to listen;
+// it does not affect the returned Listener.
 func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address string) (PacketConn, error)
 
-// Listenはローカルネットワークアドレスでアナウンスします。
+// Listen announces on the local network address.
 //
-// ネットワークは"tcp"、"tcp4"、"tcp6"、"unix"、または"unixpacket"である必要があります。
+// The network must be "tcp", "tcp4", "tcp6", "unix" or "unixpacket".
 //
-// TCPネットワークの場合、アドレスパラメータのホストが空または明示的に指定されていないIPアドレスの場合、Listenは利用可能なすべてのユニキャストおよびエニーキャストIPアドレスでリッスンします。
-// IPv4のみを使用する場合は、ネットワークに"tcp4"を使用します。
-// アドレスにはホスト名を使用できますが、これは推奨されないため、ホストのIPアドレスの最大1つのリスナーが作成されます。
-// アドレスパラメータのポートが空または"0"の場合、例えば"127.0.0.1:"や"[::1]:0"のように、ポート番号が自動的に選択されます。
-// [Listener] の [Addr] メソッドを使用して、選択されたポートを取得できます。
+// For TCP networks, if the host in the address parameter is empty or
+// a literal unspecified IP address, Listen listens on all available
+// unicast and anycast IP addresses of the local system.
+// To only use IPv4, use network "tcp4".
+// The address can use a host name, but this is not recommended,
+// because it will create a listener for at most one of the host's IP
+// addresses.
+// If the port in the address parameter is empty or "0", as in
+// "127.0.0.1:" or "[::1]:0", a port number is automatically chosen.
+// The [Addr] method of [Listener] can be used to discover the chosen
+// port.
 //
-// ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
+// See func [Dial] for a description of the network and address
+// parameters.
 //
-// Listenは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、[ListenConfig.Listen] を使用してください。
+// Listen uses context.Background internally; to specify the context, use
+// [ListenConfig.Listen].
 func Listen(network, address string) (Listener, error)
 
-// ListenPacketはローカルネットワークアドレスでの通知を行います。
+// ListenPacket announces on the local network address.
 //
-// ネットワークは「udp」「udp4」「udp6」「unixgram」またはIPトランスポートである必要があります。
-// IPトランスポートは、次の形式で「ip」「ip4」、「ip6」のいずれかの後に「:」とリテラルのプロトコル番号またはプロトコル名が続きます。
-// 例：「ip:1」または「ip:icmp」。
+// The network must be "udp", "udp4", "udp6", "unixgram", or an IP
+// transport. The IP transports are "ip", "ip4", or "ip6" followed by
+// a colon and a literal protocol number or a protocol name, as in
+// "ip:1" or "ip:icmp".
 //
-// UDPとIPネットワークの場合、アドレスパラメータのホストが空白またはリテラルの未指定のIPアドレスの場合、
-// ListenPacketはマルチキャストIPアドレス以外のすべての利用可能なローカルシステムのIPアドレスでリスンします。
-// IPv4のみを使用する場合は、ネットワークに「udp4」または「ip4:proto」を使用します。
-// アドレスはホスト名を使用することもできますが、これは推奨されません。
-// なぜなら、それによってホストのIPアドレスのうちの最大で1つのリスナが作成されるからです。
-// アドレスパラメータのポートが空または「0」の場合、「127.0.0.1:」や「[::1]:0」といった形式で、ポート番号は自動的に選択されます。
-// [PacketConn] のLocalAddrメソッドを使用して選択されたポートを特定することができます。
+// For UDP and IP networks, if the host in the address parameter is
+// empty or a literal unspecified IP address, ListenPacket listens on
+// all available IP addresses of the local system except multicast IP
+// addresses.
+// To only use IPv4, use network "udp4" or "ip4:proto".
+// The address can use a host name, but this is not recommended,
+// because it will create a listener for at most one of the host's IP
+// addresses.
+// If the port in the address parameter is empty or "0", as in
+// "127.0.0.1:" or "[::1]:0", a port number is automatically chosen.
+// The LocalAddr method of [PacketConn] can be used to discover the
+// chosen port.
 //
-// ネットワークおよびアドレスパラメータの説明については、[Dial] 関数を参照してください。
+// See func [Dial] for a description of the network and address
+// parameters.
 //
-// ListenPacketは内部的にcontext.Backgroundを使用します。コンテキストを指定するには、
-// [ListenConfig.ListenPacket] を使用してください。
+// ListenPacket uses context.Background internally; to specify the context, use
+// [ListenConfig.ListenPacket].
 func ListenPacket(network, address string) (PacketConn, error)

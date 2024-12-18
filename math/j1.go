@@ -4,17 +4,17 @@
 
 package math
 
-// J1は第1種の1次ベッセル関数を返します。
+// J1 returns the order-one Bessel function of the first kind.
 //
-// 特殊なケースは以下の通りです：
+// Special cases are:
 //
 //	J1(±Inf) = 0
 //	J1(NaN) = NaN
 func J1(x float64) float64
 
-// Y1は第2種ベッセル関数の1次の値を返します。
+// Y1 returns the order-one Bessel function of the second kind.
 //
-// 特殊な場合は以下の通りです:
+// Special cases are:
 //
 //	Y1(+Inf) = 0
 //	Y1(0) = -Inf

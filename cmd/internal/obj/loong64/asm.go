@@ -31,6 +31,8 @@ const (
 
 func IsAtomicInst(as obj.As) bool
 
+func OP_RRRR(op uint32, r1 uint32, r2 uint32, r3 uint32, r4 uint32) uint32
+
 // r1 -> rk
 // r2 -> rj
 // r3 -> rd
@@ -49,6 +51,12 @@ func OP_12IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32
 func OP_IR(op uint32, i uint32, r2 uint32) uint32
 
 func OP_15I(op uint32, i uint32) uint32
+
+// i1 -> msb
+// r2 -> rj
+// i3 -> lsb
+// r4 -> rd
+func OP_IRIR(op uint32, i1 uint32, r2 uint32, i3 uint32, r4 uint32) uint32
 
 // Encoding for the 'b' or 'bl' instruction.
 func OP_B_BL(op uint32, i uint32) uint32

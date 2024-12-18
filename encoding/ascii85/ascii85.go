@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// ascii85パッケージはbtoaツールやAdobeのPostScriptおよびPDFドキュメント形式で使用されているascii85データエンコーディングを実装しています。
+// Package ascii85 implements the ascii85 data encoding
+// as used in the btoa tool and Adobe's PostScript and PDF document formats.
 package ascii85
 
 import (
@@ -16,13 +17,18 @@ import (
 // for the last fragment, so Encode is not appropriate for use on
 // individual blocks of a large data stream. Use [NewEncoder] instead.
 //
-// しばしば、ascii85でエンコードされたデータは<~と~>の記号で囲まれていますが、Encodeはこれを追加しません。
+// Often, ascii85-encoded data is wrapped in <~ and ~> symbols.
+// Encode does not add these.
 func Encode(dst, src []byte) int
 
-// MaxEncodedLenは、n個のソースバイトのエンコーディングの最大長を返します。
+// MaxEncodedLen returns the maximum length of an encoding of n source bytes.
 func MaxEncodedLen(n int) int
 
-// NewEncoderは新しいascii85ストリームエンコーダーを返します。返されたライターに書き込まれたデータはエンコードされ、wに書き込まれます。Ascii85エンコーディングは32ビットのブロックで動作します。書き込みが終了したら、呼び出し元は残りの部分ブロックをフラッシュするために返されたエンコーダーを閉じる必要があります。
+// NewEncoder returns a new ascii85 stream encoder. Data written to
+// the returned writer will be encoded and then written to w.
+// Ascii85 encodings operate in 32-bit blocks; when finished
+// writing, the caller must Close the returned encoder to flush any
+// trailing partial block.
 func NewEncoder(w io.Writer) io.WriteCloser
 
 type CorruptInputError int64
@@ -37,10 +43,12 @@ func (e CorruptInputError) Error() string
 // Often, ascii85-encoded data is wrapped in <~ and ~> symbols.
 // Decode expects these to have been stripped by the caller.
 //
-// flushがtrueの場合、Decodeはsrcが入力ストリームの終わりを表し、別の32ビットブロックの完了を待つのではなく、完全に処理すると想定します。
+// If flush is true, Decode assumes that src represents the
+// end of the input stream and processes it completely rather
+// than wait for the completion of another 32-bit block.
 //
 // [NewDecoder] wraps an [io.Reader] interface around Decode.
 func Decode(dst, src []byte, flush bool) (ndst, nsrc int, err error)
 
-// NewDecoder は新しい ascii85 ストリームデコーダを構築します。
+// NewDecoder constructs a new ascii85 stream decoder.
 func NewDecoder(r io.Reader) io.Reader

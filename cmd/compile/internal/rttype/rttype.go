@@ -83,7 +83,7 @@ func (c Cursor) WriteSlice(target *obj.LSym, off, len, cap int64)
 
 // Reloc adds a relocation from the current cursor position.
 // Reloc fills in Off and Siz fields. Caller should fill in the rest (Type, others).
-func (c Cursor) Reloc() *obj.Reloc
+func (c Cursor) Reloc(rel obj.Reloc)
 
 // Field selects the field with the given name from the struct pointed to by c.
 func (c Cursor) Field(name string) Cursor

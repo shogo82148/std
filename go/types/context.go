@@ -11,9 +11,12 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// Contextは不透明な型チェックコンテキストです。これは、型チェックされたパッケージやInstantiateへの呼び出し間で同じ型のインスタンスを共有するために使用される場合があります。Contextは同時利用に関して安全です。
+// A Context is an opaque type checking context. It may be used to share
+// identical type instances across type-checked packages or calls to
+// Instantiate. Contexts are safe for concurrent use.
 //
-// 共有コンテキストの利用は、すべてのケースで同じインスタンスが重複削除されることを保証するものではありません。
+// The use of a shared context does not guarantee that identical instances are
+// deduplicated in all cases.
 type Context struct {
 	mu        sync.Mutex
 	typeMap   map[string][]ctxtEntry
@@ -21,5 +24,5 @@ type Context struct {
 	originIDs map[Type]int
 }
 
-// NewContext は新しいコンテキストを作成します。
+// NewContext creates a new Context.
 func NewContext() *Context

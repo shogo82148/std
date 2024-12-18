@@ -16,16 +16,14 @@ func Exit(code int)
 // Exitf logs an error message then calls Exit(2).
 func Exitf(format string, a ...interface{})
 
-// Errorf logs an error message.
+// Errorf logs an error message without a specific symbol for context.
+// Use ctxt.Errorf when possible.
 //
 // If more than 20 errors have been printed, exit with an error.
 //
 // Logging an error means that on exit cmd/link will delete any
 // output file and return a non-zero error code.
-//
-// TODO: remove. Use ctxt.Errorf instead.
-// All remaining calls use nil as first arg.
-func Errorf(dummy *int, format string, args ...interface{})
+func Errorf(format string, args ...interface{})
 
 // Errorf method logs an error message.
 //

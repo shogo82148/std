@@ -7,12 +7,37 @@
 
 package types
 
-// Aliasは、エイリアス型を表します。
-// エイリアス型が作成されるかどうかは、
-// GODEBUG環境変数のgotypesalias設定によって制御されます。
-// gotypesalias=1の場合、エイリアス宣言はエイリアス型を生成します。
-// それ以外の場合、エイリアス情報は型名にのみ存在し、
-// 実際の（エイリアスされた）型を直接指します。
+// An Alias represents an alias type.
+//
+// Alias types are created by alias declarations such as:
+//
+//	type A = int
+//
+// The type on the right-hand side of the declaration can be accessed
+// using [Alias.Rhs]. This type may itself be an alias.
+// Call [Unalias] to obtain the first non-alias type in a chain of
+// alias type declarations.
+//
+// Like a defined ([Named]) type, an alias type has a name.
+// Use the [Alias.Obj] method to access its [TypeName] object.
+//
+// Historically, Alias types were not materialized so that, in the example
+// above, A's type was represented by a Basic (int), not an Alias
+// whose [Alias.Rhs] is int. But Go 1.24 allows you to declare an
+// alias type with type parameters or arguments:
+//
+//	type Set[K comparable] = map[K]bool
+//	s := make(Set[String])
+//
+// and this requires that Alias types be materialized. Use the
+// [Alias.TypeParams] and [Alias.TypeArgs] methods to access them.
+//
+// To ease the transition, the Alias type was introduced in go1.22,
+// but the type-checker would not construct values of this type unless
+// the GODEBUG=gotypesalias=1 environment variable was provided.
+// Starting in go1.23, this variable is enabled by default.
+// This setting also causes the predeclared type "any" to be
+// represented as an Alias, not a bare [Interface].
 type Alias struct {
 	obj     *TypeName
 	orig    *Alias
@@ -22,8 +47,8 @@ type Alias struct {
 	actual  Type
 }
 
-// NewAliasは、指定された型名とrhsを持つ新しいAlias型を作成します。
-// rhsはnilであってはなりません。
+// NewAlias creates a new Alias type with the given type name and rhs.
+// rhs must not be nil.
 func NewAlias(obj *TypeName, rhs Type) *Alias
 
 // Obj returns the type name for the declaration defining the alias type a.
@@ -32,34 +57,35 @@ func (a *Alias) Obj() *TypeName
 
 func (a *Alias) String() string
 
-// Underlyingは、エイリアス型aの [underlying type] を返します。これはエイリアスされた型の基底型です。
-// 基底型は、Named、TypeParam、Alias型ではありません。
+// Underlying returns the [underlying type] of the alias type a, which is the
+// underlying type of the aliased type. Underlying types are never Named,
+// TypeParam, or Alias types.
 //
 // [underlying type]: https://go.dev/ref/spec#Underlying_types.
 func (a *Alias) Underlying() Type
 
-// Originは、aがインスタンスであるジェネリックエイリアス型を返します。
-// もしaがジェネリックエイリアスのインスタンスでない場合、Originはaを返します。
+// Origin returns the generic Alias type of which a is an instance.
+// If a is not an instance of a generic alias, Origin returns a.
 func (a *Alias) Origin() *Alias
 
-// TypeParamsは、エイリアス型aの型パラメータを返します。またはnilを返します。
-// ジェネリックエイリアスとそのインスタンスは、同じ型パラメータを持ちます。
+// TypeParams returns the type parameters of the alias type a, or nil.
+// A generic Alias and its instances have the same type parameters.
 func (a *Alias) TypeParams() *TypeParamList
 
-// SetTypeParamsは、エイリアス型aの型パラメータを設定します。
-// エイリアスaは、型引数を持っていてはいけません。
+// SetTypeParams sets the type parameters of the alias type a.
+// The alias a must not have type arguments.
 func (a *Alias) SetTypeParams(tparams []*TypeParam)
 
-// TypeArgsは、エイリアス型をインスタンス化するために使用された型引数を返します。
-// もしaがジェネリックエイリアスのインスタンスでない場合、結果はnilです。
+// TypeArgs returns the type arguments used to instantiate the Alias type.
+// If a is not an instance of a generic alias, the result is nil.
 func (a *Alias) TypeArgs() *TypeList
 
-// Rhsは、エイリアス宣言 "type A = R" の右辺にある型Rを返します。
-// これは別のエイリアスかもしれません。
+// Rhs returns the type R on the right-hand side of an alias
+// declaration "type A = R", which may be another alias.
 func (a *Alias) Rhs() Type
 
-// Unaliasは、tがエイリアス型でない場合はtを返し、
-// それ以外の場合はtのエイリアスチェーンを追跡して
-// エイリアスでない型に到達すると、その型を返します。
-// その結果、返される結果は決してエイリアス型ではありません。
+// Unalias returns t if it is not an alias type;
+// otherwise it follows t's alias chain until it
+// reaches a non-alias type which is then returned.
+// Consequently, the result is never an alias type.
 func Unalias(t Type) Type

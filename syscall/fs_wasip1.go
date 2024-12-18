@@ -73,6 +73,8 @@ const (
 
 func Open(path string, openmode int, perm uint32) (int, error)
 
+func Openat(dirFd int, path string, openmode int, perm uint32) (int, error)
+
 func Close(fd int) error
 
 func CloseOnExec(fd int)

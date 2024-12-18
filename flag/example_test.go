@@ -2,15 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// これらの例は、flagパッケージのより複雑な使用方法を示しています。
+// These examples demonstrate more intricate uses of the flag package.
 package flag_test
 
 func Example() {
-
-	// ここには興味深いコードの変数が宣言されますが、
-	// それらのフラグをフラグパッケージが見るためには、通常はmainの開始時に実行する必要があります（initではなく）：
-	// 	flag.Parse()
-	// このコードはパッケージのテストスイートの一部である「Example」と呼ばれる関数であり、
-	// すでにフラグが解析されていますので、ここでは呼び出しません。
-	// ただし、pkg.go.devで表示される場合、この関数は「main」という名前に変更され、スタンドアロンの例として実行できます。
+	// All the interesting pieces are with the variables declared above, but
+	// to enable the flag package to see the flags defined there, one must
+	// execute, typically at the start of main (not init!):
+	//	flag.Parse()
+	// We don't call it here because this code is a function called "Example"
+	// that is part of the testing suite for the package, which has already
+	// parsed the flags. When viewed at pkg.go.dev, however, the function is
+	// renamed to "main" and it could be run as a standalone example.
 }

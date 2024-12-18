@@ -2,9 +2,18 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Addr2lineはGNU addr2lineツールの最低限のシミュレーションであり、pprofをサポートするために必要なだけの機能を有しています。
-// 使用方法：
-// 	go tool addr2line バイナリ
-// Addr2lineは標準入力から16進数のアドレスを読み取ります。各入力アドレスに対して、addr2lineは2つの出力行を表示します。まず、アドレスを含む関数の名前が表示され、次にそのアドレスに対応するソースコードのファイルと行が表示されます。
-// このツールはpprofの内部でのみ使用することを目的としており、将来のリリースでインターフェースが変更される可能性があるか、または完全に削除される可能性があります。
+// Addr2line is a minimal simulation of the GNU addr2line tool,
+// just enough to support pprof.
+//
+// Usage:
+//
+//	go tool addr2line binary
+//
+// Addr2line reads hexadecimal addresses, one per line and with optional 0x prefix,
+// from standard input. For each input address, addr2line prints two output lines,
+// first the name of the function containing the address and second the file:line
+// of the source code corresponding to that address.
+//
+// This tool is intended for use only by pprof; its interface may change or
+// it may be deleted entirely in future releases.
 package main

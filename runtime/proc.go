@@ -4,34 +4,45 @@
 
 package runtime
 
-// Gosched はプロセッサを譲り、他のゴルーチンが実行されるようにします。現在のゴルーチンは一時停止されませんが、実行は自動的に再開されます。
+// Gosched yields the processor, allowing other goroutines to run. It does not
+// suspend the current goroutine, so execution resumes automatically.
 //
 //go:nosplit
 func Gosched()
 
-// ブレークポイントはブレークポイントトラップを実行します。
+// Breakpoint executes a breakpoint trap.
 func Breakpoint()
 
-// LockOSThreadは呼び出し側のゴルーチンを現在のオペレーティングシステムスレッドに接続します。
-// 呼び出し側のゴルーチンは常にそのスレッドで実行され、他のゴルーチンは実行されません。
-// それまでのLockOSThreadへの呼び出し回数と同じ数だけ、[UnlockOSThread] への呼び出しを行うまで、呼び出し側のゴルーチン以外は実行されません。
-// 呼び出し側のゴルーチンがスレッドのロックを解除せずに終了すると、スレッドは終了します。
+// LockOSThread wires the calling goroutine to its current operating system thread.
+// The calling goroutine will always execute in that thread,
+// and no other goroutine will execute in it,
+// until the calling goroutine has made as many calls to
+// [UnlockOSThread] as to LockOSThread.
+// If the calling goroutine exits without unlocking the thread,
+// the thread will be terminated.
 //
-// すべてのinit関数は起動時のスレッド上で実行されます。init関数からLockOSThreadを呼び出すと、main関数がそのスレッド上で呼び出されます。
+// All init functions are run on the startup thread. Calling LockOSThread
+// from an init function will cause the main function to be invoked on
+// that thread.
 //
-// ゴルーチンは、スレッドごとの状態に依存するOSサービスや非Goライブラリ関数を呼び出す前に、LockOSThreadを呼び出す必要があります。
+// A goroutine should call LockOSThread before calling OS services or
+// non-Go library functions that depend on per-thread state.
 //
 //go:nosplit
 func LockOSThread()
 
-// UnlockOSThreadは、以前のLockOSThread呼び出しを取り消します。
-// 呼び出し元のゴルーチンのアクティブなLockOSThread呼び出し数がゼロになると、
-// 呼び出し元のゴルーチンは固定されたオペレーティングシステムスレッドからの接続が解除されます。
-// アクティブなLockOSThread呼び出しがない場合、これは無効操作です。
+// UnlockOSThread undoes an earlier call to LockOSThread.
+// If this drops the number of active LockOSThread calls on the
+// calling goroutine to zero, it unwires the calling goroutine from
+// its fixed operating system thread.
+// If there are no active LockOSThread calls, this is a no-op.
 //
-// UnlockOSThreadを呼び出す前に、呼び出し元は他のゴルーチンを実行するためにOSスレッドが適していることを確認する必要があります。
-// 呼び出し元が他のゴルーチンに影響を与えるスレッドの状態に対して恒久的な変更を行った場合、
-// この関数を呼び出さずにゴルーチンをOSスレッドにロックしたままにしておくべきです。
+// Before calling UnlockOSThread, the caller must ensure that the OS
+// thread is suitable for running other goroutines. If the caller made
+// any permanent changes to the state of the thread that would affect
+// other goroutines, it should not call this function and thus leave
+// the goroutine locked to the OS thread until the goroutine (and
+// hence the thread) exits.
 //
 //go:nosplit
 func UnlockOSThread()

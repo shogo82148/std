@@ -4,24 +4,27 @@
 
 package rand
 
-// PCGは、128ビットの内部状態を持つPCGジェネレータです。
-// ゼロのPCGは、NewPCG(0, 0)と同等です。
+// A PCG is a PCG generator with 128 bits of internal state.
+// A zero PCG is equivalent to NewPCG(0, 0).
 type PCG struct {
 	hi uint64
 	lo uint64
 }
 
-// NewPCGは、与えられた値でシードされた新しいPCGを返します。
+// NewPCG returns a new PCG seeded with the given values.
 func NewPCG(seed1, seed2 uint64) *PCG
 
-// Seedは、PCGをNewPCG(seed1, seed2)と同じように動作するようにリセットします。
+// Seed resets the PCG to behave the same way as NewPCG(seed1, seed2).
 func (p *PCG) Seed(seed1, seed2 uint64)
 
-// MarshalBinaryは、encoding.BinaryMarshalerインターフェースを実装します。
+// AppendBinary implements the [encoding.BinaryAppender] interface.
+func (p *PCG) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements the [encoding.BinaryMarshaler] interface.
 func (p *PCG) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinaryは、encoding.BinaryUnmarshalerインターフェースを実装します。
+// UnmarshalBinary implements the [encoding.BinaryUnmarshaler] interface.
 func (p *PCG) UnmarshalBinary(data []byte) error
 
-// Uint64は、一様に分布したランダムなuint64の値を返します。
+// Uint64 return a uniformly-distributed random uint64 value.
 func (p *PCG) Uint64() uint64

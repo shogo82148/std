@@ -4,29 +4,32 @@
 
 package testing
 
-// InternalFuzzTargetは内部型ですが、異なるパッケージで使われるために公開されています。
-// これは"go test"コマンドの実装の一部です。
+// InternalFuzzTarget is an internal type but exported because it is
+// cross-package; it is part of the implementation of the "go test" command.
 type InternalFuzzTarget struct {
 	Name string
 	Fn   func(f *F)
 }
 
-// Fはフラズテストに渡される型です。
+// F is a type passed to fuzz tests.
 //
-// フラズテストは生成された入力値を提供されたフラズターゲットに対して実行し、
-// テストされるコードに潜在的なバグを見つけて報告することができます。
+// Fuzz tests run generated inputs against a provided fuzz target, which can
+// find and report potential bugs in the code being tested.
 //
-// ファズテストはデフォルトでシードコーパスを実行します。これには、(*F).Addによって提供されたエントリと
-// testdata/fuzz/<FuzzTestName>ディレクトリ内のエントリが含まれます。必要なセットアップと(*F).Addへの呼び出しの後、
-// ファズテストはファズターゲットを提供するために(*F).Fuzzを呼び出さなければなりません。
-// 例についてはテストパッケージのドキュメンテーションを参照し、詳細については [F.Fuzz] と [F.Add] メソッドのドキュメンテーションを参照してください。
+// A fuzz test runs the seed corpus by default, which includes entries provided
+// by (*F).Add and entries in the testdata/fuzz/<FuzzTestName> directory. After
+// any necessary setup and calls to (*F).Add, the fuzz test must then call
+// (*F).Fuzz to provide the fuzz target. See the testing package documentation
+// for an example, and see the [F.Fuzz] and [F.Add] method documentation for
+// details.
 //
-// *Fのメソッドは(*F).Fuzzの前にのみ呼び出すことができます。テストがフラズターゲットを実行している間は、(*T)のメソッドのみを使用することができます。
-// (*F).Fuzz関数内で許可されている*Fのメソッドは、(*F).Failedと(*F).Nameのみです。
+// *F methods can only be called before (*F).Fuzz. Once the test is
+// executing the fuzz target, only (*T) methods can be used. The only *F methods
+// that are allowed in the (*F).Fuzz function are (*F).Failed and (*F).Name.
 type F struct {
 	common
-	fuzzContext *fuzzContext
-	testContext *testContext
+	fstate *fuzzState
+	tstate *testState
 
 	// inFuzzFn is true when the fuzz function is running. Most F methods cannot
 	// be called when inFuzzFn is true.
@@ -42,38 +45,46 @@ type F struct {
 
 var _ TB = (*F)(nil)
 
-// Helperは呼び出し元の関数をテストのヘルパー関数としてマークします。
-// ファイルと行情報を表示するとき、その関数はスキップされます。
-// Helperは複数のゴルーチンから同時に呼び出すことができます。
+// Helper marks the calling function as a test helper function.
+// When printing file and line information, that function will be skipped.
+// Helper may be called simultaneously from multiple goroutines.
 func (f *F) Helper()
 
-// Failは関数が失敗したことを示しますが、実行を続けます。
+// Fail marks the function as having failed but continues execution.
 func (f *F) Fail()
 
-// Skippedはテストがスキップされたかどうかを報告します。
+// Skipped reports whether the test was skipped.
 func (f *F) Skipped() bool
 
-// Addは、引数をfuzzテストのシードコーパスに追加します。これは、fuzzターゲットの後または中で呼び出された場合は無効になり、argsはfuzzターゲットの引数と一致する必要があります。
+// Add will add the arguments to the seed corpus for the fuzz test. This will be
+// a no-op if called after or within the fuzz target, and args must match the
+// arguments for the fuzz target.
 func (f *F) Add(args ...any)
 
-// Fuzzはfuzzテストのために、関数ffを実行します。もしffが一連の引数で失敗した場合、それらの引数はシードコーパスに追加されます。
+// Fuzz runs the fuzz function, ff, for fuzz testing. If ff fails for a set of
+// arguments, those arguments will be added to the seed corpus.
 //
-// ffは、戻り値を持たない関数でなければならず、最初の引数は*T型であり、残りの引数はfuzzテストを実施する型です。
-// 例：
+// ff must be a function with no return value whose first argument is *T and
+// whose remaining arguments are the types to be fuzzed.
+// For example:
 //
 //	f.Fuzz(func(t *testing.T, b []byte, i int) { ... })
 //
-// 以下の型が許可されます：[]byte, string, bool, byte, rune, float32, float64, int, int8, int16, int32, int64,
-// uint, uint8, uint16, uint32, uint64。将来的にはより多くの型がサポートされるかもしれません。
+// The following types are allowed: []byte, string, bool, byte, rune, float32,
+// float64, int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64.
+// More types may be supported in the future.
 //
-// ffは、(*F).Log、(*F).Error、(*F).Skipなどの*Fメソッドを呼び出してはなりません。代わりに、対応する*Tメソッドを使用してください。
-// (*F).Fuzz関数で許可される*Fメソッドは、(*F).Failedと(*F).Nameのみです。
+// ff must not call any *F methods, e.g. (*F).Log, (*F).Error, (*F).Skip. Use
+// the corresponding *T method instead. The only *F methods that are allowed in
+// the (*F).Fuzz function are (*F).Failed and (*F).Name.
 //
-// この関数は高速で決定的であるべきであり、その振る舞いは共有状態に依存してはなりません。
-// 可変の入力引数、またはそれらへのポインターは、fuzz関数の実行間で保持されるべきではありません。
-// なぜなら、それらをバックアップするメモリは、後続の呼び出し中に変更される可能性があるからです。
-// ffは、fuzzingエンジンによって提供される引数の基礎となるデータを変更してはなりません。
+// This function should be fast and deterministic, and its behavior should not
+// depend on shared state. No mutable input arguments, or pointers to them,
+// should be retained between executions of the fuzz function, as the memory
+// backing them may be mutated during a subsequent invocation. ff must not
+// modify the underlying data of the arguments provided by the fuzzing engine.
 //
-// fuzzing中、F.Fuzzは問題が見つかるまで、時間切れ（-fuzztimeで設定）またはテストプロセスがシグナルによって中断されるまで、戻りません。
-// F.Fuzzは、F.Skipまたは [F.Fail] が先に呼び出されない限り、正確に1回呼び出す必要があります。
+// When fuzzing, F.Fuzz does not return until a problem is found, time runs out
+// (set with -fuzztime), or the test process is interrupted by a signal. F.Fuzz
+// should be called exactly once, unless F.Skip or [F.Fail] is called beforehand.
 func (f *F) Fuzz(ff any)

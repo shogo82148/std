@@ -4,5 +4,5 @@
 
 package math
 
-// Signbitはxが負または負のゼロかどうかを報告します。
+// Signbit reports whether x is negative or negative zero.
 func Signbit(x float64) bool

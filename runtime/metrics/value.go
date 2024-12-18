@@ -8,41 +8,44 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// ValueKindはメトリックの [Value] のタグで、そのタイプを示します。
+// ValueKind is a tag for a metric [Value] which indicates its type.
 type ValueKind int
 
 const (
-	// KindBadは、Valueに型がなく、使用すべきではないことを示します。
+	// KindBad indicates that the Value has no type and should not be used.
 	KindBad ValueKind = iota
 
-	// KindUint64 は Value の型が uint64 であることを示します。
+	// KindUint64 indicates that the type of the Value is a uint64.
 	KindUint64
 
-	// KindFloat64はValueの型がfloat64であることを示します。
+	// KindFloat64 indicates that the type of the Value is a float64.
 	KindFloat64
 
-	// KindFloat64HistogramはValueの型が*Float64Histogramであることを示します。
+	// KindFloat64Histogram indicates that the type of the Value is a *Float64Histogram.
 	KindFloat64Histogram
 )
 
-// Valueはランタイムが返すメトリック値を表します。
+// Value represents a metric value returned by the runtime.
 type Value struct {
 	kind    ValueKind
 	scalar  uint64
 	pointer unsafe.Pointer
 }
 
-// Kindは、この値の種類を表すタグを返します。
+// Kind returns the tag representing the kind of value this is.
 func (v Value) Kind() ValueKind
 
-// Uint64はメトリックの内部uint64値を返します。
+// Uint64 returns the internal uint64 value for the metric.
 //
-// もしv.Kind() != KindUint64の場合、このメソッドはパニックします。
+// If v.Kind() != KindUint64, this method panics.
 func (v Value) Uint64() uint64
 
-// Float64はメトリックの内部float64値を返します。
+// Float64 returns the internal float64 value for the metric.
 //
-// もしv.Kind() != KindFloat64なら、このメソッドはパニックを引き起こします。
+// If v.Kind() != KindFloat64, this method panics.
 func (v Value) Float64() float64
 
+// Float64Histogram returns the internal *Float64Histogram value for the metric.
+//
+// If v.Kind() != KindFloat64Histogram, this method panics.
 func (v Value) Float64Histogram() *Float64Histogram

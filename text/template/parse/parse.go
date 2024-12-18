@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// パッケージparseは、text/templateおよびhtml/templateで定義されているテンプレートのパースツリーを構築します。
-// クライアントは、一般的な使用を目的としていない共有内部データ構造を提供するこのパッケージではなく、
-// それらのパッケージを使用してテンプレートを構築する必要があります。
+// Package parse builds parse trees for templates as defined by text/template
+// and html/template. Clients should use those packages to construct templates
+// rather than this one, which provides shared internal data structures not
+// intended for general use.
 package parse
 
 // Tree is the representation of a single parsed template.
@@ -25,7 +26,7 @@ type Tree struct {
 	rangeDepth int
 }
 
-// mode値はフラグのセット（または0）です。モードはパーサの動作を制御します。
+// A mode value is a set of flags (or 0). Modes control parser behavior.
 type Mode uint
 
 const (
@@ -33,27 +34,28 @@ const (
 	SkipFuncCheck
 )
 
-// Copyは [Tree] のコピーを返します。パース状態は破棄されます。
+// Copy returns a copy of the [Tree]. Any parsing state is discarded.
 func (t *Tree) Copy() *Tree
 
-// Parseは、引数の文字列で記述されたテンプレートを解析することで作成された、
-// テンプレート名から [Tree] へのマップを返します。トップレベルのテンプレートには
-// 指定された名前が付けられます。エラーが発生した場合、解析は停止し、
-// エラーと共に空のマップが返されます。
+// Parse returns a map from template name to [Tree], created by parsing the
+// templates described in the argument string. The top-level template will be
+// given the specified name. If an error is encountered, parsing stops and an
+// empty map is returned with the error.
 func Parse(name, text, leftDelim, rightDelim string, funcs ...map[string]any) (map[string]*Tree, error)
 
-// Newは、指定された名前を持つ新しいパースツリーを割り当てます。
+// New allocates a new parse tree with the given name.
 func New(name string, funcs ...map[string]any) *Tree
 
-// ErrorContextは、入力テキスト内のノードの位置のテキスト表現を返します。
-// 受信者は、ノードが内部にツリーへのポインタを持っていない場合にのみ使用されます。
-// これは古いコードで発生する可能性があります。
+// ErrorContext returns a textual representation of the location of the node in the input text.
+// The receiver is only used when the node does not have a pointer to the tree inside,
+// which can occur in old code.
 func (t *Tree) ErrorContext(n Node) (location, context string)
 
-// Parseは、テンプレート定義文字列を解析して、テンプレートの実行用の表現を構築します。
-// アクションデリミタ文字列のいずれかが空の場合、デフォルト（"{{"または"}}"）が使用されます。
-// 埋め込まれたテンプレート定義は、treeSetマップに追加されます。
+// Parse parses the template definition string to construct a representation of
+// the template for execution. If either action delimiter string is empty, the
+// default ("{{" or "}}") is used. Embedded template definitions are added to
+// the treeSet map.
 func (t *Tree) Parse(text, leftDelim, rightDelim string, treeSet map[string]*Tree, funcs ...map[string]any) (tree *Tree, err error)
 
-// IsEmptyTreeは、このツリー（ノード）がスペースまたはコメント以外のすべてが空であるかどうかを報告します。
+// IsEmptyTree reports whether this tree (node) is empty of everything but space or comments.
 func IsEmptyTree(n Node) bool

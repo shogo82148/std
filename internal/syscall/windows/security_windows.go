@@ -123,3 +123,44 @@ type UserInfo4 struct {
 //
 //go:linkname GetSystemDirectory
 func GetSystemDirectory() string
+
+// GetUserName retrieves the user name of the current thread
+// in the specified format.
+func GetUserName(format uint32) (string, error)
+
+type TOKEN_GROUPS struct {
+	GroupCount uint32
+	Groups     [1]SID_AND_ATTRIBUTES
+}
+
+func (g *TOKEN_GROUPS) AllGroups() []SID_AND_ATTRIBUTES
+
+func GetTokenGroups(t syscall.Token) (*TOKEN_GROUPS, error)
+
+// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-sid_identifier_authority
+type SID_IDENTIFIER_AUTHORITY struct {
+	Value [6]byte
+}
+
+const (
+	SID_REVISION = 1
+	// https://learn.microsoft.com/en-us/windows/win32/services/localsystem-account
+	SECURITY_LOCAL_SYSTEM_RID = 18
+	// https://learn.microsoft.com/en-us/windows/win32/services/localservice-account
+	SECURITY_LOCAL_SERVICE_RID = 19
+	// https://learn.microsoft.com/en-us/windows/win32/services/networkservice-account
+	SECURITY_NETWORK_SERVICE_RID = 20
+)
+
+var SECURITY_NT_AUTHORITY = SID_IDENTIFIER_AUTHORITY{
+	Value: [6]byte{0, 0, 0, 0, 0, 5},
+}
+
+//go:nocheckptr
+func GetSidIdentifierAuthority(sid *syscall.SID) SID_IDENTIFIER_AUTHORITY
+
+//go:nocheckptr
+func GetSidSubAuthority(sid *syscall.SID, subAuthorityIdx uint32) uint32
+
+//go:nocheckptr
+func GetSidSubAuthorityCount(sid *syscall.SID) uint8

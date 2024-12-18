@@ -12,43 +12,54 @@ import (
 
 var _ fmt.Scanner = &ratZero
 
-// Scanは、fmt.Scannerのサポートルーチンです。これはフォーマット
-// 'e', 'E', 'f', 'F', 'g', 'G', 'v'を受け入れます。すべてのフォーマットは同等です。
+// Scan is a support routine for fmt.Scanner. It accepts the formats
+// 'e', 'E', 'f', 'F', 'g', 'G', and 'v'. All formats are equivalent.
 func (z *Rat) Scan(s fmt.ScanState, ch rune) error
 
-// SetStringは、zをsの値に設定し、zと成功を示すブール値を返します。
-// sは（符号付きの可能性のある）分数 "a/b"、または指数をオプションで追加した浮動小数点数として与えることができます。
-// 分数が提供された場合、被除数と除数はともに10進整数であるか、またはそれぞれが独立して“0b”、“0”、“0o”、
-// “0x”（またはそれらの大文字のバリエーション）のプレフィックスを使用して2進数、8進数、または16進数の整数を示すことができます。
-// 除数は符号を持つことはできません。
-// 浮動小数点数が提供された場合、それは10進数の形式であるか、または上記と同じプレフィックスのいずれかを使用して
-// 10進数以外の仮数を示すことができます。先頭の“0”は10進数の先頭0と見なされます。この場合、8進数表現を示すものではありません。
-// オプションの10進数の“e”または2進数の“p”（またはそれらの大文字のバリエーション）の指数も提供できます。
-// ただし、16進数の浮動小数点数は（オプションの）“p”指数のみを受け入れます（“e”または“E”は仮数の桁と区別できないため）。
-// 指数の絶対値が大きすぎる場合、操作は失敗する可能性があります。
-// 文字列全体、つまりプレフィックスだけでなく、有効でなければならない。操作が失敗した場合、zの値は未定義ですが、返される値はnilです。
+// SetString sets z to the value of s and returns z and a boolean indicating
+// success. s can be given as a (possibly signed) fraction "a/b", or as a
+// floating-point number optionally followed by an exponent.
+// If a fraction is provided, both the dividend and the divisor may be a
+// decimal integer or independently use a prefix of “0b”, “0” or “0o”,
+// or “0x” (or their upper-case variants) to denote a binary, octal, or
+// hexadecimal integer, respectively. The divisor may not be signed.
+// If a floating-point number is provided, it may be in decimal form or
+// use any of the same prefixes as above but for “0” to denote a non-decimal
+// mantissa. A leading “0” is considered a decimal leading 0; it does not
+// indicate octal representation in this case.
+// An optional base-10 “e” or base-2 “p” (or their upper-case variants)
+// exponent may be provided as well, except for hexadecimal floats which
+// only accept an (optional) “p” exponent (because an “e” or “E” cannot
+// be distinguished from a mantissa digit). If the exponent's absolute value
+// is too large, the operation may fail.
+// The entire string, not just a prefix, must be valid for success. If the
+// operation failed, the value of z is undefined but the returned value is nil.
 func (z *Rat) SetString(s string) (*Rat, bool)
 
-// Stringは、xの文字列表現を形式 "a/b"（b == 1であっても）で返します。
+// String returns a string representation of x in the form "a/b" (even if b == 1).
 func (x *Rat) String() string
 
-// RatStringは、b != 1の場合は形式 "a/b"、b == 1の場合は形式 "a"でxの文字列表現を返します。
+// RatString returns a string representation of x in the form "a/b" if b != 1,
+// and in the form "a" if b == 1.
 func (x *Rat) RatString() string
 
-// FloatStringは、基数点の後にprec桁の精度で10進形式でxの文字列表現を返します。
-// 最後の桁は最も近いものに丸められ、半分はゼロから丸められます。
+// FloatString returns a string representation of x in decimal form with prec
+// digits of precision after the radix point. The last digit is rounded to
+// nearest, with halves rounded away from zero.
 func (x *Rat) FloatString(prec int) string
 
-// FloatPrecは、xの10進表現の小数点直後の非繰り返し数字の数nを返します。
-// ブール結果は、その多くの小数部分を持つxの10進表現が正確か丸められたかを示します。
+// FloatPrec returns the number n of non-repeating digits immediately
+// following the decimal point of the decimal representation of x.
+// The boolean result indicates whether a decimal representation of x
+// with that many fractional digits is exact or rounded.
 //
-// 例：
+// Examples:
 //
-//	x      n    exact    n桁の小数部分を持つ10進表現
+//	x      n    exact    decimal representation n fractional digits
 //	0      0    true     0
 //	1      0    true     1
 //	1/2    1    true     0.5
-//	1/3    0    false    0       (0.333... は丸められます)
+//	1/3    0    false    0       (0.333... rounded)
 //	1/4    2    true     0.25
-//	1/6    1    false    0.2     (0.166... は丸められます)
+//	1/6    1    false    0.2     (0.166... rounded)
 func (x *Rat) FloatPrec() (n int, exact bool)

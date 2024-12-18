@@ -4,7 +4,7 @@
 
 package main
 
-// 詳細は、https://docs.microsoft.com/en-us/windows/win32/api/sysinfoapi/ns-sysinfoapi-system_info を参照してください。
+// See https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/ns-sysinfoapi-system_info
 const (
 	PROCESSOR_ARCHITECTURE_AMD64 = 9
 	PROCESSOR_ARCHITECTURE_INTEL = 0

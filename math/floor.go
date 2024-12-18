@@ -4,45 +4,45 @@
 
 package math
 
-// Floorはx以下の最大の整数値を返します。
+// Floor returns the greatest integer value less than or equal to x.
 //
-// 特殊なケースは次の通りです：
+// Special cases are:
 //
 //	Floor(±0) = ±0
 //	Floor(±Inf) = ±Inf
 //	Floor(NaN) = NaN
 func Floor(x float64) float64
 
-// Ceil（天井）は、x以上の最小の整数値を返します。
+// Ceil returns the least integer value greater than or equal to x.
 //
-// 特別なケースは:
+// Special cases are:
 //
 //	Ceil(±0) = ±0
 //	Ceil(±Inf) = ±Inf
 //	Ceil(NaN) = NaN
 func Ceil(x float64) float64
 
-// Truncはxの整数値を返します。
+// Trunc returns the integer value of x.
 //
-// 特殊なケースは以下の通りです:
+// Special cases are:
 //
 //	Trunc(±0) = ±0
 //	Trunc(±Inf) = ±Inf
 //	Trunc(NaN) = NaN
 func Trunc(x float64) float64
 
-// Roundは、最も近い整数を返します。半の場合はゼロから離れます。
+// Round returns the nearest integer, rounding half away from zero.
 //
-// 特殊なケースは次の通りです：
+// Special cases are:
 //
 //	Round(±0) = ±0
 //	Round(±Inf) = ±Inf
 //	Round(NaN) = NaN
 func Round(x float64) float64
 
-// RoundToEvenは、最も近い整数を返し、丸めの際に引き分けを偶数に丸めます。
+// RoundToEven returns the nearest integer, rounding ties to even.
 //
-// 特別なケースは以下の通りです：
+// Special cases are:
 //
 //	RoundToEven(±0) = ±0
 //	RoundToEven(±Inf) = ±Inf

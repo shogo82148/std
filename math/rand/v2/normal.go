@@ -4,9 +4,11 @@
 
 package rand
 
-// NormFloat64は、標準正規分布（平均 = 0、標準偏差 = 1）に従う
-// 範囲[-math.MaxFloat64, +math.MaxFloat64]の正規分布のfloat64を返します。
-// 異なる正規分布を生成するために、呼び出し元は出力を調整できます：
+// NormFloat64 returns a normally distributed float64 in
+// the range -math.MaxFloat64 through +math.MaxFloat64 inclusive,
+// with standard normal distribution (mean = 0, stddev = 1).
+// To produce a different normal distribution, callers can
+// adjust the output using:
 //
 //	sample = NormFloat64() * desiredStdDev + desiredMean
 func (r *Rand) NormFloat64() float64

@@ -2,11 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// sha512パッケージは、FIPS 180-4で定義されているSHA-384、SHA-512、SHA-512/224、およびSHA-512/256のハッシュアルゴリズムを実装しています。
+// Package sha512 implements the SHA-384, SHA-512, SHA-512/224, and SHA-512/256
+// hash algorithms as defined in FIPS 180-4.
 //
-// このパッケージによって返されるすべてのhash.Hash実装は、
-// encoding.BinaryMarshalerとencoding.BinaryUnmarshalerも実装しており、
-// ハッシュの内部状態をマーシャリングおよびアンマーシャリングすることができます。
+// All the hash.Hash implementations returned by this package also
+// implement encoding.BinaryMarshaler and encoding.BinaryUnmarshaler to
+// marshal and unmarshal the internal state of the hash.
 package sha512
 
 import (
@@ -14,54 +15,55 @@ import (
 )
 
 const (
-	// SizeはSHA-512のチェックサムのバイト単位のサイズです。
+	// Size is the size, in bytes, of a SHA-512 checksum.
 	Size = 64
 
-	// Size224はSHA-512/224のチェックサムのサイズ（バイト単位）です。
+	// Size224 is the size, in bytes, of a SHA-512/224 checksum.
 	Size224 = 28
 
-	// Size256はSHA-512/256チェックサムのバイト単位でのサイズです。
+	// Size256 is the size, in bytes, of a SHA-512/256 checksum.
 	Size256 = 32
 
-	// Size384はSHA-384のチェックサムのバイト数です。
+	// Size384 is the size, in bytes, of a SHA-384 checksum.
 	Size384 = 48
 
-	// BlockSizeは、SHA-512/224、SHA-512/256、SHA-384、およびSHA-512ハッシュ関数のブロックサイズ（バイト単位）です。
+	// BlockSize is the block size, in bytes, of the SHA-512/224,
+	// SHA-512/256, SHA-384 and SHA-512 hash functions.
 	BlockSize = 128
 )
 
-// NewはSHA-512チェックサムを計算する新しい [hash.Hash] を返します。
-// このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
-// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
-// [encoding.BinaryUnmarshaler] も実装しています。
+// New returns a new [hash.Hash] computing the SHA-512 checksum. The Hash
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
+// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
+// state of the hash.
 func New() hash.Hash
 
-// New512_224はSHA-512/224チェックサムを計算する新しい [hash.Hash] を返します。
-// このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
-// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
-// [encoding.BinaryUnmarshaler] も実装しています。
+// New512_224 returns a new [hash.Hash] computing the SHA-512/224 checksum. The Hash
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
+// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
+// state of the hash.
 func New512_224() hash.Hash
 
-// New512_256はSHA-512/256チェックサムを計算する新しい [hash.Hash] を返します。
-// このハッシュは、内部状態をマーシャルおよびアンマーシャルするために
-// [encoding.BinaryMarshaler]、[encoding.BinaryAppender]、および
-// [encoding.BinaryUnmarshaler] も実装しています。
+// New512_256 returns a new [hash.Hash] computing the SHA-512/256 checksum. The Hash
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
+// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
+// state of the hash.
 func New512_256() hash.Hash
 
 // New384 returns a new [hash.Hash] computing the SHA-384 checksum. The Hash
-// also implements [encoding.BinaryMarshaler], [encoding.AppendBinary] and
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
 // [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
 // state of the hash.
 func New384() hash.Hash
 
-// Sum512は、データのSHA512ハッシュ値を返します。
+// Sum512 returns the SHA512 checksum of the data.
 func Sum512(data []byte) [Size]byte
 
-// Sum384はデータのSHA384チェックサムを返します。
+// Sum384 returns the SHA384 checksum of the data.
 func Sum384(data []byte) [Size384]byte
 
-// Sum512_224は、データのSum512/224チェックサムを返します。
+// Sum512_224 returns the Sum512/224 checksum of the data.
 func Sum512_224(data []byte) [Size224]byte
 
-// Sum512_256はデータのSum512/256チェックサムを返します。
+// Sum512_256 returns the Sum512/256 checksum of the data.
 func Sum512_256(data []byte) [Size256]byte

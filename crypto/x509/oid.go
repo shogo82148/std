@@ -8,36 +8,42 @@ import (
 	"github.com/shogo82148/std/encoding/asn1"
 )
 
-// OIDはASN.1 OBJECT IDENTIFIERを表します。
+// An OID represents an ASN.1 OBJECT IDENTIFIER.
 type OID struct {
 	der []byte
 }
 
-// ParseOIDは、ドットで区切られたASCII数字で表されるオブジェクト識別子文字列を解析します。
+// ParseOID parses a Object Identifier string, represented by ASCII numbers separated by dots.
 func ParseOID(oid string) (OID, error)
 
-// OIDFromIntsは、整数を使用して新しいOIDを作成します。各整数は別々のコンポーネントです。
+// OIDFromInts creates a new OID using ints, each integer is a separate component.
 func OIDFromInts(oid []uint64) (OID, error)
 
-// MarshalTextは [encoding.TextMarshaler] を実装します。
+// AppendText implements [encoding.TextAppender]
+func (o OID) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements [encoding.TextMarshaler]
 func (o OID) MarshalText() ([]byte, error)
 
-// UnmarshalTextは [encoding.TextUnmarshaler] を実装します。
+// UnmarshalText implements [encoding.TextUnmarshaler]
 func (o *OID) UnmarshalText(text []byte) error
 
-// MarshalBinary は [encoding.BinaryMarshaler] を実装します。
+// AppendBinary implements [encoding.BinaryAppender]
+func (o OID) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements [encoding.BinaryMarshaler]
 func (o OID) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinary は [encoding.BinaryUnmarshaler] を実装します。
+// UnmarshalBinary implements [encoding.BinaryUnmarshaler]
 func (o *OID) UnmarshalBinary(b []byte) error
 
-// Equalは、oidとotherが同じオブジェクト識別子を表している場合にtrueを返します。
+// Equal returns true when oid and other represents the same Object Identifier.
 func (oid OID) Equal(other OID) bool
 
-// EqualASN1OIDは、OIDがasn1.ObjectIdentifierと等しいかどうかを返します。もし
-// asn1.ObjectIdentifierがoidによって指定されたOIDを表現できない場合、
-// OIDのコンポーネントが31ビット以上必要とする場合、falseを返します。
+// EqualASN1OID returns whether an OID equals an asn1.ObjectIdentifier. If
+// asn1.ObjectIdentifier cannot represent the OID specified by oid, because
+// a component of OID requires more than 31 bits, it returns false.
 func (oid OID) EqualASN1OID(other asn1.ObjectIdentifier) bool
 
-// Stringsはオブジェクト識別子の文字列表現を返します。
+// Strings returns the string representation of the Object Identifier.
 func (oid OID) String() string

@@ -85,7 +85,7 @@ func NewCallback(fn any) uintptr
 // Between NewCallback and NewCallbackCDecl, at least 1024 callbacks can always be created.
 func NewCallbackCDecl(fn any) uintptr
 
-func Open(path string, mode int, perm uint32) (fd Handle, err error)
+func Open(name string, flag int, perm uint32) (fd Handle, err error)
 
 func Read(fd Handle, p []byte) (n int, err error)
 

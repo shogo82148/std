@@ -9,50 +9,55 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// JSONHandlerは、レコードを行区切りのJSONオブジェクトとして [io.Writer] に書き込む [Handler] です。
+// JSONHandler is a [Handler] that writes Records to an [io.Writer] as
+// line-delimited JSON objects.
 type JSONHandler struct {
 	*commonHandler
 }
 
-// NewJSONHandlerは、指定されたオプションを使用して、
-// wに書き込む [JSONHandler] を作成します。
-// optsがnilの場合、デフォルトのオプションが使用されます。
+// NewJSONHandler creates a [JSONHandler] that writes to w,
+// using the given options.
+// If opts is nil, the default options are used.
 func NewJSONHandler(w io.Writer, opts *HandlerOptions) *JSONHandler
 
-// Enabledは、ハンドラが指定されたレベルのレコードを処理するかどうかを報告します。
-// ハンドラは、レベルが低いレコードを無視します。
+// Enabled reports whether the handler handles records at the given level.
+// The handler ignores records whose level is lower.
 func (h *JSONHandler) Enabled(_ context.Context, level Level) bool
 
-// WithAttrsは、hの属性に続く属性で構成される新しい [JSONHandler] を返します。
+// WithAttrs returns a new [JSONHandler] whose attributes consists
+// of h's attributes followed by attrs.
 func (h *JSONHandler) WithAttrs(attrs []Attr) Handler
 
 func (h *JSONHandler) WithGroup(name string) Handler
 
-// Handleは、引数の [Record] をJSONオブジェクトとして1行にフォーマットします。
+// Handle formats its argument [Record] as a JSON object on a single line.
 //
-// Recordの時間がゼロの場合、時間は省略されます。
-// そうでない場合、キーは "time" であり、値はjson.Marshalと同様に出力されます。
+// If the Record's time is zero, the time is omitted.
+// Otherwise, the key is "time"
+// and the value is output as with json.Marshal.
 //
-// Recordのレベルがゼロの場合、レベルは省略されます。
-// そうでない場合、キーは "level" であり、 [Level.String] の値が出力されます。
+// If the Record's level is zero, the level is omitted.
+// Otherwise, the key is "level"
+// and the value of [Level.String] is output.
 //
-// AddSourceオプションが設定されており、ソース情報が利用可能な場合、
-// キーは "source" であり、値は [Source] 型のレコードです。
+// If the AddSource option is set and source information is available,
+// the key is "source", and the value is a record of type [Source].
 //
-// メッセージのキーは "msg" です。
+// The message's key is "msg".
 //
-// これらまたは他の属性を変更したり、出力から削除したりするには、
-// [HandlerOptions.ReplaceAttr] を使用します。
+// To modify these or other attributes, or remove them from the output, use
+// [HandlerOptions.ReplaceAttr].
 //
-// 値は、SetEscapeHTML(false)を使用して [encoding/json.Encoder] と同様にフォーマットされます。
-// ただし、2つの例外があります。
+// Values are formatted as with an [encoding/json.Encoder] with SetEscapeHTML(false),
+// with two exceptions.
 //
-// 最初に、値がエラー型であるAttrは、そのErrorメソッドを呼び出すことによって文字列としてフォーマットされます。
-// この特別な処理は、[encoding/json] パッケージによって処理される構造体、スライス、マップ、その他のデータ構造に埋め込まれたエラーではなく、
-// Attrs内のエラーのみが受け取ります。
+// First, an Attr whose Value is of type error is formatted as a string, by
+// calling its Error method. Only errors in Attrs receive this special treatment,
+// not errors embedded in structs, slices, maps or other data structures that
+// are processed by the [encoding/json] package.
 //
-// 2つ目は、エンコードの失敗がHandleからエラーを返すことはありません。
-// 代わりに、エラーメッセージが文字列としてフォーマットされます。
+// Second, an encoding failure does not cause Handle to return an error.
+// Instead, the error message is formatted as a string.
 //
-// Handleの各呼び出しは、io.Writer.Writeに対して1回のシリアル化された呼び出しを生成します。
+// Each call to Handle results in a single serialized call to io.Writer.Write.
 func (h *JSONHandler) Handle(_ context.Context, r Record) error

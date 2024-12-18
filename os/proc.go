@@ -2,41 +2,42 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// 処理など
+// Process etc.
 
 package os
 
-// Argsはコマンドラインの引数を保持し、プログラム名から開始します。
+// Args hold the command-line arguments, starting with the program name.
 var Args []string
 
-// Getuidは呼び出し元のユーザーの数値IDを返します。
+// Getuid returns the numeric user id of the caller.
 //
-// Windowsでは、-1を返します。
+// On Windows, it returns -1.
 func Getuid() int
 
-// Geteuidは呼び出し元の数値効果的ユーザーIDを返します。
+// Geteuid returns the numeric effective user id of the caller.
 //
-// Windowsでは-1が返されます。
+// On Windows, it returns -1.
 func Geteuid() int
 
-// Getgidは呼び出し元のグループIDの数値を返します。
+// Getgid returns the numeric group id of the caller.
 //
-// Windowsでは、-1を返します。
+// On Windows, it returns -1.
 func Getgid() int
 
-// Getegidは呼び出し元の数値形式の有効グループIDを返します。
+// Getegid returns the numeric effective group id of the caller.
 //
-// Windowsでは、-1を返します。
+// On Windows, it returns -1.
 func Getegid() int
 
-// Getgroupsは、呼び出し元が所属しているグループの数値IDの一覧を返します。
+// Getgroups returns a list of the numeric ids of groups that the caller belongs to.
 //
-// Windowsでは、[syscall.EWINDOWS] が返されます。代替手段については、[os/user] パッケージを参照してください。
+// On Windows, it returns [syscall.EWINDOWS]. See the [os/user] package
+// for a possible alternative.
 func Getgroups() ([]int, error)
 
-// Exitは指定されたステータスコードで現在のプログラムを終了させます。
-// 慣習的に、コード0は成功を示し、非ゼロはエラーを示します。
-// プログラムは直ちに終了します。延期された関数は実行されません。
+// Exit causes the current program to exit with the given status code.
+// Conventionally, code zero indicates success, non-zero an error.
+// The program terminates immediately; deferred functions are not run.
 //
-// 移植性のために、ステータスコードは[0, 125]の範囲内にあるべきです。
+// For portability, the status code should be in the range [0, 125].
 func Exit(code int)

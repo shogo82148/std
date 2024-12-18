@@ -10,17 +10,14 @@ import (
 	"github.com/shogo82148/std/os"
 )
 
-// A LevelHandler wraps a Handler with an Enabled method
-// that returns false for levels below a minimum.
-type LevelHandler struct {
-	level   slog.Leveler
-	handler slog.Handler
-}
-
-// この例では、ログレベルを上げて、ロガーの出力を減らす方法を示しています。
+// This example shows how to Use a LevelHandler to change the level of an
+// existing Handler while preserving its other behavior.
 //
-// 別の一般的な使用方法は、（例えばLevelDebugに）ログレベルを下げて、
-// バグが含まれていると疑われるプログラムの一部分でログを出力することです。
+// This example demonstrates increasing the log level to reduce a logger's
+// output.
+//
+// Another typical use would be to decrease the log level (to LevelDebug, say)
+// during a part of the program that was suspected of containing a bug.
 func ExampleHandler_levelHandler() {
 	th := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: slogtest.RemoveTime})
 	logger := slog.New(NewLevelHandler(slog.LevelWarn, th))

@@ -34,31 +34,34 @@ func ToolExeSuffix() string
 
 // These are general "build flags" used by build and other commands.
 var (
-	BuildA             bool
-	BuildBuildmode     string
-	BuildBuildvcs      = "auto"
-	BuildContext       = defaultContext()
-	BuildMod           string
-	BuildModExplicit   bool
-	BuildModReason     string
-	BuildLinkshared    bool
-	BuildMSan          bool
-	BuildASan          bool
-	BuildCover         bool
-	BuildCoverMode     string
-	BuildCoverPkg      []string
-	BuildN             bool
-	BuildO             string
-	BuildP             = runtime.GOMAXPROCS(0)
-	BuildPGO           string
-	BuildPkgdir        string
-	BuildRace          bool
-	BuildToolexec      []string
-	BuildToolchainName string
-	BuildTrimpath      bool
-	BuildV             bool
-	BuildWork          bool
-	BuildX             bool
+	BuildA                 bool
+	BuildBuildmode         string
+	BuildBuildvcs          = "auto"
+	BuildContext           = defaultContext()
+	BuildMod               string
+	BuildModExplicit       bool
+	BuildModReason         string
+	BuildLinkshared        bool
+	BuildMSan              bool
+	BuildASan              bool
+	BuildCover             bool
+	BuildCoverMode         string
+	BuildCoverPkg          []string
+	BuildJSON              bool
+	BuildN                 bool
+	BuildO                 string
+	BuildP                 = runtime.GOMAXPROCS(0)
+	BuildPGO               string
+	BuildPkgdir            string
+	BuildRace              bool
+	BuildToolexec          []string
+	BuildToolchainName     string
+	BuildToolchainCompiler func() string
+	BuildToolchainLinker   func() string
+	BuildTrimpath          bool
+	BuildV                 bool
+	BuildWork              bool
+	BuildX                 bool
 
 	ModCacheRW bool
 	ModFile    string
@@ -138,16 +141,17 @@ var (
 	GOMODCACHE, GOMODCACHEChanged = EnvOrAndChanged("GOMODCACHE", gopathDir("pkg/mod"))
 
 	// Used in envcmd.MkEnv and build ID computations.
-	GOARM64   = EnvOrAndChanged("GOARM64", fmt.Sprint(buildcfg.GOARM64))
-	GOARM     = EnvOrAndChanged("GOARM", fmt.Sprint(buildcfg.GOARM))
-	GO386     = EnvOrAndChanged("GO386", buildcfg.GO386)
-	GOAMD64   = EnvOrAndChanged("GOAMD64", fmt.Sprintf("%s%d", "v", buildcfg.GOAMD64))
-	GOMIPS    = EnvOrAndChanged("GOMIPS", buildcfg.GOMIPS)
-	GOMIPS64  = EnvOrAndChanged("GOMIPS64", buildcfg.GOMIPS64)
-	GOPPC64   = EnvOrAndChanged("GOPPC64", fmt.Sprintf("%s%d", "power", buildcfg.GOPPC64))
-	GORISCV64 = EnvOrAndChanged("GORISCV64", fmt.Sprintf("rva%du64", buildcfg.GORISCV64))
+	GOARM64   = EnvOrAndChanged("GOARM64", buildcfg.DefaultGOARM64)
+	GOARM     = EnvOrAndChanged("GOARM", buildcfg.DefaultGOARM)
+	GO386     = EnvOrAndChanged("GO386", buildcfg.DefaultGO386)
+	GOAMD64   = EnvOrAndChanged("GOAMD64", buildcfg.DefaultGOAMD64)
+	GOMIPS    = EnvOrAndChanged("GOMIPS", buildcfg.DefaultGOMIPS)
+	GOMIPS64  = EnvOrAndChanged("GOMIPS64", buildcfg.DefaultGOMIPS64)
+	GOPPC64   = EnvOrAndChanged("GOPPC64", buildcfg.DefaultGOPPC64)
+	GORISCV64 = EnvOrAndChanged("GORISCV64", buildcfg.DefaultGORISCV64)
 	GOWASM    = EnvOrAndChanged("GOWASM", fmt.Sprint(buildcfg.GOWASM))
 
+	GOFIPS140, GOFIPS140Changed = EnvOrAndChanged("GOFIPS140", buildcfg.DefaultGOFIPS140)
 	GOPROXY, GOPROXYChanged     = EnvOrAndChanged("GOPROXY", "")
 	GOSUMDB, GOSUMDBChanged     = EnvOrAndChanged("GOSUMDB", "")
 	GOPRIVATE                   = Getenv("GOPRIVATE")
@@ -155,6 +159,7 @@ var (
 	GONOSUMDB, GONOSUMDBChanged = EnvOrAndChanged("GONOSUMDB", GOPRIVATE)
 	GOINSECURE                  = Getenv("GOINSECURE")
 	GOVCS                       = Getenv("GOVCS")
+	GOAUTH, GOAUTHChanged       = EnvOrAndChanged("GOAUTH", "netrc")
 )
 
 // EnvOrAndChanged returns the environment variable value

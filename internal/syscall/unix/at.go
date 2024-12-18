@@ -9,3 +9,7 @@ package unix
 func Unlinkat(dirfd int, path string, flags int) error
 
 func Openat(dirfd int, path string, flags int, perm uint32) (int, error)
+
+func Readlinkat(dirfd int, path string, buf []byte) (int, error)
+
+func Mkdirat(dirfd int, path string, mode uint32) error

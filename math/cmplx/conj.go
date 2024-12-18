@@ -4,5 +4,5 @@
 
 package cmplx
 
-// Conjはxの複素共役を返します。
+// Conj returns the complex conjugate of x.
 func Conj(x complex128) complex128

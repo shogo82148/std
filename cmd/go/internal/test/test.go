@@ -120,6 +120,7 @@ In addition to the build flags, the flags handled by 'go test' itself are:
 	-json
 	    Convert test output to JSON suitable for automated processing.
 	    See 'go doc test2json' for the encoding details.
+	    Also emits build output in JSON. See 'go help buildjson'.
 
 	-o file
 	    Compile the test binary to the named file.
@@ -197,10 +198,10 @@ control the execution of any test:
 	    Sets -cover.
 
 	-coverpkg pattern1,pattern2,pattern3
-	    Apply coverage analysis in each test to packages matching the patterns.
-	    The default is for each test to analyze only the package being tested.
-	    See 'go help packages' for a description of package patterns.
-	    Sets -cover.
+	    Apply coverage analysis in each test to packages whose import paths
+	    match the patterns. The default is for each test to analyze only
+	    the package being tested. See 'go help packages' for a description
+	    of package patterns. Sets -cover.
 
 	-cpu 1,2,4
 	    Specify a list of GOMAXPROCS values for which the tests, benchmarks or

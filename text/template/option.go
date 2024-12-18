@@ -6,10 +6,10 @@
 
 package template
 
-// Optionはテンプレートのオプションを設定します。オプションは
-// 文字列によって記述され、単純な文字列または "key=value" の形式を取ります。
-// オプション文字列には最大で一つの等号が含まれていることができます。
-// オプション文字列が認識できないものや無効なものである場合、Optionはパニックを起こします。
+// Option sets options for the template. Options are described by
+// strings, either a simple string or "key=value". There can be at
+// most one equals sign in an option string. If the option string
+// is unrecognized or otherwise invalid, Option panics.
 //
 // Known options:
 //

@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Cgo; 概要についてはdoc.goを参照してください。
+// Cgo; see doc.go for an overview.
 
-// TODO（rsc）：
-// 正しい行番号のアノテーションを出力する。
-// gcがアノテーションを理解するようにする。
+// TODO(rsc):
+//	Emit correct line number annotations.
+//	Make gc understand the annotations.
 
 package main
 
@@ -17,7 +17,7 @@ import (
 	"github.com/shogo82148/std/cmd/internal/edit"
 )
 
-// パッケージは書く予定のパッケージに関する情報を集めます。
+// A Package collects information about the package we're going to write.
 type Package struct {
 	PackageName string
 	PackagePath string
@@ -39,6 +39,7 @@ type Package struct {
 	noEscapes   map[string]bool
 }
 
+// A File collects information about a single Go input file.
 type File struct {
 	AST         *ast.File
 	Comments    []*ast.CommentGroup
@@ -54,14 +55,14 @@ type File struct {
 	Edit        *edit.Buffer
 }
 
-// Callは、ASTのC.xxx関数の呼び出しを参照します。
+// A Call refers to a call of a C.xxx function in the AST.
 type Call struct {
 	Call     *ast.CallExpr
 	Deferred bool
 	Done     bool
 }
 
-// Ref型はAST内のC.xxxの形式の式を参照します。
+// A Ref refers to an expression of the form C.xxx in the AST.
 type Ref struct {
 	Name    *Name
 	Expr    *ast.Expr
@@ -71,7 +72,7 @@ type Ref struct {
 
 func (r *Ref) Pos() token.Pos
 
-// NameはC.xxxに関する情報を収集します。
+// A Name collects information about C.xxx.
 type Name struct {
 	Go       string
 	Mangle   string
@@ -84,27 +85,28 @@ type Name struct {
 	Const    string
 }
 
-// IsVarは、Kindが "var" または "fpvar" であるかどうかを報告します。
+// IsVar reports whether Kind is either "var" or "fpvar"
 func (n *Name) IsVar() bool
 
-// IsConstはKindが「iconst」、「fconst」または「sconst」であるかどうか報告します。
+// IsConst reports whether Kind is either "iconst", "fconst" or "sconst"
 func (n *Name) IsConst() bool
 
-// ExpFuncはCから呼び出すことができるエクスポートされた関数です。
-// このような関数は、Goの入力ファイルに含まれるドキュメントコメントの行//export ExpNameによって識別されます。
+// An ExpFunc is an exported function, callable from C.
+// Such functions are identified in the Go input file
+// by doc comments containing the line //export ExpName
 type ExpFunc struct {
 	Func    *ast.FuncDecl
 	ExpName string
 	Doc     string
 }
 
-// TypeReprは型の文字列表現を含む
+// A TypeRepr contains the string representation of a type.
 type TypeRepr struct {
 	Repr       string
 	FormatArgs []interface{}
 }
 
-// TypeはCとGoの世界の両方でタイプに関する情報を収集します。
+// A Type collects information about a type in both the C and Go worlds.
 type Type struct {
 	Size       int64
 	Align      int64
@@ -115,12 +117,12 @@ type Type struct {
 	BadPointer bool
 }
 
-// FuncTypeはCとGoの両方の世界における関数型に関する情報を収集します。
+// A FuncType collects information about a function type in both the C and Go worlds.
 type FuncType struct {
 	Params []*Type
 	Result *Type
 	Go     *ast.FuncType
 }
 
-// fについて記録すべきことを記録する
+// Record what needs to be recorded about f.
 func (p *Package) Record(f *File)

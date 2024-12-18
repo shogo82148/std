@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルは子プロセスの視点からCGIを実装しています。
+// This file implements CGI from the perspective of a child
+// process.
 
 package cgi
 
@@ -10,15 +11,18 @@ import (
 	"github.com/shogo82148/std/net/http"
 )
 
-// Request は現在の環境で表される HTTP リクエストを返します。
-// この関数は、現在のプログラムが CGI 環境で実行されていることを前提としています。
-// 適用される場合、返された Request の Body は取得されます。
+// Request returns the HTTP request as represented in the current
+// environment. This assumes the current program is being run
+// by a web server in a CGI environment.
+// The returned Request's Body is populated, if applicable.
 func Request() (*http.Request, error)
 
-// RequestFromMapはCGI変数から [http.Request] を作成します。
-// 返されたRequestのBodyフィールドは入力されません。
+// RequestFromMap creates an [http.Request] from CGI variables.
+// The returned Request's Body field is not populated.
 func RequestFromMap(params map[string]string) (*http.Request, error)
 
-// Serveは現在アクティブなCGIリクエストに提供された [Handler] を実行します。
-// もし現在のCGI環境がない場合、エラーが返されます。提供されたハンドラーがnilの場合、[http.DefaultServeMux] が使用されます。
+// Serve executes the provided [Handler] on the currently active CGI
+// request, if any. If there's no current CGI environment
+// an error is returned. The provided handler may be nil to use
+// [http.DefaultServeMux].
 func Serve(handler http.Handler) error

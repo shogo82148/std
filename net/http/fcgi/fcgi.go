@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// fcgiパッケージはFastCGIプロトコルを実装します。
+// Package fcgi implements the FastCGI protocol.
 //
-// 元のドキュメントの非公式ミラーサイトである https://fast-cgi.github.io/ を参照してください。
+// See https://fast-cgi.github.io/ for an unofficial mirror of the
+// original documentation.
 //
-// 現在、レスポンダーの役割のみがサポートされています。
+// Currently only the responder role is supported.
 package fcgi

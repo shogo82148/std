@@ -7,7 +7,10 @@
 
 package types
 
-// TypeParamは型パラメータータイプを表します。
+// A TypeParam represents the type of a type parameter in a generic declaration.
+//
+// A TypeParam has a name; use the [TypeParam.Obj] method to access
+// its [TypeName] object.
 type TypeParam struct {
 	check *Checker
 	id    uint64
@@ -16,25 +19,30 @@ type TypeParam struct {
 	bound Type
 }
 
-// NewTypeParamは新しいTypeParamを返します。型パラメータは、Named型に対してSetTypeParamsを呼び出すことによって設定できます。
-// 型パラメータを複数の型に設定するとパニックが発生します。
+// NewTypeParam returns a new TypeParam. Type parameters may be set on a Named
+// type by calling SetTypeParams. Setting a type parameter on more than one type
+// will result in a panic.
 //
-// 制約引数はnilにすることもできますが、後でSetConstraintを介して設定することができます。制約が非nilの場合、完全に定義されている必要があります。func NewTypeParam(obj *TypeName, constraint Type) *TypeParam
+// The constraint argument can be nil, and set later via SetConstraint. If the
+// constraint is non-nil, it must be fully defined.
+func NewTypeParam(obj *TypeName, constraint Type) *TypeParam
 
-// Obj は型パラメータ t の型名を返します。
+// Obj returns the type name for the type parameter t.
 func (t *TypeParam) Obj() *TypeName
 
-// Indexは、タイプパラメータがまだタイプにバインドされていない場合は、そのパラメータリスト内のタイプパラメータのインデックス、または-1を返します。
+// Index returns the index of the type param within its param list, or -1 if
+// the type parameter has not yet been bound to a type.
 func (t *TypeParam) Index() int
 
-// Constraintはtに指定された型制約を返します。
+// Constraint returns the type constraint specified for t.
 func (t *TypeParam) Constraint() Type
 
-// SetConstraintはtの型制約を設定します。
+// SetConstraint sets the type constraint for t.
 //
-// これは、boundの基礎が完全に定義された後、NewTypeParamのユーザーによって呼び出される必要があります。
-// また、他のタイプを形成する以外の方法で、タイプパラメータを使用する前に呼び出す必要があります。
-// SetConstraintがレシーバを返すと、tは同時使用に安全です。
+// It must be called by users of NewTypeParam after the bound's underlying is
+// fully defined, and before using the type parameter in any way other than to
+// form other types. Once SetConstraint returns the receiver, t is safe for
+// concurrent use.
 func (t *TypeParam) SetConstraint(bound Type)
 
 // Underlying returns the [underlying type] of the type parameter t, which is

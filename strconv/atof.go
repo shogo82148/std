@@ -4,22 +4,31 @@
 
 package strconv
 
-// ParseFloatは、文字列sを、bitSizeで指定された精度の浮動小数点数に変換します。
-// bitSize=32の場合、結果はfloat64型のままですが、値を変更せずにfloat32型に変換できます。
+// ParseFloat converts the string s to a floating-point number
+// with the precision specified by bitSize: 32 for float32, or 64 for float64.
+// When bitSize=32, the result still has type float64, but it will be
+// convertible to float32 without changing its value.
 //
-// ParseFloatは、[浮動小数点リテラル] のGo構文で定義された10進数および16進数の浮動小数点数を受け入れます。
-// sが正しく形成され、有効な浮動小数点数に近い場合、ParseFloatはIEEE754のバイアスのない丸めを使用して最も近い浮動小数点数を返します。
-// （16進数の浮動小数点値を解析する場合、16進数表現にビットが多すぎてマンティッサに収まらない場合にのみ丸めが行われます。）
+// ParseFloat accepts decimal and hexadecimal floating-point numbers
+// as defined by the Go syntax for [floating-point literals].
+// If s is well-formed and near a valid floating-point number,
+// ParseFloat returns the nearest floating-point number rounded
+// using IEEE754 unbiased rounding.
+// (Parsing a hexadecimal floating-point value only rounds when
+// there are more bits in the hexadecimal representation than
+// will fit in the mantissa.)
 //
-// ParseFloatが返すエラーは、*NumErrorの具体的な型であり、err.Num = sを含みます。
+// The errors that ParseFloat returns have concrete type *NumError
+// and include err.Num = s.
 //
-// sが構文的に正しくない場合、ParseFloatはerr.Err = ErrSyntaxを返します。
+// If s is not syntactically well-formed, ParseFloat returns err.Err = ErrSyntax.
 //
-// sが構文的に正しく、与えられたサイズの最大浮動小数点数から1/2 ULP以上離れている場合、
-// ParseFloatはf = ±Inf、err.Err = ErrRangeを返します。
+// If s is syntactically well-formed but is more than 1/2 ULP
+// away from the largest floating point number of the given size,
+// ParseFloat returns f = ±Inf, err.Err = ErrRange.
 //
-// ParseFloatは、文字列 "NaN" および (可能な場合は符号付きの) 文字列 "Inf" および "Infinity" を、
-// それぞれ特別な浮動小数点値として認識します。大文字小文字は区別されません。
+// ParseFloat recognizes the string "NaN", and the (possibly signed) strings "Inf" and "Infinity"
+// as their respective special floating point values. It ignores case when matching.
 //
-// [浮動小数点リテラル]: https://go.dev/ref/spec#Floating-point_literals
+// [floating-point literals]: https://go.dev/ref/spec#Floating-point_literals
 func ParseFloat(s string, bitSize int) (float64, error)

@@ -8,15 +8,16 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// この例では、big.Ratを使用して、自然対数の基数である定数eの
-// 有理数収束のシーケンスの最初の15項を計算する方法を示します。
+// This example demonstrates how to use big.Rat to compute the
+// first 15 terms in the sequence of rational convergents for
+// the constant e (base of natural logarithm).
 func Example_eConvergents() {
 	for i := 1; i <= 15; i++ {
 		r := recur(0, int64(i))
 
-		// rを分数と浮動小数点数の両方として印刷します。
-		// big.Ratはfmt.Formatterを実装しているので、%-13sを使用して
-		// 分数の左揃えの文字列表現を取得することができます。
+		// Print r both as a fraction and as a floating-point number.
+		// Since big.Rat implements fmt.Formatter, we can use %-13s to
+		// get a left-aligned string representation of the fraction.
 		fmt.Printf("%-13s = %s\n", r, r.FloatString(8))
 	}
 

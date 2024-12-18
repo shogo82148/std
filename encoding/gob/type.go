@@ -4,37 +4,44 @@
 
 package gob
 
-// CommonTypeはすべての型の要素を保持します。
-// これは歴史的な遺物であり、バイナリ互換性を保つため、および型記述子のエンコーディングのために
-// パッケージが利用するためだけに保持されています。クライアントによる直接的な使用は意図されていません。
+// CommonType holds elements of all types.
+// It is a historical artifact, kept for binary compatibility and exported
+// only for the benefit of the package's encoding of type descriptors. It is
+// not intended for direct use by clients.
 type CommonType struct {
 	Name string
 	Id   typeId
 }
 
-// GobEncoderは、GobDecoderに送信するための値のエンコーディング表現を提供するデータを
-// 描写するインターフェースです。GobEncoderとGobDecoderを実装する型は、そのデータの表現に
-// 完全な制御を持つため、通常はgobストリームで送信できないプライベートフィールド、チャネル、
-// 関数などを含むことができます。
+// GobEncoder is the interface describing data that provides its own
+// representation for encoding values for transmission to a GobDecoder.
+// A type that implements GobEncoder and GobDecoder has complete
+// control over the representation of its data and may therefore
+// contain things such as private fields, channels, and functions,
+// which are not usually transmissible in gob streams.
 //
-// 注意: gobsは永続的に保存できるため、ソフトウェアが進化するにつれてGobEncoderによって
-// 使用されるエンコーディングが安定していることを保証することは良い設計です。例えば、GobEncodeが
-// エンコーディングにバージョン番号を含めることは理にかなっているかもしれません。
+// Note: Since gobs can be stored permanently, it is good design
+// to guarantee the encoding used by a GobEncoder is stable as the
+// software evolves. For instance, it might make sense for GobEncode
+// to include a version number in the encoding.
 type GobEncoder interface {
 	GobEncode() ([]byte, error)
 }
 
-// GobDecoderは、GobEncoderによって送信された値のデコーディングルーチンを提供するデータを
-// 描写するインターフェースです。
+// GobDecoder is the interface describing data that provides its own
+// routine for decoding transmitted values sent by a GobEncoder.
 type GobDecoder interface {
 	GobDecode([]byte) error
 }
 
-// RegisterNameは [Register] と同様ですが、型のデフォルトではなく提供された名前を使用します。
+// RegisterName is like [Register] but uses the provided name rather than the
+// type's default.
 func RegisterName(name string, value any)
 
-// Registerは、その型の値によって識別される型を、
-// 内部型名の下に記録します。その名前は、インターフェース変数として送受信される値の
-// 具体的な型を識別します。インターフェース値の実装として転送される型のみを登録する必要があります。
-// 初期化時にのみ使用されることを期待しており、型と名前の間のマッピングが全単射でない場合はパニックを引き起こします。
+// Register records a type, identified by a value for that type, under its
+// internal type name. That name will identify the concrete type of a value
+// sent or received as an interface variable. Only types that will be
+// transferred as implementations of interface values need to be registered.
+// Expecting to be used only during initialization, it panics if the mapping
+// between types and names is not a bijection.
 func Register(value any)

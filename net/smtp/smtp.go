@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// smtp パッケージは RFC 5321 で定義されている Simple Mail Transfer Protocol を実装しています。
-// さらに、以下の拡張も実装しています:
+// Package smtp implements the Simple Mail Transfer Protocol as defined in RFC 5321.
+// It also implements the following extensions:
 //
 //	8BITMIME  RFC 1652
 //	AUTH      RFC 2554
 //	STARTTLS  RFC 3207
 //
-// クライアント側で追加の拡張も扱うことができます。
+// Additional extensions may be handled by clients.
 //
-// smtp パッケージは凍結されており、新しい機能の追加は受け付けていません。
-// いくつかの外部パッケージがより多機能を提供しています。以下を参照してください:
+// The smtp package is frozen and is not accepting new features.
+// Some external packages provide more functionality. See:
 //
 //	https://godoc.org/?q=smtp
 package smtp
@@ -24,94 +24,117 @@ import (
 	"github.com/shogo82148/std/net/textproto"
 )
 
-// ClientはSMTPサーバーへのクライアント接続を表します。
+// A Client represents a client connection to an SMTP server.
 type Client struct {
-
-	// TextはClientによって使用されるtextproto.Connです。拡張機能を追加できるように、公開されています。
+	// Text is the textproto.Conn used by the Client. It is exported to allow for
+	// clients to add extensions.
 	Text *textproto.Conn
-
-	// 後でTLS接続を作成するために接続への参照を保持する
+	// keep a reference to the connection so it can be used to create a TLS
+	// connection later
 	conn net.Conn
-	// クライアントがTLSを使用しているかどうか
+	// whether the Client is using TLS
 	tls        bool
 	serverName string
-	// サポートされる拡張子のマップ
+	// map of supported extensions
 	ext map[string]string
-	// サポートされている認証メカニズム
+	// supported auth mechanisms
 	auth       []string
 	localName  string
 	didHello   bool
 	helloError error
 }
 
-// Dialはaddrに指定されたポート付きのSMTPサーバーに接続された新しい [Client] を返します。
-// addrは"mail.example.com:smtp"のような形式である必要があります。
+// Dial returns a new [Client] connected to an SMTP server at addr.
+// The addr must include a port, as in "mail.example.com:smtp".
 func Dial(addr string) (*Client, error)
 
-// NewClient は既存の接続とホストを使用して新しい [Client] を返します。認証時に使用するサーバー名です。
+// NewClient returns a new [Client] using an existing connection and host as a
+// server name to be used when authenticating.
 func NewClient(conn net.Conn, host string) (*Client, error)
 
-// Closeは接続をクローズします。
+// Close closes the connection.
 func (c *Client) Close() error
 
-// Helloメソッドは、指定されたホスト名としてサーバーにHELOまたはEHLOを送信します。
-// クライアントが使用するホスト名を制御する必要がある場合にのみ、このメソッドを呼び出す必要があります。
-// それ以外の場合は、クライアントは自動的に「localhost」として自己紹介します。
-// Helloメソッドを呼び出す場合は、他のメソッドのいずれかを呼び出す前に呼び出す必要があります。
+// Hello sends a HELO or EHLO to the server as the given host name.
+// Calling this method is only necessary if the client needs control
+// over the host name used. The client will introduce itself as "localhost"
+// automatically otherwise. If Hello is called, it must be called before
+// any of the other methods.
 func (c *Client) Hello(localName string) error
 
-// StartTLSはSTARTTLSコマンドを送信し、以降のすべての通信を暗号化します。
-// この機能をサポートするのは、STARTTLS拡張機能を広告するサーバーのみです。
+// StartTLS sends the STARTTLS command and encrypts all further communication.
+// Only servers that advertise the STARTTLS extension support this function.
 func (c *Client) StartTLS(config *tls.Config) error
 
-// TLSConnectionState はクライアントのTLS接続状態を返します。
-// [Client.StartTLS] が成功しなかった場合、返り値はゼロ値になります。
+// TLSConnectionState returns the client's TLS connection state.
+// The return values are their zero values if [Client.StartTLS] did
+// not succeed.
 func (c *Client) TLSConnectionState() (state tls.ConnectionState, ok bool)
 
-// Verifyはサーバー上でメールアドレスの妥当性をチェックします。
-// Verifyがnilを返す場合、アドレスは有効です。非nilの返り値は
-// 必ずしも無効なアドレスを示すわけではありません。セキュリティ上の理由から、
-// 多くのサーバーはアドレスの検証を行わない場合があります。
+// Verify checks the validity of an email address on the server.
+// If Verify returns nil, the address is valid. A non-nil return
+// does not necessarily indicate an invalid address. Many servers
+// will not verify addresses for security reasons.
 func (c *Client) Verify(addr string) error
 
-// Authは提供された認証メカニズムを使用してクライアントを認証します。
-// 認証に失敗した場合、接続は閉じられます。
-// この機能は、AUTH拡張機能をサポートしているサーバーのみが広告しています。
+// Auth authenticates a client using the provided authentication mechanism.
+// A failed authentication closes the connection.
+// Only servers that advertise the AUTH extension support this function.
 func (c *Client) Auth(a Auth) error
 
-// Mailは提供されたメールアドレスを使用してサーバーにMAILコマンドを発行します。
-// サーバーが8BITMIME拡張をサポートしている場合、MailはBODY=8BITMIMEパラメータを追加します。
-// サーバーがSMTPUTF8拡張をサポートしている場合、MailはSMTPUTF8パラメータを追加します。
-// これにより、メールのトランザクションが開始され、その後に1つ以上の [Client.Rcpt] 呼び出しが続きます。
+// Mail issues a MAIL command to the server using the provided email address.
+// If the server supports the 8BITMIME extension, Mail adds the BODY=8BITMIME
+// parameter. If the server supports the SMTPUTF8 extension, Mail adds the
+// SMTPUTF8 parameter.
+// This initiates a mail transaction and is followed by one or more [Client.Rcpt] calls.
 func (c *Client) Mail(from string) error
 
-// Rcptは提供されたメールアドレスを使用してサーバーにRCPTコマンドを発行します。
-// Rcptの呼び出しは、[Client.Mail] の呼び出しの前に行われなければならず、[Client.Data] の呼び出しまたは別のRcptの呼び出しの後に続く場合があります。
+// Rcpt issues a RCPT command to the server using the provided email address.
+// A call to Rcpt must be preceded by a call to [Client.Mail] and may be followed by
+// a [Client.Data] call or another Rcpt call.
 func (c *Client) Rcpt(to string) error
 
-// DataはサーバーにDATAコマンドを送信し、メールのヘッダーと本文を書き込むために使用できるライターを返します。呼び出し元は、cの他のメソッドを呼び出す前にライターを閉じる必要があります。Dataの呼び出しは、一つ以上の [Client.Rcpt] の呼び出しに先行する必要があります。
+// Data issues a DATA command to the server and returns a writer that
+// can be used to write the mail headers and body. The caller should
+// close the writer before calling any more methods on c. A call to
+// Data must be preceded by one or more calls to [Client.Rcpt].
 func (c *Client) Data() (io.WriteCloser, error)
 
-// SendMailはaddrで指定されたサーバに接続し、可能な場合はTLSに切り替え、必要に応じてオプションのメカニズムaで認証し、fromからのアドレス、toへのアドレス、メッセージmsgを送信します。
-// addrにはポートを含める必要があります。例："mail.example.com:smtp"
+// SendMail connects to the server at addr, switches to TLS if
+// possible, authenticates with the optional mechanism a if possible,
+// and then sends an email from address from, to addresses to, with
+// message msg.
+// The addr must include a port, as in "mail.example.com:smtp".
 //
-// toパラメータのアドレスは、SMTPのRCPTアドレスです。
+// The addresses in the to parameter are the SMTP RCPT addresses.
 //
-// msgパラメータは、ヘッダ、空行、メッセージ本文の順になったRFC 822スタイルの電子メールである必要があります。msgの各行はCRLFで終端する必要があります。msgのヘッダには通常、"From"、"To"、"Subject"、"Cc"などのフィールドが含まれるべきです。"Bcc"メッセージを送信するには、toパラメータにメールアドレスを含め、msgのヘッダには含めません。
+// The msg parameter should be an RFC 822-style email with headers
+// first, a blank line, and then the message body. The lines of msg
+// should be CRLF terminated. The msg headers should usually include
+// fields such as "From", "To", "Subject", and "Cc".  Sending "Bcc"
+// messages is accomplished by including an email address in the to
+// parameter but not including it in the msg headers.
 //
-// SendMail関数とnet/smtpパッケージは低レベルのメカニズムであり、DKIM署名、MIME添付ファイル（mime/multipartパッケージを参照）、その他のメール機能をサポートしていません。高レベルのパッケージは標準ライブラリの外部に存在します。
+// The SendMail function and the net/smtp package are low-level
+// mechanisms and provide no support for DKIM signing, MIME
+// attachments (see the mime/multipart package), or other mail
+// functionality. Higher-level packages exist outside of the standard
+// library.
 func SendMail(addr string, a Auth, from string, to []string, msg []byte) error
 
-// Extensionはサーバーが対応している拡張機能かどうかを報告します。
-// 拡張機能名は大文字小文字を区別しません。もし拡張機能が対応されている場合、
-// Extensionは拡張機能に対してサーバーが指定する任意のパラメータを含む文字列も返します。
+// Extension reports whether an extension is support by the server.
+// The extension name is case-insensitive. If the extension is supported,
+// Extension also returns a string that contains any parameters the
+// server specifies for the extension.
 func (c *Client) Extension(ext string) (bool, string)
 
-// Resetは、現在のメールトランザクションを中止し、サーバーにRSETコマンドを送信します。
+// Reset sends the RSET command to the server, aborting the current mail
+// transaction.
 func (c *Client) Reset() error
 
-// NoopはサーバーにNOOPコマンドを送信します。これによってサーバーとの接続が正常であることを確認します。
+// Noop sends the NOOP command to the server. It does nothing but check
+// that the connection to the server is okay.
 func (c *Client) Noop() error
 
-// QuitはQUITコマンドを送信し、サーバーへの接続を閉じます。
+// Quit sends the QUIT command and closes the connection to the server.
 func (c *Client) Quit() error

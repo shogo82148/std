@@ -4,9 +4,9 @@
 
 package math
 
-// SincosはSin(x), Cos(x)を返します。
+// Sincos returns Sin(x), Cos(x).
 //
-// 特殊なケースは以下の通りです:
+// Special cases are:
 //
 //	Sincos(±0) = ±0, 1
 //	Sincos(±Inf) = NaN, NaN

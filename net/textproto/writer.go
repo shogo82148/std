@@ -9,22 +9,24 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Writerは、テキストプロトコルネットワーク接続にリクエストまたはレスポンスを書き込むための便利なメソッドを実装します。
+// A Writer implements convenience methods for writing
+// requests or responses to a text protocol network connection.
 type Writer struct {
 	W   *bufio.Writer
 	dot *dotWriter
 }
 
-// NewWriterはwに書き込む新しい [Writer] を返します。
+// NewWriter returns a new [Writer] writing to w.
 func NewWriter(w *bufio.Writer) *Writer
 
-// PrintfLineはフォーマットされた出力を\r\nに続けて書き込みます。
+// PrintfLine writes the formatted output followed by \r\n.
 func (w *Writer) PrintfLine(format string, args ...any) error
 
-// DotWriterは、wにドットエンコードを書き込むために使用できるライターを返します。
-// 必要な場合に先行するドットを挿入し、改行文字 \n を \r\n に変換し、
-// DotWriterが閉じられるときに最後の .\r\n 行を追加します。
-// 次にwのメソッドを呼び出す前に、呼び出し元はDotWriterを閉じる必要があります。
+// DotWriter returns a writer that can be used to write a dot-encoding to w.
+// It takes care of inserting leading dots when necessary,
+// translating line-ending \n into \r\n, and adding the final .\r\n line
+// when the DotWriter is closed. The caller should close the
+// DotWriter before the next call to a method on w.
 //
-// dot-encodingの詳細については、[Reader.DotReader] メソッドのドキュメントを参照してください。
+// See the documentation for the [Reader.DotReader] method for details about dot-encoding.
 func (w *Writer) DotWriter() io.WriteCloser

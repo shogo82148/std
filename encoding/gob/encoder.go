@@ -10,8 +10,9 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// Encoderは、接続の他方に対する型とデータ情報の送信を管理します。
-// 複数のgoroutineが同時に使用しても安全です。
+// An Encoder manages the transmission of type and data information to the
+// other side of a connection.  It is safe for concurrent use by multiple
+// goroutines.
 type Encoder struct {
 	mutex      sync.Mutex
 	w          []io.Writer
@@ -22,15 +23,15 @@ type Encoder struct {
 	err        error
 }
 
-// NewEncoderは、[io.Writer] 上で送信する新しいエンコーダを返します。
+// NewEncoder returns a new encoder that will transmit on the [io.Writer].
 func NewEncoder(w io.Writer) *Encoder
 
-// Encodeは、空のインターフェース値で表されるデータ項目を送信します。
-// 必要なすべての型情報が最初に送信されることを保証します。
-// nilポインタをEncoderに渡すとパニックを引き起こします、なぜならそれらはgobによって送信できないからです。
+// Encode transmits the data item represented by the empty interface value,
+// guaranteeing that all necessary type information has been transmitted first.
+// Passing a nil pointer to Encoder will panic, as they cannot be transmitted by gob.
 func (enc *Encoder) Encode(e any) error
 
-// EncodeValueは、リフレクション値によって表されるデータ項目を送信します。
-// 必要なすべての型情報が最初に送信されることを保証します。
-// nilポインタをEncodeValueに渡すとパニックを引き起こします、なぜならそれらはgobによって送信できないからです。
+// EncodeValue transmits the data item represented by the reflection value,
+// guaranteeing that all necessary type information has been transmitted first.
+// Passing a nil pointer to EncodeValue will panic, as they cannot be transmitted by gob.
 func (enc *Encoder) EncodeValue(value reflect.Value) error

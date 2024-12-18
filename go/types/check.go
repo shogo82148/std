@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルは型チェックを実行するCheck関数を実装しています。
+// This file implements the Check function, which drives type-checking.
 
 package types
 
@@ -11,8 +11,8 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// Checkerは型チェッカーの状態を維持します。
-// [NewChecker] で作成する必要があります。
+// A Checker maintains the state of the type checker.
+// It must be created with [NewChecker].
 type Checker struct {
 	// package information
 	// (initialized by NewChecker, valid for the life-time of checker)
@@ -21,23 +21,23 @@ type Checker struct {
 	fset *token.FileSet
 	pkg  *Package
 	*Info
-	version goVersion
-	nextID  uint64
-	objMap  map[Object]*declInfo
-	impMap  map[importKey]*Package
+	nextID uint64
+	objMap map[Object]*declInfo
+	impMap map[importKey]*Package
 
-	// pkgPathMapはパッケージ名をインポートパスの集合にマッピングします。
-	// インポートグラフのどこかでその名前に対して見た異なるインポートパスの集合です。
-	// エラーメッセージでパッケージ名を曖昧にするために使用されます。
+	// pkgPathMap maps package names to the set of distinct import paths we've
+	// seen for that name, anywhere in the import graph. It is used for
+	// disambiguating package names in error messages.
 	//
-	// pkgPathMapは遅延して割り当てられており、ハッピーな経路上で構築するコストを支払いません。
-	// seenPkgMapはすでに歩いたパッケージを追跡します。
+	// pkgPathMap is allocated lazily, so that we don't pay the price of building
+	// it on the happy path. seenPkgMap tracks the packages that we've already
+	// walked.
 	pkgPathMap map[string]map[string]bool
 	seenPkgMap map[*Package]bool
 
-	// パッケージファイルのセットの型チェック中に収集された情報
-	// (Filesによって初期化され、check.Filesの間のみ有効です;
-	// マップとリストは必要に応じて割り当てられます)
+	// information collected during type-checking of a set of package files
+	// (initialized by Files, valid only for the duration of check.Files;
+	// maps and lists are allocated on demand)
 	files         []*ast.File
 	versions      map[*ast.File]string
 	imports       []*PkgName
@@ -53,16 +53,17 @@ type Checker struct {
 	objPath  []Object
 	cleaners []cleaner
 
-	// 現在のオブジェクトが型チェックされる環境（特定のオブジェクトの型チェックの間のみ有効）
+	// environment within which the current object is type-checked (valid only
+	// for the duration of type-checking a specific object)
 	environment
 
-	// デバッグ中
+	// debugging
 	indent int
 }
 
-// NewCheckerは指定されたパッケージに対して新しい [Checker] インスタンスを返します。
-// [Package] ファイルは、checker.Filesを通じて段階的に追加することができます。
+// NewChecker returns a new [Checker] instance for a given package.
+// [Package] files may be added incrementally via checker.Files.
 func NewChecker(conf *Config, fset *token.FileSet, pkg *Package, info *Info) *Checker
 
-// Filesは、チェッカーのパッケージの一部として提供されたファイルをチェックします。
+// Files checks the provided files as part of the checker's package.
 func (check *Checker) Files(files []*ast.File) (err error)

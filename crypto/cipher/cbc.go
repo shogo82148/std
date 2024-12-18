@@ -2,16 +2,21 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// 暗号ブロックチェーン (CBC) モード。
+// Cipher block chaining (CBC) mode.
 
-// CBCは、ブロック暗号を適用する前に、前の暗号文ブロックと各平文ブロックをXOR演算（チェイニング）することで機密性を提供します。
+// CBC provides confidentiality by xoring (chaining) each plaintext block
+// with the previous ciphertext block before applying the block cipher.
 
-// NIST SP 800-38A、pp 10-11を参照してください。
+// See NIST SP 800-38A, pp 10-11
 
 package cipher
 
-// NewCBCEncrypterは、与えられたBlockを使用して、暗号ブロック連鎖モードで暗号化するBlockModeを返します。ivの長さは、Blockのブロックサイズと同じでなければなりません。
+// NewCBCEncrypter returns a BlockMode which encrypts in cipher block chaining
+// mode, using the given Block. The length of iv must be the same as the
+// Block's block size.
 func NewCBCEncrypter(b Block, iv []byte) BlockMode
 
-// NewCBCDecrypterは、与えられたBlockを使用して、暗号ブロックチェーンモードで復号化するためのBlockModeを返します。ivの長さは、Blockのブロックサイズと同じでなければならず、データの暗号化に使用されたivと一致する必要があります。
+// NewCBCDecrypter returns a BlockMode which decrypts in cipher block chaining
+// mode, using the given Block. The length of iv must be the same as the
+// Block's block size and must match the iv used to encrypt the data.
 func NewCBCDecrypter(b Block, iv []byte) BlockMode

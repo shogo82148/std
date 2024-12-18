@@ -4,24 +4,10 @@
 
 package rand_test
 
-import (
-	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/crypto/rand"
-	"github.com/shogo82148/std/fmt"
-)
+import "github.com/shogo82148/std/crypto/rand"
 
-// この例は、rand.Readerから暗号的に安全な疑似乱数を10個読み込み、バイトスライスに書き込みます。
 func ExampleRead() {
-	c := 10
-	b := make([]byte, c)
-	_, err := rand.Read(b)
-	if err != nil {
-		fmt.Println("error:", err)
-		return
-	}
-	// スライスは、ゼロの代わりにランダムなバイトを含んでいるべきです。
-	fmt.Println(bytes.Equal(b, make([]byte, c)))
-
-	// Output:
-	// false
+	// Note that no error handling is necessary, as Read always succeeds.
+	key := make([]byte, 32)
+	rand.Read(key)
 }

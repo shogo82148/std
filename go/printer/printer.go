@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// printerパッケージは、ASTノードの印刷を実装しています。
+// Package printer implements printing of AST nodes.
 package printer
 
 import (
@@ -11,7 +11,7 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// モード値はフラグの集合（または0）です。これらは印刷を制御します。
+// A Mode value is a set of flags (or 0). They control printing.
 type Mode uint
 
 const (
@@ -21,27 +21,28 @@ const (
 	SourcePos
 )
 
-// ConfigノードはFprintの出力を制御します。
+// A Config node controls the output of Fprint.
 type Config struct {
 	Mode     Mode
 	Tabwidth int
 	Indent   int
 }
 
-// CommentedNodeは、ASTノードと対応するコメントをまとめたものです。
-// これは、[Fprint] 関数の引数として提供することができます。
+// A CommentedNode bundles an AST node and corresponding comments.
+// It may be provided as argument to any of the [Fprint] functions.
 type CommentedNode struct {
 	Node     any
 	Comments []*ast.CommentGroup
 }
 
-// Fprintは与えられた設定cfgに対して、ASTノードを出力に「きれいに表示」します。
-// 位置情報はファイルセットfsetを基準に解釈されます。
-// ノードの型は *[ast.File]、*[CommentedNode]、[][ast.Decl]、[][ast.Stmt]、または [ast.Expr]、[ast.Decl]、[ast.Spec]、[ast.Stmt] に互換性のあるものである必要があります。
+// Fprint "pretty-prints" an AST node to output for a given configuration cfg.
+// Position information is interpreted relative to the file set fset.
+// The node type must be *[ast.File], *[CommentedNode], [][ast.Decl], [][ast.Stmt],
+// or assignment-compatible to [ast.Expr], [ast.Decl], [ast.Spec], or [ast.Stmt].
 func (cfg *Config) Fprint(output io.Writer, fset *token.FileSet, node any) error
 
-// FprintはASTノードを出力に「整形表示」します。
-// それはデフォルトの設定でConfig.Fprintを呼び出します。
-// gofmt はインデントにタブを使用し、整列にはスペースを使用することに注意してください。
-// gofmtと一致する出力にはformat.Node（パッケージgo/format）を使用してください。
+// Fprint "pretty-prints" an AST node to output.
+// It calls [Config.Fprint] with default settings.
+// Note that gofmt uses tabs for indentation but spaces for alignment;
+// use format.Node (package go/format) for output that matches gofmt.
 func Fprint(output io.Writer, fset *token.FileSet, node any) error

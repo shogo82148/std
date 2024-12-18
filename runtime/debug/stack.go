@@ -2,18 +2,19 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// debug パッケージには、プログラムが実行中に自己デバッグするための機能が含まれています。
+// Package debug contains facilities for programs to debug themselves while
+// they are running.
 package debug
 
 import (
 	"github.com/shogo82148/std/os"
 )
 
-// PrintStackはruntime.Stackによって返されたスタックトレースを標準エラー出力に出力します。
+// PrintStack prints to standard error the stack trace returned by runtime.Stack.
 func PrintStack()
 
-// Stackはそれを呼び出すgoroutineのフォーマットされたスタックトレースを返します。
-// [runtime.Stack] を呼び出して、トレース全体をキャプチャする十分に大きなバッファを使用します。
+// Stack returns a formatted stack trace of the goroutine that calls it.
+// It calls [runtime.Stack] with a large enough buffer to capture the entire trace.
 func Stack() []byte
 
 // CrashOptions provides options that control the formatting of the

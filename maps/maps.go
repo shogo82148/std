@@ -2,30 +2,29 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// mapsパッケージは、任意の型のマップに役立つさまざまな関数を定義します。
+// Package maps defines various functions useful with maps of any type.
 //
-// このパッケージは、浮動小数点数のNaNのような非反射キー
-// (k != kとなるキー)に対する特別な処理を行いません。
+// This package does not have any special handling for non-reflexive keys
+// (keys k where k != k), such as floating-point NaNs.
 package maps
 
-// Equalは、2つのマップが同じキー/値のペアを含むかどうかを報告します。
-// 値は==を使用して比較されます。
-func Equal[M1, M2 ~map[K]V, K, V comparable](m1 M1, m2 M2) bool { return false }
+// Equal reports whether two maps contain the same key/value pairs.
+// Values are compared using ==.
+func Equal[M1, M2 ~map[K]V, K, V comparable](m1 M1, m2 M2) bool
 
-// EqualFuncはEqualと同様ですが、eqを使用して値を比較します。
-// キーは引き続き==で比較されます。
-func EqualFunc[M1 ~map[K]V1, M2 ~map[K]V2, K comparable, V1, V2 any](m1 M1, m2 M2, eq func(V1, V2) bool) bool {
-	return false
-}
+// EqualFunc is like Equal, but compares values using eq.
+// Keys are still compared with ==.
+func EqualFunc[M1 ~map[K]V1, M2 ~map[K]V2, K comparable, V1, V2 any](m1 M1, m2 M2, eq func(V1, V2) bool) bool
 
-// Cloneは、mのコピーを返します。これは浅いクローンです。
-// 新しいキーと値は、通常の代入を使用して設定されます。
-func Clone[M ~map[K]V, K comparable, V any](m M) M { return nil }
+// Clone returns a copy of m.  This is a shallow clone:
+// the new keys and values are set using ordinary assignment.
+func Clone[M ~map[K]V, K comparable, V any](m M) M
 
-// Copyは、srcのすべてのキー/値ペアをコピーし、それらをdstに追加します。
-// srcのキーがdstにすでに存在する場合、
-// dstの値はsrcのキーに関連付けられた値によって上書きされます。
-func Copy[M1 ~map[K]V, M2 ~map[K]V, K comparable, V any](dst M1, src M2) {}
+// Copy copies all key/value pairs in src adding them to dst.
+// When a key in src is already present in dst,
+// the value in dst will be overwritten by the value associated
+// with the key in src.
+func Copy[M1 ~map[K]V, M2 ~map[K]V, K comparable, V any](dst M1, src M2)
 
-// DeleteFuncは、delがtrueを返す場合、mから任意のキー/値ペアを削除します。
-func DeleteFunc[M ~map[K]V, K comparable, V any](m M, del func(K, V) bool) {}
+// DeleteFunc deletes any key/value pairs from m for which del returns true.
+func DeleteFunc[M ~map[K]V, K comparable, V any](m M, del func(K, V) bool)

@@ -8,15 +8,15 @@ import (
 	"github.com/shogo82148/std/crypto/cipher"
 )
 
-// DESのブロックサイズ（単位はバイト）。
+// The DES block size in bytes.
 const BlockSize = 8
 
 type KeySizeError int
 
 func (k KeySizeError) Error() string
 
-// NewCipherは新しい [cipher.Block] を作成して返します。
+// NewCipher creates and returns a new [cipher.Block].
 func NewCipher(key []byte) (cipher.Block, error)
 
-// NewTripleDESCipher は新しい [cipher.Block] を作成して返します。
+// NewTripleDESCipher creates and returns a new [cipher.Block].
 func NewTripleDESCipher(key []byte) (cipher.Block, error)

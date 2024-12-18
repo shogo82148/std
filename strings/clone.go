@@ -4,11 +4,14 @@
 
 package strings
 
-// Cloneは、sの新しいコピーを返します。
-// sを新しい割り当てにコピーすることを保証します。
-// これは、大きな文字列の小さなサブストリングのみを保持する場合に重要な場合があります。
-// Cloneを使用することで、このようなプログラムがより少ないメモリを使用できるようになります。
-// もちろん、Cloneを使用するとコピーが作成されるため、Cloneの過剰使用はプログラムのメモリ使用量を増やす可能性があります。
-// Cloneは通常、プロファイリングによって必要であることが示された場合にのみ使用する必要があります。
-// 長さがゼロの文字列の場合、文字列 "" が返され、割り当ては行われません。
+// Clone returns a fresh copy of s.
+// It guarantees to make a copy of s into a new allocation,
+// which can be important when retaining only a small substring
+// of a much larger string. Using Clone can help such programs
+// use less memory. Of course, since using Clone makes a copy,
+// overuse of Clone can make programs use more memory.
+// Clone should typically be used only rarely, and only when
+// profiling indicates that it is needed.
+// For strings of length zero the string "" will be returned
+// and no allocation is made.
 func Clone(s string) string

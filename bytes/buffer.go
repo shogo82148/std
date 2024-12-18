@@ -9,134 +9,171 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Bufferはバイトの可変サイズのバッファであり、 [Buffer.Read] と [Buffer.Write] のメソッドを持っています。
-// Bufferのゼロ値は、使い-readyになった空のバッファです。
+// A Buffer is a variable-sized buffer of bytes with [Buffer.Read] and [Buffer.Write] methods.
+// The zero value for Buffer is an empty buffer ready to use.
 type Buffer struct {
 	buf      []byte
 	off      int
 	lastRead readOp
 }
 
-// ErrTooLargeは、バッファにデータを格納するためのメモリを割り当てることができない場合にpanicに渡されます。
+// ErrTooLarge is passed to panic if memory cannot be allocated to store data in a buffer.
 var ErrTooLarge = errors.New("bytes.Buffer: too large")
 
-// Bytesは、バッファの未読部分を保持する長さb.Len()のスライスを返します。
-// このスライスは、次のバッファの変更までしか有効ではありません（つまり、
-// [Buffer.Read] 、 [Buffer.Write] 、 [Buffer.Reset] 、または [Buffer.Truncate] などのメソッドの次の呼び出しまでのみ有効です）。
-// スライスは、次のバッファの変更まで少なくともバッファの内容をエイリアスしているため、
-// スライスへの直接の変更は将来の読み取り結果に影響を与えます。
+// Bytes returns a slice of length b.Len() holding the unread portion of the buffer.
+// The slice is valid for use only until the next buffer modification (that is,
+// only until the next call to a method like [Buffer.Read], [Buffer.Write], [Buffer.Reset], or [Buffer.Truncate]).
+// The slice aliases the buffer content at least until the next buffer modification,
+// so immediate changes to the slice will affect the result of future reads.
 func (b *Buffer) Bytes() []byte
 
-// AvailableBufferはb.Available()の容量を持つ空のバッファを返します。
-// このバッファは追加され、直後の [Buffer.Write] 呼び出しに渡すことが想定されています。
-// バッファはbに対する次の書き込み操作までの間のみ有効です。
+// AvailableBuffer returns an empty buffer with b.Available() capacity.
+// This buffer is intended to be appended to and
+// passed to an immediately succeeding [Buffer.Write] call.
+// The buffer is only valid until the next write operation on b.
 func (b *Buffer) AvailableBuffer() []byte
 
-// Stringはバッファの未読部分の内容を文字列として返します。もし [Buffer] がnilポインタであれば、"<nil>"を返します。
+// String returns the contents of the unread portion of the buffer
+// as a string. If the [Buffer] is a nil pointer, it returns "<nil>".
 //
-// より効率的に文字列を構築するには、[strings.Builder] 型を参照してください。
+// To build strings more efficiently, see the [strings.Builder] type.
 func (b *Buffer) String() string
 
-// Lenはバッファの未読部分のバイト数を返します。
-// b.Len() == len(b.Bytes())。
+// Len returns the number of bytes of the unread portion of the buffer;
+// b.Len() == len(b.Bytes()).
 func (b *Buffer) Len() int
 
-// Capはバッファの基礎となるバイトスライスの容量、つまりバッファのデータのために割り当てられた総スペースを返します。
+// Cap returns the capacity of the buffer's underlying byte slice, that is, the
+// total space allocated for the buffer's data.
 func (b *Buffer) Cap() int
 
-// Availableはバッファ内で未使用のバイト数を返します。
+// Available returns how many bytes are unused in the buffer.
 func (b *Buffer) Available() int
 
-// Truncateはバッファから最初のnバイト以外の未読データを削除し、同じ割り当てられたストレージを使用し続けます。
-// nが負数またはバッファの長さよりも大きい場合、パニックが発生します。
+// Truncate discards all but the first n unread bytes from the buffer
+// but continues to use the same allocated storage.
+// It panics if n is negative or greater than the length of the buffer.
 func (b *Buffer) Truncate(n int)
 
-// Resetはバッファを空にリセットしますが、将来の書き込みのために基礎となるストレージは保持されます。
-// Resetは [Buffer.Truncate](0)と同じです。
+// Reset resets the buffer to be empty,
+// but it retains the underlying storage for use by future writes.
+// Reset is the same as [Buffer.Truncate](0).
 func (b *Buffer) Reset()
 
-// Growは必要に応じてバッファの容量を増やし、残りのnバイトの空間を保証します。Grow(n)の後、バッファには少なくともnバイトを別の割り当てなしで書き込むことができます。
-// nが負数の場合、Growはパニックを引き起こします。
-// バッファを拡大できない場合、 [ErrTooLarge] でパニックを引き起こします。
+// Grow grows the buffer's capacity, if necessary, to guarantee space for
+// another n bytes. After Grow(n), at least n bytes can be written to the
+// buffer without another allocation.
+// If n is negative, Grow will panic.
+// If the buffer can't grow it will panic with [ErrTooLarge].
 func (b *Buffer) Grow(n int)
 
-// Write はバッファーに p の内容を追加し、必要に応じてバッファーを拡張します。戻り値 n は p の長さであり、err は常に nil です。バッファーが大きすぎる場合、Write は [ErrTooLarge] とともにパニックを発生させます。
+// Write appends the contents of p to the buffer, growing the buffer as
+// needed. The return value n is the length of p; err is always nil. If the
+// buffer becomes too large, Write will panic with [ErrTooLarge].
 func (b *Buffer) Write(p []byte) (n int, err error)
 
-// WriteStringは、必要に応じてバッファを拡張し、sの内容をバッファに追加します。戻り値nはsの長さであり、errは常にnilです。バッファが大きすぎる場合、WriteStringは [ErrTooLarge] とともにパニックを発生させます。
+// WriteString appends the contents of s to the buffer, growing the buffer as
+// needed. The return value n is the length of s; err is always nil. If the
+// buffer becomes too large, WriteString will panic with [ErrTooLarge].
 func (b *Buffer) WriteString(s string) (n int, err error)
 
-// MinReadは、[Buffer.ReadFrom] によって [Buffer.Read] 呼び出しに渡される最小スライスサイズです。
-// [Buffer] がrの内容を保持するのに必要なバイト数を超えて少なくともMinReadバイトを持っている限り、
-// [Buffer.ReadFrom] は基礎となるバッファを拡張しません。
+// MinRead is the minimum slice size passed to a [Buffer.Read] call by
+// [Buffer.ReadFrom]. As long as the [Buffer] has at least MinRead bytes beyond
+// what is required to hold the contents of r, [Buffer.ReadFrom] will not grow the
+// underlying buffer.
 const MinRead = 512
 
-// ReadFromは、rからEOFまでデータを読み取り、バッファに追加していきます。必要に応じてバッファのサイズが拡大されます。返り値nは読み取られたバイト数です。読み取り中にio.EOF以外のエラーが発生した場合、それも返されます。バッファがあまりに大きくなると、ReadFromは [ErrTooLarge] でパニックを引き起こします。
+// ReadFrom reads data from r until EOF and appends it to the buffer, growing
+// the buffer as needed. The return value n is the number of bytes read. Any
+// error except io.EOF encountered during the read is also returned. If the
+// buffer becomes too large, ReadFrom will panic with [ErrTooLarge].
 func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error)
 
-// WriteTo はバッファが空になるかエラーが発生するまで、データを w に書き込みます。
-// 戻り値の n は書き込まれたバイト数です。この値は常に int に収まりますが、[io.WriterTo] インターフェースに合わせて int64 型です。書き込み中に発生したエラーも返されます。
+// WriteTo writes data to w until the buffer is drained or an error occurs.
+// The return value n is the number of bytes written; it always fits into an
+// int, but it is int64 to match the [io.WriterTo] interface. Any error
+// encountered during the write is also returned.
 func (b *Buffer) WriteTo(w io.Writer) (n int64, err error)
 
-// WriteByteはバイトcをバッファに追加し、必要に応じてバッファを拡張します。
-// 返されるエラーは常にnilですが、 [bufio.Writer] のWriteByteに合わせるために含まれています。
-// バッファが大きすぎる場合、WriteByteは [ErrTooLarge] でパニックします。
+// WriteByte appends the byte c to the buffer, growing the buffer as needed.
+// The returned error is always nil, but is included to match [bufio.Writer]'s
+// WriteByte. If the buffer becomes too large, WriteByte will panic with
+// [ErrTooLarge].
 func (b *Buffer) WriteByte(c byte) error
 
-// WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをバッファに追加し、その長さと常にnilであるエラーを返します。エラーは常にnilですが、 [bufio.Writer] のWriteRuneとのマッチングのために含まれます。必要に応じてバッファは拡張されます。もしバッファがあまりにも大きくなった場合、WriteRuneは [ErrTooLarge] でパニックを起こします。
+// WriteRune appends the UTF-8 encoding of Unicode code point r to the
+// buffer, returning its length and an error, which is always nil but is
+// included to match [bufio.Writer]'s WriteRune. The buffer is grown as needed;
+// if it becomes too large, WriteRune will panic with [ErrTooLarge].
 func (b *Buffer) WriteRune(r rune) (n int, err error)
 
-// Readは、バッファから次のlen(p)バイトを読み取るか、バッファが空になるまで読み取ります。返り値nは読み取られたバイト数です。バッファに返すデータがない場合、errは [io.EOF] です（len(p)がゼロの場合を除く）；それ以外の場合、nilです。
+// Read reads the next len(p) bytes from the buffer or until the buffer
+// is drained. The return value n is the number of bytes read. If the
+// buffer has no data to return, err is [io.EOF] (unless len(p) is zero);
+// otherwise it is nil.
 func (b *Buffer) Read(p []byte) (n int, err error)
 
-// Nextは、バッファから次のnバイトを含むスライスを返し、
-// バイトが [Buffer.Read] によって返された場合と同様にバッファを進めます。
-// バッファにnバイト未満のバイトがある場合、Nextはバッファ全体を返します。
-// スライスは、次の読み取りまたは書き込みメソッドの呼び出しまでの間のみ有効です。
+// Next returns a slice containing the next n bytes from the buffer,
+// advancing the buffer as if the bytes had been returned by [Buffer.Read].
+// If there are fewer than n bytes in the buffer, Next returns the entire buffer.
+// The slice is only valid until the next call to a read or write method.
 func (b *Buffer) Next(n int) []byte
 
-// ReadByte はバッファから次のバイトを読み込んで返します。
-// バイトが利用できない場合は、エラー [io.EOF] を返します。
+// ReadByte reads and returns the next byte from the buffer.
+// If no byte is available, it returns error [io.EOF].
 func (b *Buffer) ReadByte() (byte, error)
 
-// ReadRuneはバッファから次のUTF-8エンコードされた
-// Unicodeコードポイントを読み取り、返します。
-// バイトが利用できない場合は、io.EOFというエラーが返されます。
-// バイトが不正なUTF-8エンコーディングの場合、1バイトを消費し、U+FFFD、1を返します。
+// ReadRune reads and returns the next UTF-8-encoded
+// Unicode code point from the buffer.
+// If no bytes are available, the error returned is io.EOF.
+// If the bytes are an erroneous UTF-8 encoding, it
+// consumes one byte and returns U+FFFD, 1.
 func (b *Buffer) ReadRune() (r rune, size int, err error)
 
-// UnreadRuneは [Buffer.ReadRune] によって返された最後のルーンを未読状態にします。
-// バッファ上の直近の読み込みや書き込み操作が [Buffer.ReadRune] の成功でない場合、UnreadRuneはエラーを返します。 (この点で、 [Buffer.UnreadByte] よりも厳格です。 [Buffer.UnreadByte] はすべての読み込み操作から最後のバイトを未読状態にします。)
+// UnreadRune unreads the last rune returned by [Buffer.ReadRune].
+// If the most recent read or write operation on the buffer was
+// not a successful [Buffer.ReadRune], UnreadRune returns an error.  (In this regard
+// it is stricter than [Buffer.UnreadByte], which will unread the last byte
+// from any read operation.)
 func (b *Buffer) UnreadRune() error
 
-// UnreadByteは、少なくとも1バイトを読み込んだ最後の成功した読み込み操作で返された最後のバイトを戻します。最後の読み込み以降に書き込みが発生した場合、最後の読み込みがエラーを返した場合、または読み込みが0バイトを読み込んだ場合、UnreadByteはエラーを返します。
+// UnreadByte unreads the last byte returned by the most recent successful
+// read operation that read at least one byte. If a write has happened since
+// the last read, if the last read returned an error, or if the read read zero
+// bytes, UnreadByte returns an error.
 func (b *Buffer) UnreadByte() error
 
-// ReadBytesは入力の最初のdelimが現れるまで読み取り、
-// デリミタを含むデータを含むスライスを返します。
-// ReadBytesがデリミタを見つける前にエラーに遭遇した場合、
-// エラー自体（通常は [io.EOF]）とエラー前に読み取ったデータを返します。
-// 返されたデータの末尾がdelimで終わっていない場合、
-// ReadBytesはerr != nilを返します。
+// ReadBytes reads until the first occurrence of delim in the input,
+// returning a slice containing the data up to and including the delimiter.
+// If ReadBytes encounters an error before finding a delimiter,
+// it returns the data read before the error and the error itself (often [io.EOF]).
+// ReadBytes returns err != nil if and only if the returned data does not end in
+// delim.
 func (b *Buffer) ReadBytes(delim byte) (line []byte, err error)
 
-// ReadStringは入力の最初のデリミタが現れるまで読み取り、
-// デリミタを含むデータを含む文字列を返します。
-// ReadStringがデリミタを見つける前にエラーに遭遇する場合、
-// エラー自体（通常は [io.EOF]）とエラーが発生する前に読み取ったデータを返します。
-// ReadStringは、返されるデータがdelimで終わっていない場合、err！= nilを返します。
+// ReadString reads until the first occurrence of delim in the input,
+// returning a string containing the data up to and including the delimiter.
+// If ReadString encounters an error before finding a delimiter,
+// it returns the data read before the error and the error itself (often [io.EOF]).
+// ReadString returns err != nil if and only if the returned data does not end
+// in delim.
 func (b *Buffer) ReadString(delim byte) (line string, err error)
 
-// NewBufferは、bufを初期コンテンツとして使用して新しい [Buffer] を作成および初期化します。
-// 新しい [Buffer] は、bufを所有し、この呼び出しの後にbufを使用しないようにする必要があります。
-// NewBufferは、既存のデータを読むために [Buffer] を準備するためのものです。書き込み用の内部バッファの初期サイズを設定するためにも使用できます。そのためには、
-// bufは希望する容量を持つ必要がありますが、長さはゼロである必要があります。
+// NewBuffer creates and initializes a new [Buffer] using buf as its
+// initial contents. The new [Buffer] takes ownership of buf, and the
+// caller should not use buf after this call. NewBuffer is intended to
+// prepare a [Buffer] to read existing data. It can also be used to set
+// the initial size of the internal buffer for writing. To do that,
+// buf should have the desired capacity but a length of zero.
 //
-// ほとんどの場合、new([Buffer])（または単に [Buffer] 変数を宣言する）で
-// Bufferを初期化するのに十分です。
+// In most cases, new([Buffer]) (or just declaring a [Buffer] variable) is
+// sufficient to initialize a [Buffer].
 func NewBuffer(buf []byte) *Buffer
 
-// NewBufferStringは、文字列sを初期内容として使用して新しい [Buffer] を作成し、初期化します。既存の文字列を読むためのバッファを準備するために使用されます。
+// NewBufferString creates and initializes a new [Buffer] using string s as its
+// initial contents. It is intended to prepare a buffer to read an existing
+// string.
 //
-// ほとんどの場合、new([Buffer])（または単に [Buffer] 変数を宣言する）でBufferを初期化するのに十分です。
+// In most cases, new([Buffer]) (or just declaring a [Buffer] variable) is
+// sufficient to initialize a [Buffer].
 func NewBufferString(s string) *Buffer

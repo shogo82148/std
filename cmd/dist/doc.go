@@ -2,20 +2,20 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// DistはGoの配布をブートストラップ、ビルド、テストするのに役立ちます。
+// Dist helps bootstrap, build, and test the Go distribution.
 //
-// 使用方法：
+// Usage:
 //
-//	go tool dist [コマンド]
+//	go tool dist [command]
 //
-// コマンドは以下の通りです：
+// The commands are:
 //
-//	banner         インストールバナーを表示する
-//	bootstrap      すべてを再ビルドする
-//	clean          すべてのビルドファイルを削除する
-//	env [-p]       環境を表示する（-p：$PATHを含む）
-//	install [dir]  個々のディレクトリをインストールする
-//	list [-json]   サポートされているすべてのプラットフォームをリストする
-//	test [-h]      Goテストを実行する
-//	version        Goのバージョンを表示する
+//	banner         print installation banner
+//	bootstrap      rebuild everything
+//	clean          deletes all built files
+//	env [-p]       print environment (-p: include $PATH)
+//	install [dir]  install individual directory
+//	list [-json]   list all supported platforms
+//	test [-h]      run Go test(s)
+//	version        print Go version
 package main

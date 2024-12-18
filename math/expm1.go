@@ -4,14 +4,14 @@
 
 package math
 
-// Expm1はxの自然対数e**x - 1を返します。
-// xがほぼゼロの場合、 [Exp](x) - 1よりも精度が高くなります。
+// Expm1 returns e**x - 1, the base-e exponential of x minus 1.
+// It is more accurate than [Exp](x) - 1 when x is near zero.
 //
-// 特殊なケースは以下の通りです：
+// Special cases are:
 //
 //	Expm1(+Inf) = +Inf
 //	Expm1(-Inf) = -1
 //	Expm1(NaN) = NaN
 //
-// 非常に大きな値は-1または+Infにオーバーフローします。
+// Very large values overflow to -1 or +Inf.
 func Expm1(x float64) float64

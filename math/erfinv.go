@@ -4,9 +4,9 @@
 
 package math
 
-// Erfinvはxの逆誤差関数を返します。
+// Erfinv returns the inverse error function of x.
 //
-// 特殊なケースは以下の通りです：
+// Special cases are:
 //
 //	Erfinv(1) = +Inf
 //	Erfinv(-1) = -Inf
@@ -14,9 +14,9 @@ package math
 //	Erfinv(NaN) = NaN
 func Erfinv(x float64) float64
 
-// Erfcinvは [Erfc](x)の逆関数を返します。
+// Erfcinv returns the inverse of [Erfc](x).
 //
-// 特殊な場合は以下の通りです:
+// Special cases are:
 //
 //	Erfcinv(0) = +Inf
 //	Erfcinv(2) = -Inf

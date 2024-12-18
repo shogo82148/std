@@ -134,7 +134,7 @@ func ExampleFormatFloat() {
 	s64 := strconv.FormatFloat(v, 'E', -1, 64)
 	fmt.Printf("%T, %v\n", s64, s64)
 
-	// fmt.Printlnはこれらの引数を使用して浮動小数点数を出力します。
+	// fmt.Println uses these arguments to print floats
 	fmt64 := strconv.FormatFloat(v, 'g', -1, 64)
 	fmt.Printf("%T, %v\n", fmt64, fmt64)
 
@@ -230,7 +230,7 @@ func ExampleParseFloat() {
 	if s, err := strconv.ParseFloat("NaN", 32); err == nil {
 		fmt.Printf("%T, %v\n", s, s)
 	}
-	// ParseFloat は大文字小文字を区別しない
+	// ParseFloat is case insensitive
 	if s, err := strconv.ParseFloat("nan", 32); err == nil {
 		fmt.Printf("%T, %v\n", s, s)
 	}
@@ -299,7 +299,7 @@ func ExampleParseUint() {
 }
 
 func ExampleQuote() {
-	// この文字列リテラルにはタブ文字が含まれています。
+	// This string literal contains a tab character.
 	s := strconv.Quote(`"Fran & Freddie's Diner	☺"`)
 	fmt.Println(s)
 
@@ -333,7 +333,7 @@ func ExampleQuoteRuneToGraphic() {
 	s = strconv.QuoteRuneToGraphic('\u000a')
 	fmt.Println(s)
 
-	s = strconv.QuoteRuneToGraphic('	') // タブ文字
+	s = strconv.QuoteRuneToGraphic('	') // tab character
 	fmt.Println(s)
 
 	// Output:
@@ -344,7 +344,7 @@ func ExampleQuoteRuneToGraphic() {
 }
 
 func ExampleQuoteToASCII() {
-	// この文字列リテラルにはタブ文字が含まれています。
+	// This string literal contains a tab character.
 	s := strconv.QuoteToASCII(`"Fran & Freddie's Diner	☺"`)
 	fmt.Println(s)
 
@@ -356,7 +356,7 @@ func ExampleQuoteToGraphic() {
 	s := strconv.QuoteToGraphic("☺")
 	fmt.Println(s)
 
-	// この文字列リテラルにはタブ文字が含まれています。
+	// This string literal contains a tab character.
 	s = strconv.QuoteToGraphic("This is a \u263a	\u000a")
 	fmt.Println(s)
 
@@ -393,7 +393,7 @@ func ExampleUnquote() {
 	fmt.Printf("%q, %v\n", s, err)
 	s, err = strconv.Unquote("`or backquoted.`")
 	fmt.Printf("%q, %v\n", s, err)
-	s, err = strconv.Unquote("'\u263a'") // 単一の文字はシングルクォーテーション内でのみ許可されています。
+	s, err = strconv.Unquote("'\u263a'") // single character only allowed in single quotes
 	fmt.Printf("%q, %v\n", s, err)
 	s, err = strconv.Unquote("'\u2639\u2639'")
 	fmt.Printf("%q, %v\n", s, err)

@@ -5,27 +5,37 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルはジェネリック型の具現化を実装します
-// 型パラメータを型引数による置換で行います。
+// This file implements instantiation of generic types
+// through substitution of type parameters by type arguments.
 
 package types
 
-// Instantiateは、与えられた型引数targsで型origをインスタンス化します。
-// origは*Alias、*Named、または*Signature型でなければなりません。エラーがない場合、
-// 結果のTypeは同じ種類（それぞれ*Alias、*Named、または*Signature）のインスタンス化された型です。
+// Instantiate instantiates the type orig with the given type arguments targs.
+// orig must be an *Alias, *Named, or *Signature type. If there is no error,
+// the resulting Type is an instantiated type of the same kind (*Alias, *Named
+// or *Signature, respectively).
 //
-// *Named型にアタッチされたメソッドもインスタンス化され、元のメソッドと同じ位置を持つが関数スコープがnilの新しい*Funcに関連付けられます。
+// Methods attached to a *Named type are also instantiated, and associated with
+// a new *Func that has the same position as the original method, but nil function
+// scope.
 //
-// ctxtがnilでない場合、同じ識別子を持つ以前のインスタンスと重複排除するために使用できます。
-// 特別な場合として、ジェネリックの*Signatureの元の型は、ポインタの等価性がある場合のみ同一視されるため、
-// 異なる（しかし可能性としては同一の）シグネチャをインスタンス化すると、異なるインスタンスが生成されます。
-// 共有されたコンテキストの使用は、同じインスタンスがすべての場合で重複排除されることを保証しません。
+// If ctxt is non-nil, it may be used to de-duplicate the instance against
+// previous instances with the same identity. As a special case, generic
+// *Signature origin types are only considered identical if they are pointer
+// equivalent, so that instantiating distinct (but possibly identical)
+// signatures will yield different instances. The use of a shared context does
+// not guarantee that identical instances are deduplicated in all cases.
 //
-// validateが設定されている場合、Instantiateは型引数とパラメータの数が一致していること、および型引数がそれぞれの型制約を満たしていることを検証します。
-// 検証に失敗した場合、結果のエラーは*ArgumentErrorをラップする可能性があり、どの型引数がその型パラメータの制約を満たさなかったか、およびなぜ満たさなかったかを示します。
+// If validate is set, Instantiate verifies that the number of type arguments
+// and parameters match, and that the type arguments satisfy their respective
+// type constraints. If verification fails, the resulting error may wrap an
+// *ArgumentError indicating which type argument did not satisfy its type parameter
+// constraint, and why.
 //
-// validateが設定されていない場合、Instantiateは型引数の数や型引数が制約を満たしているかどうかを検証しません。
-// Instantiateはエラーを返さないことが保証されていますが、パニックする可能性があります。
-// 具体的には、*Signature型の場合、型引数の数が正しくない場合は即座にパニックします。
-// *Named型の場合、パニックは後で*Named API内で発生する可能性があります。
+// If validate is not set, Instantiate does not verify the type argument count
+// or whether the type arguments satisfy their constraints. Instantiate is
+// guaranteed to not return an error, but may panic. Specifically, for
+// *Signature types, Instantiate will panic immediately if the type argument
+// count is incorrect; for *Named types, a panic may occur later inside the
+// *Named API.
 func Instantiate(ctxt *Context, orig Type, targs []Type, validate bool) (Type, error)

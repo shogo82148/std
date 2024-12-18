@@ -4,47 +4,48 @@
 
 package errors
 
-// Unwrapは、errの型にUnwrapメソッドが含まれている場合、
-// errのUnwrapメソッドを呼び出した結果を返します。
-// それ以外の場合、Unwrapはnilを返します。
+// Unwrap returns the result of calling the Unwrap method on err, if err's
+// type contains an Unwrap method returning error.
+// Otherwise, Unwrap returns nil.
 //
-// Unwrapは、"Unwrap() error"形式のメソッドのみを呼び出します。
-// 特に、Unwrapは [Join] によって返されたエラーをアンラップしません。
+// Unwrap only calls a method of the form "Unwrap() error".
+// In particular Unwrap does not unwrap errors returned by [Join].
 func Unwrap(err error) error
 
-// Isは、errのツリー内の任意のエラーがtargetに一致するかどうかを報告します。
+// Is reports whether any error in err's tree matches target.
 //
-// このツリーは、err自体と、その後に繰り返しUnwrap() errorまたはUnwrap() []errorメソッドを
-// 呼び出すことで得られるエラーで構成されています。errが複数のエラーをラップしている場合、
-// Isはerrとその子の深さ優先探索を順に調べます。
+// The tree consists of err itself, followed by the errors obtained by repeatedly
+// calling its Unwrap() error or Unwrap() []error method. When err wraps multiple
+// errors, Is examines err followed by a depth-first traversal of its children.
 //
-// ターゲットに一致するエラーは、そのターゲットに等しい場合、または
-// Is(error) boolというメソッドを実装している場合、Is(target)がtrueを返す場合です。
+// An error is considered to match a target if it is equal to that target or if
+// it implements a method Is(error) bool such that Is(target) returns true.
 //
-// エラータイプは、既存のエラーと同等に扱うためにIsメソッドを提供する場合があります。
-// たとえば、MyErrorが次のように定義されている場合、
+// An error type might provide an Is method so it can be treated as equivalent
+// to an existing error. For example, if MyError defines
 //
 //	func (m MyError) Is(target error) bool { return target == fs.ErrExist }
 //
-// 例えば、Is(MyError{}, fs.ErrExist)はtrueを返します。
-// 標準ライブラリの例については、 [syscall.Errno.Is] を参照してください。
-// Isメソッドは、errとターゲットを浅く比較し、[Unwrap] を呼び出さないようにする必要があります。
+// then Is(MyError{}, fs.ErrExist) returns true. See [syscall.Errno.Is] for
+// an example in the standard library. An Is method should only shallowly
+// compare err and the target and not call [Unwrap] on either.
 func Is(err, target error) bool
 
-// Asは、errのツリー内で最初にtargetに一致するエラーを検索し、
-// 一致するエラーが見つかった場合、targetをそのエラー値に設定してtrueを返します。
-// それ以外の場合、falseを返します。
+// As finds the first error in err's tree that matches target, and if one is found, sets
+// target to that error value and returns true. Otherwise, it returns false.
 //
-// このツリーは、err自体と、その後に繰り返しUnwrap() errorまたはUnwrap() []errorメソッドを
-// 呼び出すことで得られるエラーで構成されています。errが複数のエラーをラップしている場合、
-// Asはerrとその子の深さ優先探索を順に調べます。
+// The tree consists of err itself, followed by the errors obtained by repeatedly
+// calling its Unwrap() error or Unwrap() []error method. When err wraps multiple
+// errors, As examines err followed by a depth-first traversal of its children.
 //
-// エラーがターゲットに一致する場合、エラーの具体的な値がtargetが指す値に代入可能であるか、
-// またはエラーがAs(any) boolというメソッドを持ち、As(target)がtrueを返す場合です。
-// 後者の場合、Asメソッドはtargetを設定する責任があります。
+// An error matches target if the error's concrete value is assignable to the value
+// pointed to by target, or if the error has a method As(any) bool such that
+// As(target) returns true. In the latter case, the As method is responsible for
+// setting target.
 //
-// エラータイプは、異なるエラータイプであるかのように扱うことができるように、Asメソッドを提供する場合があります。
+// An error type might provide an As method so it can be treated as if it were a
+// different error type.
 //
-// Asは、targetがエラーを実装する型または任意のインターフェース型の、
-// 非nilポインタでない場合にパニックを引き起こします。
+// As panics if target is not a non-nil pointer to either a type that implements
+// error, or to any interface type.
 func As(err error, target any) bool

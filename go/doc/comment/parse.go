@@ -4,175 +4,194 @@
 
 package comment
 
-// Docは解析されたGoドキュメントコメントです。
+// A Doc is a parsed Go doc comment.
 type Doc struct {
-	// Contentはコメント内のコンテンツブロックのシーケンスです。
+	// Content is the sequence of content blocks in the comment.
 	Content []Block
 
-	// Linksはコメント内のリンクの定義です。
+	// Links is the link definitions in the comment.
 	Links []*LinkDef
 }
 
-// LinkDefは単一のリンク定義です。
+// A LinkDef is a single link definition.
 type LinkDef struct {
 	Text string
 	URL  string
 	Used bool
 }
 
-// ブロックは、ドキュメントコメント内のブロックレベルのコンテンツであり、[*Code]、[*Heading]、[*List]、または[*Paragraph]のいずれかです。
+// A Block is block-level content in a doc comment,
+// one of [*Code], [*Heading], [*List], or [*Paragraph].
 type Block interface {
 	block()
 }
 
-// ヘッディングはドキュメントコメントの見出しです。
+// A Heading is a doc comment heading.
 type Heading struct {
 	Text []Text
 }
 
-// リストは番号付きまたは箇条書きリストです。
-// リストは常に空でないことが保証されます：len(Items) > 0。
-// 番号付きのリストでは、Items[i].Numberは空ではない文字列です。
-// 箇条書きリストでは、Items[i].Numberは空の文字列です。
+// A List is a numbered or bullet list.
+// Lists are always non-empty: len(Items) > 0.
+// In a numbered list, every Items[i].Number is a non-empty string.
+// In a bullet list, every Items[i].Number is an empty string.
 type List struct {
-	// Itemsはアイテムのリストです。
+	// Items is the list items.
 	Items []*ListItem
 
-	// ForceBlankBeforeは、コメントの再フォーマット時に、
-	// 通常の条件を無視してリストの前に空行が必要であることを示します。
-	// BlankBeforeメソッドを参照してください。
+	// ForceBlankBefore indicates that the list must be
+	// preceded by a blank line when reformatting the comment,
+	// overriding the usual conditions. See the BlankBefore method.
 	//
-	// コメントパーサーは、リストの前に空行がある場合に
-	// ForceBlankBeforeを設定し、空行が出力時に保持されるようにします。
+	// The comment parser sets ForceBlankBefore for any list
+	// that is preceded by a blank line, to make sure
+	// the blank line is preserved when printing.
 	ForceBlankBefore bool
 
-	// ForceBlankBetweenは、コメントを再フォーマットする際、リストの項目は必ず空白行で区切られる必要があることを示しています。通常の条件を上書きします。BlankBetweenメソッドを参照してください。
+	// ForceBlankBetween indicates that list items must be
+	// separated by blank lines when reformatting the comment,
+	// overriding the usual conditions. See the BlankBetween method.
 	//
-	// コメントパーサーは、リスト内の任意の二つの項目の間に空白行がある場合、それをプリントする際に空白行が保持されることを確認するために、ForceBlankBetweenを設定します。
+	// The comment parser sets ForceBlankBetween for any list
+	// that has a blank line between any two of its items, to make sure
+	// the blank lines are preserved when printing.
 	ForceBlankBetween bool
 }
 
-// BlankBeforeはコメントのリフォーマットにおいて、リストの前に空行を含めるべきかを報告します。
-// デフォルトのルールは[BlankBetween]と同じです：
-// もしリストの項目の内容に空行が含まれている場合
-// （つまり、少なくとも1つの項目に複数の段落がある場合）
-// リスト自体は前に空行を置く必要があります。
-// 先行する空行を強制するためには、[List].ForceBlankBeforeを設定することができます。
+// BlankBefore reports whether a reformatting of the comment
+// should include a blank line before the list.
+// The default rule is the same as for [BlankBetween]:
+// if the list item content contains any blank lines
+// (meaning at least one item has multiple paragraphs)
+// then the list itself must be preceded by a blank line.
+// A preceding blank line can be forced by setting [List].ForceBlankBefore.
 func (l *List) BlankBefore() bool
 
-// BlankBetweenはコメントのリフォーマット時に、
-// リストの項目間に空行を追加する必要があるかどうかを報告します。
-// デフォルトのルールは、リストの項目の内容に空行が含まれている場合
-// （つまり、少なくとも1つの項目が複数の段落を持っている場合）、
-// リストの項目自体も空行で分ける必要があるということです。
-// 空行の区切りは、[List].ForceBlankBetweenを設定することで強制することができます。
+// BlankBetween reports whether a reformatting of the comment
+// should include a blank line between each pair of list items.
+// The default rule is that if the list item content contains any blank lines
+// (meaning at least one item has multiple paragraphs)
+// then list items must themselves be separated by blank lines.
+// Blank line separators can be forced by setting [List].ForceBlankBetween.
 func (l *List) BlankBetween() bool
 
-// ListItemは、番号付きまたは点付きリスト内の単一の項目です。
+// A ListItem is a single item in a numbered or bullet list.
 type ListItem struct {
-
-	// Numberは、番号付きリストの10進数の文字列または箇条書きリストの空の文字列です。
+	// Number is a decimal string in a numbered list
+	// or an empty string in a bullet list.
 	Number string
 
-	// Contentはリストの内容です。
-	// 現在、パーサーとプリンターの制限により、Contentの各要素は*Paragraphである必要があります。
+	// Content is the list content.
+	// Currently, restrictions in the parser and printer
+	// require every element of Content to be a *Paragraph.
 	Content []Block
 }
 
-// パラグラフはテキストの段落です。
+// A Paragraph is a paragraph of text.
 type Paragraph struct {
 	Text []Text
 }
 
-// Code は、整形済みのコードブロックです。
+// A Code is a preformatted code block.
 type Code struct {
-
-	// Textは事前に書式設定されたテキストで、改行文字で終わります。
-	// 複数行になることがあり、それぞれの行は改行文字で終わります。
-	// 空でなく、空白行で始まることも終わることもありません。
+	// Text is the preformatted text, ending with a newline character.
+	// It may be multiple lines, each of which ends with a newline character.
+	// It is never empty, nor does it start or end with a blank line.
 	Text string
 }
 
-// テキストはドキュメントコメント内のテキストレベルの内容であり、
-// [プレーン]、[イタリック]、[*リンク]、または[*ドキュリンク]のいずれかです。
+// A Text is text-level content in a doc comment,
+// one of [Plain], [Italic], [*Link], or [*DocLink].
 type Text interface {
 	text()
 }
 
-// Plainはプレーンテキストとしてレンダリングされる文字列です（イタリック化されません）。
+// A Plain is a string rendered as plain text (not italicized).
 type Plain string
 
-// イタリック体は、斜体のテキストとしてレンダリングされる文字列です。
+// An Italic is a string rendered as italicized text.
 type Italic string
 
-// Linkは特定のURLへのリンクです。
+// A Link is a link to a specific URL.
 type Link struct {
 	Auto bool
 	Text []Text
 	URL  string
 }
 
-// DocLinkはGoのパッケージまたはシンボルのドキュメントへのリンクです。
+// A DocLink is a link to documentation for a Go package or symbol.
 type DocLink struct {
 	Text []Text
 
-	// ImportPath、Recv、Nameは、Goのパッケージまたはシンボルを識別します。
-	// 非空のフィールドの組み合わせは以下の通りです：
-	//  - ImportPath：別のパッケージへのリンク
-	//  - ImportPath、Name：別のパッケージ内のconst、func、type、varへのリンク
-	//  - ImportPath、Recv、Name：別のパッケージ内のメソッドへのリンク
-	//  - Name：このパッケージ内のconst、func、type、varへのリンク
-	//  - Recv、Name：このパッケージ内のメソッドへのリンク
+	// ImportPath, Recv, and Name identify the Go package or symbol
+	// that is the link target. The potential combinations of
+	// non-empty fields are:
+	//  - ImportPath: a link to another package
+	//  - ImportPath, Name: a link to a const, func, type, or var in another package
+	//  - ImportPath, Recv, Name: a link to a method in another package
+	//  - Name: a link to a const, func, type, or var in this package
+	//  - Recv, Name: a link to a method in this package
 	ImportPath string
 	Recv       string
 	Name       string
 }
 
-// Parserはドキュメントコメントのパーサーです。
-// 構造体のフィールドは、[Parser.Parse] を呼び出す前に埋めることで、
-// パースプロセスの詳細をカスタマイズすることができます。
+// A Parser is a doc comment parser.
+// The fields in the struct can be filled in before calling [Parser.Parse]
+// in order to customize the details of the parsing process.
 type Parser struct {
-
-	// WordsはGo言語の識別子に対応する単語のマップであり、斜体にする必要があり、
-	// かつ可能であればリンクも作成します。
-	// もしWords[w]が空の文字列であれば、単語wは斜体にのみなります。
-	// そうでなければ、Words[w]をリンクターゲットとしてリンクが作成されます。
-	// Wordsは[go/doc.ToHTML]のwordsパラメータに対応します。
+	// Words is a map of Go identifier words that
+	// should be italicized and potentially linked.
+	// If Words[w] is the empty string, then the word w
+	// is only italicized. Otherwise it is linked, using
+	// Words[w] as the link target.
+	// Words corresponds to the [go/doc.ToHTML] words parameter.
 	Words map[string]string
 
-	// LookupPackageはパッケージ名をインポートパスに変換する。
+	// LookupPackage resolves a package name to an import path.
 	//
-	// LookupPackage(name)がok == trueを返す場合、[name]
-	//（または[name.Sym]または[name.Sym.Method]）
-	//はimportPathのパッケージドキュメントへのリンクと見なされる。
-	// 空文字列とtrueを返すことも有効であり、その場合はnameが現在のパッケージを参照していると見なされる。
+	// If LookupPackage(name) returns ok == true, then [name]
+	// (or [name.Sym] or [name.Sym.Method])
+	// is considered a documentation link to importPath's package docs.
+	// It is valid to return "", true, in which case name is considered
+	// to refer to the current package.
 	//
-	// LookupPackage(name)がok == falseを返す場合、
-	//[name]（または[name.Sym]または[name.Sym.Method]）
-	//はドキュメントへのリンクと見なされないが、
-	// nameが標準ライブラリ内のパッケージの完全な（ただし要素が1つだけの）インポートパスである場合、
-	//[math]や[io.Reader]のように
-	//例外として扱われる。 LookupPackageはそれらの名前に対しても呼び出されるため、
-	//同じパッケージ名の他のパッケージのインポートを参照することができる。
+	// If LookupPackage(name) returns ok == false,
+	// then [name] (or [name.Sym] or [name.Sym.Method])
+	// will not be considered a documentation link,
+	// except in the case where name is the full (but single-element) import path
+	// of a package in the standard library, such as in [math] or [io.Reader].
+	// LookupPackage is still called for such names,
+	// in order to permit references to imports of other packages
+	// with the same package names.
 	//
-	// LookupPackageをnilに設定するのは、常に""とfalseを返す関数に設定するのと同じです。
+	// Setting LookupPackage to nil is equivalent to setting it to
+	// a function that always returns "", false.
 	LookupPackage func(name string) (importPath string, ok bool)
 
-	// LookupSymは、現在のパッケージにシンボル名またはメソッド名が存在するかどうかを報告します。
+	// LookupSym reports whether a symbol name or method name
+	// exists in the current package.
 	//
-	// LookupSym("", "Name")がtrueを返す場合、[Name]はconst、func、type、またはvarのドキュメントリンクと見なされます。
+	// If LookupSym("", "Name") returns true, then [Name]
+	// is considered a documentation link for a const, func, type, or var.
 	//
-	// 同様に、LookupSym("Recv", "Name")がtrueを返す場合、[Recv.Name]はtype RecvのメソッドNameのドキュメントリンクと見なされます。
+	// Similarly, if LookupSym("Recv", "Name") returns true,
+	// then [Recv.Name] is considered a documentation link for
+	// type Recv's method Name.
 	//
-	// LookupSymをnilに設定することは、常にfalseを返す関数に設定することと同じです。
+	// Setting LookupSym to nil is equivalent to setting it to a function
+	// that always returns false.
 	LookupSym func(recv, name string) (ok bool)
 }
 
-// DefaultLookupPackageは、[Parser.LookupPackage] がnilの場合に使用されるデフォルトのパッケージルックアップ関数です。
-// これは、単一要素のインポートパスを持つ標準ライブラリのパッケージ名を認識します。
-// それ以外の場合は、名前を付けることができません。
+// DefaultLookupPackage is the default package lookup
+// function, used when [Parser.LookupPackage] is nil.
+// It recognizes names of the packages from the standard
+// library with single-element import paths, such as math,
+// which would otherwise be impossible to name.
 //
-// ただし、現在のパッケージで使用されているインポートに基づいたより洗練されたルックアップを提供するgo/docパッケージがあることに注意してください。
+// Note that the go/doc package provides a more sophisticated
+// lookup based on the imports used in the current package.
 func DefaultLookupPackage(name string) (importPath string, ok bool)
 
 // Parse parses the doc comment text and returns the *[Doc] form.

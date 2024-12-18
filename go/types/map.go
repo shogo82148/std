@@ -7,18 +7,18 @@
 
 package types
 
-// Mapはマップ型を表します。
+// A Map represents a map type.
 type Map struct {
 	key, elem Type
 }
 
-// NewMapは与えられたキーと要素の型のための新しいマップを返します。
+// NewMap returns a new map for the given key and element types.
 func NewMap(key, elem Type) *Map
 
-// Keyはマップmのキーの型を返します。
+// Key returns the key type of map m.
 func (m *Map) Key() Type
 
-// Elemは、マップmの要素の型を返します。
+// Elem returns the element type of map m.
 func (m *Map) Elem() Type
 
 func (t *Map) Underlying() Type

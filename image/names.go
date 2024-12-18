@@ -9,18 +9,18 @@ import (
 )
 
 var (
-	// Blackは、不透明な黒の一様な画像です。
+	// Black is an opaque black uniform image.
 	Black = NewUniform(color.Black)
-	// Whiteは、不透明な白の一様な画像です。
+	// White is an opaque white uniform image.
 	White = NewUniform(color.White)
-	// Transparentは、完全に透明な一様な画像です。
+	// Transparent is a fully transparent uniform image.
 	Transparent = NewUniform(color.Transparent)
-	// Opaqueは、完全に不透明な一様な画像です。
+	// Opaque is a fully opaque uniform image.
 	Opaque = NewUniform(color.Opaque)
 )
 
-// Uniformは、一様な色の無限大の [Image] です。
-// これは [color.Color]、[color.Model]、および [Image] インターフェースを実装します。
+// Uniform is an infinite-sized [Image] of uniform color.
+// It implements the [color.Color], [color.Model], and [Image] interfaces.
 type Uniform struct {
 	C color.Color
 }
@@ -37,8 +37,8 @@ func (c *Uniform) At(x, y int) color.Color
 
 func (c *Uniform) RGBA64At(x, y int) color.RGBA64
 
-// Opaqueは、画像全体をスキャンし、それが完全に不透明であるかどうかを報告します。
+// Opaque scans the entire image and reports whether it is fully opaque.
 func (c *Uniform) Opaque() bool
 
-// NewUniformは、指定された色の新しい [Uniform] イメージを返します。
+// NewUniform returns a new [Uniform] image of the given color.
 func NewUniform(c color.Color) *Uniform

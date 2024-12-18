@@ -4,56 +4,71 @@
 
 package x509
 
-// CertPoolは証明書のセットです。
+// CertPool is a set of certificates.
 type CertPool struct {
 	byName map[string][]int
 
-	// lazyCertsには、必要に応じて遅延的に解析/展開される証明書を返す関数が含まれています。
+	// lazyCerts contains funcs that return a certificate,
+	// lazily parsing/decompressing it as needed.
 	lazyCerts []lazyCert
 
-	// haveSum は sum224(cert.Raw) を true にマッピングします。これは、AddCert の重複検出のためにのみ使用されます。CertPool.contains の呼び出しを AddCert パスで避けるためです（なぜなら、contains メソッドは getCert を呼び出し、怠惰な getCert からの節約を否定することができるためです）。
+	// haveSum maps from sum224(cert.Raw) to true. It's used only
+	// for AddCert duplicate detection, to avoid CertPool.contains
+	// calls in the AddCert path (because the contains method can
+	// call getCert and otherwise negate savings from lazy getCert
+	// funcs).
 	haveSum map[sum224]bool
 
-	// systemPoolは、システムルートから派生した特別なプールであることを示します。追加のルートを含む場合、呼び出し元によって提供されたルートを使用して1つの検証、およびシステムプラットフォームの検証装置を使用してもう1つの検証が必要です。
+	// systemPool indicates whether this is a special pool derived from the
+	// system roots. If it includes additional roots, it requires doing two
+	// verifications, one using the roots provided by the caller, and one using
+	// the system platform verifier.
 	systemPool bool
 }
 
-// NewCertPoolは新しい、空のCertPoolを返します。
+// NewCertPool returns a new, empty CertPool.
 func NewCertPool() *CertPool
 
-// Cloneはsのコピーを返します。
+// Clone returns a copy of s.
 func (s *CertPool) Clone() *CertPool
 
-// SystemCertPoolはシステム証明書プールのコピーを返します。
+// SystemCertPool returns a copy of the system cert pool.
 //
-// macOS以外のUnixシステムでは、環境変数SSL_CERT_FILEとSSL_CERT_DIRを使用して、
-// SSL証明書ファイルとSSL証明書ファイルのディレクトリのシステムのデフォルト場所を上書きすることができます。後者はコロンで区切られたリストになります。
+// On Unix systems other than macOS the environment variables SSL_CERT_FILE and
+// SSL_CERT_DIR can be used to override the system default locations for the SSL
+// certificate file and SSL certificate files directory, respectively. The
+// latter can be a colon-separated list.
 //
-// 返されたプールへの変更はディスクに書き込まれず、SystemCertPoolによって返される他のプールに影響を与えません。
+// Any mutations to the returned pool are not written to disk and do not affect
+// any other pool returned by SystemCertPool.
 //
-// システム証明書プールの新しい変更は、後続の呼び出しで反映されない場合があります。
+// New changes in the system cert pool might not be reflected in subsequent calls.
 func SystemCertPool() (*CertPool, error)
 
-// AddCertは証明書をプールに追加します。
+// AddCert adds a certificate to a pool.
 func (s *CertPool) AddCert(cert *Certificate)
 
-// AppendCertsFromPEMは、一連のPEMエンコードされた証明書を解析しようとします。
-// 見つかった証明書をsに追加し、成功した証明書があるかどうかを報告します。
+// AppendCertsFromPEM attempts to parse a series of PEM encoded certificates.
+// It appends any certificates found to s and reports whether any certificates
+// were successfully parsed.
 //
-// 多くのLinuxシステムでは、/etc/ssl/cert.pemには、この関数に適した形式でシステム全体のルートCAセットが含まれています。
+// On many Linux systems, /etc/ssl/cert.pem will contain the system wide set
+// of root CAs in a format suitable for this function.
 func (s *CertPool) AppendCertsFromPEM(pemCerts []byte) (ok bool)
 
-// Subjectsはプール内のすべての証明書のDERエンコードされたサブジェクトのリストを返します。
+// Subjects returns a list of the DER-encoded subjects of
+// all of the certificates in the pool.
 //
-// Deprecated: sが [SystemCertPool] から返された場合、Subjectsにはシステムルートは含まれません。
+// Deprecated: if s was returned by [SystemCertPool], Subjects
+// will not include the system roots.
 func (s *CertPool) Subjects() [][]byte
 
-// Equalは、sとotherが等しいかどうかを報告します。
+// Equal reports whether s and other are equal.
 func (s *CertPool) Equal(other *CertPool) bool
 
-// AddCertWithConstraintは、追加の制約を持つ証明書をプールに追加します。
-// Certificate.Verifyがcertによってルート化されたチェーンを構築するとき、
-// さらにその全体のチェーンを制約に渡してその有効性を判断します。
-// 制約が非nilのエラーを返すと、チェーンは破棄されます。
-// 制約は複数のゴルーチンから同時に呼び出される可能性があります。
+// AddCertWithConstraint adds a certificate to the pool with the additional
+// constraint. When Certificate.Verify builds a chain which is rooted by cert,
+// it will additionally pass the whole chain to constraint to determine its
+// validity. If constraint returns a non-nil error, the chain will be discarded.
+// constraint may be called concurrently from multiple goroutines.
 func (s *CertPool) AddCertWithConstraint(cert *Certificate, constraint func([]*Certificate) error)

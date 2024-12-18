@@ -3,16 +3,17 @@
 // license that can be found in the LICENSE file.
 
 /*
-dwarfパッケージは、実行可能ファイルからロードされたDWARFデバッグ情報へのアクセスを提供します。
-これは、DWARF 2.0標準で定義されています。
-http://dwarfstd.org/doc/dwarf-2.0.0.pdf
+Package dwarf provides access to DWARF debugging information loaded from
+executable files, as defined in the DWARF 2.0 Standard at
+http://dwarfstd.org/doc/dwarf-2.0.0.pdf.
 
-# セキュリティ
+# Security
 
-このパッケージは、敵対的な入力に対して強化されていないため、https://go.dev/security/policy の範囲外です。
-特に、オブジェクトファイルを解析する際には基本的な検証しか行われません。
-そのため、信頼できない入力を解析する場合は注意が必要です。
-不正なファイルを解析すると、大量のリソースを消費したり、パニックを引き起こす可能性があるためです。
+This package is not designed to be hardened against adversarial inputs, and is
+outside the scope of https://go.dev/security/policy. In particular, only basic
+validation is done when parsing object files. As such, care should be taken when
+parsing untrusted inputs, as parsing malformed files may consume significant
+resources, or cause panics.
 */
 package dwarf
 
@@ -20,8 +21,8 @@ import (
 	"github.com/shogo82148/std/encoding/binary"
 )
 
-// Dataは、実行可能ファイル（例えば、ELFまたはMach-O実行可能ファイル）からロードされた
-// DWARFデバッグ情報を表します。
+// Data represents the DWARF debugging information
+// loaded from an executable file (for example, an ELF or Mach-O executable).
 type Data struct {
 	// raw data
 	abbrev   []byte
@@ -48,19 +49,24 @@ type Data struct {
 	unit        []unit
 }
 
-// Newは、指定されたパラメータから初期化された新しい [Data] オブジェクトを返します。
-// この関数を直接呼び出す代わりに、クライアントは通常、適切なパッケージ [debug/elf]、[debug/macho]、または [debug/pe] のFile型のDWARFメソッドを使用する必要があります。
+// New returns a new [Data] object initialized from the given parameters.
+// Rather than calling this function directly, clients should typically use
+// the DWARF method of the File type of the appropriate package [debug/elf],
+// [debug/macho], or [debug/pe].
 //
-// []byte引数は、オブジェクトファイルの対応するデバッグセクションからのデータです。
-// たとえば、ELFオブジェクトの場合、abbrevは".debug_abbrev"セクションの内容です。
+// The []byte arguments are the data from the corresponding debug section
+// in the object file; for example, for an ELF object, abbrev is the contents of
+// the ".debug_abbrev" section.
 func New(abbrev, aranges, frame, info, line, pubnames, ranges, str []byte) (*Data, error)
 
-// AddTypesは、DWARFデータに1つの.debug_typesセクションを追加します。
-// DWARFバージョン4のデバッグ情報を持つ典型的なオブジェクトには、複数の.debug_typesセクションがあります。
-// 名前はエラー報告のみに使用され、1つの.debug_typesセクションを別のセクションと区別するために使用されます。
+// AddTypes will add one .debug_types section to the DWARF data. A
+// typical object with DWARF version 4 debug info will have multiple
+// .debug_types sections. The name is used for error reporting only,
+// and serves to distinguish one .debug_types section from another.
 func (d *Data) AddTypes(name string, types []byte) error
 
-// AddSectionは、名前で指定された別のDWARFセクションを追加します。
-// 名前は、".debug_addr"、".debug_str_offsets"などのDWARFセクション名である必要があります。
-// このアプローチは、DWARF 5以降で追加された新しいDWARFセクションに使用されます。
+// AddSection adds another DWARF section by name. The name should be a
+// DWARF section name such as ".debug_addr", ".debug_str_offsets", and
+// so forth. This approach is used for new DWARF sections added in
+// DWARF 5 and later.
 func (d *Data) AddSection(name string, contents []byte) error

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルは、各関数に対して（行、列）-（行-列）の範囲を計算するビジターを実装します。
+// This file implements the visitor that computes the (line, column)-(line-column) range for each function.
 
 package main
 
@@ -11,7 +11,7 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-// FuncExtentはソース内の関数の範囲をファイルと位置で説明します。
+// FuncExtent describes a function's extent in the source by file and position.
 type FuncExtent struct {
 	name      string
 	startLine int
@@ -20,7 +20,7 @@ type FuncExtent struct {
 	endCol    int
 }
 
-// FuncVisitorは、ファイルの関数の位置リストを構築するための訪問者を実装します。
+// FuncVisitor implements the visitor that builds the function position list for a file.
 type FuncVisitor struct {
 	fset    *token.FileSet
 	name    string
@@ -28,10 +28,10 @@ type FuncVisitor struct {
 	funcs   []*FuncExtent
 }
 
-// Visit は ast.Visitor インターフェースを実装します。
+// Visit implements the ast.Visitor interface.
 func (v *FuncVisitor) Visit(node ast.Node) ast.Visitor
 
-// Pkgは単一のパッケージを説明します。 'go list'のJSON出力と互換性があります。 'go help list'を参照してください。
+// Pkg describes a single package, compatible with the JSON output from 'go list'; see 'go help list'.
 type Pkg struct {
 	ImportPath string
 	Dir        string

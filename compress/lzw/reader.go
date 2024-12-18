@@ -2,29 +2,36 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// lzwパッケージ は、T. A. Welchによって述べられた「高性能データ圧縮のためのテクニック」という文書で説明されている、Lempel-Ziv-Welch圧縮データフォーマットを実装します。
+// Package lzw implements the Lempel-Ziv-Welch compressed data format,
+// described in T. A. Welch, “A Technique for High-Performance Data
+// Compression”, Computer, 17(6) (June 1984), pp 8-19.
 //
-// 特に、これはGIFおよびPDFファイル形式で使用されるLZWを実装しており、可変幅コード（最大12ビット）および最初の2つの非文字コードはクリアコードとEOFコードを意味します。
+// In particular, it implements LZW as used by the GIF and PDF file
+// formats, which means variable-width codes up to 12 bits and the first
+// two non-literal codes are a clear code and an EOF code.
 //
-// TIFFファイル形式は、LZWアルゴリズムの似ているが互換性のないバージョンを使用しています。実装については、golang.org/x/image/tiff/lzwパッケージを参照してください。
+// The TIFF file format uses a similar but incompatible version of the LZW
+// algorithm. See the golang.org/x/image/tiff/lzw package for an
+// implementation.
 package lzw
 
 import (
 	"github.com/shogo82148/std/io"
 )
 
-// OrderはLZWデータストリーム内のビットの順序を指定します。
+// Order specifies the bit ordering in an LZW data stream.
 type Order int
 
 const (
-	// LSBは、GIFファイルフォーマットで使用されるLeast Significant Bits（最下位ビット優先）の意味です。
+	// LSB means Least Significant Bits first, as used in the GIF file format.
 	LSB Order = iota
-
-	// MSBは、TIFFおよびPDFファイル形式で使用される、最上位ビットを優先することを意味します。
+	// MSB means Most Significant Bits first, as used in the TIFF and PDF
+	// file formats.
 	MSB
 )
 
-// ReaderはLZW形式で圧縮されたデータを読み込むために使用できるio.Readerです。
+// Reader is an io.Reader which can be used to read compressed data in the
+// LZW format.
 type Reader struct {
 	r        io.ByteReader
 	bits     uint32
@@ -34,44 +41,48 @@ type Reader struct {
 	litWidth int
 	err      error
 
-	// 最初の1<<litWidthのコードはリテラルコードです。
-	// 次の2つのコードはクリアとEOFを意味します。
-	// 他の有効なコードは [lo, hi] の範囲にあります。ここで、lo := clear + 2 であり、
-	// 各コードが現れるたびに上限が増加します。
+	// The first 1<<litWidth codes are literal codes.
+	// The next two codes mean clear and EOF.
+	// Other valid codes are in the range [lo, hi] where lo := clear + 2,
+	// with the upper bound incrementing on each code seen.
 	//
-	// overflowはhiがコード幅を超えるコードです。常に1 << widthと等しくなります。
+	// overflow is the code at which hi overflows the code width. It always
+	// equals 1 << width.
 	//
-	// lastは最後に見たコード、またはdecoderInvalidCodeです。
+	// last is the most recently seen code, or decoderInvalidCode.
 	//
-	// 不変事項はhi < overflowです。
+	// An invariant is that hi < overflow.
 	clear, eof, hi, overflow, last uint16
 
-	// [lo, hi]の各コードcは2バイト以上に展開されます。ただし、c != hiの場合：
-	//   suffix[c]はこれらのバイトの最後のバイトです。
-	//   prefix[c]は最後のバイト以外のコードです。
-	//   このコードは、リテラルコードまたは[lo, c)内の別のコードである場合があります。
-	// c == hiの場合は特別なケースです。
+	// Each code c in [lo, hi] expands to two or more bytes. For c != hi:
+	//   suffix[c] is the last of these bytes.
+	//   prefix[c] is the code for all but the last byte.
+	//   This code can either be a literal code or another code in [lo, c).
+	// The c == hi case is a special case.
 	suffix [1 << maxWidth]uint8
 	prefix [1 << maxWidth]uint16
 
-	// outputは一時的な出力バッファです。
-	// 文字コードはバッファの先頭から蓄積されます。
-	// リテラルコードは、バッファの末尾から右から左にデコードされ、
-	// バッファの先頭にコピーされる接尾辞のシーケンスにデコードされます。
-	// バッファに >= 1<<maxWidth バイトが含まれている場合、フラッシュされます。
-	// したがって、常にコード全体をデコードするためのスペースがあります。
+	// output is the temporary output buffer.
+	// Literal codes are accumulated from the start of the buffer.
+	// Non-literal codes decode to a sequence of suffixes that are first
+	// written right-to-left from the end of the buffer before being copied
+	// to the start of the buffer.
+	// It is flushed when it contains >= 1<<maxWidth bytes,
+	// so that there is always room to decode an entire code.
 	output [2 * 1 << maxWidth]byte
 	o      int
 	toRead []byte
 }
 
-// Readはio.Readerを実装し、基になる [Reader] から非圧縮バイトを読み取ります。
+// Read implements io.Reader, reading uncompressed bytes from its underlying [Reader].
 func (r *Reader) Read(b []byte) (int, error)
 
-// Closeは [Reader] を閉じ、将来の読み込み操作に対してエラーを返します。
-// サブの [io.Reader] を閉じません。
+// Close closes the [Reader] and returns an error for any future read operation.
+// It does not close the underlying [io.Reader].
 func (r *Reader) Close() error
 
+// Reset clears the [Reader]'s state and allows it to be reused again
+// as a new [Reader].
 func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 
 // NewReader creates a new [io.ReadCloser].
@@ -84,5 +95,6 @@ func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 // range [2,8] and is typically 8. It must equal the litWidth
 // used during compression.
 //
-// 返された [io.ReadCloser] の基底型は、*[Reader] であることが保証されます。
+// It is guaranteed that the underlying type of the returned [io.ReadCloser]
+// is a *[Reader].
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser

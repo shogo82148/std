@@ -4,21 +4,27 @@
 
 package sync
 
-// Condはイベントの発生を待つまたは宣言するための待機ポイントである条件変数を実装します。
+// Cond implements a condition variable, a rendezvous point
+// for goroutines waiting for or announcing the occurrence
+// of an event.
 //
-// 各Condには関連付けられたLocker L（通常は [*Mutex] または [*RWMutex]）があり、条件を変更するときや [Cond.Wait] メソッドを呼び出すときに保持する必要があります。
+// Each Cond has an associated Locker L (often a [*Mutex] or [*RWMutex]),
+// which must be held when changing the condition and
+// when calling the [Cond.Wait] method.
 //
-// 最初の使用後にCondをコピーしてはいけません。
+// A Cond must not be copied after first use.
 //
-// [the Go memory model] の用語では、Condは
-// [Cond.Broadcast] または [Cond.Signal] の呼び出しが、それによってブロック解除される任意のWait呼び出しよりも
-// 「先に同期する」ように配置します。
+// In the terminology of [the Go memory model], Cond arranges that
+// a call to [Cond.Broadcast] or [Cond.Signal] “synchronizes before” any Wait call
+// that it unblocks.
 //
-// 単純な使用例では、ユーザーはチャネルを使用する方がCondよりも優れています（Broadcastはチャネルを閉じることに対応し、Signalはチャネルに送信することに対応します）。
+// For many simple use cases, users will be better off using channels than a
+// Cond (Broadcast corresponds to closing a channel, and Signal corresponds to
+// sending on a channel).
 //
-// [sync.Cond] の代わりに他のものについては、[Roberto Clapis's series on
-// advanced concurrency patterns] と [Bryan Mills's talk on concurrency
-// patterns] を参照してください。
+// For more on replacements for [sync.Cond], see [Roberto Clapis's series on
+// advanced concurrency patterns], as well as [Bryan Mills's talk on concurrency
+// patterns].
 //
 // [the Go memory model]: https://go.dev/ref/mem
 // [Roberto Clapis's series on advanced concurrency patterns]: https://blogtitle.github.io/categories/concurrency/
@@ -26,40 +32,44 @@ package sync
 type Cond struct {
 	noCopy noCopy
 
-	// 条件を観察または変更する間は、Lを保持します
+	// L is held while observing or changing the condition
 	L Locker
 
 	notify  notifyList
 	checker copyChecker
 }
 
-// NewCondはLocker lを持つ新しいCondを返します。
+// NewCond returns a new Cond with Locker l.
 func NewCond(l Locker) *Cond
 
-// Waitはc.Lのロックを解除して、呼び出し元のゴルーチンの実行を一時停止します。
-// 後で再開すると、Waitは戻る前にc.Lをロックします。他のシステムとは異なり、
-// Waitは [Cond.Broadcast] または [Cond.Signal] によって起こされない限り戻りません。
+// Wait atomically unlocks c.L and suspends execution
+// of the calling goroutine. After later resuming execution,
+// Wait locks c.L before returning. Unlike in other systems,
+// Wait cannot return unless awoken by [Cond.Broadcast] or [Cond.Signal].
 //
-// Waitが待機している間、c.Lはロックされていないため、呼び出し元は
-// 待機が返るときに条件が真であることを前提とすることはできません。代わりに、
-// 呼び出し元はループ内でWaitを使用する必要があります：
+// Because c.L is not locked while Wait is waiting, the caller
+// typically cannot assume that the condition is true when
+// Wait returns. Instead, the caller should Wait in a loop:
 //
 //	c.L.Lock()
 //	for !condition() {
 //	    c.Wait()
 //	}
-//	... 条件を活用する ...
+//	... make use of condition ...
 //	c.L.Unlock()
 func (c *Cond) Wait()
 
-// cに待機しているゴルーチンがあれば、Signalは1つのゴルーチンを起こします。
+// Signal wakes one goroutine waiting on c, if there is any.
 //
-// 呼び出し元がc.Lを保持していることは必須ではありませんが、許可されています。
+// It is allowed but not required for the caller to hold c.L
+// during the call.
 //
-// Signal()はゴルーチンのスケジューリングの優先順位に影響を与えません。他のゴルーチンがc.Lをロックしようとしている場合、"待機中"のゴルーチンよりも先に起きる場合があります。
+// Signal() does not affect goroutine scheduling priority; if other goroutines
+// are attempting to lock c.L, they may be awoken before a "waiting" goroutine.
 func (c *Cond) Signal()
 
-// Broadcastは、cで待機しているすべてのゴルーチンを起こします。
+// Broadcast wakes all goroutines waiting on c.
 //
-// 呼び出し元がc.Lを保持していることは許可されていますが、必須ではありません。
+// It is allowed but not required for the caller to hold c.L
+// during the call.
 func (c *Cond) Broadcast()

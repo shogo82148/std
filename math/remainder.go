@@ -4,9 +4,9 @@
 
 package math
 
-// Remainderはx/yのIEEE 754浮動小数点余りを返します。
+// Remainder returns the IEEE 754 floating-point remainder of x/y.
 //
-// 特殊なケースは以下の通りです：
+// Special cases are:
 //
 //	Remainder(±Inf, y) = NaN
 //	Remainder(NaN, y) = NaN

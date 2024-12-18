@@ -11,20 +11,20 @@ import (
 )
 
 func ExampleInts() {
-	s := []int{5, 2, 6, 3, 1, 4} // ソートされていない
+	s := []int{5, 2, 6, 3, 1, 4} // unsorted
 	sort.Ints(s)
 	fmt.Println(s)
 	// Output: [1 2 3 4 5 6]
 }
 
 func ExampleIntsAreSorted() {
-	s := []int{1, 2, 3, 4, 5, 6} // 昇順でソートされています
+	s := []int{1, 2, 3, 4, 5, 6} // sorted ascending
 	fmt.Println(sort.IntsAreSorted(s))
 
-	s = []int{6, 5, 4, 3, 2, 1} // 降順で並べ替え済み
+	s = []int{6, 5, 4, 3, 2, 1} // sorted descending
 	fmt.Println(sort.IntsAreSorted(s))
 
-	s = []int{3, 2, 4, 1, 5} // 未ソート
+	s = []int{3, 2, 4, 1, 5} // unsorted
 	fmt.Println(sort.IntsAreSorted(s))
 
 	// Output: true
@@ -33,11 +33,11 @@ func ExampleIntsAreSorted() {
 }
 
 func ExampleFloat64s() {
-	s := []float64{5.2, -1.3, 0.7, -3.8, 2.6} // ソートされていない
+	s := []float64{5.2, -1.3, 0.7, -3.8, 2.6} // unsorted
 	sort.Float64s(s)
 	fmt.Println(s)
 
-	s = []float64{math.Inf(1), math.NaN(), math.Inf(-1), 0.0} // 未整列
+	s = []float64{math.Inf(1), math.NaN(), math.Inf(-1), 0.0} // unsorted
 	sort.Float64s(s)
 	fmt.Println(s)
 
@@ -46,13 +46,13 @@ func ExampleFloat64s() {
 }
 
 func ExampleFloat64sAreSorted() {
-	s := []float64{0.7, 1.3, 2.6, 3.8, 5.2} // 昇順でソートされています
+	s := []float64{0.7, 1.3, 2.6, 3.8, 5.2} // sorted ascending
 	fmt.Println(sort.Float64sAreSorted(s))
 
-	s = []float64{5.2, 3.8, 2.6, 1.3, 0.7} // 降順でソート済み
+	s = []float64{5.2, 3.8, 2.6, 1.3, 0.7} // sorted descending
 	fmt.Println(sort.Float64sAreSorted(s))
 
-	s = []float64{5.2, 1.3, 0.7, 3.8, 2.6} // 未整列
+	s = []float64{5.2, 1.3, 0.7, 3.8, 2.6} // unsorted
 	fmt.Println(sort.Float64sAreSorted(s))
 
 	// Output: true
@@ -61,7 +61,7 @@ func ExampleFloat64sAreSorted() {
 }
 
 func ExampleReverse() {
-	s := []int{5, 2, 6, 3, 1, 4} // ソートされていない
+	s := []int{5, 2, 6, 3, 1, 4} // unsorted
 	sort.Sort(sort.Reverse(sort.IntSlice(s)))
 	fmt.Println(s)
 	// Output: [6 5 4 3 2 1]
@@ -86,6 +86,34 @@ func ExampleSlice() {
 	// By age: [{Gopher 7} {Vera 24} {Alice 55} {Bob 75}]
 }
 
+func ExampleSliceIsSorted() {
+	numbers := []int{1, 2, 3, 4, 5, 6}
+
+	isSortedAsc := sort.SliceIsSorted(numbers, func(i, j int) bool {
+		return numbers[i] < numbers[j]
+	})
+	fmt.Printf("%v sorted ascending: %t\n", numbers, isSortedAsc)
+
+	numbersDesc := []int{6, 5, 4, 3, 2, 1}
+
+	isSortedDesc := sort.SliceIsSorted(numbersDesc, func(i, j int) bool {
+		return numbersDesc[i] > numbersDesc[j]
+	})
+	fmt.Printf("%v sorted descending: %t\n", numbers, isSortedDesc)
+
+	unsortedNumbers := []int{1, 3, 2, 4, 5}
+
+	isSortedUnsorted := sort.SliceIsSorted(unsortedNumbers, func(i, j int) bool {
+		return unsortedNumbers[i] < unsortedNumbers[j]
+	})
+	fmt.Printf("%v unsorted slice sorted: %t\n", unsortedNumbers, isSortedUnsorted)
+
+	// Output:
+	// [1 2 3 4 5 6] sorted ascending: true
+	// [1 2 3 4 5 6] sorted descending: true
+	// [1 3 2 4 5] unsorted slice sorted: false
+}
+
 func ExampleSliceStable() {
 
 	people := []struct {
@@ -102,11 +130,11 @@ func ExampleSliceStable() {
 		{"Elizabeth", 25},
 	}
 
-	// 名前でソートし、元の順序を保持します
+	// Sort by name, preserving original order
 	sort.SliceStable(people, func(i, j int) bool { return people[i].Name < people[j].Name })
 	fmt.Println("By name:", people)
 
-	// 名前の順序を保持しつつ年齢でソートする
+	// Sort by age preserving name order
 	sort.SliceStable(people, func(i, j int) bool { return people[i].Age < people[j].Age })
 	fmt.Println("By age,name:", people)
 

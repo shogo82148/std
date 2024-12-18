@@ -7,13 +7,13 @@
 
 package types
 
-// BasicKindは基本型の種類を表します。
+// BasicKind describes the kind of basic type.
 type BasicKind int
 
 const (
 	Invalid BasicKind = iota
 
-	// 事前に宣言された型
+	// predeclared types
 	Bool
 	Int
 	Int8
@@ -33,7 +33,7 @@ const (
 	String
 	UnsafePointer
 
-	// 型のない値に対する型
+	// types for untyped values
 	UntypedBool
 	UntypedInt
 	UntypedRune
@@ -42,15 +42,15 @@ const (
 	UntypedString
 	UntypedNil
 
-	// エイリアス
+	// aliases
 	Byte = Uint8
 	Rune = Int32
 )
 
-// BasicInfoは基本型のプロパティを記述するフラグの集合です。
+// BasicInfo is a set of flags describing properties of a basic type.
 type BasicInfo int
 
-// 基本型のプロパティ。
+// Properties of basic types.
 const (
 	IsBoolean BasicInfo = 1 << iota
 	IsInteger
@@ -65,20 +65,20 @@ const (
 	IsConstType = IsBoolean | IsNumeric | IsString
 )
 
-// Basicは基本型を表します。
+// A Basic represents a basic type.
 type Basic struct {
 	kind BasicKind
 	info BasicInfo
 	name string
 }
 
-// Kindは基本型bの種類を返します。
+// Kind returns the kind of basic type b.
 func (b *Basic) Kind() BasicKind
 
-// Infoは基本型bのプロパティに関する情報を返します。
+// Info returns information about properties of basic type b.
 func (b *Basic) Info() BasicInfo
 
-// Nameは基本型bの名前を返します。
+// Name returns the name of basic type b.
 func (b *Basic) Name() string
 
 func (b *Basic) Underlying() Type

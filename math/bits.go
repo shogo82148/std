@@ -4,17 +4,17 @@
 
 package math
 
-// signが0以上の場合、正の無限大を返し、signが0より小さい場合は負の無限大を返します。
+// Inf returns positive infinity if sign >= 0, negative infinity if sign < 0.
 func Inf(sign int) float64
 
-// NaNはIEEE 754の「非数値」を返します。
+// NaN returns an IEEE 754 “not-a-number” value.
 func NaN() float64
 
-// IsNaNは、fがIEEE 754の"非数"値であるかどうかを報告します。
+// IsNaN reports whether f is an IEEE 754 “not-a-number” value.
 func IsNaN(f float64) (is bool)
 
-// IsInfは、fが無限大であるかどうかをsignに基づいて報告します。
-// sign > 0の場合、fが正の無限大であるかどうかを報告します。
-// sign < 0の場合、fが負の無限大であるかどうかを報告します。
-// sign == 0の場合、fがどちらかの無限大であるかどうかを報告します。
+// IsInf reports whether f is an infinity, according to sign.
+// If sign > 0, IsInf reports whether f is positive infinity.
+// If sign < 0, IsInf reports whether f is negative infinity.
+// If sign == 0, IsInf reports whether f is either infinity.
 func IsInf(f float64, sign int) bool

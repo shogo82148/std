@@ -7,19 +7,20 @@
 
 package types
 
-// Tupleは変数の順序付きリストを表します。nil *Tupleは有効な（空の）タプルです。
-// Tupleはシグネチャの構成要素や複数の代入の型を表すために使用されますが、Goのファーストクラスの型ではありません。
+// A Tuple represents an ordered list of variables; a nil *Tuple is a valid (empty) tuple.
+// Tuples are used as components of signatures and to represent the type of multiple
+// assignments; they are not first class types of Go.
 type Tuple struct {
 	vars []*Var
 }
 
-// NewTupleは指定された変数に対して新しいタプルを返します。
+// NewTuple returns a new tuple for the given variables.
 func NewTuple(x ...*Var) *Tuple
 
-// Lenはタプルtの変数の数を返します。
+// Len returns the number variables of tuple t.
 func (t *Tuple) Len() int
 
-// Atはタプルtのi番目の変数を返します。
+// At returns the i'th variable of tuple t.
 func (t *Tuple) At(i int) *Var
 
 func (t *Tuple) Underlying() Type

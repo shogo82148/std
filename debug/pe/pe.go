@@ -116,7 +116,7 @@ const (
 	IMAGE_FILE_MACHINE_RISCV128    = 0x5128
 )
 
-// IMAGE_DIRECTORY_ENTRY 定数
+// IMAGE_DIRECTORY_ENTRY constants
 const (
 	IMAGE_DIRECTORY_ENTRY_EXPORT         = 0
 	IMAGE_DIRECTORY_ENTRY_IMPORT         = 1
@@ -135,7 +135,7 @@ const (
 	IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR = 14
 )
 
-// IMAGE_FILE_HEADER.Characteristicsの値。これらは組み合わせることができます。
+// Values of IMAGE_FILE_HEADER.Characteristics. These can be combined together.
 const (
 	IMAGE_FILE_RELOCS_STRIPPED         = 0x0001
 	IMAGE_FILE_EXECUTABLE_IMAGE        = 0x0002
@@ -154,7 +154,7 @@ const (
 	IMAGE_FILE_BYTES_REVERSED_HI       = 0x8000
 )
 
-// OptionalHeader64.SubsystemとOptionalHeader32.Subsystemの値。
+// OptionalHeader64.Subsystem and OptionalHeader32.Subsystem values.
 const (
 	IMAGE_SUBSYSTEM_UNKNOWN                  = 0
 	IMAGE_SUBSYSTEM_NATIVE                   = 1
@@ -172,8 +172,8 @@ const (
 	IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION = 16
 )
 
-// OptionalHeader64.DllCharacteristicsとOptionalHeader32.DllCharacteristicsの値。
-// これらは組み合わせることができます。
+// OptionalHeader64.DllCharacteristics and OptionalHeader32.DllCharacteristics
+// values. These can be combined together.
 const (
 	IMAGE_DLLCHARACTERISTICS_HIGH_ENTROPY_VA       = 0x0020
 	IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE          = 0x0040

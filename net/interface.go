@@ -4,7 +4,9 @@
 
 package net
 
-// インターフェースはネットワークインタフェースの名前とインデックスのマッピングを表します。また、ネットワークインタフェースの機能情報も表します。
+// Interface represents a mapping between network interface name
+// and index. It also represents network interface facility
+// information.
 type Interface struct {
 	Index        int
 	MTU          int
@@ -16,7 +18,7 @@ type Interface struct {
 type Flags uint
 
 const (
-	FlagUp Flags = 1 << iota
+	FlagUp           Flags = 1 << iota
 	FlagBroadcast
 	FlagLoopback
 	FlagPointToPoint
@@ -26,25 +28,30 @@ const (
 
 func (f Flags) String() string
 
-// Addrsは特定のインターフェースのユニキャストインターフェースアドレスのリストを返します。
+// Addrs returns a list of unicast interface addresses for a specific
+// interface.
 func (ifi *Interface) Addrs() ([]Addr, error)
 
-// MulticastAddrsは特定のインターフェースに結合されたマルチキャストグループアドレスのリストを返します。
+// MulticastAddrs returns a list of multicast, joined group addresses
+// for a specific interface.
 func (ifi *Interface) MulticastAddrs() ([]Addr, error)
 
-// インタフェースはシステムのネットワークインタフェースのリストを返します。
+// Interfaces returns a list of the system's network interfaces.
 func Interfaces() ([]Interface, error)
 
-// InterfaceAddrsはシステムのユニキャストインターフェースのアドレスのリストを返します。
+// InterfaceAddrs returns a list of the system's unicast interface
+// addresses.
 //
-// 返されたリストは関連するインターフェースを識別しません。詳細についてはInterfacesと [Interface.Addrs] を使用してください。
+// The returned list does not identify the associated interface; use
+// Interfaces and [Interface.Addrs] for more detail.
 func InterfaceAddrs() ([]Addr, error)
 
-// InterfaceByIndex は、インデックスで指定されたインターフェースを返します。
+// InterfaceByIndex returns the interface specified by index.
 //
-// Solarisでは、論理データリンクを共有する論理ネットワークインターフェースのうちの1つを返しますが、より正確な情報が必要な場合は、
-// [InterfaceByName] を使用してください。
+// On Solaris, it returns one of the logical network interfaces
+// sharing the logical data link; for more precision use
+// [InterfaceByName].
 func InterfaceByIndex(index int) (*Interface, error)
 
-// InterfaceByNameは、指定された名前で指定されたインターフェースを返します。
+// InterfaceByName returns the interface specified by name.
 func InterfaceByName(name string) (*Interface, error)

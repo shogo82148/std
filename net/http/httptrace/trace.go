@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// httptraceパッケージは、HTTPクライアントリクエスト内のイベントをトレースするメカニズムを提供します。
+// Package httptrace provides mechanisms to trace the events within
+// HTTP client requests.
 package httptrace
 
 import (
@@ -13,116 +14,156 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// ContextClientTraceは与えられたコンテキストに関連付けられた [ClientTrace] を返します。関連付けられていない場合はnilを返します。
+// ContextClientTrace returns the [ClientTrace] associated with the
+// provided context. If none, it returns nil.
 func ContextClientTrace(ctx context.Context) *ClientTrace
 
-// WithClientTraceは提供された親コンテキストに基づいた新しいコンテキストを返します。返されたコンテキストを使用して行われるHTTPクライアントリクエストは、以前のフックに加えて、提供されたトレースフックを使用します。提供されたトレースで定義されたフックは最初に呼び出されます。
+// WithClientTrace returns a new context based on the provided parent
+// ctx. HTTP client requests made with the returned context will use
+// the provided trace hooks, in addition to any previous hooks
+// registered with ctx. Any hooks defined in the provided trace will
+// be called first.
 func WithClientTrace(ctx context.Context, trace *ClientTrace) context.Context
 
-// ClientTraceは、送信中のHTTPリクエストのさまざまなステージで実行するためのフックのセットです。特定のフックはnilである場合があります。関数は複数のゴルーチンから同時に呼び出されることがあり、一部の関数はリクエストが完了または失敗した後に呼び出されることがあります。
-// 現在、ClientTraceは単一のHTTPリクエストとレスポンスをトレースし、リダイレクトされたリクエストのシリーズを対象とするフックはありません。
-// 詳細については、https://blog.golang.org/http-tracingを参照してください。
+// ClientTrace is a set of hooks to run at various stages of an outgoing
+// HTTP request. Any particular hook may be nil. Functions may be
+// called concurrently from different goroutines and some may be called
+// after the request has completed or failed.
+//
+// ClientTrace currently traces a single HTTP request & response
+// during a single round trip and has no hooks that span a series
+// of redirected requests.
+//
+// See https://blog.golang.org/http-tracing for more.
 type ClientTrace struct {
-	// GetConnは、接続が作成される前またはアイドルプールから取得される前に呼び出されます。hostPortは、対象またはプロキシの"ホスト:ポート"です。GetConnは、すでにアイドルキャッシュされた接続が利用可能である場合でも呼び出されます。
+	// GetConn is called before a connection is created or
+	// retrieved from an idle pool. The hostPort is the
+	// "host:port" of the target or proxy. GetConn is called even
+	// if there's already an idle cached connection available.
 	GetConn func(hostPort string)
 
-	// GotConnは、成功した接続後に呼び出されます。
-	// 接続の取得に失敗した場合のフックはありません。代わりに、Transport.RoundTripからのエラーを使用してください。
+	// GotConn is called after a successful connection is
+	// obtained. There is no hook for failure to obtain a
+	// connection; instead, use the error from
+	// Transport.RoundTrip.
 	GotConn func(GotConnInfo)
 
-	// PutIdleConnは接続がアイドルプールに返されたときに呼び出されます。
-	// errがnilの場合、接続は正常にアイドルプールに返されました。
-	// errが非nilの場合、なぜ正常に返されなかったかを説明します。
-	// Transport.DisableKeepAlivesによって、接続再利用が無効化されている場合、PutIdleConnは呼び出されません。
-	// PutIdleConnは呼び出し元のResponse.Body.Close呼び出しの前に呼び出されます。
-	// HTTP/2では、このフックは現在使用されていません。
+	// PutIdleConn is called when the connection is returned to
+	// the idle pool. If err is nil, the connection was
+	// successfully returned to the idle pool. If err is non-nil,
+	// it describes why not. PutIdleConn is not called if
+	// connection reuse is disabled via Transport.DisableKeepAlives.
+	// PutIdleConn is called before the caller's Response.Body.Close
+	// call returns.
+	// For HTTP/2, this hook is not currently used.
 	PutIdleConn func(err error)
 
-	// GotFirstResponseByteは、レスポンスヘッダーの最初のバイトが利用可能な場合に呼び出されます。
+	// GotFirstResponseByte is called when the first byte of the response
+	// headers is available.
 	GotFirstResponseByte func()
 
-	// Got100Continue はサーバーが「100 Continue」の応答を返した場合に呼び出されます。
+	// Got100Continue is called if the server replies with a "100
+	// Continue" response.
 	Got100Continue func()
 
-	// Got1xxResponseは、最終的な非1xxレスポンス前に返される1xx情報レスポンスヘッダーごとに呼び出されます。
-	// Got1xxResponseは、「100 Continue」レスポンスに対しても、Got100Continueが定義されている場合でも呼び出されます。
-	// エラーを返すと、そのエラー値でクライアントリクエストが中止されます。
+	// Got1xxResponse is called for each 1xx informational response header
+	// returned before the final non-1xx response. Got1xxResponse is called
+	// for "100 Continue" responses, even if Got100Continue is also defined.
+	// If it returns an error, the client request is aborted with that error value.
 	Got1xxResponse func(code int, header textproto.MIMEHeader) error
 
-	// DNSStart はDNSの検索が始まった時に呼び出されます。
+	// DNSStart is called when a DNS lookup begins.
 	DNSStart func(DNSStartInfo)
 
-	// DNSDoneはDNSの検索が終了した時に呼び出されます。
+	// DNSDone is called when a DNS lookup ends.
 	DNSDone func(DNSDoneInfo)
 
-	// ConnectStart は新しい接続のダイヤルが開始された時に呼び出されます。
-	// net.Dialer.DualStack (IPv6 "Happy Eyeballs") サポートが有効になっている場合、これは複数回呼び出されるかもしれません。
+	// ConnectStart is called when a new connection's Dial begins.
+	// If net.Dialer.DualStack (IPv6 "Happy Eyeballs") support is
+	// enabled, this may be called multiple times.
 	ConnectStart func(network, addr string)
 
-	// ConnectDone は新しい接続の Dial が完了すると呼び出されます。
-	// 提供された err は接続が成功したかどうかを示します。
-	// net.Dialer.DualStack ("Happy Eyeballs") サポートが有効な場合、これは複数回呼び出される可能性があります。
+	// ConnectDone is called when a new connection's Dial
+	// completes. The provided err indicates whether the
+	// connection completed successfully.
+	// If net.Dialer.DualStack ("Happy Eyeballs") support is
+	// enabled, this may be called multiple times.
 	ConnectDone func(network, addr string, err error)
 
-	// TLSHandshakeStartはTLSハンドシェイクが開始されたときに呼び出されます。HTTPプロキシを介してHTTPSサイトに接続する場合、ハンドシェイクはプロキシによってCONNECTリクエストが処理された後に行われます。
+	// TLSHandshakeStart is called when the TLS handshake is started. When
+	// connecting to an HTTPS site via an HTTP proxy, the handshake happens
+	// after the CONNECT request is processed by the proxy.
 	TLSHandshakeStart func()
 
-	// TLSHandshakeDoneは、TLSハンドシェイクが成功した場合、またはハンドシェイクが失敗した場合に、成功したハンドシェイクの接続状態、またはハンドシェイクエラーのいずれかを受け取った後に呼び出される。
+	// TLSHandshakeDone is called after the TLS handshake with either the
+	// successful handshake's connection state, or a non-nil error on handshake
+	// failure.
 	TLSHandshakeDone func(tls.ConnectionState, error)
 
-	// WroteHeaderField は、Transport が各リクエストヘッダーを書き込んだ後に呼び出されます。この呼び出し時点では、値はバッファリングされており、まだネットワークに書き込まれていない可能性があります。
+	// WroteHeaderField is called after the Transport has written
+	// each request header. At the time of this call the values
+	// might be buffered and not yet written to the network.
 	WroteHeaderField func(key string, value []string)
 
-	// WroteHeaders は、Transport がすべてのリクエストヘッダを書き込んだ後に呼び出されます。
+	// WroteHeaders is called after the Transport has written
+	// all request headers.
 	WroteHeaders func()
 
-	// Wait100Continue は、リクエストが "Expect: 100-continue" を指定し、
-	// トランスポートがリクエストヘッダーを書き込みましたが、
-	// リクエストボディを書き込む前にサーバーから "100 Continue" を待っている場合に呼び出されます。
+	// Wait100Continue is called if the Request specified
+	// "Expect: 100-continue" and the Transport has written the
+	// request headers but is waiting for "100 Continue" from the
+	// server before writing the request body.
 	Wait100Continue func()
 
-	// WroteRequestは、リクエストと任意のボディの書き込み結果が渡されたときに呼び出されます。再試行される場合には複数回呼び出されることがあります。
+	// WroteRequest is called with the result of writing the
+	// request and any body. It may be called multiple times
+	// in the case of retried requests.
 	WroteRequest func(WroteRequestInfo)
 }
 
-// WroteRequestInfoはWroteRequestフックに提供される情報を含んでいます。
+// WroteRequestInfo contains information provided to the WroteRequest
+// hook.
 type WroteRequestInfo struct {
-	// Err はリクエストの書き込み中に遭遇したエラーです。
+	// Err is any error encountered while writing the Request.
 	Err error
 }
 
-// DNSStartInfoはDNSリクエストに関する情報を含んでいます。
+// DNSStartInfo contains information about a DNS request.
 type DNSStartInfo struct {
 	Host string
 }
 
-// DNSDoneInfoはDNS検索の結果に関する情報を含んでいます。
+// DNSDoneInfo contains information about the results of a DNS lookup.
 type DNSDoneInfo struct {
-
-	// AddrsにはDNSの検索で見つかったIPv4と/またはIPv6のアドレスが含まれます。
-	// スライスの内容は変更しないでください。
+	// Addrs are the IPv4 and/or IPv6 addresses found in the DNS
+	// lookup. The contents of the slice should not be mutated.
 	Addrs []net.IPAddr
 
-	// ErrはDNSルックアップ中に発生したエラーです。
+	// Err is any error that occurred during the DNS lookup.
 	Err error
 
-	// Coalescedは、同時にDNSルックアップを行っていた別の呼び出し元とAddrsが共有されていたかどうかを示す。
+	// Coalesced is whether the Addrs were shared with another
+	// caller who was doing the same DNS lookup concurrently.
 	Coalesced bool
 }
 
-// GotConnInfoは [ClientTrace.GotConn] 関数の引数であり、
-// 取得した接続に関する情報を含んでいます。
+// GotConnInfo is the argument to the [ClientTrace.GotConn] function and
+// contains information about the obtained connection.
 type GotConnInfo struct {
-
-	// Connは取得された接続です。これはhttp.Transportによって所有されており、ClientTraceのユーザーは読み書きやクローズを行ってはいけません。
+	// Conn is the connection that was obtained. It is owned by
+	// the http.Transport and should not be read, written or
+	// closed by users of ClientTrace.
 	Conn net.Conn
 
-	// Reusedは、この接続が以前に別のHTTPリクエストで使用されたかどうかを示す。
+	// Reused is whether this connection has been previously
+	// used for another HTTP request.
 	Reused bool
 
-	// WasIdleはこのコネクションがアイドルプールから取得されたかどうかを示します。
+	// WasIdle is whether this connection was obtained from an
+	// idle pool.
 	WasIdle bool
 
-	// WasIdleがtrueの場合、IdleTimeは接続が前回アイドル状態だった時間を示します。
+	// IdleTime reports how long the connection was previously
+	// idle, if WasIdle is true.
 	IdleTime time.Duration
 }

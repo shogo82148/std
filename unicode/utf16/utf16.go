@@ -2,34 +2,35 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// utf16パッケージはUTF-16シーケンスのエンコードとデコードを実装します。
+// Package utf16 implements encoding and decoding of UTF-16 sequences.
 package utf16
 
-// IsSurrogateは指定されたUnicodeコードポイントが
-// 代理ペアに現れることができるかどうかを報告します。
+// IsSurrogate reports whether the specified Unicode code point
+// can appear in a surrogate pair.
 func IsSurrogate(r rune) bool
 
-// DecodeRune はサロゲートペアのUTF-16デコードを返します。
-// サロゲートペアが正しいUTF-16のサロゲートペアでない場合、
-// DecodeRune はUnicodeの代替コードポイントU+FFFDを返します。
+// DecodeRune returns the UTF-16 decoding of a surrogate pair.
+// If the pair is not a valid UTF-16 surrogate pair, DecodeRune returns
+// the Unicode replacement code point U+FFFD.
 func DecodeRune(r1, r2 rune) rune
 
-// EncodeRuneは与えられたルーンに対して、UTF-16サロゲートペアのr1、r2を返します。
-// もしルーンが有効なUnicodeコードポイントでない場合やエンコーディングが必要ではない場合、
-// EncodeRuneはU+FFFD、U+FFFDを返します。
+// EncodeRune returns the UTF-16 surrogate pair r1, r2 for the given rune.
+// If the rune is not a valid Unicode code point or does not need encoding,
+// EncodeRune returns U+FFFD, U+FFFD.
 func EncodeRune(r rune) (r1, r2 rune)
 
-// RuneLenは、ルーンのUTF-16エンコーディングに含まれる16ビットワードの数を返します。
-// ルーンがUTF-16でエンコードするための有効な値でない場合、-1を返します。
+// RuneLen returns the number of 16-bit words in the UTF-16 encoding of the rune.
+// It returns -1 if the rune is not a valid value to encode in UTF-16.
 func RuneLen(r rune) int
 
-// EncodeはUnicodeコードポイントの列sのUTF-16エンコーディングを返します。
+// Encode returns the UTF-16 encoding of the Unicode code point sequence s.
 func Encode(s []rune) []uint16
 
-// AppendRuneはUnicodeのコードポイントrのUTF-16エンコーディングを
-// pの末尾に追加し、拡張されたバッファを返します。コードポイントが有効な
-// Unicodeのコードポイントでない場合、U+FFFDのエンコーディングを追加します。
+// AppendRune appends the UTF-16 encoding of the Unicode code point r
+// to the end of p and returns the extended buffer. If the rune is not
+// a valid Unicode code point, it appends the encoding of U+FFFD.
 func AppendRune(a []uint16, r rune) []uint16
 
-// DecodeはUTF-16エンコーディングsで表されるUnicodeのコードポイントのシーケンスを返します。
+// Decode returns the Unicode code point sequence represented
+// by the UTF-16 encoding s.
 func Decode(s []uint16) []rune

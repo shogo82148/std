@@ -4,13 +4,14 @@
 
 package strconv
 
-// ParseBoolは文字列で表されるブール値を返します。
-// 1、t、T、TRUE、true、True、0、f、F、FALSE、false、Falseを受け入れます。
-// その他の値はエラーを返します。
+// ParseBool returns the boolean value represented by the string.
+// It accepts 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False.
+// Any other value returns an error.
 func ParseBool(str string) (bool, error)
 
-// FormatBoolはbの値に応じて"true"または"false"を返します。
+// FormatBool returns "true" or "false" according to the value of b.
 func FormatBool(b bool) string
 
-// AppendBoolはbの値に応じて、"true"または"false"をdstに追加し、拡張されたバッファを返します。
+// AppendBool appends "true" or "false", according to the value of b,
+// to dst and returns the extended buffer.
 func AppendBool(dst []byte, b bool) []byte

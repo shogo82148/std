@@ -25,21 +25,21 @@ func ExampleDB_QueryContext() {
 	for rows.Next() {
 		var name string
 		if err := rows.Scan(&name); err != nil {
-
-			// スキャンエラーをチェックします。
-			// クエリの行はdeferで閉じられます。
+			// Check for a scan error.
+			// Query rows will be closed with defer.
 			log.Fatal(err)
 		}
 		names = append(names, name)
 	}
-
-	// データベースが書き込まれる場合は、ドライバから返されるCloseエラーを確認することを確実に行ってください。クエリは自動コミットエラーに遭遇し、変更をロールバックする必要がある場合があります。
+	// If the database is being written to ensure to check for Close
+	// errors that may be returned from the driver. The query may
+	// encounter an auto-commit error and be forced to rollback changes.
 	rerr := rows.Close()
 	if rerr != nil {
 		log.Fatal(rerr)
 	}
 
-	// Rows.ErrはRows.Scanで遭遇した最後のエラーを報告します。
+	// Rows.Err will report the last error encountered by Rows.Scan.
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}
@@ -139,12 +139,14 @@ from
 }
 
 func ExampleDB_PingContext() {
-
-	// PingとPingContextは、データベースサーバーとの通信がまだ可能かどうかを判定するために使用されます。
+	// Ping and PingContext may be used to determine if communication with
+	// the database server is still possible.
 	//
-	// コマンドラインアプリケーションで使用する場合、Pingは追加クエリが可能であり、提供されたDSNが有効であることを確立するために使用できます。
+	// When used in a command line application Ping may be used to establish
+	// that further queries are possible; that the provided DSN is valid.
 	//
-	// ロングランニングサービスで使用する場合、Pingはヘルスチェックシステムの一部となることがあります。
+	// When used in long running service Ping may be part of the health
+	// checking system.
 
 	ctx, cancel := context.WithTimeout(ctx, 1*time.Second)
 	defer cancel()
@@ -171,7 +173,7 @@ func ExampleDB_Prepare() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer stmt.Close() // 準備されたステートメントはサーバーリソースを消費するため、使用後は必ず閉じる必要があります。
+	defer stmt.Close() // Prepared statements take up server resources and should be closed after use.
 
 	for id, project := range projects {
 		if _, err := stmt.Exec(id+1, project.mascot, project.release, "open source"); err != nil {
@@ -195,13 +197,13 @@ func ExampleTx_Prepare() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer tx.Rollback() // もし関数内で後でトランザクションがコミットされた場合は、ロールバックは無視されます。
+	defer tx.Rollback() // The rollback will be ignored if the tx has been committed later in the function.
 
 	stmt, err := tx.Prepare("INSERT INTO projects(id, mascot, release, category) VALUES( ?, ?, ?, ? )")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer stmt.Close() // プリペアドステートメントはサーバーのリソースを使用するため、使用後は閉じるべきです。
+	defer stmt.Close() // Prepared statements take up server resources and should be closed after use.
 
 	for id, project := range projects {
 		if _, err := stmt.Exec(id+1, project.mascot, project.release, "open source"); err != nil {
@@ -230,13 +232,13 @@ func ExampleDB_BeginTx() {
 }
 
 func ExampleConn_ExecContext() {
-
-	// *DBは接続のプールです。Connを呼び出して接続を予約し、専用で使用します。
+	// A *DB is a pool of connections. Call Conn to reserve a connection for
+	// exclusive use.
 	conn, err := db.Conn(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer conn.Close() // プールに接続を返す。
+	defer conn.Close() // Return the connection to the pool.
 	id := 41
 	result, err := conn.ExecContext(ctx, `UPDATE balances SET balance = balance + 10 WHERE user_id = ?;`, id)
 	if err != nil {
@@ -295,14 +297,14 @@ func ExampleTx_Rollback() {
 }
 
 func ExampleStmt() {
-	// 通常使用時には、プロセスの開始時に1つのStmtを作成します。
+	// In normal use, create one Stmt when your process starts.
 	stmt, err := db.PrepareContext(ctx, "SELECT username FROM users WHERE id = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer stmt.Close()
 
-	// クエリを発行する必要があるたびに再利用してください。
+	// Then reuse it each time you need to issue the query.
 	id := 43
 	var username string
 	err = stmt.QueryRowContext(ctx, id).Scan(&username)
@@ -317,14 +319,14 @@ func ExampleStmt() {
 }
 
 func ExampleStmt_QueryRowContext() {
-	// 通常の使用では、プロセス開始時に1つのStmtを作成します。
+	// In normal use, create one Stmt when your process starts.
 	stmt, err := db.PrepareContext(ctx, "SELECT username FROM users WHERE id = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer stmt.Close()
 
-	// クエリを発行するたびに再利用してください。
+	// Then reuse it each time you need to issue the query.
 	id := 43
 	var username string
 	err = stmt.QueryRowContext(ctx, id).Scan(&username)
@@ -354,7 +356,7 @@ func ExampleRows() {
 		}
 		names = append(names, name)
 	}
-	// 行を反復してエラーをチェックします。
+	// Check for errors from iterating over rows.
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}

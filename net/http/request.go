@@ -16,82 +16,99 @@ import (
 	"github.com/shogo82148/std/net/url"
 )
 
-// ErrMissingFileは、FormFileが提供されたファイルフィールド名がリクエストに存在しないか、ファイルフィールドではない場合に返されます。
+// ErrMissingFile is returned by FormFile when the provided file field name
+// is either not present in the request or not a file field.
 var ErrMissingFile = errors.New("http: no such file")
 
-// ProtocolErrorは、HTTPプロトコルエラーを表します。
+// ProtocolError represents an HTTP protocol error.
 //
-// Deprecated: httpパッケージのすべてのプロトコルエラーに関連するエラーがProtocolError型ではありません。
+// Deprecated: Not all errors in the http package related to protocol errors
+// are of type ProtocolError.
 type ProtocolError struct {
 	ErrorString string
 }
 
 func (pe *ProtocolError) Error() string
 
-// Isは、http.ErrNotSupportedがerrors.ErrUnsupportedに一致するようにします。
+// Is lets http.ErrNotSupported match errors.ErrUnsupported.
 func (pe *ProtocolError) Is(err error) bool
 
 var (
-	// ErrNotSupportedは、機能がサポートされていないことを示します。
+	// ErrNotSupported indicates that a feature is not supported.
 	//
-	// ResponseControllerメソッドによって、ハンドラがメソッドをサポートしていないことを示すために返され、
-	// Pusher実装のPushメソッドによって、HTTP/2 Pushサポートが利用できないことを示すために返されます。
+	// It is returned by ResponseController methods to indicate that
+	// the handler does not support the method, and by the Push method
+	// of Pusher implementations to indicate that HTTP/2 Push support
+	// is not available.
 	ErrNotSupported = &ProtocolError{"feature not supported"}
 
-	// Deprecated: ErrUnexpectedTrailerは、net/httpパッケージの何も返さなくなりました。
-	// 呼び出し元は、この変数とエラーを比較すべきではありません。
+	// Deprecated: ErrUnexpectedTrailer is no longer returned by
+	// anything in the net/http package. Callers should not
+	// compare errors against this variable.
 	ErrUnexpectedTrailer = &ProtocolError{"trailer header without chunked transfer encoding"}
 
-	// ErrMissingBoundaryは、リクエストのContent-Typeに「boundary」パラメータが含まれていない場合に、Request.MultipartReaderによって返されます。
+	// ErrMissingBoundary is returned by Request.MultipartReader when the
+	// request's Content-Type does not include a "boundary" parameter.
 	ErrMissingBoundary = &ProtocolError{"no multipart boundary param in Content-Type"}
 
-	/// ErrNotMultipartは、リクエストのContent-Typeがmultipart/form-dataでない場合、Request.MultipartReaderによって返されます。
+	// ErrNotMultipart is returned by Request.MultipartReader when the
+	// request's Content-Type is not multipart/form-data.
 	ErrNotMultipart = &ProtocolError{"request Content-Type isn't multipart/form-data"}
 
-	// Deprecated: ErrHeaderTooLongは、net/httpパッケージの何も返さなくなりました。
-	// 呼び出し元は、この変数とエラーを比較すべきではありません。
+	// Deprecated: ErrHeaderTooLong is no longer returned by
+	// anything in the net/http package. Callers should not
+	// compare errors against this variable.
 	ErrHeaderTooLong = &ProtocolError{"header too long"}
 
-	// Deprecated: ErrShortBodyは、net/httpパッケージの何も返さなくなりました。
-	// 呼び出し元は、この変数とエラーを比較すべきではありません。
+	// Deprecated: ErrShortBody is no longer returned by
+	// anything in the net/http package. Callers should not
+	// compare errors against this variable.
 	ErrShortBody = &ProtocolError{"entity body too short"}
 
-	// Deprecated: ErrMissingContentLengthは、net/httpパッケージの何も返さなくなりました。
-	// 呼び出し元は、この変数とエラーを比較すべきではありません。
+	// Deprecated: ErrMissingContentLength is no longer returned by
+	// anything in the net/http package. Callers should not
+	// compare errors against this variable.
 	ErrMissingContentLength = &ProtocolError{"missing ContentLength in HEAD response"}
 )
 
-// Requestは、サーバーによって受信されたHTTPリクエストまたはクライアントによって送信されるHTTPリクエストを表します。
+// A Request represents an HTTP request received by a server
+// or to be sent by a client.
 //
-// フィールドの意味は、クライアントとサーバーの使用方法でわずかに異なります。
-// 以下のフィールドに関する注意事項に加えて、[Request.Write] および [RoundTripper] のドキュメントを参照してください。
+// The field semantics differ slightly between client and server
+// usage. In addition to the notes on the fields below, see the
+// documentation for [Request.Write] and [RoundTripper].
 type Request struct {
-	// Methodは、HTTPメソッド（GET、POST、PUTなど）を指定します。
-	// クライアントリクエストの場合、空の文字列はGETを意味します。
+	// Method specifies the HTTP method (GET, POST, PUT, etc.).
+	// For client requests, an empty string means GET.
 	Method string
 
-	// URLは、サーバーリクエストの場合に要求されるURI（URI）を指定するか、
-	// クライアントリクエストの場合にアクセスするURLを指定します。
+	// URL specifies either the URI being requested (for server
+	// requests) or the URL to access (for client requests).
 	//
-	// サーバーリクエストの場合、URLはRequestURIに格納されたRequest-Lineで指定されたURIから解析されます。
-	// ほとんどのリクエストでは、PathとRawQuery以外のフィールドは空になります。 （RFC 7230、セクション5.3を参照）
+	// For server requests, the URL is parsed from the URI
+	// supplied on the Request-Line as stored in RequestURI.  For
+	// most requests, fields other than Path and RawQuery will be
+	// empty. (See RFC 7230, Section 5.3)
 	//
-	// クライアントリクエストの場合、URLのHostは接続するサーバーを指定し、
-	// RequestのHostフィールドはHTTPリクエストで送信するHostヘッダー値をオプションで指定します。
+	// For client requests, the URL's Host specifies the server to
+	// connect to, while the Request's Host field optionally
+	// specifies the Host header value to send in the HTTP
+	// request.
 	URL *url.URL
 
-	// サーバーリクエストのプロトコルバージョン。
+	// The protocol version for incoming server requests.
 	//
-	// クライアントリクエストの場合、これらのフィールドは無視されます。
-	// HTTPクライアントコードは常にHTTP/1.1またはHTTP/2を使用します。
-	// 詳細については、Transportのドキュメントを参照してください。
+	// For client requests, these fields are ignored. The HTTP
+	// client code always uses either HTTP/1.1 or HTTP/2.
+	// See the docs on Transport for details.
 	Proto      string
 	ProtoMajor int
 	ProtoMinor int
 
-	// Headerは、サーバーによって受信されたリクエストヘッダーフィールドまたはクライアントによって送信されるリクエストヘッダーフィールドを含みます。
+	// Header contains the request header fields either received
+	// by the server or to be sent by the client.
 	//
-	// サーバーがヘッダーラインを含むリクエストを受信した場合、
+	// If a server received a request with header lines,
 	//
 	//	Host: example.com
 	//	accept-encoding: gzip, deflate
@@ -99,7 +116,7 @@ type Request struct {
 	//	fOO: Bar
 	//	foo: two
 	//
-	// その場合、
+	// then
 	//
 	//	Header = map[string][]string{
 	//		"Accept-Encoding": {"gzip, deflate"},
@@ -107,125 +124,169 @@ type Request struct {
 	//		"Foo": {"Bar", "two"},
 	//	}
 	//
-	// 入力リクエストの場合、HostヘッダーはRequest.Hostフィールドに昇格し、Headerマップから削除されます。
+	// For incoming requests, the Host header is promoted to the
+	// Request.Host field and removed from the Header map.
 	//
-	// HTTPは、ヘッダー名が大文字小文字を区別しないことを定義しています。リクエストパーサーは、CanonicalHeaderKeyを使用してこれを実装し、ハイフンの後に続く最初の文字と任意の文字を大文字にし、残りを小文字にします。
+	// HTTP defines that header names are case-insensitive. The
+	// request parser implements this by using CanonicalHeaderKey,
+	// making the first character and any characters following a
+	// hyphen uppercase and the rest lowercase.
 	//
-	// クライアントリクエストの場合、Content-LengthやConnectionなどの特定のヘッダーは必要に応じて自動的に書き込まれ、Headerの値は無視される場合があります。Request.Writeメソッドのドキュメントを参照してください。
+	// For client requests, certain headers such as Content-Length
+	// and Connection are automatically written when needed and
+	// values in Header may be ignored. See the documentation
+	// for the Request.Write method.
 	Header Header
 
-	// Bodyは、リクエストの本文です。
+	// Body is the request's body.
 	//
-	// クライアントリクエストの場合、nilのBodyは、GETリクエストなど、リクエストに本文がないことを意味します。
-	// HTTPクライアントのTransportは、Closeメソッドを呼び出す責任があります。
+	// For client requests, a nil body means the request has no
+	// body, such as a GET request. The HTTP Client's Transport
+	// is responsible for calling the Close method.
 	//
-	// サーバーリクエストの場合、Request Bodyは常にnilではありませんが、本文が存在しない場合はすぐにEOFが返されます。
-	// サーバーはリクエストボディを閉じます。ServeHTTPハンドラーは閉じる必要はありません。
+	// For server requests, the Request Body is always non-nil
+	// but will return EOF immediately when no body is present.
+	// The Server will close the request body. The ServeHTTP
+	// Handler does not need to.
 	//
-	// Bodyは、ReadがCloseと同時に呼び出されることを許可する必要があります。
-	// 特に、Closeを呼び出すと、入力を待機しているReadがブロックされている場合は、それを解除する必要があります。
+	// Body must allow Read to be called concurrently with Close.
+	// In particular, calling Close should unblock a Read waiting
+	// for input.
 	Body io.ReadCloser
 
-	// GetBodyは、Bodyの新しいコピーを返すオプションの関数を定義します。
-	// リダイレクトにより、Bodyを複数回読み取る必要がある場合にクライアントリクエストで使用されます。
-	// GetBodyの使用には、Bodyを設定する必要があります。
+	// GetBody defines an optional func to return a new copy of
+	// Body. It is used for client requests when a redirect requires
+	// reading the body more than once. Use of GetBody still
+	// requires setting Body.
 	//
-	// サーバーリクエストの場合、使用されません。
+	// For server requests, it is unused.
 	GetBody func() (io.ReadCloser, error)
 
-	// ContentLengthは、関連するコンテンツの長さを記録します。
-	// 値-1は、長さが不明であることを示します。
-	// 値が0以上の場合、Bodyから指定されたバイト数を読み取ることができます。
+	// ContentLength records the length of the associated content.
+	// The value -1 indicates that the length is unknown.
+	// Values >= 0 indicate that the given number of bytes may
+	// be read from Body.
 	//
-	// クライアントリクエストの場合、Bodyがnilでない場合、値0は不明として扱われます。
+	// For client requests, a value of 0 with a non-nil Body is
+	// also treated as unknown.
 	ContentLength int64
 
-	// TransferEncodingは、最も外側から最も内側までの転送エンコーディングをリストします。
-	// 空のリストは「identity」エンコーディングを示します。
-	// TransferEncodingは通常無視できます。チャンクエンコーディングは、
-	// リクエストの送信と受信時に必要に応じて自動的に追加および削除されます。
+	// TransferEncoding lists the transfer encodings from outermost to
+	// innermost. An empty list denotes the "identity" encoding.
+	// TransferEncoding can usually be ignored; chunked encoding is
+	// automatically added and removed as necessary when sending and
+	// receiving requests.
 	TransferEncoding []string
 
-	// Closeは、このリクエストに応答した後（サーバーの場合）またはこのリクエストを送信してその応答を読み取った後（クライアントの場合）に接続を閉じるかどうかを示します。
+	// Close indicates whether to close the connection after
+	// replying to this request (for servers) or after sending this
+	// request and reading its response (for clients).
 	//
-	// サーバーリクエストの場合、HTTPサーバーがこれを自動的に処理し、このフィールドはHandlersによって必要ではありません。
+	// For server requests, the HTTP server handles this automatically
+	// and this field is not needed by Handlers.
 	//
-	// クライアントリクエストの場合、このフィールドを設定すると、 Transport.DisableKeepAlives が設定された場合と同様に、同じホストへのリクエスト間でTCP接続の再利用が防止されます。
+	// For client requests, setting this field prevents re-use of
+	// TCP connections between requests to the same hosts, as if
+	// Transport.DisableKeepAlives were set.
 	Close bool
 
-	// サーバーリクエストの場合、HostはURLが要求されるホストを指定します。
-	// HTTP/1（RFC 7230 Section 5.4 による）の場合、これは「Host」ヘッダーの値またはURL自体で指定されたホスト名のいずれかです。
-	// HTTP/2の場合、これは「:authority」疑似ヘッダーフィールドの値です。
-	// 形式は「host:port」にすることができます。
-	// 国際ドメイン名の場合、HostはPunycodeまたはUnicode形式である場合があります。
-	// 必要に応じて、golang.org/x/net/idna を使用してどちらの形式にも変換できます。
-	// DNSリバインディング攻撃を防ぐために、サーバーハンドラーは、Hostヘッダーがハンドラー自身が権限を持つ値であることを検証する必要があります。
-	// 含まれるServeMuxは、特定のホスト名に登録されたパターンをサポートし、その登録されたハンドラーを保護します。
+	// For server requests, Host specifies the host on which the
+	// URL is sought. For HTTP/1 (per RFC 7230, section 5.4), this
+	// is either the value of the "Host" header or the host name
+	// given in the URL itself. For HTTP/2, it is the value of the
+	// ":authority" pseudo-header field.
+	// It may be of the form "host:port". For international domain
+	// names, Host may be in Punycode or Unicode form. Use
+	// golang.org/x/net/idna to convert it to either format if
+	// needed.
+	// To prevent DNS rebinding attacks, server Handlers should
+	// validate that the Host header has a value for which the
+	// Handler considers itself authoritative. The included
+	// ServeMux supports patterns registered to particular host
+	// names and thus protects its registered Handlers.
 	//
-	// クライアントリクエストの場合、HostはオプションでHostヘッダーを上書きして送信します。
-	// 空の場合、Request.Write メソッドは URL.Host の値を使用します。
-	// Hostには国際ドメイン名が含まれる場合があります。
+	// For client requests, Host optionally overrides the Host
+	// header to send. If empty, the Request.Write method uses
+	// the value of URL.Host. Host may contain an international
+	// domain name.
 	Host string
 
-	// Formには、URLフィールドのクエリパラメータとPATCH、POST、またはPUTフォームデータを含む解析されたフォームデータが含まれます。
-	// ParseFormが呼び出された後にのみこのフィールドが使用可能です。
-	// HTTPクライアントはFormを無視し、代わりにBodyを使用します。
+	// Form contains the parsed form data, including both the URL
+	// field's query parameters and the PATCH, POST, or PUT form data.
+	// This field is only available after ParseForm is called.
+	// The HTTP client ignores Form and uses Body instead.
 	Form url.Values
 
-	// PostFormには、PATCH、POST、またはPUTボディパラメータから解析されたフォームデータが含まれます。
+	// PostForm contains the parsed form data from PATCH, POST
+	// or PUT body parameters.
 	//
-	// ParseFormが呼び出された後にのみこのフィールドが使用可能です。
-	// HTTPクライアントはPostFormを無視し、代わりにBodyを使用します。
+	// This field is only available after ParseForm is called.
+	// The HTTP client ignores PostForm and uses Body instead.
 	PostForm url.Values
 
-	// MultipartFormは、ファイルのアップロードを含む解析されたマルチパートフォームです。
-	// ParseMultipartFormが呼び出された後にのみこのフィールドが使用可能です。
-	// HTTPクライアントはMultipartFormを無視し、代わりにBodyを使用します。
+	// MultipartForm is the parsed multipart form, including file uploads.
+	// This field is only available after ParseMultipartForm is called.
+	// The HTTP client ignores MultipartForm and uses Body instead.
 	MultipartForm *multipart.Form
 
-	// Trailerは、リクエスト本文の後に送信される追加のヘッダーを指定します。
+	// Trailer specifies additional headers that are sent after the request
+	// body.
 	//
-	// サーバーリクエストの場合、Trailerマップには最初にトレーラーキーのみが含まれ、nil値が含まれます。
-	// （クライアントは、後で送信するトレーラーを宣言します。）
-	// ハンドラーがBodyから読み取っている間、Trailerに参照しないでください。
-	// Bodyからの読み取りがEOFを返した後、Trailerを再度読み取ると、クライアントが送信した場合は非nil値が含まれます。
+	// For server requests, the Trailer map initially contains only the
+	// trailer keys, with nil values. (The client declares which trailers it
+	// will later send.)  While the handler is reading from Body, it must
+	// not reference Trailer. After reading from Body returns EOF, Trailer
+	// can be read again and will contain non-nil values, if they were sent
+	// by the client.
 	//
-	// クライアントリクエストの場合、Trailerは、後で送信するトレーラーキーを含むマップで初期化する必要があります。
-	// 値はnilまたは最終値である場合があります。ContentLengthは0または-1である必要があります。
-	// HTTPリクエストが送信された後、マップの値は、リクエストボディが読み取られている間に更新できます。
-	// ボディがEOFを返した後、呼び出し元はTrailerを変更してはいけません。
+	// For client requests, Trailer must be initialized to a map containing
+	// the trailer keys to later send. The values may be nil or their final
+	// values. The ContentLength must be 0 or -1, to send a chunked request.
+	// After the HTTP request is sent the map values can be updated while
+	// the request body is read. Once the body returns EOF, the caller must
+	// not mutate Trailer.
 	//
-	// 少数のHTTPクライアント、サーバー、またはプロキシがHTTPトレーラーをサポートしています。
+	// Few HTTP clients, servers, or proxies support HTTP trailers.
 	Trailer Header
 
-	// RemoteAddrは、HTTPサーバーやその他のソフトウェアが、通常はログ記録のためにリクエストを送信したネットワークアドレスを記録できるようにします。
-	// このフィールドはReadRequestによって入力されず、定義された形式はありません。
-	// このパッケージのHTTPサーバーは、ハンドラーを呼び出す前にRemoteAddrを「IP:port」アドレスに設定します。
-	// このフィールドはHTTPクライアントによって無視されます。
+	// RemoteAddr allows HTTP servers and other software to record
+	// the network address that sent the request, usually for
+	// logging. This field is not filled in by ReadRequest and
+	// has no defined format. The HTTP server in this package
+	// sets RemoteAddr to an "IP:port" address before invoking a
+	// handler.
+	// This field is ignored by the HTTP client.
 	RemoteAddr string
 
-	// RequestURIは、クライアントがサーバーに送信したRequest-Line（RFC 7230 Section 3.1.1）の変更されていないリクエストターゲットです。
-	// 通常、URLフィールドを代わりに使用する必要があります。
-	// HTTPクライアントリクエストでこのフィールドを設定することはエラーです。
+	// RequestURI is the unmodified request-target of the
+	// Request-Line (RFC 7230, Section 3.1.1) as sent by the client
+	// to a server. Usually the URL field should be used instead.
+	// It is an error to set this field in an HTTP client request.
 	RequestURI string
 
-	// TLSは、HTTPサーバーやその他のソフトウェアが、リクエストを受信したTLS接続に関する情報を記録できるようにします。
-	// このフィールドはReadRequestによって入力されず、定義された形式はありません。
-	// このパッケージのHTTPサーバーは、ハンドラーを呼び出す前にTLS有効な接続のためにこのフィールドを設定します。
-	// それ以外の場合は、このフィールドをnilのままにします。
-	// このフィールドはHTTPクライアントによって無視されます。
+	// TLS allows HTTP servers and other software to record
+	// information about the TLS connection on which the request
+	// was received. This field is not filled in by ReadRequest.
+	// The HTTP server in this package sets the field for
+	// TLS-enabled connections before invoking a handler;
+	// otherwise it leaves the field nil.
+	// This field is ignored by the HTTP client.
 	TLS *tls.ConnectionState
 
-	// Cancelは、クライアントリクエストがキャンセルされたと見なす必要があることを示すチャネルのオプションです。
-	// RoundTripperのすべての実装がCancelをサポートしているわけではありません。
+	// Cancel is an optional channel whose closure indicates that the client
+	// request should be regarded as canceled. Not all implementations of
+	// RoundTripper may support Cancel.
 	//
-	// サーバーリクエストの場合、このフィールドは適用されません。
+	// For server requests, this field is not applicable.
 	//
-	// Deprecated: NewRequestWithContextでRequestのコンテキストを設定してください。
-	// RequestのCancelフィールドとコンテキストの両方が設定されている場合、Cancelが尊重されるかどうかは未定義です。
+	// Deprecated: Set the Request's context with NewRequestWithContext
+	// instead. If a Request's Cancel field and context are both
+	// set, it is undefined whether Cancel is respected.
 	Cancel <-chan struct{}
 
-	// Responseは、このリクエストが作成されたクライアントリダイレクト中にのみ設定されるリダイレクトレスポンスです。
+	// Response is the redirect response which caused this request
+	// to be created. This field is only populated during client
+	// redirects.
 	Response *Response
 
 	// Pattern is the [ServeMux] pattern that matched the request.
@@ -244,191 +305,247 @@ type Request struct {
 	otherValues map[string]string
 }
 
-// Contextは、リクエストのコンテキストを返します。コンテキストを変更するには、[Request.Clone] または [Request.WithContext] を使用してください。
+// Context returns the request's context. To change the context, use
+// [Request.Clone] or [Request.WithContext].
 //
-// 返されるコンテキストは常にnilではありません。デフォルトでは、バックグラウンドコンテキストになります。
+// The returned context is always non-nil; it defaults to the
+// background context.
 //
-// 出力クライアントリクエストの場合、コンテキストはキャンセルを制御します。
+// For outgoing client requests, the context controls cancellation.
 //
-// 入力サーバーリクエストの場合、クライアントの接続が閉じられたとき、リクエストがキャンセルされたとき（HTTP/2で）、またはServeHTTPメソッドが返されたときに、コンテキストがキャンセルされます。
+// For incoming server requests, the context is canceled when the
+// client's connection closes, the request is canceled (with HTTP/2),
+// or when the ServeHTTP method returns.
 func (r *Request) Context() context.Context
 
-// WithContextは、そのコンテキストをctxに変更したrの浅いコピーを返します。提供されたctxはnilであってはなりません。
+// WithContext returns a shallow copy of r with its context changed
+// to ctx. The provided ctx must be non-nil.
 //
-// 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
+// For outgoing client request, the context controls the entire
+// lifetime of a request and its response: obtaining a connection,
+// sending the request, and reading the response headers and body.
 //
-// コンテキストを持つ新しいリクエストを作成するには、[NewRequestWithContext] を使用します。
-// 新しいコンテキストを持つリクエストのディープコピーを作成するには、[Request.Clone] を使用します。
+// To create a new request with a context, use [NewRequestWithContext].
+// To make a deep copy of a request with a new context, use [Request.Clone].
 func (r *Request) WithContext(ctx context.Context) *Request
 
-// Cloneは、そのコンテキストをctxに変更したrのディープコピーを返します。提供されたctxはnilであってはなりません。
+// Clone returns a deep copy of r with its context changed to ctx.
+// The provided ctx must be non-nil.
 //
-// 出力クライアントリクエストの場合、コンテキストはリクエストとそのレスポンスのライフタイム全体を制御します：接続の取得、リクエストの送信、レスポンスヘッダーとボディの読み取り。
+// Clone only makes a shallow copy of the Body field.
 //
-// CloneはBodyフィールドの浅いコピーのみを作成します。
-//
-// 新しいコンテキストを持つリクエストを作成するには、NewRequestWithContextを使用します。
-// コンテキストを変更せずに新しいリクエストを作成するには、Request.WithContextを使用します。
+// For an outgoing client request, the context controls the entire
+// lifetime of a request and its response: obtaining a connection,
+// sending the request, and reading the response headers and body.
 func (r *Request) Clone(ctx context.Context) *Request
 
-// ProtoAtLeastは、リクエストで使用されるHTTPプロトコルがmajor.minor以上であるかどうかを報告します。
+// ProtoAtLeast reports whether the HTTP protocol used
+// in the request is at least major.minor.
 func (r *Request) ProtoAtLeast(major, minor int) bool
 
-// UserAgentは、リクエストで送信された場合にクライアントのUser-Agentを返します。
+// UserAgent returns the client's User-Agent, if sent in the request.
 func (r *Request) UserAgent() string
 
-// Cookiesは、リクエストで送信されたHTTPクッキーを解析して返します。
+// Cookies parses and returns the HTTP cookies sent with the request.
 func (r *Request) Cookies() []*Cookie
 
-// CookiesNamedは、リクエストとともに送信された名前付きHTTPクッキーを解析し、
-// マッチするものがなければ空のスライスを返します。
+// CookiesNamed parses and returns the named HTTP cookies sent with the request
+// or an empty slice if none matched.
 func (r *Request) CookiesNamed(name string) []*Cookie
 
-// ErrNoCookieは、Cookieメソッドがクッキーを見つけられなかった場合にRequestによって返されます。
+// ErrNoCookie is returned by Request's Cookie method when a cookie is not found.
 var ErrNoCookie = errors.New("http: named cookie not present")
 
-// Cookieは、リクエストで提供された名前付きクッキーを返します。クッキーが見つからない場合は [ErrNoCookie] を返します。
-// 複数のクッキーが指定された名前に一致する場合、1つのクッキーのみが返されます。
+// Cookie returns the named cookie provided in the request or
+// [ErrNoCookie] if not found.
+// If multiple cookies match the given name, only one cookie will
+// be returned.
 func (r *Request) Cookie(name string) (*Cookie, error)
 
-// AddCookieは、リクエストにクッキーを追加します。RFC 6265 Section 5.4 に従い、
-// AddCookieは1つ以上の [Cookie] ヘッダーフィールドを添付しません。つまり、すべてのクッキーが、
-// セミコロンで区切られた同じ行に書き込まれます。
-// AddCookieは、cの名前と値をサニタイズするだけで、すでにリクエストに存在するCookieヘッダーをサニタイズしません。
+// AddCookie adds a cookie to the request. Per RFC 6265 section 5.4,
+// AddCookie does not attach more than one [Cookie] header field. That
+// means all cookies, if any, are written into the same line,
+// separated by semicolon.
+// AddCookie only sanitizes c's name and value, and does not sanitize
+// a Cookie header already present in the request.
 func (r *Request) AddCookie(c *Cookie)
 
-// Refererは、リクエストで送信された場合に参照元のURLを返します。
+// Referer returns the referring URL, if sent in the request.
 //
-// Refererは、HTTPの初期の日々からの誤りで、リクエスト自体で誤ってスペルがされています。
-// この値はHeader["Referer"]として [Header] マップから取得することもできますが、
-// メソッドとして利用可能にすることの利点は、代替の（正しい英語の）スペルreq.Referrer()を使用するプログラムをコンパイラが診断できるが、
-// Header["Referrer"]を使用するプログラムを診断できないことです。
+// Referer is misspelled as in the request itself, a mistake from the
+// earliest days of HTTP.  This value can also be fetched from the
+// [Header] map as Header["Referer"]; the benefit of making it available
+// as a method is that the compiler can diagnose programs that use the
+// alternate (correct English) spelling req.Referrer() but cannot
+// diagnose programs that use Header["Referrer"].
 func (r *Request) Referer() string
 
-// MultipartReaderは、これがmultipart/form-dataまたはmultipart/mixed POSTリクエストである場合、MIMEマルチパートリーダーを返します。
-// それ以外の場合はnilとエラーを返します。
-// リクエストボディをストリームとして処理するために、[Request.ParseMultipartForm] の代わりにこの関数を使用してください。
+// MultipartReader returns a MIME multipart reader if this is a
+// multipart/form-data or a multipart/mixed POST request, else returns nil and an error.
+// Use this function instead of [Request.ParseMultipartForm] to
+// process the request body as a stream.
 func (r *Request) MultipartReader() (*multipart.Reader, error)
 
-// Writeは、ワイヤフォーマットでHTTP/1.1リクエスト（ヘッダーとボディ）を書き込みます。
-// このメソッドは、リクエストの以下のフィールドを参照します。
+// Write writes an HTTP/1.1 request, which is the header and body, in wire format.
+// This method consults the following fields of the request:
 //
 //	Host
 //	URL
-//	Method（デフォルトは "GET"）
+//	Method (defaults to "GET")
 //	Header
 //	ContentLength
 //	TransferEncoding
 //	Body
 //
-// Bodyが存在し、Content-Lengthが0以下であり、[Request.TransferEncoding] が "identity"に設定されていない場合、
-// Writeはヘッダーに "Transfer-Encoding: chunked"を追加します。Bodyは送信後に閉じられます。
+// If Body is present, Content-Length is <= 0 and [Request.TransferEncoding]
+// hasn't been set to "identity", Write adds "Transfer-Encoding:
+// chunked" to the header. Body is closed after it is sent.
 func (r *Request) Write(w io.Writer) error
 
-// WriteProxyは、[Request.Write] と似ていますが、HTTPプロキシが期待する形式でリクエストを書き込みます。
-// 特に、[Request.WriteProxy] は、RFC 7230のセクション5.3に従って、スキームとホストを含む絶対URIでリクエストの最初のRequest-URI行を書き込みます。
-// WriteProxyは、r.Host または r.URL.Host を使用して、Hostヘッダーも書き込みます。
+// WriteProxy is like [Request.Write] but writes the request in the form
+// expected by an HTTP proxy. In particular, [Request.WriteProxy] writes the
+// initial Request-URI line of the request with an absolute URI, per
+// section 5.3 of RFC 7230, including the scheme and host.
+// In either case, WriteProxy also writes a Host header, using
+// either r.Host or r.URL.Host.
 func (r *Request) WriteProxy(w io.Writer) error
 
-// ParseHTTPVersionは、RFC 7230 Section 2.6 に従ってHTTPバージョン文字列を解析します。
-// "HTTP/1.0"は(1, 0, true)を返します。注意："HTTP/2"のようにマイナーバージョンがない文字列は無効です。
+// ParseHTTPVersion parses an HTTP version string according to RFC 7230, section 2.6.
+// "HTTP/1.0" returns (1, 0, true). Note that strings without
+// a minor version, such as "HTTP/2", are not valid.
 func ParseHTTPVersion(vers string) (major, minor int, ok bool)
 
-// NewRequestは、[context.Background] を使用して [NewRequestWithContext] をラップします。
+// NewRequest wraps [NewRequestWithContext] using [context.Background].
 func NewRequest(method, url string, body io.Reader) (*Request, error)
 
-// NewRequestWithContextは、メソッド、URL、およびオプションのボディが与えられた場合に新しい [Request] を返します。
+// NewRequestWithContext returns a new [Request] given a method, URL, and
+// optional body.
 //
-// 提供されたbodyが [io.Closer] でも、返された [Request.Body] はbodyに設定され、ClientのDo、Post、PostForm、および [Transport.RoundTrip] によって（非同期に）閉じられます。
+// If the provided body is also an [io.Closer], the returned
+// [Request.Body] is set to body and will be closed (possibly
+// asynchronously) by the Client methods Do, Post, and PostForm,
+// and [Transport.RoundTrip].
 //
-// NewRequestWithContextは、[Client.Do] または [Transport.RoundTrip] で使用するためのRequestを返します。
-// Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージの [NewRequest] 関数を使用するか、
-// [ReadRequest] を使用するか、またはRequestフィールドを手動で更新します。送信元のクライアントリクエストの場合、
-// コンテキストはリクエストとその応答の全寿命を制御します：接続の取得、リクエストの送信、および応答ヘッダーとボディの読み取り。
-// 入力リクエストフィールドと出力リクエストフィールドの違いについては、Requestタイプのドキュメントを参照してください。
+// NewRequestWithContext returns a Request suitable for use with
+// [Client.Do] or [Transport.RoundTrip]. To create a request for use with
+// testing a Server Handler, either use the [NewRequest] function in the
+// net/http/httptest package, use [ReadRequest], or manually update the
+// Request fields. For an outgoing client request, the context
+// controls the entire lifetime of a request and its response:
+// obtaining a connection, sending the request, and reading the
+// response headers and body. See the Request type's documentation for
+// the difference between inbound and outbound request fields.
 //
-// bodyが [*bytes.Buffer]、 [*bytes.Reader]、または [*strings.Reader] の場合、返されたリクエストのContentLengthはその正確な値に設定されます（-1の代わりに）、
-// GetBodyが作成されます（307および308のリダイレクトがボディを再生できるように）、およびContentLengthが0の場合はBodyが [NoBody] に設定されます。
+// If body is of type [*bytes.Buffer], [*bytes.Reader], or
+// [*strings.Reader], the returned request's ContentLength is set to its
+// exact value (instead of -1), GetBody is populated (so 307 and 308
+// redirects can replay the body), and Body is set to [NoBody] if the
+// ContentLength is 0.
 func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error)
 
-// BasicAuthは、リクエストがHTTP Basic認証を使用する場合、リクエストのAuthorizationヘッダーで提供されるユーザー名とパスワードを返します。
-// RFC 2617 Section 2 を参照してください。
+// BasicAuth returns the username and password provided in the request's
+// Authorization header, if the request uses HTTP Basic Authentication.
+// See RFC 2617, Section 2.
 func (r *Request) BasicAuth() (username, password string, ok bool)
 
-// SetBasicAuthは、提供されたユーザー名とパスワードを使用して、HTTP Basic認証を使用するようにリクエストのAuthorizationヘッダーを設定します。
+// SetBasicAuth sets the request's Authorization header to use HTTP
+// Basic Authentication with the provided username and password.
 //
-// HTTP Basic認証では、提供されたユーザー名とパスワードは暗号化されません。 HTTPSリクエストでのみ使用することが一般的です。
+// With HTTP Basic Authentication the provided username and password
+// are not encrypted. It should generally only be used in an HTTPS
+// request.
 //
-// ユーザー名にはコロンを含めることはできません。一部のプロトコルでは、ユーザー名とパスワードを事前にエスケープする追加の要件がある場合があります。たとえば、OAuth2と一緒に使用する場合、両方の引数を最初に [url.QueryEscape] でURLエンコードする必要があります。
+// The username may not contain a colon. Some protocols may impose
+// additional requirements on pre-escaping the username and
+// password. For instance, when used with OAuth2, both arguments must
+// be URL encoded first with [url.QueryEscape].
 func (r *Request) SetBasicAuth(username, password string)
 
-// ReadRequestは、bから受信したリクエストを読み取り、解析します。
+// ReadRequest reads and parses an incoming request from b.
 //
-// ReadRequestは、低レベルの関数であり、特殊なアプリケーションにのみ使用する必要があります。
-// ほとんどのコードは、[Server] を使用してリクエストを読み取り、[Handler] インターフェイスを介して処理する必要があります。
-// ReadRequestは、HTTP/1.xリクエストのみをサポートしています。 HTTP/2の場合は、golang.org/x/net/http2 を使用してください。
+// ReadRequest is a low-level function and should only be used for
+// specialized applications; most code should use the [Server] to read
+// requests and handle them via the [Handler] interface. ReadRequest
+// only supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.
 func ReadRequest(b *bufio.Reader) (*Request, error)
 
-// MaxBytesReaderは、[io.LimitReader] に似ていますが、着信リクエストボディのサイズを制限するために使用されます。
-// io.LimitReaderとは異なり、MaxBytesReaderの結果はReadCloserであり、制限を超えたReadに対して [*MaxBytesError] 型の非nilエラーを返し、Closeメソッドが呼び出されたときに基になるリーダーを閉じます。
+// MaxBytesReader is similar to [io.LimitReader] but is intended for
+// limiting the size of incoming request bodies. In contrast to
+// io.LimitReader, MaxBytesReader's result is a ReadCloser, returns a
+// non-nil error of type [*MaxBytesError] for a Read beyond the limit,
+// and closes the underlying reader when its Close method is called.
 //
-// MaxBytesReaderは、クライアントが誤ってまたは悪意を持って大きなリクエストを送信してサーバーのリソースを浪費することを防止します。可能であれば、[ResponseWriter] に制限に達した後に接続を閉じるように指示します。
+// MaxBytesReader prevents clients from accidentally or maliciously
+// sending a large request and wasting server resources. If possible,
+// it tells the [ResponseWriter] to close the connection after the limit
+// has been reached.
 func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser
 
-// MaxBytesErrorは、[MaxBytesReader] の読み取り制限を超えた場合に [MaxBytesReader] によって返されます。
+// MaxBytesError is returned by [MaxBytesReader] when its read limit is exceeded.
 type MaxBytesError struct {
 	Limit int64
 }
 
 func (e *MaxBytesError) Error() string
 
-// ParseFormはr.Formとr.PostFormを埋めます。
+// ParseForm populates r.Form and r.PostForm.
 //
-// すべてのリクエストに対して、ParseFormはURLから生のクエリを解析し、r.Formを更新します。
+// For all requests, ParseForm parses the raw query from the URL and updates
+// r.Form.
 //
-// POST、PUT、およびPATCHリクエストの場合、それはまた、リクエストボディを読み取り、フォームとして解析し、その結果をr.PostFormとr.Formの両方に入れます。リクエストボディのパラメータは、r.FormのURLクエリ文字列値より優先されます。
+// For POST, PUT, and PATCH requests, it also reads the request body, parses it
+// as a form and puts the results into both r.PostForm and r.Form. Request body
+// parameters take precedence over URL query string values in r.Form.
 //
-// リクエストボディのサイズがすでに [MaxBytesReader] によって制限されていない場合、サイズは10MBに制限されます。
+// If the request Body's size has not already been limited by [MaxBytesReader],
+// the size is capped at 10MB.
 //
-// 他のHTTPメソッド、またはContent-Typeがapplication/x-www-form-urlencodedでない場合、リクエストボディは読み取られず、r.PostFormはnilでない空の値に初期化されます。
+// For other HTTP methods, or when the Content-Type is not
+// application/x-www-form-urlencoded, the request Body is not read, and
+// r.PostForm is initialized to a non-nil, empty value.
 //
-// [Request.ParseMultipartForm] は自動的にParseFormを呼び出します。
-// ParseFormは冪等です。
+// [Request.ParseMultipartForm] calls ParseForm automatically.
+// ParseForm is idempotent.
 func (r *Request) ParseForm() error
 
-// ParseMultipartFormは、リクエストボディをmultipart/form-dataとして解析します。
-// リクエストボディ全体が解析され、そのファイルパーツの最大maxMemoryバイトがメモリに格納され、残りは一時ファイルに格納されます。
-// ParseMultipartFormは必要に応じて [Request.ParseForm] を呼び出します。
-// ParseFormがエラーを返した場合、ParseMultipartFormはそれを返しますが、リクエストボディの解析を続けます。
-// ParseMultipartFormを1回呼び出した後、以降の呼び出しは効果がありません。
+// ParseMultipartForm parses a request body as multipart/form-data.
+// The whole request body is parsed and up to a total of maxMemory bytes of
+// its file parts are stored in memory, with the remainder stored on
+// disk in temporary files.
+// ParseMultipartForm calls [Request.ParseForm] if necessary.
+// If ParseForm returns an error, ParseMultipartForm returns it but also
+// continues parsing the request body.
+// After one call to ParseMultipartForm, subsequent calls have no effect.
 func (r *Request) ParseMultipartForm(maxMemory int64) error
 
-// FormValueは、クエリの名前付きコンポーネントの最初の値を返します。
-// 優先順位は以下の通りです：
-//  1. application/x-www-form-urlencoded形式のフォームボディ（POST、PUT、PATCHのみ）
-//  2. クエリパラメータ（常に）
-//  3. multipart/form-data形式のフォームボディ（常に）
+// FormValue returns the first value for the named component of the query.
+// The precedence order:
+//  1. application/x-www-form-urlencoded form body (POST, PUT, PATCH only)
+//  2. query parameters (always)
+//  3. multipart/form-data form body (always)
 //
-// FormValueは必要に応じて [Request.ParseMultipartForm] と [Request.ParseForm] を呼び出し、
-// これらの関数が返すエラーは無視します。
-// キーが存在しない場合、FormValueは空文字列を返します。
-// 同じキーの複数の値にアクセスするには、ParseFormを呼び出し、
-// その後で [Request.Form] を直接調べます。
+// FormValue calls [Request.ParseMultipartForm] and [Request.ParseForm]
+// if necessary and ignores any errors returned by these functions.
+// If key is not present, FormValue returns the empty string.
+// To access multiple values of the same key, call ParseForm and
+// then inspect [Request.Form] directly.
 func (r *Request) FormValue(key string) string
 
-// PostFormValueは、POST、PUT、またはPATCHリクエストボディの名前付きコンポーネントの最初の値を返します。
-// URLクエリパラメータは無視されます。
-// 必要に応じて、PostFormValueは [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出し、
-// これらの関数によって返されるエラーを無視します。
-// キーが存在しない場合、PostFormValueは空の文字列を返します。
+// PostFormValue returns the first value for the named component of the POST,
+// PUT, or PATCH request body. URL query parameters are ignored.
+// PostFormValue calls [Request.ParseMultipartForm] and [Request.ParseForm] if necessary and ignores
+// any errors returned by these functions.
+// If key is not present, PostFormValue returns the empty string.
 func (r *Request) PostFormValue(key string) string
 
-// FormFileは、指定されたフォームキーの最初のファイルを返します。
-// 必要に応じて、FormFileは [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出します。
+// FormFile returns the first file for the provided form key.
+// FormFile calls [Request.ParseMultipartForm] and [Request.ParseForm] if necessary.
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
 
-// PathValueは、リクエストに一致した [ServeMux] パターンの名前付きパスワイルドカードの値を返します。
-// リクエストがパターンに一致しなかった場合、またはパターンにそのようなワイルドカードがない場合、空の文字列を返します。
+// PathValue returns the value for the named path wildcard in the [ServeMux] pattern
+// that matched the request.
+// It returns the empty string if the request was not matched against a pattern
+// or there is no such wildcard in the pattern.
 func (r *Request) PathValue(name string) string
 
 // SetPathValue sets name to value, so that subsequent calls to r.PathValue(name)

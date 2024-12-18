@@ -13,7 +13,7 @@ import (
 // export data.
 type PkgDecoder struct {
 	// version is the file format version.
-	version uint32
+	version Version
 
 	// sync indicates whether the file uses sync markers.
 	sync bool
@@ -60,8 +60,6 @@ func (pr *PkgDecoder) SyncMarkers() bool
 // NewPkgDecoder returns a PkgDecoder initialized to read the Unified
 // IR export data from input. pkgPath is the package path for the
 // compilation unit that produced the export data.
-//
-// TODO(mdempsky): Remove pkgPath parameter; unneeded since CL 391014.
 func NewPkgDecoder(pkgPath, input string) PkgDecoder
 
 // NumElems returns the number of elements in section k.
@@ -127,7 +125,7 @@ func (r *Decoder) Bool() bool
 // Int64 decodes and returns an int64 value from the element bitstream.
 func (r *Decoder) Int64() int64
 
-// Int64 decodes and returns a uint64 value from the element bitstream.
+// Uint64 decodes and returns a uint64 value from the element bitstream.
 func (r *Decoder) Uint64() uint64
 
 // Len decodes and returns a non-negative int value from the element bitstream.
@@ -171,3 +169,6 @@ func (pr *PkgDecoder) PeekPkgPath(idx Index) string
 // PeekObj returns the package path, object name, and CodeObj for the
 // specified object index.
 func (pr *PkgDecoder) PeekObj(idx Index) (string, string, CodeObj)
+
+// Version reports the version of the bitstream.
+func (w *Decoder) Version() Version

@@ -10,12 +10,13 @@ import (
 	"github.com/shogo82148/std/strings"
 )
 
-// Nodeはパースツリーの要素です。インターフェースは極めて単純です。
-// インターフェースには未エクスポートのメソッドが含まれているため、
-// このパッケージのローカルタイプのみがそれを満たすことができます。
+// A Node is an element in the parse tree. The interface is trivial.
+// The interface contains an unexported method so that only
+// types local to this package can satisfy it.
 type Node interface {
 	Type() NodeType
 	String() string
+
 	Copy() Node
 	Position() Pos
 
@@ -24,16 +25,17 @@ type Node interface {
 	writeTo(*strings.Builder)
 }
 
-// NodeTypeは、パースツリーノードのタイプを識別します。
+// NodeType identifies the type of a parse tree node.
 type NodeType int
 
-// Posは、このテンプレートがパースされた元の入力テキストのバイト位置を表します。
+// Pos represents a byte position in the original input text from which
+// this template was parsed.
 type Pos int
 
 func (p Pos) Position() Pos
 
-// Typeは自身を返し、Nodeに埋め込むための簡単なデフォルト実装を提供します。
-// すべての非自明なノードに埋め込まれています。
+// Type returns itself and provides an easy default implementation
+// for embedding in a Node. Embedded in all non-trivial Nodes.
 func (t NodeType) Type() NodeType
 
 const (
@@ -61,7 +63,7 @@ const (
 	NodeContinue
 )
 
-// ListNodeは、ノードのシーケンスを保持します。
+// ListNode holds a sequence of nodes.
 type ListNode struct {
 	NodeType
 	Pos
@@ -75,7 +77,7 @@ func (l *ListNode) CopyList() *ListNode
 
 func (l *ListNode) Copy() Node
 
-// TextNodeはプレーンテキストを保持します。
+// TextNode holds plain text.
 type TextNode struct {
 	NodeType
 	Pos
@@ -99,7 +101,7 @@ func (c *CommentNode) String() string
 
 func (c *CommentNode) Copy() Node
 
-// PipeNodeは、オプションの宣言を持つパイプラインを保持します。
+// PipeNode holds a pipeline with optional declaration
 type PipeNode struct {
 	NodeType
 	Pos
@@ -116,9 +118,9 @@ func (p *PipeNode) CopyPipe() *PipeNode
 
 func (p *PipeNode) Copy() Node
 
-// ActionNodeはアクション（デリミタで区切られた何か）を保持します。
-// 制御アクションはそれぞれが独自のノードを持ち、ActionNodeはフィールド評価や
-// 括弧付きパイプラインのような単純なものを表します。
+// ActionNode holds an action (something bounded by delimiters).
+// Control actions have their own nodes; ActionNode represents simple
+// ones such as field evaluations and parenthesized pipelines.
 type ActionNode struct {
 	NodeType
 	Pos
@@ -131,7 +133,7 @@ func (a *ActionNode) String() string
 
 func (a *ActionNode) Copy() Node
 
-// CommandNodeは、コマンド（評価アクション内のパイプライン）を保持します。
+// CommandNode holds a command (a pipeline inside an evaluating action).
 type CommandNode struct {
 	NodeType
 	Pos
@@ -143,7 +145,7 @@ func (c *CommandNode) String() string
 
 func (c *CommandNode) Copy() Node
 
-// CommandNodeは、コマンド（評価アクション内のパイプライン）を保持します。
+// IdentifierNode holds an identifier.
 type IdentifierNode struct {
 	NodeType
 	Pos
@@ -151,25 +153,25 @@ type IdentifierNode struct {
 	Ident string
 }
 
-// NewIdentifierは、指定された識別子名を持つ新しい [IdentifierNode] を返します。
+// NewIdentifier returns a new [IdentifierNode] with the given identifier name.
 func NewIdentifier(ident string) *IdentifierNode
 
-// SetPosは位置を設定します。[NewIdentifier] は公開メソッドなので、そのシグネチャを変更することはできません。
-// 便宜上チェーン化されています。
-// TODO: いつか修正する？
+// SetPos sets the position. [NewIdentifier] is a public method so we can't modify its signature.
+// Chained for convenience.
+// TODO: fix one day?
 func (i *IdentifierNode) SetPos(pos Pos) *IdentifierNode
 
-// SetTreeは、ノードの親ツリーを設定します。[NewIdentifier] は公開メソッドなので、そのシグネチャを変更することはできません。
-// 便宜上チェーン化されています。
-// TODO: いつか修正する？
+// SetTree sets the parent tree for the node. [NewIdentifier] is a public method so we can't modify its signature.
+// Chained for convenience.
+// TODO: fix one day?
 func (i *IdentifierNode) SetTree(t *Tree) *IdentifierNode
 
 func (i *IdentifierNode) String() string
 
 func (i *IdentifierNode) Copy() Node
 
-// VariableNodeは、チェーンフィールドへのアクセスが可能な変数名のリストを保持します。
-// ドル記号は（最初の）名前の一部です。
+// VariableNode holds a list of variable names, possibly with chained field
+// accesses. The dollar sign is part of the (first) name.
 type VariableNode struct {
 	NodeType
 	Pos
@@ -181,7 +183,7 @@ func (v *VariableNode) String() string
 
 func (v *VariableNode) Copy() Node
 
-// DotNodeは、特別な識別子'.'を保持します。
+// DotNode holds the special identifier '.'.
 type DotNode struct {
 	NodeType
 	Pos
@@ -194,7 +196,7 @@ func (d *DotNode) String() string
 
 func (d *DotNode) Copy() Node
 
-// NilNodeは、型指定されていないnil定数を表す特別な識別子'nil'を保持します。
+// NilNode holds the special identifier 'nil' representing an untyped nil constant.
 type NilNode struct {
 	NodeType
 	Pos
@@ -207,9 +209,9 @@ func (n *NilNode) String() string
 
 func (n *NilNode) Copy() Node
 
-// FieldNodeはフィールド（'.'で始まる識別子）を保持します。
-// 名前はチェーン可能です（'.x.y'など）。
-// 各識別子からピリオドは削除されます。
+// FieldNode holds a field (identifier starting with '.').
+// The names may be chained ('.x.y').
+// The period is dropped from each ident.
 type FieldNode struct {
 	NodeType
 	Pos
@@ -221,9 +223,9 @@ func (f *FieldNode) String() string
 
 func (f *FieldNode) Copy() Node
 
-// ChainNodeは、フィールドアクセスのチェーン（'.'で始まる識別子）に続く項を保持します。
-// 名前はチェーン可能です（'.x.y'など）。
-// 各識別子からピリオドは削除されます。
+// ChainNode holds a term followed by a chain of field accesses (identifier starting with '.').
+// The names may be chained ('.x.y').
+// The periods are dropped from each ident.
 type ChainNode struct {
 	NodeType
 	Pos
@@ -232,14 +234,14 @@ type ChainNode struct {
 	Field []string
 }
 
-// Addは、名前付きフィールド（ピリオドで始まるべき）をチェーンの末尾に追加します。
+// Add adds the named field (which should start with a period) to the end of the chain.
 func (c *ChainNode) Add(field string)
 
 func (c *ChainNode) String() string
 
 func (c *ChainNode) Copy() Node
 
-// BoolNodeは、ブール型の定数を保持します。
+// BoolNode holds a boolean constant.
 type BoolNode struct {
 	NodeType
 	Pos
@@ -251,9 +253,9 @@ func (b *BoolNode) String() string
 
 func (b *BoolNode) Copy() Node
 
-// NumberNodeは、符号付きまたは符号なしの整数、浮動小数点数、または複素数を保持します。
-// 値は解析され、その値を表現できるすべての型の下に格納されます。
-// これはGoの理想的な定数の振る舞いを少量のコードでシミュレートします。
+// NumberNode holds a number: signed or unsigned integer, float, or complex.
+// The value is parsed and stored under all the types that can represent the value.
+// This simulates in a small amount of code the behavior of Go's ideal constants.
 type NumberNode struct {
 	NodeType
 	Pos
@@ -273,7 +275,7 @@ func (n *NumberNode) String() string
 
 func (n *NumberNode) Copy() Node
 
-// StringNodeは文字列定数を保持します。値は"引用符を外され"ています。
+// StringNode holds a string constant. The value has been "unquoted".
 type StringNode struct {
 	NodeType
 	Pos
@@ -286,7 +288,7 @@ func (s *StringNode) String() string
 
 func (s *StringNode) Copy() Node
 
-// BranchNodeは、if、range、およびwithの共通の表現です。
+// BranchNode is the common representation of if, range, and with.
 type BranchNode struct {
 	NodeType
 	Pos
@@ -301,14 +303,14 @@ func (b *BranchNode) String() string
 
 func (b *BranchNode) Copy() Node
 
-// IfNodeは{{if}}アクションとそのコマンドを表します。
+// IfNode represents an {{if}} action and its commands.
 type IfNode struct {
 	BranchNode
 }
 
 func (i *IfNode) Copy() Node
 
-// BreakNodeは{{break}}アクションを表します。
+// BreakNode represents a {{break}} action.
 type BreakNode struct {
 	tr *Tree
 	NodeType
@@ -319,7 +321,7 @@ type BreakNode struct {
 func (b *BreakNode) Copy() Node
 func (b *BreakNode) String() string
 
-// ContinueNodeは{{continue}}アクションを表します。
+// ContinueNode represents a {{continue}} action.
 type ContinueNode struct {
 	tr *Tree
 	NodeType
@@ -330,21 +332,21 @@ type ContinueNode struct {
 func (c *ContinueNode) Copy() Node
 func (c *ContinueNode) String() string
 
-// RangeNodeは{{range}}アクションとそのコマンドを表します。
+// RangeNode represents a {{range}} action and its commands.
 type RangeNode struct {
 	BranchNode
 }
 
 func (r *RangeNode) Copy() Node
 
-// WithNodeは{{with}}アクションとそのコマンドを表します。
+// WithNode represents a {{with}} action and its commands.
 type WithNode struct {
 	BranchNode
 }
 
 func (w *WithNode) Copy() Node
 
-// TemplateNodeは{{template}}アクションを表します。
+// TemplateNode represents a {{template}} action.
 type TemplateNode struct {
 	NodeType
 	Pos

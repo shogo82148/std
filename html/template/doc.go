@@ -3,103 +3,115 @@
 // license that can be found in the LICENSE file.
 
 /*
-templateパッケージ（html/template）は、コードインジェクションに対して安全なHTML出力を生成するための
-データ駆動型テンプレートを実装します。それは [text/template] と同じインターフェースを提供し、出力がHTMLの場合は
-[text/template] の代わりに使用すべきです。
+Package template (html/template) implements data-driven templates for
+generating HTML output safe against code injection. It provides the
+same interface as [text/template] and should be used instead of
+[text/template] whenever the output is HTML.
 
-ここでのドキュメンテーションは、パッケージのセキュリティ機能に焦点を当てています。
-テンプレート自体のプログラミングについての情報は、[text/template] のドキュメンテーションを参照してください。
+The documentation here focuses on the security features of the package.
+For information about how to program the templates themselves, see the
+documentation for [text/template].
 
 # Introduction
 
-このパッケージは[text/template]をラップして、そのテンプレートAPIを共有して
-HTMLテンプレートを安全に解析し実行できます。
+This package wraps [text/template] so you can share its template API
+to parse and execute HTML templates safely.
 
 	tmpl, err := template.New("name").Parse(...)
-	// エラーチェックは省略
+	// Error checking elided
 	err = tmpl.Execute(out, data)
 
-成功した場合、tmplは今後、インジェクションに対して安全になります。それ以外の場合、errはErrorCodeのドキュメントで定義されたエラーです。
+If successful, tmpl will now be injection-safe. Otherwise, err is an error
+defined in the docs for ErrorCode.
 
-HTMLテンプレートは、データ値をHTMLドキュメントに安全に埋め込むためにエンコードするべきプレーンテキストとして扱います。エスケープは文脈に依存するため、JavaScript、CSS、URIの文脈内にアクションが現れることがあります。
+HTML templates treat data values as plain text which should be encoded so they
+can be safely embedded in an HTML document. The escaping is contextual, so
+actions can appear within JavaScript, CSS, and URI contexts.
 
-このパッケージが使用するセキュリティモデルは、テンプレートの作者が信頼できると仮定し、
-一方でExecuteのデータパラメータは信頼できないと仮定します。詳細は以下に提供されています。
+The security model used by this package assumes that template authors are
+trusted, while Execute's data parameter is not. More details are
+provided below.
 
-例
+Example
 
 	import "text/template"
 	...
 	t, err := template.New("foo").Parse(`{{define "T"}}Hello, {{.}}!{{end}}`)
 	err = t.ExecuteTemplate(out, "T", "<script>alert('you have been pwned')</script>")
 
-は以下を生成します
+produces
 
 	Hello, <script>alert('you have been pwned')</script>!
 
-しかし、html/templateの文脈自動エスケープでは
+but the contextual autoescaping in html/template
 
 	import "html/template"
 	...
 	t, err := template.New("foo").Parse(`{{define "T"}}Hello, {{.}}!{{end}}`)
 	err = t.ExecuteTemplate(out, "T", "<script>alert('you have been pwned')</script>")
 
-は安全な、エスケープされたHTML出力を生成します
+produces safe, escaped HTML output
 
 	Hello, &lt;script&gt;alert(&#39;you have been pwned&#39;)&lt;/script&gt;!
 
 # Contexts
 
-このパッケージはHTML、CSS、JavaScript、およびURIを理解します。それは各単純なアクションパイプラインに
-サニタイジング関数を追加するので、以下の抜粋が与えられた場合
+This package understands HTML, CSS, JavaScript, and URIs. It adds sanitizing
+functions to each simple action pipeline, so given the excerpt
 
 	<a href="/search?q={{.}}">{{.}}</a>
 
-パース時に、必要に応じてエスケープ関数を追加するため、各{{.}}が上書きされます。
-この場合、それは次のようになります。
+At parse time each {{.}} is overwritten to add escaping functions as necessary.
+In this case it becomes
 
 	<a href="/search?q={{. | urlescaper | attrescaper}}">{{. | htmlescaper}}</a>
 
-ここで、urlescaper、attrescaper、およびhtmlescaperは、内部エスケープ関数のエイリアスです。
+where urlescaper, attrescaper, and htmlescaper are aliases for internal escaping
+functions.
 
-これらの内部エスケープ関数については、アクションパイプラインがnilインターフェース値を評価すると、
-それは空の文字列であるかのように扱われます。
+For these internal escaping functions, if an action pipeline evaluates to
+a nil interface value, it is treated as though it were an empty string.
 
 # Namespaced and data- attributes
 
-名前空間を持つ属性は、名前空間がないかのように扱われます。
-以下の抜粋が与えられた場合
+Attributes with a namespace are treated as if they had no namespace.
+Given the excerpt
 
 	<a my:href="{{.}}"></a>
 
-パース時に、属性はまるでそれがただの"href"であるかのように扱われます。
-したがって、パース時にテンプレートは次のようになります：
+At parse time the attribute will be treated as if it were just "href".
+So at parse time the template becomes:
 
 	<a my:href="{{. | urlescaper | attrescaper}}"></a>
 
-同様に、"data-"プレフィックスを持つ属性は、まるでそれらが"data-"プレフィックスを持っていないかのように扱われます。したがって、以下が与えられた場合
+Similarly to attributes with namespaces, attributes with a "data-" prefix are
+treated as if they had no "data-" prefix. So given
 
 	<a data-href="{{.}}"></a>
 
-パース時に、これは次のようになります。
+At parse time this becomes
 
 	<a data-href="{{. | urlescaper | attrescaper}}"></a>
 
-属性が名前空間と"data-"プレフィックスの両方を持っている場合、コンテキストを決定するときには名前空間のみが削除されます。例えば
+If an attribute has both a namespace and a "data-" prefix, only the namespace
+will be removed when determining the context. For example
 
 	<a my:data-href="{{.}}"></a>
 
-これは、"my:data-href"がただの"data-href"であるかのように、そして"href"であるかのように（"data-"プレフィックスも無視される場合）扱われます。したがって、パース時には次のようになります。
+This is handled as if "my:data-href" was just "data-href" and not "href" as
+it would be if the "data-" prefix were to be ignored too. Thus at parse
+time this becomes just
 
 	<a my:data-href="{{. | attrescaper}}"></a>
 
-特別なケースとして、"xmlns"名前空間を持つ属性は常にURLを含んでいるとして扱われます。以下の抜粋が与えられた場合
+As a special case, attributes with the namespace "xmlns" are always treated
+as containing URLs. Given the excerpts
 
 	<a xmlns:title="{{.}}"></a>
 	<a xmlns:href="{{.}}"></a>
 	<a xmlns:onclick="{{.}}"></a>
 
-パース時に、それらは次のようになります。
+At parse time they become:
 
 	<a xmlns:title="{{. | urlescaper | attrescaper}}"></a>
 	<a xmlns:href="{{. | urlescaper | attrescaper}}"></a>
@@ -107,18 +119,18 @@ HTMLテンプレートは、データ値をHTMLドキュメントに安全に埋
 
 # Errors
 
-詳細はErrorCodeのドキュメンテーションを参照してください。
+See the documentation of ErrorCode for details.
 
 # A fuller picture
 
-このパッケージのコメントの残りの部分は、最初の読み込み時にスキップしても構いません。これには、
-エスケープの文脈とエラーメッセージを理解するために必要な詳細が含まれています。ほとんどのユーザーは
-これらの詳細を理解する必要はありません。
+The rest of this package comment may be skipped on first reading; it includes
+details necessary to understand escaping contexts and error messages. Most users
+will not need to understand these details.
 
 # Contexts
 
-{{.}}が`O'Reilly: How are <i>you</i>?`と仮定すると、以下の表は
-左側の文脈で{{.}}がどのように表示されるかを示しています。
+Assuming {{.}} is `O'Reilly: How are <i>you</i>?`, the table below shows
+how {{.}} appears when used in the context to the left.
 
 	Context                          {{.}} After
 	{{.}}                            O'Reilly: How are &lt;i&gt;you&lt;/i&gt;?
@@ -129,14 +141,14 @@ HTMLテンプレートは、データ値をHTMLドキュメントに安全に埋
 	<a onx='f({{.}})'>               "O\x27Reilly: How are \x3ci\x3eyou...?"
 	<a onx='pattern = /{{.}}/;'>     O\x27Reilly: How are \x3ci\x3eyou...\x3f
 
-安全でないコンテキストで使用された場合、その値はフィルタリングされる可能性があります：
+If used in an unsafe context, then the value might be filtered out:
 
 	Context                          {{.}} After
 	<a href="{{.}}">                 #ZgotmplZ
 
-なぜなら "O'Reilly:" は "http:" のような許可されたプロトコルではないからです。
+since "O'Reilly:" is not an allowed protocol like "http:".
 
-もし {{.}} が無害な単語、`left`であるなら、それはより広範に現れることができます。
+If {{.}} is the innocuous word, `left`, then it can appear more widely,
 
 	Context                              {{.}} After
 	{{.}}                                left
@@ -150,71 +162,79 @@ HTMLテンプレートは、データ値をHTMLドキュメントに安全に埋
 	<a style="background: url('{{.}}')>  left
 	<style>p.{{.}} {color:red}</style>   left
 
-非文字列の値はJavaScriptの文脈で使用できます。
-もし {{.}} が
+Non-string values can be used in JavaScript contexts.
+If {{.}} is
 
 	struct{A,B string}{ "foo", "bar" }
 
-エスケープされたテンプレート内で
+in the escaped template
 
 	<script>var pair = {{.}};</script>
 
-その後、テンプレートの出力は次のようになります。
+then the template output is
 
 	<script>var pair = {"A": "foo", "B": "bar"};</script>
 
-JavaScriptの文脈で埋め込むために非文字列コンテンツがどのようにマーシャルされるかを理解するために、jsonパッケージを参照してください。
+See package json to understand how non-string content is marshaled for
+embedding in JavaScript contexts.
 
 # Typed Strings
 
-デフォルトでは、このパッケージはすべてのパイプラインがプレーンテキストの文字列を生成すると仮定します。
-それは、そのプレーンテキスト文字列を適切な文脈で正しく安全に埋め込むために必要なエスケープパイプラインステージを追加します。
+By default, this package assumes that all pipelines produce a plain text string.
+It adds escaping pipeline stages necessary to correctly and safely embed that
+plain text string in the appropriate context.
 
-データ値がプレーンテキストでない場合、そのタイプでマークすることで、それが過度にエスケープされないようにすることができます。
+When a data value is not plain text, you can make sure it is not over-escaped
+by marking it with its type.
 
 Types HTML, JS, URL, and others from content.go can carry safe content that is
 exempted from escaping.
 
-テンプレート
+The template
 
 	Hello, {{.}}!
 
-は以下のように呼び出すことができます
+can be invoked with
 
 	tmpl.Execute(out, template.HTML(`<b>World</b>`))
 
-これにより
+to produce
 
 	Hello, <b>World</b>!
 
-が生成されます。
-
-これは、{{.}}が通常の文字列であった場合に生成される
+instead of the
 
 	Hello, &lt;b&gt;World&lt;b&gt;!
 
-とは異なります。
+that would have been produced if {{.}} was a regular string.
 
 # Security Model
 
-https://rawgit.com/mikesamuel/sanitized-jquery-templates/trunk/safetemplate.html#problem_definition は、このパッケージが使用する「安全」を定義しています。
+https://rawgit.com/mikesamuel/sanitized-jquery-templates/trunk/safetemplate.html#problem_definition defines "safe" as used by this package.
 
-このパッケージは、テンプレートの作者が信頼できると仮定し、Executeのデータパラメータは信頼できないと仮定し、信頼できないデータに対して以下のプロパティを保持しようとします：
+This package assumes that template authors are trusted, that Execute's data
+parameter is not, and seeks to preserve the properties below in the face
+of untrusted data:
 
 Structure Preservation Property:
-"... テンプレートの作者が安全なテンプレート言語でHTMLタグを書くとき、
-ブラウザは出力の対応する部分を、信頼できないデータの値に関係なくタグとして解釈します。
-同様に、属性の境界やJSとCSSの文字列の境界などの他の構造についても同様です。"
+"... when a template author writes an HTML tag in a safe templating language,
+the browser will interpret the corresponding portion of the output as a tag
+regardless of the values of untrusted data, and similarly for other structures
+such as attribute boundaries and JS and CSS string boundaries."
 
 Code Effect Property:
-"... テンプレートの出力をページに注入する結果として実行されるのは、
-テンプレートの作者によって指定されたコードのみであり、
-同じ結果として実行されるすべてのコードもテンプレートの作者によって指定されるべきです。"
+"... only code specified by the template author should run as a result of
+injecting the template output into a page and all code specified by the
+template author should run as a result of the same."
 
 Least Surprise Property:
-"HTML、CSS、JavaScriptに精通し、コンテキストに応じた自動エスケープが行われることを知っている開発者（またはコードレビュアー）は、{{.}}を見て、どのようなサニタイゼーションが行われるかを正しく推測することができるべきです。"
+"A developer (or code reviewer) familiar with HTML, CSS, and JavaScript, who
+knows that contextual autoescaping happens should be able to look at a {{.}}
+and correctly infer what sanitization happens."
 
-以前は、ECMAScript 6のテンプレートリテラルはデフォルトで無効にされており、GODEBUG=jstmpllitinterp=1 環境変数で有効にすることができました。
-テンプレートリテラルは現在デフォルトでサポートされており、jstmpllitinterpを設定しても効果はありません。
+Previously, ECMAScript 6 template literal were disabled by default, and could be
+enabled with the GODEBUG=jstmpllitinterp=1 environment variable. Template
+literals are now supported by default, and setting jstmpllitinterp has no
+effect.
 */
 package template

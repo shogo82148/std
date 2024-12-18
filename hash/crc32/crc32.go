@@ -2,64 +2,71 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// crc32パッケージは32ビットの巡回冗長検査 (CRC-32) チェックサムを実装しています。
-// 詳細はhttps://en.wikipedia.org/wiki/Cyclic_redundancy_checkを参照してください。
+// Package crc32 implements the 32-bit cyclic redundancy check, or CRC-32,
+// checksum. See https://en.wikipedia.org/wiki/Cyclic_redundancy_check for
+// information.
 //
-// 多項式は、LSBファースト形式、または反転表現としても表されます。
+// Polynomials are represented in LSB-first form also known as reversed representation.
 //
-// 詳細はhttps://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks#Reversed_representations_and_reciprocal_polynomialsを参照してください。
+// See https://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks#Reversed_representations_and_reciprocal_polynomials
+// for information.
 package crc32
 
 import (
 	"github.com/shogo82148/std/hash"
 )
 
-// CRC-32のチェックサムのサイズ（バイト単位）。
+// The size of a CRC-32 checksum in bytes.
 const Size = 4
 
-// 事前に定義された多項式。
+// Predefined polynomials.
 const (
-
-	// IEEEは、断然最も一般的なCRC-32多項式です。
-	// ethernet (IEEE 802.3)、v.42、fddi、gzip、zip、pngなどで使用されています。
+	// IEEE is by far and away the most common CRC-32 polynomial.
+	// Used by ethernet (IEEE 802.3), v.42, fddi, gzip, zip, png, ...
 	IEEE = 0xedb88320
 
-	// キャスタニョーリの多項式、iSCSIで使用されています。
-	// IEEEよりも優れたエラー検出特性を持っています。
+	// Castagnoli's polynomial, used in iSCSI.
+	// Has better error detection characteristics than IEEE.
 	// https://dx.doi.org/10.1109/26.231911
 	Castagnoli = 0x82f63b78
 
-	// クープマンの多項式。
-	// IEEEよりもエラー検出性能が優れています。
+	// Koopman's polynomial.
+	// Also has better error detection characteristics than IEEE.
 	// https://dx.doi.org/10.1109/DSN.2002.1028931
 	Koopman = 0xeb31d82e
 )
 
-// Tableは、効率的な処理のための多項式を表す256ワードのテーブルです。
+// Table is a 256-word table representing the polynomial for efficient processing.
 type Table [256]uint32
 
-// IEEETableは [IEEE] ポリノミアルのテーブルです。
+// IEEETable is the table for the [IEEE] polynomial.
 var IEEETable = simpleMakeTable(IEEE)
 
-// MakeTableは指定された多項式から構築された [Table] を返します。
-// この [Table] の内容は変更してはいけません。
+// MakeTable returns a [Table] constructed from the specified polynomial.
+// The contents of this [Table] must not be modified.
 func MakeTable(poly uint32) *Table
 
-// Newは [Table] によって表現される多項式を使用してCRC-32チェックサムを計算する新しい [hash.Hash32] を作成します。
-// そのSumメソッドはビッグエンディアンのバイト順で値を配置します。
-// 返されるHash32は、内部状態のマーシャリングとアンマーシャリングを実装するため、 [encoding.BinaryMarshaler] と [encoding.BinaryUnmarshaler] も実装しています。
+// New creates a new [hash.Hash32] computing the CRC-32 checksum using the
+// polynomial represented by the [Table]. Its Sum method will lay the
+// value out in big-endian byte order. The returned Hash32 also
+// implements [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to
+// marshal and unmarshal the internal state of the hash.
 func New(tab *Table) hash.Hash32
 
-// NewIEEEは、 [IEEE] 多項式を使用してCRC-32チェックサムを計算する新しい [hash.Hash32] を作成します。そのSumメソッドは、値をビッグエンディアンのバイト順でレイアウトします。
-// 返されるHash32は、 [encoding.BinaryMarshaler] および [encoding.BinaryUnmarshaler] も実装しており、ハッシュの内部状態をマーシャルおよびアンマーシャルすることができます。
+// NewIEEE creates a new [hash.Hash32] computing the CRC-32 checksum using
+// the [IEEE] polynomial. Its Sum method will lay the value out in
+// big-endian byte order. The returned Hash32 also implements
+// [encoding.BinaryMarshaler] and [encoding.BinaryUnmarshaler] to marshal
+// and unmarshal the internal state of the hash.
 func NewIEEE() hash.Hash32
 
-// Updateはpのバイトをcrcに追加した結果を返します。
+// Update returns the result of adding the bytes in p to the crc.
 func Update(crc uint32, tab *Table, p []byte) uint32
 
-// Checksumは [Table] で表されるポリノミアルを使用して、
-// dataのCRC-32チェックサムを返します。
+// Checksum returns the CRC-32 checksum of data
+// using the polynomial represented by the [Table].
 func Checksum(data []byte, tab *Table) uint32
 
-// ChecksumIEEEは、 [IEEE] 多項式を使用してデータのCRC-32チェックサムを返します。
+// ChecksumIEEE returns the CRC-32 checksum of data
+// using the [IEEE] polynomial.
 func ChecksumIEEE(data []byte) uint32

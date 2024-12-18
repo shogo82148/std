@@ -4,40 +4,42 @@
 
 package os
 
-// Fdは、開いているファイルを参照するWindowsハンドルを返します。
-// もしfが閉じている場合、ファイルディスクリプタは無効になります。
-// もしfがガベージコレクションされる場合、ファイナライザーがファイルディスクリプタを閉じる可能性があり、
-// それにより無効になります。ファイナライザーがいつ実行されるかの詳細については、
-// [runtime.SetFinalizer] を参照してください。Unixシステムでは、これにより [File.SetDeadline]
-// メソッドが動作しなくなります。
+// Fd returns the Windows handle referencing the open file.
+// If f is closed, the file descriptor becomes invalid.
+// If f is garbage collected, a finalizer may close the file descriptor,
+// making it invalid; see [runtime.SetFinalizer] for more information on when
+// a finalizer might be run. On Unix systems this will cause the [File.SetDeadline]
+// methods to stop working.
 func (file *File) Fd() uintptr
 
-// NewFileは指定したファイルディスクリプタと名前の新しいFileを返します。
-// fdが有効なファイルディスクリプタでない場合、返される値はnilになります。
+// NewFile returns a new File with the given file descriptor and
+// name. The returned value will be nil if fd is not a valid file
+// descriptor.
 func NewFile(fd uintptr, name string) *File
 
-// DevNullはオペレーティングシステムの「nullデバイス」の名前です。
-// Unix系のシステムでは、"/dev/null"です。Windowsでは"NUL"です。
+// DevNull is the name of the operating system's “null device.”
+// On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
 const DevNull = "NUL"
 
-// Truncateは指定されたファイルのサイズを変更します。
-// もしファイルがシンボリックリンクである場合、リンクの対象のサイズを変更します。
+// Truncate changes the size of the named file.
+// If the file is a symbolic link, it changes the size of the link's target.
 func Truncate(name string, size int64) error
 
-// Removeは指定されたファイルまたはディレクトリを削除します。
-// エラーが発生した場合、*PathErrorの型で返されます。
+// Remove removes the named file or directory.
+// If there is an error, it will be of type *PathError.
 func Remove(name string) error
 
-// Pipeは接続された一対のファイルを返します。rからの読み取りはwに書き込まれたバイトを返します。
-// エラーがある場合は、ファイルとエラーを返します。返されたファイルのWindowsハンドルは、子プロセスに引き継がれるようにマークされています。
+// Pipe returns a connected pair of Files; reads from r return bytes written to w.
+// It returns the files and an error, if any. The Windows handles underlying
+// the returned files are marked as inheritable by child processes.
 func Pipe() (r *File, w *File, err error)
 
-// Linkはoldnameファイルへのハードリンクとしてnewnameを作成します。
-// エラーが発生した場合、*LinkError型になります。
+// Link creates newname as a hard link to the oldname file.
+// If there is an error, it will be of type *LinkError.
 func Link(oldname, newname string) error
 
-// Symlinkはnewnameをoldnameへのシンボリックリンクとして作成します。
-// Windowsでは、存在しないoldnameへのシンボリックリンクはファイルシンボリックリンクとして作成されます。
-// oldnameが後でディレクトリとして作成された場合、シンボリックリンクは機能しません。
-// エラーが発生した場合、*LinkErrorの型になります。
+// Symlink creates newname as a symbolic link to oldname.
+// On Windows, a symlink to a non-existent oldname creates a file symlink;
+// if oldname is later created as a directory the symlink will not work.
+// If there is an error, it will be of type *LinkError.
 func Symlink(oldname, newname string) error

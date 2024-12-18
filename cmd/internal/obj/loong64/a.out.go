@@ -13,6 +13,8 @@ const (
 	NSYM   = 50
 	NREG   = 32
 	NFREG  = 32
+	NVREG  = 32
+	NXREG  = 32
 )
 
 const (
@@ -148,7 +150,73 @@ const (
 	REG_FCC30
 	REG_FCC31
 
-	REG_LAST = REG_FCC31
+	// LSX: 128-bit vector register
+	REG_V0
+	REG_V1
+	REG_V2
+	REG_V3
+	REG_V4
+	REG_V5
+	REG_V6
+	REG_V7
+	REG_V8
+	REG_V9
+	REG_V10
+	REG_V11
+	REG_V12
+	REG_V13
+	REG_V14
+	REG_V15
+	REG_V16
+	REG_V17
+	REG_V18
+	REG_V19
+	REG_V20
+	REG_V21
+	REG_V22
+	REG_V23
+	REG_V24
+	REG_V25
+	REG_V26
+	REG_V27
+	REG_V28
+	REG_V29
+	REG_V30
+	REG_V31
+
+	// LASX: 256-bit vector register
+	REG_X0
+	REG_X1
+	REG_X2
+	REG_X3
+	REG_X4
+	REG_X5
+	REG_X6
+	REG_X7
+	REG_X8
+	REG_X9
+	REG_X10
+	REG_X11
+	REG_X12
+	REG_X13
+	REG_X14
+	REG_X15
+	REG_X16
+	REG_X17
+	REG_X18
+	REG_X19
+	REG_X20
+	REG_X21
+	REG_X22
+	REG_X23
+	REG_X24
+	REG_X25
+	REG_X26
+	REG_X27
+	REG_X28
+	REG_X29
+	REG_X30
+	REG_X31
 
 	REG_SPECIAL = REG_FCSR0
 
@@ -179,12 +247,69 @@ const (
 	BRANCH = 1 << 3
 )
 
+// Arrangement for Loong64 SIMD instructions
+const (
+	// arrangement types
+	ARNG_32B int16 = iota
+	ARNG_16H
+	ARNG_8W
+	ARNG_4V
+	ARNG_2Q
+	ARNG_16B
+	ARNG_8H
+	ARNG_4W
+	ARNG_2V
+	ARNG_B
+	ARNG_H
+	ARNG_W
+	ARNG_V
+	ARNG_BU
+	ARNG_HU
+	ARNG_WU
+	ARNG_VU
+)
+
+// LoongArch64 SIMD extension type
+const (
+	LSX int16 = iota
+	LASX
+)
+
+// bits 0-4 indicates register: Vn or Xn
+// bits 5-9 indicates arrangement: <T>
+// bits 10 indicates SMID type: 0: LSX, 1: LASX
+const (
+	REG_ARNG = obj.RBaseLOONG64 + (1 << 10) + (iota << 11)
+	REG_ELEM
+	REG_ELEM_END
+)
+
+const (
+	EXT_REG_SHIFT = 0
+	EXT_REG_MASK  = 0x1f
+
+	EXT_TYPE_SHIFT = 5
+	EXT_TYPE_MASK  = 0x1f
+
+	EXT_SIMDTYPE_SHIFT = 10
+	EXT_SIMDTYPE_MASK  = 0x1
+)
+
+const (
+	REG_LAST = REG_ELEM_END
+)
+
+//go:generate go run ../mkcnames.go -i a.out.go -o cnames.go -p loong64
 const (
 	C_NONE = iota
 	C_REG
 	C_FREG
 	C_FCSRREG
 	C_FCCREG
+	C_VREG
+	C_XREG
+	C_ARNG
+	C_ELEM
 	C_ZCON
 	C_SCON
 	C_UCON
@@ -235,8 +360,6 @@ const (
 
 	ABNE
 	ABREAK
-	ACLO
-	ACLZ
 
 	ACMPEQD
 	ACMPEQF
@@ -371,6 +494,10 @@ const (
 	AMOVVF
 	AMOVVD
 
+	// 2.2.1.8
+	AORN
+	AANDN
+
 	// 2.2.7. Atomic Memory Access Instructions
 	AAMSWAPB
 	AAMSWAPH
@@ -421,11 +548,71 @@ const (
 	AAMMINDBWU
 	AAMMINDBVU
 
+	// 2.2.3.1
+	AEXTWB
+	AEXTWH
+
+	// 2.2.3.2
+	ACLOW
+	ACLOV
+	ACLZW
+	ACLZV
+	ACTOW
+	ACTOV
+	ACTZW
+	ACTZV
+
+	// 2.2.3.4
+	AREVBV
+	AREVB2W
+	AREVB4H
+	AREVB2H
+
+	// 2.2.3.5
+	AREVH2W
+	AREVHV
+
+	// 2.2.3.6
+	ABITREV4B
+	ABITREV8B
+
+	// 2.2.3.7
+	ABITREVW
+	ABITREVV
+
+	// 2.2.3.8
+	ABSTRINSW
+	ABSTRINSV
+
+	// 2.2.3.9
+	ABSTRPICKW
+	ABSTRPICKV
+
+	// 2.2.9. CRC Check Instructions
+	ACRCWBW
+	ACRCWHW
+	ACRCWWW
+	ACRCWVW
+	ACRCCWBW
+	ACRCCWHW
+	ACRCCWWW
+	ACRCCWVW
+
 	// 2.2.10. Other Miscellaneous Instructions
 	ARDTIMELW
 	ARDTIMEHW
 	ARDTIMED
 	ACPUCFG
+
+	// 3.2.1.2
+	AFMADDF
+	AFMADDD
+	AFMSUBF
+	AFMSUBD
+	AFNMADDF
+	AFNMADDD
+	AFNMSUBF
+	AFNMSUBD
 
 	// 3.2.1.3
 	AFMINF
@@ -436,6 +623,10 @@ const (
 	// 3.2.1.7
 	AFCOPYSGF
 	AFCOPYSGD
+	AFSCALEBF
+	AFSCALEBD
+	AFLOGBF
+	AFLOGBD
 
 	// 3.2.1.8
 	AFCLASSF
@@ -468,6 +659,30 @@ const (
 	AFTINTRNEWD
 	AFTINTRNEVF
 	AFTINTRNEVD
+
+	// LSX and LASX memory access instructions
+	AVMOVQ
+	AXVMOVQ
+
+	// LSX and LASX Bit-manipulation Instructions
+	AVPCNTB
+	AVPCNTH
+	AVPCNTW
+	AVPCNTV
+	AXVPCNTB
+	AXVPCNTH
+	AXVPCNTW
+	AXVPCNTV
+
+	// LSX and LASX integer comparison instruction
+	AVSEQB
+	AXVSEQB
+	AVSEQH
+	AXVSEQH
+	AVSEQW
+	AXVSEQW
+	AVSEQV
+	AXVSEQV
 
 	ALAST
 

@@ -27,7 +27,7 @@ Best wishes,
 Josie
 `
 
-	// テンプレートに挿入するためのデータを準備します。
+	// Prepare some data to insert into the template.
 	type Recipient struct {
 		Name, Gift string
 		Attended   bool
@@ -38,10 +38,10 @@ Josie
 		{"Cousin Rodney", "", false},
 	}
 
-	// 新しいテンプレートを作成し、その中にレターを解析します。
+	// Create a new template and parse the letter into it.
 	t := template.Must(template.New("letter").Parse(letter))
 
-	// 各受信者に対してテンプレートを実行します。
+	// Execute the template for each recipient.
 	for _, r := range recipients {
 		err := t.Execute(os.Stdout, r)
 		if err != nil {

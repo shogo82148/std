@@ -32,7 +32,10 @@ type PackageError string
 
 func (p PackageError) Error() string
 
-// pkg.Fatalfはlog.Fatalfと似ていますが、エラーが発生するため、メインのdo関数で回復が可能であり、プログラムが終了しないようになっています。サブプロセスを実行しないでテストを実行できるようにします。ログの接頭辞はメインで追加されますが、ここでは追加されません。
+// pkg.Fatalf is like log.Fatalf, but panics so it can be recovered in the
+// main do function, so it doesn't cause an exit. Allows testing to work
+// without running a subprocess. The log prefix will be added when
+// logged in main; it is not added here.
 func (pkg *Package) Fatalf(format string, args ...any)
 
 func (pkg *Package) Printf(format string, args ...any)

@@ -2,21 +2,28 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// testingパッケージはGoパッケージの自動テストをサポートします。
-// これは"go test"コマンドと一緒に使用することを意図しています。"go test"コマンドは以下の形式の関数を自動的に実行します。
+// Package testing provides support for automated testing of Go packages.
+// It is intended to be used in concert with the "go test" command, which automates
+// execution of any function of the form
 //
 //	func TestXxx(*testing.T)
 //
-// ただし、Xxxは小文字ではじまらないものとします。関数名はテストルーチンを識別するために使用されます。
+// where Xxx does not start with a lowercase letter. The function name
+// serves to identify the test routine.
 //
-// これらの関数内では、FailureをシグナルするためにError、Fail、または関連するメソッドを使用します。
+// Within these functions, use the Error, Fail or related methods to signal failure.
 //
-// 新しいテストスイートを書くためには、次の要件に従っているファイルを作成し、"_test.go"で終わる名前を付けます。
-// このファイルは通常のパッケージのビルドから除外されますが、"go test"コマンドの実行時には含まれます。
+// To write a new test suite, create a file that
+// contains the TestXxx functions as described here,
+// and give that file a name ending in "_test.go".
+// The file will be excluded from regular
+// package builds but will be included when the "go test" command is run.
 //
-// テストファイルは、テスト対象のパッケージと同じパッケージにあるか、"_test"という接尾辞の付いた対応するパッケージに含めることができます。
+// The test file can be in the same package as the one being tested,
+// or in a corresponding package with the suffix "_test".
 //
-// テストファイルが同じパッケージにある場合、パッケージ内の非公開の識別子を参照することができます。次の例のようになります。
+// If the test file is in the same package, it may refer to unexported
+// identifiers within the package, as in this example:
 //
 //	package abs
 //
@@ -29,7 +36,9 @@
 //	    }
 //	}
 //
-// ファイルが別の"_test"パッケージにある場合、テスト対象のパッケージを明示的にインポートする必要があり、公開された識別子のみ使用できます。これは「ブラックボックス」テストとして知られています。
+// If the file is in a separate "_test" package, the package being tested
+// must be imported explicitly and only its exported identifiers may be used.
+// This is known as "black box" testing.
 //
 //	package abs_test
 //
@@ -46,11 +55,11 @@
 //	    }
 //	}
 //
-// 詳細については、「go help test」と「go help testflag」を実行してください。
+// For more detail, run "go help test" and "go help testflag".
 //
-// ＃ ベンチマーク
+// # Benchmarks
 //
-// 次の形式の関数
+// Functions of the form
 //
 //	func BenchmarkXxx(*testing.B)
 //
@@ -361,30 +370,35 @@
 package testing
 
 import (
+	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/time"
 )
 
-// Initはテストフラグを登録します。これらのフラグは、テスト関数を実行する前に"go test"コマンドによって自動的に登録されるため、Initは、"go test"を使用せずにBenchmarkなどの関数を呼び出す場合にのみ必要です。
+// Init registers testing flags. These flags are automatically registered by
+// the "go test" command before running test functions, so Init is only needed
+// when calling functions such as Benchmark without using "go test".
 //
-// Initは並行して呼び出すことは安全ではありません。 すでに呼び出されている場合は、効果がありません。
+// Init is not safe to call concurrently. It has no effect if it was already called.
 func Init()
 
-// Short は -test.short フラグが設定されているかどうかを報告します。
+// Short reports whether the -test.short flag is set.
 func Short() bool
 
-// Testingは現在のコードがテストで実行されているかどうかを報告します。
-// "go test"で作られたプログラムではtrueを報告し、
-// "go build"で作られたプログラムではfalseを報告します。
+// Testing reports whether the current code is being run in a test.
+// This will report true in programs created by "go test",
+// false in programs created by "go build".
 func Testing() bool
 
-// CoverModeはテストカバレッジモードの設定を報告します。値は「set」、「count」または「atomic」です。テストカバレッジが有効でない場合、戻り値は空になります。
+// CoverMode reports what the test coverage mode is set to. The
+// values are "set", "count", or "atomic". The return value will be
+// empty if test coverage is not enabled.
 func CoverMode() string
 
-// Verboseは、-test.vフラグが設定されているかどうかを報告します。
+// Verbose reports whether the -test.v flag is set.
 func Verbose() bool
 
-// TBはT、B、Fに共通するインターフェースです。
+// TB is the interface common to T, B, and F.
 type TB interface {
 	Cleanup(func())
 	Error(args ...any)
@@ -399,11 +413,13 @@ type TB interface {
 	Logf(format string, args ...any)
 	Name() string
 	Setenv(key, value string)
+	Chdir(dir string)
 	Skip(args ...any)
 	SkipNow()
 	Skipf(format string, args ...any)
 	Skipped() bool
 	TempDir() string
+	Context() context.Context
 
 	private()
 }
@@ -411,54 +427,73 @@ type TB interface {
 var _ TB = (*T)(nil)
 var _ TB = (*B)(nil)
 
-// Tはテスト状態を管理し、フォーマットされたテストログをサポートするためにTest関数に渡される型です。
+// T is a type passed to Test functions to manage test state and support formatted test logs.
 //
-// テストは、そのTest関数が返却されるか、またはFailNow、Fatal、Fatalf、SkipNow、Skip、Skipfのいずれかのメソッドが呼び出された時に終了します。これらのメソッド、およびParallelメソッドは、テスト関数を実行しているゴルーチンからのみ呼び出す必要があります。
+// A test ends when its Test function returns or calls any of the methods
+// FailNow, Fatal, Fatalf, SkipNow, Skip, or Skipf. Those methods, as well as
+// the Parallel method, must be called only from the goroutine running the
+// Test function.
 //
-// LogやErrorのバリエーションなど、他のレポートメソッドは、複数のゴルーチンから同時に呼び出すことができます。
+// The other reporting methods, such as the variations of Log and Error,
+// may be called simultaneously from multiple goroutines.
 type T struct {
 	common
-	isEnvSet bool
-	context  *testContext
+	denyParallel bool
+	tstate       *testState
 }
 
-// Parallelは、このテストが並行して（そしてそれ以外では）実行されることを示します。
-// -test.countや-test.cpuの使用により、テストが複数回実行される場合、単一のテストの複数のインスタンスは互いに並行して実行されません。
+// Parallel signals that this test is to be run in parallel with (and only with)
+// other parallel tests. When a test is run multiple times due to use of
+// -test.count or -test.cpu, multiple instances of a single test never run in
+// parallel with each other.
 func (t *T) Parallel()
 
-// Setenvはos.Setenv(key, value)を呼び出し、Cleanupを使用してテスト後に環境変数を元の値に復元します。
+// Setenv calls os.Setenv(key, value) and uses Cleanup to
+// restore the environment variable to its original value
+// after the test.
 //
-// Setenvはプロセス全体に影響を与えるため、並列テストや並列祖先を持つテストで使用することはできません。
+// Because Setenv affects the whole process, it cannot be used
+// in parallel tests or tests with parallel ancestors.
 func (t *T) Setenv(key, value string)
 
-// InternalTestは内部の型ですが、異なるパッケージでも使用するためにエクスポートされています。
-// これは「go test」コマンドの実装の一部です。
+// Chdir calls os.Chdir(dir) and uses Cleanup to restore the current
+// working directory to its original value after the test. On Unix, it
+// also sets PWD environment variable for the duration of the test.
+//
+// Because Chdir affects the whole process, it cannot be used
+// in parallel tests or tests with parallel ancestors.
+func (t *T) Chdir(dir string)
+
+// InternalTest is an internal type but exported because it is cross-package;
+// it is part of the implementation of the "go test" command.
 type InternalTest struct {
 	Name string
 	F    func(*T)
 }
 
-// Runはfをtのサブテストとして実行します。nameという名前で実行されます。fは別のゴルーチンで実行され、
-// fが返るか、t.Parallelを呼び出して並列テストになるまでブロックされます。
-// Runはfが成功したか（またはt.Parallelを呼び出す前に失敗しなかったか）を報告します。
+// Run runs f as a subtest of t called name. It runs f in a separate goroutine
+// and blocks until f returns or calls t.Parallel to become a parallel test.
+// Run reports whether f succeeded (or at least did not fail before calling t.Parallel).
 //
-// Runは複数のゴルーチンから同時に呼び出すことができますが、そのようなすべての呼び出しは、
-// tが外部テスト関数を返す前に返さなければなりません。
+// Run may be called simultaneously from multiple goroutines, but all such calls
+// must return before the outer test function for t returns.
 func (t *T) Run(name string, f func(t *T)) bool
 
-// Deadlineは、-timeoutフラグで指定されたタイムアウトを超えるテストバイナリの時間を報告します。
+// Deadline reports the time at which the test binary will have
+// exceeded the timeout specified by the -timeout flag.
 //
-// -timeoutフラグが「タイムアウトなし」（0）を示す場合、ok結果はfalseです。
+// The ok result is false if the -timeout flag indicates “no timeout” (0).
 func (t *T) Deadline() (deadline time.Time, ok bool)
 
-// Mainは"go test"コマンドの実装の一部である内部関数です。
-// これは、クロスパッケージであり、「internal」パッケージより前にエクスポートされました。
-// "go test"ではもはや使用されていませんが、他のシステムにはできるだけ保持されます。
-// "go test"をシミュレートする他のシステムが、Mainを使用する一方で、Mainは更新できないことがあります。
-// "go test"をシミュレートするシステムは、MainStartを使用するように更新する必要があります。
+// Main is an internal function, part of the implementation of the "go test" command.
+// It was exported because it is cross-package and predates "internal" packages.
+// It is no longer used by "go test" but preserved, as much as possible, for other
+// systems that simulate "go test" using Main, but Main sometimes cannot be updated as
+// new functionality is added to the testing package.
+// Systems simulating "go test" should be updated to use MainStart.
 func Main(matchString func(pat, str string) (bool, error), tests []InternalTest, benchmarks []InternalBenchmark, examples []InternalExample)
 
-// MはTestMain関数に渡される型で、実際のテストを実行するために使用されます。
+// M is a type passed to a TestMain function to run the actual tests.
 type M struct {
 	deps        testDeps
 	tests       []InternalTest
@@ -471,19 +506,19 @@ type M struct {
 
 	numRun int
 
-	// os.Exitに渡す値、外部のtest func mainに
-	// harnessはこのコードでos.Exitを呼び出します。#34129を参照してください。
+	// value to pass to os.Exit, the outer test func main
+	// harness calls os.Exit with this code. See #34129.
 	exitCode int
 }
 
-// MainStartは「go test」によって生成されたテストで使用することを意図しています。
-// 直接呼び出すことは意図されておらず、Go 1の互換性ドキュメントの対象外です。
-// リリースごとにシグネチャが変更される可能性があります。
+// MainStart is meant for use by tests generated by 'go test'.
+// It is not meant to be called directly and is not subject to the Go 1 compatibility document.
+// It may change signature from release to release.
 func MainStart(deps testDeps, tests []InternalTest, benchmarks []InternalBenchmark, fuzzTargets []InternalFuzzTarget, examples []InternalExample) *M
 
-// Runはテストを実行します。os.Exitに渡すための終了コードを返します。
+// Run runs the tests. It returns an exit code to pass to os.Exit.
 func (m *M) Run() (code int)
 
-// RunTestsは内部関数ですが、クロスパッケージであるためにエクスポートされています。
-// これは"go test"コマンドの実装の一部です。
+// RunTests is an internal function but exported because it is cross-package;
+// it is part of the implementation of the "go test" command.
 func RunTests(matchString func(pat, str string) (bool, error), tests []InternalTest) (ok bool)

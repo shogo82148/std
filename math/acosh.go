@@ -4,9 +4,9 @@
 
 package math
 
-// Acoshはxの逆双曲線余弦を返します。
+// Acosh returns the inverse hyperbolic cosine of x.
 //
-// 特殊な場合は以下の通りです:
+// Special cases are:
 //
 //	Acosh(+Inf) = +Inf
 //	Acosh(x) = NaN if x < 1

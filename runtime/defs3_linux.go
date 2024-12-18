@@ -12,7 +12,7 @@ GOARCH=ppc64 cgo -cdefs defs_linux.go defs3_linux.go > defs_linux_ppc64.h
 
 package runtime
 
-import "C"
+import "github.com/shogo82148/std/C"
 
 const (
 	O_RDONLY    = C.O_RDONLY

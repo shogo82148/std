@@ -2,8 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// backtrack（バックトラック）は、小さな正規表現とテキストに対して、サブマッチの追跡を行う正規表現検索です。それは、(入力の長さ) * (プログラムの長さ)ビットのビットベクトルを割り当てて、同じ（文字位置、命令）の状態を複数回探索しないようにします。これにより、テストの長さに比例して実行時間が線形に制限されます。
+// backtrack is a regular expression search with submatch
+// tracking for small regular expressions and texts. It allocates
+// a bit vector with (length of input) * (length of prog) bits,
+// to make sure it never explores the same (character position, instruction)
+// state multiple times. This limits the search to run in time linear in
+// the length of the test.
 //
-// backtrackは、onepassを使用できない場合に、小さな正規表現のNFAコードの高速な代替手段です。
+// backtrack is a fast replacement for the NFA code on small
+// regexps when onepass cannot be used.
 
 package regexp

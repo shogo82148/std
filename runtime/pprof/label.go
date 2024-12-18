@@ -8,24 +8,27 @@ import (
 	"github.com/shogo82148/std/context"
 )
 
-// LabelSetはラベルのセットです。
+// LabelSet is a set of labels.
 type LabelSet struct {
 	list []label
 }
 
-// WithLabelsは指定されたラベルが追加された新しい [context.Context] を返します。
-// ラベルは同じキーを持つ以前のラベルを上書きします。
+// WithLabels returns a new [context.Context] with the given labels added.
+// A label overwrites a prior label with the same key.
 func WithLabels(ctx context.Context, labels LabelSet) context.Context
 
-// Labelsは、キーと値のペアを表す文字列の偶数個を受け取り、それらを含む [LabelSet] を作成します。
-// ラベルは、同じキーを持つ以前のラベルを上書きします。
-// 現在、CPUプロファイルとゴルーチンプロファイルのみがラベル情報を利用しています。
-// 詳細は、https://golang.org/issue/23458 を参照してください。
+// Labels takes an even number of strings representing key-value pairs
+// and makes a [LabelSet] containing them.
+// A label overwrites a prior label with the same key.
+// Currently only the CPU and goroutine profiles utilize any labels
+// information.
+// See https://golang.org/issue/23458 for details.
 func Labels(args ...string) LabelSet
 
-// Labelは与えられたキーに対応するラベルの値と、そのラベルが存在するかを示すブール値をctxから返します。
+// Label returns the value of the label with the given key on ctx, and a boolean indicating
+// whether that label exists.
 func Label(ctx context.Context, key string) (string, bool)
 
-// ForLabelsはコンテキストに設定された各ラベルを持ってfを呼び出します。
-// 関数fは繰り返しを続けるためにtrueを返すか、繰り返しを早期に停止するためにfalseを返す必要があります。
+// ForLabels invokes f with each label set on the context.
+// The function f should return true to continue iteration or false to stop iteration early.
 func ForLabels(ctx context.Context, f func(key, value string) bool)

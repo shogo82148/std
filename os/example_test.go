@@ -27,13 +27,13 @@ func ExampleOpenFile() {
 }
 
 func ExampleOpenFile_append() {
-	// ファイルが存在しない場合は作成し、ファイルに追記する
+	// If the file doesn't exist, create it, or append to the file
 	f, err := os.OpenFile("access.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
 	if _, err := f.Write([]byte("appended some data\n")); err != nil {
-		f.Close() // エラーを無視する; エラーが優先される
+		f.Close() // ignore error; Write error takes precedence
 		log.Fatal(err)
 	}
 	if err := f.Close(); err != nil {
@@ -165,7 +165,7 @@ func ExampleMkdirTemp() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.RemoveAll(dir) // クリーンアップ
+	defer os.RemoveAll(dir) // clean up
 
 	file := filepath.Join(dir, "tmpfile")
 	if err := os.WriteFile(file, []byte("content"), 0666); err != nil {
@@ -178,10 +178,10 @@ func ExampleMkdirTemp_suffix() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.RemoveAll(logsDir) // クリーンアップ
+	defer os.RemoveAll(logsDir) // clean up
 
-	// ログは必要に応じて早期にクリーニングアウトできます
-	// *-logsで終わるすべてのディレクトリを検索してください。
+	// Logs can be cleaned out earlier if needed by searching
+	// for all directories whose suffix ends in *-logs.
 	globPattern := filepath.Join(os.TempDir(), "*-logs")
 	matches, err := filepath.Glob(globPattern)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleCreateTemp() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.Remove(f.Name()) // クリーンアップ
+	defer os.Remove(f.Name()) // clean up
 
 	if _, err := f.Write([]byte("content")); err != nil {
 		log.Fatal(err)
@@ -215,7 +215,7 @@ func ExampleCreateTemp_suffix() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.Remove(f.Name()) // クリーンアップ
+	defer os.Remove(f.Name()) // clean up
 
 	if _, err := f.Write([]byte("content")); err != nil {
 		f.Close()

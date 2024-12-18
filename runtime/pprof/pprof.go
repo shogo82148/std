@@ -2,17 +2,21 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// pprofパッケージは、pprof視覚化ツールで期待される形式でランタイムプロファイリングデータを書き込みます。
+// Package pprof writes runtime profiling data in the format expected
+// by the pprof visualization tool.
 //
-// # Goプログラムのプロファイリング
+// # Profiling a Go program
 //
-// Goプログラムをプロファイリングする最初のステップは、プロファイリングを有効にすることです。
-// 標準のテストパッケージでビルドされたベンチマークのプロファイリングをサポートするためには、go testに組み込まれています。
-// たとえば、次のコマンドは現在のディレクトリでベンチマークを実行し、CPUプロファイルとメモリプロファイルをcpu.profとmem.profに書き込みます：
+// The first step to profiling a Go program is to enable profiling.
+// Support for profiling benchmarks built with the standard testing
+// package is built into go test. For example, the following command
+// runs benchmarks in the current directory and writes the CPU and
+// memory profiles to cpu.prof and mem.prof:
 //
 //	go test -cpuprofile cpu.prof -memprofile mem.prof -bench .
 //
-// スタンドアロンのプログラムに同等のプロファイリングサポートを追加するには、以下のようなコードをmain関数に追加します：
+// To add equivalent profiling support to a standalone program, add
+// code like the following to your main function:
 //
 //	var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
 //	var memprofile = flag.String("memprofile", "", "write memory profile to `file`")
@@ -24,42 +28,50 @@
 //	        if err != nil {
 //	            log.Fatal("could not create CPU profile: ", err)
 //	        }
-//	        defer f.Close() // エラーハンドリングは例外です
+//	        defer f.Close() // error handling omitted for example
 //	        if err := pprof.StartCPUProfile(f); err != nil {
 //	            log.Fatal("could not start CPU profile: ", err)
 //	        }
 //	        defer pprof.StopCPUProfile()
 //	    }
 //
-//	    // ... プログラムの残り ...
+//	    // ... rest of the program ...
 //
 //	    if *memprofile != "" {
 //	        f, err := os.Create(*memprofile)
 //	        if err != nil {
 //	            log.Fatal("could not create memory profile: ", err)
 //	        }
-//	        defer f.Close() // エラーハンドリングは例外です
-//	        runtime.GC() // 最新の統計情報を取得
-//	        if err := pprof.WriteHeapProfile(f); err != nil {
+//	        defer f.Close() // error handling omitted for example
+//	        runtime.GC() // get up-to-date statistics
+//	        // Lookup("allocs") creates a profile similar to go test -memprofile.
+//	        // Alternatively, use Lookup("heap") for a profile
+//	        // that has inuse_space as the default index.
+//	        if err := pprof.Lookup("allocs").WriteTo(f, 0); err != nil {
 //	            log.Fatal("could not write memory profile: ", err)
 //	        }
 //	    }
 //	}
 //
-// プロファイリングデータへの標準のHTTPインターフェースもあります。以下の行を追加すると、/debug/pprof/の下にハンドラがインストールされ、ライブプロファイルをダウンロードすることができます：
+// There is also a standard HTTP interface to profiling data. Adding
+// the following line will install handlers under the /debug/pprof/
+// URL to download live profiles:
 //
 //	import _ "net/http/pprof"
 //
-// 詳細については、net/http/pprofパッケージを参照してください。
-// プロファイルはpprofツールで可視化することができます：
+// See the net/http/pprof package for more details.
+//
+// Profiles can then be visualized with the pprof tool:
 //
 //	go tool pprof cpu.prof
 //
-// pprofコマンドラインからは多くのコマンドが利用できます。
-// よく使用されるコマンドには、「top」（プログラムのホットスポットの要約を表示する）や、「web」（ホットスポットとその呼び出しグラフの対話型グラフを開く）があります。
-// すべてのpprofコマンドに関する情報については、「help」を使用してください。
-// pprofに関する詳細情報は、次を参照してください
+// There are many commands available from the pprof command line.
+// Commonly used commands include "top", which prints a summary of the
+// top program hot-spots, and "web", which opens an interactive graph
+// of hot-spots and their call graphs. Use "help" for information on
+// all pprof commands.
 //
+// For more information about pprof, see
 // https://github.com/google/pprof/blob/main/doc/README.md.
 package pprof
 
@@ -68,74 +80,86 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// Profileは、特定のイベント（例えば、割り当て）へのインスタンスにつながる呼び出しシーケンスを示すスタックトレースの集合です。
-// パッケージは自身のプロファイルを作成し、維持することができます。最も一般的な使用例は、
-// ファイルやネットワーク接続のような、明示的に閉じる必要があるリソースの追跡です。
+// A Profile is a collection of stack traces showing the call sequences
+// that led to instances of a particular event, such as allocation.
+// Packages can create and maintain their own profiles; the most common
+// use is for tracking resources that must be explicitly closed, such as files
+// or network connections.
 //
-// プロファイルのメソッドは、複数のゴルーチンから同時に呼び出すことができます。
+// A Profile's methods can be called from multiple goroutines simultaneously.
 //
-// 各プロファイルには一意の名前があります。いくつかのプロファイルは事前に定義されています：
+// Each Profile has a unique name. A few profiles are predefined:
 //
-//	goroutine    - 現在のすべてのゴルーチンのスタックトレース
-//	heap         - 生存しているオブジェクトのメモリ割り当てのサンプリング
-//	allocs       - 過去のすべてのメモリ割り当てのサンプリング
-//	threadcreate - 新しいOSスレッドの作成につながったスタックトレース
-//	block        - 同期プリミティブでのブロックにつながったスタックトレース
-//	mutex        - 競合するミューテックスの保持者のスタックトレース
+//	goroutine    - stack traces of all current goroutines
+//	heap         - a sampling of memory allocations of live objects
+//	allocs       - a sampling of all past memory allocations
+//	threadcreate - stack traces that led to the creation of new OS threads
+//	block        - stack traces that led to blocking on synchronization primitives
+//	mutex        - stack traces of holders of contended mutexes
 //
-// これらの事前定義されたプロファイルは自己維持し、明示的な
-// [Profile.Add] または [Profile.Remove] メソッド呼び出しでパニックを起こします。
+// These predefined profiles maintain themselves and panic on an explicit
+// [Profile.Add] or [Profile.Remove] method call.
 //
-// CPUプロファイルはProfileとして利用できません。これは特別なAPIを持っており、
-// [StartCPUProfile] と [StopCPUProfile] 関数があります。これはプロファイリング中に
-// 出力をライターにストリームします。
+// The CPU profile is not available as a Profile. It has a special API,
+// the [StartCPUProfile] and [StopCPUProfile] functions, because it streams
+// output to a writer during profiling.
 //
 // # Heap profile
 //
-// ヒーププロファイルは、最も最近に完了したガベージコレクション時点の統計を報告します。
-// これは、プロファイルを生データからガベージに偏らせるのを避けるため、より最近の割り当てを省略します。
-// ガベージコレクションが一度も行われていない場合、ヒーププロファイルはすべての既知の割り当てを報告します。
-// この例外は主に、通常はデバッグ目的で、ガベージコレクションが有効になっていないプログラムで役立ちます。
+// The heap profile reports statistics as of the most recently completed
+// garbage collection; it elides more recent allocation to avoid skewing
+// the profile away from live data and toward garbage.
+// If there has been no garbage collection at all, the heap profile reports
+// all known allocations. This exception helps mainly in programs running
+// without garbage collection enabled, usually for debugging purposes.
 //
-// ヒーププロファイルは、アプリケーションメモリ内のすべてのライブオブジェクトの割り当て場所と、
-// プログラム開始以降に割り当てられたすべてのオブジェクトを追跡します。
-// Pprofの -inuse_space、-inuse_objects、-alloc_space、および -alloc_objects
-// フラグは、表示するものを選択し、デフォルトは -inuse_space（ライブオブジェクト、サイズによってスケーリング）です。
+// The heap profile tracks both the allocation sites for all live objects in
+// the application memory and for all objects allocated since the program start.
+// Pprof's -inuse_space, -inuse_objects, -alloc_space, and -alloc_objects
+// flags select which to display, defaulting to -inuse_space (live objects,
+// scaled by size).
 //
 // # Allocs profile
 //
-// allocsプロファイルはheapプロファイルと同じですが、デフォルトの
-// pprof表示を -alloc_space（プログラムが開始してから割り当てられた
-// バイト数の合計（ガベージコレクションされたバイトを含む））に変更します。
+// The allocs profile is the same as the heap profile but changes the default
+// pprof display to -alloc_space, the total number of bytes allocated since
+// the program began (including garbage-collected bytes).
 //
 // # Block profile
 //
-// ブロックプロファイルは、[sync.Mutex]、[sync.RWMutex]、[sync.WaitGroup]、
-// [sync.Cond]、およびチャネルの送信/受信/選択などの同期プリミティブで
-// ブロックされた時間を追跡します。
+// The block profile tracks time spent blocked on synchronization primitives,
+// such as [sync.Mutex], [sync.RWMutex], [sync.WaitGroup], [sync.Cond], and
+// channel send/receive/select.
 //
-// スタックトレースは、ブロックした場所（例えば、[sync.Mutex.Lock]）に対応します。
+// Stack traces correspond to the location that blocked (for example,
+// [sync.Mutex.Lock]).
 //
-// サンプル値は、そのスタックトレースでブロックされた累積時間に対応します。
-// これは [runtime.SetBlockProfileRate] で指定された時間ベースのサンプリングに従います。
+// Sample values correspond to cumulative time spent blocked at that stack
+// trace, subject to time-based sampling specified by
+// [runtime.SetBlockProfileRate].
 //
 // # Mutex profile
 //
-// ミューテックスプロファイルは、[sync.Mutex]、[sync.RWMutex]、およびランタイム内部のロックなど、
-// ミューテックスの競合を追跡します。
+// The mutex profile tracks contention on mutexes, such as [sync.Mutex],
+// [sync.RWMutex], and runtime-internal locks.
 //
-// スタックトレースは、競合を引き起こすクリティカルセクションの終わりに対応します。
-// 例えば、他のゴルーチンがロックを取得しようと待っている間に長時間保持されたロックは、
-// ロックが最終的に解除されたとき（つまり、[sync.Mutex.Unlock] で）に競合を報告します。
+// Stack traces correspond to the end of the critical section causing
+// contention. For example, a lock held for a long time while other goroutines
+// are waiting to acquire the lock will report contention when the lock is
+// finally unlocked (that is, at [sync.Mutex.Unlock]).
 //
-// サンプル値は、他のゴルーチンがロックを待ってブロックされていた累積時間に相当し、
-// [runtime.SetMutexProfileFraction] によって指定されたイベントベースのサンプリングに従います。
-// 例えば、ある呼び出し元がロックを1秒間保持していて、他の5つのゴルーチンがそのロックを獲得するために
-// その全秒を待っていた場合、そのアンロックのコールスタックは5秒の競合を報告します。
+// Sample values correspond to the approximate cumulative time other goroutines
+// spent blocked waiting for the lock, subject to event-based sampling
+// specified by [runtime.SetMutexProfileFraction]. For example, if a caller
+// holds a lock for 1s while 5 other goroutines are waiting for the entire
+// second to acquire the lock, its unlock call stack will report 5s of
+// contention.
 //
-// ランタイム内部のロックは常に "runtime._LostContendedRuntimeLock" の位置で報告されます。ランタイム内部のロックに対する
-// より詳細なスタックトレースは、`GODEBUG=runtimecontentionstacks=1` を設定することで取得できます（注意事項については
-// [runtime] パッケージのドキュメントを参照してください）。
+// Runtime-internal locks are always reported at the location
+// "runtime._LostContendedRuntimeLock". More detailed stack traces for
+// runtime-internal locks can be obtained by setting
+// `GODEBUG=runtimecontentionstacks=1` (see package [runtime] docs for
+// caveats).
 type Profile struct {
 	name  string
 	mu    sync.Mutex
@@ -144,77 +168,84 @@ type Profile struct {
 	write func(io.Writer, int) error
 }
 
-// NewProfileは指定された名前で新しいプロファイルを作成します。
-// すでにその名前のプロファイルが存在する場合、NewProfileはパニックを引き起こします。
-// 各パッケージごとに別の名前空間を作成するために、'import/path.'接頭辞を使用するのが一般的です。
-// pprofデータを読み取るさまざまなツールとの互換性のために、プロファイル名にはスペースを含めないでください。
+// NewProfile creates a new profile with the given name.
+// If a profile with that name already exists, NewProfile panics.
+// The convention is to use a 'import/path.' prefix to create
+// separate name spaces for each package.
+// For compatibility with various tools that read pprof data,
+// profile names should not contain spaces.
 func NewProfile(name string) *Profile
 
-// Lookupは指定された名前のプロフィールを返します。存在しない場合はnilを返します。
+// Lookup returns the profile with the given name, or nil if no such profile exists.
 func Lookup(name string) *Profile
 
-// Profilesは、名前でソートされたすべてのプロフィールのスライスを返します。
+// Profiles returns a slice of all the known profiles, sorted by name.
 func Profiles() []*Profile
 
-// Nameはこのプロフィールの名前を返します。プロフィールを再取得するために [Lookup] に渡すことができます。
+// Name returns this profile's name, which can be passed to [Lookup] to reobtain the profile.
 func (p *Profile) Name() string
 
-// Countは現在のプロファイル内の実行スタックの数を返します。
+// Count returns the number of execution stacks currently in the profile.
 func (p *Profile) Count() int
 
-// Addは現在の実行スタックを、値と関連付けてプロファイルに追加します。
-// Addは値を内部のマップに保存するため、値はマップのキーとして使用するのに適しており、対応する [Profile.Remove] 呼び出しまでガベージコレクトされません。
-// Addはもしプロファイルにすでに値のスタックが含まれている場合、パニックを発生させます。
+// Add adds the current execution stack to the profile, associated with value.
+// Add stores value in an internal map, so value must be suitable for use as
+// a map key and will not be garbage collected until the corresponding
+// call to [Profile.Remove]. Add panics if the profile already contains a stack for value.
 //
-// skipパラメータは [runtime.Caller] のskipと同じ意味を持ち、スタックトレースが始まる場所を制御します。
-// skip=0を渡すと、Addを呼び出した関数からトレースが始まります。例えば、以下のような実行スタックがあるとします:
+// The skip parameter has the same meaning as [runtime.Caller]'s skip
+// and controls where the stack trace begins. Passing skip=0 begins the
+// trace in the function calling Add. For example, given this
+// execution stack:
 //
 //	Add
-//	rpc.NewClientから呼び出される
-//	mypkg.Runから呼び出される
-//	main.mainから呼び出される
+//	called from rpc.NewClient
+//	called from mypkg.Run
+//	called from main.main
 //
-// skip=0を渡すと、スタックトレースはrpc.NewClient内でのAddの呼び出しで始まります。
-// skip=1を渡すと、スタックトレースはmypkg.Run内でのNewClientの呼び出しで始まります。
+// Passing skip=0 begins the stack trace at the call to Add inside rpc.NewClient.
+// Passing skip=1 begins the stack trace at the call to NewClient inside mypkg.Run.
 func (p *Profile) Add(value any, skip int)
 
-// Removeはプロファイルから関連付けられた実行スタックを削除します。
-// valueがプロファイルに存在しない場合、何もしません。
+// Remove removes the execution stack associated with value from the profile.
+// It is a no-op if the value is not in the profile.
 func (p *Profile) Remove(value any)
 
-// WriteToはプロファイルのスナップショットをwにpprof形式で書き込みます。
-// wへの書き込みがエラーを返す場合、WriteToはそのエラーを返します。
-// それ以外の場合、WriteToはnilを返します。
+// WriteTo writes a pprof-formatted snapshot of the profile to w.
+// If a write to w returns an error, WriteTo returns that error.
+// Otherwise, WriteTo returns nil.
 //
-// debugパラメータは追加の出力を有効にします。
-// debug=0を渡すと、https://github.com/google/pprof/tree/master/proto#overviewで
-// 説明されているgzip圧縮されたプロトコルバッファ形式で書き込まれます。
-// debug=1を渡すと、関数名と行番号をアドレスに変換したレガシーテキスト形式で書き込まれます。
-// これにより、プログラマがツールなしでプロファイルを読むことができます。
+// The debug parameter enables additional output.
+// Passing debug=0 writes the gzip-compressed protocol buffer described
+// in https://github.com/google/pprof/tree/main/proto#overview.
+// Passing debug=1 writes the legacy text format with comments
+// translating addresses to function names and line numbers, so that a
+// programmer can read the profile without tools.
 //
-// プリセットのプロファイルは、他のdebugの値に意味を割り当てることができます。
-// たとえば、"goroutine"プロファイルの場合、debug=2は、
-// ゴルーチンのスタックをGoプログラムが回復不可能なパニックによって終了する際に使用する同じ形式で表示することを意味します。
+// The predefined profiles may assign meaning to other debug values;
+// for example, when printing the "goroutine" profile, debug=2 means to
+// print the goroutine stacks in the same form that a Go program uses
+// when dying due to an unrecovered panic.
 func (p *Profile) WriteTo(w io.Writer, debug int) error
 
-// WriteHeapProfileは、[Lookup]("heap").WriteTo(w, 0)の略記です。
-// 後方互換性のために保持されています。
+// WriteHeapProfile is shorthand for [Lookup]("heap").WriteTo(w, 0).
+// It is preserved for backwards compatibility.
 func WriteHeapProfile(w io.Writer) error
 
-// StartCPUProfileは現在のプロセスに対してCPUプロファイリングを有効にします。
-// プロファイリング中は、プロファイルがバッファリングされ、wに書き込まれます。
-// StartCPUProfileは、すでにプロファイリングが有効な場合にエラーを返します。
+// StartCPUProfile enables CPU profiling for the current process.
+// While profiling, the profile will be buffered and written to w.
+// StartCPUProfile returns an error if profiling is already enabled.
 //
-// Unix系システムでは、-buildmode=c-archiveまたは-buildmode=c-sharedで
-// ビルドされたGoコードでは、デフォルトではStartCPUProfileは動作しません。
-// StartCPUProfileはSIGPROFシグナルを利用していますが、
-// そのシグナルはGoが使用するものではなく、
-// メインプログラムのSIGPROFシグナルハンドラ（あれば）に送信されます。
-// 関数 [os/signal.Notify] を [syscall.SIGPROF] に対して呼び出すことで、
-// それが動作するようにすることができますが、その場合、
-// メインプログラムで実行されているプロファイリングが壊れる可能性があります。
+// On Unix-like systems, StartCPUProfile does not work by default for
+// Go code built with -buildmode=c-archive or -buildmode=c-shared.
+// StartCPUProfile relies on the SIGPROF signal, but that signal will
+// be delivered to the main program's SIGPROF signal handler (if any)
+// not to the one used by Go. To make it work, call [os/signal.Notify]
+// for [syscall.SIGPROF], but note that doing so may break any profiling
+// being done by the main program.
 func StartCPUProfile(w io.Writer) error
 
-// StopCPUProfileは現在のCPUプロファイルを停止します（もし存在する場合）。
-// StopCPUProfileはプロファイルの書き込みが完了するまでのみ戻ります。
+// StopCPUProfile stops the current CPU profile, if any.
+// StopCPUProfile only returns after all the writes for the
+// profile have completed.
 func StopCPUProfile()

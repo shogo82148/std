@@ -8,77 +8,85 @@ import (
 	"github.com/shogo82148/std/syscall"
 )
 
-// IPAddrはIPエンドポイントのアドレスを表します。
+// IPAddr represents the address of an IP end point.
 type IPAddr struct {
 	IP   IP
 	Zone string
 }
 
-// Networkはアドレスのネットワーク名を返します。"ip"。
+// Network returns the address's network name, "ip".
 func (a *IPAddr) Network() string
 
 func (a *IPAddr) String() string
 
-// ResolveIPAddrはIPエンドポイントのアドレスを返します。
+// ResolveIPAddr returns an address of IP end point.
 //
-// ネットワークはIPネットワーク名である必要があります。
+// The network must be an IP network name.
 //
-// アドレスパラメーターのホストがリテラルIPアドレスではない場合、
-// ResolveIPAddrはIPエンドポイントのアドレスに解決します。
-// そうでなければ、アドレスをリテラルのIPアドレスとして解析します。
-// アドレスパラメーターはホスト名を使用することもできますが、
-// これは推奨されません。なぜなら、ホスト名のIPアドレスのうち最大で1つしか返さないからです。
+// If the host in the address parameter is not a literal IP address,
+// ResolveIPAddr resolves the address to an address of IP end point.
+// Otherwise, it parses the address as a literal IP address.
+// The address parameter can use a host name, but this is not
+// recommended, because it will return at most one of the host name's
+// IP addresses.
 //
-// ネットワークとアドレスパラメーターの説明については、[Dial] 関数を参照してください。
+// See func [Dial] for a description of the network and address
+// parameters.
 func ResolveIPAddr(network, address string) (*IPAddr, error)
 
-// IPConnはIPネットワーク接続の [Conn] および [PacketConn] インターフェースの実装です。
+// IPConn is the implementation of the [Conn] and [PacketConn] interfaces
+// for IP network connections.
 type IPConn struct {
 	conn
 }
 
-// SyscallConnは、生のネットワーク接続を返します。
-// これは [syscall.Conn] インターフェースを実装しています。
+// SyscallConn returns a raw network connection.
+// This implements the [syscall.Conn] interface.
 func (c *IPConn) SyscallConn() (syscall.RawConn, error)
 
-// ReadFromIPはReadFromと同様に動作しますが、IPAddrを返します。
+// ReadFromIP acts like ReadFrom but returns an IPAddr.
 func (c *IPConn) ReadFromIP(b []byte) (int, *IPAddr, error)
 
-// ReadFromは [PacketConn] のReadFromメソッドを実装します。
+// ReadFrom implements the [PacketConn] ReadFrom method.
 func (c *IPConn) ReadFrom(b []byte) (int, Addr, error)
 
-// ReadMsgIPはcからメッセージを読み取り、ペイロードをbにコピーし、
-// 関連する帯域外データをoobにコピーします。bにコピーされたバイト数、oobにコピーされたバイト数、
-// メッセージに設定されたフラグ、およびメッセージの送信元アドレスを返します。
+// ReadMsgIP reads a message from c, copying the payload into b and
+// the associated out-of-band data into oob. It returns the number of
+// bytes copied into b, the number of bytes copied into oob, the flags
+// that were set on the message and the source address of the message.
 //
-// パッケージ golang.org/x/net/ipv4 と golang.org/x/net/ipv6 を使用して、oobに対してIPレベルのソケットオプションを操作できます。
+// The packages golang.org/x/net/ipv4 and golang.org/x/net/ipv6 can be
+// used to manipulate IP-level socket options in oob.
 func (c *IPConn) ReadMsgIP(b, oob []byte) (n, oobn, flags int, addr *IPAddr, err error)
 
-// WriteToIPは [IPConn.WriteTo] と同様の動作をするが、[IPAddr] を取ります。
+// WriteToIP acts like [IPConn.WriteTo] but takes an [IPAddr].
 func (c *IPConn) WriteToIP(b []byte, addr *IPAddr) (int, error)
 
-// WriteToは [PacketConn] のWriteToメソッドを実装します。
+// WriteTo implements the [PacketConn] WriteTo method.
 func (c *IPConn) WriteTo(b []byte, addr Addr) (int, error)
 
-// WriteMsgIPは、bからペイロードを、oobから関連のオフドーバンドータをコピーし、cを経由してaddrにメッセージを送信します。送信されたペイロードとオフドーバンドズダのバイト数を返します。
+// WriteMsgIP writes a message to addr via c, copying the payload from
+// b and the associated out-of-band data from oob. It returns the
+// number of payload and out-of-band bytes written.
 //
-// golang.org/x/net/ipv4とgolang.org/x/net/ipv6のパッケージを使用して、oob内のIPレベルのソケットオプションを操作することができます。
+// The packages golang.org/x/net/ipv4 and golang.org/x/net/ipv6 can be
+// used to manipulate IP-level socket options in oob.
 func (c *IPConn) WriteMsgIP(b, oob []byte, addr *IPAddr) (n, oobn int, err error)
 
-// DialIPはIPネットワークに対して [Dial] のように機能します。
+// DialIP acts like [Dial] for IP networks.
 //
-// ネットワークはIPネットワーク名である必要があります。詳細はfunc Dialを参照してください。
+// The network must be an IP network name; see func Dial for details.
 //
-// もしladdrがnilであれば、ローカルアドレスが自動的に選択されます。
-// もしraddrのIPフィールドがnilであるか、未指定のIPアドレスである場合、
-// ローカルシステムが仮定されます。
+// If laddr is nil, a local address is automatically chosen.
+// If the IP field of raddr is nil or an unspecified IP address, the
+// local system is assumed.
 func DialIP(network string, laddr, raddr *IPAddr) (*IPConn, error)
 
-// ListenIPはIPネットワーク用の [ListenPacket] と同様に機能します。
+// ListenIP acts like [ListenPacket] for IP networks.
 //
-// ネットワークはIPネットワーク名である必要があります。詳細についてはfunc Dialを参照してください。
+// The network must be an IP network name; see func Dial for details.
 //
-// もしladdrのIPフィールドがnilまたは指定されていないIPアドレスである場合、
-// ListenIPはローカルシステムの利用可能なすべてのIPアドレスでリッスンします
-// マルチキャストIPアドレスを除く。
+// If the IP field of laddr is nil or an unspecified IP address,
+// ListenIP listens on all available IP addresses of the local system
+// except multicast IP addresses.
 func ListenIP(network string, laddr *IPAddr) (*IPConn, error)

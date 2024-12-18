@@ -4,15 +4,15 @@
 
 package fs
 
-// StatFSは、Statメソッドを持つファイルシステムです。
+// A StatFS is a file system with a Stat method.
 type StatFS interface {
 	FS
 
 	Stat(name string) (FileInfo, error)
 }
 
-// Statはファイルシステムから指定されたファイルに関する [FileInfo] を返します。
+// Stat returns a [FileInfo] describing the named file from the file system.
 //
-// もしfsが [StatFS] を実装している場合、Statはfs.Statを呼び出します。
-// そうでない場合、Statは [File] を開いて統計情報を取得します。
+// If fs implements [StatFS], Stat calls fs.Stat.
+// Otherwise, Stat opens the [File] to stat it.
 func Stat(fsys FS, name string) (FileInfo, error)

@@ -6,70 +6,72 @@
 
 package reflect
 
-// MapOfは、指定されたキーと要素の型を持つマップ型を返します。
-// 例えば、kがintを表し、eがstringを表す場合、
-// MapOf(k, e)はmap[int]stringを表します。
+// MapOf returns the map type with the given key and element types.
+// For example, if k represents int and e represents string,
+// MapOf(k, e) represents map[int]string.
 //
-// キーの型が有効なマップキーの型でない場合（つまり、Goの==演算子を
-// 実装していない場合）、MapOfはパニックを起こします。
+// If the key type is not a valid map key type (that is, if it does
+// not implement Go's == operator), MapOf panics.
 func MapOf(key, elem Type) Type
 
-// MapIndexは、マップv内のキーに関連付けられた値を返します。
-// vのKindが [Map] でない場合、パニックを起こします。
-// キーがマップ内に見つからない場合、またはvがnilマップを表す場合、ゼロ値を返します。
-// Goと同様に、キーの値はマップのキー型に代入可能でなければなりません。
+// MapIndex returns the value associated with key in the map v.
+// It panics if v's Kind is not [Map].
+// It returns the zero Value if key is not found in the map or if v represents a nil map.
+// As in Go, the key's value must be assignable to the map's key type.
 func (v Value) MapIndex(key Value) Value
 
-// MapKeysは、マップに存在するすべてのキーを含むスライスを返します。
-// 順序は指定されていません。
-// vのKindが [Map] でない場合、パニックを起こします。
-// vがnilマップを表す場合、空のスライスを返します。
+// MapKeys returns a slice containing all the keys present in the map,
+// in unspecified order.
+// It panics if v's Kind is not [Map].
+// It returns an empty slice if v represents a nil map.
 func (v Value) MapKeys() []Value
 
-// MapIterは、マップを範囲指定して反復するためのイテレータです。
-// 詳細は [Value.MapRange] を参照してください。
+// A MapIter is an iterator for ranging over a map.
+// See [Value.MapRange].
 type MapIter struct {
 	m     Value
 	hiter hiter
 }
 
-// Keyは、iterの現在のマップエントリのキーを返します。
+// Key returns the key of iter's current map entry.
 func (iter *MapIter) Key() Value
 
-// SetIterKeyは、iterの現在のマップエントリのキーをvに割り当てます。
-// これはv.Set(iter.Key())と同等ですが、新しいValueを割り当てることを避けます。
-// Goと同様に、キーはvの型に代入可能でなければならず、
-// 非公開フィールドから派生したものであってはなりません。
+// SetIterKey assigns to v the key of iter's current map entry.
+// It is equivalent to v.Set(iter.Key()), but it avoids allocating a new Value.
+// As in Go, the key must be assignable to v's type and
+// must not be derived from an unexported field.
+// It panics if [Value.CanSet] returns false.
 func (v Value) SetIterKey(iter *MapIter)
 
-// Valueは、iterの現在のマップエントリの値を返します。
+// Value returns the value of iter's current map entry.
 func (iter *MapIter) Value() Value
 
-// SetIterValueは、iterの現在のマップエントリの値をvに割り当てます。
-// これはv.Set(iter.Value())と同等ですが、新しいValueを割り当てることを避けます。
-// Goと同様に、値はvの型に代入可能でなければならず、
-// 非公開フィールドから派生したものであってはなりません。
+// SetIterValue assigns to v the value of iter's current map entry.
+// It is equivalent to v.Set(iter.Value()), but it avoids allocating a new Value.
+// As in Go, the value must be assignable to v's type and
+// must not be derived from an unexported field.
+// It panics if [Value.CanSet] returns false.
 func (v Value) SetIterValue(iter *MapIter)
 
-// Nextはマップイテレータを進め、次のエントリがあるかどうかを報告します。
-// iterが終了した場合、falseを返します。
-// その後の [MapIter.Key]、[MapIter.Value]、または [MapIter.Next] の呼び出しはパニックを引き起こします。
+// Next advances the map iterator and reports whether there is another
+// entry. It returns false when iter is exhausted; subsequent
+// calls to [MapIter.Key], [MapIter.Value], or [MapIter.Next] will panic.
 func (iter *MapIter) Next() bool
 
-// Resetは、iterをvを反復するように変更します。
-// vのKindが [Map] でない場合、またはvがゼロ値でない場合、パニックを起こします。
-// Reset(Value{})は、iterがどのマップも参照しないようにします。
-// これにより、以前に反復されたマップがガベージコレクションされる可能性があります。
+// Reset modifies iter to iterate over v.
+// It panics if v's Kind is not [Map] and v is not the zero Value.
+// Reset(Value{}) causes iter to not to refer to any map,
+// which may allow the previously iterated-over map to be garbage collected.
 func (iter *MapIter) Reset(v Value)
 
-// MapRangeはマップの範囲イテレータを返します。
-// vのKindが [Map] でない場合、パニックを起こします。
+// MapRange returns a range iterator for a map.
+// It panics if v's Kind is not [Map].
 //
-// イテレータを進めるには [MapIter.Next] を呼び出し、各エントリにアクセスするには [MapIter.Key]/[MapIter.Value] を呼び出します。
-// イテレータが終了した場合、[MapIter.Next] はfalseを返します。
-// MapRangeはrangeステートメントと同じイテレーションセマンティクスに従います。
+// Call [MapIter.Next] to advance the iterator, and [MapIter.Key]/[MapIter.Value] to access each entry.
+// [MapIter.Next] returns false when the iterator is exhausted.
+// MapRange follows the same iteration semantics as a range statement.
 //
-// 例:
+// Example:
 //
 //	iter := reflect.ValueOf(m).MapRange()
 //	for iter.Next() {
@@ -79,10 +81,10 @@ func (iter *MapIter) Reset(v Value)
 //	}
 func (v Value) MapRange() *MapIter
 
-// SetMapIndexは、マップv内のキーに関連付けられた要素をelemに設定します。
-// vのKindが [Map] でない場合、パニックを起こします。
-// elemがゼロ値の場合、SetMapIndexはマップからキーを削除します。
-// それ以外の場合、vがnilマップを保持している場合、SetMapIndexはパニックを起こします。
-// Goと同様に、キーの要素はマップのキー型に代入可能でなければならず、
-// 要素の値はマップの要素型に代入可能でなければなりません。
+// SetMapIndex sets the element associated with key in the map v to elem.
+// It panics if v's Kind is not [Map].
+// If elem is the zero Value, SetMapIndex deletes the key from the map.
+// Otherwise if v holds a nil map, SetMapIndex will panic.
+// As in Go, key's elem must be assignable to the map's key type,
+// and elem's value must be assignable to the map's elem type.
 func (v Value) SetMapIndex(key, elem Value)

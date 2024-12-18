@@ -4,7 +4,7 @@
 
 package syntax
 
-// 正規表現（RegExp）は正規表現構文木のノードです。
+// A Regexp is a node in a regular expression syntax tree.
 type Regexp struct {
 	Op       Op
 	Flags    Flags
@@ -17,11 +17,11 @@ type Regexp struct {
 	Name     string
 }
 
-// Opは単一の正規表現演算子です。
+// An Op is a single regular expression operator.
 type Op uint8
 
 const (
-	OpNoMatch Op = 1 + iota
+	OpNoMatch        Op = 1 + iota
 	OpEmptyMatch
 	OpLiteral
 	OpCharClass
@@ -42,13 +42,13 @@ const (
 	OpAlternate
 )
 
-// Equalはxとyが同じ構造を持っているかどうかを報告します。
+// Equal reports whether x and y have identical structure.
 func (x *Regexp) Equal(y *Regexp) bool
 
 func (re *Regexp) String() string
 
-// MaxCapは正規表現を辿って最大のキャプチャーインデックスを見つけます。
+// MaxCap walks the regexp to find the maximum capture index.
 func (re *Regexp) MaxCap() int
 
-// CapNamesは正規表現を走査してキャプチャグループの名前を見つけます。
+// CapNames walks the regexp to find the names of capturing groups.
 func (re *Regexp) CapNames() []string

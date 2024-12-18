@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// cookiejar パッケージはメモリ内で RFC 6265 に準拠した http.CookieJar を実装します。
+// Package cookiejar implements an in-memory RFC 6265-compliant http.CookieJar.
 package cookiejar
 
 import (
@@ -11,54 +11,63 @@ import (
 	"github.com/shogo82148/std/sync"
 )
 
-// PublicSuffixListはドメインの公開サフィックスを提供します。例えば：
-//   - "example.com"の公開サフィックスは「com」です。
-//   - "foo1.foo2.foo3.co.uk"の公開サフィックスは「co.uk」です。
-//   - "bar.pvt.k12.ma.us"の公開サフィックスは「pvt.k12.ma.us」です。
+// PublicSuffixList provides the public suffix of a domain. For example:
+//   - the public suffix of "example.com" is "com",
+//   - the public suffix of "foo1.foo2.foo3.co.uk" is "co.uk", and
+//   - the public suffix of "bar.pvt.k12.ma.us" is "pvt.k12.ma.us".
 //
-// PublicSuffixListの実装は、複数のゴルーチンに対して安全に同時に使用できる必要があります。
+// Implementations of PublicSuffixList must be safe for concurrent use by
+// multiple goroutines.
 //
-// 常に""を返す実装は有効であり、テストには便利ですが、安全ではありません。これは、foo.comのHTTPサーバがbar.comのためにクッキーを設定できることを意味します。
+// An implementation that always returns "" is valid and may be useful for
+// testing but it is not secure: it means that the HTTP server for foo.com can
+// set a cookie for bar.com.
 //
-// golang.org/x/net/publicsuffixパッケージには、公開サフィックスリストの実装があります。
+// A public suffix list implementation is in the package
+// golang.org/x/net/publicsuffix.
 type PublicSuffixList interface {
 	PublicSuffix(domain string) string
 
 	String() string
 }
 
-// Options は新しい Jar の作成オプションです。
+// Options are the options for creating a new Jar.
 type Options struct {
-
-	// PublicSuffixListは、ドメインに対してHTTPサーバがクッキーを設定できるかどうかを決定する公開サフィックスリストです。
+	// PublicSuffixList is the public suffix list that determines whether
+	// an HTTP server can set a cookie for a domain.
 	//
-	// nilの値は有効であり、テストには便利ですが、セキュリティ上の理由から使用するべきではありません。これは、foo.co.ukのHTTPサーバがbar.co.ukに対してクッキーを設定できることを意味します。
+	// A nil value is valid and may be useful for testing but it is not
+	// secure: it means that the HTTP server for foo.co.uk can set a cookie
+	// for bar.co.uk.
 	PublicSuffixList PublicSuffixList
 }
 
-// Jarはnet/httpパッケージのhttp.CookieJarインターフェースを実装しています。
+// Jar implements the http.CookieJar interface from the net/http package.
 type Jar struct {
 	psList PublicSuffixList
 
-	// muは残りのフィールドをロックします。
+	// mu locks the remaining fields.
 	mu sync.Mutex
 
-	// entriesは、eTLD+1でキー付けされ、その名前/ドメイン/パスでサブキー付けされたエントリのセットです。
+	// entries is a set of entries, keyed by their eTLD+1 and subkeyed by
+	// their name/domain/path.
 	entries map[string]map[string]entry
 
-	// nextSeqNumは新しいクッキーが作成されたSetCookiesに割り当てられる次のシーケンス番号です。
+	// nextSeqNum is the next sequence number assigned to a new cookie
+	// created SetCookies.
 	nextSeqNum uint64
 }
 
-// Newは新しいクッキージャーを返します。nilの [*Options] はゼロのOptionsと同等です。
+// New returns a new cookie jar. A nil [*Options] is equivalent to a zero
+// Options.
 func New(o *Options) (*Jar, error)
 
-// Cookiesは [http.CookieJar] インターフェースのCookiesメソッドを実装しています。
+// Cookies implements the Cookies method of the [http.CookieJar] interface.
 //
-// URLのスキームがHTTPまたはHTTPSでない場合、空のスライスを返します。
+// It returns an empty slice if the URL's scheme is not HTTP or HTTPS.
 func (j *Jar) Cookies(u *url.URL) (cookies []*http.Cookie)
 
-// SetCookiesは [http.CookieJar] インターフェースのSetCookiesメソッドを実装します。
+// SetCookies implements the SetCookies method of the [http.CookieJar] interface.
 //
-// URLのスキームがHTTPまたはHTTPSでない場合、何もしません。
+// It does nothing if the URL's scheme is not HTTP or HTTPS.
 func (j *Jar) SetCookies(u *url.URL, cookies []*http.Cookie)

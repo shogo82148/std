@@ -4,13 +4,15 @@
 
 package os
 
-// Executableは、現在のプロセスを開始した実行可能ファイルのパス名を返します。
-// パスがまだ正しい実行可能ファイルを指しているとは限りません。
-// プロセスの開始にシンボリックリンクが使用された場合、オペレーティングシステムによって結果は
-// シンボリックリンクまたはそれが指していたパスになる可能性があります。
-// 安定した結果が必要な場合は、[path/filepath.EvalSymlinks] が役立ちます。
+// Executable returns the path name for the executable that started
+// the current process. There is no guarantee that the path is still
+// pointing to the correct executable. If a symlink was used to start
+// the process, depending on the operating system, the result might
+// be the symlink or the path it pointed to. If a stable result is
+// needed, [path/filepath.EvalSymlinks] might help.
 //
-// Executableは、エラーが発生しない限り、絶対パスを返します。
+// Executable returns an absolute path unless an error occurred.
 //
-// 主な利用ケースは、実行可能ファイルに対して相対的に配置されたリソースを見つけることです。
+// The main use case is finding resources located relative to an
+// executable.
 func Executable() (string, error)

@@ -11,7 +11,7 @@ import (
 )
 
 func ExampleParseFile() {
-	fset := token.NewFileSet() // positionsはfsetに対して相対的な位置にあります。
+	fset := token.NewFileSet() // positions are relative to fset
 
 	src := `package foo
 
@@ -24,19 +24,19 @@ func bar() {
 	fmt.Println(time.Now())
 }`
 
-	// インポートの処理をした後にsrcをパースしますが、それ以降の処理を停止します。
+	// Parse src but stop after processing the imports.
 	f, err := parser.ParseFile(fset, "", src, parser.ImportsOnly)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	// ファイルのASTからインポートを出力する。
+	// Print the imports from the file's AST.
 	for _, s := range f.Imports {
 		fmt.Println(s.Path.Value)
 	}
 
-	// 出力：
+	// output:
 	//
 	// "fmt"
 	// "time"

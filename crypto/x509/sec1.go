@@ -8,13 +8,14 @@ import (
 	"github.com/shogo82148/std/crypto/ecdsa"
 )
 
-// ParseECPrivateKeyはSEC 1、ASN.1 DER形式のECプライベートキーを解析します。
+// ParseECPrivateKey parses an EC private key in SEC 1, ASN.1 DER form.
 //
-// この種類のキーは、一般的に "EC PRIVATE KEY" タイプのPEMブロックにエンコードされています。
+// This kind of key is commonly encoded in PEM blocks of type "EC PRIVATE KEY".
 func ParseECPrivateKey(der []byte) (*ecdsa.PrivateKey, error)
 
-// MarshalECPrivateKeyは、ECの秘密鍵をSEC 1、ASN.1 DER形式に変換します。
+// MarshalECPrivateKey converts an EC private key to SEC 1, ASN.1 DER form.
 //
-// この種類の鍵は、一般的にはタイプ"EC PRIVATE KEY"のPEMブロックにエンコードされます。
-// EC固有でないより柔軟な鍵形式を使用する場合は、 [MarshalPKCS8PrivateKey] を使用します。
+// This kind of key is commonly encoded in PEM blocks of type "EC PRIVATE KEY".
+// For a more flexible key format which is not EC specific, use
+// [MarshalPKCS8PrivateKey].
 func MarshalECPrivateKey(key *ecdsa.PrivateKey) ([]byte, error)

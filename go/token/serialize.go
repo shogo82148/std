@@ -4,8 +4,8 @@
 
 package token
 
-// Readはファイルセットをデシリアライズするためにデコードを呼び出します。sはnilであってはいけません。
+// Read calls decode to deserialize a file set into s; s must not be nil.
 func (s *FileSet) Read(decode func(any) error) error
 
-// Writeはエンコードを呼び出してファイルセットsをシリアライズする。
+// Write calls encode to serialize the file set s.
 func (s *FileSet) Write(encode func(any) error) error

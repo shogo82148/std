@@ -5,16 +5,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルではよく使用される型の述語を実装しています。
+// This file implements commonly used type predicates.
 
 package types
 
-// IsInterfaceはtがインターフェース型かどうかを報告します。
+// IsInterface reports whether t is an interface type.
 func IsInterface(t Type) bool
 
-// Comparableは、型Tの値が比較可能かどうかを報告します。
+// Comparable reports whether values of type T are comparable.
 func Comparable(T Type) bool
 
-// Defaultは、「未指定の」型に対して「型付き」のデフォルト型を返します；
-// 他のすべての型に対しては、入力された型を返します。未指定のnilのデフォルト型は未指定のnilです。
+// Default returns the default "typed" type for an "untyped" type;
+// it returns the incoming type for all other types. The default type
+// for untyped nil is untyped nil.
 func Default(t Type) Type

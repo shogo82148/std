@@ -3,231 +3,255 @@
 // license that can be found in the LICENSE file.
 
 /*
-fmtパッケージは、Cのprintfおよびscanfに類似した関数を使用してフォーマットされたI/Oを実装します。
-フォーマット'verbs'はCから派生していますが、よりシンプルです。
+Package fmt implements formatted I/O with functions analogous
+to C's printf and scanf.  The format 'verbs' are derived from C's but
+are simpler.
 
-# 印刷
+# Printing
 
-動詞：
+The verbs:
 
-一般：
+General:
 
-	%v	デフォルトのフォーマットでの値
-		構造体を印刷する場合、プラスフラグ（%+v）はフィールド名を追加します
-	%#v	値のGo構文表現
-		（浮動小数点の無限大とNaNは±InfとNaNとして印刷されます）
-	%T	値の型のGo構文表現
-	%%	リテラルのパーセント記号；値を消費しません
+	%v	the value in a default format
+		when printing structs, the plus flag (%+v) adds field names
+	%#v	a Go-syntax representation of the value
+		(floating-point infinities and NaNs print as ±Inf and NaN)
+	%T	a Go-syntax representation of the type of the value
+	%%	a literal percent sign; consumes no value
 
-ブール値：
+Boolean:
 
-	%t	trueまたはfalseの単語
+	%t	the word true or false
 
-整数：
+Integer:
 
-	%b	2進数
-	%c	対応するUnicodeコードポイントによって表される文字
-	%d	10進数
-	%o	8進数
-	%O	0o接頭辞を付けた8進数
-	%q	Go構文で安全にエスケープされたシングルクォート文字リテラル。
-	%x	16進数（小文字のa-f）
-	%X	16進数（大文字のA-F）
-	%U	Unicode形式：U+1234； "U+%04X"と同じ
+	%b	base 2
+	%c	the character represented by the corresponding Unicode code point
+	%d	base 10
+	%o	base 8
+	%O	base 8 with 0o prefix
+	%q	a single-quoted character literal safely escaped with Go syntax.
+	%x	base 16, with lower-case letters for a-f
+	%X	base 16, with upper-case letters for A-F
+	%U	Unicode format: U+1234; same as "U+%04X"
 
-浮動小数点数と複素数の構成要素：
+Floating-point and complex constituents:
 
-	%b	2の累乗の指数で表される10進数の科学的表記法。
-	    'b'フォーマットを使用したstrconv.FormatFloatの方法で、例：-123456p-78
-	%e	科学的表記法、例：-1.234456e+78
-	%E	科学的表記法、例：-1.234456E+78
-	%f	小数点を含むが指数を含まない表記法、例：123.456
-	%F	%fの同義語
-	%g	大きな指数の場合は%e、それ以外の場合は%f。精度については後述します。
-	%G	大きな指数の場合は%E、それ以外の場合は%F
-	%x	16進数表記法（2の累乗の10進数指数を含む）、例：-0x1.23abcp+20
-	%X	大文字の16進数表記法、例：-0X1.23ABCP+20
+	%b	decimalless scientific notation with exponent a power of two,
+		in the manner of strconv.FormatFloat with the 'b' format,
+		e.g. -123456p-78
+	%e	scientific notation, e.g. -1.234456e+78
+	%E	scientific notation, e.g. -1.234456E+78
+	%f	decimal point but no exponent, e.g. 123.456
+	%F	synonym for %f
+	%g	%e for large exponents, %f otherwise. Precision is discussed below.
+	%G	%E for large exponents, %F otherwise
+	%x	hexadecimal notation (with decimal power of two exponent), e.g. -0x1.23abcp+20
+	%X	upper-case hexadecimal notation, e.g. -0X1.23ABCP+20
 
-文字列とバイトスライス（これらの動詞では同等に扱われます）：
+String and slice of bytes (treated equivalently with these verbs):
 
-	%s	文字列またはスライスの解釈されていないバイト
-	%q	Go構文で安全にエスケープされたダブルクォート文字列
-	%x	16進数、小文字、1バイトあたり2文字
-	%X	16進数、大文字、1バイトあたり2文字
+	%s	the uninterpreted bytes of the string or slice
+	%q	a double-quoted string safely escaped with Go syntax
+	%x	base 16, lower-case, two characters per byte
+	%X	base 16, upper-case, two characters per byte
 
-スライス：
+Slice:
 
-	%p	16進表記法で表された0番目の要素のアドレス。先頭に0xが付きます。
+	%p	address of 0th element in base 16 notation, with leading 0x
 
-ポインタ：
+Pointer:
 
-	%p	先頭に0xが付いた16進表記法
-	%b、%d、%o、%x、%Xの動詞は、ポインタでも整数と同じように機能し、
-	整数であるかのように値をフォーマットします。
+	%p	base 16 notation, with leading 0x
+	The %b, %d, %o, %x and %X verbs also work with pointers,
+	formatting the value exactly as if it were an integer.
 
-%vのデフォルトフォーマットは次のとおりです。
+The default format for %v is:
 
 	bool:                    %t
 	int, int8 etc.:          %d
-	uint, uint8 etc.:        %d, %#vで出力された場合は%#x
+	uint, uint8 etc.:        %d, %#x if printed with %#v
 	float32, complex64, etc: %g
 	string:                  %s
 	chan:                    %p
 	pointer:                 %p
 
-複合オブジェクトの場合、要素は再帰的にこれらのルールを使用して印刷され、次のようにレイアウトされます。
+For compound objects, the elements are printed using these rules, recursively,
+laid out like this:
 
 	struct:             {field0 field1 ...}
 	array, slice:       [elem0 elem1 ...]
 	maps:               map[key1:value1 key2:value2 ...]
-	上記へのポインタ：     &{}, &[], &map[]
+	pointer to above:   &{}, &[], &map[]
 
-幅は、動詞の直前にオプションの10進数で指定されます。
-省略された場合、幅は値を表すために必要なものです。
-精度は、（オプションの）幅の後に、ピリオドに続く10進数で指定されます。
-ピリオドが存在しない場合、デフォルトの精度が使用されます。
-後続の数字のないピリオドは、精度0を指定します。
-例：
+Width is specified by an optional decimal number immediately preceding the verb.
+If absent, the width is whatever is necessary to represent the value.
+Precision is specified after the (optional) width by a period followed by a
+decimal number. If no period is present, a default precision is used.
+A period with no following number specifies a precision of zero.
+Examples:
 
-	%f     デフォルトの幅、デフォルトの精度
-	%9f    幅9、デフォルトの精度
-	%.2f   デフォルトの幅、精度2
-	%9.2f  幅9、精度2
-	%9.f   幅9、精度0
+	%f     default width, default precision
+	%9f    width 9, default precision
+	%.2f   default width, precision 2
+	%9.2f  width 9, precision 2
+	%9.f   width 9, precision 0
 
-幅と精度は、Unicodeコードポイントの単位で測定されます。
-つまり、ルーンです。（これは、Cのprintfと異なり、常にバイトで測定される単位です。）
-'*'文字でどちらかまたは両方のフラグを置き換えることができます。
-これにより、次のオペランド（フォーマットする前のオペランドの前）から値を取得できます。
-このオペランドはint型でなければなりません。
+Width and precision are measured in units of Unicode code points,
+that is, runes. (This differs from C's printf where the
+units are always measured in bytes.) Either or both of the flags
+may be replaced with the character '*', causing their values to be
+obtained from the next operand (preceding the one to format),
+which must be of type int.
 
-ほとんどの値について、幅は出力する最小のルーン数であり、必要に応じてフォーマットされた形式をスペースでパディングします。
+For most values, width is the minimum number of runes to output,
+padding the formatted form with spaces if necessary.
 
-ただし、文字列、バイトスライス、およびバイト配列の場合、精度は入力をフォーマットするための長さを制限します（出力のサイズではありません）。
-必要に応じて切り捨てます。通常、ルーンで測定されますが、これらの型を%xまたは%Xフォーマットでフォーマットする場合はバイトで測定されます。
+For strings, byte slices and byte arrays, however, precision
+limits the length of the input to be formatted (not the size of
+the output), truncating if necessary. Normally it is measured in
+runes, but for these types when formatted with the %x or %X format
+it is measured in bytes.
 
-浮動小数点数の場合、幅はフィールドの最小幅を設定し、
-精度は必要に応じて小数点以下の桁数を設定します。
-ただし、%g /%Gの場合、精度は最大有効桁数を設定します（末尾のゼロは削除されます）。
-たとえば、12.345が与えられた場合、フォーマット%6.3fは12.345を印刷し、
-%.3gは12.3を印刷します。%e、%f、および%#gのデフォルトの精度は6です。
-％gの場合、値を一意に識別するために必要な最小桁数です。
+For floating-point values, width sets the minimum width of the field and
+precision sets the number of places after the decimal, if appropriate,
+except that for %g/%G precision sets the maximum number of significant
+digits (trailing zeros are removed). For example, given 12.345 the format
+%6.3f prints 12.345 while %.3g prints 12.3. The default precision for %e, %f
+and %#g is 6; for %g it is the smallest number of digits necessary to identify
+the value uniquely.
 
-複素数の場合、幅と精度は2つの要素に独立に適用され、結果は括弧で囲まれます。
-したがって、1.2 + 3.4iに適用された％fは（1.200000 + 3.400000i）を生成します。
+For complex numbers, the width and precision apply to the two
+components independently and the result is parenthesized, so %f applied
+to 1.2+3.4i produces (1.200000+3.400000i).
 
-整数コードポイントまたはルーン文字列（[]rune型）を%qでフォーマットする場合、
-無効なUnicodeコードポイントは、[strconv.QuoteRune] のようにUnicode置換文字U+FFFDに変更されます。
+When formatting a single integer code point or a rune string (type []rune)
+with %q, invalid Unicode code points are changed to the Unicode replacement
+character, U+FFFD, as in [strconv.QuoteRune].
 
-その他のフラグ：
+Other flags:
 
-	'+'	数値の値に対して常に符号を表示します。
-		%q (%+q)の出力をASCIIのみに保証します。
-	'-'	左側ではなく右側にスペースでパディングします（フィールドを左揃えにします）。
-	'#'	代替フォーマット: 二進数(%#b)の場合は先頭に0bを追加、8進数(%#o)の場合は0を追加、
-		16進数(%#x または %#X)の場合は0xまたは0Xを追加します。%p (%#p)の0xを抑制します。
-		%qの場合、[strconv.CanBackquote] がtrueを返す場合は生の（バッククォートされた）文字列を表示します。
-		%e、%E、%f、%F、%g、%Gに対して常に小数点を表示します。
-		%gと%Gの末尾のゼロを削除しません。
-		文字が印刷可能な場合は、例えばU+0078 'x'と表示します（%U (%#U)）。
-	' '	（スペース）数値の省略された符号のスペースを残します（% d）。
-		16進数で文字列やスライスを印刷するときにバイト間にスペースを入れます（% x、% X）。
-	'0'	スペースではなく先頭ゼロでパディングします。
-		数値の場合、これは符号の後にパディングを移動します。
+	'+'	always print a sign for numeric values;
+		guarantee ASCII-only output for %q (%+q)
+	'-'	pad with spaces on the right rather than the left (left-justify the field)
+	'#'	alternate format: add leading 0b for binary (%#b), 0 for octal (%#o),
+		0x or 0X for hex (%#x or %#X); suppress 0x for %p (%#p);
+		for %q, print a raw (backquoted) string if [strconv.CanBackquote]
+		returns true;
+		always print a decimal point for %e, %E, %f, %F, %g and %G;
+		do not remove trailing zeros for %g and %G;
+		write e.g. U+0078 'x' if the character is printable for %U (%#U)
+	' '	(space) leave a space for elided sign in numbers (% d);
+		put spaces between bytes printing strings or slices in hex (% x, % X)
+	'0'	pad with leading zeros rather than spaces;
+		for numbers, this moves the padding after the sign
 
-動詞がそれらを期待していない場合、フラグは無視されます。
-たとえば、代替の10進数フォーマットがないため、%#dと%dは同じように動作します。
+Flags are ignored by verbs that do not expect them.
+For example there is no alternate decimal format, so %#d and %d
+behave identically.
 
-Printfのような各関数に対して、フォーマットを取らないPrint関数もあります。
-これは、すべてのオペランドに対して%vと言うのと同等です。
-別のバリアントであるPrintlnは、オペランド間に空白を挿入し、改行を追加します。
+For each Printf-like function, there is also a Print function
+that takes no format and is equivalent to saying %v for every
+operand.  Another variant Println inserts blanks between
+operands and appends a newline.
 
-動詞に関係なく、オペランドがインターフェース値である場合、
-インターフェース自体ではなく、内部の具体的な値が使用されます。
-したがって、次のようになります。
+Regardless of the verb, if an operand is an interface value,
+the internal concrete value is used, not the interface itself.
+Thus:
 
 	var i interface{} = 23
 	fmt.Printf("%v\n", i)
 
-とすると、23が出力されます。
+will print 23.
 
-％Tおよび％p動詞を使用して印刷される場合を除き、
-特定のインターフェースを実装するオペランドには特別なフォーマットが適用されます。
-適用順序は次のとおりです。
+Except when printed using the verbs %T and %p, special
+formatting considerations apply for operands that implement
+certain interfaces. In order of application:
 
-1. オペランドが [reflect.Value] である場合、オペランドは保持する具体的な値に置き換えられ、
-次のルールで印刷が続行されます。
+1. If the operand is a [reflect.Value], the operand is replaced by the
+concrete value that it holds, and printing continues with the next rule.
 
-2. オペランドが [Formatter] インターフェースを実装している場合、
-それが呼び出されます。この場合、動詞とフラグの解釈はその実装によって制御されます。
+2. If an operand implements the [Formatter] interface, it will
+be invoked. In this case the interpretation of verbs and flags is
+controlled by that implementation.
 
-3. オペランドが [GoStringer] インターフェースを実装している場合、
-%v動詞が#フラグとともに使用（%#v）され、それが呼び出されます。
+3. If the %v verb is used with the # flag (%#v) and the operand
+implements the [GoStringer] interface, that will be invoked.
 
-フォーマット（[Println] などの暗黙的な%v）が文字列（%s %q %x %X）に対して有効である場合、または%vであり、%#vではない場合、次の2つのルールが適用されます。
+If the format (which is implicitly %v for [Println] etc.) is valid
+for a string (%s %q %x %X), or is %v but not %#v,
+the following two rules apply:
 
-4. オペランドがerrorインターフェースを実装している場合、Errorメソッドが呼び出され、
-オブジェクトが文字列に変換され、動詞に必要な形式でフォーマットされます（ある場合）。
+4. If an operand implements the error interface, the Error method
+will be invoked to convert the object to a string, which will then
+be formatted as required by the verb (if any).
 
-5. オペランドがString() stringメソッドを実装している場合、
-そのメソッドが呼び出され、オブジェクトが文字列に変換され、
-動詞に必要な形式でフォーマットされます（ある場合）。
+5. If an operand implements method String() string, that method
+will be invoked to convert the object to a string, which will then
+be formatted as required by the verb (if any).
 
-スライスや構造体などの複合オペランドの場合、フォーマットは各オペランドの要素に再帰的に適用され、
-オペランド全体には適用されません。したがって、%qは文字列のスライスの各要素を引用し、
-%6.2fは浮動小数点数の配列の各要素のフォーマットを制御します。
+For compound operands such as slices and structs, the format
+applies to the elements of each operand, recursively, not to the
+operand as a whole. Thus %q will quote each element of a slice
+of strings, and %6.2f will control formatting for each element
+of a floating-point array.
 
-ただし、文字列のような動詞（％s％q％x％X）を使用してバイトスライスを印刷する場合、
-バイトスライスは文字列と同じように、単一のアイテムとして扱われます。
+However, when printing a byte slice with a string-like verb
+(%s %q %x %X), it is treated identically to a string, as a single item.
 
-次のような再帰を避けるために
+To avoid recursion in cases such as
 
 	type X string
 	func (x X) String() string { return Sprintf("<%s>", x) }
 
-再帰する前に値を変換してください:
+convert the value before recurring:
 
 	func (x X) String() string { return Sprintf("<%s>", string(x)) }
 
-また、自己参照するデータ構造（スライスなど）が、その型にStringメソッドがある場合、
-無限再帰がトリガーされることがあります。しかし、そのような病理はまれであり、
-パッケージはそれらに対して保護しません。
+Infinite recursion can also be triggered by self-referential data
+structures, such as a slice that contains itself as an element, if
+that type has a String method. Such pathologies are rare, however,
+and the package does not protect against them.
 
-構造体を出力する場合、fmtはエクスポートされていないフィールドに対してErrorやStringなどの
-フォーマットメソッドを呼び出すことができないため、呼び出しません。
+When printing a struct, fmt cannot and therefore does not invoke
+formatting methods such as Error or String on unexported fields.
 
-# 明示的な引数インデックス
+# Explicit argument indexes
 
-[Printf]、[Sprintf]、および [Fprintf] では、各フォーマット指定子が呼び出し時に渡された
-引数を順番にフォーマットすることがデフォルトの動作です。
-ただし、動詞の直前に[n]という表記がある場合、n番目の1から始まる引数が代わりに
-フォーマットされることを示します。 幅または精度の'*'の前に同じ表記がある場合、
-値を保持する引数インデックスが選択されます。 [n]の括弧式を処理した後、
-後続の動詞は、別の指示がない限り、引数n + 1、n + 2などを使用します。
+In [Printf], [Sprintf], and [Fprintf], the default behavior is for each
+formatting verb to format successive arguments passed in the call.
+However, the notation [n] immediately before the verb indicates that the
+nth one-indexed argument is to be formatted instead. The same notation
+before a '*' for a width or precision selects the argument index holding
+the value. After processing a bracketed expression [n], subsequent verbs
+will use arguments n+1, n+2, etc. unless otherwise directed.
 
-例えば、
+For example,
 
 	fmt.Sprintf("%[2]d %[1]d\n", 11, 22)
 
-は "22 11" を生成します。一方、
+will yield "22 11", while
 
 	fmt.Sprintf("%[3]*.[2]*[1]f", 12.0, 2, 6)
 
-は
+equivalent to
 
 	fmt.Sprintf("%6.2f", 12.0)
 
-と同等であり、 " 12.00" を生成します。明示的なインデックスは後続の動詞に影響を与えるため、
-最初の引数のインデックスをリセットして同じ値を複数回出力するために使用できます。
+will yield " 12.00". Because an explicit index affects subsequent verbs,
+this notation can be used to print the same values multiple times
+by resetting the index for the first argument to be repeated:
 
 	fmt.Sprintf("%d %d %#[1]x %#x", 16, 17)
 
-は "16 17 0x10 0x11" を生成します。
+will yield "16 17 0x10 0x11".
 
 # Format errors
 
-動詞に対して無効な引数が指定された場合、例えば%dに対して文字列が提供された場合、
-生成された文字列には問題の説明が含まれます。次の例のように:
+If an invalid argument is given for a verb, such as providing
+a string to %d, the generated string will contain a
+description of the problem, as in these examples:
 
 	Wrong type or unknown verb: %!verb(type=value)
 		Printf("%d", "hi"):        %!d(string=hi)
@@ -242,95 +266,119 @@ Printfのような各関数に対して、フォーマットを取らないPrint
 		Printf("%*[2]d", 7):       %!d(BADINDEX)
 		Printf("%.[2]d", 7):       %!d(BADINDEX)
 
-すべてのエラーは、文字列「%!」で始まり、時には1文字（動詞）が続き、
-かっこで囲まれた説明で終わります。
+All errors begin with the string "%!" followed sometimes
+by a single character (the verb) and end with a parenthesized
+description.
 
-printルーチンによって呼び出されたときにErrorまたはStringメソッドがパニックを引き起こす場合、
-fmtパッケージはパニックからエラーメッセージを再フォーマットし、fmtパッケージを介して
-渡されたことを示す装飾を付けます。 たとえば、Stringメソッドがpanic("bad")を呼び出す場合、
-生成されたフォーマットされたメッセージは次のようになります。
+If an Error or String method triggers a panic when called by a
+print routine, the fmt package reformats the error message
+from the panic, decorating it with an indication that it came
+through the fmt package.  For example, if a String method
+calls panic("bad"), the resulting formatted message will look
+like
 
 	%!s(PANIC=bad)
 
-%!sは、失敗が発生したときに使用されるプリント動詞を示すだけです。
-ただし、パニックがErrorまたはStringメソッドに対するnilレシーバによって引き起こされる場合、
-出力は装飾されていない文字列「<nil>」です。
+The %!s just shows the print verb in use when the failure
+occurred. If the panic is caused by a nil receiver to an Error,
+String, or GoString method, however, the output is the undecorated
+string, "<nil>".
 
-# スキャン
+# Scanning
 
-フォーマットされたテキストをスキャンして値を生成する、同様の関数群があります。
-[Scan]、[Scanf]、および [Scanln] は [os.Stdin] から読み取ります。
-[Fscan]、[Fscanf]、および [Fscanln] は指定された [io.Reader] から読み取ります。
-[Sscan]、[Sscanf]、および [Sscanln] は引数文字列から読み取ります。
+An analogous set of functions scans formatted text to yield
+values.  [Scan], [Scanf] and [Scanln] read from [os.Stdin]; [Fscan],
+[Fscanf] and [Fscanln] read from a specified [io.Reader]; [Sscan],
+[Sscanf] and [Sscanln] read from an argument string.
 
-[Scan]、[Fscan]、[Sscan] は、入力の改行をスペースとして扱います。
+[Scan], [Fscan], [Sscan] treat newlines in the input as spaces.
 
-[Scanln]、[Fscanln]、および [Sscanln] は、改行でスキャンを停止し、
-アイテムの後に改行またはEOFが続くことを要求します。
+[Scanln], [Fscanln] and [Sscanln] stop scanning at a newline and
+require that the items be followed by a newline or EOF.
 
-[Scanf]、[Fscanf]、および [Sscanf] は、[Printf] と同様のフォーマット文字列に従って引数を解析します。
-以下のテキストでは、「スペース」とは、改行以外の任意のUnicode空白文字を意味します。
+[Scanf], [Fscanf], and [Sscanf] parse the arguments according to a
+format string, analogous to that of [Printf]. In the text that
+follows, 'space' means any Unicode whitespace character
+except newline.
 
-フォーマット文字列では、%文字で導入された動詞が入力を消費して解析されます。
-これらの動詞については、以下で詳しく説明します。フォーマット以外の文字（%、スペース、
-改行以外）は、正確にその入力文字を消費し、存在する必要があります。フォーマット文字列
-内の改行の前に0個以上のスペースがある場合、0個以上のスペースを入力で消費して、
-単一の改行または入力の終わりに続く改行を消費します。フォーマット文字列内の改行の後に
-スペースが続く場合、入力で0個以上のスペースを消費します。それ以外の場合、フォーマット
-文字列内の1つ以上のスペースの実行は、入力で可能な限り多くのスペースを消費します。
-フォーマット文字列内のスペースの実行が改行に隣接していない場合、実行は入力から少なくとも
-1つのスペースを消費するか、入力の終わりを見つける必要があります。
+In the format string, a verb introduced by the % character
+consumes and parses input; these verbs are described in more
+detail below. A character other than %, space, or newline in
+the format consumes exactly that input character, which must
+be present. A newline with zero or more spaces before it in
+the format string consumes zero or more spaces in the input
+followed by a single newline or the end of the input. A space
+following a newline in the format string consumes zero or more
+spaces in the input. Otherwise, any run of one or more spaces
+in the format string consumes as many spaces as possible in
+the input. Unless the run of spaces in the format string
+appears adjacent to a newline, the run must consume at least
+one space from the input or find the end of the input.
 
-スペースと改行の処理は、Cのscanfファミリーとは異なります。
-Cでは、改行は他のスペースと同様に扱われ、フォーマット文字列内のスペースの実行が
-入力で消費するスペースが見つからない場合でもエラーは発生しません。
+The handling of spaces and newlines differs from that of C's
+scanf family: in C, newlines are treated as any other space,
+and it is never an error when a run of spaces in the format
+string finds no spaces to consume in the input.
 
-動詞は [Printf] と同様に動作します。
-たとえば、%xは整数を16進数としてスキャンし、%vは値のデフォルト表現形式をスキャンします。
-[Printf] の動詞%pと%T、フラグ#と+は実装されていません。
-浮動小数点数と複素数の場合、すべての有効なフォーマット動詞
-（%b %e %E %f %F %g %G %x %Xおよび%v）は同等であり、
-10進数と16進数の表記法の両方を受け入れます（たとえば、「2.3e + 7」、「0x4.5p-8」）
-および数字を区切るアンダースコア（たとえば、「3.14159_26535_89793」）。
+The verbs behave analogously to those of [Printf].
+For example, %x will scan an integer as a hexadecimal number,
+and %v will scan the default representation format for the value.
+The [Printf] verbs %p and %T and the flags # and + are not implemented.
+For floating-point and complex values, all valid formatting verbs
+(%b %e %E %f %F %g %G %x %X and %v) are equivalent and accept
+both decimal and hexadecimal notation (for example: "2.3e+7", "0x4.5p-8")
+and digit-separating underscores (for example: "3.14159_26535_89793").
 
-動詞によって処理される入力は、暗黙的にスペースで区切られます。
-%cを除くすべての動詞の実装は、残りの入力から先頭のスペースを破棄して開始し、
-%s動詞（および文字列に読み込む%v）は、最初のスペースまたは改行文字で入力の消費を停止します。
+Input processed by verbs is implicitly space-delimited: the
+implementation of every verb except %c starts by discarding
+leading spaces from the remaining input, and the %s verb
+(and %v reading into a string) stops consuming input at the first
+space or newline character.
 
-整数をフォーマット指定子なしまたは%v動詞でスキャンする場合、
-0b（バイナリ）、0oおよび0（8進数）、0x（16進数）のよく知られた基本設定の接頭辞が受け入れられます。
-数字を区切るアンダースコアも受け入れられます。
+The familiar base-setting prefixes 0b (binary), 0o and 0 (octal),
+and 0x (hexadecimal) are accepted when scanning integers
+without a format or with the %v verb, as are digit-separating
+underscores.
 
-幅は入力テキストで解釈されますが、精度を指定する構文はありません（%5.2fではなく、%5fのみ）。
-幅が指定された場合、先頭のスペースがトリムされた後に適用され、動詞を満たすために読み取る最大ルーン数を指定します。
-例えば、
+Width is interpreted in the input text but there is no
+syntax for scanning with a precision (no %5.2f, just %5f).
+If width is provided, it applies after leading spaces are
+trimmed and specifies the maximum number of runes to read
+to satisfy the verb. For example,
 
 	Sscanf(" 1234567 ", "%5s%d", &s, &i)
 
-は、sを「12345」に、iを67に設定しますが、
+will set s to "12345" and i to 67 while
 
 	Sscanf(" 12 34 567 ", "%5s%d", &s, &i)
 
-は、sを「12」に、iを34に設定します。
+will set s to "12" and i to 34.
 
-すべてのスキャン関数において、改行文字の直後にすぐにキャリッジリターンがある場合、
-それは通常の改行文字として扱われます。
-(\r\n は \n と同じ意味を持ちます。)
+In all the scanning functions, a carriage return followed
+immediately by a newline is treated as a plain newline
+(\r\n means the same as \n).
 
-すべてのスキャン関数において、オペランドが [Scan] メソッドを実装している場合、
-つまり [Scanner] インターフェースを実装している場合、そのメソッドがそのオペランドのテキストをスキャンするために使用されます。
-また、スキャンされた引数の数が提供された引数の数よりも少ない場合、エラーが返されます。
+In all the scanning functions, if an operand implements method
+[Scan] (that is, it implements the [Scanner] interface) that
+method will be used to scan the text for that operand.  Also,
+if the number of arguments scanned is less than the number of
+arguments provided, an error is returned.
 
-スキャンするすべての引数は、基本型のポインタまたは [Scanner] インターフェースの実装である必要があります。
+All arguments to be scanned must be either pointers to basic
+types or implementations of the [Scanner] interface.
 
-[Scanf] や [Fscanf] のように、[Sscanf] は入力全体を消費する必要はありません。
-[Sscanf] が使用した入力文字列の量を回復する方法はありません。
+Like [Scanf] and [Fscanf], [Sscanf] need not consume its entire input.
+There is no way to recover how much of the input string [Sscanf] used.
 
-注意: [Fscan] などは、返された入力の1文字（rune）を読み取ることができます。
-これは、スキャンルーチンを呼び出すループが入力の一部をスキップする可能性があることを意味します。
-これは通常、入力値の間にスペースがない場合にのみ問題になります。
-[Fscan] に提供されたリーダーがReadRuneを実装している場合、そのメソッドが文字を読み取るために使用されます。
-また、リーダーがUnreadRuneも実装している場合、そのメソッドが文字を保存し、連続した呼び出しでデータが失われないようにします。
-ReadRuneとUnreadRuneのメソッドを持たないリーダーにReadRuneとUnreadRuneのメソッドをアタッチするには、[bufio.NewReader] を使用します。
+Note: [Fscan] etc. can read one character (rune) past the input
+they return, which means that a loop calling a scan routine
+may skip some of the input.  This is usually a problem only
+when there is no space between input values.  If the reader
+provided to [Fscan] implements ReadRune, that method will be used
+to read characters.  If the reader also implements UnreadRune,
+that method will be used to save the character and successive
+calls will not lose data.  To attach ReadRune and UnreadRune
+methods to a reader without that capability, use
+[bufio.NewReader].
 */
 package fmt

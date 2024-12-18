@@ -128,6 +128,7 @@
 
 package runtime
 
-// GCはガベージコレクションを実行し、呼び出し元が完了するまで呼び出し元をブロックします。
-// プログラム全体をブロックする場合もあります。
+// GC runs a garbage collection and blocks the caller until the
+// garbage collection is complete. It may also block the entire
+// program.
 func GC()

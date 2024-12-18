@@ -6,16 +6,18 @@ package io
 
 var _ WriterTo = (*multiReader)(nil)
 
-// MultiReaderは、提供された入力リーダーの論理的な連結であるReaderを返します。
-// これらは順次読み取られます。すべての入力がEOFを返したら、ReadはEOFを返します。
-// リーダーのいずれかがnilでない、EOFでないエラーを返す場合、Readはそのエラーを返します。
+// MultiReader returns a Reader that's the logical concatenation of
+// the provided input readers. They're read sequentially. Once all
+// inputs have returned EOF, Read will return EOF.  If any of the readers
+// return a non-nil, non-EOF error, Read will return that error.
 func MultiReader(readers ...Reader) Reader
 
 var _ StringWriter = (*multiWriter)(nil)
 
-// MultiWriterは、Unixのtee(1)コマンドに似た、書き込みを提供されたすべてのライターに複製するライターを作成します。
+// MultiWriter creates a writer that duplicates its writes to all the
+// provided writers, similar to the Unix tee(1) command.
 //
-// 各書き込みは、1つずつリストされたすべてのライターに書き込まれます。
-// リストされたライターのいずれかがエラーを返すと、その全体の書き込み操作が停止し、エラーが返されます。
-// リストは、書き込み操作が完了するまで変更されるべきではありません。
+// Each write is written to each listed writer, one at a time.
+// If a listed writer returns an error, that overall write operation
+// stops and returns the error; it does not continue down the list.
 func MultiWriter(writers ...Writer) Writer

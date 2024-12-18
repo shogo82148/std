@@ -137,8 +137,6 @@ func Geteuid() (euid int)
 
 func Getgid() (gid int)
 
-func Getrlimit(resource int, rlim *Rlimit) (err error)
-
 func Getuid() (uid int)
 
 func Listen(s int, n int) (err error)

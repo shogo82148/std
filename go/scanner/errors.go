@@ -9,44 +9,50 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// [ErrorList] では、エラーは*Errorで表されます。
-// Posは、有効な場合は問題のあるトークンの先頭を指し、エラーの状況はMsgで説明されます。
+// In an [ErrorList], an error is represented by an *Error.
+// The position Pos, if valid, points to the beginning of
+// the offending token, and the error condition is described
+// by Msg.
 type Error struct {
 	Pos token.Position
 	Msg string
 }
 
-// Errorはerrorインターフェースを実装します。
+// Error implements the error interface.
 func (e Error) Error() string
 
-// ErrorListは*Errorsのリストです。
-// ErrorListのゼロ値は使用する準備ができた空のErrorListです。
+// ErrorList is a list of *Errors.
+// The zero value for an ErrorList is an empty ErrorList ready to use.
 type ErrorList []*Error
 
-// Addは、指定された位置とエラーメッセージを持つ [Error] を [ErrorList] に追加します。
+// Add adds an [Error] with given position and error message to an [ErrorList].
 func (p *ErrorList) Add(pos token.Position, msg string)
 
-// Resetは [ErrorList] のエラーをリセットします。
+// Reset resets an [ErrorList] to no errors.
 func (p *ErrorList) Reset()
 
-// [ErrorList] はsort Interfaceを実装します。
+// [ErrorList] implements the sort Interface.
 func (p ErrorList) Len() int
 func (p ErrorList) Swap(i, j int)
 
 func (p ErrorList) Less(i, j int) bool
 
-// Sort関数は、[ErrorList] をソートします。*[Error] のエントリは位置で、他のエラーはエラーメッセージでソートされ、*[Error] のエントリの前に配置されます。
+// Sort sorts an [ErrorList]. *[Error] entries are sorted by position,
+// other errors are sorted by error message, and before any *[Error]
+// entry.
 func (p ErrorList) Sort()
 
-// RemoveMultiplesは [ErrorList] をソートし、1行ごとに最初のエラー以外を削除します。
+// RemoveMultiples sorts an [ErrorList] and removes all but the first error per line.
 func (p *ErrorList) RemoveMultiples()
 
-// [ErrorList] はerrorインターフェースを実装しています。
+// An [ErrorList] implements the error interface.
 func (p ErrorList) Error() string
 
-// Errはこのエラーリストに相当するエラーを返します。
-// リストが空の場合、Errはnilを返します。
+// Err returns an error equivalent to this error list.
+// If the list is empty, Err returns nil.
 func (p ErrorList) Err() error
 
-// PrintErrorは、errパラメータが [ErrorList] の場合、エラーリストを1行ごとにwに出力します。それ以外の場合は、err文字列を出力します。
+// PrintError is a utility function that prints a list of errors to w,
+// one error per line, if the err parameter is an [ErrorList]. Otherwise
+// it prints the err string.
 func PrintError(w io.Writer, err error)

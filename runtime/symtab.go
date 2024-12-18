@@ -4,9 +4,10 @@
 
 package runtime
 
-// Framesを使用すると、[Callers] が返すPC値のスライスのための関数/ファイル/行情報を取得できます。
+// Frames may be used to get function/file/line information for a
+// slice of PC values returned by [Callers].
 type Frames struct {
-	// callersはまだフレームに展開されていないPCのスライスです。
+	// callers is a slice of PCs that have not yet been expanded to frames.
 	callers []uintptr
 
 	// nextPC is a next PC to expand ahead of processing callers.
@@ -17,80 +18,91 @@ type Frames struct {
 	frameStore [2]Frame
 }
 
-// Frameは各コールフレームごとに [Frames] によって返される情報です。
+// Frame is the information returned by [Frames] for each call frame.
 type Frame struct {
-
-	// PCはこのフレームの位置に対するプログラムカウンタです。
-	// 別のフレームを呼び出すフレームの場合、これは
-	// 呼び出し命令のプログラムカウンタです。インライン展開のため、
-	// 複数のフレームは同じPC値を持つことがありますが、異なる
-	// シンボリック情報を持ちます。
+	// PC is the program counter for the location in this frame.
+	// For a frame that calls another frame, this will be the
+	// program counter of a call instruction. Because of inlining,
+	// multiple frames may have the same PC value, but different
+	// symbolic information.
 	PC uintptr
 
-	// Funcはこの呼び出しフレームのFunc値です。これは、非Goコードや完全にインライン化された関数の場合はnilになることがあります。
+	// Func is the Func value of this call frame. This may be nil
+	// for non-Go code or fully inlined functions.
 	Func *Func
 
-	// Functionはこの呼び出しフレームのパッケージパス修飾された関数名です。非空であれば、この文字列はプログラム内の1つの関数を一意に識別します。
-	// これは知られていない場合は空の文字列になることがあります。
-	// Funcがnilでない場合、Function == Func.Name()です。
+	// Function is the package path-qualified function name of
+	// this call frame. If non-empty, this string uniquely
+	// identifies a single function in the program.
+	// This may be the empty string if not known.
+	// If Func is not nil then Function == Func.Name().
 	Function string
 
-	// FileとLineは、このフレームのファイル名と行番号です。
-	// 非終端フレームの場合、これは呼び出しの位置になります。
-	// もし分かっていない場合は、それぞれ空文字列とゼロになります。
+	// File and Line are the file name and line number of the
+	// location in this frame. For non-leaf frames, this will be
+	// the location of a call. These may be the empty string and
+	// zero, respectively, if not known. The file name uses
+	// forward slashes, even on Windows.
 	File string
 	Line int
 
-	// startLineは、このフレームの関数の開始行番号です。具体的には、Goの関数のfuncキーワードの行番号です。注意点として、//lineディレクティブは、関数内で任意のファイル名や行番号を変更することができ、したがってLine - startLineのオフセットは常に意味を持たないことがあります。
-	// もし知られていない場合、これはゼロになる場合があります。
+	// startLine is the line number of the beginning of the function in
+	// this frame. Specifically, it is the line number of the func keyword
+	// for Go functions. Note that //line directives can change the
+	// filename and/or line number arbitrarily within a function, meaning
+	// that the Line - startLine offset is not always meaningful.
+	//
+	// This may be zero if not known.
 	startLine int
 
-	// 関数のエントリーポイントのプログラムカウンター。不明の場合はゼロ。
-	// Funcがnilでない場合、Entry == Func.Entry()。
+	// Entry point program counter for the function; may be zero
+	// if not known. If Func is not nil then Entry ==
+	// Func.Entry().
 	Entry uintptr
 
-	// ランタイムの内部ビューでの関数。このフィールドは、Goの関数にのみ設定されます（funcInfo.valid()がtrueを返します）、Cの関数には設定されません。
+	// The runtime's internal view of the function. This field
+	// is set (funcInfo.valid() returns true) only for Go functions,
+	// not for C functions.
 	funcInfo funcInfo
 }
 
-// CallersFramesは [Callers] によって返されるPC値のスライスを受け取り、
-// 関数/ファイル/行情報を返す準備をします。
-// [Frames] で終わるまでスライスを変更しないでください。
+// CallersFrames takes a slice of PC values returned by [Callers] and
+// prepares to return function/file/line information.
+// Do not change the slice until you are done with the [Frames].
 func CallersFrames(callers []uintptr) *Frames
 
-// Nextは、PC値のスライス内で次の呼び出しフレームを表す [Frame] を返します。
-// すべての呼び出しフレームをすでに返した場合、Nextはゼロの [Frame] を返します。
+// Next returns a [Frame] representing the next call frame in the slice
+// of PC values. If it has already returned all call frames, Next
+// returns a zero [Frame].
 //
-// moreの結果は、次のNext呼び出しで有効な [Frame] が返されるかどうかを示します。
-// これが呼び出し元に一つ返されたかどうかを必ずしも示しません。
+// The more result indicates whether the next call to Next will return
+// a valid [Frame]. It does not necessarily indicate whether this call
+// returned one.
 //
-// 典型的な使用法については、[Frames] の例を参照してください。
+// See the [Frames] example for idiomatic usage.
 func (ci *Frames) Next() (frame Frame, more bool)
 
-// Funcは実行中のバイナリ内のGo関数を表します。
+// A Func represents a Go function in the running binary.
 type Func struct {
 	opaque struct{}
 }
 
-// FuncForPCは、指定されたプログラムカウンターアドレスを含む関数を記述した*[Func] を返します。もし複数の関数がインライン展開の影響で存在する場合は、最も内側の関数を示す*Funcを返しますが、最も外側の関数のエントリーも持っています。
+// FuncForPC returns a *[Func] describing the function that contains the
+// given program counter address, or else nil.
 //
-// 完全に不明な理由で、runtimeをインポートできるにもかかわらず、
-// いくつかの広く使用されているパッケージはこれをlinknameを使用してアクセスします。
-// 恥の殿堂に名を連ねる注目のメンバーには以下が含まれます：
-//   - gitee.com/quant1x/gox
-//
-// 型シグネチャを変更または削除しないでください。
-// go.dev/issue/67401 を参照してください。
-//
-//go:linkname FuncForPC
+// If pc represents multiple functions because of inlining, it returns
+// the *Func describing the innermost function, but with an entry of
+// the outermost function.
 func FuncForPC(pc uintptr) *Func
 
-// Nameは関数の名前を返します。
+// Name returns the name of the function.
 func (f *Func) Name() string
 
-// Entryは関数のエントリーアドレスを返します。
+// Entry returns the entry address of the function.
 func (f *Func) Entry() uintptr
 
-// FileLineは、プログラムカウンターpcに対応するソースコードのファイル名と行番号を返します。
-// pcがfのプログラムカウンターでない場合、結果は正確ではありません。
+// FileLine returns the file name and line number of the
+// source code corresponding to the program counter pc.
+// The result will not be accurate if pc is not a program
+// counter within f.
 func (f *Func) FileLine(pc uintptr) (file string, line int)

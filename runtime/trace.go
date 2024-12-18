@@ -19,16 +19,20 @@
 
 package runtime
 
-// StartTraceは現在のプロセスのトレースを有効にします。
-// トレース中はデータがバッファされ、[ReadTrace] を介して利用可能です。
-// トレースが既に有効化されている場合、StartTraceはエラーを返します。
-// ほとんどのクライアントは [runtime/trace] パッケージや [testing] パッケージの-test.traceフラグを直接呼び出す代わりに使用するべきです。
+// StartTrace enables tracing for the current process.
+// While tracing, the data will be buffered and available via [ReadTrace].
+// StartTrace returns an error if tracing is already enabled.
+// Most clients should use the [runtime/trace] package or the [testing] package's
+// -test.trace flag instead of calling StartTrace directly.
 func StartTrace() error
 
-// StopTraceは、以前に有効にされていた場合にトレースを停止します。
-// StopTraceは、トレースのすべての読み取りが完了するまで戻りません。
+// StopTrace stops tracing, if it was previously enabled.
+// StopTrace only returns after all the reads for the trace have completed.
 func StopTrace()
 
-// ReadTrace はバイナリ追跡データの次のチャンクを返します。データが利用可能になるまでブロックされます。もし追跡がオフになっており、オンの間に蓄積されたデータがすべて返された場合、ReadTrace は nil を返します。呼び出し元は、再度 ReadTrace を呼び出す前に返されたデータをコピーする必要があります。
-// ReadTrace は一度に1つの goroutine から呼び出す必要があります。
+// ReadTrace returns the next chunk of binary tracing data, blocking until data
+// is available. If tracing is turned off and all the data accumulated while it
+// was on has been returned, ReadTrace returns nil. The caller must copy the
+// returned data before calling ReadTrace again.
+// ReadTrace must be called from one goroutine at a time.
 func ReadTrace() []byte

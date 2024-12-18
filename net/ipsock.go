@@ -4,15 +4,20 @@
 
 package net
 
-// SplitHostPortは、"host:port"、"host％zone:port"、"[host]:port"、または "[host%zone]:port" のネットワークアドレスをhostまたはhost％zoneとポートに分割します。
+// SplitHostPort splits a network address of the form "host:port",
+// "host%zone:port", "[host]:port" or "[host%zone]:port" into host or
+// host%zone and port.
 //
-// ホストポート内のリテラルIPv6アドレスは、"[::1]:80"、"[::1％lo0]:80"のように角括弧で囲む必要があります。
+// A literal IPv6 address in hostport must be enclosed in square
+// brackets, as in "[::1]:80", "[::1%lo0]:80".
 //
-// hostportパラメータ、およびhostとportの結果の詳細については、func Dialを参照してください。
+// See func Dial for a description of the hostport parameter, and host
+// and port results.
 func SplitHostPort(hostport string) (host, port string, err error)
 
-// JoinHostPort はホストとポートを "ホスト:ポート" のネットワークアドレスに結合します。
-// ホストがコロンを含んでいる場合、リテラルIPv6アドレスで見つかるように、JoinHostPortは "[host]:port" を返します。
+// JoinHostPort combines host and port into a network address of the
+// form "host:port". If host contains a colon, as found in literal
+// IPv6 addresses, then JoinHostPort returns "[host]:port".
 //
-// ホストとポートパラメータの説明については、func Dial を参照してください。
+// See func Dial for a description of the host and port parameters.
 func JoinHostPort(host, port string) string

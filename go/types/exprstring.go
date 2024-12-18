@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// このファイルは式の出力を実装しています。
+// This file implements printing of expressions.
 
 package types
 
@@ -11,10 +11,12 @@ import (
 	"github.com/shogo82148/std/go/ast"
 )
 
-// ExprStringはxの（短縮された可能性のある）文字列表現を返します。
-// 短縮された表現はユーザーインターフェースに適していますが、Goの構文に必ずしも従っているわけではありません。
+// ExprString returns the (possibly shortened) string representation for x.
+// Shortened representations are suitable for user interfaces but may not
+// necessarily follow Go syntax.
 func ExprString(x ast.Expr) string
 
-// WriteExprは、xの（短縮されたかもしれない）文字列表現をbufに書き込みます。
-// 短縮表示はユーザーインターフェースに適していますが、必ずしもGoの構文に従うとは限りません。
+// WriteExpr writes the (possibly shortened) string representation for x to buf.
+// Shortened representations are suitable for user interfaces but may not
+// necessarily follow Go syntax.
 func WriteExpr(buf *bytes.Buffer, x ast.Expr)

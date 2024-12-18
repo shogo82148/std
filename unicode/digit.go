@@ -4,5 +4,5 @@
 
 package unicode
 
-// IsDigitはルーンが10進数の数字かどうかを報告します。
+// IsDigit reports whether the rune is a decimal digit.
 func IsDigit(r rune) bool

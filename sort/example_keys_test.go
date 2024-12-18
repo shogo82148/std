@@ -8,9 +8,9 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// ExampleSortKeysは、プログラム可能なソート基準を使用して構造体タイプをソートするためのテクニックを示しています。
+// Example_sortKeys demonstrates a technique for sorting a struct type using programmable sort criteria.
 func Example_sortKeys() {
-	// プラネット構造体を順序付けるクロージャー。
+	// Closures that order the Planet structure.
 	name := func(p1, p2 *Planet) bool {
 		return p1.name < p2.name
 	}
@@ -24,7 +24,7 @@ func Example_sortKeys() {
 		return distance(p2, p1)
 	}
 
-	// 各種基準で惑星をソートします。
+	// Sort the planets by the various criteria.
 	By(name).Sort(planets)
 	fmt.Println("By name:", planets)
 

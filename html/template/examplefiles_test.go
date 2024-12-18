@@ -11,28 +11,28 @@ import (
 	"github.com/shogo82148/std/text/template"
 )
 
-// ここでは、ディレクトリから一連のテンプレートをロードする方法を示しています。
+// Here we demonstrate loading a set of templates from a directory.
 func ExampleTemplate_glob() {
-	// ここでは、一時ディレクトリを作成し、それをサンプルの
-	// テンプレート定義ファイルで満たします。通常、テンプレートファイルはすでに
-	// プログラムが知っている何らかの場所に存在します。
+	// Here we create a temporary directory and populate it with our sample
+	// template definition files; usually the template files would already
+	// exist in some location known to the program.
 	dir := createTestDir([]templateFile{
-		// T0.tmplは、単にT1を呼び出すだけのプレーンなテンプレートファイルです。
+		// T0.tmpl is a plain template file that just invokes T1.
 		{"T0.tmpl", `T0 invokes T1: ({{template "T1"}})`},
-		// T1.tmplは、T2を呼び出すテンプレート、T1を定義します。
+		// T1.tmpl defines a template, T1 that invokes T2.
 		{"T1.tmpl", `{{define "T1"}}T1 invokes T2: ({{template "T2"}}){{end}}`},
-		// T2.tmplは、テンプレートT2を定義します。
+		// T2.tmpl defines a template T2.
 		{"T2.tmpl", `{{define "T2"}}This is T2{{end}}`},
 	})
-	// テストの後片付けをします。これも例として実行する際の特性です。
+	// Clean up after the test; another quirk of running as an example.
 	defer os.RemoveAll(dir)
 
-	// patternは、すべてのテンプレートファイルを見つけるために使用されるグロブパターンです。
+	// pattern is the glob pattern used to find all the template files.
 	pattern := filepath.Join(dir, "*.tmpl")
 
-	// ここからが実際の例です。
-	// T0.tmplは最初にマッチした名前なので、それが開始テンプレートとなり、
-	// ParseGlobによって返される値となります。
+	// Here starts the example proper.
+	// T0.tmpl is the first name matched, so it becomes the starting template,
+	// the value returned by ParseGlob.
 	tmpl := template.Must(template.ParseGlob(pattern))
 
 	err := tmpl.Execute(os.Stdout, nil)
@@ -43,30 +43,30 @@ func ExampleTemplate_glob() {
 	// T0 invokes T1: (T1 invokes T2: (This is T2))
 }
 
-// ここでは、異なるディレクトリ内のファイルから一連のテンプレートをロードする方法を示しています。
+// Here we demonstrate loading a set of templates from files in different directories
 func ExampleTemplate_parsefiles() {
-	// ここでは、異なる一時ディレクトリを作成し、それらをサンプルの
-	// テンプレート定義ファイルで満たします。通常、テンプレートファイルはすでに
-	// プログラムが知っている何らかの場所に存在します。
+	// Here we create different temporary directories and populate them with our sample
+	// template definition files; usually the template files would already
+	// exist in some location known to the program.
 	dir1 := createTestDir([]templateFile{
-		// T1.tmplは、単にT2を呼び出すだけのプレーンなテンプレートファイルです。
+		// T1.tmpl is a plain template file that just invokes T2.
 		{"T1.tmpl", `T1 invokes T2: ({{template "T2"}})`},
 	})
 
 	dir2 := createTestDir([]templateFile{
-		// T2.tmplは、テンプレートT2を定義します。
+		// T2.tmpl defines a template T2.
 		{"T2.tmpl", `{{define "T2"}}This is T2{{end}}`},
 	})
 
-	// テストの後片付けをします。これも例として実行する際の特性です。
+	// Clean up after the test; another quirk of running as an example.
 	defer func(dirs ...string) {
 		for _, dir := range dirs {
 			os.RemoveAll(dir)
 		}
 	}(dir1, dir2)
 
-	// ここからが実際の例です。
-	// dir1/T0とdir2/T2だけをパースしましょう
+	// Here starts the example proper.
+	// Let's just parse only dir1/T0 and dir2/T2
 	paths := []string{
 		filepath.Join(dir1, "T1.tmpl"),
 		filepath.Join(dir2, "T2.tmpl"),
@@ -81,39 +81,40 @@ func ExampleTemplate_parsefiles() {
 	// T1 invokes T2: (This is T2)
 }
 
-// この例では、いくつかのテンプレートを共有し、それらを異なるコンテキストで使用する方法を示しています。
-// このバリアントでは、既存のテンプレートバンドルに手動で複数のドライバーテンプレートを追加します。
+// This example demonstrates one way to share some templates
+// and use them in different contexts. In this variant we add multiple driver
+// templates by hand to an existing bundle of templates.
 func ExampleTemplate_helpers() {
-	// ここでは、一時ディレクトリを作成し、それをサンプルの
-	// テンプレート定義ファイルで満たします。通常、テンプレートファイルはすでに
-	// プログラムが知っている何らかの場所に存在します。
+	// Here we create a temporary directory and populate it with our sample
+	// template definition files; usually the template files would already
+	// exist in some location known to the program.
 	dir := createTestDir([]templateFile{
-		// T1.tmplは、T2を呼び出すテンプレート、T1を定義します。
+		// T1.tmpl defines a template, T1 that invokes T2.
 		{"T1.tmpl", `{{define "T1"}}T1 invokes T2: ({{template "T2"}}){{end}}`},
-		// T2.tmplは、テンプレートT2を定義します。
+		// T2.tmpl defines a template T2.
 		{"T2.tmpl", `{{define "T2"}}This is T2{{end}}`},
 	})
-	// テストの後片付けをします。これも例として実行する際の特性です。
+	// Clean up after the test; another quirk of running as an example.
 	defer os.RemoveAll(dir)
 
-	// patternは、すべてのテンプレートファイルを見つけるために使用されるグロブパターンです。
+	// pattern is the glob pattern used to find all the template files.
 	pattern := filepath.Join(dir, "*.tmpl")
 
-	// ここからが実際の例です。
-	// ヘルパーをロードします。
+	// Here starts the example proper.
+	// Load the helpers.
 	templates := template.Must(template.ParseGlob(pattern))
-	// 明示的なテンプレート定義を使用して、一連のテンプレートに1つのドライバーテンプレートを追加します。
+	// Add one driver template to the bunch; we do this with an explicit template definition.
 	_, err := templates.Parse("{{define `driver1`}}Driver 1 calls T1: ({{template `T1`}})\n{{end}}")
 	if err != nil {
 		log.Fatal("parsing driver1: ", err)
 	}
-	// 別のドライバーテンプレートを追加します。
+	// Add another driver template.
 	_, err = templates.Parse("{{define `driver2`}}Driver 2 calls T2: ({{template `T2`}})\n{{end}}")
 	if err != nil {
 		log.Fatal("parsing driver2: ", err)
 	}
-	// 実行前にすべてのテンプレートをロードします。このパッケージはそのような振る舞いを必要としませんが、
-	// html/templateのエスケープはそれを必要とするので、それは良い習慣です。
+	// We load all the templates before execution. This package does not require
+	// that behavior but html/template's escaping does, so it's a good habit.
 	err = templates.ExecuteTemplate(os.Stdout, "driver1", nil)
 	if err != nil {
 		log.Fatalf("driver1 execution: %s", err)
@@ -127,44 +128,44 @@ func ExampleTemplate_helpers() {
 	// Driver 2 calls T2: (This is T2)
 }
 
-// この例では、一連のヘルパーテンプレートと異なる一連のヘルパーテンプレートを使用して、
-// 一つのグループのドライバーテンプレートを使用する方法を示しています。
+// This example demonstrates how to use one group of driver
+// templates with distinct sets of helper templates.
 func ExampleTemplate_share() {
-	// ここでは、一時ディレクトリを作成し、それをサンプルの
-	// テンプレート定義ファイルで満たします。通常、テンプレートファイルはすでに
-	// プログラムが知っている何らかの場所に存在します。
+	// Here we create a temporary directory and populate it with our sample
+	// template definition files; usually the template files would already
+	// exist in some location known to the program.
 	dir := createTestDir([]templateFile{
-		// T0.tmplは、単にT1を呼び出すだけのプレーンなテンプレートファイルです。
+		// T0.tmpl is a plain template file that just invokes T1.
 		{"T0.tmpl", "T0 ({{.}} version) invokes T1: ({{template `T1`}})\n"},
-		// T1.tmplは、T2を呼び出すテンプレート、T1を定義します。T2は定義されていないことに注意してください。
+		// T1.tmpl defines a template, T1 that invokes T2. Note T2 is not defined
 		{"T1.tmpl", `{{define "T1"}}T1 invokes T2: ({{template "T2"}}){{end}}`},
 	})
-	// テストの後片付けをします。これも例として実行する際の特性です。
+	// Clean up after the test; another quirk of running as an example.
 	defer os.RemoveAll(dir)
 
-	// patternは、すべてのテンプレートファイルを見つけるために使用されるグロブパターンです。
+	// pattern is the glob pattern used to find all the template files.
 	pattern := filepath.Join(dir, "*.tmpl")
 
-	// ここからが実際の例です。
-	// ドライバーをロードします。
+	// Here starts the example proper.
+	// Load the drivers.
 	drivers := template.Must(template.ParseGlob(pattern))
 
-	// T2テンプレートの実装を定義する必要があります。まず、ドライバーをクローンし、
-	// 次にT2の定義をテンプレート名前空間に追加します。
+	// We must define an implementation of the T2 template. First we clone
+	// the drivers, then add a definition of T2 to the template name space.
 
-	// 1. ヘルパーセットをクローンして、それらを実行するための新しい名前空間を作成します。
+	// 1. Clone the helper set to create a new name space from which to run them.
 	first, err := drivers.Clone()
 	if err != nil {
 		log.Fatal("cloning helpers: ", err)
 	}
-	// 2. T2のバージョンAを定義し、それを解析します。
+	// 2. Define T2, version A, and parse it.
 	_, err = first.Parse("{{define `T2`}}T2, version A{{end}}")
 	if err != nil {
 		log.Fatal("parsing T2: ", err)
 	}
 
-	// 今度は、T2の別のバージョンを使用して、全体を繰り返します。
-	// 1. ドライバーをクローンします。
+	// Now repeat the whole thing, using a different version of T2.
+	// 1. Clone the drivers.
 	second, err := drivers.Clone()
 	if err != nil {
 		log.Fatal("cloning drivers: ", err)
@@ -175,8 +176,8 @@ func ExampleTemplate_share() {
 		log.Fatal("parsing T2: ", err)
 	}
 
-	// テンプレートを逆の順序で実行して、
-	// 最初のテンプレートが2番目のテンプレートに影響されないことを確認します。
+	// Execute the templates in the reverse order to verify the
+	// first is unaffected by the second.
 	err = second.ExecuteTemplate(os.Stdout, "T0.tmpl", "second")
 	if err != nil {
 		log.Fatalf("second execution: %s", err)

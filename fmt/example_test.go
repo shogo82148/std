@@ -13,8 +13,8 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Errorf関数を使用することで、表示形式の機能を使って
-// 詳細なエラーメッセージを作成することができます。
+// The Errorf function lets us use formatting features
+// to create descriptive error messages.
 func ExampleErrorf() {
 	const name, id = "bueller", 17
 	err := fmt.Errorf("user %q (id %d) not found", name, id)
@@ -80,7 +80,8 @@ func ExamplePrint() {
 	const name, age = "Kim", 22
 	fmt.Print(name, " is ", age, " years old.\n")
 
-	// Print が返すエラーについては心配する必要がないというのは慣習です。
+	// It is conventional not to worry about any
+	// error returned by Print.
 
 	// Output:
 	// Kim is 22 years old.
@@ -90,7 +91,8 @@ func ExamplePrintln() {
 	const name, age = "Kim", 22
 	fmt.Println(name, "is", age, "years old.")
 
-	// Printlnが返すエラーについては、心配しないのが一般的です。
+	// It is conventional not to worry about any
+	// error returned by Println.
 
 	// Output:
 	// Kim is 22 years old.
@@ -100,7 +102,8 @@ func ExamplePrintf() {
 	const name, age = "Kim", 22
 	fmt.Printf("%s is %d years old.\n", name, age)
 
-	// Printfが返すエラーについては心配しないのが通例です。
+	// It is conventional not to worry about any
+	// error returned by Printf.
 
 	// Output:
 	// Kim is 22 years old.
@@ -110,7 +113,7 @@ func ExampleSprint() {
 	const name, age = "Kim", 22
 	s := fmt.Sprint(name, " is ", age, " years old.\n")
 
-	io.WriteString(os.Stdout, s) // シンプルさのためにエラーを無視しています。
+	io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
 
 	// Output:
 	// Kim is 22 years old.
@@ -120,7 +123,7 @@ func ExampleSprintln() {
 	const name, age = "Kim", 22
 	s := fmt.Sprintln(name, "is", age, "years old.")
 
-	io.WriteString(os.Stdout, s) // シンプルさを考慮してエラーを無視します。
+	io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
 
 	// Output:
 	// Kim is 22 years old.
@@ -130,7 +133,7 @@ func ExampleSprintf() {
 	const name, age = "Kim", 22
 	s := fmt.Sprintf("%s is %d years old.\n", name, age)
 
-	io.WriteString(os.Stdout, s) // 単純化のため、エラーを無視しています。
+	io.WriteString(os.Stdout, s) // Ignoring error for simplicity.
 
 	// Output:
 	// Kim is 22 years old.
@@ -140,7 +143,8 @@ func ExampleFprint() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprint(os.Stdout, name, " is ", age, " years old.\n")
 
-	// Fprint の n と err の返り値は、基礎となる io.Writer から返されたものです。
+	// The n and err return values from Fprint are
+	// those returned by the underlying io.Writer.
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprint: %v\n", err)
 	}
@@ -155,7 +159,8 @@ func ExampleFprintln() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprintln(os.Stdout, name, "is", age, "years old.")
 
-	// Fprintlnのnとerrの返り値は、基礎となるio.Writerから返されるものです。
+	// The n and err return values from Fprintln are
+	// those returned by the underlying io.Writer.
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprintln: %v\n", err)
 	}
@@ -170,7 +175,8 @@ func ExampleFprintf() {
 	const name, age = "Kim", 22
 	n, err := fmt.Fprintf(os.Stdout, "%s is %d years old.\n", name, age)
 
-	// Fprintfからのnとerrの返り値は、基になるio.Writerによって返されたものです。
+	// The n and err return values from Fprintf are
+	// those returned by the underlying io.Writer.
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fprintf: %v\n", err)
 	}
@@ -181,24 +187,29 @@ func ExampleFprintf() {
 	// 21 bytes written.
 }
 
-// Print、Println、およびPrintfは、引数を異なるレイアウトで配置します。この例では、それらの振る舞いを比較することができます。Printlnは常に出力する項目の間に空白を追加しますが、Printは非文字列の引数の間のみ空白を追加し、Printfは正確に指示通りの出力を行います。
-// Sprint、Sprintln、Sprintf、Fprint、Fprintln、およびFprintfは、ここに示すPrint、Println、およびPrintf関数と同じように動作します。
+// Print, Println, and Printf lay out their arguments differently. In this example
+// we can compare their behaviors. Println always adds blanks between the items it
+// prints, while Print adds blanks only between non-string arguments and Printf
+// does exactly what it is told.
+// Sprint, Sprintln, Sprintf, Fprint, Fprintln, and Fprintf behave the same as
+// their corresponding Print, Println, and Printf functions shown here.
 func Example_printers() {
 	a, b := 3.0, 4.0
 	h := math.Hypot(a, b)
 
-	// Printは、どちらも文字列でない場合に引数間に空白を挿入します。
-	// 出力に改行は追加されませんので、明示的に追加します。
+	// Print inserts blanks between arguments when neither is a string.
+	// It does not add a newline to the output, so we add one explicitly.
 	fmt.Print("The vector (", a, b, ") has length ", h, ".\n")
 
-	// Printlnは常に引数の間にスペースを挿入するため、
-	// この場合にはPrintと同じ出力を生成するためには使用できません。
-	// 出力には余分なスペースが含まれています。
-	// また、Printlnは常に出力に改行を追加します。
+	// Println always inserts spaces between its arguments,
+	// so it cannot be used to produce the same output as Print in this case;
+	// its output has extra spaces.
+	// Also, Println always adds a newline to the output.
 	fmt.Println("The vector (", a, b, ") has length", h, ".")
 
-	// Printfは完全な制御を提供しますが、使用する際にはより複雑です。
-	// 出力に改行が追加されないため、フォーマット指定文字列の最後に明示的に追加します。
+	// Printf provides complete control but is more complex to use.
+	// It does not add a newline to the output, so we add one explicitly
+	// at the end of the format specifier string.
 	fmt.Printf("The vector (%g %g) has length %g.\n", a, b, h)
 
 	// Output:
@@ -207,109 +218,131 @@ func Example_printers() {
 	// The vector (3 4) has length 5.
 }
 
-// これらの例は、フォーマット文字列を使用して印刷する基本的な方法を示しています。Printf、Sprintf、およびFprintfは、次の引数の書式を指定するフォーマット文字列を受け取ります。たとえば、%d（これを「動詞」と呼びます）は、対応する引数を10進数で表示することを意味します。その引数は整数（または整数を含むもの、例えば整数のスライス）でなければなりません。動詞%v（'v'は'value'を意味します）は、引数をそのデフォルトの形式で表示します。PrintまたはPrintlnのように。特別な動詞%T（'T'は'Type'を意味します）は、値ではなく引数の型を表示します。これらの例は網羅的ではありません。詳細については、パッケージのコメントを参照してください。
+// These examples demonstrate the basics of printing using a format string. Printf,
+// Sprintf, and Fprintf all take a format string that specifies how to format the
+// subsequent arguments. For example, %d (we call that a 'verb') says to print the
+// corresponding argument, which must be an integer (or something containing an
+// integer, such as a slice of ints) in decimal. The verb %v ('v' for 'value')
+// always formats the argument in its default form, just how Print or Println would
+// show it. The special verb %T ('T' for 'Type') prints the type of the argument
+// rather than its value. The examples are not exhaustive; see the package comment
+// for all the details.
 func Example_formats() {
-
-	// %vはデフォルトの形式であることを示す基本的な例のセットです。この場合、整数に対しては10進数の形式（%d）が明示的に要求されることがあります。出力はPrintlnが生成するものと同じです。
+	// A basic set of examples showing that %v is the default format, in this
+	// case decimal for integers, which can be explicitly requested with %d;
+	// the output is just what Println generates.
 	integer := 23
-	// それぞれの出力は「23」です（引用符なし）。
+	// Each of these prints "23" (without the quotes).
 	fmt.Println(integer)
 	fmt.Printf("%v\n", integer)
 	fmt.Printf("%d\n", integer)
 
-	// 特別な動詞％Tは、値ではなくアイテムの型を示します。
+	// The special verb %T shows the type of an item rather than its value.
 	fmt.Printf("%T %T\n", integer, &integer)
-	// 結果: int *int
+	// Result: int *int
 
-	// Println(x) は Printf("%v\n", x) と同じなので、以下の例ではPrintfのみを使用します。
-	// 各例は、整数や文字列など特定の型の値をどのようにフォーマットするかを示しています。
-	// 各フォーマット文字列は %v で始めてデフォルトの出力を示し、それに続けて1つ以上のカスタムフォーマットが続きます。
+	// Println(x) is the same as Printf("%v\n", x) so we will use only Printf
+	// in the following examples. Each one demonstrates how to format values of
+	// a particular type, such as integers or strings. We start each format
+	// string with %v to show the default output and follow that with one or
+	// more custom formats.
 
-	// ブール値は、%v や %t とともに "true" または "false" として表示されます。
+	// Booleans print as "true" or "false" with %v or %t.
 	truth := true
 	fmt.Printf("%v %t\n", truth, truth)
-	// 結果: true true
+	// Result: true true
 
-	// 整数は %v や %d を使って10進数で表示されます。
-	// %x を使うと16進数で表示され、%o を使うと8進数、%b を使うと2進数で表示されます。
+	// Integers print as decimals with %v and %d,
+	// or in hex with %x, octal with %o, or binary with %b.
 	answer := 42
 	fmt.Printf("%v %d %x %o %b\n", answer, answer, answer, answer, answer)
-	// 結果: 42 42 2a 52 101010
+	// Result: 42 42 2a 52 101010
 
-	// 浮動小数点数は複数のフォーマットを持っています: %v と %g はコンパクトな表現を出力し、
-	// %f は小数点を出力し、%e は指数表記を使用します。ここで使用されている %6.2f のフォーマットは、
-	// 浮動小数点値の表示方法を制御するために幅と精度を設定する方法を示しています。この場合、6 は
-	// 値の出力テキストの総幅です(出力の余分なスペースに注意してください)。2 は表示する小数点以下の桁数です。
+	// Floats have multiple formats: %v and %g print a compact representation,
+	// while %f prints a decimal point and %e uses exponential notation. The
+	// format %6.2f used here shows how to set the width and precision to
+	// control the appearance of a floating-point value. In this instance, 6 is
+	// the total width of the printed text for the value (note the extra spaces
+	// in the output) and 2 is the number of decimal places to show.
 	pi := math.Pi
 	fmt.Printf("%v %g %.2f (%6.2f) %e\n", pi, pi, pi, pi, pi)
-	// 結果：3.141592653589793 3.141592653589793 3.14 (  3.14) 3.141593e+00
+	// Result: 3.141592653589793 3.141592653589793 3.14 (  3.14) 3.141593e+00
 
-	// 複素数は、実部と虚部の浮動小数点を括弧で囲んで、虚部の後に「i」を付けた形式です。
+	// Complex numbers format as parenthesized pairs of floats, with an 'i'
+	// after the imaginary part.
 	point := 110.7 + 22.5i
 	fmt.Printf("%v %g %.2f %.2e\n", point, point, point, point)
-	// 結果: (110.7+22.5i) (110.7+22.5i) (110.70+22.50i) (1.11e+02+2.25e+01i)
+	// Result: (110.7+22.5i) (110.7+22.5i) (110.70+22.50i) (1.11e+02+2.25e+01i)
 
-	// Runesは整数ですが、%cで印刷するとそのUnicode値に対応する文字が表示されます。
-	// %qの動詞はクオートされた文字として表示し、%Uは16進数のUnicodeコードポイントとして表示し、
-	// %#Uはコードポイントとクオートされた表示可能な形式の両方として表示します。
+	// Runes are integers but when printed with %c show the character with that
+	// Unicode value. The %q verb shows them as quoted characters, %U as a
+	// hex Unicode code point, and %#U as both a code point and a quoted
+	// printable form if the rune is printable.
 	smile := '😀'
 	fmt.Printf("%v %d %c %q %U %#U\n", smile, smile, smile, smile, smile, smile)
-	// 結果: 128512 128512 😀 '😀' U+1F600 U+1F600 '😀'
+	// Result: 128512 128512 😀 '😀' U+1F600 U+1F600 '😀'
 
-	// 文字列は、%vと%sはそのまま、%qは引用符付き文字列、そして%#qはバッククォート付き文字列としてフォーマットされます。
+	// Strings are formatted with %v and %s as-is, with %q as quoted strings,
+	// and %#q as backquoted strings.
 	placeholders := `foo "bar"`
 	fmt.Printf("%v %s %q %#q\n", placeholders, placeholders, placeholders, placeholders)
-	// 結果：foo "bar" foo "bar" "foo \"bar\"" `foo "bar"`
+	// Result: foo "bar" foo "bar" "foo \"bar\"" `foo "bar"`
 
-	// %vでフォーマットされたマップは、キーと値をデフォルトの形式で表示します。
-	// %#v形式（#はこのコンテキストで「フラグ」と呼ばれます）では、マップをGoのソース形式で表示します。
-	// マップはキーの値に応じて一貫した順序で表示されます。
+	// Maps formatted with %v show keys and values in their default formats.
+	// The %#v form (the # is called a "flag" in this context) shows the map in
+	// the Go source format. Maps are printed in a consistent order, sorted
+	// by the values of the keys.
 	isLegume := map[string]bool{
 		"peanut":    true,
 		"dachshund": false,
 	}
 	fmt.Printf("%v %#v\n", isLegume, isLegume)
-	// 結果: map[dachshund:false peanut:true] map[string]bool{"dachshund":false, "peanut":true}
+	// Result: map[dachshund:false peanut:true] map[string]bool{"dachshund":false, "peanut":true}
 
-	// %vでフォーマットされた構造体は、そのデフォルトの形式でフィールドの値を表示します。
-	// %+vの形式はフィールドを名前付きで表示しますが、%#vは構造体をGoのソース形式でフォーマットします。
+	// Structs formatted with %v show field values in their default formats.
+	// The %+v form shows the fields by name, while %#v formats the struct in
+	// Go source format.
 	person := struct {
 		Name string
 		Age  int
 	}{"Kim", 22}
 	fmt.Printf("%v %+v %#v\n", person, person, person)
-	// 結果: {Kim 22} {Name:Kim Age:22} struct { Name string; Age int }{Name:"Kim", Age:22}
+	// Result: {Kim 22} {Name:Kim Age:22} struct { Name string; Age int }{Name:"Kim", Age:22}
 
-	// ポインタのデフォルトのフォーマットは、アンパサンドに続く元の値を表示します。
-	// %p フォーマット指定子はポインタの値を16進数で表示します。ここでは、
-	// %p への引数には型付きの nil を使用しています。なぜなら、非 nil のポインタ
-	// の値は実行ごとに変化するためです；コメントアウトされた Printf 呼び出し
-	// を自分で実行するとわかります。
+	// The default format for a pointer shows the underlying value preceded by
+	// an ampersand. The %p verb prints the pointer value in hex. We use a
+	// typed nil for the argument to %p here because the value of any non-nil
+	// pointer would change from run to run; run the commented-out Printf
+	// call yourself to see.
 	pointer := &person
 	fmt.Printf("%v %p\n", pointer, (*int)(nil))
-
-	// 結果: &{Kim 22} 0x0
+	// Result: &{Kim 22} 0x0
 	// fmt.Printf("%v %p\n", pointer, pointer)
-	// 結果: &{Kim 22} 0x010203 // 上のコメントを参照してください。
+	// Result: &{Kim 22} 0x010203 // See comment above.
 
-	// 配列やスライスは、各要素に対してフォーマットを適用して表示されます。
+	// Arrays and slices are formatted by applying the format to each element.
 	greats := [5]string{"Kitano", "Kobayashi", "Kurosawa", "Miyazaki", "Ozu"}
 	fmt.Printf("%v %q\n", greats, greats)
-	// 結果: [北野 小林 黒沢 宮崎 小津] ["北野" "小林" "黒沢" "宮崎" "小津"]
+	// Result: [Kitano Kobayashi Kurosawa Miyazaki Ozu] ["Kitano" "Kobayashi" "Kurosawa" "Miyazaki" "Ozu"]
 
 	kGreats := greats[:3]
 	fmt.Printf("%v %q %#v\n", kGreats, kGreats, kGreats)
-	// 結果: [北野 小林 黒沢] ["北野" "小林" "黒沢"] []string{"北野", "小林", "黒沢"}
+	// Result: [Kitano Kobayashi Kurosawa] ["Kitano" "Kobayashi" "Kurosawa"] []string{"Kitano", "Kobayashi", "Kurosawa"}
 
-	// バイトスライスは特別です。%dのような整数の形式で要素を印字します。%sと%qの形式ではスライスを文字列として扱います。%xの動詞は、スペースフラグを持つ特別な形式で、バイト間にスペースを挿入します。
+	// Byte slices are special. Integer verbs like %d print the elements in
+	// that format. The %s and %q forms treat the slice like a string. The %x
+	// verb has a special form with the space flag that puts a space between
+	// the bytes.
 	cmd := []byte("a⌘")
 	fmt.Printf("%v %d %s %q %x % x\n", cmd, cmd, cmd, cmd, cmd, cmd)
-	// 結果: [97 226 140 152] [97 226 140 152] a⌘ "a⌘" 61e28c98 61 e2 8c 98
+	// Result: [97 226 140 152] [97 226 140 152] a⌘ "a⌘" 61e28c98 61 e2 8c 98
 
-	// Stringerを実装するタイプは文字列と同じように表示されます。Stringerは文字列を返すため、%qなどの文字列専用のフォーマット指定子を使用して印刷することができます。
-	now := time.Unix(123456789, 0).UTC()
+	// Types that implement Stringer are printed the same as strings. Because
+	// Stringers return a string, we can print them using a string-specific
+	// verb such as %q.
+	now := time.Unix(123456789, 0).UTC() // time.Time implements fmt.Stringer.
 	fmt.Printf("%v %q\n", now, now)
-	// 結果: 1973年11月29日 21時33分09秒 +0000 UTC "1973年11月29日 21時33分09秒 +0000 UTC"
+	// Result: 1973-11-29 21:33:09 +0000 UTC "1973-11-29 21:33:09 +0000 UTC"
 
 	// Output:
 	// 23

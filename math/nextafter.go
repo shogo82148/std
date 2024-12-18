@@ -4,18 +4,18 @@
 
 package math
 
-// Nextafter32はxからyの方向に次に表現可能なfloat32値を返します。
+// Nextafter32 returns the next representable float32 value after x towards y.
 //
-// 特殊なケースは以下の通りです:
+// Special cases are:
 //
 //	Nextafter32(x, x)   = x
 //	Nextafter32(NaN, y) = NaN
 //	Nextafter32(x, NaN) = NaN
 func Nextafter32(x, y float32) (r float32)
 
-// Nextafterはxからyに向かって次の表現可能なfloat64値を返します。
+// Nextafter returns the next representable float64 value after x towards y.
 //
-// 特別な場合は以下の通りです:
+// Special cases are:
 //
 //	Nextafter(x, x)   = x
 //	Nextafter(NaN, y) = NaN

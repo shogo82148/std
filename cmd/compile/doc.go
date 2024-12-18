@@ -3,151 +3,162 @@
 // license that can be found in the LICENSE file.
 
 /*
-コンパイルは通常、 ``go tool compile'' として呼び出され、コマンドラインで指定されたファイルの名前を持つ単一のGoパッケージをコンパイルします。それはその後、最初のソースファイルのベース名に.oの接尾辞を付けた単一のオブジェクトファイルを書き込みます。オブジェクトファイルは、他のオブジェクトと組み合わせてパッケージアーカイブに結合するか、直接リンカ（ ``go tool link''）に渡すことができます。-packを使用して呼び出された場合、コンパイラは中間オブジェクトファイルを経由せずに直接アーカイブを書き込みます。
+Compile, typically invoked as ``go tool compile,'' compiles a single Go package
+comprising the files named on the command line. It then writes a single
+object file named for the basename of the first source file with a .o suffix.
+The object file can then be combined with other objects into a package archive
+or passed directly to the linker (``go tool link''). If invoked with -pack, the compiler
+writes an archive directly, bypassing the intermediate object file.
 
-生成されたファイルには、パッケージがエクスポートするシンボルに関する型情報と、パッケージが他のパッケージからインポートされたシンボルで使用される型に関する情報が含まれています。したがって、パッケージPのクライアントCをコンパイルする場合、Pの依存関係のファイルを読み込む必要はありません。コンパイルされたPの出力のみが必要です。
+The generated files contain type information about the symbols exported by
+the package and about types used by symbols imported by the package from
+other packages. It is therefore not necessary when compiling client C of
+package P to read the files of P's dependencies, only the compiled output of P.
 
-コマンドライン
+Command Line
 
-使用法：
+Usage:
 
-	go tool compile [フラグ] ファイル...
+	go tool compile [flags] file...
 
-指定されたファイルはGoのソースファイルでなければなりません。すべて同じパッケージの一部です。
-すべてのターゲットオペレーティングシステムとアーキテクチャには同じコンパイラが使用されます。
-GOOSとGOARCHの環境変数が目標となるものを設定します。
+The specified files must be Go source files and all part of the same package.
+The same compiler is used for all target operating systems and architectures.
+The GOOS and GOARCH environment variables set the desired target.
 
-フラグ：
+Flags:
 
-	-D パス
-		ローカルインポートの相対パスを設定します。
+	-D path
+		Set relative path for local imports.
 	-I dir1 -I dir2
-		dir1、dir2などのインポートされたパッケージを検索します。
-		この後、$GOROOT/pkg/$GOOS_$GOARCHを参照します。
+		Search for imported packages in dir1, dir2, etc,
+		after consulting $GOROOT/pkg/$GOOS_$GOARCH.
 	-L
-		エラーメッセージに完全なファイルパスを表示します。
+		Show complete file path in error messages.
 	-N
-		最適化を無効にします。
+		Disable optimizations.
 	-S
-		アセンブリリストを標準出力に表示します（コードのみ）。
+		Print assembly listing to standard output (code only).
 	-S -S
-		アセンブリリスト（コードとデータ）を標準出力に表示します。
+		Print assembly listing to standard output (code and data).
 	-V
-		コンパイラのバージョンを表示して終了します。
-	-asmhdr ファイル
-		アセンブリヘッダをファイルに書き込みます。
+		Print compiler version and exit.
+	-asmhdr file
+		Write assembly header to file.
 	-asan
-		C/C++アドレスサニタイザへの呼び出しを挿入します。
-	-buildid ID
-		エクスポートメタデータのビルドIDとしてIDを記録します。
-	-blockprofile ファイル
-		コンパイルのためのブロックプロファイルをファイルに書き込みます。
+		Insert calls to C/C++ address sanitizer.
+	-buildid id
+		Record id as the build id in the export metadata.
+	-blockprofile file
+		Write block profile for the compilation to file.
 	-c int
-		コンパイル中の並行性を設定します。並行性を行わない場合は1を設定します（デフォルトは1）。
+		Concurrency during compilation. Set 1 for no concurrency (default is 1).
 	-complete
-		パッケージに非Goコンポーネントがないと想定します。
-	-cpuprofile ファイル
-		コンパイルのためのCPUプロファイルをファイルに書き込みます。
+		Assume package has no non-Go components.
+	-cpuprofile file
+		Write a CPU profile for the compilation to file.
 	-dynlink
-		共有ライブラリ内のGoシンボルへの参照を許可します（実験的）。
+		Allow references to Go symbols in shared libraries (experimental).
 	-e
-		エラーの数に制限を解除します（デフォルトの制限は10です）。
+		Remove the limit on the number of errors reported (default limit is 10).
 	-goversion string
-		ランタイムの必要なgoツールバージョンを指定します。
-		ランタイムのgoバージョンがgoversionと一致しない場合は終了します。
+		Specify required go tool version of the runtime.
+		Exits when the runtime go version does not match goversion.
 	-h
-		最初のエラーが検出されたときにスタックトレースで停止します。
-	-importcfg ファイル
-		インポート構成をファイルから読み取ります。
-		ファイルでは、importmap、packagefileを設定してインポートの解決を指定します。
+		Halt with a stack trace at the first error detected.
+	-importcfg file
+		Read import configuration from file.
+		In the file, set importmap, packagefile to specify import resolution.
 	-installsuffix suffix
-		$GOROOT/pkg/$GOOS_$GOARCH_suffixのかわりに$GOROOT/pkg/$GOOS_$GOARCHでパッケージを検索します。
+		Look for packages in $GOROOT/pkg/$GOOS_$GOARCH_suffix
+		instead of $GOROOT/pkg/$GOOS_$GOARCH.
 	-l
-		インライニングを無効にします。
+		Disable inlining.
 	-lang version
-		コンパイルするための言語バージョンを設定します（-lang=go1.12など）。
-		デフォルトは現在のバージョンです。
+		Set language version to compile, as in -lang=go1.12.
+		Default is current version.
 	-linkobj file
-		リンカー固有のオブジェクトをファイルに書き込み、コンパイラ固有の
-		オブジェクトを通常の出力ファイルに書き込みます（-oで指定）。
-		このフラグがない場合、-oの出力はリンカーとコンパイラの入力の両方の組み合わせです。
+		Write linker-specific object to file and compiler-specific
+		object to usual output file (as specified by -o).
+		Without this flag, the -o output is a combination of both
+		linker and compiler input.
 	-m
-		最適化の決定を印刷します。より高い値または繰り返し
-		詳細を生成します。
+		Print optimization decisions. Higher values or repetition
+		produce more detail.
 	-memprofile file
-		コンパイルのメモリプロファイルをファイルに書き込みます。
+		Write memory profile for the compilation to file.
 	-memprofilerate rate
-		コンパイルのruntime.MemProfileRateをrateに設定します。
+		Set runtime.MemProfileRate for the compilation to rate.
 	-msan
-		C/C++メモリサニタイザーへの呼び出しを挿入します。
+		Insert calls to C/C++ memory sanitizer.
 	-mutexprofile file
-		コンパイルのミューテックスプロファイルをファイルに書き込みます。
+		Write mutex profile for the compilation to file.
 	-nolocalimports
-		ローカル（相対）インポートを禁止します。
+		Disallow local (relative) imports.
 	-o file
-		オブジェクトをファイルに書き込みます（デフォルトはfile.oまたは、-packがある場合はfile.a）。
+		Write object to file (default file.o or, with -pack, file.a).
 	-p path
-		コンパイルされるコードの予想されるパッケージインポートパスを設定し、
-		循環依存関係を引き起こすインポートを診断します。
+		Set expected package import path for the code being compiled,
+		and diagnose imports that would cause a circular dependency.
 	-pack
-		オブジェクトファイルではなくパッケージ（アーカイブ）ファイルを書き込みます
+		Write a package (archive) file rather than an object file
 	-race
-		レースディテクターを有効にしてコンパイルします。
+		Compile with race detector enabled.
 	-s
-		簡略化できる複合リテラルについて警告します。
+		Warn about composite literals that can be simplified.
 	-shared
-		共有ライブラリにリンクできるコードを生成します。
+		Generate code that can be linked into a shared library.
 	-spectre list
-		リスト（all, index, ret）のスペクター軽減を有効にします。
+		Enable spectre mitigations in list (all, index, ret).
 	-traceprofile file
-		実行トレースをファイルに書き込みます。
+		Write an execution trace to file.
 	-trimpath prefix
-		記録されたソースファイルパスからプレフィックスを削除します。
+		Remove prefix from recorded source file paths.
 
-デバッグ情報に関連するフラグ：
+Flags related to debugging information:
 
 	-dwarf
-		DWARFシンボルを生成します。
+		Generate DWARF symbols.
 	-dwarflocationlists
-		最適化モードでDWARFにロケーションリストを追加します。
+		Add location lists to DWARF in optimized mode.
 	-gendwarfinl int
-		DWARFインライン情報レコードを生成します（デフォルトは2）。
+		Generate DWARF inline info records (default 2).
 
-コンパイラ自体をデバッグするためのフラグ：
+Flags to debug the compiler itself:
 
 	-E
-		シンボルエクスポートをデバッグします。
+		Debug symbol export.
 	-K
-		行番号が欠落していることをデバッグします。
+		Debug missing line numbers.
 	-d list
-		リスト内のアイテムについてのデバッグ情報を印刷します。詳細については、-d helpを試してみてください。
+		Print debug information about items in list. Try -d help for further information.
 	-live
-		ライブネス分析をデバッグします。
+		Debug liveness analysis.
 	-v
-		デバッグの詳細度を増やします。
+		Increase debug verbosity.
 	-%
-		静的初期化子ではないものをデバッグします。
+		Debug non-static initializers.
 	-W
-		型チェック後のパースツリーをデバッグします。
+		Debug parse tree after type checking.
 	-f
-		スタックフレームをデバッグします。
+		Debug stack frames.
 	-i
-		行番号スタックをデバッグします。
+		Debug line number stack.
 	-j
-		ランタイムで初期化された変数をデバッグします。
+		Debug runtime-initialized variables.
 	-r
-		生成されたラッパーをデバッグします。
+		Debug generated wrappers.
 	-w
-		型チェックをデバッグします。
+		Debug type checking.
 
-コンパイラディレクティブ
+Compiler Directives
 
-コンパイラは、コメントの形式でディレクティブを受け入れます。
-ディレクティブを非ディレクティブコメントと区別するために、ディレクティブの名前とコメントの開始の間にはスペースが必要ありません。しかし、
-それらはコメントであるため、ディレクティブの規則や特定の
-ディレクティブを知らないツールは、他のコメントと同様にディレクティブをスキップできます。
+The compiler accepts directives in the form of comments.
+To distinguish them from non-directive comments, directives
+require no space between the comment opening and the name of the directive. However, since
+they are comments, tools unaware of the directive convention or of a particular
+directive can skip over a directive like any other comment.
 */
-// ラインディレクティブはいくつかの形式で存在します：
+// Line directives come in several forms:
 //
 // 	//line :line
 // 	//line :line:col
@@ -158,88 +169,101 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
 // 	/*line filename:line*/
 // 	/*line filename:line:col*/
 //
-// ラインディレクティブとして認識されるためには、コメントは
-// //lineまたは/*lineに続くスペースで始まり、少なくとも一つのコロンを含んでいなければなりません。
-// //line形式は行の始まりでなければなりません。
-// ラインディレクティブは、コメントの直後の文字のソース位置を指定したファイル、行、列から来たものとして指定します：
-// //lineコメントの場合、これは次の行の最初の文字であり、
-// /*lineコメントの場合、これは閉じる*/の直後の文字位置です。
-// ファイル名が指定されていない場合、記録されたファイル名は列番号もない場合は空であり、
-// それ以外の場合は最近記録されたファイル名（実際のファイル名または前のラインディレクティブで指定されたファイル名）です。
-// ラインディレクティブが列番号を指定していない場合、列は"未知"であり、
-// 次のディレクティブまでコンパイラはその範囲の列番号を報告しません。
-// ラインディレクティブのテキストは後ろから解釈されます：まず、dddが有効な数値> 0である場合、
-// ディレクティブテキストから末尾の:dddが剥がされます。次に、それが有効である場合、
-// 同じ方法で2番目の:dddが剥がされます。それ以前のものはすべてファイル名と見なされます
-// （空白とコロンを含む可能性があります）。無効な行または列の値はエラーとして報告されます。
+// In order to be recognized as a line directive, the comment must start with
+// //line or /*line followed by a space, and must contain at least one colon.
+// The //line form must start at the beginning of a line.
+// A line directive specifies the source position for the character immediately following
+// the comment as having come from the specified file, line and column:
+// For a //line comment, this is the first character of the next line, and
+// for a /*line comment this is the character position immediately following the closing */.
+// If no filename is given, the recorded filename is empty if there is also no column number;
+// otherwise it is the most recently recorded filename (actual filename or filename specified
+// by previous line directive).
+// If a line directive doesn't specify a column number, the column is "unknown" until
+// the next directive and the compiler does not report column numbers for that range.
+// The line directive text is interpreted from the back: First the trailing :ddd is peeled
+// off from the directive text if ddd is a valid number > 0. Then the second :ddd
+// is peeled off the same way if it is valid. Anything before that is considered the filename
+// (possibly including blanks and colons). Invalid line or column values are reported as errors.
 //
-// 例：
+// Examples:
 //
-//	//line foo.go:10      ファイル名はfoo.goで、次の行の行番号は10です
-//	//line C:foo.go:10    ファイル名にはコロンが許可されています。ここではファイル名はC:foo.goで、行は10です
-//	//line  a:100 :10     ファイル名には空白が許可されています。ここではファイル名は " a:100 "（引用符を除く）
-//	/*line :10:20*/x      xの位置は現在のファイル内で、行番号は10、列番号は20です
-//	/*line foo: 10 */     このコメントは無効な行ディレクティブとして認識されます（行番号の周囲に余分な空白があります）
+//	//line foo.go:10      the filename is foo.go, and the line number is 10 for the next line
+//	//line C:foo.go:10    colons are permitted in filenames, here the filename is C:foo.go, and the line is 10
+//	//line  a:100 :10     blanks are permitted in filenames, here the filename is " a:100 " (excluding quotes)
+//	/*line :10:20*/x      the position of x is in the current file with line number 10 and column number 20
+//	/*line foo: 10 */     this comment is recognized as invalid line directive (extra blanks around line number)
 //
-// ラインディレクティブは通常、機械生成されたコードに現れます。これにより、コンパイラとデバッガは
-// ジェネレータへの元の入力の位置を報告します。
+// Line directives typically appear in machine-generated code, so that compilers and debuggers
+// will report positions in the original input to the generator.
 /*
-ラインディレクティブは歴史的な特例であり、他のすべてのディレクティブは
-//go:nameの形式で、それらがGoツールチェーンによって定義されていることを示しています。
-各ディレクティブは自身の行に配置する必要があり、コメントの前には先頭のスペースとタブのみが許可されます。
-各ディレクティブは、それに直後に続くGoコードに適用され、
-通常は宣言でなければなりません。
+The line directive is a historical special case; all other directives are of the form
+//go:name, indicating that they are defined by the Go toolchain.
+Each directive must be placed its own line, with only leading spaces and tabs
+allowed before the comment.
+Each directive applies to the Go code that immediately follows it,
+which typically must be a declaration.
 
 	//go:noescape
 
-//go:noescape ディレクティブは、本体を持たない関数宣言（つまり、Goで書かれていない実装を持つ関数）に続く必要があります。
-これは、関数が引数として渡されたポインタをヒープに逃がしたり、関数から返される値に逃がしたりしないことを指定します。
-この情報は、関数を呼び出すGoコードのコンパイラのエスケープ解析中に使用できます。
+The //go:noescape directive must be followed by a function declaration without
+a body (meaning that the function has an implementation not written in Go).
+It specifies that the function does not allow any of the pointers passed as
+arguments to escape into the heap or into the values returned from the function.
+This information can be used during the compiler's escape analysis of Go code
+calling the function.
 
 	//go:uintptrescapes
 
-//go:uintptrescapes ディレクティブは、関数宣言に続く必要があります。
-これは、関数のuintptr引数がuintptrに変換されたポインタ値であり、
-呼び出しの期間中、型だけから見てオブジェクトが呼び出し中には必要ないように見える場合でも、
-ヒープ上に保持され、生きていなければならないことを指定します。
-ポインタからuintptrへの変換は、この関数への任意の呼び出しの引数リストに現れなければなりません。
-このディレクティブは、一部の低レベルシステムコールの実装に必要であり、それ以外の場合は避けるべきです。
+The //go:uintptrescapes directive must be followed by a function declaration.
+It specifies that the function's uintptr arguments may be pointer values that
+have been converted to uintptr and must be on the heap and kept alive for the
+duration of the call, even though from the types alone it would appear that the
+object is no longer needed during the call. The conversion from pointer to
+uintptr must appear in the argument list of any call to this function. This
+directive is necessary for some low-level system call implementations and
+should be avoided otherwise.
 
 	//go:noinline
 
-//go:noinline ディレクティブは、関数宣言に続く必要があります。
-これは、関数への呼び出しがインライン化されないように指定し、
-コンパイラの通常の最適化ルールを上書きします。これは通常、
-特別なランタイム関数やコンパイラのデバッグ時にのみ必要です。
+The //go:noinline directive must be followed by a function declaration.
+It specifies that calls to the function should not be inlined, overriding
+the compiler's usual optimization rules. This is typically only needed
+for special runtime functions or when debugging the compiler.
 
 	//go:norace
 
-//go:norace ディレクティブは、関数宣言に続く必要があります。
-これは、関数のメモリアクセスがレース検出器によって無視されるべきであることを指定します。
-これは最も一般的に、レース検出器ランタイムに呼び出すことが安全でない時期に呼び出される低レベルのコードで使用されます。
+The //go:norace directive must be followed by a function declaration.
+It specifies that the function's memory accesses must be ignored by the
+race detector. This is most commonly used in low-level code invoked
+at times when it is unsafe to call into the race detector runtime.
 
 	//go:nosplit
 
-//go:nosplitディレクティブは、関数宣言に続く必要があります。
-これは、関数が通常のスタックオーバーフローチェックを省略する必要があることを指定します。
-これは最も一般的に、呼び出し元のゴルーチンがプリエンプトされるのが安全でない時期に呼び出される低レベルのランタイムコードで使用されます。
+The //go:nosplit directive must be followed by a function declaration.
+It specifies that the function must omit its usual stack overflow check.
+This is most commonly used by low-level runtime code invoked
+at times when it is unsafe for the calling goroutine to be preempted.
 
 	//go:linkname localname [importpath.name]
 
-//go:linknameディレクティブは、通常、「localname」で指定されたvarまたはfunc宣言の前に配置されますが、
-その位置はその効果を変えません。
-このディレクティブは、Goのvarまたはfunc宣言に使用されるオブジェクトファイルシンボルを決定し、
-2つのGoシンボルが同じオブジェクトファイルシンボルをエイリアスとして使用できるようにします。
-これにより、一つのパッケージが、通常は未エクスポート宣言のカプセル化を侵害する、
-または型安全性を侵害する場合でも、別のパッケージのシンボルにアクセスできます。
-そのため、"unsafe"をインポートしたファイルでのみ有効になります。
+The //go:linkname directive conventionally precedes the var or func
+declaration named by ``localname``, though its position does not
+change its effect.
+This directive determines the object-file symbol used for a Go var or
+func declaration, allowing two Go symbols to alias the same
+object-file symbol, thereby enabling one package to access a symbol in
+another package even when this would violate the usual encapsulation
+of unexported declarations, or even type safety.
+For that reason, it is only enabled in files that have imported "unsafe".
 
-二つのシナリオで使用することができます。パッケージupperがパッケージlowerを
-インポートしていると仮定しましょう、おそらく間接的に。最初のシナリオでは、
-パッケージlowerは、そのオブジェクトファイル名がパッケージupperに属するシンボルを定義します。
-両方のパッケージにはlinknameディレクティブが含まれています：パッケージlowerは
-二つの引数形式を使用し、パッケージupperは一つの引数形式を使用します。
-以下の例では、lower.fは関数upper.gのエイリアスです：
+It may be used in two scenarios. Let's assume that package upper
+imports package lower, perhaps indirectly. In the first scenario,
+package lower defines a symbol whose object file name belongs to
+package upper. Both packages contain a linkname directive: package
+lower uses the two-argument form and package upper uses the
+one-argument form. In the example below, lower.f is an alias for the
+function upper.g:
 
     package upper
     import _ "unsafe"
@@ -251,11 +275,13 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
     //go:linkname f upper.g
     func f() { ... }
 
-パッケージupperのlinknameディレクティブは、本体を持たない関数に対する通常のエラーを抑制します。
-（そのチェックは、パッケージに.sファイル（空でも可）を含めることで、代わりに抑制することもできます。）
+The linkname directive in package upper suppresses the usual error for
+a function that lacks a body. (That check may alternatively be
+suppressed by including a .s file, even an empty one, in the package.)
 
-二つ目のシナリオでは、パッケージupperが一方的にパッケージlowerのシンボルのエイリアスを作成します。
-以下の例では、upper.gは関数lower.fのエイリアスです。
+In the second scenario, package upper unilaterally creates an alias
+for a symbol in package lower. In the example below, upper.g is an alias
+for the function lower.f.
 
     package upper
     import _ "unsafe"
@@ -265,27 +291,51 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
     package lower
     func f() { ... }
 
-lower.fの宣言には、単一の引数fを持つlinknameディレクティブも含まれているかもしれません。
-これはオプションですが、関数がパッケージ外からアクセスされることを読者に警告するのに役立ちます。
+The declaration of lower.f may also have a linkname directive with a
+single argument, f. This is optional, but helps alert the reader that
+the function is accessed from outside the package.
 
 	//go:wasmimport importmodule importname
 
-//go:wasmimportディレクティブはwasm専用で、関数宣言に続く必要があります。
-これは、関数が``importmodule``と``importname``で識別されるwasmモジュールによって提供されることを指定します。
+The //go:wasmimport directive is wasm-only and must be followed by a
+function declaration.
+It specifies that the function is provided by a wasm module identified
+by ``importmodule`` and ``importname``.
 
 	//go:wasmimport a_module f
 	func g()
 
-Go関数のパラメータと戻り値の型は、以下の表に従ってWasmに変換されます：
+The types of parameters and return values to the Go function are translated to
+Wasm according to the following table:
 
     Go types        Wasm types
+    bool            i32
     int32, uint32   i32
     int64, uint64   i64
     float32         f32
     float64         f64
     unsafe.Pointer  i32
+    pointer         i32 (more restrictions below)
+    string          (i32, i32) (only permitted as a parameters, not a result)
 
-コンパイラは他のすべてのパラメータ型を許可しません。
+For a pointer type, its element type must be a bool, int8, uint8, int16, uint16,
+int32, uint32, int64, uint64, float32, float64, an array whose element type is
+a permitted pointer element type, or a struct, which, if non-empty, embeds
+structs.HostLayout, and contains only fields whose types are permitted pointer
+element types.
 
+Any other parameter types are disallowed by the compiler.
+
+	//go:wasmexport exportname
+
+The //go:wasmexport directive is wasm-only and must be followed by a
+function definition.
+It specifies that the function is exported to the wasm host as ``exportname``.
+
+	//go:wasmexport f
+	func g()
+
+The types of parameters and return values to the Go function are permitted and
+translated to Wasm in the same way as //go:wasmimport functions.
 */
 package main
