@@ -72,4 +72,4 @@ func (ek *EncapsulationKey768) Bytes() []byte
 // encapsulation key, drawing random bytes from crypto/rand.
 //
 // The shared key must be kept secret.
-func (ek *EncapsulationKey768) Encapsulate() (ciphertext, sharedKey []byte)
+func (ek *EncapsulationKey768) Encapsulate() (sharedKey, ciphertext []byte)
