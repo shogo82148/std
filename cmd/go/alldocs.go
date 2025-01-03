@@ -739,11 +739,6 @@
 //
 // For more about specifying packages, see 'go help packages'.
 //
-// This text describes the behavior of get using modules to manage source
-// code and dependencies. If instead the go command is running in GOPATH
-// mode, the details of get's flags and effects change, as does 'go help get'.
-// See 'go help gopath-get'.
-//
 // See also: go build, go install, go clean, go mod.
 //
 // # Compile and install packages and dependencies
@@ -2186,7 +2181,7 @@
 // fields of all events to reconstruct the text format output, as it would
 // have appeared from go build without the -json flag.
 //
-// Note that there may also be non-JSON error text on stdnard error, even
+// Note that there may also be non-JSON error text on standard error, even
 // with the -json flag. Typically, this indicates an early, serious error.
 // Consumers should be robust to this.
 //
@@ -2338,6 +2333,10 @@
 //	GOCACHE
 //		The directory where the go command will store cached
 //		information for reuse in future builds.
+//	GOCACHEPROG
+//		A command (with optional space-separated flags) that implements an
+//		external go command build cache.
+//		See 'go doc cmd/go/internal/cacheprog'.
 //	GODEBUG
 //		Enable various debugging facilities. See https://go.dev/doc/godebug
 //		for details.
@@ -2617,7 +2616,7 @@
 //		Example: Data
 //
 //	If the server responds with any 4xx code, the go command will write the
-//	following to the programs' stdin:
+//	following to the program's stdin:
 //		Response      = StatusLine { HeaderLine } BlankLine .
 //		StatusLine    = Protocol Space Status '\n' .
 //		Protocol      = /* HTTP protocol */ .
@@ -2974,11 +2973,7 @@
 // same meta tag and then git clone https://code.org/r/p/exproj into
 // GOPATH/src/example.org.
 //
-// When using GOPATH, downloaded packages are written to the first directory
-// listed in the GOPATH environment variable.
-// (See 'go help gopath-get' and 'go help gopath'.)
-//
-// When using modules, downloaded packages are stored in the module cache.
+// Downloaded packages are stored in the module cache.
 // See https://golang.org/ref/mod#module-cache.
 //
 // When using modules, an additional variant of the go-import meta tag is
