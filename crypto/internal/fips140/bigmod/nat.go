@@ -19,6 +19,11 @@ type Nat struct {
 // NewNat inlines, so the allocation can live on the stack.
 func NewNat() *Nat
 
+// Bits returns x as a little-endian slice of uint. The length of the slice
+// matches the announced length of x. The result and x share the same underlying
+// array.
+func (x *Nat) Bits() []uint
+
 // Bytes returns x as a zero-extended big-endian byte slice. The size of the
 // slice will match the size of m.
 //
@@ -198,3 +203,16 @@ func (out *Nat) ExpShortVarTime(x *Nat, e uint, m *Modulus) *Nat
 //
 //go:norace
 func (x *Nat) InverseVarTime(a *Nat, m *Modulus) (*Nat, bool)
+
+// GCDVarTime calculates x = GCD(a, b) where at least one of a or b is odd, and
+// both are non-zero. If GCDVarTime returns an error, x is not modified.
+//
+// The output will be resized to the size of the larger of a and b.
+func (x *Nat) GCDVarTime(a, b *Nat) (*Nat, error)
+
+// DivShortVarTime calculates x = x / y and returns the remainder.
+//
+// It panics if y is zero.
+//
+//go:norace
+func (x *Nat) DivShortVarTime(y uint) uint
