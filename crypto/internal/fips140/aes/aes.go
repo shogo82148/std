@@ -27,3 +27,8 @@ func (c *Block) BlockSize() int
 func (c *Block) Encrypt(dst, src []byte)
 
 func (c *Block) Decrypt(dst, src []byte)
+
+// EncryptBlockInternal applies the AES encryption function to one block.
+//
+// It is an internal function meant only for the gcm package.
+func EncryptBlockInternal(c *Block, dst, src []byte)

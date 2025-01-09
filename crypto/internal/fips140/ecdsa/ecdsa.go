@@ -62,7 +62,7 @@ func NewPublicKey[P Point[P]](c *Curve[P], Q []byte) (*PublicKey, error)
 func GenerateKey[P Point[P]](c *Curve[P], rand io.Reader) (*PrivateKey, error)
 
 // Signature is an ECDSA signature, where r and s are represented as big-endian
-// fixed-length byte slices.
+// byte slices of the same length as the curve order.
 type Signature struct {
 	R, S []byte
 }

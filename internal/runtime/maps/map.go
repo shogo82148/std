@@ -13,6 +13,7 @@ import (
 type Map struct {
 	// The number of filled slots (i.e. the number of elements in all
 	// tables). Excludes deleted slots.
+	// Must be first (known by the compiler, for len() builtin).
 	used uint64
 
 	// seed is the hash seed, computed as a unique random number per map.

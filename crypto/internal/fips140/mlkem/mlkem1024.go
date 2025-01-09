@@ -51,11 +51,11 @@ func NewDecapsulationKey1024(seed []byte) (*DecapsulationKey1024, error)
 // encapsulation key, drawing random bytes from a DRBG.
 //
 // The shared key must be kept secret.
-func (ek *EncapsulationKey1024) Encapsulate() (ciphertext, sharedKey []byte)
+func (ek *EncapsulationKey1024) Encapsulate() (sharedKey, ciphertext []byte)
 
 // EncapsulateInternal is a derandomized version of Encapsulate, exclusively for
 // use in tests.
-func (ek *EncapsulationKey1024) EncapsulateInternal(m *[32]byte) (ciphertext, sharedKey []byte)
+func (ek *EncapsulationKey1024) EncapsulateInternal(m *[32]byte) (sharedKey, ciphertext []byte)
 
 // NewEncapsulationKey1024 parses an encapsulation key from its encoded form.
 // If the encapsulation key is not valid, NewEncapsulationKey1024 returns an error.

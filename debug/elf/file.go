@@ -136,22 +136,13 @@ type Symbol struct {
 	Name        string
 	Info, Other byte
 
-	// VersionScope describes the version in which the symbol is defined.
-	// This is only set for the dynamic symbol table.
-	// When no symbol versioning information is available,
-	// this is VersionScopeNone.
-	VersionScope SymbolVersionScope
-	// VersionIndex is the version index.
-	// This is only set if VersionScope is VersionScopeSpecific or
-	// VersionScopeHidden. This is only set for the dynamic symbol table.
-	// This index will match either [DynamicVersion.Index]
-	// in the slice returned by [File.DynamicVersions],
-	// or [DynamicVersiondep.Index] in the Needs field
-	// of the elements of the slice returned by [File.DynamicVersionNeeds].
-	// In general, a defined symbol will have an index referring
-	// to DynamicVersions, and an undefined symbol will have an index
-	// referring to some version in DynamicVersionNeeds.
-	VersionIndex int16
+	// HasVersion reports whether the symbol has any version information.
+	// This will only be true for the dynamic symbol table.
+	HasVersion bool
+	// VersionIndex is the symbol's version index.
+	// Use the methods of the [VersionIndex] type to access it.
+	// This field is only meaningful if HasVersion is true.
+	VersionIndex VersionIndex
 
 	Section     SectionIndex
 	Value, Size uint64
@@ -226,17 +217,27 @@ type ImportedSymbol struct {
 // It does not return weak symbols.
 func (f *File) ImportedSymbols() ([]ImportedSymbol, error)
 
-// SymbolVersionScope describes the version in which a [Symbol] is defined.
-// This is only used for the dynamic symbol table.
-type SymbolVersionScope byte
+// VersionIndex is the type of a [Symbol] version index.
+type VersionIndex uint16
 
-const (
-	VersionScopeNone SymbolVersionScope = iota
-	VersionScopeLocal
-	VersionScopeGlobal
-	VersionScopeSpecific
-	VersionScopeHidden
-)
+// IsHidden reports whether the symbol is hidden within the version.
+// This means that the symbol can only be seen by specifying the exact version.
+func (vi VersionIndex) IsHidden() bool
+
+// Index returns the version index.
+// If this is the value 0, it means that the symbol is local,
+// and is not visible externally.
+// If this is the value 1, it means that the symbol is in the base version,
+// and has no specific version; it may or may not match a
+// [DynamicVersion.Index] in the slice returned by [File.DynamicVersions].
+// Other values will match either [DynamicVersion.Index]
+// in the slice returned by [File.DynamicVersions],
+// or [DynamicVersionDep.Index] in the Needs field
+// of the elements of the slice returned by [File.DynamicVersionNeeds].
+// In general, a defined symbol will have an index referring
+// to DynamicVersions, and an undefined symbol will have an index
+// referring to some version in DynamicVersionNeeds.
+func (vi VersionIndex) Index() uint16
 
 // DynamicVersion is a version defined by a dynamic object.
 // This describes entries in the ELF SHT_GNU_verdef section.

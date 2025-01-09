@@ -5,3 +5,10 @@
 package fips140
 
 var Enabled bool
+
+// Supported returns an error if FIPS 140-3 mode can't be enabled.
+func Supported() error
+
+func Name() string
+
+func Version() string

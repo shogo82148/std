@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package check implements the FIPS-140 load-time code+data verification.
+// Package check implements the FIPS 140 load-time code+data verification.
 // Every FIPS package providing cryptographic functionality except hmac and sha256
 // must import crypto/internal/fips140/check, so that the verification happens
 // before initialization of package global variables.
@@ -16,15 +16,9 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// Enabled reports whether verification was enabled.
-// If Enabled returns true, then verification succeeded,
-// because if it failed the binary would have panicked at init time.
-func Enabled() bool
-
+// Verified is set when verification succeeded. It can be expected to always be
+// true when [fips140.Enabled] is true, or init would have panicked.
 var Verified bool
-
-// Supported reports whether the current GOOS/GOARCH is Supported at all.
-func Supported() bool
 
 // Linkinfo holds the go:fipsinfo symbol prepared by the linker.
 // See cmd/link/internal/ld/fips.go for details.

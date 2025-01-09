@@ -32,6 +32,8 @@ package strconv
 // zeros are removed).
 // The special precision -1 uses the smallest number of digits
 // necessary such that ParseFloat will return f exactly.
+// The exponent is written as a decimal integer;
+// for all formats other than 'b', it will be at least two digits.
 func FormatFloat(f float64, fmt byte, prec, bitSize int) string
 
 // AppendFloat appends the string form of the floating-point number f,

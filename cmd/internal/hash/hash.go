@@ -6,19 +6,16 @@
 package hash
 
 import (
-	"github.com/shogo82148/std/crypto/md5"
-	"github.com/shogo82148/std/crypto/sha1"
-	"github.com/shogo82148/std/crypto/sha256"
 	"github.com/shogo82148/std/hash"
 )
 
 const (
-	// Size32 is the size of 32 bytes hash checksum.
-	Size32 = sha256.Size
-	// Size20 is the size of 20 bytes hash checksum.
-	Size20 = sha1.Size
-	// Size16 is the size of 16 bytes hash checksum.
-	Size16 = md5.Size
+	// Size32 is the size of the 32-byte hash checksum.
+	Size32 = 32
+	// Size20 is the size of the 20-byte hash checksum.
+	Size20 = 20
+	// Size16 is the size of the 16-byte hash checksum.
+	Size16 = 16
 )
 
 // New32 returns a new [hash.Hash] computing the 32 bytes hash checksum.

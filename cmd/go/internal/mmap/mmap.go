@@ -22,4 +22,4 @@ type Data struct {
 }
 
 // Mmap maps the given file into memory.
-func Mmap(file string) (Data, error)
+func Mmap(file string) (Data, bool, error)

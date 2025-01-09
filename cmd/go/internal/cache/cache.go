@@ -77,7 +77,7 @@ func GetBytes(c Cache, id ActionID) ([]byte, Entry, error)
 // GetMmap looks up the action ID in the cache and returns
 // the corresponding output bytes.
 // GetMmap should only be used for data that can be expected to fit in memory.
-func GetMmap(c Cache, id ActionID) ([]byte, Entry, error)
+func GetMmap(c Cache, id ActionID) ([]byte, Entry, bool, error)
 
 // OutputFile returns the name of the cache file storing output with the given OutputID.
 func (c *DiskCache) OutputFile(out OutputID) string
