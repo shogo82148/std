@@ -12,7 +12,6 @@ package types_test
 import (
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/go/ast"
-	"github.com/shogo82148/std/go/importer"
 	"github.com/shogo82148/std/go/parser"
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/go/types"
@@ -50,7 +49,7 @@ func Unused() { {}; {{ var x int; _ = x }} } // make sure empty block scopes get
 	// Type-check a package consisting of these files.
 	// Type information for the imported "fmt" package
 	// comes from $GOROOT/pkg/$GOOS_$GOOARCH/fmt.a.
-	conf := types.Config{Importer: importer.Default()}
+	conf := types.Config{Importer: defaultImporter(fset)}
 	pkg, err := conf.Check("temperature", fset, files, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -119,7 +118,7 @@ type I interface { m() byte }
 	// Type-check a package consisting of this file.
 	// Type information for the imported packages
 	// comes from $GOROOT/pkg/$GOOS_$GOOARCH/fmt.a.
-	conf := types.Config{Importer: importer.Default()}
+	conf := types.Config{Importer: defaultImporter(fset)}
 	pkg, err := conf.Check("temperature", fset, []*ast.File{f}, nil)
 	if err != nil {
 		log.Fatal(err)
