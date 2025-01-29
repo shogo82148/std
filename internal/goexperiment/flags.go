@@ -49,7 +49,7 @@ package goexperiment
 // tags, experiments use the strings.ToLower of their field name.
 //
 // For the baseline experimental configuration, see
-// objabi.experimentBaseline.
+// [internal/buildcfg.ParseGOEXPERIMENT].
 //
 // If you change this struct definition, run "go generate".
 type Flags struct {
