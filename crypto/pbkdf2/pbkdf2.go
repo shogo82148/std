@@ -30,4 +30,7 @@ import (
 //
 // Using a higher iteration count will increase the cost of an exhaustive
 // search but will also make derivation proportionally slower.
+//
+// keyLength must be a positive integer between 1 and (2^32 - 1) * h.Size().
+// Setting keyLength to a value outside of this range will result in an error.
 func Key[Hash hash.Hash](h func() Hash, password string, salt []byte, iter, keyLength int) ([]byte, error)
