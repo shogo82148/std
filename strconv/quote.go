@@ -99,7 +99,8 @@ func QuotedPrefix(s string) (string, error)
 // or backquoted Go string literal, returning the string value
 // that s quotes.  (If s is single-quoted, it would be a Go
 // character literal; Unquote returns the corresponding
-// one-character string. For ” Unquote returns the empty string.)
+// one-character string. For an empty character literal
+// Unquote returns the empty string.)
 func Unquote(s string) (string, error)
 
 // IsPrint reports whether the rune is defined as printable by Go, with

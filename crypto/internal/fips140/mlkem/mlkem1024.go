@@ -20,6 +20,13 @@ type DecapsulationKey1024 struct {
 // The decapsulation key must be kept secret.
 func (dk *DecapsulationKey1024) Bytes() []byte
 
+// TestingOnlyExpandedBytes1024 returns the decapsulation key as a byte slice
+// using the full expanded NIST encoding.
+//
+// This should only be used for ACVP testing. For all other purposes prefer
+// the Bytes method that returns the (much smaller) seed.
+func TestingOnlyExpandedBytes1024(dk *DecapsulationKey1024) []byte
+
 // EncapsulationKey returns the public encapsulation key necessary to produce
 // ciphertexts.
 func (dk *DecapsulationKey1024) EncapsulationKey() *EncapsulationKey1024
@@ -46,6 +53,15 @@ func GenerateKeyInternal1024(d, z *[32]byte) *DecapsulationKey1024
 // NewDecapsulationKey1024 parses a decapsulation key from a 64-byte
 // seed in the "d || z" form. The seed must be uniformly random.
 func NewDecapsulationKey1024(seed []byte) (*DecapsulationKey1024, error)
+
+// TestingOnlyNewDecapsulationKey1024 parses a decapsulation key from its expanded NIST format.
+//
+// Bytes() must not be called on the returned key, as it will not produce the
+// original seed.
+//
+// This function should only be used for ACVP testing. Prefer NewDecapsulationKey1024 for all
+// other purposes.
+func TestingOnlyNewDecapsulationKey1024(b []byte) (*DecapsulationKey1024, error)
 
 // Encapsulate generates a shared key and an associated ciphertext from an
 // encapsulation key, drawing random bytes from a DRBG.
