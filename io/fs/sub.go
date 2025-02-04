@@ -17,7 +17,8 @@ type SubFS interface {
 // Otherwise, if fs implements [SubFS], Sub returns fsys.Sub(dir).
 // Otherwise, Sub returns a new [FS] implementation sub that,
 // in effect, implements sub.Open(name) as fsys.Open(path.Join(dir, name)).
-// The implementation also translates calls to ReadDir, ReadFile, and Glob appropriately.
+// The implementation also translates calls to ReadDir, ReadFile,
+// ReadLink, Lstat, and Glob appropriately.
 //
 // Note that Sub(os.DirFS("/"), "prefix") is equivalent to os.DirFS("/prefix")
 // and that neither of them guarantees to avoid operating system
@@ -26,3 +27,9 @@ type SubFS interface {
 // other directories. That is, [os.DirFS] is not a general substitute for a
 // chroot-style security mechanism, and Sub does not change that fact.
 func Sub(fsys FS, dir string) (FS, error)
+
+var _ FS = (*subFS)(nil)
+var _ ReadDirFS = (*subFS)(nil)
+var _ ReadFileFS = (*subFS)(nil)
+var _ ReadLinkFS = (*subFS)(nil)
+var _ GlobFS = (*subFS)(nil)

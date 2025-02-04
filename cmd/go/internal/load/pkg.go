@@ -141,7 +141,6 @@ type PackageInternal struct {
 	ExeName           string
 	FuzzInstrument    bool
 	Cover             CoverSetup
-	CoverVars         map[string]*CoverVar
 	OmitDebug         bool
 	GobinSubdir       bool
 	BuildInfo         *debug.BuildInfo
@@ -179,12 +178,6 @@ func (e *NoGoError) Error() string
 // The initial load of p loads all the non-test imports and rewrites
 // the vendored paths, so nothing should ever call p.vendored(p.Imports).
 func (p *Package) Resolve(imports []string) []string
-
-// CoverVar holds the name of the generated coverage variables targeting the named file.
-type CoverVar struct {
-	File string
-	Var  string
-}
 
 // CoverSetup holds parameters related to coverage setup for a given package (covermode, etc).
 type CoverSetup struct {
@@ -470,9 +463,3 @@ func EnsureImport(p *Package, pkg string)
 func PrepareForCoverageBuild(pkgs []*Package)
 
 func SelectCoverPackages(roots []*Package, match []func(*Package) bool, op string) []*Package
-
-// DeclareCoverVars attaches the required cover variables names
-// to the files, to be used when annotating the files. This
-// function only called when using legacy coverage test/build
-// (e.g. GOEXPERIMENT=coverageredesign is off).
-func DeclareCoverVars(p *Package, files ...string) map[string]*CoverVar

@@ -78,9 +78,6 @@ func ReadDir(name string) ([]DirEntry, error)
 // already exists in the destination, CopyFS will return an error
 // such that errors.Is(err, fs.ErrExist) will be true.
 //
-// Symbolic links in fsys are not supported. A *PathError with Err set
-// to ErrInvalid is returned when copying from a symbolic link.
-//
 // Symbolic links in dir are followed.
 //
 // New files added to fsys (including if dir is a subdirectory of fsys)

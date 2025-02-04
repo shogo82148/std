@@ -11,7 +11,7 @@ import (
 
 // A MapFS is a simple in-memory file system for use in tests,
 // represented as a map from path names (arguments to Open)
-// to information about the files or directories they represent.
+// to information about the files, directories, or symbolic links they represent.
 //
 // The map need not include parent directories for files contained
 // in the map; those will be synthesized if needed.
@@ -37,10 +37,19 @@ type MapFile struct {
 }
 
 var _ fs.FS = MapFS(nil)
+var _ fs.ReadLinkFS = MapFS(nil)
 var _ fs.File = (*openMapFile)(nil)
 
-// Open opens the named file.
+// Open opens the named file after following any symbolic links.
 func (fsys MapFS) Open(name string) (fs.File, error)
+
+// ReadLink returns the destination of the named symbolic link.
+func (fsys MapFS) ReadLink(name string) (string, error)
+
+// Lstat returns a FileInfo describing the named file.
+// If the file is a symbolic link, the returned FileInfo describes the symbolic link.
+// Lstat makes no attempt to follow the link.
+func (fsys MapFS) Lstat(name string) (fs.FileInfo, error)
 
 func (fsys MapFS) ReadFile(name string) ([]byte, error)
 

@@ -238,11 +238,9 @@ const (
 // install, list, run, and test commands.
 func AddBuildFlags(cmd *base.Command, mask BuildFlagMask)
 
-// AddCoverFlags adds coverage-related flags to "cmd". If the
-// CoverageRedesign experiment is enabled, we add -cover{mode,pkg} to
-// the build command and only -coverprofile to the test command. If
-// the CoverageRedesign experiment is disabled, -cover* flags are
-// added only to the test command.
+// AddCoverFlags adds coverage-related flags to "cmd".
+// We add -cover{mode,pkg} to the build command and only
+// -coverprofile to the test command.
 func AddCoverFlags(cmd *base.Command, coverProfileFlag *string)
 
 var CmdInstall = &base.Command{

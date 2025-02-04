@@ -21,7 +21,6 @@ type TestCover struct {
 	Local bool
 	Pkgs  []*Package
 	Paths []string
-	Vars  []coverInfo
 }
 
 // TestPackagesFor is like TestPackagesAndErrors but it returns

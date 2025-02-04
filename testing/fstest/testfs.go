@@ -12,6 +12,9 @@ import (
 // TestFS tests a file system implementation.
 // It walks the entire tree of files in fsys,
 // opening and checking that each file behaves correctly.
+// Symbolic links are not followed,
+// but their Lstat values are checked
+// if the file system implements [fs.ReadLinkFS].
 // It also checks that the file system contains at least the expected files.
 // As a special case, if no expected files are listed, fsys must be empty.
 // Otherwise, fsys must contain at least the listed files; it can also contain others.
