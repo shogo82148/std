@@ -201,7 +201,7 @@ var ArchPPC64 = &Arch{
 	RegSize:       8,
 	MinLC:         4,
 	Alignment:     1,
-	CanMergeLoads: false,
+	CanMergeLoads: true,
 	HasLR:         true,
 
 	FixedFrameSize: 4 * 8,

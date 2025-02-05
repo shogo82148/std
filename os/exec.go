@@ -19,15 +19,13 @@ var ErrProcessDone = errors.New("os: process already finished")
 type Process struct {
 	Pid int
 
-	mode processMode
-
 	// State contains the atomic process state.
 	//
-	// In modePID, this consists only of the processStatus fields, which
-	// indicate if the process is done/released.
+	// If handle is nil, this consists only of the processStatus fields,
+	// which indicate if the process is done/released.
 	//
-	// In modeHandle, the lower bits also contain a reference count for the
-	// handle field.
+	// In handle is not nil, the lower bits also contain a reference
+	// count for the handle field.
 	//
 	// The Process itself initially holds 1 persistent reference. Any
 	// operation that uses the handle with a system call temporarily holds
@@ -48,19 +46,16 @@ type Process struct {
 	// errors returned by concurrent calls.
 	state atomic.Uint64
 
-	// Used only in modePID.
+	// Used only when handle is nil
 	sigMu sync.RWMutex
 
-	// handle is the OS handle for process actions, used only in
-	// modeHandle.
-	//
-	// handle must be accessed only via the handleTransientAcquire method
-	// (or during closeHandle), not directly! handle is immutable.
-	//
-	// On Windows, it is a handle from OpenProcess.
-	// On Linux, it is a pidfd.
-	// It is unused on other GOOSes.
-	handle uintptr
+	// handle, if not nil, is a pointer to a struct
+	// that holds the OS-specific process handle.
+	// This pointer is set when Process is created,
+	// and never changed afterward.
+	// This is a pointer to a separate memory allocation
+	// so that we can use runtime.AddCleanup.
+	handle *processHandle
 }
 
 // ProcAttr holds the attributes that will be applied to a new process
