@@ -134,6 +134,17 @@ var S390X struct {
 	_         CacheLinePad
 }
 
+// RISCV64 contains the supported CPU features and performance characteristics for riscv64
+// platforms. The booleans in RISCV64, with the exception of HasFastMisaligned, indicate
+// the presence of RISC-V extensions.
+// The struct is padded to avoid false sharing.
+var RISCV64 struct {
+	_                 CacheLinePad
+	HasFastMisaligned bool
+	HasV              bool
+	_                 CacheLinePad
+}
+
 // Initialize examines the processor and sets the relevant variables above.
 // This is called by the runtime package early in program initialization,
 // before normal init functions are run. env is set by runtime if the OS supports

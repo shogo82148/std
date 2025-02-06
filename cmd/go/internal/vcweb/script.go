@@ -3,3 +3,9 @@
 // license that can be found in the LICENSE file.
 
 package vcweb
+
+type SkipError struct {
+	Msg string
+}
+
+func (s SkipError) Error() string

@@ -1890,7 +1890,7 @@
 // The rule for a match in the cache is that the run involves the same
 // test binary and the flags on the command line come entirely from a
 // restricted set of 'cacheable' test flags, defined as -benchtime, -cpu,
-// -list, -parallel, -run, -short, -timeout, -failfast, -fullpath and -v.
+// -list, -parallel, -run, -short, -skip, -timeout, -failfast, -fullpath and -v.
 // If a run of go test has any test or non-test flags outside this set,
 // the result is not cached. To disable test caching, use any test flag
 // or argument other than the cacheable flags. The idiomatic way to disable
@@ -2100,8 +2100,8 @@
 //     (or ppc64le.power8, ppc64le.power9, and ppc64le.power10)
 //     feature build tags.
 //   - For GOARCH=riscv64,
-//     GORISCV64=rva20u64 and rva22u64 correspond to the riscv64.rva20u64
-//     and riscv64.rva22u64 build tags.
+//     GORISCV64=rva20u64, rva22u64 and rva23u64 correspond to the riscv64.rva20u64,
+//     riscv64.rva22u64 and riscv64.rva23u64 build tags.
 //   - For GOARCH=wasm, GOWASM=satconv and signext
 //     correspond to the wasm.satconv and wasm.signext feature build tags.
 //
@@ -2473,8 +2473,9 @@
 //		Valid values are power8 (default), power9, power10.
 //	GORISCV64
 //		For GOARCH=riscv64, the RISC-V user-mode application profile for which
-//		to compile. Valid values are rva20u64 (default), rva22u64.
+//		to compile. Valid values are rva20u64 (default), rva22u64, rva23u64.
 //		See https://github.com/riscv/riscv-profiles/blob/main/src/profiles.adoc
+//		and https://github.com/riscv/riscv-profiles/blob/main/src/rva23-profile.adoc
 //	GOWASM
 //		For GOARCH=wasm, comma-separated list of experimental WebAssembly features to use.
 //		Valid values are satconv, signext.
