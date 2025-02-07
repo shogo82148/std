@@ -54,6 +54,9 @@ import (
 // referenced object. Typically, this batching only happens for tiny
 // (on the order of 16 bytes or less) and pointer-free objects.
 type Pointer[T any] struct {
+	// Mention T in the type definition to prevent conversions
+	// between Pointer types, like we do for sync/atomic.Pointer.
+	_ [0]*T
 	u unsafe.Pointer
 }
 
