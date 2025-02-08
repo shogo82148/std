@@ -19,32 +19,11 @@ var ErrProcessDone = errors.New("os: process already finished")
 type Process struct {
 	Pid int
 
-	// State contains the atomic process state.
+	// state contains the atomic process state.
 	//
-	// If handle is nil, this consists only of the processStatus fields,
+	// This consists of the processStatus fields,
 	// which indicate if the process is done/released.
-	//
-	// In handle is not nil, the lower bits also contain a reference
-	// count for the handle field.
-	//
-	// The Process itself initially holds 1 persistent reference. Any
-	// operation that uses the handle with a system call temporarily holds
-	// an additional transient reference. This prevents the handle from
-	// being closed prematurely, which could result in the OS allocating a
-	// different handle with the same value, leading to Process' methods
-	// operating on the wrong process.
-	//
-	// Release and Wait both drop the Process' persistent reference, but
-	// other concurrent references may delay actually closing the handle
-	// because they hold a transient reference.
-	//
-	// Regardless, we want new method calls to immediately treat the handle
-	// as unavailable after Release or Wait to avoid extending this delay.
-	// This is achieved by setting either processStatus flag when the
-	// Process' persistent reference is dropped. The only difference in the
-	// flags is the reason the handle is unavailable, which affects the
-	// errors returned by concurrent calls.
-	state atomic.Uint64
+	state atomic.Uint32
 
 	// Used only when handle is nil
 	sigMu sync.RWMutex

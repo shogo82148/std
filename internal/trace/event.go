@@ -260,26 +260,15 @@ type ExperimentalEvent struct {
 	// Name is the name of the event.
 	Name string
 
+	// Experiment is the name of the experiment this event is a part of.
+	Experiment string
+
 	// ArgNames is the names of the event's arguments in order.
 	// This may refer to a globally shared slice. Copy before mutating.
 	ArgNames []string
 
 	// Args contains the event's arguments.
 	Args []uint64
-
-	// Data is additional unparsed data that is associated with the experimental event.
-	// Data is likely to be shared across many ExperimentalEvents, so callers that parse
-	// Data are encouraged to cache the parse result and look it up by the value of Data.
-	Data *ExperimentalData
-}
-
-// ExperimentalData represents some raw and unparsed sidecar data present in the trace that is
-// associated with certain kinds of experimental events. For example, this data may contain
-// tables needed to interpret ExperimentalEvent arguments, or the ExperimentEvent could just be
-// a placeholder for a differently encoded event that's actually present in the experimental data.
-type ExperimentalData struct {
-	// Batches contain the actual experimental data, along with metadata about each batch.
-	Batches []ExperimentalBatch
 }
 
 // ExperimentalBatch represents a packet of unparsed data along with metadata about that packet.
@@ -379,6 +368,20 @@ func (e Event) Log() Log
 //
 // Panics if Kind != EventStateTransition.
 func (e Event) StateTransition() StateTransition
+
+// Sync returns details that are relevant for the following events, up to but excluding the
+// next EventSync event.
+func (e Event) Sync() Sync
+
+// Sync contains details potentially relevant to all the following events, up to but excluding
+// the next EventSync event.
+type Sync struct {
+	// N indicates that this is the Nth sync event in the trace.
+	N int
+
+	// ExperimentalBatches contain all the unparsed batches of data for a given experiment.
+	ExperimentalBatches map[string][]ExperimentalBatch
+}
 
 // Experimental returns a view of the raw event for an experimental event.
 //

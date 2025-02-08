@@ -10,14 +10,14 @@ import (
 
 // Validator is a type used for validating a stream of trace.Events.
 type Validator struct {
-	lastTs   trace.Time
-	gs       map[trace.GoID]*goState
-	ps       map[trace.ProcID]*procState
-	ms       map[trace.ThreadID]*schedContext
-	ranges   map[trace.ResourceID][]string
-	tasks    map[trace.TaskID]string
-	seenSync bool
-	Go121    bool
+	lastTs trace.Time
+	gs     map[trace.GoID]*goState
+	ps     map[trace.ProcID]*procState
+	ms     map[trace.ThreadID]*schedContext
+	ranges map[trace.ResourceID][]string
+	tasks  map[trace.TaskID]string
+	nSync  int
+	Go121  bool
 }
 
 // NewValidator creates a new Validator.

@@ -610,12 +610,12 @@ const (
 	ABSET
 	ABSETI
 
-	// 31.6. Configuration-Setting Instructions
+	// 31.6: Configuration-Setting Instructions
 	AVSETVLI
 	AVSETIVLI
 	AVSETVL
 
-	// 31.7.4. Vector Unit-Stride Instructions
+	// 31.7.4: Vector Unit-Stride Instructions
 	AVLE8V
 	AVLE16V
 	AVLE32V
@@ -627,7 +627,7 @@ const (
 	AVLMV
 	AVSMV
 
-	// 31.7.5. Vector Strided Instructions
+	// 31.7.5: Vector Strided Instructions
 	AVLSE8V
 	AVLSE16V
 	AVLSE32V
@@ -637,7 +637,7 @@ const (
 	AVSSE32V
 	AVSSE64V
 
-	// 31.7.6. Vector Indexed Instructions
+	// 31.7.6: Vector Indexed Instructions
 	AVLUXEI8V
 	AVLUXEI16V
 	AVLUXEI32V
@@ -655,13 +655,13 @@ const (
 	AVSOXEI32V
 	AVSOXEI64V
 
-	// 31.7.7. Unit-stride Fault-Only-First Loads
+	// 31.7.7: Unit-stride Fault-Only-First Loads
 	AVLE8FFV
 	AVLE16FFV
 	AVLE32FFV
 	AVLE64FFV
 
-	// 31.7.9. Vector Load/Store Whole Register Instructions
+	// 31.7.9: Vector Load/Store Whole Register Instructions
 	AVL1RE8V
 	AVL1RE16V
 	AVL1RE32V
@@ -683,7 +683,7 @@ const (
 	AVS4RV
 	AVS8RV
 
-	// 31.11.1. Vector Single-Width Integer Add and Subtract
+	// 31.11.1: Vector Single-Width Integer Add and Subtract
 	AVADDVV
 	AVADDVX
 	AVADDVI
@@ -692,7 +692,7 @@ const (
 	AVRSUBVX
 	AVRSUBVI
 
-	// 31.11.2. Vector Widening Integer Add/Subtract
+	// 31.11.2: Vector Widening Integer Add/Subtract
 	AVWADDUVV
 	AVWADDUVX
 	AVWSUBUVV
@@ -710,7 +710,7 @@ const (
 	AVWSUBWV
 	AVWSUBWX
 
-	// 31.11.3. Vector Integer Extension
+	// 31.11.3: Vector Integer Extension
 	AVZEXTVF2
 	AVSEXTVF2
 	AVZEXTVF4
@@ -718,7 +718,7 @@ const (
 	AVZEXTVF8
 	AVSEXTVF8
 
-	// 31.11.4. Vector Integer Add-with-Carry / Subtract-with-Borrow Instructions
+	// 31.11.4: Vector Integer Add-with-Carry / Subtract-with-Borrow Instructions
 	AVADCVVM
 	AVADCVXM
 	AVADCVIM
@@ -735,7 +735,7 @@ const (
 	AVMSBCVV
 	AVMSBCVX
 
-	// 31.11.5. Vector Bitwise Logical Instructions
+	// 31.11.5: Vector Bitwise Logical Instructions
 	AVANDVV
 	AVANDVX
 	AVANDVI
@@ -746,7 +746,7 @@ const (
 	AVXORVX
 	AVXORVI
 
-	// 31.11.6. Vector Single-Width Shift Instructions
+	// 31.11.6: Vector Single-Width Shift Instructions
 	AVSLLVV
 	AVSLLVX
 	AVSLLVI
@@ -757,7 +757,7 @@ const (
 	AVSRAVX
 	AVSRAVI
 
-	// 31.11.7. Vector Narrowing Integer Right Shift Instructions
+	// 31.11.7: Vector Narrowing Integer Right Shift Instructions
 	AVNSRLWV
 	AVNSRLWX
 	AVNSRLWI
@@ -765,7 +765,7 @@ const (
 	AVNSRAWX
 	AVNSRAWI
 
-	// 31.11.8. Vector Integer Compare Instructions
+	// 31.11.8: Vector Integer Compare Instructions
 	AVMSEQVV
 	AVMSEQVX
 	AVMSEQVI
@@ -787,7 +787,7 @@ const (
 	AVMSGTVX
 	AVMSGTVI
 
-	// 31.11.9. Vector Integer Min/Max Instructions
+	// 31.11.9: Vector Integer Min/Max Instructions
 	AVMINUVV
 	AVMINUVX
 	AVMINVV
@@ -797,7 +797,7 @@ const (
 	AVMAXVV
 	AVMAXVX
 
-	// 31.11.10. Vector Single-Width Integer Multiply Instructions
+	// 31.11.10: Vector Single-Width Integer Multiply Instructions
 	AVMULVV
 	AVMULVX
 	AVMULHVV
@@ -807,7 +807,7 @@ const (
 	AVMULHSUVV
 	AVMULHSUVX
 
-	// 31.11.11. Vector Integer Divide Instructions
+	// 31.11.11: Vector Integer Divide Instructions
 	AVDIVUVV
 	AVDIVUVX
 	AVDIVVV
@@ -817,7 +817,7 @@ const (
 	AVREMVV
 	AVREMVX
 
-	// 31.11.12. Vector Widening Integer Multiply Instructions
+	// 31.11.12: Vector Widening Integer Multiply Instructions
 	AVWMULVV
 	AVWMULVX
 	AVWMULUVV
@@ -825,7 +825,7 @@ const (
 	AVWMULSUVV
 	AVWMULSUVX
 
-	// 31.11.13. Vector Single-Width Integer Multiply-Add Instructions
+	// 31.11.13: Vector Single-Width Integer Multiply-Add Instructions
 	AVMACCVV
 	AVMACCVX
 	AVNMSACVV
@@ -835,7 +835,7 @@ const (
 	AVNMSUBVV
 	AVNMSUBVX
 
-	// 31.11.14. Vector Widening Integer Multiply-Add Instructions
+	// 31.11.14: Vector Widening Integer Multiply-Add Instructions
 	AVWMACCUVV
 	AVWMACCUVX
 	AVWMACCVV
@@ -844,17 +844,17 @@ const (
 	AVWMACCSUVX
 	AVWMACCUSVX
 
-	// 31.11.15. Vector Integer Merge Instructions
+	// 31.11.15: Vector Integer Merge Instructions
 	AVMERGEVVM
 	AVMERGEVXM
 	AVMERGEVIM
 
-	// 31.11.16. Vector Integer Move Instructions
+	// 31.11.16: Vector Integer Move Instructions
 	AVMVVV
 	AVMVVX
 	AVMVVI
 
-	// 31.12.1. Vector Single-Width Saturating Add and Subtract
+	// 31.12.1: Vector Single-Width Saturating Add and Subtract
 	AVSADDUVV
 	AVSADDUVX
 	AVSADDUVI
@@ -866,7 +866,7 @@ const (
 	AVSSUBVV
 	AVSSUBVX
 
-	// 31.12.2. Vector Single-Width Averaging Add and Subtract
+	// 31.12.2: Vector Single-Width Averaging Add and Subtract
 	AVAADDUVV
 	AVAADDUVX
 	AVAADDVV
@@ -876,11 +876,11 @@ const (
 	AVASUBVV
 	AVASUBVX
 
-	// 31.12.3. Vector Single-Width Fractional Multiply with Rounding and Saturation
+	// 31.12.3: Vector Single-Width Fractional Multiply with Rounding and Saturation
 	AVSMULVV
 	AVSMULVX
 
-	// 31.12.4. Vector Single-Width Scaling Shift Instructions
+	// 31.12.4: Vector Single-Width Scaling Shift Instructions
 	AVSSRLVV
 	AVSSRLVX
 	AVSSRLVI
@@ -888,7 +888,7 @@ const (
 	AVSSRAVX
 	AVSSRAVI
 
-	// 31.12.5. Vector Narrowing Fixed-Point Clip Instructions
+	// 31.12.5: Vector Narrowing Fixed-Point Clip Instructions
 	AVNCLIPUWV
 	AVNCLIPUWX
 	AVNCLIPUWI
@@ -896,14 +896,14 @@ const (
 	AVNCLIPWX
 	AVNCLIPWI
 
-	// 31.13.2. Vector Single-Width Floating-Point Add/Subtract Instructions
+	// 31.13.2: Vector Single-Width Floating-Point Add/Subtract Instructions
 	AVFADDVV
 	AVFADDVF
 	AVFSUBVV
 	AVFSUBVF
 	AVFRSUBVF
 
-	// 31.13.3. Vector Widening Floating-Point Add/Subtract Instructions
+	// 31.13.3: Vector Widening Floating-Point Add/Subtract Instructions
 	AVFWADDVV
 	AVFWADDVF
 	AVFWSUBVV
@@ -913,18 +913,18 @@ const (
 	AVFWSUBWV
 	AVFWSUBWF
 
-	// 31.13.4. Vector Single-Width Floating-Point Multiply/Divide Instructions
+	// 31.13.4: Vector Single-Width Floating-Point Multiply/Divide Instructions
 	AVFMULVV
 	AVFMULVF
 	AVFDIVVV
 	AVFDIVVF
 	AVFRDIVVF
 
-	// 31.13.5. Vector Widening Floating-Point Multiply
+	// 31.13.5: Vector Widening Floating-Point Multiply
 	AVFWMULVV
 	AVFWMULVF
 
-	// 31.13.6. Vector Single-Width Floating-Point Fused Multiply-Add Instructions
+	// 31.13.6: Vector Single-Width Floating-Point Fused Multiply-Add Instructions
 	AVFMACCVV
 	AVFMACCVF
 	AVFNMACCVV
@@ -942,7 +942,7 @@ const (
 	AVFNMSUBVV
 	AVFNMSUBVF
 
-	// 31.13.7. Vector Widening Floating-Point Fused Multiply-Add Instructions
+	// 31.13.7: Vector Widening Floating-Point Fused Multiply-Add Instructions
 	AVFWMACCVV
 	AVFWMACCVF
 	AVFWNMACCVV
@@ -952,22 +952,22 @@ const (
 	AVFWNMSACVV
 	AVFWNMSACVF
 
-	// 31.13.8. Vector Floating-Point Square-Root Instruction
+	// 31.13.8: Vector Floating-Point Square-Root Instruction
 	AVFSQRTV
 
-	// 31.13.9. Vector Floating-Point Reciprocal Square-Root Estimate Instruction
+	// 31.13.9: Vector Floating-Point Reciprocal Square-Root Estimate Instruction
 	AVFRSQRT7V
 
-	// 31.13.10. Vector Floating-Point Reciprocal Estimate Instruction
+	// 31.13.10: Vector Floating-Point Reciprocal Estimate Instruction
 	AVFREC7V
 
-	// 31.13.11. Vector Floating-Point MIN/MAX Instructions
+	// 31.13.11: Vector Floating-Point MIN/MAX Instructions
 	AVFMINVV
 	AVFMINVF
 	AVFMAXVV
 	AVFMAXVF
 
-	// 31.13.12. Vector Floating-Point Sign-Injection Instructions
+	// 31.13.12: Vector Floating-Point Sign-Injection Instructions
 	AVFSGNJVV
 	AVFSGNJVF
 	AVFSGNJNVV
@@ -975,7 +975,7 @@ const (
 	AVFSGNJXVV
 	AVFSGNJXVF
 
-	// 31.13.13. Vector Floating-Point Compare Instructions
+	// 31.13.13: Vector Floating-Point Compare Instructions
 	AVMFEQVV
 	AVMFEQVF
 	AVMFNEVV
@@ -987,16 +987,16 @@ const (
 	AVMFGTVF
 	AVMFGEVF
 
-	// 31.13.14. Vector Floating-Point Classify Instruction
+	// 31.13.14: Vector Floating-Point Classify Instruction
 	AVFCLASSV
 
-	// 31.13.15. Vector Floating-Point Merge Instruction
+	// 31.13.15: Vector Floating-Point Merge Instruction
 	AVFMERGEVFM
 
-	// 31.13.16. Vector Floating-Point Move Instruction
+	// 31.13.16: Vector Floating-Point Move Instruction
 	AVFMVVF
 
-	// 31.13.17. Single-Width Floating-Point/Integer Type-Convert Instructions
+	// 31.13.17: Single-Width Floating-Point/Integer Type-Convert Instructions
 	AVFCVTXUFV
 	AVFCVTXFV
 	AVFCVTRTZXUFV
@@ -1004,7 +1004,7 @@ const (
 	AVFCVTFXUV
 	AVFCVTFXV
 
-	// 31.13.18. Widening Floating-Point/Integer Type-Convert Instructions
+	// 31.13.18: Widening Floating-Point/Integer Type-Convert Instructions
 	AVFWCVTXUFV
 	AVFWCVTXFV
 	AVFWCVTRTZXUFV
@@ -1013,7 +1013,7 @@ const (
 	AVFWCVTFXV
 	AVFWCVTFFV
 
-	// 31.13.19. Narrowing Floating-Point/Integer Type-Convert Instructions
+	// 31.13.19: Narrowing Floating-Point/Integer Type-Convert Instructions
 	AVFNCVTXUFW
 	AVFNCVTXFW
 	AVFNCVTRTZXUFW
@@ -1023,7 +1023,7 @@ const (
 	AVFNCVTFFW
 	AVFNCVTRODFFW
 
-	// 31.14.1. Vector Single-Width Integer Reduction Instructions
+	// 31.14.1: Vector Single-Width Integer Reduction Instructions
 	AVREDSUMVS
 	AVREDMAXUVS
 	AVREDMAXVS
@@ -1033,21 +1033,21 @@ const (
 	AVREDORVS
 	AVREDXORVS
 
-	// 31.14.2. Vector Widening Integer Reduction Instructions
+	// 31.14.2: Vector Widening Integer Reduction Instructions
 	AVWREDSUMUVS
 	AVWREDSUMVS
 
-	// 31.14.3. Vector Single-Width Floating-Point Reduction Instructions
+	// 31.14.3: Vector Single-Width Floating-Point Reduction Instructions
 	AVFREDOSUMVS
 	AVFREDUSUMVS
 	AVFREDMAXVS
 	AVFREDMINVS
 
-	// 31.14.4. Vector Widening Floating-Point Reduction Instructions
+	// 31.14.4: Vector Widening Floating-Point Reduction Instructions
 	AVFWREDOSUMVS
 	AVFWREDUSUMVS
 
-	// 31.15. Vector Mask Instructions
+	// 31.15: Vector Mask Instructions
 	AVMANDMM
 	AVMNANDMM
 	AVMANDNMM
@@ -1064,15 +1064,15 @@ const (
 	AVIOTAM
 	AVIDV
 
-	// 31.16.1. Integer Scalar Move Instructions
+	// 31.16.1: Integer Scalar Move Instructions
 	AVMVXS
 	AVMVSX
 
-	// 31.16.2. Floating-Point Scalar Move Instructions
+	// 31.16.2: Floating-Point Scalar Move Instructions
 	AVFMVFS
 	AVFMVSF
 
-	// 31.16.3. Vector Slide Instructions
+	// 31.16.3: Vector Slide Instructions
 	AVSLIDEUPVX
 	AVSLIDEUPVI
 	AVSLIDEDOWNVX
@@ -1082,16 +1082,16 @@ const (
 	AVSLIDE1DOWNVX
 	AVFSLIDE1DOWNVF
 
-	// 31.16.4. Vector Register Gather Instructions
+	// 31.16.4: Vector Register Gather Instructions
 	AVRGATHERVV
 	AVRGATHEREI16VV
 	AVRGATHERVX
 	AVRGATHERVI
 
-	// 31.16.5. Vector Compress Instruction
+	// 31.16.5: Vector Compress Instruction
 	AVCOMPRESSVM
 
-	// 31.16.6. Whole Vector Register Move
+	// 31.16.6: Whole Vector Register Move
 	AVMV1RV
 	AVMV2RV
 	AVMV4RV
