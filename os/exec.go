@@ -6,6 +6,7 @@ package os
 
 import (
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/runtime"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/syscall"
@@ -35,6 +36,9 @@ type Process struct {
 	// This is a pointer to a separate memory allocation
 	// so that we can use runtime.AddCleanup.
 	handle *processHandle
+
+	// cleanup is used to clean up the process handle.
+	cleanup runtime.Cleanup
 }
 
 // ProcAttr holds the attributes that will be applied to a new process
