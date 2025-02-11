@@ -19,3 +19,5 @@ func Fstatat(dirfd int, path string, stat *syscall.Stat_t, flags int) error
 func Readlinkat(dirfd int, path string, buf []byte) (int, error)
 
 func Mkdirat(dirfd int, path string, mode uint32) error
+
+func Fchmodat(dirfd int, path string, mode uint32, flags int) error

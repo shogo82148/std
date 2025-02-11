@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/bufio"
 	"github.com/shogo82148/std/io"
 
-	"github.com/shogo82148/std/internal/trace/event"
+	"github.com/shogo82148/std/internal/trace/tracev2"
 	"github.com/shogo82148/std/internal/trace/version"
 )
 
@@ -16,8 +16,8 @@ import (
 // into an event stream.
 type TextReader struct {
 	v     version.Version
-	specs []event.Spec
-	names map[string]event.Type
+	specs []tracev2.EventSpec
+	names map[string]tracev2.EventType
 	s     *bufio.Scanner
 }
 

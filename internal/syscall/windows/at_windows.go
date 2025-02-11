@@ -19,9 +19,10 @@ const (
 	O_DIRECTORY    = 0x100000
 	O_NOFOLLOW_ANY = 0x20000000
 	O_OPEN_REPARSE = 0x40000000
+	O_WRITE_ATTRS  = 0x80000000
 )
 
-func Openat(dirfd syscall.Handle, name string, flag int, perm uint32) (_ syscall.Handle, e1 error)
+func Openat(dirfd syscall.Handle, name string, flag uint64, perm uint32) (_ syscall.Handle, e1 error)
 
 func Mkdirat(dirfd syscall.Handle, name string, mode uint32) error
 

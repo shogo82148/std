@@ -2,18 +2,18 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package testkit
+package testgen
 
 import (
 	"github.com/shogo82148/std/regexp"
 
 	"github.com/shogo82148/std/internal/trace"
-	"github.com/shogo82148/std/internal/trace/event"
 	"github.com/shogo82148/std/internal/trace/raw"
+	"github.com/shogo82148/std/internal/trace/tracev2"
 	"github.com/shogo82148/std/internal/trace/version"
 )
 
-func Main(f func(*Trace))
+func Main(ver version.Version, f func(*Trace))
 
 // Trace represents an execution trace for testing.
 //
@@ -26,8 +26,8 @@ func Main(f func(*Trace))
 type Trace struct {
 	// Trace data state.
 	ver             version.Version
-	names           map[string]event.Type
-	specs           []event.Spec
+	names           map[string]tracev2.EventType
+	specs           []tracev2.EventSpec
 	events          []raw.Event
 	gens            []*Generation
 	validTimestamps bool
@@ -38,7 +38,7 @@ type Trace struct {
 }
 
 // NewTrace creates a new trace.
-func NewTrace() *Trace
+func NewTrace(ver version.Version) *Trace
 
 // ExpectFailure writes down that the trace should be broken. The caller
 // must provide a pattern matching the expected error produced by the parser.
@@ -50,7 +50,7 @@ func (t *Trace) ExpectSuccess()
 // RawEvent emits an event into the trace. name must correspond to one
 // of the names in Specs() result for the version that was passed to
 // this trace.
-func (t *Trace) RawEvent(typ event.Type, data []byte, args ...uint64)
+func (t *Trace) RawEvent(typ tracev2.EventType, data []byte, args ...uint64)
 
 // DisableTimestamps makes the timestamps for all events generated after
 // this call zero. Raw events are exempted from this because the caller
@@ -118,7 +118,7 @@ func (b *Batch) Event(name string, args ...any)
 // RawEvent emits an event into a batch. name must correspond to one
 // of the names in Specs() result for the version that was passed to
 // this trace.
-func (b *Batch) RawEvent(typ event.Type, data []byte, args ...uint64)
+func (b *Batch) RawEvent(typ tracev2.EventType, data []byte, args ...uint64)
 
 // Seq represents a sequence counter.
 type Seq uint64

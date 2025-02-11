@@ -41,13 +41,18 @@ func OpenInRoot(dir, name string) (*File, error)
 //
 //   - When GOOS=windows, file names may not reference Windows reserved device names
 //     such as NUL and COM1.
+//   - On Unix, [Root.Chmod] and [Root.Chown] are vulnerable to a race condition.
+//     If the target of the operation is changed from a regular file to a symlink
+//     while the operation is in progress, the operation may be peformed on the link
+//     rather than the link target.
 //   - When GOOS=js, Root is vulnerable to TOCTOU (time-of-check-time-of-use)
 //     attacks in symlink validation, and cannot ensure that operations will not
 //     escape the root.
 //   - When GOOS=plan9 or GOOS=js, Root does not track directories across renames.
 //     On these platforms, a Root references a directory name, not a file descriptor.
+//   - WASI preview 1 (GOOS=wasip1) does not support [Root.Chmod].
 type Root struct {
-	root root
+	root *root
 }
 
 // OpenRoot opens the named directory.
@@ -81,6 +86,10 @@ func (r *Root) OpenFile(name string, flag int, perm FileMode) (*File, error)
 // OpenRoot opens the named directory in the root.
 // If there is an error, it will be of type *PathError.
 func (r *Root) OpenRoot(name string) (*Root, error)
+
+// Chmod changes the mode of the named file in the root to mode.
+// See [Chmod] for more details.
+func (r *Root) Chmod(name string, mode FileMode) error
 
 // Mkdir creates a new directory in the root
 // with the specified name and permission bits (before umask).

@@ -7,6 +7,8 @@ package trace
 import (
 	"github.com/shogo82148/std/bufio"
 	"github.com/shogo82148/std/io"
+
+	"github.com/shogo82148/std/internal/trace/version"
 )
 
 // Reader reads a byte stream, validates it, and produces trace events.
@@ -15,6 +17,7 @@ import (
 // event as the first event, and a Sync event as the last event.
 // (There may also be any number of Sync events in the middle, too.)
 type Reader struct {
+	version    version.Version
 	r          *bufio.Reader
 	lastTs     Time
 	gen        *generation

@@ -13,7 +13,6 @@ package tracev1
 
 import (
 	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/internal/trace/event"
 	"github.com/shogo82148/std/internal/trace/version"
 	"github.com/shogo82148/std/io"
 )
@@ -30,7 +29,7 @@ type Event struct {
 	Args  [4]uint64
 	StkID uint32
 	P     int32
-	Type  event.Type
+	Type  EventType
 }
 
 // Frame is a frame in stack traces.
@@ -106,60 +105,62 @@ var ErrTimeOrder = errors.New("time stamps out of order")
 
 func (ev *Event) String() string
 
+type EventType uint8
+
 // Event types in the trace.
 // Verbatim copy from src/runtime/trace.go with the "trace" prefix removed.
 const (
-	EvNone              event.Type = 0
-	EvBatch             event.Type = 1
-	EvFrequency         event.Type = 2
-	EvStack             event.Type = 3
-	EvGomaxprocs        event.Type = 4
-	EvProcStart         event.Type = 5
-	EvProcStop          event.Type = 6
-	EvGCStart           event.Type = 7
-	EvGCDone            event.Type = 8
-	EvSTWStart          event.Type = 9
-	EvSTWDone           event.Type = 10
-	EvGCSweepStart      event.Type = 11
-	EvGCSweepDone       event.Type = 12
-	EvGoCreate          event.Type = 13
-	EvGoStart           event.Type = 14
-	EvGoEnd             event.Type = 15
-	EvGoStop            event.Type = 16
-	EvGoSched           event.Type = 17
-	EvGoPreempt         event.Type = 18
-	EvGoSleep           event.Type = 19
-	EvGoBlock           event.Type = 20
-	EvGoUnblock         event.Type = 21
-	EvGoBlockSend       event.Type = 22
-	EvGoBlockRecv       event.Type = 23
-	EvGoBlockSelect     event.Type = 24
-	EvGoBlockSync       event.Type = 25
-	EvGoBlockCond       event.Type = 26
-	EvGoBlockNet        event.Type = 27
-	EvGoSysCall         event.Type = 28
-	EvGoSysExit         event.Type = 29
-	EvGoSysBlock        event.Type = 30
-	EvGoWaiting         event.Type = 31
-	EvGoInSyscall       event.Type = 32
-	EvHeapAlloc         event.Type = 33
-	EvHeapGoal          event.Type = 34
-	EvTimerGoroutine    event.Type = 35
-	EvFutileWakeup      event.Type = 36
-	EvString            event.Type = 37
-	EvGoStartLocal      event.Type = 38
-	EvGoUnblockLocal    event.Type = 39
-	EvGoSysExitLocal    event.Type = 40
-	EvGoStartLabel      event.Type = 41
-	EvGoBlockGC         event.Type = 42
-	EvGCMarkAssistStart event.Type = 43
-	EvGCMarkAssistDone  event.Type = 44
-	EvUserTaskCreate    event.Type = 45
-	EvUserTaskEnd       event.Type = 46
-	EvUserRegion        event.Type = 47
-	EvUserLog           event.Type = 48
-	EvCPUSample         event.Type = 49
-	EvCount             event.Type = 50
+	EvNone              EventType = 0
+	EvBatch             EventType = 1
+	EvFrequency         EventType = 2
+	EvStack             EventType = 3
+	EvGomaxprocs        EventType = 4
+	EvProcStart         EventType = 5
+	EvProcStop          EventType = 6
+	EvGCStart           EventType = 7
+	EvGCDone            EventType = 8
+	EvSTWStart          EventType = 9
+	EvSTWDone           EventType = 10
+	EvGCSweepStart      EventType = 11
+	EvGCSweepDone       EventType = 12
+	EvGoCreate          EventType = 13
+	EvGoStart           EventType = 14
+	EvGoEnd             EventType = 15
+	EvGoStop            EventType = 16
+	EvGoSched           EventType = 17
+	EvGoPreempt         EventType = 18
+	EvGoSleep           EventType = 19
+	EvGoBlock           EventType = 20
+	EvGoUnblock         EventType = 21
+	EvGoBlockSend       EventType = 22
+	EvGoBlockRecv       EventType = 23
+	EvGoBlockSelect     EventType = 24
+	EvGoBlockSync       EventType = 25
+	EvGoBlockCond       EventType = 26
+	EvGoBlockNet        EventType = 27
+	EvGoSysCall         EventType = 28
+	EvGoSysExit         EventType = 29
+	EvGoSysBlock        EventType = 30
+	EvGoWaiting         EventType = 31
+	EvGoInSyscall       EventType = 32
+	EvHeapAlloc         EventType = 33
+	EvHeapGoal          EventType = 34
+	EvTimerGoroutine    EventType = 35
+	EvFutileWakeup      EventType = 36
+	EvString            EventType = 37
+	EvGoStartLocal      EventType = 38
+	EvGoUnblockLocal    EventType = 39
+	EvGoSysExitLocal    EventType = 40
+	EvGoStartLabel      EventType = 41
+	EvGoBlockGC         EventType = 42
+	EvGCMarkAssistStart EventType = 43
+	EvGCMarkAssistDone  EventType = 44
+	EvUserTaskCreate    EventType = 45
+	EvUserTaskEnd       EventType = 46
+	EvUserRegion        EventType = 47
+	EvUserLog           EventType = 48
+	EvCPUSample         EventType = 49
+	EvCount             EventType = 50
 )
 
 var EventDescriptions = [256]struct {
