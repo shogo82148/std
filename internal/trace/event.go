@@ -263,13 +263,17 @@ type ExperimentalEvent struct {
 	// Experiment is the name of the experiment this event is a part of.
 	Experiment string
 
-	// ArgNames is the names of the event's arguments in order.
-	// This may refer to a globally shared slice. Copy before mutating.
-	ArgNames []string
+	// Args lists the names of the event's arguments in order.
+	Args []string
 
-	// Args contains the event's arguments.
-	Args []uint64
+	// argValues contains the raw integer arguments which are interpreted
+	// by ArgValue using table.
+	table     *evTable
+	argValues []uint64
 }
+
+// ArgValue returns a typed Value for the i'th argument in the experimental event.
+func (e ExperimentalEvent) ArgValue(i int) Value
 
 // ExperimentalBatch represents a packet of unparsed data along with metadata about that packet.
 type ExperimentalBatch struct {

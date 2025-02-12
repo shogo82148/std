@@ -82,7 +82,11 @@ const (
 
 	// Batch event for an experimental batch with a custom format. Added in Go 1.23.
 	EvExperimentalBatch
+
+	NumEvents
 )
+
+func (ev EventType) Experimental() bool
 
 // Experiments.
 const (
@@ -96,7 +100,7 @@ func Experiments() []string
 
 // Experimental events.
 const (
-	_ EventType = 127 + iota
+	MaxEvent EventType = 127 + iota
 
 	// Experimental heap span events. Added in Go 1.23.
 	EvSpan
@@ -112,7 +116,14 @@ const (
 	EvGoroutineStack
 	EvGoroutineStackAlloc
 	EvGoroutineStackFree
+
+	MaxExperimentalEvent
 )
+
+const NumExperimentalEvents = MaxExperimentalEvent - MaxEvent
+
+// MaxTimedEventArgs is the maximum number of arguments for timed events.
+const MaxTimedEventArgs = 5
 
 func Specs() []EventSpec
 

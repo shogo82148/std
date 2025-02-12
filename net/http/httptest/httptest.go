@@ -28,9 +28,9 @@ func NewRequest(method, target string, body io.Reader) *http.Request
 //
 // An empty method means "GET".
 //
-// The provided body may be nil. If the body is of type *bytes.Reader,
-// *strings.Reader, or *bytes.Buffer, the Request.ContentLength is
-// set.
+// The provided body may be nil. If the body is of type [bytes.Reader],
+// [strings.Reader], [bytes.Buffer], or the value [http.NoBody],
+// the Request.ContentLength is set.
 //
 // NewRequest panics on error for ease of use in testing, where a
 // panic is acceptable.

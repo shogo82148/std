@@ -140,7 +140,7 @@ func (e *Emitter) Flush()
 
 // Stack emits the given frames and returns a unique id for the stack. No
 // pointers to the given data are being retained beyond the call to Stack.
-func (e *Emitter) Stack(stk []*trace.Frame) int
+func (e *Emitter) Stack(stk []trace.StackFrame) int
 
 type GState int
 
