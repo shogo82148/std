@@ -9,4 +9,6 @@
 // to either minimize, skip, or remove them. Finally, the module needs to avoid
 // importing internal packages like testenv and cryptotest to avoid locking in
 // their APIs.
+//
+// Also, this package includes the ACVP and functional testing harnesses.
 package fipstest

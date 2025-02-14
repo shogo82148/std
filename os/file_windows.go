@@ -4,14 +4,6 @@
 
 package os
 
-// Fd returns the Windows handle referencing the open file.
-// If f is closed, the file descriptor becomes invalid.
-// If f is garbage collected, a finalizer may close the file descriptor,
-// making it invalid; see [runtime.SetFinalizer] for more information on when
-// a finalizer might be run. On Unix systems this will cause the [File.SetDeadline]
-// methods to stop working.
-func (file *File) Fd() uintptr
-
 // NewFile returns a new File with the given file descriptor and
 // name. The returned value will be nil if fd is not a valid file
 // descriptor.

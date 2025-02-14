@@ -99,6 +99,10 @@ func (r *Root) Chmod(name string, mode FileMode) error
 // OpenFile returns an error.
 func (r *Root) Mkdir(name string, perm FileMode) error
 
+// Chown changes the numeric uid and gid of the named file in the root.
+// See [Chown] for more details.
+func (r *Root) Chown(name string, uid, gid int) error
+
 // Remove removes the named file or (empty) directory in the root.
 // See [Remove] for more details.
 func (r *Root) Remove(name string) error

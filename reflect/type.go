@@ -225,6 +225,9 @@ func (tag StructTag) Lookup(key string) (value string, ok bool)
 // If i is a nil interface value, TypeOf returns nil.
 func TypeOf(i any) Type
 
+// TypeFor returns the [Type] that represents the type argument T.
+func TypeFor[T any]() Type
+
 // PtrTo returns the pointer type with element t.
 // For example, if t represents type Foo, PtrTo(t) represents *Foo.
 //
@@ -272,6 +275,3 @@ func StructOf(fields []StructField) Type
 // If the resulting type would be larger than the available address space,
 // ArrayOf panics.
 func ArrayOf(length int, elem Type) Type
-
-// TypeFor returns the [Type] that represents the type argument T.
-func TypeFor[T any]() Type

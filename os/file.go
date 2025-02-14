@@ -310,6 +310,21 @@ func (f *File) SetWriteDeadline(t time.Time) error
 // This implements the syscall.Conn interface.
 func (f *File) SyscallConn() (syscall.RawConn, error)
 
+// Fd returns the system file descriptor or handle referencing the open file.
+// If f is closed, the descriptor becomes invalid.
+// If f is garbage collected, a cleanup may close the descriptor,
+// making it invalid; see [runtime.AddCleanup] for more information on when
+// a cleanup might be run.
+//
+// Do not close the returned descriptor; that could cause a later
+// close of f to close an unrelated descriptor.
+//
+// On Unix systems this will cause the [File.SetDeadline]
+// methods to stop working.
+//
+// For most uses prefer the f.SyscallConn method.
+func (f *File) Fd() uintptr
+
 // DirFS returns a file system (an fs.FS) for the tree of files rooted at the directory dir.
 //
 // Note that DirFS("/prefix") only guarantees that the Open calls it makes to the

@@ -17,6 +17,10 @@ package impl
 // disabled. pkg must be the package name, not path (e.g. "aes" not "crypto/aes").
 func Register(pkg, name string, available *bool)
 
+// Packages returns the list of all packages for which alternative
+// implementations are registered.
+func Packages() []string
+
 // List returns the names of all alternative implementations registered for the
 // given package, whether available or not. The implicit base implementation is
 // not included.

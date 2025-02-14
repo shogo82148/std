@@ -6,20 +6,6 @@
 
 package os
 
-// Fd returns the integer Unix file descriptor referencing the open file.
-// If f is closed, the file descriptor becomes invalid.
-// If f is garbage collected, a finalizer may close the file descriptor,
-// making it invalid; see [runtime.SetFinalizer] for more information on when
-// a finalizer might be run. On Unix systems this will cause the [File.SetDeadline]
-// methods to stop working.
-// Because file descriptors can be reused, the returned file descriptor may
-// only be closed through the [File.Close] method of f, or by its finalizer during
-// garbage collection. Otherwise, during garbage collection the finalizer
-// may close an unrelated file descriptor with the same (reused) number.
-//
-// As an alternative, see the f.SyscallConn method.
-func (f *File) Fd() uintptr
-
 // NewFile returns a new File with the given file descriptor and
 // name. The returned value will be nil if fd is not a valid file
 // descriptor. On Unix systems, if the file descriptor is in

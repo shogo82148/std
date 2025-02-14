@@ -33,3 +33,5 @@ func Readlinkat(dirfd int, path string, buf []byte) (int, error)
 func Mkdirat(dirfd int, path string, mode uint32) error
 
 func Fchmodat(dirfd int, path string, mode uint32, flags int) error
+
+func Fchownat(dirfd int, path string, uid, gid int, flags int) error
