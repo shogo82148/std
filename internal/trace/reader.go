@@ -17,17 +17,18 @@ import (
 // event as the first event, and a Sync event as the last event.
 // (There may also be any number of Sync events in the middle, too.)
 type Reader struct {
-	version    version.Version
-	r          *bufio.Reader
-	lastTs     Time
-	gen        *generation
-	spill      *spilledBatch
-	spillErr   error
-	frontier   []*batchCursor
-	cpuSamples []cpuSample
-	order      ordering
-	syncs      int
-	done       bool
+	version      version.Version
+	r            *bufio.Reader
+	lastTs       Time
+	gen          *generation
+	spill        *spilledBatch
+	spillErr     error
+	spillErrSync bool
+	frontier     []*batchCursor
+	cpuSamples   []cpuSample
+	order        ordering
+	syncs        int
+	done         bool
 
 	v1Events *traceV1Converter
 }

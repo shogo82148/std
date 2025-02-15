@@ -14,6 +14,7 @@ package rttype
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
+	"github.com/shogo82148/std/reflect"
 )
 
 // The type structures shared with the runtime.
@@ -43,6 +44,9 @@ var TypeAssert *types.Type
 var ITab *types.Type
 
 func Init()
+
+// FromReflect translates from a host type to the equivalent target type.
+func FromReflect(rt reflect.Type) *types.Type
 
 // A Cursor represents a typed location inside a static variable where we
 // are going to write.

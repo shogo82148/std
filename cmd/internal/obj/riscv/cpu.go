@@ -311,6 +311,11 @@ const (
 	// it is the first instruction in an AUIPC + S-type pair that needs a
 	// R_RISCV_PCREL_STYPE relocation.
 	NEED_PCREL_STYPE_RELOC
+
+	// NEED_GOT_PCREL_ITYPE_RELOC is set on AUIPC instructions to indicate that
+	// it is the first instruction in an AUIPC + I-type pair that needs a
+	// R_RISCV_GOT_PCREL_ITYPE relocation.
+	NEED_GOT_PCREL_ITYPE_RELOC
 )
 
 // RISC-V mnemonics, as defined in the "opcodes" and "opcodes-pseudo" files
@@ -1164,6 +1169,39 @@ const (
 	RM_RUP
 	RM_RMM
 )
+
+type SpecialOperand int
+
+const (
+	SPOP_BEGIN SpecialOperand = obj.SpecialOperandRISCVBase
+
+	// Vector mask policy.
+	SPOP_MA SpecialOperand = obj.SpecialOperandRISCVBase + iota - 1
+	SPOP_MU
+
+	// Vector tail policy.
+	SPOP_TA
+	SPOP_TU
+
+	// Vector register group multiplier (VLMUL).
+	SPOP_M1
+	SPOP_M2
+	SPOP_M4
+	SPOP_M8
+	SPOP_MF2
+	SPOP_MF4
+	SPOP_MF8
+
+	// Vector selected element width (VSEW).
+	SPOP_E8
+	SPOP_E16
+	SPOP_E32
+	SPOP_E64
+
+	SPOP_END
+)
+
+func (so SpecialOperand) String() string
 
 // Instruction encoding masks.
 const (

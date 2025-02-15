@@ -13,8 +13,8 @@ import (
 	"github.com/shogo82148/std/cmd/internal/obj/arm64"
 )
 
-// GetARM64SpecialOperand returns the internal representation of a special operand.
-func GetARM64SpecialOperand(name string) arm64.SpecialOperand
+// ARM64SpecialOperand returns the internal representation of a special operand.
+func ARM64SpecialOperand(name string) arm64.SpecialOperand
 
 // IsARM64ADR reports whether the op (as defined by an arm64.A* constant) is
 // one of the comparison instructions that require special handling.

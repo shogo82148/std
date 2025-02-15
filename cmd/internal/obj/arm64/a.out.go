@@ -1051,8 +1051,8 @@ type SpecialOperand int
 
 const (
 	// PRFM
-	SPOP_PLDL1KEEP SpecialOperand = iota
-	SPOP_BEGIN     SpecialOperand = iota - 1
+	SPOP_PLDL1KEEP SpecialOperand = obj.SpecialOperandARM64Base + iota
+	SPOP_BEGIN     SpecialOperand = obj.SpecialOperandARM64Base + iota - 1
 	SPOP_PLDL1STRM
 	SPOP_PLDL2KEEP
 	SPOP_PLDL2STRM
