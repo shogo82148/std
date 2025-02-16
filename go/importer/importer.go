@@ -45,6 +45,8 @@ func ForCompiler(fset *token.FileSet, compiler string, lookup Lookup) types.Impo
 //
 // Deprecated: Use [ForCompiler], which populates a FileSet
 // with the positions of objects created by the importer.
+//
+//go:fix inline
 func For(compiler string, lookup Lookup) types.Importer
 
 // Default returns an Importer for the compiler that built the running binary.

@@ -140,6 +140,8 @@ const (
 )
 
 // Ptr is the old name for the [Pointer] kind.
+//
+//go:fix inline
 const Ptr = Pointer
 
 // ChanDir represents a channel type's direction.
@@ -235,6 +237,8 @@ func TypeFor[T any]() Type
 // The two functions behave identically.
 //
 // Deprecated: Superseded by [PointerTo].
+//
+//go:fix inline
 func PtrTo(t Type) Type
 
 // PointerTo returns the pointer type with element t.

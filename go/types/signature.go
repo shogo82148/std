@@ -26,6 +26,8 @@ type Signature struct {
 // must be of unnamed slice type.
 //
 // Deprecated: Use [NewSignatureType] instead which allows for type parameters.
+//
+//go:fix inline
 func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 
 // NewSignatureType creates a new function type for the given receiver,
