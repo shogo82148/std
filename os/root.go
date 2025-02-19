@@ -56,6 +56,7 @@ type Root struct {
 }
 
 // OpenRoot opens the named directory.
+// It follows symbolic links in the directory name.
 // If there is an error, it will be of type *PathError.
 func OpenRoot(name string) (*Root, error)
 
