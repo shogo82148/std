@@ -80,8 +80,6 @@ func CreateDirectory(path *uint16, sa *SecurityAttributes) (err error)
 
 func CreateFileMapping(fhandle Handle, sa *SecurityAttributes, prot uint32, maxSizeHigh uint32, maxSizeLow uint32, name *uint16) (handle Handle, err error)
 
-func CreateFile(name *uint16, access uint32, mode uint32, sa *SecurityAttributes, createmode uint32, attrs uint32, templatefile int32) (handle Handle, err error)
-
 func CreateHardLink(filename *uint16, existingfilename *uint16, reserved uintptr) (err error)
 
 func CreatePipe(readhandle *Handle, writehandle *Handle, sa *SecurityAttributes, size uint32) (err error)

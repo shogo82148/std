@@ -365,3 +365,5 @@ func PostQueuedCompletionStatus(cphandle Handle, qty uint32, key uint32, overlap
 func RegEnumKeyEx(key Handle, index uint32, name *uint16, nameLen *uint32, reserved *uint32, class *uint16, classLen *uint32, lastWriteTime *Filetime) (regerrno error)
 
 func GetStartupInfo(startupInfo *StartupInfo) error
+
+func CreateFile(name *uint16, access uint32, mode uint32, sa *SecurityAttributes, createmode uint32, attrs uint32, templatefile int32) (handle Handle, err error)
