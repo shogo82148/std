@@ -53,6 +53,14 @@ func Actual(name string) string
 // in the virtual file system compared to the OS file system.
 func Replaced(name string) bool
 
+// DirContainsReplacement reports whether the named directory is affected by a replacement,
+// either because a parent directory has been replaced, it has been replaced, or a file or
+// directory under it has been replaced.
+// It is meant to be used to detect cases where GOMODCACHE has been replaced. That replacement
+// is not supported (GOMODCACHE is meant to be immutable) and the caller will use the
+// information to return an error.
+func DirContainsReplacement(name string) (string, bool)
+
 // Open opens the named file in the virtual file system.
 // It must be an ordinary file, not a directory.
 func Open(name string) (*os.File, error)

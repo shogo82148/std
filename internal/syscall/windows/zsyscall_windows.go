@@ -97,6 +97,8 @@ func NtOpenFile(handle *syscall.Handle, access uint32, oa *OBJECT_ATTRIBUTES, io
 
 func NtSetInformationFile(handle syscall.Handle, iosb *IO_STATUS_BLOCK, inBuffer uintptr, inBufferLen uint32, class uint32) (ntstatus error)
 
+func RtlIsDosDeviceName_U(name *uint16) (ret uint32)
+
 func GetProcessMemoryInfo(handle syscall.Handle, memCounters *PROCESS_MEMORY_COUNTERS, cb uint32) (err error)
 
 func CreateEnvironmentBlock(block **uint16, token syscall.Token, inheritExisting bool) (err error)

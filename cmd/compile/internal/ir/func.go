@@ -314,3 +314,6 @@ func FuncPC(pos src.XPos, n Node, wantABI obj.ABI) Node
 // If setNname is true, then it also sets types.Field.Nname for each
 // parameter.
 func (fn *Func) DeclareParams(setNname bool)
+
+// ContainsClosure reports whether c is a closure contained within f.
+func ContainsClosure(f, c *Func) bool
