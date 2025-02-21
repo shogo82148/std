@@ -35,7 +35,6 @@ type Config struct {
 	floatParamRegs []int8
 	ABI1           *abi.ABIConfig
 	ABI0           *abi.ABIConfig
-	GCRegMap       []*Register
 	FPReg          int8
 	LinkReg        int8
 	hasGReg        bool
