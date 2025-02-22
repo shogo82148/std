@@ -10,6 +10,12 @@ package subtle
 // returns 0 immediately.
 func ConstantTimeCompare(x, y []byte) int
 
+// ConstantTimeLessOrEqBytes returns 1 if x <= y and 0 otherwise. The comparison
+// is lexigraphical, or big-endian. The time taken is a function of the length of
+// the slices and is independent of the contents. If the lengths of x and y do not
+// match it returns 0 immediately.
+func ConstantTimeLessOrEqBytes(x, y []byte) int
+
 // ConstantTimeSelect returns x if v == 1 and y if v == 0.
 // Its behavior is undefined if v takes any other value.
 func ConstantTimeSelect(v, x, y int) int
