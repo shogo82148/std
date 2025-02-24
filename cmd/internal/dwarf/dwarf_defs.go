@@ -184,6 +184,7 @@ const (
 	DW_AT_elemental      = 0x66
 	DW_AT_pure           = 0x67
 	DW_AT_recursive      = 0x68
+	DW_AT_addr_base      = 0x73
 
 	DW_AT_lo_user = 0x2000
 	DW_AT_hi_user = 0x3fff
@@ -216,9 +217,14 @@ const (
 	DW_FORM_sec_offset   = 0x17
 	DW_FORM_exprloc      = 0x18
 	DW_FORM_flag_present = 0x19
-	DW_FORM_ref_sig8     = 0x20
+	// Dwarf5
+	DW_FORM_addrx = 0x1b
 	// Pseudo-form: expanded to data4 on IOS, udata elsewhere.
 	DW_FORM_udata_pseudo = 0x99
+	// Pseudo-form: expands to DW_FORM_addrx in DWARF5, DW_FORM_addr in DWARF4
+	DW_FORM_lo_pc_pseudo = 0x9a
+	// Pseudo-form: expands to DW_FORM_udata in DWARF5, DW_FORM_addr in DWARF4
+	DW_FORM_hi_pc_pseudo = 0x9b
 )
 
 // Table 24 (#operands, notes)

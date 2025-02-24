@@ -672,6 +672,7 @@ type Link struct {
 	PosTable           src.PosTable
 	InlTree            InlTree
 	DwFixups           *DwarfFixupTable
+	DwTextCount        int
 	Imports            []goobj.ImportedPkg
 	DiagFunc           func(string, ...interface{})
 	DiagFlush          func()

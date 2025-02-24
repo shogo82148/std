@@ -79,3 +79,10 @@ func (s *LSym) WriteBytes(ctxt *Link, off int64, b []byte) int64
 
 // AddRel adds the relocation rel to s.
 func (s *LSym) AddRel(ctxt *Link, rel Reloc)
+
+// WriteDwTxtAddrx appends a zero blob of the proper size to s at off
+// and attaches one of the various R_DWTXTADDR_U* relocations to the
+// symbol. Here size is dependent on the total number of functions in
+// the package (for more on why this is needed, consult the
+// .debug_addr generation code in the linker).
+func (s *LSym) WriteDwTxtAddrx(ctxt *Link, off int64, rsym *LSym, maxFuncs int)

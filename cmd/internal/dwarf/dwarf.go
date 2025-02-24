@@ -140,6 +140,7 @@ type Context interface {
 	AddCURelativeAddress(s Sym, t interface{}, ofs int64)
 	AddSectionOffset(s Sym, size int, t interface{}, ofs int64)
 	AddDWARFAddrSectionOffset(s Sym, t interface{}, ofs int64)
+	AddIndirectTextRef(s Sym, t interface{})
 	CurrentOffset(s Sym) int64
 	RecordDclReference(from Sym, to Sym, dclIdx int, inlIndex int)
 	RecordChildDieOffsets(s Sym, vars []*Var, offsets []int32)
@@ -284,7 +285,7 @@ func PutAbstractFunc(ctxt Context, s *FnState) error
 // for the function (which holds location-independent attributes such
 // as name, type), then the remainder of the attributes are specific
 // to this instance (location, frame base, etc).
-func PutConcreteFunc(ctxt Context, s *FnState, isWrapper bool) error
+func PutConcreteFunc(ctxt Context, s *FnState, isWrapper bool, fncount int) error
 
 // Emit DWARF attributes and child DIEs for a subprogram. Here
 // 'default' implies that the function in question was not inlined
