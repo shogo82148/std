@@ -36,12 +36,12 @@ type Func struct {
 	ABISelf        *abi.ABIConfig
 	ABIDefault     *abi.ABIConfig
 
-	scheduled         bool
-	laidout           bool
-	NoSplit           bool
-	dumpFileSeq       uint8
-	IsPgoHot          bool
-	HasDeferRangeFunc bool
+	scheduled   bool
+	laidout     bool
+	NoSplit     bool
+	dumpFileSeq uint8
+	IsPgoHot    bool
+	DeferReturn *Block
 
 	// when register allocation is done, maps value ids to locations
 	RegAlloc []Location
