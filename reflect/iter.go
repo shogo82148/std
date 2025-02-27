@@ -4,7 +4,9 @@
 
 package reflect
 
-import "github.com/shogo82148/std/iter"
+import (
+	"github.com/shogo82148/std/iter"
+)
 
 // Seq returns an iter.Seq[Value] that loops over the elements of v.
 // If v's kind is Func, it must be a function that has no results and
