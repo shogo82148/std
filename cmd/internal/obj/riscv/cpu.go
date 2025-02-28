@@ -1157,6 +1157,10 @@ const (
 	ARDTIME
 	ASEQZ
 	ASNEZ
+	AVL1RV
+	AVL2RV
+	AVL4RV
+	AVL8RV
 
 	// End marker
 	ALAST
