@@ -22,7 +22,6 @@ package x509
 
 import (
 	"github.com/shogo82148/std/crypto"
-
 	"github.com/shogo82148/std/crypto/x509/pkix"
 	"github.com/shogo82148/std/encoding/asn1"
 	"github.com/shogo82148/std/errors"
