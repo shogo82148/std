@@ -310,19 +310,31 @@ const (
 	C_XREG
 	C_ARNG
 	C_ELEM
+
 	C_ZCON
-	C_SCON
-	C_UCON
-
-	// When the immediate value is SCON, it can choose either the ADDCON implementation
-	// or the ANDCON implementation, using ADD0CON/AND0CON to distinguish them, so that
-	// the program can choose the implementation with fewer instructions.
-	C_ADD0CON
-	C_AND0CON
-
-	C_ADDCON
-	C_ANDCON
-	C_LCON
+	C_U1CON
+	C_U2CON
+	C_U3CON
+	C_U4CON
+	C_U5CON
+	C_U6CON
+	C_U7CON
+	C_U8CON
+	C_S5CON
+	C_US12CON
+	C_UU12CON
+	C_S12CON
+	C_U12CON
+	C_12CON
+	C_S13CON20_0
+	C_S13CON
+	C_U13CON20_0
+	C_U13CON
+	C_13CON
+	C_U15CON
+	C_U15CON20_0
+	C_32CON20_0
+	C_32CON
 
 	// 64 bit signed, lo32 bits 0, hi20 bits are not 0, hi12 bits can
 	// be obtained by sign extension of the hi20 bits.

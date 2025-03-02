@@ -8,6 +8,7 @@ package work
 
 import (
 	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/cmd/internal/par"
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/sync"
 
@@ -40,9 +41,10 @@ type Builder struct {
 	readySema chan bool
 	ready     actionQueue
 
-	id           sync.Mutex
-	toolIDCache  map[string]string
-	buildIDCache map[string]string
+	id             sync.Mutex
+	toolIDCache    par.Cache[string, string]
+	gccToolIDCache map[string]string
+	buildIDCache   map[string]string
 }
 
 // An Actor runs an action.
