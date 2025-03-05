@@ -61,6 +61,14 @@ func OP_16IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32
 
 func OP_12IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32
 
+func OP_6IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32
+
+func OP_5IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32
+
+func OP_4IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32
+
+func OP_3IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32
+
 func OP_IR(op uint32, i uint32, r2 uint32) uint32
 
 func OP_15I(op uint32, i uint32) uint32

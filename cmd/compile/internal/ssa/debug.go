@@ -129,8 +129,22 @@ func PopulateABIInRegArgOps(f *Func)
 // will be when machine code is emitted.
 func BuildFuncDebug(ctxt *obj.Link, f *Func, loggingLevel int, stackOffset func(LocalSlot) int32, rval *FuncDebug)
 
-// PutLocationList adds list (a location list in its intermediate representation) to listSym.
+// PutLocationList adds list (a location list in its intermediate
+// representation) to listSym.
 func (debugInfo *FuncDebug) PutLocationList(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
+
+// PutLocationListDwarf5 adds list (a location list in its intermediate
+// representation) to listSym in DWARF 5 format. NB: this is a somewhat
+// hacky implementation in that it actually reads a DWARF4 encoded
+// info from list (with all its DWARF4-specific quirks) then re-encodes
+// it in DWARF5. It would probably be better at some point to have
+// ssa/debug encode the list in a version-independent form and then
+// have this func (and PutLocationListDwarf4) intoduce the quirks.
+func (debugInfo *FuncDebug) PutLocationListDwarf5(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
+
+// PutLocationListDwarf4 adds list (a location list in its intermediate
+// representation) to listSym in DWARF 4 format.
+func (debugInfo *FuncDebug) PutLocationListDwarf4(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
 
 // BuildFuncDebugNoOptimized populates a FuncDebug object "rval" with
 // entries corresponding to the register-resident input parameters for

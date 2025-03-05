@@ -265,6 +265,10 @@ func PutGlobal(ctxt Context, info, typ, gvar Sym, name string)
 // (e.g., with a DW_AT_low_pc attribute, or in a BASE-prefixed range).
 func PutBasedRanges(ctxt Context, sym Sym, ranges []Range)
 
+// PutRngListRanges writes a DWARF5-style set of rangelist entries to sym,
+// using base as a starting/base address.
+func PutRngListRanges(ctxt Context, sym Sym, base Sym, ranges []Range)
+
 // PutRanges writes a range table to s.Ranges.
 // All addresses in ranges are relative to s.base.
 func (s *FnState) PutRanges(ctxt Context, ranges []Range)

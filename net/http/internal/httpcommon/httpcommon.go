@@ -66,3 +66,29 @@ func EncodeHeaders(ctx context.Context, param EncodeHeadersParam, headerf func(n
 // IsRequestGzip reports whether we should add an Accept-Encoding: gzip header
 // for a request.
 func IsRequestGzip(method string, header map[string][]string, disableCompression bool) bool
+
+// ServerRequestParam is parameters to NewServerRequest.
+type ServerRequestParam struct {
+	Method                  string
+	Scheme, Authority, Path string
+	Protocol                string
+	Header                  map[string][]string
+}
+
+// ServerRequestResult is the result of NewServerRequest.
+type ServerRequestResult struct {
+	// Various http.Request fields.
+	URL        *url.URL
+	RequestURI string
+	Trailer    map[string][]string
+
+	NeedsContinue bool
+
+	// If the request should be rejected, this is a short string suitable for passing
+	// to the http2 package's CountError function.
+	// It might be a bit odd to return errors this way rather than returing an error,
+	// but this ensures we don't forget to include a CountError reason.
+	InvalidReason string
+}
+
+func NewServerRequest(rp ServerRequestParam) ServerRequestResult

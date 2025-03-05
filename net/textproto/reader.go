@@ -158,6 +158,6 @@ func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 // the rest are converted to lowercase. For example, the
 // canonical key for "accept-encoding" is "Accept-Encoding".
 // MIME header keys are assumed to be ASCII only.
-// If s contains a space or invalid header field bytes, it is
-// returned without modifications.
+// If s contains a space or invalid header field bytes as
+// defined by RFC 9112, it is returned without modifications.
 func CanonicalMIMEHeaderKey(s string) string
