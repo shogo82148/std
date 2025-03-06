@@ -60,7 +60,6 @@ func Id(pkg *Package, name string) string
 type PkgName struct {
 	object
 	imported *Package
-	used     bool
 }
 
 // NewPkgName returns a new PkgName object representing an imported package.
@@ -108,17 +107,44 @@ func (obj *TypeName) IsAlias() bool
 // A Variable represents a declared variable (including function parameters and results, and struct fields).
 type Var struct {
 	object
-	embedded bool
-	isField  bool
-	used     bool
 	origin   *Var
+	kind     VarKind
+	embedded bool
 }
+
+// A VarKind discriminates the various kinds of variables.
+type VarKind uint8
+
+const (
+	_ VarKind = iota
+	PackageVar
+	LocalVar
+	RecvVar
+	ParamVar
+	ResultVar
+	FieldVar
+)
+
+func (kind VarKind) String() string
+
+// Kind reports what kind of variable v is.
+func (v *Var) Kind() VarKind
+
+// SetKind sets the kind of the variable.
+// It should be used only immediately after [NewVar] or [NewParam].
+func (v *Var) SetKind(kind VarKind)
 
 // NewVar returns a new variable.
 // The arguments set the attributes found with all Objects.
+//
+// The caller must subsequently call [Var.SetKind]
+// if the desired Var is not of kind [PackageVar].
 func NewVar(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
 // NewParam returns a new variable representing a function parameter.
+//
+// The caller must subsequently call [Var.SetKind] if the desired Var
+// is not of kind [ParamVar]: for example, [RecvVar] or [ResultVar].
 func NewParam(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
 // NewField returns a new variable representing a struct field.

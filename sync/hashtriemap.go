@@ -60,6 +60,7 @@ func (m *Map) LoadOrStore(key, value any) (actual any, loaded bool)
 func (m *Map) LoadAndDelete(key any) (value any, loaded bool)
 
 // Delete deletes the value for a key.
+// If the key is not in the map, Delete does nothing.
 func (m *Map) Delete(key any)
 
 // Swap swaps the value for a key and returns the previous value if any.
