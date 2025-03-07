@@ -18,7 +18,7 @@ const DevNull = "NUL"
 func Truncate(name string, size int64) error
 
 // Remove removes the named file or directory.
-// If there is an error, it will be of type *PathError.
+// If there is an error, it will be of type [*PathError].
 func Remove(name string) error
 
 // Pipe returns a connected pair of Files; reads from r return bytes written to w.

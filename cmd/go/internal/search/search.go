@@ -32,7 +32,7 @@ func (m *Match) IsLiteral() bool
 func (m *Match) IsLocal() bool
 
 // IsMeta reports whether the pattern is a “meta-package” keyword that represents
-// multiple packages, such as "std", "cmd", "tool", or "all".
+// multiple packages, such as "std", "cmd", "tool", "work", or "all".
 func (m *Match) IsMeta() bool
 
 // IsMetaPackage checks if name is a reserved package name that expands to multiple packages.

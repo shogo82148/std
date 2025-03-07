@@ -57,7 +57,7 @@ type Root struct {
 
 // OpenRoot opens the named directory.
 // It follows symbolic links in the directory name.
-// If there is an error, it will be of type *PathError.
+// If there is an error, it will be of type [*PathError].
 func OpenRoot(name string) (*Root, error)
 
 // Name returns the name of the directory presented to OpenRoot.
@@ -85,7 +85,7 @@ func (r *Root) Create(name string) (*File, error)
 func (r *Root) OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // OpenRoot opens the named directory in the root.
-// If there is an error, it will be of type *PathError.
+// If there is an error, it will be of type [*PathError].
 func (r *Root) OpenRoot(name string) (*Root, error)
 
 // Chmod changes the mode of the named file in the root to mode.

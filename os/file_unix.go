@@ -23,11 +23,11 @@ const DevNull = "/dev/null"
 
 // Truncate changes the size of the named file.
 // If the file is a symbolic link, it changes the size of the link's target.
-// If there is an error, it will be of type *PathError.
+// If there is an error, it will be of type [*PathError].
 func Truncate(name string, size int64) error
 
 // Remove removes the named file or (empty) directory.
-// If there is an error, it will be of type *PathError.
+// If there is an error, it will be of type [*PathError].
 func Remove(name string) error
 
 // Link creates newname as a hard link to the oldname file.

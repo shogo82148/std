@@ -11,7 +11,7 @@
 // two non-literal codes are a clear code and an EOF code.
 //
 // The TIFF file format uses a similar but incompatible version of the LZW
-// algorithm. See the golang.org/x/image/tiff/lzw package for an
+// algorithm. See the [golang.org/x/image/tiff/lzw] package for an
 // implementation.
 package lzw
 
@@ -30,7 +30,7 @@ const (
 	MSB
 )
 
-// Reader is an io.Reader which can be used to read compressed data in the
+// Reader is an [io.Reader] which can be used to read compressed data in the
 // LZW format.
 type Reader struct {
 	r        io.ByteReader

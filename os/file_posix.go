@@ -22,7 +22,7 @@ func (f *File) Close() error
 // If there is an error, it will be of type [*PathError].
 //
 // On Windows or Plan 9, Chown always returns the [syscall.EWINDOWS] or
-// EPLAN9 error, wrapped in *PathError.
+// [syscall.EPLAN9] error, wrapped in [*PathError].
 func Chown(name string, uid, gid int) error
 
 // Lchown changes the numeric uid and gid of the named file.
@@ -30,14 +30,14 @@ func Chown(name string, uid, gid int) error
 // If there is an error, it will be of type [*PathError].
 //
 // On Windows, it always returns the [syscall.EWINDOWS] error, wrapped
-// in *PathError.
+// in [*PathError].
 func Lchown(name string, uid, gid int) error
 
 // Chown changes the numeric uid and gid of the named file.
 // If there is an error, it will be of type [*PathError].
 //
 // On Windows, it always returns the [syscall.EWINDOWS] error, wrapped
-// in *PathError.
+// in [*PathError].
 func (f *File) Chown(uid, gid int) error
 
 // Truncate changes the size of the file.
