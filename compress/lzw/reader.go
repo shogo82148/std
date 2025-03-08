@@ -74,7 +74,7 @@ type Reader struct {
 	toRead []byte
 }
 
-// Read implements io.Reader, reading uncompressed bytes from its underlying [Reader].
+// Read implements io.Reader, reading uncompressed bytes from its underlying reader.
 func (r *Reader) Read(b []byte) (int, error)
 
 // Close closes the [Reader] and returns an error for any future read operation.

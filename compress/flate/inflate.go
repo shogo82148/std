@@ -49,7 +49,7 @@ type Resetter interface {
 }
 
 // The actual read interface needed by [NewReader].
-// If the passed in io.Reader does not also have ReadByte,
+// If the passed in [io.Reader] does not also have ReadByte,
 // the [NewReader] will introduce its own buffering.
 type Reader interface {
 	io.Reader
@@ -67,7 +67,7 @@ type Reader interface {
 func NewReader(r io.Reader) io.ReadCloser
 
 // NewReaderDict is like [NewReader] but initializes the reader
-// with a preset dictionary. The returned [Reader] behaves as if
+// with a preset dictionary. The returned reader behaves as if
 // the uncompressed data stream started with the given dictionary,
 // which has already been read. NewReaderDict is typically used
 // to read data compressed by [NewWriterDict].

@@ -11,4 +11,6 @@ func Supported() error
 
 func Name() string
 
+// Version returns the formal version (such as "v1.0") if building against a
+// frozen module with GOFIPS140. Otherwise, it returns "latest".
 func Version() string
