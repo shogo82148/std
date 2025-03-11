@@ -22,4 +22,8 @@ type Data struct {
 }
 
 // Mmap maps the given file into memory.
+// The boolean result indicates whether the file was opened.
+// If it is true, the caller should avoid attempting
+// to write to the file on Windows, because Windows locks
+// the open file, and writes to it will fail.
 func Mmap(file string) (Data, bool, error)
