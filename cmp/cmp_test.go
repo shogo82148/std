@@ -7,6 +7,7 @@ package cmp_test
 import (
 	"github.com/shogo82148/std/cmp"
 	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/math"
 	"github.com/shogo82148/std/slices"
 	"github.com/shogo82148/std/strings"
 )
@@ -59,4 +60,28 @@ func ExampleOr_sort() {
 	// foo bob 4.00
 	// bar carol 1.00
 	// baz carol 4.00
+}
+
+func ExampleLess() {
+	fmt.Println(cmp.Less(1, 2))
+	fmt.Println(cmp.Less("a", "aa"))
+	fmt.Println(cmp.Less(1.0, math.NaN()))
+	fmt.Println(cmp.Less(math.NaN(), 1.0))
+	// Output:
+	// true
+	// true
+	// false
+	// true
+}
+
+func ExampleCompare() {
+	fmt.Println(cmp.Compare(1, 2))
+	fmt.Println(cmp.Compare("a", "aa"))
+	fmt.Println(cmp.Compare(1.5, 1.5))
+	fmt.Println(cmp.Compare(math.NaN(), 1.0))
+	// Output:
+	// -1
+	// -1
+	// 0
+	// -1
 }

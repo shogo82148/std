@@ -21,9 +21,13 @@ type Signature struct {
 }
 
 // NewSignatureType creates a new function type for the given receiver,
-// receiver type parameters, type parameters, parameters, and results. If
-// variadic is set, params must hold at least one parameter and the last
-// parameter's core type must be of unnamed slice or bytestring type.
+// receiver type parameters, type parameters, parameters, and results.
+// If variadic is set, params must hold at least one parameter and the
+// last parameter must be an unnamed slice or a type parameter whose
+// type set has an unnamed slice as common underlying type.
+// As a special case, for variadic signatures the last parameter may
+// also be a string type, or a type parameter containing a mix of byte
+// slices and string types in its type set.
 // If recv is non-nil, typeParams must be empty. If recvTypeParams is
 // non-empty, recv must be non-nil.
 func NewSignatureType(recv *Var, recvTypeParams, typeParams []*TypeParam, params, results *Tuple, variadic bool) *Signature
