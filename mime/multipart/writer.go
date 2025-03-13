@@ -49,6 +49,10 @@ func (w *Writer) CreateFormFile(fieldname, filename string) (io.Writer, error)
 // given field name.
 func (w *Writer) CreateFormField(fieldname string) (io.Writer, error)
 
+// FileContentDisposition returns the value of a Content-Disposition header
+// with the provided field name and file name.
+func FileContentDisposition(fieldname, filename string) string
+
 // WriteField calls [Writer.CreateFormField] and then writes the given value.
 func (w *Writer) WriteField(fieldname, value string) error
 

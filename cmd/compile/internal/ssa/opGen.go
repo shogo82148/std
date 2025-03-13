@@ -3146,6 +3146,7 @@ const (
 	OpCvt64Fto64U
 	OpSelect0
 	OpSelect1
+	OpMakeTuple
 	OpSelectN
 	OpSelectNAddr
 	OpMakeResult

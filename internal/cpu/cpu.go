@@ -81,6 +81,7 @@ var ARM64 struct {
 var Loong64 struct {
 	_         CacheLinePad
 	HasLSX    bool
+	HasLASX   bool
 	HasCRC32  bool
 	HasLAMCAS bool
 	HasLAM_BH bool

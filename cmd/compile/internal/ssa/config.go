@@ -40,14 +40,11 @@ type Config struct {
 	hasGReg        bool
 	ctxt           *obj.Link
 	optimize       bool
-	noDuffDevice   bool
-	useSSE         bool
 	useAvg         bool
 	useHmul        bool
 	SoftFloat      bool
 	Race           bool
 	BigEndian      bool
-	UseFMA         bool
 	unalignedOK    bool
 	haveBswap64    bool
 	haveBswap32    bool
