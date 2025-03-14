@@ -34,8 +34,6 @@ func SecTrustEvaluate(trustObj CFRef) (CFRef, error)
 
 func SecTrustEvaluateWithError(trustObj CFRef) (int, error)
 
-func SecTrustGetCertificateCount(trustObj CFRef) int
-
-func SecTrustGetCertificateAtIndex(trustObj CFRef, i int) (CFRef, error)
-
 func SecCertificateCopyData(cert CFRef) ([]byte, error)
+
+func SecTrustCopyCertificateChain(trustObj CFRef) (CFRef, error)

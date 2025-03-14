@@ -49,6 +49,9 @@ type SessionState struct {
 	useBy  uint64
 	ageAdd uint32
 	ticket []byte
+
+	// TLS 1.0–1.2 only fields.
+	curveID CurveID
 }
 
 // Bytes encodes the session, including any private fields, so that it can be
