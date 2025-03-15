@@ -361,36 +361,37 @@ func (i SectionIndex) GoString() string
 type SectionType uint32
 
 const (
-	SHT_NULL           SectionType = 0
-	SHT_PROGBITS       SectionType = 1
-	SHT_SYMTAB         SectionType = 2
-	SHT_STRTAB         SectionType = 3
-	SHT_RELA           SectionType = 4
-	SHT_HASH           SectionType = 5
-	SHT_DYNAMIC        SectionType = 6
-	SHT_NOTE           SectionType = 7
-	SHT_NOBITS         SectionType = 8
-	SHT_REL            SectionType = 9
-	SHT_SHLIB          SectionType = 10
-	SHT_DYNSYM         SectionType = 11
-	SHT_INIT_ARRAY     SectionType = 14
-	SHT_FINI_ARRAY     SectionType = 15
-	SHT_PREINIT_ARRAY  SectionType = 16
-	SHT_GROUP          SectionType = 17
-	SHT_SYMTAB_SHNDX   SectionType = 18
-	SHT_LOOS           SectionType = 0x60000000
-	SHT_GNU_ATTRIBUTES SectionType = 0x6ffffff5
-	SHT_GNU_HASH       SectionType = 0x6ffffff6
-	SHT_GNU_LIBLIST    SectionType = 0x6ffffff7
-	SHT_GNU_VERDEF     SectionType = 0x6ffffffd
-	SHT_GNU_VERNEED    SectionType = 0x6ffffffe
-	SHT_GNU_VERSYM     SectionType = 0x6fffffff
-	SHT_HIOS           SectionType = 0x6fffffff
-	SHT_LOPROC         SectionType = 0x70000000
-	SHT_MIPS_ABIFLAGS  SectionType = 0x7000002a
-	SHT_HIPROC         SectionType = 0x7fffffff
-	SHT_LOUSER         SectionType = 0x80000000
-	SHT_HIUSER         SectionType = 0xffffffff
+	SHT_NULL             SectionType = 0
+	SHT_PROGBITS         SectionType = 1
+	SHT_SYMTAB           SectionType = 2
+	SHT_STRTAB           SectionType = 3
+	SHT_RELA             SectionType = 4
+	SHT_HASH             SectionType = 5
+	SHT_DYNAMIC          SectionType = 6
+	SHT_NOTE             SectionType = 7
+	SHT_NOBITS           SectionType = 8
+	SHT_REL              SectionType = 9
+	SHT_SHLIB            SectionType = 10
+	SHT_DYNSYM           SectionType = 11
+	SHT_INIT_ARRAY       SectionType = 14
+	SHT_FINI_ARRAY       SectionType = 15
+	SHT_PREINIT_ARRAY    SectionType = 16
+	SHT_GROUP            SectionType = 17
+	SHT_SYMTAB_SHNDX     SectionType = 18
+	SHT_LOOS             SectionType = 0x60000000
+	SHT_GNU_ATTRIBUTES   SectionType = 0x6ffffff5
+	SHT_GNU_HASH         SectionType = 0x6ffffff6
+	SHT_GNU_LIBLIST      SectionType = 0x6ffffff7
+	SHT_GNU_VERDEF       SectionType = 0x6ffffffd
+	SHT_GNU_VERNEED      SectionType = 0x6ffffffe
+	SHT_GNU_VERSYM       SectionType = 0x6fffffff
+	SHT_HIOS             SectionType = 0x6fffffff
+	SHT_LOPROC           SectionType = 0x70000000
+	SHT_RISCV_ATTRIBUTES SectionType = 0x70000003
+	SHT_MIPS_ABIFLAGS    SectionType = 0x7000002a
+	SHT_HIPROC           SectionType = 0x7fffffff
+	SHT_LOUSER           SectionType = 0x80000000
+	SHT_HIUSER           SectionType = 0xffffffff
 )
 
 func (i SectionType) String() string
@@ -479,6 +480,8 @@ const (
 	PT_MIPS_RTPROC   ProgType = 0x70000001
 	PT_MIPS_OPTIONS  ProgType = 0x70000002
 	PT_MIPS_ABIFLAGS ProgType = 0x70000003
+
+	PT_RISCV_ATTRIBUTES ProgType = 0x70000003
 
 	PT_S390_PGSTE ProgType = 0x70000000
 
