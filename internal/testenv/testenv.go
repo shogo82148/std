@@ -147,3 +147,7 @@ func SyscallIsNotSupported(err error) bool
 // This function should be used when it is necessary to avoid t.Parallel on
 // 32-bit machines, typically because the test uses lots of memory.
 func ParallelOn64Bit(t *testing.T)
+
+// CPUProfilingBroken returns true if CPU profiling has known issues on this
+// platform.
+func CPUProfilingBroken() bool
