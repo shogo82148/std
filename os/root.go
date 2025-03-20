@@ -6,6 +6,7 @@ package os
 
 import (
 	"github.com/shogo82148/std/io/fs"
+	"github.com/shogo82148/std/time"
 )
 
 // OpenInRoot opens the file name in the directory dir.
@@ -41,7 +42,7 @@ func OpenInRoot(dir, name string) (*File, error)
 //
 //   - When GOOS=windows, file names may not reference Windows reserved device names
 //     such as NUL and COM1.
-//   - On Unix, [Root.Chmod] and [Root.Chown] are vulnerable to a race condition.
+//   - On Unix, [Root.Chmod], [Root.Chown], and [Root.Chtimes] are vulnerable to a race condition.
 //     If the target of the operation is changed from a regular file to a symlink
 //     while the operation is in progress, the operation may be peformed on the link
 //     rather than the link target.
@@ -104,6 +105,14 @@ func (r *Root) Mkdir(name string, perm FileMode) error
 // See [Chown] for more details.
 func (r *Root) Chown(name string, uid, gid int) error
 
+// Lchown changes the numeric uid and gid of the named file in the root.
+// See [Lchown] for more details.
+func (r *Root) Lchown(name string, uid, gid int) error
+
+// Chtimes changes the access and modification times of the named file in the root.
+// See [Chtimes] for more details.
+func (r *Root) Chtimes(name string, atime time.Time, mtime time.Time) error
+
 // Remove removes the named file or (empty) directory in the root.
 // See [Remove] for more details.
 func (r *Root) Remove(name string) error
@@ -117,6 +126,10 @@ func (r *Root) Stat(name string) (FileInfo, error)
 // describes the symbolic link.
 // See [Lstat] for more details.
 func (r *Root) Lstat(name string) (FileInfo, error)
+
+// Readlink returns the destination of the named symbolic link in the root.
+// See [Readlink] for more details.
+func (r *Root) Readlink(name string) (string, error)
 
 // FS returns a file system (an fs.FS) for the tree of files in the root.
 //
