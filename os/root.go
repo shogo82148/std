@@ -44,7 +44,7 @@ func OpenInRoot(dir, name string) (*File, error)
 //     such as NUL and COM1.
 //   - On Unix, [Root.Chmod], [Root.Chown], and [Root.Chtimes] are vulnerable to a race condition.
 //     If the target of the operation is changed from a regular file to a symlink
-//     while the operation is in progress, the operation may be peformed on the link
+//     while the operation is in progress, the operation may be performed on the link
 //     rather than the link target.
 //   - When GOOS=js, Root is vulnerable to TOCTOU (time-of-check-time-of-use)
 //     attacks in symlink validation, and cannot ensure that operations will not
@@ -130,6 +130,11 @@ func (r *Root) Lstat(name string) (FileInfo, error)
 // Readlink returns the destination of the named symbolic link in the root.
 // See [Readlink] for more details.
 func (r *Root) Readlink(name string) (string, error)
+
+// Rename renames (moves) oldname to newname.
+// Both paths are relative to the root.
+// See [Rename] for more details.
+func (r *Root) Rename(oldname, newname string) error
 
 // FS returns a file system (an fs.FS) for the tree of files in the root.
 //

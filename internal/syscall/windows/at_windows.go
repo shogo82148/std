@@ -27,3 +27,5 @@ func Openat(dirfd syscall.Handle, name string, flag uint64, perm uint32) (_ sysc
 func Mkdirat(dirfd syscall.Handle, name string, mode uint32) error
 
 func Deleteat(dirfd syscall.Handle, name string) error
+
+func Renameat(olddirfd syscall.Handle, oldpath string, newdirfd syscall.Handle, newpath string) error
