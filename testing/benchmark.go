@@ -52,10 +52,13 @@ type B struct {
 	netBytes  uint64
 	// Extra metrics collected by ReportMetric.
 	extra map[string]float64
-	// For Loop() to be executed in benchFunc.
-	// Loop() has its own control logic that skips the loop scaling.
-	// See issue #61515.
-	loopN int
+
+	// loop tracks the state of B.Loop
+	loop struct {
+		n int
+
+		i int
+	}
 }
 
 // StartTimer starts timing a test. This function is called automatically
