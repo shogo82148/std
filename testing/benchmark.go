@@ -55,9 +55,11 @@ type B struct {
 
 	// loop tracks the state of B.Loop
 	loop struct {
-		n int
+		n uint64
 
-		i int
+		i uint64
+
+		done bool
 	}
 }
 

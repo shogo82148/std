@@ -136,6 +136,16 @@ func (r *Root) Readlink(name string) (string, error)
 // See [Rename] for more details.
 func (r *Root) Rename(oldname, newname string) error
 
+// Link creates newname as a hard link to the oldname file.
+// Both paths are relative to the root.
+// See [Link] for more details.
+//
+// If oldname is a symbolic link, Link creates new link to oldname and not its target.
+// This behavior may differ from that of [Link] on some platforms.
+//
+// When GOOS=js, Link returns an error if oldname is a symbolic link.
+func (r *Root) Link(oldname, newname string) error
+
 // FS returns a file system (an fs.FS) for the tree of files in the root.
 //
 // The result implements [io/fs.StatFS], [io/fs.ReadFileFS] and
