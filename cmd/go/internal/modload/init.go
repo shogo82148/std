@@ -6,7 +6,6 @@ package modload
 
 import (
 	"github.com/shogo82148/std/context"
-	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
 
 	"golang.org/x/mod/modfile"
@@ -209,7 +208,7 @@ func Enabled() bool
 
 func VendorDir() string
 
-// HasModRoot reports whether a main module is present.
+// HasModRoot reports whether a main module or main modules are present.
 // HasModRoot may return false even if Enabled returns true: for example, 'get'
 // does not require a main module.
 func HasModRoot() bool
@@ -223,7 +222,7 @@ func MustHaveModRoot()
 // module, even if -modfile is set.
 func ModFilePath() string
 
-var ErrNoModRoot = errors.New("go.mod file not found in current directory or any parent directory; see 'go help modules'")
+var ErrNoModRoot noMainModulesError
 
 // ReadWorkFile reads and parses the go.work file at the given path.
 func ReadWorkFile(path string) (*modfile.WorkFile, error)

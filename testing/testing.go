@@ -544,6 +544,9 @@ type M struct {
 func MainStart(deps testDeps, tests []InternalTest, benchmarks []InternalBenchmark, fuzzTargets []InternalFuzzTarget, examples []InternalExample) *M
 
 // Run runs the tests. It returns an exit code to pass to os.Exit.
+// The exit code is zero when all tests pass, and non-zero for any kind
+// of failure. For machine readable test results, parse the output of
+// 'go test -json'.
 func (m *M) Run() (code int)
 
 // RunTests is an internal function but exported because it is cross-package;

@@ -72,7 +72,7 @@ type FD struct {
 // The net argument is a network name from the net package (e.g., "tcp"),
 // or "file" or "console" or "dir".
 // Set pollable to true if fd should be managed by runtime netpoll.
-func (fd *FD) Init(net string, pollable bool) (string, error)
+func (fd *FD) Init(net string, pollable bool) error
 
 // Close closes the FD. The underlying file descriptor is closed by
 // the destroy method when there are no remaining references.
