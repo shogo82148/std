@@ -44,6 +44,8 @@ type Checker struct {
 	dotImportMap  map[dotImportKey]*PkgName
 	brokenAliases map[*TypeName]bool
 	unionTypeSets map[*Union]*_TypeSet
+	usedVars      map[*Var]bool
+	usedPkgNames  map[*PkgName]bool
 	mono          monoGraph
 
 	firstErr error

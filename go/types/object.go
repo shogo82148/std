@@ -60,7 +60,6 @@ func Id(pkg *Package, name string) string
 type PkgName struct {
 	object
 	imported *Package
-	used     bool
 }
 
 // NewPkgName returns a new PkgName object representing an imported package.
@@ -108,10 +107,10 @@ func (obj *TypeName) IsAlias() bool
 // A Variable represents a declared variable (including function parameters and results, and struct fields).
 type Var struct {
 	object
+	origin   *Var
 	embedded bool
 	isField  bool
-	used     bool
-	origin   *Var
+	isParam  bool
 }
 
 // NewVar returns a new variable.
