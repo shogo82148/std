@@ -1015,6 +1015,7 @@ const (
 	AWFI
 	AWORD
 	AYIELD
+	ABTI
 	ALAST
 	AB  = obj.AJMP
 	ABL = obj.ACALL
@@ -1185,7 +1186,7 @@ const (
 	SPOP_DAIFSet
 	SPOP_DAIFClr
 
-	// Condition code, EQ, NE, etc. Their relative order to EQ is matter.
+	// Condition code, EQ, NE, etc. Their relative order to EQ matters.
 	SPOP_EQ
 	SPOP_NE
 	SPOP_HS
@@ -1202,6 +1203,11 @@ const (
 	SPOP_LE
 	SPOP_AL
 	SPOP_NV
+
+	// Branch Target Indicator (BTI) targets
+	SPOP_C
+	SPOP_J
+	SPOP_JC
 
 	SPOP_END
 )

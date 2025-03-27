@@ -39,6 +39,8 @@ func GetAdaptersAddresses(family uint32, flags uint32, reserved uintptr, adapter
 
 func CreateEvent(eventAttrs *SecurityAttributes, manualReset uint32, initialState uint32, name *uint16) (handle syscall.Handle, err error)
 
+func CreateNamedPipe(name *uint16, flags uint32, pipeMode uint32, maxInstances uint32, outSize uint32, inSize uint32, defaultTimeout uint32, sa *SecurityAttributes) (handle syscall.Handle, err error)
+
 func GetACP() (acp uint32)
 
 func GetComputerNameEx(nameformat uint32, buf *uint16, n *uint32) (err error)
@@ -54,6 +56,8 @@ func GetFinalPathNameByHandle(file syscall.Handle, filePath *uint16, filePathSiz
 func GetModuleFileName(module syscall.Handle, fn *uint16, len uint32) (n uint32, err error)
 
 func GetModuleHandle(modulename *uint16) (handle syscall.Handle, err error)
+
+func GetOverlappedResult(handle syscall.Handle, overlapped *syscall.Overlapped, done *uint32, wait bool) (err error)
 
 func GetTempPath2(buflen uint32, buf *uint16) (n uint32, err error)
 

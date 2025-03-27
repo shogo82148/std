@@ -354,6 +354,14 @@ func QueryPerformanceCounter() int64
 //go:linkname QueryPerformanceFrequency
 func QueryPerformanceFrequency() int64
 
+const (
+	PIPE_ACCESS_INBOUND  = 0x00000001
+	PIPE_ACCESS_OUTBOUND = 0x00000002
+	PIPE_ACCESS_DUPLEX   = 0x00000003
+
+	PIPE_TYPE_BYTE = 0x00000000
+)
+
 // NTStatus corresponds with NTSTATUS, error values returned by ntdll.dll and
 // other native functions.
 type NTStatus uint32

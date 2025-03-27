@@ -20,6 +20,8 @@ import (
 //
 // Users of the slog package should not invoke Handler methods directly.
 // They should use the methods of [Logger] instead.
+//
+// Before implementing your own handler, consult https://go.dev/s/slog-handler-guide.
 type Handler interface {
 	Enabled(context.Context, Level) bool
 
