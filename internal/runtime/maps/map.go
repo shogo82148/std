@@ -86,3 +86,5 @@ func (m *Map) Delete(typ *abi.SwissMapType, key unsafe.Pointer)
 
 // Clear deletes all entries from the map resulting in an empty map.
 func (m *Map) Clear(typ *abi.SwissMapType)
+
+func (m *Map) Clone(typ *abi.SwissMapType) *Map
