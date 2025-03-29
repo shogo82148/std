@@ -21,3 +21,5 @@ func Fchownat(dirfd int, path string, uid, gid int, flags int) error
 func Renameat(olddirfd int, oldpath string, newdirfd int, newpath string) error
 
 func Linkat(olddirfd int, oldpath string, newdirfd int, newpath string, flag int) error
+
+func Symlinkat(oldpath string, newdirfd int, newpath string) error

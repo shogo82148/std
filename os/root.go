@@ -146,6 +146,16 @@ func (r *Root) Rename(oldname, newname string) error
 // When GOOS=js, Link returns an error if oldname is a symbolic link.
 func (r *Root) Link(oldname, newname string) error
 
+// Symlink creates newname as a symbolic link to oldname.
+// See [Symlink] for more details.
+//
+// Symlink does not validate oldname,
+// which may reference a location outside the root.
+//
+// On Windows, a directory link is created if oldname references
+// a directory within the root. Otherwise a file link is created.
+func (r *Root) Symlink(oldname, newname string) error
+
 // FS returns a file system (an fs.FS) for the tree of files in the root.
 //
 // The result implements [io/fs.StatFS], [io/fs.ReadFileFS] and

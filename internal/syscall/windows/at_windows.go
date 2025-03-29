@@ -31,3 +31,22 @@ func Deleteat(dirfd syscall.Handle, name string) error
 func Renameat(olddirfd syscall.Handle, oldpath string, newdirfd syscall.Handle, newpath string) error
 
 func Linkat(olddirfd syscall.Handle, oldpath string, newdirfd syscall.Handle, newpath string) error
+
+// SymlinkatFlags configure Symlinkat.
+//
+// Symbolic links have two properties: They may be directory or file links,
+// and they may be absolute or relative.
+//
+// The Windows API defines flags describing these properties
+// (SYMBOLIC_LINK_FLAG_DIRECTORY and SYMLINK_FLAG_RELATIVE),
+// but the flags are passed to different system calls and
+// do not have distinct values, so we define our own enumeration
+// that permits expressing both.
+type SymlinkatFlags uint
+
+const (
+	SYMLINKAT_DIRECTORY = SymlinkatFlags(1 << iota)
+	SYMLINKAT_RELATIVE
+)
+
+func Symlinkat(oldname string, newdirfd syscall.Handle, newname string, flags SymlinkatFlags) error

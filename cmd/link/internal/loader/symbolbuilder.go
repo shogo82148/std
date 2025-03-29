@@ -91,6 +91,9 @@ func (sb *SymbolBuilder) SetRelocSym(i int, tgt Sym)
 // SetRelocAdd sets the addend of the 'i'-th relocation on this sym to 'a'
 func (sb *SymbolBuilder) SetRelocAdd(i int, a int64)
 
+// SetRelocAdd sets the size of the 'i'-th relocation on this sym to 'sz'
+func (sb *SymbolBuilder) SetRelocSiz(i int, sz uint8)
+
 // Add n relocations, return a handle to the relocations.
 func (sb *SymbolBuilder) AddRelocs(n int) Relocs
 
