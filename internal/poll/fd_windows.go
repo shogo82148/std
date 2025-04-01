@@ -70,6 +70,9 @@ type FD struct {
 
 	// The kind of this file.
 	kind fileKind
+
+	// Whether FILE_FLAG_OVERLAPPED was not set when opening the file
+	isBlocking bool
 }
 
 // Init initializes the FD. The Sysfd field should already be set.

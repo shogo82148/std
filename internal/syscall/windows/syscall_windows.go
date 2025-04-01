@@ -382,3 +382,12 @@ const (
 	STATUS_CANNOT_DELETE             NTStatus = 0xC0000121
 	STATUS_REPARSE_POINT_ENCOUNTERED NTStatus = 0xC000050B
 )
+
+const (
+	FileModeInformation = 16
+)
+
+// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_mode_information
+type FILE_MODE_INFORMATION struct {
+	Mode uint32
+}
