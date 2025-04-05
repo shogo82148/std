@@ -104,6 +104,23 @@ func (e *LinkError) Error() string
 
 func (e *LinkError) Unwrap() error
 
+// NewFile returns a new [File] with the given file descriptor and name.
+// The returned value will be nil if fd is not a valid file descriptor.
+//
+// NewFile's behavior differs on some platforms:
+//
+//   - On Unix, if fd is in non-blocking mode, NewFile will attempt to return a pollable file.
+//   - On Windows, if fd is opened for asynchronous I/O (that is, [syscall.FILE_FLAG_OVERLAPPED]
+//     has been specified in the [syscall.CreateFile] call), NewFile will attempt to return a pollable
+//     file by associating fd with the Go runtime I/O completion port.
+//     The I/O operations will be performed synchronously if the association fails.
+//
+// Only pollable files support [File.SetDeadline], [File.SetReadDeadline], and [File.SetWriteDeadline].
+//
+// After passing it to NewFile, fd may become invalid under the same conditions described
+// in the comments of [File.Fd], and the same constraints apply.
+func NewFile(fd uintptr, name string) *File
+
 // Read reads up to len(b) bytes from the File and stores them in b.
 // It returns the number of bytes read and any error encountered.
 // At end of file, Read returns 0, io.EOF.

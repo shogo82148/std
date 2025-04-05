@@ -75,9 +75,8 @@ type FD struct {
 	isBlocking bool
 
 	// Initialization parameters.
-	initIOOnce   sync.Once
-	initIOErr    error
-	initPollable bool
+	initIOOnce sync.Once
+	initIOErr  error
 }
 
 // Init initializes the FD. The Sysfd field should already be set.
@@ -85,6 +84,7 @@ type FD struct {
 // The net argument is a network name from the net package (e.g., "tcp"),
 // or "file" or "console" or "dir".
 // Set pollable to true if fd should be managed by runtime netpoll.
+// Pollable must be set to true for overlapped fds.
 func (fd *FD) Init(net string, pollable bool) error
 
 // Close closes the FD. The underlying file descriptor is closed by

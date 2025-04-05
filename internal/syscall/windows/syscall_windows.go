@@ -326,6 +326,12 @@ type FILE_FULL_DIR_INFO struct {
 	FileName        [1]uint16
 }
 
+type RUNTIME_FUNCTION struct {
+	BeginAddress uint32
+	EndAddress   uint32
+	UnwindData   uint32
+}
+
 type SERVICE_STATUS struct {
 	ServiceType             uint32
 	CurrentState            uint32
@@ -361,6 +367,9 @@ const (
 
 	PIPE_TYPE_BYTE    = 0x00000000
 	PIPE_TYPE_MESSAGE = 0x00000004
+
+	PIPE_READMODE_BYTE    = 0x00000000
+	PIPE_READMODE_MESSAGE = 0x00000002
 )
 
 // NTStatus corresponds with NTSTATUS, error values returned by ntdll.dll and

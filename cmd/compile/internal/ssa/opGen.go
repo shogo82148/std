@@ -1466,18 +1466,6 @@ const (
 	OpARM64MOVDstoreidx8
 	OpARM64FMOVSstoreidx4
 	OpARM64FMOVDstoreidx8
-	OpARM64MOVBstorezero
-	OpARM64MOVHstorezero
-	OpARM64MOVWstorezero
-	OpARM64MOVDstorezero
-	OpARM64MOVQstorezero
-	OpARM64MOVBstorezeroidx
-	OpARM64MOVHstorezeroidx
-	OpARM64MOVWstorezeroidx
-	OpARM64MOVDstorezeroidx
-	OpARM64MOVHstorezeroidx2
-	OpARM64MOVWstorezeroidx4
-	OpARM64MOVDstorezeroidx8
 	OpARM64FMOVDgpfp
 	OpARM64FMOVDfpgp
 	OpARM64FMOVSgpfp
@@ -1591,6 +1579,7 @@ const (
 	OpARM64LoweredPanicBoundsC
 	OpARM64PRFM
 	OpARM64DMB
+	OpARM64ZERO
 
 	OpLOONG64NEGV
 	OpLOONG64NEGF
