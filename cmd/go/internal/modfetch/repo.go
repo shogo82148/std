@@ -64,5 +64,9 @@ type RevInfo struct {
 // has any defined versions.
 func Lookup(ctx context.Context, proxy, path string) Repo
 
-// LookupLocal will only use local VCS information to fetch the Repo.
-func LookupLocal(ctx context.Context, path string) Repo
+// LookupLocal returns a Repo that accesses local VCS information.
+//
+// codeRoot is the module path of the root module in the repository.
+// path is the module path of the module being looked up.
+// dir is the file system path of the repository containing the module.
+func LookupLocal(ctx context.Context, codeRoot string, path string, dir string) Repo

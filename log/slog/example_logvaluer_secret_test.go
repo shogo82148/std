@@ -6,7 +6,6 @@ package slog_test
 
 import (
 	"github.com/shogo82148/std/log/slog"
-	"github.com/shogo82148/std/log/slog/internal/slogtest"
 	"github.com/shogo82148/std/os"
 )
 
@@ -14,7 +13,13 @@ import (
 // with an alternative representation to avoid revealing secrets.
 func ExampleLogValuer_secret() {
 	t := Token("shhhh!")
-	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: slogtest.RemoveTime}))
+	removeTime := func(groups []string, a slog.Attr) slog.Attr {
+		if a.Key == slog.TimeKey && len(groups) == 0 {
+			return slog.Attr{}
+		}
+		return a
+	}
+	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: removeTime}))
 	logger.Info("permission granted", "user", "Perry", "token", t)
 
 	// Output:
