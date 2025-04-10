@@ -137,7 +137,7 @@ var ArchLoong64 = &Arch{
 	RegSize:        8,
 	MinLC:          4,
 	Alignment:      8,
-	CanMergeLoads:  false,
+	CanMergeLoads:  true,
 	HasLR:          true,
 	FixedFrameSize: 8,
 }
