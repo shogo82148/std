@@ -88,6 +88,7 @@ func FromDir(dir, srcRoot string, allowNesting bool) (repoDir string, vcsCmd *Cm
 type RepoRoot struct {
 	Repo     string
 	Root     string
+	SubDir   string
 	IsCustom bool
 	VCS      *Cmd
 }

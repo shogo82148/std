@@ -21,4 +21,4 @@ package poll
 // If handled is false, sendfile was unable to perform the copy,
 // has not modified the source or destination,
 // and the caller should perform the copy using a fallback implementation.
-func SendFile(dstFD *FD, src int, size int64) (n int64, err error, handled bool)
+func SendFile(dstFD *FD, src uintptr, size int64) (n int64, err error, handled bool)
