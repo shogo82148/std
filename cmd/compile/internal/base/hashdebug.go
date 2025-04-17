@@ -38,6 +38,7 @@ var FmaHash *HashDebug
 var LoopVarHash *HashDebug
 var PGOHash *HashDebug
 var MergeLocalsHash *HashDebug
+var VariableMakeHash *HashDebug
 
 // DebugHashMatchPkgFunc reports whether debug variable Gossahash
 //
