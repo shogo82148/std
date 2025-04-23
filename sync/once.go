@@ -25,7 +25,7 @@ type Once struct {
 	// The hot path is inlined at every call site.
 	// Placing done first allows more compact instructions on some architectures (amd64/386),
 	// and fewer instructions (to calculate offset) on other architectures.
-	done atomic.Uint32
+	done atomic.Bool
 	m    Mutex
 }
 

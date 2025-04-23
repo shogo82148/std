@@ -88,3 +88,5 @@ func (m *Map) Delete(typ *abi.SwissMapType, key unsafe.Pointer)
 func (m *Map) Clear(typ *abi.SwissMapType)
 
 func (m *Map) Clone(typ *abi.SwissMapType) *Map
+
+func OldMapKeyError(t *abi.OldMapType, p unsafe.Pointer) error
