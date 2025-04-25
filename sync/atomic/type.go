@@ -8,6 +8,8 @@ import "github.com/shogo82148/std/unsafe"
 
 // A Bool is an atomic boolean value.
 // The zero value is false.
+//
+// Bool must not be copied after first use.
 type Bool struct {
 	_ noCopy
 	v uint32
@@ -30,6 +32,8 @@ func (x *Bool) CompareAndSwap(old, new bool) (swapped bool)
 var _ = &Pointer[int]{}
 
 // A Pointer is an atomic pointer of type *T. The zero value is a nil *T.
+//
+// Pointer must not be copied after first use.
 type Pointer[T any] struct {
 	// Mention *T in a field to disallow conversion between Pointer types.
 	// See go.dev/issue/56603 for more details.
@@ -53,6 +57,8 @@ func (x *Pointer[T]) Swap(new *T) (old *T)
 func (x *Pointer[T]) CompareAndSwap(old, new *T) (swapped bool)
 
 // An Int32 is an atomic int32. The zero value is zero.
+//
+// Int32 must not be copied after first use.
 type Int32 struct {
 	_ noCopy
 	v int32
@@ -82,6 +88,8 @@ func (x *Int32) And(mask int32) (old int32)
 func (x *Int32) Or(mask int32) (old int32)
 
 // An Int64 is an atomic int64. The zero value is zero.
+//
+// Int64 must not be copied after first use.
 type Int64 struct {
 	_ noCopy
 	_ align64
@@ -112,6 +120,8 @@ func (x *Int64) And(mask int64) (old int64)
 func (x *Int64) Or(mask int64) (old int64)
 
 // A Uint32 is an atomic uint32. The zero value is zero.
+//
+// Uint32 must not be copied after first use.
 type Uint32 struct {
 	_ noCopy
 	v uint32
@@ -141,6 +151,8 @@ func (x *Uint32) And(mask uint32) (old uint32)
 func (x *Uint32) Or(mask uint32) (old uint32)
 
 // A Uint64 is an atomic uint64. The zero value is zero.
+//
+// Uint64 must not be copied after first use.
 type Uint64 struct {
 	_ noCopy
 	_ align64
@@ -171,6 +183,8 @@ func (x *Uint64) And(mask uint64) (old uint64)
 func (x *Uint64) Or(mask uint64) (old uint64)
 
 // A Uintptr is an atomic uintptr. The zero value is zero.
+//
+// Uintptr must not be copied after first use.
 type Uintptr struct {
 	_ noCopy
 	v uintptr
