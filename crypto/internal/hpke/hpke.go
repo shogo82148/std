@@ -29,7 +29,7 @@ type Sender struct {
 	*context
 }
 
-type Receipient struct {
+type Recipient struct {
 	*context
 }
 
@@ -63,11 +63,11 @@ var SupportedKDFs = map[uint16]func() *hkdfKDF{
 
 func SetupSender(kemID, kdfID, aeadID uint16, pub *ecdh.PublicKey, info []byte) ([]byte, *Sender, error)
 
-func SetupReceipient(kemID, kdfID, aeadID uint16, priv *ecdh.PrivateKey, info, encPubEph []byte) (*Receipient, error)
+func SetupRecipient(kemID, kdfID, aeadID uint16, priv *ecdh.PrivateKey, info, encPubEph []byte) (*Recipient, error)
 
 func (s *Sender) Seal(aad, plaintext []byte) ([]byte, error)
 
-func (r *Receipient) Open(aad, ciphertext []byte) ([]byte, error)
+func (r *Recipient) Open(aad, ciphertext []byte) ([]byte, error)
 
 func ParseHPKEPublicKey(kemID uint16, bytes []byte) (*ecdh.PublicKey, error)
 
