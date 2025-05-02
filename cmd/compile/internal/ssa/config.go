@@ -49,6 +49,9 @@ type Config struct {
 	haveBswap64    bool
 	haveBswap32    bool
 	haveBswap16    bool
+
+	// mulRecipes[x] = function to build v * x from v.
+	mulRecipes map[int64]mulRecipe
 }
 
 type Types struct {

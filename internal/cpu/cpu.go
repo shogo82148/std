@@ -143,6 +143,7 @@ var RISCV64 struct {
 	_                 CacheLinePad
 	HasFastMisaligned bool
 	HasV              bool
+	HasZbb            bool
 	_                 CacheLinePad
 }
 
