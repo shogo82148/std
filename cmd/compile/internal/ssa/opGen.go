@@ -478,6 +478,8 @@ const (
 	OpAMD64DIVLU
 	OpAMD64DIVWU
 	OpAMD64NEGLflags
+	OpAMD64ADDQconstflags
+	OpAMD64ADDLconstflags
 	OpAMD64ADDQcarry
 	OpAMD64ADCQ
 	OpAMD64ADDQconstcarry

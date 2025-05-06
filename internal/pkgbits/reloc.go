@@ -4,27 +4,10 @@
 
 package pkgbits
 
-// A RelocKind indicates a particular section within a unified IR export.
+// A RelocKind indicates a section, as well as the ordering of sections within
+// unified export data. Any object given a dedicated section can be referred to
+// via a section / index pair (and thus dereferenced) in other sections.
 type RelocKind int32
-
-// An Index represents a bitstream element index within a particular
-// section.
-type Index int32
-
-// A relocEnt (relocation entry) is an entry in an element's local
-// reference table.
-//
-// TODO(mdempsky): Rename this too.
-type RelocEnt struct {
-	Kind RelocKind
-	Idx  Index
-}
-
-// Reserved indices within the meta relocation section.
-const (
-	PublicRootIdx  Index = 0
-	PrivateRootIdx Index = 1
-)
 
 const (
 	RelocString RelocKind = iota
@@ -37,4 +20,22 @@ const (
 	RelocObjExt
 	RelocObjDict
 	RelocBody
+)
+
+// An Index represents a bitstream element index *within* (i.e., relative to) a
+// particular section.
+type Index int32
+
+// A RelocEnt, or relocation entry, is an entry in an element's reference
+// table. All elements are preceded by a reference table which provides
+// locations for all dereferences that the element may use.
+type RelocEnt struct {
+	Kind RelocKind
+	Idx  Index
+}
+
+// Reserved indices within the [RelocMeta] section.
+const (
+	PublicRootIdx  Index = 0
+	PrivateRootIdx Index = 1
 )

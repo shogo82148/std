@@ -25,9 +25,16 @@ func (ctxt *Link) Globl(s *LSym, size int64, flag int)
 
 func (ctxt *Link) GloblPos(s *LSym, size int64, flag int, pos src.XPos)
 
-// EmitEntryStackMap generates PCDATA Progs after p to switch to the
-// liveness map active at the entry of function s.
+// EmitEntryLiveness generates PCDATA Progs after p to switch to the
+// liveness map active at the entry of function s. It returns the last
+// Prog generated.
+func (ctxt *Link) EmitEntryLiveness(s *LSym, p *Prog, newprog ProgAlloc) *Prog
+
+// Similar to EmitEntryLiveness, but just emit stack map.
 func (ctxt *Link) EmitEntryStackMap(s *LSym, p *Prog, newprog ProgAlloc) *Prog
+
+// Similar to EmitEntryLiveness, but just emit unsafe point map.
+func (ctxt *Link) EmitEntryUnsafePoint(s *LSym, p *Prog, newprog ProgAlloc) *Prog
 
 // StartUnsafePoint generates PCDATA Progs after p to mark the
 // beginning of an unsafe point. The unsafe point starts immediately
