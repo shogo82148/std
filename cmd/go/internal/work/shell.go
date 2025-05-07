@@ -41,7 +41,7 @@ func (b *Builder) Shell(a *Action) *Shell
 // Try not to use this unless there's really no sensible Action available.
 func (b *Builder) BackgroundShell() *Shell
 
-// copyFile is like 'cp src dst'.
+// CopyFile is like 'cp src dst'.
 func (sh *Shell) CopyFile(dst, src string, perm fs.FileMode, force bool) error
 
 // Mkdir makes the named directory.

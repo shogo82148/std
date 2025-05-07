@@ -4,13 +4,13 @@
 
 package pkgbits
 
-// A RelocKind indicates a section, as well as the ordering of sections within
+// A SectionKind indicates a section, as well as the ordering of sections within
 // unified export data. Any object given a dedicated section can be referred to
 // via a section / index pair (and thus dereferenced) in other sections.
-type RelocKind int32
+type SectionKind int32
 
 const (
-	RelocString RelocKind = iota
+	RelocString SectionKind = iota
 	RelocMeta
 	RelocPosBase
 	RelocPkg
@@ -26,16 +26,20 @@ const (
 // particular section.
 type Index int32
 
+// TODO(markfreeman): Make RelIndex its own named type once we point external
+// references from Index to RelIndex.
+type RelIndex = Index
+
 // A RelocEnt, or relocation entry, is an entry in an element's reference
 // table. All elements are preceded by a reference table which provides
 // locations for all dereferences that the element may use.
 type RelocEnt struct {
-	Kind RelocKind
-	Idx  Index
+	Kind SectionKind
+	Idx  RelIndex
 }
 
 // Reserved indices within the [RelocMeta] section.
 const (
-	PublicRootIdx  Index = 0
-	PrivateRootIdx Index = 1
+	PublicRootIdx  RelIndex = 0
+	PrivateRootIdx RelIndex = 1
 )

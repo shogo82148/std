@@ -85,3 +85,8 @@ type Source struct {
 	File string `json:"file"`
 	Line int    `json:"line"`
 }
+
+// Source returns a new Source for the log event using r's PC.
+// If the PC field is zero, meaning the Record was created without the necessary information
+// or the location is unavailable, then nil is returned.
+func (r Record) Source() *Source

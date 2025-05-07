@@ -58,7 +58,8 @@ type Checker struct {
 	environment
 
 	// debugging
-	indent int
+	posStack []syntax.Pos
+	indent   int
 }
 
 // NewChecker returns a new Checker instance for a given package.
