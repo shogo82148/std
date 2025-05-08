@@ -10,6 +10,7 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
+// Note: changes here must be reflected in cmd/compile/internal/reflectdata/map_swiss.go:SwissMapType.
 type Map struct {
 	// The number of filled slots (i.e. the number of elements in all
 	// tables). Excludes deleted slots.
@@ -53,6 +54,10 @@ type Map struct {
 	// multiple concurrent writers, then toggling increases the probability
 	// that both sides will detect the race.
 	writing uint8
+
+	// tombstonePossible is false if we know that no table in this map
+	// contains a tombstone.
+	tombstonePossible bool
 
 	// clearSeq is a sequence counter of calls to Clear. It is used to
 	// detect map clears during iteration.
