@@ -11,3 +11,5 @@ func Tool(toolName string) string
 // ToolPath returns the path at which we expect to find the named tool
 // (for example, "vet"), and the error (if any) from statting that path.
 func ToolPath(toolName string) (string, error)
+
+func ValidToolName(toolName string) bool

@@ -79,6 +79,11 @@ var (
 	CGOChanged    bool
 )
 
+// ForceHost forces GOOS and GOARCH to runtime.GOOS and runtime.GOARCH.
+// This is used by go tool to build tools for the go command's own
+// GOOS and GOARCH.
+func ForceHost()
+
 // SetGOROOT sets GOROOT and associated variables to the given values.
 //
 // If isTestGo is true, build.ToolDir is set based on the TESTGO_GOHOSTOS and
