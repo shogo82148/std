@@ -10,16 +10,16 @@ package pkgbits
 type SectionKind int32
 
 const (
-	RelocString SectionKind = iota
-	RelocMeta
-	RelocPosBase
-	RelocPkg
-	RelocName
-	RelocType
-	RelocObj
-	RelocObjExt
-	RelocObjDict
-	RelocBody
+	SectionString SectionKind = iota
+	SectionMeta
+	SectionPosBase
+	SectionPkg
+	SectionName
+	SectionType
+	SectionObj
+	SectionObjExt
+	SectionObjDict
+	SectionBody
 )
 
 // An Index represents a bitstream element index *within* (i.e., relative to) a
@@ -38,7 +38,7 @@ type RelocEnt struct {
 	Idx  RelIndex
 }
 
-// Reserved indices within the [RelocMeta] section.
+// Reserved indices within the [SectionMeta] section.
 const (
 	PublicRootIdx  RelIndex = 0
 	PrivateRootIdx RelIndex = 1
