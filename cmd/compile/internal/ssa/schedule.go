@@ -13,6 +13,7 @@ const (
 	ScoreMemory
 	ScoreReadFlags
 	ScoreDefault
+	ScoreInductionInc
 	ScoreFlags
 	ScoreControl
 )

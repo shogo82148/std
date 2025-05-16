@@ -453,8 +453,10 @@ type TB interface {
 	private()
 }
 
-var _ TB = (*T)(nil)
-var _ TB = (*B)(nil)
+var (
+	_ TB = (*T)(nil)
+	_ TB = (*B)(nil)
+)
 
 // T is a type passed to Test functions to manage test state and support formatted test logs.
 //
