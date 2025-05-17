@@ -86,3 +86,8 @@ type ImportMissingSumError struct {
 func (e *ImportMissingSumError) Error() string
 
 func (e *ImportMissingSumError) ImportPath() string
+
+// PkgIsInLocalModule reports whether the directory of the package with
+// the given pkgpath, exists in the module with the given modpath
+// at the given modroot, and contains go source files.
+func PkgIsInLocalModule(pkgpath, modpath, modroot string) bool

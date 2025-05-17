@@ -37,6 +37,12 @@ var (
 // EnterModule resets MainModules and requirements to refer to just this one module.
 func EnterModule(ctx context.Context, enterModroot string)
 
+// EnterWorkspace enters workspace mode from module mode, applying the updated requirements to the main
+// module to that module in the workspace. There should be no calls to any of the exported
+// functions of the modload package running concurrently with a call to EnterWorkspace as
+// EnterWorkspace will modify the global state they depend on in a non-thread-safe way.
+func EnterWorkspace(ctx context.Context) (exit func(), err error)
+
 type MainModuleSet struct {
 	// versions are the module.Version values of each of the main modules.
 	// For each of them, the Path fields are ordinary module paths and the Version
@@ -223,6 +229,11 @@ func MustHaveModRoot()
 func ModFilePath() string
 
 var ErrNoModRoot noMainModulesError
+
+// LoadWorkFile parses and checks the go.work file at the given path,
+// and returns the absolute paths of the workspace modules' modroots.
+// It does not modify the global state of the modload package.
+func LoadWorkFile(path string) (workFile *modfile.WorkFile, modRoots []string, err error)
 
 // ReadWorkFile reads and parses the go.work file at the given path.
 func ReadWorkFile(path string) (*modfile.WorkFile, error)

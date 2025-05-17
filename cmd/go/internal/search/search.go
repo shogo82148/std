@@ -58,6 +58,26 @@ func (e *MatchError) Unwrap() error
 // MatchPackages appends those errors to m.Errs.
 func (m *Match) MatchPackages()
 
+// IgnorePatterns is normalized with normalizePath.
+type IgnorePatterns struct {
+	relativePatterns []string
+	anyPatterns      []string
+}
+
+// ShouldIgnore returns true if the given directory should be ignored
+// based on the ignore patterns.
+//
+// An ignore pattern "x" will cause any file or directory named "x"
+// (and its entire subtree) to be ignored, regardless of its location
+// within the module.
+//
+// An ignore pattern "./x" will only cause the specific file or directory
+// named "x" at the root of the module to be ignored.
+// Wildcards in ignore patterns are not supported.
+func (ignorePatterns *IgnorePatterns) ShouldIgnore(dir string) bool
+
+func NewIgnorePatterns(patterns []string) *IgnorePatterns
+
 // MatchDirs sets m.Dirs to a non-nil slice containing all directories that
 // potentially match a local pattern. The pattern must begin with an absolute
 // path, or "./", or "../". On Windows, the pattern may use slash or backslash
@@ -72,10 +92,10 @@ func WarnUnmatched(matches []*Match)
 
 // ImportPaths returns the matching paths to use for the given command line.
 // It calls ImportPathsQuiet and then WarnUnmatched.
-func ImportPaths(patterns, modRoots []string) []*Match
+func ImportPaths(patterns []string) []*Match
 
 // ImportPathsQuiet is like ImportPaths but does not warn about patterns with no matches.
-func ImportPathsQuiet(patterns, modRoots []string) []*Match
+func ImportPathsQuiet(patterns []string) []*Match
 
 // CleanPatterns returns the patterns to use for the given command line. It
 // canonicalizes the patterns but does not evaluate any matches. For patterns
