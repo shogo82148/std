@@ -86,10 +86,21 @@ func MustHaveCGO(t testing.TB)
 // internal linking.
 func CanInternalLink(withCgo bool) bool
 
+// SpecialBuildTypes are interesting build types that may affect linking.
+type SpecialBuildTypes struct {
+	Cgo  bool
+	Asan bool
+	Msan bool
+	Race bool
+}
+
+// NoSpecialBuildTypes indicates a standard, no cgo go build.
+var NoSpecialBuildTypes SpecialBuildTypes
+
 // MustInternalLink checks that the current system can link programs with internal
 // linking.
 // If not, MustInternalLink calls t.Skip with an explanation.
-func MustInternalLink(t testing.TB, withCgo bool)
+func MustInternalLink(t testing.TB, with SpecialBuildTypes)
 
 // MustInternalLinkPIE checks whether the current system can link PIE binary using
 // internal linking.

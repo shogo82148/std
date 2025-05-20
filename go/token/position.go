@@ -67,6 +67,9 @@ func (p Pos) IsValid() bool
 
 // A File is a handle for a file belonging to a [FileSet].
 // A File has a name, size, and line offset table.
+//
+// Use [FileSet.AddFile] to create a File.
+// A File may belong to more than one FileSet; see [FileSet.AddExistingFiles].
 type File struct {
 	name string
 	base int
@@ -228,6 +231,12 @@ func (s *FileSet) Base() int
 // For convenience, [File.Pos] may be used to create file-specific position
 // values from a file offset.
 func (s *FileSet) AddFile(filename string, base, size int) *File
+
+// AddExistingFiles adds the specified files to the
+// FileSet if they are not already present.
+// The caller must ensure that no pair of Files that
+// would appear in the resulting FileSet overlap.
+func (s *FileSet) AddExistingFiles(files ...*File)
 
 // RemoveFile removes a file from the [FileSet] so that subsequent
 // queries for its [Pos] interval yield a negative result.

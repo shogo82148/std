@@ -1781,6 +1781,8 @@ const (
 	OpLOONG64LoweredPanicBoundsA
 	OpLOONG64LoweredPanicBoundsB
 	OpLOONG64LoweredPanicBoundsC
+	OpLOONG64PRELD
+	OpLOONG64PRELDX
 
 	OpMIPSADD
 	OpMIPSADDconst

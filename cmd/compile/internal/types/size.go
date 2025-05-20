@@ -57,6 +57,11 @@ func CalcSize(t *Type)
 // even if size calculation is otherwise disabled.
 func CalcStructSize(t *Type)
 
+// CalcArraySize calculates the size of t,
+// filling in t.width, t.align, t.alg, and t.ptrBytes,
+// even if size calculation is otherwise disabled.
+func CalcArraySize(t *Type)
+
 func CheckSize(t *Type)
 
 func DeferCheckSize()

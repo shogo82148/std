@@ -378,6 +378,10 @@ var DefaultServeMux = &defaultServeMux
 //
 // If there is no registered handler that applies to the request,
 // Handler returns a “page not found” handler and an empty pattern.
+//
+// Handler does not modify its argument. In particular, it does not
+// populate named path wildcards, so r.PathValue will always return
+// the empty string.
 func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 
 // ServeHTTP dispatches the request to the handler whose

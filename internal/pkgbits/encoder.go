@@ -52,13 +52,13 @@ func (pw *PkgEncoder) StringIdx(s string) RelIndex
 // NewEncoder returns an Encoder for a new element within the given
 // section, and encodes the given SyncMarker as the start of the
 // element bitstream.
-func (pw *PkgEncoder) NewEncoder(k SectionKind, marker SyncMarker) Encoder
+func (pw *PkgEncoder) NewEncoder(k SectionKind, marker SyncMarker) *Encoder
 
 // NewEncoderRaw returns an Encoder for a new element within the given
 // section.
 //
 // Most callers should use NewEncoder instead.
-func (pw *PkgEncoder) NewEncoderRaw(k SectionKind) Encoder
+func (pw *PkgEncoder) NewEncoderRaw(k SectionKind) *Encoder
 
 // An Encoder provides methods for encoding an individual element's
 // bitstream data.
