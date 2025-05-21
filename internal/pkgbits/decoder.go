@@ -46,7 +46,7 @@ type PkgDecoder struct {
 	// (or 0, if K==0) and end at elemEndsEnds[K].
 	elemEndsEnds [numRelocs]uint32
 
-	scratchRelocEnt []RelocEnt
+	scratchRelocEnt []RefTableEntry
 }
 
 // PkgPath returns the package path for the package
@@ -106,7 +106,7 @@ func (pr *PkgDecoder) TempDecoderRaw(k SectionKind, idx RelIndex) Decoder
 type Decoder struct {
 	common *PkgDecoder
 
-	Relocs []RelocEnt
+	Relocs []RefTableEntry
 	Data   strings.Reader
 
 	k   SectionKind

@@ -14,6 +14,19 @@ import (
 // of the current Windows OS from the RtlGetVersion API.
 func Version() (major, minor, build uint32)
 
+// SupportUnlimitedTransmitFile indicates whether the current
+// Windows version's TransmitFile function imposes any
+// concurrent operation limits.
+// Workstation and client versions of Windows limit the number
+// of concurrent TransmitFile operations allowed on the system
+// to a maximum of two. Please see:
+// https://learn.microsoft.com/en-us/windows/win32/api/mswsock/nf-mswsock-transmitfile
+// https://golang.org/issue/73746
+var SupportUnlimitedTransmitFile = sync.OnceValue(func() bool {
+	info := getVersionInfo()
+	return info.productType != VER_NT_WORKSTATION
+})
+
 // SupportTCPKeepAliveIdle indicates whether TCP_KEEPIDLE is supported.
 // The minimal requirement is Windows 10.0.16299.
 func SupportTCPKeepAliveIdle() bool

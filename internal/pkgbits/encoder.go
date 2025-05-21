@@ -65,8 +65,8 @@ func (pw *PkgEncoder) NewEncoderRaw(k SectionKind) *Encoder
 type Encoder struct {
 	p *PkgEncoder
 
-	Relocs   []RelocEnt
-	RelocMap map[RelocEnt]uint32
+	Relocs   []RefTableEntry
+	RelocMap map[RefTableEntry]uint32
 	Data     bytes.Buffer
 
 	encodingRelocHeader bool

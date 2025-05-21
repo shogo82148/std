@@ -193,6 +193,11 @@ func (v Value) CanInterface() bool
 // unexported struct fields.
 func (v Value) Interface() (i any)
 
+// TypeAssert is semantically equivalent to:
+//
+//	v2, ok := v.Interface().(T)
+func TypeAssert[T any](v Value) (T, bool)
+
 // InterfaceData returns a pair of unspecified uintptr values.
 // It panics if v's Kind is not Interface.
 //
