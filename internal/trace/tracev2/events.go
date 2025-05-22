@@ -83,6 +83,10 @@ const (
 	// Batch event for an experimental batch with a custom format. Added in Go 1.23.
 	EvExperimentalBatch
 
+	// Sync batch. Added in Go 1.25. Previously a lone EvFrequency event.
+	EvSync
+	EvClockSnapshot
+
 	NumEvents
 )
 

@@ -8,6 +8,7 @@ package sha3
 
 import (
 	"github.com/shogo82148/std/crypto/internal/fips140/sha3"
+	"github.com/shogo82148/std/hash"
 )
 
 // Sum224 returns the SHA3-224 hash of data.
@@ -70,6 +71,9 @@ func (s *SHA3) AppendBinary(p []byte) ([]byte, error)
 
 // UnmarshalBinary implements [encoding.BinaryUnmarshaler].
 func (s *SHA3) UnmarshalBinary(data []byte) error
+
+// Clone implements [hash.Cloner].
+func (d *SHA3) Clone() (hash.Cloner, error)
 
 // SHAKE is an instance of a SHAKE extendable output function.
 type SHAKE struct {

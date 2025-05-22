@@ -6,6 +6,10 @@
 // in FIPS 180-4.
 package sha256
 
+import (
+	"github.com/shogo82148/std/hash"
+)
+
 // Digest is a SHA-224 or SHA-256 [hash.Hash] implementation.
 type Digest struct {
 	h     [8]uint32
@@ -20,6 +24,8 @@ func (d *Digest) MarshalBinary() ([]byte, error)
 func (d *Digest) AppendBinary(b []byte) ([]byte, error)
 
 func (d *Digest) UnmarshalBinary(b []byte) error
+
+func (d *Digest) Clone() (hash.Cloner, error)
 
 func (d *Digest) Reset()
 

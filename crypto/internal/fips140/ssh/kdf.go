@@ -7,7 +7,7 @@
 package ssh
 
 import (
-	"github.com/shogo82148/std/crypto/internal/fips140"
+	"github.com/shogo82148/std/hash"
 )
 
 type Direction struct {
@@ -18,7 +18,7 @@ type Direction struct {
 
 var ServerKeys, ClientKeys Direction
 
-func Keys[Hash fips140.Hash](hash func() Hash, d Direction,
+func Keys[Hash hash.Hash](hash func() Hash, d Direction,
 	K, H, sessionID []byte,
 	ivKeyLen, keyLen, macKeyLen int,
 ) (ivKey, key, macKey []byte)

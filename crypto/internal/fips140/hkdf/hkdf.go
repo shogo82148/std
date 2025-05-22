@@ -5,11 +5,11 @@
 package hkdf
 
 import (
-	"github.com/shogo82148/std/crypto/internal/fips140"
+	"github.com/shogo82148/std/hash"
 )
 
-func Extract[H fips140.Hash](h func() H, secret, salt []byte) []byte
+func Extract[H hash.Hash](h func() H, secret, salt []byte) []byte
 
-func Expand[H fips140.Hash](h func() H, pseudorandomKey []byte, info string, keyLen int) []byte
+func Expand[H hash.Hash](h func() H, pseudorandomKey []byte, info string, keyLen int) []byte
 
-func Key[H fips140.Hash](h func() H, secret, salt []byte, info string, keyLen int) []byte
+func Key[H hash.Hash](h func() H, secret, salt []byte, info string, keyLen int) []byte

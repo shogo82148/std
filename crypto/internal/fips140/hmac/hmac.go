@@ -8,12 +8,13 @@
 package hmac
 
 import (
-	"github.com/shogo82148/std/crypto/internal/fips140"
+	"github.com/shogo82148/std/hash"
 )
 
 type HMAC struct {
+	// opad and ipad may share underlying storage with HMAC clones.
 	opad, ipad   []byte
-	outer, inner fips140.Hash
+	outer, inner hash.Hash
 
 	// If marshaled is true, then opad and ipad do not contain a padded
 	// copy of the key, but rather the marshaled state of outer/inner after
@@ -34,8 +35,12 @@ func (h *HMAC) BlockSize() int
 
 func (h *HMAC) Reset()
 
-// New returns a new HMAC hash using the given [fips140.Hash] type and key.
-func New[H fips140.Hash](h func() H, key []byte) *HMAC
+// Clone implements [hash.Cloner] if the underlying hash does.
+// Otherwise, it returns [errors.ErrUnsupported].
+func (h *HMAC) Clone() (hash.Cloner, error)
+
+// New returns a new HMAC hash using the given [hash.Hash] type and key.
+func New[H hash.Hash](h func() H, key []byte) *HMAC
 
 // MarkAsUsedInKDF records that this HMAC instance is used as part of a KDF.
 func MarkAsUsedInKDF(h *HMAC)

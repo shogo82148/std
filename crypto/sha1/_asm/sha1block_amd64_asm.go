@@ -4,30 +4,6 @@
 
 package main
 
-func LOAD(index int)
-
-func SHUFFLE(index int)
-
-func FUNC1(a, b, c, d, e GPPhysical)
-
-func FUNC2(a, b, c, d, e GPPhysical)
-
-func FUNC3(a, b, c, d, e GPPhysical)
-
-func FUNC4(a, b, c, d, e GPPhysical)
-
-func MIX(a, b, c, d, e GPPhysical, konst int)
-
-func ROUND1(a, b, c, d, e GPPhysical, index int)
-
-func ROUND1x(a, b, c, d, e GPPhysical, index int)
-
-func ROUND2(a, b, c, d, e GPPhysical, index int)
-
-func ROUND3(a, b, c, d, e GPPhysical, index int)
-
-func ROUND4(a, b, c, d, e GPPhysical, index int)
-
 func UPDATE_HASH(A, TB, C, D, E GPPhysical)
 
 func PRECALC_0(OFFSET int)

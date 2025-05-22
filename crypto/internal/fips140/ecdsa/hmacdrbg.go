@@ -5,7 +5,7 @@
 package ecdsa
 
 import (
-	"github.com/shogo82148/std/crypto/internal/fips140"
+	"github.com/shogo82148/std/hash"
 )
 
 // TestingOnlyNewDRBG creates an SP 800-90A Rev. 1 HMAC_DRBG with a plain
@@ -13,4 +13,4 @@ import (
 //
 // This should only be used for ACVP testing. hmacDRBG is not intended to be
 // used directly.
-func TestingOnlyNewDRBG(hash func() fips140.Hash, entropy, nonce []byte, s []byte) *hmacDRBG
+func TestingOnlyNewDRBG(hash func() hash.Hash, entropy, nonce []byte, s []byte) *hmacDRBG

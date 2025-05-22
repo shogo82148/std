@@ -22,7 +22,7 @@ type PkgEncoder struct {
 	// stringsIdx maps previously encoded strings to their index within
 	// the RelocString section, to allow deduplication. That is,
 	// elems[RelocString][stringsIdx[s]] == s (if present).
-	stringsIdx map[string]RelIndex
+	stringsIdx map[string]RelElemIdx
 
 	// syncFrames is the number of frames to write at each sync
 	// marker. A negative value means sync markers are omitted.
@@ -47,7 +47,7 @@ func (pw *PkgEncoder) DumpTo(out0 io.Writer) (fingerprint [8]byte)
 
 // StringIdx adds a string value to the strings section, if not
 // already present, and returns its index.
-func (pw *PkgEncoder) StringIdx(s string) RelIndex
+func (pw *PkgEncoder) StringIdx(s string) RelElemIdx
 
 // NewEncoder returns an Encoder for a new element within the given
 // section, and encodes the given SyncMarker as the start of the
@@ -72,11 +72,11 @@ type Encoder struct {
 	encodingRelocHeader bool
 
 	k   SectionKind
-	Idx RelIndex
+	Idx RelElemIdx
 }
 
-// Flush finalizes the element's bitstream and returns its [RelIndex].
-func (w *Encoder) Flush() RelIndex
+// Flush finalizes the element's bitstream and returns its [RelElemIdx].
+func (w *Encoder) Flush() RelElemIdx
 
 func (w *Encoder) Sync(m SyncMarker)
 
@@ -116,7 +116,7 @@ func (w *Encoder) Uint(x uint)
 // Note: Only the index is formally written into the element
 // bitstream, so bitstream decoders must know from context which
 // section an encoded relocation refers to.
-func (w *Encoder) Reloc(k SectionKind, idx RelIndex)
+func (w *Encoder) Reloc(k SectionKind, idx RelElemIdx)
 
 // Code encodes and writes a Code value into the element bitstream.
 func (w *Encoder) Code(c Code)
@@ -131,7 +131,7 @@ func (w *Encoder) String(s string)
 
 // StringRef writes a reference to the given index, which must be a
 // previously encoded string value.
-func (w *Encoder) StringRef(idx RelIndex)
+func (w *Encoder) StringRef(idx RelElemIdx)
 
 // Strings encodes and writes a variable-length slice of strings into
 // the element bitstream.

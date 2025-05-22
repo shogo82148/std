@@ -27,6 +27,18 @@ import (
 // PublicKey represents an ECDSA public key.
 type PublicKey struct {
 	elliptic.Curve
+
+	// X, Y are the coordinates of the public key point.
+	//
+	// Modifying the raw coordinates can produce invalid keys, and may
+	// invalidate internal optimizations; moreover, [big.Int] methods are not
+	// suitable for operating on cryptographic values. To encode and decode
+	// PublicKey values, use [PublicKey.Bytes] and [ParseUncompressedPublicKey]
+	// or [x509.MarshalPKIXPublicKey] and [x509.ParsePKIXPublicKey]. For ECDH,
+	// use [crypto/ecdh]. For lower-level elliptic curve operations, use a
+	// third-party module like filippo.io/nistec.
+	//
+	// These fields will be deprecated in Go 1.26.
 	X, Y *big.Int
 }
 
@@ -42,9 +54,49 @@ func (k *PublicKey) ECDH() (*ecdh.PublicKey, error)
 // values, as the latter is a generic not constant time implementation.
 func (pub *PublicKey) Equal(x crypto.PublicKey) bool
 
+// ParseUncompressedPublicKey parses a public key encoded as an uncompressed
+// point according to SEC 1, Version 2.0, Section 2.3.3 (also known as the X9.62
+// uncompressed format). It returns an error if the point is not in uncompressed
+// form, is not on the curve, or is the point at infinity.
+//
+// curve must be one of [elliptic.P224], [elliptic.P256], [elliptic.P384], or
+// [elliptic.P521], or ParseUncompressedPublicKey returns an error.
+//
+// ParseUncompressedPublicKey accepts the same format as
+// [ecdh.Curve.NewPublicKey] does for NIST curves, but returns a [PublicKey]
+// instead of an [ecdh.PublicKey].
+//
+// Note that public keys are more commonly encoded in DER (or PEM) format, which
+// can be parsed with [x509.ParsePKIXPublicKey] (and [encoding/pem]).
+func ParseUncompressedPublicKey(curve elliptic.Curve, data []byte) (*PublicKey, error)
+
+// Bytes encodes the public key as an uncompressed point according to SEC 1,
+// Version 2.0, Section 2.3.3 (also known as the X9.62 uncompressed format).
+// It returns an error if the public key is invalid.
+//
+// PublicKey.Curve must be one of [elliptic.P224], [elliptic.P256],
+// [elliptic.P384], or [elliptic.P521], or Bytes returns an error.
+//
+// Bytes returns the same format as [ecdh.PublicKey.Bytes] does for NIST curves.
+//
+// Note that public keys are more commonly encoded in DER (or PEM) format, which
+// can be generated with [x509.MarshalPKIXPublicKey] (and [encoding/pem]).
+func (pub *PublicKey) Bytes() ([]byte, error)
+
 // PrivateKey represents an ECDSA private key.
 type PrivateKey struct {
 	PublicKey
+
+	// D is the private scalar value.
+	//
+	// Modifying the raw value can produce invalid keys, and may
+	// invalidate internal optimizations; moreover, [big.Int] methods are not
+	// suitable for operating on cryptographic values. To encode and decode
+	// PrivateKey values, use [PrivateKey.Bytes] and [ParseRawPrivateKey]
+	// or [x509.MarshalPKCS8PrivateKey] and [x509.ParsePKCS8PrivateKey].
+	// For ECDH, use [crypto/ecdh].
+	//
+	// This field will be deprecated in Go 1.26.
 	D *big.Int
 }
 
@@ -60,6 +112,36 @@ func (priv *PrivateKey) Public() crypto.PublicKey
 //
 // See [PublicKey.Equal] for details on how Curve is compared.
 func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool
+
+// ParseRawPrivateKey parses a private key encoded as a fixed-length big-endian
+// integer, according to SEC 1, Version 2.0, Section 2.3.6 (sometimes referred
+// to as the raw format). It returns an error if the value is not reduced modulo
+// the curve's order, or if it's zero.
+//
+// curve must be one of [elliptic.P224], [elliptic.P256], [elliptic.P384], or
+// [elliptic.P521], or ParseRawPrivateKey returns an error.
+//
+// ParseRawPrivateKey accepts the same format as [ecdh.Curve.NewPrivateKey] does
+// for NIST curves, but returns a [PrivateKey] instead of an [ecdh.PrivateKey].
+//
+// Note that private keys are more commonly encoded in ASN.1 or PKCS#8 format,
+// which can be parsed with [x509.ParseECPrivateKey] or
+// [x509.ParsePKCS8PrivateKey] (and [encoding/pem]).
+func ParseRawPrivateKey(curve elliptic.Curve, data []byte) (*PrivateKey, error)
+
+// Bytes encodes the private key as a fixed-length big-endian integer according
+// to SEC 1, Version 2.0, Section 2.3.6 (sometimes referred to as the raw
+// format). It returns an error if the private key is invalid.
+//
+// PrivateKey.Curve must be one of [elliptic.P224], [elliptic.P256],
+// [elliptic.P384], or [elliptic.P521], or Bytes returns an error.
+//
+// Bytes returns the same format as [ecdh.PrivateKey.Bytes] does for NIST curves.
+//
+// Note that private keys are more commonly encoded in ASN.1 or PKCS#8 format,
+// which can be generated with [x509.MarshalECPrivateKey] or
+// [x509.MarshalPKCS8PrivateKey] (and [encoding/pem]).
+func (priv *PrivateKey) Bytes() ([]byte, error)
 
 // Sign signs a hash (which should be the result of hashing a larger message
 // with opts.HashFunc()) using the private key, priv. If the hash is longer than

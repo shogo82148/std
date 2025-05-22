@@ -5,9 +5,9 @@
 package ecdsa
 
 import (
-	"github.com/shogo82148/std/crypto/internal/fips140"
 	"github.com/shogo82148/std/crypto/internal/fips140/bigmod"
 	"github.com/shogo82148/std/crypto/internal/fips140/nistec"
+	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"
 )
 
@@ -71,14 +71,14 @@ type Signature struct {
 // the hash function H) using the private key, priv. If the hash is longer than
 // the bit-length of the private key's curve order, the hash will be truncated
 // to that length.
-func Sign[P Point[P], H fips140.Hash](c *Curve[P], h func() H, priv *PrivateKey, rand io.Reader, hash []byte) (*Signature, error)
+func Sign[P Point[P], H hash.Hash](c *Curve[P], h func() H, priv *PrivateKey, rand io.Reader, hash []byte) (*Signature, error)
 
 // SignDeterministic signs a hash (which shall be the result of hashing a
 // larger message with the hash function H) using the private key, priv. If the
 // hash is longer than the bit-length of the private key's curve order, the hash
 // will be truncated to that length. This applies Deterministic ECDSA as
 // specified in FIPS 186-5 and RFC 6979.
-func SignDeterministic[P Point[P], H fips140.Hash](c *Curve[P], h func() H, priv *PrivateKey, hash []byte) (*Signature, error)
+func SignDeterministic[P Point[P], H hash.Hash](c *Curve[P], h func() H, priv *PrivateKey, hash []byte) (*Signature, error)
 
 // Verify verifies the signature, sig, of hash (which should be the result of
 // hashing a larger message) using the public key, pub. If the hash is longer

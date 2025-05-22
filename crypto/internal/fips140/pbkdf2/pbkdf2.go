@@ -5,7 +5,7 @@
 package pbkdf2
 
 import (
-	"github.com/shogo82148/std/crypto/internal/fips140"
+	"github.com/shogo82148/std/hash"
 )
 
-func Key[Hash fips140.Hash](h func() Hash, password string, salt []byte, iter, keyLength int) ([]byte, error)
+func Key[Hash hash.Hash](h func() Hash, password string, salt []byte, iter, keyLength int) ([]byte, error)

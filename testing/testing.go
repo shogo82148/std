@@ -429,6 +429,7 @@ func Verbose() bool
 
 // TB is the interface common to [T], [B], and [F].
 type TB interface {
+	Attr(key, value string)
 	Cleanup(func())
 	Error(args ...any)
 	Errorf(format string, args ...any)

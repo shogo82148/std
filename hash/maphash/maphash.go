@@ -12,6 +12,10 @@
 // (See crypto/sha256 and crypto/sha512 for cryptographic use.)
 package maphash
 
+import (
+	"github.com/shogo82148/std/hash"
+)
+
 // A Seed is a random value that selects the specific hash function
 // computed by a [Hash]. If two Hashes use the same Seeds, they
 // will compute the same hash values for any given input.
@@ -51,7 +55,7 @@ func String(seed Seed, s string) uint64
 //
 // The zero Hash is a valid Hash ready to use.
 // A zero Hash chooses a random seed for itself during
-// the first call to a Reset, Write, Seed, or Sum64 method.
+// the first call to a Reset, Write, Seed, Clone, or Sum64 method.
 // For control over the seed, use SetSeed.
 //
 // The computed hash values depend only on the initial seed and
@@ -126,6 +130,9 @@ func (h *Hash) Size() int
 
 // BlockSize returns h's block size.
 func (h *Hash) BlockSize() int
+
+// Clone implements [hash.Cloner].
+func (h *Hash) Clone() (hash.Cloner, error)
 
 // Comparable returns the hash of comparable value v with the given seed
 // such that Comparable(s, v1) == Comparable(s, v2) if v1 == v2.

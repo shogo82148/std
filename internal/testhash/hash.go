@@ -14,3 +14,5 @@ type MakeHash func() hash.Hash
 // TestHash performs a set of tests on hash.Hash implementations, checking the
 // documented requirements of Write, Sum, Reset, Size, and BlockSize.
 func TestHash(t *testing.T, mh MakeHash)
+
+func TestHashWithoutClone(t *testing.T, mh MakeHash)

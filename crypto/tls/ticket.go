@@ -35,15 +35,14 @@ type SessionState struct {
 	// createdAt is the generation time of the secret on the sever (which for
 	// TLS 1.0–1.2 might be earlier than the current session) and the time at
 	// which the ticket was received on the client.
-	createdAt         uint64
-	secret            []byte
-	extMasterSecret   bool
-	peerCertificates  []*x509.Certificate
-	activeCertHandles []*activeCert
-	ocspResponse      []byte
-	scts              [][]byte
-	verifiedChains    [][]*x509.Certificate
-	alpnProtocol      string
+	createdAt        uint64
+	secret           []byte
+	extMasterSecret  bool
+	peerCertificates []*x509.Certificate
+	ocspResponse     []byte
+	scts             [][]byte
+	verifiedChains   [][]*x509.Certificate
+	alpnProtocol     string
 
 	// Client-side TLS 1.3-only fields.
 	useBy  uint64

@@ -6,6 +6,7 @@ package testgen
 
 import (
 	"github.com/shogo82148/std/regexp"
+	"github.com/shogo82148/std/time"
 
 	"github.com/shogo82148/std/internal/trace"
 	"github.com/shogo82148/std/internal/trace/raw"
@@ -31,6 +32,7 @@ type Trace struct {
 	events          []raw.Event
 	gens            []*Generation
 	validTimestamps bool
+	lastTs          Time
 
 	// Expectation state.
 	bad      bool
@@ -78,6 +80,7 @@ type Generation struct {
 	batches []*Batch
 	strings map[string]uint64
 	stacks  map[stack]uint64
+	sync    sync
 
 	// Options applied when Trace.Generate is called.
 	ignoreStringBatchSizeLimit bool
@@ -100,6 +103,12 @@ func (g *Generation) String(s string) uint64
 // This is a convenience function for easily adding correct
 // stacks to traces.
 func (g *Generation) Stack(stk []trace.StackFrame) uint64
+
+// Sync configures the sync batch for the generation. For go1.25 and later,
+// the time value is the timestamp of the EvClockSnapshot event. For earlier
+// version, the time value is the timestamp of the batch containing a lone
+// EvFrequency event.
+func (g *Generation) Sync(freq uint64, time Time, mono uint64, wall time.Time)
 
 // Batch represents an event batch.
 type Batch struct {

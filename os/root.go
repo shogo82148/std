@@ -98,8 +98,15 @@ func (r *Root) Chmod(name string, mode FileMode) error
 // See [Mkdir] for more details.
 //
 // If perm contains bits other than the nine least-significant bits (0o777),
-// OpenFile returns an error.
+// Mkdir returns an error.
 func (r *Root) Mkdir(name string, perm FileMode) error
+
+// MkdirAll creates a new directory in the root, along with any necessary parents.
+// See [MkdirAll] for more details.
+//
+// If perm contains bits other than the nine least-significant bits (0o777),
+// MkdirAll returns an error.
+func (r *Root) MkdirAll(name string, perm FileMode) error
 
 // Chown changes the numeric uid and gid of the named file in the root.
 // See [Chown] for more details.
@@ -116,6 +123,10 @@ func (r *Root) Chtimes(name string, atime time.Time, mtime time.Time) error
 // Remove removes the named file or (empty) directory in the root.
 // See [Remove] for more details.
 func (r *Root) Remove(name string) error
+
+// RemoveAll removes the named file or directory and any children that it contains.
+// See [RemoveAll] for more details.
+func (r *Root) RemoveAll(name string) error
 
 // Stat returns a [FileInfo] describing the named file in the root.
 // See [Stat] for more details.
@@ -155,6 +166,14 @@ func (r *Root) Link(oldname, newname string) error
 // On Windows, a directory link is created if oldname references
 // a directory within the root. Otherwise a file link is created.
 func (r *Root) Symlink(oldname, newname string) error
+
+// ReadFile reads the named file in the root and returns its contents.
+// See [ReadFile] for more details.
+func (r *Root) ReadFile(name string) ([]byte, error)
+
+// WriteFile writes data to the named file in the root, creating it if necessary.
+// See [WriteFile] for more details.
+func (r *Root) WriteFile(name string, data []byte, perm FileMode) error
 
 // FS returns a file system (an fs.FS) for the tree of files in the root.
 //

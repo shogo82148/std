@@ -1629,6 +1629,8 @@ const (
 	OpLOONG64XORconst
 	OpLOONG64NOR
 	OpLOONG64NORconst
+	OpLOONG64ANDN
+	OpLOONG64ORN
 	OpLOONG64FMADDF
 	OpLOONG64FMADDD
 	OpLOONG64FMSUBF
@@ -1893,6 +1895,7 @@ const (
 	OpMIPSLoweredGetCallerSP
 	OpMIPSLoweredGetCallerPC
 	OpMIPSLoweredWB
+	OpMIPSLoweredPubBarrier
 	OpMIPSLoweredPanicBoundsA
 	OpMIPSLoweredPanicBoundsB
 	OpMIPSLoweredPanicBoundsC
@@ -2024,6 +2027,7 @@ const (
 	OpMIPS64LoweredGetCallerSP
 	OpMIPS64LoweredGetCallerPC
 	OpMIPS64LoweredWB
+	OpMIPS64LoweredPubBarrier
 	OpMIPS64LoweredPanicBoundsA
 	OpMIPS64LoweredPanicBoundsB
 	OpMIPS64LoweredPanicBoundsC

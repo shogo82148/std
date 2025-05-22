@@ -73,33 +73,33 @@ func (pr *PkgDecoder) Fingerprint() [8]byte
 
 // AbsIdx returns the absolute index for the given (section, index)
 // pair.
-func (pr *PkgDecoder) AbsIdx(k SectionKind, idx RelIndex) int
+func (pr *PkgDecoder) AbsIdx(k SectionKind, idx RelElemIdx) int
 
 // DataIdx returns the raw element bitstream for the given (section,
 // index) pair.
-func (pr *PkgDecoder) DataIdx(k SectionKind, idx RelIndex) string
+func (pr *PkgDecoder) DataIdx(k SectionKind, idx RelElemIdx) string
 
 // StringIdx returns the string value for the given string index.
-func (pr *PkgDecoder) StringIdx(idx RelIndex) string
+func (pr *PkgDecoder) StringIdx(idx RelElemIdx) string
 
 // NewDecoder returns a Decoder for the given (section, index) pair,
 // and decodes the given SyncMarker from the element bitstream.
-func (pr *PkgDecoder) NewDecoder(k SectionKind, idx RelIndex, marker SyncMarker) Decoder
+func (pr *PkgDecoder) NewDecoder(k SectionKind, idx RelElemIdx, marker SyncMarker) Decoder
 
 // TempDecoder returns a Decoder for the given (section, index) pair,
 // and decodes the given SyncMarker from the element bitstream.
 // If possible the Decoder should be RetireDecoder'd when it is no longer
 // needed, this will avoid heap allocations.
-func (pr *PkgDecoder) TempDecoder(k SectionKind, idx RelIndex, marker SyncMarker) Decoder
+func (pr *PkgDecoder) TempDecoder(k SectionKind, idx RelElemIdx, marker SyncMarker) Decoder
 
 func (pr *PkgDecoder) RetireDecoder(d *Decoder)
 
 // NewDecoderRaw returns a Decoder for the given (section, index) pair.
 //
 // Most callers should use NewDecoder instead.
-func (pr *PkgDecoder) NewDecoderRaw(k SectionKind, idx RelIndex) Decoder
+func (pr *PkgDecoder) NewDecoderRaw(k SectionKind, idx RelElemIdx) Decoder
 
-func (pr *PkgDecoder) TempDecoderRaw(k SectionKind, idx RelIndex) Decoder
+func (pr *PkgDecoder) TempDecoderRaw(k SectionKind, idx RelElemIdx) Decoder
 
 // A Decoder provides methods for decoding an individual element's
 // bitstream data.
@@ -110,7 +110,7 @@ type Decoder struct {
 	Data   strings.Reader
 
 	k   SectionKind
-	Idx RelIndex
+	Idx RelElemIdx
 }
 
 // Sync decodes a sync marker from the element bitstream and asserts
@@ -148,7 +148,7 @@ func (r *Decoder) Code(mark SyncMarker) int
 
 // Reloc decodes a relocation of expected section k from the element
 // bitstream and returns an index to the referenced element.
-func (r *Decoder) Reloc(k SectionKind) RelIndex
+func (r *Decoder) Reloc(k SectionKind) RelElemIdx
 
 // String decodes and returns a string value from the element
 // bitstream.
@@ -164,11 +164,11 @@ func (r *Decoder) Value() constant.Value
 
 // PeekPkgPath returns the package path for the specified package
 // index.
-func (pr *PkgDecoder) PeekPkgPath(idx RelIndex) string
+func (pr *PkgDecoder) PeekPkgPath(idx RelElemIdx) string
 
 // PeekObj returns the package path, object name, and CodeObj for the
 // specified object index.
-func (pr *PkgDecoder) PeekObj(idx RelIndex) (string, string, CodeObj)
+func (pr *PkgDecoder) PeekObj(idx RelElemIdx) (string, string, CodeObj)
 
 // Version reports the version of the bitstream.
 func (w *Decoder) Version() Version

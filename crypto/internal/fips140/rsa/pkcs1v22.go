@@ -5,25 +5,25 @@
 package rsa
 
 import (
-	"github.com/shogo82148/std/crypto/internal/fips140"
+	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"
 )
 
 // PSSMaxSaltLength returns the maximum salt length for a given public key and
 // hash function.
-func PSSMaxSaltLength(pub *PublicKey, hash fips140.Hash) (int, error)
+func PSSMaxSaltLength(pub *PublicKey, hash hash.Hash) (int, error)
 
 // SignPSS calculates the signature of hashed using RSASSA-PSS.
-func SignPSS(rand io.Reader, priv *PrivateKey, hash fips140.Hash, hashed []byte, saltLength int) ([]byte, error)
+func SignPSS(rand io.Reader, priv *PrivateKey, hash hash.Hash, hashed []byte, saltLength int) ([]byte, error)
 
 // VerifyPSS verifies sig with RSASSA-PSS automatically detecting the salt length.
-func VerifyPSS(pub *PublicKey, hash fips140.Hash, digest []byte, sig []byte) error
+func VerifyPSS(pub *PublicKey, hash hash.Hash, digest []byte, sig []byte) error
 
 // VerifyPSS verifies sig with RSASSA-PSS and an expected salt length.
-func VerifyPSSWithSaltLength(pub *PublicKey, hash fips140.Hash, digest []byte, sig []byte, saltLength int) error
+func VerifyPSSWithSaltLength(pub *PublicKey, hash hash.Hash, digest []byte, sig []byte, saltLength int) error
 
 // EncryptOAEP encrypts the given message with RSAES-OAEP.
-func EncryptOAEP(hash, mgfHash fips140.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
+func EncryptOAEP(hash, mgfHash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
 
 // DecryptOAEP decrypts ciphertext using RSAES-OAEP.
-func DecryptOAEP(hash, mgfHash fips140.Hash, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)
+func DecryptOAEP(hash, mgfHash hash.Hash, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)

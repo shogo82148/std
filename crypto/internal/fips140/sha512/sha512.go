@@ -6,6 +6,10 @@
 // hash algorithms as defined in FIPS 180-4.
 package sha512
 
+import (
+	"github.com/shogo82148/std/hash"
+)
+
 // Digest is a SHA-384, SHA-512, SHA-512/224, or SHA-512/256 [hash.Hash]
 // implementation.
 type Digest struct {
@@ -23,6 +27,8 @@ func (d *Digest) MarshalBinary() ([]byte, error)
 func (d *Digest) AppendBinary(b []byte) ([]byte, error)
 
 func (d *Digest) UnmarshalBinary(b []byte) error
+
+func (d *Digest) Clone() (hash.Cloner, error)
 
 // New returns a new Digest computing the SHA-512 hash.
 func New() *Digest
