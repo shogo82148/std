@@ -377,7 +377,8 @@ var DefaultServeMux = &defaultServeMux
 // the path that will match after following the redirect.
 //
 // If there is no registered handler that applies to the request,
-// Handler returns a “page not found” handler and an empty pattern.
+// Handler returns a “page not found” or “method not supported”
+// handler and an empty pattern.
 //
 // Handler does not modify its argument. In particular, it does not
 // populate named path wildcards, so r.PathValue will always return
@@ -389,12 +390,12 @@ func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
 // Handle registers the handler for the given pattern.
-// If the given pattern conflicts, with one that is already registered, Handle
+// If the given pattern conflicts with one that is already registered, Handle
 // panics.
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
 // HandleFunc registers the handler function for the given pattern.
-// If the given pattern conflicts, with one that is already registered, HandleFunc
+// If the given pattern conflicts with one that is already registered, HandleFunc
 // panics.
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
