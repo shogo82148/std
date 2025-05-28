@@ -44,6 +44,7 @@ type Conn struct {
 	didHRR           bool
 	cipherSuite      uint16
 	curveID          CurveID
+	peerSigAlg       SignatureScheme
 	ocspResponse     []byte
 	scts             [][]byte
 	peerCertificates []*x509.Certificate

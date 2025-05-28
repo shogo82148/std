@@ -125,6 +125,10 @@ type ConnectionState struct {
 
 	// testingOnlyDidHRR is true if a HelloRetryRequest was sent/received.
 	testingOnlyDidHRR bool
+
+	// testingOnlyPeerSignatureAlgorithm is the signature algorithm used by the
+	// peer to sign the handshake. It is not set for resumed connections.
+	testingOnlyPeerSignatureAlgorithm SignatureScheme
 }
 
 // ExportKeyingMaterial returns length bytes of exported key material in a new
