@@ -35,7 +35,6 @@ type AbsElemIdx = uint32
 // relative to some other index, such as the start of a section.
 type RelElemIdx = Index
 
-// TODO(markfreeman): Isn't this strictly less efficient than an AbsElemIdx?
 // A RefTableEntry is an entry in an element's reference table. All
 // elements are preceded by a reference table which provides locations
 // for referenced elements.

@@ -45,6 +45,10 @@ import (
 type WaitGroup struct {
 	noCopy noCopy
 
+	// Bits (high to low):
+	//   bits[0:32]  counter
+	//   bits[32]    flag: synctest bubble membership
+	//   bits[33:64] wait count
 	state atomic.Uint64
 	sema  uint32
 }

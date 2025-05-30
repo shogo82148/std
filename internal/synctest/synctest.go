@@ -13,6 +13,21 @@ func Run(f func())
 //go:linkname Wait
 func Wait()
 
+// IsInBubble reports whether the current goroutine is in a bubble.
+//
+//go:linkname IsInBubble
+func IsInBubble() bool
+
+// Associate associates p with the current bubble.
+// It returns false if p has an existing association with a different bubble.
+func Associate[T any](p *T) (ok bool)
+
+// Disassociate disassociates p from any bubble.
+func Disassociate[T any](p *T)
+
+// IsAssociated reports whether p is associated with the current bubble.
+func IsAssociated[T any](p *T) bool
+
 // A Bubble is a synctest bubble.
 //
 // Not a public API. Used by syscall/js to propagate bubble membership through syscalls.

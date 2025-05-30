@@ -122,6 +122,7 @@ func New(pkg *ast.Package, importPath string, mode Mode) *Package
 //
 // The package is specified by a list of *ast.Files and corresponding
 // file set, which must not be nil.
+//
 // NewFromFiles uses all provided files when computing documentation,
 // so it is the caller's responsibility to provide only the files that
 // match the desired build context. "go/build".Context.MatchFile can

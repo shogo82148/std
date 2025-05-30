@@ -62,6 +62,7 @@ func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool
 // and, if i < len(s), r[i+len(v)] == value originally at r[i].
 // Insert panics if i > len(s).
 // This function is O(len(s) + len(v)).
+// If the result is empty, it has the same nilness as s.
 func Insert[S ~[]E, E any](s S, i int, v ...E) S
 
 // Delete removes the elements s[i:j] from s, returning the modified slice.
@@ -69,22 +70,26 @@ func Insert[S ~[]E, E any](s S, i int, v ...E) S
 // Delete is O(len(s)-i), so if many items must be deleted, it is better to
 // make a single call deleting them all together than to delete one at a time.
 // Delete zeroes the elements s[len(s)-(j-i):len(s)].
+// If the result is empty, it has the same nilness as s.
 func Delete[S ~[]E, E any](s S, i, j int) S
 
 // DeleteFunc removes any elements from s for which del returns true,
 // returning the modified slice.
 // DeleteFunc zeroes the elements between the new length and the original length.
+// If the result is empty, it has the same nilness as s.
 func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S
 
 // Replace replaces the elements s[i:j] by the given v, and returns the
 // modified slice.
 // Replace panics if j > len(s) or s[i:j] is not a valid slice of s.
 // When len(v) < (j-i), Replace zeroes the elements between the new length and the original length.
+// If the result is empty, it has the same nilness as s.
 func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
 
 // Clone returns a copy of the slice.
 // The elements are copied using assignment, so this is a shallow clone.
 // The result may have additional unused capacity.
+// The result preserves the nilness of s.
 func Clone[S ~[]E, E any](s S) S
 
 // Compact replaces consecutive runs of equal elements with a single copy.
@@ -92,26 +97,31 @@ func Clone[S ~[]E, E any](s S) S
 // Compact modifies the contents of the slice s and returns the modified slice,
 // which may have a smaller length.
 // Compact zeroes the elements between the new length and the original length.
+// The result preserves the nilness of s.
 func Compact[S ~[]E, E comparable](s S) S
 
 // CompactFunc is like [Compact] but uses an equality function to compare elements.
 // For runs of elements that compare equal, CompactFunc keeps the first one.
 // CompactFunc zeroes the elements between the new length and the original length.
+// The result preserves the nilness of s.
 func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S
 
 // Grow increases the slice's capacity, if necessary, to guarantee space for
 // another n elements. After Grow(n), at least n elements can be appended
 // to the slice without another allocation. If n is negative or too large to
 // allocate the memory, Grow panics.
+// The result preserves the nilness of s.
 func Grow[S ~[]E, E any](s S, n int) S
 
 // Clip removes unused capacity from the slice, returning s[:len(s):len(s)].
+// The result preserves the nilness of s.
 func Clip[S ~[]E, E any](s S) S
 
 // Reverse reverses the elements of the slice in place.
 func Reverse[S ~[]E, E any](s S)
 
 // Concat returns a new slice concatenating the passed in slices.
+// If the concatenation is empty, the result is nil.
 func Concat[S ~[]E, E any](slices ...S) S
 
 // Repeat returns a new slice that repeats the provided slice the given number of times.
