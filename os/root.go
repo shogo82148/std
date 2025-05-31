@@ -177,6 +177,6 @@ func (r *Root) WriteFile(name string, data []byte, perm FileMode) error
 
 // FS returns a file system (an fs.FS) for the tree of files in the root.
 //
-// The result implements [io/fs.StatFS], [io/fs.ReadFileFS] and
-// [io/fs.ReadDirFS].
+// The result implements [io/fs.StatFS], [io/fs.ReadFileFS],
+// [io/fs.ReadDirFS], and [io/fs.ReadLinkFS].
 func (r *Root) FS() fs.FS
