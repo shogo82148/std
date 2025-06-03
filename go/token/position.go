@@ -204,7 +204,7 @@ func (f *File) Position(p Pos) (pos Position)
 type FileSet struct {
 	mutex sync.RWMutex
 	base  int
-	files []*File
+	tree  tree
 	last  atomic.Pointer[File]
 }
 
@@ -246,9 +246,9 @@ func (s *FileSet) AddExistingFiles(files ...*File)
 // Removing a file that does not belong to the set has no effect.
 func (s *FileSet) RemoveFile(file *File)
 
-// Iterate calls f for the files in the file set in the order they were added
-// until f returns false.
-func (s *FileSet) Iterate(f func(*File) bool)
+// Iterate calls yield for the files in the file set in ascending Base
+// order until yield returns false.
+func (s *FileSet) Iterate(yield func(*File) bool)
 
 // File returns the file that contains the position p.
 // If no such file is found (for instance for p == [NoPos]),
