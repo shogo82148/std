@@ -4,4 +4,4 @@
 
 //go:build unix || js || wasip1
 
-package main
+package doc

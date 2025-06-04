@@ -4,4 +4,4 @@
 
 //go:build plan9 || windows
 
-package main
+package doc
