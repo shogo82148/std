@@ -80,6 +80,7 @@ type CallExpr struct {
 	KeepAlive []*Name
 	IsDDD     bool
 	GoDefer   bool
+	NoInline  bool
 }
 
 func NewCallExpr(pos src.XPos, op Op, fun Node, args []Node) *CallExpr
