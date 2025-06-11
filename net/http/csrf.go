@@ -23,12 +23,15 @@ import (
 // Requests without Sec-Fetch-Site or Origin headers are currently assumed to be
 // either same-origin or non-browser requests, and are allowed.
 //
+// The zero value of CrossOriginProtection is valid and has no trusted origins
+// or bypass patterns.
+//
 // [Sec-Fetch-Site]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Site
 // [Origin]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin
 // [Cross-Site Request Forgery (CSRF)]: https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF
 // [safe methods]: https://developer.mozilla.org/en-US/docs/Glossary/Safe/HTTP
 type CrossOriginProtection struct {
-	bypass    *ServeMux
+	bypass    atomic.Pointer[ServeMux]
 	trustedMu sync.RWMutex
 	trusted   map[string]bool
 	deny      atomic.Pointer[Handler]

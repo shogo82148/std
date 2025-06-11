@@ -18,9 +18,18 @@ func Wait()
 //go:linkname IsInBubble
 func IsInBubble() bool
 
-// Associate associates p with the current bubble.
-// It returns false if p has an existing association with a different bubble.
-func Associate[T any](p *T) (ok bool)
+// Association is the state of a pointer's bubble association.
+type Association int
+
+const (
+	Unbubbled     = Association(iota)
+	CurrentBubble
+	OtherBubble
+)
+
+// Associate attempts to associate p with the current bubble.
+// It returns the new association status of p.
+func Associate[T any](p *T) Association
 
 // Disassociate disassociates p from any bubble.
 func Disassociate[T any](p *T)
