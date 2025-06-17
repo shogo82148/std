@@ -32,15 +32,11 @@ const (
 // to that possibility.
 func (v Value) Kind() ValueKind
 
-// ToUint64 returns the uint64 value for a ValueUint64.
+// Uint64 returns the uint64 value for a ValueUint64.
 //
 // Panics if this Value's Kind is not ValueUint64.
-func (v Value) ToUint64() uint64
+func (v Value) Uint64() uint64
 
-// ToString returns the uint64 value for a ValueString.
-//
-// Panics if this Value's Kind is not ValueString.
-func (v Value) ToString() string
-
-// String returns the string representation of the value.
+// String returns the string value for a ValueString, and otherwise
+// a string representation of the value for other kinds of values.
 func (v Value) String() string
