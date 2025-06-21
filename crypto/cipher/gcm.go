@@ -33,7 +33,7 @@ func NewGCMWithTagSize(cipher Block, tagSize int) (AEAD, error)
 
 // NewGCMWithRandomNonce returns the given cipher wrapped in Galois Counter
 // Mode, with randomly-generated nonces. The cipher must have been created by
-// [aes.NewCipher].
+// [crypto/aes.NewCipher].
 //
 // It generates a random 96-bit nonce, which is prepended to the ciphertext by Seal,
 // and is extracted from the ciphertext by Open. The NonceSize of the AEAD is zero,
