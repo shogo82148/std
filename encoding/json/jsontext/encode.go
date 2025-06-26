@@ -99,20 +99,20 @@ func (e *Encoder) WriteValue(v Value) error
 // than this offset due to internal buffering effects.
 func (e *Encoder) OutputOffset() int64
 
-// UnusedBuffer returns a zero-length buffer with a possible non-zero capacity.
+// AvailableBuffer returns a zero-length buffer with a possible non-zero capacity.
 // This buffer is intended to be used to populate a [Value]
 // being passed to an immediately succeeding [Encoder.WriteValue] call.
 //
 // Example usage:
 //
-//	b := d.UnusedBuffer()
+//	b := d.AvailableBuffer()
 //	b = append(b, '"')
 //	b = appendString(b, v) // append the string formatting of v
 //	b = append(b, '"')
 //	... := d.WriteValue(b)
 //
 // It is the user's responsibility to ensure that the value is valid JSON.
-func (e *Encoder) UnusedBuffer() []byte
+func (e *Encoder) AvailableBuffer() []byte
 
 // StackDepth returns the depth of the state machine for written JSON data.
 // Each level on the stack represents a nested JSON object or array.
