@@ -175,6 +175,12 @@ type Loader struct {
 	// CgoExports records cgo-exported symbols by SymName.
 	CgoExports map[string]Sym
 
+	// sizeFixups records symbols that we need to fix up the size
+	// after loading. It is very rarely needed, only for a DATA symbol
+	// and a BSS symbol with the same name, and the BSS symbol has
+	// larger size.
+	sizeFixups []symAndSize
+
 	flags uint32
 
 	strictDupMsgs int
