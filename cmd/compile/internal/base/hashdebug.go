@@ -37,6 +37,7 @@ func (d *HashDebug) SetInlineSuffixOnly(b bool) *HashDebug
 var FmaHash *HashDebug
 var LoopVarHash *HashDebug
 var PGOHash *HashDebug
+var LiteralAllocHash *HashDebug
 var MergeLocalsHash *HashDebug
 var VariableMakeHash *HashDebug
 

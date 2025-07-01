@@ -60,13 +60,13 @@ func (*Struct) JSONOptions(internal.NotForPublicUse)
 
 // GetUnknownOption is injected by the "json" package to handle Options
 // declared in that package so that "jsonopts" can handle them.
-var GetUnknownOption = func(*Struct, Options) (any, bool) { panic("unknown option") }
+var GetUnknownOption = func(Struct, Options) (any, bool) { panic("unknown option") }
 
 func GetOption[T any](opts Options, setter func(T) Options) (T, bool)
 
 // JoinUnknownOption is injected by the "json" package to handle Options
 // declared in that package so that "jsonopts" can handle them.
-var JoinUnknownOption = func(*Struct, Options) { panic("unknown option") }
+var JoinUnknownOption = func(Struct, Options) Struct { panic("unknown option") }
 
 func (dst *Struct) Join(srcs ...Options)
 

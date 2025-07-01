@@ -36,7 +36,7 @@ func (h *HMAC) BlockSize() int
 func (h *HMAC) Reset()
 
 // Clone implements [hash.Cloner] if the underlying hash does.
-// Otherwise, it returns [errors.ErrUnsupported].
+// Otherwise, it returns an error wrapping [errors.ErrUnsupported].
 func (h *HMAC) Clone() (hash.Cloner, error)
 
 // New returns a new HMAC hash using the given [hash.Hash] type and key.
