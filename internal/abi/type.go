@@ -271,7 +271,7 @@ type SliceType struct {
 	Elem *Type
 }
 
-// funcType represents a function type.
+// FuncType represents a function type.
 //
 // A *Type for each in and out parameter is stored in an array that
 // directly follows the funcType (and possibly its uncommonType). So
