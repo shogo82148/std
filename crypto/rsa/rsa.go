@@ -30,14 +30,15 @@
 // with a key smaller than 1024 bits. Such keys are insecure and should not be
 // used.
 //
-// The `rsa1024min=0` GODEBUG setting suppresses this error, but we recommend
-// doing so only in tests, if necessary. Tests can use [testing.T.Setenv] or
-// include `//go:debug rsa1024min=0` in a `_test.go` source file to set it.
+// The rsa1024min=0 GODEBUG setting suppresses this error, but we recommend
+// doing so only in tests, if necessary. Tests can set this option using
+// [testing.T.Setenv] or by including "//go:debug rsa1024min=0" in a *_test.go
+// source file.
 //
 // Alternatively, see the [GenerateKey (TestKey)] example for a pregenerated
 // test-only 2048-bit key.
 //
-// [GenerateKey (TestKey)]: #example-GenerateKey-TestKey
+// [GenerateKey (TestKey)]: https://pkg.go.dev/crypto/rsa#example-GenerateKey-TestKey
 package rsa
 
 import (
@@ -50,9 +51,8 @@ import (
 
 // A PublicKey represents the public part of an RSA key.
 //
-// The value of the modulus N is considered secret by this library and protected
-// from leaking through timing side-channels. However, neither the value of the
-// exponent E nor the precise bit size of N are similarly protected.
+// The values of N and E are not considered confidential, and may leak through
+// side channels, or could be mathematically derived from other public values.
 type PublicKey struct {
 	N *big.Int
 	E int
@@ -142,7 +142,7 @@ type CRTValue struct {
 // Validate performs basic sanity checks on the key.
 // It returns nil if the key is valid, or else an error describing a problem.
 //
-// It runs faster on valid keys if run after [Precompute].
+// It runs faster on valid keys if run after [PrivateKey.Precompute].
 func (priv *PrivateKey) Validate() error
 
 // GenerateKey generates a random RSA private key of the given bit size.
@@ -154,7 +154,7 @@ func (priv *PrivateKey) Validate() error
 // returned key does not depend deterministically on the bytes read from rand,
 // and may change between calls and/or between versions.
 //
-// [Minimum key size]: #hdr-Minimum_key_size
+// [Minimum key size]: https://pkg.go.dev/crypto/rsa#hdr-Minimum_key_size
 func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 
 // GenerateMultiPrimeKey generates a multi-prime RSA keypair of the given bit
