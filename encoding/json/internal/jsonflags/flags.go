@@ -58,11 +58,14 @@ const (
 		FormatNilSliceAsNull |
 		MatchCaseInsensitiveNames |
 		CallMethodsWithLegacySemantics |
+		FormatByteArrayAsArray |
 		FormatBytesWithLegacySemantics |
-		FormatTimeWithLegacySemantics |
+		FormatDurationAsNano |
 		MatchCaseSensitiveDelimiter |
 		MergeWithLegacySemantics |
-		OmitEmptyWithLegacyDefinition |
+		OmitEmptyWithLegacySemantics |
+		ParseBytesWithLooseRFC4648 |
+		ParseTimeWithLooseRFC3339 |
 		ReportErrorsWithLegacySemantics |
 		StringifyWithLegacySemantics |
 		UnmarshalArrayFromAnyLength
@@ -124,17 +127,23 @@ const (
 	_ Bools = (maxArshalV2Flag >> 1) << iota
 
 	CallMethodsWithLegacySemantics
+	FormatByteArrayAsArray
 	FormatBytesWithLegacySemantics
-	FormatTimeWithLegacySemantics
+	FormatDurationAsNano
 	MatchCaseSensitiveDelimiter
 	MergeWithLegacySemantics
-	OmitEmptyWithLegacyDefinition
+	OmitEmptyWithLegacySemantics
+	ParseBytesWithLooseRFC4648
+	ParseTimeWithLooseRFC3339
 	ReportErrorsWithLegacySemantics
 	StringifyWithLegacySemantics
 	StringifyBoolsAndStrings
 	UnmarshalAnyWithRawNumber
 	UnmarshalArrayFromAnyLength
 )
+
+// Static compile check that bitsUsed and maxArshalV1Flag are in sync.
+const _ = uint64((1<<bitsUsed)-maxArshalV1Flag) + uint64(maxArshalV1Flag-(1<<bitsUsed))
 
 // Flags is a set of boolean flags.
 // If the presence bit is zero, then the value bit must also be zero.

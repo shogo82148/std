@@ -103,4 +103,8 @@
 // RFC 7493 is a stricter subset of RFC 8259 and fully compliant with it.
 // In particular, it makes specific choices about behavior that RFC 8259
 // leaves as undefined in order to ensure greater interoperability.
+//
+// # Security Considerations
+//
+// See the "Security Considerations" section in [encoding/json/v2].
 package jsontext
