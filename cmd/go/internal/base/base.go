@@ -49,7 +49,7 @@ var Go = &Command{
 // Lookup returns the subcommand with the given name, if any.
 // Otherwise it returns nil.
 //
-// Lookup ignores subcommands that have len(c.Commands) == 0 and c.Run == nil.
+// Lookup ignores any subcommand `sub` that has len(sub.Commands) == 0 and sub.Run == nil.
 // Such subcommands are only for use as arguments to "help".
 func (c *Command) Lookup(name string) *Command
 
