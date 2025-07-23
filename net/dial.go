@@ -296,7 +296,7 @@ func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Li
 // parameters.
 //
 // The ctx argument is used while resolving the address on which to listen;
-// it does not affect the returned Listener.
+// it does not affect the returned PacketConn.
 func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address string) (PacketConn, error)
 
 // Listen announces on the local network address.
