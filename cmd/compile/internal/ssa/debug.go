@@ -30,6 +30,9 @@ type FuncDebug struct {
 	RegOutputParams []*ir.Name
 	// Variable declarations that were removed during optimization
 	OptDcl []*ir.Name
+	// The ssa.Func.EntryID value, used to build location lists for
+	// return values promoted to heap in later DWARF generation.
+	EntryID ID
 
 	// Filled in by the user. Translates Block and Value ID to PC.
 	//
@@ -145,6 +148,12 @@ func (debugInfo *FuncDebug) PutLocationListDwarf5(list []byte, ctxt *obj.Link, l
 // PutLocationListDwarf4 adds list (a location list in its intermediate
 // representation) to listSym in DWARF 4 format.
 func (debugInfo *FuncDebug) PutLocationListDwarf4(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
+
+// SetupLocList creates the initial portion of a location list for a
+// user variable. It emits the encoded start/end of the range and a
+// placeholder for the size. Return value is the new list plus the
+// slot in the list holding the size (to be updated later).
+func SetupLocList(ctxt *obj.Link, entryID ID, list []byte, st, en ID) ([]byte, int)
 
 // BuildFuncDebugNoOptimized populates a FuncDebug object "rval" with
 // entries corresponding to the register-resident input parameters for
