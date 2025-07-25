@@ -33,3 +33,18 @@ func GetPPC64Shiftme(auxint int64) int64
 // DecodePPC64RotateMask is the inverse operation of encodePPC64RotateMask.  The values returned as
 // mb and me satisfy the POWER ISA definition of MASK(x,y) where MASK(mb,me) = mask.
 func DecodePPC64RotateMask(sauxint int64) (rotate, mb, me int64, mask uint64)
+
+// PanicBoundsC contains a constant for a bounds failure.
+type PanicBoundsC struct {
+	C int64
+}
+
+// PanicBoundsCC contains 2 constants for a bounds failure.
+type PanicBoundsCC struct {
+	Cx int64
+	Cy int64
+}
+
+func (p PanicBoundsC) CanBeAnSSAAux()
+
+func (p PanicBoundsCC) CanBeAnSSAAux()

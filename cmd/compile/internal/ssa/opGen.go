@@ -388,12 +388,12 @@ const (
 	Op386LoweredGetCallerSP
 	Op386LoweredNilCheck
 	Op386LoweredWB
-	Op386LoweredPanicBoundsA
-	Op386LoweredPanicBoundsB
-	Op386LoweredPanicBoundsC
-	Op386LoweredPanicExtendA
-	Op386LoweredPanicExtendB
-	Op386LoweredPanicExtendC
+	Op386LoweredPanicBoundsRR
+	Op386LoweredPanicBoundsRC
+	Op386LoweredPanicBoundsCR
+	Op386LoweredPanicBoundsCC
+	Op386LoweredPanicExtendRR
+	Op386LoweredPanicExtendRC
 	Op386FlagEQ
 	Op386FlagLT_ULT
 	Op386FlagLT_UGT
@@ -886,9 +886,10 @@ const (
 	OpAMD64LoweredNilCheck
 	OpAMD64LoweredWB
 	OpAMD64LoweredHasCPUFeature
-	OpAMD64LoweredPanicBoundsA
-	OpAMD64LoweredPanicBoundsB
-	OpAMD64LoweredPanicBoundsC
+	OpAMD64LoweredPanicBoundsRR
+	OpAMD64LoweredPanicBoundsRC
+	OpAMD64LoweredPanicBoundsCR
+	OpAMD64LoweredPanicBoundsCC
 	OpAMD64FlagEQ
 	OpAMD64FlagLT_ULT
 	OpAMD64FlagLT_UGT
@@ -1576,9 +1577,10 @@ const (
 	OpARM64LoweredAtomicAnd32Variant
 	OpARM64LoweredAtomicOr32Variant
 	OpARM64LoweredWB
-	OpARM64LoweredPanicBoundsA
-	OpARM64LoweredPanicBoundsB
-	OpARM64LoweredPanicBoundsC
+	OpARM64LoweredPanicBoundsRR
+	OpARM64LoweredPanicBoundsRC
+	OpARM64LoweredPanicBoundsCR
+	OpARM64LoweredPanicBoundsCC
 	OpARM64PRFM
 	OpARM64DMB
 	OpARM64ZERO

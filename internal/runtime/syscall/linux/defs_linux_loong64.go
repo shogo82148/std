@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package syscall
+package linux
 
 const (
 	SYS_CLOSE         = 57
@@ -24,7 +24,7 @@ const (
 )
 
 type EpollEvent struct {
-	Events uint32
-	_pad   uint32
-	Data   [8]byte
+	Events    uint32
+	pad_cgo_0 [4]byte
+	Data      [8]byte
 }

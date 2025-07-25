@@ -76,11 +76,12 @@ type Action struct {
 	CacheExecutable bool
 
 	// Generated files, directories.
-	Objdir   string
-	Target   string
-	built    string
-	actionID cache.ActionID
-	buildID  string
+	Objdir           string
+	Target           string
+	built            string
+	cachedExecutable string
+	actionID         cache.ActionID
+	buildID          string
 
 	VetxOnly  bool
 	needVet   bool
@@ -111,6 +112,10 @@ func (a *Action) BuildID() string
 // BuiltTarget returns the actual file that was built. This differs
 // from Target when the result was cached.
 func (a *Action) BuiltTarget() string
+
+// CachedExecutable returns the cached executable, if CacheExecutable
+// was set and the executable could be cached, and "" otherwise.
+func (a *Action) CachedExecutable() string
 
 // BuildMode specifies the build mode:
 // are we just building things or also installing the results?

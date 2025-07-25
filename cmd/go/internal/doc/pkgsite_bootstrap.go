@@ -4,10 +4,6 @@
 
 //go:build cmd_go_bootstrap
 
-// Don't build cmd/doc into go_bootstrap because it depends on net.
+// Don't build the pkgsite code into go_bootstrap because it depends on net.
 
 package doc
-
-import "github.com/shogo82148/std/cmd/go/internal/base"
-
-var CmdDoc = &base.Command{}
