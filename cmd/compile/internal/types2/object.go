@@ -100,7 +100,7 @@ func NewTypeName(pos syntax.Pos, pkg *Package, name string, typ Type) *TypeName
 
 // NewTypeNameLazy returns a new defined type like NewTypeName, but it
 // lazily calls resolve to finish constructing the Named object.
-func NewTypeNameLazy(pos syntax.Pos, pkg *Package, name string, load func(named *Named) (tparams []*TypeParam, underlying Type, methods []*Func)) *TypeName
+func NewTypeNameLazy(pos syntax.Pos, pkg *Package, name string, load func(*Named) ([]*TypeParam, Type, []*Func, []func())) *TypeName
 
 // IsAlias reports whether obj is an alias name for a type.
 func (obj *TypeName) IsAlias() bool

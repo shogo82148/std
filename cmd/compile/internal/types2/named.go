@@ -44,8 +44,8 @@ type Named struct {
 	// accessed.
 	methods []*Func
 
-	// loader may be provided to lazily load type parameters, underlying type, and methods.
-	loader func(*Named) (tparams []*TypeParam, underlying Type, methods []*Func)
+	// loader may be provided to lazily load type parameters, underlying type, methods, and delayed functions
+	loader func(*Named) ([]*TypeParam, Type, []*Func, []func())
 }
 
 // NewNamed returns a new named type for the given type name, underlying type, and associated methods.

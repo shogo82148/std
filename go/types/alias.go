@@ -48,7 +48,7 @@ type Alias struct {
 }
 
 // NewAlias creates a new Alias type with the given type name and rhs.
-// rhs must not be nil.
+// If rhs is nil, the alias is incomplete.
 func NewAlias(obj *TypeName, rhs Type) *Alias
 
 // Obj returns the type name for the declaration defining the alias type a.
@@ -88,4 +88,5 @@ func (a *Alias) Rhs() Type
 // otherwise it follows t's alias chain until it
 // reaches a non-alias type which is then returned.
 // Consequently, the result is never an alias type.
+// Returns nil if the alias is incomplete.
 func Unalias(t Type) Type
