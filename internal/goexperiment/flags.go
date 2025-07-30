@@ -89,16 +89,9 @@ type Flags struct {
 	// copy of the iteration variable.
 	LoopVar bool
 
-	// CacheProg adds support to cmd/go to use a child process to implement
-	// the build cache; see https://github.com/golang/go/issues/59719.
-	CacheProg bool
-
 	// NewInliner enables a new+improved version of the function
 	// inlining phase within the Go compiler.
 	NewInliner bool
-
-	// RangeFunc enables range over func.
-	RangeFunc bool
 
 	// AliasTypeParams enables type parameters for alias types.
 	// Requires that gotypesalias=1 is set with GODEBUG.
@@ -107,9 +100,6 @@ type Flags struct {
 
 	// SwissMap enables the SwissTable-based map implementation.
 	SwissMap bool
-
-	// SyncHashTrieMap enables the HashTrieMap sync.Map implementation.
-	SyncHashTrieMap bool
 
 	// Synctest enables the testing/synctest package.
 	Synctest bool

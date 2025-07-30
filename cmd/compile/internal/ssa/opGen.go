@@ -1241,12 +1241,12 @@ const (
 	OpARMLoweredGetClosurePtr
 	OpARMLoweredGetCallerSP
 	OpARMLoweredGetCallerPC
-	OpARMLoweredPanicBoundsA
-	OpARMLoweredPanicBoundsB
-	OpARMLoweredPanicBoundsC
-	OpARMLoweredPanicExtendA
-	OpARMLoweredPanicExtendB
-	OpARMLoweredPanicExtendC
+	OpARMLoweredPanicBoundsRR
+	OpARMLoweredPanicBoundsRC
+	OpARMLoweredPanicBoundsCR
+	OpARMLoweredPanicBoundsCC
+	OpARMLoweredPanicExtendRR
+	OpARMLoweredPanicExtendRC
 	OpARMFlagConstant
 	OpARMInvertFlags
 	OpARMLoweredWB
