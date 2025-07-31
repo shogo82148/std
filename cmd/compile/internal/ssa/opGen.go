@@ -1782,9 +1782,10 @@ const (
 	OpLOONG64LoweredGetCallerPC
 	OpLOONG64LoweredWB
 	OpLOONG64LoweredPubBarrier
-	OpLOONG64LoweredPanicBoundsA
-	OpLOONG64LoweredPanicBoundsB
-	OpLOONG64LoweredPanicBoundsC
+	OpLOONG64LoweredPanicBoundsRR
+	OpLOONG64LoweredPanicBoundsRC
+	OpLOONG64LoweredPanicBoundsCR
+	OpLOONG64LoweredPanicBoundsCC
 	OpLOONG64PRELD
 	OpLOONG64PRELDX
 
@@ -1898,12 +1899,12 @@ const (
 	OpMIPSLoweredGetCallerPC
 	OpMIPSLoweredWB
 	OpMIPSLoweredPubBarrier
-	OpMIPSLoweredPanicBoundsA
-	OpMIPSLoweredPanicBoundsB
-	OpMIPSLoweredPanicBoundsC
-	OpMIPSLoweredPanicExtendA
-	OpMIPSLoweredPanicExtendB
-	OpMIPSLoweredPanicExtendC
+	OpMIPSLoweredPanicBoundsRR
+	OpMIPSLoweredPanicBoundsRC
+	OpMIPSLoweredPanicBoundsCR
+	OpMIPSLoweredPanicBoundsCC
+	OpMIPSLoweredPanicExtendRR
+	OpMIPSLoweredPanicExtendRC
 
 	OpMIPS64ADDV
 	OpMIPS64ADDVconst
@@ -2030,9 +2031,10 @@ const (
 	OpMIPS64LoweredGetCallerPC
 	OpMIPS64LoweredWB
 	OpMIPS64LoweredPubBarrier
-	OpMIPS64LoweredPanicBoundsA
-	OpMIPS64LoweredPanicBoundsB
-	OpMIPS64LoweredPanicBoundsC
+	OpMIPS64LoweredPanicBoundsRR
+	OpMIPS64LoweredPanicBoundsRC
+	OpMIPS64LoweredPanicBoundsCR
+	OpMIPS64LoweredPanicBoundsCC
 
 	OpPPC64ADD
 	OpPPC64ADDCC
@@ -2472,6 +2474,10 @@ const (
 	OpS390XLPDFR
 	OpS390XLNDFR
 	OpS390XCPSDR
+	OpS390XWFMAXDB
+	OpS390XWFMAXSB
+	OpS390XWFMINDB
+	OpS390XWFMINSB
 	OpS390XFIDBR
 	OpS390XFMOVSload
 	OpS390XFMOVDload

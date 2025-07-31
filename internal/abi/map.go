@@ -12,21 +12,21 @@ import (
 // runtime/runtime-gdb.py:MapTypePrinter contains its own copy
 const (
 	// Number of bits in the group.slot count.
-	SwissMapGroupSlotsBits = 3
+	MapGroupSlotsBits = 3
 
 	// Number of slots in a group.
-	SwissMapGroupSlots = 1 << SwissMapGroupSlotsBits
+	MapGroupSlots = 1 << MapGroupSlotsBits
 
 	// Maximum key or elem size to keep inline (instead of mallocing per element).
 	// Must fit in a uint8.
-	SwissMapMaxKeyBytes  = 128
-	SwissMapMaxElemBytes = 128
+	MapMaxKeyBytes  = 128
+	MapMaxElemBytes = 128
 
 	// Value of control word with all empty slots.
-	SwissMapCtrlEmpty = bitsetLSB * uint64(ctrlEmpty)
+	MapCtrlEmpty = bitsetLSB * uint64(ctrlEmpty)
 )
 
-type SwissMapType struct {
+type MapType struct {
 	Type
 	Key   *Type
 	Elem  *Type
@@ -41,16 +41,16 @@ type SwissMapType struct {
 
 // Flag values
 const (
-	SwissMapNeedKeyUpdate = 1 << iota
-	SwissMapHashMightPanic
-	SwissMapIndirectKey
-	SwissMapIndirectElem
+	MapNeedKeyUpdate = 1 << iota
+	MapHashMightPanic
+	MapIndirectKey
+	MapIndirectElem
 )
 
-func (mt *SwissMapType) NeedKeyUpdate() bool
+func (mt *MapType) NeedKeyUpdate() bool
 
-func (mt *SwissMapType) HashMightPanic() bool
+func (mt *MapType) HashMightPanic() bool
 
-func (mt *SwissMapType) IndirectKey() bool
+func (mt *MapType) IndirectKey() bool
 
-func (mt *SwissMapType) IndirectElem() bool
+func (mt *MapType) IndirectElem() bool

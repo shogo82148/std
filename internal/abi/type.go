@@ -231,8 +231,8 @@ func (t *Type) Elem() *Type
 // StructType returns t cast to a *StructType, or nil if its tag does not match.
 func (t *Type) StructType() *StructType
 
-// MapType returns t cast to a *OldMapType or *SwissMapType, or nil if its tag does not match.
-func (t *Type) MapType() *mapType
+// MapType returns t cast to a *MapType, or nil if its tag does not match.
+func (t *Type) MapType() *MapType
 
 // ArrayType returns t cast to a *ArrayType, or nil if its tag does not match.
 func (t *Type) ArrayType() *ArrayType
