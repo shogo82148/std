@@ -870,7 +870,8 @@ const (
 	OpAMD64MOVLstoreconstidx4
 	OpAMD64MOVQstoreconstidx1
 	OpAMD64MOVQstoreconstidx8
-	OpAMD64DUFFZERO
+	OpAMD64LoweredZero
+	OpAMD64LoweredZeroLoop
 	OpAMD64REPSTOSQ
 	OpAMD64CALLstatic
 	OpAMD64CALLtail

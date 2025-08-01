@@ -269,6 +269,10 @@ func UpdateWorkFile(wf *modfile.WorkFile)
 // use LoadModGraph instead.
 func LoadModFile(ctx context.Context) *Requirements
 
+// CheckReservedModulePath checks whether the module path is a reserved module path
+// that can't be used for a user's module.
+func CheckReservedModulePath(path string) error
+
 // CreateModFile initializes a new module by creating a go.mod file.
 //
 // If modPath is empty, CreateModFile will attempt to infer the path from the
