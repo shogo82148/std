@@ -74,7 +74,7 @@ type MainModuleSet struct {
 	// highest replaced version of each module path; empty string for wildcard-only replacements
 	highestReplaced map[string]string
 
-	indexMu sync.Mutex
+	indexMu sync.RWMutex
 	indices map[module.Version]*modFileIndex
 }
 
