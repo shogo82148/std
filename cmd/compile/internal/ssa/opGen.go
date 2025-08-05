@@ -2404,9 +2404,10 @@ const (
 	OpRISCV64LoweredGetCallerPC
 	OpRISCV64LoweredWB
 	OpRISCV64LoweredPubBarrier
-	OpRISCV64LoweredPanicBoundsA
-	OpRISCV64LoweredPanicBoundsB
-	OpRISCV64LoweredPanicBoundsC
+	OpRISCV64LoweredPanicBoundsRR
+	OpRISCV64LoweredPanicBoundsRC
+	OpRISCV64LoweredPanicBoundsCR
+	OpRISCV64LoweredPanicBoundsCC
 	OpRISCV64FADDS
 	OpRISCV64FSUBS
 	OpRISCV64FMULS
@@ -2661,9 +2662,10 @@ const (
 	OpS390XLoweredRound32F
 	OpS390XLoweredRound64F
 	OpS390XLoweredWB
-	OpS390XLoweredPanicBoundsA
-	OpS390XLoweredPanicBoundsB
-	OpS390XLoweredPanicBoundsC
+	OpS390XLoweredPanicBoundsRR
+	OpS390XLoweredPanicBoundsRC
+	OpS390XLoweredPanicBoundsCR
+	OpS390XLoweredPanicBoundsCC
 	OpS390XFlagEQ
 	OpS390XFlagLT
 	OpS390XFlagGT
