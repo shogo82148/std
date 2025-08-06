@@ -235,10 +235,5 @@
 
 package typecheck
 
-// TparamName returns the real name of a type parameter, after stripping its
-// qualifying prefix and reverting blank-name encoding. See TparamExportName
-// for details.
-func TparamName(exportName string) string
-
 // The name used for dictionary parameters or local variables.
 const LocalDictName = ".dict"

@@ -29,9 +29,13 @@ var X86 struct {
 	HasADX              bool
 	HasAVX              bool
 	HasAVX2             bool
+	HasAVX512           bool
 	HasAVX512F          bool
+	HasAVX512CD         bool
 	HasAVX512BW         bool
+	HasAVX512DQ         bool
 	HasAVX512VL         bool
+	HasAVX512VPCLMULQDQ bool
 	HasBMI1             bool
 	HasBMI2             bool
 	HasERMS             bool
@@ -46,7 +50,6 @@ var X86 struct {
 	HasSSSE3            bool
 	HasSSE41            bool
 	HasSSE42            bool
-	HasAVX512VPCLMULQDQ bool
 	_                   CacheLinePad
 }
 

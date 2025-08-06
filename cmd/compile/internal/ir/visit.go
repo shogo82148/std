@@ -115,12 +115,6 @@ func VisitFuncAndClosures(fn *Func, visit func(n Node))
 // Otherwise Any returns false after completing the entire traversal.
 func Any(n Node, cond func(Node) bool) bool
 
-// AnyList calls Any(x, cond) for each node x in the list, in order.
-// If any call returns true, AnyList stops and returns true.
-// Otherwise, AnyList returns false after calling Any(x, cond)
-// for every x in the list.
-func AnyList(list Nodes, cond func(Node) bool) bool
-
 // EditChildren edits the child nodes of n, replacing each child x with edit(x).
 //
 // Note that EditChildren(n, edit) only calls edit(x) for n's immediate children.

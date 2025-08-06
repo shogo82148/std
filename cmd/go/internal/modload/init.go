@@ -124,10 +124,6 @@ func (mms *MainModuleSet) GoVersion() string
 // The caller must not modify the result.
 func (mms *MainModuleSet) Godebugs() []*modfile.Godebug
 
-// Toolchain returns the toolchain set on the single module, in module mode,
-// or the go.work file in workspace mode.
-func (mms *MainModuleSet) Toolchain() string
-
 func (mms *MainModuleSet) WorkFileReplaceMap() map[module.Version]module.Version
 
 var MainModules *MainModuleSet

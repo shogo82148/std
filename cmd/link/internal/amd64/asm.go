@@ -29,5 +29,3 @@
 // THE SOFTWARE.
 
 package amd64
-
-func PADDR(x uint32) uint32

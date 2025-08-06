@@ -28,8 +28,6 @@ func GetPPC64Shiftsh(auxint int64) int64
 
 func GetPPC64Shiftmb(auxint int64) int64
 
-func GetPPC64Shiftme(auxint int64) int64
-
 // DecodePPC64RotateMask is the inverse operation of encodePPC64RotateMask.  The values returned as
 // mb and me satisfy the POWER ISA definition of MASK(x,y) where MASK(mb,me) = mask.
 func DecodePPC64RotateMask(sauxint int64) (rotate, mb, me int64, mask uint64)

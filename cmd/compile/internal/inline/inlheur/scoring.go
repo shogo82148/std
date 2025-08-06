@@ -36,12 +36,6 @@ func SetupScoreAdjustments()
 // chance that scoring will enable inlining.
 func LargestNegativeScoreAdjustment(fn *ir.Func, props *FuncProps) int
 
-// LargestPositiveScoreAdjustment tries to estimate the largest possible
-// positive score adjustment that could be applied to a given callsite.
-// At the moment we don't have very many positive score adjustments, so
-// this is just hard-coded, not table-driven.
-func LargestPositiveScoreAdjustment(fn *ir.Func) int
-
 // ScoreCalls assigns numeric scores to each of the callsites in
 // function 'fn'; the lower the score, the more helpful we think it
 // will be to inline.

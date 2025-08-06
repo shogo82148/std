@@ -151,7 +151,4 @@ func (s *State) UseArgs(n int64)
 // addressing for the parameters will be wrong.
 func SpillSlotAddr(spill ssa.Spill, baseReg int16, extraOffset int64) obj.Addr
 
-var (
-	BoundsCheckFunc [ssa.BoundsKindCount]*obj.LSym
-	ExtendCheckFunc [ssa.BoundsKindCount]*obj.LSym
-)
+var BoundsCheckFunc [ssa.BoundsKindCount]*obj.LSym
