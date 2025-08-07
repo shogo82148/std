@@ -55,6 +55,8 @@ func OP_RRR(op uint32, r1 uint32, r2 uint32, r3 uint32) uint32
 // r3 -> rd
 func OP_RR(op uint32, r2 uint32, r3 uint32) uint32
 
+func OP_2IRRR(op uint32, i uint32, r2 uint32, r3 uint32, r4 uint32) uint32
+
 func OP_16IR_5I(op uint32, i uint32, r2 uint32) uint32
 
 func OP_16IRR(op uint32, i uint32, r2 uint32, r3 uint32) uint32

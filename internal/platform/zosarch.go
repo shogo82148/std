@@ -57,6 +57,5 @@ var List = []OSArch{
 	{"wasip1", "wasm"},
 	{"windows", "386"},
 	{"windows", "amd64"},
-	{"windows", "arm"},
 	{"windows", "arm64"},
 }

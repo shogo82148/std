@@ -550,6 +550,11 @@ const (
 	AMOVVF
 	AMOVVD
 
+	// 2.2.1.3
+	AALSLW
+	AALSLWU
+	AALSLV
+
 	// 2.2.1.8
 	AORN
 	AANDN
