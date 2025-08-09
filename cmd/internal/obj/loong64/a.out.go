@@ -731,6 +731,9 @@ const (
 	AFTINTRNEVF
 	AFTINTRNEVD
 
+	// 3.2.4.2
+	AFSEL
+
 	// LSX and LASX memory access instructions
 	AVMOVQ
 	AXVMOVQ
