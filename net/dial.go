@@ -6,6 +6,7 @@ package net
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/net/netip"
 	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
@@ -228,6 +229,46 @@ func (d *Dialer) Dial(network, address string) (Conn, error)
 // See func [Dial] for a description of the network and address
 // parameters.
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
+
+// DialTCP acts like Dial for TCP networks using the provided context.
+//
+// The provided Context must be non-nil. If the context expires before
+// the connection is complete, an error is returned. Once successfully
+// connected, any expiration of the context will not affect the
+// connection.
+//
+// The network must be a TCP network name; see func Dial for details.
+func (d *Dialer) DialTCP(ctx context.Context, network string, laddr netip.AddrPort, raddr netip.AddrPort) (*TCPConn, error)
+
+// DialUDP acts like Dial for UDP networks using the provided context.
+//
+// The provided Context must be non-nil. If the context expires before
+// the connection is complete, an error is returned. Once successfully
+// connected, any expiration of the context will not affect the
+// connection.
+//
+// The network must be a UDP network name; see func Dial for details.
+func (d *Dialer) DialUDP(ctx context.Context, network string, laddr netip.AddrPort, raddr netip.AddrPort) (*UDPConn, error)
+
+// DialIP acts like Dial for IP networks using the provided context.
+//
+// The provided Context must be non-nil. If the context expires before
+// the connection is complete, an error is returned. Once successfully
+// connected, any expiration of the context will not affect the
+// connection.
+//
+// The network must be an IP network name; see func Dial for details.
+func (d *Dialer) DialIP(ctx context.Context, network string, laddr netip.Addr, raddr netip.Addr) (*IPConn, error)
+
+// DialUnix acts like Dial for Unix networks using the provided context.
+//
+// The provided Context must be non-nil. If the context expires before
+// the connection is complete, an error is returned. Once successfully
+// connected, any expiration of the context will not affect the
+// connection.
+//
+// The network must be a Unix network name; see func Dial for details.
+func (d *Dialer) DialUnix(ctx context.Context, network string, laddr *UnixAddr, raddr *UnixAddr) (*UnixConn, error)
 
 // ListenConfig contains options for listening to an address.
 type ListenConfig struct {

@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build freebsd && go1.21
+//go:build (freebsd || netbsd) && (amd64 || arm64 || riscv64)
 
-package ld
+package unix
+
+func PosixFallocate(fd int, off int64, size int64) error
