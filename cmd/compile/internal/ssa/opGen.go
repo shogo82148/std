@@ -1536,8 +1536,8 @@ const (
 	OpARM64NotGreaterEqualF
 	OpARM64LessThanNoov
 	OpARM64GreaterEqualNoov
-	OpARM64DUFFZERO
 	OpARM64LoweredZero
+	OpARM64LoweredZeroLoop
 	OpARM64DUFFCOPY
 	OpARM64LoweredMove
 	OpARM64LoweredGetClosurePtr
