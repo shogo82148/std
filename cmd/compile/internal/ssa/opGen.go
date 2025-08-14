@@ -877,7 +877,8 @@ const (
 	OpAMD64CALLtail
 	OpAMD64CALLclosure
 	OpAMD64CALLinter
-	OpAMD64DUFFCOPY
+	OpAMD64LoweredMove
+	OpAMD64LoweredMoveLoop
 	OpAMD64REPMOVSQ
 	OpAMD64InvertFlags
 	OpAMD64LoweredGetG
@@ -1789,6 +1790,7 @@ const (
 	OpLOONG64LoweredPanicBoundsCC
 	OpLOONG64PRELD
 	OpLOONG64PRELDX
+	OpLOONG64ADDshiftLLV
 
 	OpMIPSADD
 	OpMIPSADDconst
