@@ -542,7 +542,7 @@ const (
 	AFNMADDQ
 	AFNMSUBQ
 
-	// 22.3 Quad-Precision Convert and Move Instructions
+	// 22.3: Quad-Precision Convert and Move Instructions
 	AFCVTWQ
 	AFCVTLQ
 	AFCVTSQ
@@ -559,13 +559,68 @@ const (
 	AFSGNJNQ
 	AFSGNJXQ
 
-	// 22.4 Quad-Precision Floating-Point Compare Instructions
+	// 22.4: Quad-Precision Floating-Point Compare Instructions
 	AFEQQ
 	AFLEQ
 	AFLTQ
 
-	// 22.5 Quad-Precision Floating-Point Classify Instruction
+	// 22.5: Quad-Precision Floating-Point Classify Instruction
 	AFCLASSQ
+
+	// 26.3.1: Compressed Stack-Pointer-Based Loads and Stores
+	ACLWSP
+	ACFLWSP
+	ACLDSP
+	ACFLDSP
+	ACSWSP
+	ACSDSP
+	ACFSWSP
+	ACFSDSP
+
+	// 26.3.2: Compressed Register-Based Loads and Stores
+	ACLW
+	ACLD
+	ACFLW
+	ACFLD
+	ACSW
+	ACSD
+	ACFSW
+	ACFSD
+
+	// 26.4: Compressed Control Transfer Instructions
+	ACJ
+	ACJR
+	ACJALR
+	ACBEQZ
+	ACBNEZ
+
+	// 26.5.1: Compressed Integer Constant-Generation Instructions
+	ACLI
+	ACLUI
+	ACADDI
+	ACADDIW
+	ACADDI16SP
+	ACADDI4SPN
+	ACSLLI
+	ACSRLI
+	ACSRAI
+	ACANDI
+
+	// 26.5.3: Compressed Integer Register-Register Operations
+	ACMV
+	ACADD
+	ACAND
+	ACOR
+	ACXOR
+	ACSUB
+	ACADDW
+	ACSUBW
+
+	// 26.5.5: Compressed NOP Instruction
+	ACNOP
+
+	// 26.5.6: Compressed Breakpoint Instruction
+	ACEBREAK
 
 	// 28.4.1: Address Generation Instructions (Zba)
 	AADDUW
