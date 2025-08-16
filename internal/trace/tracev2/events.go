@@ -87,8 +87,8 @@ const (
 	EvSync
 	EvClockSnapshot
 
-	// Reserved internal in-band end-of-generation signal. Must never appear in the trace. Added in Go 1.25.
-	// This could be used as an explicit in-band end-of-generation signal in the future.
+	// In-band end-of-generation signal. Added in Go 1.26.
+	// Used in Go 1.25 only internally.
 	EvEndOfGeneration
 
 	NumEvents

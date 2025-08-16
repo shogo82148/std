@@ -1539,8 +1539,8 @@ const (
 	OpARM64GreaterEqualNoov
 	OpARM64LoweredZero
 	OpARM64LoweredZeroLoop
-	OpARM64DUFFCOPY
 	OpARM64LoweredMove
+	OpARM64LoweredMoveLoop
 	OpARM64LoweredGetClosurePtr
 	OpARM64LoweredGetCallerSP
 	OpARM64LoweredGetCallerPC

@@ -71,7 +71,7 @@ type Action struct {
 
 	buggyInstall bool
 
-	TryCache func(*Builder, *Action) bool
+	TryCache func(*Builder, *Action, *Action) bool
 
 	CacheExecutable bool
 

@@ -5,6 +5,7 @@
 package math
 
 const (
+	MaxUint16  = ^uint16(0)
 	MaxUint32  = ^uint32(0)
 	MaxUint64  = ^uint64(0)
 	MaxUintptr = ^uintptr(0)
