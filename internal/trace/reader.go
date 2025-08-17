@@ -25,6 +25,7 @@ type Reader struct {
 	cpuSamples []cpuSample
 	order      ordering
 	syncs      int
+	readGenErr error
 	done       bool
 
 	// Spill state.
