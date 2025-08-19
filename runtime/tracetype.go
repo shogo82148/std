@@ -2,6 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Trace stack table and acquisition.
+// Trace type table.
 
 package runtime
