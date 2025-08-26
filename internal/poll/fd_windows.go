@@ -39,9 +39,6 @@ type FD struct {
 	// I/O poller.
 	pd pollDesc
 
-	// Used to implement pread/pwrite.
-	l sync.Mutex
-
 	// The file offset for the next read or write.
 	// Overlapped IO operations don't use the real file pointer,
 	// so we need to keep track of the offset ourselves.
