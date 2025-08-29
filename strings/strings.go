@@ -106,7 +106,7 @@ func SplitAfter(s, sep string) []string
 // Fields splits the string s around each instance of one or more consecutive white space
 // characters, as defined by [unicode.IsSpace], returning a slice of substrings of s or an
 // empty slice if s contains only white space. Every element of the returned slice is
-// non-empty. Unlike [Split], leading and trailing runs runs of white space characters
+// non-empty. Unlike [Split], leading and trailing runs of white space characters
 // are discarded.
 func Fields(s string) []string
 

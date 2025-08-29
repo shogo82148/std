@@ -45,7 +45,8 @@ const (
 	O_APPEND   = 0x00400
 	O_SYNC     = 0x01000
 	O_ASYNC    = 0x02000
-	O_CLOEXEC  = 0x80000
+
+	O_CLOEXEC = 0x80000
 )
 
 const (
