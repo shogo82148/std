@@ -33,8 +33,6 @@ type Package struct {
 	GoFiles     []string
 	GccFiles    []string
 	Preamble    string
-	typedefs    map[string]bool
-	typedefList []typedefInfo
 	noCallbacks map[string]bool
 	noEscapes   map[string]bool
 }

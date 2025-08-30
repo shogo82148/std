@@ -6,11 +6,6 @@
 // used by the Go standard library.
 package cpu
 
-// DebugOptions is set to true by the runtime if the OS supports reading
-// GODEBUG early in runtime startup.
-// This should not be changed after it is initialized.
-var DebugOptions bool
-
 // CacheLinePad is used to pad structs to avoid false sharing.
 type CacheLinePad struct{ _ [CacheLinePadSize]byte }
 
