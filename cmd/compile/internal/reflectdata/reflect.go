@@ -5,11 +5,15 @@
 package reflectdata
 
 import (
+	"github.com/shogo82148/std/internal/abi"
+
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
 )
+
+func ABIKindOfType(t *types.Type) abi.Kind
 
 // TrackSym returns the symbol for tracking use of field/method f, assumed
 // to be a member of struct/interface type t.
