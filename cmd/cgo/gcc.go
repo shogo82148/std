@@ -16,6 +16,7 @@ func (f *File) ProcessCgoDirectives()
 // Translate rewrites f.AST, the original Go input, to remove
 // references to the imported package C, replacing them with
 // references to the equivalent Go types, functions, and variables.
+// Preconditions: File.loadDebug must be called prior to translate.
 func (p *Package) Translate(f *File)
 
 // String returns the current type representation. Format arguments

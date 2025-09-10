@@ -51,6 +51,8 @@ type File struct {
 	NoCallbacks map[string]bool
 	NoEscapes   map[string]bool
 	Edit        *edit.Buffer
+
+	debugs []*debug
 }
 
 // A Call refers to a call of a C.xxx function in the AST.

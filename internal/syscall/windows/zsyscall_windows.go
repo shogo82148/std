@@ -15,8 +15,6 @@ func ImpersonateLoggedOnUser(token syscall.Token) (err error)
 
 func ImpersonateSelf(impersonationlevel uint32) (err error)
 
-func InitializeAcl(acl *ACL, length uint32, revision uint32) (err error)
-
 func IsValidSid(sid *syscall.SID) (valid bool)
 
 func LogonUser(username *uint16, domain *uint16, password *uint16, logonType uint32, logonProvider uint32, token *syscall.Token) (err error)
@@ -32,8 +30,6 @@ func OpenThreadToken(h syscall.Handle, access uint32, openasself bool, token *sy
 func QueryServiceStatus(hService syscall.Handle, lpServiceStatus *SERVICE_STATUS) (err error)
 
 func RevertToSelf() (err error)
-
-func SetNamedSecurityInfo(objectName string, objectType SE_OBJECT_TYPE, securityInformation SECURITY_INFORMATION, owner *syscall.SID, group *syscall.SID, dacl *ACL, sacl *ACL) (ret error)
 
 func SetTokenInformation(tokenHandle syscall.Token, tokenInformationClass uint32, tokenInformation unsafe.Pointer, tokenInformationLength uint32) (err error)
 

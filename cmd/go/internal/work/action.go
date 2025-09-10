@@ -67,6 +67,8 @@ type Action struct {
 	TestOutput *bytes.Buffer
 	Args       []string
 
+	Provider any
+
 	triggers []*Action
 
 	buggyInstall bool
