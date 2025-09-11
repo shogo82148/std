@@ -2385,10 +2385,10 @@ const (
 	OpRISCV64CALLtail
 	OpRISCV64CALLclosure
 	OpRISCV64CALLinter
-	OpRISCV64DUFFZERO
-	OpRISCV64DUFFCOPY
 	OpRISCV64LoweredZero
+	OpRISCV64LoweredZeroLoop
 	OpRISCV64LoweredMove
+	OpRISCV64LoweredMoveLoop
 	OpRISCV64LoweredAtomicLoad8
 	OpRISCV64LoweredAtomicLoad32
 	OpRISCV64LoweredAtomicLoad64
