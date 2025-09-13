@@ -21,6 +21,11 @@ func IsRISCV64AMO(op obj.As) bool
 // requires special handling.
 func IsRISCV64VTypeI(op obj.As) bool
 
+// IsRISCV64CSRO reports whether the op is an instruction that uses
+// CSR symbolic names and whether that instruction expects a register
+// or an immediate source operand.
+func IsRISCV64CSRO(op obj.As) (imm bool, ok bool)
+
 // RISCV64SpecialOperand returns the internal representation of a special operand.
 func RISCV64SpecialOperand(name string) riscv.SpecialOperand
 

@@ -66,7 +66,7 @@ func WriteBasicTypes()
 // GC information is always a bitmask, never a gc program.
 // GCSym may be called in concurrent backend, so it does not emit the symbol
 // content.
-func GCSym(t *types.Type) (lsym *obj.LSym, ptrdata int64)
+func GCSym(t *types.Type, onDemandAllowed bool) (lsym *obj.LSym, ptrdata int64)
 
 // ZeroAddr returns the address of a symbol with at least
 // size bytes of zeros.
