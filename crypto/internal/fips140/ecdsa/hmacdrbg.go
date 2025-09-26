@@ -13,4 +13,4 @@ import (
 //
 // This should only be used for ACVP testing. hmacDRBG is not intended to be
 // used directly.
-func TestingOnlyNewDRBG(hash func() hash.Hash, entropy, nonce []byte, s []byte) *hmacDRBG
+func TestingOnlyNewDRBG[H hash.Hash](hash func() H, entropy, nonce []byte, s []byte) *hmacDRBG
