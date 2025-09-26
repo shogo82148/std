@@ -20,9 +20,10 @@ package fips140
 func CAST(name string, f func() error)
 
 // PCT runs the named Pairwise Consistency Test (if operated in FIPS mode) and
-// returns any errors. If an error is returned, the key must not be used.
+// aborts the program (stopping the module input/output and entering the "error
+// state") if the test fails.
 //
-// PCTs are mandatory for every key pair that is generated/imported, including
+// PCTs are mandatory for every generated (but not imported) key pair, including
 // ephemeral keys (which effectively doubles the cost of key establishment). See
 // Implementation Guidance 10.3.A Additional Comment 1.
 //
@@ -30,4 +31,4 @@ func CAST(name string, f func() error)
 //
 // If a package p calls PCT during key generation, an invocation of that
 // function should be added to fipstest.TestConditionals.
-func PCT(name string, f func() error) error
+func PCT(name string, f func() error)
