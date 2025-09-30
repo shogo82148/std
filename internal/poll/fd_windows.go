@@ -5,6 +5,7 @@
 package poll
 
 import (
+	"github.com/shogo82148/std/runtime"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/syscall"
@@ -73,6 +74,9 @@ type FD struct {
 	isBlocking bool
 
 	disassociated atomic.Bool
+
+	readPinner  runtime.Pinner
+	writePinner runtime.Pinner
 }
 
 // Init initializes the FD. The Sysfd field should already be set.
@@ -98,7 +102,7 @@ func (fd *FD) Read(buf []byte) (int, error)
 var ReadConsole = syscall.ReadConsole
 
 // Pread emulates the Unix pread system call.
-func (fd *FD) Pread(b []byte, off int64) (int, error)
+func (fd *FD) Pread(buf []byte, off int64) (int, error)
 
 // ReadFrom wraps the recvfrom network call.
 func (fd *FD) ReadFrom(buf []byte) (int, syscall.Sockaddr, error)
