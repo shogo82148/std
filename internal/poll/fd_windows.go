@@ -32,11 +32,6 @@ type FD struct {
 	// System file descriptor. Immutable until Close.
 	Sysfd syscall.Handle
 
-	// Read operation.
-	rop operation
-	// Write operation.
-	wop operation
-
 	// I/O poller.
 	pd pollDesc
 
@@ -75,6 +70,8 @@ type FD struct {
 
 	disassociated atomic.Bool
 
+	// readPinner and writePinner are automatically unpinned
+	// before execIO returns.
 	readPinner  runtime.Pinner
 	writePinner runtime.Pinner
 }

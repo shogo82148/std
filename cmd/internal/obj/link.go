@@ -353,6 +353,9 @@ type TypeInfo struct {
 
 func (s *LSym) NewTypeInfo() *TypeInfo
 
+// TypeInfo returns the *TypeInfo associated with s, or else nil.
+func (s *LSym) TypeInfo() *TypeInfo
+
 // An ItabInfo contains information for a symbol
 // that contains a runtime.itab.
 type ItabInfo struct {
@@ -360,6 +363,9 @@ type ItabInfo struct {
 }
 
 func (s *LSym) NewItabInfo() *ItabInfo
+
+// ItabInfo returns the *ItabInfo associated with s, or else nil.
+func (s *LSym) ItabInfo() *ItabInfo
 
 // WasmImport represents a WebAssembly (WASM) imported function with
 // parameters and results translated into WASM types based on the Go function
