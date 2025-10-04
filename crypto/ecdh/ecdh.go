@@ -55,28 +55,17 @@ type PrivateKey struct {
 	privateKey []byte
 	publicKey  *PublicKey
 	boring     *boring.PrivateKeyECDH
-<<<<<<< HEAD
-
-	// publicKeyは、公開鍵を公開鍵の一度セットしています。これにより、スカラー乗算を行わずにNewPrivateKeyで秘密鍵を読み込むことができます。
-	publicKey     *PublicKey
-	publicKeyOnce sync.Once
-=======
 	fips       *ecdh.PrivateKey
->>>>>>> upstream/release-branch.go1.25
 }
 
-// ECDH performs an ECDH exchange and returns the shared secret. The [PrivateKey]
-// and [PublicKey] must use the same curve.
+// ECDHはECDH交換を実行し、共有秘密を返します。[PrivateKey]
+// と [PublicKey] は同じ曲線を使用する必要があります。
 //
-<<<<<<< HEAD
-// NIST曲線の場合、これはSEC 1バージョン2.0セクション3.3.1で指定されたようにECDHを実行し、SEC 1バージョン2.0セクション2.3.5に従ってエンコードされたx座標を返します。結果は決して無限遠点ではありません。
-=======
-// For NIST curves, this performs ECDH as specified in SEC 1, Version 2.0,
-// Section 3.3.1, and returns the x-coordinate encoded according to SEC 1,
-// Version 2.0, Section 2.3.5. The result is never the point at infinity.
-// This is also known as the Shared Secret Computation of the Ephemeral Unified
-// Model scheme specified in NIST SP 800-56A Rev. 3, Section 6.1.2.2.
->>>>>>> upstream/release-branch.go1.25
+// NIST曲線の場合、これはSEC 1, Version 2.0,
+// Section 3.3.1で指定されたECDHを実行し、SEC 1,
+// Version 2.0, Section 2.3.5に従ってエンコードされたx座標を返します。結果は決して無限遠点にはなりません。
+// これは、NIST SP 800-56A Rev. 3, Section 6.1.2.2で指定された
+// Ephemeral Unified Modelスキームの共有秘密計算としても知られています。
 //
 // [X25519] の場合、これはRFC 7748 Section 6.1 で指定されたようにECDHを実行します。結果が全て0値の場合、ECDHはエラーを返します。
 func (k *PrivateKey) ECDH(remote *PublicKey) ([]byte, error)
