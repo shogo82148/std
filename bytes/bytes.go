@@ -93,31 +93,19 @@ func Split(s, sep []byte) [][]byte
 // これは、countが-1のSplitAfterNと同等です。
 func SplitAfter(s, sep []byte) [][]byte
 
-<<<<<<< HEAD
-// Fieldsは、sをUTF-8エンコードされたコードポイントのシーケンスとして解釈します。
-// [unicode.IsSpace] で定義される1つ以上の連続する空白文字の各インスタンスの周りでスライスsを分割し、
-// sの部分スライスのスライスを返します。sが空白のみを含む場合は空のスライスを返します。
+// FieldsはsをUTF-8エンコードされたコードポイントのシーケンスとして解釈します。
+// [unicode.IsSpace] で定義される1つ以上の連続する空白文字の各インスタンスの周りで
+// スライスsを分割し、sのサブスライスのスライスを返すか、
+// sが空白のみを含む場合は空のスライスを返します。返されるスライスのすべての要素は
+// 空ではありません。[Split] とは異なり、先頭と末尾の空白文字の連続は破棄されます。
 func Fields(s []byte) [][]byte
 
-// FieldsFuncは、sをUTF-8でエンコードされたコードポイントのシーケンスとして解釈します。
-// それは、f(c)を満たすコードポイントcの連続を各ランでsを分割し、sのサブスライスのスライスを返します。
-// sのすべてのコードポイントがf(c)を満たすか、またはlen(s) == 0の場合、空のスライスが返されます。
-=======
-// Fields interprets s as a sequence of UTF-8-encoded code points.
-// It splits the slice s around each instance of one or more consecutive white space
-// characters, as defined by [unicode.IsSpace], returning a slice of subslices of s or an
-// empty slice if s contains only white space. Every element of the returned slice is
-// non-empty. Unlike [Split], leading and trailing runs of white space characters
-// are discarded.
-func Fields(s []byte) [][]byte
-
-// FieldsFunc interprets s as a sequence of UTF-8-encoded code points.
-// It splits the slice s at each run of code points c satisfying f(c) and
-// returns a slice of subslices of s. If all code points in s satisfy f(c), or
-// len(s) == 0, an empty slice is returned. Every element of the returned slice is
-// non-empty. Unlike [SplitFunc], leading and trailing runs of code points
-// satisfying f(c) are discarded.
->>>>>>> upstream/release-branch.go1.25
+// FieldsFuncは、sをUTF-8エンコードされたコードポイントのシーケンスとして解釈します。
+// f(c)を満たすコードポイントcの各連続部分でスライスsを分割し、
+// sのサブスライスのスライスを返します。sのすべてのコードポイントがf(c)を満たすか、
+// len(s) == 0の場合、空のスライスを返します。返されるスライスのすべての要素は
+// 空ではありません。[SplitFunc] とは異なり、f(c)を満たすコードポイントの
+// 先頭と末尾の連続部分は破棄されます。
 //
 // FieldsFuncは、f(c)をどの順序で呼び出すかについて保証はなく、fは常に同じ値を返すと仮定しています。
 func FieldsFunc(s []byte, f func(rune) bool) [][]byte
