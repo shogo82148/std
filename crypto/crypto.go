@@ -87,28 +87,24 @@ type Signer interface {
 	Sign(rand io.Reader, digest []byte, opts SignerOpts) (signature []byte, err error)
 }
 
-<<<<<<< HEAD
-// SignerOptsは [Signer] での署名に対するオプションを含んでいます。
-=======
-// MessageSigner is an interface for an opaque private key that can be used for
-// signing operations where the message is not pre-hashed by the caller.
-// It is a superset of the Signer interface so that it can be passed to APIs
-// which accept Signer, which may try to do an interface upgrade.
+// MessageSignerは、呼び出し元によってメッセージが事前にハッシュ化されていない
+// 署名操作に使用できる不透明な秘密鍵のインターフェースです。
+// これは、Signerを受け入れるAPIに渡すことができるように、Signerインターフェースの
+// スーパーセットであり、これらのAPIはインターフェースのアップグレードを試行する場合があります。
 //
-// MessageSigner.SignMessage and MessageSigner.Sign should produce the same
-// result given the same opts. In particular, MessageSigner.SignMessage should
-// only accept a zero opts.HashFunc if the Signer would also accept messages
-// which are not pre-hashed.
+// MessageSigner.SignMessageとMessageSigner.Signは、同じoptsが与えられた場合、
+// 同じ結果を生成する必要があります。特に、MessageSigner.SignMessageは、
+// Signerも事前にハッシュ化されていないメッセージを受け入れる場合にのみ、
+// ゼロのopts.HashFuncを受け入れる必要があります。
 //
-// Implementations which do not provide the pre-hashed Sign API should implement
-// Signer.Sign by always returning an error.
+// 事前にハッシュ化されたSign APIを提供しない実装では、
+// 常にエラーを返すことでSigner.Signを実装する必要があります。
 type MessageSigner interface {
 	Signer
 	SignMessage(rand io.Reader, msg []byte, opts SignerOpts) (signature []byte, err error)
 }
 
-// SignerOpts contains options for signing with a [Signer].
->>>>>>> upstream/release-branch.go1.25
+// SignerOptsは [Signer] での署名のためのオプションを含みます。
 type SignerOpts interface {
 	HashFunc() Hash
 }
@@ -122,7 +118,7 @@ type Decrypter interface {
 
 type DecrypterOpts any
 
-// SignMessage signs msg with signer. If signer implements [MessageSigner],
-// [MessageSigner.SignMessage] is called directly. Otherwise, msg is hashed
-// with opts.HashFunc() and signed with [Signer.Sign].
+// SignMessageはsignerでmsgに署名します。signerが [MessageSigner] を実装している場合、
+// [MessageSigner.SignMessage] が直接呼び出されます。そうでなければ、msgは
+// opts.HashFunc()でハッシュ化され、[Signer.Sign] で署名されます。
 func SignMessage(signer Signer, rand io.Reader, msg []byte, opts SignerOpts) (signature []byte, err error)
