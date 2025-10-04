@@ -13,19 +13,12 @@ type SubFS interface {
 
 // Subはfsysのdirでルートされた部分木に対応する [FS] を返します。
 //
-<<<<<<< HEAD
 // dirが"."の場合、Subはfsysを変更せずに返します。
-// そうでない場合、fsが [SubFS] を実装している場合、Subはfsys.Sub(dir)を返します。
-// そうでない場合、Subは効果的に、sub.Open(name)をfsys.Open(path.Join(dir, name))として実装する新しい [FS] 実装subを返します。
-// 実装では、ReadDir、ReadFile、そしてGlobへの呼び出しも適切に変換されます。
-=======
-// If dir is ".", Sub returns fsys unchanged.
-// Otherwise, if fs implements [SubFS], Sub returns fsys.Sub(dir).
-// Otherwise, Sub returns a new [FS] implementation sub that,
-// in effect, implements sub.Open(name) as fsys.Open(path.Join(dir, name)).
-// The implementation also translates calls to ReadDir, ReadFile,
-// ReadLink, Lstat, and Glob appropriately.
->>>>>>> upstream/release-branch.go1.25
+// そうでなければ、fsが [SubFS] を実装している場合、Subはfsys.Sub(dir)を返します。
+// そうでなければ、Subは新しい [FS] 実装subを返します。これは
+// 実質的にsub.Open(name)をfsys.Open(path.Join(dir, name))として実装します。
+// この実装はまた、ReadDir、ReadFile、
+// ReadLink、Lstat、およびGlobの呼び出しも適切に変換します。
 //
 // os.DirFS("/prefix")とSub(os.DirFS("/"), "prefix")は同等であることに注意してください。
 // どちらも、"/prefix"の外部にあるオペレーティングシステムのアクセスを回避することを保証するものではありません。
