@@ -2,29 +2,21 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-// parserパッケージはGoのソースファイルのパーサを実装しています。入力はさまざまな形式で提供できます（Parse*関数を参照）。出力はGoソースを表す抽象構文木（AST）です。パーサはParse*関数のいずれかを経由して呼び出されます。
-// パーサは、Goの仕様で構文的に許可されていないより大きな言語を受け入れていますが、これは単純さと構文エラーの存在下での強靱性の向上のためです。たとえば、メソッド宣言では、レシーバは通常のパラメータリストのように扱われるため、複数のエントリが可能ですが、仕様では一つしか許可されていません。そのため、ASTの対応するフィールド（ast.FuncDecl.Recv）は一つに制限されていません。
-=======
-// Package parser implements a parser for Go source files.
+// parserパッケージは、Goソースファイル用のパーサーを実装します。
 //
-// The [ParseFile] function reads file input from a string, []byte, or
-// io.Reader, and produces an [ast.File] representing the complete
-// abstract syntax tree of the file.
+// [ParseFile] 関数は、string、[]byte、またはio.Readerからファイル入力を読み取り、
+// ファイルの完全な抽象構文木を表す [ast.File] を生成します。
 //
-// The [ParseExprFrom] function reads a single source-level expression and
-// produces an [ast.Expr], the syntax tree of the expression.
+// [ParseExprFrom] 関数は、単一のソースレベル式を読み取り、
+// その式の構文木である [ast.Expr] を生成します。
 //
-// The parser accepts a larger language than is syntactically permitted by
-// the Go spec, for simplicity, and for improved robustness in the presence
-// of syntax errors. For instance, in method declarations, the receiver is
-// treated like an ordinary parameter list and thus may contain multiple
-// entries where the spec permits exactly one. Consequently, the corresponding
-// field in the AST (ast.FuncDecl.Recv) field is not restricted to one entry.
+// パーサーは、簡単性と構文エラーの存在下での堅牢性の向上のために、
+// Go仕様で構文的に許可されているよりも大きな言語を受け入れます。
+// 例えば、メソッド宣言では、レシーバーは通常のパラメータリストのように扱われるため、
+// 仕様では正確に1つが許可されている場所で複数のエントリを含むことができます。
+// その結果、ASTの対応するフィールド（ast.FuncDecl.Recv）フィールドは1つのエントリに制限されません。
 //
-// Applications that need to parse one or more complete packages of Go
-// source code may find it more convenient not to interact directly
-// with the parser but instead to use the Load function in package
-// [golang.org/x/tools/go/packages].
->>>>>>> upstream/release-branch.go1.25
+// Goソースコードの1つ以上の完全なパッケージを解析する必要があるアプリケーションは、
+// パーサーと直接やり取りするのではなく、代わりに
+// [golang.org/x/tools/go/packages] パッケージのLoad関数を使用する方が便利かもしれません。
 package parser
