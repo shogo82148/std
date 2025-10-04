@@ -10,49 +10,32 @@ import (
 	"github.com/shogo82148/std/math/big"
 )
 
-<<<<<<< HEAD
-// この例は、rand.Readerから暗号的に安全な疑似乱数を10個読み込み、バイトスライスに書き込みます。
-func ExampleRead() {
-	c := 10
-	b := make([]byte, c)
-	_, err := rand.Read(b)
-	if err != nil {
-		fmt.Println("error:", err)
-		return
-	}
-	// スライスは、ゼロの代わりにランダムなバイトを含んでいるべきです。
-	fmt.Println(bytes.Equal(b, make([]byte, c)))
-
-	// Output:
-	// false
-=======
-// ExampleInt prints a single cryptographically secure pseudorandom number between 0 and 99 inclusive.
+// ExampleIntは0から99までの範囲（境界値を含む）で暗号学的に安全な擬似乱数を1つ出力します。
 func ExampleInt() {
-	// Int cannot return an error when using rand.Reader.
+	// rand.Readerを使用する場合、Intはエラーを返すことができません。
 	a, _ := rand.Int(rand.Reader, big.NewInt(100))
 	fmt.Println(a.Int64())
 }
 
-// ExamplePrime prints a cryptographically secure pseudorandom 64 bit prime number.
+// ExamplePrimeは暗号学的に安全な擬似乱数64ビット素数を出力します。
 func ExamplePrime() {
-	// Prime cannot return an error when using rand.Reader and bits >= 2.
+	// rand.Readerを使用し、bits >= 2の場合、Primeはエラーを返すことができません。
 	a, _ := rand.Prime(rand.Reader, 64)
 	fmt.Println(a.Int64())
 }
 
-// ExampleRead prints a cryptographically secure pseudorandom 32 byte key.
+// ExampleReadは暗号学的に安全な擬似乱数32バイトキーを出力します。
 func ExampleRead() {
-	// Note that no error handling is necessary, as Read always succeeds.
+	// Readは常に成功するため、エラーハンドリングは不要であることに注意してください。
 	key := make([]byte, 32)
 	rand.Read(key)
-	// The key can contain any byte value, print the key in hex.
+	// キーは任意のバイト値を含む可能性があるため、キーを16進数で出力します。
 	fmt.Printf("% x\n", key)
 }
 
-// ExampleText prints a random key encoded in base32.
+// ExampleTextはbase32でエンコードされたランダムキーを出力します。
 func ExampleText() {
 	key := rand.Text()
-	// The key is base32 and safe to display.
+	// キーはbase32で、表示しても安全です。
 	fmt.Println(key)
->>>>>>> upstream/release-branch.go1.25
 }

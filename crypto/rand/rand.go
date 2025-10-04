@@ -9,42 +9,25 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-<<<<<<< HEAD
 // Readerは暗号学的に安全な乱数生成器のグローバルで共有されたインスタンスです。
+// 並行使用に対して安全です。
 //
-//   - Linux、FreeBSD、Dragonfly、Solarisでは、Readerは利用可能な場合はgetrandom(2)を使用し、
-//     それ以外の場合は/dev/urandomを使用します。
-//   - macOSとiOSでは、Readerはarc4random_buf(3)を使用します。
-//   - OpenBSDとNetBSDでは、Readerはgetentropy(2)を使用します。
-//   - 他のUnix系システムでは、Readerは/dev/urandomから読み取ります。
+//   - Linux、FreeBSD、Dragonfly、およびSolarisでは、Readerはgetrandom(2)を使用します。
+//   - レガシーLinux（< 3.17）では、Readerは初回使用時に/dev/urandomを開きます。
+//   - macOS、iOS、およびOpenBSDでは、Readerはarc4random_buf(3)を使用します。
+//   - NetBSDでは、Readerはkern.arandom sysctlを使用します。
 //   - Windowsでは、ReaderはProcessPrng APIを使用します。
 //   - js/wasmでは、ReaderはWeb Crypto APIを使用します。
-//   - wasip1/wasmでは、Readerはwasi_snapshot_preview1からrandom_getを使用します。
+//   - wasip1/wasmでは、Readerはrandom_getを使用します。
+//
+// FIPS 140-3モードでは、出力はSP 800-90A Rev. 1
+// 決定論的乱数ビット生成器（DRBG）を通過します。
 var Reader io.Reader
 
-// Readはio.ReadFullを使ってReader.Readを呼び出すヘルパー関数です。
-// 帰り値として、n == len(b) は err == nil の場合に限り成り立ちます。
-=======
-// Reader is a global, shared instance of a cryptographically
-// secure random number generator. It is safe for concurrent use.
+// Readは暗号学的に安全な乱数バイトでbを埋めます。エラーを返すことはなく、
+// 常にbを完全に埋めます。
 //
-//   - On Linux, FreeBSD, Dragonfly, and Solaris, Reader uses getrandom(2).
-//   - On legacy Linux (< 3.17), Reader opens /dev/urandom on first use.
-//   - On macOS, iOS, and OpenBSD Reader, uses arc4random_buf(3).
-//   - On NetBSD, Reader uses the kern.arandom sysctl.
-//   - On Windows, Reader uses the ProcessPrng API.
-//   - On js/wasm, Reader uses the Web Crypto API.
-//   - On wasip1/wasm, Reader uses random_get.
-//
-// In FIPS 140-3 mode, the output passes through an SP 800-90A Rev. 1
-// Deterministric Random Bit Generator (DRBG).
-var Reader io.Reader
-
-// Read fills b with cryptographically secure random bytes. It never returns an
-// error, and always fills b entirely.
-//
-// Read calls [io.ReadFull] on [Reader] and crashes the program irrecoverably if
-// an error is returned. The default Reader uses operating system APIs that are
-// documented to never return an error on all but legacy Linux systems.
->>>>>>> upstream/release-branch.go1.25
+// Readは [Reader] に対して [io.ReadFull] を呼び出し、エラーが返された場合は
+// プログラムを回復不可能にクラッシュさせます。デフォルトのReaderは、
+// レガシーLinuxシステム以外では決してエラーを返さないと文書化されているオペレーティングシステムAPIを使用します。
 func Read(b []byte) (n int, err error)
