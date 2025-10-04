@@ -111,26 +111,14 @@ func New(pkg *ast.Package, importPath string, mode Mode) *Package
 
 // NewFromFilesはパッケージのドキュメントを計算します。
 //
-<<<<<<< HEAD
-// パッケージは*ast.Filesのリストと対応するファイルセットで指定されます。
-// ファイルセットはnilであってはなりません。
-// NewFromFilesはドキュメントを計算する際に提供されたすべてのファイルを使用しますので、
-// 呼び出し側は必要なビルドコンテキストに一致するファイルのみを提供する責任があります。
-// ファイルがビルドコンテキストに一致するかどうかを判断するためには、
-// "go/build".Context.MatchFileを使用できます。
-// この関数は、望ましいGOOSおよびGOARCHの値と他のビルド制約と一致するかどうかを判断します。
-// パッケージのインポートパスはimportPathで指定されます。
-=======
-// The package is specified by a list of *ast.Files and corresponding
-// file set, which must not be nil.
+// パッケージは*ast.Filesのリストと対応するファイルセットによって指定され、
+// これらはnilであってはいけません。
 //
-// NewFromFiles uses all provided files when computing documentation,
-// so it is the caller's responsibility to provide only the files that
-// match the desired build context. "go/build".Context.MatchFile can
-// be used for determining whether a file matches a build context with
-// the desired GOOS and GOARCH values, and other build constraints.
-// The import path of the package is specified by importPath.
->>>>>>> upstream/release-branch.go1.25
+// NewFromFilesはドキュメントを計算する際にすべての提供されたファイルを使用するため、
+// 望ましいビルドコンテキストに一致するファイルのみを提供するのは呼び出し元の責任です。
+// "go/build".Context.MatchFileは、ファイルが望ましいGOOSおよびGOARCH値と
+// その他のビルド制約を持つビルドコンテキストに一致するかどうかを判断するために使用できます。
+// パッケージのインポートパスはimportPathによって指定されます。
 //
 // _test.goファイルに見つかった例は、それらの名前に基づいて対応する型、関数、メソッド、またはパッケージに関連付けられます。
 // もし例の名前に接尾辞がある場合、それは [Example.Suffix] フィールドに設定されます。
