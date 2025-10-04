@@ -9,22 +9,13 @@ package asn1
 // In addition to the struct tags recognized by Unmarshal, the following can be
 // used:
 //
-<<<<<<< HEAD
-//	ia5:         文字列をASN.1のIA5String値としてエンコードします。
-//	omitempty:   空のスライスをスキップします。
-//	printable:   文字列をASN.1のPrintableString値としてエンコードします。
-//	utf8:        文字列をASN.1のUTF8String値としてエンコードします。
-//	utc:         time.TimeをASN.1のUTCTime値としてエンコードします。
-//	generalized: time.TimeをASN.1のGeneralizedTime値としてエンコードします。
-=======
-//	ia5:         causes strings to be marshaled as ASN.1, IA5String values
-//	omitempty:   causes empty slices to be skipped
-//	printable:   causes strings to be marshaled as ASN.1, PrintableString values
-//	utf8:        causes strings to be marshaled as ASN.1, UTF8String values
-//	numeric:     causes strings to be marshaled as ASN.1, NumericString values
-//	utc:         causes time.Time to be marshaled as ASN.1, UTCTime values
-//	generalized: causes time.Time to be marshaled as ASN.1, GeneralizedTime values
->>>>>>> upstream/release-branch.go1.25
+//	ia5:         文字列をASN.1 IA5String値としてマーシャルします
+//	omitempty:   空のスライスをスキップします
+//	printable:   文字列をASN.1 PrintableString値としてマーシャルします
+//	utf8:        文字列をASN.1 UTF8String値としてマーシャルします
+//	numeric:     文字列をASN.1 NumericString値としてマーシャルします
+//	utc:         time.TimeをASN.1 UTCTime値としてマーシャルします
+//	generalized: time.TimeをASN.1 GeneralizedTime値としてマーシャルします
 func Marshal(val any) ([]byte, error)
 
 // MarshalWithParamsは、トップレベルの要素にフィールドパラメータを指定することを可能にします。パラメータの形式は、フィールドタグと同じです。

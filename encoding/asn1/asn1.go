@@ -118,19 +118,14 @@ type RawContent []byte
 //	numericは文字列をASN.1 NumericString値として復元します
 //	utf8は文字列をASN.1 UTF8String値として復元します
 //
-<<<<<<< HEAD
-// 構造体の最初のフィールドの型がRawContentの場合、構造体の生のASN1コンテンツがそれに保存されます。
-=======
-// When decoding an ASN.1 value with an IMPLICIT tag into a time.Time field,
-// Unmarshal will default to a UTCTime, which doesn't support time zones or
-// fractional seconds. To force usage of GeneralizedTime, use the following
-// tag:
+// IMPLICITタグを持つASN.1値をtime.Timeフィールドにデコードする場合、
+// Unmarshalはデフォルトでタイムゾーンや小数秒をサポートしないUTCTimeになります。
+// GeneralizedTimeの使用を強制するには、次のタグを使用します：
 //
-//	generalized causes time.Times to be unmarshaled as ASN.1 GeneralizedTime values
+//	generalizedはtime.TimeをASN.1 GeneralizedTime値としてアンマーシャルします
 //
-// If the type of the first field of a structure is RawContent then the raw
-// ASN1 contents of the struct will be stored in it.
->>>>>>> upstream/release-branch.go1.25
+// 構造体の最初のフィールドの型がRawContentの場合、構造体の生の
+// ASN1内容がそこに格納されます。
 //
 // スライスの型名が"SET"で終わる場合、これは"set"タグが設定されたように扱われます。これにより、
 // タイプがSEQUENCEではなくSET OF xと解釈されます。これは、
