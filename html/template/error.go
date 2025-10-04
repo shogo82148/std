@@ -76,6 +76,7 @@ const (
 	//   すべての属性を引用符で囲むのが最善の方針です。
 	ErrBadHTML
 
+<<<<<<< HEAD
 	// ErrBranchEnd: "{{if}}の分岐が異なるコンテキストで終わります"
 	// 例：
 	//   {{if .C}}<a href="{{end}}{{.X}}
@@ -84,6 +85,21 @@ const (
 	//   その後のパイプラインをエスケープします。例は曖昧です。なぜなら、{{.X}}はHTMLテキストノードであるか、
 	//   HTML属性のURLプレフィックスである可能性があるからです。{{.X}}のコンテキストは、それをどのようにエスケープするかを
 	//   理解するために使用されますが、そのコンテキストは実行時の{{.C}}の値に依存し、それは静的には知られていません。
+=======
+	// ErrBranchEnd: "{{if}} branches end in different contexts"
+	// Examples:
+	//   {{if .C}}<a href="{{end}}{{.X}}
+	//   <script {{with .T}}type="{{.}}"{{end}}>
+	// Discussion:
+	//   Package html/template statically examines each path through an
+	//   {{if}}, {{range}}, or {{with}} to escape any following pipelines.
+	//   The first example is ambiguous since {{.X}} might be an HTML text node,
+	//   or a URL prefix in an HTML attribute. The context of {{.X}} is
+	//   used to figure out how to escape it, but that context depends on
+	//   the run-time value of {{.C}} which is not statically known.
+	//   The second example is ambiguous as the script type attribute
+	//   can change the type of escaping needed for the script contents.
+>>>>>>> upstream/release-branch.go1.25
 	//
 	//   問題は通常、引用符や角括弧が欠けているなどの問題であり、または、2つのコンテキストをif、range、withの
 	//   異なる分岐にリファクタリングすることで回避できます。問題が空であるべきではないコレクションに対する{{range}}にある場合、

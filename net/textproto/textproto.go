@@ -4,7 +4,14 @@
 
 // textprotoパッケージは、HTTP、NNTP、およびSMTPのスタイルでテキストベースのリクエスト/レスポンスプロトコルの汎用サポートを実装します。
 //
+<<<<<<< HEAD
 // このパッケージでは以下を提供します:
+=======
+// This package enforces the HTTP/1.1 character set defined by
+// RFC 9112 for header keys and values.
+//
+// The package provides:
+>>>>>>> upstream/release-branch.go1.25
 //
 // [Error] は、サーバーからの数値エラーレスポンスを表します。
 //

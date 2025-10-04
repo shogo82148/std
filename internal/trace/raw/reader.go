@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/bufio"
 	"github.com/shogo82148/std/io"
 
-	"github.com/shogo82148/std/internal/trace/event"
+	"github.com/shogo82148/std/internal/trace/tracev2"
 	"github.com/shogo82148/std/internal/trace/version"
 )
 
@@ -17,7 +17,7 @@ import (
 type Reader struct {
 	r     *bufio.Reader
 	v     version.Version
-	specs []event.Spec
+	specs []tracev2.EventSpec
 }
 
 // NewReader creates a new reader for the trace wire format.

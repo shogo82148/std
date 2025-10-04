@@ -28,6 +28,7 @@ type SessionState struct {
 	version     uint16
 	isClient    bool
 	cipherSuite uint16
+<<<<<<< HEAD
 
 	// createdAtはサーバー上でのシークレットの生成時間（TLS 1.0-1.2の場合、現在のセッションよりも前かもしれません）およびクライアントでのチケット受信時間です。
 	createdAt         uint64
@@ -39,11 +40,27 @@ type SessionState struct {
 	scts              [][]byte
 	verifiedChains    [][]*x509.Certificate
 	alpnProtocol      string
+=======
+	// createdAt is the generation time of the secret on the sever (which for
+	// TLS 1.0–1.2 might be earlier than the current session) and the time at
+	// which the ticket was received on the client.
+	createdAt        uint64
+	secret           []byte
+	extMasterSecret  bool
+	peerCertificates []*x509.Certificate
+	ocspResponse     []byte
+	scts             [][]byte
+	verifiedChains   [][]*x509.Certificate
+	alpnProtocol     string
+>>>>>>> upstream/release-branch.go1.25
 
 	// クライアント側のTLS 1.3専用フィールド。
 	useBy  uint64
 	ageAdd uint32
 	ticket []byte
+
+	// TLS 1.0–1.2 only fields.
+	curveID CurveID
 }
 
 // Bytesはセッションをエンコードし、[ParseSessionState]によって解析できるようにします。エンコードには、将来のセッションのセキュリティに重要な秘密値が含まれている可能性があります。

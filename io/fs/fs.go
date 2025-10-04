@@ -25,9 +25,17 @@ type FS interface {
 
 // ValidPathは与えられたパス名がOpenの呼び出しに使用するために有効かどうかを報告します。
 //
+<<<<<<< HEAD
 // Openに渡されるパス名はUTF-8でエンコードされた、ルートなしのスラッシュで区切られたパス要素のシーケンス（例: "x/y/z"）です。
 // パス名には、"."または".."または空の文字列を含めることはできませんが、ルートディレクトリが "."という特殊なケースを除いてはです。
 // パスはスラッシュで始まることや終わることはできません: "/x"や"x/"は無効です。
+=======
+// Path names passed to open are UTF-8-encoded,
+// unrooted, slash-separated sequences of path elements, like “x/y/z”.
+// Path names must not contain an element that is “.” or “..” or the empty string,
+// except for the special case that the name "." may be used for the root directory.
+// Paths must not start or end with a slash: “/x” and “x/” are invalid.
+>>>>>>> upstream/release-branch.go1.25
 //
 // なお、パスは全てのシステムでスラッシュで区切られます（Windowsでも）。
 // バックスラッシュやコロンなどの他の文字を含むパスも有効ですが、これらの文字は [FS] の実装によっては絶対にパス要素の区切りとして解釈されるべきではありません。

@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build !cmd_go_bootstrap
+
 // Package doc implements the “go doc” command.
 package doc
 
@@ -71,6 +73,8 @@ different cases. If this occurs, documentation for all matches is printed.
 Examples:
 	go doc
 		Show documentation for current package.
+	go doc -http
+		Serve HTML documentation over HTTP for the current package.
 	go doc Foo
 		Show documentation for Foo in the current package.
 		(Foo starts with a capital letter so it cannot match
@@ -112,6 +116,8 @@ Flags:
 		Treat a command (package main) like a regular package.
 		Otherwise package main's exported symbols are hidden
 		when showing the package's top-level documentation.
+  	-http
+		Serve HTML docs over HTTP.
 	-short
 		One-line representation for each symbol.
 	-src

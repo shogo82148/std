@@ -46,7 +46,15 @@ func (w *Writer) CreateFormFile(fieldname, filename string) (io.Writer, error)
 // [Writer.CreatePart] を呼び出します。
 func (w *Writer) CreateFormField(fieldname string) (io.Writer, error)
 
+<<<<<<< HEAD
 // WriteFieldは [Writer.CreateFormField] を呼び出し、その後で与えられた値を書き込みます。
+=======
+// FileContentDisposition returns the value of a Content-Disposition header
+// with the provided field name and file name.
+func FileContentDisposition(fieldname, filename string) string
+
+// WriteField calls [Writer.CreateFormField] and then writes the given value.
+>>>>>>> upstream/release-branch.go1.25
 func (w *Writer) WriteField(fieldname, value string) error
 
 // Closeはマルチパートメッセージを終了し、終了境界線を出力に書き込みます。

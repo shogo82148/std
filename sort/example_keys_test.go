@@ -8,7 +8,11 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
+<<<<<<< HEAD
 // ExampleSortKeysは、プログラム可能なソート基準を使用して構造体タイプをソートするためのテクニックを示しています。
+=======
+// Example_sortKeys demonstrates a technique for sorting a struct type using programmable sort criteria.
+>>>>>>> upstream/release-branch.go1.25
 func Example_sortKeys() {
 	// プラネット構造体を順序付けるクロージャー。
 	name := func(p1, p2 *Planet) bool {

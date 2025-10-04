@@ -9,7 +9,12 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+<<<<<<< HEAD
 // これらの定数はflateパッケージからコピーされています。そのため、「compress/gzip」をインポートするコードは、「compress/flate」もインポートする必要はありません。
+=======
+// These constants are copied from the [flate] package, so that code that imports
+// [compress/gzip] does not also have to import [compress/flate].
+>>>>>>> upstream/release-branch.go1.25
 const (
 	NoCompression      = flate.NoCompression
 	BestSpeed          = flate.BestSpeed
@@ -18,8 +23,13 @@ const (
 	HuffmanOnly        = flate.HuffmanOnly
 )
 
+<<<<<<< HEAD
 // Writerはio.WriteCloserです。
 // Writerへの書き込みは圧縮され、wに書き込まれます。
+=======
+// A Writer is an [io.WriteCloser].
+// Writes to a Writer are compressed and written to w.
+>>>>>>> upstream/release-branch.go1.25
 type Writer struct {
 	Header
 	w           io.Writer
@@ -39,8 +49,13 @@ type Writer struct {
 // [Writer] が終了したら、呼び出し元はCloseを呼ぶ責任があります。
 // 書き込みはバッファリングされ、Closeが呼ばれるまでフラッシュされない場合があります。
 //
+<<<<<<< HEAD
 // Writer.Headerのフィールドを設定したい呼び出し元は、
 // Write、Flush、またはCloseの最初の呼び出しの前に設定する必要があります。
+=======
+// Callers that wish to set the fields in Writer.[Header] must do so before
+// the first call to Write, Flush, or Close.
+>>>>>>> upstream/release-branch.go1.25
 func NewWriter(w io.Writer) *Writer
 
 // NewWriterLevel関数は、デフォルトの圧縮レベルを仮定する代わりに、圧縮レベルを指定して

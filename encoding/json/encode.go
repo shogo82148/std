@@ -2,11 +2,51 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 // jsonパッケージは、RFC 7159で定義されているJSONのエンコーディングとデコーディングを実装します。
 // JSONとGoの値の間のマッピングは、Marshal関数とUnmarshal関数のドキュメンテーションで説明されています。
+=======
+//go:build !goexperiment.jsonv2
+
+// Package json implements encoding and decoding of JSON as defined in RFC 7159.
+// The mapping between JSON and Go values is described in the documentation for
+// the Marshal and Unmarshal functions.
+>>>>>>> upstream/release-branch.go1.25
 //
 // このパッケージの紹介については、「JSONとGo」を参照してください：
 // https://golang.org/doc/articles/json_and_go.html
+//
+// # Security Considerations
+//
+// The JSON standard (RFC 7159) is lax in its definition of a number of parser
+// behaviors. As such, many JSON parsers behave differently in various
+// scenarios. These differences in parsers mean that systems that use multiple
+// independent JSON parser implementations may parse the same JSON object in
+// differing ways.
+//
+// Systems that rely on a JSON object being parsed consistently for security
+// purposes should be careful to understand the behaviors of this parser, as
+// well as how these behaviors may cause interoperability issues with other
+// parser implementations.
+//
+// Due to the Go Backwards Compatibility promise (https://go.dev/doc/go1compat)
+// there are a number of behaviors this package exhibits that may cause
+// interopability issues, but cannot be changed. In particular the following
+// parsing behaviors may cause issues:
+//
+//   - If a JSON object contains duplicate keys, keys are processed in the order
+//     they are observed, meaning later values will replace or be merged into
+//     prior values, depending on the field type (in particular maps and structs
+//     will have values merged, while other types have values replaced).
+//   - When parsing a JSON object into a Go struct, keys are considered in a
+//     case-insensitive fashion.
+//   - When parsing a JSON object into a Go struct, unknown keys in the JSON
+//     object are ignored (unless a [Decoder] is used and
+//     [Decoder.DisallowUnknownFields] has been called).
+//   - Invalid UTF-8 bytes in JSON strings are replaced by the Unicode
+//     replacement character.
+//   - Large JSON number integers will lose precision when unmarshaled into
+//     floating-point types.
 package json
 
 import (
@@ -51,10 +91,17 @@ import (
 // フォーマット文字列はフィールド名を指定し、それに続いてカンマで区切られたオプションのリストが続く可能性があります。
 // デフォルトのフィールド名を上書きせずにオプションを指定するために、名前は空にすることができます。
 //
+<<<<<<< HEAD
 // "omitempty"オプションは、フィールドが空の値を持つ場合、
 // エンコーディングからそのフィールドを省略することを指定します。
 // 空の値とは、false、0、nilポインタ、nilインターフェース値、
 // そして任意の空の配列、スライス、マップ、または文字列を指します。
+=======
+// The "omitempty" option specifies that the field should be omitted
+// from the encoding if the field has an empty value, defined as
+// false, 0, a nil pointer, a nil interface value, and any array,
+// slice, map, or string of length zero.
+>>>>>>> upstream/release-branch.go1.25
 //
 // 特別なケースとして、フィールドタグが"-"の場合、フィールドは常に省略されます。
 // フィールド名が"-"のフィールドでも、タグ"-,"を使用して生成することができることに注意してください。
@@ -80,9 +127,27 @@ import (
 //	// フィールドはJSONでキー"-"として現れます。
 //	Field int `json:"-,"`
 //
+<<<<<<< HEAD
 // "string"オプションは、フィールドがJSONエンコードされた文字列内にJSONとして格納されることを示します。
 // これは、文字列、浮動小数点数、整数、またはブール型のフィールドにのみ適用されます。
 // この追加のエンコーディングレベルは、JavaScriptプログラムと通信する際に時々使用されます：
+=======
+// The "omitzero" option specifies that the field should be omitted
+// from the encoding if the field has a zero value, according to rules:
+//
+// 1) If the field type has an "IsZero() bool" method, that will be used to
+// determine whether the value is zero.
+//
+// 2) Otherwise, the value is zero if it is the zero value for its type.
+//
+// If both "omitempty" and "omitzero" are specified, the field will be omitted
+// if the value is either empty or zero (or both).
+//
+// The "string" option signals that a field is stored as JSON inside a
+// JSON-encoded string. It applies only to fields of string, floating point,
+// integer, or boolean types. This extra level of encoding is sometimes used
+// when communicating with JavaScript programs:
+>>>>>>> upstream/release-branch.go1.25
 //
 //	Int64String int64 `json:",string"`
 //

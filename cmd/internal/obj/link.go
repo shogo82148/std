@@ -351,6 +351,14 @@ type TypeInfo struct {
 
 func (s *LSym) NewTypeInfo() *TypeInfo
 
+// An ItabInfo contains information for a symbol
+// that contains a runtime.itab.
+type ItabInfo struct {
+	Type interface{}
+}
+
+func (s *LSym) NewItabInfo() *ItabInfo
+
 // WasmImport represents a WebAssembly (WASM) imported function with
 // parameters and results translated into WASM types based on the Go function
 // declaration.
@@ -385,6 +393,10 @@ const (
 	WasmF32
 	WasmF64
 	WasmPtr
+
+	// bool is not really a wasm type, but we allow it on wasmimport/wasmexport
+	// function parameters/results. 32-bit on Wasm side, 8-bit on Go side.
+	WasmBool
 )
 
 type InlMark struct {
@@ -591,6 +603,7 @@ type Auto struct {
 type RegSpill struct {
 	Addr           Addr
 	Reg            int16
+	Reg2           int16
 	Spill, Unspill As
 }
 
@@ -625,10 +638,11 @@ type Link struct {
 	PosTable           src.PosTable
 	InlTree            InlTree
 	DwFixups           *DwarfFixupTable
+	DwTextCount        int
 	Imports            []goobj.ImportedPkg
 	DiagFunc           func(string, ...interface{})
 	DiagFlush          func()
-	DebugInfo          func(fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
+	DebugInfo          func(ctxt *Link, fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
 	GenAbstractFunc    func(fn *LSym)
 	Errors             int
 

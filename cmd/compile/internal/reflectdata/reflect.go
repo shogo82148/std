@@ -69,12 +69,11 @@ func WritePluginTable()
 
 func WriteBasicTypes()
 
-// GCSym returns a data symbol containing GC information for type t, along
-// with a boolean reporting whether the UseGCProg bit should be set in the
-// type kind, and the ptrdata field to record in the reflect type information.
+// GCSym returns a data symbol containing GC information for type t.
+// GC information is always a bitmask, never a gc program.
 // GCSym may be called in concurrent backend, so it does not emit the symbol
 // content.
-func GCSym(t *types.Type) (lsym *obj.LSym, useGCProg bool, ptrdata int64)
+func GCSym(t *types.Type) (lsym *obj.LSym, ptrdata int64)
 
 // ZeroAddr returns the address of a symbol with at least
 // size bytes of zeros.

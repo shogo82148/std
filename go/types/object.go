@@ -12,8 +12,20 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
+<<<<<<< HEAD
 // Objectは、パッケージ、定数、型、変数、関数（メソッドを含む）、またはラベルなどの名前付きの言語エンティティを表します。
 // すべてのオブジェクトはObjectインターフェースを実装しています。
+=======
+// An Object is a named language entity.
+// An Object may be a constant ([Const]), type name ([TypeName]),
+// variable or struct field ([Var]), function or method ([Func]),
+// imported package ([PkgName]), label ([Label]),
+// built-in function ([Builtin]),
+// or the predeclared identifier 'nil' ([Nil]).
+//
+// The environment, which is structured as a tree of Scopes,
+// maps each name to the unique Object that it denotes.
+>>>>>>> upstream/release-branch.go1.25
 type Object interface {
 	Parent() *Scope
 	Pos() token.Pos
@@ -53,7 +65,6 @@ func Id(pkg *Package, name string) string
 type PkgName struct {
 	object
 	imported *Package
-	used     bool
 }
 
 // NewPkgNameは、インポートされたパッケージを表す新しいPkgNameオブジェクトを返します。
@@ -77,7 +88,15 @@ func NewConst(pos token.Pos, pkg *Package, name string, typ Type, val constant.V
 // Valは定数の値を返します。
 func (obj *Const) Val() constant.Value
 
+<<<<<<< HEAD
 // TypeNameは(定義済みまたはエイリアスの)型の名前を表します。
+=======
+// A TypeName is an [Object] that represents a type with a name:
+// a defined type ([Named]),
+// an alias type ([Alias]),
+// a type parameter ([TypeParam]),
+// or a predeclared type such as int or error.
+>>>>>>> upstream/release-branch.go1.25
 type TypeName struct {
 	object
 }
@@ -95,17 +114,52 @@ func (obj *TypeName) IsAlias() bool
 
 type Var struct {
 	object
-	embedded bool
-	isField  bool
-	used     bool
 	origin   *Var
+	kind     VarKind
+	embedded bool
 }
 
+<<<<<<< HEAD
 // NewVarは新しい変数を返します。
 // 引数はすべてのオブジェクトで見つかった属性を設定します。
 func NewVar(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
 // NewParam は関数のパラメータを表す新しい変数を返します。
+=======
+// A VarKind discriminates the various kinds of variables.
+type VarKind uint8
+
+const (
+	_ VarKind = iota
+	PackageVar
+	LocalVar
+	RecvVar
+	ParamVar
+	ResultVar
+	FieldVar
+)
+
+func (kind VarKind) String() string
+
+// Kind reports what kind of variable v is.
+func (v *Var) Kind() VarKind
+
+// SetKind sets the kind of the variable.
+// It should be used only immediately after [NewVar] or [NewParam].
+func (v *Var) SetKind(kind VarKind)
+
+// NewVar returns a new variable.
+// The arguments set the attributes found with all Objects.
+//
+// The caller must subsequently call [Var.SetKind]
+// if the desired Var is not of kind [PackageVar].
+func NewVar(pos token.Pos, pkg *Package, name string, typ Type) *Var
+
+// NewParam returns a new variable representing a function parameter.
+//
+// The caller must subsequently call [Var.SetKind] if the desired Var
+// is not of kind [ParamVar]: for example, [RecvVar] or [ResultVar].
+>>>>>>> upstream/release-branch.go1.25
 func NewParam(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
 // NewFieldは、構造体のフィールドを表す新しい変数を返します。

@@ -19,7 +19,16 @@
 // 型推論は、すべての式([ast.Expr])の型([Type])を計算し、言語仕様に準拠しているかをチェックします。
 // 型推論の結果については、[Info]のTypesフィールドを使用してください。
 //
+<<<<<<< HEAD
 // チュートリアルについては、https://go.dev/s/types-tutorial を参照してください。
+=======
+// Applications that need to type-check one or more complete packages
+// of Go source code may find it more convenient not to invoke the
+// type checker directly but instead to use the Load function in
+// package [golang.org/x/tools/go/packages].
+//
+// For a tutorial, see https://go.dev/s/types-tutorial.
+>>>>>>> upstream/release-branch.go1.25
 package types
 
 import (
@@ -154,9 +163,33 @@ type Info struct {
 	// （カッコで囲まれた）組み込み関数を示す識別子に対して、記録されるシグネチャは呼び出し側に特化されます：
 	// 呼び出し結果が定数でない場合、記録される型は引数ごとのシグネチャとなります。それ以外の場合、記録される型は無効です。
 	//
+<<<<<<< HEAD
 	// Typesマップはすべての識別子の型を記録するのではなく、任意の式が許される場所に現れる識別子のみを記録します。
 	// たとえば、セレクタ式x.fの中の識別子fはSelectionsマップにのみ存在し、変数宣言 'var z int' の中の識別子zはDefsマップにのみ存在し、
 	// 限定識別子内のパッケージを示す識別子はUsesマップに収集されます。
+=======
+	// For (possibly parenthesized) identifiers denoting built-in
+	// functions, the recorded signatures are call-site specific:
+	// if the call result is not a constant, the recorded type is
+	// an argument-specific signature. Otherwise, the recorded type
+	// is invalid.
+	//
+	// The Types map does not record the type of every identifier,
+	// only those that appear where an arbitrary expression is
+	// permitted. For instance:
+	// - an identifier f in a selector expression x.f is found
+	//   only in the Selections map;
+	// - an identifier z in a variable declaration 'var z int'
+	//   is found only in the Defs map;
+	// - an identifier p denoting a package in a qualified
+	//   identifier p.X is found only in the Uses map.
+	//
+	// Similarly, no type is recorded for the (synthetic) FuncType
+	// node in a FuncDecl.Type field, since there is no corresponding
+	// syntactic function type expression in the source in this case
+	// Instead, the function type is found in the Defs map entry for
+	// the corresponding function declaration.
+>>>>>>> upstream/release-branch.go1.25
 	Types map[ast.Expr]TypeAndValue
 
 	// インスタンス変数は、ジェネリックな型や関数を指定する識別子を、その型引数とインスタンス化された型とのマッピングする。
@@ -172,7 +205,14 @@ type Info struct {
 	//
 	// 埋め込まれたフィールドの場合、Defsはフィールド*Varを返します。
 	//
+<<<<<<< HEAD
 	// 不変条件: Defs[id] == nil || Defs[id].Pos() == id.Pos()
+=======
+	// In ill-typed code, such as a duplicate declaration of the
+	// same name, Defs may lack an entry for a declaring identifier.
+	//
+	// Invariant: Defs[id] == nil || Defs[id].Pos() == id.Pos()
+>>>>>>> upstream/release-branch.go1.25
 	Defs map[*ast.Ident]Object
 
 	// マップは識別子をその指すオブジェクトに使用します。

@@ -78,21 +78,44 @@ type Dialer struct {
 
 	// Controlがnilでない場合、ネットワーク接続の作成後に、実際にダイアルする前に呼び出されます。
 	//
+<<<<<<< HEAD
 	// Control関数に渡されるネットワークとアドレスのパラメータは、必ずしもDialに渡されるものとは限りません。たとえば、Dialに「tcp」を渡すと、Control関数は「tcp4」または「tcp6」で呼び出されます。
+=======
+	// Network and address parameters passed to Control function are not
+	// necessarily the ones passed to Dial. Calling Dial with TCP networks
+	// will cause the Control function to be called with "tcp4" or "tcp6",
+	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
+	// and other known networks are passed as-is.
+>>>>>>> upstream/release-branch.go1.25
 	//
 	// ControlContextがnilでない場合、Controlは無視されます。
 	Control func(network, address string, c syscall.RawConn) error
 
 	// ControlContextがnilでない場合、ネットワークの接続を作成する前に呼び出されます。
 	//
+<<<<<<< HEAD
 	// ControlContext関数に渡されるネットワークおよびアドレスのパラメータは、必ずしもDialに渡されたものではありません。
 	// 例えば、Dialに"tcp"を渡すと、ControlContext関数は "tcp4" または "tcp6" とともに呼び出されます。
+=======
+	// Network and address parameters passed to ControlContext function are not
+	// necessarily the ones passed to Dial. Calling Dial with TCP networks
+	// will cause the ControlContext function to be called with "tcp4" or "tcp6",
+	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
+	// and other known networks are passed as-is.
+>>>>>>> upstream/release-branch.go1.25
 	//
 	// ControlContextがnilでない場合、Controlは無視されます。
 	ControlContext func(ctx context.Context, network, address string, c syscall.RawConn) error
 
+<<<<<<< HEAD
 	// もしmptcpStatusがMPTCPを許可する値に設定されている場合、"tcp(4|6)"というネットワークを使用するDialの呼び出しは、オペレーティングシステムでサポートされていればMPTCPを使用します。
 	mptcpStatus mptcpStatus
+=======
+	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
+	// used, any call to Dial with "tcp(4|6)" as network will use MPTCP if
+	// supported by the operating system.
+	mptcpStatus mptcpStatusDial
+>>>>>>> upstream/release-branch.go1.25
 }
 
 // MultipathTCPはMPTCPを使用するかどうかを報告します。
@@ -179,9 +202,17 @@ type ListenConfig struct {
 	// Controlがnilでない場合、ネットワーク接続を作成した後、
 	// オペレーティングシステムにバインドする前に呼び出されます。
 	//
+<<<<<<< HEAD
 	// Controlメソッドに渡されるネットワークとアドレスのパラメータは、
 	// 必ずしもListenに渡されるものとは限りません。例えば、"tcp"を
 	// Listenに渡すと、Control関数へは"tcp4"または"tcp6"が渡されます。
+=======
+	// Network and address parameters passed to Control function are not
+	// necessarily the ones passed to Listen. Calling Listen with TCP networks
+	// will cause the Control function to be called with "tcp4" or "tcp6",
+	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
+	// and other known networks are passed as-is.
+>>>>>>> upstream/release-branch.go1.25
 	Control func(network, address string, c syscall.RawConn) error
 
 	// KeepAlive specifies the keep-alive period for network
@@ -207,7 +238,7 @@ type ListenConfig struct {
 	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
 	// used, any call to Listen with "tcp(4|6)" as network will use MPTCP if
 	// supported by the operating system.
-	mptcpStatus mptcpStatus
+	mptcpStatus mptcpStatusListen
 }
 
 // MultipathTCPはMPTCPが使用されるかどうかを報告します。
@@ -224,12 +255,28 @@ func (lc *ListenConfig) SetMultipathTCP(use bool)
 
 // Listenはローカルネットワークアドレスでアナウンスします。
 //
+<<<<<<< HEAD
 // ネットワークおよびアドレスの詳細については、func Listenを参照してください。
+=======
+// See func Listen for a description of the network and address
+// parameters.
+//
+// The ctx argument is used while resolving the address on which to listen;
+// it does not affect the returned Listener.
+>>>>>>> upstream/release-branch.go1.25
 func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Listener, error)
 
 // ListenPacketはローカルネットワークアドレスでアナウンスします。
 //
+<<<<<<< HEAD
 // ネットワークとアドレスのパラメーターの説明については、func ListenPacketを参照してください。
+=======
+// See func ListenPacket for a description of the network and address
+// parameters.
+//
+// The ctx argument is used while resolving the address on which to listen;
+// it does not affect the returned PacketConn.
+>>>>>>> upstream/release-branch.go1.25
 func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address string) (PacketConn, error)
 
 // Listenはローカルネットワークアドレスでアナウンスします。

@@ -57,8 +57,16 @@ const NoPos Pos = 0
 // IsValid は位置が有効かどうかを報告します。
 func (p Pos) IsValid() bool
 
+<<<<<<< HEAD
 // Fileは、[FileSet] に属するファイルのハンドルです。
 // Fileには名前、サイズ、行オフセット表があります。
+=======
+// A File is a handle for a file belonging to a [FileSet].
+// A File has a name, size, and line offset table.
+//
+// Use [FileSet.AddFile] to create a File.
+// A File may belong to more than one FileSet; see [FileSet.AddExistingFiles].
+>>>>>>> upstream/release-branch.go1.25
 type File struct {
 	name string
 	base int
@@ -130,8 +138,14 @@ func (f *File) Pos(offset int) Pos
 
 // Offsetは、指定されたファイル位置pのオフセットを返します。
 //
+<<<<<<< HEAD
 // pがファイルの開始位置より前（またはpがNoPos）の場合、結果は0です。
 // pがファイルの終了位置を過ぎている場合、結果はファイルサイズです（go.dev/issue/57490も参照してください）。
+=======
+// If p is before the file's start position (or if p is NoPos),
+// the result is 0; if p is past the file's end position,
+// the result is the file size (see also go.dev/issue/57490).
+>>>>>>> upstream/release-branch.go1.25
 //
 // 一般的なオフセット値には当てはまらないが、結果のオフセットに対しては次の不変性が保持されます：
 // f.Offset(f.Pos(offset)) == offset
@@ -164,7 +178,7 @@ func (f *File) Position(p Pos) (pos Position)
 type FileSet struct {
 	mutex sync.RWMutex
 	base  int
-	files []*File
+	tree  tree
 	last  atomic.Pointer[File]
 }
 
@@ -180,14 +194,33 @@ func (s *FileSet) Base() int
 // ただし、offsは範囲[0、size]にあり、したがってpは範囲[base、base+size]にあります。便宜上、 [File.Pos] はファイル固有の位置値をファイルオフセットから作成するために使用できます。
 func (s *FileSet) AddFile(filename string, base, size int) *File
 
+<<<<<<< HEAD
 // RemoveFileは、 [FileSet] からファイルを削除し、その後の [Pos] 間隔のクエリが負の結果を返すようにします。
 // これにより、長寿命の [FileSet] のメモリ使用量が減少し、無制限のファイルストリームに遭遇した場合でも処理が可能になります。
+=======
+// AddExistingFiles adds the specified files to the
+// FileSet if they are not already present.
+// The caller must ensure that no pair of Files that
+// would appear in the resulting FileSet overlap.
+func (s *FileSet) AddExistingFiles(files ...*File)
+
+// RemoveFile removes a file from the [FileSet] so that subsequent
+// queries for its [Pos] interval yield a negative result.
+// This reduces the memory usage of a long-lived [FileSet] that
+// encounters an unbounded stream of files.
+>>>>>>> upstream/release-branch.go1.25
 //
 // セットに属さないファイルを削除しても効果はありません。
 func (s *FileSet) RemoveFile(file *File)
 
+<<<<<<< HEAD
 // ファイルセット内のファイルを追加された順にfに呼び出し、fがfalseを返すまで繰り返します。
 func (s *FileSet) Iterate(f func(*File) bool)
+=======
+// Iterate calls yield for the files in the file set in ascending Base
+// order until yield returns false.
+func (s *FileSet) Iterate(yield func(*File) bool)
+>>>>>>> upstream/release-branch.go1.25
 
 // File関数は、位置pを含むファイルを返します。
 // 該当するファイルが見つからない場合（たとえばp == [NoPos] の場合）、結果はnilです。

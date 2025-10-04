@@ -93,6 +93,12 @@ const (
 	BlockLOONG64GEZ
 	BlockLOONG64FPT
 	BlockLOONG64FPF
+	BlockLOONG64BEQ
+	BlockLOONG64BNE
+	BlockLOONG64BGE
+	BlockLOONG64BLT
+	BlockLOONG64BGEU
+	BlockLOONG64BLTU
 
 	BlockMIPSEQ
 	BlockMIPSNE
@@ -282,6 +288,7 @@ const (
 	Op386BSFL
 	Op386BSFW
 	Op386LoweredCtz32
+	Op386LoweredCtz64
 	Op386BSRL
 	Op386BSRW
 	Op386BSWAPL
@@ -471,6 +478,8 @@ const (
 	OpAMD64DIVLU
 	OpAMD64DIVWU
 	OpAMD64NEGLflags
+	OpAMD64ADDQconstflags
+	OpAMD64ADDLconstflags
 	OpAMD64ADDQcarry
 	OpAMD64ADCQ
 	OpAMD64ADDQconstcarry
@@ -736,6 +745,9 @@ const (
 	OpAMD64SQRTSD
 	OpAMD64SQRTSS
 	OpAMD64ROUNDSD
+	OpAMD64LoweredRound32F
+	OpAMD64LoweredRound64F
+	OpAMD64VFMADD231SS
 	OpAMD64VFMADD231SD
 	OpAMD64MINSD
 	OpAMD64MINSS
@@ -956,6 +968,13 @@ const (
 	OpAMD64SHRXLloadidx8
 	OpAMD64SHRXQloadidx1
 	OpAMD64SHRXQloadidx8
+	OpAMD64PUNPCKLBW
+	OpAMD64PSHUFLW
+	OpAMD64PSHUFBbroadcast
+	OpAMD64VPBROADCASTB
+	OpAMD64PSIGNB
+	OpAMD64PCMPEQB
+	OpAMD64PMOVMSKB
 
 	OpARMADD
 	OpARMADDconst
@@ -1399,9 +1418,13 @@ const (
 	OpARM64MOVWload
 	OpARM64MOVWUload
 	OpARM64MOVDload
-	OpARM64LDP
 	OpARM64FMOVSload
 	OpARM64FMOVDload
+	OpARM64LDP
+	OpARM64LDPW
+	OpARM64LDPSW
+	OpARM64FLDPD
+	OpARM64FLDPS
 	OpARM64MOVDloadidx
 	OpARM64MOVWloadidx
 	OpARM64MOVWUloadidx
@@ -1422,9 +1445,12 @@ const (
 	OpARM64MOVHstore
 	OpARM64MOVWstore
 	OpARM64MOVDstore
-	OpARM64STP
 	OpARM64FMOVSstore
 	OpARM64FMOVDstore
+	OpARM64STP
+	OpARM64STPW
+	OpARM64FSTPD
+	OpARM64FSTPS
 	OpARM64MOVBstoreidx
 	OpARM64MOVHstoreidx
 	OpARM64MOVWstoreidx
@@ -1436,18 +1462,6 @@ const (
 	OpARM64MOVDstoreidx8
 	OpARM64FMOVSstoreidx4
 	OpARM64FMOVDstoreidx8
-	OpARM64MOVBstorezero
-	OpARM64MOVHstorezero
-	OpARM64MOVWstorezero
-	OpARM64MOVDstorezero
-	OpARM64MOVQstorezero
-	OpARM64MOVBstorezeroidx
-	OpARM64MOVHstorezeroidx
-	OpARM64MOVWstorezeroidx
-	OpARM64MOVDstorezeroidx
-	OpARM64MOVHstorezeroidx2
-	OpARM64MOVWstorezeroidx4
-	OpARM64MOVDstorezeroidx8
 	OpARM64FMOVDgpfp
 	OpARM64FMOVDfpgp
 	OpARM64FMOVSgpfp
@@ -1531,8 +1545,10 @@ const (
 	OpARM64STLRW
 	OpARM64LoweredAtomicExchange64
 	OpARM64LoweredAtomicExchange32
+	OpARM64LoweredAtomicExchange8
 	OpARM64LoweredAtomicExchange64Variant
 	OpARM64LoweredAtomicExchange32Variant
+	OpARM64LoweredAtomicExchange8Variant
 	OpARM64LoweredAtomicAdd64
 	OpARM64LoweredAtomicAdd32
 	OpARM64LoweredAtomicAdd64Variant
@@ -1559,7 +1575,27 @@ const (
 	OpARM64LoweredPanicBoundsC
 	OpARM64PRFM
 	OpARM64DMB
+	OpARM64ZERO
 
+	OpLOONG64NEGV
+	OpLOONG64NEGF
+	OpLOONG64NEGD
+	OpLOONG64SQRTD
+	OpLOONG64SQRTF
+	OpLOONG64ABSD
+	OpLOONG64CLZW
+	OpLOONG64CLZV
+	OpLOONG64CTZW
+	OpLOONG64CTZV
+	OpLOONG64REVB2H
+	OpLOONG64REVB2W
+	OpLOONG64REVBV
+	OpLOONG64BITREV4B
+	OpLOONG64BITREVW
+	OpLOONG64BITREVV
+	OpLOONG64VPCNT64
+	OpLOONG64VPCNT32
+	OpLOONG64VPCNT16
 	OpLOONG64ADDV
 	OpLOONG64ADDVconst
 	OpLOONG64SUBV
@@ -1587,6 +1623,7 @@ const (
 	OpLOONG64XORconst
 	OpLOONG64NOR
 	OpLOONG64NORconst
+<<<<<<< HEAD
 	OpLOONG64NEGV
 	OpLOONG64NEGF
 	OpLOONG64NEGD
@@ -1594,11 +1631,36 @@ const (
 	OpLOONG64SQRTF
 	OpLOONG64MASKEQZ
 	OpLOONG64MASKNEZ
+=======
+	OpLOONG64ANDN
+	OpLOONG64ORN
+	OpLOONG64FMADDF
+	OpLOONG64FMADDD
+	OpLOONG64FMSUBF
+	OpLOONG64FMSUBD
+	OpLOONG64FNMADDF
+	OpLOONG64FNMADDD
+	OpLOONG64FNMSUBF
+	OpLOONG64FNMSUBD
+	OpLOONG64FMINF
+	OpLOONG64FMIND
+	OpLOONG64FMAXF
+	OpLOONG64FMAXD
+	OpLOONG64MASKEQZ
+	OpLOONG64MASKNEZ
+	OpLOONG64FCOPYSGD
+	OpLOONG64SLL
+>>>>>>> upstream/release-branch.go1.25
 	OpLOONG64SLLV
+	OpLOONG64SLLconst
 	OpLOONG64SLLVconst
+	OpLOONG64SRL
 	OpLOONG64SRLV
+	OpLOONG64SRLconst
 	OpLOONG64SRLVconst
+	OpLOONG64SRA
 	OpLOONG64SRAV
+	OpLOONG64SRAconst
 	OpLOONG64SRAVconst
 	OpLOONG64ROTR
 	OpLOONG64ROTRV
@@ -1614,6 +1676,8 @@ const (
 	OpLOONG64CMPGED
 	OpLOONG64CMPGTF
 	OpLOONG64CMPGTD
+	OpLOONG64BSTRPICKW
+	OpLOONG64BSTRPICKV
 	OpLOONG64MOVVconst
 	OpLOONG64MOVFconst
 	OpLOONG64MOVDconst
@@ -1627,16 +1691,39 @@ const (
 	OpLOONG64MOVVload
 	OpLOONG64MOVFload
 	OpLOONG64MOVDload
+	OpLOONG64MOVVloadidx
+	OpLOONG64MOVWloadidx
+	OpLOONG64MOVWUloadidx
+	OpLOONG64MOVHloadidx
+	OpLOONG64MOVHUloadidx
+	OpLOONG64MOVBloadidx
+	OpLOONG64MOVBUloadidx
+	OpLOONG64MOVFloadidx
+	OpLOONG64MOVDloadidx
 	OpLOONG64MOVBstore
 	OpLOONG64MOVHstore
 	OpLOONG64MOVWstore
 	OpLOONG64MOVVstore
 	OpLOONG64MOVFstore
 	OpLOONG64MOVDstore
+	OpLOONG64MOVBstoreidx
+	OpLOONG64MOVHstoreidx
+	OpLOONG64MOVWstoreidx
+	OpLOONG64MOVVstoreidx
+	OpLOONG64MOVFstoreidx
+	OpLOONG64MOVDstoreidx
 	OpLOONG64MOVBstorezero
 	OpLOONG64MOVHstorezero
 	OpLOONG64MOVWstorezero
 	OpLOONG64MOVVstorezero
+	OpLOONG64MOVBstorezeroidx
+	OpLOONG64MOVHstorezeroidx
+	OpLOONG64MOVWstorezeroidx
+	OpLOONG64MOVVstorezeroidx
+	OpLOONG64MOVWfpgp
+	OpLOONG64MOVWgpfp
+	OpLOONG64MOVVfpgp
+	OpLOONG64MOVVgpfp
 	OpLOONG64MOVBreg
 	OpLOONG64MOVBUreg
 	OpLOONG64MOVHreg
@@ -1655,6 +1742,8 @@ const (
 	OpLOONG64TRUNCDV
 	OpLOONG64MOVFD
 	OpLOONG64MOVDF
+	OpLOONG64LoweredRound32F
+	OpLOONG64LoweredRound64F
 	OpLOONG64CALLstatic
 	OpLOONG64CALLtail
 	OpLOONG64CALLclosure
@@ -1669,16 +1758,24 @@ const (
 	OpLOONG64LoweredAtomicStore8
 	OpLOONG64LoweredAtomicStore32
 	OpLOONG64LoweredAtomicStore64
-	OpLOONG64LoweredAtomicStorezero32
-	OpLOONG64LoweredAtomicStorezero64
+	OpLOONG64LoweredAtomicStore8Variant
+	OpLOONG64LoweredAtomicStore32Variant
+	OpLOONG64LoweredAtomicStore64Variant
 	OpLOONG64LoweredAtomicExchange32
 	OpLOONG64LoweredAtomicExchange64
+	OpLOONG64LoweredAtomicExchange8Variant
 	OpLOONG64LoweredAtomicAdd32
 	OpLOONG64LoweredAtomicAdd64
-	OpLOONG64LoweredAtomicAddconst32
-	OpLOONG64LoweredAtomicAddconst64
 	OpLOONG64LoweredAtomicCas32
 	OpLOONG64LoweredAtomicCas64
+	OpLOONG64LoweredAtomicCas64Variant
+	OpLOONG64LoweredAtomicCas32Variant
+	OpLOONG64LoweredAtomicAnd32
+	OpLOONG64LoweredAtomicOr32
+	OpLOONG64LoweredAtomicAnd32value
+	OpLOONG64LoweredAtomicAnd64value
+	OpLOONG64LoweredAtomicOr32value
+	OpLOONG64LoweredAtomicOr64value
 	OpLOONG64LoweredNilCheck
 	OpLOONG64FPFlagTrue
 	OpLOONG64FPFlagFalse
@@ -1686,9 +1783,12 @@ const (
 	OpLOONG64LoweredGetCallerSP
 	OpLOONG64LoweredGetCallerPC
 	OpLOONG64LoweredWB
+	OpLOONG64LoweredPubBarrier
 	OpLOONG64LoweredPanicBoundsA
 	OpLOONG64LoweredPanicBoundsB
 	OpLOONG64LoweredPanicBoundsC
+	OpLOONG64PRELD
+	OpLOONG64PRELDX
 
 	OpMIPSADD
 	OpMIPSADDconst
@@ -1799,6 +1899,7 @@ const (
 	OpMIPSLoweredGetCallerSP
 	OpMIPSLoweredGetCallerPC
 	OpMIPSLoweredWB
+	OpMIPSLoweredPubBarrier
 	OpMIPSLoweredPanicBoundsA
 	OpMIPSLoweredPanicBoundsB
 	OpMIPSLoweredPanicBoundsC
@@ -1930,6 +2031,7 @@ const (
 	OpMIPS64LoweredGetCallerSP
 	OpMIPS64LoweredGetCallerPC
 	OpMIPS64LoweredWB
+	OpMIPS64LoweredPubBarrier
 	OpMIPS64LoweredPanicBoundsA
 	OpMIPS64LoweredPanicBoundsB
 	OpMIPS64LoweredPanicBoundsC
@@ -1955,6 +2057,7 @@ const (
 	OpPPC64MULHD
 	OpPPC64MULHW
 	OpPPC64MULHDU
+	OpPPC64MULHDUCC
 	OpPPC64MULHWU
 	OpPPC64FMUL
 	OpPPC64FMULS
@@ -2157,6 +2260,7 @@ const (
 	OpPPC64LoweredAtomicLoadPtr
 	OpPPC64LoweredAtomicAdd32
 	OpPPC64LoweredAtomicAdd64
+	OpPPC64LoweredAtomicExchange8
 	OpPPC64LoweredAtomicExchange32
 	OpPPC64LoweredAtomicExchange64
 	OpPPC64LoweredAtomicCas64
@@ -2233,19 +2337,36 @@ const (
 	OpRISCV64SRAIW
 	OpRISCV64SRLI
 	OpRISCV64SRLIW
+	OpRISCV64SH1ADD
+	OpRISCV64SH2ADD
+	OpRISCV64SH3ADD
 	OpRISCV64AND
+	OpRISCV64ANDN
 	OpRISCV64ANDI
+	OpRISCV64CLZ
+	OpRISCV64CLZW
+	OpRISCV64CPOP
+	OpRISCV64CPOPW
+	OpRISCV64CTZ
+	OpRISCV64CTZW
 	OpRISCV64NOT
 	OpRISCV64OR
+	OpRISCV64ORN
 	OpRISCV64ORI
+	OpRISCV64REV8
 	OpRISCV64ROL
 	OpRISCV64ROLW
 	OpRISCV64ROR
 	OpRISCV64RORI
 	OpRISCV64RORIW
 	OpRISCV64RORW
+	OpRISCV64XNOR
 	OpRISCV64XOR
 	OpRISCV64XORI
+	OpRISCV64MIN
+	OpRISCV64MAX
+	OpRISCV64MINU
+	OpRISCV64MAXU
 	OpRISCV64SEQZ
 	OpRISCV64SNEZ
 	OpRISCV64SLT
@@ -2855,6 +2976,7 @@ const (
 	OpCtz16
 	OpCtz32
 	OpCtz64
+	OpCtz64On32
 	OpCtz8NonZero
 	OpCtz16NonZero
 	OpCtz32NonZero
@@ -2887,6 +3009,10 @@ const (
 	OpRoundToEven
 	OpAbs
 	OpCopysign
+	OpMin64
+	OpMax64
+	OpMin64u
+	OpMax64u
 	OpMin64F
 	OpMin32F
 	OpMax64F
@@ -2991,11 +3117,7 @@ const (
 	OpIMake
 	OpITab
 	OpIData
-	OpStructMake0
-	OpStructMake1
-	OpStructMake2
-	OpStructMake3
-	OpStructMake4
+	OpStructMake
 	OpStructSelect
 	OpArrayMake0
 	OpArrayMake1
@@ -3032,6 +3154,7 @@ const (
 	OpCvt64Fto64U
 	OpSelect0
 	OpSelect1
+	OpMakeTuple
 	OpSelectN
 	OpSelectNAddr
 	OpMakeResult
@@ -3047,6 +3170,7 @@ const (
 	OpAtomicStorePtrNoWB
 	OpAtomicStoreRel32
 	OpAtomicStoreRel64
+	OpAtomicExchange8
 	OpAtomicExchange32
 	OpAtomicExchange64
 	OpAtomicAdd32
@@ -3060,8 +3184,21 @@ const (
 	OpAtomicAnd32
 	OpAtomicOr64
 	OpAtomicOr32
+<<<<<<< HEAD
+=======
+	OpAtomicAnd64value
+	OpAtomicAnd32value
+	OpAtomicAnd8value
+	OpAtomicOr64value
+	OpAtomicOr32value
+	OpAtomicOr8value
+	OpAtomicStore8Variant
+	OpAtomicStore32Variant
+	OpAtomicStore64Variant
+>>>>>>> upstream/release-branch.go1.25
 	OpAtomicAdd32Variant
 	OpAtomicAdd64Variant
+	OpAtomicExchange8Variant
 	OpAtomicExchange32Variant
 	OpAtomicExchange64Variant
 	OpAtomicCompareAndSwap32Variant

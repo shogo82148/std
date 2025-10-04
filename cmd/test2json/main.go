@@ -34,12 +34,22 @@
 // Goの構造体に対応します：
 //
 //	type TestEvent struct {
+<<<<<<< HEAD
 //		Time    time.Time // RFC3339形式の文字列としてエンコードされます
 //		Action  string
 //		Package string
 //		Test    string
 //		Elapsed float64 // 秒単位
 //		Output  string
+=======
+//		Time        time.Time // encodes as an RFC3339-format string
+//		Action      string
+//		Package     string
+//		Test        string
+//		Elapsed     float64 // seconds
+//		Output      string
+//		FailedBuild string
+>>>>>>> upstream/release-branch.go1.25
 //	}
 //
 // Timeフィールドはイベントが発生した時刻を保持しています。
@@ -74,10 +84,25 @@
 // 置換文字を使用して有効なUTF-8に変換されます。この例外を除いて、
 // Outputフィールドのすべての出力イベントの連結がテストの実行の正確な出力です。
 //
+<<<<<<< HEAD
 // ベンチマークが実行されると、通常はタイミング結果を示す1行の出力が生成されます。
 // その行は、Action == "output"かつTestフィールドが存在しないイベントで報告されます。
 // ベンチマークが出力を記録したり失敗を報告した場合
 // （たとえば、b.Logやb.Errorを使用することによって）、その追加の出力は
 // ベンチマーク名が設定されたイベントのシーケンスとして報告され、最後のイベントは
 // Action == "bench"または"fail"です。ベンチマークにはAction == "pause"のイベントはありません。
+=======
+// The FailedBuild field is set for Action == "fail" if the test failure was
+// caused by a build failure. It contains the package ID of the package that
+// failed to build. This matches the ImportPath field of the "go list" output,
+// as well as the BuildEvent.ImportPath field as emitted by "go build -json".
+//
+// When a benchmark runs, it typically produces a single line of output
+// giving timing results. That line is reported in an event with Action == "output"
+// and no Test field. If a benchmark logs output or reports a failure
+// (for example, by using b.Log or b.Error), that extra output is reported
+// as a sequence of events with Test set to the benchmark name, terminated
+// by a final event with Action == "bench" or "fail".
+// Benchmarks have no events with Action == "pause".
+>>>>>>> upstream/release-branch.go1.25
 package main

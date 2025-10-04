@@ -57,9 +57,15 @@ type Reader struct {
 // If r does not also implement [io.ByteReader],
 // the decompressor may read more data than necessary from r.
 //
+<<<<<<< HEAD
 // [Reader] を使用し終わった後は、呼び出し元の責任でCloseを呼び出す必要があります。
 //
 // [Reader] によって返される [Reader.Header] フィールドは有効です。
+=======
+// It is the caller's responsibility to call [Reader.Close] when done.
+//
+// The Reader.[Header] fields will be valid in the [Reader] returned.
+>>>>>>> upstream/release-branch.go1.25
 func NewReader(r io.Reader) (*Reader, error)
 
 // Resetは [Reader] zの状態を破棄し、 [NewReader] からの元の状態の結果と同等にしますが、代わりにrから読み込みます。
@@ -81,9 +87,18 @@ func (z *Reader) Reset(r io.Reader) error
 // 次のストリームが存在しない場合、z.Reset（r）は [io.EOF] を返します。
 func (z *Reader) Multistream(ok bool)
 
+<<<<<<< HEAD
 // Readは、基になるReaderから圧縮されていないバイトを読み込むために [io.Reader] を実装しています。
 func (z *Reader) Read(p []byte) (n int, err error)
 
 // CloseはReaderを閉じます。ただし、基本となる [io.Reader] は閉じません。
 // GZIPのチェックサムを検証するためには、 [io.EOF] まで完全に消費する必要があります。
+=======
+// Read implements [io.Reader], reading uncompressed bytes from its underlying reader.
+func (z *Reader) Read(p []byte) (n int, err error)
+
+// Close closes the [Reader]. It does not close the underlying reader.
+// In order for the GZIP checksum to be verified, the reader must be
+// fully consumed until the [io.EOF].
+>>>>>>> upstream/release-branch.go1.25
 func (z *Reader) Close() error

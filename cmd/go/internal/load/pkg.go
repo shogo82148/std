@@ -141,7 +141,6 @@ type PackageInternal struct {
 	ExeName           string
 	FuzzInstrument    bool
 	Cover             CoverSetup
-	CoverVars         map[string]*CoverVar
 	OmitDebug         bool
 	GobinSubdir       bool
 	BuildInfo         *debug.BuildInfo
@@ -180,12 +179,6 @@ func (e *NoGoError) Error() string
 // the vendored paths, so nothing should ever call p.vendored(p.Imports).
 func (p *Package) Resolve(imports []string) []string
 
-// CoverVar holds the name of the generated coverage variables targeting the named file.
-type CoverVar struct {
-	File string
-	Var  string
-}
-
 // CoverSetup holds parameters related to coverage setup for a given package (covermode, etc).
 type CoverSetup struct {
 	Mode    string
@@ -195,11 +188,10 @@ type CoverSetup struct {
 
 // A PackageError describes an error loading information about a package.
 type PackageError struct {
-	ImportStack      []string
+	ImportStack      ImportStack
 	Pos              string
 	Err              error
 	IsImportCycle    bool
-	Hard             bool
 	alwaysPrintStack bool
 }
 
@@ -234,18 +226,29 @@ var (
 
 func ImportErrorf(path, format string, args ...any) ImportPathError
 
+type ImportInfo struct {
+	Pkg string
+	Pos *token.Position
+}
+
 // An ImportStack is a stack of import paths, possibly with the suffix " (test)" appended.
 // The import path of a test package is the import path of the corresponding
 // non-test package with the suffix "_test" added.
-type ImportStack []string
+type ImportStack []ImportInfo
 
-func (s *ImportStack) Push(p string)
+func NewImportInfo(pkg string, pos *token.Position) ImportInfo
+
+func (s *ImportStack) Push(p ImportInfo)
 
 func (s *ImportStack) Pop()
 
-func (s *ImportStack) Copy() []string
+func (s *ImportStack) Copy() ImportStack
 
-func (s *ImportStack) Top() string
+func (s *ImportStack) Pkgs() []string
+
+func (s *ImportStack) PkgsWithPos() []string
+
+func (s *ImportStack) Top() (ImportInfo, bool)
 
 // Mode flags for loadImport and download (in get.go).
 const (
@@ -269,7 +272,7 @@ const (
 	GetTestDeps
 )
 
-// LoadPackage does Load import, but without a parent package load contezt
+// LoadPackage does Load import, but without a parent package load context
 func LoadPackage(ctx context.Context, opts PackageOpts, path, srcDir string, stk *ImportStack, importPos []token.Position, mode int) *Package
 
 // ResolveImportPath returns the true meaning of path when it appears in parent.
@@ -424,6 +427,9 @@ func PackagesAndErrors(ctx context.Context, opts PackageOpts, patterns []string)
 // dependencies, then exits with a non-zero status if any errors were found.
 func CheckPackageErrors(pkgs []*Package)
 
+// PackageErrors calls report for errors encountered loading pkgs and their dependencies.
+func PackageErrors(pkgs []*Package, report func(*Package))
+
 // GoFilesPackage creates a package for building a collection of Go files
 // (typically named on the command line). The target is named p.a for
 // package p or named after the first Go file for package main.
@@ -457,9 +463,3 @@ func EnsureImport(p *Package, pkg string)
 func PrepareForCoverageBuild(pkgs []*Package)
 
 func SelectCoverPackages(roots []*Package, match []func(*Package) bool, op string) []*Package
-
-// DeclareCoverVars attaches the required cover variables names
-// to the files, to be used when annotating the files. This
-// function only called when using legacy coverage test/build
-// (e.g. GOEXPERIMENT=coverageredesign is off).
-func DeclareCoverVars(p *Package, files ...string) map[string]*CoverVar

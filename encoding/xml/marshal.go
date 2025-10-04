@@ -29,6 +29,7 @@ const (
 //   - データを取得するために使用された構造体フィールドの名前
 //   - マーシャルされた型の名前
 //
+<<<<<<< HEAD
 // 構造体のXML要素には、構造体のエクスポートされた各フィールドのマーシャルされた要素が含まれますが、以下の例外があります：
 //   - 上記で説明したXMLNameフィールドは省略されます。
 //   - タグ "-" のフィールドは省略されます。
@@ -42,6 +43,37 @@ const (
 //   - 匿名の構造体フィールドは、その値のフィールドが外部の構造体の一部であるかのように処理されます。
 //   - [Marshaler] を実装するフィールドは、そのMarshalXMLメソッドを呼び出して書き込まれます。
 //   - [encoding.TextMarshaler] を実装するフィールドは、そのMarshalTextメソッドの結果をテキストとしてエンコードして書き込まれます。
+=======
+// The XML element for a struct contains marshaled elements for each of the
+// exported fields of the struct, with these exceptions:
+//   - the XMLName field, described above, is omitted.
+//   - a field with tag "-" is omitted.
+//   - a field with tag "name,attr" becomes an attribute with
+//     the given name in the XML element.
+//   - a field with tag ",attr" becomes an attribute with the
+//     field name in the XML element.
+//   - a field with tag ",chardata" is written as character data,
+//     not as an XML element.
+//   - a field with tag ",cdata" is written as character data
+//     wrapped in one or more <![CDATA[ ... ]]> tags, not as an XML element.
+//   - a field with tag ",innerxml" is written verbatim, not subject
+//     to the usual marshaling procedure.
+//   - a field with tag ",comment" is written as an XML comment, not
+//     subject to the usual marshaling procedure. It must not contain
+//     the "--" string within it.
+//   - a field with a tag including the "omitempty" option is omitted
+//     if the field value is empty. The empty values are false, 0, any
+//     nil pointer or interface value, and any array, slice, map, or
+//     string of length zero.
+//   - an anonymous struct field is handled as if the fields of its
+//     value were part of the outer struct.
+//   - an anonymous struct field of interface type is treated the same as having
+//     that type as its name, rather than being anonymous.
+//   - a field implementing [Marshaler] is written by calling its MarshalXML
+//     method.
+//   - a field implementing [encoding.TextMarshaler] is written by encoding the
+//     result of its MarshalText method as text.
+>>>>>>> upstream/release-branch.go1.25
 //
 // フィールドがタグ "a>b>c" を使用する場合、要素cは親要素aとbの内部にネストされます。
 // 同じ親を名指す隣接するフィールドは、1つのXML要素内に囲まれます。

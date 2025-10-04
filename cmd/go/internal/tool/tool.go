@@ -15,11 +15,22 @@ var CmdTool = &base.Command{
 	Short:     "run specified go tool",
 	Long: `
 Tool runs the go tool command identified by the arguments.
+
+Go ships with a number of builtin tools, and additional tools
+may be defined in the go.mod of the current module.
+
 With no arguments it prints the list of known tools.
 
 The -n flag causes tool to print the command that would be
 executed but not execute it.
 
-For more about each tool command, see 'go doc cmd/<command>'.
+The -modfile=file.mod build flag causes tool to use an alternate file
+instead of the go.mod in the module root directory.
+
+Tool also provides the -C, -overlay, and -modcacherw build flags.
+
+For more about build flags, see 'go help build'.
+
+For more about each builtin tool command, see 'go doc cmd/<command>'.
 `,
 }

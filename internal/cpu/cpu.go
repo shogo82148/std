@@ -67,11 +67,24 @@ var ARM64 struct {
 	HasSHA1    bool
 	HasSHA2    bool
 	HasSHA512  bool
+	HasSHA3    bool
 	HasCRC32   bool
 	HasATOMICS bool
 	HasCPUID   bool
 	IsNeoverse bool
 	_          CacheLinePad
+}
+
+// The booleans in Loong64 contain the correspondingly named cpu feature bit.
+// The struct is padded to avoid false sharing.
+var Loong64 struct {
+	_         CacheLinePad
+	HasLSX    bool
+	HasLASX   bool
+	HasCRC32  bool
+	HasLAMCAS bool
+	HasLAM_BH bool
+	_         CacheLinePad
 }
 
 var MIPS64X struct {
@@ -119,6 +132,18 @@ var S390X struct {
 	HasECDSA  bool
 	HasEDDSA  bool
 	_         CacheLinePad
+}
+
+// RISCV64 contains the supported CPU features and performance characteristics for riscv64
+// platforms. The booleans in RISCV64, with the exception of HasFastMisaligned, indicate
+// the presence of RISC-V extensions.
+// The struct is padded to avoid false sharing.
+var RISCV64 struct {
+	_                 CacheLinePad
+	HasFastMisaligned bool
+	HasV              bool
+	HasZbb            bool
+	_                 CacheLinePad
 }
 
 // Initialize examines the processor and sets the relevant variables above.

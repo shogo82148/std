@@ -2,8 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 // flateパッケージは、DEFLATE圧縮データ形式を実装しています。RFC 1951で説明されています。
 // gzipとzlibパッケージは、DEFLATEベースのファイル形式へのアクセスを実装しています。
+=======
+// Package flate implements the DEFLATE compressed data format, described in
+// RFC 1951.  The [compress/gzip] and [compress/zlib] packages implement access
+// to DEFLATE-based file formats.
+>>>>>>> upstream/release-branch.go1.25
 package flate
 
 import (
@@ -45,9 +51,15 @@ type Resetter interface {
 	Reset(r io.Reader, dict []byte) error
 }
 
+<<<<<<< HEAD
 // [NewReader] で必要とされる実際の読み取りインターフェース。
 // 渡された io.Reader が ReadByte も持っていない場合、
 // [NewReader] は自身のバッファリングを導入します。
+=======
+// The actual read interface needed by [NewReader].
+// If the passed in [io.Reader] does not also have ReadByte,
+// the [NewReader] will introduce its own buffering.
+>>>>>>> upstream/release-branch.go1.25
 type Reader interface {
 	io.Reader
 	io.ByteReader
@@ -63,10 +75,18 @@ type Reader interface {
 // NewReaderによって返される [io.ReadCloser] は、 [Resetter] も実装しています。
 func NewReader(r io.Reader) io.ReadCloser
 
+<<<<<<< HEAD
 // NewReaderDictは [NewReader] と同じようにリーダーを初期化しますが、
 // 事前に設定された辞書でリーダーを初期化します。
 // 返されたリーダーは、与えられた辞書で圧縮解除されたデータストリームが開始されたかのように振る舞います。
 // この辞書は既に読み取られています。通常、NewWriterDictで圧縮されたデータを読み込むためにNewReaderDictが使用されます。
+=======
+// NewReaderDict is like [NewReader] but initializes the reader
+// with a preset dictionary. The returned reader behaves as if
+// the uncompressed data stream started with the given dictionary,
+// which has already been read. NewReaderDict is typically used
+// to read data compressed by [NewWriterDict].
+>>>>>>> upstream/release-branch.go1.25
 //
 // NewReaderによって返されたReadCloserは [Resetter] も実装しています。
 func NewReaderDict(r io.Reader, dict []byte) io.ReadCloser

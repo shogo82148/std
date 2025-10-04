@@ -25,7 +25,14 @@ type Block struct {
 	Bytes   []byte
 }
 
+<<<<<<< HEAD
 // Decodeは入力内で次のPEM形式のブロック（証明書、秘密鍵など）を見つけます。それはそのブロックと入力の残り部分を返します。PEMデータが見つからない場合は、pがnilであり、入力全体がrestとして返されます。
+=======
+// Decode will find the next PEM formatted block (certificate, private key
+// etc) in the input. It returns that block and the remainder of the input. If
+// no PEM data is found, p is nil and the whole of the input is returned in
+// rest. Blocks must start at the beginning of a line and end at the end of a line.
+>>>>>>> upstream/release-branch.go1.25
 func Decode(data []byte) (p *Block, rest []byte)
 
 // Encodeは、bのPEMエンコーディングをoutに書き込みます。

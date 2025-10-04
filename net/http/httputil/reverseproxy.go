@@ -23,8 +23,16 @@ type ProxyRequest struct {
 	Out *http.Request
 }
 
+<<<<<<< HEAD
 // SetURLは、ターゲットに指定されたスキーム、ホスト、およびベースパスに従って、アウトバウンドリクエストをルーティングします。
 // もしターゲットのパスが"/base"であり、受信したリクエストが"/dir"である場合、ターゲットリクエストは"/base/dir"となります。
+=======
+// SetURL routes the outbound request to the scheme, host, and base path
+// provided in target. If the target's path is "/base" and the incoming
+// request was for "/dir", the target request will be for "/base/dir".
+// To route requests without joining the incoming path,
+// set r.Out.URL directly.
+>>>>>>> upstream/release-branch.go1.25
 //
 // SetURLは、アウトバウンドのHostヘッダをターゲットのホストに合わせて書き換えます。
 // インバウンドのリクエストのHostヘッダを保持するために（[NewSingleHostReverseProxy] のデフォルトの動作）：
@@ -53,7 +61,19 @@ func (r *ProxyRequest) SetXForwarded()
 
 // ReverseProxyは、受信したリクエストを別のサーバーに送信し、レスポンスをクライアントにプロキシするHTTPハンドラです。
 //
+<<<<<<< HEAD
 // もし基礎となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、1xxのレスポンスはクライアントに転送されます。
+=======
+// 1xx responses are forwarded to the client if the underlying
+// transport supports ClientTrace.Got1xxResponse.
+//
+// Hop-by-hop headers (see RFC 9110, section 7.6.1), including
+// Connection, Proxy-Connection, Keep-Alive, Proxy-Authenticate,
+// Proxy-Authorization, TE, Trailer, Transfer-Encoding, and Upgrade,
+// are removed from client requests and backend responses.
+// The Rewrite function may be used to add hop-by-hop headers to the request,
+// and the ModifyResponse function may be used to remove them from the response.
+>>>>>>> upstream/release-branch.go1.25
 type ReverseProxy struct {
 
 	// Rewriteは、リクエストを変更してTransportを使用して送信される新しいリクエストに変換する関数でなければなりません。
@@ -100,8 +120,18 @@ type ReverseProxy struct {
 	// この関数は、バックエンドからのレスポンスがある場合に呼び出されます（HTTPのステータスコードに関係なく）。
 	// バックエンドに到達できない場合は、オプションのErrorHandlerが呼び出され、ModifyResponseは呼び出されません。
 	//
+<<<<<<< HEAD
 	// ModifyResponseがエラーを返す場合、それに対してErrorHandlerが呼び出されます。
 	// ErrorHandlerがnilの場合は、デフォルトの実装が使用されます。
+=======
+	// Hop-by-hop headers are removed from the response before
+	// calling ModifyResponse. ModifyResponse may need to remove
+	// additional headers to fit its deployment model, such as Alt-Svc.
+	//
+	// If ModifyResponse returns an error, ErrorHandler is called
+	// with its error value. If ErrorHandler is nil, its default
+	// implementation is used.
+>>>>>>> upstream/release-branch.go1.25
 	ModifyResponse func(*http.Response) error
 
 	// ErrorHandlerは、バックエンドに到達したエラーやModifyResponseからのエラーを処理するオプションの関数です。

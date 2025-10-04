@@ -7,6 +7,7 @@ package objfile
 
 import (
 	"github.com/shogo82148/std/debug/dwarf"
+	"github.com/shogo82148/std/debug/gosym"
 	"github.com/shogo82148/std/os"
 )
 
@@ -61,8 +62,6 @@ func (f *File) LoadAddress() (uint64, error)
 
 func (f *File) DWARF() (*dwarf.Data, error)
 
-func (f *File) Disasm() (*Disasm, error)
-
 func (e *Entry) Name() string
 
 func (e *Entry) Symbols() ([]Sym, error)
@@ -81,3 +80,7 @@ func (e *Entry) LoadAddress() (uint64, error)
 // DWARF returns DWARF debug data for the file, if any.
 // This is for cmd/pprof to locate cgo functions.
 func (e *Entry) DWARF() (*dwarf.Data, error)
+
+type Liner interface {
+	PCToLine(uint64) (string, int, *gosym.Func)
+}

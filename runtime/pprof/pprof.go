@@ -38,9 +38,18 @@
 //	        if err != nil {
 //	            log.Fatal("could not create memory profile: ", err)
 //	        }
+<<<<<<< HEAD
 //	        defer f.Close() // エラーハンドリングは例外です
 //	        runtime.GC() // 最新の統計情報を取得
 //	        if err := pprof.WriteHeapProfile(f); err != nil {
+=======
+//	        defer f.Close() // error handling omitted for example
+//	        runtime.GC() // get up-to-date statistics
+//	        // Lookup("allocs") creates a profile similar to go test -memprofile.
+//	        // Alternatively, use Lookup("heap") for a profile
+//	        // that has inuse_space as the default index.
+//	        if err := pprof.Lookup("allocs").WriteTo(f, 0); err != nil {
+>>>>>>> upstream/release-branch.go1.25
 //	            log.Fatal("could not write memory profile: ", err)
 //	        }
 //	    }
@@ -128,6 +137,7 @@ import (
 // 例えば、他のゴルーチンがロックを取得しようと待っている間に長時間保持されたロックは、
 // ロックが最終的に解除されたとき（つまり、[sync.Mutex.Unlock] で）に競合を報告します。
 //
+<<<<<<< HEAD
 // サンプル値は、他のゴルーチンがロックを待ってブロックされていた累積時間に相当し、
 // [runtime.SetMutexProfileFraction] によって指定されたイベントベースのサンプリングに従います。
 // 例えば、ある呼び出し元がロックを1秒間保持していて、他の5つのゴルーチンがそのロックを獲得するために
@@ -136,6 +146,14 @@ import (
 // ランタイム内部のロックは常に "runtime._LostContendedRuntimeLock" の位置で報告されます。ランタイム内部のロックに対する
 // より詳細なスタックトレースは、`GODEBUG=runtimecontentionstacks=1` を設定することで取得できます（注意事項については
 // [runtime] パッケージのドキュメントを参照してください）。
+=======
+// Sample values correspond to the approximate cumulative time other goroutines
+// spent blocked waiting for the lock, subject to event-based sampling
+// specified by [runtime.SetMutexProfileFraction]. For example, if a caller
+// holds a lock for 1s while 5 other goroutines are waiting for the entire
+// second to acquire the lock, its unlock call stack will report 5s of
+// contention.
+>>>>>>> upstream/release-branch.go1.25
 type Profile struct {
 	name  string
 	mu    sync.Mutex

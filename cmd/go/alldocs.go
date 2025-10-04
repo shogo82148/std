@@ -37,6 +37,7 @@
 //
 // 追加のヘルプトピック:
 //
+<<<<<<< HEAD
 //	buildconstraint ビルド制約
 //	buildmode       ビルドモード
 //	c               GoとC間の呼び出し
@@ -54,6 +55,27 @@
 //	testflag        テストフラグ
 //	testfunc        テスト関数
 //	vcs             GOVCSでバージョン管理を制御
+=======
+//	buildconstraint build constraints
+//	buildjson       build -json encoding
+//	buildmode       build modes
+//	c               calling between Go and C
+//	cache           build and test caching
+//	environment     environment variables
+//	filetype        file types
+//	goauth          GOAUTH environment variable
+//	go.mod          the go.mod file
+//	gopath          GOPATH environment variable
+//	goproxy         module proxy protocol
+//	importpath      import path syntax
+//	modules         modules, module versions, and more
+//	module-auth     module authentication using go.sum
+//	packages        package lists and patterns
+//	private         configuration for downloading non-public code
+//	testflag        testing flags
+//	testfunc        testing functions
+//	vcs             controlling version control with GOVCS
+>>>>>>> upstream/release-branch.go1.25
 //
 // "go help <トピック>"を使用して、そのトピックに関する詳細情報を取得します。
 //
@@ -144,10 +166,19 @@
 //			かなり高価です。
 //		-coverを設定します。
 //	-coverpkg pattern1,pattern2,pattern3
+<<<<<<< HEAD
 //		'メイン'パッケージをターゲットとするビルド（つまり、Go実行可能ファイルをビルドする）の場合、
 //		各パターンに一致するパッケージに対してカバレッジ分析を適用します。
 //		デフォルトでは、メインのGoモジュール内のパッケージにカバレッジ分析を適用します。
 //		パッケージパターンの説明については、「go help packages」を参照してください。-coverを設定します。
+=======
+//		For a build that targets package 'main' (e.g. building a Go
+//		executable), apply coverage analysis to each package whose
+//		import path matches the patterns. The default is to apply
+//		coverage analysis to packages in the main Go module. See
+//		'go help packages' for a description of package patterns.
+//		Sets -cover.
+>>>>>>> upstream/release-branch.go1.25
 //	-v
 //		コンパイルされるパッケージの名前を表示します。
 //	-work
@@ -174,12 +205,24 @@
 //	-gcflags '[pattern=]arg list'
 //		各go tool compile呼び出しに渡す引数。
 //	-installsuffix suffix
+<<<<<<< HEAD
 //		パッケージインストールディレクトリの名前に使用する接尾辞、
 //		デフォルトのビルドから出力を分けて保持するため。
 //		-raceフラグを使用している場合、インストール接尾辞は自動的にraceに設定されます
 //		または、明示的に設定されている場合、_raceが追加されます。同様に-msan
 //		および-asanフラグについても同様です。デフォルト以外のコンパイル
 //		フラグが必要な-buildmodeオプションを使用すると、同様の効果があります。
+=======
+//		a suffix to use in the name of the package installation directory,
+//		in order to keep output separate from default builds.
+//		If using the -race flag, the install suffix is automatically set to race
+//		or, if set explicitly, has _race appended to it. Likewise for the -msan
+//		and -asan flags. Using a -buildmode option that requires non-default compile
+//		flags has a similar effect.
+//	-json
+//		Emit build output in JSON suitable for automated processing.
+//		See 'go help buildjson' for the encoding details.
+>>>>>>> upstream/release-branch.go1.25
 //	-ldflags '[pattern=]arg list'
 //		各go tool link呼び出しに渡す引数。
 //	-linkshared
@@ -201,6 +244,7 @@
 //		-modfileが指定されている場合、代替のgo.sumファイルも使用されます。
 //		そのパスは、".mod"拡張子をトリミングして".sum"を追加することで-modfileフラグから派生します。
 //	-overlay file
+<<<<<<< HEAD
 //		ビルド操作のオーバーレイを提供するJSON設定ファイルを読み込みます。
 //		ファイルは、'Replace'という名前の単一のフィールドを持つJSON構造で、
 //		各ディスクファイルパス（文字列）をそのバッキングファイルパスにマッピングします。
@@ -209,6 +253,19 @@
 //		-overlayフラグのサポートにはいくつかの制限があります。
 //		重要な点として、インクルードパスの外部から含まれるcgoファイルは、それらが含まれるGoパッケージと同じディレクトリに
 //		存在しなければならず、オーバーレイはgo runおよびgo testを通じて実行されるバイナリとテストには表示されません。
+=======
+//		read a JSON config file that provides an overlay for build operations.
+//		The file is a JSON object with a single field, named 'Replace', that
+//		maps each disk file path (a string) to its backing file path, so that
+//		a build will run as if the disk file path exists with the contents
+//		given by the backing file paths, or as if the disk file path does not
+//		exist if its backing file path is empty. Support for the -overlay flag
+//		has some limitations: importantly, cgo files included from outside the
+//		include path must be in the same directory as the Go package they are
+//		included from, overlays will not appear when binaries and tests are
+//		run through go run and go test respectively, and files beneath
+//		GOMODCACHE may not be replaced.
+>>>>>>> upstream/release-branch.go1.25
 //	-pgo file
 //		プロファイルガイド付き最適化（PGO）のプロファイルのファイルパスを指定します。
 //		特別な名前"auto"が指定された場合、ビルドの各メインパッケージについて、
@@ -361,7 +418,13 @@
 // 例：
 //
 //	go doc
+<<<<<<< HEAD
 //		現在のパッケージのドキュメンテーションを表示します。
+=======
+//		Show documentation for current package.
+//	go doc -http
+//		Serve HTML documentation over HTTP for the current package.
+>>>>>>> upstream/release-branch.go1.25
 //	go doc Foo
 //		現在のパッケージのFooに関するドキュメンテーションを表示します。
 //		(Fooは大文字で始まるため、パッケージパスと一致することはありません。)
@@ -395,6 +458,7 @@
 //
 // フラグ：
 //
+<<<<<<< HEAD
 //	-all
 //		パッケージのすべてのドキュメンテーションを表示します。
 //	-c
@@ -411,6 +475,30 @@
 //		型の宣言、または囲むconstブロックなどです。そのため、出力にはエクスポートされていない詳細が含まれる可能性があります。
 //	-u
 //		エクスポートされたシンボル、メソッド、フィールドだけでなく、エクスポートされていないもののドキュメンテーションも表示します。
+=======
+//		-all
+//			Show all the documentation for the package.
+//		-c
+//			Respect case when matching symbols.
+//		-cmd
+//			Treat a command (package main) like a regular package.
+//			Otherwise package main's exported symbols are hidden
+//			when showing the package's top-level documentation.
+//	  	-http
+//			Serve HTML docs over HTTP.
+//		-short
+//			One-line representation for each symbol.
+//		-src
+//			Show the full source code for the symbol. This will
+//			display the full Go source of its declaration and
+//			definition, such as a function definition (including
+//			the body), type declaration or enclosing const
+//			block. The output may therefore include unexported
+//			details.
+//		-u
+//			Show documentation for unexported as well as exported
+//			symbols, methods, and fields.
+>>>>>>> upstream/release-branch.go1.25
 //
 // # Print Go environment information
 //
@@ -604,7 +692,7 @@
 //
 // 使用法:
 //
-//	go get [-t] [-u] [-v] [build flags] [packages]
+//	go get [-t] [-u] [-tool] [build flags] [packages]
 //
 // Getは、コマンドライン引数を特定のモジュールバージョンのパッケージに解決し、
 // go.modを更新してそれらのバージョンを要求し、ソースコードをモジュールキャッシュにダウンロードします。
@@ -652,7 +740,16 @@
 //
 // -tフラグと-uフラグが一緒に使用されると、getはテスト依存関係も更新します。
 //
+<<<<<<< HEAD
 // -xフラグは、実行されるコマンドを出力します。これは、モジュールが直接リポジトリからダウンロードされるときにバージョン管理コマンドをデバッグするのに便利です。
+=======
+// The -tool flag instructs go to add a matching tool line to go.mod for each
+// listed package. If -tool is used with @none, the line will be removed.
+//
+// The -x flag prints commands as they are executed. This is useful for
+// debugging version control commands when a module is downloaded directly
+// from a repository.
+>>>>>>> upstream/release-branch.go1.25
 //
 // ビルドフラグの詳細については、「go help build」を参照してください。
 //
@@ -662,9 +759,13 @@
 //
 // パッケージの指定についての詳細は、'go help packages'を参照してください。
 //
+<<<<<<< HEAD
 // このテキストは、ソースコードと依存関係の管理にモジュールを使用してgetの動作を説明しています。代わりにgoコマンドがGOPATHモードで実行されている場合、getのフラグと効果の詳細が変わり、'go help get'も変わります。'go help gopath-get'を参照してください。
 //
 // 参照してください: go build, go install, go clean, go mod.
+=======
+// See also: go build, go install, go clean, go mod.
+>>>>>>> upstream/release-branch.go1.25
 //
 // # Compile and install packages and dependencies
 //
@@ -961,12 +1062,22 @@
 // セマンティックバージョニングに従って、最初から最新の順に並べられます。このフラグはまた、
 // デフォルトの出力形式を変更して、モジュールパスに続いてスペースで区切られたバージョンリストを表示します。
 //
+<<<<<<< HEAD
 // -retractedフラグを使用すると、listは撤回されたモジュールバージョンに関する情報を報告します。
 // -retractedが-fまたは-jsonと一緒に使用されると、Retractedフィールドは、
 // バージョンがなぜ撤回されたかを説明する文字列に設定されます。
 // この文字列は、モジュールのgo.modファイルのretractディレクティブのコメントから取得されます。
 // -retractedが-versionsと一緒に使用されると、撤回されたバージョンと撤回されていないバージョンが一緒にリストされます。
 // -retractedフラグは、-mの有無に関係なく使用できます。
+=======
+// The -retracted flag causes list to report information about retracted
+// module versions. When -retracted is used with -f or -json, the Retracted
+// field explains why the version was retracted.
+// The strings are taken from comments on the retract directive in the
+// module's go.mod file. When -retracted is used with -versions, retracted
+// versions are listed together with unretracted versions. The -retracted
+// flag may be used with or without -m.
+>>>>>>> upstream/release-branch.go1.25
 //
 // list -mへの引数は、パッケージではなくモジュールのリストとして解釈されます。
 // メインモジュールは、現在のディレクトリを含むモジュールです。
@@ -1129,9 +1240,22 @@
 // バージョンは、"v1.2.3"のような単一のバージョンまたは"[v1.1.0,v1.1.9]"のような閉区間である可能性があります。
 // その撤回が既に存在する場合、-retract=versionは何も操作を行わないことに注意してください。
 //
+<<<<<<< HEAD
 // -godebug, -dropgodebug, -require, -droprequire, -exclude, -dropexclude,
 // -replace, -dropreplace, -retract, および -dropretract の編集フラグは
 // 繰り返し使用することができ、与えられた順序で変更が適用されます。
+=======
+// The -tool=path and -droptool=path flags add and drop a tool declaration
+// for the given path.
+//
+// The -ignore=path and -dropignore=path flags add and drop a ignore declaration
+// for the given path.
+//
+// The -godebug, -dropgodebug, -require, -droprequire, -exclude, -dropexclude,
+// -replace, -dropreplace, -retract, -dropretract, -tool, -droptool, -ignore,
+// and -dropignore editing flags may be repeated, and the changes are applied
+// in the order given.
+>>>>>>> upstream/release-branch.go1.25
 //
 // -printフラグは、最終的なgo.modをテキスト形式で印刷し、go.modに戻す代わりにそれを印刷します。
 //
@@ -1180,8 +1304,21 @@
 //		Rationale string
 //	}
 //
+<<<<<<< HEAD
 // 単一のバージョンを表すRetractエントリ（間隔ではない）は、
 // "Low"と"High"のフィールドが同じ値に設定されます。
+=======
+//	type Tool struct {
+//		Path string
+//	}
+//
+//	type Ignore struct {
+//		Path string
+//	}
+//
+// Retract entries representing a single version (not an interval) will have
+// the "Low" and "High" fields set to the same value.
+>>>>>>> upstream/release-branch.go1.25
 //
 // Note that this only describes the go.mod file itself, not other modules
 // referred to indirectly. For the full set of modules available to a build,
@@ -1217,10 +1354,16 @@
 // Initは、新しいgo.modファイルを初期化し、現在のディレクトリに書き込むことで、
 // 現在のディレクトリをルートとする新しいモジュールを作成します。go.modファイルはすでに存在していてはなりません。
 //
+<<<<<<< HEAD
 // Initは、新しいモジュールのモジュールパスを1つのオプション引数として受け入れます。もし
 // モジュールパス引数が省略された場合、initは.goファイルのインポートコメント、
 // ベンダーツールの設定ファイル（Gopkg.lockのような）、そして現在のディレクトリ（GOPATH内であれば）を
 // 使用してモジュールパスを推測しようとします。
+=======
+// Init accepts one optional argument, the module path for the new module. If the
+// module path argument is omitted, init will attempt to infer the module path
+// using import comments in .go files and the current directory (if in GOPATH).
+>>>>>>> upstream/release-branch.go1.25
 //
 // See https://golang.org/ref/mod#go-mod-init for more about 'go mod init'.
 //
@@ -1609,6 +1752,11 @@
 // To enable both collection and uploading, run “go telemetry on”.
 // To disable both collection and uploading, run "go telemetry off".
 //
+// The current telemetry mode is also available as the value of the
+// non-settable "GOTELEMETRY" go env variable. The directory in the
+// local file system that telemetry data is written to is available
+// as the value of the non-settable "GOTELEMETRYDIR" go env variable.
+//
 // See https://go.dev/doc/telemetry for more information on telemetry.
 //
 // # Test packages
@@ -1675,6 +1823,7 @@
 // go testはテストバイナリを再度実行する代わりに前回の出力を再表示します。これが発生すると、
 // go testはサマリーラインの経過時間の代わりに '(cached)' を印刷します。
 //
+<<<<<<< HEAD
 // キャッシュの一致ルールは、実行が同じテストバイナリを含み、
 // コマンドラインのフラグが完全に「キャッシュ可能な」テストフラグの制限されたセットから来ることです。
 // これらのフラグは、-benchtime、-cpu、-list、-parallel、-run、-short、-timeout、-failfast、-fullpath、および-vです。
@@ -1685,6 +1834,22 @@
 // ファイルや環境変数が変更されていない将来の実行と一致します。
 // キャッシュされたテスト結果は全く時間がかからずに実行されたものとして扱われるため、
 // 成功したパッケージテスト結果はキャッシュされ、-timeout設定に関係なく再利用されます。
+=======
+// The rule for a match in the cache is that the run involves the same
+// test binary and the flags on the command line come entirely from a
+// restricted set of 'cacheable' test flags, defined as -benchtime,
+// -coverprofile, -cpu, -failfast, -fullpath, -list, -outputdir, -parallel,
+// -run, -short, -skip, -timeout and -v.
+// If a run of go test has any test or non-test flags outside this set,
+// the result is not cached. To disable test caching, use any test flag
+// or argument other than the cacheable flags. The idiomatic way to disable
+// test caching explicitly is to use -count=1. Tests that open files within
+// the package's module or that consult environment variables only
+// match future runs in which the files and environment variables are
+// unchanged. A cached test result is treated as executing in no time
+// at all, so a successful package test result will be cached and
+// reused regardless of -timeout setting.
+>>>>>>> upstream/release-branch.go1.25
 //
 // ビルドフラグに加えて、'go test'自体が処理するフラグは以下の通りです：
 //
@@ -1702,8 +1867,14 @@
 //	    'go run'と同じです。詳細は'go help run'を参照してください。
 //
 //	-json
+<<<<<<< HEAD
 //	    テスト出力を自動処理に適したJSONに変換します。
 //	    エンコーディングの詳細については'go doc test2json'を参照してください。
+=======
+//	    Convert test output to JSON suitable for automated processing.
+//	    See 'go doc test2json' for the encoding details.
+//	    Also emits build output in JSON. See 'go help buildjson'.
+>>>>>>> upstream/release-branch.go1.25
 //
 //	-o file
 //	    テストバイナリを指定したファイルにコンパイルします。
@@ -1725,18 +1896,38 @@
 //
 //	go tool [-n] command [args...]
 //
+<<<<<<< HEAD
 // Toolは、引数で識別されるgoツールコマンドを実行します。
 // 引数がない場合、既知のツールのリストを表示します。
+=======
+// Tool runs the go tool command identified by the arguments.
+//
+// Go ships with a number of builtin tools, and additional tools
+// may be defined in the go.mod of the current module.
+//
+// With no arguments it prints the list of known tools.
+>>>>>>> upstream/release-branch.go1.25
 //
 // -nフラグは、toolに実行されるコマンドを表示させるが実行はさせないようにします。
 //
+<<<<<<< HEAD
 // 各ツールコマンドの詳細については、'go doc cmd/<command>'を参照してください。
+=======
+// The -modfile=file.mod build flag causes tool to use an alternate file
+// instead of the go.mod in the module root directory.
+//
+// Tool also provides the -C, -overlay, and -modcacherw build flags.
+//
+// For more about build flags, see 'go help build'.
+//
+// For more about each builtin tool command, see 'go doc cmd/<command>'.
+>>>>>>> upstream/release-branch.go1.25
 //
 // # Print Go version
 //
 // 使用法：
 //
-//	go version [-m] [-v] [file ...]
+//	go version [-m] [-v] [-json] [file ...]
 //
 // Versionは、Goバイナリファイルのビルド情報を表示します。
 //
@@ -1754,7 +1945,14 @@
 // モジュールバージョン情報を表示します（利用可能な場合）。出力では、モジュール
 // 情報はバージョンラインに続く複数の行で構成され、各行は先頭のタブ文字でインデントされます。
 //
+<<<<<<< HEAD
 // 参照：go doc runtime/debug.BuildInfo.
+=======
+// The -json flag is similar to -m but outputs the runtime/debug.BuildInfo in JSON format.
+// If flag -json is specified without -m, go version reports an error.
+//
+// See also: go doc runtime/debug.BuildInfo.
+>>>>>>> upstream/release-branch.go1.25
 //
 // # Report likely mistakes in packages
 //
@@ -1842,6 +2040,7 @@
 //
 // 定義されたアーキテクチャ機能のビルドタグは以下の通りです：
 //
+<<<<<<< HEAD
 //   - GOARCH=386の場合、GO386=387とGO386=sse2は
 //     それぞれ386.387と386.sse2のビルドタグを設定します。
 //   - GOARCH=amd64の場合、GOAMD64=v1、v2、v3は
@@ -1868,6 +2067,34 @@
 //     とriscv64.rva22u64のビルドタグに対応します。
 //   - GOARCH=wasmの場合、GOWASM=satconvとsignextは
 //     wasm.satconvとwasm.signextの機能ビルドタグに対応します。
+=======
+//   - For GOARCH=386, GO386=387 and GO386=sse2
+//     set the 386.387 and 386.sse2 build tags, respectively.
+//   - For GOARCH=amd64, GOAMD64=v1, v2, and v3
+//     correspond to the amd64.v1, amd64.v2, and amd64.v3 feature build tags.
+//   - For GOARCH=arm, GOARM=5, 6, and 7
+//     correspond to the arm.5, arm.6, and arm.7 feature build tags.
+//   - For GOARCH=arm64, GOARM64=v8.{0-9} and v9.{0-5}
+//     correspond to the arm64.v8.{0-9} and arm64.v9.{0-5} feature build tags.
+//   - For GOARCH=mips or mipsle,
+//     GOMIPS=hardfloat and softfloat
+//     correspond to the mips.hardfloat and mips.softfloat
+//     (or mipsle.hardfloat and mipsle.softfloat) feature build tags.
+//   - For GOARCH=mips64 or mips64le,
+//     GOMIPS64=hardfloat and softfloat
+//     correspond to the mips64.hardfloat and mips64.softfloat
+//     (or mips64le.hardfloat and mips64le.softfloat) feature build tags.
+//   - For GOARCH=ppc64 or ppc64le,
+//     GOPPC64=power8, power9, and power10 correspond to the
+//     ppc64.power8, ppc64.power9, and ppc64.power10
+//     (or ppc64le.power8, ppc64le.power9, and ppc64le.power10)
+//     feature build tags.
+//   - For GOARCH=riscv64,
+//     GORISCV64=rva20u64, rva22u64 and rva23u64 correspond to the riscv64.rva20u64,
+//     riscv64.rva22u64 and riscv64.rva23u64 build tags.
+//   - For GOARCH=wasm, GOWASM=satconv and signext
+//     correspond to the wasm.satconv and wasm.signext feature build tags.
+>>>>>>> upstream/release-branch.go1.25
 //
 // GOARCH=amd64、arm、ppc64、ppc64le、riscv64の場合、特定の機能レベルは
 // すべての前のレベルの機能ビルドタグも設定します。
@@ -1904,6 +2131,48 @@
 // has a term for a Go major release, the language version used when compiling
 // the file will be the minimum version implied by the build constraint.
 //
+// # Build -json encoding
+//
+// The 'go build', 'go install', and 'go test' commands take a -json flag that
+// reports build output and failures as structured JSON output on standard
+// output.
+//
+// The JSON stream is a newline-separated sequence of BuildEvent objects
+// corresponding to the Go struct:
+//
+//	type BuildEvent struct {
+//		ImportPath string
+//		Action     string
+//		Output     string
+//	}
+//
+// The ImportPath field gives the package ID of the package being built.
+// This matches the Package.ImportPath field of go list -json and the
+// TestEvent.FailedBuild field of go test -json. Note that it does not
+// match TestEvent.Package.
+//
+// The Action field is one of the following:
+//
+//	build-output - The toolchain printed output
+//	build-fail - The build failed
+//
+// The Output field is set for Action == "build-output" and is a portion of
+// the build's output. The concatenation of the Output fields of all output
+// events is the exact output of the build. A single event may contain one
+// or more lines of output and there may be more than one output event for
+// a given ImportPath. This matches the definition of the TestEvent.Output
+// field produced by go test -json.
+//
+// For go test -json, this struct is designed so that parsers can distinguish
+// interleaved TestEvents and BuildEvents by inspecting the Action field.
+// Furthermore, as with TestEvent, parsers can simply concatenate the Output
+// fields of all events to reconstruct the text format output, as it would
+// have appeared from go build without the -json flag.
+//
+// Note that there may also be non-JSON error text on standard error, even
+// with the -json flag. Typically, this indicates an early, serious error.
+// Consumers should be robust to this.
+//
 // # Build modes
 //
 // 'go build'と'go install'コマンドは-buildmode引数を取り、
@@ -1918,9 +2187,19 @@
 //		エクスポートされた関数だけになります。リストされるメインパッケージは1つだけでなければなりません。
 //
 //	-buildmode=c-shared
+<<<<<<< HEAD
 //		リストされたメインパッケージとそれがインポートするすべてのパッケージを
 //		C共有ライブラリにビルドします。呼び出し可能なシンボルは、cgo //exportコメントを使用して
 //		エクスポートされた関数だけになります。リストされるメインパッケージは1つだけでなければなりません。
+=======
+//		Build the listed main package, plus all packages it imports,
+//		into a C shared library. The only callable symbols will
+//		be those functions exported using a cgo //export comment.
+//		On wasip1, this mode builds it to a WASI reactor/library,
+//		of which the callable symbols are those functions exported
+//		using a //go:wasmexport directive. Requires exactly one
+//		main package to be listed.
+>>>>>>> upstream/release-branch.go1.25
 //
 //	-buildmode=default
 //		リストされたメインパッケージは実行可能ファイルに、リストされた非メインパッケージは.aファイルに
@@ -1952,10 +2231,20 @@
 // 最初の方法は、Goディストリビューションの一部であるcgoツールです。
 // その使用方法については、cgoのドキュメンテーション（go doc cmd/cgo）を参照してください。
 //
+<<<<<<< HEAD
 // 2つ目の方法は、SWIGプログラムで、これは言語間のインターフェースを作成する一般的なツールです。
 // SWIGについての情報は、http://swig.org/ を参照してください。
 // go buildを実行するとき、.swig拡張子を持つ任意のファイルはSWIGに渡されます。
 // .swigcxx拡張子を持つ任意のファイルは、-c++オプション付きでSWIGに渡されます。
+=======
+// The second is the SWIG program, which is a general tool for
+// interfacing between languages. For information on SWIG see
+// https://swig.org/. When running go build, any file with a .swig
+// extension will be passed to SWIG. Any file with a .swigcxx extension
+// will be passed to SWIG with the -c++ option. A package can't be just
+// a .swig or .swigcxx file; there must be at least one .go file, even if
+// it has just a package clause.
+>>>>>>> upstream/release-branch.go1.25
 //
 // cgoまたはSWIGを使用するとき、go buildは任意の.c、.m、.s、.S
 // または.sxファイルをCコンパイラに、任意の.cc、.cpp、.cxxファイルをC++
@@ -1964,10 +2253,19 @@
 //
 // # Build and test caching
 //
+<<<<<<< HEAD
 // goコマンドはビルドの出力をキャッシュして、将来のビルドで再利用します。
 // キャッシュデータのデフォルトの場所は、現在のオペレーティングシステムの標準ユーザーキャッシュディレクトリ内の
 // go-buildという名前のサブディレクトリです。GOCACHE環境変数を設定すると、このデフォルトが上書きされます。
 // 'go env GOCACHE'を実行すると、現在のキャッシュディレクトリが表示されます。
+=======
+// The go command caches build outputs for reuse in future builds.
+// The default location for cache data is a subdirectory named go-build
+// in the standard user cache directory for the current operating system.
+// The cache is safe for concurrent invocations of the go command.
+// Setting the GOCACHE environment variable overrides this default,
+// and running 'go env GOCACHE' prints the current cache directory.
+>>>>>>> upstream/release-branch.go1.25
 //
 // goコマンドは定期的に最近使用されていないキャッシュデータを削除します。
 // 'go clean -cache'を実行すると、すべてのキャッシュデータが削除されます。
@@ -2013,7 +2311,10 @@
 //
 // 汎用的な環境変数:
 //
+//	GCCGO
+//		The gccgo command to run for 'go build -compiler=gccgo'.
 //	GO111MODULE
+<<<<<<< HEAD
 //		goコマンドがモジュール対応モードで実行するか、GOPATHモードで実行するかを制御します。
 //		"off"、"on"、"auto"のいずれかになります。
 //		詳細は https://golang.org/ref/mod#mod-commands を参照してください。
@@ -2022,14 +2323,38 @@
 //	GOARCH
 //		コードをコンパイルするアーキテクチャ、またはプロセッサ。
 //		例えばamd64、386、arm、ppc64など。
+=======
+//		Controls whether the go command runs in module-aware mode or GOPATH mode.
+//		May be "off", "on", or "auto".
+//		See https://golang.org/ref/mod#mod-commands.
+//	GOARCH
+//		The architecture, or processor, for which to compile code.
+//		Examples are amd64, 386, arm, ppc64.
+//	GOAUTH
+//		Controls authentication for go-import and HTTPS module mirror interactions.
+//		See 'go help goauth'.
+>>>>>>> upstream/release-branch.go1.25
 //	GOBIN
 //		'go install'がコマンドをインストールするディレクトリ。
 //	GOCACHE
+<<<<<<< HEAD
 //		goコマンドが将来のビルドで再利用するためのキャッシュ情報を保存するディレクトリ。
 //	GOMODCACHE
 //		goコマンドがダウンロードしたモジュールを保存するディレクトリ。
 //	GODEBUG
 //		各種デバッグ機能を有効にします。詳細は https://go.dev/doc/godebug を参照してください。
+=======
+//		The directory where the go command will store cached
+//		information for reuse in future builds. Must be an absolute path.
+//	GOCACHEPROG
+//		A command (with optional space-separated flags) that implements an
+//		external go command build cache.
+//		See 'go doc cmd/go/internal/cacheprog'.
+//	GODEBUG
+//		Enable various debugging facilities for programs built with Go,
+//		including the go command. Cannot be set using 'go env -w'.
+//		See https://go.dev/doc/godebug for details.
+>>>>>>> upstream/release-branch.go1.25
 //	GOENV
 //		Go環境設定ファイルの場所。
 //		'go env -w'を使用して設定することはできません。
@@ -2040,15 +2365,26 @@
 //		エントリはスペースで区切られているため、フラグの値にはスペースを含めることはできません。
 //		コマンドラインにリストされたフラグは、このリストの後に適用されるため、それを上書きします。
 //	GOINSECURE
+<<<<<<< HEAD
 //		常に安全でない方法で取得するべきモジュールパスのプレフィックスのグロブパターンのカンマ区切りのリスト
 //		（Goのpath.Matchの構文）。
 //		直接取得される依存関係にのみ適用されます。
 //		GOINSECUREはチェックサムデータベースの検証を無効にしません。それを達成するためにはGOPRIVATEまたは
 //		GONOSUMDBを使用します。
+=======
+//		Comma-separated list of glob patterns (in the syntax of Go's path.Match)
+//		of module path prefixes that should always be fetched in an insecure
+//		manner. Only applies to dependencies that are being fetched directly.
+//		GOINSECURE does not disable checksum database validation. GOPRIVATE or
+//		GONOSUMDB may be used to achieve that.
+//	GOMODCACHE
+//		The directory where the go command will store downloaded modules.
+>>>>>>> upstream/release-branch.go1.25
 //	GOOS
 //		コードをコンパイルするオペレーティングシステム。
 //		例えばlinux、darwin、windows、netbsdなど。
 //	GOPATH
+<<<<<<< HEAD
 //		さまざまなファイルが保存される場所を制御します。詳細は 'go help gopath' を参照してください。
 //	GOPROXY
 //		GoモジュールプロキシのURL。詳細は https://golang.org/ref/mod#environment-variables
@@ -2058,15 +2394,36 @@
 //		（Goのpath.Matchの構文）。
 //		または、チェックサムデータベースと比較すべきでないもの。
 //		詳細は https://golang.org/ref/mod#private-modules を参照してください。
+=======
+//		Controls where various files are stored. See: 'go help gopath'.
+//	GOPRIVATE, GONOPROXY, GONOSUMDB
+//		Comma-separated list of glob patterns (in the syntax of Go's path.Match)
+//		of module path prefixes that should always be fetched directly
+//		or that should not be compared against the checksum database.
+//		See https://golang.org/ref/mod#private-modules.
+//	GOPROXY
+//		URL of Go module proxy. See https://golang.org/ref/mod#environment-variables
+//		and https://golang.org/ref/mod#module-proxy for details.
+>>>>>>> upstream/release-branch.go1.25
 //	GOROOT
 //		goツリーのルート。
 //	GOSUMDB
+<<<<<<< HEAD
 //		使用するチェックサムデータベースの名前と、オプションでその公開鍵と
 //		URL。詳細は https://golang.org/ref/mod#authenticating を参照してください。
 //	GOTOOLCHAIN
 //		使用するGoツールチェーンを制御します。詳細は https://go.dev/doc/toolchain を参照してください。
 //	GOTMPDIR
 //		goコマンドが一時的なソースファイル、パッケージ、バイナリを書き込むディレクトリ。
+=======
+//		The name of checksum database to use and optionally its public key and
+//		URL. See https://golang.org/ref/mod#authenticating.
+//	GOTMPDIR
+//		The directory where the go command will write
+//		temporary source files, packages, and binaries.
+//	GOTOOLCHAIN
+//		Controls which Go toolchain is used. See https://go.dev/doc/toolchain.
+>>>>>>> upstream/release-branch.go1.25
 //	GOVCS
 //		一致するサーバーで使用できるバージョン管理コマンドのリスト。
 //		詳細は 'go help vcs' を参照してください。
@@ -2083,9 +2440,13 @@
 //		gccgoコンパイラでビルドする際にライブラリアーカイブを操作するために使用するコマンド。
 //		デフォルトは 'ar' です。
 //	CC
+<<<<<<< HEAD
 //		Cコードをコンパイルするために使用するコマンド。
 //	CGO_ENABLED
 //		cgoコマンドがサポートされているかどうか。0または1。
+=======
+//		The command to use to compile C code.
+>>>>>>> upstream/release-branch.go1.25
 //	CGO_CFLAGS
 //		cgoがCコードをコンパイルする際にコンパイラに渡すフラグ。
 //	CGO_CFLAGS_ALLOW
@@ -2098,8 +2459,15 @@
 //		CGO_CFLAGS、CGO_CFLAGS_ALLOW、およびCGO_CFLAGS_DISALLOWと同様ですが、
 //		Cプリプロセッサ用です。
 //	CGO_CXXFLAGS, CGO_CXXFLAGS_ALLOW, CGO_CXXFLAGS_DISALLOW
+<<<<<<< HEAD
 //		CGO_CFLAGS、CGO_CFLAGS_ALLOW、およびCGO_CFLAGS_DISALLOWと同様ですが、
 //		C++コンパイラ用です。
+=======
+//		Like CGO_CFLAGS, CGO_CFLAGS_ALLOW, and CGO_CFLAGS_DISALLOW,
+//		but for the C++ compiler.
+//	CGO_ENABLED
+//		Whether the cgo command is supported. Either 0 or 1.
+>>>>>>> upstream/release-branch.go1.25
 //	CGO_FFLAGS, CGO_FFLAGS_ALLOW, CGO_FFLAGS_DISALLOW
 //		CGO_CFLAGS、CGO_CFLAGS_ALLOW、およびCGO_CFLAGS_DISALLOWと同様ですが、
 //		Fortranコンパイラ用です。
@@ -2115,7 +2483,15 @@
 //
 // アーキテクチャ固有の環境変数:
 //
+//	GO386
+//		For GOARCH=386, how to implement floating point instructions.
+//		Valid values are sse2 (default), softfloat.
+//	GOAMD64
+//		For GOARCH=amd64, the microarchitecture level for which to compile.
+//		Valid values are v1 (default), v2, v3, v4.
+//		See https://golang.org/wiki/MinimumRequirements#amd64
 //	GOARM
+<<<<<<< HEAD
 //		GOARCH=armの場合、コンパイルするARMアーキテクチャ。
 //		有効な値は5、6、7です。
 //		値の後には、浮動小数点命令の実装方法を指定するオプションを続けることができます。
@@ -2134,6 +2510,24 @@
 //		GOARCH=amd64の場合、コンパイルするマイクロアーキテクチャレベル。
 //		有効な値はv1（デフォルト）、v2、v3、v4です。
 //		詳細は https://golang.org/wiki/MinimumRequirements#amd64 を参照してください。
+=======
+//		For GOARCH=arm, the ARM architecture for which to compile.
+//		Valid values are 5, 6, 7.
+//		When the Go tools are built on an arm system,
+//		the default value is set based on what the build system supports.
+//		When the Go tools are not built on an arm system
+//		(that is, when building a cross-compiler),
+//		the default value is 7.
+//		The value can be followed by an option specifying how to implement floating point instructions.
+//		Valid options are ,softfloat (default for 5) and ,hardfloat (default for 6 and 7).
+//	GOARM64
+//		For GOARCH=arm64, the ARM64 architecture for which to compile.
+//		Valid values are v8.0 (default), v8.{1-9}, v9.{0-5}.
+//		The value can be followed by an option specifying extensions implemented by target hardware.
+//		Valid options are ,lse and ,crypto.
+//		Note that some extensions are enabled by default starting from a certain GOARM64 version;
+//		for example, lse is enabled by default starting from v8.1.
+>>>>>>> upstream/release-branch.go1.25
 //	GOMIPS
 //		GOARCH=mips{,le}の場合、浮動小数点命令を使用するかどうか。
 //		有効な値はhardfloat（デフォルト）、softfloatです。
@@ -2144,9 +2538,16 @@
 //		GOARCH=ppc64{,le}の場合、ターゲットISA（Instruction Set Architecture）。
 //		有効な値はpower8（デフォルト）、power9、power10です。
 //	GORISCV64
+<<<<<<< HEAD
 //		GOARCH=riscv64の場合、コンパイルするRISC-Vユーザーモードアプリケーションプロファイル。
 //		有効な値はrva20u64（デフォルト）、rva22u64です。
 //		https://github.com/riscv/riscv-profiles/blob/main/src/profiles.adoc を参照してください。
+=======
+//		For GOARCH=riscv64, the RISC-V user-mode application profile for which
+//		to compile. Valid values are rva20u64 (default), rva22u64, rva23u64.
+//		See https://github.com/riscv/riscv-profiles/blob/main/src/profiles.adoc
+//		and https://github.com/riscv/riscv-profiles/blob/main/src/rva23-profile.adoc
+>>>>>>> upstream/release-branch.go1.25
 //	GOWASM
 //		GOARCH=wasmの場合、使用する実験的なWebAssembly機能のカンマ区切りのリスト。
 //		有効な値はsatconv、signextです。
@@ -2154,8 +2555,13 @@
 // コードカバレッジに使用する環境変数:
 //
 //	GOCOVERDIR
+<<<<<<< HEAD
 //		"go build -cover"バイナリを実行して生成されたコードカバレッジデータファイルを書き込むディレクトリ。
 //		GOEXPERIMENT=coverageredesignが有効になっている必要があります。
+=======
+//		Directory into which to write code coverage data files
+//		generated by running a "go build -cover" binary.
+>>>>>>> upstream/release-branch.go1.25
 //
 // 特別な目的の環境変数:
 //
@@ -2163,11 +2569,25 @@
 //		設定されている場合、cgoなどのgccgoツールを見つける場所。
 //		デフォルトはgccgoの設定方法に基づいています。
 //	GOEXPERIMENT
+<<<<<<< HEAD
 //		有効化または無効化するツールチェーンの実験のカンマ区切りのリスト。
 //		利用可能な実験のリストは時間とともに任意に変更される可能性があります。
 //		現在有効な値については、src/internal/goexperiment/flags.goを参照してください。
 //		警告: この変数はGoツールチェーン自体の開発とテストのために提供されています。
 //		それ以外の目的での使用はサポートされていません。
+=======
+//		Comma-separated list of toolchain experiments to enable or disable.
+//		The list of available experiments may change arbitrarily over time.
+//		See GOROOT/src/internal/goexperiment/flags.go for currently valid values.
+//		Warning: This variable is provided for the development and testing
+//		of the Go toolchain itself. Use beyond that purpose is unsupported.
+//	GOFIPS140
+//		The FIPS-140 cryptography mode to use when building binaries.
+//		The default is GOFIPS140=off, which makes no FIPS-140 changes at all.
+//		Other values enable FIPS-140 compliance measures and select alternate
+//		versions of the cryptography source code.
+//		See https://go.dev/security/fips140 for details.
+>>>>>>> upstream/release-branch.go1.25
 //	GO_EXTLINK_ENABLED
 //		cgoを使用するコードと-linkmode=autoを使用するときに、
 //		リンカーが外部リンクモードを使用するかどうか。
@@ -2188,10 +2608,22 @@
 //	GOHOSTOS
 //		Goツールチェーンバイナリのオペレーティングシステム（GOOS）。
 //	GOMOD
+<<<<<<< HEAD
 //		メインモジュールのgo.modへの絶対パス。
 //		モジュール対応モードが有効で、go.modがない場合、GOMODはos.DevNullになります
 //		（Unix系システムでは"/dev/null"、Windowsでは"NUL"）。
 //		モジュール対応モードが無効の場合、GOMODは空文字列になります。
+=======
+//		The absolute path to the go.mod of the main module.
+//		If module-aware mode is enabled, but there is no go.mod, GOMOD will be
+//		os.DevNull ("/dev/null" on Unix-like systems, "NUL" on Windows).
+//		If module-aware mode is disabled, GOMOD will be the empty string.
+//	GOTELEMETRY
+//		The current Go telemetry mode ("off", "local", or "on").
+//		See "go help telemetry" for more information.
+//	GOTELEMETRYDIR
+//		The directory Go telemetry data is written is written to.
+>>>>>>> upstream/release-branch.go1.25
 //	GOTOOLDIR
 //		goツール（compile、cover、docなど）がインストールされているディレクトリ。
 //	GOVERSION
@@ -2228,6 +2660,74 @@
 // .sysoを除くこれらのタイプの各ファイルにはビルド制約が含まれている場合がありますが、
 // goコマンドは、空行または//-スタイルの行コメントでないファイルの最初の項目で
 // ビルド制約のスキャンを停止します。詳細はgo/buildパッケージのドキュメンテーションを参照してください。
+//
+// # GOAUTH environment variable
+//
+// GOAUTH is a semicolon-separated list of authentication commands for go-import and
+// HTTPS module mirror interactions. The default is netrc.
+//
+// The supported authentication commands are:
+//
+// off
+//
+//	Disables authentication.
+//
+// netrc
+//
+//	Uses credentials from NETRC or the .netrc file in your home directory.
+//
+// git dir
+//
+//	Runs 'git credential fill' in dir and uses its credentials. The
+//	go command will run 'git credential approve/reject' to update
+//	the credential helper's cache.
+//
+// command
+//
+//	Executes the given command (a space-separated argument list) and attaches
+//	the provided headers to HTTPS requests.
+//	The command must produce output in the following format:
+//		Response      = { CredentialSet } .
+//		CredentialSet = URLLine { URLLine } BlankLine { HeaderLine } BlankLine .
+//		URLLine       = /* URL that starts with "https://" */ '\n' .
+//		HeaderLine    = /* HTTP Request header */ '\n' .
+//		BlankLine     = '\n' .
+//
+//	Example:
+//		https://example.com
+//		https://example.net/api/
+//
+//		Authorization: Basic <token>
+//
+//		https://another-example.org/
+//
+//		Example: Data
+//
+//	If the server responds with any 4xx code, the go command will write the
+//	following to the program's stdin:
+//		Response      = StatusLine { HeaderLine } BlankLine .
+//		StatusLine    = Protocol Space Status '\n' .
+//		Protocol      = /* HTTP protocol */ .
+//		Space         = ' ' .
+//		Status        = /* HTTP status code */ .
+//		BlankLine     = '\n' .
+//		HeaderLine    = /* HTTP Response's header */ '\n' .
+//
+//	Example:
+//		HTTP/1.1 401 Unauthorized
+//		Content-Length: 19
+//		Content-Type: text/plain; charset=utf-8
+//		Date: Thu, 07 Nov 2024 18:43:09 GMT
+//
+//	Note: it is safe to use net/http.ReadResponse to parse this input.
+//
+// Before the first HTTPS fetch, the go command will invoke each GOAUTH
+// command in the list with no additional arguments and no input.
+// If the server responds with any 4xx code, the go command will invoke the
+// GOAUTH commands again with the URL as an additional command-line argument
+// and the HTTP Response to the program's stdin.
+// If the server responds with an error again, the fetch fails: a URL-specific
+// GOAUTH will only be attempted once per fetch.
 //
 // # The go.mod file
 //
@@ -2493,11 +2993,21 @@
 //
 //	import "example.org/user/foo.hg"
 //
+<<<<<<< HEAD
 // はexample.org/user/fooまたはfoo.hgのMercurialリポジトリのルートディレクトリを示し、
 //
 //	import "example.org/repo.git/foo/bar"
 //
 // はexample.org/repoまたはrepo.gitのGitリポジトリのfoo/barディレクトリを示します。
+=======
+// denotes the root directory of the Mercurial repository at
+// example.org/user/foo, and
+//
+//	import "example.org/repo.git/foo/bar"
+//
+// denotes the foo/bar directory of the Git repository at
+// example.org/repo.
+>>>>>>> upstream/release-branch.go1.25
 //
 // バージョン管理システムが複数のプロトコルをサポートしている場合、
 // ダウンロード時にそれぞれが順番に試されます。例えば、Gitのダウンロードでは
@@ -2515,9 +3025,21 @@
 //
 //	<meta name="go-import" content="import-prefix vcs repo-root">
 //
+<<<<<<< HEAD
 // import-prefixはリポジトリルートに対応するインポートパスです。
 // "go get"でフェッチされるパッケージのプレフィックスまたは完全一致でなければなりません。
 // 完全一致でない場合、プレフィックスで別のhttpリクエストが行われ、<meta>タグが一致することを確認します。
+=======
+// Starting in Go 1.25, an optional subdirectory will be recognized by the
+// go command:
+//
+//	<meta name="go-import" content="import-prefix vcs repo-root subdir">
+//
+// The import-prefix is the import path corresponding to the repository
+// root. It must be a prefix or an exact match of the package being
+// fetched with "go get". If it's not an exact match, another http
+// request is made at the prefix to verify the <meta> tags match.
+>>>>>>> upstream/release-branch.go1.25
 //
 // メタタグはファイル内で可能な限り早く現れるべきです。
 // 特に、生のJavaScriptやCSSの前に現れるべきです、
@@ -2527,7 +3049,17 @@
 //
 // repo-rootはスキームを含み、.vcs修飾子を含まないバージョン管理システムのルートです。
 //
+<<<<<<< HEAD
 // 例えば、
+=======
+// The subdir specifies the directory within the repo-root where the
+// Go module's root (including its go.mod file) is located. It allows
+// you to organize your repository with the Go module code in a subdirectory
+// rather than directly at the repository's root.
+// If set, all vcs tags must be prefixed with "subdir". i.e. "subdir/v1.2.3"
+//
+// For example,
+>>>>>>> upstream/release-branch.go1.25
 //
 //	import "example.org/pkg/foo"
 //
@@ -2540,6 +3072,7 @@
 //
 //	<meta name="go-import" content="example.org git https://code.org/r/p/exproj">
 //
+<<<<<<< HEAD
 // を含む場合、goツールはhttps://example.org/?go-get=1が同じメタタグを含むことを確認し、
 // その後git clone https://code.org/r/p/exprojをGOPATH/src/example.orgにクローンします。
 //
@@ -2548,6 +3081,21 @@
 //
 // モジュールを使用している場合、ダウンロードしたパッケージはモジュールキャッシュに保存されます。
 // https://golang.org/ref/mod#module-cache を参照してください。
+=======
+// the go tool will verify that https://example.org/?go-get=1 contains the
+// same meta tag and then download the code from the Git repository at https://code.org/r/p/exproj
+//
+// If that page contains the meta tag
+//
+//	<meta name="go-import" content="example.org git https://code.org/r/p/exproj foo/subdir">
+//
+// the go tool will verify that https://example.org/?go-get=1 contains the same meta
+// tag and then download the code from the "foo/subdir" subdirectory within the Git repository
+// at https://code.org/r/p/exproj
+//
+// Downloaded packages are stored in the module cache.
+// See https://golang.org/ref/mod#module-cache.
+>>>>>>> upstream/release-branch.go1.25
 //
 // モジュールを使用している場合、go-importメタタグの追加のバリアントが認識され、
 // バージョン管理システムをリストしているものよりも優先されます。
@@ -2631,20 +3179,44 @@
 //
 // インポートパスが指定されていない場合、アクションは現在のディレクトリ内のパッケージに適用されます。
 //
+<<<<<<< HEAD
 // goツールでビルドするパッケージに対して使用すべきでない、4つの予約済みのパス名があります：
+=======
+// There are five reserved names for paths that should not be used
+// for packages to be built with the go tool:
+>>>>>>> upstream/release-branch.go1.25
 //
 // - "main"は、スタンドアロンの実行可能ファイルのトップレベルのパッケージを示します。
 //
+<<<<<<< HEAD
 // - "all"は、すべてのGOPATHツリーで見つかったすべてのパッケージに展開されます。
 // 例えば、'go list all'はローカルシステム上のすべてのパッケージをリストします。
 // モジュールを使用している場合、"all"はメインモジュール内のすべてのパッケージと
 // それらの依存関係に展開され、それらのいずれかのテストに必要な依存関係も含みます。
+=======
+// - "all" expands to all packages in the main module (or workspace modules) and
+// their dependencies, including dependencies needed by tests of any of those. In
+// GOPATH mode, "all" expands to all packages found in all the GOPATH trees.
+>>>>>>> upstream/release-branch.go1.25
 //
 // - "std"はallと似ていますが、標準のGoライブラリ内のパッケージだけに展開されます。
 //
 // - "cmd"はGoリポジトリのコマンドとそれらの内部ライブラリに展開されます。
 //
+<<<<<<< HEAD
 // "cmd/"で始まるインポートパスは、Goリポジトリ内のソースコードのみに一致します。
+=======
+// - "tool" expands to the tools defined in the current module's go.mod file.
+//
+// Package names match against fully-qualified import paths or patterns that
+// match against any number of import paths. For instance, "fmt" refers to the
+// standard library's package fmt, but "http" alone for package http would not
+// match the import path "net/http" from the standard library. Instead, the
+// complete import path "net/http" must be used.
+//
+// Import paths beginning with "cmd/" only match source code in
+// the Go repository.
+>>>>>>> upstream/release-branch.go1.25
 //
 // インポートパスに1つ以上の"..."ワイルドカードが含まれている場合、それはパターンとなります。
 // これらのワイルドカードは、空文字列やスラッシュを含む文字列を含む任意の文字列に一致することができます。
@@ -2664,10 +3236,22 @@
 // インポートパスは、リモートリポジトリからダウンロードされるパッケージを指定することもできます。
 // 詳細は 'go help importpath' を実行してください。
 //
+<<<<<<< HEAD
 // プログラム内のすべてのパッケージは、一意のインポートパスを持つ必要があります。
 // 慣習的に、各パスはあなたが所有する一意のプレフィックスで始まるように配置されます。
 // 例えば、Google内部で使用されるパスはすべて'google'で始まり、
 // リモートリポジトリを示すパスはコードへのパス、例えば'github.com/user/repo'で始まります。
+=======
+// Every package in a program must have a unique import path.
+// By convention, this is arranged by starting each path with a
+// unique prefix that belongs to you. For example, paths used
+// internally at Google all begin with 'google', and paths
+// denoting remote repositories begin with the path to the code,
+// such as 'github.com/user/repo'. Package patterns should include this prefix.
+// For instance, a package called 'http' residing under 'github.com/user/repo',
+// would be addressed with the fully-qualified pattern:
+// 'github.com/user/repo/http'.
+>>>>>>> upstream/release-branch.go1.25
 //
 // プログラム内のパッケージは一意のパッケージ名を持つ必要はありませんが、
 // 特別な意味を持つ2つの予約済みのパッケージ名があります。
@@ -2771,10 +3355,17 @@
 //	    -coverを設定します。
 //
 //	-coverpkg pattern1,pattern2,pattern3
+<<<<<<< HEAD
 //	    各テストで、パターンに一致するパッケージにカバレッジ分析を適用します。
 //	    デフォルトでは、各テストはテスト対象のパッケージのみを分析します。
 //	    パッケージパターンの説明については、'go help packages'を参照してください。
 //	    -coverを設定します。
+=======
+//	    Apply coverage analysis in each test to packages whose import paths
+//	    match the patterns. The default is for each test to analyze only
+//	    the package being tested. See 'go help packages' for a description
+//	    of package patterns. Sets -cover.
+>>>>>>> upstream/release-branch.go1.25
 //
 //	-cpu 1,2,4
 //	    テスト、ベンチマーク、またはfuzzテストを実行するためのGOMAXPROCS値のリストを指定します。

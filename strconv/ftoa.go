@@ -14,6 +14,7 @@ package strconv
 // それは、元の値がbitSizeビット（float32の場合は32、float64の場合は64）の浮動小数点値から得られたものと仮定して、
 // 結果を四捨五入します。
 //
+<<<<<<< HEAD
 // フォーマットfmtは、次のいずれかです。
 // 'b' (-ddddp±ddd、2進指数表記),
 // 'e' (-d.dddde±dd、10進指数表記),
@@ -28,6 +29,27 @@ package strconv
 // 'e'、'E'、'f'、'x'、および'X'の場合、小数点以下の桁数です。
 // 'g'および'G'の場合、最大有効桁数です（末尾のゼロは削除されます）。
 // 特別な精度-1は、ParseFloatがfを正確に返すために必要な最小桁数を使用します。
+=======
+// The format fmt is one of
+//   - 'b' (-ddddp±ddd, a binary exponent),
+//   - 'e' (-d.dddde±dd, a decimal exponent),
+//   - 'E' (-d.ddddE±dd, a decimal exponent),
+//   - 'f' (-ddd.dddd, no exponent),
+//   - 'g' ('e' for large exponents, 'f' otherwise),
+//   - 'G' ('E' for large exponents, 'f' otherwise),
+//   - 'x' (-0xd.ddddp±ddd, a hexadecimal fraction and binary exponent), or
+//   - 'X' (-0Xd.ddddP±ddd, a hexadecimal fraction and binary exponent).
+//
+// The precision prec controls the number of digits (excluding the exponent)
+// printed by the 'e', 'E', 'f', 'g', 'G', 'x', and 'X' formats.
+// For 'e', 'E', 'f', 'x', and 'X', it is the number of digits after the decimal point.
+// For 'g' and 'G' it is the maximum number of significant digits (trailing
+// zeros are removed).
+// The special precision -1 uses the smallest number of digits
+// necessary such that ParseFloat will return f exactly.
+// The exponent is written as a decimal integer;
+// for all formats other than 'b', it will be at least two digits.
+>>>>>>> upstream/release-branch.go1.25
 func FormatFloat(f float64, fmt byte, prec, bitSize int) string
 
 // AppendFloatは、[FormatFloat] によって生成された浮動小数点数fの文字列形式をdstに追加し、拡張されたバッファを返します。

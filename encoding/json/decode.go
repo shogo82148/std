@@ -5,6 +5,8 @@
 // Represents JSON data structure using native Go types: booleans, floats,
 // strings, arrays, and maps.
 
+//go:build !goexperiment.jsonv2
+
 package json
 
 import (
@@ -31,11 +33,22 @@ import (
 // 入力がJSONの引用符で囲まれた文字列である場合、Unmarshalはその値の
 // [encoding.TextUnmarshaler.UnmarshalText] を引用符で囲まれていない形式の文字列で呼び出します。
 //
+<<<<<<< HEAD
 // JSONを構造体にアンマーシャルするために、Unmarshalは受信したオブジェクトの
 // キーをMarshalが使用するキー（構造体のフィールド名またはそのタグ）と一致させます。
 // これは完全一致を優先しますが、大文字小文字を区別しない一致も受け入れます。
 // デフォルトでは、対応する構造体のフィールドがないオブジェクトのキーは無視されます
 // （代替として [Decoder.DisallowUnknownFields] を参照してください）。
+=======
+// To unmarshal JSON into a struct, Unmarshal matches incoming object keys to
+// the keys used by [Marshal] (either the struct field name or its tag),
+// ignoring case. If multiple struct fields match an object key, an exact case
+// match is preferred over a case-insensitive one.
+//
+// Incoming object members are processed in the order observed. If an object
+// includes duplicate keys, later duplicates will replace or be merged into
+// prior values.
+>>>>>>> upstream/release-branch.go1.25
 //
 // インターフェース値にJSONをアンマーシャルするために、
 // Unmarshalは以下のいずれかをインターフェース値に格納します：
@@ -83,12 +96,20 @@ import (
 // 代わりに、それらはUnicodeの置換文字U+FFFDに置き換えられます。
 func Unmarshal(data []byte, v any) error
 
+<<<<<<< HEAD
 // Unmarshalerは、自分自身のJSON記述をアンマーシャルできる型によって実装されるインターフェースです。
 // 入力は、JSON値の有効なエンコーディングであると想定できます。
 // UnmarshalJSONは、戻り値後にデータを保持したい場合、JSONデータをコピーする必要があります。
 //
 // 慣習的に、[Unmarshal] 自体の振る舞いを近似するために、
 // UnmarshalersはUnmarshalJSON([]byte("null"))を何もしない操作として実装します。
+=======
+// Unmarshaler is the interface implemented by types
+// that can unmarshal a JSON description of themselves.
+// The input can be assumed to be a valid encoding of
+// a JSON value. UnmarshalJSON must copy the JSON data
+// if it wishes to retain the data after returning.
+>>>>>>> upstream/release-branch.go1.25
 type Unmarshaler interface {
 	UnmarshalJSON([]byte) error
 }

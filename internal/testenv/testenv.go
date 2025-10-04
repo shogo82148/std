@@ -63,8 +63,9 @@ func GOROOT(t testing.TB) string
 // GoTool reports the path to the Go tool.
 func GoTool() (string, error)
 
-// HasSrc reports whether the entire source tree is available under GOROOT.
-func HasSrc() bool
+// MustHaveSource checks that the entire source tree is available under GOROOT.
+// If not, it calls t.Skip with an explanation.
+func MustHaveSource(t testing.TB)
 
 // HasExternalNetwork reports whether the current system can use
 // external (non-localhost) networks.
@@ -85,10 +86,21 @@ func MustHaveCGO(t testing.TB)
 // internal linking.
 func CanInternalLink(withCgo bool) bool
 
+// SpecialBuildTypes are interesting build types that may affect linking.
+type SpecialBuildTypes struct {
+	Cgo  bool
+	Asan bool
+	Msan bool
+	Race bool
+}
+
+// NoSpecialBuildTypes indicates a standard, no cgo go build.
+var NoSpecialBuildTypes SpecialBuildTypes
+
 // MustInternalLink checks that the current system can link programs with internal
 // linking.
 // If not, MustInternalLink calls t.Skip with an explanation.
-func MustInternalLink(t testing.TB, withCgo bool)
+func MustInternalLink(t testing.TB, with SpecialBuildTypes)
 
 // MustInternalLinkPIE checks whether the current system can link PIE binary using
 // internal linking.
@@ -146,3 +158,7 @@ func SyscallIsNotSupported(err error) bool
 // This function should be used when it is necessary to avoid t.Parallel on
 // 32-bit machines, typically because the test uses lots of memory.
 func ParallelOn64Bit(t *testing.T)
+
+// CPUProfilingBroken returns true if CPU profiling has known issues on this
+// platform.
+func CPUProfilingBroken() bool

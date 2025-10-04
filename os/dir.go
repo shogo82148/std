@@ -63,11 +63,17 @@ func ReadDir(name string) ([]DirEntry, error)
 // CopyFS will not overwrite existing files. If a file name in fsys
 // already exists in the destination, CopyFS will return an error
 // such that errors.Is(err, fs.ErrExist) will be true.
+<<<<<<< HEAD
 //
 // Symbolic links in fsys are not supported. A *PathError with Err set
 // to ErrInvalid is returned when copying from a symbolic link.
+=======
+>>>>>>> upstream/release-branch.go1.25
 //
 // Symbolic links in dir are followed.
+//
+// New files added to fsys (including if dir is a subdirectory of fsys)
+// while CopyFS is running are not guaranteed to be copied.
 //
 // Copying stops at and returns the first error encountered.
 func CopyFS(dir string, fsys fs.FS) error

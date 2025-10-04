@@ -10,18 +10,3 @@
 // bootstrap process.
 
 package web
-
-import (
-	"github.com/shogo82148/std/net/http"
-)
-
-type Interceptor struct {
-	Scheme   string
-	FromHost string
-	ToHost   string
-	Client   *http.Client
-}
-
-func EnableTestHooks(interceptors []Interceptor) error
-
-func DisableTestHooks()

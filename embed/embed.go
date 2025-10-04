@@ -85,9 +85,17 @@
 // エクスポートされた変数と非エクスポートされた変数の両方で使用できます。
 // ローカル変数ではなく、パッケージスコープの変数でのみ使用できます。
 //
+<<<<<<< HEAD
 // パターンは、'.git/*'やシンボリックリンクなど、パッケージのモジュール外のファイルに一致してはなりません。
 // パターンは、特殊な句読点文字 " * < > ? ` ' | / \ および : を含むファイル名に一致してはなりません。
 // 空のディレクトリの一致は無視されます。その後、//go:embed行の各パターンは、少なくとも1つのファイルまたは空でないディレクトリに一致する必要があります。
+=======
+// Patterns must not match files outside the package's module, such as ‘.git/*’, symbolic links,
+// 'vendor/', or any directories containing go.mod (these are separate modules).
+// Patterns must not match files whose names include the special punctuation characters  " * < > ? ` ' | / \ and :.
+// Matches for empty directories are ignored. After that, each pattern in a //go:embed line
+// must match at least one file or non-empty directory.
+>>>>>>> upstream/release-branch.go1.25
 //
 // パターンが無効であるか、無効な一致がある場合、ビルドは失敗します。
 //
@@ -160,7 +168,7 @@ type FS struct {
 	//
 	//	p       # dir=.    elem=p
 	//	q/      # dir=.    elem=q
-	//	w/      # dir=.    elem=w
+	//	w       # dir=.    elem=w
 	//	q/r     # dir=q    elem=r
 	//	q/s/    # dir=q    elem=s
 	//	q/v     # dir=q    elem=v

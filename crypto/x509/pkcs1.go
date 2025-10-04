@@ -10,13 +10,30 @@ import (
 
 // ParsePKCS1PrivateKeyはPKCS #1形式、ASN.1 DER形式の [RSA] 秘密鍵を解析します。
 //
+<<<<<<< HEAD
 // この種のキーは一般的に、"RSA PRIVATE KEY"というタイプのPEMブロックにエンコードされます。
+=======
+// This kind of key is commonly encoded in PEM blocks of type "RSA PRIVATE KEY".
+//
+// Before Go 1.24, the CRT parameters were ignored and recomputed. To restore
+// the old behavior, use the GODEBUG=x509rsacrt=0 environment variable.
+>>>>>>> upstream/release-branch.go1.25
 func ParsePKCS1PrivateKey(der []byte) (*rsa.PrivateKey, error)
 
 // MarshalPKCS1PrivateKeyは [RSA] の秘密鍵をPKCS #1、ASN.1 DER形式に変換します。
 //
+<<<<<<< HEAD
 // この種類の鍵は、一般的には「RSA PRIVATE KEY」というタイプのPEMブロックにエンコードされます。
 // [RSA] 固有ではなく、より柔軟な鍵形式が必要な場合は、 [MarshalPKCS8PrivateKey] を使用してください。
+=======
+// This kind of key is commonly encoded in PEM blocks of type "RSA PRIVATE KEY".
+// For a more flexible key format which is not [RSA] specific, use
+// [MarshalPKCS8PrivateKey].
+//
+// The key must have passed validation by calling [rsa.PrivateKey.Validate]
+// first. MarshalPKCS1PrivateKey calls [rsa.PrivateKey.Precompute], which may
+// modify the key if not already precomputed.
+>>>>>>> upstream/release-branch.go1.25
 func MarshalPKCS1PrivateKey(key *rsa.PrivateKey) []byte
 
 // ParsePKCS1PublicKeyはPKCS＃1、ASN.1 DER形式の [RSA] 公開鍵を解析します。

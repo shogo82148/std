@@ -7,7 +7,11 @@
 
 生成されたファイルには、パッケージがエクスポートするシンボルに関する型情報と、パッケージが他のパッケージからインポートされたシンボルで使用される型に関する情報が含まれています。したがって、パッケージPのクライアントCをコンパイルする場合、Pの依存関係のファイルを読み込む必要はありません。コンパイルされたPの出力のみが必要です。
 
+<<<<<<< HEAD
 コマンドライン
+=======
+# Command Line
+>>>>>>> upstream/release-branch.go1.25
 
 使用法：
 
@@ -51,7 +55,16 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
 	-dynlink
 		共有ライブラリ内のGoシンボルへの参照を許可します（実験的）。
 	-e
+<<<<<<< HEAD
 		エラーの数に制限を解除します（デフォルトの制限は10です）。
+=======
+		Remove the limit on the number of errors reported (default limit is 10).
+	-embedcfg file
+		Read go:embed configuration from file.
+		This is required if any //go:embed directives are used.
+		The file is a JSON file mapping patterns to lists of filenames
+		and filenames to full path names.
+>>>>>>> upstream/release-branch.go1.25
 	-goversion string
 		ランタイムの必要なgoツールバージョンを指定します。
 		ランタイムのgoバージョンがgoversionと一致しない場合は終了します。
@@ -140,6 +153,7 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
 	-w
 		型チェックをデバッグします。
 
+<<<<<<< HEAD
 コンパイラディレクティブ
 
 コンパイラは、コメントの形式でディレクティブを受け入れます。
@@ -148,6 +162,24 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
 ディレクティブを知らないツールは、他のコメントと同様にディレクティブをスキップできます。
 */
 // ラインディレクティブはいくつかの形式で存在します：
+=======
+# Compiler Directives
+
+The compiler accepts directives in the form of comments.
+Each directive must be placed its own line, with only leading spaces and tabs
+allowed before the comment, and there must be no space between the comment
+opening and the name of the directive, to distinguish it from a regular comment.
+Tools unaware of the directive convention or of a particular
+directive can skip over a directive like any other comment.
+
+Other than the line directive, which is a historical special case;
+all other compiler directives are of the form
+//go:name, indicating that they are defined by the Go toolchain.
+*/
+// # Line Directives
+//
+// Line directives come in several forms:
+>>>>>>> upstream/release-branch.go1.25
 //
 // 	//line :line
 // 	//line :line:col
@@ -184,11 +216,17 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
 // ラインディレクティブは通常、機械生成されたコードに現れます。これにより、コンパイラとデバッガは
 // ジェネレータへの元の入力の位置を報告します。
 /*
+<<<<<<< HEAD
 ラインディレクティブは歴史的な特例であり、他のすべてのディレクティブは
 //go:nameの形式で、それらがGoツールチェーンによって定義されていることを示しています。
 各ディレクティブは自身の行に配置する必要があり、コメントの前には先頭のスペースとタブのみが許可されます。
 各ディレクティブは、それに直後に続くGoコードに適用され、
 通常は宣言でなければなりません。
+=======
+# Function Directives
+
+A function directive applies to the Go function that immediately follows it.
+>>>>>>> upstream/release-branch.go1.25
 
 	//go:noescape
 
@@ -220,9 +258,21 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
 
 	//go:nosplit
 
+<<<<<<< HEAD
 //go:nosplitディレクティブは、関数宣言に続く必要があります。
 これは、関数が通常のスタックオーバーフローチェックを省略する必要があることを指定します。
 これは最も一般的に、呼び出し元のゴルーチンがプリエンプトされるのが安全でない時期に呼び出される低レベルのランタイムコードで使用されます。
+=======
+The //go:nosplit directive must be followed by a function declaration.
+It specifies that the function must omit its usual stack overflow check.
+This is most commonly used by low-level runtime code invoked
+at times when it is unsafe for the calling goroutine to be preempted.
+Using this directive outside of low-level runtime code is not safe,
+because it permits the nosplit function to overwrite the end of stack,
+leading to memory corruption and arbitrary program failure.
+
+# Linkname Directive
+>>>>>>> upstream/release-branch.go1.25
 
 	//go:linkname localname [importpath.name]
 
@@ -268,24 +318,61 @@ GOOSとGOARCHの環境変数が目標となるものを設定します。
 lower.fの宣言には、単一の引数fを持つlinknameディレクティブも含まれているかもしれません。
 これはオプションですが、関数がパッケージ外からアクセスされることを読者に警告するのに役立ちます。
 
+# WebAssembly Directives
+
 	//go:wasmimport importmodule importname
 
+<<<<<<< HEAD
 //go:wasmimportディレクティブはwasm専用で、関数宣言に続く必要があります。
 これは、関数が``importmodule``と``importname``で識別されるwasmモジュールによって提供されることを指定します。
+=======
+The //go:wasmimport directive is wasm-only and must be followed by a
+function declaration with no body.
+It specifies that the function is provided by a wasm module identified
+by ``importmodule'' and ``importname''. For example,
+>>>>>>> upstream/release-branch.go1.25
 
 	//go:wasmimport a_module f
 	func g()
 
+<<<<<<< HEAD
 Go関数のパラメータと戻り値の型は、以下の表に従ってWasmに変換されます：
+=======
+causes g to refer to the WebAssembly function f from module a_module.
+
+	//go:wasmexport exportname
+
+The //go:wasmexport directive is wasm-only and must be followed by a
+function definition.
+It specifies that the function is exported to the wasm host as ``exportname''.
+For example,
+
+	//go:wasmexport h
+	func hWasm() { ... }
+
+make Go function hWasm available outside this WebAssembly module as h.
+
+For both go:wasmimport and go:wasmexport,
+the types of parameters and return values to the Go function are translated to
+Wasm according to the following table:
+>>>>>>> upstream/release-branch.go1.25
 
     Go types        Wasm types
+    bool            i32
     int32, uint32   i32
     int64, uint64   i64
     float32         f32
     float64         f64
     unsafe.Pointer  i32
+    pointer         i32 (more restrictions below)
+    string          (i32, i32) (only permitted as a parameters, not a result)
 
 コンパイラは他のすべてのパラメータ型を許可しません。
 
+For a pointer type, its element type must be a bool, int8, uint8, int16, uint16,
+int32, uint32, int64, uint64, float32, float64, an array whose element type is
+a permitted pointer element type, or a struct, which, if non-empty, embeds
+[structs.HostLayout], and contains only fields whose types are permitted pointer
+element types.
 */
 package main

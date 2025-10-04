@@ -48,7 +48,14 @@ fmtパッケージは、Cのprintfおよびscanfに類似した関数を使用�
 	%x	16進数表記法（2の累乗の10進数指数を含む）、例：-0x1.23abcp+20
 	%X	大文字の16進数表記法、例：-0X1.23ABCP+20
 
+<<<<<<< HEAD
 文字列とバイトスライス（これらの動詞では同等に扱われます）：
+=======
+	The exponent is always a decimal integer.
+	For formats other than %b the exponent is at least two digits.
+
+String and slice of bytes (treated equivalently with these verbs):
+>>>>>>> upstream/release-branch.go1.25
 
 	%s	文字列またはスライスの解釈されていないバイト
 	%q	Go構文で安全にエスケープされたダブルクォート文字列
@@ -252,9 +259,16 @@ fmtパッケージはパニックからエラーメッセージを再フォー�
 
 	%!s(PANIC=bad)
 
+<<<<<<< HEAD
 %!sは、失敗が発生したときに使用されるプリント動詞を示すだけです。
 ただし、パニックがErrorまたはStringメソッドに対するnilレシーバによって引き起こされる場合、
 出力は装飾されていない文字列「<nil>」です。
+=======
+The %!s just shows the print verb in use when the failure
+occurred. If the panic is caused by a nil receiver to an Error,
+String, or GoString method, however, the output is the undecorated
+string, "<nil>".
+>>>>>>> upstream/release-branch.go1.25
 
 # スキャン
 

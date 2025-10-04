@@ -19,7 +19,7 @@ type ProfileFunc func(r *http.Request) ([]ProfileRecord, error)
 func SVGProfileHandlerFunc(f ProfileFunc) http.HandlerFunc
 
 type ProfileRecord struct {
-	Stack []*trace.Frame
+	Stack []trace.StackFrame
 	Count uint64
 	Time  time.Duration
 }

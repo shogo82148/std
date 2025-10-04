@@ -39,7 +39,14 @@ func New512_224() hash.Hash
 // New512_256はSHA-512/256チェックサムを計算する新しいhash.Hashを返します。
 func New512_256() hash.Hash
 
+<<<<<<< HEAD
 // New384はSHA-384チェックサムを計算する新しいhash.Hashを返します。
+=======
+// New384 returns a new [hash.Hash] computing the SHA-384 checksum. The Hash
+// also implements [encoding.BinaryMarshaler], [encoding.BinaryAppender] and
+// [encoding.BinaryUnmarshaler] to marshal and unmarshal the internal
+// state of the hash.
+>>>>>>> upstream/release-branch.go1.25
 func New384() hash.Hash
 
 // Sum512は、データのSHA512ハッシュ値を返します。

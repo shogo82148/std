@@ -9,7 +9,7 @@ import (
 	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
-func Info(fnsym *obj.LSym, infosym *obj.LSym, curfn obj.Func) (scopes []dwarf.Scope, inlcalls dwarf.InlCalls)
+func Info(ctxt *obj.Link, fnsym *obj.LSym, infosym *obj.LSym, curfn obj.Func) (scopes []dwarf.Scope, inlcalls dwarf.InlCalls)
 
 // RecordFlags records the specified command-line flags to be placed
 // in the DWARF info.

@@ -108,7 +108,13 @@ func (ip Addr) Less(ip2 Addr) bool
 // IPv4マップされたIPv6アドレスの場合、falseを返します。[Addr.Unmap] を参照してください。
 func (ip Addr) Is4() bool
 
+<<<<<<< HEAD
 // Is4In6は、ipがIPv4マップされたIPv6アドレスであるかどうかを報告します。
+=======
+// Is4In6 reports whether ip is an "IPv4-mapped IPv6 address"
+// as defined by RFC 4291.
+// That is, it reports whether ip is in ::ffff:0:0/96.
+>>>>>>> upstream/release-branch.go1.25
 func (ip Addr) Is4In6() bool
 
 // Is6は、IPv6アドレス、IPv4マップされたIPv6アドレスを含むかどうかを報告します。
@@ -208,9 +214,19 @@ func (ip Addr) AppendTo(b []byte) []byte
 // たとえば、"2001:db8::1"は"2001:0db8:0000:0000:0000:0000:0000:0001"になります。
 func (ip Addr) StringExpanded() string
 
+<<<<<<< HEAD
 // MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
 // エンコーディングは、[Addr.String] が返すものと同じですが、1つの例外があります。
 // ipがゼロの [Addr] の場合、エンコーディングは空の文字列になります。
+=======
+// AppendText implements the [encoding.TextAppender] interface,
+// It is the same as [Addr.AppendTo].
+func (ip Addr) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements the [encoding.TextMarshaler] interface,
+// The encoding is the same as returned by [Addr.String], with one exception:
+// If ip is the zero [Addr], the encoding is the empty string.
+>>>>>>> upstream/release-branch.go1.25
 func (ip Addr) MarshalText() ([]byte, error)
 
 // UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
@@ -219,9 +235,19 @@ func (ip Addr) MarshalText() ([]byte, error)
 // textが空の場合、UnmarshalTextは*ipをゼロの [Addr] に設定し、エラーを返しません。
 func (ip *Addr) UnmarshalText(text []byte) error
 
+<<<<<<< HEAD
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
 // ゼロの [Addr] の場合は長さ0のスライスを返し、IPv4アドレスの場合は4バイトの形式を、
 // IPv6アドレスの場合はゾーンを追加した16バイトの形式を返します。
+=======
+// AppendBinary implements the [encoding.BinaryAppender] interface.
+func (ip Addr) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements the [encoding.BinaryMarshaler] interface.
+// It returns a zero-length slice for the zero [Addr],
+// the 4-byte form for an IPv4 address,
+// and the 16-byte form with zone appended for an IPv6 address.
+>>>>>>> upstream/release-branch.go1.25
 func (ip Addr) MarshalBinary() ([]byte, error)
 
 // UnmarshalBinaryは、[encoding.BinaryUnmarshaler] インターフェースを実装します。
@@ -267,17 +293,38 @@ func (p AddrPort) String() string
 // AppendToは、[AddrPort.MarshalText] によって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
 func (p AddrPort) AppendTo(b []byte) []byte
 
+<<<<<<< HEAD
 // MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
 // エンコーディングは、[AddrPort.String] が返すものと同じですが、1つの例外があります。
 // p.Addr()がゼロの [Addr] の場合、エンコーディングは空の文字列になります。
+=======
+// AppendText implements the [encoding.TextAppender] interface. The
+// encoding is the same as returned by [AddrPort.AppendTo].
+func (p AddrPort) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements the [encoding.TextMarshaler] interface. The
+// encoding is the same as returned by [AddrPort.String], with one exception: if
+// p.Addr() is the zero [Addr], the encoding is the empty string.
+>>>>>>> upstream/release-branch.go1.25
 func (p AddrPort) MarshalText() ([]byte, error)
 
 // UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
 // [AddrPort] は、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
 func (p *AddrPort) UnmarshalText(text []byte) error
 
+<<<<<<< HEAD
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
 // これは、[Addr.MarshalBinary] に、リトルエンディアンで表されたポートを追加したものを返します。
+=======
+// AppendBinary implements the [encoding.BinaryAppendler] interface.
+// It returns [Addr.AppendBinary] with an additional two bytes appended
+// containing the port in little-endian.
+func (p AddrPort) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements the [encoding.BinaryMarshaler] interface.
+// It returns [Addr.MarshalBinary] with an additional two bytes appended
+// containing the port in little-endian.
+>>>>>>> upstream/release-branch.go1.25
 func (p AddrPort) MarshalBinary() ([]byte, error)
 
 // UnmarshalBinaryは、[encoding.BinaryUnmarshaler] インターフェースを実装します。
@@ -353,9 +400,19 @@ func (p Prefix) Overlaps(o Prefix) bool
 // AppendToは、[Prefix.MarshalText] によって生成されたpのテキストエンコーディングをbに追加し、拡張されたバッファを返します。
 func (p Prefix) AppendTo(b []byte) []byte
 
+<<<<<<< HEAD
 // MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
 // エンコーディングは、[Prefix.String] が返すものと同じですが、1つの例外があります。
 // pがゼロ値の場合、エンコーディングは空の文字列になります。
+=======
+// AppendText implements the [encoding.TextAppender] interface.
+// It is the same as [Prefix.AppendTo].
+func (p Prefix) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements the [encoding.TextMarshaler] interface,
+// The encoding is the same as returned by [Prefix.String], with one exception:
+// If p is the zero value, the encoding is the empty string.
+>>>>>>> upstream/release-branch.go1.25
 func (p Prefix) MarshalText() ([]byte, error)
 
 // UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
@@ -363,8 +420,19 @@ func (p Prefix) MarshalText() ([]byte, error)
 // または、[Prefix.MarshalText] によって生成された形式である必要があります。
 func (p *Prefix) UnmarshalText(text []byte) error
 
+<<<<<<< HEAD
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。
 // これは、[Addr.MarshalBinary] に、プレフィックスビットを表す追加のバイトを追加したものを返します。
+=======
+// AppendBinary implements the [encoding.AppendMarshaler] interface.
+// It returns [Addr.AppendBinary] with an additional byte appended
+// containing the prefix bits.
+func (p Prefix) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements the [encoding.BinaryMarshaler] interface.
+// It returns [Addr.MarshalBinary] with an additional byte appended
+// containing the prefix bits.
+>>>>>>> upstream/release-branch.go1.25
 func (p Prefix) MarshalBinary() ([]byte, error)
 
 // UnmarshalBinaryは、[encoding.BinaryUnmarshaler] インターフェースを実装します。

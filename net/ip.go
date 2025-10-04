@@ -116,9 +116,20 @@ func (ip IP) Mask(mask IPMask) IP
 //   - 上記の条件に当てはまらない場合は、ipの句読点を除いた16進数形式
 func (ip IP) String() string
 
+<<<<<<< HEAD
 // MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
 // エンコードは [IP.String] で返されるものと同じですが、1つ例外があります：
 // len(ip)がゼロの場合、空のスライスを返します。
+=======
+// AppendText implements the [encoding.TextAppender] interface.
+// The encoding is the same as returned by [IP.String], with one exception:
+// When len(ip) is zero, it appends nothing.
+func (ip IP) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements the [encoding.TextMarshaler] interface.
+// The encoding is the same as returned by [IP.String], with one exception:
+// When len(ip) is zero, it returns an empty slice.
+>>>>>>> upstream/release-branch.go1.25
 func (ip IP) MarshalText() ([]byte, error)
 
 // UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。

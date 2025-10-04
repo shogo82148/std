@@ -1,0 +1,11 @@
+// Copyright 2023 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+//go:build goexperiment.jsonv2
+
+package jsontext
+
+// Internal is for internal use only.
+// This is exempt from the Go compatibility agreement.
+var Internal exporter

@@ -10,9 +10,11 @@ var Categories = map[string]*RangeTable{
 	"C":  C,
 	"Cc": Cc,
 	"Cf": Cf,
+	"Cn": Cn,
 	"Co": Co,
 	"Cs": Cs,
 	"L":  L,
+	"LC": LC,
 	"Ll": Ll,
 	"Lm": Lm,
 	"Lo": Lo,
@@ -45,14 +47,66 @@ var Categories = map[string]*RangeTable{
 	"Zs": Zs,
 }
 
+<<<<<<< HEAD
 // これらの変数は*RangeTable型です。
+=======
+// CategoryAliases maps category aliases to standard category names.
+var CategoryAliases = map[string]string{
+	"Cased_Letter":          "LC",
+	"Close_Punctuation":     "Pe",
+	"Combining_Mark":        "M",
+	"Connector_Punctuation": "Pc",
+	"Control":               "Cc",
+	"Currency_Symbol":       "Sc",
+	"Dash_Punctuation":      "Pd",
+	"Decimal_Number":        "Nd",
+	"Enclosing_Mark":        "Me",
+	"Final_Punctuation":     "Pf",
+	"Format":                "Cf",
+	"Initial_Punctuation":   "Pi",
+	"Letter":                "L",
+	"Letter_Number":         "Nl",
+	"Line_Separator":        "Zl",
+	"Lowercase_Letter":      "Ll",
+	"Mark":                  "M",
+	"Math_Symbol":           "Sm",
+	"Modifier_Letter":       "Lm",
+	"Modifier_Symbol":       "Sk",
+	"Nonspacing_Mark":       "Mn",
+	"Number":                "N",
+	"Open_Punctuation":      "Ps",
+	"Other":                 "C",
+	"Other_Letter":          "Lo",
+	"Other_Number":          "No",
+	"Other_Punctuation":     "Po",
+	"Other_Symbol":          "So",
+	"Paragraph_Separator":   "Zp",
+	"Private_Use":           "Co",
+	"Punctuation":           "P",
+	"Separator":             "Z",
+	"Space_Separator":       "Zs",
+	"Spacing_Mark":          "Mc",
+	"Surrogate":             "Cs",
+	"Symbol":                "S",
+	"Titlecase_Letter":      "Lt",
+	"Unassigned":            "Cn",
+	"Uppercase_Letter":      "Lu",
+	"cntrl":                 "Cc",
+	"digit":                 "Nd",
+	"punct":                 "P",
+}
+
+// These variables have type *RangeTable.
+>>>>>>> upstream/release-branch.go1.25
 var (
 	Cc     = _Cc
 	Cf     = _Cf
+	Cn     = _Cn
 	Co     = _Co
 	Cs     = _Cs
 	Digit  = _Nd
 	Nd     = _Nd
+	LC     = _LC
 	Letter = _L
 	L      = _L
 	Lm     = _Lm

@@ -6,6 +6,7 @@
 
 package os
 
+<<<<<<< HEAD
 // Fdは、開いているファイルを参照する整数型のUnixファイルディスクリプタを返します。
 // もしfが閉じている場合、ファイルディスクリプタは無効になります。
 // もしfがガベージコレクションされる場合、ファイナライザーがファイルディスクリプタを閉じる可能性があり、
@@ -34,6 +35,19 @@ func Truncate(name string, size int64) error
 
 // Removeは指定したファイルまたは(空の)ディレクトリを削除します。
 // エラーが発生した場合、*PathError型のエラーとなります。
+=======
+// DevNull is the name of the operating system's “null device.”
+// On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
+const DevNull = "/dev/null"
+
+// Truncate changes the size of the named file.
+// If the file is a symbolic link, it changes the size of the link's target.
+// If there is an error, it will be of type [*PathError].
+func Truncate(name string, size int64) error
+
+// Remove removes the named file or (empty) directory.
+// If there is an error, it will be of type [*PathError].
+>>>>>>> upstream/release-branch.go1.25
 func Remove(name string) error
 
 // Link は newname を oldname ファイルのハードリンクとして作成します。

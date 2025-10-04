@@ -8,8 +8,8 @@ package ecdh
 import (
 	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/crypto/internal/boring"
+	"github.com/shogo82148/std/crypto/internal/fips140/ecdh"
 	"github.com/shogo82148/std/io"
-	"github.com/shogo82148/std/sync"
 )
 
 type Curve interface {
@@ -20,8 +20,6 @@ type Curve interface {
 	NewPublicKey(key []byte) (*PublicKey, error)
 
 	ecdh(local *PrivateKey, remote *PublicKey) ([]byte, error)
-
-	privateKeyToPublicKey(*PrivateKey) *PublicKey
 }
 
 // PublicKeyは通常、ワイヤ経由で送信されるECDHの共有キーです。
@@ -33,6 +31,7 @@ type PublicKey struct {
 	curve     Curve
 	publicKey []byte
 	boring    *boring.PublicKeyECDH
+	fips      *ecdh.PublicKey
 }
 
 // Bytesは公開鍵のエンコードのコピーを返します。
@@ -54,17 +53,30 @@ func (k *PublicKey) Curve() Curve
 type PrivateKey struct {
 	curve      Curve
 	privateKey []byte
+	publicKey  *PublicKey
 	boring     *boring.PrivateKeyECDH
+<<<<<<< HEAD
 
 	// publicKeyは、公開鍵を公開鍵の一度セットしています。これにより、スカラー乗算を行わずにNewPrivateKeyで秘密鍵を読み込むことができます。
 	publicKey     *PublicKey
 	publicKeyOnce sync.Once
+=======
+	fips       *ecdh.PrivateKey
+>>>>>>> upstream/release-branch.go1.25
 }
 
 // ECDH performs an ECDH exchange and returns the shared secret. The [PrivateKey]
 // and [PublicKey] must use the same curve.
 //
+<<<<<<< HEAD
 // NIST曲線の場合、これはSEC 1バージョン2.0セクション3.3.1で指定されたようにECDHを実行し、SEC 1バージョン2.0セクション2.3.5に従ってエンコードされたx座標を返します。結果は決して無限遠点ではありません。
+=======
+// For NIST curves, this performs ECDH as specified in SEC 1, Version 2.0,
+// Section 3.3.1, and returns the x-coordinate encoded according to SEC 1,
+// Version 2.0, Section 2.3.5. The result is never the point at infinity.
+// This is also known as the Shared Secret Computation of the Ephemeral Unified
+// Model scheme specified in NIST SP 800-56A Rev. 3, Section 6.1.2.2.
+>>>>>>> upstream/release-branch.go1.25
 //
 // [X25519] の場合、これはRFC 7748 Section 6.1 で指定されたようにECDHを実行します。結果が全て0値の場合、ECDHはエラーを返します。
 func (k *PrivateKey) ECDH(remote *PublicKey) ([]byte, error)

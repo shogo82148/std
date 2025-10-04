@@ -7,7 +7,7 @@ package version
 import (
 	"github.com/shogo82148/std/io"
 
-	"github.com/shogo82148/std/internal/trace/event"
+	"github.com/shogo82148/std/internal/trace/tracev2"
 )
 
 // Version represents the version of a trace file.
@@ -19,11 +19,16 @@ const (
 	Go121   Version = 21
 	Go122   Version = 22
 	Go123   Version = 23
-	Current         = Go123
+	Go125   Version = 25
+	Current         = Go125
 )
 
 // Specs returns the set of event.Specs for this version.
-func (v Version) Specs() []event.Spec
+func (v Version) Specs() []tracev2.EventSpec
+
+// EventName returns a string name of a wire format event
+// for a particular trace version.
+func (v Version) EventName(typ tracev2.EventType) string
 
 func (v Version) Valid() bool
 

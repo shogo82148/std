@@ -63,6 +63,6 @@ func CgoSupported(goos, goarch string) bool
 // (See https://go.dev/wiki/PortingPolicy#first-class-ports.)
 func FirstClass(goos, goarch string) bool
 
-// Broken reportsr whether goos/goarch is considered a broken port.
+// Broken reports whether goos/goarch is considered a broken port.
 // (See https://go.dev/wiki/PortingPolicy#broken-ports.)
 func Broken(goos, goarch string) bool

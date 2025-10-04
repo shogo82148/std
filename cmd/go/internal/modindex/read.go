@@ -43,8 +43,8 @@ func (rp *IndexPackage) Import(bctxt build.Context, mode build.ImportMode) (p *b
 // and otherwise falling back to internal/goroot.IsStandardPackage
 func IsStandardPackage(goroot_, compiler, path string) bool
 
-// IsDirWithGoFiles is the equivalent of fsys.IsDirWithGoFiles using the information in the index.
-func (rp *IndexPackage) IsDirWithGoFiles() (_ bool, err error)
+// IsGoDir is the equivalent of fsys.IsGoDir using the information in the index.
+func (rp *IndexPackage) IsGoDir() (_ bool, err error)
 
 // ScanDir implements imports.ScanDir using the information in the index.
 func (rp *IndexPackage) ScanDir(tags map[string]bool) (sortedImports []string, sortedTestImports []string, err error)

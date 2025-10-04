@@ -14,32 +14,32 @@
 //
 // Experiments are exposed to the build in the following ways:
 //
-// - Build tag goexperiment.x is set if experiment x (lower case) is
-// enabled.
+//   - Build tag goexperiment.x is set if experiment x (lower case) is
+//     enabled.
 //
-// - For each experiment x (in camel case), this package contains a
-// boolean constant x and an integer constant xInt.
+//   - For each experiment x (in camel case), this package contains a
+//     boolean constant x and an integer constant xInt.
 //
-// - In runtime assembly, the macro GOEXPERIMENT_x is defined if
-// experiment x (lower case) is enabled.
+//   - In runtime assembly, the macro GOEXPERIMENT_x is defined if
+//     experiment x (lower case) is enabled.
 //
 // In the toolchain, the set of experiments enabled for the current
 // build should be accessed via objabi.Experiment.
 //
-// The set of experiments is included in the output of runtime.Version()
+// The set of experiments is included in the output of [runtime.Version]()
 // and "go version <binary>" if it differs from the default experiments.
 //
 // For the set of experiments supported by the current toolchain, see
 // "go doc goexperiment.Flags".
 //
-// Note that this package defines the set of experiments (in Flags)
+// Note that this package defines the set of experiments (in [Flags])
 // and records the experiments that were enabled when the package
 // was compiled (as boolean and integer constants).
 //
 // Note especially that this package does not itself change behavior
 // at run time based on the GOEXPERIMENT variable.
 // The code used in builds to interpret the GOEXPERIMENT variable
-// is in the separate package internal/buildcfg.
+// is in the separate package [internal/buildcfg].
 package goexperiment
 
 // Flags is the set of experiments that can be enabled or disabled in
@@ -49,7 +49,7 @@ package goexperiment
 // tags, experiments use the strings.ToLower of their field name.
 //
 // For the baseline experimental configuration, see
-// objabi.experimentBaseline.
+// [internal/buildcfg.Experiment].
 //
 // If you change this struct definition, run "go generate".
 type Flags struct {
@@ -75,10 +75,6 @@ type Flags struct {
 	// has been broken out to its own experiment that is disabled
 	// by default.
 	HeapMinimum512KiB bool
-
-	// CoverageRedesign enables the new compiler-based code coverage
-	// tooling.
-	CoverageRedesign bool
 
 	// Arenas causes the "arena" standard library package to be visible
 	// to the outside world.
@@ -106,6 +102,27 @@ type Flags struct {
 
 	// AliasTypeParams enables type parameters for alias types.
 	// Requires that gotypesalias=1 is set with GODEBUG.
-	// This flag will be removed with Go 1.24.
+	// This flag will be removed with Go 1.25.
 	AliasTypeParams bool
+<<<<<<< HEAD
+=======
+
+	// SwissMap enables the SwissTable-based map implementation.
+	SwissMap bool
+
+	// SyncHashTrieMap enables the HashTrieMap sync.Map implementation.
+	SyncHashTrieMap bool
+
+	// Synctest enables the testing/synctest package.
+	Synctest bool
+
+	// Dwarf5 enables DWARF version 5 debug info generation.
+	Dwarf5 bool
+
+	// JSONv2 enables the json/v2 package.
+	JSONv2 bool
+
+	// GreenTeaGC enables the Green Tea GC implementation.
+	GreenTeaGC bool
+>>>>>>> upstream/release-branch.go1.25
 }

@@ -42,12 +42,43 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	より完全で遅いcgocheckモードは、GOEXPERIMENTを使用して有効にできます（再ビルドが必要です）。
 	詳細については、https://pkg.go.dev/internal/goexperiment を参照してください。
 
+<<<<<<< HEAD
 	disablethp: Linuxでdisablethp=1を設定すると、ヒープの透過的な巨大ページが無効になります。
 	それは他のプラットフォームには影響しません。disablethpは、Goの1.21以前のバージョンとの互換性を保つためのものです。
 	これらのバージョンは、大幅なメモリの過剰使用を引き起こす可能性のあるLinuxカーネルのデフォルトを回避するのをやめました。
 	詳細は https://go.dev/issue/64332 を参照してください。この設定は将来のリリースで削除される予定なので、
 	その時までに運用者はLinuxの設定を自分のニーズに合わせて調整する必要があります。
 	詳細は https://go.dev/doc/gc-guide#Linux_transparent_huge_pages を参照してください。
+=======
+	checkfinalizers: setting checkfinalizers=1 causes the garbage collector to run
+	multiple partial non-parallel stop-the-world collections to identify common issues with
+	finalizers and cleanups, like those listed at
+	https://go.dev/doc/gc-guide#Finalizers_cleanups_and_weak_pointers. If a potential issue
+	is found, the program will terminate with a description of all potential issues, the
+	associated values, and a list of those values' finalizers and cleanups, including where
+	they were created. It also adds tracking for tiny blocks to help diagnose issues with
+	those as well. The analysis performed during the partial collection is conservative.
+	Notably, it flags any path back to the original object from the cleanup function,
+	cleanup arguments, or finalizer function as a potential issue, even if that path might
+	be severed sometime later during execution (though this is not a recommended pattern).
+	This mode also produces one line of output to stderr every GC cycle with information
+	about the finalizer and cleanup queue lengths. Lines produced by this mode start with
+	"checkfinalizers:".
+
+	decoratemappings: controls whether the Go runtime annotates OS
+	anonymous memory mappings with context about their purpose. These
+	annotations appear in /proc/self/maps and /proc/self/smaps as
+	"[anon: Go: ...]". This setting is only used on Linux. For Go 1.25, it
+	defaults to `decoratemappings=1`, enabling annotations. Using
+	`decoratemappings=0` reverts to the pre-Go 1.25 behavior.
+
+	disablethp: setting disablethp=1 on Linux disables transparent huge pages for the heap.
+	It has no effect on other platforms. disablethp is meant for compatibility with versions
+	of Go before 1.21, which stopped working around a Linux kernel default that can result
+	in significant memory overuse. See https://go.dev/issue/64332. This setting will be
+	removed in a future release, so operators should tweak their Linux configuration to suit
+	their needs before then. See https://go.dev/doc/gc-guide#Linux_transparent_huge_pages.
+>>>>>>> upstream/release-branch.go1.25
 
 	dontfreezetheworld: デフォルトでは、致命的なパニックまたはスローの開始は
 	"世界を凍結"し、すべてのスレッドを事前に停止させてすべての実行中の
@@ -130,6 +161,7 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 
 	panicnil: panicnil=1を設定すると、nilのインターフェース値または型指定されていないnilを引数にpanicを呼び出したときのランタイムエラーが無効になります。
 
+<<<<<<< HEAD
 	runtimecontentionstacks: runtimecontentionstacks=1を設定すると、"mutex"プロファイルにおいて、
 	runtime内部のロックに関する競合に関連するコールスタックが含まれるようになります。これは、
 	MutexProfileFraction設定に従います。runtimecontentionstacks=0の場合、runtime内部のロックに対する競合は
@@ -142,6 +174,13 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	ガベージコレクターとスタックコピー機がプログラムをクラッシュさせるようにします。invalidptr=0に設定すると、このチェックが無効になります。
 	これは、バグのあるコードを診断するための一時的な回避策としてのみ使用されるべきです。
 	本当の修正は、ポインタ型の場所に整数を格納しないことです。
+=======
+	invalidptr: invalidptr=1 (the default) causes the garbage collector and stack
+	copier to crash the program if an invalid pointer value (for example, 1)
+	is found in a pointer-typed location. Setting invalidptr=0 disables this check.
+	This should only be used as a temporary workaround to diagnose buggy code.
+	The real fix is to not store integers in pointer-typed locations.
+>>>>>>> upstream/release-branch.go1.25
 
 	sbrk: sbrk=1を設定すると、メモリアロケータとガベージコレクタが置き換えられ、オペレーティングシステムからメモリを取得し、メモリを回収しない単純なアロケータになります。
 
@@ -235,11 +274,21 @@ import (
 	"github.com/shogo82148/std/internal/goos"
 )
 
+<<<<<<< HEAD
 // Callerは、呼び出し元のゴルーチンのスタック上での関数呼び出しに関するファイルと行番号情報を報告します。
 // 引数skipは、上昇するスタックフレームの数であり、0はCallerの呼び出し元を識別します。
 // （歴史的な理由から、skipの意味はCallerと [Callers] で異なります。）
 // 戻り値は、対応する呼び出しのプログラムカウンタ、ファイル名、およびファイル内の行番号を報告します。
 // 情報を回復できなかった場合、ブール値okはfalseです。
+=======
+// Caller reports file and line number information about function invocations on
+// the calling goroutine's stack. The argument skip is the number of stack frames
+// to ascend, with 0 identifying the caller of Caller. (For historical reasons the
+// meaning of skip differs between Caller and [Callers].) The return values report
+// the program counter, the file name (using forward slashes as path separator, even
+// on Windows), and the line number within the file of the corresponding call.
+// The boolean ok is false if it was not possible to recover the information.
+>>>>>>> upstream/release-branch.go1.25
 func Caller(skip int) (pc uintptr, file string, line int, ok bool)
 
 // Callersは、呼び出し元のゴルーチンのスタック上での関数呼び出しの戻りプログラムカウンタを、スライスpcで埋めます。
@@ -253,8 +302,19 @@ func Caller(skip int) (pc uintptr, file string, line int, ok bool)
 // インライン化や戻りプログラムカウンタの調整を考慮に入れられないため、勧められません。
 func Callers(skip int, pc []uintptr) int
 
+<<<<<<< HEAD
 // GOROOTは、Goツリーのルートを返します。プロセス開始時に設定されている場合はGOROOT環境変数を使用し、
 // それ以外の場合はGoビルド中に使用されたルートを使用します。
+=======
+// GOROOT returns the root of the Go tree. It uses the
+// GOROOT environment variable, if set at process start,
+// or else the root used during the Go build.
+//
+// Deprecated: The root used during the Go build will not be
+// meaningful if the binary is copied to another machine.
+// Use the system path to locate the “go” binary, and use
+// “go env GOROOT” to find its GOROOT.
+>>>>>>> upstream/release-branch.go1.25
 func GOROOT() string
 
 // Versionは、Goツリーのバージョン文字列を返します。

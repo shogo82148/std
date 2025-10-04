@@ -48,18 +48,6 @@ func (s *Scope) Child(i int) *Scope
 // object exists; otherwise the result is nil.
 func (s *Scope) Lookup(name string) Object
 
-// LookupParent follows the parent chain of scopes starting with s until
-// it finds a scope where Lookup(name) returns a non-nil object, and then
-// returns that scope and object. If a valid position pos is provided,
-// only objects that were declared at or before pos are considered.
-// If no such scope and object exists, the result is (nil, nil).
-//
-// Note that obj.Parent() may be different from the returned scope if the
-// object was inserted into the scope and already had a parent at that
-// time (see Insert). This can only happen for dot-imported objects
-// whose scope is the scope of the package that exported them.
-func (s *Scope) LookupParent(name string, pos syntax.Pos) (*Scope, Object)
-
 // Insert attempts to insert an object obj into scope s.
 // If s already contains an alternative object alt with
 // the same name, Insert leaves s unchanged and returns alt.
@@ -76,6 +64,7 @@ func (s *Scope) Insert(obj Object) Object
 // will be set to s after resolve is called.
 func (s *Scope) InsertLazy(name string, resolve func() Object) bool
 
+<<<<<<< HEAD
 // Squash merges s with its parent scope p by adding all
 // objects of s to p, adding all children of s to the
 // children of p, and removing s from p's children.
@@ -103,6 +92,8 @@ func (s *Scope) Contains(pos syntax.Pos) bool
 // AST has complete position information.
 func (s *Scope) Innermost(pos syntax.Pos) *Scope
 
+=======
+>>>>>>> upstream/release-branch.go1.25
 // WriteTo writes a string representation of the scope to w,
 // with the scope elements sorted by name.
 // The level of indentation is controlled by n >= 0, with

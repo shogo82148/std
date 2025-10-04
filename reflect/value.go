@@ -173,8 +173,18 @@ func (v Value) CanInterface() bool
 // もしValueが非公開の構造体フィールドにアクセスして取得された場合はパニックを起こします。
 func (v Value) Interface() (i any)
 
+<<<<<<< HEAD
 // InterfaceDataは未指定のuintptr値のペアを返します。
 // vの種類がInterfaceでない場合、エラーが発生します。
+=======
+// TypeAssert is semantically equivalent to:
+//
+//	v2, ok := v.Interface().(T)
+func TypeAssert[T any](v Value) (T, bool)
+
+// InterfaceData returns a pair of unspecified uintptr values.
+// It panics if v's Kind is not Interface.
+>>>>>>> upstream/release-branch.go1.25
 //
 // Goの以前のバージョンでは、この関数はインターフェースの値をuintptrのペアで返していました。
 // Go 1.4以降、インターフェースの値の実装はInterfaceDataの定義された使用を除外しています。
@@ -209,6 +219,7 @@ func (v Value) Kind() Kind
 // vの種類が [Array] 、 [Chan] 、 [Map] 、 [Slice] 、 [String] 、または [Array] のポインタでない場合、パニックを発生させます。
 func (v Value) Len() int
 
+<<<<<<< HEAD
 // MapIndexは、マップv内のキーに関連付けられた値を返します。
 // vのKindが [Map] でない場合、パニックを起こします。
 // キーがマップ内に見つからない場合、またはvがnilマップを表す場合、ゼロ値を返します。
@@ -278,6 +289,15 @@ func (v Value) MapRange() *MapIter
 // 返された関数に対するCallの引数には、レシーバを含めないでください。
 // 返された関数は常にvをレシーバとして使用します。
 // iが範囲外であるか、vがnilインターフェースの値である場合、Methodはパニックを引き起こします。
+=======
+// Method returns a function value corresponding to v's i'th method.
+// The arguments to a Call on the returned function should not include
+// a receiver; the returned function will always use v as the receiver.
+// Method panics if i is out of range or if v is a nil interface value.
+//
+// Calling this method will force the linker to retain all exported methods in all packages.
+// This may make the executable binary larger but will not affect execution time.
+>>>>>>> upstream/release-branch.go1.25
 func (v Value) Method(i int) Value
 
 // NumMethodは値のメソッドセット内のメソッド数を返します。
@@ -286,9 +306,21 @@ func (v Value) Method(i int) Value
 // インターフェース以外の型では、エクスポートされたメソッドの数を返します。
 func (v Value) NumMethod() int
 
+<<<<<<< HEAD
 // MethodByNameは、指定された名前のメソッドに対応する関数値を返します。
 // 返された関数に対するCallの引数には、レシーバを含めないでください。返された関数は常にvをレシーバとして使用します。
 // メソッドが見つからない場合、ゼロ値を返します。
+=======
+// MethodByName returns a function value corresponding to the method
+// of v with the given name.
+// The arguments to a Call on the returned function should not include
+// a receiver; the returned function will always use v as the receiver.
+// It returns the zero Value if no method was found.
+//
+// Calling this method will cause the linker to retain all methods with this name in all packages.
+// If the linker can't determine the name, it will retain all exported methods.
+// This may make the executable binary larger but will not affect execution time.
+>>>>>>> upstream/release-branch.go1.25
 func (v Value) MethodByName(name string) Value
 
 // NumFieldは構造体vのフィールドの数を返します。
@@ -348,6 +380,7 @@ func (v Value) Set(x Value)
 // vのKindが [Bool] でない場合、または [Value.CanSet] がfalseを返す場合はパニックを発生させます。
 func (v Value) SetBool(x bool)
 
+<<<<<<< HEAD
 // SetBytesはvの基本値を設定します。
 // vの基本値がバイトのスライスでない場合、パニックを引き起こします。
 func (v Value) SetBytes(x []byte)
@@ -388,6 +421,48 @@ func (v Value) SetUint(x uint64)
 
 // SetPointerは、[unsafe.Pointer]の値であるvをxに設定します。
 // vの種類が [UnsafePointer] でない場合、パニックを起こします。
+=======
+// SetBytes sets v's underlying value.
+// It panics if v's underlying value is not a slice of bytes
+// or if [Value.CanSet] returns false.
+func (v Value) SetBytes(x []byte)
+
+// SetComplex sets v's underlying value to x.
+// It panics if v's Kind is not [Complex64] or [Complex128],
+// or if [Value.CanSet] returns false.
+func (v Value) SetComplex(x complex128)
+
+// SetFloat sets v's underlying value to x.
+// It panics if v's Kind is not [Float32] or [Float64],
+// or if [Value.CanSet] returns false.
+func (v Value) SetFloat(x float64)
+
+// SetInt sets v's underlying value to x.
+// It panics if v's Kind is not [Int], [Int8], [Int16], [Int32], or [Int64],
+// or if [Value.CanSet] returns false.
+func (v Value) SetInt(x int64)
+
+// SetLen sets v's length to n.
+// It panics if v's Kind is not [Slice], or if n is negative or
+// greater than the capacity of the slice,
+// or if [Value.CanSet] returns false.
+func (v Value) SetLen(n int)
+
+// SetCap sets v's capacity to n.
+// It panics if v's Kind is not [Slice], or if n is smaller than the length or
+// greater than the capacity of the slice,
+// or if [Value.CanSet] returns false.
+func (v Value) SetCap(n int)
+
+// SetUint sets v's underlying value to x.
+// It panics if v's Kind is not [Uint], [Uintptr], [Uint8], [Uint16], [Uint32], or [Uint64],
+// or if [Value.CanSet] returns false.
+func (v Value) SetUint(x uint64)
+
+// SetPointer sets the [unsafe.Pointer] value v to x.
+// It panics if v's Kind is not [UnsafePointer]
+// or if [Value.CanSet] returns false.
+>>>>>>> upstream/release-branch.go1.25
 func (v Value) SetPointer(x unsafe.Pointer)
 
 // SetStringはvの基礎となる値をxに設定します。
@@ -477,8 +552,8 @@ type SliceHeader struct {
 // another n elements. After Grow(n), at least n elements can be appended
 // to the slice without another allocation.
 //
-// It panics if v's Kind is not a [Slice] or if n is negative or too large to
-// allocate the memory.
+// It panics if v's Kind is not a [Slice], or if n is negative or too large to
+// allocate the memory, or if [Value.CanSet] returns false.
 func (v Value) Grow(n int)
 
 // Clearメソッドは、マップの内容をクリアするか、スライスの内容をゼロにします。
@@ -494,10 +569,19 @@ func Append(s Value, x ...Value) Value
 // スライスsとtは同じ要素の型でなければなりません。
 func AppendSlice(s, t Value) Value
 
+<<<<<<< HEAD
 // Copyは、dstが満たされるか、srcが使い果たされるまで、srcの内容をdstにコピーします。
 // コピーされた要素の数を返します。
 // Dstとsrcはそれぞれ [Slice] または [Array] の種類でなければならず、
 // dstとsrcは同じ要素の型でなければなりません。
+=======
+// Copy copies the contents of src into dst until either
+// dst has been filled or src has been exhausted.
+// It returns the number of elements copied.
+// Dst and src each must have kind [Slice] or [Array], and
+// dst and src must have the same element type.
+// It dst is an [Array], it panics if [Value.CanSet] returns false.
+>>>>>>> upstream/release-branch.go1.25
 //
 // 特別な場合として、dstの要素の種類がUint8である場合、srcの種類はStringであることができます。
 func Copy(dst, src Value) int

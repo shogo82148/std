@@ -22,6 +22,7 @@ type Signature struct {
 
 // NewSignatureは与えられたレシーバ、パラメータ、戻り値のための新しい関数型を返します。それぞれnilにすることもできます。もしvariadicがtrueに設定されている場合、関数は可変長引数を持ち、少なくとも1つのパラメータを持つ必要があります。また、最後のパラメータは無名のスライス型である必要があります。
 //
+<<<<<<< HEAD
 // Deprecated: 代わりに型パラメータを使用できる [NewSignatureType] を使用してください。
 func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 
@@ -31,6 +32,23 @@ func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 // 最後のパラメータのコア型は未命名スライスまたはバイト文字列型である必要があります。
 // recvがnilでない場合、typeParamsは空でなければなりません。
 // recvTypeParamsが空でない場合、recvはnilではない必要があります。
+=======
+// Deprecated: Use [NewSignatureType] instead which allows for type parameters.
+//
+//go:fix inline
+func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
+
+// NewSignatureType creates a new function type for the given receiver,
+// receiver type parameters, type parameters, parameters, and results.
+// If variadic is set, params must hold at least one parameter and the
+// last parameter must be an unnamed slice or a type parameter whose
+// type set has an unnamed slice as common underlying type.
+// As a special case, for variadic signatures the last parameter may
+// also be a string type, or a type parameter containing a mix of byte
+// slices and string types in its type set.
+// If recv is non-nil, typeParams must be empty. If recvTypeParams is
+// non-empty, recv must be non-nil.
+>>>>>>> upstream/release-branch.go1.25
 func NewSignatureType(recv *Var, recvTypeParams, typeParams []*TypeParam, params, results *Tuple, variadic bool) *Signature
 
 // Recv returns the receiver of signature s (if a method), or nil if a

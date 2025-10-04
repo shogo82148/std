@@ -48,6 +48,7 @@ func Contains[S ~[]E, E comparable](s S, v E) bool { return false }
 // ContainsFunc は、s の少なくとも1つの要素 e が f(e) を満たすかどうかを報告します。
 func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool { return false }
 
+<<<<<<< HEAD
 // Insert は、値 v... を s のインデックス i に挿入し、変更されたスライスを返します。
 // s[i:] の要素は上にシフトされ、スペースが作成されます。
 // 返されるスライス r では、r[i] == v[0] であり、r[i+len(v)] == r[i] に元々あった値です。
@@ -97,12 +98,81 @@ func Grow[S ~[]E, E any](s S, n int) S { return nil }
 
 // Clip は、スライスから未使用の容量を削除し、s[:len(s):len(s)] を返します。
 func Clip[S ~[]E, E any](s S) S { return nil }
+=======
+// Insert inserts the values v... into s at index i,
+// returning the modified slice.
+// The elements at s[i:] are shifted up to make room.
+// In the returned slice r, r[i] == v[0],
+// and, if i < len(s), r[i+len(v)] == value originally at r[i].
+// Insert panics if i > len(s).
+// This function is O(len(s) + len(v)).
+// If the result is empty, it has the same nilness as s.
+func Insert[S ~[]E, E any](s S, i int, v ...E) S
+
+// Delete removes the elements s[i:j] from s, returning the modified slice.
+// Delete panics if j > len(s) or s[i:j] is not a valid slice of s.
+// Delete is O(len(s)-i), so if many items must be deleted, it is better to
+// make a single call deleting them all together than to delete one at a time.
+// Delete zeroes the elements s[len(s)-(j-i):len(s)].
+// If the result is empty, it has the same nilness as s.
+func Delete[S ~[]E, E any](s S, i, j int) S
+
+// DeleteFunc removes any elements from s for which del returns true,
+// returning the modified slice.
+// DeleteFunc zeroes the elements between the new length and the original length.
+// If the result is empty, it has the same nilness as s.
+func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S
+
+// Replace replaces the elements s[i:j] by the given v, and returns the
+// modified slice.
+// Replace panics if j > len(s) or s[i:j] is not a valid slice of s.
+// When len(v) < (j-i), Replace zeroes the elements between the new length and the original length.
+// If the result is empty, it has the same nilness as s.
+func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
+
+// Clone returns a copy of the slice.
+// The elements are copied using assignment, so this is a shallow clone.
+// The result may have additional unused capacity.
+// The result preserves the nilness of s.
+func Clone[S ~[]E, E any](s S) S
+
+// Compact replaces consecutive runs of equal elements with a single copy.
+// This is like the uniq command found on Unix.
+// Compact modifies the contents of the slice s and returns the modified slice,
+// which may have a smaller length.
+// Compact zeroes the elements between the new length and the original length.
+// The result preserves the nilness of s.
+func Compact[S ~[]E, E comparable](s S) S
+
+// CompactFunc is like [Compact] but uses an equality function to compare elements.
+// For runs of elements that compare equal, CompactFunc keeps the first one.
+// CompactFunc zeroes the elements between the new length and the original length.
+// The result preserves the nilness of s.
+func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S
+
+// Grow increases the slice's capacity, if necessary, to guarantee space for
+// another n elements. After Grow(n), at least n elements can be appended
+// to the slice without another allocation. If n is negative or too large to
+// allocate the memory, Grow panics.
+// The result preserves the nilness of s.
+func Grow[S ~[]E, E any](s S, n int) S
+
+// Clip removes unused capacity from the slice, returning s[:len(s):len(s)].
+// The result preserves the nilness of s.
+func Clip[S ~[]E, E any](s S) S
+>>>>>>> upstream/release-branch.go1.25
 
 // Reverse は、スライスの要素を逆順にします。
 func Reverse[S ~[]E, E any](s S) { return }
 
+<<<<<<< HEAD
 // Concat は、渡されたスライスを連結した新しいスライスを返します。
 func Concat[S ~[]E, E any](slices ...S) S { return nil }
+=======
+// Concat returns a new slice concatenating the passed in slices.
+// If the concatenation is empty, the result is nil.
+func Concat[S ~[]E, E any](slices ...S) S
+>>>>>>> upstream/release-branch.go1.25
 
 // Repeatは、指定されたスライスを指定された回数だけ繰り返す新しいスライスを返します。
 // 結果の長さと容量は (len(x) * count) です。

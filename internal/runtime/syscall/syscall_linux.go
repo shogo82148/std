@@ -15,3 +15,11 @@ func EpollWait(epfd int32, events []EpollEvent, maxev, waitms int32) (n int32, e
 func EpollCtl(epfd, op, fd int32, event *EpollEvent) (errno uintptr)
 
 func Eventfd(initval, flags int32) (fd int32, errno uintptr)
+
+func Open(path *byte, mode int, perm uint32) (fd int, errno uintptr)
+
+func Close(fd int) (errno uintptr)
+
+func Read(fd int, p []byte) (n int, errno uintptr)
+
+func Pread(fd int, p []byte, offset int64) (n int, errno uintptr)

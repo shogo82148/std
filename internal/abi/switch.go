@@ -4,6 +4,8 @@
 
 package abi
 
+import "github.com/shogo82148/std/internal/goarch"
+
 type InterfaceSwitch struct {
 	Cache  *InterfaceSwitchCache
 	NCases int
@@ -27,7 +29,7 @@ type InterfaceSwitchCacheEntry struct {
 	Itab uintptr
 }
 
-func UseInterfaceSwitchCache(goarch string) bool
+func UseInterfaceSwitchCache(arch goarch.ArchFamilyType) bool
 
 type TypeAssert struct {
 	Cache   *TypeAssertCache

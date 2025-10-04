@@ -19,10 +19,9 @@ type Checker struct {
 	ctxt *Context
 	pkg  *Package
 	*Info
-	version goVersion
-	nextID  uint64
-	objMap  map[Object]*declInfo
-	impMap  map[importKey]*Package
+	nextID uint64
+	objMap map[Object]*declInfo
+	impMap map[importKey]*Package
 
 	// pkgPathMap maps package names to the set of distinct import paths we've
 	// seen for that name, anywhere in the import graph. It is used for
@@ -44,6 +43,8 @@ type Checker struct {
 	recvTParamMap map[*syntax.Name]*TypeParam
 	brokenAliases map[*TypeName]bool
 	unionTypeSets map[*Union]*_TypeSet
+	usedVars      map[*Var]bool
+	usedPkgNames  map[*PkgName]bool
 	mono          monoGraph
 
 	firstErr error
@@ -58,7 +59,8 @@ type Checker struct {
 	environment
 
 	// debugging
-	indent int
+	posStack []syntax.Pos
+	indent   int
 }
 
 // NewChecker returns a new Checker instance for a given package.

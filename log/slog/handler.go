@@ -19,8 +19,15 @@ type commonHandler struct{}
 // Handlerのメソッドのいずれかは、自身または他のメソッドと同時に呼び出される可能性があります。
 // Handlerは、この並行性を管理する責任があります。
 //
+<<<<<<< HEAD
 // slogパッケージのユーザーは、Handlerメソッドを直接呼び出すべきではありません。
 // 代わりに、[Logger]のメソッドを使用する必要があります。
+=======
+// Users of the slog package should not invoke Handler methods directly.
+// They should use the methods of [Logger] instead.
+//
+// Before implementing your own handler, consult https://go.dev/s/slog-handler-guide.
+>>>>>>> upstream/release-branch.go1.25
 type Handler interface {
 	Enabled(context.Context, Level) bool
 
@@ -91,3 +98,7 @@ const (
 	// 関連する値は *[Source] です。
 	SourceKey = "source"
 )
+
+// DiscardHandler discards all log output.
+// DiscardHandler.Enabled returns false for all Levels.
+var DiscardHandler Handler = discardHandler{}

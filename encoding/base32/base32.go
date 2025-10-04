@@ -70,6 +70,7 @@ type CorruptInputError int64
 
 func (e CorruptInputError) Error() string
 
+<<<<<<< HEAD
 // Decodeは、エンコーディングencを使用してsrcをデコードし、
 // [Encoding.DecodedLen](len(src))バイトをdstに書き込みます。
 // srcに無効なbase32データが含まれている場合、
@@ -83,6 +84,25 @@ func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
 func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
 
 // DecodeStringは、base32文字列sによって表されるバイト列を返します。
+=======
+// Decode decodes src using the encoding enc. It writes at most
+// [Encoding.DecodedLen](len(src)) bytes to dst and returns the number of bytes
+// written. The caller must ensure that dst is large enough to hold all
+// the decoded data. If src contains invalid base32 data, it will return the
+// number of bytes successfully written and [CorruptInputError].
+// Newline characters (\r and \n) are ignored.
+func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
+
+// AppendDecode appends the base32 decoded src to dst
+// and returns the extended buffer.
+// If the input is malformed, it returns the partially decoded src and an error.
+// New line characters (\r and \n) are ignored.
+func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
+
+// DecodeString returns the bytes represented by the base32 string s.
+// If the input is malformed, it returns the partially decoded data and
+// [CorruptInputError]. New line characters (\r and \n) are ignored.
+>>>>>>> upstream/release-branch.go1.25
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
 
 // NewDecoderは、新しいbase32ストリームデコーダーを構築します。

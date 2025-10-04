@@ -13,6 +13,13 @@ func DuplicateTokenEx(hExistingToken syscall.Token, dwDesiredAccess uint32, lpTo
 
 func ImpersonateSelf(impersonationlevel uint32) (err error)
 
+<<<<<<< HEAD
+=======
+func IsValidSid(sid *syscall.SID) (valid bool)
+
+func LogonUser(username *uint16, domain *uint16, password *uint16, logonType uint32, logonProvider uint32, token *syscall.Token) (err error)
+
+>>>>>>> upstream/release-branch.go1.25
 func LookupPrivilegeValue(systemname *uint16, name *uint16, luid *LUID) (err error)
 
 func OpenSCManager(machineName *uint16, databaseName *uint16, access uint32) (handle syscall.Handle, err error)
@@ -25,13 +32,17 @@ func QueryServiceStatus(hService syscall.Handle, lpServiceStatus *SERVICE_STATUS
 
 func RevertToSelf() (err error)
 
-func SetTokenInformation(tokenHandle syscall.Token, tokenInformationClass uint32, tokenInformation uintptr, tokenInformationLength uint32) (err error)
+func SetTokenInformation(tokenHandle syscall.Token, tokenInformationClass uint32, tokenInformation unsafe.Pointer, tokenInformationLength uint32) (err error)
 
 func ProcessPrng(buf []byte) (err error)
 
-func GetAdaptersAddresses(family uint32, flags uint32, reserved uintptr, adapterAddresses *IpAdapterAddresses, sizePointer *uint32) (errcode error)
+func GetAdaptersAddresses(family uint32, flags uint32, reserved unsafe.Pointer, adapterAddresses *IpAdapterAddresses, sizePointer *uint32) (errcode error)
 
 func CreateEvent(eventAttrs *SecurityAttributes, manualReset uint32, initialState uint32, name *uint16) (handle syscall.Handle, err error)
+
+func CreateIoCompletionPort(filehandle syscall.Handle, cphandle syscall.Handle, key uintptr, threadcnt uint32) (handle syscall.Handle, err error)
+
+func CreateNamedPipe(name *uint16, flags uint32, pipeMode uint32, maxInstances uint32, outSize uint32, inSize uint32, defaultTimeout uint32, sa *syscall.SecurityAttributes) (handle syscall.Handle, err error)
 
 func GetACP() (acp uint32)
 
@@ -46,6 +57,10 @@ func GetFileInformationByHandleEx(handle syscall.Handle, class uint32, info *byt
 func GetFinalPathNameByHandle(file syscall.Handle, filePath *uint16, filePathSize uint32, flags uint32) (n uint32, err error)
 
 func GetModuleFileName(module syscall.Handle, fn *uint16, len uint32) (n uint32, err error)
+
+func GetModuleHandle(modulename *uint16) (handle syscall.Handle, err error)
+
+func GetOverlappedResult(handle syscall.Handle, overlapped *syscall.Overlapped, done *uint32, wait bool) (err error)
 
 func GetTempPath2(buflen uint32, buf *uint16) (n uint32, err error)
 
@@ -63,9 +78,9 @@ func MoveFileEx(from *uint16, to *uint16, flags uint32) (err error)
 
 func MultiByteToWideChar(codePage uint32, dwFlags uint32, str *byte, nstr int32, wchar *uint16, nwchar int32) (nwrite int32, err error)
 
-func RtlLookupFunctionEntry(pc uintptr, baseAddress *uintptr, table *byte) (ret uintptr)
+func RtlLookupFunctionEntry(pc uintptr, baseAddress *uintptr, table unsafe.Pointer) (ret *RUNTIME_FUNCTION)
 
-func RtlVirtualUnwind(handlerType uint32, baseAddress uintptr, pc uintptr, entry uintptr, ctxt uintptr, data *uintptr, frame *uintptr, ctxptrs *byte) (ret uintptr)
+func RtlVirtualUnwind(handlerType uint32, baseAddress uintptr, pc uintptr, entry *RUNTIME_FUNCTION, ctxt unsafe.Pointer, data unsafe.Pointer, frame *uintptr, ctxptrs unsafe.Pointer) (ret uintptr)
 
 func SetFileInformationByHandle(handle syscall.Handle, fileInformationClass uint32, buf unsafe.Pointer, bufsize uint32) (err error)
 
@@ -79,6 +94,16 @@ func NetShareDel(serverName *uint16, netName *uint16, reserved uint32) (neterr e
 
 func NetUserGetLocalGroups(serverName *uint16, userName *uint16, level uint32, flags uint32, buf **byte, prefMaxLen uint32, entriesRead *uint32, totalEntries *uint32) (neterr error)
 
+func NtCreateFile(handle *syscall.Handle, access uint32, oa *OBJECT_ATTRIBUTES, iosb *IO_STATUS_BLOCK, allocationSize *int64, attributes uint32, share uint32, disposition uint32, options uint32, eabuffer unsafe.Pointer, ealength uint32) (ntstatus error)
+
+func NtOpenFile(handle *syscall.Handle, access uint32, oa *OBJECT_ATTRIBUTES, iosb *IO_STATUS_BLOCK, share uint32, options uint32) (ntstatus error)
+
+func NtQueryInformationFile(handle syscall.Handle, iosb *IO_STATUS_BLOCK, inBuffer unsafe.Pointer, inBufferLen uint32, class uint32) (ntstatus error)
+
+func NtSetInformationFile(handle syscall.Handle, iosb *IO_STATUS_BLOCK, inBuffer unsafe.Pointer, inBufferLen uint32, class uint32) (ntstatus error)
+
+func RtlIsDosDeviceName_U(name *uint16) (ret uint32)
+
 func GetProcessMemoryInfo(handle syscall.Handle, memCounters *PROCESS_MEMORY_COUNTERS, cb uint32) (err error)
 
 func CreateEnvironmentBlock(block **uint16, token syscall.Token, inheritExisting bool) (err error)
@@ -86,6 +111,8 @@ func CreateEnvironmentBlock(block **uint16, token syscall.Token, inheritExisting
 func DestroyEnvironmentBlock(block *uint16) (err error)
 
 func GetProfilesDirectory(dir *uint16, dirLen *uint32) (err error)
+
+func WSADuplicateSocket(s syscall.Handle, processID uint32, info *syscall.WSAProtocolInfo) (err error)
 
 func WSAGetOverlappedResult(h syscall.Handle, o *syscall.Overlapped, bytes *uint32, wait bool, flags *uint32) (err error)
 

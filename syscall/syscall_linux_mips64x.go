@@ -14,6 +14,8 @@ func Ioperm(from int, num int, on int) (err error)
 
 func Iopl(level int) (err error)
 
+func Fstatat(fd int, path string, s *Stat_t, flags int) (err error)
+
 func Fstat(fd int, s *Stat_t) (err error)
 
 func Lstat(path string, s *Stat_t) (err error)

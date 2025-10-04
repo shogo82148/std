@@ -4,6 +4,7 @@
 
 package os
 
+<<<<<<< HEAD
 // Fdは、開いているファイルを参照するWindowsハンドルを返します。
 // もしfが閉じている場合、ファイルディスクリプタは無効になります。
 // もしfがガベージコレクションされる場合、ファイナライザーがファイルディスクリプタを閉じる可能性があり、
@@ -18,14 +19,23 @@ func NewFile(fd uintptr, name string) *File
 
 // DevNullはオペレーティングシステムの「nullデバイス」の名前です。
 // Unix系のシステムでは、"/dev/null"です。Windowsでは"NUL"です。
+=======
+// DevNull is the name of the operating system's “null device.”
+// On Unix-like systems, it is "/dev/null"; on Windows, "NUL".
+>>>>>>> upstream/release-branch.go1.25
 const DevNull = "NUL"
 
 // Truncateは指定されたファイルのサイズを変更します。
 // もしファイルがシンボリックリンクである場合、リンクの対象のサイズを変更します。
 func Truncate(name string, size int64) error
 
+<<<<<<< HEAD
 // Removeは指定されたファイルまたはディレクトリを削除します。
 // エラーが発生した場合、*PathErrorの型で返されます。
+=======
+// Remove removes the named file or directory.
+// If there is an error, it will be of type [*PathError].
+>>>>>>> upstream/release-branch.go1.25
 func Remove(name string) error
 
 // Pipeは接続された一対のファイルを返します。rからの読み取りはwに書き込まれたバイトを返します。

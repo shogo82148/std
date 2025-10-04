@@ -41,13 +41,9 @@ type FuncLines struct {
 	Lines       []string
 }
 
-// ByTopo sorts topologically: target function is on top,
+// ByTopoCmp sorts topologically: target function is on top,
 // followed by inlined functions sorted by filename and line numbers.
-type ByTopo []*FuncLines
-
-func (x ByTopo) Len() int
-func (x ByTopo) Swap(i, j int)
-func (x ByTopo) Less(i, j int) bool
+func ByTopoCmp(a, b *FuncLines) int
 
 // WriteSources writes lines as source code in a column headed by title.
 // phase is used for collapsing columns and should be unique across the table.

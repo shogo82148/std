@@ -93,7 +93,7 @@ const (
 	RBaseS390X   = 14 * 1024
 	RBaseRISCV   = 15 * 1024
 	RBaseWasm    = 16 * 1024
-	RBaseLOONG64 = 17 * 1024
+	RBaseLOONG64 = 19 * 1024
 )
 
 // RegisterRegister binds a pretty-printer (Rconv) for register
@@ -124,6 +124,13 @@ const (
 func RegisterRegisterList(lo, hi int64, rlconv func(int64) string)
 
 func RLconv(list int64) string
+
+// Each architecture is allotted a distinct subspace: [Lo, Hi) for declaring its
+// arch-specific special operands.
+const (
+	SpecialOperandARM64Base = 0 << 16
+	SpecialOperandRISCVBase = 1 << 16
+)
 
 // RegisterSpecialOperands binds a pretty-printer (SPCconv) for special
 // operand numbers to a given special operand number range. Lo is inclusive,

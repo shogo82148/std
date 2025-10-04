@@ -35,9 +35,17 @@ type Frame struct {
 	// Funcがnilでない場合、Function == Func.Name()です。
 	Function string
 
+<<<<<<< HEAD
 	// FileとLineは、このフレームのファイル名と行番号です。
 	// 非終端フレームの場合、これは呼び出しの位置になります。
 	// もし分かっていない場合は、それぞれ空文字列とゼロになります。
+=======
+	// File and Line are the file name and line number of the
+	// location in this frame. For non-leaf frames, this will be
+	// the location of a call. These may be the empty string and
+	// zero, respectively, if not known. The file name uses
+	// forward slashes, even on Windows.
+>>>>>>> upstream/release-branch.go1.25
 	File string
 	Line int
 
@@ -74,6 +82,7 @@ type Func struct {
 
 // FuncForPCは、指定されたプログラムカウンターアドレスを含む関数を記述した*[Func] を返します。もし複数の関数がインライン展開の影響で存在する場合は、最も内側の関数を示す*Funcを返しますが、最も外側の関数のエントリーも持っています。
 //
+<<<<<<< HEAD
 // 完全に不明な理由で、runtimeをインポートできるにもかかわらず、
 // いくつかの広く使用されているパッケージはこれをlinknameを使用してアクセスします。
 // 恥の殿堂に名を連ねる注目のメンバーには以下が含まれます：
@@ -83,6 +92,11 @@ type Func struct {
 // go.dev/issue/67401 を参照してください。
 //
 //go:linkname FuncForPC
+=======
+// If pc represents multiple functions because of inlining, it returns
+// the *Func describing the innermost function, but with an entry of
+// the outermost function.
+>>>>>>> upstream/release-branch.go1.25
 func FuncForPC(pc uintptr) *Func
 
 // Nameは関数の名前を返します。

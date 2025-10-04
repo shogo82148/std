@@ -23,6 +23,7 @@ type Tree struct {
 	treeSet    map[string]*Tree
 	actionLine int
 	rangeDepth int
+	stackDepth int
 }
 
 // mode値はフラグのセット（または0）です。モードはパーサの動作を制御します。

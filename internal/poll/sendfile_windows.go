@@ -4,9 +4,5 @@
 
 package poll
 
-import (
-	"github.com/shogo82148/std/syscall"
-)
-
 // SendFile wraps the TransmitFile call.
-func SendFile(fd *FD, src syscall.Handle, n int64) (written int64, err error)
+func SendFile(fd *FD, src uintptr, size int64) (written int64, err error, handled bool)

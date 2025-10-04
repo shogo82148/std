@@ -8,4 +8,6 @@
 // We benchmark converting between the JSON form
 // and in-memory data structures.
 
+//go:build !goexperiment.jsonv2
+
 package json

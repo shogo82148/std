@@ -25,11 +25,20 @@
 //
 // tとuのいずれもモノトニッククロックの読み取り結果を含む場合、t.After(u)、t.Before(u)、t.Equal(u)、t.Compare(u)、t.Sub(u)は壁掛け時計の読み取り結果を無視してモノトニッククロックの読み取り結果だけを使用して実行されます。tまたはuのいずれかがモノトニッククロックの読み取り結果を含まない場合、これらの操作は壁掛け時計の読み取り結果を使用します。
 //
+<<<<<<< HEAD
 // 一部のシステムでは、コンピュータがスリープ状態になるとモノトニッククロックが停止します。
 // そのようなシステムでは、t.Sub(u) は t と u の間に実際に経過した時間を正確に反映しないかもしれません。
 // [Since]、[Until]、[Before]、[After]、[Add]、[Sub]、[Equal]、[Compare] など、
 // 時間を引き算する他の関数やメソッドにも同様のことが当てはまります。場合によっては、
 // モノトニッククロックを取り除いて正確な結果を得る必要があるかもしれません。
+=======
+// On some systems the monotonic clock will stop if the computer goes to sleep.
+// On such a system, t.Sub(u) may not accurately reflect the actual
+// time that passed between t and u. The same applies to other functions and
+// methods that subtract times, such as [Since], [Until], [Time.Before], [Time.After],
+// [Time.Add], [Time.Equal] and [Time.Compare]. In some cases, you may need to strip
+// the monotonic clock to get accurate results.
+>>>>>>> upstream/release-branch.go1.25
 //
 // モノトニッククロックの読み取り結果には、現在のプロセスの外部では意味がありません。t.GobEncode、t.MarshalBinary、t.MarshalJSON、t.MarshalTextによって生成されるシリアル化された形式では、モノトニッククロックの読み取り結果は省略され、t.Formatはそれに対するフォーマットを提供しません。同様に、コンストラクタ [time.Date]、[time.Parse]、[time.ParseInLocation]、および [time.Unix]、およびアンマーシャラーt.GobDecode、t.UnmarshalBinary、t.UnmarshalJSON、およびt.UnmarshalTextは常にモノトニッククロックの読み取り結果のない時刻を作成します。
 //
@@ -68,8 +77,14 @@ package time
 // 各時刻には関連する [Location] があります。[Time.Local]、[Time.UTC]、および Time.In メソッドは、特定のLocationを持つTimeを返します。
 // これらのメソッドを使用してTime値のLocationを変更しても、それが表す実際の瞬間は変更されず、解釈するタイムゾーンのみが変更されます。
 //
+<<<<<<< HEAD
 // [Time.GobEncode]、[Time.MarshalBinary]、[Time.MarshalJSON]、[Time.MarshalText] メソッドによって保存されるTime値の表現には、[Time.Location] のオフセットが格納されますが、
 // 場所の名前は格納されません。そのため、夏時間に関する情報が失われます。
+=======
+// Representations of a Time value saved by the [Time.GobEncode], [Time.MarshalBinary], [Time.AppendBinary],
+// [Time.MarshalJSON], [Time.MarshalText] and [Time.AppendText] methods store the [Time.Location]'s offset,
+// but not the location name. They therefore lose information about Daylight Saving Time.
+>>>>>>> upstream/release-branch.go1.25
 //
 // 必要な「壁時計」の読み取りに加えて、Timeにはオプションのプロセスの単調な時計の読み取りが含まれることがあります。
 // 比較や減算のための追加の精度を提供するためです。
@@ -323,10 +338,20 @@ func (t Time) UnixMicro() int64
 // UnixNanoはtをUnix時刻として返します。これは、1970年1月1日UTCから経過したナノ秒数です。Unix時刻がint64で表現できない場合（1678年以前または2262年以降の日付）、結果は未定義です。なお、これはゼロのTimeに対してUnixNanoを呼び出した結果も未定義であることを意味します。結果はtに関連付けられた場所に依存しません。
 func (t Time) UnixNano() int64
 
+<<<<<<< HEAD
 // MarshalBinaryはencoding.BinaryMarshalerインターフェースを実装します。
 func (t Time) MarshalBinary() ([]byte, error)
 
 // UnmarshalBinaryはencoding.BinaryUnmarshalerインターフェースを実装します。
+=======
+// AppendBinary implements the [encoding.BinaryAppender] interface.
+func (t Time) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements the [encoding.BinaryMarshaler] interface.
+func (t Time) MarshalBinary() ([]byte, error)
+
+// UnmarshalBinary implements the [encoding.BinaryUnmarshaler] interface.
+>>>>>>> upstream/release-branch.go1.25
 func (t *Time) UnmarshalBinary(data []byte) error
 
 // GobEncodeはgob.GobEncoderインターフェースを実装します。
@@ -345,9 +370,22 @@ func (t Time) MarshalJSON() ([]byte, error)
 // 時刻はRFC 3339形式でクォートされた文字列である必要があります。
 func (t *Time) UnmarshalJSON(data []byte) error
 
+<<<<<<< HEAD
 // MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
 // 時間はRFC 3339形式でサブ秒の精度でフォーマットされます。
 // タイムスタンプが有効なRFC 3339として表現できない場合（例：年が範囲外の場合）、エラーが報告されます。
+=======
+// AppendText implements the [encoding.TextAppender] interface.
+// The time is formatted in RFC 3339 format with sub-second precision.
+// If the timestamp cannot be represented as valid RFC 3339
+// (e.g., the year is out of range), then an error is returned.
+func (t Time) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements the [encoding.TextMarshaler] interface. The output
+// matches that of calling the [Time.AppendText] method.
+//
+// See [Time.AppendText] for more information.
+>>>>>>> upstream/release-branch.go1.25
 func (t Time) MarshalText() ([]byte, error)
 
 // UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。

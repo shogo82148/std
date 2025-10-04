@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build !goexperiment.synchashtriemap
+
 package sync
 
 import (
@@ -32,6 +34,8 @@ import (
 //
 // [the Go memory model]: https://go.dev/ref/mem
 type Map struct {
+	_ noCopy
+
 	mu Mutex
 
 	// readには、muを保持している場合とそうでない場合の両方で、

@@ -4,10 +4,12 @@
 
 package base
 
-// Tool returns the path to the named tool (for example, "vet").
+// Tool returns the path to the named builtin tool (for example, "vet").
 // If the tool cannot be found, Tool exits the process.
 func Tool(toolName string) string
 
 // ToolPath returns the path at which we expect to find the named tool
 // (for example, "vet"), and the error (if any) from statting that path.
 func ToolPath(toolName string) (string, error)
+
+func ValidToolName(toolName string) bool

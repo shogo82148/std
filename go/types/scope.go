@@ -47,6 +47,7 @@ func (s *Scope) Child(i int) *Scope
 // オブジェクトが存在する場合はそのオブジェクトを返し、存在しない場合はnilを返します。
 func (s *Scope) Lookup(name string) Object
 
+<<<<<<< HEAD
 // LookupParentは、sから始まるスコープの親チェーンをたどり、Lookup（name）が非nilのオブジェクトを返すスコープを見つけ、そのスコープとオブジェクトを返します。有効な位置posが指定された場合、posで宣言されたかそれ以前のオブジェクトのみが考慮されます。このようなスコープとオブジェクトが存在しない場合、結果は（nil、nil）です。
 // obj.Parent()は、オブジェクトがスコープに挿入され、すでにその時点で親があった場合に、返されたスコープと異なるかもしれないことに注意してください（Insertを参照）。これは、スコープがそれらをエクスポートしたパッケージのスコープであるドットインポートされたオブジェクトにのみ起こり得ます。
 func (s *Scope) LookupParent(name string, pos token.Pos) (*Scope, Object)
@@ -77,6 +78,20 @@ func (s *Scope) Innermost(pos token.Pos) *Scope
 // インデントのレベルはn >= 0で制御され、
 // インデントなしの場合はn == 0です。
 // recurseが設定されている場合は、ネストされた（子）スコープも書き込みます。
+=======
+// Insert attempts to insert an object obj into scope s.
+// If s already contains an alternative object alt with
+// the same name, Insert leaves s unchanged and returns alt.
+// Otherwise it inserts obj, sets the object's parent scope
+// if not already set, and returns nil.
+func (s *Scope) Insert(obj Object) Object
+
+// WriteTo writes a string representation of the scope to w,
+// with the scope elements sorted by name.
+// The level of indentation is controlled by n >= 0, with
+// n == 0 for no indentation.
+// If recurse is set, it also writes nested (children) scopes.
+>>>>>>> upstream/release-branch.go1.25
 func (s *Scope) WriteTo(w io.Writer, n int, recurse bool)
 
 // Stringはデバッグ用のスコープの文字列表現を返します。

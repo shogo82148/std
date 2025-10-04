@@ -2,7 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 // astパッケージはGoのパッケージの構文木を表すために使用される型を宣言します。
+=======
+// Package ast declares the types used to represent syntax trees for Go
+// packages.
+//
+// Syntax trees may be constructed directly, but they are typically
+// produced from Go source code by the parser; see the ParseFile
+// function in package [go/parser].
+>>>>>>> upstream/release-branch.go1.25
 package ast
 
 import (
@@ -110,7 +119,23 @@ type (
 		Elt      Expr
 	}
 
+<<<<<<< HEAD
 	// BasicLitノードは基本型のリテラルを表します。
+=======
+	// A BasicLit node represents a literal of basic type.
+	//
+	// Note that for the CHAR and STRING kinds, the literal is stored
+	// with its quotes. For example, for a double-quoted STRING, the
+	// first and the last rune in the Value field will be ". The
+	// [strconv.Unquote] and [strconv.UnquoteChar] functions can be
+	// used to unquote STRING and CHAR values, respectively.
+	//
+	// For raw string literals (Kind == token.STRING && Value[0] == '`'),
+	// the Value field contains the string text without carriage returns (\r) that
+	// may have been present in the source. Because the end position is
+	// computed using len(Value), the position reported by [BasicLit.End] does not match the
+	// true source end position for raw string literals containing carriage returns.
+>>>>>>> upstream/release-branch.go1.25
 	BasicLit struct {
 		ValuePos token.Pos
 		Kind     token.Token
@@ -668,12 +693,25 @@ type File struct {
 	GoVersion          string
 }
 
+<<<<<<< HEAD
 // Posはパッケージ宣言の位置を返します。
 // （ファイル全体の開始位置にはFileStartを使用してください。）
 func (f *File) Pos() token.Pos
 
 // Endはファイル中の最後の宣言の終了位置を返します。
 // （ファイル全体の終了位置にはFileEndを使用してください。）
+=======
+// Pos returns the position of the package declaration.
+// It may be invalid, for example in an empty file.
+//
+// (Use FileStart for the start of the entire file. It is always valid.)
+func (f *File) Pos() token.Pos
+
+// End returns the end of the last declaration in the file.
+// It may be invalid, for example in an empty file.
+//
+// (Use FileEnd for the end of the entire file. It is always valid.)
+>>>>>>> upstream/release-branch.go1.25
 func (f *File) End() token.Pos
 
 // A Package node represents a set of source files

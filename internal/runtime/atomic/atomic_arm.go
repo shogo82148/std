@@ -21,6 +21,9 @@ func Xadduintptr(ptr *uintptr, delta uintptr) uintptr
 //go:nosplit
 func Xchg(addr *uint32, v uint32) uint32
 
+//go:noescape
+func Xchg8(addr *uint8, v uint8) uint8
+
 //go:nosplit
 func Xchguintptr(addr *uintptr, v uintptr) uintptr
 
@@ -36,10 +39,10 @@ func StoreRel(addr *uint32, v uint32)
 //go:noescape
 func StoreReluintptr(addr *uintptr, v uintptr)
 
-//go:nosplit
+//go:noescape
 func Or8(addr *uint8, v uint8)
 
-//go:nosplit
+//go:noescape
 func And8(addr *uint8, v uint8)
 
 //go:nosplit

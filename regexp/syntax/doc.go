@@ -132,6 +132,11 @@ ASCII文字クラス：
 	[[:word:]]     単語の文字（== [0-9A-Za-z_]）
 	[[:xdigit:]]   16進数の数字（== [0-9A-Fa-f]）
 
+<<<<<<< HEAD
 Unicode文字クラスは、[unicode.Categories] および [unicode.Scripts] のものです。
+=======
+Unicode character classes are those in [unicode.Categories],
+[unicode.CategoryAliases], and [unicode.Scripts].
+>>>>>>> upstream/release-branch.go1.25
 */
 package syntax

@@ -20,7 +20,7 @@ func Localize(path string) (string, error)
 // ToSlash is filepath.ToSlash.
 func ToSlash(path string) string
 
-// FromSlash is filepath.ToSlash.
+// FromSlash is filepath.FromSlash.
 func FromSlash(path string) string
 
 // Split is filepath.Split.

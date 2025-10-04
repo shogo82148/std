@@ -5,6 +5,7 @@
 package work
 
 import (
+	"github.com/shogo82148/std/cmd/go/internal/load"
 	"github.com/shogo82148/std/io/fs"
 )
 
@@ -19,13 +20,16 @@ type Shell struct {
 
 // NewShell returns a new Shell.
 //
-// Shell will internally serialize calls to the print function.
-// If print is nil, it defaults to printing to stderr.
-func NewShell(workDir string, print func(a ...any) (int, error)) *Shell
+// Shell will internally serialize calls to the printer.
+// If printer is nil, it uses load.DefaultPrinter.
+func NewShell(workDir string, printer load.Printer) *Shell
 
-// Print emits a to this Shell's output stream, formatting it like fmt.Print.
+// Printf emits a to this Shell's output stream, formatting it like fmt.Printf.
 // It is safe to call concurrently.
-func (sh *Shell) Print(a ...any)
+func (sh *Shell) Printf(format string, a ...any)
+
+// Errorf reports an error on sh's package and sets the process exit status to 1.
+func (sh *Shell) Errorf(format string, a ...any)
 
 // WithAction returns a Shell identical to sh, but bound to Action a.
 func (sh *Shell) WithAction(a *Action) *Shell
@@ -37,7 +41,7 @@ func (b *Builder) Shell(a *Action) *Shell
 // Try not to use this unless there's really no sensible Action available.
 func (b *Builder) BackgroundShell() *Shell
 
-// copyFile is like 'cp src dst'.
+// CopyFile is like 'cp src dst'.
 func (sh *Shell) CopyFile(dst, src string, perm fs.FileMode, force bool) error
 
 // Mkdir makes the named directory.

@@ -14,10 +14,23 @@ package runtime
 //
 // SetFinalizer(obj, nil)は、objに関連付けられたファイナライザをクリアします。
 //
+<<<<<<< HEAD
 // 引数objは、newを呼び出すことによって割り当てられたオブジェクトへのポインタ、
 // 複合リテラルのアドレスを取得することによって、またはローカル変数のアドレスを取得することによって割り当てられたオブジェクトへのポインタである必要があります。
 // 引数finalizerは、objの型に割り当てることができる単一の引数を取る関数であり、任意の無視される戻り値を持つことができます。
 // これらのいずれかがtrueでない場合、SetFinalizerはプログラムを中止する可能性があります。
+=======
+// New Go code should consider using [AddCleanup] instead, which is much
+// less error-prone than SetFinalizer.
+//
+// The argument obj must be a pointer to an object allocated by calling
+// new, by taking the address of a composite literal, or by taking the
+// address of a local variable.
+// The argument finalizer must be a function that takes a single argument
+// to which obj's type can be assigned, and can have arbitrary ignored return
+// values. If either of these is not true, SetFinalizer may abort the
+// program.
+>>>>>>> upstream/release-branch.go1.25
 //
 // ファイナライザは依存関係の順序で実行されます。
 // AがBを指し示し、両方にファイナライザがあり、それらが到達不能である場合、Aのファイナライザのみが実行されます。

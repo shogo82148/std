@@ -118,9 +118,19 @@ func (r *Rand) Read(p []byte) (n int, err error)
 // 古い振る舞いを強制するには、プログラムの起動時にSeed(1)を呼び出します。
 // あるいは、このパッケージの関数を呼び出す前に環境変数でGODEBUG=randautoseed=0を設定します。
 //
+<<<<<<< HEAD
 // Deprecated: Go 1.20以降、ランダムな値でSeedを呼び出す理由はありません。
 // 特定の結果のシーケンスを得るために既知の値でSeedを呼び出すプログラムは、
 // New(NewSource(seed))を使用してローカルのランダムジェネレータを取得するべきです。
+=======
+// Deprecated: As of Go 1.20 there is no reason to call Seed with
+// a random value. Programs that call Seed with a known value to get
+// a specific sequence of results should use New(NewSource(seed)) to
+// obtain a local random generator.
+//
+// As of Go 1.24 [Seed] is a no-op. To restore the previous behavior set
+// GODEBUG=randseednop=0.
+>>>>>>> upstream/release-branch.go1.25
 func Seed(seed int64)
 
 // Int63は、デフォルトの [Source] から非負の擬似乱数63ビット整数をint64として返します。

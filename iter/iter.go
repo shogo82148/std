@@ -22,7 +22,26 @@ Seq2は、通常はキーと値のペアやインデックスと値のペアを�
 yieldは、イテレータがシーケンスの次の要素を続行すべき場合にtrueを返し、
 停止すべき場合にfalseを返します。
 
+<<<<<<< HEAD
 イテレータ関数は、次のようにrangeループで呼び出されることが最も多いです：
+=======
+For instance, [maps.Keys] returns an iterator that produces the sequence
+of keys of the map m, implemented as follows:
+
+	func Keys[Map ~map[K]V, K comparable, V any](m Map) iter.Seq[K] {
+		return func(yield func(K) bool) {
+			for k := range m {
+				if !yield(k) {
+					return
+				}
+			}
+		}
+	}
+
+Further examples can be found in [The Go Blog: Range Over Function Types].
+
+Iterator functions are most often called by a [range loop], as in:
+>>>>>>> upstream/release-branch.go1.25
 
 	func PrintAll[V any](seq iter.Seq[V]) {
 		for v := range seq {
@@ -149,8 +168,13 @@ stopを呼び出す必要があります。例に示すように、これを確�
 
 例えば、ツリーの実装は次のように提供されるかもしれません：
 
+<<<<<<< HEAD
 	// Positionsは、シーケンス内の位置を反復するイテレータを返します。
 	func (t *Tree[V]) Positions() iter.Seq[*Pos]
+=======
+	// Positions returns an iterator over positions in the sequence.
+	func (t *Tree[V]) Positions() iter.Seq[*Pos[V]]
+>>>>>>> upstream/release-branch.go1.25
 
 	// Posはシーケンス内の位置を表します。
 	// これは、それが渡されるyield呼び出しの間のみ有効です。
@@ -172,6 +196,9 @@ stopを呼び出す必要があります。例に示すように、これを確�
 			p.Delete()
 		}
 	}
+
+[The Go Blog: Range Over Function Types]: https://go.dev/blog/range-functions
+[range loop]: https://go.dev/ref/spec#For_range
 */
 package iter
 

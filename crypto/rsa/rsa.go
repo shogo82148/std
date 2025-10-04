@@ -10,23 +10,50 @@
 //
 // このパッケージには2つのセットのインタフェースが含まれています。より抽象的なインタフェースが不要な場合は、v1.5 / OAEPでの暗号化/復号化、およびv1.5 / PSSでの署名/検証のための関数があります。公開鍵原則に対して抽象化する必要がある場合は、PrivateKey型がcryptoパッケージのDecrypterおよびSignerインタフェースを実装します。
 //
+<<<<<<< HEAD
 // 私有鍵を扱う操作は、[GenerateKey]、[PrivateKey.Precompute]、および
 // [PrivateKey.Validate] を除いて、定数時間アルゴリズムを使用して実装されています。
+=======
+// Operations involving private keys are implemented using constant-time
+// algorithms, except for [GenerateKey] and for some operations involving
+// deprecated multi-prime keys.
+//
+// # Minimum key size
+//
+// [GenerateKey] returns an error if a key of less than 1024 bits is requested,
+// and all Sign, Verify, Encrypt, and Decrypt methods return an error if used
+// with a key smaller than 1024 bits. Such keys are insecure and should not be
+// used.
+//
+// The rsa1024min=0 GODEBUG setting suppresses this error, but we recommend
+// doing so only in tests, if necessary. Tests can set this option using
+// [testing.T.Setenv] or by including "//go:debug rsa1024min=0" in a *_test.go
+// source file.
+//
+// Alternatively, see the [GenerateKey (TestKey)] example for a pregenerated
+// test-only 2048-bit key.
+//
+// [GenerateKey (TestKey)]: https://pkg.go.dev/crypto/rsa#example-GenerateKey-TestKey
+>>>>>>> upstream/release-branch.go1.25
 package rsa
 
 import (
 	"github.com/shogo82148/std/crypto"
-	"github.com/shogo82148/std/crypto/internal/bigmod"
+	"github.com/shogo82148/std/crypto/internal/fips140/rsa"
 	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/math/big"
 )
 
 // PublicKeyは、RSAキーの公開部分を表します。
 //
+<<<<<<< HEAD
 // このライブラリでは、モジュラスNの値は秘密と見なされ、タイミングサイドチャネルを通じた漏洩から保護されます。
 // しかし、指数Eの値やNの正確なビットサイズは同様に保護されません。
+=======
+// The values of N and E are not considered confidential, and may leak through
+// side channels, or could be mathematically derived from other public values.
+>>>>>>> upstream/release-branch.go1.25
 type PublicKey struct {
 	N *big.Int
 	E int
@@ -90,7 +117,7 @@ type PrecomputedValues struct {
 	// 複雑さを制限するためにこのパッケージでCRTの最適化なしで実装されています。
 	CRTValues []CRTValue
 
-	n, p, q *bigmod.Modulus
+	fips *rsa.PrivateKey
 }
 
 // CRTValueには事前計算された中国剰余定理の値が含まれています。
@@ -100,13 +127,31 @@ type CRTValue struct {
 	R     *big.Int
 }
 
+<<<<<<< HEAD
 // Validateはキーに基本的な正当性チェックを行います。
 // キーが正当であれば、nilを返します。それ以外の場合は、問題を説明するエラーが返されます。
+=======
+// Validate performs basic sanity checks on the key.
+// It returns nil if the key is valid, or else an error describing a problem.
+//
+// It runs faster on valid keys if run after [PrivateKey.Precompute].
+>>>>>>> upstream/release-branch.go1.25
 func (priv *PrivateKey) Validate() error
 
 // GenerateKeyは指定されたビットサイズのランダムなRSA秘密鍵を生成します。
 //
+<<<<<<< HEAD
 // ほとんどのアプリケーションはrandとして[crypto/rand.Reader]を使用するべきです。注意：返される鍵は、randから読み取られたバイトに従属的に決定されず、呼び出しやバージョンによって変わる可能性があります。
+=======
+// If bits is less than 1024, [GenerateKey] returns an error. See the "[Minimum
+// key size]" section for further details.
+//
+// Most applications should use [crypto/rand.Reader] as rand. Note that the
+// returned key does not depend deterministically on the bytes read from rand,
+// and may change between calls and/or between versions.
+//
+// [Minimum key size]: https://pkg.go.dev/crypto/rsa#hdr-Minimum_key_size
+>>>>>>> upstream/release-branch.go1.25
 func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 
 // GenerateMultiPrimeKeyは指定されたビットサイズとランダムソースで、マルチプライムRSA鍵ペアを生成します。
@@ -125,6 +170,7 @@ func GenerateMultiPrimeKey(random io.Reader, nprimes int, bits int) (*PrivateKey
 // ErrMessageTooLong は、鍵のサイズに対して大きすぎるメッセージを暗号化または署名しようとした場合に返されます。 [SignPSS] を使用する場合、塩のサイズが大きすぎる場合にも返されることがあります。
 var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA key size")
 
+<<<<<<< HEAD
 // EncryptOAEPはRSA-OAEPで与えられたメッセージを暗号化します。
 //
 // OAEPはランダムオラクルとして使用されるハッシュ関数でパラメータ化されています。
@@ -147,12 +193,17 @@ func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, l
 
 // ErrDecryptionはメッセージの復号に失敗したことを表します。
 // 適応攻撃を避けるため、故意に曖昧さを持たせています。
+=======
+// ErrDecryption represents a failure to decrypt a message.
+// It is deliberately vague to avoid adaptive attacks.
+>>>>>>> upstream/release-branch.go1.25
 var ErrDecryption = errors.New("crypto/rsa: decryption error")
 
 // ErrVerificationは署名を検証できなかったことを表します。
 // 自己適応攻撃を避けるために、意図的にあいまいです。
 var ErrVerification = errors.New("crypto/rsa: verification error")
 
+<<<<<<< HEAD
 // Precomputeは未来の秘密鍵操作を高速化するためのいくつかの計算を実行します。
 func (priv *PrivateKey) Precompute()
 
@@ -167,3 +218,8 @@ func (priv *PrivateKey) Precompute()
 // ラベルパラメータは暗号化時に指定した値と一致する必要があります。
 // 詳細については、 [EncryptOAEP] を参照してください。
 func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)
+=======
+// Precompute performs some calculations that speed up private key operations
+// in the future. It is safe to run on non-validated private keys.
+func (priv *PrivateKey) Precompute()
+>>>>>>> upstream/release-branch.go1.25

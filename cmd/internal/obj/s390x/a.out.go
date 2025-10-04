@@ -165,6 +165,7 @@ const (
 	USETMP
 )
 
+//go:generate go run ../mkcnames.go -i a.out.go -o anamesz.go -p s390x
 const (
 	C_NONE     = iota
 	C_REG
@@ -304,6 +305,7 @@ const (
 	AFNABS
 	AFNEG
 	AFNEGS
+	ALCDBR
 	ALEDBR
 	ALDEBR
 	ALPDFR

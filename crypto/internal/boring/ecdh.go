@@ -11,7 +11,6 @@ import "C"
 type PublicKeyECDH struct {
 	curve string
 	key   *C.GO_EC_POINT
-	group *C.GO_EC_GROUP
 	bytes []byte
 }
 

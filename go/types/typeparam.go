@@ -7,7 +7,14 @@
 
 package types
 
+<<<<<<< HEAD
 // TypeParamは型パラメータータイプを表します。
+=======
+// A TypeParam represents the type of a type parameter in a generic declaration.
+//
+// A TypeParam has a name; use the [TypeParam.Obj] method to access
+// its [TypeName] object.
+>>>>>>> upstream/release-branch.go1.25
 type TypeParam struct {
 	check *Checker
 	id    uint64

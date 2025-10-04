@@ -19,13 +19,27 @@ func ParseOID(oid string) (OID, error)
 // OIDFromIntsは、整数を使用して新しいOIDを作成します。各整数は別々のコンポーネントです。
 func OIDFromInts(oid []uint64) (OID, error)
 
+<<<<<<< HEAD
 // MarshalTextは [encoding.TextMarshaler] を実装します。
+=======
+// AppendText implements [encoding.TextAppender]
+func (o OID) AppendText(b []byte) ([]byte, error)
+
+// MarshalText implements [encoding.TextMarshaler]
+>>>>>>> upstream/release-branch.go1.25
 func (o OID) MarshalText() ([]byte, error)
 
 // UnmarshalTextは [encoding.TextUnmarshaler] を実装します。
 func (o *OID) UnmarshalText(text []byte) error
 
+<<<<<<< HEAD
 // MarshalBinary は [encoding.BinaryMarshaler] を実装します。
+=======
+// AppendBinary implements [encoding.BinaryAppender]
+func (o OID) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinary implements [encoding.BinaryMarshaler]
+>>>>>>> upstream/release-branch.go1.25
 func (o OID) MarshalBinary() ([]byte, error)
 
 // UnmarshalBinary は [encoding.BinaryUnmarshaler] を実装します。

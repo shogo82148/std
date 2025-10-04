@@ -9,6 +9,7 @@ package lockedfile
 import (
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/io/fs"
+	"github.com/shogo82148/std/runtime"
 )
 
 // A File is a locked *os.File.
@@ -21,6 +22,8 @@ import (
 type File struct {
 	osFile
 	closed bool
+	// cleanup panics when the file is no longer referenced and it has not been closed.
+	cleanup runtime.Cleanup
 }
 
 // OpenFile is like os.OpenFile, but returns a locked file.

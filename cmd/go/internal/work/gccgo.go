@@ -5,3 +5,4 @@
 package work
 
 var GccgoName, GccgoBin string
+var GccgoChanged bool

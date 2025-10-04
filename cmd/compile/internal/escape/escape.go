@@ -12,4 +12,4 @@ func Funcs(all []*ir.Func)
 
 // Batch performs escape analysis on a minimal batch of
 // functions.
-func Batch(fns []*ir.Func, recursive bool)
+func Batch(fns []*ir.Func, reassignOracles map[*ir.Func]*ir.ReassignOracle)

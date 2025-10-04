@@ -16,8 +16,6 @@ func Fstatfs(fd int, buf *Statfs_t) (err error)
 
 func Statfs(path string, buf *Statfs_t) (err error)
 
-func Getrlimit(resource int, rlim *Rlimit) (err error)
-
 func (r *PtraceRegs) PC() uint64
 
 func (r *PtraceRegs) SetPC(pc uint64)

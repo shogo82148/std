@@ -139,8 +139,6 @@ func Geteuid() (euid int)
 
 func Getgid() (gid int)
 
-func Getrlimit(resource int, rlim *Rlimit) (err error)
-
 func Getuid() (uid int)
 
 func InotifyInit() (fd int, err error)

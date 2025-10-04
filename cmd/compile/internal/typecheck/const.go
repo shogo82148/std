@@ -21,9 +21,5 @@ func DefaultLit(n ir.Node, t *types.Type) ir.Node
 // also allowed.
 func ConvertVal(v constant.Value, t *types.Type, explicit bool) constant.Value
 
-// IndexConst checks if Node n contains a constant expression
-// representable as a non-negative int and returns its value.
-// If n is not a constant expression, not representable as an
-// integer, or negative, it returns -1. If n is too large, it
-// returns -2.
+// IndexConst returns the index value of constant Node n.
 func IndexConst(n ir.Node) int64

@@ -29,6 +29,7 @@ type Cover struct {
 	CoveredPackages string
 }
 
+<<<<<<< HEAD
 // Coverageは現在のコードカバレッジを[0, 1]の範囲で示します。
 // カバレッジが有効でない場合、Coverageは0を返します。
 //
@@ -40,4 +41,9 @@ func Coverage() float64
 // RegisterCoverはテストのカバレッジデータの累積器を記録します。
 // 注意：この関数はテストインフラストラクチャに内部的なものであり、変更される可能性があります。
 // まだGo 1の互換性ガイドラインでカバーされていません。
+=======
+// RegisterCover records the coverage data accumulators for the tests.
+// NOTE: This function is internal to the testing infrastructure and may change.
+// It is not covered (yet) by the Go 1 compatibility guidelines.
+>>>>>>> upstream/release-branch.go1.25
 func RegisterCover(c Cover)

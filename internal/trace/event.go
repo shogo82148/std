@@ -5,6 +5,7 @@
 package trace
 
 import (
+	"github.com/shogo82148/std/iter"
 	"github.com/shogo82148/std/time"
 )
 
@@ -231,7 +232,7 @@ type Stack struct {
 }
 
 // Frames is an iterator over the frames in a Stack.
-func (s Stack) Frames(yield func(f StackFrame) bool) bool
+func (s Stack) Frames() iter.Seq[StackFrame]
 
 // NoStack is a sentinel value that can be compared against any Stack value, indicating
 // a lack of a stack trace.
@@ -254,32 +255,25 @@ type StackFrame struct {
 	Line uint64
 }
 
-// ExperimentalEvent presents a raw view of an experimental event's arguments and thier names.
+// ExperimentalEvent presents a raw view of an experimental event's arguments and their names.
 type ExperimentalEvent struct {
 	// Name is the name of the event.
 	Name string
 
-	// ArgNames is the names of the event's arguments in order.
-	// This may refer to a globally shared slice. Copy before mutating.
-	ArgNames []string
+	// Experiment is the name of the experiment this event is a part of.
+	Experiment string
 
-	// Args contains the event's arguments.
-	Args []uint64
+	// Args lists the names of the event's arguments in order.
+	Args []string
 
-	// Data is additional unparsed data that is associated with the experimental event.
-	// Data is likely to be shared across many ExperimentalEvents, so callers that parse
-	// Data are encouraged to cache the parse result and look it up by the value of Data.
-	Data *ExperimentalData
+	// argValues contains the raw integer arguments which are interpreted
+	// by ArgValue using table.
+	table     *evTable
+	argValues []uint64
 }
 
-// ExperimentalData represents some raw and unparsed sidecar data present in the trace that is
-// associated with certain kinds of experimental events. For example, this data may contain
-// tables needed to interpret ExperimentalEvent arguments, or the ExperimentEvent could just be
-// a placeholder for a differently encoded event that's actually present in the experimental data.
-type ExperimentalData struct {
-	// Batches contain the actual experimental data, along with metadata about each batch.
-	Batches []ExperimentalBatch
-}
+// ArgValue returns a typed Value for the i'th argument in the experimental event.
+func (e ExperimentalEvent) ArgValue(i int) Value
 
 // ExperimentalBatch represents a packet of unparsed data along with metadata about that packet.
 type ExperimentalBatch struct {
@@ -378,6 +372,40 @@ func (e Event) Log() Log
 //
 // Panics if Kind != EventStateTransition.
 func (e Event) StateTransition() StateTransition
+
+// Sync returns details that are relevant for the following events, up to but excluding the
+// next EventSync event.
+func (e Event) Sync() Sync
+
+// Sync contains details potentially relevant to all the following events, up to but excluding
+// the next EventSync event.
+type Sync struct {
+	// N indicates that this is the Nth sync event in the trace.
+	N int
+
+	// ClockSnapshot is a snapshot of different clocks taken in close in time
+	// that can be used to correlate trace events with data captured by other
+	// tools. May be nil for older trace versions.
+	ClockSnapshot *ClockSnapshot
+
+	// ExperimentalBatches contain all the unparsed batches of data for a given experiment.
+	ExperimentalBatches map[string][]ExperimentalBatch
+}
+
+// ClockSnapshot represents a near-simultaneous clock reading of several
+// different system clocks. The snapshot can be used as a reference to convert
+// timestamps to different clocks, which is helpful for correlating timestamps
+// with data captured by other tools.
+type ClockSnapshot struct {
+	// Trace is a snapshot of the trace clock.
+	Trace Time
+
+	// Wall is a snapshot of the system's wall clock.
+	Wall time.Time
+
+	// Mono is a snapshot of the system's monotonic clock.
+	Mono uint64
+}
 
 // Experimental returns a view of the raw event for an experimental event.
 //

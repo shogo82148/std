@@ -85,6 +85,9 @@ func Xadduintptr(ptr *uintptr, delta uintptr) uintptr
 func Xchg(ptr *uint32, new uint32) uint32
 
 //go:nosplit
+func Xchg8(addr *uint8, v uint8) uint8
+
+//go:nosplit
 //go:noinline
 func Xchg64(ptr *uint64, new uint64) uint64
 

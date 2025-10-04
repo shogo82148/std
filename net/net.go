@@ -59,7 +59,17 @@ ASR_CONFIG環境変数が空でない場合（OpenBSDのみ）、
 	export GODEBUG=netdns=go    # 純粋なGoリゾルバを強制する
 	export GODEBUG=netdns=cgo   # ネイティブリゾルバを強制する（cgo、win32）
 
+<<<<<<< HEAD
 この判断は、Goソースツリーをビルドする際にも、netgoまたはnetcgoビルドタグを設定することで強制することができます。
+=======
+The decision can also be forced while building the Go source tree
+by setting the netgo or netcgo build tag.
+The netgo build tag disables entirely the use of the native (CGO) resolver,
+meaning the Go resolver is the only one that can be used.
+With the netcgo build tag the native and the pure Go resolver are compiled into the binary,
+but the native (CGO) resolver is preferred over the Go resolver.
+With netcgo, the Go resolver can still be forced at runtime with GODEBUG=netdns=go.
+>>>>>>> upstream/release-branch.go1.25
 
 GODEBUG=netdns=1のような数値のnetdns設定は、リゾルバが自身の判断に関するデバッグ情報を出力します。
 特定のリゾルバを強制すると同時にデバッグ情報を出力するには、

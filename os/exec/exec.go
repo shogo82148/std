@@ -15,9 +15,15 @@
 // [path/filepath] パッケージのGlob関数を使用します。
 // 環境変数を展開するには、osパッケージのExpandEnvを使用します。
 //
+<<<<<<< HEAD
 // このパッケージの例はUnixシステムを前提としています。
 // これらはWindowsでは実行できないかもしれませんし、golang.org や godoc.org が使用する
 // Go Playgroundでは実行できません。
+=======
+// Note that the examples in this package assume a Unix system.
+// They may not run on Windows, and they do not run in the Go Playground
+// used by go.dev and pkg.go.dev.
+>>>>>>> upstream/release-branch.go1.25
 //
 // # Executables in the current directory
 //
@@ -128,6 +134,7 @@ type Cmd struct {
 	// 典型的な使用では、PathとArgsの両方はCommandを呼び出すことで設定されます。
 	Args []string
 
+<<<<<<< HEAD
 	// Envはプロセスの環境を指定します。
 	// 各エントリは "key=value" の形式です。
 	// Envがnilの場合、新しいプロセスは現在のプロセスの
@@ -140,6 +147,37 @@ type Cmd struct {
 
 	// Dirはコマンドの作業ディレクトリを指定します。
 	// Dirが空文字列の場合、Runは呼び出し元プロセスの現在のディレクトリでコマンドを実行します。
+=======
+	// Env specifies the environment of the process.
+	// Each entry is of the form "key=value".
+	// If Env is nil, the new process uses the current process's
+	// environment.
+	// If Env contains duplicate environment keys, only the last
+	// value in the slice for each duplicate key is used.
+	// As a special case on Windows, SYSTEMROOT is always added if
+	// missing and not explicitly set to the empty string.
+	//
+	// See also the Dir field, which may set PWD in the environment.
+	Env []string
+
+	// Dir specifies the working directory of the command.
+	// If Dir is the empty string, Run runs the command in the
+	// calling process's current directory.
+	//
+	// On Unix systems, the value of Dir also determines the
+	// child process's PWD environment variable if not otherwise
+	// specified. A Unix process represents its working directory
+	// not by name but as an implicit reference to a node in the
+	// file tree. So, if the child process obtains its working
+	// directory by calling a function such as C's getcwd, which
+	// computes the canonical name by walking up the file tree, it
+	// will not recover the original value of Dir if that value
+	// was an alias involving symbolic links. However, if the
+	// child process calls Go's [os.Getwd] or GNU C's
+	// get_current_dir_name, and the value of PWD is an alias for
+	// the current directory, those functions will return the
+	// value of PWD, which matches the value of Dir.
+>>>>>>> upstream/release-branch.go1.25
 	Dir string
 
 	// Stdinはプロセスの標準入力を指定します。
@@ -390,9 +428,17 @@ func (e *ExitError) Error() string
 // Waitは、Cmdに関連付けられたリソースを解放します。
 func (c *Cmd) Wait() error
 
+<<<<<<< HEAD
 // Outputはコマンドを実行し、その標準出力を返します。
 // 返されるエラーは通常、[*ExitError] 型です。
 // c.Stderrがnilだった場合、Outputは [ExitError.Stderr] を設定します。
+=======
+// Output runs the command and returns its standard output.
+// Any returned error will usually be of type [*ExitError].
+// If c.Stderr was nil and the returned error is of type
+// [*ExitError], Output populates the Stderr field of the
+// returned error.
+>>>>>>> upstream/release-branch.go1.25
 func (c *Cmd) Output() ([]byte, error)
 
 // CombinedOutputはコマンドを実行し、その標準出力と標準エラーを結合したものを返します。

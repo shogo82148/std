@@ -10,7 +10,7 @@ import (
 )
 
 var CmdVersion = &base.Command{
-	UsageLine: "go version [-m] [-v] [file ...]",
+	UsageLine: "go version [-m] [-v] [-json] [file ...]",
 	Short:     "print Go version",
 	Long: `Version prints the build information for Go binary files.
 
@@ -28,6 +28,9 @@ The -m flag causes go version to print each file's embedded
 module version information, when available. In the output, the module
 information consists of multiple lines following the version line, each
 indented by a leading tab character.
+
+The -json flag is similar to -m but outputs the runtime/debug.BuildInfo in JSON format.
+If flag -json is specified without -m, go version reports an error.
 
 See also: go doc runtime/debug.BuildInfo.
 `,

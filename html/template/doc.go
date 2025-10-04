@@ -23,8 +23,17 @@ HTMLテンプレートを安全に解析し実行できます。
 
 HTMLテンプレートは、データ値をHTMLドキュメントに安全に埋め込むためにエンコードするべきプレーンテキストとして扱います。エスケープは文脈に依存するため、JavaScript、CSS、URIの文脈内にアクションが現れることがあります。
 
+<<<<<<< HEAD
 このパッケージが使用するセキュリティモデルは、テンプレートの作者が信頼できると仮定し、
 一方でExecuteのデータパラメータは信頼できないと仮定します。詳細は以下に提供されています。
+=======
+Comments are stripped from output, except for those passed in via the
+[HTML], [CSS], and [JS] types for their respective contexts.
+
+The security model used by this package assumes that template authors are
+trusted, while Execute's data parameter is not. More details are
+provided below.
+>>>>>>> upstream/release-branch.go1.25
 
 例
 
@@ -197,7 +206,11 @@ exempted from escaping.
 
 # Security Model
 
+<<<<<<< HEAD
 https://rawgit.com/mikesamuel/sanitized-jquery-templates/trunk/safetemplate.html#problem_definition は、このパッケージが使用する「安全」を定義しています。
+=======
+https://web.archive.org/web/20160501113828/http://js-quasis-libraries-and-repl.googlecode.com/svn/trunk/safetemplate.html#problem_definition defines "safe" as used by this package.
+>>>>>>> upstream/release-branch.go1.25
 
 このパッケージは、テンプレートの作者が信頼できると仮定し、Executeのデータパラメータは信頼できないと仮定し、信頼できないデータに対して以下のプロパティを保持しようとします：
 

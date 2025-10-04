@@ -34,6 +34,10 @@ type Converter struct {
 	input      lineBuffer
 	output     lineBuffer
 	needMarker bool
+
+	// failedBuild is set to the package ID of the cause of a build failure,
+	// if that's what caused this test to fail.
+	failedBuild string
 }
 
 // NewConverter returns a "test to json" converter.
@@ -59,6 +63,11 @@ func (c *Converter) Write(b []byte) (int, error)
 
 // Exited marks the test process as having exited with the given error.
 func (c *Converter) Exited(err error)
+
+// SetFailedBuild sets the package ID that is the root cause of a build failure
+// for this test. This will be reported in the final "fail" event's FailedBuild
+// field.
+func (c *Converter) SetFailedBuild(pkgID string)
 
 // Close marks the end of the go test output.
 // It flushes any pending input and then output (only partial lines at this point)

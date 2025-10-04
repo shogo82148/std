@@ -19,7 +19,31 @@ func ExampleWaitGroup() {
 		"http://www.example.com/",
 	}
 	for _, url := range urls {
+<<<<<<< HEAD
 		// WaitGroup のカウンターをインクリメントする。
+=======
+		// Launch a goroutine to fetch the URL.
+		wg.Go(func() {
+			// Fetch the URL.
+			http.Get(url)
+		})
+	}
+	// Wait for all HTTP fetches to complete.
+	wg.Wait()
+}
+
+// This example is equivalent to the main example, but uses Add/Done
+// instead of Go.
+func ExampleWaitGroup_addAndDone() {
+	var wg sync.WaitGroup
+	var urls = []string{
+		"http://www.golang.org/",
+		"http://www.google.com/",
+		"http://www.example.com/",
+	}
+	for _, url := range urls {
+		// Increment the WaitGroup counter.
+>>>>>>> upstream/release-branch.go1.25
 		wg.Add(1)
 		// URLを取得するために、ゴルーチンを起動します。
 		go func(url string) {

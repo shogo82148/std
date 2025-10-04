@@ -86,6 +86,7 @@ type CorruptInputError int64
 
 func (e CorruptInputError) Error() string
 
+<<<<<<< HEAD
 // AppendDecodeは、base64でデコードされたsrcをdstに追加し、
 // 拡張されたバッファを返します。
 // 入力が不正な形式の場合、部分的にデコードされたsrcとエラーを返します。
@@ -99,6 +100,25 @@ func (enc *Encoding) DecodeString(s string) ([]byte, error)
 // srcに無効なbase64データが含まれている場合、
 // 書き込まれたバイト数と [CorruptInputError] を返します。
 // 改行文字（\rおよび\n）は無視されます。
+=======
+// AppendDecode appends the base64 decoded src to dst
+// and returns the extended buffer.
+// If the input is malformed, it returns the partially decoded src and an error.
+// New line characters (\r and \n) are ignored.
+func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
+
+// DecodeString returns the bytes represented by the base64 string s.
+// If the input is malformed, it returns the partially decoded data and
+// [CorruptInputError]. New line characters (\r and \n) are ignored.
+func (enc *Encoding) DecodeString(s string) ([]byte, error)
+
+// Decode decodes src using the encoding enc. It writes at most
+// [Encoding.DecodedLen](len(src)) bytes to dst and returns the number of bytes
+// written. The caller must ensure that dst is large enough to hold all
+// the decoded data. If src contains invalid base64 data, it will return the
+// number of bytes successfully written and [CorruptInputError].
+// New line characters (\r and \n) are ignored.
+>>>>>>> upstream/release-branch.go1.25
 func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
 
 // NewDecoderは、新しいbase64ストリームデコーダーを構築します。

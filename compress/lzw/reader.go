@@ -6,7 +6,13 @@
 //
 // 特に、これはGIFおよびPDFファイル形式で使用されるLZWを実装しており、可変幅コード（最大12ビット）および最初の2つの非文字コードはクリアコードとEOFコードを意味します。
 //
+<<<<<<< HEAD
 // TIFFファイル形式は、LZWアルゴリズムの似ているが互換性のないバージョンを使用しています。実装については、golang.org/x/image/tiff/lzwパッケージを参照してください。
+=======
+// The TIFF file format uses a similar but incompatible version of the LZW
+// algorithm. See the [golang.org/x/image/tiff/lzw] package for an
+// implementation.
+>>>>>>> upstream/release-branch.go1.25
 package lzw
 
 import (
@@ -24,7 +30,12 @@ const (
 	MSB
 )
 
+<<<<<<< HEAD
 // ReaderはLZW形式で圧縮されたデータを読み込むために使用できるio.Readerです。
+=======
+// Reader is an [io.Reader] which can be used to read compressed data in the
+// LZW format.
+>>>>>>> upstream/release-branch.go1.25
 type Reader struct {
 	r        io.ByteReader
 	bits     uint32
@@ -65,7 +76,11 @@ type Reader struct {
 	toRead []byte
 }
 
+<<<<<<< HEAD
 // Readはio.Readerを実装し、基になる [Reader] から非圧縮バイトを読み取ります。
+=======
+// Read implements io.Reader, reading uncompressed bytes from its underlying reader.
+>>>>>>> upstream/release-branch.go1.25
 func (r *Reader) Read(b []byte) (int, error)
 
 // Closeは [Reader] を閉じ、将来の読み込み操作に対してエラーを返します。

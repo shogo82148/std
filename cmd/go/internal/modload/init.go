@@ -6,7 +6,6 @@ package modload
 
 import (
 	"github.com/shogo82148/std/context"
-	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
 
 	"golang.org/x/mod/modfile"
@@ -38,6 +37,12 @@ var (
 // EnterModule resets MainModules and requirements to refer to just this one module.
 func EnterModule(ctx context.Context, enterModroot string)
 
+// EnterWorkspace enters workspace mode from module mode, applying the updated requirements to the main
+// module to that module in the workspace. There should be no calls to any of the exported
+// functions of the modload package running concurrently with a call to EnterWorkspace as
+// EnterWorkspace will modify the global state they depend on in a non-thread-safe way.
+func EnterWorkspace(ctx context.Context) (exit func(), err error)
+
 type MainModuleSet struct {
 	// versions are the module.Version values of each of the main modules.
 	// For each of them, the Path fields are ordinary module paths and the Version
@@ -59,6 +64,8 @@ type MainModuleSet struct {
 
 	modFiles map[module.Version]*modfile.File
 
+	tools map[string]bool
+
 	modContainingCWD module.Version
 
 	workFile *modfile.WorkFile
@@ -78,6 +85,10 @@ func (mms *MainModuleSet) PathPrefix(m module.Version) string
 // fields are empty strings.
 // Callers should not modify the returned slice.
 func (mms *MainModuleSet) Versions() []module.Version
+
+// Tools returns the tools defined by all the main modules.
+// The key is the absolute package path of the tool.
+func (mms *MainModuleSet) Tools() map[string]bool
 
 func (mms *MainModuleSet) Contains(path string) bool
 
@@ -203,7 +214,7 @@ func Enabled() bool
 
 func VendorDir() string
 
-// HasModRoot reports whether a main module is present.
+// HasModRoot reports whether a main module or main modules are present.
 // HasModRoot may return false even if Enabled returns true: for example, 'get'
 // does not require a main module.
 func HasModRoot() bool
@@ -217,7 +228,12 @@ func MustHaveModRoot()
 // module, even if -modfile is set.
 func ModFilePath() string
 
-var ErrNoModRoot = errors.New("go.mod file not found in current directory or any parent directory; see 'go help modules'")
+var ErrNoModRoot noMainModulesError
+
+// LoadWorkFile parses and checks the go.work file at the given path,
+// and returns the absolute paths of the workspace modules' modroots.
+// It does not modify the global state of the modload package.
+func LoadWorkFile(path string) (workFile *modfile.WorkFile, modRoots []string, err error)
 
 // ReadWorkFile reads and parses the go.work file at the given path.
 func ReadWorkFile(path string) (*modfile.WorkFile, error)
@@ -277,6 +293,9 @@ func AllowMissingModuleImports()
 type WriteOpts struct {
 	DropToolchain     bool
 	ExplicitToolchain bool
+
+	AddTools  []string
+	DropTools []string
 
 	// TODO(bcmills): Make 'go mod tidy' update the go version in the Requirements
 	// instead of writing directly to the modfile.File

@@ -91,9 +91,19 @@ var ErrFinalToken = errors.New("final token")
 // これは、スキャナーの一般的なエラーモードです。
 func (s *Scanner) Scan() bool
 
+<<<<<<< HEAD
 // Bufferは、スキャン中に使用する初期バッファと、割り当て可能な最大バッファサイズを設定します。
 // 最大トークンサイズは、maxとcap(buf)の大きい方よりも小さくなければなりません。
 // max <= cap(buf)の場合、 [Scanner.Scan] はこのバッファのみを使用し、割り当てを行いません。
+=======
+// Buffer controls memory allocation by the Scanner.
+// It sets the initial buffer to use when scanning
+// and the maximum size of buffer that may be allocated during scanning.
+// The contents of the buffer are ignored.
+//
+// The maximum token size must be less than the larger of max and cap(buf).
+// If max <= cap(buf), [Scanner.Scan] will use this buffer only and do no allocation.
+>>>>>>> upstream/release-branch.go1.25
 //
 // デフォルトでは、[Scanner.Scan] は内部バッファを使用し、最大トークンサイズを [MaxScanTokenSize] に設定します。
 //

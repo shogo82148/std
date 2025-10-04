@@ -97,11 +97,26 @@ func Split(s, sep string) []string
 // countが-1の [SplitAfterN] と同等です。
 func SplitAfter(s, sep string) []string
 
+<<<<<<< HEAD
 // Fieldsは、sを [Unicode.IsSpace] によって定義される1つ以上の連続する空白文字の各インスタンスで分割し、sの部分文字列のスライスまたは空のスライスを返します。
 func Fields(s string) []string
 
 // FieldsFuncは、Unicodeコードポイントcがf(c)を満たす連続するランで文字列sを分割し、sのスライスの配列を返します。
 // sのすべてのコードポイントがf(c)を満たすか、文字列が空の場合、空のスライスが返されます。
+=======
+// Fields splits the string s around each instance of one or more consecutive white space
+// characters, as defined by [unicode.IsSpace], returning a slice of substrings of s or an
+// empty slice if s contains only white space. Every element of the returned slice is
+// non-empty. Unlike [Split], leading and trailing runs runs of white space characters
+// are discarded.
+func Fields(s string) []string
+
+// FieldsFunc splits the string s at each run of Unicode code points c satisfying f(c)
+// and returns an array of slices of s. If all code points in s satisfy f(c) or the
+// string is empty, an empty slice is returned. Every element of the returned slice is
+// non-empty. Unlike [SplitFunc], leading and trailing runs of code points satisfying f(c)
+// are discarded.
+>>>>>>> upstream/release-branch.go1.25
 //
 // FieldsFuncは、f(c)を呼び出す順序について保証せず、fが常に同じ値を返すことを前提としています。
 func FieldsFunc(s string, f func(rune) bool) []string

@@ -20,6 +20,7 @@ var CanUseLongPaths bool
 func UTF16PtrToString(p *uint16) string
 
 const (
+	ERROR_INVALID_HANDLE         syscall.Errno = 6
 	ERROR_BAD_LENGTH             syscall.Errno = 24
 	ERROR_SHARING_VIOLATION      syscall.Errno = 32
 	ERROR_LOCK_VIOLATION         syscall.Errno = 33
@@ -27,7 +28,13 @@ const (
 	ERROR_CALL_NOT_IMPLEMENTED   syscall.Errno = 120
 	ERROR_INVALID_NAME           syscall.Errno = 123
 	ERROR_LOCK_FAILED            syscall.Errno = 167
+<<<<<<< HEAD
+=======
+	ERROR_IO_INCOMPLETE          syscall.Errno = 996
+	ERROR_NO_TOKEN               syscall.Errno = 1008
+>>>>>>> upstream/release-branch.go1.25
 	ERROR_NO_UNICODE_TRANSLATION syscall.Errno = 1113
+	ERROR_CANT_ACCESS_FILE       syscall.Errno = 1920
 )
 
 const (
@@ -324,6 +331,12 @@ type FILE_FULL_DIR_INFO struct {
 	FileName        [1]uint16
 }
 
+type RUNTIME_FUNCTION struct {
+	BeginAddress uint32
+	EndAddress   uint32
+	UnwindData   uint32
+}
+
 type SERVICE_STATUS struct {
 	ServiceType             uint32
 	CurrentState            uint32
@@ -351,3 +364,45 @@ func QueryPerformanceCounter() int64
 //
 //go:linkname QueryPerformanceFrequency
 func QueryPerformanceFrequency() int64
+
+const (
+	PIPE_ACCESS_INBOUND  = 0x00000001
+	PIPE_ACCESS_OUTBOUND = 0x00000002
+	PIPE_ACCESS_DUPLEX   = 0x00000003
+
+	PIPE_TYPE_BYTE    = 0x00000000
+	PIPE_TYPE_MESSAGE = 0x00000004
+
+	PIPE_READMODE_BYTE    = 0x00000000
+	PIPE_READMODE_MESSAGE = 0x00000002
+)
+
+// NTStatus corresponds with NTSTATUS, error values returned by ntdll.dll and
+// other native functions.
+type NTStatus uint32
+
+func (s NTStatus) Errno() syscall.Errno
+
+func (s NTStatus) Error() string
+
+// x/sys/windows/mkerrors.bash can generate a complete list of NTStatus codes.
+//
+// At the moment, we only need a couple, so just put them here manually.
+// If this list starts getting long, we should consider generating the full set.
+const (
+	STATUS_OBJECT_NAME_COLLISION     NTStatus = 0xC0000035
+	STATUS_FILE_IS_A_DIRECTORY       NTStatus = 0xC00000BA
+	STATUS_DIRECTORY_NOT_EMPTY       NTStatus = 0xC0000101
+	STATUS_NOT_A_DIRECTORY           NTStatus = 0xC0000103
+	STATUS_CANNOT_DELETE             NTStatus = 0xC0000121
+	STATUS_REPARSE_POINT_ENCOUNTERED NTStatus = 0xC000050B
+)
+
+const (
+	FileModeInformation = 16
+)
+
+// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_mode_information
+type FILE_MODE_INFORMATION struct {
+	Mode uint32
+}

@@ -100,9 +100,3 @@ func (ft *DwarfFixupTable) AbsFuncDwarfSym(fnsym *LSym) *LSym
 // This helper walks through and locate these fixups, then invokes a
 // helper to create an abstract subprogram DIE for each one.
 func (ft *DwarfFixupTable) Finalize(myimportpath string, trace bool)
-
-type BySymName []*LSym
-
-func (s BySymName) Len() int
-func (s BySymName) Less(i, j int) bool
-func (s BySymName) Swap(i, j int)

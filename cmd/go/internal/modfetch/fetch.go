@@ -9,6 +9,7 @@ import (
 	"github.com/shogo82148/std/errors"
 
 	"github.com/shogo82148/std/cmd/go/internal/base"
+	"github.com/shogo82148/std/cmd/internal/par"
 
 	"golang.org/x/mod/module"
 )
@@ -19,6 +20,11 @@ var ErrToolchain = errors.New("internal error: invalid operation on toolchain mo
 // local download cache and returns the name of the directory
 // corresponding to the root of the module's file tree.
 func Download(ctx context.Context, mod module.Version) (dir string, err error)
+
+// Unzip is like Download but is given the explicit zip file to use,
+// rather than downloading it. This is used for the GOFIPS140 zip files,
+// which ship in the Go distribution itself.
+func Unzip(ctx context.Context, mod module.Version, zipfile string) (dir string, err error)
 
 // DownloadZip downloads the specific module version to the
 // local zip cache and returns the name of the zip file.
@@ -31,9 +37,24 @@ func RemoveAll(dir string) error
 var GoSumFile string
 var WorkspaceGoSumFiles []string
 
+// State holds a snapshot of the global state of the modfetch package.
+type State struct {
+	goSumFile           string
+	workspaceGoSumFiles []string
+	lookupCache         *par.Cache[lookupCacheKey, Repo]
+	downloadCache       *par.ErrCache[module.Version, string]
+	sumState            sumState
+}
+
 // Reset resets globals in the modfetch package, so previous loads don't affect
 // contents of go.sum files.
 func Reset()
+
+// SetState sets the global state of the modfetch package to the newState, and returns the previous
+// global state. newState should have been returned by SetState, or be an empty State.
+// There should be no concurrent calls to any of the exported functions of this package with
+// a call to SetState because it will modify the global state in a non-thread-safe way.
+func SetState(newState State) (oldState State)
 
 // HaveSum returns true if the go.sum file contains an entry for mod.
 // The entry's hash must be generated with a known hash algorithm.

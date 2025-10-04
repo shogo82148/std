@@ -41,6 +41,8 @@ const (
 
 	// CANotAuthorizedForExtKeyUsage は、中間証明書またはルート証明書が要求された拡張キー使用法を許可しない場合に発生します。
 	CANotAuthorizedForExtKeyUsage
+	// NoValidChains results when there are no valid chains to return.
+	NoValidChains
 )
 
 // CertificateInvalidErrorは、奇妙なエラーが発生した場合に結果が返されます。このライブラリのユーザーはおそらく、これらのエラーを統一的に処理したいと考えるでしょう。
@@ -105,6 +107,23 @@ type VerifyOptions struct {
 	// ゼロの場合、適切なデフォルト値が使用されます。この制限によって、病的な証明書が検証時に過剰なCPU時間を消費するのを防ぎます。
 	// この制限は、プラットフォームの検証ツールには適用されません。
 	MaxConstraintComparisions int
+
+	// CertificatePolicies specifies which certificate policy OIDs are
+	// acceptable during policy validation. An empty CertificatePolices
+	// field implies any valid policy is acceptable.
+	CertificatePolicies []OID
+
+	// inhibitPolicyMapping indicates if policy mapping should be allowed
+	// during path validation.
+	inhibitPolicyMapping bool
+
+	// requireExplicitPolicy indidicates if explicit policies must be present
+	// for each certificate being validated.
+	requireExplicitPolicy bool
+
+	// inhibitAnyPolicy indicates if the anyPolicy policy should be
+	// processed if present in a certificate being validated.
+	inhibitAnyPolicy bool
 }
 
 // Verifyは、オプションのRootsの証明書を使用して、cからaの証明書までの1つ以上のチェーンを構築し、検証を試みます。成功すると、最初のチェーン要素はcで、最後の要素はopts.Rootsから来ます。

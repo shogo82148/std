@@ -20,9 +20,6 @@ func Time(t *Time_t) (Time_t, error)
 
 func Utime(path string, buf *Utimbuf) error
 
-// Getrlimit prefers the prlimit64 system call.
-func Getrlimit(resource int, rlim *Rlimit) error
-
 func (r *PtraceRegs) GetEra() uint64
 
 func (r *PtraceRegs) SetEra(era uint64)

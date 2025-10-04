@@ -693,10 +693,7 @@ const (
 
 	// MisplacedDotDotDot occurs when a "..." is used somewhere other than the
 	// final argument in a function declaration.
-	//
-	// Example:
-	// 	func f(...int, int)
-	MisplacedDotDotDot
+	_
 
 	_
 
