@@ -46,17 +46,8 @@ type Conn struct {
 	ocspResponse     []byte
 	scts             [][]byte
 	peerCertificates []*x509.Certificate
-<<<<<<< HEAD
-
-	// activeCertHandlesにはpeerCertificates内の証明書のキャッシュハンドルが格納されており、アクティブな参照を追跡するために使用されます。
-	activeCertHandles []*activeCert
-
-	// verifiedChainsには、私たちが構築した証明書チェーンが含まれています。
-	// これは、サーバーが提示した証明書チェーンとは異なります。
-=======
 	// verifiedChains contains the certificate chains that we built, as
 	// opposed to the ones presented by the server.
->>>>>>> upstream/release-branch.go1.25
 	verifiedChains [][]*x509.Certificate
 	// serverName には、クライアントが指定したサーバー名が含まれています。
 	serverName string

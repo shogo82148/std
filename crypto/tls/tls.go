@@ -2,24 +2,20 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-// tlsパッケージは、RFC 5246で指定されているTLS 1.2と、RFC 8446で指定されているTLS 1.3を部分的に実装しています。
-=======
-// Package tls partially implements TLS 1.2, as specified in RFC 5246,
-// and TLS 1.3, as specified in RFC 8446.
+// Package tlsは、RFC 5246で規定されているTLS 1.2と、
+// RFC 8446で規定されているTLS 1.3を部分的に実装しています。
 //
 // # FIPS 140-3 mode
 //
-// When the program is in [FIPS 140-3 mode], this package behaves as if only
-// SP 800-140C and SP 800-140D approved protocol versions, cipher suites,
-// signature algorithms, certificate public key types and sizes, and key
-// exchange and derivation algorithms were implemented. Others are silently
-// ignored and not negotiated, or rejected. This set may depend on the
-// algorithms supported by the FIPS 140-3 Go Cryptographic Module selected with
-// GOFIPS140, and may change across Go versions.
+// プログラムが [FIPS 140-3 mode] の場合、このパッケージは
+// SP 800-140CとSP 800-140Dで承認されたプロトコルバージョン、暗号スイート、
+// 署名アルゴリズム、証明書公開鍵タイプとサイズ、および鍵
+// 交換と導出アルゴリズムのみが実装されているかのように動作します。その他は静かに
+// 無視され、ネゴシエートされないか、拒否されます。このセットは、
+// GOFIPS140で選択されたFIPS 140-3 Go暗号化モジュールでサポートされている
+// アルゴリズムに依存し、Goバージョン間で変更される可能性があります。
 //
 // [FIPS 140-3 mode]: https://go.dev/doc/security/fips140
->>>>>>> upstream/release-branch.go1.25
 package tls
 
 import (

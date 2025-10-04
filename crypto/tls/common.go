@@ -60,21 +60,17 @@ type ConnectionState struct {
 	// CipherSuiteは、接続のためにネゴシエートされた暗号スイートです（例： TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256、TLS_AES_128_GCM_SHA256）。
 	CipherSuite uint16
 
-<<<<<<< HEAD
-	// NegotiatedProtocolはALPNで交渉されたアプリケーションプロトコルです。
-=======
-	// CurveID is the key exchange mechanism used for the connection. The name
-	// refers to elliptic curves for legacy reasons, see [CurveID]. If a legacy
-	// RSA key exchange is used, this value is zero.
+	// CurveIDは接続で使用される鍵交換メカニズムです。この名前は
+	// 従来の理由から楕円曲線を指しており、[CurveID] を参照してください。従来の
+	// RSA鍵交換が使用される場合、この値はゼロです。
 	CurveID CurveID
 
-	// NegotiatedProtocol is the application protocol negotiated with ALPN.
->>>>>>> upstream/release-branch.go1.25
+	// NegotiatedProtocolはALPNで交渉されたアプリケーションプロトコルです。
 	NegotiatedProtocol string
 
 	// NegotiatedProtocolIsMutualは相互のNPN（Next Protocol Negotiation）交渉を示すために使われます。
 	//
-	// 廃止予定：この値は常にtrueです。
+	// Deprecated: この値は常にtrueです。
 	NegotiatedProtocolIsMutual bool
 
 	// ServerNameはクライアントが送信するServer Name Indication拡張機能の値です。これはサーバーとクライアントの両方で利用できます。
@@ -104,9 +100,9 @@ type ConnectionState struct {
 	// この値は、TLS 1.3接続や拡張されたマスターシークレット（RFC 7627）をサポートしていない再開接続ではnilになります。
 	TLSUnique []byte
 
-	// ECHAccepted indicates if Encrypted Client Hello was offered by the client
-	// and accepted by the server. Currently, ECH is supported only on the
-	// client side.
+	// ECHAcceptedは、Encrypted Client Helloがクライアントによって提供され、
+	// サーバーによって受け入れられたかどうかを示します。現在、ECHは
+	// クライアント側でのみサポートされています。
 	ECHAccepted bool
 
 	// ekmはExportKeyingMaterialを介して公開されるクロージャです。
@@ -199,17 +195,12 @@ type ClientHelloInfo struct {
 	// 仮想ホスティングをサポートするために、クライアントがSNIを使用している場合にのみ、ServerNameが設定されます（RFC 4366、セクション3.1を参照）。
 	ServerName string
 
-<<<<<<< HEAD
-	// SupportedCurvesはクライアントでサポートされている楕円曲線をリストアップしています。
-	// SupportedCurvesは、サポートされている楕円曲線拡張が使用されている場合にのみ設定されます(RFC 4492、セクション5.1.1を参照)。
-=======
-	// SupportedCurves lists the key exchange mechanisms supported by the
-	// client. It was renamed to "supported groups" in TLS 1.3, see RFC 8446,
-	// Section 4.2.7 and [CurveID].
+	// SupportedCurvesはクライアントがサポートする鍵交換メカニズムをリストします。
+	// TLS 1.3では「サポートされるグループ」に名前が変更されました。RFC 8446、
+	// セクション4.2.7および[CurveID]を参照してください。
 	//
-	// SupportedCurves may be nil in TLS 1.2 and lower if the Supported Elliptic
-	// Curves Extension is not being used (see RFC 4492, Section 5.1.1).
->>>>>>> upstream/release-branch.go1.25
+	// SupportedCurvesは、TLS 1.2以下において、サポートされる楕円曲線拡張が
+	// 使用されていない場合はnilになることがあります（RFC 4492、セクション5.1.1を参照）。
 	SupportedCurves []CurveID
 
 	// SupportedPointsはクライアントがサポートするポイントフォーマットをリストアップしています。
@@ -229,17 +220,12 @@ type ClientHelloInfo struct {
 	// TLSバージョン1.3未満では、これはクライアントがアドバタイズする最大のバージョンから予測されるため、最大の値以外の値は使用されると拒否される可能性があります。
 	SupportedVersions []uint16
 
-<<<<<<< HEAD
-	// Connは接続の基礎となるnet.Connです。この接続から読み取ったり、書き込んだりしないでください。それはTLS接続の失敗を引き起こします。
-=======
-	// Extensions lists the IDs of the extensions presented by the client
-	// in the ClientHello.
+	// Extensionsは、クライアントがClientHelloで提示した拡張機能のIDをリストします。
 	Extensions []uint16
 
-	// Conn is the underlying net.Conn for the connection. Do not read
-	// from, or write to, this connection; that will cause the TLS
-	// connection to fail.
->>>>>>> upstream/release-branch.go1.25
+	// Connは接続の基盤となるnet.Connです。この接続から読み取ったり、
+	// この接続に書き込んだりしないでください。そうするとTLS
+	// 接続が失敗します。
 	Conn net.Conn
 
 	// configはGetCertificateまたはGetConfigForClientの呼び出し元で埋め込まれ、
@@ -454,22 +440,14 @@ type Config struct {
 	// 現在のバージョンはTLS 1.3です。
 	MaxVersion uint16
 
-<<<<<<< HEAD
-	// CurvePreferencesには、ECDHEハンドシェイクで使用される楕円曲線が好まれる順に含まれます。空の場合、デフォルトが使用されます。クライアントは、TLS 1.3でキーシェアのタイプとして最初の選択肢を使用します。将来的には、これは変更される可能性があります。
+	// CurvePreferencesは、サポートされる鍵交換メカニズムのセットを含みます。
+	// この名前は従来の理由から楕円曲線を指しており、 [CurveID] を参照してください。
+	// リストの順序は無視され、鍵交換メカニズムは内部の優先順序を使用して
+	// このリストから選択されます。空の場合、デフォルトが使用されます。
 	//
-	// Go 1.23から、デフォルトにはX25519Kyber768Draft00ハイブリッドポスト量子鍵交換が含まれます。
-	// これを無効にするには、CurvePreferencesを明示的に設定するか、GODEBUG=tlskyber=0環境変数を使用します。
-=======
-	// CurvePreferences contains a set of supported key exchange mechanisms.
-	// The name refers to elliptic curves for legacy reasons, see [CurveID].
-	// The order of the list is ignored, and key exchange mechanisms are chosen
-	// from this list using an internal preference order. If empty, the default
-	// will be used.
-	//
-	// From Go 1.24, the default includes the [X25519MLKEM768] hybrid
-	// post-quantum key exchange. To disable it, set CurvePreferences explicitly
-	// or use the GODEBUG=tlsmlkem=0 environment variable.
->>>>>>> upstream/release-branch.go1.25
+	// Go 1.24から、デフォルトには [X25519MLKEM768] ハイブリッド
+	// ポスト量子鍵交換が含まれます。これを無効にするには、CurvePreferencesを明示的に
+	// 設定するか、GODEBUG=tlsmlkem=0環境変数を使用してください。
 	CurvePreferences []CurveID
 
 	// DynamicRecordSizingDisabledはTLSレコードの適応的なサイズ調整を無効にします。
@@ -482,85 +460,80 @@ type Config struct {
 	Renegotiation RenegotiationSupport
 
 	// KeyLogWriterは、TLSのマスターシークレットの宛先として使用できる、NSSキーログ形式の外部プログラム（Wiresharkなど）によるTLS接続の復号化を許可するためのオプションです。
-	// https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Formatを参照してください。
+	// https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format を参照してください。
 	// KeyLogWriterの使用はセキュリティを損なう可能性があり、デバッグ目的のみに使用するべきです。
 	KeyLogWriter io.Writer
 
-	// EncryptedClientHelloConfigList is a serialized ECHConfigList. If
-	// provided, clients will attempt to connect to servers using Encrypted
-	// Client Hello (ECH) using one of the provided ECHConfigs.
+	// EncryptedClientHelloConfigListはシリアライズされたECHConfigListです。
+	// 提供された場合、クライアントは提供されたECHConfigsの1つを使用して
+	// Encrypted Client Hello (ECH) を使ってサーバーに接続を試みます。
 	//
-	// Servers do not use this field. In order to configure ECH for servers, see
-	// the EncryptedClientHelloKeys field.
+	// サーバーはこのフィールドを使用しません。サーバーのECHを設定するには、
+	// EncryptedClientHelloKeysフィールドを参照してください。
 	//
-	// If the list contains no valid ECH configs, the handshake will fail
-	// and return an error.
+	// リストに有効なECH設定が含まれていない場合、ハンドシェイクは失敗し、
+	// エラーを返します。
 	//
-	// If EncryptedClientHelloConfigList is set, MinVersion, if set, must
-	// be VersionTLS13.
+	// EncryptedClientHelloConfigListが設定されている場合、MinVersionが設定されていれば
+	// VersionTLS13である必要があります。
 	//
-	// When EncryptedClientHelloConfigList is set, the handshake will only
-	// succeed if ECH is successfully negotiated. If the server rejects ECH,
-	// an ECHRejectionError error will be returned, which may contain a new
-	// ECHConfigList that the server suggests using.
+	// EncryptedClientHelloConfigListが設定されている場合、ハンドシェイクは
+	// ECHが正常にネゴシエートされた場合のみ成功します。サーバーがECHを拒否した場合、
+	// ECHRejectionErrorエラーが返され、これにはサーバーが使用を提案する新しい
+	// ECHConfigListが含まれる可能性があります。
 	//
-	// How this field is parsed may change in future Go versions, if the
-	// encoding described in the final Encrypted Client Hello RFC changes.
+	// 最終的なEncrypted Client Hello RFCで説明されているエンコーディングが
+	// 変更された場合、このフィールドの解析方法は将来のGoバージョンで変更される可能性があります。
 	EncryptedClientHelloConfigList []byte
 
-	// EncryptedClientHelloRejectionVerify, if not nil, is called when ECH is
-	// rejected by the remote server, in order to verify the ECH provider
-	// certificate in the outer ClientHello. If it returns a non-nil error, the
-	// handshake is aborted and that error results.
+	// EncryptedClientHelloRejectionVerify は、nilでない場合、リモートサーバーによって
+	// ECHが拒否されたときに、外側のClientHelloのECHプロバイダー証明書を検証するために
+	// 呼び出されます。non-nilのエラーを返す場合、ハンドシェイクは中断され、
+	// そのエラーが結果となります。
 	//
-	// On the server side this field is not used.
+	// サーバー側では、このフィールドは使用されません。
 	//
-	// Unlike VerifyPeerCertificate and VerifyConnection, normal certificate
-	// verification will not be performed before calling
-	// EncryptedClientHelloRejectionVerify.
+	// VerifyPeerCertificateとVerifyConnectionとは異なり、通常の証明書検証は
+	// EncryptedClientHelloRejectionVerifyを呼び出す前には実行されません。
 	//
-	// If EncryptedClientHelloRejectionVerify is nil and ECH is rejected, the
-	// roots in RootCAs will be used to verify the ECH providers public
-	// certificate. VerifyPeerCertificate and VerifyConnection are not called
-	// when ECH is rejected, even if set, and InsecureSkipVerify is ignored.
+	// EncryptedClientHelloRejectionVerifyがnilでECHが拒否された場合、
+	// RootCAsのルートがECHプロバイダーの公開証明書の検証に使用されます。
+	// ECHが拒否された場合、設定されていてもVerifyPeerCertificateと
+	// VerifyConnectionは呼び出されず、InsecureSkipVerifyは無視されます。
 	EncryptedClientHelloRejectionVerify func(ConnectionState) error
 
-<<<<<<< HEAD
-	// mutexはsessionTicketKeysとautoSessionTicketKeysを保護しています。
-=======
-	// GetEncryptedClientHelloKeys, if not nil, is called when by a server when
-	// a client attempts ECH.
+	// GetEncryptedClientHelloKeysは、nilでない場合、クライアントがECHを試行したときに
+	// サーバーによって呼び出されます。
 	//
-	// If GetEncryptedClientHelloKeys is not nil, [EncryptedClientHelloKeys] is
-	// ignored.
+	// GetEncryptedClientHelloKeysがnilでない場合、[EncryptedClientHelloKeys] は
+	// 無視されます。
 	//
-	// If GetEncryptedClientHelloKeys returns an error, the handshake will be
-	// aborted and the error will be returned. Otherwise,
-	// GetEncryptedClientHelloKeys must return a non-nil slice of
-	// [EncryptedClientHelloKey] that represents the acceptable ECH keys.
+	// GetEncryptedClientHelloKeysがエラーを返した場合、ハンドシェイクは
+	// 中止され、そのエラーが返されます。そうでない場合、
+	// GetEncryptedClientHelloKeysは、受け入れ可能なECHキーを表す
+	// [EncryptedClientHelloKey] のnilでないスライスを返さなければなりません。
 	//
-	// For further details, see [EncryptedClientHelloKeys].
+	// 詳細については、[EncryptedClientHelloKeys] を参照してください。
 	GetEncryptedClientHelloKeys func(*ClientHelloInfo) ([]EncryptedClientHelloKey, error)
 
-	// EncryptedClientHelloKeys are the ECH keys to use when a client
-	// attempts ECH.
+	// EncryptedClientHelloKeysは、クライアントがECHを試行したときに
+	// 使用するECHキーです。
 	//
-	// If EncryptedClientHelloKeys is set, MinVersion, if set, must be
-	// VersionTLS13.
+	// EncryptedClientHelloKeysが設定されている場合、MinVersionが設定されていれば
+	// VersionTLS13である必要があります。
 	//
-	// If a client attempts ECH, but it is rejected by the server, the server
-	// will send a list of configs to retry based on the set of
-	// EncryptedClientHelloKeys which have the SendAsRetry field set.
+	// クライアントがECHを試行したがサーバーによって拒否された場合、サーバーは
+	// SendAsRetryフィールドが設定されているEncryptedClientHelloKeysのセットに基づいて
+	// 再試行用の設定リストを送信します。
 	//
-	// If GetEncryptedClientHelloKeys is non-nil, EncryptedClientHelloKeys is
-	// ignored.
+	// GetEncryptedClientHelloKeysがnilでない場合、EncryptedClientHelloKeysは
+	// 無視されます。
 	//
-	// On the client side, this field is ignored. In order to configure ECH for
-	// clients, see the EncryptedClientHelloConfigList field.
+	// クライアント側では、このフィールドは無視されます。クライアント用にECHを設定するには、
+	// EncryptedClientHelloConfigListフィールドを参照してください。
 	EncryptedClientHelloKeys []EncryptedClientHelloKey
 
 	// mutex protects sessionTicketKeys and autoSessionTicketKeys.
->>>>>>> upstream/release-branch.go1.25
 	mutex sync.RWMutex
 
 	// sessionTicketKeysには、ゼロ個以上のチケットキーが含まれています。
@@ -573,31 +546,26 @@ type Config struct {
 	autoSessionTicketKeys []ticketKey
 }
 
-<<<<<<< HEAD
-// Cloneはcの浅いクローンを返します。cがnilの場合はnilを返します。TLSクライアントやサーバーによって
-// 同時に使用されている [Config] をクローンすることは安全です。
-=======
-// EncryptedClientHelloKey holds a private key that is associated
-// with a specific ECH config known to a client.
+// EncryptedClientHelloKeyは、クライアントが知っている特定のECH設定に
+// 関連付けられた秘密鍵を保持します。
 type EncryptedClientHelloKey struct {
-	// Config should be a marshalled ECHConfig associated with PrivateKey. This
-	// must match the config provided to clients byte-for-byte. The config
-	// should only specify the DHKEM(X25519, HKDF-SHA256) KEM ID (0x0020), the
-	// HKDF-SHA256 KDF ID (0x0001), and a subset of the following AEAD IDs:
-	// AES-128-GCM (0x0001), AES-256-GCM (0x0002), ChaCha20Poly1305 (0x0003).
+	// Configは、PrivateKeyに関連付けられたマーシャルされたECHConfigである必要があります。
+	// これは、クライアントに提供される設定とバイト単位で完全に一致する必要があります。
+	// この設定は、DHKEM(X25519, HKDF-SHA256) KEM ID (0x0020)、
+	// HKDF-SHA256 KDF ID (0x0001)、および以下のAEAD IDのサブセットのみを
+	// 指定する必要があります：
+	// AES-128-GCM (0x0001)、AES-256-GCM (0x0002)、ChaCha20Poly1305 (0x0003)。
 	Config []byte
-	// PrivateKey should be a marshalled private key. Currently, we expect
-	// this to be the output of [ecdh.PrivateKey.Bytes].
+	// PrivateKeyはマーシャルされた秘密鍵である必要があります。現在、これは
+	// [ecdh.PrivateKey.Bytes]の出力であることを期待しています。
 	PrivateKey []byte
-	// SendAsRetry indicates if Config should be sent as part of the list of
-	// retry configs when ECH is requested by the client but rejected by the
-	// server.
+	// SendAsRetryは、クライアントからECHが要求されたがサーバーによって拒否された場合に、
+	// Configが再試行設定のリストの一部として送信されるかどうかを示します。
 	SendAsRetry bool
 }
 
-// Clone returns a shallow clone of c or nil if c is nil. It is safe to clone a [Config] that is
-// being used concurrently by a TLS client or server.
->>>>>>> upstream/release-branch.go1.25
+// Cloneは、cのシャロークローンを返すか、cがnilの場合はnilを返します。TLSクライアントまたはサーバーによって
+// 同時に使用されている [Config] をクローンすることは安全です。
 func (c *Config) Clone() *Config
 
 // SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
