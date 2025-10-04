@@ -33,10 +33,7 @@ func ExampleWriter_AvailableBuffer() {
 	// Output: 1 2 3 4
 }
 
-<<<<<<< HEAD
-// Scannerの最も単純な使用方法は、標準入力を行のセットとして読み取ることです。
-=======
-// ExampleWriter_ReadFrom demonstrates how to use the ReadFrom method of Writer.
+// ExampleWriter_ReadFromはWriterのReadFromメソッドの使用方法を示します。
 func ExampleWriter_ReadFrom() {
 	var buf bytes.Buffer
 	writer := bufio.NewWriter(&buf)
@@ -64,7 +61,6 @@ func ExampleWriter_ReadFrom() {
 }
 
 // The simplest use of a Scanner, to read standard input as a set of lines.
->>>>>>> upstream/release-branch.go1.25
 func ExampleScanner_lines() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
