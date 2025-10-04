@@ -175,8 +175,6 @@ type Loader struct {
 	// CgoExports records cgo-exported symbols by SymName.
 	CgoExports map[string]Sym
 
-<<<<<<< HEAD
-=======
 	WasmExports []Sym
 
 	// sizeFixups records symbols that we need to fix up the size
@@ -185,7 +183,6 @@ type Loader struct {
 	// larger size.
 	sizeFixups []symAndSize
 
->>>>>>> upstream/release-branch.go1.25
 	flags uint32
 
 	strictDupMsgs int
