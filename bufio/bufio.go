@@ -18,14 +18,9 @@ var (
 	ErrNegativeCount     = errors.New("bufio: negative count")
 )
 
-<<<<<<< HEAD
 // Readerはio.Readerオブジェクトに対してバッファリングを実装します。
-=======
-// Reader implements buffering for an io.Reader object.
-// A new Reader is created by calling [NewReader] or [NewReaderSize];
-// alternatively the zero value of a Reader may be used after calling [Reset]
-// on it.
->>>>>>> upstream/release-branch.go1.25
+// 新しいReaderは [NewReader] または [NewReaderSize] を呼び出すことで作成されます。
+// また、Readerのゼロ値に対して [Reset] を呼び出した後に使用することもできます。
 type Reader struct {
 	buf          []byte
 	rd           io.Reader
