@@ -19,15 +19,10 @@ type commonHandler struct{}
 // Handlerのメソッドのいずれかは、自身または他のメソッドと同時に呼び出される可能性があります。
 // Handlerは、この並行性を管理する責任があります。
 //
-<<<<<<< HEAD
 // slogパッケージのユーザーは、Handlerメソッドを直接呼び出すべきではありません。
-// 代わりに、[Logger]のメソッドを使用する必要があります。
-=======
-// Users of the slog package should not invoke Handler methods directly.
-// They should use the methods of [Logger] instead.
+// 代わりに [Logger] のメソッドを使用すべきです。
 //
-// Before implementing your own handler, consult https://go.dev/s/slog-handler-guide.
->>>>>>> upstream/release-branch.go1.25
+// 独自のハンドラを実装する前に、https://go.dev/s/slog-handler-guide を参照してください。
 type Handler interface {
 	Enabled(context.Context, Level) bool
 
@@ -41,42 +36,41 @@ type Handler interface {
 // HandlerOptionsは、[TextHandler] または [JSONHandler] のオプションです。
 // ゼロ値のHandlerOptionsは、完全にデフォルト値で構成されています。
 type HandlerOptions struct {
-	// AddSource causes the handler to compute the source code position
-	// of the log statement and add a SourceKey attribute to the output.
+	// AddSourceは、ハンドラにログステートメントのソースコード位置を計算させ、
+	// 出力にSourceKey属性を追加させます。
 	AddSource bool
 
-	// Level reports the minimum record level that will be logged.
-	// The handler discards records with lower levels.
-	// If Level is nil, the handler assumes LevelInfo.
-	// The handler calls Level.Level for each record processed;
-	// to adjust the minimum level dynamically, use a LevelVar.
+	// Levelは、ログに記録される最小レコードレベルを報告します。
+	// ハンドラは、より低いレベルのレコードを破棄します。
+	// Levelがnilの場合、ハンドラはLevelInfoを想定します。
+	// ハンドラは処理される各レコードに対してLevel.Levelを呼び出します。
+	// 最小レベルを動的に調整するには、LevelVarを使用してください。
 	Level Leveler
 
-	// ReplaceAttr is called to rewrite each non-group attribute before it is logged.
-	// The attribute's value has been resolved (see [Value.Resolve]).
-	// If ReplaceAttr returns a zero Attr, the attribute is discarded.
+	// ReplaceAttrは、ログに記録される前に各非グループ属性を書き換えるために呼び出されます。
+	// 属性の値は解決されています（[Value.Resolve]を参照）。
+	// ReplaceAttrがゼロのAttrを返した場合、その属性は破棄されます。
 	//
-	// The built-in attributes with keys "time", "level", "source", and "msg"
-	// are passed to this function, except that time is omitted
-	// if zero, and source is omitted if AddSource is false.
+	// "time"、"level"、"source"、"msg"のキーを持つ組み込み属性は
+	// この関数に渡されますが、timeがゼロの場合は省略され、
+	// AddSourceがfalseの場合はsourceが省略されます。
 	//
-	// The first argument is a list of currently open groups that contain the
-	// Attr. It must not be retained or modified. ReplaceAttr is never called
-	// for Group attributes, only their contents. For example, the attribute
-	// list
+	// 最初の引数は、Attrを含む現在開いているグループのリストです。
+	// これは保持または変更してはいけません。ReplaceAttrは
+	// Group属性に対しては呼び出されず、その内容に対してのみ呼び出されます。例えば、属性
+	// リスト
 	//
 	//     Int("a", 1), Group("g", Int("b", 2)), Int("c", 3)
 	//
-	// results in consecutive calls to ReplaceAttr with the following arguments:
+	// は、以下の引数でReplaceAttrを連続して呼び出します：
 	//
 	//     nil, Int("a", 1)
 	//     []string{"g"}, Int("b", 2)
 	//     nil, Int("c", 3)
 	//
-	// ReplaceAttr can be used to change the default keys of the built-in
-	// attributes, convert types (for example, to replace a `time.Time` with the
-	// integer seconds since the Unix epoch), sanitize personal information, or
-	// remove attributes from the output.
+	// ReplaceAttrは、組み込み属性のデフォルトキーを変更したり、
+	// 型を変換したり（例えば、`time.Time`をUnixエポックからの整数秒で置き換える）、
+	// 個人情報をサニタイズしたり、出力から属性を削除するために使用できます。
 	ReplaceAttr func(groups []string, a Attr) Attr
 }
 
@@ -84,11 +78,11 @@ type HandlerOptions struct {
 const (
 	// TimeKeyは、ログメソッドが呼び出されたときの時間を表すために、
 	// 組み込みハンドラによって使用されるキーです。
-	// 関連する値は[time.Time]です。
+	// 関連する値は [time.Time] です。
 	TimeKey = "time"
 	// LevelKeyは、ログ呼び出しのレベルを表すために、
 	// 組み込みハンドラによって使用されるキーです。
-	// 関連する値は[Level]です。
+	// 関連する値は [Level] です。
 	LevelKey = "level"
 	// MessageKeyは、ログ呼び出しのメッセージを表すために、
 	// 組み込みハンドラによって使用されるキーです。

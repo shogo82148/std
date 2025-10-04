@@ -46,20 +46,13 @@ func Duration(key string, v time.Duration) Attr
 // LogValueの結果として単一の値を複数のAttrsとしてログに記録するために使用します。
 func Group(key string, args ...any) Attr
 
-<<<<<<< HEAD
-// Anyは指定された値のAttrを返します。
-// 値の扱い方については[AnyValue]を参照してください。
-=======
-// GroupAttrs returns an Attr for a Group [Value]
-// consisting of the given Attrs.
+// GroupAttrsは与えられたAttrsからなるGroup [Value] のAttrを返します。
 //
-// GroupAttrs is a more efficient version of [Group]
-// that accepts only [Attr] values.
+// GroupAttrsは [Attr] 値のみを受け入れる、より効率的な [Group] のバージョンです。
 func GroupAttrs(key string, attrs ...Attr) Attr
 
-// Any returns an Attr for the supplied value.
-// See [AnyValue] for how values are treated.
->>>>>>> upstream/release-branch.go1.25
+// Anyは指定された値のAttrを返します。
+// 値の扱い方については [AnyValue] を参照してください。
 func Any(key string, value any) Attr
 
 // Equalはaとbが等しいキーと値を持つかどうかを報告します。

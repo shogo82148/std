@@ -33,12 +33,7 @@ func (h *JSONHandler) WithGroup(name string) Handler
 // Recordの時間がゼロの場合、時間は省略されます。
 // そうでない場合、キーは "time" であり、値はjson.Marshalと同様に出力されます。
 //
-<<<<<<< HEAD
-// Recordのレベルがゼロの場合、レベルは省略されます。
-// そうでない場合、キーは "level" であり、 [Level.String] の値が出力されます。
-=======
-// The level's key is "level" and its value is the result of calling [Level.String].
->>>>>>> upstream/release-branch.go1.25
+// レベルのキーは"level"で、その値は [Level.String] を呼び出した結果です。
 //
 // AddSourceオプションが設定されており、ソース情報が利用可能な場合、
 // キーは "source" であり、値は [Source] 型のレコードです。
