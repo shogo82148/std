@@ -26,18 +26,12 @@
 // 最初にエラー自体を調べ、次にその子のツリーを順番に調べます
 // （前順、深さ優先のトラバース）。
 //
-<<<<<<< HEAD
-// [Is] は、第1引数のエラーツリーを調べ、第2引数に一致するエラーを探します。
-// 一致するエラーが見つかった場合、trueを返します。
-// 単純な等価性チェックよりも使用することをお勧めします。
-=======
-// See https://go.dev/blog/go1.13-errors for a deeper discussion of the
-// philosophy of wrapping and when to wrap.
+// ラップの哲学とラップするタイミングについてのより深い議論については、
+// https://go.dev/blog/go1.13-errors を参照してください。
 //
-// [Is] examines the tree of its first argument looking for an error that
-// matches the second. It reports whether it finds a match. It should be
-// used in preference to simple equality checks:
->>>>>>> upstream/release-branch.go1.25
+// [Is] は、第1引数のツリーを調べて、第2引数と一致するエラーを探します。
+// 一致するものが見つかったかどうかを報告します。単純な等価性チェックよりも
+// 優先して使用すべきです：
 //
 //	if errors.Is(err, fs.ErrExist)
 //
