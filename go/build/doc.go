@@ -6,18 +6,17 @@
 //
 // # Build Constraints
 //
-// A build constraint, also known as a build tag, is a condition under which a
-// file should be included in the package. Build constraints are given by a
-// line comment that begins
+// ビルド制約（ビルドタグとも呼ばれる）は、ファイルがパッケージに含まれるべき
+// 条件です。ビルド制約は以下で始まる行コメントによって指定されます
 //
 //	//go:build
 //
-// Build constraints may also be part of a file's name
-// (for example, source_windows.go will only be included if the target
-// operating system is windows).
+// ビルド制約はファイル名の一部にもなります
+// （例えば、source_windows.goは対象のオペレーティングシステムが
+// windowsの場合にのみ含まれます）。
 //
-// See 'go help buildconstraint'
-// (https://pkg.go.dev/cmd/go#hdr-Build_constraints) for details.
+// 詳細については 'go help buildconstraint'
+// (https://pkg.go.dev/cmd/go#hdr-Build_constraints) を参照してください。
 //
 // # Go Path
 //
@@ -65,25 +64,7 @@
 //	        foo/
 //	            bar.a          (インストールされたパッケージオブジェクト)
 //
-<<<<<<< HEAD
-// # ビルド制約
-//
-// ビルド制約、またはビルドタグとも呼ばれるものは、
-// パッケージに含めるべきファイルの条件です。ビルド制約は、次の行コメントによって与えられます。
-//
-//	//go:build
-//
-// ビルド制約は、ファイル名の一部にもなることがあります
-// (例えば、source_windows.go は、対象の
-// オペレーティングシステムがwindowsの場合のみ含まれます)。
-//
-// 詳細は 'go help buildconstraint'
-// (https://golang.org/cmd/go/#hdr-Build_constraints) を参照してください。
-//
-// # バイナリのみのパッケージ
-=======
 // # Binary-Only Packages
->>>>>>> upstream/release-branch.go1.25
 //
 // Go 1.12 およびそれ以前では、
 // パッケージをソースコードなしでバイナリ形式で配布することが可能でした。
