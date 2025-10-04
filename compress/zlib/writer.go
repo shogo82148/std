@@ -10,13 +10,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-<<<<<<< HEAD
-// これらの定数はflateパッケージからコピーされています。
-// これにより、「compress/zlib」をインポートするコードが「compress/flate」もインポートする必要がなくなります。
-=======
-// These constants are copied from the [flate] package, so that code that imports
-// [compress/zlib] does not also have to import [compress/flate].
->>>>>>> upstream/release-branch.go1.25
+// これらの定数は [flate] パッケージからコピーされており、
+// [compress/zlib] をインポートするコードが [compress/flate] もインポートする必要がないようになっています。
 const (
 	NoCompression      = flate.NoCompression
 	BestSpeed          = flate.BestSpeed
@@ -25,12 +20,8 @@ const (
 	HuffmanOnly        = flate.HuffmanOnly
 )
 
-<<<<<<< HEAD
-// Writerは、書き込まれたデータを受け取り、そのデータの圧縮形式を下位のライターに書き込みます（NewWriterを参照）。
-=======
-// A Writer takes data written to it and writes the compressed
-// form of that data to an underlying writer (see [NewWriter]).
->>>>>>> upstream/release-branch.go1.25
+// Writerは書き込まれたデータを受け取り、そのデータの圧縮された形式を
+// 基になるライターに書き込みます（[NewWriter] を参照）。
 type Writer struct {
 	w           io.Writer
 	level       int
@@ -42,72 +33,39 @@ type Writer struct {
 	wroteHeader bool
 }
 
-<<<<<<< HEAD
-// NewWriterは、新しいWriterを作成します。
-// 返されたWriterに書き込まれたデータは圧縮され、wに書き込まれます。
-=======
-// NewWriter creates a new [Writer].
-// Writes to the returned Writer are compressed and written to w.
->>>>>>> upstream/release-branch.go1.25
+// NewWriterは新しい [Writer] を作成します。
+// 返されたWriterへの書き込みは圧縮されてwに書き込まれます。
 //
 // Writerを使用し終わったら、呼び出し元がCloseを呼び出す責任があります。
 // 書き込みはバッファリングされ、Closeが呼び出されるまでフラッシュされない場合があります。
 func NewWriter(w io.Writer) *Writer
 
-<<<<<<< HEAD
-// NewWriterLevelは、NewWriterと同様ですが、デフォルトの圧縮レベルを仮定する代わりに、
+// NewWriterLevelは [NewWriter] と同様ですが、[DefaultCompression] を仮定する代わりに
 // 圧縮レベルを指定します。
 //
-// 圧縮レベルは、DefaultCompression、NoCompression、HuffmanOnly、BestSpeedからBestCompressionまでの
-// 任意の整数値であることができます。レベルが有効である場合、返されるエラーはnilになります。
+// 圧縮レベルは、[DefaultCompression]、[NoCompression]、[HuffmanOnly]
+// または [BestSpeed] から [BestCompression] までの整数値のいずれかを指定できます。
+// レベルが有効である場合、返されるエラーはnilになります。
 func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 
-// NewWriterLevelDictは、NewWriterLevelと同様ですが、圧縮に使用する辞書を指定します。
-=======
-// NewWriterLevel is like [NewWriter] but specifies the compression level instead
-// of assuming [DefaultCompression].
-//
-// The compression level can be [DefaultCompression], [NoCompression], [HuffmanOnly]
-// or any integer value between [BestSpeed] and [BestCompression] inclusive.
-// The error returned will be nil if the level is valid.
-func NewWriterLevel(w io.Writer, level int) (*Writer, error)
-
-// NewWriterLevelDict is like [NewWriterLevel] but specifies a dictionary to
-// compress with.
->>>>>>> upstream/release-branch.go1.25
+// NewWriterLevelDictは [NewWriterLevel] と同様ですが、圧縮に使用する辞書を
+// 指定します。
 //
 // 辞書はnilである場合があります。そうでない場合、その内容はWriterが閉じられるまで変更されないようにする必要があります。
 func NewWriterLevelDict(w io.Writer, level int, dict []byte) (*Writer, error)
 
-<<<<<<< HEAD
-// Resetは、Writer zの状態をクリアし、NewWriterLevelまたはNewWriterLevelDictからの初期状態と同等になるようにしますが、
-// 代わりにwに書き込みます。
+// Resetは[Writer] zの状態をクリアし、[NewWriterLevel] または [NewWriterLevelDict] からの
+// 初期状態と同等にしますが、代わりにwに書き込みます。
 func (z *Writer) Reset(w io.Writer)
 
-// Writeは、pの圧縮形式を基になるio.Writerに書き込みます。
-// 圧縮されたバイトは、Writerが閉じられるか、明示的にフラッシュされるまで必ずしもフラッシュされません。
+// Writeはpの圧縮された形式を基になる [io.Writer] に書き込みます。
+// 圧縮されたバイトは、[Writer] が閉じられるか
+// 明示的にフラッシュされるまで必ずしもフラッシュされません。
 func (z *Writer) Write(p []byte) (n int, err error)
 
-// Flushは、Writerをその基になるio.Writerにフラッシュします。
+// Flushは、Writerをその基になる [io.Writer] にフラッシュします。
 func (z *Writer) Flush() error
 
-// Closeは、Writerを閉じ、書き込まれていないデータを基になるio.Writerにフラッシュしますが、
-// 基になるio.Writerを閉じません。
-=======
-// Reset clears the state of the [Writer] z such that it is equivalent to its
-// initial state from [NewWriterLevel] or [NewWriterLevelDict], but instead writing
-// to w.
-func (z *Writer) Reset(w io.Writer)
-
-// Write writes a compressed form of p to the underlying [io.Writer]. The
-// compressed bytes are not necessarily flushed until the [Writer] is closed or
-// explicitly flushed.
-func (z *Writer) Write(p []byte) (n int, err error)
-
-// Flush flushes the Writer to its underlying [io.Writer].
-func (z *Writer) Flush() error
-
-// Close closes the Writer, flushing any unwritten data to the underlying
-// [io.Writer], but does not close the underlying io.Writer.
->>>>>>> upstream/release-branch.go1.25
+// Closeは、Writerを閉じ、書き込まれていないデータを基になる [io.Writer] にフラッシュしますが、
+// 基になる [io.Writer] を閉じません。
 func (z *Writer) Close() error
