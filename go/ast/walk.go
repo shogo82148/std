@@ -18,42 +18,32 @@ type Visitor interface {
 // WalkはASTを深さ優先でトラバースします。最初にv.Visit(node)を呼び出します。nodeはnilであってはいけません。v.Visit(node)から返されるビジターwがnilでない場合、Walkはnodeのnilでない子要素ごとに再帰的にビジターwを用いて呼び出され、その後にw.Visit(nil)が呼び出されます。
 func Walk(v Visitor, node Node)
 
-<<<<<<< HEAD
-// InspectはASTを深さ優先順で走査します：まずf(node)を呼び出します。nodeはnilであってはなりません。fがtrueを返す場合、Inspectはnodeの非nilな子のそれぞれに対して再帰的にfを呼び出し、その後にf(nil)を呼び出します。
-=======
-// Inspect traverses an AST in depth-first order: It starts by calling
-// f(node); node must not be nil. If f returns true, Inspect invokes f
-// recursively for each of the non-nil children of node, followed by a
-// call of f(nil).
+// InspectはASTを深さ優先の順序でトラバースします：最初にf(node)を呼び出すことから始まります；
+// nodeはnilであってはいけません。fがtrueを返す場合、Inspectはnodeのnilでない子要素それぞれに対して
+// 再帰的にfを呼び出し、その後にf(nil)を呼び出します。
 //
-// In many cases it may be more convenient to use [Preorder], which
-// returns an iterator over the sqeuence of nodes, or [PreorderStack],
-// which (like [Inspect]) provides control over descent into subtrees,
-// but additionally reports the stack of enclosing nodes.
->>>>>>> upstream/release-branch.go1.25
+// 多くの場合、ノードのシーケンスに対するイテレータを返す [Preorder]、または
+// （[Inspect] と同様に）サブツリーへの降下を制御できる [PreorderStack] を使用する方が
+// 便利な場合があります。[PreorderStack] はさらに、囲んでいるノードのスタックも報告します。
 func Inspect(node Node, f func(Node) bool)
 
 // Preorderは、指定されたルート以下（ルートを含む）の構文木のすべてのノードに対するイテレータを返します。
 // これは深さ優先のプレオーダーで行われます。
 //
-<<<<<<< HEAD
-// 各サブツリーの走査をより細かく制御するには、[Inspect] を使用します。
-=======
-// For greater control over the traversal of each subtree, use
-// [Inspect] or [PreorderStack].
->>>>>>> upstream/release-branch.go1.25
+// 各サブツリーのトラバースをより詳細に制御するには、
+// [Inspect] または [PreorderStack] を使用してください。
 func Preorder(root Node) iter.Seq[Node]
 
-// PreorderStack traverses the tree rooted at root,
-// calling f before visiting each node.
+// PreorderStackは、rootをルートとするツリーをトラバースし、
+// 各ノードを訪問する前にfを呼び出します。
 //
-// Each call to f provides the current node and traversal stack,
-// consisting of the original value of stack appended with all nodes
-// from root to n, excluding n itself. (This design allows calls
-// to PreorderStack to be nested without double counting.)
+// fの各呼び出しでは、現在のノードとトラバースのスタックが提供されます。
+// スタックは、stackの元の値に、rootからnまでのすべてのノード（n自体は除く）を
+// 追加したものです。（この設計により、PreorderStackの呼び出しを
+// 二重カウントなしでネストできます。）
 //
-// If f returns false, the traversal skips over that subtree. Unlike
-// [Inspect], no second call to f is made after visiting node n.
-// (In practice, the second call is nearly always used only to pop the
-// stack, and it is surprisingly tricky to do this correctly.)
+// fがfalseを返した場合、トラバースはそのサブツリーをスキップします。
+// [Inspect] とは異なり、ノードnを訪問した後にfへの2回目の呼び出しは行われません。
+// （実際には、2回目の呼び出しはほぼ常にスタックをポップするためだけに使用され、
+// これを正しく行うのは驚くほど難しいです。）
 func PreorderStack(root Node, stack []Node, f func(n Node, stack []Node) bool)

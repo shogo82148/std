@@ -2,16 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-// astパッケージはGoのパッケージの構文木を表すために使用される型を宣言します。
-=======
-// Package ast declares the types used to represent syntax trees for Go
-// packages.
+// astパッケージは、Goパッケージの構文木を表現するために使用される型を宣言します。
 //
-// Syntax trees may be constructed directly, but they are typically
-// produced from Go source code by the parser; see the ParseFile
-// function in package [go/parser].
->>>>>>> upstream/release-branch.go1.25
+// 構文木は直接構築することもできますが、通常はパーサーによってGoソースコードから
+// 生成されます。パッケージ [go/parser] のParseFile関数を参照してください。
 package ast
 
 import (
@@ -119,23 +113,18 @@ type (
 		Elt      Expr
 	}
 
-<<<<<<< HEAD
 	// BasicLitノードは基本型のリテラルを表します。
-=======
-	// A BasicLit node represents a literal of basic type.
 	//
-	// Note that for the CHAR and STRING kinds, the literal is stored
-	// with its quotes. For example, for a double-quoted STRING, the
-	// first and the last rune in the Value field will be ". The
-	// [strconv.Unquote] and [strconv.UnquoteChar] functions can be
-	// used to unquote STRING and CHAR values, respectively.
+	// CHARとSTRINGの種類の場合、リテラルはクォートを含めて格納されることに注意してください。
+	// 例えば、ダブルクォートで囲まれたSTRINGの場合、Valueフィールドの最初と最後のルーンは"になります。
+	// [strconv.Unquote] および [strconv.UnquoteChar] 関数を使用して、
+	// それぞれSTRINGとCHARの値をアンクォートできます。
 	//
-	// For raw string literals (Kind == token.STRING && Value[0] == '`'),
-	// the Value field contains the string text without carriage returns (\r) that
-	// may have been present in the source. Because the end position is
-	// computed using len(Value), the position reported by [BasicLit.End] does not match the
-	// true source end position for raw string literals containing carriage returns.
->>>>>>> upstream/release-branch.go1.25
+	// 生文字列リテラル（Kind == token.STRING && Value[0] == '`'）の場合、
+	// Valueフィールドには、ソースに存在した可能性のあるキャリッジリターン（\r）を除いた
+	// 文字列テキストが含まれます。終了位置はlen(Value)を使用して計算されるため、
+	// [BasicLit.End] によって報告される位置は、キャリッジリターンを含む
+	// 生文字列リテラルの真のソース終了位置と一致しません。
 	BasicLit struct {
 		ValuePos token.Pos
 		Kind     token.Token
@@ -693,31 +682,22 @@ type File struct {
 	GoVersion          string
 }
 
-<<<<<<< HEAD
-// Posはパッケージ宣言の位置を返します。
-// （ファイル全体の開始位置にはFileStartを使用してください。）
+// Posはpackage宣言の位置を返します。
+// 例えば空のファイルの場合、無効な値になる可能性があります。
+//
+// （ファイル全体の開始位置にはFileStartを使用してください。常に有効です。）
 func (f *File) Pos() token.Pos
 
-// Endはファイル中の最後の宣言の終了位置を返します。
-// （ファイル全体の終了位置にはFileEndを使用してください。）
-=======
-// Pos returns the position of the package declaration.
-// It may be invalid, for example in an empty file.
+// Endはファイル内の最後の宣言の終了位置を返します。
+// 例えば空のファイルの場合、無効な値になる可能性があります。
 //
-// (Use FileStart for the start of the entire file. It is always valid.)
-func (f *File) Pos() token.Pos
-
-// End returns the end of the last declaration in the file.
-// It may be invalid, for example in an empty file.
-//
-// (Use FileEnd for the end of the entire file. It is always valid.)
->>>>>>> upstream/release-branch.go1.25
+// （ファイル全体の終了位置にはFileEndを使用してください。常に有効です。）
 func (f *File) End() token.Pos
 
-// A Package node represents a set of source files
-// collectively building a Go package.
+// Packageノードは、Goパッケージを総合的に構築する
+// ソースファイルのセットを表します。
 //
-// Deprecated: use the type checker [go/types] instead; see [Object].
+// Deprecated: 代わりに型チェッカー [go/types] を使用してください; [Object] を参照してください。
 type Package struct {
 	Name    string
 	Scope   *Scope
