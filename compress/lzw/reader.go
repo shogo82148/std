@@ -6,13 +6,8 @@
 //
 // 特に、これはGIFおよびPDFファイル形式で使用されるLZWを実装しており、可変幅コード（最大12ビット）および最初の2つの非文字コードはクリアコードとEOFコードを意味します。
 //
-<<<<<<< HEAD
-// TIFFファイル形式は、LZWアルゴリズムの似ているが互換性のないバージョンを使用しています。実装については、golang.org/x/image/tiff/lzwパッケージを参照してください。
-=======
-// The TIFF file format uses a similar but incompatible version of the LZW
-// algorithm. See the [golang.org/x/image/tiff/lzw] package for an
-// implementation.
->>>>>>> upstream/release-branch.go1.25
+// TIFFファイル形式は、LZWアルゴリズムの似ているが互換性のないバージョンを使用しています。
+// 実装については、[golang.org/x/image/tiff/lzw] パッケージを参照してください。
 package lzw
 
 import (
@@ -30,12 +25,7 @@ const (
 	MSB
 )
 
-<<<<<<< HEAD
-// ReaderはLZW形式で圧縮されたデータを読み込むために使用できるio.Readerです。
-=======
-// Reader is an [io.Reader] which can be used to read compressed data in the
-// LZW format.
->>>>>>> upstream/release-branch.go1.25
+// ReaderはLZW形式で圧縮されたデータを読み込むために使用できる [io.Reader] です。
 type Reader struct {
 	r        io.ByteReader
 	bits     uint32
@@ -76,11 +66,7 @@ type Reader struct {
 	toRead []byte
 }
 
-<<<<<<< HEAD
-// Readはio.Readerを実装し、基になる [Reader] から非圧縮バイトを読み取ります。
-=======
-// Read implements io.Reader, reading uncompressed bytes from its underlying reader.
->>>>>>> upstream/release-branch.go1.25
+// Readは[io.Reader]を実装し、基になるリーダーから非圧縮バイトを読み取ります。
 func (r *Reader) Read(b []byte) (int, error)
 
 // Closeは [Reader] を閉じ、将来の読み込み操作に対してエラーを返します。
@@ -89,15 +75,14 @@ func (r *Reader) Close() error
 
 func (r *Reader) Reset(src io.Reader, order Order, litWidth int)
 
-// NewReader creates a new [io.ReadCloser].
-// Reads from the returned [io.ReadCloser] read and decompress data from r.
-// If r does not also implement [io.ByteReader],
-// the decompressor may read more data than necessary from r.
-// It is the caller's responsibility to call Close on the ReadCloser when
-// finished reading.
-// The number of bits to use for literal codes, litWidth, must be in the
-// range [2,8] and is typically 8. It must equal the litWidth
-// used during compression.
+// NewReaderは新しい [io.ReadCloser] を作成します。
+// 返された [io.ReadCloser] からの読み取りは、rからデータを読み取って解凍します。
+// rが [io.ByteReader] も実装していない場合、
+// デコンプレッサーはrから必要以上のデータを読み取る可能性があります。
+// 読み取り完了時にReadCloserのCloseを呼び出すのは呼び出し元の責任です。
+// リテラルコードに使用するビット数litWidthは、
+// [2,8]の範囲でなければならず、通常は8です。これは圧縮時に
+// 使用されたlitWidthと等しくなければなりません。
 //
 // 返された [io.ReadCloser] の基底型は、*[Reader] であることが保証されます。
 func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser
