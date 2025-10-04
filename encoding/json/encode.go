@@ -2,51 +2,37 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-// jsonパッケージは、RFC 7159で定義されているJSONのエンコーディングとデコーディングを実装します。
-// JSONとGoの値の間のマッピングは、Marshal関数とUnmarshal関数のドキュメンテーションで説明されています。
-=======
 //go:build !goexperiment.jsonv2
 
-// Package json implements encoding and decoding of JSON as defined in RFC 7159.
-// The mapping between JSON and Go values is described in the documentation for
-// the Marshal and Unmarshal functions.
->>>>>>> upstream/release-branch.go1.25
+// jsonパッケージは、RFC 7159で定義されたJSONのエンコーディングとデコーディングを実装します。
+// JSONとGoの値の間のマッピングは、MarshalとUnmarshal関数のドキュメントで説明されています。
 //
 // このパッケージの紹介については、「JSONとGo」を参照してください：
 // https://golang.org/doc/articles/json_and_go.html
 //
 // # Security Considerations
 //
-// The JSON standard (RFC 7159) is lax in its definition of a number of parser
-// behaviors. As such, many JSON parsers behave differently in various
-// scenarios. These differences in parsers mean that systems that use multiple
-// independent JSON parser implementations may parse the same JSON object in
-// differing ways.
+// JSON標準（RFC 7159）は、多くのパーサーの動作の定義が曖昧です。
+// そのため、多くのJSONパーサーは様々なシナリオで異なる動作をします。
+// パーサーのこれらの違いは、複数の独立したJSONパーサー実装を使用するシステムが
+// 同じJSONオブジェクトを異なる方法で解析する可能性があることを意味します。
 //
-// Systems that rely on a JSON object being parsed consistently for security
-// purposes should be careful to understand the behaviors of this parser, as
-// well as how these behaviors may cause interoperability issues with other
-// parser implementations.
+// セキュリティ目的でJSONオブジェクトが一貫して解析されることに依存するシステムは、
+// このパーサーの動作と、これらの動作が他のパーサー実装との相互運用性の問題を
+// 引き起こす可能性について注意深く理解する必要があります。
 //
-// Due to the Go Backwards Compatibility promise (https://go.dev/doc/go1compat)
-// there are a number of behaviors this package exhibits that may cause
-// interopability issues, but cannot be changed. In particular the following
-// parsing behaviors may cause issues:
+// Go後方互換性の約束（https://go.dev/doc/go1compat）により、
+// このパッケージが示す動作の中には相互運用性の問題を引き起こす可能性があるものが
+// 数多くありますが、変更することはできません。特に以下の解析動作が問題を引き起こす可能性があります：
 //
-//   - If a JSON object contains duplicate keys, keys are processed in the order
-//     they are observed, meaning later values will replace or be merged into
-//     prior values, depending on the field type (in particular maps and structs
-//     will have values merged, while other types have values replaced).
-//   - When parsing a JSON object into a Go struct, keys are considered in a
-//     case-insensitive fashion.
-//   - When parsing a JSON object into a Go struct, unknown keys in the JSON
-//     object are ignored (unless a [Decoder] is used and
-//     [Decoder.DisallowUnknownFields] has been called).
-//   - Invalid UTF-8 bytes in JSON strings are replaced by the Unicode
-//     replacement character.
-//   - Large JSON number integers will lose precision when unmarshaled into
-//     floating-point types.
+//   - JSONオブジェクトに重複したキーが含まれている場合、キーは観察された順序で処理され、
+//     フィールドタイプに応じて、後の値が以前の値を置き換えるかマージされることを意味します
+//     （特にマップと構造体では値がマージされ、その他のタイプでは値が置き換えられます）。
+//   - JSONオブジェクトをGo構造体に解析する場合、キーは大文字小文字を区別しない方法で考慮されます。
+//   - JSONオブジェクトをGo構造体に解析する場合、JSONオブジェクト内の未知のキーは無視されます
+//     （[Decoder] が使用されて [Decoder.DisallowUnknownFields] が呼び出されている場合を除く）。
+//   - JSON文字列内の無効なUTF-8バイトは、Unicode置換文字に置き換えられます。
+//   - 大きなJSON数値整数は、浮動小数点型にアンマーシャルされる際に精度を失います。
 package json
 
 import (
@@ -91,17 +77,10 @@ import (
 // フォーマット文字列はフィールド名を指定し、それに続いてカンマで区切られたオプションのリストが続く可能性があります。
 // デフォルトのフィールド名を上書きせずにオプションを指定するために、名前は空にすることができます。
 //
-<<<<<<< HEAD
-// "omitempty"オプションは、フィールドが空の値を持つ場合、
-// エンコーディングからそのフィールドを省略することを指定します。
-// 空の値とは、false、0、nilポインタ、nilインターフェース値、
-// そして任意の空の配列、スライス、マップ、または文字列を指します。
-=======
-// The "omitempty" option specifies that the field should be omitted
-// from the encoding if the field has an empty value, defined as
-// false, 0, a nil pointer, a nil interface value, and any array,
-// slice, map, or string of length zero.
->>>>>>> upstream/release-branch.go1.25
+// "omitempty"オプションは、フィールドが空の値を持つ場合に
+// エンコーディングからフィールドを省略することを指定します。空の値は、
+// false、0、nilポインタ、nilインターフェース値、および長さゼロの
+// 配列、スライス、マップ、または文字列として定義されます。
 //
 // 特別なケースとして、フィールドタグが"-"の場合、フィールドは常に省略されます。
 // フィールド名が"-"のフィールドでも、タグ"-,"を使用して生成することができることに注意してください。
@@ -127,27 +106,21 @@ import (
 //	// フィールドはJSONでキー"-"として現れます。
 //	Field int `json:"-,"`
 //
-<<<<<<< HEAD
-// "string"オプションは、フィールドがJSONエンコードされた文字列内にJSONとして格納されることを示します。
-// これは、文字列、浮動小数点数、整数、またはブール型のフィールドにのみ適用されます。
-// この追加のエンコーディングレベルは、JavaScriptプログラムと通信する際に時々使用されます：
-=======
-// The "omitzero" option specifies that the field should be omitted
-// from the encoding if the field has a zero value, according to rules:
+// "omitzero"オプションは、フィールドがゼロ値を持つ場合に
+// エンコーディングからフィールドを省略することを指定します。以下のルールに従います：
 //
-// 1) If the field type has an "IsZero() bool" method, that will be used to
-// determine whether the value is zero.
+// 1) フィールドの型が"IsZero() bool"メソッドを持つ場合、それを使用して
+// 値がゼロかどうかを判定します。
 //
-// 2) Otherwise, the value is zero if it is the zero value for its type.
+// 2) それ以外の場合、値がその型のゼロ値であればゼロです。
 //
-// If both "omitempty" and "omitzero" are specified, the field will be omitted
-// if the value is either empty or zero (or both).
+// "omitempty"と"omitzero"の両方が指定された場合、フィールドは
+// 値が空またはゼロ（または両方）の場合に省略されます。
 //
-// The "string" option signals that a field is stored as JSON inside a
-// JSON-encoded string. It applies only to fields of string, floating point,
-// integer, or boolean types. This extra level of encoding is sometimes used
-// when communicating with JavaScript programs:
->>>>>>> upstream/release-branch.go1.25
+// "string"オプションは、フィールドがJSONエンコードされた文字列内に
+// JSONとして格納されることを示します。これは文字列、浮動小数点数、
+// 整数、またはブール型のフィールドにのみ適用されます。この追加のエンコーディングレベルは、
+// JavaScriptプログラムと通信する際に時々使用されます：
 //
 //	Int64String int64 `json:",string"`
 //
