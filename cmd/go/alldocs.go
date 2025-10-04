@@ -121,9 +121,8 @@
 //		The default is GOMAXPROCS, normally the number of CPUs available.
 //	-race
 //		enable data race detection.
-//		Supported only on darwin/amd64, darwin/arm64, freebsd/amd64, linux/amd64,
-//		linux/arm64 (only for 48-bit VMA), linux/ppc64le, linux/riscv64 and
-//		windows/amd64.
+//		Supported only on linux/amd64, freebsd/amd64, darwin/amd64, darwin/arm64, windows/amd64,
+//		linux/ppc64le and linux/arm64 (only for 48-bit VMA).
 //	-msan
 //		enable interoperation with memory sanitizer.
 //		Supported only on linux/amd64, linux/arm64, linux/loong64, freebsd/amd64
@@ -759,8 +758,6 @@
 // variable, which defaults to $GOPATH/bin or $HOME/go/bin if the GOPATH
 // environment variable is not set. Executables in $GOROOT
 // are installed in $GOROOT/bin or $GOTOOLDIR instead of $GOBIN.
-// Cross compiled binaries are installed in $GOOS_$GOARCH subdirectories
-// of the above.
 //
 // If the arguments have version suffixes (like @latest or @v1.0.0), "go install"
 // builds packages in module-aware mode, ignoring the go.mod file in the current
@@ -1280,6 +1277,11 @@
 // The -json flag prints the final go.mod file in JSON format instead of
 // writing it back to go.mod. The JSON output corresponds to these Go types:
 //
+//	type Module struct {
+//		Path    string
+//		Version string
+//	}
+//
 //	type GoMod struct {
 //		Module    ModPath
 //		Go        string
@@ -1289,13 +1291,6 @@
 //		Exclude   []Module
 //		Replace   []Replace
 //		Retract   []Retract
-//		Tool      []Tool
-//		Ignore    []Ignore
-//	}
-//
-//	type Module struct {
-//		Path    string
-//		Version string
 //	}
 //
 //	type ModPath struct {
@@ -2410,10 +2405,8 @@
 //		The name of checksum database to use and optionally its public key and
 //		URL. See https://golang.org/ref/mod#authenticating.
 //	GOTMPDIR
-//		Temporary directory used by the go command and testing package.
-//		Overrides the platform-specific temporary directory such as "/tmp".
-//		The go command and testing package will write temporary source files,
-//		packages, and binaries here.
+//		The directory where the go command will write
+//		temporary source files, packages, and binaries.
 //	GOTOOLCHAIN
 //		Controls which Go toolchain is used. See https://go.dev/doc/toolchain.
 //	GOVCS
@@ -2534,7 +2527,7 @@
 //		The default is GOFIPS140=off, which makes no FIPS-140 changes at all.
 //		Other values enable FIPS-140 compliance measures and select alternate
 //		versions of the cryptography source code.
-//		See https://go.dev/doc/security/fips140 for details.
+//		See https://go.dev/security/fips140 for details.
 //	GO_EXTLINK_ENABLED
 //		Whether the linker should use external linking mode
 //		when using -linkmode=auto with code that uses cgo.
@@ -3238,8 +3231,8 @@
 //
 // Several of the flags control profiling and write an execution profile
 // suitable for "go tool pprof"; run "go tool pprof -h" for more
-// information. The -sample_index=alloc_space, -sample_index=alloc_objects,
-// and -show_bytes options of pprof control how the information is presented.
+// information. The --alloc_space, --alloc_objects, and --show_bytes
+// options of pprof control how the information is presented.
 //
 // The following flags are recognized by the 'go test' command and
 // control the execution of any test:

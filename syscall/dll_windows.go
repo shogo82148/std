@@ -20,48 +20,25 @@ func (e *DLLError) Error() string
 func (e *DLLError) Unwrap() error
 
 // Deprecated: Use [SyscallN] instead.
-//
-//go:nosplit
-//go:uintptrkeepalive
 func Syscall(trap, nargs, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno)
 
 // Deprecated: Use [SyscallN] instead.
-//
-//go:nosplit
-//go:uintptrkeepalive
 func Syscall6(trap, nargs, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno)
 
 // Deprecated: Use [SyscallN] instead.
-//
-//go:nosplit
-//go:uintptrkeepalive
 func Syscall9(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr, err Errno)
 
 // Deprecated: Use [SyscallN] instead.
-//
-//go:nosplit
-//go:uintptrkeepalive
 func Syscall12(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 uintptr) (r1, r2 uintptr, err Errno)
 
 // Deprecated: Use [SyscallN] instead.
-//
-//go:nosplit
-//go:uintptrkeepalive
 func Syscall15(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15 uintptr) (r1, r2 uintptr, err Errno)
 
 // Deprecated: Use [SyscallN] instead.
-//
-//go:nosplit
-//go:uintptrkeepalive
 func Syscall18(trap, nargs, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18 uintptr) (r1, r2 uintptr, err Errno)
 
-// SyscallN executes procedure p with arguments args.
-//
-// See [Proc.Call] for more information.
-//
-//go:nosplit
-//go:uintptrkeepalive
-func SyscallN(p uintptr, args ...uintptr) (r1, r2 uintptr, err Errno)
+//go:noescape
+func SyscallN(trap uintptr, args ...uintptr) (r1, r2 uintptr, err Errno)
 
 // A DLL implements access to a single DLL.
 type DLL struct {

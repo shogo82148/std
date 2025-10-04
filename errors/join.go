@@ -12,5 +12,4 @@ package errors
 // between each string.
 //
 // A non-nil error returned by Join implements the Unwrap() []error method.
-// The errors may be inspected with [Is] and [As].
 func Join(errs ...error) error

@@ -7,8 +7,6 @@ package gc
 import "github.com/shogo82148/std/internal/goarch"
 
 const (
-	// PageWords is the number of pointer-words per page.
-	PageWords = PageSize / goarch.PtrSize
 
 	// A malloc header is functionally a single type pointer, but
 	// we need to use 8 here to ensure 8-byte alignment of allocations
@@ -44,7 +42,7 @@ const (
 	// would not be invariant to size-class rounding. Eschewing this property means a
 	// more complex check or possibly storing additional state to determine whether a
 	// span has malloc headers.
-	MinSizeForMallocHeader = goarch.PtrSize * goarch.PtrBits
+	MinSizeForMallocHeader = goarch.PtrSize * ptrBits
 
 	// PageSize is the increment in which spans are managed.
 	PageSize = 1 << PageShift

@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Package maps implements Go's builtin map type.
 package maps
 
 import (
@@ -16,7 +17,7 @@ var _ = uint16(maxTableCapacity)
 type Iter struct {
 	key  unsafe.Pointer
 	elem unsafe.Pointer
-	typ  *abi.MapType
+	typ  *abi.SwissMapType
 	m    *Map
 
 	// Randomize iteration order by starting iteration at a random slot
@@ -50,7 +51,7 @@ type Iter struct {
 }
 
 // Init initializes Iter for iteration.
-func (it *Iter) Init(typ *abi.MapType, m *Map)
+func (it *Iter) Init(typ *abi.SwissMapType, m *Map)
 
 func (it *Iter) Initialized() bool
 

@@ -190,7 +190,3 @@ const (
 	BoundsConvert
 	BoundsKindCount
 )
-
-// Returns the bounds error code needed by the runtime, and
-// whether the x field is signed.
-func (b BoundsKind) Code() (rtabi.BoundsErrorCode, bool)

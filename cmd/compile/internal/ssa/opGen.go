@@ -85,8 +85,8 @@ const (
 	BlockARM64GEnoov
 	BlockARM64JUMPTABLE
 
-	BlockLOONG64EQZ
-	BlockLOONG64NEZ
+	BlockLOONG64EQ
+	BlockLOONG64NE
 	BlockLOONG64LTZ
 	BlockLOONG64LEZ
 	BlockLOONG64GTZ
@@ -99,7 +99,6 @@ const (
 	BlockLOONG64BLT
 	BlockLOONG64BGEU
 	BlockLOONG64BLTU
-	BlockLOONG64JUMPTABLE
 
 	BlockMIPSEQ
 	BlockMIPSNE
@@ -389,12 +388,12 @@ const (
 	Op386LoweredGetCallerSP
 	Op386LoweredNilCheck
 	Op386LoweredWB
-	Op386LoweredPanicBoundsRR
-	Op386LoweredPanicBoundsRC
-	Op386LoweredPanicBoundsCR
-	Op386LoweredPanicBoundsCC
-	Op386LoweredPanicExtendRR
-	Op386LoweredPanicExtendRC
+	Op386LoweredPanicBoundsA
+	Op386LoweredPanicBoundsB
+	Op386LoweredPanicBoundsC
+	Op386LoweredPanicExtendA
+	Op386LoweredPanicExtendB
+	Op386LoweredPanicExtendC
 	Op386FlagEQ
 	Op386FlagLT_ULT
 	Op386FlagLT_UGT
@@ -871,15 +870,13 @@ const (
 	OpAMD64MOVLstoreconstidx4
 	OpAMD64MOVQstoreconstidx1
 	OpAMD64MOVQstoreconstidx8
-	OpAMD64LoweredZero
-	OpAMD64LoweredZeroLoop
+	OpAMD64DUFFZERO
 	OpAMD64REPSTOSQ
 	OpAMD64CALLstatic
 	OpAMD64CALLtail
 	OpAMD64CALLclosure
 	OpAMD64CALLinter
-	OpAMD64LoweredMove
-	OpAMD64LoweredMoveLoop
+	OpAMD64DUFFCOPY
 	OpAMD64REPMOVSQ
 	OpAMD64InvertFlags
 	OpAMD64LoweredGetG
@@ -889,10 +886,9 @@ const (
 	OpAMD64LoweredNilCheck
 	OpAMD64LoweredWB
 	OpAMD64LoweredHasCPUFeature
-	OpAMD64LoweredPanicBoundsRR
-	OpAMD64LoweredPanicBoundsRC
-	OpAMD64LoweredPanicBoundsCR
-	OpAMD64LoweredPanicBoundsCC
+	OpAMD64LoweredPanicBoundsA
+	OpAMD64LoweredPanicBoundsB
+	OpAMD64LoweredPanicBoundsC
 	OpAMD64FlagEQ
 	OpAMD64FlagLT_ULT
 	OpAMD64FlagLT_UGT
@@ -1244,12 +1240,12 @@ const (
 	OpARMLoweredGetClosurePtr
 	OpARMLoweredGetCallerSP
 	OpARMLoweredGetCallerPC
-	OpARMLoweredPanicBoundsRR
-	OpARMLoweredPanicBoundsRC
-	OpARMLoweredPanicBoundsCR
-	OpARMLoweredPanicBoundsCC
-	OpARMLoweredPanicExtendRR
-	OpARMLoweredPanicExtendRC
+	OpARMLoweredPanicBoundsA
+	OpARMLoweredPanicBoundsB
+	OpARMLoweredPanicBoundsC
+	OpARMLoweredPanicExtendA
+	OpARMLoweredPanicExtendB
+	OpARMLoweredPanicExtendC
 	OpARMFlagConstant
 	OpARMInvertFlags
 	OpARMLoweredWB
@@ -1513,14 +1509,6 @@ const (
 	OpARM64CSINV
 	OpARM64CSNEG
 	OpARM64CSETM
-	OpARM64CCMP
-	OpARM64CCMN
-	OpARM64CCMPconst
-	OpARM64CCMNconst
-	OpARM64CCMPW
-	OpARM64CCMNW
-	OpARM64CCMPWconst
-	OpARM64CCMNWconst
 	OpARM64CALLstatic
 	OpARM64CALLtail
 	OpARM64CALLclosure
@@ -1546,10 +1534,10 @@ const (
 	OpARM64NotGreaterEqualF
 	OpARM64LessThanNoov
 	OpARM64GreaterEqualNoov
+	OpARM64DUFFZERO
 	OpARM64LoweredZero
-	OpARM64LoweredZeroLoop
+	OpARM64DUFFCOPY
 	OpARM64LoweredMove
-	OpARM64LoweredMoveLoop
 	OpARM64LoweredGetClosurePtr
 	OpARM64LoweredGetCallerSP
 	OpARM64LoweredGetCallerPC
@@ -1588,10 +1576,9 @@ const (
 	OpARM64LoweredAtomicAnd32Variant
 	OpARM64LoweredAtomicOr32Variant
 	OpARM64LoweredWB
-	OpARM64LoweredPanicBoundsRR
-	OpARM64LoweredPanicBoundsRC
-	OpARM64LoweredPanicBoundsCR
-	OpARM64LoweredPanicBoundsCC
+	OpARM64LoweredPanicBoundsA
+	OpARM64LoweredPanicBoundsB
+	OpARM64LoweredPanicBoundsC
 	OpARM64PRFM
 	OpARM64DMB
 	OpARM64ZERO
@@ -1608,7 +1595,6 @@ const (
 	OpLOONG64CTZV
 	OpLOONG64REVB2H
 	OpLOONG64REVB2W
-	OpLOONG64REVB4H
 	OpLOONG64REVBV
 	OpLOONG64BITREV4B
 	OpLOONG64BITREVW
@@ -1618,14 +1604,11 @@ const (
 	OpLOONG64VPCNT16
 	OpLOONG64ADDV
 	OpLOONG64ADDVconst
-	OpLOONG64ADDV16const
 	OpLOONG64SUBV
 	OpLOONG64SUBVconst
 	OpLOONG64MULV
 	OpLOONG64MULHV
 	OpLOONG64MULHVU
-	OpLOONG64MULH
-	OpLOONG64MULHU
 	OpLOONG64DIVV
 	OpLOONG64DIVVU
 	OpLOONG64REMV
@@ -1725,6 +1708,14 @@ const (
 	OpLOONG64MOVVstoreidx
 	OpLOONG64MOVFstoreidx
 	OpLOONG64MOVDstoreidx
+	OpLOONG64MOVBstorezero
+	OpLOONG64MOVHstorezero
+	OpLOONG64MOVWstorezero
+	OpLOONG64MOVVstorezero
+	OpLOONG64MOVBstorezeroidx
+	OpLOONG64MOVHstorezeroidx
+	OpLOONG64MOVWstorezeroidx
+	OpLOONG64MOVVstorezeroidx
 	OpLOONG64MOVWfpgp
 	OpLOONG64MOVWgpfp
 	OpLOONG64MOVVfpgp
@@ -1753,10 +1744,10 @@ const (
 	OpLOONG64CALLtail
 	OpLOONG64CALLclosure
 	OpLOONG64CALLinter
+	OpLOONG64DUFFZERO
+	OpLOONG64DUFFCOPY
 	OpLOONG64LoweredZero
-	OpLOONG64LoweredZeroLoop
 	OpLOONG64LoweredMove
-	OpLOONG64LoweredMoveLoop
 	OpLOONG64LoweredAtomicLoad8
 	OpLOONG64LoweredAtomicLoad32
 	OpLOONG64LoweredAtomicLoad64
@@ -1789,14 +1780,11 @@ const (
 	OpLOONG64LoweredGetCallerPC
 	OpLOONG64LoweredWB
 	OpLOONG64LoweredPubBarrier
-	OpLOONG64LoweredPanicBoundsRR
-	OpLOONG64LoweredPanicBoundsRC
-	OpLOONG64LoweredPanicBoundsCR
-	OpLOONG64LoweredPanicBoundsCC
+	OpLOONG64LoweredPanicBoundsA
+	OpLOONG64LoweredPanicBoundsB
+	OpLOONG64LoweredPanicBoundsC
 	OpLOONG64PRELD
 	OpLOONG64PRELDX
-	OpLOONG64ADDshiftLLV
-	OpLOONG64ZERO
 
 	OpMIPSADD
 	OpMIPSADDconst
@@ -1908,12 +1896,12 @@ const (
 	OpMIPSLoweredGetCallerPC
 	OpMIPSLoweredWB
 	OpMIPSLoweredPubBarrier
-	OpMIPSLoweredPanicBoundsRR
-	OpMIPSLoweredPanicBoundsRC
-	OpMIPSLoweredPanicBoundsCR
-	OpMIPSLoweredPanicBoundsCC
-	OpMIPSLoweredPanicExtendRR
-	OpMIPSLoweredPanicExtendRC
+	OpMIPSLoweredPanicBoundsA
+	OpMIPSLoweredPanicBoundsB
+	OpMIPSLoweredPanicBoundsC
+	OpMIPSLoweredPanicExtendA
+	OpMIPSLoweredPanicExtendB
+	OpMIPSLoweredPanicExtendC
 
 	OpMIPS64ADDV
 	OpMIPS64ADDVconst
@@ -1980,7 +1968,10 @@ const (
 	OpMIPS64MOVVstore
 	OpMIPS64MOVFstore
 	OpMIPS64MOVDstore
-	OpMIPS64ZERO
+	OpMIPS64MOVBstorezero
+	OpMIPS64MOVHstorezero
+	OpMIPS64MOVWstorezero
+	OpMIPS64MOVVstorezero
 	OpMIPS64MOVWfpgp
 	OpMIPS64MOVWgpfp
 	OpMIPS64MOVVfpgp
@@ -2037,10 +2028,9 @@ const (
 	OpMIPS64LoweredGetCallerPC
 	OpMIPS64LoweredWB
 	OpMIPS64LoweredPubBarrier
-	OpMIPS64LoweredPanicBoundsRR
-	OpMIPS64LoweredPanicBoundsRC
-	OpMIPS64LoweredPanicBoundsCR
-	OpMIPS64LoweredPanicBoundsCC
+	OpMIPS64LoweredPanicBoundsA
+	OpMIPS64LoweredPanicBoundsB
+	OpMIPS64LoweredPanicBoundsC
 
 	OpPPC64ADD
 	OpPPC64ADDCC
@@ -2277,10 +2267,9 @@ const (
 	OpPPC64LoweredAtomicOr32
 	OpPPC64LoweredWB
 	OpPPC64LoweredPubBarrier
-	OpPPC64LoweredPanicBoundsRR
-	OpPPC64LoweredPanicBoundsRC
-	OpPPC64LoweredPanicBoundsCR
-	OpPPC64LoweredPanicBoundsCC
+	OpPPC64LoweredPanicBoundsA
+	OpPPC64LoweredPanicBoundsB
+	OpPPC64LoweredPanicBoundsC
 	OpPPC64InvertFlags
 	OpPPC64FlagEQ
 	OpPPC64FlagLT
@@ -2386,10 +2375,10 @@ const (
 	OpRISCV64CALLtail
 	OpRISCV64CALLclosure
 	OpRISCV64CALLinter
+	OpRISCV64DUFFZERO
+	OpRISCV64DUFFCOPY
 	OpRISCV64LoweredZero
-	OpRISCV64LoweredZeroLoop
 	OpRISCV64LoweredMove
-	OpRISCV64LoweredMoveLoop
 	OpRISCV64LoweredAtomicLoad8
 	OpRISCV64LoweredAtomicLoad32
 	OpRISCV64LoweredAtomicLoad64
@@ -2410,10 +2399,9 @@ const (
 	OpRISCV64LoweredGetCallerPC
 	OpRISCV64LoweredWB
 	OpRISCV64LoweredPubBarrier
-	OpRISCV64LoweredPanicBoundsRR
-	OpRISCV64LoweredPanicBoundsRC
-	OpRISCV64LoweredPanicBoundsCR
-	OpRISCV64LoweredPanicBoundsCC
+	OpRISCV64LoweredPanicBoundsA
+	OpRISCV64LoweredPanicBoundsB
+	OpRISCV64LoweredPanicBoundsC
 	OpRISCV64FADDS
 	OpRISCV64FSUBS
 	OpRISCV64FMULS
@@ -2425,7 +2413,6 @@ const (
 	OpRISCV64FSQRTS
 	OpRISCV64FNEGS
 	OpRISCV64FMVSX
-	OpRISCV64FMVXS
 	OpRISCV64FCVTSW
 	OpRISCV64FCVTSL
 	OpRISCV64FCVTWS
@@ -2451,7 +2438,6 @@ const (
 	OpRISCV64FABSD
 	OpRISCV64FSGNJD
 	OpRISCV64FMVDX
-	OpRISCV64FMVXD
 	OpRISCV64FCVTDW
 	OpRISCV64FCVTDL
 	OpRISCV64FCVTWD
@@ -2466,8 +2452,6 @@ const (
 	OpRISCV64FLED
 	OpRISCV64LoweredFMIND
 	OpRISCV64LoweredFMAXD
-	OpRISCV64FCLASSS
-	OpRISCV64FCLASSD
 
 	OpS390XFADDS
 	OpS390XFADD
@@ -2486,10 +2470,6 @@ const (
 	OpS390XLPDFR
 	OpS390XLNDFR
 	OpS390XCPSDR
-	OpS390XWFMAXDB
-	OpS390XWFMAXSB
-	OpS390XWFMINDB
-	OpS390XWFMINSB
 	OpS390XFIDBR
 	OpS390XFMOVSload
 	OpS390XFMOVDload
@@ -2672,10 +2652,9 @@ const (
 	OpS390XLoweredRound32F
 	OpS390XLoweredRound64F
 	OpS390XLoweredWB
-	OpS390XLoweredPanicBoundsRR
-	OpS390XLoweredPanicBoundsRC
-	OpS390XLoweredPanicBoundsCR
-	OpS390XLoweredPanicBoundsCC
+	OpS390XLoweredPanicBoundsA
+	OpS390XLoweredPanicBoundsB
+	OpS390XLoweredPanicBoundsC
 	OpS390XFlagEQ
 	OpS390XFlagLT
 	OpS390XFlagGT

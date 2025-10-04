@@ -66,6 +66,9 @@ type Engine struct {
 	Quiet bool
 }
 
+// NewEngine returns an Engine configured with a basic set of commands and conditions.
+func NewEngine() *Engine
+
 // A Cmd is a command that is available to a script.
 type Cmd interface {
 	Run(s *State, args ...string) (WaitFunc, error)

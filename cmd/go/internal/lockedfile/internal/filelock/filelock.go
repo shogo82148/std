@@ -50,3 +50,8 @@ func RLock(f File) error
 //
 // The caller must not attempt to unlock a file that is not locked.
 func Unlock(f File) error
+
+// IsNotSupported returns a boolean indicating whether the error is known to
+// report that a function is not supported (possibly for a specific input).
+// It is satisfied by errors.ErrUnsupported as well as some syscall errors.
+func IsNotSupported(err error) bool

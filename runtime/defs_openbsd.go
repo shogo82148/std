@@ -11,6 +11,7 @@ GOARCH=amd64 go tool cgo -godefs defs_openbsd.go
 GOARCH=386 go tool cgo -godefs defs_openbsd.go
 GOARCH=arm go tool cgo -godefs defs_openbsd.go
 GOARCH=arm64 go tool cgo -godefs defs_openbsd.go
+GOARCH=mips64 go tool cgo -godefs defs_openbsd.go
 */
 
 package runtime

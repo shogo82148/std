@@ -49,6 +49,9 @@ func (w *Writer) Init(writeByte func(byte))
 // It also enables debugging checks during the encoding.
 func (w *Writer) Debug(out io.Writer)
 
+// BitIndex returns the number of bits written to the bit stream so far.
+func (w *Writer) BitIndex() int64
+
 // End marks the end of the program, writing any remaining bytes.
 func (w *Writer) End()
 
@@ -57,6 +60,11 @@ func (w *Writer) End()
 // Any bits between the current index and the new index
 // are set to zero, meaning the corresponding words are scalars.
 func (w *Writer) Ptr(index int64)
+
+// ShouldRepeat reports whether it would be worthwhile to
+// use a Repeat to describe c elements of n bits each,
+// compared to just emitting c copies of the n-bit description.
+func (w *Writer) ShouldRepeat(n, c int64) bool
 
 // Repeat emits an instruction to repeat the description
 // of the last n words c times (including the initial description, c+1 times in total).
@@ -67,3 +75,8 @@ func (w *Writer) Repeat(n, c int64)
 // the index'th word are scalars.
 // ZeroUntil is usually called in preparation for a call to Repeat, Append, or End.
 func (w *Writer) ZeroUntil(index int64)
+
+// Append emits the given GC program into the current output.
+// The caller asserts that the program emits n bits (describes n words),
+// and Append panics if that is not true.
+func (w *Writer) Append(prog []byte, n int64)

@@ -26,10 +26,11 @@ var SupportSockNonblockCloexec = sync.OnceValue(func() bool {
 	}
 	if err != syscall.EPROTONOSUPPORT && err != syscall.EINVAL {
 
+		major, minor := KernelVersion()
 		if runtime.GOOS == "illumos" {
-			return KernelVersionGE(5, 11)
+			return major > 5 || (major == 5 && minor >= 11)
 		}
-		return KernelVersionGE(11, 4)
+		return major > 11 || (major == 11 && minor >= 4)
 	}
 	return false
 })
@@ -49,5 +50,6 @@ var SupportAccept4 = sync.OnceValue(func() bool {
 // SupportTCPKeepAliveIdleIntvlCNT determines whether the TCP_KEEPIDLE, TCP_KEEPINTVL and TCP_KEEPCNT
 // are available by checking the kernel version for Solaris 11.4.
 var SupportTCPKeepAliveIdleIntvlCNT = sync.OnceValue(func() bool {
-	return KernelVersionGE(11, 4)
+	major, minor := KernelVersion()
+	return major > 11 || (major == 11 && minor >= 4)
 })

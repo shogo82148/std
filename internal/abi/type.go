@@ -78,6 +78,12 @@ const (
 	UnsafePointer
 )
 
+const (
+	// TODO (khr, drchase) why aren't these in TFlag?  Investigate, fix if possible.
+	KindDirectIface Kind = 1 << 5
+	KindMask        Kind = (1 << 5) - 1
+)
+
 // TFlag is used by a Type to signal what extra type information is
 // available in the memory directly following the Type value.
 type TFlag uint8
@@ -119,15 +125,6 @@ const (
 	// has type **byte instead of *byte. The runtime will store a
 	// pointer to the GC pointer bitmask in *GCData.
 	TFlagGCMaskOnDemand TFlag = 1 << 4
-
-	// TFlagDirectIface means that a value of this type is stored directly
-	// in the data field of an interface, instead of indirectly. Normally
-	// this means the type is pointer-ish.
-	TFlagDirectIface TFlag = 1 << 5
-
-	// Leaving this breadcrumb behind for dlv. It should not be used, and no
-	// Kind should be big enough to set this bit.
-	KindDirectIface Kind = 1 << 5
 )
 
 // NameOff is the offset to a name from moduledata.types.  See resolveNameOff in runtime.
@@ -155,7 +152,10 @@ func (t *Type) HasName() bool
 // Pointers reports whether t contains pointers.
 func (t *Type) Pointers() bool
 
-// IsDirectIface reports whether t is stored directly in an interface value.
+// IfaceIndir reports whether t is stored indirectly in an interface value.
+func (t *Type) IfaceIndir() bool
+
+// isDirectIface reports whether t is stored directly in an interface value.
 func (t *Type) IsDirectIface() bool
 
 func (t *Type) GcSlice(begin, end uintptr) []byte
@@ -231,8 +231,8 @@ func (t *Type) Elem() *Type
 // StructType returns t cast to a *StructType, or nil if its tag does not match.
 func (t *Type) StructType() *StructType
 
-// MapType returns t cast to a *MapType, or nil if its tag does not match.
-func (t *Type) MapType() *MapType
+// MapType returns t cast to a *OldMapType or *SwissMapType, or nil if its tag does not match.
+func (t *Type) MapType() *mapType
 
 // ArrayType returns t cast to a *ArrayType, or nil if its tag does not match.
 func (t *Type) ArrayType() *ArrayType

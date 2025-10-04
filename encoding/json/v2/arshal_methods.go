@@ -16,10 +16,6 @@ import (
 //
 // It is recommended that implementations return a buffer that is safe
 // for the caller to retain and potentially mutate.
-//
-// If the returned error is a [SemanticError], then unpopulated fields
-// of the error may be populated by [json] with additional context.
-// Errors of other types are wrapped within a [SemanticError].
 type Marshaler interface {
 	MarshalJSON() ([]byte, error)
 }
@@ -33,11 +29,6 @@ type Marshaler interface {
 //
 // The implementation must write only one JSON value to the Encoder and
 // must not retain the pointer to [jsontext.Encoder].
-//
-// If the returned error is a [SemanticError], then unpopulated fields
-// of the error may be populated by [json] with additional context.
-// Errors of other types are wrapped within a [SemanticError],
-// unless it is an IO error.
 type MarshalerTo interface {
 	MarshalJSONTo(*jsontext.Encoder) error
 }
@@ -53,10 +44,6 @@ type MarshalerTo interface {
 // unmarshaling into a pre-populated value.
 //
 // Implementations must not retain or mutate the input []byte.
-//
-// If the returned error is a [SemanticError], then unpopulated fields
-// of the error may be populated by [json] with additional context.
-// Errors of other types are wrapped within a [SemanticError].
 type Unmarshaler interface {
 	UnmarshalJSON([]byte) error
 }
@@ -73,11 +60,6 @@ type Unmarshaler interface {
 // unmarshaling into a pre-populated value.
 //
 // Implementations must not retain the pointer to [jsontext.Decoder].
-//
-// If the returned error is a [SemanticError], then unpopulated fields
-// of the error may be populated by [json] with additional context.
-// Errors of other types are wrapped within a [SemanticError],
-// unless it is a [jsontext.SyntacticError] or an IO error.
 type UnmarshalerFrom interface {
 	UnmarshalJSONFrom(*jsontext.Decoder) error
 }

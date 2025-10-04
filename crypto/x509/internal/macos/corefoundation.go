@@ -4,10 +4,10 @@
 
 //go:build darwin
 
-// Package macos provides cgo-less wrappers for Core Foundation and
+// Package macOS provides cgo-less wrappers for Core Foundation and
 // Security.framework, similarly to how package syscall provides access to
 // libSystem.dylib.
-package macos
+package macOS
 
 import (
 	"github.com/shogo82148/std/time"

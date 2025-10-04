@@ -7,6 +7,7 @@
 package archive
 
 import (
+	"github.com/shogo82148/std/bufio"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
 )
@@ -69,5 +70,7 @@ func (a *Archive) AddEntry(typ EntryType, name string, mtime int64, uid, gid int
 
 // architecture-independent object file output
 const HeaderSize = 60
+
+func ReadHeader(b *bufio.Reader, name string) int
 
 func FormatHeader(arhdr []byte, name string, size int64)

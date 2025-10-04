@@ -5,7 +5,6 @@
 package poll
 
 import (
-	"github.com/shogo82148/std/runtime"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/syscall"
@@ -32,8 +31,16 @@ type FD struct {
 	// System file descriptor. Immutable until Close.
 	Sysfd syscall.Handle
 
+	// Read operation.
+	rop operation
+	// Write operation.
+	wop operation
+
 	// I/O poller.
 	pd pollDesc
+
+	// Used to implement pread/pwrite.
+	l sync.Mutex
 
 	// The file offset for the next read or write.
 	// Overlapped IO operations don't use the real file pointer,
@@ -69,11 +76,6 @@ type FD struct {
 	isBlocking bool
 
 	disassociated atomic.Bool
-
-	// readPinner and writePinner are automatically unpinned
-	// before execIO returns.
-	readPinner  runtime.Pinner
-	writePinner runtime.Pinner
 }
 
 // Init initializes the FD. The Sysfd field should already be set.
@@ -99,7 +101,7 @@ func (fd *FD) Read(buf []byte) (int, error)
 var ReadConsole = syscall.ReadConsole
 
 // Pread emulates the Unix pread system call.
-func (fd *FD) Pread(buf []byte, off int64) (int, error)
+func (fd *FD) Pread(b []byte, off int64) (int, error)
 
 // ReadFrom wraps the recvfrom network call.
 func (fd *FD) ReadFrom(buf []byte) (int, syscall.Sockaddr, error)

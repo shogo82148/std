@@ -157,6 +157,9 @@ func LoadModGraph(ctx context.Context, goVersion string) (*ModuleGraph, error)
 // result.
 func EditBuildList(ctx context.Context, add, mustSelect []module.Version) (changed bool, err error)
 
+// OverrideRoots edits the global requirement roots by replacing the specific module versions.
+func OverrideRoots(ctx context.Context, replace []module.Version)
+
 // A ConstraintError describes inconsistent constraints in EditBuildList
 type ConstraintError struct {
 	// Conflict lists the source of the conflict for each version in mustSelect

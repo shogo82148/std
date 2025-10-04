@@ -53,8 +53,6 @@ func GetCurrentThread() (pseudoHandle syscall.Handle, err error)
 
 func GetFileInformationByHandleEx(handle syscall.Handle, class uint32, info *byte, bufsize uint32) (err error)
 
-func GetFileSizeEx(handle syscall.Handle, size *int64) (err error)
-
 func GetFinalPathNameByHandle(file syscall.Handle, filePath *uint16, filePathSize uint32, flags uint32) (n uint32, err error)
 
 func GetModuleFileName(module syscall.Handle, fn *uint16, len uint32) (n uint32, err error)

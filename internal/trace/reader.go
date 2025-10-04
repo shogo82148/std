@@ -17,29 +17,18 @@ import (
 // event as the first event, and a Sync event as the last event.
 // (There may also be any number of Sync events in the middle, too.)
 type Reader struct {
-	version    version.Version
-	r          *bufio.Reader
-	lastTs     Time
-	gen        *generation
-	frontier   []*batchCursor
-	cpuSamples []cpuSample
-	order      ordering
-	syncs      int
-	readGenErr error
-	done       bool
-
-	// Spill state.
-	//
-	// Traces before Go 1.26 had no explicit end-of-generation signal, and
-	// so the first batch of the next generation needed to be parsed to identify
-	// a new generation. This batch is the "spilled" so we don't lose track
-	// of it when parsing the next generation.
-	//
-	// This is unnecessary after Go 1.26 because of an explicit end-of-generation
-	// signal.
+	version      version.Version
+	r            *bufio.Reader
+	lastTs       Time
+	gen          *generation
 	spill        *spilledBatch
 	spillErr     error
 	spillErrSync bool
+	frontier     []*batchCursor
+	cpuSamples   []cpuSample
+	order        ordering
+	syncs        int
+	done         bool
 
 	v1Events *traceV1Converter
 }

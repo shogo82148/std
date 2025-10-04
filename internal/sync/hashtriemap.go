@@ -35,7 +35,7 @@ func (ht *HashTrieMap[K, V]) Load(key K) (value V, ok bool)
 func (ht *HashTrieMap[K, V]) LoadOrStore(key K, value V) (result V, loaded bool)
 
 // Store sets the value for a key.
-func (ht *HashTrieMap[K, V]) Store(key K, new V)
+func (ht *HashTrieMap[K, V]) Store(key K, old V)
 
 // Swap swaps the value for a key and returns the previous value if any.
 // The loaded result reports whether the key was present.

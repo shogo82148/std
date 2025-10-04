@@ -30,9 +30,9 @@
 //	import "testing"
 //
 //	func TestAbs(t *testing.T) {
-//	    got := abs(-1)
+//	    got := Abs(-1)
 //	    if got != 1 {
-//	        t.Errorf("abs(-1) = %d; want 1", got)
+//	        t.Errorf("Abs(-1) = %d; want 1", got)
 //	    }
 //	}
 //

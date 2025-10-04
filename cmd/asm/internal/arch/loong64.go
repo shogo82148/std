@@ -12,6 +12,10 @@ import (
 	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
+// IsLoong64MUL reports whether the op (as defined by an loong64.A* constant) is
+// one of the MUL/DIV/REM instructions that require special handling.
+func IsLoong64MUL(op obj.As) bool
+
 // IsLoong64RDTIME reports whether the op (as defined by an loong64.A*
 // constant) is one of the RDTIMELW/RDTIMEHW/RDTIMED instructions that
 // require special handling.

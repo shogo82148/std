@@ -390,17 +390,13 @@ func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
 // Handle registers the handler for the given pattern.
-// If the given pattern conflicts with one that is already registered
-// or if the pattern is invalid, Handle panics.
-//
-// See [ServeMux] for details on valid patterns and conflict rules.
+// If the given pattern conflicts with one that is already registered, Handle
+// panics.
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
 // HandleFunc registers the handler function for the given pattern.
-// If the given pattern conflicts with one that is already registered
-// or if the pattern is invalid, HandleFunc panics.
-//
-// See [ServeMux] for details on valid patterns and conflict rules.
+// If the given pattern conflicts with one that is already registered, HandleFunc
+// panics.
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Handle registers the handler for the given pattern in [DefaultServeMux].

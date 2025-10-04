@@ -15,3 +15,6 @@ func Copy(n Node) Node
 // (except for shared nodes like ONAME, ONONAME, OLITERAL, and OTYPE).
 // If pos.IsKnown(), it sets the source position of newly allocated Nodes to pos.
 func DeepCopy(pos src.XPos, n Node) Node
+
+// DeepCopyList returns a list of deep copies (using DeepCopy) of the nodes in list.
+func DeepCopyList(pos src.XPos, list []Node) []Node

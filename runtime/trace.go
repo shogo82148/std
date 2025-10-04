@@ -35,4 +35,4 @@ func StopTrace()
 // was on has been returned, ReadTrace returns nil. The caller must copy the
 // returned data before calling ReadTrace again.
 // ReadTrace must be called from one goroutine at a time.
-func ReadTrace() (buf []byte)
+func ReadTrace() []byte

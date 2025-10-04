@@ -12,5 +12,5 @@
 //
 //	go tool pprof -h
 //
-// For an example, see https://go.dev/blog/pprof.
+// For an example, see https://blog.golang.org/profiling-go-programs.
 package main

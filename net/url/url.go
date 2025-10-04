@@ -76,41 +76,25 @@ func PathEscape(s string) string
 // A consequence is that it is impossible to tell which slashes in the Path were
 // slashes in the raw URL and which were %2f. This distinction is rarely important,
 // but when it is, the code should use the [URL.EscapedPath] method, which preserves
-// the original encoding of Path. The Fragment field is also stored in decoded form,
-// use [URL.EscapedFragment] to retrieve the original encoding.
+// the original encoding of Path.
 //
-// The [URL.String] method uses the [URL.EscapedPath] method to obtain the path.
+// The RawPath field is an optional field which is only set when the default
+// encoding of Path is different from the escaped path. See the EscapedPath method
+// for more details.
+//
+// URL's String method uses the EscapedPath method to obtain the path.
 type URL struct {
-	Scheme   string
-	Opaque   string
-	User     *Userinfo
-	Host     string
-	Path     string
-	Fragment string
-
-	// RawQuery contains the encoded query values, without the initial '?'.
-	// Use URL.Query to decode the query.
-	RawQuery string
-
-	// RawPath is an optional field containing an encoded path hint.
-	// See the EscapedPath method for more details.
-	//
-	// In general, code should call EscapedPath instead of reading RawPath.
-	RawPath string
-
-	// RawFragment is an optional field containing an encoded fragment hint.
-	// See the EscapedFragment method for more details.
-	//
-	// In general, code should call EscapedFragment instead of reading RawFragment.
+	Scheme      string
+	Opaque      string
+	User        *Userinfo
+	Host        string
+	Path        string
+	RawPath     string
+	OmitHost    bool
+	ForceQuery  bool
+	RawQuery    string
+	Fragment    string
 	RawFragment string
-
-	// ForceQuery indicates whether the original URL contained a query ('?') character.
-	// When set, the String method will include a trailing '?', even when RawQuery is empty.
-	ForceQuery bool
-
-	// OmitHost indicates the URL has an empty host (authority).
-	// When set, the String method will not include the host when it is empty.
-	OmitHost bool
 }
 
 // User returns a [Userinfo] containing the provided username

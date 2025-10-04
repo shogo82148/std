@@ -74,7 +74,7 @@ type MainModuleSet struct {
 	// highest replaced version of each module path; empty string for wildcard-only replacements
 	highestReplaced map[string]string
 
-	indexMu sync.RWMutex
+	indexMu sync.Mutex
 	indices map[module.Version]*modFileIndex
 }
 
@@ -123,6 +123,10 @@ func (mms *MainModuleSet) GoVersion() string
 // or on the go.work file in workspace mode.
 // The caller must not modify the result.
 func (mms *MainModuleSet) Godebugs() []*modfile.Godebug
+
+// Toolchain returns the toolchain set on the single module, in module mode,
+// or the go.work file in workspace mode.
+func (mms *MainModuleSet) Toolchain() string
 
 func (mms *MainModuleSet) WorkFileReplaceMap() map[module.Version]module.Version
 
@@ -264,10 +268,6 @@ func UpdateWorkFile(wf *modfile.WorkFile)
 // it for global consistency. Most callers outside of the modload package should
 // use LoadModGraph instead.
 func LoadModFile(ctx context.Context) *Requirements
-
-// CheckReservedModulePath checks whether the module path is a reserved module path
-// that can't be used for a user's module.
-func CheckReservedModulePath(path string) error
 
 // CreateModFile initializes a new module by creating a go.mod file.
 //

@@ -94,6 +94,8 @@ func OPVC(o uint32, xo uint32, oe uint32, rc uint32) uint32
 
 func OPVCC(o uint32, xo uint32, oe uint32, rc uint32) uint32
 
+func OPCC(o uint32, xo uint32, rc uint32) uint32
+
 /* Generate MD-form opcode */
 func OPMD(o, xo, rc uint32) uint32
 

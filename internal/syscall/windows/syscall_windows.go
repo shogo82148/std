@@ -27,7 +27,6 @@ const (
 	ERROR_NOT_SUPPORTED          syscall.Errno = 50
 	ERROR_CALL_NOT_IMPLEMENTED   syscall.Errno = 120
 	ERROR_INVALID_NAME           syscall.Errno = 123
-	ERROR_NEGATIVE_SEEK          syscall.Errno = 131
 	ERROR_LOCK_FAILED            syscall.Errno = 167
 	ERROR_IO_INCOMPLETE          syscall.Errno = 996
 	ERROR_NO_TOKEN               syscall.Errno = 1008
@@ -227,7 +226,7 @@ var WSAID_WSARECVMSG = syscall.GUID{
 }
 
 type WSAMsg struct {
-	Name        *syscall.RawSockaddrAny
+	Name        syscall.Pointer
 	Namelen     int32
 	Buffers     *syscall.WSABuf
 	BufferCount uint32

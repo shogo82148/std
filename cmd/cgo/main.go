@@ -33,6 +33,8 @@ type Package struct {
 	GoFiles     []string
 	GccFiles    []string
 	Preamble    string
+	typedefs    map[string]bool
+	typedefList []typedefInfo
 	noCallbacks map[string]bool
 	noEscapes   map[string]bool
 }
@@ -51,8 +53,6 @@ type File struct {
 	NoCallbacks map[string]bool
 	NoEscapes   map[string]bool
 	Edit        *edit.Buffer
-
-	debugs []*debug
 }
 
 // A Call refers to a call of a C.xxx function in the AST.

@@ -41,12 +41,12 @@
 //
 // because the former will succeed if err wraps [io/fs.ErrExist].
 //
-// [AsType] examines the tree of its argument looking for an error whose
-// type matches its type argument. If it succeeds, it returns the
-// corresponding value of that type and true. Otherwise, it returns the
-// zero value of that type and false. The form
+// [As] examines the tree of its first argument looking for an error that can be
+// assigned to its second argument, which must be a pointer. If it succeeds, it
+// performs the assignment and returns true. Otherwise, it returns false. The form
 //
-//	if perr, ok := errors.AsType[*fs.PathError](err); ok {
+//	var perr *fs.PathError
+//	if errors.As(err, &perr) {
 //		fmt.Println(perr.Path)
 //	}
 //

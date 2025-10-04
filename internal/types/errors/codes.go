@@ -855,9 +855,7 @@ const (
 	// context in which it is used.
 	//
 	// Example:
-	//  func f[T ~int8 | ~int16 | ~int32 | ~int64](x T) T {
-	//  	return x + 1024
-	//  }
+	//  var _ = 1 + []int{}
 	InvalidUntypedConversion
 
 	// BadOffsetofSyntax occurs when unsafe.Offsetof is called with an argument
