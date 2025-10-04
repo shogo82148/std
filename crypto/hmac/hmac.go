@@ -22,19 +22,12 @@ import (
 	"github.com/shogo82148/std/hash"
 )
 
-<<<<<<< HEAD
-// Newは指定した [hash.Hash] タイプとキーを使用して新しいHMACハッシュを返します。
-// [crypto/sha256] からのsha256.NewのようなNew関数はhとして使用できます。
-// hは呼び出されるたびに新しいハッシュを返す必要があります。
-// 標準ライブラリの他のハッシュ実装とは異なり、返されたハッシュは [encoding.BinaryMarshaler] または [encoding.BinaryUnmarshaler] を実装していません。
-=======
-// New returns a new HMAC hash using the given [hash.Hash] type and key.
-// New functions like [crypto/sha256.New] can be used as h.
-// h must return a new Hash every time it is called.
-// Note that unlike other hash implementations in the standard library,
-// the returned Hash does not implement [encoding.BinaryMarshaler]
-// or [encoding.BinaryUnmarshaler].
->>>>>>> upstream/release-branch.go1.25
+// Newは、与えられた [hash.Hash] タイプとキーを使用して新しいHMACハッシュを返します。
+// [crypto/sha256.New] のようなNew関数をhとして使用できます。
+// hは呼び出されるたびに新しいHashを返す必要があります。
+// 標準ライブラリの他のハッシュ実装とは異なり、
+// 返されるHashは [encoding.BinaryMarshaler]
+// または [encoding.BinaryUnmarshaler] を実装していないことに注意してください。
 func New(h func() hash.Hash, key []byte) hash.Hash
 
 // Equalは、タイミング情報を漏らさずに2つのMACを比較します。
