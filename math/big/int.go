@@ -102,13 +102,8 @@ func (z *Int) Rem(x, y *Int) *Int
 //	q = x/y      結果はゼロに切り捨てられます
 //	r = x - y*q
 //
-<<<<<<< HEAD
-// （Daan Leijenの「コンピュータサイエンティストのための除算とモジュラス」を参照）
-// ユークリッド除算とモジュラス（Goとは異なる）については [DivMod] を参照してください。
-=======
-// (See Daan Leijen, “Division and Modulus for Computer Scientists”.)
-// See [Int.DivMod] for Euclidean division and modulus (unlike Go).
->>>>>>> upstream/release-branch.go1.25
+// (Daan Leijen, "Division and Modulus for Computer Scientists"を参照。)
+// ユークリッド除算と剰余については [Int.DivMod] を参照してください（Goとは異なります）。
 func (z *Int) QuoRem(x, y, r *Int) (*Int, *Int)
 
 // Divは、y != 0の場合、zを商x/yに設定し、zを返します。

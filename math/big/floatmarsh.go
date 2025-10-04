@@ -15,19 +15,14 @@ func (x *Float) GobEncode() ([]byte, error)
 // ただし、zの精度が0の場合、zは正確にデコードされた値に設定されます。
 func (z *Float) GobDecode(buf []byte) error
 
-<<<<<<< HEAD
-// MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
-// [Float] の値のみが（全精度で）マーシャルされ、精度や精度などの他の属性は無視されます。
-=======
-// AppendText implements the [encoding.TextAppender] interface.
-// Only the [Float] value is marshaled (in full precision), other
-// attributes such as precision or accuracy are ignored.
+// AppendTextは [encoding.TextAppender] インターフェースを実装します。
+// [Float] 値のみがマーシャルされ（完全な精度で）、
+// 精度や正確性などの他の属性は無視されます。
 func (x *Float) AppendText(b []byte) ([]byte, error)
 
-// MarshalText implements the [encoding.TextMarshaler] interface.
-// Only the [Float] value is marshaled (in full precision), other
-// attributes such as precision or accuracy are ignored.
->>>>>>> upstream/release-branch.go1.25
+// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
+// [Float] 値のみがマーシャルされ（完全な精度で）、
+// 精度や正確性などの他の属性は無視されます。
 func (x *Float) MarshalText() (text []byte, err error)
 
 // UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
