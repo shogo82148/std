@@ -31,13 +31,6 @@ const (
 
 func IsAtomicInst(as obj.As) bool
 
-<<<<<<< HEAD
-func OP(x uint32, y uint32) uint32
-
-func SP(x uint32, y uint32) uint32
-
-func OP_TEN(x uint32, y uint32) uint32
-=======
 // The constants here define the data characteristics within the bit field range.
 //
 //	ALL1: The data in the bit field is all 1
@@ -52,7 +45,6 @@ const (
 )
 
 func OP_RRRR(op uint32, r1 uint32, r2 uint32, r3 uint32, r4 uint32) uint32
->>>>>>> upstream/release-branch.go1.25
 
 // r1 -> rk
 // r2 -> rj

@@ -216,8 +216,6 @@ var Anames = []string{
 	"RDTIMELW",
 	"RDTIMEHW",
 	"RDTIMED",
-<<<<<<< HEAD
-=======
 	"CPUCFG",
 	"FMADDF",
 	"FMADDD",
@@ -581,6 +579,5 @@ var Anames = []string{
 	"XVSETALLNEH",
 	"XVSETALLNEW",
 	"XVSETALLNEV",
->>>>>>> upstream/release-branch.go1.25
 	"LAST",
 }

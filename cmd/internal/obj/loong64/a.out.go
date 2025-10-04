@@ -671,8 +671,6 @@ const (
 	ARDTIMELW
 	ARDTIMEHW
 	ARDTIMED
-<<<<<<< HEAD
-=======
 	ACPUCFG
 
 	// 3.2.1.2
@@ -736,7 +734,6 @@ const (
 	AFTINTRNEWD
 	AFTINTRNEVF
 	AFTINTRNEVD
->>>>>>> upstream/release-branch.go1.25
 
 	// LSX and LASX memory access instructions
 	AVMOVQ
