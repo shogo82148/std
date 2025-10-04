@@ -287,14 +287,8 @@ type PolicyMapping struct {
 // ErrUnsupportedAlgorithmは、現在実装されていないアルゴリズムを使用して操作を実行しようとした結果です。
 var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorithm unimplemented")
 
-<<<<<<< HEAD
-// InsecureAlgorithmErrorは、署名の生成に使用される [SignatureAlgorithm] が安全でないことを示し、署名が拒否されたことを示します。
-//
-// SHA-1署名のサポートを一時的に復元するには、GODEBUG環境変数に値"x509sha1=1"を含めます。ただし、このオプションは将来のリリースで削除される予定です。
-=======
-// An InsecureAlgorithmError indicates that the [SignatureAlgorithm] used to
-// generate the signature is not secure, and the signature has been rejected.
->>>>>>> upstream/release-branch.go1.25
+// InsecureAlgorithmErrorは、署名の生成に使用された [SignatureAlgorithm] が
+// 安全でなく、署名が拒否されたことを示します。
 type InsecureAlgorithmError SignatureAlgorithm
 
 func (e InsecureAlgorithmError) Error() string
@@ -369,36 +363,24 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // 返されるスライスはDERエンコーディングされた証明書です。
 //
-<<<<<<< HEAD
-// 現在サポートされている鍵のタイプは*rsa.PublicKey、*ecdsa.PublicKey、およびed25519.PublicKeyです。pubはサポートされている鍵のタイプである必要があり、privはサポートされている公開鍵を持つcrypto.Signerである必要があります。
-=======
-// The currently supported key types are *rsa.PublicKey, *ecdsa.PublicKey and
-// ed25519.PublicKey. pub must be a supported key type, and priv must be a
-// crypto.Signer or crypto.MessageSigner with a supported public key.
->>>>>>> upstream/release-branch.go1.25
+// 現在サポートされているキータイプは*rsa.PublicKey、*ecdsa.PublicKey、
+// ed25519.PublicKeyです。pubはサポートされているキータイプである必要があり、privは
+// サポートされている公開鍵を持つcrypto.Signerまたはcrypto.MessageSignerである必要があります。
 //
 // AuthorityKeyIdは、親のSubjectKeyIdから取得されます（存在する場合）、ただし証明書が自己署名でない場合はテンプレートの値が使用されます。
 //
 // テンプレートからのSubjectKeyIdが空で、テンプレートがCAである場合、SubjectKeyIdは
 // 公開鍵のハッシュから生成されます。
 //
-<<<<<<< HEAD
-// PolicyIdentifierとPoliciesフィールドは、両方とも証明書ポリシーOIDをマーシャルするために使用されます。
-// デフォルトでは、PolicyIdentifierのみがマーシャルされますが、
-// GODEBUG設定の"x509usepolicies"が"1"の値を持つ場合、Policiesフィールドが
-// PolicyIdentifierフィールドの代わりにマーシャルされます。Policiesフィールドは、
-// コンポーネントが31ビットより大きいポリシーOIDをマーシャルするために使用できます。
-=======
-// If template.SerialNumber is nil, a serial number will be generated which
-// conforms to RFC 5280, Section 4.1.2.2 using entropy from rand.
+// template.SerialNumberがnilの場合、randからのエントロピーを使用して
+// RFC 5280、セクション4.1.2.2に準拠したシリアル番号が生成されます。
 //
-// The PolicyIdentifier and Policies fields can both be used to marshal certificate
-// policy OIDs. By default, only the Policies is marshaled, but if the
-// GODEBUG setting "x509usepolicies" has the value "0", the PolicyIdentifiers field will
-// be marshaled instead of the Policies field. This changed in Go 1.24. The Policies field can
-// be used to marshal policy OIDs which have components that are larger than 31
-// bits.
->>>>>>> upstream/release-branch.go1.25
+// PolicyIdentifierフィールドとPoliciesフィールドの両方を使用して証明書
+// ポリシーOIDをマーシャルできます。デフォルトでは、Policiesのみがマーシャルされますが、
+// GODEBUG設定"x509usepolicies"の値が"0"の場合、Policiesフィールドの代わりに
+// PolicyIdentifiersフィールドがマーシャルされます。これはGo 1.24で変更されました。Policiesフィールドは
+// 31ビットより大きなコンポーネントを持つポリシーOIDをマーシャルするために
+// 使用できます。
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRLは指定されたバイトからCRLを解析します。PEMエンコードされたCRLがDERエンコードされるべき場所に表示されることがよくありますが、この関数は前方にゴミがない限り、PEMエンコーディングを透過的に処理します。
@@ -467,18 +449,13 @@ type CertificateRequest struct {
 //   - ExtraExtensions
 //   - Attributes (非推奨)
 //
-<<<<<<< HEAD
-// privはCSRに署名するための秘密鍵であり、対応する公開鍵はCSRに含まれます。privはcrypto.Signerを実装しており、そのPublic()メソッドは*rsa.PublicKeyまたは*ecdsa.PublicKeyまたはed25519.PublicKeyを返さなければなりません。(*rsa.PrivateKey、*ecdsa.PrivateKey、またはed25519.PrivateKeyもこれを満たします。)
-// 返されるスライスはDERエンコードされた証明書リクエストです。
-=======
-// priv is the private key to sign the CSR with, and the corresponding public
-// key will be included in the CSR. It must implement crypto.Signer or
-// crypto.MessageSigner and its Public() method must return a *rsa.PublicKey or
-// a *ecdsa.PublicKey or a ed25519.PublicKey. (A *rsa.PrivateKey,
-// *ecdsa.PrivateKey or ed25519.PrivateKey satisfies this.)
+// privはCSRの署名に使用する秘密鍵であり、対応する公開鍵が
+// CSRに含まれます。crypto.Signerまたはcrypto.MessageSignerを実装し、
+// そのPublic()メソッドは*rsa.PublicKey、*ecdsa.PublicKey、またはed25519.PublicKeyを
+// 返す必要があります。（*rsa.PrivateKey、*ecdsa.PrivateKey、またはed25519.PrivateKeyは
+// これを満たします。）
 //
-// The returned slice is the certificate request in DER encoding.
->>>>>>> upstream/release-branch.go1.25
+// 返されるスライスはDERエンコーディングされた証明書リクエストです。
 func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv any) (csr []byte, err error)
 
 // ParseCertificateRequestは与えられたASN.1 DERデータから単一の証明書リクエストを解析します。
@@ -571,13 +548,8 @@ type RevocationList struct {
 
 // CreateRevocationListは、テンプレートに基づいてRFC 5280に準拠した新しいX.509 v2証明書失効リストを作成します。
 //
-<<<<<<< HEAD
-// CRLは、privによって署名されます。これは、発行者証明書の公開キーに関連付けられた秘密キーである必要があります。
-=======
-// The CRL is signed by priv which should be a crypto.Signer or
-// crypto.MessageSigner associated with the public key in the issuer
-// certificate.
->>>>>>> upstream/release-branch.go1.25
+// CRLはprivによって署名されます。privは発行者証明書内の公開鍵に
+// 関連付けられたcrypto.Signerまたはcrypto.MessageSignerである必要があります。
 //
 // 発行者はnilであってはならず、CRL発行者として使用するには [KeyUsage] でcrlSignビットを設定する必要があります。
 //
