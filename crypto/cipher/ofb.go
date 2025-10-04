@@ -6,18 +6,11 @@
 
 package cipher
 
-<<<<<<< HEAD
-// NewOFBは、ブロック暗号bを使用して暗号化または復号化する [Stream] を返します。
+// NewOFBは、ブロック暗号bを出力フィードバックモードで使用して暗号化または復号化する [Stream] を返します。
 // 初期化ベクトルivの長さは、bのブロックサイズと等しくなければなりません。
-=======
-// NewOFB returns a [Stream] that encrypts or decrypts using the block cipher b
-// in output feedback mode. The initialization vector iv's length must be equal
-// to b's block size.
 //
-// Deprecated: OFB mode is not authenticated, which generally enables active
-// attacks to manipulate and recover the plaintext. It is recommended that
-// applications use [AEAD] modes instead. The standard library implementation of
-// OFB is also unoptimized and not validated as part of the FIPS 140-3 module.
-// If an unauthenticated [Stream] mode is required, use [NewCTR] instead.
->>>>>>> upstream/release-branch.go1.25
+// Deprecated: OFBモードは認証されておらず、一般的に平文を操作して復元するアクティブ攻撃を可能にします。
+// アプリケーションでは代わりに [AEAD] モードを使用することを推奨します。OFBの標準ライブラリ実装は
+// 最適化されておらず、FIPS 140-3モジュールの一部として検証されていません。
+// 認証されていない [Stream] モードが必要な場合は、代わりに [NewCTR] を使用してください。
 func NewOFB(b Block, iv []byte) Stream
