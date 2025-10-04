@@ -1623,15 +1623,6 @@ const (
 	OpLOONG64XORconst
 	OpLOONG64NOR
 	OpLOONG64NORconst
-<<<<<<< HEAD
-	OpLOONG64NEGV
-	OpLOONG64NEGF
-	OpLOONG64NEGD
-	OpLOONG64SQRTD
-	OpLOONG64SQRTF
-	OpLOONG64MASKEQZ
-	OpLOONG64MASKNEZ
-=======
 	OpLOONG64ANDN
 	OpLOONG64ORN
 	OpLOONG64FMADDF
@@ -1650,7 +1641,6 @@ const (
 	OpLOONG64MASKNEZ
 	OpLOONG64FCOPYSGD
 	OpLOONG64SLL
->>>>>>> upstream/release-branch.go1.25
 	OpLOONG64SLLV
 	OpLOONG64SLLconst
 	OpLOONG64SLLVconst
@@ -3184,8 +3174,6 @@ const (
 	OpAtomicAnd32
 	OpAtomicOr64
 	OpAtomicOr32
-<<<<<<< HEAD
-=======
 	OpAtomicAnd64value
 	OpAtomicAnd32value
 	OpAtomicAnd8value
@@ -3195,7 +3183,6 @@ const (
 	OpAtomicStore8Variant
 	OpAtomicStore32Variant
 	OpAtomicStore64Variant
->>>>>>> upstream/release-branch.go1.25
 	OpAtomicAdd32Variant
 	OpAtomicAdd64Variant
 	OpAtomicExchange8Variant

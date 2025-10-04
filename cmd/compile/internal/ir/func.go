@@ -231,12 +231,9 @@ func (f *Func) SetIsPackageInit(b bool)
 
 func (f *Func) SetWBPos(pos src.XPos)
 
-<<<<<<< HEAD
-=======
 // IsClosure reports whether f is a function literal that captures at least one value.
 func (f *Func) IsClosure() bool
 
->>>>>>> upstream/release-branch.go1.25
 // FuncName returns the name (without the package) of the function f.
 func FuncName(f *Func) string
 

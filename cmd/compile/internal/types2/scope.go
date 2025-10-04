@@ -64,36 +64,6 @@ func (s *Scope) Insert(obj Object) Object
 // will be set to s after resolve is called.
 func (s *Scope) InsertLazy(name string, resolve func() Object) bool
 
-<<<<<<< HEAD
-// Squash merges s with its parent scope p by adding all
-// objects of s to p, adding all children of s to the
-// children of p, and removing s from p's children.
-// The function f is called for each object obj in s which
-// has an object alt in p. s should be discarded after
-// having been squashed.
-func (s *Scope) Squash(err func(obj, alt Object))
-
-// Pos and End describe the scope's source code extent [pos, end).
-// The results are guaranteed to be valid only if the type-checked
-// AST has complete position information. The extent is undefined
-// for Universe and package scopes.
-func (s *Scope) Pos() syntax.Pos
-func (s *Scope) End() syntax.Pos
-
-// Contains reports whether pos is within the scope's extent.
-// The result is guaranteed to be valid only if the type-checked
-// AST has complete position information.
-func (s *Scope) Contains(pos syntax.Pos) bool
-
-// Innermost returns the innermost (child) scope containing
-// pos. If pos is not within any scope, the result is nil.
-// The result is also nil for the Universe scope.
-// The result is guaranteed to be valid only if the type-checked
-// AST has complete position information.
-func (s *Scope) Innermost(pos syntax.Pos) *Scope
-
-=======
->>>>>>> upstream/release-branch.go1.25
 // WriteTo writes a string representation of the scope to w,
 // with the scope elements sorted by name.
 // The level of indentation is controlled by n >= 0, with
