@@ -84,17 +84,10 @@ func Write(w io.Writer, order ByteOrder, data any) error
 // bufが小さすぎる場合はエラーを返し、それ以外の場合はbufに書き込まれたバイト数を返します。
 func Encode(buf []byte, order ByteOrder, data any) (int, error)
 
-<<<<<<< HEAD
-// Appendは、データのバイナリ表現をbufに追加します。
+// Appendは、dataのバイナリ表現をbufに追加します。
 // bufはnilでも構いません。その場合、新しいバッファが割り当てられます。
-// どのようなデータが受け入れられるかについては [Write] を参照してください。
-// データを含む（可能性のある拡張された）バッファまたはエラーを返します。
-=======
-// Append appends the binary representation of data to buf.
-// buf may be nil, in which case a new buffer will be allocated.
-// See [Write] on which data are acceptable.
-// It returns the (possibly extended) buffer containing data or an error.
->>>>>>> upstream/release-branch.go1.25
+// どのようなdataが受け入れられるかについては、[Write] を参照してください。
+// dataを含む（場合によっては拡張された）バッファまたはエラーを返します。
 func Append(buf []byte, order ByteOrder, data any) ([]byte, error)
 
 // Sizeは、値vをエンコードするために [Write] が生成するバイト数を返します。
