@@ -7,46 +7,36 @@
 
 package types
 
-<<<<<<< HEAD
-// Aliasは、エイリアス型を表します。
-// エイリアス型が作成されるかどうかは、
-// GODEBUG環境変数のgotypesalias設定によって制御されます。
-// gotypesalias=1の場合、エイリアス宣言はエイリアス型を生成します。
-// それ以外の場合、エイリアス情報は型名にのみ存在し、
-// 実際の（エイリアスされた）型を直接指します。
-=======
-// An Alias represents an alias type.
+// Aliasはエイリアス型を表します。
 //
-// Alias types are created by alias declarations such as:
+// エイリアス型は次のようなエイリアス宣言によって作成されます：
 //
 //	type A = int
 //
-// The type on the right-hand side of the declaration can be accessed
-// using [Alias.Rhs]. This type may itself be an alias.
-// Call [Unalias] to obtain the first non-alias type in a chain of
-// alias type declarations.
+// 宣言の右辺の型は [Alias.Rhs] を使用してアクセスできます。
+// この型自体もエイリアスである可能性があります。
+// エイリアス型宣言のチェーンで最初の非エイリアス型を取得するには、
+// [Unalias]を呼び出してください。
 //
-// Like a defined ([Named]) type, an alias type has a name.
-// Use the [Alias.Obj] method to access its [TypeName] object.
+// 定義された（[Named]）型と同様に、エイリアス型には名前があります。
+// その[TypeName]オブジェクトにアクセスするには [Alias.Obj] メソッドを使用してください。
 //
-// Historically, Alias types were not materialized so that, in the example
-// above, A's type was represented by a Basic (int), not an Alias
-// whose [Alias.Rhs] is int. But Go 1.24 allows you to declare an
-// alias type with type parameters or arguments:
+// 歴史的に、Alias型は実体化されていませんでした。そのため、上記の例では、
+// Aの型は [Alias.Rhs] がintであるAliasではなく、Basic（int）によって表現されていました。
+// しかし、Go 1.24では型パラメータや引数を持つエイリアス型を宣言できるようになりました：
 //
 //	type Set[K comparable] = map[K]bool
 //	s := make(Set[String])
 //
-// and this requires that Alias types be materialized. Use the
-// [Alias.TypeParams] and [Alias.TypeArgs] methods to access them.
+// これによりAlias型を実体化する必要があります。それらにアクセスするには
+// [Alias.TypeParams] と [Alias.TypeArgs] メソッドを使用してください。
 //
-// To ease the transition, the Alias type was introduced in go1.22,
-// but the type-checker would not construct values of this type unless
-// the GODEBUG=gotypesalias=1 environment variable was provided.
-// Starting in go1.23, this variable is enabled by default.
-// This setting also causes the predeclared type "any" to be
-// represented as an Alias, not a bare [Interface].
->>>>>>> upstream/release-branch.go1.25
+// 移行を容易にするため、Alias型はgo1.22で導入されましたが、
+// GODEBUG=gotypesalias=1環境変数が提供されない限り、
+// 型チェッカーはこの型の値を構築しませんでした。
+// go1.23以降、この変数はデフォルトで有効になっています。
+// この設定により、事前宣言された型「any」も
+// 生の [Interface] ではなくAliasとして表現されます。
 type Alias struct {
 	obj     *TypeName
 	orig    *Alias

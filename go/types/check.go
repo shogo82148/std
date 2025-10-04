@@ -58,14 +58,9 @@ type Checker struct {
 	// 現在のオブジェクトが型チェックされる環境（特定のオブジェクトの型チェックの間のみ有効）
 	environment
 
-<<<<<<< HEAD
-	// デバッグ中
-	indent int
-=======
 	// debugging
 	posStack []positioner
 	indent   int
->>>>>>> upstream/release-branch.go1.25
 }
 
 // NewCheckerは指定されたパッケージに対して新しい [Checker] インスタンスを返します。

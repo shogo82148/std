@@ -9,71 +9,55 @@
 
 package types
 
-<<<<<<< HEAD
-// LookupFieldOrMethodは、与えられたパッケージと名前でTというフィールドまたはメソッドを検索し、対応する*Varまたは*Func、インデックスのシーケンス、そしてパスにおいてポインタ間接参照があったかどうかを示すブール値を返します。addressableが設定されている場合、Tはアドレス可能な変数の型です（メソッドの検索にのみ関係します）。Tはnilであってはなりません。
-// 最後のインデックスエントリは、エントリが見つかった（埋め込まれた可能性のある）型のフィールドまたはメソッドのインデックスであり、次のいずれかです：
-=======
-// LookupSelection selects the field or method whose ID is Id(pkg,
-// name), on a value of type T. If addressable is set, T is the type
-// of an addressable variable (this matters only for method lookups).
-// T must not be nil.
+// LookupSelectionは、型Tの値に対して、ID Id(pkg, name)を持つフィールドまたはメソッドを選択します。
+// addressableが設定されている場合、Tはアドレス可能な変数の型です（これはメソッド検索の場合のみ重要です）。
+// Tはnilであってはなりません。
 //
-// If the selection is valid:
+// 選択が有効な場合：
 //
-//   - [Selection.Obj] returns the field ([Var]) or method ([Func]);
-//   - [Selection.Indirect] reports whether there were any pointer
-//     indirections on the path to the field or method.
-//   - [Selection.Index] returns the index sequence, defined below.
+//   - [Selection.Obj]はフィールド（[Var]）またはメソッド（[Func]）を返します；
+//   - [Selection.Indirect]は、フィールドまたはメソッドへのパスにポインタ間接参照があったかどうかを報告します。
+//   - [Selection.Index]は、以下で定義されるインデックスシーケンスを返します。
 //
-// The last index entry is the field or method index in the (possibly
-// embedded) type where the entry was found, either:
+// 最後のインデックスエントリは、エントリが見つかった（おそらく埋め込まれた）型における
+// フィールドまたはメソッドのインデックスです：
 //
-//  1. the list of declared methods of a named type; or
-//  2. the list of all methods (method set) of an interface type; or
-//  3. the list of fields of a struct type.
+//  1. 名前付き型の宣言されたメソッドのリスト；または
+//  2. インターフェース型のすべてのメソッド（メソッドセット）のリスト；または
+//  3. 構造体型のフィールドのリスト。
 //
-// The earlier index entries are the indices of the embedded struct
-// fields traversed to get to the found entry, starting at depth 0.
+// より早いインデックスエントリは、見つかったエントリに到達するためにトラバースされた
+// 埋め込まれた構造体フィールドのインデックスであり、深度0から開始します。
 //
-// See also [LookupFieldOrMethod], which returns the components separately.
+// また、コンポーネントを別々に返す [LookupFieldOrMethod] も参照してください。
 func LookupSelection(T Type, addressable bool, pkg *Package, name string) (Selection, bool)
 
-// LookupFieldOrMethod looks up a field or method with given package and name
-// in T and returns the corresponding *Var or *Func, an index sequence, and a
-// bool indicating if there were any pointer indirections on the path to the
-// field or method. If addressable is set, T is the type of an addressable
-// variable (only matters for method lookups). T must not be nil.
->>>>>>> upstream/release-branch.go1.25
+// LookupFieldOrMethodは、T内で指定されたパッケージと名前を持つフィールドまたはメソッドを検索し、
+// 対応する*Varまたは*Func、インデックスシーケンス、およびフィールドまたはメソッドへのパスに
+// ポインタ間接参照があったかどうかを示すboolを返します。addressableが設定されている場合、
+// Tはアドレス可能な変数の型です（メソッド検索の場合のみ重要です）。Tはnilであってはなりません。
 //
-//  1. 名前付き型の宣言されたメソッドのリスト
-//  2. インターフェース型のすべてのメソッド（メソッドセット）のリスト
-//  3. 構造体型のフィールドのリスト
+// 最後のインデックスエントリは、エントリが見つかった（おそらく埋め込まれた）型における
+// フィールドまたはメソッドのインデックスです：
 //
-<<<<<<< HEAD
-// より早いインデックスエントリは、見つかったエントリに到達するためにトラバースされた埋め込まれた構造体フィールドのインデックスであり、depth 0から開始します。
-// エントリが見つからない場合、nilオブジェクトが返されます。この場合、返されるインデックスとindirectの値の意味は次のとおりです：
-//   - もしindex != nilなら、インデックスシーケンスは曖昧なエントリを指します（同じ名前が同じ埋め込みレベルで複数回現れました）。
-//   - indirectが設定されている場合、ポインタレシーバータイプを持つメソッドが見つかりましたが、実際のレシーバータイプからメソッドの形式的なレシーバーベースタイプへのパスにポインタがなく、レシーバーがアドレス可能ではありませんでした。
-=======
-//  1. the list of declared methods of a named type; or
-//  2. the list of all methods (method set) of an interface type; or
-//  3. the list of fields of a struct type.
+//  1. 名前付き型の宣言されたメソッドのリスト；または
+//  2. インターフェース型のすべてのメソッド（メソッドセット）のリスト；または
+//  3. 構造体型のフィールドのリスト。
 //
-// The earlier index entries are the indices of the embedded struct fields
-// traversed to get to the found entry, starting at depth 0.
+// より早いインデックスエントリは、見つかったエントリに到達するためにトラバースされた
+// 埋め込まれた構造体フィールドのインデックスであり、深度0から開始します。
 //
-// If no entry is found, a nil object is returned. In this case, the returned
-// index and indirect values have the following meaning:
+// エントリが見つからない場合、nilオブジェクトが返されます。この場合、返される
+// インデックスとindirectの値は以下の意味を持ちます：
 //
-//   - If index != nil, the index sequence points to an ambiguous entry
-//     (the same name appeared more than once at the same embedding level).
+//   - index != nilの場合、インデックスシーケンスは曖昧なエントリを指します
+//     （同じ名前が同じ埋め込みレベルで複数回現れた場合）。
 //
-//   - If indirect is set, a method with a pointer receiver type was found
-//     but there was no pointer on the path from the actual receiver type to
-//     the method's formal receiver base type, nor was the receiver addressable.
+//   - indirectが設定されている場合、ポインタレシーバー型を持つメソッドが見つかりましたが、
+//     実際のレシーバー型からメソッドの形式的なレシーバーベース型へのパスにポインタがなく、
+//     レシーバーもアドレス可能ではありませんでした。
 //
-// See also [LookupSelection], which returns the result as a [Selection].
->>>>>>> upstream/release-branch.go1.25
+// 結果を[Selection]として返す [LookupSelection] も参照してください。
 func LookupFieldOrMethod(T Type, addressable bool, pkg *Package, name string) (obj Object, index []int, indirect bool)
 
 // MissingMethodは、VがTを実装している場合、(nil, false)を返します。そうでない場合、Tに必要な欠落しているメソッドと、欠落しているか、または単に間違った型（ポインタレシーバーまたは間違ったシグネチャ）を返します。

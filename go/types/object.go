@@ -12,20 +12,15 @@ import (
 	"github.com/shogo82148/std/go/token"
 )
 
-<<<<<<< HEAD
-// Objectは、パッケージ、定数、型、変数、関数（メソッドを含む）、またはラベルなどの名前付きの言語エンティティを表します。
-// すべてのオブジェクトはObjectインターフェースを実装しています。
-=======
-// An Object is a named language entity.
-// An Object may be a constant ([Const]), type name ([TypeName]),
-// variable or struct field ([Var]), function or method ([Func]),
-// imported package ([PkgName]), label ([Label]),
-// built-in function ([Builtin]),
-// or the predeclared identifier 'nil' ([Nil]).
+// Objectは名前付き言語エンティティです。
+// Objectは定数（[Const]）、型名（[TypeName]）、
+// 変数または構造体フィールド（[Var]）、関数またはメソッド（[Func]）、
+// インポートされたパッケージ（[PkgName]）、ラベル（[Label]）、
+// 組み込み関数（[Builtin]）、
+// または事前宣言された識別子'nil'（[Nil]）である可能性があります。
 //
-// The environment, which is structured as a tree of Scopes,
-// maps each name to the unique Object that it denotes.
->>>>>>> upstream/release-branch.go1.25
+// スコープのツリーとして構造化された環境は、
+// 各名前をそれが示す一意のObjectにマッピングします。
 type Object interface {
 	Parent() *Scope
 	Pos() token.Pos
@@ -88,15 +83,11 @@ func NewConst(pos token.Pos, pkg *Package, name string, typ Type, val constant.V
 // Valは定数の値を返します。
 func (obj *Const) Val() constant.Value
 
-<<<<<<< HEAD
-// TypeNameは(定義済みまたはエイリアスの)型の名前を表します。
-=======
-// A TypeName is an [Object] that represents a type with a name:
-// a defined type ([Named]),
-// an alias type ([Alias]),
-// a type parameter ([TypeParam]),
-// or a predeclared type such as int or error.
->>>>>>> upstream/release-branch.go1.25
+// TypeNameは名前を持つ型を表す [Object] です：
+// 定義済み型（[Named]）、
+// エイリアス型（[Alias]）、
+// 型パラメータ（[TypeParam]）、
+// またはintやerrorのような事前宣言された型。
 type TypeName struct {
 	object
 }
@@ -119,14 +110,7 @@ type Var struct {
 	embedded bool
 }
 
-<<<<<<< HEAD
-// NewVarは新しい変数を返します。
-// 引数はすべてのオブジェクトで見つかった属性を設定します。
-func NewVar(pos token.Pos, pkg *Package, name string, typ Type) *Var
-
-// NewParam は関数のパラメータを表す新しい変数を返します。
-=======
-// A VarKind discriminates the various kinds of variables.
+// VarKindは様々な種類の変数を区別します。
 type VarKind uint8
 
 const (
@@ -141,25 +125,24 @@ const (
 
 func (kind VarKind) String() string
 
-// Kind reports what kind of variable v is.
+// Kindは変数vがどのような種類かを報告します。
 func (v *Var) Kind() VarKind
 
-// SetKind sets the kind of the variable.
-// It should be used only immediately after [NewVar] or [NewParam].
+// SetKindは変数の種類を設定します。
+// [NewVar]または[NewParam]の直後にのみ使用すべきです。
 func (v *Var) SetKind(kind VarKind)
 
-// NewVar returns a new variable.
-// The arguments set the attributes found with all Objects.
+// NewVarは新しい変数を返します。
+// 引数は、すべてのObjectで見つかる属性を設定します。
 //
-// The caller must subsequently call [Var.SetKind]
-// if the desired Var is not of kind [PackageVar].
+// 呼び出し元は、希望するVarが[PackageVar]の種類でない場合、
+// その後に[Var.SetKind]を呼び出さなければなりません。
 func NewVar(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
-// NewParam returns a new variable representing a function parameter.
+// NewParamは関数パラメータを表す新しい変数を返します。
 //
-// The caller must subsequently call [Var.SetKind] if the desired Var
-// is not of kind [ParamVar]: for example, [RecvVar] or [ResultVar].
->>>>>>> upstream/release-branch.go1.25
+// 呼び出し元は、希望するVarが[ParamVar]の種類でない場合、
+// その後に[Var.SetKind]を呼び出さなければなりません。例：[RecvVar]または[ResultVar]。
 func NewParam(pos token.Pos, pkg *Package, name string, typ Type) *Var
 
 // NewFieldは、構造体のフィールドを表す新しい変数を返します。
@@ -210,10 +193,10 @@ func (obj *Func) Scope() *Scope
 // インスタンス化中に作成された合成関数（具名型のメソッドや型引数に依存するインターフェースのメソッドなど）の場合、これはジェネリック（インスタンス化されていない）型の対応するFuncになります。その他のすべてのFuncに対して、Originはレシーバーを返します。
 func (obj *Func) Origin() *Func
 
-// Pkg returns the package to which the function belongs.
+// Pkgは関数が属するパッケージを返します。
 //
-// The result is nil for methods of types in the Universe scope,
-// like method Error of the error built-in interface type.
+// 結果は、error組み込みインターフェース型のErrorメソッドのような、
+// Universeスコープの型のメソッドに対してはnilです。
 func (obj *Func) Pkg() *Package
 
 // Labelは宣言されたラベルを表します。
