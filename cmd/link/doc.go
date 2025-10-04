@@ -66,13 +66,9 @@
 		システムツールがヘッダーの存在を前提としているため、
 		動的ライブラリへの参照がなくてもデフォルトでオンになっています。
 	-dumpdep
-<<<<<<< HEAD
 		シンボル依存関係グラフをダンプします。
-=======
-		Dump symbol dependency graph.
 	-e
-		No limit on number of errors reported.
->>>>>>> upstream/release-branch.go1.25
+		報告されるエラー数に制限はありません。
 	-extar ar
 		外部アーカイブプログラムを設定します（デフォルトは「ar」）。
 		-buildmode=c-archiveにのみ使用されます。
@@ -81,13 +77,9 @@
 	-extldflags flags
 		外部リンカに渡すスペース区切りのフラグを設定します。
 	-f
-<<<<<<< HEAD
 		リンクされたアーカイブのバージョンの不一致を無視します。
-=======
-		Ignore version mismatch in the linked archives.
 	-funcalign N
-		Set function alignment to N bytes
->>>>>>> upstream/release-branch.go1.25
+        関数のアラインメントをNバイトに設定します。
 	-g
 		Goパッケージデータのチェックを無効にします。
 	-importcfg file
@@ -124,12 +116,8 @@
 	-race
 		レース検出ライブラリとリンクします。
 	-s
-<<<<<<< HEAD
 		シンボルテーブルとデバッグ情報を省略します。
-=======
-		Omit the symbol table and debug information.
-		Implies the -w flag, which can be negated with -w=0.
->>>>>>> upstream/release-branch.go1.25
+        -wフラグを暗黙的に指定します。これは-w=0で無効にできます。
 	-tmpdir dir
 		一時ファイルをdirに書き込みます。
 		一時ファイルは外部リンキングモードでのみ使用されます。
