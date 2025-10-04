@@ -40,20 +40,3 @@ func DecryptPKCS1v15(random io.Reader, priv *PrivateKey, ciphertext []byte) ([]b
 //   - [1] RFC 3218, Preventing the Million Message Attack on CMS,
 //     https://www.rfc-editor.org/rfc/rfc3218.html
 func DecryptPKCS1v15SessionKey(random io.Reader, priv *PrivateKey, ciphertext []byte, key []byte) error
-<<<<<<< HEAD
-
-// SignPKCS1v15は、RSASSA-PKCS1-V1_5-SIGNを使用して、ハッシュされたデータの署名を計算します。ハッシュされたデータは、与えられたハッシュ関数を使用して入力メッセージをハッシュした結果でなければなりません。ハッシュがゼロの場合は、ハッシュされたデータが直接署名されます。これは相互運用性のためにのみ推奨されません。
-// randomパラメータはレガシーであり、無視されることがあります。nilにすることもできます。
-// この関数は決定的です。したがって、可能なメッセージのセットが小さい場合、攻撃者はメッセージから署名へのマップを作成し、署名されたメッセージを特定する可能性があります。いつものように、署名は真正さを提供し、機密性は提供しません。
-func SignPKCS1v15(random io.Reader, priv *PrivateKey, hash crypto.Hash, hashed []byte) ([]byte, error)
-
-// VerifyPKCS1v15は、RSA PKCS #1 v1.5の署名を検証します。
-// hashedは、入力メッセージを指定されたハッシュ関数でハッシュ化した結果で、
-// sigは署名です。有効な署名の場合、nilエラーが返されます。
-// hashがゼロであれば、hashedは直接使用されます。
-// これは相互運用性以外の用途には適していません。
-//
-// 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
-func VerifyPKCS1v15(pub *PublicKey, hash crypto.Hash, hashed []byte, sig []byte) error
-=======
->>>>>>> upstream/release-branch.go1.25

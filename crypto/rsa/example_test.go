@@ -19,11 +19,6 @@ import (
 	"github.com/shogo82148/std/strings"
 )
 
-<<<<<<< HEAD
-// RSAは非常に限られた量のデータしか暗号化できません。したがって、合理的な量のデータを暗号化するためには、一般的にハイブリッド方式が使用されます。具体的には、RSAはAES-GCMのような対称プリミティブの鍵を暗号化するために使用されます。
-// 暗号化する前に、データは既知の構造に埋め込むことで「パディング」されます。これにはいくつかの理由がありますが、最も明らかな理由は、指数関数がモジュラスよりも大きい値になるようにするためです（そうしないと平方根で復号化できてしまいます）。
-// これらの設計では、PKCS #1 v1.5を使用する場合、受信したRSAメッセージが形式に適合しているか（つまり、復号化の結果が正しくパディングされたメッセージか）を漏らさないようにすることが重要です。そのためにDecryptPKCS1v15SessionKeyはこの状況に対応しており、復号化された対称鍵が適切な形式であれば、ランダムなキーを含むバッファ上で一定時間内に対称鍵をコピーします。したがって、RSAの結果が形式に適合していない場合は、実装が一定時間内にランダムなキーを使用します。
-=======
 func ExampleGenerateKey() {
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
@@ -44,8 +39,8 @@ func ExampleGenerateKey() {
 }
 
 func ExampleGenerateKey_testKey() {
-	// This is an insecure, test-only key from RFC 9500, Section 2.1.
-	// It can be used in tests to avoid slow key generation.
+	// これはRFC 9500, Section 2.1の安全でないテスト専用キーです。
+	// 遅いキー生成を避けるためにテストで使用できます。
 	block, _ := pem.Decode([]byte(strings.ReplaceAll(
 		`-----BEGIN RSA TESTING KEY-----
 MIIEowIBAAKCAQEAsPnoGUOnrpiSqt4XynxA+HRP7S+BSObI6qJ7fQAVSPtRkqso
@@ -98,7 +93,6 @@ UjmopwKBgAqB2KYYMUqAOvYcBnEfLDmyZv9BTVNHbR2lKkMYqv5LlvDaBxVfilE0
 // the decrypted, symmetric key (if well-formed) in constant-time over
 // a buffer that contains a random key. Thus, if the RSA result isn't
 // well-formed, the implementation uses a random key in constant time.
->>>>>>> upstream/release-branch.go1.25
 func ExampleDecryptPKCS1v15SessionKey() {
 
 	// ハイブリッド方式では、少なくとも16バイトの対称鍵を使用する必要があります。ここでは、RSA復号が正しく形成されていない場合に使用されるランダムな鍵を読み取ります。
