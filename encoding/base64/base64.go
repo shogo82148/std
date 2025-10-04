@@ -86,39 +86,23 @@ type CorruptInputError int64
 
 func (e CorruptInputError) Error() string
 
-<<<<<<< HEAD
 // AppendDecodeは、base64でデコードされたsrcをdstに追加し、
 // 拡張されたバッファを返します。
 // 入力が不正な形式の場合、部分的にデコードされたsrcとエラーを返します。
+// 改行文字（\rと\n）は無視されます。
 func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
 
-// DecodeStringは、base64文字列sによって表されるバイト列を返します。
+// DecodeStringは、base64文字列sで表されるバイトを返します。
+// 入力が不正な形式の場合、部分的にデコードされたデータと
+// [CorruptInputError] を返します。改行文字（\rと\n）は無視されます。
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
 
-// Decodeは、エンコーディングencを使用してsrcをデコードし、
-// [Encoding.DecodedLen](len(src))バイトをdstに書き込みます。
-// srcに無効なbase64データが含まれている場合、
-// 書き込まれたバイト数と [CorruptInputError] を返します。
-// 改行文字（\rおよび\n）は無視されます。
-=======
-// AppendDecode appends the base64 decoded src to dst
-// and returns the extended buffer.
-// If the input is malformed, it returns the partially decoded src and an error.
-// New line characters (\r and \n) are ignored.
-func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
-
-// DecodeString returns the bytes represented by the base64 string s.
-// If the input is malformed, it returns the partially decoded data and
-// [CorruptInputError]. New line characters (\r and \n) are ignored.
-func (enc *Encoding) DecodeString(s string) ([]byte, error)
-
-// Decode decodes src using the encoding enc. It writes at most
-// [Encoding.DecodedLen](len(src)) bytes to dst and returns the number of bytes
-// written. The caller must ensure that dst is large enough to hold all
-// the decoded data. If src contains invalid base64 data, it will return the
-// number of bytes successfully written and [CorruptInputError].
-// New line characters (\r and \n) are ignored.
->>>>>>> upstream/release-branch.go1.25
+// Decodeは、エンコーディングencを使用してsrcをデコードします。最大で
+// [Encoding.DecodedLen](len(src))バイトをdstに書き込み、書き込まれたバイト数を
+// 返します。呼び出し元は、dstがすべてのデコードされたデータを保持するのに
+// 十分な大きさであることを確認する必要があります。srcに無効なbase64データが
+// 含まれている場合、正常に書き込まれたバイト数と [CorruptInputError] を返します。
+// 改行文字（\rと\n）は無視されます。
 func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
 
 // NewDecoderは、新しいbase64ストリームデコーダーを構築します。
