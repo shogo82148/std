@@ -7,6 +7,7 @@ package maps_test
 import (
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/maps"
+	"github.com/shogo82148/std/slices"
 	"github.com/shogo82148/std/strings"
 )
 
@@ -133,8 +134,6 @@ func ExampleEqualFunc() {
 	// Output:
 	// true
 }
-<<<<<<< HEAD
-=======
 
 func ExampleAll() {
 	m1 := map[string]int{
@@ -192,4 +191,3 @@ func ExampleCollect() {
 	// Output:
 	// m1 is: map[0:zero 1:one 2:two 3:three]
 }
->>>>>>> upstream/release-branch.go1.25
