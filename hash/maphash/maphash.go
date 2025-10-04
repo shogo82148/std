@@ -2,37 +2,24 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-// maphashパッケージはバイト列上のハッシュ関数を提供します。
-// これらのハッシュ関数は、任意の文字列やバイト列を符号なし64ビット整数上の均一な分布にマッピングするために使用されることを意図しています。
-// ハッシュテーブルやデータ構造の異なるインスタンスごとに個別の [Seed] を使用する必要があります。
-=======
-// Package maphash provides hash functions on byte sequences and comparable values.
-// These hash functions are intended to be used to implement hash tables or
-// other data structures that need to map arbitrary strings or byte
-// sequences to a uniform distribution on unsigned 64-bit integers.
-// Each different instance of a hash table or data structure should use its own [Seed].
->>>>>>> upstream/release-branch.go1.25
+// Package maphashはバイトシーケンスと比較可能な値に対するハッシュ関数を提供します。
+// これらのハッシュ関数は、ハッシュテーブルや任意の文字列やバイト
+// シーケンスを符号なし64ビット整数の一様分布にマップする必要がある
+// 他のデータ構造を実装するために使用することを意図しています。
+// ハッシュテーブルやデータ構造の各異なるインスタンスは、独自の [Seed] を使用する必要があります。
 //
 // これらのハッシュ関数は、暗号的に安全ではありません。
 // (暗号的な使用には、crypto/sha256およびcrypto/sha512を参照してください。)
 package maphash
 
-<<<<<<< HEAD
-// Seedは [Hash] によって計算されるハッシュ関数を選択するランダムな値です。
-// もし2つのHashが同じSeedを使う場合、任意の入力に対して同じハッシュ値を計算します。
-// もし2つのHashが異なるSeedを使う場合、任意の入力に対して異なるハッシュ値を計算する可能性が非常に高いです。
-=======
 import (
 	"github.com/shogo82148/std/hash"
 )
 
-// A Seed is a random value that selects the specific hash function
-// computed by a [Hash]. If two Hashes use the same Seeds, they
-// will compute the same hash values for any given input.
-// If two Hashes use different Seeds, they are very likely to compute
-// distinct hash values for any given input.
->>>>>>> upstream/release-branch.go1.25
+// Seedは [Hash] によって計算される特定のハッシュ関数を選択するランダム値です。
+// 2つのHashが同じSeedを使用する場合、任意の入力に対して同じハッシュ値を
+// 計算します。2つのHashが異なるSeedを使用する場合、任意の入力に対して
+// 非常に異なるハッシュ値を計算する可能性が高いです。
 //
 // Seedは [MakeSeed] を呼び出すことで初期化する必要があります。
 // ゼロSeedは初期化されておらず、 [Hash] のSetSeedメソッドで使用することはできません。
@@ -64,16 +51,10 @@ func String(seed Seed, s string) uint64
 
 // Hashはバイトシーケンスのシード付きハッシュを計算します。
 //
-<<<<<<< HEAD
-// ゼロのHashは使用する準備ができた有効なHashです。
-// ゼロのHashは、Reset、Write、Seed、またはSum64メソッドの最初の呼び出し時に自動でランダムなシードを選択します。
-// シードに対する制御には、SetSeedを使用します。
-=======
-// The zero Hash is a valid Hash ready to use.
-// A zero Hash chooses a random seed for itself during
-// the first call to a Reset, Write, Seed, Clone, or Sum64 method.
-// For control over the seed, use SetSeed.
->>>>>>> upstream/release-branch.go1.25
+// ゼロ値のHashは使用可能な有効なHashです。
+// ゼロ値のHashは、Reset、Write、Seed、Clone、またはSum64メソッドの
+// 最初の呼び出し時に、自動的にランダムなシードを選択します。
+// シードを制御するには、SetSeedを使用してください。
 //
 // 計算されたハッシュ値は、初期シードとHashオブジェクトに提供されたバイトのシーケンスにのみ依存し、
 // バイトの提供方法には依存しません。たとえば、以下の3つのシーケンス
@@ -146,10 +127,10 @@ func (h *Hash) BlockSize() int
 // Clone implements [hash.Cloner].
 func (h *Hash) Clone() (hash.Cloner, error)
 
-// Comparable returns the hash of comparable value v with the given seed
-// such that Comparable(s, v1) == Comparable(s, v2) if v1 == v2.
-// If v != v, then the resulting hash is randomly distributed.
+// Comparableは、与えられたシードで比較可能な値vのハッシュを返します。
+// Comparable(s, v1) == Comparable(s, v2)となるのは、v1 == v2の場合です。
+// v != vの場合、結果のハッシュはランダムに分散されます。
 func Comparable[T comparable](seed Seed, v T) uint64
 
-// WriteComparable adds x to the data hashed by h.
+// WriteComparableは、hによってハッシュされるデータにxを追加します。
 func WriteComparable[T comparable](h *Hash, x T)
