@@ -28,11 +28,8 @@ const (
 	ERROR_CALL_NOT_IMPLEMENTED   syscall.Errno = 120
 	ERROR_INVALID_NAME           syscall.Errno = 123
 	ERROR_LOCK_FAILED            syscall.Errno = 167
-<<<<<<< HEAD
-=======
 	ERROR_IO_INCOMPLETE          syscall.Errno = 996
 	ERROR_NO_TOKEN               syscall.Errno = 1008
->>>>>>> upstream/release-branch.go1.25
 	ERROR_NO_UNICODE_TRANSLATION syscall.Errno = 1113
 	ERROR_CANT_ACCESS_FILE       syscall.Errno = 1920
 )

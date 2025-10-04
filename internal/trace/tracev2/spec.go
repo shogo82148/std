@@ -4,15 +4,10 @@
 
 package tracev2
 
-<<<<<<< HEAD:internal/trace/event/event.go
-// Type is the common in-memory representation of the low-leve
-type Type uint8
-=======
 // EventType indicates an event's type from which its arguments and semantics can be
 // derived. Its representation matches the wire format's representation of the event
 // types that precede all event data.
 type EventType uint8
->>>>>>> upstream/release-branch.go1.25:internal/trace/tracev2/spec.go
 
 // EventSpec is a specification for a trace event. It contains sufficient information
 // to perform basic parsing of any trace event for any version of Go.

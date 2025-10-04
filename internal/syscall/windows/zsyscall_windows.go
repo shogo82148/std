@@ -13,13 +13,10 @@ func DuplicateTokenEx(hExistingToken syscall.Token, dwDesiredAccess uint32, lpTo
 
 func ImpersonateSelf(impersonationlevel uint32) (err error)
 
-<<<<<<< HEAD
-=======
 func IsValidSid(sid *syscall.SID) (valid bool)
 
 func LogonUser(username *uint16, domain *uint16, password *uint16, logonType uint32, logonProvider uint32, token *syscall.Token) (err error)
 
->>>>>>> upstream/release-branch.go1.25
 func LookupPrivilegeValue(systemname *uint16, name *uint16, luid *LUID) (err error)
 
 func OpenSCManager(machineName *uint16, databaseName *uint16, access uint32) (handle syscall.Handle, err error)
