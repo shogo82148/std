@@ -143,11 +143,7 @@ type Symbol struct {
 	Section     SectionIndex
 	Value, Size uint64
 
-<<<<<<< HEAD
-	// VersionとLibraryは、動的シンボルテーブルにのみ存在します。
-=======
-	// These fields are present only for the dynamic symbol table.
->>>>>>> upstream/release-branch.go1.25
+	// これらのフィールドは動的シンボルテーブルでのみ存在します。
 	Version string
 	Library string
 }
@@ -214,37 +210,33 @@ type ImportedSymbol struct {
 // 弱いシンボルは返しません。
 func (f *File) ImportedSymbols() ([]ImportedSymbol, error)
 
-<<<<<<< HEAD
-// ImportedLibrariesは、動的リンク時にバイナリとリンクされることが期待される
-// バイナリfによって参照されるすべてのライブラリの名前を返します。
-=======
-// VersionIndex is the type of a [Symbol] version index.
+// VersionIndexは [Symbol] のバージョンインデックスの型です。
 type VersionIndex uint16
 
-// IsHidden reports whether the symbol is hidden within the version.
-// This means that the symbol can only be seen by specifying the exact version.
+// IsHiddenは、シンボルがバージョン内で隠されているかどうかを報告します。
+// これは、正確なバージョンを指定することによってのみシンボルが見えることを意味します。
 func (vi VersionIndex) IsHidden() bool
 
-// Index returns the version index.
-// If this is the value 0, it means that the symbol is local,
-// and is not visible externally.
-// If this is the value 1, it means that the symbol is in the base version,
-// and has no specific version; it may or may not match a
-// [DynamicVersion.Index] in the slice returned by [File.DynamicVersions].
-// Other values will match either [DynamicVersion.Index]
-// in the slice returned by [File.DynamicVersions],
-// or [DynamicVersionDep.Index] in the Needs field
-// of the elements of the slice returned by [File.DynamicVersionNeeds].
-// In general, a defined symbol will have an index referring
-// to DynamicVersions, and an undefined symbol will have an index
-// referring to some version in DynamicVersionNeeds.
+// Indexはバージョンインデックスを返します。
+// この値が0の場合、シンボルはローカルであり、
+// 外部から見えないことを意味します。
+// この値が1の場合、シンボルはベースバージョンにあり、
+// 特定のバージョンを持たないことを意味します。[File.DynamicVersions] によって返される
+// スライス内の [DynamicVersion.Index] と一致する場合もしないかもしれません。
+// その他の値は、[File.DynamicVersions] によって返される
+// スライス内の [DynamicVersion.Index]、
+// または [File.DynamicVersionNeeds] によって返される
+// スライスの要素の Needs フィールド内の [DynamicVersionDep.Index] のいずれかと一致します。
+// 一般的に、定義されたシンボルは DynamicVersions を参照するインデックスを持ち、
+// 未定義のシンボルは DynamicVersionNeeds 内のいずれかのバージョンを参照する
+// インデックスを持ちます。
 func (vi VersionIndex) Index() uint16
 
-// DynamicVersion is a version defined by a dynamic object.
-// This describes entries in the ELF SHT_GNU_verdef section.
-// We assume that the vd_version field is 1.
-// Note that the name of the version appears here;
-// it is not in the first Deps entry as it is in the ELF file.
+// DynamicVersionは動的オブジェクトによって定義されるバージョンです。
+// これはELF SHT_GNU_verdefセクションのエントリを記述します。
+// vd_versionフィールドが1であると仮定します。
+// バージョンの名前はここに表示されることに注意してください；
+// ELFファイルのように最初のDepsエントリにはありません。
 type DynamicVersion struct {
 	Name  string
 	Index uint16
@@ -252,32 +244,30 @@ type DynamicVersion struct {
 	Deps  []string
 }
 
-// DynamicVersionNeed describes a shared library needed by a dynamic object,
-// with a list of the versions needed from that shared library.
-// This describes entries in the ELF SHT_GNU_verneed section.
-// We assume that the vn_version field is 1.
+// DynamicVersionNeedは、動的オブジェクトによって必要とされる共有ライブラリを記述し、
+// その共有ライブラリから必要とされるバージョンのリストを含みます。
+// これはELF SHT_GNU_verneedセクションのエントリを記述します。
+// vn_versionフィールドが1であると仮定します。
 type DynamicVersionNeed struct {
 	Name  string
 	Needs []DynamicVersionDep
 }
 
-// DynamicVersionDep is a version needed from some shared library.
+// DynamicVersionDepは共有ライブラリから必要とされるバージョンです。
 type DynamicVersionDep struct {
 	Flags DynamicVersionFlag
 	Index uint16
 	Dep   string
 }
 
-// DynamicVersions returns version information for a dynamic object.
+// DynamicVersionsは動的オブジェクトのバージョン情報を返します。
 func (f *File) DynamicVersions() ([]DynamicVersion, error)
 
-// DynamicVersionNeeds returns version dependencies for a dynamic object.
+// DynamicVersionNeedsは動的オブジェクトのバージョン依存関係を返します。
 func (f *File) DynamicVersionNeeds() ([]DynamicVersionNeed, error)
 
-// ImportedLibraries returns the names of all libraries
-// referred to by the binary f that are expected to be
-// linked with the binary at dynamic link time.
->>>>>>> upstream/release-branch.go1.25
+// ImportedLibrariesは、バイナリfによって参照されるすべてのライブラリの名前を返します。
+// これらのライブラリは動的リンク時にバイナリとリンクされることが期待されます。
 func (f *File) ImportedLibraries() ([]string, error)
 
 // DynStringは、ファイルの動的セクションで指定されたタグにリストされている文字列を返します。
