@@ -47,10 +47,7 @@ var Categories = map[string]*RangeTable{
 	"Zs": Zs,
 }
 
-<<<<<<< HEAD
-// これらの変数は*RangeTable型です。
-=======
-// CategoryAliases maps category aliases to standard category names.
+// CategoryAliasesはカテゴリのエイリアスを標準的なカテゴリ名にマッピングします。
 var CategoryAliases = map[string]string{
 	"Cased_Letter":          "LC",
 	"Close_Punctuation":     "Pe",
@@ -97,7 +94,6 @@ var CategoryAliases = map[string]string{
 }
 
 // These variables have type *RangeTable.
->>>>>>> upstream/release-branch.go1.25
 var (
 	Cc     = _Cc
 	Cf     = _Cf
