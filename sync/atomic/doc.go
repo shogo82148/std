@@ -50,314 +50,144 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-<<<<<<< HEAD
-// SwapInt32はアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// SwapInt32は、*addrにnewをアトミックに格納し、以前の*addrの値を返します。
 // より使いやすく、エラーが発生しにくい [Int32.Swap] の使用を検討してください。
+//
+//go:noescape
 func SwapInt32(addr *int32, new int32) (old int32)
 
-// SwapInt64はアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
-// より使いやすく、エラーが発生しにくい [Int64.Swap] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func SwapInt64(addr *int64, new int64) (old int64)
-
-// SwapUint32はアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// SwapUint32は、*addrにnewをアトミックに格納し、以前の*addrの値を返します。
 // より使いやすく、エラーが発生しにくい [Uint32.Swap] の使用を検討してください。
+//
+//go:noescape
 func SwapUint32(addr *uint32, new uint32) (old uint32)
 
-// SwapUint64はアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
-// より使いやすく、エラーが発生しにくい [Uint64.Swap] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func SwapUint64(addr *uint64, new uint64) (old uint64)
-
-// SwapUintptrはアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
+// SwapUintptrは、*addrにnewをアトミックに格納し、以前の*addrの値を返します。
 // より使いやすく、エラーが発生しにくい [Uintptr.Swap] の使用を検討してください。
-=======
-// SwapInt32 atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Int32.Swap] instead.
 //
 //go:noescape
-func SwapInt32(addr *int32, new int32) (old int32)
-
-// SwapUint32 atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Uint32.Swap] instead.
-//
-//go:noescape
-func SwapUint32(addr *uint32, new uint32) (old uint32)
-
-// SwapUintptr atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Uintptr.Swap] instead.
-//
-//go:noescape
->>>>>>> upstream/release-branch.go1.25
 func SwapUintptr(addr *uintptr, new uintptr) (old uintptr)
 
 // SwapPointerはアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
 // より使いやすく、エラーが発生しにくい [Pointer.Swap] の使用を検討してください。
 func SwapPointer(addr *unsafe.Pointer, new unsafe.Pointer) (old unsafe.Pointer)
 
-<<<<<<< HEAD
 // CompareAndSwapInt32は、int32値のための比較交換操作を実行します。
 // より使いやすく、エラーが発生しにくい [Int32.CompareAndSwap] の使用を検討してください。
+//
+//go:noescape
 func CompareAndSwapInt32(addr *int32, old, new int32) (swapped bool)
-
-// CompareAndSwapInt64は、int64値のための比較交換操作を実行します。
-// より使いやすく、エラーが発生しにくい [Int64.CompareAndSwap] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func CompareAndSwapInt64(addr *int64, old, new int64) (swapped bool)
 
 // CompareAndSwapUint32は、uint32値のための比較交換操作を実行します。
 // より使いやすく、エラーが発生しにくい [Uint32.CompareAndSwap] の使用を検討してください。
+//
+//go:noescape
 func CompareAndSwapUint32(addr *uint32, old, new uint32) (swapped bool)
-
-// CompareAndSwapUint64は、uint64値のための比較交換操作を実行します。
-// より使いやすく、エラーが発生しにくい [Uint64.CompareAndSwap] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func CompareAndSwapUint64(addr *uint64, old, new uint64) (swapped bool)
 
 // CompareAndSwapUintptrは、uintptr値のための比較交換操作を実行します。
 // より使いやすく、エラーが発生しにくい [Uintptr.CompareAndSwap] の使用を検討してください。
-=======
-// CompareAndSwapInt32 executes the compare-and-swap operation for an int32 value.
-// Consider using the more ergonomic and less error-prone [Int32.CompareAndSwap] instead.
 //
 //go:noescape
-func CompareAndSwapInt32(addr *int32, old, new int32) (swapped bool)
-
-// CompareAndSwapUint32 executes the compare-and-swap operation for a uint32 value.
-// Consider using the more ergonomic and less error-prone [Uint32.CompareAndSwap] instead.
-//
-//go:noescape
-func CompareAndSwapUint32(addr *uint32, old, new uint32) (swapped bool)
-
-// CompareAndSwapUintptr executes the compare-and-swap operation for a uintptr value.
-// Consider using the more ergonomic and less error-prone [Uintptr.CompareAndSwap] instead.
-//
-//go:noescape
->>>>>>> upstream/release-branch.go1.25
 func CompareAndSwapUintptr(addr *uintptr, old, new uintptr) (swapped bool)
 
 // CompareAndSwapPointerは、unsafe.Pointer値のための比較交換操作を実行します。
 // より使いやすく、エラーが発生しにくい [Pointer.CompareAndSwap] の使用を検討してください。
 func CompareAndSwapPointer(addr *unsafe.Pointer, old, new unsafe.Pointer) (swapped bool)
 
-<<<<<<< HEAD
-// AddInt32はアトミックにdeltaを*addrに加え、新しい値を返します。
+// AddInt32は、deltaを*addrにアトミックに加算し、新しい値を返します。
 // より使いやすく、エラーが発生しにくい [Int32.Add] の使用を検討してください。
+//
+//go:noescape
 func AddInt32(addr *int32, delta int32) (new int32)
 
-// AddUint32はアトミックにdeltaを*addrに加え、新しい値を返します。
-// xから符号付き正の定数値cを減算するには、AddUint32(&x, ^uint32(c-1))を行います。
-// 特に、xをデクリメントするには、AddUint32(&x, ^uint32(0))を行います。
+// AddUint32は、deltaを*addrにアトミックに加算し、新しい値を返します。
+// xから符号付き正の定数値cを減算するには、AddUint32(&x, ^uint32(c-1))を使用します。
+// 特に、xをデクリメントするには、AddUint32(&x, ^uint32(0))を使用します。
 // より使いやすく、エラーが発生しにくい [Uint32.Add] の使用を検討してください。
+//
+//go:noescape
 func AddUint32(addr *uint32, delta uint32) (new uint32)
 
-// AddInt64はアトミックにdeltaを*addrに加え、新しい値を返します。
-// より使いやすく、エラーが発生しにくい [Int64.Add] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func AddInt64(addr *int64, delta int64) (new int64)
-
-// AddUint64はアトミックにdeltaを*addrに加え、新しい値を返します。
-// xから符号付き正の定数値cを減算するには、AddUint64(&x, ^uint64(c-1))を行います。
-// 特に、xをデクリメントするには、AddUint64(&x, ^uint64(0))を行います。
-// より使いやすく、エラーが発生しにくい [Uint64.Add] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func AddUint64(addr *uint64, delta uint64) (new uint64)
-
-// AddUintptrはアトミックにdeltaを*addrに加え、新しい値を返します。
+// AddUintptrは、deltaを*addrにアトミックに加算し、新しい値を返します。
 // より使いやすく、エラーが発生しにくい [Uintptr.Add] の使用を検討してください。
+//
+//go:noescape
 func AddUintptr(addr *uintptr, delta uintptr) (new uintptr)
 
-// AndInt32は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
-// 古い値を返します。
+// AndInt32は、指定されたマスクを使って*addr上でビット単位のAND操作をアトミックに実行し、古い値を返します。
 // より使いやすく、エラーが発生しにくい [Int32.And] の使用を検討してください。
+//
+//go:noescape
 func AndInt32(addr *int32, mask int32) (old int32)
 
-// AndUint32は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
-// 古い値を返します。
+// AndUint32は、指定されたマスクを使って*addr上でビット単位のAND操作をアトミックに実行し、古い値を返します。
 // より使いやすく、エラーが発生しにくい [Uint32.And] の使用を検討してください。
+//
+//go:noescape
 func AndUint32(addr *uint32, mask uint32) (old uint32)
 
-// AndInt64は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
-// 古い値を返します。
-// より使いやすく、エラーが発生しにくい [Int64.And] の使用を検討してください。
-func AndInt64(addr *int64, mask int64) (old int64)
-
-// AndUint64は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
-// 古い値を返します。
-// より使いやすく、エラーが発生しにくい [Uint64.And] の使用を検討してください。
-func AndUint64(addr *uint64, mask uint64) (old uint64)
-
-// AndUintptrは、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のAND操作をアトミックに実行し、
-// 古い値を返します。
+// AndUintptrは、指定されたマスクを使って*addr上でビット単位のAND操作をアトミックに実行し、古い値を返します。
 // より使いやすく、エラーが発生しにくい [Uintptr.And] の使用を検討してください。
-=======
-// AddInt32 atomically adds delta to *addr and returns the new value.
-// Consider using the more ergonomic and less error-prone [Int32.Add] instead.
 //
 //go:noescape
-func AddInt32(addr *int32, delta int32) (new int32)
-
-// AddUint32 atomically adds delta to *addr and returns the new value.
-// To subtract a signed positive constant value c from x, do AddUint32(&x, ^uint32(c-1)).
-// In particular, to decrement x, do AddUint32(&x, ^uint32(0)).
-// Consider using the more ergonomic and less error-prone [Uint32.Add] instead.
-//
-//go:noescape
-func AddUint32(addr *uint32, delta uint32) (new uint32)
-
-// AddUintptr atomically adds delta to *addr and returns the new value.
-// Consider using the more ergonomic and less error-prone [Uintptr.Add] instead.
-//
-//go:noescape
-func AddUintptr(addr *uintptr, delta uintptr) (new uintptr)
-
-// AndInt32 atomically performs a bitwise AND operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Int32.And] instead.
-//
-//go:noescape
-func AndInt32(addr *int32, mask int32) (old int32)
-
-// AndUint32 atomically performs a bitwise AND operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Uint32.And] instead.
-//
-//go:noescape
-func AndUint32(addr *uint32, mask uint32) (old uint32)
-
-// AndUintptr atomically performs a bitwise AND operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Uintptr.And] instead.
-//
-//go:noescape
->>>>>>> upstream/release-branch.go1.25
 func AndUintptr(addr *uintptr, mask uintptr) (old uintptr)
 
-// OrInt32 atomically performs a bitwise OR operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Int32.Or] instead.
+// OrInt32は、指定されたマスクを使って*addr上でビット単位のOR操作をアトミックに実行し、古い値を返します。
+// より使いやすく、エラーが発生しにくい [Int32.Or] の使用を検討してください。
 //
 //go:noescape
 func OrInt32(addr *int32, mask int32) (old int32)
 
-<<<<<<< HEAD
-// OrUint32は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のOR操作をアトミックに実行し、
-// 古い値を返します。
+// OrUint32は、指定されたマスクを使って*addr上でビット単位のOR操作をアトミックに実行し、古い値を返します。
 // より使いやすく、エラーが発生しにくい [Uint32.Or] の使用を検討してください。
+//
+//go:noescape
 func OrUint32(addr *uint32, mask uint32) (old uint32)
 
-// OrInt64は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のOR操作をアトミックに実行し、
-// 古い値を返します。
-// より使いやすく、エラーが発生しにくい [Int64.Or] の使用を検討してください。
-func OrInt64(addr *int64, mask int64) (old int64)
-
-// OrUint64は、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のOR操作をアトミックに実行し、
-// 古い値を返します。
-// より使いやすく、エラーが発生しにくい [Uint64.Or] の使用を検討してください。
-func OrUint64(addr *uint64, mask uint64) (old uint64)
-
-// OrUintptrは、提供されたマスクとしてビットマスクを使用して*addr上でビット単位のOR操作をアトミックに実行し、
-// 古い値を返します。
+// OrUintptrは、指定されたマスクを使って*addr上でビット単位のOR操作をアトミックに実行し、古い値を返します。
 // より使いやすく、エラーが発生しにくい [Uintptr.Or] の使用を検討してください。
+//
+//go:noescape
 func OrUintptr(addr *uintptr, mask uintptr) (old uintptr)
 
 // LoadInt32はアトミックに*addrをロードします。
 // より使いやすく、エラーが発生しにくい [Int32.Load] の使用を検討してください。
+//
+//go:noescape
 func LoadInt32(addr *int32) (val int32)
-
-// LoadInt64はアトミックに*addrをロードします。
-// より使いやすく、エラーが発生しにくい [Int64.Load] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func LoadInt64(addr *int64) (val int64)
 
 // LoadUint32はアトミックに*addrをロードします。
 // より使いやすく、エラーが発生しにくい [Uint32.Load] の使用を検討してください。
+//
+//go:noescape
 func LoadUint32(addr *uint32) (val uint32)
-
-// LoadUint64はアトミックに*addrをロードします。
-// より使いやすく、エラーが発生しにくい [Uint64.Load] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func LoadUint64(addr *uint64) (val uint64)
 
 // LoadUintptrはアトミックに*addrをロードします。
 // より使いやすく、エラーが発生しにくい [Uintptr.Load] の使用を検討してください。
-=======
-// OrUint32 atomically performs a bitwise OR operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Uint32.Or] instead.
 //
 //go:noescape
-func OrUint32(addr *uint32, mask uint32) (old uint32)
-
-// OrUintptr atomically performs a bitwise OR operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Uintptr.Or] instead.
-//
-//go:noescape
-func OrUintptr(addr *uintptr, mask uintptr) (old uintptr)
-
-// LoadInt32 atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Int32.Load] instead.
-//
-//go:noescape
-func LoadInt32(addr *int32) (val int32)
-
-// LoadUint32 atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Uint32.Load] instead.
-//
-//go:noescape
-func LoadUint32(addr *uint32) (val uint32)
-
-// LoadUintptr atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Uintptr.Load] instead.
-//
-//go:noescape
->>>>>>> upstream/release-branch.go1.25
 func LoadUintptr(addr *uintptr) (val uintptr)
 
 // LoadPointerはアトミックに*addrをロードします。
 // より使いやすく、エラーが発生しにくい [Pointer.Load] の使用を検討してください。
 func LoadPointer(addr *unsafe.Pointer) (val unsafe.Pointer)
 
-<<<<<<< HEAD
-// StoreInt32はアトミックにvalを*addrに格納します。
+// StoreInt32は、valを*addrにアトミックに格納します。
 // より使いやすく、エラーが発生しにくい [Int32.Store] の使用を検討してください。
+//
+//go:noescape
 func StoreInt32(addr *int32, val int32)
 
-// StoreInt64はアトミックにvalを*addrに格納します。
-// より使いやすく、エラーが発生しにくい [Int64.Store] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func StoreInt64(addr *int64, val int64)
-
-// StoreUint32はアトミックにvalを*addrに格納します。
+// StoreUint32は、valを*addrにアトミックに格納します。
 // より使いやすく、エラーが発生しにくい [Uint32.Store] の使用を検討してください。
+//
+//go:noescape
 func StoreUint32(addr *uint32, val uint32)
 
-// StoreUint64はアトミックにvalを*addrに格納します。
-// より使いやすく、エラーが発生しにくい [Uint64.Store] の使用を検討してください
-// （特に32ビットプラットフォームを対象とする場合は、バグセクションを参照してください）。
-func StoreUint64(addr *uint64, val uint64)
-
-// StoreUintptrはアトミックにvalを*addrに格納します。
+// StoreUintptrは、valを*addrにアトミックに格納します。
 // より使いやすく、エラーが発生しにくい [Uintptr.Store] の使用を検討してください。
-=======
-// StoreInt32 atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Int32.Store] instead.
 //
 //go:noescape
-func StoreInt32(addr *int32, val int32)
-
-// StoreUint32 atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Uint32.Store] instead.
-//
-//go:noescape
-func StoreUint32(addr *uint32, val uint32)
-
-// StoreUintptr atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Uintptr.Store] instead.
-//
-//go:noescape
->>>>>>> upstream/release-branch.go1.25
 func StoreUintptr(addr *uintptr, val uintptr)
 
 // StorePointerはアトミックにvalを*addrに格納します。

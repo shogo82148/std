@@ -6,15 +6,10 @@ package atomic
 
 import "github.com/shogo82148/std/unsafe"
 
-<<<<<<< HEAD
-// Boolはアトミックなブーリアン値です。
+// Boolはアトミックなブール値です。
 // ゼロ値はfalseです。
-=======
-// A Bool is an atomic boolean value.
-// The zero value is false.
 //
-// Bool must not be copied after first use.
->>>>>>> upstream/release-branch.go1.25
+// Boolは最初に使用した後でコピーしてはいけません。
 type Bool struct {
 	_ noCopy
 	v uint32
@@ -36,13 +31,9 @@ func (x *Bool) CompareAndSwap(old, new bool) (swapped bool)
 // Keep in sync with cmd/compile/internal/test/inl_test.go:TestIntendedInlining.
 var _ = &Pointer[int]{}
 
-<<<<<<< HEAD
-// Pointerはタイプ*Tのアトミックポインタです。ゼロ値はnil *Tです。
-=======
-// A Pointer is an atomic pointer of type *T. The zero value is a nil *T.
+// Pointerは型*Tのアトミックなポインタです。ゼロ値はnil *Tです。
 //
-// Pointer must not be copied after first use.
->>>>>>> upstream/release-branch.go1.25
+// Pointerは最初に使用した後でコピーしてはいけません。
 type Pointer[T any] struct {
 	// Mention *T in a field to disallow conversion between Pointer types.
 	// See go.dev/issue/56603 for more details.
@@ -65,13 +56,9 @@ func (x *Pointer[T]) Swap(new *T) (old *T)
 // CompareAndSwapは、ポインタxの比較交換操作を実行します。
 func (x *Pointer[T]) CompareAndSwap(old, new *T) (swapped bool)
 
-<<<<<<< HEAD
 // Int32はアトミックなint32です。ゼロ値はゼロです。
-=======
-// An Int32 is an atomic int32. The zero value is zero.
 //
-// Int32 must not be copied after first use.
->>>>>>> upstream/release-branch.go1.25
+// Int32は最初に使用した後でコピーしてはいけません。
 type Int32 struct {
 	_ noCopy
 	v int32
@@ -100,13 +87,9 @@ func (x *Int32) And(mask int32) (old int32)
 // 古い値を返します。
 func (x *Int32) Or(mask int32) (old int32)
 
-<<<<<<< HEAD
 // Int64はアトミックなint64です。ゼロ値はゼロです。
-=======
-// An Int64 is an atomic int64. The zero value is zero.
 //
-// Int64 must not be copied after first use.
->>>>>>> upstream/release-branch.go1.25
+// Int64は最初に使用した後でコピーしてはいけません。
 type Int64 struct {
 	_ noCopy
 	_ align64
@@ -136,13 +119,9 @@ func (x *Int64) And(mask int64) (old int64)
 // 古い値を返します。
 func (x *Int64) Or(mask int64) (old int64)
 
-<<<<<<< HEAD
 // Uint32はアトミックなuint32です。ゼロ値はゼロです。
-=======
-// A Uint32 is an atomic uint32. The zero value is zero.
 //
-// Uint32 must not be copied after first use.
->>>>>>> upstream/release-branch.go1.25
+// Uint32は最初に使用した後でコピーしてはいけません。
 type Uint32 struct {
 	_ noCopy
 	v uint32
@@ -171,13 +150,9 @@ func (x *Uint32) And(mask uint32) (old uint32)
 // 古い値を返します。
 func (x *Uint32) Or(mask uint32) (old uint32)
 
-<<<<<<< HEAD
 // Uint64はアトミックなuint64です。ゼロ値はゼロです。
-=======
-// A Uint64 is an atomic uint64. The zero value is zero.
 //
-// Uint64 must not be copied after first use.
->>>>>>> upstream/release-branch.go1.25
+// Uint64は最初に使用した後でコピーしてはいけません。
 type Uint64 struct {
 	_ noCopy
 	_ align64
@@ -207,13 +182,9 @@ func (x *Uint64) And(mask uint64) (old uint64)
 // 古い値を返します。
 func (x *Uint64) Or(mask uint64) (old uint64)
 
-<<<<<<< HEAD
 // Uintptrはアトミックなuintptrです。ゼロ値はゼロです。
-=======
-// A Uintptr is an atomic uintptr. The zero value is zero.
 //
-// Uintptr must not be copied after first use.
->>>>>>> upstream/release-branch.go1.25
+// Uintptrは最初に使用した後でコピーしてはいけません。
 type Uintptr struct {
 	_ noCopy
 	v uintptr
@@ -234,10 +205,10 @@ func (x *Uintptr) CompareAndSwap(old, new uintptr) (swapped bool)
 // Addはアトミックにdeltaをxに加え、新しい値を返します。
 func (x *Uintptr) Add(delta uintptr) (new uintptr)
 
-// And atomically performs a bitwise AND operation on x using the bitmask
-// provided as mask and returns the old value.
+// Andは、提供されたマスクとしてビットマスクを使用してx上でビット単位のAND操作をアトミックに実行し、
+// 古い値を返します。
 func (x *Uintptr) And(mask uintptr) (old uintptr)
 
-// Or atomically performs a bitwise OR operation on x using the bitmask
-// provided as mask and returns the old value.
+// Orは、提供されたマスクとしてビットマスクを使用してx上でビット単位のOR操作をアトミックに実行し、
+// 古い値を返します。
 func (x *Uintptr) Or(mask uintptr) (old uintptr)
