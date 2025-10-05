@@ -6,11 +6,11 @@
 
 package json
 
-// Valid reports whether data is a valid JSON encoding.
+// Validは、dataが有効なJSONエンコーディングかどうかを報告します。
 func Valid(data []byte) bool
 
-// A SyntaxError is a description of a JSON syntax error.
-// [Unmarshal] will return a SyntaxError if the JSON can't be parsed.
+// SyntaxErrorは、JSON構文エラーの内容を表します。
+// [Unmarshal]は、JSONをパースできない場合にSyntaxErrorを返します。
 type SyntaxError struct {
 	msg    string
 	Offset int64

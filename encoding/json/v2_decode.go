@@ -15,91 +15,65 @@ import (
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// Unmarshal parses the JSON-encoded data and stores the result
-// in the value pointed to by v. If v is nil or not a pointer,
-// Unmarshal returns an [InvalidUnmarshalError].
+// UnmarshalはJSONエンコードされたデータを解析し、結果をvが指す値に格納します。
+// vがnilまたはポインタでない場合、Unmarshalは [InvalidUnmarshalError] を返します。
 //
-// Unmarshal uses the inverse of the encodings that
-// [Marshal] uses, allocating maps, slices, and pointers as necessary,
-// with the following additional rules:
+// Unmarshalは [Marshal] が使用するエンコーディングの逆を使い、必要に応じてマップ、スライス、ポインタを割り当てます。
+// 追加のルールは以下の通りです：
 //
-// To unmarshal JSON into a pointer, Unmarshal first handles the case of
-// the JSON being the JSON literal null. In that case, Unmarshal sets
-// the pointer to nil. Otherwise, Unmarshal unmarshals the JSON into
-// the value pointed at by the pointer. If the pointer is nil, Unmarshal
-// allocates a new value for it to point to.
+// ポインタ型にJSONをアンマーシャルする場合、まずJSONリテラルnullの場合を処理します。
+// この場合、Unmarshalはポインタをnilに設定します。それ以外の場合、ポインタが指す値にアンマーシャルします。
+// ポインタがnilの場合は新しい値を割り当てて指すようにします。
 //
-// To unmarshal JSON into a value implementing [Unmarshaler],
-// Unmarshal calls that value's [Unmarshaler.UnmarshalJSON] method, including
-// when the input is a JSON null.
-// Otherwise, if the value implements [encoding.TextUnmarshaler]
-// and the input is a JSON quoted string, Unmarshal calls
-// [encoding.TextUnmarshaler.UnmarshalText] with the unquoted form of the string.
+// [Unmarshaler] を実装する値にJSONをアンマーシャルする場合、Unmarshalはその値の [Unmarshaler.UnmarshalJSON] メソッドを呼び出します。
+// 入力がJSON nullの場合も含みます。
+// それ以外の場合、値が [encoding.TextUnmarshaler] を実装していて入力がJSONの引用符付き文字列なら、Unmarshalは
+// [encoding.TextUnmarshaler.UnmarshalText] を文字列のアンエスケープ版で呼び出します。
 //
-// To unmarshal JSON into a struct, Unmarshal matches incoming object
-// keys to the keys used by [Marshal] (either the struct field name or its tag),
-// preferring an exact match but also accepting a case-insensitive match. By
-// default, object keys which don't have a corresponding struct field are
-// ignored (see [Decoder.DisallowUnknownFields] for an alternative).
+// 構造体にJSONをアンマーシャルする場合、Unmarshalは受信したオブジェクトのキーを [Marshal] で使われるキー（フィールド名またはタグ）に一致させます。
+// 完全一致を優先しますが、大文字小文字を無視した一致も受け入れます。
+// デフォルトでは、対応するフィールドがないオブジェクトキーは無視されます（代替として [Decoder.DisallowUnknownFields] を参照）。
 //
-// To unmarshal JSON into an interface value,
-// Unmarshal stores one of these in the interface value:
+// インターフェース値にJSONをアンマーシャルする場合、Unmarshalは以下のいずれかをインターフェース値に格納します：
 //
-//   - bool, for JSON booleans
-//   - float64, for JSON numbers
-//   - string, for JSON strings
-//   - []any, for JSON arrays
-//   - map[string]any, for JSON objects
-//   - nil for JSON null
+//   - bool（JSONの真偽値）
+//   - float64（JSONの数値）
+//   - string（JSONの文字列）
+//   - []any（JSONの配列）
+//   - map[string]any（JSONのオブジェクト）
+//   - nil（JSONのnull）
 //
-// To unmarshal a JSON array into a slice, Unmarshal resets the slice length
-// to zero and then appends each element to the slice.
-// As a special case, to unmarshal an empty JSON array into a slice,
-// Unmarshal replaces the slice with a new empty slice.
+// JSON配列をスライスにアンマーシャルする場合、Unmarshalはスライスの長さをゼロにリセットし、各要素をスライスに追加します。
+// 特別なケースとして、空のJSON配列をスライスにアンマーシャルする場合、Unmarshalは新しい空のスライスに置き換えます。
 //
-// To unmarshal a JSON array into a Go array, Unmarshal decodes
-// JSON array elements into corresponding Go array elements.
-// If the Go array is smaller than the JSON array,
-// the additional JSON array elements are discarded.
-// If the JSON array is smaller than the Go array,
-// the additional Go array elements are set to zero values.
+// JSON配列をGo配列にアンマーシャルする場合、UnmarshalはJSON配列の要素を対応するGo配列の要素にデコードします。
+// Go配列がJSON配列より小さい場合、余分なJSON配列要素は破棄されます。
+// JSON配列がGo配列より小さい場合、余分なGo配列要素はゼロ値に設定されます。
 //
-// To unmarshal a JSON object into a map, Unmarshal first establishes a map to
-// use. If the map is nil, Unmarshal allocates a new map. Otherwise Unmarshal
-// reuses the existing map, keeping existing entries. Unmarshal then stores
-// key-value pairs from the JSON object into the map. The map's key type must
-// either be any string type, an integer, or implement [encoding.TextUnmarshaler].
+// JSONオブジェクトをマップにアンマーシャルする場合、Unmarshalはまず使用するマップを決定します。
+// マップがnilの場合は新しいマップを割り当てます。そうでなければ既存のマップを再利用し、既存のエントリを保持します。
+// その後、JSONオブジェクトのキーと値のペアをマップに格納します。
+// マップのキー型は任意の文字列型、整数型、または [encoding.TextUnmarshaler] を実装している必要があります。
 //
-// If the JSON-encoded data contain a syntax error, Unmarshal returns a [SyntaxError].
+// JSONエンコードされたデータに構文エラーが含まれている場合、Unmarshalは [SyntaxError] を返します。
 //
-// If a JSON value is not appropriate for a given target type,
-// or if a JSON number overflows the target type, Unmarshal
-// skips that field and completes the unmarshaling as best it can.
-// If no more serious errors are encountered, Unmarshal returns
-// an [UnmarshalTypeError] describing the earliest such error. In any
-// case, it's not guaranteed that all the remaining fields following
-// the problematic one will be unmarshaled into the target object.
+// JSON値がターゲット型に適していない場合や、JSON数値がターゲット型でオーバーフローする場合、Unmarshalはそのフィールドをスキップし、可能な限りアンマーシャル処理を続行します。
+// より重大なエラーがなければ、Unmarshalは最初に発生したエラーを説明する [UnmarshalTypeError] を返します。
+// いずれにせよ、問題のあるフィールド以降の残りのフィールドがターゲットオブジェクトにアンマーシャルされる保証はありません。
 //
-// The JSON null value unmarshals into an interface, map, pointer, or slice
-// by setting that Go value to nil. Because null is often used in JSON to mean
-// “not present,” unmarshaling a JSON null into any other Go type has no effect
-// on the value and produces no error.
+// JSONのnull値は、インターフェース、マップ、ポインタ、スライスにアンマーシャルする場合、Go値をnilに設定します。
+// nullはJSONで「存在しない」を意味することが多いため、他のGo型にアンマーシャルする場合は値に影響せず、エラーも発生しません。
 //
-// When unmarshaling quoted strings, invalid UTF-8 or
-// invalid UTF-16 surrogate pairs are not treated as an error.
-// Instead, they are replaced by the Unicode replacement
-// character U+FFFD.
+// 引用符付き文字列をアンマーシャルする際、無効なUTF-8や無効なUTF-16サロゲートペアはエラーとして扱われません。
+// 代わりにUnicodeの置換文字U+FFFDに置き換えられます。
 func Unmarshal(data []byte, v any) error
 
-// Unmarshaler is the interface implemented by types
-// that can unmarshal a JSON description of themselves.
-// The input can be assumed to be a valid encoding of
-// a JSON value. UnmarshalJSON must copy the JSON data
-// if it wishes to retain the data after returning.
+// Unmarshalerは、自身のJSON記述をアンマーシャルできる型が実装するインターフェースです。
+// 入力は有効なJSON値のエンコーディングであるとみなせます。
+// UnmarshalJSONは、戻り値の後もデータを保持したい場合はJSONデータをコピーする必要があります。
 type Unmarshaler = jsonv2.Unmarshaler
 
-// An UnmarshalTypeError describes a JSON value that was
-// not appropriate for a value of a specific Go type.
+// UnmarshalTypeErrorは、特定のGo型の値として不適切なJSON値を説明します。
 type UnmarshalTypeError struct {
 	Value  string
 	Type   reflect.Type
@@ -113,10 +87,11 @@ func (e *UnmarshalTypeError) Error() string
 
 func (e *UnmarshalTypeError) Unwrap() error
 
-// An UnmarshalFieldError describes a JSON object key that
-// led to an unexported (and therefore unwritable) struct field.
+// UnmarshalFieldErrorは、JSONオブジェクトのキーが
+// エクスポートされていない（そのため書き込み不可な）構造体フィールドに
+// 対応していたことを説明します。
 //
-// Deprecated: No longer used; kept for compatibility.
+// Deprecated: 互換性維持のために残されていますが、現在は使用されていません。
 type UnmarshalFieldError struct {
 	Key   string
 	Type  reflect.Type
@@ -125,28 +100,28 @@ type UnmarshalFieldError struct {
 
 func (e *UnmarshalFieldError) Error() string
 
-// An InvalidUnmarshalError describes an invalid argument passed to [Unmarshal].
-// (The argument to [Unmarshal] must be a non-nil pointer.)
+// InvalidUnmarshalErrorは[Unmarshal]に渡された無効な引数を説明します。
+// （[Unmarshal]への引数はnilでないポインタでなければなりません。）
 type InvalidUnmarshalError struct {
 	Type reflect.Type
 }
 
 func (e *InvalidUnmarshalError) Error() string
 
-// A Number represents a JSON number literal.
+// NumberはJSONの数値リテラルを表します。
 type Number string
 
-// String returns the literal text of the number.
+// Stringは数値のリテラルテキストを返します。
 func (n Number) String() string
 
-// Float64 returns the number as a float64.
+// Float64は数値をfloat64として返します。
 func (n Number) Float64() (float64, error)
 
-// Int64 returns the number as an int64.
+// Int64は数値をint64として返します。
 func (n Number) Int64() (int64, error)
 
-// MarshalJSONTo implements [jsonv2.MarshalerTo].
+// MarshalJSONToは [jsonv2.MarshalerTo] を実装します。
 func (n Number) MarshalJSONTo(enc *jsontext.Encoder) error
 
-// UnmarshalJSONFrom implements [jsonv2.UnmarshalerFrom].
+// UnmarshalJSONFromは [jsonv2.UnmarshalerFrom] を実装します。
 func (n *Number) UnmarshalJSONFrom(dec *jsontext.Decoder) error

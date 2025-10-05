@@ -10,32 +10,31 @@ import (
 	"github.com/shogo82148/std/encoding/json/internal/jsonopts"
 )
 
-// Options configure [Marshal], [MarshalWrite], [MarshalEncode],
-// [Unmarshal], [UnmarshalRead], and [UnmarshalDecode] with specific features.
-// Each function takes in a variadic list of options, where properties
-// set in later options override the value of previously set properties.
+// Optionsは [Marshal], [MarshalWrite], [MarshalEncode],
+// [Unmarshal], [UnmarshalRead], [UnmarshalDecode] を特定の機能で設定します。
+// 各関数は可変長のオプションリストを受け取り、後から指定されたオプションのプロパティが
+// 以前に設定された値を上書きします。
 //
-// The Options type is identical to [encoding/json.Options] and
-// [encoding/json/jsontext.Options]. Options from the other packages can
-// be used interchangeably with functionality in this package.
+// Options型は [encoding/json.Options] や [encoding/json/jsontext.Options] と同一です。
+// 他のパッケージのOptionsも本パッケージの機能と相互利用できます。
 //
-// Options represent either a singular option or a set of options.
-// It can be functionally thought of as a Go map of option properties
-// (even though the underlying implementation avoids Go maps for performance).
+// Optionsは単一のオプションまたはオプションの集合を表します。
+// 機能的にはGoのオプションプロパティのマップのように考えられます
+// （実装上はパフォーマンスのためGoのmapは使っていません）。
 //
-// The constructors (e.g., [Deterministic]) return a singular option value:
+// コンストラクタ（例: [Deterministic]）は単一のオプション値を返します:
 //
 //	opt := Deterministic(true)
 //
-// which is analogous to creating a single entry map:
+// これは単一エントリのマップを作ることに相当します:
 //
 //	opt := Options{"Deterministic": true}
 //
-// [JoinOptions] composes multiple options values to together:
+// [JoinOptions]は複数のオプション値を合成します:
 //
 //	out := JoinOptions(opts...)
 //
-// which is analogous to making a new map and copying the options over:
+// これは新しいマップを作り、オプションをコピーすることに相当します:
 //
 //	out := make(Options)
 //	for _, m := range opts {
@@ -44,139 +43,119 @@ import (
 //		}
 //	}
 //
-// [GetOption] looks up the value of options parameter:
+// [GetOption] はオプションパラメータの値を取得します:
 //
 //	v, ok := GetOption(opts, Deterministic)
 //
-// which is analogous to a Go map lookup:
+// これはGoのマップ検索に相当します:
 //
 //	v, ok := Options["Deterministic"]
 //
-// There is a single Options type, which is used with both marshal and unmarshal.
-// Some options affect both operations, while others only affect one operation:
+// Options型はマーシャルとアンマーシャルの両方で使われます。
+// 一部のオプションは両方に影響し、他はどちらか一方だけに影響します:
 //
-//   - [StringifyNumbers] affects marshaling and unmarshaling
-//   - [Deterministic] affects marshaling only
-//   - [FormatNilSliceAsNull] affects marshaling only
-//   - [FormatNilMapAsNull] affects marshaling only
-//   - [OmitZeroStructFields] affects marshaling only
-//   - [MatchCaseInsensitiveNames] affects marshaling and unmarshaling
-//   - [DiscardUnknownMembers] affects marshaling only
-//   - [RejectUnknownMembers] affects unmarshaling only
-//   - [WithMarshalers] affects marshaling only
-//   - [WithUnmarshalers] affects unmarshaling only
+//   - [StringifyNumbers] はマーシャル・アンマーシャル両方に影響
+//   - [Deterministic] はマーシャルのみ
+//   - [FormatNilSliceAsNull] はマーシャルのみ
+//   - [FormatNilMapAsNull] はマーシャルのみ
+//   - [OmitZeroStructFields] はマーシャルのみ
+//   - [MatchCaseInsensitiveNames] はマーシャル・アンマーシャル両方に影響
+//   - [DiscardUnknownMembers] はマーシャルのみ
+//   - [RejectUnknownMembers] はアンマーシャルのみ
+//   - [WithMarshalers] はマーシャルのみ
+//   - [WithUnmarshalers] はアンマーシャルのみ
 //
-// Options that do not affect a particular operation are ignored.
+// 特定の操作に影響しないオプションは無視されます。
 type Options = jsonopts.Options
 
-// JoinOptions coalesces the provided list of options into a single Options.
-// Properties set in later options override the value of previously set properties.
+// JoinOptionsは、指定されたオプションリストを1つのOptionsにまとめます。
+// 後から指定されたオプションのプロパティが、以前に設定された値を上書きします。
 func JoinOptions(srcs ...Options) Options
 
-// GetOption returns the value stored in opts with the provided setter,
-// reporting whether the value is present.
+// GetOptionは、optsに格納されたsetterで指定された値を返し、
+// その値が存在するかどうかを報告します。
 //
-// Example usage:
+// 使用例:
 //
 //	v, ok := json.GetOption(opts, json.Deterministic)
 //
-// Options are most commonly introspected to alter the JSON representation of
-// [MarshalerTo.MarshalJSONTo] and [UnmarshalerFrom.UnmarshalJSONFrom] methods, and
-// [MarshalToFunc] and [UnmarshalFromFunc] functions.
-// In such cases, the presence bit should generally be ignored.
+// Optionsは主に、[MarshalerTo.MarshalJSONTo] や [UnmarshalerFrom.UnmarshalJSONFrom] メソッド、
+// [MarshalToFunc] や [UnmarshalFromFunc] 関数のJSON表現を変更するために調査されます。
+// その場合、存在ビットは通常無視されるべきです。
 func GetOption[T any](opts Options, setter func(T) Options) (T, bool)
 
-// DefaultOptionsV2 is the full set of all options that define v2 semantics.
-// It is equivalent to all options under [Options], [encoding/json.Options],
-// and [encoding/json/jsontext.Options] being set to false or the zero value,
-// except for the options related to whitespace formatting.
+// DefaultOptionsV2はv2セマンティクスを定義するすべてのオプションの完全なセットです。
+// これは [Options]、[encoding/json.Options]、[encoding/json/jsontext.Options] の
+// すべてのオプションがfalseまたはゼロ値に設定されている状態と同等ですが、
+// 空白フォーマットに関連するオプションは除きます。
 func DefaultOptionsV2() Options
 
-// StringifyNumbers specifies that numeric Go types should be marshaled
-// as a JSON string containing the equivalent JSON number value.
-// When unmarshaling, numeric Go types are parsed from a JSON string
-// containing the JSON number without any surrounding whitespace.
+// StringifyNumbersは、数値型のGo値を対応するJSON数値を含むJSON文字列としてマーシャルすることを指定します。
+// アンマーシャル時には、数値型のGo値を、余分な空白を含まないJSON数値を含むJSON文字列からパースします。
 //
-// According to RFC 8259, section 6, a JSON implementation may choose to
-// limit the representation of a JSON number to an IEEE 754 binary64 value.
-// This may cause decoders to lose precision for int64 and uint64 types.
-// Quoting JSON numbers as a JSON string preserves the exact precision.
+// RFC 8259のセクション6によると、JSON実装はJSON数値の表現をIEEE 754 binary64値に制限する場合があります。
+// これにより、int64やuint64型の精度が失われることがあります。
+// JSON数値をJSON文字列として引用することで、正確な精度を保持できます。
 //
-// This affects either marshaling or unmarshaling.
+// このオプションはマーシャル・アンマーシャルの両方に影響します。
 func StringifyNumbers(v bool) Options
 
-// Deterministic specifies that the same input value will be serialized
-// as the exact same output bytes. Different processes of
-// the same program will serialize equal values to the same bytes,
-// but different versions of the same program are not guaranteed
-// to produce the exact same sequence of bytes.
+// Deterministicは、同じ入力値が常に同じ出力バイト列としてシリアライズされることを指定します。
+// 同じプログラムの異なるプロセスは、等価な値を同じバイト列にシリアライズしますが、
+// プログラムのバージョンが異なる場合は、必ずしも同じバイト列になるとは限りません。
 //
-// This only affects marshaling and is ignored when unmarshaling.
+// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func Deterministic(v bool) Options
 
-// FormatNilSliceAsNull specifies that a nil Go slice should marshal as a
-// JSON null instead of the default representation as an empty JSON array
-// (or an empty JSON string in the case of ~[]byte).
-// Slice fields explicitly marked with `format:emitempty` still marshal
-// as an empty JSON array.
+// FormatNilSliceAsNullは、nilのGoスライスをデフォルトの空JSON配列（~[]byteの場合は空JSON文字列）ではなく、JSON nullとしてマーシャルすることを指定します。
+// `format:emitempty`が明示的に指定されたスライスフィールドは、引き続き空のJSON配列としてマーシャルされます。
 //
-// This only affects marshaling and is ignored when unmarshaling.
+// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func FormatNilSliceAsNull(v bool) Options
 
-// FormatNilMapAsNull specifies that a nil Go map should marshal as a
-// JSON null instead of the default representation as an empty JSON object.
-// Map fields explicitly marked with `format:emitempty` still marshal
-// as an empty JSON object.
+// FormatNilMapAsNullは、nilのGoマップをデフォルトの空JSONオブジェクトではなく、JSON nullとしてマーシャルすることを指定します。
+// `format:emitempty`が明示的に指定されたマップフィールドは、引き続き空のJSONオブジェクトとしてマーシャルされます。
 //
-// This only affects marshaling and is ignored when unmarshaling.
+// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func FormatNilMapAsNull(v bool) Options
 
-// OmitZeroStructFields specifies that a Go struct should marshal in such a way
-// that all struct fields that are zero are omitted from the marshaled output
-// if the value is zero as determined by the "IsZero() bool" method if present,
-// otherwise based on whether the field is the zero Go value.
-// This is semantically equivalent to specifying the `omitzero` tag option
-// on every field in a Go struct.
+// OmitZeroStructFieldsは、Go構造体のゼロ値フィールドをマーシャル出力から省略することを指定します。
+// ゼロ値かどうかは "IsZero() bool" メソッドがあればその結果で、なければGoのゼロ値かどうかで判定します。
+// これはすべてのフィールドに `omitzero` タグオプションを指定するのと同等です。
 //
-// This only affects marshaling and is ignored when unmarshaling.
+// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func OmitZeroStructFields(v bool) Options
 
-// MatchCaseInsensitiveNames specifies that JSON object members are matched
-// against Go struct fields using a case-insensitive match of the name.
-// Go struct fields explicitly marked with `case:strict` or `case:ignore`
-// always use case-sensitive (or case-insensitive) name matching,
-// regardless of the value of this option.
+// MatchCaseInsensitiveNamesは、JSONオブジェクトのメンバー名をGo構造体のフィールド名と
+// 大文字・小文字を区別せずに一致させることを指定します。
+// Go構造体フィールドに `case:strict` や `case:ignore` が明示的に指定されている場合は、
+// このオプションの値に関わらず、それぞれ大文字・小文字を区別する（または区別しない）一致が使われます。
 //
-// This affects either marshaling or unmarshaling.
-// For marshaling, this option may alter the detection of duplicate names
-// (assuming [jsontext.AllowDuplicateNames] is false) from inlined fields
-// if it matches one of the declared fields in the Go struct.
+// このオプションはマーシャル・アンマーシャルの両方に影響します。
+// マーシャル時には、インラインフィールドから宣言済みフィールドと一致する場合、
+// （[jsontext.AllowDuplicateNames]がfalseの場合）重複名の検出方法が変わることがあります。
 func MatchCaseInsensitiveNames(v bool) Options
 
-// DiscardUnknownMembers specifies that marshaling should ignore any
-// JSON object members stored in Go struct fields dedicated to storing
-// unknown JSON object members.
+// DiscardUnknownMembersは、Go構造体の未知のJSONオブジェクトメンバーを格納する専用フィールドに保存された
+// JSONオブジェクトメンバーをマーシャル時に無視することを指定します。
 //
-// This only affects marshaling and is ignored when unmarshaling.
+// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func DiscardUnknownMembers(v bool) Options
 
-// RejectUnknownMembers specifies that unknown members should be rejected
-// when unmarshaling a JSON object, regardless of whether there is a field
-// to store unknown members.
+// RejectUnknownMembersは、未知のメンバーが格納用フィールドの有無に関わらず
+// JSONオブジェクトのアンマーシャル時に拒否されるべきであることを指定します。
 //
-// This only affects unmarshaling and is ignored when marshaling.
+// このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
 func RejectUnknownMembers(v bool) Options
 
-// WithMarshalers specifies a list of type-specific marshalers to use,
-// which can be used to override the default marshal behavior for values
-// of particular types.
+// WithMarshalersは、型ごとのマシャラーのリストを指定します。
+// これにより、特定の型の値に対するデフォルトのマーシャル動作を上書きできます。
 //
-// This only affects marshaling and is ignored when unmarshaling.
+// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func WithMarshalers(v *Marshalers) Options
 
-// WithUnmarshalers specifies a list of type-specific unmarshalers to use,
-// which can be used to override the default unmarshal behavior for values
-// of particular types.
+// WithUnmarshalersは、型ごとのアンマーシャラーのリストを指定します。
+// これにより、特定の型の値に対するデフォルトのアンマーシャル動作を上書きできます。
 //
-// This only affects unmarshaling and is ignored when marshaling.
+// このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
 func WithUnmarshalers(v *Unmarshalers) Options

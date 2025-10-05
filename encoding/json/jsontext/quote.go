@@ -6,19 +6,19 @@
 
 package jsontext
 
-// AppendQuote appends a double-quoted JSON string literal representing src
-// to dst and returns the extended buffer.
-// It uses the minimal string representation per RFC 8785, section 3.2.2.2.
-// Invalid UTF-8 bytes are replaced with the Unicode replacement character
-// and an error is returned at the end indicating the presence of invalid UTF-8.
-// The dst must not overlap with the src.
+// AppendQuoteは、srcを表す二重引用符付きのJSON文字列リテラルを
+// dstに追加し、拡張されたバッファを返します。
+// RFC 8785の3.2.2.2節に従い、最小限の文字列表現を使用します。
+// 不正なUTF-8バイトはUnicodeの置換文字に置き換えられ、
+// 不正なUTF-8が存在した場合はエラーが返されます。
+// dstはsrcと重複していてはいけません。
 func AppendQuote[Bytes ~[]byte | ~string](dst []byte, src Bytes) ([]byte, error)
 
-// AppendUnquote appends the decoded interpretation of src as a
-// double-quoted JSON string literal to dst and returns the extended buffer.
-// The input src must be a JSON string without any surrounding whitespace.
-// Invalid UTF-8 bytes are replaced with the Unicode replacement character
-// and an error is returned at the end indicating the presence of invalid UTF-8.
-// Any trailing bytes after the JSON string literal results in an error.
-// The dst must not overlap with the src.
+// AppendUnquoteは、srcをデコードした二重引用符付きJSON文字列リテラルとして
+// dstに追加し、拡張されたバッファを返します。
+// 入力srcは前後に空白のないJSON文字列である必要があります。
+// 不正なUTF-8バイトはUnicodeの置換文字に置き換えられ、
+// 不正なUTF-8が存在した場合は最後にエラーが返されます。
+// JSON文字列リテラルの後に余分なバイトがある場合はエラーとなります。
+// dstはsrcと重複していてはいけません。
 func AppendUnquote[Bytes ~[]byte | ~string](dst []byte, src Bytes) ([]byte, error)

@@ -10,56 +10,45 @@ import (
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// Marshaler is implemented by types that can marshal themselves.
-// It is recommended that types implement [MarshalerTo] unless the implementation
-// is trying to avoid a hard dependency on the "jsontext" package.
+// Marshalerは自分自身をマーシャルできる型が実装します。
+// 実装が "jsontext" パッケージへの強い依存を避けたい場合を除き、[MarshalerTo] を実装することを推奨します。
 //
-// It is recommended that implementations return a buffer that is safe
-// for the caller to retain and potentially mutate.
+// 実装では、呼び出し元が保持・変更しても安全なバッファを返すことを推奨します。
 type Marshaler interface {
 	MarshalJSON() ([]byte, error)
 }
 
-// MarshalerTo is implemented by types that can marshal themselves.
-// It is recommended that types implement MarshalerTo instead of [Marshaler]
-// since this is both more performant and flexible.
-// If a type implements both Marshaler and MarshalerTo,
-// then MarshalerTo takes precedence. In such a case, both implementations
-// should aim to have equivalent behavior for the default marshal options.
+// MarshalerToは自分自身をマーシャルできる型が実装します。
+// より高いパフォーマンスと柔軟性のため、[Marshaler] ではなくMarshalerToを実装することが推奨されます。
+// MarshalerとMarshalerToの両方を実装している場合は、MarshalerToが優先されます。
+// その場合、両方の実装はデフォルトのマーシャルオプションで同等の動作を目指すべきです。
 //
-// The implementation must write only one JSON value to the Encoder and
-// must not retain the pointer to [jsontext.Encoder].
+// 実装はEncoderに対して1つのJSON値のみを書き込み、[jsontext.Encoder] へのポインタを保持してはなりません。
 type MarshalerTo interface {
 	MarshalJSONTo(*jsontext.Encoder) error
 }
 
-// Unmarshaler is implemented by types that can unmarshal themselves.
-// It is recommended that types implement [UnmarshalerFrom] unless the implementation
-// is trying to avoid a hard dependency on the "jsontext" package.
+// Unmarshalerは自分自身をアンマーシャルできる型が実装します。
+// 実装が "jsontext" パッケージへの強い依存を避けたい場合を除き、[UnmarshalerFrom] を実装することを推奨します。
 //
-// The input can be assumed to be a valid encoding of a JSON value
-// if called from unmarshal functionality in this package.
-// UnmarshalJSON must copy the JSON data if it is retained after returning.
-// It is recommended that UnmarshalJSON implement merge semantics when
-// unmarshaling into a pre-populated value.
+// 入力はこのパッケージのアンマーシャル機能から呼び出された場合、正しいJSON値のエンコーディングであるとみなせます。
+// UnmarshalJSONが返却後もJSONデータを保持する場合は、必ずコピーしてください。
+// 事前に値が設定された変数にアンマーシャルする場合は、UnmarshalJSONでマージセマンティクスを実装することが推奨されます。
 //
-// Implementations must not retain or mutate the input []byte.
+// 実装は入力の[]byteを保持したり変更したりしてはいけません。
 type Unmarshaler interface {
 	UnmarshalJSON([]byte) error
 }
 
-// UnmarshalerFrom is implemented by types that can unmarshal themselves.
-// It is recommended that types implement UnmarshalerFrom instead of [Unmarshaler]
-// since this is both more performant and flexible.
-// If a type implements both Unmarshaler and UnmarshalerFrom,
-// then UnmarshalerFrom takes precedence. In such a case, both implementations
-// should aim to have equivalent behavior for the default unmarshal options.
+// UnmarshalerFromは自分自身をアンマーシャルできる型が実装します。
+// より高いパフォーマンスと柔軟性のため、[Unmarshaler] ではなくUnmarshalerFromを実装することが推奨されます。
+// UnmarshalerとUnmarshalerFromの両方を実装している場合は、UnmarshalerFromが優先されます。
+// その場合、両方の実装はデフォルトのアンマーシャルオプションで同等の動作を目指すべきです。
 //
-// The implementation must read only one JSON value from the Decoder.
-// It is recommended that UnmarshalJSONFrom implement merge semantics when
-// unmarshaling into a pre-populated value.
+// 実装はDecoderから1つのJSON値のみを読み込まなければなりません。
+// UnmarshalJSONFromが事前に値が設定された変数にアンマーシャルする場合は、マージセマンティクスを実装することが推奨されます。
 //
-// Implementations must not retain the pointer to [jsontext.Decoder].
+// 実装は [jsontext.Decoder] へのポインタを保持してはいけません。
 type UnmarshalerFrom interface {
 	UnmarshalJSONFrom(*jsontext.Decoder) error
 }

@@ -13,48 +13,47 @@ import (
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// ErrUnknownName indicates that a JSON object member could not be
-// unmarshaled because the name is not known to the target Go struct.
-// This error is directly wrapped within a [SemanticError] when produced.
+// ErrUnknownNameは、JSONオブジェクトのメンバー名が
+// 対象のGo構造体で認識されずアンマーシャルできなかったことを示します。
+// このエラーは生成時に [SemanticError] で直接ラップされます。
 //
-// The name of an unknown JSON object member can be extracted as:
+// 未知のJSONオブジェクトメンバー名は以下のように取得できます:
 //
 //	err := ...
 //	var serr json.SemanticError
 //	if errors.As(err, &serr) && serr.Err == json.ErrUnknownName {
-//		ptr := serr.JSONPointer // JSON pointer to unknown name
-//		name := ptr.LastToken() // unknown name itself
+//		ptr := serr.JSONPointer // 未知の名前へのJSONポインタ
+//		name := ptr.LastToken() // 未知の名前そのもの
 //		...
 //	}
 //
-// This error is only returned if [RejectUnknownMembers] is true.
+// このエラーは [RejectUnknownMembers] がtrueの場合のみ返されます。
 var ErrUnknownName = errors.New("unknown object member name")
 
-// SemanticError describes an error determining the meaning
-// of JSON data as Go data or vice-versa.
+// SemanticErrorは、JSONデータをGoデータへ、またはその逆へ意味付けする際のエラーを表します。
 //
-// The contents of this error as produced by this package may change over time.
+// このパッケージによって生成されるこのエラーの内容は将来的に変更される可能性があります。
 type SemanticError struct {
 	requireKeyedLiterals
 	nonComparable
 
 	action string
 
-	// ByteOffset indicates that an error occurred after this byte offset.
+	// ByteOffsetは、エラーがこのバイトオフセット以降で発生したことを示します。
 	ByteOffset int64
-	// JSONPointer indicates that an error occurred within this JSON value
-	// as indicated using the JSON Pointer notation (see RFC 6901).
+	// JSONPointerは、RFC 6901で定義されたJSONポインタ表記を使って
+	// このJSON値内でエラーが発生したことを示します。
 	JSONPointer jsontext.Pointer
 
-	// JSONKind is the JSON kind that could not be handled.
+	// JSONKindは、処理できなかったJSONの種類を示します。
 	JSONKind jsontext.Kind
-	// JSONValue is the JSON number or string that could not be unmarshaled.
-	// It is not populated during marshaling.
+	// JSONValueは、アンマーシャルできなかったJSONの数値または文字列です。
+	// マーシャル時には設定されません。
 	JSONValue jsontext.Value
-	// GoType is the Go type that could not be handled.
+	// GoTypeは、処理できなかったGoの型を示します。
 	GoType reflect.Type
 
-	// Err is the underlying error.
+	// Errは、根本的なエラーです。
 	Err error
 }
 

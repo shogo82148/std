@@ -1,6 +1,6 @@
 module github.com/shogo82148/std
 
-go 1.21.1
+go 1.25.1
 
 require (
 	golang.org/x/crypto v0.31.0

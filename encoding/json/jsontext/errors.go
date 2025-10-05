@@ -6,21 +6,20 @@
 
 package jsontext
 
-// SyntacticError is a description of a syntactic error that occurred when
-// encoding or decoding JSON according to the grammar.
+// SyntacticErrorは、文法に従ってJSONをエンコードまたはデコードする際に発生した構文エラーの説明です。
 //
-// The contents of this error as produced by this package may change over time.
+// このパッケージによって生成されるこのエラーの内容は将来的に変更される可能性があります。
 type SyntacticError struct {
 	requireKeyedLiterals
 	nonComparable
 
-	// ByteOffset indicates that an error occurred after this byte offset.
+	// ByteOffsetは、このバイトオフセットの直後でエラーが発生したことを示します。
 	ByteOffset int64
-	// JSONPointer indicates that an error occurred within this JSON value
-	// as indicated using the JSON Pointer notation (see RFC 6901).
+	// JSONPointerは、RFC 6901で定義されたJSONポインタ表記を用いて、
+	// このJSON値内でエラーが発生したことを示します。
 	JSONPointer Pointer
 
-	// Err is the underlying error.
+	// Errは基礎となるエラーです。
 	Err error
 }
 

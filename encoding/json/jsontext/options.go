@@ -10,163 +10,148 @@ import (
 	"github.com/shogo82148/std/encoding/json/internal/jsonopts"
 )
 
-// Options configures [NewEncoder], [Encoder.Reset], [NewDecoder],
-// and [Decoder.Reset] with specific features.
-// Each function takes in a variadic list of options, where properties
-// set in latter options override the value of previously set properties.
+// Optionsは [NewEncoder]、[Encoder.Reset]、[NewDecoder]、
+// および [Decoder.Reset] を特定の機能で構成します。
+// 各関数は可変長のオプションリストを受け取り、
+// 後から指定されたオプションのプロパティが、以前に設定された値を上書きします。
 //
-// There is a single Options type, which is used with both encoding and decoding.
-// Some options affect both operations, while others only affect one operation:
+// Options型はエンコードとデコードの両方で使用されます。
+// 一部のオプションは両方の操作に影響し、他は一方の操作のみに影響します:
 //
-//   - [AllowDuplicateNames] affects encoding and decoding
-//   - [AllowInvalidUTF8] affects encoding and decoding
-//   - [EscapeForHTML] affects encoding only
-//   - [EscapeForJS] affects encoding only
-//   - [PreserveRawStrings] affects encoding only
-//   - [CanonicalizeRawInts] affects encoding only
-//   - [CanonicalizeRawFloats] affects encoding only
-//   - [ReorderRawObjects] affects encoding only
-//   - [SpaceAfterColon] affects encoding only
-//   - [SpaceAfterComma] affects encoding only
-//   - [Multiline] affects encoding only
-//   - [WithIndent] affects encoding only
-//   - [WithIndentPrefix] affects encoding only
+//   - [AllowDuplicateNames] はエンコードとデコードに影響します
+//   - [AllowInvalidUTF8] はエンコードとデコードに影響します
+//   - [EscapeForHTML] はエンコードのみに影響します
+//   - [EscapeForJS] はエンコードのみに影響します
+//   - [PreserveRawStrings] はエンコードのみに影響します
+//   - [CanonicalizeRawInts] はエンコードのみに影響します
+//   - [CanonicalizeRawFloats] はエンコードのみに影響します
+//   - [ReorderRawObjects] はエンコードのみに影響します
+//   - [SpaceAfterColon] はエンコードのみに影響します
+//   - [SpaceAfterComma] はエンコードのみに影響します
+//   - [Multiline] はエンコードのみに影響します
+//   - [WithIndent] はエンコードのみに影響します
+//   - [WithIndentPrefix] はエンコードのみに影響します
 //
-// Options that do not affect a particular operation are ignored.
+// 特定の操作に影響しないオプションは無視されます。
 //
-// The Options type is identical to [encoding/json.Options] and
-// [encoding/json/v2.Options]. Options from the other packages may
-// be passed to functionality in this package, but are ignored.
-// Options from this package may be used with the other packages.
+// Options型は [encoding/json.Options] および [encoding/json/v2.Options] と同一です。
+// 他のパッケージのOptionsをこのパッケージの機能に渡すことはできますが、無視されます。
+// このパッケージのOptionsは他のパッケージでも使用できます。
 type Options = jsonopts.Options
 
-// AllowDuplicateNames specifies that JSON objects may contain
-// duplicate member names. Disabling the duplicate name check may provide
-// performance benefits, but breaks compliance with RFC 7493, section 2.3.
-// The input or output will still be compliant with RFC 8259,
-// which leaves the handling of duplicate names as unspecified behavior.
+// AllowDuplicateNamesは、JSONオブジェクトが重複したメンバー名を含むことを許可します。
+// 重複名のチェックを無効にするとパフォーマンス向上の可能性がありますが、RFC 7493の2.3節に準拠しなくなります。
+// 入力や出力はRFC 8259には準拠し続けますが、重複名の扱いは未定義の動作となります。
 //
-// This affects either encoding or decoding.
+// このオプションはエンコードまたはデコードのいずれかに影響します。
 func AllowDuplicateNames(v bool) Options
 
-// AllowInvalidUTF8 specifies that JSON strings may contain invalid UTF-8,
-// which will be mangled as the Unicode replacement character, U+FFFD.
-// This causes the encoder or decoder to break compliance with
-// RFC 7493, section 2.1, and RFC 8259, section 8.1.
+// AllowInvalidUTF8は、JSON文字列に不正なUTF-8が含まれることを許可します。
+// 不正なUTF-8はUnicodeの置換文字U+FFFDとして扱われます。
+// このオプションを有効にすると、エンコーダやデコーダは
+// RFC 7493の2.1節およびRFC 8259の8.1節に準拠しなくなります。
 //
-// This affects either encoding or decoding.
+// このオプションはエンコードまたはデコードのいずれかに影響します。
 func AllowInvalidUTF8(v bool) Options
 
-// EscapeForHTML specifies that '<', '>', and '&' characters within JSON strings
-// should be escaped as a hexadecimal Unicode codepoint (e.g., \u003c) so that
-// the output is safe to embed within HTML.
+// EscapeForHTMLは、JSON文字列内の '<', '>', '&' の各文字を
+// 16進数のUnicodeコードポイント（例: \u003c）としてエスケープし、
+// 出力がHTML内に安全に埋め込めるようにします。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func EscapeForHTML(v bool) Options
 
-// EscapeForJS specifies that U+2028 and U+2029 characters within JSON strings
-// should be escaped as a hexadecimal Unicode codepoint (e.g., \u2028) so that
-// the output is valid to embed within JavaScript. See RFC 8259, section 12.
+// EscapeForJSは、JSON文字列内のU+2028およびU+2029の文字を
+// 16進数のUnicodeコードポイント（例: \u2028）としてエスケープし、
+// 出力がJavaScript内に安全に埋め込めるようにします。RFC 8259の12節を参照。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func EscapeForJS(v bool) Options
 
-// PreserveRawStrings specifies that when encoding a raw JSON string in a
-// [Token] or [Value], pre-escaped sequences
-// in a JSON string are preserved to the output.
-// However, raw strings still respect [EscapeForHTML] and [EscapeForJS]
-// such that the relevant characters are escaped.
-// If [AllowInvalidUTF8] is enabled, bytes of invalid UTF-8
-// are preserved to the output.
+// PreserveRawStringsは、生のJSON文字列を [Token] や [Value] でエンコードする際、
+// JSON文字列内の事前にエスケープされたシーケンスを出力にそのまま保持します。
+// ただし、生の文字列でも [EscapeForHTML] や [EscapeForJS] が有効な場合は、該当する文字がエスケープされます。
+// [AllowInvalidUTF8] が有効な場合、不正なUTF-8のバイトも出力に保持されます。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func PreserveRawStrings(v bool) Options
 
-// CanonicalizeRawInts specifies that when encoding a raw JSON
-// integer number (i.e., a number without a fraction and exponent) in a
-// [Token] or [Value], the number is canonicalized
-// according to RFC 8785, section 3.2.2.3. As a special case,
-// the number -0 is canonicalized as 0.
+// CanonicalizeRawIntsは、生のJSON整数（小数点や指数部を持たない数値）を
+// [Token] や [Value] でエンコードする際、RFC 8785の3.2.2.3節に従って正規化します。
+// 特別なケースとして、-0は0として正規化されます。
 //
-// JSON numbers are treated as IEEE 754 double precision numbers.
-// Any numbers with precision beyond what is representable by that form
-// will lose their precision when canonicalized. For example,
-// integer values beyond ±2⁵³ will lose their precision.
-// For example, 1234567890123456789 is formatted as 1234567890123456800.
+// JSONの数値はIEEE 754倍精度浮動小数点数として扱われます。
+// この形式で表現できる範囲を超える精度の数値は、正規化時に精度が失われます。
+// 例えば、±2⁵³を超える整数値は精度が失われます。
+// 例：1234567890123456789は1234567890123456800としてフォーマットされます。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func CanonicalizeRawInts(v bool) Options
 
-// CanonicalizeRawFloats specifies that when encoding a raw JSON
-// floating-point number (i.e., a number with a fraction or exponent) in a
-// [Token] or [Value], the number is canonicalized
-// according to RFC 8785, section 3.2.2.3. As a special case,
-// the number -0 is canonicalized as 0.
+// CanonicalizeRawFloatsは、生のJSON浮動小数点数（小数部や指数部を持つ数値）を
+// [Token] や [Value] でエンコードする際、RFC 8785の3.2.2.3節に従って正規化します。
+// 特別なケースとして、-0は0として正規化されます。
 //
-// JSON numbers are treated as IEEE 754 double precision numbers.
-// It is safe to canonicalize a serialized single precision number and
-// parse it back as a single precision number and expect the same value.
-// If a number exceeds ±1.7976931348623157e+308, which is the maximum
-// finite number, then it saturated at that value and formatted as such.
+// JSONの数値はIEEE 754倍精度浮動小数点数として扱われます。
+// シリアライズされた単精度数値を正規化し、再度単精度としてパースしても同じ値が得られます。
+// ±1.7976931348623157e+308を超える数値は最大有限値で飽和し、その値としてフォーマットされます。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func CanonicalizeRawFloats(v bool) Options
 
-// ReorderRawObjects specifies that when encoding a raw JSON object in a
-// [Value], the object members are reordered according to
-// RFC 8785, section 3.2.3.
+// ReorderRawObjectsは、生のJSONオブジェクトを [Value] でエンコードする際、
+// オブジェクトのメンバーをRFC 8785の3.2.3節に従って並べ替えます。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func ReorderRawObjects(v bool) Options
 
-// SpaceAfterColon specifies that the JSON output should emit a space character
-// after each colon separator following a JSON object name.
-// If false, then no space character appears after the colon separator.
+// SpaceAfterColonは、JSON出力で各コロン区切り（JSONオブジェクト名の後）に
+// スペース文字を挿入するかどうかを指定します。
+// falseの場合、コロンの後にスペース文字は挿入されません。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func SpaceAfterColon(v bool) Options
 
-// SpaceAfterComma specifies that the JSON output should emit a space character
-// after each comma separator following a JSON object value or array element.
-// If false, then no space character appears after the comma separator.
+// SpaceAfterCommaは、JSON出力で各カンマ区切り（JSONオブジェクトの値や配列要素の後）に
+// スペース文字を挿入するかどうかを指定します。
+// falseの場合、カンマの後にスペース文字は挿入されません。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func SpaceAfterComma(v bool) Options
 
-// Multiline specifies that the JSON output should expand to multiple lines,
-// where every JSON object member or JSON array element appears on
-// a new, indented line according to the nesting depth.
+// Multilineは、JSON出力を複数行に展開することを指定します。
+// すべてのJSONオブジェクトメンバーやJSON配列要素が、
+// ネストの深さに応じて新しいインデント付きの行に表示されます。
 //
-// If [SpaceAfterColon] is not specified, then the default is true.
-// If [SpaceAfterComma] is not specified, then the default is false.
-// If [WithIndent] is not specified, then the default is "\t".
+// [SpaceAfterColon] が指定されていない場合、デフォルトはtrueです。
+// [SpaceAfterComma] が指定されていない場合、デフォルトはfalseです。
+// [WithIndent] が指定されていない場合、デフォルトは"\t"です。
 //
-// If set to false, then the output is a single-line,
-// where the only whitespace emitted is determined by the current
-// values of [SpaceAfterColon] and [SpaceAfterComma].
+// falseに設定すると、出力は1行のみとなり、
+// 出力される空白文字は現在の [SpaceAfterColon] と [SpaceAfterComma] の値によって決まります。
 //
-// This only affects encoding and is ignored when decoding.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
 func Multiline(v bool) Options
 
-// WithIndent specifies that the encoder should emit multiline output
-// where each element in a JSON object or array begins on a new, indented line
-// beginning with the indent prefix (see [WithIndentPrefix])
-// followed by one or more copies of indent according to the nesting depth.
-// The indent must only be composed of space or tab characters.
+// WithIndentは、エンコーダが複数行の出力を生成することを指定します。
+// 各JSONオブジェクトや配列の要素は、新しいインデント付きの行で開始され、
+// インデントプリフィックス（[WithIndentPrefix] 参照）の後に、
+// ネストの深さに応じてインデント文字列が1回以上繰り返されます。
+// インデント文字列はスペースまたはタブのみで構成されている必要があります。
 //
-// If the intent to emit indented output without a preference for
-// the particular indent string, then use [Multiline] instead.
+// 特定のインデント文字列にこだわりがなく、インデントされた出力を生成したい場合は
+// [Multiline] を使用してください。
 //
-// This only affects encoding and is ignored when decoding.
-// Use of this option implies [Multiline] being set to true.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
+// このオプションを指定すると [Multiline] もtrueになります。
 func WithIndent(indent string) Options
 
-// WithIndentPrefix specifies that the encoder should emit multiline output
-// where each element in a JSON object or array begins on a new, indented line
-// beginning with the indent prefix followed by one or more copies of indent
-// (see [WithIndent]) according to the nesting depth.
-// The prefix must only be composed of space or tab characters.
+// WithIndentPrefixは、エンコーダが複数行の出力を生成する際、
+// 各JSONオブジェクトや配列の要素が新しいインデント付きの行で開始され、
+// インデントプリフィックスの後にインデント文字列がネストの深さに応じて1回以上繰り返されます
+// （詳細は [WithIndent] を参照）。
+// プリフィックスはスペースまたはタブのみで構成されている必要があります。
 //
-// This only affects encoding and is ignored when decoding.
-// Use of this option implies [Multiline] being set to true.
+// このオプションはエンコード時のみ有効で、デコード時には無視されます。
+// このオプションを指定すると [Multiline] もtrueになります。
 func WithIndentPrefix(prefix string) Options

@@ -12,100 +12,84 @@ import (
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// SkipFunc may be returned by [MarshalToFunc] and [UnmarshalFromFunc] functions.
+// SkipFuncは、[MarshalToFunc] および [UnmarshalFromFunc] 関数から返される場合があります。
 //
-// Any function that returns SkipFunc must not cause observable side effects
-// on the provided [jsontext.Encoder] or [jsontext.Decoder].
-// For example, it is permissible to call [jsontext.Decoder.PeekKind],
-// but not permissible to call [jsontext.Decoder.ReadToken] or
-// [jsontext.Encoder.WriteToken] since such methods mutate the state.
+// SkipFuncを返す関数は、渡された [jsontext.Encoder] や [jsontext.Decoder] に
+// 観測可能な副作用を与えてはなりません。
+// 例えば、[jsontext.Decoder.PeekKind] を呼び出すことは許容されますが、
+// [jsontext.Decoder.ReadToken] や [jsontext.Encoder.WriteToken] のような
+// 状態を変更するメソッドを呼び出すことは許容されません。
 var SkipFunc = errors.New("json: skip function")
 
-// Marshalers is a list of functions that may override the marshal behavior
-// of specific types. Populate [WithMarshalers] to use it with
-// [Marshal], [MarshalWrite], or [MarshalEncode].
-// A nil *Marshalers is equivalent to an empty list.
-// There are no exported fields or methods on Marshalers.
+// Marshalersは、特定の型のマーシャル動作を上書きできる関数群のリストです。
+// [WithMarshalers] で設定することで、[Marshal]、[MarshalWrite]、[MarshalEncode] で利用できます。
+// nilの*Marshalersは空リストと同等です。
+// Marshalersにはエクスポートされたフィールドやメソッドはありません。
 type Marshalers = typedMarshalers
 
-// JoinMarshalers constructs a flattened list of marshal functions.
-// If multiple functions in the list are applicable for a value of a given type,
-// then those earlier in the list take precedence over those that come later.
-// If a function returns [SkipFunc], then the next applicable function is called,
-// otherwise the default marshaling behavior is used.
+// JoinMarshalersは、マーシャル関数のフラットなリストを構築します。
+// リスト内の複数の関数が特定の型の値に適用可能な場合、リストの先頭にある関数ほど優先されます。
+// 関数が [SkipFunc] を返した場合は、次に適用可能な関数が呼び出され、
+// それ以外の場合はデフォルトのマーシャル動作が使われます。
 //
-// For example:
+// 例：
 //
 //	m1 := JoinMarshalers(f1, f2)
-//	m2 := JoinMarshalers(f0, m1, f3)     // equivalent to m3
-//	m3 := JoinMarshalers(f0, f1, f2, f3) // equivalent to m2
+//	m2 := JoinMarshalers(f0, m1, f3)     // m3と同等
+//	m3 := JoinMarshalers(f0, f1, f2, f3) // m2と同等
 func JoinMarshalers(ms ...*Marshalers) *Marshalers
 
-// Unmarshalers is a list of functions that may override the unmarshal behavior
-// of specific types. Populate [WithUnmarshalers] to use it with
-// [Unmarshal], [UnmarshalRead], or [UnmarshalDecode].
-// A nil *Unmarshalers is equivalent to an empty list.
-// There are no exported fields or methods on Unmarshalers.
+// Unmarshalersは、特定の型のアンマーシャル動作を上書きできる関数群のリストです。
+// [WithUnmarshalers] で設定することで、[Unmarshal]、[UnmarshalRead]、[UnmarshalDecode] で利用できます。
+// nilの*Unmarshalersは空リストと同等です。
+// Unmarshalersにはエクスポートされたフィールドやメソッドはありません。
 type Unmarshalers = typedUnmarshalers
 
-// JoinUnmarshalers constructs a flattened list of unmarshal functions.
-// If multiple functions in the list are applicable for a value of a given type,
-// then those earlier in the list take precedence over those that come later.
-// If a function returns [SkipFunc], then the next applicable function is called,
-// otherwise the default unmarshaling behavior is used.
+// JoinUnmarshalersは、アンマーシャル関数のフラットなリストを構築します。
+// リスト内の複数の関数が特定の型の値に適用可能な場合、リストの先頭にある関数ほど優先されます。
+// 関数が [SkipFunc] を返した場合は、次に適用可能な関数が呼び出され、
+// それ以外の場合はデフォルトのアンマーシャル動作が使われます。
 //
-// For example:
+// 例：
 //
 //	u1 := JoinUnmarshalers(f1, f2)
-//	u2 := JoinUnmarshalers(f0, u1, f3)     // equivalent to u3
-//	u3 := JoinUnmarshalers(f0, f1, f2, f3) // equivalent to u2
+//	u2 := JoinUnmarshalers(f0, u1, f3)     // u3と同等
+//	u3 := JoinUnmarshalers(f0, f1, f2, f3) // u2と同等
 func JoinUnmarshalers(us ...*Unmarshalers) *Unmarshalers
 
-// MarshalFunc constructs a type-specific marshaler that
-// specifies how to marshal values of type T.
-// T can be any type except a named pointer.
-// The function is always provided with a non-nil pointer value
-// if T is an interface or pointer type.
+// MarshalFuncは、型T専用のマーシャル方法を指定する関数を構築します。
+// Tは名前付きポインタ以外の任意の型にできます。
+// Tがインターフェース型またはポインタ型の場合、関数には必ず非nilのポインタ値が渡されます。
 //
-// The function must marshal exactly one JSON value.
-// The value of T must not be retained outside the function call.
-// It may not return [SkipFunc].
+// 関数は必ず1つのJSON値をマーシャルしなければなりません。
+// Tの値を関数呼び出しの外部に保持してはなりません。
+// [SkipFunc] を返すことはできません。
 func MarshalFunc[T any](fn func(T) ([]byte, error)) *Marshalers
 
-// MarshalToFunc constructs a type-specific marshaler that
-// specifies how to marshal values of type T.
-// T can be any type except a named pointer.
-// The function is always provided with a non-nil pointer value
-// if T is an interface or pointer type.
+// MarshalToFuncは、型T専用のマーシャル方法を指定する関数を構築します。
+// Tは名前付きポインタ以外の任意の型にできます。
+// Tがインターフェース型またはポインタ型の場合、関数には必ず非nilのポインタ値が渡されます。
 //
-// The function must marshal exactly one JSON value by calling write methods
-// on the provided encoder. It may return [SkipFunc] such that marshaling can
-// move on to the next marshal function. However, no mutable method calls may
-// be called on the encoder if [SkipFunc] is returned.
-// The pointer to [jsontext.Encoder] and the value of T
-// must not be retained outside the function call.
+// 関数は必ず提供されたエンコーダのwriteメソッドを呼び出して、1つのJSON値をマーシャルしなければなりません。
+// [SkipFunc] を返すことで、次のマーシャル関数に処理を移すことができますが、[SkipFunc] を返す場合はエンコーダに対して可変メソッドを呼び出してはいけません。
+// [jsontext.Encoder] へのポインタやTの値は関数呼び出しの外部に保持してはいけません。
 func MarshalToFunc[T any](fn func(*jsontext.Encoder, T) error) *Marshalers
 
-// UnmarshalFunc constructs a type-specific unmarshaler that
-// specifies how to unmarshal values of type T.
-// T must be an unnamed pointer or an interface type.
-// The function is always provided with a non-nil pointer value.
+// UnmarshalFuncは、型T専用のアンマーシャル方法を指定する関数を構築します。
+// Tは名前なしポインタ型またはインターフェース型でなければなりません。
+// 関数には必ず非nilのポインタ値が渡されます。
 //
-// The function must unmarshal exactly one JSON value.
-// The input []byte must not be mutated.
-// The input []byte and value T must not be retained outside the function call.
-// It may not return [SkipFunc].
+// 関数は必ず1つのJSON値をアンマーシャルしなければなりません。
+// 入力の[]byteは変更してはいけません。
+// 入力の[]byteやTの値は関数呼び出しの外部に保持してはいけません。
+// [SkipFunc] を返すことはできません。
 func UnmarshalFunc[T any](fn func([]byte, T) error) *Unmarshalers
 
-// UnmarshalFromFunc constructs a type-specific unmarshaler that
-// specifies how to unmarshal values of type T.
-// T must be an unnamed pointer or an interface type.
-// The function is always provided with a non-nil pointer value.
+// UnmarshalFromFuncは、型T専用のアンマーシャル方法を指定する関数を構築します。
+// Tは名前なしポインタ型またはインターフェース型でなければなりません。
+// 関数には必ず非nilのポインタ値が渡されます。
 //
-// The function must unmarshal exactly one JSON value by calling read methods
-// on the provided decoder. It may return [SkipFunc] such that unmarshaling can
-// move on to the next unmarshal function. However, no mutable method calls may
-// be called on the decoder if [SkipFunc] is returned.
-// The pointer to [jsontext.Decoder] and the value of T
-// must not be retained outside the function call.
+// 関数は必ず提供されたデコーダのreadメソッドを呼び出して、1つのJSON値をアンマーシャルしなければなりません。
+// [SkipFunc] を返すことで、次のアンマーシャル関数に処理を移すことができますが、[SkipFunc] を返す場合はデコーダに対して可変メソッドを呼び出してはいけません。
+// [jsontext.Decoder] へのポインタやTの値は関数呼び出しの外部に保持してはいけません。
 func UnmarshalFromFunc[T any](fn func(*jsontext.Decoder, T) error) *Unmarshalers

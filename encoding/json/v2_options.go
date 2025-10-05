@@ -4,171 +4,116 @@
 
 //go:build goexperiment.jsonv2
 
-// Migrating to v2
+// v2への移行
 //
-// This package (i.e., [encoding/json]) is now formally known as the v1 package
-// since a v2 package now exists at [encoding/json/v2].
-// All the behavior of the v1 package is implemented in terms of
-// the v2 package with the appropriate set of options specified that
-// preserve the historical behavior of v1.
+// このパッケージ（つまり [encoding/json]）は、v2パッケージが[encoding/json/v2]に存在するため、正式にはv1パッケージと呼ばれるようになりました。
+// v1パッケージのすべての動作は、v2パッケージの適切なオプションセットを指定することで、v1の歴史的な動作を維持した形で実装されています。
 //
-// The [jsonv2.Marshal] function is the newer equivalent of v1 [Marshal].
-// The [jsonv2.Unmarshal] function is the newer equivalent of v1 [Unmarshal].
-// The v2 functions have the same calling signature as the v1 equivalent
-// except that they take in variadic [Options] arguments that can be specified
-// to alter the behavior of marshal or unmarshal. Both v1 and v2 generally
-// behave in similar ways, but there are some notable differences.
+// [jsonv2.Marshal] 関数は、v1の [Marshal] の新しい同等関数です。
+// [jsonv2.Unmarshal] 関数は、v1の [Unmarshal] の新しい同等関数です。
+// v2の関数は、v1と同じ呼び出しシグネチャですが、可変長の [Options] 引数を受け取り、マーシャルやアンマーシャルの動作を変更できます。
+// v1とv2は一般的に似た動作をしますが、いくつか顕著な違いがあります。
 //
-// The following is a list of differences between v1 and v2:
+// 以下はv1とv2の違いの一覧です：
 //
-//   - In v1, JSON object members are unmarshaled into a Go struct using a
-//     case-insensitive name match with the JSON name of the fields.
-//     In contrast, v2 matches fields using an exact, case-sensitive match.
-//     The [jsonv2.MatchCaseInsensitiveNames] and [MatchCaseSensitiveDelimiter]
-//     options control this behavior difference. To explicitly specify a Go struct
-//     field to use a particular name matching scheme, either the `case:ignore`
-//     or the `case:strict` field option can be specified.
-//     Field-specified options take precedence over caller-specified options.
+//   - v1では、JSONオブジェクトのメンバーはGo構造体のフィールド名と大文字小文字を区別しない一致でアンマーシャルされます。
+//     一方、v2ではフィールド名の完全一致（大文字小文字区別）で一致させます。
+//     [jsonv2.MatchCaseInsensitiveNames] や [MatchCaseSensitiveDelimiter] オプションでこの動作を制御できます。
+//     Go構造体フィールドごとに一致方法を指定したい場合は、`case:ignore`や`case:strict`フィールドオプションを指定できます。
+//     フィールド指定のオプションは呼び出し元指定のオプションより優先されます。
 //
-//   - In v1, when marshaling a Go struct, a field marked as `omitempty`
-//     is omitted if the field value is an "empty" Go value, which is defined as
-//     false, 0, a nil pointer, a nil interface value, and
-//     any empty array, slice, map, or string. In contrast, v2 redefines
-//     `omitempty` to omit a field if it encodes as an "empty" JSON value,
-//     which is defined as a JSON null, or an empty JSON string, object, or array.
-//     The [OmitEmptyWithLegacySemantics] option controls this behavior difference.
-//     Note that `omitempty` behaves identically in both v1 and v2 for a
-//     Go array, slice, map, or string (assuming no user-defined MarshalJSON method
-//     overrides the default representation). Existing usages of `omitempty` on a
-//     Go bool, number, pointer, or interface value should migrate to specifying
-//     `omitzero` instead (which is identically supported in both v1 and v2).
+//   - v1では、Go構造体のフィールドに`omitempty`が付いている場合、値が「空」のGo値（false, 0, nilポインタ, nilインターフェース値、長さ0の配列・スライス・マップ・文字列）なら省略されます。
+//     一方、v2では`omitempty`は「空」のJSON値（JSON null、空のJSON文字列・オブジェクト・配列）としてエンコードされる場合に省略されます。
+//     [OmitEmptyWithLegacySemantics]オプションでこの動作を制御できます。
+//     なお、`omitempty`はGoの配列・スライス・マップ・文字列についてはv1とv2で同じ動作です（ユーザー定義MarshalJSONメソッドがなければ）。
+//     既存のGoのbool, number, pointer, interface値に対する`omitempty`は、`omitzero`に移行してください（v1/v2両方で同じ動作）。
 //
-//   - In v1, a Go struct field marked as `string` can be used to quote a
-//     Go string, bool, or number as a JSON string. It does not recursively
-//     take effect on composite Go types. In contrast, v2 restricts
-//     the `string` option to only quote a Go number as a JSON string.
-//     It does recursively take effect on Go numbers within a composite Go type.
-//     The [StringifyWithLegacySemantics] option controls this behavior difference.
+//   - v1では、Go構造体フィールドに`string`を付けると、Goのstring, bool, numberをJSON文字列として引用できます。複合型には再帰的に適用されません。
+//     一方、v2では`string`オプションはGoのnumberのみをJSON文字列として引用でき、複合型内のGo numberにも再帰的に適用されます。
+//     [StringifyWithLegacySemantics] オプションでこの動作を制御できます。
 //
-//   - In v1, a nil Go slice or Go map is marshaled as a JSON null.
-//     In contrast, v2 marshals a nil Go slice or Go map as
-//     an empty JSON array or JSON object, respectively.
-//     The [jsonv2.FormatNilSliceAsNull] and [jsonv2.FormatNilMapAsNull] options
-//     control this behavior difference. To explicitly specify a Go struct field
-//     to use a particular representation for nil, either the `format:emitempty`
-//     or `format:emitnull` field option can be specified.
-//     Field-specified options take precedence over caller-specified options.
+//   - v1では、nilのGoスライスやGoマップはJSON nullとしてマーシャルされます。
+//     一方、v2ではnilのGoスライスは空のJSON配列、nilのGoマップは空のJSONオブジェクトとしてマーシャルされます。
+//     [jsonv2.FormatNilSliceAsNull] や [jsonv2.FormatNilMapAsNull] オプションでこの動作を制御できます。
+//     Go構造体フィールドごとにnilの表現を指定したい場合は、`format:emitempty`や`format:emitnull`フィールドオプションを指定できます。
+//     フィールド指定のオプションは呼び出し元指定のオプションより優先されます。
 //
-//   - In v1, a Go array may be unmarshaled from a JSON array of any length.
-//     In contrast, in v2 a Go array must be unmarshaled from a JSON array
-//     of the same length, otherwise it results in an error.
-//     The [UnmarshalArrayFromAnyLength] option controls this behavior difference.
+//   - v1では、Go配列は任意の長さのJSON配列からアンマーシャルできます。
+//     一方、v2ではGo配列は同じ長さのJSON配列からのみアンマーシャルでき、長さが違うとエラーになります。
+//     [UnmarshalArrayFromAnyLength] オプションでこの動作を制御できます。
 //
-//   - In v1, a Go byte array is represented as a JSON array of JSON numbers.
-//     In contrast, in v2 a Go byte array is represented as a Base64-encoded JSON string.
-//     The [FormatByteArrayAsArray] option controls this behavior difference.
-//     To explicitly specify a Go struct field to use a particular representation,
-//     either the `format:array` or `format:base64` field option can be specified.
-//     Field-specified options take precedence over caller-specified options.
+//   - v1では、Goのバイト配列はJSONの数値配列として表現されます。
+//     一方、v2ではGoのバイト配列はBase64エンコードされたJSON文字列として表現されます。
+//     [FormatByteArrayAsArray] オプションでこの動作を制御できます。
+//     Go構造体フィールドごとに表現を指定したい場合は、`format:array`や`format:base64`フィールドオプションを指定できます。
+//     フィールド指定のオプションは呼び出し元指定のオプションより優先されます。
 //
-//   - In v1, MarshalJSON methods declared on a pointer receiver are only called
-//     if the Go value is addressable. In contrast, in v2 a MarshalJSON method
-//     is always callable regardless of addressability.
-//     The [CallMethodsWithLegacySemantics] option controls this behavior difference.
+//   - v1では、ポインタレシーバで宣言されたMarshalJSONメソッドはGo値がアドレス可能な場合のみ呼び出されます。
+//     一方、v2ではMarshalJSONメソッドはアドレス可能かどうかに関係なく常に呼び出されます。
+//     [CallMethodsWithLegacySemantics] オプションでこの動作を制御できます。
 //
-//   - In v1, MarshalJSON and UnmarshalJSON methods are never called for Go map keys.
-//     In contrast, in v2 a MarshalJSON or UnmarshalJSON method is eligible for
-//     being called for Go map keys.
-//     The [CallMethodsWithLegacySemantics] option controls this behavior difference.
+//   - v1では、Goマップのキーに対してMarshalJSONやUnmarshalJSONメソッドは呼び出されません。
+//     一方、v2ではGoマップのキーにもMarshalJSONやUnmarshalJSONメソッドが呼び出される可能性があります。
+//     [CallMethodsWithLegacySemantics] オプションでこの動作を制御できます。
 //
-//   - In v1, a Go map is marshaled in a deterministic order.
-//     In contrast, in v2 a Go map is marshaled in a non-deterministic order.
-//     The [jsonv2.Deterministic] option controls this behavior difference.
+//   - v1では、Goマップは決定的な順序でマーシャルされます。
+//     一方、v2ではGoマップは非決定的な順序でマーシャルされます。
+//     [jsonv2.Deterministic] オプションでこの動作を制御できます。
 //
-//   - In v1, JSON strings are encoded with HTML-specific or JavaScript-specific
-//     characters being escaped. In contrast, in v2 JSON strings use the minimal
-//     encoding and only escape if required by the JSON grammar.
-//     The [jsontext.EscapeForHTML] and [jsontext.EscapeForJS] options
-//     control this behavior difference.
+//   - v1では、JSON文字列はHTMLやJavaScript固有の文字がエスケープされてエンコードされます。
+//     一方、v2ではJSON文字列は最小限のエンコーディングとなり、JSON文法で必要な場合のみエスケープされます。
+//     [jsontext.EscapeForHTML] や [jsontext.EscapeForJS] オプションでこの動作を制御できます。
 //
-//   - In v1, bytes of invalid UTF-8 within a string are silently replaced with
-//     the Unicode replacement character. In contrast, in v2 the presence of
-//     invalid UTF-8 results in an error. The [jsontext.AllowInvalidUTF8] option
-//     controls this behavior difference.
+//   - v1では、文字列内の無効なUTF-8バイトは黙ってUnicodeの置換文字に置き換えられます。
+//     一方、v2では無効なUTF-8があるとエラーになります。[jsontext.AllowInvalidUTF8] オプションでこの動作を制御できます。
 //
-//   - In v1, a JSON object with duplicate names is permitted.
-//     In contrast, in v2 a JSON object with duplicate names results in an error.
-//     The [jsontext.AllowDuplicateNames] option controls this behavior difference.
+//   - v1では、重複した名前を持つJSONオブジェクトが許可されます。
+//     一方、v2では重複した名前のJSONオブジェクトはエラーになります。[jsontext.AllowDuplicateNames] オプションでこの動作を制御できます。
 //
-//   - In v1, when unmarshaling a JSON null into a non-empty Go value it will
-//     inconsistently either zero out the value or do nothing.
-//     In contrast, in v2 unmarshaling a JSON null will consistently and always
-//     zero out the underlying Go value. The [MergeWithLegacySemantics] option
-//     controls this behavior difference.
+//   - v1では、JSON nullを非空のGo値にアンマーシャルする場合、値をゼロクリアするか何もしないかが一貫しません。
+//     一方、v2ではJSON nullをアンマーシャルすると常にGo値をゼロクリアします。[MergeWithLegacySemantics] オプションでこの動作を制御できます。
 //
-//   - In v1, when unmarshaling a JSON value into a non-zero Go value,
-//     it merges into the original Go value for array elements, slice elements,
-//     struct fields (but not map values),
-//     pointer values, and interface values (only if a non-nil pointer).
-//     In contrast, in v2 unmarshal merges into the Go value
-//     for struct fields, map values, pointer values, and interface values.
-//     In general, the v2 semantic merges when unmarshaling a JSON object,
-//     otherwise it replaces the value. The [MergeWithLegacySemantics] option
-//     controls this behavior difference.
+//   - v1では、JSON値を非ゼロのGo値にアンマーシャルする場合、配列要素・スライス要素・構造体フィールド（ただしマップ値は除く）・ポインタ値・インターフェース値（非nilポインタのみ）にマージされます。
+//     一方、v2では構造体フィールド・マップ値・ポインタ値・インターフェース値にマージされます。
+//     一般的に、v2のセマンティクスはJSONオブジェクトをアンマーシャルする場合にマージし、それ以外は値を置き換えます。[MergeWithLegacySemantics] オプションでこの動作を制御できます。
 //
-//   - In v1, a [time.Duration] is represented as a JSON number containing
-//     the decimal number of nanoseconds. In contrast, in v2 a [time.Duration]
-//     has no default representation and results in a runtime error.
-//     The [FormatDurationAsNano] option controls this behavior difference.
-//     To explicitly specify a Go struct field to use a particular representation,
-//     either the `format:nano` or `format:units` field option can be specified.
-//     Field-specified options take precedence over caller-specified options.
+//   - v1では、[time.Duration] はナノ秒数のJSON数値として表現されます。
+//     一方、v2では [time.Duration] はデフォルトの表現がなく、実行時エラーになります。[FormatDurationAsNano] オプションでこの動作を制御できます。
+//     Go構造体フィールドごとに表現を指定したい場合は、`format:nano`や`format:units`フィールドオプションを指定できます。
+//     フィールド指定のオプションは呼び出し元指定のオプションより優先されます。
 //
-//   - In v1, errors are never reported at runtime for Go struct types
-//     that have some form of structural error (e.g., a malformed tag option).
-//     In contrast, v2 reports a runtime error for Go types that are invalid
-//     as they relate to JSON serialization. For example, a Go struct
-//     with only unexported fields cannot be serialized.
-//     The [ReportErrorsWithLegacySemantics] option controls this behavior difference.
+//   - v1では、Go構造体型に構造的なエラー（例：タグオプションの不正）があっても実行時エラーは報告されません。
+//     一方、v2ではJSONシリアライズに関連するGo型が不正な場合は実行時エラーが報告されます。例えば、エクスポートされていないフィールドのみのGo構造体はシリアライズできません。
+//     [ReportErrorsWithLegacySemantics] オプションでこの動作を制御できます。
 //
-// As mentioned, the entirety of v1 is implemented in terms of v2,
-// where options are implicitly specified to opt into legacy behavior.
-// For example, [Marshal] directly calls [jsonv2.Marshal] with [DefaultOptionsV1].
-// Similarly, [Unmarshal] directly calls [jsonv2.Unmarshal] with [DefaultOptionsV1].
-// The [DefaultOptionsV1] option represents the set of all options that specify
-// default v1 behavior.
+// 前述の通り、v1の全機能はv2を使って実装されており、オプションを指定することでレガシー動作に切り替えています。
+// 例えば、[Marshal] は [jsonv2.Marshal] を [DefaultOptionsV1] 付きで直接呼び出します。
+// 同様に、[Unmarshal] は [jsonv2.Unmarshal] を [DefaultOptionsV1] 付きで直接呼び出します。
+// [DefaultOptionsV1] オプションはv1のデフォルト動作を指定するすべてのオプションセットです。
 //
-// For many of the behavior differences, there are Go struct field options
-// that the author of a Go type can specify to control the behavior such that
-// the type is represented identically in JSON under either v1 or v2 semantics.
+// 多くの動作の違いについては、Go型の作者がGo構造体フィールドオプションを指定することで、v1/v2どちらのセマンティクスでも同じJSON表現になるよう制御できます。
 //
-// The availability of [DefaultOptionsV1] and [jsonv2.DefaultOptionsV2],
-// where later options take precedence over former options allows for
-// a gradual migration from v1 to v2. For example:
+// [DefaultOptionsV1] と [jsonv2.DefaultOptionsV2] の両方を利用でき、後者のオプションが前者より優先されるため、v1からv2への段階的な移行が可能です。例：
 //
 //   - jsonv1.Marshal(v)
-//     uses default v1 semantics.
+//     デフォルトのv1セマンティクスを使用します。
 //
 //   - jsonv2.Marshal(v, jsonv1.DefaultOptionsV1())
-//     is semantically equivalent to jsonv1.Marshal
-//     and thus uses default v1 semantics.
+//     jsonv1.Marshalと同じ意味で、デフォルトのv1セマンティクスを使用します。
 //
 //   - jsonv2.Marshal(v, jsonv1.DefaultOptionsV1(), jsontext.AllowDuplicateNames(false))
-//     uses mostly v1 semantics, but opts into one particular v2-specific behavior.
+//     ほぼv1セマンティクスですが、1つだけv2固有の動作に切り替えます。
 //
 //   - jsonv2.Marshal(v, jsonv1.CallMethodsWithLegacySemantics(true))
-//     uses mostly v2 semantics, but opts into one particular v1-specific behavior.
+//     ほぼv2セマンティクスですが、1つだけv1固有の動作に切り替えます。
 //
 //   - jsonv2.Marshal(v, ..., jsonv2.DefaultOptionsV2())
-//     is semantically equivalent to jsonv2.Marshal since
-//     jsonv2.DefaultOptionsV2 overrides any options specified earlier
-//     and thus uses default v2 semantics.
+//     jsonv2.Marshalと同じ意味で、jsonv2.DefaultOptionsV2がそれ以前のオプションを上書きし、デフォルトのv2セマンティクスを使用します。
 //
 //   - jsonv2.Marshal(v)
-//     uses default v2 semantics.
+//     デフォルトのv2セマンティクスを使用します。
 //
-// All new usages of "json" in Go should use the v2 package,
-// but the v1 package will forever remain supported.
+// Goで新しく"json"を使う場合はv2パッケージの利用を推奨しますが、v1パッケージも今後もサポートされ続けます。
 package json
 
 import (
@@ -187,18 +132,15 @@ var (
 	_ jsontext.Options
 )
 
-// Options are a set of options to configure the v2 "json" package
-// to operate with v1 semantics for particular features.
-// Values of this type can be passed to v2 functions like
-// [jsonv2.Marshal] or [jsonv2.Unmarshal].
-// Instead of referencing this type, use [jsonv2.Options].
+// Optionsは、v2の "json" パッケージを特定の機能についてv1のセマンティクスで動作させるためのオプションセットです。
+// この型の値は、[jsonv2.Marshal] や [jsonv2.Unmarshal] などのv2関数に渡すことができます。
+// この型を直接参照するのではなく、[jsonv2.Options] を使用してください。
 //
-// See the "Migrating to v2" section for guidance on how to migrate usage
-// of "json" from using v1 to using v2 instead.
+// v1からv2への移行方法については「v2への移行」セクションを参照してください。
 type Options = jsonopts.Options
 
-// DefaultOptionsV1 is the full set of all options that define v1 semantics.
-// It is equivalent to the following boolean options being set to true:
+// DefaultOptionsV1は、v1のセマンティクスを定義するすべてのオプションセットです。
+// 以下のブールオプションがtrueに設定されているのと同等です：
 //
 //   - [CallMethodsWithLegacySemantics]
 //   - [FormatByteArrayAsArray]
@@ -222,235 +164,157 @@ type Options = jsonopts.Options
 //   - [jsontext.EscapeForJS]
 //   - [jsontext.PreserveRawStrings]
 //
-// All other boolean options are set to false.
-// All non-boolean options are set to the zero value,
-// except for [jsontext.WithIndent], which defaults to "\t".
+// その他のブールオプションはすべてfalseに設定されます。
+// 非ブールオプションはすべてゼロ値に設定されますが、[jsontext.WithIndent] のみ"\t"がデフォルトです。
 //
-// The [Marshal] and [Unmarshal] functions in this package are
-// semantically identical to calling the v2 equivalents with this option:
+// このパッケージの [Marshal] および [Unmarshal] 関数は、v2の同等関数にこのオプションを指定して呼び出すのと同じ意味です：
 //
 //	jsonv2.Marshal(v, jsonv1.DefaultOptionsV1())
 //	jsonv2.Unmarshal(b, v, jsonv1.DefaultOptionsV1())
 func DefaultOptionsV1() Options
 
-// CallMethodsWithLegacySemantics specifies that calling of type-provided
-// marshal and unmarshal methods follow legacy semantics:
+// CallMethodsWithLegacySemanticsは、型が提供するマーシャル・アンマーシャルメソッドの呼び出しをレガシーセマンティクスで行うことを指定します:
 //
-//   - When marshaling, a marshal method declared on a pointer receiver
-//     is only called if the Go value is addressable.
-//     Values obtained from an interface or map element are not addressable.
-//     Values obtained from a pointer or slice element are addressable.
-//     Values obtained from an array element or struct field inherit
-//     the addressability of the parent. In contrast, the v2 semantic
-//     is to always call marshal methods regardless of addressability.
+//   - マーシャル時、ポインタレシーバで宣言されたマーシャルメソッドはGo値がアドレス可能な場合のみ呼び出されます。
+//     インターフェースやマップ要素から取得した値はアドレス不可です。
+//     ポインタやスライス要素から取得した値はアドレス可能です。
+//     配列要素や構造体フィールドから取得した値は親のアドレス可能性を継承します。
+//     v2のセマンティクスではアドレス可能かどうかに関係なく常にメソッドを呼び出します。
 //
-//   - When marshaling or unmarshaling, the [Marshaler] or [Unmarshaler]
-//     methods are ignored for map keys. However, [encoding.TextMarshaler]
-//     or [encoding.TextUnmarshaler] are still callable.
-//     In contrast, the v2 semantic is to serialize map keys
-//     like any other value (with regard to calling methods),
-//     which may include calling [Marshaler] or [Unmarshaler] methods,
-//     where it is the implementation's responsibility to represent the
-//     Go value as a JSON string (as required for JSON object names).
+//   - マーシャル・アンマーシャル時、マップキーに対して [Marshaler] や [Unmarshaler] メソッドは無視されます。
+//     ただし [encoding.TextMarshaler] や [encoding.TextUnmarshaler] は呼び出されます。
+//     v2のセマンティクスではマップキーも他の値と同様にメソッドを呼び出してシリアライズします。
+//     実装側がGo値をJSON文字列として表現する責任があります（JSONオブジェクト名として必要）。
 //
-//   - When marshaling, if a map key value implements a marshal method
-//     and is a nil pointer, then it is serialized as an empty JSON string.
-//     In contrast, the v2 semantic is to report an error.
+//   - マーシャル時、マップキー値がマーシャルメソッドを実装していてnilポインタの場合、空のJSON文字列としてシリアライズされます。
+//     v2のセマンティクスではエラーになります。
 //
-//   - When marshaling, if an interface type implements a marshal method
-//     and the interface value is a nil pointer to a concrete type,
-//     then the marshal method is always called.
-//     In contrast, the v2 semantic is to never directly call methods
-//     on interface values and to instead defer evaluation based upon
-//     the underlying concrete value. Similar to non-interface values,
-//     marshal methods are not called on nil pointers and
-//     are instead serialized as a JSON null.
+//   - マーシャル時、インターフェース型がマーシャルメソッドを実装していてインターフェース値が具体型へのnilポインタの場合、常にマーシャルメソッドが呼び出されます。
+//     v2のセマンティクスではインターフェース値に直接メソッドを呼び出さず、基底の具体値に基づいて評価を遅延します。
+//     非インターフェース値と同様、nilポインタにはメソッドを呼び出さず、JSON nullとしてシリアライズされます。
 //
-// This affects either marshaling or unmarshaling.
-// The v1 default is true.
+// このオプションはマーシャル・アンマーシャルの両方に影響します。
+// v1のデフォルトはtrueです。
 func CallMethodsWithLegacySemantics(v bool) Options
 
-// FormatByteArrayAsArray specifies that a Go [N]byte is
-// formatted as as a normal Go array in contrast to the v2 default of
-// formatting [N]byte as using binary data encoding (RFC 4648).
-// If a struct field has a `format` tag option,
-// then the specified formatting takes precedence.
+// FormatByteArrayAsArrayは、Goの [N]byte 型を通常のGo配列としてフォーマットすることを指定します。
+// v2のデフォルトでは [N]byte 型はバイナリデータエンコーディング（RFC 4648）としてフォーマットされます。
+// 構造体フィールドに `format` タグオプションが指定されている場合は、そのフォーマットが優先されます。
 //
-// This affects either marshaling or unmarshaling.
-// The v1 default is true.
+// このオプションはマーシャル・アンマーシャルの両方に影響します。
+// v1のデフォルトはtrueです。
 func FormatByteArrayAsArray(v bool) Options
 
-// FormatBytesWithLegacySemantics specifies that handling of
-// []~byte and [N]~byte types follow legacy semantics:
+// FormatBytesWithLegacySemanticsは、[]~byte型および[N]~byte型の扱いをレガシーセマンティクスに従うことを指定します:
 //
-//   - A Go []~byte is to be treated as using some form of
-//     binary data encoding (RFC 4648) in contrast to the v2 default
-//     of only treating []byte as such. In particular, v2 does not
-//     treat slices of named byte types as representing binary data.
+//   - Goの[]~byte型は、v2のデフォルトである[]byte型のみをバイナリデータとして扱うのとは異なり、何らかのバイナリデータエンコーディング（RFC 4648）として扱われます。特に、v2では名前付きbyte型のスライスはバイナリデータとして扱われません。
 //
-//   - When marshaling, if a named byte implements a marshal method,
-//     then the slice is serialized as a JSON array of elements,
-//     each of which call the marshal method.
+//   - マーシャル時、名前付きbyte型がマーシャルメソッドを実装している場合、スライスは各要素ごとにマーシャルメソッドを呼び出してJSON配列としてシリアライズされます。
 //
-//   - When unmarshaling, if the input is a JSON array,
-//     then unmarshal into the []~byte as if it were a normal Go slice.
-//     In contrast, the v2 default is to report an error unmarshaling
-//     a JSON array when expecting some form of binary data encoding.
+//   - アンマーシャル時、入力がJSON配列の場合、通常のGoスライスとして[]~byte型にアンマーシャルされます。対して、v2のデフォルトではバイナリデータエンコーディングを期待している場合にJSON配列のアンマーシャルはエラーとなります。
 //
-// This affects either marshaling or unmarshaling.
-// The v1 default is true.
+// このオプションはマーシャル・アンマーシャルの両方に影響します。
+// v1のデフォルトはtrueです。
 func FormatBytesWithLegacySemantics(v bool) Options
 
-// FormatDurationAsNano specifies that a [time.Duration] is
-// formatted as a JSON number representing the number of nanoseconds
-// in contrast to the v2 default of reporting an error.
-// If a duration field has a `format` tag option,
-// then the specified formatting takes precedence.
+// FormatDurationAsNanoは、[time.Duration] 型をJSON数値（ナノ秒数）としてフォーマットすることを指定します。
+// v2のデフォルトではエラーとなります。
+// フィールドに`format`タグオプションが指定されている場合は、そのフォーマットが優先されます。
 //
-// This affects either marshaling or unmarshaling.
-// The v1 default is true.
+// このオプションはマーシャル・アンマーシャルの両方に影響します。
+// v1のデフォルトはtrueです。
 func FormatDurationAsNano(v bool) Options
 
-// MatchCaseSensitiveDelimiter specifies that underscores and dashes are
-// not to be ignored when performing case-insensitive name matching which
-// occurs under [jsonv2.MatchCaseInsensitiveNames] or the `case:ignore` tag option.
-// Thus, case-insensitive name matching is identical to [strings.EqualFold].
-// Use of this option diminishes the ability of case-insensitive matching
-// to be able to match common case variants (e.g, "foo_bar" with "fooBar").
+// MatchCaseSensitiveDelimiterは、大文字小文字を区別しない名前一致（[jsonv2.MatchCaseInsensitiveNames] や `case:ignore` タグオプション使用時）において、アンダースコアやハイフンを無視しないことを指定します。
+// そのため、大文字小文字を区別しない名前一致は [strings.EqualFold] と同じ動作になります。
+// このオプションを使用すると、大文字小文字を区別しない一致で一般的なケースバリアント（例："foo_bar" と "fooBar"）を一致させる能力が低下します。
 //
-// This affects either marshaling or unmarshaling.
-// The v1 default is true.
+// このオプションはマーシャル・アンマーシャルのどちらにも影響します。
+// v1のデフォルトはtrueです。
 func MatchCaseSensitiveDelimiter(v bool) Options
 
-// MergeWithLegacySemantics specifies that unmarshaling into a non-zero
-// Go value follows legacy semantics:
+// MergeWithLegacySemanticsは、非ゼロのGo値へのアンマーシャル時にレガシーセマンティクスで動作することを指定します:
 //
-//   - When unmarshaling a JSON null, this preserves the original Go value
-//     if the kind is a bool, int, uint, float, string, array, or struct.
-//     Otherwise, it zeros the Go value.
-//     In contrast, the default v2 behavior is to consistently and always
-//     zero the Go value when unmarshaling a JSON null into it.
+//   - JSON nullをアンマーシャルする場合、Go値の型がbool, int, uint, float, string, array, structであれば元の値を保持します。
+//     それ以外の場合はGo値をゼロクリアします。
+//     対して、v2のデフォルト動作ではJSON nullをアンマーシャルすると常にGo値をゼロクリアします。
 //
-//   - When unmarshaling a JSON value other than null, this merges into
-//     the original Go value for array elements, slice elements,
-//     struct fields (but not map values),
-//     pointer values, and interface values (only if a non-nil pointer).
-//     In contrast, the default v2 behavior is to merge into the Go value
-//     for struct fields, map values, pointer values, and interface values.
-//     In general, the v2 semantic merges when unmarshaling a JSON object,
-//     otherwise it replaces the original value.
+//   - JSON null以外の値をアンマーシャルする場合、配列要素・スライス要素・構造体フィールド（ただしマップ値は除く）・ポインタ値・インターフェース値（非nilポインタのみ）にマージします。
+//     対して、v2のデフォルト動作では構造体フィールド・マップ値・ポインタ値・インターフェース値にマージします。
+//     一般的に、v2のセマンティクスではJSONオブジェクトをアンマーシャルする場合にマージし、それ以外は値を置き換えます。
 //
-// This only affects unmarshaling and is ignored when marshaling.
-// The v1 default is true.
+// このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
+// v1のデフォルトはtrueです。
 func MergeWithLegacySemantics(v bool) Options
 
-// OmitEmptyWithLegacySemantics specifies that the `omitempty` tag option
-// follows a definition of empty where a field is omitted if the Go value is
-// false, 0, a nil pointer, a nil interface value,
-// or any empty array, slice, map, or string.
-// This overrides the v2 semantic where a field is empty if the value
-// marshals as a JSON null or an empty JSON string, object, or array.
+// OmitEmptyWithLegacySemanticsは、`omitempty`タグオプションが「空」の定義に従うことを指定します。
+// この定義では、Go値がfalse、0、nilポインタ、nilインターフェース値、または空の配列・スライス・マップ・文字列の場合にフィールドが省略されます。
+// この動作は、値がJSON nullや空のJSON文字列・オブジェクト・配列としてマーシャルされる場合にフィールドを省略するv2のセマンティクスを上書きします。
 //
-// The v1 and v2 definitions of `omitempty` are practically the same for
-// Go strings, slices, arrays, and maps. Usages of `omitempty` on
-// Go bools, ints, uints floats, pointers, and interfaces should migrate to use
-// the `omitzero` tag option, which omits a field if it is the zero Go value.
+// v1とv2の`omitempty`の定義は、Goの文字列、スライス、配列、マップについてはほぼ同じです。
+// Goのbool、int、uint、float、ポインタ、インターフェースに対する`omitempty`の利用は、ゼロ値の場合にフィールドを省略する`omitzero`タグオプションへの移行が推奨されます。
 //
-// This only affects marshaling and is ignored when unmarshaling.
-// The v1 default is true.
+// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
+// v1のデフォルトはtrueです。
 func OmitEmptyWithLegacySemantics(v bool) Options
 
-// ParseBytesWithLooseRFC4648 specifies that when parsing
-// binary data encoded as "base32" or "base64",
-// to ignore the presence of '\r' and '\n' characters.
-// In contrast, the v2 default is to report an error in order to be
-// strictly compliant with RFC 4648, section 3.3,
-// which specifies that non-alphabet characters must be rejected.
+// ParseBytesWithLooseRFC4648は、"base32"や"base64"でエンコードされたバイナリデータをパースする際に、'\r'や'\n'文字の存在を無視することを指定します。
+// 対して、v2のデフォルトではRFC 4648の厳密な準拠のためエラーを報告します（RFC 4648セクション3.3では非アルファベット文字は拒否する必要があります）。
 //
-// This only affects unmarshaling and is ignored when marshaling.
-// The v1 default is true.
+// このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
+// v1のデフォルトはtrueです。
 func ParseBytesWithLooseRFC4648(v bool) Options
 
-// ParseTimeWithLooseRFC3339 specifies that a [time.Time]
-// parses according to loose adherence to RFC 3339.
-// In particular, it permits historically incorrect representations,
-// allowing for deviations in hour format, sub-second separator,
-// and timezone representation. In contrast, the default v2 behavior
-// is to strictly comply with the grammar specified in RFC 3339.
+// ParseTimeWithLooseRFC3339は、[time.Time] 型のパースをRFC 3339に緩やかに準拠して行うことを指定します。
+// 特に、過去の誤った表現（時間のフォーマット、秒以下の区切り文字、タイムゾーン表現の揺れ）も許容します。
+// 一方、v2のデフォルト動作ではRFC 3339で定められた文法に厳密に従います。
 //
-// This only affects unmarshaling and is ignored when marshaling.
-// The v1 default is true.
+// このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
+// v1のデフォルトはtrueです。
 func ParseTimeWithLooseRFC3339(v bool) Options
 
-// ReportErrorsWithLegacySemantics specifies that Marshal and Unmarshal
-// should report errors with legacy semantics:
+// ReportErrorsWithLegacySemanticsは、MarshalおよびUnmarshalがレガシーセマンティクスでエラーを報告することを指定します:
 //
-//   - When marshaling or unmarshaling, the returned error values are
-//     usually of types such as [SyntaxError], [MarshalerError],
-//     [UnsupportedTypeError], [UnsupportedValueError],
-//     [InvalidUnmarshalError], or [UnmarshalTypeError].
-//     In contrast, the v2 semantic is to always return errors as either
-//     [jsonv2.SemanticError] or [jsontext.SyntacticError].
+//   - マーシャルまたはアンマーシャル時、返されるエラー値は通常 [SyntaxError]、[MarshalerError]、[UnsupportedTypeError]、[UnsupportedValueError]、[InvalidUnmarshalError]、[UnmarshalTypeError] などの型になります。
+//     一方、v2のセマンティクスでは、常に [jsonv2.SemanticError] または [jsontext.SyntacticError] のいずれかとしてエラーを返します。
 //
-//   - When marshaling, if a user-defined marshal method reports an error,
-//     it is always wrapped in a [MarshalerError], even if the error itself
-//     is already a [MarshalerError], which may lead to multiple redundant
-//     layers of wrapping. In contrast, the v2 semantic is to
-//     always wrap an error within [jsonv2.SemanticError]
-//     unless it is already a semantic error.
+//   - マーシャル時、ユーザー定義のマーシャルメソッドがエラーを報告した場合、エラー自体がすでに [MarshalerError] であっても必ず [MarshalerError] でラップされ、冗長なラップが複数重なることがあります。
+//     一方、v2のセマンティクスでは、すでにセマンティックエラーでない限り、常に [jsonv2.SemanticError] でラップします。
 //
-//   - When unmarshaling, if a user-defined unmarshal method reports an error,
-//     it is never wrapped and reported verbatim. In contrast, the v2 semantic
-//     is to always wrap an error within [jsonv2.SemanticError]
-//     unless it is already a semantic error.
+//   - アンマーシャル時、ユーザー定義のアンマーシャルメソッドがエラーを報告した場合、ラップせずそのまま報告します。
+//     一方、v2のセマンティクスでは、すでにセマンティックエラーでない限り、常に [jsonv2.SemanticError] でラップします。
 //
-//   - When marshaling or unmarshaling, if a Go struct contains type errors
-//     (e.g., conflicting names or malformed field tags), then such errors
-//     are ignored and the Go struct uses a best-effort representation.
-//     In contrast, the v2 semantic is to report a runtime error.
+//   - マーシャルまたはアンマーシャル時、Go構造体に型エラー（例：名前の競合やフィールドタグの不正）がある場合、それらのエラーは無視され、Go構造体はベストエフォートで表現されます。
+//     一方、v2のセマンティクスでは、ランタイムエラーとして報告します。
 //
-//   - When unmarshaling, the syntactic structure of the JSON input
-//     is fully validated before performing the semantic unmarshaling
-//     of the JSON data into the Go value. Practically speaking,
-//     this means that JSON input with syntactic errors do not result
-//     in any mutations of the target Go value. In contrast, the v2 semantic
-//     is to perform a streaming decode and gradually unmarshal the JSON input
-//     into the target Go value, which means that the Go value may be
-//     partially mutated when a syntactic error is encountered.
+//   - アンマーシャル時、JSON入力の構文構造は、JSONデータをGo値にセマンティックアンマーシャルする前に完全に検証されます。
+//     実際には、構文エラーのあるJSON入力はGo値の変更を一切引き起こしません。
+//     一方、v2のセマンティクスではストリーミングデコードを行い、JSON入力を段階的にGo値へアンマーシャルするため、構文エラーが発生した場合でもGo値が部分的に変更される可能性があります。
 //
-//   - When unmarshaling, a semantic error does not immediately terminate the
-//     unmarshal procedure, but rather evaluation continues.
-//     When unmarshal returns, only the first semantic error is reported.
-//     In contrast, the v2 semantic is to terminate unmarshal the moment
-//     an error is encountered.
+//   - アンマーシャル時、セマンティックエラーが発生してもすぐに処理を終了せず、評価を継続します。
+//     Unmarshalが返る際、最初のセマンティックエラーのみが報告されます。
+//     一方、v2のセマンティクスでは、エラーが発生した時点でアンマーシャル処理を終了します。
 //
-// This affects either marshaling or unmarshaling.
-// The v1 default is true.
+// このオプションはマーシャルまたはアンマーシャルのどちらにも影響します。
+// v1のデフォルトはtrueです。
 func ReportErrorsWithLegacySemantics(v bool) Options
 
-// StringifyWithLegacySemantics specifies that the `string` tag option
-// may stringify bools and string values. It only takes effect on fields
-// where the top-level type is a bool, string, numeric kind, or a pointer to
-// such a kind. Specifically, `string` will not stringify bool, string,
-// or numeric kinds within a composite data type
-// (e.g., array, slice, struct, map, or interface).
+// StringifyWithLegacySemanticsは、`string`タグオプションがbool型やstring型の値を文字列化できることを指定します。
+// このオプションは、フィールドのトップレベルの型がbool、string、数値型、またはそれらへのポインタの場合のみ有効です。
+// 特に、`string`は複合型（配列、スライス、構造体、マップ、インターフェース）の内部にあるbool、string、数値型には適用されません。
 //
-// When marshaling, such Go values are serialized as their usual
-// JSON representation, but quoted within a JSON string.
-// When unmarshaling, such Go values must be deserialized from
-// a JSON string containing their usual JSON representation.
-// A JSON null quoted in a JSON string is a valid substitute for JSON null
-// while unmarshaling into a Go value that `string` takes effect on.
+// マーシャル時、これらのGo値は通常のJSON表現でシリアライズされますが、JSON文字列として引用されます。
+// アンマーシャル時、これらのGo値は通常のJSON表現が含まれるJSON文字列からデシリアライズされなければなりません。
+// JSON文字列内で引用されたJSON nullは、`string`が有効なGo値へのアンマーシャル時にJSON nullの代用として認められます。
 //
-// This affects either marshaling or unmarshaling.
-// The v1 default is true.
+// このオプションはマーシャルまたはアンマーシャルのどちらにも影響します。
+// v1のデフォルトはtrueです。
 func StringifyWithLegacySemantics(v bool) Options
 
-// UnmarshalArrayFromAnyLength specifies that Go arrays can be unmarshaled
-// from input JSON arrays of any length. If the JSON array is too short,
-// then the remaining Go array elements are zeroed. If the JSON array
-// is too long, then the excess JSON array elements are skipped over.
+// UnmarshalArrayFromAnyLengthは、Go配列が入力JSON配列の任意の長さからアンマーシャルできることを指定します。
+// JSON配列が短すぎる場合、残りのGo配列要素はゼロクリアされます。
+// JSON配列が長すぎる場合、余分なJSON配列要素はスキップされます。
 //
-// This only affects unmarshaling and is ignored when marshaling.
-// The v1 default is true.
+// このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
+// v1のデフォルトはtrueです。
 func UnmarshalArrayFromAnyLength(v bool) Options
