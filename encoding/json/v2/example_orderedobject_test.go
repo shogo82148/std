@@ -7,6 +7,8 @@
 package json_test
 
 import (
+	"encoding/json"
+
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/reflect"
@@ -14,12 +16,12 @@ import (
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// The exact order of JSON object can be preserved through the use of a
-// specialized type that implements [MarshalerTo] and [UnmarshalerFrom].
+// JSONオブジェクトの正確な順序は、[MarshalerTo]と[UnmarshalerFrom]を実装した
+// 専用型を使うことで保持できます。
 func Example_orderedObject() {
-	// Round-trip marshal and unmarshal an ordered object.
-	// We expect the order and duplicity of JSON object members to be preserved.
-	// Specify jsontext.AllowDuplicateNames since this object contains "fizz" twice.
+	// 順序付きオブジェクトをマーシャル・アンマーシャルしてラウンドトリップします。
+	// JSONオブジェクトメンバーの順序と重複が保持されることを期待します。
+	// このオブジェクトには"fizz"が2回含まれるため、jsontext.AllowDuplicateNamesを指定します。
 	want := OrderedObject[string]{
 		{"fizz", "buzz"},
 		{"hello", "world"},
@@ -35,13 +37,13 @@ func Example_orderedObject() {
 		log.Fatal(err)
 	}
 
-	// Sanity check.
+	// 正常性チェック。
 	if !reflect.DeepEqual(got, want) {
 		log.Fatalf("roundtrip mismatch: got %v, want %v", got, want)
 	}
 
-	// Print the serialized JSON object.
-	(*jsontext.Value)(&b).Indent() // indent for readability
+	// シリアライズされたJSONオブジェクトを表示します。
+	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
 	fmt.Println(string(b))
 
 	// Output:
