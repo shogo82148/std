@@ -2,15 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-// urlパッケージはURLを解析し、クエリのエスケープを実装します。
-=======
-// Package url parses URLs and implements query escaping.
+// Package urlはURLの解析とクエリエスケープ処理を行います。
 //
-// See RFC 3986. This package generally follows RFC 3986, except where
-// it deviates for compatibility reasons.
-// RFC 6874 followed for IPv6 zone literals.
->>>>>>> upstream/release-branch.go1.25
+// RFC 3986を参照してください。このパッケージは基本的にRFC 3986に従いますが、互換性のために一部逸脱する場合があります。
+// IPv6ゾーンリテラルについてはRFC 6874に従います。
 package url
 
 // Errorはエラーと、それが発生した操作とURLを報告します。
