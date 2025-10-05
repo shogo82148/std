@@ -4,20 +4,20 @@
 
 package unique
 
-// Handle is a globally unique identity for some value of type T.
+// Handleは型Tの値に対するグローバルに一意な識別子です。
 //
-// Two handles compare equal exactly if the two values used to create the handles
-// would have also compared equal. The comparison of two handles is trivial and
-// typically much more efficient than comparing the values used to create them.
+// 2つのハンドルが等しいと比較されるのは、それらのハンドルを生成した2つの値が
+// 等しいと比較される場合に限ります。ハンドル同士の比較は単純で、
+// 通常、元の値同士を比較するよりもはるかに効率的です。
 type Handle[T comparable] struct {
 	value *T
 }
 
-// Value returns a shallow copy of the T value that produced the Handle.
-// Value is safe for concurrent use by multiple goroutines.
+// Valueは、Handleを生成したT値の浅いコピーを返します。
+// Valueは複数のゴルーチンから同時に安全に使用できます。
 func (h Handle[T]) Value() T
 
-// Make returns a globally unique handle for a value of type T. Handles
-// are equal if and only if the values used to produce them are equal.
-// Make is safe for concurrent use by multiple goroutines.
+// Makeは型Tの値に対するグローバルに一意なハンドルを返します。
+// ハンドル同士が等しいのは、それらを生成した値が等しい場合のみです。
+// Makeは複数のゴルーチンから同時に安全に使用できます。
 func Make[T comparable](value T) Handle[T]
