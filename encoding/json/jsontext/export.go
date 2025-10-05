@@ -6,6 +6,6 @@
 
 package jsontext
 
-// Internal is for internal use only.
-// This is exempt from the Go compatibility agreement.
+// Internalは内部利用専用です。
+// これはGo互換性契約の対象外です。
 var Internal exporter
