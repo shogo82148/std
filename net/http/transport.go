@@ -52,18 +52,9 @@ const DefaultMaxIdleConnsPerHost = 2
 // Transportは、HTTPおよびHTTPSリクエストを行うための低レベルのプリミティブです。
 // クッキーやリダイレクトなどの高レベルの機能については、[Client] を参照してください。
 //
-<<<<<<< HEAD
-// Transportは、HTTP URLではHTTP/1.1を、HTTPS URLではHTTP/1.1またはHTTP/2を使用します。
-// これは、サーバーがHTTP/2をサポートしているかどうか、およびTransportの構成によって異なります。
+// TransportはHTTP URLに対してHTTP/1.1を使用し、HTTPS URLに対してはサーバーがHTTP/2をサポートしているか、Transportの設定によってHTTP/1.1またはHTTP/2を使用します。
 // [DefaultTransport] はHTTP/2をサポートしています。
-// Transportで明示的にHTTP/2を有効にするには、golang.org/x/net/http2 を使用してConfigureTransportを呼び出します。
-// HTTP/2についての詳細については、パッケージのドキュメントを参照してください。
-=======
-// Transport uses HTTP/1.1 for HTTP URLs and either HTTP/1.1 or HTTP/2
-// for HTTPS URLs, depending on whether the server supports HTTP/2,
-// and how the Transport is configured. The [DefaultTransport] supports HTTP/2.
-// To explicitly enable HTTP/2 on a transport, set [Transport.Protocols].
->>>>>>> upstream/release-branch.go1.25
+// Transportで明示的にHTTP/2を有効にするには、[Transport.Protocols] を設定してください。
 //
 // ステータスコードが1xx範囲にあるレスポンスは、自動的に処理されます（100 expect-continue）。
 // ただし、HTTPステータスコード101（Switching Protocols）は、終端ステータスと見なされ、[Transport.RoundTrip] によって返されます。

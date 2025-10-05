@@ -166,15 +166,9 @@ func NotFoundHandler() Handler
 // 接頭辞は完全に一致する必要があります。リクエストの接頭辞にエスケープされた文字が含まれている場合、応答もHTTP 404 not foundエラーになります。
 func StripPrefix(prefix string, h Handler) Handler
 
-<<<<<<< HEAD
-// Redirectは、リクエストに対してurlにリダイレクトする応答を返します。
-// urlは、リクエストパスに対する相対パスである場合があります。
-=======
-// Redirect replies to the request with a redirect to url,
-// which may be a path relative to the request path.
-// Any non-ASCII characters in url will be percent-encoded,
-// but existing percent encodings will not be changed.
->>>>>>> upstream/release-branch.go1.25
+// Redirectは、リクエストに対してurlへのリダイレクトで応答します。
+// urlはリクエストパスからの相対パスでもかまいません。
+// url内の非ASCII文字はパーセントエンコードされますが、既存のパーセントエンコードは変更されません。
 //
 // 提供されたコードは通常、[StatusMovedPermanently]、[StatusFound]、または [StatusSeeOther] の3xx範囲にあります。
 //
@@ -267,15 +261,9 @@ func RedirectHandler(url string, code int) Handler
 //
 // # Request sanitizing
 //
-<<<<<<< HEAD
-// ServeMuxは、URLリクエストパスとHostヘッダーをサニタイズし、ポート番号を削除し、.または..セグメントまたは重複したスラッシュを含むリクエストを同等のクリーンなURLにリダイレクトします。
-=======
-// ServeMux also takes care of sanitizing the URL request path and the Host
-// header, stripping the port number and redirecting any request containing . or
-// .. segments or repeated slashes to an equivalent, cleaner URL.
-// Escaped path elements such as "%2e" for "." and "%2f" for "/" are preserved
-// and aren't considered separators for request routing.
->>>>>>> upstream/release-branch.go1.25
+// ServeMuxは、URLリクエストパスとHostヘッダーのサニタイズも行います。
+// ポート番号を除去し、. や .. セグメント、連続したスラッシュを含むリクエストを、同等でよりクリーンなURLにリダイレクトします。
+// "%2e"（"."）や"%2f"（"/"）などのエスケープされたパス要素は保持され、ルーティングの区切り文字とはみなされません。
 //
 // # Compatibility
 //
@@ -318,40 +306,23 @@ var DefaultServeMux = &defaultServeMux
 //
 // Handlerは、リクエストに一致する登録済みのパターン、または内部で生成されたリダイレクトの場合はリダイレクトをたどった後に一致するパスを返します。
 //
-<<<<<<< HEAD
-// リクエストに適用される登録済みハンドラーがない場合、
-// Handlerは「ページが見つかりません」というハンドラーと空のパターンを返します。
-=======
-// If there is no registered handler that applies to the request,
-// Handler returns a “page not found” or “method not supported”
-// handler and an empty pattern.
+// 登録されたハンドラーがリクエストに適用されない場合、
+// Handlerは「ページが見つかりません」または「メソッドがサポートされていません」
+// のハンドラーと空のパターンを返します。
 //
-// Handler does not modify its argument. In particular, it does not
-// populate named path wildcards, so r.PathValue will always return
-// the empty string.
->>>>>>> upstream/release-branch.go1.25
+// Handlerは引数を変更しません。特に、名前付きパスワイルドカードを
+// 設定しないため、r.PathValueは常に空文字列を返します。
 func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 
 // ServeHTTPは、リクエストURLに最も近いパターンを持つハンドラにリクエストをディスパッチします。
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
-<<<<<<< HEAD
-// Handleは、指定されたパターンのハンドラを登録します。
-// 登録済みのパターンと競合する場合、Handleはパニックを発生させます。
+// Handleは、指定されたパターンのハンドラーを登録します。
+// 指定されたパターンがすでに登録されているものと競合する場合、Handleはパニックを起こします。
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
 // HandleFuncは、指定されたパターンのハンドラ関数を登録します。
-// 登録済みのパターンと競合する場合、HandleFuncはパニックを発生させます。
-=======
-// Handle registers the handler for the given pattern.
-// If the given pattern conflicts with one that is already registered, Handle
-// panics.
-func (mux *ServeMux) Handle(pattern string, handler Handler)
-
-// HandleFunc registers the handler function for the given pattern.
-// If the given pattern conflicts with one that is already registered, HandleFunc
-// panics.
->>>>>>> upstream/release-branch.go1.25
+// 指定されたパターンがすでに登録されているものと競合する場合、HandleFuncはパニックを起こします。
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Handleは、[DefaultServeMux]に指定されたパターンのハンドラを登録します。
@@ -506,15 +477,9 @@ func (srv *Server) Close() error
 // Shutdownはコンテキストのエラーを返します。それ以外の場合は、[Server] の基礎となる
 // Listener(s)を閉じる際に返される任意のエラーを返します。
 //
-<<<<<<< HEAD
-// Shutdownが呼び出されると、[Serve]、[ListenAndServe]、および
-// [ListenAndServeTLS] はすぐに [ErrServerClosed] を返します。プログラムが
-// 終了せず、代わりにShutdownが返るのを待つことを確認してください。
-=======
-// When Shutdown is called, [Serve], [ServeTLS], [ListenAndServe], and
-// [ListenAndServeTLS] immediately return [ErrServerClosed]. Make sure the
-// program doesn't exit and waits instead for Shutdown to return.
->>>>>>> upstream/release-branch.go1.25
+// Shutdownが呼び出されると、[Serve]、[ServeTLS]、[ListenAndServe]、および
+// [ListenAndServeTLS] は直ちに [ErrServerClosed] を返します。プログラムが終了せず、
+// Shutdownの戻りを待つようにしてください。
 //
 // Shutdownは、WebSocketsのようなハイジャックされた接続を閉じたり、それらを待つことは試みません。
 // Shutdownの呼び出し元は、長時間稼働する接続に対してシャットダウンを別途通知し、

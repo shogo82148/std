@@ -11,52 +11,45 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-<<<<<<< HEAD
-// NoBodyはバイトを持たない [io.ReadCloser] です。Readは常にEOFを返し、
-// Closeは常にnilを返します。これは、リクエストがゼロバイトであることを
-// 明示的に示すために、送信元クライアントのリクエストで使用することができます。
-// ただし、代わりに [Request.Body] をnilに設定することもできます。
-=======
-// Protocols is a set of HTTP protocols.
-// The zero value is an empty set of protocols.
+// ProtocolsはHTTPプロトコルのセットです。
+// ゼロ値は空のプロトコルセットです。
 //
-// The supported protocols are:
+// サポートされているプロトコルは以下の通りです：
 //
-//   - HTTP1 is the HTTP/1.0 and HTTP/1.1 protocols.
-//     HTTP1 is supported on both unsecured TCP and secured TLS connections.
+//   - HTTP1はHTTP/1.0およびHTTP/1.1プロトコルです。
+//     HTTP1は非暗号化TCP接続およびTLS接続の両方でサポートされています。
 //
-//   - HTTP2 is the HTTP/2 protcol over a TLS connection.
+//   - HTTP2はTLS接続上のHTTP/2プロトコルです。
 //
-//   - UnencryptedHTTP2 is the HTTP/2 protocol over an unsecured TCP connection.
+//   - UnencryptedHTTP2は非暗号化TCP接続上のHTTP/2プロトコルです。
 type Protocols struct {
 	bits uint8
 }
 
-// HTTP1 reports whether p includes HTTP/1.
+// HTTP1はpにHTTP/1が含まれているかどうかを報告します。
 func (p Protocols) HTTP1() bool
 
-// SetHTTP1 adds or removes HTTP/1 from p.
+// SetHTTP1はpにHTTP/1を追加または削除します。
 func (p *Protocols) SetHTTP1(ok bool)
 
-// HTTP2 reports whether p includes HTTP/2.
+// HTTP2はpにHTTP/2が含まれているかどうかを報告します。
 func (p Protocols) HTTP2() bool
 
-// SetHTTP2 adds or removes HTTP/2 from p.
+// SetHTTP2はpにHTTP/2を追加または削除します。
 func (p *Protocols) SetHTTP2(ok bool)
 
-// UnencryptedHTTP2 reports whether p includes unencrypted HTTP/2.
+// UnencryptedHTTP2はpに暗号化されていないHTTP/2が含まれているかどうかを報告します。
 func (p Protocols) UnencryptedHTTP2() bool
 
-// SetUnencryptedHTTP2 adds or removes unencrypted HTTP/2 from p.
+// SetUnencryptedHTTP2はpに暗号化されていないHTTP/2を追加または削除します。
 func (p *Protocols) SetUnencryptedHTTP2(ok bool)
 
 func (p Protocols) String() string
 
-// NoBody is an [io.ReadCloser] with no bytes. Read always returns EOF
-// and Close always returns nil. It can be used in an outgoing client
-// request to explicitly signal that a request has zero bytes.
-// An alternative, however, is to simply set [Request.Body] to nil.
->>>>>>> upstream/release-branch.go1.25
+// NoBodyはバイト数ゼロの [io.ReadCloser] です。Readは常にEOFを返し、
+// Closeは常にnilを返します。リクエストボディがゼロバイトであることを
+// 明示的に示すために、送信側のクライアントリクエストで使用できます。
+// ただし、単に [Request.Body] をnilに設定することも代替手段です。
 var NoBody = noBody{}
 
 var (
