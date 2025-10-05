@@ -3,20 +3,13 @@
 // license that can be found in the LICENSE file.
 
 /*
-<<<<<<< HEAD
-rpcパッケージは、オブジェクトのエクスポートされたメソッドに、ネットワークやその他のI/O接続を通じてアクセスする機能を提供します。サーバーはオブジェクトを登録し、オブジェクトのタイプ名に基づいてサービスとして表示されるようにします。登録後、オブジェクトのエクスポートされたメソッドはリモートからアクセス可能になります。サーバーは、異なるタイプの複数のオブジェクト（サービス）を登録することができますが、同じタイプの複数のオブジェクトを登録することはエラーです。
-=======
-Package rpc provides access to the exported methods of an object across a
-network or other I/O connection.
+Package rpcは、ネットワークやその他のI/O接続を介してオブジェクトのエクスポートされたメソッドへアクセスする機能を提供します。
 
-The net/rpc package is frozen and is not accepting new features.
+net/rpcパッケージは凍結されており、新しい機能は受け付けていません。
 
-A server registers an object, making it visible
-as a service with the name of the type of the object.  After registration, exported
-methods of the object will be accessible remotely.  A server may register multiple
-objects (services) of different types but it is an error to register multiple
-objects of the same type.
->>>>>>> upstream/release-branch.go1.25
+サーバーはオブジェクトを登録し、その型名をサービス名として公開します。
+登録後、オブジェクトのエクスポートされたメソッドはリモートからアクセス可能になります。
+サーバーは異なる型の複数のオブジェクト（サービス）を登録できますが、同じ型のオブジェクトを複数登録することはエラーとなります。
 
 以下の条件を満たすメソッドのみがリモートアクセス可能になります。それ以外のメソッドは無視されます：
 
@@ -115,14 +108,7 @@ Goメソッドは非同期に呼び出しを開始し、Call構造体のDoneチ�
 	replyCall := <-divCall.Done	// divCallと等しい
 	// エラーをチェックし、出力などを行います。
 
-<<<<<<< HEAD
 サーバーの実装では、クライアントのためのシンプルで型セーフなラッパーを提供することがよくあります。
-
-net/rpcパッケージは凍結されており、新しい機能は受け付けていません。
-=======
-A server implementation will often provide a simple, type-safe wrapper for the
-client.
->>>>>>> upstream/release-branch.go1.25
 */
 package rpc
 
