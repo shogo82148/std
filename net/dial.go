@@ -30,14 +30,15 @@ type Dialer struct {
 	// (Timeoutオプションと同様に)
 	Deadline time.Time
 
-	// LocalAddr is the local address to use when dialing an
-	// address. The address must be of a compatible type for the
-	// network being dialed.
-	// If nil, a local address is automatically chosen.
+	// LocalAddrはダイヤル時に使用するローカルアドレスです。
+	// このアドレスは、ダイヤルするネットワークと互換性のある型である必要があります。
+	// nilの場合、ローカルアドレスは自動的に選択されます。
 	LocalAddr Addr
 
-	// DualStackは以前からRFC 6555 Fast Fallback、または「Happy Eyeballs」として知られる機能をサポートしており、IPv6が誤設定されていて正しく動作していない場合にはIPv4がすぐに試されます。
-	// 廃止予定：Fast Fallbackはデフォルトで有効になっています。無効にするには、FallbackDelayを負の値に設定してください。
+	// DualStackは以前からRFC 6555 Fast Fallback、または「Happy Eyeballs」として知られる機能をサポートしており、
+	// IPv6が誤設定されていて正しく動作していない場合にはIPv4がすぐに試されます。
+	//
+	// Deprecated: Fast Fallbackはデフォルトで有効になっています。無効にするには、FallbackDelayを負の値に設定してください。
 	DualStack bool
 
 	// FallbackDelayは、RFC 6555 Fast Fallback接続を作成する前に待機する時間の長さを指定します。つまり、IPv6が成功するまで待機する時間であり、IPv6の設定が誤っていると仮定し、IPv4に切り替える前に待機する時間です。
@@ -45,77 +46,62 @@ type Dialer struct {
 	// 負の値はFast Fallbackサポートを無効にします。
 	FallbackDelay time.Duration
 
-	// KeepAlive specifies the interval between keep-alive
-	// probes for an active network connection.
+	// KeepAliveは、アクティブなネットワーク接続に対するキープアライブ
+	// プローブ間の間隔を指定します。
 	//
-	// KeepAlive is ignored if KeepAliveConfig.Enable is true.
+	// KeepAliveConfig.Enableがtrueの場合、KeepAliveは無視されます。
 	//
-	// If zero, keep-alive probes are sent with a default value
-	// (currently 15 seconds), if supported by the protocol and operating
-	// system. Network protocols or operating systems that do
-	// not support keep-alive ignore this field.
-	// If negative, keep-alive probes are disabled.
+	// ゼロの場合、プロトコルとオペレーティングシステムでサポートされていれば、
+	// デフォルト値（現在は15秒）でキープアライブプローブが送信されます。
+	// キープアライブをサポートしないネットワークプロトコルやオペレーティングシステムは
+	// このフィールドを無視します。
+	// 負の値の場合、キープアライブプローブは無効になります。
 	KeepAlive time.Duration
 
-	// KeepAliveConfig specifies the keep-alive probe configuration
-	// for an active network connection, when supported by the
-	// protocol and operating system.
+	// KeepAliveConfigは、プロトコルとオペレーティングシステムでサポートされている場合、
+	// アクティブなネットワーク接続のキープアライブプローブの設定を指定します。
 	//
-	// If KeepAliveConfig.Enable is true, keep-alive probes are enabled.
-	// If KeepAliveConfig.Enable is false and KeepAlive is negative,
-	// keep-alive probes are disabled.
+	// KeepAliveConfig.Enableがtrueの場合、キープアライブプローブが有効になります。
+	// KeepAliveConfig.EnableがfalseでKeepAliveが負の値の場合、
+	// キープアライブプローブは無効になります。
 	KeepAliveConfig KeepAliveConfig
 
 	// Resolverはオプションで、代替のリゾルバを指定することができます。
 	Resolver *Resolver
 
-	// Cancel is an optional channel whose closure indicates that
-	// the dial should be canceled. Not all types of dials support
-	// cancellation.
+	// Cancelはオプションのチャネルで、そのクローズはダイヤルが
+	// キャンセルされるべきことを示します。すべてのタイプのダイヤルが
+	// キャンセレーションをサポートしているわけではありません。
 	//
-	// Deprecated: Use DialContext instead.
+	// Deprecated: 代わりにDialContextを使用してください。
 	Cancel <-chan struct{}
 
 	// Controlがnilでない場合、ネットワーク接続の作成後に、実際にダイアルする前に呼び出されます。
 	//
-<<<<<<< HEAD
-	// Control関数に渡されるネットワークとアドレスのパラメータは、必ずしもDialに渡されるものとは限りません。たとえば、Dialに「tcp」を渡すと、Control関数は「tcp4」または「tcp6」で呼び出されます。
-=======
-	// Network and address parameters passed to Control function are not
-	// necessarily the ones passed to Dial. Calling Dial with TCP networks
-	// will cause the Control function to be called with "tcp4" or "tcp6",
-	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
-	// and other known networks are passed as-is.
->>>>>>> upstream/release-branch.go1.25
+	// Control関数に渡されるネットワークおよびアドレスのパラメータは、
+	// 必ずしもDialに渡されたものではありません。TCPネットワークでDialを呼び出すと、
+	// Control関数が"tcp4"または"tcp6"とともに呼び出され、
+	// UDPネットワークは"udp4"または"udp6"になり、IPネットワークは"ip4"または"ip6"になり、
+	// その他の既知のネットワークはそのまま渡されます。
 	//
 	// ControlContextがnilでない場合、Controlは無視されます。
 	Control func(network, address string, c syscall.RawConn) error
 
 	// ControlContextがnilでない場合、ネットワークの接続を作成する前に呼び出されます。
 	//
-<<<<<<< HEAD
-	// ControlContext関数に渡されるネットワークおよびアドレスのパラメータは、必ずしもDialに渡されたものではありません。
-	// 例えば、Dialに"tcp"を渡すと、ControlContext関数は "tcp4" または "tcp6" とともに呼び出されます。
-=======
-	// Network and address parameters passed to ControlContext function are not
-	// necessarily the ones passed to Dial. Calling Dial with TCP networks
-	// will cause the ControlContext function to be called with "tcp4" or "tcp6",
-	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
-	// and other known networks are passed as-is.
->>>>>>> upstream/release-branch.go1.25
+	// ControlContext関数に渡されるネットワークおよびアドレスのパラメータは、
+	// 必ずしもDialに渡されたものではありません。TCPネットワークでDialを呼び出すと、
+	// ControlContext関数が"tcp4"または"tcp6"とともに呼び出され、
+	// UDPネットワークは"udp4"または"udp6"になり、IPネットワークは"ip4"または"ip6"になり、
+	// その他の既知のネットワークはそのまま渡されます。
 	//
 	// ControlContextがnilでない場合、Controlは無視されます。
 	ControlContext func(ctx context.Context, network, address string, c syscall.RawConn) error
 
-<<<<<<< HEAD
-	// もしmptcpStatusがMPTCPを許可する値に設定されている場合、"tcp(4|6)"というネットワークを使用するDialの呼び出しは、オペレーティングシステムでサポートされていればMPTCPを使用します。
-	mptcpStatus mptcpStatus
-=======
-	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
-	// used, any call to Dial with "tcp(4|6)" as network will use MPTCP if
-	// supported by the operating system.
+	// mptcpStatusがMultipath TCP（MPTCP）の使用を許可する値に設定されている場合、
+	// ネットワークとして"tcp(4|6)"でDialを呼び出すと、
+	// オペレーティングシステムでサポートされていればMPTCPが使用されます。
 	mptcpStatus mptcpStatusDial
->>>>>>> upstream/release-branch.go1.25
 }
 
 // MultipathTCPはMPTCPを使用するかどうかを報告します。
@@ -202,37 +188,30 @@ type ListenConfig struct {
 	// Controlがnilでない場合、ネットワーク接続を作成した後、
 	// オペレーティングシステムにバインドする前に呼び出されます。
 	//
-<<<<<<< HEAD
-	// Controlメソッドに渡されるネットワークとアドレスのパラメータは、
-	// 必ずしもListenに渡されるものとは限りません。例えば、"tcp"を
-	// Listenに渡すと、Control関数へは"tcp4"または"tcp6"が渡されます。
-=======
-	// Network and address parameters passed to Control function are not
-	// necessarily the ones passed to Listen. Calling Listen with TCP networks
-	// will cause the Control function to be called with "tcp4" or "tcp6",
-	// UDP networks become "udp4" or "udp6", IP networks become "ip4" or "ip6",
-	// and other known networks are passed as-is.
->>>>>>> upstream/release-branch.go1.25
+	// Control関数に渡されるネットワークおよびアドレスのパラメータは、
+	// 必ずしもListenに渡されたものではありません。TCPネットワークでListenを呼び出すと、
+	// Control関数が"tcp4"または"tcp6"とともに呼び出され、
+	// UDPネットワークは"udp4"または"udp6"になり、IPネットワークは"ip4"または"ip6"になり、
+	// その他の既知のネットワークはそのまま渡されます。
 	Control func(network, address string, c syscall.RawConn) error
 
-	// KeepAlive specifies the keep-alive period for network
-	// connections accepted by this listener.
+	// KeepAliveは、このリスナーが受け入れるネットワーク接続の
+	// キープアライブ期間を指定します。
 	//
-	// KeepAlive is ignored if KeepAliveConfig.Enable is true.
+	// KeepAliveConfig.Enableがtrueの場合、KeepAliveは無視されます。
 	//
-	// If zero, keep-alive are enabled if supported by the protocol
-	// and operating system. Network protocols or operating systems
-	// that do not support keep-alive ignore this field.
-	// If negative, keep-alive are disabled.
+	// ゼロの場合、プロトコルとオペレーティングシステムでサポートされていれば
+	// キープアライブが有効になります。キープアライブをサポートしない
+	// ネットワークプロトコルやオペレーティングシステムは、このフィールドを無視します。
+	// 負の値の場合、キープアライブは無効になります。
 	KeepAlive time.Duration
 
-	// KeepAliveConfig specifies the keep-alive probe configuration
-	// for an active network connection, when supported by the
-	// protocol and operating system.
+	// KeepAliveConfigは、プロトコルとオペレーティングシステムでサポートされている場合、
+	// アクティブなネットワーク接続のキープアライブプローブの設定を指定します。
 	//
-	// If KeepAliveConfig.Enable is true, keep-alive probes are enabled.
-	// If KeepAliveConfig.Enable is false and KeepAlive is negative,
-	// keep-alive probes are disabled.
+	// KeepAliveConfig.Enableがtrueの場合、キープアライブプローブが有効になります。
+	// KeepAliveConfig.EnableがfalseでKeepAliveが負の値の場合、
+	// キープアライブプローブは無効になります。
 	KeepAliveConfig KeepAliveConfig
 
 	// If mptcpStatus is set to a value allowing Multipath TCP (MPTCP) to be
@@ -255,28 +234,18 @@ func (lc *ListenConfig) SetMultipathTCP(use bool)
 
 // Listenはローカルネットワークアドレスでアナウンスします。
 //
-<<<<<<< HEAD
-// ネットワークおよびアドレスの詳細については、func Listenを参照してください。
-=======
-// See func Listen for a description of the network and address
-// parameters.
+// ネットワークとアドレスのパラメータの説明については、func Listenを参照してください。
 //
-// The ctx argument is used while resolving the address on which to listen;
-// it does not affect the returned Listener.
->>>>>>> upstream/release-branch.go1.25
+// ctx引数は、リッスンするアドレスの解決中に使用されます。
+// 返されるListenerには影響しません。
 func (lc *ListenConfig) Listen(ctx context.Context, network, address string) (Listener, error)
 
 // ListenPacketはローカルネットワークアドレスでアナウンスします。
 //
-<<<<<<< HEAD
-// ネットワークとアドレスのパラメーターの説明については、func ListenPacketを参照してください。
-=======
-// See func ListenPacket for a description of the network and address
-// parameters.
+// ネットワークとアドレスのパラメータの説明については、func ListenPacketを参照してください。
 //
-// The ctx argument is used while resolving the address on which to listen;
-// it does not affect the returned PacketConn.
->>>>>>> upstream/release-branch.go1.25
+// ctx引数は、リッスンするアドレスの解決中に使用されます。
+// 返されるPacketConnには影響しません。
 func (lc *ListenConfig) ListenPacket(ctx context.Context, network, address string) (PacketConn, error)
 
 // Listenはローカルネットワークアドレスでアナウンスします。

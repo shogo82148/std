@@ -184,18 +184,11 @@ func (l *TCPListener) SetDeadline(t time.Time) error
 // 終了した後、f を閉じる責任は呼び出し元にあります。
 // l を閉じても f には影響を与えませんし、f を閉じても l には影響を与えません。
 //
-<<<<<<< HEAD
-// 返された os.File のファイルディスクリプタは、接続のものとは異なります。
-// この複製を使用して元のもののプロパティを変更しようとすると、
-// 望ましい効果が現れるかどうかは不明です。
-=======
-// The returned os.File's file descriptor is different from the
-// connection's. Attempting to change properties of the original
-// using this duplicate may or may not have the desired effect.
+// 返される os.File のファイルディスクリプタは、元の接続のものとは異なります。
+// この複製を使って元のプロパティを変更しようとしても、期待通りの効果があるとは限りません。
 //
-// On Windows, the returned os.File's file descriptor is not
-// usable on other processes.
->>>>>>> upstream/release-branch.go1.25
+// Windowsでは、返される os.File のファイルディスクリプタは
+// 他のプロセスでは使用できません。
 func (l *TCPListener) File() (f *os.File, err error)
 
 // ListenTCPはTCPネットワーク用の [Listen] のように機能します。

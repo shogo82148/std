@@ -129,32 +129,20 @@ func (r *Resolver) LookupSRV(ctx context.Context, service, proto, name string) (
 
 // LookupMXは指定されたドメイン名のDNS MXレコードを優先度に従ってソートして返します。
 //
-<<<<<<< HEAD
-// 返されるメールサーバー名は、正しくフォーマットされた表示形式のドメイン名であることが検証されます。
-// レスポンスに無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーと共に残りの結果が返されます（もしあれば）。
-=======
-// The returned mail server names are validated to be properly
-// formatted presentation-format domain names, or numeric IP addresses.
-// If the response contains invalid names, those records are filtered out
-// and an error will be returned alongside the remaining results, if any.
->>>>>>> upstream/release-branch.go1.25
+// 返されるメールサーバー名は、適切にフォーマットされた
+// プレゼンテーション形式のドメイン名、または数値IPアドレスであることが検証されます。
+// 応答に無効な名前が含まれている場合、それらのレコードはフィルタリングされ、
+// 残りの結果がある場合は、それらと一緒にエラーが返されます。
 //
 // LookupMXは内部的に [context.Background] を使用します。コンテキストを指定するには、[Resolver.LookupMX] を使用してください。
 func LookupMX(name string) ([]*MX, error)
 
-<<<<<<< HEAD
-// LookupMXは、指定されたドメイン名のDNS MXレコードを優先度に基づいてソートして返します。
-// 返されるメールサーバー名は正しくフォーマットされたプレゼンテーション形式のドメイン名であることが検証されます。
-// レスポンスに無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーが返されます。
-// 残りの結果がある場合、それらとともにエラーが返されます。
-=======
-// LookupMX returns the DNS MX records for the given domain name sorted by preference.
+// LookupMXは、指定されたドメイン名のDNS MXレコードを優先度順に返します。
 //
-// The returned mail server names are validated to be properly
-// formatted presentation-format domain names, or numeric IP addresses.
-// If the response contains invalid names, those records are filtered out
-// and an error will be returned alongside the remaining results, if any.
->>>>>>> upstream/release-branch.go1.25
+// 返されるメールサーバー名は、適切にフォーマットされた
+// プレゼンテーション形式のドメイン名、または数値IPアドレスであることが検証されます。
+// 応答に無効な名前が含まれている場合、それらのレコードはフィルタリングされ、
+// 残りの結果がある場合は、それらと一緒にエラーが返されます。
 func (r *Resolver) LookupMX(ctx context.Context, name string) ([]*MX, error)
 
 // LookupNSは指定されたドメイン名のDNS NSレコードを返します。
@@ -176,25 +164,15 @@ func (r *Resolver) LookupNS(ctx context.Context, name string) ([]*NS, error)
 
 // LookupTXTは指定されたドメイン名のDNS TXTレコードを返します。
 //
-<<<<<<< HEAD
-// LookupTXTは内部で [context.Background] を使用します。コンテキストを指定するには、
+// DNSのTXTレコードが複数の文字列を保持している場合、それらは1つの文字列として連結されます。
+//
+// LookupTXTは内部的に [context.Background] を使用します。コンテキストを指定するには、
 // [Resolver.LookupTXT] を使用してください。
 func LookupTXT(name string) ([]string, error)
 
-// LookupTXTは指定されたドメイン名のDNSのTXTレコードを返します。
-=======
-// If a DNS TXT record holds multiple strings, they are concatenated as a
-// single string.
+// LookupTXTは、指定されたドメイン名のDNS TXTレコードを返します。
 //
-// LookupTXT uses [context.Background] internally; to specify the context, use
-// [Resolver.LookupTXT].
-func LookupTXT(name string) ([]string, error)
-
-// LookupTXT returns the DNS TXT records for the given domain name.
-//
-// If a DNS TXT record holds multiple strings, they are concatenated as a
-// single string.
->>>>>>> upstream/release-branch.go1.25
+// DNSのTXTレコードが複数の文字列を保持している場合、それらは1つの文字列として連結されます。
 func (r *Resolver) LookupTXT(ctx context.Context, name string) ([]string, error)
 
 // LookupAddrは与えられたアドレスに対して逆引きを行い、そのアドレスにマッピングされる名前のリストを返します。
