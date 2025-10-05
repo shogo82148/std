@@ -92,23 +92,12 @@ func Int64() int64
 // Uint32は、デフォルトのSourceから擬似乱数32ビット値をuint32として返します。
 func Uint32() uint32
 
-<<<<<<< HEAD
-// Uint64Nは、デフォルトのSourceから半開放区間[0,n)内の非負の擬似乱数をuint64として返します。
-// nが0以下の場合、パニックを引き起こします。
+// Uint64Nは、デフォルトのSourceから半開区間[0,n)内の擬似乱数をuint64として返します。
+// nが0の場合、パニックを引き起こします。
 func Uint64N(n uint64) uint64
 
-// Uint32Nは、デフォルトのSourceから半開放区間[0,n)内の非負の擬似乱数をuint32として返します。
-// nが0以下の場合、パニックを引き起こします。
-=======
-// Uint64N returns, as a uint64, a pseudo-random number in the half-open interval [0,n)
-// from the default Source.
-// It panics if n == 0.
-func Uint64N(n uint64) uint64
-
-// Uint32N returns, as a uint32, a pseudo-random number in the half-open interval [0,n)
-// from the default Source.
-// It panics if n == 0.
->>>>>>> upstream/release-branch.go1.25
+// Uint32Nは、デフォルトのSourceから半開区間[0,n)内の擬似乱数をuint32として返します。
+// nが0の場合、パニックを引き起こします。
 func Uint32N(n uint32) uint32
 
 // Uint64は、デフォルトのSourceから擬似乱数64ビット値をuint64として返します。
@@ -135,14 +124,8 @@ func Int32N(n int32) int32
 // nが0以下の場合、パニックを引き起こします。
 func IntN(n int) int
 
-<<<<<<< HEAD
-// UintNは、デフォルトのSourceから半開放区間[0,n)内の非負の擬似乱数をuintとして返します。
-// nが0以下の場合、パニックを引き起こします。
-=======
-// UintN returns, as a uint, a pseudo-random number in the half-open interval [0,n)
-// from the default Source.
-// It panics if n == 0.
->>>>>>> upstream/release-branch.go1.25
+// UintNは、デフォルトのSourceから半開区間[0,n)内の擬似乱数をuintとして返します。
+// nが0の場合、パニックを引き起こします。
 func UintN(n uint) uint
 
 // Nは、デフォルトのSourceから半開放区間[0,n)内の擬似乱数を返します。
