@@ -10,43 +10,22 @@ func ReadBuildInfo() (info *BuildInfo, ok bool)
 
 // BuildInfoはGoバイナリから読み取られるビルド情報を表します。
 type BuildInfo struct {
-<<<<<<< HEAD
-
 	// GoVersionはバイナリをビルドしたGoツールチェーンのバージョンです
-	// （例: "go1.19.2").
-	GoVersion string
-
-	// Pathはバイナリのメインパッケージのパッケージパスです
-	// （例：「golang.org/x/tools/cmd/stringer」）。
-	Path string
-
-	// Mainはバイナリのmainパッケージを含むモジュールを説明します。
-	Main Module
-
-	// Depsは、このバイナリのビルドに寄与したパッケージの直接および間接の依存モジュールをすべて説明します。
-	Deps []*Module
-
-	// Settingsはバイナリのビルドに使用されるビルド設定を記述しています。
-	Settings []BuildSetting
-=======
-	// GoVersion is the version of the Go toolchain that built the binary
-	// (for example, "go1.19.2").
+	// （例: "go1.19.2"）。
 	GoVersion string `json:",omitempty"`
 
-	// Path is the package path of the main package for the binary
-	// (for example, "golang.org/x/tools/cmd/stringer").
+	// Pathはバイナリのメインパッケージのパッケージパスです
+	// （例: "golang.org/x/tools/cmd/stringer"）。
 	Path string `json:",omitempty"`
 
-	// Main describes the module that contains the main package for the binary.
+	// Mainはバイナリのメインパッケージを含むモジュールを記述します。
 	Main Module `json:""`
 
-	// Deps describes all the dependency modules, both direct and indirect,
-	// that contributed packages to the build of this binary.
+	// Depsは、このバイナリのビルドに寄与したすべての依存モジュール（直接・間接両方）を記述します。
 	Deps []*Module `json:",omitempty"`
 
-	// Settings describes the build settings used to build the binary.
+	// Settingsはバイナリのビルドに使用されたビルド設定を記述します。
 	Settings []BuildSetting `json:",omitempty"`
->>>>>>> upstream/release-branch.go1.25
 }
 
 // Moduleはビルドに含まれる単一のモジュールを記述します。
@@ -61,60 +40,37 @@ type Module struct {
 //
 // 定義されたキーには以下のものがあります:
 //
-<<<<<<< HEAD
-//   - -buildmode: 使用されたビルドモードフラグ（通常は "exe"）
+//   - -buildmode: 使用されたbuildmodeフラグ（通常は "exe"）
 //   - -compiler: 使用されたコンパイラツールチェーンフラグ（通常は "gc"）
 //   - CGO_ENABLED: 有効なCGO_ENABLED環境変数
 //   - CGO_CFLAGS: 有効なCGO_CFLAGS環境変数
 //   - CGO_CPPFLAGS: 有効なCGO_CPPFLAGS環境変数
 //   - CGO_CXXFLAGS: 有効なCGO_CXXFLAGS環境変数
 //   - CGO_LDFLAGS: 有効なCGO_LDFLAGS環境変数
+//   - DefaultGODEBUG: 有効なGODEBUG設定
 //   - GOARCH: アーキテクチャターゲット
 //   - GOAMD64/GOARM/GO386/etc: GOARCHのアーキテクチャ機能レベル
 //   - GOOS: オペレーティングシステムターゲット
+//   - GOFIPS140: 固定されたFIPS 140-3モジュールバージョン（存在する場合）
 //   - vcs: ビルドが実行されたソースツリーのバージョン管理システム
 //   - vcs.revision: 現在のコミットまたはチェックアウトのリビジョン識別子
-//   - vcs.time: vcs.revisionに関連付けられた修正時刻（RFC3339形式）
-//   - vcs.modified: ローカルの変更があるかどうかを示すtrueまたはfalse
+//   - vcs.time: vcs.revisionに関連付けられた変更日時（RFC3339形式）
+//   - vcs.modified: ソースツリーにローカル変更があったかどうか（trueまたはfalse）
 type BuildSetting struct {
-
-	// KeyとValueはビルド設定を説明します。
-	// Keyには等号、スペース、タブ、改行を含めることはできません。
-	// Valueには改行（'\n'）を含めることはできません。
-	Key, Value string
-=======
-//   - -buildmode: the buildmode flag used (typically "exe")
-//   - -compiler: the compiler toolchain flag used (typically "gc")
-//   - CGO_ENABLED: the effective CGO_ENABLED environment variable
-//   - CGO_CFLAGS: the effective CGO_CFLAGS environment variable
-//   - CGO_CPPFLAGS: the effective CGO_CPPFLAGS environment variable
-//   - CGO_CXXFLAGS:  the effective CGO_CXXFLAGS environment variable
-//   - CGO_LDFLAGS: the effective CGO_LDFLAGS environment variable
-//   - DefaultGODEBUG: the effective GODEBUG settings
-//   - GOARCH: the architecture target
-//   - GOAMD64/GOARM/GO386/etc: the architecture feature level for GOARCH
-//   - GOOS: the operating system target
-//   - GOFIPS140: the frozen FIPS 140-3 module version, if any
-//   - vcs: the version control system for the source tree where the build ran
-//   - vcs.revision: the revision identifier for the current commit or checkout
-//   - vcs.time: the modification time associated with vcs.revision, in RFC3339 format
-//   - vcs.modified: true or false indicating whether the source tree had local modifications
-type BuildSetting struct {
-	// Key and Value describe the build setting.
-	// Key must not contain an equals sign, space, tab, or newline.
+	// KeyとValueはビルド設定を表します。
+	// Keyには等号、スペース、タブ、改行を含めてはいけません。
 	Key string `json:",omitempty"`
-	// Value must not contain newlines ('\n').
+	// Valueには改行（'\n'）を含めてはいけません。
 	Value string `json:",omitempty"`
->>>>>>> upstream/release-branch.go1.25
 }
 
-// String returns a string representation of a [BuildInfo].
+// Stringは[BuildInfo]の文字列表現を返します。
 func (bi *BuildInfo) String() string
 
-// ParseBuildInfo parses the string returned by [*BuildInfo.String],
-// restoring the original BuildInfo,
-// except that the GoVersion field is not set.
-// Programs should normally not call this function,
-// but instead call [ReadBuildInfo], [debug/buildinfo.ReadFile],
-// or [debug/buildinfo.Read].
+// ParseBuildInfoは[*BuildInfo.String]が返す文字列を解析し、
+// 元のBuildInfoを復元します。
+// ただしGoVersionフィールドは設定されません。
+// 通常プログラムはこの関数を呼び出すべきではなく、
+// 代わりに[ReadBuildInfo]、[debug/buildinfo.ReadFile]、
+// または [debug/buildinfo.Read] を呼び出してください。
 func ParseBuildInfo(data string) (bi *BuildInfo, err error)
