@@ -128,13 +128,9 @@ const (
 	UnsafePointer
 )
 
-<<<<<<< HEAD
 // Ptrは [Pointer] 種別の旧名称です。
-=======
-// Ptr is the old name for the [Pointer] kind.
 //
 //go:fix inline
->>>>>>> upstream/release-branch.go1.25
 const Ptr = Pointer
 
 // ChanDirはチャネルの方向を表します。
@@ -213,27 +209,18 @@ func (tag StructTag) Lookup(key string) (value string, ok bool)
 // もしiがnilのインターフェース値である場合、TypeOfはnilを返します。
 func TypeOf(i any) Type
 
-<<<<<<< HEAD
-// PtrToは、要素tを持つポインタ型を返します。
-// 例えば、もしtがFoo型を表すなら、PtrTo(t)は*Fooを表します。
-=======
 // TypeFor returns the [Type] that represents the type argument T.
 func TypeFor[T any]() Type
 
-// PtrTo returns the pointer type with element t.
-// For example, if t represents type Foo, PtrTo(t) represents *Foo.
->>>>>>> upstream/release-branch.go1.25
+// PtrToは要素tを持つポインタ型を返します。
+// 例えば、tが型Fooを表す場合、PtrTo(t)は*Fooを表します。
 //
 // PtrToは [PointerTo] の古い綴りです。
 // これらの2つの関数は同じように動作します。
 //
-<<<<<<< HEAD
-// Deprecated: [PointerTo] によって置き換えられました。
-=======
-// Deprecated: Superseded by [PointerTo].
+// 非推奨: [PointerTo] に置き換えられました。
 //
 //go:fix inline
->>>>>>> upstream/release-branch.go1.25
 func PtrTo(t Type) Type
 
 // PointerToは要素tを持つポインタ型を返します。
@@ -279,11 +266,3 @@ func StructOf(fields []StructField) Type
 //
 // もし結果の型が利用可能なアドレススペースよりも大きくなる場合、ArrayOfはパニックを発生させます。
 func ArrayOf(length int, elem Type) Type
-<<<<<<< HEAD
-
-// TypeForは、型引数Tを表す [Type] を返します。
-func TypeFor[T any]() Type {
-	return nil
-}
-=======
->>>>>>> upstream/release-branch.go1.25
