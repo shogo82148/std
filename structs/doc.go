@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package structs defines marker types that can be used as struct fields
-// to modify the properties of a struct.
+// structsパッケージは、構造体のフィールドとして使用できるマーカー型を定義し、
+// 構造体のプロパティを変更するために利用します。
 //
-// By convention, a marker type should be used as the type of a field
-// named "_", placed at the beginning of a struct type definition.
+// 慣例として、マーカー型は「_」という名前のフィールド型として、
+// 構造体定義の先頭に配置して使用します。
 package structs
