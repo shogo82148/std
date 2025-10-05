@@ -8,18 +8,18 @@ package jsontext_test
 
 import (
 	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/encoding/json/jsontext"
+	"github.com/shogo82148/std/encoding/json/v2"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/strings"
-
-	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// This example demonstrates the use of the [Encoder] and [Decoder] to
-// parse and modify JSON without unmarshaling it into a concrete Go type.
+// この例は、[Encoder] と [Decoder] を使って、
+// JSONを具体的なGo型にアンマーシャルせずにパース・修正する方法を示します。
 func Example_stringReplace() {
-	// Example input with non-idiomatic use of "Golang" instead of "Go".
+	// 「Go」の代わりに非慣用的な「Golang」を使った例の入力。
 	const input = `{
 		"title": "Golang version 1 is released",
 		"author": "Andrew Gerrand",
@@ -32,16 +32,16 @@ func Example_stringReplace() {
 		]
 	}`
 
-	// Using a Decoder and Encoder, we can parse through every token,
-	// check and modify the token if necessary, and
-	// write the token to the output.
+	// DecoderとEncoderを使うことで、すべてのトークンをパースし、
+	// 必要に応じてトークンをチェック・修正し、
+	// 出力にトークンを書き込むことができます。
 	var replacements []jsontext.Pointer
 	in := strings.NewReader(input)
 	dec := jsontext.NewDecoder(in)
 	out := new(bytes.Buffer)
-	enc := jsontext.NewEncoder(out, jsontext.Multiline(true)) // expand for readability
+	enc := jsontext.NewEncoder(out, jsontext.Multiline(true)) // 可読性向上のため展開
 	for {
-		// Read a token from the input.
+		// 入力からトークンを読み取ります。
 		tok, err := dec.ReadToken()
 		if err != nil {
 			if err == io.EOF {
@@ -50,20 +50,20 @@ func Example_stringReplace() {
 			log.Fatal(err)
 		}
 
-		// Check whether the token contains the string "Golang" and
-		// replace each occurrence with "Go" instead.
+		// トークンに "Golang" という文字列が含まれているかをチェックし、
+		// 見つかった箇所をすべて "Go" に置き換えます。
 		if tok.Kind() == '"' && strings.Contains(tok.String(), "Golang") {
 			replacements = append(replacements, dec.StackPointer())
 			tok = jsontext.String(strings.ReplaceAll(tok.String(), "Golang", "Go"))
 		}
 
-		// Write the (possibly modified) token to the output.
+		// （場合によっては修正された）トークンを出力に書き込みます。
 		if err := enc.WriteToken(tok); err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	// Print the list of replacements and the adjusted JSON output.
+	// 置換箇所の一覧と修正後のJSON出力を表示します。
 	if len(replacements) > 0 {
 		fmt.Println(`Replaced "Golang" with "Go" in:`)
 		for _, where := range replacements {
@@ -93,14 +93,12 @@ func Example_stringReplace() {
 	// }
 }
 
-// Directly embedding JSON within HTML requires special handling for safety.
-// Escape certain runes to prevent JSON directly treated as HTML
-// from being able to perform <script> injection.
+// HTML内にJSONを直接埋め込む場合は、安全性のため特別な処理が必要です。
+// JSONがHTMLとして直接扱われた際に<script>インジェクションなどができないよう、特定のルーンをエスケープします。
 //
-// This example shows how to obtain equivalent behavior provided by the
-// v1 [encoding/json] package that is no longer directly supported by this package.
-// Newly written code that intermix JSON and HTML should instead be using the
-// [github.com/google/safehtml] module for safety purposes.
+// この例は、v1の [encoding/json] パッケージで提供されていた同等の動作を得る方法を示しますが、
+// このパッケージでは直接サポートされなくなっています。
+// 新しくJSONとHTMLを混在させるコードを書く場合は、安全のため [github.com/google/safehtml] モジュールを使用してください。
 func ExampleEscapeForHTML() {
 	page := struct {
 		Title string
@@ -111,11 +109,11 @@ func ExampleEscapeForHTML() {
 	}
 
 	b, err := json.Marshal(&page,
-		// Escape certain runes within a JSON string so that
-		// JSON will be safe to directly embed inside HTML.
+		// JSON文字列内の特定のルーンをエスケープすることで、
+		// JSONをHTML内に直接埋め込んでも安全になるようにします。
 		jsontext.EscapeForHTML(true),
 		jsontext.EscapeForJS(true),
-		jsontext.Multiline(true)) // expand for readability
+		jsontext.Multiline(true)) // 可読性向上のため展開
 	if err != nil {
 		log.Fatal(err)
 	}
