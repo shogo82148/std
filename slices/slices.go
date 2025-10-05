@@ -48,61 +48,69 @@ func Contains[S ~[]E, E comparable](s S, v E) bool { return false }
 // ContainsFunc は、s の少なくとも1つの要素 e が f(e) を満たすかどうかを報告します。
 func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool { return false }
 
-// Insert は、値 v... を s のインデックス i に挿入し、変更されたスライスを返します。
-// s[i:] の要素は上にシフトされ、スペースが作成されます。
-// 返されるスライス r では、r[i] == v[0] であり、r[i+len(v)] == r[i] に元々あった値です。
-// i が範囲外の場合、Insert は panic を発生させます。
-// この関数の計算量は O(len(s) + len(v)) です。
-func Insert[S ~[]E, E any](s S, i int, v ...E) S { return nil }
+// Insertは、値v...をsのインデックスiに挿入し、変更されたスライスを返します。
+// s[i:]の要素は空きスペースを作るために後ろにずらされます。
+// 返されたスライスrでは、r[i] == v[0]となり、
+// また、i < len(s)の場合、r[i+len(v)]は元々r[i]にあった値になります。
+// i > len(s)の場合、Insertはパニックを起こします。
+// この関数の計算量はO(len(s) + len(v))です。
+// 結果が空の場合、sのnil性を保持します。
+func Insert[S ~[]E, E any](s S, i int, v ...E) S
 
-// Deleteは、sから要素s[i:j]を削除し、変更されたスライスを返します。
-// j > len(s)またはs[i:j]がsの有効なスライスでない場合、Deleteはパニックを引き起こします。
-// DeleteはO(len(s)-i)なので、多くのアイテムを削除する必要がある場合、
-// 一度に一つずつ削除するよりも、一度に全てを削除するための単一の呼び出しを行う方が良いです。
-// Deleteは要素s[len(s)-(j-i):len(s)]をゼロにします。
-func Delete[S ~[]E, E any](s S, i, j int) S { return nil }
+// Deleteは、s[i:j]の要素をsから削除し、変更されたスライスを返します。
+// j > len(s)の場合やs[i:j]がsの有効なスライスでない場合、Deleteはパニックを起こします。
+// Deleteの計算量はO(len(s)-i)なので、多くの要素を削除する場合は、まとめて一度に削除する方が、一つずつ削除するより効率的です。
+// Deleteはs[len(s)-(j-i):len(s)]の要素をゼロにします。
+// 結果が空の場合、sのnil性を保持します。
+func Delete[S ~[]E, E any](s S, i, j int) S
 
-// DeleteFuncは、delがtrueを返すsの任意の要素を削除し、
-// 変更されたスライスを返します。
-// DeleteFuncは新しい長さと元の長さの間の要素をゼロにします。
-func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S { return nil }
+// DeleteFuncは、delがtrueを返すsの要素をすべて削除し、変更されたスライスを返します。
+// DeleteFuncは新しい長さから元の長さまでの要素をゼロにします。
+// 結果が空の場合、sのnil性を保持します。
+func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S
 
-// Replaceは、要素s[i:j]を与えられたvで置き換え、
-// 変更されたスライスを返します。
-// Replaceは、j > len(s)またはs[i:j]がsの有効なスライスでない場合、パニックを引き起こします。
-// len(v) < (j-i)の場合、Replaceは新しい長さと元の長さの間の要素をゼロにします。
-func Replace[S ~[]E, E any](s S, i, j int, v ...E) S { return nil }
+// Replaceは、s[i:j]の要素を指定されたvで置き換え、変更されたスライスを返します。
+// j > len(s)の場合やs[i:j]がsの有効なスライスでない場合、Replaceはパニックを起こします。
+// len(v) < (j-i)の場合、新しい長さから元の長さまでの要素をゼロにします。
+// 結果が空の場合、sのnil性を保持します。
+func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
 
-// Clone は、スライスのコピーを返します。
-// 要素は代入を使用してコピーされるため、これは浅いクローンです。
-// 結果には追加の未使用の容量が含まれる可能性があります。
-func Clone[S ~[]E, E any](s S) S { return nil }
+// Cloneはスライスのコピーを返します。
+// 要素は代入によってコピーされるため、これは浅いコピーです。
+// 結果は追加の未使用容量を持つ場合があります。
+// 結果はsのnil性を保持します。
+func Clone[S ~[]E, E any](s S) S
 
-// Compactは、等しい要素の連続した実行を単一のコピーで置き換えます。
-// これはUnixにあるuniqコマンドのようなものです。
+// Compactは、連続する等しい要素の並びを1つのコピーに置き換えます。
+// これはUnixのuniqコマンドのような動作です。
 // Compactはスライスsの内容を変更し、変更されたスライスを返します。
-// これはより小さい長さを持つ可能性があります。
-// Compactは新しい長さと元の長さの間の要素をゼロにします。
-func Compact[S ~[]E, E comparable](s S) S { return nil }
+// 長さが短くなる場合があります。
+// Compactは新しい長さから元の長さまでの要素をゼロにします。
+// 結果はsのnil性を保持します。
+func Compact[S ~[]E, E comparable](s S) S
 
-// CompactFuncは [Compact] と似ていますが、要素を比較するための等価性関数を使用します。
-// 等しいと比較される要素の連続について、CompactFuncは最初のものを保持します。
-// CompactFuncは新しい長さと元の長さの間の要素をゼロにします。
-func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S { return nil }
+// CompactFuncは [Compact] と同様ですが、要素の比較に等値関数を使用します。
+// 等しいと判定された並びのうち、CompactFuncは最初の要素を残します。
+// CompactFuncは新しい長さから元の長さまでの要素をゼロにします。
+// 結果はsのnil性を保持します。
+func CompactFunc[S ~[]E, E any](s S, eq func(E, E) bool) S
 
-// Grow は、必要に応じてスライスの容量を増やし、別の n 要素のスペースを保証します。
-// Grow(n) の後、スライスには、別の割り当てなしで n 要素が追加できます。
-// n が負の場合、またはメモリを割り当てるには大きすぎる場合、Grow は panic を発生させます。
-func Grow[S ~[]E, E any](s S, n int) S { return nil }
+// Growは、必要に応じてスライスの容量を増やし、
+// 追加でn個の要素分の空き容量を保証します。Grow(n)の後は、追加の割り当てなしで少なくともn個の要素をスライスに追加できます。
+// nが負またはメモリ割り当てが大きすぎる場合、Growはパニックを起こします。
+// 結果はsのnil性を保持します。
+func Grow[S ~[]E, E any](s S, n int) S
 
-// Clip は、スライスから未使用の容量を削除し、s[:len(s):len(s)] を返します。
-func Clip[S ~[]E, E any](s S) S { return nil }
+// Clipはスライスの未使用容量を削除し、s[:len(s):len(s)]を返します。
+// 結果はsのnil性を保持します。
+func Clip[S ~[]E, E any](s S) S
 
 // Reverse は、スライスの要素を逆順にします。
 func Reverse[S ~[]E, E any](s S) { return }
 
-// Concat は、渡されたスライスを連結した新しいスライスを返します。
-func Concat[S ~[]E, E any](slices ...S) S { return nil }
+// Concatは、渡されたスライスを連結した新しいスライスを返します。
+// 連結結果が空の場合、結果はnilになります。
+func Concat[S ~[]E, E any](slices ...S) S
 
 // Repeatは、指定されたスライスを指定された回数だけ繰り返す新しいスライスを返します。
 // 結果の長さと容量は (len(x) * count) です。

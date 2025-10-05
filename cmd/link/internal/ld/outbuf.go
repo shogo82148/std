@@ -67,7 +67,7 @@ func (out *OutBuf) Open(name string) error
 
 func NewOutBuf(arch *sys.Arch) *OutBuf
 
-func (out *OutBuf) View(start uint64) (*OutBuf, error)
+func (out *OutBuf) View(start uint64) *OutBuf
 
 func (out *OutBuf) Close() error
 

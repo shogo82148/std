@@ -17,7 +17,9 @@ import (
 // 呼び出し元は、f.Name()を使用してファイルのパス名を見つけることができます。
 // ファイルが不要になったら、呼び出し元の責任でファイルを削除する必要があります。
 //
-// Deprecated: Go 1.17以降、この関数は単に[os.CreateTemp]を呼び出すだけです。
+// Deprecated: Go 1.17以降、この関数は単に [os.CreateTemp] を呼び出すだけです。
+//
+//go:fix inline
 func TempFile(dir, pattern string) (f *os.File, err error)
 
 // TempDirは、ディレクトリdirに新しい一時ディレクトリを作成し、
@@ -28,5 +30,7 @@ func TempFile(dir, pattern string) (f *os.File, err error)
 // 同時にTempDirを呼び出す複数のプログラムは、同じディレクトリを選択しません。
 // 呼び出し元は、ディレクトリが不要になったら削除する責任があります。
 //
-// Deprecated: Go 1.17以降、この関数は単に[os.MkdirTemp]を呼び出すだけです。
+// Deprecated: Go 1.17以降、この関数は単に [os.MkdirTemp] を呼び出すだけです。
+//
+//go:fix inline
 func TempDir(dir, pattern string) (name string, err error)

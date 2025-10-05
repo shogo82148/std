@@ -46,6 +46,10 @@ func (w *Writer) CreateFormFile(fieldname, filename string) (io.Writer, error)
 // [Writer.CreatePart] を呼び出します。
 func (w *Writer) CreateFormField(fieldname string) (io.Writer, error)
 
+// FileContentDispositionは、提供されたフィールド名とファイル名を持つ
+// Content-Dispositionヘッダーの値を返します。
+func FileContentDisposition(fieldname, filename string) string
+
 // WriteFieldは [Writer.CreateFormField] を呼び出し、その後で与えられた値を書き込みます。
 func (w *Writer) WriteField(fieldname, value string) error
 

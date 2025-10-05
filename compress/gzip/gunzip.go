@@ -53,13 +53,13 @@ type Reader struct {
 	multistream  bool
 }
 
-// NewReader creates a new [Reader] reading the given reader.
-// If r does not also implement [io.ByteReader],
-// the decompressor may read more data than necessary from r.
+// NewReaderは指定されたリーダーを読み取る新しい [Reader] を作成します。
+// rが [io.ByteReader] も実装していない場合、
+// デコンプレッサーはrから必要以上のデータを読み取る可能性があります。
 //
-// [Reader] を使用し終わった後は、呼び出し元の責任でCloseを呼び出す必要があります。
+// 完了時に [Reader.Close] を呼び出すのは呼び出し元の責任です。
 //
-// [Reader] によって返される [Reader.Header] フィールドは有効です。
+// 返された [Reader] では、Reader.[Header] フィールドが有効になります。
 func NewReader(r io.Reader) (*Reader, error)
 
 // Resetは [Reader] zの状態を破棄し、 [NewReader] からの元の状態の結果と同等にしますが、代わりにrから読み込みます。
@@ -81,9 +81,10 @@ func (z *Reader) Reset(r io.Reader) error
 // 次のストリームが存在しない場合、z.Reset（r）は [io.EOF] を返します。
 func (z *Reader) Multistream(ok bool)
 
-// Readは、基になるReaderから圧縮されていないバイトを読み込むために [io.Reader] を実装しています。
+// Readは [io.Reader] を実装し、基になるリーダーから非圧縮バイトを読み取ります。
 func (z *Reader) Read(p []byte) (n int, err error)
 
-// CloseはReaderを閉じます。ただし、基本となる [io.Reader] は閉じません。
-// GZIPのチェックサムを検証するためには、 [io.EOF] まで完全に消費する必要があります。
+// Closeは [Reader] を閉じます。基になるリーダーは閉じません。
+// GZIPチェックサムを検証するには、リーダーは
+// [io.EOF] まで完全に消費される必要があります。
 func (z *Reader) Close() error

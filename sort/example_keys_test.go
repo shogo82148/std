@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// ExampleSortKeysは、プログラム可能なソート基準を使用して構造体タイプをソートするためのテクニックを示しています。
+// Example_sortKeysは、構造体型をプログラム可能なソート基準でソートする手法を示します。
 func Example_sortKeys() {
 	// プラネット構造体を順序付けるクロージャー。
 	name := func(p1, p2 *Planet) bool {

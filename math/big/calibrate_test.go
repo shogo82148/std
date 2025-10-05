@@ -2,19 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Calibration used to determine thresholds for using
-// different algorithms.  Ideally, this would be converted
-// to go generate to create thresholds.go
-
-// This file prints execution times for the Mul benchmark
-// given different Karatsuba thresholds. The result may be
-// used to manually fine-tune the threshold constant. The
-// results are somewhat fragile; use repeated runs to get
-// a clear picture.
-
-// Calculates lower and upper thresholds for when basicSqr
-// is faster than standard multiplication.
-
-// Usage: go test -run='^TestCalibrate$' -v -calibrate
+// TestCalibrate determines appropriate thresholds for when to use
+// different calculation algorithms. To run it, use:
+//
+//	go test -run=Calibrate -calibrate >cal.log
+//
+// Calibration data is printed in CSV format, along with the normal test output.
+// See calibrate.md for more details about using the output.
 
 package big

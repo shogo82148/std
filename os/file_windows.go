@@ -4,20 +4,8 @@
 
 package os
 
-// Fdは、開いているファイルを参照するWindowsハンドルを返します。
-// もしfが閉じている場合、ファイルディスクリプタは無効になります。
-// もしfがガベージコレクションされる場合、ファイナライザーがファイルディスクリプタを閉じる可能性があり、
-// それにより無効になります。ファイナライザーがいつ実行されるかの詳細については、
-// [runtime.SetFinalizer] を参照してください。Unixシステムでは、これにより [File.SetDeadline]
-// メソッドが動作しなくなります。
-func (file *File) Fd() uintptr
-
-// NewFileは指定したファイルディスクリプタと名前の新しいFileを返します。
-// fdが有効なファイルディスクリプタでない場合、返される値はnilになります。
-func NewFile(fd uintptr, name string) *File
-
-// DevNullはオペレーティングシステムの「nullデバイス」の名前です。
-// Unix系のシステムでは、"/dev/null"です。Windowsでは"NUL"です。
+// DevNullはオペレーティングシステムの「nullデバイス」の名称です。
+// Unix系のシステムでは"/dev/null"、Windowsでは"NUL"です。
 const DevNull = "NUL"
 
 // Truncateは指定されたファイルのサイズを変更します。
@@ -25,7 +13,7 @@ const DevNull = "NUL"
 func Truncate(name string, size int64) error
 
 // Removeは指定されたファイルまたはディレクトリを削除します。
-// エラーが発生した場合、*PathErrorの型で返されます。
+// エラーが発生した場合、エラーは [*PathError] 型になります。
 func Remove(name string) error
 
 // Pipeは接続された一対のファイルを返します。rからの読み取りはwに書き込まれたバイトを返します。

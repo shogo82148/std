@@ -70,19 +70,23 @@ type CorruptInputError int64
 
 func (e CorruptInputError) Error() string
 
-// Decodeは、エンコーディングencを使用してsrcをデコードし、
-// [Encoding.DecodedLen](len(src))バイトをdstに書き込みます。
-// srcに無効なbase32データが含まれている場合、
-// 書き込まれたバイト数と [CorruptInputError] を返します。
-// 改行文字（\rおよび\n）は無視されます。
+// Decodeは、エンコーディングencを使用してsrcをデコードします。最大で
+// [Encoding.DecodedLen](len(src))バイトをdstに書き込み、書き込まれたバイト数を返します。
+// 呼び出し元は、dstがすべてのデコードされたデータを保持するのに十分な大きさであることを
+// 確認する必要があります。srcに無効なbase32データが含まれている場合、
+// 正常に書き込まれたバイト数と [CorruptInputError] を返します。
+// 改行文字（\rと\n）は無視されます。
 func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
 
 // AppendDecodeは、base32でデコードされたsrcをdstに追加し、
 // 拡張されたバッファを返します。
 // 入力が不正な形式の場合、部分的にデコードされたsrcとエラーを返します。
+// 改行文字（\rと\n）は無視されます。
 func (enc *Encoding) AppendDecode(dst, src []byte) ([]byte, error)
 
-// DecodeStringは、base32文字列sによって表されるバイト列を返します。
+// DecodeStringは、base32文字列sで表されるバイトを返します。
+// 入力が不正な形式の場合、部分的にデコードされたデータと
+// [CorruptInputError] を返します。改行文字（\rと\n）は無視されます。
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
 
 // NewDecoderは、新しいbase32ストリームデコーダーを構築します。

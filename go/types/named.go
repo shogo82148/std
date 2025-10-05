@@ -12,6 +12,17 @@ import (
 )
 
 // Namedは名前付き（定義された）型を表します。
+//
+// 次のような宣言：
+//
+//	type S struct { ... }
+//
+// は、基底型が構造体である定義された型を作成し、
+// この型を [TypeName] であるオブジェクトSにバインドします。
+// 基底型にアクセスするには [Named.Underlying] を使用してください。
+// オブジェクトSを取得するには [Named.Obj] を使用してください。
+//
+// 型エイリアス（Go 1.9）以前では、仕様は定義された型を「名前付き型」と呼んでいました。
 type Named struct {
 	check *Checker
 	obj   *TypeName
@@ -64,17 +75,17 @@ func (t *Named) TypeArgs() *TypeList
 // NumMethodsはtに定義された明示的なメソッドの数を返します。
 func (t *Named) NumMethods() int
 
-// Method returns the i'th method of named type t for 0 <= i < t.NumMethods().
+// Methodは、0 <= i < t.NumMethods()の範囲で、名前付き型tのi番目のメソッドを返します。
 //
-// For an ordinary or instantiated type t, the receiver base type of this
-// method is the named type t. For an uninstantiated generic type t, each
-// method receiver is instantiated with its receiver type parameters.
+// 通常の型またはインスタンス化された型tの場合、このメソッドのレシーバーベース型は
+// 名前付き型tです。インスタンス化されていないジェネリック型tの場合、各メソッドの
+// レシーバーはそのレシーバー型パラメータでインスタンス化されます。
 //
-// Methods are numbered deterministically: given the same list of source files
-// presented to the type checker, or the same sequence of NewMethod and AddMethod
-// calls, the mapping from method index to corresponding method remains the same.
-// But the specific ordering is not specified and must not be relied on as it may
-// change in the future.
+// メソッドは決定論的に番号付けされます：型チェッカーに提示される同じソースファイルのリスト、
+// または同じNewMethodとAddMethodの呼び出しシーケンスが与えられた場合、メソッドインデックスから
+// 対応するメソッドへのマッピングは同じままです。
+// ただし、具体的な順序は指定されておらず、将来変更される可能性があるため、
+// 依存してはいけません。
 func (t *Named) Method(i int) *Func
 
 // SetUnderlyingは基本型を設定し、tを完全なものとしてマークします。
@@ -86,9 +97,9 @@ func (t *Named) SetUnderlying(underlying Type)
 // 型引数を持っていてはなりません。
 func (t *Named) AddMethod(m *Func)
 
-// Underlying returns the [underlying type] of the named type t, resolving all
-// forwarding declarations. Underlying types are never Named, TypeParam, or
-// Alias types.
+// Underlyingは名前付き型tの [underlying type] を返し、すべての
+// 転送宣言を解決します。基底型は決してNamed、TypeParam、または
+// Alias型ではありません。
 //
 // [underlying type]: https://go.dev/ref/spec#Underlying_types.
 func (t *Named) Underlying() Type

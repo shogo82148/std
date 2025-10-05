@@ -8,6 +8,7 @@ package work
 
 import (
 	"github.com/shogo82148/std/bytes"
+	"github.com/shogo82148/std/cmd/internal/par"
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/sync"
 
@@ -40,9 +41,10 @@ type Builder struct {
 	readySema chan bool
 	ready     actionQueue
 
-	id           sync.Mutex
-	toolIDCache  map[string]string
-	buildIDCache map[string]string
+	id             sync.Mutex
+	toolIDCache    par.Cache[string, string]
+	gccToolIDCache map[string]string
+	buildIDCache   map[string]string
 }
 
 // An Actor runs an action.
@@ -71,12 +73,15 @@ type Action struct {
 
 	TryCache func(*Builder, *Action) bool
 
+	CacheExecutable bool
+
 	// Generated files, directories.
-	Objdir   string
-	Target   string
-	built    string
-	actionID cache.ActionID
-	buildID  string
+	Objdir           string
+	Target           string
+	built            string
+	cachedExecutable string
+	actionID         cache.ActionID
+	buildID          string
 
 	VetxOnly  bool
 	needVet   bool
@@ -89,7 +94,7 @@ type Action struct {
 	// Execution state.
 	pending      int
 	priority     int
-	Failed       bool
+	Failed       *Action
 	json         *actionJSON
 	nonGoOverlay map[string]string
 	traceSpan    *trace.Span
@@ -107,6 +112,10 @@ func (a *Action) BuildID() string
 // BuiltTarget returns the actual file that was built. This differs
 // from Target when the result was cached.
 func (a *Action) BuiltTarget() string
+
+// CachedExecutable returns the cached executable, if CacheExecutable
+// was set and the executable could be cached, and "" otherwise.
+func (a *Action) CachedExecutable() string
 
 // BuildMode specifies the build mode:
 // are we just building things or also installing the results?

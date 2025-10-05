@@ -47,36 +47,18 @@ func (s *Scope) Child(i int) *Scope
 // オブジェクトが存在する場合はそのオブジェクトを返し、存在しない場合はnilを返します。
 func (s *Scope) Lookup(name string) Object
 
-// LookupParentは、sから始まるスコープの親チェーンをたどり、Lookup（name）が非nilのオブジェクトを返すスコープを見つけ、そのスコープとオブジェクトを返します。有効な位置posが指定された場合、posで宣言されたかそれ以前のオブジェクトのみが考慮されます。このようなスコープとオブジェクトが存在しない場合、結果は（nil、nil）です。
-// obj.Parent()は、オブジェクトがスコープに挿入され、すでにその時点で親があった場合に、返されたスコープと異なるかもしれないことに注意してください（Insertを参照）。これは、スコープがそれらをエクスポートしたパッケージのスコープであるドットインポートされたオブジェクトにのみ起こり得ます。
-func (s *Scope) LookupParent(name string, pos token.Pos) (*Scope, Object)
-
-// Insertはオブジェクトobjをスコープsに挿入します。
-// もしsが同じ名前の代替オブジェクトaltを既に含んでいる場合、Insertはsを変更せずにaltを返します。
-// そうでなければ、objを挿入し、オブジェクトの親スコープを設定し、nilを返します。
+// Insertはオブジェクトobjをスコープsに挿入しようと試みます。
+// sが既に同じ名前の代替オブジェクトaltを含んでいる場合、
+// Insertはsを変更せずにaltを返します。
+// そうでなければobjを挿入し、オブジェクトの親スコープが
+// まだ設定されていない場合は設定し、nilを返します。
 func (s *Scope) Insert(obj Object) Object
 
-// PosとEndは、スコープのソースコード範囲[pos, end)を記述します。
-// 結果は、型チェックされたASTが完全な位置情報を持っている場合にのみ有効であることが保証されます。
-// 範囲は、Universeとパッケージスコープでは未定義です。
-func (s *Scope) Pos() token.Pos
-func (s *Scope) End() token.Pos
-
-// Containsは、posがスコープの範囲内にあるかどうかを報告します。
-// 結果は、型チェック済みのASTに完全な位置情報がある場合にのみ有効です。
-func (s *Scope) Contains(pos token.Pos) bool
-
-// Innermostは、posを含む最も内側（子）のスコープを返します。
-// posがどのスコープにも含まれていない場合、結果はnilになります。
-// Universeスコープの場合も結果はnilです。
-// 結果は、型チェック済みのASTに完全な位置情報がある場合にのみ有効です。
-func (s *Scope) Innermost(pos token.Pos) *Scope
-
-// WriteToは、スコープの文字列表現をwに書き込みます。
-// スコープ要素は名前でソートされます。
+// WriteToはスコープの文字列表現をwに書き込みます。
+// スコープ要素は名前順にソートされます。
 // インデントのレベルはn >= 0で制御され、
-// インデントなしの場合はn == 0です。
-// recurseが設定されている場合は、ネストされた（子）スコープも書き込みます。
+// n == 0でインデントなしになります。
+// recurseが設定されている場合、ネストされた（子）スコープも書き込みます。
 func (s *Scope) WriteTo(w io.Writer, n int, recurse bool)
 
 // Stringはデバッグ用のスコープの文字列表現を返します。

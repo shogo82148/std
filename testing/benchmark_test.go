@@ -36,7 +36,7 @@ func ExampleB_ReportMetric() {
 	// これは特定のアルゴリズム（この場合はソート）に関連するカスタムベンチマークメトリックを報告します。
 	testing.Benchmark(func(b *testing.B) {
 		var compares int64
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			s := []int{5, 4, 3, 2, 1}
 			slices.SortFunc(s, func(a, b int) int {
 				compares++

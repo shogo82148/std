@@ -54,8 +54,14 @@ func ParseFile(fset *token.FileSet, filename string, src any, mode Mode) (f *ast
 // モードビットは [ParseFile] に変更なしで渡されます。
 // 位置情報はfsetに記録されますが、これはnilであってはなりません。
 //
-// ディレクトリが読み込めなかった場合、nilのマップと対応するエラーが返されます。
-// パースエラーが発生した場合、非nilで不完全なマップと最初に遭遇したエラーが返されます。
+// ディレクトリが読み取れなかった場合、nilマップとそれぞれのエラーが
+// 返されます。解析エラーが発生した場合、nilではないが不完全なマップと
+// 最初に遭遇したエラーが返されます。
+//
+// Deprecated: ParseDirはファイルをパッケージに関連付ける際にビルドタグを考慮しません。
+// パッケージとファイルの関係に関する正確な情報については、
+// golang.org/x/tools/go/packages を使用してください。
+// これはオプションでファイルの解析と型チェックも行うことができます。
 func ParseDir(fset *token.FileSet, path string, filter func(fs.FileInfo) bool, mode Mode) (pkgs map[string]*ast.Package, first error)
 
 // ParseExprFromは式を解析するための便利な関数です。

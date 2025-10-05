@@ -6,6 +6,7 @@ package sync_test
 
 import (
 	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/sync"
 )
@@ -19,7 +20,26 @@ func ExampleWaitGroup() {
 		"http://www.example.com/",
 	}
 	for _, url := range urls {
-		// WaitGroup のカウンターをインクリメントする。
+		// URLを取得するためにゴルーチンを起動します。
+		wg.Go(func() {
+			// URLを取得します。
+			http.Get(url)
+		})
+	}
+	// すべてのHTTPフェッチが完了するまで待ちます。
+	wg.Wait()
+}
+
+// この例はメインの例と同等ですが、Goの代わりにAdd/Doneを使用します。
+func ExampleWaitGroup_addAndDone() {
+	var wg sync.WaitGroup
+	var urls = []string{
+		"http://www.golang.org/",
+		"http://www.google.com/",
+		"http://www.example.com/",
+	}
+	for _, url := range urls {
+		// WaitGroupのカウンターをインクリメントします。
 		wg.Add(1)
 		// URLを取得するために、ゴルーチンを起動します。
 		go func(url string) {
@@ -52,8 +72,8 @@ func ExampleOnce() {
 	// Only once
 }
 
-// This example uses OnceValue to perform an "expensive" computation just once,
-// even when used concurrently.
+// この例はOnceValueを使って「高コスト」な計算を一度だけ実行します。
+// 同時に使用しても一度だけ実行されます。
 func ExampleOnceValue() {
 	once := sync.OnceValue(func() int {
 		sum := 0
@@ -81,7 +101,7 @@ func ExampleOnceValue() {
 	// Computed once: 499500
 }
 
-// This example uses OnceValues to read a file just once.
+// この例はOnceValuesを使ってファイルを一度だけ読み込みます。
 func ExampleOnceValues() {
 	once := sync.OnceValues(func() ([]byte, error) {
 		fmt.Println("Reading file once")
@@ -94,7 +114,7 @@ func ExampleOnceValues() {
 			if err != nil {
 				fmt.Println("error:", err)
 			}
-			_ = data // Ignore the data for this example
+			_ = data // この例ではデータは無視します
 			done <- true
 		}()
 	}

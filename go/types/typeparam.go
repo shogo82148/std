@@ -7,7 +7,10 @@
 
 package types
 
-// TypeParamは型パラメータータイプを表します。
+// TypeParamはジェネリック宣言における型パラメータの型を表します。
+//
+// TypeParamは名前を持ちます；その [TypeName] オブジェクトにアクセスするには
+// [TypeParam.Obj] メソッドを使用してください。
 type TypeParam struct {
 	check *Checker
 	id    uint64
@@ -37,8 +40,8 @@ func (t *TypeParam) Constraint() Type
 // SetConstraintがレシーバを返すと、tは同時使用に安全です。
 func (t *TypeParam) SetConstraint(bound Type)
 
-// Underlying returns the [underlying type] of the type parameter t, which is
-// the underlying type of its constraint. This type is always an interface.
+// Underlyingは型パラメータtの [underlying type] を返します。これは
+// その制約の基底型です。この型は常にインターフェースです。
 //
 // [underlying type]: https://go.dev/ref/spec#Underlying_types.
 func (t *TypeParam) Underlying() Type

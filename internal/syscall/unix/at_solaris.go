@@ -5,6 +5,8 @@
 package unix
 
 const (
+	AT_EACCESS          = 0x4
+	AT_FDCWD            = 0xffd19553
 	AT_REMOVEDIR        = 0x1
 	AT_SYMLINK_NOFOLLOW = 0x1000
 

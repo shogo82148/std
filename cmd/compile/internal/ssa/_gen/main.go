@@ -5,9 +5,3 @@
 // The gen command generates Go code (in the parent directory) for all
 // the architecture-specific opcodes, blocks, and rewrites.
 package main
-
-type ArchsByName []arch
-
-func (x ArchsByName) Len() int
-func (x ArchsByName) Swap(i, j int)
-func (x ArchsByName) Less(i, j int) bool

@@ -8,7 +8,8 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// ExampleMultiKeysは、比較に異なる複数のフィールドのセットを使用してstructタイプをソートするためのテクニックを示しています。各フィールドを比較する「Less」関数を連鎖させます。
+// Example_sortMultiKeysは、構造体型を複数のフィールドセットで比較してソートする手法を示します。
+// "Less"関数を連鎖させ、それぞれが1つのフィールドを比較します。
 func Example_sortMultiKeys() {
 	// Change構造体を順序付けるクロージャー。
 	user := func(c1, c2 *Change) bool {

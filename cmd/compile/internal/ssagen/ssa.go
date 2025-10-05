@@ -20,6 +20,8 @@ func InitEnv()
 
 func InitConfig()
 
+func InitTables()
+
 // AbiForBodylessFuncStackMap returns the ABI for a bodyless function's stack map.
 // This is not necessarily the ABI used to call it.
 // Currently (1.17 dev) such a stack map is always ABI0;
@@ -28,10 +30,6 @@ func InitConfig()
 // enough to call the wrapped assembly function).
 // This always returns a freshly copied ABI.
 func AbiForBodylessFuncStackMap(fn *ir.Func) *abi.ABIConfig
-
-func InitTables()
-
-func IsIntrinsicCall(n *ir.CallExpr) bool
 
 // Branch is an unresolved branch.
 type Branch struct {

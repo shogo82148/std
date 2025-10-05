@@ -4,25 +4,26 @@
 
 package sys
 
-import "github.com/shogo82148/std/encoding/binary"
+import (
+	"github.com/shogo82148/std/encoding/binary"
+	"github.com/shogo82148/std/internal/goarch"
+)
 
-// ArchFamily represents a family of one or more related architectures.
-// For example, ppc64 and ppc64le are both members of the PPC64 family.
-type ArchFamily byte
+// TODO: just use goarch.ArchFamilyType directly
+type ArchFamily = goarch.ArchFamilyType
 
 const (
-	NoArch ArchFamily = iota
-	AMD64
-	ARM
-	ARM64
-	I386
-	Loong64
-	MIPS
-	MIPS64
-	PPC64
-	RISCV64
-	S390X
-	Wasm
+	AMD64   = goarch.AMD64
+	ARM     = goarch.ARM
+	ARM64   = goarch.ARM64
+	I386    = goarch.I386
+	Loong64 = goarch.LOONG64
+	MIPS    = goarch.MIPS
+	MIPS64  = goarch.MIPS64
+	PPC64   = goarch.PPC64
+	RISCV64 = goarch.RISCV64
+	S390X   = goarch.S390X
+	Wasm    = goarch.WASM
 )
 
 // Arch represents an individual architecture.
@@ -136,7 +137,7 @@ var ArchLoong64 = &Arch{
 	RegSize:        8,
 	MinLC:          4,
 	Alignment:      8,
-	CanMergeLoads:  false,
+	CanMergeLoads:  true,
 	HasLR:          true,
 	FixedFrameSize: 8,
 }
@@ -201,7 +202,7 @@ var ArchPPC64 = &Arch{
 	RegSize:       8,
 	MinLC:         4,
 	Alignment:     1,
-	CanMergeLoads: false,
+	CanMergeLoads: true,
 	HasLR:         true,
 
 	FixedFrameSize: 4 * 8,

@@ -32,8 +32,7 @@ func (h *TextHandler) WithGroup(name string) Handler
 // Recordのtimeがゼロの場合、timeは省略されます。
 // そうでない場合、keyは"time"であり、RFC3339形式でミリ秒精度で出力されます。
 //
-// Recordのlevelがゼロの場合、levelは省略されます。
-// そうでない場合、keyは"level"であり、 [Level.String] の値が出力されます。
+// レベルのキーは"level"で、その値は [Level.String] を呼び出した結果です。
 //
 // AddSourceオプションが設定されており、ソース情報が利用可能な場合、
 // keyは"source"であり、値はFILE:LINEとして出力されます。

@@ -52,11 +52,9 @@ const DefaultMaxIdleConnsPerHost = 2
 // Transportは、HTTPおよびHTTPSリクエストを行うための低レベルのプリミティブです。
 // クッキーやリダイレクトなどの高レベルの機能については、[Client] を参照してください。
 //
-// Transportは、HTTP URLではHTTP/1.1を、HTTPS URLではHTTP/1.1またはHTTP/2を使用します。
-// これは、サーバーがHTTP/2をサポートしているかどうか、およびTransportの構成によって異なります。
+// TransportはHTTP URLに対してHTTP/1.1を使用し、HTTPS URLに対してはサーバーがHTTP/2をサポートしているか、Transportの設定によってHTTP/1.1またはHTTP/2を使用します。
 // [DefaultTransport] はHTTP/2をサポートしています。
-// Transportで明示的にHTTP/2を有効にするには、golang.org/x/net/http2 を使用してConfigureTransportを呼び出します。
-// HTTP/2についての詳細については、パッケージのドキュメントを参照してください。
+// Transportで明示的にHTTP/2を有効にするには、[Transport.Protocols] を設定してください。
 //
 // ステータスコードが1xx範囲にあるレスポンスは、自動的に処理されます（100 expect-continue）。
 // ただし、HTTPステータスコード101（Switching Protocols）は、終端ステータスと見なされ、[Transport.RoundTrip] によって返されます。
@@ -232,6 +230,22 @@ type Transport struct {
 	// カスタムダイヤラーやTLS設定を使用しつつ、HTTP/2への
 	// アップグレードを試みるには、これをtrueに設定します。
 	ForceAttemptHTTP2 bool
+
+	// HTTP2 configures HTTP/2 connections.
+	//
+	// This field does not yet have any effect.
+	// See https://go.dev/issue/67813.
+	HTTP2 *HTTP2Config
+
+	// Protocols is the set of protocols supported by the transport.
+	//
+	// If Protocols includes UnencryptedHTTP2 and does not include HTTP1,
+	// the transport will use unencrypted HTTP/2 for requests for http:// URLs.
+	//
+	// If Protocols is nil, the default is usually HTTP/1 only.
+	// If ForceAttemptHTTP2 is true, or if TLSNextProto contains an "h2" entry,
+	// the default is HTTP/1 and HTTP/2.
+	Protocols *Protocols
 }
 
 // Cloneは、tのエクスポートされたフィールドのディープコピーを返します。

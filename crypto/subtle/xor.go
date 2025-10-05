@@ -4,8 +4,12 @@
 
 package subtle
 
-// XORBytesはdst[i] = x[i] ^ y[i]をi < n = min(len(x), len(y))のすべてのiに対して設定し、
-// dstに書き込まれたバイト数であるnを返します。
-// もしdstの長さが少なくともnでない場合、
-// XORBytesはなにもdstに書き込まずにパニックを起こします。
+// XORBytesはすべてのi < n = min(len(x), len(y))に対してdst[i] = x[i] ^ y[i]を設定し、
+// dstに書き込まれたバイト数nを返します。
+//
+// dstの長さが少なくともnでない場合、
+// XORBytesはdstに何も書き込まずにパニックします。
+//
+// dstとxまたはyは完全に重複するか全く重複しないかのいずれかである必要があり、
+// そうでない場合XORBytesはパニックすることがあります。
 func XORBytes(dst, x, y []byte) int

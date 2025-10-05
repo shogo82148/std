@@ -142,12 +142,12 @@ const (
 
 // A Sym represents a symbolic offset from a base register.
 // Currently a Sym can be one of 3 things:
-//   - a *gc.Node, for an offset from SP (the stack pointer)
+//   - a *ir.Name, for an offset from SP (the stack pointer)
 //   - a *obj.LSym, for an offset from SB (the global pointer)
 //   - nil, for no offset
 type Sym interface {
+	Aux
 	CanBeAnSSASym()
-	CanBeAnSSAAux()
 }
 
 // A ValAndOff is used by the several opcodes. It holds

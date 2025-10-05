@@ -97,11 +97,16 @@ func Split(s, sep string) []string
 // countが-1の [SplitAfterN] と同等です。
 func SplitAfter(s, sep string) []string
 
-// Fieldsは、sを [Unicode.IsSpace] によって定義される1つ以上の連続する空白文字の各インスタンスで分割し、sの部分文字列のスライスまたは空のスライスを返します。
+// Fieldsは、[unicode.IsSpace]で定義される1つ以上連続した空白文字ごとに文字列sを分割し、
+// sの部分文字列のスライスまたはsが空白のみの場合は空のスライスを返します。
+// 返されるスライスの各要素は空ではありません。[Split] とは異なり、
+// 先頭と末尾の空白文字の並びは破棄されます。
 func Fields(s string) []string
 
-// FieldsFuncは、Unicodeコードポイントcがf(c)を満たす連続するランで文字列sを分割し、sのスライスの配列を返します。
-// sのすべてのコードポイントがf(c)を満たすか、文字列が空の場合、空のスライスが返されます。
+// FieldsFuncは、Unicodeコードポイントcがf(c)を満たす連続部分ごとに文字列sを分割し、
+// sの部分文字列のスライスを返します。sのすべてのコードポイントがf(c)を満たす場合や
+// 文字列が空の場合、空のスライスを返します。返されるスライスの各要素は空ではありません。
+// [SplitFunc]とは異なり、先頭と末尾のf(c)を満たす部分は破棄されます。
 //
 // FieldsFuncは、f(c)を呼び出す順序について保証せず、fが常に同じ値を返すことを前提としています。
 func FieldsFunc(s string, f func(rune) bool) []string

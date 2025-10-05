@@ -4,7 +4,10 @@
 
 package types2
 
-// A TypeParam represents a type parameter type.
+// A TypeParam represents the type of a type parameter in a generic declaration.
+//
+// A TypeParam has a name; use the [TypeParam.Obj] method to access
+// its [TypeName] object.
 type TypeParam struct {
 	check *Checker
 	id    uint64

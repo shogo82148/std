@@ -129,16 +129,20 @@ func (r *Resolver) LookupSRV(ctx context.Context, service, proto, name string) (
 
 // LookupMXは指定されたドメイン名のDNS MXレコードを優先度に従ってソートして返します。
 //
-// 返されるメールサーバー名は、正しくフォーマットされた表示形式のドメイン名であることが検証されます。
-// レスポンスに無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーと共に残りの結果が返されます（もしあれば）。
+// 返されるメールサーバー名は、適切にフォーマットされた
+// プレゼンテーション形式のドメイン名、または数値IPアドレスであることが検証されます。
+// 応答に無効な名前が含まれている場合、それらのレコードはフィルタリングされ、
+// 残りの結果がある場合は、それらと一緒にエラーが返されます。
 //
 // LookupMXは内部的に [context.Background] を使用します。コンテキストを指定するには、[Resolver.LookupMX] を使用してください。
 func LookupMX(name string) ([]*MX, error)
 
-// LookupMXは、指定されたドメイン名のDNS MXレコードを優先度に基づいてソートして返します。
-// 返されるメールサーバー名は正しくフォーマットされたプレゼンテーション形式のドメイン名であることが検証されます。
-// レスポンスに無効な名前が含まれている場合、それらのレコードはフィルタリングされ、エラーが返されます。
-// 残りの結果がある場合、それらとともにエラーが返されます。
+// LookupMXは、指定されたドメイン名のDNS MXレコードを優先度順に返します。
+//
+// 返されるメールサーバー名は、適切にフォーマットされた
+// プレゼンテーション形式のドメイン名、または数値IPアドレスであることが検証されます。
+// 応答に無効な名前が含まれている場合、それらのレコードはフィルタリングされ、
+// 残りの結果がある場合は、それらと一緒にエラーが返されます。
 func (r *Resolver) LookupMX(ctx context.Context, name string) ([]*MX, error)
 
 // LookupNSは指定されたドメイン名のDNS NSレコードを返します。
@@ -160,11 +164,15 @@ func (r *Resolver) LookupNS(ctx context.Context, name string) ([]*NS, error)
 
 // LookupTXTは指定されたドメイン名のDNS TXTレコードを返します。
 //
-// LookupTXTは内部で [context.Background] を使用します。コンテキストを指定するには、
+// DNSのTXTレコードが複数の文字列を保持している場合、それらは1つの文字列として連結されます。
+//
+// LookupTXTは内部的に [context.Background] を使用します。コンテキストを指定するには、
 // [Resolver.LookupTXT] を使用してください。
 func LookupTXT(name string) ([]string, error)
 
-// LookupTXTは指定されたドメイン名のDNSのTXTレコードを返します。
+// LookupTXTは、指定されたドメイン名のDNS TXTレコードを返します。
+//
+// DNSのTXTレコードが複数の文字列を保持している場合、それらは1つの文字列として連結されます。
 func (r *Resolver) LookupTXT(ctx context.Context, name string) ([]string, error)
 
 // LookupAddrは与えられたアドレスに対して逆引きを行い、そのアドレスにマッピングされる名前のリストを返します。

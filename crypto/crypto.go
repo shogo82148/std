@@ -87,7 +87,24 @@ type Signer interface {
 	Sign(rand io.Reader, digest []byte, opts SignerOpts) (signature []byte, err error)
 }
 
-// SignerOptsは [Signer] での署名に対するオプションを含んでいます。
+// MessageSignerは、呼び出し元によってメッセージが事前にハッシュ化されていない
+// 署名操作に使用できる不透明な秘密鍵のインターフェースです。
+// これは、Signerを受け入れるAPIに渡すことができるように、Signerインターフェースの
+// スーパーセットであり、これらのAPIはインターフェースのアップグレードを試行する場合があります。
+//
+// MessageSigner.SignMessageとMessageSigner.Signは、同じoptsが与えられた場合、
+// 同じ結果を生成する必要があります。特に、MessageSigner.SignMessageは、
+// Signerも事前にハッシュ化されていないメッセージを受け入れる場合にのみ、
+// ゼロのopts.HashFuncを受け入れる必要があります。
+//
+// 事前にハッシュ化されたSign APIを提供しない実装では、
+// 常にエラーを返すことでSigner.Signを実装する必要があります。
+type MessageSigner interface {
+	Signer
+	SignMessage(rand io.Reader, msg []byte, opts SignerOpts) (signature []byte, err error)
+}
+
+// SignerOptsは [Signer] での署名のためのオプションを含みます。
 type SignerOpts interface {
 	HashFunc() Hash
 }
@@ -100,3 +117,8 @@ type Decrypter interface {
 }
 
 type DecrypterOpts any
+
+// SignMessageはsignerでmsgに署名します。signerが [MessageSigner] を実装している場合、
+// [MessageSigner.SignMessage] が直接呼び出されます。そうでなければ、msgは
+// opts.HashFunc()でハッシュ化され、[Signer.Sign] で署名されます。
+func SignMessage(signer Signer, rand io.Reader, msg []byte, opts SignerOpts) (signature []byte, err error)

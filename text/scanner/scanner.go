@@ -35,7 +35,7 @@ func (pos Position) String() string
 // 例えば、(Goの)識別子と整数のみを認識し、コメントをスキップするように
 // [Scanner] を設定するには、ScannerのModeフィールドを次のように設定します:
 //
-//	ScanIdents | ScanInts | SkipComments
+//	ScanIdents | ScanInts | ScanComments | SkipComments
 //
 // SkipCommentsが設定されている場合、コメントはスキップされるを除いて、
 // 認識されないトークンは無視されません。代わりに、スキャナは単に

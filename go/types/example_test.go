@@ -11,7 +11,6 @@ package types_test
 import (
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/go/ast"
-	"github.com/shogo82148/std/go/importer"
 	"github.com/shogo82148/std/go/parser"
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/go/types"
@@ -45,9 +44,10 @@ func Unused() { {}; {{ var x int; _ = x }} } // make sure empty block scopes get
 		files = append(files, mustParse(fset, src))
 	}
 
-	// これらのファイルから成るパッケージの型チェックを行います。
-	// インポートされた "fmt" パッケージの型情報は、$GOROOT/pkg/$GOOS_$GOOARCH/fmt.a から取得されます。
-	conf := types.Config{Importer: importer.Default()}
+	// これらのファイルで構成されるパッケージの型チェックを行う。
+	// インポートされた"fmt"パッケージの型情報は
+	// $GOROOT/pkg/$GOOS_$GOOARCH/fmt.aから取得される。
+	conf := types.Config{Importer: defaultImporter(fset)}
 	pkg, err := conf.Check("temperature", fset, files, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -113,9 +113,10 @@ type I interface { m() byte }
 		log.Fatal(err)
 	}
 
-	// このファイルからなるパッケージを型チェックします。
-	// インポートされたパッケージの型情報は、$GOROOT/pkg/$GOOS_$GOOARCH/fmt.a から来ます。
-	conf := types.Config{Importer: importer.Default()}
+	// このファイルで構成されるパッケージの型チェックを行う。
+	// インポートされたパッケージの型情報は
+	// $GOROOT/pkg/$GOOS_$GOOARCH/fmt.aから取得される。
+	conf := types.Config{Importer: defaultImporter(fset)}
 	pkg, err := conf.Check("temperature", fset, []*ast.File{f}, nil)
 	if err != nil {
 		log.Fatal(err)

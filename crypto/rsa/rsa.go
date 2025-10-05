@@ -10,23 +10,39 @@
 //
 // このパッケージには2つのセットのインタフェースが含まれています。より抽象的なインタフェースが不要な場合は、v1.5 / OAEPでの暗号化/復号化、およびv1.5 / PSSでの署名/検証のための関数があります。公開鍵原則に対して抽象化する必要がある場合は、PrivateKey型がcryptoパッケージのDecrypterおよびSignerインタフェースを実装します。
 //
-// 私有鍵を扱う操作は、[GenerateKey]、[PrivateKey.Precompute]、および
-// [PrivateKey.Validate] を除いて、定数時間アルゴリズムを使用して実装されています。
+// 秘密鍵を含む操作は、[GenerateKey] と一部の非推奨マルチプライム鍵を含む
+// 操作を除いて、定数時間アルゴリズムを使用して実装されています。
+//
+// # Minimum key size
+//
+// [GenerateKey]は1024ビット未満のキーが要求された場合にエラーを返し、
+// すべてのSign、Verify、Encrypt、およびDecryptメソッドは1024ビット未満の
+// キーで使用された場合にエラーを返します。そのようなキーは安全ではなく、
+// 使用すべきではありません。
+//
+// rsa1024min=0 GODEBUG設定はこのエラーを抑制しますが、必要な場合のみ
+// テストでのみそうすることを推奨します。テストでは[testing.T.Setenv]を使用するか、
+// *_test.goソースファイルに"//go:debug rsa1024min=0"を含めることで
+// このオプションを設定できます。
+//
+// または、事前生成されたテスト専用の2048ビットキーについては
+// [GenerateKey (TestKey)] の例を参照してください。
+//
+// [GenerateKey (TestKey)]: https://pkg.go.dev/crypto/rsa#example-GenerateKey-TestKey
 package rsa
 
 import (
 	"github.com/shogo82148/std/crypto"
-	"github.com/shogo82148/std/crypto/internal/bigmod"
+	"github.com/shogo82148/std/crypto/internal/fips140/rsa"
 	"github.com/shogo82148/std/errors"
-	"github.com/shogo82148/std/hash"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/math/big"
 )
 
 // PublicKeyは、RSAキーの公開部分を表します。
 //
-// このライブラリでは、モジュラスNの値は秘密と見なされ、タイミングサイドチャネルを通じた漏洩から保護されます。
-// しかし、指数Eの値やNの正確なビットサイズは同様に保護されません。
+// NとEの値は機密とは見なされず、サイドチャネルを通じて漏洩したり、
+// 他の公開値から数学的に導出される可能性があります。
 type PublicKey struct {
 	N *big.Int
 	E int
@@ -90,7 +106,7 @@ type PrecomputedValues struct {
 	// 複雑さを制限するためにこのパッケージでCRTの最適化なしで実装されています。
 	CRTValues []CRTValue
 
-	n, p, q *bigmod.Modulus
+	fips *rsa.PrivateKey
 }
 
 // CRTValueには事前計算された中国剰余定理の値が含まれています。
@@ -100,13 +116,22 @@ type CRTValue struct {
 	R     *big.Int
 }
 
-// Validateはキーに基本的な正当性チェックを行います。
-// キーが正当であれば、nilを返します。それ以外の場合は、問題を説明するエラーが返されます。
+// Validateはキーに対して基本的な健全性チェックを実行します。
+// キーが有効な場合はnilを返し、そうでなければ問題を説明するエラーを返します。
+//
+// [PrivateKey.Precompute] の後に実行すると、有効なキーに対してより高速に実行されます。
 func (priv *PrivateKey) Validate() error
 
 // GenerateKeyは指定されたビットサイズのランダムなRSA秘密鍵を生成します。
 //
-// ほとんどのアプリケーションはrandとして[crypto/rand.Reader]を使用するべきです。注意：返される鍵は、randから読み取られたバイトに従属的に決定されず、呼び出しやバージョンによって変わる可能性があります。
+// bitsが1024未満の場合、[GenerateKey] はエラーを返します。詳細については「 [Minimum
+// key size] 」セクションを参照してください。
+//
+// ほとんどのアプリケーションでは、randとして [crypto/rand.Reader] を使用する必要があります。
+// 返されるキーはrandから読み取ったバイトに決定論的に依存せず、
+// 呼び出し間やバージョン間で変更される可能性があることに注意してください。
+//
+// [Minimum key size]: https://pkg.go.dev/crypto/rsa#hdr-Minimum_key_size
 func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 
 // GenerateMultiPrimeKeyは指定されたビットサイズとランダムソースで、マルチプライムRSA鍵ペアを生成します。
@@ -125,45 +150,14 @@ func GenerateMultiPrimeKey(random io.Reader, nprimes int, bits int) (*PrivateKey
 // ErrMessageTooLong は、鍵のサイズに対して大きすぎるメッセージを暗号化または署名しようとした場合に返されます。 [SignPSS] を使用する場合、塩のサイズが大きすぎる場合にも返されることがあります。
 var ErrMessageTooLong = errors.New("crypto/rsa: message too long for RSA key size")
 
-// EncryptOAEPはRSA-OAEPで与えられたメッセージを暗号化します。
-//
-// OAEPはランダムオラクルとして使用されるハッシュ関数でパラメータ化されています。
-// 暗号化と復号化は同じハッシュ関数を使用する必要があります。
-// sha256.New()は妥当な選択肢です。
-//
-// ランダムパラメータはエントロピーのソースとして使用され、同じメッセージを2回暗号化しても
-// 同じ暗号文にならないようにします。
-// ほとんどのアプリケーションでは、[crypto/rand.Reader]をランダムとして使用するべきです。
-//
-// ラベルパラメータには暗号化されない任意のデータを含めることができます。
-// ただし、このデータはメッセージに重要な文脈を与えます。
-// 例えば、特定の公開鍵が2つのタイプのメッセージを暗号化する場合、異なるラベル値を使用して
-// 攻撃者が別の目的で暗号文を使用できないようにすることができます。
-// 必要ない場合は空にしても構いません。
-//
-// メッセージは公開モジュラスの長さからハッシュの2倍の長さを引いた値より長くすることはできません。
-// さらに2を引いた長さ以下である必要があります。
-func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
-
-// ErrDecryptionはメッセージの復号に失敗したことを表します。
-// 適応攻撃を避けるため、故意に曖昧さを持たせています。
+// ErrDecryptionはメッセージの復号化に失敗したことを表します。
+// 適応攻撃を避けるために、意図的にあいまいです。
 var ErrDecryption = errors.New("crypto/rsa: decryption error")
 
 // ErrVerificationは署名を検証できなかったことを表します。
 // 自己適応攻撃を避けるために、意図的にあいまいです。
 var ErrVerification = errors.New("crypto/rsa: verification error")
 
-// Precomputeは未来の秘密鍵操作を高速化するためのいくつかの計算を実行します。
+// Precomputeは将来の秘密鍵操作を高速化するためのいくつかの計算を実行します。
+// 検証されていない秘密鍵に対して実行しても安全です。
 func (priv *PrivateKey) Precompute()
-
-// DecryptOAEPはRSA-OAEPを使用して暗号文を復号化します。
-//
-// OAEPはランダムオラクルとして使用されるハッシュ関数でパラメータ化されます。
-// 特定のメッセージの暗号化および復号化は、同じハッシュ関数を使用する必要があります。
-// sha256.New()が妥当な選択肢です。
-//
-// ランダムパラメータは旧式で無視され、nilであることができます。
-//
-// ラベルパラメータは暗号化時に指定した値と一致する必要があります。
-// 詳細については、 [EncryptOAEP] を参照してください。
-func DecryptOAEP(hash hash.Hash, random io.Reader, priv *PrivateKey, ciphertext []byte, label []byte) ([]byte, error)

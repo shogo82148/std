@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-func ScanDir(dir string, tags map[string]bool) ([]string, []string, error)
+func ScanDir(path string, tags map[string]bool) ([]string, []string, error)
 
 func ScanFiles(files []string, tags map[string]bool) ([]string, []string, error)
 

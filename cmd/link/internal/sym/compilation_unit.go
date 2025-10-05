@@ -32,4 +32,5 @@ type CompilationUnit struct {
 	AbsFnDIEs []LoaderSym
 	RangeSyms []LoaderSym
 	Textp     []LoaderSym
+	Addrs     map[LoaderSym]uint32
 }

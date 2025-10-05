@@ -341,11 +341,12 @@ func NewRequest(method, url string, body io.Reader) (*Request, error)
 //
 // 提供されたbodyが [io.Closer] でも、返された [Request.Body] はbodyに設定され、ClientのDo、Post、PostForm、および [Transport.RoundTrip] によって（非同期に）閉じられます。
 //
-// NewRequestWithContextは、[Client.Do] または [Transport.RoundTrip] で使用するためのRequestを返します。
-// Server Handlerをテストするためのリクエストを作成するには、net/http/httptestパッケージの [NewRequest] 関数を使用するか、
-// [ReadRequest] を使用するか、またはRequestフィールドを手動で更新します。送信元のクライアントリクエストの場合、
-// コンテキストはリクエストとその応答の全寿命を制御します：接続の取得、リクエストの送信、および応答ヘッダーとボディの読み取り。
-// 入力リクエストフィールドと出力リクエストフィールドの違いについては、Requestタイプのドキュメントを参照してください。
+// NewRequestWithContextは、[Client.Do] や [Transport.RoundTrip] で使用できるRequestを返します。
+// サーバーハンドラのテスト用リクエストを作成するには、[net/http/httptest.NewRequest] 関数を使うか、
+// [ReadRequest] を使うか、Requestフィールドを手動で更新してください。
+// クライアントから送信するリクエストの場合、contextはリクエストとレスポンスの
+// 取得、リクエストの送信、レスポンスヘッダーとボディの読み取りなど、リクエスト全体のライフサイクルを制御します。
+// 入力リクエストと出力リクエストのフィールドの違いについては、[Request] 型のドキュメントを参照してください。
 //
 // bodyが [*bytes.Buffer]、 [*bytes.Reader]、または [*strings.Reader] の場合、返されたリクエストのContentLengthはその正確な値に設定されます（-1の代わりに）、
 // GetBodyが作成されます（307および308のリダイレクトがボディを再生できるように）、およびContentLengthが0の場合はBodyが [NoBody] に設定されます。

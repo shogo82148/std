@@ -14,6 +14,7 @@ package rttype
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
+	"github.com/shogo82148/std/reflect"
 )
 
 // The type structures shared with the runtime.
@@ -42,6 +43,9 @@ var TypeAssert *types.Type
 var ITab *types.Type
 
 func Init()
+
+// FromReflect translates from a host type to the equivalent target type.
+func FromReflect(rt reflect.Type) *types.Type
 
 // A Cursor represents a typed location inside a static variable where we
 // are going to write.
@@ -82,7 +86,7 @@ func (c Cursor) WriteSlice(target *obj.LSym, off, len, cap int64)
 
 // Reloc adds a relocation from the current cursor position.
 // Reloc fills in Off and Siz fields. Caller should fill in the rest (Type, others).
-func (c Cursor) Reloc() *obj.Reloc
+func (c Cursor) Reloc(rel obj.Reloc)
 
 // Field selects the field with the given name from the struct pointed to by c.
 func (c Cursor) Field(name string) Cursor

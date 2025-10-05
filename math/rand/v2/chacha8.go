@@ -35,8 +35,11 @@ func (c *ChaCha8) Uint64() uint64
 // Readは最後のUint64の呼び出し前に生成されたビットを返すことがあります。
 func (c *ChaCha8) Read(p []byte) (n int, err error)
 
-// UnmarshalBinaryはencoding.BinaryUnmarshalerインターフェースを実装します。
+// UnmarshalBinaryは [encoding.BinaryUnmarshaler] インターフェースを実装します。
 func (c *ChaCha8) UnmarshalBinary(data []byte) error
 
-// MarshalBinaryはencoding.BinaryMarshalerインターフェースを実装します。
+// AppendBinaryは [encoding.BinaryAppender] インターフェースを実装します。
+func (c *ChaCha8) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinaryは [encoding.BinaryMarshaler] インターフェースを実装します。
 func (c *ChaCha8) MarshalBinary() ([]byte, error)

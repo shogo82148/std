@@ -4,25 +4,37 @@
 
 // contextパッケージは、期限、キャンセルシグナル、および他のAPI境界やプロセス間を超えたリクエストスコープの値を伝達するContext型を定義します。
 //
-// サーバーへの入力リクエストは [Context] を作成し、サーバーへの出力呼び出しは [Context] を受け入れる必要があります。
-// それらの間の関数呼び出しのチェーンは、Contextを伝播させ、[WithCancel]、[WithDeadline]、[WithTimeout]、または [WithValue] を使用して作成された派生Contextで置き換えることができます。
-// Contextがキャンセルされると、それから派生したすべてのContextもキャンセルされます。
+// サーバーへの受信リクエストは [Context] を作成し、サーバーへの送信
+// 呼び出しはContextを受け入れる必要があります。それらの間の関数
+// 呼び出しのチェーンはContextを伝播する必要があり、オプションで
+// [WithCancel]、[WithDeadline]、[WithTimeout]、または [WithValue] を使用して
+// 作成された派生Contextで置き換えることができます。
 //
-// [WithCancel]、[WithDeadline]、および [WithTimeout] 関数は、Context（親）を取得し、派生Context（子）と [CancelFunc] を返します。
-// CancelFuncを呼び出すと、子とその子がキャンセルされ、親の子への参照が削除され、関連するタイマーが停止します。
-// CancelFuncを呼び出さないと、子とその子は親がキャンセルされるか、タイマーが発火するまでリークします。
-// go vetツールは、CancelFuncがすべての制御フローパスで使用されていることを確認します。
+// Contextは、その代わりに実行される作業を停止すべきことを示すためにキャンセルされる場合があります。
+// 期限のあるContextは、期限が過ぎた後にキャンセルされます。
+// Contextがキャンセルされると、そこから派生したすべてのContextもキャンセルされます。
 //
-// [WithCancelCause] 関数は [CancelCauseFunc] を返し、エラーを受け取り、キャンセルの原因として記録します。
-// キャンセルされたコンテキストまたはその子のいずれかで [Cause] を呼び出すと、原因が取得されます。
-// 原因が指定されていない場合、 Cause(ctx) は ctx.Err() と同じ値を返します。
+// [WithCancel]、[WithDeadline]、および [WithTimeout] 関数は
+// Context（親）を受け取り、派生Context（子）と
+// [CancelFunc] を返します。CancelFuncを直接呼び出すと、子とその
+// 子たちがキャンセルされ、親の子への参照が削除され、
+// 関連するタイマーが停止されます。CancelFuncの呼び出しに失敗すると、
+// 親がキャンセルされるまで子とその子たちがリークします。go vetツールは
+// CancelFuncがすべての制御フローパスで使用されているかをチェックします。
+//
+// [WithCancelCause]、[WithDeadlineCause]、および [WithTimeoutCause] 関数は
+// [CancelCauseFunc] を返します。これはエラーを受け取り、それを
+// キャンセルの原因として記録します。キャンセルされたコンテキスト
+// またはその子のいずれかで [Cause] を呼び出すと、原因が取得されます。原因が指定されていない場合、
+// Cause(ctx)はctx.Err()と同じ値を返します。
 //
 // Contextを使用するプログラムは、これらのルールに従う必要があります。
 // これにより、パッケージ間でインターフェースを一貫させ、静的解析ツールがコンテキストの伝播をチェックできるようになります。
 //
-// 構造体型の内部にContextを格納しないでください。
-// 代わりに、それが必要な各関数に明示的にContextを渡してください。
-// 通常、最初のパラメーターにctxという名前を付けます。
+// Contextを構造体型の内部に格納しないでください。代わりに、必要とする
+// 各関数にContextを明示的に渡してください。これについては
+// https://go.dev/blog/context-and-structs でさらに詳しく説明されています。Contextは最初の
+// パラメータであるべきで、通常はctxという名前を付けます：
 //
 //	func DoSomething(ctx context.Context, arg Arg) error {
 //		// ... use ctx ...
@@ -35,7 +47,7 @@
 //
 // 同じContextは、異なるゴルーチンで実行される関数に渡すことができます。Contextは、複数のゴルーチンによる同時使用に対して安全です。
 //
-// サーバーでContextを使用する例のコードについては、https://blog.golang.org/context を参照してください。
+// Contextを使用するサーバーのサンプルコードについては https://go.dev/blog/context を参照してください。
 package context
 
 import (
@@ -56,21 +68,18 @@ type Context interface {
 	Value(key any) any
 }
 
-// Canceled コンテキストがキャンセルされた場合に [Context.Err] が返すエラーです。
+// Canceledは、期限の経過以外の理由でコンテキストがキャンセルされた場合に
+// [Context.Err] によって返されるエラーです。
 var Canceled = errors.New("context canceled")
 
-type deadlineExceededError struct{}
-
-func (deadlineExceededError) Error() string { return "context deadline exceeded" }
-
-// DeadlineExceeded コンテキストの期限が切れた場合に [Context.Err] が返すエラーです。
+// DeadlineExceededは、コンテキストの期限が切れた場合に [Context.Err] によって返されるエラーです。
 var DeadlineExceeded error = deadlineExceededError{}
 
 // Backgroundは、非nilで空の [Context] を返します。キャンセルされることはなく、値も期限もありません。
 // 通常、main関数、初期化、テスト、および着信リクエストのトップレベルContextとして使用されます。
 func Background() Context
 
-// TODO 非nilで空の [Context] を返します。
+// TODOは、非nilで空の [Context] を返します。
 // コードがどの [Context] を使用するか不明である場合や、まだ [Context] パラメータを受け入れるように拡張されていない
 // （周囲の関数がまだ [Context] を受け入れるように拡張されていない）場合に、コードは [context.TODO] を使用する必要があります。
 func TODO() Context
@@ -81,9 +90,10 @@ func TODO() Context
 // 最初の呼び出しの後、CancelFuncへの後続の呼び出しは何もしません。
 type CancelFunc func()
 
-// WithCancel 新しいDoneチャネルを持つ親のコピーを返します。
-// 返されたコンテキストのDoneチャネルは、返されたキャンセル関数が呼び出されるか、
-// または親のコンテキストのDoneチャネルが閉じられたとき、より早く閉じられます。
+// WithCancelは親のコンテキストを指す派生コンテキストを返しますが、
+// 新しいDoneチャネルを持ちます。返されたコンテキストのDoneチャネルは、
+// 返されたキャンセル関数が呼び出されたとき、または親のコンテキストの
+// Doneチャネルが閉じられたときのいずれか最初に発生したときに閉じられます。
 //
 // このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、コードはこの [Context] で実行される操作が完了したらすぐにcancelを呼び出す必要があります。
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
@@ -119,32 +129,36 @@ func WithCancelCause(parent Context) (ctx Context, cancel CancelCauseFunc)
 // cがまだキャンセルされていない場合、Causeはnilを返します。
 func Cause(c Context) error
 
-// AfterFunc ctxが完了（キャンセルまたはタイムアウト）した後、fを独自のゴルーチンで呼び出すように設定します。
-// もしctxが既に完了している場合、AfterFuncは独自のゴルーチンで直ちにfを呼び出します。
+// AfterFuncは、ctxがキャンセルされた後に独自のゴルーチンでfを呼び出すように手配します。
+// ctxが既にキャンセルされている場合、AfterFuncは独自のゴルーチンで即座にfを呼び出します。
 //
 // ContextでのAfterFuncの複数回の呼び出しは独立して動作し、1つが他を置き換えることはありません。
 //
-// 返されたstop関数を呼び出すと、ctxとfの関連付けが停止します。
-// 呼び出しがfの実行を停止した場合、trueを返します。
+// 返されたstop関数を呼び出すと、ctxとfの関連付けが停止されます。
+// fの実行が停止された場合、trueを返します。
 // stopがfalseを返す場合、
-// コンテキストが完了し、fが独自のゴルーチンで開始されたか、
+// コンテキストがキャンセルされてfが独自のゴルーチンで開始されているか、
 // またはfが既に停止されています。
-// stop関数は、fが完了するのを待ってから戻りません。
+// stop関数は、fの完了を待たずに戻ります。
 // 呼び出し元がfが完了したかどうかを知る必要がある場合、
-// 明示的にfと調整する必要があります。
+// fと明示的に協調する必要があります。
 //
 // ctxに「AfterFunc(func()) func() bool」メソッドがある場合、
 // AfterFuncはそれを使用して呼び出しをスケジュールします。
 func AfterFunc(ctx Context, f func()) (stop func() bool)
 
-// WithoutCancelは、親がキャンセルされたときにキャンセルされない親のコピーを返します。
-// 返されたコンテキストは、DeadlineやErrを返さず、Doneチャネルはnilです。
-// 返されたコンテキストで [Cause] を呼び出すとnilが返されます。
+// WithoutCancelは親のコンテキストを指す派生コンテキストを返し、
+// 親がキャンセルされたときにキャンセルされません。
+// 返されたコンテキストはDeadlineやErrを返さず、そのDoneチャネルはnilです。
+// 返されたコンテキストで[Cause]を呼び出すとnilを返します。
 func WithoutCancel(parent Context) Context
 
-// WithDeadlineは、親の期限をdよりも遅くならないように調整した親のコピーを返します。
-// 親の期限がすでにdよりも早い場合、 WithDeadline(parent, d) は親と意味的に等価です。
-// 返された [Context.Done] チャネルは、期限が切れたとき、返されたキャンセル関数が呼び出されたとき、または親のコンテキストのDoneチャネルが閉じられたときのいずれかが最初に発生したときに閉じられます。
+// WithDeadlineは親のコンテキストを指す派生コンテキストを返しますが、
+// 期限はd以降にならないように調整されます。親の
+// 期限が既にdより早い場合、WithDeadline(parent, d)は意味的に
+// 親と同等です。返された[Context.Done]チャネルは、
+// 期限が切れたとき、返されたキャンセル関数が呼び出されたとき、
+// または親のコンテキストのDoneチャネルが閉じられたときのいずれか最初に発生したときに閉じられます。
 //
 // このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、コードはこの [Context] で実行される操作が完了したらすぐにcancelを呼び出す必要があります。
 func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
@@ -153,7 +167,7 @@ func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
 // 返された [CancelFunc] は原因を設定しません。
 func WithDeadlineCause(parent Context, d time.Time, cause error) (Context, CancelFunc)
 
-// WithTimeout returns WithDeadline(parent, time.Now().Add(timeout)).
+// WithTimeoutはWithDeadline(parent, time.Now().Add(timeout))を返します。
 //
 // このコンテキストをキャンセルすると、それに関連するリソースが解放されるため、
 // コードはこの [Context] で実行される操作が完了したらすぐにcancelを呼び出す必要があります。
@@ -169,7 +183,8 @@ func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
 // 返された [CancelFunc] は原因を設定しません。
 func WithTimeoutCause(parent Context, timeout time.Duration, cause error) (Context, CancelFunc)
 
-// WithValueは、キーに関連付けられた値がvalである親のコピーを返します。
+// WithValueは親のContextを指す派生コンテキストを返します。
+// 派生コンテキストでは、keyに関連付けられた値はvalです。
 //
 // コンテキストの値は、プロセスやAPIを超えて転送されるリクエストスコープのデータにのみ使用し、関数にオプションのパラメータを渡すために使用しないでください。
 //

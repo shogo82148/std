@@ -20,20 +20,26 @@ import (
 // なぜなら、ReadAllはsrcからEOFまで読み取るように定義されているためです。
 //
 // Deprecated: Go 1.16以降、この関数は単に [io.ReadAll] を呼び出すだけです。
+//
+//go:fix inline
 func ReadAll(r io.Reader) ([]byte, error)
 
 // ReadFileは、filenameで指定されたファイルを読み取り、その内容を返します。
 // 成功した呼び出しはerr == nilを返します。err == EOFではありません。
 // ReadFileは、ファイル全体を読み取るため、ReadからのEOFをエラーとして報告する必要はありません。
 //
-// Deprecated: Go 1.16以降、この関数は単に[os.ReadFile]を呼び出すだけです。
+// Deprecated: Go 1.16以降、この関数は単に [os.ReadFile] を呼び出すだけです。
+//
+//go:fix inline
 func ReadFile(filename string) ([]byte, error)
 
 // WriteFileは、filenameで指定されたファイルにデータを書き込みます。
 // ファイルが存在しない場合、WriteFileは、パーミッションperm（umaskの前）で作成します。
 // それ以外の場合、WriteFileはパーミッションを変更せずに書き込むために切り捨てます。
 //
-// Deprecated: Go 1.16以降、この関数は単に[os.WriteFile]を呼び出すだけです。
+// Deprecated: Go 1.16以降、この関数は単に [os.WriteFile] を呼び出すだけです。
+//
+//go:fix inline
 func WriteFile(filename string, data []byte, perm fs.FileMode) error
 
 // ReadDirは、dirnameで指定されたディレクトリを読み取り、
@@ -60,6 +66,8 @@ func ReadDir(dirname string) ([]fs.FileInfo, error)
 // NopCloserは、提供されたReader rをラップするCloseメソッドのないReadCloserを返します。
 //
 // Deprecated: Go 1.16以降、この関数は単に [io.NopCloser] を呼び出すだけです。
+//
+//go:fix inline
 func NopCloser(r io.Reader) io.ReadCloser
 
 // Discardは、何もしないですべての書き込み呼び出しが成功するio.Writerです。

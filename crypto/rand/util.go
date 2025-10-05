@@ -9,9 +9,10 @@ import (
 	"github.com/shogo82148/std/math/big"
 )
 
-// Prime は与えられたビット長の数が高確率で素数である場合に返します。
-// Prime は [rand.Read] によって返されるエラーまたは bits < 2 の場合にはエラーを返します。
+// Primeは与えられたビット長で高い確率で素数である数を返します。
+// Primeはrand.Readが返すエラーやbits < 2の場合にエラーを返します。
 func Prime(rand io.Reader, bits int) (*big.Int, error)
 
-// Intは[0、max)の一様乱数を返します。max <= 0の場合、パニックを発生させます。
+// Intは[0, max)の範囲の一様乱数値を返します。max <= 0の場合はパニックし、
+// rand.Readがエラーを返した場合はエラーを返します。
 func Int(rand io.Reader, max *big.Int) (n *big.Int, err error)

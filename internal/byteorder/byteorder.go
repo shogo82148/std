@@ -6,38 +6,38 @@
 // little and big endian integer types from/to byte slices.
 package byteorder
 
-func LeUint16(b []byte) uint16
+func LEUint16(b []byte) uint16
 
-func LePutUint16(b []byte, v uint16)
+func LEPutUint16(b []byte, v uint16)
 
-func LeAppendUint16(b []byte, v uint16) []byte
+func LEAppendUint16(b []byte, v uint16) []byte
 
-func LeUint32(b []byte) uint32
+func LEUint32(b []byte) uint32
 
-func LePutUint32(b []byte, v uint32)
+func LEPutUint32(b []byte, v uint32)
 
-func LeAppendUint32(b []byte, v uint32) []byte
+func LEAppendUint32(b []byte, v uint32) []byte
 
-func LeUint64(b []byte) uint64
+func LEUint64(b []byte) uint64
 
-func LePutUint64(b []byte, v uint64)
+func LEPutUint64(b []byte, v uint64)
 
-func LeAppendUint64(b []byte, v uint64) []byte
+func LEAppendUint64(b []byte, v uint64) []byte
 
-func BeUint16(b []byte) uint16
+func BEUint16(b []byte) uint16
 
-func BePutUint16(b []byte, v uint16)
+func BEPutUint16(b []byte, v uint16)
 
-func BeAppendUint16(b []byte, v uint16) []byte
+func BEAppendUint16(b []byte, v uint16) []byte
 
-func BeUint32(b []byte) uint32
+func BEUint32(b []byte) uint32
 
-func BePutUint32(b []byte, v uint32)
+func BEPutUint32(b []byte, v uint32)
 
-func BeAppendUint32(b []byte, v uint32) []byte
+func BEAppendUint32(b []byte, v uint32) []byte
 
-func BeUint64(b []byte) uint64
+func BEUint64(b []byte) uint64
 
-func BePutUint64(b []byte, v uint64)
+func BEPutUint64(b []byte, v uint64)
 
-func BeAppendUint64(b []byte, v uint64) []byte
+func BEAppendUint64(b []byte, v uint64) []byte

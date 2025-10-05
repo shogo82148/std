@@ -53,21 +53,20 @@ func (f *File) ReadDir(n int) ([]DirEntry, error)
 // ReadDirはエラーが発生する前に読み込むことができたエントリと共にエラーを返します。
 func ReadDir(name string) ([]DirEntry, error)
 
-// CopyFS copies the file system fsys into the directory dir,
-// creating dir if necessary.
+// CopyFSは、ファイルシステムfsysをディレクトリdirにコピーします。
+// 必要に応じてdirを作成します。
 //
-// Files are created with mode 0o666 plus any execute permissions
-// from the source, and directories are created with mode 0o777
-// (before umask).
+// ファイルは、元の実行権限を加えたモード0o666で作成され、
+// ディレクトリはモード0o777（umask適用前）で作成されます。
 //
-// CopyFS will not overwrite existing files. If a file name in fsys
-// already exists in the destination, CopyFS will return an error
-// such that errors.Is(err, fs.ErrExist) will be true.
+// CopyFSは既存のファイルを上書きしません。fsys内のファイル名が
+// すでに宛先に存在する場合、CopyFSは errors.Is(err, fs.ErrExist) がtrueとなる
+// エラーを返します。
 //
-// Symbolic links in fsys are not supported. A *PathError with Err set
-// to ErrInvalid is returned when copying from a symbolic link.
+// dir内のシンボリックリンクは辿られます。
 //
-// Symbolic links in dir are followed.
+// CopyFSの実行中にfsysに新しいファイルが追加された場合（dirがfsysのサブディレクトリの場合も含む）
+// それらがコピーされる保証はありません。
 //
-// Copying stops at and returns the first error encountered.
+// コピーは最初に発生したエラーで停止し、そのエラーを返します。
 func CopyFS(dir string, fsys fs.FS) error

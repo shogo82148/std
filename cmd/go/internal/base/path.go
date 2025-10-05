@@ -14,7 +14,11 @@ func UncachedCwd() string
 func Cwd() string
 
 // ShortPath returns an absolute or relative name for path, whatever is shorter.
+// ShortPath should only be used when formatting paths for error messages.
 func ShortPath(path string) string
+
+// ShortPathError rewrites the path in err using base.ShortPath, if err is a wrapped PathError.
+func ShortPathError(err error) error
 
 // RelPaths returns a copy of paths with absolute paths
 // made relative to the current directory if they would be shorter.

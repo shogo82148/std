@@ -33,12 +33,13 @@ func (fm *Formatter) SetPackage(importpath string)
 // Counter values will be accumulated where appropriate.
 func (fm *Formatter) AddUnit(file string, fname string, isfnlit bool, unit coverage.CoverableUnit, count uint32)
 
-// EmitTextual writes the accumulated coverage data in the legacy
-// cmd/cover text format to the writer 'w'. We sort the data items by
+// EmitTextual writes the accumulated coverage data for 'pkgs' in the legacy
+// cmd/cover text format to the writer 'w'; if pkgs is empty, text output
+// is emitted for all packages recorded.  We sort the data items by
 // importpath, source file, and line number before emitting (this sorting
 // is not explicitly mandated by the format, but seems like a good idea
 // for repeatable/deterministic dumps).
-func (fm *Formatter) EmitTextual(w io.Writer) error
+func (fm *Formatter) EmitTextual(pkgs []string, w io.Writer) error
 
 // EmitPercent writes out a "percentage covered" string to the writer
 // 'w', selecting the set of packages in 'pkgs' and suffixing the

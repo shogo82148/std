@@ -22,7 +22,7 @@ const ConstInfoPrefix = "go:constinfo."
 // populate the DWARF compilation unit info entries.
 const CUInfoPrefix = "go:cuinfo."
 
-// Used to form the symbol name assigned to the DWARF 'abstract subprogram"
+// Used to form the symbol name assigned to the DWARF "abstract subprogram"
 // info entry for a function
 const AbstractFuncSuffix = "$abstract"
 
@@ -140,6 +140,7 @@ type Context interface {
 	AddCURelativeAddress(s Sym, t interface{}, ofs int64)
 	AddSectionOffset(s Sym, size int, t interface{}, ofs int64)
 	AddDWARFAddrSectionOffset(s Sym, t interface{}, ofs int64)
+	AddIndirectTextRef(s Sym, t interface{})
 	CurrentOffset(s Sym) int64
 	RecordDclReference(from Sym, to Sym, dclIdx int, inlIndex int)
 	RecordChildDieOffsets(s Sym, vars []*Var, offsets []int32)
@@ -263,6 +264,10 @@ func PutGlobal(ctxt Context, info, typ, gvar Sym, name string)
 // (e.g., with a DW_AT_low_pc attribute, or in a BASE-prefixed range).
 func PutBasedRanges(ctxt Context, sym Sym, ranges []Range)
 
+// PutRngListRanges writes a DWARF5-style set of rangelist entries to sym,
+// using base as a starting/base address.
+func PutRngListRanges(ctxt Context, sym Sym, base Sym, ranges []Range)
+
 // PutRanges writes a range table to s.Ranges.
 // All addresses in ranges are relative to s.base.
 func (s *FnState) PutRanges(ctxt Context, ranges []Range)
@@ -283,7 +288,7 @@ func PutAbstractFunc(ctxt Context, s *FnState) error
 // for the function (which holds location-independent attributes such
 // as name, type), then the remainder of the attributes are specific
 // to this instance (location, frame base, etc).
-func PutConcreteFunc(ctxt Context, s *FnState, isWrapper bool) error
+func PutConcreteFunc(ctxt Context, s *FnState, isWrapper bool, fncount int) error
 
 // Emit DWARF attributes and child DIEs for a subprogram. Here
 // 'default' implies that the function in question was not inlined

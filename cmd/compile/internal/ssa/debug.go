@@ -30,6 +30,9 @@ type FuncDebug struct {
 	RegOutputParams []*ir.Name
 	// Variable declarations that were removed during optimization
 	OptDcl []*ir.Name
+	// The ssa.Func.EntryID value, used to build location lists for
+	// return values promoted to heap in later DWARF generation.
+	EntryID ID
 
 	// Filled in by the user. Translates Block and Value ID to PC.
 	//
@@ -124,13 +127,33 @@ type SlKeyIdx uint32
 // non-live pieces of partially live params.
 func PopulateABIInRegArgOps(f *Func)
 
-// BuildFuncDebug debug information for f, placing the results
+// BuildFuncDebug builds debug information for f, placing the results
 // in "rval". f must be fully processed, so that each Value is where it
 // will be when machine code is emitted.
 func BuildFuncDebug(ctxt *obj.Link, f *Func, loggingLevel int, stackOffset func(LocalSlot) int32, rval *FuncDebug)
 
-// PutLocationList adds list (a location list in its intermediate representation) to listSym.
+// PutLocationList adds list (a location list in its intermediate
+// representation) to listSym.
 func (debugInfo *FuncDebug) PutLocationList(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
+
+// PutLocationListDwarf5 adds list (a location list in its intermediate
+// representation) to listSym in DWARF 5 format. NB: this is a somewhat
+// hacky implementation in that it actually reads a DWARF4 encoded
+// info from list (with all its DWARF4-specific quirks) then re-encodes
+// it in DWARF5. It would probably be better at some point to have
+// ssa/debug encode the list in a version-independent form and then
+// have this func (and PutLocationListDwarf4) intoduce the quirks.
+func (debugInfo *FuncDebug) PutLocationListDwarf5(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
+
+// PutLocationListDwarf4 adds list (a location list in its intermediate
+// representation) to listSym in DWARF 4 format.
+func (debugInfo *FuncDebug) PutLocationListDwarf4(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
+
+// SetupLocList creates the initial portion of a location list for a
+// user variable. It emits the encoded start/end of the range and a
+// placeholder for the size. Return value is the new list plus the
+// slot in the list holding the size (to be updated later).
+func SetupLocList(ctxt *obj.Link, entryID ID, list []byte, st, en ID) ([]byte, int)
 
 // BuildFuncDebugNoOptimized populates a FuncDebug object "rval" with
 // entries corresponding to the register-resident input parameters for

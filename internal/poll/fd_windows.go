@@ -6,6 +6,7 @@ package poll
 
 import (
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/syscall"
 )
 
@@ -41,6 +42,11 @@ type FD struct {
 	// Used to implement pread/pwrite.
 	l sync.Mutex
 
+	// The file offset for the next read or write.
+	// Overlapped IO operations don't use the real file pointer,
+	// so we need to keep track of the offset ourselves.
+	offset int64
+
 	// For console I/O.
 	lastbits       []byte
 	readuint16     []uint16
@@ -60,11 +66,16 @@ type FD struct {
 	// message based socket connection.
 	ZeroReadIsEOF bool
 
-	// Whether this is a file rather than a network socket.
+	// Whether the handle is owned by os.File.
 	isFile bool
 
 	// The kind of this file.
 	kind fileKind
+
+	// Whether FILE_FLAG_OVERLAPPED was not set when opening the file.
+	isBlocking bool
+
+	disassociated atomic.Bool
 }
 
 // Init initializes the FD. The Sysfd field should already be set.
@@ -72,7 +83,13 @@ type FD struct {
 // The net argument is a network name from the net package (e.g., "tcp"),
 // or "file" or "console" or "dir".
 // Set pollable to true if fd should be managed by runtime netpoll.
-func (fd *FD) Init(net string, pollable bool) (string, error)
+// Pollable must be set to true for overlapped fds.
+func (fd *FD) Init(net string, pollable bool) error
+
+// DisassociateIOCP disassociates the file handle from the IOCP.
+// The disassociate operation will not succeed if there is any
+// in-progress IO operation on the file handle.
+func (fd *FD) DisassociateIOCP() error
 
 // Close closes the FD. The underlying file descriptor is closed by
 // the destroy method when there are no remaining references.

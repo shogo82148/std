@@ -9,7 +9,8 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// これらの定数はflateパッケージからコピーされています。そのため、「compress/gzip」をインポートするコードは、「compress/flate」もインポートする必要はありません。
+// これらの定数は [flate] パッケージからコピーされており、
+// [compress/gzip] をインポートするコードが [compress/flate] もインポートする必要がないようになっています。
 const (
 	NoCompression      = flate.NoCompression
 	BestSpeed          = flate.BestSpeed
@@ -18,8 +19,8 @@ const (
 	HuffmanOnly        = flate.HuffmanOnly
 )
 
-// Writerはio.WriteCloserです。
-// Writerへの書き込みは圧縮され、wに書き込まれます。
+// Writerは [io.WriteCloser] です。
+// Writerへの書き込みは圧縮されてwに書き込まれます。
 type Writer struct {
 	Header
 	w           io.Writer
@@ -39,7 +40,7 @@ type Writer struct {
 // [Writer] が終了したら、呼び出し元はCloseを呼ぶ責任があります。
 // 書き込みはバッファリングされ、Closeが呼ばれるまでフラッシュされない場合があります。
 //
-// Writer.Headerのフィールドを設定したい呼び出し元は、
+// Writer.[Header] のフィールドを設定したい呼び出し元は、
 // Write、Flush、またはCloseの最初の呼び出しの前に設定する必要があります。
 func NewWriter(w io.Writer) *Writer
 

@@ -2,8 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// flateパッケージは、DEFLATE圧縮データ形式を実装しています。RFC 1951で説明されています。
-// gzipとzlibパッケージは、DEFLATEベースのファイル形式へのアクセスを実装しています。
+// Package flateは、RFC 1951で説明されているDEFLATE圧縮データ形式を実装します。
+// [compress/gzip] および [compress/zlib] パッケージは、
+// DEFLATEベースのファイル形式へのアクセスを実装します。
 package flate
 
 import (
@@ -45,28 +46,28 @@ type Resetter interface {
 	Reset(r io.Reader, dict []byte) error
 }
 
-// [NewReader] で必要とされる実際の読み取りインターフェース。
-// 渡された io.Reader が ReadByte も持っていない場合、
-// [NewReader] は自身のバッファリングを導入します。
+// [NewReader] で必要な実際の読み取りインターフェース。
+// 渡された [io.Reader] がReadByteも持たない場合、
+// [NewReader] は独自のバッファリングを導入します。
 type Reader interface {
 	io.Reader
 	io.ByteReader
 }
 
-// NewReader returns a new ReadCloser that can be used
-// to read the uncompressed version of r.
-// If r does not also implement [io.ByteReader],
-// the decompressor may read more data than necessary from r.
-// The reader returns [io.EOF] after the final block in the DEFLATE stream has
-// been encountered. Any trailing data after the final block is ignored.
+// NewReaderは、rの非圧縮版を読み取るために使用できる新しいReadCloserを返します。
+// rが [io.ByteReader] も実装していない場合、
+// デコンプレッサーはrから必要以上のデータを読み取る可能性があります。
+// リーダーは、DEFLATEストリーム内の最終ブロックに遭遇した後に
+// [io.EOF] を返します。最終ブロック後の末尾データは無視されます。
 //
 // NewReaderによって返される [io.ReadCloser] は、 [Resetter] も実装しています。
 func NewReader(r io.Reader) io.ReadCloser
 
-// NewReaderDictは [NewReader] と同じようにリーダーを初期化しますが、
-// 事前に設定された辞書でリーダーを初期化します。
-// 返されたリーダーは、与えられた辞書で圧縮解除されたデータストリームが開始されたかのように振る舞います。
-// この辞書は既に読み取られています。通常、NewWriterDictで圧縮されたデータを読み込むためにNewReaderDictが使用されます。
+// NewReaderDictは [NewReader] と同様ですが、リーダーを
+// プリセット辞書で初期化します。返されたリーダーは、
+// 非圧縮データストリームが指定された辞書で始まったかのように動作し、
+// その辞書は既に読み取られています。NewReaderDictは通常、
+// [NewWriterDict] で圧縮されたデータを読み取るために使用されます。
 //
 // NewReaderによって返されたReadCloserは [Resetter] も実装しています。
 func NewReaderDict(r io.Reader, dict []byte) io.ReadCloser

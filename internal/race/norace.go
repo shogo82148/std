@@ -7,6 +7,7 @@
 package race
 
 import (
+	"github.com/shogo82148/std/internal/abi"
 	"github.com/shogo82148/std/unsafe"
 )
 
@@ -24,7 +25,15 @@ func Enable()
 
 func Read(addr unsafe.Pointer)
 
+func ReadPC(addr unsafe.Pointer, callerpc, pc uintptr)
+
+func ReadObjectPC(t *abi.Type, addr unsafe.Pointer, callerpc, pc uintptr)
+
 func Write(addr unsafe.Pointer)
+
+func WritePC(addr unsafe.Pointer, callerpc, pc uintptr)
+
+func WriteObjectPC(t *abi.Type, addr unsafe.Pointer, callerpc, pc uintptr)
 
 func ReadRange(addr unsafe.Pointer, len int)
 

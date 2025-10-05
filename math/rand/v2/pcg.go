@@ -17,10 +17,13 @@ func NewPCG(seed1, seed2 uint64) *PCG
 // Seedは、PCGをNewPCG(seed1, seed2)と同じように動作するようにリセットします。
 func (p *PCG) Seed(seed1, seed2 uint64)
 
-// MarshalBinaryは、encoding.BinaryMarshalerインターフェースを実装します。
+// AppendBinaryは [encoding.BinaryAppender] インターフェースを実装します。
+func (p *PCG) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinaryは [encoding.BinaryMarshaler] インターフェースを実装します。
 func (p *PCG) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinaryは、encoding.BinaryUnmarshalerインターフェースを実装します。
+// UnmarshalBinaryは [encoding.BinaryUnmarshaler] インターフェースを実装します。
 func (p *PCG) UnmarshalBinary(data []byte) error
 
 // Uint64は、一様に分布したランダムなuint64の値を返します。

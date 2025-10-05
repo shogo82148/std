@@ -49,7 +49,7 @@ var Go = &Command{
 // Lookup returns the subcommand with the given name, if any.
 // Otherwise it returns nil.
 //
-// Lookup ignores subcommands that have len(c.Commands) == 0 and c.Run == nil.
+// Lookup ignores any subcommand `sub` that has len(sub.Commands) == 0 and sub.Run == nil.
 // Such subcommands are only for use as arguments to "help".
 func (c *Command) Lookup(name string) *Command
 
@@ -88,7 +88,13 @@ func GetExitStatus() int
 // If the command fails, Run reports the error using Errorf.
 func Run(cmdargs ...any)
 
-// RunStdin is like run but connects Stdin.
+// Run runs the command, with stdout and stderr
+// connected to the go command's own stdout and stderr.
+// If the command fails, RunErr returns the error, which
+// may be an *exec.ExitError.
+func RunErr(cmdargs ...any) error
+
+// RunStdin is like run but connects Stdin. It retries if it encounters an ETXTBSY.
 func RunStdin(cmdline []string)
 
 // Usage is the usage-reporting function, filled in by package main

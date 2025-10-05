@@ -10,9 +10,20 @@ package arch
 
 import (
 	"github.com/shogo82148/std/cmd/internal/obj"
+	"github.com/shogo82148/std/cmd/internal/obj/riscv"
 )
 
-// IsRISCV64AMO reports whether the op (as defined by a riscv.A*
-// constant) is one of the AMO instructions that requires special
-// handling.
+// IsRISCV64AMO reports whether op is an AMO instruction that requires
+// special handling.
 func IsRISCV64AMO(op obj.As) bool
+
+// IsRISCV64VTypeI reports whether op is a vtype immediate instruction that
+// requires special handling.
+func IsRISCV64VTypeI(op obj.As) bool
+
+// RISCV64SpecialOperand returns the internal representation of a special operand.
+func RISCV64SpecialOperand(name string) riscv.SpecialOperand
+
+// RISCV64ValidateVectorType reports whether the given configuration is a
+// valid vector type.
+func RISCV64ValidateVectorType(vsew, vlmul, vtail, vmask int64) error

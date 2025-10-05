@@ -39,8 +39,8 @@ func NewResponseController(rw ResponseWriter) *ResponseController
 // Flushは、バッファリングされたデータをクライアントにフラッシュします。
 func (c *ResponseController) Flush() error
 
-// Hijackは、呼び出し元が接続を引き継ぐことを可能にします。
-// 詳細については、Hijackerインターフェースを参照してください。
+// Hijackは呼び出し元が接続を乗っ取ることを可能にします。
+// 詳細は [Hijacker] インターフェースを参照してください。
 func (c *ResponseController) Hijack() (net.Conn, *bufio.ReadWriter, error)
 
 // SetReadDeadlineは、ボディを含むリクエスト全体の読み取りの期限を設定します。

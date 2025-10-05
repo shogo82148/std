@@ -8,18 +8,6 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-// Fdは、開かれたファイルを参照する整数型のPlan 9ファイルディスクリプタを返します。
-// fがクローズされると、ファイルディスクリプタは無効になります。
-// fがガベージコレクションされると、ファイルディスクリプタをクローズするファイナライザが実行される可能性があります。
-// この場合、[runtime.SetFinalizer] に関する詳細は、ファイナライザがいつ実行されるかについての情報を参照してください。Unixシステムでは、これによって [File.SetDeadline] メソッドが動作しなくなります。
-//
-// 代替案として、f.SyscallConnメソッドを参照してください。
-func (f *File) Fd() uintptr
-
-// NewFile は指定されたファイルディスクリプタと名前で新しいファイルを返します。
-// fd が有効なファイルディスクリプタでない場合、返される値は nil になります。
-func NewFile(fd uintptr, name string) *File
-
 // DevNullはオペレーティングシステムの「nullデバイス」の名称です。
 // Unix系のシステムでは、"/dev/null"となります。Windowsでは、"NUL"です。
 const DevNull = "/dev/null"
@@ -30,13 +18,13 @@ const DevNull = "/dev/null"
 // Closeは、すでに呼び出されている場合にエラーを返します。
 func (f *File) Close() error
 
-// Statはファイルに関する情報を記述するFileInfo構造体を返します。
-// エラーが発生した場合は、*PathErrorのタイプになります。
+// Statはファイルを記述するFileInfo構造体を返します。
+// エラーが発生した場合、エラーは [*PathError] 型になります。
 func (f *File) Stat() (FileInfo, error)
 
 // Truncateはファイルのサイズを変更します。
-// I/Oオフセットは変更されません。
-// エラーが発生した場合、*PathError型となります。
+// I/Oオフセットは変更しません。
+// エラーが発生した場合、エラーは [*PathError] 型になります。
 func (f *File) Truncate(size int64) error
 
 // Syncはファイルの現在の内容を安定したストレージにコミットします。
@@ -44,19 +32,19 @@ func (f *File) Truncate(size int64) error
 func (f *File) Sync() error
 
 // Truncateは指定されたファイルのサイズを変更します。
-// もしファイルがシンボリックリンクなら、リンクの対象のサイズを変更します。
-// エラーが発生した場合、*PathErrorの型となります。
+// ファイルがシンボリックリンクの場合は、リンク先のサイズを変更します。
+// エラーが発生した場合、エラーは [*PathError] 型になります。
 func Truncate(name string, size int64) error
 
 // Removeは指定されたファイルまたはディレクトリを削除します。
-// エラーが発生した場合、それは*PathError型のエラーです。
+// エラーが発生した場合、エラーは[*PathError]型になります。
 func Remove(name string) error
 
 // Chtimesは、Unixのutime()やutimes()関数に似た、指定したファイルのアクセス時刻と修正時刻を変更します。
 // time.Time値がゼロの場合、対応するファイルの時刻は変更されません。
 //
 // 根底のファイルシステムは、値をより精度の低い単位に切り捨てたり、四捨五入したりする場合があります。
-// エラーがある場合、それは*PathError型になります。
+// エラーがある場合、それは [*PathError] 型になります。
 func Chtimes(name string, atime time.Time, mtime time.Time) error
 
 // Pipeは、接続されたファイルのペアを返します；rから読み取られたバイトはwに書き込まれます。ファイルとエラー（あれば）を返します。
@@ -72,20 +60,25 @@ func Link(oldname, newname string) error
 // エラーが発生した場合、*LinkErrorの型になります。
 func Symlink(oldname, newname string) error
 
-// Chownは指定されたファイルの数値化されたuidとgidを変更します。
-// ファイルがシンボリックリンクの場合、リンク先のuidとgidを変更します。
-// uidまたはgidが-1の場合、その値は変更されません。
-// エラーが発生した場合、*PathError型のエラーが返されます。
+// Chownは指定されたファイルの数値uidとgidを変更します。
+// ファイルがシンボリックリンクの場合は、リンク先のuidとgidを変更します。
+// uidまたはgidに-1を指定すると、その値は変更されません。
+// エラーが発生した場合、エラーは [*PathError] 型になります。
 //
-// WindowsまたはPlan 9では、Chownは常にsyscall.EWINDOWSまたはEPLAN9エラーを返し、*PathErrorでラップされます。
+// WindowsまたはPlan 9では、Chownは常に [syscall.EWINDOWS] または
+// [syscall.EPLAN9] エラーを [*PathError] でラップして返します。
 func Chown(name string, uid, gid int) error
 
+// Lchownは指定されたファイルの数値uidとgidを変更します。
+// ファイルがシンボリックリンクの場合は、リンク自体のuidとgidを変更します。
+// エラーが発生した場合、エラーは [*PathError] 型になります。
 func Lchown(name string, uid, gid int) error
 
-// Chownは指定されたファイルの数値UIDとGIDを変更します。
-// エラーが発生した場合、それは*PathErrorのタイプになります。
+// Chownは指定されたファイルの数値uidとgidを変更します。
+// エラーが発生した場合、エラーは [*PathError] 型になります。
 func (f *File) Chown(uid, gid int) error
 
-// Chdirは現在の作業ディレクトリを指定されたファイル（ディレクトリである必要があります）に変更します。
-// エラーが発生した場合、それは*PathErrorの型です。
+// Chdirはカレントワーキングディレクトリをそのファイルに変更します。
+// ファイルはディレクトリである必要があります。
+// エラーが発生した場合、エラーは [*PathError] 型になります。
 func (f *File) Chdir() error

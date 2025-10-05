@@ -174,10 +174,20 @@ Cgoは、Cの型を同等の非公開のGoの型に変換します。
 	_, err := C.voidFunc()
 	var n, err = C.sqrt(1)
 
-Cの関数ポインタを呼び出すことは現在サポートされていませんが、
-Cの関数ポインタを保持するGo変数を宣言し、GoとCの間で相互に渡すことができます。
-Cコードは、Goから受け取った関数ポインタを呼び出すことができます。
-例えば：
+Cerrno値は非ゼロの場合があり、したがってerr結果が
+非nilの場合があることに注意してください。これは関数呼び出しが成功した場合でも起こりえます。通常のGoの慣例とは異なり、
+エラー結果をチェックする前に、まず呼び出しが成功したかどうかをチェックする必要があります。例えば：
+
+	n, err := C.setenv(key, value, 1)
+	if n != 0 {
+		// we know the call failed, so it is now valid to use err
+		return err
+	}
+
+C関数ポインタの呼び出しは現在サポートされていませんが、
+C関数ポインタを保持するGo変数を宣言し、それらを
+GoとCの間で相互に渡すことができます。CコードはGoから
+受け取った関数ポインタを呼び出すことができます。例えば：
 
 	package main
 
@@ -362,7 +372,31 @@ runtime/cgo.Handle型は、GoとCの間で安全にGo値を渡すために使用
 したがって、Goコードがその中にポインタ値を格納する場合は、初期化されていないCメモリをGoコードに渡すことを避けてください。
 Cでメモリをゼロにしてから渡してください。
 
-# 特殊なケース
+# Optimizing calls of C code
+
+GoポインタをC関数に渡すとき、コンパイラは通常、
+Goオブジェクトがヒープ上に存在することを保証します。C関数が
+Goポインタのコピーを保持せず、GoポインタをGoコードに戻すことがない場合、
+これは不要です。#cgo noescapeディレクティブを使用して、
+指定されたC関数を介してGoポインタがエスケープしないことをコンパイラに伝えることができます。
+noescapeディレクティブが使用され、C関数がポインタを安全に処理しない場合、
+プログラムはクラッシュしたり、メモリ破損が発生する可能性があります。
+
+例えば：
+
+	// #cgo noescape cFunctionName
+
+Go関数がC関数を呼び出すとき、C関数が
+Go関数にコールバックすることに備えて準備を行います。#cgo nocallbackディレクティブを使用して、
+これらの準備が不要であることをコンパイラに伝えることができます。
+nocallbackディレクティブが使用され、C関数が実際にGo
+コードにコールバックした場合、プログラムはパニックします。
+
+例えば：
+
+	// #cgo nocallback cFunctionName
+
+# Special cases
 
 通常、Goではポインタ型で表されるいくつかの特殊なC型は、代わりにuintptrで表されます。それらには以下が含まれます:
 
@@ -432,14 +466,9 @@ Cgoは、指定された入力Goソースファイルを複数の出力Goおよ�
 	-dynpackage package
 		-dynimport出力のためのGoパッケージを設定します。
 	-exportheader file
-		エクスポートされた関数がある場合、生成されたエクスポート宣言をファイルに書き込みます。
-		Cコードはこれを#includeして宣言を見ることができます。
-	-importpath string
-		Goパッケージのインポートパス。オプションです。生成されたファイルのコメントに使用されます。
-	-import_runtime_cgo
-		設定されている場合（デフォルトで設定されています）、生成された出力でruntime/cgoをインポートします。
-	-import_syscall
-		設定されている場合（デフォルトで設定されています）、生成された出力でsyscallをインポートします。
+		エクスポートされた関数がある場合、生成されたエクスポート宣言を
+		ファイルに書き込みます。
+		Cコードは、これを#includeして宣言を確認できます。
 	-gccgo
 		gcコンパイラではなく、gccgoコンパイラ向けの出力を生成します。
 	-gccgoprefix prefix
@@ -450,13 +479,23 @@ Cgoは、指定された入力Goソースファイルを複数の出力Goおよ�
 		古いgccgoバージョン用に、cgo.Incompleteをインポートする代わりにローカルで定義します。
 		"runtime/cgo"パッケージから。
 	-godefs
-		Cパッケージ名を実際の値に置き換えたGo構文で入力ファイルを書き出します。
-		新しいターゲットをブートストラップするときにsyscallパッケージ内のファイルを生成するために使用されます。
+		Cパッケージ名を実際の値に置き換えて、入力ファイルをGo構文で出力します。
+		新しいターゲットをブートストラップする際にsyscallパッケージでファイルを生成するために使用されます。
+	-importpath string
+		Goパッケージのインポートパス。オプション；生成されたファイルでより良いコメントのために使用されます。
+	-import_runtime_cgo
+		設定されている場合（デフォルトで設定されています）、生成された出力でruntime/cgoをインポートします。
+	-import_syscall
+		設定されている場合（デフォルトで設定されています）、生成された出力でsyscallをインポートします。
 	-ldflags flags
 		Cリンカーに渡すフラグ。cmd/goツールはこれを使用して、
 		CGO_LDFLAGS変数内のフラグを渡します。
 	-objdir directory
 		すべての生成されたファイルをディレクトリに配置します。
 	-srcdir directory
+		Find the Go input files, listed on the command line,
+		in directory.
+	-trimpath rewrites
+		Apply trims and rewrites to source file paths.
 */
 package main

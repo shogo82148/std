@@ -19,6 +19,8 @@ var (
 )
 
 // Readerはio.Readerオブジェクトに対してバッファリングを実装します。
+// 新しいReaderは [NewReader] または [NewReaderSize] を呼び出すことで作成されます。
+// また、Readerのゼロ値に対して [Reset] を呼び出した後に使用することもできます。
 type Reader struct {
 	buf          []byte
 	rd           io.Reader
@@ -45,9 +47,10 @@ func (b *Reader) Size() int
 func (b *Reader) Reset(r io.Reader)
 
 // Peek returns the next n bytes without advancing the reader. The bytes stop
-// being valid at the next read call. If Peek returns fewer than n bytes, it
-// also returns an error explaining why the read is short. The error is
-// [ErrBufferFull] if n is larger than b's buffer size.
+// being valid at the next read call. If necessary, Peek will read more bytes
+// into the buffer in order to make n bytes available. If Peek returns fewer
+// than n bytes, it also returns an error explaining why the read is short.
+// The error is [ErrBufferFull] if n is larger than b's buffer size.
 //
 // Calling Peek prevents a [Reader.UnreadByte] or [Reader.UnreadRune] call from succeeding
 // until the next read operation.

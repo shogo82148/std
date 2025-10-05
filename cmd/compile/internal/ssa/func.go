@@ -41,6 +41,7 @@ type Func struct {
 	NoSplit     bool
 	dumpFileSeq uint8
 	IsPgoHot    bool
+	DeferReturn *Block
 
 	// when register allocation is done, maps value ids to locations
 	RegAlloc []Location

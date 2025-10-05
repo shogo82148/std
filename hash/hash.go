@@ -9,13 +9,13 @@ import "github.com/shogo82148/std/io"
 
 // Hashはすべてのハッシュ関数で実装される共通のインターフェースです。
 //
-// 標準ライブラリのハッシュ実装（例：[hash/crc32] や [crypto/sha256]）は、
-// [encoding.BinaryMarshaler]、および
-// [encoding.BinaryUnmarshaler] インターフェースを実装しています。
-// ハッシュ実装をマーシャリングすることで、その内部状態を保存し、
-// 後で追加の処理に使用することができます。これにより、ハッシュに以前に書き込まれたデータを
-// 再度書き込む必要がなくなります。ハッシュ状態には、入力の一部が元の形式で含まれている場合があり、
-// ユーザーはそのセキュリティ上の影響を考慮する必要があります。
+// 標準ライブラリのハッシュ実装（例：[hash/crc32] や
+// [crypto/sha256]）は、[encoding.BinaryMarshaler]、[encoding.BinaryAppender]、
+// [encoding.BinaryUnmarshaler]、および [Cloner] インターフェースを実装しています。ハッシュ実装の
+// マーシャリングにより、その内部状態を保存し、以前にハッシュに書き込まれたデータを
+// 再書き込みすることなく、後で追加処理に使用することができます。
+// ハッシュ状態には、入力の一部が元の形で含まれている可能性があり、
+// ユーザーは可能なセキュリティ上の影響を処理することが期待されます。
 //
 // 互換性：ハッシュまたは暗号パッケージへの将来の変更は、
 // 以前のバージョンでエンコードされた状態を保持することを目指します。
@@ -45,4 +45,29 @@ type Hash32 interface {
 type Hash64 interface {
 	Hash
 	Sum64() uint64
+}
+
+// Clonerは状態をクローンできるハッシュ関数で、
+// 同等で独立した状態を持つ値を返します。
+//
+// 標準ライブラリのすべての [Hash] 実装は、GOFIPS140=v1.0.0が設定されていない限り、
+// このインターフェースを実装しています。
+//
+// ハッシュが実行時にのみクローン可能かどうかを判断できる場合（例：別のハッシュをラップしている場合）、
+// CloneはErrUnsupportedをラップしたエラーを返すことがあります。
+// それ以外の場合、Cloneは常にnilエラーを返さなければなりません。
+type Cloner interface {
+	Hash
+	Clone() (Cloner, error)
+}
+
+// XOF (extendable output function) は任意または無制限の出力長を持つハッシュ関数です。
+type XOF interface {
+	io.Writer
+
+	io.Reader
+
+	Reset()
+
+	BlockSize() int
 }

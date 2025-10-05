@@ -25,11 +25,10 @@
 //
 // tとuのいずれもモノトニッククロックの読み取り結果を含む場合、t.After(u)、t.Before(u)、t.Equal(u)、t.Compare(u)、t.Sub(u)は壁掛け時計の読み取り結果を無視してモノトニッククロックの読み取り結果だけを使用して実行されます。tまたはuのいずれかがモノトニッククロックの読み取り結果を含まない場合、これらの操作は壁掛け時計の読み取り結果を使用します。
 //
-// 一部のシステムでは、コンピュータがスリープ状態になるとモノトニッククロックが停止します。
-// そのようなシステムでは、t.Sub(u) は t と u の間に実際に経過した時間を正確に反映しないかもしれません。
-// [Since]、[Until]、[Before]、[After]、[Add]、[Sub]、[Equal]、[Compare] など、
-// 時間を引き算する他の関数やメソッドにも同様のことが当てはまります。場合によっては、
-// モノトニッククロックを取り除いて正確な結果を得る必要があるかもしれません。
+// 一部のシステムでは、コンピュータがスリープするとモノトニッククロックが停止します。
+// そのようなシステムでは、t.Sub(u)はtとuの間に実際に経過した時間を正確に反映しない場合があります。
+// 同様のことは、[Since]、[Until]、[Time.Before]、[Time.After]、[Time.Add]、[Time.Equal]、[Time.Compare] など、時刻を減算する他の関数やメソッドにも当てはまります。
+// 場合によっては、正確な結果を得るためにモノトニッククロックを除去する必要があります。
 //
 // モノトニッククロックの読み取り結果には、現在のプロセスの外部では意味がありません。t.GobEncode、t.MarshalBinary、t.MarshalJSON、t.MarshalTextによって生成されるシリアル化された形式では、モノトニッククロックの読み取り結果は省略され、t.Formatはそれに対するフォーマットを提供しません。同様に、コンストラクタ [time.Date]、[time.Parse]、[time.ParseInLocation]、および [time.Unix]、およびアンマーシャラーt.GobDecode、t.UnmarshalBinary、t.UnmarshalJSON、およびt.UnmarshalTextは常にモノトニッククロックの読み取り結果のない時刻を作成します。
 //
@@ -68,8 +67,8 @@ package time
 // 各時刻には関連する [Location] があります。[Time.Local]、[Time.UTC]、および Time.In メソッドは、特定のLocationを持つTimeを返します。
 // これらのメソッドを使用してTime値のLocationを変更しても、それが表す実際の瞬間は変更されず、解釈するタイムゾーンのみが変更されます。
 //
-// [Time.GobEncode]、[Time.MarshalBinary]、[Time.MarshalJSON]、[Time.MarshalText] メソッドによって保存されるTime値の表現には、[Time.Location] のオフセットが格納されますが、
-// 場所の名前は格納されません。そのため、夏時間に関する情報が失われます。
+// [Time.GobEncode]、[Time.MarshalBinary]、[Time.AppendBinary]、[Time.MarshalJSON]、[Time.MarshalText]、[Time.AppendText] メソッドで保存された
+// Time 値の表現は、[Time.Location] のオフセットのみを保持し、ロケーション名は保持しません。そのため、夏時間の情報は失われます。
 //
 // 必要な「壁時計」の読み取りに加えて、Timeにはオプションのプロセスの単調な時計の読み取りが含まれることがあります。
 // 比較や減算のための追加の精度を提供するためです。
@@ -323,10 +322,13 @@ func (t Time) UnixMicro() int64
 // UnixNanoはtをUnix時刻として返します。これは、1970年1月1日UTCから経過したナノ秒数です。Unix時刻がint64で表現できない場合（1678年以前または2262年以降の日付）、結果は未定義です。なお、これはゼロのTimeに対してUnixNanoを呼び出した結果も未定義であることを意味します。結果はtに関連付けられた場所に依存しません。
 func (t Time) UnixNano() int64
 
-// MarshalBinaryはencoding.BinaryMarshalerインターフェースを実装します。
+// AppendBinaryは [encoding.BinaryAppender] インターフェースを実装します。
+func (t Time) AppendBinary(b []byte) ([]byte, error)
+
+// MarshalBinaryは [encoding.BinaryMarshaler] インターフェースを実装します。
 func (t Time) MarshalBinary() ([]byte, error)
 
-// UnmarshalBinaryはencoding.BinaryUnmarshalerインターフェースを実装します。
+// UnmarshalBinaryは [encoding.BinaryUnmarshaler] インターフェースを実装します。
 func (t *Time) UnmarshalBinary(data []byte) error
 
 // GobEncodeはgob.GobEncoderインターフェースを実装します。
@@ -345,9 +347,16 @@ func (t Time) MarshalJSON() ([]byte, error)
 // 時刻はRFC 3339形式でクォートされた文字列である必要があります。
 func (t *Time) UnmarshalJSON(data []byte) error
 
-// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
-// 時間はRFC 3339形式でサブ秒の精度でフォーマットされます。
-// タイムスタンプが有効なRFC 3339として表現できない場合（例：年が範囲外の場合）、エラーが報告されます。
+// AppendTextは [encoding.TextAppender] インターフェースを実装します。
+// 時刻は秒未満の精度を持つRFC 3339形式でフォーマットされます。
+// タイムスタンプが有効なRFC 3339として表現できない場合
+// （例：年が範囲外の場合）、エラーが返されます。
+func (t Time) AppendText(b []byte) ([]byte, error)
+
+// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。出力は
+// [Time.AppendText] メソッドを呼び出した場合と一致します。
+//
+// 詳細は [Time.AppendText] を参照してください。
 func (t Time) MarshalText() ([]byte, error)
 
 // UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。

@@ -4,7 +4,9 @@
 
 package reflect
 
-import "github.com/shogo82148/std/iter"
+import (
+	"github.com/shogo82148/std/iter"
+)
 
 // Seqは、vの要素をループするiter.Seq[Value]を返します。
 // vの種類がFuncの場合、それは結果を持たず、型func(T) boolの単一の引数を取る

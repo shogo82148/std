@@ -25,7 +25,10 @@ type Block struct {
 	Bytes   []byte
 }
 
-// Decodeは入力内で次のPEM形式のブロック（証明書、秘密鍵など）を見つけます。それはそのブロックと入力の残り部分を返します。PEMデータが見つからない場合は、pがnilであり、入力全体がrestとして返されます。
+// Decodeは入力から次のPEM形式のブロック（証明書、秘密鍵
+// など）を見つけます。そのブロックと入力の残りを返します。
+// PEMデータが見つからない場合、pはnilで、入力全体がrestで返されます。
+// ブロックは行の始まりから始まり、行の終わりで終わる必要があります。
 func Decode(data []byte) (p *Block, rest []byte)
 
 // Encodeは、bのPEMエンコーディングをoutに書き込みます。
@@ -33,7 +36,7 @@ func Encode(out io.Writer, b *Block) error
 
 // EncodeToMemoryはbのPEMエンコーディングを返します。
 //
-// If b has invalid headers and cannot be encoded,
-// EncodeToMemory returns nil. If it is important to
-// report details about this error case, use [Encode] instead.
+// bが無効なヘッダーを持ちエンコードできない場合、
+// EncodeToMemoryはnilを返します。このエラーケースの詳細を
+// 報告することが重要な場合は、代わりに [Encode] を使用してください。
 func EncodeToMemory(b *Block) []byte

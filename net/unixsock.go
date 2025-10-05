@@ -39,18 +39,18 @@ type UnixConn struct {
 // これは [syscall.Conn] インターフェースを実装しています。
 func (c *UnixConn) SyscallConn() (syscall.RawConn, error)
 
-// CloseReadは、Unixドメイン接続の読み込み側をシャットダウンします。
-// ほとんどの呼び出し元は、単にCloseを使用すべきです。
+// CloseReadはUnixドメイン接続の読み取り側をシャットダウンします。
+// ほとんどの呼び出し元は [UnixConn.Close] を使用すべきです。
 func (c *UnixConn) CloseRead() error
 
 // CloseWriteはUnixドメイン接続の書き込み側をシャットダウンします。
-// ほとんどの呼び出し元は、単にCloseを使用するだけで十分です。
+// ほとんどの呼び出し元は [UnixConn.Close] を使用すべきです。
 func (c *UnixConn) CloseWrite() error
 
 // ReadFromUnixは、[UnixConn.ReadFrom] と同様に動作しますが、[UnixAddr] を返します。
 func (c *UnixConn) ReadFromUnix(b []byte) (int, *UnixAddr, error)
 
-// ReadFromは [PacketConn] のReadFromメソッドを実装します。
+// ReadFromは [PacketConn].ReadFrom メソッドを実装します。
 func (c *UnixConn) ReadFrom(b []byte) (int, Addr, error)
 
 // ReadMsgUnix はcからメッセージを読み取り、そのペイロードをbに、
@@ -65,7 +65,7 @@ func (c *UnixConn) ReadMsgUnix(b, oob []byte) (n, oobn, flags int, addr *UnixAdd
 // WriteToUnixは [UnixConn.WriteTo] と同様に動作しますが、[UnixAddr] を取ります。
 func (c *UnixConn) WriteToUnix(b []byte, addr *UnixAddr) (int, error)
 
-// WriteToは [PacketConn] のWriteToメソッドを実装します。
+// WriteToは [PacketConn].WriteTo メソッドを実装します。
 func (c *UnixConn) WriteTo(b []byte, addr Addr) (int, error)
 
 // WriteMsgUnixは、ペイロードのbと関連するオーバンドデータのoobから、cを介してaddrにメッセージを書き込みます。書き込まれたペイロードとオーバンドバイトの数を返します。
@@ -74,7 +74,7 @@ func (c *UnixConn) WriteMsgUnix(b, oob []byte, addr *UnixAddr) (n, oobn int, err
 
 // DialUnixは、Unixネットワークにおける [Dial] と同様の動作をします。
 //
-// ネットワークはUnixネットワーク名でなければなりません。詳細についてはfunc Dialを参照してください。
+// ネットワークはUnixのネットワーク名である必要があります。詳細は [Dial] 関数を参照してください。
 //
 // laddrがnilでない場合、それは接続のローカルアドレスとして使用されます。
 func DialUnix(network string, laddr, raddr *UnixAddr) (*UnixConn, error)
@@ -90,8 +90,8 @@ type UnixListener struct {
 // SyscallConnは、生のネットワーク接続を返します。
 // これは [syscall.Conn] インターフェースを実装します。
 //
-// 返されるRawConnは、Controlの呼び出しのみをサポートします。
-// ReadとWriteはエラーを返します。
+// 返される [syscall.RawConn] は Control の呼び出しのみをサポートします。Read と
+// Write はエラーを返します。
 func (l *UnixListener) SyscallConn() (syscall.RawConn, error)
 
 // AcceptUnixは次の着信呼び出しを受け入れ、新しい接続を返します。
@@ -105,7 +105,7 @@ func (l *UnixListener) Accept() (Conn, error)
 func (l *UnixListener) Close() error
 
 // Addrはリスナーのネットワークアドレスを返します。
-// 返されるAddrは、Addrのすべての呼び出しで共有されるため、
+// 返される [Addr] はAddrのすべての呼び出しで共有されるため、
 // 変更しないでください。
 func (l *UnixListener) Addr() Addr
 
@@ -117,8 +117,11 @@ func (l *UnixListener) SetDeadline(t time.Time) error
 // 終了時には、f を閉じるのは呼び出し元の責任です。
 // l を閉じても f に影響を与えず、f を閉じても l に影響を与えません。
 //
-// 返された os.File のファイルディスクリプタは、接続のものとは異なります。
-// この複製を使用して元のもののプロパティを変更しようとしても、望ましい効果があるかどうかはわかりません。
+// 返される [os.File] のファイルディスクリプタは元の接続のものとは異なります。
+// この複製を使って元のプロパティを変更しようとしても、期待通りの効果があるとは限りません。
+//
+// Windowsでは、返される os.File のファイルディスクリプタは
+// 他のプロセスでは使用できません。
 func (l *UnixListener) File() (f *os.File, err error)
 
 // ListenUnixはUnixネットワーク向けの [Listen] のように機能します。

@@ -19,7 +19,6 @@ type Location interface {
 type Register struct {
 	num    int32
 	objNum int16
-	gcNum  int16
 	name   string
 }
 
@@ -28,10 +27,6 @@ func (r *Register) String() string
 // ObjNum returns the register number from cmd/internal/obj/$ARCH that
 // corresponds to this register.
 func (r *Register) ObjNum() int16
-
-// GCNum returns the runtime GC register index of r, or -1 if this
-// register can't contain pointers.
-func (r *Register) GCNum() int16
 
 // A LocalSlot is a location in the stack frame, which identifies and stores
 // part or all of a PPARAM, PPARAMOUT, or PAUTO ONAME node.

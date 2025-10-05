@@ -6,8 +6,10 @@ package atomic
 
 import "github.com/shogo82148/std/unsafe"
 
-// Boolはアトミックなブーリアン値です。
+// Boolはアトミックなブール値です。
 // ゼロ値はfalseです。
+//
+// Boolは最初に使用した後でコピーしてはいけません。
 type Bool struct {
 	_ noCopy
 	v uint32
@@ -29,7 +31,9 @@ func (x *Bool) CompareAndSwap(old, new bool) (swapped bool)
 // Keep in sync with cmd/compile/internal/test/inl_test.go:TestIntendedInlining.
 var _ = &Pointer[int]{}
 
-// Pointerはタイプ*Tのアトミックポインタです。ゼロ値はnil *Tです。
+// Pointerは型*Tのアトミックなポインタです。ゼロ値はnil *Tです。
+//
+// Pointerは最初に使用した後でコピーしてはいけません。
 type Pointer[T any] struct {
 	// Mention *T in a field to disallow conversion between Pointer types.
 	// See go.dev/issue/56603 for more details.
@@ -53,6 +57,8 @@ func (x *Pointer[T]) Swap(new *T) (old *T)
 func (x *Pointer[T]) CompareAndSwap(old, new *T) (swapped bool)
 
 // Int32はアトミックなint32です。ゼロ値はゼロです。
+//
+// Int32は最初に使用した後でコピーしてはいけません。
 type Int32 struct {
 	_ noCopy
 	v int32
@@ -82,6 +88,8 @@ func (x *Int32) And(mask int32) (old int32)
 func (x *Int32) Or(mask int32) (old int32)
 
 // Int64はアトミックなint64です。ゼロ値はゼロです。
+//
+// Int64は最初に使用した後でコピーしてはいけません。
 type Int64 struct {
 	_ noCopy
 	_ align64
@@ -112,6 +120,8 @@ func (x *Int64) And(mask int64) (old int64)
 func (x *Int64) Or(mask int64) (old int64)
 
 // Uint32はアトミックなuint32です。ゼロ値はゼロです。
+//
+// Uint32は最初に使用した後でコピーしてはいけません。
 type Uint32 struct {
 	_ noCopy
 	v uint32
@@ -141,6 +151,8 @@ func (x *Uint32) And(mask uint32) (old uint32)
 func (x *Uint32) Or(mask uint32) (old uint32)
 
 // Uint64はアトミックなuint64です。ゼロ値はゼロです。
+//
+// Uint64は最初に使用した後でコピーしてはいけません。
 type Uint64 struct {
 	_ noCopy
 	_ align64
@@ -171,6 +183,8 @@ func (x *Uint64) And(mask uint64) (old uint64)
 func (x *Uint64) Or(mask uint64) (old uint64)
 
 // Uintptrはアトミックなuintptrです。ゼロ値はゼロです。
+//
+// Uintptrは最初に使用した後でコピーしてはいけません。
 type Uintptr struct {
 	_ noCopy
 	v uintptr
@@ -191,10 +205,10 @@ func (x *Uintptr) CompareAndSwap(old, new uintptr) (swapped bool)
 // Addはアトミックにdeltaをxに加え、新しい値を返します。
 func (x *Uintptr) Add(delta uintptr) (new uintptr)
 
-// And atomically performs a bitwise AND operation on x using the bitmask
-// provided as mask and returns the old value.
+// Andは、提供されたマスクとしてビットマスクを使用してx上でビット単位のAND操作をアトミックに実行し、
+// 古い値を返します。
 func (x *Uintptr) And(mask uintptr) (old uintptr)
 
-// Or atomically performs a bitwise OR operation on x using the bitmask
-// provided as mask and returns the updated value after the OR operation.
+// Orは、提供されたマスクとしてビットマスクを使用してx上でビット単位のOR操作をアトミックに実行し、
+// 古い値を返します。
 func (x *Uintptr) Or(mask uintptr) (old uintptr)

@@ -232,3 +232,5 @@ func Setuid(uid int) (err error)
 func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error)
 
 func Munmap(b []byte) (err error)
+
+func Getrlimit(resource int, rlim *Rlimit) (err error)

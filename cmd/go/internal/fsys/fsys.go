@@ -2,15 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package fsys is an abstraction for reading files that
-// allows for virtual overlays on top of the files on disk.
+// Package fsys implements a virtual file system that the go command
+// uses to read source file trees. The virtual file system redirects some
+// OS file paths to other OS file paths, according to an overlay file.
+// Editors can use this overlay support to invoke the go command on
+// temporary files that have been edited but not yet saved into their
+// final locations.
 package fsys
 
 import (
 	"github.com/shogo82148/std/io/fs"
 	"github.com/shogo82148/std/os"
-
-	"github.com/shogo82148/std/path/filepath"
 )
 
 // Trace emits a trace event for the operation and file path to the trace log,
@@ -20,57 +22,61 @@ import (
 // matching that glob pattern (using path.Match) will be followed by a full stack trace.
 func Trace(op, path string)
 
-// OverlayFile is the path to a text file in the OverlayJSON format.
-// It is the value of the -overlay flag.
+// OverlayFile is the -overlay flag value.
+// It names a file containing the JSON for an overlayJSON struct.
 var OverlayFile string
 
-// OverlayJSON is the format overlay files are expected to be in.
-// The Replace map maps from overlaid paths to replacement paths:
-// the Go command will forward all reads trying to open
-// each overlaid path to its replacement path, or consider the overlaid
-// path not to exist if the replacement path is empty.
-type OverlayJSON struct {
-	Replace map[string]string
-}
+// Bind makes the virtual file system use dir as if it were mounted at mtpt,
+// like Plan 9's “bind” or Linux's “mount --bind”, or like os.Symlink
+// but without the symbolic link.
+//
+// For now, the behavior of using Bind on multiple overlapping
+// mountpoints (for example Bind("x", "/a") and Bind("y", "/a/b"))
+// is undefined.
+func Bind(dir, mtpt string)
 
 // Init initializes the overlay, if one is being used.
-func Init(wd string) error
+func Init() error
 
 // IsDir returns true if path is a directory on disk or in the
 // overlay.
 func IsDir(path string) (bool, error)
 
-// ReadDir provides a slice of fs.FileInfo entries corresponding
-// to the overlaid files in the directory.
-func ReadDir(dir string) ([]fs.FileInfo, error)
+// ReadDir reads the named directory in the virtual file system.
+func ReadDir(name string) ([]fs.DirEntry, error)
 
-// OverlayPath returns the path to the overlaid contents of the
-// file, the empty string if the overlay deletes the file, or path
-// itself if the file is not in the overlay, the file is a directory
-// in the overlay, or there is no overlay.
-// It returns true if the path is overlaid with a regular file
-// or deleted, and false otherwise.
-func OverlayPath(path string) (string, bool)
+// Actual returns the actual file system path for the named file.
+// It returns the empty string if name has been deleted in the virtual file system.
+func Actual(name string) string
 
-// Open opens the file at or overlaid on the given path.
-func Open(path string) (*os.File, error)
+// Replaced reports whether the named file has been modified
+// in the virtual file system compared to the OS file system.
+func Replaced(name string) bool
 
-// ReadFile reads the file at or overlaid on the given path.
-func ReadFile(path string) ([]byte, error)
+// DirContainsReplacement reports whether the named directory is affected by a replacement,
+// either because a parent directory has been replaced, it has been replaced, or a file or
+// directory under it has been replaced.
+// It is meant to be used to detect cases where GOMODCACHE has been replaced. That replacement
+// is not supported (GOMODCACHE is meant to be immutable) and the caller will use the
+// information to return an error.
+func DirContainsReplacement(name string) (string, bool)
 
-// IsDirWithGoFiles reports whether dir is a directory containing Go files
-// either on disk or in the overlay.
-func IsDirWithGoFiles(dir string) (bool, error)
+// Open opens the named file in the virtual file system.
+// It must be an ordinary file, not a directory.
+func Open(name string) (*os.File, error)
 
-// Walk walks the file tree rooted at root, calling walkFn for each file or
-// directory in the tree, including root.
-func Walk(root string, walkFn filepath.WalkFunc) error
+// ReadFile reads the named file from the virtual file system
+// and returns the contents.
+func ReadFile(name string) ([]byte, error)
 
-// Lstat implements a version of os.Lstat that operates on the overlay filesystem.
-func Lstat(path string) (fs.FileInfo, error)
+// IsGoDir reports whether the named directory in the virtual file system
+// is a directory containing one or more Go source files.
+func IsGoDir(name string) (bool, error)
 
-// Stat implements a version of os.Stat that operates on the overlay filesystem.
-func Stat(path string) (fs.FileInfo, error)
+// Lstat returns a FileInfo describing the named file in the virtual file system.
+// It does not follow symbolic links
+func Lstat(name string) (fs.FileInfo, error)
 
-// Glob is like filepath.Glob but uses the overlay file system.
-func Glob(pattern string) (matches []string, err error)
+// Stat returns a FileInfo describing the named file in the virtual file system.
+// It follows symbolic links.
+func Stat(name string) (fs.FileInfo, error)

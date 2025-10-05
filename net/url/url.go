@@ -2,7 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// urlパッケージはURLを解析し、クエリのエスケープを実装します。
+// Package urlはURLの解析とクエリエスケープ処理を行います。
+//
+// RFC 3986を参照してください。このパッケージは基本的にRFC 3986に従いますが、互換性のために一部逸脱する場合があります。
+// IPv6ゾーンリテラルについてはRFC 6874に従います。
 package url
 
 // Errorはエラーと、それが発生した操作とURLを報告します。

@@ -48,18 +48,6 @@ func (s *Scope) Child(i int) *Scope
 // object exists; otherwise the result is nil.
 func (s *Scope) Lookup(name string) Object
 
-// LookupParent follows the parent chain of scopes starting with s until
-// it finds a scope where Lookup(name) returns a non-nil object, and then
-// returns that scope and object. If a valid position pos is provided,
-// only objects that were declared at or before pos are considered.
-// If no such scope and object exists, the result is (nil, nil).
-//
-// Note that obj.Parent() may be different from the returned scope if the
-// object was inserted into the scope and already had a parent at that
-// time (see Insert). This can only happen for dot-imported objects
-// whose scope is the scope of the package that exported them.
-func (s *Scope) LookupParent(name string, pos syntax.Pos) (*Scope, Object)
-
 // Insert attempts to insert an object obj into scope s.
 // If s already contains an alternative object alt with
 // the same name, Insert leaves s unchanged and returns alt.
@@ -75,33 +63,6 @@ func (s *Scope) Insert(obj Object) Object
 // records the binding and returns true. The object's parent scope
 // will be set to s after resolve is called.
 func (s *Scope) InsertLazy(name string, resolve func() Object) bool
-
-// Squash merges s with its parent scope p by adding all
-// objects of s to p, adding all children of s to the
-// children of p, and removing s from p's children.
-// The function f is called for each object obj in s which
-// has an object alt in p. s should be discarded after
-// having been squashed.
-func (s *Scope) Squash(err func(obj, alt Object))
-
-// Pos and End describe the scope's source code extent [pos, end).
-// The results are guaranteed to be valid only if the type-checked
-// AST has complete position information. The extent is undefined
-// for Universe and package scopes.
-func (s *Scope) Pos() syntax.Pos
-func (s *Scope) End() syntax.Pos
-
-// Contains reports whether pos is within the scope's extent.
-// The result is guaranteed to be valid only if the type-checked
-// AST has complete position information.
-func (s *Scope) Contains(pos syntax.Pos) bool
-
-// Innermost returns the innermost (child) scope containing
-// pos. If pos is not within any scope, the result is nil.
-// The result is also nil for the Universe scope.
-// The result is guaranteed to be valid only if the type-checked
-// AST has complete position information.
-func (s *Scope) Innermost(pos syntax.Pos) *Scope
 
 // WriteTo writes a string representation of the scope to w,
 // with the scope elements sorted by name.

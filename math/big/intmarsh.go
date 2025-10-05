@@ -12,7 +12,10 @@ func (x *Int) GobEncode() ([]byte, error)
 // GobDecodeは、[encoding/gob.GobDecoder] インターフェースを実装します。
 func (z *Int) GobDecode(buf []byte) error
 
-// MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
+// AppendTextは [encoding.TextAppender] インターフェースを実装します。
+func (x *Int) AppendText(b []byte) (text []byte, err error)
+
+// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
 func (x *Int) MarshalText() (text []byte, err error)
 
 // UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。

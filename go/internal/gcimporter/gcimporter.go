@@ -11,12 +11,6 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// FindPkg returns the filename and unique package id for an import
-// path based on package information provided by build.Import (using
-// the build.Default build.Context). A relative srcDir is interpreted
-// relative to the current working directory.
-func FindPkg(path, srcDir string) (filename, id string, err error)
-
 // Import imports a gc-generated package given its import path and srcDir, adds
 // the corresponding package object to the packages map, and returns the object.
 // The packages map must contain all packages already imported.

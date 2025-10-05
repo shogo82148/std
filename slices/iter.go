@@ -19,22 +19,25 @@ func Backward[Slice ~[]E, E any](s Slice) iter.Seq2[int, E]
 // Valuesは、スライス要素を順番に生成するイテレータを返します。
 func Values[Slice ~[]E, E any](s Slice) iter.Seq[E]
 
-// AppendSeqは、seqからスライスに値を追加し、拡張されたスライスを返します。
+// AppendSeqは、seqの値をスライスに追加し、拡張されたスライスを返します。
+// seqが空の場合、結果はsのnil性を保持します。
 func AppendSeq[Slice ~[]E, E any](s Slice, seq iter.Seq[E]) Slice
 
 // Collectは、seqから値を収集して新しいスライスに格納し、それを返します。
+// seqが空の場合、結果はnilになります。
 func Collect[E any](seq iter.Seq[E]) []E
 
 // Sortedは、seqから値を収集して新しいスライスに格納し、スライスをソートして返します。
+// seqが空の場合、結果はnilになります。
 func Sorted[E cmp.Ordered](seq iter.Seq[E]) []E
 
-// SortedFuncは、seqから値を収集して新しいスライスに格納し、
-// 比較関数を使用してスライスをソートし、それを返します。
+// SortedFuncは、seqから値を収集して新しいスライスに格納し、比較関数を使ってソートして返します。
+// seqが空の場合、結果はnilになります。
 func SortedFunc[E any](seq iter.Seq[E], cmp func(E, E) int) []E
 
 // SortedStableFuncは、seqから値を収集して新しいスライスに格納します。
-// 次に、比較関数を使用して要素を比較しながら、元の順序を保持してスライスをソートします。
-// 新しいスライスを返します。
+// その後、比較関数を使って要素の元の順序を保ったままソートし、新しいスライスを返します。
+// seqが空の場合、結果はnilになります。
 func SortedStableFunc[E any](seq iter.Seq[E], cmp func(E, E) int) []E
 
 // Chunkは、sの最大n要素の連続する部分スライスを反復するイテレータを返します。

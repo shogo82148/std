@@ -6,7 +6,6 @@ package slog_test
 
 import (
 	"github.com/shogo82148/std/log/slog"
-	"github.com/shogo82148/std/log/slog/internal/slogtest"
 	"github.com/shogo82148/std/os"
 )
 
@@ -22,7 +21,13 @@ type LevelHandler struct {
 // 別の一般的な使用方法は、（例えばLevelDebugに）ログレベルを下げて、
 // バグが含まれていると疑われるプログラムの一部分でログを出力することです。
 func ExampleHandler_levelHandler() {
-	th := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: slogtest.RemoveTime})
+	removeTime := func(groups []string, a slog.Attr) slog.Attr {
+		if a.Key == slog.TimeKey && len(groups) == 0 {
+			return slog.Attr{}
+		}
+		return a
+	}
+	th := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: removeTime})
 	logger := slog.New(NewLevelHandler(slog.LevelWarn, th))
 	logger.Info("not printed")
 	logger.Warn("printed")

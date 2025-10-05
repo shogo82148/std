@@ -16,16 +16,17 @@ type InternalBenchmark struct {
 	F    func(b *B)
 }
 
-// Bはベンチマークのタイミングを管理し、実行する繰り返し回数を指定するために [Benchmark] 関数に渡される型です。
+// Bはベンチマーク関数に渡され、ベンチマークのタイミングや反復回数の管理を行う型です。
 //
-// ベンチマーク関数がリターンするか、またはFailNow、Fatal、Fatalf、SkipNow、Skip、Skipfのいずれかのメソッドを呼び出すことでベンチマークは終了します。これらのメソッドはベンチマーク関数を実行しているゴルーチンからのみ呼び出す必要があります。
-// ログやエラーのバリエーションといった他の報告用メソッドは、複数のゴルーチンから同時に呼び出すことができます。
+// ベンチマークは、そのBenchmark関数がreturnするか、[B.FailNow]、[B.Fatal]、[B.Fatalf]、[B.SkipNow]、[B.Skip]、[B.Skipf] のいずれかのメソッドを呼び出すことで終了します。
+// これらのメソッドは、Benchmark関数を実行しているゴルーチンからのみ呼び出す必要があります。
+// その他の報告用メソッド（[B.Log] や [B.Error] のバリエーションなど）は、複数のゴルーチンから同時に呼び出すことができます。
 //
 // テストと同様に、ベンチマークのログは実行中に蓄積され、終了時に標準出力に出力されます。ただし、ベンチマークのログは常に出力されるため、ベンチマーク結果に影響を与える可能性がある出力を隠すことはありません。
 type B struct {
 	common
 	importPath       string
-	context          *benchContext
+	bstate           *benchState
 	N                int
 	previousN        int
 	previousDuration time.Duration
@@ -45,6 +46,15 @@ type B struct {
 	netBytes  uint64
 	// ReportMetricによって収集される追加のメトリクス。
 	extra map[string]float64
+
+	// loop tracks the state of B.Loop
+	loop struct {
+		n uint64
+
+		i uint64
+
+		done bool
+	}
 }
 
 // StartTimerはテストの計測を開始します。この関数はベンチマークが開始する前に自動的に呼び出されますが、[B.StopTimer] を呼び出した後に計測を再開するためにも使用することができます。
@@ -81,7 +91,36 @@ func (b *B) Elapsed() time.Duration
 // "ns/op"を0に設定すると、組み込まれたメトリックは抑制されます。
 func (b *B) ReportMetric(n float64, unit string)
 
-// BenchmarkResultはベンチマークの実行結果を含んでいます。
+// Loopはベンチマークを継続して実行すべき間、trueを返します。
+//
+// 一般的なベンチマークの構造例：
+//
+//	func Benchmark(b *testing.B) {
+//		... セットアップ ...
+//		for b.Loop() {
+//			... 計測対象のコード ...
+//		}
+//		... クリーンアップ ...
+//	}
+//
+// Loopはベンチマーク内で最初に呼び出されたときにベンチマークタイマーをリセットします。
+// そのため、ベンチマークループ開始前のセットアップ処理は計測に含まれません。
+// 同様に、falseを返すときにタイマーを停止するため、クリーンアップ処理も計測されません。
+//
+// "for b.Loop() { ... }" ループの本体内では、ループ内で呼び出される関数の引数や戻り値が生存し続け、
+// コンパイラによるループ本体の完全な最適化が防がれます。現在は、b.Loopループ内で呼び出される関数のインライン化を無効化することで実現されています。
+// これはループの波括弧内で構文的に呼び出される関数にのみ適用され、ループ条件は必ず "b.Loop()" と記述する必要があります。
+// ループ内から呼び出される関数では通常通り最適化が行われます。
+//
+// Loopがfalseを返した後、b.Nには実行された総イテレーション数が格納されるため、ベンチマークはb.Nを使って他の平均値を計算できます。
+//
+// Loop導入以前は、ベンチマークは0からb.Nまでの明示的なループを含む必要がありました。
+// ベンチマークはLoopを使うかb.Nまでのループを含むか、どちらか一方にすべきです。
+// Loopはベンチマークタイマーの管理をより自動化し、各ベンチマーク関数を計測ごとに一度だけ実行します。
+// 一方、b.Nベースのベンチマークはベンチマーク関数（および関連するセットアップ・クリーンアップ）を複数回実行する必要があります。
+func (b *B) Loop() bool
+
+// BenchmarkResult contains the results of a benchmark run.
 type BenchmarkResult struct {
 	N         int
 	T         time.Duration

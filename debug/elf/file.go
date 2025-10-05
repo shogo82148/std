@@ -37,11 +37,12 @@ type FileHeader struct {
 // Fileは開いているELFファイルを表します。
 type File struct {
 	FileHeader
-	Sections  []*Section
-	Progs     []*Prog
-	closer    io.Closer
-	gnuNeed   []verneed
-	gnuVersym []byte
+	Sections    []*Section
+	Progs       []*Prog
+	closer      io.Closer
+	dynVers     []DynamicVersion
+	dynVerNeeds []DynamicVersionNeed
+	gnuVersym   []byte
 }
 
 // SectionHeaderは単一のELFセクションヘッダーを表します。
@@ -130,10 +131,19 @@ func (p *Prog) Open() io.ReadSeeker
 type Symbol struct {
 	Name        string
 	Info, Other byte
+
+	// HasVersion reports whether the symbol has any version information.
+	// This will only be true for the dynamic symbol table.
+	HasVersion bool
+	// VersionIndex is the symbol's version index.
+	// Use the methods of the [VersionIndex] type to access it.
+	// This field is only meaningful if HasVersion is true.
+	VersionIndex VersionIndex
+
 	Section     SectionIndex
 	Value, Size uint64
 
-	// VersionとLibraryは、動的シンボルテーブルにのみ存在します。
+	// これらのフィールドは動的シンボルテーブルでのみ存在します。
 	Version string
 	Library string
 }
@@ -200,8 +210,64 @@ type ImportedSymbol struct {
 // 弱いシンボルは返しません。
 func (f *File) ImportedSymbols() ([]ImportedSymbol, error)
 
-// ImportedLibrariesは、動的リンク時にバイナリとリンクされることが期待される
-// バイナリfによって参照されるすべてのライブラリの名前を返します。
+// VersionIndexは [Symbol] のバージョンインデックスの型です。
+type VersionIndex uint16
+
+// IsHiddenは、シンボルがバージョン内で隠されているかどうかを報告します。
+// これは、正確なバージョンを指定することによってのみシンボルが見えることを意味します。
+func (vi VersionIndex) IsHidden() bool
+
+// Indexはバージョンインデックスを返します。
+// この値が0の場合、シンボルはローカルであり、
+// 外部から見えないことを意味します。
+// この値が1の場合、シンボルはベースバージョンにあり、
+// 特定のバージョンを持たないことを意味します。[File.DynamicVersions] によって返される
+// スライス内の [DynamicVersion.Index] と一致する場合もしないかもしれません。
+// その他の値は、[File.DynamicVersions] によって返される
+// スライス内の [DynamicVersion.Index]、
+// または [File.DynamicVersionNeeds] によって返される
+// スライスの要素の Needs フィールド内の [DynamicVersionDep.Index] のいずれかと一致します。
+// 一般的に、定義されたシンボルは DynamicVersions を参照するインデックスを持ち、
+// 未定義のシンボルは DynamicVersionNeeds 内のいずれかのバージョンを参照する
+// インデックスを持ちます。
+func (vi VersionIndex) Index() uint16
+
+// DynamicVersionは動的オブジェクトによって定義されるバージョンです。
+// これはELF SHT_GNU_verdefセクションのエントリを記述します。
+// vd_versionフィールドが1であると仮定します。
+// バージョンの名前はここに表示されることに注意してください；
+// ELFファイルのように最初のDepsエントリにはありません。
+type DynamicVersion struct {
+	Name  string
+	Index uint16
+	Flags DynamicVersionFlag
+	Deps  []string
+}
+
+// DynamicVersionNeedは、動的オブジェクトによって必要とされる共有ライブラリを記述し、
+// その共有ライブラリから必要とされるバージョンのリストを含みます。
+// これはELF SHT_GNU_verneedセクションのエントリを記述します。
+// vn_versionフィールドが1であると仮定します。
+type DynamicVersionNeed struct {
+	Name  string
+	Needs []DynamicVersionDep
+}
+
+// DynamicVersionDepは共有ライブラリから必要とされるバージョンです。
+type DynamicVersionDep struct {
+	Flags DynamicVersionFlag
+	Index uint16
+	Dep   string
+}
+
+// DynamicVersionsは動的オブジェクトのバージョン情報を返します。
+func (f *File) DynamicVersions() ([]DynamicVersion, error)
+
+// DynamicVersionNeedsは動的オブジェクトのバージョン依存関係を返します。
+func (f *File) DynamicVersionNeeds() ([]DynamicVersionNeed, error)
+
+// ImportedLibrariesは、バイナリfによって参照されるすべてのライブラリの名前を返します。
+// これらのライブラリは動的リンク時にバイナリとリンクされることが期待されます。
 func (f *File) ImportedLibraries() ([]string, error)
 
 // DynStringは、ファイルの動的セクションで指定されたタグにリストされている文字列を返します。

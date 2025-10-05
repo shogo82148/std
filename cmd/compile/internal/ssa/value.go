@@ -114,6 +114,8 @@ func (v *Value) SetArgs2(a, b *Value)
 
 func (v *Value) SetArgs3(a, b, c *Value)
 
+func (v *Value) SetArgs4(a, b, c, d *Value)
+
 func (v *Value) Logf(msg string, args ...interface{})
 func (v *Value) Log() bool
 func (v *Value) Fatalf(msg string, args ...interface{})

@@ -8,36 +8,89 @@ import (
 	"github.com/shogo82148/std/sync/atomic"
 )
 
-// WaitGroupは、一連のゴルーチンの完了を待機します。
-// メインゴルーチンは、待機するゴルーチンの数を設定するために [WaitGroup.Add] を呼び出します。
-// それぞれのゴルーチンは実行され、終了時に [WaitGroup.Done] を呼び出します。
-// 同時に、全てのゴルーチンが終了するまでブロックするために [WaitGroup.Wait] を使用できます。
+// WaitGroupは、主に複数のゴルーチンやタスクの終了を待つために使われるカウント型セマフォです。
 //
-// WaitGroupは、初回使用後にコピーしてはいけません。
+// 通常、メインゴルーチンは各タスクを新しいゴルーチンで起動する際に [WaitGroup.Go] を呼び出し、
+// すべてのタスクが完了するまで [WaitGroup.Wait] を呼び出して待機します。例：
 //
-// [the Go memory model] の用語である、[WaitGroup.Done] への呼び出しは、それによってブロックが解除される任意のWait呼び出しの前に「同期します」。
+//	var wg sync.WaitGroup
+//	wg.Go(task1)
+//	wg.Go(task2)
+//	wg.Wait()
 //
-// [the Go memory model]: https://go.dev/ref/mem
+// WaitGroupは、Goを使わずにタスクの追跡にも利用でき、[WaitGroup.Add] と [WaitGroup.Done] を使います。
+//
+// 前述の例は、AddとDoneを使って明示的にゴルーチンを作成する形でも書き換えられます：
+//
+//	var wg sync.WaitGroup
+//	wg.Add(1)
+//	go func() {
+//		defer wg.Done()
+//		task1()
+//	}()
+//	wg.Add(1)
+//	go func() {
+//		defer wg.Done()
+//		task2()
+//	}()
+//	wg.Wait()
+//
+// このパターンは [WaitGroup.Go] より前のコードでよく使われます。
+//
+// WaitGroupは最初に使用した後でコピーしてはいけません。
 type WaitGroup struct {
 	noCopy noCopy
 
+	// Bits (high to low):
+	//   bits[0:32]  counter
+	//   bits[32]    flag: synctest bubble membership
+	//   bits[33:64] wait count
 	state atomic.Uint64
 	sema  uint32
 }
 
-// Addは [WaitGroup] のカウンターにデルタを追加します。デルタは負であることもあります。
+// Addは、[WaitGroup] のタスクカウンターにdelta（負でも可）を加算します。
 // カウンターがゼロになると、[WaitGroup.Wait] でブロックされているすべてのゴルーチンが解放されます。
-// カウンターが負になると、Addはパニックを発生させます。
+// カウンターが負になると、Addはパニックを起こします。
 //
-// カウンターがゼロの状態で正のデルタで呼び出される場合は、Waitより前に実行される必要があることに注意してください。
-// 負のデルタで呼び出される場合や、カウンターがゼロより大きい状態で正のデルタで呼ばれる場合は、任意のタイミングで発生する場合があります。
-// 通常、これはAddの呼び出しは、ゴルーチンの作成または待機する他のイベントの直前に実行されるべきことを意味します。
-// WaitGroupが複数の独立したイベントセットを待機するために再利用される場合、新しいAdd呼び出しは以前のすべてのWait呼び出しが返された後に行われる必要があります。
+// 呼び出し側は [WaitGroup.Go]を優先して使用すべきです。
+//
+// カウンターがゼロのときに正のdeltaで呼び出す場合、Waitの前に実行する必要があります。
+// カウンターがゼロより大きいときに正のdeltaで呼び出す場合や、負のdeltaで呼び出す場合は、いつでも実行できます。
+// 通常、Addの呼び出しは、ゴルーチンや待機対象のイベントを作成する文の前に実行します。
+// WaitGroupを複数の独立したイベントセットの待機に再利用する場合は、
+// 新しいAddの呼び出しは、すべての前回のWait呼び出しが返った後に実行する必要があります。
 // WaitGroupの例を参照してください。
 func (wg *WaitGroup) Add(delta int)
 
-// Doneは [WaitGroup] のカウンターを1つ減らします。
+// Doneは、[WaitGroup] のタスクカウンターを1減算します。
+// Add(-1)と同じです。
+//
+// 呼び出し側は [WaitGroup.Go] を優先して使用すべきです。
+//
+// [the Go memory model] の用語では、Doneの呼び出しは、
+// それによって解除されるWait呼び出しの返り値より「先に同期」します。
+//
+// [the Go memory model]: https://go.dev/ref/mem
 func (wg *WaitGroup) Done()
 
-// Wait は [WaitGroup] カウンタがゼロになるまでブロックします。
+// Waitは、[WaitGroup]のタスクカウンターがゼロになるまでブロックします。
 func (wg *WaitGroup) Wait()
+
+// Goはfを新しいゴルーチンで呼び出し、そのタスクを [WaitGroup] に追加します。
+// fが返ると、そのタスクはWaitGroupから削除されます。
+//
+// fはパニックを起こしてはいけません。
+//
+// WaitGroupが空の場合、Goは [WaitGroup.Wait] より前に実行されなければなりません。
+// 通常は、Goでタスクを開始してからWaitを呼び出します。
+// WaitGroupが空でない場合、Goはいつでも実行できます。
+// Goで開始されたゴルーチン自身がGoを呼び出すこともできます。
+// WaitGroupを複数の独立したタスクセットの待機に再利用する場合は、
+// 新しいGoの呼び出しは、すべての前回のWait呼び出しが返った後に実行する必要があります。
+//
+// [the Go memory model] の用語では、fの返り値は、
+// それによって解除されるWait呼び出しの返り値より「先に同期」します。
+//
+// [the Go memory model]: https://go.dev/ref/mem
+func (wg *WaitGroup) Go(f func())

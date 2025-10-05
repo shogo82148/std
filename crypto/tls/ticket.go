@@ -15,10 +15,10 @@ type SessionState struct {
 	//
 	// これにより、[Config.UnwrapSession]/[Config.WrapSession]や[ClientSessionCache]の実装が、このセッションとともに追加のデータを格納および取得できるようになります。
 	//
-	// To allow different layers in a protocol stack to share this field,
-	// applications must only append to it, not replace it, and must use entries
-	// that can be recognized even if out of order (for example, by starting
-	// with an id and version prefix).
+	// プロトコルスタックの異なる層がこのフィールドを共有できるようにするため、
+	// アプリケーションはそれを置き換えるのではなく追加のみを行い、順序が異なっても
+	// 認識できるエントリを使用する必要があります（例えば、IDとバージョンの
+	// プレフィックスで始めるなど）。
 	Extra [][]byte
 
 	// EarlyDataは、QUIC接続で0-RTTに使用できるかを示します。
@@ -28,22 +28,25 @@ type SessionState struct {
 	version     uint16
 	isClient    bool
 	cipherSuite uint16
-
-	// createdAtはサーバー上でのシークレットの生成時間（TLS 1.0-1.2の場合、現在のセッションよりも前かもしれません）およびクライアントでのチケット受信時間です。
-	createdAt         uint64
-	secret            []byte
-	extMasterSecret   bool
-	peerCertificates  []*x509.Certificate
-	activeCertHandles []*activeCert
-	ocspResponse      []byte
-	scts              [][]byte
-	verifiedChains    [][]*x509.Certificate
-	alpnProtocol      string
+	// createdAt is the generation time of the secret on the sever (which for
+	// TLS 1.0–1.2 might be earlier than the current session) and the time at
+	// which the ticket was received on the client.
+	createdAt        uint64
+	secret           []byte
+	extMasterSecret  bool
+	peerCertificates []*x509.Certificate
+	ocspResponse     []byte
+	scts             [][]byte
+	verifiedChains   [][]*x509.Certificate
+	alpnProtocol     string
 
 	// クライアント側のTLS 1.3専用フィールド。
 	useBy  uint64
 	ageAdd uint32
 	ticket []byte
+
+	// TLS 1.0–1.2 only fields.
+	curveID CurveID
 }
 
 // Bytesはセッションをエンコードし、[ParseSessionState]によって解析できるようにします。エンコードには、将来のセッションのセキュリティに重要な秘密値が含まれている可能性があります。

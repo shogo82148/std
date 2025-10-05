@@ -35,24 +35,23 @@ type Config struct {
 	floatParamRegs []int8
 	ABI1           *abi.ABIConfig
 	ABI0           *abi.ABIConfig
-	GCRegMap       []*Register
 	FPReg          int8
 	LinkReg        int8
 	hasGReg        bool
 	ctxt           *obj.Link
 	optimize       bool
-	noDuffDevice   bool
-	useSSE         bool
 	useAvg         bool
 	useHmul        bool
 	SoftFloat      bool
 	Race           bool
 	BigEndian      bool
-	UseFMA         bool
 	unalignedOK    bool
 	haveBswap64    bool
 	haveBswap32    bool
 	haveBswap16    bool
+
+	// mulRecipes[x] = function to build v * x from v.
+	mulRecipes map[int64]mulRecipe
 }
 
 type Types struct {

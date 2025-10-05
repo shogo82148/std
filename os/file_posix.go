@@ -21,21 +21,21 @@ func (f *File) Close() error
 // -1のUIDまたはGIDはその値を変更しないことを意味します。
 // エラーが発生した場合、型 [*PathError] になります。
 //
-// WindowsまたはPlan 9の場合、Chownは常に [syscall.EWINDOWS] または
-// EPLAN9のエラーを*PathErrorでラップして返します。
+// WindowsまたはPlan 9では、Chownは常に [syscall.EWINDOWS] または
+// [syscall.EPLAN9] のエラーを [*PathError] でラップして返します。
 func Chown(name string, uid, gid int) error
 
 // Lchownは指定されたファイルの数値UIDとGIDを変更します。
 // ファイルがシンボリックリンクの場合、リンク自体のUIDとGIDを変更します。
 // エラーが発生した場合は、[*PathError] 型のエラーが返されます。
 //
-// Windowsでは、常に [syscall.EWINDOWS] エラーが返され、*PathErrorでラップされます。
+// Windowsでは、常に [syscall.EWINDOWS] エラーを [*PathError] でラップして返します。
 func Lchown(name string, uid, gid int) error
 
 // Chownは指定したファイルの数値uidとgidを変更します。
 // エラーが発生した場合、それは [*PathError] の型です。
 //
-// Windowsでは、いつも [syscall.EWINDOWS] のエラーを返し、*PathErrorにラップします。
+// Windowsでは、常に [syscall.EWINDOWS] エラーを [*PathError] でラップして返します。
 func (f *File) Chown(uid, gid int) error
 
 // Truncateはファイルのサイズを変更します。

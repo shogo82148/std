@@ -77,7 +77,11 @@ func GetBytes(c Cache, id ActionID) ([]byte, Entry, error)
 // GetMmap looks up the action ID in the cache and returns
 // the corresponding output bytes.
 // GetMmap should only be used for data that can be expected to fit in memory.
-func GetMmap(c Cache, id ActionID) ([]byte, Entry, error)
+// The boolean result indicates whether the file was opened.
+// If it is true, the caller should avoid attempting
+// to write to the file on Windows, because Windows locks
+// the open file, and writes to it will fail.
+func GetMmap(c Cache, id ActionID) ([]byte, Entry, bool, error)
 
 // OutputFile returns the name of the cache file storing output with the given OutputID.
 func (c *DiskCache) OutputFile(out OutputID) string
@@ -90,6 +94,11 @@ func (c *DiskCache) Trim() error
 // Put stores the given output in the cache as the output for the action ID.
 // It may read file twice. The content of file must not change between the two passes.
 func (c *DiskCache) Put(id ActionID, file io.ReadSeeker) (OutputID, int64, error)
+
+// PutExecutable is used to store the output as the output for the action ID into a
+// file with the given base name, with the executable mode bit set.
+// It may read file twice. The content of file must not change between the two passes.
+func (c *DiskCache) PutExecutable(id ActionID, name string, file io.ReadSeeker) (OutputID, int64, error)
 
 // PutNoVerify is like Put but disables the verify check
 // when GODEBUG=goverifycache=1 is set.

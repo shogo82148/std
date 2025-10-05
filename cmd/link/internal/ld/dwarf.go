@@ -33,7 +33,3 @@ const (
 	PC_RANGE    = (255 - OPCODE_BASE) / LINE_RANGE
 	OPCODE_BASE = 11
 )
-
-const (
-	COMPUNITHEADERSIZE = 4 + 2 + 4 + 1
-)

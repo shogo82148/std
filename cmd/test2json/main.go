@@ -34,12 +34,13 @@
 // Goの構造体に対応します：
 //
 //	type TestEvent struct {
-//		Time    time.Time // RFC3339形式の文字列としてエンコードされます
-//		Action  string
-//		Package string
-//		Test    string
-//		Elapsed float64 // 秒単位
-//		Output  string
+//		Time        time.Time // RFC3339形式の文字列としてエンコードされます
+//		Action      string
+//		Package     string
+//		Test        string
+//		Elapsed     float64 // 秒単位
+//		Output      string
+//		FailedBuild string
 //	}
 //
 // Timeフィールドはイベントが発生した時刻を保持しています。
@@ -74,10 +75,16 @@
 // 置換文字を使用して有効なUTF-8に変換されます。この例外を除いて、
 // Outputフィールドのすべての出力イベントの連結がテストの実行の正確な出力です。
 //
+// FailedBuildフィールドは、テストの失敗がビルド失敗によって引き起こされた場合、
+// Action == "fail"のときに設定されます。ビルドに失敗したパッケージのパッケージIDが含まれます。
+// これは"go list"出力のImportPathフィールド、および"go build -json"によって
+// 出力されるBuildEvent.ImportPathフィールドと一致します。
+//
 // ベンチマークが実行されると、通常はタイミング結果を示す1行の出力が生成されます。
-// その行は、Action == "output"かつTestフィールドが存在しないイベントで報告されます。
-// ベンチマークが出力を記録したり失敗を報告した場合
-// （たとえば、b.Logやb.Errorを使用することによって）、その追加の出力は
-// ベンチマーク名が設定されたイベントのシーケンスとして報告され、最後のイベントは
-// Action == "bench"または"fail"です。ベンチマークにはAction == "pause"のイベントはありません。
+// その行は、Action == "output"でTestフィールドのないイベントで報告されます。
+// ベンチマークが出力をログに記録したり失敗を報告したりする場合
+// （例えば、b.Logやb.Errorを使用することによって）、その追加出力は
+// Testがベンチマーク名に設定されたイベントのシーケンスとして報告され、
+// Action == "bench"または"fail"の最終イベントで終了します。
+// ベンチマークには、Action == "pause"のイベントはありません。
 package main

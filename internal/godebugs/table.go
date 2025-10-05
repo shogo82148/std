@@ -9,11 +9,12 @@ package godebugs
 
 // An Info describes a single known GODEBUG setting.
 type Info struct {
-	Name    string
-	Package string
-	Changed int
-	Old     string
-	Opaque  bool
+	Name      string
+	Package   string
+	Changed   int
+	Old       string
+	Opaque    bool
+	Immutable bool
 }
 
 // All is the table of known settings, sorted by Name.
@@ -25,11 +26,18 @@ type Info struct {
 // Note: After adding entries to this table, update the list in doc/godebug.md as well.
 // (Otherwise the test in this package will fail.)
 var All = []Info{
+	{Name: "allowmultiplevcs", Package: "cmd/go"},
 	{Name: "asynctimerchan", Package: "time", Changed: 23, Old: "1"},
+	{Name: "containermaxprocs", Package: "runtime", Changed: 25, Old: "0"},
+	{Name: "dataindependenttiming", Package: "crypto/subtle", Opaque: true},
+	{Name: "decoratemappings", Package: "runtime", Opaque: true, Changed: 25, Old: "0"},
+	{Name: "embedfollowsymlinks", Package: "cmd/go"},
 	{Name: "execerrdot", Package: "os/exec"},
+	{Name: "fips140", Package: "crypto/fips140", Opaque: true, Immutable: true},
 	{Name: "gocachehash", Package: "cmd/go"},
 	{Name: "gocachetest", Package: "cmd/go"},
 	{Name: "gocacheverify", Package: "cmd/go"},
+	{Name: "gotestjsonbuildtext", Package: "cmd/go", Changed: 24, Old: "1"},
 	{Name: "gotypesalias", Package: "go/types", Changed: 23, Old: "0"},
 	{Name: "http2client", Package: "net/http"},
 	{Name: "http2debug", Package: "net/http", Opaque: true},
@@ -42,25 +50,30 @@ var All = []Info{
 
 	{Name: "multipartmaxheaders", Package: "mime/multipart"},
 	{Name: "multipartmaxparts", Package: "mime/multipart"},
-	{Name: "multipathtcp", Package: "net"},
+	{Name: "multipathtcp", Package: "net", Changed: 24, Old: "0"},
 	{Name: "netdns", Package: "net", Opaque: true},
 	{Name: "netedns0", Package: "net", Changed: 19, Old: "0"},
 	{Name: "panicnil", Package: "runtime", Changed: 21, Old: "1"},
 	{Name: "randautoseed", Package: "math/rand"},
+	{Name: "randseednop", Package: "math/rand", Changed: 24, Old: "0"},
+	{Name: "rsa1024min", Package: "crypto/rsa", Changed: 24, Old: "0"},
 	{Name: "tarinsecurepath", Package: "archive/tar"},
 	{Name: "tls10server", Package: "crypto/tls", Changed: 22, Old: "1"},
 	{Name: "tls3des", Package: "crypto/tls", Changed: 23, Old: "1"},
-	{Name: "tlskyber", Package: "crypto/tls", Changed: 23, Old: "0", Opaque: true},
 	{Name: "tlsmaxrsasize", Package: "crypto/tls"},
+	{Name: "tlsmlkem", Package: "crypto/tls", Changed: 24, Old: "0", Opaque: true},
 	{Name: "tlsrsakex", Package: "crypto/tls", Changed: 22, Old: "1"},
+	{Name: "tlssha1", Package: "crypto/tls", Changed: 25, Old: "1"},
 	{Name: "tlsunsafeekm", Package: "crypto/tls", Changed: 22, Old: "1"},
-	{Name: "winreadlinkvolume", Package: "os", Changed: 22, Old: "0"},
-	{Name: "winsymlink", Package: "os", Changed: 22, Old: "0"},
+	{Name: "updatemaxprocs", Package: "runtime", Changed: 25, Old: "0"},
+	{Name: "winreadlinkvolume", Package: "os", Changed: 23, Old: "0"},
+	{Name: "winsymlink", Package: "os", Changed: 23, Old: "0"},
 	{Name: "x509keypairleaf", Package: "crypto/tls", Changed: 23, Old: "0"},
 	{Name: "x509negativeserial", Package: "crypto/x509", Changed: 23, Old: "1"},
-	{Name: "x509sha1", Package: "crypto/x509"},
+	{Name: "x509rsacrt", Package: "crypto/x509", Changed: 24, Old: "0"},
+	{Name: "x509sha256skid", Package: "crypto/x509", Changed: 25, Old: "0"},
 	{Name: "x509usefallbackroots", Package: "crypto/x509"},
-	{Name: "x509usepolicies", Package: "crypto/x509"},
+	{Name: "x509usepolicies", Package: "crypto/x509", Changed: 24, Old: "0"},
 	{Name: "zipinsecurepath", Package: "archive/zip"},
 }
 

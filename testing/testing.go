@@ -9,7 +9,7 @@
 //
 // ただし、Xxxは小文字ではじまらないものとします。関数名はテストルーチンを識別するために使用されます。
 //
-// これらの関数内では、FailureをシグナルするためにError、Fail、または関連するメソッドを使用します。
+// これらの関数内では、失敗を通知するために [T.Error]、[T.Fail] などの関連メソッドを使用してください。
 //
 // 新しいテストスイートを書くためには、次の要件に従っているファイルを作成し、"_test.go"で終わる名前を付けます。
 // このファイルは通常のパッケージのビルドから除外されますが、"go test"コマンドの実行時には含まれます。
@@ -46,7 +46,7 @@
 //	    }
 //	}
 //
-// 詳細については、「go help test」と「go help testflag」を実行してください。
+// 詳細については [go help test] および [go help testflag] を実行してください。
 //
 // ＃ ベンチマーク
 //
@@ -57,33 +57,29 @@
 // are considered benchmarks, and are executed by the "go test" command when
 // its -bench flag is provided. Benchmarks are run sequentially.
 //
-// For a description of the testing flags, see
-// https://golang.org/cmd/go/#hdr-Testing_flags.
+// For a description of the testing flags, see [go help testflag].
 //
 // A sample benchmark function looks like this:
 //
 //	func BenchmarkRandInt(b *testing.B) {
-//	    for range b.N {
+//	    for b.Loop() {
 //	        rand.Int()
 //	    }
 //	}
 //
-// The benchmark function must run the target code b.N times.
-// It is called multiple times with b.N adjusted until the
-// benchmark function lasts long enough to be timed reliably.
 // The output
 //
 //	BenchmarkRandInt-8   	68453040	        17.8 ns/op
 //
-// means that the loop ran 68453040 times at a speed of 17.8 ns per loop.
+// means that the body of the loop ran 68453040 times at a speed of 17.8 ns per loop.
 //
-// If a benchmark needs some expensive setup before running, the timer
-// may be reset:
+// Only the body of the loop is timed, so benchmarks may do expensive
+// setup before calling b.Loop, which will not be counted toward the
+// benchmark measurement:
 //
 //	func BenchmarkBigLen(b *testing.B) {
 //	    big := NewBig()
-//	    b.ResetTimer()
-//	    for range b.N {
+//	    for b.Loop() {
 //	        big.Len()
 //	    }
 //	}
@@ -104,12 +100,43 @@
 //	}
 //
 // A detailed specification of the benchmark results format is given
-// in https://golang.org/design/14313-benchmark-format.
+// in https://go.dev/design/14313-benchmark-format.
 //
 // There are standard tools for working with benchmark results at
-// https://golang.org/x/perf/cmd.
-// In particular, https://golang.org/x/perf/cmd/benchstat performs
+// [golang.org/x/perf/cmd].
+// In particular, [golang.org/x/perf/cmd/benchstat] performs
 // statistically robust A/B comparisons.
+//
+// # b.N-style benchmarks
+//
+// Prior to the introduction of [B.Loop], benchmarks were written in a
+// different style using B.N. For example:
+//
+//	func BenchmarkRandInt(b *testing.B) {
+//	    for range b.N {
+//	        rand.Int()
+//	    }
+//	}
+//
+// In this style of benchmark, the benchmark function must run
+// the target code b.N times. The benchmark function is called
+// multiple times with b.N adjusted until the benchmark function
+// lasts long enough to be timed reliably. This also means any setup
+// done before the loop may be run several times.
+//
+// If a benchmark needs some expensive setup before running, the timer
+// should be explicitly reset:
+//
+//	func BenchmarkBigLen(b *testing.B) {
+//	    big := NewBig()
+//	    b.ResetTimer()
+//	    for range b.N {
+//	        big.Len()
+//	    }
+//	}
+//
+// New benchmarks should prefer using [B.Loop], which is more robust
+// and more efficient.
 //
 // # Examples
 //
@@ -200,19 +227,19 @@
 //
 // A fuzz test maintains a seed corpus, or a set of inputs which are run by
 // default, and can seed input generation. Seed inputs may be registered by
-// calling (*F).Add or by storing files in the directory testdata/fuzz/<Name>
+// calling [F.Add] or by storing files in the directory testdata/fuzz/<Name>
 // (where <Name> is the name of the fuzz test) within the package containing
 // the fuzz test. Seed inputs are optional, but the fuzzing engine may find
 // bugs more efficiently when provided with a set of small seed inputs with good
 // code coverage. These seed inputs can also serve as regression tests for bugs
 // identified through fuzzing.
 //
-// The function passed to (*F).Fuzz within the fuzz test is considered the fuzz
-// target. A fuzz target must accept a *T parameter, followed by one or more
-// parameters for random inputs. The types of arguments passed to (*F).Add must
+// The function passed to [F.Fuzz] within the fuzz test is considered the fuzz
+// target. A fuzz target must accept a [*T] parameter, followed by one or more
+// parameters for random inputs. The types of arguments passed to [F.Add] must
 // be identical to the types of these parameters. The fuzz target may signal
-// that it's found a problem the same way tests do: by calling T.Fail (or any
-// method that calls it like T.Error or T.Fatal) or by panicking.
+// that it's found a problem the same way tests do: by calling [T.Fail] (or any
+// method that calls it like [T.Error] or [T.Fatal]) or by panicking.
 //
 // When fuzzing is enabled (by setting the -fuzz flag to a regular expression
 // that matches a specific fuzz test), the fuzz target is called with arguments
@@ -228,16 +255,16 @@
 // the fuzz cache directory within the build cache instead.
 //
 // When fuzzing is disabled, the fuzz target is called with the seed inputs
-// registered with F.Add and seed inputs from testdata/fuzz/<Name>. In this
+// registered with [F.Add] and seed inputs from testdata/fuzz/<Name>. In this
 // mode, the fuzz test acts much like a regular test, with subtests started
-// with F.Fuzz instead of T.Run.
+// with [F.Fuzz] instead of [T.Run].
 //
 // See https://go.dev/doc/fuzz for documentation about fuzzing.
 //
 // # Skipping
 //
 // Tests or benchmarks may be skipped at run time with a call to
-// the Skip method of *T or *B:
+// [T.Skip] or [B.Skip]:
 //
 //	func TestTimeConsuming(t *testing.T) {
 //	    if testing.Short() {
@@ -246,7 +273,7 @@
 //	    ...
 //	}
 //
-// The Skip method of *T can be used in a fuzz target if the input is invalid,
+// The [T.Skip] method can be used in a fuzz target if the input is invalid,
 // but should not be considered a failing input. For example:
 //
 //	func FuzzJSONMarshaling(f *testing.F) {
@@ -263,7 +290,7 @@
 //
 // # Subtests and Sub-benchmarks
 //
-// The Run methods of T and B allow defining subtests and sub-benchmarks,
+// The [T.Run] and [B.Run] methods allow defining subtests and sub-benchmarks,
 // without having to define separate functions for each. This enables uses
 // like table-driven benchmarks and creating hierarchical tests.
 // It also provides a way to share common setup and tear-down code:
@@ -308,7 +335,6 @@
 //
 //	func TestGroupedParallel(t *testing.T) {
 //	    for _, tc := range tests {
-//	        tc := tc // capture range variable
 //	        t.Run(tc.Name, func(t *testing.T) {
 //	            t.Parallel()
 //	            ...
@@ -341,12 +367,12 @@
 // then the generated test will call TestMain(m) instead of running the tests or benchmarks
 // directly. TestMain runs in the main goroutine and can do whatever setup
 // and teardown is necessary around a call to m.Run. m.Run will return an exit
-// code that may be passed to os.Exit. If TestMain returns, the test wrapper
-// will pass the result of m.Run to os.Exit itself.
+// code that may be passed to [os.Exit]. If TestMain returns, the test wrapper
+// will pass the result of m.Run to [os.Exit] itself.
 //
 // When TestMain is called, flag.Parse has not been run. If TestMain depends on
 // command-line flags, including those of the testing package, it should call
-// flag.Parse explicitly. Command line flags are always parsed by the time test
+// [flag.Parse] explicitly. Command line flags are always parsed by the time test
 // or benchmark functions run.
 //
 // A simple implementation of TestMain is:
@@ -358,9 +384,14 @@
 //
 // TestMain is a low-level primitive and should not be necessary for casual
 // testing needs, where ordinary test functions suffice.
+//
+// [go help test]: https://pkg.go.dev/cmd/go#hdr-Test_packages
+// [go help testflag]: https://pkg.go.dev/cmd/go#hdr-Testing_flags
 package testing
 
 import (
+	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/time"
 )
@@ -384,8 +415,9 @@ func CoverMode() string
 // Verboseは、-test.vフラグが設定されているかどうかを報告します。
 func Verbose() bool
 
-// TBはT、B、Fに共通するインターフェースです。
+// TBは [T], [B], [F] に共通するインターフェースです。
 type TB interface {
+	Attr(key, value string)
 	Cleanup(func())
 	Error(args ...any)
 	Errorf(format string, args ...any)
@@ -399,27 +431,33 @@ type TB interface {
 	Logf(format string, args ...any)
 	Name() string
 	Setenv(key, value string)
+	Chdir(dir string)
 	Skip(args ...any)
 	SkipNow()
 	Skipf(format string, args ...any)
 	Skipped() bool
 	TempDir() string
+	Context() context.Context
+	Output() io.Writer
 
 	private()
 }
 
-var _ TB = (*T)(nil)
-var _ TB = (*B)(nil)
+var (
+	_ TB = (*T)(nil)
+	_ TB = (*B)(nil)
+)
 
 // Tはテスト状態を管理し、フォーマットされたテストログをサポートするためにTest関数に渡される型です。
 //
-// テストは、そのTest関数が返却されるか、またはFailNow、Fatal、Fatalf、SkipNow、Skip、Skipfのいずれかのメソッドが呼び出された時に終了します。これらのメソッド、およびParallelメソッドは、テスト関数を実行しているゴルーチンからのみ呼び出す必要があります。
+// テストは、そのTest関数がreturnするか、[T.FailNow]、[T.Fatal]、[T.Fatalf]、[T.SkipNow]、[T.Skip]、[T.Skipf] のいずれかのメソッドを呼び出すことで終了します。
+// これらのメソッドおよび [T.Parallel] メソッドは、Test関数を実行しているゴルーチンからのみ呼び出す必要があります。
 //
-// LogやErrorのバリエーションなど、他のレポートメソッドは、複数のゴルーチンから同時に呼び出すことができます。
+// その他の報告用メソッド（[T.Log] や [T.Error] のバリエーションなど）は、複数のゴルーチンから同時に呼び出すことができます。
 type T struct {
 	common
-	isEnvSet bool
-	context  *testContext
+	denyParallel bool
+	tstate       *testState
 }
 
 // Parallelは、このテストが並行して（そしてそれ以外では）実行されることを示します。
@@ -431,8 +469,13 @@ func (t *T) Parallel()
 // Setenvはプロセス全体に影響を与えるため、並列テストや並列祖先を持つテストで使用することはできません。
 func (t *T) Setenv(key, value string)
 
-// InternalTestは内部の型ですが、異なるパッケージでも使用するためにエクスポートされています。
-// これは「go test」コマンドの実装の一部です。
+// Chdirは [os.Chdir] を呼び出し、テスト後に作業ディレクトリを元の値に復元するためにCleanupを使用します。Unixでは、テストの実行中のみPWD環境変数も設定されます。
+//
+// Chdirはプロセス全体に影響を与えるため、並列テストや並列祖先を持つテストでは使用できません。
+func (t *T) Chdir(dir string)
+
+// InternalTestは内部型ですが、クロスパッケージであるためにエクスポートされています。
+// これは"go test"コマンドの実装の一部です。
 type InternalTest struct {
 	Name string
 	F    func(*T)
@@ -452,10 +495,10 @@ func (t *T) Run(name string, f func(t *T)) bool
 func (t *T) Deadline() (deadline time.Time, ok bool)
 
 // Mainは"go test"コマンドの実装の一部である内部関数です。
-// これは、クロスパッケージであり、「internal」パッケージより前にエクスポートされました。
-// "go test"ではもはや使用されていませんが、他のシステムにはできるだけ保持されます。
-// "go test"をシミュレートする他のシステムが、Mainを使用する一方で、Mainは更新できないことがあります。
-// "go test"をシミュレートするシステムは、MainStartを使用するように更新する必要があります。
+// クロスパッケージであり "internal" パッケージ以前から存在するためエクスポートされています。
+// 現在は"go test"では使用されていませんが、可能な限り他の"go test"を模倣するシステムのために保持されています。
+// ただし、testingパッケージに新機能が追加されるとMainを更新できない場合があります。
+// "go test"を模倣するシステムは [MainStart] の使用に切り替えるべきです。
 func Main(matchString func(pat, str string) (bool, error), tests []InternalTest, benchmarks []InternalBenchmark, examples []InternalExample)
 
 // MはTestMain関数に渡される型で、実際のテストを実行するために使用されます。
@@ -481,7 +524,9 @@ type M struct {
 // リリースごとにシグネチャが変更される可能性があります。
 func MainStart(deps testDeps, tests []InternalTest, benchmarks []InternalBenchmark, fuzzTargets []InternalFuzzTarget, examples []InternalExample) *M
 
-// Runはテストを実行します。os.Exitに渡すための終了コードを返します。
+// Runはテストを実行します。os.Exitに渡す終了コードを返します。
+// 終了コードはすべてのテストが成功した場合はゼロ、何らかの失敗があった場合は非ゼロです。
+// 機械可読なテスト結果が必要な場合は、'go test -json'の出力を解析してください。
 func (m *M) Run() (code int)
 
 // RunTestsは内部関数ですが、クロスパッケージであるためにエクスポートされています。

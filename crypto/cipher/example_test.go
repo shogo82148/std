@@ -30,14 +30,14 @@ func ExampleNewGCM_encrypt() {
 		panic(err.Error())
 	}
 
-	// 同じキーで2^32以上のランダムなノンスを使用しないでください。繰り返しのリスクがあるためです。
-	nonce := make([]byte, 12)
-	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
 		panic(err.Error())
 	}
 
-	aesgcm, err := cipher.NewGCM(block)
-	if err != nil {
+	// Never use more than 2^32 random nonces with a given key because of the risk of a repeat.
+	nonce := make([]byte, aesgcm.NonceSize())
+	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
 		panic(err.Error())
 	}
 

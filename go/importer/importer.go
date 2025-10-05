@@ -2,7 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// importerパッケージは、エクスポートデータのインポートを提供します。
+// importerパッケージは、エクスポートデータインポータへのアクセスを提供します。
+//
+// これらの関数は、ほとんどが非推奨であり、Go 1.11リリースでモジュールが導入される前の
+// ものです。標準ライブラリのみに依存する小さなプログラムを使用するテストケースでの
+// 使用を除いて、もはや依存すべきではありません。型情報の信頼性のあるモジュール対応
+// ロードについては、golang.org/x/tools/go/packages のpackages.Load関数を使用してください。
 package importer
 
 import (
@@ -27,10 +32,17 @@ func ForCompiler(fset *token.FileSet, compiler string, lookup Lookup) types.Impo
 
 // 新しいFileSetで [ForCompiler] を呼び出します。
 //
-// Deprecated:  importerによって作成されたオブジェクトの位置を
-// FileSetで設定するために [ForCompiler] を使用してください。
+// Deprecated: インポータによって作成されたオブジェクトの位置情報を
+// FileSetに設定する [ForCompiler] を使用してください。
+//
+//go:fix inline
 func For(compiler string, lookup Lookup) types.Importer
 
-// Defaultは実行バイナリをビルドしたコンパイラのためのImporterを返します。
-// もし利用可能であれば、結果は [types.ImporterFrom] を実装します。
+// Defaultは実行中のバイナリをビルドしたコンパイラ用のImporterを返します。
+// 利用可能な場合、結果は [types.ImporterFrom] を実装します。
+//
+// Defaultは最もシンプルなケースでの使用には便利かもしれませんが、
+// ほとんどのクライアントは代わりに、呼び出し元から [token.FileSet] を受け取る
+// [ForCompiler] を使用すべきです；それなしでは、Importerから派生した
+// すべての位置情報が不正確で誤解を招くものになります。パッケージドキュメントも参照してください。
 func Default() types.Importer

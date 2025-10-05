@@ -132,6 +132,6 @@ ASCII文字クラス：
 	[[:word:]]     単語の文字（== [0-9A-Za-z_]）
 	[[:xdigit:]]   16進数の数字（== [0-9A-Fa-f]）
 
-Unicode文字クラスは、[unicode.Categories] および [unicode.Scripts] のものです。
+Unicode文字クラスは [unicode.Categories]、[unicode.CategoryAliases]、[unicode.Scripts] に含まれるものです。
 */
 package syntax

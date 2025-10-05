@@ -2,7 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// astパッケージはGoのパッケージの構文木を表すために使用される型を宣言します。
+// astパッケージは、Goパッケージの構文木を表現するために使用される型を宣言します。
+//
+// 構文木は直接構築することもできますが、通常はパーサーによってGoソースコードから
+// 生成されます。パッケージ [go/parser] のParseFile関数を参照してください。
 package ast
 
 import (
@@ -111,6 +114,17 @@ type (
 	}
 
 	// BasicLitノードは基本型のリテラルを表します。
+	//
+	// CHARとSTRINGの種類の場合、リテラルはクォートを含めて格納されることに注意してください。
+	// 例えば、ダブルクォートで囲まれたSTRINGの場合、Valueフィールドの最初と最後のルーンは"になります。
+	// [strconv.Unquote] および [strconv.UnquoteChar] 関数を使用して、
+	// それぞれSTRINGとCHARの値をアンクォートできます。
+	//
+	// 生文字列リテラル（Kind == token.STRING && Value[0] == '`'）の場合、
+	// Valueフィールドには、ソースに存在した可能性のあるキャリッジリターン（\r）を除いた
+	// 文字列テキストが含まれます。終了位置はlen(Value)を使用して計算されるため、
+	// [BasicLit.End] によって報告される位置は、キャリッジリターンを含む
+	// 生文字列リテラルの真のソース終了位置と一致しません。
 	BasicLit struct {
 		ValuePos token.Pos
 		Kind     token.Token
@@ -668,18 +682,22 @@ type File struct {
 	GoVersion          string
 }
 
-// Posはパッケージ宣言の位置を返します。
-// （ファイル全体の開始位置にはFileStartを使用してください。）
+// Posはpackage宣言の位置を返します。
+// 例えば空のファイルの場合、無効な値になる可能性があります。
+//
+// （ファイル全体の開始位置にはFileStartを使用してください。常に有効です。）
 func (f *File) Pos() token.Pos
 
-// Endはファイル中の最後の宣言の終了位置を返します。
-// （ファイル全体の終了位置にはFileEndを使用してください。）
+// Endはファイル内の最後の宣言の終了位置を返します。
+// 例えば空のファイルの場合、無効な値になる可能性があります。
+//
+// （ファイル全体の終了位置にはFileEndを使用してください。常に有効です。）
 func (f *File) End() token.Pos
 
-// A Package node represents a set of source files
-// collectively building a Go package.
+// Packageノードは、Goパッケージを総合的に構築する
+// ソースファイルのセットを表します。
 //
-// Deprecated: use the type checker [go/types] instead; see [Object].
+// Deprecated: 代わりに型チェッカー [go/types] を使用してください; [Object] を参照してください。
 type Package struct {
 	Name    string
 	Scope   *Scope

@@ -166,8 +166,9 @@ func NotFoundHandler() Handler
 // 接頭辞は完全に一致する必要があります。リクエストの接頭辞にエスケープされた文字が含まれている場合、応答もHTTP 404 not foundエラーになります。
 func StripPrefix(prefix string, h Handler) Handler
 
-// Redirectは、リクエストに対してurlにリダイレクトする応答を返します。
-// urlは、リクエストパスに対する相対パスである場合があります。
+// Redirectは、リクエストに対してurlへのリダイレクトで応答します。
+// urlはリクエストパスからの相対パスでもかまいません。
+// url内の非ASCII文字はパーセントエンコードされますが、既存のパーセントエンコードは変更されません。
 //
 // 提供されたコードは通常、[StatusMovedPermanently]、[StatusFound]、または [StatusSeeOther] の3xx範囲にあります。
 //
@@ -260,7 +261,9 @@ func RedirectHandler(url string, code int) Handler
 //
 // # Request sanitizing
 //
-// ServeMuxは、URLリクエストパスとHostヘッダーをサニタイズし、ポート番号を削除し、.または..セグメントまたは重複したスラッシュを含むリクエストを同等のクリーンなURLにリダイレクトします。
+// ServeMuxは、URLリクエストパスとHostヘッダーのサニタイズも行います。
+// ポート番号を除去し、. や .. セグメント、連続したスラッシュを含むリクエストを、同等でよりクリーンなURLにリダイレクトします。
+// "%2e"（"."）や"%2f"（"/"）などのエスケープされたパス要素は保持され、ルーティングの区切り文字とはみなされません。
 //
 // # Compatibility
 //
@@ -281,11 +284,10 @@ func RedirectHandler(url string, code int) Handler
 //     この変更は、スラッシュに隣接する%2Fエスケープを持つパスがどのように処理されるかに影響します。
 //     詳細については、https://go.dev/issue/21955 を参照してください。
 type ServeMux struct {
-	mu       sync.RWMutex
-	tree     routingNode
-	index    routingIndex
-	patterns []*pattern
-	mux121   serveMux121
+	mu     sync.RWMutex
+	tree   routingNode
+	index  routingIndex
+	mux121 serveMux121
 }
 
 // NewServeMuxは、新しい [ServeMux] を割り当てて返します。
@@ -304,19 +306,23 @@ var DefaultServeMux = &defaultServeMux
 //
 // Handlerは、リクエストに一致する登録済みのパターン、または内部で生成されたリダイレクトの場合はリダイレクトをたどった後に一致するパスを返します。
 //
-// リクエストに適用される登録済みハンドラーがない場合、
-// Handlerは「ページが見つかりません」というハンドラーと空のパターンを返します。
+// 登録されたハンドラーがリクエストに適用されない場合、
+// Handlerは「ページが見つかりません」または「メソッドがサポートされていません」
+// のハンドラーと空のパターンを返します。
+//
+// Handlerは引数を変更しません。特に、名前付きパスワイルドカードを
+// 設定しないため、r.PathValueは常に空文字列を返します。
 func (mux *ServeMux) Handler(r *Request) (h Handler, pattern string)
 
 // ServeHTTPは、リクエストURLに最も近いパターンを持つハンドラにリクエストをディスパッチします。
 func (mux *ServeMux) ServeHTTP(w ResponseWriter, r *Request)
 
-// Handleは、指定されたパターンのハンドラを登録します。
-// 登録済みのパターンと競合する場合、Handleはパニックを発生させます。
+// Handleは、指定されたパターンのハンドラーを登録します。
+// 指定されたパターンがすでに登録されているものと競合する場合、Handleはパニックを起こします。
 func (mux *ServeMux) Handle(pattern string, handler Handler)
 
 // HandleFuncは、指定されたパターンのハンドラ関数を登録します。
-// 登録済みのパターンと競合する場合、HandleFuncはパニックを発生させます。
+// 指定されたパターンがすでに登録されているものと競合する場合、HandleFuncはパニックを起こします。
 func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 
 // Handleは、[DefaultServeMux]に指定されたパターンのハンドラを登録します。
@@ -425,6 +431,23 @@ type Server struct {
 	// 提供されたctxはBaseContextから派生し、ServerContextKeyの値を持ちます。
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
 
+	// HTTP2 configures HTTP/2 connections.
+	//
+	// This field does not yet have any effect.
+	// See https://go.dev/issue/67813.
+	HTTP2 *HTTP2Config
+
+	// Protocols is the set of protocols accepted by the server.
+	//
+	// If Protocols includes UnencryptedHTTP2, the server will accept
+	// unencrypted HTTP/2 connections. The server can serve both
+	// HTTP/1 and unencrypted HTTP/2 on the same address and port.
+	//
+	// If Protocols is nil, the default is usually HTTP/1 and HTTP/2.
+	// If TLSNextProto is non-nil and does not contain an "h2" entry,
+	// the default is HTTP/1 only.
+	Protocols *Protocols
+
 	inShutdown atomic.Bool
 
 	disableKeepAlives atomic.Bool
@@ -454,9 +477,9 @@ func (srv *Server) Close() error
 // Shutdownはコンテキストのエラーを返します。それ以外の場合は、[Server] の基礎となる
 // Listener(s)を閉じる際に返される任意のエラーを返します。
 //
-// Shutdownが呼び出されると、[Serve]、[ListenAndServe]、および
-// [ListenAndServeTLS] はすぐに [ErrServerClosed] を返します。プログラムが
-// 終了せず、代わりにShutdownが返るのを待つことを確認してください。
+// Shutdownが呼び出されると、[Serve]、[ServeTLS]、[ListenAndServe]、および
+// [ListenAndServeTLS] は直ちに [ErrServerClosed] を返します。プログラムが終了せず、
+// Shutdownの戻りを待つようにしてください。
 //
 // Shutdownは、WebSocketsのようなハイジャックされた接続を閉じたり、それらを待つことは試みません。
 // Shutdownの呼び出し元は、長時間稼働する接続に対してシャットダウンを別途通知し、

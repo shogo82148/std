@@ -184,7 +184,7 @@ func Post(url, contentType string, body io.Reader) (resp *Response, err error)
 //
 // 指定されたcontext.Contextでリクエストを作成するには、[NewRequestWithContext] と [Client.Do] を使用します。
 //
-// リダイレクトの処理方法については、Client.Doメソッドのドキュメントを参照してください。
+// リダイレクトの処理方法については、[Client.Do] メソッドのドキュメントを参照してください。
 func (c *Client) Post(url, contentType string, body io.Reader) (resp *Response, err error)
 
 // PostFormは、データのキーと値がURLエンコードされたリクエストボディとして指定されたURLにPOSTを発行します。
@@ -210,7 +210,7 @@ func PostForm(url string, data url.Values) (resp *Response, err error)
 // errがnilの場合、respは常に非nilのresp.Bodyを含みます。
 // 読み取り後、呼び出し元はresp.Bodyを閉じなければなりません。
 //
-// リダイレクトの処理については、Client.Doメソッドのドキュメンテーションを参照してください。
+// リダイレクトの処理方法については、[Client.Do] メソッドのドキュメントを参照してください。
 //
 // 指定したcontext.Contextでリクエストを作成するには、[NewRequestWithContext] とClient.Doを使用します。
 func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)

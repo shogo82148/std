@@ -21,10 +21,9 @@ type Checker struct {
 	fset *token.FileSet
 	pkg  *Package
 	*Info
-	version goVersion
-	nextID  uint64
-	objMap  map[Object]*declInfo
-	impMap  map[importKey]*Package
+	nextID uint64
+	objMap map[Object]*declInfo
+	impMap map[importKey]*Package
 
 	// pkgPathMapはパッケージ名をインポートパスの集合にマッピングします。
 	// インポートグラフのどこかでその名前に対して見た異なるインポートパスの集合です。
@@ -45,6 +44,8 @@ type Checker struct {
 	recvTParamMap map[*ast.Ident]*TypeParam
 	brokenAliases map[*TypeName]bool
 	unionTypeSets map[*Union]*_TypeSet
+	usedVars      map[*Var]bool
+	usedPkgNames  map[*PkgName]bool
 	mono          monoGraph
 
 	firstErr error
@@ -57,8 +58,9 @@ type Checker struct {
 	// 現在のオブジェクトが型チェックされる環境（特定のオブジェクトの型チェックの間のみ有効）
 	environment
 
-	// デバッグ中
-	indent int
+	// debugging
+	posStack []positioner
+	indent   int
 }
 
 // NewCheckerは指定されたパッケージに対して新しい [Checker] インスタンスを返します。

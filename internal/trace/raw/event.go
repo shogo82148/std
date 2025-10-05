@@ -5,7 +5,7 @@
 package raw
 
 import (
-	"github.com/shogo82148/std/internal/trace/event"
+	"github.com/shogo82148/std/internal/trace/tracev2"
 	"github.com/shogo82148/std/internal/trace/version"
 )
 
@@ -16,7 +16,7 @@ import (
 // trace format's framing. (But not interpreted.)
 type Event struct {
 	Version version.Version
-	Ev      event.Type
+	Ev      tracev2.EventType
 	Args    []uint64
 	Data    []byte
 }

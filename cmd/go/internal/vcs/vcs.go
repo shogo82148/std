@@ -15,6 +15,7 @@ import (
 type Cmd struct {
 	Name      string
 	Cmd       string
+	Env       []string
 	RootNames []rootName
 
 	CreateCmd   []string
@@ -81,12 +82,13 @@ func (v *Cmd) TagSync(dir, tag string) error
 // version control system and code repository to use.
 // If no repository is found, FromDir returns an error
 // equivalent to os.ErrNotExist.
-func FromDir(dir, srcRoot string, allowNesting bool) (repoDir string, vcsCmd *Cmd, err error)
+func FromDir(dir, srcRoot string) (repoDir string, vcsCmd *Cmd, err error)
 
 // RepoRoot describes the repository root for a tree of source code.
 type RepoRoot struct {
 	Repo     string
 	Root     string
+	SubDir   string
 	IsCustom bool
 	VCS      *Cmd
 }

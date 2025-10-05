@@ -16,10 +16,61 @@ package liveness
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/abi"
+	"github.com/shogo82148/std/cmd/compile/internal/bitvec"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/objw"
 	"github.com/shogo82148/std/cmd/compile/internal/ssa"
 )
+
+// A collection of global state used by Liveness analysis.
+type Liveness struct {
+	fn         *ir.Func
+	f          *ssa.Func
+	vars       []*ir.Name
+	idx        map[*ir.Name]int32
+	stkptrsize int64
+
+	be []blockEffects
+
+	// allUnsafe indicates that all points in this function are
+	// unsafe-points.
+	allUnsafe bool
+	// unsafePoints bit i is set if Value ID i is an unsafe-point
+	// (preemption is not allowed). Only valid if !allUnsafe.
+	unsafePoints bitvec.BitVec
+	// unsafeBlocks bit i is set if Block ID i is an unsafe-point
+	// (preemption is not allowed on any end-of-block
+	// instructions). Only valid if !allUnsafe.
+	unsafeBlocks bitvec.BitVec
+
+	// An array with a bit vector for each safe point in the
+	// current Block during liveness.epilogue. Indexed in Value
+	// order for that block. Additionally, for the entry block
+	// livevars[0] is the entry bitmap. liveness.compact moves
+	// these to stackMaps.
+	livevars []bitvec.BitVec
+
+	// livenessMap maps from safe points (i.e., CALLs) to their
+	// liveness map indexes.
+	livenessMap Map
+	stackMapSet bvecSet
+	stackMaps   []bitvec.BitVec
+
+	cache progeffectscache
+
+	// partLiveArgs includes input arguments (PPARAM) that may
+	// be partially live. That is, it is considered live because
+	// a part of it is used, but we may not initialize all parts.
+	partLiveArgs map[*ir.Name]bool
+
+	doClobber     bool
+	noClobberArgs bool
+
+	// treat "dead" writes as equivalent to reads during the analysis;
+	// used only during liveness analysis for stack slot merging (doesn't
+	// make sense for stackmap analysis).
+	conservativeWrites bool
+}
 
 // Map maps from *ssa.Value to StackMapIndex.
 // Also keeps track of unsafe ssa.Values and ssa.Blocks.
@@ -43,12 +94,14 @@ func (m Map) GetUnsafeBlock(b *ssa.Block) bool
 // unsafe-points.
 func IsUnsafe(f *ssa.Func) bool
 
+func (lv *Liveness) Format(v *ssa.Value) string
+
 // Entry pointer for Compute analysis. Solves for the Compute of
 // pointer variables in the function and emits a runtime data
 // structure read by the garbage collector.
 // Returns a map from GC safe points to their corresponding stack map index,
 // and a map that contains all input parameters that may be partially live.
-func Compute(curfn *ir.Func, f *ssa.Func, stkptrsize int64, pp *objw.Progs) (Map, map[*ir.Name]bool)
+func Compute(curfn *ir.Func, f *ssa.Func, stkptrsize int64, pp *objw.Progs, retLiveness bool) (Map, map[*ir.Name]bool, *Liveness)
 
 // WriteFuncMap writes the pointer bitmaps for bodyless function fn's
 // inputs and outputs as the value of symbol <fn>.args_stackmap.

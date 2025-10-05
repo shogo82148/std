@@ -157,8 +157,9 @@ The value of #stateK transitions
 
 (3) at the beginning of the iteration of the loop body,
 
-	if #stateN != abi.RF_READY { runtime.panicrangestate(#stateN) }
+	if #stateN != abi.RF_READY { #stateN = abi.RF_PANIC ; runtime.panicrangestate(#stateN) }
 	#stateN = abi.RF_PANIC
+	// This is slightly rearranged below for better code generation.
 
 (4) when loop iteration continues,
 
@@ -183,7 +184,7 @@ becomes
 		{
 			var #state1 = abi.RF_READY
 			f(func(x T1) bool {
-				if #state1 != abi.RF_READY { runtime.panicrangestate(#state1) }
+				if #state1 != abi.RF_READY { #state1 = abi.RF_PANIC; runtime.panicrangestate(#state1) }
 				#state1 = abi.RF_PANIC
 				...
 				if ... { #state1 = abi.RF_DONE ; return false }
@@ -232,11 +233,11 @@ becomes
 		)
 		var #state1 = abi.RF_READY
 		f(func() bool {
-			if #state1 != abi.RF_READY { runtime.panicrangestate(#state1) }
+			if #state1 != abi.RF_READY { #state1 = abi.RF_PANIC; runtime.panicrangestate(#state1) }
 			#state1 = abi.RF_PANIC
 			var #state2 = abi.RF_READY
 			g(func() bool {
-				if #state2 != abi.RF_READY { runtime.panicrangestate(#state2) }
+				if #state2 != abi.RF_READY { #state2 = abi.RF_PANIC; runtime.panicrangestate(#state2) }
 				...
 				{
 					// return a, b
@@ -324,15 +325,15 @@ becomes
 		var #next int
 		var #state1 = abi.RF_READY
 		f(func() { // 1,2
-			if #state1 != abi.RF_READY { runtime.panicrangestate(#state1) }
+			if #state1 != abi.RF_READY { #state1 = abi.RF_PANIC; runtime.panicrangestate(#state1) }
 			#state1 = abi.RF_PANIC
 			var #state2 = abi.RF_READY
 			g(func() { // 3,4
-				if #state2 != abi.RF_READY { runtime.panicrangestate(#state2) }
+				if #state2 != abi.RF_READY { #state2 = abi.RF_PANIC; runtime.panicrangestate(#state2) }
 				#state2 = abi.RF_PANIC
 				var #state3 = abi.RF_READY
 				h(func() { // 5,6
-					if #state3 != abi.RF_READY { runtime.panicrangestate(#state3) }
+					if #state3 != abi.RF_READY { #state3 = abi.RF_PANIC; runtime.panicrangestate(#state3) }
 					#state3 = abi.RF_PANIC
 					...
 					{
@@ -425,16 +426,16 @@ becomes
 		var #next int
 		var #state1 = abi.RF_READY
 		f(func() {
-			if #state1 != abi.RF_READY{ runtime.panicrangestate(#state1) }
+			if #state1 != abi.RF_READY{ #state1 = abi.RF_PANIC; runtime.panicrangestate(#state1) }
 			#state1 = abi.RF_PANIC
 			var #state2 = abi.RF_READY
 			g(func() {
-				if #state2 != abi.RF_READY { runtime.panicrangestate(#state2) }
+				if #state2 != abi.RF_READY { #state2 = abi.RF_PANIC; runtime.panicrangestate(#state2) }
 				#state2 = abi.RF_PANIC
 				...
 				var #state3 bool = abi.RF_READY
 				h(func() {
-					if #state3 != abi.RF_READY { runtime.panicrangestate(#state3) }
+					if #state3 != abi.RF_READY { #state3 = abi.RF_PANIC; runtime.panicrangestate(#state3) }
 					#state3 = abi.RF_PANIC
 					...
 					{

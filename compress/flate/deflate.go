@@ -31,7 +31,11 @@ const (
 // そうでない場合、返されたエラーは nil ではありません。
 func NewWriter(w io.Writer, level int) (*Writer, error)
 
-// NewWriterDictは [NewWriter] と似ていますが、新しい [Writer] をプリセット辞書で初期化します。返された [Writer] は、圧縮された出力を生成せずに、辞書が書き込まれたかのように振る舞います。wに書き込まれた圧縮データは、同じ辞書で初期化されたReaderでのみ解凍することができます。
+// NewWriterDictは [NewWriter] と同様ですが、新しい
+// [Writer] をプリセット辞書で初期化します。返された [Writer] は
+// 辞書が圧縮出力を生成することなく書き込まれたかのように動作します。
+// wに書き込まれた圧縮データは、同じ辞書で初期化された
+// リーダーによってのみ解凍できます（[NewReaderDict] を参照）。
 func NewWriterDict(w io.Writer, level int, dict []byte) (*Writer, error)
 
 // Writerは、書き込まれたデータを受け取り、そのデータの圧縮された形式を基になるWriterに書き込む。 ([NewWriter] を参照してください)。

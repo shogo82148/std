@@ -5,6 +5,8 @@
 // package goarch contains GOARCH-specific constants.
 package goarch
 
+// ArchFamilyType represents a family of one or more related architectures.
+// For example, ppc64 and ppc64le are both members of the PPC64 family.
 type ArchFamilyType int
 
 const (

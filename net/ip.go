@@ -116,6 +116,11 @@ func (ip IP) Mask(mask IPMask) IP
 //   - 上記の条件に当てはまらない場合は、ipの句読点を除いた16進数形式
 func (ip IP) String() string
 
+// AppendTextは [encoding.TextAppender] インターフェースを実装します。
+// エンコードは [IP.String] で返されるものと同じですが、1つ例外があります：
+// len(ip)がゼロの場合、何も追加しません。
+func (ip IP) AppendText(b []byte) ([]byte, error)
+
 // MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
 // エンコードは [IP.String] で返されるものと同じですが、1つ例外があります：
 // len(ip)がゼロの場合、空のスライスを返します。

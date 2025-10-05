@@ -199,19 +199,96 @@ type Certificate struct {
 	// cannot be represented by asn1.ObjectIdentifier, it will not be included in
 	// PolicyIdentifiers, but will be present in Policies, which contains all parsed
 	// policy OIDs.
+	// See CreateCertificate for context about how this field and the Policies field
+	// interact.
 	PolicyIdentifiers []asn1.ObjectIdentifier
 
 	// Policies contains all policy identifiers included in the certificate.
+	// See CreateCertificate for context about how this field and the PolicyIdentifiers field
+	// interact.
 	// In Go 1.22, encoding/gob cannot handle and ignores this field.
 	Policies []OID
+
+	// InhibitAnyPolicy and InhibitAnyPolicyZero indicate the presence and value
+	// of the inhibitAnyPolicy extension.
+	//
+	// The value of InhibitAnyPolicy indicates the number of additional
+	// certificates in the path after this certificate that may use the
+	// anyPolicy policy OID to indicate a match with any other policy.
+	//
+	// When parsing a certificate, a positive non-zero InhibitAnyPolicy means
+	// that the field was specified, -1 means it was unset, and
+	// InhibitAnyPolicyZero being true mean that the field was explicitly set to
+	// zero. The case of InhibitAnyPolicy==0 with InhibitAnyPolicyZero==false
+	// should be treated equivalent to -1 (unset).
+	InhibitAnyPolicy int
+	// InhibitAnyPolicyZero indicates that InhibitAnyPolicy==0 should be
+	// interpreted as an actual maximum path length of zero. Otherwise, that
+	// combination is interpreted as InhibitAnyPolicy not being set.
+	InhibitAnyPolicyZero bool
+
+	// InhibitPolicyMapping and InhibitPolicyMappingZero indicate the presence
+	// and value of the inhibitPolicyMapping field of the policyConstraints
+	// extension.
+	//
+	// The value of InhibitPolicyMapping indicates the number of additional
+	// certificates in the path after this certificate that may use policy
+	// mapping.
+	//
+	// When parsing a certificate, a positive non-zero InhibitPolicyMapping
+	// means that the field was specified, -1 means it was unset, and
+	// InhibitPolicyMappingZero being true mean that the field was explicitly
+	// set to zero. The case of InhibitPolicyMapping==0 with
+	// InhibitPolicyMappingZero==false should be treated equivalent to -1
+	// (unset).
+	InhibitPolicyMapping int
+	// InhibitPolicyMappingZero indicates that InhibitPolicyMapping==0 should be
+	// interpreted as an actual maximum path length of zero. Otherwise, that
+	// combination is interpreted as InhibitAnyPolicy not being set.
+	InhibitPolicyMappingZero bool
+
+	// RequireExplicitPolicy and RequireExplicitPolicyZero indicate the presence
+	// and value of the requireExplicitPolicy field of the policyConstraints
+	// extension.
+	//
+	// The value of RequireExplicitPolicy indicates the number of additional
+	// certificates in the path after this certificate before an explicit policy
+	// is required for the rest of the path. When an explicit policy is required,
+	// each subsequent certificate in the path must contain a required policy OID,
+	// or a policy OID which has been declared as equivalent through the policy
+	// mapping extension.
+	//
+	// When parsing a certificate, a positive non-zero RequireExplicitPolicy
+	// means that the field was specified, -1 means it was unset, and
+	// RequireExplicitPolicyZero being true mean that the field was explicitly
+	// set to zero. The case of RequireExplicitPolicy==0 with
+	// RequireExplicitPolicyZero==false should be treated equivalent to -1
+	// (unset).
+	RequireExplicitPolicy int
+	// RequireExplicitPolicyZero indicates that RequireExplicitPolicy==0 should be
+	// interpreted as an actual maximum path length of zero. Otherwise, that
+	// combination is interpreted as InhibitAnyPolicy not being set.
+	RequireExplicitPolicyZero bool
+
+	// PolicyMappings contains a list of policy mappings included in the certificate.
+	PolicyMappings []PolicyMapping
+}
+
+// PolicyMapping represents a policy mapping entry in the policyMappings extension.
+type PolicyMapping struct {
+	// IssuerDomainPolicy contains a policy OID the issuing certificate considers
+	// equivalent to SubjectDomainPolicy in the subject certificate.
+	IssuerDomainPolicy OID
+	// SubjectDomainPolicy contains a OID the issuing certificate considers
+	// equivalent to IssuerDomainPolicy in the subject certificate.
+	SubjectDomainPolicy OID
 }
 
 // ErrUnsupportedAlgorithmは、現在実装されていないアルゴリズムを使用して操作を実行しようとした結果です。
 var ErrUnsupportedAlgorithm = errors.New("x509: cannot verify signature: algorithm unimplemented")
 
-// InsecureAlgorithmErrorは、署名の生成に使用される [SignatureAlgorithm] が安全でないことを示し、署名が拒否されたことを示します。
-//
-// SHA-1署名のサポートを一時的に復元するには、GODEBUG環境変数に値"x509sha1=1"を含めます。ただし、このオプションは将来のリリースで削除される予定です。
+// InsecureAlgorithmErrorは、署名の生成に使用された [SignatureAlgorithm] が
+// 安全でなく、署名が拒否されたことを示します。
 type InsecureAlgorithmError SignatureAlgorithm
 
 func (e InsecureAlgorithmError) Error() string
@@ -286,18 +363,24 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // 返されるスライスはDERエンコーディングされた証明書です。
 //
-// 現在サポートされている鍵のタイプは*rsa.PublicKey、*ecdsa.PublicKey、およびed25519.PublicKeyです。pubはサポートされている鍵のタイプである必要があり、privはサポートされている公開鍵を持つcrypto.Signerである必要があります。
+// 現在サポートされているキータイプは*rsa.PublicKey、*ecdsa.PublicKey、
+// ed25519.PublicKeyです。pubはサポートされているキータイプである必要があり、privは
+// サポートされている公開鍵を持つcrypto.Signerまたはcrypto.MessageSignerである必要があります。
 //
 // AuthorityKeyIdは、親のSubjectKeyIdから取得されます（存在する場合）、ただし証明書が自己署名でない場合はテンプレートの値が使用されます。
 //
 // テンプレートからのSubjectKeyIdが空で、テンプレートがCAである場合、SubjectKeyIdは
 // 公開鍵のハッシュから生成されます。
 //
-// PolicyIdentifierとPoliciesフィールドは、両方とも証明書ポリシーOIDをマーシャルするために使用されます。
-// デフォルトでは、PolicyIdentifierのみがマーシャルされますが、
-// GODEBUG設定の"x509usepolicies"が"1"の値を持つ場合、Policiesフィールドが
-// PolicyIdentifierフィールドの代わりにマーシャルされます。Policiesフィールドは、
-// コンポーネントが31ビットより大きいポリシーOIDをマーシャルするために使用できます。
+// template.SerialNumberがnilの場合、randからのエントロピーを使用して
+// RFC 5280、セクション4.1.2.2に準拠したシリアル番号が生成されます。
+//
+// PolicyIdentifierフィールドとPoliciesフィールドの両方を使用して証明書
+// ポリシーOIDをマーシャルできます。デフォルトでは、Policiesのみがマーシャルされますが、
+// GODEBUG設定"x509usepolicies"の値が"0"の場合、Policiesフィールドの代わりに
+// PolicyIdentifiersフィールドがマーシャルされます。これはGo 1.24で変更されました。Policiesフィールドは
+// 31ビットより大きなコンポーネントを持つポリシーOIDをマーシャルするために
+// 使用できます。
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRLは指定されたバイトからCRLを解析します。PEMエンコードされたCRLがDERエンコードされるべき場所に表示されることがよくありますが、この関数は前方にゴミがない限り、PEMエンコーディングを透過的に処理します。
@@ -366,8 +449,13 @@ type CertificateRequest struct {
 //   - ExtraExtensions
 //   - Attributes (非推奨)
 //
-// privはCSRに署名するための秘密鍵であり、対応する公開鍵はCSRに含まれます。privはcrypto.Signerを実装しており、そのPublic()メソッドは*rsa.PublicKeyまたは*ecdsa.PublicKeyまたはed25519.PublicKeyを返さなければなりません。(*rsa.PrivateKey、*ecdsa.PrivateKey、またはed25519.PrivateKeyもこれを満たします。)
-// 返されるスライスはDERエンコードされた証明書リクエストです。
+// privはCSRの署名に使用する秘密鍵であり、対応する公開鍵が
+// CSRに含まれます。crypto.Signerまたはcrypto.MessageSignerを実装し、
+// そのPublic()メソッドは*rsa.PublicKey、*ecdsa.PublicKey、またはed25519.PublicKeyを
+// 返す必要があります。（*rsa.PrivateKey、*ecdsa.PrivateKey、またはed25519.PrivateKeyは
+// これを満たします。）
+//
+// 返されるスライスはDERエンコーディングされた証明書リクエストです。
 func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv any) (csr []byte, err error)
 
 // ParseCertificateRequestは与えられたASN.1 DERデータから単一の証明書リクエストを解析します。
@@ -460,7 +548,8 @@ type RevocationList struct {
 
 // CreateRevocationListは、テンプレートに基づいてRFC 5280に準拠した新しいX.509 v2証明書失効リストを作成します。
 //
-// CRLは、privによって署名されます。これは、発行者証明書の公開キーに関連付けられた秘密キーである必要があります。
+// CRLはprivによって署名されます。privは発行者証明書内の公開鍵に
+// 関連付けられたcrypto.Signerまたはcrypto.MessageSignerである必要があります。
 //
 // 発行者はnilであってはならず、CRL発行者として使用するには [KeyUsage] でcrlSignビットを設定する必要があります。
 //

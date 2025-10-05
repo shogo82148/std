@@ -18,8 +18,9 @@ package sync
 //
 // [the Go memory model]: https://go.dev/ref/mem
 type Mutex struct {
-	state int32
-	sema  uint32
+	_ noCopy
+
+	mu isync.Mutex
 }
 
 // Lockerはロックおよびアンロックできるオブジェクトを表します。

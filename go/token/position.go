@@ -57,8 +57,11 @@ const NoPos Pos = 0
 // IsValid は位置が有効かどうかを報告します。
 func (p Pos) IsValid() bool
 
-// Fileは、[FileSet] に属するファイルのハンドルです。
-// Fileには名前、サイズ、行オフセット表があります。
+// FileはFileSetに属するファイルのハンドルです。
+// Fileには名前、サイズ、行オフセットテーブルがあります。
+//
+// Fileを作成するには[FileSet.AddFile]を使用してください。
+// Fileは複数のFileSetに属することができます；[FileSet.AddExistingFiles]を参照してください。
 type File struct {
 	name string
 	base int
@@ -130,8 +133,9 @@ func (f *File) Pos(offset int) Pos
 
 // Offsetは、指定されたファイル位置pのオフセットを返します。
 //
-// pがファイルの開始位置より前（またはpがNoPos）の場合、結果は0です。
-// pがファイルの終了位置を過ぎている場合、結果はファイルサイズです（go.dev/issue/57490も参照してください）。
+// pがファイルの開始位置より前にある場合（またはpがNoPosの場合）、
+// 結果は0です；pがファイルの終了位置を過ぎている場合、
+// 結果はファイルサイズです（ go.dev/issue/57490 も参照してください）。
 //
 // 一般的なオフセット値には当てはまらないが、結果のオフセットに対しては次の不変性が保持されます：
 // f.Offset(f.Pos(offset)) == offset
@@ -164,7 +168,7 @@ func (f *File) Position(p Pos) (pos Position)
 type FileSet struct {
 	mutex sync.RWMutex
 	base  int
-	files []*File
+	tree  tree
 	last  atomic.Pointer[File]
 }
 
@@ -180,14 +184,23 @@ func (s *FileSet) Base() int
 // ただし、offsは範囲[0、size]にあり、したがってpは範囲[base、base+size]にあります。便宜上、 [File.Pos] はファイル固有の位置値をファイルオフセットから作成するために使用できます。
 func (s *FileSet) AddFile(filename string, base, size int) *File
 
-// RemoveFileは、 [FileSet] からファイルを削除し、その後の [Pos] 間隔のクエリが負の結果を返すようにします。
-// これにより、長寿命の [FileSet] のメモリ使用量が減少し、無制限のファイルストリームに遭遇した場合でも処理が可能になります。
+// AddExistingFilesは、指定されたファイルが既に存在していない場合に
+// FileSetに追加します。
+// 呼び出し元は、結果のFileSetに表示されるFileのペアが
+// 重複しないことを保証する必要があります。
+func (s *FileSet) AddExistingFiles(files ...*File)
+
+// RemoveFileは [FileSet] からファイルを削除し、その後の
+// [Pos] 区間への問い合わせが負の結果を返すようにします。
+// これにより、無制限のファイルストリームに遭遇する長期間実行される
+// [FileSet] のメモリ使用量を削減します。
 //
 // セットに属さないファイルを削除しても効果はありません。
 func (s *FileSet) RemoveFile(file *File)
 
-// ファイルセット内のファイルを追加された順にfに呼び出し、fがfalseを返すまで繰り返します。
-func (s *FileSet) Iterate(f func(*File) bool)
+// Iterateは、yieldがfalseを返すまで、ファイルセット内のファイルを
+// Baseの昇順でyieldを呼び出します。
+func (s *FileSet) Iterate(yield func(*File) bool)
 
 // File関数は、位置pを含むファイルを返します。
 // 該当するファイルが見つからない場合（たとえばp == [NoPos] の場合）、結果はnilです。

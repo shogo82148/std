@@ -62,7 +62,11 @@ func (l Level) MarshalJSON() ([]byte, error)
 // たとえば、"Error-8"は "INFO" としてマーシャルされます。
 func (l *Level) UnmarshalJSON(data []byte) error
 
-// MarshalTextは、 [Level.String] を呼び出して、
+// AppendTextは [Level.String] を呼び出すことで
+// [encoding.TextAppender] を実装します。
+func (l Level) AppendText(b []byte) ([]byte, error)
+
+// MarshalTextは[Level.AppendText] を呼び出すことで
 // [encoding.TextMarshaler] を実装します。
 func (l Level) MarshalText() ([]byte, error)
 
@@ -93,7 +97,11 @@ func (v *LevelVar) Set(l Level)
 
 func (v *LevelVar) String() string
 
-// MarshalTextは、 [Level.MarshalText] を呼び出して、
+// AppendTextは [Level.AppendText] を呼び出すことで
+// [encoding.TextAppender] を実装します。
+func (v *LevelVar) AppendText(b []byte) ([]byte, error)
+
+// MarshalTextは [LevelVar.AppendText]を呼び出すことで
 // [encoding.TextMarshaler] を実装します。
 func (v *LevelVar) MarshalText() ([]byte, error)
 
