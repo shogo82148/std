@@ -13,40 +13,34 @@ import (
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// A Decoder reads and decodes JSON values from an input stream.
+// Decoderは入力ストリームからJSON値を読み込み、デコードします。
 type Decoder struct {
 	dec  *jsontext.Decoder
 	opts jsonv2.Options
 	err  error
 }
 
-// NewDecoder returns a new decoder that reads from r.
+// NewDecoderは、rから読み込む新しいデコーダを返します。
 //
-// The decoder introduces its own buffering and may
-// read data from r beyond the JSON values requested.
+// デコーダは独自にバッファリングを行い、要求されたJSON値以外のデータもrから読み込む場合があります。
 func NewDecoder(r io.Reader) *Decoder
 
-// UseNumber causes the Decoder to unmarshal a number into an
-// interface value as a [Number] instead of as a float64.
+// UseNumberは、Decoderが数値をfloat64ではなく [Number] としてinterface値にアンマーシャルするようにします。
 func (dec *Decoder) UseNumber()
 
-// DisallowUnknownFields causes the Decoder to return an error when the destination
-// is a struct and the input contains object keys which do not match any
-// non-ignored, exported fields in the destination.
+// DisallowUnknownFieldsは、デコード先が構造体の場合に、入力に無視されないエクスポートされたフィールドと一致しないオブジェクトキーが含まれているとエラーを返すようにDecoderに指示します。
 func (dec *Decoder) DisallowUnknownFields()
 
-// Decode reads the next JSON-encoded value from its
-// input and stores it in the value pointed to by v.
+// Decodeは、次のJSONエンコードされた値を入力から読み込み、vが指す値に格納します。
 //
-// See the documentation for [Unmarshal] for details about
-// the conversion of JSON into a Go value.
+// JSONからGo値への変換の詳細については [Unmarshal] のドキュメントを参照してください。
 func (dec *Decoder) Decode(v any) error
 
-// Buffered returns a reader of the data remaining in the Decoder's
-// buffer. The reader is valid until the next call to [Decoder.Decode].
+// Bufferedは、Decoderのバッファに残っているデータのリーダーを返します。
+// このリーダーは次に [Decoder.Decode] が呼ばれるまで有効です。
 func (dec *Decoder) Buffered() io.Reader
 
-// An Encoder writes JSON values to an output stream.
+// Encoderは、出力ストリームにJSON値を書き込みます。
 type Encoder struct {
 	w    io.Writer
 	opts jsonv2.Options
@@ -59,68 +53,59 @@ type Encoder struct {
 	indentValue  string
 }
 
-// NewEncoder returns a new encoder that writes to w.
+// NewEncoderは、wに書き込む新しいエンコーダを返します。
 func NewEncoder(w io.Writer) *Encoder
 
-// Encode writes the JSON encoding of v to the stream,
-// followed by a newline character.
+// Encodeは、vのJSONエンコーディングをストリームに書き込み、
+// 続けて改行文字を書き込みます。
 //
-// See the documentation for [Marshal] for details about the
-// conversion of Go values to JSON.
+// Go値からJSONへの変換の詳細については[Marshal]のドキュメントを参照してください。
 func (enc *Encoder) Encode(v any) error
 
-// SetIndent instructs the encoder to format each subsequent encoded
-// value as if indented by the package-level function Indent(dst, src, prefix, indent).
-// Calling SetIndent("", "") disables indentation.
+// SetIndentは、エンコーダに対して以降にエンコードされる値を、パッケージレベル関数Indent(dst, src, prefix, indent)でインデントされたかのように整形するよう指示します。
+// SetIndent("", "")を呼び出すとインデントが無効になります。
 func (enc *Encoder) SetIndent(prefix, indent string)
 
-// SetEscapeHTML specifies whether problematic HTML characters
-// should be escaped inside JSON quoted strings.
-// The default behavior is to escape &, <, and > to \u0026, \u003c, and \u003e
-// to avoid certain safety problems that can arise when embedding JSON in HTML.
+// SetEscapeHTMLは、JSONの引用符付き文字列内で問題となるHTML文字をエスケープするかどうかを指定します。
+// デフォルトの動作では、&, <, > をそれぞれ \u0026, \u003c, \u003e にエスケープし、
+// HTMLにJSONを埋め込む際に発生しうる安全上の問題を回避します。
 //
-// In non-HTML settings where the escaping interferes with the readability
-// of the output, SetEscapeHTML(false) disables this behavior.
+// HTML以外の用途でエスケープが可読性を損なう場合は、SetEscapeHTML(false)でこの動作を無効化できます。
 func (enc *Encoder) SetEscapeHTML(on bool)
 
-// RawMessage is a raw encoded JSON value.
-// It implements [Marshaler] and [Unmarshaler] and can
-// be used to delay JSON decoding or precompute a JSON encoding.
+// RawMessageは生のエンコード済みJSON値です。
+// [Marshaler] と [Unmarshaler] を実装しており、
+// JSONデコードを遅延させたり、事前にJSONエンコードを計算するために利用できます。
 type RawMessage = jsontext.Value
 
-// A Token holds a value of one of these types:
+// Tokenは、次のいずれかの型の値を保持します:
 //
-//   - [Delim], for the four JSON delimiters [ ] { }
-//   - bool, for JSON booleans
-//   - float64, for JSON numbers
-//   - [Number], for JSON numbers
-//   - string, for JSON string literals
-//   - nil, for JSON null
+//   - [Delim]（4つのJSON区切り記号 [ ] { }）
+//   - bool（JSONの真偽値）
+//   - float64（JSONの数値）
+//   - [Number]（JSONの数値）
+//   - string（JSONの文字列リテラル）
+//   - nil（JSONのnull）
 type Token any
 
-// A Delim is a JSON array or object delimiter, one of [ ] { or }.
+// DelimはJSON配列またはオブジェクトの区切り記号で、[ ] { } のいずれかです。
 type Delim rune
 
 func (d Delim) String() string
 
-// Token returns the next JSON token in the input stream.
-// At the end of the input stream, Token returns nil, [io.EOF].
+// Tokenは入力ストリームから次のJSONトークンを返します。
+// 入力ストリームの終端では、Tokenはnilまたは[io.EOF]を返します。
 //
-// Token guarantees that the delimiters [ ] { } it returns are
-// properly nested and matched: if Token encounters an unexpected
-// delimiter in the input, it will return an error.
+// Tokenは返す区切り記号[ ] { }が正しくネストされ対応していることを保証します。
+// 入力中に予期しない区切り記号が現れた場合、エラーを返します。
 //
-// The input stream consists of basic JSON values—bool, string,
-// number, and null—along with delimiters [ ] { } of type [Delim]
-// to mark the start and end of arrays and objects.
-// Commas and colons are elided.
+// 入力ストリームは基本的なJSON値（bool, string, number, null）と、配列やオブジェクトの開始・終了を示す [Delim] 型の区切り記号[ ] { }で構成されます。
+// カンマやコロンは省略されます。
 func (dec *Decoder) Token() (Token, error)
 
-// More reports whether there is another element in the
-// current array or object being parsed.
+// Moreは、現在パース中の配列またはオブジェクトに次の要素が存在するかどうかを報告します。
 func (dec *Decoder) More() bool
 
-// InputOffset returns the input stream byte offset of the current decoder position.
-// The offset gives the location of the end of the most recently returned token
-// and the beginning of the next token.
+// InputOffsetは、現在のデコーダ位置の入力ストリームのバイトオフセットを返します。
+// オフセットは直前に返されたトークンの終了位置と、次のトークンの開始位置を示します。
 func (dec *Decoder) InputOffset() int64
