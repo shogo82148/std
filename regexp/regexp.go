@@ -290,27 +290,14 @@ func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int
 //   - n < 0: 全ての部分文字列を返します。
 func (re *Regexp) Split(s string, n int) []string
 
-<<<<<<< HEAD
-// MarshalTextは[encoding.TextMarshaler]を実装します。出力は
-// [Regexp.String]メソッドを呼び出した場合と一致します。
+// AppendTextは [encoding.TextAppender] を実装します。出力は [Regexp.String] メソッドを呼び出した場合と同じ内容になります。
 //
-// 注意：このメソッドはいくつかの場合において情報の損失があります。POSIX
-// 正規表現（つまり、[CompilePOSIX]を呼び出してコンパイルされたもの）や、
-// [Regexp.Longest]メソッドが呼び出された正規表現については示しません。
-=======
-// AppendText implements [encoding.TextAppender]. The output
-// matches that of calling the [Regexp.String] method.
-//
-// Note that the output is lossy in some cases: This method does not indicate
-// POSIX regular expressions (i.e. those compiled by calling [CompilePOSIX]), or
-// those for which the [Regexp.Longest] method has been called.
+// この出力は場合によっては情報が失われることに注意してください：このメソッドはPOSIX正規表現（[CompilePOSIX] でコンパイルされたもの）や、[Regexp.Longest] メソッドが呼ばれたものを示しません。
 func (re *Regexp) AppendText(b []byte) ([]byte, error)
 
-// MarshalText implements [encoding.TextMarshaler]. The output
-// matches that of calling the [Regexp.AppendText] method.
+// MarshalTextは [encoding.TextMarshaler] を実装します。出力は [Regexp.AppendText] メソッドを呼び出した場合と同じ内容になります。
 //
-// See [Regexp.AppendText] for more information.
->>>>>>> upstream/release-branch.go1.25
+// 詳細は [Regexp.AppendText] を参照してください。
 func (re *Regexp) MarshalText() ([]byte, error)
 
 // UnmarshalTextは、エンコードされた値に対して[Compile]を呼び出すことで、[encoding.TextUnmarshaler]を実装します。
