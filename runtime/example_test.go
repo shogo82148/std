@@ -31,21 +31,12 @@ func ExampleFrames() {
 		for {
 			frame, more := frames.Next()
 
-<<<<<<< HEAD
-			// このフレームを処理します。
-			//
-			// この例の出力を安定させるために
-			// テストパッケージに変更があっても
-			// runtimeパッケージを抜けるとアンワインドを停止します。
-			if !strings.Contains(frame.File, "runtime/") {
-=======
-			// Canonicalize function name and skip callers of this function
-			// for predictable example output.
-			// You probably don't need this in your own code.
+			// 関数名を正規化し、この関数の呼び出し元をスキップします。
+			// 例の出力を予測可能にするためです。
+			// 通常は自身のコードでこれを使う必要はありません。
 			function := strings.ReplaceAll(frame.Function, "main.main", "runtime_test.ExampleFrames")
 			fmt.Printf("- more:%v | %s\n", more, function)
 			if function == "runtime_test.ExampleFrames" {
->>>>>>> upstream/release-branch.go1.25
 				break
 			}
 

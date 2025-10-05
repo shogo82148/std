@@ -8,18 +8,11 @@ package runtime
 // Goexitは終了する前にすべての延期呼び出しを実行します。Goexitはパニックではないため、
 // これらの延期された関数内のrecover呼び出しはnilを返します。
 //
-<<<<<<< HEAD
-// メインゴルーチンからGoexitを呼び出すと、そのゴルーチンはfunc mainが戻らない状態で終了します。
-// func mainが戻っていないため、プログラムは他のゴルーチンの実行を継続します。
+// メインゴルーチンからGoexitを呼び出すと、そのゴルーチンはfunc mainがreturnせずに終了します。
+// func mainがreturnしていないため、他のゴルーチンの実行は継続されます。
 // 他のすべてのゴルーチンが終了すると、プログラムはクラッシュします。
-=======
-// Calling Goexit from the main goroutine terminates that goroutine
-// without func main returning. Since func main has not returned,
-// the program continues execution of other goroutines.
-// If all other goroutines exit, the program crashes.
 //
-// It crashes if called from a thread not created by the Go runtime.
->>>>>>> upstream/release-branch.go1.25
+// Goランタイムによって作成されていないスレッドから呼び出すとクラッシュします。
 func Goexit()
 
 // PanicNilErrorは、コードがpanic(nil)を呼び出したときに発生します。

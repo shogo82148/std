@@ -4,85 +4,51 @@
 
 package runtime
 
-<<<<<<< HEAD
-// GOMAXPROCSは同時に実行できる最大CPU数を設定し、前の設定を返します。デフォルトは [runtime.NumCPU] の値です。nが1未満の場合、現在の設定は変更されません。スケジューラの改善が行われると、この呼び出しはなくなります。
-func GOMAXPROCS(n int) int
-
-// NumCPUは現在のプロセスで使用可能な論理CPUの数を返します。
-=======
-// GOMAXPROCS sets the maximum number of CPUs that can be executing
-// simultaneously and returns the previous setting. If n < 1, it does not change
-// the current setting.
+// GOMAXPROCSは同時に実行可能なCPUの最大数を設定し、以前の設定値を返します。n < 1の場合は現在の設定を変更しません。
 //
 // # Default
 //
-// If the GOMAXPROCS environment variable is set to a positive whole number,
-// GOMAXPROCS defaults to that value.
+// GOMAXPROCS環境変数が正の整数に設定されている場合、GOMAXPROCSはその値がデフォルトになります。
 //
-// Otherwise, the Go runtime selects an appropriate default value from a combination of
-//   - the number of logical CPUs on the machine,
-//   - the process’s CPU affinity mask,
-//   - and, on Linux, the process’s average CPU throughput limit based on cgroup CPU
-//     quota, if any.
+// それ以外の場合、Goランタイムは以下の組み合わせから適切なデフォルト値を選択します。
+//   - マシン上の論理CPU数
+//   - プロセスのCPUアフィニティマスク
+//   - Linuxの場合、cgroup CPUクォータに基づくプロセスの平均CPUスループット制限（存在する場合）
 //
-// If GODEBUG=containermaxprocs=0 is set and GOMAXPROCS is not set by the
-// environment variable, then GOMAXPROCS instead defaults to the value of
-// [runtime.NumCPU]. Note that GODEBUG=containermaxprocs=0 is [default] for
-// language version 1.24 and below.
+// GODEBUG=containermaxprocs=0が設定されていて、GOMAXPROCSが環境変数で設定されていない場合、GOMAXPROCSは[runtime.NumCPU]の値がデフォルトになります。なお、GODEBUG=containermaxprocs=0はバージョン1.24以下では [default] です。
 //
 // # Updates
 //
-// The Go runtime periodically updates the default value based on changes to
-// the total logical CPU count, the CPU affinity mask, or cgroup quota. Setting
-// a custom value with the GOMAXPROCS environment variable or by calling
-// GOMAXPROCS disables automatic updates. The default value and automatic
-// updates can be restored by calling [SetDefaultGOMAXPROCS].
+// Goランタイムは、論理CPU数、CPUアフィニティマスク、cgroupクォータの変更に基づいてデフォルト値を定期的に更新します。
+// GOMAXPROCS環境変数を設定するか、GOMAXPROCSを呼び出してカスタム値を設定すると、自動更新は無効になります。
+// デフォルト値と自動更新は [SetDefaultGOMAXPROCS] を呼び出すことで元に戻せます。
 //
-// If GODEBUG=updatemaxprocs=0 is set, the Go runtime does not perform
-// automatic GOMAXPROCS updating. Note that GODEBUG=updatemaxprocs=0 is
-// [default] for language version 1.24 and below.
+// GODEBUG=updatemaxprocs=0 が設定されている場合、GoランタイムはGOMAXPROCSの自動更新を行いません。
+// なお、GODEBUG=updatemaxprocs=0 は言語バージョン1.24以下では [default] です。
 //
 // # Compatibility
 //
-// Note that the default GOMAXPROCS behavior may change as the scheduler
-// improves, especially the implementation detail below.
+// デフォルトのGOMAXPROCSの挙動は、スケジューラの改善に伴い変更される可能性があることに注意してください。特に以下の実装詳細に関しては変更される場合があります。
 //
 // # Implementation details
 //
-// When computing default GOMAXPROCS via cgroups, the Go runtime computes the
-// "average CPU throughput limit" as the cgroup CPU quota / period. In cgroup
-// v2, these values come from the cpu.max file. In cgroup v1, they come from
-// cpu.cfs_quota_us and cpu.cfs_period_us, respectively. In container runtimes
-// that allow configuring CPU limits, this value usually corresponds to the
-// "CPU limit" option, not "CPU request".
+// デフォルトのGOMAXPROCSをcgroup経由で計算する場合、GoランタイムはcgroupのCPUクォータ／期間として「平均CPUスループット制限」を計算します。cgroup v2ではこれらの値はcpu.maxファイルから取得され、cgroup v1ではそれぞれcpu.cfs_quota_usとcpu.cfs_period_usから取得されます。コンテナランタイムでCPU制限を設定できる場合、この値は通常「CPUリミット」オプションに対応し、「CPUリクエスト」ではありません。
 //
-// The Go runtime typically selects the default GOMAXPROCS as the minimum of
-// the logical CPU count, the CPU affinity mask count, or the cgroup CPU
-// throughput limit. However, it will never set GOMAXPROCS less than 2 unless
-// the logical CPU count or CPU affinity mask count are below 2.
+// Goランタイムは通常、論理CPU数、CPUアフィニティマスク数、cgroupのCPUスループット制限のうち最小値をデフォルトのGOMAXPROCSとして選択します。ただし、論理CPU数またはCPUアフィニティマスク数が2未満でない限り、GOMAXPROCSを2未満に設定することはありません。
 //
-// If the cgroup CPU throughput limit is not a whole number, the Go runtime
-// rounds up to the next whole number.
+// cgroupのCPUスループット制限が整数でない場合、Goランタイムは次の整数に切り上げます。
 //
-// GOMAXPROCS updates are performed up to once per second, or less if the
-// application is idle.
+// GOMAXPROCSの更新は最大で1秒に1回、またはアプリケーションがアイドル状態の場合はそれ以下の頻度で行われます。
 //
 // [default]: https://go.dev/doc/godebug#default
 func GOMAXPROCS(n int) int
 
-// SetDefaultGOMAXPROCS updates the GOMAXPROCS setting to the runtime
-// default, as described by [GOMAXPROCS], ignoring the GOMAXPROCS
-// environment variable.
+// SetDefaultGOMAXPROCSは、GOMAXPROCSの設定をランタイムのデフォルト値に更新します。[GOMAXPROCS] で説明されている通り、GOMAXPROCS環境変数は無視されます。
 //
-// SetDefaultGOMAXPROCS can be used to enable the default automatic updating
-// GOMAXPROCS behavior if it has been disabled by the GOMAXPROCS
-// environment variable or a prior call to [GOMAXPROCS], or to force an immediate
-// update if the caller is aware of a change to the total logical CPU count, CPU
-// affinity mask or cgroup quota.
+// SetDefaultGOMAXPROCSは、GOMAXPROCS環境変数や以前の[GOMAXPROCS]呼び出しによって自動更新が無効化されている場合に、デフォルトの自動更新GOMAXPROCS動作を有効にするため、または論理CPU数・CPUアフィニティマスク・cgroupクォータの合計が変更されたことを呼び出し元が認識している場合に即座に更新を強制するために使用できます。
 func SetDefaultGOMAXPROCS()
 
-// NumCPU returns the number of logical CPUs usable by the current process.
->>>>>>> upstream/release-branch.go1.25
+// NumCPUは現在のプロセスで使用可能な論理CPUの数を返します。
 //
 // 利用可能なCPUのセットはプロセスの起動時にオペレーティングシステムによって確認されます。
 // プロセスの起動後にオペレーティングシステムのCPU割り当てに変更があっても、それは反映されません。

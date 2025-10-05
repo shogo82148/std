@@ -4,21 +4,13 @@
 
 package runtime
 
-<<<<<<< HEAD
-// Error インターフェースはランタイムエラーを識別します。
-=======
-// Error identifies a runtime error used in panic.
+// Errorはpanicで使用されるランタイムエラーを識別します。
 //
-// The Go runtime triggers panics for a variety of cases, as described by the
-// Go Language Spec, such as out-of-bounds slice/array access, close of nil
-// channels, type assertion failures, etc.
+// Goランタイムは、Go言語仕様で説明されている様々なケース、例えばスライスや配列の範囲外アクセス、nilチャネルのクローズ、型アサーションの失敗などでpanicを発生させます。
 //
-// When these cases occur, the Go runtime panics with an error that implements
-// Error. This can be useful when recovering from panics to distinguish between
-// custom application panics and fundamental runtime panics.
+// これらのケースが発生した場合、GoランタイムはErrorを実装するエラーでpanicします。これは、panicからのリカバリー時に、カスタムアプリケーションのpanicと基本的なランタイムpanicを区別するのに役立ちます。
 //
-// Packages outside of the Go standard library should not implement Error.
->>>>>>> upstream/release-branch.go1.25
+// Go標準ライブラリ以外のパッケージでErrorを実装すべきではありません。
 type Error interface {
 	error
 
