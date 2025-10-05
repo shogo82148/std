@@ -6,16 +6,16 @@
 
 package jsontext
 
-// Token represents a lexical JSON token, which may be one of the following:
-//   - a JSON literal (i.e., null, true, or false)
-//   - a JSON string (e.g., "hello, world!")
-//   - a JSON number (e.g., 123.456)
-//   - a begin or end delimiter for a JSON object (i.e., { or } )
-//   - a begin or end delimiter for a JSON array (i.e., [ or ] )
+// Tokenは字句的なJSONトークンを表します。次のいずれかになります:
+//   - JSONリテラル（null, true, false）
+//   - JSON文字列（例: "hello, world!"）
+//   - JSON数値（例: 123.456）
+//   - JSONオブジェクトの開始・終了デリミタ（{ または }）
+//   - JSON配列の開始・終了デリミタ（[ または ]）
 //
-// A Token cannot represent entire array or object values, while a [Value] can.
-// There is no Token to represent commas and colons since
-// these structural tokens can be inferred from the surrounding context.
+// Tokenは配列やオブジェクト全体の値は表せませんが、[Value] は表せます。
+// カンマやコロンを表すTokenはありません。
+// これらの構造的トークンは周囲のコンテキストから推測できます。
 type Token struct {
 	nonComparable
 
@@ -45,77 +45,72 @@ var (
 	EndArray    Token = rawToken("]")
 )
 
-// Bool constructs a Token representing a JSON boolean.
+// Boolは、JSONの真偽値を表すTokenを構築します。
 func Bool(b bool) Token
 
-// String constructs a Token representing a JSON string.
-// The provided string should contain valid UTF-8, otherwise invalid characters
-// may be mangled as the Unicode replacement character.
+// Stringは、JSON文字列を表すTokenを構築します。
+// 渡された文字列は有効なUTF-8である必要があります。そうでない場合、
+// 不正な文字はUnicodeの置換文字として扱われることがあります。
 func String(s string) Token
 
-// Float constructs a Token representing a JSON number.
-// The values NaN, +Inf, and -Inf will be represented
-// as a JSON string with the values "NaN", "Infinity", and "-Infinity".
+// Floatは、JSON数値を表すTokenを構築します。
+// NaN、+Inf、-Infの値は、"NaN"、"Infinity"、"-Infinity"という値のJSON文字列として表現されます。
 func Float(n float64) Token
 
-// Int constructs a Token representing a JSON number from an int64.
+// Intは、int64からJSON数値を表すTokenを構築します。
 func Int(n int64) Token
 
-// Uint constructs a Token representing a JSON number from a uint64.
+// Uintは、uint64からJSON数値を表すTokenを構築します。
 func Uint(n uint64) Token
 
-// Clone makes a copy of the Token such that its value remains valid
-// even after a subsequent [Decoder.Read] call.
+// Cloneは、Tokenのコピーを作成し、後続の [Decoder.Read] 呼び出し後も値が有効であることを保証します。
 func (t Token) Clone() Token
 
-// Bool returns the value for a JSON boolean.
-// It panics if the token kind is not a JSON boolean.
+// Boolは、JSONの真偽値を返します。
+// トークンの種類がJSONの真偽値でない場合はパニックになります。
 func (t Token) Bool() bool
 
-// String returns the unescaped string value for a JSON string.
-// For other JSON kinds, this returns the raw JSON representation.
+// Stringは、JSON文字列のエスケープされていない文字列値を返します。
+// 他のJSONの種類の場合、これが生のJSON表現を返します。
 func (t Token) String() string
 
-// Float returns the floating-point value for a JSON number.
-// It returns a NaN, +Inf, or -Inf value for any JSON string
-// with the values "NaN", "Infinity", or "-Infinity".
-// It panics for all other cases.
+// Floatは、JSON数値の浮動小数点値を返します。
+// "NaN"、"Infinity"、"-Infinity"という値のJSON文字列に対しては、NaN、+Inf、-Infの値を返します。
+// その他の場合はパニックになります。
 func (t Token) Float() float64
 
-// Int returns the signed integer value for a JSON number.
-// The fractional component of any number is ignored (truncation toward zero).
-// Any number beyond the representation of an int64 will be saturated
-// to the closest representable value.
-// It panics if the token kind is not a JSON number.
+// Intは、JSON数値の符号付き整数値を返します。
+// 数値の小数部分は無視されます（ゼロ方向への切り捨て）。
+// int64で表現できない数値は、最も近い表現可能な値に丸められます。
+// トークンの種類がJSON数値でない場合はパニックになります。
 func (t Token) Int() int64
 
-// Uint returns the unsigned integer value for a JSON number.
-// The fractional component of any number is ignored (truncation toward zero).
-// Any number beyond the representation of an uint64 will be saturated
-// to the closest representable value.
-// It panics if the token kind is not a JSON number.
+// Uintは、JSON数値の符号なし整数値を返します。
+// 数値の小数部分は無視されます（ゼロ方向への切り捨て）。
+// uint64で表現できない数値は、最も近い表現可能な値に丸められます。
+// トークンの種類がJSON数値でない場合はパニックになります。
 func (t Token) Uint() uint64
 
-// Kind returns the token kind.
+// Kindは、トークンの種類を返します。
 func (t Token) Kind() Kind
 
-// Kind represents each possible JSON token kind with a single byte,
-// which is conveniently the first byte of that kind's grammar
-// with the restriction that numbers always be represented with '0':
+// Kindは、すべてのJSONトークン種別を1バイトで表します。
+// このバイトは各種別の文法の先頭バイトであり、
+// 数値は必ず '0' で表現されるという制約があります:
 //
 //   - 'n': null
 //   - 'f': false
 //   - 't': true
 //   - '"': string
 //   - '0': number
-//   - '{': object begin
-//   - '}': object end
-//   - '[': array begin
-//   - ']': array end
+//   - '{': オブジェクト開始
+//   - '}': オブジェクト終了
+//   - '[': 配列開始
+//   - ']': 配列終了
 //
-// An invalid kind is usually represented using 0,
-// but may be non-zero due to invalid JSON data.
+// 無効な種別は通常0で表されますが、
+// 不正なJSONデータの場合は0以外になることもあります。
 type Kind byte
 
-// String prints the kind in a humanly readable fashion.
+// Stringは、種別を人間が読める形式で表示します。
 func (k Kind) String() string

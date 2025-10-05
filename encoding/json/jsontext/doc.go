@@ -4,107 +4,84 @@
 
 //go:build goexperiment.jsonv2
 
-// Package jsontext implements syntactic processing of JSON
-// as specified in RFC 4627, RFC 7159, RFC 7493, RFC 8259, and RFC 8785.
-// JSON is a simple data interchange format that can represent
-// primitive data types such as booleans, strings, and numbers,
-// in addition to structured data types such as objects and arrays.
+// Package jsontextは、RFC 4627, RFC 7159, RFC 7493, RFC 8259, RFC 8785で規定された
+// JSONの構文処理を実装します。
+// JSONは、ブール値、文字列、数値などのプリミティブ型に加え、
+// オブジェクトや配列などの構造化データ型も表現できるシンプルなデータ交換フォーマットです。
 //
-// This package (encoding/json/jsontext) is experimental,
-// and not subject to the Go 1 compatibility promise.
-// It only exists when building with the GOEXPERIMENT=jsonv2 environment variable set.
-// Most users should use [encoding/json].
+// このパッケージ（encoding/json/jsontext）は実験的なものであり、
+// Go 1の互換性保証の対象ではありません。
+// GOEXPERIMENT=jsonv2環境変数を設定してビルドした場合のみ存在します。
+// ほとんどのユーザーは[encoding/json]を使用してください。
 //
-// The [Encoder] and [Decoder] types are used to encode or decode
-// a stream of JSON tokens or values.
+// [Encoder] 型と [Decoder] 型は、JSONトークンや値のストリームをエンコードまたはデコードするために使われます。
 //
 // # Tokens and Values
 //
-// A JSON token refers to the basic structural elements of JSON:
+// JSONトークンは、JSONの基本的な構造要素を指します:
 //
-//   - a JSON literal (i.e., null, true, or false)
-//   - a JSON string (e.g., "hello, world!")
-//   - a JSON number (e.g., 123.456)
-//   - a begin or end delimiter for a JSON object (i.e., '{' or '}')
-//   - a begin or end delimiter for a JSON array (i.e., '[' or ']')
+//   - JSONリテラル（null, true, false）
+//   - JSON文字列（例: "hello, world!"）
+//   - JSON数値（例: 123.456）
+//   - JSONオブジェクトの開始・終了デリミタ（'{' または '}'）
+//   - JSON配列の開始・終了デリミタ（'[' または ']'）
 //
-// A JSON token is represented by the [Token] type in Go. Technically,
-// there are two additional structural characters (i.e., ':' and ','),
-// but there is no [Token] representation for them since their presence
-// can be inferred by the structure of the JSON grammar itself.
-// For example, there must always be an implicit colon between
-// the name and value of a JSON object member.
+// JSONトークンはGoの [Token] 型で表現されます。技術的には、他にも2つの構造文字（':'と','）がありますが、
+// これらはJSON文法の構造から存在が推測できるため、[Token] 型としては表現されません。
+// 例えば、JSONオブジェクトの名前と値の間には必ず暗黙のコロンが存在します。
 //
-// A JSON value refers to a complete unit of JSON data:
+// JSON値は、完全なJSONデータ単位を指します:
 //
-//   - a JSON literal, string, or number
-//   - a JSON object (e.g., `{"name":"value"}`)
-//   - a JSON array (e.g., `[1,2,3,]`)
+//   - JSONリテラル、文字列、数値
+//   - JSONオブジェクト（例: `{"name":"value"}`）
+//   - JSON配列（例: `[1,2,3,]`）
 //
-// A JSON value is represented by the [Value] type in Go and is a []byte
-// containing the raw textual representation of the value. There is some overlap
-// between tokens and values as both contain literals, strings, and numbers.
-// However, only a value can represent the entirety of a JSON object or array.
+// JSON値はGoの [Value] 型で表現され、値の生テキスト表現を含む[]byteです。
+// トークンと値はリテラル、文字列、数値を含む点で重複しますが、
+// オブジェクトや配列全体を表現できるのは値のみです。
 //
-// The [Encoder] and [Decoder] types contain methods to read or write the next
-// [Token] or [Value] in a sequence. They maintain a state machine to validate
-// whether the sequence of JSON tokens and/or values produces a valid JSON.
-// [Options] may be passed to the [NewEncoder] or [NewDecoder] constructors
-// to configure the syntactic behavior of encoding and decoding.
+// [Encoder] 型と [Decoder] 型は、シーケンス内の次の [Token] または [Value] を読み書きするメソッドを持ちます。
+// これらは状態マシンを維持し、JSONトークンや値の並びが有効なJSONかどうかを検証します。
+// [Options] は [NewEncoder] や [NewDecoder] のコンストラクタに渡すことで、エンコード・デコードの構文的挙動を設定できます。
 //
 // # Terminology
 //
-// The terms "encode" and "decode" are used for syntactic functionality
-// that is concerned with processing JSON based on its grammar, and
-// the terms "marshal" and "unmarshal" are used for semantic functionality
-// that determines the meaning of JSON values as Go values and vice-versa.
-// This package (i.e., [jsontext]) deals with JSON at a syntactic layer,
-// while [encoding/json/v2] deals with JSON at a semantic layer.
-// The goal is to provide a clear distinction between functionality that
-// is purely concerned with encoding versus that of marshaling.
-// For example, one can directly encode a stream of JSON tokens without
-// needing to marshal a concrete Go value representing them.
-// Similarly, one can decode a stream of JSON tokens without
-// needing to unmarshal them into a concrete Go value.
+// "encode"と"decode"という用語は、JSONの文法に基づいて処理する構文的機能を指します。
+// 一方、"marshal"と"unmarshal"という用語は、JSON値の意味をGo値として解釈したり、逆にGo値をJSON値として表現する意味的機能を指します。
+// このパッケージ（[jsontext]）はJSONの構文層を扱い、[encoding/json/v2] はJSONの意味層を扱います。
+// 構文的なエンコードと意味的なマーシャルの機能を明確に区別することが目的です。
+// 例えば、具体的なGo値にマーシャルせずに、JSONトークンのストリームを直接エンコードできます。
+// 同様に、具体的なGo値にアンマーシャルせずに、JSONトークンのストリームをデコードできます。
 //
-// This package uses JSON terminology when discussing JSON, which may differ
-// from related concepts in Go or elsewhere in computing literature.
+// このパッケージではJSONについて説明する際、Goや他の計算機科学の文献で使われる概念と異なる場合がありますが、JSONの用語を使用します。
 //
-//   - a JSON "object" refers to an unordered collection of name/value members.
-//   - a JSON "array" refers to an ordered sequence of elements.
-//   - a JSON "value" refers to either a literal (i.e., null, false, or true),
-//     string, number, object, or array.
+//   - JSONの「object」は名前と値のメンバーの順不同コレクションを指します。
+//   - JSONの「array」は要素の順序付きシーケンスを指します。
+//   - JSONの「value」はリテラル（null, false, true）、文字列、数値、オブジェクト、配列のいずれかを指します。
 //
-// See RFC 8259 for more information.
+// 詳細はRFC 8259を参照してください。
 //
 // # Specifications
 //
-// Relevant specifications include RFC 4627, RFC 7159, RFC 7493, RFC 8259,
-// and RFC 8785. Each RFC is generally a stricter subset of another RFC.
-// In increasing order of strictness:
+// 関連する仕様にはRFC 4627, RFC 7159, RFC 7493, RFC 8259, RFC 8785があります。
+// 各RFCは一般的に他のRFCのより厳密なサブセットです。厳密さの順に:
 //
-//   - RFC 4627 and RFC 7159 do not require (but recommend) the use of UTF-8
-//     and also do not require (but recommend) that object names be unique.
-//   - RFC 8259 requires the use of UTF-8,
-//     but does not require (but recommends) that object names be unique.
-//   - RFC 7493 requires the use of UTF-8
-//     and also requires that object names be unique.
-//   - RFC 8785 defines a canonical representation. It requires the use of UTF-8
-//     and also requires that object names be unique and in a specific ordering.
-//     It specifies exactly how strings and numbers must be formatted.
+//   - RFC 4627とRFC 7159はUTF-8の使用を必須とはしていません（推奨のみ）
+//     また、オブジェクト名の一意性も必須ではありません（推奨のみ）
+//   - RFC 8259はUTF-8の使用を必須としますが、オブジェクト名の一意性は必須ではありません（推奨のみ）
+//   - RFC 7493はUTF-8の使用を必須とし、オブジェクト名の一意性も必須とします
+//   - RFC 8785は正規表現を定義します。UTF-8の使用を必須とし、
+//     オブジェクト名の一意性と特定の順序も必須とします。
+//     文字列や数値のフォーマット方法も厳密に規定します。
 //
-// The primary difference between RFC 4627 and RFC 7159 is that the former
-// restricted top-level values to only JSON objects and arrays, while
-// RFC 7159 and subsequent RFCs permit top-level values to additionally be
-// JSON nulls, booleans, strings, or numbers.
+// RFC 4627とRFC 7159の主な違いは、前者がトップレベル値をJSONオブジェクトと配列のみに制限していたのに対し、
+// RFC 7159以降のRFCではトップレベル値としてJSONのnull、boolean、文字列、数値も許可しています。
 //
-// By default, this package operates on RFC 7493, but can be configured
-// to operate according to the other RFC specifications.
-// RFC 7493 is a stricter subset of RFC 8259 and fully compliant with it.
-// In particular, it makes specific choices about behavior that RFC 8259
-// leaves as undefined in order to ensure greater interoperability.
+// デフォルトでは、このパッケージはRFC 7493に準拠して動作しますが、他のRFC仕様に合わせて設定することも可能です。
+// RFC 7493はRFC 8259のより厳密なサブセットであり、完全に準拠しています。
+// 特に、RFC 8259が未定義としている動作について、より高い相互運用性を確保するために具体的な選択を行っています。
 //
 // # Security Considerations
 //
-// See the "Security Considerations" section in [encoding/json/v2].
+// 「セキュリティに関する考慮事項」については [encoding/json/v2] の該当セクションを参照してください。
 package jsontext

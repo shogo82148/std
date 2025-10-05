@@ -4,260 +4,208 @@
 
 //go:build goexperiment.jsonv2
 
-// Package json implements semantic processing of JSON as specified in RFC 8259.
-// JSON is a simple data interchange format that can represent
-// primitive data types such as booleans, strings, and numbers,
-// in addition to structured data types such as objects and arrays.
+// Package jsonは、RFC 8259で規定されたJSONのセマンティック処理を実装します。
+// JSONは、真偽値、文字列、数値などのプリミティブ型に加え、
+// オブジェクトや配列などの構造化データ型も表現できるシンプルなデータ交換フォーマットです。
 //
-// This package (encoding/json/v2) is experimental,
-// and not subject to the Go 1 compatibility promise.
-// It only exists when building with the GOEXPERIMENT=jsonv2 environment variable set.
-// Most users should use [encoding/json].
+// このパッケージ（encoding/json/v2）は実験的なものであり、
+// Go 1 の互換性保証の対象ではありません。
+// GOEXPERIMENT=jsonv2 環境変数を設定してビルドした場合のみ存在します。
+// ほとんどのユーザーは [encoding/json] を使用してください。
 //
-// [Marshal] and [Unmarshal] encode and decode Go values
-// to/from JSON text contained within a []byte.
-// [MarshalWrite] and [UnmarshalRead] operate on JSON text
-// by writing to or reading from an [io.Writer] or [io.Reader].
-// [MarshalEncode] and [UnmarshalDecode] operate on JSON text
-// by encoding to or decoding from a [jsontext.Encoder] or [jsontext.Decoder].
-// [Options] may be passed to each of the marshal or unmarshal functions
-// to configure the semantic behavior of marshaling and unmarshaling
-// (i.e., alter how JSON data is understood as Go data and vice versa).
-// [jsontext.Options] may also be passed to the marshal or unmarshal functions
-// to configure the syntactic behavior of encoding or decoding.
+// [Marshal] および [Unmarshal] は、Go値を[]byte内のJSONテキストへエンコード・デコードします。
+// [MarshalWrite] および [UnmarshalRead] は、[io.Writer] や [io.Reader] を介してJSONテキストを書き込み・読み込みします。
+// [MarshalEncode] および [UnmarshalDecode] は、[jsontext.Encoder] や [jsontext.Decoder] を使ってJSONテキストをエンコード・デコードします。
+// 各マーシャル・アンマーシャル関数には [Options] を渡すことで、マーシャル・アンマーシャルのセマンティクス（つまりJSONデータとGoデータの対応方法）を設定できます。
+// また、[jsontext.Options] を渡すことで、エンコード・デコードの構文的な挙動も設定できます。
 //
-// The data types of JSON are mapped to/from the data types of Go based on
-// the closest logical equivalent between the two type systems. For example,
-// a JSON boolean corresponds with a Go bool,
-// a JSON string corresponds with a Go string,
-// a JSON number corresponds with a Go int, uint or float,
-// a JSON array corresponds with a Go slice or array, and
-// a JSON object corresponds with a Go struct or map.
-// See the documentation on [Marshal] and [Unmarshal] for a comprehensive list
-// of how the JSON and Go type systems correspond.
+// JSONのデータ型は、両者の型システム間で最も論理的に近いGoのデータ型へマッピングされます。例えば、
+// JSONの真偽値はGoのbool型に、
+// JSONの文字列はGoのstring型に、
+// JSONの数値はGoのint型、uint型、float型に、
+// JSONの配列はGoのスライスまたは配列に、
+// JSONのオブジェクトはGoの構造体またはマップに対応します。
+// JSONとGoの型システムの対応関係の詳細は [Marshal] および [Unmarshal] のドキュメントを参照してください。
 //
-// Arbitrary Go types can customize their JSON representation by implementing
-// [Marshaler], [MarshalerTo], [Unmarshaler], or [UnmarshalerFrom].
-// This provides authors of Go types with control over how their types are
-// serialized as JSON. Alternatively, users can implement functions that match
-// [MarshalFunc], [MarshalToFunc], [UnmarshalFunc], or [UnmarshalFromFunc]
-// to specify the JSON representation for arbitrary types.
-// This provides callers of JSON functionality with control over
-// how any arbitrary type is serialized as JSON.
+// 任意のGo型は、[Marshaler]、[MarshalerTo]、[Unmarshaler]、[UnmarshalerFrom] を実装することで
+// JSON表現をカスタマイズできます。
+// これにより、Go型の作者は自身の型がJSONとしてどのようにシリアライズされるかを制御できます。
+// また、[MarshalFunc]、[MarshalToFunc]、[UnmarshalFunc]、[UnmarshalFromFunc] に一致する関数を実装することで
+// 任意の型のJSON表現を指定することもできます。
+// これにより、JSON機能の利用者は任意の型がJSONとしてどのようにシリアライズされるかを制御できます。
 //
 // # JSON Representation of Go structs
 //
-// A Go struct is naturally represented as a JSON object,
-// where each Go struct field corresponds with a JSON object member.
-// When marshaling, all Go struct fields are recursively encoded in depth-first
-// order as JSON object members except those that are ignored or omitted.
-// When unmarshaling, JSON object members are recursively decoded
-// into the corresponding Go struct fields.
-// Object members that do not match any struct fields,
-// also known as “unknown members”, are ignored by default or rejected
-// if [RejectUnknownMembers] is specified.
+// Goの構造体は自然にJSONオブジェクトとして表現され、
+// 各Go構造体フィールドがJSONオブジェクトのメンバーに対応します。
+// マーシャル時は、無視または省略されたフィールドを除き、すべてのGo構造体フィールドが
+// 深さ優先で再帰的にJSONオブジェクトのメンバーとしてエンコードされます。
+// アンマーシャル時は、JSONオブジェクトのメンバーが対応するGo構造体フィールドへ
+// 再帰的にデコードされます。
+// 構造体フィールドに一致しないオブジェクトメンバー（「未知のメンバー」とも呼ばれる）は、
+// デフォルトでは無視されますが、[RejectUnknownMembers] が指定されている場合は拒否されます。
 //
-// The representation of each struct field can be customized in the
-// "json" struct field tag, where the tag is a comma separated list of options.
-// As a special case, if the entire tag is `json:"-"`,
-// then the field is ignored with regard to its JSON representation.
-// Some options also have equivalent behavior controlled by a caller-specified [Options].
-// Field-specified options take precedence over caller-specified options.
+// 各構造体フィールドの表現は、"json"構造体タグでカスタマイズできます。
+// タグはカンマ区切りのオプションリストです。
+// 特殊なケースとして、タグ全体が`json:"-"`の場合、
+// そのフィールドはJSON表現上無視されます。
+// 一部のオプションは呼び出し元が指定する [Options] によっても同等の挙動を制御できます。
+// フィールド指定のオプションは呼び出し元指定のオプションより優先されます。
 //
-// The first option is the JSON object name override for the Go struct field.
-// If the name is not specified, then the Go struct field name
-// is used as the JSON object name. JSON names containing commas or quotes,
-// or names identical to "" or "-", can be specified using
-// a single-quoted string literal, where the syntax is identical to
-// the Go grammar for a double-quoted string literal,
-// but instead uses single quotes as the delimiters.
-// By default, unmarshaling uses case-sensitive matching to identify
-// the Go struct field associated with a JSON object name.
+// 最初のオプションはGo構造体フィールドのJSONオブジェクト名の上書きです。
+// 名前が指定されていない場合、Go構造体フィールド名がJSONオブジェクト名として使われます。
+// カンマや引用符を含む名前、""や"-"と同じ名前は、
+// Goの二重引用符文字列リテラルと同じ構文で、区切りを単一引用符にした
+// 単一引用符文字列リテラルで指定できます。
+// デフォルトでは、アンマーシャル時にJSONオブジェクト名とGo構造体フィールドの対応は
+// 大文字・小文字を区別して一致判定されます。
 //
-// After the name, the following tag options are supported:
+// 名前の後には、以下のタグオプションがサポートされています。
 //
-//   - omitzero: When marshaling, the "omitzero" option specifies that
-//     the struct field should be omitted if the field value is zero
-//     as determined by the "IsZero() bool" method if present,
-//     otherwise based on whether the field is the zero Go value.
-//     This option has no effect when unmarshaling.
+//   - omitzero: マーシャル時に、"omitzero"オプションはフィールド値がゼロ値の場合に
+//     フィールドを省略します。ゼロ値かどうかは "IsZero() bool" メソッドがあればそれで判定し、
+//     なければGoのゼロ値かどうかで判定します。
+//     このオプションはアンマーシャル時には効果がありません。
 //
-//   - omitempty: When marshaling, the "omitempty" option specifies that
-//     the struct field should be omitted if the field value would have been
-//     encoded as a JSON null, empty string, empty object, or empty array.
-//     This option has no effect when unmarshaling.
+//   - omitempty: マーシャル時に、"omitempty"オプションはフィールド値が
+//     JSON null、空文字列、空オブジェクト、空配列としてエンコードされる場合に
+//     フィールドを省略します。
+//     このオプションはアンマーシャル時には効果がありません。
 //
-//   - string: The "string" option specifies that [StringifyNumbers]
-//     be set when marshaling or unmarshaling a struct field value.
-//     This causes numeric types to be encoded as a JSON number
-//     within a JSON string, and to be decoded from a JSON string
-//     containing the JSON number without any surrounding whitespace.
-//     This extra level of encoding is often necessary since
-//     many JSON parsers cannot precisely represent 64-bit integers.
+//   - string: "string"オプションは [StringifyNumbers] をセットし、
+//     構造体フィールド値のマーシャル・アンマーシャル時に数値型を
+//     JSON文字列内のJSON数値としてエンコード・デコードします。
+//     この追加のエンコードは、多くのJSONパーサが64ビット整数を正確に扱えないため
+//     必要になることがあります。
 //
-//   - case: When unmarshaling, the "case" option specifies how
-//     JSON object names are matched with the JSON name for Go struct fields.
-//     The option is a key-value pair specified as "case:value" where
-//     the value must either be 'ignore' or 'strict'.
-//     The 'ignore' value specifies that matching is case-insensitive
-//     where dashes and underscores are also ignored. If multiple fields match,
-//     the first declared field in breadth-first order takes precedence.
-//     The 'strict' value specifies that matching is case-sensitive.
-//     This takes precedence over the [MatchCaseInsensitiveNames] option.
+//   - case: アンマーシャル時に、"case"オプションは
+//     JSONオブジェクト名とGo構造体フィールドのJSON名の一致方法を指定します。
+//     オプションは "case:value" のキー・バリュー形式で、値は 'ignore' または 'strict' です。
+//     'ignore' は大文字・小文字を区別せず、ダッシュやアンダースコアも無視して一致判定します。
+//     複数フィールドが一致した場合は幅優先順で最初のフィールドが優先されます。
+//     'strict' は大文字・小文字を区別して一致判定します。
+//     この指定は [MatchCaseInsensitiveNames] オプションより優先されます。
 //
-//   - inline: The "inline" option specifies that
-//     the JSON representable content of this field type is to be promoted
-//     as if they were specified in the parent struct.
-//     It is the JSON equivalent of Go struct embedding.
-//     A Go embedded field is implicitly inlined unless an explicit JSON name
-//     is specified. The inlined field must be a Go struct
-//     (that does not implement any JSON methods), [jsontext.Value],
-//     map[~string]T, or an unnamed pointer to such types. When marshaling,
-//     inlined fields from a pointer type are omitted if it is nil.
-//     Inlined fields of type [jsontext.Value] and map[~string]T are called
-//     “inlined fallbacks” as they can represent all possible
-//     JSON object members not directly handled by the parent struct.
-//     Only one inlined fallback field may be specified in a struct,
-//     while many non-fallback fields may be specified. This option
-//     must not be specified with any other option (including the JSON name).
+//   - inline: "inline"オプションは、このフィールド型のJSON表現内容を
+//     親構造体に指定されたかのように昇格させます。
+//     これはGoの構造体埋め込みのJSON版です。
+//     Goの埋め込みフィールドは明示的なJSON名がなければ暗黙的にinlineされます。
+//     inline対象はJSONメソッドを実装しないGo構造体、[jsontext.Value]、map[~string]T、またはそれらへの無名ポインタ型です。
+//     マーシャル時、ポインタ型のinlineフィールドがnilなら省略されます。
+//     [jsontext.Value] 型やmap[~string]T型のinlineフィールドは「インラインフォールバック」と呼ばれ、
+//     親構造体で直接扱われないすべてのJSONオブジェクトメンバーを表現できます。
+//     インラインフォールバックフィールドは構造体内に1つだけ指定でき、
+//     非フォールバックフィールドは複数指定できます。
+//     このオプションは他のオプション（JSON名含む）と併用できません。
 //
-//   - unknown: The "unknown" option is a specialized variant
-//     of the inlined fallback to indicate that this Go struct field
-//     contains any number of unknown JSON object members. The field type must
-//     be a [jsontext.Value], map[~string]T, or an unnamed pointer to such types.
-//     If [DiscardUnknownMembers] is specified when marshaling,
-//     the contents of this field are ignored.
-//     If [RejectUnknownMembers] is specified when unmarshaling,
-//     any unknown object members are rejected regardless of whether
-//     an inlined fallback with the "unknown" option exists. This option
-//     must not be specified with any other option (including the JSON name).
+//   - unknown: "unknown"オプションはインラインフォールバックの特殊なバリエーションで、
+//     このGo構造体フィールドが任意数の未知のJSONオブジェクトメンバーを保持することを示します。
+//     フィールド型は [jsontext.Value]、map[~string]T、またはそれらへの無名ポインタ型でなければなりません。
+//     マーシャル時に [DiscardUnknownMembers] が指定されている場合、このフィールドの内容は無視されます。
+//     アンマーシャル時に [RejectUnknownMembers] が指定されている場合、未知のオブジェクトメンバーは
+//     "unknown"オプション付きインラインフォールバックの有無に関わらず拒否されます。
+//     このオプションは他のオプション（JSON名含む）と併用できません。
 //
-//   - format: The "format" option specifies a format flag
-//     used to specialize the formatting of the field value.
-//     The option is a key-value pair specified as "format:value" where
-//     the value must be either a literal consisting of letters and numbers
-//     (e.g., "format:RFC3339") or a single-quoted string literal
-//     (e.g., "format:'2006-01-02'"). The interpretation of the format flag
-//     is determined by the struct field type.
+//   - format: "format"オプションはフィールド値の書式指定フラグを指定します。
+//     オプションは "format:value" のキー・バリュー形式で、
+//     値は英数字のリテラル（例："format:RFC3339"）または単一引用符付き文字列リテラル
+//     （例："format:'2006-01-02'"）です。
+//     フォーマットフラグの解釈は構造体フィールド型によって決まります。
 //
-// The "omitzero" and "omitempty" options are mostly semantically identical.
-// The former is defined in terms of the Go type system,
-// while the latter in terms of the JSON type system.
-// Consequently they behave differently in some circumstances.
-// For example, only a nil slice or map is omitted under "omitzero", while
-// an empty slice or map is omitted under "omitempty" regardless of nilness.
-// The "omitzero" option is useful for types with a well-defined zero value
-// (e.g., [net/netip.Addr]) or have an IsZero method (e.g., [time.Time.IsZero]).
+// "omitzero"と"omitempty"オプションは、ほぼ同じ意味を持ちます。
+// 前者はGoの型システムに基づいて定義されており、
+// 後者はJSONの型システムに基づいて定義されています。
+// そのため、状況によって挙動が異なる場合があります。
+// 例えば、"omitzero"ではnilのスライスやマップのみが省略されますが、
+// "omitempty"ではnilかどうかに関係なく空のスライスやマップが省略されます。
+// "omitzero"オプションは、明確なゼロ値を持つ型（例：[net/netip.Addr]）や
+// IsZeroメソッドを持つ型（例：[time.Time.IsZero]）に便利です。
 //
-// Every Go struct corresponds to a list of JSON representable fields
-// which is constructed by performing a breadth-first search over
-// all struct fields (excluding unexported or ignored fields),
-// where the search recursively descends into inlined structs.
-// The set of non-inlined fields in a struct must have unique JSON names.
-// If multiple fields all have the same JSON name, then the one
-// at shallowest depth takes precedence and the other fields at deeper depths
-// are excluded from the list of JSON representable fields.
-// If multiple fields at the shallowest depth have the same JSON name,
-// but exactly one is explicitly tagged with a JSON name,
-// then that field takes precedence and all others are excluded from the list.
-// This is analogous to Go visibility rules for struct field selection
-// with embedded struct types.
+// すべてのGo構造体は、JSONで表現可能なフィールドのリストに対応します。
+// このリストは、すべての構造体フィールド（非公開や無視されたフィールドを除く）に対して
+// 幅優先探索を行い、探索はインライン構造体にも再帰的に降りていくことで構築されます。
+// 構造体内のインラインでないフィールド集合は、ユニークなJSON名を持たなければなりません。
+// 複数のフィールドが同じJSON名を持つ場合、最も浅い階層のフィールドが優先され、
+// より深い階層のフィールドはJSON表現可能フィールドのリストから除外されます。
+// 最も浅い階層で複数のフィールドが同じJSON名を持ち、
+// そのうち1つだけが明示的にJSON名タグを持つ場合は、そのフィールドが優先され、
+// 他のフィールドはリストから除外されます。
+// これは、埋め込み構造体型のフィールド選択におけるGoの可視性ルールに類似しています。
 //
-// Marshaling or unmarshaling a non-empty struct
-// without any JSON representable fields results in a [SemanticError].
-// Unexported fields must not have any `json` tags except for `json:"-"`.
+// JSON表現可能なフィールドがない非空構造体をマーシャルまたはアンマーシャルすると
+// [SemanticError] になります。
+// 非公開フィールドには`json:"-"`以外の`json`タグを付けてはいけません。
 //
 // # Security Considerations
 //
-// JSON is frequently used as a data interchange format to communicate
-// between different systems, possibly implemented in different languages.
-// For interoperability and security reasons, it is important that
-// all implementations agree upon the semantic meaning of the data.
+// JSONは、異なるシステム間（異なる言語で実装されている場合もある）で
+// データ交換フォーマットとして頻繁に利用されます。
+// 相互運用性やセキュリティの観点から、すべての実装が
+// データのセマンティックな意味に合意することが重要です。
 //
 // [For example, suppose we have two micro-services.]
-// The first service is responsible for authenticating a JSON request,
-// while the second service is responsible for executing the request
-// (having assumed that the prior service authenticated the request).
-// If an attacker were able to maliciously craft a JSON request such that
-// both services believe that the same request is from different users,
-// it could bypass the authenticator with valid credentials for one user,
-// but maliciously perform an action on behalf of a different user.
+// 1つ目のサービスはJSONリクエストの認証を担当し、
+// 2つ目のサービスは（前のサービスが認証したと仮定して）リクエストの実行を担当します。
+// 攻撃者がJSONリクエストを巧妙に細工し、両サービスが同じリクエストを
+// 異なるユーザーからのものと認識することができれば、
+// 1人のユーザーの有効な認証情報で認証を通過し、
+// 別のユーザーの権限で悪意ある操作を実行できてしまいます。
 //
-// According to RFC 8259, there unfortunately exist many JSON texts
-// that are syntactically valid but semantically ambiguous.
-// For example, the standard does not define how to interpret duplicate
-// names within an object.
+// RFC 8259によると、構文的には正しいが意味的に曖昧なJSONテキストが多数存在します。
+// 例えば、標準ではオブジェクト内の重複した名前の解釈方法が定義されていません。
 //
-// The v1 [encoding/json] and [encoding/json/v2] packages
-// interpret some inputs in different ways. In particular:
+// v1の [encoding/json] とv2の [encoding/json/v2] パッケージは、
+// 一部の入力を異なる方法で解釈します。特に：
 //
-//   - The standard specifies that JSON must be encoded using UTF-8.
-//     By default, v1 replaces invalid bytes of UTF-8 in JSON strings
-//     with the Unicode replacement character,
-//     while v2 rejects inputs with invalid UTF-8.
-//     To change the default, specify the [jsontext.AllowInvalidUTF8] option.
-//     The replacement of invalid UTF-8 is a form of data corruption
-//     that alters the precise meaning of strings.
+//   - 標準ではJSONはUTF-8でエンコードされる必要があります。
+//     デフォルトでは、v1はJSON文字列内の不正なUTF-8バイトを
+//     Unicodeの置換文字に置き換えますが、v2は不正なUTF-8を含む入力を拒否します。
+//     デフォルトを変更するには [jsontext.AllowInvalidUTF8] オプションを指定します。
+//     不正なUTF-8の置換は、文字列の意味を変えてしまうデータ破損の一種です。
 //
-//   - The standard does not specify a particular behavior when
-//     duplicate names are encountered within a JSON object,
-//     which means that different implementations may behave differently.
-//     By default, v1 allows for the presence of duplicate names,
-//     while v2 rejects duplicate names.
-//     To change the default, specify the [jsontext.AllowDuplicateNames] option.
-//     If allowed, object members are processed in the order they are observed,
-//     meaning that later values will replace or be merged into prior values,
-//     depending on the Go value type.
+//   - 標準ではJSONオブジェクト内の重複した名前に対する特定の挙動は定義されていません。
+//     そのため、実装ごとに挙動が異なる場合があります。
+//     デフォルトでは、v1は重複した名前の存在を許容し、v2は重複した名前を拒否します。
+//     デフォルトを変更するには [jsontext.AllowDuplicateNames] オプションを指定します。
+//     許容した場合、オブジェクトメンバーは観測された順に処理され、
+//     後の値が前の値を置換またはマージします（Go値の型による）。
 //
-//   - The standard defines a JSON object as an unordered collection of name/value pairs.
-//     While ordering can be observed through the underlying [jsontext] API,
-//     both v1 and v2 generally avoid exposing the ordering.
-//     No application should semantically depend on the order of object members.
-//     Allowing duplicate names is a vector through which ordering of members
-//     can accidentally be observed and depended upon.
+//   - 標準ではJSONオブジェクトは名前と値のペアの順序なし集合と定義されています。
+//     順序は基礎となる [jsontext] APIで観測できますが、
+//     v1もv2も一般的には順序を公開しません。
+//     アプリケーションはオブジェクトメンバーの順序に意味を持たせるべきではありません。
+//     重複した名前を許容すると、順序に依存する挙動が偶発的に発生する可能性があります。
 //
-//   - The standard suggests that JSON object names are typically compared
-//     based on equality of the sequence of Unicode code points,
-//     which implies that comparing names is often case-sensitive.
-//     When unmarshaling a JSON object into a Go struct,
-//     by default, v1 uses a (loose) case-insensitive match on the name,
-//     while v2 uses a (strict) case-sensitive match on the name.
-//     To change the default, specify the [MatchCaseInsensitiveNames] option.
-//     The use of case-insensitive matching provides another vector through
-//     which duplicate names can occur. Allowing case-insensitive matching
-//     means that v1 or v2 might interpret JSON objects differently from most
-//     other JSON implementations (which typically use a case-sensitive match).
+//   - 標準ではJSONオブジェクト名はUnicodeコードポイント列の等価性で比較されると示唆されています。
+//     これは通常、大文字・小文字を区別する比較を意味します。
+//     JSONオブジェクトをGo構造体にアンマーシャルする際、
+//     デフォルトでv1は（緩い）大文字・小文字を区別しない一致判定を行い、
+//     v2は（厳密な）大文字・小文字を区別する一致判定を行います。
+//     デフォルトを変更するには [MatchCaseInsensitiveNames] オプションを指定します。
+//     大文字・小文字を区別しない一致判定を許容すると、重複名が発生する可能性があり、
+//     v1やv2が他の多くのJSON実装（通常は大文字・小文字を区別する）と異なる解釈をすることになります。
 //
-//   - The standard does not specify a particular behavior when
-//     an unknown name in a JSON object is encountered.
-//     When unmarshaling a JSON object into a Go struct, by default
-//     both v1 and v2 ignore unknown names and their corresponding values.
-//     To change the default, specify the [RejectUnknownMembers] option.
+//   - 標準ではJSONオブジェクト内で未知の名前が現れた場合の挙動は定義されていません。
+//     Go構造体へのアンマーシャル時、デフォルトでv1もv2も未知の名前と値を無視します。
+//     デフォルトを変更するには [RejectUnknownMembers] オプションを指定します。
 //
-//   - The standard suggests that implementations may use a float64
-//     to represent a JSON number. Consequently, large JSON integers
-//     may lose precision when stored as a floating-point type.
-//     Both v1 and v2 correctly preserve precision when marshaling and
-//     unmarshaling a concrete integer type. However, even if v1 and v2
-//     preserve precision for concrete types, other JSON implementations
-//     may not be able to preserve precision for outputs produced by v1 or v2.
-//     The `string` tag option can be used to specify that an integer type
-//     is to be quoted within a JSON string to avoid loss of precision.
-//     Furthermore, v1 and v2 may still lose precision when unmarshaling
-//     into an any interface value, where unmarshal uses a float64
-//     by default to represent a JSON number.
-//     To change the default, specify the [WithUnmarshalers] option
-//     with a custom unmarshaler that pre-populates the interface value
-//     with a concrete Go type that can preserve precision.
+//   - 標準ではJSON数値の表現にfloat64を使うことができると示唆されています。
+//     そのため、大きなJSON整数は浮動小数点型に格納すると精度を失う可能性があります。
+//     v1もv2も具体的な整数型へのマーシャル・アンマーシャル時は精度を正しく保持します。
+//     ただし、他のJSON実装がv1やv2の出力の精度を保持できるとは限りません。
+//     `string`タグオプションを使うことで、整数型をJSON文字列で囲み、精度喪失を防げます。
+//     また、v1やv2でもanyインターフェース値へのアンマーシャル時は
+//     デフォルトでfloat64を使うため精度を失う場合があります。
+//     デフォルトを変更するには [WithUnmarshalers] オプションで
+//     精度を保持できる具体的なGo型を事前にインターフェース値へ設定するカスタムアンマーシャラを指定します。
 //
-// RFC 8785 specifies a canonical form for any JSON text,
-// which explicitly defines specific behaviors that RFC 8259 leaves undefined.
-// In theory, if a text can successfully [jsontext.Value.Canonicalize]
-// without changing the semantic meaning of the data, then it provides a
-// greater degree of confidence that the data is more secure and interoperable.
+// RFC 8785は、RFC 8259で未定義だった挙動を明確に定義した
+// JSONテキストの正規形を規定しています。
+// 理論的には、[jsontext.Value.Canonicalize] で意味を変えずに
+// 正規化できるテキストは、より安全かつ相互運用性が高いと考えられます。
 //
-// The v2 API generally chooses more secure defaults than v1,
-// but care should still be taken with large integers or unknown members.
+// v2 APIは一般的にv1より安全なデフォルトを選択しますが、
+// 大きな整数や未知のメンバーには引き続き注意が必要です。
 //
 // [For example, suppose we have two micro-services.]: https://www.youtube.com/watch?v=avilmOcHKHE&t=1057s
 package json

@@ -24,12 +24,12 @@ import (
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// If a type implements [encoding.TextMarshaler] and/or [encoding.TextUnmarshaler],
-// then the MarshalText and UnmarshalText methods are used to encode/decode
-// the value to/from a JSON string.
+// 型が [encoding.TextMarshaler] や [encoding.TextUnmarshaler] を実装している場合、
+// MarshalText および UnmarshalText メソッドが値のエンコード・デコードに
+// JSON文字列として利用されます。
 func Example_textMarshal() {
-	// Round-trip marshal and unmarshal a hostname map where the netip.Addr type
-	// implements both encoding.TextMarshaler and encoding.TextUnmarshaler.
+	// netip.Addr型が encoding.TextMarshaler と encoding.TextUnmarshaler の両方を
+	// 実装しているホスト名マップをラウンドトリップでマーシャル・アンマーシャルします。
 	want := map[netip.Addr]string{
 		netip.MustParseAddr("192.168.0.100"): "carbonite",
 		netip.MustParseAddr("192.168.0.101"): "obsidian",
@@ -45,13 +45,13 @@ func Example_textMarshal() {
 		log.Fatal(err)
 	}
 
-	// Sanity check.
+	// 正常性チェック。
 	if !reflect.DeepEqual(got, want) {
 		log.Fatalf("roundtrip mismatch: got %v, want %v", got, want)
 	}
 
-	// Print the serialized JSON object.
-	(*jsontext.Value)(&b).Indent() // indent for readability
+	// シリアライズされたJSONオブジェクトを表示します。
+	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
 	fmt.Println(string(b))
 
 	// Output:
@@ -62,29 +62,28 @@ func Example_textMarshal() {
 	// }
 }
 
-// By default, JSON object names for Go struct fields are derived from
-// the Go field name, but may be specified in the `json` tag.
-// Due to JSON's heritage in JavaScript, the most common naming convention
-// used for JSON object names is camelCase.
+// デフォルトでは、Go構造体フィールドのJSONオブジェクト名は
+// Goフィールド名から導出されますが、`json`タグで指定することもできます。
+// JSONがJavaScript由来であるため、JSONオブジェクト名の最も一般的な命名規則はcamelCaseです。
 func Example_fieldNames() {
 	var value struct {
-		// This field is explicitly ignored with the special "-" name.
+		// このフィールドは特殊な"-"名で明示的に無視されます。
 		Ignored any `json:"-"`
-		// No JSON name is not provided, so the Go field name is used.
+		// JSON名が指定されていないため、Goフィールド名が使われます。
 		GoName any
-		// A JSON name is provided without any special characters.
+		// 特殊文字なしでJSON名が指定されています。
 		JSONName any `json:"jsonName"`
-		// No JSON name is not provided, so the Go field name is used.
+		// JSON名が指定されていないため、Goフィールド名が使われます。
 		Option any `json:",case:ignore"`
-		// An empty JSON name specified using an single-quoted string literal.
+		// 空のJSON名を単一引用符文字列リテラルで指定しています。
 		Empty any `json:"''"`
-		// A dash JSON name specified using an single-quoted string literal.
+		// ダッシュのJSON名を単一引用符文字列リテラルで指定しています。
 		Dash any `json:"'-'"`
-		// A comma JSON name specified using an single-quoted string literal.
+		// カンマのJSON名を単一引用符文字列リテラルで指定しています。
 		Comma any `json:"','"`
-		// JSON name with quotes specified using a single-quoted string literal.
+		// 引用符付きのJSON名を単一引用符文字列リテラルで指定しています。
 		Quote any `json:"'\"\\''"`
-		// An unexported field is always ignored.
+		// 非公開フィールドは常に無視されます。
 		unexported any
 	}
 
@@ -92,7 +91,7 @@ func Example_fieldNames() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent() // indent for readability
+	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
 	fmt.Println(string(b))
 
 	// Output:
@@ -107,68 +106,68 @@ func Example_fieldNames() {
 	// }
 }
 
-// Unmarshal matches JSON object names with Go struct fields using
-// a case-sensitive match, but can be configured to use a case-insensitive
-// match with the "case:ignore" option. This permits unmarshaling from inputs
-// that use naming conventions such as camelCase, snake_case, or kebab-case.
+// Unmarshalは、JSONオブジェクト名とGo構造体フィールドを
+// 大文字・小文字を区別して一致させますが、"case:ignore"オプションを使うことで
+// 大文字・小文字を区別しない一致に設定できます。
+// これにより、camelCase、snake_case、kebab-caseなどの命名規則を使った入力からアンマーシャルできます。
 func Example_caseSensitivity() {
-	// JSON input using various naming conventions.
+	// 様々な命名規則を使ったJSON入力。
 	const input = `[
-		{"firstname": true},
-		{"firstName": true},
-		{"FirstName": true},
-		{"FIRSTNAME": true},
-		{"first_name": true},
-		{"FIRST_NAME": true},
-		{"first-name": true},
-		{"FIRST-NAME": true},
-		{"unknown": true}
-	]`
+        {"firstname": true},
+        {"firstName": true},
+        {"FirstName": true},
+        {"FIRSTNAME": true},
+        {"first_name": true},
+        {"FIRST_NAME": true},
+        {"first-name": true},
+        {"FIRST-NAME": true},
+        {"unknown": true}
+    ]`
 
-	// Without "case:ignore", Unmarshal looks for an exact match.
+	// "case:ignore"なしの場合、Unmarshalは完全一致のみを探します。
 	var caseStrict []struct {
 		X bool `json:"firstName"`
 	}
 	if err := json.Unmarshal([]byte(input), &caseStrict); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(caseStrict) // exactly 1 match found
+	fmt.Println(caseStrict) // 完全一致が1つだけ見つかる
 
-	// With "case:ignore", Unmarshal looks first for an exact match,
-	// then for a case-insensitive match if none found.
+	// "case:ignore"ありの場合、Unmarshalはまず完全一致を探し、
+	// 見つからなければ大文字・小文字を区別しない一致を探します。
 	var caseIgnore []struct {
 		X bool `json:"firstName,case:ignore"`
 	}
 	if err := json.Unmarshal([]byte(input), &caseIgnore); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(caseIgnore) // 8 matches found
+	fmt.Println(caseIgnore) // 8つ一致が見つかる
 
 	// Output:
 	// [{false} {true} {false} {false} {false} {false} {false} {false} {false}]
 	// [{true} {true} {true} {true} {true} {true} {true} {true} {false}]
 }
 
-// Go struct fields can be omitted from the output depending on either
-// the input Go value or the output JSON encoding of the value.
-// The "omitzero" option omits a field if it is the zero Go value or
-// implements a "IsZero() bool" method that reports true.
-// The "omitempty" option omits a field if it encodes as an empty JSON value,
-// which we define as a JSON null or empty JSON string, object, or array.
-// In many cases, the behavior of "omitzero" and "omitempty" are equivalent.
-// If both provide the desired effect, then using "omitzero" is preferred.
+// Go構造体フィールドは、入力Go値または出力JSONエンコーディングのいずれかに応じて
+// 出力から省略される場合があります。
+// "omitzero"オプションは、フィールドがGoのゼロ値である場合や
+// "IsZero() bool"メソッドがtrueを返す場合にフィールドを省略します。
+// "omitempty"オプションは、フィールドが空のJSON値としてエンコードされる場合に省略します。
+// ここで空のJSON値とは、JSON null、空文字列、空オブジェクト、空配列を指します。
+// 多くの場合、"omitzero"と"omitempty"の挙動は同等です。
+// 両方で期待する効果が得られる場合は、"omitzero"の使用が推奨されます。
 func Example_omitFields() {
 	type MyStruct struct {
 		Foo string `json:",omitzero"`
 		Bar []int  `json:",omitempty"`
-		// Both "omitzero" and "omitempty" can be specified together,
-		// in which case the field is omitted if either would take effect.
-		// This omits the Baz field either if it is a nil pointer or
-		// if it would have encoded as an empty JSON object.
+		// "omitzero"と"omitempty"は両方同時に指定できます。
+		// その場合、どちらかの条件を満たせばフィールドは省略されます。
+		// この場合、Bazフィールドはnilポインタであるか、
+		// 空のJSONオブジェクトとしてエンコードされる場合に省略されます。
 		Baz *MyStruct `json:",omitzero,omitempty"`
 	}
 
-	// Demonstrate behavior of "omitzero".
+	// "omitzero"の挙動を示します。
 	b, err := json.Marshal(struct {
 		Bool         bool        `json:",omitzero"`
 		Int          int         `json:",omitzero"`
@@ -185,42 +184,42 @@ func Example_omitFields() {
 		InterfaceNil any         `json:",omitzero"`
 		Interface    any         `json:",omitzero"`
 	}{
-		// Bool is omitted since false is the zero value for a Go bool.
+		// Boolは、falseがGoのbool型のゼロ値であるため省略されます。
 		Bool: false,
-		// Int is omitted since 0 is the zero value for a Go int.
+		// Intは、0がGoのint型のゼロ値であるため省略されます。
 		Int: 0,
-		// String is omitted since "" is the zero value for a Go string.
+		// Stringは、""がGoのstring型のゼロ値であるため省略されます。
 		String: "",
-		// Time is omitted since time.Time.IsZero reports true.
+		// Timeは、time.Time.IsZeroがtrueを返すため省略されます。
 		Time: time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC),
-		// Addr is omitted since netip.Addr{} is the zero value for a Go struct.
+		// Addrは、netip.Addr{}がGoの構造体のゼロ値であるため省略されます。
 		Addr: netip.Addr{},
-		// Struct is NOT omitted since it is not the zero value for a Go struct.
+		// Structは、Goの構造体のゼロ値ではないため省略されません。
 		Struct: MyStruct{Bar: []int{}, Baz: new(MyStruct)},
-		// SliceNil is omitted since nil is the zero value for a Go slice.
+		// SliceNilは、nilがGoのスライスのゼロ値であるため省略されます。
 		SliceNil: nil,
-		// Slice is NOT omitted since []int{} is not the zero value for a Go slice.
+		// Sliceは、[]int{}がGoのスライスのゼロ値ではないため省略されません。
 		Slice: []int{},
-		// MapNil is omitted since nil is the zero value for a Go map.
+		// MapNilは、nilがGoのマップのゼロ値であるため省略されます。
 		MapNil: nil,
-		// Map is NOT omitted since map[int]int{} is not the zero value for a Go map.
+		// Mapは、map[int]int{}がGoのマップのゼロ値ではないため省略されません。
 		Map: map[int]int{},
-		// PointerNil is omitted since nil is the zero value for a Go pointer.
+		// PointerNilは、nilがGoのポインタのゼロ値であるため省略されます。
 		PointerNil: nil,
-		// Pointer is NOT omitted since new(string) is not the zero value for a Go pointer.
+		// Pointerは、new(string)がGoのポインタのゼロ値ではないため省略されません。
 		Pointer: new(string),
-		// InterfaceNil is omitted since nil is the zero value for a Go interface.
+		// InterfaceNilは、nilがGoのインターフェースのゼロ値であるため省略されます。
 		InterfaceNil: nil,
-		// Interface is NOT omitted since (*string)(nil) is not the zero value for a Go interface.
+		// Interfaceは、(*string)(nil)がGoのインターフェースのゼロ値ではないため省略されません。
 		Interface: (*string)(nil),
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent()      // indent for readability
-	fmt.Println("OmitZero:", string(b)) // outputs "Struct", "Slice", "Map", "Pointer", and "Interface"
+	(*jsontext.Value)(&b).Indent()      // 可読性のためインデント
+	fmt.Println("OmitZero:", string(b)) // "Struct", "Slice", "Map", "Pointer", "Interface"が出力されます
 
-	// Demonstrate behavior of "omitempty".
+	// "omitempty"の挙動を示します。
 	b, err = json.Marshal(struct {
 		Bool         bool        `json:",omitempty"`
 		Int          int         `json:",omitempty"`
@@ -235,29 +234,29 @@ func Example_omitFields() {
 		InterfaceNil any         `json:",omitempty"`
 		Interface    any         `json:",omitempty"`
 	}{
-		// Bool is NOT omitted since false is not an empty JSON value.
+		// Boolは、省略されません。falseは空のJSON値ではないためです。
 		Bool: false,
-		// Int is NOT omitted since 0 is not a empty JSON value.
+		// Intは、省略されません。0は空のJSON値ではないためです。
 		Int: 0,
-		// String is omitted since "" is an empty JSON string.
+		// Stringは、省略されます。""は空のJSON文字列だからです。
 		String: "",
-		// Time is NOT omitted since this encodes as a non-empty JSON string.
+		// Timeは、省略されません。これは空でないJSON文字列としてエンコードされるためです。
 		Time: time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC),
-		// Addr is omitted since this encodes as an empty JSON string.
+		// Addrは、省略されます。これは空のJSON文字列としてエンコードされるためです。
 		Addr: netip.Addr{},
-		// Struct is omitted since {} is an empty JSON object.
+		// Structは、省略されます。{}は空のJSONオブジェクトだからです。
 		Struct: MyStruct{Bar: []int{}, Baz: new(MyStruct)},
-		// Slice is omitted since [] is an empty JSON array.
+		// Sliceは、省略されます。[]は空のJSON配列だからです。
 		Slice: []int{},
-		// Map is omitted since {} is an empty JSON object.
+		// Mapは、省略されます。{}は空のJSONオブジェクトだからです。
 		Map: map[int]int{},
-		// PointerNil is omitted since null is an empty JSON value.
+		// PointerNilは、省略されます。nullは空のJSON値だからです。
 		PointerNil: nil,
-		// Pointer is omitted since "" is an empty JSON string.
+		// Pointerは、省略されます。""は空のJSON文字列だからです。
 		Pointer: new(string),
-		// InterfaceNil is omitted since null is an empty JSON value.
+		// InterfaceNilは、省略されます。nullは空のJSON値だからです。
 		InterfaceNil: nil,
-		// Interface is omitted since null is an empty JSON value.
+		// Interfaceは、省略されます。nullは空のJSON値だからです。
 		Interface: (*string)(nil),
 	})
 	if err != nil {
@@ -281,48 +280,47 @@ func Example_omitFields() {
 	// }
 }
 
-// JSON objects can be inlined within a parent object similar to
-// how Go structs can be embedded within a parent struct.
-// The inlining rules are similar to those of Go embedding,
-// but operates upon the JSON namespace.
+// JSONオブジェクトは、Go構造体が親構造体に埋め込まれるのと同様に
+// 親オブジェクト内にインライン化できます。
+// インライン化のルールはGoの埋め込みと似ていますが、JSONの名前空間上で動作します。
 func Example_inlinedFields() {
-	// Base is embedded within Container.
+	// BaseはContainerに埋め込まれています。
 	type Base struct {
-		// ID is promoted into the JSON object for Container.
+		// IDはContainerのJSONオブジェクトに昇格されます。
 		ID string
-		// Type is ignored due to presence of Container.Type.
+		// TypeはContainer.Typeが存在するため無視されます。
 		Type string
-		// Time cancels out with Container.Inlined.Time.
+		// TimeはContainer.Inlined.Timeと打ち消し合います。
 		Time time.Time
 	}
-	// Other is embedded within Container.
+	// OtherはContainerに埋め込まれています。
 	type Other struct{ Cost float64 }
-	// Container embeds Base and Other.
+	// ContainerはBaseとOtherを埋め込みます。
 	type Container struct {
-		// Base is an embedded struct and is implicitly JSON inlined.
+		// Baseは埋め込み構造体であり、暗黙的にJSONインライン化されます。
 		Base
-		// Type takes precedence over Base.Type.
+		// TypeはBase.Typeより優先されます。
 		Type int
-		// Inlined is a named Go field, but is explicitly JSON inlined.
+		// Inlinedは名前付きGoフィールドですが、明示的にJSONインライン化されています。
 		Inlined struct {
-			// User is promoted into the JSON object for Container.
+			// UserはContainerのJSONオブジェクトに昇格されます。
 			User string
-			// Time cancels out with Base.Time.
+			// TimeはBase.Timeと打ち消し合います。
 			Time string
 		} `json:",inline"`
-		// ID does not conflict with Base.ID since the JSON name is different.
+		// IDはJSON名が異なるため、Base.IDと競合しません。
 		ID string `json:"uuid"`
-		// Other is not JSON inlined since it has an explicit JSON name.
+		// Otherは明示的なJSON名があるためJSONインライン化されません。
 		Other `json:"other"`
 	}
 
-	// Format an empty Container to show what fields are JSON serializable.
+	// 空のContainerをフォーマットして、どのフィールドがJSONシリアライズ可能かを表示します。
 	var input Container
 	b, err := json.Marshal(&input)
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent() // indent for readability
+	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
 	fmt.Println(string(b))
 
 	// Output:
@@ -337,10 +335,10 @@ func Example_inlinedFields() {
 	// }
 }
 
-// Due to version skew, the set of JSON object members known at compile-time
-// may differ from the set of members encountered at execution-time.
-// As such, it may be useful to have finer grain handling of unknown members.
-// This package supports preserving, rejecting, or discarding such members.
+// バージョンの違いにより、コンパイル時に既知のJSONオブジェクトメンバー集合と
+// 実行時に遭遇するメンバー集合が異なる場合があります。
+// そのため、未知のメンバーを細かく制御できると便利です。
+// このパッケージは、未知のメンバーの保持・拒否・破棄をサポートします。
 func Example_unknownMembers() {
 	const input = `{
 		"Name": "Teal",
@@ -351,15 +349,15 @@ func Example_unknownMembers() {
 		Name  string
 		Value string
 
-		// Unknown is a Go struct field that holds unknown JSON object members.
-		// It is marked as having this behavior with the "unknown" tag option.
+		// Unknownは未知のJSONオブジェクトメンバーを保持するGo構造体フィールドです。
+		// "unknown"タグオプションを指定することでこの挙動になります。
 		//
-		// The type may be a jsontext.Value or map[string]T.
+		// 型はjsontext.Valueまたはmap[string]Tが利用できます。
 		Unknown jsontext.Value `json:",unknown"`
 	}
 
-	// By default, unknown members are stored in a Go field marked as "unknown"
-	// or ignored if no such field exists.
+	// デフォルトでは、未知のメンバーは "unknown" とマークされたGoフィールドに格納されます。
+	// そのようなフィールドが存在しない場合は無視されます。
 	var color Color
 	err := json.Unmarshal([]byte(input), &color)
 	if err != nil {
@@ -367,24 +365,24 @@ func Example_unknownMembers() {
 	}
 	fmt.Println("Unknown members:", string(color.Unknown))
 
-	// Specifying RejectUnknownMembers causes Unmarshal
-	// to reject the presence of any unknown members.
+	// RejectUnknownMembersを指定すると、Unmarshalは
+	// 未知のメンバーが存在する場合に拒否します。
 	err = json.Unmarshal([]byte(input), new(Color), json.RejectUnknownMembers(true))
 	var serr *json.SemanticError
 	if errors.As(err, &serr) && serr.Err == json.ErrUnknownName {
 		fmt.Println("Unmarshal error:", serr.Err, strconv.Quote(serr.JSONPointer.LastToken()))
 	}
 
-	// By default, Marshal preserves unknown members stored in
-	// a Go struct field marked as "unknown".
+	// デフォルトでは、Marshalは "unknown" とマークされた
+	// Go構造体フィールドに格納された未知のメンバーを保持します。
 	b, err := json.Marshal(color)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Output with unknown members:   ", string(b))
 
-	// Specifying DiscardUnknownMembers causes Marshal
-	// to discard any unknown members.
+	// DiscardUnknownMembersを指定すると、Marshalは
+	// 未知のメンバーを破棄します。
 	b, err = json.Marshal(color, json.DiscardUnknownMembers(true))
 	if err != nil {
 		log.Fatal(err)
@@ -398,7 +396,7 @@ func Example_unknownMembers() {
 	// Output without unknown members: {"Name":"Teal","Value":"#008080"}
 }
 
-// The "format" tag option can be used to alter the formatting of certain types.
+// "format"タグオプションを使うことで、特定の型の書式を変更できます。
 func Example_formatFlags() {
 	value := struct {
 		BytesBase64     []byte         `json:",format:base64"`
@@ -430,7 +428,7 @@ func Example_formatFlags() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent() // indent for readability
+	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
 	fmt.Println(string(b))
 
 	// Output:
@@ -458,96 +456,94 @@ func Example_formatFlags() {
 	// }
 }
 
-// When implementing HTTP endpoints, it is common to be operating with an
-// [io.Reader] and an [io.Writer]. The [MarshalWrite] and [UnmarshalRead] functions
-// assist in operating on such input/output types.
-// [UnmarshalRead] reads the entirety of the [io.Reader] to ensure that [io.EOF]
-// is encountered without any unexpected bytes after the top-level JSON value.
+// HTTPエンドポイントを実装する際、[io.Reader] や [io.Writer] を扱うことが一般的です。
+// [MarshalWrite] と [UnmarshalRead] 関数は、こうした入出力型の操作を補助します。
+// [UnmarshalRead] は [io.Reader] 全体を読み込み、トップレベルのJSON値の後に
+// 予期しないバイトがないことを確認します。
 func Example_serveHTTP() {
-	// Some global state maintained by the server.
+	// サーバーが保持するグローバルな状態。
 	var n int64
 
-	// The "add" endpoint accepts a POST request with a JSON object
-	// containing a number to atomically add to the server's global counter.
-	// It returns the updated value of the counter.
+	// "add"エンドポイントは、JSONオブジェクトを含むPOSTリクエストを受け付け、
+	// サーバーのグローバルカウンターに数値をアトミックに加算します。
+	// 更新されたカウンターの値を返します。
 	http.HandleFunc("/api/add", func(w http.ResponseWriter, r *http.Request) {
-		// Unmarshal the request from the client.
+		// クライアントからのリクエストをアンマーシャルします。
 		var val struct{ N int64 }
 		if err := json.UnmarshalRead(r.Body, &val); err != nil {
-			// Inability to unmarshal the input suggests a client-side problem.
+			// 入力のアンマーシャルに失敗した場合は、クライアント側の問題を示唆します。
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		// Marshal a response from the server.
+		// サーバーからのレスポンスをマーシャルします。
 		val.N = atomic.AddInt64(&n, val.N)
 		if err := json.MarshalWrite(w, &val); err != nil {
-			// Inability to marshal the output suggests a server-side problem.
-			// This error is not always observable by the client since
-			// json.MarshalWrite may have already written to the output.
+			// 出力のマーシャルに失敗した場合は、サーバー側の問題を示唆します。
+			// このエラーは、json.MarshalWriteがすでに出力に書き込んでいる場合、
+			// クライアントからは常に観測できるとは限りません。
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	})
 }
 
-// Some Go types have a custom JSON representation where the implementation
-// is delegated to some external package. Consequently, the "json" package
-// will not know how to use that external implementation.
-// For example, the [google.golang.org/protobuf/encoding/protojson] package
-// implements JSON for all [google.golang.org/protobuf/proto.Message] types.
-// [WithMarshalers] and [WithUnmarshalers] can be used
-// to configure "json" and "protojson" to cooperate together.
+// 一部のGo型は、独自のJSON表現を外部パッケージに委譲しています。
+// そのため、"json"パッケージは外部実装の使い方を知りません。
+// 例えば、[google.golang.org/protobuf/encoding/protojson] パッケージは
+// すべての [google.golang.org/protobuf/proto.Message] 型のJSONを実装しています。
+// [WithMarshalers] や [WithUnmarshalers] を使うことで
+// "json"と"protojson"を連携させることができます。
 func Example_protoJSON() {
-	// Let protoMessage be "google.golang.org/protobuf/proto".Message.
+	// protoMessage を "google.golang.org/protobuf/proto".Message とします。
 	type protoMessage interface{ ProtoReflect() }
-	// Let foopbMyMessage be a concrete implementation of proto.Message.
+	// foopbMyMessage を proto.Message の具体的な実装とします。
 	type foopbMyMessage struct{ protoMessage }
-	// Let protojson be an import of "google.golang.org/protobuf/encoding/protojson".
+	// protojson を "google.golang.org/protobuf/encoding/protojson" のインポートとします。
 	var protojson struct {
 		Marshal   func(protoMessage) ([]byte, error)
 		Unmarshal func([]byte, protoMessage) error
 	}
 
-	// This value mixes both non-proto.Message types and proto.Message types.
-	// It should use the "json" package to handle non-proto.Message types and
-	// should use the "protojson" package to handle proto.Message types.
+	// この値は、非proto.Message型とproto.Message型の両方を混在させています。
+	// 非proto.Message型には "json" パッケージを、
+	// proto.Message型には "protojson" パッケージを使うべきです。
 	var value struct {
-		// GoStruct does not implement proto.Message and
-		// should use the default behavior of the "json" package.
+		// GoStructはproto.Messageを実装していないため、
+		// "json"パッケージのデフォルト動作を使うべきです。
 		GoStruct struct {
 			Name string
 			Age  int
 		}
 
-		// ProtoMessage implements proto.Message and
-		// should be handled using protojson.Marshal.
+		// ProtoMessageはproto.Messageを実装しているため、
+		// protojson.Marshalで処理すべきです。
 		ProtoMessage *foopbMyMessage
 	}
 
-	// Marshal using protojson.Marshal for proto.Message types.
+	// proto.Message型にはprotojson.Marshalを使ってマーシャルします。
 	b, err := json.Marshal(&value,
-		// Use protojson.Marshal as a type-specific marshaler.
+		// protojson.Marshalを型固有のマーシャラーとして使います。
 		json.WithMarshalers(json.MarshalFunc(protojson.Marshal)))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Unmarshal using protojson.Unmarshal for proto.Message types.
+	// proto.Message型にはprotojson.Unmarshalを使ってアンマーシャルします。
 	err = json.Unmarshal(b, &value,
-		// Use protojson.Unmarshal as a type-specific unmarshaler.
+		// protojson.Unmarshalを型固有のアンマーシャラーとして使います。
 		json.WithUnmarshalers(json.UnmarshalFunc(protojson.Unmarshal)))
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-// Many error types are not serializable since they tend to be Go structs
-// without any exported fields (e.g., errors constructed with [errors.New]).
-// Some applications, may desire to marshal an error as a JSON string
-// even if these errors cannot be unmarshaled.
+// 多くのエラー型は、Goの構造体で公開フィールドを持たないためシリアライズできません
+// （例: [errors.New] で生成されたエラーなど）。
+// 一部のアプリケーションでは、アンマーシャルできないエラーであっても
+// エラーをJSON文字列としてマーシャルしたい場合があります。
 func ExampleWithMarshalers_errors() {
-	// Response to serialize with some Go errors encountered.
+	// シリアライズ時にGoエラーがいくつか発生したレスポンス。
 	response := []struct {
 		Result string `json:",omitzero"`
 		Error  error  `json:",omitzero"`
@@ -558,22 +554,22 @@ func ExampleWithMarshalers_errors() {
 	}
 
 	b, err := json.Marshal(&response,
-		// Intercept every attempt to marshal an error type.
+		// エラー型をマーシャルするすべての試みをインターセプトします。
 		json.WithMarshalers(json.JoinMarshalers(
-			// Suppose we consider strconv.NumError to be a safe to serialize:
-			// this type-specific marshal function intercepts this type
-			// and encodes the error message as a JSON string.
+			// 例えば、strconv.NumErrorは安全にシリアライズできると仮定します:
+			// この型固有のマーシャル関数はこの型をインターセプトし、
+			// エラーメッセージをJSON文字列としてエンコードします。
 			json.MarshalToFunc(func(enc *jsontext.Encoder, err *strconv.NumError) error {
 				return enc.WriteToken(jsontext.String(err.Error()))
 			}),
-			// Error messages may contain sensitive information that may not
-			// be appropriate to serialize. For all errors not handled above,
-			// report some generic error message.
+			// エラーメッセージには機密情報が含まれる場合があり、
+			// シリアライズに適さないことがあります。上記で処理されなかった
+			// すべてのエラーには汎用的なエラーメッセージを返します。
 			json.MarshalFunc(func(error) ([]byte, error) {
 				return []byte(`"internal server error"`), nil
 			}),
 		)),
-		jsontext.Multiline(true)) // expand for readability
+		jsontext.Multiline(true)) // 可読性のため展開
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -593,25 +589,26 @@ func ExampleWithMarshalers_errors() {
 	// ]
 }
 
-// In some applications, the exact precision of JSON numbers needs to be
-// preserved when unmarshaling. This can be accomplished using a type-specific
-// unmarshal function that intercepts all any types and pre-populates the
-// interface value with a [jsontext.Value], which can represent a JSON number exactly.
+// 一部のアプリケーションでは、JSON数値の正確な精度を
+// アンマーシャル時に保持する必要があります。これは型固有の
+// アンマーシャル関数を使い、any型へのすべてのアンマーシャルをインターセプトして
+// インターフェース値を [jsontext.Value] で事前に埋めることで実現できます。
+// [jsontext.Value] はJSON数値を正確に表現できます。
 func ExampleWithUnmarshalers_rawNumber() {
-	// Input with JSON numbers beyond the representation of a float64.
+	// float64の表現を超えるJSON数値を含む入力。
 	const input = `[false, 1e-1000, 3.141592653589793238462643383279, 1e+1000, true]`
 
 	var value any
 	err := json.Unmarshal([]byte(input), &value,
-		// Intercept every attempt to unmarshal into the any type.
+		// any型へのすべてのアンマーシャル試行をインターセプトします。
 		json.WithUnmarshalers(
 			json.UnmarshalFromFunc(func(dec *jsontext.Decoder, val *any) error {
-				// If the next value to be decoded is a JSON number,
-				// then provide a concrete Go type to unmarshal into.
+				// 次にデコードされる値がJSON数値の場合、
+				// アンマーシャル先のGo型を具体的に指定します。
 				if dec.PeekKind() == '0' {
 					*val = jsontext.Value(nil)
 				}
-				// Return SkipFunc to fallback on default unmarshal behavior.
+				// SkipFuncを返してデフォルトのアンマーシャル動作にフォールバックします。
 				return json.SkipFunc
 			}),
 		))
@@ -620,7 +617,7 @@ func ExampleWithUnmarshalers_rawNumber() {
 	}
 	fmt.Println(value)
 
-	// Sanity check.
+	// 正常性チェック。
 	want := []any{false, jsontext.Value("1e-1000"), jsontext.Value("3.141592653589793238462643383279"), jsontext.Value("1e+1000"), true}
 	if !reflect.DeepEqual(value, want) {
 		log.Fatalf("value mismatch:\ngot  %v\nwant %v", value, want)
@@ -630,42 +627,42 @@ func ExampleWithUnmarshalers_rawNumber() {
 	// [false 1e-1000 3.141592653589793238462643383279 1e+1000 true]
 }
 
-// When using JSON for parsing configuration files,
-// the parsing logic often needs to report an error with a line and column
-// indicating where in the input an error occurred.
+// JSONで設定ファイルをパースする場合、
+// パース処理は入力のどこでエラーが発生したかを示すために
+// 行番号や列番号付きでエラーを報告する必要があることがよくあります。
 func ExampleWithUnmarshalers_recordOffsets() {
-	// Hypothetical configuration file.
+	// 仮想的な設定ファイル。
 	const input = `[
-		{"Source": "192.168.0.100:1234", "Destination": "192.168.0.1:80"},
-		{"Source": "192.168.0.251:4004"},
-		{"Source": "192.168.0.165:8080", "Destination": "0.0.0.0:80"}
-	]`
+					{"Source": "192.168.0.100:1234", "Destination": "192.168.0.1:80"},
+					{"Source": "192.168.0.251:4004"},
+					{"Source": "192.168.0.165:8080", "Destination": "0.0.0.0:80"}
+			]`
 	type Tunnel struct {
 		Source      netip.AddrPort
 		Destination netip.AddrPort
 
-		// ByteOffset is populated during unmarshal with the byte offset
-		// within the JSON input of the JSON object for this Go struct.
-		ByteOffset int64 `json:"-"` // metadata to be ignored for JSON serialization
+		// ByteOffsetはアンマーシャル時に、このGo構造体のJSONオブジェクトが
+		// JSON入力内のどのバイトオフセットにあるかを記録します。
+		ByteOffset int64 `json:"-"` // JSONシリアライズ時は無視されるメタデータ
 	}
 
 	var tunnels []Tunnel
 	err := json.Unmarshal([]byte(input), &tunnels,
-		// Intercept every attempt to unmarshal into the Tunnel type.
+		// Tunnel型へのすべてのアンマーシャル試行をインターセプトします。
 		json.WithUnmarshalers(
 			json.UnmarshalFromFunc(func(dec *jsontext.Decoder, tunnel *Tunnel) error {
-				// Decoder.InputOffset reports the offset after the last token,
-				// but we want to record the offset before the next token.
+				// Decoder.InputOffsetは直前のトークンの後のオフセットを報告しますが、
+				// 次のトークンの前のオフセットを記録したい場合があります。
 				//
-				// Call Decoder.PeekKind to buffer enough to reach the next token.
-				// Add the number of leading whitespace, commas, and colons
-				// to locate the start of the next token.
+				// Decoder.PeekKindを呼び出して、次のトークンまで十分にバッファリングします。
+				// 先頭の空白、カンマ、コロンの数を加算して
+				// 次のトークンの開始位置を特定します。
 				dec.PeekKind()
 				unread := dec.UnreadBuffer()
 				n := len(unread) - len(bytes.TrimLeft(unread, " \n\r\t,:"))
 				tunnel.ByteOffset = dec.InputOffset() + int64(n)
 
-				// Return SkipFunc to fallback on default unmarshal behavior.
+				// SkipFuncを返してデフォルトのアンマーシャル動作にフォールバックします。
 				return json.SkipFunc
 			}),
 		))
@@ -673,15 +670,15 @@ func ExampleWithUnmarshalers_recordOffsets() {
 		log.Fatal(err)
 	}
 
-	// lineColumn converts a byte offset into a one-indexed line and column.
-	// The offset must be within the bounds of the input.
+	// lineColumnはバイトオフセットを1始まりの行・列番号に変換します。
+	// オフセットはinputの範囲内である必要があります。
 	lineColumn := func(input string, offset int) (line, column int) {
 		line = 1 + strings.Count(input[:offset], "\n")
 		column = 1 + offset - (strings.LastIndex(input[:offset], "\n") + len("\n"))
 		return line, column
 	}
 
-	// Verify that the configuration file is valid.
+	// 設定ファイルが有効かどうかを検証します。
 	for _, tunnel := range tunnels {
 		if !tunnel.Source.IsValid() || !tunnel.Destination.IsValid() {
 			line, column := lineColumn(input, int(tunnel.ByteOffset))
