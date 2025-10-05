@@ -23,16 +23,9 @@ type ProxyRequest struct {
 	Out *http.Request
 }
 
-<<<<<<< HEAD
-// SetURLは、ターゲットに指定されたスキーム、ホスト、およびベースパスに従って、アウトバウンドリクエストをルーティングします。
-// もしターゲットのパスが"/base"であり、受信したリクエストが"/dir"である場合、ターゲットリクエストは"/base/dir"となります。
-=======
-// SetURL routes the outbound request to the scheme, host, and base path
-// provided in target. If the target's path is "/base" and the incoming
-// request was for "/dir", the target request will be for "/base/dir".
-// To route requests without joining the incoming path,
-// set r.Out.URL directly.
->>>>>>> upstream/release-branch.go1.25
+// SetURLは、アウトバウンドリクエストをtargetで指定されたスキーム、ホスト、およびベースパスにルーティングします。
+// 例えば、targetのパスが "/base" で、受信リクエストが "/dir" の場合、ターゲットリクエストは "/base/dir" になります。
+// 受信パスを結合せずにリクエストをルーティングしたい場合は、r.Out.URL を直接設定してください。
 //
 // SetURLは、アウトバウンドのHostヘッダをターゲットのホストに合わせて書き換えます。
 // インバウンドのリクエストのHostヘッダを保持するために（[NewSingleHostReverseProxy] のデフォルトの動作）：
@@ -61,19 +54,14 @@ func (r *ProxyRequest) SetXForwarded()
 
 // ReverseProxyは、受信したリクエストを別のサーバーに送信し、レスポンスをクライアントにプロキシするHTTPハンドラです。
 //
-<<<<<<< HEAD
-// もし基礎となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、1xxのレスポンスはクライアントに転送されます。
-=======
-// 1xx responses are forwarded to the client if the underlying
-// transport supports ClientTrace.Got1xxResponse.
+// 1xxレスポンスは、基盤となるトランスポートがClientTrace.Got1xxResponseをサポートしている場合、クライアントに転送されます。
 //
-// Hop-by-hop headers (see RFC 9110, section 7.6.1), including
-// Connection, Proxy-Connection, Keep-Alive, Proxy-Authenticate,
-// Proxy-Authorization, TE, Trailer, Transfer-Encoding, and Upgrade,
-// are removed from client requests and backend responses.
-// The Rewrite function may be used to add hop-by-hop headers to the request,
-// and the ModifyResponse function may be used to remove them from the response.
->>>>>>> upstream/release-branch.go1.25
+// ホップバイホップヘッダー（RFC 9110のセクション7.6.1参照）、
+// Connection、Proxy-Connection、Keep-Alive、Proxy-Authenticate、
+// Proxy-Authorization、TE、Trailer、Transfer-Encoding、Upgradeなどは、
+// クライアントリクエストおよびバックエンドレスポンスから削除されます。
+// Rewrite関数を使用してリクエストにホップバイホップヘッダーを追加したり、
+// ModifyResponse関数を使用してレスポンスからそれらを削除することができます。
 type ReverseProxy struct {
 
 	// Rewriteは、リクエストを変更してTransportを使用して送信される新しいリクエストに変換する関数でなければなりません。
@@ -120,18 +108,11 @@ type ReverseProxy struct {
 	// この関数は、バックエンドからのレスポンスがある場合に呼び出されます（HTTPのステータスコードに関係なく）。
 	// バックエンドに到達できない場合は、オプションのErrorHandlerが呼び出され、ModifyResponseは呼び出されません。
 	//
-<<<<<<< HEAD
-	// ModifyResponseがエラーを返す場合、それに対してErrorHandlerが呼び出されます。
-	// ErrorHandlerがnilの場合は、デフォルトの実装が使用されます。
-=======
-	// Hop-by-hop headers are removed from the response before
-	// calling ModifyResponse. ModifyResponse may need to remove
-	// additional headers to fit its deployment model, such as Alt-Svc.
+	// ホップバイホップヘッダーは、ModifyResponseを呼び出す前にレスポンスから削除されます。
+	// ModifyResponseは、Alt-Svcなど、運用モデルに合わせて追加のヘッダーを削除する必要がある場合があります。
 	//
-	// If ModifyResponse returns an error, ErrorHandler is called
-	// with its error value. If ErrorHandler is nil, its default
-	// implementation is used.
->>>>>>> upstream/release-branch.go1.25
+	// ModifyResponseがエラーを返した場合、ErrorHandlerがそのエラー値で呼び出されます。
+	// ErrorHandlerがnilの場合は、デフォルトの実装が使用されます。
 	ModifyResponse func(*http.Response) error
 
 	// ErrorHandlerは、バックエンドに到達したエラーやModifyResponseからのエラーを処理するオプションの関数です。

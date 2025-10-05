@@ -25,13 +25,9 @@ func NewRequest(method, target string, body io.Reader) *http.Request
 //
 // 空のメソッドは「GET」を意味します。
 //
-<<<<<<< HEAD
-// 指定されたbodyはnilである場合があります。bodyが*bytes.Reader、*strings.Reader、または*bytes.Bufferの型の場合、Request.ContentLengthが設定されます。
-=======
-// The provided body may be nil. If the body is of type [bytes.Reader],
-// [strings.Reader], [bytes.Buffer], or the value [http.NoBody],
-// the Request.ContentLength is set.
->>>>>>> upstream/release-branch.go1.25
+// bodyにnilを指定することもできます。bodyが [bytes.Reader]、
+// [strings.Reader]、[bytes.Buffer] 型、または値が [http.NoBody] の場合、
+// Request.ContentLength が設定されます。
 //
 // NewRequestはエラー時にパニックを発生させます。テストではパニックが許容されるため、使用の便宜上です。
 //
