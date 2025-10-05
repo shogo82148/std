@@ -74,25 +74,25 @@ UjmopwKBgAqB2KYYMUqAOvYcBnEfLDmyZv9BTVNHbR2lKkMYqv5LlvDaBxVfilE0
 	fmt.Println("Private key bit size:", testRSA2048.N.BitLen())
 }
 
-// RSA is able to encrypt only a very limited amount of data. In order
-// to encrypt reasonable amounts of data a hybrid scheme is commonly
-// used: RSA is used to encrypt a key for a symmetric primitive like
-// AES-GCM.
+// RSAは非常に限られた量のデータしか暗号化できません。合理的な量の
+// データを暗号化するために、ハイブリッドスキームが一般的に
+// 使用されます：RSAはAES-GCMのような対称プリミティブの
+// キーを暗号化するために使用されます。
 //
-// Before encrypting, data is “padded” by embedding it in a known
-// structure. This is done for a number of reasons, but the most
-// obvious is to ensure that the value is large enough that the
-// exponentiation is larger than the modulus. (Otherwise it could be
-// decrypted with a square-root.)
+// 暗号化の前に、データは既知の
+// 構造に埋め込むことで「パディング」されます。これは多くの理由で行われますが、最も
+// 明らかなのは、べき乗が剰余より大きくなるように
+// 値が十分に大きいことを保証することです。（そうでなければ平方根で
+// 復号化される可能性があります。）
 //
-// In these designs, when using PKCS #1 v1.5, it's vitally important to
-// avoid disclosing whether the received RSA message was well-formed
-// (that is, whether the result of decrypting is a correctly padded
-// message) because this leaks secret information.
-// DecryptPKCS1v15SessionKey is designed for this situation and copies
-// the decrypted, symmetric key (if well-formed) in constant-time over
-// a buffer that contains a random key. Thus, if the RSA result isn't
-// well-formed, the implementation uses a random key in constant time.
+// これらの設計では、PKCS #1 v1.5を使用する場合、受信したRSAメッセージが
+// 正しい形式であったかどうか（つまり、復号化の結果が正しく
+// パディングされたメッセージであるかどうか）を開示することを避けることが
+// 極めて重要です。これは秘密情報を漏洩するためです。
+// DecryptPKCS1v15SessionKeyはこの状況のために設計されており、
+// 復号化された対称キー（正しい形式の場合）を、ランダムキーを含む
+// バッファに定数時間でコピーします。したがって、RSAの結果が
+// 正しい形式でない場合、実装は定数時間でランダムキーを使用します。
 func ExampleDecryptPKCS1v15SessionKey() {
 
 	// ハイブリッド方式では、少なくとも16バイトの対称鍵を使用する必要があります。ここでは、RSA復号が正しく形成されていない場合に使用されるランダムな鍵を読み取ります。
