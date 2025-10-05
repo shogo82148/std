@@ -78,18 +78,9 @@ func UnquoteChar(s string, quote byte) (value rune, multibyte bool, tail string,
 // sが有効な引用符で囲まれた文字列で始まらない場合、QuotedPrefixはエラーを返します。
 func QuotedPrefix(s string) (string, error)
 
-<<<<<<< HEAD
-// Unquoteは、sをシングルクォート、ダブルクォート、またはバッククォートされたGo文字列リテラルとして解釈し、
-// sが引用する文字列値を返します。（sがシングルクォートされている場合、それはGoの文字リテラルであり、
-// Unquoteは対応する1文字の文字列を返します。）
-=======
-// Unquote interprets s as a single-quoted, double-quoted,
-// or backquoted Go string literal, returning the string value
-// that s quotes.  (If s is single-quoted, it would be a Go
-// character literal; Unquote returns the corresponding
-// one-character string. For an empty character literal
-// Unquote returns the empty string.)
->>>>>>> upstream/release-branch.go1.25
+// Unquoteは、sをシングルクォート、ダブルクォート、またはバッククォートで囲まれたGo文字列リテラルとして解釈し、
+// sが囲む文字列値を返します。（sがシングルクォートの場合、それはGoの文字リテラルとなり、Unquoteは対応する1文字の文字列を返します。
+// 空の文字リテラルの場合、Unquoteは空文字列を返します。）
 func Unquote(s string) (string, error)
 
 // IsPrintは、文字がGoによって印刷可能と定義されているかどうかを報告します。
