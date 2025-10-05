@@ -15,15 +15,8 @@
 // [path/filepath] パッケージのGlob関数を使用します。
 // 環境変数を展開するには、osパッケージのExpandEnvを使用します。
 //
-<<<<<<< HEAD
 // このパッケージの例はUnixシステムを前提としています。
-// これらはWindowsでは実行できないかもしれませんし、golang.org や godoc.org が使用する
-// Go Playgroundでは実行できません。
-=======
-// Note that the examples in this package assume a Unix system.
-// They may not run on Windows, and they do not run in the Go Playground
-// used by go.dev and pkg.go.dev.
->>>>>>> upstream/release-branch.go1.25
+// Windowsでは動作しない場合があり、go.dev や pkg.go.dev で使われているGo Playgroundでは実行できません。
 //
 // # Executables in the current directory
 //
@@ -134,50 +127,24 @@ type Cmd struct {
 	// 典型的な使用では、PathとArgsの両方はCommandを呼び出すことで設定されます。
 	Args []string
 
-<<<<<<< HEAD
-	// Envはプロセスの環境を指定します。
-	// 各エントリは "key=value" の形式です。
-	// Envがnilの場合、新しいプロセスは現在のプロセスの
-	// 環境を使用します。
-	// Envに環境キーの重複が含まれている場合、各重複キーに対してスライス内の
-	// 最後の値のみが使用されます。
-	// Windowsでは特別なケースとして、SYSTEMROOTは常に追加されます。
-	// 明示的に空文字列に設定されていない場合は欠落しています。
+	// Envはプロセスの環境変数を指定します。
+	// 各要素は "key=value" の形式です。
+	// Envがnilの場合、新しいプロセスは現在のプロセスの環境を使用します。
+	// Envに重複するキーが含まれている場合、重複したキーごとに最後の値のみが使用されます。
+	// Windowsでは特別なケースとして、SYSTEMROOTが存在しない場合は必ず追加され、空文字列に明示的に設定されていない限り追加されます。
+	//
+	// また、Dirフィールドも参照してください。これは環境変数PWDを設定する場合があります。
 	Env []string
 
 	// Dirはコマンドの作業ディレクトリを指定します。
 	// Dirが空文字列の場合、Runは呼び出し元プロセスの現在のディレクトリでコマンドを実行します。
-=======
-	// Env specifies the environment of the process.
-	// Each entry is of the form "key=value".
-	// If Env is nil, the new process uses the current process's
-	// environment.
-	// If Env contains duplicate environment keys, only the last
-	// value in the slice for each duplicate key is used.
-	// As a special case on Windows, SYSTEMROOT is always added if
-	// missing and not explicitly set to the empty string.
 	//
-	// See also the Dir field, which may set PWD in the environment.
-	Env []string
-
-	// Dir specifies the working directory of the command.
-	// If Dir is the empty string, Run runs the command in the
-	// calling process's current directory.
-	//
-	// On Unix systems, the value of Dir also determines the
-	// child process's PWD environment variable if not otherwise
-	// specified. A Unix process represents its working directory
-	// not by name but as an implicit reference to a node in the
-	// file tree. So, if the child process obtains its working
-	// directory by calling a function such as C's getcwd, which
-	// computes the canonical name by walking up the file tree, it
-	// will not recover the original value of Dir if that value
-	// was an alias involving symbolic links. However, if the
-	// child process calls Go's [os.Getwd] or GNU C's
-	// get_current_dir_name, and the value of PWD is an alias for
-	// the current directory, those functions will return the
-	// value of PWD, which matches the value of Dir.
->>>>>>> upstream/release-branch.go1.25
+	// Unixシステムでは、Dirの値は他に指定がなければ子プロセスのPWD環境変数も決定します。
+	// Unixプロセスは作業ディレクトリを名前ではなく、ファイルツリー内のノードへの暗黙的な参照として表現します。
+	// そのため、子プロセスがCのgetcwdなどの関数を呼び出してファイルツリーを辿って正規名を計算した場合、
+	// Dirの値がシンボリックリンクを含むエイリアスだった場合は元の値を復元できません。
+	// しかし、子プロセスがGoの [os.Getwd] やGNU Cのget_current_dir_nameを呼び出し、PWDの値が現在のディレクトリのエイリアスであれば、
+	// それらの関数はPWDの値、つまりDirの値を返します。
 	Dir string
 
 	// Stdinはプロセスの標準入力を指定します。
@@ -428,17 +395,9 @@ func (e *ExitError) Error() string
 // Waitは、Cmdに関連付けられたリソースを解放します。
 func (c *Cmd) Wait() error
 
-<<<<<<< HEAD
 // Outputはコマンドを実行し、その標準出力を返します。
-// 返されるエラーは通常、[*ExitError] 型です。
-// c.Stderrがnilだった場合、Outputは [ExitError.Stderr] を設定します。
-=======
-// Output runs the command and returns its standard output.
-// Any returned error will usually be of type [*ExitError].
-// If c.Stderr was nil and the returned error is of type
-// [*ExitError], Output populates the Stderr field of the
-// returned error.
->>>>>>> upstream/release-branch.go1.25
+// 返されるエラーは通常 [*ExitError] 型です。
+// c.Stderrがnilで、返されたエラーが [*ExitError] 型の場合、Outputは返されたエラーのStderrフィールドを埋めます。
 func (c *Cmd) Output() ([]byte, error)
 
 // CombinedOutputはコマンドを実行し、その標準出力と標準エラーを結合したものを返します。
