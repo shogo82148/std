@@ -23,7 +23,7 @@ jobs:
         with:
           path: tools
 
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v6
         with:
           go-version-file: ./tools/_tools/go.mod
           cache-dependency-path: ./tools/_tools/go.sum
