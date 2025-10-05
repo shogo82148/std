@@ -8,13 +8,8 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-<<<<<<< HEAD
-// ExampleMultiKeysは、比較に異なる複数のフィールドのセットを使用してstructタイプをソートするためのテクニックを示しています。各フィールドを比較する「Less」関数を連鎖させます。
-=======
-// Example_sortMultiKeys demonstrates a technique for sorting a struct type using different
-// sets of multiple fields in the comparison. We chain together "Less" functions, each of
-// which compares a single field.
->>>>>>> upstream/release-branch.go1.25
+// Example_sortMultiKeysは、構造体型を複数のフィールドセットで比較してソートする手法を示します。
+// "Less"関数を連鎖させ、それぞれが1つのフィールドを比較します。
 func Example_sortMultiKeys() {
 	// Change構造体を順序付けるクロージャー。
 	user := func(c1, c2 *Change) bool {
