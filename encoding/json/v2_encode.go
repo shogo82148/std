@@ -4,191 +4,136 @@
 
 //go:build goexperiment.jsonv2
 
-// Package json implements encoding and decoding of JSON as defined in
-// RFC 7159. The mapping between JSON and Go values is described
-// in the documentation for the Marshal and Unmarshal functions.
+// jsonパッケージはRFC 7159で定義されたJSONのエンコードとデコードを実装します。
+// JSONとGoの値の対応関係については、MarshalおよびUnmarshal関数のドキュメントを参照してください。
 //
-// See "JSON and Go" for an introduction to this package:
+// このパッケージの概要については「JSON and Go」を参照してください:
 // https://golang.org/doc/articles/json_and_go.html
 //
 // # Security Considerations
 //
-// See the "Security Considerations" section in [encoding/json/v2].
+// [encoding/json/v2] の「Security Considerations」セクションを参照してください。
 //
-// For historical reasons, the default behavior of v1 [encoding/json]
-// unfortunately operates with less secure defaults.
-// New usages of JSON in Go are encouraged to use [encoding/json/v2] instead.
+// 歴史的な理由により、v1 [encoding/json] のデフォルト動作は
+// 残念ながらセキュリティ面で安全性が低い設定となっています。
+// Goで新しくJSONを利用する場合は [encoding/json/v2] の使用を推奨します。
 package json
 
 import (
 	"github.com/shogo82148/std/reflect"
 )
 
-// Marshal returns the JSON encoding of v.
+// MarshalはvのJSONエンコーディングを返します。
 //
-// Marshal traverses the value v recursively.
-// If an encountered value implements [Marshaler]
-// and is not a nil pointer, Marshal calls [Marshaler.MarshalJSON]
-// to produce JSON. If no [Marshaler.MarshalJSON] method is present but the
-// value implements [encoding.TextMarshaler] instead, Marshal calls
-// [encoding.TextMarshaler.MarshalText] and encodes the result as a JSON string.
-// The nil pointer exception is not strictly necessary
-// but mimics a similar, necessary exception in the behavior of
-// [Unmarshaler.UnmarshalJSON].
+// Marshalは値vを再帰的に走査します。
+// 走査中の値が [Marshaler] を実装していてnilポインタでない場合、Marshalは [Marshaler.MarshalJSON] を呼び出してJSONを生成します。
+// [Marshaler.MarshalJSON] メソッドが存在しないが値が [encoding.TextMarshaler] を実装している場合、Marshalは [encoding.TextMarshaler.MarshalText] を呼び出し、その結果をJSON文字列としてエンコードします。
+// nilポインタの例外は厳密には必要ありませんが、[Unmarshaler.UnmarshalJSON] の動作にある同様の必要な例外を模倣しています。
 //
-// Otherwise, Marshal uses the following type-dependent default encodings:
+// それ以外の場合、Marshalは型ごとのデフォルトエンコーディングを使用します：
 //
-// Boolean values encode as JSON booleans.
+// ブール値はJSONの真偽値としてエンコードされます。
 //
-// Floating point, integer, and [Number] values encode as JSON numbers.
-// NaN and +/-Inf values will return an [UnsupportedValueError].
+// 浮動小数点、整数、および [Number] 値はJSONの数値としてエンコードされます。
+// NaNや±Inf値は [UnsupportedValueError] を返します。
 //
-// String values encode as JSON strings coerced to valid UTF-8,
-// replacing invalid bytes with the Unicode replacement rune.
-// So that the JSON will be safe to embed inside HTML <script> tags,
-// the string is encoded using [HTMLEscape],
-// which replaces "<", ">", "&", U+2028, and U+2029 are escaped
-// to "\u003c","\u003e", "\u0026", "\u2028", and "\u2029".
-// This replacement can be disabled when using an [Encoder],
-// by calling [Encoder.SetEscapeHTML](false).
+// 文字列値は有効なUTF-8に強制されてJSON文字列としてエンコードされ、無効なバイトはUnicodeの置換文字に置き換えられます。
+// JSONをHTMLの<script>タグ内に安全に埋め込むため、文字列は [HTMLEscape] を使ってエンコードされ、"<", ">", "&", U+2028, U+2029はそれぞれ"\u003c","\u003e", "\u0026", "\u2028", "\u2029"にエスケープされます。
+// この置換は [Encoder.SetEscapeHTML](false) を呼び出すことで無効化できます。
 //
-// Array and slice values encode as JSON arrays, except that
-// []byte encodes as a base64-encoded string, and a nil slice
-// encodes as the null JSON value.
+// 配列とスライス値はJSON配列としてエンコードされます。ただし、[]byteはbase64エンコードされた文字列として、nilスライスはnull JSON値としてエンコードされます。
 //
-// Struct values encode as JSON objects.
-// Each exported struct field becomes a member of the object, using the
-// field name as the object key, unless the field is omitted for one of the
-// reasons given below.
+// 構造体値はJSONオブジェクトとしてエンコードされます。
+// エクスポートされた各構造体フィールドはオブジェクトのメンバーとなり、フィールド名がオブジェクトキーになります（下記の理由で省略される場合を除く）。
 //
-// The encoding of each struct field can be customized by the format string
-// stored under the "json" key in the struct field's tag.
-// The format string gives the name of the field, possibly followed by a
-// comma-separated list of options. The name may be empty in order to
-// specify options without overriding the default field name.
+// 各構造体フィールドのエンコーディングは、フィールドタグの"json"キーに格納されたフォーマット文字列でカスタマイズできます。
+// フォーマット文字列はフィールド名と、カンマ区切りのオプションリストを指定できます。名前が空の場合はデフォルトのフィールド名を上書きせずにオプションのみ指定できます。
 //
-// The "omitempty" option specifies that the field should be omitted
-// from the encoding if the field has an empty value, defined as
-// false, 0, a nil pointer, a nil interface value, and any array,
-// slice, map, or string of length zero.
+// "omitempty"オプションは、フィールド値が空の場合（false, 0, nilポインタ, nilインターフェース値、長さ0の配列・スライス・マップ・文字列）、エンコーディングからフィールドを省略します。
 //
-// As a special case, if the field tag is "-", the field is always omitted.
-// JSON names containing commas or quotes, or names identical to "" or "-",
-// can be specified using a single-quoted string literal, where the syntax
-// is identical to the Go grammar for a double-quoted string literal,
-// but instead uses single quotes as the delimiters.
+// 特別なケースとして、フィールドタグが"-"の場合は常に省略されます。
+// カンマや引用符を含むJSON名、""や"-"と同じ名前は、シングルクォート文字列リテラルで指定できます。構文はGoのダブルクォート文字列リテラルと同じですが、区切りがシングルクォートです。
 //
-// Examples of struct field tags and their meanings:
+// 構造体フィールドタグの例と意味：
 //
-//	// Field appears in JSON as key "myName".
+//	// フィールドはJSONでキー"myName"として現れます。
 //	Field int `json:"myName"`
 //
-//	// Field appears in JSON as key "myName" and
-//	// the field is omitted from the object if its value is empty,
-//	// as defined above.
+//	// フィールドはJSONでキー"myName"として現れ、値が空の場合はオブジェクトから省略されます。
 //	Field int `json:"myName,omitempty"`
 //
-//	// Field appears in JSON as key "Field" (the default), but
-//	// the field is skipped if empty.
-//	// Note the leading comma.
+//	// フィールドはJSONでキー"Field"（デフォルト）として現れますが、値が空の場合は省略されます。
+//	// 先頭のカンマに注意。
 //	Field int `json:",omitempty"`
 //
-//	// Field is ignored by this package.
+//	// このパッケージではフィールドは無視されます。
 //	Field int `json:"-"`
 //
-//	// Field appears in JSON as key "-".
+//	// フィールドはJSONでキー"-"として現れます。
 //	Field int `json:"'-'"`
 //
-// The "omitzero" option specifies that the field should be omitted
-// from the encoding if the field has a zero value, according to rules:
+// "omitzero"オプションは、フィールド値がゼロ値の場合にエンコーディングから省略します。判定ルール：
 //
-// 1) If the field type has an "IsZero() bool" method, that will be used to
-// determine whether the value is zero.
+// 1) フィールド型に"IsZero() bool"メソッドがあれば、それでゼロ値か判定します。
+// 2) それ以外は型のゼロ値ならゼロ値とみなします。
 //
-// 2) Otherwise, the value is zero if it is the zero value for its type.
+// "omitempty"と"omitzero"両方指定した場合、値が空またはゼロ値（または両方）なら省略されます。
 //
-// If both "omitempty" and "omitzero" are specified, the field will be omitted
-// if the value is either empty or zero (or both).
-//
-// The "string" option signals that a field is stored as JSON inside a
-// JSON-encoded string. It applies only to fields of string, floating point,
-// integer, or boolean types. This extra level of encoding is sometimes used
-// when communicating with JavaScript programs:
+// "string"オプションは、フィールドをJSONエンコードされた文字列内に格納することを示します。文字列、浮動小数点、整数、ブール型フィールドにのみ適用されます。
+// この追加のエンコーディングはJavaScriptプログラムとの通信時などに使われます：
 //
 //	Int64String int64 `json:",string"`
 //
-// The key name will be used if it's a non-empty string consisting of
-// only Unicode letters, digits, and ASCII punctuation except quotation
-// marks, backslash, and comma.
+// キー名は、空でなく、Unicodeの文字・数字・ASCII句読点（引用符、バックスラッシュ、カンマを除く）のみからなる場合に使用されます。
 //
-// Embedded struct fields are usually marshaled as if their inner exported fields
-// were fields in the outer struct, subject to the usual Go visibility rules amended
-// as described in the next paragraph.
-// An anonymous struct field with a name given in its JSON tag is treated as
-// having that name, rather than being anonymous.
-// An anonymous struct field of interface type is treated the same as having
-// that type as its name, rather than being anonymous.
+// 埋め込み構造体フィールドは、通常、内部のエクスポートされたフィールドが外側の構造体のフィールドとしてマーシャルされます（Goの可視性ルールに従う。ただし次の段落で修正あり）。
+// JSONタグで名前が指定された匿名構造体フィールドは匿名ではなくその名前を持つものとして扱われます。
+// インターフェース型の匿名構造体フィールドも、その型名を持つものとして扱われます。
 //
-// The Go visibility rules for struct fields are amended for JSON when
-// deciding which field to marshal or unmarshal. If there are
-// multiple fields at the same level, and that level is the least
-// nested (and would therefore be the nesting level selected by the
-// usual Go rules), the following extra rules apply:
+// Goの構造体フィールドの可視性ルールは、JSONのマーシャル・アンマーシャル時に修正されます。
+// 同じレベルに複数のフィールドがあり、そのレベルが最も浅い（通常のGoルールで選択されるネストレベル）場合、次の追加ルールが適用されます：
 //
-// 1) Of those fields, if any are JSON-tagged, only tagged fields are considered,
-// even if there are multiple untagged fields that would otherwise conflict.
+// 1) そのフィールドのうちJSONタグ付きがあれば、タグ付きのみが対象となります（タグなしフィールドが複数あっても競合は無視）。
+// 2) 1つだけ（タグ付きか否かに関わらず）ならそれが選択されます。
+// 3) それ以外は複数ある場合、すべて無視され、エラーは発生しません。
 //
-// 2) If there is exactly one field (tagged or not according to the first rule), that is selected.
+// 匿名構造体フィールドの扱いはGo 1.1で新しくなりました。
+// Go 1.1以前は匿名構造体フィールドは無視されていました。両方のバージョンで匿名構造体フィールドを無視したい場合はJSONタグ"-"を付けてください。
 //
-// 3) Otherwise there are multiple fields, and all are ignored; no error occurs.
+// マップ値はJSONオブジェクトとしてエンコードされます。マップのキー型は文字列型、整数型、または [encoding.TextMarshaler] を実装している必要があります。
+// マップキーはソートされ、JSONオブジェクトキーとして使われます。文字列値のUTF-8強制に関するルールに従います：
+//   - 文字列型キーはそのまま使用
+//   - [encoding.TextMarshaler] を実装するキーはマーシャルされる
+//   - 整数キーは文字列に変換される
 //
-// Handling of anonymous struct fields is new in Go 1.1.
-// Prior to Go 1.1, anonymous struct fields were ignored. To force ignoring of
-// an anonymous struct field in both current and earlier versions, give the field
-// a JSON tag of "-".
+// ポインタ値は指す値としてエンコードされます。
+// nilポインタはnull JSON値としてエンコードされます。
 //
-// Map values encode as JSON objects. The map's key type must either be a
-// string, an integer type, or implement [encoding.TextMarshaler]. The map keys
-// are sorted and used as JSON object keys by applying the following rules,
-// subject to the UTF-8 coercion described for string values above:
-//   - keys of any string type are used directly
-//   - keys that implement [encoding.TextMarshaler] are marshaled
-//   - integer keys are converted to strings
+// インターフェース値はインターフェースに格納された値としてエンコードされます。
+// nilインターフェース値はnull JSON値としてエンコードされます。
 //
-// Pointer values encode as the value pointed to.
-// A nil pointer encodes as the null JSON value.
+// チャネル、複素数、関数値はJSONでエンコードできません。
+// これらの値をエンコードしようとするとMarshalは [UnsupportedTypeError] を返します。
 //
-// Interface values encode as the value contained in the interface.
-// A nil interface value encodes as the null JSON value.
-//
-// Channel, complex, and function values cannot be encoded in JSON.
-// Attempting to encode such a value causes Marshal to return
-// an [UnsupportedTypeError].
-//
-// JSON cannot represent cyclic data structures and Marshal does not
-// handle them. Passing cyclic structures to Marshal will result in
-// an error.
+// JSONは循環データ構造を表現できず、Marshalも対応しません。循環構造をMarshalに渡すとエラーになります。
 func Marshal(v any) ([]byte, error)
 
-// MarshalIndent is like [Marshal] but applies [Indent] to format the output.
-// Each JSON element in the output will begin on a new line beginning with prefix
-// followed by one or more copies of indent according to the indentation nesting.
+// MarshalIndentは[Marshal]と同様ですが、[Indent] を適用して出力を整形します。
+// 出力される各JSON要素は新しい行で始まり、prefixの後に
+// インデントのネストに応じてindentが1回以上繰り返されます。
 func MarshalIndent(v any, prefix, indent string) ([]byte, error)
 
-// Marshaler is the interface implemented by types that
-// can marshal themselves into valid JSON.
+// Marshalerは、自身を有効なJSONにマーシャルできる型が実装するインターフェースです。
 type Marshaler = jsonv2.Marshaler
 
-// An UnsupportedTypeError is returned by [Marshal] when attempting
-// to encode an unsupported value type.
+// UnsupportedTypeErrorは、サポートされていない値型をエンコードしようとした際に [Marshal] から返されます。
 type UnsupportedTypeError struct {
 	Type reflect.Type
 }
 
 func (e *UnsupportedTypeError) Error() string
 
-// An UnsupportedValueError is returned by [Marshal] when attempting
-// to encode an unsupported value.
+// UnsupportedValueErrorは、サポートされていない値をエンコードしようとした際に [Marshal] から返されます。
 type UnsupportedValueError struct {
 	Value reflect.Value
 	Str   string
@@ -196,20 +141,17 @@ type UnsupportedValueError struct {
 
 func (e *UnsupportedValueError) Error() string
 
-// Before Go 1.2, an InvalidUTF8Error was returned by [Marshal] when
-// attempting to encode a string value with invalid UTF-8 sequences.
-// As of Go 1.2, [Marshal] instead coerces the string to valid UTF-8 by
-// replacing invalid bytes with the Unicode replacement rune U+FFFD.
+// Go 1.2以前は、無効なUTF-8シーケンスを含む文字列値をエンコードしようとした場合、[Marshal] はInvalidUTF8Errorを返していました。
+// Go 1.2以降は、[Marshal] は無効なバイトをUnicodeの置換文字U+FFFDに置き換えて、文字列を有効なUTF-8に強制します。
 //
-// Deprecated: No longer used; kept for compatibility.
+// Deprecated: 互換性維持のために残されていますが、現在は使用されていません。
 type InvalidUTF8Error struct {
 	S string
 }
 
 func (e *InvalidUTF8Error) Error() string
 
-// A MarshalerError represents an error from calling a
-// [Marshaler.MarshalJSON] or [encoding.TextMarshaler.MarshalText] method.
+// MarshalerErrorは、[Marshaler.MarshalJSON] または [encoding.TextMarshaler.MarshalText] メソッドの呼び出しによるエラーを表します。
 type MarshalerError struct {
 	Type       reflect.Type
 	Err        error
@@ -218,5 +160,5 @@ type MarshalerError struct {
 
 func (e *MarshalerError) Error() string
 
-// Unwrap returns the underlying error.
+// Unwrapは元となるエラーを返します。
 func (e *MarshalerError) Unwrap() error
