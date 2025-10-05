@@ -137,22 +137,9 @@ func (r *Reader) ReadDotLines() ([]string, error)
 //	}
 func (r *Reader) ReadMIMEHeader() (MIMEHeader, error)
 
-<<<<<<< HEAD
-// CanonicalMIMEHeaderKeyは、MIMEヘッダーキーsの正準形を返します。正準化は、
-// 最初の文字とハイフンの後に続くすべての文字を大文字に変換し、
-// 残りの文字は小文字に変換します。たとえば、
-// "accept-encoding"の正規キーは"Accept-Encoding"です。
-// MIMEヘッダーキーはASCIIのみとします。
-// sにスペースや無効なヘッダーフィールドバイトが含まれている場合、
-// 変更せずに返されます。
-=======
-// CanonicalMIMEHeaderKey returns the canonical format of the
-// MIME header key s. The canonicalization converts the first
-// letter and any letter following a hyphen to upper case;
-// the rest are converted to lowercase. For example, the
-// canonical key for "accept-encoding" is "Accept-Encoding".
-// MIME header keys are assumed to be ASCII only.
-// If s contains a space or invalid header field bytes as
-// defined by RFC 9112, it is returned without modifications.
->>>>>>> upstream/release-branch.go1.25
+// CanonicalMIMEHeaderKeyは、MIMEヘッダーキーsの正規形式を返します。
+// 正規化では、最初の文字とハイフンの後の文字を大文字に変換し、
+// それ以外は小文字に変換します。例えば、"accept-encoding"の正規キーは"Accept-Encoding"です。
+// MIMEヘッダーキーはASCIIのみと仮定されます。
+// sにスペースやRFC 9112で定義される無効なヘッダーフィールドバイトが含まれる場合、変更せずにそのまま返します。
 func CanonicalMIMEHeaderKey(s string) string
