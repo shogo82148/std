@@ -9,14 +9,8 @@ import (
 	"github.com/shogo82148/std/time"
 )
 
-<<<<<<< HEAD
-// MapFSは、テストで使用するためのシンプルなメモリ内ファイルシステムであり、
-// パス名（Openへの引数）からそれらが表すファイルやディレクトリの情報へのマップとして表されます。
-=======
-// A MapFS is a simple in-memory file system for use in tests,
-// represented as a map from path names (arguments to Open)
-// to information about the files, directories, or symbolic links they represent.
->>>>>>> upstream/release-branch.go1.25
+// MapFSはテストで使用するためのシンプルなインメモリファイルシステムです。
+// パス名（Openの引数）から、それが表すファイル、ディレクトリ、またはシンボリックリンクの情報へのマップとして表現されます。
 //
 // マップには、マップに含まれるファイルの親ディレクトリを含める必要はありません。
 // 必要に応じてそれらは合成されます。
@@ -45,19 +39,15 @@ var _ fs.FS = MapFS(nil)
 var _ fs.ReadLinkFS = MapFS(nil)
 var _ fs.File = (*openMapFile)(nil)
 
-<<<<<<< HEAD
-// Openは、指定された名前のファイルを開きます。
-=======
-// Open opens the named file after following any symbolic links.
->>>>>>> upstream/release-branch.go1.25
+// Openは、シンボリックリンクを辿った後に指定されたファイルを開きます。
 func (fsys MapFS) Open(name string) (fs.File, error)
 
-// ReadLink returns the destination of the named symbolic link.
+// ReadLinkは、指定されたシンボリックリンクのリンク先を返します。
 func (fsys MapFS) ReadLink(name string) (string, error)
 
-// Lstat returns a FileInfo describing the named file.
-// If the file is a symbolic link, the returned FileInfo describes the symbolic link.
-// Lstat makes no attempt to follow the link.
+// Lstatは、指定されたファイルを説明するFileInfoを返します。
+// ファイルがシンボリックリンクの場合、返されるFileInfoはそのシンボリックリンク自体を説明します。
+// Lstatはリンクを辿ろうとはしません。
 func (fsys MapFS) Lstat(name string) (fs.FileInfo, error)
 
 func (fsys MapFS) ReadFile(name string) ([]byte, error)
