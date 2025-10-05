@@ -24,333 +24,278 @@ var (
 	_ time.Duration
 )
 
-// Marshal serializes a Go value as a []byte according to the provided
-// marshal and encode options (while ignoring unmarshal or decode options).
-// It does not terminate the output with a newline.
+// Marshalは、指定されたマーシャルおよびエンコードオプションに従って
+// Go値を[]byteとしてシリアライズします（アンマーシャルやデコードオプションは無視されます）。
+// 出力の末尾に改行は付加しません。
 //
-// Type-specific marshal functions and methods take precedence
-// over the default representation of a value.
-// Functions or methods that operate on *T are only called when encoding
-// a value of type T (by taking its address) or a non-nil value of *T.
-// Marshal ensures that a value is always addressable
-// (by boxing it on the heap if necessary) so that
-// these functions and methods can be consistently called. For performance,
-// it is recommended that Marshal be passed a non-nil pointer to the value.
+// 型固有のマーシャル関数やメソッドは、値のデフォルト表現よりも優先されます。
+// *Tを操作する関数やメソッドは、T型の値（アドレスを取得）や非nilの*T値をエンコードする場合のみ呼び出されます。
+// Marshalは、値が常にアドレス可能であることを保証します
+// （必要に応じてヒープ上にボックス化）ので、これらの関数やメソッドを一貫して呼び出せます。
+// パフォーマンスのため、Marshalには非nilポインタ値を渡すことを推奨します。
 //
-// The input value is encoded as JSON according the following rules:
+// 入力値は以下のルールに従ってJSONとしてエンコードされます：
 //
-//   - If any type-specific functions in a [WithMarshalers] option match
-//     the value type, then those functions are called to encode the value.
-//     If all applicable functions return [SkipFunc],
-//     then the value is encoded according to subsequent rules.
+//   - [WithMarshalers] オプション内の型固有関数が値の型に一致する場合、
+//     それらの関数が値のエンコードに呼び出されます。
+//     適用可能な関数がすべて [SkipFunc] を返した場合、
+//     以降のルールに従って値がエンコードされます。
 //
-//   - If the value type implements [MarshalerTo],
-//     then the MarshalJSONTo method is called to encode the value.
+//   - 値の型が [MarshalerTo] を実装している場合、
+//     MarshalJSONToメソッドが呼び出されます。
 //
-//   - If the value type implements [Marshaler],
-//     then the MarshalJSON method is called to encode the value.
+//   - 値の型が [Marshaler] を実装している場合、
+//     MarshalJSONメソッドが呼び出されます。
 //
-//   - If the value type implements [encoding.TextAppender],
-//     then the AppendText method is called to encode the value and
-//     subsequently encode its result as a JSON string.
+//   - 値の型が [encoding.TextAppender] を実装している場合、
+//     AppendTextメソッドが呼び出され、その結果がJSON文字列としてエンコードされます。
 //
-//   - If the value type implements [encoding.TextMarshaler],
-//     then the MarshalText method is called to encode the value and
-//     subsequently encode its result as a JSON string.
+//   - 値の型が [encoding.TextMarshaler] を実装している場合、
+//     MarshalTextメソッドが呼び出され、その結果がJSON文字列としてエンコードされます。
 //
-//   - Otherwise, the value is encoded according to the value's type
-//     as described in detail below.
+//   - それ以外の場合、値の型に応じて以下の詳細なルールでエンコードされます。
 //
-// Most Go types have a default JSON representation.
-// Certain types support specialized formatting according to
-// a format flag optionally specified in the Go struct tag
-// for the struct field that contains the current value
-// (see the “JSON Representation of Go structs” section for more details).
+// ほとんどのGo型にはデフォルトのJSON表現があります。
+// 一部の型は、Go構造体フィールドのタグで指定できるフォーマットフラグにより
+// 特殊なフォーマットをサポートします（詳細は「Go構造体のJSON表現」セクション参照）。
 //
-// The representation of each type is as follows:
+// 各型の表現は以下の通りです：
 //
-//   - A Go boolean is encoded as a JSON boolean (e.g., true or false).
-//     It does not support any custom format flags.
+//   - Goのbool型はJSONの真偽値（true/false）としてエンコードされます。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go string is encoded as a JSON string.
-//     It does not support any custom format flags.
+//   - Goのstring型はJSON文字列としてエンコードされます。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go []byte or [N]byte is encoded as a JSON string containing
-//     the binary value encoded using RFC 4648.
-//     If the format is "base64" or unspecified, then this uses RFC 4648, section 4.
-//     If the format is "base64url", then this uses RFC 4648, section 5.
-//     If the format is "base32", then this uses RFC 4648, section 6.
-//     If the format is "base32hex", then this uses RFC 4648, section 7.
-//     If the format is "base16" or "hex", then this uses RFC 4648, section 8.
-//     If the format is "array", then the bytes value is encoded as a JSON array
-//     where each byte is recursively JSON-encoded as each JSON array element.
+//   - Goの[]byteや[N]byte型は、RFC 4648でエンコードされたバイナリ値を含む
+//     JSON文字列としてエンコードされます。
+//     フォーマットが"base64"または未指定の場合はRFC 4648のsection 4、
+//     "base64url"ならsection 5、"base32"ならsection 6、
+//     "base32hex"ならsection 7、"base16"や"hex"ならsection 8を使用します。
+//     フォーマットが"array"の場合、各バイトをJSON配列の要素として再帰的にエンコードします。
 //
-//   - A Go integer is encoded as a JSON number without fractions or exponents.
-//     If [StringifyNumbers] is specified or encoding a JSON object name,
-//     then the JSON number is encoded within a JSON string.
-//     It does not support any custom format flags.
+//   - Goの整数型は、小数や指数部のないJSON数値としてエンコードされます。
+//     [StringifyNumbers] が指定されている場合やJSONオブジェクト名をエンコードする場合、
+//     JSON数値はJSON文字列内にエンコードされます。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go float is encoded as a JSON number.
-//     If [StringifyNumbers] is specified or encoding a JSON object name,
-//     then the JSON number is encoded within a JSON string.
-//     If the format is "nonfinite", then NaN, +Inf, and -Inf are encoded as
-//     the JSON strings "NaN", "Infinity", and "-Infinity", respectively.
-//     Otherwise, the presence of non-finite numbers results in a [SemanticError].
+//   - Goの浮動小数点型はJSON数値としてエンコードされます。
+//     [StringifyNumbers] が指定されている場合やJSONオブジェクト名をエンコードする場合、
+//     JSON数値はJSON文字列内にエンコードされます。
+//     フォーマットが"nonfinite"の場合、NaN、+Inf、-Infは
+//     "NaN"、"Infinity"、"-Infinity"というJSON文字列としてエンコードされます。
+//     それ以外の場合、非有限値があると [SemanticError] になります。
 //
-//   - A Go map is encoded as a JSON object, where each Go map key and value
-//     is recursively encoded as a name and value pair in the JSON object.
-//     The Go map key must encode as a JSON string, otherwise this results
-//     in a [SemanticError]. The Go map is traversed in a non-deterministic order.
-//     For deterministic encoding, consider using the [Deterministic] option.
-//     If the format is "emitnull", then a nil map is encoded as a JSON null.
-//     If the format is "emitempty", then a nil map is encoded as an empty JSON object,
-//     regardless of whether [FormatNilMapAsNull] is specified.
-//     Otherwise by default, a nil map is encoded as an empty JSON object.
+//   - Goのmap型はJSONオブジェクトとしてエンコードされ、
+//     各Goマップのキーと値がJSONオブジェクトの名前と値のペアとして再帰的にエンコードされます。
+//     GoマップのキーはJSON文字列としてエンコードできなければ [SemanticError] になります。
+//     Goマップの走査順は非決定的です。決定的なエンコードには [Deterministic] オプションを検討してください。
+//     フォーマットが"emitnull"ならnilマップはJSON null、
+//     "emitempty"ならnilマップは空のJSONオブジェクトとしてエンコードされます。
+//     それ以外はデフォルトでnilマップは空のJSONオブジェクトになります。
 //
-//   - A Go struct is encoded as a JSON object.
-//     See the “JSON Representation of Go structs” section
-//     in the package-level documentation for more details.
+//   - Goの構造体はJSONオブジェクトとしてエンコードされます。
+//     詳細はパッケージレベルの「Go構造体のJSON表現」セクション参照。
 //
-//   - A Go slice is encoded as a JSON array, where each Go slice element
-//     is recursively JSON-encoded as the elements of the JSON array.
-//     If the format is "emitnull", then a nil slice is encoded as a JSON null.
-//     If the format is "emitempty", then a nil slice is encoded as an empty JSON array,
-//     regardless of whether [FormatNilSliceAsNull] is specified.
-//     Otherwise by default, a nil slice is encoded as an empty JSON array.
+//   - GoのスライスはJSON配列としてエンコードされ、
+//     各要素がJSON配列の要素として再帰的にエンコードされます。
+//     フォーマットが"emitnull"ならnilスライスはJSON null、
+//     "emitempty"ならnilスライスは空のJSON配列としてエンコードされます。
+//     それ以外はデフォルトでnilスライスは空のJSON配列になります。
 //
-//   - A Go array is encoded as a JSON array, where each Go array element
-//     is recursively JSON-encoded as the elements of the JSON array.
-//     The JSON array length is always identical to the Go array length.
-//     It does not support any custom format flags.
+//   - Goの配列はJSON配列としてエンコードされ、
+//     各要素がJSON配列の要素として再帰的にエンコードされます。
+//     JSON配列の長さはGo配列の長さと常に一致します。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go pointer is encoded as a JSON null if nil, otherwise it is
-//     the recursively JSON-encoded representation of the underlying value.
-//     Format flags are forwarded to the encoding of the underlying value.
+//   - Goのポインタ型はnilならJSON null、そうでなければ
+//     基底値を再帰的にJSONエンコードした表現になります。
+//     フォーマットフラグは基底値のエンコードに引き継がれます。
 //
-//   - A Go interface is encoded as a JSON null if nil, otherwise it is
-//     the recursively JSON-encoded representation of the underlying value.
-//     It does not support any custom format flags.
+//   - Goのインターフェース型はnilならJSON null、そうでなければ
+//     基底値を再帰的にJSONエンコードした表現になります。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go [time.Time] is encoded as a JSON string containing the timestamp
-//     formatted in RFC 3339 with nanosecond precision.
-//     If the format matches one of the format constants declared
-//     in the time package (e.g., RFC1123), then that format is used.
-//     If the format is "unix", "unixmilli", "unixmicro", or "unixnano",
-//     then the timestamp is encoded as a possibly fractional JSON number
-//     of the number of seconds (or milliseconds, microseconds, or nanoseconds)
-//     since the Unix epoch, which is January 1st, 1970 at 00:00:00 UTC.
-//     To avoid a fractional component, round the timestamp to the relevant unit.
-//     Otherwise, the format is used as-is with [time.Time.Format] if non-empty.
+//   - Goの [time.Time] 型はRFC 3339（ナノ秒精度）でフォーマットされた
+//     タイムスタンプを含むJSON文字列としてエンコードされます。
+//     timeパッケージで宣言されたフォーマット定数（例：RFC1123）に一致する場合はそのフォーマットを使用します。
+//     フォーマットが"unix"、"unixmilli"、"unixmicro"、"unixnano"の場合、
+//     タイムスタンプはUnixエポック（1970年1月1日00:00:00 UTC）からの
+//     秒数（またはミリ秒、マイクロ秒、ナノ秒）を表すJSON数値としてエンコードされます。
+//     小数部を避けるには該当単位に丸めてください。
+//     それ以外は非空なら [time.Time.Format] でそのフォーマットを使用します。
 //
-//   - A Go [time.Duration] currently has no default representation and
-//     requires an explicit format to be specified.
-//     If the format is "sec", "milli", "micro", or "nano",
-//     then the duration is encoded as a possibly fractional JSON number
-//     of the number of seconds (or milliseconds, microseconds, or nanoseconds).
-//     To avoid a fractional component, round the duration to the relevant unit.
-//     If the format is "units", it is encoded as a JSON string formatted using
-//     [time.Duration.String] (e.g., "1h30m" for 1 hour 30 minutes).
-//     If the format is "iso8601", it is encoded as a JSON string using the
-//     ISO 8601 standard for durations (e.g., "PT1H30M" for 1 hour 30 minutes)
-//     using only accurate units of hours, minutes, and seconds.
+//   - Goの [time.Duration] 型はデフォルト表現がなく、明示的なフォーマット指定が必要です。
+//     フォーマットが"sec"、"milli"、"micro"、"nano"の場合、
+//     継続時間は秒数（またはミリ秒、マイクロ秒、ナノ秒）を表すJSON数値としてエンコードされます。
+//     小数部を避けるには該当単位に丸めてください。
+//     フォーマットが"units"なら [time.Duration.String] でフォーマットされたJSON文字列、
+//     "iso8601"ならISO 8601標準のJSON文字列（例："PT1H30M"）としてエンコードされます。
+//     単位は時間、分、秒のみ正確に扱います。
 //
-//   - All other Go types (e.g., complex numbers, channels, and functions)
-//     have no default representation and result in a [SemanticError].
+//   - その他のGo型（複素数、チャネル、関数など）はデフォルト表現がなく、[SemanticError] になります。
 //
-// JSON cannot represent cyclic data structures and Marshal does not handle them.
-// Passing cyclic structures will result in an error.
+// JSONは循環データ構造を表現できず、Marshalはそれらを扱いません。
+// 循環構造を渡すとエラーになります。
 func Marshal(in any, opts ...Options) (out []byte, err error)
 
-// MarshalWrite serializes a Go value into an [io.Writer] according to the provided
-// marshal and encode options (while ignoring unmarshal or decode options).
-// It does not terminate the output with a newline.
-// See [Marshal] for details about the conversion of a Go value into JSON.
+// MarshalWriteは、指定されたマーシャルおよびエンコードオプションに従って
+// Go値を [io.Writer] にシリアライズします（アンマーシャルやデコードオプションは無視されます）。
+// 出力の末尾に改行は付加しません。
+// Go値をJSONへ変換する詳細は [Marshal] を参照してください。
 func MarshalWrite(out io.Writer, in any, opts ...Options) (err error)
 
-// MarshalEncode serializes a Go value into an [jsontext.Encoder] according to
-// the provided marshal options (while ignoring unmarshal, encode, or decode options).
-// Any marshal-relevant options already specified on the [jsontext.Encoder]
-// take lower precedence than the set of options provided by the caller.
-// Unlike [Marshal] and [MarshalWrite], encode options are ignored because
-// they must have already been specified on the provided [jsontext.Encoder].
+// MarshalEncodeは、指定されたマーシャルオプションに従って
+// Go値を [jsontext.Encoder] にシリアライズします（アンマーシャル、エンコード、デコードオプションは無視されます）。
+// [jsontext.Encoder] に既に指定されているマーシャル関連のオプションは、呼び出し元が指定したオプションよりも優先度が低くなります。
+// [Marshal] や [MarshalWrite] と異なり、エンコードオプションは無視されます。
+// これは、エンコードオプションが既に指定済みである必要があるためです。
 //
-// See [Marshal] for details about the conversion of a Go value into JSON.
+// Go値をJSONへ変換する詳細は [Marshal] を参照してください。
 func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 
-// Unmarshal decodes a []byte input into a Go value according to the provided
-// unmarshal and decode options (while ignoring marshal or encode options).
-// The input must be a single JSON value with optional whitespace interspersed.
-// The output must be a non-nil pointer.
+// Unmarshalは、指定されたアンマーシャルおよびデコードオプションに従って
+// []byte入力をGo値へデコードします（マーシャルやエンコードオプションは無視されます）。
+// 入力は、空白を含んでもよい単一のJSON値でなければなりません。
+// 出力は非nilのポインタでなければなりません。
 //
-// Type-specific unmarshal functions and methods take precedence
-// over the default representation of a value.
-// Functions or methods that operate on *T are only called when decoding
-// a value of type T (by taking its address) or a non-nil value of *T.
-// Unmarshal ensures that a value is always addressable
-// (by boxing it on the heap if necessary) so that
-// these functions and methods can be consistently called.
+// 型固有のアンマーシャル関数やメソッドは、値のデフォルト表現よりも優先されます。
+// *Tを操作する関数やメソッドは、T型の値（アドレスを取得）や非nilの*T値をデコードする場合のみ呼び出されます。
+// Unmarshalは、値が常にアドレス可能であることを保証します
+// （必要に応じてヒープ上にボックス化）ので、これらの関数やメソッドを一貫して呼び出せます。
 //
-// The input is decoded into the output according the following rules:
+// 入力は以下のルールに従って出力へデコードされます：
 //
-//   - If any type-specific functions in a [WithUnmarshalers] option match
-//     the value type, then those functions are called to decode the JSON
-//     value. If all applicable functions return [SkipFunc],
-//     then the input is decoded according to subsequent rules.
+//   - [WithUnmarshalers] オプション内の型固有関数が値の型に一致する場合、
+//     それらの関数がJSON値のデコードに呼び出されます。
+//     適用可能な関数がすべて [SkipFunc] を返した場合、
+//     以降のルールに従ってデコードされます。
 //
-//   - If the value type implements [UnmarshalerFrom],
-//     then the UnmarshalJSONFrom method is called to decode the JSON value.
+//   - 値の型が [UnmarshalerFrom] を実装している場合、
+//     UnmarshalJSONFromメソッドが呼び出されます。
 //
-//   - If the value type implements [Unmarshaler],
-//     then the UnmarshalJSON method is called to decode the JSON value.
+//   - 値の型が [Unmarshaler] を実装している場合、
+//     UnmarshalJSONメソッドが呼び出されます。
 //
-//   - If the value type implements [encoding.TextUnmarshaler],
-//     then the input is decoded as a JSON string and
-//     the UnmarshalText method is called with the decoded string value.
-//     This fails with a [SemanticError] if the input is not a JSON string.
+//   - 値の型が [encoding.TextUnmarshaler] を実装している場合、
+//     入力はJSON文字列としてデコードされ、
+//     デコードされた文字列値でUnmarshalTextメソッドが呼び出されます。
+//     入力がJSON文字列でない場合は [SemanticError] になります。
 //
-//   - Otherwise, the JSON value is decoded according to the value's type
-//     as described in detail below.
+//   - それ以外の場合、値の型に応じて以下の詳細なルールでデコードされます。
 //
-// Most Go types have a default JSON representation.
-// Certain types support specialized formatting according to
-// a format flag optionally specified in the Go struct tag
-// for the struct field that contains the current value
-// (see the “JSON Representation of Go structs” section for more details).
-// A JSON null may be decoded into every supported Go value where
-// it is equivalent to storing the zero value of the Go value.
-// If the input JSON kind is not handled by the current Go value type,
-// then this fails with a [SemanticError]. Unless otherwise specified,
-// the decoded value replaces any pre-existing value.
+// ほとんどのGo型にはデフォルトのJSON表現があります。
+// 一部の型は、Go構造体フィールドのタグで指定できるフォーマットフラグにより
+// 特殊なフォーマットをサポートします（詳細は「Go構造体のJSON表現」セクション参照）。
+// JSON nullは、サポートされるすべてのGo値にデコード可能であり、Go値のゼロ値を格納するのと同等です。
+// 入力JSONの種類が現在のGo値型で扱えない場合は [SemanticError] になります。
+// 特に指定がない限り、デコードされた値は既存の値を置き換えます。
 //
-// The representation of each type is as follows:
+// 各型の表現は以下の通りです：
 //
-//   - A Go boolean is decoded from a JSON boolean (e.g., true or false).
-//     It does not support any custom format flags.
+//   - Goのbool型はJSONの真偽値（true/false）からデコードされます。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go string is decoded from a JSON string.
-//     It does not support any custom format flags.
+//   - Goのstring型はJSON文字列からデコードされます。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go []byte or [N]byte is decoded from a JSON string
-//     containing the binary value encoded using RFC 4648.
-//     If the format is "base64" or unspecified, then this uses RFC 4648, section 4.
-//     If the format is "base64url", then this uses RFC 4648, section 5.
-//     If the format is "base32", then this uses RFC 4648, section 6.
-//     If the format is "base32hex", then this uses RFC 4648, section 7.
-//     If the format is "base16" or "hex", then this uses RFC 4648, section 8.
-//     If the format is "array", then the Go slice or array is decoded from a
-//     JSON array where each JSON element is recursively decoded for each byte.
-//     When decoding into a non-nil []byte, the slice length is reset to zero
-//     and the decoded input is appended to it.
-//     When decoding into a [N]byte, the input must decode to exactly N bytes,
-//     otherwise it fails with a [SemanticError].
+//   - Goの[]byteや[N]byte型は、RFC 4648でエンコードされたバイナリ値を含む
+//     JSON文字列からデコードされます。
+//     フォーマットが"base64"または未指定の場合はRFC 4648のsection 4、
+//     "base64url"ならsection 5、"base32"ならsection 6、
+//     "base32hex"ならsection 7、"base16"や"hex"ならsection 8を使用します。
+//     フォーマットが"array"の場合、Goスライスや配列はJSON配列からデコードされ、
+//     各JSON要素が各バイトに再帰的にデコードされます。
+//     非nilの[]byteへデコードする場合、スライス長はゼロにリセットされ、デコード結果が追加されます。
+//     [N]byteへデコードする場合、入力は必ずNバイトでなければならず、そうでなければ [SemanticError] になります。
 //
-//   - A Go integer is decoded from a JSON number.
-//     It must be decoded from a JSON string containing a JSON number
-//     if [StringifyNumbers] is specified or decoding a JSON object name.
-//     It fails with a [SemanticError] if the JSON number
-//     has a fractional or exponent component.
-//     It also fails if it overflows the representation of the Go integer type.
-//     It does not support any custom format flags.
+//   - Goの整数型はJSON数値からデコードされます。
+//     [StringifyNumbers] が指定されている場合やJSONオブジェクト名をデコードする場合、
+//     JSON文字列内のJSON数値からデコードされます。
+//     JSON数値に小数部や指数部がある場合は [SemanticError] になります。
+//     Go整数型の表現をオーバーフローした場合も失敗します。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go float is decoded from a JSON number.
-//     It must be decoded from a JSON string containing a JSON number
-//     if [StringifyNumbers] is specified or decoding a JSON object name.
-//     It fails if it overflows the representation of the Go float type.
-//     If the format is "nonfinite", then the JSON strings
-//     "NaN", "Infinity", and "-Infinity" are decoded as NaN, +Inf, and -Inf.
-//     Otherwise, the presence of such strings results in a [SemanticError].
+//   - Goの浮動小数点型はJSON数値からデコードされます。
+//     [StringifyNumbers] が指定されている場合やJSONオブジェクト名をデコードする場合、
+//     JSON文字列内のJSON数値からデコードされます。
+//     Go浮動小数点型の表現をオーバーフローした場合は失敗します。
+//     フォーマットが"nonfinite"の場合、JSON文字列"NaN"、"Infinity"、"-Infinity"は
+//     NaN、+Inf、-Infとしてデコードされます。
+//     それ以外の場合、これらの文字列があると [SemanticError] になります。
 //
-//   - A Go map is decoded from a JSON object,
-//     where each JSON object name and value pair is recursively decoded
-//     as the Go map key and value. Maps are not cleared.
-//     If the Go map is nil, then a new map is allocated to decode into.
-//     If the decoded key matches an existing Go map entry, the entry value
-//     is reused by decoding the JSON object value into it.
-//     The formats "emitnull" and "emitempty" have no effect when decoding.
+//   - Goのmap型はJSONオブジェクトからデコードされ、
+//     各JSONオブジェクト名と値のペアがGoマップのキーと値として再帰的にデコードされます。
+//     マップはクリアされません。
+//     Goマップがnilの場合、新しいマップが割り当てられます。
+//     デコードされたキーが既存のGoマップエントリと一致する場合、エントリ値は再利用され、JSONオブジェクト値がそこへデコードされます。
+//     "emitnull"や"emitempty"フォーマットはデコード時には効果がありません。
 //
-//   - A Go struct is decoded from a JSON object.
-//     See the “JSON Representation of Go structs” section
-//     in the package-level documentation for more details.
+//   - Goの構造体はJSONオブジェクトからデコードされます。
+//     詳細はパッケージレベルの「Go構造体のJSON表現」セクション参照。
 //
-//   - A Go slice is decoded from a JSON array, where each JSON element
-//     is recursively decoded and appended to the Go slice.
-//     Before appending into a Go slice, a new slice is allocated if it is nil,
-//     otherwise the slice length is reset to zero.
-//     The formats "emitnull" and "emitempty" have no effect when decoding.
+//   - GoのスライスはJSON配列からデコードされ、各JSON要素が再帰的にデコードされてGoスライスに追加されます。
+//     Goスライスがnilの場合は新しいスライスが割り当てられ、そうでなければスライス長はゼロにリセットされます。
+//     "emitnull"や"emitempty"フォーマットはデコード時には効果がありません。
 //
-//   - A Go array is decoded from a JSON array, where each JSON array element
-//     is recursively decoded as each corresponding Go array element.
-//     Each Go array element is zeroed before decoding into it.
-//     It fails with a [SemanticError] if the JSON array does not contain
-//     the exact same number of elements as the Go array.
-//     It does not support any custom format flags.
+//   - Goの配列はJSON配列からデコードされ、各JSON配列要素が対応するGo配列要素に再帰的にデコードされます。
+//     各Go配列要素はデコード前にゼロ化されます。
+//     JSON配列の要素数がGo配列と一致しない場合は [SemanticError] になります。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go pointer is decoded based on the JSON kind and underlying Go type.
-//     If the input is a JSON null, then this stores a nil pointer.
-//     Otherwise, it allocates a new underlying value if the pointer is nil,
-//     and recursively JSON decodes into the underlying value.
-//     Format flags are forwarded to the decoding of the underlying type.
+//   - Goのポインタ型はJSONの種類と基底Go型に基づいてデコードされます。
+//     入力がJSON nullの場合はnilポインタになります。
+//     そうでなければ、ポインタがnilの場合は新しい基底値が割り当てられ、基底値へ再帰的にJSONデコードされます。
+//     フォーマットフラグは基底型のデコードに引き継がれます。
 //
-//   - A Go interface is decoded based on the JSON kind and underlying Go type.
-//     If the input is a JSON null, then this stores a nil interface value.
-//     Otherwise, a nil interface value of an empty interface type is initialized
-//     with a zero Go bool, string, float64, map[string]any, or []any if the
-//     input is a JSON boolean, string, number, object, or array, respectively.
-//     If the interface value is still nil, then this fails with a [SemanticError]
-//     since decoding could not determine an appropriate Go type to decode into.
-//     For example, unmarshaling into a nil io.Reader fails since
-//     there is no concrete type to populate the interface value with.
-//     Otherwise an underlying value exists and it recursively decodes
-//     the JSON input into it. It does not support any custom format flags.
+//   - Goのインターフェース型はJSONの種類と基底Go型に基づいてデコードされます。
+//     入力がJSON nullの場合はnilインターフェース値になります。
+//     そうでなければ、空のインターフェース型のnil値は、入力がJSONの真偽値、文字列、数値、オブジェクト、配列の場合に
+//     それぞれゼロ値のGo bool、string、float64、map[string]any、[]anyで初期化されます。
+//     インターフェース値がまだnilの場合は [SemanticError] になります（デコード先のGo型が決定できないため）。
+//     例として、nilのio.Readerへアンマーシャルすると失敗します（具体型がないため）。
+//     それ以外は基底値が存在し、JSON入力がそこへ再帰的にデコードされます。
+//     カスタムフォーマットフラグはサポートしません。
 //
-//   - A Go [time.Time] is decoded from a JSON string containing the time
-//     formatted in RFC 3339 with nanosecond precision.
-//     If the format matches one of the format constants declared in
-//     the time package (e.g., RFC1123), then that format is used for parsing.
-//     If the format is "unix", "unixmilli", "unixmicro", or "unixnano",
-//     then the timestamp is decoded from an optionally fractional JSON number
-//     of the number of seconds (or milliseconds, microseconds, or nanoseconds)
-//     since the Unix epoch, which is January 1st, 1970 at 00:00:00 UTC.
-//     Otherwise, the format is used as-is with [time.Time.Parse] if non-empty.
+//   - Goの [time.Time] 型はRFC 3339（ナノ秒精度）でフォーマットされた
+//     JSON文字列からデコードされます。
+//     timeパッケージで宣言されたフォーマット定数（例：RFC1123）に一致する場合はそのフォーマットでパースされます。
+//     フォーマットが"unix"、"unixmilli"、"unixmicro"、"unixnano"の場合、
+//     タイムスタンプはUnixエポック（1970年1月1日00:00:00 UTC）からの
+//     秒数（またはミリ秒、マイクロ秒、ナノ秒）を表すJSON数値（小数部可）からデコードされます。
+//     それ以外は非空なら [time.Time.Parse] でそのフォーマットが使われます。
 //
-//   - A Go [time.Duration] currently has no default representation and
-//     requires an explicit format to be specified.
-//     If the format is "sec", "milli", "micro", or "nano",
-//     then the duration is decoded from an optionally fractional JSON number
-//     of the number of seconds (or milliseconds, microseconds, or nanoseconds).
-//     If the format is "units", it is decoded from a JSON string parsed using
-//     [time.ParseDuration] (e.g., "1h30m" for 1 hour 30 minutes).
-//     If the format is "iso8601", it is decoded from a JSON string using the
-//     ISO 8601 standard for durations (e.g., "PT1H30M" for 1 hour 30 minutes)
-//     accepting only accurate units of hours, minutes, or seconds.
+//   - Goの [time.Duration] 型はデフォルト表現がなく、明示的なフォーマット指定が必要です。
+//     フォーマットが"sec"、"milli"、"micro"、"nano"の場合、
+//     継続時間は秒数（またはミリ秒、マイクロ秒、ナノ秒）を表すJSON数値（小数部可）からデコードされます。
+//     フォーマットが"units"なら [time.ParseDuration] でパースされるJSON文字列（例："1h30m"）からデコードされます。
+//     フォーマットが"iso8601"ならISO 8601標準のJSON文字列（例："PT1H30M"）からデコードされ、
+//     時間、分、秒のみ正確に扱います。
 //
-//   - All other Go types (e.g., complex numbers, channels, and functions)
-//     have no default representation and result in a [SemanticError].
+//   - その他のGo型（複素数、チャネル、関数など）はデフォルト表現がなく、[SemanticError] になります。
 //
-// In general, unmarshaling follows merge semantics (similar to RFC 7396)
-// where the decoded Go value replaces the destination value
-// for any JSON kind other than an object.
-// For JSON objects, the input object is merged into the destination value
-// where matching object members recursively apply merge semantics.
+// 一般に、アンマーシャルはマージセマンティクス（RFC 7396に類似）に従い、
+// デコードされたGo値はJSONオブジェクト以外の種類では出力値を置き換えます。
+// JSONオブジェクトの場合、入力オブジェクトは出力値にマージされ、
+// 一致するメンバーは再帰的にマージセマンティクスが適用されます。
 func Unmarshal(in []byte, out any, opts ...Options) (err error)
 
-// UnmarshalRead deserializes a Go value from an [io.Reader] according to the
-// provided unmarshal and decode options (while ignoring marshal or encode options).
-// The input must be a single JSON value with optional whitespace interspersed.
-// It consumes the entirety of [io.Reader] until [io.EOF] is encountered,
-// without reporting an error for EOF. The output must be a non-nil pointer.
-// See [Unmarshal] for details about the conversion of JSON into a Go value.
+// UnmarshalReadは、指定されたアンマーシャルおよびデコードオプションに従って
+// [io.Reader] からGo値をデシリアライズします（マーシャルやエンコードオプションは無視されます）。
+// 入力は空白を含んでもよい単一のJSON値でなければなりません。
+// [io.Reader] 全体を [io.EOF] に達するまで消費し、EOFでエラーを報告しません。
+// 出力は非nilのポインタでなければなりません。
+// JSONからGo値への変換の詳細は [Unmarshal] を参照してください。
 func UnmarshalRead(in io.Reader, out any, opts ...Options) (err error)
 
-// UnmarshalDecode deserializes a Go value from a [jsontext.Decoder] according to
-// the provided unmarshal options (while ignoring marshal, encode, or decode options).
-// Any unmarshal options already specified on the [jsontext.Decoder]
-// take lower precedence than the set of options provided by the caller.
-// Unlike [Unmarshal] and [UnmarshalRead], decode options are ignored because
-// they must have already been specified on the provided [jsontext.Decoder].
+// UnmarshalDecodeは、指定されたアンマーシャルオプションに従って
+// [jsontext.Decoder] からGo値をデシリアライズします（マーシャル、エンコード、デコードオプションは無視されます）。
+// [jsontext.Decoder] に既に指定されているアンマーシャルオプションは、呼び出し元が指定したオプションよりも優先度が低くなります。
+// [Unmarshal] や [UnmarshalRead] と異なり、デコードオプションは無視されます。
+// これは、デコードオプションが既に指定済みである必要があるためです。
 //
-// The input may be a stream of one or more JSON values,
-// where this only unmarshals the next JSON value in the stream.
-// The output must be a non-nil pointer.
-// See [Unmarshal] for details about the conversion of JSON into a Go value.
+// 入力は1つ以上のJSON値のストリームである場合があり、
+// この関数はストリーム中の次のJSON値のみをアンマーシャルします。
+// 出力は非nilのポインタでなければなりません。
+// JSONからGo値への変換の詳細は [Unmarshal] を参照してください。
 func UnmarshalDecode(in *jsontext.Decoder, out any, opts ...Options) (err error)
