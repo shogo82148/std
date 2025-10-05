@@ -21,36 +21,21 @@ func (f *File) Close() error
 // -1のUIDまたはGIDはその値を変更しないことを意味します。
 // エラーが発生した場合、型 [*PathError] になります。
 //
-<<<<<<< HEAD
-// WindowsまたはPlan 9の場合、Chownは常に [syscall.EWINDOWS] または
-// EPLAN9のエラーを*PathErrorでラップして返します。
-=======
-// On Windows or Plan 9, Chown always returns the [syscall.EWINDOWS] or
-// [syscall.EPLAN9] error, wrapped in [*PathError].
->>>>>>> upstream/release-branch.go1.25
+// WindowsまたはPlan 9では、Chownは常に [syscall.EWINDOWS] または
+// [syscall.EPLAN9] のエラーを [*PathError] でラップして返します。
 func Chown(name string, uid, gid int) error
 
 // Lchownは指定されたファイルの数値UIDとGIDを変更します。
 // ファイルがシンボリックリンクの場合、リンク自体のUIDとGIDを変更します。
 // エラーが発生した場合は、[*PathError] 型のエラーが返されます。
 //
-<<<<<<< HEAD
-// Windowsでは、常に [syscall.EWINDOWS] エラーが返され、*PathErrorでラップされます。
-=======
-// On Windows, it always returns the [syscall.EWINDOWS] error, wrapped
-// in [*PathError].
->>>>>>> upstream/release-branch.go1.25
+// Windowsでは、常に [syscall.EWINDOWS] エラーを [*PathError] でラップして返します。
 func Lchown(name string, uid, gid int) error
 
 // Chownは指定したファイルの数値uidとgidを変更します。
 // エラーが発生した場合、それは [*PathError] の型です。
 //
-<<<<<<< HEAD
-// Windowsでは、いつも [syscall.EWINDOWS] のエラーを返し、*PathErrorにラップします。
-=======
-// On Windows, it always returns the [syscall.EWINDOWS] error, wrapped
-// in [*PathError].
->>>>>>> upstream/release-branch.go1.25
+// Windowsでは、常に [syscall.EWINDOWS] エラーを [*PathError] でラップして返します。
 func (f *File) Chown(uid, gid int) error
 
 // Truncateはファイルのサイズを変更します。

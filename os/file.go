@@ -92,32 +92,25 @@ func (e *LinkError) Error() string
 
 func (e *LinkError) Unwrap() error
 
-<<<<<<< HEAD
-// ReadはFileから最大len(b)バイトを読み込み、bに格納します。
-// 読み込まれたバイト数とエラーがあればそれを返します。
-// ファイルの末尾では、Readは0とio.EOFを返します。
-=======
-// NewFile returns a new [File] with the given file descriptor and name.
-// The returned value will be nil if fd is not a valid file descriptor.
+// NewFileは、指定されたファイルディスクリプタと名前で新しい [File] を返します。
+// fdが有効なファイルディスクリプタでない場合、返される値はnilになります。
 //
-// NewFile's behavior differs on some platforms:
+// NewFileの挙動はプラットフォームによって異なります：
 //
-//   - On Unix, if fd is in non-blocking mode, NewFile will attempt to return a pollable file.
-//   - On Windows, if fd is opened for asynchronous I/O (that is, [syscall.FILE_FLAG_OVERLAPPED]
-//     has been specified in the [syscall.CreateFile] call), NewFile will attempt to return a pollable
-//     file by associating fd with the Go runtime I/O completion port.
-//     The I/O operations will be performed synchronously if the association fails.
+//   - Unixでは、fdがノンブロッキングモードの場合、NewFileはポーリング可能なファイルを返そうとします。
+//   - Windowsでは、fdが非同期I/O用にオープンされている場合（つまり、[syscall.FILE_FLAG_OVERLAPPED]
+//     が [syscall.CreateFile] 呼び出しで指定されている場合）、NewFileはGoランタイムのI/O完了ポートに
+//     fdを関連付けてポーリング可能なファイルを返そうとします。
+//     関連付けに失敗した場合、I/O操作は同期的に実行されます。
 //
-// Only pollable files support [File.SetDeadline], [File.SetReadDeadline], and [File.SetWriteDeadline].
+// ポーリング可能なファイルのみが [File.SetDeadline]、[File.SetReadDeadline]、[File.SetWriteDeadline] をサポートします。
 //
-// After passing it to NewFile, fd may become invalid under the same conditions described
-// in the comments of [File.Fd], and the same constraints apply.
+// fdをNewFileに渡した後は、[File.Fd] のコメントで説明されているのと同じ条件下でfdが無効になる場合があり、同じ制約が適用されます。
 func NewFile(fd uintptr, name string) *File
 
-// Read reads up to len(b) bytes from the File and stores them in b.
-// It returns the number of bytes read and any error encountered.
-// At end of file, Read returns 0, io.EOF.
->>>>>>> upstream/release-branch.go1.25
+// ReadはFileから最大len(b)バイトを読み取り、bに格納します。
+// 読み取ったバイト数と発生したエラーを返します。
+// ファイルの終端では、Readは0, io.EOFを返します。
 func (f *File) Read(b []byte) (n int, err error)
 
 // ReadAt はオフセット off から始まる File から len(b) バイトを読み取ります。
@@ -138,85 +131,48 @@ func (f *File) Write(b []byte) (n int, err error)
 // 書き込まれたバイト数とエラー（ある場合）を返します。
 // n != len(b)の場合、WriteAtはnilでないエラーを返します。
 //
-<<<<<<< HEAD
-// ファイルがO_APPENDフラグで開かれている場合、WriteAtはエラーを返します。
-=======
-// If file was opened with the [O_APPEND] flag, WriteAt returns an error.
->>>>>>> upstream/release-branch.go1.25
+// ファイルが [O_APPEND] フラグ付きでオープンされている場合、WriteAt はエラーを返します。
 func (f *File) WriteAt(b []byte, off int64) (n int, err error)
 
 // WriteToは、io.WriterToのWriteToメソッドを実装します。
 func (f *File) WriteTo(w io.Writer) (n int64, err error)
 
-<<<<<<< HEAD
-// Seekは、オフセットをオフセットに設定します。オフセットは、whenceによって解釈されます。
-// whenceの解釈は次のとおりです：0はファイルの原点に対する相対的なオフセット、1は現在のオフセットに対する相対的なオフセット、2は終端に対する相対的なオフセットを意味します。
-// エラーがあれば、新しいオフセットとエラーを返します。
-// O_APPENDで開かれたファイルに対するSeekの振る舞いは指定されていません。
-=======
-// Seek sets the offset for the next Read or Write on file to offset, interpreted
-// according to whence: 0 means relative to the origin of the file, 1 means
-// relative to the current offset, and 2 means relative to the end.
-// It returns the new offset and an error, if any.
-// The behavior of Seek on a file opened with [O_APPEND] is not specified.
->>>>>>> upstream/release-branch.go1.25
+// Seekは、次回のReadまたはWriteのためのファイルオフセットをoffsetに設定します。
+// whenceの値によって解釈が異なります：0はファイルの先頭から、1は現在のオフセットから、2はファイルの末尾からの相対値です。
+// 新しいオフセット値と、エラーがあればそれを返します。
+// [O_APPEND] フラグ付きでオープンされたファイルに対するSeekの挙動は未定義です。
 func (f *File) Seek(offset int64, whence int) (ret int64, err error)
 
 // WriteStringはWriteと似ていますが、バイトのスライスではなく、文字列sの内容を書き込みます。
 func (f *File) WriteString(s string) (n int, err error)
 
-<<<<<<< HEAD
+// Mkdirは指定された名前とパーミッションビット（umask適用前）で新しいディレクトリを作成します。
+// エラーが発生した場合、それは[*PathError]型になります。
 func Mkdir(name string, perm FileMode) error
 
-// Chdirは現在の作業ディレクトリを指定されたディレクトリに変更します。
-// エラーが発生した場合、*PathError型になります。
+// Chdirはカレントワーキングディレクトリを指定されたディレクトリに変更します。
+// エラーが発生した場合、それは [*PathError] 型になります。
 func Chdir(dir string) error
 
-// Openは指定されたファイルを読み取り用に開きます。成功した場合、
-// 返されたファイルのメソッドを使用して読み取りができます。
-// 関連付けられたファイルディスクリプタはO_RDONLYのモードで持ちます。
-// エラーが発生した場合、*PathError型のエラーが返されます。
+// Openは指定された名前のファイルを読み込み用にオープンします。
+// 成功した場合、返されたファイルのメソッドで読み取りが可能です。
+// 関連付けられたファイルディスクリプタは [O_RDONLY] モードです。
+// エラーが発生した場合、それは [*PathError] 型になります。
 func Open(name string) (*File, error)
 
-// Createは指定されたファイルを作成または切り詰めます。ファイルが既に存在する場合、ファイルは切り詰められます。
-// ファイルが存在しない場合、モード0o666（umaskの前）で作成されます。
-// 成功した場合、返されたFileのメソッドを使用してI/Oを行うことができます。
-// 関連付けられたファイルディスクリプタはO_RDWRモードになります。エラーが発生した場合、*PathError型のエラーとなります。
+// Createは指定された名前のファイルを作成または切り詰めます。
+// ファイルが既に存在する場合は切り詰められます。存在しない場合はモード0o666（umask適用前）で作成されます。
+// 成功した場合、返されたFileのメソッドでI/Oが可能です。関連付けられたファイルディスクリプタは [O_RDWR] モードです。
+// ファイルを含むディレクトリは既に存在している必要があります。
+// エラーが発生した場合、それは [*PathError] 型になります。
 func Create(name string) (*File, error)
 
-// OpenFileは一般化されたオープンコールであり、ほとんどのユーザーは代わりにOpenまたはCreateを使用します。指定されたフラグ（O_RDONLYなど）で指定された名前のファイルを開きます。ファイルが存在しない場合、O_CREATEフラグが渡されると、モード許可（umask前）で作成されます。成功すると、返されたFileのメソッドを使用してI/Oが可能です。エラーが発生した場合、*PathErrorのタイプになります。
-=======
-// Mkdir creates a new directory with the specified name and permission
-// bits (before umask).
-// If there is an error, it will be of type [*PathError].
-func Mkdir(name string, perm FileMode) error
-
-// Chdir changes the current working directory to the named directory.
-// If there is an error, it will be of type [*PathError].
-func Chdir(dir string) error
-
-// Open opens the named file for reading. If successful, methods on
-// the returned file can be used for reading; the associated file
-// descriptor has mode [O_RDONLY].
-// If there is an error, it will be of type [*PathError].
-func Open(name string) (*File, error)
-
-// Create creates or truncates the named file. If the file already exists,
-// it is truncated. If the file does not exist, it is created with mode 0o666
-// (before umask). If successful, methods on the returned File can
-// be used for I/O; the associated file descriptor has mode [O_RDWR].
-// The directory containing the file must already exist.
-// If there is an error, it will be of type [*PathError].
-func Create(name string) (*File, error)
-
-// OpenFile is the generalized open call; most users will use Open
-// or Create instead. It opens the named file with specified flag
-// ([O_RDONLY] etc.). If the file does not exist, and the [O_CREATE] flag
-// is passed, it is created with mode perm (before umask);
-// the containing directory must exist. If successful,
-// methods on the returned File can be used for I/O.
-// If there is an error, it will be of type [*PathError].
->>>>>>> upstream/release-branch.go1.25
+// OpenFileは汎用的なオープン呼び出しです。ほとんどのユーザーはOpenまたはCreateを使用します。
+// 指定されたフラグ（[O_RDONLY] など）でファイルをオープンします。
+// ファイルが存在せず、[O_CREATE] フラグが指定されている場合は、perm（umask適用前）で作成されます。
+// ディレクトリは既に存在している必要があります。
+// 成功した場合、返されたFileのメソッドでI/Oが可能です。
+// エラーが発生した場合、それは [*PathError] 型になります。
 func OpenFile(name string, flag int, perm FileMode) (*File, error)
 
 // Renameはoldpathをnewpathに名前を変更（移動）します。
@@ -226,13 +182,8 @@ func OpenFile(name string, flag int, perm FileMode) (*File, error)
 // エラーが発生した場合、それは*LinkErrorの型である可能性があります。
 func Rename(oldpath, newpath string) error
 
-<<<<<<< HEAD
-// Readlinkは、指定されたシンボリックリンクの宛先を返します。
-// エラーがある場合、そのタイプは*PathErrorになります。
-=======
-// Readlink returns the destination of the named symbolic link.
-// If there is an error, it will be of type [*PathError].
->>>>>>> upstream/release-branch.go1.25
+// Readlinkは指定されたシンボリックリンクのリンク先を返します。
+// エラーが発生した場合、それは [*PathError] 型になります。
 //
 // リンク先が相対的な場合、Readlinkはそれを絶対パスに解決せずに
 // 相対パスを返します。
@@ -281,24 +232,13 @@ func UserConfigDir() (string, error)
 // は、プラットフォーム固有のデフォルト値または非nilのエラーを返します。
 func UserHomeDir() (string, error)
 
-<<<<<<< HEAD
-// Chmodは指定されたファイルのモードを変更します。
-// もしファイルがシンボリックリンクであれば、リンクのターゲットのモードを変更します。
-// エラーが発生した場合は、*PathError型になります。
-=======
-// Chmod changes the mode of the named file to mode.
-// If the file is a symbolic link, it changes the mode of the link's target.
-// If there is an error, it will be of type [*PathError].
->>>>>>> upstream/release-branch.go1.25
+// Chmodは指定されたファイルのモードをmodeに変更します。
+// ファイルがシンボリックリンクの場合は、リンク先のモードを変更します。
+// エラーが発生した場合、それは [*PathError] 型になります。
 //
 // オペレーティングシステムによって使用されるモードビットのサブセットが異なります。
 //
-<<<<<<< HEAD
-// Unixでは、モードのパーミッションビットであるModeSetuid、ModeSetgid、およびModeStickyが使用されます。
-=======
-// On Unix, the mode's permission bits, [ModeSetuid], [ModeSetgid], and
-// [ModeSticky] are used.
->>>>>>> upstream/release-branch.go1.25
+// Unixでは、モードのパーミッションビット [ModeSetuid]、[ModeSetgid]、および [ModeSticky] が使用されます。
 //
 // Windowsでは、モードの0o200ビット（所有者書き込み可能）のみが使用されます。
 // これにより、ファイルの読み取り専用属性が設定されるかクリアされるかが制御されます。
@@ -306,20 +246,11 @@ func UserHomeDir() (string, error)
 // Go 1.12以前との互換性を保つために、ゼロ以外のモードを使用してください。
 // 読み取り専用ファイルにはモード0o400、読み書き可能なファイルにはモード0o600を使用します。
 //
-<<<<<<< HEAD
-// Plan 9では、モードのパーミッションビットであるModeAppend、ModeExclusive、およびModeTemporaryが使用されます。
+// Plan 9では、モードのパーミッションビット [ModeAppend]、[ModeExclusive]、および [ModeTemporary] が使用されます。
 func Chmod(name string, mode FileMode) error
 
 // Chmodはファイルのモードをmodeに変更します。
-// エラーが発生した場合、それは*PathError型です。
-=======
-// On Plan 9, the mode's permission bits, [ModeAppend], [ModeExclusive],
-// and [ModeTemporary] are used.
-func Chmod(name string, mode FileMode) error
-
-// Chmod changes the mode of the file to mode.
-// If there is an error, it will be of type [*PathError].
->>>>>>> upstream/release-branch.go1.25
+// エラーが発生した場合、それは [*PathError] 型になります。
 func (f *File) Chmod(mode FileMode) error
 
 // SetDeadlineは、ファイルの読み取りと書き込みのデッドラインを設定します。
@@ -356,30 +287,23 @@ func (f *File) SetWriteDeadline(t time.Time) error
 // これはsyscall.Connインターフェースを実装しています。
 func (f *File) SyscallConn() (syscall.RawConn, error)
 
-<<<<<<< HEAD
-// DirFSはディレクトリdirをルートとするファイルツリーのファイルシステム（fs.FS）を返します。
-=======
-// Fd returns the system file descriptor or handle referencing the open file.
-// If f is closed, the descriptor becomes invalid.
-// If f is garbage collected, a finalizer may close the descriptor,
-// making it invalid; see [runtime.SetFinalizer] for more information on when
-// a finalizer might be run.
+// Fdは、オープンされているファイルを参照するシステムのファイルディスクリプタまたはハンドルを返します。
+// fがクローズされている場合、ディスクリプタは無効になります。
+// fがガベージコレクトされた場合、ファイナライザによってディスクリプタがクローズされ、無効になることがあります。
+// ファイナライザがいつ実行されるかについては [runtime.SetFinalizer] を参照してください。
 //
-// Do not close the returned descriptor; that could cause a later
-// close of f to close an unrelated descriptor.
+// 返されたディスクリプタをクローズしないでください。後でfをクローズした際に、無関係なディスクリプタがクローズされる可能性があります。
 //
-// Fd's behavior differs on some platforms:
+// Fdの挙動はプラットフォームによって異なります：
 //
-//   - On Unix and Windows, [File.SetDeadline] methods will stop working.
-//   - On Windows, the file descriptor will be disassociated from the
-//     Go runtime I/O completion port if there are no concurrent I/O
-//     operations on the file.
+//   - UnixおよびWindowsでは、[File.SetDeadline] メソッドが動作しなくなります。
+//   - Windowsでは、ファイルディスクリプタはGoランタイムのI/O完了ポートから切り離されます。
+//     これはファイルに対して同時I/O操作がない場合に発生します。
 //
-// For most uses prefer the f.SyscallConn method.
+// ほとんどの場合、f.SyscallConnメソッドの使用を推奨します。
 func (f *File) Fd() uintptr
 
 // DirFS returns a file system (an fs.FS) for the tree of files rooted at the directory dir.
->>>>>>> upstream/release-branch.go1.25
 //
 // ただし、DirFS("/prefix")は、オペレーティングシステムへのOpen呼び出しが常に"/prefix"で始まることを保証するだけです。
 // つまり、DirFS("/prefix").Open("file")はos.Open("/prefix/file")と同じです。
@@ -387,22 +311,11 @@ func (f *File) Fd() uintptr
 // また、相対パスの場合、fs.FSのルート（DirFS("prefix")で返されるもの）は、後続のChdir呼び出しの影響を受けます。
 // したがって、ディレクトリツリーに任意のコンテンツが含まれる場合、DirFSは一般的なchrootスタイルのセキュリティメカニズムの代替ではありません。
 //
-<<<<<<< HEAD
-// ディレクトリdirは空ではありません。
+// [Root.FS] を使用して、シンボリックリンクによるツリーからの脱出を防ぐ fs.FS を取得してください。
 //
-// 結果は[io/fs.StatFS]、[io/fs.ReadFileFS]、[io/fs.ReadDirFS]を実装しています。
-func DirFS(dir string) fs.FS
-
-// ReadFileは指定されたファイルを読み込み、その内容を返します。
-// 成功した呼び出しはerr == nilを返します。 err == EOFではありません。
-// ReadFileはファイル全体を読み込むため、ReadからのEOFをエラーとして報告しません。
-=======
-// Use [Root.FS] to obtain a fs.FS that prevents escapes from the tree via symbolic links.
+// ディレクトリ dir は "" であってはなりません。
 //
-// The directory dir must not be "".
-//
-// The result implements [io/fs.StatFS], [io/fs.ReadFileFS], [io/fs.ReadDirFS], and
-// [io/fs.ReadLinkFS].
+// 結果は [io/fs.StatFS]、[io/fs.ReadFileFS]、[io/fs.ReadDirFS]、および [io/fs.ReadLinkFS] を実装します。
 func DirFS(dir string) fs.FS
 
 var _ fs.StatFS = dirFS("")
@@ -414,7 +327,6 @@ var _ fs.ReadLinkFS = dirFS("")
 // A successful call returns err == nil, not err == EOF.
 // Because ReadFile reads the whole file, it does not treat an EOF from Read
 // as an error to be reported.
->>>>>>> upstream/release-branch.go1.25
 func ReadFile(name string) ([]byte, error)
 
 // WriteFileはデータを指定されたファイルに書き込みます。必要に応じて新規作成されます。
