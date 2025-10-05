@@ -15,20 +15,13 @@ HTML出力を生成するには、[html/template] を参照してください。
 これはピリオド '.' で表され、"dot"と呼ばれ、実行が進行するにつれて構造内の現在の位置の
 値に設定されます。
 
-<<<<<<< HEAD
-テンプレートの入力テキストは、任意の形式のUTF-8エンコードされたテキストです。
-"アクション" -- データ評価または制御構造 -- は "{{" と "}}" で区切られます。
-アクションの外側のすべてのテキストは、そのままの状態で出力にコピーされます。
-=======
-The security model used by this package assumes that template authors are
-trusted. The package does not auto-escape output, so injecting code into
-a template can lead to arbitrary code execution if the template is executed
-by an untrusted source.
+このパッケージで採用されているセキュリティモデルは、テンプレートの作成者が信頼できることを前提としています。
+このパッケージは出力の自動エスケープを行わないため、テンプレートにコードを注入すると、
+テンプレートが信頼できないソースによって実行された場合、任意のコード実行につながる可能性があります。
 
-The input text for a template is UTF-8-encoded text in any format.
-"Actions"--data evaluations or control structures--are delimited by
-"{{" and "}}"; all text outside actions is copied to the output unchanged.
->>>>>>> upstream/release-branch.go1.25
+テンプレートの入力テキストは、任意の形式のUTF-8エンコードされたテキストです。
+「アクション」（データ評価や制御構造）は「{{」と「}}」で区切られ、
+アクション外のすべてのテキストは変更されずに出力へコピーされます。
 
 一度パースされると、テンプレートは並行して安全に実行することができますが、
 並行実行がWriterを共有している場合、出力は交互になる可能性があります。
@@ -105,36 +98,16 @@ The input text for a template is UTF-8-encoded text in any format.
 		直接別のifを含むことができます。その効果は、以下を書くのと全く同じです。
 			{{if パイプライン}} T1 {{else}}{{if パイプライン}} T0 {{end}}{{end}}
 
-<<<<<<< HEAD
-	{{range パイプライン}} T1 {{end}}
-		パイプラインの値は、配列、スライス、マップ、またはチャネルでなければなりません。
-		パイプラインの値の長さがゼロの場合、何も出力されません。
-		それ以外の場合、ドットは配列、スライス、またはマップの連続する要素に設定され、
-		T1が実行されます。値がマップで、キーが定義された順序を持つ基本型である場合、
-		要素はソートされたキーの順序で訪れます。
-
-	{{range パイプライン}} T1 {{else}} T0 {{end}}
-		パイプラインの値は、配列、スライス、マップ、またはチャネルでなければなりません。
-		パイプラインの値の長さがゼロの場合、ドットは影響を受けず、T0が実行されます。
-		それ以外の場合、ドットは配列、スライス、またはマップの連続する要素に設定され、
-		T1が実行されます。
-=======
 	{{range pipeline}} T1 {{end}}
-		The value of the pipeline must be an array, slice, map, iter.Seq,
-		iter.Seq2, integer or channel.
-		If the value of the pipeline has length zero, nothing is output;
-		otherwise, dot is set to the successive elements of the array,
-		slice, or map and T1 is executed. If the value is a map and the
-		keys are of basic type with a defined order, the elements will be
-		visited in sorted key order.
+			パイプラインの値は配列、スライス、マップ、iter.Seq、iter.Seq2、整数またはチャネルでなければなりません。
+			パイプラインの値の長さがゼロの場合は何も出力されません。
+			それ以外の場合、ドットは配列、スライス、またはマップの各要素に順次設定され、T1が実行されます。
+			値がマップで、キーが基本型かつ順序が定義されている場合、要素はキー順に訪問されます。
 
 	{{range pipeline}} T1 {{else}} T0 {{end}}
-		The value of the pipeline must be an array, slice, map, iter.Seq,
-		iter.Seq2, integer or channel.
-		If the value of the pipeline has length zero, dot is unaffected and
-		T0 is executed; otherwise, dot is set to the successive elements
-		of the array, slice, or map and T1 is executed.
->>>>>>> upstream/release-branch.go1.25
+			パイプラインの値は配列、スライス、マップ、iter.Seq、iter.Seq2、整数またはチャネルでなければなりません。
+			パイプラインの値の長さがゼロの場合、ドットは変更されずT0が実行されます。
+			それ以外の場合、ドットは配列、スライス、またはマップの各要素に順次設定され、T1が実行されます。
 
 	{{break}}
 		最も内側の {{range pipeline}} ループが早期に終了し、
