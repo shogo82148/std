@@ -16,21 +16,11 @@ type InternalBenchmark struct {
 	F    func(b *B)
 }
 
-<<<<<<< HEAD
-// Bはベンチマークのタイミングを管理し、実行する繰り返し回数を指定するために [Benchmark] 関数に渡される型です。
+// Bはベンチマーク関数に渡され、ベンチマークのタイミングや反復回数の管理を行う型です。
 //
-// ベンチマーク関数がリターンするか、またはFailNow、Fatal、Fatalf、SkipNow、Skip、Skipfのいずれかのメソッドを呼び出すことでベンチマークは終了します。これらのメソッドはベンチマーク関数を実行しているゴルーチンからのみ呼び出す必要があります。
-// ログやエラーのバリエーションといった他の報告用メソッドは、複数のゴルーチンから同時に呼び出すことができます。
-=======
-// B is a type passed to [Benchmark] functions to manage benchmark
-// timing and control the number of iterations.
-//
-// A benchmark ends when its Benchmark function returns or calls any of the methods
-// [B.FailNow], [B.Fatal], [B.Fatalf], [B.SkipNow], [B.Skip], or [B.Skipf].
-// Those methods must be called only from the goroutine running the Benchmark function.
-// The other reporting methods, such as the variations of [B.Log] and [B.Error],
-// may be called simultaneously from multiple goroutines.
->>>>>>> upstream/release-branch.go1.25
+// ベンチマークは、そのBenchmark関数がreturnするか、[B.FailNow]、[B.Fatal]、[B.Fatalf]、[B.SkipNow]、[B.Skip]、[B.Skipf] のいずれかのメソッドを呼び出すことで終了します。
+// これらのメソッドは、Benchmark関数を実行しているゴルーチンからのみ呼び出す必要があります。
+// その他の報告用メソッド（[B.Log] や [B.Error] のバリエーションなど）は、複数のゴルーチンから同時に呼び出すことができます。
 //
 // テストと同様に、ベンチマークのログは実行中に蓄積され、終了時に標準出力に出力されます。ただし、ベンチマークのログは常に出力されるため、ベンチマーク結果に影響を与える可能性がある出力を隠すことはありません。
 type B struct {
@@ -70,12 +60,7 @@ type B struct {
 // StartTimerはテストの計測を開始します。この関数はベンチマークが開始する前に自動的に呼び出されますが、[B.StopTimer] を呼び出した後に計測を再開するためにも使用することができます。
 func (b *B) StartTimer()
 
-<<<<<<< HEAD
 // StopTimerはテストのタイミングを停止します。これは、計測したくない複雑な初期化を実行する間にタイマーを一時停止するために使用することができます。
-=======
-// StopTimer stops timing a test. This can be used to pause the timer
-// while performing steps that you don't want to measure.
->>>>>>> upstream/release-branch.go1.25
 func (b *B) StopTimer()
 
 // ResetTimerは経過したベンチマーク時間とメモリ割り当てのカウンターをゼロにし、
@@ -106,47 +91,36 @@ func (b *B) Elapsed() time.Duration
 // "ns/op"を0に設定すると、組み込まれたメトリックは抑制されます。
 func (b *B) ReportMetric(n float64, unit string)
 
-<<<<<<< HEAD
-// BenchmarkResultはベンチマークの実行結果を含んでいます。
-=======
-// Loop returns true as long as the benchmark should continue running.
+// Loopはベンチマークを継続して実行すべき間、trueを返します。
 //
-// A typical benchmark is structured like:
+// 一般的なベンチマークの構造例：
 //
 //	func Benchmark(b *testing.B) {
-//		... setup ...
+//		... セットアップ ...
 //		for b.Loop() {
-//			... code to measure ...
+//			... 計測対象のコード ...
 //		}
-//		... cleanup ...
+//		... クリーンアップ ...
 //	}
 //
-// Loop resets the benchmark timer the first time it is called in a benchmark,
-// so any setup performed prior to starting the benchmark loop does not count
-// toward the benchmark measurement. Likewise, when it returns false, it stops
-// the timer so cleanup code is not measured.
+// Loopはベンチマーク内で最初に呼び出されたときにベンチマークタイマーをリセットします。
+// そのため、ベンチマークループ開始前のセットアップ処理は計測に含まれません。
+// 同様に、falseを返すときにタイマーを停止するため、クリーンアップ処理も計測されません。
 //
-// Within the body of a "for b.Loop() { ... }" loop, arguments to and
-// results from function calls within the loop are kept alive, preventing
-// the compiler from fully optimizing away the loop body. Currently, this is
-// implemented by disabling inlining of functions called in a b.Loop loop.
-// This applies only to calls syntactically between the curly braces of the loop,
-// and the loop condition must be written exactly as "b.Loop()". Optimizations
-// are performed as usual in any functions called by the loop.
+// "for b.Loop() { ... }" ループの本体内では、ループ内で呼び出される関数の引数や戻り値が生存し続け、
+// コンパイラによるループ本体の完全な最適化が防がれます。現在は、b.Loopループ内で呼び出される関数のインライン化を無効化することで実現されています。
+// これはループの波括弧内で構文的に呼び出される関数にのみ適用され、ループ条件は必ず "b.Loop()" と記述する必要があります。
+// ループ内から呼び出される関数では通常通り最適化が行われます。
 //
-// After Loop returns false, b.N contains the total number of iterations that
-// ran, so the benchmark may use b.N to compute other average metrics.
+// Loopがfalseを返した後、b.Nには実行された総イテレーション数が格納されるため、ベンチマークはb.Nを使って他の平均値を計算できます。
 //
-// Prior to the introduction of Loop, benchmarks were expected to contain an
-// explicit loop from 0 to b.N. Benchmarks should either use Loop or contain a
-// loop to b.N, but not both. Loop offers more automatic management of the
-// benchmark timer, and runs each benchmark function only once per measurement,
-// whereas b.N-based benchmarks must run the benchmark function (and any
-// associated setup and cleanup) several times.
+// Loop導入以前は、ベンチマークは0からb.Nまでの明示的なループを含む必要がありました。
+// ベンチマークはLoopを使うかb.Nまでのループを含むか、どちらか一方にすべきです。
+// Loopはベンチマークタイマーの管理をより自動化し、各ベンチマーク関数を計測ごとに一度だけ実行します。
+// 一方、b.Nベースのベンチマークはベンチマーク関数（および関連するセットアップ・クリーンアップ）を複数回実行する必要があります。
 func (b *B) Loop() bool
 
 // BenchmarkResult contains the results of a benchmark run.
->>>>>>> upstream/release-branch.go1.25
 type BenchmarkResult struct {
 	N         int
 	T         time.Duration

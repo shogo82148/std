@@ -10,10 +10,5 @@ package testing
 // 割り当ての数を計算するために、まず関数はウォームアップとして一度実行されます。
 // 指定された回数の実行における平均的な割り当ての数が測定され、返されます。
 //
-<<<<<<< HEAD
-// AllocsPerRunは、計測中にGOMAXPROCSを1に設定し、戻る前に元に戻します。
-=======
-// AllocsPerRun sets [runtime.GOMAXPROCS] to 1 during its measurement and will restore
-// it before returning.
->>>>>>> upstream/release-branch.go1.25
+// AllocsPerRunは、計測中に [runtime.GOMAXPROCS] を1に設定し、終了時に元に戻します。
 func AllocsPerRun(runs int, f func()) (avg float64)

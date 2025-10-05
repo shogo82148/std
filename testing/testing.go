@@ -9,11 +9,7 @@
 //
 // ただし、Xxxは小文字ではじまらないものとします。関数名はテストルーチンを識別するために使用されます。
 //
-<<<<<<< HEAD
-// これらの関数内では、FailureをシグナルするためにError、Fail、または関連するメソッドを使用します。
-=======
-// Within these functions, use [T.Error], [T.Fail] or related methods to signal failure.
->>>>>>> upstream/release-branch.go1.25
+// これらの関数内では、失敗を通知するために [T.Error]、[T.Fail] などの関連メソッドを使用してください。
 //
 // 新しいテストスイートを書くためには、次の要件に従っているファイルを作成し、"_test.go"で終わる名前を付けます。
 // このファイルは通常のパッケージのビルドから除外されますが、"go test"コマンドの実行時には含まれます。
@@ -50,11 +46,7 @@
 //	    }
 //	}
 //
-<<<<<<< HEAD
-// 詳細については、「go help test」と「go help testflag」を実行してください。
-=======
-// For more detail, run [go help test] and [go help testflag].
->>>>>>> upstream/release-branch.go1.25
+// 詳細については [go help test] および [go help testflag] を実行してください。
 //
 // ＃ ベンチマーク
 //
@@ -423,11 +415,7 @@ func CoverMode() string
 // Verboseは、-test.vフラグが設定されているかどうかを報告します。
 func Verbose() bool
 
-<<<<<<< HEAD
-// TBはT、B、Fに共通するインターフェースです。
-=======
-// TB is the interface common to [T], [B], and [F].
->>>>>>> upstream/release-branch.go1.25
+// TBは [T], [B], [F] に共通するインターフェースです。
 type TB interface {
 	Attr(key, value string)
 	Cleanup(func())
@@ -462,19 +450,10 @@ var (
 
 // Tはテスト状態を管理し、フォーマットされたテストログをサポートするためにTest関数に渡される型です。
 //
-<<<<<<< HEAD
-// テストは、そのTest関数が返却されるか、またはFailNow、Fatal、Fatalf、SkipNow、Skip、Skipfのいずれかのメソッドが呼び出された時に終了します。これらのメソッド、およびParallelメソッドは、テスト関数を実行しているゴルーチンからのみ呼び出す必要があります。
+// テストは、そのTest関数がreturnするか、[T.FailNow]、[T.Fatal]、[T.Fatalf]、[T.SkipNow]、[T.Skip]、[T.Skipf] のいずれかのメソッドを呼び出すことで終了します。
+// これらのメソッドおよび [T.Parallel] メソッドは、Test関数を実行しているゴルーチンからのみ呼び出す必要があります。
 //
-// LogやErrorのバリエーションなど、他のレポートメソッドは、複数のゴルーチンから同時に呼び出すことができます。
-=======
-// A test ends when its Test function returns or calls any of the methods
-// [T.FailNow], [T.Fatal], [T.Fatalf], [T.SkipNow], [T.Skip], or [T.Skipf]. Those methods, as well as
-// the [T.Parallel] method, must be called only from the goroutine running the
-// Test function.
-//
-// The other reporting methods, such as the variations of [T.Log] and [T.Error],
-// may be called simultaneously from multiple goroutines.
->>>>>>> upstream/release-branch.go1.25
+// その他の報告用メソッド（[T.Log] や [T.Error] のバリエーションなど）は、複数のゴルーチンから同時に呼び出すことができます。
 type T struct {
 	common
 	denyParallel bool
@@ -490,21 +469,13 @@ func (t *T) Parallel()
 // Setenvはプロセス全体に影響を与えるため、並列テストや並列祖先を持つテストで使用することはできません。
 func (t *T) Setenv(key, value string)
 
-<<<<<<< HEAD
-// InternalTestは内部の型ですが、異なるパッケージでも使用するためにエクスポートされています。
-// これは「go test」コマンドの実装の一部です。
-=======
-// Chdir calls [os.Chdir] and uses Cleanup to restore the current
-// working directory to its original value after the test. On Unix, it
-// also sets PWD environment variable for the duration of the test.
+// Chdirは [os.Chdir] を呼び出し、テスト後に作業ディレクトリを元の値に復元するためにCleanupを使用します。Unixでは、テストの実行中のみPWD環境変数も設定されます。
 //
-// Because Chdir affects the whole process, it cannot be used
-// in parallel tests or tests with parallel ancestors.
+// Chdirはプロセス全体に影響を与えるため、並列テストや並列祖先を持つテストでは使用できません。
 func (t *T) Chdir(dir string)
 
-// InternalTest is an internal type but exported because it is cross-package;
-// it is part of the implementation of the "go test" command.
->>>>>>> upstream/release-branch.go1.25
+// InternalTestは内部型ですが、クロスパッケージであるためにエクスポートされています。
+// これは"go test"コマンドの実装の一部です。
 type InternalTest struct {
 	Name string
 	F    func(*T)
@@ -523,20 +494,11 @@ func (t *T) Run(name string, f func(t *T)) bool
 // -timeoutフラグが「タイムアウトなし」（0）を示す場合、ok結果はfalseです。
 func (t *T) Deadline() (deadline time.Time, ok bool)
 
-<<<<<<< HEAD
 // Mainは"go test"コマンドの実装の一部である内部関数です。
-// これは、クロスパッケージであり、「internal」パッケージより前にエクスポートされました。
-// "go test"ではもはや使用されていませんが、他のシステムにはできるだけ保持されます。
-// "go test"をシミュレートする他のシステムが、Mainを使用する一方で、Mainは更新できないことがあります。
-// "go test"をシミュレートするシステムは、MainStartを使用するように更新する必要があります。
-=======
-// Main is an internal function, part of the implementation of the "go test" command.
-// It was exported because it is cross-package and predates "internal" packages.
-// It is no longer used by "go test" but preserved, as much as possible, for other
-// systems that simulate "go test" using Main, but Main sometimes cannot be updated as
-// new functionality is added to the testing package.
-// Systems simulating "go test" should be updated to use [MainStart].
->>>>>>> upstream/release-branch.go1.25
+// クロスパッケージであり "internal" パッケージ以前から存在するためエクスポートされています。
+// 現在は"go test"では使用されていませんが、可能な限り他の"go test"を模倣するシステムのために保持されています。
+// ただし、testingパッケージに新機能が追加されるとMainを更新できない場合があります。
+// "go test"を模倣するシステムは [MainStart] の使用に切り替えるべきです。
 func Main(matchString func(pat, str string) (bool, error), tests []InternalTest, benchmarks []InternalBenchmark, examples []InternalExample)
 
 // MはTestMain関数に渡される型で、実際のテストを実行するために使用されます。
@@ -562,14 +524,9 @@ type M struct {
 // リリースごとにシグネチャが変更される可能性があります。
 func MainStart(deps testDeps, tests []InternalTest, benchmarks []InternalBenchmark, fuzzTargets []InternalFuzzTarget, examples []InternalExample) *M
 
-<<<<<<< HEAD
-// Runはテストを実行します。os.Exitに渡すための終了コードを返します。
-=======
-// Run runs the tests. It returns an exit code to pass to os.Exit.
-// The exit code is zero when all tests pass, and non-zero for any kind
-// of failure. For machine readable test results, parse the output of
-// 'go test -json'.
->>>>>>> upstream/release-branch.go1.25
+// Runはテストを実行します。os.Exitに渡す終了コードを返します。
+// 終了コードはすべてのテストが成功した場合はゼロ、何らかの失敗があった場合は非ゼロです。
+// 機械可読なテスト結果が必要な場合は、'go test -json'の出力を解析してください。
 func (m *M) Run() (code int)
 
 // RunTestsは内部関数ですが、クロスパッケージであるためにエクスポートされています。
