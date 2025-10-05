@@ -22,7 +22,6 @@ import (
 // Deprecated: Go 1.16以降、この関数は単に [io.ReadAll] を呼び出すだけです。
 //
 //go:fix inline
->>>>>>> upstream/release-branch.go1.25
 func ReadAll(r io.Reader) ([]byte, error)
 
 // ReadFileは、filenameで指定されたファイルを読み取り、その内容を返します。
