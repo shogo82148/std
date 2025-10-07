@@ -8,6 +8,8 @@ import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/sync"
 
+	"github.com/shogo82148/std/cmd/go/internal/modfetch"
+
 	"golang.org/x/mod/modfile"
 	"golang.org/x/mod/module"
 )
@@ -177,6 +179,22 @@ func WorkFilePath() string
 // Reset clears all the initialized, cached state about the use of modules,
 // so that we can start over.
 func Reset()
+
+type State struct {
+	initialized     bool
+	forceUseModules bool
+	rootMode        Root
+	modRoots        []string
+	modulesEnabled  bool
+	mainModules     *MainModuleSet
+	requirements    *Requirements
+	workFilePath    string
+	modfetchState   modfetch.State
+}
+
+func NewState() *State
+
+var LoaderState = NewState()
 
 // Init determines whether module mode is enabled, locates the root of the
 // current module (if any), sets environment variables for Git subprocesses, and
