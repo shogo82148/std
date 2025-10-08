@@ -14,4 +14,4 @@ package fmt
 // order they appear in the arguments.
 // It is invalid to supply the %w verb with an operand that does not implement
 // the error interface. The %w verb is otherwise a synonym for %v.
-func Errorf(format string, a ...any) error
+func Errorf(format string, a ...any) (err error)

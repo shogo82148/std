@@ -18,12 +18,6 @@ import (
 //
 // TODO(#40775): See if these can be plumbed as explicit parameters.
 var (
-	// RootMode determines whether a module root is needed.
-	RootMode Root
-
-	// ForceUseModules may be set to force modules to be enabled when
-	// GO111MODULE=auto or to report an error when GO111MODULE=off.
-	ForceUseModules bool
 
 	// ExplicitWriteGoMod prevents LoadPackages, ListModules, and other functions
 	// from updating go.mod and go.sum or reporting errors when updates are
@@ -128,8 +122,6 @@ func (mms *MainModuleSet) Godebugs() []*modfile.Godebug
 
 func (mms *MainModuleSet) WorkFileReplaceMap() map[module.Version]module.Version
 
-var MainModules *MainModuleSet
-
 type Root int
 
 const (
@@ -181,15 +173,40 @@ func WorkFilePath() string
 func Reset()
 
 type State struct {
-	initialized     bool
-	forceUseModules bool
-	rootMode        Root
-	modRoots        []string
-	modulesEnabled  bool
-	mainModules     *MainModuleSet
-	requirements    *Requirements
-	workFilePath    string
-	modfetchState   modfetch.State
+	initialized bool
+
+	// ForceUseModules may be set to force modules to be enabled when
+	// GO111MODULE=auto or to report an error when GO111MODULE=off.
+	ForceUseModules bool
+
+	// RootMode determines whether a module root is needed.
+	RootMode Root
+
+	// These are primarily used to initialize the MainModules, and should
+	// be eventually superseded by them but are still used in cases where
+	// the module roots are required but MainModules has not been
+	// initialized yet. Set to the modRoots of the main modules.
+	// modRoots != nil implies len(modRoots) > 0
+	modRoots       []string
+	modulesEnabled bool
+	MainModules    *MainModuleSet
+
+	// requirements is the requirement graph for the main module.
+	//
+	// It is always non-nil if the main module's go.mod file has been
+	// loaded.
+	//
+	// This variable should only be read from the loadModFile
+	// function, and should only be written in the loadModFile and
+	// commitRequirements functions.  All other functions that need or
+	// produce a *Requirements should accept and/or return an explicit
+	// parameter.
+	requirements *Requirements
+
+	// Set to the path to the go.work file, or "" if workspace mode is
+	// disabled
+	workFilePath  string
+	modfetchState modfetch.State
 }
 
 func NewState() *State
