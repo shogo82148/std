@@ -34,6 +34,7 @@ type HashDebug struct {
 // copy of the source code.
 func (d *HashDebug) SetInlineSuffixOnly(b bool) *HashDebug
 
+var ConvertHash *HashDebug
 var FmaHash *HashDebug
 var LoopVarHash *HashDebug
 var PGOHash *HashDebug
