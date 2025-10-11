@@ -1,16 +1,20 @@
-// Copyright 2011 The Go Authors. All rights reserved.
+// Copyright 2025 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+/*
+Fix is a tool executed by "go fix" to update Go programs that use old
+features of the language and library and rewrite them to use newer
+ones. After you update to a new Go release, fix helps make the
+necessary changes to your programs.
+
+See the documentation for "go fix" for how to run this command.
+You can provide an alternative tool using "go fix -fixtool=..."
+
+Run "go tool fix help" to see the list of analyzers supported by this
+program.
+
+See [golang.org/x/tools/go/analysis] for information on how to write
+an analyzer that can suggest fixes.
+*/
 package main
-
-import (
-	"github.com/shogo82148/std/flag"
-)
-
-var (
-	_ = flag.Bool("diff", false, "obsolete, no effect")
-	_ = flag.String("go", "", "obsolete, no effect")
-	_ = flag.String("r", "", "obsolete, no effect")
-	_ = flag.String("force", "", "obsolete, no effect")
-)
