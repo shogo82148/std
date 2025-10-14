@@ -43,7 +43,7 @@ type ArshalValues struct {
 // DefaultOptionsV2 is the set of all options that define default v2 behavior.
 var DefaultOptionsV2 = Struct{
 	Flags: jsonflags.Flags{
-		Presence: uint64(jsonflags.AllFlags & ^jsonflags.WhitespaceFlags),
+		Presence: uint64(jsonflags.DefaultV1Flags),
 		Values:   uint64(0),
 	},
 }
@@ -51,7 +51,7 @@ var DefaultOptionsV2 = Struct{
 // DefaultOptionsV1 is the set of all options that define default v1 behavior.
 var DefaultOptionsV1 = Struct{
 	Flags: jsonflags.Flags{
-		Presence: uint64(jsonflags.AllFlags & ^jsonflags.WhitespaceFlags),
+		Presence: uint64(jsonflags.DefaultV1Flags),
 		Values:   uint64(jsonflags.DefaultV1Flags),
 	},
 }
