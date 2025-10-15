@@ -317,7 +317,6 @@ const (
 	Op386MOVBLZX
 	Op386MOVWLSX
 	Op386MOVWLZX
-	Op386MOVLf2i
 	Op386MOVLconst
 	Op386CVTTSD2SL
 	Op386CVTTSS2SL
@@ -2798,10 +2797,6 @@ const (
 	OpWasmI64TruncSatF64U
 	OpWasmI64TruncSatF32S
 	OpWasmI64TruncSatF32U
-	OpWasmI32TruncSatF64S
-	OpWasmI32TruncSatF64U
-	OpWasmI32TruncSatF32S
-	OpWasmI32TruncSatF32U
 	OpWasmF32ConvertI64S
 	OpWasmF32ConvertI64U
 	OpWasmF64ConvertI64S

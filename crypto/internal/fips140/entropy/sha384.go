@@ -5,3 +5,5 @@
 package entropy
 
 func SHA384(p *[1024]byte) [48]byte
+
+func TestingOnlySHA384(p []byte) [48]byte
