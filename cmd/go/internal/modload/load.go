@@ -127,7 +127,7 @@ type PackageOpts struct {
 
 // LoadPackages identifies the set of packages matching the given patterns and
 // loads the packages in the import graph rooted at that set.
-func LoadPackages(ctx context.Context, opts PackageOpts, patterns ...string) (matches []*search.Match, loadedPackages []string)
+func LoadPackages(loaderstate *State, ctx context.Context, opts PackageOpts, patterns ...string) (matches []*search.Match, loadedPackages []string)
 
 // ImportFromFiles adds modules to the build list as needed
 // to satisfy the imports in the named Go source files.
@@ -136,11 +136,11 @@ func LoadPackages(ctx context.Context, opts PackageOpts, patterns ...string) (ma
 //
 // TODO(bcmills): Silencing errors seems off. Take a closer look at this and
 // figure out what the error-reporting actually ought to be.
-func ImportFromFiles(ctx context.Context, gofiles []string)
+func ImportFromFiles(loaderstate *State, ctx context.Context, gofiles []string)
 
 // DirImportPath returns the effective import path for dir,
 // provided it is within a main module, or else returns ".".
-func (mms *MainModuleSet) DirImportPath(ctx context.Context, dir string) (path string, m module.Version)
+func (mms *MainModuleSet) DirImportPath(loaderstate *State, ctx context.Context, dir string) (path string, m module.Version)
 
 // PackageModule returns the module providing the package named by the import path.
 func PackageModule(path string) module.Version
@@ -149,7 +149,7 @@ func PackageModule(path string) module.Version
 // the package at path as imported from the package in parentDir.
 // Lookup requires that one of the Load functions in this package has already
 // been called.
-func Lookup(parentPath string, parentIsStd bool, path string) (dir, realPath string, err error)
+func Lookup(loaderstate *State, parentPath string, parentIsStd bool, path string) (dir, realPath string, err error)
 
 // Why returns the "go mod why" output stanza for the given package,
 // without the leading # comment.

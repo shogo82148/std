@@ -20,13 +20,13 @@ var (
 // a given package. If modules are not enabled or if the package is in the
 // standard library or if the package was not successfully loaded with
 // LoadPackages or ImportFromFiles, nil is returned.
-func PackageModuleInfo(ctx context.Context, pkgpath string) *modinfo.ModulePublic
+func PackageModuleInfo(loaderstate *State, ctx context.Context, pkgpath string) *modinfo.ModulePublic
 
 // PackageModRoot returns the module root directory for the module that provides
 // a given package. If modules are not enabled or if the package is in the
 // standard library or if the package was not successfully loaded with
 // LoadPackages or ImportFromFiles, the empty string is returned.
-func PackageModRoot(ctx context.Context, pkgpath string) string
+func PackageModRoot(loaderstate *State, ctx context.Context, pkgpath string) string
 
 func ModuleInfo(ctx context.Context, path string) *modinfo.ModulePublic
 

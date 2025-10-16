@@ -4,5 +4,9 @@
 
 package load
 
+import (
+	"github.com/shogo82148/std/cmd/go/internal/modload"
+)
+
 // MatchPackage(pattern, cwd)(p) reports whether package p matches pattern in the working directory cwd.
-func MatchPackage(pattern, cwd string) func(*Package) bool
+func MatchPackage(loaderstate *modload.State, pattern, cwd string) func(*Package) bool

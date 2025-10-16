@@ -31,7 +31,7 @@ func CheckExclusions(ctx context.Context, m module.Version) error
 
 // CheckRetractions returns an error if module m has been retracted by
 // its author.
-func CheckRetractions(ctx context.Context, m module.Version) (err error)
+func CheckRetractions(loaderstate *State, ctx context.Context, m module.Version) (err error)
 
 type ModuleRetractedError struct {
 	Rationale []string
@@ -56,12 +56,12 @@ func ShortMessage(message, emptyDefault string) string
 //
 // CheckDeprecation returns an error if the message can't be loaded.
 // CheckDeprecation returns "", nil if there is no deprecation message.
-func CheckDeprecation(ctx context.Context, m module.Version) (deprecation string, err error)
+func CheckDeprecation(loaderstate *State, ctx context.Context, m module.Version) (deprecation string, err error)
 
 // Replacement returns the replacement for mod, if any. If the path in the
 // module.Version is relative it's relative to the single main module outside
 // workspace mode, or the workspace's directory in workspace mode.
-func Replacement(mod module.Version) module.Version
+func Replacement(loaderstate *State, mod module.Version) module.Version
 
 // ToDirectoryPath adds a prefix if necessary so that path in unambiguously
 // an absolute path or a relative path starting with a '.' or '..'

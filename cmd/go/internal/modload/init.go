@@ -92,7 +92,7 @@ func (mms *MainModuleSet) ModRoot(m module.Version) string
 
 func (mms *MainModuleSet) InGorootSrc(m module.Version) bool
 
-func (mms *MainModuleSet) GetSingleIndexOrNil() *modFileIndex
+func (mms *MainModuleSet) GetSingleIndexOrNil(loaderstate *State) *modFileIndex
 
 func (mms *MainModuleSet) Index(m module.Version) *modFileIndex
 
@@ -113,12 +113,12 @@ func (mms *MainModuleSet) HighestReplaced() map[string]string
 
 // GoVersion returns the go version set on the single module, in module mode,
 // or the go.work file in workspace mode.
-func (mms *MainModuleSet) GoVersion() string
+func (mms *MainModuleSet) GoVersion(loaderstate *State) string
 
 // Godebugs returns the godebug lines set on the single module, in module mode,
 // or on the go.work file in workspace mode.
 // The caller must not modify the result.
-func (mms *MainModuleSet) Godebugs() []*modfile.Godebug
+func (mms *MainModuleSet) Godebugs(loaderstate *State) []*modfile.Godebug
 
 func (mms *MainModuleSet) WorkFileReplaceMap() map[module.Version]module.Version
 
@@ -150,23 +150,23 @@ const (
 // in go.mod, edit it before loading.
 func ModFile() *modfile.File
 
-func BinDir() string
+func BinDir(loaderstate *State) string
 
 // InitWorkfile initializes the workFilePath variable for commands that
 // operate in workspace mode. It should not be called by other commands,
 // for example 'go mod tidy', that don't operate in workspace mode.
-func InitWorkfile()
+func InitWorkfile(loaderstate *State)
 
 // FindGoWork returns the name of the go.work file for this command,
 // or the empty string if there isn't one.
 // Most code should use Init and Enabled rather than use this directly.
 // It is exported mainly for Go toolchain switching, which must process
 // the go.work very early at startup.
-func FindGoWork(wd string) string
+func FindGoWork(loaderstate *State, wd string) string
 
 // WorkFilePath returns the absolute path of the go.work file, or "" if not in
 // workspace mode. WorkFilePath must be called after InitWorkfile.
-func WorkFilePath() string
+func WorkFilePath(loaderstate *State) string
 
 // Reset clears all the initialized, cached state about the use of modules,
 // so that we can start over.
@@ -217,7 +217,7 @@ var LoaderState = NewState()
 // current module (if any), sets environment variables for Git subprocesses, and
 // configures the cfg, codehost, load, modfetch, and search packages for use
 // with modules.
-func Init()
+func Init(loaderstate *State)
 
 // WillBeEnabled checks whether modules should be enabled but does not
 // initialize modules by installing hooks. If Init has already been called,
@@ -241,14 +241,14 @@ func FindGoMod(wd string) string
 // If modules are enabled but there is no main module, Enabled returns true
 // and then the first use of module information will call die
 // (usually through MustModRoot).
-func Enabled() bool
+func Enabled(loaderstate *State) bool
 
-func VendorDir() string
+func VendorDir(loaderstate *State) string
 
 // HasModRoot reports whether a main module or main modules are present.
 // HasModRoot may return false even if Enabled returns true: for example, 'get'
 // does not require a main module.
-func HasModRoot() bool
+func HasModRoot(loaderstate *State) bool
 
 // MustHaveModRoot checks that a main module or main modules are present,
 // and calls base.Fatalf if there are no main modules.
@@ -298,7 +298,7 @@ func UpdateWorkFile(wf *modfile.WorkFile)
 // other, but unlike LoadModGraph does not load the full module graph or check
 // it for global consistency. Most callers outside of the modload package should
 // use LoadModGraph instead.
-func LoadModFile(ctx context.Context) *Requirements
+func LoadModFile(loaderstate *State, ctx context.Context) *Requirements
 
 // CheckReservedModulePath checks whether the module path is a reserved module path
 // that can't be used for a user's module.
@@ -322,7 +322,7 @@ func CreateModFile(ctx context.Context, modPath string)
 //
 // This function affects the default cfg.BuildMod when outside of a module,
 // so it can only be called prior to Init.
-func AllowMissingModuleImports()
+func AllowMissingModuleImports(loaderstate *State)
 
 // WriteOpts control the behavior of WriteGoMod.
 type WriteOpts struct {
@@ -342,6 +342,6 @@ func WriteGoMod(ctx context.Context, opts WriteOpts) error
 
 // UpdateGoModFromReqs returns a modified go.mod file using the current
 // requirements. It does not commit these changes to disk.
-func UpdateGoModFromReqs(ctx context.Context, opts WriteOpts) (before, after []byte, modFile *modfile.File, err error)
+func UpdateGoModFromReqs(loaderstate *State, ctx context.Context, opts WriteOpts) (before, after []byte, modFile *modfile.File, err error)
 
 func CheckGodebug(verb, k, v string) error

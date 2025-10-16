@@ -59,7 +59,7 @@ import (
 //
 // Query often returns a non-nil *RevInfo with a non-nil error,
 // to provide an info.Origin that can allow the error to be cached.
-func Query(ctx context.Context, path, query, current string, allowed AllowedFunc) (*modfetch.RevInfo, error)
+func Query(loaderstate *State, ctx context.Context, path, query, current string, allowed AllowedFunc) (*modfetch.RevInfo, error)
 
 // AllowedFunc is used by Query and other functions to filter out unsuitable
 // versions, for example, those listed in exclude directives in the main
@@ -86,7 +86,7 @@ type QueryResult struct {
 
 // QueryPackages is like QueryPattern, but requires that the pattern match at
 // least one package and omits the non-package result (if any).
-func QueryPackages(ctx context.Context, pattern, query string, current func(string) string, allowed AllowedFunc) ([]QueryResult, error)
+func QueryPackages(loaderstate *State, ctx context.Context, pattern, query string, current func(string) string, allowed AllowedFunc) ([]QueryResult, error)
 
 // QueryPattern looks up the module(s) containing at least one package matching
 // the given pattern at the given version. The results are sorted by module path
@@ -103,7 +103,7 @@ func QueryPackages(ctx context.Context, pattern, query string, current func(stri
 //
 // QueryPattern always returns at least one QueryResult (which may be only
 // modOnly) or a non-nil error.
-func QueryPattern(ctx context.Context, pattern, query string, current func(string) string, allowed AllowedFunc) (pkgMods []QueryResult, modOnly *QueryResult, err error)
+func QueryPattern(loaderstate *State, ctx context.Context, pattern, query string, current func(string) string, allowed AllowedFunc) (pkgMods []QueryResult, modOnly *QueryResult, err error)
 
 // A NoMatchingVersionError indicates that Query found a module at the requested
 // path, but not at any versions satisfying the query string and allow-function.

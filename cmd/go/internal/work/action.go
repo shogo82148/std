@@ -14,6 +14,7 @@ import (
 
 	"github.com/shogo82148/std/cmd/go/internal/cache"
 	"github.com/shogo82148/std/cmd/go/internal/load"
+	"github.com/shogo82148/std/cmd/go/internal/modload"
 	"github.com/shogo82148/std/cmd/go/internal/trace"
 )
 
@@ -172,4 +173,4 @@ func (b *Builder) VetAction(mode, depMode BuildMode, p *load.Package) *Action
 // LinkAction returns the action for linking p into an executable
 // and possibly installing the result (according to mode).
 // depMode is the action (build or install) to use when compiling dependencies.
-func (b *Builder) LinkAction(mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) LinkAction(loaderstate *modload.State, mode, depMode BuildMode, p *load.Package) *Action

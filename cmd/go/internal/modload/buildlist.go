@@ -71,7 +71,7 @@ type Requirements struct {
 func (rs *Requirements) String() string
 
 // GoVersion returns the Go language version for the Requirements.
-func (rs *Requirements) GoVersion() string
+func (rs *Requirements) GoVersion(loaderstate *State) string
 
 // Graph returns the graph of module requirements loaded from the current
 // root modules (as reported by RootModules).
@@ -81,7 +81,7 @@ func (rs *Requirements) GoVersion() string
 //
 // If the requirements of any relevant module fail to load, Graph also
 // returns a non-nil error of type *mvs.BuildListError.
-func (rs *Requirements) Graph(ctx context.Context) (*ModuleGraph, error)
+func (rs *Requirements) Graph(loaderstate *State, ctx context.Context) (*ModuleGraph, error)
 
 // IsDirect returns whether the given module provides a package directly
 // imported by a package or test in the main module.
@@ -155,7 +155,7 @@ func LoadModGraph(ctx context.Context, goVersion string) (*ModuleGraph, error)
 // On success, EditBuildList reports whether the selected version of any module
 // in the build list may have been changed (possibly to or from "none") as a
 // result.
-func EditBuildList(ctx context.Context, add, mustSelect []module.Version) (changed bool, err error)
+func EditBuildList(loaderstate *State, ctx context.Context, add, mustSelect []module.Version) (changed bool, err error)
 
 // A ConstraintError describes inconsistent constraints in EditBuildList
 type ConstraintError struct {
