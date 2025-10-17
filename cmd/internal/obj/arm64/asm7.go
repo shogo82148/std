@@ -114,3 +114,6 @@ const OP_NOOP = 0xd503201f
 func SYSARG5(op0 int, op1 int, Cn int, Cm int, op2 int) int
 
 func SYSARG4(op1 int, Cn int, Cm int, op2 int) int
+
+// ARM64RegisterExtension constructs an ARM64 register with extension or arrangement.
+func ARM64RegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error

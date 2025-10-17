@@ -47,9 +47,6 @@ func ARM64Suffix(prog *obj.Prog, cond string) bool
 // ARM64RegisterShift constructs an ARM64 register with shift operation.
 func ARM64RegisterShift(reg, op, count int16) (int64, error)
 
-// ARM64RegisterExtension constructs an ARM64 register with extension or arrangement.
-func ARM64RegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error
-
 // ARM64RegisterArrangement constructs an ARM64 vector register arrangement.
 func ARM64RegisterArrangement(reg int16, name, arng string) (int64, error)
 

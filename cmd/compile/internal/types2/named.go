@@ -24,18 +24,17 @@ type Named struct {
 	check *Checker
 	obj   *TypeName
 
-	// fromRHS holds the type (on RHS of declaration) this *Named type is derived
-	// from (for cycle reporting). Only used by validType, and therefore does not
-	// require synchronization.
-	fromRHS Type
+	// flags indicating temporary violations of the invariants for fromRHS and underlying
+	allowNilRHS        bool
+	allowNilUnderlying bool
 
-	// information for instantiated types; nil otherwise
-	inst *instance
-
-	mu         sync.Mutex
-	state_     uint32
 	underlying Type
-	tparams    *TypeParamList
+	inst       *instance
+
+	mu      sync.Mutex
+	state_  uint32
+	fromRHS Type
+	tparams *TypeParamList
 
 	// methods declared for this type (not the method set of this type)
 	// Signatures are type-checked lazily.
@@ -102,6 +101,6 @@ func (t *Named) AddMethod(m *Func)
 // Alias types.
 //
 // [underlying type]: https://go.dev/ref/spec#Underlying_types.
-func (t *Named) Underlying() Type
+func (n *Named) Underlying() Type
 
 func (t *Named) String() string
