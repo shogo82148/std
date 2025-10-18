@@ -45,5 +45,5 @@ func (oid OID) Equal(other OID) bool
 // a component of OID requires more than 31 bits, it returns false.
 func (oid OID) EqualASN1OID(other asn1.ObjectIdentifier) bool
 
-// Strings returns the string representation of the Object Identifier.
+// String returns the string representation of the Object Identifier.
 func (oid OID) String() string

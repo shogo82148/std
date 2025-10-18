@@ -14,7 +14,7 @@ import (
 	"github.com/shogo82148/std/encoding/binary"
 )
 
-// An entry is a sequence of attribute/value pairs.
+// An Entry is a sequence of attribute/value pairs.
 type Entry struct {
 	Offset   Offset
 	Tag      Tag

@@ -104,7 +104,7 @@ func NewTypeName(pos token.Pos, pkg *Package, name string, typ Type) *TypeName
 // IsAlias reports whether obj is an alias name for a type.
 func (obj *TypeName) IsAlias() bool
 
-// A Variable represents a declared variable (including function parameters and results, and struct fields).
+// A Var represents a declared variable (including function parameters and results, and struct fields).
 type Var struct {
 	object
 	origin   *Var

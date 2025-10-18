@@ -309,7 +309,7 @@ func (n *SliceExpr) SetOp(op Op)
 // o must be a slicing op.
 func (o Op) IsSlice3() bool
 
-// A SliceHeader expression constructs a slice header from its parts.
+// A SliceHeaderExpr constructs a slice header from its parts.
 type SliceHeaderExpr struct {
 	miniExpr
 	Ptr Node
@@ -340,7 +340,7 @@ func NewStarExpr(pos src.XPos, x Node) *StarExpr
 func (n *StarExpr) Implicit() bool
 func (n *StarExpr) SetImplicit(b bool)
 
-// A TypeAssertionExpr is a selector expression X.(Type).
+// A TypeAssertExpr is a selector expression X.(Type).
 // Before type-checking, the type is Ntype.
 type TypeAssertExpr struct {
 	miniExpr

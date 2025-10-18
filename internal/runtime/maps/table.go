@@ -62,7 +62,7 @@ func (it *Iter) Map() *Map
 // Must not be called prior to Next.
 func (it *Iter) Key() unsafe.Pointer
 
-// Key returns a pointer to the current element. nil indicates end of
+// Elem returns a pointer to the current element. nil indicates end of
 // iteration.
 //
 // Must not be called prior to Next.

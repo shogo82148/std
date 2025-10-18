@@ -275,7 +275,7 @@ type Func struct {
 	Argwid int64
 }
 
-// StructType contains Type fields specific to struct types.
+// Struct contains Type fields specific to struct types.
 type Struct struct {
 	fields fields
 

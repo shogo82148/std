@@ -19,7 +19,7 @@ func SignPSS(rand io.Reader, priv *PrivateKey, hash hash.Hash, hashed []byte, sa
 // VerifyPSS verifies sig with RSASSA-PSS automatically detecting the salt length.
 func VerifyPSS(pub *PublicKey, hash hash.Hash, digest []byte, sig []byte) error
 
-// VerifyPSS verifies sig with RSASSA-PSS and an expected salt length.
+// VerifyPSSWithSaltLength verifies sig with RSASSA-PSS and an expected salt length.
 func VerifyPSSWithSaltLength(pub *PublicKey, hash hash.Hash, digest []byte, sig []byte, saltLength int) error
 
 // EncryptOAEP encrypts the given message with RSAES-OAEP.

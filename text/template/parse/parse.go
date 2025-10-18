@@ -27,7 +27,7 @@ type Tree struct {
 	stackDepth int
 }
 
-// A mode value is a set of flags (or 0). Modes control parser behavior.
+// A Mode value is a set of flags (or 0). Modes control parser behavior.
 type Mode uint
 
 const (
