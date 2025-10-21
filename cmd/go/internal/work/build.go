@@ -9,6 +9,7 @@ import (
 
 	"github.com/shogo82148/std/cmd/go/internal/base"
 	"github.com/shogo82148/std/cmd/go/internal/load"
+	"github.com/shogo82148/std/cmd/go/internal/modload"
 )
 
 var CmdBuild = &base.Command{
@@ -310,7 +311,7 @@ See also: go build, go get, go clean.
 	`,
 }
 
-func InstallPackages(ctx context.Context, patterns []string, pkgs []*load.Package)
+func InstallPackages(loaderstate *modload.State, ctx context.Context, patterns []string, pkgs []*load.Package)
 
 // ExecCmd is the command to use to run user binaries.
 // Normally it is empty, meaning run the binaries directly.

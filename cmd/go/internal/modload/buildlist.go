@@ -137,7 +137,7 @@ func (mg *ModuleGraph) BuildList() []module.Version
 // Modules are loaded automatically (and lazily) in LoadPackages:
 // LoadModGraph need only be called if LoadPackages is not,
 // typically in commands that care about modules but no particular package.
-func LoadModGraph(ctx context.Context, goVersion string) (*ModuleGraph, error)
+func LoadModGraph(loaderstate *State, ctx context.Context, goVersion string) (*ModuleGraph, error)
 
 // EditBuildList edits the global build list by first adding every module in add
 // to the existing build list, then adjusting versions (and adding or removing

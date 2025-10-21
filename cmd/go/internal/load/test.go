@@ -6,6 +6,8 @@ package load
 
 import (
 	"github.com/shogo82148/std/context"
+
+	"github.com/shogo82148/std/cmd/go/internal/modload"
 )
 
 var TestMainDeps = []string{
@@ -27,7 +29,7 @@ type TestCover struct {
 // the package containing an error if the test packages or
 // their dependencies have errors.
 // Only test packages without errors are returned.
-func TestPackagesFor(ctx context.Context, opts PackageOpts, p *Package, cover *TestCover) (pmain, ptest, pxtest, perr *Package)
+func TestPackagesFor(loaderstate *modload.State, ctx context.Context, opts PackageOpts, p *Package, cover *TestCover) (pmain, ptest, pxtest, perr *Package)
 
 // TestPackagesAndErrors returns three packages:
 //   - pmain, the package main corresponding to the test binary (running tests in ptest and pxtest).
@@ -46,4 +48,4 @@ func TestPackagesFor(ctx context.Context, opts PackageOpts, p *Package, cover *T
 //
 // The caller is expected to have checked that len(p.TestGoFiles)+len(p.XTestGoFiles) > 0,
 // or else there's no point in any of this.
-func TestPackagesAndErrors(ctx context.Context, done func(), opts PackageOpts, p *Package, cover *TestCover) (pmain, ptest, pxtest *Package)
+func TestPackagesAndErrors(loaderstate *modload.State, ctx context.Context, done func(), opts PackageOpts, p *Package, cover *TestCover) (pmain, ptest, pxtest *Package)

@@ -177,7 +177,7 @@ func (e *NoGoError) Error() string
 // can produce better error messages if it starts with the original paths.
 // The initial load of p loads all the non-test imports and rewrites
 // the vendored paths, so nothing should ever call p.vendored(p.Imports).
-func (p *Package) Resolve(imports []string) []string
+func (p *Package) Resolve(loaderstate *modload.State, imports []string) []string
 
 // CoverSetup holds parameters related to coverage setup for a given package (covermode, etc).
 type CoverSetup struct {
@@ -280,7 +280,7 @@ func LoadPackage(loaderstate *modload.State, ctx context.Context, opts PackageOp
 // First, there is Go 1.5 vendoring (golang.org/s/go15vendor).
 // If vendor expansion doesn't trigger, then the path is also subject to
 // Go 1.11 module legacy conversion (golang.org/issue/25069).
-func ResolveImportPath(parent *Package, path string) (found string)
+func ResolveImportPath(loaderstate *modload.State, parent *Package, path string) (found string)
 
 // FindVendor looks for the last non-terminating "vendor" path element in the given import path.
 // If there isn't one, FindVendor returns ok=false.
@@ -363,7 +363,7 @@ func PackageList(roots []*Package) []*Package
 // TestPackageList returns the list of packages in the dag rooted at roots
 // as visited in a depth-first post-order traversal, including the test
 // imports of the roots. This ignores errors in test packages.
-func TestPackageList(ctx context.Context, opts PackageOpts, roots []*Package) []*Package
+func TestPackageList(loaderstate *modload.State, ctx context.Context, opts PackageOpts, roots []*Package) []*Package
 
 // LoadImportWithFlags loads the package with the given import path and
 // sets tool flags on that package. This function is useful loading implicit

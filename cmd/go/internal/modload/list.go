@@ -24,4 +24,4 @@ const (
 // along with any error preventing additional matches from being identified.
 //
 // The returned slice can be nonempty even if the error is non-nil.
-func ListModules(ctx context.Context, args []string, mode ListMode, reuseFile string) ([]*modinfo.ModulePublic, error)
+func ListModules(loaderstate *State, ctx context.Context, args []string, mode ListMode, reuseFile string) ([]*modinfo.ModulePublic, error)

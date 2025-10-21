@@ -6,6 +6,8 @@ package modcmd
 
 import (
 	"github.com/shogo82148/std/context"
+
+	"github.com/shogo82148/std/cmd/go/internal/modload"
 )
 
-func RunVendor(ctx context.Context, vendorE bool, vendorO string, args []string)
+func RunVendor(loaderstate *modload.State, ctx context.Context, vendorE bool, vendorO string, args []string)

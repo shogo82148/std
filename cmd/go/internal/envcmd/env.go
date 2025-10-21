@@ -10,6 +10,7 @@ import (
 
 	"github.com/shogo82148/std/cmd/go/internal/base"
 	"github.com/shogo82148/std/cmd/go/internal/cfg"
+	"github.com/shogo82148/std/cmd/go/internal/modload"
 )
 
 var CmdEnv = &base.Command{
@@ -45,7 +46,7 @@ For more about environment variables, see 'go help environment'.
 func MkEnv() []cfg.EnvVar
 
 // ExtraEnvVars returns environment variables that should not leak into child processes.
-func ExtraEnvVars() []cfg.EnvVar
+func ExtraEnvVars(loaderstate *modload.State) []cfg.EnvVar
 
 // ExtraEnvVarsCostly returns environment variables that should not leak into child processes
 // but are costly to evaluate.

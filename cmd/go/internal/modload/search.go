@@ -18,4 +18,4 @@ import (
 //
 // If m is the zero module.Version, MatchInModule matches the pattern
 // against the standard library (std and cmd) in GOROOT/src.
-func MatchInModule(ctx context.Context, pattern string, m module.Version, tags map[string]bool) *search.Match
+func MatchInModule(loaderstate *State, ctx context.Context, pattern string, m module.Version, tags map[string]bool) *search.Match

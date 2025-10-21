@@ -28,7 +28,7 @@ func PackageModuleInfo(loaderstate *State, ctx context.Context, pkgpath string) 
 // LoadPackages or ImportFromFiles, the empty string is returned.
 func PackageModRoot(loaderstate *State, ctx context.Context, pkgpath string) string
 
-func ModuleInfo(ctx context.Context, path string) *modinfo.ModulePublic
+func ModuleInfo(loaderstate *State, ctx context.Context, path string) *modinfo.ModulePublic
 
 func ModInfoProg(info string, isgccgo bool) []byte
 
