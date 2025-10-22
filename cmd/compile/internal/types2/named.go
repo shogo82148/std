@@ -28,13 +28,13 @@ type Named struct {
 	allowNilRHS        bool
 	allowNilUnderlying bool
 
-	underlying Type
-	inst       *instance
+	inst *instance
 
-	mu      sync.Mutex
-	state_  uint32
-	fromRHS Type
-	tparams *TypeParamList
+	mu         sync.Mutex
+	state_     uint32
+	fromRHS    Type
+	tparams    *TypeParamList
+	underlying Type
 
 	// methods declared for this type (not the method set of this type)
 	// Signatures are type-checked lazily.
@@ -89,7 +89,7 @@ func (t *Named) Method(i int) *Func
 
 // SetUnderlying sets the underlying type and marks t as complete.
 // t must not have type arguments.
-func (t *Named) SetUnderlying(underlying Type)
+func (t *Named) SetUnderlying(u Type)
 
 // AddMethod adds method m unless it is already in the method list.
 // The method must be in the same package as t, and t must not have

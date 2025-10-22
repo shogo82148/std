@@ -19,6 +19,7 @@ const (
 	FileBasicInfo                  = 0
 	FileStandardInfo               = 1
 	FileNameInfo                   = 2
+	FileDispositionInfo            = 4
 	FileStreamInfo                 = 7
 	FileCompressionInfo            = 8
 	FileAttributeTagInfo           = 9

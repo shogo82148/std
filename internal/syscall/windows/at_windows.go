@@ -33,6 +33,10 @@ func Mkdirat(dirfd syscall.Handle, name string, mode uint32) error
 
 func Deleteat(dirfd syscall.Handle, name string, options uint32) error
 
+// TestDeleteatFallback should only be used for testing purposes.
+// When set, [Deleteat] uses the fallback path unconditionally.
+var TestDeleteatFallback bool
+
 func Renameat(olddirfd syscall.Handle, oldpath string, newdirfd syscall.Handle, newpath string) error
 
 func Linkat(olddirfd syscall.Handle, oldpath string, newdirfd syscall.Handle, newpath string) error

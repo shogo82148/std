@@ -134,15 +134,16 @@ func IsAbs(path string) bool
 // Abs calls [Clean] on the result.
 func Abs(path string) (string, error)
 
-// Rel returns a relative path that is lexically equivalent to targpath when
-// joined to basepath with an intervening separator. That is,
-// [Join](basepath, Rel(basepath, targpath)) is equivalent to targpath itself.
-// On success, the returned path will always be relative to basepath,
-// even if basepath and targpath share no elements.
-// An error is returned if targpath can't be made relative to basepath or if
-// knowing the current working directory would be necessary to compute it.
-// Rel calls [Clean] on the result.
-func Rel(basepath, targpath string) (string, error)
+// Rel returns a relative path that is lexically equivalent to targPath when
+// joined to basePath with an intervening separator. That is,
+// [Join](basePath, Rel(basePath, targPath)) is equivalent to targPath itself.
+//
+// The returned path will always be relative to basePath, even if basePath and
+// targPath share no elements. Rel calls [Clean] on the result.
+//
+// An error is returned if targPath can't be made relative to basePath
+// or if knowing the current working directory would be necessary to compute it.
+func Rel(basePath, targPath string) (string, error)
 
 // SkipDir is used as a return value from [WalkFunc] to indicate that
 // the directory named in the call is to be skipped. It is not returned
