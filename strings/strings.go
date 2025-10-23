@@ -210,8 +210,9 @@ func TrimLeft(s, cutset string) string
 // To remove a suffix, use [TrimSuffix] instead.
 func TrimRight(s, cutset string) string
 
-// TrimSpace returns a slice of the string s, with all leading
-// and trailing white space removed, as defined by Unicode.
+// TrimSpace returns a slice (substring) of the string s,
+// with all leading and trailing white space removed,
+// as defined by Unicode.
 func TrimSpace(s string) string
 
 // TrimPrefix returns s without the provided leading prefix string.
