@@ -33,7 +33,7 @@
 //
 // To make it possible for gcc-compiled C code to call a Go function p.GoF,
 // cgo writes a gcc-compiled function named GoF (not p.GoF, since gcc doesn't
-// know about packages).  The gcc-compiled C function f calls GoF.
+// know about packages). The gcc-compiled C function f calls GoF.
 //
 // GoF initializes "frame", a structure containing all of its
 // arguments and slots for p.GoF's results. It calls
@@ -58,10 +58,10 @@
 // m.g0 stack, so that it can be restored later.
 //
 // runtime.cgocallbackg (below) is now running on a real goroutine
-// stack (not an m.g0 stack).  First it calls runtime.exitsyscall, which will
+// stack (not an m.g0 stack). First it calls runtime.exitsyscall, which will
 // block until the $GOMAXPROCS limit allows running this goroutine.
 // Once exitsyscall has returned, it is safe to do things like call the memory
-// allocator or invoke the Go callback function.  runtime.cgocallbackg
+// allocator or invoke the Go callback function. runtime.cgocallbackg
 // first defers a function to unwind m.g0.sched.sp, so that if p.GoF
 // panics, m.g0.sched.sp will be restored to its old value: the m.g0 stack
 // and the m.curg stack will be unwound in lock step.
