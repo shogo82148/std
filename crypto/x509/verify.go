@@ -170,7 +170,7 @@ type VerifyOptions struct {
 // Certificates other than c in the returned chains should not be modified.
 //
 // WARNING: this function doesn't do any revocation checking.
-func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)
+func (c *Certificate) Verify(opts VerifyOptions) ([][]*Certificate, error)
 
 // VerifyHostname returns nil if c is a valid certificate for the named host.
 // Otherwise it returns an error describing the mismatch.

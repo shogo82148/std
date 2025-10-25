@@ -6,6 +6,7 @@ package modload
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/sync"
 
 	"github.com/shogo82148/std/cmd/go/internal/modfetch"
@@ -243,6 +244,8 @@ func FindGoMod(wd string) string
 // (usually through MustModRoot).
 func Enabled(loaderstate *State) bool
 
+func (s *State) VendorDirOrEmpty() string
+
 func VendorDir(loaderstate *State) string
 
 // HasModRoot reports whether a main module or main modules are present.
@@ -259,7 +262,9 @@ func MustHaveModRoot(loaderstate *State)
 // module, even if -modfile is set.
 func ModFilePath(loaderstate *State) string
 
-var ErrNoModRoot noMainModulesError
+var ErrNoModRoot = errors.New("no module root")
+
+func NewNoMainModulesError(s *State) noMainModulesError
 
 // LoadWorkFile parses and checks the go.work file at the given path,
 // and returns the absolute paths of the workspace modules' modroots.

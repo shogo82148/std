@@ -23,6 +23,7 @@ import (
 // build packages in parallel, and the builder is shared.
 type Builder struct {
 	WorkDir            string
+	getVendorDir       func() string
 	actionCache        map[cacheKey]*Action
 	flagCache          map[[2]string]bool
 	gccCompilerIDCache map[string]cache.ActionID
@@ -138,7 +139,7 @@ const (
 // and arranges for it to be removed in case of an unclean exit.
 // The caller must Close the builder explicitly to clean up the WorkDir
 // before a clean exit.
-func NewBuilder(workDir string) *Builder
+func NewBuilder(workDir string, getVendorDir func() string) *Builder
 
 func (b *Builder) Close() error
 
@@ -155,7 +156,7 @@ func CheckGOOSARCHPair(goos, goarch string) error
 func (b *Builder) NewObjdir() string
 
 // AutoAction returns the "right" action for go build or go install of p.
-func (b *Builder) AutoAction(loaderstate *modload.State, mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) AutoAction(s *modload.State, mode, depMode BuildMode, p *load.Package) *Action
 
 // CompileAction returns the action for compiling and possibly installing
 // (according to mode) the given package. The resulting action is only
@@ -168,9 +169,9 @@ func (b *Builder) CompileAction(mode, depMode BuildMode, p *load.Package) *Actio
 // It depends on the action for compiling p.
 // If the caller may be causing p to be installed, it is up to the caller
 // to make sure that the install depends on (runs after) vet.
-func (b *Builder) VetAction(loaderstate *modload.State, mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) VetAction(s *modload.State, mode, depMode BuildMode, p *load.Package) *Action
 
 // LinkAction returns the action for linking p into an executable
 // and possibly installing the result (according to mode).
 // depMode is the action (build or install) to use when compiling dependencies.
-func (b *Builder) LinkAction(loaderstate *modload.State, mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) LinkAction(s *modload.State, mode, depMode BuildMode, p *load.Package) *Action

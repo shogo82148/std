@@ -50,7 +50,7 @@ func ExtraEnvVars(loaderstate *modload.State) []cfg.EnvVar
 
 // ExtraEnvVarsCostly returns environment variables that should not leak into child processes
 // but are costly to evaluate.
-func ExtraEnvVarsCostly() []cfg.EnvVar
+func ExtraEnvVarsCostly(loaderstate *modload.State) []cfg.EnvVar
 
 // PrintEnv prints the environment variables to w.
 func PrintEnv(w io.Writer, env []cfg.EnvVar, onlyChanged bool)

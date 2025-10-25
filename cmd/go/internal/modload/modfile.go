@@ -19,7 +19,7 @@ func ReadModFile(gomod string, fix modfile.VersionFixer) (data []byte, f *modfil
 // CheckAllowed returns an error equivalent to ErrDisallowed if m is excluded by
 // the main module's go.mod or retracted by its author. Most version queries use
 // this to filter out versions that should not be used.
-func CheckAllowed(ctx context.Context, m module.Version) error
+func (s *State) CheckAllowed(ctx context.Context, m module.Version) error
 
 // ErrDisallowed is returned by version predicates passed to Query and similar
 // functions to indicate that a version should not be considered.
@@ -27,11 +27,11 @@ var ErrDisallowed = errors.New("disallowed module version")
 
 // CheckExclusions returns an error equivalent to ErrDisallowed if module m is
 // excluded by the main module's go.mod file.
-func CheckExclusions(ctx context.Context, m module.Version) error
+func (s *State) CheckExclusions(ctx context.Context, m module.Version) error
 
 // CheckRetractions returns an error if module m has been retracted by
 // its author.
-func CheckRetractions(loaderstate *State, ctx context.Context, m module.Version) (err error)
+func (s *State) CheckRetractions(ctx context.Context, m module.Version) (err error)
 
 type ModuleRetractedError struct {
 	Rationale []string

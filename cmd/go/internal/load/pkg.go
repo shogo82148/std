@@ -177,7 +177,7 @@ func (e *NoGoError) Error() string
 // can produce better error messages if it starts with the original paths.
 // The initial load of p loads all the non-test imports and rewrites
 // the vendored paths, so nothing should ever call p.vendored(p.Imports).
-func (p *Package) Resolve(loaderstate *modload.State, imports []string) []string
+func (p *Package) Resolve(s *modload.State, imports []string) []string
 
 // CoverSetup holds parameters related to coverage setup for a given package (covermode, etc).
 type CoverSetup struct {
@@ -280,7 +280,7 @@ func LoadPackage(loaderstate *modload.State, ctx context.Context, opts PackageOp
 // First, there is Go 1.5 vendoring (golang.org/s/go15vendor).
 // If vendor expansion doesn't trigger, then the path is also subject to
 // Go 1.11 module legacy conversion (golang.org/issue/25069).
-func ResolveImportPath(loaderstate *modload.State, parent *Package, path string) (found string)
+func ResolveImportPath(s *modload.State, parent *Package, path string) (found string)
 
 // FindVendor looks for the last non-terminating "vendor" path element in the given import path.
 // If there isn't one, FindVendor returns ok=false.
@@ -335,7 +335,7 @@ func ResolveEmbed(dir string, patterns []string) ([]string, error)
 func SafeArg(name string) bool
 
 // LinkerDeps returns the list of linker-induced dependencies for main package p.
-func LinkerDeps(p *Package) ([]string, error)
+func LinkerDeps(s *modload.State, p *Package) ([]string, error)
 
 // InternalGoFiles returns the list of Go files being built for the package,
 // using absolute paths.
@@ -453,13 +453,13 @@ func GoFilesPackage(loaderstate *modload.State, ctx context.Context, opts Packag
 func PackagesAndErrorsOutsideModule(loaderstate *modload.State, ctx context.Context, opts PackageOpts, args []string) ([]*Package, error)
 
 // EnsureImport ensures that package p imports the named package.
-func EnsureImport(loaderstate *modload.State, p *Package, pkg string)
+func EnsureImport(s *modload.State, p *Package, pkg string)
 
 // PrepareForCoverageBuild is a helper invoked for "go install
 // -cover", "go run -cover", and "go build -cover" (but not used by
 // "go test -cover"). It walks through the packages being built (and
 // dependencies) and marks them for coverage instrumentation when
 // appropriate, and possibly adding additional deps where needed.
-func PrepareForCoverageBuild(loaderstate *modload.State, pkgs []*Package)
+func PrepareForCoverageBuild(s *modload.State, pkgs []*Package)
 
-func SelectCoverPackages(loaderstate *modload.State, roots []*Package, match []func(*Package) bool, op string) []*Package
+func SelectCoverPackages(s *modload.State, roots []*Package, match []func(*modload.State, *Package) bool, op string) []*Package
