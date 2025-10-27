@@ -168,10 +168,10 @@ var _ versionRepo = (*replacementRepo)(nil)
 // a version of the main module that cannot be satisfied.
 // (The main module's version cannot be changed.)
 type QueryMatchesMainModulesError struct {
-	LoaderState *State
-	MainModules []module.Version
-	Pattern     string
-	Query       string
+	MainModules     []module.Version
+	Pattern         string
+	Query           string
+	PatternIsModule bool
 }
 
 func (e *QueryMatchesMainModulesError) Error() string
