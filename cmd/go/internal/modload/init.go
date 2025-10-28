@@ -212,8 +212,6 @@ type State struct {
 
 func NewState() *State
 
-var LoaderState = NewState()
-
 // Init determines whether module mode is enabled, locates the root of the
 // current module (if any), sets environment variables for Git subprocesses, and
 // configures the cfg, codehost, load, modfetch, and search packages for use
