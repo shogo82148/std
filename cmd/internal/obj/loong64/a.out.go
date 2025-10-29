@@ -232,7 +232,13 @@ const (
 var LOONG64DWARFRegisters = map[int16]int16{}
 
 const (
-	BIG = 2046
+	BIG_8  = 128 - 2
+	BIG_9  = 256 - 2
+	BIG_10 = 512 - 2
+	BIG_11 = 1024 - 2
+	BIG_12 = 2046
+	BIG_16 = 32768 - 2
+	BIG_32 = 2147483648 - 2
 )
 
 const (
@@ -381,8 +387,14 @@ const (
 	C_SAUTO
 	C_LAUTO
 	C_ZOREG
-	C_SOREG
-	C_LOREG
+	C_SOREG_8
+	C_SOREG_9
+	C_SOREG_10
+	C_SOREG_11
+	C_SOREG_12
+	C_SOREG_16
+	C_LOREG_32
+	C_LOREG_64
 	C_ROFF
 	C_ADDR
 	C_TLS_LE

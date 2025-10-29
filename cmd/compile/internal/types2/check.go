@@ -19,9 +19,10 @@ type Checker struct {
 	ctxt *Context
 	pkg  *Package
 	*Info
-	nextID uint64
-	objMap map[Object]*declInfo
-	impMap map[importKey]*Package
+	nextID  uint64
+	objMap  map[Object]*declInfo
+	objList []Object
+	impMap  map[importKey]*Package
 
 	// pkgPathMap maps package names to the set of distinct import paths we've
 	// seen for that name, anywhere in the import graph. It is used for
