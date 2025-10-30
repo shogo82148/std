@@ -4,26 +4,17 @@
 
 package strconv
 
-import (
-	"github.com/shogo82148/std/errors"
+type Error int
+
+const (
+	_ Error = iota
+	ErrRange
+	ErrSyntax
+	ErrBase
+	ErrBitSize
 )
 
-// ErrRange indicates that a value is out of range for the target type.
-var ErrRange = errors.New("value out of range")
-
-// ErrSyntax indicates that a value does not have the right syntax for the target type.
-var ErrSyntax = errors.New("invalid syntax")
-
-// A NumError records a failed conversion.
-type NumError struct {
-	Func string
-	Num  string
-	Err  error
-}
-
-func (e *NumError) Error() string
-
-func (e *NumError) Unwrap() error
+func (e Error) Error() string
 
 // IntSize is the size in bits of an int or uint value.
 const IntSize = intSize

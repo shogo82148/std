@@ -12,3 +12,8 @@ package strconv
 // It rounds the result assuming that the original was obtained from a complex
 // value of bitSize bits, which must be 64 for complex64 and 128 for complex128.
 func FormatComplex(c complex128, fmt byte, prec, bitSize int) string
+
+// AppendComplex appends the result of FormatComplex to dst.
+// It is here for the runtime.
+// There is no public strconv.AppendComplex.
+func AppendComplex(dst []byte, c complex128, fmt byte, prec, bitSize int) []byte
