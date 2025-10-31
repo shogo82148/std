@@ -204,6 +204,7 @@ const (
 	Op386ADDLcarry
 	Op386ADDLconstcarry
 	Op386ADCL
+	Op386ADCLcarry
 	Op386ADCLconst
 	Op386SUBL
 	Op386SUBLconst
@@ -1000,6 +1001,7 @@ const (
 	OpARMADDSconst
 	OpARMADC
 	OpARMADCconst
+	OpARMADCS
 	OpARMSUBS
 	OpARMSUBSconst
 	OpARMRSBSconst
@@ -2828,6 +2830,7 @@ const (
 	OpWasmI64Rotl
 	OpWasmI64Popcnt
 
+	OpLast
 	OpAdd8
 	OpAdd16
 	OpAdd32
@@ -3154,6 +3157,7 @@ const (
 	OpInt64Lo
 	OpAdd32carry
 	OpAdd32withcarry
+	OpAdd32carrywithcarry
 	OpSub32carry
 	OpSub32withcarry
 	OpAdd64carry
