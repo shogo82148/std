@@ -9,10 +9,11 @@ import (
 )
 
 type ImportMissingError struct {
-	Path             string
-	Module           module.Version
-	QueryErr         error
-	modContainingCWD module.Version
+	Path                      string
+	Module                    module.Version
+	QueryErr                  error
+	modContainingCWD          module.Version
+	allowMissingModuleImports bool
 
 	// modRoot is dependent on the value of ImportingMainModule and should be
 	// kept in sync.

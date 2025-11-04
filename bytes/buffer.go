@@ -39,6 +39,13 @@ func (b *Buffer) AvailableBuffer() []byte
 // To build strings more efficiently, see the [strings.Builder] type.
 func (b *Buffer) String() string
 
+// Peek returns the next n bytes without advancing the buffer.
+// If Peek returns fewer than n bytes, it also returns [io.EOF].
+// The slice is only valid until the next call to a read or write method.
+// The slice aliases the buffer content at least until the next buffer modification,
+// so immediate changes to the slice will affect the result of future reads.
+func (b *Buffer) Peek(n int) ([]byte, error)
+
 // Len returns the number of bytes of the unread portion of the buffer;
 // b.Len() == len(b.Bytes()).
 func (b *Buffer) Len() int

@@ -78,5 +78,15 @@ var All = []Info{
 	{Name: "zipinsecurepath", Package: "archive/zip"},
 }
 
+type RemovedInfo struct {
+	Name    string
+	Removed int
+}
+
+// Removed contains all GODEBUGs that we have removed.
+var Removed = []RemovedInfo{
+	{Name: "x509sha1", Removed: 24},
+}
+
 // Lookup returns the Info with the given name.
 func Lookup(name string) *Info

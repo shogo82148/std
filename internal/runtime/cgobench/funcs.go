@@ -7,3 +7,5 @@
 package cgobench
 
 func Empty()
+
+func Callback()

@@ -16,21 +16,7 @@ func ConstantTimeCompare(x, y []byte) int
 // match it returns 0 immediately.
 func ConstantTimeLessOrEqBytes(x, y []byte) int
 
-// ConstantTimeSelect returns x if v == 1 and y if v == 0.
-// Its behavior is undefined if v takes any other value.
-func ConstantTimeSelect(v, x, y int) int
-
-// ConstantTimeByteEq returns 1 if x == y and 0 otherwise.
-func ConstantTimeByteEq(x, y uint8) int
-
-// ConstantTimeEq returns 1 if x == y and 0 otherwise.
-func ConstantTimeEq(x, y int32) int
-
 // ConstantTimeCopy copies the contents of y into x (a slice of equal length)
 // if v == 1. If v == 0, x is left unchanged. Its behavior is undefined if v
 // takes any other value.
 func ConstantTimeCopy(v int, x, y []byte)
-
-// ConstantTimeLessOrEq returns 1 if x <= y and 0 otherwise.
-// Its behavior is undefined if x or y are negative or > 2**31 - 1.
-func ConstantTimeLessOrEq(x, y int) int

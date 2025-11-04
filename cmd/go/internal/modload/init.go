@@ -19,7 +19,6 @@ import (
 //
 // TODO(#40775): See if these can be plumbed as explicit parameters.
 var (
-
 	// ExplicitWriteGoMod prevents LoadPackages, ListModules, and other functions
 	// from updating go.mod and go.sum or reporting errors when updates are
 	// needed. A package should set this if it would cause go.mod to be written
@@ -156,14 +155,14 @@ func BinDir(loaderstate *State) string
 // InitWorkfile initializes the workFilePath variable for commands that
 // operate in workspace mode. It should not be called by other commands,
 // for example 'go mod tidy', that don't operate in workspace mode.
-func InitWorkfile(loaderstate *State)
+func (loaderstate *State) InitWorkfile()
 
 // FindGoWork returns the name of the go.work file for this command,
 // or the empty string if there isn't one.
 // Most code should use Init and Enabled rather than use this directly.
 // It is exported mainly for Go toolchain switching, which must process
 // the go.work very early at startup.
-func FindGoWork(loaderstate *State, wd string) string
+func (loaderstate *State) FindGoWork(wd string) string
 
 // WorkFilePath returns the absolute path of the go.work file, or "" if not in
 // workspace mode. WorkFilePath must be called after InitWorkfile.
@@ -174,7 +173,8 @@ func WorkFilePath(loaderstate *State) string
 func (s *State) Reset()
 
 type State struct {
-	initialized bool
+	initialized               bool
+	allowMissingModuleImports bool
 
 	// ForceUseModules may be set to force modules to be enabled when
 	// GO111MODULE=auto or to report an error when GO111MODULE=off.
@@ -227,7 +227,7 @@ func Init(loaderstate *State)
 // of 'go get', but Init reads the -modfile flag in 'go get', so it shouldn't
 // be called until the command is installed and flags are parsed. Instead of
 // calling Init and Enabled, the main package can call this function.
-func WillBeEnabled(loaderstate *State) bool
+func (loaderstate *State) WillBeEnabled() bool
 
 // FindGoMod returns the name of the go.mod file for this command,
 // or the empty string if there isn't one.
@@ -240,7 +240,7 @@ func FindGoMod(wd string) string
 // If modules are enabled but there is no main module, Enabled returns true
 // and then the first use of module information will call die
 // (usually through MustModRoot).
-func Enabled(loaderstate *State) bool
+func (loaderstate *State) Enabled() bool
 
 func (s *State) VendorDirOrEmpty() string
 
@@ -249,16 +249,16 @@ func VendorDir(loaderstate *State) string
 // HasModRoot reports whether a main module or main modules are present.
 // HasModRoot may return false even if Enabled returns true: for example, 'get'
 // does not require a main module.
-func HasModRoot(loaderstate *State) bool
+func (loaderstate *State) HasModRoot() bool
 
 // MustHaveModRoot checks that a main module or main modules are present,
 // and calls base.Fatalf if there are no main modules.
-func MustHaveModRoot(loaderstate *State)
+func (loaderstate *State) MustHaveModRoot()
 
 // ModFilePath returns the path that would be used for the go.mod
 // file, if in module mode. ModFilePath calls base.Fatalf if there is no main
 // module, even if -modfile is set.
-func ModFilePath(loaderstate *State) string
+func (loaderstate *State) ModFilePath() string
 
 var ErrNoModRoot = errors.New("no module root")
 
@@ -325,7 +325,7 @@ func CreateModFile(loaderstate *State, ctx context.Context, modPath string)
 //
 // This function affects the default cfg.BuildMod when outside of a module,
 // so it can only be called prior to Init.
-func AllowMissingModuleImports(loaderstate *State)
+func (s *State) AllowMissingModuleImports()
 
 // WriteOpts control the behavior of WriteGoMod.
 type WriteOpts struct {
