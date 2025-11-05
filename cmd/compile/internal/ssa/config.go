@@ -40,8 +40,6 @@ type Config struct {
 	hasGReg        bool
 	ctxt           *obj.Link
 	optimize       bool
-	useAvg         bool
-	useHmul        bool
 	SoftFloat      bool
 	Race           bool
 	BigEndian      bool
