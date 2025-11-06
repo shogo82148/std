@@ -165,6 +165,7 @@ type Loader struct {
 	plt         map[Sym]int32
 	got         map[Sym]int32
 	dynid       map[Sym]int32
+	weakBinding map[Sym]bool
 
 	relocVariant map[relocId]sym.RelocVariant
 
@@ -475,6 +476,10 @@ func (l *Loader) SymExtname(i Sym) string
 
 // SetSymExtname sets the  "extname" attribute for a symbol.
 func (l *Loader) SetSymExtname(i Sym, value string)
+
+func (l *Loader) SymWeakBinding(i Sym) bool
+
+func (l *Loader) SetSymWeakBinding(i Sym, v bool)
 
 // SymElfType returns the previously recorded ELF type for a symbol
 // (used only for symbols read from shared libraries by ldshlibsyms).

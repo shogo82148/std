@@ -41,7 +41,9 @@ type SymKind uint8
 //
 //go:generate stringer -type=SymKind
 const (
+	// An otherwise invalid zero value for the type.
 	Sxxx SymKind = iota
+	// The text segment, containing executable instructions.
 	STEXT
 	STEXTFIPSSTART
 	STEXTFIPS
@@ -50,7 +52,7 @@ const (
 	SELFRXSECT
 	SMACHOPLT
 
-	// Read-only sections.
+	// Read-only, non-executable, segment.
 	STYPE
 	SSTRING
 	SGOSTRING
@@ -62,10 +64,9 @@ const (
 	SRODATAFIPSEND
 	SRODATAEND
 	SFUNCTAB
-
 	SELFROSECT
 
-	// Read-only sections with relocations.
+	// Read-only, non-executable, dynamically relocatable segment.
 	//
 	// Types STYPE-SFUNCTAB above are written to the .rodata section by default.
 	// When linking a shared object, some conceptually "read only" types need to
@@ -84,16 +85,15 @@ const (
 	SGCBITSRELRO
 	SRODATARELRO
 	SFUNCTABRELRO
+
 	SELFRELROSECT
 	SMACHORELROSECT
 
-	// Part of .data.rel.ro if it exists, otherwise part of .rodata.
 	STYPELINK
 	SITABLINK
-	SSYMTAB
 	SPCLNTAB
 
-	// Writable sections.
+	// Allocated writable segment.
 	SFirstWritable
 	SBUILDINFO
 	SFIPSINFO
@@ -114,25 +114,29 @@ const (
 	SDATAFIPSEND
 	SDATAEND
 	SXCOFFTOC
+
+	// Allocated zero-initialized segment.
 	SBSS
 	SNOPTRBSS
 	SLIBFUZZER_8BIT_COUNTER
 	SCOVERAGE_COUNTER
 	SCOVERAGE_AUXVAR
 	STLSBSS
+
+	// Unallocated segment.
+	SFirstUnallocated
 	SXREF
 	SMACHOSYMSTR
 	SMACHOSYMTAB
 	SMACHOINDIRECTPLT
 	SMACHOINDIRECTGOT
-	SFILEPATH
 	SDYNIMPORT
 	SHOSTOBJ
 	SUNDEFEXT
 
-	// Sections for debugging information
+	// Unallocated DWARF debugging segment.
 	SDWARFSECT
-	// DWARF symbol types
+	// DWARF symbol types created by compiler or linker.
 	SDWARFCUINFO
 	SDWARFCONST
 	SDWARFFCN
@@ -144,7 +148,7 @@ const (
 	SDWARFLINES
 	SDWARFADDR
 
-	// SEH symbol types
+	// SEH symbol types. These are probably allocated at run time.
 	SSEHUNWINDINFO
 	SSEHSECT
 )

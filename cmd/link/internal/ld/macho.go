@@ -165,6 +165,8 @@ const (
 	BIND_SPECIAL_DYLIB_FLAT_LOOKUP     = -2
 	BIND_SPECIAL_DYLIB_WEAK_LOOKUP     = -3
 
+	BIND_SYMBOL_FLAGS_WEAK_IMPORT = 0x1
+
 	BIND_OPCODE_MASK                                         = 0xF0
 	BIND_IMMEDIATE_MASK                                      = 0x0F
 	BIND_OPCODE_DONE                                         = 0x00
