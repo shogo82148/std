@@ -64,6 +64,7 @@ const (
 	SRODATAFIPSEND
 	SRODATAEND
 	SFUNCTAB
+	SPCLNTAB
 	SELFROSECT
 
 	// Read-only, non-executable, dynamically relocatable segment.
@@ -91,7 +92,6 @@ const (
 
 	STYPELINK
 	SITABLINK
-	SPCLNTAB
 
 	// Allocated writable segment.
 	SFirstWritable
