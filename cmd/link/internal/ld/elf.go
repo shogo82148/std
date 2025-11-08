@@ -10,34 +10,18 @@ import (
 	"github.com/shogo82148/std/debug/elf"
 )
 
-/*
- * Relocation types.
- */
-const (
-	ARM_MAGIC_TRAMP_NUMBER = 0x5c000003
-)
-
-/*
- * ELF header.
- */
+// ElfEhdr is the ELF file header.
 type ElfEhdr elf.Header64
 
-/*
- * Section header.
- */
+// ElfShdr is an ELF section entry, plus the section index.
 type ElfShdr struct {
 	elf.Section64
 	shnum elf.SectionIndex
 }
 
-/*
- * Program header.
- */
+// ElfPhdr is the ELF program, or segment, header.
 type ElfPhdr elf.ProgHeader
 
-/*
- * Go linker interface
- */
 const (
 	ELF64HDRSIZE  = 64
 	ELF64PHDRSIZE = 56
@@ -52,21 +36,12 @@ const (
 	ELF32RELSIZE  = 8
 )
 
-/*
- * Total amount of space to reserve at the start of the file
- * for Header, PHeaders, SHeaders, and interp.
- * May waste some.
- * On FreeBSD, cannot be larger than a page.
- */
-const (
-	ELFRESERVE = 4096
-)
+// ELFRESERVE is the total amount of space to reserve at the
+// start of the file for Header, PHeaders, SHeaders, and interp.
+// May waste some space.
+// On FreeBSD, cannot be larger than a page.
+const ELFRESERVE = 4096
 
-/*
- * We use the 64-bit data structures on both 32- and 64-bit machines
- * in order to write the code just once.  The 64-bit data structure is
- * written in the 32-bit format on the 32-bit machines.
- */
 const (
 	NSECT = 400
 )
@@ -103,10 +78,8 @@ type Elfstring struct {
 	off int
 }
 
-/*
-Initialize the global variable that describes the ELF header. It will be updated as
-we write section and prog headers.
-*/
+// Elfinit initializes the global ehdr variable that holds the ELF header.
+// It will be updated as write section and program headers.
 func Elfinit(ctxt *Link)
 
 func Elfwritedynent(arch *sys.Arch, s *loader.SymbolBuilder, tag elf.DynTag, val uint64)
