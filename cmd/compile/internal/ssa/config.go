@@ -86,13 +86,13 @@ func NewTypes() *Types
 func (t *Types) SetTypPtrs()
 
 type Logger interface {
-	Logf(string, ...interface{})
+	Logf(string, ...any)
 
 	Log() bool
 
-	Fatalf(pos src.XPos, msg string, args ...interface{})
+	Fatalf(pos src.XPos, msg string, args ...any)
 
-	Warnl(pos src.XPos, fmt_ string, args ...interface{})
+	Warnl(pos src.XPos, fmt_ string, args ...any)
 
 	Debug_checknil() bool
 }

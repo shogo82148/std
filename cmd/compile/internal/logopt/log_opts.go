@@ -135,7 +135,7 @@ type LoggedOpt struct {
 	compilerPass string
 	functionName string
 	what         string
-	target       []interface{}
+	target       []any
 }
 
 const (
@@ -152,16 +152,16 @@ func LogJsonOption(flagValue string)
 // Pos is the source position (including inlining), what is the message, pass is which pass created the message,
 // funcName is the name of the function
 // A typical use for this to accumulate an explanation for a missed optimization, for example, why did something escape?
-func NewLoggedOpt(pos, lastPos src.XPos, what, pass, funcName string, args ...interface{}) *LoggedOpt
+func NewLoggedOpt(pos, lastPos src.XPos, what, pass, funcName string, args ...any) *LoggedOpt
 
 // LogOpt logs information about a (usually missed) optimization performed by the compiler.
 // Pos is the source position (including inlining), what is the message, pass is which pass created the message,
 // funcName is the name of the function.
-func LogOpt(pos src.XPos, what, pass, funcName string, args ...interface{})
+func LogOpt(pos src.XPos, what, pass, funcName string, args ...any)
 
 // LogOptRange is the same as LogOpt, but includes the ability to express a range of positions,
 // not just a point.
-func LogOptRange(pos, lastPos src.XPos, what, pass, funcName string, args ...interface{})
+func LogOptRange(pos, lastPos src.XPos, what, pass, funcName string, args ...any)
 
 // Enabled returns whether optimization logging is enabled.
 func Enabled() bool

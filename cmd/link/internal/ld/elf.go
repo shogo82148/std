@@ -42,10 +42,6 @@ const (
 // On FreeBSD, cannot be larger than a page.
 const ELFRESERVE = 4096
 
-const (
-	NSECT = 400
-)
-
 var (
 	Nelfsym = 1
 )

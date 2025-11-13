@@ -34,7 +34,7 @@ type Name struct {
 	Func      *Func
 	Offset_   int64
 	val       constant.Value
-	Opt       interface{}
+	Opt       any
 	Embed     *[]Embed
 
 	// For a local variable (not param) or extern, the initializing assignment (OAS or OAS2).

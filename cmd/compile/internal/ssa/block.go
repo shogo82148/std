@@ -163,9 +163,9 @@ func (b *Block) LackingPos() bool
 
 func (b *Block) AuxIntString() string
 
-func (b *Block) Logf(msg string, args ...interface{})
+func (b *Block) Logf(msg string, args ...any)
 func (b *Block) Log() bool
-func (b *Block) Fatalf(msg string, args ...interface{})
+func (b *Block) Fatalf(msg string, args ...any)
 
 type BranchPrediction int8
 

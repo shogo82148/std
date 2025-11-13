@@ -781,13 +781,13 @@ type ErrorReporter struct {
 //
 // Logging an error means that on exit cmd/link will delete any
 // output file and return a non-zero error code.
-func (reporter *ErrorReporter) Errorf(s Sym, format string, args ...interface{})
+func (reporter *ErrorReporter) Errorf(s Sym, format string, args ...any)
 
 // GetErrorReporter returns the loader's associated error reporter.
 func (l *Loader) GetErrorReporter() *ErrorReporter
 
 // Errorf method logs an error message. See ErrorReporter.Errorf for details.
-func (l *Loader) Errorf(s Sym, format string, args ...interface{})
+func (l *Loader) Errorf(s Sym, format string, args ...any)
 
 // Symbol statistics.
 func (l *Loader) Stat() string

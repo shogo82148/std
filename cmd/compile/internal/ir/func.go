@@ -83,7 +83,7 @@ type Func struct {
 	Marks []Mark
 
 	FieldTrack map[*obj.LSym]struct{}
-	DebugInfo  interface{}
+	DebugInfo  any
 	LSym       *obj.LSym
 
 	Inl *Inline

@@ -30,4 +30,4 @@ func (tr *TypeRepr) Empty() bool
 // Set modifies the type representation.
 // If fargs are provided, repr is used as a format for fmt.Sprintf.
 // Otherwise, repr is used unprocessed as the type representation.
-func (tr *TypeRepr) Set(repr string, fargs ...interface{})
+func (tr *TypeRepr) Set(repr string, fargs ...any)

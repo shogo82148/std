@@ -349,7 +349,7 @@ func (n Name) ReadVarint(off int) (int, int)
 // IsBlank indicates whether n is "_".
 func (n Name) IsBlank() bool
 
-// Name returns the tag string for n, or empty if there is none.
+// Name returns the name of n, or empty if it does not actually have a name.
 func (n Name) Name() string
 
 // Tag returns the tag string for n, or empty if there is none.

@@ -57,7 +57,7 @@ type Addr struct {
 	//	for TYPE_FCONST, a float64
 	//	for TYPE_BRANCH, a *Prog (optional)
 	//	for TYPE_TEXTSIZE, an int32 (optional)
-	Val interface{}
+	Val any
 }
 
 type AddrName int8
@@ -263,7 +263,7 @@ type LSym struct {
 	P      []byte
 	R      []Reloc
 
-	Extra *interface{}
+	Extra *any
 
 	Pkg    string
 	PkgIdx int32
@@ -348,7 +348,7 @@ func (s *LSym) File() *FileInfo
 // A TypeInfo contains information for a symbol
 // that contains a runtime._type.
 type TypeInfo struct {
-	Type interface{}
+	Type any
 }
 
 func (s *LSym) NewTypeInfo() *TypeInfo
@@ -359,7 +359,7 @@ func (s *LSym) TypeInfo() *TypeInfo
 // An ItabInfo contains information for a symbol
 // that contains a runtime.itab.
 type ItabInfo struct {
-	Type interface{}
+	Type any
 }
 
 func (s *LSym) NewItabInfo() *ItabInfo
@@ -680,7 +680,7 @@ type Link struct {
 	DwFixups           *DwarfFixupTable
 	DwTextCount        int
 	Imports            []goobj.ImportedPkg
-	DiagFunc           func(string, ...interface{})
+	DiagFunc           func(string, ...any)
 	DiagFlush          func()
 	DebugInfo          func(ctxt *Link, fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
 	GenAbstractFunc    func(fn *LSym)
@@ -718,9 +718,9 @@ type Link struct {
 	Fingerprint goobj.FingerprintType
 }
 
-func (ctxt *Link) Diag(format string, args ...interface{})
+func (ctxt *Link) Diag(format string, args ...any)
 
-func (ctxt *Link) Logf(format string, args ...interface{})
+func (ctxt *Link) Logf(format string, args ...any)
 
 // SpillRegisterArgs emits the code to spill register args into whatever
 // locations the spill records specify.

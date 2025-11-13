@@ -12,4 +12,4 @@
 // https://github.com/netflix/bettertls
 // https://netflixtechblog.com/bettertls-c9915cd255c0
 
-package tls_test
+package x509

@@ -167,7 +167,7 @@ type Type struct {
 	// TARRAY: *Array
 	// TSLICE: Slice
 	// TSSA: string
-	extra interface{}
+	extra any
 
 	// width is the width of this Type in bytes.
 	width int64

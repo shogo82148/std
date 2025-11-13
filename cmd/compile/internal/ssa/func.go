@@ -129,7 +129,7 @@ func (f *Func) SplitSlot(name *LocalSlot, sfx string, offset int64, t *types.Typ
 // context to allow item-by-item comparisons across runs.
 // For example:
 // awk 'BEGIN {FS="\t"} $3~/TIME/{sum+=$4} END{print "t(ns)=",sum}' t.log
-func (f *Func) LogStat(key string, args ...interface{})
+func (f *Func) LogStat(key string, args ...any)
 
 // NewBlock allocates a new Block of the given kind and places it at the end of f.Blocks.
 func (f *Func) NewBlock(kind BlockKind) *Block
@@ -211,11 +211,11 @@ func (f *Func) ConstEmptyString(t *types.Type) *Value
 func (f *Func) ConstOffPtrSP(t *types.Type, c int64, sp *Value) *Value
 
 func (f *Func) Frontend() Frontend
-func (f *Func) Warnl(pos src.XPos, msg string, args ...interface{})
-func (f *Func) Logf(msg string, args ...interface{})
+func (f *Func) Warnl(pos src.XPos, msg string, args ...any)
+func (f *Func) Logf(msg string, args ...any)
 func (f *Func) Log() bool
 
-func (f *Func) Fatalf(msg string, args ...interface{})
+func (f *Func) Fatalf(msg string, args ...any)
 
 func (f *Func) Postorder() []*Block
 

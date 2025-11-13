@@ -85,7 +85,7 @@ func NewLoadCmdReader(f io.ReadSeeker, order binary.ByteOrder, nextOffset int64)
 
 func (r *LoadCmdReader) Next() (LoadCmd, error)
 
-func (r LoadCmdReader) ReadAt(offset int64, data interface{}) error
+func (r LoadCmdReader) ReadAt(offset int64, data any) error
 
 func (r LoadCmdReader) Offset() int64
 
@@ -95,6 +95,6 @@ type LoadCmdUpdater struct {
 
 func NewLoadCmdUpdater(f io.ReadWriteSeeker, order binary.ByteOrder, nextOffset int64) LoadCmdUpdater
 
-func (u LoadCmdUpdater) WriteAt(offset int64, data interface{}) error
+func (u LoadCmdUpdater) WriteAt(offset int64, data any) error
 
 func FileHeaderSize(f *macho.File) int64

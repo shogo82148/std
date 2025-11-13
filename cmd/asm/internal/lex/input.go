@@ -22,7 +22,7 @@ type Input struct {
 // NewInput returns an Input from the given path.
 func NewInput(name string) *Input
 
-func (in *Input) Error(args ...interface{})
+func (in *Input) Error(args ...any)
 
 func (in *Input) Next() ScanToken
 

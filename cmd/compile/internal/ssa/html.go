@@ -22,10 +22,10 @@ type HTMLWriter struct {
 func NewHTMLWriter(path string, f *Func, cfgMask string) *HTMLWriter
 
 // Fatalf reports an error and exits.
-func (w *HTMLWriter) Fatalf(msg string, args ...interface{})
+func (w *HTMLWriter) Fatalf(msg string, args ...any)
 
 // Logf calls the (w *HTMLWriter).Func's Logf method passing along a msg and args.
-func (w *HTMLWriter) Logf(msg string, args ...interface{})
+func (w *HTMLWriter) Logf(msg string, args ...any)
 
 func (w *HTMLWriter) Close()
 
@@ -57,7 +57,7 @@ func (w *HTMLWriter) WriteColumn(phase, title, class, html string)
 
 func (w *HTMLWriter) WriteMultiTitleColumn(phase string, titles []string, class, html string)
 
-func (w *HTMLWriter) Printf(msg string, v ...interface{})
+func (w *HTMLWriter) Printf(msg string, v ...any)
 
 func (w *HTMLWriter) WriteString(s string)
 

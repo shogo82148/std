@@ -118,9 +118,9 @@ func (v *Value) SetArgs3(a, b, c *Value)
 
 func (v *Value) SetArgs4(a, b, c, d *Value)
 
-func (v *Value) Logf(msg string, args ...interface{})
+func (v *Value) Logf(msg string, args ...any)
 func (v *Value) Log() bool
-func (v *Value) Fatalf(msg string, args ...interface{})
+func (v *Value) Fatalf(msg string, args ...any)
 
 // ResultReg returns the result register assigned to v, in cmd/internal/obj/$ARCH numbering.
 // It is similar to Reg and Reg0, except that it is usable interchangeably for all Value Ops.
