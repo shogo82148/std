@@ -34,17 +34,29 @@ func DownloadZip(ctx context.Context, mod module.Version) (zipfile string, err e
 // any permission changes needed to do so.
 func RemoveAll(dir string) error
 
-var GoSumFile string
-var WorkspaceGoSumFiles []string
-
 // State holds a snapshot of the global state of the modfetch package.
 type State struct {
-	goSumFile           string
-	workspaceGoSumFiles []string
-	lookupCache         *par.Cache[lookupCacheKey, Repo]
-	downloadCache       *par.ErrCache[module.Version, string]
-	sumState            sumState
+	// path to go.sum; set by package modload
+	GoSumFile string
+	// path to module go.sums in workspace; set by package modload
+	WorkspaceGoSumFiles []string
+	// The Lookup cache is used cache the work done by Lookup.
+	// It is important that the global functions of this package that access it do not
+	// do so after they return.
+	lookupCache *par.Cache[lookupCacheKey, Repo]
+	// The downloadCache is used to cache the operation of downloading a module to disk
+	// (if it's not already downloaded) and getting the directory it was downloaded to.
+	// It is important that downloadCache must not be accessed by any of the exported
+	// functions of this package after they return, because it can be modified by the
+	// non-thread-safe SetState function.
+	downloadCache *par.ErrCache[module.Version, string]
+
+	sumState sumState
 }
+
+var ModuleFetchState *State = NewState()
+
+func NewState() *State
 
 // Reset resets globals in the modfetch package, so previous loads don't affect
 // contents of go.sum files.
