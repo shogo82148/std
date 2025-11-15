@@ -47,12 +47,13 @@ type Checker struct {
 	usedPkgNames  map[*PkgName]bool
 	mono          monoGraph
 
-	firstErr error
-	methods  map[*TypeName][]*Func
-	untyped  map[syntax.Expr]exprInfo
-	delayed  []action
-	objPath  []Object
-	cleaners []cleaner
+	firstErr   error
+	methods    map[*TypeName][]*Func
+	untyped    map[syntax.Expr]exprInfo
+	delayed    []action
+	objPath    []Object
+	objPathIdx map[Object]int
+	cleaners   []cleaner
 
 	// environment within which the current object is type-checked (valid only
 	// for the duration of type-checking a specific object)

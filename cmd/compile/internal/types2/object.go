@@ -31,13 +31,9 @@ type Object interface {
 
 	order() uint32
 
-	color() color
-
 	setType(Type)
 
 	setOrder(uint32)
-
-	setColor(color color)
 
 	setParent(*Scope)
 

@@ -7,6 +7,8 @@
 // to produce a full mallocgc function that's specialized for a span class
 // or specific size in the case of the tiny allocator.
 //
+// To generate the specialized mallocgc functions, do 'go run .' inside runtime/_mkmalloc.
+//
 // To assemble a mallocgc function, the mallocStub function is cloned, and the call to
 // inlinedMalloc is replaced with the inlined body of smallScanNoHeaderStub,
 // smallNoScanStub or tinyStub, depending on the parameters being specialized.

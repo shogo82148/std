@@ -6,6 +6,9 @@
 
 package cgobench
 
-func Empty()
+func EmptyC()
 
-func Callback()
+func CallbackC()
+
+//go:noinline
+func Empty()
