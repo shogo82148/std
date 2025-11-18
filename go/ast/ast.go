@@ -137,11 +137,10 @@ type (
 	//
 	// For raw string literals (Kind == token.STRING && Value[0] == '`'),
 	// the Value field contains the string text without carriage returns (\r) that
-	// may have been present in the source. Because the end position is
-	// computed using len(Value), the position reported by [BasicLit.End] does not match the
-	// true source end position for raw string literals containing carriage returns.
+	// may have been present in the source.
 	BasicLit struct {
 		ValuePos token.Pos
+		ValueEnd token.Pos
 		Kind     token.Token
 		Value    string
 	}
@@ -345,6 +344,7 @@ func (x *Ident) End() token.Pos
 func (x *Ellipsis) End() token.Pos
 
 func (x *BasicLit) End() token.Pos
+
 func (x *FuncLit) End() token.Pos
 func (x *CompositeLit) End() token.Pos
 func (x *ParenExpr) End() token.Pos

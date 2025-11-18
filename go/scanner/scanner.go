@@ -35,6 +35,7 @@ type Scanner struct {
 	lineOffset int
 	insertSemi bool
 	nlPos      token.Pos
+	stringEnd  token.Pos
 
 	// public state - ok to modify
 	ErrorCount int

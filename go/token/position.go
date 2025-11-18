@@ -90,6 +90,9 @@ func (f *File) Base() int
 // Size returns the size of file f as registered with AddFile.
 func (f *File) Size() int
 
+// End returns the end position of file f as registered with AddFile.
+func (f *File) End() Pos
+
 // LineCount returns the number of lines in file f.
 func (f *File) LineCount() int
 
