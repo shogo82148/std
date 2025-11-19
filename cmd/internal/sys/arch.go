@@ -228,7 +228,7 @@ var ArchRISCV64 = &Arch{
 	ByteOrder:      binary.LittleEndian,
 	PtrSize:        8,
 	RegSize:        8,
-	MinLC:          4,
+	MinLC:          2,
 	Alignment:      8,
 	CanMergeLoads:  false,
 	HasLR:          true,
