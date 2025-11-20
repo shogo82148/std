@@ -49,6 +49,18 @@ func (k *PublicKey) Equal(x crypto.PublicKey) bool
 
 func (k *PublicKey) Curve() Curve
 
+// KeyExchanger is an interface for an opaque private key that can be used for
+// key exchange operations. For example, an ECDH key kept in a hardware module.
+//
+// It is implemented by [PrivateKey].
+type KeyExchanger interface {
+	PublicKey() *PublicKey
+	Curve() Curve
+	ECDH(*PublicKey) ([]byte, error)
+}
+
+var _ KeyExchanger = (*PrivateKey)(nil)
+
 // PrivateKey is an ECDH private key, usually kept secret.
 //
 // These keys can be parsed with [crypto/x509.ParsePKCS8PrivateKey] and encoded
