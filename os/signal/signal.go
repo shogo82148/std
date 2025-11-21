@@ -58,6 +58,9 @@ func Stop(c chan<- os.Signal)
 // the returned context. Future interrupts received will not trigger the default
 // (exit) behavior until the returned stop function is called.
 //
+// If a signal causes the returned context to be canceled, calling
+// [context.Cause] on it will return an error describing the signal.
+//
 // The stop function releases resources associated with it, so code should
 // call stop as soon as the operations running in this Context complete and
 // signals no longer need to be diverted to the context.

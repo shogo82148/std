@@ -3,3 +3,5 @@
 // license that can be found in the LICENSE file.
 
 package escape
+
+func ParseLeaks(s string) leaks

@@ -81,6 +81,7 @@ type CallExpr struct {
 	IsDDD     bool
 	GoDefer   bool
 	NoInline  bool
+	UseBuf    bool
 }
 
 func NewCallExpr(pos src.XPos, op Op, fun Node, args []Node) *CallExpr
@@ -505,3 +506,23 @@ func MethodExprName(n Node) *Name
 
 // MethodExprFunc is like MethodExprName, but returns the types.Field instead.
 func MethodExprFunc(n Node) *types.Field
+
+// A MoveToHeapExpr takes a slice as input and moves it to the
+// heap (by copying the backing store if it is not already
+// on the heap).
+type MoveToHeapExpr struct {
+	miniExpr
+	Slice Node
+	// An expression that evaluates to a *runtime._type
+	// that represents the slice element type.
+	RType Node
+	// If PreserveCapacity is true, the capacity of
+	// the resulting slice, and all of the elements in
+	// [len:cap], must be preserved.
+	// If PreserveCapacity is false, the resulting
+	// slice may have any capacity >= len, with any
+	// elements in the resulting [len:cap] range zeroed.
+	PreserveCapacity bool
+}
+
+func NewMoveToHeapExpr(pos src.XPos, slice Node) *MoveToHeapExpr

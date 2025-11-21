@@ -4,7 +4,7 @@
 
 // Package version provides operations on [Go versions]
 // in [Go toolchain name syntax]: strings like
-// "go1.20", "go1.21.0", "go1.22rc2", and "go1.23.4-bigcorp".
+// "go1.20", "go1.21.0", "go1.22rc2", and "go1.23.4-custom".
 //
 // [Go versions]: https://go.dev/doc/toolchain#version
 // [Go toolchain name syntax]: https://go.dev/doc/toolchain#name

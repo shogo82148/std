@@ -102,6 +102,11 @@ const (
 	// The application may modify the [SessionState] before storing it.
 	// This event only occurs on client connections.
 	QUICStoreSession
+
+	// QUICErrorEvent indicates that a fatal error has occurred.
+	// The handshake cannot proceed and the connection must be closed.
+	// QUICEvent.Err is set.
+	QUICErrorEvent
 )
 
 // A QUICEvent is an event occurring on a QUIC connection.
@@ -123,6 +128,10 @@ type QUICEvent struct {
 
 	// Set for QUICResumeSession and QUICStoreSession.
 	SessionState *SessionState
+
+	// Set for QUICErrorEvent.
+	// The error will wrap AlertError.
+	Err error
 }
 
 // QUICClient returns a new TLS client side connection using QUICTransport as the

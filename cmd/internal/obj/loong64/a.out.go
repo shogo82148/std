@@ -572,6 +572,10 @@ const (
 	AORN
 	AANDN
 
+	// 2.2.1.12
+	AMULWVW
+	AMULWVWU
+
 	// 2.2.7. Atomic Memory Access Instructions
 	AAMSWAPB
 	AAMSWAPH

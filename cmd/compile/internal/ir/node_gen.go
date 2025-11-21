@@ -70,6 +70,8 @@ func (n *LogicalExpr) Format(s fmt.State, verb rune)
 
 func (n *MakeExpr) Format(s fmt.State, verb rune)
 
+func (n *MoveToHeapExpr) Format(s fmt.State, verb rune)
+
 func (n *Name) Format(s fmt.State, verb rune)
 
 func (n *NilExpr) Format(s fmt.State, verb rune)
