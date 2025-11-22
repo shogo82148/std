@@ -13,17 +13,17 @@
 // ## Design
 //
 // The basic idea behind the the execution tracer is to have per-M buffers that
-// trace data may be written into. Each M maintains a seqlock indicating whether
+// trace data may be written into. Each M maintains a write flag indicating whether
 // its trace buffer is currently in use.
 //
 // Tracing is initiated by StartTrace, and proceeds in "generations," with each
 // generation being marked by a call to traceAdvance, to advance to the next
 // generation. Generations are a global synchronization point for trace data,
 // and we proceed to a new generation by moving forward trace.gen. Each M reads
-// trace.gen under its own seqlock to determine which generation it is writing
+// trace.gen under its own write flag to determine which generation it is writing
 // trace data for. To this end, each M has 2 slots for buffers: one slot for the
 // previous generation, one slot for the current one. It uses tl.gen to select
-// which buffer slot to write to. Simultaneously, traceAdvance uses the seqlock
+// which buffer slot to write to. Simultaneously, traceAdvance uses the write flag
 // to determine whether every thread is guaranteed to observe an updated
 // trace.gen. Once it is sure, it may then flush any buffers that are left over
 // from the previous generation safely, since it knows the Ms will not mutate
@@ -43,7 +43,7 @@
 // appear in pairs: one for the previous generation, and one for the current one.
 // Like the per-M buffers, which of the two is written to is selected using trace.gen,
 // and anything managed this way must similarly be mutated only in traceAdvance or
-// under the M's seqlock.
+// under the M's write flag.
 //
 // Trace events themselves are simple. They consist of a single byte for the event type,
 // followed by zero or more LEB128-encoded unsigned varints. They are decoded using

@@ -301,8 +301,10 @@ func (u *URL) UnmarshalBinary(text []byte) error
 // JoinPath returns a new [URL] with the provided path elements joined to
 // any existing path and the resulting path cleaned of any ./ or ../ elements.
 // Any sequences of multiple / characters will be reduced to a single /.
+// Path elements must already be in escaped form, as produced by [PathEscape].
 func (u *URL) JoinPath(elem ...string) *URL
 
 // JoinPath returns a [URL] string with the provided path elements joined to
 // the existing path of base and the resulting path cleaned of any ./ or ../ elements.
+// Path elements must already be in escaped form, as produced by [PathEscape].
 func JoinPath(base string, elem ...string) (result string, err error)

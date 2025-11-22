@@ -2,73 +2,74 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Package hpke implements Hybrid Public Key Encryption (HPKE) as defined in
+// [RFC 9180].
+//
+// [RFC 9180]: https://www.rfc-editor.org/rfc/rfc9180.html
 package hpke
 
-import (
-	"github.com/shogo82148/std/crypto"
-	"github.com/shogo82148/std/crypto/cipher"
-	"github.com/shogo82148/std/crypto/ecdh"
-
-	"golang.org/x/crypto/chacha20poly1305"
-)
-
-type KemID uint16
-
-const DHKEM_X25519_HKDF_SHA256 = 0x0020
-
-var SupportedKEMs = map[uint16]struct {
-	curve   ecdh.Curve
-	hash    crypto.Hash
-	nSecret uint16
-}{
-
-	DHKEM_X25519_HKDF_SHA256: {ecdh.X25519(), crypto.SHA256, 32},
-}
-
+// Sender is a sending HPKE context. It is instantiated with a specific KEM
+// encapsulation key (i.e. the public key), and it is stateful, incrementing the
+// nonce counter for each [Sender.Seal] call.
 type Sender struct {
 	*context
 }
 
+// Recipient is a receiving HPKE context. It is instantiated with a specific KEM
+// decapsulation key (i.e. the secret key), and it is stateful, incrementing the
+// nonce counter for each successful [Recipient.Open] call.
 type Recipient struct {
 	*context
 }
 
-type AEADID uint16
+// NewSender returns a sending HPKE context for the provided KEM encapsulation
+// key (i.e. the public key), and using the ciphersuite defined by the
+// combination of KEM, KDF, and AEAD.
+//
+// The info parameter is additional public information that must match between
+// sender and recipient.
+//
+// The returned enc ciphertext can be used to instantiate a matching receiving
+// HPKE context with the corresponding KEM decapsulation key.
+func NewSender(pk PublicKey, kdf KDF, aead AEAD, info []byte) (enc []byte, s *Sender, err error)
 
-const (
-	AEAD_AES_128_GCM      = 0x0001
-	AEAD_AES_256_GCM      = 0x0002
-	AEAD_ChaCha20Poly1305 = 0x0003
-)
+// NewRecipient returns a receiving HPKE context for the provided KEM
+// decapsulation key (i.e. the secret key), and using the ciphersuite defined by
+// the combination of KEM, KDF, and AEAD.
+//
+// The enc parameter must have been produced by a matching sending HPKE context
+// with the corresponding KEM encapsulation key. The info parameter is
+// additional public information that must match between sender and recipient.
+func NewRecipient(enc []byte, k PrivateKey, kdf KDF, aead AEAD, info []byte) (*Recipient, error)
 
-var SupportedAEADs = map[uint16]struct {
-	keySize   int
-	nonceSize int
-	aead      func([]byte) (cipher.AEAD, error)
-}{
-
-	AEAD_AES_128_GCM:      {keySize: 16, nonceSize: 12, aead: aesGCMNew},
-	AEAD_AES_256_GCM:      {keySize: 32, nonceSize: 12, aead: aesGCMNew},
-	AEAD_ChaCha20Poly1305: {keySize: chacha20poly1305.KeySize, nonceSize: chacha20poly1305.NonceSize, aead: chacha20poly1305.New},
-}
-
-type KDFID uint16
-
-const KDF_HKDF_SHA256 = 0x0001
-
-var SupportedKDFs = map[uint16]func() *hkdfKDF{
-
-	KDF_HKDF_SHA256: func() *hkdfKDF { return &hkdfKDF{crypto.SHA256} },
-}
-
-func SetupSender(kemID, kdfID, aeadID uint16, pub *ecdh.PublicKey, info []byte) ([]byte, *Sender, error)
-
-func SetupRecipient(kemID, kdfID, aeadID uint16, priv *ecdh.PrivateKey, info, encPubEph []byte) (*Recipient, error)
-
+// Seal encrypts the provided plaintext, optionally binding to the additional
+// public data aad.
+//
+// Seal uses incrementing counters for each call, and Open on the receiving side
+// must be called in the same order as Seal.
 func (s *Sender) Seal(aad, plaintext []byte) ([]byte, error)
 
+// Seal instantiates a single-use HPKE sending HPKE context like [NewSender],
+// and then encrypts the provided plaintext like [Sender.Seal] (with no aad).
+// Seal returns the concatenation of the encapsulated key and the ciphertext.
+func Seal(pk PublicKey, kdf KDF, aead AEAD, info, plaintext []byte) ([]byte, error)
+
+// Export produces a secret value derived from the shared key between sender and
+// recipient. length must be at most 65,535.
+func (s *Sender) Export(exporterContext string, length int) ([]byte, error)
+
+// Open decrypts the provided ciphertext, optionally binding to the additional
+// public data aad, or returns an error if decryption fails.
+//
+// Open uses incrementing counters for each successful call, and must be called
+// in the same order as Seal on the sending side.
 func (r *Recipient) Open(aad, ciphertext []byte) ([]byte, error)
 
-func ParseHPKEPublicKey(kemID uint16, bytes []byte) (*ecdh.PublicKey, error)
+// Open instantiates a single-use HPKE receiving HPKE context like [NewRecipient],
+// and then decrypts the provided ciphertext like [Recipient.Open] (with no aad).
+// ciphertext must be the concatenation of the encapsulated key and the actual ciphertext.
+func Open(k PrivateKey, kdf KDF, aead AEAD, info, ciphertext []byte) ([]byte, error)
 
-func ParseHPKEPrivateKey(kemID uint16, bytes []byte) (*ecdh.PrivateKey, error)
+// Export produces a secret value derived from the shared key between sender and
+// recipient. length must be at most 65,535.
+func (r *Recipient) Export(exporterContext string, length int) ([]byte, error)
