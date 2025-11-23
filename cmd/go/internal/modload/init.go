@@ -348,3 +348,13 @@ func WriteGoMod(loaderstate *State, ctx context.Context, opts WriteOpts) error
 func UpdateGoModFromReqs(loaderstate *State, ctx context.Context, opts WriteOpts) (before, after []byte, modFile *modfile.File, err error)
 
 func CheckGodebug(verb, k, v string) error
+
+// DefaultModInitGoVersion returns the appropriate go version to include in a
+// newly initialized module or work file.
+//
+// If the current toolchain version is a stable version of Go 1.N.M, default to
+// go 1.(N-1).0
+//
+// If the current toolchain version is a pre-release version of Go 1.N (Release
+// Candidate M) or a development version of Go 1.N, default to go 1.(N-2).0
+func DefaultModInitGoVersion() string
