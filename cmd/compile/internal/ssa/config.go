@@ -77,6 +77,10 @@ type Types struct {
 	Float32Ptr *types.Type
 	Float64Ptr *types.Type
 	BytePtrPtr *types.Type
+	Vec128     *types.Type
+	Vec256     *types.Type
+	Vec512     *types.Type
+	Mask       *types.Type
 }
 
 // NewTypes creates and populates a Types.

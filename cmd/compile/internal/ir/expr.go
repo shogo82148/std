@@ -449,6 +449,9 @@ func StaticCalleeName(n Node) *Name
 // IsIntrinsicCall reports whether the compiler back end will treat the call as an intrinsic operation.
 var IsIntrinsicCall = func(*CallExpr) bool { return false }
 
+// IsIntrinsicSym reports whether the compiler back end will treat a call to this symbol as an intrinsic operation.
+var IsIntrinsicSym = func(*types.Sym) bool { return false }
+
 // SameSafeExpr checks whether it is safe to reuse one of l and r
 // instead of computing both. SameSafeExpr assumes that l and r are
 // used in the same statement or expression. In order for it to be
@@ -480,6 +483,8 @@ func ShouldAsanCheckPtr(fn *Func) bool
 func IsReflectHeaderDataField(l Node) bool
 
 func ParamNames(ft *types.Type) []Node
+
+func RecvParamNames(ft *types.Type) []Node
 
 // MethodSym returns the method symbol representing a method name
 // associated with a specific receiver type.

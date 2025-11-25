@@ -36,6 +36,8 @@ type Func struct {
 	ABISelf        *abi.ABIConfig
 	ABIDefault     *abi.ABIConfig
 
+	maxCPUFeatures CPUfeatures
+
 	scheduled   bool
 	laidout     bool
 	NoSplit     bool
@@ -181,6 +183,9 @@ func (b *Block) NewValue3A(pos src.XPos, op Op, t *types.Type, aux Aux, arg0, ar
 
 // NewValue4 returns a new value in the block with four arguments and zero aux values.
 func (b *Block) NewValue4(pos src.XPos, op Op, t *types.Type, arg0, arg1, arg2, arg3 *Value) *Value
+
+// NewValue4A returns a new value in the block with four arguments and zero aux values.
+func (b *Block) NewValue4A(pos src.XPos, op Op, t *types.Type, aux Aux, arg0, arg1, arg2, arg3 *Value) *Value
 
 // NewValue4I returns a new value in the block with four arguments and auxint value.
 func (b *Block) NewValue4I(pos src.XPos, op Op, t *types.Type, auxint int64, arg0, arg1, arg2, arg3 *Value) *Value

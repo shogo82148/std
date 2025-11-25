@@ -17,6 +17,9 @@ type Block struct {
 	// Source position for block's control operation
 	Pos src.XPos
 
+	// What cpu features (AVXnnn, SVEyyy) are implied to reach/execute this block?
+	CPUfeatures CPUfeatures
+
 	// The kind of block this is.
 	Kind BlockKind
 
@@ -189,3 +192,25 @@ const (
 	HotPgoInitial          = HotPgo | HotInitial
 	HotPgoInitialNotFLowIn = HotPgo | HotInitial | HotNotFlowIn
 )
+
+type CPUfeatures uint32
+
+const (
+	CPUNone CPUfeatures = 0
+	CPUAll  CPUfeatures = ^CPUfeatures(0)
+	CPUavx  CPUfeatures = 1 << iota
+	CPUavx2
+	CPUavxvnni
+	CPUavx512
+	CPUbitalg
+	CPUgfni
+	CPUvbmi
+	CPUvbmi2
+	CPUvpopcntdq
+	CPUavx512vnni
+
+	CPUneon
+	CPUsve2
+)
+
+func (f CPUfeatures) String() string
