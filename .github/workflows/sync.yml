@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: checkout tools
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: tools
 
@@ -33,13 +33,13 @@ jobs:
           go install ./importgodoc
 
       - name: checkout std
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: upstream/${{ matrix.branch }}
           path: std
 
       - name: checkout golang/go
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: golang/go
           ref: ${{ matrix.branch }}
