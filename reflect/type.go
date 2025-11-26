@@ -17,6 +17,7 @@ package reflect
 
 import (
 	"github.com/shogo82148/std/internal/abi"
+	"github.com/shogo82148/std/iter"
 )
 
 // Type is the representation of a Go type.
@@ -36,6 +37,8 @@ type Type interface {
 	FieldAlign() int
 
 	Method(int) Method
+
+	Methods() iter.Seq[Method]
 
 	MethodByName(string) (Method, bool)
 
@@ -69,6 +72,8 @@ type Type interface {
 
 	Field(i int) StructField
 
+	Fields() iter.Seq[StructField]
+
 	FieldByIndex(index []int) StructField
 
 	FieldByName(name string) (StructField, bool)
@@ -76,6 +81,8 @@ type Type interface {
 	FieldByNameFunc(match func(string) bool) (StructField, bool)
 
 	In(i int) Type
+
+	Ins() iter.Seq[Type]
 
 	Key() Type
 
@@ -88,6 +95,8 @@ type Type interface {
 	NumOut() int
 
 	Out(i int) Type
+
+	Outs() iter.Seq[Type]
 
 	OverflowComplex(x complex128) bool
 

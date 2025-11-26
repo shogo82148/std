@@ -7,6 +7,7 @@ package modfetch
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/errors"
+	"github.com/shogo82148/std/sync"
 
 	"github.com/shogo82148/std/cmd/go/internal/base"
 	"github.com/shogo82148/std/cmd/internal/par"
@@ -24,7 +25,7 @@ func Download(ctx context.Context, mod module.Version) (dir string, err error)
 // Unzip is like Download but is given the explicit zip file to use,
 // rather than downloading it. This is used for the GOFIPS140 zip files,
 // which ship in the Go distribution itself.
-func Unzip(ctx context.Context, mod module.Version, zipfile string) (dir string, err error)
+func (f *Fetcher) Unzip(ctx context.Context, mod module.Version, zipfile string) (dir string, err error)
 
 // DownloadZip downloads the specific module version to the
 // local zip cache and returns the name of the zip file.
@@ -34,12 +35,12 @@ func DownloadZip(ctx context.Context, mod module.Version) (zipfile string, err e
 // any permission changes needed to do so.
 func RemoveAll(dir string) error
 
-// State holds a snapshot of the global state of the modfetch package.
-type State struct {
+// Fetcher holds a snapshot of the global state of the modfetch package.
+type Fetcher struct {
 	// path to go.sum; set by package modload
-	GoSumFile string
+	goSumFile string
 	// path to module go.sums in workspace; set by package modload
-	WorkspaceGoSumFiles []string
+	workspaceGoSumFiles []string
 	// The Lookup cache is used cache the work done by Lookup.
 	// It is important that the global functions of this package that access it do not
 	// do so after they return.
@@ -51,12 +52,19 @@ type State struct {
 	// non-thread-safe SetState function.
 	downloadCache *par.ErrCache[module.Version, string]
 
+	mu       sync.Mutex
 	sumState sumState
 }
 
-var ModuleFetchState *State = NewState()
+var Fetcher_ *Fetcher = NewFetcher()
 
-func NewState() *State
+func NewFetcher() *Fetcher
+
+func (f *Fetcher) GoSumFile() string
+
+func (f *Fetcher) SetGoSumFile(str string)
+
+func (f *Fetcher) AddWorkspaceGoSumFile(file string)
 
 // Reset resets globals in the modfetch package, so previous loads don't affect
 // contents of go.sum files.
@@ -66,7 +74,7 @@ func Reset()
 // global state. newState should have been returned by SetState, or be an empty State.
 // There should be no concurrent calls to any of the exported functions of this package with
 // a call to SetState because it will modify the global state in a non-thread-safe way.
-func SetState(newState State) (oldState State)
+func SetState(newState *Fetcher) (oldState *Fetcher)
 
 // HaveSum returns true if the go.sum file contains an entry for mod.
 // The entry's hash must be generated with a known hash algorithm.

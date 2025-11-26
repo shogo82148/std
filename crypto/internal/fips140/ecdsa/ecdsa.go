@@ -54,8 +54,13 @@ func P384() *Curve[*nistec.P384Point]
 
 func P521() *Curve[*nistec.P521Point]
 
+// NewPrivateKey creates a new ECDSA private key from the given D and Q byte
+// slices. D must be the fixed-length big-endian encoding of the private scalar,
+// and Q must be the compressed or uncompressed encoding of the public point.
 func NewPrivateKey[P Point[P]](c *Curve[P], D, Q []byte) (*PrivateKey, error)
 
+// NewPublicKey creates a new ECDSA public key from the given Q byte slice.
+// Q must be the compressed or uncompressed encoding of the public point.
 func NewPublicKey[P Point[P]](c *Curve[P], Q []byte) (*PublicKey, error)
 
 // GenerateKey generates a new ECDSA private key pair for the specified curve.

@@ -43,7 +43,7 @@ type PublicKey struct {
 // ECDH returns k as a [ecdh.PublicKey]. It returns an error if the key is
 // invalid according to the definition of [ecdh.Curve.NewPublicKey], or if the
 // Curve is not supported by crypto/ecdh.
-func (k *PublicKey) ECDH() (*ecdh.PublicKey, error)
+func (pub *PublicKey) ECDH() (*ecdh.PublicKey, error)
 
 // Equal reports whether pub and x have the same value.
 //
@@ -99,7 +99,7 @@ type PrivateKey struct {
 // ECDH returns k as a [ecdh.PrivateKey]. It returns an error if the key is
 // invalid according to the definition of [ecdh.Curve.NewPrivateKey], or if the
 // Curve is not supported by [crypto/ecdh].
-func (k *PrivateKey) ECDH() (*ecdh.PrivateKey, error)
+func (priv *PrivateKey) ECDH() (*ecdh.PrivateKey, error)
 
 // Public returns the public key corresponding to priv.
 func (priv *PrivateKey) Public() crypto.PublicKey

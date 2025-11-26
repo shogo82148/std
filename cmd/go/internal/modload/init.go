@@ -206,8 +206,8 @@ type State struct {
 
 	// Set to the path to the go.work file, or "" if workspace mode is
 	// disabled
-	workFilePath  string
-	modfetchState modfetch.State
+	workFilePath string
+	fetcher      *modfetch.Fetcher
 }
 
 func NewState() *State

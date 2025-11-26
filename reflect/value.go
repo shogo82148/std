@@ -6,6 +6,7 @@ package reflect
 
 import (
 	"github.com/shogo82148/std/internal/abi"
+	"github.com/shogo82148/std/iter"
 	"github.com/shogo82148/std/unsafe"
 )
 
@@ -436,6 +437,27 @@ func (v Value) UnsafeAddr() uintptr
 // If v's Kind is [String], the returned pointer is to the first
 // element of the underlying bytes of string.
 func (v Value) UnsafePointer() unsafe.Pointer
+
+// Fields returns an iterator over each [StructField] of v along with its [Value].
+//
+// The sequence is equivalent to calling [Value.Field] successively
+// for each index i in the range [0, NumField()).
+//
+// It panics if v's Kind is not Struct.
+func (v Value) Fields() iter.Seq2[StructField, Value]
+
+// Methods returns an iterator over each [Method] of v along with the corresponding
+// method [Value]; this is a function with v bound as the receiver. As such, the
+// receiver shouldn't be included in the arguments to [Value.Call].
+//
+// The sequence is equivalent to calling [Value.Method] successively
+// for each index i in the range [0, NumMethod()).
+//
+// Methods panics if v is a nil interface value.
+//
+// Calling this method will force the linker to retain all exported methods in all packages.
+// This may make the executable binary larger but will not affect execution time.
+func (v Value) Methods() iter.Seq2[Method, Value]
 
 // StringHeader is the runtime representation of a string.
 // It cannot be used safely or portably and its representation may

@@ -80,6 +80,15 @@ func VerifyPSS(pub *PublicKey, hash crypto.Hash, digest []byte, sig []byte, opts
 // twice the hash length, minus a further 2.
 func EncryptOAEP(hash hash.Hash, random io.Reader, pub *PublicKey, msg []byte, label []byte) ([]byte, error)
 
+// EncryptOAEPWithOptions encrypts the given message with RSA-OAEP using the
+// provided options.
+//
+// This function should only be used over [EncryptOAEP] when there is a need to
+// specify the OAEP and MGF1 hashes separately.
+//
+// See [EncryptOAEP] for additional details.
+func EncryptOAEPWithOptions(random io.Reader, pub *PublicKey, msg []byte, opts *OAEPOptions) ([]byte, error)
+
 // DecryptOAEP decrypts ciphertext using RSA-OAEP.
 //
 // OAEP is parameterised by a hash function that is used as a random oracle.

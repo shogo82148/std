@@ -6,11 +6,12 @@ package pprof
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/internal/runtime/pprof/label"
 )
 
 // LabelSet is a set of labels.
 type LabelSet struct {
-	list []label
+	list []label.Label
 }
 
 // WithLabels returns a new [context.Context] with the given labels added.
