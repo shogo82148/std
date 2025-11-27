@@ -6,13 +6,12 @@ package fips140only
 
 import (
 	"github.com/shogo82148/std/hash"
-	"github.com/shogo82148/std/internal/godebug"
 	"github.com/shogo82148/std/io"
 )
 
-// Enabled reports whether FIPS 140-only mode is enabled, in which non-approved
+// Enforced reports whether FIPS 140-only mode is enabled and enforced, in which non-approved
 // cryptography returns an error or panics.
-var Enabled = godebug.New("fips140").Value() == "only"
+func Enforced() bool
 
 func ApprovedHash(h hash.Hash) bool
 

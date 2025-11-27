@@ -61,6 +61,8 @@ package runtime
 // mentions it. To ensure a cleanup does not get called prematurely,
 // pass the object to the [KeepAlive] function after the last point
 // where the object must remain reachable.
+//
+//go:nocheckptr
 func AddCleanup[T, S any](ptr *T, cleanup func(S), arg S) Cleanup
 
 // Cleanup is a handle to a cleanup call for a specific object.

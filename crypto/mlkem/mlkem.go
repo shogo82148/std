@@ -43,7 +43,7 @@ type DecapsulationKey768 struct {
 }
 
 // GenerateKey768 generates a new decapsulation key, drawing random bytes from
-// the default crypto/rand source. The decapsulation key must be kept secret.
+// a secure source. The decapsulation key must be kept secret.
 func GenerateKey768() (*DecapsulationKey768, error)
 
 // NewDecapsulationKey768 expands a decapsulation key from a 64-byte seed in the
@@ -87,7 +87,7 @@ func NewEncapsulationKey768(encapsulationKey []byte) (*EncapsulationKey768, erro
 func (ek *EncapsulationKey768) Bytes() []byte
 
 // Encapsulate generates a shared key and an associated ciphertext from an
-// encapsulation key, drawing random bytes from the default crypto/rand source.
+// encapsulation key, drawing random bytes from a secure source.
 //
 // The shared key must be kept secret.
 //
@@ -102,7 +102,7 @@ type DecapsulationKey1024 struct {
 }
 
 // GenerateKey1024 generates a new decapsulation key, drawing random bytes from
-// the default crypto/rand source. The decapsulation key must be kept secret.
+// a secure source. The decapsulation key must be kept secret.
 func GenerateKey1024() (*DecapsulationKey1024, error)
 
 // NewDecapsulationKey1024 expands a decapsulation key from a 64-byte seed in the
@@ -146,7 +146,7 @@ func NewEncapsulationKey1024(encapsulationKey []byte) (*EncapsulationKey1024, er
 func (ek *EncapsulationKey1024) Bytes() []byte
 
 // Encapsulate generates a shared key and an associated ciphertext from an
-// encapsulation key, drawing random bytes from the default crypto/rand source.
+// encapsulation key, drawing random bytes from a secure source.
 //
 // The shared key must be kept secret.
 //

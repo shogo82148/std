@@ -28,12 +28,11 @@ type PKCS1v15DecryptOptions struct {
 // scheme from PKCS #1 v1.5.  The message must be no longer than the
 // length of the public modulus minus 11 bytes.
 //
-// The random parameter is used as a source of entropy to ensure that
-// encrypting the same message twice doesn't result in the same
-// ciphertext. Most applications should use [crypto/rand.Reader]
-// as random. Note that the returned ciphertext does not depend
-// deterministically on the bytes read from random, and may change
-// between calls and/or between versions.
+// The random parameter is used as a source of entropy to ensure that encrypting
+// the same message twice doesn't result in the same ciphertext. Since Go 1.26,
+// a secure source of random bytes is always used, and the Reader is ignored
+// unless GODEBUG=cryptocustomrand=1 is set. This setting will be removed in a
+// future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].
 //
 // Deprecated: PKCS #1 v1.5 encryption is dangerous and should not be used.
 // See [draft-irtf-cfrg-rsa-guidance-05] for more information. Use

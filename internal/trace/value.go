@@ -40,3 +40,9 @@ func (v Value) Uint64() uint64
 // String returns the string value for a ValueString, and otherwise
 // a string representation of the value for other kinds of values.
 func (v Value) String() string
+
+// Uint64Value creates a value of kind ValueUint64.
+func Uint64Value(x uint64) Value
+
+// StringValue creates a value of kind ValueString.
+func StringValue(s string) Value

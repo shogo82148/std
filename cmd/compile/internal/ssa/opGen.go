@@ -4020,6 +4020,7 @@ const (
 	OpARM64CALLclosure
 	OpARM64CALLinter
 	OpARM64LoweredNilCheck
+	OpARM64LoweredMemEq
 	OpARM64Equal
 	OpARM64NotEqual
 	OpARM64LessThan
@@ -5734,6 +5735,7 @@ const (
 	OpClobberReg
 	OpPrefetchCache
 	OpPrefetchCacheStreamed
+	OpMemEq
 	OpZeroSIMD
 	OpCvt16toMask8x16
 	OpCvt32toMask8x32

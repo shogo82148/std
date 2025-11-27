@@ -23,7 +23,6 @@ const (
 // to avoid overlap.
 const (
 	O_NOFOLLOW_ANY = 0x200000000
-	O_OPEN_REPARSE = 0x400000000
 	O_WRITE_ATTRS  = 0x800000000
 )
 

@@ -17,18 +17,21 @@ import (
 // Otherwise, it uses the operating system's random number generator.
 func Read(b []byte)
 
+// SetTestingReader sets a global, deterministic cryptographic randomness source
+// for testing purposes. Its Read method must never return an error, it must
+// never return short, and it must be safe for concurrent use.
+//
+// This is only intended to be used by the testing/cryptotest package.
+func SetTestingReader(r io.Reader)
+
 // DefaultReader is a sentinel type, embedded in the default
 // [crypto/rand.Reader], used to recognize it when passed to
 // APIs that accept a rand io.Reader.
+//
+// Any Reader that implements this interface is assumed to
+// call [Read] as its Read method.
 type DefaultReader interface{ defaultReader() }
 
 // ReadWithReader uses Reader to fill b with cryptographically secure random
 // bytes. It is intended for use in APIs that expose a rand io.Reader.
-//
-// If Reader is not the default Reader from crypto/rand,
-// [randutil.MaybeReadByte] and [fips140.RecordNonApproved] are called.
 func ReadWithReader(r io.Reader, b []byte) error
-
-// ReadWithReaderDeterministic is like ReadWithReader, but it doesn't call
-// [randutil.MaybeReadByte] on non-default Readers.
-func ReadWithReaderDeterministic(r io.Reader, b []byte) error

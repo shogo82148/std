@@ -47,3 +47,6 @@ func (oid OID) EqualASN1OID(other asn1.ObjectIdentifier) bool
 
 // String returns the string representation of the Object Identifier.
 func (oid OID) String() string
+
+// OIDFromASN1OID creates a new OID using asn1OID.
+func OIDFromASN1OID(asn1OID asn1.ObjectIdentifier) (OID, error)

@@ -71,9 +71,13 @@ func GenerateKey(priv *PrivateKey, rand io.Reader) error
 // to the byte-length of the subgroup. This function does not perform that
 // truncation itself.
 //
+// Since Go 1.26, a secure source of random bytes is always used, and the Reader is
+// ignored unless GODEBUG=cryptocustomrand=1 is set. This setting will be removed
+// in a future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].
+//
 // Be aware that calling Sign with an attacker-controlled [PrivateKey] may
 // require an arbitrary amount of CPU.
-func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
+func Sign(random io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
 
 // Verify verifies the signature in r, s of hash using the public key, pub. It
 // reports whether the signature is valid.

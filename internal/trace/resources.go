@@ -149,6 +149,12 @@ type StateTransition struct {
 	newState uint8
 }
 
+// MakeGoStateTransition creates a goroutine state transition.
+func MakeGoStateTransition(id GoID, from, to GoState) StateTransition
+
+// MakeProcStateTransition creates a proc state transition.
+func MakeProcStateTransition(id ProcID, from, to ProcState) StateTransition
+
 // Goroutine returns the state transition for a goroutine.
 //
 // Transitions to and from states that are Executing are special in that

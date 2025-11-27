@@ -20,7 +20,7 @@ var ErrToolchain = errors.New("internal error: invalid operation on toolchain mo
 // Download downloads the specific module version to the
 // local download cache and returns the name of the directory
 // corresponding to the root of the module's file tree.
-func Download(ctx context.Context, mod module.Version) (dir string, err error)
+func (f *Fetcher) Download(ctx context.Context, mod module.Version) (dir string, err error)
 
 // Unzip is like Download but is given the explicit zip file to use,
 // rather than downloading it. This is used for the GOFIPS140 zip files,
@@ -29,7 +29,7 @@ func (f *Fetcher) Unzip(ctx context.Context, mod module.Version, zipfile string)
 
 // DownloadZip downloads the specific module version to the
 // local zip cache and returns the name of the zip file.
-func DownloadZip(ctx context.Context, mod module.Version) (zipfile string, err error)
+func (f *Fetcher) DownloadZip(ctx context.Context, mod module.Version) (zipfile string, err error)
 
 // RemoveAll removes a directory written by Download or Unzip, first applying
 // any permission changes needed to do so.
@@ -56,8 +56,6 @@ type Fetcher struct {
 	sumState sumState
 }
 
-var Fetcher_ *Fetcher = NewFetcher()
-
 func NewFetcher() *Fetcher
 
 func (f *Fetcher) GoSumFile() string
@@ -68,19 +66,19 @@ func (f *Fetcher) AddWorkspaceGoSumFile(file string)
 
 // Reset resets globals in the modfetch package, so previous loads don't affect
 // contents of go.sum files.
-func Reset()
+func (f *Fetcher) Reset()
 
 // SetState sets the global state of the modfetch package to the newState, and returns the previous
 // global state. newState should have been returned by SetState, or be an empty State.
 // There should be no concurrent calls to any of the exported functions of this package with
 // a call to SetState because it will modify the global state in a non-thread-safe way.
-func SetState(newState *Fetcher) (oldState *Fetcher)
+func (f *Fetcher) SetState(newState *Fetcher) (oldState *Fetcher)
 
 // HaveSum returns true if the go.sum file contains an entry for mod.
 // The entry's hash must be generated with a known hash algorithm.
 // mod.Version may have a "/go.mod" suffix to distinguish sums for
 // .mod and .zip files.
-func HaveSum(mod module.Version) bool
+func HaveSum(f *Fetcher, mod module.Version) bool
 
 // RecordedSum returns the sum if the go.sum file contains an entry for mod.
 // The boolean reports true if an entry was found or
@@ -88,7 +86,7 @@ func HaveSum(mod module.Version) bool
 // The entry's hash must be generated with a known hash algorithm.
 // mod.Version may have a "/go.mod" suffix to distinguish sums for
 // .mod and .zip files.
-func RecordedSum(mod module.Version) (sum string, ok bool)
+func (f *Fetcher) RecordedSum(mod module.Version) (sum string, ok bool)
 
 // Sum returns the checksum for the downloaded copy of the given module,
 // if present in the download cache.
@@ -102,11 +100,11 @@ var ErrGoSumDirty = errors.New("updates to go.sum needed, disabled by -mod=reado
 // It should have entries for both module content sums and go.mod sums
 // (version ends with "/go.mod"). Existing sums will be preserved unless they
 // have been marked for deletion with TrimGoSum.
-func WriteGoSum(ctx context.Context, keep map[module.Version]bool, readonly bool) error
+func (f *Fetcher) WriteGoSum(ctx context.Context, keep map[module.Version]bool, readonly bool) error
 
 // TidyGoSum returns a tidy version of the go.sum file.
 // A missing go.sum file is treated as if empty.
-func TidyGoSum(keep map[module.Version]bool) (before, after []byte)
+func (f *Fetcher) TidyGoSum(keep map[module.Version]bool) (before, after []byte)
 
 // TrimGoSum trims go.sum to contain only the modules needed for reproducible
 // builds.
@@ -114,7 +112,7 @@ func TidyGoSum(keep map[module.Version]bool) (before, after []byte)
 // keep is used to check whether a sum should be retained in go.mod. It should
 // have entries for both module content sums and go.mod sums (version ends
 // with "/go.mod").
-func TrimGoSum(keep map[module.Version]bool)
+func (f *Fetcher) TrimGoSum(keep map[module.Version]bool)
 
 var HelpModuleAuth = &base.Command{
 	UsageLine: "module-auth",

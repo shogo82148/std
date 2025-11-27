@@ -7,6 +7,7 @@ package modcmd
 import (
 	"github.com/shogo82148/std/context"
 
+	"github.com/shogo82148/std/cmd/go/internal/modfetch"
 	"github.com/shogo82148/std/cmd/go/internal/modfetch/codehost"
 )
 
@@ -29,4 +30,4 @@ type ModuleJSON struct {
 
 // DownloadModule runs 'go mod download' for m.Path@m.Version,
 // leaving the results (including any error) in m itself.
-func DownloadModule(ctx context.Context, m *ModuleJSON) error
+func DownloadModule(ctx context.Context, f *modfetch.Fetcher, m *ModuleJSON) error

@@ -127,6 +127,9 @@ const (
 	ExtKeyUsageMicrosoftKernelCodeSigning
 )
 
+// OID returns the ASN.1 object identifier of the EKU.
+func (eku ExtKeyUsage) OID() OID
+
 // A Certificate represents an X.509 certificate.
 type Certificate struct {
 	Raw                     []byte

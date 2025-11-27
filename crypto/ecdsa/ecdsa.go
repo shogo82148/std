@@ -144,33 +144,35 @@ func (priv *PrivateKey) Bytes() ([]byte, error)
 // the bit-length of the private key's curve order, the hash will be truncated
 // to that length. It returns the ASN.1 encoded signature, like [SignASN1].
 //
-// If rand is not nil, the signature is randomized. Most applications should use
-// [crypto/rand.Reader] as rand. Note that the returned signature does not
-// depend deterministically on the bytes read from rand, and may change between
-// calls and/or between versions.
+// If random is not nil, the signature is randomized. Most applications should use
+// [crypto/rand.Reader] as random, but unless GODEBUG=cryptocustomrand=1 is set, a
+// secure source of random bytes is always used, and the actual Reader is ignored.
+// The GODEBUG setting will be removed in a future Go release. Instead, use
+// [testing/cryptotest.SetGlobalRandom].
 //
-// If rand is nil, Sign will produce a deterministic signature according to RFC
+// If random is nil, Sign will produce a deterministic signature according to RFC
 // 6979. When producing a deterministic signature, opts.HashFunc() must be the
 // function used to produce digest and priv.Curve must be one of
 // [elliptic.P224], [elliptic.P256], [elliptic.P384], or [elliptic.P521].
-func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
+func (priv *PrivateKey) Sign(random io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
 
 // GenerateKey generates a new ECDSA private key for the specified curve.
 //
-// Most applications should use [crypto/rand.Reader] as rand. Note that the
-// returned key does not depend deterministically on the bytes read from rand,
-// and may change between calls and/or between versions.
-func GenerateKey(c elliptic.Curve, rand io.Reader) (*PrivateKey, error)
+// Since Go 1.26, a secure source of random bytes is always used, and the Reader is
+// ignored unless GODEBUG=cryptocustomrand=1 is set. This setting will be removed
+// in a future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].
+func GenerateKey(c elliptic.Curve, r io.Reader) (*PrivateKey, error)
 
 // SignASN1 signs a hash (which should be the result of hashing a larger message)
 // using the private key, priv. If the hash is longer than the bit-length of the
 // private key's curve order, the hash will be truncated to that length. It
 // returns the ASN.1 encoded signature.
 //
-// The signature is randomized. Most applications should use [crypto/rand.Reader]
-// as rand. Note that the returned signature does not depend deterministically on
-// the bytes read from rand, and may change between calls and/or between versions.
-func SignASN1(rand io.Reader, priv *PrivateKey, hash []byte) ([]byte, error)
+// The signature is randomized. Since Go 1.26, a secure source of random bytes
+// is always used, and the Reader is ignored unless GODEBUG=cryptocustomrand=1
+// is set. This setting will be removed in a future Go release. Instead, use
+// [testing/cryptotest.SetGlobalRandom].
+func SignASN1(r io.Reader, priv *PrivateKey, hash []byte) ([]byte, error)
 
 // VerifyASN1 verifies the ASN.1 encoded signature, sig, of hash using the
 // public key, pub. Its return value records whether the signature is valid.

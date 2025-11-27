@@ -77,12 +77,16 @@ type Options struct {
 // HashFunc returns o.Hash.
 func (o *Options) HashFunc() crypto.Hash
 
-// GenerateKey generates a public/private key pair using entropy from rand.
-// If rand is nil, [crypto/rand.Reader] will be used.
+// GenerateKey generates a public/private key pair using entropy from random.
+//
+// If random is nil, a secure random source is used. (Before Go 1.26, a custom
+// [crypto/rand.Reader] was used if set by the application. That behavior can be
+// restored with GODEBUG=cryptocustomrand=1. This setting will be removed in a
+// future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].)
 //
 // The output of this function is deterministic, and equivalent to reading
-// [SeedSize] bytes from rand, and passing them to [NewKeyFromSeed].
-func GenerateKey(rand io.Reader) (PublicKey, PrivateKey, error)
+// [SeedSize] bytes from random, and passing them to [NewKeyFromSeed].
+func GenerateKey(random io.Reader) (PublicKey, PrivateKey, error)
 
 // NewKeyFromSeed calculates a private key from a seed. It will panic if
 // len(seed) is not [SeedSize]. This function is provided for interoperability

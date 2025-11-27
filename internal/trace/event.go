@@ -222,6 +222,13 @@ type Log struct {
 	Message string
 }
 
+// StackSample is used to construct StackSample events via MakeEvent. There are
+// no details associated with it, use EventConfig.Stack instead.
+type StackSample struct{}
+
+// MakeStack create a stack from a list of stack frames.
+func MakeStack(frames []StackFrame) Stack
+
 // Stack represents a stack. It's really a handle to a stack and it's trivially comparable.
 //
 // If two Stacks are equal then their Frames are guaranteed to be identical. If they are not
@@ -233,6 +240,11 @@ type Stack struct {
 
 // Frames is an iterator over the frames in a Stack.
 func (s Stack) Frames() iter.Seq[StackFrame]
+
+// String returns the stack as a human-readable string.
+//
+// The format of the string is intended for debugging and is subject to change.
+func (s Stack) String() string
 
 // NoStack is a sentinel value that can be compared against any Stack value, indicating
 // a lack of a stack trace.
@@ -283,6 +295,37 @@ type ExperimentalBatch struct {
 	// Data is a packet of unparsed data all produced by one thread.
 	Data []byte
 }
+
+type EventDetails interface {
+	Metric | Label | Range | StateTransition | Sync | Task | Region | Log | StackSample
+}
+
+// EventConfig holds the data for constructing a trace event.
+type EventConfig[T EventDetails] struct {
+	// Time is the timestamp of the event.
+	Time Time
+
+	// Kind is the kind of the event.
+	Kind EventKind
+
+	// Goroutine is the goroutine ID of the event.
+	Goroutine GoID
+
+	// Proc is the proc ID of the event.
+	Proc ProcID
+
+	// Thread is the thread ID of the event.
+	Thread ThreadID
+
+	// Stack is the stack of the event.
+	Stack Stack
+
+	// Details is the kind specific details of the event.
+	Details T
+}
+
+// MakeEvent creates a new trace event from the given configuration.
+func MakeEvent[T EventDetails](c EventConfig[T]) (e Event, err error)
 
 // Event represents a single event in the trace.
 type Event struct {
