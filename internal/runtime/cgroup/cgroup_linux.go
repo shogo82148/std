@@ -39,24 +39,24 @@ func ReadCPULimit(c CPU) (float64, bool, error)
 // Returns ErrNoCgroup if the process is not in a CPU cgroup.
 func FindCPU(out []byte, scratch []byte) (int, Version, error)
 
-// FindCPURelativePath finds the path to the CPU cgroup that this process is a member of
-// relative to the root of the cgroup mount and places it in out. scratch is a
-// scratch buffer for internal use.
+// FindCPUCgroup finds the path to the CPU cgroup that this process is a member of
+// and places it in out. scratch is a scratch buffer for internal use.
 //
-// out must have length PathSize minus the size of the cgroup mount root (if
-// known). scratch must have length ParseSize.
+// out must have length PathSize. scratch must have length ParseSize.
 //
 // Returns the number of bytes written to out and the cgroup version (1 or 2).
 //
 // Returns ErrNoCgroup if the process is not in a CPU cgroup.
-func FindCPURelativePath(out []byte, scratch []byte) (int, Version, error)
+func FindCPUCgroup(out []byte, scratch []byte) (int, Version, error)
 
-// FindCPUMountPoint finds the root of the CPU cgroup mount places it in out.
+// FindCPUMountPoint finds the mount point containing the specified cgroup and
+// version with cpu controller, and compose the full path to the cgroup in out.
 // scratch is a scratch buffer for internal use.
 //
-// out must have length PathSize. scratch must have length ParseSize.
+// out must have length PathSize, may overlap with cgroup.
+// scratch must have length ParseSize.
 //
 // Returns the number of bytes written to out.
 //
-// Returns ErrNoCgroup if the process is not in a CPU cgroup.
-func FindCPUMountPoint(out []byte, scratch []byte) (int, error)
+// Returns ErrNoCgroup if no matching mount point is found.
+func FindCPUMountPoint(out, cgroup []byte, version Version, scratch []byte) (int, error)

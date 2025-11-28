@@ -412,7 +412,6 @@ const (
 	AADD
 	AADDD
 	AADDF
-	AADDU
 
 	AADDW
 	AAND
@@ -478,7 +477,6 @@ const (
 	AMUL
 	AMULD
 	AMULF
-	AMULU
 	AMULH
 	AMULHU
 	AMULW
@@ -514,7 +512,6 @@ const (
 	ASUBD
 	ASUBF
 
-	ASUBU
 	ASUBW
 	ADBAR
 	ASYSCALL

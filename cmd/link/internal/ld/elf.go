@@ -7,16 +7,37 @@ package ld
 import (
 	"github.com/shogo82148/std/cmd/internal/sys"
 	"github.com/shogo82148/std/cmd/link/internal/loader"
+	"github.com/shogo82148/std/cmd/link/internal/sym"
 	"github.com/shogo82148/std/debug/elf"
 )
 
 // ElfEhdr is the ELF file header.
 type ElfEhdr elf.Header64
 
-// ElfShdr is an ELF section entry, plus the section index.
+// ElfShdr is an ELF section table entry.
 type ElfShdr struct {
 	elf.Section64
+
+	// nameString is the section name as a string.
+	// This is not to be confused with Name,
+	// inherited from elf.Section64, which is an offset.
+	nameString string
+
+	// The section index, set by elfSortShdrs.
+	// Don't read this directly, use elfShdrShnum.
 	shnum elf.SectionIndex
+
+	// Because we don't compute the final section number
+	// until late in the link, when the link and info fields
+	// hold section indexes, we store pointers, and fetch
+	// the final section index when we write them out.
+	link *ElfShdr
+	info *ElfShdr
+
+	// We compute the section offsets of reloc sections
+	// after we create the ELF section header.
+	// This field lets us fetch the section offset and size.
+	relocSect *sym.Section
 }
 
 // ElfPhdr is the ELF program, or segment, header.
@@ -67,11 +88,6 @@ type ELFArch struct {
 	// section read-only. By default it is writable.
 	// This is used by MIPS targets.
 	DynamicReadOnly bool
-}
-
-type Elfstring struct {
-	s   string
-	off int
 }
 
 // Elfinit initializes the global ehdr variable that holds the ELF header.
