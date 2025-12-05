@@ -7,6 +7,7 @@
 package rand
 
 import (
+	"github.com/shogo82148/std/crypto/internal/rand"
 	"github.com/shogo82148/std/io"
 )
 
@@ -23,7 +24,7 @@ import (
 //
 // In FIPS 140-3 mode, the output passes through an SP 800-90A Rev. 1
 // Deterministric Random Bit Generator (DRBG).
-var Reader io.Reader
+var Reader io.Reader = rand.Reader
 
 // Read fills b with cryptographically secure random bytes. It never returns an
 // error, and always fills b entirely.

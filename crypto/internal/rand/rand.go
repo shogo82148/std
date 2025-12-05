@@ -30,3 +30,8 @@ func SetTestingReader(r io.Reader)
 //
 // If returning a non-default Reader, it calls [randutil.MaybeReadByte] on it.
 func CustomReader(r io.Reader) io.Reader
+
+// IsDefaultReader reports whether r is the default [crypto/rand.Reader].
+//
+// If true, the Read method of r can be assumed to call [drbg.Read].
+func IsDefaultReader(r io.Reader) bool

@@ -45,9 +45,9 @@ func (opts *PSSOptions) HashFunc() crypto.Hash
 // used. If opts.Hash is set, it overrides hash.
 //
 // The signature is randomized depending on the message, key, and salt size,
-// using bytes from rand. Most applications should use [crypto/rand.Reader] as
-// rand.
-func SignPSS(rand io.Reader, priv *PrivateKey, hash crypto.Hash, digest []byte, opts *PSSOptions) ([]byte, error)
+// using bytes from random. Most applications should use [crypto/rand.Reader] as
+// random.
+func SignPSS(random io.Reader, priv *PrivateKey, hash crypto.Hash, digest []byte, opts *PSSOptions) ([]byte, error)
 
 // VerifyPSS verifies a PSS signature.
 //
