@@ -87,11 +87,13 @@ type Action struct {
 	actionID         cache.ActionID
 	buildID          string
 
-	VetxOnly  bool
-	needVet   bool
-	needBuild bool
-	vetCfg    *vetConfig
-	output    []byte
+	VetxOnly   bool
+	needVet    bool
+	needBuild  bool
+	needFix    bool
+	vetCfg     *vetConfig
+	FixArchive string
+	output     []byte
 
 	sh *Shell
 
@@ -169,7 +171,7 @@ func (b *Builder) CompileAction(mode, depMode BuildMode, p *load.Package) *Actio
 // It depends on the action for compiling p.
 // If the caller may be causing p to be installed, it is up to the caller
 // to make sure that the install depends on (runs after) vet.
-func (b *Builder) VetAction(s *modload.State, mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) VetAction(s *modload.State, mode, depMode BuildMode, needFix bool, p *load.Package) *Action
 
 // LinkAction returns the action for linking p into an executable
 // and possibly installing the result (according to mode).
