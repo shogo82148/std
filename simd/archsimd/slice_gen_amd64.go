@@ -2,7 +2,7 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd
 
 // LoadInt8x16Slice loads an Int8x16 from a slice of at least 16 int8s
 func LoadInt8x16Slice(s []int8) Int8x16

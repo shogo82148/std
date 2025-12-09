@@ -2,7 +2,7 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd
 
 type X86Features struct{}
 
@@ -72,6 +72,12 @@ func (X86Features) AVX512VBMI2() bool
 // AVX512VNNI is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) AVX512VNNI() bool
+
+// AVX512VPCLMULQDQ returns whether the CPU supports the AVX512VPCLMULQDQ feature.
+//
+// AVX512VPCLMULQDQ is defined on all GOARCHes, but will only return true on
+// GOARCH amd64.
+func (X86Features) AVX512VPCLMULQDQ() bool
 
 // AVX512VPOPCNTDQ returns whether the CPU supports the AVX512VPOPCNTDQ feature.
 //

@@ -2,7 +2,7 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd
 
 // Less returns a mask whose elements indicate whether x < y
 //

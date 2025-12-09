@@ -4,4 +4,4 @@
 
 //go:build goexperiment.simd && amd64
 
-package simd_test
+package archsimd_test

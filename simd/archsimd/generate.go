@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build goexperiment.simd && amd64
+//go:build goexperiment.simd
 
-// This exposes some internal interfaces to simd_test.
-
-package simd
+package archsimd

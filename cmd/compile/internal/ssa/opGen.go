@@ -2328,6 +2328,9 @@ const (
 	OpAMD64VPALIGNRMasked128
 	OpAMD64VPALIGNRMasked256
 	OpAMD64VPALIGNRMasked512
+	OpAMD64VPCLMULQDQ128
+	OpAMD64VPCLMULQDQ256
+	OpAMD64VPCLMULQDQ512
 	OpAMD64VPCMPB512
 	OpAMD64VPCMPBMasked128
 	OpAMD64VPCMPBMasked256
@@ -7266,6 +7269,9 @@ const (
 	OpTruncScaledResidueFloat64x2
 	OpTruncScaledResidueFloat64x4
 	OpTruncScaledResidueFloat64x8
+	OpcarrylessMultiplyUint64x2
+	OpcarrylessMultiplyUint64x4
+	OpcarrylessMultiplyUint64x8
 	OpconcatSelectedConstantFloat32x4
 	OpconcatSelectedConstantFloat64x2
 	OpconcatSelectedConstantGroupedFloat32x8

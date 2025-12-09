@@ -2,7 +2,7 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd
 
 // Float32x4 is a 128-bit SIMD vector of 4 float32
 type Float32x4 struct {

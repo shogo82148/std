@@ -2,4 +2,4 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd

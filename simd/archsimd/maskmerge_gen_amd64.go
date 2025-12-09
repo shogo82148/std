@@ -2,7 +2,7 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int8x16) Masked(mask Mask8x16) Int8x16

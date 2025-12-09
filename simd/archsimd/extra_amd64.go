@@ -4,7 +4,7 @@
 
 //go:build goexperiment.simd && amd64
 
-package simd
+package archsimd
 
 // ClearAVXUpperBits clears the high bits of Y0-Y15 and Z0-Z15 registers.
 // It is intended for transitioning from AVX to SSE, eliminating the

@@ -2,7 +2,7 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd
 
 // AESDecryptLastRound performs a series of operations in AES cipher algorithm defined in FIPS 197.
 // x is the state array, starting from low index to high are s00, s10, s20, s30, s01, ..., s33.

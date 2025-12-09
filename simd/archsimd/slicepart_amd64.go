@@ -4,7 +4,7 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd
 
 // LoadInt8x32SlicePart loads a Int8x32 from the slice s.
 // If s has fewer than 32 elements, the remaining elements of the vector are filled with zeroes.

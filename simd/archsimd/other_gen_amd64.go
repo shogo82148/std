@@ -2,7 +2,7 @@
 
 //go:build goexperiment.simd
 
-package simd
+package archsimd
 
 // BroadcastInt8x16 returns a vector with the input
 // x assigned to all elements of the output.

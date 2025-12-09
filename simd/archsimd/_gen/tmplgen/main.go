@@ -6,4 +6,4 @@ package main
 
 const SIMD = "../../"
 const TD = "../../internal/simd_test/"
-const SSA = "../../../cmd/compile/internal/ssa/"
+const SSA = "../../../../cmd/compile/internal/ssa/"
