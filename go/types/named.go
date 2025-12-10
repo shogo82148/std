@@ -31,7 +31,8 @@ type Named struct {
 	allowNilRHS        bool
 	allowNilUnderlying bool
 
-	inst *instance
+	inst   *instance
+	finite *bool
 
 	mu         sync.Mutex
 	state_     uint32
