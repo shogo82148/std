@@ -80,6 +80,12 @@ func NewGCMWithXORCounterNonce(cipher *aes.Block) (*GCMWithXORCounterNonce, erro
 // This complies with FIPS 140-3 IG C.H Scenario 1.a.
 func NewGCMForTLS13(cipher *aes.Block) (*GCMWithXORCounterNonce, error)
 
+// NewGCMForHPKE returns a new AEAD that works like GCM, but enforces the
+// construction of nonces as specified in RFC 9180, Section 5.2.
+//
+// This complies with FIPS 140-3 IG C.H Scenario 5.
+func NewGCMForHPKE(cipher *aes.Block) (*GCMWithXORCounterNonce, error)
+
 // NewGCMForQUIC returns a new AEAD that works like GCM, but enforces the
 // construction of nonces as specified in RFC 9001, Section 5.3.
 //
