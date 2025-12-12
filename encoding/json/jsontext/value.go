@@ -150,5 +150,5 @@ func (v Value) MarshalJSON() ([]byte, error)
 func (v *Value) UnmarshalJSON(b []byte) error
 
 // Kind returns the starting token kind.
-// For a valid value, this will never include '}' or ']'.
+// For a valid value, this will never include [KindEndObject] or [KindEndArray].
 func (v Value) Kind() Kind

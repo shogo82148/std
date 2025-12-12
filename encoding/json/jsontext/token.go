@@ -99,23 +99,25 @@ func (t Token) Uint() uint64
 // Kind returns the token kind.
 func (t Token) Kind() Kind
 
+// A Kind represents the kind of a JSON token.
+//
 // Kind represents each possible JSON token kind with a single byte,
 // which is conveniently the first byte of that kind's grammar
-// with the restriction that numbers always be represented with '0':
-//
-//   - 'n': null
-//   - 'f': false
-//   - 't': true
-//   - '"': string
-//   - '0': number
-//   - '{': object begin
-//   - '}': object end
-//   - '[': array begin
-//   - ']': array end
-//
-// An invalid kind is usually represented using 0,
-// but may be non-zero due to invalid JSON data.
+// with the restriction that numbers always be represented with '0'.
 type Kind byte
+
+const (
+	KindInvalid     Kind = 0
+	KindNull        Kind = 'n'
+	KindFalse       Kind = 'f'
+	KindTrue        Kind = 't'
+	KindString      Kind = '"'
+	KindNumber      Kind = '0'
+	KindBeginObject Kind = '{'
+	KindEndObject   Kind = '}'
+	KindBeginArray  Kind = '['
+	KindEndArray    Kind = ']'
+)
 
 // String prints the kind in a humanly readable fashion.
 func (k Kind) String() string

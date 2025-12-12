@@ -28,14 +28,14 @@ type Named struct {
 	allowNilRHS        bool
 	allowNilUnderlying bool
 
-	inst   *instance
-	finite *bool
+	inst *instance
 
 	mu         sync.Mutex
 	state_     uint32
 	fromRHS    Type
 	tparams    *TypeParamList
 	underlying Type
+	finite     bool
 
 	// methods declared for this type (not the method set of this type)
 	// Signatures are type-checked lazily.
