@@ -1468,31 +1468,31 @@ func (x Int64x8) ConcatPermute(y Int64x8, indices Uint64x8) Int64x8
 // Asm: VPERMI2Q, CPU Feature: AVX512
 func (x Uint64x8) ConcatPermute(y Uint64x8, indices Uint64x8) Uint64x8
 
-// ConcatShiftBytesRight concatenates x and y and shift it right by constant bytes.
+// ConcatShiftBytesRight concatenates x and y and shift it right by shift bytes.
 // The result vector will be the lower half of the concatenated vector.
 //
-// constant results in better performance when it's a constant, a non-constant value will be translated into a jump table.
+// shift results in better performance when it's a constant, a non-constant value will be translated into a jump table.
 //
 // Asm: VPALIGNR, CPU Feature: AVX
-func (x Uint8x16) ConcatShiftBytesRight(constant uint8, y Uint8x16) Uint8x16
+func (x Uint8x16) ConcatShiftBytesRight(shift uint8, y Uint8x16) Uint8x16
 
-// ConcatShiftBytesRightGrouped concatenates x and y and shift it right by constant bytes.
+// ConcatShiftBytesRightGrouped concatenates x and y and shift it right by shift bytes.
 // The result vector will be the lower half of the concatenated vector.
 // This operation is performed grouped by each 16 byte.
 //
-// constant results in better performance when it's a constant, a non-constant value will be translated into a jump table.
+// shift results in better performance when it's a constant, a non-constant value will be translated into a jump table.
 //
 // Asm: VPALIGNR, CPU Feature: AVX2
-func (x Uint8x32) ConcatShiftBytesRightGrouped(constant uint8, y Uint8x32) Uint8x32
+func (x Uint8x32) ConcatShiftBytesRightGrouped(shift uint8, y Uint8x32) Uint8x32
 
-// ConcatShiftBytesRightGrouped concatenates x and y and shift it right by constant bytes.
+// ConcatShiftBytesRightGrouped concatenates x and y and shift it right by shift bytes.
 // The result vector will be the lower half of the concatenated vector.
 // This operation is performed grouped by each 16 byte.
 //
-// constant results in better performance when it's a constant, a non-constant value will be translated into a jump table.
+// shift results in better performance when it's a constant, a non-constant value will be translated into a jump table.
 //
 // Asm: VPALIGNR, CPU Feature: AVX512
-func (x Uint8x64) ConcatShiftBytesRightGrouped(constant uint8, y Uint8x64) Uint8x64
+func (x Uint8x64) ConcatShiftBytesRightGrouped(shift uint8, y Uint8x64) Uint8x64
 
 // ConvertToFloat32 converts element values to float32.
 // The result vector's elements are rounded to the nearest value.
@@ -1808,38 +1808,38 @@ func (x Float64x4) ConvertToUint64() Uint64x4
 // Asm: VCVTTPD2UQQ, CPU Feature: AVX512
 func (x Float64x8) ConvertToUint64() Uint64x8
 
-// CopySign returns the product of the first operand with -1, 0, or 1,
-// whichever constant is nearest to the value of the second operand.
+// CopySign returns the product of x with -1, 0, or 1,
+// whichever constant is nearest to the value of y.
 //
 // Asm: VPSIGNB, CPU Feature: AVX
 func (x Int8x16) CopySign(y Int8x16) Int8x16
 
-// CopySign returns the product of the first operand with -1, 0, or 1,
-// whichever constant is nearest to the value of the second operand.
+// CopySign returns the product of x with -1, 0, or 1,
+// whichever constant is nearest to the value of y.
 //
 // Asm: VPSIGNB, CPU Feature: AVX2
 func (x Int8x32) CopySign(y Int8x32) Int8x32
 
-// CopySign returns the product of the first operand with -1, 0, or 1,
-// whichever constant is nearest to the value of the second operand.
+// CopySign returns the product of x with -1, 0, or 1,
+// whichever constant is nearest to the value of y.
 //
 // Asm: VPSIGNW, CPU Feature: AVX
 func (x Int16x8) CopySign(y Int16x8) Int16x8
 
-// CopySign returns the product of the first operand with -1, 0, or 1,
-// whichever constant is nearest to the value of the second operand.
+// CopySign returns the product of x with -1, 0, or 1,
+// whichever constant is nearest to the value of y.
 //
 // Asm: VPSIGNW, CPU Feature: AVX2
 func (x Int16x16) CopySign(y Int16x16) Int16x16
 
-// CopySign returns the product of the first operand with -1, 0, or 1,
-// whichever constant is nearest to the value of the second operand.
+// CopySign returns the product of x with -1, 0, or 1,
+// whichever constant is nearest to the value of y.
 //
 // Asm: VPSIGND, CPU Feature: AVX
 func (x Int32x4) CopySign(y Int32x4) Int32x4
 
-// CopySign returns the product of the first operand with -1, 0, or 1,
-// whichever constant is nearest to the value of the second operand.
+// CopySign returns the product of x with -1, 0, or 1,
+// whichever constant is nearest to the value of y.
 //
 // Asm: VPSIGND, CPU Feature: AVX2
 func (x Int32x8) CopySign(y Int32x8) Int32x8
@@ -1910,188 +1910,152 @@ func (x Uint8x32) DotProductPairsSaturated(y Int8x32) Int16x16
 // Asm: VPMADDUBSW, CPU Feature: AVX512
 func (x Uint8x64) DotProductPairsSaturated(y Int8x64) Int16x32
 
-// DotProductQuadruple performs dot products on groups of 4 elements of x and y.
-// DotProductQuadruple(x, y).Add(z) will be optimized to the full form of the underlying instruction.
-//
-// Asm: VPDPBUSD, CPU Feature: AVXVNNI
-func (x Int8x16) DotProductQuadruple(y Uint8x16) Int32x4
-
-// DotProductQuadruple performs dot products on groups of 4 elements of x and y.
-// DotProductQuadruple(x, y).Add(z) will be optimized to the full form of the underlying instruction.
-//
-// Asm: VPDPBUSD, CPU Feature: AVXVNNI
-func (x Int8x32) DotProductQuadruple(y Uint8x32) Int32x8
-
-// DotProductQuadruple performs dot products on groups of 4 elements of x and y.
-// DotProductQuadruple(x, y).Add(z) will be optimized to the full form of the underlying instruction.
-//
-// Asm: VPDPBUSD, CPU Feature: AVX512VNNI
-func (x Int8x64) DotProductQuadruple(y Uint8x64) Int32x16
-
-// DotProductQuadrupleSaturated multiplies performs dot products on groups of 4 elements of x and y.
-// DotProductQuadrupleSaturated(x, y).Add(z) will be optimized to the full form of the underlying instruction.
-//
-// Asm: VPDPBUSDS, CPU Feature: AVXVNNI
-func (x Int8x16) DotProductQuadrupleSaturated(y Uint8x16) Int32x4
-
-// DotProductQuadrupleSaturated multiplies performs dot products on groups of 4 elements of x and y.
-// DotProductQuadrupleSaturated(x, y).Add(z) will be optimized to the full form of the underlying instruction.
-//
-// Asm: VPDPBUSDS, CPU Feature: AVXVNNI
-func (x Int8x32) DotProductQuadrupleSaturated(y Uint8x32) Int32x8
-
-// DotProductQuadrupleSaturated multiplies performs dot products on groups of 4 elements of x and y.
-// DotProductQuadrupleSaturated(x, y).Add(z) will be optimized to the full form of the underlying instruction.
-//
-// Asm: VPDPBUSDS, CPU Feature: AVX512VNNI
-func (x Int8x64) DotProductQuadrupleSaturated(y Uint8x64) Int32x16
-
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQB, CPU Feature: AVX
 func (x Int8x16) Equal(y Int8x16) Mask8x16
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQB, CPU Feature: AVX2
 func (x Int8x32) Equal(y Int8x32) Mask8x32
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQB, CPU Feature: AVX512
 func (x Int8x64) Equal(y Int8x64) Mask8x64
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQW, CPU Feature: AVX
 func (x Int16x8) Equal(y Int16x8) Mask16x8
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQW, CPU Feature: AVX2
 func (x Int16x16) Equal(y Int16x16) Mask16x16
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQW, CPU Feature: AVX512
 func (x Int16x32) Equal(y Int16x32) Mask16x32
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQD, CPU Feature: AVX
 func (x Int32x4) Equal(y Int32x4) Mask32x4
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQD, CPU Feature: AVX2
 func (x Int32x8) Equal(y Int32x8) Mask32x8
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQD, CPU Feature: AVX512
 func (x Int32x16) Equal(y Int32x16) Mask32x16
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQQ, CPU Feature: AVX
 func (x Int64x2) Equal(y Int64x2) Mask64x2
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQQ, CPU Feature: AVX2
 func (x Int64x4) Equal(y Int64x4) Mask64x4
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQQ, CPU Feature: AVX512
 func (x Int64x8) Equal(y Int64x8) Mask64x8
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQB, CPU Feature: AVX
 func (x Uint8x16) Equal(y Uint8x16) Mask8x16
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQB, CPU Feature: AVX2
 func (x Uint8x32) Equal(y Uint8x32) Mask8x32
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQB, CPU Feature: AVX512
 func (x Uint8x64) Equal(y Uint8x64) Mask8x64
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQW, CPU Feature: AVX
 func (x Uint16x8) Equal(y Uint16x8) Mask16x8
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQW, CPU Feature: AVX2
 func (x Uint16x16) Equal(y Uint16x16) Mask16x16
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQW, CPU Feature: AVX512
 func (x Uint16x32) Equal(y Uint16x32) Mask16x32
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQD, CPU Feature: AVX
 func (x Uint32x4) Equal(y Uint32x4) Mask32x4
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQD, CPU Feature: AVX2
 func (x Uint32x8) Equal(y Uint32x8) Mask32x8
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQD, CPU Feature: AVX512
 func (x Uint32x16) Equal(y Uint32x16) Mask32x16
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQQ, CPU Feature: AVX
 func (x Uint64x2) Equal(y Uint64x2) Mask64x2
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQQ, CPU Feature: AVX2
 func (x Uint64x4) Equal(y Uint64x4) Mask64x4
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VPCMPEQQ, CPU Feature: AVX512
 func (x Uint64x8) Equal(y Uint64x8) Mask64x8
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x4) Equal(y Float32x4) Mask32x4
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x8) Equal(y Float32x8) Mask32x8
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VCMPPS, CPU Feature: AVX512
 func (x Float32x16) Equal(y Float32x16) Mask32x16
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x2) Equal(y Float64x2) Mask64x2
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x4) Equal(y Float64x4) Mask64x4
 
-// Equal returns x equals y, elementwise.
+// Equal returns a mask whose elements indicate whether x == y.
 //
 // Asm: VCMPPD, CPU Feature: AVX512
 func (x Float64x8) Equal(y Float64x8) Mask64x8
@@ -2911,182 +2875,182 @@ func (x Uint64x4) GetLo() Uint64x2
 // Asm: VEXTRACTI64X4, CPU Feature: AVX512
 func (x Uint64x8) GetLo() Uint64x4
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTB, CPU Feature: AVX
 func (x Int8x16) Greater(y Int8x16) Mask8x16
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTB, CPU Feature: AVX2
 func (x Int8x32) Greater(y Int8x32) Mask8x32
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTB, CPU Feature: AVX512
 func (x Int8x64) Greater(y Int8x64) Mask8x64
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTW, CPU Feature: AVX
 func (x Int16x8) Greater(y Int16x8) Mask16x8
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTW, CPU Feature: AVX2
 func (x Int16x16) Greater(y Int16x16) Mask16x16
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTW, CPU Feature: AVX512
 func (x Int16x32) Greater(y Int16x32) Mask16x32
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTD, CPU Feature: AVX
 func (x Int32x4) Greater(y Int32x4) Mask32x4
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTD, CPU Feature: AVX2
 func (x Int32x8) Greater(y Int32x8) Mask32x8
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTD, CPU Feature: AVX512
 func (x Int32x16) Greater(y Int32x16) Mask32x16
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTQ, CPU Feature: AVX
 func (x Int64x2) Greater(y Int64x2) Mask64x2
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTQ, CPU Feature: AVX2
 func (x Int64x4) Greater(y Int64x4) Mask64x4
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPGTQ, CPU Feature: AVX512
 func (x Int64x8) Greater(y Int64x8) Mask64x8
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x4) Greater(y Float32x4) Mask32x4
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x8) Greater(y Float32x8) Mask32x8
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VCMPPS, CPU Feature: AVX512
 func (x Float32x16) Greater(y Float32x16) Mask32x16
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x2) Greater(y Float64x2) Mask64x2
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x4) Greater(y Float64x4) Mask64x4
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VCMPPD, CPU Feature: AVX512
 func (x Float64x8) Greater(y Float64x8) Mask64x8
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPUB, CPU Feature: AVX512
 func (x Uint8x64) Greater(y Uint8x64) Mask8x64
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPUW, CPU Feature: AVX512
 func (x Uint16x32) Greater(y Uint16x32) Mask16x32
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPUD, CPU Feature: AVX512
 func (x Uint32x16) Greater(y Uint32x16) Mask32x16
 
-// Greater returns x greater-than y, elementwise.
+// Greater returns a mask whose elements indicate whether x > y.
 //
 // Asm: VPCMPUQ, CPU Feature: AVX512
 func (x Uint64x8) Greater(y Uint64x8) Mask64x8
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x4) GreaterEqual(y Float32x4) Mask32x4
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x8) GreaterEqual(y Float32x8) Mask32x8
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VCMPPS, CPU Feature: AVX512
 func (x Float32x16) GreaterEqual(y Float32x16) Mask32x16
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x2) GreaterEqual(y Float64x2) Mask64x2
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x4) GreaterEqual(y Float64x4) Mask64x4
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VCMPPD, CPU Feature: AVX512
 func (x Float64x8) GreaterEqual(y Float64x8) Mask64x8
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VPCMPB, CPU Feature: AVX512
 func (x Int8x64) GreaterEqual(y Int8x64) Mask8x64
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VPCMPW, CPU Feature: AVX512
 func (x Int16x32) GreaterEqual(y Int16x32) Mask16x32
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VPCMPD, CPU Feature: AVX512
 func (x Int32x16) GreaterEqual(y Int32x16) Mask32x16
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VPCMPQ, CPU Feature: AVX512
 func (x Int64x8) GreaterEqual(y Int64x8) Mask64x8
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VPCMPUB, CPU Feature: AVX512
 func (x Uint8x64) GreaterEqual(y Uint8x64) Mask8x64
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VPCMPUW, CPU Feature: AVX512
 func (x Uint16x32) GreaterEqual(y Uint16x32) Mask16x32
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VPCMPUD, CPU Feature: AVX512
 func (x Uint32x16) GreaterEqual(y Uint32x16) Mask32x16
 
-// GreaterEqual returns x greater-than-or-equals y, elementwise.
+// GreaterEqual returns a mask whose elements indicate whether x >= y.
 //
 // Asm: VPCMPUQ, CPU Feature: AVX512
 func (x Uint64x8) GreaterEqual(y Uint64x8) Mask64x8
@@ -3361,442 +3325,442 @@ func (x Uint64x4) LeadingZeros() Uint64x4
 // Asm: VPLZCNTQ, CPU Feature: AVX512
 func (x Uint64x8) LeadingZeros() Uint64x8
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x4) Less(y Float32x4) Mask32x4
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x8) Less(y Float32x8) Mask32x8
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VCMPPS, CPU Feature: AVX512
 func (x Float32x16) Less(y Float32x16) Mask32x16
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x2) Less(y Float64x2) Mask64x2
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x4) Less(y Float64x4) Mask64x4
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VCMPPD, CPU Feature: AVX512
 func (x Float64x8) Less(y Float64x8) Mask64x8
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VPCMPB, CPU Feature: AVX512
 func (x Int8x64) Less(y Int8x64) Mask8x64
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VPCMPW, CPU Feature: AVX512
 func (x Int16x32) Less(y Int16x32) Mask16x32
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VPCMPD, CPU Feature: AVX512
 func (x Int32x16) Less(y Int32x16) Mask32x16
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VPCMPQ, CPU Feature: AVX512
 func (x Int64x8) Less(y Int64x8) Mask64x8
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VPCMPUB, CPU Feature: AVX512
 func (x Uint8x64) Less(y Uint8x64) Mask8x64
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VPCMPUW, CPU Feature: AVX512
 func (x Uint16x32) Less(y Uint16x32) Mask16x32
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VPCMPUD, CPU Feature: AVX512
 func (x Uint32x16) Less(y Uint32x16) Mask32x16
 
-// Less returns x less-than y, elementwise.
+// Less returns a mask whose elements indicate whether x < y.
 //
 // Asm: VPCMPUQ, CPU Feature: AVX512
 func (x Uint64x8) Less(y Uint64x8) Mask64x8
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x4) LessEqual(y Float32x4) Mask32x4
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x8) LessEqual(y Float32x8) Mask32x8
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VCMPPS, CPU Feature: AVX512
 func (x Float32x16) LessEqual(y Float32x16) Mask32x16
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x2) LessEqual(y Float64x2) Mask64x2
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x4) LessEqual(y Float64x4) Mask64x4
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VCMPPD, CPU Feature: AVX512
 func (x Float64x8) LessEqual(y Float64x8) Mask64x8
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VPCMPB, CPU Feature: AVX512
 func (x Int8x64) LessEqual(y Int8x64) Mask8x64
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VPCMPW, CPU Feature: AVX512
 func (x Int16x32) LessEqual(y Int16x32) Mask16x32
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VPCMPD, CPU Feature: AVX512
 func (x Int32x16) LessEqual(y Int32x16) Mask32x16
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VPCMPQ, CPU Feature: AVX512
 func (x Int64x8) LessEqual(y Int64x8) Mask64x8
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VPCMPUB, CPU Feature: AVX512
 func (x Uint8x64) LessEqual(y Uint8x64) Mask8x64
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VPCMPUW, CPU Feature: AVX512
 func (x Uint16x32) LessEqual(y Uint16x32) Mask16x32
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VPCMPUD, CPU Feature: AVX512
 func (x Uint32x16) LessEqual(y Uint32x16) Mask32x16
 
-// LessEqual returns x less-than-or-equals y, elementwise.
+// LessEqual returns a mask whose elements indicate whether x <= y.
 //
 // Asm: VPCMPUQ, CPU Feature: AVX512
 func (x Uint64x8) LessEqual(y Uint64x8) Mask64x8
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VMAXPS, CPU Feature: AVX
 func (x Float32x4) Max(y Float32x4) Float32x4
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VMAXPS, CPU Feature: AVX
 func (x Float32x8) Max(y Float32x8) Float32x8
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VMAXPS, CPU Feature: AVX512
 func (x Float32x16) Max(y Float32x16) Float32x16
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VMAXPD, CPU Feature: AVX
 func (x Float64x2) Max(y Float64x2) Float64x2
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VMAXPD, CPU Feature: AVX
 func (x Float64x4) Max(y Float64x4) Float64x4
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VMAXPD, CPU Feature: AVX512
 func (x Float64x8) Max(y Float64x8) Float64x8
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSB, CPU Feature: AVX
 func (x Int8x16) Max(y Int8x16) Int8x16
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSB, CPU Feature: AVX2
 func (x Int8x32) Max(y Int8x32) Int8x32
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSB, CPU Feature: AVX512
 func (x Int8x64) Max(y Int8x64) Int8x64
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSW, CPU Feature: AVX
 func (x Int16x8) Max(y Int16x8) Int16x8
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSW, CPU Feature: AVX2
 func (x Int16x16) Max(y Int16x16) Int16x16
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSW, CPU Feature: AVX512
 func (x Int16x32) Max(y Int16x32) Int16x32
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSD, CPU Feature: AVX
 func (x Int32x4) Max(y Int32x4) Int32x4
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSD, CPU Feature: AVX2
 func (x Int32x8) Max(y Int32x8) Int32x8
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSD, CPU Feature: AVX512
 func (x Int32x16) Max(y Int32x16) Int32x16
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSQ, CPU Feature: AVX512
 func (x Int64x2) Max(y Int64x2) Int64x2
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSQ, CPU Feature: AVX512
 func (x Int64x4) Max(y Int64x4) Int64x4
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXSQ, CPU Feature: AVX512
 func (x Int64x8) Max(y Int64x8) Int64x8
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUB, CPU Feature: AVX
 func (x Uint8x16) Max(y Uint8x16) Uint8x16
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUB, CPU Feature: AVX2
 func (x Uint8x32) Max(y Uint8x32) Uint8x32
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUB, CPU Feature: AVX512
 func (x Uint8x64) Max(y Uint8x64) Uint8x64
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUW, CPU Feature: AVX
 func (x Uint16x8) Max(y Uint16x8) Uint16x8
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUW, CPU Feature: AVX2
 func (x Uint16x16) Max(y Uint16x16) Uint16x16
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUW, CPU Feature: AVX512
 func (x Uint16x32) Max(y Uint16x32) Uint16x32
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUD, CPU Feature: AVX
 func (x Uint32x4) Max(y Uint32x4) Uint32x4
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUD, CPU Feature: AVX2
 func (x Uint32x8) Max(y Uint32x8) Uint32x8
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUD, CPU Feature: AVX512
 func (x Uint32x16) Max(y Uint32x16) Uint32x16
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUQ, CPU Feature: AVX512
 func (x Uint64x2) Max(y Uint64x2) Uint64x2
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUQ, CPU Feature: AVX512
 func (x Uint64x4) Max(y Uint64x4) Uint64x4
 
-// Max computes the maximum of corresponding elements.
+// Max computes the maximum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMAXUQ, CPU Feature: AVX512
 func (x Uint64x8) Max(y Uint64x8) Uint64x8
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VMINPS, CPU Feature: AVX
 func (x Float32x4) Min(y Float32x4) Float32x4
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VMINPS, CPU Feature: AVX
 func (x Float32x8) Min(y Float32x8) Float32x8
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VMINPS, CPU Feature: AVX512
 func (x Float32x16) Min(y Float32x16) Float32x16
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VMINPD, CPU Feature: AVX
 func (x Float64x2) Min(y Float64x2) Float64x2
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VMINPD, CPU Feature: AVX
 func (x Float64x4) Min(y Float64x4) Float64x4
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VMINPD, CPU Feature: AVX512
 func (x Float64x8) Min(y Float64x8) Float64x8
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSB, CPU Feature: AVX
 func (x Int8x16) Min(y Int8x16) Int8x16
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSB, CPU Feature: AVX2
 func (x Int8x32) Min(y Int8x32) Int8x32
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSB, CPU Feature: AVX512
 func (x Int8x64) Min(y Int8x64) Int8x64
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSW, CPU Feature: AVX
 func (x Int16x8) Min(y Int16x8) Int16x8
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSW, CPU Feature: AVX2
 func (x Int16x16) Min(y Int16x16) Int16x16
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSW, CPU Feature: AVX512
 func (x Int16x32) Min(y Int16x32) Int16x32
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSD, CPU Feature: AVX
 func (x Int32x4) Min(y Int32x4) Int32x4
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSD, CPU Feature: AVX2
 func (x Int32x8) Min(y Int32x8) Int32x8
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSD, CPU Feature: AVX512
 func (x Int32x16) Min(y Int32x16) Int32x16
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSQ, CPU Feature: AVX512
 func (x Int64x2) Min(y Int64x2) Int64x2
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSQ, CPU Feature: AVX512
 func (x Int64x4) Min(y Int64x4) Int64x4
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINSQ, CPU Feature: AVX512
 func (x Int64x8) Min(y Int64x8) Int64x8
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUB, CPU Feature: AVX
 func (x Uint8x16) Min(y Uint8x16) Uint8x16
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUB, CPU Feature: AVX2
 func (x Uint8x32) Min(y Uint8x32) Uint8x32
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUB, CPU Feature: AVX512
 func (x Uint8x64) Min(y Uint8x64) Uint8x64
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUW, CPU Feature: AVX
 func (x Uint16x8) Min(y Uint16x8) Uint16x8
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUW, CPU Feature: AVX2
 func (x Uint16x16) Min(y Uint16x16) Uint16x16
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUW, CPU Feature: AVX512
 func (x Uint16x32) Min(y Uint16x32) Uint16x32
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUD, CPU Feature: AVX
 func (x Uint32x4) Min(y Uint32x4) Uint32x4
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUD, CPU Feature: AVX2
 func (x Uint32x8) Min(y Uint32x8) Uint32x8
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUD, CPU Feature: AVX512
 func (x Uint32x16) Min(y Uint32x16) Uint32x16
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUQ, CPU Feature: AVX512
 func (x Uint64x2) Min(y Uint64x2) Uint64x2
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUQ, CPU Feature: AVX512
 func (x Uint64x4) Min(y Uint64x4) Uint64x4
 
-// Min computes the minimum of corresponding elements.
+// Min computes the minimum of each pair of corresponding elements in x and y.
 //
 // Asm: VPMINUQ, CPU Feature: AVX512
 func (x Uint64x8) Min(y Uint64x8) Uint64x8
@@ -3982,25 +3946,25 @@ func (x Float64x4) MulAddSub(y Float64x4, z Float64x4) Float64x4
 func (x Float64x8) MulAddSub(y Float64x8, z Float64x8) Float64x8
 
 // MulEvenWiden multiplies even-indexed elements, widening the result.
-// Result[i] = v1.Even[i] * v2.Even[i].
+// Result[i] = v1[2*i] * v2[2*i].
 //
 // Asm: VPMULDQ, CPU Feature: AVX
 func (x Int32x4) MulEvenWiden(y Int32x4) Int64x2
 
 // MulEvenWiden multiplies even-indexed elements, widening the result.
-// Result[i] = v1.Even[i] * v2.Even[i].
+// Result[i] = v1[2*i] * v2[2*i].
 //
 // Asm: VPMULDQ, CPU Feature: AVX2
 func (x Int32x8) MulEvenWiden(y Int32x8) Int64x4
 
 // MulEvenWiden multiplies even-indexed elements, widening the result.
-// Result[i] = v1.Even[i] * v2.Even[i].
+// Result[i] = v1[2*i] * v2[2*i].
 //
 // Asm: VPMULUDQ, CPU Feature: AVX
 func (x Uint32x4) MulEvenWiden(y Uint32x4) Uint64x2
 
 // MulEvenWiden multiplies even-indexed elements, widening the result.
-// Result[i] = v1.Even[i] * v2.Even[i].
+// Result[i] = v1[2*i] * v2[2*i].
 //
 // Asm: VPMULUDQ, CPU Feature: AVX2
 func (x Uint32x8) MulEvenWiden(y Uint32x8) Uint64x4
@@ -4065,72 +4029,72 @@ func (x Float64x4) MulSubAdd(y Float64x4, z Float64x4) Float64x4
 // Asm: VFMSUBADD213PD, CPU Feature: AVX512
 func (x Float64x8) MulSubAdd(y Float64x8, z Float64x8) Float64x8
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x4) NotEqual(y Float32x4) Mask32x4
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VCMPPS, CPU Feature: AVX
 func (x Float32x8) NotEqual(y Float32x8) Mask32x8
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VCMPPS, CPU Feature: AVX512
 func (x Float32x16) NotEqual(y Float32x16) Mask32x16
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x2) NotEqual(y Float64x2) Mask64x2
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VCMPPD, CPU Feature: AVX
 func (x Float64x4) NotEqual(y Float64x4) Mask64x4
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VCMPPD, CPU Feature: AVX512
 func (x Float64x8) NotEqual(y Float64x8) Mask64x8
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VPCMPB, CPU Feature: AVX512
 func (x Int8x64) NotEqual(y Int8x64) Mask8x64
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VPCMPW, CPU Feature: AVX512
 func (x Int16x32) NotEqual(y Int16x32) Mask16x32
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VPCMPD, CPU Feature: AVX512
 func (x Int32x16) NotEqual(y Int32x16) Mask32x16
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VPCMPQ, CPU Feature: AVX512
 func (x Int64x8) NotEqual(y Int64x8) Mask64x8
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VPCMPUB, CPU Feature: AVX512
 func (x Uint8x64) NotEqual(y Uint8x64) Mask8x64
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VPCMPUW, CPU Feature: AVX512
 func (x Uint16x32) NotEqual(y Uint16x32) Mask16x32
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VPCMPUD, CPU Feature: AVX512
 func (x Uint32x16) NotEqual(y Uint32x16) Mask32x16
 
-// NotEqual returns x not-equals y, elementwise.
+// NotEqual returns a mask whose elements indicate whether x != y.
 //
 // Asm: VPCMPUQ, CPU Feature: AVX512
 func (x Uint64x8) NotEqual(y Uint64x8) Mask64x8
@@ -4943,22 +4907,22 @@ func (x Uint64x4) RotateRight(y Uint64x4) Uint64x4
 // Asm: VPRORVQ, CPU Feature: AVX512
 func (x Uint64x8) RotateRight(y Uint64x8) Uint64x8
 
-// RoundToEven rounds elements to the nearest integer.
+// RoundToEven rounds elements to the nearest integer, rounding ties to even.
 //
 // Asm: VROUNDPS, CPU Feature: AVX
 func (x Float32x4) RoundToEven() Float32x4
 
-// RoundToEven rounds elements to the nearest integer.
+// RoundToEven rounds elements to the nearest integer, rounding ties to even.
 //
 // Asm: VROUNDPS, CPU Feature: AVX
 func (x Float32x8) RoundToEven() Float32x8
 
-// RoundToEven rounds elements to the nearest integer.
+// RoundToEven rounds elements to the nearest integer, rounding ties to even.
 //
 // Asm: VROUNDPD, CPU Feature: AVX
 func (x Float64x2) RoundToEven() Float64x2
 
-// RoundToEven rounds elements to the nearest integer.
+// RoundToEven rounds elements to the nearest integer, rounding ties to even.
 //
 // Asm: VROUNDPD, CPU Feature: AVX
 func (x Float64x4) RoundToEven() Float64x4
@@ -5200,28 +5164,27 @@ func (x Int64x4) SaturateToInt16() Int16x8
 func (x Int64x8) SaturateToInt16() Int16x8
 
 // SaturateToInt16Concat converts element values to int16 with signed saturation.
-// With each 128-bit as a group:
-// The converted group from the first input vector will be packed to the lower part of the result vector,
-// the converted group from the second input vector will be packed to the upper part of the result vector.
+// The converted elements from x will be packed to the lower part of the result vector,
+// the converted elements from y will be packed to the upper part of the result vector.
 //
 // Asm: VPACKSSDW, CPU Feature: AVX
 func (x Int32x4) SaturateToInt16Concat(y Int32x4) Int16x8
 
-// SaturateToInt16Concat converts element values to int16 with signed saturation.
+// SaturateToInt16ConcatGrouped converts element values to int16 with signed saturation.
 // With each 128-bit as a group:
-// The converted group from the first input vector will be packed to the lower part of the result vector,
-// the converted group from the second input vector will be packed to the upper part of the result vector.
+// The converted elements from x will be packed to the lower part of the group in the result vector,
+// the converted elements from y will be packed to the upper part of the group in the result vector.
 //
 // Asm: VPACKSSDW, CPU Feature: AVX2
-func (x Int32x8) SaturateToInt16Concat(y Int32x8) Int16x16
+func (x Int32x8) SaturateToInt16ConcatGrouped(y Int32x8) Int16x16
 
-// SaturateToInt16Concat converts element values to int16 with signed saturation.
+// SaturateToInt16ConcatGrouped converts element values to int16 with signed saturation.
 // With each 128-bit as a group:
-// The converted group from the first input vector will be packed to the lower part of the result vector,
-// the converted group from the second input vector will be packed to the upper part of the result vector.
+// The converted elements from x will be packed to the lower part of the group in the result vector,
+// the converted elements from y will be packed to the upper part of the group in the result vector.
 //
 // Asm: VPACKSSDW, CPU Feature: AVX512
-func (x Int32x16) SaturateToInt16Concat(y Int32x16) Int16x32
+func (x Int32x16) SaturateToInt16ConcatGrouped(y Int32x16) Int16x32
 
 // SaturateToInt32 converts element values to int32 with signed saturation.
 // Results are packed to low elements in the returned vector, its upper elements are zeroed.
@@ -5242,53 +5205,53 @@ func (x Int64x8) SaturateToInt32() Int32x8
 // SaturateToUint8 converts element values to uint8 with unsigned saturation.
 // Results are packed to low elements in the returned vector, its upper elements are zeroed.
 //
-// Asm: VPMOVSWB, CPU Feature: AVX512
-func (x Int16x8) SaturateToUint8() Int8x16
+// Asm: VPMOVUSWB, CPU Feature: AVX512
+func (x Uint16x8) SaturateToUint8() Uint8x16
 
 // SaturateToUint8 converts element values to uint8 with unsigned saturation.
 //
-// Asm: VPMOVSWB, CPU Feature: AVX512
-func (x Int16x16) SaturateToUint8() Int8x16
-
-// SaturateToUint8 converts element values to uint8 with unsigned saturation.
-// Results are packed to low elements in the returned vector, its upper elements are zeroed.
-//
-// Asm: VPMOVSDB, CPU Feature: AVX512
-func (x Int32x4) SaturateToUint8() Int8x16
-
-// SaturateToUint8 converts element values to uint8 with unsigned saturation.
-// Results are packed to low elements in the returned vector, its upper elements are zeroed.
-//
-// Asm: VPMOVSDB, CPU Feature: AVX512
-func (x Int32x8) SaturateToUint8() Int8x16
-
-// SaturateToUint8 converts element values to uint8 with unsigned saturation.
-//
-// Asm: VPMOVSDB, CPU Feature: AVX512
-func (x Int32x16) SaturateToUint8() Int8x16
-
-// SaturateToUint8 converts element values to uint8 with unsigned saturation.
-// Results are packed to low elements in the returned vector, its upper elements are zeroed.
-//
-// Asm: VPMOVSQB, CPU Feature: AVX512
-func (x Int64x2) SaturateToUint8() Int8x16
-
-// SaturateToUint8 converts element values to uint8 with unsigned saturation.
-// Results are packed to low elements in the returned vector, its upper elements are zeroed.
-//
-// Asm: VPMOVSQB, CPU Feature: AVX512
-func (x Int64x4) SaturateToUint8() Int8x16
-
-// SaturateToUint8 converts element values to uint8 with unsigned saturation.
-// Results are packed to low elements in the returned vector, its upper elements are zeroed.
-//
-// Asm: VPMOVSQB, CPU Feature: AVX512
-func (x Int64x8) SaturateToUint8() Int8x16
+// Asm: VPMOVUSWB, CPU Feature: AVX512
+func (x Uint16x16) SaturateToUint8() Uint8x16
 
 // SaturateToUint8 converts element values to uint8 with unsigned saturation.
 //
 // Asm: VPMOVUSWB, CPU Feature: AVX512
 func (x Uint16x32) SaturateToUint8() Uint8x32
+
+// SaturateToUint8 converts element values to uint8 with unsigned saturation.
+// Results are packed to low elements in the returned vector, its upper elements are zeroed.
+//
+// Asm: VPMOVUSDB, CPU Feature: AVX512
+func (x Uint32x4) SaturateToUint8() Uint8x16
+
+// SaturateToUint8 converts element values to uint8 with unsigned saturation.
+// Results are packed to low elements in the returned vector, its upper elements are zeroed.
+//
+// Asm: VPMOVUSDB, CPU Feature: AVX512
+func (x Uint32x8) SaturateToUint8() Uint8x16
+
+// SaturateToUint8 converts element values to uint8 with unsigned saturation.
+//
+// Asm: VPMOVUSDB, CPU Feature: AVX512
+func (x Uint32x16) SaturateToUint8() Uint8x16
+
+// SaturateToUint8 converts element values to uint8 with unsigned saturation.
+// Results are packed to low elements in the returned vector, its upper elements are zeroed.
+//
+// Asm: VPMOVUSQB, CPU Feature: AVX512
+func (x Uint64x2) SaturateToUint8() Uint8x16
+
+// SaturateToUint8 converts element values to uint8 with unsigned saturation.
+// Results are packed to low elements in the returned vector, its upper elements are zeroed.
+//
+// Asm: VPMOVUSQB, CPU Feature: AVX512
+func (x Uint64x4) SaturateToUint8() Uint8x16
+
+// SaturateToUint8 converts element values to uint8 with unsigned saturation.
+// Results are packed to low elements in the returned vector, its upper elements are zeroed.
+//
+// Asm: VPMOVUSQB, CPU Feature: AVX512
+func (x Uint64x8) SaturateToUint8() Uint8x16
 
 // SaturateToUint16 converts element values to uint16 with unsigned saturation.
 // Results are packed to low elements in the returned vector, its upper elements are zeroed.
@@ -5324,19 +5287,27 @@ func (x Uint64x4) SaturateToUint16() Uint16x8
 func (x Uint64x8) SaturateToUint16() Uint16x8
 
 // SaturateToUint16Concat converts element values to uint16 with unsigned saturation.
+// The converted elements from x will be packed to the lower part of the result vector,
+// the converted elements from y will be packed to the upper part of the result vector.
 //
 // Asm: VPACKUSDW, CPU Feature: AVX
-func (x Uint32x4) SaturateToUint16Concat(y Uint32x4) Uint16x8
+func (x Int32x4) SaturateToUint16Concat(y Int32x4) Uint16x8
 
-// SaturateToUint16Concat converts element values to uint16 with unsigned saturation.
+// SaturateToUint16ConcatGrouped converts element values to uint16 with unsigned saturation.
+// With each 128-bit as a group:
+// The converted elements from x will be packed to the lower part of the group in the result vector,
+// the converted elements from y will be packed to the upper part of the group in the result vector.
 //
 // Asm: VPACKUSDW, CPU Feature: AVX2
-func (x Uint32x8) SaturateToUint16Concat(y Uint32x8) Uint16x16
+func (x Int32x8) SaturateToUint16ConcatGrouped(y Int32x8) Uint16x16
 
-// SaturateToUint16Concat converts element values to uint16 with unsigned saturation.
+// SaturateToUint16ConcatGrouped converts element values to uint16 with unsigned saturation.
+// With each 128-bit as a group:
+// The converted elements from x will be packed to the lower part of the group in the result vector,
+// the converted elements from y will be packed to the upper part of the group in the result vector.
 //
 // Asm: VPACKUSDW, CPU Feature: AVX512
-func (x Uint32x16) SaturateToUint16Concat(y Uint32x16) Uint16x32
+func (x Int32x16) SaturateToUint16ConcatGrouped(y Int32x16) Uint16x32
 
 // SaturateToUint32 converts element values to uint32 with unsigned saturation.
 // Results are packed to low elements in the returned vector, its upper elements are zeroed.
