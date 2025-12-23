@@ -95,6 +95,7 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
@@ -331,6 +332,9 @@ type Cmd struct {
 	// the work of resolving the extension, so Start doesn't need to do it again.
 	// This is only used on Windows.
 	cachedLookExtensions struct{ in, out string }
+
+	// startCalled records that Start was attempted, regardless of outcome.
+	startCalled atomic.Bool
 }
 
 // Command returns the [Cmd] struct to execute the named program with

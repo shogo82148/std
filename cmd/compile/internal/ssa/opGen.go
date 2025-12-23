@@ -6020,19 +6020,19 @@ const (
 	OpAddInt64x4
 	OpAddInt64x8
 	OpAddPairsFloat32x4
-	OpAddPairsFloat32x8
 	OpAddPairsFloat64x2
-	OpAddPairsFloat64x4
+	OpAddPairsGroupedFloat32x8
+	OpAddPairsGroupedFloat64x4
+	OpAddPairsGroupedInt16x16
+	OpAddPairsGroupedInt32x8
+	OpAddPairsGroupedUint16x16
+	OpAddPairsGroupedUint32x8
 	OpAddPairsInt16x8
-	OpAddPairsInt16x16
 	OpAddPairsInt32x4
-	OpAddPairsInt32x8
+	OpAddPairsSaturatedGroupedInt16x16
 	OpAddPairsSaturatedInt16x8
-	OpAddPairsSaturatedInt16x16
 	OpAddPairsUint16x8
-	OpAddPairsUint16x16
 	OpAddPairsUint32x4
-	OpAddPairsUint32x8
 	OpAddSaturatedInt8x16
 	OpAddSaturatedInt8x32
 	OpAddSaturatedInt8x64
@@ -7008,19 +7008,19 @@ const (
 	OpSubInt64x4
 	OpSubInt64x8
 	OpSubPairsFloat32x4
-	OpSubPairsFloat32x8
 	OpSubPairsFloat64x2
-	OpSubPairsFloat64x4
+	OpSubPairsGroupedFloat32x8
+	OpSubPairsGroupedFloat64x4
+	OpSubPairsGroupedInt16x16
+	OpSubPairsGroupedInt32x8
+	OpSubPairsGroupedUint16x16
+	OpSubPairsGroupedUint32x8
 	OpSubPairsInt16x8
-	OpSubPairsInt16x16
 	OpSubPairsInt32x4
-	OpSubPairsInt32x8
+	OpSubPairsSaturatedGroupedInt16x16
 	OpSubPairsSaturatedInt16x8
-	OpSubPairsSaturatedInt16x16
 	OpSubPairsUint16x8
-	OpSubPairsUint16x16
 	OpSubPairsUint32x4
-	OpSubPairsUint32x8
 	OpSubSaturatedInt8x16
 	OpSubSaturatedInt8x32
 	OpSubSaturatedInt8x64
