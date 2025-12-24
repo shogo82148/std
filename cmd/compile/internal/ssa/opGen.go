@@ -1511,6 +1511,18 @@ const (
 	OpAMD64VPCOMPRESSWMasked128
 	OpAMD64VPCOMPRESSWMasked256
 	OpAMD64VPCOMPRESSWMasked512
+	OpAMD64VPDPBUSD128
+	OpAMD64VPDPBUSD256
+	OpAMD64VPDPBUSD512
+	OpAMD64VPDPBUSDMasked128
+	OpAMD64VPDPBUSDMasked256
+	OpAMD64VPDPBUSDMasked512
+	OpAMD64VPDPBUSDS128
+	OpAMD64VPDPBUSDS256
+	OpAMD64VPDPBUSDS512
+	OpAMD64VPDPBUSDSMasked128
+	OpAMD64VPDPBUSDSMasked256
+	OpAMD64VPDPBUSDSMasked512
 	OpAMD64VPDPWSSD128
 	OpAMD64VPDPWSSD256
 	OpAMD64VPDPWSSD512
@@ -1827,24 +1839,12 @@ const (
 	OpAMD64VPMOVSXWQMasked128
 	OpAMD64VPMOVSXWQMasked256
 	OpAMD64VPMOVSXWQMasked512
-	OpAMD64VPMOVUSDB128_128
-	OpAMD64VPMOVUSDB128_256
-	OpAMD64VPMOVUSDB128_512
-	OpAMD64VPMOVUSDBMasked128_128
-	OpAMD64VPMOVUSDBMasked128_256
-	OpAMD64VPMOVUSDBMasked128_512
 	OpAMD64VPMOVUSDW128_128
 	OpAMD64VPMOVUSDW128_256
 	OpAMD64VPMOVUSDW256
 	OpAMD64VPMOVUSDWMasked128_128
 	OpAMD64VPMOVUSDWMasked128_256
 	OpAMD64VPMOVUSDWMasked256
-	OpAMD64VPMOVUSQB128_128
-	OpAMD64VPMOVUSQB128_256
-	OpAMD64VPMOVUSQB128_512
-	OpAMD64VPMOVUSQBMasked128_128
-	OpAMD64VPMOVUSQBMasked128_256
-	OpAMD64VPMOVUSQBMasked128_512
 	OpAMD64VPMOVUSQD128_128
 	OpAMD64VPMOVUSQD128_256
 	OpAMD64VPMOVUSQD256
@@ -1857,11 +1857,7 @@ const (
 	OpAMD64VPMOVUSQWMasked128_128
 	OpAMD64VPMOVUSQWMasked128_256
 	OpAMD64VPMOVUSQWMasked128_512
-	OpAMD64VPMOVUSWB128_128
-	OpAMD64VPMOVUSWB128_256
 	OpAMD64VPMOVUSWB256
-	OpAMD64VPMOVUSWBMasked128_128
-	OpAMD64VPMOVUSWBMasked128_256
 	OpAMD64VPMOVUSWBMasked256
 	OpAMD64VPMOVWB128_128
 	OpAMD64VPMOVWB128_256
@@ -2761,6 +2757,14 @@ const (
 	OpAMD64VPCMPEQQ512load
 	OpAMD64VPCMPGTD512load
 	OpAMD64VPCMPGTQ512load
+	OpAMD64VPDPBUSD512load
+	OpAMD64VPDPBUSDMasked128load
+	OpAMD64VPDPBUSDMasked256load
+	OpAMD64VPDPBUSDMasked512load
+	OpAMD64VPDPBUSDS512load
+	OpAMD64VPDPBUSDSMasked128load
+	OpAMD64VPDPBUSDSMasked256load
+	OpAMD64VPDPBUSDSMasked512load
 	OpAMD64VPDPWSSD512load
 	OpAMD64VPDPWSSDMasked128load
 	OpAMD64VPDPWSSDMasked256load
@@ -3437,23 +3441,15 @@ const (
 	OpAMD64VPMOVSXWQMasked128Merging
 	OpAMD64VPMOVSXWQMasked256Merging
 	OpAMD64VPMOVSXWQMasked512Merging
-	OpAMD64VPMOVUSDBMasked128_128Merging
-	OpAMD64VPMOVUSDBMasked128_256Merging
-	OpAMD64VPMOVUSDBMasked128_512Merging
 	OpAMD64VPMOVUSDWMasked128_128Merging
 	OpAMD64VPMOVUSDWMasked128_256Merging
 	OpAMD64VPMOVUSDWMasked256Merging
-	OpAMD64VPMOVUSQBMasked128_128Merging
-	OpAMD64VPMOVUSQBMasked128_256Merging
-	OpAMD64VPMOVUSQBMasked128_512Merging
 	OpAMD64VPMOVUSQDMasked128_128Merging
 	OpAMD64VPMOVUSQDMasked128_256Merging
 	OpAMD64VPMOVUSQDMasked256Merging
 	OpAMD64VPMOVUSQWMasked128_128Merging
 	OpAMD64VPMOVUSQWMasked128_256Merging
 	OpAMD64VPMOVUSQWMasked128_512Merging
-	OpAMD64VPMOVUSWBMasked128_128Merging
-	OpAMD64VPMOVUSWBMasked128_256Merging
 	OpAMD64VPMOVUSWBMasked256Merging
 	OpAMD64VPMOVWBMasked128_128Merging
 	OpAMD64VPMOVWBMasked128_256Merging
@@ -6020,19 +6016,19 @@ const (
 	OpAddInt64x4
 	OpAddInt64x8
 	OpAddPairsFloat32x4
+	OpAddPairsFloat32x8
 	OpAddPairsFloat64x2
-	OpAddPairsGroupedFloat32x8
-	OpAddPairsGroupedFloat64x4
-	OpAddPairsGroupedInt16x16
-	OpAddPairsGroupedInt32x8
-	OpAddPairsGroupedUint16x16
-	OpAddPairsGroupedUint32x8
+	OpAddPairsFloat64x4
 	OpAddPairsInt16x8
+	OpAddPairsInt16x16
 	OpAddPairsInt32x4
-	OpAddPairsSaturatedGroupedInt16x16
+	OpAddPairsInt32x8
 	OpAddPairsSaturatedInt16x8
+	OpAddPairsSaturatedInt16x16
 	OpAddPairsUint16x8
+	OpAddPairsUint16x16
 	OpAddPairsUint32x4
+	OpAddPairsUint32x8
 	OpAddSaturatedInt8x16
 	OpAddSaturatedInt8x32
 	OpAddSaturatedInt8x64
@@ -6276,6 +6272,12 @@ const (
 	OpDotProductPairsSaturatedUint8x16
 	OpDotProductPairsSaturatedUint8x32
 	OpDotProductPairsSaturatedUint8x64
+	OpDotProductQuadrupleInt32x4
+	OpDotProductQuadrupleInt32x8
+	OpDotProductQuadrupleInt32x16
+	OpDotProductQuadrupleSaturatedInt32x4
+	OpDotProductQuadrupleSaturatedInt32x8
+	OpDotProductQuadrupleSaturatedInt32x16
 	OpEqualFloat32x4
 	OpEqualFloat32x8
 	OpEqualFloat32x16
@@ -6796,9 +6798,9 @@ const (
 	OpSaturateToInt8Int64x2
 	OpSaturateToInt8Int64x4
 	OpSaturateToInt8Int64x8
-	OpSaturateToInt16ConcatGroupedInt32x8
-	OpSaturateToInt16ConcatGroupedInt32x16
 	OpSaturateToInt16ConcatInt32x4
+	OpSaturateToInt16ConcatInt32x8
+	OpSaturateToInt16ConcatInt32x16
 	OpSaturateToInt16Int32x4
 	OpSaturateToInt16Int32x8
 	OpSaturateToInt16Int32x16
@@ -6808,18 +6810,18 @@ const (
 	OpSaturateToInt32Int64x2
 	OpSaturateToInt32Int64x4
 	OpSaturateToInt32Int64x8
-	OpSaturateToUint8Uint16x8
-	OpSaturateToUint8Uint16x16
+	OpSaturateToUint8Int16x8
+	OpSaturateToUint8Int16x16
+	OpSaturateToUint8Int32x4
+	OpSaturateToUint8Int32x8
+	OpSaturateToUint8Int32x16
+	OpSaturateToUint8Int64x2
+	OpSaturateToUint8Int64x4
+	OpSaturateToUint8Int64x8
 	OpSaturateToUint8Uint16x32
-	OpSaturateToUint8Uint32x4
-	OpSaturateToUint8Uint32x8
-	OpSaturateToUint8Uint32x16
-	OpSaturateToUint8Uint64x2
-	OpSaturateToUint8Uint64x4
-	OpSaturateToUint8Uint64x8
-	OpSaturateToUint16ConcatGroupedInt32x8
-	OpSaturateToUint16ConcatGroupedInt32x16
-	OpSaturateToUint16ConcatInt32x4
+	OpSaturateToUint16ConcatUint32x4
+	OpSaturateToUint16ConcatUint32x8
+	OpSaturateToUint16ConcatUint32x16
 	OpSaturateToUint16Uint32x4
 	OpSaturateToUint16Uint32x8
 	OpSaturateToUint16Uint32x16
@@ -7008,19 +7010,19 @@ const (
 	OpSubInt64x4
 	OpSubInt64x8
 	OpSubPairsFloat32x4
+	OpSubPairsFloat32x8
 	OpSubPairsFloat64x2
-	OpSubPairsGroupedFloat32x8
-	OpSubPairsGroupedFloat64x4
-	OpSubPairsGroupedInt16x16
-	OpSubPairsGroupedInt32x8
-	OpSubPairsGroupedUint16x16
-	OpSubPairsGroupedUint32x8
+	OpSubPairsFloat64x4
 	OpSubPairsInt16x8
+	OpSubPairsInt16x16
 	OpSubPairsInt32x4
-	OpSubPairsSaturatedGroupedInt16x16
+	OpSubPairsInt32x8
 	OpSubPairsSaturatedInt16x8
+	OpSubPairsSaturatedInt16x16
 	OpSubPairsUint16x8
+	OpSubPairsUint16x16
 	OpSubPairsUint32x4
+	OpSubPairsUint32x8
 	OpSubSaturatedInt8x16
 	OpSubSaturatedInt8x32
 	OpSubSaturatedInt8x64
