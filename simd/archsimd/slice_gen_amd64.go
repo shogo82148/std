@@ -4,184 +4,184 @@
 
 package archsimd
 
-// LoadInt8x16Slice loads an Int8x16 from a slice of at least 16 int8s
+// LoadInt8x16Slice loads an Int8x16 from a slice of at least 16 int8s.
 func LoadInt8x16Slice(s []int8) Int8x16
 
-// StoreSlice stores x into a slice of at least 16 int8s
+// StoreSlice stores x into a slice of at least 16 int8s.
 func (x Int8x16) StoreSlice(s []int8)
 
-// LoadInt16x8Slice loads an Int16x8 from a slice of at least 8 int16s
+// LoadInt16x8Slice loads an Int16x8 from a slice of at least 8 int16s.
 func LoadInt16x8Slice(s []int16) Int16x8
 
-// StoreSlice stores x into a slice of at least 8 int16s
+// StoreSlice stores x into a slice of at least 8 int16s.
 func (x Int16x8) StoreSlice(s []int16)
 
-// LoadInt32x4Slice loads an Int32x4 from a slice of at least 4 int32s
+// LoadInt32x4Slice loads an Int32x4 from a slice of at least 4 int32s.
 func LoadInt32x4Slice(s []int32) Int32x4
 
-// StoreSlice stores x into a slice of at least 4 int32s
+// StoreSlice stores x into a slice of at least 4 int32s.
 func (x Int32x4) StoreSlice(s []int32)
 
-// LoadInt64x2Slice loads an Int64x2 from a slice of at least 2 int64s
+// LoadInt64x2Slice loads an Int64x2 from a slice of at least 2 int64s.
 func LoadInt64x2Slice(s []int64) Int64x2
 
-// StoreSlice stores x into a slice of at least 2 int64s
+// StoreSlice stores x into a slice of at least 2 int64s.
 func (x Int64x2) StoreSlice(s []int64)
 
-// LoadUint8x16Slice loads an Uint8x16 from a slice of at least 16 uint8s
+// LoadUint8x16Slice loads an Uint8x16 from a slice of at least 16 uint8s.
 func LoadUint8x16Slice(s []uint8) Uint8x16
 
-// StoreSlice stores x into a slice of at least 16 uint8s
+// StoreSlice stores x into a slice of at least 16 uint8s.
 func (x Uint8x16) StoreSlice(s []uint8)
 
-// LoadUint16x8Slice loads an Uint16x8 from a slice of at least 8 uint16s
+// LoadUint16x8Slice loads an Uint16x8 from a slice of at least 8 uint16s.
 func LoadUint16x8Slice(s []uint16) Uint16x8
 
-// StoreSlice stores x into a slice of at least 8 uint16s
+// StoreSlice stores x into a slice of at least 8 uint16s.
 func (x Uint16x8) StoreSlice(s []uint16)
 
-// LoadUint32x4Slice loads an Uint32x4 from a slice of at least 4 uint32s
+// LoadUint32x4Slice loads an Uint32x4 from a slice of at least 4 uint32s.
 func LoadUint32x4Slice(s []uint32) Uint32x4
 
-// StoreSlice stores x into a slice of at least 4 uint32s
+// StoreSlice stores x into a slice of at least 4 uint32s.
 func (x Uint32x4) StoreSlice(s []uint32)
 
-// LoadUint64x2Slice loads an Uint64x2 from a slice of at least 2 uint64s
+// LoadUint64x2Slice loads an Uint64x2 from a slice of at least 2 uint64s.
 func LoadUint64x2Slice(s []uint64) Uint64x2
 
-// StoreSlice stores x into a slice of at least 2 uint64s
+// StoreSlice stores x into a slice of at least 2 uint64s.
 func (x Uint64x2) StoreSlice(s []uint64)
 
-// LoadFloat32x4Slice loads a Float32x4 from a slice of at least 4 float32s
+// LoadFloat32x4Slice loads a Float32x4 from a slice of at least 4 float32s.
 func LoadFloat32x4Slice(s []float32) Float32x4
 
-// StoreSlice stores x into a slice of at least 4 float32s
+// StoreSlice stores x into a slice of at least 4 float32s.
 func (x Float32x4) StoreSlice(s []float32)
 
-// LoadFloat64x2Slice loads a Float64x2 from a slice of at least 2 float64s
+// LoadFloat64x2Slice loads a Float64x2 from a slice of at least 2 float64s.
 func LoadFloat64x2Slice(s []float64) Float64x2
 
-// StoreSlice stores x into a slice of at least 2 float64s
+// StoreSlice stores x into a slice of at least 2 float64s.
 func (x Float64x2) StoreSlice(s []float64)
 
-// LoadInt8x32Slice loads an Int8x32 from a slice of at least 32 int8s
+// LoadInt8x32Slice loads an Int8x32 from a slice of at least 32 int8s.
 func LoadInt8x32Slice(s []int8) Int8x32
 
-// StoreSlice stores x into a slice of at least 32 int8s
+// StoreSlice stores x into a slice of at least 32 int8s.
 func (x Int8x32) StoreSlice(s []int8)
 
-// LoadInt16x16Slice loads an Int16x16 from a slice of at least 16 int16s
+// LoadInt16x16Slice loads an Int16x16 from a slice of at least 16 int16s.
 func LoadInt16x16Slice(s []int16) Int16x16
 
-// StoreSlice stores x into a slice of at least 16 int16s
+// StoreSlice stores x into a slice of at least 16 int16s.
 func (x Int16x16) StoreSlice(s []int16)
 
-// LoadInt32x8Slice loads an Int32x8 from a slice of at least 8 int32s
+// LoadInt32x8Slice loads an Int32x8 from a slice of at least 8 int32s.
 func LoadInt32x8Slice(s []int32) Int32x8
 
-// StoreSlice stores x into a slice of at least 8 int32s
+// StoreSlice stores x into a slice of at least 8 int32s.
 func (x Int32x8) StoreSlice(s []int32)
 
-// LoadInt64x4Slice loads an Int64x4 from a slice of at least 4 int64s
+// LoadInt64x4Slice loads an Int64x4 from a slice of at least 4 int64s.
 func LoadInt64x4Slice(s []int64) Int64x4
 
-// StoreSlice stores x into a slice of at least 4 int64s
+// StoreSlice stores x into a slice of at least 4 int64s.
 func (x Int64x4) StoreSlice(s []int64)
 
-// LoadUint8x32Slice loads an Uint8x32 from a slice of at least 32 uint8s
+// LoadUint8x32Slice loads an Uint8x32 from a slice of at least 32 uint8s.
 func LoadUint8x32Slice(s []uint8) Uint8x32
 
-// StoreSlice stores x into a slice of at least 32 uint8s
+// StoreSlice stores x into a slice of at least 32 uint8s.
 func (x Uint8x32) StoreSlice(s []uint8)
 
-// LoadUint16x16Slice loads an Uint16x16 from a slice of at least 16 uint16s
+// LoadUint16x16Slice loads an Uint16x16 from a slice of at least 16 uint16s.
 func LoadUint16x16Slice(s []uint16) Uint16x16
 
-// StoreSlice stores x into a slice of at least 16 uint16s
+// StoreSlice stores x into a slice of at least 16 uint16s.
 func (x Uint16x16) StoreSlice(s []uint16)
 
-// LoadUint32x8Slice loads an Uint32x8 from a slice of at least 8 uint32s
+// LoadUint32x8Slice loads an Uint32x8 from a slice of at least 8 uint32s.
 func LoadUint32x8Slice(s []uint32) Uint32x8
 
-// StoreSlice stores x into a slice of at least 8 uint32s
+// StoreSlice stores x into a slice of at least 8 uint32s.
 func (x Uint32x8) StoreSlice(s []uint32)
 
-// LoadUint64x4Slice loads an Uint64x4 from a slice of at least 4 uint64s
+// LoadUint64x4Slice loads an Uint64x4 from a slice of at least 4 uint64s.
 func LoadUint64x4Slice(s []uint64) Uint64x4
 
-// StoreSlice stores x into a slice of at least 4 uint64s
+// StoreSlice stores x into a slice of at least 4 uint64s.
 func (x Uint64x4) StoreSlice(s []uint64)
 
-// LoadFloat32x8Slice loads a Float32x8 from a slice of at least 8 float32s
+// LoadFloat32x8Slice loads a Float32x8 from a slice of at least 8 float32s.
 func LoadFloat32x8Slice(s []float32) Float32x8
 
-// StoreSlice stores x into a slice of at least 8 float32s
+// StoreSlice stores x into a slice of at least 8 float32s.
 func (x Float32x8) StoreSlice(s []float32)
 
-// LoadFloat64x4Slice loads a Float64x4 from a slice of at least 4 float64s
+// LoadFloat64x4Slice loads a Float64x4 from a slice of at least 4 float64s.
 func LoadFloat64x4Slice(s []float64) Float64x4
 
-// StoreSlice stores x into a slice of at least 4 float64s
+// StoreSlice stores x into a slice of at least 4 float64s.
 func (x Float64x4) StoreSlice(s []float64)
 
-// LoadInt8x64Slice loads an Int8x64 from a slice of at least 64 int8s
+// LoadInt8x64Slice loads an Int8x64 from a slice of at least 64 int8s.
 func LoadInt8x64Slice(s []int8) Int8x64
 
-// StoreSlice stores x into a slice of at least 64 int8s
+// StoreSlice stores x into a slice of at least 64 int8s.
 func (x Int8x64) StoreSlice(s []int8)
 
-// LoadInt16x32Slice loads an Int16x32 from a slice of at least 32 int16s
+// LoadInt16x32Slice loads an Int16x32 from a slice of at least 32 int16s.
 func LoadInt16x32Slice(s []int16) Int16x32
 
-// StoreSlice stores x into a slice of at least 32 int16s
+// StoreSlice stores x into a slice of at least 32 int16s.
 func (x Int16x32) StoreSlice(s []int16)
 
-// LoadInt32x16Slice loads an Int32x16 from a slice of at least 16 int32s
+// LoadInt32x16Slice loads an Int32x16 from a slice of at least 16 int32s.
 func LoadInt32x16Slice(s []int32) Int32x16
 
-// StoreSlice stores x into a slice of at least 16 int32s
+// StoreSlice stores x into a slice of at least 16 int32s.
 func (x Int32x16) StoreSlice(s []int32)
 
-// LoadInt64x8Slice loads an Int64x8 from a slice of at least 8 int64s
+// LoadInt64x8Slice loads an Int64x8 from a slice of at least 8 int64s.
 func LoadInt64x8Slice(s []int64) Int64x8
 
-// StoreSlice stores x into a slice of at least 8 int64s
+// StoreSlice stores x into a slice of at least 8 int64s.
 func (x Int64x8) StoreSlice(s []int64)
 
-// LoadUint8x64Slice loads an Uint8x64 from a slice of at least 64 uint8s
+// LoadUint8x64Slice loads an Uint8x64 from a slice of at least 64 uint8s.
 func LoadUint8x64Slice(s []uint8) Uint8x64
 
-// StoreSlice stores x into a slice of at least 64 uint8s
+// StoreSlice stores x into a slice of at least 64 uint8s.
 func (x Uint8x64) StoreSlice(s []uint8)
 
-// LoadUint16x32Slice loads an Uint16x32 from a slice of at least 32 uint16s
+// LoadUint16x32Slice loads an Uint16x32 from a slice of at least 32 uint16s.
 func LoadUint16x32Slice(s []uint16) Uint16x32
 
-// StoreSlice stores x into a slice of at least 32 uint16s
+// StoreSlice stores x into a slice of at least 32 uint16s.
 func (x Uint16x32) StoreSlice(s []uint16)
 
-// LoadUint32x16Slice loads an Uint32x16 from a slice of at least 16 uint32s
+// LoadUint32x16Slice loads an Uint32x16 from a slice of at least 16 uint32s.
 func LoadUint32x16Slice(s []uint32) Uint32x16
 
-// StoreSlice stores x into a slice of at least 16 uint32s
+// StoreSlice stores x into a slice of at least 16 uint32s.
 func (x Uint32x16) StoreSlice(s []uint32)
 
-// LoadUint64x8Slice loads an Uint64x8 from a slice of at least 8 uint64s
+// LoadUint64x8Slice loads an Uint64x8 from a slice of at least 8 uint64s.
 func LoadUint64x8Slice(s []uint64) Uint64x8
 
-// StoreSlice stores x into a slice of at least 8 uint64s
+// StoreSlice stores x into a slice of at least 8 uint64s.
 func (x Uint64x8) StoreSlice(s []uint64)
 
-// LoadFloat32x16Slice loads a Float32x16 from a slice of at least 16 float32s
+// LoadFloat32x16Slice loads a Float32x16 from a slice of at least 16 float32s.
 func LoadFloat32x16Slice(s []float32) Float32x16
 
-// StoreSlice stores x into a slice of at least 16 float32s
+// StoreSlice stores x into a slice of at least 16 float32s.
 func (x Float32x16) StoreSlice(s []float32)
 
-// LoadFloat64x8Slice loads a Float64x8 from a slice of at least 8 float64s
+// LoadFloat64x8Slice loads a Float64x8 from a slice of at least 8 float64s.
 func LoadFloat64x8Slice(s []float64) Float64x8
 
-// StoreSlice stores x into a slice of at least 8 float64s
+// StoreSlice stores x into a slice of at least 8 float64s.
 func (x Float64x8) StoreSlice(s []float64)
 
 // LoadInt8x64SlicePart loads a Int8x64 from the slice s.

@@ -127,59 +127,59 @@ func (x Float64x4) Merge(y Float64x4, mask Mask64x4) Float64x4
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int8x64) Masked(mask Mask8x64) Int8x64
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Int8x64) Merge(y Int8x64, mask Mask8x64) Int8x64
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int16x32) Masked(mask Mask16x32) Int16x32
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Int16x32) Merge(y Int16x32, mask Mask16x32) Int16x32
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int32x16) Masked(mask Mask32x16) Int32x16
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Int32x16) Merge(y Int32x16, mask Mask32x16) Int32x16
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int64x8) Masked(mask Mask64x8) Int64x8
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Int64x8) Merge(y Int64x8, mask Mask64x8) Int64x8
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Uint8x64) Masked(mask Mask8x64) Uint8x64
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Uint8x64) Merge(y Uint8x64, mask Mask8x64) Uint8x64
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Uint16x32) Masked(mask Mask16x32) Uint16x32
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Uint16x32) Merge(y Uint16x32, mask Mask16x32) Uint16x32
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Uint32x16) Masked(mask Mask32x16) Uint32x16
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Uint32x16) Merge(y Uint32x16, mask Mask32x16) Uint32x16
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Uint64x8) Masked(mask Mask64x8) Uint64x8
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Uint64x8) Merge(y Uint64x8, mask Mask64x8) Uint64x8
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Float32x16) Masked(mask Mask32x16) Float32x16
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Float32x16) Merge(y Float32x16, mask Mask32x16) Float32x16
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Float64x8) Masked(mask Mask64x8) Float64x8
 
-// Merge returns x but with elements set to y where m is false.
+// Merge returns x but with elements set to y where mask is false.
 func (x Float64x8) Merge(y Float64x8, mask Mask64x8) Float64x8
