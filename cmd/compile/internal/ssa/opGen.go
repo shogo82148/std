@@ -5976,6 +5976,12 @@ const (
 	OpCvtMask64x4to8
 	OpCvtMask64x8to8
 	OpIsZeroVec
+	OpIsNaNFloat32x4
+	OpIsNaNFloat32x8
+	OpIsNaNFloat32x16
+	OpIsNaNFloat64x2
+	OpIsNaNFloat64x4
+	OpIsNaNFloat64x8
 	OpAESDecryptLastRoundUint8x16
 	OpAESDecryptLastRoundUint8x32
 	OpAESDecryptLastRoundUint8x64
@@ -6491,12 +6497,6 @@ const (
 	OpInterleaveLoUint16x8
 	OpInterleaveLoUint32x4
 	OpInterleaveLoUint64x2
-	OpIsNanFloat32x4
-	OpIsNanFloat32x8
-	OpIsNanFloat32x16
-	OpIsNanFloat64x2
-	OpIsNanFloat64x4
-	OpIsNanFloat64x8
 	OpLeadingZerosInt32x4
 	OpLeadingZerosInt32x8
 	OpLeadingZerosInt32x16
