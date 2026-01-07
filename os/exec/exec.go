@@ -95,7 +95,6 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/os"
-	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/syscall"
 	"github.com/shogo82148/std/time"
 )
@@ -334,7 +333,9 @@ type Cmd struct {
 	cachedLookExtensions struct{ in, out string }
 
 	// startCalled records that Start was attempted, regardless of outcome.
-	startCalled atomic.Bool
+	// (Until go.dev/issue/77075 is resolved, we use atomic.SwapInt32,
+	// not atomic.Bool.Swap, to avoid triggering the copylocks vet check.)
+	startCalled int32
 }
 
 // Command returns the [Cmd] struct to execute the named program with
