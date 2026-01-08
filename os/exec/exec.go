@@ -331,6 +331,11 @@ type Cmd struct {
 	// the work of resolving the extension, so Start doesn't need to do it again.
 	// This is only used on Windows.
 	cachedLookExtensions struct{ in, out string }
+
+	// startCalled records that Start was attempted, regardless of outcome.
+	// (Until go.dev/issue/77075 is resolved, we use atomic.SwapInt32,
+	// not atomic.Bool.Swap, to avoid triggering the copylocks vet check.)
+	startCalled int32
 }
 
 // Command returns the [Cmd] struct to execute the named program with

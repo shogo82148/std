@@ -105,6 +105,7 @@ func (v Value) CanSet() bool
 // type of the function's corresponding input parameter.
 // If v is a variadic function, Call creates the variadic slice parameter
 // itself, copying in the corresponding values.
+// It panics if the Value was obtained by accessing unexported struct fields.
 func (v Value) Call(in []Value) []Value
 
 // CallSlice calls the variadic function v with the input arguments in,
@@ -114,6 +115,7 @@ func (v Value) Call(in []Value) []Value
 // It returns the output results as Values.
 // As in Go, each input argument must be assignable to the
 // type of the function's corresponding input parameter.
+// It panics if the Value was obtained by accessing unexported struct fields.
 func (v Value) CallSlice(in []Value) []Value
 
 // Cap returns v's capacity.
