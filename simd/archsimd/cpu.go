@@ -8,12 +8,6 @@ type X86Features struct{}
 
 var X86 X86Features
 
-// AES returns whether the CPU supports the AES feature.
-//
-// AES is defined on all GOARCHes, but will only return true on
-// GOARCH amd64.
-func (X86Features) AES() bool
-
 // AVX returns whether the CPU supports the AVX feature.
 //
 // AVX is defined on all GOARCHes, but will only return true on
@@ -21,6 +15,8 @@ func (X86Features) AES() bool
 func (X86Features) AVX() bool
 
 // AVX2 returns whether the CPU supports the AVX2 feature.
+//
+// If it returns true, then the CPU also supports AVX.
 //
 // AVX2 is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
@@ -33,11 +29,15 @@ func (X86Features) AVX2() bool
 // Nearly every CPU that has shipped with any support for AVX-512 has
 // supported all five of these features.
 //
+// If it returns true, then the CPU also supports AVX and AVX2.
+//
 // AVX512 is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) AVX512() bool
 
 // AVX512BITALG returns whether the CPU supports the AVX512BITALG feature.
+//
+// If it returns true, then the CPU also supports AVX, AVX2, and AVX512.
 //
 // AVX512BITALG is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
@@ -45,11 +45,15 @@ func (X86Features) AVX512BITALG() bool
 
 // AVX512GFNI returns whether the CPU supports the AVX512GFNI feature.
 //
+// If it returns true, then the CPU also supports AVX, AVX2, and AVX512.
+//
 // AVX512GFNI is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) AVX512GFNI() bool
 
 // AVX512VAES returns whether the CPU supports the AVX512VAES feature.
+//
+// If it returns true, then the CPU also supports AVX, AVX2, and AVX512.
 //
 // AVX512VAES is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
@@ -57,17 +61,23 @@ func (X86Features) AVX512VAES() bool
 
 // AVX512VBMI returns whether the CPU supports the AVX512VBMI feature.
 //
+// If it returns true, then the CPU also supports AVX, AVX2, and AVX512.
+//
 // AVX512VBMI is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) AVX512VBMI() bool
 
 // AVX512VBMI2 returns whether the CPU supports the AVX512VBMI2 feature.
 //
+// If it returns true, then the CPU also supports AVX, AVX2, and AVX512.
+//
 // AVX512VBMI2 is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) AVX512VBMI2() bool
 
 // AVX512VNNI returns whether the CPU supports the AVX512VNNI feature.
+//
+// If it returns true, then the CPU also supports AVX, AVX2, and AVX512.
 //
 // AVX512VNNI is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
@@ -81,15 +91,35 @@ func (X86Features) AVX512VPCLMULQDQ() bool
 
 // AVX512VPOPCNTDQ returns whether the CPU supports the AVX512VPOPCNTDQ feature.
 //
+// If it returns true, then the CPU also supports AVX, AVX2, and AVX512.
+//
 // AVX512VPOPCNTDQ is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) AVX512VPOPCNTDQ() bool
 
+// AVXAES returns whether the CPU supports the AVXAES feature.
+//
+// If it returns true, then the CPU also supports AES and AVX.
+//
+// AVXAES is defined on all GOARCHes, but will only return true on
+// GOARCH amd64.
+func (X86Features) AVXAES() bool
+
 // AVXVNNI returns whether the CPU supports the AVXVNNI feature.
+//
+// If it returns true, then the CPU also supports AVX and AVX2.
 //
 // AVXVNNI is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) AVXVNNI() bool
+
+// FMA returns whether the CPU supports the FMA feature.
+//
+// If it returns true, then the CPU also supports AVX.
+//
+// FMA is defined on all GOARCHes, but will only return true on
+// GOARCH amd64.
+func (X86Features) FMA() bool
 
 // SHA returns whether the CPU supports the SHA feature.
 //
