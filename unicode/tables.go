@@ -3,7 +3,7 @@
 package unicode
 
 // Version is the Unicode edition from which the tables are derived.
-const Version = "15.0.0"
+const Version = "17.0.0"
 
 // Categories is the set of Unicode category tables.
 var Categories = map[string]*RangeTable{
@@ -159,6 +159,7 @@ var Scripts = map[string]*RangeTable{
 	"Bassa_Vah":              Bassa_Vah,
 	"Batak":                  Batak,
 	"Bengali":                Bengali,
+	"Beria_Erfe":             Beria_Erfe,
 	"Bhaiksuki":              Bhaiksuki,
 	"Bopomofo":               Bopomofo,
 	"Brahmi":                 Brahmi,
@@ -187,6 +188,7 @@ var Scripts = map[string]*RangeTable{
 	"Elbasan":                Elbasan,
 	"Elymaic":                Elymaic,
 	"Ethiopic":               Ethiopic,
+	"Garay":                  Garay,
 	"Georgian":               Georgian,
 	"Glagolitic":             Glagolitic,
 	"Gothic":                 Gothic,
@@ -195,6 +197,7 @@ var Scripts = map[string]*RangeTable{
 	"Gujarati":               Gujarati,
 	"Gunjala_Gondi":          Gunjala_Gondi,
 	"Gurmukhi":               Gurmukhi,
+	"Gurung_Khema":           Gurung_Khema,
 	"Han":                    Han,
 	"Hangul":                 Hangul,
 	"Hanifi_Rohingya":        Hanifi_Rohingya,
@@ -217,6 +220,7 @@ var Scripts = map[string]*RangeTable{
 	"Khmer":                  Khmer,
 	"Khojki":                 Khojki,
 	"Khudawadi":              Khudawadi,
+	"Kirat_Rai":              Kirat_Rai,
 	"Lao":                    Lao,
 	"Latin":                  Latin,
 	"Lepcha":                 Lepcha,
@@ -254,6 +258,7 @@ var Scripts = map[string]*RangeTable{
 	"Nyiakeng_Puachue_Hmong": Nyiakeng_Puachue_Hmong,
 	"Ogham":                  Ogham,
 	"Ol_Chiki":               Ol_Chiki,
+	"Ol_Onal":                Ol_Onal,
 	"Old_Hungarian":          Old_Hungarian,
 	"Old_Italic":             Old_Italic,
 	"Old_North_Arabian":      Old_North_Arabian,
@@ -279,12 +284,14 @@ var Scripts = map[string]*RangeTable{
 	"Sharada":                Sharada,
 	"Shavian":                Shavian,
 	"Siddham":                Siddham,
+	"Sidetic":                Sidetic,
 	"SignWriting":            SignWriting,
 	"Sinhala":                Sinhala,
 	"Sogdian":                Sogdian,
 	"Sora_Sompeng":           Sora_Sompeng,
 	"Soyombo":                Soyombo,
 	"Sundanese":              Sundanese,
+	"Sunuwar":                Sunuwar,
 	"Syloti_Nagri":           Syloti_Nagri,
 	"Syriac":                 Syriac,
 	"Tagalog":                Tagalog,
@@ -292,6 +299,7 @@ var Scripts = map[string]*RangeTable{
 	"Tai_Le":                 Tai_Le,
 	"Tai_Tham":               Tai_Tham,
 	"Tai_Viet":               Tai_Viet,
+	"Tai_Yo":                 Tai_Yo,
 	"Takri":                  Takri,
 	"Tamil":                  Tamil,
 	"Tangsa":                 Tangsa,
@@ -302,7 +310,10 @@ var Scripts = map[string]*RangeTable{
 	"Tibetan":                Tibetan,
 	"Tifinagh":               Tifinagh,
 	"Tirhuta":                Tirhuta,
+	"Todhri":                 Todhri,
+	"Tolong_Siki":            Tolong_Siki,
 	"Toto":                   Toto,
+	"Tulu_Tigalari":          Tulu_Tigalari,
 	"Ugaritic":               Ugaritic,
 	"Vai":                    Vai,
 	"Vithkuqi":               Vithkuqi,
@@ -326,6 +337,7 @@ var (
 	Bassa_Vah              = _Bassa_Vah
 	Batak                  = _Batak
 	Bengali                = _Bengali
+	Beria_Erfe             = _Beria_Erfe
 	Bhaiksuki              = _Bhaiksuki
 	Bopomofo               = _Bopomofo
 	Brahmi                 = _Brahmi
@@ -354,6 +366,7 @@ var (
 	Elbasan                = _Elbasan
 	Elymaic                = _Elymaic
 	Ethiopic               = _Ethiopic
+	Garay                  = _Garay
 	Georgian               = _Georgian
 	Glagolitic             = _Glagolitic
 	Gothic                 = _Gothic
@@ -362,6 +375,7 @@ var (
 	Gujarati               = _Gujarati
 	Gunjala_Gondi          = _Gunjala_Gondi
 	Gurmukhi               = _Gurmukhi
+	Gurung_Khema           = _Gurung_Khema
 	Han                    = _Han
 	Hangul                 = _Hangul
 	Hanifi_Rohingya        = _Hanifi_Rohingya
@@ -384,6 +398,7 @@ var (
 	Khmer                  = _Khmer
 	Khojki                 = _Khojki
 	Khudawadi              = _Khudawadi
+	Kirat_Rai              = _Kirat_Rai
 	Lao                    = _Lao
 	Latin                  = _Latin
 	Lepcha                 = _Lepcha
@@ -421,6 +436,7 @@ var (
 	Nyiakeng_Puachue_Hmong = _Nyiakeng_Puachue_Hmong
 	Ogham                  = _Ogham
 	Ol_Chiki               = _Ol_Chiki
+	Ol_Onal                = _Ol_Onal
 	Old_Hungarian          = _Old_Hungarian
 	Old_Italic             = _Old_Italic
 	Old_North_Arabian      = _Old_North_Arabian
@@ -446,12 +462,14 @@ var (
 	Sharada                = _Sharada
 	Shavian                = _Shavian
 	Siddham                = _Siddham
+	Sidetic                = _Sidetic
 	SignWriting            = _SignWriting
 	Sinhala                = _Sinhala
 	Sogdian                = _Sogdian
 	Sora_Sompeng           = _Sora_Sompeng
 	Soyombo                = _Soyombo
 	Sundanese              = _Sundanese
+	Sunuwar                = _Sunuwar
 	Syloti_Nagri           = _Syloti_Nagri
 	Syriac                 = _Syriac
 	Tagalog                = _Tagalog
@@ -459,6 +477,7 @@ var (
 	Tai_Le                 = _Tai_Le
 	Tai_Tham               = _Tai_Tham
 	Tai_Viet               = _Tai_Viet
+	Tai_Yo                 = _Tai_Yo
 	Takri                  = _Takri
 	Tamil                  = _Tamil
 	Tangsa                 = _Tangsa
@@ -469,7 +488,10 @@ var (
 	Tibetan                = _Tibetan
 	Tifinagh               = _Tifinagh
 	Tirhuta                = _Tirhuta
+	Todhri                 = _Todhri
+	Tolong_Siki            = _Tolong_Siki
 	Toto                   = _Toto
+	Tulu_Tigalari          = _Tulu_Tigalari
 	Ugaritic               = _Ugaritic
 	Vai                    = _Vai
 	Vithkuqi               = _Vithkuqi
@@ -492,9 +514,13 @@ var Properties = map[string]*RangeTable{
 	"Hyphen":                             Hyphen,
 	"IDS_Binary_Operator":                IDS_Binary_Operator,
 	"IDS_Trinary_Operator":               IDS_Trinary_Operator,
+	"IDS_Unary_Operator":                 IDS_Unary_Operator,
+	"ID_Compat_Math_Continue":            ID_Compat_Math_Continue,
+	"ID_Compat_Math_Start":               ID_Compat_Math_Start,
 	"Ideographic":                        Ideographic,
 	"Join_Control":                       Join_Control,
 	"Logical_Order_Exception":            Logical_Order_Exception,
+	"Modifier_Combining_Mark":            Modifier_Combining_Mark,
 	"Noncharacter_Code_Point":            Noncharacter_Code_Point,
 	"Other_Alphabetic":                   Other_Alphabetic,
 	"Other_Default_Ignorable_Code_Point": Other_Default_Ignorable_Code_Point,
@@ -531,9 +557,13 @@ var (
 	Hyphen                             = _Hyphen
 	IDS_Binary_Operator                = _IDS_Binary_Operator
 	IDS_Trinary_Operator               = _IDS_Trinary_Operator
+	IDS_Unary_Operator                 = _IDS_Unary_Operator
+	ID_Compat_Math_Continue            = _ID_Compat_Math_Continue
+	ID_Compat_Math_Start               = _ID_Compat_Math_Start
 	Ideographic                        = _Ideographic
 	Join_Control                       = _Join_Control
 	Logical_Order_Exception            = _Logical_Order_Exception
+	Modifier_Combining_Mark            = _Modifier_Combining_Mark
 	Noncharacter_Code_Point            = _Noncharacter_Code_Point
 	Other_Alphabetic                   = _Other_Alphabetic
 	Other_Default_Ignorable_Code_Point = _Other_Default_Ignorable_Code_Point
