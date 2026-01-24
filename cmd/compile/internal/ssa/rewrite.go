@@ -20,6 +20,17 @@ var AuxMark auxMark
 
 func StringToAux(s string) Aux
 
+// check if value zeroes out upper 32-bit of 64-bit register.
+// depth limits recursion depth. In AMD64.rules 3 is used as limit,
+// because it catches same amount of cases as 4.
+func ZeroUpper32Bits(x *Value, depth int) bool
+
+// ZeroUpper48Bits is similar to ZeroUpper32Bits, but for upper 48 bits.
+func ZeroUpper48Bits(x *Value, depth int) bool
+
+// ZeroUpper56Bits is similar to ZeroUpper32Bits, but for upper 56 bits.
+func ZeroUpper56Bits(x *Value, depth int) bool
+
 func IsInlinableMemmove(dst, src *Value, sz int64, c *Config) bool
 
 func LogLargeCopy(funcName string, pos src.XPos, s int64)
