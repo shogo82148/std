@@ -672,20 +672,21 @@ type Link struct {
 	Bso                  *bufio.Writer
 	Pathname             string
 	Pkgpath              string
-	hashmu               sync.Mutex
-	hash                 map[string]*LSym
-	funchash             map[string]*LSym
-	statichash           map[string]*LSym
-	PosTable             src.PosTable
-	InlTree              InlTree
-	DwFixups             *DwarfFixupTable
-	DwTextCount          int
-	Imports              []goobj.ImportedPkg
-	DiagFunc             func(string, ...any)
-	DiagFlush            func()
-	DebugInfo            func(ctxt *Link, fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
-	GenAbstractFunc      func(fn *LSym)
-	Errors               int
+
+	hashmu          sync.Mutex
+	hash            sync.Map
+	funchash        sync.Map
+	statichash      map[string]*LSym
+	PosTable        src.PosTable
+	InlTree         InlTree
+	DwFixups        *DwarfFixupTable
+	DwTextCount     int
+	Imports         []goobj.ImportedPkg
+	DiagFunc        func(string, ...any)
+	DiagFlush       func()
+	DebugInfo       func(ctxt *Link, fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
+	GenAbstractFunc func(fn *LSym)
+	Errors          int
 
 	InParallel    bool
 	UseBASEntries bool
