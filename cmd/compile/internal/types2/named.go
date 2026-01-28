@@ -24,9 +24,7 @@ type Named struct {
 	check *Checker
 	obj   *TypeName
 
-	// flags indicating temporary violations of the invariants for fromRHS and underlying
-	allowNilRHS        bool
-	allowNilUnderlying bool
+	allowNilRHS bool
 
 	inst *instance
 
@@ -35,7 +33,7 @@ type Named struct {
 	fromRHS    Type
 	tparams    *TypeParamList
 	underlying Type
-	finite     bool
+	varSize    bool
 
 	// methods declared for this type (not the method set of this type)
 	// Signatures are type-checked lazily.
