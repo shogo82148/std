@@ -126,3 +126,11 @@ func (X86Features) FMA() bool
 // SHA is defined on all GOARCHes, but will only return true on
 // GOARCH amd64.
 func (X86Features) SHA() bool
+
+// VAES returns whether the CPU supports the VAES feature.
+//
+// If it returns true, then the CPU also supports AVX.
+//
+// VAES is defined on all GOARCHes, but will only return true on
+// GOARCH amd64.
+func (X86Features) VAES() bool
