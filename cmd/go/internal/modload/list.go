@@ -25,3 +25,12 @@ const (
 //
 // The returned slice can be nonempty even if the error is non-nil.
 func ListModules(ctx context.Context, args []string, mode ListMode, reuseFile string) ([]*modinfo.ModulePublic, error)
+
+// ParsePathVersion parses arg expecting arg to be path@version. If there is no
+// '@' in arg, found is false, vers is "", and path is arg. This mirrors the
+// typical usage of strings.Cut. ParsePathVersion is meant to be a general
+// replacement for strings.Cut in module version parsing. If the version is
+// invalid, an error is returned. The version is considered invalid if it is
+// prefixed with '-' or '/', which can cause security problems when constructing
+// commands to execute that use the version.
+func ParsePathVersion(arg string) (path, vers string, found bool, err error)
