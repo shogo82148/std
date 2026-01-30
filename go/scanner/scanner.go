@@ -35,7 +35,9 @@ type Scanner struct {
 	lineOffset int
 	insertSemi bool
 	nlPos      token.Pos
-	stringEnd  token.Pos
+
+	endPosValid bool
+	endPos      token.Pos
 
 	// public state - ok to modify
 	ErrorCount int
@@ -65,6 +67,10 @@ const (
 // of the file.
 func (s *Scanner) Init(file *token.File, src []byte, err ErrorHandler, mode Mode)
 
+// End returns the position immediately after the last scanned token.
+// If [Scanner.Scan] has not been called yet, End returns [token.NoPos].
+func (s *Scanner) End() token.Pos
+
 // Scan scans the next token and returns the token position, the token,
 // and its literal string if applicable. The source end is indicated by
 // [token.EOF].
@@ -78,7 +84,9 @@ func (s *Scanner) Init(file *token.File, src []byte, err ErrorHandler, mode Mode
 // If the returned token is [token.SEMICOLON], the corresponding
 // literal string is ";" if the semicolon was present in the source,
 // and "\n" if the semicolon was inserted because of a newline or
-// at EOF.
+// at EOF. If the newline is within a /*...*/ comment, the SEMICOLON token
+// is synthesized immediately after the COMMENT token; its position is that
+// of the actual newline within the comment.
 //
 // If the returned token is [token.ILLEGAL], the literal string is the
 // offending character.
