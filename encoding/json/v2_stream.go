@@ -56,7 +56,6 @@ type Encoder struct {
 	opts jsonv2.Options
 	err  error
 
-	buf       bytes.Buffer
 	indentBuf bytes.Buffer
 
 	indentPrefix string
