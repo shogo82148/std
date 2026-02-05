@@ -33,3 +33,37 @@ func DumpAny(root any, filter string, depth int)
 // non-matching field names are omitted, and "…" means recursion
 // depth has been reached or struct fields have been omitted.
 func FDumpAny(w io.Writer, root any, filter string, depth int)
+
+// MatchAstDump returns true if the fn matches the value
+// of the astdump debug flag.  Fn matches in the following
+// cases:
+//
+//   - astdump == name(fn)
+//   - astdump == pkgname(fn).name(fn)
+//   - astdump == afterslash(pkgname(fn)).name(fn)
+//   - astdump begins with a "~" and what follows "~" is a
+//     regular expression matching pkgname(fn).name(fn)
+//
+// If MatchAstDump returns true, it also prints to os.Stderr
+//
+//	\nir.Match(<fn>, <astdump>) for <where>\n
+func MatchAstDump(fn *Func, where string) bool
+
+// AstDump appends the ast dump for fn to the ast dump file for fn.
+// The generated file name is
+//
+//	url.PathEscape(PkgFuncName(fn)) + ".ast"
+//
+// It also prints
+//
+//	Writing ast output to <astfilename>\n
+//
+// to os.Stderr.
+func AstDump(fn *Func, why string)
+
+// DumpNodeHTML dumps the node n to the HTML writer for fn.
+// It uses the same phase name as the text dump.
+func DumpNodeHTML(fn *Func, why string, n Node)
+
+// CloseHTMLWriter closes the HTML writer for fn, if one exists.
+func CloseHTMLWriters()
