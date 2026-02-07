@@ -20,7 +20,6 @@ var InitWSA = sync.OnceFunc(func() {
 	if e != nil {
 		initErr = e
 	}
-	checkSetFileCompletionNotificationModes()
 })
 
 // FD is a file descriptor. The net and os packages embed this type in
@@ -49,7 +48,9 @@ type FD struct {
 	// Semaphore signaled when file is closed.
 	csema uint32
 
-	skipSyncNotif bool
+	// Don't wait from completion port notifications for successful
+	// operations that complete synchronously.
+	waitOnSuccess bool
 
 	// Whether this is a streaming descriptor, as opposed to a
 	// packet-based descriptor like a UDP socket.

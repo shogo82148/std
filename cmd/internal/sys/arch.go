@@ -136,7 +136,7 @@ var ArchLoong64 = &Arch{
 	PtrSize:        8,
 	RegSize:        8,
 	MinLC:          4,
-	Alignment:      8,
+	Alignment:      1,
 	CanMergeLoads:  true,
 	CanJumpTable:   true,
 	HasLR:          true,
