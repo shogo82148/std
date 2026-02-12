@@ -10,8 +10,8 @@
 // While asynchronous preemption stores general-purpose (GP) registers on the
 // preempted goroutine's own stack, extended register state can be used to save
 // non-GP state off the stack. In particular, this is meant for large vector
-// register files. Currently, we assume this contains only scalar data, though
-// we could change this constraint by conservatively scanning this memory.
+// register files. This memory is conservatively scanned to enable using
+// non-GP registers for operations that may involve pointers.
 //
 // For an architecture to support extended register state, it must provide a Go
 // definition of an xRegState type for storing the state, and its asyncPreempt
