@@ -9,7 +9,7 @@
 
 package time
 
-// LoadLocationFromTZData returns a Location with the given name
+// LoadLocationFromTZData returns a new [Location] with the given name
 // initialized from the IANA Time Zone database-formatted data.
 // The data should be in the format of a standard IANA time zone file
 // (for example, the content of /etc/localtime on Unix systems).
