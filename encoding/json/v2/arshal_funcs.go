@@ -7,19 +7,8 @@
 package json
 
 import (
-	"github.com/shogo82148/std/errors"
-
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
-
-// SkipFunc may be returned by [MarshalToFunc] and [UnmarshalFromFunc] functions.
-//
-// Any function that returns SkipFunc must not cause observable side effects
-// on the provided [jsontext.Encoder] or [jsontext.Decoder].
-// For example, it is permissible to call [jsontext.Decoder.PeekKind],
-// but not permissible to call [jsontext.Decoder.ReadToken] or
-// [jsontext.Encoder.WriteToken] since such methods mutate the state.
-var SkipFunc = errors.New("json: skip function")
 
 // Marshalers is a list of functions that may override the marshal behavior
 // of specific types. Populate [WithMarshalers] to use it with
@@ -31,7 +20,8 @@ type Marshalers = typedMarshalers
 // JoinMarshalers constructs a flattened list of marshal functions.
 // If multiple functions in the list are applicable for a value of a given type,
 // then those earlier in the list take precedence over those that come later.
-// If a function returns [SkipFunc], then the next applicable function is called,
+// If a function returns [errors.ErrUnsupported],
+// then the next applicable function is called,
 // otherwise the default marshaling behavior is used.
 //
 // For example:
@@ -51,7 +41,8 @@ type Unmarshalers = typedUnmarshalers
 // JoinUnmarshalers constructs a flattened list of unmarshal functions.
 // If multiple functions in the list are applicable for a value of a given type,
 // then those earlier in the list take precedence over those that come later.
-// If a function returns [SkipFunc], then the next applicable function is called,
+// If a function returns [errors.ErrUnsupported],
+// then the next applicable function is called,
 // otherwise the default unmarshaling behavior is used.
 //
 // For example:
@@ -69,7 +60,7 @@ func JoinUnmarshalers(us ...*Unmarshalers) *Unmarshalers
 //
 // The function must marshal exactly one JSON value.
 // The value of T must not be retained outside the function call.
-// It may not return [SkipFunc].
+// It may not return [errors.ErrUnsupported].
 func MarshalFunc[T any](fn func(T) ([]byte, error)) *Marshalers
 
 // MarshalToFunc constructs a type-specific marshaler that
@@ -79,9 +70,9 @@ func MarshalFunc[T any](fn func(T) ([]byte, error)) *Marshalers
 // if T is an interface or pointer type.
 //
 // The function must marshal exactly one JSON value by calling write methods
-// on the provided encoder. It may return [SkipFunc] such that marshaling can
+// on the provided encoder. It may return [errors.ErrUnsupported] such that marshaling can
 // move on to the next marshal function. However, no mutable method calls may
-// be called on the encoder if [SkipFunc] is returned.
+// be called on the encoder if [errors.ErrUnsupported] is returned.
 // The pointer to [jsontext.Encoder] and the value of T
 // must not be retained outside the function call.
 func MarshalToFunc[T any](fn func(*jsontext.Encoder, T) error) *Marshalers
@@ -94,7 +85,7 @@ func MarshalToFunc[T any](fn func(*jsontext.Encoder, T) error) *Marshalers
 // The function must unmarshal exactly one JSON value.
 // The input []byte must not be mutated.
 // The input []byte and value T must not be retained outside the function call.
-// It may not return [SkipFunc].
+// It may not return [errors.ErrUnsupported].
 func UnmarshalFunc[T any](fn func([]byte, T) error) *Unmarshalers
 
 // UnmarshalFromFunc constructs a type-specific unmarshaler that
@@ -103,9 +94,9 @@ func UnmarshalFunc[T any](fn func([]byte, T) error) *Unmarshalers
 // The function is always provided with a non-nil pointer value.
 //
 // The function must unmarshal exactly one JSON value by calling read methods
-// on the provided decoder. It may return [SkipFunc] such that unmarshaling can
+// on the provided decoder. It may return [errors.ErrUnsupported] such that unmarshaling can
 // move on to the next unmarshal function. However, no mutable method calls may
-// be called on the decoder if [SkipFunc] is returned.
+// be called on the decoder if [errors.ErrUnsupported] is returned.
 // The pointer to [jsontext.Decoder] and the value of T
 // must not be retained outside the function call.
 func UnmarshalFromFunc[T any](fn func(*jsontext.Decoder, T) error) *Unmarshalers

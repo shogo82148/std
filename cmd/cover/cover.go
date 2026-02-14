@@ -48,5 +48,11 @@ type File struct {
 	pkg     *Package
 }
 
+// Range represents a contiguous range of executable code within a basic block.
+type Range struct {
+	pos token.Pos
+	end token.Pos
+}
+
 // Visit implements the ast.Visitor interface.
 func (f *File) Visit(node ast.Node) ast.Visitor

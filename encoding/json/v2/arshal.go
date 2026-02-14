@@ -41,7 +41,7 @@ var (
 //
 //   - If any type-specific functions in a [WithMarshalers] option match
 //     the value type, then those functions are called to encode the value.
-//     If all applicable functions return [SkipFunc],
+//     If all applicable functions return [errors.ErrUnsupported],
 //     then the value is encoded according to subsequent rules.
 //
 //   - If the value type implements [MarshalerTo],
@@ -194,7 +194,7 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 //
 //   - If any type-specific functions in a [WithUnmarshalers] option match
 //     the value type, then those functions are called to decode the JSON
-//     value. If all applicable functions return [SkipFunc],
+//     value. If all applicable functions return [errors.ErrUnsupported],
 //     then the input is decoded according to subsequent rules.
 //
 //   - If the value type implements [UnmarshalerFrom],
