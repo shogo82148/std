@@ -31,13 +31,20 @@ type Marshaler interface {
 // then MarshalerTo takes precedence. In such a case, both implementations
 // should aim to have equivalent behavior for the default marshal options.
 //
-// The implementation must write only one JSON value to the Encoder and
-// must not retain the pointer to [jsontext.Encoder].
+// The implementation must write only one JSON value to the Encoder.
+// Alternatively, it may return [errors.ErrUnsupported] without mutating
+// the Encoder. The "json" package calling the method will
+// use the next available JSON representation for the receiver type.
+// Implementations must not retain the pointer to [jsontext.Encoder].
 //
 // If the returned error is a [SemanticError], then unpopulated fields
 // of the error may be populated by [json] with additional context.
 // Errors of other types are wrapped within a [SemanticError],
 // unless it is an IO error.
+//
+// The MarshalJSONTo method should not be directly called as it may
+// return sentinel errors that need special handling.
+// Users should instead call [MarshalEncode], which handles such cases.
 type MarshalerTo interface {
 	MarshalJSONTo(*jsontext.Encoder) error
 }
@@ -71,13 +78,19 @@ type Unmarshaler interface {
 // The implementation must read only one JSON value from the Decoder.
 // It is recommended that UnmarshalJSONFrom implement merge semantics when
 // unmarshaling into a pre-populated value.
-//
+// Alternatively, it may return [errors.ErrUnsupported] without mutating
+// the Decoder. The "json" package calling the method will
+// use the next available JSON representation for the receiver type.
 // Implementations must not retain the pointer to [jsontext.Decoder].
 //
 // If the returned error is a [SemanticError], then unpopulated fields
 // of the error may be populated by [json] with additional context.
 // Errors of other types are wrapped within a [SemanticError],
 // unless it is a [jsontext.SyntacticError] or an IO error.
+//
+// The UnmarshalJSONFrom method should not be directly called as it may
+// return sentinel errors that need special handling.
+// Users should instead call [UnmarshalDecode], which handles such cases.
 type UnmarshalerFrom interface {
 	UnmarshalJSONFrom(*jsontext.Decoder) error
 }
