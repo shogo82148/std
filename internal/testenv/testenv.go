@@ -167,3 +167,7 @@ func ParallelOn64Bit(t *testing.T)
 // CPUProfilingBroken returns true if CPU profiling has known issues on this
 // platform.
 func CPUProfilingBroken() bool
+
+// SetGODEBUG appends v to the GODEBUG environment variable for the
+// duration of the test.
+func SetGODEBUG(t testing.TB, v string)
