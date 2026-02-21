@@ -201,12 +201,12 @@ const (
 
 // https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_disposition_info
 type FILE_DISPOSITION_INFO struct {
-	DeleteFile bool
+	DeleteFile byte
 }
 
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/ns-ntddk-_file_disposition_information
 type FILE_DISPOSITION_INFORMATION struct {
-	DeleteFile bool
+	DeleteFile byte
 }
 
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/ns-ntddk-_file_disposition_information_ex
@@ -232,7 +232,7 @@ const (
 
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_rename_information
 type FILE_RENAME_INFORMATION struct {
-	ReplaceIfExists bool
+	ReplaceIfExists byte
 	RootDirectory   syscall.Handle
 	FileNameLength  uint32
 	FileName        [syscall.MAX_PATH]uint16
@@ -248,7 +248,7 @@ type FILE_RENAME_INFORMATION_EX struct {
 
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_link_information
 type FILE_LINK_INFORMATION struct {
-	ReplaceIfExists bool
+	ReplaceIfExists byte
 	RootDirectory   syscall.Handle
 	FileNameLength  uint32
 	FileName        [syscall.MAX_PATH]uint16
