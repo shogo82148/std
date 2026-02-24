@@ -81,6 +81,9 @@ type File struct {
 	infos []lineInfo
 }
 
+// String returns a brief description of the File.
+func (f *File) String() string
+
 // Name returns the file name of file f as registered with AddFile.
 func (f *File) Name() string
 
