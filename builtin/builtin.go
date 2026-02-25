@@ -20,6 +20,10 @@ type Type int
 // invocation.
 type Type1 int
 
+// TypeOrExpr is here for the purposes of documentation only. It is a stand-in
+// for either a Go type or an expression.
+type TypeOrExpr int
+
 // IntegerType is here for the purposes of documentation only. It is a stand-in
 // for any integer type: int, uint, int8 etc.
 type IntegerType int

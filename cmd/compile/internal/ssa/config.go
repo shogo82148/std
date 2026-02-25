@@ -119,3 +119,7 @@ type Frontend interface {
 func NewConfig(arch string, types Types, ctxt *obj.Link, optimize, softfloat bool) *Config
 
 func (c *Config) Ctxt() *obj.Link
+
+func (c *Config) Reg(i int8) int16
+func (c *Config) IntParamReg(i abi.RegIndex) int8
+func (c *Config) FloatParamReg(i abi.RegIndex) int8
