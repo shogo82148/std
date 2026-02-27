@@ -31,6 +31,10 @@ func QueryServiceStatus(hService syscall.Handle, lpServiceStatus *SERVICE_STATUS
 
 func RevertToSelf() (err error)
 
+func SetEntriesInAcl(countExplicitEntries uint32, explicitEntries *EXPLICIT_ACCESS, oldACL *ACL, newACL **ACL) (ret error)
+
+func SetNamedSecurityInfo(objectName string, objectType uint32, securityInformation uint32, owner *syscall.SID, group *syscall.SID, dacl *ACL, sacl *ACL) (ret error)
+
 func SetTokenInformation(tokenHandle syscall.Token, tokenInformationClass uint32, tokenInformation unsafe.Pointer, tokenInformationLength uint32) (err error)
 
 func ProcessPrng(buf []byte) (err error)
