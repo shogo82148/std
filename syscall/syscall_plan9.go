@@ -22,6 +22,10 @@ const ImplementsGetwd = true
 // without build-tagged files, using runtime.GOOS checks instead.
 type Errno uintptr
 
+func (e Errno) Error() string
+func (e Errno) Temporary() bool
+func (e Errno) Timeout() bool
+
 // ErrorString implements Error's String method by returning itself.
 //
 // ErrorString values can be tested against error values using [errors.Is].
