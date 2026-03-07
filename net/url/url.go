@@ -239,6 +239,9 @@ func (v Values) Del(key string)
 // Has checks whether a given key is set.
 func (v Values) Has(key string) bool
 
+// Clone creates a deep copy of the subject [Values].
+func (vs Values) Clone() Values
+
 // ParseQuery parses the URL-encoded query string and returns
 // a map listing the values specified for each key.
 // ParseQuery always returns a non-nil map containing all the

@@ -379,6 +379,7 @@ const (
 	Op386REPSTOSL
 	Op386CALLstatic
 	Op386CALLtail
+	Op386CALLtailinter
 	Op386CALLclosure
 	Op386CALLinter
 	Op386DUFFCOPY
@@ -878,6 +879,7 @@ const (
 	OpAMD64REPSTOSQ
 	OpAMD64CALLstatic
 	OpAMD64CALLtail
+	OpAMD64CALLtailinter
 	OpAMD64CALLclosure
 	OpAMD64CALLinter
 	OpAMD64LoweredMove
@@ -3927,6 +3929,7 @@ const (
 	OpARMSRAcond
 	OpARMCALLstatic
 	OpARMCALLtail
+	OpARMCALLtailinter
 	OpARMCALLclosure
 	OpARMCALLinter
 	OpARMLoweredNilCheck
@@ -4134,11 +4137,13 @@ const (
 	OpARM64MOVDload
 	OpARM64FMOVSload
 	OpARM64FMOVDload
+	OpARM64FMOVQload
 	OpARM64LDP
 	OpARM64LDPW
 	OpARM64LDPSW
 	OpARM64FLDPD
 	OpARM64FLDPS
+	OpARM64FLDPQ
 	OpARM64MOVDloadidx
 	OpARM64MOVWloadidx
 	OpARM64MOVWUloadidx
@@ -4161,10 +4166,12 @@ const (
 	OpARM64MOVDstore
 	OpARM64FMOVSstore
 	OpARM64FMOVDstore
+	OpARM64FMOVQstore
 	OpARM64STP
 	OpARM64STPW
 	OpARM64FSTPD
 	OpARM64FSTPS
+	OpARM64FSTPQ
 	OpARM64MOVBstoreidx
 	OpARM64MOVHstoreidx
 	OpARM64MOVWstoreidx
@@ -4232,6 +4239,7 @@ const (
 	OpARM64CCMNWconst
 	OpARM64CALLstatic
 	OpARM64CALLtail
+	OpARM64CALLtailinter
 	OpARM64CALLclosure
 	OpARM64CALLinter
 	OpARM64LoweredNilCheck
@@ -4464,6 +4472,7 @@ const (
 	OpLOONG64LoweredRound64F
 	OpLOONG64CALLstatic
 	OpLOONG64CALLtail
+	OpLOONG64CALLtailinter
 	OpLOONG64CALLclosure
 	OpLOONG64CALLinter
 	OpLOONG64LoweredZero
@@ -4597,6 +4606,7 @@ const (
 	OpMIPSMOVDF
 	OpMIPSCALLstatic
 	OpMIPSCALLtail
+	OpMIPSCALLtailinter
 	OpMIPSCALLclosure
 	OpMIPSCALLinter
 	OpMIPSLoweredAtomicLoad8
@@ -4716,6 +4726,7 @@ const (
 	OpMIPS64MOVDF
 	OpMIPS64CALLstatic
 	OpMIPS64CALLtail
+	OpMIPS64CALLtailinter
 	OpMIPS64CALLclosure
 	OpMIPS64CALLinter
 	OpMIPS64DUFFZERO
@@ -4958,6 +4969,7 @@ const (
 	OpPPC64LoweredRound64F
 	OpPPC64CALLstatic
 	OpPPC64CALLtail
+	OpPPC64CALLtailinter
 	OpPPC64CALLclosure
 	OpPPC64CALLinter
 	OpPPC64LoweredZero
@@ -5097,6 +5109,7 @@ const (
 	OpRISCV64LoweredRound64F
 	OpRISCV64CALLstatic
 	OpRISCV64CALLtail
+	OpRISCV64CALLtailinter
 	OpRISCV64CALLclosure
 	OpRISCV64CALLinter
 	OpRISCV64LoweredZero
@@ -5376,6 +5389,7 @@ const (
 	OpS390XCLEAR
 	OpS390XCALLstatic
 	OpS390XCALLtail
+	OpS390XCALLtailinter
 	OpS390XCALLclosure
 	OpS390XCALLinter
 	OpS390XInvertFlags
@@ -5431,6 +5445,7 @@ const (
 
 	OpWasmLoweredStaticCall
 	OpWasmLoweredTailCall
+	OpWasmLoweredTailCallInter
 	OpWasmLoweredClosureCall
 	OpWasmLoweredInterCall
 	OpWasmLoweredAddr
@@ -5799,10 +5814,12 @@ const (
 	OpStaticCall
 	OpInterCall
 	OpTailCall
+	OpTailCallInter
 	OpClosureLECall
 	OpStaticLECall
 	OpInterLECall
 	OpTailLECall
+	OpTailLECallInter
 	OpSignExt8to16
 	OpSignExt8to32
 	OpSignExt8to64
