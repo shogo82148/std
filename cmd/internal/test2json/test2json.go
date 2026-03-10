@@ -34,6 +34,7 @@ type Converter struct {
 	input       lineBuffer
 	output      lineBuffer
 	markFraming bool
+	markErrEnd  bool
 	markEscape  bool
 	isFraming   bool
 
@@ -48,8 +49,12 @@ type Converter struct {
 //
 // Writes on the returned writer are expected to contain markers. Test framing
 // such as "=== RUN" and friends are expected to be prefixed with ^V (\x22).
-// Other occurrences of this control character (e.g. calls to T.Log) must be
-// escaped with ^[ (\x1b).
+// Error output is expected to be prefixed with ^O (\x0f) and suffixed with ^N
+// (\x0e). Other occurrences of these control characters (e.g. calls to T.Log)
+// must be escaped with ^[ (\x1b). Test framing will generate events such as
+// start, run, etc as well as output events with an output type of "frame".
+// Error output will generate output events with an output type of "error" or
+// "error-continue". See cmd/test2json help for details.
 //
 // The writes to w are whole JSON events ending in \n,
 // so that it is safe to run multiple tests writing to multiple converters
