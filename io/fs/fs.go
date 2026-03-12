@@ -91,8 +91,11 @@ var (
 	ErrPermission = errPermission()
 	ErrExist      = errExist()
 	ErrNotExist   = errNotExist()
-	ErrClosed     = errClosed()
 )
+
+// ErrClosed is returned when operations are attempted on a file that
+// has already been closed, including when Close is called more than once.
+var ErrClosed = errClosed()
 
 // A FileInfo describes a file and is returned by [Stat].
 type FileInfo interface {
