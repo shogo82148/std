@@ -34,6 +34,7 @@ func ContainsAny(b []byte, chars string) bool
 func ContainsRune(b []byte, r rune) bool
 
 // ContainsFunc reports whether any of the UTF-8-encoded code points r within b satisfy f(r).
+// It stops as soon as a call to f returns true.
 func ContainsFunc(b []byte, f func(rune) bool) bool
 
 // IndexByte returns the index of the first instance of c in b, or -1 if c is not present in b.

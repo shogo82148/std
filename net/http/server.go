@@ -13,6 +13,7 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/net/http/internal"
 
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
@@ -24,7 +25,7 @@ var (
 	// ErrBodyNotAllowed is returned by ResponseWriter.Write calls
 	// when the HTTP method or response code does not permit a
 	// body.
-	ErrBodyNotAllowed = errors.New("http: request method or response status code does not allow body")
+	ErrBodyNotAllowed = internal.ErrBodyNotAllowed
 
 	// ErrHijacked is returned by ResponseWriter.Write calls when
 	// the underlying connection has been hijacked using the
@@ -171,7 +172,7 @@ var _ closeWriter = (*net.TCPConn)(nil)
 // While any panic from ServeHTTP aborts the response to the client,
 // panicking with ErrAbortHandler also suppresses logging of a stack
 // trace to the server's error log.
-var ErrAbortHandler = errors.New("net/http: abort Handler")
+var ErrAbortHandler = internal.ErrAbortHandler
 
 // The HandlerFunc type is an adapter to allow the use of
 // ordinary functions as HTTP handlers. If f is a function
@@ -574,6 +575,7 @@ type Server struct {
 	listeners  map[*net.Listener]struct{}
 	activeConn map[*conn]struct{}
 	onShutdown []func()
+	h2         *http2Server
 
 	listenerGroup sync.WaitGroup
 }

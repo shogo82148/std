@@ -25,6 +25,7 @@ func ContainsAny(s, chars string) bool
 func ContainsRune(s string, r rune) bool
 
 // ContainsFunc reports whether any Unicode code points r within s satisfy f(r).
+// It stops as soon as a call to f returns true.
 func ContainsFunc(s string, f func(rune) bool) bool
 
 // LastIndex returns the index of the last instance of substr in s, or -1 if substr is not present in s.

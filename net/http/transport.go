@@ -12,9 +12,9 @@ package http
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
-	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/net/http/internal"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
@@ -322,7 +322,7 @@ func ProxyFromEnvironment(req *Request) (*url.URL, error)
 func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 
 // ErrSkipAltProtocol is a sentinel error value defined by Transport.RegisterProtocol.
-var ErrSkipAltProtocol = errors.New("net/http: skip alternate protocol")
+var ErrSkipAltProtocol = internal.ErrSkipAltProtocol
 
 // RegisterProtocol registers a new protocol with scheme.
 // The [Transport] will pass requests using the given scheme to rt.

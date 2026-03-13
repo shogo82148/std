@@ -53,6 +53,7 @@ func Contains[S ~[]E, E comparable](s S, v E) bool
 
 // ContainsFunc reports whether at least one
 // element e of s satisfies f(e).
+// It stops as soon as a call to f returns true.
 func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool
 
 // Insert inserts the values v... into s at index i,
