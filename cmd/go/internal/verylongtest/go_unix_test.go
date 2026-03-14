@@ -4,4 +4,4 @@
 
 //go:build unix
 
-package main_test
+package verylongtest
