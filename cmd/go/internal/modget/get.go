@@ -38,7 +38,7 @@ To upgrade the Go toolchain to the latest patch release of the current Go toolch
 
 	go get toolchain@patch
 
-See https://golang.org/ref/mod#go-get for details.
+See https://go.dev/ref/mod#go-get for details.
 
 In earlier versions of Go, 'go get' was used to build and install packages.
 Now, 'go get' is dedicated to adjusting dependencies in go.mod. 'go install'
@@ -49,7 +49,7 @@ current directory. For example:
 	go install example.com/pkg@v1.2.3
 	go install example.com/pkg@latest
 
-See 'go help install' or https://golang.org/ref/mod#go-install for details.
+See 'go help install' or https://go.dev/ref/mod#go-install for details.
 
 'go get' accepts the following flags.
 
@@ -75,7 +75,7 @@ from a repository.
 
 For more about build flags, see 'go help build'.
 
-For more about modules, see https://golang.org/ref/mod.
+For more about modules, see https://go.dev/ref/mod.
 
 For more about using 'go get' to update the minimum Go version and
 suggested Go toolchain, see https://go.dev/doc/toolchain.

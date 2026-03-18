@@ -199,6 +199,16 @@ var ErrDecryption = errors.New("crypto/rsa: decryption error")
 // It is deliberately vague to avoid adaptive attacks.
 var ErrVerification = errors.New("crypto/rsa: verification error")
 
-// Precompute performs some calculations that speed up private key operations
-// in the future. It is safe to run on non-validated private keys.
+// Precompute performs some calculations that speed up private key operations in
+// the future. It is safe to run on non-validated private keys, and it can speed
+// up future calls to [PrivateKey.Validate] for valid keys.
+//
+// Precompute writes to the Precomputed field, so it must not be called
+// concurrently with any other method.
+//
+// Precompute does not return an error. Applications should call
+// [PrivateKey.Validate] after Precompute to check for any problems with the
+// key, including any that would cause Precompute to fail.
+//
+// Calling Precompute on a key that has already been precomputed is a no-op.
 func (priv *PrivateKey) Precompute()
