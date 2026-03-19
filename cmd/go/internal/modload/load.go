@@ -143,7 +143,7 @@ func ImportFromFiles(loaderstate *State, ctx context.Context, gofiles []string)
 func (mms *MainModuleSet) DirImportPath(loaderstate *State, ctx context.Context, dir string) (path string, m module.Version)
 
 // PackageModule returns the module providing the package named by the import path.
-func PackageModule(path string) module.Version
+func (loaderstate *State) PackageModule(path string) module.Version
 
 // Lookup returns the source directory, import path, and any loading error for
 // the package at path as imported from the package in parentDir.
@@ -156,9 +156,9 @@ func Lookup(loaderstate *State, parentPath string, parentIsStd bool, path string
 // The package graph must have been loaded already, usually by LoadPackages.
 // If there is no reason for the package to be in the current build,
 // Why returns an empty string.
-func Why(path string) string
+func (loaderstate *State) Why(path string) string
 
 // WhyDepth returns the number of steps in the Why listing.
 // If there is no reason for the package to be in the current build,
 // WhyDepth returns 0.
-func WhyDepth(path string) int
+func (loaderstate *State) WhyDepth(path string) int
