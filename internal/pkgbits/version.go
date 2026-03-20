@@ -27,6 +27,12 @@ const (
 	// - add a TypeParamNames field to ObjAlias
 	// - remove derived info "needed" bool
 	V2
+
+	// V3: introduces a more compact format for composite literal element lists
+	// - negative lengths indicate that (some) elements may have keys
+	// - positive lengths indicate that no element has a key
+	// - a negative struct field index indicates an embedded field
+	V3
 )
 
 // Field denotes a unit of data in the serialized unified IR bitstream.
@@ -58,6 +64,9 @@ const (
 	// Deprecated: DerivedInfoNeeded was a bool indicating
 	// whether a type was a derived type.
 	DerivedInfoNeeded
+
+	// Composite literals use a more compact format for element lists.
+	CompactCompLiterals
 )
 
 // Has reports whether field f is present in a bitstream at version v.
