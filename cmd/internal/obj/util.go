@@ -89,11 +89,11 @@ const (
 	RBaseARM     = 3 * 1024
 	RBasePPC64   = 4 * 1024
 	RBaseARM64   = 8 * 1024
-	RBaseMIPS    = 13 * 1024
-	RBaseS390X   = 14 * 1024
-	RBaseRISCV   = 15 * 1024
-	RBaseWasm    = 16 * 1024
-	RBaseLOONG64 = 19 * 1024
+	RBaseMIPS    = 18 * 1024
+	RBaseS390X   = 19 * 1024
+	RBaseRISCV   = 20 * 1024
+	RBaseWasm    = 21 * 1024
+	RBaseLOONG64 = 22 * 1024
 )
 
 // RegisterRegister binds a pretty-printer (Rconv) for register
