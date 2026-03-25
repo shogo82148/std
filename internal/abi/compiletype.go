@@ -19,3 +19,6 @@ func TFlagOff(ptrSize int) int
 
 // ITabTypeOff returns the offset of ITab.Type for a compilation target with a given ptrSize
 func ITabTypeOff(ptrSize int) int
+
+// RTypeSize returns sizeof(kindType) for a compilation target with a given ptrSize.
+func RTypeSize(kind Kind, ptrSize int) int

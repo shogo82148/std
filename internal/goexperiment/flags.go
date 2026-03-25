@@ -121,4 +121,9 @@ type Flags struct {
 
 	// RuntimeSecret enables the runtime/secret package.
 	RuntimeSecret bool
+
+	// MapSplitGroup changes the internal representation of map groups
+	// from interleaved key/elem slots (KVKVKVKV) to split key and elem
+	// arrays (KKKKVVVV).
+	MapSplitGroup bool
 }

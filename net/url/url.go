@@ -2,14 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:generate go run gen_encoding_table.go
+
 // Package url parses URLs and implements query escaping.
 //
 // See RFC 3986. This package generally follows RFC 3986, except where
 // it deviates for compatibility reasons.
 // RFC 6874 followed for IPv6 zone literals.
-
-//go:generate go run gen_encoding_table.go
-
 package url
 
 // Error reports an error and the operation and URL that caused it.

@@ -136,9 +136,139 @@ const (
 	IMAGE_REL_BASED_DIR64   = 10
 )
 
+// IMAGE_LOAD_CONFIG_DIRECTORY64.GuardFlags and IMAGE_LOAD_CONFIG_DIRECTORY32.GuardFlags
+// values. These can be combined together.
 const (
-	PeMinimumTargetMajorVersion = 6
-	PeMinimumTargetMinorVersion = 1
+	IMAGE_GUARD_CF_INSTRUMENTED                    = 0x00000100
+	IMAGE_GUARD_CFW_INSTRUMENTED                   = 0x00000200
+	IMAGE_GUARD_CF_FUNCTION_TABLE_PRESENT          = 0x00000400
+	IMAGE_GUARD_SECURITY_COOKIE_UNUSED             = 0x00000800
+	IMAGE_GUARD_PROTECT_DELAYLOAD_IAT              = 0x00001000
+	IMAGE_GUARD_DELAYLOAD_IAT_IN_ITS_OWN_SECTION   = 0x00002000
+	IMAGE_GUARD_CF_EXPORT_SUPPRESSION_INFO_PRESENT = 0x00004000
+	IMAGE_GUARD_CF_ENABLE_EXPORT_SUPPRESSION       = 0x00008000
+	IMAGE_GUARD_CF_LONGJUMP_TABLE_PRESENT          = 0x00010000
+	IMAGE_GUARD_RF_INSTRUMENTED                    = 0x00020000
+	IMAGE_GUARD_RF_ENABLE                          = 0x00040000
+	IMAGE_GUARD_RF_STRICT                          = 0x00080000
+	IMAGE_GUARD_CF_FUNCTION_TABLE_SIZE_MASK        = 0xF0000000
+	IMAGE_GUARD_CF_FUNCTION_TABLE_SIZE_SHIFT       = 28
+)
+
+type IMAGE_LOAD_CONFIG_CODE_INTEGRITY struct {
+	Flags         uint16
+	Catalog       uint16
+	CatalogOffset uint32
+	Reserved      uint32
+}
+
+type IMAGE_LOAD_CONFIG_DIRECTORY32 struct {
+	Size                                     uint32
+	TimeDateStamp                            uint32
+	MajorVersion                             uint16
+	MinorVersion                             uint16
+	GlobalFlagsClear                         uint32
+	GlobalFlagsSet                           uint32
+	CriticalSectionDefaultTimeout            uint32
+	DeCommitFreeBlockThreshold               uint32
+	DeCommitTotalFreeThreshold               uint32
+	LockPrefixTable                          uint32
+	MaximumAllocationSize                    uint32
+	VirtualMemoryThreshold                   uint32
+	ProcessHeapFlags                         uint32
+	ProcessAffinityMask                      uint32
+	CSDVersion                               uint16
+	DependentLoadFlags                       uint16
+	EditList                                 uint32
+	SecurityCookie                           uint32
+	SEHandlerTable                           uint32
+	SEHandlerCount                           uint32
+	GuardCFCheckFunctionPointer              uint32
+	GuardCFDispatchFunctionPointer           uint32
+	GuardCFFunctionTable                     uint32
+	GuardCFFunctionCount                     uint32
+	GuardFlags                               uint32
+	CodeIntegrity                            IMAGE_LOAD_CONFIG_CODE_INTEGRITY
+	GuardAddressTakenIatEntryTable           uint32
+	GuardAddressTakenIatEntryCount           uint32
+	GuardLongJumpTargetTable                 uint32
+	GuardLongJumpTargetCount                 uint32
+	DynamicValueRelocTable                   uint32
+	CHPEMetadataPointer                      uint32
+	GuardRFFailureRoutine                    uint32
+	GuardRFFailureRoutineFunctionPointer     uint32
+	DynamicValueRelocTableOffset             uint32
+	DynamicValueRelocTableSection            uint16
+	Reserved2                                uint16
+	GuardRFVerifyStackPointerFunctionPointer uint32
+	HotPatchTableOffset                      uint32
+	Reserved3                                uint32
+	EnclaveConfigurationPointer              uint32
+	VolatileMetadataPointer                  uint32
+	GuardEHContinuationTable                 uint32
+	GuardEHContinuationCount                 uint32
+	GuardXFGCheckFunctionPointer             uint32
+	GuardXFGDispatchFunctionPointer          uint32
+	GuardXFGTableDispatchFunctionPointer     uint32
+	CastGuardOsDeterminedFailureMode         uint32
+	GuardMemcpyFunctionPointer               uint32
+}
+
+type IMAGE_LOAD_CONFIG_DIRECTORY64 struct {
+	Size                                     uint32
+	TimeDateStamp                            uint32
+	MajorVersion                             uint16
+	MinorVersion                             uint16
+	GlobalFlagsClear                         uint32
+	GlobalFlagsSet                           uint32
+	CriticalSectionDefaultTimeout            uint32
+	DeCommitFreeBlockThreshold               uint64
+	DeCommitTotalFreeThreshold               uint64
+	LockPrefixTable                          uint64
+	MaximumAllocationSize                    uint64
+	VirtualMemoryThreshold                   uint64
+	ProcessAffinityMask                      uint64
+	ProcessHeapFlags                         uint32
+	CSDVersion                               uint16
+	DependentLoadFlags                       uint16
+	EditList                                 uint64
+	SecurityCookie                           uint64
+	SEHandlerTable                           uint64
+	SEHandlerCount                           uint64
+	GuardCFCheckFunctionPointer              uint64
+	GuardCFDispatchFunctionPointer           uint64
+	GuardCFFunctionTable                     uint64
+	GuardCFFunctionCount                     uint64
+	GuardFlags                               uint32
+	CodeIntegrity                            IMAGE_LOAD_CONFIG_CODE_INTEGRITY
+	GuardAddressTakenIatEntryTable           uint64
+	GuardAddressTakenIatEntryCount           uint64
+	GuardLongJumpTargetTable                 uint64
+	GuardLongJumpTargetCount                 uint64
+	DynamicValueRelocTable                   uint64
+	CHPEMetadataPointer                      uint64
+	GuardRFFailureRoutine                    uint64
+	GuardRFFailureRoutineFunctionPointer     uint64
+	DynamicValueRelocTableOffset             uint32
+	DynamicValueRelocTableSection            uint16
+	Reserved2                                uint16
+	GuardRFVerifyStackPointerFunctionPointer uint64
+	HotPatchTableOffset                      uint32
+	Reserved3                                uint32
+	EnclaveConfigurationPointer              uint64
+	VolatileMetadataPointer                  uint64
+	GuardEHContinuationTable                 uint64
+	GuardEHContinuationCount                 uint64
+	GuardXFGCheckFunctionPointer             uint64
+	GuardXFGDispatchFunctionPointer          uint64
+	GuardXFGTableDispatchFunctionPointer     uint64
+	CastGuardOsDeterminedFailureMode         uint64
+	GuardMemcpyFunctionPointer               uint64
+}
+
+const (
+	PeMinimumTargetMajorVersion = 10
+	PeMinimumTargetMinorVersion = 0
 )
 
 type Imp struct {
