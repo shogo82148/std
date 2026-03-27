@@ -62,7 +62,6 @@ const (
 	SRODATAFIPSEND
 	SRODATAEND
 	SPCLNTAB
-	STYPELINK
 	SELFROSECT
 
 	// Read-only, non-executable, dynamically relocatable segment.
