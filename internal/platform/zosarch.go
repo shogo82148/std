@@ -47,7 +47,6 @@ var List = []OSArch{
 	{"openbsd", "amd64"},
 	{"openbsd", "arm"},
 	{"openbsd", "arm64"},
-	{"openbsd", "mips64"},
 	{"openbsd", "ppc64"},
 	{"openbsd", "riscv64"},
 	{"plan9", "386"},
