@@ -13,7 +13,7 @@ type StackRecord struct {
 }
 
 type MemProfileRecord struct {
-	AllocBytes, FreeBytes     int64
+	ObjectSize                int64
 	AllocObjects, FreeObjects int64
 	Stack                     []uintptr
 }
