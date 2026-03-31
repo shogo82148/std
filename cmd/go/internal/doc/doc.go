@@ -119,7 +119,8 @@ Flags:
   	-http
 		Serve HTML docs over HTTP.
 	-short
-		One-line representation for each symbol.
+		One-line representation for each symbol. Cannot be
+		combined with -all.
 	-src
 		Show the full source code for the symbol. This will
 		display the full Go source of its declaration and

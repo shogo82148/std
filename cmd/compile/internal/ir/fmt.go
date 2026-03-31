@@ -225,7 +225,7 @@ func (l Nodes) Format(s fmt.State, verb rune)
 // This includes all the recursive structure under n.
 func Dump(s string, n Node)
 
-// Fdump prints to w the message s followed by a debug dump of n.
+// FDump prints to w the message s followed by a debug dump of n.
 // This includes all the recursive structure under n.
 func FDump(w io.Writer, s string, n Node)
 
