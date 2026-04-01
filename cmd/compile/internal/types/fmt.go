@@ -96,5 +96,9 @@ func (t *Type) NameString() string
 // suffix, if any.
 func SplitVargenSuffix(name string) (base, suffix string)
 
+// SplitMethSuffix returns name split into a defining type name and a .m
+// suffix, if any.
+func SplitMethSuffix(name string) (tname, suffix string)
+
 // TypeHash computes a hash value for type t to use in type switch statements.
 func TypeHash(t *Type) uint32
