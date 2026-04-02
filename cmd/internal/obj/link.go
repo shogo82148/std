@@ -568,6 +568,9 @@ const (
 
 	// Linkname indicates this is a go:linkname'd symbol.
 	AttrLinkname
+
+	// LinknameStd indicates this is a go:linknamestd'd symbol.
+	AttrLinknameStd
 )
 
 func (a *Attribute) DuplicateOK() bool
@@ -590,6 +593,7 @@ func (a *Attribute) ABIWrapper() bool
 func (a *Attribute) IsPcdata() bool
 func (a *Attribute) IsPkgInit() bool
 func (a *Attribute) IsLinkname() bool
+func (a *Attribute) IsLinknameStd() bool
 
 func (a *Attribute) Set(flag Attribute, value bool)
 
