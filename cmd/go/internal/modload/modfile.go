@@ -19,7 +19,7 @@ func ReadModFile(gomod string, fix modfile.VersionFixer) (data []byte, f *modfil
 // CheckAllowed returns an error equivalent to ErrDisallowed if m is excluded by
 // the main module's go.mod or retracted by its author. Most version queries use
 // this to filter out versions that should not be used.
-func (s *State) CheckAllowed(ctx context.Context, m module.Version) error
+func (ld *Loader) CheckAllowed(ctx context.Context, m module.Version) error
 
 // ErrDisallowed is returned by version predicates passed to Query and similar
 // functions to indicate that a version should not be considered.
@@ -27,11 +27,11 @@ var ErrDisallowed = errors.New("disallowed module version")
 
 // CheckExclusions returns an error equivalent to ErrDisallowed if module m is
 // excluded by the main module's go.mod file.
-func (s *State) CheckExclusions(ctx context.Context, m module.Version) error
+func (ld *Loader) CheckExclusions(ctx context.Context, m module.Version) error
 
 // CheckRetractions returns an error if module m has been retracted by
 // its author.
-func (s *State) CheckRetractions(ctx context.Context, m module.Version) (err error)
+func (ld *Loader) CheckRetractions(ctx context.Context, m module.Version) (err error)
 
 type ModuleRetractedError struct {
 	Rationale []string
@@ -56,12 +56,12 @@ func ShortMessage(message, emptyDefault string) string
 //
 // CheckDeprecation returns an error if the message can't be loaded.
 // CheckDeprecation returns "", nil if there is no deprecation message.
-func CheckDeprecation(loaderstate *State, ctx context.Context, m module.Version) (deprecation string, err error)
+func CheckDeprecation(ld *Loader, ctx context.Context, m module.Version) (deprecation string, err error)
 
 // Replacement returns the replacement for mod, if any. If the path in the
 // module.Version is relative it's relative to the single main module outside
 // workspace mode, or the workspace's directory in workspace mode.
-func Replacement(loaderstate *State, mod module.Version) module.Version
+func Replacement(ld *Loader, mod module.Version) module.Version
 
 // ToDirectoryPath adds a prefix if necessary so that path in unambiguously
 // an absolute path or a relative path starting with a '.' or '..'

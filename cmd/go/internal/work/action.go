@@ -158,7 +158,7 @@ func CheckGOOSARCHPair(goos, goarch string) error
 func (b *Builder) NewObjdir() string
 
 // AutoAction returns the "right" action for go build or go install of p.
-func (b *Builder) AutoAction(s *modload.State, mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) AutoAction(s *modload.Loader, mode, depMode BuildMode, p *load.Package) *Action
 
 // CompileAction returns the action for compiling and possibly installing
 // (according to mode) the given package. The resulting action is only
@@ -171,9 +171,9 @@ func (b *Builder) CompileAction(mode, depMode BuildMode, p *load.Package) *Actio
 // It depends on the action for compiling p.
 // If the caller may be causing p to be installed, it is up to the caller
 // to make sure that the install depends on (runs after) vet.
-func (b *Builder) VetAction(s *modload.State, mode, depMode BuildMode, needFix bool, p *load.Package) *Action
+func (b *Builder) VetAction(s *modload.Loader, mode, depMode BuildMode, needFix bool, p *load.Package) *Action
 
 // LinkAction returns the action for linking p into an executable
 // and possibly installing the result (according to mode).
 // depMode is the action (build or install) to use when compiling dependencies.
-func (b *Builder) LinkAction(s *modload.State, mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) LinkAction(s *modload.Loader, mode, depMode BuildMode, p *load.Package) *Action

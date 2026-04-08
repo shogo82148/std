@@ -71,7 +71,7 @@ type Requirements struct {
 func (rs *Requirements) String() string
 
 // GoVersion returns the Go language version for the Requirements.
-func (rs *Requirements) GoVersion(loaderstate *State) string
+func (rs *Requirements) GoVersion(ld *Loader) string
 
 // Graph returns the graph of module requirements loaded from the current
 // root modules (as reported by RootModules).
@@ -81,7 +81,7 @@ func (rs *Requirements) GoVersion(loaderstate *State) string
 //
 // If the requirements of any relevant module fail to load, Graph also
 // returns a non-nil error of type *mvs.BuildListError.
-func (rs *Requirements) Graph(loaderstate *State, ctx context.Context) (*ModuleGraph, error)
+func (rs *Requirements) Graph(ld *Loader, ctx context.Context) (*ModuleGraph, error)
 
 // IsDirect returns whether the given module provides a package directly
 // imported by a package or test in the main module.
@@ -137,7 +137,7 @@ func (mg *ModuleGraph) BuildList() []module.Version
 // Modules are loaded automatically (and lazily) in LoadPackages:
 // LoadModGraph need only be called if LoadPackages is not,
 // typically in commands that care about modules but no particular package.
-func LoadModGraph(loaderstate *State, ctx context.Context, goVersion string) (*ModuleGraph, error)
+func LoadModGraph(ld *Loader, ctx context.Context, goVersion string) (*ModuleGraph, error)
 
 // EditBuildList edits the global build list by first adding every module in add
 // to the existing build list, then adjusting versions (and adding or removing
@@ -155,7 +155,7 @@ func LoadModGraph(loaderstate *State, ctx context.Context, goVersion string) (*M
 // On success, EditBuildList reports whether the selected version of any module
 // in the build list may have been changed (possibly to or from "none") as a
 // result.
-func EditBuildList(loaderstate *State, ctx context.Context, add, mustSelect []module.Version) (changed bool, err error)
+func EditBuildList(ld *Loader, ctx context.Context, add, mustSelect []module.Version) (changed bool, err error)
 
 // A ConstraintError describes inconsistent constraints in EditBuildList
 type ConstraintError struct {
