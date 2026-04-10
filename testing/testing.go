@@ -478,9 +478,10 @@ type T struct {
 }
 
 // Parallel signals that this test is to be run in parallel with (and only with)
-// other parallel tests. When a test is run multiple times due to use of
-// -test.count or -test.cpu, multiple instances of a single test never run in
-// parallel with each other.
+// other parallel tests, and pauses until all non-parallel tests have finished.
+//
+// When a test is run multiple times due to use of -test.count or -test.cpu,
+// multiple instances of a single test never run in parallel with each other.
 func (t *T) Parallel()
 
 // Setenv calls os.Setenv(key, value) and uses Cleanup to
