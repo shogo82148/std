@@ -37,6 +37,9 @@ type Server struct {
 	// certificate is a parsed version of the TLS config certificate, if present.
 	certificate *x509.Certificate
 
+	// started indicates whether the server has been started.
+	started bool
+
 	// wg counts the number of outstanding HTTP requests on this server.
 	// Close blocks until all requests are finished.
 	wg sync.WaitGroup
