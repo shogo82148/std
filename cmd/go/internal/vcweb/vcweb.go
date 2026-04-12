@@ -15,7 +15,7 @@
 // until the script is modified.
 //
 // The script engine includes all of the engine's default commands and
-// conditions, as well as commands for each supported VCS binary (bzr, fossil,
+// conditions, as well as commands for each supported VCS binary (fossil,
 // git, hg, and svn), a "handle" command that informs the script which protocol
 // or handler to use to serve the request, and utilities "at" (which sets
 // environment variables for Git timestamps) and "unquote" (which unquotes its
