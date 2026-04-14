@@ -13,6 +13,11 @@ var PNn_imm___Pd_T = []operand{
 	a_ARNG_Pd_SizeBHSD2224,
 }
 
+var PNn_imm____Pd1_T__Pd2_T_ = []operand{
+	a_PREGIDX_PnN_58_Noop_I189,
+	a_REGLIST2_Pd04_SizeBHSD2224_Pd04Plus1_SizeBHSD2224,
+}
+
 var Pd_B = []operand{
 	a_ARNG_Pd_ArngBCheck,
 }
@@ -155,14 +160,20 @@ var Rm__Zdn_T = []operand{
 	a_ARNG_ZdnSrcDst_SizeBHSD2224,
 }
 
+var Rm__cimm__Zd_T = []operand{
+	a_SPZGREG_Noop_Rm1621ZR,
+	a_IMM_Imm5Signed510Unique,
+	a_ARNG_Zd_SizeBHSD2224,
+}
+
 var RnSP__PgM__Zd_T = []operand{
-	a_SPZGREG_Noop_Rn510SP,
+	a_SPZGREG_Noop_Rn510SPV1,
 	a_PREGZM_Pg1013_MergePredCheck,
 	a_ARNG_Zd_SizeBHSD2224,
 }
 
 var RnSP__Zd_T = []operand{
-	a_SPZGREG_Noop_Rn510SP,
+	a_SPZGREG_Noop_Rn510SPV1,
 	a_ARNG_Zd_SizeBHSD2224,
 }
 
@@ -184,14 +195,953 @@ var Wdn__Pm_T__Xdn = []operand{
 }
 
 var Xm__Xn__Pd_T = []operand{
-	a_SPZGREG_Noop_Rm1621,
+	a_SPZGREG_Noop_Rm1621V1,
 	a_SPZGREG_Noop_Rn510,
 	a_ARNG_Pd_SizeBHSD2224,
 }
 
+var Xm__Xn___Pd1_T__Pd2_T_ = []operand{
+	a_SPZGREG_Noop_Rm1621V1,
+	a_SPZGREG_Noop_Rn510,
+	a_REGLIST2_Pd14_SizeBHSD2224_Pd14Plus1_SizeBHSD2224,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt1_H__Zt2_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngHCheck_Zt052_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt1_H__Zt2_H__Zt3_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt1_H__Zt2_H__Zt3_H__Zt4_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck_Zt054_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt_D__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt_H__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c1___PgZ___Zt_S__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c1___Pg___Zt1_H__Zt2_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngHCheck_Zt052_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___Pg___Zt1_H__Zt2_H__Zt3_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___Pg___Zt1_H__Zt2_H__Zt3_H__Zt4_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck_Zt054_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___Pg___Zt_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__Xm__LSL_c1___Pg___Zt_T_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_Size2123V2,
+}
+
+var XnSP__Xm__LSL_c1___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Xm__LSL_c2___PgZ___Zt1_S__Zt2_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngSCheck_Zt052_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___PgZ___Zt1_S__Zt2_S__Zt3_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___PgZ___Zt1_S__Zt2_S__Zt3_S__Zt4_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck_Zt054_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c2___PgZ___Zt_D__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c2___PgZ___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___PgZ___Zt_S__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___Pg___Zt1_S__Zt2_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngSCheck_Zt052_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___Pg___Zt1_S__Zt2_S__Zt3_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___Pg___Zt1_S__Zt2_S__Zt3_S__Zt4_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck_Zt054_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___Pg___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Xm__LSL_c2___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Xm__LSL_c3___PgZ___Zt1_D__Zt2_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngDCheck_Zt052_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___PgZ___Zt1_D__Zt2_D__Zt3_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___PgZ___Zt1_D__Zt2_D__Zt3_D__Zt4_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck_Zt054_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___PgZ___Zt_D__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___Pg___Zt1_D__Zt2_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngDCheck_Zt052_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___Pg___Zt1_D__Zt2_D__Zt3_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___Pg___Zt1_D__Zt2_D__Zt3_D__Zt4_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck_Zt054_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm__LSL_c3___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Xm__LSL_c4___PgZ___Zt1_Q__Zt2_Q_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngQCheck_Zt052_ArngQCheck,
+}
+
+var XnSP__Xm__LSL_c4___PgZ___Zt1_Q__Zt2_Q__Zt3_Q_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck,
+}
+
+var XnSP__Xm__LSL_c4___PgZ___Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
+}
+
+var XnSP__Xm__LSL_c4___Pg___Zt1_Q__Zt2_Q_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngQCheck_Zt052_ArngQCheck,
+}
+
+var XnSP__Xm__LSL_c4___Pg___Zt1_Q__Zt2_Q__Zt3_Q_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck,
+}
+
+var XnSP__Xm__LSL_c4___Pg___Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
+}
+
+var XnSP__Xm___PgZ___Zt1_B__Zt2_B_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngBCheck_Zt052_ArngBCheck,
+}
+
+var XnSP__Xm___PgZ___Zt1_B__Zt2_B__Zt3_B_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck,
+}
+
+var XnSP__Xm___PgZ___Zt1_B__Zt2_B__Zt3_B__Zt4_B_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck_Zt054_ArngBCheck,
+}
+
+var XnSP__Xm___PgZ___Zt_B_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngBCheck,
+}
+
+var XnSP__Xm___PgZ___Zt_B__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngBCheck,
+}
+
+var XnSP__Xm___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm___PgZ___Zt_D__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Xm___PgZ___Zt_H_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__Xm___PgZ___Zt_H__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__Xm___PgZ___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Xm___PgZ___Zt_S__V2 = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Xm___Pg___Zt1_B__Zt2_B_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngBCheck_Zt052_ArngBCheck,
+}
+
+var XnSP__Xm___Pg___Zt1_B__Zt2_B__Zt3_B_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck,
+}
+
+var XnSP__Xm___Pg___Zt1_B__Zt2_B__Zt3_B__Zt4_B_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck_Zt054_ArngBCheck,
+}
+
+var XnSP__Xm___Pg___Zt_B_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngBCheck,
+}
+
+var XnSP__Xm___Pg___Zt_T_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_Size2123V1,
+}
+
+var XnSP__Xm___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_D__LSL_c1___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__LSL_c1___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__LSL_c1___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_D__LSL_c2___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__LSL_c2___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__LSL_c2___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_D__LSL_c3___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt3Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__LSL_c3___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__LSL_c3___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_D___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_D__mod___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__mod___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__mod___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_D__mod_c1___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__mod_c1___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__mod_c1___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_D__mod_c2___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__mod_c2___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__mod_c2___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_D__mod_c3___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt3Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__mod_c3___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__Zm_D__mod_c3___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_S__mod___PgZ___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Zm_S__mod___Pg___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Zm_S__mod___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_S__mod_c1___PgZ___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_ModAmt1Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Zm_S__mod_c1___Pg___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Zm_S__mod_c1___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_ModAmt1Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_S__mod_c2___PgZ___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_ModAmt2Check,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Zm_S__mod_c2___Pg___Zt_S_ = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__Zm_S__mod_c2___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_ModAmt2Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__Zm_S__mod_c3___Pg__prfop = []operand{
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_ModAmt3Check,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_B__Zt2_B_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngBCheck_Zt052_ArngBCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_B__Zt2_B__Zt3_B_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_B__Zt2_B__Zt3_B__Zt4_B_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck_Zt054_ArngBCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_D__Zt2_D_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngDCheck_Zt052_ArngDCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_D__Zt2_D__Zt3_D_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_D__Zt2_D__Zt3_D__Zt4_D_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck_Zt054_ArngDCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_H__Zt2_H_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngHCheck_Zt052_ArngHCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_H__Zt2_H__Zt3_H_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_H__Zt2_H__Zt3_H__Zt4_H_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck_Zt054_ArngHCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_Q__Zt2_Q_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngQCheck_Zt052_ArngQCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_Q__Zt2_Q__Zt3_Q_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_S__Zt2_S_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST2_Zt051_ArngSCheck_Zt052_ArngSCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_S__Zt2_S__Zt3_S_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST3_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt1_S__Zt2_S__Zt3_S__Zt4_S_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST4_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck_Zt054_ArngSCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt_B_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngBCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt_D_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt_H_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__cimm__MUL_VL___PgZ___Zt_S_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_B__Zt2_B_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngBCheck_Zt052_ArngBCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_B__Zt2_B__Zt3_B_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_B__Zt2_B__Zt3_B__Zt4_B_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck_Zt054_ArngBCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_D__Zt2_D_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngDCheck_Zt052_ArngDCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_D__Zt2_D__Zt3_D_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_D__Zt2_D__Zt3_D__Zt4_D_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck_Zt054_ArngDCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_H__Zt2_H_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngHCheck_Zt052_ArngHCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_H__Zt2_H__Zt3_H_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_H__Zt2_H__Zt3_H__Zt4_H_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck_Zt054_ArngHCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_Q__Zt2_Q_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngQCheck_Zt052_ArngQCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_Q__Zt2_Q__Zt3_Q_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_S__Zt2_S_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST2_Zt051_ArngSCheck_Zt052_ArngSCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_S__Zt2_S__Zt3_S_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST3_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt1_S__Zt2_S__Zt3_S__Zt4_S_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST4_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck_Zt054_ArngSCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt_B_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngBCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt_D_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt_H_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt_S_ = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt_T___1 = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_Size2123V1,
+}
+
+var XnSP__cimm__MUL_VL___Pg___Zt_T___2 = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_Size2123V2,
+}
+
+var XnSP__cimm__MUL_VL___Pg__prfop = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm61622V5,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var XnSP__cimm__MUL_VL___Pt__1 = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm9h1622L1013,
+	a_PREG_Pt04V1_Noop,
+}
+
+var XnSP__cimm__MUL_VL___Pt__2 = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm9h1622L1013,
+	a_PREG_Pt04V2_Noop,
+}
+
+var XnSP__cimm__MUL_VL___Zt = []operand{
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm9h1622L1013,
+	a_ZREG_Zt05_Noop,
+}
+
+var XnSP__cimm___PgZ___Zt_B___1 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngBCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_B___2 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm41620V2,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngBCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_B___3 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm41620V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngBCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_D___1 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_D___2 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_D___3 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V2,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_D___4 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V3,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_D___5 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm41620V2,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_D___6 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm41620V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_H___1 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_H___2 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_H___3 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm41620V2,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_H___4 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm41620V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngHCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_S___1 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_S___2 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_S___3 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm41620V2,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_S___4 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm41620V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var XnSP__cimm___PgZ___Zt_S___5 = []operand{
+	a_MEMOFF_Rn510SPV2_Noop_Imm61622V2,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
 var Za_D__Zm_D__Zdn_D = []operand{
 	a_ARNG_Za5103Rd_ArngDCheck,
-	a_ARNG_Zm1621_ArngDCheck,
+	a_ARNG_Zm1621V2_ArngDCheck,
 	a_ARNG_ZdnDest_ArngDCheck,
 }
 
@@ -204,7 +1154,7 @@ var Za_T__Zm_T__PgM__Zdn_T__1 = []operand{
 
 var Za_T__Zm_T__PgM__Zdn_T__2 = []operand{
 	a_ARNG_Za5103Rd_SizeBHSD2224,
-	a_ARNG_Zm1621_SizeBHSD2224,
+	a_ARNG_Zm1621V2_SizeBHSD2224,
 	a_PREGZM_Pg1013_MergePredCheck,
 	a_ARNG_ZdnDest_SizeBHSD2224,
 }
@@ -216,7 +1166,7 @@ var Zdn_B__Zdn_B = []operand{
 
 var Zk_D__Zm_D__Zdn_D__Zdn_D = []operand{
 	a_ARNG_Zk5103Rd_ArngDCheck,
-	a_ARNG_Zm1621_ArngDCheck,
+	a_ARNG_Zm1621V2_ArngDCheck,
 	a_ARNG_ZdnDest_ArngDCheck,
 	a_ARNG_ZdnDest_ArngDCheck,
 }
@@ -228,56 +1178,56 @@ var Zm_B__Zdn_B__Zdn_B = []operand{
 }
 
 var Zm_B__Zn_B__Zd_B = []operand{
-	a_ARNG_Zm1621_ArngBCheck,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNG_Zm1621V2_ArngBCheck,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zd_ArngBCheck,
 }
 
 var Zm_B__Zn_B__Zda_H = []operand{
-	a_ARNG_Zm1621_ArngBCheck,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNG_Zm1621V2_ArngBCheck,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_B__Zn_B__Zda_S = []operand{
-	a_ARNG_Zm1621_ArngBCheck,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNG_Zm1621V2_ArngBCheck,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_B_imm___Zn_B__Zda_H__1 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngBCheck_I4hI4l_1019,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngBCheck_I4hI4l_1019,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_B_imm___Zn_B__Zda_H__2 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngBCheck_I3hI3l_1923_8To16Bit,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngBCheck_I3hI3l_1923_8To16Bit,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_B_imm___Zn_B__Zda_H__3 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngBCheck_I3hI3l_1119_Pair8Bit,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngBCheck_I3hI3l_1119_Pair8Bit,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_B_imm___Zn_B__Zda_S__1 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngBCheck_I4hI4l_1019,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngBCheck_I4hI4l_1019,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_B_imm___Zn_B__Zda_S__2 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngBCheck_I2_1921_8BitGroup,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngBCheck_I2_1921_8BitGroup,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_B_imm___Zn_B__Zda_S__3 = []operand{
 	a_ARNGIDX_Zm1619_8To32Bit_ArngBCheck_I2_1921_8To32Bit,
-	a_ARNG_Zn510_ArngBCheck,
+	a_ARNG_Zn510V1_ArngBCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
@@ -296,57 +1246,57 @@ var Zm_D__Zdn_T__PgM__Zdn_T = []operand{
 }
 
 var Zm_D__Zn_D__Zd_D = []operand{
-	a_ARNG_Zm1621_ArngDCheck,
-	a_ARNG_Zn510_ArngDCheck,
+	a_ARNG_Zm1621V2_ArngDCheck,
+	a_ARNG_Zn510V1_ArngDCheck,
 	a_ARNG_Zd_ArngDCheck,
 }
 
 var Zm_D__Zn_D__Zd_Q = []operand{
-	a_ARNG_Zm1621_ArngDCheck,
-	a_ARNG_Zn510_ArngDCheck,
+	a_ARNG_Zm1621V2_ArngDCheck,
+	a_ARNG_Zn510V1_ArngDCheck,
 	a_ARNG_Zd_ArngQCheck,
 }
 
 var Zm_D__Zn_D__Zda_D = []operand{
-	a_ARNG_Zm1621_ArngDCheck,
-	a_ARNG_Zn510_ArngDCheck,
+	a_ARNG_Zm1621V2_ArngDCheck,
+	a_ARNG_Zn510V1_ArngDCheck,
 	a_ARNG_Zda3RdSrcDst_ArngDCheck,
 }
 
 var Zm_D__Zn_T__PgZ__Pd_T = []operand{
-	a_ARNG_Zm1621_ArngDCheck,
-	a_ARNG_Zn510_SizeBHS2224,
+	a_ARNG_Zm1621V2_ArngDCheck,
+	a_ARNG_Zn510V1_SizeBHS2224,
 	a_PREGZM_Pg1013_ZeroPredCheck,
 	a_ARNG_Pd_SizeBHS2224,
 }
 
 var Zm_D__Zn_T__Zd_T = []operand{
-	a_ARNG_Zm1621_ArngDCheck,
-	a_ARNG_Zn510_SizeBHS2224,
+	a_ARNG_Zm1621V2_ArngDCheck,
+	a_ARNG_Zn510V1_SizeBHS2224,
 	a_ARNG_Zd_SizeBHS2224,
 }
 
 var Zm_D_imm___Zn_D__Zd_D__1 = []operand{
 	a_ARNGIDX_Zm1620_64Bit_ArngDCheck_I1_2021_64Bit,
-	a_ARNG_Zn510_ArngDCheck,
+	a_ARNG_Zn510V1_ArngDCheck,
 	a_ARNG_Zd_ArngDCheck,
 }
 
 var Zm_D_imm___Zn_D__Zd_D__2 = []operand{
 	a_ARNGIDX_Zm1620_DoublePrecision_ArngDCheck_I1_2021_DoublePrecision,
-	a_ARNG_Zn510_ArngDCheck,
+	a_ARNG_Zn510V1_ArngDCheck,
 	a_ARNG_Zd_ArngDCheck,
 }
 
 var Zm_D_imm___Zn_D__Zda_D__1 = []operand{
 	a_ARNGIDX_Zm1620_64Bit_ArngDCheck_I1_2021_64Bit,
-	a_ARNG_Zn510_ArngDCheck,
+	a_ARNG_Zn510V1_ArngDCheck,
 	a_ARNG_Zda3RdSrcDst_ArngDCheck,
 }
 
 var Zm_D_imm___Zn_D__Zda_D__2 = []operand{
 	a_ARNGIDX_Zm1620_DoublePrecision_ArngDCheck_I1_2021_DoublePrecision,
-	a_ARNG_Zn510_ArngDCheck,
+	a_ARNG_Zn510V1_ArngDCheck,
 	a_ARNG_Zda3RdSrcDst_ArngDCheck,
 }
 
@@ -358,105 +1308,105 @@ var Zm_H__Zdn_H__PgM__Zdn_H = []operand{
 }
 
 var Zm_H__Zn_H__PgM__Zda_H = []operand{
-	a_ARNG_Zm1621_ArngHCheck,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zm1621V2_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_PREGZM_Pg1013_MergePredCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_H__Zn_H__Zd_H = []operand{
-	a_ARNG_Zm1621_ArngHCheck,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zm1621V2_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zd_ArngHCheck,
 }
 
 var Zm_H__Zn_H__Zda_H = []operand{
-	a_ARNG_Zm1621_ArngHCheck,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zm1621V2_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_H__Zn_H__Zda_S = []operand{
-	a_ARNG_Zm1621_ArngHCheck,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zm1621V2_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_H_imm___Zn_H__Zd_H__1 = []operand{
 	a_ARNGIDX_Zm1619_16Bit32Bit_ArngHCheck_I3hI3l_1923_16Bit,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zd_ArngHCheck,
 }
 
 var Zm_H_imm___Zn_H__Zd_H__2 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngHCheck_I3hI3l_1922,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngHCheck_I3hI3l_1922,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zd_ArngHCheck,
 }
 
 var Zm_H_imm___Zn_H__Zd_H__3 = []operand{
 	a_ARNGIDX_Zm1619_HalfSinglePrecision_ArngHCheck_I3hI3l_1923_HalfPrecision,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zd_ArngHCheck,
 }
 
 var Zm_H_imm___Zn_H__Zd_S = []operand{
 	a_ARNGIDX_Zm1619_32Bit_ArngHCheck_I3hI3l_1119_32Bit,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zd_ArngSCheck,
 }
 
 var Zm_H_imm___Zn_H__Zda_D = []operand{
 	a_ARNGIDX_Zm1620_16To64Bit_ArngHCheck_I1_2021_16To64Bit,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngDCheck,
 }
 
 var Zm_H_imm___Zn_H__Zda_H__1 = []operand{
 	a_ARNGIDX_Zm1619_16Bit32Bit_ArngHCheck_I3hI3l_1923_16Bit,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_H_imm___Zn_H__Zda_H__2 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngHCheck_I3hI3l_1922,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngHCheck_I3hI3l_1922,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_H_imm___Zn_H__Zda_H__3 = []operand{
 	a_ARNGIDX_Zm1619_HalfSinglePrecision_ArngHCheck_I3hI3l_1923_HalfPrecision,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngHCheck,
 }
 
 var Zm_H_imm___Zn_H__Zda_S__1 = []operand{
 	a_ARNGIDX_Zm1619_32Bit_ArngHCheck_I3hI3l_1119_32Bit,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_H_imm___Zn_H__Zda_S__2 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngHCheck_I3hI3l_1119,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngHCheck_I3hI3l_1119,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_H_imm___Zn_H__Zda_S__3 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngHCheck_I2_1921_Pair16Bit,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngHCheck_I2_1921_Pair16Bit,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_H_imm___Zn_H__Zda_S__4 = []operand{
-	a_ARNGIDX_Zm_1619_Range0_7_ArngHCheck_I2_1921_16To32Bit,
-	a_ARNG_Zn510_ArngHCheck,
+	a_ARNGIDX_Zm_1619_Range0_7V2_ArngHCheck_I2_1921_16To32Bit,
+	a_ARNG_Zn510V1_ArngHCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_Q__Zn_Q__Zd_Q = []operand{
-	a_ARNG_Zm1621_ArngQCheck,
-	a_ARNG_Zn510_ArngQCheck,
+	a_ARNG_Zm1621V2_ArngQCheck,
+	a_ARNG_Zn510V1_ArngQCheck,
 	a_ARNG_Zd_ArngQCheck,
 }
 
@@ -467,50 +1417,50 @@ var Zm_S__Zdn_S__Zdn_S = []operand{
 }
 
 var Zm_S__Zn_S__Zd_S = []operand{
-	a_ARNG_Zm1621_ArngSCheck,
-	a_ARNG_Zn510_ArngSCheck,
+	a_ARNG_Zm1621V2_ArngSCheck,
+	a_ARNG_Zn510V1_ArngSCheck,
 	a_ARNG_Zd_ArngSCheck,
 }
 
 var Zm_S__Zn_S__Zda_S = []operand{
-	a_ARNG_Zm1621_ArngSCheck,
-	a_ARNG_Zn510_ArngSCheck,
+	a_ARNG_Zm1621V2_ArngSCheck,
+	a_ARNG_Zn510V1_ArngSCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_S_imm___Zn_S__Zd_D = []operand{
 	a_ARNGIDX_Zm1620_64Bit_ArngSCheck_I2hI2l_1120_64Bit,
-	a_ARNG_Zn510_ArngSCheck,
+	a_ARNG_Zn510V1_ArngSCheck,
 	a_ARNG_Zd_ArngDCheck,
 }
 
 var Zm_S_imm___Zn_S__Zd_S__1 = []operand{
 	a_ARNGIDX_Zm1619_16Bit32Bit_ArngSCheck_I2_1921_32Bit,
-	a_ARNG_Zn510_ArngSCheck,
+	a_ARNG_Zn510V1_ArngSCheck,
 	a_ARNG_Zd_ArngSCheck,
 }
 
 var Zm_S_imm___Zn_S__Zd_S__2 = []operand{
 	a_ARNGIDX_Zm1619_HalfSinglePrecision_ArngSCheck_I2_1921_SinglePrecision,
-	a_ARNG_Zn510_ArngSCheck,
+	a_ARNG_Zn510V1_ArngSCheck,
 	a_ARNG_Zd_ArngSCheck,
 }
 
 var Zm_S_imm___Zn_S__Zda_D = []operand{
 	a_ARNGIDX_Zm1620_64Bit_ArngSCheck_I2hI2l_1120_64Bit,
-	a_ARNG_Zn510_ArngSCheck,
+	a_ARNG_Zn510V1_ArngSCheck,
 	a_ARNG_Zda3RdSrcDst_ArngDCheck,
 }
 
 var Zm_S_imm___Zn_S__Zda_S__1 = []operand{
 	a_ARNGIDX_Zm1619_16Bit32Bit_ArngSCheck_I2_1921_32Bit,
-	a_ARNG_Zn510_ArngSCheck,
+	a_ARNG_Zn510V1_ArngSCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
 var Zm_S_imm___Zn_S__Zda_S__2 = []operand{
 	a_ARNGIDX_Zm1619_HalfSinglePrecision_ArngSCheck_I2_1921_SinglePrecision,
-	a_ARNG_Zn510_ArngSCheck,
+	a_ARNG_Zn510V1_ArngSCheck,
 	a_ARNG_Zda3RdSrcDst_ArngSCheck,
 }
 
@@ -578,118 +1528,172 @@ var Zm_T__Zdn_T__Pv__Zdn_T = []operand{
 }
 
 var Zm_T__Zn_T__PgM__Zda_T__1 = []operand{
-	a_ARNG_Zm1621_SizeHSD2224No00,
-	a_ARNG_Zn510_SizeHSD2224No00,
+	a_ARNG_Zm1621V2_SizeHSD2224No00,
+	a_ARNG_Zn510V1_SizeHSD2224No00,
 	a_PREGZM_Pg1013_MergePredCheck,
 	a_ARNG_Zda3RdSrcDst_SizeHSD2224No00,
 }
 
 var Zm_T__Zn_T__PgM__Zda_T__2 = []operand{
-	a_ARNG_Zm1621_SizeBHSD2224,
-	a_ARNG_Zn510_SizeBHSD2224,
+	a_ARNG_Zm1621V2_SizeBHSD2224,
+	a_ARNG_Zn510V1_SizeBHSD2224,
 	a_PREGZM_Pg1013_MergePredCheck,
 	a_ARNG_Zda3RdSrcDst_SizeBHSD2224,
 }
 
 var Zm_T__Zn_T__PgZ__Pd_T__1 = []operand{
-	a_ARNG_Zm1621_SizeHSD2224,
-	a_ARNG_Zn510_SizeHSD2224,
+	a_ARNG_Zm1621V2_SizeHSD2224,
+	a_ARNG_Zn510V1_SizeHSD2224,
 	a_PREGZM_Pg1013_ZeroPredCheck,
 	a_ARNG_Pd_SizeHSD2224,
 }
 
 var Zm_T__Zn_T__PgZ__Pd_T__2 = []operand{
-	a_ARNG_Zm1621_SizeBHSD2224,
-	a_ARNG_Zn510_SizeBHSD2224,
+	a_ARNG_Zm1621V2_SizeBHSD2224,
+	a_ARNG_Zn510V1_SizeBHSD2224,
 	a_PREGZM_Pg1013_ZeroPredCheck,
 	a_ARNG_Pd_SizeBHSD2224,
 }
 
 var Zm_T__Zn_T__PgZ__Pd_T__3 = []operand{
-	a_ARNG_Zm1621_Size0BH2223,
-	a_ARNG_Zn510_Size0BH2223,
+	a_ARNG_Zm1621V2_Size0BH2223,
+	a_ARNG_Zn510V1_Size0BH2223,
 	a_PREGZM_Pg1013_ZeroPredCheck,
 	a_ARNG_Pd_Size0BH2223,
 }
 
 var Zm_T__Zn_T__PgZ__Zd_T = []operand{
-	a_ARNG_Zm1621_Size0SD2223,
-	a_ARNG_Zn510_Size0SD2223,
+	a_ARNG_Zm1621V2_Size0SD2223,
+	a_ARNG_Zn510V1_Size0SD2223,
 	a_PREGZM_Pg1013_ZeroPredCheck,
 	a_ARNG_Zd_Size0SD2223,
 }
 
 var Zm_T__Zn_T__Pv__Zd_T = []operand{
-	a_ARNG_Zm1621_SizeBHSD2224,
-	a_ARNG_Zn510_SizeBHSD2224,
+	a_ARNG_Zm1621V2_SizeBHSD2224,
+	a_ARNG_Zn510V1_SizeBHSD2224,
 	a_PREG_Pv1014_Noop,
 	a_ARNG_Zd_SizeBHSD2224,
 }
 
 var Zm_T__Zn_T__Zd_T__1 = []operand{
-	a_ARNG_Zm1621_SizeBHSD2224,
-	a_ARNG_Zn510_SizeBHSD2224,
+	a_ARNG_Zm1621V2_SizeBHSD2224,
+	a_ARNG_Zn510V1_SizeBHSD2224,
 	a_ARNG_Zd_SizeBHSD2224,
 }
 
 var Zm_T__Zn_T__Zd_T__2 = []operand{
-	a_ARNG_Zm1621_SizeHSD2224No00,
-	a_ARNG_Zn510_SizeHSD2224No00,
+	a_ARNG_Zm1621V2_SizeHSD2224No00,
+	a_ARNG_Zn510V1_SizeHSD2224No00,
 	a_ARNG_Zd_SizeHSD2224No00,
 }
 
 var Zm_T__Zn_T__Zd_T__3 = []operand{
-	a_ARNG_Zm1621_SizeHSD2224,
-	a_ARNG_Zn510_SizeHSD2224,
+	a_ARNG_Zm1621V2_SizeHSD2224,
+	a_ARNG_Zn510V1_SizeHSD2224,
 	a_ARNG_Zd_SizeHSD2224,
 }
 
 var Zm_T__Zn_T__Zda_T__1 = []operand{
-	a_ARNG_Zm1621_SzSD2223,
-	a_ARNG_Zn510_SzSD2223,
+	a_ARNG_Zm1621V2_SzSD2223,
+	a_ARNG_Zn510V1_SzSD2223,
 	a_ARNG_Zda3RdSrcDst_SzSD2223,
 }
 
 var Zm_T__Zn_T__Zda_T__2 = []operand{
-	a_ARNG_Zm1621_SizeBHSD2224,
-	a_ARNG_Zn510_SizeBHSD2224,
+	a_ARNG_Zm1621V2_SizeBHSD2224,
+	a_ARNG_Zn510V1_SizeBHSD2224,
 	a_ARNG_Zda3RdSrcDst_SizeBHSD2224,
 }
 
+var Zm_T___Zn_T___Zd_T = []operand{
+	a_ARNG_Zm1621V2_SizeBHSD2224,
+	a_REGLIST1_Zn510V1_SizeBHSD2224,
+	a_ARNG_Zd_SizeBHSD2224,
+}
+
 var Zm_Tb__Zn_T__Zd_T = []operand{
-	a_ARNG_Zm1621_SizeTbBHS2224,
-	a_ARNG_Zn510_SizeHSD2224,
+	a_ARNG_Zm1621V2_SizeTbBHS2224,
+	a_ARNG_Zn510V1_SizeHSD2224,
 	a_ARNG_Zd_SizeHSD2224,
 }
 
 var Zm_Tb__Zn_Tb__Zd_T__1 = []operand{
-	a_ARNG_Zm1621_SizeTbBHS2224,
-	a_ARNG_Zn510_SizeTbBHS2224,
+	a_ARNG_Zm1621V2_SizeTbBHS2224,
+	a_ARNG_Zn510V1_SizeTbBHS2224,
 	a_ARNG_Zd_SizeHSD2224,
 }
 
 var Zm_Tb__Zn_Tb__Zd_T__2 = []operand{
-	a_ARNG_Zm1621_SizeTbHSD2224Offset1,
-	a_ARNG_Zn510_SizeTbHSD2224Offset1,
+	a_ARNG_Zm1621V2_SizeTbHSD2224Offset1,
+	a_ARNG_Zn510V1_SizeTbHSD2224Offset1,
 	a_ARNG_Zd_SizeBHS2224Offset1,
 }
 
 var Zm_Tb__Zn_Tb__Zd_T__3 = []operand{
-	a_ARNG_Zm1621_SizeTbBS2224,
-	a_ARNG_Zn510_SizeTbBS2224,
+	a_ARNG_Zm1621V2_SizeTbBS2224,
+	a_ARNG_Zn510V1_SizeTbBS2224,
 	a_ARNG_Zd_SizeHD2224,
 }
 
 var Zm_Tb__Zn_Tb__Zda_T__1 = []operand{
-	a_ARNG_Zm1621_SizeTbBHS2224,
-	a_ARNG_Zn510_SizeTbBHS2224,
+	a_ARNG_Zm1621V2_SizeTbBHS2224,
+	a_ARNG_Zn510V1_SizeTbBHS2224,
 	a_ARNG_Zda3RdSrcDst_SizeHSD2224,
 }
 
 var Zm_Tb__Zn_Tb__Zda_T__2 = []operand{
-	a_ARNG_Zm1621_Size0TbBH2223,
-	a_ARNG_Zn510_Size0TbBH2223,
+	a_ARNG_Zm1621V2_Size0TbBH2223,
+	a_ARNG_Zn510V1_Size0TbBH2223,
 	a_ARNG_Zda3RdSrcDst_Size0SD2223,
+}
+
+var Zm___Zn1_B__Zn2_B___Zd_B = []operand{
+	a_ZREG_Zm1621V1_Noop,
+	a_REGLIST2_Zn510Table1_ArngBCheck_Zn510Table2_ArngBCheck,
+	a_ARNG_Zd_ArngBCheck,
+}
+
+var Zm_index____Zn1_H__Zn2_H___Zd_H__1 = []operand{
+	a_ZREGIDX_Zm1621V1_Noop_I22224HW,
+	a_REGLIST2_Zn510Table1_ArngHCheck_Zn510Table2_ArngHCheck,
+	a_ARNG_Zd_ArngHCheck,
+}
+
+var Zm_index____Zn1_H__Zn2_H___Zd_H__2 = []operand{
+	a_ZREGIDX_Zm1621V1_Noop_I12324,
+	a_REGLIST2_Zn510Table1_ArngHCheck_Zn510Table2_ArngHCheck,
+	a_ARNG_Zd_ArngHCheck,
+}
+
+var Zm_index____Zn_B___Zd_B__1 = []operand{
+	a_ZREGIDX_Zm1621V1_Noop_I22224,
+	a_REGLIST1_Zn510Table3_ArngBCheck,
+	a_ARNG_Zd_ArngBCheck,
+}
+
+var Zm_index____Zn_B___Zd_B__2 = []operand{
+	a_ZREGIDX_Zm1621V1_Noop_I12324B,
+	a_REGLIST1_Zn510Table3_ArngBCheck,
+	a_ARNG_Zd_ArngBCheck,
+}
+
+var Zm_index____Zn_H___Zd_H__1 = []operand{
+	a_ZREGIDX_Zm1621V1_Noop_I3224I31213,
+	a_REGLIST1_Zn510Table3_ArngHCheck,
+	a_ARNG_Zd_ArngHCheck,
+}
+
+var Zm_index____Zn_H___Zd_H__2 = []operand{
+	a_ZREGIDX_Zm1621V1_Noop_I22224HW,
+	a_REGLIST1_Zn510Table3_ArngHCheck,
+	a_ARNG_Zd_ArngHCheck,
+}
+
+var Zn1_T__Zn2_T___Pv__Zd_T = []operand{
+	a_REGLIST2_Zn510MultiSrc1_SizeBHSD2224_Zn510MultiSrc2_SizeBHSD2224,
+	a_PREG_Pv1013_Noop,
+	a_ARNG_Zd_SizeBHSD2224,
 }
 
 var Zn_B__Zd_H = []operand{
@@ -731,6 +1735,112 @@ var Zn_D__PgZ__Zd_S = []operand{
 	a_ARNG_Zn510Src_ArngDCheck,
 	a_PREGZM_Pg1013_ZeroPredCheck,
 	a_ARNG_Zd_ArngSCheck,
+}
+
+var Zn_D__Xm___PgZ___Zt_D_ = []operand{
+	a_MEMEXT_Zn510V2_ArngDCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__Xm___PgZ___Zt_Q_ = []operand{
+	a_MEMEXT_Zn510V2_ArngDCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngQCheck,
+}
+
+var Zn_D__Xm___Pg___Zt_D_ = []operand{
+	a_MEMEXT_Zn510V2_ArngDCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__Xm___Pg___Zt_Q_ = []operand{
+	a_MEMEXT_Zn510V2_ArngDCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngQCheck,
+}
+
+var Zn_D__Zm_D__SXTWamount___Zd_D = []operand{
+	a_MEMEXT_Zn510V2_ArngDCheck_Zm1621V3_ArngDCheck_ModSXTWCheck_Msz1012Amount,
+	a_ARNG_Zd_ArngDCheck,
+}
+
+var Zn_D__Zm_D__UXTWamount___Zd_D = []operand{
+	a_MEMEXT_Zn510V2_ArngDCheck_Zm1621V3_ArngDCheck_ModUXTWCheck_Msz1012Amount,
+	a_ARNG_Zd_ArngDCheck,
+}
+
+var Zn_D__cimm___PgZ___Zt_D___1 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__cimm___PgZ___Zt_D___2 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__cimm___PgZ___Zt_D___3 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V2,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__cimm___PgZ___Zt_D___4 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V3,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__cimm___Pg___Zt_D___1 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V4,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__cimm___Pg___Zt_D___2 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V3,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__cimm___Pg___Zt_D___3 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V1,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__cimm___Pg___Zt_D___4 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V2,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngDCheck,
+}
+
+var Zn_D__cimm___Pg__prfop__1 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V4,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var Zn_D__cimm___Pg__prfop__2 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V3,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var Zn_D__cimm___Pg__prfop__3 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V1,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var Zn_D__cimm___Pg__prfop__4 = []operand{
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V2,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
 }
 
 var Zn_H__PgM__Zd_D = []operand{
@@ -815,6 +1925,78 @@ var Zn_S__PgZ__Zd_S = []operand{
 	a_ARNG_Zn510Src_ArngSCheck,
 	a_PREGZM_Pg1013_ZeroPredCheck,
 	a_ARNG_Zd_ArngSCheck,
+}
+
+var Zn_S__Xm___PgZ___Zt_S_ = []operand{
+	a_MEMEXT_Zn510V2_ArngSCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var Zn_S__Xm___Pg___Zt_S_ = []operand{
+	a_MEMEXT_Zn510V2_ArngSCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var Zn_S__cimm___PgZ___Zt_S___1 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V4,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var Zn_S__cimm___PgZ___Zt_S___2 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V1,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var Zn_S__cimm___PgZ___Zt_S___3 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V2,
+	a_PREGZM_Pg1013_ZeroPredCheck,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var Zn_S__cimm___Pg___Zt_S___1 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V4,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var Zn_S__cimm___Pg___Zt_S___2 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V1,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var Zn_S__cimm___Pg___Zt_S___3 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V2,
+	a_PREG_Pg1013_Noop,
+	a_REGLIST1_Zt05_ArngSCheck,
+}
+
+var Zn_S__cimm___Pg__prfop__1 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V4,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var Zn_S__cimm___Pg__prfop__2 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V3,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var Zn_S__cimm___Pg__prfop__3 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V1,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
+}
+
+var Zn_S__cimm___Pg__prfop__4 = []operand{
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V2,
+	a_PREG_Pg1013_Noop,
+	a_SPECIAL_Prfop04,
 }
 
 var Zn_T__PgM__Zd_T__1 = []operand{
@@ -953,6 +2135,11 @@ var Zn_T__Zd_T__2 = []operand{
 	a_ARNG_Zd_SizeBHSD2224,
 }
 
+var Zn_T__Zm_T__mod_amount___Zd_T = []operand{
+	a_MEMEXT_Zn510V2_SzSD2223_Zm1621V3_SzSD2223_Msz1012_Msz1012Amount,
+	a_ARNG_Zd_SzSD2223,
+}
+
 var Zn_T_imm___Zd_T__1 = []operand{
 	a_ARNGIDX_Zn510Src_Tsz_1621_SizeSpecifier5_Imm2Tsz_Delegate,
 	a_ARNG_Zd_Tsz_1621_SizeSpecifier5,
@@ -964,7 +2151,7 @@ var Zn_T_imm___Zd_T__2 = []operand{
 }
 
 var Zn_Tb__PgM__Zda_T = []operand{
-	a_ARNG_Zn510_SizeTbBHS2224,
+	a_ARNG_Zn510V1_SizeTbBHS2224,
 	a_PREGZM_Pg1013_MergePredCheck,
 	a_ARNG_ZdaDest_SizeHSD2224,
 }
