@@ -33,8 +33,7 @@ type Signature struct {
 // type set. It may even be a named []byte slice type resulting from
 // substitution of such a type parameter.
 //
-// If recv is non-nil, typeParams must be empty. If recvTypeParams is
-// non-empty, recv must be non-nil.
+// If recvTypeParams is non-empty, recv must be non-nil.
 func NewSignatureType(recv *Var, recvTypeParams, typeParams []*TypeParam, params, results *Tuple, variadic bool) *Signature
 
 // Recv returns the receiver of signature s (if a method), or nil if a

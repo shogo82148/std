@@ -131,4 +131,4 @@ func SYSARG4(op1 int, Cn int, Cm int, op2 int) int
 func EncodeRegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error
 
 // RegisterListOffset generates offset encoding according to AArch64 specification.
-func RegisterListOffset(firstReg, regCnt int, arrangement int64) (int64, error)
+func RegisterListOffset(firstReg, regCnt int, arrangement int64, scale int16) (int64, error)

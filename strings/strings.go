@@ -264,3 +264,9 @@ func CutPrefix(s, prefix string) (after string, found bool)
 // If s doesn't end with suffix, CutSuffix returns s, false.
 // If suffix is the empty string, CutSuffix returns s, true.
 func CutSuffix(s, suffix string) (before string, found bool)
+
+// CutLast slices s around the last instance of sep,
+// returning the text before and after sep.
+// The found result reports whether sep appears in s.
+// If sep does not appear in s, CutLast returns s, "", false.
+func CutLast(s, sep string) (before, after string, found bool)
