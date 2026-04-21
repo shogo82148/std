@@ -113,12 +113,7 @@ var ErrWaitDelay = errors.New("exec: WaitDelay expired before I/O complete")
 
 // Cmdは、準備中または実行中の外部コマンドを表します。
 //
-<<<<<<< HEAD
-// Cmdは、[Cmd.Run]、[Cmd.Output]、または [Cmd.CombinedOutput] メソッドを呼び出した後では再利用できません。
-=======
-// A Cmd cannot be reused after calling its [Cmd.Start], [Cmd.Run],
-// [Cmd.Output], or [Cmd.CombinedOutput] methods.
->>>>>>> upstream/release-branch.go1.26
+// Cmdはその [Cmd.Start]、[Cmd.Run]、[Cmd.Output]、または [Cmd.CombinedOutput] メソッドを呼び出した後は再利用できません。
 type Cmd struct {
 	// Pathは、実行するコマンドのパスです。
 	//
