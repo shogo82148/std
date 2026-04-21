@@ -120,17 +120,9 @@ type (
 	// [strconv.Unquote] および [strconv.UnquoteChar] 関数を使用して、
 	// それぞれSTRINGとCHARの値をアンクォートできます。
 	//
-<<<<<<< HEAD
 	// 生文字列リテラル（Kind == token.STRING && Value[0] == '`'）の場合、
-	// Valueフィールドには、ソースに存在した可能性のあるキャリッジリターン（\r）を除いた
-	// 文字列テキストが含まれます。終了位置はlen(Value)を使用して計算されるため、
-	// [BasicLit.End] によって報告される位置は、キャリッジリターンを含む
-	// 生文字列リテラルの真のソース終了位置と一致しません。
-=======
-	// For raw string literals (Kind == token.STRING && Value[0] == '`'),
-	// the Value field contains the string text without carriage returns (\r) that
-	// may have been present in the source.
->>>>>>> upstream/release-branch.go1.26
+	// Valueフィールドには、ソースに存在した可能性のあるキャリッジリターン（\r）を含まない
+	// 文字列テキストが含まれます。
 	BasicLit struct {
 		ValuePos token.Pos
 		ValueEnd token.Pos
