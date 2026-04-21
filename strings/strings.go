@@ -183,13 +183,8 @@ func TrimLeft(s, cutset string) string
 // 接尾辞を削除するには、代わりに [TrimSuffix] を使用してください。
 func TrimRight(s, cutset string) string
 
-<<<<<<< HEAD
-// TrimSpaceは、Unicodeで定義されるように、すべての先頭と末尾の空白を削除した文字列sのスライスを返します。
-=======
-// TrimSpace returns a slice (substring) of the string s,
-// with all leading and trailing white space removed,
-// as defined by Unicode.
->>>>>>> upstream/release-branch.go1.26
+// TrimSpaceは、Unicodeで定義されるすべての先頭と末尾の空白文字を削除した
+// 文字列sのスライス（部分文字列）を返します。
 func TrimSpace(s string) string
 
 // TrimPrefixは、指定された接頭辞文字列を除いたsを返します。
