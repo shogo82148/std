@@ -12,12 +12,3 @@ import (
 
 // ErrNotFoundは、パスの検索が実行可能なファイルを見つけられなかった場合のエラーです。
 var ErrNotFound = errors.New("executable file not found in $PATH")
-<<<<<<< HEAD
-
-// LookPathは、PATH環境変数で指定されたディレクトリ内の実行可能なファイルを検索します。
-// もしファイルがスラッシュを含んでいる場合、直接試みられ、
-// PATHは参照されません。
-// 結果は絶対パスであるか、現在のディレクトリに対する相対パスである可能性があります。
-func LookPath(file string) (string, error)
-=======
->>>>>>> upstream/release-branch.go1.26
