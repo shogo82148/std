@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package scan
+package main
 
 // FilterNilAVX512 is the simd version of FilterNil,
 // it is implemented in assembly.

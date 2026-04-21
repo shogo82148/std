@@ -4,4 +4,4 @@
 
 //go:build amd64
 
-package scan_test
+package main_test
