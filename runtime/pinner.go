@@ -4,33 +4,27 @@
 
 package runtime
 
-<<<<<<< HEAD
-// Pinnerは、メモリ内の固定された場所に各Goオブジェクトが固定されたセットです。
-// [Pinner.Pin]メソッドは1つのオブジェクトを固定し、[Pinner.Unpin]メソッドはすべての固定されたオブジェクトを解除します。
-// 詳細については、それぞれのコメントを参照してください。
-=======
-// A Pinner is a set of Go objects each pinned to a fixed location in memory. The
-// [Pinner.Pin] method pins one object, while [Pinner.Unpin] unpins all pinned
-// objects.
+// Pinnerは、それぞれがメモリ内の固定場所にピン留めされたGoオブジェクトのセットです。
+// [Pinner.Pin] メソッドは1つのオブジェクトをピン留めし、[Pinner.Unpin] はピン留めされた
+// すべてのオブジェクトをアンピンします。
 //
-// The purpose of a Pinner is two-fold.
-// First, it allows C code to safely use Go pointers that have not been passed
-// explicitly to the C code via a cgo call.
-// For example, for safely interacting with a pointer stored inside of a struct
-// whose pointer is passed to a C function.
-// Second, it allows C memory to safely retain that Go pointer even after the
-// cgo call returns, provided the object remains pinned.
+// Pinnerの目的は二つあります。
+// 第一に、cgo呼び出しを通じてCコードに明示的に渡されていないGoポインタを
+// Cコードが安全に使用できるようにします。
+// 例えば、C関数に渡される構造体のポインタ内に格納されたポインタと
+// 安全に相互作用するためです。
+// 第二に、オブジェクトがピン留めされている限り、cgo呼び出しが戻った後でも
+// CメモリがそのGoポインタを安全に保持できるようにします。
 //
-// A Pinner arranges for its objects to be automatically unpinned some time after
-// it becomes unreachable, so its referents will not leak. However, this means the
-// Pinner itself must be kept alive across a cgo call, or as long as C retains a
-// reference to the pinned Go pointers.
+// Pinnerは、到達不可能になった後しばらくしてからオブジェクトを自動的に
+// アンピンするように配置されるため、その参照先がリークしません。ただし、これは
+// Pinner自体がcgo呼び出し全体にわたって、またはCがピン留めされたGoポインタへの
+// 参照を保持している限り、生存していなければならないことを意味します。
 //
-// Reusing a Pinner is safe, and in fact encouraged, to avoid the cost of
-// initializing new Pinners on first use.
+// Pinnerの再利用は安全であり、実際に奨励されています。これにより、初回使用時の
+// 新しいPinnerの初期化コストを回避できます。
 //
-// The zero value of Pinner is ready to use.
->>>>>>> upstream/release-branch.go1.26
+// Pinnerのゼロ値は使用可能な状態です。
 type Pinner struct {
 	*pinner
 }
@@ -41,19 +35,11 @@ type Pinner struct {
 // 固定されたオブジェクトへのポインタは、Cメモリに直接格納されるか、C関数に渡されるGoメモリに含まれることができます。
 // 固定されたオブジェクト自体がGoオブジェクトへのポインタを含む場合、これらのオブジェクトがCコードからアクセスされる場合は、別途固定する必要があります。
 //
-<<<<<<< HEAD
-// 引数は、任意の型のポインタまたは [unsafe.Pointer] である必要があります。
-// 非Goポインタに対してPinを呼び出すことは安全であり、その場合、Pinは何もしません。
-func (p *Pinner) Pin(pointer any)
-
-// Unpinは [Pinner] のすべてのピン留めされたオブジェクトを解除します。
-=======
-// The argument must be a pointer of any type or an [unsafe.Pointer].
+// 引数は任意の型のポインタまたは [unsafe.Pointer] である必要があります。
 //
-// It's safe to call Pin on non-Go pointers, in which case Pin will do nothing.
+// 非GoポインタでPinを呼び出すことは安全で、その場合Pinは何もしません。
 func (p *Pinner) Pin(pointer any)
 
-// Unpin unpins all pinned objects of the [Pinner].
-// It's safe and encouraged to reuse a Pinner after calling Unpin.
->>>>>>> upstream/release-branch.go1.26
+// Unpinは [Pinner] のピン留めされたすべてのオブジェクトをアンピンします。
+// Unpinを呼び出した後にPinnerを再利用することは安全で、推奨されます。
 func (p *Pinner) Unpin()
