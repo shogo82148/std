@@ -48,24 +48,14 @@ func Contains[S ~[]E, E comparable](s S, v E) bool { return false }
 // ContainsFunc は、s の少なくとも1つの要素 e が f(e) を満たすかどうかを報告します。
 func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool { return false }
 
-<<<<<<< HEAD
-// Insertは、値v...をsのインデックスiに挿入し、変更されたスライスを返します。
-// s[i:]の要素は空きスペースを作るために後ろにずらされます。
-// 返されたスライスrでは、r[i] == v[0]となり、
-// また、i < len(s)の場合、r[i+len(v)]は元々r[i]にあった値になります。
+// Insertは値v...をインデックスiでsに挿入し、
+// 変更されたスライスを返します。
+// s[i:]の要素は場所を空けるために上にシフトされます。
+// 返されたスライスrにおいて、r[i] == v[0]、
+// そして、i < len(s)の場合、r[i+len(v)] == 元々s[i]にあった値になります。
 // i > len(s)の場合、Insertはパニックを起こします。
 // この関数の計算量はO(len(s) + len(v))です。
 // 結果が空の場合、sのnil性を保持します。
-=======
-// Insert inserts the values v... into s at index i,
-// returning the modified slice.
-// The elements at s[i:] are shifted up to make room.
-// In the returned slice r, r[i] == v[0],
-// and, if i < len(s), r[i+len(v)] == value originally at s[i].
-// Insert panics if i > len(s).
-// This function is O(len(s) + len(v)).
-// If the result is empty, it has the same nilness as s.
->>>>>>> upstream/release-branch.go1.26
 func Insert[S ~[]E, E any](s S, i int, v ...E) S
 
 // Deleteは、s[i:j]の要素をsから削除し、変更されたスライスを返します。
