@@ -35,13 +35,8 @@ type Scanner struct {
 	ErrorCount int
 }
 
-<<<<<<< HEAD
-// モード値はフラグの集合体です（または0）。
+// Mode値はフラグのセット（または0）です。
 // これらはスキャナの動作を制御します。
-=======
-// A Mode value is a set of flags (or 0).
-// They control scanner behavior.
->>>>>>> upstream/release-branch.go1.26
 type Mode uint
 
 const (
