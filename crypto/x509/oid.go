@@ -45,12 +45,8 @@ func (oid OID) Equal(other OID) bool
 // OIDのコンポーネントが31ビット以上必要とする場合、falseを返します。
 func (oid OID) EqualASN1OID(other asn1.ObjectIdentifier) bool
 
-<<<<<<< HEAD
-// Stringsはオブジェクト識別子の文字列表現を返します。
-=======
-// String returns the string representation of the Object Identifier.
->>>>>>> upstream/release-branch.go1.26
+// Stringはオブジェクト識別子の文字列表現を返します。
 func (oid OID) String() string
 
-// OIDFromASN1OID creates a new OID using asn1OID.
+// OIDFromASN1OIDはasn1OIDを使用して新しいOIDを作成します。
 func OIDFromASN1OID(asn1OID asn1.ObjectIdentifier) (OID, error)
