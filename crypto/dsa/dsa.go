@@ -58,18 +58,13 @@ func GenerateKey(priv *PrivateKey, rand io.Reader) error
 //
 // なお、FIPS 186-3のセクション4.6では、ハッシュは部分群のバイト長に切り詰める必要があると指定されています。この関数自体ではその切り詰めを実行しません。
 //
-<<<<<<< HEAD
-// 注意してください。攻撃者の制御下にある [PrivateKey] を使用してSignを呼び出すことは、任意の量のCPUを必要とする場合があります。
-func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
-=======
-// Since Go 1.26, a secure source of random bytes is always used, and the Reader is
-// ignored unless GODEBUG=cryptocustomrand=1 is set. This setting will be removed
-// in a future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].
+// Go 1.26以降、安全なランダムバイトソースが常に使用され、GODEBUG=cryptocustomrand=1が
+// 設定されない限りReaderは無視されます。この設定は将来のGoリリースで削除されます。
+// 代わりに [testing/cryptotest.SetGlobalRandom] を使用してください。
 //
-// Be aware that calling Sign with an attacker-controlled [PrivateKey] may
-// require an arbitrary amount of CPU.
+// 攻撃者が制御する [PrivateKey] でSignを呼び出すと、任意量のCPUが必要になる可能性が
+// あることに注意してください。
 func Sign(random io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
->>>>>>> upstream/release-branch.go1.26
 
 // Verifyは、公開鍵pubを使用してハッシュのr、sの署名を検証します。署名が有効かどうかを報告します。
 //
