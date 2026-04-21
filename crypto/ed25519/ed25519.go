@@ -66,40 +66,32 @@ type Options struct {
 // HashFuncはo.Hashを返します。
 func (o *Options) HashFunc() crypto.Hash
 
-<<<<<<< HEAD
-// GenerateKeyはrandからのエントロピーを使用して公開鍵/秘密鍵のペアを生成します。
-// randがnilの場合、[crypto/rand.Reader]が使用されます。
+// GenerateKeyは、randomからのエントロピーを使用して公開鍵/秘密鍵のペアを生成します。
 //
-// この関数の出力は決定論的であり、randから[SeedSize]バイトを読み取り、[NewKeyFromSeed]に渡すことと等価です。
-func GenerateKey(rand io.Reader) (PublicKey, PrivateKey, error)
-=======
-// GenerateKey generates a public/private key pair using entropy from random.
+// randomがnilの場合、安全なランダムソースが使用されます。（Go 1.26以前では、アプリケーションによって
+// 設定されたカスタムの [crypto/rand.Reader] が使用されていました。その動作は
+// GODEBUG=cryptocustomrand=1で復元できます。この設定は将来のGoリリースで削除されます。
+// 代わりに [testing/cryptotest.SetGlobalRandom] を使用してください。）
 //
-// If random is nil, a secure random source is used. (Before Go 1.26, a custom
-// [crypto/rand.Reader] was used if set by the application. That behavior can be
-// restored with GODEBUG=cryptocustomrand=1. This setting will be removed in a
-// future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].)
-//
-// The output of this function is deterministic, and equivalent to reading
-// [SeedSize] bytes from random, and passing them to [NewKeyFromSeed].
+// この関数の出力は決定論的で、randomから [SeedSize] バイトを読み取り、
+// それらを [NewKeyFromSeed] に渡すのと同等です。
 func GenerateKey(random io.Reader) (PublicKey, PrivateKey, error)
->>>>>>> upstream/release-branch.go1.26
 
-// NewKeyFromSeedはシードから秘密鍵を計算します。もしseedの長さが[SeedSize]でない場合、パニックを発生させます。この関数はRFC 8032との互換性のために提供されています。RFC 8032の秘密鍵はこのパッケージのシードに対応します。
+// NewKeyFromSeedはシードから秘密鍵を計算します。もしseedの長さが [SeedSize] でない場合、パニックを発生させます。この関数はRFC 8032との互換性のために提供されています。RFC 8032の秘密鍵はこのパッケージのシードに対応します。
 func NewKeyFromSeed(seed []byte) PrivateKey
 
-// SignはメッセージにprivateKeyで署名し、署名を返します。もしprivateKeyの長さが[PrivateKeySize]でない場合はパニックを起こします。
+// SignはメッセージにprivateKeyで署名し、署名を返します。もしprivateKeyの長さが [PrivateKeySize] でない場合はパニックを起こします。
 func Sign(privateKey PrivateKey, message []byte) []byte
 
 // Verifyは、publicKeyによってメッセージのsigが有効な署名かどうかを検証します。
-// もしlen(publicKey)が[PublicKeySize]でない場合、パニックを引き起こします。
+// もしlen(publicKey)が [PublicKeySize] でない場合、パニックを引き起こします。
 //
 // 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func Verify(publicKey PublicKey, message, sig []byte) bool
 
-// VerifyWithOptionsは、publicKeyによってメッセージのsigが有効な署名であるかどうかを報告します。有効な署名は、nilのエラーを返すことで示されます。len(publicKey)が[PublicKeySize]でない場合、パニックが発生します。
+// VerifyWithOptionsは、publicKeyによってメッセージのsigが有効な署名であるかどうかを報告します。有効な署名は、nilのエラーを返すことで示されます。len(publicKey)が [PublicKeySize] でない場合、パニックが発生します。
 //
-// もしopts.Hashが[crypto.SHA512]である場合、Ed25519phとして事前にハッシュされたバリアントが使用され、messageはSHA-512ハッシュであることが想定されます。それ以外の場合、opts.Hashは[crypto.Hash](0)でなければならず、メッセージはハッシュされていない状態である必要があります。なぜなら、Ed25519は署名されるメッセージを2回処理するからです。
+// もしopts.Hashが [crypto.SHA512] である場合、Ed25519phとして事前にハッシュされたバリアントが使用され、messageはSHA-512ハッシュであることが想定されます。それ以外の場合、opts.Hashは [crypto.Hash](0)でなければならず、メッセージはハッシュされていない状態である必要があります。なぜなら、Ed25519は署名されるメッセージを2回処理するからです。
 //
 // 入力は機密とはみなされず、タイミングのサイドチャネルを通じて、または攻撃者が入力の一部を制御している場合に漏洩する可能性があります。
 func VerifyWithOptions(publicKey PublicKey, message, sig []byte, opts *Options) error
