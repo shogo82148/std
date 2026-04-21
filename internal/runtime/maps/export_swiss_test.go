@@ -4,7 +4,7 @@
 
 //go:build goexperiment.swissmap
 
-package cgobench
+package maps
 
 func EmptyC()
 
