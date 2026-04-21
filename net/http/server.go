@@ -405,26 +405,14 @@ type Server struct {
 	// ゼロの場合、DefaultMaxHeaderBytesが使用されます。
 	MaxHeaderBytes int
 
-<<<<<<< HEAD
-	// TLSNextProtoは、ALPNプロトコルアップグレードが発生した場合に提供されたTLS接続の所有権を引き継ぐための関数をオプションで指定します。
-	// マップキーはネゴシエートされたプロトコル名です。
-	// Handler引数はHTTPリクエストを処理するために使用され、RequestのTLSとRemoteAddrを初期化します（設定されていない場合）。
-	// 関数が返されると、接続は自動的に閉じられます。
+	// TLSNextProtoは、ALPNプロトコルアップグレードが発生したときに、提供されたTLS接続の所有権を
+	// 引き継ぐ関数をオプションで指定します。マップキーは、ネゴシエートされたプロトコル名です。
+	// Handler引数は、HTTPリクエストを処理するために使用され、まだ設定されていない場合は
+	// RequestのTLSとRemoteAddrを初期化します。関数が戻るときに接続は自動的に閉じられます。
 	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的に有効になりません。
-=======
-	// TLSNextProto optionally specifies a function to take over
-	// ownership of the provided TLS connection when an ALPN
-	// protocol upgrade has occurred. The map key is the protocol
-	// name negotiated. The Handler argument should be used to
-	// handle HTTP requests and will initialize the Request's TLS
-	// and RemoteAddr if not already set. The connection is
-	// automatically closed when the function returns.
-	// If TLSNextProto is not nil, HTTP/2 support is not enabled
-	// automatically.
 	//
-	// Historically, TLSNextProto was used to disable HTTP/2 support.
-	// The Server.Protocols field now provides a simpler way to do this.
->>>>>>> upstream/release-branch.go1.26
+	// 歴史的に、TLSNextProtoはHTTP/2サポートを無効にするために使用されていました。
+	// Server.Protocolsフィールドは、これを行うためのより簡単な方法を提供します。
 	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)
 
 	// ConnStateは、クライアント接続の状態が変化したときに呼び出されるオプションのコールバック関数を指定します。
