@@ -94,32 +94,10 @@ func (t Token) Uint() uint64
 // Kindは、トークンの種類を返します。
 func (t Token) Kind() Kind
 
-<<<<<<< HEAD
-// Kindは、すべてのJSONトークン種別を1バイトで表します。
-// このバイトは各種別の文法の先頭バイトであり、
-// 数値は必ず '0' で表現されるという制約があります:
+// KindはJSONトークンの種類を表します。
 //
-//   - 'n': null
-//   - 'f': false
-//   - 't': true
-//   - '"': string
-//   - '0': number
-//   - '{': オブジェクト開始
-//   - '}': オブジェクト終了
-//   - '[': 配列開始
-//   - ']': 配列終了
-//
-// 無効な種別は通常0で表されますが、
-// 不正なJSONデータの場合は0以外になることもあります。
-type Kind byte
-
-// Stringは、種別を人間が読める形式で表示します。
-=======
-// A Kind represents the kind of a JSON token.
-//
-// Kind represents each possible JSON token kind with a single byte,
-// which is conveniently the first byte of that kind's grammar
-// with the restriction that numbers always be represented with '0'.
+// Kindは各JSONトークンの種類を1バイトで表現し、便利なことにその種類の文法の
+// 最初のバイトになっています。ただし、数値は常に'0'で表現されるという制限があります。
 type Kind byte
 
 const (
@@ -135,6 +113,5 @@ const (
 	KindEndArray    Kind = ']'
 )
 
-// String prints the kind in a humanly readable fashion.
->>>>>>> upstream/release-branch.go1.26
+// Stringは種類を人間が読みやすい形で出力します。
 func (k Kind) String() string
