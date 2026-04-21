@@ -26,19 +26,12 @@ package mime
 // テキストタイプは、デフォルトでcharsetパラメータが"utf-8"に設定されています。
 func TypeByExtension(ext string) string
 
-<<<<<<< HEAD
-// ExtensionsByTypeは、MIMEタイプtypに関連付けられていると知られている拡張子を返します。
-// 返される拡張子は、".html"のように先頭にドットが付いて始まります。
-// typが関連付けられた拡張子を持っていない場合、ExtensionsByTypeはnilスライスを返します。
-=======
-// ExtensionsByType returns the extensions known to be associated with the MIME
-// type typ. The returned extensions will each begin with a leading dot, as in
-// ".html". When typ has no associated extensions, ExtensionsByType returns an
-// nil slice.
+// ExtensionsByTypeは、MIMEタイプtypに関連付けられることが知られている拡張子を返します。
+// 返される拡張子は、".html"のように先頭にドットを付けて開始されます。
+// typに関連付けられた拡張子がない場合、ExtensionsByTypeはnilスライスを返します。
 //
-// The built-in table is small but on unix it is augmented by the local
-// system's MIME-info database or mime.types file(s) if available under one or
-// more of these names:
+// 組み込みのテーブルは小さいですが、unixではローカルシステムのMIME-infoデータベースや
+// mime.typesファイルによって補強されます（もし以下の名前の一つ以上で利用可能な場合）:
 //
 //	/usr/local/share/mime/globs2
 //	/usr/share/mime/globs2
@@ -47,8 +40,7 @@ func TypeByExtension(ext string) string
 //	/etc/apache/mime.types
 //	/etc/httpd/conf/mime.types
 //
-// On Windows, extensions are extracted from the registry.
->>>>>>> upstream/release-branch.go1.26
+// Windowsでは、拡張子はレジストリから抽出されます。
 func ExtensionsByType(typ string) ([]string, error)
 
 // AddExtensionTypeは、拡張子extに関連付けられたMIMEタイプをtypに設定します。
