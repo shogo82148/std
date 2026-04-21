@@ -76,16 +76,10 @@ type Table struct {
 	go12line *LineTable
 }
 
-<<<<<<< HEAD
-// NewTableはGoのシンボルテーブル（ELFの".gosymtab"セクション）をデコードし、
-// メモリ内表現を返します。
-// Go 1.3以降、Goのシンボルテーブルにはシンボルデータが含まれなくなりました。
-=======
-// NewTable decodes the Go symbol table (the ".gosymtab" section in ELF),
-// returning an in-memory representation.
-// Starting with Go 1.3, the Go symbol table no longer includes symbol data;
-// callers should pass nil for the symtab parameter.
->>>>>>> upstream/release-branch.go1.26
+// NewTableはGoシンボルテーブル（ELFの".gosymtab"セクション）をデコードし、
+// インメモリ表現を返します。
+// Go 1.3以降、Goシンボルテーブルにはもはやシンボルデータが含まれていません。
+// 呼び出し側はsymtabパラメータにnilを渡すべきです。
 func NewTable(symtab []byte, pcln *LineTable) (*Table, error)
 
 // PCToFuncは、プログラムカウンタpcを含む関数を返します。
