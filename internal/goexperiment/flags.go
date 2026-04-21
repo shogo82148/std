@@ -97,26 +97,6 @@ type Flags struct {
 	// inlining phase within the Go compiler.
 	NewInliner bool
 
-<<<<<<< HEAD
-	// RangeFunc enables range over func.
-	RangeFunc bool
-
-	// AliasTypeParams enables type parameters for alias types.
-	// Requires that gotypesalias=1 is set with GODEBUG.
-	// This flag will be removed with Go 1.25.
-	AliasTypeParams bool
-
-	// SwissMap enables the SwissTable-based map implementation.
-	SwissMap bool
-
-	// SyncHashTrieMap enables the HashTrieMap sync.Map implementation.
-	SyncHashTrieMap bool
-
-	// Synctest enables the testing/synctest package.
-	Synctest bool
-
-=======
->>>>>>> upstream/release-branch.go1.26
 	// Dwarf5 enables DWARF version 5 debug info generation.
 	Dwarf5 bool
 
@@ -125,8 +105,6 @@ type Flags struct {
 
 	// GreenTeaGC enables the Green Tea GC implementation.
 	GreenTeaGC bool
-<<<<<<< HEAD
-=======
 
 	// RandomizedHeapBase enables heap base address randomization on 64-bit
 	// platforms.
@@ -147,5 +125,4 @@ type Flags struct {
 
 	// RuntimeSecret enables the runtime/secret package.
 	RuntimeSecret bool
->>>>>>> upstream/release-branch.go1.26
 }
