@@ -87,41 +87,22 @@ func (v Value) CanAddr() bool
 // CanSetがfalseを返す場合、Setや任意のタイプ固有のセッター（例： [Value.SetBool] 、 [Value.SetInt] ）を呼び出すとパニックが発生します。
 func (v Value) CanSet() bool
 
-<<<<<<< HEAD
-// Callは引数inを使って関数vを呼び出します。
-// 例えば、len(in) == 3の場合、v.Call(in)はGoの呼び出しv(in[0], in[1], in[2])を表します。
-// CallはvのKindが [Func] でない場合にパニックを発生させます。
-// Callは結果をValuesとして返します。
+// Callは入力引数inで関数vを呼び出します。
+// 例えば、len(in) == 3の場合、v.Call(in)はGo呼び出し v(in[0], in[1], in[2]) を表します。
+// vのKindが [Func] でない場合、Callはパニックを発生させます。
+// 出力結果をValuesとして返します。
 // Goと同様に、各入力引数は関数の対応する入力パラメータの型に代入可能でなければなりません。
-// もしvが可変引数関数である場合、Callは対応する値をコピーして可変引数スライスパラメータを作成します。
+// vが可変長引数関数の場合、Callは対応する値をコピーして可変長スライスパラメータ自体を作成します。
+// 非公開の構造体フィールドにアクセスして取得されたValueの場合はパニックを発生させます。
 func (v Value) Call(in []Value) []Value
 
-// CallSliceは可変長関数vを入力引数inで呼び出し、スライスin[len(in)-1]をvの最終可変引数に割り当てます。
-// 例えば、len(in) == 3の場合、v.CallSlice(in)はGoの呼び出しv(in[0], in[1], in[2]...)を表します。
-// CallSliceはvのKindが [Func] でないか、可変引数でない場合にパニックを引き起こします。
-// 出力結果はValuesとして返されます。
+// CallSliceは入力引数inで可変長引数関数vを呼び出し、
+// スライス in[len(in)-1] をvの最終的な可変長引数に代入します。
+// 例えば、len(in) == 3の場合、v.CallSlice(in)はGo呼び出し v(in[0], in[1], in[2]...) を表します。
+// vのKindが [Func] でない場合やvが可変長引数でない場合、CallSliceはパニックを発生させます。
+// 出力結果をValuesとして返します。
 // Goと同様に、各入力引数は関数の対応する入力パラメータの型に代入可能でなければなりません。
-=======
-// Call calls the function v with the input arguments in.
-// For example, if len(in) == 3, v.Call(in) represents the Go call v(in[0], in[1], in[2]).
-// Call panics if v's Kind is not [Func].
-// It returns the output results as Values.
-// As in Go, each input argument must be assignable to the
-// type of the function's corresponding input parameter.
-// If v is a variadic function, Call creates the variadic slice parameter
-// itself, copying in the corresponding values.
-// It panics if the Value was obtained by accessing unexported struct fields.
-func (v Value) Call(in []Value) []Value
-
-// CallSlice calls the variadic function v with the input arguments in,
-// assigning the slice in[len(in)-1] to v's final variadic argument.
-// For example, if len(in) == 3, v.CallSlice(in) represents the Go call v(in[0], in[1], in[2]...).
-// CallSlice panics if v's Kind is not [Func] or if v is not variadic.
-// It returns the output results as Values.
-// As in Go, each input argument must be assignable to the
-// type of the function's corresponding input parameter.
-// It panics if the Value was obtained by accessing unexported struct fields.
->>>>>>> upstream/release-branch.go1.26
+// 非公開の構造体フィールドにアクセスして取得されたValueの場合はパニックを発生させます。
 func (v Value) CallSlice(in []Value) []Value
 
 // Cap は v の容量を返します。
@@ -410,39 +391,30 @@ func (v Value) UnsafeAddr() uintptr
 // vのKindが [String] である場合、返されるポインタは文字列の基礎となるバイトの最初の要素を指します。
 func (v Value) UnsafePointer() unsafe.Pointer
 
-<<<<<<< HEAD
+// Fieldsはvの各 [StructField] をその [Value] と共に反復処理するイテレータを返します。
+//
+// シーケンスは [0, NumField()) の範囲内の各インデックスiに対して
+// [Value.Field] を連続して呼び出すことと等価です。
+//
+// vのKindがStructでない場合はパニックを発生させます。
+func (v Value) Fields() iter.Seq2[StructField, Value]
+
+// Methodsはvの各 [Method] を対応するメソッド [Value] と共に反復処理するイテレータを返します。
+// これはvがレシーバとしてバインドされた関数です。そのため、
+// レシーバは [Value.Call] の引数に含めるべきではありません。
+//
+// シーケンスは [0, NumMethod()) の範囲内の各インデックスiに対して
+// [Value.Method] を連続して呼び出すことと等価です。
+//
+// vがnilインターフェース値の場合、Methodsはパニックを発生させます。
+//
+// このメソッドを呼び出すと、リンカはすべてのパッケージのエクスポートされたメソッドを保持します。
+// これにより実行ファイルのバイナリサイズが大きくなる可能性がありますが、実行時間には影響しません。
+func (v Value) Methods() iter.Seq2[Method, Value]
+
 // StringHeaderは文字列のランタイム表現です。
 // 安全かつ可搬性が保証されておらず、将来のリリースで表現が変わる可能性があります。
 // さらに、Dataフィールドだけではデータがガベージコレクションされないことは保証できないため、プログラムは基礎データへの正しい型付きポインタを別途保持する必要があります。
-=======
-// Fields returns an iterator over each [StructField] of v along with its [Value].
-//
-// The sequence is equivalent to calling [Value.Field] successively
-// for each index i in the range [0, NumField()).
-//
-// It panics if v's Kind is not Struct.
-func (v Value) Fields() iter.Seq2[StructField, Value]
-
-// Methods returns an iterator over each [Method] of v along with the corresponding
-// method [Value]; this is a function with v bound as the receiver. As such, the
-// receiver shouldn't be included in the arguments to [Value.Call].
-//
-// The sequence is equivalent to calling [Value.Method] successively
-// for each index i in the range [0, NumMethod()).
-//
-// Methods panics if v is a nil interface value.
-//
-// Calling this method will force the linker to retain all exported methods in all packages.
-// This may make the executable binary larger but will not affect execution time.
-func (v Value) Methods() iter.Seq2[Method, Value]
-
-// StringHeader is the runtime representation of a string.
-// It cannot be used safely or portably and its representation may
-// change in a later release.
-// Moreover, the Data field is not sufficient to guarantee the data
-// it references will not be garbage collected, so programs must keep
-// a separate, correctly typed pointer to the underlying data.
->>>>>>> upstream/release-branch.go1.26
 //
 // Deprecated: 代わりにunsafe.Stringまたはunsafe.StringDataを使用してください。
 type StringHeader struct {
