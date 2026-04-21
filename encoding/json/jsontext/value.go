@@ -144,11 +144,6 @@ func (v Value) MarshalJSON() ([]byte, error)
 // 検証を行わずに、提供された生のJSON入力のコピーを格納します。
 func (v *Value) UnmarshalJSON(b []byte) error
 
-<<<<<<< HEAD
-// Kindは、開始トークン種別を返します。
-// 有効な値の場合、'}' や ']' を含むことはありません。
-=======
-// Kind returns the starting token kind.
-// For a valid value, this will never include [KindEndObject] or [KindEndArray].
->>>>>>> upstream/release-branch.go1.26
+// Kindは開始トークンの種類を返します。
+// 有効な値の場合、[KindEndObject] や [KindEndArray] は含まれません。
 func (v Value) Kind() Kind
