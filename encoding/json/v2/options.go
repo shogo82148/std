@@ -84,16 +84,9 @@ func JoinOptions(srcs ...Options) Options
 // その場合、存在ビットは通常無視されるべきです。
 func GetOption[T any](opts Options, setter func(T) Options) (T, bool)
 
-<<<<<<< HEAD
-// DefaultOptionsV2はv2セマンティクスを定義するすべてのオプションの完全なセットです。
-// これは [Options]、[encoding/json.Options]、[encoding/json/jsontext.Options] の
-// すべてのオプションがfalseまたはゼロ値に設定されている状態と同等ですが、
-// 空白フォーマットに関連するオプションは除きます。
-=======
-// DefaultOptionsV2 is the full set of all options that define v2 semantics.
-// It is equivalent to the set of options in [encoding/json.DefaultOptionsV1]
-// all being set to false. All other options are not present.
->>>>>>> upstream/release-branch.go1.26
+// DefaultOptionsV2は、v2のセマンティクスを定義するすべてのオプションセットです。
+// これは [encoding/json.DefaultOptionsV1] のオプションセットのすべてがfalseに設定されているのと同等です。
+// その他のすべてのオプションは存在しません。
 func DefaultOptionsV2() Options
 
 // StringifyNumbersは、数値型のGo値を対応するJSON数値を含むJSON文字列としてマーシャルすることを指定します。
