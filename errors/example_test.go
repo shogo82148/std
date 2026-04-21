@@ -121,8 +121,6 @@ func ExampleAs() {
 	// Failed at path: non-existing
 }
 
-<<<<<<< HEAD
-=======
 func ExampleAsType() {
 	if _, err := os.Open("non-existing"); err != nil {
 		if pathError, ok := errors.AsType[*fs.PathError](err); ok {
@@ -135,8 +133,8 @@ func ExampleAsType() {
 	// Failed at path: non-existing
 }
 
-// Custom errors can implement a method "As(any) bool" to match against other error types,
-// overriding the default matching of [errors.As].
+// カスタムエラーは "As(any) bool" メソッドを実装することで他のエラー型とマッチングでき、
+// [errors.As] のデフォルトマッチングを上書きします。
 func ExampleAs_custom_match() {
 	var err error = MyAsError{"an error"}
 	fmt.Println("Error:", err)
@@ -154,8 +152,8 @@ func ExampleAs_custom_match() {
 	// fs.PathError: custom /: an error
 }
 
-// Custom errors can implement a method "As(any) bool" to match against other error types,
-// overriding the default matching of [errors.AsType].
+// カスタムエラーは "As(any) bool" メソッドを実装することで他のエラー型とマッチングでき、
+// [errors.AsType] のデフォルトマッチングを上書きします。
 func ExampleAsType_custom_match() {
 	var err error = MyAsError{"an error"}
 	fmt.Println("Error:", err)
@@ -172,7 +170,6 @@ func ExampleAsType_custom_match() {
 	// fs.PathError: custom /: an error
 }
 
->>>>>>> upstream/release-branch.go1.26
 func ExampleUnwrap() {
 	err1 := errors.New("error1")
 	err2 := fmt.Errorf("error2: [%w]", err1)
