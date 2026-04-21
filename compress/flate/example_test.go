@@ -168,15 +168,9 @@ func Example_synchronization() {
 		}
 
 		b := make([]byte, 256)
-<<<<<<< HEAD
-		for _, m := range strings.Fields("A long time ago in a galaxy far, far away...") {
-
-			// 最初のバイトがメッセージの長さであり、その後にメッセージ自体が続く、単純なフレーム形式を使用しています。
-=======
 		for m := range strings.FieldsSeq("A long time ago in a galaxy far, far away...") {
-			// We use a simple framing format where the first byte is the
-			// message length, followed the message itself.
->>>>>>> upstream/release-branch.go1.26
+			// 最初のバイトがメッセージ長で、その後にメッセージ自体が続く
+			// 単純なフレーミング形式を使用します。
 			b[0] = uint8(copy(b[1:], m))
 
 			if _, err := zw.Write(b[:1+len(m)]); err != nil {
