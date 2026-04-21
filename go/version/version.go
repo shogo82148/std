@@ -2,18 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-// versionパッケージは、[Goツールチェーン名の構文] のような文字列、
-// つまり "go1.20"、"go1.21.0"、"go1.22rc2"、"go1.23.4-bigcorp"などの
-// [Goバージョン] に対する操作を提供します。
-=======
-// Package version provides operations on [Go versions]
-// in [Go toolchain name syntax]: strings like
-// "go1.20", "go1.21.0", "go1.22rc2", and "go1.23.4-custom".
->>>>>>> upstream/release-branch.go1.26
+// versionパッケージは [Go toolchain name syntax] での [Go versions] に対する操作を提供します：
+// "go1.20"、"go1.21.0"、"go1.22rc2"、"go1.23.4-custom"のような文字列です。
 //
-// [Goバージョン]: https://go.dev/doc/toolchain#version
-// [Goツールチェーン名の構文]: https://go.dev/doc/toolchain#name
+// [Go versions]: https://go.dev/doc/toolchain#version
+// [Go toolchain name syntax]: https://go.dev/doc/toolchain#name
 package version
 
 // Langは、バージョンxのGo言語バージョンを返します。
