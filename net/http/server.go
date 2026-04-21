@@ -571,12 +571,14 @@ type Server struct {
 	nextProtoOnce     sync.Once
 	nextProtoErr      error
 
-	mu         sync.Mutex
-	listeners  map[*net.Listener]struct{}
-	activeConn map[*conn]struct{}
-	onShutdown []func()
-	h2         *http2Server
-	h3         *http3ServerHandler
+	mu            sync.Mutex
+	listeners     map[*net.Listener]struct{}
+	activeConn    map[*conn]struct{}
+	onShutdown    []func()
+	h2            *http2Server
+	h2Config      http2ExternalServerConfig
+	h2IdleTimeout time.Duration
+	h3            *http3ServerHandler
 
 	listenerGroup sync.WaitGroup
 }

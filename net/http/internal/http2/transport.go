@@ -130,12 +130,6 @@ type Transport struct {
 	// available to write, and is extended whenever any bytes are written.
 	WriteByteTimeout time.Duration
 
-	// CountError, if non-nil, is called on HTTP/2 transport errors.
-	// It's intended to increment a metric for monitoring, such
-	// as an expvar or Prometheus metric.
-	// The errType consists of only ASCII word characters.
-	CountError func(errType string)
-
 	t1 TransportConfig
 
 	connPoolOnce  sync.Once
