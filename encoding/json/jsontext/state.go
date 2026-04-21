@@ -18,17 +18,10 @@ import (
 // 重複したJSONオブジェクトメンバーの名前は以下のように抽出できます:
 //
 //	err := ...
-<<<<<<< HEAD
-//	var serr jsontext.SyntacticError
-//	if errors.As(err, &serr) && serr.Err == jsontext.ErrDuplicateName {
-//		ptr := serr.JSONPointer // 重複名へのJSONポインタ
-//		name := ptr.LastToken() // 重複した名前そのもの
-=======
 //	serr, ok := errors.AsType[*jsontext.SyntacticError](err)
 //	if ok && serr.Err == jsontext.ErrDuplicateName {
-//		ptr := serr.JSONPointer // JSON pointer to duplicate name
-//		name := ptr.LastToken() // duplicate name itself
->>>>>>> upstream/release-branch.go1.26
+//		ptr := serr.JSONPointer // 重複した名前へのJSONポインタ
+//		name := ptr.LastToken() // 重複した名前自体
 //		...
 //	}
 //
