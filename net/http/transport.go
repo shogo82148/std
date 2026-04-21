@@ -60,22 +60,14 @@ const DefaultMaxIdleConnsPerHost = 2
 // ただし、HTTPステータスコード101（Switching Protocols）は、終端ステータスと見なされ、[Transport.RoundTrip] によって返されます。
 // 無視された1xxレスポンスを表示するには、httptraceトレースパッケージのClientTrace.Got1xxResponseを使用します。
 //
-<<<<<<< HEAD
-// Transportは、ネットワークエラーに遭遇した場合にのみ、接続がすでに正常に使用されており、
-// リクエストが冪等であり、ボディがないか、または [Request.GetBody] が定義されている場合に、
-// リクエストを再試行します。HTTPリクエストは、HTTPメソッドがGET、HEAD、OPTIONS、またはTRACEである場合、
-// または [Header] マップに「Idempotency-Key」または「X-Idempotency-Key」エントリが含まれている場合、冪等と見なされます。
-// 冪等性キーの値がゼロ長のスライスの場合、リクエストは冪等と見なされますが、ヘッダーはワイヤーに送信されません。
-=======
-// Transport only retries a request upon encountering a network error
-// if the connection has already been used successfully and if the
-// request is idempotent and either has no body or has its [Request.GetBody]
-// defined. HTTP requests are considered idempotent if they have HTTP methods
-// GET, HEAD, OPTIONS, or TRACE; or if their [Header] map contains an
-// "Idempotency-Key" or "X-Idempotency-Key" entry. If the idempotency key
-// value is a zero-length slice, the request is treated as idempotent but the
-// header is not sent on the wire.
->>>>>>> upstream/release-branch.go1.26
+// Transportは、ネットワークエラーに遭遇した場合、接続が既に正常に使用されており、
+// かつリクエストが冪等であり、ボディがないか、または[Request.GetBody]が
+// 定義されている場合にのみ、リクエストを再試行します。HTTPリクエストは、
+// HTTPメソッドがGET、HEAD、OPTIONS、またはTRACEの場合、
+// または[Header]マップに"Idempotency-Key"または"X-Idempotency-Key"
+// エントリが含まれている場合に冪等と見なされます。冪等キーの値が
+// 長さゼロのスライスの場合、リクエストは冪等として扱われますが、
+// ヘッダーは回線上に送信されません。
 type Transport struct {
 	idleMu       sync.Mutex
 	closeIdle    bool
@@ -198,27 +190,16 @@ type Transport struct {
 	// この時間には、リクエストヘッダーを送信する時間は含まれません。
 	ExpectContinueTimeout time.Duration
 
-<<<<<<< HEAD
-	// TLSNextProtoは、TLS ALPNプロトコルネゴシエーション後にTransportが代替プロトコル（HTTP/2など）に切り替える方法を指定します。
-	// Transportがプロトコル名が空でないTLS接続をダイアルし、TLSNextProtoにそのキーのマップエントリが含まれている場合（"h2"など）、
-	// リクエストの権限（"example.com"または"example.com:1234"など）とTLS接続でfuncが呼び出されます。
+	// TLSNextProtoは、TLS ALPNプロトコルネゴシエーション後に、Transportが
+	// 代替プロトコル（HTTP/2など）に切り替える方法を指定します。Transportが
+	// 空でないプロトコル名でTLS接続をダイアルし、TLSNextProtoがそのキー
+	// （"h2"など）のマップエントリを含んでいる場合、リクエストの権限
+	// （"example.com"や"example.com:1234"など）とTLS接続でfuncが呼び出されます。
 	// この関数は、その後リクエストを処理するRoundTripperを返さなければなりません。
 	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的に有効になりません。
-=======
-	// TLSNextProto specifies how the Transport switches to an
-	// alternate protocol (such as HTTP/2) after a TLS ALPN
-	// protocol negotiation. If Transport dials a TLS connection
-	// with a non-empty protocol name and TLSNextProto contains a
-	// map entry for that key (such as "h2"), then the func is
-	// called with the request's authority (such as "example.com"
-	// or "example.com:1234") and the TLS connection. The function
-	// must return a RoundTripper that then handles the request.
-	// If TLSNextProto is not nil, HTTP/2 support is not enabled
-	// automatically.
 	//
-	// Historically, TLSNextProto was used to disable HTTP/2 support.
-	// The Transport.Protocols field now provides a simpler way to do this.
->>>>>>> upstream/release-branch.go1.26
+	// 歴史的に、TLSNextProtoはHTTP/2サポートを無効にするために使用されていました。
+	// Transport.Protocolsフィールドは、これを行うためのより簡単な方法を提供します。
 	TLSNextProto map[string]func(authority string, c *tls.Conn) RoundTripper
 
 	// ProxyConnectHeaderは、CONNECTリクエスト中にプロキシに送信するヘッダーをオプションで指定します。
