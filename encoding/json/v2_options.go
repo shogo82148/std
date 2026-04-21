@@ -164,12 +164,7 @@ type Options = jsonopts.Options
 //   - [jsontext.EscapeForJS]
 //   - [jsontext.PreserveRawStrings]
 //
-<<<<<<< HEAD
-// その他のブールオプションはすべてfalseに設定されます。
-// 非ブールオプションはすべてゼロ値に設定されますが、[jsontext.WithIndent] のみ"\t"がデフォルトです。
-=======
-// All other options are not present.
->>>>>>> upstream/release-branch.go1.26
+// その他のすべてのオプションは存在しません。
 //
 // このパッケージの [Marshal] および [Unmarshal] 関数は、v2の同等関数にこのオプションを指定して呼び出すのと同じ意味です：
 //
@@ -307,20 +302,12 @@ func ReportErrorsWithLegacySemantics(v bool) Options
 // このオプションは、フィールドのトップレベルの型がbool、string、数値型、またはそれらへのポインタの場合のみ有効です。
 // 特に、`string`は複合型（配列、スライス、構造体、マップ、インターフェース）の内部にあるbool、string、数値型には適用されません。
 //
-<<<<<<< HEAD
-// マーシャル時、これらのGo値は通常のJSON表現でシリアライズされますが、JSON文字列として引用されます。
-// アンマーシャル時、これらのGo値は通常のJSON表現が含まれるJSON文字列からデシリアライズされなければなりません。
-// JSON文字列内で引用されたJSON nullは、`string`が有効なGo値へのアンマーシャル時にJSON nullの代用として認められます。
-=======
-// When marshaling, such Go values are serialized as their usual
-// JSON representation, but quoted within a JSON string.
-// When unmarshaling, such Go values must be deserialized from
-// a JSON string containing their usual JSON representation or
-// Go number representation for that numeric kind.
-// Note that the Go number grammar is a superset of the JSON number grammar.
-// A JSON null quoted in a JSON string is a valid substitute for JSON null
-// while unmarshaling into a Go value that `string` takes effect on.
->>>>>>> upstream/release-branch.go1.26
+// マーシャル時、これらのGo値は通常のJSON表現でシリアライズされますが、JSON文字列内で引用されます。
+// アンマーシャル時、これらのGo値は通常のJSON表現またはその数値型のGo数値表現を含む
+// JSON文字列からデシリアライズされなければなりません。
+// Go数値文法はJSON数値文法のスーパーセットであることに注意してください。
+// JSON文字列内で引用されたJSON nullは、`string`が有効なGo値へのアンマーシャル時に
+// JSON nullの代用として認められます。
 //
 // このオプションはマーシャルまたはアンマーシャルのどちらにも影響します。
 // v1のデフォルトはtrueです。
