@@ -294,16 +294,9 @@ func UnmarshalRead(in io.Reader, out any, opts ...Options) (err error)
 // [Unmarshal] や [UnmarshalRead] と異なり、デコードオプションは無視されます。
 // これは、デコードオプションが既に指定済みである必要があるためです。
 //
-<<<<<<< HEAD
-// 入力は1つ以上のJSON値のストリームである場合があり、
-// この関数はストリーム中の次のJSON値のみをアンマーシャルします。
+// 入力は0個以上のJSON値のストリームであっても構いませんが、
+// これはストリーム内の次のJSON値のみをアンマーシャルします。
+// トップレベルのJSON値がもうない場合は、[io.EOF] を報告します。
 // 出力は非nilのポインタでなければなりません。
 // JSONからGo値への変換の詳細は [Unmarshal] を参照してください。
-=======
-// The input may be a stream of zero or more JSON values,
-// where this only unmarshals the next JSON value in the stream.
-// If there are no more top-level JSON values, it reports [io.EOF].
-// The output must be a non-nil pointer.
-// See [Unmarshal] for details about the conversion of JSON into a Go value.
->>>>>>> upstream/release-branch.go1.26
 func UnmarshalDecode(in *jsontext.Decoder, out any, opts ...Options) (err error)
