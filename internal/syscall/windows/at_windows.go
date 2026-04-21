@@ -16,15 +16,8 @@ import (
 // the set of invented O_ values in syscall/types_windows.go
 // to avoid overlap.
 const (
-<<<<<<< HEAD
-	O_DIRECTORY    = 0x100000
-	O_NOFOLLOW_ANY = 0x20000000
-	O_OPEN_REPARSE = 0x40000000
-	O_WRITE_ATTRS  = 0x80000000
-=======
 	O_NOFOLLOW_ANY = 0x200000000
 	O_WRITE_ATTRS  = 0x800000000
->>>>>>> upstream/release-branch.go1.26
 )
 
 func Openat(dirfd syscall.Handle, name string, flag uint64, perm uint32) (_ syscall.Handle, e1 error)

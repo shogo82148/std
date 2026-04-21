@@ -5,6 +5,7 @@
 package windows
 
 import (
+	"github.com/shogo82148/std/internal/syscall/windows"
 	"github.com/shogo82148/std/syscall"
 )
 
@@ -248,8 +249,6 @@ type FILE_COMPLETION_INFORMATION struct {
 // https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_osversioninfoexw
 const VER_NT_WORKSTATION = 0x0000001
-<<<<<<< HEAD
-=======
 
 type MemoryBasicInformation = windows.MemoryBasicInformation
 
@@ -350,4 +349,3 @@ const (
 	PROCESS_TRUST_LABEL_SECURITY_INFORMATION = 0x00000080
 	BACKUP_SECURITY_INFORMATION              = 0x00010000
 )
->>>>>>> upstream/release-branch.go1.26
