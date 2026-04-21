@@ -324,11 +324,7 @@ type RowsColumnTypePrecisionScale interface {
 	ColumnTypePrecisionScale(index int) (precision, scale int64, ok bool)
 }
 
-<<<<<<< HEAD
 // Txはトランザクションです。
-=======
-// Tx is a transaction.
->>>>>>> upstream/release-branch.go1.26
 type Tx interface {
 	Commit() error
 	Rollback() error
