@@ -37,20 +37,15 @@ func (b *Buffer) AvailableBuffer() []byte
 // より効率的に文字列を構築するには、[strings.Builder] 型を参照してください。
 func (b *Buffer) String() string
 
-<<<<<<< HEAD
-// Lenはバッファの未読部分のバイト数を返します。
-// b.Len() == len(b.Bytes())。
-=======
-// Peek returns the next n bytes without advancing the buffer.
-// If Peek returns fewer than n bytes, it also returns [io.EOF].
-// The slice is only valid until the next call to a read or write method.
-// The slice aliases the buffer content at least until the next buffer modification,
-// so immediate changes to the slice will affect the result of future reads.
+// Peekはバッファを進めることなく次のnバイトを返します。
+// Peekがnバイトより少ないバイトを返す場合、[io.EOF] も返します。
+// スライスは、次の読み取りまたは書き込みメソッドの呼び出しまでの間のみ有効です。
+// スライスは、次のバッファの変更まで少なくともバッファの内容をエイリアスしているため、
+// スライスへの直接の変更は将来の読み取り結果に影響を与えます。
 func (b *Buffer) Peek(n int) ([]byte, error)
 
-// Len returns the number of bytes of the unread portion of the buffer;
-// b.Len() == len(b.Bytes()).
->>>>>>> upstream/release-branch.go1.26
+// Lenはバッファの未読部分のバイト数を返します。
+// b.Len() == len(b.Bytes())。
 func (b *Buffer) Len() int
 
 // Capはバッファの基礎となるバイトスライスの容量、つまりバッファのデータのために割り当てられた総スペースを返します。
