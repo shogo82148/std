@@ -115,14 +115,10 @@ const (
 	ExtKeyUsageMicrosoftKernelCodeSigning
 )
 
-<<<<<<< HEAD
-// CertificateはX.509証明書を表します。
-=======
-// OID returns the ASN.1 object identifier of the EKU.
+// OIDはEKUのASN.1オブジェクト識別子を返します。
 func (eku ExtKeyUsage) OID() OID
 
-// A Certificate represents an X.509 certificate.
->>>>>>> upstream/release-branch.go1.26
+// CertificateはX.509証明書を表します。
 type Certificate struct {
 	Raw                     []byte
 	RawTBSCertificate       []byte
