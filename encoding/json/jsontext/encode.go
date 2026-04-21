@@ -115,15 +115,9 @@ func (e *Encoder) StackDepth() int
 // 0から [Encoder.StackDepth] までの数値でなければなりません。
 // 各レベルについて、その種別を報告します:
 //
-<<<<<<< HEAD
-//   - 0 はゼロレベルを表します。
-//   - '{' はJSONオブジェクトのレベルを表します。
-//   - '[' はJSON配列のレベルを表します。
-=======
-//   - [KindInvalid] for a level of zero,
-//   - [KindBeginObject] for a level representing a JSON object, and
-//   - [KindBeginArray] for a level representing a JSON array.
->>>>>>> upstream/release-branch.go1.26
+//   - ゼロレベルの場合は [KindInvalid]
+//   - JSONオブジェクトを表すレベルの場合は [KindBeginObject]
+//   - JSON配列を表すレベルの場合は [KindBeginArray]
 //
 // また、そのJSONオブジェクトや配列の長さも報告します。
 // JSONオブジェクト内の各名前と値は個別にカウントされるため、
