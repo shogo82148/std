@@ -340,10 +340,6 @@ const (
 	R_LOONG64_GOT_HI
 	R_LOONG64_GOT_LO
 
-<<<<<<< HEAD
-	// R_JMPLOONG64 resolves to non-PC-relative target address of a JMP instruction,
-	// by encoding the address into the instruction.
-=======
 	// 64-bit in-place addition.
 	R_LOONG64_ADD64
 	// 64-bit in-place subtraction.
@@ -360,7 +356,6 @@ const (
 
 	// R_JMPLOONG64 resolves to the 28-bit 4-byte aligned PC-relative target
 	// address of a B instruction, by encoding it into the instruction.
->>>>>>> upstream/release-branch.go1.26
 	R_JMPLOONG64
 
 	// R_ADDRMIPSU (only used on mips/mips64) resolves to the sign-adjusted "upper" 16

@@ -203,8 +203,6 @@ Note: In the following sections 3.1 to 3.6, "ui4" (4-bit unsigned int immediate)
 	VMOVQ Vj.W[index], Vd.W4  | vreplvei.w vd, vj, ui2 | for i in range(4) : VR[vd].w[i] = VR[vj].w[ui2]
 	VMOVQ Vj.V[index], Vd.V2  | vreplvei.d vd, vj, ui1 | for i in range(2) : VR[vd].d[i] = VR[vj].d[ui1]
 
-<<<<<<< HEAD
-=======
 3.7 Move vector register to vector register.
         Instruction format:
         VMOVQ     Vj, Vd
@@ -274,7 +272,6 @@ Note: In the following sections 3.1 to 3.6, "ui4" (4-bit unsigned int immediate)
 	XVEXTRINSW ui8, Vj, Vd | xvextrins.w vd, vj, ui8 | XR[xd].W[ui8[5:4]] = XR[xj].W[ui8[1:0]], XR[xd].W[ui8[5:4]+4] = XR[xj].W[ui8[1:0]+4]
 	XVEXTRINSV ui8, Vj, Vd | xvextrins.d vd, vj, ui8 | XR[xd].D[ui8[4]] = XR[xj].D[ui8[0]],XR[xd].D[ui8[4]+2] = XR[xj].D[ui8[0]+2]
 
->>>>>>> upstream/release-branch.go1.26
 # Special instruction encoding definition and description on LoongArch
 
  1. DBAR hint encoding for LA664(Loongson 3A6000) and later micro-architectures, paraphrased

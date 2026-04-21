@@ -394,11 +394,6 @@ const (
 	C_SEXT
 	C_LEXT
 	C_ZOREG
-<<<<<<< HEAD
-	C_SOREG
-	C_LOREG
-	C_GOK
-=======
 	C_SOREG_8
 	C_SOREG_9
 	C_SOREG_10
@@ -408,7 +403,6 @@ const (
 	C_LOREG_32
 	C_LOREG_64
 	C_ROFF
->>>>>>> upstream/release-branch.go1.26
 	C_ADDR
 	C_TLS_LE
 	C_TLS_IE
