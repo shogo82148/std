@@ -74,13 +74,8 @@ func Print(a ...any) (n int, err error)
 // オペランドがどちらも文字列でない場合、オペランド間にスペースが追加されます。
 func Sprint(a ...any) string
 
-<<<<<<< HEAD
-// Appendはオペランドのデフォルトフォーマットを使用して、フォーマットを行い、結果をバイトスライスに追加し、更新されたスライスを返します。
-=======
-// Append formats using the default formats for its operands, appends the result to
-// the byte slice, and returns the updated slice.
-// Spaces are added between operands when neither is a string.
->>>>>>> upstream/release-branch.go1.26
+// Appendはオペランドのデフォルトのフォーマットを使用してフォーマットし、結果をバイトスライスに追加し、更新されたスライスを返します。
+// オペランドがどちらも文字列でない場合、オペランド間にスペースが追加されます。
 func Append(b []byte, a ...any) []byte
 
 // Fprintln はオペランドのデフォルト形式を使用してフォーマットし、w に書き込みます。
