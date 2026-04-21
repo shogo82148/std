@@ -126,51 +126,37 @@ type VerifyOptions struct {
 	inhibitAnyPolicy bool
 }
 
-<<<<<<< HEAD
-// Verifyは、オプションのRootsの証明書を使用して、cからaの証明書までの1つ以上のチェーンを構築し、検証を試みます。成功すると、最初のチェーン要素はcで、最後の要素はopts.Rootsから来ます。
-// opts.Rootsがnilの場合、プラットフォームの検証プログラムが使用される可能性があります。この場合、検証の詳細は以下の説明と異なる場合があります。システムのルートが利用できない場合、返されるエラーはSystemRootsError型です。
-// 中間証明書の名前制約は、opts.DNSNameだけでなく、チェーン内で要求されるすべての名前に適用されます。したがって、中間証明書が許可しない場合でも、葉がexample.comを要求することは無効です。ただし、DirectoryName制約はサポートされていません。
-// 名前制約の検証は、RFC 5280の規則に従います。ただし、DNS名の制約は、電子メールやURIで定義された先頭のピリオド形式を使用できます。制約に先頭のピリオドがある場合、有効な制約名を構成するために少なくとも1つの追加のラベルが前置される必要があります。
-// 拡張キー使用（Extended Key Usage）の値は、チェーンが入れ子になった形で強制されます。したがって、EKUを列挙する中間証明書やルート証明書は、そのリストに含まれていないEKUを持つ葉がアサートすることを防ぎます。（これは明示されていませんが、CAが発行できる証明書の種類を制限するために一般的に行われています。）
-// SHA1WithRSAおよびECDSAWithSHA1の署名を使用する証明書はサポートされておらず、チェーンの構築には使用されません。
-// 返されるチェーンのc以外の証明書は変更しないでください。
-// 警告：この関数はリボケーション（証明書の失効チェック）を行いません。
-func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)
-=======
-// Verify attempts to verify c by building one or more chains from c to a
-// certificate in opts.Roots, using certificates in opts.Intermediates if
-// needed. If successful, it returns one or more chains where the first
-// element of the chain is c and the last element is from opts.Roots.
+// Verifyは、必要に応じてopts.Intermediatesの証明書を使用して、cからopts.Rootsの
+// 証明書への1つ以上のチェーンを構築することで、cを検証しようと試みます。
+// 成功した場合、チェーンの最初の要素がcで、最後の要素がopts.Rootsからの
+// 1つ以上のチェーンを返します。
 //
-// If opts.Roots is nil, the platform verifier might be used, and
-// verification details might differ from what is described below. If system
-// roots are unavailable the returned error will be of type SystemRootsError.
+// opts.Rootsがnilの場合、プラットフォーム検証器が使用される可能性があり、
+// 検証の詳細は以下に記載されているものと異なる場合があります。システム
+// ルートが利用できない場合、返されるエラーはSystemRootsError型になります。
 //
-// Name constraints in the intermediates will be applied to all names claimed
-// in the chain, not just opts.DNSName. Thus it is invalid for a leaf to claim
-// example.com if an intermediate doesn't permit it, even if example.com is not
-// the name being validated. Note that DirectoryName constraints are not
-// supported.
+// 中間証明書の名前制約は、opts.DNSNameだけでなく、チェーン内で主張されるすべての
+// 名前に適用されます。したがって、 example.com が検証対象の名前でない場合でも、
+// 中間証明書がそれを許可しない場合、リーフが example.com を主張するのは無効です。
+// なお、DirectoryName制約はサポートされていません。
 //
-// Name constraint validation follows the rules from RFC 5280, with the
-// addition that DNS name constraints may use the leading period format
-// defined for emails and URIs. When a constraint has a leading period
-// it indicates that at least one additional label must be prepended to
-// the constrained name to be considered valid.
+// 名前制約の検証はRFC 5280の規則に従い、DNS名制約がメールやURIに定義されている
+// 先頭ピリオド形式を使用できるという追加があります。制約に先頭ピリオドがある場合、
+// 制約された名前の前に少なくとも1つの追加ラベルが付加されて有効とみなされることを
+// 示します。
 //
-// Extended Key Usage values are enforced nested down a chain, so an intermediate
-// or root that enumerates EKUs prevents a leaf from asserting an EKU not in that
-// list. (While this is not specified, it is common practice in order to limit
-// the types of certificates a CA can issue.)
+// 拡張キー使用法の値はチェーンに沿って下位にネストして強制されるため、EKUを
+// 列挙する中間またはルートは、リーフがそのリストにないEKUを主張することを
+// 防ぎます。（これは仕様では指定されていませんが、CAが発行できる証明書の
+// 種類を制限するための一般的な慣行です。）
 //
-// Certificates that use SHA1WithRSA and ECDSAWithSHA1 signatures are not supported,
-// and will not be used to build chains.
+// SHA1WithRSAおよびECDSAWithSHA1署名を使用する証明書はサポートされておらず、
+// チェーンの構築には使用されません。
 //
-// Certificates other than c in the returned chains should not be modified.
+// 返されるチェーン内のc以外の証明書は変更すべきではありません。
 //
-// WARNING: this function doesn't do any revocation checking.
+// 警告：この関数は失効チェックを実行しません。
 func (c *Certificate) Verify(opts VerifyOptions) ([][]*Certificate, error)
->>>>>>> upstream/release-branch.go1.26
 
 // VerifyHostnameは指定されたホストに対して、cが有効な証明書であればnilを返します。
 // それ以外の場合、ミスマッチを説明するエラーを返します。
