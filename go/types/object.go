@@ -99,10 +99,7 @@ func NewTypeName(pos token.Pos, pkg *Package, name string, typ Type) *TypeName
 // IsAliasは、objが型のエイリアス名であるかどうかを報告します。
 func (obj *TypeName) IsAlias() bool
 
-<<<<<<< HEAD
-=======
-// A Var represents a declared variable (including function parameters and results, and struct fields).
->>>>>>> upstream/release-branch.go1.26
+// Varは宣言された変数（関数のパラメータと結果、および構造体のフィールドを含む）を表します。
 type Var struct {
 	object
 	origin   *Var
