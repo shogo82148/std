@@ -13,12 +13,7 @@ import (
 // その二つ目の型はエラーです。その場合、もし二つ目の（エラー）戻り値が実行中に非nilに評価された場合、
 // 実行は終了し、Executeはそのエラーを返します。
 //
-<<<<<<< HEAD
-// Executeによって返されるエラーは、基礎となるエラーをラップします。それらをアンラップするには、[errors.As] を呼び出します。
-=======
-// Errors returned by Execute wrap the underlying error; call [errors.AsType] to
-// unwrap them.
->>>>>>> upstream/release-branch.go1.26
+// Executeが返すエラーは元のエラーをラップしています。アンラップするには [errors.AsType] を呼び出してください。
 //
 // テンプレートの実行が引数リストを持つ関数を呼び出すとき、そのリストは
 // 関数のパラメータタイプに割り当て可能でなければなりません。任意のタイプの引数に適用することを意図した
