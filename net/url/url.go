@@ -2,7 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 // Package urlはURLの解析とクエリエスケープ処理を行います。
+=======
+//go:generate go run gen_encoding_table.go
+
+// Package url parses URLs and implements query escaping.
+>>>>>>> upstream/release-branch.go1.26
 //
 // RFC 3986を参照してください。このパッケージは基本的にRFC 3986に従いますが、互換性のために一部逸脱する場合があります。
 // IPv6ゾーンリテラルについてはRFC 6874に従います。
@@ -235,6 +241,7 @@ func (u *URL) MarshalBinary() (text []byte, err error)
 
 func (u *URL) UnmarshalBinary(text []byte) error
 
+<<<<<<< HEAD
 // JoinPath は、指定されたパス要素が既存のパスに結合され、
 // 結果のパスが "./" や "../" の要素を除去された新しい [URL] を返します。
 // 連続する複数の / 文字のシーケンスは、単一の / に縮小されます。
@@ -242,4 +249,15 @@ func (u *URL) JoinPath(elem ...string) *URL
 
 // JoinPathは、指定されたパス要素が結合された [URL] 文字列を返します。
 // ベースの既存パスと生成されたパスは、"./"や"../"要素が除去された状態でクリーンになります。
+=======
+// JoinPath returns a new [URL] with the provided path elements joined to
+// any existing path and the resulting path cleaned of any ./ or ../ elements.
+// Any sequences of multiple / characters will be reduced to a single /.
+// Path elements must already be in escaped form, as produced by [PathEscape].
+func (u *URL) JoinPath(elem ...string) *URL
+
+// JoinPath returns a [URL] string with the provided path elements joined to
+// the existing path of base and the resulting path cleaned of any ./ or ../ elements.
+// Path elements must already be in escaped form, as produced by [PathEscape].
+>>>>>>> upstream/release-branch.go1.26
 func JoinPath(base string, elem ...string) (result string, err error)

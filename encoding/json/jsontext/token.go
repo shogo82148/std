@@ -94,6 +94,7 @@ func (t Token) Uint() uint64
 // Kindは、トークンの種類を返します。
 func (t Token) Kind() Kind
 
+<<<<<<< HEAD
 // Kindは、すべてのJSONトークン種別を1バイトで表します。
 // このバイトは各種別の文法の先頭バイトであり、
 // 数値は必ず '0' で表現されるという制約があります:
@@ -113,4 +114,27 @@ func (t Token) Kind() Kind
 type Kind byte
 
 // Stringは、種別を人間が読める形式で表示します。
+=======
+// A Kind represents the kind of a JSON token.
+//
+// Kind represents each possible JSON token kind with a single byte,
+// which is conveniently the first byte of that kind's grammar
+// with the restriction that numbers always be represented with '0'.
+type Kind byte
+
+const (
+	KindInvalid     Kind = 0
+	KindNull        Kind = 'n'
+	KindFalse       Kind = 'f'
+	KindTrue        Kind = 't'
+	KindString      Kind = '"'
+	KindNumber      Kind = '0'
+	KindBeginObject Kind = '{'
+	KindEndObject   Kind = '}'
+	KindBeginArray  Kind = '['
+	KindEndArray    Kind = ']'
+)
+
+// String prints the kind in a humanly readable fashion.
+>>>>>>> upstream/release-branch.go1.26
 func (k Kind) String() string

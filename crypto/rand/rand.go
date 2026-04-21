@@ -6,6 +6,7 @@
 package rand
 
 import (
+	"github.com/shogo82148/std/crypto/internal/rand"
 	"github.com/shogo82148/std/io"
 )
 
@@ -20,9 +21,15 @@ import (
 //   - js/wasmでは、ReaderはWeb Crypto APIを使用します。
 //   - wasip1/wasmでは、Readerはrandom_getを使用します。
 //
+<<<<<<< HEAD
 // FIPS 140-3モードでは、出力はSP 800-90A Rev. 1
 // 決定論的乱数ビット生成器（DRBG）を通過します。
 var Reader io.Reader
+=======
+// In FIPS 140-3 mode, the output passes through an SP 800-90A Rev. 1
+// Deterministric Random Bit Generator (DRBG).
+var Reader io.Reader = rand.Reader
+>>>>>>> upstream/release-branch.go1.26
 
 // Readは暗号学的に安全な乱数バイトでbを埋めます。エラーを返すことはなく、
 // 常にbを完全に埋めます。

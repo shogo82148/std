@@ -5,6 +5,10 @@
 // Package toolchain implements dynamic switching of Go toolchains.
 package toolchain
 
+import (
+	"github.com/shogo82148/std/cmd/go/internal/modload"
+)
+
 // FilterEnv returns a copy of env with internal GOTOOLCHAIN environment
 // variables filtered out.
 func FilterEnv(env []string) []string
@@ -28,4 +32,4 @@ var TestVersionSwitch string
 // If $GOTOOLCHAIN is set to path or min+path, Exec only considers the PATH
 // as a source of Go toolchains. Otherwise Exec tries the PATH but then downloads
 // a toolchain if necessary.
-func Exec(gotoolchain string)
+func Exec(s *modload.State, gotoolchain string)

@@ -29,13 +29,19 @@ type Scanner struct {
 	lineOffset int
 	insertSemi bool
 	nlPos      token.Pos
+	stringEnd  token.Pos
 
 	// 公開される状態 - 変更しても問題ありません
 	ErrorCount int
 }
 
+<<<<<<< HEAD
 // モード値はフラグの集合体です（または0）。
 // これらはスキャナの動作を制御します。
+=======
+// A Mode value is a set of flags (or 0).
+// They control scanner behavior.
+>>>>>>> upstream/release-branch.go1.26
 type Mode uint
 
 const (

@@ -17,8 +17,17 @@ type Type int
 // しかし、任意の関数呼び出しに対して同じ型を表します。
 type Type1 int
 
+<<<<<<< HEAD
 // IntegerTypeは、ドキュメンテーションの目的のみでここに存在します。それは任意の整数型の代わりで、
 // 例えば、int、uint、int8などを表します。
+=======
+// TypeOrExpr is here for the purposes of documentation only. It is a stand-in
+// for either a Go type or an expression.
+type TypeOrExpr int
+
+// IntegerType is here for the purposes of documentation only. It is a stand-in
+// for any integer type: int, uint, int8 etc.
+>>>>>>> upstream/release-branch.go1.26
 type IntegerType int
 
 // FloatTypeは、ドキュメンテーションの目的のみでここに存在します。それは任意の浮動小数点型の代わりで、

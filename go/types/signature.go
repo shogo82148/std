@@ -27,6 +27,7 @@ type Signature struct {
 //go:fix inline
 func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 
+<<<<<<< HEAD
 // NewSignatureTypeは、与えられたレシーバ、レシーバ型パラメータ、型パラメータ、
 // パラメータ、および結果のための新しい関数型を作成します。
 // variadicが設定されている場合、paramsは少なくとも1つのパラメータを持つ必要があり、
@@ -37,6 +38,23 @@ func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 // 型パラメータであっても構いません。
 // recvがnon-nilの場合、typeParamsは空である必要があります。recvTypeParamsが
 // 空でない場合、recvはnon-nilである必要があります。
+=======
+// NewSignatureType creates a new function type for the given receiver,
+// receiver type parameters, type parameters, parameters, and results.
+//
+// If variadic is set, params must hold at least one parameter and the
+// last parameter must be an unnamed slice or a type parameter whose
+// type set has an unnamed slice as common underlying type.
+//
+// As a special case, to support append([]byte, str...), for variadic
+// signatures the last parameter may also be a string type, or a type
+// parameter containing a mix of byte slices and string types in its
+// type set. It may even be a named []byte slice type resulting from
+// instantiation of such a type parameter.
+//
+// If recv is non-nil, typeParams must be empty. If recvTypeParams is
+// non-empty, recv must be non-nil.
+>>>>>>> upstream/release-branch.go1.26
 func NewSignatureType(recv *Var, recvTypeParams, typeParams []*TypeParam, params, results *Tuple, variadic bool) *Signature
 
 // Recvはシグネチャsのレシーバー（メソッドの場合）を返します。関数の場合はnilを返します。
@@ -53,7 +71,12 @@ func (s *Signature) TypeParams() *TypeParamList
 // RecvTypeParams はシグネチャ s のレシーバー型パラメーターを返します。nil の場合もあります。
 func (s *Signature) RecvTypeParams() *TypeParamList
 
+<<<<<<< HEAD
 // Paramsはシグネチャsのパラメータを返します。パラメータがない場合はnilを返します。
+=======
+// Params returns the parameters of signature s, or nil.
+// See [NewSignatureType] for details of variadic functions.
+>>>>>>> upstream/release-branch.go1.26
 func (s *Signature) Params() *Tuple
 
 // Resultsはシグネチャsの結果、またはnilを返します。

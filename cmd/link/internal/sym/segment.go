@@ -47,7 +47,7 @@ type Section struct {
 	Vaddr   uint64
 	Length  uint64
 	Seg     *Segment
-	Elfsect interface{}
+	Elfsect any
 	Reloff  uint64
 	Rellen  uint64
 	// Relcount is the number of *host* relocations applied to this section

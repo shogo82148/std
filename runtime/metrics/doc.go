@@ -244,6 +244,11 @@ Below is the full list of supported metrics, ordered lexicographically.
 		package due to a non-default GODEBUG=containermaxprocs=...
 		setting.
 
+	/godebug/non-default-behavior/cryptocustomrand:events
+		The number of non-default behaviors executed by the crypto
+		package due to a non-default GODEBUG=cryptocustomrand=...
+		setting.
+
 	/godebug/non-default-behavior/embedfollowsymlinks:events
 		The number of non-default behaviors executed by the cmd/go
 		package due to a non-default GODEBUG=embedfollowsymlinks=...
@@ -274,6 +279,11 @@ Below is the full list of supported metrics, ordered lexicographically.
 		The number of non-default behaviors executed by the go/types
 		package due to a non-default GODEBUG=gotypesalias=... setting.
 
+	/godebug/non-default-behavior/htmlmetacontenturlescape:events
+		The number of non-default behaviors executed by
+		the html/template package due to a non-default
+		GODEBUG=htmlmetacontenturlescape=... setting.
+
 	/godebug/non-default-behavior/http2client:events
 		The number of non-default behaviors executed by the net/http
 		package due to a non-default GODEBUG=http2client=... setting.
@@ -281,6 +291,11 @@ Below is the full list of supported metrics, ordered lexicographically.
 	/godebug/non-default-behavior/http2server:events
 		The number of non-default behaviors executed by the net/http
 		package due to a non-default GODEBUG=http2server=... setting.
+
+	/godebug/non-default-behavior/httpcookiemaxnum:events
+		The number of non-default behaviors executed by the net/http
+		package due to a non-default GODEBUG=httpcookiemaxnum=...
+		setting.
 
 	/godebug/non-default-behavior/httplaxcontentlength:events
 		The number of non-default behaviors executed by the net/http
@@ -366,6 +381,16 @@ Below is the full list of supported metrics, ordered lexicographically.
 	/godebug/non-default-behavior/updatemaxprocs:events
 		The number of non-default behaviors executed by the runtime
 		package due to a non-default GODEBUG=updatemaxprocs=... setting.
+
+	/godebug/non-default-behavior/urlmaxqueryparams:events
+		The number of non-default behaviors executed by the net/url
+		package due to a non-default GODEBUG=urlmaxqueryparams=...
+		setting.
+
+	/godebug/non-default-behavior/urlstrictcolons:events
+		The number of non-default behaviors executed by the net/url
+		package due to a non-default GODEBUG=urlstrictcolons=...
+		setting.
 
 	/godebug/non-default-behavior/winreadlinkvolume:events
 		The number of non-default behaviors executed by the os package

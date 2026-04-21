@@ -47,7 +47,7 @@ type DebugSSA func(phase, flag string, val int, valString string) string
 //
 // If debugSSA is non-nil, any debug flags of the form ssa/... will be
 // passed to debugSSA for processing.
-func NewDebugFlag(debug interface{}, debugSSA DebugSSA) *DebugFlag
+func NewDebugFlag(debug any, debugSSA DebugSSA) *DebugFlag
 
 func (f *DebugFlag) Set(debugstr string) error
 

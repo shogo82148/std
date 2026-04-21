@@ -368,8 +368,8 @@ func Example_unknownMembers() {
 	// RejectUnknownMembersを指定すると、Unmarshalは
 	// 未知のメンバーが存在する場合に拒否します。
 	err = json.Unmarshal([]byte(input), new(Color), json.RejectUnknownMembers(true))
-	var serr *json.SemanticError
-	if errors.As(err, &serr) && serr.Err == json.ErrUnknownName {
+	serr, ok := errors.AsType[*json.SemanticError](err)
+	if ok && serr.Err == json.ErrUnknownName {
 		fmt.Println("Unmarshal error:", serr.Err, strconv.Quote(serr.JSONPointer.LastToken()))
 	}
 

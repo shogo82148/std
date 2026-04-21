@@ -107,10 +107,20 @@ func (b *B) ReportMetric(n float64, unit string)
 // そのため、ベンチマークループ開始前のセットアップ処理は計測に含まれません。
 // 同様に、falseを返すときにタイマーを停止するため、クリーンアップ処理も計測されません。
 //
+<<<<<<< HEAD
 // "for b.Loop() { ... }" ループの本体内では、ループ内で呼び出される関数の引数や戻り値が生存し続け、
 // コンパイラによるループ本体の完全な最適化が防がれます。現在は、b.Loopループ内で呼び出される関数のインライン化を無効化することで実現されています。
 // これはループの波括弧内で構文的に呼び出される関数にのみ適用され、ループ条件は必ず "b.Loop()" と記述する必要があります。
 // ループ内から呼び出される関数では通常通り最適化が行われます。
+=======
+// Within the body of a "for b.Loop() { ... }" loop, arguments to and
+// results from function calls and assigned variables within the loop are kept
+// alive, preventing the compiler from fully optimizing away the loop body.
+// Currently, this is implemented as a compiler transformation that wraps such
+// variables with a runtime.KeepAlive intrinsic call. This applies only to
+// statements syntactically between the curly braces of the loop, and the loop
+// condition must be written exactly as "b.Loop()".
+>>>>>>> upstream/release-branch.go1.26
 //
 // Loopがfalseを返した後、b.Nには実行された総イテレーション数が格納されるため、ベンチマークはb.Nを使って他の平均値を計算できます。
 //

@@ -38,8 +38,15 @@ type PublicKey struct {
 	X, Y *big.Int
 }
 
+<<<<<<< HEAD
 // ECDHはkを[ecdh.PublicKey]として返します。もしキーが[ecdh.Curve.NewPublicKey]の定義に従って無効であるか、暗号/crypto/ecdhでサポートされていないCurveであればエラーが返されます。
 func (k *PublicKey) ECDH() (*ecdh.PublicKey, error)
+=======
+// ECDH returns k as a [ecdh.PublicKey]. It returns an error if the key is
+// invalid according to the definition of [ecdh.Curve.NewPublicKey], or if the
+// Curve is not supported by crypto/ecdh.
+func (pub *PublicKey) ECDH() (*ecdh.PublicKey, error)
+>>>>>>> upstream/release-branch.go1.26
 
 // Equalは、pubとxが同じ値を持つかどうかを報告します。
 //
@@ -91,8 +98,15 @@ type PrivateKey struct {
 	D *big.Int
 }
 
+<<<<<<< HEAD
 // ECDHは [ecdh.PrivateKey] としてkを返します。キーが [ecdh.Curve.NewPrivateKey] の定義に従って無効である場合や、Curveが [crypto/ecdh] でサポートされていない場合はエラーを返します。
 func (k *PrivateKey) ECDH() (*ecdh.PrivateKey, error)
+=======
+// ECDH returns k as a [ecdh.PrivateKey]. It returns an error if the key is
+// invalid according to the definition of [ecdh.Curve.NewPrivateKey], or if the
+// Curve is not supported by [crypto/ecdh].
+func (priv *PrivateKey) ECDH() (*ecdh.PrivateKey, error)
+>>>>>>> upstream/release-branch.go1.26
 
 // Publicはprivに対応する公開鍵を返します。
 func (priv *PrivateKey) Public() crypto.PublicKey
@@ -134,6 +148,7 @@ func (priv *PrivateKey) Bytes() ([]byte, error)
 // ハッシュが秘密鍵の曲線位数のビット長よりも長い場合、ハッシュはその長さに切り詰められます。
 // [SignASN1] と同様に、ASN.1エンコードされた署名を返します。
 //
+<<<<<<< HEAD
 // randがnilでない場合、署名はランダム化されます。ほとんどのアプリケーションでは
 // randとして [crypto/rand.Reader] を使用する必要があります。返される署名は
 // randから読み取られたバイトに決定論的に依存せず、呼び出し間やバージョン間で変更される可能性があることに注意してください。
@@ -142,20 +157,48 @@ func (priv *PrivateKey) Bytes() ([]byte, error)
 // 決定論的署名を生成する場合、opts.HashFunc()はdigestを生成するために使用された関数である必要があり、
 // priv.Curveは [elliptic.P224]、[elliptic.P256]、[elliptic.P384]、または [elliptic.P521] のいずれかである必要があります。
 func (priv *PrivateKey) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
+=======
+// If random is not nil, the signature is randomized. Most applications should use
+// [crypto/rand.Reader] as random, but unless GODEBUG=cryptocustomrand=1 is set, a
+// secure source of random bytes is always used, and the actual Reader is ignored.
+// The GODEBUG setting will be removed in a future Go release. Instead, use
+// [testing/cryptotest.SetGlobalRandom].
+//
+// If random is nil, Sign will produce a deterministic signature according to RFC
+// 6979. When producing a deterministic signature, opts.HashFunc() must be the
+// function used to produce digest and priv.Curve must be one of
+// [elliptic.P224], [elliptic.P256], [elliptic.P384], or [elliptic.P521].
+func (priv *PrivateKey) Sign(random io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error)
+>>>>>>> upstream/release-branch.go1.26
 
 // GenerateKeyは指定された曲線の新しいECDSA秘密鍵を生成します。
 //
+<<<<<<< HEAD
 // ほとんどのアプリケーションではrandとして[crypto/rand.Reader]を使用する必要があります。注意点として、randから読み取ったバイトに決定的な依存関係を持たない返された鍵は、呼び出し間やバージョン間で変更される可能性があります。
 func GenerateKey(c elliptic.Curve, rand io.Reader) (*PrivateKey, error)
+=======
+// Since Go 1.26, a secure source of random bytes is always used, and the Reader is
+// ignored unless GODEBUG=cryptocustomrand=1 is set. This setting will be removed
+// in a future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].
+func GenerateKey(c elliptic.Curve, r io.Reader) (*PrivateKey, error)
+>>>>>>> upstream/release-branch.go1.26
 
 // SignASN1は、大きなメッセージをハッシュ化した結果であるハッシュに対して、
 // 秘密鍵privを使用して署名します。ハッシュが秘密鍵の曲線順序のビット長よりも長い場合、
 // ハッシュはその長さに切り詰められます。ASN.1エンコードされた署名を返します。
 //
+<<<<<<< HEAD
 // 署名はランダム化されています。ほとんどのアプリケーションでは、[crypto/rand.Reader]
 // を rand として使用する必要があります。なお、返される署名はrandから読み取られた
 // バイトに対して決定論的に依存しないことに注意してください。また、呼び出しやバージョン間で変更される可能性があります。
 func SignASN1(rand io.Reader, priv *PrivateKey, hash []byte) ([]byte, error)
+=======
+// The signature is randomized. Since Go 1.26, a secure source of random bytes
+// is always used, and the Reader is ignored unless GODEBUG=cryptocustomrand=1
+// is set. This setting will be removed in a future Go release. Instead, use
+// [testing/cryptotest.SetGlobalRandom].
+func SignASN1(r io.Reader, priv *PrivateKey, hash []byte) ([]byte, error)
+>>>>>>> upstream/release-branch.go1.26
 
 // VerifyASN1は公開鍵pubを使用してハッシュのASN.1エンコードされた署名sigを検証します。
 // 返り値は署名が有効かどうかを示します。

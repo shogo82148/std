@@ -164,6 +164,7 @@ type Loader struct {
 	plt         map[Sym]int32
 	got         map[Sym]int32
 	dynid       map[Sym]int32
+	weakBinding map[Sym]bool
 
 	relocVariant map[relocId]sym.RelocVariant
 
@@ -471,6 +472,10 @@ func (l *Loader) SymExtname(i Sym) string
 // SetSymExtname sets the  "extname" attribute for a symbol.
 func (l *Loader) SetSymExtname(i Sym, value string)
 
+func (l *Loader) SymWeakBinding(i Sym) bool
+
+func (l *Loader) SetSymWeakBinding(i Sym, v bool)
+
 // SymElfType returns the previously recorded ELF type for a symbol
 // (used only for symbols read from shared libraries by ldshlibsyms).
 // It is not set for symbols defined by the packages being linked or
@@ -769,13 +774,13 @@ type ErrorReporter struct {
 //
 // Logging an error means that on exit cmd/link will delete any
 // output file and return a non-zero error code.
-func (reporter *ErrorReporter) Errorf(s Sym, format string, args ...interface{})
+func (reporter *ErrorReporter) Errorf(s Sym, format string, args ...any)
 
 // GetErrorReporter returns the loader's associated error reporter.
 func (l *Loader) GetErrorReporter() *ErrorReporter
 
 // Errorf method logs an error message. See ErrorReporter.Errorf for details.
-func (l *Loader) Errorf(s Sym, format string, args ...interface{})
+func (l *Loader) Errorf(s Sym, format string, args ...any)
 
 // Symbol statistics.
 func (l *Loader) Stat() string

@@ -4,6 +4,10 @@
 
 package load
 
+import (
+	"github.com/shogo82148/std/cmd/go/internal/modload"
+)
+
 var (
 	BuildAsmflags   PerPackageFlag
 	BuildGcflags    PerPackageFlag
@@ -29,4 +33,7 @@ func (f *PerPackageFlag) String() string
 func (f *PerPackageFlag) Present() bool
 
 // For returns the flags to use for the given package.
-func (f *PerPackageFlag) For(p *Package) []string
+//
+// The module loader state is used by the matcher to know if certain
+// patterns match packages within the state's MainModules.
+func (f *PerPackageFlag) For(s *modload.State, p *Package) []string

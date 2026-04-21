@@ -8,6 +8,8 @@ import (
 	"github.com/shogo82148/std/context"
 
 	"github.com/shogo82148/std/cmd/go/internal/gover"
+	"github.com/shogo82148/std/cmd/go/internal/modfetch"
+	"github.com/shogo82148/std/cmd/go/internal/modload"
 )
 
 // A Switcher collects errors to be reported and then decides
@@ -22,9 +24,12 @@ import (
 //
 // See https://go.dev/doc/toolchain#switch.
 type Switcher struct {
-	TooNew *gover.TooNewError
-	Errors []error
+	TooNew      *gover.TooNewError
+	Errors      []error
+	loaderstate *modload.State
 }
+
+func NewSwitcher(s *modload.State) *Switcher
 
 // Error reports the error to the Switcher,
 // which saves it for processing during Switch.
@@ -50,7 +55,7 @@ func (s *Switcher) Switch(ctx context.Context)
 
 // SwitchOrFatal attempts a toolchain switch based on the information in err
 // and otherwise falls back to base.Fatal(err).
-func SwitchOrFatal(ctx context.Context, err error)
+func SwitchOrFatal(loaderstate *modload.State, ctx context.Context, err error)
 
 // NewerToolchain returns the name of the toolchain to use when we need
 // to switch to a newer toolchain that must support at least the given Go version.
@@ -59,7 +64,7 @@ func SwitchOrFatal(ctx context.Context, err error)
 // If the latest major release is 1.N.0, we use the latest patch release of 1.(N-1) if that's >= version.
 // Otherwise we use the latest 1.N if that's allowed.
 // Otherwise we use the latest release.
-func NewerToolchain(ctx context.Context, version string) (string, error)
+func NewerToolchain(ctx context.Context, f *modfetch.Fetcher, version string) (string, error)
 
 // HasAuto reports whether the GOTOOLCHAIN setting allows "auto" upgrades.
 func HasAuto() bool

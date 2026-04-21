@@ -20,10 +20,17 @@ import (
 // 未知のJSONオブジェクトメンバー名は以下のように取得できます:
 //
 //	err := ...
+<<<<<<< HEAD
 //	var serr json.SemanticError
 //	if errors.As(err, &serr) && serr.Err == json.ErrUnknownName {
 //		ptr := serr.JSONPointer // 未知の名前へのJSONポインタ
 //		name := ptr.LastToken() // 未知の名前そのもの
+=======
+//	serr, ok := errors.AsType[*json.SemanticError](err)
+//	if ok && serr.Err == json.ErrUnknownName {
+//		ptr := serr.JSONPointer // JSON pointer to unknown name
+//		name := ptr.LastToken() // unknown name itself
+>>>>>>> upstream/release-branch.go1.26
 //		...
 //	}
 //

@@ -19,8 +19,13 @@ import (
 // それ以外の場合、fsysは少なくとも指定されたファイルを含み、他のファイルを含んでもかまいません。
 // fsysの内容はTestFSの実行中に同時に変更されてはなりません。
 //
+<<<<<<< HEAD
 // TestFSが何かしらの不適切な振る舞いを見つけた場合、最初のエラーまたはエラーのリストを返します。
 // 検査には [errors.Is] または [errors.As] を使用します。
+=======
+// If TestFS finds any misbehaviors, it returns either the first error or a
+// list of errors. Use [errors.Is] or [errors.AsType] to inspect.
+>>>>>>> upstream/release-branch.go1.26
 //
 // テスト内での典型的な使用法は以下の通りです：
 //

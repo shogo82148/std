@@ -10,6 +10,7 @@ import (
 
 // ErrNotFoundは、パスの検索が実行可能なファイルを見つけられなかった場合のエラーです。
 var ErrNotFound = errors.New("executable file not found in %PATH%")
+<<<<<<< HEAD
 
 // LookPathは、PATH環境変数で指定されたディレクトリ内の実行可能なファイルを検索します。
 // LookPathはまた、PATHEXT環境変数を使用して適切な候補をマッチングします。
@@ -20,3 +21,5 @@ var ErrNotFound = errors.New("executable file not found in %PATH%")
 // Go 1.19以降では、LookPathはそのパスとともに、[errors.Is](err, [ErrDot])を満たすエラーを返します。
 // 詳細はパッケージのドキュメンテーションを参照してください。
 func LookPath(file string) (string, error)
+=======
+>>>>>>> upstream/release-branch.go1.26

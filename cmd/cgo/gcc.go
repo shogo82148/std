@@ -22,7 +22,14 @@ func (tr *TypeRepr) String() string
 
 func (tr *TypeRepr) Empty() bool
 
+<<<<<<< HEAD
 // Setは型の表現を変更します。
 // fargsが指定されている場合、reprはfmt.Sprintfのフォーマットとして使用されます。
 // それ以外の場合、reprは処理されずに型の表現として使用されます。
 func (tr *TypeRepr) Set(repr string, fargs ...interface{})
+=======
+// Set modifies the type representation.
+// If fargs are provided, repr is used as a format for fmt.Sprintf.
+// Otherwise, repr is used unprocessed as the type representation.
+func (tr *TypeRepr) Set(repr string, fargs ...any)
+>>>>>>> upstream/release-branch.go1.26

@@ -13,7 +13,7 @@ import (
 )
 
 // DumpAny is like FDumpAny but prints to stderr.
-func DumpAny(root interface{}, filter string, depth int)
+func DumpAny(root any, filter string, depth int)
 
 // FDumpAny prints the structure of a rooted data structure
 // to w by depth-first traversal of the data structure.
@@ -32,4 +32,4 @@ func DumpAny(root interface{}, filter string, depth int)
 // rather than their type; struct fields with zero values or
 // non-matching field names are omitted, and "…" means recursion
 // depth has been reached or struct fields have been omitted.
-func FDumpAny(w io.Writer, root interface{}, filter string, depth int)
+func FDumpAny(w io.Writer, root any, filter string, depth int)

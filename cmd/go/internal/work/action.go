@@ -14,6 +14,7 @@ import (
 
 	"github.com/shogo82148/std/cmd/go/internal/cache"
 	"github.com/shogo82148/std/cmd/go/internal/load"
+	"github.com/shogo82148/std/cmd/go/internal/modload"
 	"github.com/shogo82148/std/cmd/go/internal/trace"
 )
 
@@ -22,6 +23,7 @@ import (
 // build packages in parallel, and the builder is shared.
 type Builder struct {
 	WorkDir            string
+	getVendorDir       func() string
 	actionCache        map[cacheKey]*Action
 	flagCache          map[[2]string]bool
 	gccCompilerIDCache map[string]cache.ActionID
@@ -83,11 +85,13 @@ type Action struct {
 	actionID         cache.ActionID
 	buildID          string
 
-	VetxOnly  bool
-	needVet   bool
-	needBuild bool
-	vetCfg    *vetConfig
-	output    []byte
+	VetxOnly   bool
+	needVet    bool
+	needBuild  bool
+	needFix    bool
+	vetCfg     *vetConfig
+	FixArchive string
+	output     []byte
 
 	sh *Shell
 
@@ -135,7 +139,7 @@ const (
 // and arranges for it to be removed in case of an unclean exit.
 // The caller must Close the builder explicitly to clean up the WorkDir
 // before a clean exit.
-func NewBuilder(workDir string) *Builder
+func NewBuilder(workDir string, getVendorDir func() string) *Builder
 
 func (b *Builder) Close() error
 
@@ -152,7 +156,7 @@ func CheckGOOSARCHPair(goos, goarch string) error
 func (b *Builder) NewObjdir() string
 
 // AutoAction returns the "right" action for go build or go install of p.
-func (b *Builder) AutoAction(mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) AutoAction(s *modload.State, mode, depMode BuildMode, p *load.Package) *Action
 
 // CompileAction returns the action for compiling and possibly installing
 // (according to mode) the given package. The resulting action is only
@@ -165,9 +169,9 @@ func (b *Builder) CompileAction(mode, depMode BuildMode, p *load.Package) *Actio
 // It depends on the action for compiling p.
 // If the caller may be causing p to be installed, it is up to the caller
 // to make sure that the install depends on (runs after) vet.
-func (b *Builder) VetAction(mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) VetAction(s *modload.State, mode, depMode BuildMode, needFix bool, p *load.Package) *Action
 
 // LinkAction returns the action for linking p into an executable
 // and possibly installing the result (according to mode).
 // depMode is the action (build or install) to use when compiling dependencies.
-func (b *Builder) LinkAction(mode, depMode BuildMode, p *load.Package) *Action
+func (b *Builder) LinkAction(s *modload.State, mode, depMode BuildMode, p *load.Package) *Action

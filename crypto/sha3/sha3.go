@@ -32,6 +32,7 @@ func SumSHAKE128(data []byte, length int) []byte
 func SumSHAKE256(data []byte, length int) []byte
 
 // SHA3 is an instance of a SHA-3 hash. It implements [hash.Hash].
+// The zero value is a usable SHA3-256 hash.
 type SHA3 struct {
 	s sha3.Digest
 }
@@ -76,6 +77,7 @@ func (s *SHA3) UnmarshalBinary(data []byte) error
 func (d *SHA3) Clone() (hash.Cloner, error)
 
 // SHAKE is an instance of a SHAKE extendable output function.
+// The zero value is a usable SHAKE256 hash.
 type SHAKE struct {
 	s sha3.SHAKE
 }

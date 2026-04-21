@@ -40,8 +40,6 @@ type Config struct {
 	hasGReg        bool
 	ctxt           *obj.Link
 	optimize       bool
-	useAvg         bool
-	useHmul        bool
 	SoftFloat      bool
 	Race           bool
 	BigEndian      bool
@@ -49,6 +47,7 @@ type Config struct {
 	haveBswap64    bool
 	haveBswap32    bool
 	haveBswap16    bool
+	haveCondSelect bool
 
 	// mulRecipes[x] = function to build v * x from v.
 	mulRecipes map[int64]mulRecipe
@@ -78,6 +77,10 @@ type Types struct {
 	Float32Ptr *types.Type
 	Float64Ptr *types.Type
 	BytePtrPtr *types.Type
+	Vec128     *types.Type
+	Vec256     *types.Type
+	Vec512     *types.Type
+	Mask       *types.Type
 }
 
 // NewTypes creates and populates a Types.
@@ -87,13 +90,13 @@ func NewTypes() *Types
 func (t *Types) SetTypPtrs()
 
 type Logger interface {
-	Logf(string, ...interface{})
+	Logf(string, ...any)
 
 	Log() bool
 
-	Fatalf(pos src.XPos, msg string, args ...interface{})
+	Fatalf(pos src.XPos, msg string, args ...any)
 
-	Warnl(pos src.XPos, fmt_ string, args ...interface{})
+	Warnl(pos src.XPos, fmt_ string, args ...any)
 
 	Debug_checknil() bool
 }

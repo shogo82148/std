@@ -90,6 +90,11 @@ const (
 	// アプリケーションは保存する前に [SessionState] を変更することができます。
 	// このイベントはクライアント接続でのみ発生します。
 	QUICStoreSession
+
+	// QUICErrorEvent indicates that a fatal error has occurred.
+	// The handshake cannot proceed and the connection must be closed.
+	// QUICEvent.Err is set.
+	QUICErrorEvent
 )
 
 // QUICEventはQUIC接続で発生するイベントです。
@@ -111,6 +116,10 @@ type QUICEvent struct {
 
 	// Set for QUICResumeSession and QUICStoreSession.
 	SessionState *SessionState
+
+	// Set for QUICErrorEvent.
+	// The error will wrap AlertError.
+	Err error
 }
 
 // QUICClientは、QUICTransportを基礎とした新しいTLSクライアント側接続を返します。設定はnilであってはなりません。

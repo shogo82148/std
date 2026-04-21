@@ -37,6 +37,10 @@ var ImportPath string
 
 func (TestDeps) ImportPath() string
 
+var ModulePath string
+
+func (TestDeps) ModulePath() string
+
 func (TestDeps) StartTestLog(w io.Writer)
 
 func (TestDeps) StopTestLog() error

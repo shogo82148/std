@@ -417,6 +417,7 @@ func Verbose() bool
 
 // TBは [T], [B], [F] に共通するインターフェースです。
 type TB interface {
+	ArtifactDir() string
 	Attr(key, value string)
 	Cleanup(func())
 	Error(args ...any)

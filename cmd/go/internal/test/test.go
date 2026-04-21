@@ -124,8 +124,8 @@ In addition to the build flags, the flags handled by 'go test' itself are:
 	    Also emits build output in JSON. See 'go help buildjson'.
 
 	-o file
-	    Compile the test binary to the named file.
-	    The test still runs (unless -c or -i is specified).
+	    Save a copy of the test binary to the named file.
+	    The test still runs (unless -c is specified).
 	    If file ends in a slash or names an existing directory,
 	    the test is written to pkg.test in that directory.
 
@@ -153,6 +153,10 @@ options of pprof control how the information is presented.
 
 The following flags are recognized by the 'go test' command and
 control the execution of any test:
+
+	-artifacts
+	    Save test artifacts in the directory specified by -outputdir.
+	    See 'go doc testing.T.ArtifactDir'.
 
 	-bench regexp
 	    Run only those benchmarks matching a regular expression.
@@ -247,6 +251,10 @@ control the execution of any test:
 	    expression. No tests, benchmarks, fuzz tests, or examples will be run.
 	    This will only list top-level tests. No subtest or subbenchmarks will be
 	    shown.
+
+	-outputdir directory
+	    Place output files from profiling and test artifacts in the
+	    specified directory, by default the directory in which "go test" is running.
 
 	-parallel n
 	    Allow parallel execution of test functions that call t.Parallel, and
@@ -358,10 +366,6 @@ profile the tests during execution:
 	-mutexprofilefraction n
 	    Sample 1 in n stack traces of goroutines holding a
 	    contended mutex.
-
-	-outputdir directory
-	    Place output files from profiling in the specified directory,
-	    by default the directory in which "go test" is running.
 
 	-trace trace.out
 	    Write an execution trace to the specified file before exiting.

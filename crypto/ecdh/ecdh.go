@@ -46,7 +46,23 @@ func (k *PublicKey) Equal(x crypto.PublicKey) bool
 
 func (k *PublicKey) Curve() Curve
 
+<<<<<<< HEAD
 // PrivateKeyは通常秘密に保持されるECDHの秘密鍵です。
+=======
+// KeyExchanger is an interface for an opaque private key that can be used for
+// key exchange operations. For example, an ECDH key kept in a hardware module.
+//
+// It is implemented by [PrivateKey].
+type KeyExchanger interface {
+	PublicKey() *PublicKey
+	Curve() Curve
+	ECDH(*PublicKey) ([]byte, error)
+}
+
+var _ KeyExchanger = (*PrivateKey)(nil)
+
+// PrivateKey is an ECDH private key, usually kept secret.
+>>>>>>> upstream/release-branch.go1.26
 //
 // これらの鍵は[crypto/x509.ParsePKCS8PrivateKey]でパースでき、[crypto/x509.MarshalPKCS8PrivateKey]
 // でエンコードすることができます。NIST曲線の場合、パース後に[crypto/ecdsa.PrivateKey.ECDH]で変換する必要があります。

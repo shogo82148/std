@@ -10,4 +10,7 @@ package sysrand
 // system. It always fills b entirely and crashes the program irrecoverably if
 // an error is encountered. The operating system APIs are documented to never
 // return an error on all but legacy Linux systems.
+//
+// Note that Read is not affected by [testing/cryptotest.SetGlobalRand], and it
+// should not be used directly by algorithm implementations.
 func Read(b []byte)

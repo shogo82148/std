@@ -13,6 +13,7 @@
 //
 // コマンドは以下の通りです:
 //
+<<<<<<< HEAD
 //	bug         バグレポートを開始する
 //	build       パッケージと依存関係をコンパイルする
 //	clean       オブジェクトファイルとキャッシュファイルを削除する
@@ -32,6 +33,27 @@
 //	tool        指定されたgoツールを実行する
 //	version     Goのバージョンを表示する
 //	vet         パッケージのおそらく間違いを報告する
+=======
+//	bug         start a bug report
+//	build       compile packages and dependencies
+//	clean       remove object files and cached files
+//	doc         show documentation for package or symbol
+//	env         print Go environment information
+//	fix         apply fixes suggested by static checkers
+//	fmt         gofmt (reformat) package sources
+//	generate    generate Go files by processing source
+//	get         add dependencies to current module and install them
+//	install     compile and install packages and dependencies
+//	list        list packages or modules
+//	mod         module maintenance
+//	work        workspace maintenance
+//	run         compile and run Go program
+//	telemetry   manage telemetry data and settings
+//	test        test packages
+//	tool        run specified go tool
+//	version     print Go version
+//	vet         report likely mistakes in packages
+>>>>>>> upstream/release-branch.go1.26
 //
 // "go help <コマンド>"を使用して、コマンドの詳細情報を取得します。
 //
@@ -449,12 +471,13 @@
 //
 // 環境変数についての詳細は、'go help environment'を参照してください。
 //
-// # Update packages to use new APIs
+// # Apply fixes suggested by static checkers
 //
 // 使用法:
 //
-//	go fix [-fix list] [packages]
+//	go fix [build flags] [-fixtool prog] [fix flags] [packages]
 //
+<<<<<<< HEAD
 // Fixは、インポートパスで指定されたパッケージにGo fixコマンドを実行します。
 //
 // -fixフラグは、実行する修正のカンマ区切りのリストを設定します。
@@ -465,6 +488,29 @@
 // パッケージの指定についての詳細は、'go help packages'を参照してください。
 //
 // 他のオプションでfixを実行するには、'go tool fix'を実行します。
+=======
+// Fix runs the Go fix tool (cmd/fix) on the named packages
+// and applies suggested fixes.
+//
+// It supports these flags:
+//
+//	  -diff
+//		instead of applying each fix, print the patch as a unified diff
+//
+// The -fixtool=prog flag selects a different analysis tool with
+// alternative or additional fixers; see the documentation for go vet's
+// -vettool flag for details.
+//
+// The default fix tool is 'go tool fix' or cmd/fix.
+// For help on its fixers and their flags, run 'go tool fix help'.
+// For details of a specific fixer such as 'hostport', see 'go tool fix help hostport'.
+//
+// For more about specifying packages, see 'go help packages'.
+//
+// The build flags supported by go fix are those that control package resolution
+// and execution, such as -C, -n, -x, -v, -tags, and -toolexec.
+// For more about these flags, see 'go help build'.
+>>>>>>> upstream/release-branch.go1.26
 //
 // 参照してください: go fmt, go vet.
 //
@@ -1742,10 +1788,17 @@
 //	    また、ビルド出力もJSONで出力します。'go help buildjson'を参照してください。
 //
 //	-o file
+<<<<<<< HEAD
 //	    テストバイナリを指定したファイルにコンパイルします。
 //	    テストはまだ実行されます（-cまたは-iが指定されていない限り）。
 //	    もしファイルがスラッシュで終わっているか、既存のディレクトリを指定している場合、
 //	    テストはそのディレクトリのpkg.testに書き込まれます。
+=======
+//	    Save a copy of the test binary to the named file.
+//	    The test still runs (unless -c is specified).
+//	    If file ends in a slash or names an existing directory,
+//	    the test is written to pkg.test in that directory.
+>>>>>>> upstream/release-branch.go1.26
 //
 // テストバイナリは、テストの実行を制御するフラグも受け入れます。これらの
 // フラグは'go test'でもアクセス可能です。詳細は'go help testflag'を参照してください。
@@ -1812,6 +1865,7 @@
 //
 //	go vet [ビルドフラグ] [-vettool prog] [vetフラグ] [パッケージ]
 //
+<<<<<<< HEAD
 // Vetは、インポートパスで指定されたパッケージに対してGo vetコマンドを実行します。
 //
 // vetとそのフラグについての詳細は、'go doc cmd/vet'を参照してください。
@@ -1821,13 +1875,47 @@
 //
 // -vettool=progフラグは、代替または追加のチェックを持つ別の分析ツールを選択します。
 // 例えば、'shadow'アナライザは、これらのコマンドを使用してビルドおよび実行できます：
+=======
+// Vet runs the Go vet tool (cmd/vet) on the named packages
+// and reports diagnostics.
+//
+// It supports these flags:
+//
+//	  -c int
+//		display offending line with this many lines of context (default -1)
+//	  -json
+//		emit JSON output
+//	  -fix
+//		instead of printing each diagnostic, apply its first fix (if any)
+//	  -diff
+//		instead of applying each fix, print the patch as a unified diff
+//
+// The -vettool=prog flag selects a different analysis tool with
+// alternative or additional checks. For example, the 'shadow' analyzer
+// can be built and run using these commands:
+>>>>>>> upstream/release-branch.go1.26
 //
 //	go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow@latest
 //	go vet -vettool=$(which shadow)
 //
+<<<<<<< HEAD
 // go vetがサポートするビルドフラグは、パッケージの解決と実行を制御するものです。
 // 例えば、-C, -n, -x, -v, -tags, そして -toolexecです。
 // これらのフラグについての詳細は、'go help build'を参照してください。
+=======
+// Alternative vet tools should be built atop golang.org/x/tools/go/analysis/unitchecker,
+// which handles the interaction with go vet.
+//
+// The default vet tool is 'go tool vet' or cmd/vet.
+// For help on its checkers and their flags, run 'go tool vet help'.
+// For details of a specific checker such as 'printf', see 'go tool vet help printf'.
+//
+// For more about specifying packages, see 'go help packages'.
+//
+// The build flags supported by go vet are those that control package resolution
+// and execution, such as -C, -n, -x, -v, -tags, and -toolexec.
+// For more about these flags, see 'go help build'.
+>>>>>>> upstream/release-branch.go1.26
 //
 // 参照：go fmt, go fix.
 //
@@ -1946,9 +2034,21 @@
 // ファイル名をdns_windows.goとすると、Windows用のパッケージをビルドするときにのみ
 // 含まれます。同様に、math_386.sは32ビットx86のパッケージをビルドするときにのみ含まれます。
 //
+<<<<<<< HEAD
 // Goのバージョン1.16以前では、ビルド制約には異なる構文が使用されていました。
 // それは"// +build"プレフィックスでした。gofmtコマンドは、古い構文に遭遇すると、
 // 同等の//go:build制約を追加します。
+=======
+// By convention, packages with assembly implementations may provide a go-only
+// version under the "purego" build constraint. This does not limit the use of
+// cgo (use the "cgo" build constraint) or unsafe. For example:
+//
+//	//go:build purego
+//
+// Go versions 1.16 and earlier used a different syntax for build constraints,
+// with a "// +build" prefix. The gofmt command will add an equivalent //go:build
+// constraint when encountering the older syntax.
+>>>>>>> upstream/release-branch.go1.26
 //
 // Go 1.21以降のバージョンを持つモジュールでは、ファイルのビルド制約に
 // Goメジャーリリースの項が含まれている場合、ファイルをコンパイルする際に
@@ -2949,6 +3049,10 @@
 // 'go test'コマンドは以下のフラグを認識し、
 // 任意のテストの実行を制御します：
 //
+//	-artifacts
+//	    Save test artifacts in the directory specified by -outputdir.
+//	    See 'go doc testing.T.ArtifactDir'.
+//
 //	-bench regexp
 //	    正規表現に一致するベンチマークのみを実行します。
 //	    デフォルトでは、ベンチマークは実行されません。
@@ -3037,6 +3141,10 @@
 //	    テスト、ベンチマーク、fuzzテスト、または例は実行されません。
 //	    これはトップレベルのテストのみをリストします。サブテストやサブベンチマークは
 //	    表示されません。
+//
+//	-outputdir directory
+//	    Place output files from profiling and test artifacts in the
+//	    specified directory, by default the directory in which "go test" is running.
 //
 //	-parallel n
 //	    t.Parallelを呼び出すテスト関数の並列実行を許可し、
@@ -3135,10 +3243,13 @@
 //	-mutexprofilefraction n
 //	    競合するミューテックスを保持するゴルーチンのスタックトレースの1/nをサンプリングします。
 //
+<<<<<<< HEAD
 //	-outputdir directory
 //	    プロファイリングからの出力ファイルを指定されたディレクトリに配置します。
 //	    デフォルトでは、"go test"が実行されているディレクトリです。
 //
+=======
+>>>>>>> upstream/release-branch.go1.26
 //	-trace trace.out
 //	    終了する前に、指定されたファイルに実行トレースを書き込みます。
 //

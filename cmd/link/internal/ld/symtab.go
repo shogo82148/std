@@ -36,7 +36,7 @@ import (
 )
 
 // CarrierSymByType tracks carrier symbols and their sizes.
-var CarrierSymByType [sym.SXREF]struct {
+var CarrierSymByType [sym.SFirstUnallocated]struct {
 	Sym  loader.Sym
 	Size int64
 }

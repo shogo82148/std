@@ -14,7 +14,7 @@ func AtExit(f func())
 func Exit(code int)
 
 // Exitf logs an error message then calls Exit(2).
-func Exitf(format string, a ...interface{})
+func Exitf(format string, a ...any)
 
 // Errorf logs an error message without a specific symbol for context.
 // Use ctxt.Errorf when possible.
@@ -23,7 +23,7 @@ func Exitf(format string, a ...interface{})
 //
 // Logging an error means that on exit cmd/link will delete any
 // output file and return a non-zero error code.
-func Errorf(format string, args ...interface{})
+func Errorf(format string, args ...any)
 
 // Errorf method logs an error message.
 //
@@ -31,4 +31,4 @@ func Errorf(format string, args ...interface{})
 //
 // Logging an error means that on exit cmd/link will delete any
 // output file and return a non-zero error code.
-func (ctxt *Link) Errorf(s loader.Sym, format string, args ...interface{})
+func (ctxt *Link) Errorf(s loader.Sym, format string, args ...any)

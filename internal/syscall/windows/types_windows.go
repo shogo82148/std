@@ -175,11 +175,17 @@ const (
 	FILE_NO_COMPRESSION            = 0x00008000
 	FILE_OPEN_REQUIRING_OPLOCK     = 0x00010000
 	FILE_DISALLOW_EXCLUSIVE        = 0x00020000
+	FILE_SESSION_AWARE             = 0x00040000
 	FILE_RESERVE_OPFILTER          = 0x00100000
 	FILE_OPEN_REPARSE_POINT        = 0x00200000
 	FILE_OPEN_NO_RECALL            = 0x00400000
 	FILE_OPEN_FOR_FREE_SPACE_QUERY = 0x00800000
 )
+
+// https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_disposition_info
+type FILE_DISPOSITION_INFO struct {
+	DeleteFile bool
+}
 
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/ns-ntddk-_file_disposition_information
 type FILE_DISPOSITION_INFORMATION struct {
@@ -242,3 +248,106 @@ type FILE_COMPLETION_INFORMATION struct {
 // https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_osversioninfoexw
 const VER_NT_WORKSTATION = 0x0000001
+<<<<<<< HEAD
+=======
+
+type MemoryBasicInformation = windows.MemoryBasicInformation
+
+type Context = windows.Context
+
+const FileFlagsMask = 0xFFF00000
+
+const ValidFileFlagsMask = O_FILE_FLAG_OPEN_REPARSE_POINT |
+	O_FILE_FLAG_BACKUP_SEMANTICS |
+	O_FILE_FLAG_OVERLAPPED |
+	O_FILE_FLAG_OPEN_NO_RECALL |
+	O_FILE_FLAG_SESSION_AWARE |
+	O_FILE_FLAG_POSIX_SEMANTICS |
+	O_FILE_FLAG_DELETE_ON_CLOSE |
+	O_FILE_FLAG_SEQUENTIAL_SCAN |
+	O_FILE_FLAG_NO_BUFFERING |
+	O_FILE_FLAG_RANDOM_ACCESS |
+	O_FILE_FLAG_WRITE_THROUGH
+
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa379636.aspx
+type TRUSTEE struct {
+	MultipleTrustee          *TRUSTEE
+	MultipleTrusteeOperation uint32
+	TrusteeForm              uint32
+	TrusteeType              uint32
+	Name                     uintptr
+}
+
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa379638.aspx
+const (
+	TRUSTEE_IS_SID              = 0x0
+	TRUSTEE_IS_NAME             = 0x1
+	TRUSTEE_BAD_FORM            = 0x2
+	TRUSTEE_IS_OBJECTS_AND_SID  = 0x3
+	TRUSTEE_IS_OBJECTS_AND_NAME = 0x4
+)
+
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa446627.aspx
+type EXPLICIT_ACCESS struct {
+	AccessPermissions uint32
+	AccessMode        uint32
+	Inheritance       uint32
+	Trustee           TRUSTEE
+}
+
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa374899.aspx
+const (
+	NOT_USED_ACCESS   = 0x0
+	GRANT_ACCESS      = 0x1
+	SET_ACCESS        = 0x2
+	DENY_ACCESS       = 0x3
+	REVOKE_ACCESS     = 0x4
+	SET_AUDIT_SUCCESS = 0x5
+	SET_AUDIT_FAILURE = 0x6
+)
+
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa446627.aspx
+const (
+	NO_INHERITANCE                     = 0x0
+	SUB_OBJECTS_ONLY_INHERIT           = 0x1
+	SUB_CONTAINERS_ONLY_INHERIT        = 0x2
+	SUB_CONTAINERS_AND_OBJECTS_INHERIT = 0x3
+	INHERIT_NO_PROPAGATE               = 0x4
+	INHERIT_ONLY                       = 0x8
+)
+
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa379593.aspx
+const (
+	SE_UNKNOWN_OBJECT_TYPE     = 0x0
+	SE_FILE_OBJECT             = 0x1
+	SE_SERVICE                 = 0x2
+	SE_PRINTER                 = 0x3
+	SE_REGISTRY_KEY            = 0x4
+	SE_LMSHARE                 = 0x5
+	SE_KERNEL_OBJECT           = 0x6
+	SE_WINDOW_OBJECT           = 0x7
+	SE_DS_OBJECT               = 0x8
+	SE_DS_OBJECT_ALL           = 0x9
+	SE_PROVIDER_DEFINED_OBJECT = 0xa
+	SE_WMIGUID_OBJECT          = 0xb
+	SE_REGISTRY_WOW64_32KEY    = 0xc
+	SE_REGISTRY_WOW64_64KEY    = 0xd
+)
+
+// https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/23e75ca3-98fd-4396-84e5-86cd9d40d343
+const (
+	OWNER_SECURITY_INFORMATION               = 0x00000001
+	GROUP_SECURITY_INFORMATION               = 0x00000002
+	DACL_SECURITY_INFORMATION                = 0x00000004
+	SACL_SECURITY_INFORMATION                = 0x00000008
+	LABEL_SECURITY_INFORMATION               = 0x00000010
+	UNPROTECTED_SACL_SECURITY_INFORMATION    = 0x10000000
+	UNPROTECTED_DACL_SECURITY_INFORMATION    = 0x20000000
+	PROTECTED_SACL_SECURITY_INFORMATION      = 0x40000000
+	PROTECTED_DACL_SECURITY_INFORMATION      = 0x80000000
+	ATTRIBUTE_SECURITY_INFORMATION           = 0x00000020
+	SCOPE_SECURITY_INFORMATION               = 0x00000040
+	PROCESS_TRUST_LABEL_SECURITY_INFORMATION = 0x00000080
+	BACKUP_SECURITY_INFORMATION              = 0x00010000
+)
+>>>>>>> upstream/release-branch.go1.26

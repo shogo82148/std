@@ -18,6 +18,8 @@ func BEPutUint32(b []byte, v uint32)
 
 func BEPutUint64(b []byte, v uint64)
 
+func LEPutUint16(b []byte, v uint16)
+
 func LEPutUint64(b []byte, v uint64)
 
 func BEAppendUint16(b []byte, v uint16) []byte

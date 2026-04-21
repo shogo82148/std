@@ -66,11 +66,24 @@ type Options struct {
 // HashFuncはo.Hashを返します。
 func (o *Options) HashFunc() crypto.Hash
 
+<<<<<<< HEAD
 // GenerateKeyはrandからのエントロピーを使用して公開鍵/秘密鍵のペアを生成します。
 // randがnilの場合、[crypto/rand.Reader]が使用されます。
 //
 // この関数の出力は決定論的であり、randから[SeedSize]バイトを読み取り、[NewKeyFromSeed]に渡すことと等価です。
 func GenerateKey(rand io.Reader) (PublicKey, PrivateKey, error)
+=======
+// GenerateKey generates a public/private key pair using entropy from random.
+//
+// If random is nil, a secure random source is used. (Before Go 1.26, a custom
+// [crypto/rand.Reader] was used if set by the application. That behavior can be
+// restored with GODEBUG=cryptocustomrand=1. This setting will be removed in a
+// future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].)
+//
+// The output of this function is deterministic, and equivalent to reading
+// [SeedSize] bytes from random, and passing them to [NewKeyFromSeed].
+func GenerateKey(random io.Reader) (PublicKey, PrivateKey, error)
+>>>>>>> upstream/release-branch.go1.26
 
 // NewKeyFromSeedはシードから秘密鍵を計算します。もしseedの長さが[SeedSize]でない場合、パニックを発生させます。この関数はRFC 8032との互換性のために提供されています。RFC 8032の秘密鍵はこのパッケージのシードに対応します。
 func NewKeyFromSeed(seed []byte) PrivateKey

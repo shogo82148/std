@@ -28,7 +28,7 @@ type Cache struct {
 	ValueToProgAfter []*obj.Prog
 	debugState       debugState
 
-	Liveness interface{}
+	Liveness any
 
 	// Free "headers" for use by the allocators in allocators.go.
 	// Used to put slices in sync.Pools without allocation.

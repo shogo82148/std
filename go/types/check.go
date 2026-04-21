@@ -21,9 +21,10 @@ type Checker struct {
 	fset *token.FileSet
 	pkg  *Package
 	*Info
-	nextID uint64
-	objMap map[Object]*declInfo
-	impMap map[importKey]*Package
+	nextID  uint64
+	objMap  map[Object]*declInfo
+	objList []Object
+	impMap  map[importKey]*Package
 
 	// pkgPathMapはパッケージ名をインポートパスの集合にマッピングします。
 	// インポートグラフのどこかでその名前に対して見た異なるインポートパスの集合です。
@@ -48,12 +49,13 @@ type Checker struct {
 	usedPkgNames  map[*PkgName]bool
 	mono          monoGraph
 
-	firstErr error
-	methods  map[*TypeName][]*Func
-	untyped  map[ast.Expr]exprInfo
-	delayed  []action
-	objPath  []Object
-	cleaners []cleaner
+	firstErr   error
+	methods    map[*TypeName][]*Func
+	untyped    map[ast.Expr]exprInfo
+	delayed    []action
+	objPath    []Object
+	objPathIdx map[Object]int
+	cleaners   []cleaner
 
 	// 現在のオブジェクトが型チェックされる環境（特定のオブジェクトの型チェックの間のみ有効）
 	environment

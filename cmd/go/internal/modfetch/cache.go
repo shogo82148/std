@@ -39,17 +39,17 @@ func SideLock(ctx context.Context) (unlock func(), err error)
 
 // InfoFile is like Lookup(ctx, path).Stat(version) but also returns the name of the file
 // containing the cached information.
-func InfoFile(ctx context.Context, path, version string) (*RevInfo, string, error)
+func (f *Fetcher) InfoFile(ctx context.Context, path, version string) (*RevInfo, string, error)
 
 // GoMod is like Lookup(ctx, path).GoMod(rev) but avoids the
 // repository path resolution in Lookup if the result is
 // already cached on local disk.
-func GoMod(ctx context.Context, path, rev string) ([]byte, error)
+func (f *Fetcher) GoMod(ctx context.Context, path, rev string) ([]byte, error)
 
 // GoModFile is like GoMod but returns the name of the file containing
 // the cached information.
-func GoModFile(ctx context.Context, path, version string) (string, error)
+func (f *Fetcher) GoModFile(ctx context.Context, path, version string) (string, error)
 
 // GoModSum returns the go.sum entry for the module version's go.mod file.
 // (That is, it returns the entry listed in go.sum as "path version/go.mod".)
-func GoModSum(ctx context.Context, path, version string) (string, error)
+func (f *Fetcher) GoModSum(ctx context.Context, path, version string) (string, error)

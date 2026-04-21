@@ -16,4 +16,4 @@ import (
 // of the API even if undocumented per Hyrum's Law.
 //
 // ms must be a pointer to a non-nil interface.
-func NoExtraMethods(t *testing.T, ms interface{}, allowed ...string)
+func NoExtraMethods(t *testing.T, ms any, allowed ...string)

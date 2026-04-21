@@ -4,4 +4,15 @@
 
 //go:build goexperiment.swissmap
 
+<<<<<<< HEAD:internal/runtime/maps/export_swiss_test.go
 package maps
+=======
+package cgobench
+
+func EmptyC()
+
+func CallbackC()
+
+//go:noinline
+func Empty()
+>>>>>>> upstream/release-branch.go1.26:internal/runtime/cgobench/funcs.go

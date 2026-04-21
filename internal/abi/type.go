@@ -125,6 +125,18 @@ const (
 	// has type **byte instead of *byte. The runtime will store a
 	// pointer to the GC pointer bitmask in *GCData.
 	TFlagGCMaskOnDemand TFlag = 1 << 4
+<<<<<<< HEAD
+=======
+
+	// TFlagDirectIface means that a value of this type is stored directly
+	// in the data field of an interface, instead of indirectly.
+	// This flag is just a cached computation of Size_ == PtrBytes == goarch.PtrSize.
+	TFlagDirectIface TFlag = 1 << 5
+
+	// Leaving this breadcrumb behind for dlv. It should not be used, and no
+	// Kind should be big enough to set this bit.
+	KindDirectIface Kind = 1 << 5
+>>>>>>> upstream/release-branch.go1.26
 )
 
 // NameOff is the offset to a name from moduledata.types.  See resolveNameOff in runtime.
@@ -374,7 +386,7 @@ func (n Name) ReadVarint(off int) (int, int)
 // IsBlank indicates whether n is "_".
 func (n Name) IsBlank() bool
 
-// Name returns the tag string for n, or empty if there is none.
+// Name returns the name of n, or empty if it does not actually have a name.
 func (n Name) Name() string
 
 // Tag returns the tag string for n, or empty if there is none.

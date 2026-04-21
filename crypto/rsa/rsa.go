@@ -34,6 +34,7 @@ package rsa
 import (
 	"github.com/shogo82148/std/crypto"
 	"github.com/shogo82148/std/crypto/internal/fips140/rsa"
+
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/math/big"
@@ -54,7 +55,12 @@ func (pub *PublicKey) Size() int
 // Equalは、pubとxが同じ値を持っているかどうかを報告します。
 func (pub *PublicKey) Equal(x crypto.PublicKey) bool
 
+<<<<<<< HEAD
 // OAEPOptionsは、crypto.Decrypterインタフェースを使用してOAEP復号化にオプションを渡すためのインタフェースです。
+=======
+// OAEPOptions allows passing options to OAEP encryption and decryption
+// through the [PrivateKey.Decrypt] and [EncryptOAEPWithOptions] functions.
+>>>>>>> upstream/release-branch.go1.26
 type OAEPOptions struct {
 	// Hashはマスク生成時に使用されるハッシュ関数です。
 	Hash crypto.Hash
@@ -127,9 +133,15 @@ func (priv *PrivateKey) Validate() error
 // bitsが1024未満の場合、[GenerateKey] はエラーを返します。詳細については「 [Minimum
 // key size] 」セクションを参照してください。
 //
+<<<<<<< HEAD
 // ほとんどのアプリケーションでは、randとして [crypto/rand.Reader] を使用する必要があります。
 // 返されるキーはrandから読み取ったバイトに決定論的に依存せず、
 // 呼び出し間やバージョン間で変更される可能性があることに注意してください。
+=======
+// Since Go 1.26, a secure source of random bytes is always used, and the Reader is
+// ignored unless GODEBUG=cryptocustomrand=1 is set. This setting will be removed
+// in a future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].
+>>>>>>> upstream/release-branch.go1.26
 //
 // [Minimum key size]: https://pkg.go.dev/crypto/rsa#hdr-Minimum_key_size
 func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
@@ -142,7 +154,17 @@ func GenerateKey(random io.Reader, bits int) (*PrivateKey, error)
 //
 // このパッケージではマルチプライムRSAのCRT最適化を実装していないため、2つ以上のプライムを持つキーのパフォーマンスは悪くなります。
 //
+<<<<<<< HEAD
 // Deprecated: 上記のセキュリティ、互換性、およびパフォーマンスの理由により、2つ以外のプライム数でこの関数を使用することはお勧めしません。代わりに [GenerateKey] を使用してください。
+=======
+// Since Go 1.26, a secure source of random bytes is always used, and the Reader is
+// ignored unless GODEBUG=cryptocustomrand=1 is set. This setting will be removed
+// in a future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].
+//
+// Deprecated: The use of this function with a number of primes different from
+// two is not recommended for the above security, compatibility, and performance
+// reasons. Use [GenerateKey] instead.
+>>>>>>> upstream/release-branch.go1.26
 //
 // [On the Security of Multi-prime RSA]: http://www.cacr.math.uwaterloo.ca/techreports/2006/cacr2006-16.pdf
 func GenerateMultiPrimeKey(random io.Reader, nprimes int, bits int) (*PrivateKey, error)

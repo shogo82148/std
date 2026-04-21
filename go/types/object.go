@@ -34,13 +34,9 @@ type Object interface {
 
 	order() uint32
 
-	color() color
-
 	setType(Type)
 
 	setOrder(uint32)
-
-	setColor(color color)
 
 	setParent(*Scope)
 
@@ -103,6 +99,10 @@ func NewTypeName(pos token.Pos, pkg *Package, name string, typ Type) *TypeName
 // IsAliasは、objが型のエイリアス名であるかどうかを報告します。
 func (obj *TypeName) IsAlias() bool
 
+<<<<<<< HEAD
+=======
+// A Var represents a declared variable (including function parameters and results, and struct fields).
+>>>>>>> upstream/release-branch.go1.26
 type Var struct {
 	object
 	origin   *Var

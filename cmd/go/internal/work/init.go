@@ -6,4 +6,8 @@
 
 package work
 
-func BuildInit()
+import (
+	"github.com/shogo82148/std/cmd/go/internal/modload"
+)
+
+func BuildInit(loaderstate *modload.State)

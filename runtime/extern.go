@@ -119,6 +119,7 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	暗黙のうちに1024にデフォルト設定されます。将来のGoのバージョンでは、この制限が取り除かれ、profstackdepthがCPUプロファイラーと実行トレーサーにも
 	適用されるように拡張される可能性があります。
 
+<<<<<<< HEAD
 	pagetrace: pagetrace=/path/to/fileを設定すると、ページイベントのトレースが書き出され、
 	x/debug/cmd/pagetraceツールを使用して表示、分析、および可視化できます。この機能を有効にするには、
 	プログラムをGOEXPERIMENT=pagetraceでビルドしてください。
@@ -128,6 +129,10 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	一部のアプリケーションでこのオプションを設定すると、大きなトレースが生成される場合があるため、注意して使用してください。
 
 	panicnil: panicnil=1を設定すると、nilのインターフェース値または型指定されていないnilを引数にpanicを呼び出したときのランタイムエラーが無効になります。
+=======
+	panicnil: setting panicnil=1 disables the runtime error when calling panic with nil
+	interface value or an untyped nil.
+>>>>>>> upstream/release-branch.go1.26
 
 	invalidptr: invalidptr=1（デフォルト）を設定すると、ガベージコレクタとスタックコピー処理が、ポインタ型の場所に不正なポインタ値（例: 1）が見つかった場合にプログラムをクラッシュさせます。invalidptr=0を設定するとこのチェックが無効になります。これはバグのあるコードの診断のための一時的な回避策としてのみ使用してください。本来の修正は、ポインタ型の場所に整数値を格納しないことです。
 
@@ -153,9 +158,17 @@ GODEBUG変数は、ランタイム内のデバッグ変数を制御します。
 	N は報告する先祖ゴルーチンの数を制限します。これは runtime.Stack によって返される情報も拡張します。
 	N を 0 に設定すると、先祖情報は報告されません。
 
+<<<<<<< HEAD
 	tracefpunwindoff: tracefpunwindoff=1を設定すると、実行トレーサーがフレームポインタアンワインディングの代わりに
 	ランタイムのデフォルトスタックアンワインダーを使用するようになります。これにより、トレーサーのオーバーヘッドが増加しますが、
 	フレームポインタアンワインディングによって引き起こされる予期しないリグレッションのワークアラウンドやデバッグに役立つ場合があります。
+=======
+	tracefpunwindoff: setting tracefpunwindoff=1 forces the execution tracer
+	and block and mutex profilers to use the runtime's default stack
+	unwinder instead of frame pointer unwinding. This increases their
+	overhead, but could be helpful as a workaround or for debugging
+	unexpected regressions caused by frame pointer unwinding.
+>>>>>>> upstream/release-branch.go1.26
 
 	traceadvanceperiod: トレース生成間のおおよその周期（ナノ秒単位）。GOEXPERIMENT=exectracer2でプログラムがビルドされている場合にのみ適用されます。
 	主に実行トレーサーのテストとデバッグに使用されます。

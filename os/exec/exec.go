@@ -113,7 +113,12 @@ var ErrWaitDelay = errors.New("exec: WaitDelay expired before I/O complete")
 
 // Cmdは、準備中または実行中の外部コマンドを表します。
 //
+<<<<<<< HEAD
 // Cmdは、[Cmd.Run]、[Cmd.Output]、または [Cmd.CombinedOutput] メソッドを呼び出した後では再利用できません。
+=======
+// A Cmd cannot be reused after calling its [Cmd.Start], [Cmd.Run],
+// [Cmd.Output], or [Cmd.CombinedOutput] methods.
+>>>>>>> upstream/release-branch.go1.26
 type Cmd struct {
 	// Pathは、実行するコマンドのパスです。
 	//
@@ -296,6 +301,11 @@ type Cmd struct {
 	// the work of resolving the extension, so Start doesn't need to do it again.
 	// This is only used on Windows.
 	cachedLookExtensions struct{ in, out string }
+
+	// startCalled records that Start was attempted, regardless of outcome.
+	// (Until go.dev/issue/77075 is resolved, we use atomic.SwapInt32,
+	// not atomic.Bool.Swap, to avoid triggering the copylocks vet check.)
+	startCalled int32
 }
 
 // Commandは、指定されたプログラムを

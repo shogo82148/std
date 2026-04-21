@@ -167,7 +167,7 @@ type Type struct {
 	// TARRAY: *Array
 	// TSLICE: Slice
 	// TSSA: string
-	extra interface{}
+	extra any
 
 	// width is the width of this Type in bytes.
 	width int64
@@ -193,8 +193,9 @@ type Type struct {
 
 	intRegs, floatRegs uint8
 
-	flags bitset8
-	alg   AlgKind
+	flags             bitset8
+	alg               AlgKind
+	isSIMDTag, isSIMD bool
 
 	// size of prefix of object that contains all pointers. valid if Align > 0.
 	// Note that for pointers, this is always PtrSize even if the element type
@@ -279,7 +280,7 @@ type Func struct {
 	Argwid int64
 }
 
-// StructType contains Type fields specific to struct types.
+// Struct contains Type fields specific to struct types.
 type Struct struct {
 	fields fields
 
@@ -512,8 +513,10 @@ func (t *Type) SetInterface(methods []*Field)
 // It includes the receiver, parameters, and results.
 func (t *Type) ArgWidth() int64
 
+// Size returns the width of t in bytes.
 func (t *Type) Size() int64
 
+// Alignment returns the alignment of t in bytes.
 func (t *Type) Alignment() int64
 
 func (t *Type) SimpleString() string
@@ -668,6 +671,10 @@ var (
 	TypeFlags     = newSSA("flags")
 	TypeVoid      = newSSA("void")
 	TypeInt128    = newSSA("int128")
+	TypeVec128    = newSIMD("vec128")
+	TypeVec256    = newSIMD("vec256")
+	TypeVec512    = newSIMD("vec512")
+	TypeMask      = newSIMD("mask")
 	TypeResultMem = newResults([]*Type{TypeMem})
 )
 
@@ -763,3 +770,5 @@ var SimType [NTYPE]Kind
 
 // Fake package for shape types (see typecheck.Shapify()).
 var ShapePkg = NewPkg("go.shape", "go.shape")
+
+func (t *Type) IsSIMD() bool

@@ -17,4 +17,22 @@ import (
 
 // StaticCall devirtualizes the given call if possible when the concrete callee
 // is available statically.
-func StaticCall(call *ir.CallExpr)
+func StaticCall(s *State, call *ir.CallExpr)
+
+// State holds precomputed state for use in [StaticCall].
+type State struct {
+	// ifaceAssignments maps interface variables to all their assignments
+	// defined inside functions stored in the analyzedFuncs set.
+	// Note: it does not include direct assignments to nil.
+	ifaceAssignments map[*ir.Name][]assignment
+
+	// ifaceCallExprAssigns stores every [*ir.CallExpr], which has an interface
+	// result, that is assigned to a variable.
+	ifaceCallExprAssigns map[*ir.CallExpr][]ifaceAssignRef
+
+	// analyzedFuncs is a set of Funcs that were analyzed for iface assignments.
+	analyzedFuncs map[*ir.Func]struct{}
+}
+
+// InlinedCall updates the [State] to take into account a newly inlined call.
+func (s *State) InlinedCall(fun *ir.Func, origCall *ir.CallExpr, inlinedCall *ir.InlinedCallExpr)

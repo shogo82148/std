@@ -104,7 +104,7 @@ type Link struct {
 	generatorSyms map[loader.Sym]generatorFunc
 }
 
-func (ctxt *Link) Logf(format string, args ...interface{})
+func (ctxt *Link) Logf(format string, args ...any)
 
 // Allocate a new version (i.e. symbol namespace).
 func (ctxt *Link) IncVersion() int

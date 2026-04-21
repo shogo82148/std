@@ -6,6 +6,7 @@ package ssagen
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
+	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
@@ -28,6 +29,9 @@ func NewSymABIs() *SymABIs
 // the symbol name and the third field is the ABI name, as one of the
 // named cmd/internal/obj.ABI constants.
 func (s *SymABIs) ReadSymABIs(file string)
+
+// HasDef returns whether the given symbol has an assembly definition.
+func (s *SymABIs) HasDef(sym *types.Sym) bool
 
 // GenABIWrappers applies ABI information to Funcs and generates ABI
 // wrapper functions where necessary.

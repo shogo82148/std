@@ -126,6 +126,7 @@ type VerifyOptions struct {
 	inhibitAnyPolicy bool
 }
 
+<<<<<<< HEAD
 // Verifyは、オプションのRootsの証明書を使用して、cからaの証明書までの1つ以上のチェーンを構築し、検証を試みます。成功すると、最初のチェーン要素はcで、最後の要素はopts.Rootsから来ます。
 // opts.Rootsがnilの場合、プラットフォームの検証プログラムが使用される可能性があります。この場合、検証の詳細は以下の説明と異なる場合があります。システムのルートが利用できない場合、返されるエラーはSystemRootsError型です。
 // 中間証明書の名前制約は、opts.DNSNameだけでなく、チェーン内で要求されるすべての名前に適用されます。したがって、中間証明書が許可しない場合でも、葉がexample.comを要求することは無効です。ただし、DirectoryName制約はサポートされていません。
@@ -135,6 +136,41 @@ type VerifyOptions struct {
 // 返されるチェーンのc以外の証明書は変更しないでください。
 // 警告：この関数はリボケーション（証明書の失効チェック）を行いません。
 func (c *Certificate) Verify(opts VerifyOptions) (chains [][]*Certificate, err error)
+=======
+// Verify attempts to verify c by building one or more chains from c to a
+// certificate in opts.Roots, using certificates in opts.Intermediates if
+// needed. If successful, it returns one or more chains where the first
+// element of the chain is c and the last element is from opts.Roots.
+//
+// If opts.Roots is nil, the platform verifier might be used, and
+// verification details might differ from what is described below. If system
+// roots are unavailable the returned error will be of type SystemRootsError.
+//
+// Name constraints in the intermediates will be applied to all names claimed
+// in the chain, not just opts.DNSName. Thus it is invalid for a leaf to claim
+// example.com if an intermediate doesn't permit it, even if example.com is not
+// the name being validated. Note that DirectoryName constraints are not
+// supported.
+//
+// Name constraint validation follows the rules from RFC 5280, with the
+// addition that DNS name constraints may use the leading period format
+// defined for emails and URIs. When a constraint has a leading period
+// it indicates that at least one additional label must be prepended to
+// the constrained name to be considered valid.
+//
+// Extended Key Usage values are enforced nested down a chain, so an intermediate
+// or root that enumerates EKUs prevents a leaf from asserting an EKU not in that
+// list. (While this is not specified, it is common practice in order to limit
+// the types of certificates a CA can issue.)
+//
+// Certificates that use SHA1WithRSA and ECDSAWithSHA1 signatures are not supported,
+// and will not be used to build chains.
+//
+// Certificates other than c in the returned chains should not be modified.
+//
+// WARNING: this function doesn't do any revocation checking.
+func (c *Certificate) Verify(opts VerifyOptions) ([][]*Certificate, error)
+>>>>>>> upstream/release-branch.go1.26
 
 // VerifyHostnameは指定されたホストに対して、cが有効な証明書であればnilを返します。
 // それ以外の場合、ミスマッチを説明するエラーを返します。

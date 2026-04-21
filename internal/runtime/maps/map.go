@@ -7,6 +7,7 @@ package maps
 
 import (
 	"github.com/shogo82148/std/internal/abi"
+	"github.com/shogo82148/std/internal/goarch"
 	"github.com/shogo82148/std/unsafe"
 )
 
@@ -63,6 +64,10 @@ type Map struct {
 	// detect map clears during iteration.
 	clearSeq uint64
 }
+
+// Use 64-bit hash on 64-bit systems, except on Wasm, where we use
+// 32-bit hash (see runtime/hash32.go).
+const Use64BitHash = goarch.PtrSize == 8 && goarch.IsWasm == 0
 
 // If m is non-nil, it should be used rather than allocating.
 //

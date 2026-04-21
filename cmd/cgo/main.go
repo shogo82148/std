@@ -101,7 +101,7 @@ type ExpFunc struct {
 // TypeReprは型の文字列表現を含む
 type TypeRepr struct {
 	Repr       string
-	FormatArgs []interface{}
+	FormatArgs []any
 }
 
 // TypeはCとGoの世界の両方でタイプに関する情報を収集します。

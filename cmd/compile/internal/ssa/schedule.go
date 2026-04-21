@@ -27,8 +27,8 @@ type ValHeap struct {
 func (h ValHeap) Len() int
 func (h ValHeap) Swap(i, j int)
 
-func (h *ValHeap) Push(x interface{})
+func (h *ValHeap) Push(x any)
 
-func (h *ValHeap) Pop() interface{}
+func (h *ValHeap) Pop() any
 
 func (h ValHeap) Less(i, j int) bool

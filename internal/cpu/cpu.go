@@ -24,6 +24,7 @@ var CacheLineSize uintptr = CacheLinePadSize
 // in addition to the cpuid feature bit being set.
 // The struct is padded to avoid false sharing.
 var X86 struct {
+<<<<<<< HEAD
 	_            CacheLinePad
 	HasAES       bool
 	HasADX       bool
@@ -46,6 +47,45 @@ var X86 struct {
 	HasSSE41     bool
 	HasSSE42     bool
 	_            CacheLinePad
+=======
+	_                   CacheLinePad
+	HasAES              bool
+	HasADX              bool
+	HasAVX              bool
+	HasAVXVNNI          bool
+	HasAVX2             bool
+	HasAVX512           bool
+	HasAVX512F          bool
+	HasAVX512CD         bool
+	HasAVX512BW         bool
+	HasAVX512DQ         bool
+	HasAVX512VL         bool
+	HasAVX512GFNI       bool
+	HasAVX512VAES       bool
+	HasAVX512VNNI       bool
+	HasAVX512VBMI       bool
+	HasAVX512VBMI2      bool
+	HasAVX512BITALG     bool
+	HasAVX512VPOPCNTDQ  bool
+	HasAVX512VPCLMULQDQ bool
+	HasBMI1             bool
+	HasBMI2             bool
+	HasERMS             bool
+	HasFSRM             bool
+	HasFMA              bool
+	HasGFNI             bool
+	HasOSXSAVE          bool
+	HasPCLMULQDQ        bool
+	HasPOPCNT           bool
+	HasRDTSCP           bool
+	HasSHA              bool
+	HasSSE3             bool
+	HasSSSE3            bool
+	HasSSE41            bool
+	HasSSE42            bool
+	HasVAES             bool
+	_                   CacheLinePad
+>>>>>>> upstream/release-branch.go1.26
 }
 
 // The booleans in ARM contain the correspondingly named cpu feature bit.

@@ -29,6 +29,7 @@ func NewDecl(pos src.XPos, op Op, x *Name) *Decl
 type Stmt interface {
 	Node
 	isStmt()
+	PtrInit() *Nodes
 }
 
 // An AssignListStmt is an assignment statement with

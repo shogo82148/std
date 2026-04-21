@@ -109,6 +109,7 @@ func IsAbs(path string) bool
 // Absは結果に [Clean] を呼び出します。
 func Abs(path string) (string, error)
 
+<<<<<<< HEAD
 // Relは、中間のセパレーターでbasepathと結合したときにtargpathと同等の相対パスを返します。
 // つまり、[Join](basepath, Rel(basepath, targpath))はtargpathと同じです。
 // 成功した場合、返されるパスは常にbasepathに対して相対的であり、
@@ -116,6 +117,18 @@ func Abs(path string) (string, error)
 // targpathがbasepathに相対化できない場合や、現在の作業ディレクトリの情報が必要な場合はエラーが返されます。
 // Relは結果に対して [Clean] を呼び出します。
 func Rel(basepath, targpath string) (string, error)
+=======
+// Rel returns a relative path that is lexically equivalent to targPath when
+// joined to basePath with an intervening separator. That is,
+// [Join](basePath, Rel(basePath, targPath)) is equivalent to targPath itself.
+//
+// The returned path will always be relative to basePath, even if basePath and
+// targPath share no elements. Rel calls [Clean] on the result.
+//
+// An error is returned if targPath can't be made relative to basePath
+// or if knowing the current working directory would be necessary to compute it.
+func Rel(basePath, targPath string) (string, error)
+>>>>>>> upstream/release-branch.go1.26
 
 // SkipDirは、[WalkFunc] からの返り値として使用され、呼び出し元で指定されたディレクトリをスキップすることを示します。これは、どの関数からもエラーとして返されません。
 var SkipDir error = fs.SkipDir

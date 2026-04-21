@@ -8,7 +8,18 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
+<<<<<<< HEAD
 // PKCS1v15DecryptOptionsは、 [crypto.Decrypter] インターフェースを使用してPKCS #1 v1.5復号化にオプションを渡すためのものです。
+=======
+// PKCS1v15DecryptOptions is for passing options to PKCS #1 v1.5 decryption using
+// the [crypto.Decrypter] interface.
+//
+// Deprecated: PKCS #1 v1.5 encryption is dangerous and should not be used.
+// See [draft-irtf-cfrg-rsa-guidance-05] for more information. Use
+// [EncryptOAEP] and [DecryptOAEP] instead.
+//
+// [draft-irtf-cfrg-rsa-guidance-05]: https://www.ietf.org/archive/id/draft-irtf-cfrg-rsa-guidance-05.html#name-rationale
+>>>>>>> upstream/release-branch.go1.26
 type PKCS1v15DecryptOptions struct {
 
 	// SessionKeyLenは、復号化されているセッションキーの長さです。
@@ -17,6 +28,7 @@ type PKCS1v15DecryptOptions struct {
 	SessionKeyLen int
 }
 
+<<<<<<< HEAD
 // EncryptPKCS1v15は、与えられたメッセージをRSAとPKCS #1 v1.5のパディングスキームで暗号化します。メッセージの長さは、公開モジュラスの11バイトを引いた長さ以下である必要があります。
 // ランダムパラメータはエントロピーソースとして使用され、同じメッセージを2回暗号化しても同じ暗号文が生成されないようにします。ほとんどのアプリケーションでは、[crypto/rand.Reader]をランダム関数として使用することが推奨されます。ただし、返される暗号文はランダムから読み取られたバイトに対して決定論的に依存せず、呼び出しやバージョンによって変わる場合があります。
 // 注意：セッションキー以外の平文を暗号化するためにこの関数を使用することは危険です。新しいプロトコルではRSA OAEPを使用してください。
@@ -29,6 +41,36 @@ func EncryptPKCS1v15(random io.Reader, pub *PublicKey, msg []byte) ([]byte, erro
 // 攻撃者がこの関数を繰り返し実行させ、各インスタンスがエラーを返すかどうかを学ぶことができれば、
 // 秘密鍵を持っているかのように復号化し、署名を偽造することができます。この問題を解決する方法として、
 // DecryptPKCS1v15SessionKeyを参照してください。
+=======
+// EncryptPKCS1v15 encrypts the given message with RSA and the padding
+// scheme from PKCS #1 v1.5.  The message must be no longer than the
+// length of the public modulus minus 11 bytes.
+//
+// The random parameter is used as a source of entropy to ensure that encrypting
+// the same message twice doesn't result in the same ciphertext. Since Go 1.26,
+// a secure source of random bytes is always used, and the Reader is ignored
+// unless GODEBUG=cryptocustomrand=1 is set. This setting will be removed in a
+// future Go release. Instead, use [testing/cryptotest.SetGlobalRandom].
+//
+// Deprecated: PKCS #1 v1.5 encryption is dangerous and should not be used.
+// See [draft-irtf-cfrg-rsa-guidance-05] for more information. Use
+// [EncryptOAEP] and [DecryptOAEP] instead.
+//
+// [draft-irtf-cfrg-rsa-guidance-05]: https://www.ietf.org/archive/id/draft-irtf-cfrg-rsa-guidance-05.html#name-rationale
+func EncryptPKCS1v15(random io.Reader, pub *PublicKey, msg []byte) ([]byte, error)
+
+// DecryptPKCS1v15 decrypts a plaintext using RSA and the padding scheme from
+// PKCS #1 v1.5. The random parameter is legacy and ignored, and it can be nil.
+//
+// Deprecated: PKCS #1 v1.5 encryption is dangerous and should not be used.
+// Whether this function returns an error or not discloses secret information.
+// If an attacker can cause this function to run repeatedly and learn whether
+// each instance returned an error then they can decrypt and forge signatures as
+// if they had the private key. See [draft-irtf-cfrg-rsa-guidance-05] for more
+// information. Use [EncryptOAEP] and [DecryptOAEP] instead.
+//
+// [draft-irtf-cfrg-rsa-guidance-05]: https://www.ietf.org/archive/id/draft-irtf-cfrg-rsa-guidance-05.html#name-rationale
+>>>>>>> upstream/release-branch.go1.26
 func DecryptPKCS1v15(random io.Reader, priv *PrivateKey, ciphertext []byte) ([]byte, error)
 
 // DecryptPKCS1v15SessionKeyは、RSAとPKCS #1 v1.5のパディングスキームを使用してセッションキーを復号化します。randomパラメータは旧式であり、無視されることがあります。nilでも構いません。
@@ -39,4 +81,11 @@ func DecryptPKCS1v15(random io.Reader, priv *PrivateKey, ciphertext []byte) ([]b
 //     Standard PKCS #1”, Daniel Bleichenbacher, Advances in Cryptology (Crypto'98)
 //   - [1] RFC 3218, Preventing the Million Message Attack on CMS,
 //     https://www.rfc-editor.org/rfc/rfc3218.html
+//
+// Deprecated: PKCS #1 v1.5 encryption is dangerous and should not be used. The
+// protections implemented by this function are limited and fragile, as
+// explained above. See [draft-irtf-cfrg-rsa-guidance-05] for more information.
+// Use [EncryptOAEP] and [DecryptOAEP] instead.
+//
+// [draft-irtf-cfrg-rsa-guidance-05]: https://www.ietf.org/archive/id/draft-irtf-cfrg-rsa-guidance-05.html#name-rationale
 func DecryptPKCS1v15SessionKey(random io.Reader, priv *PrivateKey, ciphertext []byte, key []byte) error

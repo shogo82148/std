@@ -26,7 +26,11 @@ type Tree struct {
 	stackDepth int
 }
 
+<<<<<<< HEAD
 // mode値はフラグのセット（または0）です。モードはパーサの動作を制御します。
+=======
+// A Mode value is a set of flags (or 0). Modes control parser behavior.
+>>>>>>> upstream/release-branch.go1.26
 type Mode uint
 
 const (

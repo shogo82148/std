@@ -12,7 +12,12 @@ package errors
 // 特に、Unwrapは [Join] によって返されたエラーをアンラップしません。
 func Unwrap(err error) error
 
+<<<<<<< HEAD
 // Isは、errのツリー内の任意のエラーがtargetに一致するかどうかを報告します。
+=======
+// Is reports whether any error in err's tree matches target.
+// The target must be comparable.
+>>>>>>> upstream/release-branch.go1.26
 //
 // このツリーは、err自体と、その後に繰り返しUnwrap() errorまたはUnwrap() []errorメソッドを
 // 呼び出すことで得られるエラーで構成されています。errが複数のエラーをラップしている場合、

@@ -14,7 +14,11 @@ import (
 	"github.com/shogo82148/std/encoding/binary"
 )
 
+<<<<<<< HEAD
 // エントリは、属性/値のペアのシーケンスです。
+=======
+// An Entry is a sequence of attribute/value pairs.
+>>>>>>> upstream/release-branch.go1.26
 type Entry struct {
 	Offset   Offset
 	Tag      Tag

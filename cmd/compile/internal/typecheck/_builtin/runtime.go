@@ -10,3 +10,6 @@
 //go:build ignore
 
 package runtime
+
+// used by testing.B.Loop
+func KeepAlive(interface{})

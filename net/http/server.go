@@ -405,11 +405,26 @@ type Server struct {
 	// ゼロの場合、DefaultMaxHeaderBytesが使用されます。
 	MaxHeaderBytes int
 
+<<<<<<< HEAD
 	// TLSNextProtoは、ALPNプロトコルアップグレードが発生した場合に提供されたTLS接続の所有権を引き継ぐための関数をオプションで指定します。
 	// マップキーはネゴシエートされたプロトコル名です。
 	// Handler引数はHTTPリクエストを処理するために使用され、RequestのTLSとRemoteAddrを初期化します（設定されていない場合）。
 	// 関数が返されると、接続は自動的に閉じられます。
 	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的に有効になりません。
+=======
+	// TLSNextProto optionally specifies a function to take over
+	// ownership of the provided TLS connection when an ALPN
+	// protocol upgrade has occurred. The map key is the protocol
+	// name negotiated. The Handler argument should be used to
+	// handle HTTP requests and will initialize the Request's TLS
+	// and RemoteAddr if not already set. The connection is
+	// automatically closed when the function returns.
+	// If TLSNextProto is not nil, HTTP/2 support is not enabled
+	// automatically.
+	//
+	// Historically, TLSNextProto was used to disable HTTP/2 support.
+	// The Server.Protocols field now provides a simpler way to do this.
+>>>>>>> upstream/release-branch.go1.26
 	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)
 
 	// ConnStateは、クライアント接続の状態が変化したときに呼び出されるオプションのコールバック関数を指定します。
@@ -432,9 +447,6 @@ type Server struct {
 	ConnContext func(ctx context.Context, c net.Conn) context.Context
 
 	// HTTP2 configures HTTP/2 connections.
-	//
-	// This field does not yet have any effect.
-	// See https://go.dev/issue/67813.
 	HTTP2 *HTTP2Config
 
 	// Protocols is the set of protocols accepted by the server.
