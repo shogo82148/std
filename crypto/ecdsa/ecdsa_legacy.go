@@ -9,22 +9,14 @@ import (
 	"github.com/shogo82148/std/math/big"
 )
 
-<<<<<<< HEAD
-// Sign は、ハッシュ（大きなメッセージのハッシュの結果である必要があります）をプライベートキー priv を使用して署名します。
-// もしハッシュがプライベートキーの曲線順序のビット長よりも長い場合、ハッシュはその長さに切り詰められます。
-// 結果の署名は、2つの整数のペアとして返されます。ほとんどのアプリケーションでは、r, s と直接扱う代わりに [SignASN1] を使用するべきです。
-=======
-// Sign signs a hash (which should be the result of hashing a larger message)
-// using the private key, priv. If the hash is longer than the bit-length of the
-// private key's curve order, the hash will be truncated to that length. It
-// returns the signature as a pair of integers. Most applications should use
-// [SignASN1] instead of dealing directly with r, s.
+// Signは、秘密鍵privを使用してハッシュ（より大きなメッセージをハッシュした結果である必要があります）に署名します。
+// ハッシュが秘密鍵の曲線位数のビット長より長い場合、ハッシュはその長さに切り詰められます。
+// 署名は整数のペアとして返されます。ほとんどのアプリケーションでは、r、sと直接取り扱う代わりに
+// [SignASN1] を使用する必要があります。
 //
-// The signature is randomized. Since Go 1.26, a secure source of random bytes
-// is always used, and the Reader is ignored unless GODEBUG=cryptocustomrand=1
-// is set. This setting will be removed in a future Go release. Instead, use
-// [testing/cryptotest.SetGlobalRandom].
->>>>>>> upstream/release-branch.go1.26
+// 署名はランダム化されます。Go 1.26以降、安全なランダムバイトソースが常に使用され、
+// GODEBUG=cryptocustomrand=1が設定されない限りReaderは無視されます。
+// この設定は将来のGoリリースで削除されます。代わりに [testing/cryptotest.SetGlobalRandom] を使用してください。
 func Sign(rand io.Reader, priv *PrivateKey, hash []byte) (r, s *big.Int, err error)
 
 // Verifyは、公開鍵pubを使用してハッシュのr、sの署名を検証します。
