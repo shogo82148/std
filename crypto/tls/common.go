@@ -107,15 +107,11 @@ type ConnectionState struct {
 	// クライアント側でのみサポートされています。
 	ECHAccepted bool
 
-<<<<<<< HEAD
-	// ekmはExportKeyingMaterialを介して公開されるクロージャです。
-=======
-	// HelloRetryRequest indicates whether we sent a HelloRetryRequest if we
-	// are a server, or if we received a HelloRetryRequest if we are a client.
+	// HelloRetryRequestは、サーバーの場合はHelloRetryRequestを送信したかどうか、
+	// クライアントの場合はHelloRetryRequestを受信したかどうかを示します。
 	HelloRetryRequest bool
 
 	// ekm is a closure exposed via ExportKeyingMaterial.
->>>>>>> upstream/release-branch.go1.26
 	ekm func(label string, context []byte, length int) ([]byte, error)
 
 	// testingOnlyPeerSignatureAlgorithm is the signature algorithm used by the
@@ -235,17 +231,12 @@ type ClientHelloInfo struct {
 	// 接続が失敗します。
 	Conn net.Conn
 
-<<<<<<< HEAD
-	// configはGetCertificateまたはGetConfigForClientの呼び出し元で埋め込まれ、
-	// SupportsCertificateと共に使用されます。
-=======
-	// HelloRetryRequest indicates whether the ClientHello was sent in response
-	// to a HelloRetryRequest message.
+	// HelloRetryRequestは、ClientHelloがHelloRetryRequestメッセージに応答して
+	// 送信されたかどうかを示します。
 	HelloRetryRequest bool
 
 	// config is embedded by the GetCertificate or GetConfigForClient caller,
 	// for use with SupportsCertificate.
->>>>>>> upstream/release-branch.go1.26
 	config *Config
 
 	// ctxは進行中のハンドシェイクのコンテキストです。
@@ -350,46 +341,33 @@ type Config struct {
 	//
 	// GetConfigForClientがnilの場合、Server()に渡されたConfigがすべての接続に使用されます。
 	//
-<<<<<<< HEAD
-	// 返されたConfigに明示的にSessionTicketKeyが設定されている場合、または返されたConfigにSetSessionTicketKeysが呼び出された場合、これらのキーが使用されます。それ以外の場合、元のConfigキーが使用されます（自動的に管理される場合、回転する可能性もあります）。
+	// 返されたConfigでSessionTicketKeyが明示的に設定されている場合、または
+	// 返されたConfigでSetSessionTicketKeysが呼び出された場合、それらのキーが使用されます。
+	// そうでなければ、元のConfigキーが使用されます（自動管理されている場合は
+	// ローテーションされる可能性があります）。警告：これにより、親（または
+	// 兄弟）Configで元々確立された接続のセッション再開が可能になり、
+	// 返されたConfigの [Config.VerifyPeerCertificate] 値をバイパスする可能性があります。
 	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
 
-	// VerifyPeerCertificate は、TLSクライアントまたはサーバーによる通常の証明書検証の後に呼び出されます（nilでない場合）。この関数は、ピアから提供された生のASN.1証明書と、通常の処理で検証されたチェーンを受け取ります。もしnon-nilのエラーを返す場合、ハンドシェイクは中断され、そのエラーが結果となります。
-	// 通常の検証に失敗した場合、このコールバックは検討される前にハンドシェイクが中断されます。通常の検証が無効になっている場合（InsecureSkipVerifyがクライアント側で設定されている場合、またはServerAuthがRequestClientCertまたはRequireAnyClientCertの場合）、このコールバックは考慮されますが、verifiedChains引数は常にnilになります。ClientAuthがNoClientCertの場合、このコールバックはサーバーで呼び出されません。rawCertsは、ClientAuthがRequestClientCertまたはVerifyClientCertIfGivenの場合には、サーバーで空になる可能性があります。
-	// このコールバックは再開された接続では呼び出されず、証明書は再検証されません。
+	// VerifyPeerCertificateは、nilでない場合、TLSクライアントまたはサーバーによる
+	// 通常の証明書検証の後に呼び出されます。この関数は、ピアから提供された生のASN.1証明書と、
+	// 通常の処理で見つかった検証済みチェーンを受け取ります。non-nilエラーを返す場合、
+	// ハンドシェイクは中止され、そのエラーが結果となります。
+	//
+	// 通常の検証が失敗した場合、このコールバックが考慮される前にハンドシェイクは中止されます。
+	// 通常の検証が無効になっている場合（クライアント側でInsecureSkipVerifyが設定されている場合、
+	// またはサーバー側でClientAuthがRequestClientCertまたはRequireAnyClientCertの場合）、
+	// このコールバックは考慮されますが、verifiedChains引数は常にnilになります。
+	// ClientAuthがNoClientCertの場合、このコールバックはサーバーで呼び出されません。
+	// rawCertsは、ClientAuthがRequestClientCertまたはVerifyClientCertIfGivenの場合、
+	// サーバー上で空になる可能性があります。
+	//
+	// このコールバックは再開された接続では呼び出されません。警告：これには
+	// [Config.Clone] や [Config.GetConfigForClient] によって返されたConfigとその親で
+	// 再開された接続も含まれます。それが意図されていない場合は、代わりに
+	// [Config.VerifyConnection] を使用するか、[Config.SessionTicketsDisabled] を設定してください。
+	//
 	// verifiedChainsとその内容は変更しないでください。
-=======
-	// If SessionTicketKey is explicitly set on the returned Config, or if
-	// SetSessionTicketKeys is called on the returned Config, those keys will
-	// be used. Otherwise, the original Config keys will be used (and possibly
-	// rotated if they are automatically managed). WARNING: this allows session
-	// resumtion of connections originally established with the parent (or a
-	// sibling) Config, which may bypass the [Config.VerifyPeerCertificate]
-	// value of the returned Config.
-	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
-
-	// VerifyPeerCertificate, if not nil, is called after normal
-	// certificate verification by either a TLS client or server. It
-	// receives the raw ASN.1 certificates provided by the peer and also
-	// any verified chains that normal processing found. If it returns a
-	// non-nil error, the handshake is aborted and that error results.
-	//
-	// If normal verification fails then the handshake will abort before
-	// considering this callback. If normal verification is disabled (on the
-	// client when InsecureSkipVerify is set, or on a server when ClientAuth is
-	// RequestClientCert or RequireAnyClientCert), then this callback will be
-	// considered but the verifiedChains argument will always be nil. When
-	// ClientAuth is NoClientCert, this callback is not called on the server.
-	// rawCerts may be empty on the server if ClientAuth is RequestClientCert or
-	// VerifyClientCertIfGiven.
-	//
-	// This callback is not invoked on resumed connections. WARNING: this
-	// includes connections resumed across Configs returned by [Config.Clone] or
-	// [Config.GetConfigForClient] and their parents. If that is not intended,
-	// use [Config.VerifyConnection] instead, or set [Config.SessionTicketsDisabled].
-	//
-	// verifiedChains and its contents should not be modified.
->>>>>>> upstream/release-branch.go1.26
 	VerifyPeerCertificate func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error
 
 	// VerifyConnectionは、通常の証明書の検証とVerifyPeerCertificateの後に、TLSクライアントまたはサーバーによって呼び出されます（nilではない場合）。非nilのエラーが返された場合、ハンドシェイクは中止されます。
@@ -494,20 +472,14 @@ type Config struct {
 	// リストの順序は無視され、鍵交換メカニズムは内部の優先順序を使用して
 	// このリストから選択されます。空の場合、デフォルトが使用されます。
 	//
-<<<<<<< HEAD
 	// Go 1.24から、デフォルトには [X25519MLKEM768] ハイブリッド
 	// ポスト量子鍵交換が含まれます。これを無効にするには、CurvePreferencesを明示的に
 	// 設定するか、GODEBUG=tlsmlkem=0環境変数を使用してください。
-=======
-	// From Go 1.24, the default includes the [X25519MLKEM768] hybrid
-	// post-quantum key exchange. To disable it, set CurvePreferences explicitly
-	// or use the GODEBUG=tlsmlkem=0 environment variable.
 	//
-	// From Go 1.26, the default includes the [SecP256r1MLKEM768] and
-	// [SecP256r1MLKEM768] hybrid post-quantum key exchanges, too. To disable
-	// them, set CurvePreferences explicitly or use either the
-	// GODEBUG=tlsmlkem=0 or the GODEBUG=tlssecpmlkem=0 environment variable.
->>>>>>> upstream/release-branch.go1.26
+	// Go 1.26から、デフォルトには [SecP256r1MLKEM768] と
+	// [SecP256r1MLKEM768] ハイブリッドポスト量子鍵交換も含まれます。
+	// これらを無効にするには、CurvePreferencesを明示的に設定するか、
+	// GODEBUG=tlsmlkem=0またはGODEBUG=tlssecpmlkem=0環境変数のいずれかを使用してください。
 	CurvePreferences []CurveID
 
 	// DynamicRecordSizingDisabledはTLSレコードの適応的なサイズ調整を無効にします。
@@ -609,62 +581,46 @@ type Config struct {
 // EncryptedClientHelloKeyは、クライアントが知っている特定のECH設定に
 // 関連付けられた秘密鍵を保持します。
 type EncryptedClientHelloKey struct {
-<<<<<<< HEAD
-	// Configは、PrivateKeyに関連付けられたマーシャルされたECHConfigである必要があります。
+	// ConfigはPrivateKeyに関連付けられたマーシャルされたECHConfigである必要があります。
 	// これは、クライアントに提供される設定とバイト単位で完全に一致する必要があります。
-	// この設定は、DHKEM(X25519, HKDF-SHA256) KEM ID (0x0020)、
-	// HKDF-SHA256 KDF ID (0x0001)、および以下のAEAD IDのサブセットのみを
-	// 指定する必要があります：
-	// AES-128-GCM (0x0001)、AES-256-GCM (0x0002)、ChaCha20Poly1305 (0x0003)。
-	Config []byte
-	// PrivateKeyはマーシャルされた秘密鍵である必要があります。現在、これは
-	// [ecdh.PrivateKey.Bytes]の出力であることを期待しています。
-=======
-	// Config should be a marshalled ECHConfig associated with PrivateKey. This
-	// must match the config provided to clients byte-for-byte. The config must
-	// use as KEM one of
+	// この設定は、KEMとして以下のいずれかを使用する必要があります：
 	//
 	//   - DHKEM(P-256, HKDF-SHA256) (0x0010)
 	//   - DHKEM(P-384, HKDF-SHA384) (0x0011)
 	//   - DHKEM(P-521, HKDF-SHA512) (0x0012)
 	//   - DHKEM(X25519, HKDF-SHA256) (0x0020)
 	//
-	// and as KDF one of
+	// そしてKDFとして以下のいずれかを使用する必要があります：
 	//
 	//   - HKDF-SHA256 (0x0001)
 	//   - HKDF-SHA384 (0x0002)
 	//   - HKDF-SHA512 (0x0003)
 	//
-	// and as AEAD one of
+	// そしてAEADとして以下のいずれかを使用する必要があります：
 	//
 	//   - AES-128-GCM (0x0001)
 	//   - AES-256-GCM (0x0002)
 	//   - ChaCha20Poly1305 (0x0003)
 	//
 	Config []byte
-	// PrivateKey should be a marshalled private key, in the format expected by
-	// HPKE's DeserializePrivateKey (see RFC 9180), for the KEM used in Config.
->>>>>>> upstream/release-branch.go1.26
+	// PrivateKeyは、Configで使用されるKEMについて、HPKEのDeserializePrivateKey
+	// （RFC 9180を参照）で期待される形式のマーシャルされた秘密鍵である必要があります。
 	PrivateKey []byte
 	// SendAsRetryは、クライアントからECHが要求されたがサーバーによって拒否された場合に、
 	// Configが再試行設定のリストの一部として送信されるかどうかを示します。
 	SendAsRetry bool
 }
 
-<<<<<<< HEAD
-// Cloneは、cのシャロークローンを返すか、cがnilの場合はnilを返します。TLSクライアントまたはサーバーによって
-// 同時に使用されている [Config] をクローンすることは安全です。
-=======
-// Clone returns a shallow clone of c or nil if c is nil. It is safe to clone a
-// [Config] that is being used concurrently by a TLS client or server.
+// Cloneは、cのシャロークローンを返すか、cがnilの場合はnilを返します。
+// TLSクライアントまたはサーバーによって同時に使用されている [Config] を
+// クローンすることは安全です。
 //
-// The returned Config can share session ticket keys with the original Config,
-// which means connections could be resumed across the two Configs. WARNING:
-// [Config.VerifyPeerCertificate] does not get called on resumed connections,
-// including connections that were originally established on the parent Config.
-// If that is not intended, use [Config.VerifyConnection] instead, or set
-// [Config.SessionTicketsDisabled].
->>>>>>> upstream/release-branch.go1.26
+// 返されたConfigは元のConfigとセッションチケットキーを共有する可能性があり、
+// これは2つのConfig間で接続が再開される可能性があることを意味します。警告：
+// [Config.VerifyPeerCertificate] は再開された接続では呼び出されません。
+// これには、親Configで元々確立された接続も含まれます。
+// それが意図されていない場合は、代わりに [Config.VerifyConnection] を使用するか、
+// [Config.SessionTicketsDisabled] を設定してください。
 func (c *Config) Clone() *Config
 
 // SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
@@ -698,22 +654,13 @@ func (c *Config) BuildNameToCertificate()
 // ボタン構造体は、最初にリーフ（最下位）のボタンから始まり、その上位にある1つ以上のボタンのチェーンです。
 type Certificate struct {
 	Certificate [][]byte
-<<<<<<< HEAD
-
 	// PrivateKeyは、Leafの公開鍵に対応する秘密鍵を含んでいます。
-	// これは、RSA、ECDSA、またはEd25519 PublicKeyを使用してcrypto.Signerを実装する必要があります。
+	// これは、RSA、ECDSA、またはEd25519 PublicKeyを使用して [crypto.Signer] を実装する必要があります。
+	//
 	// TLS 1.2までのサーバーの場合、RSA PublicKeyを使用してcrypto.Decrypterも実装できます。
-=======
-	// PrivateKey contains the private key corresponding to the public key in
-	// Leaf. This must implement [crypto.Signer] with an RSA, ECDSA or Ed25519
-	// PublicKey.
 	//
-	// For a server up to TLS 1.2, it can also implement crypto.Decrypter with
-	// an RSA PublicKey.
-	//
-	// If it implements [crypto.MessageSigner], SignMessage will be used instead
-	// of Sign for TLS 1.2 and later.
->>>>>>> upstream/release-branch.go1.26
+	// [crypto.MessageSigner] を実装している場合、TLS 1.2以降ではSignの代わりに
+	// SignMessageが使用されます。
 	PrivateKey crypto.PrivateKey
 
 	// SupportedSignatureAlgorithmsは、PrivateKeyが使用できる署名アルゴリズムを制限するオプションのリストです。
