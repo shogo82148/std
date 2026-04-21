@@ -22,16 +22,9 @@ func Walk(v Visitor, node Node)
 // nodeはnilであってはいけません。fがtrueを返す場合、Inspectはnodeのnilでない子要素それぞれに対して
 // 再帰的にfを呼び出し、その後にf(nil)を呼び出します。
 //
-<<<<<<< HEAD
-// 多くの場合、ノードのシーケンスに対するイテレータを返す [Preorder]、または
-// （[Inspect] と同様に）サブツリーへの降下を制御できる [PreorderStack] を使用する方が
-// 便利な場合があります。[PreorderStack] はさらに、囲んでいるノードのスタックも報告します。
-=======
-// In many cases it may be more convenient to use [Preorder], which
-// returns an iterator over the sequence of nodes, or [PreorderStack],
-// which (like [Inspect]) provides control over descent into subtrees,
-// but additionally reports the stack of enclosing nodes.
->>>>>>> upstream/release-branch.go1.26
+// 多くの場合、ノードの列に対するイテレータを返す [Preorder]、または
+// （ [Inspect] のように）サブツリーへの降下の制御を提供しつつ、さらに囲むノードの
+// スタックを報告する [PreorderStack] を使用する方が便利な場合があります。
 func Inspect(node Node, f func(Node) bool)
 
 // Preorderは、指定されたルート以下（ルートを含む）の構文木のすべてのノードに対するイテレータを返します。
