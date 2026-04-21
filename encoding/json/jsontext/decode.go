@@ -63,14 +63,8 @@ func (d *Decoder) Options() Options
 
 // PeekKindは次のトークン種別を取得しますが、読み取り位置は進めません。
 //
-<<<<<<< HEAD
-// エラーが発生した場合は0を返します。エラーは次の読み取り呼び出しまでキャッシュされ、
-// 呼び出し側は最終的にPeekKindの後に読み取り呼び出しを行う責任があります。
-=======
-// It returns [KindInvalid] if an error occurs. Any such error is cached until
-// the next read call and it is the caller's responsibility to eventually
-// follow up a PeekKind call with a read call.
->>>>>>> upstream/release-branch.go1.26
+// エラーが発生した場合は [KindInvalid] を返します。そのようなエラーは次の読み取り呼び出しまで
+// キャッシュされ、最終的にPeekKind呼び出しの後に読み取り呼び出しを続けることは呼び出し側の責任です。
 func (d *Decoder) PeekKind() Kind
 
 // SkipValueは、[Decoder.ReadValue] を呼び出して結果を破棄するのと意味的に同等ですが、
@@ -114,15 +108,9 @@ func (d *Decoder) StackDepth() int
 // 0から [Decoder.StackDepth] までの数値でなければなりません。
 // 各レベルについて、その種別を報告します:
 //
-<<<<<<< HEAD
-//   - 0 はゼロレベルを表します。
-//   - '{' はJSONオブジェクトのレベルを表します。
-//   - '[' はJSON配列のレベルを表します。
-=======
-//   - [KindInvalid] for a level of zero,
-//   - [KindBeginObject] for a level representing a JSON object, and
-//   - [KindBeginArray] for a level representing a JSON array.
->>>>>>> upstream/release-branch.go1.26
+//   - ゼロレベルの場合は [KindInvalid]
+//   - JSONオブジェクトを表すレベルの場合は [KindBeginObject]
+//   - JSON配列を表すレベルの場合は [KindBeginArray]
 //
 // また、そのJSONオブジェクトや配列の長さも報告します。
 // JSONオブジェクト内の各名前と値は個別にカウントされるため、
