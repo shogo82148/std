@@ -27,18 +27,10 @@ type Named struct {
 	check *Checker
 	obj   *TypeName
 
-<<<<<<< HEAD
-	// fromRHS はこの *Named 型が派生元となる宣言の右辺値の型（サイクルの報告用）を保持します。
-	// validType のみで使用されるため、同期化は必要ありません。
-	fromRHS Type
-
-	// インスタンス化された型に関する情報; それ以外はnil
-=======
 	// flags indicating temporary violations of the invariants for fromRHS and underlying
 	allowNilRHS        bool
 	allowNilUnderlying bool
 
->>>>>>> upstream/release-branch.go1.26
 	inst *instance
 
 	mu         sync.Mutex
@@ -97,15 +89,9 @@ func (t *Named) NumMethods() int
 // 依存してはいけません。
 func (t *Named) Method(i int) *Func
 
-<<<<<<< HEAD
-// SetUnderlyingは基本型を設定し、tを完全なものとしてマークします。
-// tには型引数を持っていてはいけません。
-func (t *Named) SetUnderlying(underlying Type)
-=======
-// SetUnderlying sets the underlying type and marks t as complete.
-// t must not have type arguments.
+// SetUnderlyingは基底型を設定し、tを完了としてマークします。
+// tは型引数を持っていてはいけません。
 func (t *Named) SetUnderlying(u Type)
->>>>>>> upstream/release-branch.go1.26
 
 // AddMethodは、メソッドmがすでにメソッドリストに存在しない場合に追加します。
 // メソッドはtと同じパッケージに存在しなければならず、tは
