@@ -20,34 +20,19 @@ var ErrBadPattern = errors.New("syntax error in pattern")
 //		'*'         任意の非区切り文字のシーケンスに一致します
 //		'?'         任意の単一の非区切り文字に一致します
 //		'[' [ '^' ] { character-range } ']'
-<<<<<<< HEAD
-//		            キャラクタークラス（非空である必要があります）
-//		c           文字cに一致します（c != '*', '?', '\\', '['）
-//		'\\' c      文字cに一致します
+//		            文字クラス（空でない必要があります）
+//		c           文字 c に一致します (c != '*', '?', '\', '[')
+//		'\' c      文字 c に一致します（Windowsを除く）
 //
 //	character-range:
-//		c           文字cに一致します（c != '\\', '-', ']'）
-//		'\\' c      文字cに一致します
-//		lo '-' hi   lo <= c <= hi の条件で文字cに一致します
+//		c           文字 c に一致します (c != '\', '-', ']')
+//		'\\' c      文字 c に一致します（Windowsを除く）
+//		lo '-' hi   lo <= c <= hi の範囲の文字 c に一致します
 //
-// Matchは、パターンが名前全体ではなく、部分文字列ではないことを要求します。
-// 返される唯一の可能なエラーは、パターンが異常である場合の [ErrBadPattern] です。
-=======
-//		            character class (must be non-empty)
-//		c           matches character c (c != '*', '?', '\\', '[')
-//		'\\' c      matches character c (except on Windows)
+// パターン内のパスセグメントは [Separator] で区切られている必要があります。
 //
-//	character-range:
-//		c           matches character c (c != '\\', '-', ']')
-//		'\\' c      matches character c (except on Windows)
-//		lo '-' hi   matches character c for lo <= c <= hi
-//
-// Path segments in the pattern must be separated by [Separator].
-//
-// Match requires pattern to match all of name, not just a substring.
-// The only possible returned error is [ErrBadPattern], when pattern
-// is malformed.
->>>>>>> upstream/release-branch.go1.26
+// Matchはパターンがnameのすべてに一致することを要求し、部分文字列だけではありません。
+// 返される可能性のある唯一のエラーは、パターンが不正な場合の [ErrBadPattern] です。
 //
 // Windowsでは、エスケープは無効になっています。代わりに'\\'はパスセパレータとして扱われます。
 func Match(pattern, name string) (matched bool, err error)
