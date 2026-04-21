@@ -14,26 +14,7 @@ const (
 	ErrBitSize
 )
 
-<<<<<<< HEAD:strconv/atoi.go
-// ErrRangeは、値が対象の型の範囲外であることを示します。
-var ErrRange = errors.New("value out of range")
-
-// ErrSyntaxは、値がターゲットの型の正しい構文ではないことを示します。
-var ErrSyntax = errors.New("invalid syntax")
-
-// NumErrorは変換に失敗したことを記録します。
-type NumError struct {
-	Func string
-	Num  string
-	Err  error
-}
-
-func (e *NumError) Error() string
-
-func (e *NumError) Unwrap() error
-=======
 func (e Error) Error() string
->>>>>>> upstream/release-branch.go1.26:internal/strconv/atoi.go
 
 // IntSizeはintまたはuint値のビットサイズです。
 const IntSize = intSize
