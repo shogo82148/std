@@ -24,117 +24,8 @@ import (
 // A Transport internally caches connections to servers. It is safe
 // for concurrent use by multiple goroutines.
 type Transport struct {
-	// DialTLSContext specifies an optional dial function with context for
-	// creating TLS connections for requests.
-	//
-	// If DialTLSContext and DialTLS is nil, tls.Dial is used.
-	//
-	// If the returned net.Conn has a ConnectionState method like tls.Conn,
-	// it will be used to set http.Response.TLS.
-	DialTLSContext func(ctx context.Context, network, addr string, cfg *tls.Config) (net.Conn, error)
-
-	// DialTLS specifies an optional dial function for creating
-	// TLS connections for requests.
-	//
-	// If DialTLSContext and DialTLS is nil, tls.Dial is used.
-	//
-	// Deprecated: Use DialTLSContext instead, which allows the transport
-	// to cancel dials as soon as they are no longer needed.
-	// If both are set, DialTLSContext takes priority.
-	DialTLS func(network, addr string, cfg *tls.Config) (net.Conn, error)
-
-	// TLSClientConfig specifies the TLS configuration to use with
-	// tls.Client. If nil, the default configuration is used.
-	TLSClientConfig *tls.Config
-
-	// ConnPool optionally specifies an alternate connection pool to use.
-	// If nil, the default is used.
-	ConnPool ClientConnPool
-
-	// DisableCompression, if true, prevents the Transport from
-	// requesting compression with an "Accept-Encoding: gzip"
-	// request header when the Request contains no existing
-	// Accept-Encoding value. If the Transport requests gzip on
-	// its own and gets a gzipped response, it's transparently
-	// decoded in the Response.Body. However, if the user
-	// explicitly requested gzip it is not automatically
-	// uncompressed.
-	DisableCompression bool
-
-	// AllowHTTP, if true, permits HTTP/2 requests using the insecure,
-	// plain-text "http" scheme. Note that this does not enable h2c support.
-	AllowHTTP bool
-
-	// MaxHeaderListSize is the http2 SETTINGS_MAX_HEADER_LIST_SIZE to
-	// send in the initial settings frame. It is how many bytes
-	// of response headers are allowed. Unlike the http2 spec, zero here
-	// means to use a default limit (currently 10MB). If you actually
-	// want to advertise an unlimited value to the peer, Transport
-	// interprets the highest possible value here (0xffffffff or 1<<32-1)
-	// to mean no limit.
-	MaxHeaderListSize uint32
-
-	// MaxReadFrameSize is the http2 SETTINGS_MAX_FRAME_SIZE to send in the
-	// initial settings frame. It is the size in bytes of the largest frame
-	// payload that the sender is willing to receive. If 0, no setting is
-	// sent, and the value is provided by the peer, which should be 16384
-	// according to the spec:
-	// https://datatracker.ietf.org/doc/html/rfc7540#section-6.5.2.
-	// Values are bounded in the range 16k to 16M.
-	MaxReadFrameSize uint32
-
-	// MaxDecoderHeaderTableSize optionally specifies the http2
-	// SETTINGS_HEADER_TABLE_SIZE to send in the initial settings frame. It
-	// informs the remote endpoint of the maximum size of the header compression
-	// table used to decode header blocks, in octets. If zero, the default value
-	// of 4096 is used.
-	MaxDecoderHeaderTableSize uint32
-
-	// MaxEncoderHeaderTableSize optionally specifies an upper limit for the
-	// header compression table used for encoding request headers. Received
-	// SETTINGS_HEADER_TABLE_SIZE settings are capped at this limit. If zero,
-	// the default value of 4096 is used.
-	MaxEncoderHeaderTableSize uint32
-
-	// StrictMaxConcurrentStreams controls whether the server's
-	// SETTINGS_MAX_CONCURRENT_STREAMS should be respected
-	// globally. If false, new TCP connections are created to the
-	// server as needed to keep each under the per-connection
-	// SETTINGS_MAX_CONCURRENT_STREAMS limit. If true, the
-	// server's SETTINGS_MAX_CONCURRENT_STREAMS is interpreted as
-	// a global limit and callers of RoundTrip block when needed,
-	// waiting for their turn.
-	StrictMaxConcurrentStreams bool
-
-	// IdleConnTimeout is the maximum amount of time an idle
-	// (keep-alive) connection will remain idle before closing
-	// itself.
-	// Zero means no limit.
-	IdleConnTimeout time.Duration
-
-	// ReadIdleTimeout is the timeout after which a health check using ping
-	// frame will be carried out if no frame is received on the connection.
-	// Note that a ping response will is considered a received frame, so if
-	// there is no other traffic on the connection, the health check will
-	// be performed every ReadIdleTimeout interval.
-	// If zero, no health check is performed.
-	ReadIdleTimeout time.Duration
-
-	// PingTimeout is the timeout after which the connection will be closed
-	// if a response to Ping is not received.
-	// Defaults to 15s.
-	PingTimeout time.Duration
-
-	// WriteByteTimeout is the timeout after which the connection will be
-	// closed no data can be written to it. The timeout begins when data is
-	// available to write, and is extended whenever any bytes are written.
-	WriteByteTimeout time.Duration
-
-	t1 TransportConfig
-
-	connPoolOnce  sync.Once
-	connPoolOrDef ClientConnPool
-
+	t1       TransportConfig
+	connPool noDialClientConnPool
 	*transportTestHooks
 }
 
@@ -248,8 +139,6 @@ type RoundTripOpt struct {
 	// no cached connection is available, RoundTripOpt
 	// will return ErrNoCachedConn.
 	OnlyCachedConn bool
-
-	allowHTTP bool
 }
 
 func (t *Transport) RoundTrip(req *ClientRequest) (*ClientResponse, error)

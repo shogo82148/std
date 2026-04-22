@@ -5,14 +5,3 @@
 // Transport code's client connection pooling.
 
 package http2
-
-// ClientConnPool manages a pool of HTTP/2 client connections.
-type ClientConnPool interface {
-	GetClientConn(req *ClientRequest, addr string) (*ClientConn, error)
-	MarkDead(*ClientConn)
-}
-
-var (
-	_ clientConnPoolIdleCloser = (*clientConnPool)(nil)
-	_ clientConnPoolIdleCloser = noDialClientConnPool{}
-)
