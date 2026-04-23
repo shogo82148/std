@@ -70,7 +70,7 @@ type BuildSetting struct {
 func (bi *BuildInfo) String() string
 
 // ParseBuildInfo parses the string returned by [*BuildInfo.String],
-// restoring the original BuildInfo,
+// restoring the original [BuildInfo],
 // except that the GoVersion field is not set.
 // Programs should normally not call this function,
 // but instead call [ReadBuildInfo], [debug/buildinfo.ReadFile],

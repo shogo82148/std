@@ -10,7 +10,7 @@ import (
 	"github.com/shogo82148/std/os"
 )
 
-// PrintStack prints to standard error the stack trace returned by runtime.Stack.
+// PrintStack prints to standard error the stack trace returned by [runtime.Stack].
 func PrintStack()
 
 // Stack returns a formatted stack trace of the goroutine that calls it.

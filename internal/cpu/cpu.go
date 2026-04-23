@@ -155,6 +155,7 @@ var RISCV64 struct {
 	HasFastMisaligned bool
 	HasV              bool
 	HasZbb            bool
+	HasZbc            bool
 	HasZvbb           bool
 	HasZvbc           bool
 	HasZvkg           bool
