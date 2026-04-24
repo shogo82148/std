@@ -365,13 +365,6 @@ func PackageList(roots []*Package) []*Package
 // imports of the roots. This ignores errors in test packages.
 func TestPackageList(ld *modload.Loader, ctx context.Context, opts PackageOpts, roots []*Package) []*Package
 
-// LoadImportWithFlags loads the package with the given import path and
-// sets tool flags on that package. This function is useful loading implicit
-// dependencies (like sync/atomic for coverage).
-// TODO(jayconrod): delete this function and set flags automatically
-// in LoadImport instead.
-func LoadImportWithFlags(ld *modload.Loader, path, srcDir string, parent *Package, stk *ImportStack, importPos []token.Position, mode int) (*Package, *PackageError)
-
 // LoadPackageWithFlags is the same as LoadImportWithFlags but without a parent.
 // It's then guaranteed to not return an error
 func LoadPackageWithFlags(ld *modload.Loader, path, srcDir string, stk *ImportStack, importPos []token.Position, mode int) *Package
