@@ -14,3 +14,7 @@ const UnlinkablePkg = "<unlinkable>"
 
 // Entry point of writing new object file.
 func WriteObjFile(ctxt *Link, b *bio.Writer)
+
+// MaxSymSize is the maximum data section size permitted by the linker
+// (see issue #9862).
+const MaxSymSize = int64(2e9)

@@ -9,3 +9,7 @@ import (
 )
 
 func MustSupportFIPS140(t *testing.T)
+
+func RerunWithFIPS140Enabled(t *testing.T)
+
+func RerunWithFIPS140Enforced(t *testing.T)
