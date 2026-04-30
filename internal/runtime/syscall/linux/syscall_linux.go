@@ -23,3 +23,14 @@ func Close(fd int) (errno uintptr)
 func Read(fd int, p []byte) (n int, errno uintptr)
 
 func Pread(fd int, p []byte, offset int64) (n int, errno uintptr)
+
+type Utsname struct {
+	Sysname    [65]byte
+	Nodename   [65]byte
+	Release    [65]byte
+	Version    [65]byte
+	Machine    [65]byte
+	Domainname [65]byte
+}
+
+func Uname(buf *Utsname) (errno uintptr)
