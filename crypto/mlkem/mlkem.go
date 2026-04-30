@@ -56,7 +56,10 @@ func NewDecapsulationKey768(seed []byte) (*DecapsulationKey768, error)
 func (dk *DecapsulationKey768) Bytes() []byte
 
 // Decapsulate generates a shared key from a ciphertext and a decapsulation
-// key. If the ciphertext is not valid, Decapsulate returns an error.
+// key. If the ciphertext is not the correct length, Decapsulate returns an
+// error. A ciphertext that is the correct length but otherwise invalid will
+// not return an error; instead, it will produce a shared key that does not
+// match the sender's, according to FIPS 203.
 //
 // The shared key must be kept secret.
 func (dk *DecapsulationKey768) Decapsulate(ciphertext []byte) (sharedKey []byte, err error)
@@ -115,7 +118,10 @@ func NewDecapsulationKey1024(seed []byte) (*DecapsulationKey1024, error)
 func (dk *DecapsulationKey1024) Bytes() []byte
 
 // Decapsulate generates a shared key from a ciphertext and a decapsulation
-// key. If the ciphertext is not valid, Decapsulate returns an error.
+// key. If the ciphertext is not the correct length, Decapsulate returns an
+// error. A ciphertext that is the correct length but otherwise invalid will
+// not return an error; instead, it will produce a shared key that does not
+// match the sender's, according to FIPS 203.
 //
 // The shared key must be kept secret.
 func (dk *DecapsulationKey1024) Decapsulate(ciphertext []byte) (sharedKey []byte, err error)
