@@ -56,7 +56,7 @@ func NewDecoder(r io.Reader, opts ...Options) *Decoder
 // or the [encoding/json/v2.UnmarshalFromFunc] function.
 func (d *Decoder) Reset(r io.Reader, opts ...Options)
 
-// Options returns the options used to construct the encoder and
+// Options returns the options used to construct the decoder and
 // may additionally contain semantic options passed to a
 // [encoding/json/v2.UnmarshalDecode] call.
 //

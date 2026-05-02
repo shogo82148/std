@@ -58,7 +58,7 @@ func NewEncoder(w io.Writer, opts ...Options) *Encoder
 // or the [encoding/json/v2.MarshalToFunc] function.
 func (e *Encoder) Reset(w io.Writer, opts ...Options)
 
-// Options returns the options used to construct the decoder and
+// Options returns the options used to construct the encoder and
 // may additionally contain semantic options passed to a
 // [encoding/json/v2.MarshalEncode] call.
 //

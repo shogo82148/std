@@ -26,7 +26,7 @@ func AppendFloat(dst []byte, src float64, bits int) []byte
 //
 // The dst and src may overlap.
 // If an error is reported, then the entirety of src is appended to dst.
-func AppendFormat(dst, src []byte, opts ...Options) ([]byte, error)
+func AppendFormat[Bytes ~[]byte | ~string](dst []byte, src Bytes, opts ...Options) ([]byte, error)
 
 // Value represents a single raw JSON value, which may be one of the following:
 //   - a JSON literal (i.e., null, true, or false)

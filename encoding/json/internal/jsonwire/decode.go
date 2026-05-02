@@ -61,7 +61,7 @@ func ConsumeStringResumable(flags *ValueFlags, b []byte, resumeOffset int, valid
 // Any invalid UTF-8 within the string will be replaced with utf8.RuneError,
 // but the error will be specified as having encountered such an error.
 // The input must be an entire JSON string with no surrounding whitespace.
-func AppendUnquote[Bytes ~[]byte | ~string](dst []byte, src Bytes) (v []byte, err error)
+func AppendUnquote(dst, src []byte) (v []byte, err error)
 
 // UnquoteMayCopy returns the unescaped form of b.
 // If there are no escaped characters, the output is simply a subslice of
@@ -96,11 +96,3 @@ func ConsumeNumberResumable(b []byte, resumeOffset int, state ConsumeNumberState
 // It returns (0, false) if there is a syntax error and
 // returns (math.MaxUint64, false) if there is an overflow.
 func ParseUint(b []byte) (v uint64, ok bool)
-
-// ParseFloat parses a floating point number according to the Go float grammar.
-// Note that the JSON number grammar is a strict subset.
-//
-// If the number overflows the finite representation of a float,
-// then we return MaxFloat since any finite value will always be infinitely
-// more accurate at representing another finite value than an infinite value.
-func ParseFloat(b []byte, bits int) (v float64, ok bool)

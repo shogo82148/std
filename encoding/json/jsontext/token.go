@@ -97,6 +97,16 @@ func (t Token) String() string
 // Float32 returns the floating-point value for a JSON number
 // parsed according to 32 bits of precision.
 //
+// If the JSON number is outside the representable range of a float32,
+// it returns +Inf or -Inf along with an error
+// that matches [strconv.ErrRange] according to [errors.Is].
+//
+// It returns a NaN, +Inf, or -Inf value for any JSON string
+// with the values "NaN", "Infinity", or "-Infinity".
+//
+// It panics if the token kind is not a JSON number
+// or a JSON string with the aforementioned values.
+//
 // Note that most JSON libraries and standards assume that JSON numbers
 // are 64-bit floating-point numbers.
 // This method should only be used if the caller knows
@@ -104,33 +114,49 @@ func (t Token) String() string
 // formatted only to 32 bits of precision (such as being encoded
 // using the [Float32] constructor). For all other situations,
 // prefer using the [Token.Float] accessor instead.
-//
-// It returns a NaN, +Inf, or -Inf value for any JSON string
-// with the values "NaN", "Infinity", or "-Infinity".
-// It panics for all other cases.
-func (t Token) Float32() float32
+func (t Token) Float32() (float32, error)
 
 // Float returns the floating-point value for a JSON number
 // parsed according to 64 bits of precision.
 //
+// If the JSON number is outside the representable range of a float64,
+// it returns +Inf or -Inf along with an error
+// that matches [strconv.ErrRange] according to [errors.Is].
+//
 // It returns a NaN, +Inf, or -Inf value for any JSON string
 // with the values "NaN", "Infinity", or "-Infinity".
-// It panics for all other cases.
-func (t Token) Float() float64
+//
+// It panics if the token kind is not a JSON number
+// or a JSON string with the aforementioned values.
+func (t Token) Float() (float64, error)
 
 // Int returns the signed integer value for a JSON number.
+//
+// It reports an error that matches [strconv.ErrSyntax] according to [errors.Is]
+// if the JSON number does not match the restricted grammar of just a signed integer.
+// It reports an error that matches [strconv.ErrRange] according to [errors.Is]
+// if the JSON number is a signed integer, but outside the range of an int64.
+// Even if an error is reported, a reasonable value is still returned.
 // The fractional component of any number is ignored (truncation toward zero).
 // Any number beyond the representation of an int64 will be saturated
 // to the closest representable value.
+//
 // It panics if the token kind is not a JSON number.
-func (t Token) Int() int64
+func (t Token) Int() (int64, error)
 
 // Uint returns the unsigned integer value for a JSON number.
+//
+// It reports an error that matches [strconv.ErrSyntax] if the JSON number
+// does not match the restricted grammar of just an unsigned integer.
+// It reports an error that matches [strconv.ErrRange] if the JSON number
+// is an unsigned integer, but outside the representable range of an uint64.
+// Even if an error is reported, a reasonable value is still returned.
 // The fractional component of any number is ignored (truncation toward zero).
 // Any number beyond the representation of an uint64 will be saturated
 // to the closest representable value.
+//
 // It panics if the token kind is not a JSON number.
-func (t Token) Uint() uint64
+func (t Token) Uint() (uint64, error)
 
 // Kind returns the token kind.
 func (t Token) Kind() Kind
