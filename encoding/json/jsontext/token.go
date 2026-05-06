@@ -16,6 +16,20 @@ package jsontext
 // A Token cannot represent entire array or object values, while a [Value] can.
 // There is no Token to represent commas and colons since
 // these structural tokens can be inferred from the surrounding context.
+//
+// A Token stores data in one of two forms:
+//
+//   - As raw JSON text: backed by the internal buffer of the [Decoder]
+//     and only ever produced by [Decoder.ReadToken].
+//     Such a token is only valid until the next call to any method on that
+//     [Decoder] (e.g., [Decoder.PeekKind], [Decoder.ReadToken],
+//     [Decoder.ReadValue], or [Decoder.SkipValue]).
+//     Call [Token.Clone] to copy the raw text into an independent allocation
+//     that persists beyond subsequent [Decoder] calls.
+//
+//   - As a typed Go value: a self-contained representation produced by
+//     the constructor functions (e.g., [String], [Int], [Uint], [Float]).
+//     Such tokens are valid indefinitely and do not need to be cloned.
 type Token struct {
 	nonComparable
 
@@ -82,8 +96,10 @@ func Int(n int64) Token
 // Uint constructs a Token representing a JSON number from a uint64.
 func Uint(n uint64) Token
 
-// Clone makes a copy of the Token such that its value remains valid
-// even after a subsequent [Decoder.Read] call.
+// Clone returns a copy of the token with a value that is not backed by the
+// [Decoder] buffer and therefore remains valid past subsequent [Decoder] calls.
+// It has no effect on tokens produced by constructor functions,
+// since those are already self-contained.
 func (t Token) Clone() Token
 
 // Bool returns the value for a JSON boolean.
