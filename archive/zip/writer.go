@@ -24,6 +24,10 @@ type Writer struct {
 }
 
 // NewWriter returns a new [Writer] writing a zip file to w.
+//
+// Note that the exact bytes written to w are not covered by the Go 1
+// compatibility promise. Callers, including tests, should not depend on the
+// exact written bytes.
 func NewWriter(w io.Writer) *Writer
 
 // SetOffset sets the offset of the beginning of the zip data within the

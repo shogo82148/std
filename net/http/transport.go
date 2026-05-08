@@ -148,6 +148,9 @@ type Transport struct {
 	// requests and the TLSClientConfig and TLSHandshakeTimeout
 	// are ignored. The returned net.Conn is assumed to already be
 	// past the TLS handshake.
+	//
+	// To support ALPN protocol negotiation, the returned net.Conn should be
+	// a *tls.Conn or implement the same ConnectionState method as *tls.Conn.
 	DialTLSContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
 	// DialTLS specifies an optional dial function for creating

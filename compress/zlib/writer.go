@@ -38,6 +38,10 @@ type Writer struct {
 //
 // It is the caller's responsibility to call Close on the Writer when done.
 // Writes may be buffered and not flushed until Close.
+//
+// Note that the exact bytes written to w are not covered by the Go 1
+// compatibility promise. Callers, including tests, should not depend on the
+// exact written bytes.
 func NewWriter(w io.Writer) *Writer
 
 // NewWriterLevel is like [NewWriter] but specifies the compression level instead
@@ -46,6 +50,10 @@ func NewWriter(w io.Writer) *Writer
 // The compression level can be [DefaultCompression], [NoCompression], [HuffmanOnly]
 // or any integer value between [BestSpeed] and [BestCompression] inclusive.
 // The error returned will be nil if the level is valid.
+//
+// Note that the exact bytes written to w are not covered by the Go 1
+// compatibility promise. Callers, including tests, should not depend on the
+// exact written bytes.
 func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 
 // NewWriterLevelDict is like [NewWriterLevel] but specifies a dictionary to
@@ -53,6 +61,10 @@ func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 //
 // The dictionary may be nil. If not, its contents should not be modified until
 // the Writer is closed.
+//
+// Note that the exact bytes written to w are not covered by the Go 1
+// compatibility promise. Callers, including tests, should not depend on the
+// exact written bytes.
 func NewWriterLevelDict(w io.Writer, level int, dict []byte) (*Writer, error)
 
 // Reset clears the state of the [Writer] z such that it is equivalent to its

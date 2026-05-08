@@ -42,6 +42,10 @@ type Writer struct {
 //
 // Callers that wish to set the fields in Writer.[Header] must do so before
 // the first call to Write, Flush, or Close.
+//
+// Note that the exact bytes written to w are not covered by the Go 1
+// compatibility promise. Callers, including tests, should not depend on the
+// exact written bytes.
 func NewWriter(w io.Writer) *Writer
 
 // NewWriterLevel is like [NewWriter] but specifies the compression level instead
@@ -50,6 +54,10 @@ func NewWriter(w io.Writer) *Writer
 // The compression level can be [DefaultCompression], [NoCompression], [HuffmanOnly]
 // or any integer value between [BestSpeed] and [BestCompression] inclusive.
 // The error returned will be nil if the level is valid.
+//
+// Note that the exact bytes written to w are not covered by the Go 1
+// compatibility promise. Callers, including tests, should not depend on the
+// exact written bytes.
 func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 
 // Reset discards the [Writer] z's state and makes it equivalent to the

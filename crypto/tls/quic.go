@@ -6,6 +6,7 @@ package tls
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/net"
 )
 
 // QUICEncryptionLevel represents a QUIC encryption level used to transmit
@@ -41,6 +42,9 @@ type QUICConfig struct {
 	// stored in the client session cache.
 	// The application should use [QUICConn.StoreSession] to store sessions.
 	EnableSessionEvents bool
+
+	// ClientHelloInfoConn is the net.Conn to use for the ClientHelloInfo.Conn field.
+	ClientHelloInfoConn net.Conn
 }
 
 // A QUICEventKind is a type of operation on a QUIC connection.

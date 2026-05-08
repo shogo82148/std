@@ -419,8 +419,9 @@ func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 // The handler is typically nil, in which case [DefaultServeMux] is used.
 //
 // HTTP/2 support is only enabled if the Listener returns [*tls.Conn]
-// connections and they were configured with "h2" in the TLS
-// Config.NextProtos.
+// connections or connections which implement the same ConnectionState
+// method as *tls.Conn, and the connection state indicates that the "h2"
+// protocol was negotiated by ALPN.
 //
 // Serve always returns a non-nil error.
 func Serve(l net.Listener, handler Handler) error
