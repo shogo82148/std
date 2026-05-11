@@ -10,7 +10,6 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// AES hashing not implemented for these architectures
 func MemHash(p unsafe.Pointer, h, s uintptr) uintptr
 
 func MemHash32(p unsafe.Pointer, h uintptr) uintptr
