@@ -6,8 +6,8 @@
 // packages.
 //
 // Syntax trees may be constructed directly, but they are typically
-// produced from Go source code by the parser; see the ParseFile
-// function in package [go/parser].
+// produced from Go source code by the parser; see the
+// [go/parser.ParseFile] function.
 package ast
 
 import (
@@ -760,7 +760,7 @@ func (p *Package) End() token.Pos
 // not handwritten, by detecting the special comment described
 // at https://go.dev/s/generatedcode.
 //
-// The syntax tree must have been parsed with the [parser.ParseComments] flag.
+// The syntax tree must have been parsed with the [go/parser.ParseComments] flag.
 // Example:
 //
 //	f, err := parser.ParseFile(fset, filename, src, parser.ParseComments|parser.PackageClauseOnly)
