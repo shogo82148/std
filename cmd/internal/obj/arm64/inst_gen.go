@@ -138,6 +138,11 @@ var Pn_T__Pg__Xd = []operand{
 	a_SPZGREG_Noop_Rd05,
 }
 
+var Pt___XnSP__cimm__MUL_VL_ = []operand{
+	a_PREG_Pt04V2_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm9h1622L1013,
+}
+
 var Rm__Rn = []operand{
 	a_SPZGREG_Noop_Rm1621ZR,
 	a_SPZGREG_Noop_Rn510ZR,
@@ -218,18 +223,6 @@ var XnSP__Xm__LSL_c1___PNgZ___Zt1_H_Zt4_H_ = []operand{
 	a_REGLIST_RANGE_Zt25V1_ArngHCheck_Zt25V2_ArngHCheck,
 }
 
-var XnSP__Xm__LSL_c1___PNg___Zt1_H_Zt2_H_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt15V1_ArngHCheck_Zt15V2_ArngHCheck,
-}
-
-var XnSP__Xm__LSL_c1___PNg___Zt1_H_Zt4_H_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt25V1_ArngHCheck_Zt25V2_ArngHCheck,
-}
-
 var XnSP__Xm__LSL_c1___PgZ___Zt1_H__Zt2_H_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
 	a_PREGZM_Pg1013_ZeroPredCheck,
@@ -284,36 +277,6 @@ var XnSP__Xm__LSL_c1___PgZ___Zt_S__V2 = []operand{
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
-var XnSP__Xm__LSL_c1___Pg___Zt1_H__Zt2_H_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngHCheck_Zt052_ArngHCheck,
-}
-
-var XnSP__Xm__LSL_c1___Pg___Zt1_H__Zt2_H__Zt3_H_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck,
-}
-
-var XnSP__Xm__LSL_c1___Pg___Zt1_H__Zt2_H__Zt3_H__Zt4_H_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck_Zt054_ArngHCheck,
-}
-
-var XnSP__Xm__LSL_c1___Pg___Zt_H_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngHCheck,
-}
-
-var XnSP__Xm__LSL_c1___Pg___Zt_T_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_Size2123V2,
-}
-
 var XnSP__Xm__LSL_c1___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
 	a_PREG_Pg1013_Noop,
@@ -329,18 +292,6 @@ var XnSP__Xm__LSL_c2___PNgZ___Zt1_S_Zt2_S_ = []operand{
 var XnSP__Xm__LSL_c2___PNgZ___Zt1_S_Zt4_S_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
 	a_PREGZM_PNg1013_ZeroPredCheck,
-	a_REGLIST_RANGE_Zt25V1_ArngSCheck_Zt25V2_ArngSCheck,
-}
-
-var XnSP__Xm__LSL_c2___PNg___Zt1_S_Zt2_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt15V1_ArngSCheck_Zt15V2_ArngSCheck,
-}
-
-var XnSP__Xm__LSL_c2___PNg___Zt1_S_Zt4_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
-	a_PREG_PNg1013_Noop,
 	a_REGLIST_RANGE_Zt25V1_ArngSCheck_Zt25V2_ArngSCheck,
 }
 
@@ -392,42 +343,6 @@ var XnSP__Xm__LSL_c2___PgZ___Zt_S__V2 = []operand{
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
-var XnSP__Xm__LSL_c2___Pg___Zt1_S__Zt2_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngSCheck_Zt052_ArngSCheck,
-}
-
-var XnSP__Xm__LSL_c2___Pg___Zt1_S__Zt2_S__Zt3_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck,
-}
-
-var XnSP__Xm__LSL_c2___Pg___Zt1_S__Zt2_S__Zt3_S__Zt4_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck_Zt054_ArngSCheck,
-}
-
-var XnSP__Xm__LSL_c2___Pg___Zt_Q_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngQCheck,
-}
-
-var XnSP__Xm__LSL_c2___Pg___Zt_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
-var XnSP__Xm__LSL_c2___Pg___Zt_T_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_Sz2122,
-}
-
 var XnSP__Xm__LSL_c2___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
 	a_PREG_Pg1013_Noop,
@@ -443,18 +358,6 @@ var XnSP__Xm__LSL_c3___PNgZ___Zt1_D_Zt2_D_ = []operand{
 var XnSP__Xm__LSL_c3___PNgZ___Zt1_D_Zt4_D_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
 	a_PREGZM_PNg1013_ZeroPredCheck,
-	a_REGLIST_RANGE_Zt25V1_ArngDCheck_Zt25V2_ArngDCheck,
-}
-
-var XnSP__Xm__LSL_c3___PNg___Zt1_D_Zt2_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt15V1_ArngDCheck_Zt15V2_ArngDCheck,
-}
-
-var XnSP__Xm__LSL_c3___PNg___Zt1_D_Zt4_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
-	a_PREG_PNg1013_Noop,
 	a_REGLIST_RANGE_Zt25V1_ArngDCheck_Zt25V2_ArngDCheck,
 }
 
@@ -494,36 +397,6 @@ var XnSP__Xm__LSL_c3___PgZ___Zt_Q_ = []operand{
 	a_REGLIST1_Zt05_ArngQCheck,
 }
 
-var XnSP__Xm__LSL_c3___Pg___Zt1_D__Zt2_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngDCheck_Zt052_ArngDCheck,
-}
-
-var XnSP__Xm__LSL_c3___Pg___Zt1_D__Zt2_D__Zt3_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck,
-}
-
-var XnSP__Xm__LSL_c3___Pg___Zt1_D__Zt2_D__Zt3_D__Zt4_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck_Zt054_ArngDCheck,
-}
-
-var XnSP__Xm__LSL_c3___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var XnSP__Xm__LSL_c3___Pg___Zt_Q_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngQCheck,
-}
-
 var XnSP__Xm__LSL_c3___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
 	a_PREG_Pg1013_Noop,
@@ -548,24 +421,6 @@ var XnSP__Xm__LSL_c4___PgZ___Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q_ = []operand{
 	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
 }
 
-var XnSP__Xm__LSL_c4___Pg___Zt1_Q__Zt2_Q_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngQCheck_Zt052_ArngQCheck,
-}
-
-var XnSP__Xm__LSL_c4___Pg___Zt1_Q__Zt2_Q__Zt3_Q_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck,
-}
-
-var XnSP__Xm__LSL_c4___Pg___Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
-}
-
 var XnSP__Xm___PNgZ___Zt1_B_Zt2_B_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
 	a_PREGZM_PNg1013_ZeroPredCheck,
@@ -575,18 +430,6 @@ var XnSP__Xm___PNgZ___Zt1_B_Zt2_B_ = []operand{
 var XnSP__Xm___PNgZ___Zt1_B_Zt4_B_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
 	a_PREGZM_PNg1013_ZeroPredCheck,
-	a_REGLIST_RANGE_Zt25V1_ArngBCheck_Zt25V2_ArngBCheck,
-}
-
-var XnSP__Xm___PNg___Zt1_B_Zt2_B_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt15V1_ArngBCheck_Zt15V2_ArngBCheck,
-}
-
-var XnSP__Xm___PNg___Zt1_B_Zt4_B_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_PNg1013_Noop,
 	a_REGLIST_RANGE_Zt25V1_ArngBCheck_Zt25V2_ArngBCheck,
 }
 
@@ -656,36 +499,6 @@ var XnSP__Xm___PgZ___Zt_S__V2 = []operand{
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
-var XnSP__Xm___Pg___Zt1_B__Zt2_B_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngBCheck_Zt052_ArngBCheck,
-}
-
-var XnSP__Xm___Pg___Zt1_B__Zt2_B__Zt3_B_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck,
-}
-
-var XnSP__Xm___Pg___Zt1_B__Zt2_B__Zt3_B__Zt4_B_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck_Zt054_ArngBCheck,
-}
-
-var XnSP__Xm___Pg___Zt_B_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngBCheck,
-}
-
-var XnSP__Xm___Pg___Zt_T_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_Size2123V1,
-}
-
 var XnSP__Xm___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
 	a_PREG_Pg1013_Noop,
@@ -695,12 +508,6 @@ var XnSP__Xm___Pg__prfop = []operand{
 var XnSP__Zm_D__LSL_c1___PgZ___Zt_D_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt1Check,
 	a_PREGZM_Pg1013_ZeroPredCheck,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var XnSP__Zm_D__LSL_c1___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt1Check,
-	a_PREG_Pg1013_Noop,
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
@@ -716,12 +523,6 @@ var XnSP__Zm_D__LSL_c2___PgZ___Zt_D_ = []operand{
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
-var XnSP__Zm_D__LSL_c2___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
 var XnSP__Zm_D__LSL_c2___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt2Check,
 	a_PREG_Pg1013_Noop,
@@ -731,12 +532,6 @@ var XnSP__Zm_D__LSL_c2___Pg__prfop = []operand{
 var XnSP__Zm_D__LSL_c3___PgZ___Zt_D_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt3Check,
 	a_PREGZM_Pg1013_ZeroPredCheck,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var XnSP__Zm_D__LSL_c3___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt3Check,
-	a_PREG_Pg1013_Noop,
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
@@ -752,12 +547,6 @@ var XnSP__Zm_D___PgZ___Zt_D_ = []operand{
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
-var XnSP__Zm_D___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
 var XnSP__Zm_D___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_NoModCheck_NoAmtCheck,
 	a_PREG_Pg1013_Noop,
@@ -767,12 +556,6 @@ var XnSP__Zm_D___Pg__prfop = []operand{
 var XnSP__Zm_D__mod___PgZ___Zt_D_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_NoAmtCheck,
 	a_PREGZM_Pg1013_ZeroPredCheck,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var XnSP__Zm_D__mod___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
@@ -788,12 +571,6 @@ var XnSP__Zm_D__mod_c1___PgZ___Zt_D_ = []operand{
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
-var XnSP__Zm_D__mod_c1___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt1Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
 var XnSP__Zm_D__mod_c1___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt1Check,
 	a_PREG_Pg1013_Noop,
@@ -803,12 +580,6 @@ var XnSP__Zm_D__mod_c1___Pg__prfop = []operand{
 var XnSP__Zm_D__mod_c2___PgZ___Zt_D_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt2Check,
 	a_PREGZM_Pg1013_ZeroPredCheck,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var XnSP__Zm_D__mod_c2___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
@@ -824,12 +595,6 @@ var XnSP__Zm_D__mod_c3___PgZ___Zt_D_ = []operand{
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
-var XnSP__Zm_D__mod_c3___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt3Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
 var XnSP__Zm_D__mod_c3___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs2223_ModAmt3Check,
 	a_PREG_Pg1013_Noop,
@@ -839,12 +604,6 @@ var XnSP__Zm_D__mod_c3___Pg__prfop = []operand{
 var XnSP__Zm_S__mod___PgZ___Zt_S_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_NoAmtCheck,
 	a_PREGZM_Pg1013_ZeroPredCheck,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
-var XnSP__Zm_S__mod___Pg___Zt_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
@@ -860,12 +619,6 @@ var XnSP__Zm_S__mod_c1___PgZ___Zt_S_ = []operand{
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
-var XnSP__Zm_S__mod_c1___Pg___Zt_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_ModAmt1Check,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
 var XnSP__Zm_S__mod_c1___Pg__prfop = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_ModAmt1Check,
 	a_PREG_Pg1013_Noop,
@@ -875,12 +628,6 @@ var XnSP__Zm_S__mod_c1___Pg__prfop = []operand{
 var XnSP__Zm_S__mod_c2___PgZ___Zt_S_ = []operand{
 	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs2223_ModAmt2Check,
 	a_PREGZM_Pg1013_ZeroPredCheck,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
-var XnSP__Zm_S__mod_c2___Pg___Zt_S_ = []operand{
-	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_ModAmt2Check,
-	a_PREG_Pg1013_Noop,
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
@@ -941,54 +688,6 @@ var XnSP__cimm__MUL_VL___PNgZ___Zt1_S_Zt2_S_ = []operand{
 var XnSP__cimm__MUL_VL___PNgZ___Zt1_S_Zt4_S_ = []operand{
 	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
 	a_PREGZM_PNg1013_ZeroPredCheck,
-	a_REGLIST_RANGE_Zt25V1_ArngSCheck_Zt25V2_ArngSCheck,
-}
-
-var XnSP__cimm__MUL_VL___PNg___Zt1_B_Zt2_B_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V9,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt15V1_ArngBCheck_Zt15V2_ArngBCheck,
-}
-
-var XnSP__cimm__MUL_VL___PNg___Zt1_B_Zt4_B_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt25V1_ArngBCheck_Zt25V2_ArngBCheck,
-}
-
-var XnSP__cimm__MUL_VL___PNg___Zt1_D_Zt2_D_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V9,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt15V1_ArngDCheck_Zt15V2_ArngDCheck,
-}
-
-var XnSP__cimm__MUL_VL___PNg___Zt1_D_Zt4_D_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt25V1_ArngDCheck_Zt25V2_ArngDCheck,
-}
-
-var XnSP__cimm__MUL_VL___PNg___Zt1_H_Zt2_H_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V9,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt15V1_ArngHCheck_Zt15V2_ArngHCheck,
-}
-
-var XnSP__cimm__MUL_VL___PNg___Zt1_H_Zt4_H_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt25V1_ArngHCheck_Zt25V2_ArngHCheck,
-}
-
-var XnSP__cimm__MUL_VL___PNg___Zt1_S_Zt2_S_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V9,
-	a_PREG_PNg1013_Noop,
-	a_REGLIST_RANGE_Zt15V1_ArngSCheck_Zt15V2_ArngSCheck,
-}
-
-var XnSP__cimm__MUL_VL___PNg___Zt1_S_Zt4_S_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
-	a_PREG_PNg1013_Noop,
 	a_REGLIST_RANGE_Zt25V1_ArngSCheck_Zt25V2_ArngSCheck,
 }
 
@@ -1112,158 +811,15 @@ var XnSP__cimm__MUL_VL___PgZ___Zt_S_ = []operand{
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
-var XnSP__cimm__MUL_VL___Pg___Zt1_B__Zt2_B_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngBCheck_Zt052_ArngBCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_B__Zt2_B__Zt3_B_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_B__Zt2_B__Zt3_B__Zt4_B_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck_Zt054_ArngBCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_D__Zt2_D_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngDCheck_Zt052_ArngDCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_D__Zt2_D__Zt3_D_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_D__Zt2_D__Zt3_D__Zt4_D_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck_Zt054_ArngDCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_H__Zt2_H_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngHCheck_Zt052_ArngHCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_H__Zt2_H__Zt3_H_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_H__Zt2_H__Zt3_H__Zt4_H_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck_Zt054_ArngHCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_Q__Zt2_Q_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngQCheck_Zt052_ArngQCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_Q__Zt2_Q__Zt3_Q_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_S__Zt2_S_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST2_Zt051_ArngSCheck_Zt052_ArngSCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_S__Zt2_S__Zt3_S_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST3_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt1_S__Zt2_S__Zt3_S__Zt4_S_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST4_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck_Zt054_ArngSCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt_B_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngBCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt_D_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt_H_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngHCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt_Q_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngQCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt_S_ = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt_T___1 = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_Size2123V1,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt_T___2 = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_Size2123V2,
-}
-
-var XnSP__cimm__MUL_VL___Pg___Zt_T___3 = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_Sz2122,
-}
-
 var XnSP__cimm__MUL_VL___Pg__prfop = []operand{
 	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm61622V5,
 	a_PREG_Pg1013_Noop,
 	a_SPECIAL_Prfop04,
 }
 
-var XnSP__cimm__MUL_VL___Pt__1 = []operand{
+var XnSP__cimm__MUL_VL___Pt = []operand{
 	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm9h1622L1013,
 	a_PREG_Pt04V1_Noop,
-}
-
-var XnSP__cimm__MUL_VL___Pt__2 = []operand{
-	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm9h1622L1013,
-	a_PREG_Pt04V2_Noop,
 }
 
 var XnSP__cimm__MUL_VL___Zt = []operand{
@@ -2039,18 +1595,6 @@ var Zn_D__Xm___PgZ___Zt_Q_ = []operand{
 	a_REGLIST1_Zt05_ArngQCheck,
 }
 
-var Zn_D__Xm___Pg___Zt_D_ = []operand{
-	a_MEMEXT_Zn510V2_ArngDCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var Zn_D__Xm___Pg___Zt_Q_ = []operand{
-	a_MEMEXT_Zn510V2_ArngDCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngQCheck,
-}
-
 var Zn_D__Zm_D__SXTWamount___Zd_D = []operand{
 	a_MEMEXT_Zn510V2_ArngDCheck_Zm1621V3_ArngDCheck_ModSXTWCheck_Msz1012Amount,
 	a_ARNG_Zd_ArngDCheck,
@@ -2082,30 +1626,6 @@ var Zn_D__cimm___PgZ___Zt_D___3 = []operand{
 var Zn_D__cimm___PgZ___Zt_D___4 = []operand{
 	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V3,
 	a_PREGZM_Pg1013_ZeroPredCheck,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var Zn_D__cimm___Pg___Zt_D___1 = []operand{
-	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V4,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var Zn_D__cimm___Pg___Zt_D___2 = []operand{
-	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V3,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var Zn_D__cimm___Pg___Zt_D___3 = []operand{
-	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V1,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngDCheck,
-}
-
-var Zn_D__cimm___Pg___Zt_D___4 = []operand{
-	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V2,
-	a_PREG_Pg1013_Noop,
 	a_REGLIST1_Zt05_ArngDCheck,
 }
 
@@ -2223,12 +1743,6 @@ var Zn_S__Xm___PgZ___Zt_S_ = []operand{
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
-var Zn_S__Xm___Pg___Zt_S_ = []operand{
-	a_MEMEXT_Zn510V2_ArngSCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
 var Zn_S__cimm___PgZ___Zt_S___1 = []operand{
 	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V4,
 	a_PREGZM_Pg1013_ZeroPredCheck,
@@ -2244,24 +1758,6 @@ var Zn_S__cimm___PgZ___Zt_S___2 = []operand{
 var Zn_S__cimm___PgZ___Zt_S___3 = []operand{
 	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V2,
 	a_PREGZM_Pg1013_ZeroPredCheck,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
-var Zn_S__cimm___Pg___Zt_S___1 = []operand{
-	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V4,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
-var Zn_S__cimm___Pg___Zt_S___2 = []operand{
-	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V1,
-	a_PREG_Pg1013_Noop,
-	a_REGLIST1_Zt05_ArngSCheck,
-}
-
-var Zn_S__cimm___Pg___Zt_S___3 = []operand{
-	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V2,
-	a_PREG_Pg1013_Noop,
 	a_REGLIST1_Zt05_ArngSCheck,
 }
 
@@ -2491,4 +1987,513 @@ var Zn_imm___Pd_H = []operand{
 var Zn_imm___Pd_S = []operand{
 	a_ZREGIDX_Zn510Src_Noop_I2_1719_Word,
 	a_ARNG_Pd_ArngSCheck,
+}
+
+var Zt1_B_Zt2_B___PNg___XnSP__Xm_ = []operand{
+	a_REGLIST_RANGE_Zt15V1_ArngBCheck_Zt15V2_ArngBCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt1_B_Zt2_B___PNg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST_RANGE_Zt15V1_ArngBCheck_Zt15V2_ArngBCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V9,
+}
+
+var Zt1_B_Zt4_B___PNg___XnSP__Xm_ = []operand{
+	a_REGLIST_RANGE_Zt25V1_ArngBCheck_Zt25V2_ArngBCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt1_B_Zt4_B___PNg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST_RANGE_Zt25V1_ArngBCheck_Zt25V2_ArngBCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
+}
+
+var Zt1_B__Zt2_B__Zt3_B__Zt4_B___Pg___XnSP__Xm_ = []operand{
+	a_REGLIST4_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck_Zt054_ArngBCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt1_B__Zt2_B__Zt3_B__Zt4_B___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST4_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck_Zt054_ArngBCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+}
+
+var Zt1_B__Zt2_B__Zt3_B___Pg___XnSP__Xm_ = []operand{
+	a_REGLIST3_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt1_B__Zt2_B__Zt3_B___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST3_Zt051_ArngBCheck_Zt052_ArngBCheck_Zt053_ArngBCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+}
+
+var Zt1_B__Zt2_B___Pg___XnSP__Xm_ = []operand{
+	a_REGLIST2_Zt051_ArngBCheck_Zt052_ArngBCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt1_B__Zt2_B___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST2_Zt051_ArngBCheck_Zt052_ArngBCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+}
+
+var Zt1_D_Zt2_D___PNg___XnSP__Xm__LSL_c3_ = []operand{
+	a_REGLIST_RANGE_Zt15V1_ArngDCheck_Zt15V2_ArngDCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+}
+
+var Zt1_D_Zt2_D___PNg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST_RANGE_Zt15V1_ArngDCheck_Zt15V2_ArngDCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V9,
+}
+
+var Zt1_D_Zt4_D___PNg___XnSP__Xm__LSL_c3_ = []operand{
+	a_REGLIST_RANGE_Zt25V1_ArngDCheck_Zt25V2_ArngDCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+}
+
+var Zt1_D_Zt4_D___PNg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST_RANGE_Zt25V1_ArngDCheck_Zt25V2_ArngDCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
+}
+
+var Zt1_D__Zt2_D__Zt3_D__Zt4_D___Pg___XnSP__Xm__LSL_c3_ = []operand{
+	a_REGLIST4_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck_Zt054_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+}
+
+var Zt1_D__Zt2_D__Zt3_D__Zt4_D___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST4_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck_Zt054_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+}
+
+var Zt1_D__Zt2_D__Zt3_D___Pg___XnSP__Xm__LSL_c3_ = []operand{
+	a_REGLIST3_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+}
+
+var Zt1_D__Zt2_D__Zt3_D___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST3_Zt051_ArngDCheck_Zt052_ArngDCheck_Zt053_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+}
+
+var Zt1_D__Zt2_D___Pg___XnSP__Xm__LSL_c3_ = []operand{
+	a_REGLIST2_Zt051_ArngDCheck_Zt052_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+}
+
+var Zt1_D__Zt2_D___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST2_Zt051_ArngDCheck_Zt052_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+}
+
+var Zt1_H_Zt2_H___PNg___XnSP__Xm__LSL_c1_ = []operand{
+	a_REGLIST_RANGE_Zt15V1_ArngHCheck_Zt15V2_ArngHCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+}
+
+var Zt1_H_Zt2_H___PNg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST_RANGE_Zt15V1_ArngHCheck_Zt15V2_ArngHCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V9,
+}
+
+var Zt1_H_Zt4_H___PNg___XnSP__Xm__LSL_c1_ = []operand{
+	a_REGLIST_RANGE_Zt25V1_ArngHCheck_Zt25V2_ArngHCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+}
+
+var Zt1_H_Zt4_H___PNg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST_RANGE_Zt25V1_ArngHCheck_Zt25V2_ArngHCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
+}
+
+var Zt1_H__Zt2_H__Zt3_H__Zt4_H___Pg___XnSP__Xm__LSL_c1_ = []operand{
+	a_REGLIST4_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck_Zt054_ArngHCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+}
+
+var Zt1_H__Zt2_H__Zt3_H__Zt4_H___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST4_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck_Zt054_ArngHCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+}
+
+var Zt1_H__Zt2_H__Zt3_H___Pg___XnSP__Xm__LSL_c1_ = []operand{
+	a_REGLIST3_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+}
+
+var Zt1_H__Zt2_H__Zt3_H___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST3_Zt051_ArngHCheck_Zt052_ArngHCheck_Zt053_ArngHCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+}
+
+var Zt1_H__Zt2_H___Pg___XnSP__Xm__LSL_c1_ = []operand{
+	a_REGLIST2_Zt051_ArngHCheck_Zt052_ArngHCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+}
+
+var Zt1_H__Zt2_H___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST2_Zt051_ArngHCheck_Zt052_ArngHCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+}
+
+var Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q___Pg___XnSP__Xm__LSL_c4_ = []operand{
+	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+}
+
+var Zt1_Q__Zt2_Q__Zt3_Q__Zt4_Q___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST4_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck_Zt054_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+}
+
+var Zt1_Q__Zt2_Q__Zt3_Q___Pg___XnSP__Xm__LSL_c4_ = []operand{
+	a_REGLIST3_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+}
+
+var Zt1_Q__Zt2_Q__Zt3_Q___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST3_Zt051_ArngQCheck_Zt052_ArngQCheck_Zt053_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+}
+
+var Zt1_Q__Zt2_Q___Pg___XnSP__Xm__LSL_c4_ = []operand{
+	a_REGLIST2_Zt051_ArngQCheck_Zt052_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt4Check,
+}
+
+var Zt1_Q__Zt2_Q___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST2_Zt051_ArngQCheck_Zt052_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+}
+
+var Zt1_S_Zt2_S___PNg___XnSP__Xm__LSL_c2_ = []operand{
+	a_REGLIST_RANGE_Zt15V1_ArngSCheck_Zt15V2_ArngSCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt1_S_Zt2_S___PNg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST_RANGE_Zt15V1_ArngSCheck_Zt15V2_ArngSCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V9,
+}
+
+var Zt1_S_Zt4_S___PNg___XnSP__Xm__LSL_c2_ = []operand{
+	a_REGLIST_RANGE_Zt25V1_ArngSCheck_Zt25V2_ArngSCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt1_S_Zt4_S___PNg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST_RANGE_Zt25V1_ArngSCheck_Zt25V2_ArngSCheck,
+	a_PREG_PNg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V8,
+}
+
+var Zt1_S__Zt2_S__Zt3_S__Zt4_S___Pg___XnSP__Xm__LSL_c2_ = []operand{
+	a_REGLIST4_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck_Zt054_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt1_S__Zt2_S__Zt3_S__Zt4_S___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST4_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck_Zt054_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V4,
+}
+
+var Zt1_S__Zt2_S__Zt3_S___Pg___XnSP__Xm__LSL_c2_ = []operand{
+	a_REGLIST3_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt1_S__Zt2_S__Zt3_S___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST3_Zt051_ArngSCheck_Zt052_ArngSCheck_Zt053_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V3,
+}
+
+var Zt1_S__Zt2_S___Pg___XnSP__Xm__LSL_c2_ = []operand{
+	a_REGLIST2_Zt051_ArngSCheck_Zt052_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt1_S__Zt2_S___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST2_Zt051_ArngSCheck_Zt052_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V6,
+}
+
+var Zt_B___Pg___XnSP__Xm_ = []operand{
+	a_REGLIST1_Zt05_ArngBCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt_B___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST1_Zt05_ArngBCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+}
+
+var Zt_D___Pg___XnSP__Xm__LSL_c3_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+}
+
+var Zt_D___Pg___XnSP__Zm_D_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_NoModCheck_NoAmtCheck,
+}
+
+var Zt_D___Pg___XnSP__Zm_D__LSL_c1_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt1Check,
+}
+
+var Zt_D___Pg___XnSP__Zm_D__LSL_c2_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt_D___Pg___XnSP__Zm_D__LSL_c3_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_ModLSLCheck_ModAmt3Check,
+}
+
+var Zt_D___Pg___XnSP__Zm_D__mod_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_NoAmtCheck,
+}
+
+var Zt_D___Pg___XnSP__Zm_D__mod_c1_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt1Check,
+}
+
+var Zt_D___Pg___XnSP__Zm_D__mod_c2_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt2Check,
+}
+
+var Zt_D___Pg___XnSP__Zm_D__mod_c3_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngDCheck_Xs1415_ModAmt3Check,
+}
+
+var Zt_D___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+}
+
+var Zt_D___Pg___Zn_D__Xm_ = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Zn510V2_ArngDCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt_D___Pg___Zn_D__cimm___1 = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V4,
+}
+
+var Zt_D___Pg___Zn_D__cimm___2 = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V3,
+}
+
+var Zt_D___Pg___Zn_D__cimm___3 = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V1,
+}
+
+var Zt_D___Pg___Zn_D__cimm___4 = []operand{
+	a_REGLIST1_Zt05_ArngDCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFF_Zn510V2_ArngDCheck_Imm51621V2,
+}
+
+var Zt_H___Pg___XnSP__Xm__LSL_c1_ = []operand{
+	a_REGLIST1_Zt05_ArngHCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+}
+
+var Zt_H___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST1_Zt05_ArngHCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+}
+
+var Zt_Q___Pg___XnSP__Xm__LSL_c2_ = []operand{
+	a_REGLIST1_Zt05_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt_Q___Pg___XnSP__Xm__LSL_c3_ = []operand{
+	a_REGLIST1_Zt05_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt3Check,
+}
+
+var Zt_Q___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST1_Zt05_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+}
+
+var Zt_Q___Pg___Zn_D__Xm_ = []operand{
+	a_REGLIST1_Zt05_ArngQCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Zn510V2_ArngDCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt_S___Pg___XnSP__Xm__LSL_c2_ = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt_S___Pg___XnSP__Zm_S__mod_ = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_NoAmtCheck,
+}
+
+var Zt_S___Pg___XnSP__Zm_S__mod_c1_ = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_ModAmt1Check,
+}
+
+var Zt_S___Pg___XnSP__Zm_S__mod_c2_ = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Zm1621V3_ArngSCheck_Xs1415_ModAmt2Check,
+}
+
+var Zt_S___Pg___XnSP__cimm__MUL_VL_ = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+}
+
+var Zt_S___Pg___Zn_S__Xm_ = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Zn510V2_ArngSCheck_Rm1621XZR_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt_S___Pg___Zn_S__cimm___1 = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V4,
+}
+
+var Zt_S___Pg___Zn_S__cimm___2 = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V1,
+}
+
+var Zt_S___Pg___Zn_S__cimm___3 = []operand{
+	a_REGLIST1_Zt05_ArngSCheck,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFF_Zn510V2_ArngSCheck_Imm51621V2,
+}
+
+var Zt_T___Pg___XnSP__Xm_ = []operand{
+	a_REGLIST1_Zt05_Size2123V1,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_NoModCheck_NoAmtCheck,
+}
+
+var Zt_T___Pg___XnSP__Xm__LSL_c1_ = []operand{
+	a_REGLIST1_Zt05_Size2123V2,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt1Check,
+}
+
+var Zt_T___Pg___XnSP__Xm__LSL_c2_ = []operand{
+	a_REGLIST1_Zt05_Sz2122,
+	a_PREG_Pg1013_Noop,
+	a_MEMEXT_Rn510SPV2_Noop_Rm1621V2_Noop_ModLSLCheck_ModAmt2Check,
+}
+
+var Zt_T___Pg___XnSP__cimm__MUL_VL___1 = []operand{
+	a_REGLIST1_Zt05_Size2123V1,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+}
+
+var Zt_T___Pg___XnSP__cimm__MUL_VL___2 = []operand{
+	a_REGLIST1_Zt05_Size2123V2,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+}
+
+var Zt_T___Pg___XnSP__cimm__MUL_VL___3 = []operand{
+	a_REGLIST1_Zt05_Sz2122,
+	a_PREG_Pg1013_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm41620V5,
+}
+
+var Zt___XnSP__cimm__MUL_VL_ = []operand{
+	a_ZREG_Zt05_Noop,
+	a_MEMOFFMULVL_Rn510SPV2_Noop_Imm9h1622L1013,
 }

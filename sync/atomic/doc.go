@@ -43,6 +43,10 @@
 // この定義は、C++の一貫性のあるアトミックとJavaのvolatile変数と
 // 同じセマンティクスを提供します。
 //
+// Only a few integer sizes are supported: on many architectures,
+// atomic operations on non-word-sized integers are inefficient or
+// infeasible. For example, a [Bool] may be larger than a built-in bool.
+//
 // [the Go memory model]: https://go.dev/ref/mem
 package atomic
 

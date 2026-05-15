@@ -660,6 +660,7 @@ var Anames = []string{
 	"VSTEG",
 	"VSTEB",
 	"VSTM",
+	"VSTRL",
 	"VSTL",
 	"VSTRC",
 	"VSTRCB",

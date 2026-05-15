@@ -13,7 +13,7 @@ import (
 // NeedEscape reports whether src needs escaping of any characters.
 // It conservatively assumes EscapeForHTML and EscapeForJS.
 // It reports true for inputs with invalid UTF-8.
-func NeedEscape[Bytes ~[]byte | ~string](src Bytes) bool
+func NeedEscape(src []byte) bool
 
 // AppendQuote appends src to dst as a JSON string per RFC 7159, section 7.
 //
@@ -26,7 +26,7 @@ func NeedEscape[Bytes ~[]byte | ~string](src Bytes) bool
 // invalid bytes are replaced with the Unicode replacement character ('\ufffd').
 // If no escape flags are set, then the shortest representable form is used,
 // which is also the canonical form for strings (RFC 8785, section 3.2.2.2).
-func AppendQuote[Bytes ~[]byte | ~string](dst []byte, src Bytes, flags *jsonflags.Flags) ([]byte, error)
+func AppendQuote(dst, src []byte, flags *jsonflags.Flags) ([]byte, error)
 
 // ReformatString consumes a JSON string from src and appends it to dst,
 // reformatting it if necessary according to the specified flags.
@@ -46,7 +46,7 @@ func ReformatString(dst, src []byte, flags *jsonflags.Flags) ([]byte, int, error
 // Note that ECMA-262 specifies no algorithm for 32-bit numbers.
 func AppendFloat(dst []byte, src float64, bits int) []byte
 
-// ReformatNumber consumes a JSON string from src and appends it to dst,
+// ReformatNumber consumes a JSON number from src and appends it to dst,
 // canonicalizing it if specified.
 // It returns the appended output and the number of consumed input bytes.
 func ReformatNumber(dst, src []byte, flags *jsonflags.Flags) ([]byte, int, error)

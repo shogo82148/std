@@ -41,9 +41,16 @@ type Dialer struct {
 	// Deprecated: Fast Fallbackはデフォルトで有効になっています。無効にするには、FallbackDelayを負の値に設定してください。
 	DualStack bool
 
-	// FallbackDelayは、RFC 6555 Fast Fallback接続を作成する前に待機する時間の長さを指定します。つまり、IPv6が成功するまで待機する時間であり、IPv6の設定が誤っていると仮定し、IPv4に切り替える前に待機する時間です。
-	// ゼロの場合、デフォルトの遅延時間は300msです。
-	// 負の値はFast Fallbackサポートを無効にします。
+	// FallbackDelay は、RFC 6555 Fast Fallback 接続を開始するまでに
+	// 待機する時間を指定します。
+	//
+	// "tcp" をダイヤルし、IPv6 と IPv4 の両方のアドレスが利用可能な場合、
+	// 最初に解決されたアドレスのアドレスファミリがプライマリとして扱われます。
+	// FallbackDelay 経過後、プライマリ接続がまだ成功していなければ、
+	// もう一方のアドレスファミリへの接続試行が開始されます。
+	//
+	// ゼロの場合、デフォルトの遅延 300ms が使われます。
+	// 負の値は Fast Fallback のサポートを無効にします。
 	FallbackDelay time.Duration
 
 	// KeepAliveは、アクティブなネットワーク接続に対するキープアライブ

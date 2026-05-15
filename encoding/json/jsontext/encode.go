@@ -56,8 +56,9 @@ func NewEncoder(w io.Writer, opts ...Options) *Encoder
 // [encoding/json/v2.MarshalToFunc] 関数に渡されたEncoderに対して呼び出してはいけません。
 func (e *Encoder) Reset(w io.Writer, opts ...Options)
 
-// Optionsはデコーダの構築に使用されたオプションを返します。
-// また、[encoding/json/v2.MarshalEncode] 呼び出しに渡されたセマンティックオプションを含む場合があります。
+// Options は、エンコーダの構築に使用されたオプションを返します。
+// さらに、[encoding/json/v2.MarshalEncode] 呼び出しに渡された
+// セマンティックなオプションを含む場合があります。
 //
 // [encoding/json/v2.MarshalerTo.MarshalJSONTo] メソッド呼び出しや
 // [encoding/json/v2.MarshalToFunc] 関数呼び出しの中で動作している場合、

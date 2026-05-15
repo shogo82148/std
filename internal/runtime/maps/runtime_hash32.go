@@ -7,4 +7,4 @@
 
 //go:build 386 || arm || mips || mipsle || wasm || (gccgo && (ppc || s390))
 
-package runtime
+package maps

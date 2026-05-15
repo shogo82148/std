@@ -53,8 +53,9 @@ func NewDecoder(r io.Reader, opts ...Options) *Decoder
 // [encoding/json/v2.UnmarshalFromFunc] 関数に渡されたDecoderに対して呼び出してはいけません。
 func (d *Decoder) Reset(r io.Reader, opts ...Options)
 
-// Optionsはエンコーダの構築に使用されたオプションを返します。
-// また、[encoding/json/v2.UnmarshalDecode]呼び出しに渡されたセマンティックオプションを含む場合があります。
+// Options は、デコーダの構築に使用されたオプションを返します。
+// さらに、[encoding/json/v2.UnmarshalDecode] 呼び出しに渡された
+// セマンティックなオプションを含む場合があります。
 //
 // [encoding/json/v2.UnmarshalerFrom.UnmarshalJSONFrom]メソッド呼び出しや
 // [encoding/json/v2.UnmarshalFromFunc]関数呼び出しの中で動作している場合、

@@ -25,12 +25,12 @@ func HasSuffixByte(b []byte, c byte) bool
 func TrimSuffixByte(b []byte, c byte) []byte
 
 // QuoteRune quotes the first rune in the input.
-func QuoteRune[Bytes ~[]byte | ~string](b Bytes) string
+func QuoteRune(b []byte) string
 
 // CompareUTF16 lexicographically compares x to y according
 // to the UTF-16 codepoints of the UTF-8 encoded input strings.
 // This implements the ordering specified in RFC 8785, section 3.2.3.
-func CompareUTF16[Bytes ~[]byte | ~string](x, y Bytes) int
+func CompareUTF16(x, y []byte) int
 
 // TODO(https://go.dev/issue/70547): Use utf8.ErrInvalid instead.
 var ErrInvalidUTF8 = errors.New("invalid UTF-8")

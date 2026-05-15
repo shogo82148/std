@@ -23,9 +23,9 @@ func AppendFloat(dst []byte, src float64, bits int) []byte
 // その結果を dst に追加します。
 // 整形動作の詳細は [Value.Format] を参照してください。
 //
-// dstとsrcは重複していても構いません。
-// エラーが報告された場合は、src全体がdstに追加されます。
-func AppendFormat(dst, src []byte, opts ...Options) ([]byte, error)
+// dst と src は重なっていても構いません。
+// エラーが報告された場合でも、src 全体が dst に追加されます。
+func AppendFormat[Bytes ~[]byte | ~string](dst []byte, src Bytes, opts ...Options) ([]byte, error)
 
 // Valueは1つの生のJSON値を表します。次のいずれかになります:
 //   - JSONリテラル（null, true, false）
