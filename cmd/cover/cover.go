@@ -48,5 +48,11 @@ type File struct {
 	pkg     *Package
 }
 
+// Rangeは基本ブロック内の実行可能なコードの連続した範囲を表します。
+type Range struct {
+	pos token.Pos
+	end token.Pos
+}
+
 // Visitはast.Visitorインターフェースを実装します。
 func (f *File) Visit(node ast.Node) ast.Visitor
