@@ -23,7 +23,20 @@ type Marshaler interface {
 // MarshalerとMarshalerToの両方を実装している場合は、MarshalerToが優先されます。
 // その場合、両方の実装はデフォルトのマーシャルオプションで同等の動作を目指すべきです。
 //
-// 実装はEncoderに対して1つのJSON値のみを書き込み、[jsontext.Encoder] へのポインタを保持してはなりません。
+// 実装では、Encoderに1つのJSON値だけを書き込む必要があります。
+// または、[errors.ErrUnsupported] を返してEncoderを変更せずにすることもできます。
+// このメソッドを呼び出す "json" パッケージはレシーバー型の
+// 次の利用可能なJSON表現を使用します。
+// 実装は [jsontext.Encoder] へのポインタを保持してはいけません。
+//
+// 返されたエラーが [SemanticError] の場合、エラーの未設定フィールド
+// は [json] によって追加コンテキストで設定されることがあります。
+// 他の型のエラーは [SemanticError] でラップされます。
+// ただし、IOエラーの場合は除きます。
+//
+// MarshalJSONToメソッドは直接呼び出すべきではありません。これは
+// 特別な処理が必要なセンチネルエラーを返す場合があるためです。
+// ユーザーは代わりに [MarshalEncode] を呼び出すべきです。これはそのような場合を処理します。
 type MarshalerTo interface {
 	MarshalJSONTo(*jsontext.Encoder) error
 }
@@ -45,10 +58,20 @@ type Unmarshaler interface {
 // UnmarshalerとUnmarshalerFromの両方を実装している場合は、UnmarshalerFromが優先されます。
 // その場合、両方の実装はデフォルトのアンマーシャルオプションで同等の動作を目指すべきです。
 //
-// 実装はDecoderから1つのJSON値のみを読み込まなければなりません。
-// UnmarshalJSONFromが事前に値が設定された変数にアンマーシャルする場合は、マージセマンティクスを実装することが推奨されます。
-//
+// 実装はDecoderから1つのJSON値だけを読み込む必要があります。
+// 事前に設定された値にアンマーシャルする場合は、UnmarshalJSONFromがマージセマンティクスを実装することが推奨されます。
+// または、[errors.ErrUnsupported] を返してDecoderを変更せずにすることもできます。
+// このメソッドを呼び出す "json" パッケージはレシーバー型の次の利用可能なJSON表現を使用します。
 // 実装は [jsontext.Decoder] へのポインタを保持してはいけません。
+//
+// 返されたエラーが [SemanticError] の場合、エラーの未設定フィールド
+// は [json] によって追加コンテキストで設定されることがあります。
+// 他の型のエラーは [SemanticError] でラップされます。
+// ただし、[jsontext.SyntacticError] またはIOエラーの場合は除きます。
+//
+// UnmarshalJSONFromメソッドは直接呼び出すべきではありません。これは
+// 特別な処理が必要なセンチネルエラーを返す場合があるためです。
+// ユーザーは代わりに [UnmarshalDecode] を呼び出すべきです。これはそのような場合を処理します。
 type UnmarshalerFrom interface {
 	UnmarshalJSONFrom(*jsontext.Decoder) error
 }

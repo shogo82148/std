@@ -42,7 +42,9 @@ var (
 //     値は後続のルールに従ってエンコードされます。
 //
 //   - 値の型が [MarshalerTo] を実装している場合、
-//     MarshalJSONToメソッドが呼び出されます。
+//     MarshalJSONToメソッドが呼び出されて値がエンコードされます。
+//     メソッドが [errors.ErrUnsupported] を返す場合、
+//     入力は後続のルールに従ってエンコードされます。
 //
 //   - 値の型が [Marshaler] を実装している場合、
 //     MarshalJSONメソッドが呼び出されます。
@@ -172,7 +174,9 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 //     入力は後続のルールに従ってデコードされます。
 //
 //   - 値の型が [UnmarshalerFrom] を実装している場合、
-//     UnmarshalJSONFromメソッドが呼び出されます。
+//     UnmarshalJSONFromメソッドが呼び出されてJSON値がデコードされます。
+//     メソッドが [errors.ErrUnsupported] を返す場合、
+//     入力は後続のルールに従ってデコードされます。
 //
 //   - 値の型が [Unmarshaler] を実装している場合、
 //     UnmarshalJSONメソッドが呼び出されます。

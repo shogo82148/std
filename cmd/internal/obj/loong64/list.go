@@ -4,4 +4,6 @@
 
 package loong64
 
+func RegName(r int) string
+
 func DRconv(a int) string
