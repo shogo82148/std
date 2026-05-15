@@ -613,10 +613,6 @@ type EncryptedClientHelloKey struct {
 
 // Cloneはcの浅いコピーを返します。cがnilの場合はnilを返します。
 // TLSクライアントまたはサーバーで並行利用中の [Config] であっても、安全にCloneできます。
-//
-// Config.SessionTicketKeyが未設定で、かつConfig.SetSessionTicketKeysが
-// 呼び出されていない場合、Config間でセッションが再開されることを防ぐために、
-// cloneは元のConfigと同じ自動ローテーションされたセッションチケットキーを共有しません。
 func (c *Config) Clone() *Config
 
 // SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
