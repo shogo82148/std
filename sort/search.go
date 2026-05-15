@@ -6,106 +6,109 @@
 
 package sort
 
-// Search uses binary search to find and return the smallest index i
-// in [0, n) at which f(i) is true, assuming that on the range [0, n),
-// f(i) == true implies f(i+1) == true. That is, Search requires that
-// f is false for some (possibly empty) prefix of the input range [0, n)
-// and then true for the (possibly empty) remainder; Search returns
-// the first true index. If there is no such index, Search returns n.
-// (Note that the "not found" return value is not -1 as in, for instance,
-// strings.Index.)
-// Search calls f(i) only for i in the range [0, n).
+// Searchは二分探索を使って、[0, n) の範囲で f(i) が true となる
+// 最小のインデックス i を見つけて返します。ここで [0, n) の範囲において
+// f(i) == true なら f(i+1) == true であると仮定します。つまり Search は、
+// 入力範囲 [0, n) の先頭側の（空の場合もある）接頭部分で f が false、
+// 残りの（空の場合もある）部分で true となることを要求し、
+// 最初に true となるインデックスを返します。そのようなインデックスが
+// ない場合、Search は n を返します。
+// （たとえば strings.Index のように、"見つからない" 場合の戻り値が
+// -1 ではない点に注意してください。）
+// Search は [0, n) の範囲の i に対してのみ f(i) を呼び出します。
 //
-// A common use of Search is to find the index i for a value x in
-// a sorted, indexable data structure such as an array or slice.
-// In this case, the argument f, typically a closure, captures the value
-// to be searched for, and how the data structure is indexed and
-// ordered.
+// Search の一般的な用途は、配列やスライスのようなソート済みで
+// インデックスアクセス可能なデータ構造において、値 x のインデックス i を
+// 見つけることです。この場合、引数 f（通常はクロージャ）は、
+// 探索対象の値と、データ構造のインデックス付けおよび順序付けの方法を
+// 捕捉します。
 //
-// For instance, given a slice data sorted in ascending order,
-// the call Search(len(data), func(i int) bool { return data[i] >= 23 })
-// returns the smallest index i such that data[i] >= 23. If the caller
-// wants to find whether 23 is in the slice, it must test data[i] == 23
-// separately.
+// たとえば、昇順にソートされたスライス data があるとき、
+// Search(len(data), func(i int) bool { return data[i] >= 23 })
+// の呼び出しは data[i] >= 23 となる最小のインデックス i を返します。
+// 呼び出し側が 23 がスライス内に存在するかを調べたい場合は、
+// data[i] == 23 を別途確認する必要があります。
 //
-// Searching data sorted in descending order would use the <=
-// operator instead of the >= operator.
+// 降順にソートされたデータを探索する場合は、>= 演算子の代わりに
+// <= 演算子を使います。
 //
-// To complete the example above, the following code tries to find the value
-// x in an integer slice data sorted in ascending order:
+// 上の例を完成させると、次のコードは昇順にソートされた整数スライス data から
+// 値 x を探します。
 //
 //	x := 23
 //	i := sort.Search(len(data), func(i int) bool { return data[i] >= x })
 //	if i < len(data) && data[i] == x {
-//		// x is present at data[i]
+//		// x は data[i] に存在する
 //	} else {
-//		// x is not present in data,
-//		// but i is the index where it would be inserted.
+//		// x は data には存在しないが、
+//		// i は挿入される位置のインデックスである。
 //	}
 //
-// As a more whimsical example, this program guesses your number:
+// もう少し遊び心のある例として、次のプログラムはあなたの数を当てます。
 //
 //	func GuessingGame() {
 //		var s string
-//		fmt.Printf("Pick an integer from 0 to 100.\n")
+//		fmt.Printf("0 から 100 までの整数を 1 つ選んでください。\n")
 //		answer := sort.Search(100, func(i int) bool {
-//			fmt.Printf("Is your number <= %d? ", i)
+//			fmt.Printf("あなたの数は %d 以下ですか? ", i)
 //			fmt.Scanf("%s", &s)
 //			return s != "" && s[0] == 'y'
 //		})
-//		fmt.Printf("Your number is %d.\n", answer)
+//		fmt.Printf("あなたの数は %d です。\n", answer)
 //	}
 func Search(n int, f func(int) bool) int
 
-// Find uses binary search to find and return the smallest index i in [0, n)
-// at which cmp(i) <= 0. If there is no such index i, Find returns i = n.
-// The found result is true if i < n and cmp(i) == 0.
-// Find calls cmp(i) only for i in the range [0, n).
+// Findは二分探索を使って、[0, n) の範囲で cmp(i) <= 0 となる
+// 最小のインデックス i を見つけて返します。そのような i がない場合、
+// Find は i = n を返します。
+// i < n かつ cmp(i) == 0 のとき、found の結果は true です。
+// Find は [0, n) の範囲の i に対してのみ cmp(i) を呼び出します。
 //
-// To permit binary search, Find requires that cmp(i) > 0 for a leading
-// prefix of the range, cmp(i) == 0 in the middle, and cmp(i) < 0 for
-// the final suffix of the range. (Each subrange could be empty.)
-// The usual way to establish this condition is to interpret cmp(i)
-// as a comparison of a desired target value t against entry i in an
-// underlying indexed data structure x, returning <0, 0, and >0
-// when t < x[i], t == x[i], and t > x[i], respectively.
+// 二分探索を可能にするため、Find は範囲の先頭側の接頭部分で cmp(i) > 0、
+// 中央で cmp(i) == 0、末尾側の接尾部分で cmp(i) < 0 であることを
+// 要求します。（各部分範囲は空でも構いません。）
+// この条件を満たす一般的な方法は、cmp(i) を、
+// 目的のターゲット値 t と基礎となるインデックス付きデータ構造 x の
+// 要素 i との比較として解釈し、
+// それぞれ t < x[i]、t == x[i]、t > x[i] のときに
+// <0、0、>0 を返すようにすることです。
 //
-// For example, to look for a particular string in a sorted, random-access
-// list of strings:
+// たとえば、ソート済みでランダムアクセス可能な文字列リストから
+// 特定の文字列を探すには次のようにします。
 //
 //	i, found := sort.Find(x.Len(), func(i int) int {
 //	    return strings.Compare(target, x.At(i))
 //	})
 //	if found {
-//	    fmt.Printf("found %s at entry %d\n", target, i)
+//	    fmt.Printf("%s がエントリ %d で見つかりました\n", target, i)
 //	} else {
-//	    fmt.Printf("%s not found, would insert at %d", target, i)
+//	    fmt.Printf("%s は見つかりませんでした。挿入位置は %d です", target, i)
 //	}
 func Find(n int, cmp func(int) int) (i int, found bool)
 
-// SearchInts searches for x in a sorted slice of ints and returns the index
-// as specified by [Search]. The return value is the index to insert x if x is
-// not present (it could be len(a)).
-// The slice must be sorted in ascending order.
+// SearchIntsはソート済みのintスライスから x を探索し、[Search] で
+// 指定されるインデックスを返します。戻り値は x が存在しない場合に x を
+// 挿入するインデックスです（len(a) になる場合があります）。
+// スライスは昇順にソートされている必要があります。
 func SearchInts(a []int, x int) int
 
-// SearchFloat64s searches for x in a sorted slice of float64s and returns the index
-// as specified by [Search]. The return value is the index to insert x if x is not
-// present (it could be len(a)).
-// The slice must be sorted in ascending order.
+// SearchFloat64sはソート済みのfloat64スライスから x を探索し、[Search] で
+// 指定されるインデックスを返します。戻り値は x が存在しない場合に x を
+// 挿入するインデックスです（len(a) になる場合があります）。
+// スライスは昇順にソートされている必要があります。
 func SearchFloat64s(a []float64, x float64) int
 
-// SearchStrings searches for x in a sorted slice of strings and returns the index
-// as specified by Search. The return value is the index to insert x if x is not
-// present (it could be len(a)).
-// The slice must be sorted in ascending order.
+// SearchStringsはソート済みのstringスライスから x を探索し、Search で
+// 指定されるインデックスを返します。戻り値は x が存在しない場合に x を
+// 挿入するインデックスです（len(a) になる場合があります）。
+// スライスは昇順にソートされている必要があります。
 func SearchStrings(a []string, x string) int
 
-// Search returns the result of applying [SearchInts] to the receiver and x.
+// Searchはレシーバと x に [SearchInts] を適用した結果を返します。
 func (p IntSlice) Search(x int) int
 
-// Search returns the result of applying [SearchFloat64s] to the receiver and x.
+// Searchはレシーバと x に [SearchFloat64s] を適用した結果を返します。
 func (p Float64Slice) Search(x float64) int
 
-// Search returns the result of applying [SearchStrings] to the receiver and x.
+// Searchはレシーバと x に [SearchStrings] を適用した結果を返します。
 func (p StringSlice) Search(x string) int
