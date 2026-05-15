@@ -2,58 +2,54 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package ring implements operations on circular lists.
+// パッケージringは循環リストに対する操作を実装します。
 package ring
 
-// A Ring is an element of a circular list, or ring.
-// Rings do not have a beginning or end; a pointer to any ring element
-// serves as reference to the entire ring. Empty rings are represented
-// as nil Ring pointers. The zero value for a Ring is a one-element
-// ring with a nil Value.
+// Ringは循環リスト、またはリングの要素です。
+// リングには先頭も末尾もありません。どのリング要素へのポインタも
+// リング全体への参照として機能します。空のリングはnilのRingポインタで
+// 表されます。Ringのゼロ値は、Valueがnilの1要素のリングです。
 type Ring struct {
 	next, prev *Ring
 	Value      any
 }
 
-// Next returns the next ring element. r must not be empty.
+// Nextは次のリング要素を返します。rは空であってはなりません。
 func (r *Ring) Next() *Ring
 
-// Prev returns the previous ring element. r must not be empty.
+// Prevは前のリング要素を返します。rは空であってはなりません。
 func (r *Ring) Prev() *Ring
 
-// Move moves n % r.Len() elements backward (n < 0) or forward (n >= 0)
-// in the ring and returns that ring element. r must not be empty.
+// Moveは、リング内を n % r.Len() 個ぶん、後方へ（n < 0）または前方へ
+// （n >= 0）移動し、そのリング要素を返します。rは空であってはなりません。
 func (r *Ring) Move(n int) *Ring
 
-// New creates a ring of n elements.
+// Newはn個の要素からなるリングを作成します。
 func New(n int) *Ring
 
-// Link connects ring r with ring s such that r.Next()
-// becomes s and returns the original value for r.Next().
-// r must not be empty.
+// Linkはリングrとリングsを接続し、r.Next()がsになるようにして、
+// r.Next()の元の値を返します。rは空であってはなりません。
 //
-// If r and s point to the same ring, linking
-// them removes the elements between r and s from the ring.
-// The removed elements form a subring and the result is a
-// reference to that subring (if no elements were removed,
-// the result is still the original value for r.Next(),
-// and not nil).
+// rとsが同じリングを指している場合、それらをリンクすると
+// rとsの間の要素がリングから削除されます。削除された要素は
+// サブリングを形成し、結果はそのサブリングへの参照になります
+// （要素が削除されなかった場合でも、結果はr.Next()の元の値であり、
+// nilではありません）。
 //
-// If r and s point to different rings, linking
-// them creates a single ring with the elements of s inserted
-// after r. The result points to the element following the
-// last element of s after insertion.
+// rとsが異なるリングを指している場合、それらをリンクすると
+// sの要素がrの後ろに挿入された1つのリングが作成されます。
+// 結果は、挿入後のsの最後の要素の次の要素を指します。
 func (r *Ring) Link(s *Ring) *Ring
 
-// Unlink removes n % r.Len() elements from the ring r, starting
-// at r.Next(). If n % r.Len() == 0, r remains unchanged.
-// The result is the removed subring. r must not be empty.
+// Unlinkは、r.Next()から始まるリングrの n % r.Len() 個の要素を削除します。
+// n % r.Len() == 0 の場合、rは変更されません。
+// 結果は削除されたサブリングです。rは空であってはなりません。
 func (r *Ring) Unlink(n int) *Ring
 
-// Len computes the number of elements in ring r.
-// It executes in time proportional to the number of elements.
+// Lenはリングr内の要素数を計算します。
+// 実行時間は要素数に比例します。
 func (r *Ring) Len() int
 
-// Do calls function f on each element of the ring, in forward order.
-// The behavior of Do is undefined if f changes *r.
+// Doはリングの各要素に対して、前方向の順序で関数fを呼び出します。
+// fが*rを変更した場合、Doの振る舞いは未定義です。
 func (r *Ring) Do(f func(any))
