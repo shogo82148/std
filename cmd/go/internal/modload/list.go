@@ -24,7 +24,7 @@ const (
 // along with any error preventing additional matches from being identified.
 //
 // The returned slice can be nonempty even if the error is non-nil.
-func ListModules(loaderstate *State, ctx context.Context, args []string, mode ListMode, reuseFile string) ([]*modinfo.ModulePublic, error)
+func ListModules(ld *Loader, ctx context.Context, args []string, mode ListMode, reuseFile string) ([]*modinfo.ModulePublic, error)
 
 // ParsePathVersion parses arg expecting arg to be path@version. If there is no
 // '@' in arg, found is false, vers is "", and path is arg. This mirrors the

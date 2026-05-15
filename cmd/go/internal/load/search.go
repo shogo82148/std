@@ -9,4 +9,4 @@ import (
 )
 
 // MatchPackage(pattern, cwd)(p) reports whether package p matches pattern in the working directory cwd.
-func MatchPackage(pattern, cwd string) func(*modload.State, *Package) bool
+func MatchPackage(pattern, cwd string) func(*modload.Loader, *Package) bool

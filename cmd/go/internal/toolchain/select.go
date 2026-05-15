@@ -32,4 +32,4 @@ var TestVersionSwitch string
 // If $GOTOOLCHAIN is set to path or min+path, Exec only considers the PATH
 // as a source of Go toolchains. Otherwise Exec tries the PATH but then downloads
 // a toolchain if necessary.
-func Exec(s *modload.State, gotoolchain string)
+func Exec(s *modload.Loader, gotoolchain string)

@@ -177,7 +177,7 @@ func (e *NoGoError) Error() string
 // can produce better error messages if it starts with the original paths.
 // The initial load of p loads all the non-test imports and rewrites
 // the vendored paths, so nothing should ever call p.vendored(p.Imports).
-func (p *Package) Resolve(s *modload.State, imports []string) []string
+func (p *Package) Resolve(s *modload.Loader, imports []string) []string
 
 // CoverSetup holds parameters related to coverage setup for a given package (covermode, etc).
 type CoverSetup struct {
@@ -273,14 +273,14 @@ const (
 )
 
 // LoadPackage does Load import, but without a parent package load context
-func LoadPackage(loaderstate *modload.State, ctx context.Context, opts PackageOpts, path, srcDir string, stk *ImportStack, importPos []token.Position, mode int) *Package
+func LoadPackage(ld *modload.Loader, ctx context.Context, opts PackageOpts, path, srcDir string, stk *ImportStack, importPos []token.Position, mode int) *Package
 
 // ResolveImportPath returns the true meaning of path when it appears in parent.
 // There are two different resolutions applied.
 // First, there is Go 1.5 vendoring (golang.org/s/go15vendor).
 // If vendor expansion doesn't trigger, then the path is also subject to
 // Go 1.11 module legacy conversion (golang.org/issue/25069).
-func ResolveImportPath(s *modload.State, parent *Package, path string) (found string)
+func ResolveImportPath(s *modload.Loader, parent *Package, path string) (found string)
 
 // FindVendor looks for the last non-terminating "vendor" path element in the given import path.
 // If there isn't one, FindVendor returns ok=false.
@@ -335,7 +335,7 @@ func ResolveEmbed(dir string, patterns []string) ([]string, error)
 func SafeArg(name string) bool
 
 // LinkerDeps returns the list of linker-induced dependencies for main package p.
-func LinkerDeps(s *modload.State, p *Package) ([]string, error)
+func LinkerDeps(s *modload.Loader, p *Package) ([]string, error)
 
 // InternalGoFiles returns the list of Go files being built for the package,
 // using absolute paths.
@@ -363,18 +363,18 @@ func PackageList(roots []*Package) []*Package
 // TestPackageList returns the list of packages in the dag rooted at roots
 // as visited in a depth-first post-order traversal, including the test
 // imports of the roots. This ignores errors in test packages.
-func TestPackageList(loaderstate *modload.State, ctx context.Context, opts PackageOpts, roots []*Package) []*Package
+func TestPackageList(ld *modload.Loader, ctx context.Context, opts PackageOpts, roots []*Package) []*Package
 
 // LoadImportWithFlags loads the package with the given import path and
 // sets tool flags on that package. This function is useful loading implicit
 // dependencies (like sync/atomic for coverage).
 // TODO(jayconrod): delete this function and set flags automatically
 // in LoadImport instead.
-func LoadImportWithFlags(loaderstate *modload.State, path, srcDir string, parent *Package, stk *ImportStack, importPos []token.Position, mode int) (*Package, *PackageError)
+func LoadImportWithFlags(ld *modload.Loader, path, srcDir string, parent *Package, stk *ImportStack, importPos []token.Position, mode int) (*Package, *PackageError)
 
 // LoadPackageWithFlags is the same as LoadImportWithFlags but without a parent.
 // It's then guaranteed to not return an error
-func LoadPackageWithFlags(loaderstate *modload.State, path, srcDir string, stk *ImportStack, importPos []token.Position, mode int) *Package
+func LoadPackageWithFlags(ld *modload.Loader, path, srcDir string, stk *ImportStack, importPos []token.Position, mode int) *Package
 
 // PackageOpts control the behavior of PackagesAndErrors and other package
 // loading functions.
@@ -421,7 +421,7 @@ type PackageOpts struct {
 //
 // To obtain a flat list of packages, use PackageList.
 // To report errors loading packages, use ReportPackageErrors.
-func PackagesAndErrors(loaderstate *modload.State, ctx context.Context, opts PackageOpts, patterns []string) []*Package
+func PackagesAndErrors(ld *modload.Loader, ctx context.Context, opts PackageOpts, patterns []string) []*Package
 
 // CheckPackageErrors prints errors encountered loading pkgs and their
 // dependencies, then exits with a non-zero status if any errors were found.
@@ -433,7 +433,7 @@ func PackageErrors(pkgs []*Package, report func(*Package))
 // GoFilesPackage creates a package for building a collection of Go files
 // (typically named on the command line). The target is named p.a for
 // package p or named after the first Go file for package main.
-func GoFilesPackage(loaderstate *modload.State, ctx context.Context, opts PackageOpts, gofiles []string) *Package
+func GoFilesPackage(ld *modload.Loader, ctx context.Context, opts PackageOpts, gofiles []string) *Package
 
 // PackagesAndErrorsOutsideModule is like PackagesAndErrors but runs in
 // module-aware mode and ignores the go.mod file in the current directory or any
@@ -450,16 +450,16 @@ func GoFilesPackage(loaderstate *modload.State, ctx context.Context, opts Packag
 // module, but its go.mod file (if it has one) must not contain directives that
 // would cause it to be interpreted differently if it were the main module
 // (replace, exclude).
-func PackagesAndErrorsOutsideModule(loaderstate *modload.State, ctx context.Context, opts PackageOpts, args []string) ([]*Package, error)
+func PackagesAndErrorsOutsideModule(ld *modload.Loader, ctx context.Context, opts PackageOpts, args []string) ([]*Package, error)
 
 // EnsureImport ensures that package p imports the named package.
-func EnsureImport(s *modload.State, p *Package, pkg string)
+func EnsureImport(s *modload.Loader, p *Package, pkg string)
 
 // PrepareForCoverageBuild is a helper invoked for "go install
 // -cover", "go run -cover", and "go build -cover" (but not used by
 // "go test -cover"). It walks through the packages being built (and
 // dependencies) and marks them for coverage instrumentation when
 // appropriate, and possibly adding additional deps where needed.
-func PrepareForCoverageBuild(s *modload.State, pkgs []*Package)
+func PrepareForCoverageBuild(s *modload.Loader, pkgs []*Package)
 
-func SelectCoverPackages(s *modload.State, roots []*Package, match []func(*modload.State, *Package) bool, op string) []*Package
+func SelectCoverPackages(s *modload.Loader, roots []*Package, match []func(*modload.Loader, *Package) bool, op string) []*Package

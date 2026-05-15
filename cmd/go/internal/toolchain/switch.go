@@ -24,12 +24,12 @@ import (
 //
 // See https://go.dev/doc/toolchain#switch.
 type Switcher struct {
-	TooNew      *gover.TooNewError
-	Errors      []error
-	loaderstate *modload.State
+	TooNew *gover.TooNewError
+	Errors []error
+	ld     *modload.Loader
 }
 
-func NewSwitcher(s *modload.State) *Switcher
+func NewSwitcher(s *modload.Loader) *Switcher
 
 // Error reports the error to the Switcher,
 // which saves it for processing during Switch.
@@ -55,7 +55,7 @@ func (s *Switcher) Switch(ctx context.Context)
 
 // SwitchOrFatal attempts a toolchain switch based on the information in err
 // and otherwise falls back to base.Fatal(err).
-func SwitchOrFatal(loaderstate *modload.State, ctx context.Context, err error)
+func SwitchOrFatal(ld *modload.Loader, ctx context.Context, err error)
 
 // NewerToolchain returns the name of the toolchain to use when we need
 // to switch to a newer toolchain that must support at least the given Go version.

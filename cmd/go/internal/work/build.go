@@ -310,7 +310,7 @@ See also: go build, go get, go clean.
 	`,
 }
 
-func InstallPackages(loaderstate *modload.State, ctx context.Context, patterns []string, pkgs []*load.Package)
+func InstallPackages(ld *modload.Loader, ctx context.Context, patterns []string, pkgs []*load.Package)
 
 // ExecCmd is the command to use to run user binaries.
 // Normally it is empty, meaning run the binaries directly.
