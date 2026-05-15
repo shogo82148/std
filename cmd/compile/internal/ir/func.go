@@ -140,6 +140,9 @@ type Func struct {
 	// WasmImport is used by the //go:wasmimport directive to store info about
 	// a WebAssembly function import.
 	WasmImport *WasmImport
+	// WasmExport is used by the //go:wasmexport directive to store info about
+	// a WebAssembly function export.
+	WasmExport *WasmExport
 }
 
 // WasmImport stores metadata associated with the //go:wasmimport pragma.
