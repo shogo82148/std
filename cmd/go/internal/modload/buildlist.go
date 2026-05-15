@@ -98,6 +98,10 @@ type ModuleGraph struct {
 
 	buildListOnce sync.Once
 	buildList     []module.Version
+
+	// checkPathsOnce ensures checkMultiplePaths runs at most once per graph.
+	// Errors are checked and reported only on the first call.
+	checkPathsOnce sync.Once
 }
 
 // RequiredBy returns the dependencies required by module m in the graph,
