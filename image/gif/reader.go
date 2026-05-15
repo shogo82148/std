@@ -4,7 +4,11 @@
 
 // gifパッケージは、GIF画像のデコーダとエンコーダを実装します。
 //
-// GIFの仕様は https://www.w3.org/Graphics/GIF/spec-gif89a.txt にあります。
+// GIF仕様は https://www.w3.org/Graphics/GIF/spec-gif89a.txt にあります。
+//
+// 信頼できない入力をデコードする場合は、[Decode] または [DecodeAll] を呼び出す前に
+// [DecodeConfig] でディメンションを読み取ってください。これらの関数と [image] パッケージ
+// ドキュメントの「Security Considerations」セクションを参照してください。
 package gif
 
 import (
@@ -19,7 +23,12 @@ const (
 	DisposalPrevious   = 0x03
 )
 
-// Decodeは、rからGIF画像を読み取り、最初の埋め込み画像を [image.Image] として返します。
+// DecodeはrからGIF画像を読み取り、最初に埋め込まれた画像を
+// [image.Image] として返します。
+//
+// 信頼できないソースから画像をデコードする場合、
+// 最初に DecodeConfig を呼び出して画像サイズをチェックして
+// 下さい。詳算外の大きなメモリ割り当てを会を回避できます。
 func Decode(r io.Reader) (image.Image, error)
 
 // GIFは、GIFファイルに保存されている可能性のある複数の画像を表します。
@@ -49,9 +58,19 @@ type GIF struct {
 	BackgroundIndex byte
 }
 
-// DecodeAllは、rからGIF画像を読み取り、連続するフレームとタイミング情報を返します。
+// DecodeAllはrからGIF画像を読み取り、連続したフレームと
+// タイミング情報を返します。
+//
+// [Decode] と同様に、画像記述子の幅と高さからフレームごとに
+// パレットバッファを割り当てます。[DecodeAll] はすべてのデコードされたフレームを
+// メモリに留めます。信頼できない入力の場合、最初に [DecodeConfig] を呼び出して
+// 詰輿画面サイズを検証し、過大なメモリを要求する入力を拒否して下さい。
 func DecodeAll(r io.Reader) (*GIF, error)
 
-// DecodeConfigは、画像全体をデコードすることなく、GIF画像のグローバルカラーモデルと
-// 寸法を返します。
+// DecodeConfigはGIF画像全体をデコードせずに、グローバルカラーモデルと
+// ディメンションを返します。
+//
+// 詰輿画面記述子とグローバルカラーテーブルのみを読み取り、
+// フレームのピクセルバッファを割り当てません。幅と高さを検証したい場合、
+// [Decode] または [DecodeAll] を呼び出す前に使用して下さい。
 func DecodeConfig(r io.Reader) (image.Config, error)
