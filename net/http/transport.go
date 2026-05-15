@@ -226,10 +226,12 @@ type Transport struct {
 	ReadBufferSize int
 
 	// nextProtoOnce guards initialization of TLSNextProto and
-	// h2transport (via onceSetNextProtoDefaults)
+	// h2Transport (via onceSetNextProtoDefaults)
 	nextProtoOnce      sync.Once
-	h2transport        h2Transport
-	h3transport        dialClientConner
+	closeIdleFunc      closeIdleConnectionser
+	h2Transport        *http2Transport
+	h2Config           http2ExternalTransportConfig
+	h3Transport        dialClientConner
 	tlsNextProtoWasNil bool
 
 	// ForceAttemptHTTP2は、非ゼロの

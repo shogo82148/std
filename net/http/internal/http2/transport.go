@@ -365,3 +365,5 @@ func (cc NetHTTPClientConn) Release()
 func (cc NetHTTPClientConn) Available() int
 
 func (cc NetHTTPClientConn) InFlight() int
+
+func (cc NetHTTPClientConn) Ping(ctx context.Context) error
