@@ -98,6 +98,18 @@ func OPBIT(x uint32) uint32
 
 func MOVCONST(d int64, s int, rt int) uint32
 
+func ASIMDALL(u, size, opcode uint32) uint32
+
+func ASIMDDIFF(u, opcode uint32) uint32
+
+func ASIMDMISC(u, size, opcode uint32) uint32
+
+func ASIMDPERM(opcode uint32) uint32
+
+func ASIMDSAME(u, size, opcode uint32) uint32
+
+func ASIMDSHF(u, opcode uint32) uint32
+
 const (
 	// Optab.flag
 	LFROM = 1 << iota
