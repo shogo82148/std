@@ -7,7 +7,7 @@
 // 詳細は [RFC 9562] を参照してください。
 //
 // 新しいUUIDのランダムコンポーネントは、
-// 暗号化して安全な乱数生成器で生成されます。
+// 暗号学的に安全な乱数生成器で生成されます。
 //
 // UUIDはさまざまなアルゴリズムを使用して生成できます。
 // [New] 関数は、ほとんどの目的に適したアルゴリズムを使用して
@@ -30,7 +30,7 @@ type UUID [16]byte
 //	urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6
 //	f81d4fae7dec11d0a76500a0c91e6bf6
 //
-// 二進法のアルファベット文字は大小文字で使用できます。
+// 十六進法のアルファベット文字は大小文字で使用できます。
 func Parse(s string) (UUID, error)
 
 // MustParseはsで表されたUUIDを返します。
@@ -41,12 +41,12 @@ func MustParse(s string) UUID
 // Newは新しいUUIDを返します。
 //
 // 特定のUUID生成アルゴリズムを必要としないプログラムはNewを使用してください。
-// 現在のNewは [NewV4] と等侧です。
+// 現在のNewは [NewV4] と等価です。
 func New() UUID
 
 // NilはNil UUID 00000000-0000-0000-0000-000000000000を返します。
 //
-// Nil UUIDは [RFC 9562のセクション5.9] で定群されています。
+// Nil UUIDは [RFC 9562のセクション5.9] で定義されています。
 // Goのnil値とは異なることに注意してください。
 //
 // [RFC 9562のセクション5.9]: https://www.rfc-editor.org/rfc/rfc9562#section-5.9
@@ -54,7 +54,7 @@ func Nil() UUID
 
 // MaxはMax UUID ffffffff-ffff-ffff-ffff-ffffffffffffを返します。
 //
-// Max UUIDは [RFC 9562のセクション5.10] で定群されています。
+// Max UUIDは [RFC 9562のセクション5.10] で定義されています。
 //
 // [RFC 9562のセクション5.10]: https://www.rfc-editor.org/rfc/rfc9562#section-5.10
 func Max() UUID
@@ -65,11 +65,11 @@ func Max() UUID
 func (u UUID) String() string
 
 // MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
-// エンコードは [UUID.String] で返されるものと同じです
+// エンコードは [UUID.String] で返されるものと同じです。
 func (u UUID) MarshalText() ([]byte, error)
 
 // AppendTextは [encoding.TextAppender] インターフェースを実装します。
-// エンコードは [UUID.String] で返されるものと同じです
+// エンコードは [UUID.String] で返されるものと同じです。
 func (u UUID) AppendText(b []byte) ([]byte, error)
 
 // UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。
