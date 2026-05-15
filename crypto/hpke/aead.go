@@ -8,8 +8,8 @@ import (
 	"github.com/shogo82148/std/crypto/cipher"
 )
 
-// The AEAD is one of the three components of an HPKE ciphersuite, implementing
-// symmetric encryption.
+// AEAD は HPKE 暗号スイートの 3 つのコンポーネントの 1 つで、対称暗号化を
+// 実装します。
 type AEAD interface {
 	ID() uint16
 	keySize() int
@@ -17,23 +17,24 @@ type AEAD interface {
 	aead(key []byte) (cipher.AEAD, error)
 }
 
-// NewAEAD returns the AEAD implementation for the given AEAD ID.
+// NewAEAD は与えられた AEAD ID の AEAD 実装を返します。
 //
-// Applications are encouraged to use specific implementations like [AES128GCM]
-// or [ChaCha20Poly1305] instead, unless runtime agility is required.
+// アプリケーションは、ランタイム可変性が必要でない限り、
+// [AES128GCM] や [ChaCha20Poly1305] などの特定の実装を使用することをお勧めします。
 func NewAEAD(id uint16) (AEAD, error)
 
-// AES128GCM returns an AES-128-GCM AEAD implementation.
+// AES128GCM は AES-128-GCM AEAD 実装を返します。
 func AES128GCM() AEAD
 
-// AES256GCM returns an AES-256-GCM AEAD implementation.
+// AES256GCM は AES-256-GCM AEAD 実装を返します。
 func AES256GCM() AEAD
 
-// ChaCha20Poly1305 returns a ChaCha20Poly1305 AEAD implementation.
+// ChaCha20Poly1305 は ChaCha20Poly1305 AEAD 実装を返します。
 func ChaCha20Poly1305() AEAD
 
-// ExportOnly returns a placeholder AEAD implementation that cannot encrypt or
-// decrypt, but only export secrets with [Sender.Export] or [Recipient.Export].
+// ExportOnly は、暗号化または複号ができない。
+// ただし [Sender.Export] または [Recipient.Export] でのみ秘密をエクスポートできる
+// プレースホルダー AEAD 実装を返します。
 //
-// When this is used, [Sender.Seal] and [Recipient.Open] return errors.
+// これが使用される場合、[Sender.Seal] と [Recipient.Open] はエラーを返します。
 func ExportOnly() AEAD

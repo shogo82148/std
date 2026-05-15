@@ -9,76 +9,75 @@ import (
 	"github.com/shogo82148/std/crypto/ecdh"
 )
 
-// MLKEM768X25519 returns a KEM implementing MLKEM768-X25519 (a.k.a. X-Wing)
-// from draft-ietf-hpke-pq.
+// MLKEM768X25519 は draft-ietf-hpke-pq から MLKEM768-X25519（別名 X-Wing）を
+// 実装する KEM を返します。
 func MLKEM768X25519() KEM
 
-// MLKEM768P256 returns a KEM implementing MLKEM768-P256 from draft-ietf-hpke-pq.
+// MLKEM768P256 は draft-ietf-hpke-pq から MLKEM768-P256 を実装する KEM を返します。
 func MLKEM768P256() KEM
 
-// MLKEM1024P384 returns a KEM implementing MLKEM1024-P384 from draft-ietf-hpke-pq.
+// MLKEM1024P384 は draft-ietf-hpke-pq から MLKEM1024-P384 を実装する KEM を返します。
 func MLKEM1024P384() KEM
 
-// NewHybridPublicKey returns a PublicKey implementing one of
+// NewHybridPublicKey は以下のいずれかを実装する PublicKey を返します。
 //
 //   - MLKEM768-X25519 (a.k.a. X-Wing)
 //   - MLKEM768-P256
 //   - MLKEM1024-P384
 //
-// from draft-ietf-hpke-pq, depending on the underlying curve of t
-// ([ecdh.X25519], [ecdh.P256], or [ecdh.P384]) and the type of pq (either
-// *[mlkem.EncapsulationKey768] or *[mlkem.EncapsulationKey1024]).
+// draft-ietf-hpke-pq から、t の基礎となる曲線（[ecdh.X25519]、[ecdh.P256]、
+// または [ecdh.P384]）と pq の型（*[mlkem.EncapsulationKey768] または
+// *[mlkem.EncapsulationKey1024]）に応じています。
 //
-// This function is meant for applications that already have instantiated
-// crypto/ecdh and crypto/mlkem public keys. Otherwise, applications should use
-// the [KEM.NewPublicKey] method of e.g. [MLKEM768X25519].
+// この関数は、既にインスタンス化された crypto/ecdh および crypto/mlkem 公開鍵を
+// 持つアプリケーション用です。それ以外の場合、アプリケーションは例えば
+// [MLKEM768X25519] の [KEM.NewPublicKey] メソッドを使用するべきです。
 func NewHybridPublicKey(pq crypto.Encapsulator, t *ecdh.PublicKey) (PublicKey, error)
 
-// NewHybridPrivateKey returns a PrivateKey implementing
+// NewHybridPrivateKey は以下のいずれかを実装する PrivateKey を返します。
 //
 //   - MLKEM768-X25519 (a.k.a. X-Wing)
 //   - MLKEM768-P256
 //   - MLKEM1024-P384
 //
-// from draft-ietf-hpke-pq, depending on the underlying curve of t
-// ([ecdh.X25519], [ecdh.P256], or [ecdh.P384]) and the type of pq.Encapsulator()
-// (either *[mlkem.EncapsulationKey768] or *[mlkem.EncapsulationKey1024]).
+// draft-ietf-hpke-pq から、t の基礎となる曲線（[ecdh.X25519]、[ecdh.P256]、
+// または [ecdh.P384]）と pq.Encapsulator() の型（*[mlkem.EncapsulationKey768]
+// または *[mlkem.EncapsulationKey1024]）に応じています。
 //
-// This function is meant for applications that already have instantiated
-// crypto/ecdh and crypto/mlkem private keys, or another implementation of a
-// [ecdh.KeyExchanger] and [crypto.Decapsulator] (e.g. a hardware key).
-// Otherwise, applications should use the [KEM.NewPrivateKey] method of e.g.
-// [MLKEM768X25519].
+// この関数は、既にインスタンス化された crypto/ecdh および crypto/mlkem 秘密鍵、
+// または [ecdh.KeyExchanger] および [crypto.Decapsulator] の別の実装（例えば
+// ハードウェアキー）を持つアプリケーション用です。それ以外の場合、アプリケーション
+// は例えば [MLKEM768X25519] の [KEM.NewPrivateKey] メソッドを使用するべきです。
 func NewHybridPrivateKey(pq crypto.Decapsulator, t ecdh.KeyExchanger) (PrivateKey, error)
 
-// MLKEM768 returns a KEM implementing ML-KEM-768 from draft-ietf-hpke-pq.
+// MLKEM768 は draft-ietf-hpke-pq から ML-KEM-768 を実装する KEM を返します。
 func MLKEM768() KEM
 
-// MLKEM1024 returns a KEM implementing ML-KEM-1024 from draft-ietf-hpke-pq.
+// MLKEM1024 は draft-ietf-hpke-pq から ML-KEM-1024 を実装する KEM を返します。
 func MLKEM1024() KEM
 
-// NewMLKEMPublicKey returns a KEMPublicKey implementing
+// NewMLKEMPublicKey は以下のいずれかを実装する KEMPublicKey を返します。
 //
 //   - ML-KEM-768
 //   - ML-KEM-1024
 //
-// from draft-ietf-hpke-pq, depending on the type of pub
-// (*[mlkem.EncapsulationKey768] or *[mlkem.EncapsulationKey1024]).
+// draft-ietf-hpke-pq から、pub の型（*[mlkem.EncapsulationKey768] または
+// *[mlkem.EncapsulationKey1024]）に応じています。
 //
-// This function is meant for applications that already have an instantiated
-// crypto/mlkem public key. Otherwise, applications should use the
-// [KEM.NewPublicKey] method of e.g. [MLKEM768].
+// この関数は、既にインスタンス化された crypto/mlkem 公開鍵を持つアプリケーション用です。
+// それ以外の場合、アプリケーションは例えば [MLKEM768] の [KEM.NewPublicKey]
+// メソッドを使用するべきです。
 func NewMLKEMPublicKey(pub crypto.Encapsulator) (PublicKey, error)
 
-// NewMLKEMPrivateKey returns a KEMPrivateKey implementing
+// NewMLKEMPrivateKey は以下のいずれかを実装する KEMPrivateKey を返します。
 //
 //   - ML-KEM-768
 //   - ML-KEM-1024
 //
-// from draft-ietf-hpke-pq, depending on the type of priv.Encapsulator()
-// (either *[mlkem.EncapsulationKey768] or *[mlkem.EncapsulationKey1024]).
+// draft-ietf-hpke-pq から、priv.Encapsulator() の型（*[mlkem.EncapsulationKey768]
+// または *[mlkem.EncapsulationKey1024]）に応じています。
 //
-// This function is meant for applications that already have an instantiated
-// crypto/mlkem private key. Otherwise, applications should use the
-// [KEM.NewPrivateKey] method of e.g. [MLKEM768].
+// この関数は、既にインスタンス化された crypto/mlkem 秘密鍵を持つアプリケーション用です。
+// それ以外の場合、アプリケーションは例えば [MLKEM768] の [KEM.NewPrivateKey]
+// メソッドを使用するべきです。
 func NewMLKEMPrivateKey(priv crypto.Decapsulator) (PrivateKey, error)
