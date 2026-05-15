@@ -2,101 +2,101 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package uuid provides support for generating and manipulating UUIDs.
+// uuid パッケージはUUIDの生成と操作のサポートを提供します。
 //
-// See [RFC 9562] for details.
+// 詳細は [RFC 9562] を参照してください。
 //
-// Random components of new UUIDs are generated with a
-// cryptographically secure random number generator.
+// 新しいUUIDのランダムコンポーネントは、
+// 暗号学的に安全な乱数生成器で生成されます。
 //
-// UUIDs may be generated using various algorithms.
-// The [New] function returns a new UUID generated using
-// an algorithm suitable for most purposes.
+// UUIDはさまざまなアルゴリズムを使用して生成できます。
+// [New] 関数は、ほとんどの目的に適したアルゴリズムを使用して
+// 新しいUUIDを返します。
 //
 // [RFC 9562]: https://www.rfc-editor.org/rfc/rfc9562.html
 package uuid
 
-// A UUID is a Universally Unique Identifier as specified in RFC 9562.
+// UUIDはRFC 9562で指定された汎用一意識別子です。
 //
-// UUIDs are comparable, such as with the == operator.
+// UUIDは比較可能で、== 演算子で比較できます。
 type UUID [16]byte
 
-// Parse returns the UUID represented by s.
+// ParseはsでUUIDを返します。
 //
-// It accepts strings in the following forms:
+// 次の形式での文字列を受け付けます。
 //
 //	f81d4fae-7dec-11d0-a765-00a0c91e6bf6
 //	{f81d4fae-7dec-11d0-a765-00a0c91e6bf6}
 //	urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6
 //	f81d4fae7dec11d0a76500a0c91e6bf6
 //
-// Alphabetic characters in the hexadecimal digits may be any case.
+// 十六進法のアルファベット文字は大小文字で使用できます。
 func Parse(s string) (UUID, error)
 
-// MustParse returns the UUID represented by s.
+// MustParseはsで表されたUUIDを返します。
 //
-// It panics if s is not a valid string representation of a UUID as defined by [Parse].
+// sが [Parse] で定義されているUUIDの有効な文字列表記でない場合、パニックを引き起こします。
 func MustParse(s string) UUID
 
-// New returns a new UUID.
+// Newは新しいUUIDを返します。
 //
-// Programs which do not have a need for a specific UUID generation algorithm should use New.
-// At this time, New is equivalent to [NewV4].
+// 特定のUUID生成アルゴリズムを必要としないプログラムはNewを使用してください。
+// 現在のNewは [NewV4] と等価です。
 func New() UUID
 
-// Nil returns the Nil UUID 00000000-0000-0000-0000-000000000000.
+// NilはNil UUID 00000000-0000-0000-0000-000000000000を返します。
 //
-// The Nil UUID is defined in [Section 5.9 of RFC 9562].
-// Note that this is not the same as the Go value nil.
+// Nil UUIDは [RFC 9562のセクション5.9] で定義されています。
+// Goのnil値とは異なることに注意してください。
 //
-// [Section 5.9 of RFC 9562]: https://www.rfc-editor.org/rfc/rfc9562#section-5.9
+// [RFC 9562のセクション5.9]: https://www.rfc-editor.org/rfc/rfc9562#section-5.9
 func Nil() UUID
 
-// Max returns the Max UUID ffffffff-ffff-ffff-ffff-ffffffffffff.
+// MaxはMax UUID ffffffff-ffff-ffff-ffff-ffffffffffffを返します。
 //
-// The Max UUID is defined in [Section 5.10 of RFC 9562].
+// Max UUIDは [RFC 9562のセクション5.10] で定義されています。
 //
-// [Section 5.10 of RFC 9562]: https://www.rfc-editor.org/rfc/rfc9562#section-5.10
+// [RFC 9562のセクション5.10]: https://www.rfc-editor.org/rfc/rfc9562#section-5.10
 func Max() UUID
 
-// String returns the string representation of u.
+// Stringはuの文字列表記を返します。
 //
-// It uses the lowercase hex-and-dash representation defined in RFC 9562.
+// RFC 9562で定義されている小文字の16進法とダッシュ表記を使用します。
 func (u UUID) String() string
 
-// MarshalText implements the [encoding.TextMarshaler] interface.
-// The encoding is the same as returned by [UUID.String]
+// MarshalTextは [encoding.TextMarshaler] インターフェースを実装します。
+// エンコードは [UUID.String] で返されるものと同じです。
 func (u UUID) MarshalText() ([]byte, error)
 
-// AppendText implements the [encoding.TextAppender] interface.
-// The encoding is the same as returned by [UUID.String]
+// AppendTextは [encoding.TextAppender] インターフェースを実装します。
+// エンコードは [UUID.String] で返されるものと同じです。
 func (u UUID) AppendText(b []byte) ([]byte, error)
 
-// UnmarshalText implements the [encoding.TextUnmarshaler] interface.
-// The UUID is expected in a form accepted by [Parse].
+// UnmarshalTextは [encoding.TextUnmarshaler] インターフェースを実装します。
+// UUIDは [Parse] が受け付ける形式であることを予想します。
 func (u *UUID) UnmarshalText(b []byte) error
 
-// Compare compares the UUID u with v.
-// If u is before v, it returns -1.
-// If u is after v, it returns +1.
-// If they are the same, it returns 0.
+// Compareはuとvを比較します。
+// uがvより前にある場合、-1を返します。
+// uがvより後ろにある場合、+1を返します。
+// 同じ場合は0を返します。
 //
-// Compare uses the big-endian byte order defined in
-// [Section 6.11 of RFC 9562] for sorting.
+// Compareはソート用に [RFC 9562のセクション6.11] で定義されている
+// ビッグエンディアンバイト位置を使用します。
 //
-// [Section 6.11 of RFC 9562]: https://www.rfc-editor.org/rfc/rfc9562#section-6.11
+// [RFC 9562のセクション6.11]: https://www.rfc-editor.org/rfc/rfc9562#section-6.11
 func (u UUID) Compare(v UUID) int
 
-// NewV4 returns a new version 4 UUID.
+// NewV4は新しいバージョン4 UUIDを返します。
 //
-// Version 4 UUIDs contain 122 bits of random data.
+// バージョン4 UUIDは122ビットのランダムデータを含みます。
 func NewV4() UUID
 
-// NewV7 returns a new version 7 UUID.
+// NewV7は新しいバージョン7 UUIDを返します。
 //
-// Version 7 UUIDs contain a timestamp in the most significant 48 bits,
-// and at least 62 bits of random data.
+// バージョン7 UUIDは最も重要な48ビットにタイムスタンプを含み、
+// 最低でも62ビット以上のランダムデータを含みます。
 //
-// NewV7 always returns UUIDs which sort in increasing order,
-// except when the system clock moves backwards.
+// NewV7はシステムクロックが逆方向に動いた時を除いて、
+// 常に昇順にソートされたUUIDを返します。
 func NewV7() UUID
