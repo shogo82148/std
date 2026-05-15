@@ -10,8 +10,8 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// This example creates a PriorityQueue with some items, adds and manipulates an item,
-// and then removes the items in priority order.
+// この例では、いくつかの要素を持つPriorityQueueを作成し、要素を追加して操作し、
+// その後、優先度順に要素を取り出します。
 func Example_priorityQueue() {
 	// Some items and their priorities.
 	items := map[string]int{
