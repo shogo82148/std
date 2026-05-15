@@ -143,7 +143,77 @@ const (
 	REG_V30
 	REG_V31
 
-	REG_RSP = REG_V31 + 32
+	// SVE (Scalable Vector Extension) scalable vector registers
+	// The order matters, make sure that each
+	// kind of register starts numbering from the lowest bit.
+	REG_Z0
+	REG_Z1
+	REG_Z2
+	REG_Z3
+	REG_Z4
+	REG_Z5
+	REG_Z6
+	REG_Z7
+	REG_Z8
+	REG_Z9
+	REG_Z10
+	REG_Z11
+	REG_Z12
+	REG_Z13
+	REG_Z14
+	REG_Z15
+	REG_Z16
+	REG_Z17
+	REG_Z18
+	REG_Z19
+	REG_Z20
+	REG_Z21
+	REG_Z22
+	REG_Z23
+	REG_Z24
+	REG_Z25
+	REG_Z26
+	REG_Z27
+	REG_Z28
+	REG_Z29
+	REG_Z30
+	REG_Z31
+
+	REG_P0
+	REG_P1
+	REG_P2
+	REG_P3
+	REG_P4
+	REG_P5
+	REG_P6
+	REG_P7
+	REG_P8
+	REG_P9
+	REG_P10
+	REG_P11
+	REG_P12
+	REG_P13
+	REG_P14
+	REG_P15
+
+	REG_PN0
+	REG_PN1
+	REG_PN2
+	REG_PN3
+	REG_PN4
+	REG_PN5
+	REG_PN6
+	REG_PN7
+	REG_PN8
+	REG_PN9
+	REG_PN10
+	REG_PN11
+	REG_PN12
+	REG_PN13
+	REG_PN14
+	REG_PN15
+
+	REG_RSP = (REG_PN15 + 1) | 0x1f
 )
 
 // bits 0-4 indicates register: Vn
@@ -152,15 +222,18 @@ const (
 	REG_ARNG = obj.RBaseARM64 + 1<<10 + iota<<9
 	REG_ELEM
 	REG_ELEM_END
+	REG_ZARNG
+	REG_PARNGZM
+	REG_PARNGZM_END
 )
 
 // Not registers, but flags that can be combined with regular register
 // constants to indicate extended register conversion. When checking,
-// you should subtract obj.RBaseARM64 first. From this difference, bit 11
+// you should subtract obj.RBaseARM64 first. From this difference, bit 12
 // indicates extended register, bits 8-10 select the conversion mode.
 // REG_LSL is the index shift specifier, bit 9 indicates shifted offset register.
 const REG_LSL = obj.RBaseARM64 + 1<<9
-const REG_EXT = obj.RBaseARM64 + 1<<11
+const REG_EXT = obj.RBaseARM64 + 1<<12
 
 const (
 	REG_UXTB = REG_EXT + iota<<8
@@ -173,14 +246,14 @@ const (
 	REG_SXTX
 )
 
-// Special registers, after subtracting obj.RBaseARM64, bit 12 indicates
+// Special registers, after subtracting obj.RBaseARM64, bit 13 indicates
 // a special register and the low bits select the register.
 // SYSREG_END is the last item in the automatically generated system register
 // declaration, and it is defined in the sysRegEnc.go file.
 // Define the special register after REG_SPECIAL, the first value of it should be
 // REG_{name} = SYSREG_END + iota.
 const (
-	REG_SPECIAL = obj.RBaseARM64 + 1<<12
+	REG_SPECIAL = obj.RBaseARM64 + 1<<13
 )
 
 // Register assignments:
@@ -250,6 +323,23 @@ var ARM64DWARFRegisters = map[int16]int16{
 	REG_R29: 29,
 	REG_R30: 30,
 
+	REG_P0:  48,
+	REG_P1:  49,
+	REG_P2:  50,
+	REG_P3:  51,
+	REG_P4:  52,
+	REG_P5:  53,
+	REG_P6:  54,
+	REG_P7:  55,
+	REG_P8:  56,
+	REG_P9:  57,
+	REG_P10: 58,
+	REG_P11: 59,
+	REG_P12: 60,
+	REG_P13: 61,
+	REG_P14: 62,
+	REG_P15: 63,
+
 	REG_F0:  64,
 	REG_F1:  65,
 	REG_F2:  66,
@@ -315,6 +405,39 @@ var ARM64DWARFRegisters = map[int16]int16{
 	REG_V29: 93,
 	REG_V30: 94,
 	REG_V31: 95,
+
+	REG_Z0:  96,
+	REG_Z1:  97,
+	REG_Z2:  98,
+	REG_Z3:  99,
+	REG_Z4:  100,
+	REG_Z5:  101,
+	REG_Z6:  102,
+	REG_Z7:  103,
+	REG_Z8:  104,
+	REG_Z9:  105,
+	REG_Z10: 106,
+	REG_Z11: 107,
+	REG_Z12: 108,
+	REG_Z13: 109,
+	REG_Z14: 110,
+	REG_Z15: 111,
+	REG_Z16: 112,
+	REG_Z17: 113,
+	REG_Z18: 114,
+	REG_Z19: 115,
+	REG_Z20: 116,
+	REG_Z21: 117,
+	REG_Z22: 118,
+	REG_Z23: 119,
+	REG_Z24: 120,
+	REG_Z25: 121,
+	REG_Z26: 122,
+	REG_Z27: 123,
+	REG_Z28: 124,
+	REG_Z29: 125,
+	REG_Z30: 126,
+	REG_Z31: 127,
 }
 
 const (
@@ -481,6 +604,42 @@ const (
 const (
 	C_XPRE  = 1 << 6
 	C_XPOST = 1 << 5
+)
+
+type AClass uint16
+
+// [insts] is sorted based on the order of these constants and the first match is chosen.
+const (
+	AC_NONE    AClass = iota
+	AC_REG
+	AC_RSP
+	AC_VREG
+	AC_ZREG
+	AC_PREG
+	AC_PREGZM
+	AC_REGIDX
+	AC_ZREGIDX
+	AC_PREGIDX
+	AC_ARNG
+	AC_ARNGIDX
+
+	AC_IMM
+
+	AC_REGLIST1
+	AC_REGLIST2
+	AC_REGLIST3
+	AC_REGLIST4
+	AC_REGLIST_RANGE
+
+	AC_MEMOFF
+	AC_MEMOFFMULVL
+	AC_MEMEXT
+
+	AC_PREG_PATTERN
+	AC_REG_PATTERN
+	AC_ZREG_PATTERN
+
+	AC_SPECIAL
 )
 
 const (
@@ -1023,7 +1182,7 @@ const (
 	AAUTIBSP
 	AAUTIA1716
 	AAUTIB1716
-	ALAST
+	ASVESTART
 	AB  = obj.AJMP
 	ABL = obj.ACALL
 )
@@ -1052,6 +1211,9 @@ const (
 	ARNG_H
 	ARNG_S
 	ARNG_D
+	ARNG_Q
+	PRED_M
+	PRED_Z
 )
 
 //go:generate stringer -type SpecialOperand -trimprefix SPOP_
