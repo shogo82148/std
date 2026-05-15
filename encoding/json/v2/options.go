@@ -105,14 +105,14 @@ func StringifyNumbers(v bool) Options
 // このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func Deterministic(v bool) Options
 
-// FormatNilSliceAsNullは、nilのGoスライスをデフォルトの空JSON配列（~[]byteの場合は空JSON文字列）ではなく、JSON nullとしてマーシャルすることを指定します。
-// `format:emitempty`が明示的に指定されたスライスフィールドは、引き続き空のJSON配列としてマーシャルされます。
+// FormatNilSliceAsNullは、nilのGoスライスをJSON nullとしてマーシャルすることを指定し、
+// デフォルトの空のJSON配列表現（または~[]byteの場合は空のJSON文字列）の代わりに使用されます。
 //
 // このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func FormatNilSliceAsNull(v bool) Options
 
-// FormatNilMapAsNullは、nilのGoマップをデフォルトの空JSONオブジェクトではなく、JSON nullとしてマーシャルすることを指定します。
-// `format:emitempty`が明示的に指定されたマップフィールドは、引き続き空のJSONオブジェクトとしてマーシャルされます。
+// FormatNilMapAsNullは、nilのGoマップをJSON nullとしてマーシャルすることを指定し、
+// デフォルトの空のJSONオブジェクト表現の代わりに使用されます。
 //
 // このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func FormatNilMapAsNull(v bool) Options
