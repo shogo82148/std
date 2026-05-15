@@ -27,9 +27,7 @@ type Named struct {
 	check *Checker
 	obj   *TypeName
 
-	// flags indicating temporary violations of the invariants for fromRHS and underlying
-	allowNilRHS        bool
-	allowNilUnderlying bool
+	allowNilRHS bool
 
 	inst *instance
 
@@ -38,7 +36,7 @@ type Named struct {
 	fromRHS    Type
 	tparams    *TypeParamList
 	underlying Type
-	finite     bool
+	varSize    bool
 
 	// この型に宣言されたメソッド（この型のメソッドセットではない）
 	// シグネチャは遅延してチェックされます。

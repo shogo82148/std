@@ -61,7 +61,6 @@ const (
 	SRODATAFIPS
 	SRODATAFIPSEND
 	SRODATAEND
-	SFUNCTAB
 	SPCLNTAB
 	STYPELINK
 	SELFROSECT
@@ -188,7 +187,6 @@ var ReadOnly = []SymKind{
 	SRODATAFIPS,
 	SRODATAFIPSEND,
 	SRODATAEND,
-	SFUNCTAB,
 }
 
 // IsText returns true if t is a text type.

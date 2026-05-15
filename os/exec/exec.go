@@ -153,10 +153,17 @@ type Cmd struct {
 	//
 	// Stdinが*os.Fileの場合、プロセスの標準入力はそのファイルに直接接続されます。
 	//
-	// それ以外の場合、コマンドの実行中に別のgoroutineがStdinから読み取り、
-	// そのデータをパイプ経由でコマンドに送信します。この場合、Waitはgoroutineが
-	// コピーを停止するまで完了しません。これは、Stdinの終わりに達したため（EOFまたは読み取りエラー）、
-	// パイプへの書き込みがエラーを返したため、または非ゼロのWaitDelayが設定されて期限切れになったためです。
+	// それ以外の場合、コマンド実行中に別のgoroutineがStdinから読み取り、
+	// そのデータをパイプ経由でコマンドへ渡します。この場合、Waitは
+	// そのgoroutineがコピーを停止するまで完了しません。停止するのは、
+	// Stdinの終端に達したとき（EOFまたは読み取りエラー）、
+	// パイプへの書き込みがエラーを返したとき、
+	// または非ゼロのWaitDelayが設定されて期限切れになったときです。
+	//
+	// WaitDelayに関わらず、WaitはStdinからのReadが完了するまで
+	// ブロックすることがあります。ブロッキングするio.Readerを使う必要がある場合は、
+	// StdinPipeメソッドでパイプを取得し、そのReaderからパイプへコピーし、
+	// Waitの返却後にReaderを閉じるようにしてください。
 	Stdin io.Reader
 
 	// StdoutとStderrは、プロセスの標準出力とエラーを指定します。
@@ -171,8 +178,14 @@ type Cmd struct {
 	// そのデータを対応するWriterに送信します。この場合、Waitはgoroutineが
 	// EOFに達するか、エラーに遭遇するか、非ゼロのWaitDelayが期限切れになるまで完了しません。
 	//
-	// StdoutとStderrが同じWriterで、==で比較できる型を持っている場合、
-	// 同時に最大1つのgoroutineだけがWriteを呼び出します。
+	// WaitDelayに関係なく、WaitはStdoutまたはStderrへのWriteが完了するまで
+	// ブロックすることがあります。ブロッキングするio.Writerを使う必要がある場合は、
+	// StdoutPipeまたはStderrPipeメソッドでパイプを取得し、
+	// そのパイプからWriterへコピーして、
+	// Waitが返った後にWriterを閉じるようにしてください。
+	//
+	// StdoutとStderrが同じwriterで、かつ==で比較可能な型である場合、
+	// 一度にWriteを呼び出すgoroutineは最大1つです。
 	Stdout io.Writer
 	Stderr io.Writer
 
