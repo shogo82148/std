@@ -8,8 +8,8 @@ import (
 	"github.com/shogo82148/std/crypto/ecdh"
 )
 
-// A KEM is a Key Encapsulation Mechanism, one of the three components of an
-// HPKE ciphersuite.
+// KEM は、HPKE 暗号スイートの 3 つのコンポーネントの 1 つである
+// 鍵カプセル化メカニズムです。
 type KEM interface {
 	ID() uint16
 
@@ -24,17 +24,17 @@ type KEM interface {
 	encSize() int
 }
 
-// NewKEM returns the KEM implementation for the given KEM ID.
+// NewKEM は与えられた KEM ID の KEM 実装を返します。
 //
-// Applications are encouraged to use specific implementations like [DHKEM] or
-// [MLKEM768X25519] instead, unless runtime agility is required.
+// アプリケーションは、ランタイム可変性が必要でない限り、
+// [DHKEM] や [MLKEM768X25519] などの特定の実装を使用してください。
 func NewKEM(id uint16) (KEM, error)
 
-// A PublicKey is an instantiation of a KEM (one of the three components of an
-// HPKE ciphersuite) with an encapsulation key (i.e. the public key).
+// PublicKey は、HPKE 暗号スイートの 3 つのコンポーネントの 1 つである
+// KEM の、カプセル化鍵（つまり公開鍵）による実装です。
 //
-// A PublicKey is usually obtained from a method of the corresponding [KEM] or
-// [PrivateKey], such as [KEM.NewPublicKey] or [PrivateKey.PublicKey].
+// PublicKey は通常、対応する [KEM] または [PrivateKey] のメソッドから
+// 取得されます。例えば [KEM.NewPublicKey] または [PrivateKey.PublicKey] など。
 type PublicKey interface {
 	KEM() KEM
 
@@ -43,11 +43,11 @@ type PublicKey interface {
 	encap() (sharedSecret, enc []byte, err error)
 }
 
-// A PrivateKey is an instantiation of a KEM (one of the three components of
-// an HPKE ciphersuite) with a decapsulation key (i.e. the secret key).
+// PrivateKey は、HPKE 暗号スイートの 3 つのコンポーネントの 1 つである
+// KEM の、カプセル化解除鍵（つまり秘密鍵）による実装です。
 //
-// A PrivateKey is usually obtained from a method of the corresponding [KEM],
-// such as [KEM.GenerateKey] or [KEM.NewPrivateKey].
+// PrivateKey は通常、対応する [KEM] のメソッドから取得されます。
+// 例えば [KEM.GenerateKey] または [KEM.NewPrivateKey] など。
 type PrivateKey interface {
 	KEM() KEM
 
@@ -58,43 +58,43 @@ type PrivateKey interface {
 	decap(enc []byte) (sharedSecret []byte, err error)
 }
 
-// DHKEM returns a KEM implementing one of
+// DHKEM は以下のいずれかを実装する KEM を返します。
 //
 //   - DHKEM(P-256, HKDF-SHA256)
 //   - DHKEM(P-384, HKDF-SHA384)
 //   - DHKEM(P-521, HKDF-SHA512)
 //   - DHKEM(X25519, HKDF-SHA256)
 //
-// depending on curve.
+// curve によります。
 func DHKEM(curve ecdh.Curve) KEM
 
-// NewDHKEMPublicKey returns a PublicKey implementing
+// NewDHKEMPublicKey は以下のいずれかを実装する PublicKey を返します。
 //
 //   - DHKEM(P-256, HKDF-SHA256)
 //   - DHKEM(P-384, HKDF-SHA384)
 //   - DHKEM(P-521, HKDF-SHA512)
 //   - DHKEM(X25519, HKDF-SHA256)
 //
-// depending on the underlying curve of pub ([ecdh.X25519], [ecdh.P256],
-// [ecdh.P384], or [ecdh.P521]).
+// pub の基礎となる曲線 ([ecdh.X25519]、[ecdh.P256]、
+// [ecdh.P384]、または [ecdh.P521]) によります。
 //
-// This function is meant for applications that already have an instantiated
-// crypto/ecdh public key. Otherwise, applications should use the
-// [KEM.NewPublicKey] method of [DHKEM].
+// この関数は、既にインスタンス化された crypto/ecdh 公開鍵を持つ
+// アプリケーション用です。それ以外の場合、アプリケーションは
+// [DHKEM] の [KEM.NewPublicKey] メソッドを使用してください。
 func NewDHKEMPublicKey(pub *ecdh.PublicKey) (PublicKey, error)
 
-// NewDHKEMPrivateKey returns a PrivateKey implementing
+// NewDHKEMPrivateKey は以下のいずれかを実装する PrivateKey を返します。
 //
 //   - DHKEM(P-256, HKDF-SHA256)
 //   - DHKEM(P-384, HKDF-SHA384)
 //   - DHKEM(P-521, HKDF-SHA512)
 //   - DHKEM(X25519, HKDF-SHA256)
 //
-// depending on the underlying curve of priv ([ecdh.X25519], [ecdh.P256],
-// [ecdh.P384], or [ecdh.P521]).
+// priv の基礎となる曲線 ([ecdh.X25519]、[ecdh.P256]、
+// [ecdh.P384]、または [ecdh.P521]) によります。
 //
-// This function is meant for applications that already have an instantiated
-// crypto/ecdh private key, or another implementation of a [ecdh.KeyExchanger]
-// (e.g. a hardware key). Otherwise, applications should use the
-// [KEM.NewPrivateKey] method of [DHKEM].
+// この関数は、既にインスタンス化された crypto/ecdh 秘密鍵、または
+// [ecdh.KeyExchanger] の別の実装（例えばハードウェアキー）を持つ
+// アプリケーション用です。それ以外の場合、アプリケーションは
+// [DHKEM] の [KEM.NewPrivateKey] メソッドを使用してください。
 func NewDHKEMPrivateKey(priv ecdh.KeyExchanger) (PrivateKey, error)
