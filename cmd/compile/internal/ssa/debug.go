@@ -24,7 +24,7 @@ type FuncDebug struct {
 	// The slots that make up each variable, indexed by VarID.
 	VarSlots [][]SlotID
 	// The location list data, indexed by VarID. Must be processed by PutLocationList.
-	LocationLists [][]byte
+	LocationLists [][]LocListEntry
 	// Register-resident output parameters for the function. This is filled in at
 	// SSA generation time.
 	RegOutputParams []*ir.Name
@@ -39,6 +39,15 @@ type FuncDebug struct {
 	// NOTE: block is only used if value is BlockStart.ID or BlockEnd.ID.
 	// Otherwise, it is ignored.
 	GetPC func(block, value ID) int64
+}
+
+// LocListEntry represents a single entry in a location list.
+// StartBlock/StartValue and EndBlock/EndValue are SSA coordinates
+// that get resolved to PCs during final encoding.
+type LocListEntry struct {
+	StartBlock, StartValue ID
+	EndBlock, EndValue     ID
+	Expr                   []byte
 }
 
 type BlockDebug struct {
@@ -132,28 +141,17 @@ func PopulateABIInRegArgOps(f *Func)
 // will be when machine code is emitted.
 func BuildFuncDebug(ctxt *obj.Link, f *Func, loggingLevel int, stackOffset func(LocalSlot) int32, rval *FuncDebug)
 
-// PutLocationList adds list (a location list in its intermediate
-// representation) to listSym.
-func (debugInfo *FuncDebug) PutLocationList(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
+// PutLocationList adds entries (a location list in structured form)
+// to listSym, encoding it in the appropriate DWARF format.
+func (debugInfo *FuncDebug) PutLocationList(entries []LocListEntry, ctxt *obj.Link, listSym, startPC *obj.LSym)
 
-// PutLocationListDwarf5 adds list (a location list in its intermediate
-// representation) to listSym in DWARF 5 format. NB: this is a somewhat
-// hacky implementation in that it actually reads a DWARF4 encoded
-// info from list (with all its DWARF4-specific quirks) then re-encodes
-// it in DWARF5. It would probably be better at some point to have
-// ssa/debug encode the list in a version-independent form and then
-// have this func (and PutLocationListDwarf4) intoduce the quirks.
-func (debugInfo *FuncDebug) PutLocationListDwarf5(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
+// PutLocationListDwarf5 adds entries (a location list in structured form)
+// to listSym in DWARF 5 format.
+func (debugInfo *FuncDebug) PutLocationListDwarf5(entries []LocListEntry, ctxt *obj.Link, listSym, startPC *obj.LSym)
 
-// PutLocationListDwarf4 adds list (a location list in its intermediate
-// representation) to listSym in DWARF 4 format.
-func (debugInfo *FuncDebug) PutLocationListDwarf4(list []byte, ctxt *obj.Link, listSym, startPC *obj.LSym)
-
-// SetupLocList creates the initial portion of a location list for a
-// user variable. It emits the encoded start/end of the range and a
-// placeholder for the size. Return value is the new list plus the
-// slot in the list holding the size (to be updated later).
-func SetupLocList(ctxt *obj.Link, entryID ID, list []byte, st, en ID) ([]byte, int)
+// PutLocationListDwarf4 adds entries (a location list in structured form)
+// to listSym in DWARF 4 format.
+func (debugInfo *FuncDebug) PutLocationListDwarf4(entries []LocListEntry, ctxt *obj.Link, listSym, startPC *obj.LSym)
 
 // BuildFuncDebugNoOptimized populates a FuncDebug object "rval" with
 // entries corresponding to the register-resident input parameters for

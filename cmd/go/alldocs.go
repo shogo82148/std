@@ -1469,11 +1469,11 @@
 //
 // -toolchain=nameフラグは、使用するGoツールチェーンを設定します。
 //
-// -printフラグは、最終的なgo.workをテキスト形式で印刷し、
-// go.modに書き戻す代わりに表示します。
+// -print フラグは、最終的な go.work を go.work に書き戻す代わりに、
+// そのテキスト形式で出力します。
 //
-// -jsonフラグは、最終的なgo.workファイルをJSON形式で印刷し、
-// go.modに書き戻す代わりに表示します。JSON出力は以下のGo型に対応します：
+// -json フラグは、最終的な go.work ファイルを go.work に書き戻す代わりに、
+// JSON 形式で出力します。JSON 出力は次の Go 型に対応します。
 //
 //	type GoWork struct {
 //		Go        string
