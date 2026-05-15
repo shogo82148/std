@@ -342,11 +342,12 @@ type Config struct {
 	// GetConfigForClientがnilの場合、Server()に渡されたConfigがすべての接続に使用されます。
 	//
 	// 返されたConfigでSessionTicketKeyが明示的に設定されている場合、または
-	// 返されたConfigでSetSessionTicketKeysが呼び出された場合、それらのキーが使用されます。
-	// そうでなければ、元のConfigキーが使用されます（自動管理されている場合は
-	// ローテーションされる可能性があります）。警告：これにより、親（または
-	// 兄弟）Configで元々確立された接続のセッション再開が可能になり、
-	// 返されたConfigの [Config.VerifyPeerCertificate] 値をバイパスする可能性があります。
+	// 返されたConfigでSetSessionTicketKeysが呼び出された場合、それらのキーが
+	// 使用されます。そうでない場合は元のConfigのキーが使用されます
+	// （自動管理されている場合はローテーションされる可能性があります）。警告：
+	// これにより、親（または兄弟）Configで元々確立された接続のセッション再開が
+	// 可能になり、返されたConfigの [Config.VerifyPeerCertificate] の値を
+	// バイパスする可能性があります。
 	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
 
 	// VerifyPeerCertificateは、nilでない場合、TLSクライアントまたはサーバーによる
@@ -363,8 +364,8 @@ type Config struct {
 	// サーバー上で空になる可能性があります。
 	//
 	// このコールバックは再開された接続では呼び出されません。警告：これには
-	// [Config.Clone] や [Config.GetConfigForClient] によって返されたConfigとその親で
-	// 再開された接続も含まれます。それが意図されていない場合は、代わりに
+	// [Config.Clone] または [Config.GetConfigForClient] によって返されたConfigおよびその
+	// 親Configで再開された接続も含まれます。それが意図されていない場合は、代わりに
 	// [Config.VerifyConnection] を使用するか、[Config.SessionTicketsDisabled] を設定してください。
 	//
 	// verifiedChainsとその内容は変更しないでください。
@@ -613,6 +614,13 @@ type EncryptedClientHelloKey struct {
 
 // Cloneはcの浅いコピーを返します。cがnilの場合はnilを返します。
 // TLSクライアントまたはサーバーで並行利用中の [Config] であっても、安全にCloneできます。
+//
+// 返されたConfigは元のConfigとセッションチケットキーを共有する可能性があり、
+// その場合2つのConfig間で接続が再開されることがあります。警告：
+// [Config.VerifyPeerCertificate] は再開された接続では呼び出されません。
+// 元の親Config上で確立された接続も含みます。
+// それが意図されていない場合は、代わりに [Config.VerifyConnection] を使用するか、
+// [Config.SessionTicketsDisabled] を設定してください。
 func (c *Config) Clone() *Config
 
 // SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
