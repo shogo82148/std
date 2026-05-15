@@ -196,6 +196,14 @@ type State struct {
 	modulesEnabled bool
 	MainModules    *MainModuleSet
 
+	// pkgLoader is the most recently-used package loader.
+	// It holds details about individual packages.
+	//
+	// This variable should only be accessed directly in top-level exported
+	// functions. All other functions that require or produce a *packageLoader should pass
+	// or return it as an explicit parameter.
+	pkgLoader *packageLoader
+
 	// requirements is the requirement graph for the main module.
 	//
 	// It is always non-nil if the main module's go.mod file has been

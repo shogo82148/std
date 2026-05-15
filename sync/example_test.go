@@ -59,13 +59,13 @@ func ExampleOnce() {
 		fmt.Println("Only once")
 	}
 	done := make(chan bool)
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		go func() {
 			once.Do(onceBody)
 			done <- true
 		}()
 	}
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		<-done
 	}
 	// Output:
@@ -77,14 +77,14 @@ func ExampleOnce() {
 func ExampleOnceValue() {
 	once := sync.OnceValue(func() int {
 		sum := 0
-		for i := 0; i < 1000; i++ {
+		for i := range 1000 {
 			sum += i
 		}
 		fmt.Println("Computed once:", sum)
 		return sum
 	})
 	done := make(chan bool)
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		go func() {
 			const want = 499500
 			got := once()
@@ -94,7 +94,7 @@ func ExampleOnceValue() {
 			done <- true
 		}()
 	}
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		<-done
 	}
 	// Output:
@@ -108,7 +108,7 @@ func ExampleOnceValues() {
 		return os.ReadFile("example_test.go")
 	})
 	done := make(chan bool)
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		go func() {
 			data, err := once()
 			if err != nil {
@@ -118,7 +118,7 @@ func ExampleOnceValues() {
 			done <- true
 		}()
 	}
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		<-done
 	}
 	// Output:
