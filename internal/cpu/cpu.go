@@ -160,6 +160,15 @@ var RISCV64 struct {
 	HasFastMisaligned bool
 	HasV              bool
 	HasZbb            bool
+	HasZvbb           bool
+	HasZvbc           bool
+	HasZvkg           bool
+	HasZvkned         bool
+	HasZvknha         bool
+	HasZvknhb         bool
+	HasZvksed         bool
+	HasZvksh          bool
+	HasZvkt           bool
 	_                 CacheLinePad
 }
 
