@@ -229,6 +229,7 @@ type Transport struct {
 	// h2transport (via onceSetNextProtoDefaults)
 	nextProtoOnce      sync.Once
 	h2transport        h2Transport
+	h3transport        dialClientConner
 	tlsNextProtoWasNil bool
 
 	// ForceAttemptHTTP2は、非ゼロの
