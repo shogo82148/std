@@ -254,9 +254,10 @@ const (
 // It represents Go symbols in a flat pkg+"."+name namespace.
 type LSym struct {
 	Name string
-	Type objabi.SymKind
 	Attribute
+	Type objabi.SymKind
 
+	Align  int16
 	Size   int64
 	Gotype *LSym
 	P      []byte
@@ -273,7 +274,6 @@ type LSym struct {
 type FuncInfo struct {
 	Args      int32
 	Locals    int32
-	Align     int32
 	FuncID    abi.FuncID
 	FuncFlag  abi.FuncFlag
 	StartLine int32
