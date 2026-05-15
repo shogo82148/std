@@ -28,5 +28,6 @@ func SetTestingReader(r io.Reader)
 // CustomReader returns [Reader] or, only if the GODEBUG setting
 // "cryptocustomrand=1" is set, the provided io.Reader.
 //
-// If returning a non-default Reader, it calls [randutil.MaybeReadByte] on it.
+// If returning a non-default Reader, it calls [randutil.MaybeReadByte] on it,
+// unless it's the global testing Reader set with [SetTestingReader].
 func CustomReader(r io.Reader) io.Reader
