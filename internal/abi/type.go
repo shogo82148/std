@@ -243,8 +243,17 @@ func (t *Type) StructType() *StructType
 // MapType returns t cast to a *MapType, or nil if its tag does not match.
 func (t *Type) MapType() *MapType
 
+// PointerType returns t cast to a *PtrType, or nil if its tag does not match.
+func (t *Type) PointerType() *PtrType
+
+// SliceType returns t cast to a *SliceType, or nil if its tag does not match.
+func (t *Type) SliceType() *SliceType
+
 // ArrayType returns t cast to a *ArrayType, or nil if its tag does not match.
 func (t *Type) ArrayType() *ArrayType
+
+// ChanType returns t cast to a *ChanType, or nil if its tag does not match.
+func (t *Type) ChanType() *ChanType
 
 // FuncType returns t cast to a *FuncType, or nil if its tag does not match.
 func (t *Type) FuncType() *FuncType
@@ -390,6 +399,18 @@ func (n Name) Name() string
 func (n Name) Tag() string
 
 func NewName(n, tag string, exported, embedded bool) Name
+
+// DescriptorSize returns the contiguous size taken in memory by the
+// type descriptor. This is the size of the Type struct,
+// plus other fields used by some type kinds, plus the UncommonType
+// struct if present, plus other optional information.
+// This is just the size of the bytes that appear contiguously in memory.
+// It does not include the size of things like type strings
+// and field names that appear elsewhere.
+//
+// This code must match the data structures build by
+// cmd/compile/internal/reflectdata/reflect.go:writeType.
+func (t *Type) DescriptorSize() int
 
 const (
 	TraceArgsLimit    = 10
