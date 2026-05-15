@@ -354,10 +354,6 @@ const (
 	// address of a BEQZ/BNEZ instruction, by encoding it into the instruction.
 	R_JMP21LOONG64
 
-	// R_JMPLOONG64 resolves to the 28-bit 4-byte aligned PC-relative target
-	// address of a B instruction, by encoding it into the instruction.
-	R_JMPLOONG64
-
 	// R_ADDRMIPSU (only used on mips/mips64) resolves to the sign-adjusted "upper" 16
 	// bits (bit 16-31) of an external address, by encoding it into the instruction.
 	R_ADDRMIPSU
