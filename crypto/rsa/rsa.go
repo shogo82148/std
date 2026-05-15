@@ -166,6 +166,16 @@ var ErrDecryption = errors.New("crypto/rsa: decryption error")
 // 自己適応攻撃を避けるために、意図的にあいまいです。
 var ErrVerification = errors.New("crypto/rsa: verification error")
 
-// Precomputeは将来の秘密鍵操作を高速化するためのいくつかの計算を実行します。
-// 検証されていない秘密鍵に対して実行しても安全です。
+// Precomputeは、将来の秘密鍵操作を高速化するためのいくつかの計算を行います。
+// 検証されていない秘密鍵に対して実行しても安全であり、有効な鍵に対する
+// 将来の [PrivateKey.Validate] の呼び出しを高速化できます。
+//
+// PrecomputeはPrecomputedフィールドに書き込むため、他のいかなるメソッドとも
+// 同時に呼び出してはいけません。
+//
+// Precomputeはエラーを返しません。アプリケーションは、鍵に関する問題
+// （Precomputeが失敗する原因になるものを含む）を確認するため、
+// Precomputeの後に [PrivateKey.Validate] を呼び出すべきです。
+//
+// すでに事前計算済みの鍵に対してPrecomputeを呼び出しても、何も起こりません。
 func (priv *PrivateKey) Precompute()

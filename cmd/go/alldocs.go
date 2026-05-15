@@ -190,11 +190,11 @@
 //	-linkshared
 //		-buildmode=sharedで以前に作成された共有ライブラリに対してリンクされるコードをビルドします。
 //	-mod mode
-//		使用するモジュールのダウンロードモード: readonly、vendor、またはmod。
-//		デフォルトでは、vendorディレクトリが存在し、go.modのgoバージョンが1.14以上の場合、
-//		goコマンドは-mod=vendorが設定されているかのように動作します。
-//		それ以外の場合、goコマンドは-mod=readonlyが設定されているかのように動作します。
-//		詳細はhttps://golang.org/ref/mod#build-commandsを参照してください。
+//		使用するモジュールダウンロードモードを指定します: readonly、vendor、または mod。
+//		デフォルトでは、vendorディレクトリが存在し、go.mod内のGoバージョンが
+//		1.14以上の場合、goコマンドは -mod=vendor が設定されたものとして動作します。
+//		それ以外の場合、goコマンドは -mod=readonly が設定されたものとして動作します。
+//		詳細は https://go.dev/ref/mod#build-commands を参照してください。
 //	-modcacherw
 //		モジュールキャッシュ内の新しく作成されたディレクトリを読み取り専用ではなく、
 //		読み書き可能にします。
@@ -654,7 +654,7 @@
 //
 //	go get toolchain@patch
 //
-// 詳細は https://golang.org/ref/mod#go-get を参照してください。
+// 詳細は https://go.dev/ref/mod#go-get を参照してください。
 //
 // Goの初期のバージョンでは、'go get'はパッケージのビルドとインストールに使用されていました。
 // 現在では、'go get'はgo.mod内の依存関係の調整に専用化されています。代わりに'go install'
@@ -665,8 +665,9 @@
 //	go install example.com/pkg@v1.2.3
 //	go install example.com/pkg@latest
 //
-// 詳細は 'go help install' または https://golang.org/ref/mod#go-install を参照してください。
+// 詳細は 'go help install' または https://go.dev/ref/mod#go-install を参照してください。
 //
+
 // 'go get'は以下のフラグを受け入れます。
 //
 // -tフラグは、getにコマンドラインで指定されたパッケージのテストをビルドするために必要なモジュールを考慮するよう指示します。
@@ -687,7 +688,7 @@
 //
 // ビルドフラグの詳細については、「go help build」を参照してください。
 //
-// モジュールについての詳細は、https://golang.org/ref/mod を参照してください。
+// モジュールについての詳細は、https://go.dev/ref/mod を参照してください。
 //
 // 'go get'を使用して最小のGoバージョンと推奨されるGoツールチェーンを更新する方法についての詳細は、https://go.dev/doc/toolchain を参照してください。
 //
@@ -1027,7 +1028,7 @@
 //
 // パッケージの指定についての詳細は、'go help packages'を参照してください。
 //
-// モジュールについての詳細は、https://golang.org/ref/modを参照してください。
+// モジュールについての詳細は、https://go.dev/ref/mod を参照してください。
 //
 // # Module maintenance
 //
@@ -1100,9 +1101,9 @@
 //
 // -xフラグを使用すると、downloadは実行するコマンドを出力します。
 //
-// 'go mod download'についての詳細は、https://golang.org/ref/mod#go-mod-download を参照してください。
+// 'go mod download'についての詳細は、https://go.dev/ref/mod#go-mod-download を参照してください。
 //
-// バージョンクエリについての詳細は、https://golang.org/ref/mod#version-queries を参照してください。
+// バージョンクエリについての詳細は、https://go.dev/ref/mod#version-queries を参照してください。
 //
 // # Edit go.mod from tools or scripts
 //
@@ -1231,7 +1232,7 @@
 //
 // Editは、-C、-n、および-xビルドフラグも提供します。
 //
-// 'go mod edit'についての詳細は、https://golang.org/ref/mod#go-mod-edit を参照してください。
+// 'go mod edit'についての詳細は、https://go.dev/ref/mod#go-mod-edit を参照してください。
 //
 // # Print module requirement graph
 //
@@ -1248,7 +1249,7 @@
 //
 // -xフラグは、graphが実行するコマンドを印刷するようにgraphに指示します。
 //
-// 'go mod graph'についての詳細は、https://golang.org/ref/mod#go-mod-graph を参照してください。
+// 'go mod graph'についての詳細は、https://go.dev/ref/mod#go-mod-graph を参照してください。
 //
 // # Initialize new module in current directory
 //
@@ -1263,7 +1264,7 @@
 // モジュールパス引数が省略された場合、initは.goファイル内のインポートコメントと
 // 現在のディレクトリ（GOPATHにある場合）を使用してモジュールパスを推測しようとします。
 //
-// 'go mod init'についての詳細は、https://golang.org/ref/mod#go-mod-init を参照してください。
+// 'go mod init'についての詳細は、https://go.dev/ref/mod#go-mod-init を参照してください。
 //
 // # Add missing and remove unused modules
 //
@@ -1315,7 +1316,7 @@
 // "vendor"ではない。goコマンドはモジュールのルートディレクトリ内の"vendor"という名前のベンダーディレクトリのみを使用できるため、
 // このフラグは主に他のツールに有用です。
 //
-// 'go mod vendor'についての詳細は、https://golang.org/ref/mod#go-mod-vendor を参照してください。
+// 'go mod vendor'についての詳細は、https://go.dev/ref/mod#go-mod-vendor を参照してください。
 //
 // # Verify dependencies have expected content
 //
@@ -1328,7 +1329,7 @@
 // verifyは"all modules verified."を印刷します。それ以外の場合、どのモジュールが変更されたかを報告し、
 // 'go mod'が非ゼロのステータスで終了する原因となります。
 //
-// 'go mod verify'についての詳細は、https://golang.org/ref/mod#go-mod-verify を参照してください。
+// 'go mod verify'についての詳細は、https://go.dev/ref/mod#go-mod-verify を参照してください。
 //
 // # Explain why packages or modules are needed
 //
@@ -1359,7 +1360,7 @@
 //	(main module does not need package golang.org/x/text/encoding)
 //	$
 //
-// 'go mod why'についての詳細は、https://golang.org/ref/mod#go-mod-why を参照してください。
+// 'go mod why'についての詳細は、https://go.dev/ref/mod#go-mod-why を参照してください。
 //
 // # Workspace maintenance
 //
@@ -2162,7 +2163,7 @@
 //	GO111MODULE
 //		goコマンドがモジュール対応モードかGOPATHモードで実行されるかを制御します。
 //		"off"、"on"、または"auto"を指定できます。
-//		https://golang.org/ref/mod#mod-commands を参照してください。
+//		https://go.dev/ref/mod#mod-commands を参照してください。
 //	GOARCH
 //		コードをコンパイルするアーキテクチャまたはプロセッサ。
 //		例：amd64、386、arm、ppc64など。
@@ -2206,15 +2207,15 @@
 //	GOPRIVATE, GONOPROXY, GONOSUMDB
 //		常に直接取得されるべき、またはチェックサムデータベースと比較されるべきでない
 //		モジュールパスプレフィックスのglobパターン（Go の path.Match の構文）のカンマ区切りリスト。
-//		https://golang.org/ref/mod#private-modules を参照してください。
+//		https://go.dev/ref/mod#private-modules を参照してください。
 //	GOPROXY
-//		Go モジュールプロキシの URL。詳細は https://golang.org/ref/mod#environment-variables
-//		および https://golang.org/ref/mod#module-proxy を参照してください。
+//		Go モジュールプロキシの URL。詳細は https://go.dev/ref/mod#environment-variables
+//		および https://go.dev/ref/mod#module-proxy を参照してください。
 //	GOROOT
 //		goツリーのルート。
 //	GOSUMDB
 //		使用するチェックサムデータベースの名前と、オプションでその公開鍵と
-//		URL。https://golang.org/ref/mod#authenticating を参照してください。
+//		URL。https://go.dev/ref/mod#authenticating を参照してください。
 //	GOTMPDIR
 //		go コマンドが一時的なソースファイル、パッケージ、
 //		およびバイナリを書き込むディレクトリ。
@@ -2274,7 +2275,7 @@
 //	GOAMD64
 //		GOARCH=amd64において、コンパイル対象のマイクロアーキテクチャレベルを指定します。
 //		有効な値はv1（デフォルト）、v2、v3、v4です。
-//		https://golang.org/wiki/MinimumRequirements#amd64 を参照してください。
+//		https://go.dev/wiki/MinimumRequirements#amd64 を参照してください。
 //	GOARM
 //		GOARCH=armにおいて、コンパイル対象のARMアーキテクチャを指定します。
 //		有効な値は5、6、7です。
@@ -2472,22 +2473,22 @@
 // goコマンドが実行されると、現在のディレクトリとその親ディレクトリを順に探し、
 // メイン（現在の）モジュールのルートをマークするgo.modを見つけます。
 //
-// go.modファイルの形式は、https://golang.org/ref/mod#go-mod-file で詳しく説明されています。
+// go.modファイルの形式は、https://go.dev/ref/mod#go-mod-file で詳しく説明されています。
 //
 // 新しいgo.modファイルを作成するには、'go mod init'を使用します。詳細は
-// 'go help mod init'またはhttps://golang.org/ref/mod#go-mod-init を参照してください。
+// 'go help mod init'またはhttps://go.dev/ref/mod#go-mod-init を参照してください。
 //
 // 不足しているモジュール要件を追加したり、不要な要件を削除したりするには、
 // 'go mod tidy'を使用します。詳細は、'go help mod tidy'または
-// https://golang.org/ref/mod#go-mod-tidy を参照してください。
+// https://go.dev/ref/mod#go-mod-tidy を参照してください。
 //
 // 特定のモジュール要件を追加、アップグレード、ダウングレード、または削除するには、
 // 'go get'を使用します。詳細は、'go help module-get'または
-// https://golang.org/ref/mod#go-get を参照してください。
+// https://go.dev/ref/mod#go-get を参照してください。
 //
 // 他の変更を加えたり、go.modをJSONとして解析して他のツールで使用したりするには、
 // 'go mod edit'を使用します。'go help mod edit'または
-// https://golang.org/ref/mod#go-mod-edit を参照してください。
+// https://go.dev/ref/mod#go-mod-edit を参照してください。
 //
 // # GOPATH environment variable
 //
@@ -2529,7 +2530,7 @@
 // このリストの最初の要素は、上記で説明されたデフォルトのモジュールキャッシュと
 // バイナリインストールディレクトリの場所を設定するために使用されます。
 //
-// カスタムGOPATHを設定するには https://golang.org/wiki/SettingGOPATH を参照してください。
+// カスタムGOPATHを設定するには https://go.dev/wiki/SettingGOPATH を参照してください。
 //
 // GOPATHにリストされている各ディレクトリは、所定の構造を持つ必要があります：
 //
@@ -2576,7 +2577,7 @@
 // Goはソースコードを見つけるために、GOPATHにリストされた各ディレクトリを検索しますが、
 // 新しいパッケージは常にリストの最初のディレクトリにダウンロードされます。
 //
-// 例については、https://golang.org/doc/code.html を参照してください。
+// 例については、https://go.dev/doc/code.html を参照してください。
 //
 // # GOPATH mode vendor directories
 //
@@ -2630,7 +2631,7 @@
 // モジュールプロキシになることができます。
 //
 // GOPROXYプロトコルの詳細については、
-// https://golang.org/ref/mod#goproxy-protocol を参照してください。
+// https://go.dev/ref/mod#goproxy-protocol を参照してください。
 //
 // # Import path syntax
 //
@@ -2667,7 +2668,7 @@
 // 「example.com/m/foo/quux」はすべて「foo/internal/baz」をインポートできますが、
 // パッケージ「example.com/m/crash/bang」はインポートできません。
 //
-// 詳細については https://golang.org/s/go14internal を参照してください。
+// 詳細については https://go.dev/s/go14internal を参照してください。
 //
 // # Fully-qualified import paths
 //
@@ -2797,7 +2798,7 @@
 // "foo/subdir"サブディレクトリからコードをダウンロードします
 //
 // ダウンロードされたモジュールはモジュールキャッシュに保存されます。
-// https://golang.org/ref/mod#module-cache を参照してください。
+// https://go.dev/ref/mod#module-cache を参照してください。
 //
 // go-import メタタグの追加のバリアントが
 // 認識され、バージョン管理システムをリストするものよりも優先されます。
@@ -2805,8 +2806,8 @@
 //
 //	<meta name="go-import" content="example.org mod https://code.org/moduleproxy">
 //
-// このタグは、パスがexample.orgで始まるモジュールを、URL https://code.org/moduleproxyで利用可能なモジュールプロキシからフェッチすることを意味します。
-// プロキシプロトコルの詳細については、https://golang.org/ref/mod#goproxy-protocol を参照してください。
+// このタグは、パスがexample.orgで始まるモジュールを、URL https://code.org/moduleproxy で利用可能なモジュールプロキシからフェッチすることを意味します。
+// プロキシプロトコルの詳細については、https://go.dev/ref/mod#goproxy-protocol を参照してください。
 //
 // # Modules, module versions, and more
 //
@@ -2817,9 +2818,9 @@
 // モジュールプロキシサーバーからダウンロードすることもできます。
 //
 // モジュールに関する一連のチュートリアルについては、
-// https://golang.org/doc/tutorial/create-module を参照してください。
+// https://go.dev/doc/tutorial/create-module を参照してください。
 //
-// モジュールに関する詳細なリファレンスについては、https://golang.org/ref/mod を参照してください。
+// モジュールに関する詳細なリファレンスについては、https://go.dev/ref/mod を参照してください。
 //
 // デフォルトでは、goコマンドはhttps://proxy.golang.orgからモジュールをダウンロードすることができます。
 // また、https://sum.golang.orgのチェックサムデータベースを使用してモジュールを認証することもできます。
@@ -2828,7 +2829,7 @@
 // https://proxy.golang.org/privacy と https://sum.golang.org/privacy で利用可能です。
 //
 // goコマンドのダウンロード動作は、GOPROXY、GOSUMDB、GOPRIVATEなどの環境変数を使用して設定することができます。
-// 詳細は 'go help environment' と https://golang.org/ref/mod#private-module-privacy を参照してください。
+// 詳細は 'go help environment' と https://go.dev/ref/mod#private-module-privacy を参照してください。
 //
 // # Module authentication using go.sum
 //
@@ -2837,7 +2838,7 @@
 // 既知のハッシュは、モジュールのルートディレクトリにあるgo.sumという名前のファイルに保存されます。
 // ハッシュは、GOSUMDB、GOPRIVATE、およびGONOSUMDBの値に応じて、チェックサムデータベースからもダウンロードされることがあります。
 //
-// 詳細は、https://golang.org/ref/mod#authenticating を参照してください。
+// 詳細は、https://go.dev/ref/mod#authenticating を参照してください。
 //
 // # Package lists and patterns
 //
@@ -2965,7 +2966,7 @@
 //
 // 'go env -w'コマンド（'go help env'を参照）は、これらの変数を将来のgoコマンドの呼び出しに設定するために使用できます。
 //
-// 詳細は、https://golang.org/ref/mod#private-modules を参照してください。
+// 詳細は、https://go.dev/ref/mod#private-modules を参照してください。
 //
 // # Testing flags
 //
