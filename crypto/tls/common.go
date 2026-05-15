@@ -611,16 +611,12 @@ type EncryptedClientHelloKey struct {
 	SendAsRetry bool
 }
 
-// Cloneは、cのシャロークローンを返すか、cがnilの場合はnilを返します。
-// TLSクライアントまたはサーバーによって同時に使用されている [Config] を
-// クローンすることは安全です。
+// Cloneはcの浅いコピーを返します。cがnilの場合はnilを返します。
+// TLSクライアントまたはサーバーで並行利用中の [Config] であっても、安全にCloneできます。
 //
-// 返されたConfigは元のConfigとセッションチケットキーを共有する可能性があり、
-// これは2つのConfig間で接続が再開される可能性があることを意味します。警告：
-// [Config.VerifyPeerCertificate] は再開された接続では呼び出されません。
-// これには、親Configで元々確立された接続も含まれます。
-// それが意図されていない場合は、代わりに [Config.VerifyConnection] を使用するか、
-// [Config.SessionTicketsDisabled] を設定してください。
+// Config.SessionTicketKeyが未設定で、かつConfig.SetSessionTicketKeysが
+// 呼び出されていない場合、Config間でセッションが再開されることを防ぐために、
+// cloneは元のConfigと同じ自動ローテーションされたセッションチケットキーを共有しません。
 func (c *Config) Clone() *Config
 
 // SetSessionTicketKeysはサーバーのセッションチケットのキーを更新します。
