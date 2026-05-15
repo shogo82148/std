@@ -25,7 +25,8 @@ func ContainsAny(s, chars string) bool
 // ContainsRuneは、Unicodeコードポイントrがs内に含まれているかどうかを報告します。
 func ContainsRune(s string, r rune) bool
 
-// ContainsFuncは、s内の任意のUnicodeコードポイントrがf(r)を満たすかどうかを報告します。
+// ContainsFuncは、s内のUnicodeコードポイントrのいずれかがf(r)を満たすかどうかを報告します。
+// fの呼び出しがtrueを返した時点で停止します。
 func ContainsFunc(s string, f func(rune) bool) bool
 
 // LastIndexは、s内のsubstrの最後のインスタンスのインデックスを返します。

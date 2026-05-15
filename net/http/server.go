@@ -13,6 +13,7 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/net/http/internal"
 
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
@@ -21,8 +22,10 @@ import (
 
 // HTTPサーバーで使用されるエラー。
 var (
-	// ErrBodyNotAllowedは、HTTPメソッドまたはレスポンスコードがボディを許可しない場合に、ResponseWriter.Write呼び出しによって返されます。
-	ErrBodyNotAllowed = errors.New("http: request method or response status code does not allow body")
+	// ErrBodyNotAllowedは、HTTPメソッドまたはレスポンスコードが
+	// ボディを許可しない場合に、ResponseWriter.Writeの呼び出しで
+	// 返されます。
+	ErrBodyNotAllowed = internal.ErrBodyNotAllowed
 
 	// ErrHijackedは、Hijackerインターフェースを使用して基礎となる接続がハイジャックされた場合に、ResponseWriter.Write呼び出しによって返されます。
 	// ハイジャックされた接続でのゼロバイト書き込みは、他の副作用なしにErrHijackedを返します。
@@ -132,10 +135,11 @@ const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
 
 var _ closeWriter = (*net.TCPConn)(nil)
 
-// ErrAbortHandlerは、ハンドラーを中止するためのセンチネルパニック値です。
-// ServeHTTPからのパニックはすべて、クライアントへの応答を中止しますが、
-// ErrAbortHandlerでパニックすると、サーバーのエラーログにスタックトレースを記録しないようにすることができます。
-var ErrAbortHandler = errors.New("net/http: abort Handler")
+// ErrAbortHandlerは、ハンドラーを中止するための番兵パニック値です。
+// ServeHTTPで発生したパニックはどれもクライアントへの応答を中止しますが、
+// ErrAbortHandlerでパニックすると、サーバーのエラーログへのスタック
+// トレースの記録も抑制されます。
+var ErrAbortHandler = internal.ErrAbortHandler
 
 // HandlerFunc型は、HTTPハンドラーとして通常の関数を使用できるようにするためのアダプタです。
 // fが適切なシグネチャを持つ関数である場合、HandlerFunc(f)はfを呼び出す [Handler] です。
@@ -469,6 +473,7 @@ type Server struct {
 	listeners  map[*net.Listener]struct{}
 	activeConn map[*conn]struct{}
 	onShutdown []func()
+	h2         *http2Server
 
 	listenerGroup sync.WaitGroup
 }

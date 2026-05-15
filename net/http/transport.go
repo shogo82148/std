@@ -12,9 +12,9 @@ package http
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
-	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/net/http/internal"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
@@ -273,8 +273,8 @@ func ProxyFromEnvironment(req *Request) (*url.URL, error)
 // ProxyURLは、常に同じURLを返すプロキシ関数（[Transport] で使用するため）を返します。
 func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 
-// ErrSkipAltProtocolは、Transport.RegisterProtocolによって定義されたセンチネルエラー値です。
-var ErrSkipAltProtocol = errors.New("net/http: skip alternate protocol")
+// ErrSkipAltProtocolは、Transport.RegisterProtocolで定義されるセンチネルエラー値です。
+var ErrSkipAltProtocol = internal.ErrSkipAltProtocol
 
 // RegisterProtocolは、新しいプロトコルをスキームとともに登録します。
 // [Transport] は、指定されたスキームを使用してリクエストをrtに渡します。

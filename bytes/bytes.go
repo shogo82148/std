@@ -32,7 +32,8 @@ func ContainsAny(b []byte, chars string) bool
 // ContainsRuneは、UTF-8でエンコードされたバイトスライスbにルーンが含まれているかどうかを報告します。
 func ContainsRune(b []byte, r rune) bool
 
-// ContainsFuncは、UTF-8エンコードされたコードポイントの中で、bのどれかがf(r)を満たすかどうかを報告します。
+// ContainsFuncは、b内のUTF-8エンコードされたコードポイントrのいずれかがf(r)を満たすかどうかを報告します。
+// fがtrueを返した時点で、ただちに停止します。
 func ContainsFunc(b []byte, f func(rune) bool) bool
 
 // IndexByteはb内の最初のcのインスタンスのインデックスを返します。もしcがbに存在しない場合は、-1を返します。

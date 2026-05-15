@@ -45,8 +45,9 @@ func IndexFunc[S ~[]E, E any](s S, f func(E) bool) int { return 0 }
 // Contains は、s 内に v が存在するかどうかを報告します。
 func Contains[S ~[]E, E comparable](s S, v E) bool { return false }
 
-// ContainsFunc は、s の少なくとも1つの要素 e が f(e) を満たすかどうかを報告します。
-func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool { return false }
+// ContainsFuncは、sの要素eのうち少なくとも1つがf(e)を満たすかどうかを報告します。
+// fの呼び出しがtrueを返した時点で停止します。
+func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool
 
 // Insertは値v...をインデックスiでsに挿入し、
 // 変更されたスライスを返します。
