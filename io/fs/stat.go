@@ -13,6 +13,6 @@ type StatFS interface {
 
 // Statはファイルシステムから指定されたファイルに関する [FileInfo] を返します。
 //
-// もしfsが [StatFS] を実装している場合、Statはfs.Statを呼び出します。
-// そうでない場合、Statは [File] を開いて統計情報を取得します。
+// fsysが [StatFS] を実装している場合、StatはfsysのStatを呼び出します。
+// そうでない場合、Statは [File] を開いてstatを取得します。
 func Stat(fsys FS, name string) (FileInfo, error)
