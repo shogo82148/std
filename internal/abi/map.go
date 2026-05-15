@@ -4,6 +4,8 @@
 
 package abi
 
+import "github.com/shogo82148/std/unsafe"
+
 // Map constants common to several packages
 // runtime/runtime-gdb.py:MapTypePrinter contains its own copy
 const (
@@ -17,8 +19,6 @@ const (
 	MapMaxKeyBytes  = 128
 	MapMaxElemBytes = 128
 )
-<<<<<<< HEAD
-=======
 
 type MapType struct {
 	Type
@@ -66,4 +66,3 @@ func (mt *MapType) HashMightPanic() bool
 func (mt *MapType) IndirectKey() bool
 
 func (mt *MapType) IndirectElem() bool
->>>>>>> af828fe07e833d4b09d20a822ebe5fb87440e115
