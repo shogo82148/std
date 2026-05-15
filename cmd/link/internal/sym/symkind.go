@@ -109,6 +109,7 @@ const (
 	// Allocated zero-initialized segment.
 	SBSS
 	SNOPTRBSS
+	SGCMASK
 	SLIBFUZZER_8BIT_COUNTER
 	SCOVERAGE_COUNTER
 	SCOVERAGE_AUXVAR
