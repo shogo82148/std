@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package mlkem implements the quantum-resistant key encapsulation method
-// ML-KEM (formerly known as Kyber), as specified in [NIST FIPS 203].
+// Package mlkem は、[NIST FIPS 203] で指定された量子耐性鍵カプセル化方式
+// ML-KEM (以前は Kyber として知られていた) を実装します。
 //
-// Most applications should use the ML-KEM-768 parameter set, as implemented by
-// [DecapsulationKey768] and [EncapsulationKey768].
+// ほとんどのアプリケーションは、[DecapsulationKey768] と [EncapsulationKey768]
+// で実装された ML-KEM-768 パラメータセットを使用すべきです。
 //
 // [NIST FIPS 203]: https://doi.org/10.6028/NIST.FIPS.203
 package mlkem
@@ -17,139 +17,139 @@ import (
 )
 
 const (
-	// SharedKeySize is the size of a shared key produced by ML-KEM.
+	// SharedKeySize は、ML-KEM で生成される共有鍵のサイズです。
 	SharedKeySize = 32
 
-	// SeedSize is the size of a seed used to generate a decapsulation key.
+	// SeedSize は、カプセル化解除鍵を生成するために使用されるシードのサイズです。
 	SeedSize = 64
 
-	// CiphertextSize768 is the size of a ciphertext produced by ML-KEM-768.
+	// CiphertextSize768 は、ML-KEM-768 で生成される暗号文のサイズです。
 	CiphertextSize768 = 1088
 
-	// EncapsulationKeySize768 is the size of an ML-KEM-768 encapsulation key.
+	// EncapsulationKeySize768 は、ML-KEM-768 カプセル化鍵のサイズです。
 	EncapsulationKeySize768 = 1184
 
-	// CiphertextSize1024 is the size of a ciphertext produced by ML-KEM-1024.
+	// CiphertextSize1024 は、ML-KEM-1024 で生成される暗号文のサイズです。
 	CiphertextSize1024 = 1568
 
-	// EncapsulationKeySize1024 is the size of an ML-KEM-1024 encapsulation key.
+	// EncapsulationKeySize1024 は、ML-KEM-1024 カプセル化鍵のサイズです。
 	EncapsulationKeySize1024 = 1568
 )
 
-// DecapsulationKey768 is the secret key used to decapsulate a shared key
-// from a ciphertext. It includes various precomputed values.
+// DecapsulationKey768 は、暗号文から共有鍵をカプセル化解除するために使用される
+// 秘密鍵です。様々な事前計算値が含まれています。
 type DecapsulationKey768 struct {
 	key *mlkem.DecapsulationKey768
 }
 
-// GenerateKey768 generates a new decapsulation key, drawing random bytes from
-// a secure source. The decapsulation key must be kept secret.
+// GenerateKey768 は、安全なソースからランダムバイトを取得して、新しい
+// カプセル化解除鍵を生成します。カプセル化解除鍵は秘密に保つ必要があります。
 func GenerateKey768() (*DecapsulationKey768, error)
 
-// NewDecapsulationKey768 expands a decapsulation key from a 64-byte seed in the
-// "d || z" form. The seed must be uniformly random.
+// NewDecapsulationKey768 は、"d || z" 形式の 64 バイトシードから
+// カプセル化解除鍵を展開します。シードは均一にランダムである必要があります。
 func NewDecapsulationKey768(seed []byte) (*DecapsulationKey768, error)
 
-// Bytes returns the decapsulation key as a 64-byte seed in the "d || z" form.
+// Bytes は、カプセル化解除鍵を "d || z" 形式の 64 バイトシードとして返します。
 //
-// The decapsulation key must be kept secret.
+// カプセル化解除鍵は秘密に保つ必要があります。
 func (dk *DecapsulationKey768) Bytes() []byte
 
-// Decapsulate generates a shared key from a ciphertext and a decapsulation
-// key. If the ciphertext is not valid, Decapsulate returns an error.
+// Decapsulate は、暗号文とカプセル化解除鍵から共有鍵を生成します。
+// 暗号文が有効でない場合、Decapsulate はエラーを返します。
 //
-// The shared key must be kept secret.
+// 共有鍵は秘密に保つ必要があります。
 func (dk *DecapsulationKey768) Decapsulate(ciphertext []byte) (sharedKey []byte, err error)
 
-// EncapsulationKey returns the public encapsulation key necessary to produce
-// ciphertexts.
+// EncapsulationKey は、暗号文を生成するために必要な公開カプセル化鍵を
+// 返します。
 func (dk *DecapsulationKey768) EncapsulationKey() *EncapsulationKey768
 
-// Encapsulator returns the encapsulation key, like
-// [DecapsulationKey768.EncapsulationKey].
+// Encapsulator は、[DecapsulationKey768.EncapsulationKey] のように
+// カプセル化鍵を返します。
 //
-// It implements [crypto.Decapsulator].
+// これは [crypto.Decapsulator] を実装します。
 func (dk *DecapsulationKey768) Encapsulator() crypto.Encapsulator
 
 var _ crypto.Decapsulator = (*DecapsulationKey768)(nil)
 
-// An EncapsulationKey768 is the public key used to produce ciphertexts to be
-// decapsulated by the corresponding DecapsulationKey768.
+// EncapsulationKey768 は、対応する DecapsulationKey768 によって
+// カプセル化解除される暗号文を生成するために使用される公開鍵です。
 type EncapsulationKey768 struct {
 	key *mlkem.EncapsulationKey768
 }
 
-// NewEncapsulationKey768 parses an encapsulation key from its encoded form. If
-// the encapsulation key is not valid, NewEncapsulationKey768 returns an error.
+// NewEncapsulationKey768 は、カプセル化鍵をエンコード形式から解析します。
+// カプセル化鍵が有効でない場合、NewEncapsulationKey768 はエラーを返します。
 func NewEncapsulationKey768(encapsulationKey []byte) (*EncapsulationKey768, error)
 
-// Bytes returns the encapsulation key as a byte slice.
+// Bytes は、カプセル化鍵をバイトスライスとして返します。
 func (ek *EncapsulationKey768) Bytes() []byte
 
-// Encapsulate generates a shared key and an associated ciphertext from an
-// encapsulation key, drawing random bytes from a secure source.
+// Encapsulate は、カプセル化鍵から共有鍵と関連する暗号文を生成します。
+// 安全なソースからランダムバイトを取得します。
 //
-// The shared key must be kept secret.
+// 共有鍵は秘密に保つ必要があります。
 //
-// For testing, derandomized encapsulation is provided by the
-// [crypto/mlkem/mlkemtest] package.
+// テストの場合、非ランダム化されたカプセル化は [crypto/mlkem/mlkemtest]
+// パッケージで提供されています。
 func (ek *EncapsulationKey768) Encapsulate() (sharedKey, ciphertext []byte)
 
-// DecapsulationKey1024 is the secret key used to decapsulate a shared key
-// from a ciphertext. It includes various precomputed values.
+// DecapsulationKey1024 は、暗号文から共有鍵をカプセル化解除するために使用される
+// 秘密鍵です。様々な事前計算値が含まれています。
 type DecapsulationKey1024 struct {
 	key *mlkem.DecapsulationKey1024
 }
 
-// GenerateKey1024 generates a new decapsulation key, drawing random bytes from
-// a secure source. The decapsulation key must be kept secret.
+// GenerateKey1024 は、安全なソースからランダムバイトを取得して、新しい
+// カプセル化解除鍵を生成します。カプセル化解除鍵は秘密に保つ必要があります。
 func GenerateKey1024() (*DecapsulationKey1024, error)
 
-// NewDecapsulationKey1024 expands a decapsulation key from a 64-byte seed in the
-// "d || z" form. The seed must be uniformly random.
+// NewDecapsulationKey1024 は、"d || z" 形式の 64 バイトシードから
+// カプセル化解除鍵を展開します。シードは均一にランダムである必要があります。
 func NewDecapsulationKey1024(seed []byte) (*DecapsulationKey1024, error)
 
-// Bytes returns the decapsulation key as a 64-byte seed in the "d || z" form.
+// Bytes は、カプセル化解除鍵を "d || z" 形式の 64 バイトシードとして返します。
 //
-// The decapsulation key must be kept secret.
+// カプセル化解除鍵は秘密に保つ必要があります。
 func (dk *DecapsulationKey1024) Bytes() []byte
 
-// Decapsulate generates a shared key from a ciphertext and a decapsulation
-// key. If the ciphertext is not valid, Decapsulate returns an error.
+// Decapsulate は、暗号文とカプセル化解除鍵から共有鍵を生成します。
+// 暗号文が有効でない場合、Decapsulate はエラーを返します。
 //
-// The shared key must be kept secret.
+// 共有鍵は秘密に保つ必要があります。
 func (dk *DecapsulationKey1024) Decapsulate(ciphertext []byte) (sharedKey []byte, err error)
 
-// EncapsulationKey returns the public encapsulation key necessary to produce
-// ciphertexts.
+// EncapsulationKey は、暗号文を生成するために必要な公開カプセル化鍵を
+// 返します。
 func (dk *DecapsulationKey1024) EncapsulationKey() *EncapsulationKey1024
 
-// Encapsulator returns the encapsulation key, like
-// [DecapsulationKey1024.EncapsulationKey].
+// Encapsulator は、[DecapsulationKey1024.EncapsulationKey] のように
+// カプセル化鍵を返します。
 //
-// It implements [crypto.Decapsulator].
+// これは [crypto.Decapsulator] を実装します。
 func (dk *DecapsulationKey1024) Encapsulator() crypto.Encapsulator
 
 var _ crypto.Decapsulator = (*DecapsulationKey1024)(nil)
 
-// An EncapsulationKey1024 is the public key used to produce ciphertexts to be
-// decapsulated by the corresponding DecapsulationKey1024.
+// EncapsulationKey1024 は、対応する DecapsulationKey1024 によって
+// カプセル化解除される暗号文を生成するために使用される公開鍵です。
 type EncapsulationKey1024 struct {
 	key *mlkem.EncapsulationKey1024
 }
 
-// NewEncapsulationKey1024 parses an encapsulation key from its encoded form. If
-// the encapsulation key is not valid, NewEncapsulationKey1024 returns an error.
+// NewEncapsulationKey1024 は、カプセル化鍵をエンコード形式から解析します。
+// カプセル化鍵が有効でない場合、NewEncapsulationKey1024 はエラーを返します。
 func NewEncapsulationKey1024(encapsulationKey []byte) (*EncapsulationKey1024, error)
 
-// Bytes returns the encapsulation key as a byte slice.
+// Bytes は、カプセル化鍵をバイトスライスとして返します。
 func (ek *EncapsulationKey1024) Bytes() []byte
 
-// Encapsulate generates a shared key and an associated ciphertext from an
-// encapsulation key, drawing random bytes from a secure source.
+// Encapsulate は、カプセル化鍵から共有鍵と関連する暗号文を生成します。
+// 安全なソースからランダムバイトを取得します。
 //
-// The shared key must be kept secret.
+// 共有鍵は秘密に保つ必要があります。
 //
-// For testing, derandomized encapsulation is provided by the
-// [crypto/mlkem/mlkemtest] package.
+// テストの場合、非ランダム化されたカプセル化は [crypto/mlkem/mlkemtest]
+// パッケージで提供されています。
 func (ek *EncapsulationKey1024) Encapsulate() (sharedKey, ciphertext []byte)
