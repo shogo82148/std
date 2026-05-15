@@ -6,74 +6,74 @@
 
 package atomic
 
-// SwapInt64 atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Int64.Swap] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// SwapInt64 は *addr に new をアトミックに格納し、以前の *addr の値を返します。
+// より人間工学的でエラーが起きにくい [Int64.Swap] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func SwapInt64(addr *int64, new int64) (old int64)
 
-// SwapUint64 atomically stores new into *addr and returns the previous *addr value.
-// Consider using the more ergonomic and less error-prone [Uint64.Swap] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// SwapUint64 は *addr に new をアトミックに格納し、以前の *addr の値を返します。
+// より人間工学的でエラーが起きにくい [Uint64.Swap] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func SwapUint64(addr *uint64, new uint64) (old uint64)
 
-// CompareAndSwapInt64 executes the compare-and-swap operation for an int64 value.
-// Consider using the more ergonomic and less error-prone [Int64.CompareAndSwap] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// CompareAndSwapInt64 は int64 値に対するコンペアアンドスワップ操作を実行します。
+// より人間工学的でエラーが起きにくい [Int64.CompareAndSwap] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func CompareAndSwapInt64(addr *int64, old, new int64) (swapped bool)
 
-// CompareAndSwapUint64 executes the compare-and-swap operation for a uint64 value.
-// Consider using the more ergonomic and less error-prone [Uint64.CompareAndSwap] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// CompareAndSwapUint64 は uint64 値に対するコンペアアンドスワップ操作を実行します。
+// より人間工学的でエラーが起きにくい [Uint64.CompareAndSwap] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func CompareAndSwapUint64(addr *uint64, old, new uint64) (swapped bool)
 
-// AddInt64 atomically adds delta to *addr and returns the new value.
-// Consider using the more ergonomic and less error-prone [Int64.Add] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// AddInt64 は *addr に delta をアトミックに加算し、新しい値を返します。
+// より人間工学的でエラーが起きにくい [Int64.Add] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func AddInt64(addr *int64, delta int64) (new int64)
 
-// AddUint64 atomically adds delta to *addr and returns the new value.
-// To subtract a signed positive constant value c from x, do AddUint64(&x, ^uint64(c-1)).
-// In particular, to decrement x, do AddUint64(&x, ^uint64(0)).
-// Consider using the more ergonomic and less error-prone [Uint64.Add] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// AddUint64 は *addr に delta をアトミックに加算し、新しい値を返します。
+// x から符号付き正の定数値 c を減算するには AddUint64(&x, ^uint64(c-1)) を実行します。
+// 特に x をデクリメントするには AddUint64(&x, ^uint64(0)) を実行します。
+// より人間工学的でエラーが起きにくい [Uint64.Add] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func AddUint64(addr *uint64, delta uint64) (new uint64)
 
-// AndInt64 atomically performs a bitwise AND operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Int64.And] instead.
+// AndInt64 は mask で指定されたビットマスクを使って *addr にビットAND演算を
+// アトミックに実行し、古い値を返します。
+// より人間工学的でエラーが起きにくい [Int64.And] の使用を検討してください。
 func AndInt64(addr *int64, mask int64) (old int64)
 
-// AndUint64 atomically performs a bitwise AND operation on *addr using the bitmask provided as mask
-// and returns the old.
-// Consider using the more ergonomic and less error-prone [Uint64.And] instead.
+// AndUint64 は mask で指定されたビットマスクを使って *addr にビットAND演算を
+// アトミックに実行し、古い値を返します。
+// より人間工学的でエラーが起きにくい [Uint64.And] の使用を検討してください。
 func AndUint64(addr *uint64, mask uint64) (old uint64)
 
-// OrInt64 atomically performs a bitwise OR operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Int64.Or] instead.
+// OrInt64 は mask で指定されたビットマスクを使って *addr にビットOR演算を
+// アトミックに実行し、古い値を返します。
+// より人間工学的でエラーが起きにくい [Int64.Or] の使用を検討してください。
 func OrInt64(addr *int64, mask int64) (old int64)
 
-// OrUint64 atomically performs a bitwise OR operation on *addr using the bitmask provided as mask
-// and returns the old value.
-// Consider using the more ergonomic and less error-prone [Uint64.Or] instead.
+// OrUint64 は mask で指定されたビットマスクを使って *addr にビットOR演算を
+// アトミックに実行し、古い値を返します。
+// より人間工学的でエラーが起きにくい [Uint64.Or] の使用を検討してください。
 func OrUint64(addr *uint64, mask uint64) (old uint64)
 
-// LoadInt64 atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Int64.Load] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// LoadInt64 は *addr をアトミックにロードします。
+// より人間工学的でエラーが起きにくい [Int64.Load] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func LoadInt64(addr *int64) (val int64)
 
-// LoadUint64 atomically loads *addr.
-// Consider using the more ergonomic and less error-prone [Uint64.Load] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// LoadUint64 は *addr をアトミックにロードします。
+// より人間工学的でエラーが起きにくい [Uint64.Load] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func LoadUint64(addr *uint64) (val uint64)
 
-// StoreInt64 atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Int64.Store] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// StoreInt64 は val を *addr にアトミックに格納します。
+// より人間工学的でエラーが起きにくい [Int64.Store] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func StoreInt64(addr *int64, val int64)
 
-// StoreUint64 atomically stores val into *addr.
-// Consider using the more ergonomic and less error-prone [Uint64.Store] instead
-// (particularly if you target 32-bit platforms; see the bugs section).
+// StoreUint64 は val を *addr にアトミックに格納します。
+// より人間工学的でエラーが起きにくい [Uint64.Store] の使用を検討してください
+// （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
 func StoreUint64(addr *uint64, val uint64)
