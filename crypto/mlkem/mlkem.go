@@ -33,6 +33,7 @@ const (
 	CiphertextSize1024 = 1568
 
 	// EncapsulationKeySize1024 は、ML-KEM-1024 カプセル化鍵のサイズです。
+	EncapsulationKeySize1024 = 1568
 )
 
 // DecapsulationKey768 は、暗号文から共有鍵をカプセル化解除するために使用される
