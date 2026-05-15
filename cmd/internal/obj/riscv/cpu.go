@@ -1231,7 +1231,32 @@ const (
 	SPOP_E32
 	SPOP_E64
 
-	SPOP_END
+	// CSR names.  4096 special operands are reserved for RISC-V CSR names.
+	SPOP_CSR_BEGIN = SPOP_RVV_END
+	SPOP_CSR_END   = SPOP_CSR_BEGIN + 4096
+
+	// FENCE operands. 16 special operands are reserved for FENCE flags (4 bits: IORW).
+	SPOP_FENCE_BEGIN = SPOP_CSR_END
+
+	SPOP_FENCE_W SpecialOperand = SPOP_FENCE_BEGIN + iota - 20
+	SPOP_FENCE_R
+	SPOP_FENCE_RW
+	SPOP_FENCE_O
+	SPOP_FENCE_OW
+	SPOP_FENCE_OR
+	SPOP_FENCE_ORW
+	SPOP_FENCE_I
+	SPOP_FENCE_IW
+	SPOP_FENCE_IR
+	SPOP_FENCE_IRW
+	SPOP_FENCE_IO
+	SPOP_FENCE_IOW
+	SPOP_FENCE_IOR
+	SPOP_FENCE_IORW
+
+	SPOP_FENCE_END = SPOP_FENCE_BEGIN + 16
+
+	SPOP_END = SPOP_FENCE_END + 1
 )
 
 func (so SpecialOperand) String() string

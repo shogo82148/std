@@ -224,7 +224,7 @@ type State struct {
 
 func NewState() *State
 
-func DisabledState() *State
+func NewDisabledState() *State
 
 func (s *State) Fetcher() *modfetch.Fetcher
 

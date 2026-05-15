@@ -81,8 +81,6 @@ const (
 	SELFRELROSECT
 	SMACHORELROSECT
 
-	SITABLINK
-
 	// Allocated writable segment.
 	SFirstWritable
 	SBUILDINFO

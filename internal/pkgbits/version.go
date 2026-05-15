@@ -33,6 +33,9 @@ const (
 	// - positive lengths indicate that no element has a key
 	// - a negative struct field index indicates an embedded field
 	V3
+
+	// V4: encodes generic methods as standalone function objects
+	V4
 )
 
 // Field denotes a unit of data in the serialized unified IR bitstream.
@@ -67,6 +70,9 @@ const (
 
 	// Composite literals use a more compact format for element lists.
 	CompactCompLiterals
+
+	// Generic methods may appear as standalone function objects.
+	GenericMethods
 )
 
 // Has reports whether field f is present in a bitstream at version v.
