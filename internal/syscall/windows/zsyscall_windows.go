@@ -69,6 +69,8 @@ func GetVolumeInformationByHandle(file syscall.Handle, volumeNameBuffer *uint16,
 
 func GetVolumeNameForVolumeMountPoint(volumeMountPoint *uint16, volumeName *uint16, bufferlength uint32) (err error)
 
+func IsProcessorFeaturePresent(ProcessorFeature uint32) (ret bool)
+
 func LockFileEx(file syscall.Handle, flags uint32, reserved uint32, bytesLow uint32, bytesHigh uint32, overlapped *syscall.Overlapped) (err error)
 
 func Module32First(snapshot syscall.Handle, moduleEntry *ModuleEntry32) (err error)
