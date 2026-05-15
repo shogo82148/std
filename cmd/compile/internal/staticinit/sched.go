@@ -67,3 +67,9 @@ func AddKeepRelocations()
 // profitable), to facilitate better dead-code elimination by the
 // linker.
 func OutlineMapInits(fn *ir.Func)
+
+// SplitLargeInit breaks up a large "init" function into smaller chunks to avoid slow compilation.
+func SplitLargeInit(fn *ir.Func)
+
+// CanOptimize reports whether the given fn can be optimized for static assignments.
+func CanOptimize(fn *ir.Func) bool
