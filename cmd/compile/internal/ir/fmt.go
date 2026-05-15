@@ -222,12 +222,19 @@ func StmtWithInit(op Op) bool
 func (l Nodes) Format(s fmt.State, verb rune)
 
 // Dump prints the message s followed by a debug dump of n.
+// This includes all the recursive structure under n.
 func Dump(s string, n Node)
 
+// FDump prints to w the message s followed by a debug dump of n.
+// This includes all the recursive structure under n.
+func FDump(w io.Writer, s string, n Node)
+
 // DumpList prints the message s followed by a debug dump of each node in the list.
+// This includes all the recursive structure under each node in the list.
 func DumpList(s string, list Nodes)
 
 // FDumpList prints to w the message s followed by a debug dump of each node in the list.
+// This includes all the recursive structure under each node in the list.
 func FDumpList(w io.Writer, s string, list Nodes)
 
 // EscFmt is set by the escape analysis code to add escape analysis details to the node print.

@@ -36,4 +36,4 @@ func (f *PerPackageFlag) Present() bool
 //
 // The module loader state is used by the matcher to know if certain
 // patterns match packages within the state's MainModules.
-func (f *PerPackageFlag) For(s *modload.State, p *Package) []string
+func (f *PerPackageFlag) For(s *modload.Loader, p *Package) []string

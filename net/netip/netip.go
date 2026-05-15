@@ -151,9 +151,12 @@ func (ip Addr) IsLinkLocalMulticast() bool
 func (ip Addr) IsGlobalUnicast() bool
 
 // IsPrivateは、RFC 1918（IPv4アドレス）およびRFC 4193（IPv6アドレス）に従って、
-// ipがプライベートアドレスであるかどうかを報告します。
-// つまり、ipが10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、またはfc00::/7のいずれかであるかどうかを報告します。
-// これは、[net.IP.IsPrivate] と同じです。
+// ipがプライベートアドレスかどうかを報告します。つまり、
+// ipが10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、またはfc00::/7に含まれるかどうかを
+// 報告します。これは [net.IP.IsPrivate] と同じです。
+//
+// IsPrivateはアドレスのセキュリティ特性を表すものではなく、
+// アクセス制御に使用すべきではありません。
 func (ip Addr) IsPrivate() bool
 
 // IsUnspecifiedは、ipが未指定のアドレスであるかどうかを報告します。
@@ -288,8 +291,9 @@ func (p AddrPort) MarshalText() ([]byte, error)
 // [AddrPort] は、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
 func (p *AddrPort) UnmarshalText(text []byte) error
 
-// AppendBinaryは、[encoding.BinaryAppender] インターフェースを実装します。
-// [Addr.AppendBinary] に、リトルエンディアンで表されたポートを追加したものを返します。
+// AppendBinaryは [encoding.BinaryAppender] インターフェースを実装します。
+// [Addr.AppendBinary] にリトルエンディアンで表されたポートを含む
+// 追加の2バイトを追加したものを返します。
 func (p AddrPort) AppendBinary(b []byte) ([]byte, error)
 
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。

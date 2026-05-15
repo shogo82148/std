@@ -4,9 +4,10 @@
 
 //go:generate go run gen_encoding_table.go
 
-// urlパッケージはURLを解析し、クエリエスケープを実装します。
+// Package url はURLを解析し、クエリのエスケープを実装します。
 //
-// RFC 3986を参照してください。このパッケージは基本的にRFC 3986に従いますが、互換性のために一部逸脱する場合があります。
+// RFC 3986 を参照してください。このパッケージは、互換性のために逸脱する場合を除き、
+// 一般的にRFC 3986に従います。
 // IPv6ゾーンリテラルについてはRFC 6874に従います。
 package url
 
@@ -191,9 +192,14 @@ func (v Values) Del(key string)
 // Hasは与えられたキーが設定されているかどうかを確認します。
 func (v Values) Has(key string) bool
 
-// ParseQueryはURLエンコードされたクエリ文字列を解析して、
-// 各キーに指定された値をリストしたマップを返します。
-// ParseQueryは常に、最初にエンコードできないエラーが見つかった場合を示すnon-nilのマップを返します。エラーの詳細はerrに記載されます。
+// Cloneはサブジェクト [Values] の深いコピーを作成します。
+func (vs Values) Clone() Values
+
+// ParseQueryはURLエンコードされたクエリ文字列を解析し、
+// 各キーに指定された値をリストするマップを返します。
+// ParseQueryは常に見つかったすべての
+// 有効なクエリパラメータを含むnilではないマップを返します。errは、
+// 見つかった最初のデコードエラーを記述します。
 //
 // クエリはアンパサンドで区切られたキー=値のリストとして期待されます。
 // イコール記号がない設定は、空の値に設定されたキーとして解釈されます。
@@ -247,3 +253,6 @@ func (u *URL) JoinPath(elem ...string) *URL
 // 結果のパスから ./ や ../ 要素が除去されます。
 // パス要素は [PathEscape] によって生成されるエスケープ形式である必要があります。
 func JoinPath(base string, elem ...string) (result string, err error)
+
+// Clone creates a deep copy of the fields of the subject [URL].
+func (u *URL) Clone() *URL

@@ -598,7 +598,7 @@ const (
 	ASEXTH
 	AZEXTH
 
-	// 28.4.3: Bitwise Rotation (Zbb)
+	// 28.4.2: Bitwise Rotation (Zbb)
 	AROL
 	AROLW
 	AROR
@@ -607,6 +607,11 @@ const (
 	ARORW
 	AORCB
 	AREV8
+
+	// 28.4.3: Carry-less multiplication (Zbc)
+	ACLMUL
+	ACLMULH
+	ACLMULR
 
 	// 28.4.4: Single-bit Instructions (Zbs)
 	ABCLR
@@ -1105,6 +1110,30 @@ const (
 	AVMV4RV
 	AVMV8RV
 
+	// 32.2.1: Vector Basic Bit-manipulation (Zvbb)
+	AVANDNVV
+	AVANDNVX
+	AVBREVV
+	AVBREV8V
+	AVREV8V
+	AVCLZV
+	AVCTZV
+	AVCPOPV
+	AVROLVV
+	AVROLVX
+	AVRORVV
+	AVRORVX
+	AVRORVI
+	AVWSLLVV
+	AVWSLLVX
+	AVWSLLVI
+
+	// 32.2.2: Vector Carryless Multiplication (Zvbc)
+	AVCLMULVV
+	AVCLMULVX
+	AVCLMULHVV
+	AVCLMULHVX
+
 	// 3.3.1: Environment Call and Breakpoint
 	AECALL
 	ASCALL
@@ -1137,6 +1166,13 @@ const (
 	ABLEZ
 	ABLTZ
 	ABNEZ
+	ACSRC
+	ACSRCI
+	ACSRR
+	ACSRS
+	ACSRSI
+	ACSRW
+	ACSRWI
 	AFABSD
 	AFABSS
 	AFNED
@@ -1155,6 +1191,7 @@ const (
 	ANEG
 	ANEGW
 	ANOT
+	APAUSE
 	ARDCYCLE
 	ARDINSTRET
 	ARDTIME
@@ -1226,7 +1263,32 @@ const (
 	SPOP_E32
 	SPOP_E64
 
-	SPOP_END
+	// CSR names.  4096 special operands are reserved for RISC-V CSR names.
+	SPOP_CSR_BEGIN = SPOP_RVV_END
+	SPOP_CSR_END   = SPOP_CSR_BEGIN + 4096
+
+	// FENCE operands. 16 special operands are reserved for FENCE flags (4 bits: IORW).
+	SPOP_FENCE_BEGIN = SPOP_CSR_END
+
+	SPOP_FENCE_W SpecialOperand = SPOP_FENCE_BEGIN + iota - 20
+	SPOP_FENCE_R
+	SPOP_FENCE_RW
+	SPOP_FENCE_O
+	SPOP_FENCE_OW
+	SPOP_FENCE_OR
+	SPOP_FENCE_ORW
+	SPOP_FENCE_I
+	SPOP_FENCE_IW
+	SPOP_FENCE_IR
+	SPOP_FENCE_IRW
+	SPOP_FENCE_IO
+	SPOP_FENCE_IOW
+	SPOP_FENCE_IOR
+	SPOP_FENCE_IORW
+
+	SPOP_FENCE_END = SPOP_FENCE_BEGIN + 16
+
+	SPOP_END = SPOP_FENCE_END + 1
 )
 
 func (so SpecialOperand) String() string

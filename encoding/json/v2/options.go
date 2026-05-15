@@ -54,16 +54,15 @@ import (
 // Options型はマーシャルとアンマーシャルの両方で使われます。
 // 一部のオプションは両方に影響し、他はどちらか一方だけに影響します:
 //
-//   - [StringifyNumbers] はマーシャル・アンマーシャル両方に影響
-//   - [Deterministic] はマーシャルのみ
-//   - [FormatNilSliceAsNull] はマーシャルのみ
-//   - [FormatNilMapAsNull] はマーシャルのみ
-//   - [OmitZeroStructFields] はマーシャルのみ
-//   - [MatchCaseInsensitiveNames] はマーシャル・アンマーシャル両方に影響
-//   - [DiscardUnknownMembers] はマーシャルのみ
-//   - [RejectUnknownMembers] はアンマーシャルのみ
-//   - [WithMarshalers] はマーシャルのみ
-//   - [WithUnmarshalers] はアンマーシャルのみ
+//   - [StringifyNumbers] はマーシャルとアンマーシャルの両方に影響します
+//   - [Deterministic] はマーシャル時のみ影響します
+//   - [FormatNilSliceAsNull] はマーシャル時のみ影響します
+//   - [FormatNilMapAsNull] はマーシャル時のみ影響します
+//   - [OmitZeroStructFields] はマーシャル時のみ影響します
+//   - [MatchCaseInsensitiveNames] はマーシャルとアンマーシャルの両方に影響します
+//   - [RejectUnknownMembers] はアンマーシャル時のみ影響します
+//   - [WithMarshalers] はマーシャル時のみ影響します
+//   - [WithUnmarshalers] はアンマーシャル時のみ影響します
 //
 // 特定の操作に影響しないオプションは無視されます。
 type Options = jsonopts.Options
@@ -106,14 +105,14 @@ func StringifyNumbers(v bool) Options
 // このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func Deterministic(v bool) Options
 
-// FormatNilSliceAsNullは、nilのGoスライスをデフォルトの空JSON配列（~[]byteの場合は空JSON文字列）ではなく、JSON nullとしてマーシャルすることを指定します。
-// `format:emitempty`が明示的に指定されたスライスフィールドは、引き続き空のJSON配列としてマーシャルされます。
+// FormatNilSliceAsNullは、nilのGoスライスをJSON nullとしてマーシャルすることを指定し、
+// デフォルトの空のJSON配列表現（または~[]byteの場合は空のJSON文字列）の代わりに使用されます。
 //
 // このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func FormatNilSliceAsNull(v bool) Options
 
-// FormatNilMapAsNullは、nilのGoマップをデフォルトの空JSONオブジェクトではなく、JSON nullとしてマーシャルすることを指定します。
-// `format:emitempty`が明示的に指定されたマップフィールドは、引き続き空のJSONオブジェクトとしてマーシャルされます。
+// FormatNilMapAsNullは、nilのGoマップをJSON nullとしてマーシャルすることを指定し、
+// デフォルトの空のJSONオブジェクト表現の代わりに使用されます。
 //
 // このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 func FormatNilMapAsNull(v bool) Options
@@ -135,14 +134,8 @@ func OmitZeroStructFields(v bool) Options
 // （[jsontext.AllowDuplicateNames]がfalseの場合）重複名の検出方法が変わることがあります。
 func MatchCaseInsensitiveNames(v bool) Options
 
-// DiscardUnknownMembersは、Go構造体の未知のJSONオブジェクトメンバーを格納する専用フィールドに保存された
-// JSONオブジェクトメンバーをマーシャル時に無視することを指定します。
-//
-// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
-func DiscardUnknownMembers(v bool) Options
-
-// RejectUnknownMembersは、未知のメンバーが格納用フィールドの有無に関わらず
-// JSONオブジェクトのアンマーシャル時に拒否されるべきであることを指定します。
+// RejectUnknownMembersは、JSONオブジェクトのアンマーシャル時に
+// 未知のメンバーを拒否することを指定します。
 //
 // このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
 func RejectUnknownMembers(v bool) Options

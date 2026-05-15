@@ -17,11 +17,10 @@ type Type int
 // しかし、任意の関数呼び出しに対して同じ型を表します。
 type Type1 int
 
-// TypeOrExprは、ドキュメンテーションの目的のみでここに存在します。それは任意のGo型または式の代わりです。
+// TypeOrExprはドキュメンテーションの目的のためだけにここに存在します。Go型または式のいずれかの代わりです。
 type TypeOrExpr int
 
-// IntegerTypeは、ドキュメンテーションの目的のみでここに存在します。それは任意の整数型の代わりで、
-// 例えば、int、uint、int8などを表します。
+// IntegerTypeはドキュメンテーションの目的のためだけにここに存在します。任意の整数型（int、uint、int8など）の代わりです。
 type IntegerType int
 
 // FloatTypeは、ドキュメンテーションの目的のみでここに存在します。それは任意の浮動小数点型の代わりで、

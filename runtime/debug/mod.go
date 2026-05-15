@@ -67,10 +67,10 @@ type BuildSetting struct {
 // Stringは[BuildInfo]の文字列表現を返します。
 func (bi *BuildInfo) String() string
 
-// ParseBuildInfoは[*BuildInfo.String]が返す文字列を解析し、
-// 元のBuildInfoを復元します。
-// ただしGoVersionフィールドは設定されません。
-// 通常プログラムはこの関数を呼び出すべきではなく、
-// 代わりに[ReadBuildInfo]、[debug/buildinfo.ReadFile]、
+// ParseBuildInfo は [*BuildInfo.String] が返す文字列を解析し、
+// 元の [BuildInfo] を復元します。
+// ただし、GoVersion フィールドは設定されません。
+// 通常、プログラムはこの関数を呼び出すべきではありません。
+// 代わりに [ReadBuildInfo]、[debug/buildinfo.ReadFile]、
 // または [debug/buildinfo.Read] を呼び出してください。
 func ParseBuildInfo(data string) (bi *BuildInfo, err error)

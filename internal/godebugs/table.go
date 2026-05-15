@@ -39,7 +39,6 @@ var All = []Info{
 	{Name: "gocachetest", Package: "cmd/go"},
 	{Name: "gocacheverify", Package: "cmd/go"},
 	{Name: "gotestjsonbuildtext", Package: "cmd/go", Changed: 24, Old: "1"},
-	{Name: "gotypesalias", Package: "go/types", Changed: 23, Old: "0"},
 	{Name: "htmlmetacontenturlescape", Package: "html/template"},
 	{Name: "http2client", Package: "net/http"},
 	{Name: "http2debug", Package: "net/http", Opaque: true},
@@ -69,6 +68,8 @@ var All = []Info{
 	{Name: "tlssecpmlkem", Package: "crypto/tls", Changed: 26, Old: "0", Opaque: true},
 	{Name: "tlssha1", Package: "crypto/tls", Changed: 25, Old: "1"},
 	{Name: "tlsunsafeekm", Package: "crypto/tls", Changed: 22, Old: "1"},
+
+	{Name: "tracebacklabels", Package: "runtime", Changed: 27, Old: "0", Opaque: true},
 	{Name: "updatemaxprocs", Package: "runtime", Changed: 25, Old: "0"},
 	{Name: "urlmaxqueryparams", Package: "net/url", Changed: 24, Old: "0"},
 	{Name: "urlstrictcolons", Package: "net/url", Changed: 26, Old: "0"},
@@ -89,8 +90,12 @@ type RemovedInfo struct {
 }
 
 // Removed contains all GODEBUGs that we have removed.
+//
+// Every removed GODEBUG must have a corresponding section in doc/godebug.md,
+// since cmd/go links to this document when a removed GODEBUG is used.
 var Removed = []RemovedInfo{
 	{Name: "x509sha1", Removed: 24},
+	{Name: "gotypesalias", Removed: 27},
 }
 
 // Lookup returns the Info with the given name.

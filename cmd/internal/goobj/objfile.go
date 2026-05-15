@@ -131,6 +131,7 @@ const (
 	SymFlagDict
 	SymFlagPkgInit
 	SymFlagLinkname
+	SymFlagLinknameStd
 	SymFlagABIWrapper
 )
 
@@ -158,6 +159,7 @@ func (s *Sym) IsItab() bool
 func (s *Sym) IsDict() bool
 func (s *Sym) IsPkgInit() bool
 func (s *Sym) IsLinkname() bool
+func (s *Sym) IsLinknameStd() bool
 func (s *Sym) ABIWrapper() bool
 
 func (s *Sym) SetName(x string, w *Writer)

@@ -13,17 +13,21 @@ type SubFS interface {
 
 // Subはfsysのdirでルートされた部分木に対応する [FS] を返します。
 //
-// dirが"."の場合、Subはfsysを変更せずに返します。
-// そうでなければ、fsが [SubFS] を実装している場合、Subはfsys.Sub(dir)を返します。
-// そうでなければ、Subは新しい [FS] 実装subを返します。これは
-// 実質的にsub.Open(name)をfsys.Open(path.Join(dir, name))として実装します。
-// この実装はまた、ReadDir、ReadFile、
-// ReadLink、Lstat、およびGlobの呼び出しも適切に変換します。
+// If dir is ".", Sub returns fsys unchanged.
+// Otherwise, if fsys implements [SubFS], Sub returns fsys.Sub(dir).
+// Otherwise, Sub returns a new [FS] implementation sub that,
+// in effect, implements sub.Open(name) as fsys.Open(path.Join(dir, name)).
+// The implementation also translates calls to ReadDir, ReadFile,
+// ReadLink, Lstat, and Glob appropriately. Sub does not check if the
+// directory currently exists.
 //
-// os.DirFS("/prefix")とSub(os.DirFS("/"), "prefix")は同等であることに注意してください。
-// どちらも、"/prefix"の外部にあるオペレーティングシステムのアクセスを回避することを保証するものではありません。
-// なぜなら、 [os.DirFS] の実装は、"/prefix"内部の他のディレクトリを指すシンボリックリンクをチェックしないためです。
-// つまり、os.DirFSはchrootスタイルのセキュリティメカニズムの一般的な代替手段ではなく、Subもその事実を変えません。
+// Sub(os.DirFS("/"), "prefix")はos.DirFS("/prefix")と等価ですが、
+// どちらも"/prefix"の外でのオペレーティングシステムアクセスを避けることを
+// 保証しません。これは [os.DirFS] の実装が"/prefix"内で他のディレクトリを
+// 指すシンボリックリンクをチェックしないためです。つまり、[os.DirFS] は
+// chroot方式のセキュリティメカニズムの一般的な代替ではなく、Subはその
+// 事実を変えません。特定のディレクトリツリーへのアクセスを制限するには
+// [os.Root] を使用してください。
 func Sub(fsys FS, dir string) (FS, error)
 
 var _ FS = (*subFS)(nil)

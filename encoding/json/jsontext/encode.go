@@ -56,8 +56,9 @@ func NewEncoder(w io.Writer, opts ...Options) *Encoder
 // [encoding/json/v2.MarshalToFunc] 関数に渡されたEncoderに対して呼び出してはいけません。
 func (e *Encoder) Reset(w io.Writer, opts ...Options)
 
-// Optionsはデコーダの構築に使用されたオプションを返します。
-// また、[encoding/json/v2.MarshalEncode] 呼び出しに渡されたセマンティックオプションを含む場合があります。
+// Options は、エンコーダの構築に使用されたオプションを返します。
+// さらに、[encoding/json/v2.MarshalEncode] 呼び出しに渡された
+// セマンティックなオプションを含む場合があります。
 //
 // [encoding/json/v2.MarshalerTo.MarshalJSONTo] メソッド呼び出しや
 // [encoding/json/v2.MarshalToFunc] 関数呼び出しの中で動作している場合、
@@ -104,11 +105,11 @@ func (e *Encoder) OutputOffset() int64
 // 値が有効なJSONであることは利用者の責任です。
 func (e *Encoder) AvailableBuffer() []byte
 
-// StackDepthは、書き込まれたJSONデータに対する状態マシンの深さを返します。
-// スタックの各レベルは入れ子になったJSONオブジェクトまたは配列を表します。
-// [BeginObject] または [BeginArray] トークンが現れるたびに増加し、
-// [EndObject] または [EndArray] トークンが現れるたびに減少します。
-// 深さはゼロ始まりで、ゼロはトップレベルのJSON値を表します。
+// StackDepthは書き込まれたJSONデータのステートマシンの深さを返します。
+// スタックの各レベルは、ネストされたJSONオブジェクトまたは配列を表します。
+// [BeginObject] または [BeginArray] トークンが検出されるたびにインクリメントされ、
+// [EndObject] または [EndArray] トークンが検出されるたびにデクリメントされます。
+// 深さはゼロインデックスで、ゼロはトップレベルのJSON値を表します。
 func (e *Encoder) StackDepth() int
 
 // StackIndexは指定されたスタックレベルの情報を返します。

@@ -43,6 +43,10 @@
 // この定義は、C++の一貫性のあるアトミックとJavaのvolatile変数と
 // 同じセマンティクスを提供します。
 //
+// Only a few integer sizes are supported: on many architectures,
+// atomic operations on non-word-sized integers are inefficient or
+// infeasible. For example, a [Bool] may be larger than a built-in bool.
+//
 // [the Go memory model]: https://go.dev/ref/mem
 package atomic
 
@@ -66,6 +70,7 @@ func SwapUint32(addr *uint32, new uint32) (old uint32)
 // より使いやすく、エラーが発生しにくい [Uintptr.Swap] の使用を検討してください。
 //
 //go:noescape
+//go:linknamestd SwapUintptr
 func SwapUintptr(addr *uintptr, new uintptr) (old uintptr)
 
 // SwapPointerはアトミックに新しい値を*addrに格納し、前の*addrの値を返します。
@@ -88,6 +93,7 @@ func CompareAndSwapUint32(addr *uint32, old, new uint32) (swapped bool)
 // より使いやすく、エラーが発生しにくい [Uintptr.CompareAndSwap] の使用を検討してください。
 //
 //go:noescape
+//go:linknamestd CompareAndSwapUintptr
 func CompareAndSwapUintptr(addr *uintptr, old, new uintptr) (swapped bool)
 
 // CompareAndSwapPointerは、unsafe.Pointer値のための比較交換操作を実行します。
@@ -188,6 +194,7 @@ func StoreUint32(addr *uint32, val uint32)
 // より使いやすく、エラーが発生しにくい [Uintptr.Store] の使用を検討してください。
 //
 //go:noescape
+//go:linknamestd StoreUintptr
 func StoreUintptr(addr *uintptr, val uintptr)
 
 // StorePointerはアトミックにvalを*addrに格納します。

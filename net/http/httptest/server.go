@@ -34,8 +34,11 @@ type Server struct {
 	// certificate はTLS設定の証明書の解析バージョンです。存在する場合にのみ使用されます。
 	certificate *x509.Certificate
 
-	// wgはこのサーバー上の未処理のHTTPリクエストの数をカウントします。
-	// Closeはすべてのリクエストが終了するまでブロックします。
+	// started indicates whether the server has been started.
+	started bool
+
+	// wg counts the number of outstanding HTTP requests on this server.
+	// Close blocks until all requests are finished.
 	wg sync.WaitGroup
 
 	mu     sync.Mutex

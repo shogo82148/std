@@ -341,12 +341,13 @@ type Config struct {
 	//
 	// GetConfigForClientがnilの場合、Server()に渡されたConfigがすべての接続に使用されます。
 	//
-	// 返されたConfigでSessionTicketKeyが明示的に設定されている場合、または
-	// 返されたConfigでSetSessionTicketKeysが呼び出された場合、それらのキーが使用されます。
-	// そうでなければ、元のConfigキーが使用されます（自動管理されている場合は
-	// ローテーションされる可能性があります）。警告：これにより、親（または
-	// 兄弟）Configで元々確立された接続のセッション再開が可能になり、
-	// 返されたConfigの [Config.VerifyPeerCertificate] 値をバイパスする可能性があります。
+	// 返されたConfig上でSessionTicketKeyが明示的に設定されている場合、または
+	// 返されたConfig上でSetSessionTicketKeysが呼び出された場合、これらのキーが
+	// 使用されます。そうでない場合、元のConfigキーが使用されます（自動的に
+	// 管理されている場合、ローテーションされる可能性があります）。警告：これは、
+	// 親（または兄弟）Configで元々確立された接続のセッション再開を許可し、
+	// 返されたConfigの[Config.VerifyPeerCertificate]値をバイパスする
+	// 可能性があります。
 	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
 
 	// VerifyPeerCertificateは、nilでない場合、TLSクライアントまたはサーバーによる
@@ -363,8 +364,8 @@ type Config struct {
 	// サーバー上で空になる可能性があります。
 	//
 	// このコールバックは再開された接続では呼び出されません。警告：これには
-	// [Config.Clone] や [Config.GetConfigForClient] によって返されたConfigとその親で
-	// 再開された接続も含まれます。それが意図されていない場合は、代わりに
+	// [Config.Clone] または [Config.GetConfigForClient] によって返されたConfigおよびその
+	// 親Configで再開された接続も含まれます。それが意図されていない場合は、代わりに
 	// [Config.VerifyConnection] を使用するか、[Config.SessionTicketsDisabled] を設定してください。
 	//
 	// verifiedChainsとその内容は変更しないでください。
@@ -477,7 +478,7 @@ type Config struct {
 	// 設定するか、GODEBUG=tlsmlkem=0環境変数を使用してください。
 	//
 	// Go 1.26から、デフォルトには [SecP256r1MLKEM768] と
-	// [SecP256r1MLKEM768] ハイブリッドポスト量子鍵交換も含まれます。
+	// [SecP384r1MLKEM1024] ハイブリッドポスト量子鍵交換も含まれます。
 	// これらを無効にするには、CurvePreferencesを明示的に設定するか、
 	// GODEBUG=tlsmlkem=0またはGODEBUG=tlssecpmlkem=0環境変数のいずれかを使用してください。
 	CurvePreferences []CurveID
@@ -491,9 +492,12 @@ type Config struct {
 	// デフォルトの「なし」は、ほとんどのアプリケーションにとって正しいです。
 	Renegotiation RenegotiationSupport
 
-	// KeyLogWriterは、TLSのマスターシークレットの宛先として使用できる、NSSキーログ形式の外部プログラム（Wiresharkなど）によるTLS接続の復号化を許可するためのオプションです。
-	// https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format を参照してください。
-	// KeyLogWriterの使用はセキュリティを損なう可能性があり、デバッグ目的のみに使用するべきです。
+	// KeyLogWriterは、TLSマスターシークレットをNSSキーログ形式で書き込む
+	// 出力先をオプションで指定します。Wiresharkなどの外部プログラムが
+	// TLS接続を復号化できるようにするために使用できます。
+	// https://datatracker.ietf.org/doc/draft-ietf-tls-keylogfile/ を参照してください。
+	// KeyLogWriterの使用はセキュリティを損なうため、デバッグ目的のみに
+	// 使用すべきです。
 	KeyLogWriter io.Writer
 
 	// EncryptedClientHelloConfigListはシリアライズされたECHConfigListです。
@@ -611,14 +615,13 @@ type EncryptedClientHelloKey struct {
 	SendAsRetry bool
 }
 
-// Cloneは、cのシャロークローンを返すか、cがnilの場合はnilを返します。
-// TLSクライアントまたはサーバーによって同時に使用されている [Config] を
-// クローンすることは安全です。
+// Cloneはcの浅いコピーを返します。cがnilの場合はnilを返します。
+// TLSクライアントまたはサーバーで並行利用中の [Config] であっても、安全にCloneできます。
 //
 // 返されたConfigは元のConfigとセッションチケットキーを共有する可能性があり、
-// これは2つのConfig間で接続が再開される可能性があることを意味します。警告：
+// その場合2つのConfig間で接続が再開されることがあります。警告：
 // [Config.VerifyPeerCertificate] は再開された接続では呼び出されません。
-// これには、親Configで元々確立された接続も含まれます。
+// 元の親Config上で確立された接続も含みます。
 // それが意図されていない場合は、代わりに [Config.VerifyConnection] を使用するか、
 // [Config.SessionTicketsDisabled] を設定してください。
 func (c *Config) Clone() *Config

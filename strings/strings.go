@@ -25,7 +25,8 @@ func ContainsAny(s, chars string) bool
 // ContainsRuneは、Unicodeコードポイントrがs内に含まれているかどうかを報告します。
 func ContainsRune(s string, r rune) bool
 
-// ContainsFuncは、s内の任意のUnicodeコードポイントrがf(r)を満たすかどうかを報告します。
+// ContainsFuncは、s内のUnicodeコードポイントrのいずれかがf(r)を満たすかどうかを報告します。
+// fの呼び出しがtrueを返した時点で停止します。
 func ContainsFunc(s string, f func(rune) bool) bool
 
 // LastIndexは、s内のsubstrの最後のインスタンスのインデックスを返します。
@@ -226,3 +227,9 @@ func CutPrefix(s, prefix string) (after string, found bool)
 // s が suffix で終わらない場合、CutSuffix は s、false を返します。
 // suffix が空の文字列の場合、CutSuffix は s、true を返します。
 func CutSuffix(s, suffix string) (before string, found bool)
+
+// CutLast slices s around the last instance of sep,
+// returning the text before and after sep.
+// The found result reports whether sep appears in s.
+// If sep does not appear in s, CutLast returns s, "", false.
+func CutLast(s, sep string) (before, after string, found bool)

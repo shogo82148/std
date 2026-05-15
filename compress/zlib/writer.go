@@ -36,22 +36,31 @@ type Writer struct {
 // NewWriterは新しい [Writer] を作成します。
 // 返されたWriterへの書き込みは圧縮されてwに書き込まれます。
 //
-// Writerを使用し終わったら、呼び出し元がCloseを呼び出す責任があります。
-// 書き込みはバッファリングされ、Closeが呼び出されるまでフラッシュされない場合があります。
+// 完了したら、呼び出し元が Writer の Close を呼ぶ責任があります。
+// 書き込みはバッファリングされ、Close されるまでフラッシュされない場合があります。
+//
+// w に書き込まれた正確なバイト数は Go 1 の互換性保証の対象外です。
+// テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriter(w io.Writer) *Writer
 
 // NewWriterLevelは [NewWriter] と同様ですが、[DefaultCompression] を仮定する代わりに
 // 圧縮レベルを指定します。
 //
-// 圧縮レベルは、[DefaultCompression]、[NoCompression]、[HuffmanOnly]
-// または [BestSpeed] から [BestCompression] までの整数値のいずれかを指定できます。
-// レベルが有効である場合、返されるエラーはnilになります。
+// 圧縮レベルは [DefaultCompression]、[NoCompression]、[HuffmanOnly]、
+// または [BestSpeed] から [BestCompression] までの整数値（両端含む）にすることができます。
+// レベルが有効な場合、返されるエラーは nil になります。
+//
+// w に書き込まれた正確なバイト数は Go 1 の互換性保証の対象外です。
+// テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 
 // NewWriterLevelDictは [NewWriterLevel] と同様ですが、圧縮に使用する辞書を
 // 指定します。
 //
-// 辞書はnilである場合があります。そうでない場合、その内容はWriterが閉じられるまで変更されないようにする必要があります。
+// 辞書は nil でもかまいません。そうでない場合、Writer が閉じられるまで、その内容は変更されないようにしてください。
+//
+// w に書き込まれた正確なバイト数は Go 1 の互換性保証の対象外です。
+// テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriterLevelDict(w io.Writer, level int, dict []byte) (*Writer, error)
 
 // Resetは[Writer] zの状態をクリアし、[NewWriterLevel] または [NewWriterLevelDict] からの

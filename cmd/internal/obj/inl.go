@@ -69,6 +69,10 @@ func (tree *InlTree) Parent(inlIndex int) int
 
 func (tree *InlTree) InlinedFunction(inlIndex int) *LSym
 
+func (tree *InlTree) InlinedFuncName(inlIndex int) string
+
+func (tree *InlTree) InlinedFuncPkg(inlIndex int) string
+
 func (tree *InlTree) CallPos(inlIndex int) src.XPos
 
 // OutermostPos returns the outermost position corresponding to xpos,

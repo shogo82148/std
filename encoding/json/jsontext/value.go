@@ -6,13 +6,26 @@
 
 package jsontext
 
-// AppendFormatは、src内のJSON値を指定されたオプションに従ってフォーマットし、
-// dstに追加して返します。
-// フォーマット動作の詳細については [Value.Format] を参照してください。
+// AppendFloat は、RFC 8259 の 6 節に従って、src を JSON 数値として dst に追加します。
 //
-// dstとsrcは重複していても構いません。
-// エラーが報告された場合は、src全体がdstに追加されます。
-func AppendFormat(dst, src []byte, opts ...Options) ([]byte, error)
+// -0 だけは 0 ではなく -0 として形式化されますが、それ以外の出力は
+// ECMA-262 第 10 版の 7.1.12.1 節と一致し、さらに
+// （64 ビット精度の場合は）RFC 8785 の 3.2.2.3 節とも一致します。
+// NaN、+Inf、-Inf の値は、それぞれ "NaN"、"Infinity"、"-Infinity" の
+// JSON 文字列として表されます。
+//
+// ほとんどの JSON ライブラリと標準は、JSON 数値が 64 ビット浮動小数点数であることを
+// 前提としています。そのため、受け取り側が別の文脈からエンコードされた数値が
+// 32 ビット精度を使っていると分かる場合を除き、64 ビット精度を使うことを推奨します。
+func AppendFloat(dst []byte, src float64, bits int) []byte
+
+// AppendFormat は、src 内の JSON 値を指定されたオプションに従って整形し、
+// その結果を dst に追加します。
+// 整形動作の詳細は [Value.Format] を参照してください。
+//
+// dst と src は重なっていても構いません。
+// エラーが報告された場合でも、src 全体が dst に追加されます。
+func AppendFormat[Bytes ~[]byte | ~string](dst []byte, src Bytes, opts ...Options) ([]byte, error)
 
 // Valueは1つの生のJSON値を表します。次のいずれかになります:
 //   - JSONリテラル（null, true, false）

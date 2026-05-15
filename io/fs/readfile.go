@@ -11,10 +11,12 @@ type ReadFileFS interface {
 	ReadFile(name string) ([]byte, error)
 }
 
-// ReadFileはファイルシステムfsから指定された名前のファイルを読み込み、その内容を返します。
-// 成功した呼び出しはnilのエラーを返しますが、[io.EOF] ではありません。
-// (ReadFileはファイル全体を読み込むため、最後のReadでの予想されるEOFはエラーとして報告されません。)
+// ReadFileはファイルシステムfsysから指定された名前のファイルを読み取り、その内容を返します。
+// 成功した呼び出しはnilエラーを返し、[io.EOF] は返しません。
+// （ReadFileはファイル全体を読み取るため、最後のReadで予期されるEOFは
+// 報告すべきエラーとして扱われません。）
 //
-// もしfsが [ReadFileFS] を実装している場合、ReadFileはfs.ReadFileを呼び出します。
-// そうでなければ、ReadFileはfs.Openを呼び出し、返された [File] に対してReadとCloseを使用します。
+// fsysが [ReadFileFS] を実装している場合、ReadFileはfsys.ReadFileを呼び出します。
+// そうでない場合、ReadFileはfsys.Openを呼び出し、返された [File] の
+// ReadとCloseを使用します。
 func ReadFile(fsys FS, name string) ([]byte, error)

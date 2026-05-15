@@ -10,4 +10,4 @@ import (
 	"github.com/shogo82148/std/cmd/go/internal/modload"
 )
 
-func RunVendor(loaderstate *modload.State, ctx context.Context, vendorE bool, vendorO string, args []string)
+func RunVendor(ld *modload.Loader, ctx context.Context, vendorE bool, vendorO string, args []string)

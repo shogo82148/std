@@ -40,15 +40,22 @@ type Writer struct {
 // [Writer] が終了したら、呼び出し元はCloseを呼ぶ責任があります。
 // 書き込みはバッファリングされ、Closeが呼ばれるまでフラッシュされない場合があります。
 //
-// Writer.[Header] のフィールドを設定したい呼び出し元は、
-// Write、Flush、またはCloseの最初の呼び出しの前に設定する必要があります。
+// Writer.[Header] のフィールドを設定したい呼び出し元は、最初の
+// Write、Flush、または Close の呼び出しの前に行う必要があります。
+//
+// w に書き込まれた正確なバイト数は Go 1 の互換性保証の対象外です。
+// テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriter(w io.Writer) *Writer
 
 // NewWriterLevel関数は、デフォルトの圧縮レベルを仮定する代わりに、圧縮レベルを指定して
 // [NewWriter] 関数と同様の処理を行います。
 //
-// 圧縮レベルは、 [DefaultCompression] 、 [NoCompression] 、 [HuffmanOnly] 、または [BestSpeed] から [BestCompression] までの
-// いずれかの整数値を指定できます。レベルが有効である場合、返されるエラーはnilになります。
+// 圧縮レベルは [DefaultCompression]、[NoCompression]、[HuffmanOnly]、
+// または [BestSpeed] から [BestCompression] までの整数値（両端含む）にすることができます。
+// レベルが有効な場合、返されるエラーは nil になります。
+//
+// w に書き込まれた正確なバイト数は Go 1 の互換性保証の対象外です。
+// テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriterLevel(w io.Writer, level int) (*Writer, error)
 
 // Resetは [Writer] zの状態を破棄し、 [NewWriter] または [NewWriterLevel] の元の状態と同等にし、

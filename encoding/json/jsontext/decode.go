@@ -53,8 +53,9 @@ func NewDecoder(r io.Reader, opts ...Options) *Decoder
 // [encoding/json/v2.UnmarshalFromFunc] 関数に渡されたDecoderに対して呼び出してはいけません。
 func (d *Decoder) Reset(r io.Reader, opts ...Options)
 
-// Optionsはエンコーダの構築に使用されたオプションを返します。
-// また、[encoding/json/v2.UnmarshalDecode]呼び出しに渡されたセマンティックオプションを含む場合があります。
+// Options は、デコーダの構築に使用されたオプションを返します。
+// さらに、[encoding/json/v2.UnmarshalDecode] 呼び出しに渡された
+// セマンティックなオプションを含む場合があります。
 //
 // [encoding/json/v2.UnmarshalerFrom.UnmarshalJSONFrom]メソッド呼び出しや
 // [encoding/json/v2.UnmarshalFromFunc]関数呼び出しの中で動作している場合、
@@ -97,11 +98,11 @@ func (d *Decoder) InputOffset() int64
 // バッファの内容は次のPeek、Read、Skip呼び出しまで有効です。
 func (d *Decoder) UnreadBuffer() []byte
 
-// StackDepthは、読み取ったJSONデータに対する状態マシンの深さを返します。
-// スタックの各レベルは入れ子になったJSONオブジェクトまたは配列を表します。
-// [BeginObject] または [BeginArray] トークンが現れるたびに増加し、
-// [EndObject] または [EndArray] トークンが現れるたびに減少します。
-// 深さはゼロ始まりで、ゼロはトップレベルのJSON値を表します。
+// StackDepthは読み込まれたJSONデータのステートマシンの深さを返します。
+// スタックの各レベルは、ネストされたJSONオブジェクトまたは配列を表します。
+// [BeginObject] または [BeginArray] トークンが検出されるたびにインクリメントされ、
+// [EndObject] または [EndArray] トークンが検出されるたびにデクリメントされます。
+// 深さはゼロインデックスで、ゼロはトップレベルのJSON値を表します。
 func (d *Decoder) StackDepth() int
 
 // StackIndexは指定されたスタックレベルの情報を返します。

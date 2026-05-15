@@ -9,7 +9,7 @@ import (
 	"github.com/shogo82148/std/os"
 )
 
-// PrintStackはruntime.Stackによって返されたスタックトレースを標準エラー出力に出力します。
+// PrintStack は [runtime.Stack] が返すスタックトレースを標準エラーに出力します。
 func PrintStack()
 
 // Stackはそれを呼び出すgoroutineのフォーマットされたスタックトレースを返します。

@@ -242,6 +242,8 @@ func (l *Loader) SymName(i Sym) string
 // Returns the version of the i-th symbol.
 func (l *Loader) SymVersion(i Sym) int
 
+func (l *Loader) IsContentHashed(i Sym) bool
+
 func (l *Loader) IsFileLocal(i Sym) bool
 
 // IsFromAssembly returns true if this symbol is derived from an

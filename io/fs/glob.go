@@ -17,6 +17,7 @@ type GlobFS interface {
 // Globは、ディレクトリの読み取り時のI/Oエラーなどのファイルシステムのエラーを無視します。
 // 返される唯一の可能なエラーは、 [path.ErrBadPattern] で、パターンが不正であることを報告します。
 //
-// もしfsが [GlobFS] を実装している場合、Globはfs.Globを呼び出します。
-// そうでない場合、Globは [ReadDir] を使用してディレクトリツリーをトラバースし、パターンに一致するものを探します。
+// fsysが [GlobFS] を実装している場合、Globはfsys.Globを呼び出します。
+// そうでない場合、Globは [ReadDir] を使用してディレクトリツリーを走査し、
+// パターンに一致するものを探します。
 func Glob(fsys FS, pattern string) (matches []string, err error)

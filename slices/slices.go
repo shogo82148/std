@@ -45,35 +45,40 @@ func IndexFunc[S ~[]E, E any](s S, f func(E) bool) int { return 0 }
 // Contains は、s 内に v が存在するかどうかを報告します。
 func Contains[S ~[]E, E comparable](s S, v E) bool { return false }
 
-// ContainsFunc は、s の少なくとも1つの要素 e が f(e) を満たすかどうかを報告します。
-func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool { return false }
+// ContainsFuncは、sの要素eのうち少なくとも1つがf(e)を満たすかどうかを報告します。
+// fの呼び出しがtrueを返した時点で停止します。
+func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool
 
-// Insertは値v...をインデックスiでsに挿入し、
-// 変更されたスライスを返します。
-// s[i:]の要素は場所を空けるために上にシフトされます。
-// 返されたスライスrにおいて、r[i] == v[0]、
-// そして、i < len(s)の場合、r[i+len(v)] == 元々s[i]にあった値になります。
+// Insertは、インデックスiに値v...を挿入してsをその場で変更し、
+// 変更後のスライスを返します。
+// s[i:]の要素は、挿入のための空きを作るために後ろへずらされます。
+// 返されるスライスrでは、r[i] == v[0]であり、
+// さらにi < len(s)の場合、r[i+len(v)] == もともとのs[i]の値です。
 // i > len(s)の場合、Insertはパニックを起こします。
 // この関数の計算量はO(len(s) + len(v))です。
-// 結果が空の場合、sのnil性を保持します。
+// 結果が空の場合、sと同じnil性を保ちます。
 func Insert[S ~[]E, E any](s S, i int, v ...E) S
 
-// Deleteは、s[i:j]の要素をsから削除し、変更されたスライスを返します。
-// j > len(s)の場合やs[i:j]がsの有効なスライスでない場合、Deleteはパニックを起こします。
-// Deleteの計算量はO(len(s)-i)なので、多くの要素を削除する場合は、まとめて一度に削除する方が、一つずつ削除するより効率的です。
-// Deleteはs[len(s)-(j-i):len(s)]の要素をゼロにします。
-// 結果が空の場合、sのnil性を保持します。
+// Deleteは、要素s[i:j]を削除してsをその場で変更し、
+// 変更後のスライスを返します。
+// j > len(s)の場合、またはs[i:j]がsの有効なスライスでない場合、Deleteはパニックを起こします。
+// DeleteはO(len(s)-i)なので、多数の要素を削除する必要がある場合は、
+// 1つずつ削除するより、まとめて1回で削除する方が効率的です。
+// Deleteはs[len(s)-(j-i):len(s)]の要素をゼロ化します。
+// 結果が空の場合、sと同じnil性を保ちます。
 func Delete[S ~[]E, E any](s S, i, j int) S
 
-// DeleteFuncは、delがtrueを返すsの要素をすべて削除し、変更されたスライスを返します。
-// DeleteFuncは新しい長さから元の長さまでの要素をゼロにします。
-// 結果が空の場合、sのnil性を保持します。
+// DeleteFuncは、delがtrueを返す要素を削除してsをその場で変更し、
+// 変更後のスライスを返します。
+// DeleteFuncは、新しい長さから元の長さまでの要素をゼロ化します。
+// 結果が空の場合、sと同じnil性を保ちます。
 func DeleteFunc[S ~[]E, E any](s S, del func(E) bool) S
 
-// Replaceは、s[i:j]の要素を指定されたvで置き換え、変更されたスライスを返します。
-// j > len(s)の場合やs[i:j]がsの有効なスライスでない場合、Replaceはパニックを起こします。
-// len(v) < (j-i)の場合、新しい長さから元の長さまでの要素をゼロにします。
-// 結果が空の場合、sのnil性を保持します。
+// Replaceは、要素s[i:j]を与えられたvで置き換えてsをその場で変更し、
+// 変更後のスライスを返します。
+// j > len(s)の場合、またはs[i:j]がsの有効なスライスでない場合、Replaceはパニックを起こします。
+// len(v) < (j-i)のとき、Replaceは新しい長さから元の長さまでの要素をゼロ化します。
+// 結果が空の場合、sと同じnil性を保ちます。
 func Replace[S ~[]E, E any](s S, i, j int, v ...E) S
 
 // Cloneはスライスのコピーを返します。

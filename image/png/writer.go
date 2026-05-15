@@ -38,9 +38,15 @@ const (
 	BestCompression    CompressionLevel = -3
 )
 
-// Encodeは、画像mをPNG形式でwに書き込みます。任意の画像をエンコードできますが、
-// [image.NRGBA] でない画像は、損失を伴ってエンコードされる可能性があります。
+// EncodeはイメージmをPNG形式でwに書き込みます。任意のイメージをエンコードできますが、
+// [image.NRGBA] でないイメージは非可逆的にエンコードされる可能性があります。
+//
+// wに書き込まれた正確なバイト数はGo 1の互換性保証の対象外です。
+// テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func Encode(w io.Writer, m image.Image) error
 
-// Encodeは、画像mをPNG形式でwに書き込みます。
+// EncodeはイメージmをPNG形式でwに書き込みます。
+//
+// wに書き込まれた正確なバイト数はGo 1の互換性保証の対象外です。
+// テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func (enc *Encoder) Encode(w io.Writer, m image.Image) error

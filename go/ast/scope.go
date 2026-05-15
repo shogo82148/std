@@ -46,10 +46,10 @@ func (s *Scope) String() string
 // 例えば、式T{K: 0}は、Tの型によって、構造体、マップ、スライス、または配列リテラルを表す可能性があります。
 // Tが構造体の場合、KはTのフィールドを参照しますが、他の型では環境内の値を参照します。
 //
-// 新しいプログラムは、[parser.SkipObjectResolution] パーサーフラグを設定して、
-// 構文的なオブジェクト解決を無効にするべきです（これによりCPUとメモリも節約されます）。
-// そして、オブジェクト解決が必要な場合は代わりに型チェッカー [go/types] を使用します。
-// 詳細は、[types.Info] 構造体のDefs、Uses、およびImplicitsフィールドを参照してください。
+// 新しいプログラムは [go/parser.SkipObjectResolution] パーサーフラグを設定して、
+// 構文的なオブジェクト解析を無効にします（CPUとメモリも節約します）。
+// オブジェクト解析が必要な場合は、代わりに型チェッカー [go/types] を使用してください。
+// [go/types.Info] 構造体の Defs、Uses、および Implicits フィールドを詳細については参照してください。
 type Object struct {
 	Kind ObjKind
 	Name string

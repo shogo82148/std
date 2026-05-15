@@ -57,6 +57,9 @@ func (p XPos) WithXlogue(x PosXlogue) XPos
 // LineNumber returns a string for the line number, "?" if it is not known.
 func (p XPos) LineNumber() string
 
+// ColumnNumber returns a string for the column number, "?" if it is not known.
+func (p XPos) ColumnNumber() string
+
 // FileIndex returns a smallish non-negative integer corresponding to the
 // file for this source position.  Smallish is relative; it can be thousands
 // large, but not millions.

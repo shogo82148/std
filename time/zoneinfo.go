@@ -49,13 +49,13 @@ func (l *Location) String() string
 // FixedZoneは、常に指定されたタイムゾーン名とオフセット（UTCからの秒数）を使用する [Location] を返します。
 func FixedZone(name string, offset int) *Location
 
-// LoadLocationは指定された名前を持つLocationを返します。
+// LoadLocationは指定された名前の [Location] を返します。
 //
-// 名前が""または"UTC"の場合、LoadLocationはUTCを返します。
-// 名前が"Local"の場合、LoadLocationはLocalを返します。
+// 名前が""または"UTC"の場合、LoadLocationは [UTC] を返します。
+// 名前が"Local"の場合、LoadLocationは [Local] を返します。
 //
-// それ以外の場合、名前はファイルに対応する場所の名前であり、
-// IANAタイムゾーンデータベースの中に存在します。例えば"America/New_York"です。
+// それ以外の場合、"America/New_York"のようなIANAタイムゾーンデータベース内の
+// ファイルに対応するロケーション名として扱われ、新しい [Location] が作成されます。
 //
 // LoadLocationは以下の順序でIANAタイムゾーンデータベースを探します:
 //

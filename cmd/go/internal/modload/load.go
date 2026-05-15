@@ -127,7 +127,7 @@ type PackageOpts struct {
 
 // LoadPackages identifies the set of packages matching the given patterns and
 // loads the packages in the import graph rooted at that set.
-func LoadPackages(loaderstate *State, ctx context.Context, opts PackageOpts, patterns ...string) (matches []*search.Match, loadedPackages []string)
+func LoadPackages(ld *Loader, ctx context.Context, opts PackageOpts, patterns ...string) (matches []*search.Match, loadedPackages []string)
 
 // ImportFromFiles adds modules to the build list as needed
 // to satisfy the imports in the named Go source files.
@@ -136,29 +136,29 @@ func LoadPackages(loaderstate *State, ctx context.Context, opts PackageOpts, pat
 //
 // TODO(bcmills): Silencing errors seems off. Take a closer look at this and
 // figure out what the error-reporting actually ought to be.
-func ImportFromFiles(loaderstate *State, ctx context.Context, gofiles []string)
+func ImportFromFiles(ld *Loader, ctx context.Context, gofiles []string)
 
 // DirImportPath returns the effective import path for dir,
 // provided it is within a main module, or else returns ".".
-func (mms *MainModuleSet) DirImportPath(loaderstate *State, ctx context.Context, dir string) (path string, m module.Version)
+func (mms *MainModuleSet) DirImportPath(ld *Loader, ctx context.Context, dir string) (path string, m module.Version)
 
 // PackageModule returns the module providing the package named by the import path.
-func PackageModule(path string) module.Version
+func (ld *Loader) PackageModule(path string) module.Version
 
 // Lookup returns the source directory, import path, and any loading error for
 // the package at path as imported from the package in parentDir.
 // Lookup requires that one of the Load functions in this package has already
 // been called.
-func Lookup(loaderstate *State, parentPath string, parentIsStd bool, path string) (dir, realPath string, err error)
+func Lookup(ld *Loader, parentPath string, parentIsStd bool, path string) (dir, realPath string, err error)
 
 // Why returns the "go mod why" output stanza for the given package,
 // without the leading # comment.
 // The package graph must have been loaded already, usually by LoadPackages.
 // If there is no reason for the package to be in the current build,
 // Why returns an empty string.
-func Why(path string) string
+func (ld *Loader) Why(path string) string
 
 // WhyDepth returns the number of steps in the Why listing.
 // If there is no reason for the package to be in the current build,
 // WhyDepth returns 0.
-func WhyDepth(path string) int
+func (ld *Loader) WhyDepth(path string) int

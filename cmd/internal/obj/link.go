@@ -254,9 +254,10 @@ const (
 // It represents Go symbols in a flat pkg+"."+name namespace.
 type LSym struct {
 	Name string
-	Type objabi.SymKind
 	Attribute
+	Type objabi.SymKind
 
+	Align  int16
 	Size   int64
 	Gotype *LSym
 	P      []byte
@@ -273,7 +274,6 @@ type LSym struct {
 type FuncInfo struct {
 	Args      int32
 	Locals    int32
-	Align     int32
 	FuncID    abi.FuncID
 	FuncFlag  abi.FuncFlag
 	StartLine int32
@@ -528,6 +528,9 @@ const (
 
 	// Linkname indicates this is a go:linkname'd symbol.
 	AttrLinkname
+
+	// LinknameStd indicates this is a go:linknamestd'd symbol.
+	AttrLinknameStd
 )
 
 func (a *Attribute) DuplicateOK() bool
@@ -550,6 +553,7 @@ func (a *Attribute) ABIWrapper() bool
 func (a *Attribute) IsPcdata() bool
 func (a *Attribute) IsPkgInit() bool
 func (a *Attribute) IsLinkname() bool
+func (a *Attribute) IsLinknameStd() bool
 
 func (a *Attribute) Set(flag Attribute, value bool)
 
@@ -632,20 +636,21 @@ type Link struct {
 	Bso                  *bufio.Writer
 	Pathname             string
 	Pkgpath              string
-	hashmu               sync.Mutex
-	hash                 map[string]*LSym
-	funchash             map[string]*LSym
-	statichash           map[string]*LSym
-	PosTable             src.PosTable
-	InlTree              InlTree
-	DwFixups             *DwarfFixupTable
-	DwTextCount          int
-	Imports              []goobj.ImportedPkg
-	DiagFunc             func(string, ...any)
-	DiagFlush            func()
-	DebugInfo            func(ctxt *Link, fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
-	GenAbstractFunc      func(fn *LSym)
-	Errors               int
+
+	hashmu          sync.Mutex
+	hash            sync.Map
+	funchash        sync.Map
+	statichash      map[string]*LSym
+	PosTable        src.PosTable
+	InlTree         InlTree
+	DwFixups        *DwarfFixupTable
+	DwTextCount     int
+	Imports         []goobj.ImportedPkg
+	DiagFunc        func(string, ...any)
+	DiagFlush       func()
+	DebugInfo       func(ctxt *Link, fn *LSym, info *LSym, curfn Func) ([]dwarf.Scope, dwarf.InlCalls)
+	GenAbstractFunc func(fn *LSym)
+	Errors          int
 
 	InParallel    bool
 	UseBASEntries bool

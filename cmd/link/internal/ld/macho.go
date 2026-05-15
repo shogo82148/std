@@ -198,4 +198,4 @@ func AddMachoSym(ldr *loader.Loader, s loader.Sym)
 
 func MachoAddRebase(s loader.Sym, off int64)
 
-func MachoAddBind(off int64, targ loader.Sym)
+func MachoAddBind(sym loader.Sym, off int64, targ loader.Sym)

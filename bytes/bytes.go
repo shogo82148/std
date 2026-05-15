@@ -32,7 +32,8 @@ func ContainsAny(b []byte, chars string) bool
 // ContainsRuneは、UTF-8でエンコードされたバイトスライスbにルーンが含まれているかどうかを報告します。
 func ContainsRune(b []byte, r rune) bool
 
-// ContainsFuncは、UTF-8エンコードされたコードポイントの中で、bのどれかがf(r)を満たすかどうかを報告します。
+// ContainsFuncは、b内のUTF-8エンコードされたコードポイントrのいずれかがf(r)を満たすかどうかを報告します。
+// fがtrueを返した時点で、ただちに停止します。
 func ContainsFunc(b []byte, f func(rune) bool) bool
 
 // IndexByteはb内の最初のcのインスタンスのインデックスを返します。もしcがbに存在しない場合は、-1を返します。
@@ -241,3 +242,11 @@ func CutPrefix(s, prefix []byte) (after []byte, found bool)
 //
 // CutSuffixは元のスライスsのスライスを返しますが、コピーではありません。
 func CutSuffix(s, suffix []byte) (before []byte, found bool)
+
+// CutLast slices s around the last instance of sep,
+// returning the text before and after sep.
+// The found result reports whether sep appears in s.
+// If sep does not appear in s, CutLast returns s, nil, false.
+//
+// CutLast returns slices of the original slice s, not copies.
+func CutLast(s, sep []byte) (before, after []byte, found bool)

@@ -98,6 +98,18 @@ func OPBIT(x uint32) uint32
 
 func MOVCONST(d int64, s int, rt int) uint32
 
+func ASIMDALL(u, size, opcode uint32) uint32
+
+func ASIMDDIFF(u, opcode uint32) uint32
+
+func ASIMDMISC(u, size, opcode uint32) uint32
+
+func ASIMDPERM(opcode uint32) uint32
+
+func ASIMDSAME(u, size, opcode uint32) uint32
+
+func ASIMDSHF(u, opcode uint32) uint32
+
 const (
 	// Optab.flag
 	LFROM = 1 << iota
@@ -115,5 +127,11 @@ func SYSARG5(op0 int, op1 int, Cn int, Cm int, op2 int) int
 
 func SYSARG4(op1 int, Cn int, Cm int, op2 int) int
 
-// ARM64RegisterExtension constructs an ARM64 register with extension or arrangement.
-func ARM64RegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error
+// EncodeRegisterExtension constructs an ARM64 register with extension or arrangement in the argument a.
+func EncodeRegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error
+
+// RegisterArrangement encodes specified simd register number and arrangement.
+func RegisterArrangement(reg int16, arng int16, isIndex bool) (int16, error)
+
+// RegisterListOffset generates offset encoding according to AArch64 specification.
+func RegisterListOffset(firstReg, regCnt int, arrangement int64, scale int16) (int64, error)

@@ -7,19 +7,8 @@
 package json
 
 import (
-	"github.com/shogo82148/std/errors"
-
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
-
-// SkipFuncは、[MarshalToFunc] および [UnmarshalFromFunc] 関数から返される場合があります。
-//
-// SkipFuncを返す関数は、渡された [jsontext.Encoder] や [jsontext.Decoder] に
-// 観測可能な副作用を与えてはなりません。
-// 例えば、[jsontext.Decoder.PeekKind] を呼び出すことは許容されますが、
-// [jsontext.Decoder.ReadToken] や [jsontext.Encoder.WriteToken] のような
-// 状態を変更するメソッドを呼び出すことは許容されません。
-var SkipFunc = errors.New("json: skip function")
 
 // Marshalersは、特定の型のマーシャル動作を上書きできる関数群のリストです。
 // [WithMarshalers] で設定することで、[Marshal]、[MarshalWrite]、[MarshalEncode] で利用できます。
@@ -28,9 +17,11 @@ var SkipFunc = errors.New("json: skip function")
 type Marshalers = typedMarshalers
 
 // JoinMarshalersは、マーシャル関数のフラットなリストを構築します。
-// リスト内の複数の関数が特定の型の値に適用可能な場合、リストの先頭にある関数ほど優先されます。
-// 関数が [SkipFunc] を返した場合は、次に適用可能な関数が呼び出され、
-// それ以外の場合はデフォルトのマーシャル動作が使われます。
+// リスト内に同じ型に適用できる関数が複数ある場合、
+// リストの前にある関数が後にある関数より優先されます。
+// 関数が [errors.ErrUnsupported] を返した場合、
+// 次に適用可能な関数が呼ばれます。
+// それ以外の場合はデフォルトのマーシャル動作が使用されます。
 //
 // 例：
 //
@@ -46,9 +37,11 @@ func JoinMarshalers(ms ...*Marshalers) *Marshalers
 type Unmarshalers = typedUnmarshalers
 
 // JoinUnmarshalersは、アンマーシャル関数のフラットなリストを構築します。
-// リスト内の複数の関数が特定の型の値に適用可能な場合、リストの先頭にある関数ほど優先されます。
-// 関数が [SkipFunc] を返した場合は、次に適用可能な関数が呼び出され、
-// それ以外の場合はデフォルトのアンマーシャル動作が使われます。
+// リスト内に同じ型に適用できる関数が複数ある場合、
+// リストの前にある関数が後にある関数より優先されます。
+// 関数が [errors.ErrUnsupported] を返した場合、
+// 次に適用可能な関数が呼ばれます。
+// それ以外の場合はデフォルトのアンマーシャル動作が使用されます。
 //
 // 例：
 //
@@ -61,35 +54,41 @@ func JoinUnmarshalers(us ...*Unmarshalers) *Unmarshalers
 // Tは名前付きポインタ以外の任意の型にできます。
 // Tがインターフェース型またはポインタ型の場合、関数には必ず非nilのポインタ値が渡されます。
 //
-// 関数は必ず1つのJSON値をマーシャルしなければなりません。
-// Tの値を関数呼び出しの外部に保持してはなりません。
-// [SkipFunc] を返すことはできません。
+// 関数はJSON値をちょうど1つマーシャルしなければなりません。
+// Tの値は関数呼び出しの外部に保持してはなりません。
+// [errors.ErrUnsupported] を返してはなりません。
 func MarshalFunc[T any](fn func(T) ([]byte, error)) *Marshalers
 
 // MarshalToFuncは、型T専用のマーシャル方法を指定する関数を構築します。
 // Tは名前付きポインタ以外の任意の型にできます。
 // Tがインターフェース型またはポインタ型の場合、関数には必ず非nilのポインタ値が渡されます。
 //
-// 関数は必ず提供されたエンコーダのwriteメソッドを呼び出して、1つのJSON値をマーシャルしなければなりません。
-// [SkipFunc] を返すことで、次のマーシャル関数に処理を移すことができますが、[SkipFunc] を返す場合はエンコーダに対して可変メソッドを呼び出してはいけません。
-// [jsontext.Encoder] へのポインタやTの値は関数呼び出しの外部に保持してはいけません。
+// 関数は提供されたエンコーダーの書き込みメソッドを呼び出して、
+// JSON値をちょうど1つマーシャルしなければなりません。
+// [errors.ErrUnsupported] を返すことで、次のマーシャル関数に処理を移すことができます。
+// ただし、[errors.ErrUnsupported] を返す場合、エンコーダーの変更を伴うメソッドを
+// 呼び出してはなりません。
+// [jsontext.Encoder] へのポインタとTの値は関数呼び出しの外部に保持してはなりません。
 func MarshalToFunc[T any](fn func(*jsontext.Encoder, T) error) *Marshalers
 
 // UnmarshalFuncは、型T専用のアンマーシャル方法を指定する関数を構築します。
 // Tは名前なしポインタ型またはインターフェース型でなければなりません。
 // 関数には必ず非nilのポインタ値が渡されます。
 //
-// 関数は必ず1つのJSON値をアンマーシャルしなければなりません。
-// 入力の[]byteは変更してはいけません。
-// 入力の[]byteやTの値は関数呼び出しの外部に保持してはいけません。
-// [SkipFunc] を返すことはできません。
+// 関数はJSON値をちょうど1つアンマーシャルしなければなりません。
+// 入力の[]byteを変更してはなりません。
+// 入力の[]byteとTの値は関数呼び出しの外部に保持してはなりません。
+// [errors.ErrUnsupported] を返してはなりません。
 func UnmarshalFunc[T any](fn func([]byte, T) error) *Unmarshalers
 
 // UnmarshalFromFuncは、型T専用のアンマーシャル方法を指定する関数を構築します。
 // Tは名前なしポインタ型またはインターフェース型でなければなりません。
 // 関数には必ず非nilのポインタ値が渡されます。
 //
-// 関数は必ず提供されたデコーダのreadメソッドを呼び出して、1つのJSON値をアンマーシャルしなければなりません。
-// [SkipFunc] を返すことで、次のアンマーシャル関数に処理を移すことができますが、[SkipFunc] を返す場合はデコーダに対して可変メソッドを呼び出してはいけません。
-// [jsontext.Decoder] へのポインタやTの値は関数呼び出しの外部に保持してはいけません。
+// 関数は提供されたデコーダーの読み取りメソッドを呼び出して、
+// JSON値をちょうど1つアンマーシャルしなければなりません。
+// [errors.ErrUnsupported] を返すことで、次のアンマーシャル関数に処理を移すことができます。
+// ただし、[errors.ErrUnsupported] を返す場合、デコーダーの変更を伴うメソッドを
+// 呼び出してはなりません。
+// [jsontext.Decoder] へのポインタとTの値は関数呼び出しの外部に保持してはなりません。
 func UnmarshalFromFunc[T any](fn func(*jsontext.Decoder, T) error) *Unmarshalers

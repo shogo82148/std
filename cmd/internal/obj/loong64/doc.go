@@ -6,6 +6,18 @@
 Package loong64 implements an LoongArch64 assembler. Go assembly syntax is different from
 GNU LoongArch64 syntax, but we can still follow the general rules to map between them.
 
+# Register Convention
+
+	Name                |  Alias  | Meaning
+	-----------------------------------------------------------------------------------------------------------------------
+	R0                  | REGZERO | Constant zero
+	R1                  | REGLINK | Return address
+	R3                  | REGSP   | Stack pointer
+	R12,R13,R14,R15,R20 |         | For plt and trampoline, use with caution in assembly code, save before calling function
+	R22                 | REGG    | Goroutine pointer
+	R29                 | REGCTXT | Context for closures
+	R30                 | REGTMP  | Tmp register used by assembler
+
 # Instructions mnemonics mapping rules
 
 1. Bit widths represented by various instruction suffixes and prefixes
@@ -320,6 +332,67 @@ Note: In the following sections 3.1 to 3.6, "ui4" (4-bit unsigned int immediate)
       bits[11:1]:  block size, the value range is [16, 1024], and it must be an integer multiple of 16
       bits[20:12]: block num, the value range is [1, 256]
       bits[36:21]: stride, the value range is [0, 0xffff]
+
+4. ShiftAdd instructions
+    Mapping between Go and platform assembly:
+                Go assembly            |    platform assembly
+     ALSL.W/WU/V $Imm, Rj, Rk, Rd      |    alsl.w/wu/d rd, rj, rk, $imm
+
+    Instruction encoding format is as follows:
+
+	| 31 ~ 17 | 16 ~ 15 | 14 ~ 10 | 9 ~ 5 | 4 ~ 0 |
+	|  opcode |   sa2   |   rk    |   rj  |   rd  |
+
+    The alsl.w/wu/v series of instructions shift the data in rj left by sa+1, add the value
+    in rk, and write the result to rd.
+
+    To allow programmers to directly write the desired shift amount in assembly code, we actually write
+    the value of sa2+1 in the assembly code and then include the value of sa2 in the instruction encoding.
+
+    For example:
+
+            Go assembly      | instruction Encoding
+        ALSLV $4, r4, r5, R6 |      002d9486
+
+5. Note of special memory access instructions
+    Instruction format:
+      MOVWP	offset(Rj), Rd
+      MOVVP	offset(Rj), Rd
+      MOVWP	Rd, offset(Rj)
+      MOVVP	Rd, offset(Rj)
+
+    Mapping between Go and platform assembly:
+               Go assembly      |      platform assembly
+      MOVWP  offset(Rj), Rd     |    ldptr.w  rd, rj, si14
+      MOVVP  offset(Rj), Rd     |    ldptr.d  rd, rj, si14
+      MOVWP  Rd, offset(Rj)     |    stptr.w  rd, rj, si14
+      MOVVP  Rd, offset(Rj)     |    stptr.d  rd, rj, si14
+
+      note: In Go assembly, for ease of understanding, offset is a 16-bit immediate number representing
+            the actual address offset, but in platform assembly, it need a 14-bit immediate number.
+	    si14 = offset>>2
+
+    The addressing calculation for the above instruction involves logically left-shifting the 14-bit
+    immediate number si14 by 2 bits, then sign-extending it, and finally adding it to the value in the
+    general-purpose register rj to obtain the sum.
+
+    For example:
+
+            Go assembly      |      platform assembly
+         MOVWP  8(R4), R5    |      ldptr.w r5, r4, $2
+
+6. Note of special add instruction
+    Mapping between Go and platform assembly:
+              Go assembly        |      platform assembly
+      ADDV16  si16<<16, Rj, Rd   |    addu16i.d  rd, rj, si16
+
+      note: si16 is a 16-bit immediate number, and si16<<16 is the actual operand.
+
+    The addu16i.d instruction logically left-shifts the 16-bit immediate number si16 by 16 bits, then
+    sign-extends it. The resulting data is added to the [63:0] bits of data in the general-purpose register
+    rj, and the sum is written into the general-purpose register rd.
+    The addu16i.d instruction is used in conjunction with the ldptr.w/d and stptr.w/d instructions to
+    accelerate access based on the GOT table in position-independent code.
 */
 
 package loong64

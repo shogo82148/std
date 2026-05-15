@@ -5,3 +5,13 @@
 //go:build goexperiment.swissmap
 
 package runtime
+
+import (
+	"github.com/shogo82148/std/testing"
+)
+
+func MustSupportFIPS140(t *testing.T)
+
+func RerunWithFIPS140Enabled(t *testing.T)
+
+func RerunWithFIPS140Enforced(t *testing.T)

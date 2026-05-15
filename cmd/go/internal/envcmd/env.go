@@ -46,11 +46,11 @@ For more about environment variables, see 'go help environment'.
 func MkEnv() []cfg.EnvVar
 
 // ExtraEnvVars returns environment variables that should not leak into child processes.
-func ExtraEnvVars(loaderstate *modload.State) []cfg.EnvVar
+func ExtraEnvVars(ld *modload.Loader) []cfg.EnvVar
 
 // ExtraEnvVarsCostly returns environment variables that should not leak into child processes
 // but are costly to evaluate.
-func ExtraEnvVarsCostly(loaderstate *modload.State) []cfg.EnvVar
+func ExtraEnvVarsCostly(ld *modload.Loader) []cfg.EnvVar
 
 // PrintEnv prints the environment variables to w.
 func PrintEnv(w io.Writer, env []cfg.EnvVar, onlyChanged bool)

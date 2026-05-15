@@ -56,7 +56,10 @@ func NewDecapsulationKey768(seed []byte) (*DecapsulationKey768, error)
 func (dk *DecapsulationKey768) Bytes() []byte
 
 // Decapsulate は、暗号文とカプセル化解除鍵から共有鍵を生成します。
-// 暗号文が有効でない場合、Decapsulate はエラーを返します。
+// 暗号文の長さが正しくない場合、Decapsulate はエラーを返します。
+// 長さは正しいがそれ以外は無効な暗号文については、エラーは返されません。
+// その代わり、FIPS 203 に従って、送信者の共有鍵とは一致しない
+// 共有鍵が生成されます。
 //
 // 共有鍵は秘密に保つ必要があります。
 func (dk *DecapsulationKey768) Decapsulate(ciphertext []byte) (sharedKey []byte, err error)
@@ -115,7 +118,10 @@ func NewDecapsulationKey1024(seed []byte) (*DecapsulationKey1024, error)
 func (dk *DecapsulationKey1024) Bytes() []byte
 
 // Decapsulate は、暗号文とカプセル化解除鍵から共有鍵を生成します。
-// 暗号文が有効でない場合、Decapsulate はエラーを返します。
+// 暗号文の長さが正しくない場合、Decapsulate はエラーを返します。
+// 長さは正しいがそれ以外は無効な暗号文については、エラーは返されません。
+// その代わり、FIPS 203 に従って、送信者の共有鍵とは一致しない
+// 共有鍵が生成されます。
 //
 // 共有鍵は秘密に保つ必要があります。
 func (dk *DecapsulationKey1024) Decapsulate(ciphertext []byte) (sharedKey []byte, err error)

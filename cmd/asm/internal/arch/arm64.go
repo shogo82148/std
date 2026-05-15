@@ -49,6 +49,3 @@ func ARM64RegisterShift(reg, op, count int16) (int64, error)
 
 // ARM64RegisterArrangement constructs an ARM64 vector register arrangement.
 func ARM64RegisterArrangement(reg int16, name, arng string) (int64, error)
-
-// ARM64RegisterListOffset generates offset encoding according to AArch64 specification.
-func ARM64RegisterListOffset(firstReg, regCnt int, arrangement int64) (int64, error)

@@ -12,9 +12,9 @@ package http
 import (
 	"github.com/shogo82148/std/context"
 	"github.com/shogo82148/std/crypto/tls"
-	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/net"
+	"github.com/shogo82148/std/net/http/internal"
 	"github.com/shogo82148/std/net/url"
 	"github.com/shogo82148/std/sync"
 	"github.com/shogo82148/std/sync/atomic"
@@ -129,9 +129,12 @@ type Transport struct {
 	// DialTLSContextがnilである場合（および下記の非推奨のDialTLSもnilである場合）、
 	// DialContextとTLSClientConfigが使用されます。
 	//
-	// DialTLSContextが設定されている場合、HTTPSリクエストに対してDialおよびDialContextフックは使用されず、
-	// TLSClientConfigおよびTLSHandshakeTimeoutは無視されます。
-	// 返されたnet.Connは、すでにTLSハンドシェイクを完了しているものと見なされます。
+	// DialTLSContextが設定されている場合、DialおよびDialContextフックはHTTPSリクエストに使用されず、
+	// TLSClientConfigおよびTLSHandshakeTimeoutは無視されます。返されたnet.Connは既に
+	// TLSハンドシェイクを完了していると見なされます。
+	//
+	// ALPNプロトコルネゴシエーションをサポートするには、返されたnet.Connは
+	// *tls.Connであるか、*tls.Connと同じConnectionStateメソッドを実装する必要があります。
 	DialTLSContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
 	// DialTLSは、プロキシを使用しないHTTPSリクエストのためのTLS接続を作成するためのオプションのダイアル関数を指定します。
@@ -226,9 +229,12 @@ type Transport struct {
 	ReadBufferSize int
 
 	// nextProtoOnce guards initialization of TLSNextProto and
-	// h2transport (via onceSetNextProtoDefaults)
+	// h2Transport (via onceSetNextProtoDefaults)
 	nextProtoOnce      sync.Once
-	h2transport        h2Transport
+	closeIdleFunc      closeIdleConnectionser
+	h2Transport        *http2Transport
+	h2Config           http2ExternalTransportConfig
+	h3Transport        dialClientConner
 	tlsNextProtoWasNil bool
 
 	// ForceAttemptHTTP2は、非ゼロの
@@ -272,8 +278,8 @@ func ProxyFromEnvironment(req *Request) (*url.URL, error)
 // ProxyURLは、常に同じURLを返すプロキシ関数（[Transport] で使用するため）を返します。
 func ProxyURL(fixedURL *url.URL) func(*Request) (*url.URL, error)
 
-// ErrSkipAltProtocolは、Transport.RegisterProtocolによって定義されたセンチネルエラー値です。
-var ErrSkipAltProtocol = errors.New("net/http: skip alternate protocol")
+// ErrSkipAltProtocolは、Transport.RegisterProtocolで定義されるセンチネルエラー値です。
+var ErrSkipAltProtocol = internal.ErrSkipAltProtocol
 
 // RegisterProtocolは、新しいプロトコルをスキームとともに登録します。
 // [Transport] は、指定されたスキームを使用してリクエストをrtに渡します。

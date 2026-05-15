@@ -11,7 +11,6 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/log"
-	"github.com/shogo82148/std/math"
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/net/netip"
 	"github.com/shogo82148/std/os"
@@ -22,6 +21,7 @@ import (
 	"github.com/shogo82148/std/time"
 
 	"github.com/shogo82148/std/encoding/json/jsontext"
+	"github.com/shogo82148/std/encoding/json/v2"
 )
 
 // 型が [encoding.TextMarshaler] や [encoding.TextUnmarshaler] を実装している場合、
@@ -75,14 +75,6 @@ func Example_fieldNames() {
 		JSONName any `json:"jsonName"`
 		// JSON名が指定されていないため、Goフィールド名が使われます。
 		Option any `json:",case:ignore"`
-		// 空のJSON名を単一引用符文字列リテラルで指定しています。
-		Empty any `json:"''"`
-		// ダッシュのJSON名を単一引用符文字列リテラルで指定しています。
-		Dash any `json:"'-'"`
-		// カンマのJSON名を単一引用符文字列リテラルで指定しています。
-		Comma any `json:"','"`
-		// 引用符付きのJSON名を単一引用符文字列リテラルで指定しています。
-		Quote any `json:"'\"\\''"`
 		// 非公開フィールドは常に無視されます。
 		unexported any
 	}
@@ -98,11 +90,7 @@ func Example_fieldNames() {
 	// {
 	// 	"GoName": null,
 	// 	"jsonName": null,
-	// 	"Option": null,
-	// 	"": null,
-	// 	"-": null,
-	// 	",": null,
-	// 	"\"'": null
+	// 	"Option": null
 	// }
 }
 
@@ -335,131 +323,10 @@ func Example_inlinedFields() {
 	// }
 }
 
-// バージョンの違いにより、コンパイル時に既知のJSONオブジェクトメンバー集合と
-// 実行時に遭遇するメンバー集合が異なる場合があります。
-// そのため、未知のメンバーを細かく制御できると便利です。
-// このパッケージは、未知のメンバーの保持・拒否・破棄をサポートします。
-func Example_unknownMembers() {
-	const input = `{
-		"Name": "Teal",
-		"Value": "#008080",
-		"WebSafe": false
-	}`
-	type Color struct {
-		Name  string
-		Value string
-
-		// Unknownは未知のJSONオブジェクトメンバーを保持するGo構造体フィールドです。
-		// "unknown"タグオプションを指定することでこの挙動になります。
-		//
-		// 型はjsontext.Valueまたはmap[string]Tが利用できます。
-		Unknown jsontext.Value `json:",unknown"`
-	}
-
-	// デフォルトでは、未知のメンバーは "unknown" とマークされたGoフィールドに格納されます。
-	// そのようなフィールドが存在しない場合は無視されます。
-	var color Color
-	err := json.Unmarshal([]byte(input), &color)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Unknown members:", string(color.Unknown))
-
-	// RejectUnknownMembersを指定すると、Unmarshalは
-	// 未知のメンバーが存在する場合に拒否します。
-	err = json.Unmarshal([]byte(input), new(Color), json.RejectUnknownMembers(true))
-	serr, ok := errors.AsType[*json.SemanticError](err)
-	if ok && serr.Err == json.ErrUnknownName {
-		fmt.Println("Unmarshal error:", serr.Err, strconv.Quote(serr.JSONPointer.LastToken()))
-	}
-
-	// デフォルトでは、Marshalは "unknown" とマークされた
-	// Go構造体フィールドに格納された未知のメンバーを保持します。
-	b, err := json.Marshal(color)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Output with unknown members:   ", string(b))
-
-	// DiscardUnknownMembersを指定すると、Marshalは
-	// 未知のメンバーを破棄します。
-	b, err = json.Marshal(color, json.DiscardUnknownMembers(true))
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Output without unknown members:", string(b))
-
-	// Output:
-	// Unknown members: {"WebSafe":false}
-	// Unmarshal error: unknown object member name "WebSafe"
-	// Output with unknown members:    {"Name":"Teal","Value":"#008080","WebSafe":false}
-	// Output without unknown members: {"Name":"Teal","Value":"#008080"}
-}
-
-// "format"タグオプションを使うことで、特定の型の書式を変更できます。
-func Example_formatFlags() {
-	value := struct {
-		BytesBase64     []byte         `json:",format:base64"`
-		BytesHex        [8]byte        `json:",format:hex"`
-		BytesArray      []byte         `json:",format:array"`
-		FloatNonFinite  float64        `json:",format:nonfinite"`
-		MapEmitNull     map[string]any `json:",format:emitnull"`
-		SliceEmitNull   []any          `json:",format:emitnull"`
-		TimeDateOnly    time.Time      `json:",format:'2006-01-02'"`
-		TimeUnixSec     time.Time      `json:",format:unix"`
-		DurationSecs    time.Duration  `json:",format:sec"`
-		DurationNanos   time.Duration  `json:",format:nano"`
-		DurationISO8601 time.Duration  `json:",format:iso8601"`
-	}{
-		BytesBase64:     []byte{0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef},
-		BytesHex:        [8]byte{0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef},
-		BytesArray:      []byte{0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef},
-		FloatNonFinite:  math.NaN(),
-		MapEmitNull:     nil,
-		SliceEmitNull:   nil,
-		TimeDateOnly:    time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
-		TimeUnixSec:     time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
-		DurationSecs:    12*time.Hour + 34*time.Minute + 56*time.Second + 7*time.Millisecond + 8*time.Microsecond + 9*time.Nanosecond,
-		DurationNanos:   12*time.Hour + 34*time.Minute + 56*time.Second + 7*time.Millisecond + 8*time.Microsecond + 9*time.Nanosecond,
-		DurationISO8601: 12*time.Hour + 34*time.Minute + 56*time.Second + 7*time.Millisecond + 8*time.Microsecond + 9*time.Nanosecond,
-	}
-
-	b, err := json.Marshal(&value)
-	if err != nil {
-		log.Fatal(err)
-	}
-	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
-	fmt.Println(string(b))
-
-	// Output:
-	// {
-	// 	"BytesBase64": "ASNFZ4mrze8=",
-	// 	"BytesHex": "0123456789abcdef",
-	// 	"BytesArray": [
-	// 		1,
-	// 		35,
-	// 		69,
-	// 		103,
-	// 		137,
-	// 		171,
-	// 		205,
-	// 		239
-	// 	],
-	// 	"FloatNonFinite": "NaN",
-	// 	"MapEmitNull": null,
-	// 	"SliceEmitNull": null,
-	//	"TimeDateOnly": "2000-01-01",
-	//	"TimeUnixSec": 946684800,
-	//	"DurationSecs": 45296.007008009,
-	//	"DurationNanos": 45296007008009,
-	//	"DurationISO8601": "PT12H34M56.007008009S"
-	// }
-}
-
-// HTTPエンドポイントを実装する際、[io.Reader] や [io.Writer] を扱うことが一般的です。
-// [MarshalWrite] と [UnmarshalRead] 関数は、こうした入出力型の操作を補助します。
-// [UnmarshalRead] は [io.Reader] 全体を読み込み、トップレベルのJSON値の後に
-// 予期しないバイトがないことを確認します。
+// HTTPエンドポイントを実装する場合、[io.Reader]と[io.Writer]を操作することが一般的です。
+// [MarshalWrite]と[UnmarshalRead]関数は、このような入出力型を操作するのに役立ちます。
+// [UnmarshalRead]は、[io.Reader]全体を読み込んで、トップレベルのJSON値の後に予期しない
+// バイトがなく[io.EOF]に到達することを確認します。
 func Example_serveHTTP() {
 	// サーバーが保持するグローバルな状態。
 	var n int64
@@ -608,8 +475,8 @@ func ExampleWithUnmarshalers_rawNumber() {
 				if dec.PeekKind() == '0' {
 					*val = jsontext.Value(nil)
 				}
-				// SkipFuncを返してデフォルトのアンマーシャル動作にフォールバックします。
-				return json.SkipFunc
+				// デフォルトのアンマーシャル動作にフォールバックするためにErrUnsupportedを返してください。
+				return errors.ErrUnsupported
 			}),
 		))
 	if err != nil {
@@ -662,8 +529,8 @@ func ExampleWithUnmarshalers_recordOffsets() {
 				n := len(unread) - len(bytes.TrimLeft(unread, " \n\r\t,:"))
 				tunnel.ByteOffset = dec.InputOffset() + int64(n)
 
-				// SkipFuncを返してデフォルトのアンマーシャル動作にフォールバックします。
-				return json.SkipFunc
+				// デフォルトのアンマーシャル動作にフォールバックするためにErrUnsupportedを返してください。
+				return errors.ErrUnsupported
 			}),
 		))
 	if err != nil {

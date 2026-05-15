@@ -16,12 +16,20 @@ func Flagprint(w io.Writer)
 
 func Flagparse(usage func())
 
-func AddVersionFlag()
+// ParseArgs parses response file content into arguments using GCC-compatible rules.
+// Arguments are separated by whitespace. Single quotes preserve content literally.
+// Double quotes allow escape sequences: \\, \", \$, \`, and backslash-newline
+// for line continuation (both LF and CRLF). Outside quotes, backslash escapes the
+// next character, backslash-newline is line continuation (both LF and CRLF).
+// We aim to follow GCC's buildargv implementation.
+// Source code: https://github.com/gcc-mirror/gcc/blob/releases/gcc-15.2.0/libiberty/argv.c#L167
+// Known deviations from GCC:
+// - CRLF is treated as line continuation to be Windows-friendly; GCC only recognizes LF.
+// - Obsolete \f and \v are not treated as whitespaces
+// This function is public to test with cmd/go/internal/work.encodeArg
+func ParseArgs(s []byte) []string
 
-// DecodeArg decodes an argument.
-//
-// This function is public for testing with the parallel encoder.
-func DecodeArg(arg string) string
+func AddVersionFlag()
 
 type DebugFlag struct {
 	tab          map[string]debugField
