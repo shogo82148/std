@@ -40,8 +40,7 @@ func NewSignature(recv *Var, params, results *Tuple, variadic bool) *Signature
 // そのような型パラメータのインスタンス化の結果として生じる名前付き[]byte
 // スライス型でさえも使用できます。
 //
-// recvがnilでない場合、typeParamsは空でなければなりません。recvTypeParamsが
-// 空でない場合、recvはnilでなければなりません。
+// recvTypeParams が空でない場合、recv は非 nil でなければなりません。
 func NewSignatureType(recv *Var, recvTypeParams, typeParams []*TypeParam, params, results *Tuple, variadic bool) *Signature
 
 // Recvはシグネチャsのレシーバー（メソッドの場合）を返します。関数の場合はnilを返します。

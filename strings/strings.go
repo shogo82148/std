@@ -227,3 +227,9 @@ func CutPrefix(s, prefix string) (after string, found bool)
 // s が suffix で終わらない場合、CutSuffix は s、false を返します。
 // suffix が空の文字列の場合、CutSuffix は s、true を返します。
 func CutSuffix(s, suffix string) (before string, found bool)
+
+// CutLast slices s around the last instance of sep,
+// returning the text before and after sep.
+// The found result reports whether sep appears in s.
+// If sep does not appear in s, CutLast returns s, "", false.
+func CutLast(s, sep string) (before, after string, found bool)
