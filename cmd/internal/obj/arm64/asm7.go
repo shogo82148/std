@@ -115,5 +115,8 @@ func SYSARG5(op0 int, op1 int, Cn int, Cm int, op2 int) int
 
 func SYSARG4(op1 int, Cn int, Cm int, op2 int) int
 
-// ARM64RegisterExtension constructs an ARM64 register with extension or arrangement.
-func ARM64RegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error
+// EncodeRegisterExtension constructs an ARM64 register with extension or arrangement in the argument a.
+func EncodeRegisterExtension(a *obj.Addr, ext string, reg, num int16, isAmount, isIndex bool) error
+
+// RegisterListOffset generates offset encoding according to AArch64 specification.
+func RegisterListOffset(firstReg, regCnt int, arrangement int64) (int64, error)
