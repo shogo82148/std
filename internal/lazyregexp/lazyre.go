@@ -25,6 +25,8 @@ func (r *Regexp) FindStringSubmatch(s string) []string
 
 func (r *Regexp) FindStringSubmatchIndex(s string) []int
 
+func (r *Regexp) ReplaceAll(src, repl []byte) []byte
+
 func (r *Regexp) ReplaceAllString(src, repl string) string
 
 func (r *Regexp) FindString(s string) string

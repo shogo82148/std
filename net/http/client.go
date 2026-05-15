@@ -144,9 +144,13 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 //
 // クライアントポリシー（CheckRedirectなど）によってトリガーされた場合、またはHTTP転送が失敗した場合（ネットワーク接続の問題など）、エラーが返されます。2xx以外のステータスコードはエラーを引き起こしません。
 //
-// 返されるエラーがnilの場合、[Response] にはユーザーが閉じなければならない非nilのBodyが含まれます。
-// BodyがEOFまで完全に読み取られずに閉じられない場合、[Client] の基本となる [RoundTripper]（通常は [Transport]）は、
-// 次の「keep-alive」リクエストのためにサーバーへの永続的なTCP接続を再利用できないかもしれません。
+// 返されたエラーがnilの場合、[Response] はnilでないBodyを含み、
+// 呼び出し元はそれを閉じることが期待されます。BodyがEOFまで読み取られ
+// かつ閉じられない場合、[Client] の基礎となる [RoundTripper]
+// （通常は [Transport]）は、後続の"keep-alive"リクエストのためにサーバーへの
+// 持続的なTCP接続を再利用できない可能性があります。
+// ただし、[Transport] はBodyが閉じられたとき、保守的な上限まで
+// 非同期に [Response] のBodyをEOFまで自動的に読み取ろうとします。
 //
 // リクエストのBodyがnilでない場合、それは基本となるTransportによって閉じられます。エラーが発生した場合も同様です。
 //
