@@ -54,16 +54,15 @@ import (
 // Options型はマーシャルとアンマーシャルの両方で使われます。
 // 一部のオプションは両方に影響し、他はどちらか一方だけに影響します:
 //
-//   - [StringifyNumbers] はマーシャル・アンマーシャル両方に影響
-//   - [Deterministic] はマーシャルのみ
-//   - [FormatNilSliceAsNull] はマーシャルのみ
-//   - [FormatNilMapAsNull] はマーシャルのみ
-//   - [OmitZeroStructFields] はマーシャルのみ
-//   - [MatchCaseInsensitiveNames] はマーシャル・アンマーシャル両方に影響
-//   - [DiscardUnknownMembers] はマーシャルのみ
-//   - [RejectUnknownMembers] はアンマーシャルのみ
-//   - [WithMarshalers] はマーシャルのみ
-//   - [WithUnmarshalers] はアンマーシャルのみ
+//   - [StringifyNumbers] はマーシャルとアンマーシャルの両方に影響します
+//   - [Deterministic] はマーシャル時のみ影響します
+//   - [FormatNilSliceAsNull] はマーシャル時のみ影響します
+//   - [FormatNilMapAsNull] はマーシャル時のみ影響します
+//   - [OmitZeroStructFields] はマーシャル時のみ影響します
+//   - [MatchCaseInsensitiveNames] はマーシャルとアンマーシャルの両方に影響します
+//   - [RejectUnknownMembers] はアンマーシャル時のみ影響します
+//   - [WithMarshalers] はマーシャル時のみ影響します
+//   - [WithUnmarshalers] はアンマーシャル時のみ影響します
 //
 // 特定の操作に影響しないオプションは無視されます。
 type Options = jsonopts.Options
@@ -135,14 +134,8 @@ func OmitZeroStructFields(v bool) Options
 // （[jsontext.AllowDuplicateNames]がfalseの場合）重複名の検出方法が変わることがあります。
 func MatchCaseInsensitiveNames(v bool) Options
 
-// DiscardUnknownMembersは、Go構造体の未知のJSONオブジェクトメンバーを格納する専用フィールドに保存された
-// JSONオブジェクトメンバーをマーシャル時に無視することを指定します。
-//
-// このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
-func DiscardUnknownMembers(v bool) Options
-
-// RejectUnknownMembersは、未知のメンバーが格納用フィールドの有無に関わらず
-// JSONオブジェクトのアンマーシャル時に拒否されるべきであることを指定します。
+// RejectUnknownMembersは、JSONオブジェクトのアンマーシャル時に
+// 未知のメンバーを拒否することを指定します。
 //
 // このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
 func RejectUnknownMembers(v bool) Options

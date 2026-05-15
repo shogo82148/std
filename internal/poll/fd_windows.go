@@ -5,8 +5,9 @@
 package poll
 
 import (
+	"runtime"
+
 	"github.com/shogo82148/std/sync"
-	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/syscall"
 )
 
@@ -76,7 +77,13 @@ type FD struct {
 	// Whether FILE_FLAG_OVERLAPPED was not set when opening the file.
 	isBlocking bool
 
-	disassociated atomic.Bool
+	// Whether the handle is currently associated with the IOCP.
+	associated bool
+
+	// readPinner and writePinner are automatically unpinned
+	// before execIO returns.
+	readPinner  runtime.Pinner
+	writePinner runtime.Pinner
 }
 
 // Init initializes the FD. The Sysfd field should already be set.
@@ -89,7 +96,7 @@ func (fd *FD) Init(net string, pollable bool) error
 
 // DisassociateIOCP disassociates the file handle from the IOCP.
 // The disassociate operation will not succeed if there is any
-// in-progress IO operation on the file handle.
+// in-progress I/O operation on the file handle.
 func (fd *FD) DisassociateIOCP() error
 
 // Close closes the FD. The underlying file descriptor is closed by

@@ -8,7 +8,6 @@ package json_test
 
 import (
 	"github.com/shogo82148/std/bytes"
-	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/math"
@@ -22,6 +21,7 @@ import (
 	"github.com/shogo82148/std/time"
 
 	"github.com/shogo82148/std/encoding/json/jsontext"
+	"github.com/shogo82148/std/encoding/json/v2"
 )
 
 // 型が [encoding.TextMarshaler] や [encoding.TextUnmarshaler] を実装している場合、
@@ -335,68 +335,7 @@ func Example_inlinedFields() {
 	// }
 }
 
-// バージョンの違いにより、コンパイル時に既知のJSONオブジェクトメンバー集合と
-// 実行時に遭遇するメンバー集合が異なる場合があります。
-// そのため、未知のメンバーを細かく制御できると便利です。
-// このパッケージは、未知のメンバーの保持・拒否・破棄をサポートします。
-func Example_unknownMembers() {
-	const input = `{
-		"Name": "Teal",
-		"Value": "#008080",
-		"WebSafe": false
-	}`
-	type Color struct {
-		Name  string
-		Value string
-
-		// Unknownは未知のJSONオブジェクトメンバーを保持するGo構造体フィールドです。
-		// "unknown"タグオプションを指定することでこの挙動になります。
-		//
-		// 型はjsontext.Valueまたはmap[string]Tが利用できます。
-		Unknown jsontext.Value `json:",unknown"`
-	}
-
-	// デフォルトでは、未知のメンバーは "unknown" とマークされたGoフィールドに格納されます。
-	// そのようなフィールドが存在しない場合は無視されます。
-	var color Color
-	err := json.Unmarshal([]byte(input), &color)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Unknown members:", string(color.Unknown))
-
-	// RejectUnknownMembersを指定すると、Unmarshalは
-	// 未知のメンバーが存在する場合に拒否します。
-	err = json.Unmarshal([]byte(input), new(Color), json.RejectUnknownMembers(true))
-	serr, ok := errors.AsType[*json.SemanticError](err)
-	if ok && serr.Err == json.ErrUnknownName {
-		fmt.Println("Unmarshal error:", serr.Err, strconv.Quote(serr.JSONPointer.LastToken()))
-	}
-
-	// デフォルトでは、Marshalは "unknown" とマークされた
-	// Go構造体フィールドに格納された未知のメンバーを保持します。
-	b, err := json.Marshal(color)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Output with unknown members:   ", string(b))
-
-	// DiscardUnknownMembersを指定すると、Marshalは
-	// 未知のメンバーを破棄します。
-	b, err = json.Marshal(color, json.DiscardUnknownMembers(true))
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Output without unknown members:", string(b))
-
-	// Output:
-	// Unknown members: {"WebSafe":false}
-	// Unmarshal error: unknown object member name "WebSafe"
-	// Output with unknown members:    {"Name":"Teal","Value":"#008080","WebSafe":false}
-	// Output without unknown members: {"Name":"Teal","Value":"#008080"}
-}
-
-// "format"タグオプションを使うことで、特定の型の書式を変更できます。
+// "format"タグオプションを使うと、特定の型のフォーマットを変更できます。
 func Example_formatFlags() {
 	value := struct {
 		BytesBase64     []byte         `json:",format:base64"`

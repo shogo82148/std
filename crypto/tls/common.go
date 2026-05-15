@@ -478,7 +478,7 @@ type Config struct {
 	// 設定するか、GODEBUG=tlsmlkem=0環境変数を使用してください。
 	//
 	// Go 1.26から、デフォルトには [SecP256r1MLKEM768] と
-	// [SecP256r1MLKEM768] ハイブリッドポスト量子鍵交換も含まれます。
+	// [SecP384r1MLKEM1024] ハイブリッドポスト量子鍵交換も含まれます。
 	// これらを無効にするには、CurvePreferencesを明示的に設定するか、
 	// GODEBUG=tlsmlkem=0またはGODEBUG=tlssecpmlkem=0環境変数のいずれかを使用してください。
 	CurvePreferences []CurveID

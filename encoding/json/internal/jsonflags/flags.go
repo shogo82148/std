@@ -116,7 +116,6 @@ const (
 	FormatNilSliceAsNull
 	OmitZeroStructFields
 	MatchCaseInsensitiveNames
-	DiscardUnknownMembers
 	RejectUnknownMembers
 	Marshalers
 	Unmarshalers
