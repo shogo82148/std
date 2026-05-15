@@ -291,8 +291,9 @@ func (p AddrPort) MarshalText() ([]byte, error)
 // [AddrPort] は、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
 func (p *AddrPort) UnmarshalText(text []byte) error
 
-// AppendBinaryは、[encoding.BinaryAppender] インターフェースを実装します。
-// [Addr.AppendBinary] に、リトルエンディアンで表されたポートを追加したものを返します。
+// AppendBinaryは [encoding.BinaryAppender] インターフェースを実装します。
+// [Addr.AppendBinary] にリトルエンディアンで表されたポートを含む
+// 追加の2バイトを追加したものを返します。
 func (p AddrPort) AppendBinary(b []byte) ([]byte, error)
 
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。

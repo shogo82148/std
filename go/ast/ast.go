@@ -4,8 +4,8 @@
 
 // astパッケージは、Goパッケージの構文木を表現するために使用される型を宣言します。
 //
-// 構文木は直接構築することもできますが、通常はパーサーによってGoソースコードから
-// 生成されます。パッケージ [go/parser] のParseFile関数を参照してください。
+// 構文木は直接構築することもできますが、通常はGoソースコードからパーサーによって
+// 生成されます。[go/parser.ParseFile] 関数を参照してください。
 package ast
 
 import (
@@ -709,9 +709,9 @@ func (p *Package) Pos() token.Pos
 func (p *Package) End() token.Pos
 
 // IsGeneratedは、プログラムによって生成されたファイルか、手書きではないかを報告します。
-// https://go.dev/s/generatedcodeに記載されている特殊コメントを検出します。
+// https://go.dev/s/generatedcode に記載されている特殊コメントを検出します。
 //
-// 構文木は [parser.ParseComments] フラグを使用して解析されている必要があります。
+// 構文木は [go/parser.ParseComments] フラグで解析されている必要があります。
 // 例：
 //
 //	f, err := parser.ParseFile(fset, filename, src, parser.ParseComments|parser.PackageClauseOnly)
