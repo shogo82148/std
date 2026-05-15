@@ -461,12 +461,8 @@
 // サポートされているフラグ:
 //
 //	  -diff
-<<<<<<< HEAD
-//		各修正を適用する代わりに、パッチを統一diffとして出力
-=======
-//		instead of applying each fix, print the patch as a unified diff;
-//		exit with a non-zero status if the diff is not empty
->>>>>>> upstream/release-branch.go1.26
+//		各修正を適用する代わりに、パッチを unified diff として表示します;
+//		diff が空でない場合は、非ゼロのステータスで終了します
 //
 // -fixtool=progフラグは、代替または追加のfixerを持つ別の解析ツールを選択します。
 // 詳細は、go vetの-vettoolフラグのドキュメントを参照してください。
@@ -1839,12 +1835,8 @@
 //	  -fix
 //		各診断を出力する代わりに、その最初の修正を適用 (可能な場合)
 //	  -diff
-<<<<<<< HEAD
-//		各修正を適用する代わりに、パッチを統一diffとして出力
-=======
-//		instead of applying each fix, print the patch as a unified diff;
-//		exit with a non-zero status if the diff is not empty
->>>>>>> upstream/release-branch.go1.26
+//		各修正を適用する代わりに、パッチを unified diff として表示します;
+//		diff が空でない場合は、非ゼロのステータスで終了します
 //
 // -vettool=progフラグは、代替または追加のチェックを持つ別の解析ツールを選択します。
 // 例えば、'shadow'アナライザーは次のコマンドでビルドして実行できます:
