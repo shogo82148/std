@@ -8,17 +8,6 @@ package bytealg
 // If MaxLen is not 0, make sure MaxLen >= 4.
 var MaxLen int
 
-// PrimeRK is the prime base used in Rabin-Karp algorithm.
-const PrimeRK = 16777619
-
-// HashStr returns the hash and the appropriate multiplicative
-// factor for use in Rabin-Karp algorithm.
-func HashStr[T string | []byte](sep T) (uint32, uint32)
-
-// HashStrRev returns the hash of the reverse of sep and the
-// appropriate multiplicative factor for use in Rabin-Karp algorithm.
-func HashStrRev[T string | []byte](sep T) (uint32, uint32)
-
 // IndexRabinKarp uses the Rabin-Karp search algorithm to return the index of the
 // first occurrence of sep in s, or -1 if not present.
 func IndexRabinKarp[T string | []byte](s, sep T) int

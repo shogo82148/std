@@ -492,9 +492,12 @@ type Config struct {
 	// デフォルトの「なし」は、ほとんどのアプリケーションにとって正しいです。
 	Renegotiation RenegotiationSupport
 
-	// KeyLogWriterは、TLSのマスターシークレットの宛先として使用できる、NSSキーログ形式の外部プログラム（Wiresharkなど）によるTLS接続の復号化を許可するためのオプションです。
-	// https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format を参照してください。
-	// KeyLogWriterの使用はセキュリティを損なう可能性があり、デバッグ目的のみに使用するべきです。
+	// KeyLogWriterは、TLSマスターシークレットをNSSキーログ形式で書き込む
+	// 出力先をオプションで指定します。Wiresharkなどの外部プログラムが
+	// TLS接続を復号化できるようにするために使用できます。
+	// https://datatracker.ietf.org/doc/draft-ietf-tls-keylogfile/ を参照してください。
+	// KeyLogWriterの使用はセキュリティを損なうため、デバッグ目的のみに
+	// 使用すべきです。
 	KeyLogWriter io.Writer
 
 	// EncryptedClientHelloConfigListはシリアライズされたECHConfigListです。
