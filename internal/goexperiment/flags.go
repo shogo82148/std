@@ -130,4 +130,7 @@ type Flags struct {
 	// from interleaved key/elem slots (KVKVKVKV) to split key and elem
 	// arrays (KKKKVVVV).
 	MapSplitGroup bool
+
+	// GenericMethods enables use of generic methods.
+	GenericMethods bool
 }
