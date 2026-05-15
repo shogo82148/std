@@ -172,8 +172,8 @@ type Framer struct {
 
 	debugFramer       *Framer
 	debugFramerBuf    *bytes.Buffer
-	debugReadLoggerf  func(string, ...interface{})
-	debugWriteLoggerf func(string, ...interface{})
+	debugReadLoggerf  func(string, ...any)
+	debugWriteLoggerf func(string, ...any)
 
 	frameCache *frameCache
 }
