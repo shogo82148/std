@@ -8,7 +8,7 @@ import (
 	"github.com/shogo82148/std/crypto/cipher"
 )
 
-// AEAD は HPKE 暗号スイートの 3 つのコンポーネントの 1 つで、対秱暗号化を
+// AEAD は HPKE 暗号スイートの 3 つのコンポーネントの 1 つで、対称暗号化を
 // 実装します。
 type AEAD interface {
 	ID() uint16
@@ -32,7 +32,7 @@ func AES256GCM() AEAD
 // ChaCha20Poly1305 は ChaCha20Poly1305 AEAD 実装を返します。
 func ChaCha20Poly1305() AEAD
 
-// ExportOnly は、暗号化または複号化ができない。
+// ExportOnly は、暗号化または複号ができない。
 // ただし [Sender.Export] または [Recipient.Export] でのみ秘密をエクスポートできる
 // プレースホルダー AEAD 実装を返します。
 //
