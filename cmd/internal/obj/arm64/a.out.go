@@ -218,12 +218,21 @@ const (
 
 // bits 0-4 indicates register: Vn
 // bits 5-8 indicates arrangement: <T>
+// TODO: consider putting the register and arrangement in different fields of an
+// [obj.Prog] to make the bit pattern less confusing.
 const (
-	REG_ARNG = obj.RBaseARM64 + 1<<10 + iota<<9
+	REG_ARNG  = obj.RBaseARM64 + 1<<10 + iota<<9
 	REG_ELEM
-	REG_ELEM_END
 	REG_ZARNG
+	REG_ZARNGELEM
+	// PZELEM is taking a portion of the P or Z register.
+	// Since it does not have an arrangement, it interpret bit 5 differently:
+	// bit 5 = 0: Z register
+	// bit 5 = 1: P register
+	REG_PZELEM
 	REG_PARNGZM
+	// This currently overlaps with REG_EXT, if more arrangements are to be added,
+	// move REG_EXT to a higher range and update RBase.*.
 	REG_PARNGZM_END
 )
 
@@ -610,16 +619,16 @@ type AClass uint16
 
 // [insts] is sorted based on the order of these constants and the first match is chosen.
 const (
-	AC_NONE    AClass = iota
-	AC_REG
-	AC_RSP
+	AC_NONE AClass = iota
+	// TODO: probably make this AClass split into AC_REG (R0...R30), AC_RSP (R0...R30, RSP), AC_ZR (R0...R30, ZR).
+	AC_SPZGREG
 	AC_VREG
 	AC_ZREG
 	AC_PREG
 	AC_PREGZM
-	AC_REGIDX
-	AC_ZREGIDX
 	AC_PREGIDX
+	AC_ZREGIDX
+	AC_PREGSEL
 	AC_ARNG
 	AC_ARNGIDX
 
