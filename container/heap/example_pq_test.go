@@ -10,16 +10,16 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// This example creates a PriorityQueue with some items, adds and manipulates an item,
-// and then removes the items in priority order.
+// この例では、いくつかの要素を持つPriorityQueueを作成し、要素を追加して操作し、
+// その後、優先度順に要素を取り出します。
 func Example_priorityQueue() {
-	// Some items and their priorities.
+	// いくつかの要素とその優先度。
 	items := map[string]int{
 		"banana": 3, "apple": 2, "pear": 4,
 	}
 
-	// Create a priority queue, put the items in it, and
-	// establish the priority queue (heap) invariants.
+	// 優先度付きキューを作成し、要素を入れて、
+	// 優先度付きキュー（ヒープ）の不変条件を確立します。
 	pq := make(PriorityQueue, len(items))
 	i := 0
 	for value, priority := range items {
@@ -32,7 +32,7 @@ func Example_priorityQueue() {
 	}
 	heap.Init(&pq)
 
-	// Insert a new item and then modify its priority.
+	// 新しい要素を挿入してから、その優先度を変更します。
 	item := &Item{
 		value:    "orange",
 		priority: 1,
@@ -40,7 +40,7 @@ func Example_priorityQueue() {
 	heap.Push(&pq, item)
 	pq.update(item, item.value, 5)
 
-	// Take the items out; they arrive in decreasing priority order.
+	// 要素を取り出します。優先度の高い順に取り出されます。
 	for pq.Len() > 0 {
 		item := heap.Pop(&pq).(*Item)
 		fmt.Printf("%.2d:%s ", item.priority, item.value)

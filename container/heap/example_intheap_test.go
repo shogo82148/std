@@ -10,8 +10,8 @@ import (
 	"github.com/shogo82148/std/fmt"
 )
 
-// This example inserts several ints into an IntHeap, checks the minimum,
-// and removes them in order of priority.
+// この例では、複数のintをIntHeapに挿入し、最小値を確認して、
+// 優先度の順に取り出します。
 func Example_intHeap() {
 	h := &IntHeap{2, 1, 5}
 	heap.Init(h)
