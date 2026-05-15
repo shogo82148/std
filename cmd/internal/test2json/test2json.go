@@ -24,16 +24,18 @@ const (
 // It implements io.WriteCloser; the caller writes test output in,
 // and the converter writes JSON output to w.
 type Converter struct {
-	w          io.Writer
-	pkg        string
-	mode       Mode
-	start      time.Time
-	testName   string
-	report     []*event
-	result     string
-	input      lineBuffer
-	output     lineBuffer
-	needMarker bool
+	w           io.Writer
+	pkg         string
+	mode        Mode
+	start       time.Time
+	testName    string
+	report      []*event
+	result      string
+	input       lineBuffer
+	output      lineBuffer
+	markFraming bool
+	markEscape  bool
+	isFraming   bool
 
 	// failedBuild is set to the package ID of the cause of a build failure,
 	// if that's what caused this test to fail.
@@ -43,6 +45,11 @@ type Converter struct {
 // NewConverter returns a "test to json" converter.
 // Writes on the returned writer are written as JSON to w,
 // with minimal delay.
+//
+// Writes on the returned writer are expected to contain markers. Test framing
+// such as "=== RUN" and friends are expected to be prefixed with ^V (\x22).
+// Other occurrences of this control character (e.g. calls to T.Log) must be
+// escaped with ^[ (\x1b).
 //
 // The writes to w are whole JSON events ending in \n,
 // so that it is safe to run multiple tests writing to multiple converters
