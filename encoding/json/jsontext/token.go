@@ -25,11 +25,12 @@ type Token struct {
 	raw *decodeBuffer
 
 	// str is the unescaped JSON string if num is zero.
-	// Otherwise, it is "f", "i", or "u" if num should be interpreted
-	// as a float64, int64, or uint64, respectively.
+	// Otherwise, it is "F", "f", "i", or "u" if num should be interpreted
+	// as a float32, float64, int64, or uint64, respectively.
 	str string
 
-	// num is a float64, int64, or uint64 stored as a uint64 value.
+	// num is a float32, float64, int64, or uint64 stored as a uint64 value.
+	// For floating-point values, it stores the raw IEEE-754 bit-pattern.
 	// It is non-zero for any JSON number in the "exact" form.
 	num uint64
 }
@@ -53,8 +54,23 @@ func Bool(b bool) Token
 // 不正な文字はUnicodeの置換文字として扱われることがあります。
 func String(s string) Token
 
-// Floatは、JSON数値を表すTokenを構築します。
-// NaN、+Inf、-Infの値は、"NaN"、"Infinity"、"-Infinity"という値のJSON文字列として表現されます。
+// Float32 は、JSON 数値を 32 ビット浮動小数点数として表す Token を構築します。
+// 形式は ECMA-262 第 10 版の 7.1.12.1 節に従いますが、
+// -0 は引き続き -0 として形式化されます。
+// NaN、+Inf、-Inf の値は、それぞれ "NaN"、"Infinity"、"-Infinity" の
+// JSON 文字列として表されます。
+//
+// ほとんどの JSON ライブラリと標準は、JSON 数値が 64 ビット浮動小数点数であることを
+// 前提としています。32 ビット精度の使用は、対応するデコーダーがこの JSON 数値トークンが
+// 32 ビット精度のみを持つことを想定している場合に限るべきです。
+// それ以外の状況では、代わりに [Float] コンストラクタを使うことを推奨します。
+func Float32(n float32) Token
+
+// Float は、JSON 数値を 64 ビット浮動小数点数として表す Token を構築します。
+// 形式は ECMA-262 第 10 版の 7.1.12.1 節および RFC 8785 の 3.2.2.3 節に従いますが、
+// -0 は引き続き -0 として形式化されます。
+// NaN、+Inf、-Inf の値は、それぞれ "NaN"、"Infinity"、"-Infinity" の
+// JSON 文字列として表されます。
 func Float(n float64) Token
 
 // Intは、int64からJSON数値を表すTokenを構築します。
@@ -74,9 +90,24 @@ func (t Token) Bool() bool
 // 他のJSONの種類の場合、これが生のJSON表現を返します。
 func (t Token) String() string
 
-// Floatは、JSON数値の浮動小数点値を返します。
-// "NaN"、"Infinity"、"-Infinity"という値のJSON文字列に対しては、NaN、+Inf、-Infの値を返します。
-// その他の場合はパニックになります。
+// Float32 は、32 ビット精度として解釈された JSON 数値の浮動小数点値を返します。
+//
+// ほとんどの JSON ライブラリと標準は、JSON 数値が 64 ビット浮動小数点数であることを
+// 前提としています。このメソッドは、呼び出し元が別の文脈から、このトークンが
+// 32 ビット精度だけで形式化された JSON 数値であることを知っている場合にのみ
+// 使用するべきです（たとえば [Float32] コンストラクタでエンコードされた場合など）。
+// それ以外の状況では、代わりに [Token.Float] アクセサを使うことを推奨します。
+//
+// 値が "NaN"、"Infinity"、"-Infinity" の JSON 文字列に対しては、
+// NaN、+Inf、-Inf の値を返します。
+// それ以外の場合はパニックになります。
+func (t Token) Float32() float32
+
+// Float は、64 ビット精度として解釈された JSON 数値の浮動小数点値を返します。
+//
+// 値が "NaN"、"Infinity"、"-Infinity" の JSON 文字列に対しては、
+// NaN、+Inf、-Inf の値を返します。
+// それ以外の場合はパニックになります。
 func (t Token) Float() float64
 
 // Intは、JSON数値の符号付き整数値を返します。
