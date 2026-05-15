@@ -34,11 +34,13 @@ func NewReader(r io.Reader) *Reader
 // 現在のファイルに残っているデータは自動的に破棄されます。
 // アーカイブの末尾に達した場合、Nextはエラーio.EOFを返します。
 //
-// Nextが [filepath.IsLocal] によって定義されるローカルでない名前に遭遇し、
-// GODEBUG環境変数に`tarinsecurepath=0`が含まれている場合、
-// Nextは [ErrInsecurePath] エラーを伴うヘッダーを返します。
-// 将来のGoのバージョンでは、この動作がデフォルトで導入される可能性があります。
-// ローカルでない名前を受け入れたいプログラムは、 [ErrInsecurePath] エラーを無視して返されたヘッダーを使用できます。
+// Nextがlocal以外のファイル名（[filepath.IsLocal] で定義されたもの）を検出した場合、
+// およびGODEBUG環境変数に`tarinsecurepath=0`が含まれている場合、
+// ファイル名のみが検証され、リンクターゲットは検証されません。
+// Nextはヘッダーを[ErrInsecurePath]エラーとともに返します。
+// Go の将来のバージョンではこの動作がデフォルトで導入される可能性があります。
+// local以外の名前を受け入れたいプログラムは[ErrInsecurePath]エラーを無視し、
+// 返されたヘッダーを使用できます。
 func (tr *Reader) Next() (*Header, error)
 
 // Readはtarアーカイブの現在のファイルから読み取ります。

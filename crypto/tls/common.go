@@ -341,13 +341,13 @@ type Config struct {
 	//
 	// GetConfigForClientがnilの場合、Server()に渡されたConfigがすべての接続に使用されます。
 	//
-	// 返されたConfigでSessionTicketKeyが明示的に設定されている場合、または
-	// 返されたConfigでSetSessionTicketKeysが呼び出された場合、それらのキーが
-	// 使用されます。そうでない場合は元のConfigのキーが使用されます
-	// （自動管理されている場合はローテーションされる可能性があります）。警告：
-	// これにより、親（または兄弟）Configで元々確立された接続のセッション再開が
-	// 可能になり、返されたConfigの [Config.VerifyPeerCertificate] の値を
-	// バイパスする可能性があります。
+	// 返されたConfig上でSessionTicketKeyが明示的に設定されている場合、または
+	// 返されたConfig上でSetSessionTicketKeysが呼び出された場合、これらのキーが
+	// 使用されます。そうでない場合、元のConfigキーが使用されます（自動的に
+	// 管理されている場合、ローテーションされる可能性があります）。警告：これは、
+	// 親（または兄弟）Configで元々確立された接続のセッション再開を許可し、
+	// 返されたConfigの[Config.VerifyPeerCertificate]値をバイパスする
+	// 可能性があります。
 	GetConfigForClient func(*ClientHelloInfo) (*Config, error)
 
 	// VerifyPeerCertificateは、nilでない場合、TLSクライアントまたはサーバーによる

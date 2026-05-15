@@ -342,7 +342,9 @@ func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
 //
 // ハンドラは通常nilであり、その場合は [DefaultServeMux] が使用されます。
 //
-// TLS Config.NextProtosで"h2"が設定された [*tls.Conn] 接続を返すリスナーがある場合、HTTP/2サポートが有効になります。
+// HTTP/2 support は、Listener が [*tls.Conn] 接続、または *tls.Conn と同じ ConnectionState
+// メソッドを実装する接続を返し、かつ接続状態が ALPN によってネゴシエートされた「h2」
+// プロトコルを示す場合のみ有効になります。
 //
 // Serveは常にnilでないエラーを返します。
 func Serve(l net.Listener, handler Handler) error

@@ -6,6 +6,7 @@ package tls
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/net"
 )
 
 // QUICEncryptionLevelは、ハンドシェイクメッセージを送信するために使用されるQUIC暗号化レベルを表します。
@@ -39,6 +40,9 @@ type QUICConfig struct {
 	// stored in the client session cache.
 	// The application should use [QUICConn.StoreSession] to store sessions.
 	EnableSessionEvents bool
+
+	// ClientHelloInfoConn is the net.Conn to use for the ClientHelloInfo.Conn field.
+	ClientHelloInfoConn net.Conn
 }
 
 // QUICEventKindはQUIC接続上での操作の種類です。

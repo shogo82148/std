@@ -29,7 +29,10 @@ type Writer struct {
 	testHookCloseSizeOffset func(size, offset uint64)
 }
 
-// NewWriter は、w に ZIP ファイルを書き込む新しい [Writer] を返します。
+// NewWriterは、wにzipファイルを書き込む新しい [Writer] を返します。
+//
+// wに書き込まれた正確なバイト数はGo 1の互換性保証の対象外です。
+// テストを含む呼び出し元は、正確に書き込まれたバイト数に依存してはいけません。
 func NewWriter(w io.Writer) *Writer
 
 // SetOffset は、zip データの開始オフセットを基になるライター内に設定します。

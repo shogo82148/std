@@ -105,11 +105,11 @@ func (e *Encoder) OutputOffset() int64
 // 値が有効なJSONであることは利用者の責任です。
 func (e *Encoder) AvailableBuffer() []byte
 
-// StackDepthは、書き込まれたJSONデータに対する状態マシンの深さを返します。
-// スタックの各レベルは入れ子になったJSONオブジェクトまたは配列を表します。
-// [BeginObject] または [BeginArray] トークンが現れるたびに増加し、
-// [EndObject] または [EndArray] トークンが現れるたびに減少します。
-// 深さはゼロ始まりで、ゼロはトップレベルのJSON値を表します。
+// StackDepthは書き込まれたJSONデータのステートマシンの深さを返します。
+// スタックの各レベルは、ネストされたJSONオブジェクトまたは配列を表します。
+// [BeginObject] または [BeginArray] トークンが検出されるたびにインクリメントされ、
+// [EndObject] または [EndArray] トークンが検出されるたびにデクリメントされます。
+// 深さはゼロインデックスで、ゼロはトップレベルのJSON値を表します。
 func (e *Encoder) StackDepth() int
 
 // StackIndexは指定されたスタックレベルの情報を返します。

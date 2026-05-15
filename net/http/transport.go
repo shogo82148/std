@@ -129,9 +129,12 @@ type Transport struct {
 	// DialTLSContextがnilである場合（および下記の非推奨のDialTLSもnilである場合）、
 	// DialContextとTLSClientConfigが使用されます。
 	//
-	// DialTLSContextが設定されている場合、HTTPSリクエストに対してDialおよびDialContextフックは使用されず、
-	// TLSClientConfigおよびTLSHandshakeTimeoutは無視されます。
-	// 返されたnet.Connは、すでにTLSハンドシェイクを完了しているものと見なされます。
+	// DialTLSContextが設定されている場合、DialおよびDialContextフックはHTTPSリクエストに使用されず、
+	// TLSClientConfigおよびTLSHandshakeTimeoutは無視されます。返されたnet.Connは既に
+	// TLSハンドシェイクを完了していると見なされます。
+	//
+	// ALPNプロトコルネゴシエーションをサポートするには、返されたnet.Connは
+	// *tls.Connであるか、*tls.Connと同じConnectionStateメソッドを実装する必要があります。
 	DialTLSContext func(ctx context.Context, network, addr string) (net.Conn, error)
 
 	// DialTLSは、プロキシを使用しないHTTPSリクエストのためのTLS接続を作成するためのオプションのダイアル関数を指定します。

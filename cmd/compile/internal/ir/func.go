@@ -284,7 +284,10 @@ func ClosureDebugRuntimeCheck(clo *ClosureExpr)
 // why is the reason we're generating this Func. It can be OCLOSURE
 // (for a normal function literal) or OGO or ODEFER (for wrapping a
 // call expression that has parameters or results).
-func NewClosureFunc(fpos, cpos src.XPos, why Op, typ *types.Type, outerfn *Func, pkg *Package) *Func
+//
+// gen is an optional counter for the closure name. If it is 0,
+// the counter will be computed based on outerfn.
+func NewClosureFunc(fpos, cpos src.XPos, why Op, typ *types.Type, outerfn *Func, pkg *Package, gen int) *Func
 
 // IsFuncPCIntrinsic returns whether n is a direct call of internal/abi.FuncPCABIxxx functions.
 func IsFuncPCIntrinsic(n *CallExpr) bool
