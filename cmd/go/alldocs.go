@@ -2626,11 +2626,11 @@
 // GOPATHモードのvendorディレクトリ内のコードは、
 // GOPATHモードのインポートパス確認の対象ではありません（「go help importpath」を参照）。
 //
-// GOPATHモードでは、バイナリに組み込まれるデフォルトのGODEBUG値は
-// Go 1.20で使用されていたものとなり、モジュールが "godebug default=go1.20" を
-// 指定した場合と同じGODEBUG値が設定されます。異なるGODEBUG設定を使用するには、
-// GODEBUG環境変数を設定してそれらの値を上書きする必要があります。これはまた、
-// GO111MODULE=offでは標準ライブラリのテストが正しく動作しないことも意味します。
+// GOPATHモードでは、バイナリに組み込まれるデフォルトのGODEBUG値は、
+// モジュールが "godebug default=go1.20" を指定した場合と同じGODEBUG値になります。
+// 異なるGODEBUG設定を使用するには、GODEBUG環境変数を設定してそれらの値を
+// 上書きする必要があります。これはまた、GO111MODULE=offでは標準ライブラリの
+// テストが正しく動作しないことも意味します。
 //
 // See https://go.dev/s/go15vendor for details.
 //

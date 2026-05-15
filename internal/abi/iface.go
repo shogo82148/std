@@ -4,7 +4,9 @@
 
 package abi
 
-import "github.com/shogo82148/std/unsafe"
+import (
+	"github.com/shogo82148/std/unsafe"
+)
 
 // The first word of every non-empty interface type contains an *ITab.
 // It records the underlying concrete type (Type), the interface type it
@@ -17,6 +19,9 @@ type ITab struct {
 	Hash  uint32
 	Fun   [1]uintptr
 }
+
+// Size returns the size of the itab in memory.
+func (it *ITab) Size() int
 
 // EmptyInterface describes the layout of a "interface{}" or a "any."
 // These are represented differently than non-empty interface, as the first

@@ -142,7 +142,7 @@ const (
 type Symbols struct {
 	Textp     []loader.Sym
 	Resources []loader.Sym
-	PData     loader.Sym
+	PData     []loader.Sym
 	XData     loader.Sym
 }
 
