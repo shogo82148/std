@@ -13,10 +13,10 @@ import (
 // A Cmd describes how to use a version control system
 // like Mercurial, Git, or Subversion.
 type Cmd struct {
-	Name      string
-	Cmd       string
-	Env       []string
-	RootNames []rootName
+	Name  string
+	Cmd   string
+	Env   []string
+	Roots []isVCSRoot
 
 	Scheme  []string
 	PingCmd string

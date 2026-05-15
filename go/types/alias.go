@@ -18,25 +18,8 @@ package types
 // エイリアス型宣言のチェーンで最初の非エイリアス型を取得するには、
 // [Unalias]を呼び出してください。
 //
-// 定義された（[Named]）型と同様に、エイリアス型には名前があります。
-// その[TypeName]オブジェクトにアクセスするには [Alias.Obj] メソッドを使用してください。
-//
-// 歴史的に、Alias型は実体化されていませんでした。そのため、上記の例では、
-// Aの型は [Alias.Rhs] がintであるAliasではなく、Basic（int）によって表現されていました。
-// しかし、Go 1.24では型パラメータや引数を持つエイリアス型を宣言できるようになりました：
-//
-//	type Set[K comparable] = map[K]bool
-//	s := make(Set[String])
-//
-// これによりAlias型を実体化する必要があります。それらにアクセスするには
-// [Alias.TypeParams] と [Alias.TypeArgs] メソッドを使用してください。
-//
-// 移行を容易にするため、Alias型はgo1.22で導入されましたが、
-// GODEBUG=gotypesalias=1環境変数が提供されない限り、
-// 型チェッカーはこの型の値を構築しませんでした。
-// go1.23以降、この変数はデフォルトで有効になっています。
-// この設定により、事前宣言された型「any」も
-// 生の [Interface] ではなくAliasとして表現されます。
+// 定義済み（[Named]）型と同様に、エイリアス型は名前を持ちます。
+// その [TypeName] オブジェクトにアクセスするには [Alias.Obj] メソッドを使用します。
 type Alias struct {
 	obj     *TypeName
 	orig    *Alias

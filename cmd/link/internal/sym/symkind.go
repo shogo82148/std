@@ -52,11 +52,9 @@ const (
 	SELFRXSECT
 	SMACHOPLT
 
-	// Read-only, non-executable, segment.
-	STYPE
+	// Read-only, non-executable, unrelocated segment.
 	SSTRING
 	SGOSTRING
-	SGOFUNC
 	SGCBITS
 	SRODATA
 	SRODATAFIPSSTART
@@ -65,32 +63,26 @@ const (
 	SRODATAEND
 	SFUNCTAB
 	SPCLNTAB
+	STYPELINK
 	SELFROSECT
 
 	// Read-only, non-executable, dynamically relocatable segment.
 	//
-	// Types STYPE-SFUNCTAB above are written to the .rodata section by default.
-	// When linking a shared object, some conceptually "read only" types need to
-	// be written to by relocations and putting them in a section called
-	// ".rodata" interacts poorly with the system linkers. The GNU linkers
-	// support this situation by arranging for sections of the name
-	// ".data.rel.ro.XXX" to be mprotected read only by the dynamic linker after
-	// relocations have applied, so when the Go linker is creating a shared
-	// object it checks all objects of the above types and bumps any object that
-	// has a relocation to it to the corresponding type below, which are then
-	// written to sections with appropriate magic names.
-	STYPERELRO
-	SSTRINGRELRO
-	SGOSTRINGRELRO
-	SGOFUNCRELRO
-	SGCBITSRELRO
+	// This segment holds read-only data that contains pointers to
+	// other parts of the program. When generating a position
+	// independent executable or a shared library, these sections
+	// are "relro", meaning that they start as writable, and are
+	// changed to be read-only after dynamic relocations are applied.
+	//
+	// When no dynamic relocations are required, as when generating
+	// an executable that is not position independent, this is just
+	// part of the normal read-only segment.
 	SRODATARELRO
-	SFUNCTABRELRO
-
+	STYPE
+	SGOFUNC
 	SELFRELROSECT
 	SMACHORELROSECT
 
-	STYPELINK
 	SITABLINK
 
 	// Allocated writable segment.
@@ -185,14 +177,11 @@ var AbiSymKindToSymKind = [...]SymKind{
 	objabi.SSEHUNWINDINFO:          SSEHUNWINDINFO,
 }
 
-// ReadOnly are the symbol kinds that form read-only sections. In some
-// cases, if they will require relocations, they are transformed into
-// rel-ro sections using relROMap.
+// ReadOnly are the symbol kinds that form read-only sections
+// that never require runtime relocations.
 var ReadOnly = []SymKind{
-	STYPE,
 	SSTRING,
 	SGOSTRING,
-	SGOFUNC,
 	SGCBITS,
 	SRODATA,
 	SRODATAFIPSSTART,
@@ -200,18 +189,6 @@ var ReadOnly = []SymKind{
 	SRODATAFIPSEND,
 	SRODATAEND,
 	SFUNCTAB,
-}
-
-// RelROMap describes the transformation of read-only symbols to rel-ro
-// symbols.
-var RelROMap = map[SymKind]SymKind{
-	STYPE:     STYPERELRO,
-	SSTRING:   SSTRINGRELRO,
-	SGOSTRING: SGOSTRINGRELRO,
-	SGOFUNC:   SGOFUNCRELRO,
-	SGCBITS:   SGCBITSRELRO,
-	SRODATA:   SRODATARELRO,
-	SFUNCTAB:  SFUNCTABRELRO,
 }
 
 // IsText returns true if t is a text type.
