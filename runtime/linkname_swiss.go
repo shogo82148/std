@@ -4,6 +4,8 @@
 
 //go:build goexperiment.swissmap
 
+package runtime
+
 import (
 	"github.com/shogo82148/std/testing"
 )
