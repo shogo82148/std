@@ -39,6 +39,13 @@ func Run(t testing.TB, e *script.Engine, s *script.State, filename string, testS
 // Skip returns a sentinel error that causes Run to mark the test as skipped.
 func Skip() script.Cmd
 
+// SkipError is returned by a script test that executes the [Skip] command.
+type SkipError struct {
+	msg string
+}
+
+func (s SkipError) Error() string
+
 // CachedExec returns a Condition that reports whether the PATH of the test
 // binary itself (not the script's current environment) contains the named
 // executable.

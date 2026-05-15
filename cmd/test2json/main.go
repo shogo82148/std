@@ -40,6 +40,7 @@
 //		Test        string
 //		Elapsed     float64 // 秒単位
 //		Output      string
+//		OutputType  string
 //		FailedBuild string
 //	}
 //
@@ -80,11 +81,18 @@
 // これは"go list"出力のImportPathフィールド、および"go build -json"によって
 // 出力されるBuildEvent.ImportPathフィールドと一致します。
 //
-// ベンチマークが実行されると、通常はタイミング結果を示す1行の出力が生成されます。
-// その行は、Action == "output"でTestフィールドのないイベントで報告されます。
-// ベンチマークが出力をログに記録したり失敗を報告したりする場合
-// （例えば、b.Logやb.Errorを使用することによって）、その追加出力は
-// Testがベンチマーク名に設定されたイベントのシーケンスとして報告され、
+// OutputTypeフィールドはAction == "output"の場合に設定される*可能性があり*、
+// 出力のタイプを示します。OutputTypeは次のいずれかになります：
+//
+//	(blank)        - 通常の出力
+//	frame          - テストフレーミング、例えば「=== RUN ...」または「--- FAIL: ...」のような
+//	error          - Error(f)またはFatal(f)によって生成されたエラー
+//	error-continue - マルチラインエラーの続き
+//
+// ベンチマークが実行されると、通常はタイミング結果を示す単一の出力行を生成します。
+// その行はAction == "output"とTestフィールドなしのイベントで報告されます。
+// ベンチマークが出力をログに記録するか、失敗を報告する場合（例えば、b.Logまたはb.Errorを使用することによって）、
+// その追加の出力はベンチマーク名に設定されたTestを持つイベントのシーケンスとして報告され、
 // Action == "bench"または"fail"の最終イベントで終了します。
-// ベンチマークには、Action == "pause"のイベントはありません。
+// ベンチマークにはAction == "pause"のイベントはありません。
 package main
