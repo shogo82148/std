@@ -59,5 +59,6 @@ func (w *Writer) Flush() error
 // Close は書き込みバッファをフラッシュしてクローズします。
 func (w *Writer) Close() error
 
-// Resetは、ライターの状態を破棄し、dstとwのレベルと辞書を使用して [NewWriter] または [NewWriterDict] が呼び出された結果と同じ状態にします。
+// Reset はライターの状態を破棄し、dst と w のレベルおよび辞書を使って
+// NewWriter または NewWriterDict を呼び出した結果と同等にします。
 func (w *Writer) Reset(dst io.Writer)
