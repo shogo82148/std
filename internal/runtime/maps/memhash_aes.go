@@ -10,14 +10,10 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-//go:noescape
 func MemHash(p unsafe.Pointer, h, s uintptr) uintptr
 
-//go:noescape
 func MemHash32(p unsafe.Pointer, h uintptr) uintptr
 
-//go:noescape
 func MemHash64(p unsafe.Pointer, h uintptr) uintptr
 
-//go:noescape
 func StrHash(p unsafe.Pointer, h uintptr) uintptr
