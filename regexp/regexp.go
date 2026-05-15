@@ -17,28 +17,38 @@
 // すべての文字はUTF-8でエンコードされたコードポイントです。
 // [utf8.DecodeRune] に従って、無効なUTF-8シーケンスの各バイトは、utf8.RuneError（U+FFFD）としてエンコードされたものとして扱われます。
 //
-// 正規表現に一致し、一致したテキストを識別する [Regexp] の16個のメソッドがあります。
-// これらのメソッドの名前は、次の正規表現と一致します。
+// [Regexp]には正規表現にマッチして、マッチしたテキストを識別する24個のメソッドがあります。
+// これらのメソッド名は以下の正規表現にマッチします:
 //
-// Find(All)?(String)?(Submatch)?(Index)?
+//	(All|Find|FindAll)(String)?(Submatch)?(Index)?
 //
-// 'All'が存在する場合、このルーチンは表現全体の連続する重複しない一致を見つけます。直前の一致と隣接する空の一致は無視されます。戻り値は、対応する非-'All'ルーチンの連続する戻り値を含むスライスです。これらのルーチンは、追加の整数引数nを受け取ります。ただし、n >= 0の場合、関数は最大n個の一致/サブマッチを返し、それ以外の場合はすべてを返します。
+// 'All'バリアントは、式全体の連続した重複しないマッチに対するイテレーターを返します。
+// 'FindAll'バリアントは、代わりにそれらのマッチのスライスを返します。
+// 前のマッチに隣接する空のマッチは無視されます。'FindAll'バリアントは追加の整数引数nを取ります。
+// n >= 0の場合、関数は最大でnのマッチ/サブマッチを返します。
+// そうでない場合、すべてを返します。
 //
-// 'String'が存在する場合、引数は文字列です。それ以外の場合はバイトのスライスです。返り値は適切に調整されます。
+// 'Find'バリアントは、AllまたはFindAllが返す最初のマッチのみを返します。
 //
-// 'Submatch'が存在する場合、返り値は式の連続するサブマッチを識別するスライスです。サブマッチは、正規表現内のパレンセシスで囲まれたサブ式（キャプチャグループとも呼ばれる）の一致です。左から右にかけて開くかっこの順に番号が付けられています。サブマッチ0は式全体の一致であり、サブマッチ1は最初のカッコで囲まれた部分式の一致です。
+// 'String'が存在する場合、引数は文字列です。そうでない場合は[]byteです。
 //
-// 'Index'が存在する場合、一致とサブマッチは入力文字列内のバイトインデックスのペアで識別されます。
-// result[2*n:2*n+2]はn番目のサブマッチのインデックスを識別します。n==0の場合のペアは、式全体の一致を識別します。'Index'が存在しない場合、一致/サブマッチのテキストで識別されます。
-// インデックスが負数であるか、テキストがnilの場合、サブ式は入力文字列内で一致するテキストがないことを意味します。
-// 'String'バージョンでは、空の文字列は一致がないか空の一致を意味します。
+// デフォルトでは、返される各マッチは正規表現にマッチする部分文字列で表され、
+// 引数の型に応じてstringまたは[]byteです。
+// 'Submatch'が存在する場合、各マッチは代わりに
+// 正規表現の括弧で囲まれた部分式（キャプチャグループとも呼ばれます）にマッチする
+// 部分文字列のスライスで表され、開き括弧の順序で左から右へ番号付けされます。
+// Submatch 0は式全体のマッチ、submatch 1は最初の括弧付き部分式のマッチなどです。
+// 'Index'が存在する場合、各部分文字列は代わりに入力文字列内のバイトインデックスのペアで表されます。
+// インデックスが負またはサブ文字列がnilの場合、その部分式は入力内のいかなる文字列にもマッチしていません。
+// 'String'バージョンの場合、空文字列はマッチなしまたは空のマッチを意味します。
 //
-// また、[io.RuneReader] から読み取ったテキストに適用できるメソッドのサブセットもあります：
-// [Regexp.MatchReader]、[Regexp.FindReaderIndex]、[Regexp.FindReaderSubmatchIndex]。
-//
-// このセットは増える可能性があります。正規表現のマッチングは、マッチによって返されるテキストを超えて
-// テキストを調べる必要がある場合があるため、[io.RuneReader] からテキストをマッチングするメソッドは、
-// 戻り値を返す前に入力を任意の長さまで読み取る可能性があります。
+// また、[io.RuneReader]から読み込まれたテキストに適用できるメソッドのサブセットもあります:
+// [Regexp.MatchReader]、[Regexp.FindReaderIndex]、
+// [Regexp.FindReaderSubmatchIndex]。
+// 正規表現のマッチはマッチとして返されたテキストを超えてテキストを
+// 調べる必要がある場合があることに注意してください。
+// そのため、[io.RuneReader]からテキストをマッチさせるメソッドは
+// 返す前に任意の距離入力を読み込む可能性があります。
 //
 // （このパターンに一致しないいくつかの他のメソッドもあります。）
 package regexp
@@ -180,32 +190,109 @@ func (re *Regexp) ReplaceAllFunc(src []byte, repl func([]byte) []byte) []byte
 // QuoteMetaは、引数のテキスト内のすべての正規表現メタ文字をエスケープした文字列を返します。返された文字列は、リテラルテキストにマッチする正規表現です。
 func QuoteMeta(s string) string
 
-// Findは正規表現に一致する最も左側のテキストを含むスライスを返します。
-// nilの返り値は一致なしを示します。
+// Findはbでreの最も左のマッチのテキストを返します。
+// マッチがない場合、戻り値はnilです。
 func (re *Regexp) Find(b []byte) []byte
 
-// FindIndexは、正規表現の一致する最も左側の箇所を示す整数の2要素スライスを返します。一致部分はb[loc[0]:loc[1]]にあります。
-// nilを返す場合は一致なしを示します。
-func (re *Regexp) FindIndex(b []byte) (loc []int)
-
-// FindStringは、正規表現の左端と一致する最初のテキストを保持する文字列を返します。
-// 一致がない場合、返り値は空の文字列になりますが、正規表現が空の文字列と一致する場合も同様に空になります。
-// これらのケースを区別する必要がある場合は、 [Regexp.FindStringIndex] または [Regexp.FindStringSubmatch] を使用してください。
+// FindStringはsでreの最も左のマッチのテキストを返します。
+// 戻り値は空のマッチとマッチがない場合の両方で空文字列です。
+// これら2つのケースを区別するには、[Regexp.FindStringIndex]または[Regexp.FindStringSubmatch]を使用してください。
 func (re *Regexp) FindString(s string) string
 
-// FindStringIndexは、正規表現のsにおける最も左にマッチする部分の位置を定義する、整数の2要素のスライスを返します。マッチはs[loc[0]:loc[1]]にあります。
-// nilの返り値は、マッチが見つからなかったことを示します。
-func (re *Regexp) FindStringIndex(s string) (loc []int)
+// FindIndexはbでreの最も左のマッチの位置を返します。
+// マッチそのものはb[m[0]:m[1]]にあります。
+// マッチがない場合、戻り値はnilです。
+func (re *Regexp) FindIndex(b []byte) (m []int)
 
-// FindReaderIndexは、 [io.RuneReader] から読み込まれたテキスト内で正規表現の最左一致の位置を示す整数の2要素スライスを返します。マッチしたテキストは、入力ストリームのバイトオフセットloc[0]からloc[1]-1までで見つかりました。
-// nilの戻り値は一致がないことを示します。
-func (re *Regexp) FindReaderIndex(r io.RuneReader) (loc []int)
+// FindStringIndexはsでreの最も左のマッチの位置を返します。
+// マッチそのものはs[m[0]:m[1]]にあります。
+// マッチがない場合、戻り値はnilです。
+func (re *Regexp) FindStringIndex(s string) (m []int)
 
-// FindSubmatchは、正規表現でb内で最も左にマッチするテキストと、そのサブエクスプレッション（'Submatch'のパッケージの説明による）のマッチ（あれば）を保持するスライスのスライスを返します。
-// nilの戻り値は、マッチがないことを示します。
+// FindReaderIndexはrでreの最も左のマッチの位置を返します。
+// マッチはバイトインデックスm[0]から始まり、バイトインデックスm[1]の直前で終わります。
+// マッチがない場合、戻り値はnilです。
+//
+// FindReaderIndexはrから任意の距離読み込む可能性があります。
+// これは返されたマッチを超えて読み込むことも含まれます。
+func (re *Regexp) FindReaderIndex(r io.RuneReader) (m []int)
+
+// FindSubmatchはbでreの最初のマッチをサブマッチを含めて返します。
+// 全体のマッチはm[0]、最初のサブマッチはm[1]以降です。
+// マッチがない場合、戻り値はnilです。
 func (re *Regexp) FindSubmatch(b []byte) [][]byte
 
-// Expandはテンプレートをdstに追加し、結果を返します。追加の過程で、Expandはテンプレート内の変数をsrcから引っ張った対応する一致で置き換えます。一致スライスは [Regexp.FindSubmatchIndex] によって返されるべきです。
+// FindStringSubmatchはsでreの最初のマッチをサブマッチを含めて返します。
+// 全体のマッチはs[0]、最初のサブマッチはs[1]以降です。
+// マッチがない場合、戻り値はnilです。
+func (re *Regexp) FindStringSubmatch(s string) []string
+
+// FindSubmatchIndexはbでreの最初のマッチをサブマッチを含めて返します。
+// 全体のマッチはb[m[0]:m[1]]、最初のサブマッチはb[m[2]:m[3]]以降です。
+// マッチがない場合、戻り値はnilです。
+func (re *Regexp) FindSubmatchIndex(b []byte) []int
+
+// FindStringSubmatchIndexはsでreの最初のマッチをサブマッチを含めて返します。
+// 全体のマッチはs[m[0]:m[1]]、最初のサブマッチはs[m[2]:m[3]]以降です。
+// マッチがない場合、戻り値はnilです。
+func (re *Regexp) FindStringSubmatchIndex(s string) []int
+
+// FindReaderSubmatchIndexはrでreの最初のマッチをサブマッチを含めて返します。
+// 全体のマッチはバイトインデックスm[0]からm[1]まで、
+// 最初のサブマッチはバイトインデックスm[2]からm[3]までなどです。
+// マッチがない場合、戻り値はnilです。
+//
+// FindReaderSubmatchIndexはrから任意の距離読み込む可能性があります。
+// これは返されたマッチを超えて読み込むことも含まれます。
+func (re *Regexp) FindReaderSubmatchIndex(r io.RuneReader) []int
+
+// FindAllはbでreのすべてのマッチを返します。
+// n >= 0の場合、FindAllは最大でnのマッチを返します。
+// 同等のイテレーター形式については、[Regexp.All]を参照してください。
+func (re *Regexp) FindAll(b []byte, n int) [][]byte
+
+// FindAllStringはsでreのすべてのマッチを返します。
+// n >= 0の場合、FindAllStringは最大でnのマッチを返します。
+// 同等のイテレーター形式については、[Regexp.AllString]を参照してください。
+func (re *Regexp) FindAllString(s string, n int) []string
+
+// FindAllIndexはbでreのすべてのマッチの位置を返します。
+// n >= 0の場合、FindAllIndexは最大でnのマッチを返します。
+// 同等のイテレーター形式については、[Regexp.AllIndex]を参照してください。
+func (re *Regexp) FindAllIndex(b []byte, n int) [][]int
+
+// FindAllStringIndexはsでreのすべてのマッチの位置を返します。
+// n >= 0の場合、FindAllStringIndexは最大でnのマッチを返します。
+// 同等のイテレーター形式については、[Regexp.AllStringIndex]を参照してください。
+func (re *Regexp) FindAllStringIndex(s string, n int) [][]int
+
+// FindAllSubmatchはbでreのすべてのマッチをサブマッチの位置を含めて返します。
+// 返された各マッチmでは、全体のマッチはm[0]、最初のサブマッチはm[1]以降です。
+// n >= 0の場合、FindAllSubmatchは最大でnのマッチを返します。
+// 同等のイテレーター形式については、[Regexp.AllSubmatch]を参照してください。
+func (re *Regexp) FindAllSubmatch(b []byte, n int) [][][]byte
+
+// FindAllStringSubmatchはsでreのすべてのマッチをサブマッチの位置を含めて返します。
+// 返された各マッチmでは、m[0]が全体のマッチ、m[1]が最初のサブマッチ以降です。
+// n >= 0の場合、FindAllStringSubmatchは最大でnのマッチを返します。
+// 同等のイテレーター形式については、[Regexp.AllStringSubmatch]を参照してください。
+func (re *Regexp) FindAllStringSubmatch(s string, n int) [][]string
+
+// FindAllSubmatchIndexはbでreのすべてのマッチをサブマッチの位置を含めて返します。
+// 返された各マッチmでは、全体のマッチはb[m[0]:m[1]]、最初のサブマッチはb[m[2]:m[3]]以降です。
+// n >= 0の場合、FindAllSubmatchIndexは最大でnのマッチを返します。
+// 同等のイテレーター形式については、[Regexp.AllSubmatchIndex]を参照してください。
+func (re *Regexp) FindAllSubmatchIndex(b []byte, n int) [][]int
+
+// FindAllStringSubmatchIndexはsでreのすべてのマッチをサブマッチの位置を含めて返します。
+// 返された各マッチmでは、全体のマッチはs[m[0]:m[1]]、最初のサブマッチはs[m[2]:m[3]]以降です。
+// n >= 0の場合、FindAllStringSubmatchIndexは最大でnのマッチを返します。
+// 同等のイテレーター形式については、[Regexp.AllStringSubmatchIndex]を参照してください。
+func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int
+
+// Expandはtemplateをdstに追加して結果を返します。追加時に、Expandはテンプレート内の
+// 変数をsrcから取得された対応するマッチに置き換えます。マッチスライスは
+// [Regexp.FindSubmatchIndex]によって返されたものである必要があります。
 //
 // テンプレート中では、変数は$nameまたは${name}の形式の部分文字列で示されます。nameは非空の文字、数字、アンダースコアの連続です。$1のような純粋な数字の名前は、対応するインデックスのサブマッチを参照します。その他の名前は、(?P<name>...)構文で名前付きのキャプチャ括弧を参照します。範囲外またはマッチしないインデックスの参照または正規表現に存在しない名前は、空のスライスで置き換えられます。
 //
@@ -217,63 +304,8 @@ func (re *Regexp) Expand(dst []byte, template []byte, src []byte, match []int) [
 // 割り当てに対する制御を呼び出し元のコードに提供するために、バイトスライスに追加して返します。
 func (re *Regexp) ExpandString(dst []byte, template string, src string, match []int) []byte
 
-// FindSubmatchIndexは、正規表現の最も左側の一致と、'Submatch'および'Index'の説明で定義される、必要に応じてそのサブ式のマッチを示すインデックスのペアを保持するスライスを返します。
-// nilの返り値は、一致が見つからないことを示します。
-func (re *Regexp) FindSubmatchIndex(b []byte) []int
-
-// FindStringSubmatchは、正規表現の最も左にマッチするテキストと、そのサブエクスプレッションにマッチするテキスト（あれば）を保持する文字列のスライスを返します。パッケージのコメントにある'Submatch'の説明によって定義されます。
-// nilの返り値は、マッチがないことを示します。
-func (re *Regexp) FindStringSubmatch(s string) []string
-
-// FindStringSubmatchIndexは、正規表現の最も左にある一致と、
-// パッケージコメントで定義された'Submatch'および'Index'の説明によって決まる、
-// サブ式の一致（ある場合）を特定するインデックスのペアを保持するスライスを返します。
-// nilの返り値は一致なしを示します。
-func (re *Regexp) FindStringSubmatchIndex(s string) []int
-
-// FindReaderSubmatchIndexは、 [io.RuneReader] によって読み取られたテキストの正規表現の最も左の一致と、そのサブエクスプレッションの一致（ある場合）を識別するインデックスのペアを保持するスライスを返します。パッケージコメントの'Submatch'と'Index'の説明で定義されています。nilの返り値は一致がないことを示します。
-func (re *Regexp) FindReaderSubmatchIndex(r io.RuneReader) []int
-
-// FindAllは [Regexp.Find] の 'All' バージョンであり、パッケージコメントで定義されている 'All' の説明に従って、
-// 式の全ての連続するマッチのスライスを返します。
-// nilの返り値はマッチがないことを示します。
-func (re *Regexp) FindAll(b []byte, n int) [][]byte
-
-// FindAllIndexは [Regexp.FindIndex] の「All」バージョンであり、
-// パッケージコメントで定義されている「All」の説明に従って、
-// 式のすべての連続する一致のスライスを返します。
-// nilの返り値は一致がないことを示します。
-func (re *Regexp) FindAllIndex(b []byte, n int) [][]int
-
-// FindAllStringは [Regexp.FindString] の'All'バージョンです。式によって定義されるように、
-// 'All'の説明に従って、連続する全ての一致する部分文字列のスライスを返します。
-// nilの返り値は一致なしを示します。
-func (re *Regexp) FindAllString(s string, n int) []string
-
-// FindAllStringIndexは [Regexp.FindStringIndex] の「All」バージョンです。式によって定義されるすべての連続したマッチのスライスを返します。「All」の説明によってパッケージのコメントで定義されます。
-// nilの返り値はマッチがないことを示します。
-func (re *Regexp) FindAllStringIndex(s string, n int) [][]int
-
-// FindAllSubmatchは、 [Regexp.FindSubmatch] の 'All' バージョンです。この関数は、'All' 説明によって定義された通り、式に連続するすべての一致部分をスライスとして返します。
-// nilの返り値は、マッチが見つからなかったことを示します。
-func (re *Regexp) FindAllSubmatch(b []byte, n int) [][][]byte
-
-// FindAllSubmatchIndexはFindSubmatchIndexの'All'バージョンであり、
-// パッケージコメントの'All'の説明に従って、式に対するすべての連続した一致結果のスライスを返します。
-// nilの返り値は一致なしを示します。
-func (re *Regexp) FindAllSubmatchIndex(b []byte, n int) [][]int
-
-// FindAllStringSubmatchは、 [Regexp.FindSubmatchIndex] の「All」バージョンであり、式によって定義されたすべての連続した一致のスライスを返します。パッケージコメントの「All」の説明に従います。
-// nilの戻り値は一致がないことを示します。
-func (re *Regexp) FindAllStringSubmatch(s string, n int) [][]string
-
-// FindAllStringSubmatchIndexは [Regexp.FindStringSubmatchIndex] の「All」バージョンであり、
-// 式によって定義されるすべての連続した一致のスライスを返します。
-// パッケージコメントの「All」の説明で定義されているように、
-// nilの戻り値は一致がないことを示します。
-func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int
-
-// Splitメソッドは、文字列sを指定の表現によって区切り、それらの表現にマッチする部分文字列のスライスを返します。
+// Splitは式で区切られたs内の部分文字列にスライスし、
+// それらの式のマッチ間の部分文字列のスライスを返します。
 //
 // このメソッドによって返されるスライスは、sのうちFindAllStringで返されるスライスに含まれていない
 // 全ての部分文字列からなります。メタ文字を含まない表現に対しては、 [strings.SplitN] と同等の動作になります。
