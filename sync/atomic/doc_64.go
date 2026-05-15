@@ -42,7 +42,7 @@ func CompareAndSwapUint64(addr *uint64, old, new uint64) (swapped bool)
 func AddInt64(addr *int64, delta int64) (new int64)
 
 // AddUint64 は *addr に delta をアトミックに加算し、新しい値を返します。
-// x から符号付き正の定数値 c を减算するには AddUint64(&x, ^uint64(c-1)) を実行します。
+// x から符号付き正の定数値 c を減算するには AddUint64(&x, ^uint64(c-1)) を実行します。
 // 特に x をデクリメントするには AddUint64(&x, ^uint64(0)) を実行します。
 // より人間工学的でエラーが起きにくい [Uint64.Add] の使用を検討してください
 // （32 ビットプラットフォームをターゲットにする場合は特にご注意ください。bugs セクションを参照）。
