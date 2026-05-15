@@ -65,5 +65,5 @@ func AstDump(fn *Func, why string)
 // It uses the same phase name as the text dump.
 func DumpNodeHTML(fn *Func, why string, n Node)
 
-// CloseHTMLWriter closes the HTML writer for fn, if one exists.
+// CloseHTMLWriters closes the HTML writer for fn, if one exists.
 func CloseHTMLWriters()
