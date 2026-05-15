@@ -123,19 +123,18 @@ type DecrypterOpts any
 // opts.HashFunc()でハッシュ化され、[Signer.Sign] で署名されます。
 func SignMessage(signer Signer, rand io.Reader, msg []byte, opts SignerOpts) (signature []byte, err error)
 
-// Decapsulator is an interface for an opaque private KEM key that can be used for
-// decapsulation operations. For example, an ML-KEM key kept in a hardware module.
+// Decapsulatorは、カプセル化解除操作に使用できる不透明な秘密KEM鍵のインターフェースです。
+// 例えば、ハードウェアモジュールに保持されたML-KEM鍵があります。
 //
-// It is implemented, for example, by [crypto/mlkem.DecapsulationKey768].
+// これは、例えば [crypto/mlkem.DecapsulationKey768] によって実装されています。
 type Decapsulator interface {
 	Encapsulator() Encapsulator
 	Decapsulate(ciphertext []byte) (sharedKey []byte, err error)
 }
 
-// Encapsulator is an interface for a public KEM key that can be used for
-// encapsulation operations.
+// Encapsulatorは、カプセル化操作に使用できる公開KEM鍵のインターフェースです。
 //
-// It is implemented, for example, by [crypto/mlkem.EncapsulationKey768].
+// これは、例えば [crypto/mlkem.EncapsulationKey768] によって実装されています。
 type Encapsulator interface {
 	Bytes() []byte
 	Encapsulate() (sharedKey, ciphertext []byte)
