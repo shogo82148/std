@@ -17,7 +17,14 @@ var CmdTool = &base.Command{
 Tool runs the go tool command identified by the arguments.
 
 Go ships with a number of builtin tools, and additional tools
-may be defined in the go.mod of the current module.
+may be defined in the go.mod of the current module. 'go get -tool'
+can be used to define additional tools in the current module's
+go.mod file. See 'go help get' for more information.
+
+The command can be specified using the full package path to the tool declared with
+a tool directive. The default binary name of the tool, which is the last component of
+the package path, excluding the major version suffix, can also be used if it is unique
+among declared tools.
 
 With no arguments it prints the list of known tools.
 

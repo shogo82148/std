@@ -224,6 +224,8 @@ type State struct {
 
 func NewState() *State
 
+func DisabledState() *State
+
 func (s *State) Fetcher() *modfetch.Fetcher
 
 // Init determines whether module mode is enabled, locates the root of the

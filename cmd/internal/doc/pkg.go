@@ -6,10 +6,11 @@ package doc
 
 import (
 	"github.com/shogo82148/std/go/ast"
-	"github.com/shogo82148/std/go/build"
 	"github.com/shogo82148/std/go/doc"
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/io"
+
+	"github.com/shogo82148/std/cmd/go/internal/load"
 )
 
 type Package struct {
@@ -19,7 +20,7 @@ type Package struct {
 	pkg         *ast.Package
 	file        *ast.File
 	doc         *doc.Package
-	build       *build.Package
+	build       *load.Package
 	typedValue  map[*doc.Value]bool
 	constructor map[*doc.Func]bool
 	fs          *token.FileSet

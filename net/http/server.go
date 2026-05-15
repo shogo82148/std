@@ -474,6 +474,7 @@ type Server struct {
 	activeConn map[*conn]struct{}
 	onShutdown []func()
 	h2         *http2Server
+	h3         *http3ServerHandler
 
 	listenerGroup sync.WaitGroup
 }
