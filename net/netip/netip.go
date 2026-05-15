@@ -151,9 +151,12 @@ func (ip Addr) IsLinkLocalMulticast() bool
 func (ip Addr) IsGlobalUnicast() bool
 
 // IsPrivateは、RFC 1918（IPv4アドレス）およびRFC 4193（IPv6アドレス）に従って、
-// ipがプライベートアドレスであるかどうかを報告します。
-// つまり、ipが10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、またはfc00::/7のいずれかであるかどうかを報告します。
-// これは、[net.IP.IsPrivate] と同じです。
+// ipがプライベートアドレスかどうかを報告します。つまり、
+// ipが10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、またはfc00::/7に含まれるかどうかを
+// 報告します。これは [net.IP.IsPrivate] と同じです。
+//
+// IsPrivateはアドレスのセキュリティ特性を表すものではなく、
+// アクセス制御に使用すべきではありません。
 func (ip Addr) IsPrivate() bool
 
 // IsUnspecifiedは、ipが未指定のアドレスであるかどうかを報告します。

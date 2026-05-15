@@ -70,7 +70,13 @@ func (ip IP) IsUnspecified() bool
 // IsLoopbackはipがループバックアドレスであるかどうかを報告します。
 func (ip IP) IsLoopback() bool
 
-// IsPrivateは、RFC 1918（IPv4アドレス）およびRFC 4193（IPv6アドレス）に基づいて、IPがプライベートアドレスかどうかを報告します。
+// IsPrivateは、RFC 1918（IPv4アドレス）およびRFC 4193（IPv6アドレス）に従って、
+// ipがプライベートアドレスかどうかを報告します。
+// つまり、ipが10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、またはfc00::/7に
+// 含まれるかどうかを報告します。
+//
+// IsPrivateはアドレスのセキュリティ特性を表すものではなく、
+// アクセス制御に使用すべきではありません。
 func (ip IP) IsPrivate() bool
 
 // IsMulticastは、ipがマルチキャストアドレスかどうかを報告します。

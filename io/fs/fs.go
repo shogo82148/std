@@ -74,10 +74,13 @@ var (
 	ErrPermission = errPermission()
 	ErrExist      = errExist()
 	ErrNotExist   = errNotExist()
-	ErrClosed     = errClosed()
 )
 
-// FileInfoはファイルを説明し、[Stat] によって返されます。
+// ErrClosedは、すでに閉じられたファイルに対して操作が試みられたときに返されます。
+// これには、Closeが複数回呼び出された場合も含まれます。
+var ErrClosed = errClosed()
+
+// FileInfoはファイルを記述し、[Stat] によって返されます。
 type FileInfo interface {
 	Name() string
 	Size() int64

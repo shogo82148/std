@@ -321,8 +321,14 @@ func (r *Request) MultipartReader() (*multipart.Reader, error)
 //	TransferEncoding
 //	Body
 //
-// Bodyが存在し、Content-Lengthが0以下であり、[Request.TransferEncoding] が "identity"に設定されていない場合、
-// Writeはヘッダーに "Transfer-Encoding: chunked"を追加します。Bodyは送信後に閉じられます。
+// Bodyが存在し、Content-Lengthが0以下で、[Request.TransferEncoding] が
+// "identity"に設定されていない場合、Writeはヘッダーに
+// "Transfer-Encoding: chunked"を追加します。Bodyは送信後に閉じられます。
+//
+// Host、Content-Length、Transfer-Encoding、
+// およびTrailerのヘッダー値は使用されません。これらはRequestのほかのフィールドから導出されます。
+// HeaderにUser-Agentの値が含まれていない場合、Writeは
+// "Go-http-client/1.1"を使用します。
 func (r *Request) Write(w io.Writer) error
 
 // WriteProxyは、[Request.Write] と似ていますが、HTTPプロキシが期待する形式でリクエストを書き込みます。
