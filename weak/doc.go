@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package weak provides ways to safely reference memory weakly,
-that is, without preventing its reclamation.
+Package weak は、メモリをガベージコレクションの対象から除外することなく、
+安全に弱い参照を行う方法を提供します。
 */
 package weak

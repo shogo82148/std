@@ -8,53 +8,46 @@ import (
 	"github.com/shogo82148/std/unsafe"
 )
 
-// Pointer is a weak pointer to a value of type T.
+// Pointer は型 T の値への弱いポインタです。
 //
-// Just like regular pointers, Pointer may reference any part of an
-// object, such as a field of a struct or an element of an array.
-// Objects that are only pointed to by weak pointers are not considered
-// reachable, and once the object becomes unreachable, [Pointer.Value]
-// may return nil.
+// 通常のポインタと同様に、Pointer はオブジェクトの任意の部分
+// （例えば構造体のフィールドや配列の要素）を参照できます。
+// 弱いポインタのみで参照されているオブジェクトは到達可能とはみなされず、
+// オブジェクトが到達不可能になると、[Pointer.Value] は nil を返す場合があります。
 //
-// The primary use-cases for weak pointers are for implementing caches,
-// canonicalization maps (like the unique package), and for tying together
-// the lifetimes of separate values (for example, through a map with weak
-// keys).
+// 弱いポインタの主な用途は、キャッシュの実装、正規化マップ（unique パッケージなど）、
+// および別々の値のライフタイムを結びつけること（例えば弱いキーを持つマップを通じて）です。
 //
-// Two Pointer values compare equal if and only if the pointers from which they
-// were created compare equal.
-// This property is maintained even after the object referenced by the pointer
-// used to create a weak reference is reclaimed.
-// If multiple weak pointers are made to different offsets within the same object
-// (for example, pointers to different fields of the same struct), those pointers
-// will not compare equal.
-// In other words, weak pointers map to objects and offsets within those
-// objects, not plain addresses.
-// If a weak pointer is created from an object that becomes unreachable, but is
-// then resurrected due to a finalizer, that weak pointer will not compare equal
-// with weak pointers created after the resurrection.
+// 2 つの Pointer 値は、それらが作成された元のポインタが等しい場合に限り等しくなります。
+// この性質は、弱い参照を作成するために使用したポインタが参照するオブジェクトが
+// 回収された後も維持されます。
+// 同じオブジェクト内の異なるオフセット（例えば同じ構造体の異なるフィールドへのポインタ）
+// に対して複数の弱いポインタが作成された場合、それらのポインタは等しくなりません。
+// つまり、弱いポインタは単純なアドレスではなく、オブジェクトとそのオブジェクト内の
+// オフセットに対応します。
+// 弱いポインタが到達不可能になったオブジェクトから作成された場合でも、
+// ファイナライザにより復活した場合、その弱いポインタは復活後に作成された
+// 弱いポインタと等しくなりません。
 //
-// Calling [Make] with a nil pointer returns a weak pointer whose [Pointer.Value]
-// always returns nil. The zero value of a Pointer behaves as if it were created
-// by passing nil to [Make] and compares equal with such pointers.
+// nil ポインタを渡して [Make] を呼び出すと、[Pointer.Value] が常に nil を返す
+// 弱いポインタが返されます。Pointer のゼロ値は、nil を [Make] に渡して作成された
+// かのように振る舞い、そのようなポインタと等しくなります。
 //
-// [Pointer.Value] is not guaranteed to eventually return nil.
-// [Pointer.Value] may return nil as soon as the object becomes
-// unreachable.
-// Values stored in global variables, or that can be found by tracing
-// pointers from a global variable, are reachable. A function argument or
-// receiver may become unreachable at the last point where the function
-// mentions it. To ensure [Pointer.Value] does not return nil,
-// pass a pointer to the object to the [runtime.KeepAlive] function after
-// the last point where the object must remain reachable.
+// [Pointer.Value] が最終的に nil を返すことは保証されていません。
+// [Pointer.Value] はオブジェクトが到達不可能になるとすぐに nil を返す場合があります。
+// グローバル変数に格納された値、またはグローバル変数からポインタをたどって見つけられる値は
+// 到達可能です。関数の引数やレシーバは、関数がそれを最後に参照した時点で
+// 到達不可能になる場合があります。[Pointer.Value] が nil を返さないようにするには、
+// オブジェクトが到達可能でなければならない最後の時点の後で、
+// オブジェクトへのポインタを [runtime.KeepAlive] 関数に渡してください。
 //
-// Note that because [Pointer.Value] is not guaranteed to eventually return
-// nil, even after an object is no longer referenced, the runtime is allowed to
-// perform a space-saving optimization that batches objects together in a single
-// allocation slot. The weak pointer for an unreferenced object in such an
-// allocation may never become nil if it always exists in the same batch as a
-// referenced object. Typically, this batching only happens for tiny
-// (on the order of 16 bytes or less) and pointer-free objects.
+// [Pointer.Value] が最終的に nil を返すことが保証されていないため、
+// オブジェクトが参照されなくなった後でも、ランタイムは複数のオブジェクトを
+// 1 つのアロケーションスロットにまとめる省スペース最適化を行うことが許可されています。
+// そのようなアロケーション内で参照されていないオブジェクトの弱いポインタは、
+// 参照されているオブジェクトと常に同じバッチに存在する場合、nil にならないことがあります。
+// 通常、このバッチ処理は小さな（16 バイト以下程度）かつポインタを持たないオブジェクトに
+// 対してのみ発生します。
 type Pointer[T any] struct {
 	// Mention T in the type definition to prevent conversions
 	// between Pointer types, like we do for sync/atomic.Pointer.
@@ -62,12 +55,11 @@ type Pointer[T any] struct {
 	u unsafe.Pointer
 }
 
-// Make creates a weak pointer from a pointer to some value of type T.
+// Make は型 T の値へのポインタから弱いポインタを作成します。
 func Make[T any](ptr *T) Pointer[T]
 
-// Value returns the original pointer used to create the weak pointer.
-// It returns nil if the value pointed to by the original pointer was reclaimed by
-// the garbage collector.
-// If a weak pointer points to an object with a finalizer, then Value will
-// return nil as soon as the object's finalizer is queued for execution.
+// Value は弱いポインタを作成するために使用した元のポインタを返します。
+// 元のポインタが指していた値がガベージコレクタによって回収された場合は nil を返します。
+// 弱いポインタがファイナライザを持つオブジェクトを指している場合、
+// オブジェクトのファイナライザが実行キューに入れられるとすぐに Value は nil を返します。
 func (p Pointer[T]) Value() *T
