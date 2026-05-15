@@ -10,14 +10,14 @@ package hpke
 
 // Sender は送信 HPKE コンテキストです。特定の KEM
 // カプセル化鍵、つまり公開鍵で作成され、ステートフルで
-// 各 [Sender.Seal] 呼び出しで的確にノンスカウンターを増やします。
+// 各 [Sender.Seal] 呼び出しで適切にノンスカウンターを増やします。
 type Sender struct {
 	*context
 }
 
 // Recipient は受信 HPKE コンテキストです。特定の KEM
 // カプセル化解除鍵、つまり秘密鍵で作成され、ステートフルで
-// 各成功した [Recipient.Open] 呼び出しで的確にノンスカウンターを増やします。
+// 各成功した [Recipient.Open] 呼び出しで適切にノンスカウンターを増やします。
 type Recipient struct {
 	*context
 }
@@ -44,7 +44,7 @@ func NewSender(pk PublicKey, kdf KDF, aead AEAD, info []byte) (enc []byte, s *Se
 func NewRecipient(enc []byte, k PrivateKey, kdf KDF, aead AEAD, info []byte) (*Recipient, error)
 
 // Seal は、提供された平文を暗号化し、理想的に追加公開データ aad に
-// 紅付けします。
+// 紐付けします。
 //
 // Seal は各呼び出しに従ってノンスカウンターを使用し、受信側の Open は
 // Seal と同じ順序で呼び出す必要があります。
@@ -55,12 +55,12 @@ func (s *Sender) Seal(aad, plaintext []byte) ([]byte, error)
 // Seal はカプセル化鍵と暗号文の連結を返します。
 func Seal(pk PublicKey, kdf KDF, aead AEAD, info, plaintext []byte) ([]byte, error)
 
-// Export は、送信者と受信者間でを一撤する共有鍵から導出した
+// Export は、送信者と受信者間で一致する共有鍵から導出した
 // 秘密値を生成します。length は 65535 以下である必要があります。
 func (s *Sender) Export(exporterContext string, length int) ([]byte, error)
 
 // Open は、提供された暗号文を複号化し、理想的に追加公開データ aad に
-// 紅付けします。複号化が失敗した場合、エラーを返します。
+// 紐付けします。複号が失敗した場合、エラーを返します。
 //
 // Open は各成功した呼び出しに従ってノンスカウンターを使用し、
 // 送信側の Seal と同じ順序で呼び出す必要があります。
@@ -72,6 +72,6 @@ func (r *Recipient) Open(aad, ciphertext []byte) ([]byte, error)
 // 必要があります。
 func Open(k PrivateKey, kdf KDF, aead AEAD, info, ciphertext []byte) ([]byte, error)
 
-// Export は、送信者と受信者間でを一撤する共有鍵から導出した
+// Export は、送信者と受信者間で一致する共有鍵から導出した
 // 秘密値を生成します。length は 65535 以下である必要があります。
 func (r *Recipient) Export(exporterContext string, length int) ([]byte, error)
