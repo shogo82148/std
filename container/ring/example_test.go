@@ -10,10 +10,10 @@ import (
 )
 
 func ExampleRing_Len() {
-	// Create a new ring of size 4
+	// サイズ4の新しいリングを作成します。
 	r := ring.New(4)
 
-	// Print out its length
+	// その長さを出力します。
 	fmt.Println(r.Len())
 
 	// Output:
@@ -21,19 +21,19 @@ func ExampleRing_Len() {
 }
 
 func ExampleRing_Next() {
-	// Create a new ring of size 5
+	// サイズ5の新しいリングを作成します。
 	r := ring.New(5)
 
-	// Get the length of the ring
+	// リングの長さを取得します。
 	n := r.Len()
 
-	// Initialize the ring with some integer values
+	// リングにいくつかの整数値を設定します。
 	for i := 0; i < n; i++ {
 		r.Value = i
 		r = r.Next()
 	}
 
-	// Iterate through the ring and print its contents
+	// リングを走査して内容を出力します。
 	for j := 0; j < n; j++ {
 		fmt.Println(r.Value)
 		r = r.Next()
@@ -48,19 +48,19 @@ func ExampleRing_Next() {
 }
 
 func ExampleRing_Prev() {
-	// Create a new ring of size 5
+	// サイズ5の新しいリングを作成します。
 	r := ring.New(5)
 
-	// Get the length of the ring
+	// リングの長さを取得します。
 	n := r.Len()
 
-	// Initialize the ring with some integer values
+	// リングにいくつかの整数値を設定します。
 	for i := 0; i < n; i++ {
 		r.Value = i
 		r = r.Next()
 	}
 
-	// Iterate through the ring backwards and print its contents
+	// リングを逆方向に走査して内容を出力します。
 	for j := 0; j < n; j++ {
 		r = r.Prev()
 		fmt.Println(r.Value)
@@ -75,19 +75,19 @@ func ExampleRing_Prev() {
 }
 
 func ExampleRing_Do() {
-	// Create a new ring of size 5
+	// サイズ5の新しいリングを作成します。
 	r := ring.New(5)
 
-	// Get the length of the ring
+	// リングの長さを取得します。
 	n := r.Len()
 
-	// Initialize the ring with some integer values
+	// リングにいくつかの整数値を設定します。
 	for i := 0; i < n; i++ {
 		r.Value = i
 		r = r.Next()
 	}
 
-	// Iterate through the ring and print its contents
+	// リングを走査して内容を出力します。
 	r.Do(func(p any) {
 		fmt.Println(p.(int))
 	})
@@ -101,22 +101,22 @@ func ExampleRing_Do() {
 }
 
 func ExampleRing_Move() {
-	// Create a new ring of size 5
+	// サイズ5の新しいリングを作成します。
 	r := ring.New(5)
 
-	// Get the length of the ring
+	// リングの長さを取得します。
 	n := r.Len()
 
-	// Initialize the ring with some integer values
+	// リングにいくつかの整数値を設定します。
 	for i := 0; i < n; i++ {
 		r.Value = i
 		r = r.Next()
 	}
 
-	// Move the pointer forward by three steps
+	// ポインタを3ステップ進めます。
 	r = r.Move(3)
 
-	// Iterate through the ring and print its contents
+	// リングを走査して内容を出力します。
 	r.Do(func(p any) {
 		fmt.Println(p.(int))
 	})
@@ -130,30 +130,30 @@ func ExampleRing_Move() {
 }
 
 func ExampleRing_Link() {
-	// Create two rings, r and s, of size 2
+	// サイズ2の2つのリングrとsを作成します。
 	r := ring.New(2)
 	s := ring.New(2)
 
-	// Get the length of the ring
+	// リングの長さを取得します。
 	lr := r.Len()
 	ls := s.Len()
 
-	// Initialize r with 0s
+	// rを0で初期化します。
 	for i := 0; i < lr; i++ {
 		r.Value = 0
 		r = r.Next()
 	}
 
-	// Initialize s with 1s
+	// sを1で初期化します。
 	for j := 0; j < ls; j++ {
 		s.Value = 1
 		s = s.Next()
 	}
 
-	// Link ring r and ring s
+	// リングrとリングsを連結します。
 	rs := r.Link(s)
 
-	// Iterate through the combined ring and print its contents
+	// 連結されたリングを走査して内容を出力します。
 	rs.Do(func(p any) {
 		fmt.Println(p.(int))
 	})
@@ -166,22 +166,22 @@ func ExampleRing_Link() {
 }
 
 func ExampleRing_Unlink() {
-	// Create a new ring of size 6
+	// サイズ6の新しいリングを作成します。
 	r := ring.New(6)
 
-	// Get the length of the ring
+	// リングの長さを取得します。
 	n := r.Len()
 
-	// Initialize the ring with some integer values
+	// リングにいくつかの整数値を設定します。
 	for i := 0; i < n; i++ {
 		r.Value = i
 		r = r.Next()
 	}
 
-	// Unlink three elements from r, starting from r.Next()
+	// rから3つの要素を切り離します。開始位置はr.Next()です。
 	r.Unlink(3)
 
-	// Iterate through the remaining ring and print its contents
+	// 残ったリングを走査して内容を出力します。
 	r.Do(func(p any) {
 		fmt.Println(p.(int))
 	})
