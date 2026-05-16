@@ -2,49 +2,49 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package synctest provides support for testing concurrent code.
+// Package synctest は、並行コードのテストを支援します。
 //
-// The [Test] function runs a function in an isolated "bubble".
-// Any goroutines started within the bubble are also part of the bubble.
+// [Test] 関数は、隔離された「バブル」の中で関数を実行します。
+// バブル内で開始された goroutine は、すべてそのバブルの一部です。
 //
 // # Time
 //
-// Within a bubble, the [time] package uses a fake clock.
-// Each bubble has its own clock.
-// The initial time is midnight UTC 2000-01-01.
+// バブル内では、[time] パッケージは疑似クロックを使います。
+// 各バブルは独自のクロックを持ちます。
+// 初期時刻は UTC 2000-01-01 の午前0時です。
 //
-// Time in a bubble only advances when every goroutine in the
-// bubble is durably blocked.
-// See below for the exact definition of "durably blocked".
+// バブル内の時間は、バブル内のすべての goroutine が
+// 永続的にブロックされたときにのみ進みます。
+// 「永続的にブロック」の正確な定義は下記を参照してください。
 //
-// For example, this test runs immediately rather than taking
-// two seconds:
+// たとえば、このテストは2秒待たずに即座に実行されます。
 //
 //	func TestTime(t *testing.T) {
 //		synctest.Test(t, func(t *testing.T) {
-//			start := time.Now() // always midnight UTC 2000-01-01
+//			start := time.Now() // 常に UTC 2000-01-01 の午前0時
 //			go func() {
 //				time.Sleep(1 * time.Second)
-//				t.Log(time.Since(start)) // always logs "1s"
+//				t.Log(time.Since(start)) // 常に "1s" を記録
 //			}()
-//			time.Sleep(2 * time.Second) // the goroutine above will run before this Sleep returns
-//			t.Log(time.Since(start))    // always logs "2s"
+//			time.Sleep(2 * time.Second) // ここが返る前に上の goroutine が実行される
+//			t.Log(time.Since(start))    // 常に "2s" を記録
 //		})
 //	}
 //
-// Time stops advancing when the root goroutine of the bubble exits.
+// バブルのルート goroutine が終了すると、時間は進まなくなります。
 //
 // # Blocking
 //
-// A goroutine in a bubble is "durably blocked" when it is blocked
-// and can only be unblocked by another goroutine in the same bubble.
-// A goroutine which can be unblocked by an event from outside its
-// bubble is not durably blocked.
+// バブル内の goroutine が「永続的にブロック」されているとは、
+// ブロック状態であり、かつ同じバブル内の別の goroutine によってしか
+// アンブロックされない状態を指します。
+// バブル外のイベントによってアンブロックされ得る goroutine は、
+// 永続的にブロックされているとは見なされません。
 //
-// The [Wait] function blocks until all other goroutines in the
-// bubble are durably blocked.
+// [Wait] 関数は、バブル内の他のすべての goroutine が
+// 永続的にブロックされるまで待機します。
 //
-// For example:
+// 例:
 //
 //	func TestWait(t *testing.T) {
 //		synctest.Test(t, func(t *testing.T) {
@@ -52,90 +52,91 @@
 //			go func() {
 //				done = true
 //			}()
-//			// Wait will block until the goroutine above has finished.
+//			// Wait は、上の goroutine が終了するまでブロックする。
 //			synctest.Wait()
-//			t.Log(done) // always logs "true"
+//			t.Log(done) // 常に "true" を記録
 //		})
 //	}
 //
-// When every goroutine in a bubble is durably blocked:
+// バブル内のすべての goroutine が永続的にブロックされると:
 //
-//   - [Wait] returns, if it has been called.
-//   - Otherwise, time advances to the next time that will
-//     unblock at least one goroutine, if there is such a time
-//     and the root goroutine of the bubble has not exited.
-//   - Otherwise, there is a deadlock and [Test] panics.
+//   - [Wait] が呼ばれていれば、それが返ります。
+//   - そうでなければ、少なくとも1つの goroutine をアンブロックする
+//     次の時刻まで時間が進みます（そのような時刻が存在し、かつ
+//     バブルのルート goroutine がまだ終了していない場合）。
+//   - それ以外の場合はデッドロックとなり、[Test] は panic します。
 //
-// The following operations durably block a goroutine:
+// 次の操作は、goroutine を永続的にブロックします:
 //
-//   - a blocking send or receive on a channel created within the bubble
-//   - a blocking select statement where every case is a channel created
-//     within the bubble
+//   - バブル内で作成されたチャネルに対するブロッキング送受信
+//   - すべての case がバブル内で作成されたチャネルである
+//     ブロッキング select 文
 //   - [sync.Cond.Wait]
-//   - [sync.WaitGroup.Wait], when [sync.WaitGroup.Add] was called within the bubble
+//   - [sync.WaitGroup.Wait]（[sync.WaitGroup.Add] がバブル内で
+//     呼ばれた場合）
 //   - [time.Sleep]
 //
-// Operations not in the above list are not durably blocking.
-// In particular, the following operations may block a goroutine,
-// but are not durably blocking because the goroutine can be unblocked
-// by an event occurring outside its bubble:
+// 上記リストにない操作は、永続的ブロッキングではありません。
+// とくに、次の操作は goroutine をブロックし得ますが、
+// バブル外で発生するイベントでアンブロックされ得るため、
+// 永続的ブロッキングではありません:
 //
-//   - locking a [sync.Mutex] or [sync.RWMutex]
-//   - blocking on I/O, such as reading from a network socket
-//   - system calls
+//   - [sync.Mutex] または [sync.RWMutex] のロック取得
+//   - ネットワークソケットからの読み取りなどの I/O 待ち
+//   - システムコール
 //
 // # Isolation
 //
-// A channel, [time.Timer], or [time.Ticker] created within a bubble
-// is associated with it. Operating on a bubbled channel, timer, or
-// ticker from outside the bubble panics.
+// バブル内で作成されたチャネル、[time.Timer]、[time.Ticker] は
+// そのバブルに関連付けられます。バブル外から、それらのバブル付き
+// チャネル・タイマー・ティッカーを操作すると panic します。
 //
-// A [sync.WaitGroup] becomes associated with a bubble on the first
-// call to Add or Go. Once a WaitGroup is associated with a bubble,
-// calling Add or Go from outside that bubble is a fatal error.
-// (As a technical limitation, a WaitGroup defined as a package
-// variable, such as "var wg sync.WaitGroup", cannot be associated
-// with a bubble and operations on it may not be durably blocking.
-// This limitation does not apply to a *WaitGroup stored in a
-// package variable, such as "var wg = new(sync.WaitGroup)".)
+// [sync.WaitGroup] は、最初の Add または Go 呼び出し時に
+// バブルに関連付けられます。いったん WaitGroup がバブルに関連付け
+// られた後で、そのバブル外から Add または Go を呼ぶと致命的エラーです。
+// （技術的制限として、"var wg sync.WaitGroup" のように
+// パッケージ変数として定義された WaitGroup はバブルに関連付けられず、
+// その操作は永続的ブロッキングにならない可能性があります。
+// この制限は、"var wg = new(sync.WaitGroup)" のような
+// パッケージ変数に格納された *WaitGroup には適用されません。）
 //
-// [sync.Cond.Wait] is durably blocking. Waking a goroutine in a bubble
-// blocked on Cond.Wait from outside the bubble is a fatal error.
+// [sync.Cond.Wait] は永続的ブロッキングです。バブル外から
+// Cond.Wait でブロックしているバブル内 goroutine を起こすと
+// 致命的エラーになります。
 //
-// Cleanup functions and finalizers registered with
-// [runtime.AddCleanup] and [runtime.SetFinalizer]
-// run outside of any bubble.
+// [runtime.AddCleanup] と [runtime.SetFinalizer] で登録された
+// クリーンアップ関数とファイナライザは、いずれのバブル外でも実行されます。
 //
 // # Example: Context.AfterFunc
 //
-// This example demonstrates testing the [context.AfterFunc] function.
+// この例は、[context.AfterFunc] 関数のテスト方法を示します。
 //
-// AfterFunc registers a function to execute in a new goroutine
-// after a context is canceled.
+// AfterFunc は、context がキャンセルされた後に新しい goroutine で
+// 実行する関数を登録します。
 //
-// The test verifies that the function is not run before the context is canceled,
-// and is run after the context is canceled.
+// このテストは、その関数が context のキャンセル前には実行されず、
+// キャンセル後に実行されることを検証します。
 //
 //	func TestContextAfterFunc(t *testing.T) {
 //		synctest.Test(t, func(t *testing.T) {
-//			// Create a context.Context which can be canceled.
+//			// キャンセル可能な context.Context を作成する。
 //			ctx, cancel := context.WithCancel(t.Context())
 //
-//			// context.AfterFunc registers a function to be called
-//			// when a context is canceled.
+//			// context.AfterFunc は、context がキャンセルされたときに
+//			// 呼び出される関数を登録する。
 //			afterFuncCalled := false
 //			context.AfterFunc(ctx, func() {
 //				afterFuncCalled = true
 //			})
 //
-//			// The context has not been canceled, so the AfterFunc is not called.
+//			// context はまだキャンセルされていないので、AfterFunc は呼ばれない。
 //			synctest.Wait()
 //			if afterFuncCalled {
 //				t.Fatalf("before context is canceled: AfterFunc called")
 //			}
 //
-//			// Cancel the context and wait for the AfterFunc to finish executing.
-//			// Verify that the AfterFunc ran.
+//			// context をキャンセルし、AfterFunc の実行完了を待つ。
+//			// AfterFunc が実行されたことを確認する。
 //			cancel()
 //			synctest.Wait()
 //			if !afterFuncCalled {
@@ -146,28 +147,28 @@
 //
 // # Example: Context.WithTimeout
 //
-// This example demonstrates testing the [context.WithTimeout] function.
+// この例は、[context.WithTimeout] 関数のテスト方法を示します。
 //
-// WithTimeout creates a context which is canceled after a timeout.
+// WithTimeout は、タイムアウト後にキャンセルされる context を作成します。
 //
-// The test verifies that the context is not canceled before the timeout expires,
-// and is canceled after the timeout expires.
+// このテストは、タイムアウト前には context がキャンセルされず、
+// タイムアウト後にキャンセルされることを検証します。
 //
 //	func TestContextWithTimeout(t *testing.T) {
 //		synctest.Test(t, func(t *testing.T) {
-//			// Create a context.Context which is canceled after a timeout.
+//			// タイムアウト後にキャンセルされる context.Context を作成する。
 //			const timeout = 5 * time.Second
 //			ctx, cancel := context.WithTimeout(t.Context(), timeout)
 //			defer cancel()
 //
-//			// Wait just less than the timeout.
+//			// タイムアウトよりわずかに短く待つ。
 //			time.Sleep(timeout - time.Nanosecond)
 //			synctest.Wait()
 //			if err := ctx.Err(); err != nil {
 //				t.Fatalf("before timeout: ctx.Err() = %v, want nil\n", err)
 //			}
 //
-//			// Wait the rest of the way until the timeout.
+//			// 残り時間だけ待ってタイムアウトに到達する。
 //			time.Sleep(time.Nanosecond)
 //			synctest.Wait()
 //			if err := ctx.Err(); err != context.DeadlineExceeded {
@@ -178,40 +179,40 @@
 //
 // # Example: HTTP 100 Continue
 //
-// This example demonstrates testing [http.Transport]'s 100 Continue handling.
+// この例は、[http.Transport] の 100 Continue 処理のテスト方法を示します。
 //
-// An HTTP client sending a request can include an "Expect: 100-continue" header
-// to tell the server that the client has additional data to send.
-// The server may then respond with an 100 Continue information response
-// to request the data, or some other status to tell the client the data is not needed.
-// For example, a client uploading a large file might use this feature to confirm
-// that the server is willing to accept the file before sending it.
+// リクエストを送る HTTP クライアントは、"Expect: 100-continue" ヘッダーを
+// 含めることで、追加データを送る予定であることをサーバーに伝えられます。
+// サーバーは、データ送信を要求するために 100 Continue 情報レスポンスを返すか、
+// あるいはデータ不要であることを伝える別のステータスを返せます。
+// たとえば大きなファイルをアップロードするクライアントは、送信前に
+// サーバーが受け入れる意思があることを確認するためにこの機能を使えます。
 //
-// This test confirms that when sending an "Expect: 100-continue" header
-// the HTTP client does not send a request's content before the server requests it,
-// and that it does send the content after receiving a 100 Continue response.
+// このテストは、"Expect: 100-continue" ヘッダーを付けて送信したときに、
+// HTTP クライアントがサーバーから要求される前にリクエスト本文を送らないこと、
+// そして 100 Continue レスポンス受信後には本文を送ることを確認します。
 //
 //	func TestHTTPTransport100Continue(t *testing.T) {
 //		synctest.Test(t, func(*testing.T) {
-//			// Create an in-process fake network connection.
-//			// We cannot use a loopback network connection for this test,
-//			// because goroutines blocked on network I/O prevent a synctest
-//			// bubble from becoming idle.
+//			// プロセス内の疑似ネットワーク接続を作成する。
+//			// このテストではループバック接続は使えない。
+//			// ネットワーク I/O でブロックした goroutine があると、
+//			// synctest のバブルがアイドル状態になれないため。
 //			srvConn, cliConn := net.Pipe()
 //			defer cliConn.Close()
 //			defer srvConn.Close()
 //
 //			tr := &http.Transport{
-//				// Use the fake network connection created above.
+//				// 上で作成した疑似ネットワーク接続を使う。
 //				DialContext: func(ctx context.Context, network, address string) (net.Conn, error) {
 //					return cliConn, nil
 //				},
-//				// Enable "Expect: 100-continue" handling.
+//				// "Expect: 100-continue" 処理を有効化する。
 //				ExpectContinueTimeout: 5 * time.Second,
 //			}
 //
-//			// Send a request with the "Expect: 100-continue" header set.
-//			// Send it in a new goroutine, since it won't complete until the end of the test.
+//			// "Expect: 100-continue" ヘッダー付きリクエストを送る。
+//			// テスト終了まで完了しないため、新しい goroutine で送る。
 //			body := "request body"
 //			go func() {
 //				req, _ := http.NewRequest("PUT", "http://test.tld/", strings.NewReader(body))
@@ -224,15 +225,15 @@
 //				}
 //			}()
 //
-//			// Read the request headers sent by the client.
+//			// クライアントが送ったリクエストヘッダーを読む。
 //			req, err := http.ReadRequest(bufio.NewReader(srvConn))
 //			if err != nil {
 //				t.Fatalf("ReadRequest: %v\n", err)
 //			}
 //
-//			// Start a new goroutine copying the body sent by the client into a buffer.
-//			// Wait for all goroutines in the bubble to block and verify that we haven't
-//			// read anything from the client yet.
+//			// クライアントから送られる本文をバッファへコピーする goroutine を開始する。
+//			// バブル内の全 goroutine がブロックするまで待ち、
+//			// まだ本文を読んでいないことを確認する。
 //			var gotBody bytes.Buffer
 //			go io.Copy(&gotBody, req.Body)
 //			synctest.Wait()
@@ -240,19 +241,19 @@
 //				t.Fatalf("before sending 100 Continue, read body: %q, want %q\n", got, want)
 //			}
 //
-//			// Write a "100 Continue" response to the client and verify that
-//			// it sends the request body.
+//			// クライアントへ "100 Continue" レスポンスを書き、
+//			// リクエスト本文が送られることを確認する。
 //			srvConn.Write([]byte("HTTP/1.1 100 Continue\r\n\r\n"))
 //			synctest.Wait()
 //			if got, want := gotBody.String(), body; got != want {
 //				t.Fatalf("after sending 100 Continue, read body: %q, want %q\n", got, want)
 //			}
 //
-//			// Finish up by sending the "200 OK" response to conclude the request.
+//			// 最後に "200 OK" レスポンスを送ってリクエストを完了する。
 //			srvConn.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
 //
-//			// We started several goroutines during the test.
-//			// The synctest.Test call will wait for all of them to exit before returning.
+//			// テスト中に複数の goroutine を開始した。
+//			// synctest.Test は、戻る前にそれらがすべて終了するのを待つ。
 //		})
 //	}
 package synctest
@@ -261,26 +262,25 @@ import (
 	"github.com/shogo82148/std/testing"
 )
 
-// Test executes f in a new bubble.
+// Test は、新しいバブル内で f を実行します。
 //
-// Test waits for all goroutines in the bubble to exit before returning.
-// If the goroutines in the bubble become deadlocked, the test fails.
+// Test は、戻る前にバブル内のすべての goroutine が終了するのを待ちます。
+// バブル内 goroutine がデッドロックすると、テストは失敗します。
 //
-// Test must not be called from within a bubble.
+// Test をバブル内から呼び出してはいけません。
 //
-// The [*testing.T] provided to f has the following properties:
+// f に渡される [*testing.T] には、次の性質があります:
 //
-//   - T.Cleanup functions run inside the bubble,
-//     immediately before Test returns.
-//   - T.Context returns a [context.Context] with a Done channel
-//     associated with the bubble.
-//   - T.Run, T.Parallel, and T.Deadline must not be called.
+//   - T.Cleanup 関数はバブル内で実行され、
+//     Test が返る直前に呼ばれます。
+//   - T.Context は、バブルに関連付けられた Done チャネルを持つ
+//     [context.Context] を返します。
+//   - T.Run、T.Parallel、T.Deadline は呼び出してはいけません。
 func Test(t *testing.T, f func(*testing.T))
 
-// Wait blocks until every goroutine within the current bubble,
-// other than the current goroutine, is durably blocked.
+// Wait は、現在のバブル内の goroutine のうち、
+// 現在の goroutine 以外のすべてが永続的にブロックされるまで待機します。
 //
-// Wait must not be called from outside a bubble.
-// Wait must not be called concurrently by multiple goroutines
-// in the same bubble.
+// Wait をバブル外から呼び出してはいけません。
+// 同じバブル内で、複数 goroutine から同時に Wait を呼び出してはいけません。
 func Wait()
