@@ -9,59 +9,67 @@ import (
 	"github.com/shogo82148/std/os"
 )
 
-// Ignore causes the provided signals to be ignored. If they are received by
-// the program, nothing will happen. Ignore undoes the effect of any prior
-// calls to [Notify] for the provided signals.
-// If no signals are provided, all incoming signals will be ignored.
+// Ignoreは、指定されたシグナルを無視するようにします。プログラムが
+// それらを受信しても、何も起こりません。Ignoreは、指定された
+// シグナルに対するそれ以前の [Notify] 呼び出しの効果を取り消します。
+// シグナルが指定されなかった場合、すべての受信シグナルは無視されます。
 func Ignore(sig ...os.Signal)
 
-// Ignored reports whether sig is currently ignored.
+// Ignoredは、sig が現在無視されているかどうかを報告します。
 func Ignored(sig os.Signal) bool
 
-// Notify causes package signal to relay incoming signals to c.
-// If no signals are provided, all incoming signals will be relayed to c.
-// Otherwise, just the provided signals will.
+// Notifyは、受信したシグナルを c に中継するよう package signal に
+// 指示します。
+// シグナルが指定されなかった場合、すべての受信シグナルが c に
+// 中継されます。そうでない場合は、指定されたシグナルのみが
+// 中継されます。
 //
-// Package signal will not block sending to c: the caller must ensure
-// that c has sufficient buffer space to keep up with the expected
-// signal rate. For a channel used for notification of just one signal value,
-// a buffer of size 1 is sufficient.
+// package signal は c への送信でブロックしません。呼び出し側は、
+// 予想されるシグナル頻度に追随できるだけの十分なバッファを c が
+// 持つようにしなければなりません。1つのシグナル値だけの通知に
+// 使うチャネルなら、サイズ1のバッファで十分です。
 //
-// It is allowed to call Notify multiple times with the same channel:
-// each call expands the set of signals sent to that channel.
-// The only way to remove signals from the set is to call [Stop].
+// 同じチャネルに対して Notify を複数回呼び出すことができます。
+// 各呼び出しで、そのチャネルに送られるシグナル集合が拡張されます。
+// 集合からシグナルを取り除く唯一の方法は [Stop] を呼ぶことです。
 //
-// It is allowed to call Notify multiple times with different channels
-// and the same signals: each channel receives copies of incoming
-// signals independently.
+// 異なるチャネルに対して、同じシグナルで Notify を複数回呼び出すことも
+// できます。各チャネルは、受信したシグナルのコピーを独立に受け取ります。
 func Notify(c chan<- os.Signal, sig ...os.Signal)
 
-// Reset undoes the effect of any prior calls to [Notify] for the provided
-// signals.
-// If no signals are provided, all signal handlers will be reset.
+// Resetは、指定されたシグナルに対するそれ以前の [Notify] 呼び出しの
+// 効果を取り消します。
+// シグナルが指定されなかった場合、すべての signal handler が
+// リセットされます。
 func Reset(sig ...os.Signal)
 
-// Stop causes package signal to stop relaying incoming signals to c.
-// It undoes the effect of all prior calls to [Notify] using c.
-// When Stop returns, it is guaranteed that c will receive no more signals.
+// Stopは、受信したシグナルを c へ中継するのを package signal に
+// やめさせます。
+// これは、c を使ったそれ以前のすべての [Notify] 呼び出しの効果を
+// 取り消します。
+// Stop が戻った時点で、c がこれ以上シグナルを受け取らないことが
+// 保証されます。
 func Stop(c chan<- os.Signal)
 
-// NotifyContext returns a copy of the parent context that is marked done
-// (its Done channel is closed) when one of the listed signals arrives,
-// when the returned stop function is called, or when the parent context's
-// Done channel is closed, whichever happens first.
+// NotifyContextは、列挙されたシグナルのいずれかが到着したとき、
+// 返される stop 関数が呼ばれたとき、または親コンテキストの Done
+// チャネルが閉じられたときのうち、最初に起こった時点で done
+// （Done チャネルが閉じられた状態）になる、親コンテキストのコピーを
+// 返します。
 //
-// The stop function unregisters the signal behavior, which, like [signal.Reset],
-// may restore the default behavior for a given signal. For example, the default
-// behavior of a Go program receiving [os.Interrupt] is to exit. Calling
-// NotifyContext(parent, os.Interrupt) will change the behavior to cancel
-// the returned context. Future interrupts received will not trigger the default
-// (exit) behavior until the returned stop function is called.
+// stop 関数はシグナル動作の登録を解除します。これは [signal.Reset] と
+// 同様に、指定されたシグナルの既定動作を復元する場合があります。たとえば、
+// [os.Interrupt] を受信したGoプログラムの既定動作は終了です。
+// NotifyContext(parent, os.Interrupt) を呼ぶと、その動作は返された
+// コンテキストをキャンセルする動作に変わります。返された stop 関数が
+// 呼ばれるまでは、その後に受信した割り込みは既定の（終了）動作を
+// 引き起こしません。
 //
-// If a signal causes the returned context to be canceled, calling
-// [context.Cause] on it will return an error describing the signal.
+// シグナルによって返されたコンテキストがキャンセルされた場合、
+// それに対して [context.Cause] を呼ぶと、そのシグナルを説明する
+// エラーが返ります。
 //
-// The stop function releases resources associated with it, so code should
-// call stop as soon as the operations running in this Context complete and
-// signals no longer need to be diverted to the context.
+// stop 関数は関連するリソースを解放するため、この Context で実行している
+// 操作が完了し、もはやシグナルをコンテキストへ振り向ける必要がなくなったら、
+// できるだけ早く stop を呼ぶべきです。
 func NotifyContext(parent context.Context, signals ...os.Signal) (ctx context.Context, stop context.CancelFunc)

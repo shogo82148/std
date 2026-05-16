@@ -14,8 +14,8 @@ import (
 	"github.com/shogo82148/std/os/signal"
 )
 
-// This example passes a context with a signal to tell a blocking function that
-// it should abandon its work after a signal is received.
+// この例では、シグナル付きのコンテキストを渡して、ブロックする関数に
+// シグナル受信後は処理を中止するよう伝えます。
 func ExampleNotifyContext() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
@@ -25,10 +25,10 @@ func ExampleNotifyContext() {
 		log.Fatal(err)
 	}
 
-	// On a Unix-like system, pressing Ctrl+C on a keyboard sends a
-	// SIGINT signal to the process of the program in execution.
+	// Unix系システムでは、キーボードでCtrl+Cを押すと、
+	// 実行中のプログラムのプロセスにSIGINTシグナルが送られます。
 	//
-	// This example simulates that by sending a SIGINT signal to itself.
+	// この例では、自分自身にSIGINTシグナルを送ることでそれを再現します。
 	if err := p.Signal(os.Interrupt); err != nil {
 		log.Fatal(err)
 	}
@@ -37,8 +37,8 @@ func ExampleNotifyContext() {
 	case <-neverReady:
 		fmt.Println("ready")
 	case <-ctx.Done():
-		fmt.Println(ctx.Err()) // prints "context canceled"
-		stop()                 // stop receiving signal notifications as soon as possible.
+		fmt.Println(ctx.Err()) // "context canceled" を表示します。
+		stop()                 // できるだけ早くシグナル通知の受信を停止します。
 	}
 
 	// Output:
