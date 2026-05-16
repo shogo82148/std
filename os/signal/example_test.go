@@ -11,28 +11,28 @@ import (
 )
 
 func ExampleNotify() {
-	// Set up channel on which to send signal notifications.
-	// We must use a buffered channel or risk missing the signal
-	// if we're not ready to receive when the signal is sent.
+	// シグナル通知を送るためのチャネルを用意します。
+	// バッファ付きチャネルを使わないと、シグナル送信時に
+	// 受信の準備ができていない場合に見逃すおそれがあります。
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 
-	// Block until a signal is received.
+	// シグナルを受け取るまでブロックします。
 	s := <-c
 	fmt.Println("Got signal:", s)
 }
 
 func ExampleNotify_allSignals() {
-	// Set up channel on which to send signal notifications.
-	// We must use a buffered channel or risk missing the signal
-	// if we're not ready to receive when the signal is sent.
+	// シグナル通知を送るためのチャネルを用意します。
+	// バッファ付きチャネルを使わないと、シグナル送信時に
+	// 受信の準備ができていない場合に見逃すおそれがあります。
 	c := make(chan os.Signal, 1)
 
-	// Passing no signals to Notify means that
-	// all signals will be sent to the channel.
+	// Notify にシグナルを渡さない場合は、
+	// すべてのシグナルがチャネルへ送られます。
 	signal.Notify(c)
 
-	// Block until any signal is received.
+	// いずれかのシグナルを受け取るまでブロックします。
 	s := <-c
 	fmt.Println("Got signal:", s)
 }
