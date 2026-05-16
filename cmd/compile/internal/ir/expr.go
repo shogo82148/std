@@ -446,6 +446,20 @@ func StaticValue(n Node) Node
 // code in the ReassignOracle.Init method.
 func Reassigned(name *Name) bool
 
+// FuncSingleAssignment returns the sole OAS *AssignStmt that assigns a
+// non-zero value to name, if name is a func-typed local variable (PAUTO)
+// with exactly one such assignment. Zero-value assignments (nil, bare
+// declarations) are ignored since nil panics on call. Returns nil if the
+// variable is not PAUTO, not func-typed, address-taken, has multiple
+// non-zero assignments, or has any complex assignments (OAS2, ORANGE).
+// Assignments inside nested closures are accepted because this is only
+// used for escape analysis callee resolution: the only alternative value
+// is nil, which panics on call.
+//
+// TODO: fold this into [ReassignOracle] so it can share the single
+// walk with StaticValue and Reassigned.
+func FuncSingleAssignment(name *Name) *AssignStmt
+
 // StaticCalleeName returns the ONAME/PFUNC for n, if known.
 func StaticCalleeName(n Node) *Name
 
