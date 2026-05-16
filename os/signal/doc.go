@@ -3,232 +3,195 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package signal implements access to incoming signals.
+Package signalは、受信シグナルへのアクセスを実装します。
 
-Signals are primarily used on Unix-like systems. For the use of this
-package on Windows and Plan 9, see below.
+シグナルは主にUnix系システムで使われます。WindowsとPlan 9での
+このパッケージの使い方については、以下を参照してください。
 
 # Types of signals
 
-The signals SIGKILL and SIGSTOP may not be caught by a program, and
-therefore cannot be affected by this package.
+SIGKILL と SIGSTOP はプログラムによって捕捉できないため、
+このパッケージの影響を受けません。
 
-Synchronous signals are signals triggered by errors in program
-execution: SIGBUS, SIGFPE, and SIGSEGV. These are only considered
-synchronous when caused by program execution, not when sent using
-[os.Process.Kill] or the kill program or some similar mechanism. In
-general, except as discussed below, Go programs will convert a
-synchronous signal into a run-time panic.
+同期シグナルとは、プログラム実行中のエラーによって発生する
+シグナルです。SIGBUS、SIGFPE、SIGSEGV がこれに当たります。
+これらは、[os.Process.Kill] や kill プログラム、あるいは同様の
+仕組みで送られた場合ではなく、プログラム実行によって発生した場合に
+のみ同期シグナルと見なされます。一般に、以下で述べる場合を除き、
+Goプログラムは同期シグナルを実行時panicに変換します。
 
-The remaining signals are asynchronous signals. They are not
-triggered by program errors, but are instead sent from the kernel or
-from some other program.
+残りのシグナルは非同期シグナルです。これらはプログラムのエラーに
+よって発生するのではなく、カーネルまたは他のプログラムから送られます。
 
-Of the asynchronous signals, the SIGHUP signal is sent when a program
-loses its controlling terminal. The SIGINT signal is sent when the
-user at the controlling terminal presses the interrupt character,
-which by default is ^C (Control-C). The SIGQUIT signal is sent when
-the user at the controlling terminal presses the quit character, which
-by default is ^\ (Control-Backslash). In general you can cause a
-program to simply exit by pressing ^C, and you can cause it to exit
-with a stack dump by pressing ^\.
+非同期シグナルのうち、SIGHUP はプログラムが制御端末を失ったときに
+送られます。SIGINT は、制御端末上のユーザーが割り込み文字を押したときに
+送られます。既定ではその文字は ^C（Control-C）です。SIGQUIT は、
+制御端末上のユーザーが終了文字を押したときに送られます。既定ではその文字は
+^\（Control-Backslash）です。一般に ^C を押すとプログラムを単純に終了させる
+ことができ、^\ を押すとスタックダンプ付きで終了させることができます。
 
 # Default behavior of signals in Go programs
 
-By default, a synchronous signal is converted into a run-time panic. A
-SIGHUP, SIGINT, or SIGTERM signal causes the program to exit. A
-SIGQUIT, SIGILL, SIGTRAP, SIGABRT, SIGSTKFLT, SIGEMT, or SIGSYS signal
-causes the program to exit with a stack dump. A SIGTSTP, SIGTTIN, or
-SIGTTOU signal gets the system default behavior (these signals are
-used by the shell for job control). The SIGPROF signal is handled
-directly by the Go runtime to implement runtime.CPUProfile. Other
-signals will be caught but no action will be taken.
+既定では、同期シグナルは実行時panicに変換されます。SIGHUP、SIGINT、SIGTERM
+はプログラムを終了させます。SIGQUIT、SIGILL、SIGTRAP、SIGABRT、SIGSTKFLT、
+SIGEMT、SIGSYS はスタックダンプ付きでプログラムを終了させます。
+SIGTSTP、SIGTTIN、SIGTTOU はシステムの既定動作になります（これらのシグナルは
+シェルのジョブ制御で使われます）。SIGPROF は runtime.CPUProfile を実装するために
+Goランタイムによって直接処理されます。その他のシグナルは捕捉されますが、
+何の処理も行われません。
 
-If the Go program is started with either SIGHUP or SIGINT ignored
-(signal handler set to SIG_IGN), they will remain ignored.
+Goプログラムが SIGHUP または SIGINT を無視する設定（signal handler を SIG_IGN に
+設定）で起動された場合、それらは無視されたままになります。
 
-If the Go program is started with a non-empty signal mask, that will
-generally be honored. However, some signals are explicitly unblocked:
-the synchronous signals, SIGILL, SIGTRAP, SIGSTKFLT, SIGCHLD, SIGPROF,
-and, on Linux, signals 32 (SIGCANCEL) and 33 (SIGSETXID)
-(SIGCANCEL and SIGSETXID are used internally by glibc). Subprocesses
-started by [os.Exec], or by [os/exec], will inherit the
-modified signal mask.
+Goプログラムが空でないシグナルマスクを持って起動された場合、通常はその設定が
+尊重されます。ただし、一部のシグナルは明示的にブロック解除されます。すなわち、
+同期シグナル、SIGILL、SIGTRAP、SIGSTKFLT、SIGCHLD、SIGPROF、そしてLinuxでは
+32（SIGCANCEL）と33（SIGSETXID）です（SIGCANCEL と SIGSETXID は glibc が内部で
+使います）。[os.Exec] または [os/exec] によって起動されたサブプロセスは、
+変更後のシグナルマスクを継承します。
 
 # Changing the behavior of signals in Go programs
 
-The functions in this package allow a program to change the way Go
-programs handle signals.
+このパッケージの関数を使うと、Goプログラムのシグナル処理方法を変更できます。
 
-Notify disables the default behavior for a given set of asynchronous
-signals and instead delivers them over one or more registered
-channels. Specifically, it applies to the signals SIGHUP, SIGINT,
-SIGQUIT, SIGABRT, and SIGTERM. It also applies to the job control
-signals SIGTSTP, SIGTTIN, and SIGTTOU, in which case the system
-default behavior does not occur. It also applies to some signals that
-otherwise cause no action: SIGUSR1, SIGUSR2, SIGPIPE, SIGALRM,
-SIGCHLD, SIGCONT, SIGURG, SIGXCPU, SIGXFSZ, SIGVTALRM, SIGWINCH,
-SIGIO, SIGPWR, SIGINFO, SIGTHR, SIGWAITING, SIGLWP, SIGFREEZE,
-SIGTHAW, SIGLOST, SIGXRES, SIGJVM1, SIGJVM2, and any real time signals
-used on the system. Note that not all of these signals are available
-on all systems.
+Notify は、指定された一連の非同期シグナルに対する既定動作を無効にし、
+代わりに1つ以上の登録済みチャネルへそれらを配送します。具体的には、
+SIGHUP、SIGINT、SIGQUIT、SIGABRT、SIGTERM に適用されます。また、
+SIGTSTP、SIGTTIN、SIGTTOU といったジョブ制御シグナルにも適用され、この場合は
+システムの既定動作は起こりません。さらに、通常は何も起こさない一部のシグナル、
+すなわち SIGUSR1、SIGUSR2、SIGPIPE、SIGALRM、SIGCHLD、SIGCONT、SIGURG、
+SIGXCPU、SIGXFSZ、SIGVTALRM、SIGWINCH、SIGIO、SIGPWR、SIGINFO、SIGTHR、
+SIGWAITING、SIGLWP、SIGFREEZE、SIGTHAW、SIGLOST、SIGXRES、SIGJVM1、SIGJVM2、
+およびシステムで使われる任意のリアルタイムシグナルにも適用されます。
+これらのシグナルのすべてが全システムで利用できるわけではないことに注意してください。
 
-If the program was started with SIGHUP or SIGINT ignored, and [Notify]
-is called for either signal, a signal handler will be installed for
-that signal and it will no longer be ignored. If, later, [Reset] or
-[Ignore] is called for that signal, or [Stop] is called on all channels
-passed to Notify for that signal, the signal will once again be
-ignored. Reset will restore the system default behavior for the
-signal, while Ignore will cause the system to ignore the signal
-entirely.
+プログラムが SIGHUP または SIGINT を無視する設定で起動されていて、[Notify] が
+どちらかのシグナルに対して呼ばれると、そのシグナル用の signal handler が
+インストールされ、もはや無視されなくなります。その後 [Reset] または [Ignore] が
+そのシグナルに対して呼ばれるか、あるいはそのシグナルに対して Notify に渡したすべての
+チャネルに対して [Stop] が呼ばれると、そのシグナルは再び無視されます。Reset は
+そのシグナルのシステム既定動作を復元し、Ignore はそのシグナルを完全に無視するようにします。
 
-If the program is started with a non-empty signal mask, some signals
-will be explicitly unblocked as described above. If Notify is called
-for a blocked signal, it will be unblocked. If, later, Reset is
-called for that signal, or Stop is called on all channels passed to
-Notify for that signal, the signal will once again be blocked.
+プログラムが空でないシグナルマスクで起動された場合、前述のとおり一部のシグナルは
+明示的にブロック解除されます。ブロックされたシグナルに対して Notify が呼ばれると、
+そのシグナルはブロック解除されます。その後、そのシグナルに対して Reset が呼ばれるか、
+またはそのシグナルに対して Notify に渡したすべてのチャネルに対して Stop が呼ばれると、
+そのシグナルは再びブロックされます。
 
 # SIGPIPE
 
-When a Go program writes to a broken pipe, the kernel will raise a
-SIGPIPE signal.
+Goプログラムが壊れたパイプに書き込むと、カーネルは SIGPIPE シグナルを発生させます。
 
-If the program has not called Notify to receive SIGPIPE signals, then
-the behavior depends on the file descriptor number. A write to a
-broken pipe on file descriptors 1 or 2 (standard output or standard
-error) will cause the program to exit with a SIGPIPE signal. A write
-to a broken pipe on some other file descriptor will take no action on
-the SIGPIPE signal, and the write will fail with a [syscall.EPIPE]
-error.
+プログラムが SIGPIPE シグナルを受け取るための Notify を呼んでいない場合、
+動作はファイルディスクリプタ番号に依存します。ファイルディスクリプタ1または2
+（標準出力または標準エラー）で壊れたパイプに書き込むと、SIGPIPE シグナルにより
+プログラムは終了します。その他のファイルディスクリプタで壊れたパイプに書き込んだ場合、
+SIGPIPE シグナルに対しては何の処理も行われず、書き込みは [syscall.EPIPE] エラーで失敗します。
 
-If the program has called Notify to receive SIGPIPE signals, the file
-descriptor number does not matter. The SIGPIPE signal will be
-delivered to the Notify channel, and the write will fail with a
-[syscall.EPIPE] error.
+プログラムが SIGPIPE シグナルを受け取るために Notify を呼んでいる場合は、
+ファイルディスクリプタ番号は関係ありません。SIGPIPE シグナルは Notify チャネルへ
+配送され、書き込みは [syscall.EPIPE] エラーで失敗します。
 
-This means that, by default, command line programs will behave like
-typical Unix command line programs, while other programs will not
-crash with SIGPIPE when writing to a closed network connection.
+つまり既定では、コマンドラインプログラムは典型的なUnixのコマンドラインプログラムと
+同じように動作し、その他のプログラムは閉じたネットワーク接続への書き込みで SIGPIPE によって
+クラッシュしません。
 
 # Go programs that use cgo or SWIG
 
-In a Go program that includes non-Go code, typically C/C++ code
-accessed using cgo or SWIG, Go's startup code normally runs first. It
-configures the signal handlers as expected by the Go runtime, before
-the non-Go startup code runs. If the non-Go startup code wishes to
-install its own signal handlers, it must take certain steps to keep Go
-working well. This section documents those steps and the overall
-effect changes to signal handler settings by the non-Go code can have
-on Go programs. In rare cases, the non-Go code may run before the Go
-code, in which case the next section also applies.
+非Goコード、通常は cgo または SWIG でアクセスされるC/C++コードを含むGoプログラムでは、
+通常はGoの起動コードが最初に実行されます。非Goの起動コードが実行される前に、
+Goランタイムが期待するように signal handler を設定します。非Goの起動コードが独自の
+signal handler をインストールしたい場合、Goを正常に動かし続けるためにいくつかの手順を
+踏む必要があります。この節ではその手順と、非Goコードによる signal handler 設定の変更が
+Goプログラムへ与える全体的な影響を説明します。まれに、Goコードより先に非Goコードが
+実行されることがあり、その場合は次の節も適用されます。
 
-If the non-Go code called by the Go program does not change any signal
-handlers or masks, then the behavior is the same as for a pure Go
-program.
+Goプログラムから呼ばれる非Goコードが signal handler やマスクを変更しない場合、
+動作は純粋なGoプログラムと同じです。
 
-If the non-Go code installs any signal handlers, it must use the
-SA_ONSTACK flag with sigaction. Failing to do so is likely to cause
-the program to crash if the signal is received. Go programs routinely
-run with a limited stack, and therefore set up an alternate signal
-stack.
+非Goコードが signal handler をインストールする場合は、sigaction で SA_ONSTACK フラグを
+使わなければなりません。これを怠ると、シグナル受信時にプログラムがクラッシュする可能性が
+高くなります。Goプログラムは通常、制限されたスタックで実行されるため、別の signal stack を
+設定します。
 
-If the non-Go code installs a signal handler for any of the
-synchronous signals (SIGBUS, SIGFPE, SIGSEGV), then it should record
-the existing Go signal handler. If those signals occur while
-executing Go code, it should invoke the Go signal handler (whether the
-signal occurs while executing Go code can be determined by looking at
-the PC passed to the signal handler). Otherwise some Go run-time
-panics will not occur as expected.
+非Goコードが同期シグナル（SIGBUS、SIGFPE、SIGSEGV）のいずれかに対する signal handler を
+インストールする場合、既存のGo signal handler を記録しておくべきです。これらのシグナルが
+Goコード実行中に発生した場合は、Go signal handler を呼び出すべきです（シグナルがGoコード
+実行中に発生したかどうかは、signal handler に渡された PC を見れば判断できます）。そうしないと、
+一部のGo実行時panicが期待どおりに発生しません。
 
-If the non-Go code installs a signal handler for any of the
-asynchronous signals, it may invoke the Go signal handler or not as it
-chooses. Naturally, if it does not invoke the Go signal handler, the
-Go behavior described above will not occur. This can be an issue with
-the SIGPROF signal in particular.
+非Goコードが非同期シグナルのいずれかに対する signal handler をインストールする場合、
+Go signal handler を呼び出すかどうかは任意です。もちろん、Go signal handler を呼び出さなければ、
+上で説明したGoの動作は発生しません。特に SIGPROF シグナルでは問題になることがあります。
 
-The non-Go code should not change the signal mask on any threads
-created by the Go runtime. If the non-Go code starts new threads
-itself, those threads may set the signal mask as they please.
+非Goコードは、Goランタイムによって作成されたスレッドの signal mask を変更すべきではありません。
+非Goコード自身が新しいスレッドを開始する場合、そのスレッドは好きなように signal mask を設定できます。
 
-If the non-Go code starts a new thread, changes the signal mask, and
-then invokes a Go function in that thread, the Go runtime will
-automatically unblock certain signals: the synchronous signals,
-SIGILL, SIGTRAP, SIGSTKFLT, SIGCHLD, SIGPROF, SIGCANCEL, and
-SIGSETXID. When the Go function returns, the non-Go signal mask will
-be restored.
+非Goコードが新しいスレッドを開始し、signal mask を変更し、そのスレッドでGo関数を呼び出すと、
+Goランタイムは自動的に一部のシグナルをブロック解除します。すなわち、同期シグナル、
+SIGILL、SIGTRAP、SIGSTKFLT、SIGCHLD、SIGPROF、SIGCANCEL、SIGSETXID です。
+Go関数が戻ると、非Go側の signal mask は復元されます。
 
-If the Go signal handler is invoked on a non-Go thread not running Go
-code, the handler generally forwards the signal to the non-Go code, as
-follows. If the signal is SIGPROF, the Go handler does
-nothing. Otherwise, the Go handler removes itself, unblocks the
-signal, and raises it again, to invoke any non-Go handler or default
-system handler. If the program does not exit, the Go handler then
-reinstalls itself and continues execution of the program.
+Go signal handler がGoコードを実行していない非Goスレッド上で呼び出されると、
+通常は以下のように信号を非Goコードへ転送します。シグナルが SIGPROF の場合、
+Go handler は何もしません。それ以外の場合、Go handler は自分自身を外し、
+そのシグナルをブロック解除してもう一度 raise し、非Go handler または既定のシステム handler を
+呼び出します。プログラムが終了しない場合、Go handler はその後再インストールされ、
+プログラムの実行を継続します。
 
-If a SIGPIPE signal is received, the Go program will invoke the
-special handling described above if the SIGPIPE is received on a Go
-thread.  If the SIGPIPE is received on a non-Go thread the signal will
-be forwarded to the non-Go handler, if any; if there is none the
-default system handler will cause the program to terminate.
+SIGPIPE シグナルを受信した場合、SIGPIPE がGoスレッド上で受信されたときは、Goプログラムは
+上で説明した特別な処理を行います。SIGPIPE が非Goスレッド上で受信された場合は、
+そのシグナルは（存在すれば）非Go handler に転送されます。もし handler が存在しなければ、
+既定のシステム handler によりプログラムは終了します。
 
 # Non-Go programs that call Go code
 
-When Go code is built with options like -buildmode=c-shared, it will
-be run as part of an existing non-Go program. The non-Go code may
-have already installed signal handlers when the Go code starts (that
-may also happen in unusual cases when using cgo or SWIG; in that case,
-the discussion here applies).  For -buildmode=c-archive the Go runtime
-will initialize signals at global constructor time.  For
--buildmode=c-shared the Go runtime will initialize signals when the
-shared library is loaded.
+-buildmode=c-shared のようなオプションでGoコードがビルドされると、既存の非Goプログラムの
+一部として実行されます。Goコードが開始される時点で、非Goコードはすでに signal handler を
+インストールしているかもしれません（cgo や SWIG を使う通常でないケースでも同様で、その場合は
+ここでの説明が当てはまります）。-buildmode=c-archive の場合、Goランタイムはグローバルな
+コンストラクタの時点でシグナルを初期化します。-buildmode=c-shared の場合、共有ライブラリが
+ロードされたときにGoランタイムがシグナルを初期化します。
 
-If the Go runtime sees an existing signal handler for the SIGCANCEL or
-SIGSETXID signals (which are used only on Linux), it will turn on
-the SA_ONSTACK flag and otherwise keep the signal handler.
+Goランタイムが SIGCANCEL または SIGSETXID シグナル（Linuxでのみ使われます）に対する
+既存の signal handler を見つけた場合、SA_ONSTACK フラグを有効にし、それ以外はその signal handler
+を保持します。
 
-For the synchronous signals and SIGPIPE, the Go runtime will install a
-signal handler. It will save any existing signal handler. If a
-synchronous signal arrives while executing non-Go code, the Go runtime
-will invoke the existing signal handler instead of the Go signal
-handler.
+同期シグナルと SIGPIPE に対しては、Goランタイムが signal handler をインストールします。
+既存の signal handler があれば保存します。非Goコード実行中に同期シグナルが到来した場合、
+GoランタイムはGo signal handler の代わりに既存の signal handler を呼び出します。
 
-Go code built with -buildmode=c-archive or -buildmode=c-shared will
-not install any other signal handlers by default. If there is an
-existing signal handler, the Go runtime will turn on the SA_ONSTACK
-flag and otherwise keep the signal handler. If Notify is called for an
-asynchronous signal, a Go signal handler will be installed for that
-signal. If, later, Reset is called for that signal, the original
-handling for that signal will be reinstalled, restoring the non-Go
-signal handler if any.
+-buildmode=c-archive または -buildmode=c-shared でビルドされたGoコードは、既定では
+他の signal handler をインストールしません。既存の signal handler がある場合、Goランタイムは
+SA_ONSTACK フラグを有効にし、それ以外はその signal handler を保持します。非同期シグナルに対して
+Notify が呼ばれると、そのシグナル用にGo signal handler がインストールされます。その後、その
+シグナルに対して Reset が呼ばれると、元の処理が再インストールされ、存在する場合は非Goの
+signal handler が復元されます。
 
-Go code built without -buildmode=c-archive or -buildmode=c-shared will
-install a signal handler for the asynchronous signals listed above,
-and save any existing signal handler. If a signal is delivered to a
-non-Go thread, it will act as described above, except that if there is
-an existing non-Go signal handler, that handler will be installed
-before raising the signal.
+-buildmode=c-archive でも -buildmode=c-shared でもなくビルドされたGoコードは、上で列挙した
+非同期シグナルに対する signal handler をインストールし、既存の signal handler を保存します。
+シグナルが非Goスレッドへ配送された場合は上で説明したように動作しますが、既存の非Go signal
+handler がある場合は、シグナルを raise する前にその handler がインストールされます。
 
 # Windows
 
-On Windows a ^C (Control-C) or ^BREAK (Control-Break) normally cause
-the program to exit. If Notify is called for [os.Interrupt], ^C or ^BREAK
-will cause [os.Interrupt] to be sent on the channel, and the program will
-not exit. [os.Interrupt] is the only signal that can be used on Windows.
-If Reset is called, or Stop is called on all channels passed to Notify,
-then the default behavior will be restored.
+Windows では、通常 ^C（Control-C）または ^BREAK（Control-Break）で
+プログラムが終了します。[os.Interrupt] に対して Notify が呼ばれている場合、
+^C または ^BREAK によって [os.Interrupt] がチャネルへ送られ、
+プログラムは終了しません。Windows で使用できるシグナルは [os.Interrupt]
+のみです。Reset が呼ばれるか、Notify に渡したすべてのチャネルに対して
+Stop が呼ばれると、既定の動作が復元されます。
 
-Additionally, if Notify is called, and Windows sends CTRL_CLOSE_EVENT,
-CTRL_LOGOFF_EVENT or CTRL_SHUTDOWN_EVENT to the process, Notify will
-return syscall.SIGTERM. Unlike Control-C and Control-Break, Notify does
-not change process behavior when either CTRL_CLOSE_EVENT,
-CTRL_LOGOFF_EVENT or CTRL_SHUTDOWN_EVENT is received - the process will
-still get terminated unless it exits. But receiving syscall.SIGTERM will
-give the process an opportunity to clean up before termination.
+さらに、Notify が呼ばれていて、Windows が CTRL_CLOSE_EVENT、CTRL_LOGOFF_EVENT、
+CTRL_SHUTDOWN_EVENT をプロセスへ送った場合、Notify は syscall.SIGTERM を返します。
+Control-C や Control-Break と違って、CTRL_CLOSE_EVENT、CTRL_LOGOFF_EVENT、
+CTRL_SHUTDOWN_EVENT のいずれかを受信しても Notify はプロセスの動作を変更しません。
+そのため、プロセスが終了しない限り、依然として終了されます。ただし、syscall.SIGTERM を
+受信すれば、終了前にクリーンアップする機会が得られます。
 
 # Plan 9
 
-On Plan 9, signals have type syscall.Note, which is a string. Calling
-Notify with a syscall.Note will cause that value to be sent on the
-channel when that string is posted as a note.
+Plan 9 では、シグナルの型は syscall.Note で、文字列です。syscall.Note を指定して
+Notify を呼ぶと、その文字列が note として投稿されたときに、その値がチャネルへ送られます。
 */
 package signal

@@ -7,6 +7,14 @@
 // sortパッケージはスライスやユーザー定義のコレクションをソートするための基本機能を提供します。
 package sort
 
+import (
+	"github.com/shogo82148/std/slices"
+)
+
+// shogo82148/std/slicesを参照するためのダミー変数。
+// これがないと標準ライブラリーのslicesを参照してしまう。
+var _ = slices.All[[]int]
+
 // このパッケージのルーチンによって、インタフェースの実装はソート可能です。
 // メソッドは、整数インデックスによって基礎コレクションの要素を参照します。
 type Interface interface {

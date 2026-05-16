@@ -2,59 +2,60 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package heap provides heap operations for any type that implements
-// heap.Interface. A heap is a tree with the property that each node is the
-// minimum-valued node in its subtree.
+// パッケージheapは、heap.Interfaceを実装する任意の型に対して
+// ヒープ操作を提供します。ヒープは、各ノードがその部分木における
+// 最小値ノードであるという性質を持つ木です。
 //
-// The minimum element in the tree is the root, at index 0.
+// 木の最小要素は、インデックス0のルートです。
 //
-// A heap is a common way to implement a priority queue. To build a priority
-// queue, implement the Heap interface with the (negative) priority as the
-// ordering for the Less method, so Push adds items while Pop removes the
-// highest-priority item from the queue. The Examples include such an
-// implementation; the file example_pq_test.go has the complete source.
+// ヒープは優先度付きキューを実装する一般的な方法です。優先度付きキューを
+// 構築するには、Lessメソッドの順序として（負の）優先度を用いて
+// Heapインターフェースを実装します。これにより、Pushは要素を追加し、
+// Popはキューから最優先の要素を取り出します。Examplesにはそのような
+// 実装が含まれており、example_pq_test.goに完全なソースがあります。
 package heap
 
 import "github.com/shogo82148/std/sort"
 
-// The Interface type describes the requirements
-// for a type using the routines in this package.
-// Any type that implements it may be used as a
-// min-heap with the following invariants (established after
-// [Init] has been called or if the data is empty or sorted):
+// Interface型は、このパッケージのルーチンを使用する型に対する
+// 要件を記述します。
+// これを実装する任意の型は、次の不変条件を満たす
+// 最小ヒープとして使用できます（[Init]が呼び出された後、
+// またはデータが空もしくはソート済みの場合に成立します）。
 //
 //	!h.Less(j, i) for 0 <= i < h.Len() and 2*i+1 <= j <= 2*i+2 and j < h.Len()
 //
-// Note that [Push] and [Pop] in this interface are for package heap's
-// implementation to call. To add and remove things from the heap,
-// use [heap.Push] and [heap.Pop].
+// このインターフェース内の [Push] と [Pop] は、パッケージheapの
+// 実装から呼び出すためのものである点に注意してください。
+// ヒープへの追加と削除には、[heap.Push] と [heap.Pop] を使用してください。
 type Interface interface {
 	sort.Interface
 	Push(x any)
 	Pop() any
 }
 
-// Init establishes the heap invariants required by the other routines in this package.
-// Init is idempotent with respect to the heap invariants
-// and may be called whenever the heap invariants may have been invalidated.
-// The complexity is O(n) where n = h.Len().
+// Initは、このパッケージ内の他のルーチンが要求するヒープ不変条件を確立します。
+// Initはヒープ不変条件に関して冪等であり、
+// ヒープ不変条件が崩れた可能性があるときはいつでも呼び出せます。
+// 計算量は O(n) です（n = h.Len()）。
 func Init(h Interface)
 
-// Push pushes the element x onto the heap.
-// The complexity is O(log n) where n = h.Len().
+// Pushは要素xをヒープに追加します。
+// 計算量は O(log n) です（n = h.Len()）。
 func Push(h Interface, x any)
 
-// Pop removes and returns the minimum element (according to Less) from the heap.
-// The complexity is O(log n) where n = h.Len().
-// Pop is equivalent to [Remove](h, 0).
+// Popはヒープから最小要素（Lessに従う）を取り出して返します。
+// 計算量は O(log n) です（n = h.Len()）。
+// Popは [Remove](h, 0) と等価です。
 func Pop(h Interface) any
 
-// Remove removes and returns the element at index i from the heap.
-// The complexity is O(log n) where n = h.Len().
+// Removeはヒープのインデックスiにある要素を取り出して返します。
+// 計算量は O(log n) です（n = h.Len()）。
 func Remove(h Interface, i int) any
 
-// Fix re-establishes the heap ordering after the element at index i has changed its value.
-// Changing the value of the element at index i and then calling Fix is equivalent to,
-// but less expensive than, calling [Remove](h, i) followed by a Push of the new value.
-// The complexity is O(log n) where n = h.Len().
+// Fixは、インデックスiの要素の値が変更された後にヒープ順序を再確立します。
+// インデックスiの要素の値を変更してからFixを呼び出すことは、
+// [Remove](h, i) を呼び出して新しい値をPushするのと等価ですが、
+// それより低コストです。
+// 計算量は O(log n) です（n = h.Len()）。
 func Fix(h Interface, i int)

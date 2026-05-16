@@ -2,28 +2,29 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package cryptotest provides deterministic random source testing.
+// Package cryptotestは決定論的な乱数ソースのテストを提供します。
 package cryptotest
 
 import (
 	"github.com/shogo82148/std/testing"
 )
 
-// SetGlobalRandom sets a global, deterministic cryptographic randomness source
-// for the duration of test t. It affects crypto/rand, and all implicit sources
-// of cryptographic randomness in the crypto/... packages.
+// SetGlobalRandomは、テストtの実行中にグローバルで決定論的な
+// 暗号学的乱数ソースを設定します。これはcrypto/randと、
+// crypto/... パッケージ内の暗号学的乱数のすべての暗黙的ソースに影響します。
 //
-// SetGlobalRandom may be called multiple times in the same test to reset the
-// random stream or change the seed.
+// SetGlobalRandomは、同じテスト内で複数回呼び出して、
+// 乱数ストリームをリセットしたりseedを変更したりできます。
 //
-// Because SetGlobalRandom affects the whole process, it cannot be used in
-// parallel tests or tests with parallel ancestors.
+// SetGlobalRandomはプロセス全体に影響するため、
+// 並列テストや並列な先祖テストを持つテストでは使用できません。
 //
-// Note that the way cryptographic algorithms use randomness is generally not
-// specified and may change over time. Thus, if a test expects a specific output
-// from a cryptographic function, it may fail in the future even if it uses
-// SetGlobalRandom.
+// 暗号アルゴリズムが乱数をどのように使うかは一般に仕様化されておらず、
+// 時間とともに変わる可能性がある点に注意してください。したがって、
+// テストが暗号関数の特定の出力を期待している場合、SetGlobalRandomを
+// 使用していても将来失敗する可能性があります。
 //
-// SetGlobalRandom is not supported when building against the Go Cryptographic
-// Module v1.0.0 (i.e. when [crypto/fips140.Version] returns "v1.0.0").
+// SetGlobalRandomは、Go Cryptographic Module v1.0.0 を対象にビルドする場合
+// サポートされません（つまり [crypto/fips140.Version] が "v1.0.0" を
+// 返す場合）。
 func SetGlobalRandom(t *testing.T, seed uint64)

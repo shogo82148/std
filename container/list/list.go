@@ -2,105 +2,106 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package list implements a doubly linked list.
+// パッケージlistは双方向連結リストを実装します。
 //
-// To iterate over a list (where l is a *List):
+// リストを反復するには（l は *List）:
 //
 //	for e := l.Front(); e != nil; e = e.Next() {
-//		// do something with e.Value
+//		// e.Value を使って何らかの処理を行う
 //	}
 package list
 
-// Element is an element of a linked list.
+// Elementは連結リストの要素です。
 type Element struct {
-	// Next and previous pointers in the doubly-linked list of elements.
-	// To simplify the implementation, internally a list l is implemented
-	// as a ring, such that &l.root is both the next element of the last
-	// list element (l.Back()) and the previous element of the first list
-	// element (l.Front()).
+	// 要素からなる双方向連結リストにおける次および前のポインタです。
+	// 実装を簡単にするため、内部的にはリスト l はリングとして実装され、
+	// &l.root は最後の要素（l.Back()）の次要素であると同時に、
+	// 最初の要素（l.Front()）の前要素でもあります。
 	next, prev *Element
 
-	// The list to which this element belongs.
+	// この要素が属するリストです。
 	list *List
 
-	// The value stored with this element.
+	// この要素に格納される値です。
 	Value any
 }
 
-// Next returns the next list element or nil.
+// Nextは次のリスト要素を返します。なければnilを返します。
 func (e *Element) Next() *Element
 
-// Prev returns the previous list element or nil.
+// Prevは前のリスト要素を返します。なければnilを返します。
 func (e *Element) Prev() *Element
 
-// List represents a doubly linked list.
-// The zero value for List is an empty list ready to use.
+// Listは双方向連結リストを表します。
+// Listのゼロ値は、すぐに使用可能な空のリストです。
 type List struct {
 	root Element
 	len  int
 }
 
-// Init initializes or clears list l.
+// Initはリストlを初期化またはクリアします。
 func (l *List) Init() *List
 
-// New returns an initialized list.
+// Newは初期化済みのリストを返します。
 func New() *List
 
-// Len returns the number of elements of list l.
-// The complexity is O(1).
+// Lenはリストlの要素数を返します。
+// 計算量は O(1) です。
 func (l *List) Len() int
 
-// Front returns the first element of list l or nil if the list is empty.
+// Frontはリストlの先頭要素を返します。リストが空ならnilを返します。
 func (l *List) Front() *Element
 
-// Back returns the last element of list l or nil if the list is empty.
+// Backはリストlの末尾要素を返します。リストが空ならnilを返します。
 func (l *List) Back() *Element
 
-// Remove removes e from l if e is an element of list l.
-// It returns the element value e.Value.
-// The element must not be nil.
+// Removeは、eがリストlの要素であれば l から e を削除します。
+// 要素の値 e.Value を返します。
+// 要素はnilであってはなりません。
 func (l *List) Remove(e *Element) any
 
-// PushFront inserts a new element e with value v at the front of list l and returns e.
+// PushFrontは値vを持つ新しい要素eをリストlの先頭に挿入し、eを返します。
 func (l *List) PushFront(v any) *Element
 
-// PushBack inserts a new element e with value v at the back of list l and returns e.
+// PushBackは値vを持つ新しい要素eをリストlの末尾に挿入し、eを返します。
 func (l *List) PushBack(v any) *Element
 
-// InsertBefore inserts a new element e with value v immediately before mark and returns e.
-// If mark is not an element of l, the list is not modified.
-// The mark must not be nil.
+// InsertBeforeは値vを持つ新しい要素eを mark の直前に挿入し、eを返します。
+// markが l の要素でない場合、リストは変更されません。
+// markはnilであってはなりません。
 func (l *List) InsertBefore(v any, mark *Element) *Element
 
-// InsertAfter inserts a new element e with value v immediately after mark and returns e.
-// If mark is not an element of l, the list is not modified.
-// The mark must not be nil.
+// InsertAfterは値vを持つ新しい要素eを mark の直後に挿入し、eを返します。
+// markが l の要素でない場合、リストは変更されません。
+// markはnilであってはなりません。
 func (l *List) InsertAfter(v any, mark *Element) *Element
 
-// MoveToFront moves element e to the front of list l.
-// If e is not an element of l, the list is not modified.
-// The element must not be nil.
+// MoveToFrontは要素eをリストlの先頭へ移動します。
+// eが l の要素でない場合、リストは変更されません。
+// 要素はnilであってはなりません。
 func (l *List) MoveToFront(e *Element)
 
-// MoveToBack moves element e to the back of list l.
-// If e is not an element of l, the list is not modified.
-// The element must not be nil.
+// MoveToBackは要素eをリストlの末尾へ移動します。
+// eが l の要素でない場合、リストは変更されません。
+// 要素はnilであってはなりません。
 func (l *List) MoveToBack(e *Element)
 
-// MoveBefore moves element e to its new position before mark.
-// If e or mark is not an element of l, or e == mark, the list is not modified.
-// The element and mark must not be nil.
+// MoveBeforeは要素eを mark の前の新しい位置へ移動します。
+// e または mark が l の要素でない場合、または e == mark の場合、
+// リストは変更されません。
+// 要素と mark はnilであってはなりません。
 func (l *List) MoveBefore(e, mark *Element)
 
-// MoveAfter moves element e to its new position after mark.
-// If e or mark is not an element of l, or e == mark, the list is not modified.
-// The element and mark must not be nil.
+// MoveAfterは要素eを mark の後の新しい位置へ移動します。
+// e または mark が l の要素でない場合、または e == mark の場合、
+// リストは変更されません。
+// 要素と mark はnilであってはなりません。
 func (l *List) MoveAfter(e, mark *Element)
 
-// PushBackList inserts a copy of another list at the back of list l.
-// The lists l and other may be the same. They must not be nil.
+// PushBackListは別のリストのコピーをリストlの末尾に挿入します。
+// リスト l と other は同一でも構いません。nilであってはなりません。
 func (l *List) PushBackList(other *List)
 
-// PushFrontList inserts a copy of another list at the front of list l.
-// The lists l and other may be the same. They must not be nil.
+// PushFrontListは別のリストのコピーをリストlの先頭に挿入します。
+// リスト l と other は同一でも構いません。nilであってはなりません。
 func (l *List) PushFrontList(other *List)
