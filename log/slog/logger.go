@@ -99,48 +99,64 @@ func (l *Logger) Log(ctx context.Context, level Level, msg string, args ...any)
 func (l *Logger) LogAttrs(ctx context.Context, level Level, msg string, attrs ...Attr)
 
 // Debug logs at [LevelDebug].
+// It uses [context.Background] internally; to specify the context, use
+// [Logger.DebugContext].
 func (l *Logger) Debug(msg string, args ...any)
 
 // DebugContext logs at [LevelDebug] with the given context.
 func (l *Logger) DebugContext(ctx context.Context, msg string, args ...any)
 
 // Info logs at [LevelInfo].
+// It uses [context.Background] internally; to specify the context, use
+// [Logger.InfoContext].
 func (l *Logger) Info(msg string, args ...any)
 
 // InfoContext logs at [LevelInfo] with the given context.
 func (l *Logger) InfoContext(ctx context.Context, msg string, args ...any)
 
 // Warn logs at [LevelWarn].
+// It uses [context.Background] internally; to specify the context, use
+// [Logger.WarnContext].
 func (l *Logger) Warn(msg string, args ...any)
 
 // WarnContext logs at [LevelWarn] with the given context.
 func (l *Logger) WarnContext(ctx context.Context, msg string, args ...any)
 
 // Error logs at [LevelError].
+// It uses [context.Background] internally; to specify the context, use
+// [Logger.ErrorContext].
 func (l *Logger) Error(msg string, args ...any)
 
 // ErrorContext logs at [LevelError] with the given context.
 func (l *Logger) ErrorContext(ctx context.Context, msg string, args ...any)
 
 // Debug calls [Logger.Debug] on the default logger.
+// It uses [context.Background] internally; to specify the context, use
+// [DebugContext].
 func Debug(msg string, args ...any)
 
 // DebugContext calls [Logger.DebugContext] on the default logger.
 func DebugContext(ctx context.Context, msg string, args ...any)
 
 // Info calls [Logger.Info] on the default logger.
+// It uses [context.Background] internally; to specify the context, use
+// [InfoContext].
 func Info(msg string, args ...any)
 
 // InfoContext calls [Logger.InfoContext] on the default logger.
 func InfoContext(ctx context.Context, msg string, args ...any)
 
 // Warn calls [Logger.Warn] on the default logger.
+// It uses [context.Background] internally; to specify the context, use
+// [WarnContext].
 func Warn(msg string, args ...any)
 
 // WarnContext calls [Logger.WarnContext] on the default logger.
 func WarnContext(ctx context.Context, msg string, args ...any)
 
 // Error calls [Logger.Error] on the default logger.
+// It uses [context.Background] internally; to specify the context, use
+// [ErrorContext].
 func Error(msg string, args ...any)
 
 // ErrorContext calls [Logger.ErrorContext] on the default logger.
