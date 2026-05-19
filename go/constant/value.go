@@ -111,6 +111,11 @@ func Float64Val(x Value) (float64, bool)
 //	everything else    nil
 func Val(x Value) any
 
+// StringLen returns the length of x if x is a [String].
+// If x is [Unknown], the result is 0.
+// In all other cases, the function panics.
+func StringLen(x Value) int64
+
 // Make returns the [Value] for x.
 //
 //	type of x        result Kind

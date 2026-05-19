@@ -291,3 +291,24 @@ func (z *Int) Not(x *Int) *Int
 // Sqrt sets z to ⌊√x⌋, the largest integer such that z² ≤ x, and returns z.
 // It panics if x is negative.
 func (z *Int) Sqrt(x *Int) *Int
+
+// Rounding modes that determine how the integer quotient is adjusted in an integer division.
+// See Daan Leijen, “Division and Modulus for Computer Scientists”, for details.
+const (
+	Trunc = ToZero
+	Floor = ToNegativeInf
+	Round = ToNearestEven
+	Ceil  = ToPositiveInf
+)
+
+// Divide computes the integer quotient q and remainder r such that
+//
+//	q = f(x/y)
+//	r = x - y*q
+//
+// where f is described by the rounding mode,
+// which must be one of [Trunc], [Floor], [Round] or [Ceil].
+// Divide sets z to q if z != nil, updates r if r != nil,
+// and returns the pair (z, r) if y != 0.
+// If y == 0, a division-by-zero run-time panic occurs.
+func (z *Int) Divide(x, y, r *Int, mode RoundingMode) (*Int, *Int)
