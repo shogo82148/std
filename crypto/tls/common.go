@@ -47,6 +47,7 @@ const (
 	X25519MLKEM768     CurveID = 4588
 	SecP256r1MLKEM768  CurveID = 4587
 	SecP384r1MLKEM1024 CurveID = 4589
+	MLKEM1024          CurveID = 514
 )
 
 // ConnectionState records basic TLS details about the connection.
@@ -139,11 +140,6 @@ type ConnectionState struct {
 // the seed. If the connection was set to allow renegotiation via
 // Config.Renegotiation, or if the connections supports neither TLS 1.3 nor
 // Extended Master Secret, this function will return an error.
-//
-// Exporting key material without Extended Master Secret or TLS 1.3 was disabled
-// in Go 1.22 due to security issues (see the Security Considerations sections
-// of RFC 5705 and RFC 7627), but can be re-enabled with the GODEBUG setting
-// tlsunsafeekm=1.
 func (cs *ConnectionState) ExportKeyingMaterial(label string, context []byte, length int) ([]byte, error)
 
 // ClientAuthType declares the policy the server will follow for
@@ -208,6 +204,11 @@ const (
 
 	// EdDSA algorithms.
 	Ed25519 SignatureScheme = 0x0807
+
+	// ML-DSA algorithms.
+	MLDSA44 SignatureScheme = 0x0904
+	MLDSA65 SignatureScheme = 0x0905
+	MLDSA87 SignatureScheme = 0x0906
 
 	// Legacy signature and hash algorithms for TLS 1.2.
 	PKCS1WithSHA1 SignatureScheme = 0x0201
@@ -274,6 +275,9 @@ type ClientHelloInfo struct {
 	// config is embedded by the GetCertificate or GetConfigForClient caller,
 	// for use with SupportsCertificate.
 	config *Config
+
+	// isQUIC indicates whether the connection is a QUIC connection.
+	isQUIC bool
 
 	// ctx is the context of the handshake that is in progress.
 	ctx context.Context
@@ -344,10 +348,13 @@ const (
 // modified. A Config may be reused; the tls package will also not
 // modify it.
 type Config struct {
-	// Rand provides the source of entropy for nonces and RSA blinding.
+	// Rand provides the source of entropy for the connection.
 	// If Rand is nil, TLS uses the cryptographic random reader in package
-	// crypto/rand.
-	// The Reader must be safe for use by multiple goroutines.
+	// crypto/rand. The Reader must be safe for use by multiple goroutines.
+	//
+	// Deprecated: this should be left nil in production. Not all TLS
+	// configurations are guaranteed to use Rand. Test code can use
+	// [testing/cryptotest.SetGlobalRandom] instead.
 	Rand io.Reader
 
 	// Time returns the current time as the number of seconds since the epoch.
@@ -496,11 +503,7 @@ type Config struct {
 	// the list is ignored. Note that TLS 1.3 ciphersuites are not configurable.
 	//
 	// If CipherSuites is nil, a safe default list is used. The default cipher
-	// suites might change over time. In Go 1.22 RSA key exchange based cipher
-	// suites were removed from the default list, but can be re-added with the
-	// GODEBUG setting tlsrsakex=1. In Go 1.23 3DES cipher suites were removed
-	// from the default list, but can be re-added with the GODEBUG setting
-	// tls3des=1.
+	// suites might change over time.
 	CipherSuites []uint16
 
 	// PreferServerCipherSuites is a legacy field and has no effect.
@@ -565,9 +568,6 @@ type Config struct {
 	//
 	// By default, TLS 1.2 is currently used as the minimum. TLS 1.0 is the
 	// minimum supported by this package.
-	//
-	// The server-side default can be reverted to TLS 1.0 by including the value
-	// "tls10server=1" in the GODEBUG environment variable.
 	MinVersion uint16
 
 	// MaxVersion contains the maximum TLS version that is acceptable.
@@ -784,8 +784,8 @@ func (c *Config) BuildNameToCertificate()
 type Certificate struct {
 	Certificate [][]byte
 	// PrivateKey contains the private key corresponding to the public key in
-	// Leaf. This must implement [crypto.Signer] with an RSA, ECDSA or Ed25519
-	// PublicKey.
+	// Leaf. This must implement [crypto.Signer] with an RSA, ECDSA, Ed25519
+	// (TLS 1.2+), or ML-DSA (TLS 1.3) PublicKey.
 	//
 	// For a server up to TLS 1.2, it can also implement crypto.Decrypter with
 	// an RSA PublicKey.

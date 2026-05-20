@@ -36,8 +36,8 @@ import (
 // public key is a SubjectPublicKeyInfo structure (see RFC 5280, Section 4.1).
 //
 // It returns a *[rsa.PublicKey], *[dsa.PublicKey], *[ecdsa.PublicKey],
-// [ed25519.PublicKey] (not a pointer), or *[ecdh.PublicKey] (for X25519).
-// More types might be supported in the future.
+// [ed25519.PublicKey] (not a pointer), *[mldsa.PublicKey], or *[ecdh.PublicKey]
+// (for X25519). More types might be supported in the future.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
 func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
@@ -47,8 +47,8 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 // (see RFC 5280, Section 4.1).
 //
 // The following key types are currently supported: *[rsa.PublicKey],
-// *[ecdsa.PublicKey], [ed25519.PublicKey] (not a pointer), and *[ecdh.PublicKey].
-// Unsupported key types result in an error.
+// *[ecdsa.PublicKey], [ed25519.PublicKey] (not a pointer), *[mldsa.PublicKey],
+// and *[ecdh.PublicKey]. Unsupported key types result in an error.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
 func MarshalPKIXPublicKey(pub any) ([]byte, error)
@@ -74,6 +74,9 @@ const (
 	SHA384WithRSAPSS
 	SHA512WithRSAPSS
 	PureEd25519
+	MLDSA44
+	MLDSA65
+	MLDSA87
 )
 
 func (algo SignatureAlgorithm) String() string
@@ -86,6 +89,7 @@ const (
 	DSA
 	ECDSA
 	Ed25519
+	MLDSA
 )
 
 func (algo PublicKeyAlgorithm) String() string
@@ -406,9 +410,10 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // The returned slice is the certificate in DER encoding.
 //
-// The currently supported key types are *rsa.PublicKey, *ecdsa.PublicKey and
-// ed25519.PublicKey. pub must be a supported key type, and priv must be a
-// crypto.Signer or crypto.MessageSigner with a supported public key.
+// The currently supported key types are *rsa.PublicKey, *ecdsa.PublicKey,
+// ed25519.PublicKey, and *mldsa.PublicKey. pub must be a supported key type,
+// and priv must be a crypto.Signer or crypto.MessageSigner with a supported
+// public key.
 //
 // The AuthorityKeyId will be taken from the SubjectKeyId of parent, if any,
 // unless the resulting certificate is self-signed. Otherwise the value from
@@ -508,8 +513,9 @@ type CertificateRequest struct {
 // priv is the private key to sign the CSR with, and the corresponding public
 // key will be included in the CSR. It must implement crypto.Signer or
 // crypto.MessageSigner and its Public() method must return a *rsa.PublicKey or
-// a *ecdsa.PublicKey or a ed25519.PublicKey. (A *rsa.PrivateKey,
-// *ecdsa.PrivateKey or ed25519.PrivateKey satisfies this.)
+// a *ecdsa.PublicKey or a ed25519.PublicKey or a *mldsa.PublicKey.
+// (A *rsa.PrivateKey, *ecdsa.PrivateKey or ed25519.PrivateKey or
+// *mldsa.PrivateKey satisfies this.)
 //
 // The returned slice is the certificate request in DER encoding.
 func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv any) (csr []byte, err error)

@@ -106,16 +106,8 @@ func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Con
 // files. The files must contain PEM encoded data. The certificate file may
 // contain intermediate certificates following the leaf certificate to form a
 // certificate chain. On successful return, Certificate.Leaf will be populated.
-//
-// Before Go 1.23 Certificate.Leaf was left nil, and the parsed certificate was
-// discarded. This behavior can be re-enabled by setting "x509keypairleaf=0"
-// in the GODEBUG environment variable.
 func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
 
 // X509KeyPair parses a public/private key pair from a pair of
 // PEM encoded data. On successful return, Certificate.Leaf will be populated.
-//
-// Before Go 1.23 Certificate.Leaf was left nil, and the parsed certificate was
-// discarded. This behavior can be re-enabled by setting "x509keypairleaf=0"
-// in the GODEBUG environment variable.
 func X509KeyPair(certPEMBlock, keyPEMBlock []byte) (Certificate, error)

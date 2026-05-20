@@ -763,7 +763,7 @@ func (p *Package) End() token.Pos
 // The syntax tree must have been parsed with the [go/parser.ParseComments] flag.
 // Example:
 //
-//	f, err := parser.ParseFile(fset, filename, src, parser.ParseComments|parser.PackageClauseOnly)
+//	f, err := parser.ParseFile(fset, filename, src, parser.ParseComments|parser.PackageClauseOnly|parser.SkipObjectResolution)
 //	if err != nil { ... }
 //	gen := ast.IsGenerated(f)
 func IsGenerated(file *File) bool

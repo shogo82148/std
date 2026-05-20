@@ -140,14 +140,10 @@ type QUICEvent struct {
 
 // QUICClient returns a new TLS client side connection using QUICTransport as the
 // underlying transport. The config cannot be nil.
-//
-// The config's MinVersion must be at least TLS 1.3.
 func QUICClient(config *QUICConfig) *QUICConn
 
 // QUICServer returns a new TLS server side connection using QUICTransport as the
 // underlying transport. The config cannot be nil.
-//
-// The config's MinVersion must be at least TLS 1.3.
 func QUICServer(config *QUICConfig) *QUICConn
 
 // Start starts the client or server handshake protocol.
