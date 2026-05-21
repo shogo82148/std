@@ -12,7 +12,6 @@ package types_test
 import (
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/go/ast"
-	"github.com/shogo82148/std/go/parser"
 	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/go/types"
 	"github.com/shogo82148/std/log"
@@ -110,10 +109,7 @@ type S struct { I; m int }
 type I interface { m() byte }
 `
 	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, "celsius.go", input, parser.SkipObjectResolution)
-	if err != nil {
-		log.Fatal(err)
-	}
+	f := mustParse(fset, input)
 
 	// Type-check a package consisting of this file.
 	// Type information for the imported packages

@@ -367,6 +367,8 @@ type Instance struct {
 	Type     Type
 }
 
+func (inst Instance) String() string
+
 // An Initializer describes a package-level variable, or a list of variables in case
 // of a multi-valued initialization expression, and the corresponding initialization
 // expression.

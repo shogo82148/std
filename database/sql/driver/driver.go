@@ -40,6 +40,7 @@ package driver
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/database/sql/internal"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/reflect"
 )
@@ -321,6 +322,22 @@ type Rows interface {
 	Close() error
 
 	Next(dest []Value) error
+}
+
+// ScanContext carries state related to the current query
+// through a [RowsColumnScanner.ScanColumn] function to [database/sql.ConvertAssign].
+type ScanContext internal.ScanContext
+
+// RowsColumnScanner extends the [Rows] interface by providing a way for the driver
+// to scan directly into the user-provided destination.
+//
+// RowsColumnScanner supersedes the [Rows.Next] method.
+type RowsColumnScanner interface {
+	Rows
+
+	NextRow() error
+
+	ScanColumn(scanCtx ScanContext, index int, dest any) error
 }
 
 // RowsNextResultSet extends the [Rows] interface by providing a way to signal

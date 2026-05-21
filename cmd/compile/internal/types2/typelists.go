@@ -14,6 +14,8 @@ func (l *TypeParamList) Len() int
 // At returns the i'th type parameter in the list.
 func (l *TypeParamList) At(i int) *TypeParam
 
+func (l *TypeParamList) String() string
+
 // TypeList holds a list of types.
 type TypeList struct{ types []Type }
 
@@ -23,3 +25,5 @@ func (l *TypeList) Len() int
 
 // At returns the i'th type in the list.
 func (l *TypeList) At(i int) Type
+
+func (l *TypeList) String() string

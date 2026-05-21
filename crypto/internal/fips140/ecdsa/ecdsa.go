@@ -30,7 +30,7 @@ func (pub *PublicKey) Bytes() []byte
 type Curve[P Point[P]] struct {
 	curve      curveID
 	newPoint   func() P
-	ordInverse func([]byte) ([]byte, error)
+	ordInverse func(*[4]uint64)
 	N          *bigmod.Modulus
 	nMinus2    []byte
 }

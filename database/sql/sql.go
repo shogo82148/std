@@ -919,9 +919,15 @@ type Rows struct {
 	// expected not to be called concurrently.
 	hitEOF bool
 
+	// nextCalled is set by the first call to Next.
+	nextCalled bool
+
 	// lastcols is only used in Scan, Next, and NextResultSet which are expected
 	// not to be called concurrently.
 	lastcols []driver.Value
+
+	// numCols is the number of columns, and is initialized by the first Next call.
+	numCols int
 
 	// raw is a buffer for RawBytes that persists between Scan calls.
 	// This is used when the driver returns a mismatched type that requires
