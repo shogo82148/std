@@ -17,6 +17,15 @@ type ReassignOracle struct {
 	// maps candidate name to its defining assignment (or
 	// for params, defining func).
 	singleDef map[*Name]Node
+
+	// funcAssigns tracks all known simple assignments (OAS) to
+	// func-typed PAUTO variables. Only func-typed variables are
+	// tracked because this data is used exclusively for callee
+	// resolution in escape analysis. Deletion means the candidate was
+	// invalidated (e.g., addr-taken, non-simple assignment form, or too
+	// many assignments). Assignments inside nested closures are accepted
+	// because the only alternative value is nil, which panics on call.
+	funcAssigns map[*Name][]*AssignStmt
 }
 
 // Init initializes the oracle based on the IR in function fn, laying
@@ -32,3 +41,12 @@ func (ro *ReassignOracle) StaticValue(n Node) Node
 // Reassigned method has the same semantics as the ir package function
 // of the same name; see comments on [Reassigned] for more info.
 func (ro *ReassignOracle) Reassigned(n *Name) bool
+
+// FuncAssignments returns all known simple assignments to a func-typed
+// variable. For variables defined with := and a non-zero value, the
+// defining assignment is included. Returns nil if the variable is not
+// func-typed, was invalidated (addr-taken, non-simple assignment,
+// too many assignments), or has no tracked assignments. Assignments
+// inside nested closures are accepted because the only alternative
+// value is nil, which panics on call.
+func (ro *ReassignOracle) FuncAssignments(name *Name) []*AssignStmt

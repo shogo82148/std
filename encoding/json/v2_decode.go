@@ -25,10 +25,22 @@ import (
 // この場合、Unmarshalはポインタをnilに設定します。それ以外の場合、ポインタが指す値にアンマーシャルします。
 // ポインタがnilの場合は新しい値を割り当てて指すようにします。
 //
-// [Unmarshaler] を実装する値にJSONをアンマーシャルする場合、Unmarshalはその値の [Unmarshaler.UnmarshalJSON] メソッドを呼び出します。
-// 入力がJSON nullの場合も含みます。
-// それ以外の場合、値が [encoding.TextUnmarshaler] を実装していて入力がJSONの引用符付き文字列なら、Unmarshalは
-// [encoding.TextUnmarshaler.UnmarshalText] を文字列のアンエスケープ版で呼び出します。
+// JSON入力は次の規則に従ってデコードされます:
+//
+//   - 値の型が [jsonv2.UnmarshalerFrom] を実装している場合、
+//     JSON値のデコードには UnmarshalJSONFrom メソッドが呼び出されます。
+//     このメソッドが [errors.ErrUnsupported] を返した場合は、
+//     以降の規則に従って入力がデコードされます。
+//
+//   - 値の型が [Unmarshaler] を実装している場合、
+//     JSON値のデコードには UnmarshalJSON メソッドが呼び出されます。
+//     これは入力がJSONのnullである場合も含みます。
+//
+//   - 値が [encoding.TextUnmarshaler] を実装しており、
+//     入力がJSON文字列である場合、UnmarshalText メソッドが
+//     文字列のクォートを外した形式で呼び出されます。
+//
+// それ以外の場合、Unmarshalは型に応じて次のデフォルトデコードを使用します:
 //
 // 構造体にJSONをアンマーシャルする場合、Unmarshalは受信したオブジェクトのキーを [Marshal] で使われるキー（フィールド名またはタグ）に一致させます。
 // 完全一致を優先しますが、大文字小文字を無視した一致も受け入れます。

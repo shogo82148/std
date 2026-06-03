@@ -309,7 +309,11 @@ type Instance struct {
 	Type     Type
 }
 
-// イニシャライザは、パッケージレベルの変数、または複数の値を持つ初期化式の場合、変数のリストと対応する初期化式を表します。
+func (inst Instance) String() string
+
+// Initializerは、パッケージレベル変数、または複数値の初期化式の場合は
+// その変数リストと、対応する初期化式を
+// 表します。
 type Initializer struct {
 	Lhs []*Var
 	Rhs ast.Expr

@@ -26,9 +26,24 @@ import (
 // MarshalはvのJSONエンコーディングを返します。
 //
 // Marshalは値vを再帰的に走査します。
-// 走査中の値が [Marshaler] を実装していてnilポインタでない場合、Marshalは [Marshaler.MarshalJSON] を呼び出してJSONを生成します。
-// [Marshaler.MarshalJSON] メソッドが存在しないが値が [encoding.TextMarshaler] を実装している場合、Marshalは [encoding.TextMarshaler.MarshalText] を呼び出し、その結果をJSON文字列としてエンコードします。
-// nilポインタの例外は厳密には必要ありませんが、[Unmarshaler.UnmarshalJSON] の動作にある同様の必要な例外を模倣しています。
+//
+// 入力値は次の規則に従ってJSONとしてエンコードされます:
+//
+//   - 値の型が [jsonv2.MarshalerTo] を実装している場合、
+//     値のエンコードには MarshalJSONTo メソッドが呼び出されます。
+//     このメソッドが [errors.ErrUnsupported] を返した場合は、
+//     以降の規則に従って入力がエンコードされます。
+//
+//   - 値の型が [Marshaler] を実装している場合、
+//     値のエンコードには MarshalJSON メソッドが呼び出されます。
+//
+//   - 値の型が [encoding.TextAppender] を実装している場合、
+//     値のエンコードには AppendText メソッドが呼び出され、
+//     その結果が続けてJSON文字列としてエンコードされます。
+//
+//   - 値の型が [encoding.TextMarshaler] を実装している場合、
+//     値のエンコードには MarshalText メソッドが呼び出され、
+//     その結果が続けてJSON文字列としてエンコードされます。
 //
 // それ以外の場合、Marshalは型ごとのデフォルトエンコーディングを使用します：
 //
