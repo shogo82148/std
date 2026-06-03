@@ -45,8 +45,19 @@ func (dec *Decoder) DisallowUnknownFields()
 // JSONをGoの値に変換する詳細については、[Unmarshal] のドキュメンテーションを参照してください。
 func (dec *Decoder) Decode(v any) error
 
-// Bufferedは、Decoderのバッファに残っているデータのリーダーを返します。
-// リーダーは次の [Decoder.Decode] 呼び出しまで有効です。
+// Bufferedは、未読バッファに残っているデータのリーダーを返します。
+// このデータには0バイト以上が含まれる可能性があります。
+// これは入力 [io.Reader] からすでに消費されたデータですが、
+// まだ [Decoder.Decode] または [Decoder.Token] の呼び出しでは読み取られていません。
+// JSON文法に従ってまだ検証されていないため、
+// 有効なJSONを構成しないバイトを含む可能性があります。
+// バッファリングされるデータ量の正確な値はDecoderの実装詳細であり、
+// 時間とともに変わる可能性があります。
+//
+// 最後にデコードされたJSON値の後に続くバイト列全体を得るには、
+// このバッファと入力Readerの残りを連結する責任は呼び出し側にあります。
+//
+// このリーダーは、次の [Decoder.Decode] または [Decoder.Token] の呼び出しまで有効です。
 func (dec *Decoder) Buffered() io.Reader
 
 // Encoderは、JSON値を出力ストリームに書き込みます。

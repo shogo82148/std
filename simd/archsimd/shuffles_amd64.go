@@ -6,7 +6,7 @@
 
 package archsimd
 
-// SelectFromPair returns the selection of four elements from the two
+// ConcatPermuteScalars returns the selection of four elements from the two
 // vectors x and y, where selector values in the range 0-3 specify
 // elements from x and values in the range 4-7 specify the 0-3 elements
 // of y.  When the selectors are constants and the selection can be
@@ -15,7 +15,7 @@ package archsimd
 // output, and b, c, and d are the indices of the 2nd, 3rd, and 4th
 // elements in the output.  For example,
 //
-//	{1,2,4,8}.SelectFromPair(2,3,5,7,{9,25,49,81})
+//	{1,2,4,8}.ConcatPermuteScalars(2,3,5,7,{9,25,49,81})
 //
 // returns {4,8,25,81}.
 //
@@ -23,9 +23,9 @@ package archsimd
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX
-func (x Int32x4) SelectFromPair(a, b, c, d uint8, y Int32x4) Int32x4
+func (x Int32x4) ConcatPermuteScalars(a, b, c, d uint8, y Int32x4) Int32x4
 
-// SelectFromPair returns the selection of four elements from the two
+// ConcatPermuteScalars returns the selection of four elements from the two
 // vectors x and y, where selector values in the range 0-3 specify
 // elements from x and values in the range 4-7 specify the 0-3 elements
 // of y.  When the selectors are constants and can be the selection
@@ -34,7 +34,7 @@ func (x Int32x4) SelectFromPair(a, b, c, d uint8, y Int32x4) Int32x4
 // output, and b, c, and d are the indices of the 2nd, 3rd, and 4th
 // elements in the output.  For example,
 //
-//	{1,2,4,8}.SelectFromPair(2,3,5,7,{9,25,49,81})
+//	{1,2,4,8}.ConcatPermuteScalars(2,3,5,7,{9,25,49,81})
 //
 // returns {4,8,25,81}.
 //
@@ -42,9 +42,9 @@ func (x Int32x4) SelectFromPair(a, b, c, d uint8, y Int32x4) Int32x4
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX
-func (x Uint32x4) SelectFromPair(a, b, c, d uint8, y Uint32x4) Uint32x4
+func (x Uint32x4) ConcatPermuteScalars(a, b, c, d uint8, y Uint32x4) Uint32x4
 
-// SelectFromPair returns the selection of four elements from the two
+// ConcatPermuteScalars returns the selection of four elements from the two
 // vectors x and y, where selector values in the range 0-3 specify
 // elements from x and values in the range 4-7 specify the 0-3 elements
 // of y.  When the selectors are constants and can be the selection
@@ -53,7 +53,7 @@ func (x Uint32x4) SelectFromPair(a, b, c, d uint8, y Uint32x4) Uint32x4
 // output, and b, c, and d are the indices of the 2nd, 3rd, and 4th
 // elements in the output.  For example,
 //
-//	{1,2,4,8}.SelectFromPair(2,3,5,7,{9,25,49,81})
+//	{1,2,4,8}.ConcatPermuteScalars(2,3,5,7,{9,25,49,81})
 //
 // returns {4,8,25,81}.
 //
@@ -61,9 +61,9 @@ func (x Uint32x4) SelectFromPair(a, b, c, d uint8, y Uint32x4) Uint32x4
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX
-func (x Float32x4) SelectFromPair(a, b, c, d uint8, y Float32x4) Float32x4
+func (x Float32x4) ConcatPermuteScalars(a, b, c, d uint8, y Float32x4) Float32x4
 
-// SelectFromPairGrouped returns, for each of the two 128-bit halves of
+// ConcatPermuteScalarsGrouped returns, for each of the two 128-bit halves of
 // the vectors x and y, the selection of four elements from  x and y,
 // where selector values in the range 0-3 specify elements from x and
 // values in the range 4-7 specify the 0-3 elements of y.
@@ -73,7 +73,7 @@ func (x Float32x4) SelectFromPair(a, b, c, d uint8, y Float32x4) Float32x4
 // output, and b, c, and d are the indices of the 2nd, 3rd, and 4th
 // elements in the output.  For example,
 //
-//	{1,2,4,8,16,32,64,128}.SelectFromPair(2,3,5,7,{9,25,49,81,121,169,225,289})
+//	{1,2,4,8,16,32,64,128}.ConcatPermuteScalars(2,3,5,7,{9,25,49,81,121,169,225,289})
 //
 // returns {4,8,25,81,64,128,169,289}.
 //
@@ -81,9 +81,9 @@ func (x Float32x4) SelectFromPair(a, b, c, d uint8, y Float32x4) Float32x4
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX
-func (x Int32x8) SelectFromPairGrouped(a, b, c, d uint8, y Int32x8) Int32x8
+func (x Int32x8) ConcatPermuteScalarsGrouped(a, b, c, d uint8, y Int32x8) Int32x8
 
-// SelectFromPairGrouped returns, for each of the two 128-bit halves of
+// ConcatPermuteScalarsGrouped returns, for each of the two 128-bit halves of
 // the vectors x and y, the selection of four elements from  x and y,
 // where selector values in the range 0-3 specify elements from x and
 // values in the range 4-7 specify the 0-3 elements of y.
@@ -93,7 +93,7 @@ func (x Int32x8) SelectFromPairGrouped(a, b, c, d uint8, y Int32x8) Int32x8
 // output, and b, c, and d are the indices of the 2nd, 3rd, and 4th
 // elements in the output.  For example,
 //
-//	{1,2,4,8,16,32,64,128}.SelectFromPair(2,3,5,7,{9,25,49,81,121,169,225,289})
+//	{1,2,4,8,16,32,64,128}.ConcatPermuteScalars(2,3,5,7,{9,25,49,81,121,169,225,289})
 //
 // returns {4,8,25,81,64,128,169,289}.
 //
@@ -101,9 +101,9 @@ func (x Int32x8) SelectFromPairGrouped(a, b, c, d uint8, y Int32x8) Int32x8
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX
-func (x Uint32x8) SelectFromPairGrouped(a, b, c, d uint8, y Uint32x8) Uint32x8
+func (x Uint32x8) ConcatPermuteScalarsGrouped(a, b, c, d uint8, y Uint32x8) Uint32x8
 
-// SelectFromPairGrouped returns, for each of the two 128-bit halves of
+// ConcatPermuteScalarsGrouped returns, for each of the two 128-bit halves of
 // the vectors x and y, the selection of four elements from  x and y,
 // where selector values in the range 0-3 specify elements from x and
 // values in the range 4-7 specify the 0-3 elements of y.
@@ -113,7 +113,7 @@ func (x Uint32x8) SelectFromPairGrouped(a, b, c, d uint8, y Uint32x8) Uint32x8
 // output, and b, c, and d are the indices of the 2nd, 3rd, and 4th
 // elements in the output.  For example,
 //
-//	{1,2,4,8,16,32,64,128}.SelectFromPair(2,3,5,7,{9,25,49,81,121,169,225,289})
+//	{1,2,4,8,16,32,64,128}.ConcatPermuteScalars(2,3,5,7,{9,25,49,81,121,169,225,289})
 //
 // returns {4,8,25,81,64,128,169,289}.
 //
@@ -121,9 +121,9 @@ func (x Uint32x8) SelectFromPairGrouped(a, b, c, d uint8, y Uint32x8) Uint32x8
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX
-func (x Float32x8) SelectFromPairGrouped(a, b, c, d uint8, y Float32x8) Float32x8
+func (x Float32x8) ConcatPermuteScalarsGrouped(a, b, c, d uint8, y Float32x8) Float32x8
 
-// SelectFromPairGrouped returns, for each of the four 128-bit subvectors
+// ConcatPermuteScalarsGrouped returns, for each of the four 128-bit subvectors
 // of the vectors x and y, the selection of four elements from  x and y,
 // where selector values in the range 0-3 specify elements from x and
 // values in the range 4-7 specify the 0-3 elements of y.
@@ -135,9 +135,9 @@ func (x Float32x8) SelectFromPairGrouped(a, b, c, d uint8, y Float32x8) Float32x
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX512
-func (x Int32x16) SelectFromPairGrouped(a, b, c, d uint8, y Int32x16) Int32x16
+func (x Int32x16) ConcatPermuteScalarsGrouped(a, b, c, d uint8, y Int32x16) Int32x16
 
-// SelectFromPairGrouped returns, for each of the four 128-bit subvectors
+// ConcatPermuteScalarsGrouped returns, for each of the four 128-bit subvectors
 // of the vectors x and y, the selection of four elements from  x and y,
 // where selector values in the range 0-3 specify elements from x and
 // values in the range 4-7 specify the 0-3 elements of y.
@@ -149,9 +149,9 @@ func (x Int32x16) SelectFromPairGrouped(a, b, c, d uint8, y Int32x16) Int32x16
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX512
-func (x Uint32x16) SelectFromPairGrouped(a, b, c, d uint8, y Uint32x16) Uint32x16
+func (x Uint32x16) ConcatPermuteScalarsGrouped(a, b, c, d uint8, y Uint32x16) Uint32x16
 
-// SelectFromPairGrouped returns, for each of the four 128-bit subvectors
+// ConcatPermuteScalarsGrouped returns, for each of the four 128-bit subvectors
 // of the vectors x and y, the selection of four elements from  x and y,
 // where selector values in the range 0-3 specify elements from x and
 // values in the range 4-7 specify the 0-3 elements of y.
@@ -163,9 +163,9 @@ func (x Uint32x16) SelectFromPairGrouped(a, b, c, d uint8, y Uint32x16) Uint32x1
 // call.
 //
 // Asm: VSHUFPS, CPU Feature: AVX512
-func (x Float32x16) SelectFromPairGrouped(a, b, c, d uint8, y Float32x16) Float32x16
+func (x Float32x16) ConcatPermuteScalarsGrouped(a, b, c, d uint8, y Float32x16) Float32x16
 
-// SelectFromPair returns the selection of two elements from the two
+// ConcatPermuteScalars returns the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
 // of y.  When the selectors are constants the selection can be
@@ -175,9 +175,9 @@ func (x Float32x16) SelectFromPairGrouped(a, b, c, d uint8, y Float32x16) Float3
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX
-func (x Uint64x2) SelectFromPair(a, b uint8, y Uint64x2) Uint64x2
+func (x Uint64x2) ConcatPermuteScalars(a, b uint8, y Uint64x2) Uint64x2
 
-// SelectFromPairGrouped returns, for each of the two 128-bit halves of
+// ConcatPermuteScalarsGrouped returns, for each of the two 128-bit halves of
 // the vectors x and y, the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
@@ -188,9 +188,9 @@ func (x Uint64x2) SelectFromPair(a, b uint8, y Uint64x2) Uint64x2
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX
-func (x Uint64x4) SelectFromPairGrouped(a, b uint8, y Uint64x4) Uint64x4
+func (x Uint64x4) ConcatPermuteScalarsGrouped(a, b uint8, y Uint64x4) Uint64x4
 
-// SelectFromPairGrouped returns, for each of the four 128-bit subvectors
+// ConcatPermuteScalarsGrouped returns, for each of the four 128-bit subvectors
 // of the vectors x and y, the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
@@ -201,9 +201,9 @@ func (x Uint64x4) SelectFromPairGrouped(a, b uint8, y Uint64x4) Uint64x4
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX512
-func (x Uint64x8) SelectFromPairGrouped(a, b uint8, y Uint64x8) Uint64x8
+func (x Uint64x8) ConcatPermuteScalarsGrouped(a, b uint8, y Uint64x8) Uint64x8
 
-// SelectFromPair returns the selection of two elements from the two
+// ConcatPermuteScalars returns the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
 // of y.  When the selectors are constants the selection can be
@@ -213,9 +213,9 @@ func (x Uint64x8) SelectFromPairGrouped(a, b uint8, y Uint64x8) Uint64x8
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX
-func (x Float64x2) SelectFromPair(a, b uint8, y Float64x2) Float64x2
+func (x Float64x2) ConcatPermuteScalars(a, b uint8, y Float64x2) Float64x2
 
-// SelectFromPairGrouped returns, for each of the two 128-bit halves of
+// ConcatPermuteScalarsGrouped returns, for each of the two 128-bit halves of
 // the vectors x and y, the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
@@ -226,9 +226,9 @@ func (x Float64x2) SelectFromPair(a, b uint8, y Float64x2) Float64x2
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX
-func (x Float64x4) SelectFromPairGrouped(a, b uint8, y Float64x4) Float64x4
+func (x Float64x4) ConcatPermuteScalarsGrouped(a, b uint8, y Float64x4) Float64x4
 
-// SelectFromPairGrouped returns, for each of the four 128-bit subvectors
+// ConcatPermuteScalarsGrouped returns, for each of the four 128-bit subvectors
 // of the vectors x and y, the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
@@ -239,9 +239,9 @@ func (x Float64x4) SelectFromPairGrouped(a, b uint8, y Float64x4) Float64x4
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX512
-func (x Float64x8) SelectFromPairGrouped(a, b uint8, y Float64x8) Float64x8
+func (x Float64x8) ConcatPermuteScalarsGrouped(a, b uint8, y Float64x8) Float64x8
 
-// SelectFromPair returns the selection of two elements from the two
+// ConcatPermuteScalars returns the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
 // of y.  When the selectors are constants the selection can be
@@ -251,9 +251,9 @@ func (x Float64x8) SelectFromPairGrouped(a, b uint8, y Float64x8) Float64x8
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX
-func (x Int64x2) SelectFromPair(a, b uint8, y Int64x2) Int64x2
+func (x Int64x2) ConcatPermuteScalars(a, b uint8, y Int64x2) Int64x2
 
-// SelectFromPairGrouped returns, for each of the two 128-bit halves of
+// ConcatPermuteScalarsGrouped returns, for each of the two 128-bit halves of
 // the vectors x and y, the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
@@ -264,9 +264,9 @@ func (x Int64x2) SelectFromPair(a, b uint8, y Int64x2) Int64x2
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX
-func (x Int64x4) SelectFromPairGrouped(a, b uint8, y Int64x4) Int64x4
+func (x Int64x4) ConcatPermuteScalarsGrouped(a, b uint8, y Int64x4) Int64x4
 
-// SelectFromPairGrouped returns, for each of the four 128-bit subvectors
+// ConcatPermuteScalarsGrouped returns, for each of the four 128-bit subvectors
 // of the vectors x and y, the selection of two elements from the two
 // vectors x and y, where selector values in the range 0-1 specify
 // elements from x and values in the range 2-3 specify the 0-1 elements
@@ -277,7 +277,7 @@ func (x Int64x4) SelectFromPairGrouped(a, b uint8, y Int64x4) Int64x4
 // call.
 //
 // Asm: VSHUFPD, CPU Feature: AVX512
-func (x Int64x8) SelectFromPairGrouped(a, b uint8, y Int64x8) Int64x8
+func (x Int64x8) ConcatPermuteScalarsGrouped(a, b uint8, y Int64x8) Int64x8
 
 // PermuteScalars performs a permutation of vector x's elements using the supplied indices:
 //
@@ -508,12 +508,8 @@ func (x Uint16x16) PermuteScalarsLoGrouped(a, b, c, d uint8) Uint16x16
 // Asm: VPSHUFLW, CPU Feature: AVX512
 func (x Uint16x32) PermuteScalarsLoGrouped(a, b, c, d uint8) Uint16x32
 
-// CarrylessMultiply computes one of four possible carryless
-// multiplications of selected high and low halves of x and y,
-// depending on the values of a and b, returning the 128-bit
-// product in the concatenated two elements of the result.
-// a selects the low (0) or high (1) element of x and
-// b selects the low (0) or high (1) element of y.
+// CarrylessMultiplyEven computes the carryless
+// multiplications of selected even halves of the elements of x and y.
 //
 // A carryless multiplication uses bitwise XOR instead of
 // add-with-carry, for example (in base two):
@@ -524,19 +520,12 @@ func (x Uint16x32) PermuteScalarsLoGrouped(a, b, c, d uint8) Uint16x32
 // from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
 // x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
 // polynomial terms, but coefficients "add" with XOR.)
-//
-// constant values of a and b will result in better performance,
-// otherwise the intrinsic may translate into a jump table.
 //
 // Asm: VPCLMULQDQ, CPU Feature: AVX
-func (x Uint64x2) CarrylessMultiply(a, b uint8, y Uint64x2) Uint64x2
+func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) Uint64x2
 
-// CarrylessMultiplyGrouped computes one of four possible carryless
-// multiplications of selected high and low halves of each of the two
-// 128-bit lanes of x and y, depending on the values of a and b,
-// and returns the four 128-bit products in the result's lanes.
-// a selects the low (0) or high (1) elements of x's lanes and
-// b selects the low (0) or high (1) elements of y's lanes.
+// CarrylessMultiplyOdd computes the carryless
+// multiplications of selected odd halves of the elements of x and y.
 //
 // A carryless multiplication uses bitwise XOR instead of
 // add-with-carry, for example (in base two):
@@ -548,18 +537,11 @@ func (x Uint64x2) CarrylessMultiply(a, b uint8, y Uint64x2) Uint64x2
 // x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
 // polynomial terms, but coefficients "add" with XOR.)
 //
-// constant values of a and b will result in better performance,
-// otherwise the intrinsic may translate into a jump table.
-//
-// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
-func (x Uint64x4) CarrylessMultiplyGrouped(a, b uint8, y Uint64x4) Uint64x4
+// Asm: VPCLMULQDQ, CPU Feature: AVX
+func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) Uint64x2
 
-// CarrylessMultiplyGrouped computes one of four possible carryless
-// multiplications of selected high and low halves of each of the four
-// 128-bit lanes of x and y, depending on the values of a and b,
-// and returns the four 128-bit products in the result's lanes.
-// a selects the low (0) or high (1) elements of x's lanes and
-// b selects the low (0) or high (1) elements of y's lanes.
+// CarrylessMultiplyOddEven computes the carryless
+// multiplications of selected odd half of x's elements and even half of y's elements.
 //
 // A carryless multiplication uses bitwise XOR instead of
 // add-with-carry, for example (in base two):
@@ -571,8 +553,149 @@ func (x Uint64x4) CarrylessMultiplyGrouped(a, b uint8, y Uint64x4) Uint64x4
 // x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
 // polynomial terms, but coefficients "add" with XOR.)
 //
-// constant values of a and b will result in better performance,
-// otherwise the intrinsic may translate into a jump table.
+// Asm: VPCLMULQDQ, CPU Feature: AVX
+func (x Uint64x2) CarrylessMultiplyOddEven(y Uint64x2) Uint64x2
+
+// CarrylessMultiplyEvenOdd computes the carryless
+// multiplications of selected even half of x's elements and odd half of y's elements.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
+//
+// Asm: VPCLMULQDQ, CPU Feature: AVX
+func (x Uint64x2) CarrylessMultiplyEvenOdd(y Uint64x2) Uint64x2
+
+// CarrylessMultiplyEven computes the carryless
+// multiplications of selected even halves of the elements of x and y.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
+//
+// Asm: VPCLMULQDQ, CPU Feature: AVX2
+func (x Uint64x4) CarrylessMultiplyEven(y Uint64x4) Uint64x4
+
+// CarrylessMultiplyOdd computes the carryless
+// multiplications of selected odd halves of the elements of x and y.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
+//
+// Asm: VPCLMULQDQ, CPU Feature: AVX2
+func (x Uint64x4) CarrylessMultiplyOdd(y Uint64x4) Uint64x4
+
+// CarrylessMultiplyOddEven computes the carryless
+// multiplications of selected odd half of x's elements and even half of y's elements.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
+//
+// Asm: VPCLMULQDQ, CPU Feature: AVX2
+func (x Uint64x4) CarrylessMultiplyOddEven(y Uint64x4) Uint64x4
+
+// CarrylessMultiplyEvenOdd computes the carryless
+// multiplications of selected even half of x's elements and odd half of y's elements.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
+//
+// Asm: VPCLMULQDQ, CPU Feature: AVX2
+func (x Uint64x4) CarrylessMultiplyEvenOdd(y Uint64x4) Uint64x4
+
+// CarrylessMultiplyEven computes the carryless
+// multiplications of selected even halves of the elements of x and y.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
 //
 // Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
-func (x Uint64x8) CarrylessMultiplyGrouped(a, b uint8, y Uint64x8) Uint64x8
+func (x Uint64x8) CarrylessMultiplyEven(y Uint64x8) Uint64x8
+
+// CarrylessMultiplyOdd computes the carryless
+// multiplications of selected odd halves of the elements of x and y.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
+//
+// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
+func (x Uint64x8) CarrylessMultiplyOdd(y Uint64x8) Uint64x8
+
+// CarrylessMultiplyOddEven computes the carryless
+// multiplications of selected odd half of x's elements and even half of y's elements.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
+//
+// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
+func (x Uint64x8) CarrylessMultiplyOddEven(y Uint64x8) Uint64x8
+
+// CarrylessMultiplyEvenOdd computes the carryless
+// multiplications of selected even half of x's elements and odd half of y's elements.
+//
+// A carryless multiplication uses bitwise XOR instead of
+// add-with-carry, for example (in base two):
+//
+//	11 * 11 = 11 * (10 ^ 1) = (11 * 10) ^ (11 * 1) = 110 ^ 11 = 101
+//
+// This also models multiplication of polynomials with coefficients
+// from GF(2) -- 11 * 11 models (x+1)*(x+1) = x**2 + (1^1)x + 1 =
+// x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
+// polynomial terms, but coefficients "add" with XOR.)
+//
+// Asm: VPCLMULQDQ, CPU Feature: AVX512VPCLMULQDQ
+func (x Uint64x8) CarrylessMultiplyEvenOdd(y Uint64x8) Uint64x8

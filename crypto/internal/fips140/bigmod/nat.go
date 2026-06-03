@@ -24,6 +24,10 @@ func NewNat() *Nat
 // array.
 func (x *Nat) Bits() []uint
 
+// SetBits assigns x = y, where y is a slice of little-endian uint. x is resized
+// to the length of y.
+func (x *Nat) SetBits(y []uint) *Nat
+
 // Bytes returns x as a zero-extended big-endian byte slice. The size of the
 // slice will match the size of m.
 //
@@ -209,6 +213,13 @@ func (x *Nat) InverseVarTime(a *Nat, m *Modulus) (*Nat, bool)
 //
 // The output will be resized to the size of the larger of a and b.
 func (x *Nat) GCDVarTime(a, b *Nat) (*Nat, error)
+
+// ShiftRightByOne sets x = x >> 1.
+//
+// The announced length of x is unchanged.
+//
+//go:norace
+func (x *Nat) ShiftRightByOne() *Nat
 
 // DivShortVarTime calculates x = x / y and returns the remainder.
 //

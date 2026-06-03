@@ -27,17 +27,22 @@ import (
 
 // ParsePKIXPublicKeyはPKIX、ASN.1 DER形式の公開鍵を解析します。エンコードされた公開鍵はSubjectPublicKeyInfo構造体です（RFC 5280、セクション4.1を参照）。
 //
-// *[rsa.PublicKey] 、 *[dsa.PublicKey] 、 *[ecdsa.PublicKey] 、 [ed25519.PublicKey] （ポインタではない）、または *[ecdh.PublicKey] （X25519用）を返します。
-// 将来的にはさらに多くの種類がサポートされるかもしれません。
-// この種類の鍵は、一般的に「PUBLIC KEY」というタイプのPEMブロックでエンコードされます。
+// 戻り値は、*[rsa.PublicKey]、*[dsa.PublicKey]、*[ecdsa.PublicKey]、
+// [ed25519.PublicKey]（ポインタではありません）、*[mldsa.PublicKey]、
+// または*[ecdh.PublicKey]（X25519用）のいずれかです。
+// 将来的に、さらに多くの型がサポートされる可能性があります。
+//
+// この種の鍵は、一般的に"PUBLIC KEY"タイプのPEMブロックでエンコードされます。
 func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 
 // MarshalPKIXPublicKeyは公開鍵をPKIX、ASN.1 DER形式に変換します。
 // エンコードされた公開鍵はSubjectPublicKeyInfo構造体です
 // （RFC 5280、セクション4.1を参照）。
 //
-// 現在サポートされているキータイプは次のとおりです： *[rsa.PublicKey] 、 *[ecdsa.PublicKey] 、 [ed25519.PublicKey] （ポインタではありません）、 *[ecdh.PublicKey] 。
-// サポートされていないキータイプはエラーとなります。
+// 現在サポートされている鍵型は、*[rsa.PublicKey]、
+// *[ecdsa.PublicKey]、[ed25519.PublicKey]（ポインタではありません）、
+// *[mldsa.PublicKey]、および*[ecdh.PublicKey]です。
+// サポートされていない鍵型を指定するとエラーになります。
 //
 // この種類のキーは一般的には"type 'PUBLIC KEY'のPEMブロックでエンコードされます。
 func MarshalPKIXPublicKey(pub any) ([]byte, error)
@@ -63,6 +68,9 @@ const (
 	SHA384WithRSAPSS
 	SHA512WithRSAPSS
 	PureEd25519
+	MLDSA44
+	MLDSA65
+	MLDSA87
 )
 
 func (algo SignatureAlgorithm) String() string
@@ -75,6 +83,7 @@ const (
 	DSA
 	ECDSA
 	Ed25519
+	MLDSA
 )
 
 func (algo PublicKeyAlgorithm) String() string
@@ -125,6 +134,7 @@ type Certificate struct {
 	RawSubjectPublicKeyInfo []byte
 	RawSubject              []byte
 	RawIssuer               []byte
+	RawSignatureAlgorithm   []byte
 
 	Signature          []byte
 	SignatureAlgorithm SignatureAlgorithm
@@ -366,9 +376,10 @@ func (h UnhandledCriticalExtension) Error() string
 //
 // 返されるスライスはDERエンコーディングされた証明書です。
 //
-// 現在サポートされているキータイプは*rsa.PublicKey、*ecdsa.PublicKey、
-// ed25519.PublicKeyです。pubはサポートされているキータイプである必要があり、privは
-// サポートされている公開鍵を持つcrypto.Signerまたはcrypto.MessageSignerである必要があります。
+// 現在サポートされている鍵型は、*rsa.PublicKey、*ecdsa.PublicKey、
+// ed25519.PublicKey、および*mldsa.PublicKeyです。pubはサポートされている
+// 鍵型である必要があり、privはサポートされている公開鍵を持つ
+// crypto.Signerまたはcrypto.MessageSignerである必要があります。
 //
 // AuthorityKeyIdは、親のSubjectKeyIdから取得されます（存在する場合）、ただし証明書が自己署名でない場合はテンプレートの値が使用されます。
 //
@@ -378,12 +389,16 @@ func (h UnhandledCriticalExtension) Error() string
 // template.SerialNumberがnilの場合、randからのエントロピーを使用して
 // RFC 5280、セクション4.1.2.2に準拠したシリアル番号が生成されます。
 //
-// PolicyIdentifierフィールドとPoliciesフィールドの両方を使用して証明書
-// ポリシーOIDをマーシャルできます。デフォルトでは、Policiesのみがマーシャルされますが、
-// GODEBUG設定"x509usepolicies"の値が"0"の場合、Policiesフィールドの代わりに
-// PolicyIdentifiersフィールドがマーシャルされます。これはGo 1.24で変更されました。Policiesフィールドは
-// 31ビットより大きなコンポーネントを持つポリシーOIDをマーシャルするために
-// 使用できます。
+// PolicyIdentifier フィールドと Policies フィールドは、どちらも証明書の
+// ポリシーOIDをマーシャリングするために使用できます。デフォルトでは
+// Policies のみがマーシャリングされますが、GODEBUG 設定
+// "x509usepolicies" の値が "0" の場合は、Policies フィールドの代わりに
+// PolicyIdentifiers フィールドがマーシャリングされます。これは Go 1.24 で
+// 変更されました。Policies フィールドは、31 ビットを超えるコンポーネントを
+// 持つポリシーOIDのマーシャリングに使用できます。
+//
+// IPAddresses 内のIPアドレスがIPv4マップドIPv6形式である場合、常に
+// IPv4形式でエンコードされます。
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRLは指定されたバイトからCRLを解析します。PEMエンコードされたCRLがDERエンコードされるべき場所に表示されることがよくありますが、この関数は前方にゴミがない限り、PEMエンコーディングを透過的に処理します。
@@ -408,6 +423,7 @@ type CertificateRequest struct {
 	RawTBSCertificateRequest []byte
 	RawSubjectPublicKeyInfo  []byte
 	RawSubject               []byte
+	RawSignatureAlgorithm    []byte
 
 	Version            int
 	Signature          []byte
@@ -452,11 +468,13 @@ type CertificateRequest struct {
 //   - ExtraExtensions
 //   - Attributes (非推奨)
 //
-// privはCSRの署名に使用する秘密鍵であり、対応する公開鍵が
-// CSRに含まれます。crypto.Signerまたはcrypto.MessageSignerを実装し、
-// そのPublic()メソッドは*rsa.PublicKey、*ecdsa.PublicKey、またはed25519.PublicKeyを
-// 返す必要があります。（*rsa.PrivateKey、*ecdsa.PrivateKey、またはed25519.PrivateKeyは
-// これを満たします。）
+// privはCSRへの署名に使用する秘密鍵であり、対応する公開鍵が
+// CSRに含まれます。これはcrypto.Signerまたは
+// crypto.MessageSignerを実装し、そのPublic()メソッドは
+// *rsa.PublicKey、*ecdsa.PublicKey、ed25519.PublicKey、
+// または*mldsa.PublicKeyを返す必要があります。
+// （*rsa.PrivateKey、*ecdsa.PrivateKey、ed25519.PrivateKey、
+// または*mldsa.PrivateKeyはこれを満たします。）
 //
 // 返されるスライスはDERエンコーディングされた証明書リクエストです。
 func CreateCertificateRequest(rand io.Reader, template *CertificateRequest, priv any) (csr []byte, err error)
@@ -505,6 +523,9 @@ type RevocationList struct {
 	RawTBSRevocationList []byte
 	// RawIssuerにはDERエンコードされた発行者が含まれています。
 	RawIssuer []byte
+	// RawSignatureAlgorithm contains the DER encoded signature algorithm as a
+	// PKIX AlgorithmIdentifier.
+	RawSignatureAlgorithm []byte
 
 	// Issuerには発行証明書のDNが含まれています。
 	Issuer pkix.Name

@@ -60,30 +60,27 @@ TBj0/VLZjmmx6BEP3ojY+x1J96relc8geMJgEtslQIxq/H5COEBkEveegeGTLg==
 }
 
 func ExampleConfig_keyLogWriter() {
-	// ネットワークトラフィックキャプチャを復号化してTLSアプリケーションをデバッグする。
+	// ネットワークトラフィックのキャプチャを復号してTLSアプリケーションをデバッグします。
+	// 警告: KeyLogWriter の使用はセキュリティを損なうため、
+	// デバッグ目的でのみ使用してください。
 
-	// 警告: KeyLogWriterの使用はセキュリティを損なう可能性があり、
-	// デバッグ目的でのみ使用すべきです。
-
-	// 再現性があるように、ダミーテストのためのHTTPサーバーです。セキュリティのないランダムを使用しているので、出力も同じになります。
-	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}))
-	server.TLS = &tls.Config{
-		Rand: zeroSource{}, // この例はただのサンプルです。これは実際には行わないでください。
-	}
+	server := httptest.NewUnstartedServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {}))
 	server.StartTLS()
 	defer server.Close()
 
-	// 通常、ログは開かれたファイルに保存されます：
-	// w、err：= os.OpenFile（"tls-secrets.txt"、os.O_WRONLY | os.O_CREATE | os.O_TRUNC、0600）
+	pool := x509.NewCertPool()
+	pool.AddCert(server.Certificate())
+
+	// 通常、ログは開いたファイルに出力します:
+	// w, err := os.OpenFile("tls-secrets.txt", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
 	w := os.Stdout
 
 	client := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{
 				KeyLogWriter: w,
-
-				Rand:               zeroSource{}, // 再現可能な出力のために、これを行わないでください。
-				InsecureSkipVerify: true,         // テストサーバー証明書は信頼されていません。
+				RootCAs:      pool,
 			},
 		},
 	}

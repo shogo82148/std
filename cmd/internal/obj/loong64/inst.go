@@ -55,9 +55,6 @@ const (
 	ADIVW
 	ADIVWU
 
-	ALL
-	ALLV
-
 	ALUI
 
 	AMOVB
@@ -101,9 +98,6 @@ const (
 	AREMWU
 
 	ARFE
-
-	ASC
-	ASCV
 
 	ASGT
 	ASGTU
@@ -225,6 +219,17 @@ const (
 	AAMMAXDBVU
 	AAMMINDBWU
 	AAMMINDBVU
+	ALL
+	ALLW
+	ALLV
+	ASC
+	ASCW
+	ASCV
+	ASCQ
+	ALLACQW
+	ALLACQV
+	ASCRELW
+	ASCRELV
 
 	// 2.2.3.1
 	AEXTWB
@@ -347,6 +352,13 @@ const (
 	AFTINTRNEWD
 	AFTINTRNEVF
 	AFTINTRNEVD
+
+	// 3.2.3.4
+	AFRINTF
+	AFRINTD
+
+	// 3.2.4.2
+	AFSEL
 
 	// LSX and LASX memory access instructions
 	AVMOVQ

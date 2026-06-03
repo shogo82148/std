@@ -79,8 +79,11 @@ func Error(err error)
 
 func Fatal(err error)
 
+// SetExitStatus sets exit status to n if
+// n is higher than the current exit status.
 func SetExitStatus(n int)
 
+// GetExitStatus reports the current exit status.
 func GetExitStatus() int
 
 // Run runs the command, with stdout and stderr

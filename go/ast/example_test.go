@@ -22,9 +22,9 @@ const c = 1.0
 var X = f(3.14)*2 + c
 `
 
-	// srcを解析してASTを作成する。
+	// srcを解析してASTを作成します。
 	fset := token.NewFileSet() // ポジションはfsetに対して相対的です。
-	f, err := parser.ParseFile(fset, "src.go", src, 0)
+	f, err := parser.ParseFile(fset, "src.go", src, parser.SkipObjectResolution)
 	if err != nil {
 		panic(err)
 	}
@@ -65,9 +65,9 @@ func main() {
 }
 `
 
-	// src を解析してASTを作成します。
-	fset := token.NewFileSet() // ポジションはfsetに対して相対的です。
-	f, err := parser.ParseFile(fset, "", src, 0)
+	// srcを解析してASTを作成します。
+	fset := token.NewFileSet()                   // ポジションはfsetに対して相対的です。
+	f, err := parser.ParseFile(fset, "", src, 0) // オブジェクト解決が必要です。
 	if err != nil {
 		panic(err)
 	}
@@ -151,7 +151,7 @@ func f(x, y int) {
 `
 
 	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, "", src, 0)
+	f, err := parser.ParseFile(fset, "", src, parser.SkipObjectResolution)
 	if err != nil {
 		panic(err)
 	}
@@ -197,9 +197,9 @@ func main() {
 }
 `
 
-	// src をパースしてASTを作成する。
-	fset := token.NewFileSet() // positionsはfsetに対して相対的です。
-	f, err := parser.ParseFile(fset, "src.go", src, parser.ParseComments)
+	// srcを解析してASTを作成します。
+	fset := token.NewFileSet() // ポジションはfsetに対して相対的です。
+	f, err := parser.ParseFile(fset, "src.go", src, parser.ParseComments|parser.SkipObjectResolution)
 	if err != nil {
 		panic(err)
 	}

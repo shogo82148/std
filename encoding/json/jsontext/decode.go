@@ -35,9 +35,10 @@ import (
 //	d.ReadValue() // {"k":"v"}
 //	d.ReadToken() // }
 //
-// 上記は呼び出しの一例であり、
-// 任意のトークンや値に対して最も適切な呼び出し方法を示すものではありません。
-// 例えば、オブジェクト名の文字列トークンを取得するために[Decoder.ReadToken]を呼び出す方が一般的です。
+// 上記は多数ある呼び出し順の一例であり、
+// 任意のトークン/値に対して最も適切な呼び出し方法を示すものではありません。
+// 例えば、オブジェクト名の文字列トークンを取得するには、
+// [Decoder.ReadToken] を呼び出すほうが一般的です。
 type Decoder struct {
 	s decoderState
 }
@@ -48,9 +49,10 @@ type Decoder struct {
 // デコーダの使用中にバッファへ追加の書き込みを行ってはいけません。
 func NewDecoder(r io.Reader, opts ...Options) *Decoder
 
-// Resetはデコーダをリセットし、新たにrから読み込み、指定されたオプションで構成します。
-// Resetは [encoding/json/v2.UnmarshalerFrom.UnmarshalJSONFrom] メソッドや
-// [encoding/json/v2.UnmarshalFromFunc] 関数に渡されたDecoderに対して呼び出してはいけません。
+// Resetはデコーダをリセットし、新たにrから読み込み、
+// 指定されたオプションで構成します。Resetは
+// [encoding/json/v2.UnmarshalerFrom.UnmarshalJSONFrom] メソッドに渡された
+// Decoderや [encoding/json/v2.UnmarshalFromFunc] 関数に渡されたDecoderに対して呼び出してはいけません。
 func (d *Decoder) Reset(r io.Reader, opts ...Options)
 
 // Options は、デコーダの構築に使用されたオプションを返します。
@@ -92,10 +94,20 @@ func (d *Decoder) ReadValue() (Value, error)
 // 実際に基礎となる [io.Reader] から読み込まれたバイト数は、内部バッファリングの影響でこのオフセットより多い場合があります。
 func (d *Decoder) InputOffset() int64
 
-// UnreadBufferは未読バッファに残っているデータを返します。
-// それは0バイト以上を含む場合があります。
-// 返されたバッファはDecoderの使用中に変更してはいけません。
-// バッファの内容は次のPeek、Read、Skip呼び出しまで有効です。
+// UnreadBufferは、未読バッファに残っているデータを返します。
+// このデータには0バイト以上が含まれる可能性があります。
+// これは入力 [io.Reader] からすでに消費されたデータですが、
+// まだ [Decoder.ReadToken] または [Decoder.ReadValue] の呼び出しでは読み取られていません。
+// JSON文法に従ってまだ検証されていないため、
+// 有効なJSONを構成しないバイトを含む可能性があります。
+// バッファリングされるデータ量の正確な値はDecoderの実装詳細であり、
+// 時間とともに変わる可能性があります。
+//
+// 最後に読み取られたJSONトークンまたは値の後に続くバイト列全体を得るには、
+// このバッファと入力Readerの残りを連結する責任は呼び出し側にあります。
+//
+// 返されたバッファは、Decoderを使い続けている間は変更してはいけません。
+// バッファ内容は次のPeek、Read、Skip呼び出しまで有効です。
 func (d *Decoder) UnreadBuffer() []byte
 
 // StackDepthは読み込まれたJSONデータのステートマシンの深さを返します。

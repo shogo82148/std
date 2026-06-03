@@ -93,48 +93,64 @@ func (l *Logger) Log(ctx context.Context, level Level, msg string, args ...any)
 func (l *Logger) LogAttrs(ctx context.Context, level Level, msg string, attrs ...Attr)
 
 // Debugは、[LevelDebug] でログを記録します。
+// 内部で [context.Background] を使用します。コンテキストを指定するには、
+// [Logger.DebugContext] を使用します。
 func (l *Logger) Debug(msg string, args ...any)
 
 // DebugContextは、指定されたコンテキストで [LevelDebug] でログを記録します。
 func (l *Logger) DebugContext(ctx context.Context, msg string, args ...any)
 
 // Infoは、[LevelInfo] でログを記録します。
+// 内部で [context.Background] を使用します。コンテキストを指定するには、
+// [Logger.InfoContext] を使用します。
 func (l *Logger) Info(msg string, args ...any)
 
 // InfoContextは、指定されたコンテキストで [LevelInfo] でログを記録します。
 func (l *Logger) InfoContext(ctx context.Context, msg string, args ...any)
 
 // Warnは、[LevelWarn] でログを記録します。
+// 内部で [context.Background] を使用します。コンテキストを指定するには、
+// [Logger.WarnContext] を使用します。
 func (l *Logger) Warn(msg string, args ...any)
 
 // WarnContextは、指定されたコンテキストで [LevelWarn] でログを記録します。
 func (l *Logger) WarnContext(ctx context.Context, msg string, args ...any)
 
 // Errorは、[LevelError] でログを記録します。
+// 内部で [context.Background] を使用します。コンテキストを指定するには、
+// [Logger.ErrorContext] を使用します。
 func (l *Logger) Error(msg string, args ...any)
 
 // ErrorContextは、指定されたコンテキストで [LevelError] でログを記録します。
 func (l *Logger) ErrorContext(ctx context.Context, msg string, args ...any)
 
 // Debugは、デフォルトのロガーで [Logger.Debug] を呼び出します。
+// 内部で [context.Background] を使用します。コンテキストを指定するには、
+// [DebugContext] を使用します。
 func Debug(msg string, args ...any)
 
 // DebugContextは、デフォルトのロガーで [Logger.DebugContext] を呼び出します。
 func DebugContext(ctx context.Context, msg string, args ...any)
 
 // Infoは、デフォルトのロガーで [Logger.Info] を呼び出します。
+// 内部で [context.Background] を使用します。コンテキストを指定するには、
+// [InfoContext] を使用します。
 func Info(msg string, args ...any)
 
 // InfoContextは、デフォルトのロガーで [Logger.InfoContext] を呼び出します。
 func InfoContext(ctx context.Context, msg string, args ...any)
 
 // Warnは、デフォルトのロガーで [Logger.Warn] を呼び出します。
+// 内部で [context.Background] を使用します。コンテキストを指定するには、
+// [WarnContext] を使用します。
 func Warn(msg string, args ...any)
 
 // WarnContextは、デフォルトのロガーで [Logger.WarnContext] を呼び出します。
 func WarnContext(ctx context.Context, msg string, args ...any)
 
 // Errorは、デフォルトのロガーで [Logger.Error] を呼び出します。
+// 内部で [context.Background] を使用します。コンテキストを指定するには、
+// [ErrorContext] を使用します。
 func Error(msg string, args ...any)
 
 // ErrorContextは、デフォルトのロガーで [Logger.ErrorContext] を呼び出します。

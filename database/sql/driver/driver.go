@@ -30,6 +30,7 @@ package driver
 
 import (
 	"github.com/shogo82148/std/context"
+	"github.com/shogo82148/std/database/sql/internal"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/reflect"
 )
@@ -268,7 +269,24 @@ type Rows interface {
 	Next(dest []Value) error
 }
 
-// RowsNextResultSetは、ドライバに次の結果セットに進むようにシグナルを送る方法を提供するために [Rows] インターフェースを拡張しています。
+// ScanContextは、現在のクエリに関連する状態を
+// [RowsColumnScanner.ScanColumn] 関数から [database/sql.ConvertAssign] まで運びます。
+type ScanContext internal.ScanContext
+
+// RowsColumnScannerは、ドライバがユーザー指定の宛先へ直接スキャンできる手段を提供することで、
+// [Rows] インターフェースを拡張します。
+//
+// RowsColumnScannerは [Rows.Next] メソッドに代わるものです。
+type RowsColumnScanner interface {
+	Rows
+
+	NextRow() error
+
+	ScanColumn(scanCtx ScanContext, index int, dest any) error
+}
+
+// RowsNextResultSetは、次の結果セットへ進むようドライバに通知する手段を提供することで、
+// [Rows] インターフェースを拡張します。
 type RowsNextResultSet interface {
 	Rows
 

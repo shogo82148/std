@@ -10,11 +10,11 @@
 // To generate the specialized mallocgc functions, do 'go run .' inside runtime/_mkmalloc.
 //
 // To assemble a mallocgc function, the mallocStub function is cloned, and the call to
-// inlinedMalloc is replaced with the inlined body of smallScanNoHeaderStub,
-// smallNoScanStub or tinyStub, depending on the parameters being specialized.
+// inlinedMalloc is replaced with the inlined body of smallStub or tinyStub,
+// depending on the parameters being specialized.
 //
-// The size_ (for the tiny case) and elemsize_, sizeclass_, and noscanint_ (for all three cases)
-// identifiers are replaced with the value of the parameter in the specialized case.
+// The size_ (for the tiny case) and elemsize_, sizeclass_, noscanint_, and isNoScan_ (for all
+// three cases) identifiers are replaced with the value of the parameter in the specialized case.
 // The nextFreeFastStub, nextFreeFastTiny, heapSetTypeNoHeaderStub, and writeHeapBitsSmallStub
 // functions are also inlined by _mkmalloc.
 

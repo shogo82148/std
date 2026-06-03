@@ -70,6 +70,23 @@ var Register = map[string]int16{
 	"F30": REG_F30,
 	"F31": REG_F31,
 
+	"V0":  REG_V0,
+	"V1":  REG_V1,
+	"V2":  REG_V2,
+	"V3":  REG_V3,
+	"V4":  REG_V4,
+	"V5":  REG_V5,
+	"V6":  REG_V6,
+	"V7":  REG_V7,
+	"V8":  REG_V8,
+	"V9":  REG_V9,
+	"V10": REG_V10,
+	"V11": REG_V11,
+	"V12": REG_V12,
+	"V13": REG_V13,
+	"V14": REG_V14,
+	"V15": REG_V15,
+
 	"PC_B": REG_PC_B,
 }
 

@@ -52,7 +52,6 @@ type File struct {
 	zip          *Reader
 	zipr         io.ReaderAt
 	headerOffset int64
-	zip64        bool
 }
 
 // OpenReader は、指定された名前の Zip ファイルを開き、ReadCloser を返します。

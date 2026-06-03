@@ -38,6 +38,13 @@ const (
 	BLAKE2b_256
 	BLAKE2b_384
 	BLAKE2b_512
+
+	// MLDSAMu is a sentinel value for a [pre-hashed μ message representative].
+	// It has no implementation, but is used as a [SignerOpts.HashFunc] return
+	// value for [crypto/mldsa.PrivateKey.Sign].
+	//
+	// [pre-hashed μ message representative]: https://www.rfc-editor.org/rfc/rfc9881.html#externalmu
+	MLDSAMu
 )
 
 // Sizeは与えられたハッシュ関数から生成されるダイジェストの長さ（バイト単位）を返します。

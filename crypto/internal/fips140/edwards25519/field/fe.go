@@ -82,6 +82,9 @@ func (v *Element) Multiply(x, y *Element) *Element
 // Square sets v = x * x, and returns v.
 func (v *Element) Square(x *Element) *Element
 
+// SquareN sets v = x^(2^n), and returns v. n must be positive.
+func (v *Element) SquareN(x *Element, n int) *Element
+
 // Mult32 sets v = x * y, and returns v.
 func (v *Element) Mult32(x *Element, y uint32) *Element
 

@@ -30,7 +30,7 @@ import (
 //
 //	opt := Options{"Deterministic": true}
 //
-// [JoinOptions]は複数のオプション値を合成します:
+// [JoinOptions] は複数のオプション値を1つにまとめます:
 //
 //	out := JoinOptions(opts...)
 //
@@ -88,11 +88,23 @@ func GetOption[T any](opts Options, setter func(T) Options) (T, bool)
 // その他のすべてのオプションは存在しません。
 func DefaultOptionsV2() Options
 
-// StringifyNumbersは、数値型のGo値を対応するJSON数値を含むJSON文字列としてマーシャルすることを指定します。
-// アンマーシャル時には、数値型のGo値を、余分な空白を含まないJSON数値を含むJSON文字列からパースします。
+// StringifyNumbersは、通常JSON数値としてエンコードされる型を、
+// 同等のJSON数値を含むJSON文字列としてエンコードすることを指定します。
+// アンマーシャル時には、前後に空白を含まないJSON数値を含む
+// JSON文字列から値をパースします。
 //
-// RFC 8259のセクション6によると、JSON実装はJSON数値の表現をIEEE 754 binary64値に制限する場合があります。
-// これにより、int64やuint64型の精度が失われることがあります。
+// Go構造体フィールドに `string` タグオプションが指定されている場合、
+// このオプションはそのフィールドの最上位JSON値に適用されます。
+// StringifyNumbers がグローバルに適用されていない限り、
+// JSONオブジェクトまたは配列内にネストされたJSON数値には
+// 再帰的には適用されません。
+// JSON数値を表現するカスタムのマーシャル/アンマーシャルを持つGo型は、
+// StringifyNumbers オプションを尊重し、指定されている場合は
+// JSON文字列内のJSON数値としてシリアライズすべきです。
+//
+// RFC 8259 のセクション6によると、JSON実装はJSON数値の表現を
+// IEEE 754 binary64値に制限する場合があります。
+// これにより、デコーダがint64型やuint64型の精度を失う可能性があります。
 // JSON数値をJSON文字列として引用することで、正確な精度を保持できます。
 //
 // このオプションはマーシャル・アンマーシャルの両方に影響します。

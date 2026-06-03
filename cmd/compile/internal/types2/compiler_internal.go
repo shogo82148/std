@@ -20,3 +20,6 @@ import (
 // The intended use for RenameResult is to allow rangefunc to assign results within a closure.
 // This is a hack, as narrowly targeted as possible to discourage abuse.
 func (s *Signature) RenameResult(results []*syntax.Field, i int) (*Var, *syntax.Name)
+
+// Comment returns the scope comment, for debugging purposes.
+func (s *Scope) Comment() string

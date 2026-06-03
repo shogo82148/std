@@ -11,15 +11,17 @@ const (
 	OneImmIn
 	OneKmaskImmIn
 	PureKmaskIn
+	VlistIn
 )
 
 const (
-	InvalidOut     outShape = iota
+	InvalidOut       outShape = iota
 	NoOut
 	OneVregOut
 	OneGregOut
 	OneKmaskOut
 	OneVregOutAtIn
+	OneVregOutScalar
 )
 
 const (
@@ -35,6 +37,7 @@ const (
 	ConstImm
 	VarImm
 	ConstVarImm
+	VarImmLim
 )
 
 const (
@@ -52,9 +55,11 @@ func (op Operation) SSAType() string
 func (op Operation) GoType() string
 
 // ImmName returns the name to use for an operation's immediate operand.
-// This can be overriden in the yaml with "name" on an operand,
+// This can be overridden in the yaml with "name" on an operand,
 // otherwise, for now, "constant"
 func (op Operation) ImmName() string
+
+func (op Operation) ImmType() string
 
 func (o Operand) OpName(s string) string
 

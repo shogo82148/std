@@ -12,8 +12,8 @@ import (
 
 func MemHash(p unsafe.Pointer, h, s uintptr) uintptr
 
-func MemHash32(p unsafe.Pointer, h uintptr) uintptr
+func MemHash32(k uint32, h uintptr) uintptr
 
-func MemHash64(p unsafe.Pointer, h uintptr) uintptr
+func MemHash64(k uint64, h uintptr) uintptr
 
-func StrHash(p unsafe.Pointer, h uintptr) uintptr
+func StrHash(s string, h uintptr) uintptr

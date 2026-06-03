@@ -30,7 +30,7 @@ func (pub *PublicKey) Bytes() []byte
 type Curve[P Point[P]] struct {
 	curve      curveID
 	newPoint   func() P
-	ordInverse func([]byte) ([]byte, error)
+	ordInverse func(*[4]uint64)
 	N          *bigmod.Modulus
 	nMinus2    []byte
 }
@@ -72,7 +72,7 @@ type Signature struct {
 	R, S []byte
 }
 
-// Sign signs a hash (which shall be the result of hashing a larger message with
+// Sign signs a hash (which should be the result of hashing a larger message with
 // the hash function H) using the private key, priv. If the hash is longer than
 // the bit-length of the private key's curve order, the hash will be truncated
 // to that length.

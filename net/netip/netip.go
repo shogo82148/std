@@ -58,9 +58,9 @@ func IPv4Unspecified() Addr
 // AddrFrom4は、addrのバイトで指定されたIPv4アドレスのアドレスを返します。
 func AddrFrom4(addr [4]byte) Addr
 
-// AddrFrom16は、addrのバイトで指定されたIPv6アドレスを返します。
-// IPv4マップされたIPv6アドレスはIPv6アドレスのままです。
-// （必要に応じて、Unmapを使用して変換してください。）
+// AddrFrom16は、addr内のバイト列で指定されたIPv6アドレスを返します。
+// IPv4マップドIPv6アドレスは、IPv6アドレスのまま扱われます。
+// （必要に応じて変換するには [Addr.Unmap] を使用してください。）
 func AddrFrom16(addr [16]byte) Addr
 
 // ParseAddrは、sをIPアドレスとして解析し、その結果を返します。
@@ -212,17 +212,17 @@ func (ip Addr) AppendTo(b []byte) []byte
 // たとえば、"2001:db8::1"は"2001:0db8:0000:0000:0000:0000:0000:0001"になります。
 func (ip Addr) StringExpanded() string
 
-// AppendTextは [encoding.TextAppender] インターフェースを実装します。
-// [Addr.AppendTo] と同じ動作です。
+// AppendTextは、[encoding.TextAppender] インターフェースを実装します。
+// エンコーディングは、[Addr.AppendTo] が返すものと同じです。
 func (ip Addr) AppendText(b []byte) ([]byte, error)
 
 // MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
-// エンコーディングは、[Addr.String] が返すものと同じですが、1つの例外があります。
-// ipがゼロの [Addr] の場合、エンコーディングは空の文字列になります。
+// エンコーディングは、[Addr.String] が返すものと同じですが、1つ例外があります:
+// ipがゼロの [Addr] の場合、エンコーディングは空文字列です。
 func (ip Addr) MarshalText() ([]byte, error)
 
 // UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
-// IPアドレスは、[ParseAddr] で受け入れられる形式で指定する必要があります。
+// IPアドレスは、[ParseAddr] で受け入れられる形式である必要があります。
 //
 // textが空の場合、UnmarshalTextは*ipをゼロの [Addr] に設定し、エラーを返しません。
 func (ip *Addr) UnmarshalText(text []byte) error
@@ -236,7 +236,7 @@ func (ip Addr) AppendBinary(b []byte) ([]byte, error)
 func (ip Addr) MarshalBinary() ([]byte, error)
 
 // UnmarshalBinaryは、[encoding.BinaryUnmarshaler] インターフェースを実装します。
-// MarshalBinaryによって生成された形式のデータを想定しています。
+// [Addr.MarshalBinary] によって生成される形式のデータを想定しています。
 func (ip *Addr) UnmarshalBinary(b []byte) error
 
 // AddrPortは、IPアドレスとポート番号です。
@@ -279,16 +279,17 @@ func (p AddrPort) String() string
 func (p AddrPort) AppendTo(b []byte) []byte
 
 // AppendTextは、[encoding.TextAppender] インターフェースを実装します。
-// エンコーディングは、[AddrPort.AppendTo] と同じ動作です。
+// エンコーディングは、[AddrPort.AppendTo] が返すものと同じです。
 func (p AddrPort) AppendText(b []byte) ([]byte, error)
 
 // MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
-// エンコーディングは、[AddrPort.String] が返すものと同じですが、1つの例外があります。
-// p.Addr()がゼロの [Addr] の場合、エンコーディングは空の文字列になります。
+// エンコーディングは、[AddrPort.String] が返すものと同じですが、1つ例外があります:
+// p.Addr() がゼロの [Addr] の場合、エンコーディングは空文字列です。
 func (p AddrPort) MarshalText() ([]byte, error)
 
-// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
-// [AddrPort] は、[AddrPort.MarshalText] によって生成された形式のデータ、または [ParseAddrPort] で受け入れられる形式で指定する必要があります。
+// UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
+// [AddrPort] は、[AddrPort.MarshalText] によって生成される形式、
+// または [ParseAddrPort] で受け入れられる形式である必要があります。
 func (p *AddrPort) UnmarshalText(text []byte) error
 
 // AppendBinaryは [encoding.BinaryAppender] インターフェースを実装します。
@@ -378,17 +379,18 @@ func (p Prefix) AppendTo(b []byte) []byte
 func (p Prefix) AppendText(b []byte) ([]byte, error)
 
 // MarshalTextは、[encoding.TextMarshaler] インターフェースを実装します。
-// エンコーディングは、[Prefix.String] が返すものと同じですが、1つの例外があります。
-// pがゼロ値の場合、エンコーディングは空の文字列になります。
+// エンコーディングは、[Prefix.String] が返すものと同じですが、1つ例外があります:
+// pがゼロの [Prefix] の場合、エンコーディングは空文字列です。
 func (p Prefix) MarshalText() ([]byte, error)
 
-// UnmarshalTextは、encoding.TextUnmarshalerインターフェースを実装します。
-// IPアドレスは、[ParsePrefix]で受け入れられる形式で指定する必要があります。
-// または、[Prefix.MarshalText] によって生成された形式である必要があります。
+// UnmarshalTextは、[encoding.TextUnmarshaler] インターフェースを実装します。
+// IPアドレスは、[ParsePrefix] で受け入れられる形式、
+// または [Prefix.MarshalText] によって生成される形式である必要があります。
 func (p *Prefix) UnmarshalText(text []byte) error
 
-// AppendBinaryは、[encoding.AppendMarshaler] インターフェースを実装します。
-// これは、[Addr.AppendBinary] に、プレフィックスビットを表す追加のバイトを追加したものを返します。
+// AppendBinaryは、[encoding.BinaryAppender] インターフェースを実装します。
+// [Addr.AppendBinary] にプレフィックスビットを表す追加の1バイトを
+// 付加したものを返します。
 func (p Prefix) AppendBinary(b []byte) ([]byte, error)
 
 // MarshalBinaryは、[encoding.BinaryMarshaler] インターフェースを実装します。

@@ -714,7 +714,7 @@ func (p *Package) End() token.Pos
 // 構文木は [go/parser.ParseComments] フラグで解析されている必要があります。
 // 例：
 //
-//	f, err := parser.ParseFile(fset, filename, src, parser.ParseComments|parser.PackageClauseOnly)
+//	f, err := parser.ParseFile(fset, filename, src, parser.ParseComments|parser.PackageClauseOnly|parser.SkipObjectResolution)
 //	if err != nil { ... }
 //	gen := ast.IsGenerated(f)
 func IsGenerated(file *File) bool

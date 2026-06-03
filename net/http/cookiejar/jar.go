@@ -2,7 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// cookiejar パッケージはメモリ内で RFC 6265 に準拠した http.CookieJar を実装します。
+// Package cookiejarは、メモリ上で [RFC 6265] に準拠した [http.CookieJar] を実装します。
+//
+// [RFC 6265]: https://www.rfc-editor.org/info/rfc6265
 package cookiejar
 
 import (
@@ -20,14 +22,15 @@ import (
 //
 // 常に""を返す実装は有効であり、テストには便利ですが、安全ではありません。これは、foo.comのHTTPサーバがbar.comのためにクッキーを設定できることを意味します。
 //
-// golang.org/x/net/publicsuffixパッケージには、公開サフィックスリストの実装があります。
+// 公開サフィックスリストの実装は、次のパッケージにあります。
+// [golang.org/x/net/publicsuffix].
 type PublicSuffixList interface {
 	PublicSuffix(domain string) string
 
 	String() string
 }
 
-// Options は新しい Jar の作成オプションです。
+// Optionsは新しい [Jar] を作成するためのオプションです。
 type Options struct {
 
 	// PublicSuffixListは、ドメインに対してHTTPサーバがクッキーを設定できるかどうかを決定する公開サフィックスリストです。
@@ -36,7 +39,7 @@ type Options struct {
 	PublicSuffixList PublicSuffixList
 }
 
-// Jarはnet/httpパッケージのhttp.CookieJarインターフェースを実装しています。
+// Jarは [net/http.CookieJar] インターフェースを実装します。
 type Jar struct {
 	psList PublicSuffixList
 

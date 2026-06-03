@@ -10,7 +10,11 @@ import (
 	"github.com/shogo82148/std/testing"
 )
 
-func MustSupportFIPS140(t *testing.T)
+func MustSupportFIPS140(tb testing.TB)
+
+// MustMinimumFIPS140ModuleVersion skips the test if compiled against a lower
+// minor version of the FIPS 140-3 module than min (such as "v1.26.0").
+func MustMinimumFIPS140ModuleVersion(tb testing.TB, min string)
 
 func RerunWithFIPS140Enabled(t *testing.T)
 

@@ -28,9 +28,14 @@
 //     なお、`omitempty`はGoの配列・スライス・マップ・文字列についてはv1とv2で同じ動作です（ユーザー定義MarshalJSONメソッドがなければ）。
 //     既存のGoのbool, number, pointer, interface値に対する`omitempty`は、`omitzero`に移行してください（v1/v2両方で同じ動作）。
 //
-//   - v1では、Go構造体フィールドに`string`を付けると、Goのstring, bool, numberをJSON文字列として引用できます。複合型には再帰的に適用されません。
-//     一方、v2では`string`オプションはGoのnumberのみをJSON文字列として引用でき、複合型内のGo numberにも再帰的に適用されます。
-//     [StringifyWithLegacySemantics] オプションでこの動作を制御できます。
+//   - v1では、Go構造体フィールドに `string` を付けることで、
+//     Goのstring、bool、数値、またはそれらへのポインタをJSON文字列として
+//     クォートできます。
+//     一方v2では、`string` オプションは通常JSON数値として表現される値のみを
+//     クォートするように制限されていますが、
+//     通常JSON数値として表現される任意のGo型に対して動作するよう
+//     サポートが拡張されています。
+//     この挙動の差は [StringifyWithLegacySemantics] オプションで制御できます。
 //
 //   - v1では、nilのGoスライスやGoマップはJSON nullとしてマーシャルされます。
 //     一方、v2ではnilのGoスライスは空のJSON配列、nilのGoマップは空のJSONオブジェクトとしてマーシャルされます。
@@ -226,9 +231,12 @@ func FormatBytesWithLegacySemantics(v bool) Options
 // v1のデフォルトはtrueです。
 func FormatDurationAsNano(v bool) Options
 
-// MatchCaseSensitiveDelimiterは、大文字小文字を区別しない名前一致（[jsonv2.MatchCaseInsensitiveNames] や `case:ignore` タグオプション使用時）において、アンダースコアやハイフンを無視しないことを指定します。
-// そのため、大文字小文字を区別しない名前一致は [strings.EqualFold] と同じ動作になります。
-// このオプションを使用すると、大文字小文字を区別しない一致で一般的なケースバリアント（例："foo_bar" と "fooBar"）を一致させる能力が低下します。
+// MatchCaseSensitiveDelimiterは、[jsonv2.MatchCaseInsensitiveNames] または
+// `case:ignore` タグオプションによって行われる大文字小文字を区別しない
+// 名前一致において、アンダースコアとダッシュを無視しないことを指定します。
+// そのため、大文字小文字を区別しない名前一致は [strings.EqualFold] と同一になります。
+// このオプションを使用すると、大文字小文字を区別しない一致が一般的なケース差
+// （例: "foo_bar" と "fooBar"）を一致させる能力が低下します。
 //
 // このオプションはマーシャル・アンマーシャルのどちらにも影響します。
 // v1のデフォルトはtrueです。
@@ -259,8 +267,10 @@ func MergeWithLegacySemantics(v bool) Options
 // この定義では、Go値がfalse、0、nilポインタ、nilインターフェース値、または空の配列・スライス・マップ・文字列の場合にフィールドが省略されます。
 // この動作は、値がJSON nullや空のJSON文字列・オブジェクト・配列としてマーシャルされる場合にフィールドを省略するv2のセマンティクスを上書きします。
 //
-// v1とv2の`omitempty`の定義は、Goの文字列、スライス、配列、マップについてはほぼ同じです。
-// Goのbool、int、uint、float、ポインタ、インターフェースに対する`omitempty`の利用は、ゼロ値の場合にフィールドを省略する`omitzero`タグオプションへの移行が推奨されます。
+// v1とv2における `omitempty` の定義は、
+// Goの文字列、スライス、配列、マップについては実質的に同じです。Goの
+// bool、int、uint、float、ポインタ、インターフェースに対する `omitempty` の使用は、
+// フィールドがGoのゼロ値である場合に省略する `omitzero` タグオプションへの移行が推奨されます。
 //
 // このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 // v1のデフォルトはtrueです。
@@ -307,16 +317,19 @@ func ParseTimeWithLooseRFC3339(v bool) Options
 // v1のデフォルトはtrueです。
 func ReportErrorsWithLegacySemantics(v bool) Options
 
-// StringifyWithLegacySemanticsは、`string`タグオプションがbool型やstring型の値を文字列化できることを指定します。
-// このオプションは、フィールドのトップレベルの型がbool、string、数値型、またはそれらへのポインタの場合のみ有効です。
-// 特に、`string`は複合型（配列、スライス、構造体、マップ、インターフェース）の内部にあるbool、string、数値型には適用されません。
+// StringifyWithLegacySemanticsは、`string`タグオプションが
+// bool値やstring値を文字列化できることを指定します。
+// これは、トップレベル型がbool、string、数値型、
+// またはそれらへのポインタであるフィールドにのみ適用されます。
 //
-// マーシャル時、これらのGo値は通常のJSON表現でシリアライズされますが、JSON文字列内で引用されます。
-// アンマーシャル時、これらのGo値は通常のJSON表現またはその数値型のGo数値表現を含む
-// JSON文字列からデシリアライズされなければなりません。
-// Go数値文法はJSON数値文法のスーパーセットであることに注意してください。
-// JSON文字列内で引用されたJSON nullは、`string`が有効なGo値へのアンマーシャル時に
-// JSON nullの代用として認められます。
+// マーシャル時、これらのGo値は通常のJSON表現でシリアライズされますが、
+// JSON文字列内で引用されます。
+// アンマーシャル時、これらのGo値は、通常のJSON表現または
+// その数値型に対応するGo数値表現を含むJSON文字列から
+// デシリアライズされる必要があります。
+// Goの数値文法はJSONの数値文法のスーパーセットである点に注意してください。
+// `string`が適用されるGo値へのアンマーシャル時には、
+// JSON文字列内で引用されたJSON nullもJSON nullの有効な代替として扱われます。
 //
 // このオプションはマーシャルまたはアンマーシャルのどちらにも影響します。
 // v1のデフォルトはtrueです。

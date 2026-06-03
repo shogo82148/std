@@ -20,15 +20,15 @@ func (f ValueFlags) IsCanonical() bool
 func ConsumeWhitespace(b []byte) (n int)
 
 // ConsumeNull consumes the next JSON null literal per RFC 7159, section 3.
-// It returns 0 if it is invalid, in which case consumeLiteral should be used.
+// It returns 0 if it is invalid, in which case ConsumeLiteral should be used.
 func ConsumeNull(b []byte) int
 
 // ConsumeFalse consumes the next JSON false literal per RFC 7159, section 3.
-// It returns 0 if it is invalid, in which case consumeLiteral should be used.
+// It returns 0 if it is invalid, in which case ConsumeLiteral should be used.
 func ConsumeFalse(b []byte) int
 
 // ConsumeTrue consumes the next JSON true literal per RFC 7159, section 3.
-// It returns 0 if it is invalid, in which case consumeLiteral should be used.
+// It returns 0 if it is invalid, in which case ConsumeLiteral should be used.
 func ConsumeTrue(b []byte) int
 
 // ConsumeLiteral consumes the next JSON literal per RFC 7159, section 3.
@@ -38,7 +38,7 @@ func ConsumeLiteral(b []byte, lit string) (n int, err error)
 // ConsumeSimpleString consumes the next JSON string per RFC 7159, section 7
 // but is limited to the grammar for an ASCII string without escape sequences.
 // It returns 0 if it is invalid or more complicated than a simple string,
-// in which case consumeString should be called.
+// in which case [ConsumeString] should be called.
 //
 // It rejects '<', '>', and '&' for compatibility reasons since these were
 // always escaped in the v1 implementation. Thus, if this function reports
@@ -53,7 +53,7 @@ func ConsumeSimpleString(b []byte) (n int)
 // If the input appears truncated, it returns io.ErrUnexpectedEOF.
 func ConsumeString(flags *ValueFlags, b []byte, validateUTF8 bool) (n int, err error)
 
-// ConsumeStringResumable is identical to consumeString but supports resuming
+// ConsumeStringResumable is identical to [ConsumeString] but supports resuming
 // from a previous call that returned io.ErrUnexpectedEOF.
 func ConsumeStringResumable(flags *ValueFlags, b []byte, resumeOffset int, validateUTF8 bool) (n int, err error)
 
@@ -71,9 +71,9 @@ func AppendUnquote(dst, src []byte) (v []byte, err error)
 func UnquoteMayCopy(b []byte, isVerbatim bool) []byte
 
 // ConsumeSimpleNumber consumes the next JSON number per RFC 7159, section 6
-// but is limited to the grammar for a positive integer.
+// but is limited to the grammar for a non-negative integer.
 // It returns 0 if it is invalid or more complicated than a simple integer,
-// in which case consumeNumber should be called.
+// in which case ConsumeNumber should be called.
 func ConsumeSimpleNumber(b []byte) (n int)
 
 type ConsumeNumberState uint
@@ -87,7 +87,7 @@ type ConsumeNumberState uint
 // there may be subsequent unread data that may still be part of this number.
 func ConsumeNumber(b []byte) (n int, err error)
 
-// ConsumeNumberResumable is identical to consumeNumber but supports resuming
+// ConsumeNumberResumable is identical to ConsumeNumber but supports resuming
 // from a previous call that returned io.ErrUnexpectedEOF.
 func ConsumeNumberResumable(b []byte, resumeOffset int, state ConsumeNumberState) (n int, _ ConsumeNumberState, err error)
 
