@@ -101,8 +101,8 @@ func (v *Value) Format(opts ...Options) error
 // 意図的に前のオプションを上書きすることもできます。
 func (v *Value) Compact(opts ...Options) error
 
-// Indentは、生のJSON値内の空白を再フォーマットし、
-// JSONオブジェクトや配列の各要素がネストに応じてインデントされた行で始まるようにします。
+// Indentは、生のJSON値中の空白を再整形し、
+// JSONオブジェクトまたは配列の各要素がネストに応じたインデント行で始まるようにします。
 //
 // JSON文字列や数値の表現は変更しません。
 // フォーマット可能なJSON値の集合を最大化するため、

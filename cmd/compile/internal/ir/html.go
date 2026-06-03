@@ -13,15 +13,22 @@ import (
 // ssa backend does for GOSSAFUNC.  This is not the format used for
 // the ast column in GOSSAFUNC output.
 type HTMLWriter struct {
+	HTMLWriterBase
+	Func *Func
+}
+
+type HTMLWriterBase struct {
 	w             *BufferedWriterCloser
-	Func          *Func
-	canonIdMap    map[Node]int
+	canonIdMap    map[any]int
 	prevCanonId   int
 	path          string
 	prevHash      []byte
 	pendingPhases []string
 	pendingTitles []string
+	doDump        func(string) func()
 }
+
+func (h *HTMLWriterBase) Init(out io.WriteCloser, reportPath string, doDump func(string) func())
 
 // BufferedWriterCloser is here to help avoid pre-buffering the whole
 // rendered HTML in memory, which can cause problems for large inputs.
@@ -38,30 +45,36 @@ func NewBufferedWriterCloser(f io.WriteCloser) *BufferedWriterCloser
 
 func NewHTMLWriter(path string, f *Func, cfgMask string) *HTMLWriter
 
+func (h *HTMLWriterBase) Path() string
+
+// CanonId assigns indices to nodes based on pointer identity.
+// this helps ensure that output html files don't gratuitously
+// differ from run to run.
+func (h *HTMLWriterBase) CanonId(n any) int
+
 // Fatalf reports an error and exits.
-func (w *HTMLWriter) Fatalf(msg string, args ...any)
+func (w *HTMLWriterBase) Fatalf(msg string, args ...any)
 
 const (
-	RIGHT_ARROW = "\u25BA"
-	DOWN_ARROW  = "\u25BC"
+	RightArrow = "►"
+	DownArrow  = "▼"
 )
 
-func (w *HTMLWriter) Close()
+func (w *HTMLWriterBase) Close(format string, args ...any)
 
 // WritePhase writes f in a column headed by title.
 // phase is used for collapsing columns and should be unique across the table.
-func (w *HTMLWriter) WritePhase(phase, title string)
+func (w *HTMLWriterBase) WritePhase(phase, title string)
 
-func (w *HTMLWriter) WriteMultiTitleColumn(phase string, titles []string, class string, writeContent func())
+func (w *HTMLWriterBase) WriteMultiTitleColumn(phase string, titles []string, class string, writeContent func())
 
-func (w *HTMLWriter) Printf(msg string, v ...any)
+func (w *HTMLWriterBase) Printf(msg string, v ...any)
 
-func (w *HTMLWriter) Print(s string)
+func (w *HTMLWriterBase) Print(s string)
 
 func (w *HTMLWriter) FuncHTML(phase string) func()
 
-const (
-	CSS = `<style>
+const CSS = `<style>
 
 body {
     font-size: 14px;
@@ -146,7 +159,7 @@ pre {
     overflow-x: scroll;
 }
 
-.ir-node {
+.outline-node {
     cursor: cell;
 }
 
@@ -218,16 +231,15 @@ body.darkmode .outline-black        { outline: gray solid 2px; }
 </style>
 `
 
-	JS = `<script type="text/javascript">
+func JS(opened ...string) string
+
+const (
+	JS1 = `<script type="text/javascript">
 
 // Contains phase names which are expanded by default. Other columns are collapsed.
 let expandedDefault = [
-    "bloop",
-    "loopvar",
-    "escape",
-    "slice",
-    "walk",
-];
+`
+	JS2 = `];
 if (history.state === null) {
     history.pushState({expandedDefault}, "", location.href);
 }
@@ -341,7 +353,7 @@ window.onload = function() {
         irElemClicked(this, event, outlines, outlined);
     };
 
-    var irValues = document.getElementsByClassName("ir-node");
+    var irValues = document.getElementsByClassName("outline-node");
     for (var i = 0; i < irValues.length; i++) {
         irValues[i].addEventListener('click', irTreeClicked);
     }
@@ -483,10 +495,10 @@ function toggle_node(e) {
             }
         }
     }
-    if (e.innerText == "` + RIGHT_ARROW + `") {
-        e.innerText = "` + DOWN_ARROW + `";
+    if (e.innerText == "` + RightArrow + `") {
+        e.innerText = "` + DownArrow + `";
     } else {
-        e.innerText = "` + RIGHT_ARROW + `";
+        e.innerText = "` + RightArrow + `";
     }
 }
 

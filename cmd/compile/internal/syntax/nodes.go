@@ -20,6 +20,8 @@ type File struct {
 	node
 }
 
+func (f *File) String() string
+
 type (
 	Decl interface {
 		Node
@@ -85,6 +87,12 @@ type (
 		decl
 	}
 )
+
+func (d *FuncDecl) String() string
+
+func (d *TypeDecl) String() string
+
+func (d *VarDecl) String() string
 
 // All declarations belonging to the same group point to the same Group node.
 type Group struct {

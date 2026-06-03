@@ -35,9 +35,10 @@ import (
 //	e.WriteValue(Value(`{"k":"v"}`)) // {"k":"v"}
 //	e.WriteToken(EndObject)          // }
 //
-// 上記は呼び出しの一例であり、
-// 任意のトークンや値に対して最も適切な呼び出し方法を示すものではありません。
-// 例えば、オブジェクト名の文字列トークンを取得するために[Encoder.WriteToken]を呼び出す方が一般的です。
+// 上記は多数ある呼び出し順の一例であり、
+// 任意のトークン/値に対して最も適切な呼び出し方法を示すものではありません。
+// 例えば、オブジェクト名には文字列を使って
+// [Encoder.WriteToken] を呼び出すほうが一般的です。
 type Encoder struct {
 	s encoderState
 }
@@ -51,9 +52,10 @@ type Encoder struct {
 // 直接バッファに追加します。
 func NewEncoder(w io.Writer, opts ...Options) *Encoder
 
-// Resetはエンコーダをリセットし、新たにwに書き込み、指定されたオプションで構成します。
-// Resetは [encoding/json/v2.MarshalerTo.MarshalJSONTo] メソッドや
-// [encoding/json/v2.MarshalToFunc] 関数に渡されたEncoderに対して呼び出してはいけません。
+// Resetはエンコーダをリセットし、新たにwへ書き込み、
+// 指定されたオプションで構成します。Resetは
+// [encoding/json/v2.MarshalerTo.MarshalJSONTo] メソッドに渡された
+// Encoderや [encoding/json/v2.MarshalToFunc] 関数に渡されたEncoderに対して呼び出してはいけません。
 func (e *Encoder) Reset(w io.Writer, opts ...Options)
 
 // Options は、エンコーダの構築に使用されたオプションを返します。
@@ -96,11 +98,11 @@ func (e *Encoder) OutputOffset() int64
 //
 // 使用例:
 //
-//	b := d.AvailableBuffer()
+//	b := e.AvailableBuffer()
 //	b = append(b, '"')
 //	b = appendString(b, v) // vの文字列フォーマットを追加
 //	b = append(b, '"')
-//	... := d.WriteValue(b)
+//	... := e.WriteValue(b)
 //
 // 値が有効なJSONであることは利用者の責任です。
 func (e *Encoder) AvailableBuffer() []byte

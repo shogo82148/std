@@ -28,12 +28,14 @@
 //     なお、`omitempty`はGoの配列・スライス・マップ・文字列についてはv1とv2で同じ動作です（ユーザー定義MarshalJSONメソッドがなければ）。
 //     既存のGoのbool, number, pointer, interface値に対する`omitempty`は、`omitzero`に移行してください（v1/v2両方で同じ動作）。
 //
-//   - v1では、Go構造体フィールドに`string`が付いている場合、
-//     Goのstring、bool、number、およびそれらへのポインタを
-//     JSON文字列として引用できます。
-//     一方、v2では`string`オプションはGoのnumberまたは
-//     numberへのポインタをJSON文字列として引用する場合にのみ制限されます。
-//     この挙動の違いは [StringifyWithLegacySemantics] オプションで制御できます。
+//   - v1では、Go構造体フィールドに `string` を付けることで、
+//     Goのstring、bool、数値、またはそれらへのポインタをJSON文字列として
+//     クォートできます。
+//     一方v2では、`string` オプションは通常JSON数値として表現される値のみを
+//     クォートするように制限されていますが、
+//     通常JSON数値として表現される任意のGo型に対して動作するよう
+//     サポートが拡張されています。
+//     この挙動の差は [StringifyWithLegacySemantics] オプションで制御できます。
 //
 //   - v1では、nilのGoスライスやGoマップはJSON nullとしてマーシャルされます。
 //     一方、v2ではnilのGoスライスは空のJSON配列、nilのGoマップは空のJSONオブジェクトとしてマーシャルされます。
@@ -229,9 +231,12 @@ func FormatBytesWithLegacySemantics(v bool) Options
 // v1のデフォルトはtrueです。
 func FormatDurationAsNano(v bool) Options
 
-// MatchCaseSensitiveDelimiterは、大文字小文字を区別しない名前一致（[jsonv2.MatchCaseInsensitiveNames] や `case:ignore` タグオプション使用時）において、アンダースコアやハイフンを無視しないことを指定します。
-// そのため、大文字小文字を区別しない名前一致は [strings.EqualFold] と同じ動作になります。
-// このオプションを使用すると、大文字小文字を区別しない一致で一般的なケースバリアント（例："foo_bar" と "fooBar"）を一致させる能力が低下します。
+// MatchCaseSensitiveDelimiterは、[jsonv2.MatchCaseInsensitiveNames] または
+// `case:ignore` タグオプションによって行われる大文字小文字を区別しない
+// 名前一致において、アンダースコアとダッシュを無視しないことを指定します。
+// そのため、大文字小文字を区別しない名前一致は [strings.EqualFold] と同一になります。
+// このオプションを使用すると、大文字小文字を区別しない一致が一般的なケース差
+// （例: "foo_bar" と "fooBar"）を一致させる能力が低下します。
 //
 // このオプションはマーシャル・アンマーシャルのどちらにも影響します。
 // v1のデフォルトはtrueです。
@@ -262,8 +267,10 @@ func MergeWithLegacySemantics(v bool) Options
 // この定義では、Go値がfalse、0、nilポインタ、nilインターフェース値、または空の配列・スライス・マップ・文字列の場合にフィールドが省略されます。
 // この動作は、値がJSON nullや空のJSON文字列・オブジェクト・配列としてマーシャルされる場合にフィールドを省略するv2のセマンティクスを上書きします。
 //
-// v1とv2の`omitempty`の定義は、Goの文字列、スライス、配列、マップについてはほぼ同じです。
-// Goのbool、int、uint、float、ポインタ、インターフェースに対する`omitempty`の利用は、ゼロ値の場合にフィールドを省略する`omitzero`タグオプションへの移行が推奨されます。
+// v1とv2における `omitempty` の定義は、
+// Goの文字列、スライス、配列、マップについては実質的に同じです。Goの
+// bool、int、uint、float、ポインタ、インターフェースに対する `omitempty` の使用は、
+// フィールドがGoのゼロ値である場合に省略する `omitzero` タグオプションへの移行が推奨されます。
 //
 // このオプションはマーシャル時のみ影響し、アンマーシャル時は無視されます。
 // v1のデフォルトはtrueです。

@@ -34,7 +34,7 @@ var (
 // （必要に応じてヒープ上にボックス化）ので、これらの関数やメソッドを一貫して呼び出せます。
 // パフォーマンスのため、Marshalには非nilポインタ値を渡すことを推奨します。
 //
-// 入力値は以下のルールに従ってJSONとしてエンコードされます：
+// 入力値は次の規則に従ってJSONとしてエンコードされます:
 //
 //   - [WithMarshalers]オプション内の型固有関数が値の型に一致する場合、
 //     それらの関数が値をエンコードするために呼び出されます。
@@ -121,11 +121,10 @@ func Marshal(in any, opts ...Options) (out []byte, err error)
 // Go値をJSONへ変換する詳細は [Marshal] を参照してください。
 func MarshalWrite(out io.Writer, in any, opts ...Options) (err error)
 
-// MarshalEncodeは、指定されたマーシャルオプションに従って
-// Go値を [jsontext.Encoder] にシリアライズします（アンマーシャル、エンコード、デコードオプションは無視されます）。
-// [jsontext.Encoder] に既に指定されているマーシャル関連のオプションは、呼び出し元が指定したオプションよりも優先度が低くなります。
-// [Marshal] や [MarshalWrite] と異なり、エンコードオプションは無視されます。
-// これは、エンコードオプションが既に指定済みである必要があるためです。
+// MarshalEncodeは、指定されたマーシャルまたはエンコードオプションに従って、
+// Go値を [jsontext.Encoder] へシリアライズします（アンマーシャルまたはデコードオプションは無視されます）。
+// 指定されたオプションは、[jsontext.Encoder] にすでに適用されているオプションより優先され、
+// マーシャル呼び出しの期間中のみ適用されます。
 //
 // Go値をJSONへ変換する詳細は [Marshal] を参照してください。
 func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
@@ -140,7 +139,7 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 // Unmarshalは、値が常にアドレス可能であることを保証します
 // （必要に応じてヒープ上にボックス化）ので、これらの関数やメソッドを一貫して呼び出せます。
 //
-// 入力は以下のルールに従って出力へデコードされます：
+// 入力は次の規則に従って出力へデコードされます:
 //
 //   - [WithUnmarshalers]オプション内の型固有関数が値の型に一致する場合、
 //     それらの関数がJSON値をデコードするために呼び出されます。
@@ -255,11 +254,10 @@ func Unmarshal(in []byte, out any, opts ...Options) (err error)
 // JSONからGo値への変換の詳細は [Unmarshal] を参照してください。
 func UnmarshalRead(in io.Reader, out any, opts ...Options) (err error)
 
-// UnmarshalDecodeは、指定されたアンマーシャルオプションに従って
-// [jsontext.Decoder] からGo値をデシリアライズします（マーシャル、エンコード、デコードオプションは無視されます）。
-// [jsontext.Decoder] に既に指定されているアンマーシャルオプションは、呼び出し元が指定したオプションよりも優先度が低くなります。
-// [Unmarshal] や [UnmarshalRead] と異なり、デコードオプションは無視されます。
-// これは、デコードオプションが既に指定済みである必要があるためです。
+// UnmarshalDecodeは、指定されたアンマーシャルまたはデコードオプションに従って、
+// [jsontext.Decoder] からGo値をデシリアライズします（マーシャルまたはエンコードオプションは無視されます）。
+// 指定されたオプションは、[jsontext.Decoder] にすでに適用されているオプションより優先され、
+// アンマーシャル呼び出しの期間中のみ適用されます。
 //
 // 入力は0個以上のJSON値のストリームであっても構いませんが、
 // これはストリーム内の次のJSON値のみをアンマーシャルします。

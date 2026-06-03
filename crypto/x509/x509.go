@@ -389,12 +389,16 @@ func (h UnhandledCriticalExtension) Error() string
 // template.SerialNumberがnilの場合、randからのエントロピーを使用して
 // RFC 5280、セクション4.1.2.2に準拠したシリアル番号が生成されます。
 //
-// PolicyIdentifierフィールドとPoliciesフィールドの両方を使用して証明書
-// ポリシーOIDをマーシャルできます。デフォルトでは、Policiesのみがマーシャルされますが、
-// GODEBUG設定"x509usepolicies"の値が"0"の場合、Policiesフィールドの代わりに
-// PolicyIdentifiersフィールドがマーシャルされます。これはGo 1.24で変更されました。Policiesフィールドは
-// 31ビットより大きなコンポーネントを持つポリシーOIDをマーシャルするために
-// 使用できます。
+// PolicyIdentifier フィールドと Policies フィールドは、どちらも証明書の
+// ポリシーOIDをマーシャリングするために使用できます。デフォルトでは
+// Policies のみがマーシャリングされますが、GODEBUG 設定
+// "x509usepolicies" の値が "0" の場合は、Policies フィールドの代わりに
+// PolicyIdentifiers フィールドがマーシャリングされます。これは Go 1.24 で
+// 変更されました。Policies フィールドは、31 ビットを超えるコンポーネントを
+// 持つポリシーOIDのマーシャリングに使用できます。
+//
+// IPAddresses 内のIPアドレスがIPv4マップドIPv6形式である場合、常に
+// IPv4形式でエンコードされます。
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRLは指定されたバイトからCRLを解析します。PEMエンコードされたCRLがDERエンコードされるべき場所に表示されることがよくありますが、この関数は前方にゴミがない限り、PEMエンコーディングを透過的に処理します。

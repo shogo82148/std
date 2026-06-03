@@ -434,10 +434,16 @@ func (r *Request) PostFormValue(key string) string
 // 必要に応じて、FormFileは [Request.ParseMultipartForm] および [Request.ParseForm] を呼び出します。
 func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error)
 
-// PathValueは、リクエストに一致した [ServeMux] パターンの名前付きパスワイルドカードの値を返します。
-// リクエストがパターンに一致しなかった場合、またはパターンにそのようなワイルドカードがない場合、空の文字列を返します。
+// PathValueは、リクエストに一致した [ServeMux] パターン内の、
+// 指定された名前のパスワイルドカードの値を返します。
+// リクエストがパターンに一致していない場合、またはそのパターン内に
+// そのようなワイルドカードが存在しない場合は、空文字列を返します。
+//
+// 値はアンエスケープされた状態です。例えば、パターン "/b/{bucket}" が
+// パス "/b/a%2fb" に一致した場合、PathValue("bucket") は "a/b" を返します。
 func (r *Request) PathValue(name string) string
 
-// SetPathValue sets name to value, so that subsequent calls to r.PathValue(name)
-// return value.
+// SetPathValueはnameにvalueを設定し、後続の r.PathValue(name) 呼び出しが
+// valueを返すようにします。
+// valueのアンエスケープは行いません。
 func (r *Request) SetPathValue(name, value string)

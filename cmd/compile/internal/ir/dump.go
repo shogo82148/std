@@ -49,6 +49,13 @@ func FDumpAny(w io.Writer, root any, filter string, depth int)
 //	\nir.Match(<fn>, <astdump>) for <where>\n
 func MatchAstDump(fn *Func, where string) bool
 
+// MatchPkgFn returns true if pkg and fnName "match" toMatch.
+// "~REGEXP" matches REGEXP against pkgName + "." + fnName
+// "aFunc" matches "aFunc" (in any package)
+// "aPkg.aFunc" matches "aPkg.aFunc"
+// "aPkg/subPkg.aFunc" matches "subPkg.aFunc"
+func MatchPkgFn(pkgName, fnName, toMatch string) bool
+
 // AstDump appends the ast dump for fn to the ast dump file for fn.
 // The generated file name is
 //
@@ -60,6 +67,13 @@ func MatchAstDump(fn *Func, where string) bool
 //
 // to os.Stderr.
 func AstDump(fn *Func, why string)
+
+// EscapedFileName constructs a file name from fn and suffix,
+// url-path-escaping the function part of the name and replacing it
+// with a hash if it is too long.  The suffix is neither escaped
+// nor including in the length calculation, so an excessively
+// creative suffix will result in problems.
+func EscapedFileName(fn, suffix string) string
 
 // DumpNodeHTML dumps the node n to the HTML writer for fn.
 // It uses the same phase name as the text dump.

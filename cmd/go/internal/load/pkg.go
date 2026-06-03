@@ -143,6 +143,7 @@ type PackageInternal struct {
 	Cover             CoverSetup
 	OmitDebug         bool
 	GobinSubdir       bool
+	InternalImportOk  bool
 	BuildInfo         *debug.BuildInfo
 	TestmainGo        *[]byte
 	Embed             map[string][]string
@@ -305,6 +306,9 @@ func InstallTargetDir(p *Package) TargetDir
 
 // DefaultExecName returns the default executable name for a package
 func (p *Package) DefaultExecName() string
+
+// The package used for rewriting "simd"
+const SimdBridgePkg = "simd/internal/bridge"
 
 // An EmbedError indicates a problem with a go:embed directive.
 type EmbedError struct {

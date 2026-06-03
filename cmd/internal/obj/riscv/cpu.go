@@ -393,7 +393,7 @@ const (
 	ALD
 	ASD
 
-	// 7.1: CSR Instructions (Zicsr)
+	// 6.1: CSR Instructions (Zicsr)
 	ACSRRW
 	ACSRRS
 	ACSRRC
@@ -401,14 +401,18 @@ const (
 	ACSRRSI
 	ACSRRCI
 
-	// 13.1: Multiplication Operations
+	// 11.1: Integer Conditional Operations (Zicond)
+	ACZEROEQZ
+	ACZERONEZ
+
+	// 12.1: Multiplication Operations
 	AMUL
 	AMULH
 	AMULHU
 	AMULHSU
 	AMULW
 
-	// 13.2: Division Operations
+	// 12.2: Division Operations
 	ADIV
 	ADIVU
 	AREM
@@ -418,13 +422,13 @@ const (
 	AREMW
 	AREMUW
 
-	// 14.2: Load-Reserved/Store-Conditional Instructions (Zalrsc)
+	// 13.2: Load-Reserved/Store-Conditional Instructions (Zalrsc)
 	ALRD
 	ASCD
 	ALRW
 	ASCW
 
-	// 14.4: Atomic Memory Operations (Zaamo)
+	// 13.4: Atomic Memory Operations (Zaamo)
 	AAMOSWAPD
 	AAMOADDD
 	AAMOANDD
@@ -444,11 +448,11 @@ const (
 	AAMOMINW
 	AAMOMINUW
 
-	// 20.5: Single-Precision Load and Store Instructions
+	// 21.5: Single-Precision Load and Store Instructions
 	AFLW
 	AFSW
 
-	// 20.6: Single-Precision Floating-Point Computational Instructions
+	// 21.6: Single-Precision Floating-Point Computational Instructions
 	AFADDS
 	AFSUBS
 	AFMULS
@@ -461,7 +465,7 @@ const (
 	AFNMADDS
 	AFNMSUBS
 
-	// 20.7: Single-Precision Floating-Point Conversion and Move Instructions
+	// 21.7: Single-Precision Floating-Point Conversion and Move Instructions
 	AFCVTWS
 	AFCVTLS
 	AFCVTSW
@@ -478,19 +482,19 @@ const (
 	AFMVXW
 	AFMVWX
 
-	// 20.8: Single-Precision Floating-Point Compare Instructions
+	// 21.8: Single-Precision Floating-Point Compare Instructions
 	AFEQS
 	AFLTS
 	AFLES
 
-	// 20.9: Single-Precision Floating-Point Classify Instruction
+	// 21.9: Single-Precision Floating-Point Classify Instruction
 	AFCLASSS
 
-	// 21.3: Double-Precision Load and Store Instructions
+	// 22.3: Double-Precision Load and Store Instructions
 	AFLD
 	AFSD
 
-	// 21.4: Double-Precision Floating-Point Computational Instructions
+	// 22.4: Double-Precision Floating-Point Computational Instructions
 	AFADDD
 	AFSUBD
 	AFMULD
@@ -503,7 +507,7 @@ const (
 	AFNMADDD
 	AFNMSUBD
 
-	// 21.5: Double-Precision Floating-Point Conversion and Move Instructions
+	// 22.5: Double-Precision Floating-Point Conversion and Move Instructions
 	AFCVTWD
 	AFCVTLD
 	AFCVTDW
@@ -520,19 +524,19 @@ const (
 	AFMVXD
 	AFMVDX
 
-	// 21.6: Double-Precision Floating-Point Compare Instructions
+	// 22.6: Double-Precision Floating-Point Compare Instructions
 	AFEQD
 	AFLTD
 	AFLED
 
-	// 21.7: Double-Precision Floating-Point Classify Instruction
+	// 22.7: Double-Precision Floating-Point Classify Instruction
 	AFCLASSD
 
-	// 22.1 Quad-Precision Load and Store Instructions
+	// 23.1: Quad-Precision Load and Store Instructions
 	AFLQ
 	AFSQ
 
-	// 22.2: Quad-Precision Computational Instructions
+	// 23.2: Quad-Precision Computational Instructions
 	AFADDQ
 	AFSUBQ
 	AFMULQ
@@ -545,7 +549,7 @@ const (
 	AFNMADDQ
 	AFNMSUBQ
 
-	// 22.3 Quad-Precision Convert and Move Instructions
+	// 23.3: Quad-Precision Convert and Move Instructions
 	AFCVTWQ
 	AFCVTLQ
 	AFCVTSQ
@@ -562,15 +566,68 @@ const (
 	AFSGNJNQ
 	AFSGNJXQ
 
-	// 22.4 Quad-Precision Floating-Point Compare Instructions
+	// 23.4: Quad-Precision Floating-Point Compare Instructions
 	AFEQQ
 	AFLEQ
 	AFLTQ
 
-	// 22.5 Quad-Precision Floating-Point Classify Instruction
+	// 23.5: Quad-Precision Floating-Point Classify Instruction
 	AFCLASSQ
 
-	// 28.4.1: Address Generation Instructions (Zba)
+	// 28.3.1: Compressed Stack-Pointer-Based Loads and Stores
+	ACLWSP
+	ACLDSP
+	ACFLDSP
+	ACSWSP
+	ACSDSP
+	ACFSDSP
+
+	// 28.3.2: Compressed Register-Based Loads and Stores
+	ACLW
+	ACLD
+	ACFLD
+	ACSW
+	ACSD
+	ACFSD
+
+	// 28.4: Compressed Control Transfer Instructions
+	ACJ
+	ACJR
+	ACJALR
+	ACBEQZ
+	ACBNEZ
+
+	// 28.5.1: Compressed Integer Constant-Generation Instructions
+	ACLI
+	ACLUI
+
+	// 28.5.2: Compressed Integer Register-Immediate Operations
+	ACADDI
+	ACADDIW
+	ACADDI16SP
+	ACADDI4SPN
+	ACSLLI
+	ACSRLI
+	ACSRAI
+	ACANDI
+
+	// 28.5.3: Compressed Integer Register-Register Operations
+	ACMV
+	ACADD
+	ACAND
+	ACOR
+	ACXOR
+	ACSUB
+	ACADDW
+	ACSUBW
+
+	// 28.5.5: Compressed NOP Instruction
+	ACNOP
+
+	// 28.5.6: Compressed Breakpoint Instruction
+	ACEBREAK
+
+	// 30.2: Address Generation Instructions (Zba)
 	AADDUW
 	ASH1ADD
 	ASH1ADDUW
@@ -580,7 +637,7 @@ const (
 	ASH3ADDUW
 	ASLLIUW
 
-	// 28.4.2: Basic Bit Manipulation (Zbb)
+	// 30.3: Basic Bit Manipulation (Zbb)
 	AANDN
 	AORN
 	AXNOR
@@ -597,8 +654,6 @@ const (
 	ASEXTB
 	ASEXTH
 	AZEXTH
-
-	// 28.4.2: Bitwise Rotation (Zbb)
 	AROL
 	AROLW
 	AROR
@@ -608,12 +663,12 @@ const (
 	AORCB
 	AREV8
 
-	// 28.4.3: Carry-less multiplication (Zbc)
+	// 30.4: Carry-less multiplication (Zbc)
 	ACLMUL
 	ACLMULH
 	ACLMULR
 
-	// 28.4.4: Single-bit Instructions (Zbs)
+	// 30.5: Single-bit Instructions (Zbs)
 	ABCLR
 	ABCLRI
 	ABEXT
@@ -640,7 +695,7 @@ const (
 	AVLMV
 	AVSMV
 
-	// 31.7.5: Vector Strided Instructions
+	// 31.7.5: Vector Constant-Stride Instructions
 	AVLSE8V
 	AVLSE16V
 	AVLSE32V
@@ -668,11 +723,275 @@ const (
 	AVSOXEI32V
 	AVSOXEI64V
 
-	// 31.7.7: Unit-stride Fault-Only-First Loads
+	// 31.7.7: Vector Unit-Stride Fault-Only-First Loads
 	AVLE8FFV
 	AVLE16FFV
 	AVLE32FFV
 	AVLE64FFV
+
+	// 31.7.8.1: Vector Unit-Stride Segment Loads and Stores
+	AVLSEG2E8V
+	AVLSEG3E8V
+	AVLSEG4E8V
+	AVLSEG5E8V
+	AVLSEG6E8V
+	AVLSEG7E8V
+	AVLSEG8E8V
+	AVLSEG2E16V
+	AVLSEG3E16V
+	AVLSEG4E16V
+	AVLSEG5E16V
+	AVLSEG6E16V
+	AVLSEG7E16V
+	AVLSEG8E16V
+	AVLSEG2E32V
+	AVLSEG3E32V
+	AVLSEG4E32V
+	AVLSEG5E32V
+	AVLSEG6E32V
+	AVLSEG7E32V
+	AVLSEG8E32V
+	AVLSEG2E64V
+	AVLSEG3E64V
+	AVLSEG4E64V
+	AVLSEG5E64V
+	AVLSEG6E64V
+	AVLSEG7E64V
+	AVLSEG8E64V
+
+	AVSSEG2E8V
+	AVSSEG3E8V
+	AVSSEG4E8V
+	AVSSEG5E8V
+	AVSSEG6E8V
+	AVSSEG7E8V
+	AVSSEG8E8V
+	AVSSEG2E16V
+	AVSSEG3E16V
+	AVSSEG4E16V
+	AVSSEG5E16V
+	AVSSEG6E16V
+	AVSSEG7E16V
+	AVSSEG8E16V
+	AVSSEG2E32V
+	AVSSEG3E32V
+	AVSSEG4E32V
+	AVSSEG5E32V
+	AVSSEG6E32V
+	AVSSEG7E32V
+	AVSSEG8E32V
+	AVSSEG2E64V
+	AVSSEG3E64V
+	AVSSEG4E64V
+	AVSSEG5E64V
+	AVSSEG6E64V
+	AVSSEG7E64V
+	AVSSEG8E64V
+
+	AVLSEG2E8FFV
+	AVLSEG3E8FFV
+	AVLSEG4E8FFV
+	AVLSEG5E8FFV
+	AVLSEG6E8FFV
+	AVLSEG7E8FFV
+	AVLSEG8E8FFV
+	AVLSEG2E16FFV
+	AVLSEG3E16FFV
+	AVLSEG4E16FFV
+	AVLSEG5E16FFV
+	AVLSEG6E16FFV
+	AVLSEG7E16FFV
+	AVLSEG8E16FFV
+	AVLSEG2E32FFV
+	AVLSEG3E32FFV
+	AVLSEG4E32FFV
+	AVLSEG5E32FFV
+	AVLSEG6E32FFV
+	AVLSEG7E32FFV
+	AVLSEG8E32FFV
+	AVLSEG2E64FFV
+	AVLSEG3E64FFV
+	AVLSEG4E64FFV
+	AVLSEG5E64FFV
+	AVLSEG6E64FFV
+	AVLSEG7E64FFV
+	AVLSEG8E64FFV
+
+	// 31.7.8.2: Vector Constant-Stride Segment Loads and Stores
+	AVLSSEG2E8V
+	AVLSSEG3E8V
+	AVLSSEG4E8V
+	AVLSSEG5E8V
+	AVLSSEG6E8V
+	AVLSSEG7E8V
+	AVLSSEG8E8V
+	AVLSSEG2E16V
+	AVLSSEG3E16V
+	AVLSSEG4E16V
+	AVLSSEG5E16V
+	AVLSSEG6E16V
+	AVLSSEG7E16V
+	AVLSSEG8E16V
+	AVLSSEG2E32V
+	AVLSSEG3E32V
+	AVLSSEG4E32V
+	AVLSSEG5E32V
+	AVLSSEG6E32V
+	AVLSSEG7E32V
+	AVLSSEG8E32V
+	AVLSSEG2E64V
+	AVLSSEG3E64V
+	AVLSSEG4E64V
+	AVLSSEG5E64V
+	AVLSSEG6E64V
+	AVLSSEG7E64V
+	AVLSSEG8E64V
+
+	AVSSSEG2E8V
+	AVSSSEG3E8V
+	AVSSSEG4E8V
+	AVSSSEG5E8V
+	AVSSSEG6E8V
+	AVSSSEG7E8V
+	AVSSSEG8E8V
+	AVSSSEG2E16V
+	AVSSSEG3E16V
+	AVSSSEG4E16V
+	AVSSSEG5E16V
+	AVSSSEG6E16V
+	AVSSSEG7E16V
+	AVSSSEG8E16V
+	AVSSSEG2E32V
+	AVSSSEG3E32V
+	AVSSSEG4E32V
+	AVSSSEG5E32V
+	AVSSSEG6E32V
+	AVSSSEG7E32V
+	AVSSSEG8E32V
+	AVSSSEG2E64V
+	AVSSSEG3E64V
+	AVSSSEG4E64V
+	AVSSSEG5E64V
+	AVSSSEG6E64V
+	AVSSSEG7E64V
+	AVSSSEG8E64V
+
+	// 31.7.8.3: Vector Indexed Segment Loads and Stores
+	AVLOXSEG2EI8V
+	AVLOXSEG3EI8V
+	AVLOXSEG4EI8V
+	AVLOXSEG5EI8V
+	AVLOXSEG6EI8V
+	AVLOXSEG7EI8V
+	AVLOXSEG8EI8V
+	AVLOXSEG2EI16V
+	AVLOXSEG3EI16V
+	AVLOXSEG4EI16V
+	AVLOXSEG5EI16V
+	AVLOXSEG6EI16V
+	AVLOXSEG7EI16V
+	AVLOXSEG8EI16V
+	AVLOXSEG2EI32V
+	AVLOXSEG3EI32V
+	AVLOXSEG4EI32V
+	AVLOXSEG5EI32V
+	AVLOXSEG6EI32V
+	AVLOXSEG7EI32V
+	AVLOXSEG8EI32V
+	AVLOXSEG2EI64V
+	AVLOXSEG3EI64V
+	AVLOXSEG4EI64V
+	AVLOXSEG5EI64V
+	AVLOXSEG6EI64V
+	AVLOXSEG7EI64V
+	AVLOXSEG8EI64V
+
+	AVSOXSEG2EI8V
+	AVSOXSEG3EI8V
+	AVSOXSEG4EI8V
+	AVSOXSEG5EI8V
+	AVSOXSEG6EI8V
+	AVSOXSEG7EI8V
+	AVSOXSEG8EI8V
+	AVSOXSEG2EI16V
+	AVSOXSEG3EI16V
+	AVSOXSEG4EI16V
+	AVSOXSEG5EI16V
+	AVSOXSEG6EI16V
+	AVSOXSEG7EI16V
+	AVSOXSEG8EI16V
+	AVSOXSEG2EI32V
+	AVSOXSEG3EI32V
+	AVSOXSEG4EI32V
+	AVSOXSEG5EI32V
+	AVSOXSEG6EI32V
+	AVSOXSEG7EI32V
+	AVSOXSEG8EI32V
+	AVSOXSEG2EI64V
+	AVSOXSEG3EI64V
+	AVSOXSEG4EI64V
+	AVSOXSEG5EI64V
+	AVSOXSEG6EI64V
+	AVSOXSEG7EI64V
+	AVSOXSEG8EI64V
+
+	AVLUXSEG2EI8V
+	AVLUXSEG3EI8V
+	AVLUXSEG4EI8V
+	AVLUXSEG5EI8V
+	AVLUXSEG6EI8V
+	AVLUXSEG7EI8V
+	AVLUXSEG8EI8V
+	AVLUXSEG2EI16V
+	AVLUXSEG3EI16V
+	AVLUXSEG4EI16V
+	AVLUXSEG5EI16V
+	AVLUXSEG6EI16V
+	AVLUXSEG7EI16V
+	AVLUXSEG8EI16V
+	AVLUXSEG2EI32V
+	AVLUXSEG3EI32V
+	AVLUXSEG4EI32V
+	AVLUXSEG5EI32V
+	AVLUXSEG6EI32V
+	AVLUXSEG7EI32V
+	AVLUXSEG8EI32V
+	AVLUXSEG2EI64V
+	AVLUXSEG3EI64V
+	AVLUXSEG4EI64V
+	AVLUXSEG5EI64V
+	AVLUXSEG6EI64V
+	AVLUXSEG7EI64V
+	AVLUXSEG8EI64V
+
+	AVSUXSEG2EI8V
+	AVSUXSEG3EI8V
+	AVSUXSEG4EI8V
+	AVSUXSEG5EI8V
+	AVSUXSEG6EI8V
+	AVSUXSEG7EI8V
+	AVSUXSEG8EI8V
+	AVSUXSEG2EI16V
+	AVSUXSEG3EI16V
+	AVSUXSEG4EI16V
+	AVSUXSEG5EI16V
+	AVSUXSEG6EI16V
+	AVSUXSEG7EI16V
+	AVSUXSEG8EI16V
+	AVSUXSEG2EI32V
+	AVSUXSEG3EI32V
+	AVSUXSEG4EI32V
+	AVSUXSEG5EI32V
+	AVSUXSEG6EI32V
+	AVSUXSEG7EI32V
+	AVSUXSEG8EI32V
+	AVSUXSEG2EI64V
+	AVSUXSEG3EI64V
+	AVSUXSEG4EI64V
+	AVSUXSEG5EI64V
+	AVSUXSEG6EI64V
+	AVSUXSEG7EI64V
+	AVSUXSEG8EI64V
 
 	// 31.7.9: Vector Load/Store Whole Register Instructions
 	AVL1RE8V
@@ -1110,7 +1429,7 @@ const (
 	AVMV4RV
 	AVMV8RV
 
-	// 32.2.1: Vector Basic Bit-manipulation (Zvbb)
+	// 33.2.1: Vector Basic Bit-manipulation (Zvbb)
 	AVANDNVV
 	AVANDNVX
 	AVBREVV
@@ -1128,7 +1447,7 @@ const (
 	AVWSLLVX
 	AVWSLLVI
 
-	// 32.2.2: Vector Carryless Multiplication (Zvbc)
+	// 33.2.2: Vector Carryless Multiplication (Zvbc)
 	AVCLMULVV
 	AVCLMULVX
 	AVCLMULHVV
@@ -1148,7 +1467,7 @@ const (
 	// 3.3.3: Wait for Interrupt
 	AWFI
 
-	// 10.2: Supervisor Memory-Management Fence Instruction
+	// 12.2.1: Supervisor Memory-Management Fence Instruction
 	ASFENCEVMA
 
 	// The escape hatch. Inserts a single 32-bit word.

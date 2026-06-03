@@ -36,8 +36,7 @@ type ArshalValues struct {
 	Marshalers   any
 	Unmarshalers any
 
-	Format      string
-	FormatDepth int
+	Format string
 }
 
 // DefaultOptionsV2 is the set of all options that define default v2 behavior.
@@ -70,7 +69,11 @@ var JoinUnknownOption = func(Struct, Options) Struct { panic("unknown option") }
 
 func (dst *Struct) Join(srcs ...Options)
 
-func (dst *Struct) JoinWithoutCoderOptions(srcs ...Options)
+// InitializeMultiline sets default options implied by Multiline.
+func (s *Struct) InitializeMultiline()
+
+// ChangedWhitespace reports whether whitespace values have changed.
+func ChangedWhitespace(s1, s2 Struct) bool
 
 type (
 	Indent       string

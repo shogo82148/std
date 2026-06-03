@@ -39,7 +39,7 @@ type SemanticError struct {
 
 	action string
 
-	// ByteOffsetは、エラーがこのバイトオフセット以降で発生したことを示します。
+	// ByteOffsetは、このバイトオフセット位置以降でエラーが発生したことを示します。
 	ByteOffset int64
 	// JSONPointerは、RFC 6901で定義されたJSONポインタ表記を使って
 	// このJSON値内でエラーが発生したことを示します。
