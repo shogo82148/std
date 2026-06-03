@@ -551,8 +551,12 @@ func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, e
 // that matched the request.
 // It returns the empty string if the request was not matched against a pattern
 // or there is no such wildcard in the pattern.
+//
+// The value is unescaped. For example, if the pattern "/b/{bucket}" matches
+// the path "/b/a%2fb", PathValue("bucket") returns "a/b".
 func (r *Request) PathValue(name string) string
 
 // SetPathValue sets name to value, so that subsequent calls to r.PathValue(name)
 // return value.
+// It does not unescape value.
 func (r *Request) SetPathValue(name, value string)

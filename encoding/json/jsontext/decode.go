@@ -35,7 +35,7 @@ import (
 //	d.ReadValue() // {"k":"v"}
 //	d.ReadToken() // }
 //
-// The above is one of many possible sequence of calls and
+// The above is one of many possible sequences of calls and
 // may not represent the most sensible method to call for any given token/value.
 // For example, it is probably more common to call [Decoder.ReadToken] to obtain a
 // string token for object names.
@@ -51,7 +51,7 @@ type Decoder struct {
 func NewDecoder(r io.Reader, opts ...Options) *Decoder
 
 // Reset resets a decoder such that it is reading afresh from r and
-// configured with the provided options. Reset must not be called on an
+// configured with the provided options. Reset must not be called on
 // a Decoder passed to the [encoding/json/v2.UnmarshalerFrom.UnmarshalJSONFrom] method
 // or the [encoding/json/v2.UnmarshalFromFunc] function.
 func (d *Decoder) Reset(r io.Reader, opts ...Options)

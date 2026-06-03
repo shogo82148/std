@@ -4,10 +4,16 @@
 
 // simdgen is an experiment in generating Go <-> asm SIMD mappings.
 //
-// Usage: simdgen [-xedPath=path] [-q=query] input.yaml...
+// Usage: simdgen [-xedPath=path | -arm64Path=path] [-q=query] input.yaml...
+//
+// Only one of -xedPath or -arm64Path may be specified.
 //
 // If -xedPath is provided, one of the inputs is a sum of op-code definitions
 // generated from the Intel XED data at path.
+//
+// If -arm64Path is provided, one of the inputs is a set of instruction
+// definitions parsed from ARM64 ISA XML files at path (obtained from
+// https://developer.arm.com/-/cdn-downloads/permalink/Exploration-Tools-A64-ISA/ISA_A64/ISA_A64_xml_A_profile-2025-12.tar.gz).
 //
 // If input YAML files are provided, each file is read as an input value. See
 // [unify.Closure.UnmarshalYAML] or "go doc unify.Closure.UnmarshalYAML" for the
@@ -37,14 +43,22 @@
 //
 //	go run . -xedPath $XEDPATH -q '{asm: VPADDQ}'
 //
+// For VADD.S4 on ARM64:
+//
+//	go run . -arm64Path $ARM64_ISA_PATH -o yaml -q '{asm: VADD, arrangement: "4S"}'
+//
 // simdgen can also generate Go definitions of SIMD mappings:
 // To generate go files to the go root, run:
 //
-//	go run . -xedPath $XEDPATH -o godefs -goroot $PATH/TO/go go.yaml categories.yaml types.yaml
+//	go run . -xedPath $XEDPATH -o godefs -goroot $PATH/TO/go go_amd64.yaml categories.yaml types.yaml
+//
+// For ARM64:
+//
+//	go run . -arm64Path $ARM64_ISA_PATH -o godefs -goroot $PATH/TO/go go_arm64.yaml categories.yaml types.yaml
 //
 // types.yaml is already written, it specifies the shapes of vectors.
-// categories.yaml and go.yaml contains definitions that unifies with types.yaml and XED
-// data, you can find an example in ops/AddSub/.
+// categories.yaml and go_<arch>.yaml contain definitions that unify with types.yaml and
+// XED/ARM64 ISA data, you can find an example in ops/AddSub/.
 //
 // When generating Go definitions, simdgen do 3 "magic"s:
 // - It splits masked operations(with op's [Masked] field set) to const and non const:
@@ -67,7 +81,7 @@
 // These 3 magics could be disabled by enabling -nosplitmask, -nodedup or
 // -noconstimmporting flags.
 //
-// simdgen right now only supports amd64, -arch=$OTHERARCH will trigger a fatal error.
+// simdgen supports amd64 and arm64 architectures.
 package main
 
 import (
@@ -77,7 +91,9 @@ import (
 var (
 	FlagNoDedup           = flag.Bool("nodedup", false, "disable deduplicating godefs of 2 qualifying operations from different extensions")
 	FlagNoConstImmPorting = flag.Bool("noconstimmporting", false, "disable const immediate porting from op to imm operand")
-	FlagArch              = flag.String("arch", "amd64", "the target architecture")
+
+	// FlagArch must be pre-initialized to a bogus value because there have been initializations that depended on it
+	FlagArch = flag.String("arch", "must be specified, amd64 or arm64", "the target architecture")
 
 	Verbose = flag.Bool("v", false, "verbose")
 

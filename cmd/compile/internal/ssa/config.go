@@ -30,6 +30,7 @@ type Config struct {
 	fpRegMask      regMask
 	fp32RegMask    regMask
 	fp64RegMask    regMask
+	simdRegMask    regMask
 	specialRegMask regMask
 	intParamRegs   []int8
 	floatParamRegs []int8

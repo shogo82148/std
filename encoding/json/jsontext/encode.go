@@ -35,7 +35,7 @@ import (
 //	e.WriteValue(Value(`{"k":"v"}`)) // {"k":"v"}
 //	e.WriteToken(EndObject)          // }
 //
-// The above is one of many possible sequence of calls and
+// The above is one of many possible sequences of calls and
 // may not represent the most sensible method to call for any given token/value.
 // For example, it is probably more common to call [Encoder.WriteToken] with a string
 // for object names.
@@ -54,7 +54,7 @@ func NewEncoder(w io.Writer, opts ...Options) *Encoder
 
 // Reset resets an encoder such that it is writing afresh to w and
 // configured with the provided options. Reset must not be called on
-// a Encoder passed to the [encoding/json/v2.MarshalerTo.MarshalJSONTo] method
+// an Encoder passed to the [encoding/json/v2.MarshalerTo.MarshalJSONTo] method
 // or the [encoding/json/v2.MarshalToFunc] function.
 func (e *Encoder) Reset(w io.Writer, opts ...Options)
 
@@ -105,11 +105,11 @@ func (e *Encoder) OutputOffset() int64
 //
 // Example usage:
 //
-//	b := d.AvailableBuffer()
+//	b := e.AvailableBuffer()
 //	b = append(b, '"')
 //	b = appendString(b, v) // append the string formatting of v
 //	b = append(b, '"')
-//	... := d.WriteValue(b)
+//	... := e.WriteValue(b)
 //
 // It is the user's responsibility to ensure that the value is valid JSON.
 func (e *Encoder) AvailableBuffer() []byte

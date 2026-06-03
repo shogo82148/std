@@ -45,7 +45,7 @@ type SemanticError struct {
 
 	action string
 
-	// ByteOffset indicates that an error occurred after this byte offset.
+	// ByteOffset indicates that an error occurred at or after this byte offset.
 	ByteOffset int64
 	// JSONPointer indicates that an error occurred within this JSON value
 	// as indicated using the JSON Pointer notation (see RFC 6901).

@@ -4,442 +4,506 @@
 
 package archsimd
 
-// LoadInt8x16Slice loads an Int8x16 from a slice of at least 16 int8s.
-func LoadInt8x16Slice(s []int8) Int8x16
+// LoadInt8x16 loads an Int8x16 from a slice of elements.
+// If s does not have at least 16 elements, it panics.
+func LoadInt8x16(s []int8) Int8x16
 
-// StoreSlice stores x into a slice of at least 16 int8s.
-func (x Int8x16) StoreSlice(s []int8)
+// Store stores the elements of x into a slice.
+// If s does not have at least 16 elements, it panics.
+func (x Int8x16) Store(s []int8)
 
-// LoadInt16x8Slice loads an Int16x8 from a slice of at least 8 int16s.
-func LoadInt16x8Slice(s []int16) Int16x8
+// LoadInt16x8 loads an Int16x8 from a slice of elements.
+// If s does not have at least 8 elements, it panics.
+func LoadInt16x8(s []int16) Int16x8
 
-// StoreSlice stores x into a slice of at least 8 int16s.
-func (x Int16x8) StoreSlice(s []int16)
+// Store stores the elements of x into a slice.
+// If s does not have at least 8 elements, it panics.
+func (x Int16x8) Store(s []int16)
 
-// LoadInt32x4Slice loads an Int32x4 from a slice of at least 4 int32s.
-func LoadInt32x4Slice(s []int32) Int32x4
+// LoadInt32x4 loads an Int32x4 from a slice of elements.
+// If s does not have at least 4 elements, it panics.
+func LoadInt32x4(s []int32) Int32x4
 
-// StoreSlice stores x into a slice of at least 4 int32s.
-func (x Int32x4) StoreSlice(s []int32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 4 elements, it panics.
+func (x Int32x4) Store(s []int32)
 
-// LoadInt64x2Slice loads an Int64x2 from a slice of at least 2 int64s.
-func LoadInt64x2Slice(s []int64) Int64x2
+// LoadInt64x2 loads an Int64x2 from a slice of elements.
+// If s does not have at least 2 elements, it panics.
+func LoadInt64x2(s []int64) Int64x2
 
-// StoreSlice stores x into a slice of at least 2 int64s.
-func (x Int64x2) StoreSlice(s []int64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 2 elements, it panics.
+func (x Int64x2) Store(s []int64)
 
-// LoadUint8x16Slice loads an Uint8x16 from a slice of at least 16 uint8s.
-func LoadUint8x16Slice(s []uint8) Uint8x16
+// LoadUint8x16 loads an Uint8x16 from a slice of elements.
+// If s does not have at least 16 elements, it panics.
+func LoadUint8x16(s []uint8) Uint8x16
 
-// StoreSlice stores x into a slice of at least 16 uint8s.
-func (x Uint8x16) StoreSlice(s []uint8)
+// Store stores the elements of x into a slice.
+// If s does not have at least 16 elements, it panics.
+func (x Uint8x16) Store(s []uint8)
 
-// LoadUint16x8Slice loads an Uint16x8 from a slice of at least 8 uint16s.
-func LoadUint16x8Slice(s []uint16) Uint16x8
+// LoadUint16x8 loads an Uint16x8 from a slice of elements.
+// If s does not have at least 8 elements, it panics.
+func LoadUint16x8(s []uint16) Uint16x8
 
-// StoreSlice stores x into a slice of at least 8 uint16s.
-func (x Uint16x8) StoreSlice(s []uint16)
+// Store stores the elements of x into a slice.
+// If s does not have at least 8 elements, it panics.
+func (x Uint16x8) Store(s []uint16)
 
-// LoadUint32x4Slice loads an Uint32x4 from a slice of at least 4 uint32s.
-func LoadUint32x4Slice(s []uint32) Uint32x4
+// LoadUint32x4 loads an Uint32x4 from a slice of elements.
+// If s does not have at least 4 elements, it panics.
+func LoadUint32x4(s []uint32) Uint32x4
 
-// StoreSlice stores x into a slice of at least 4 uint32s.
-func (x Uint32x4) StoreSlice(s []uint32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 4 elements, it panics.
+func (x Uint32x4) Store(s []uint32)
 
-// LoadUint64x2Slice loads an Uint64x2 from a slice of at least 2 uint64s.
-func LoadUint64x2Slice(s []uint64) Uint64x2
+// LoadUint64x2 loads an Uint64x2 from a slice of elements.
+// If s does not have at least 2 elements, it panics.
+func LoadUint64x2(s []uint64) Uint64x2
 
-// StoreSlice stores x into a slice of at least 2 uint64s.
-func (x Uint64x2) StoreSlice(s []uint64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 2 elements, it panics.
+func (x Uint64x2) Store(s []uint64)
 
-// LoadFloat32x4Slice loads a Float32x4 from a slice of at least 4 float32s.
-func LoadFloat32x4Slice(s []float32) Float32x4
+// LoadFloat32x4 loads a Float32x4 from a slice of elements.
+// If s does not have at least 4 elements, it panics.
+func LoadFloat32x4(s []float32) Float32x4
 
-// StoreSlice stores x into a slice of at least 4 float32s.
-func (x Float32x4) StoreSlice(s []float32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 4 elements, it panics.
+func (x Float32x4) Store(s []float32)
 
-// LoadFloat64x2Slice loads a Float64x2 from a slice of at least 2 float64s.
-func LoadFloat64x2Slice(s []float64) Float64x2
+// LoadFloat64x2 loads a Float64x2 from a slice of elements.
+// If s does not have at least 2 elements, it panics.
+func LoadFloat64x2(s []float64) Float64x2
 
-// StoreSlice stores x into a slice of at least 2 float64s.
-func (x Float64x2) StoreSlice(s []float64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 2 elements, it panics.
+func (x Float64x2) Store(s []float64)
 
-// LoadInt8x32Slice loads an Int8x32 from a slice of at least 32 int8s.
-func LoadInt8x32Slice(s []int8) Int8x32
+// LoadInt8x32 loads an Int8x32 from a slice of elements.
+// If s does not have at least 32 elements, it panics.
+func LoadInt8x32(s []int8) Int8x32
 
-// StoreSlice stores x into a slice of at least 32 int8s.
-func (x Int8x32) StoreSlice(s []int8)
+// Store stores the elements of x into a slice.
+// If s does not have at least 32 elements, it panics.
+func (x Int8x32) Store(s []int8)
 
-// LoadInt16x16Slice loads an Int16x16 from a slice of at least 16 int16s.
-func LoadInt16x16Slice(s []int16) Int16x16
+// LoadInt16x16 loads an Int16x16 from a slice of elements.
+// If s does not have at least 16 elements, it panics.
+func LoadInt16x16(s []int16) Int16x16
 
-// StoreSlice stores x into a slice of at least 16 int16s.
-func (x Int16x16) StoreSlice(s []int16)
+// Store stores the elements of x into a slice.
+// If s does not have at least 16 elements, it panics.
+func (x Int16x16) Store(s []int16)
 
-// LoadInt32x8Slice loads an Int32x8 from a slice of at least 8 int32s.
-func LoadInt32x8Slice(s []int32) Int32x8
+// LoadInt32x8 loads an Int32x8 from a slice of elements.
+// If s does not have at least 8 elements, it panics.
+func LoadInt32x8(s []int32) Int32x8
 
-// StoreSlice stores x into a slice of at least 8 int32s.
-func (x Int32x8) StoreSlice(s []int32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 8 elements, it panics.
+func (x Int32x8) Store(s []int32)
 
-// LoadInt64x4Slice loads an Int64x4 from a slice of at least 4 int64s.
-func LoadInt64x4Slice(s []int64) Int64x4
+// LoadInt64x4 loads an Int64x4 from a slice of elements.
+// If s does not have at least 4 elements, it panics.
+func LoadInt64x4(s []int64) Int64x4
 
-// StoreSlice stores x into a slice of at least 4 int64s.
-func (x Int64x4) StoreSlice(s []int64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 4 elements, it panics.
+func (x Int64x4) Store(s []int64)
 
-// LoadUint8x32Slice loads an Uint8x32 from a slice of at least 32 uint8s.
-func LoadUint8x32Slice(s []uint8) Uint8x32
+// LoadUint8x32 loads an Uint8x32 from a slice of elements.
+// If s does not have at least 32 elements, it panics.
+func LoadUint8x32(s []uint8) Uint8x32
 
-// StoreSlice stores x into a slice of at least 32 uint8s.
-func (x Uint8x32) StoreSlice(s []uint8)
+// Store stores the elements of x into a slice.
+// If s does not have at least 32 elements, it panics.
+func (x Uint8x32) Store(s []uint8)
 
-// LoadUint16x16Slice loads an Uint16x16 from a slice of at least 16 uint16s.
-func LoadUint16x16Slice(s []uint16) Uint16x16
+// LoadUint16x16 loads an Uint16x16 from a slice of elements.
+// If s does not have at least 16 elements, it panics.
+func LoadUint16x16(s []uint16) Uint16x16
 
-// StoreSlice stores x into a slice of at least 16 uint16s.
-func (x Uint16x16) StoreSlice(s []uint16)
+// Store stores the elements of x into a slice.
+// If s does not have at least 16 elements, it panics.
+func (x Uint16x16) Store(s []uint16)
 
-// LoadUint32x8Slice loads an Uint32x8 from a slice of at least 8 uint32s.
-func LoadUint32x8Slice(s []uint32) Uint32x8
+// LoadUint32x8 loads an Uint32x8 from a slice of elements.
+// If s does not have at least 8 elements, it panics.
+func LoadUint32x8(s []uint32) Uint32x8
 
-// StoreSlice stores x into a slice of at least 8 uint32s.
-func (x Uint32x8) StoreSlice(s []uint32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 8 elements, it panics.
+func (x Uint32x8) Store(s []uint32)
 
-// LoadUint64x4Slice loads an Uint64x4 from a slice of at least 4 uint64s.
-func LoadUint64x4Slice(s []uint64) Uint64x4
+// LoadUint64x4 loads an Uint64x4 from a slice of elements.
+// If s does not have at least 4 elements, it panics.
+func LoadUint64x4(s []uint64) Uint64x4
 
-// StoreSlice stores x into a slice of at least 4 uint64s.
-func (x Uint64x4) StoreSlice(s []uint64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 4 elements, it panics.
+func (x Uint64x4) Store(s []uint64)
 
-// LoadFloat32x8Slice loads a Float32x8 from a slice of at least 8 float32s.
-func LoadFloat32x8Slice(s []float32) Float32x8
+// LoadFloat32x8 loads a Float32x8 from a slice of elements.
+// If s does not have at least 8 elements, it panics.
+func LoadFloat32x8(s []float32) Float32x8
 
-// StoreSlice stores x into a slice of at least 8 float32s.
-func (x Float32x8) StoreSlice(s []float32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 8 elements, it panics.
+func (x Float32x8) Store(s []float32)
 
-// LoadFloat64x4Slice loads a Float64x4 from a slice of at least 4 float64s.
-func LoadFloat64x4Slice(s []float64) Float64x4
+// LoadFloat64x4 loads a Float64x4 from a slice of elements.
+// If s does not have at least 4 elements, it panics.
+func LoadFloat64x4(s []float64) Float64x4
 
-// StoreSlice stores x into a slice of at least 4 float64s.
-func (x Float64x4) StoreSlice(s []float64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 4 elements, it panics.
+func (x Float64x4) Store(s []float64)
 
-// LoadInt8x64Slice loads an Int8x64 from a slice of at least 64 int8s.
-func LoadInt8x64Slice(s []int8) Int8x64
+// LoadInt8x64 loads an Int8x64 from a slice of elements.
+// If s does not have at least 64 elements, it panics.
+func LoadInt8x64(s []int8) Int8x64
 
-// StoreSlice stores x into a slice of at least 64 int8s.
-func (x Int8x64) StoreSlice(s []int8)
+// Store stores the elements of x into a slice.
+// If s does not have at least 64 elements, it panics.
+func (x Int8x64) Store(s []int8)
 
-// LoadInt16x32Slice loads an Int16x32 from a slice of at least 32 int16s.
-func LoadInt16x32Slice(s []int16) Int16x32
+// LoadInt16x32 loads an Int16x32 from a slice of elements.
+// If s does not have at least 32 elements, it panics.
+func LoadInt16x32(s []int16) Int16x32
 
-// StoreSlice stores x into a slice of at least 32 int16s.
-func (x Int16x32) StoreSlice(s []int16)
+// Store stores the elements of x into a slice.
+// If s does not have at least 32 elements, it panics.
+func (x Int16x32) Store(s []int16)
 
-// LoadInt32x16Slice loads an Int32x16 from a slice of at least 16 int32s.
-func LoadInt32x16Slice(s []int32) Int32x16
+// LoadInt32x16 loads an Int32x16 from a slice of elements.
+// If s does not have at least 16 elements, it panics.
+func LoadInt32x16(s []int32) Int32x16
 
-// StoreSlice stores x into a slice of at least 16 int32s.
-func (x Int32x16) StoreSlice(s []int32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 16 elements, it panics.
+func (x Int32x16) Store(s []int32)
 
-// LoadInt64x8Slice loads an Int64x8 from a slice of at least 8 int64s.
-func LoadInt64x8Slice(s []int64) Int64x8
+// LoadInt64x8 loads an Int64x8 from a slice of elements.
+// If s does not have at least 8 elements, it panics.
+func LoadInt64x8(s []int64) Int64x8
 
-// StoreSlice stores x into a slice of at least 8 int64s.
-func (x Int64x8) StoreSlice(s []int64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 8 elements, it panics.
+func (x Int64x8) Store(s []int64)
 
-// LoadUint8x64Slice loads an Uint8x64 from a slice of at least 64 uint8s.
-func LoadUint8x64Slice(s []uint8) Uint8x64
+// LoadUint8x64 loads an Uint8x64 from a slice of elements.
+// If s does not have at least 64 elements, it panics.
+func LoadUint8x64(s []uint8) Uint8x64
 
-// StoreSlice stores x into a slice of at least 64 uint8s.
-func (x Uint8x64) StoreSlice(s []uint8)
+// Store stores the elements of x into a slice.
+// If s does not have at least 64 elements, it panics.
+func (x Uint8x64) Store(s []uint8)
 
-// LoadUint16x32Slice loads an Uint16x32 from a slice of at least 32 uint16s.
-func LoadUint16x32Slice(s []uint16) Uint16x32
+// LoadUint16x32 loads an Uint16x32 from a slice of elements.
+// If s does not have at least 32 elements, it panics.
+func LoadUint16x32(s []uint16) Uint16x32
 
-// StoreSlice stores x into a slice of at least 32 uint16s.
-func (x Uint16x32) StoreSlice(s []uint16)
+// Store stores the elements of x into a slice.
+// If s does not have at least 32 elements, it panics.
+func (x Uint16x32) Store(s []uint16)
 
-// LoadUint32x16Slice loads an Uint32x16 from a slice of at least 16 uint32s.
-func LoadUint32x16Slice(s []uint32) Uint32x16
+// LoadUint32x16 loads an Uint32x16 from a slice of elements.
+// If s does not have at least 16 elements, it panics.
+func LoadUint32x16(s []uint32) Uint32x16
 
-// StoreSlice stores x into a slice of at least 16 uint32s.
-func (x Uint32x16) StoreSlice(s []uint32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 16 elements, it panics.
+func (x Uint32x16) Store(s []uint32)
 
-// LoadUint64x8Slice loads an Uint64x8 from a slice of at least 8 uint64s.
-func LoadUint64x8Slice(s []uint64) Uint64x8
+// LoadUint64x8 loads an Uint64x8 from a slice of elements.
+// If s does not have at least 8 elements, it panics.
+func LoadUint64x8(s []uint64) Uint64x8
 
-// StoreSlice stores x into a slice of at least 8 uint64s.
-func (x Uint64x8) StoreSlice(s []uint64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 8 elements, it panics.
+func (x Uint64x8) Store(s []uint64)
 
-// LoadFloat32x16Slice loads a Float32x16 from a slice of at least 16 float32s.
-func LoadFloat32x16Slice(s []float32) Float32x16
+// LoadFloat32x16 loads a Float32x16 from a slice of elements.
+// If s does not have at least 16 elements, it panics.
+func LoadFloat32x16(s []float32) Float32x16
 
-// StoreSlice stores x into a slice of at least 16 float32s.
-func (x Float32x16) StoreSlice(s []float32)
+// Store stores the elements of x into a slice.
+// If s does not have at least 16 elements, it panics.
+func (x Float32x16) Store(s []float32)
 
-// LoadFloat64x8Slice loads a Float64x8 from a slice of at least 8 float64s.
-func LoadFloat64x8Slice(s []float64) Float64x8
+// LoadFloat64x8 loads a Float64x8 from a slice of elements.
+// If s does not have at least 8 elements, it panics.
+func LoadFloat64x8(s []float64) Float64x8
 
-// StoreSlice stores x into a slice of at least 8 float64s.
-func (x Float64x8) StoreSlice(s []float64)
+// Store stores the elements of x into a slice.
+// If s does not have at least 8 elements, it panics.
+func (x Float64x8) Store(s []float64)
 
-// LoadInt8x64SlicePart loads a Int8x64 from the slice s.
+// LoadInt8x64Part loads a Int8x64 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 64 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 64 or more elements, the function is equivalent to LoadInt8x64Slice.
-func LoadInt8x64SlicePart(s []int8) Int8x64
+// If s has 64 or more elements, the function is equivalent to LoadInt8x64.
+func LoadInt8x64Part(s []int8) (Int8x64, int)
 
-// StoreSlicePart stores the 64 elements of x into the slice s.
+// StorePart stores the 64 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 64 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int8x64) StoreSlicePart(s []int8)
+// If s has 64 or more elements, the method is equivalent to x.Store.
+func (x Int8x64) StorePart(s []int8)
 
-// LoadInt16x32SlicePart loads a Int16x32 from the slice s.
+// LoadInt16x32Part loads a Int16x32 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 32 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 32 or more elements, the function is equivalent to LoadInt16x32Slice.
-func LoadInt16x32SlicePart(s []int16) Int16x32
+// If s has 32 or more elements, the function is equivalent to LoadInt16x32.
+func LoadInt16x32Part(s []int16) (Int16x32, int)
 
-// StoreSlicePart stores the 32 elements of x into the slice s.
+// StorePart stores the 32 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 32 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int16x32) StoreSlicePart(s []int16)
+// If s has 32 or more elements, the method is equivalent to x.Store.
+func (x Int16x32) StorePart(s []int16)
 
-// LoadInt32x16SlicePart loads a Int32x16 from the slice s.
+// LoadInt32x16Part loads a Int32x16 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 16 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 16 or more elements, the function is equivalent to LoadInt32x16Slice.
-func LoadInt32x16SlicePart(s []int32) Int32x16
+// If s has 16 or more elements, the function is equivalent to LoadInt32x16.
+func LoadInt32x16Part(s []int32) (Int32x16, int)
 
-// StoreSlicePart stores the 16 elements of x into the slice s.
+// StorePart stores the 16 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 16 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int32x16) StoreSlicePart(s []int32)
+// If s has 16 or more elements, the method is equivalent to x.Store.
+func (x Int32x16) StorePart(s []int32)
 
-// LoadInt64x8SlicePart loads a Int64x8 from the slice s.
+// LoadInt64x8Part loads a Int64x8 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 8 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 8 or more elements, the function is equivalent to LoadInt64x8Slice.
-func LoadInt64x8SlicePart(s []int64) Int64x8
+// If s has 8 or more elements, the function is equivalent to LoadInt64x8.
+func LoadInt64x8Part(s []int64) (Int64x8, int)
 
-// StoreSlicePart stores the 8 elements of x into the slice s.
+// StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 8 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int64x8) StoreSlicePart(s []int64)
+// If s has 8 or more elements, the method is equivalent to x.Store.
+func (x Int64x8) StorePart(s []int64)
 
-// LoadUint8x64SlicePart loads a Uint8x64 from the slice s.
+// LoadUint8x64Part loads a Uint8x64 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 64 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 64 or more elements, the function is equivalent to LoadUint8x64Slice.
-func LoadUint8x64SlicePart(s []uint8) Uint8x64
+// If s has 64 or more elements, the function is equivalent to LoadUint8x64.
+func LoadUint8x64Part(s []uint8) (Uint8x64, int)
 
-// StoreSlicePart stores the 64 elements of x into the slice s.
+// StorePart stores the 64 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 64 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint8x64) StoreSlicePart(s []uint8)
+// If s has 64 or more elements, the method is equivalent to x.Store.
+func (x Uint8x64) StorePart(s []uint8)
 
-// LoadUint16x32SlicePart loads a Uint16x32 from the slice s.
+// LoadUint16x32Part loads a Uint16x32 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 32 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 32 or more elements, the function is equivalent to LoadUint16x32Slice.
-func LoadUint16x32SlicePart(s []uint16) Uint16x32
+// If s has 32 or more elements, the function is equivalent to LoadUint16x32.
+func LoadUint16x32Part(s []uint16) (Uint16x32, int)
 
-// StoreSlicePart stores the 32 elements of x into the slice s.
+// StorePart stores the 32 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 32 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint16x32) StoreSlicePart(s []uint16)
+// If s has 32 or more elements, the method is equivalent to x.Store.
+func (x Uint16x32) StorePart(s []uint16)
 
-// LoadUint32x16SlicePart loads a Uint32x16 from the slice s.
+// LoadUint32x16Part loads a Uint32x16 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 16 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 16 or more elements, the function is equivalent to LoadUint32x16Slice.
-func LoadUint32x16SlicePart(s []uint32) Uint32x16
+// If s has 16 or more elements, the function is equivalent to LoadUint32x16.
+func LoadUint32x16Part(s []uint32) (Uint32x16, int)
 
-// StoreSlicePart stores the 16 elements of x into the slice s.
+// StorePart stores the 16 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 16 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint32x16) StoreSlicePart(s []uint32)
+// If s has 16 or more elements, the method is equivalent to x.Store.
+func (x Uint32x16) StorePart(s []uint32)
 
-// LoadUint64x8SlicePart loads a Uint64x8 from the slice s.
+// LoadUint64x8Part loads a Uint64x8 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 8 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 8 or more elements, the function is equivalent to LoadUint64x8Slice.
-func LoadUint64x8SlicePart(s []uint64) Uint64x8
+// If s has 8 or more elements, the function is equivalent to LoadUint64x8.
+func LoadUint64x8Part(s []uint64) (Uint64x8, int)
 
-// StoreSlicePart stores the 8 elements of x into the slice s.
+// StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 8 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint64x8) StoreSlicePart(s []uint64)
+// If s has 8 or more elements, the method is equivalent to x.Store.
+func (x Uint64x8) StorePart(s []uint64)
 
-// LoadFloat32x16SlicePart loads a Float32x16 from the slice s.
+// LoadFloat32x16Part loads a Float32x16 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 16 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 16 or more elements, the function is equivalent to LoadFloat32x16Slice.
-func LoadFloat32x16SlicePart(s []float32) Float32x16
+// If s has 16 or more elements, the function is equivalent to LoadFloat32x16.
+func LoadFloat32x16Part(s []float32) (Float32x16, int)
 
-// StoreSlicePart stores the 16 elements of x into the slice s.
+// StorePart stores the 16 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 16 or more elements, the method is equivalent to x.StoreSlice.
-func (x Float32x16) StoreSlicePart(s []float32)
+// If s has 16 or more elements, the method is equivalent to x.Store.
+func (x Float32x16) StorePart(s []float32)
 
-// LoadFloat64x8SlicePart loads a Float64x8 from the slice s.
+// LoadFloat64x8Part loads a Float64x8 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 8 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 8 or more elements, the function is equivalent to LoadFloat64x8Slice.
-func LoadFloat64x8SlicePart(s []float64) Float64x8
+// If s has 8 or more elements, the function is equivalent to LoadFloat64x8.
+func LoadFloat64x8Part(s []float64) (Float64x8, int)
 
-// StoreSlicePart stores the 8 elements of x into the slice s.
+// StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 8 or more elements, the method is equivalent to x.StoreSlice.
-func (x Float64x8) StoreSlicePart(s []float64)
+// If s has 8 or more elements, the method is equivalent to x.Store.
+func (x Float64x8) StorePart(s []float64)
 
-// LoadInt32x4SlicePart loads a Int32x4 from the slice s.
+// LoadInt32x4Part loads a Int32x4 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 4 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 4 or more elements, the function is equivalent to LoadInt32x4Slice.
-func LoadInt32x4SlicePart(s []int32) Int32x4
+// If s has 4 or more elements, the function is equivalent to LoadInt32x4.
+func LoadInt32x4Part(s []int32) (Int32x4, int)
 
-// StoreSlicePart stores the 4 elements of x into the slice s.
+// StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 4 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int32x4) StoreSlicePart(s []int32)
+// If s has 4 or more elements, the method is equivalent to x.Store.
+func (x Int32x4) StorePart(s []int32)
 
-// LoadInt64x2SlicePart loads a Int64x2 from the slice s.
+// LoadInt64x2Part loads a Int64x2 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 2 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 2 or more elements, the function is equivalent to LoadInt64x2Slice.
-func LoadInt64x2SlicePart(s []int64) Int64x2
+// If s has 2 or more elements, the function is equivalent to LoadInt64x2.
+func LoadInt64x2Part(s []int64) (Int64x2, int)
 
-// StoreSlicePart stores the 2 elements of x into the slice s.
+// StorePart stores the 2 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 2 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int64x2) StoreSlicePart(s []int64)
+// If s has 2 or more elements, the method is equivalent to x.Store.
+func (x Int64x2) StorePart(s []int64)
 
-// LoadUint32x4SlicePart loads a Uint32x4 from the slice s.
+// LoadUint32x4Part loads a Uint32x4 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 4 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 4 or more elements, the function is equivalent to LoadUint32x4Slice.
-func LoadUint32x4SlicePart(s []uint32) Uint32x4
+// If s has 4 or more elements, the function is equivalent to LoadUint32x4.
+func LoadUint32x4Part(s []uint32) (Uint32x4, int)
 
-// StoreSlicePart stores the 4 elements of x into the slice s.
+// StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 4 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint32x4) StoreSlicePart(s []uint32)
+// If s has 4 or more elements, the method is equivalent to x.Store.
+func (x Uint32x4) StorePart(s []uint32)
 
-// LoadUint64x2SlicePart loads a Uint64x2 from the slice s.
+// LoadUint64x2Part loads a Uint64x2 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 2 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 2 or more elements, the function is equivalent to LoadUint64x2Slice.
-func LoadUint64x2SlicePart(s []uint64) Uint64x2
+// If s has 2 or more elements, the function is equivalent to LoadUint64x2.
+func LoadUint64x2Part(s []uint64) (Uint64x2, int)
 
-// StoreSlicePart stores the 2 elements of x into the slice s.
+// StorePart stores the 2 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 2 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint64x2) StoreSlicePart(s []uint64)
+// If s has 2 or more elements, the method is equivalent to x.Store.
+func (x Uint64x2) StorePart(s []uint64)
 
-// LoadFloat32x4SlicePart loads a Float32x4 from the slice s.
+// LoadFloat32x4Part loads a Float32x4 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 4 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 4 or more elements, the function is equivalent to LoadFloat32x4Slice.
-func LoadFloat32x4SlicePart(s []float32) Float32x4
+// If s has 4 or more elements, the function is equivalent to LoadFloat32x4.
+func LoadFloat32x4Part(s []float32) (Float32x4, int)
 
-// StoreSlicePart stores the 4 elements of x into the slice s.
+// StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 4 or more elements, the method is equivalent to x.StoreSlice.
-func (x Float32x4) StoreSlicePart(s []float32)
+// If s has 4 or more elements, the method is equivalent to x.Store.
+func (x Float32x4) StorePart(s []float32)
 
-// LoadFloat64x2SlicePart loads a Float64x2 from the slice s.
+// LoadFloat64x2Part loads a Float64x2 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 2 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 2 or more elements, the function is equivalent to LoadFloat64x2Slice.
-func LoadFloat64x2SlicePart(s []float64) Float64x2
+// If s has 2 or more elements, the function is equivalent to LoadFloat64x2.
+func LoadFloat64x2Part(s []float64) (Float64x2, int)
 
-// StoreSlicePart stores the 2 elements of x into the slice s.
+// StorePart stores the 2 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 2 or more elements, the method is equivalent to x.StoreSlice.
-func (x Float64x2) StoreSlicePart(s []float64)
+// If s has 2 or more elements, the method is equivalent to x.Store.
+func (x Float64x2) StorePart(s []float64)
 
-// LoadInt32x8SlicePart loads a Int32x8 from the slice s.
+// LoadInt32x8Part loads a Int32x8 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 8 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 8 or more elements, the function is equivalent to LoadInt32x8Slice.
-func LoadInt32x8SlicePart(s []int32) Int32x8
+// If s has 8 or more elements, the function is equivalent to LoadInt32x8.
+func LoadInt32x8Part(s []int32) (Int32x8, int)
 
-// StoreSlicePart stores the 8 elements of x into the slice s.
+// StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 8 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int32x8) StoreSlicePart(s []int32)
+// If s has 8 or more elements, the method is equivalent to x.Store.
+func (x Int32x8) StorePart(s []int32)
 
-// LoadInt64x4SlicePart loads a Int64x4 from the slice s.
+// LoadInt64x4Part loads a Int64x4 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 4 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 4 or more elements, the function is equivalent to LoadInt64x4Slice.
-func LoadInt64x4SlicePart(s []int64) Int64x4
+// If s has 4 or more elements, the function is equivalent to LoadInt64x4.
+func LoadInt64x4Part(s []int64) (Int64x4, int)
 
-// StoreSlicePart stores the 4 elements of x into the slice s.
+// StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 4 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int64x4) StoreSlicePart(s []int64)
+// If s has 4 or more elements, the method is equivalent to x.Store.
+func (x Int64x4) StorePart(s []int64)
 
-// LoadUint32x8SlicePart loads a Uint32x8 from the slice s.
+// LoadUint32x8Part loads a Uint32x8 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 8 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 8 or more elements, the function is equivalent to LoadUint32x8Slice.
-func LoadUint32x8SlicePart(s []uint32) Uint32x8
+// If s has 8 or more elements, the function is equivalent to LoadUint32x8.
+func LoadUint32x8Part(s []uint32) (Uint32x8, int)
 
-// StoreSlicePart stores the 8 elements of x into the slice s.
+// StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 8 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint32x8) StoreSlicePart(s []uint32)
+// If s has 8 or more elements, the method is equivalent to x.Store.
+func (x Uint32x8) StorePart(s []uint32)
 
-// LoadUint64x4SlicePart loads a Uint64x4 from the slice s.
+// LoadUint64x4Part loads a Uint64x4 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 4 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 4 or more elements, the function is equivalent to LoadUint64x4Slice.
-func LoadUint64x4SlicePart(s []uint64) Uint64x4
+// If s has 4 or more elements, the function is equivalent to LoadUint64x4.
+func LoadUint64x4Part(s []uint64) (Uint64x4, int)
 
-// StoreSlicePart stores the 4 elements of x into the slice s.
+// StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 4 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint64x4) StoreSlicePart(s []uint64)
+// If s has 4 or more elements, the method is equivalent to x.Store.
+func (x Uint64x4) StorePart(s []uint64)
 
-// LoadFloat32x8SlicePart loads a Float32x8 from the slice s.
+// LoadFloat32x8Part loads a Float32x8 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 8 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 8 or more elements, the function is equivalent to LoadFloat32x8Slice.
-func LoadFloat32x8SlicePart(s []float32) Float32x8
+// If s has 8 or more elements, the function is equivalent to LoadFloat32x8.
+func LoadFloat32x8Part(s []float32) (Float32x8, int)
 
-// StoreSlicePart stores the 8 elements of x into the slice s.
+// StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 8 or more elements, the method is equivalent to x.StoreSlice.
-func (x Float32x8) StoreSlicePart(s []float32)
+// If s has 8 or more elements, the method is equivalent to x.Store.
+func (x Float32x8) StorePart(s []float32)
 
-// LoadFloat64x4SlicePart loads a Float64x4 from the slice s.
+// LoadFloat64x4Part loads a Float64x4 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 4 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 4 or more elements, the function is equivalent to LoadFloat64x4Slice.
-func LoadFloat64x4SlicePart(s []float64) Float64x4
+// If s has 4 or more elements, the function is equivalent to LoadFloat64x4.
+func LoadFloat64x4Part(s []float64) (Float64x4, int)
 
-// StoreSlicePart stores the 4 elements of x into the slice s.
+// StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 4 or more elements, the method is equivalent to x.StoreSlice.
-func (x Float64x4) StoreSlicePart(s []float64)
+// If s has 4 or more elements, the method is equivalent to x.Store.
+func (x Float64x4) StorePart(s []float64)
 
-// LoadUint8x16SlicePart loads a Uint8x16 from the slice s.
-// If s has fewer than 16 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 16 or more elements, the function is equivalent to LoadUint8x16Slice.
-func LoadUint8x16SlicePart(s []uint8) Uint8x16
-
-// StoreSlicePart stores the 16 elements of x into the slice s.
-// It stores as many elements as will fit in s.
-// If s has 16 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint8x16) StoreSlicePart(s []uint8)
-
-// LoadUint16x8SlicePart loads a Uint16x8 from the slice s.
-// If s has fewer than 8 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 8 or more elements, the function is equivalent to LoadUint16x8Slice.
-func LoadUint16x8SlicePart(s []uint16) Uint16x8
-
-// StoreSlicePart stores the 8 elements of x into the slice s.
-// It stores as many elements as will fit in s.
-// If s has 8 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint16x8) StoreSlicePart(s []uint16)
-
-// LoadUint8x32SlicePart loads a Uint8x32 from the slice s.
+// LoadUint8x32Part loads a Uint8x32 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 32 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 32 or more elements, the function is equivalent to LoadUint8x32Slice.
-func LoadUint8x32SlicePart(s []uint8) Uint8x32
+// If s has 32 or more elements, the function is equivalent to LoadUint8x32.
+func LoadUint8x32Part(s []uint8) (Uint8x32, int)
 
-// StoreSlicePart stores the 32 elements of x into the slice s.
+// StorePart stores the 32 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 32 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint8x32) StoreSlicePart(s []uint8)
+// If s has 32 or more elements, the method is equivalent to x.Store.
+func (x Uint8x32) StorePart(s []uint8)
 
-// LoadUint16x16SlicePart loads a Uint16x16 from the slice s.
+// LoadUint16x16Part loads a Uint16x16 from the slice s, it returns the loaded vector and the
+// number of elements loaded.
 // If s has fewer than 16 elements, the remaining elements of the vector are filled with zeroes.
-// If s has 16 or more elements, the function is equivalent to LoadUint16x16Slice.
-func LoadUint16x16SlicePart(s []uint16) Uint16x16
+// If s has 16 or more elements, the function is equivalent to LoadUint16x16.
+func LoadUint16x16Part(s []uint16) (Uint16x16, int)
 
-// StoreSlicePart stores the 16 elements of x into the slice s.
+// StorePart stores the 16 elements of x into the slice s.
 // It stores as many elements as will fit in s.
-// If s has 16 or more elements, the method is equivalent to x.StoreSlice.
-func (x Uint16x16) StoreSlicePart(s []uint16)
+// If s has 16 or more elements, the method is equivalent to x.Store.
+func (x Uint16x16) StorePart(s []uint16)

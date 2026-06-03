@@ -43,9 +43,10 @@ const (
 		ByteLimit |
 		DepthLimit |
 		Marshalers |
-		Unmarshalers
+		Unmarshalers |
+		FormatTag
 
-	// DefaultV1Flags is the set of booleans flags that default to true under
+	// DefaultV1Flags is the set of boolean flags that default to true under
 	// v1 semantics. None of the non-boolean flags differ between v1 and v2.
 	DefaultV1Flags = 0 |
 		AllowDuplicateNames |
@@ -83,6 +84,12 @@ const (
 
 	// CanonicalizeNumbers is the set of flags related to raw number canonicalization.
 	CanonicalizeNumbers = CanonicalizeRawInts | CanonicalizeRawFloats
+
+	// TagFlags is the set of flags related to the presence of struct field tags.
+	// Tags have non-recursive effects, where the tag only applies to
+	// the top-level of the field value itself.
+	// Whenever descending into a JSON object or array, these flags are cleared.
+	TagFlags = StringTag | FormatTag
 )
 
 // Encoder and decoder flags.
@@ -119,6 +126,8 @@ const (
 	RejectUnknownMembers
 	Marshalers
 	Unmarshalers
+	StringTag
+	FormatTag
 )
 
 // Marshal and Unmarshal flags (for v1).
@@ -136,7 +145,6 @@ const (
 	ParseTimeWithLooseRFC3339
 	ReportErrorsWithLegacySemantics
 	StringifyWithLegacySemantics
-	StringifyBoolsAndStrings
 	UnmarshalAnyWithRawNumber
 	UnmarshalArrayFromAnyLength
 )

@@ -105,7 +105,7 @@ func (v *Value) Format(opts ...Options) error
 func (v *Value) Compact(opts ...Options) error
 
 // Indent reformats the whitespace in the raw JSON value so that each element
-// in a JSON object or array begins on a indented line according to the nesting.
+// in a JSON object or array begins on an indented line according to the nesting.
 //
 // It does not reformat JSON strings or numbers to use any other representation.
 // To maximize the set of JSON values that can be formatted,

@@ -56,11 +56,6 @@ func (t *Timer) Stop() bool
 // or [Timer.Reset] returned.
 // As of Go 1.23, the channel is synchronous (unbuffered, capacity 0),
 // eliminating the possibility of those stale values.
-//
-// The GODEBUG setting asynctimerchan=1 restores both pre-Go 1.23
-// behaviors: when set, unexpired timers won't be garbage collected, and
-// channels will have buffered capacity. This setting may be removed
-// in Go 1.27 or later.
 func NewTimer(d Duration) *Timer
 
 // Reset changes the timer to expire after duration d.

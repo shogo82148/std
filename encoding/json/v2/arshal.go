@@ -37,7 +37,7 @@ var (
 // these functions and methods can be consistently called. For performance,
 // it is recommended that Marshal be passed a non-nil pointer to the value.
 //
-// The input value is encoded as JSON according the following rules:
+// The input value is encoded as JSON according to the following rules:
 //
 //   - If any type-specific functions in a [WithMarshalers] option match
 //     the value type, then those functions are called to encode the value.
@@ -129,11 +129,9 @@ func Marshal(in any, opts ...Options) (out []byte, err error)
 func MarshalWrite(out io.Writer, in any, opts ...Options) (err error)
 
 // MarshalEncode serializes a Go value into an [jsontext.Encoder] according to
-// the provided marshal options (while ignoring unmarshal, encode, or decode options).
-// Any marshal-relevant options already specified on the [jsontext.Encoder]
-// take lower precedence than the set of options provided by the caller.
-// Unlike [Marshal] and [MarshalWrite], encode options are ignored because
-// they must have already been specified on the provided [jsontext.Encoder].
+// the provided marshal or encode options (while ignoring unmarshal or decode options).
+// The options provided take precedence over options already applied on
+// the [jsontext.Encoder] and only apply for the duration of the marshal call.
 //
 // See [Marshal] for details about the conversion of a Go value into JSON.
 func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
@@ -151,7 +149,7 @@ func MarshalEncode(out *jsontext.Encoder, in any, opts ...Options) (err error)
 // (by boxing it on the heap if necessary) so that
 // these functions and methods can be consistently called.
 //
-// The input is decoded into the output according the following rules:
+// The input is decoded into the output according to the following rules:
 //
 //   - If any type-specific functions in a [WithUnmarshalers] option match
 //     the value type, then those functions are called to decode the JSON
@@ -272,11 +270,9 @@ func Unmarshal(in []byte, out any, opts ...Options) (err error)
 func UnmarshalRead(in io.Reader, out any, opts ...Options) (err error)
 
 // UnmarshalDecode deserializes a Go value from a [jsontext.Decoder] according to
-// the provided unmarshal options (while ignoring marshal, encode, or decode options).
-// Any unmarshal options already specified on the [jsontext.Decoder]
-// take lower precedence than the set of options provided by the caller.
-// Unlike [Unmarshal] and [UnmarshalRead], decode options are ignored because
-// they must have already been specified on the provided [jsontext.Decoder].
+// the provided unmarshal or decode options (while ignoring marshal or encode options).
+// The options provided take precedence over options already applied on
+// the [jsontext.Decoder] and only apply for the duration of the unmarshal call.
 //
 // The input may be a stream of zero or more JSON values,
 // where this only unmarshals the next JSON value in the stream.

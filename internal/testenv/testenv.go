@@ -70,6 +70,8 @@ func GoTool() (string, error)
 
 // MustHaveSource checks that the entire source tree is available under GOROOT.
 // If not, it calls t.Skip with an explanation.
+//
+// This is needed when reading files from GOROOT that are not in ./testdata.
 func MustHaveSource(t testing.TB)
 
 // HasExternalNetwork reports whether the current system can use

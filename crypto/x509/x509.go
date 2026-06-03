@@ -431,6 +431,9 @@ func (h UnhandledCriticalExtension) Error() string
 // be marshaled instead of the Policies field. This changed in Go 1.24. The Policies field can
 // be used to marshal policy OIDs which have components that are larger than 31
 // bits.
+//
+// IP addresses in IPAddresses which are in their IPv4-mapped IPv6 form will always be encoded
+// in their IPv4 form.
 func CreateCertificate(rand io.Reader, template, parent *Certificate, pub, priv any) ([]byte, error)
 
 // ParseCRL parses a CRL from the given bytes. It's often the case that PEM

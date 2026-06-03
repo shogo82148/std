@@ -48,3 +48,7 @@ func Implements(t, iface *types.Type) bool
 // an interface, a type parameter, or a concrete type. If t does not implement
 // iface, a non-empty string is returned explaining why.
 func ImplementsExplain(t, iface *types.Type) string
+
+// FieldOffset returns the offset of field f in t,
+// including any implicit offsets from embedded fields.
+func FieldOffset(t *types.Type, f *types.Field) int64

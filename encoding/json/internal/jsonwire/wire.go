@@ -11,7 +11,7 @@ import (
 	"github.com/shogo82148/std/errors"
 )
 
-// TrimSuffixWhitespace trims JSON from the end of b.
+// TrimSuffixWhitespace trims JSON whitespace from the end of b.
 func TrimSuffixWhitespace(b []byte) []byte
 
 // TrimSuffixString trims a valid JSON string at the end of b.
@@ -38,6 +38,14 @@ var ErrInvalidUTF8 = errors.New("invalid UTF-8")
 func NewInvalidCharacterError[Bytes ~[]byte | ~string](prefix Bytes, where string) error
 
 func NewInvalidEscapeSequenceError[Bytes ~[]byte | ~string](what Bytes) error
+
+type InvalidTextError struct {
+	Label string
+	What  string
+	Where string
+}
+
+func (e *InvalidTextError) Error() string
 
 // TruncatePointer optionally truncates the JSON pointer,
 // enforcing that the length roughly does not exceed n.

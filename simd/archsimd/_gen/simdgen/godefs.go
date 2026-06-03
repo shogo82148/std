@@ -5,7 +5,7 @@
 package main
 
 import (
-	"github.com/shogo82148/std/simd/archsimd/_gen/unify"
+	"github.com/shogo82148/std/_gen/unify"
 )
 
 type Operation struct {
@@ -56,6 +56,7 @@ type Operand struct {
 	// The compiler will right-shift the user-passed value by ImmOffset and set it as the AuxInt
 	// field of the operation.
 	ImmOffset *string
+	ImmMax    *int
 	Name      *string
 	Lanes     *int
 	// TreatLikeAScalarOfSize means only the lower $TreatLikeAScalarOfSize bits of the vector
@@ -77,4 +78,8 @@ type Operand struct {
 	OverwriteBits *int
 	// FixedReg is the name of the fixed registers
 	FixedReg *string
+	// If non-nil, marks this vreg as a register list operand (for TBL/TBX).
+	// Currently only list number 0 is supported (we might need to teach regalloc handle register lists
+	// to support more than one register in the list).
+	ListNumber *int
 }
