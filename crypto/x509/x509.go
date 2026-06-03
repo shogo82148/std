@@ -125,6 +125,7 @@ type Certificate struct {
 	RawSubjectPublicKeyInfo []byte
 	RawSubject              []byte
 	RawIssuer               []byte
+	RawSignatureAlgorithm   []byte
 
 	Signature          []byte
 	SignatureAlgorithm SignatureAlgorithm
@@ -408,6 +409,7 @@ type CertificateRequest struct {
 	RawTBSCertificateRequest []byte
 	RawSubjectPublicKeyInfo  []byte
 	RawSubject               []byte
+	RawSignatureAlgorithm    []byte
 
 	Version            int
 	Signature          []byte
@@ -505,6 +507,9 @@ type RevocationList struct {
 	RawTBSRevocationList []byte
 	// RawIssuerにはDERエンコードされた発行者が含まれています。
 	RawIssuer []byte
+	// RawSignatureAlgorithm contains the DER encoded signature algorithm as a
+	// PKIX AlgorithmIdentifier.
+	RawSignatureAlgorithm []byte
 
 	// Issuerには発行証明書のDNが含まれています。
 	Issuer pkix.Name

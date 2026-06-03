@@ -4,10 +4,8 @@
 
 package cipher
 
-// NewGCMは、与えられた128ビットのブロック暗号を標準のナンス長でGalois Counter Modeでラップしたものを返します。
-//
-// 一般的に、GCMのこの実装で実行されるGHASH操作は一定時間ではありません。
-// aes.NewCipherで生成された基礎の [Block] が、AESのハードウェアサポートを持つシステムである場合は例外です。詳細については、 [crypto/aes] パッケージのドキュメントを参照してください。
+// NewGCMは、与えられた128ビットのブロック暗号を標準のノンス長で
+// Galois Counter Modeでラップしたものを返します。
 func NewGCM(cipher Block) (AEAD, error)
 
 // NewGCMWithNonceSize は、与えられた長さの非スタンダードなノンスを受け付ける、128-bitのブロック暗号をGalios Counter Modeでラップしたものを返します。長さはゼロであってはいけません。

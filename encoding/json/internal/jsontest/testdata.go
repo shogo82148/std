@@ -26,7 +26,7 @@ type Entry struct {
 
 // Data is a list of JSON testdata.
 var Data = func() (entries []Entry) {
-	fis := mustGet(fs.ReadDir(testdataFS, "testdata"))
+	fis := mustGet(fs.ReadDir(testdataFS, "_embed"))
 	slices.SortFunc(fis, func(x, y fs.DirEntry) int { return strings.Compare(x.Name(), y.Name()) })
 	for _, fi := range fis {
 		var entry Entry
@@ -38,7 +38,7 @@ var Data = func() (entries []Entry) {
 		entry.Name = strings.Join(words, "")
 
 		entry.Data = sync.OnceValue(func() []byte {
-			filePath := path.Join("testdata", fi.Name())
+			filePath := path.Join("_embed", fi.Name())
 			b := mustGet(fs.ReadFile(testdataFS, filePath))
 			zr := zstd.NewReader(bytes.NewReader(b))
 			return mustGet(io.ReadAll(zr))

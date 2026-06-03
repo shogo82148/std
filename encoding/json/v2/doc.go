@@ -8,16 +8,18 @@
 // JSONは、真偽値、文字列、数値などのプリミティブ型に加え、
 // オブジェクトや配列などの構造化データ型も表現できるシンプルなデータ交換フォーマットです。
 //
-// このパッケージ（encoding/json/v2）は実験的なものであり、
-// Go 1 の互換性保証の対象ではありません。
-// GOEXPERIMENT=jsonv2 環境変数を設定してビルドした場合のみ存在します。
-// ほとんどのユーザーは [encoding/json] を使用してください。
-//
-// [Marshal] および [Unmarshal] は、Go値を[]byte内のJSONテキストへエンコード・デコードします。
-// [MarshalWrite] および [UnmarshalRead] は、[io.Writer] や [io.Reader] を介してJSONテキストを書き込み・読み込みします。
-// [MarshalEncode] および [UnmarshalDecode] は、[jsontext.Encoder] や [jsontext.Decoder] を使ってJSONテキストをエンコード・デコードします。
-// 各マーシャル・アンマーシャル関数には [Options] を渡すことで、マーシャル・アンマーシャルのセマンティクス（つまりJSONデータとGoデータの対応方法）を設定できます。
-// また、[jsontext.Options] を渡すことで、エンコード・デコードの構文的な挙動も設定できます。
+// [Marshal] と [Unmarshal] は、[]byte に含まれる JSON テキストと
+// Go 値の相互変換（エンコードおよびデコード）を行います。
+// [MarshalWrite] と [UnmarshalRead] は、[io.Writer] への書き込みまたは
+// [io.Reader] からの読み取りによって JSON テキストを処理します。
+// [MarshalEncode] と [UnmarshalDecode] は、[jsontext.Encoder] へのエンコードまたは
+// [jsontext.Decoder] からのデコードによって JSON テキストを処理します。
+// [Options] は各 marshal/unmarshal 関数に渡すことができ、
+// マーシャルおよびアンマーシャルのセマンティクス上の挙動
+// （つまり、JSON データを Go データとしてどう解釈するか、その逆をどう行うか）を
+// 設定できます。
+// [jsontext.Options] も marshal/unmarshal 関数に渡すことができ、
+// エンコードまたはデコードのシンタクス上の挙動を設定できます。
 //
 // JSONのデータ型は、両者の型システム間で最も論理的に近いGoのデータ型へマッピングされます。例えば、
 // JSONの真偽値はGoのbool型に、

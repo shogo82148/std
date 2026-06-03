@@ -210,6 +210,13 @@ func (x *Nat) InverseVarTime(a *Nat, m *Modulus) (*Nat, bool)
 // The output will be resized to the size of the larger of a and b.
 func (x *Nat) GCDVarTime(a, b *Nat) (*Nat, error)
 
+// ShiftRightByOne sets x = x >> 1.
+//
+// The announced length of x is unchanged.
+//
+//go:norace
+func (x *Nat) ShiftRightByOne() *Nat
+
 // DivShortVarTime calculates x = x / y and returns the remainder.
 //
 // It panics if y is zero.
