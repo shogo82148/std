@@ -27,11 +27,15 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: ./tools/_tools/go.mod
-          cache-dependency-path: ./tools/_tools/go.sum
+          cache-dependency-path: ./tools/_tools/go.mod
+      - name: install gotip
+        run: |
+          go install golang.org/dl/gotip@latest
+          gotip download
       - name: install tools
         working-directory: ./tools/_tools
         run: |
-          go install ./importgodoc
+          gotip install ./importgodoc
 
       - name: checkout std
         uses: actions/checkout@v6
