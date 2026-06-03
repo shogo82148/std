@@ -126,14 +126,12 @@ type QUICEvent struct {
 	Err error
 }
 
-// QUICClientは、QUICTransportを基礎とした新しいTLSクライアント側接続を返します。設定はnilであってはなりません。
-//
-// 設定のMinVersionは、少なくともTLS 1.3である必要があります。
+// QUICClientは、基礎トランスポートとしてQUICTransportを使用する
+// 新しいTLSクライアント側接続を返します。configはnilにできません。
 func QUICClient(config *QUICConfig) *QUICConn
 
-// QUICServerは、下層トランスポートとしてQUICTransportを使用した新しいTLSサーバーサイド接続を返します。設定はnilにできません。
-//
-// 設定のMinVersionは、少なくともTLS 1.3である必要があります。
+// QUICServerは、基礎トランスポートとしてQUICTransportを使用する
+// 新しいTLSサーバー側接続を返します。configはnilにできません。
 func QUICServer(config *QUICConfig) *QUICConn
 
 // Startはクライアントまたはサーバーのハンドシェイクプロトコルを開始します。

@@ -82,17 +82,12 @@ func (d *Dialer) Dial(network, addr string) (net.Conn, error)
 // 返される [Conn] （あれば）は常に *[Conn] 型です。
 func (d *Dialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error)
 
-// LoadX509KeyPairは、ペアのファイルから公開/秘密鍵ペアを読み込んで解析します。
-// ファイルにはPEMエンコードされたデータが含まれている必要があります。証明書ファイルには、
-// リーフ証明書に続く中間証明書が含まれている場合があり、証明書チェーンを形成します。
-// 成功時の戻り値では、Certificate.Leafが設定されます。
-//
-// Go 1.23以前ではCertificate.Leafはnilのままで、解析された証明書は破棄されました。
-// この挙動は、GODEBUG環境変数で"x509keypairleaf=0"を設定することで再度有効にすることができます。
+// LoadX509KeyPairは、2つのファイルから公開鍵/秘密鍵のペアを読み込み、解析します。
+// ファイルにはPEMエンコードされたデータが含まれている必要があります。
+// 証明書ファイルには、リーフ証明書に続いて中間証明書を含めることで、
+// 証明書チェーンを構成できます。成功した場合、Certificate.Leafが設定されます。
 func LoadX509KeyPair(certFile, keyFile string) (Certificate, error)
 
-// X509KeyPairは、ペアのPEMエンコードされたデータから公開/秘密鍵ペアを解析します。成功時の戻り値では、Certificate.Leafが設定されます。
-//
-// Go 1.23以前ではCertificate.Leafはnilのままで、解析された証明書は破棄されました。この挙動は、GODEBUG環境変数で"x509keypairleaf=0"
-// を設定することで再度有効にすることができます。
+// X509KeyPairは、2つのPEMエンコードデータから公開鍵/秘密鍵のペアを解析します。
+// 成功した場合、Certificate.Leafが設定されます。
 func X509KeyPair(certPEMBlock, keyPEMBlock []byte) (Certificate, error)

@@ -28,9 +28,12 @@
 //     なお、`omitempty`はGoの配列・スライス・マップ・文字列についてはv1とv2で同じ動作です（ユーザー定義MarshalJSONメソッドがなければ）。
 //     既存のGoのbool, number, pointer, interface値に対する`omitempty`は、`omitzero`に移行してください（v1/v2両方で同じ動作）。
 //
-//   - v1では、Go構造体フィールドに`string`を付けると、Goのstring, bool, numberをJSON文字列として引用できます。複合型には再帰的に適用されません。
-//     一方、v2では`string`オプションはGoのnumberのみをJSON文字列として引用でき、複合型内のGo numberにも再帰的に適用されます。
-//     [StringifyWithLegacySemantics] オプションでこの動作を制御できます。
+//   - v1では、Go構造体フィールドに`string`が付いている場合、
+//     Goのstring、bool、number、およびそれらへのポインタを
+//     JSON文字列として引用できます。
+//     一方、v2では`string`オプションはGoのnumberまたは
+//     numberへのポインタをJSON文字列として引用する場合にのみ制限されます。
+//     この挙動の違いは [StringifyWithLegacySemantics] オプションで制御できます。
 //
 //   - v1では、nilのGoスライスやGoマップはJSON nullとしてマーシャルされます。
 //     一方、v2ではnilのGoスライスは空のJSON配列、nilのGoマップは空のJSONオブジェクトとしてマーシャルされます。
@@ -307,16 +310,19 @@ func ParseTimeWithLooseRFC3339(v bool) Options
 // v1のデフォルトはtrueです。
 func ReportErrorsWithLegacySemantics(v bool) Options
 
-// StringifyWithLegacySemanticsは、`string`タグオプションがbool型やstring型の値を文字列化できることを指定します。
-// このオプションは、フィールドのトップレベルの型がbool、string、数値型、またはそれらへのポインタの場合のみ有効です。
-// 特に、`string`は複合型（配列、スライス、構造体、マップ、インターフェース）の内部にあるbool、string、数値型には適用されません。
+// StringifyWithLegacySemanticsは、`string`タグオプションが
+// bool値やstring値を文字列化できることを指定します。
+// これは、トップレベル型がbool、string、数値型、
+// またはそれらへのポインタであるフィールドにのみ適用されます。
 //
-// マーシャル時、これらのGo値は通常のJSON表現でシリアライズされますが、JSON文字列内で引用されます。
-// アンマーシャル時、これらのGo値は通常のJSON表現またはその数値型のGo数値表現を含む
-// JSON文字列からデシリアライズされなければなりません。
-// Go数値文法はJSON数値文法のスーパーセットであることに注意してください。
-// JSON文字列内で引用されたJSON nullは、`string`が有効なGo値へのアンマーシャル時に
-// JSON nullの代用として認められます。
+// マーシャル時、これらのGo値は通常のJSON表現でシリアライズされますが、
+// JSON文字列内で引用されます。
+// アンマーシャル時、これらのGo値は、通常のJSON表現または
+// その数値型に対応するGo数値表現を含むJSON文字列から
+// デシリアライズされる必要があります。
+// Goの数値文法はJSONの数値文法のスーパーセットである点に注意してください。
+// `string`が適用されるGo値へのアンマーシャル時には、
+// JSON文字列内で引用されたJSON nullもJSON nullの有効な代替として扱われます。
 //
 // このオプションはマーシャルまたはアンマーシャルのどちらにも影響します。
 // v1のデフォルトはtrueです。

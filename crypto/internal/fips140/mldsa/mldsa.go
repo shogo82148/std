@@ -19,6 +19,8 @@ const (
 type PrivateKey struct {
 	seed [32]byte
 	pub  PublicKey
+	a    [maxK * maxL]nttElement
+	t1   [maxK]nttElement
 	s1   [maxL]nttElement
 	s2   [maxK]nttElement
 	t0   [maxK]nttElement
@@ -34,8 +36,6 @@ func (priv *PrivateKey) PublicKey() *PublicKey
 type PublicKey struct {
 	raw [maxPubKeySize]byte
 	p   parameters
-	a   [maxK * maxL]nttElement
-	t1  [maxK]nttElement
 	tr  [64]byte
 }
 

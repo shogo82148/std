@@ -132,11 +132,31 @@ func (z *Int) Mod(x, y *Int) *Int
 // T-除算とモジュラス（Goと同様）については [Int.QuoRem] を参照してください。
 func (z *Int) DivMod(x, y, m *Int) (*Int, *Int)
 
-// Cmpはxとyを比較し、次の値を返します:
+// 整数除算において、整数商をどのように調整するかを決定する丸めモードです。
+// 詳細は Daan Leijen, "Division and Modulus for Computer Scientists" を参照してください。
+const (
+	Trunc = ToZero
+	Floor = ToNegativeInf
+	Round = ToNearestEven
+	Ceil  = ToPositiveInf
+)
+
+// Divideは、次を満たす整数商qと余りrを計算します。
 //
-//   - -1 x <  y の場合
+//	q = f(x/y)
+//	r = x - y*q
+//
+// ここでfは丸めモードで指定され、
+// [Trunc]、[Floor]、[Round]、[Ceil] のいずれかでなければなりません。
+// Divideは、z != nil ならzをqに設定し、r != nil ならrを更新し、
+// y != 0 であればペア (z, r) を返します。
+// y == 0 の場合、ゼロ除算のランタイムパニックが発生します。
+func (z *Int) Divide(x, y, r *Int, mode RoundingMode) (*Int, *Int)
+
+// Cmpはxとyを比較し、次を返します:
+//   - -1 x < y の場合
 //   - 0 x == y の場合
-//   - +1 x >  y の場合
+//   - +1 x > y の場合
 func (x *Int) Cmp(y *Int) (r int)
 
 // CmpAbsはxとyの絶対値を比較し、次の値を返します:
@@ -283,24 +303,3 @@ func (z *Int) Not(x *Int) *Int
 // Sqrtは、zを⌊√x⌋（つまり、z² ≤ xとなる最大の整数）に設定し、zを返します。
 // xが負の場合、パニックを起こします。
 func (z *Int) Sqrt(x *Int) *Int
-
-// Rounding modes that determine how the integer quotient is adjusted in an integer division.
-// See Daan Leijen, “Division and Modulus for Computer Scientists”, for details.
-const (
-	Trunc = ToZero
-	Floor = ToNegativeInf
-	Round = ToNearestEven
-	Ceil  = ToPositiveInf
-)
-
-// Divide computes the integer quotient q and remainder r such that
-//
-//	q = f(x/y)
-//	r = x - y*q
-//
-// where f is described by the rounding mode,
-// which must be one of [Trunc], [Floor], [Round] or [Ceil].
-// Divide sets z to q if z != nil, updates r if r != nil,
-// and returns the pair (z, r) if y != 0.
-// If y == 0, a division-by-zero run-time panic occurs.
-func (z *Int) Divide(x, y, r *Int, mode RoundingMode) (*Int, *Int)

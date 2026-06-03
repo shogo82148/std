@@ -153,18 +153,19 @@ type Loader struct {
 	outer []Sym
 	sub   map[Sym]Sym
 
-	dynimplib   map[Sym]string
-	dynimpvers  map[Sym]string
-	localentry  map[Sym]uint8
-	extname     map[Sym]string
-	elfType     map[Sym]elf.SymType
-	elfSym      map[Sym]int32
-	localElfSym map[Sym]int32
-	symPkg      map[Sym]string
-	plt         map[Sym]int32
-	got         map[Sym]int32
-	dynid       map[Sym]int32
-	weakBinding map[Sym]bool
+	dynimplib     map[Sym]string
+	dynimpvers    map[Sym]string
+	localentry    map[Sym]uint8
+	extname       map[Sym]string
+	elfType       map[Sym]elf.SymType
+	elfSym        map[Sym]int32
+	localElfSym   map[Sym]int32
+	symPkg        map[Sym]string
+	plt           map[Sym]int32
+	got           map[Sym]int32
+	dynid         map[Sym]int32
+	weakBinding   map[Sym]bool
+	contentHashed map[Sym]bool
 
 	relocVariant map[relocId]sym.RelocVariant
 

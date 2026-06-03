@@ -26,8 +26,14 @@ func (s *CertPool) Clone() *CertPool
 
 // SystemCertPoolはシステム証明書プールのコピーを返します。
 //
-// macOS以外のUnixシステムでは、環境変数SSL_CERT_FILEとSSL_CERT_DIRを使用して、
-// SSL証明書ファイルとSSL証明書ファイルのディレクトリのシステムのデフォルト場所を上書きすることができます。後者はコロンで区切られたリストになります。
+// 環境変数SSL_CERT_FILEとSSL_CERT_DIRを使用すると、
+// それぞれSSL証明書ファイルおよびSSL証明書ファイルディレクトリの
+// システム既定の場所を上書きできます。後者はコロン区切りのリスト
+// （Windowsではセミコロン区切りのリスト）を指定できます。
+// 証明書検証のためのシステムAPIを持つプラットフォーム（macOSおよびWindows）では、
+// x509sslcertoverrideplatform=0 の GODEBUG 設定を使用しない限り、
+// SSL_CERT_FILE または SSL_CERT_DIR を設定するとそれらのAPIは使用されません。
+// （これはGo 1.27で変更されました。）
 //
 // 返されたプールへの変更はディスクに書き込まれず、SystemCertPoolによって返される他のプールに影響を与えません。
 //

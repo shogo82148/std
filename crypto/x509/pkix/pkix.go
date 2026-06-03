@@ -25,7 +25,22 @@ func (r RDNSequence) String() string
 
 type RelativeDistinguishedNameSET []AttributeTypeAndValue
 
-// AttributeTypeAndValueは、RFC 5280、セクション4.1.2.4で同名のASN.1構造体を反映しています。
+// AttributeTypeAndValueは、RFC 5280 セクション4.1.2.4にある
+// 同名のASN.1構造を反映します。
+//
+// crypto/x509型のpkix.Name構造の一部として解析される場合、
+// Valueは次のいずれかになります。
+//
+//   - ASN.1型がPrintableString、IA5String、
+//     NumericString、BMPString、T61String、またはUTF8Stringの場合はstring
+//   - ASN.1型がINTEGERの場合はint64
+//   - ASN.1型がBIT STRINGの場合はasn1.BitString
+//   - ASN.1型がOCTET STRINGの場合は[]byte
+//   - ASN.1型がOBJECT IDENTIFIERの場合はasn1.ObjectIdentifier
+//   - ASN.1型がUTCTIMEまたはGENERALIZEDTIMEの場合はtime.Time
+//   - ASN.1型がBOOLEANの場合はbool
+//   - ASN.1型がNULLの場合はnil
+//   - それ以外の場合はasn1.RawValue
 type AttributeTypeAndValue struct {
 	Type  asn1.ObjectIdentifier
 	Value any

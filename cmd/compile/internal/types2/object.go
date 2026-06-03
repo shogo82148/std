@@ -173,8 +173,9 @@ func (obj *Var) Origin() *Var
 // An abstract method may belong to many interfaces due to embedding.
 type Func struct {
 	object
-	hasPtrRecv_ bool
 	origin      *Func
+	hasPtrRecv_ bool
+	nointerface bool
 }
 
 // NewFunc returns a new function with the given signature, representing

@@ -60,14 +60,10 @@ var All = []Info{
 	{Name: "randseednop", Package: "math/rand", Changed: 24, Old: "0"},
 	{Name: "rsa1024min", Package: "crypto/rsa", Changed: 24, Old: "0"},
 	{Name: "tarinsecurepath", Package: "archive/tar"},
-	{Name: "tls10server", Package: "crypto/tls", Changed: 22, Old: "1"},
-	{Name: "tls3des", Package: "crypto/tls", Changed: 23, Old: "1"},
 	{Name: "tlsmaxrsasize", Package: "crypto/tls"},
 	{Name: "tlsmlkem", Package: "crypto/tls", Changed: 24, Old: "0", Opaque: true},
-	{Name: "tlsrsakex", Package: "crypto/tls", Changed: 22, Old: "1"},
 	{Name: "tlssecpmlkem", Package: "crypto/tls", Changed: 26, Old: "0", Opaque: true},
 	{Name: "tlssha1", Package: "crypto/tls", Changed: 25, Old: "1"},
-	{Name: "tlsunsafeekm", Package: "crypto/tls", Changed: 22, Old: "1"},
 
 	{Name: "tracebacklabels", Package: "runtime", Changed: 27, Old: "0", Opaque: true},
 	{Name: "updatemaxprocs", Package: "runtime", Changed: 25, Old: "0"},
@@ -75,10 +71,10 @@ var All = []Info{
 	{Name: "urlstrictcolons", Package: "net/url", Changed: 26, Old: "0"},
 	{Name: "winreadlinkvolume", Package: "os", Changed: 23, Old: "0"},
 	{Name: "winsymlink", Package: "os", Changed: 23, Old: "0"},
-	{Name: "x509keypairleaf", Package: "crypto/tls", Changed: 23, Old: "0"},
 	{Name: "x509negativeserial", Package: "crypto/x509", Changed: 23, Old: "1"},
 	{Name: "x509rsacrt", Package: "crypto/x509", Changed: 24, Old: "0"},
 	{Name: "x509sha256skid", Package: "crypto/x509", Changed: 25, Old: "0"},
+	{Name: "x509sslcertoverrideplatform", Package: "crypto/x509", Changed: 27, Old: "0"},
 	{Name: "x509usefallbackroots", Package: "crypto/x509"},
 	{Name: "x509usepolicies", Package: "crypto/x509", Changed: 24, Old: "0"},
 	{Name: "zipinsecurepath", Package: "archive/zip"},
@@ -96,6 +92,11 @@ type RemovedInfo struct {
 var Removed = []RemovedInfo{
 	{Name: "x509sha1", Removed: 24},
 	{Name: "gotypesalias", Removed: 27},
+	{Name: "tlsunsafeekm", Removed: 27},
+	{Name: "tlsrsakex", Removed: 27},
+	{Name: "tls3des", Removed: 27},
+	{Name: "tls10server", Removed: 27},
+	{Name: "x509keypairleaf", Removed: 27},
 }
 
 // Lookup returns the Info with the given name.

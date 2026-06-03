@@ -168,8 +168,9 @@ func (obj *Var) Origin() *Var
 // 抽象メソッドは、埋め込みにより多くのインターフェースに所属することがあります。
 type Func struct {
 	object
-	hasPtrRecv_ bool
 	origin      *Func
+	hasPtrRecv_ bool
+	nointerface bool
 }
 
 // NewFuncは与えられたシグネチャを持つ新しい関数を返します。これは関数の型を表します。

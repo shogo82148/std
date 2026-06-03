@@ -24,8 +24,8 @@ func bar() {
 	fmt.Println(time.Now())
 }`
 
-	// インポートの処理をした後にsrcをパースしますが、それ以降の処理を停止します。
-	f, err := parser.ParseFile(fset, "", src, parser.ImportsOnly)
+	// srcを解析しますが、importの処理後に停止します。
+	f, err := parser.ParseFile(fset, "", src, parser.ImportsOnly|parser.SkipObjectResolution)
 	if err != nil {
 		fmt.Println(err)
 		return

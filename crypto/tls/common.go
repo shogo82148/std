@@ -46,6 +46,7 @@ const (
 	X25519MLKEM768     CurveID = 4588
 	SecP256r1MLKEM768  CurveID = 4587
 	SecP384r1MLKEM1024 CurveID = 4589
+	MLKEM1024          CurveID = 514
 )
 
 // ConnectionStateは接続に関する基本的なTLSの詳細を記録します。
@@ -119,14 +120,11 @@ type ConnectionState struct {
 	testingOnlyPeerSignatureAlgorithm SignatureScheme
 }
 
-// ExportKeyingMaterialは、RFC 5705で定義されているように、新しいスライスにlengthバイトの
-// エクスポートされた鍵マテリアルを返します。contextがnilの場合、それはシードの一部として使用されません。
-// 接続がConfig.Renegotiationを介して再交渉を許可するように設定されていた場合、または接続がTLS 1.3も
-// Extended Master Secretもサポートしていない場合、この関数はエラーを返します。
-//
-// Extended Master SecretまたはTLS 1.3なしでの鍵マテリアルのエクスポートは、
-// セキュリティ上の問題（RFC 5705とRFC 7627のセキュリティ考慮事項セクションを参照）により、
-// Go 1.22で無効化されましたが、GODEBUG設定tlsunsafeekm=1で再度有効化できます。
+// ExportKeyingMaterialは、RFC 5705で定義されるエクスポート鍵素材を
+// 新しいスライスにlengthバイト分入れて返します。contextがnilの場合、
+// それはシードの一部として使用されません。接続が
+// Config.Renegotiationによって再ネゴシエーションを許可する設定になっている場合、
+// または接続がTLS 1.3とExtended Master Secretのいずれもサポートしない場合、この関数はエラーを返します。
 func (cs *ConnectionState) ExportKeyingMaterial(label string, context []byte, length int) ([]byte, error)
 
 // ClientAuthTypeは、TLSクライアント認証に関するサーバーのポリシーを宣言します。
@@ -182,7 +180,12 @@ const (
 	// EdDSAアルゴリズム。
 	Ed25519 SignatureScheme = 0x0807
 
-	// TLS 1.2用の旧バージョンの署名およびハッシュアルゴリズム。
+	// ML-DSAアルゴリズム。
+	MLDSA44 SignatureScheme = 0x0904
+	MLDSA65 SignatureScheme = 0x0905
+	MLDSA87 SignatureScheme = 0x0906
+
+	// TLS 1.2用の旧来の署名およびハッシュアルゴリズム。
 	PKCS1WithSHA1 SignatureScheme = 0x0201
 	ECDSAWithSHA1 SignatureScheme = 0x0203
 )
@@ -239,7 +242,10 @@ type ClientHelloInfo struct {
 	// for use with SupportsCertificate.
 	config *Config
 
-	// ctxは進行中のハンドシェイクのコンテキストです。
+	// isQUIC indicates whether the connection is a QUIC connection.
+	isQUIC bool
+
+	// ctx is the context of the handshake that is in progress.
 	ctx context.Context
 }
 
@@ -291,10 +297,13 @@ const (
 // ConfigがTLS関数に渡された後は変更しないでください。
 // Configは再利用することができますが、tlsパッケージ自体は変更しません。
 type Config struct {
-
-	// RandはノンスやRSAブラインディングのエントロピーの源を提供します。
-	// もしRandがnilの場合、TLSはパッケージcrypto/randの暗号化されたランダムリーダーを使用します。
-	// このリーダーは複数のゴルーチンによる使用に安全である必要があります。
+	// Randは接続のエントロピー源を提供します。
+	// Randがnilの場合、TLSはパッケージcrypto/randの暗号論的乱数リーダーを
+	// 使用します。このReaderは複数のゴルーチンから安全に使用できる必要があります。
+	//
+	// Deprecated: 本番環境ではnilのままにしておくべきです。
+	// すべてのTLS構成でRandが使われることは保証されません。
+	// テストコードでは代わりに [testing/cryptotest.SetGlobalRandom] を使用できます。
 	Rand io.Reader
 
 	// Timeはエポックからの経過秒数として現在時刻を返します。
@@ -405,9 +414,8 @@ type Config struct {
 
 	// CipherSuitesは有効なTLS 1.0-1.2の暗号化スイートのリストです。リストの順序は無視されます。注意事項として、TLS 1.3の暗号スイートは設定できません。
 	//
-	// CipherSuitesがnilの場合、安全なデフォルトリストが使用されます。デフォルトの暗号スイートは時間とともに変更される可能性があります。
-	// Go 1.22では、RSA鍵交換ベースの暗号スイートがデフォルトリストから削除されましたが、GODEBUG設定tlsrsakex=1で再追加できます。
-	// Go 1.23では、3DES暗号スイートがデフォルトリストから削除されましたが、GODEBUG設定tls3des=1で再追加できます。
+	// CipherSuitesがnilの場合、安全なデフォルトリストが使用されます。
+	// デフォルトの暗号スイートは将来変更される可能性があります。
 	CipherSuites []uint16
 
 	// PreferServerCipherSuitesは古いフィールドであり、効果がありません。
@@ -455,11 +463,8 @@ type Config struct {
 
 	// MinVersionには受け入れ可能な最小のTLSバージョンが含まれています。
 	//
-	// デフォルトでは、現在TLS 1.2が最小限として使用されています。TLS 1.0は、
-	// このパッケージがサポートする最小限です。
-	//
-	// サーバーサイドのデフォルトは、GODEBUG環境変数に値
-	// "tls10server=1"を含めることでTLS 1.0に戻すことができます。
+	// デフォルトでは、現在TLS 1.2が最小バージョンとして使用されます。
+	// TLS 1.0は、このパッケージがサポートする最小バージョンです。
 	MinVersion uint16
 
 	// MaxVersionには許容される最大のTLSバージョンが含まれています。
@@ -657,8 +662,9 @@ func (c *Config) BuildNameToCertificate()
 // ボタン構造体は、最初にリーフ（最下位）のボタンから始まり、その上位にある1つ以上のボタンのチェーンです。
 type Certificate struct {
 	Certificate [][]byte
-	// PrivateKeyは、Leafの公開鍵に対応する秘密鍵を含んでいます。
-	// これは、RSA、ECDSA、またはEd25519 PublicKeyを使用して [crypto.Signer] を実装する必要があります。
+	// PrivateKeyは、Leaf内の公開鍵に対応する秘密鍵を保持します。
+	// これは、RSA、ECDSA、Ed25519（TLS 1.2+）、または
+	// ML-DSA（TLS 1.3）の公開鍵で [crypto.Signer] を実装している必要があります。
 	//
 	// TLS 1.2までのサーバーの場合、RSA PublicKeyを使用してcrypto.Decrypterも実装できます。
 	//
