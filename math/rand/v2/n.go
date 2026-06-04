@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file.
 package rand
 
-// N returns a pseudo-random number in the half-open interval [0,n).
-// The type parameter Int can be any integer type.
-// It panics if n <= 0.
+// Nは半開区間 [0,n) の疑似乱数を返します。
+// 型パラメータIntには任意の整数型を指定できます。
+// n <= 0 の場合、パニックします。
 func (r *Rand) N[Int intType](n Int) Int
