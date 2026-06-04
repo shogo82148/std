@@ -12,77 +12,74 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// PrivateKey is an in-memory ML-DSA private key. It implements [crypto.Signer]
-// and the informal extended [crypto.PrivateKey] interface.
+// PrivateKeyはメモリ上のML-DSA秘密鍵です。
+// [crypto.Signer] と、非公式に拡張された [crypto.PrivateKey] インターフェースを実装します。
 //
-// A PrivateKey is safe for concurrent use.
+// PrivateKeyは並行利用しても安全です。
 type PrivateKey struct {
 	k mldsa.PrivateKey
 }
 
-// GenerateKey generates a new random ML-DSA private key.
+// GenerateKeyは新しいランダムなML-DSA秘密鍵を生成します。
 func GenerateKey(params Parameters) (*PrivateKey, error)
 
-// NewPrivateKey decodes an ML-DSA private key from the given seed.
+// NewPrivateKeyは、与えられたseedからML-DSA秘密鍵を復号します。
 //
-// The seed must be exactly [PrivateKeySize] bytes long.
+// seedの長さはちょうど [PrivateKeySize] バイトでなければなりません。
 func NewPrivateKey(params Parameters, seed []byte) (*PrivateKey, error)
 
-// Public returns the corresponding [PublicKey] for this private key.
+// Publicは、この秘密鍵に対応する [PublicKey] を返します。
 //
-// It implements the [crypto.Signer] interface.
+// これは [crypto.Signer] インターフェースを実装します。
 func (sk *PrivateKey) Public() crypto.PublicKey
 
-// Equal reports whether sk and x are the same key (i.e. they are derived from
-// the same seed).
+// Equalは、skとxが同じ鍵かどうか（すなわち同じseedから導出されたかどうか）を報告します。
 //
-// If x is not a *PrivateKey, Equal returns false.
+// xが*PrivateKeyでない場合、Equalはfalseを返します。
 func (sk *PrivateKey) Equal(x crypto.PrivateKey) bool
 
-// PublicKey returns the corresponding [PublicKey] for this private key.
+// PublicKeyは、この秘密鍵に対応する [PublicKey] を返します。
 func (sk *PrivateKey) PublicKey() *PublicKey
 
-// Bytes returns the private key seed.
+// Bytesは秘密鍵のseedを返します。
 func (sk *PrivateKey) Bytes() []byte
 
-// Sign returns a signature of the given message using this private key.
+// Signは、この秘密鍵を使って与えられたmessageの署名を返します。
 //
-// If opts is nil or opts.HashFunc returns zero, the message is signed directly.
-// If opts.HashFunc returns [crypto.MLDSAMu], the provided message must be a
-// [pre-hashed μ message representative]. opts can be of type *[Options] if a
-// context string is desired along with a directly-signed message. The io.Reader
-// argument is ignored.
+// optsがnil、またはopts.HashFuncがゼロを返す場合、messageは直接署名されます。
+// opts.HashFuncが [crypto.MLDSAMu] を返す場合、与えられたmessageは
+// [pre-hashed μ message representative] でなければなりません。直接署名される
+// messageとともにcontext文字列が必要な場合、optsには *[Options] を指定できます。
+// io.Reader引数は無視されます。
 //
 // [pre-hashed μ message representative]: https://www.rfc-editor.org/rfc/rfc9881.html#externalmu
 func (sk *PrivateKey) Sign(_ io.Reader, message []byte, opts crypto.SignerOpts) (signature []byte, err error)
 
-// SignDeterministic works like [PrivateKey.Sign], but the signature is
-// deterministic.
+// SignDeterministicは [PrivateKey.Sign] と同様に動作しますが、署名は決定的です。
 func (sk *PrivateKey) SignDeterministic(message []byte, opts crypto.SignerOpts) (signature []byte, err error)
 
-// PublicKey is an ML-DSA public key. It implements the informal extended
-// [crypto.PublicKey] interface.
+// PublicKeyはML-DSA公開鍵です。
+// 非公式に拡張された [crypto.PublicKey] インターフェースを実装します。
 //
-// A PublicKey is safe for concurrent use.
+// PublicKeyは並行利用しても安全です。
 type PublicKey struct {
 	p mldsa.PublicKey
 }
 
-// NewPublicKey creates a new ML-DSA public key from the given encoding.
+// NewPublicKeyは、与えられたエンコーディングから新しいML-DSA公開鍵を作成します。
 func NewPublicKey(params Parameters, encoding []byte) (*PublicKey, error)
 
-// Bytes returns the public key encoding.
+// Bytesは公開鍵のエンコーディングを返します。
 func (pk *PublicKey) Bytes() []byte
 
-// Equal reports whether pk and x are the same key (i.e. they have the same
-// encoding).
+// Equalは、pkとxが同じ鍵かどうか（すなわち同じエンコーディングを持つかどうか）を報告します。
 //
-// If x is not a *PublicKey, Equal returns false.
+// xが*PublicKeyでない場合、Equalはfalseを返します。
 func (pk *PublicKey) Equal(x crypto.PublicKey) bool
 
-// Parameters returns the parameters associated with this public key.
+// Parametersは、この公開鍵に関連付けられたパラメータを返します。
 func (pk *PublicKey) Parameters() Parameters
 
-// Verify reports whether signature is a valid signature of message by pk.
-// If opts is nil, it's equivalent to the zero value of Options.
+// Verifyは、signatureがpkによるmessageの有効な署名かどうかを報告します。
+// optsがnilの場合、Optionsのゼロ値と同等です。
 func Verify(pk *PublicKey, message []byte, signature []byte, opts *Options) error
