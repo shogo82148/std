@@ -13,17 +13,17 @@ import (
 )
 
 func Example() {
-	// The signer generates a new ML-DSA-44 key pair.
+	// 署名者は新しいML-DSA-44鍵ペアを生成します。
 	sk, err := mldsa.GenerateKey(mldsa.MLDSA44())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// The signer publishes the public key encoding.
+	// 署名者は公開鍵のエンコーディングを公開します。
 	publicKey := sk.PublicKey().Bytes()
 	fmt.Printf("public key: %d bytes\n", len(publicKey))
 
-	// The signer signs a message and publishes the signature.
+	// 署名者はメッセージに署名し、その署名を公開します。
 	msg := []byte("hello, world")
 	sig, err := sk.Sign(nil, msg, &mldsa.Options{Context: "example"})
 	if err != nil {
@@ -31,8 +31,8 @@ func Example() {
 	}
 	fmt.Printf("signature: %d bytes\n", len(sig))
 
-	// The verifier reconstructs the public key and checks the signature.
-	// The context string must match the one used by the signer.
+	// 検証者は公開鍵を再構築し、署名を検証します。
+	// context文字列は署名者が使用したものと一致している必要があります。
 	pk, err := mldsa.NewPublicKey(mldsa.MLDSA44(), publicKey)
 	if err != nil {
 		log.Fatal(err)
