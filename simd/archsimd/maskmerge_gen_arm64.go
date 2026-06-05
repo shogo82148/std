@@ -7,111 +7,61 @@ package archsimd
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int8x16) Masked(mask Mask8x16) Int8x16
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Int8x16) Merge(y Int8x16, mask Mask8x16) Int8x16
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Int8x16) IfElse(mask Mask8x16, y Int8x16) Int8x16
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int16x8) Masked(mask Mask16x8) Int16x8
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Int16x8) Merge(y Int16x8, mask Mask16x8) Int16x8
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Int16x8) IfElse(mask Mask16x8, y Int16x8) Int16x8
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int32x4) Masked(mask Mask32x4) Int32x4
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Int32x4) Merge(y Int32x4, mask Mask32x4) Int32x4
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Int32x4) IfElse(mask Mask32x4, y Int32x4) Int32x4
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Int64x2) Masked(mask Mask64x2) Int64x2
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Int64x2) Merge(y Int64x2, mask Mask64x2) Int64x2
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Int64x2) IfElse(mask Mask64x2, y Int64x2) Int64x2
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Uint8x16) Masked(mask Mask8x16) Uint8x16
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Uint8x16) Merge(y Uint8x16, mask Mask8x16) Uint8x16
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Uint8x16) IfElse(mask Mask8x16, y Uint8x16) Uint8x16
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Uint16x8) Masked(mask Mask16x8) Uint16x8
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Uint16x8) Merge(y Uint16x8, mask Mask16x8) Uint16x8
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Uint16x8) IfElse(mask Mask16x8, y Uint16x8) Uint16x8
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Uint32x4) Masked(mask Mask32x4) Uint32x4
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Uint32x4) Merge(y Uint32x4, mask Mask32x4) Uint32x4
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Uint32x4) IfElse(mask Mask32x4, y Uint32x4) Uint32x4
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Uint64x2) Masked(mask Mask64x2) Uint64x2
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Uint64x2) Merge(y Uint64x2, mask Mask64x2) Uint64x2
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Uint64x2) IfElse(mask Mask64x2, y Uint64x2) Uint64x2
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Float32x4) Masked(mask Mask32x4) Float32x4
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Float32x4) Merge(y Float32x4, mask Mask32x4) Float32x4
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Float32x4) IfElse(mask Mask32x4, y Float32x4) Float32x4
 
 // Masked returns x but with elements zeroed where mask is false.
 func (x Float64x2) Masked(mask Mask64x2) Float64x2
 
-// Merge returns x but with elements set to y where mask is true.
-//
-// Deprecated: use x.IfElse(mask, y)
-func (x Float64x2) Merge(y Float64x2, mask Mask64x2) Float64x2
-
-// IfElse returns x but with elements set to y where mask is true.
+// IfElse returns x but with elements set to y where mask is false.
 func (x Float64x2) IfElse(mask Mask64x2, y Float64x2) Float64x2
 
 // String returns a string representation of SIMD mask x.

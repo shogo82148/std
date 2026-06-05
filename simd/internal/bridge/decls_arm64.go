@@ -12,11 +12,15 @@ func LoadFloat32x4(s []float32) Float32x4
 
 func LoadFloat32x4Part(s []float32) (Float32x4, int)
 
+func BroadcastFloat32x4(x float32) Float32x4
+
 type Float64x2 archsimd.Float64x2
 
 func LoadFloat64x2(s []float64) Float64x2
 
 func LoadFloat64x2Part(s []float64) (Float64x2, int)
+
+func BroadcastFloat64x2(x float64) Float64x2
 
 type Int16x8 archsimd.Int16x8
 
@@ -24,11 +28,15 @@ func LoadInt16x8(s []int16) Int16x8
 
 func LoadInt16x8Part(s []int16) (Int16x8, int)
 
+func BroadcastInt16x8(x int16) Int16x8
+
 type Int32x4 archsimd.Int32x4
 
 func LoadInt32x4(s []int32) Int32x4
 
 func LoadInt32x4Part(s []int32) (Int32x4, int)
+
+func BroadcastInt32x4(x int32) Int32x4
 
 type Int64x2 archsimd.Int64x2
 
@@ -36,11 +44,15 @@ func LoadInt64x2(s []int64) Int64x2
 
 func LoadInt64x2Part(s []int64) (Int64x2, int)
 
+func BroadcastInt64x2(x int64) Int64x2
+
 type Int8x16 archsimd.Int8x16
 
 func LoadInt8x16(s []int8) Int8x16
 
 func LoadInt8x16Part(s []int8) (Int8x16, int)
+
+func BroadcastInt8x16(x int8) Int8x16
 
 type Mask16x8 archsimd.Mask16x8
 type Mask32x4 archsimd.Mask32x4
@@ -52,11 +64,15 @@ func LoadUint16x8(s []uint16) Uint16x8
 
 func LoadUint16x8Part(s []uint16) (Uint16x8, int)
 
+func BroadcastUint16x8(x uint16) Uint16x8
+
 type Uint32x4 archsimd.Uint32x4
 
 func LoadUint32x4(s []uint32) Uint32x4
 
 func LoadUint32x4Part(s []uint32) (Uint32x4, int)
+
+func BroadcastUint32x4(x uint32) Uint32x4
 
 type Uint64x2 archsimd.Uint64x2
 
@@ -64,11 +80,15 @@ func LoadUint64x2(s []uint64) Uint64x2
 
 func LoadUint64x2Part(s []uint64) (Uint64x2, int)
 
+func BroadcastUint64x2(x uint64) Uint64x2
+
 type Uint8x16 archsimd.Uint8x16
 
 func LoadUint8x16(s []uint8) Uint8x16
 
 func LoadUint8x16Part(s []uint8) (Uint8x16, int)
+
+func BroadcastUint8x16(x uint8) Uint8x16
 
 func (x Int8x16) Abs() Int8x16
 
@@ -114,7 +134,7 @@ func (x Int8x16) Or(y Int8x16) Int8x16
 
 func (x Int8x16) Store(s []int8)
 
-func (x Int8x16) StorePart(s []int8)
+func (x Int8x16) StorePart(s []int8) int
 
 func (x Int8x16) String() string
 
@@ -180,7 +200,7 @@ func (x Int16x8) ShiftAllRight(y uint64) Int16x8
 
 func (x Int16x8) Store(s []int16)
 
-func (x Int16x8) StorePart(s []int16)
+func (x Int16x8) StorePart(s []int16) int
 
 func (x Int16x8) String() string
 
@@ -246,7 +266,7 @@ func (x Int32x4) ShiftAllRight(y uint64) Int32x4
 
 func (x Int32x4) Store(s []int32)
 
-func (x Int32x4) StorePart(s []int32)
+func (x Int32x4) StorePart(s []int32) int
 
 func (x Int32x4) String() string
 
@@ -298,7 +318,7 @@ func (x Int64x2) ShiftAllLeft(y uint64) Int64x2
 
 func (x Int64x2) Store(s []int64)
 
-func (x Int64x2) StorePart(s []int64)
+func (x Int64x2) StorePart(s []int64) int
 
 func (x Int64x2) String() string
 
@@ -352,7 +372,7 @@ func (x Uint8x16) ReshapeToUint64s() Uint64x2
 
 func (x Uint8x16) Store(s []uint8)
 
-func (x Uint8x16) StorePart(s []uint8)
+func (x Uint8x16) StorePart(s []uint8) int
 
 func (x Uint8x16) String() string
 
@@ -420,7 +440,7 @@ func (x Uint16x8) ShiftAllRight(y uint64) Uint16x8
 
 func (x Uint16x8) Store(s []uint16)
 
-func (x Uint16x8) StorePart(s []uint16)
+func (x Uint16x8) StorePart(s []uint16) int
 
 func (x Uint16x8) String() string
 
@@ -486,7 +506,7 @@ func (x Uint32x4) ShiftAllRight(y uint64) Uint32x4
 
 func (x Uint32x4) Store(s []uint32)
 
-func (x Uint32x4) StorePart(s []uint32)
+func (x Uint32x4) StorePart(s []uint32) int
 
 func (x Uint32x4) String() string
 
@@ -548,7 +568,7 @@ func (x Uint64x2) ShiftAllRight(y uint64) Uint64x2
 
 func (x Uint64x2) Store(s []uint64)
 
-func (x Uint64x2) StorePart(s []uint64)
+func (x Uint64x2) StorePart(s []uint64) int
 
 func (x Uint64x2) String() string
 
@@ -596,7 +616,7 @@ func (x Float32x4) Sqrt() Float32x4
 
 func (x Float32x4) Store(s []float32)
 
-func (x Float32x4) StorePart(s []float32)
+func (x Float32x4) StorePart(s []float32) int
 
 func (x Float32x4) String() string
 
@@ -642,7 +662,7 @@ func (x Float64x2) Sqrt() Float64x2
 
 func (x Float64x2) Store(s []float64)
 
-func (x Float64x2) StorePart(s []float64)
+func (x Float64x2) StorePart(s []float64) int
 
 func (x Float64x2) String() string
 

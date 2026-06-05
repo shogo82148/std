@@ -12,6 +12,14 @@ func VectorBitSize() int
 // Emulated returns whether simd is emulated.
 func Emulated() bool
 
+// HasHardwareCarrylessMultiply returns whether this platform
+// has a hardware-implemented version of carryless multiply.
+// With default GODEBUG=simd settings, if this is false,
+// it is emulated and merely slow, but with non-default settings
+// this can indicate the possibility of a missing instruction
+// that will fail ("SIGILL") if it is executed.
+func HasHardwareCarrylessMultiply() bool
+
 // Int8s represents a 128-bit vector of 16 int8 elements.
 type Int8s struct {
 	_    _simd
@@ -88,7 +96,7 @@ func (x Int8s) Or(y Int8s) Int8s
 func (x Int8s) Store(s []int8)
 
 // StorePart stores a partial vector into the slice s.
-func (x Int8s) StorePart(s []int8)
+func (x Int8s) StorePart(s []int8) int
 
 // String returns a string representation of the vector.
 func (x Int8s) String() string
@@ -199,7 +207,7 @@ func (x Int16s) RotateAllRight(dist uint64) Int16s
 func (x Int16s) Store(s []int16)
 
 // StorePart stores a partial vector into the slice s.
-func (x Int16s) StorePart(s []int16)
+func (x Int16s) StorePart(s []int16) int
 
 // String returns a string representation of the vector.
 func (x Int16s) String() string
@@ -310,7 +318,7 @@ func (x Int32s) RotateAllRight(dist uint64) Int32s
 func (x Int32s) Store(s []int32)
 
 // StorePart stores a partial vector into the slice s.
-func (x Int32s) StorePart(s []int32)
+func (x Int32s) StorePart(s []int32) int
 
 // String returns a string representation of the vector.
 func (x Int32s) String() string
@@ -400,7 +408,7 @@ func (x Int64s) RotateAllRight(dist uint64) Int64s
 func (x Int64s) Store(s []int64)
 
 // StorePart stores a partial vector into the slice s.
-func (x Int64s) StorePart(s []int64)
+func (x Int64s) StorePart(s []int64) int
 
 // String returns a string representation of the vector.
 func (x Int64s) String() string
@@ -481,7 +489,7 @@ func (x Uint8s) Or(y Uint8s) Uint8s
 func (x Uint8s) Store(s []uint8)
 
 // StorePart stores a partial vector into the slice s.
-func (x Uint8s) StorePart(s []uint8)
+func (x Uint8s) StorePart(s []uint8) int
 
 // String returns a string representation of the vector.
 func (x Uint8s) String() string
@@ -595,7 +603,7 @@ func (x Uint16s) RotateAllRight(dist uint64) Uint16s
 func (x Uint16s) Store(s []uint16)
 
 // StorePart stores a partial vector into the slice s.
-func (x Uint16s) StorePart(s []uint16)
+func (x Uint16s) StorePart(s []uint16) int
 
 // String returns a string representation of the vector.
 func (x Uint16s) String() string
@@ -703,7 +711,7 @@ func (x Uint32s) RotateAllRight(dist uint64) Uint32s
 func (x Uint32s) Store(s []uint32)
 
 // StorePart stores a partial vector into the slice s.
-func (x Uint32s) StorePart(s []uint32)
+func (x Uint32s) StorePart(s []uint32) int
 
 // String returns a string representation of the vector.
 func (x Uint32s) String() string
@@ -802,7 +810,7 @@ func (x Uint64s) RotateAllRight(dist uint64) Uint64s
 func (x Uint64s) Store(s []uint64)
 
 // StorePart stores a partial vector into the slice s.
-func (x Uint64s) StorePart(s []uint64)
+func (x Uint64s) StorePart(s []uint64) int
 
 // String returns a string representation of the vector.
 func (x Uint64s) String() string
@@ -904,7 +912,7 @@ func (x Float32s) Sqrt() Float32s
 func (x Float32s) Store(s []float32)
 
 // StorePart stores a partial vector into the slice s.
-func (x Float32s) StorePart(s []float32)
+func (x Float32s) StorePart(s []float32) int
 
 // String returns a string representation of the vector.
 func (x Float32s) String() string
@@ -985,7 +993,7 @@ func (x Float64s) Sqrt() Float64s
 func (x Float64s) Store(s []float64)
 
 // StorePart stores a partial vector into the slice s.
-func (x Float64s) StorePart(s []float64)
+func (x Float64s) StorePart(s []float64) int
 
 // String returns a string representation of the vector.
 func (x Float64s) String() string
@@ -1070,6 +1078,7 @@ func (x Mask64s) ToInt64s() Int64s
 
 // CarrylessMultiplyEven computes the carryless
 // multiplications of selected even halves of the elements of x and y.
+// The result fills the 128 bits of each even-odd pair.
 //
 // A carryless multiplication uses bitwise XOR instead of
 // add-with-carry, for example (in base two):
@@ -1084,6 +1093,7 @@ func (x Uint64s) CarrylessMultiplyEven(y Uint64s) Uint64s
 
 // CarrylessMultiplyOdd computes the carryless
 // multiplications of selected odd halves of the elements of x and y.
+// The result fills the 128 bits of each even-odd pair.
 //
 // A carryless multiplication uses bitwise XOR instead of
 // add-with-carry, for example (in base two):
@@ -1095,3 +1105,33 @@ func (x Uint64s) CarrylessMultiplyEven(y Uint64s) Uint64s
 // x**2 + 0x + 1 = x**2 + 1 modeled by 101.  (Note that "+" adds
 // polynomial terms, but coefficients "add" with XOR.)
 func (x Uint64s) CarrylessMultiplyOdd(y Uint64s) Uint64s
+
+// BroadcastInt8 fills the elements of a slice with its argument value.
+func BroadcastInt8s(x int8) Int8s
+
+// BroadcastInt16 fills the elements of a slice with its argument value.
+func BroadcastInt16s(x int16) Int16s
+
+// BroadcastInt32 fills the elements of a slice with its argument value.
+func BroadcastInt32s(x int32) Int32s
+
+// BroadcastInt64 fills the elements of a slice with its argument value.
+func BroadcastInt64s(x int64) Int64s
+
+// BroadcastUint8 fills the elements of a slice with its argument value.
+func BroadcastUint8s(x uint8) Uint8s
+
+// BroadcastUint16 fills the elements of a slice with its argument value.
+func BroadcastUint16s(x uint16) Uint16s
+
+// BroadcastUint32 fills the elements of a slice with its argument value.
+func BroadcastUint32s(x uint32) Uint32s
+
+// BroadcastUint64 fills the elements of a slice with its argument value.
+func BroadcastUint64s(x uint64) Uint64s
+
+// BroadcastFloat32 fills the elements of a slice with its argument value.
+func BroadcastFloat32s(x float32) Float32s
+
+// BroadcastFloat64 fills the elements of a slice with its argument value.
+func BroadcastFloat64s(x float64) Float64s

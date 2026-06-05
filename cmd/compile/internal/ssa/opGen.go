@@ -587,8 +587,6 @@ const (
 	OpAMD64SARLconst
 	OpAMD64SARWconst
 	OpAMD64SARBconst
-	OpAMD64SHRDQ
-	OpAMD64SHLDQ
 	OpAMD64ROLQ
 	OpAMD64ROLL
 	OpAMD64ROLW
@@ -6415,6 +6413,12 @@ const (
 	OpWasmI8x16AvgrU
 	OpWasmI16x8AvgrU
 	OpWasmV128Bitselect
+	OpWasmI8x16Splat
+	OpWasmI16x8Splat
+	OpWasmI32x4Splat
+	OpWasmF32x4Splat
+	OpWasmI64x2Splat
+	OpWasmF64x2Splat
 	OpWasmF32x4Ceil
 	OpWasmF64x2Ceil
 	OpWasmF64x2ConvertLowI32x4S
@@ -7164,6 +7168,12 @@ const (
 	OpBitSelectUint16x8
 	OpBitSelectUint32x4
 	OpBitSelectUint64x2
+	OpBroadcastFloat32x4
+	OpBroadcastFloat64x2
+	OpBroadcastInt8x16
+	OpBroadcastInt16x8
+	OpBroadcastInt32x4
+	OpBroadcastInt64x2
 	OpCeilFloat32x4
 	OpCeilFloat32x8
 	OpCeilFloat64x2
@@ -7214,6 +7224,22 @@ const (
 	OpConcatAddPairsUint16x8
 	OpConcatAddPairsUint32x4
 	OpConcatAddPairsUint64x2
+	OpConcatEvenInt8x16
+	OpConcatEvenInt16x8
+	OpConcatEvenInt32x4
+	OpConcatEvenInt64x2
+	OpConcatEvenUint8x16
+	OpConcatEvenUint16x8
+	OpConcatEvenUint32x4
+	OpConcatEvenUint64x2
+	OpConcatOddInt8x16
+	OpConcatOddInt16x8
+	OpConcatOddInt32x4
+	OpConcatOddInt64x2
+	OpConcatOddUint8x16
+	OpConcatOddUint16x8
+	OpConcatOddUint32x4
+	OpConcatOddUint64x2
 	OpConcatPermuteFloat32x4
 	OpConcatPermuteFloat32x8
 	OpConcatPermuteFloat32x16
@@ -7310,22 +7336,6 @@ const (
 	OpConvertToUint64Float64x2
 	OpConvertToUint64Float64x4
 	OpConvertToUint64Float64x8
-	OpDeinterleaveEvenInt8x16
-	OpDeinterleaveEvenInt16x8
-	OpDeinterleaveEvenInt32x4
-	OpDeinterleaveEvenInt64x2
-	OpDeinterleaveEvenUint8x16
-	OpDeinterleaveEvenUint16x8
-	OpDeinterleaveEvenUint32x4
-	OpDeinterleaveEvenUint64x2
-	OpDeinterleaveOddInt8x16
-	OpDeinterleaveOddInt16x8
-	OpDeinterleaveOddInt32x4
-	OpDeinterleaveOddInt64x2
-	OpDeinterleaveOddUint8x16
-	OpDeinterleaveOddUint16x8
-	OpDeinterleaveOddUint32x4
-	OpDeinterleaveOddUint64x2
 	OpDivFloat32x4
 	OpDivFloat32x8
 	OpDivFloat32x16
@@ -7535,6 +7545,14 @@ const (
 	OpGreaterUint32x16
 	OpGreaterUint64x2
 	OpGreaterUint64x8
+	OpInterleaveEvenInt8x16
+	OpInterleaveEvenInt16x8
+	OpInterleaveEvenInt32x4
+	OpInterleaveEvenInt64x2
+	OpInterleaveEvenUint8x16
+	OpInterleaveEvenUint16x8
+	OpInterleaveEvenUint32x4
+	OpInterleaveEvenUint64x2
 	OpInterleaveHiGroupedInt16x16
 	OpInterleaveHiGroupedInt16x32
 	OpInterleaveHiGroupedInt32x8
@@ -7575,6 +7593,14 @@ const (
 	OpInterleaveLoUint16x8
 	OpInterleaveLoUint32x4
 	OpInterleaveLoUint64x2
+	OpInterleaveOddInt8x16
+	OpInterleaveOddInt16x8
+	OpInterleaveOddInt32x4
+	OpInterleaveOddInt64x2
+	OpInterleaveOddUint8x16
+	OpInterleaveOddUint16x8
+	OpInterleaveOddUint32x4
+	OpInterleaveOddUint64x2
 	OpLeadingSignBitsInt8x16
 	OpLeadingSignBitsInt16x8
 	OpLeadingSignBitsInt32x4
@@ -7639,8 +7665,6 @@ const (
 	OpLessUint32x4
 	OpLessUint32x16
 	OpLessUint64x8
-	OpLookupOrKeepInt8x16
-	OpLookupOrKeepUint8x16
 	OpLookupOrZeroInt8x16
 	OpLookupOrZeroUint8x16
 	OpMaxFloat32x4
@@ -7727,10 +7751,6 @@ const (
 	OpMulAddUint8x16
 	OpMulAddUint16x8
 	OpMulAddUint32x4
-	OpMulEvenWidenInt32x4
-	OpMulEvenWidenInt32x8
-	OpMulEvenWidenUint32x4
-	OpMulEvenWidenUint32x8
 	OpMulFloat32x4
 	OpMulFloat32x8
 	OpMulFloat32x16
@@ -7769,6 +7789,10 @@ const (
 	OpMulUint64x2
 	OpMulUint64x4
 	OpMulUint64x8
+	OpMulWidenEvenInt32x4
+	OpMulWidenEvenInt32x8
+	OpMulWidenEvenUint32x4
+	OpMulWidenEvenUint32x8
 	OpMulWidenHiInt8x16
 	OpMulWidenHiInt16x8
 	OpMulWidenHiInt32x4
@@ -8259,22 +8283,6 @@ const (
 	OpSumOf8AbsDiffUint8x16
 	OpSumOf8AbsDiffUint8x32
 	OpSumOf8AbsDiffUint8x64
-	OpTransposeEvenInt8x16
-	OpTransposeEvenInt16x8
-	OpTransposeEvenInt32x4
-	OpTransposeEvenInt64x2
-	OpTransposeEvenUint8x16
-	OpTransposeEvenUint16x8
-	OpTransposeEvenUint32x4
-	OpTransposeEvenUint64x2
-	OpTransposeOddInt8x16
-	OpTransposeOddInt16x8
-	OpTransposeOddInt32x4
-	OpTransposeOddInt64x2
-	OpTransposeOddUint8x16
-	OpTransposeOddUint16x8
-	OpTransposeOddUint32x4
-	OpTransposeOddUint64x2
 	OpTruncFloat32x4
 	OpTruncFloat32x8
 	OpTruncFloat64x2
@@ -8521,39 +8529,6 @@ const (
 	OpShiftAllRightConcatMod64Uint64x2
 	OpShiftAllRightConcatMod64Uint64x4
 	OpShiftAllRightConcatMod64Uint64x8
-	OpShiftLeftConstInt8x16
-	OpShiftLeftConstInt16x8
-	OpShiftLeftConstInt32x4
-	OpShiftLeftConstInt64x2
-	OpShiftLeftConstUint8x16
-	OpShiftLeftConstUint16x8
-	OpShiftLeftConstUint32x4
-	OpShiftLeftConstUint64x2
-	OpShiftLeftSaturatedConstInt8x16
-	OpShiftLeftSaturatedConstInt16x8
-	OpShiftLeftSaturatedConstInt32x4
-	OpShiftLeftSaturatedConstInt64x2
-	OpShiftLeftSaturatedConstUint8x16
-	OpShiftLeftSaturatedConstUint16x8
-	OpShiftLeftSaturatedConstUint32x4
-	OpShiftLeftSaturatedConstUint64x2
-	OpShiftLeftWidenLoConstInt8x16
-	OpShiftLeftWidenLoConstInt16x8
-	OpShiftLeftWidenLoConstInt32x4
-	OpShiftLeftWidenLoConstUint8x16
-	OpShiftLeftWidenLoConstUint16x8
-	OpShiftLeftWidenLoConstUint32x4
-	OpShiftRightConstInt8x16
-	OpShiftRightConstInt16x8
-	OpShiftRightConstInt32x4
-	OpShiftRightConstInt64x2
-	OpShiftRightConstUint8x16
-	OpShiftRightConstUint16x8
-	OpShiftRightConstUint32x4
-	OpShiftRightConstUint64x2
-	OpShiftRightNarrowConstUint16x8
-	OpShiftRightNarrowConstUint32x4
-	OpShiftRightNarrowConstUint64x2
 	OpTruncScaledFloat32x4
 	OpTruncScaledFloat32x8
 	OpTruncScaledFloat32x16
