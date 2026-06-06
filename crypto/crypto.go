@@ -39,11 +39,11 @@ const (
 	BLAKE2b_384
 	BLAKE2b_512
 
-	// MLDSAMu is a sentinel value for a [pre-hashed μ message representative].
-	// It has no implementation, but is used as a [SignerOpts.HashFunc] return
-	// value for [crypto/mldsa.PrivateKey.Sign].
+	// MLDSAMuは、[事前ハッシュ化されたμメッセージ代表値] のための番兵値です。
+	// 実装はありませんが、[crypto/mldsa.PrivateKey.Sign] における
+	// [SignerOpts.HashFunc] の戻り値として使用されます。
 	//
-	// [pre-hashed μ message representative]: https://www.rfc-editor.org/rfc/rfc9881.html#externalmu
+	// [事前ハッシュ化されたμメッセージ代表値]: https://www.rfc-editor.org/rfc/rfc9881.html#externalmu
 	MLDSAMu
 )
 
