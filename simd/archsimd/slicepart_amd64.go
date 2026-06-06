@@ -19,9 +19,9 @@ func LoadInt16x16Part(s []int16) (Int16x16, int)
 // StorePart stores the elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 32 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int8x32) StorePart(s []int8)
+func (x Int8x32) StorePart(s []int8) int
 
 // StorePart stores the elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 16 or more elements, the method is equivalent to x.StoreSlice.
-func (x Int16x16) StorePart(s []int16)
+func (x Int16x16) StorePart(s []int16) int

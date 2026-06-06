@@ -12,11 +12,15 @@ func LoadFloat32x16(s []float32) Float32x16
 
 func LoadFloat32x16Part(s []float32) (Float32x16, int)
 
+func BroadcastFloat32x16(x float32) Float32x16
+
 type Float32x4 archsimd.Float32x4
 
 func LoadFloat32x4(s []float32) Float32x4
 
 func LoadFloat32x4Part(s []float32) (Float32x4, int)
+
+func BroadcastFloat32x4(x float32) Float32x4
 
 type Float32x8 archsimd.Float32x8
 
@@ -24,11 +28,15 @@ func LoadFloat32x8(s []float32) Float32x8
 
 func LoadFloat32x8Part(s []float32) (Float32x8, int)
 
+func BroadcastFloat32x8(x float32) Float32x8
+
 type Float64x2 archsimd.Float64x2
 
 func LoadFloat64x2(s []float64) Float64x2
 
 func LoadFloat64x2Part(s []float64) (Float64x2, int)
+
+func BroadcastFloat64x2(x float64) Float64x2
 
 type Float64x4 archsimd.Float64x4
 
@@ -36,11 +44,15 @@ func LoadFloat64x4(s []float64) Float64x4
 
 func LoadFloat64x4Part(s []float64) (Float64x4, int)
 
+func BroadcastFloat64x4(x float64) Float64x4
+
 type Float64x8 archsimd.Float64x8
 
 func LoadFloat64x8(s []float64) Float64x8
 
 func LoadFloat64x8Part(s []float64) (Float64x8, int)
+
+func BroadcastFloat64x8(x float64) Float64x8
 
 type Int16x16 archsimd.Int16x16
 
@@ -48,11 +60,15 @@ func LoadInt16x16(s []int16) Int16x16
 
 func LoadInt16x16Part(s []int16) (Int16x16, int)
 
+func BroadcastInt16x16(x int16) Int16x16
+
 type Int16x32 archsimd.Int16x32
 
 func LoadInt16x32(s []int16) Int16x32
 
 func LoadInt16x32Part(s []int16) (Int16x32, int)
+
+func BroadcastInt16x32(x int16) Int16x32
 
 type Int16x8 archsimd.Int16x8
 
@@ -60,11 +76,15 @@ func LoadInt16x8(s []int16) Int16x8
 
 func LoadInt16x8Part(s []int16) (Int16x8, int)
 
+func BroadcastInt16x8(x int16) Int16x8
+
 type Int32x16 archsimd.Int32x16
 
 func LoadInt32x16(s []int32) Int32x16
 
 func LoadInt32x16Part(s []int32) (Int32x16, int)
+
+func BroadcastInt32x16(x int32) Int32x16
 
 type Int32x4 archsimd.Int32x4
 
@@ -72,11 +92,15 @@ func LoadInt32x4(s []int32) Int32x4
 
 func LoadInt32x4Part(s []int32) (Int32x4, int)
 
+func BroadcastInt32x4(x int32) Int32x4
+
 type Int32x8 archsimd.Int32x8
 
 func LoadInt32x8(s []int32) Int32x8
 
 func LoadInt32x8Part(s []int32) (Int32x8, int)
+
+func BroadcastInt32x8(x int32) Int32x8
 
 type Int64x2 archsimd.Int64x2
 
@@ -84,11 +108,15 @@ func LoadInt64x2(s []int64) Int64x2
 
 func LoadInt64x2Part(s []int64) (Int64x2, int)
 
+func BroadcastInt64x2(x int64) Int64x2
+
 type Int64x4 archsimd.Int64x4
 
 func LoadInt64x4(s []int64) Int64x4
 
 func LoadInt64x4Part(s []int64) (Int64x4, int)
+
+func BroadcastInt64x4(x int64) Int64x4
 
 type Int64x8 archsimd.Int64x8
 
@@ -96,11 +124,15 @@ func LoadInt64x8(s []int64) Int64x8
 
 func LoadInt64x8Part(s []int64) (Int64x8, int)
 
+func BroadcastInt64x8(x int64) Int64x8
+
 type Int8x16 archsimd.Int8x16
 
 func LoadInt8x16(s []int8) Int8x16
 
 func LoadInt8x16Part(s []int8) (Int8x16, int)
+
+func BroadcastInt8x16(x int8) Int8x16
 
 type Int8x32 archsimd.Int8x32
 
@@ -108,11 +140,15 @@ func LoadInt8x32(s []int8) Int8x32
 
 func LoadInt8x32Part(s []int8) (Int8x32, int)
 
+func BroadcastInt8x32(x int8) Int8x32
+
 type Int8x64 archsimd.Int8x64
 
 func LoadInt8x64(s []int8) Int8x64
 
 func LoadInt8x64Part(s []int8) (Int8x64, int)
+
+func BroadcastInt8x64(x int8) Int8x64
 
 type Mask16x16 archsimd.Mask16x16
 type Mask16x32 archsimd.Mask16x32
@@ -132,11 +168,15 @@ func LoadUint16x16(s []uint16) Uint16x16
 
 func LoadUint16x16Part(s []uint16) (Uint16x16, int)
 
+func BroadcastUint16x16(x uint16) Uint16x16
+
 type Uint16x32 archsimd.Uint16x32
 
 func LoadUint16x32(s []uint16) Uint16x32
 
 func LoadUint16x32Part(s []uint16) (Uint16x32, int)
+
+func BroadcastUint16x32(x uint16) Uint16x32
 
 type Uint16x8 archsimd.Uint16x8
 
@@ -144,11 +184,15 @@ func LoadUint16x8(s []uint16) Uint16x8
 
 func LoadUint16x8Part(s []uint16) (Uint16x8, int)
 
+func BroadcastUint16x8(x uint16) Uint16x8
+
 type Uint32x16 archsimd.Uint32x16
 
 func LoadUint32x16(s []uint32) Uint32x16
 
 func LoadUint32x16Part(s []uint32) (Uint32x16, int)
+
+func BroadcastUint32x16(x uint32) Uint32x16
 
 type Uint32x4 archsimd.Uint32x4
 
@@ -156,11 +200,15 @@ func LoadUint32x4(s []uint32) Uint32x4
 
 func LoadUint32x4Part(s []uint32) (Uint32x4, int)
 
+func BroadcastUint32x4(x uint32) Uint32x4
+
 type Uint32x8 archsimd.Uint32x8
 
 func LoadUint32x8(s []uint32) Uint32x8
 
 func LoadUint32x8Part(s []uint32) (Uint32x8, int)
+
+func BroadcastUint32x8(x uint32) Uint32x8
 
 type Uint64x2 archsimd.Uint64x2
 
@@ -168,11 +216,15 @@ func LoadUint64x2(s []uint64) Uint64x2
 
 func LoadUint64x2Part(s []uint64) (Uint64x2, int)
 
+func BroadcastUint64x2(x uint64) Uint64x2
+
 type Uint64x4 archsimd.Uint64x4
 
 func LoadUint64x4(s []uint64) Uint64x4
 
 func LoadUint64x4Part(s []uint64) (Uint64x4, int)
+
+func BroadcastUint64x4(x uint64) Uint64x4
 
 type Uint64x8 archsimd.Uint64x8
 
@@ -180,11 +232,15 @@ func LoadUint64x8(s []uint64) Uint64x8
 
 func LoadUint64x8Part(s []uint64) (Uint64x8, int)
 
+func BroadcastUint64x8(x uint64) Uint64x8
+
 type Uint8x16 archsimd.Uint8x16
 
 func LoadUint8x16(s []uint8) Uint8x16
 
 func LoadUint8x16Part(s []uint8) (Uint8x16, int)
+
+func BroadcastUint8x16(x uint8) Uint8x16
 
 type Uint8x32 archsimd.Uint8x32
 
@@ -192,11 +248,15 @@ func LoadUint8x32(s []uint8) Uint8x32
 
 func LoadUint8x32Part(s []uint8) (Uint8x32, int)
 
+func BroadcastUint8x32(x uint8) Uint8x32
+
 type Uint8x64 archsimd.Uint8x64
 
 func LoadUint8x64(s []uint8) Uint8x64
 
 func LoadUint8x64Part(s []uint8) (Uint8x64, int)
+
+func BroadcastUint8x64(x uint8) Uint8x64
 
 func (x Int8x16) Abs() Int8x16
 
@@ -330,11 +390,11 @@ func (x Int8x32) Store(s []int8)
 
 func (x Int8x64) Store(s []int8)
 
-func (x Int8x16) StorePart(s []int8)
+func (x Int8x16) StorePart(s []int8) int
 
-func (x Int8x32) StorePart(s []int8)
+func (x Int8x32) StorePart(s []int8) int
 
-func (x Int8x64) StorePart(s []int8)
+func (x Int8x64) StorePart(s []int8) int
 
 func (x Int8x16) String() string
 
@@ -528,11 +588,11 @@ func (x Int16x32) Store(s []int16)
 
 func (x Int16x8) Store(s []int16)
 
-func (x Int16x16) StorePart(s []int16)
+func (x Int16x16) StorePart(s []int16) int
 
-func (x Int16x32) StorePart(s []int16)
+func (x Int16x32) StorePart(s []int16) int
 
-func (x Int16x8) StorePart(s []int16)
+func (x Int16x8) StorePart(s []int16) int
 
 func (x Int16x16) String() string
 
@@ -726,7 +786,7 @@ func (x Int32x4) Store(s []int32)
 
 func (x Int32x8) Store(s []int32)
 
-func (x Int32x16) StorePart(s []int32)
+func (x Int32x16) StorePart(s []int32) int
 
 func (x Int32x4) StorePart(s []int32)
 
@@ -886,7 +946,7 @@ func (x Int64x2) StorePart(s []int64)
 
 func (x Int64x4) StorePart(s []int64)
 
-func (x Int64x8) StorePart(s []int64)
+func (x Int64x8) StorePart(s []int64) int
 
 func (x Int64x2) String() string
 
@@ -1044,11 +1104,11 @@ func (x Uint8x32) Store(s []uint8)
 
 func (x Uint8x64) Store(s []uint8)
 
-func (x Uint8x16) StorePart(s []uint8)
+func (x Uint8x16) StorePart(s []uint8) int
 
 func (x Uint8x32) StorePart(s []uint8)
 
-func (x Uint8x64) StorePart(s []uint8)
+func (x Uint8x64) StorePart(s []uint8) int
 
 func (x Uint8x16) String() string
 
@@ -1250,9 +1310,9 @@ func (x Uint16x8) Store(s []uint16)
 
 func (x Uint16x16) StorePart(s []uint16)
 
-func (x Uint16x32) StorePart(s []uint16)
+func (x Uint16x32) StorePart(s []uint16) int
 
-func (x Uint16x8) StorePart(s []uint16)
+func (x Uint16x8) StorePart(s []uint16) int
 
 func (x Uint16x16) String() string
 
@@ -1446,7 +1506,7 @@ func (x Uint32x4) Store(s []uint32)
 
 func (x Uint32x8) Store(s []uint32)
 
-func (x Uint32x16) StorePart(s []uint32)
+func (x Uint32x16) StorePart(s []uint32) int
 
 func (x Uint32x4) StorePart(s []uint32)
 
@@ -1636,7 +1696,7 @@ func (x Uint64x2) StorePart(s []uint64)
 
 func (x Uint64x4) StorePart(s []uint64)
 
-func (x Uint64x8) StorePart(s []uint64)
+func (x Uint64x8) StorePart(s []uint64) int
 
 func (x Uint64x2) String() string
 
@@ -1776,7 +1836,7 @@ func (x Float32x4) Store(s []float32)
 
 func (x Float32x8) Store(s []float32)
 
-func (x Float32x16) StorePart(s []float32)
+func (x Float32x16) StorePart(s []float32) int
 
 func (x Float32x4) StorePart(s []float32)
 
@@ -1918,7 +1978,7 @@ func (x Float64x2) StorePart(s []float64)
 
 func (x Float64x4) StorePart(s []float64)
 
-func (x Float64x8) StorePart(s []float64)
+func (x Float64x8) StorePart(s []float64) int
 
 func (x Float64x2) String() string
 

@@ -292,6 +292,102 @@ func (x Uint32x4) ConcatAddPairs(y Uint32x4) Uint32x4
 // Asm: VADDP, CPU Feature: NEON
 func (x Uint64x2) ConcatAddPairs(y Uint64x2) Uint64x2
 
+// ConcatEven concatenates even-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
+//
+// Asm: VUZP1, CPU Feature: NEON
+func (x Int8x16) ConcatEven(y Int8x16) Int8x16
+
+// ConcatEven concatenates even-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
+//
+// Asm: VUZP1, CPU Feature: NEON
+func (x Int16x8) ConcatEven(y Int16x8) Int16x8
+
+// ConcatEven concatenates even-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
+//
+// Asm: VUZP1, CPU Feature: NEON
+func (x Int32x4) ConcatEven(y Int32x4) Int32x4
+
+// ConcatEven concatenates even-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
+//
+// Asm: VUZP1, CPU Feature: NEON
+func (x Int64x2) ConcatEven(y Int64x2) Int64x2
+
+// ConcatEven concatenates even-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
+//
+// Asm: VUZP1, CPU Feature: NEON
+func (x Uint8x16) ConcatEven(y Uint8x16) Uint8x16
+
+// ConcatEven concatenates even-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
+//
+// Asm: VUZP1, CPU Feature: NEON
+func (x Uint16x8) ConcatEven(y Uint16x8) Uint16x8
+
+// ConcatEven concatenates even-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
+//
+// Asm: VUZP1, CPU Feature: NEON
+func (x Uint32x4) ConcatEven(y Uint32x4) Uint32x4
+
+// ConcatEven concatenates even-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
+//
+// Asm: VUZP1, CPU Feature: NEON
+func (x Uint64x2) ConcatEven(y Uint64x2) Uint64x2
+
+// ConcatOdd concatenates odd-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
+//
+// Asm: VUZP2, CPU Feature: NEON
+func (x Int8x16) ConcatOdd(y Int8x16) Int8x16
+
+// ConcatOdd concatenates odd-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
+//
+// Asm: VUZP2, CPU Feature: NEON
+func (x Int16x8) ConcatOdd(y Int16x8) Int16x8
+
+// ConcatOdd concatenates odd-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
+//
+// Asm: VUZP2, CPU Feature: NEON
+func (x Int32x4) ConcatOdd(y Int32x4) Int32x4
+
+// ConcatOdd concatenates odd-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
+//
+// Asm: VUZP2, CPU Feature: NEON
+func (x Int64x2) ConcatOdd(y Int64x2) Int64x2
+
+// ConcatOdd concatenates odd-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
+//
+// Asm: VUZP2, CPU Feature: NEON
+func (x Uint8x16) ConcatOdd(y Uint8x16) Uint8x16
+
+// ConcatOdd concatenates odd-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
+//
+// Asm: VUZP2, CPU Feature: NEON
+func (x Uint16x8) ConcatOdd(y Uint16x8) Uint16x8
+
+// ConcatOdd concatenates odd-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
+//
+// Asm: VUZP2, CPU Feature: NEON
+func (x Uint32x4) ConcatOdd(y Uint32x4) Uint32x4
+
+// ConcatOdd concatenates odd-indexed elements from the concatenation of x and y.
+// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
+//
+// Asm: VUZP2, CPU Feature: NEON
+func (x Uint64x2) ConcatOdd(y Uint64x2) Uint64x2
+
 // ConcatShiftBytesRight concatenates x and y and shifts it right by shift bytes.
 // The result vector will be the lower half of the concatenated vector.
 //
@@ -301,9 +397,9 @@ func (x Uint64x2) ConcatAddPairs(y Uint64x2) Uint64x2
 func (x Uint8x16) ConcatShiftBytesRight(y Uint8x16, shift uint64) Uint8x16
 
 // ConvertLo2ToFloat64 converts low-indexed float32 element values to float64.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().ConvertLo2ToFloat64(...)
+//	x.HiToLo().ConvertLo2ToFloat64(...)
 //
 // Asm: VFCVTL, CPU Feature: NEON
 func (x Float32x4) ConvertLo2ToFloat64() Float64x2
@@ -364,102 +460,6 @@ func (x Float32x4) ConvertToUint32() Uint32x4
 //
 // Asm: VFCVTZU, CPU Feature: NEON
 func (x Float64x2) ConvertToUint64() Uint64x2
-
-// DeinterleaveEven deinterleaves even-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
-//
-// Asm: VUZP1, CPU Feature: NEON
-func (x Int8x16) DeinterleaveEven(y Int8x16) Int8x16
-
-// DeinterleaveEven deinterleaves even-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
-//
-// Asm: VUZP1, CPU Feature: NEON
-func (x Int16x8) DeinterleaveEven(y Int16x8) Int16x8
-
-// DeinterleaveEven deinterleaves even-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
-//
-// Asm: VUZP1, CPU Feature: NEON
-func (x Int32x4) DeinterleaveEven(y Int32x4) Int32x4
-
-// DeinterleaveEven deinterleaves even-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
-//
-// Asm: VUZP1, CPU Feature: NEON
-func (x Int64x2) DeinterleaveEven(y Int64x2) Int64x2
-
-// DeinterleaveEven deinterleaves even-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
-//
-// Asm: VUZP1, CPU Feature: NEON
-func (x Uint8x16) DeinterleaveEven(y Uint8x16) Uint8x16
-
-// DeinterleaveEven deinterleaves even-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
-//
-// Asm: VUZP1, CPU Feature: NEON
-func (x Uint16x8) DeinterleaveEven(y Uint16x8) Uint16x8
-
-// DeinterleaveEven deinterleaves even-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
-//
-// Asm: VUZP1, CPU Feature: NEON
-func (x Uint32x4) DeinterleaveEven(y Uint32x4) Uint32x4
-
-// DeinterleaveEven deinterleaves even-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x0,x2,y0,y2].
-//
-// Asm: VUZP1, CPU Feature: NEON
-func (x Uint64x2) DeinterleaveEven(y Uint64x2) Uint64x2
-
-// DeinterleaveOdd deinterleaves odd-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
-//
-// Asm: VUZP2, CPU Feature: NEON
-func (x Int8x16) DeinterleaveOdd(y Int8x16) Int8x16
-
-// DeinterleaveOdd deinterleaves odd-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
-//
-// Asm: VUZP2, CPU Feature: NEON
-func (x Int16x8) DeinterleaveOdd(y Int16x8) Int16x8
-
-// DeinterleaveOdd deinterleaves odd-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
-//
-// Asm: VUZP2, CPU Feature: NEON
-func (x Int32x4) DeinterleaveOdd(y Int32x4) Int32x4
-
-// DeinterleaveOdd deinterleaves odd-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
-//
-// Asm: VUZP2, CPU Feature: NEON
-func (x Int64x2) DeinterleaveOdd(y Int64x2) Int64x2
-
-// DeinterleaveOdd deinterleaves odd-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
-//
-// Asm: VUZP2, CPU Feature: NEON
-func (x Uint8x16) DeinterleaveOdd(y Uint8x16) Uint8x16
-
-// DeinterleaveOdd deinterleaves odd-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
-//
-// Asm: VUZP2, CPU Feature: NEON
-func (x Uint16x8) DeinterleaveOdd(y Uint16x8) Uint16x8
-
-// DeinterleaveOdd deinterleaves odd-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
-//
-// Asm: VUZP2, CPU Feature: NEON
-func (x Uint32x4) DeinterleaveOdd(y Uint32x4) Uint32x4
-
-// DeinterleaveOdd deinterleaves odd-indexed elements from the concatenation of x and y.
-// For x = [x0,x1,x2,x3] and y = [y0,y1,y2,y3], result = [x1,x3,y1,y3].
-//
-// Asm: VUZP2, CPU Feature: NEON
-func (x Uint64x2) DeinterleaveOdd(y Uint64x2) Uint64x2
 
 // Div divides elements of two vectors. Division by zero follows IEEE 754 and does not panic.
 //
@@ -522,49 +522,49 @@ func (x Uint32x4) Equal(y Uint32x4) Mask32x4
 func (x Uint64x2) Equal(y Uint64x2) Mask64x2
 
 // ExtendLo2ToInt64 sign-extends 2 lowest vector element values to int64.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().ExtendLo2ToInt64(...)
+//	x.HiToLo().ExtendLo2ToInt64(...)
 //
 // Asm: VSXTL, CPU Feature: NEON
 func (x Int32x4) ExtendLo2ToInt64() Int64x2
 
 // ExtendLo2ToUint64 zero-extends 2 lowest vector element values to uint64.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().ExtendLo2ToUint64(...)
+//	x.HiToLo().ExtendLo2ToUint64(...)
 //
 // Asm: VUXTL, CPU Feature: NEON
 func (x Uint32x4) ExtendLo2ToUint64() Uint64x2
 
 // ExtendLo4ToInt32 sign-extends 4 lowest vector element values to int32.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().ExtendLo4ToInt32(...)
+//	x.HiToLo().ExtendLo4ToInt32(...)
 //
 // Asm: VSXTL, CPU Feature: NEON
 func (x Int16x8) ExtendLo4ToInt32() Int32x4
 
 // ExtendLo4ToUint32 zero-extends 4 lowest vector element values to uint32.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().ExtendLo4ToUint32(...)
+//	x.HiToLo().ExtendLo4ToUint32(...)
 //
 // Asm: VUXTL, CPU Feature: NEON
 func (x Uint16x8) ExtendLo4ToUint32() Uint32x4
 
 // ExtendLo8ToInt16 sign-extends 8 lowest vector element values to int16.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().ExtendLo8ToInt16(...)
+//	x.HiToLo().ExtendLo8ToInt16(...)
 //
 // Asm: VSXTL, CPU Feature: NEON
 func (x Int8x16) ExtendLo8ToInt16() Int16x8
 
 // ExtendLo8ToUint16 zero-extends 8 lowest vector element values to uint16.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().ExtendLo8ToUint16(...)
+//	x.HiToLo().ExtendLo8ToUint16(...)
 //
 // Asm: VUXTL, CPU Feature: NEON
 func (x Uint8x16) ExtendLo8ToUint16() Uint16x8
@@ -749,6 +749,54 @@ func (x Uint32x4) GreaterEqual(y Uint32x4) Mask32x4
 // Asm: VCMHS, CPU Feature: NEON
 func (x Uint64x2) GreaterEqual(y Uint64x2) Mask64x2
 
+// InterleaveEven interleaves even elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+//
+// Asm: VTRN1, CPU Feature: NEON
+func (x Int8x16) InterleaveEven(y Int8x16) Int8x16
+
+// InterleaveEven interleaves even elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+//
+// Asm: VTRN1, CPU Feature: NEON
+func (x Int16x8) InterleaveEven(y Int16x8) Int16x8
+
+// InterleaveEven interleaves even elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+//
+// Asm: VTRN1, CPU Feature: NEON
+func (x Int32x4) InterleaveEven(y Int32x4) Int32x4
+
+// InterleaveEven interleaves even elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+//
+// Asm: VTRN1, CPU Feature: NEON
+func (x Int64x2) InterleaveEven(y Int64x2) Int64x2
+
+// InterleaveEven interleaves even elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+//
+// Asm: VTRN1, CPU Feature: NEON
+func (x Uint8x16) InterleaveEven(y Uint8x16) Uint8x16
+
+// InterleaveEven interleaves even elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+//
+// Asm: VTRN1, CPU Feature: NEON
+func (x Uint16x8) InterleaveEven(y Uint16x8) Uint16x8
+
+// InterleaveEven interleaves even elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+//
+// Asm: VTRN1, CPU Feature: NEON
+func (x Uint32x4) InterleaveEven(y Uint32x4) Uint32x4
+
+// InterleaveEven interleaves even elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
+//
+// Asm: VTRN1, CPU Feature: NEON
+func (x Uint64x2) InterleaveEven(y Uint64x2) Uint64x2
+
 // InterleaveHi interleaves the elements of the high halves of x and y.
 //
 // Asm: VZIP2, CPU Feature: NEON
@@ -829,6 +877,54 @@ func (x Uint32x4) InterleaveLo(y Uint32x4) Uint32x4
 // Asm: VZIP1, CPU Feature: NEON
 func (x Uint64x2) InterleaveLo(y Uint64x2) Uint64x2
 
+// InterleaveOdd interleaves odd elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+//
+// Asm: VTRN2, CPU Feature: NEON
+func (x Int8x16) InterleaveOdd(y Int8x16) Int8x16
+
+// InterleaveOdd interleaves odd elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+//
+// Asm: VTRN2, CPU Feature: NEON
+func (x Int16x8) InterleaveOdd(y Int16x8) Int16x8
+
+// InterleaveOdd interleaves odd elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+//
+// Asm: VTRN2, CPU Feature: NEON
+func (x Int32x4) InterleaveOdd(y Int32x4) Int32x4
+
+// InterleaveOdd interleaves odd elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+//
+// Asm: VTRN2, CPU Feature: NEON
+func (x Int64x2) InterleaveOdd(y Int64x2) Int64x2
+
+// InterleaveOdd interleaves odd elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+//
+// Asm: VTRN2, CPU Feature: NEON
+func (x Uint8x16) InterleaveOdd(y Uint8x16) Uint8x16
+
+// InterleaveOdd interleaves odd elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+//
+// Asm: VTRN2, CPU Feature: NEON
+func (x Uint16x8) InterleaveOdd(y Uint16x8) Uint16x8
+
+// InterleaveOdd interleaves odd elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+//
+// Asm: VTRN2, CPU Feature: NEON
+func (x Uint32x4) InterleaveOdd(y Uint32x4) Uint32x4
+
+// InterleaveOdd interleaves odd elements from x and y.
+// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
+//
+// Asm: VTRN2, CPU Feature: NEON
+func (x Uint64x2) InterleaveOdd(y Uint64x2) Uint64x2
+
 // LeadingSignBits counts the leading sign bits of each element in x.
 //
 // Asm: VCLS, CPU Feature: NEON
@@ -888,28 +984,6 @@ func (x Uint16x8) LeadingZeros() Uint16x8
 //
 // Asm: VCLZ, CPU Feature: NEON
 func (x Uint32x4) LeadingZeros() Uint32x4
-
-// LookupOrKeep looks up table. If an index is out of range, the result is the corresponding element of keep.
-//
-//	if 0 <= indices[i] && indices[i] < len(table) {
-//	    result[i] = table[indices[i]]
-//	} else {
-//	    result[i] = keep[i]
-//	}
-//
-// Asm: VTBX, CPU Feature: NEON
-func (keep Int8x16) LookupOrKeep(table Int8x16, indices Int8x16) Int8x16
-
-// LookupOrKeep looks up table. If an index is out of range, the result is the corresponding element of keep.
-//
-//	if 0 <= indices[i] && indices[i] < len(table) {
-//	    result[i] = table[indices[i]]
-//	} else {
-//	    result[i] = keep[i]
-//	}
-//
-// Asm: VTBX, CPU Feature: NEON
-func (keep Uint8x16) LookupOrKeep(table Uint8x16, indices Uint8x16) Uint8x16
 
 // LookupOrZero looks up table. If an index is out of range, the result is 0.
 //
@@ -1094,49 +1168,49 @@ func (x Uint16x8) MulAdd(y Uint16x8, z Uint16x8) Uint16x8
 func (x Uint32x4) MulAdd(y Uint32x4, z Uint32x4) Uint32x4
 
 // MulWidenLo multiplies corresponding low-indexed elements and produces a result with double the element width.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().MulWidenLo(y.GetHi())
+//	x.HiToLo().MulWidenLo(y.HiToLo())
 //
 // Asm: VSMULL, CPU Feature: NEON
 func (x Int8x16) MulWidenLo(y Int8x16) Int16x8
 
 // MulWidenLo multiplies corresponding low-indexed elements and produces a result with double the element width.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().MulWidenLo(y.GetHi())
+//	x.HiToLo().MulWidenLo(y.HiToLo())
 //
 // Asm: VSMULL, CPU Feature: NEON
 func (x Int16x8) MulWidenLo(y Int16x8) Int32x4
 
 // MulWidenLo multiplies corresponding low-indexed elements and produces a result with double the element width.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().MulWidenLo(y.GetHi())
+//	x.HiToLo().MulWidenLo(y.HiToLo())
 //
 // Asm: VSMULL, CPU Feature: NEON
 func (x Int32x4) MulWidenLo(y Int32x4) Int64x2
 
 // MulWidenLo multiplies corresponding low-indexed elements and produces a result with double the element width.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().MulWidenLo(y.GetHi())
+//	x.HiToLo().MulWidenLo(y.HiToLo())
 //
 // Asm: VUMULL, CPU Feature: NEON
 func (x Uint8x16) MulWidenLo(y Uint8x16) Uint16x8
 
 // MulWidenLo multiplies corresponding low-indexed elements and produces a result with double the element width.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().MulWidenLo(y.GetHi())
+//	x.HiToLo().MulWidenLo(y.HiToLo())
 //
 // Asm: VUMULL, CPU Feature: NEON
 func (x Uint16x8) MulWidenLo(y Uint16x8) Uint32x4
 
 // MulWidenLo multiplies corresponding low-indexed elements and produces a result with double the element width.
-// For the high-indexed elements, use GetHi:
+// For the high-indexed elements, use HiToLo:
 //
-//	x.GetHi().MulWidenLo(y.GetHi())
+//	x.HiToLo().MulWidenLo(y.HiToLo())
 //
 // Asm: VUMULL, CPU Feature: NEON
 func (x Uint32x4) MulWidenLo(y Uint32x4) Uint64x2
@@ -1300,126 +1374,6 @@ func (x Uint32x4) OrNot(y Uint32x4) Uint32x4
 //
 // Asm: VORN, CPU Feature: NEON
 func (x Uint64x2) OrNot(y Uint64x2) Uint64x2
-
-// ReduceMax reduces x by taking the maximum of all elements. The maximum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VFMAXV, CPU Feature: NEON
-func (x Float32x4) ReduceMax() Float32x4
-
-// ReduceMax reduces x by taking the maximum of all elements. The maximum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VSMAXV, CPU Feature: NEON
-func (x Int8x16) ReduceMax() Int8x16
-
-// ReduceMax reduces x by taking the maximum of all elements. The maximum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VSMAXV, CPU Feature: NEON
-func (x Int16x8) ReduceMax() Int16x8
-
-// ReduceMax reduces x by taking the maximum of all elements. The maximum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VSMAXV, CPU Feature: NEON
-func (x Int32x4) ReduceMax() Int32x4
-
-// ReduceMax reduces x by taking the maximum of all elements. The maximum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VUMAXV, CPU Feature: NEON
-func (x Uint8x16) ReduceMax() Uint8x16
-
-// ReduceMax reduces x by taking the maximum of all elements. The maximum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VUMAXV, CPU Feature: NEON
-func (x Uint16x8) ReduceMax() Uint16x8
-
-// ReduceMax reduces x by taking the maximum of all elements. The maximum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VUMAXV, CPU Feature: NEON
-func (x Uint32x4) ReduceMax() Uint32x4
-
-// ReduceMin reduces x by taking the minimum of all elements. The minimum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VFMINV, CPU Feature: NEON
-func (x Float32x4) ReduceMin() Float32x4
-
-// ReduceMin reduces x by taking the minimum of all elements. The minimum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VSMINV, CPU Feature: NEON
-func (x Int8x16) ReduceMin() Int8x16
-
-// ReduceMin reduces x by taking the minimum of all elements. The minimum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VSMINV, CPU Feature: NEON
-func (x Int16x8) ReduceMin() Int16x8
-
-// ReduceMin reduces x by taking the minimum of all elements. The minimum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VSMINV, CPU Feature: NEON
-func (x Int32x4) ReduceMin() Int32x4
-
-// ReduceMin reduces x by taking the minimum of all elements. The minimum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VUMINV, CPU Feature: NEON
-func (x Uint8x16) ReduceMin() Uint8x16
-
-// ReduceMin reduces x by taking the minimum of all elements. The minimum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VUMINV, CPU Feature: NEON
-func (x Uint16x8) ReduceMin() Uint16x8
-
-// ReduceMin reduces x by taking the minimum of all elements. The minimum is placed
-// in element 0 of the result; other elements are zeroed.
-//
-// Asm: VUMINV, CPU Feature: NEON
-func (x Uint32x4) ReduceMin() Uint32x4
-
-// ReduceSum reduces x by summing all elements. The sum is placed in element 0
-// of the result; other elements are zeroed.
-//
-// Asm: VADDV, CPU Feature: NEON
-func (x Int8x16) ReduceSum() Int8x16
-
-// ReduceSum reduces x by summing all elements. The sum is placed in element 0
-// of the result; other elements are zeroed.
-//
-// Asm: VADDV, CPU Feature: NEON
-func (x Int16x8) ReduceSum() Int16x8
-
-// ReduceSum reduces x by summing all elements. The sum is placed in element 0
-// of the result; other elements are zeroed.
-//
-// Asm: VADDV, CPU Feature: NEON
-func (x Int32x4) ReduceSum() Int32x4
-
-// ReduceSum reduces x by summing all elements. The sum is placed in element 0
-// of the result; other elements are zeroed.
-//
-// Asm: VADDV, CPU Feature: NEON
-func (x Uint8x16) ReduceSum() Uint8x16
-
-// ReduceSum reduces x by summing all elements. The sum is placed in element 0
-// of the result; other elements are zeroed.
-//
-// Asm: VADDV, CPU Feature: NEON
-func (x Uint16x8) ReduceSum() Uint16x8
-
-// ReduceSum reduces x by summing all elements. The sum is placed in element 0
-// of the result; other elements are zeroed.
-//
-// Asm: VADDV, CPU Feature: NEON
-func (x Uint32x4) ReduceSum() Uint32x4
 
 // Round rounds elements to the nearest integer, rounding ties to even.
 //
@@ -1697,272 +1651,6 @@ func (x Uint32x4) ShiftAllRight(y uint64) Uint32x4
 // Asm: VUSHL, CPU Feature: NEON
 func (x Uint64x2) ShiftAllRight(y uint64) Uint64x2
 
-// ShiftLeftConst performs a left shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHL, CPU Feature: NEON
-func (x Int8x16) ShiftLeftConst(constant uint64) Int8x16
-
-// ShiftLeftConst performs a left shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHL, CPU Feature: NEON
-func (x Int16x8) ShiftLeftConst(constant uint64) Int16x8
-
-// ShiftLeftConst performs a left shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHL, CPU Feature: NEON
-func (x Int32x4) ShiftLeftConst(constant uint64) Int32x4
-
-// ShiftLeftConst performs a left shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHL, CPU Feature: NEON
-func (x Int64x2) ShiftLeftConst(constant uint64) Int64x2
-
-// ShiftLeftConst performs a left shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHL, CPU Feature: NEON
-func (x Uint8x16) ShiftLeftConst(constant uint64) Uint8x16
-
-// ShiftLeftConst performs a left shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHL, CPU Feature: NEON
-func (x Uint16x8) ShiftLeftConst(constant uint64) Uint16x8
-
-// ShiftLeftConst performs a left shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHL, CPU Feature: NEON
-func (x Uint32x4) ShiftLeftConst(constant uint64) Uint32x4
-
-// ShiftLeftConst performs a left shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHL, CPU Feature: NEON
-func (x Uint64x2) ShiftLeftConst(constant uint64) Uint64x2
-
-// ShiftLeftSaturatedConst performs a saturating left shift on each element in x by the constant number of bits specified by y.
-// Results are saturated to the signed range on overflow.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSQSHL, CPU Feature: NEON
-func (x Int8x16) ShiftLeftSaturatedConst(constant uint64) Int8x16
-
-// ShiftLeftSaturatedConst performs a saturating left shift on each element in x by the constant number of bits specified by y.
-// Results are saturated to the signed range on overflow.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSQSHL, CPU Feature: NEON
-func (x Int16x8) ShiftLeftSaturatedConst(constant uint64) Int16x8
-
-// ShiftLeftSaturatedConst performs a saturating left shift on each element in x by the constant number of bits specified by y.
-// Results are saturated to the signed range on overflow.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSQSHL, CPU Feature: NEON
-func (x Int32x4) ShiftLeftSaturatedConst(constant uint64) Int32x4
-
-// ShiftLeftSaturatedConst performs a saturating left shift on each element in x by the constant number of bits specified by y.
-// Results are saturated to the signed range on overflow.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSQSHL, CPU Feature: NEON
-func (x Int64x2) ShiftLeftSaturatedConst(constant uint64) Int64x2
-
-// ShiftLeftSaturatedConst performs a saturating left shift on each element in x by the constant number of bits specified by y.
-// Results are saturated to the unsigned range on overflow.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUQSHL, CPU Feature: NEON
-func (x Uint8x16) ShiftLeftSaturatedConst(constant uint64) Uint8x16
-
-// ShiftLeftSaturatedConst performs a saturating left shift on each element in x by the constant number of bits specified by y.
-// Results are saturated to the unsigned range on overflow.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUQSHL, CPU Feature: NEON
-func (x Uint16x8) ShiftLeftSaturatedConst(constant uint64) Uint16x8
-
-// ShiftLeftSaturatedConst performs a saturating left shift on each element in x by the constant number of bits specified by y.
-// Results are saturated to the unsigned range on overflow.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUQSHL, CPU Feature: NEON
-func (x Uint32x4) ShiftLeftSaturatedConst(constant uint64) Uint32x4
-
-// ShiftLeftSaturatedConst performs a saturating left shift on each element in x by the constant number of bits specified by y.
-// Results are saturated to the unsigned range on overflow.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUQSHL, CPU Feature: NEON
-func (x Uint64x2) ShiftLeftSaturatedConst(constant uint64) Uint64x2
-
-// ShiftLeftWidenLoConst performs a left shift on each signed low-indexed element in x by the constant number of bits
-// and widens the result to double the element width.
-// For the high-indexed elements, use GetHi:
-//
-//	x.GetHi().ShiftLeftWidenLoConst(...)
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSSHLL, CPU Feature: NEON
-func (x Int8x16) ShiftLeftWidenLoConst(constant uint64) Int16x8
-
-// ShiftLeftWidenLoConst performs a left shift on each signed low-indexed element in x by the constant number of bits
-// and widens the result to double the element width.
-// For the high-indexed elements, use GetHi:
-//
-//	x.GetHi().ShiftLeftWidenLoConst(...)
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSSHLL, CPU Feature: NEON
-func (x Int16x8) ShiftLeftWidenLoConst(constant uint64) Int32x4
-
-// ShiftLeftWidenLoConst performs a left shift on each signed low-indexed element in x by the constant number of bits
-// and widens the result to double the element width.
-// For the high-indexed elements, use GetHi:
-//
-//	x.GetHi().ShiftLeftWidenLoConst(...)
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSSHLL, CPU Feature: NEON
-func (x Int32x4) ShiftLeftWidenLoConst(constant uint64) Int64x2
-
-// ShiftLeftWidenLoConst performs a left shift on each unsigned low-indexed element in x by the constant number of bits
-// and widens the result to double the element width.
-// For the high-indexed elements, use GetHi:
-//
-//	x.GetHi().ShiftLeftWidenLoConst(...)
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUSHLL, CPU Feature: NEON
-func (x Uint8x16) ShiftLeftWidenLoConst(constant uint64) Uint16x8
-
-// ShiftLeftWidenLoConst performs a left shift on each unsigned low-indexed element in x by the constant number of bits
-// and widens the result to double the element width.
-// For the high-indexed elements, use GetHi:
-//
-//	x.GetHi().ShiftLeftWidenLoConst(...)
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUSHLL, CPU Feature: NEON
-func (x Uint16x8) ShiftLeftWidenLoConst(constant uint64) Uint32x4
-
-// ShiftLeftWidenLoConst performs a left shift on each unsigned low-indexed element in x by the constant number of bits
-// and widens the result to double the element width.
-// For the high-indexed elements, use GetHi:
-//
-//	x.GetHi().ShiftLeftWidenLoConst(...)
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUSHLL, CPU Feature: NEON
-func (x Uint32x4) ShiftLeftWidenLoConst(constant uint64) Uint64x2
-
-// ShiftRightConst performs an arithmetic right shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSSHR, CPU Feature: NEON
-func (x Int8x16) ShiftRightConst(constant uint64) Int8x16
-
-// ShiftRightConst performs an arithmetic right shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSSHR, CPU Feature: NEON
-func (x Int16x8) ShiftRightConst(constant uint64) Int16x8
-
-// ShiftRightConst performs an arithmetic right shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSSHR, CPU Feature: NEON
-func (x Int32x4) ShiftRightConst(constant uint64) Int32x4
-
-// ShiftRightConst performs an arithmetic right shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSSHR, CPU Feature: NEON
-func (x Int64x2) ShiftRightConst(constant uint64) Int64x2
-
-// ShiftRightConst performs a logical right shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUSHR, CPU Feature: NEON
-func (x Uint8x16) ShiftRightConst(constant uint64) Uint8x16
-
-// ShiftRightConst performs a logical right shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUSHR, CPU Feature: NEON
-func (x Uint16x8) ShiftRightConst(constant uint64) Uint16x8
-
-// ShiftRightConst performs a logical right shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUSHR, CPU Feature: NEON
-func (x Uint32x4) ShiftRightConst(constant uint64) Uint32x4
-
-// ShiftRightConst performs a logical right shift on each element in x by the constant number of bits specified by y.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VUSHR, CPU Feature: NEON
-func (x Uint64x2) ShiftRightConst(constant uint64) Uint64x2
-
-// ShiftRightNarrowConst performs a right shift on each element in x by the constant number of bits
-// and narrows the result to half the element width.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHRN, CPU Feature: NEON
-func (x Uint16x8) ShiftRightNarrowConst(constant uint64) Uint8x16
-
-// ShiftRightNarrowConst performs a right shift on each element in x by the constant number of bits
-// and narrows the result to half the element width.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHRN, CPU Feature: NEON
-func (x Uint32x4) ShiftRightNarrowConst(constant uint64) Uint16x8
-
-// ShiftRightNarrowConst performs a right shift on each element in x by the constant number of bits
-// and narrows the result to half the element width.
-//
-// A non-constant value of constant may result in significantly worse performance for this operation.
-//
-// Asm: VSHRN, CPU Feature: NEON
-func (x Uint64x2) ShiftRightNarrowConst(constant uint64) Uint32x4
-
 // ShiftSaturated shifts each element in x by the signed value of the least significant byte
 // of y's corresponding element (positive shifts left, negative shifts right).
 // Results are saturated to the signed range on overflow.
@@ -2119,102 +1807,6 @@ func (x Uint32x4) SubSaturated(y Uint32x4) Uint32x4
 // Asm: VUQSUB, CPU Feature: NEON
 func (x Uint64x2) SubSaturated(y Uint64x2) Uint64x2
 
-// TransposeEven transposes 2-element pairs at even positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
-//
-// Asm: VTRN1, CPU Feature: NEON
-func (x Int8x16) TransposeEven(y Int8x16) Int8x16
-
-// TransposeEven transposes 2-element pairs at even positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
-//
-// Asm: VTRN1, CPU Feature: NEON
-func (x Int16x8) TransposeEven(y Int16x8) Int16x8
-
-// TransposeEven transposes 2-element pairs at even positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
-//
-// Asm: VTRN1, CPU Feature: NEON
-func (x Int32x4) TransposeEven(y Int32x4) Int32x4
-
-// TransposeEven transposes 2-element pairs at even positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
-//
-// Asm: VTRN1, CPU Feature: NEON
-func (x Int64x2) TransposeEven(y Int64x2) Int64x2
-
-// TransposeEven transposes 2-element pairs at even positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
-//
-// Asm: VTRN1, CPU Feature: NEON
-func (x Uint8x16) TransposeEven(y Uint8x16) Uint8x16
-
-// TransposeEven transposes 2-element pairs at even positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
-//
-// Asm: VTRN1, CPU Feature: NEON
-func (x Uint16x8) TransposeEven(y Uint16x8) Uint16x8
-
-// TransposeEven transposes 2-element pairs at even positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
-//
-// Asm: VTRN1, CPU Feature: NEON
-func (x Uint32x4) TransposeEven(y Uint32x4) Uint32x4
-
-// TransposeEven transposes 2-element pairs at even positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a0,b0,a2,b2].
-//
-// Asm: VTRN1, CPU Feature: NEON
-func (x Uint64x2) TransposeEven(y Uint64x2) Uint64x2
-
-// TransposeOdd transposes 2-element pairs at odd positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
-//
-// Asm: VTRN2, CPU Feature: NEON
-func (x Int8x16) TransposeOdd(y Int8x16) Int8x16
-
-// TransposeOdd transposes 2-element pairs at odd positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
-//
-// Asm: VTRN2, CPU Feature: NEON
-func (x Int16x8) TransposeOdd(y Int16x8) Int16x8
-
-// TransposeOdd transposes 2-element pairs at odd positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
-//
-// Asm: VTRN2, CPU Feature: NEON
-func (x Int32x4) TransposeOdd(y Int32x4) Int32x4
-
-// TransposeOdd transposes 2-element pairs at odd positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
-//
-// Asm: VTRN2, CPU Feature: NEON
-func (x Int64x2) TransposeOdd(y Int64x2) Int64x2
-
-// TransposeOdd transposes 2-element pairs at odd positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
-//
-// Asm: VTRN2, CPU Feature: NEON
-func (x Uint8x16) TransposeOdd(y Uint8x16) Uint8x16
-
-// TransposeOdd transposes 2-element pairs at odd positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
-//
-// Asm: VTRN2, CPU Feature: NEON
-func (x Uint16x8) TransposeOdd(y Uint16x8) Uint16x8
-
-// TransposeOdd transposes 2-element pairs at odd positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
-//
-// Asm: VTRN2, CPU Feature: NEON
-func (x Uint32x4) TransposeOdd(y Uint32x4) Uint32x4
-
-// TransposeOdd transposes 2-element pairs at odd positions from x and y.
-// For x = [a0,a1,a2,a3] and y = [b0,b1,b2,b3], result = [a1,b1,a3,b3].
-//
-// Asm: VTRN2, CPU Feature: NEON
-func (x Uint64x2) TransposeOdd(y Uint64x2) Uint64x2
-
 // Trunc truncates elements towards zero.
 //
 // Asm: VFRINTZ, CPU Feature: NEON
@@ -2301,405 +1893,6 @@ func (x Uint32x4) Xor(y Uint32x4) Uint32x4
 // Asm: VEOR, CPU Feature: NEON
 func (x Uint64x2) Xor(y Uint64x2) Uint64x2
 
-// AsFloat64x2 reinterprets the bits of a Float32x4 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Float32x4 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Float32x4 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Float32x4 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Float32x4 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Float32x4 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Float32x4 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Float32x4 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Float32x4 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float32x4) AsUint64x2() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Float64x2 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsFloat32x4() Float32x4
-
-// AsInt8x16 reinterprets the bits of a Float64x2 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Float64x2 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Float64x2 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Float64x2 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Float64x2 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Float64x2 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Float64x2 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Float64x2 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Float64x2) AsUint64x2() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Int8x16 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Int8x16 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsFloat64x2() Float64x2
-
-// AsInt16x8 reinterprets the bits of a Int8x16 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Int8x16 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Int8x16 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Int8x16 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Int8x16 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Int8x16 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Int8x16 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int8x16) AsUint64x2() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Int16x8 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Int16x8 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Int16x8 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsInt8x16() Int8x16
-
-// AsInt32x4 reinterprets the bits of a Int16x8 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Int16x8 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Int16x8 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Int16x8 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Int16x8 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Int16x8 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int16x8) AsUint64x2() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Int32x4 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Int32x4 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Int32x4 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Int32x4 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsInt16x8() Int16x8
-
-// AsInt64x2 reinterprets the bits of a Int32x4 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Int32x4 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Int32x4 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Int32x4 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Int32x4 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int32x4) AsUint64x2() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Int64x2 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Int64x2 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Int64x2 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Int64x2 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Int64x2 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsInt32x4() Int32x4
-
-// AsUint8x16 reinterprets the bits of a Int64x2 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsUint8x16() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Int64x2 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsUint16x8() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Int64x2 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsUint32x4() Uint32x4
-
-// AsUint64x2 reinterprets the bits of a Int64x2 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Int64x2) AsUint64x2() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Uint8x16 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Uint8x16 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Uint8x16 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsInt8x16() Int8x16
-
 // BitsToInt8 reinterprets the bits of a Uint8x16 vector as a Int8x16 vector
 func (x Uint8x16) BitsToInt8() Int8x16
 
@@ -2712,84 +1905,14 @@ func (x Int8x16) ConvertToUint8() Uint8x16
 // ToBits reinterprets the bits of a Int8x16 vector as a Uint8x16 vector
 func (x Int8x16) ToBits() Uint8x16
 
-// AsInt16x8 reinterprets the bits of a Uint8x16 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Uint8x16 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Uint8x16 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsInt64x2() Int64x2
-
-// AsUint16x8 reinterprets the bits of a Uint8x16 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsUint16x8() Uint16x8
-
 // ReshapeToUint16s reinterprets the bits of a Uint8x16 vector as a Uint16x8 vector
 func (x Uint8x16) ReshapeToUint16s() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Uint8x16 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsUint32x4() Uint32x4
 
 // ReshapeToUint32s reinterprets the bits of a Uint8x16 vector as a Uint32x4 vector
 func (x Uint8x16) ReshapeToUint32s() Uint32x4
 
-// AsUint64x2 reinterprets the bits of a Uint8x16 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint8x16) AsUint64x2() Uint64x2
-
 // ReshapeToUint64s reinterprets the bits of a Uint8x16 vector as a Uint64x2 vector
 func (x Uint8x16) ReshapeToUint64s() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Uint16x8 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Uint16x8 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Uint16x8 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Uint16x8 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsInt16x8() Int16x8
 
 // BitsToInt16 reinterprets the bits of a Uint16x8 vector as a Int16x8 vector
 func (x Uint16x8) BitsToInt16() Int16x8
@@ -2803,90 +1926,20 @@ func (x Int16x8) ConvertToUint16() Uint16x8
 // ToBits reinterprets the bits of a Int16x8 vector as a Uint16x8 vector
 func (x Int16x8) ToBits() Uint16x8
 
-// AsInt32x4 reinterprets the bits of a Uint16x8 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Uint16x8 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Uint16x8 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsUint8x16() Uint8x16
-
 // ReshapeToUint8s reinterprets the bits of a Uint16x8 vector as a Uint8x16 vector
 func (x Uint16x8) ReshapeToUint8s() Uint8x16
-
-// AsUint32x4 reinterprets the bits of a Uint16x8 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsUint32x4() Uint32x4
 
 // ReshapeToUint32s reinterprets the bits of a Uint16x8 vector as a Uint32x4 vector
 func (x Uint16x8) ReshapeToUint32s() Uint32x4
 
-// AsUint64x2 reinterprets the bits of a Uint16x8 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint16x8) AsUint64x2() Uint64x2
-
 // ReshapeToUint64s reinterprets the bits of a Uint16x8 vector as a Uint64x2 vector
 func (x Uint16x8) ReshapeToUint64s() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Uint32x4 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsFloat32x4() Float32x4
 
 // BitsToFloat32 reinterprets the bits of a Uint32x4 vector as a Float32x4 vector
 func (x Uint32x4) BitsToFloat32() Float32x4
 
 // ToBits reinterprets the bits of a Float32x4 vector as a Uint32x4 vector
 func (x Float32x4) ToBits() Uint32x4
-
-// AsFloat64x2 reinterprets the bits of a Uint32x4 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsFloat64x2() Float64x2
-
-// AsInt8x16 reinterprets the bits of a Uint32x4 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Uint32x4 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Uint32x4 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsInt32x4() Int32x4
 
 // BitsToInt32 reinterprets the bits of a Uint32x4 vector as a Int32x4 vector
 func (x Uint32x4) BitsToInt32() Int32x4
@@ -2900,90 +1953,20 @@ func (x Int32x4) ConvertToUint32() Uint32x4
 // ToBits reinterprets the bits of a Int32x4 vector as a Uint32x4 vector
 func (x Int32x4) ToBits() Uint32x4
 
-// AsInt64x2 reinterprets the bits of a Uint32x4 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsInt64x2() Int64x2
-
-// AsUint8x16 reinterprets the bits of a Uint32x4 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsUint8x16() Uint8x16
-
 // ReshapeToUint8s reinterprets the bits of a Uint32x4 vector as a Uint8x16 vector
 func (x Uint32x4) ReshapeToUint8s() Uint8x16
-
-// AsUint16x8 reinterprets the bits of a Uint32x4 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsUint16x8() Uint16x8
 
 // ReshapeToUint16s reinterprets the bits of a Uint32x4 vector as a Uint16x8 vector
 func (x Uint32x4) ReshapeToUint16s() Uint16x8
 
-// AsUint64x2 reinterprets the bits of a Uint32x4 vector as a Uint64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint32x4) AsUint64x2() Uint64x2
-
 // ReshapeToUint64s reinterprets the bits of a Uint32x4 vector as a Uint64x2 vector
 func (x Uint32x4) ReshapeToUint64s() Uint64x2
-
-// AsFloat32x4 reinterprets the bits of a Uint64x2 vector as a Float32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsFloat32x4() Float32x4
-
-// AsFloat64x2 reinterprets the bits of a Uint64x2 vector as a Float64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsFloat64x2() Float64x2
 
 // BitsToFloat64 reinterprets the bits of a Uint64x2 vector as a Float64x2 vector
 func (x Uint64x2) BitsToFloat64() Float64x2
 
 // ToBits reinterprets the bits of a Float64x2 vector as a Uint64x2 vector
 func (x Float64x2) ToBits() Uint64x2
-
-// AsInt8x16 reinterprets the bits of a Uint64x2 vector as a Int8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsInt8x16() Int8x16
-
-// AsInt16x8 reinterprets the bits of a Uint64x2 vector as a Int16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsInt16x8() Int16x8
-
-// AsInt32x4 reinterprets the bits of a Uint64x2 vector as a Int32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsInt32x4() Int32x4
-
-// AsInt64x2 reinterprets the bits of a Uint64x2 vector as a Int64x2 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsInt64x2() Int64x2
 
 // BitsToInt64 reinterprets the bits of a Uint64x2 vector as a Int64x2 vector
 func (x Uint64x2) BitsToInt64() Int64x2
@@ -2997,32 +1980,11 @@ func (x Int64x2) ConvertToUint64() Uint64x2
 // ToBits reinterprets the bits of a Int64x2 vector as a Uint64x2 vector
 func (x Int64x2) ToBits() Uint64x2
 
-// AsUint8x16 reinterprets the bits of a Uint64x2 vector as a Uint8x16 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsUint8x16() Uint8x16
-
 // ReshapeToUint8s reinterprets the bits of a Uint64x2 vector as a Uint8x16 vector
 func (x Uint64x2) ReshapeToUint8s() Uint8x16
 
-// AsUint16x8 reinterprets the bits of a Uint64x2 vector as a Uint16x8 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsUint16x8() Uint16x8
-
 // ReshapeToUint16s reinterprets the bits of a Uint64x2 vector as a Uint16x8 vector
 func (x Uint64x2) ReshapeToUint16s() Uint16x8
-
-// AsUint32x4 reinterprets the bits of a Uint64x2 vector as a Uint32x4 vector
-//
-// Deprecated: use combinations of ToBits, BitsTo{Int<N>,Float<N>}, ReshapeToUint<N>
-//
-//go:fix inline
-func (x Uint64x2) AsUint32x4() Uint32x4
 
 // ReshapeToUint32s reinterprets the bits of a Uint64x2 vector as a Uint32x4 vector
 func (x Uint64x2) ReshapeToUint32s() Uint32x4
