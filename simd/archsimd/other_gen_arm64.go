@@ -74,85 +74,45 @@ func (x Float32x4) String() string
 // String returns a string representation of SIMD vector x.
 func (x Float64x2) String() string
 
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Int8x16) SetHi(lo Int8x16) Int8x16
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Int16x8) SetHi(lo Int16x8) Int16x8
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Int32x4) SetHi(lo Int32x4) Int32x4
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Int64x2) SetHi(lo Int64x2) Int64x2
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Uint8x16) SetHi(lo Uint8x16) Uint8x16
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Uint16x8) SetHi(lo Uint16x8) Uint16x8
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Uint32x4) SetHi(lo Uint32x4) Uint32x4
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Uint64x2) SetHi(lo Uint64x2) Uint64x2
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Float32x4) SetHi(lo Float32x4) Float32x4
-
-// SetHi returns a vector with the lower 64 bits of x preserved and the upper
-// 64 bits replaced with the lower 64 bits of the parameter lo.
-func (x Float64x2) SetHi(lo Float64x2) Float64x2
-
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Int8x16) GetHi() Int8x16
+func (x Int8x16) HiToLo() Int8x16
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Int16x8) GetHi() Int16x8
+func (x Int16x8) HiToLo() Int16x8
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Int32x4) GetHi() Int32x4
+func (x Int32x4) HiToLo() Int32x4
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Int64x2) GetHi() Int64x2
+func (x Int64x2) HiToLo() Int64x2
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Uint8x16) GetHi() Uint8x16
+func (x Uint8x16) HiToLo() Uint8x16
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Uint16x8) GetHi() Uint16x8
+func (x Uint16x8) HiToLo() Uint16x8
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Uint32x4) GetHi() Uint32x4
+func (x Uint32x4) HiToLo() Uint32x4
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Uint64x2) GetHi() Uint64x2
+func (x Uint64x2) HiToLo() Uint64x2
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Float32x4) GetHi() Float32x4
+func (x Float32x4) HiToLo() Float32x4
 
-// GetHi returns a vector with the upper 64 bits zeroed and the lower
+// HiToLo returns a vector with the upper 64 bits zeroed and the lower
 // 64 bits replaced with the upper 64 bits of x.
-func (x Float64x2) GetHi() Float64x2
+func (x Float64x2) HiToLo() Float64x2
 
 // ToMask returns a mask whose i'th element is set if x[i] is non-zero.
 func (from Int8x16) ToMask() (to Mask8x16)
@@ -165,18 +125,6 @@ func (from Int32x4) ToMask() (to Mask32x4)
 
 // ToMask returns a mask whose i'th element is set if x[i] is non-zero.
 func (from Int64x2) ToMask() (to Mask64x2)
-
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Uint8x16) ToMask() (to Mask8x16)
-
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Uint16x8) ToMask() (to Mask16x8)
-
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Uint32x4) ToMask() (to Mask32x4)
-
-// ToMask returns a mask whose i'th element is set if x[i] is non-zero.
-func (from Uint64x2) ToMask() (to Mask64x2)
 
 // RotateAllLeft rotates all elements left by the specified amount
 //
@@ -257,3 +205,103 @@ func (x Uint64x2) RotateAllLeft(dist uint64) Uint64x2
 //
 // Emulated
 func (x Uint64x2) RotateAllRight(dist uint64) Uint64x2
+
+// ReduceSum reduces x by summing all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int8x16) ReduceSum() int8
+
+// ReduceSum reduces x by summing all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int16x8) ReduceSum() int16
+
+// ReduceSum reduces x by summing all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int32x4) ReduceSum() int32
+
+// ReduceSum reduces x by summing all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint8x16) ReduceSum() uint8
+
+// ReduceSum reduces x by summing all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint16x8) ReduceSum() uint16
+
+// ReduceSum reduces x by summing all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint32x4) ReduceSum() uint32
+
+// ReduceMax reduces x by taking the maximum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int8x16) ReduceMax() int8
+
+// ReduceMin reduces x by taking the minimum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int8x16) ReduceMin() int8
+
+// ReduceMax reduces x by taking the maximum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int16x8) ReduceMax() int16
+
+// ReduceMin reduces x by taking the minimum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int16x8) ReduceMin() int16
+
+// ReduceMax reduces x by taking the maximum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int32x4) ReduceMax() int32
+
+// ReduceMin reduces x by taking the minimum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Int32x4) ReduceMin() int32
+
+// ReduceMax reduces x by taking the maximum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint8x16) ReduceMax() uint8
+
+// ReduceMin reduces x by taking the minimum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint8x16) ReduceMin() uint8
+
+// ReduceMax reduces x by taking the maximum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint16x8) ReduceMax() uint16
+
+// ReduceMin reduces x by taking the minimum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint16x8) ReduceMin() uint16
+
+// ReduceMax reduces x by taking the maximum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint32x4) ReduceMax() uint32
+
+// ReduceMin reduces x by taking the minimum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Uint32x4) ReduceMin() uint32
+
+// ReduceMax reduces x by taking the maximum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Float32x4) ReduceMax() float32
+
+// ReduceMin reduces x by taking the minimum of all elements.
+//
+// Emulated, CPU Feature: NEON
+func (x Float32x4) ReduceMin() float32

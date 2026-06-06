@@ -160,7 +160,14 @@ var ErrUseLastResponse = errors.New("net/http: use last response")
 //
 // サーバーがリダイレクトを返すと、Clientは最初にCheckRedirect関数を使用してリダイレクトをフォローするかどうかを決定します。許可されると、301、302、または303のリダイレクトは、メソッドがGET（元のリクエストがHEADだった場合はHEAD）でボディがない後続のリクエストを引き起こします。307または308のリダイレクトは、[Request.GetBody] 関数が定義されている場合、元のHTTPメソッドとボディを保持します。[NewRequest] 関数は、一般的な標準ライブラリボディタイプのGetBodyを自動的に設定します。
 //
-// すべての返されるエラーは [*url.Error] 型です。url.ErrorのTimeoutメソッドは、リクエストがタイムアウトした場合にtrueを報告します。
+// [Client] のリダイレクト挙動は、WHATWG Fetch標準には従っていない点に
+// 注意してください。これは、確立された標準が存在する前に実装されたためです。
+// そのため、現代的な基準では [Client] は比較的寛容な挙動を示します。
+// たとえば、サブドメインへのリダイレクトや、同一ホスト上で異なるスキームへの
+// リダイレクトでも、機密ヘッダーが保持されます。
+//
+// 返されるエラーはすべて [*url.Error] 型です。url.Error の Timeout
+// メソッドは、リクエストがタイムアウトした場合に true を返します。
 func (c *Client) Do(req *Request) (*Response, error)
 
 // Postは、指定されたURLに対してPOSTメソッドを送信します。
