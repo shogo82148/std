@@ -656,7 +656,7 @@ func (chi *ClientHelloInfo) SupportsCertificate(c *Certificate) error
 func (cri *CertificateRequestInfo) SupportsCertificate(c *Certificate) error
 
 // BuildNameToCertificateはc.Certificatesを解析し、各リーフ証明書のCommonNameとSubjectAlternateNameフィールドからc.NameToCertificateを構築します。
-// 廃止されました: NameToCertificateは特定の名前に対して単一の証明書の関連付けしか許可しません。そのフィールドをnilのままにしておき、ライブラリに最初に互換性のあるチェーンを選択させます。
+// Deprecated: NameToCertificateは特定の名前に対して単一の証明書の関連付けしか許可しません。そのフィールドをnilのままにしておき、ライブラリに最初に互換性のあるチェーンを選択させます。
 func (c *Config) BuildNameToCertificate()
 
 // ボタン構造体は、最初にリーフ（最下位）のボタンから始まり、その上位にある1つ以上のボタンのチェーンです。
