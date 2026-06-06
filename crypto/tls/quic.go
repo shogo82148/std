@@ -34,14 +34,14 @@ type QUICConn struct {
 type QUICConfig struct {
 	TLSConfig *Config
 
-	// EnableSessionEvents may be set to true to enable the
-	// [QUICStoreSession] and [QUICResumeSession] events for client connections.
-	// When this event is enabled, sessions are not automatically
-	// stored in the client session cache.
-	// The application should use [QUICConn.StoreSession] to store sessions.
+	// EnableSessionEventsをtrueに設定すると、クライアント接続で
+	// [QUICStoreSession] と [QUICResumeSession] のイベントを有効にできます。
+	// このイベントが有効な場合、セッションはクライアントセッションキャッシュに
+	// 自動的には保存されません。
+	// アプリケーションは、セッションの保存に [QUICConn.StoreSession] を使用する必要があります。
 	EnableSessionEvents bool
 
-	// ClientHelloInfoConn is the net.Conn to use for the ClientHelloInfo.Conn field.
+	// ClientHelloInfoConnは、ClientHelloInfo.Connフィールドに使用するnet.Connです。
 	ClientHelloInfoConn net.Conn
 }
 
