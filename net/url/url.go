@@ -254,5 +254,5 @@ func (u *URL) JoinPath(elem ...string) *URL
 // パス要素は [PathEscape] によって生成されるエスケープ形式である必要があります。
 func JoinPath(base string, elem ...string) (result string, err error)
 
-// Clone creates a deep copy of the fields of the subject [URL].
+// Cloneは対象の [URL] の各フィールドのディープコピーを作成します。
 func (u *URL) Clone() *URL
