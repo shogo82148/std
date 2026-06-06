@@ -10,14 +10,14 @@ import (
 	"github.com/shogo82148/std/database/sql/driver"
 )
 
-// ConvertAssign copies the value in src to the value pointed at by dest.
-// See the documentation on [Rows.Scan] for details on conversions.
-// dest must be a pointer or must implement [Scanner].
+// ConvertAssignは、srcの値をdestが指す値にコピーします。
+// 変換の詳細については、[Rows.Scan] のドキュメントを参照してください。
+// destはポインタであるか、[Scanner] を実装していなければなりません。
 //
-// Implementations of [driver.RowsColumnScanner] should pass through
-// their [driver.ScanContext] parameter.
-// In other cases, pass driver.ScanContext{} as the context.
+// [driver.RowsColumnScanner] の実装では、
+// [driver.ScanContext] パラメータをそのまま渡す必要があります。
+// それ以外の場合は、コンテキストとして driver.ScanContext{} を渡します。
 //
-// ConvertAssign is intended for use by driver implementations.
-// Most users should not need to use it directly.
+// ConvertAssignは、ドライバ実装での使用を意図しています。
+// ほとんどのユーザーは、これを直接使う必要はありません。
 func ConvertAssign(scanCtx driver.ScanContext, dest any, src driver.Value) error
