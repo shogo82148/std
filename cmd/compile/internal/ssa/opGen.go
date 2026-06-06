@@ -7939,26 +7939,6 @@ const (
 	OpReciprocalSqrtFloat64x2
 	OpReciprocalSqrtFloat64x4
 	OpReciprocalSqrtFloat64x8
-	OpReduceMaxFloat32x4
-	OpReduceMaxInt8x16
-	OpReduceMaxInt16x8
-	OpReduceMaxInt32x4
-	OpReduceMaxUint8x16
-	OpReduceMaxUint16x8
-	OpReduceMaxUint32x4
-	OpReduceMinFloat32x4
-	OpReduceMinInt8x16
-	OpReduceMinInt16x8
-	OpReduceMinInt32x4
-	OpReduceMinUint8x16
-	OpReduceMinUint16x8
-	OpReduceMinUint32x4
-	OpReduceSumInt8x16
-	OpReduceSumInt16x8
-	OpReduceSumInt32x4
-	OpReduceSumUint8x16
-	OpReduceSumUint16x8
-	OpReduceSumUint32x4
 	OpRotateAllLeftVarInt8x16
 	OpRotateAllLeftVarInt16x8
 	OpRotateAllLeftVarInt32x4
@@ -8416,6 +8396,26 @@ const (
 	Opbroadcast1To64MaskedUint8x16
 	Opbroadcast1To64Uint8x16
 	OpcarrylessMultiplyWidenLoUint64x2
+	OpreduceMaxFloat32x4
+	OpreduceMaxInt8x16
+	OpreduceMaxInt16x8
+	OpreduceMaxInt32x4
+	OpreduceMaxUint8x16
+	OpreduceMaxUint16x8
+	OpreduceMaxUint32x4
+	OpreduceMinFloat32x4
+	OpreduceMinInt8x16
+	OpreduceMinInt16x8
+	OpreduceMinInt32x4
+	OpreduceMinUint8x16
+	OpreduceMinUint16x8
+	OpreduceMinUint32x4
+	OpreduceSumInt8x16
+	OpreduceSumInt16x8
+	OpreduceSumInt32x4
+	OpreduceSumUint8x16
+	OpreduceSumUint16x8
+	OpreduceSumUint32x4
 	OpAESRoundKeyGenAssistUint32x4
 	OpCeilScaledFloat32x4
 	OpCeilScaledFloat32x8
