@@ -97,7 +97,7 @@ func (n Name) String() string
 
 // CertificateListは同名のASN.1構造を表します。RFC 5280、セクション5.1を参照してください。署名を検証するためにCertificate.CheckCRLSignatureを使用します。
 //
-// 廃止予定: 代わりにx509.RevocationListを使用するべきです。
+// Deprecated: 代わりにx509.RevocationListを使用するべきです。
 type CertificateList struct {
 	TBSCertList        TBSCertificateList
 	SignatureAlgorithm AlgorithmIdentifier
@@ -109,7 +109,7 @@ func (certList *CertificateList) HasExpired(now time.Time) bool
 
 // TBSCertificateListは、同じ名前のASN.1構造を表します。RFC 5280、セクション5.1を参照してください。
 //
-// 廃止予定：代わりにx509.RevocationListを使用するべきです。
+// Deprecated: 代わりにx509.RevocationListを使用するべきです。
 type TBSCertificateList struct {
 	Raw                 asn1.RawContent
 	Version             int `asn1:"optional,default:0"`
