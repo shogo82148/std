@@ -251,6 +251,11 @@ func (s *ImportStack) PkgsWithPos() []string
 
 func (s *ImportStack) Top() (ImportInfo, bool)
 
+// ClearPackageCache clears the package cache.
+// It cannot be used concurrently with calls to LoadImport or other functions
+// that use packageCache without synchronization.
+func ClearPackageCache()
+
 // Mode flags for loadImport and download (in get.go).
 const (
 	// ResolveImport means that loadImport should do import path expansion.

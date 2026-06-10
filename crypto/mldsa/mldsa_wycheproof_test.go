@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build goexperiment.jsonv2 && !goexperiment.jsonformat
+//go:build !fips140v1.0
 
-package internal
-
-const ExpJSONFormat = false
+package mldsa_test
