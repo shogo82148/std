@@ -128,6 +128,7 @@ const (
 	Unmarshalers
 	StringTag
 	FormatTag
+	FormatTagSupported
 )
 
 // Marshal and Unmarshal flags (for v1).

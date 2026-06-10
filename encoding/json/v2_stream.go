@@ -22,6 +22,10 @@ type Decoder struct {
 	// hadPeeked reports whether [Decoder.More] was called.
 	// It is reset by [Decoder.Decode] and [Decoder.Token].
 	hadPeeked bool
+
+	// hadEOF reports whether [Decoder.Token] had hit [io.EOF].
+	// It is reset by [Decoder.Decode] and [Decoder.Token].
+	hadEOF bool
 }
 
 // NewDecoder returns a new decoder that reads from r.

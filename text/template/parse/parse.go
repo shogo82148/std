@@ -25,6 +25,9 @@ type Tree struct {
 	actionLine int
 	rangeDepth int
 	stackDepth int
+
+	leftDelim  string
+	rightDelim string
 }
 
 // A Mode value is a set of flags (or 0). Modes control parser behavior.
