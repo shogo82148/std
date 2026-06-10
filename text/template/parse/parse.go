@@ -24,6 +24,9 @@ type Tree struct {
 	actionLine int
 	rangeDepth int
 	stackDepth int
+
+	leftDelim  string
+	rightDelim string
 }
 
 // Mode値はフラグのセット（または0）です。Modeはパーサの動作を制御します。

@@ -37,21 +37,19 @@
 //     サポートが拡張されています。
 //     この挙動の差は [StringifyWithLegacySemantics] オプションで制御できます。
 //
-//   - v1では、nilのGoスライスやGoマップはJSON nullとしてマーシャルされます。
-//     一方、v2ではnilのGoスライスは空のJSON配列、nilのGoマップは空のJSONオブジェクトとしてマーシャルされます。
-//     [jsonv2.FormatNilSliceAsNull] や [jsonv2.FormatNilMapAsNull] オプションでこの動作を制御できます。
-//     Go構造体フィールドごとにnilの表現を指定したい場合は、`format:emitempty`や`format:emitnull`フィールドオプションを指定できます。
-//     フィールド指定のオプションは呼び出し元指定のオプションより優先されます。
+//   - v1では、nilのGoスライスまたはGoマップはJSON nullとしてマーシャルされます。
+//     一方、v2ではnilのGoスライスまたはGoマップはそれぞれ
+//     空のJSON配列またはJSONオブジェクトとしてマーシャルされます。
+//     [jsonv2.FormatNilSliceAsNull] および [jsonv2.FormatNilMapAsNull] オプションで
+//     この挙動の違いを制御できます。
 //
 //   - v1では、Go配列は任意の長さのJSON配列からアンマーシャルできます。
 //     一方、v2ではGo配列は同じ長さのJSON配列からのみアンマーシャルでき、長さが違うとエラーになります。
 //     [UnmarshalArrayFromAnyLength] オプションでこの動作を制御できます。
 //
-//   - v1では、Goのバイト配列はJSONの数値配列として表現されます。
+//   - v1では、Goのバイト配列はJSON数値のJSON配列として表現されます。
 //     一方、v2ではGoのバイト配列はBase64エンコードされたJSON文字列として表現されます。
-//     [FormatByteArrayAsArray] オプションでこの動作を制御できます。
-//     Go構造体フィールドごとに表現を指定したい場合は、`format:array`や`format:base64`フィールドオプションを指定できます。
-//     フィールド指定のオプションは呼び出し元指定のオプションより優先されます。
+//     [FormatByteArrayAsArray] オプションでこの挙動の違いを制御できます。
 //
 //   - v1では、ポインタレシーバで宣言されたMarshalJSONメソッドはGo値がアドレス可能な場合のみ呼び出されます。
 //     一方、v2ではMarshalJSONメソッドはアドレス可能かどうかに関係なく常に呼び出されます。
@@ -82,10 +80,10 @@
 //     一方、v2では構造体フィールド・マップ値・ポインタ値・インターフェース値にマージされます。
 //     一般的に、v2のセマンティクスはJSONオブジェクトをアンマーシャルする場合にマージし、それ以外は値を置き換えます。[MergeWithLegacySemantics] オプションでこの動作を制御できます。
 //
-//   - v1では、[time.Duration] はナノ秒数のJSON数値として表現されます。
-//     一方、v2では [time.Duration] はデフォルトの表現がなく、実行時エラーになります。[FormatDurationAsNano] オプションでこの動作を制御できます。
-//     Go構造体フィールドごとに表現を指定したい場合は、`format:nano`や`format:units`フィールドオプションを指定できます。
-//     フィールド指定のオプションは呼び出し元指定のオプションより優先されます。
+//   - v1では、[time.Duration] はナノ秒数を表すJSON数値として表現されます。
+//     一方、v2では [time.Duration] にデフォルトの表現はなく、
+//     実行時エラーになります。
+//     [FormatDurationAsNano] オプションでこの挙動の違いを制御できます。
 //
 //   - v1では、Go構造体型に構造的なエラー（例：タグオプションの不正）があっても実行時エラーは報告されません。
 //     一方、v2ではJSONシリアライズに関連するGo型が不正な場合は実行時エラーが報告されます。例えば、エクスポートされていないフィールドのみのGo構造体はシリアライズできません。
@@ -201,11 +199,9 @@ func DefaultOptionsV1() Options
 // v1のデフォルトはtrueです。
 func CallMethodsWithLegacySemantics(v bool) Options
 
-// FormatByteArrayAsArray は、Go の [N]byte を、
-// v2 のデフォルトであるバイナリデータエンコーディング（RFC 4648）としてではなく、
-// 通常の Go 配列としてフォーマットすることを指定します。
-// 構造体フィールドに `format` タグオプションがある場合は、
-// そちらで指定されたフォーマットが優先されます。
+// FormatByteArrayAsArrayは、Goの [N]byte を
+// v2のデフォルトであるバイナリデータエンコーディング（RFC 4648）としてではなく、
+// 通常のGo配列としてフォーマットすることを指定します。
 //
 // このオプションはマーシャル・アンマーシャルの両方に影響します。
 // v1のデフォルトはtrueです。
@@ -223,9 +219,9 @@ func FormatByteArrayAsArray(v bool) Options
 // v1のデフォルトはtrueです。
 func FormatBytesWithLegacySemantics(v bool) Options
 
-// FormatDurationAsNanoは、[time.Duration] 型をJSON数値（ナノ秒数）としてフォーマットすることを指定します。
-// v2のデフォルトではエラーとなります。
-// フィールドに`format`タグオプションが指定されている場合は、そのフォーマットが優先されます。
+// FormatDurationAsNanoは、[time.Duration] を
+// ナノ秒数を表すJSON数値としてフォーマットすることを指定します。
+// これは、エラーを報告するv2のデフォルト挙動とは異なります。
 //
 // このオプションはマーシャル・アンマーシャルの両方に影響します。
 // v1のデフォルトはtrueです。

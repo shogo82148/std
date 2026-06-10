@@ -18,6 +18,14 @@ type Decoder struct {
 	dec  *jsontext.Decoder
 	opts jsonv2.Options
 	err  error
+
+	// hadPeeked reports whether [Decoder.More] was called.
+	// It is reset by [Decoder.Decode] and [Decoder.Token].
+	hadPeeked bool
+
+	// hadEOF reports whether [Decoder.Token] had hit [io.EOF].
+	// It is reset by [Decoder.Decode] and [Decoder.Token].
+	hadEOF bool
 }
 
 // NewDecoderは、rから読み込む新しいデコーダを返します。
