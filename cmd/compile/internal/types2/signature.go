@@ -15,6 +15,7 @@ type Signature struct {
 	tparams  *TypeParamList
 	scope    *Scope
 	recv     *Var
+	recvold  *Var
 	params   *Tuple
 	results  *Tuple
 	variadic bool
