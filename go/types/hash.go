@@ -9,14 +9,13 @@ import (
 )
 
 type (
-	// Hasher and HasherIgnoreTags define hash functions and
-	// equivalence relations for [Types] that are consistent with
-	// [Identical] and [IdenticalIgnoreTags], respectively.
-	// They use the same hash function, which ignores tags;
-	// only the Equal methods vary.
-	//
+	// Hasher defines a hash function and equivalence relation
+	// for [Types] that is consistent with [Identical].
 	// Hashers are stateless.
-	Hasher           struct{}
+	Hasher struct{}
+
+	// HasherIgnoreTags is a variant of [Hasher] that is
+	// consistent with [IdenticalIgnoreTags].
 	HasherIgnoreTags struct{}
 )
 
@@ -26,6 +25,8 @@ var (
 )
 
 func (Hasher) Hash(h *maphash.Hash, t Type)
+
 func (HasherIgnoreTags) Hash(h *maphash.Hash, t Type)
+
 func (Hasher) Equal(x, y Type) bool
 func (HasherIgnoreTags) Equal(x, y Type) bool

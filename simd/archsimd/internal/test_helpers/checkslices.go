@@ -12,7 +12,7 @@ import (
 
 func CheckSlices[T number](t *testing.T, got, want []T) bool
 
-// CheckSlices compares two slices for equality,
+// CheckSlicesLogInput compares two slices for equality,
 // reporting a test error if there is a problem,
 // and also consumes the two slices so that a
 // test/benchmark won't be dead-code eliminated.

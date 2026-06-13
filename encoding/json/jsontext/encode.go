@@ -69,12 +69,14 @@ func (e *Encoder) Options() Options
 
 // WriteTokenは次のトークンを書き込み、内部の書き込みオフセットを進めます。
 //
-// 渡されたトークン種別はJSON文法と一致していなければなりません。
-// 例えば、エンコーダがオブジェクト名（常に文字列）を期待しているときに数値を渡したり、
-// 配列の終了処理中にオブジェクトの終了デリミタを渡すとエラーになります。
-// 無効なトークンが渡された場合、[SyntacticError] を報告し、
-// 内部状態は変更されません。[SyntacticError] で報告されるオフセットは
-// [Encoder.OutputOffset] を基準とします。
+// 渡されるトークン種別はJSON文法と一致していなければなりません。
+// 例えば、エンコーダがオブジェクト名（常に文字列）を期待している場面で
+// 数値を渡したり、配列を閉じる場面でオブジェクト終端区切りを
+// 渡したりするのはエラーです。
+// 渡されたトークンが無効な場合は [SyntacticError] を報告し、
+// 内部状態は変更されません。[SyntacticError] で報告されるオフセットは、
+// [Encoder.OutputOffset] に、渡されたトークンの前に入るはずだった
+// 区切り文字や空白文字を加えた位置になります。
 func (e *Encoder) WriteToken(t Token) error
 
 // WriteValueは次の生の値を書き込み、内部の書き込みオフセットを進めます。
@@ -83,10 +85,11 @@ func (e *Encoder) WriteToken(t Token) error
 // 空白や文字列のフォーマット方法に従って再フォーマットします。
 // [AllowInvalidUTF8] が指定されている場合、不正なUTF-8はUnicodeの置換文字U+FFFDに変換されます。
 //
-// 渡された値の種別はJSON文法と一致していなければなりません
-// （[Encoder.WriteToken] の例を参照）。値が無効な場合、[SyntacticError] を報告し、
-// 内部状態は変更されません。[SyntacticError] で報告されるオフセットは
-// [Encoder.OutputOffset] に加えて、v内で構文エラーが発生した位置となります。
+// 渡される値の種別はJSON文法と一致していなければなりません
+// （[Encoder.WriteToken] の例を参照）。渡された値が無効な場合、
+// [SyntacticError] を報告し、内部状態は変更されません。
+// [SyntacticError] で報告されるオフセットは [Encoder.OutputOffset] に、
+// v内で発生した構文エラー位置のオフセットを加えた値になります。
 func (e *Encoder) WriteValue(v Value) error
 
 // OutputOffsetは現在の出力バイトオフセットを返します。これは直近に書き込まれたトークンまたは値の直後の次のバイト位置を示します。
@@ -104,14 +107,35 @@ func (e *Encoder) OutputOffset() int64
 //	b = append(b, '"')
 //	... := e.WriteValue(b)
 //
-// 値が有効なJSONであることは利用者の責任です。
+// WriteValueはJSON値を期待します。AvailableBufferを使って手動で値を構築する場合は、
+// 無効なJSON値を生成してWriteValueが失敗しないよう、
+// 注意が必要です。
 func (e *Encoder) AvailableBuffer() []byte
 
-// StackDepthは書き込まれたJSONデータのステートマシンの深さを返します。
-// スタックの各レベルは、ネストされたJSONオブジェクトまたは配列を表します。
-// [BeginObject] または [BeginArray] トークンが検出されるたびにインクリメントされ、
-// [EndObject] または [EndArray] トークンが検出されるたびにデクリメントされます。
-// 深さはゼロインデックスで、ゼロはトップレベルのJSON値を表します。
+// StackDepthは、書き込まれたJSONデータに対する状態機械の深さを返します。
+// スタック上の各レベルは、ネストしたJSONオブジェクトまたは配列を表します。
+// [BeginObject] または [BeginArray] トークンに遭遇するたびにインクリメントされ、
+// [EndObject] または [EndArray] トークンに遭遇するたびにデクリメントされます。
+//
+// オブジェクトや配列の内側にいない場合、StackDepthは0を返します。
+// 具体的には、まだトークンを何も書き込んでいないとき、
+// トップレベル値を1つ書き終えたあと、
+// およびトップレベル値のストリーム（例: NDJSON）をエンコードしているときの値間では
+// 0を返します。
+// StackDepthは、トップレベルのオブジェクトや配列の内側では1、
+// ネストしたオブジェクトや配列の内側では2、というように増えていきます。
+//
+// 例として、次のJSONをエンコードすることを考えます:
+//
+//	{"a": [1, 2], "b": {"c": 3}}
+//
+// エンコード中、StackDepthは次のように報告されます:
+//
+//   - 開始時、StackDepthは0です。
+//   - 外側の '{' をエンコードした後、StackDepthは1です。
+//   - 内側の '[' をエンコードした後、StackDepthは2です。
+//   - 内側の ']' をエンコードした後、StackDepthは1です。
+//   - 外側の '}' をエンコードした後、StackDepthは0です。
 func (e *Encoder) StackDepth() int
 
 // StackIndexは指定されたスタックレベルの情報を返します。
@@ -122,8 +146,8 @@ func (e *Encoder) StackDepth() int
 //   - JSONオブジェクトを表すレベルの場合は [KindBeginObject]
 //   - JSON配列を表すレベルの場合は [KindBeginArray]
 //
-// また、そのJSONオブジェクトや配列の長さも報告します。
-// JSONオブジェクト内の各名前と値は個別にカウントされるため、
+// また、これまでにエンコードされたそのJSONオブジェクトまたは配列の長さも報告します。
+// JSONオブジェクト内の各名前と値は個別に数えられるため、
 // 実際のメンバー数は長さの半分になります。
 // 完全なJSONオブジェクトは偶数の長さでなければなりません。
 func (e *Encoder) StackIndex(i int) (Kind, int64)

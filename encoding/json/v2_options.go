@@ -313,27 +313,37 @@ func ParseTimeWithLooseRFC3339(v bool) Options
 // v1のデフォルトはtrueです。
 func ReportErrorsWithLegacySemantics(v bool) Options
 
-// StringifyWithLegacySemanticsは、`string`タグオプションが
-// bool値やstring値を文字列化できることを指定します。
-// これは、トップレベル型がbool、string、数値型、
-// またはそれらへのポインタであるフィールドにのみ適用されます。
+// StringifyWithLegacySemanticsは、`string` タグオプションで
+// bool値やstring値も文字列化できることを指定します。これは、
+// 最上位の型がbool、string、数値型、またはそれらへのポインタである
+// フィールドにのみ適用されます。対してv2のデフォルトでは、
+// 本来JSON数値としてシリアライズされるGo型に対してのみ `string` タグオプションを許可し、
+// そのJSON数値をJSON文字列内に文字列化します。特に、
+// v2のデフォルトではGoのboolとstringは文字列化されません。
+// [ReportErrorsWithLegacySemantics] がfalseの場合、
+// `string` の不正な使用はランタイムエラーになります。
 //
-// マーシャル時、これらのGo値は通常のJSON表現でシリアライズされますが、
-// JSON文字列内で引用されます。
-// アンマーシャル時、これらのGo値は、通常のJSON表現または
-// その数値型に対応するGo数値表現を含むJSON文字列から
+// マーシャル時には、そのようなGo値は通常どおりのJSON表現で
+// シリアライズされますが、JSON文字列としてクォートされます。
+// アンマーシャル時には、そのようなGo値は、通常どおりのJSON表現、
+// またはその数値型に対応するGo数値表現を含むJSON文字列から
 // デシリアライズされる必要があります。
-// Goの数値文法はJSONの数値文法のスーパーセットである点に注意してください。
-// `string`が適用されるGo値へのアンマーシャル時には、
-// JSON文字列内で引用されたJSON nullもJSON nullの有効な代替として扱われます。
+// Go数値の文法はJSON数値の文法のスーパーセットである点に注意してください。
+// `string` が有効なGo値へアンマーシャルする場合、
+// JSON文字列内でクォートされたJSON nullはJSON nullの有効な代替です。
+// 対してv2のデフォルトでは、JSON数値の文法外の文字列化数値は拒否され、
+// JSON文字列内でクォートされたJSON nullも拒否されます。
 //
 // このオプションはマーシャルまたはアンマーシャルのどちらにも影響します。
 // v1のデフォルトはtrueです。
 func StringifyWithLegacySemantics(v bool) Options
 
-// UnmarshalArrayFromAnyLengthは、Go配列が入力JSON配列の任意の長さからアンマーシャルできることを指定します。
-// JSON配列が短すぎる場合、残りのGo配列要素はゼロクリアされます。
-// JSON配列が長すぎる場合、余分なJSON配列要素はスキップされます。
+// UnmarshalArrayFromAnyLengthは、Go配列が任意の長さの入力JSON配列から
+// アンマーシャルできることを指定します。JSON配列が短すぎる場合、
+// 残りのGo配列要素はゼロ値になります。JSON配列が長すぎる場合、
+// 余分なJSON配列要素は読み飛ばされます。
+// 対してv2のデフォルトでは、Go配列は入力JSON配列と
+// 長さが完全に一致している必要があります。
 //
 // このオプションはアンマーシャル時のみ影響し、マーシャル時は無視されます。
 // v1のデフォルトはtrueです。
