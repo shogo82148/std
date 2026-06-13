@@ -276,7 +276,10 @@ type ScanContext internal.ScanContext
 // RowsColumnScannerは、ドライバがユーザー指定の宛先へ直接スキャンできる手段を提供することで、
 // [Rows] インターフェースを拡張します。
 //
-// RowsColumnScannerは [Rows.Next] メソッドに代わるものです。
+// RowsColumnScanner は [Rows.Next] メソッドに取って代わります。
+//
+// Go 1.27 以降、Rows が RowsColumnScanner を実装している場合、database/sql は Next を呼び出しません。
+// Rows の実装は、古い Go バージョンをサポートするために引き続き Next メソッドを実装してもかまいません。
 type RowsColumnScanner interface {
 	Rows
 
