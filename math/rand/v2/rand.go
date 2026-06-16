@@ -76,6 +76,11 @@ func (r *Rand) IntN(n int) int
 // It panics if n == 0.
 func (r *Rand) UintN(n uint) uint
 
+// N returns a pseudo-random number in the half-open interval [0,n).
+// The type parameter Int can be any integer type.
+// It panics if n <= 0.
+func (r *Rand) N[Int intType](n Int) Int
+
 // Float64 returns, as a float64, a pseudo-random number in the half-open interval [0.0,1.0).
 func (r *Rand) Float64() float64
 
