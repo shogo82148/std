@@ -44,7 +44,7 @@ func (b *Builder) Write(p []byte) (int, error)
 func (b *Builder) WriteByte(c byte) error
 
 // WriteRune appends the UTF-8 encoding of Unicode code point r to b's buffer.
-// It returns the length of r and a nil error.
+// It returns the number of bytes written and a nil error.
 func (b *Builder) WriteRune(r rune) (int, error)
 
 // WriteString appends the contents of s to b's buffer.
