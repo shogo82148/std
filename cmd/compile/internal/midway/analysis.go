@@ -11,11 +11,13 @@ import (
 
 // Analyzer holds the state for SIMD dependency analysis
 type Analyzer struct {
-	pkg          *types2.Package
-	info         *types2.Info
-	dependentObj map[types2.Object]bool
-	visited      map[types2.Type]bool
-	inSimd       bool
+	pkg                *types2.Package
+	info               *types2.Info
+	isDependentObj     map[types2.Object]bool
+	isDependentMethod  map[types2.Object]bool
+	hasDependentMethod map[types2.Type]bool
+	visited            map[types2.Type]bool
+	inSimd             bool
 }
 
 func NewAnalyzer(pkg *types2.Package, info *types2.Info) *Analyzer
