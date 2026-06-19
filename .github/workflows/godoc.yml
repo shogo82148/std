@@ -11,6 +11,10 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+      - name: install gotip
+        run: |
+          go install golang.org/dl/gotip@latest
+          gotip download
       - run: |
           set -uexo pipefail
-          go list ./... | xargs -n1 go doc -all > /dev/null
+          gotip list ./... | xargs -n1 gotip doc -all > /dev/null
