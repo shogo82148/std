@@ -90,7 +90,10 @@ func (b *Buffer) WriteTo(w io.Writer) (n int64, err error)
 // バッファが大きすぎる場合、WriteByteは [ErrTooLarge] でパニックします。
 func (b *Buffer) WriteByte(c byte) error
 
-// WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをバッファに追加し、その長さと常にnilであるエラーを返します。エラーは常にnilですが、 [bufio.Writer] のWriteRuneとのマッチングのために含まれます。必要に応じてバッファは拡張されます。もしバッファがあまりにも大きくなった場合、WriteRuneは [ErrTooLarge] でパニックを起こします。
+// WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをバッファに追加し、
+// 書き込まれたバイト数とnilエラーを返します。nilエラーは
+// [bufio.Writer] のWriteRuneに合わせるために含まれています。バッファは必要に応じて拡張され、
+// 大きくなりすぎるとWriteRuneは [ErrTooLarge] でパニックします。
 func (b *Buffer) WriteRune(r rune) (n int, err error)
 
 // Readは、バッファから次のlen(p)バイトを読み取るか、バッファが空になるまで読み取ります。返り値nは読み取られたバイト数です。バッファに返すデータがない場合、errは [io.EOF] です（len(p)がゼロの場合を除く）；それ以外の場合、nilです。
