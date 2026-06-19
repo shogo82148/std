@@ -141,9 +141,10 @@ func OmitZeroStructFields(v bool) Options
 // Go構造体フィールドに `case:strict` や `case:ignore` が明示的に指定されている場合は、
 // このオプションの値に関わらず、それぞれ大文字・小文字を区別する（または区別しない）一致が使われます。
 //
-// このオプションはマーシャル・アンマーシャルの両方に影響します。
-// マーシャル時には、インラインフィールドから宣言済みフィールドと一致する場合、
-// （[jsontext.AllowDuplicateNames]がfalseの場合）重複名の検出方法が変わることがあります。
+// これはマーシャルまたはアンマーシャルのいずれかに影響します。
+// マーシャル時には、このオプションがGo構造体で宣言されたフィールドのいずれかに一致すると、
+// 埋め込みフィールド由来の重複名検出
+// （[jsontext.AllowDuplicateNames] がfalseであることを前提）に影響する可能性があります。
 func MatchCaseInsensitiveNames(v bool) Options
 
 // RejectUnknownMembersは、JSONオブジェクトのアンマーシャル時に

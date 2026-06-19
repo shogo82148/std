@@ -2198,6 +2198,10 @@
 // GODEBUG=gocachetest=1 を設定すると、goコマンドはキャッシュされたテスト結果を再利用するかどうかの
 // 決定についての詳細を出力します。
 //
+// The GOCACHEPROG environment variable can be used to provide an
+// externally managed build cache. For details see:
+// "go doc cmd/go/internal/cacheprog".
+//
 // # Environment variables
 //
 // goコマンドとそれが呼び出すツールは、設定のために環境変数を参照します。
