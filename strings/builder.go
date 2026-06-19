@@ -42,8 +42,8 @@ func (b *Builder) Write(p []byte) (int, error)
 // 返されるエラーは常にnilです。
 func (b *Builder) WriteByte(c byte) error
 
-// WriteRuneは、UnicodeコードポイントrのUTF-8エンコーディングをbのバッファに追加します。
-// rの長さとnilエラーを返します。
+// WriteRuneはUnicodeコードポイントrのUTF-8エンコーディングをbのバッファに追加します。
+// 書き込まれたバイト数とnilエラーを返します。
 func (b *Builder) WriteRune(r rune) (int, error)
 
 // WriteStringは、sの内容をbのバッファに追加します。

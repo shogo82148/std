@@ -268,37 +268,38 @@ func Example_omitFields() {
 	// }
 }
 
-// JSONオブジェクトは、Go構造体が親構造体に埋め込まれるのと同様に
-// 親オブジェクト内にインライン化できます。
-// インライン化のルールはGoの埋め込みと似ていますが、JSONの名前空間上で動作します。
-func Example_inlinedFields() {
+// JSONオブジェクトは、Go構造体を親構造体に埋め込めるのと同様に、
+// 親オブジェクト内に埋め込むことができます。
+// JSONの埋め込み規則はGoの埋め込み規則に似ていますが、
+// JSONの名前空間に対して適用されます。
+func Example_embeddedFields() {
 	// BaseはContainerに埋め込まれています。
 	type Base struct {
 		// IDはContainerのJSONオブジェクトに昇格されます。
 		ID string
 		// TypeはContainer.Typeが存在するため無視されます。
 		Type string
-		// TimeはContainer.Inlined.Timeと打ち消し合います。
+		// TimeはContainer.Embed.Timeと打ち消し合います。
 		Time time.Time
 	}
 	// OtherはContainerに埋め込まれています。
 	type Other struct{ Cost float64 }
 	// ContainerはBaseとOtherを埋め込みます。
 	type Container struct {
-		// Baseは埋め込み構造体であり、暗黙的にJSONインライン化されます。
+		// Baseは埋め込み構造体であり、暗黙的にJSON埋め込みされます。
 		Base
 		// TypeはBase.Typeより優先されます。
 		Type int
-		// Inlinedは名前付きGoフィールドですが、明示的にJSONインライン化されています。
-		Inlined struct {
+		// Embedは名前付きGoフィールドですが、明示的にJSON埋め込みされています。
+		Embed struct {
 			// UserはContainerのJSONオブジェクトに昇格されます。
 			User string
 			// TimeはBase.Timeと打ち消し合います。
 			Time string
-		} `json:",inline"`
+		} `json:",embed"`
 		// IDはJSON名が異なるため、Base.IDと競合しません。
 		ID string `json:"uuid"`
-		// Otherは明示的なJSON名があるためJSONインライン化されません。
+		// Otherは明示的なJSON名を持つため、JSON埋め込みされません。
 		Other `json:"other"`
 	}
 
