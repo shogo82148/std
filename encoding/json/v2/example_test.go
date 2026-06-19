@@ -273,7 +273,7 @@ func Example_omitFields() {
 // JSONの埋め込み規則はGoの埋め込み規則に似ていますが、
 // JSONの名前空間に対して適用されます。
 func Example_embeddedFields() {
-	// Base is embedded within Container.
+	// BaseはContainerに埋め込まれています。
 	type Base struct {
 		// IDはContainerのJSONオブジェクトに昇格されます。
 		ID string
