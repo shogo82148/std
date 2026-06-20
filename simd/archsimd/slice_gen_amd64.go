@@ -363,7 +363,7 @@ func LoadInt32x4Part(s []int32) (Int32x4, int)
 // StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 4 or more elements, the method is equivalent to x.Store.
-func (x Int32x4) StorePart(s []int32) int
+func (x Int32x4) StorePart(s []int32)
 
 // LoadInt64x2Part loads a Int64x2 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -374,7 +374,7 @@ func LoadInt64x2Part(s []int64) (Int64x2, int)
 // StorePart stores the 2 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 2 or more elements, the method is equivalent to x.Store.
-func (x Int64x2) StorePart(s []int64) int
+func (x Int64x2) StorePart(s []int64)
 
 // LoadUint32x4Part loads a Uint32x4 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -385,7 +385,7 @@ func LoadUint32x4Part(s []uint32) (Uint32x4, int)
 // StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 4 or more elements, the method is equivalent to x.Store.
-func (x Uint32x4) StorePart(s []uint32) int
+func (x Uint32x4) StorePart(s []uint32)
 
 // LoadUint64x2Part loads a Uint64x2 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -396,7 +396,7 @@ func LoadUint64x2Part(s []uint64) (Uint64x2, int)
 // StorePart stores the 2 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 2 or more elements, the method is equivalent to x.Store.
-func (x Uint64x2) StorePart(s []uint64) int
+func (x Uint64x2) StorePart(s []uint64)
 
 // LoadFloat32x4Part loads a Float32x4 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -407,7 +407,7 @@ func LoadFloat32x4Part(s []float32) (Float32x4, int)
 // StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 4 or more elements, the method is equivalent to x.Store.
-func (x Float32x4) StorePart(s []float32) int
+func (x Float32x4) StorePart(s []float32)
 
 // LoadFloat64x2Part loads a Float64x2 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -418,7 +418,7 @@ func LoadFloat64x2Part(s []float64) (Float64x2, int)
 // StorePart stores the 2 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 2 or more elements, the method is equivalent to x.Store.
-func (x Float64x2) StorePart(s []float64) int
+func (x Float64x2) StorePart(s []float64)
 
 // LoadInt32x8Part loads a Int32x8 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -429,7 +429,7 @@ func LoadInt32x8Part(s []int32) (Int32x8, int)
 // StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 8 or more elements, the method is equivalent to x.Store.
-func (x Int32x8) StorePart(s []int32) int
+func (x Int32x8) StorePart(s []int32)
 
 // LoadInt64x4Part loads a Int64x4 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -440,7 +440,7 @@ func LoadInt64x4Part(s []int64) (Int64x4, int)
 // StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 4 or more elements, the method is equivalent to x.Store.
-func (x Int64x4) StorePart(s []int64) int
+func (x Int64x4) StorePart(s []int64)
 
 // LoadUint32x8Part loads a Uint32x8 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -451,7 +451,7 @@ func LoadUint32x8Part(s []uint32) (Uint32x8, int)
 // StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 8 or more elements, the method is equivalent to x.Store.
-func (x Uint32x8) StorePart(s []uint32) int
+func (x Uint32x8) StorePart(s []uint32)
 
 // LoadUint64x4Part loads a Uint64x4 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -462,7 +462,7 @@ func LoadUint64x4Part(s []uint64) (Uint64x4, int)
 // StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 4 or more elements, the method is equivalent to x.Store.
-func (x Uint64x4) StorePart(s []uint64) int
+func (x Uint64x4) StorePart(s []uint64)
 
 // LoadFloat32x8Part loads a Float32x8 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -473,7 +473,7 @@ func LoadFloat32x8Part(s []float32) (Float32x8, int)
 // StorePart stores the 8 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 8 or more elements, the method is equivalent to x.Store.
-func (x Float32x8) StorePart(s []float32) int
+func (x Float32x8) StorePart(s []float32)
 
 // LoadFloat64x4Part loads a Float64x4 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -484,7 +484,7 @@ func LoadFloat64x4Part(s []float64) (Float64x4, int)
 // StorePart stores the 4 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 4 or more elements, the method is equivalent to x.Store.
-func (x Float64x4) StorePart(s []float64) int
+func (x Float64x4) StorePart(s []float64)
 
 // LoadUint8x32Part loads a Uint8x32 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -495,7 +495,7 @@ func LoadUint8x32Part(s []uint8) (Uint8x32, int)
 // StorePart stores the 32 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 32 or more elements, the method is equivalent to x.Store.
-func (x Uint8x32) StorePart(s []uint8) int
+func (x Uint8x32) StorePart(s []uint8)
 
 // LoadUint16x16Part loads a Uint16x16 from the slice s, it returns the loaded vector and the
 // number of elements loaded.
@@ -506,4 +506,4 @@ func LoadUint16x16Part(s []uint16) (Uint16x16, int)
 // StorePart stores the 16 elements of x into the slice s.
 // It stores as many elements as will fit in s.
 // If s has 16 or more elements, the method is equivalent to x.Store.
-func (x Uint16x16) StorePart(s []uint16) int
+func (x Uint16x16) StorePart(s []uint16)

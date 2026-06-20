@@ -42,10 +42,6 @@ import (
 // the smallest number of decimal digits necessary to identify the value x uniquely
 // using x.Prec() mantissa bits.
 // The prec value is ignored for the 'b' and 'p' formats.
-//
-// Note that Text may return a different result than strconv.FormatFloat for
-// corresponding arguments if the matching float32 or float64 number provided
-// to strconv.FormatFloat is a denormalized number.
 func (x *Float) Text(format byte, prec int) string
 
 // String formats x like x.Text('g', 10).

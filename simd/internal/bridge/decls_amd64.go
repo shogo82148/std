@@ -788,9 +788,9 @@ func (x Int32x8) Store(s []int32)
 
 func (x Int32x16) StorePart(s []int32) int
 
-func (x Int32x4) StorePart(s []int32) int
+func (x Int32x4) StorePart(s []int32)
 
-func (x Int32x8) StorePart(s []int32) int
+func (x Int32x8) StorePart(s []int32)
 
 func (x Int32x16) String() string
 
@@ -942,9 +942,9 @@ func (x Int64x4) Store(s []int64)
 
 func (x Int64x8) Store(s []int64)
 
-func (x Int64x2) StorePart(s []int64) int
+func (x Int64x2) StorePart(s []int64)
 
-func (x Int64x4) StorePart(s []int64) int
+func (x Int64x4) StorePart(s []int64)
 
 func (x Int64x8) StorePart(s []int64) int
 
@@ -1106,7 +1106,7 @@ func (x Uint8x64) Store(s []uint8)
 
 func (x Uint8x16) StorePart(s []uint8) int
 
-func (x Uint8x32) StorePart(s []uint8) int
+func (x Uint8x32) StorePart(s []uint8)
 
 func (x Uint8x64) StorePart(s []uint8) int
 
@@ -1308,7 +1308,7 @@ func (x Uint16x32) Store(s []uint16)
 
 func (x Uint16x8) Store(s []uint16)
 
-func (x Uint16x16) StorePart(s []uint16) int
+func (x Uint16x16) StorePart(s []uint16)
 
 func (x Uint16x32) StorePart(s []uint16) int
 
@@ -1508,9 +1508,9 @@ func (x Uint32x8) Store(s []uint32)
 
 func (x Uint32x16) StorePart(s []uint32) int
 
-func (x Uint32x4) StorePart(s []uint32) int
+func (x Uint32x4) StorePart(s []uint32)
 
-func (x Uint32x8) StorePart(s []uint32) int
+func (x Uint32x8) StorePart(s []uint32)
 
 func (x Uint32x16) String() string
 
@@ -1692,9 +1692,9 @@ func (x Uint64x4) Store(s []uint64)
 
 func (x Uint64x8) Store(s []uint64)
 
-func (x Uint64x2) StorePart(s []uint64) int
+func (x Uint64x2) StorePart(s []uint64)
 
-func (x Uint64x4) StorePart(s []uint64) int
+func (x Uint64x4) StorePart(s []uint64)
 
 func (x Uint64x8) StorePart(s []uint64) int
 
@@ -1838,9 +1838,9 @@ func (x Float32x8) Store(s []float32)
 
 func (x Float32x16) StorePart(s []float32) int
 
-func (x Float32x4) StorePart(s []float32) int
+func (x Float32x4) StorePart(s []float32)
 
-func (x Float32x8) StorePart(s []float32) int
+func (x Float32x8) StorePart(s []float32)
 
 func (x Float32x16) String() string
 
@@ -1974,9 +1974,9 @@ func (x Float64x4) Store(s []float64)
 
 func (x Float64x8) Store(s []float64)
 
-func (x Float64x2) StorePart(s []float64) int
+func (x Float64x2) StorePart(s []float64)
 
-func (x Float64x4) StorePart(s []float64) int
+func (x Float64x4) StorePart(s []float64)
 
 func (x Float64x8) StorePart(s []float64) int
 
