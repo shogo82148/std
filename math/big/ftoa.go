@@ -41,10 +41,6 @@ import (
 // x.Prec() の仮数ビット数を用いて値xを一意に識別するために必要な
 // 最小の10進桁数が選択されます。
 // 'b'と'p'形式ではprecの値は無視されます。
-//
-// 対応する引数に対して、strconv.FormatFloat に渡される
-// 対応するfloat32またはfloat64の値が非正規化数である場合、
-// Textはstrconv.FormatFloatとは異なる結果を返すことがあります。
 func (x *Float) Text(format byte, prec int) string
 
 // Stringはxをx.Text('g', 10)のようにフォーマットします。
