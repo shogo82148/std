@@ -60,6 +60,8 @@ func JoinUnmarshalers(us ...*Unmarshalers) *Unmarshalers
 //
 // The function must marshal exactly one JSON value.
 // The value of T must not be retained outside the function call.
+// It is recommended that fn return a []byte buffer that is safe
+// for the caller to retain and potentially mutate.
 // It may not return [errors.ErrUnsupported].
 func MarshalFunc[T any](fn func(T) ([]byte, error)) *Marshalers
 
