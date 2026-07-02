@@ -158,6 +158,11 @@ const TrailerPrefix = "Trailer:"
 // This can be overridden by setting [Server.MaxHeaderBytes].
 const DefaultMaxHeaderBytes = 1 << 20
 
+// DefaultMaxHeaderValueCount is the maximum permitted number of
+// header values in an HTTP request.
+// This can be overridden by setting [Server.MaxHeaderValueCount].
+const DefaultMaxHeaderValueCount = 500
+
 // TimeFormat is the time format to use when generating times in HTTP
 // headers. It is like [time.RFC1123] but hard-codes GMT as the time
 // zone. The time being formatted must be in UTC for Format to
@@ -501,6 +506,14 @@ type Server struct {
 	// size of the request body.
 	// If zero, DefaultMaxHeaderBytes is used.
 	MaxHeaderBytes int
+
+	// MaxHeaderValueCount controls the maximum number of header
+	// values that the server is willing to parse from a request.
+	// If zero, DefaultMaxHeaderValueCount is used.
+	// Note that comma-separated values in a single header line are
+	// counted once, while values sent as multiple header lines are
+	// counted multiple times.
+	MaxHeaderValueCount int
 
 	// TLSNextProto optionally specifies a function to take over
 	// ownership of the provided TLS connection when an ALPN
