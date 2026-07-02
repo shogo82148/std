@@ -676,7 +676,7 @@ func (x Mask8x16) Or(y Mask8x16) Mask8x16
 
 func (x Mask8x16) String() string
 
-func (x Mask8x16) ToInt8x16() Int8x16
+func (x Mask8x16) ToInt8s() Int8x16
 
 func (x Mask16x8) And(y Mask16x8) Mask16x8
 
@@ -684,7 +684,7 @@ func (x Mask16x8) Or(y Mask16x8) Mask16x8
 
 func (x Mask16x8) String() string
 
-func (x Mask16x8) ToInt16x8() Int16x8
+func (x Mask16x8) ToInt16s() Int16x8
 
 func (x Mask32x4) And(y Mask32x4) Mask32x4
 
@@ -692,7 +692,7 @@ func (x Mask32x4) Or(y Mask32x4) Mask32x4
 
 func (x Mask32x4) String() string
 
-func (x Mask32x4) ToInt32x4() Int32x4
+func (x Mask32x4) ToInt32s() Int32x4
 
 func (x Mask64x2) And(y Mask64x2) Mask64x2
 
@@ -700,4 +700,4 @@ func (x Mask64x2) Or(y Mask64x2) Mask64x2
 
 func (x Mask64x2) String() string
 
-func (x Mask64x2) ToInt64x2() Int64x2
+func (x Mask64x2) ToInt64s() Int64x2

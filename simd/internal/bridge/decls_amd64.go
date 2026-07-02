@@ -788,9 +788,9 @@ func (x Int32x8) Store(s []int32)
 
 func (x Int32x16) StorePart(s []int32) int
 
-func (x Int32x4) StorePart(s []int32)
+func (x Int32x4) StorePart(s []int32) int
 
-func (x Int32x8) StorePart(s []int32)
+func (x Int32x8) StorePart(s []int32) int
 
 func (x Int32x16) String() string
 
@@ -942,9 +942,9 @@ func (x Int64x4) Store(s []int64)
 
 func (x Int64x8) Store(s []int64)
 
-func (x Int64x2) StorePart(s []int64)
+func (x Int64x2) StorePart(s []int64) int
 
-func (x Int64x4) StorePart(s []int64)
+func (x Int64x4) StorePart(s []int64) int
 
 func (x Int64x8) StorePart(s []int64) int
 
@@ -1106,7 +1106,7 @@ func (x Uint8x64) Store(s []uint8)
 
 func (x Uint8x16) StorePart(s []uint8) int
 
-func (x Uint8x32) StorePart(s []uint8)
+func (x Uint8x32) StorePart(s []uint8) int
 
 func (x Uint8x64) StorePart(s []uint8) int
 
@@ -1308,7 +1308,7 @@ func (x Uint16x32) Store(s []uint16)
 
 func (x Uint16x8) Store(s []uint16)
 
-func (x Uint16x16) StorePart(s []uint16)
+func (x Uint16x16) StorePart(s []uint16) int
 
 func (x Uint16x32) StorePart(s []uint16) int
 
@@ -1508,9 +1508,9 @@ func (x Uint32x8) Store(s []uint32)
 
 func (x Uint32x16) StorePart(s []uint32) int
 
-func (x Uint32x4) StorePart(s []uint32)
+func (x Uint32x4) StorePart(s []uint32) int
 
-func (x Uint32x8) StorePart(s []uint32)
+func (x Uint32x8) StorePart(s []uint32) int
 
 func (x Uint32x16) String() string
 
@@ -1692,9 +1692,9 @@ func (x Uint64x4) Store(s []uint64)
 
 func (x Uint64x8) Store(s []uint64)
 
-func (x Uint64x2) StorePart(s []uint64)
+func (x Uint64x2) StorePart(s []uint64) int
 
-func (x Uint64x4) StorePart(s []uint64)
+func (x Uint64x4) StorePart(s []uint64) int
 
 func (x Uint64x8) StorePart(s []uint64) int
 
@@ -1838,9 +1838,9 @@ func (x Float32x8) Store(s []float32)
 
 func (x Float32x16) StorePart(s []float32) int
 
-func (x Float32x4) StorePart(s []float32)
+func (x Float32x4) StorePart(s []float32) int
 
-func (x Float32x8) StorePart(s []float32)
+func (x Float32x8) StorePart(s []float32) int
 
 func (x Float32x16) String() string
 
@@ -1974,9 +1974,9 @@ func (x Float64x4) Store(s []float64)
 
 func (x Float64x8) Store(s []float64)
 
-func (x Float64x2) StorePart(s []float64)
+func (x Float64x2) StorePart(s []float64) int
 
-func (x Float64x4) StorePart(s []float64)
+func (x Float64x4) StorePart(s []float64) int
 
 func (x Float64x8) StorePart(s []float64) int
 
@@ -2016,11 +2016,11 @@ func (x Mask8x32) String() string
 
 func (x Mask8x64) String() string
 
-func (x Mask8x16) ToInt8x16() Int8x16
+func (x Mask8x16) ToInt8s() Int8x16
 
-func (x Mask8x32) ToInt8x32() Int8x32
+func (x Mask8x32) ToInt8s() Int8x32
 
-func (x Mask8x64) ToInt8x64() Int8x64
+func (x Mask8x64) ToInt8s() Int8x64
 
 func (x Mask16x16) And(y Mask16x16) Mask16x16
 
@@ -2040,11 +2040,11 @@ func (x Mask16x32) String() string
 
 func (x Mask16x8) String() string
 
-func (x Mask16x16) ToInt16x16() Int16x16
+func (x Mask16x16) ToInt16s() Int16x16
 
-func (x Mask16x32) ToInt16x32() Int16x32
+func (x Mask16x32) ToInt16s() Int16x32
 
-func (x Mask16x8) ToInt16x8() Int16x8
+func (x Mask16x8) ToInt16s() Int16x8
 
 func (x Mask32x16) And(y Mask32x16) Mask32x16
 
@@ -2064,11 +2064,11 @@ func (x Mask32x4) String() string
 
 func (x Mask32x8) String() string
 
-func (x Mask32x16) ToInt32x16() Int32x16
+func (x Mask32x16) ToInt32s() Int32x16
 
-func (x Mask32x4) ToInt32x4() Int32x4
+func (x Mask32x4) ToInt32s() Int32x4
 
-func (x Mask32x8) ToInt32x8() Int32x8
+func (x Mask32x8) ToInt32s() Int32x8
 
 func (x Mask64x2) And(y Mask64x2) Mask64x2
 
@@ -2088,8 +2088,8 @@ func (x Mask64x4) String() string
 
 func (x Mask64x8) String() string
 
-func (x Mask64x2) ToInt64x2() Int64x2
+func (x Mask64x2) ToInt64s() Int64x2
 
-func (x Mask64x4) ToInt64x4() Int64x4
+func (x Mask64x4) ToInt64s() Int64x4
 
-func (x Mask64x8) ToInt64x8() Int64x8
+func (x Mask64x8) ToInt64s() Int64x8
