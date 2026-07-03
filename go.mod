@@ -4,9 +4,9 @@ go 1.26.0
 
 require (
 	golang.org/x/mod v0.16.0
-	golang.org/x/net v0.47.0
+	golang.org/x/net v0.55.0
 	golang.org/x/sync v0.6.0
 	golang.org/x/telemetry v0.0.0-20240319204737-f4db1c7d8e43
 )
 
-require golang.org/x/sys v0.38.0 // indirect
+require golang.org/x/sys v0.45.0 // indirect
