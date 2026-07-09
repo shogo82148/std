@@ -34,13 +34,13 @@ import (
 //
 // フォーマットが異なる文字の場合、Textは"%"と認識されないフォーマット文字を続けて返します。
 //
-// The precision prec controls the number of digits (excluding the exponent)
-// printed by the 'e', 'E', 'f', 'g', 'G', and 'x' formats.
-// For 'e', 'E', 'f', and 'x', it is the number of digits after the decimal point.
-// For 'g' and 'G' it is the total number of digits. A negative precision selects
-// the smallest number of decimal digits necessary to identify the value x uniquely
-// using x.Prec() mantissa bits.
-// The prec value is ignored for the 'b' and 'p' formats.
+// 精度precは、'e'、'E'、'f'、'g'、'G'、'x' 形式で出力される
+// 桁数（指数部は除く）を制御します。
+// 'e'、'E'、'f'、'x' では、小数点以下の桁数を表します。
+// 'g' と 'G' では、全体の桁数を表します。負の精度を指定すると、
+// x.Prec() の仮数ビット数を用いて値xを一意に識別するために必要な
+// 最小の10進桁数が選ばれます。
+// precの値は、'b' および 'p' 形式では無視されます。
 func (x *Float) Text(format byte, prec int) string
 
 // Stringはxをx.Text('g', 10)のようにフォーマットします。
