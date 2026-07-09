@@ -168,6 +168,12 @@ type Framer struct {
 	// If the limit is hit, MetaHeadersFrame.Truncated is set true.
 	MaxHeaderListSize uint32
 
+	// MaxHeaderValueCount is the maximum permitted number of
+	// header values.
+	// It's used only if ReadMetaHeaders is set; 0 means no limit.
+	// If the limit is hit, MetaHeadersFrame.Truncated is set true.
+	MaxHeaderValueCount int
+
 	logReads, logWrites bool
 
 	debugFramer       *Framer
