@@ -4,7 +4,7 @@
 
 // This file implements Float-to-string conversion functions.
 // It is closely following the corresponding implementation
-// in strconv/ftoa.go, but modified and simplified for Float.
+// in internal/strconv/ftoa.go, but modified and simplified for Float.
 
 package big
 
@@ -34,17 +34,13 @@ import (
 //
 // フォーマットが異なる文字の場合、Textは"%"と認識されないフォーマット文字を続けて返します。
 //
-// 精度precは、'e'、'E'、'f'、'g'、'G'、'x'形式で
-// 出力される桁数（指数部を除く）を制御します。
-// 'e'、'E'、'f'、'x'では、小数点以下の桁数を表します。
-// 'g'と'G'では、全体の有効桁数を表します。負の精度を指定すると、
+// 精度precは、'e'、'E'、'f'、'g'、'G'、'x' 形式で出力される
+// 桁数（指数部は除く）を制御します。
+// 'e'、'E'、'f'、'x' では、小数点以下の桁数を表します。
+// 'g' と 'G' では、全体の桁数を表します。負の精度を指定すると、
 // x.Prec() の仮数ビット数を用いて値xを一意に識別するために必要な
-// 最小の10進桁数が選択されます。
-// 'b'と'p'形式ではprecの値は無視されます。
-//
-// 対応する引数に対して、strconv.FormatFloat に渡される
-// 対応するfloat32またはfloat64の値が非正規化数である場合、
-// Textはstrconv.FormatFloatとは異なる結果を返すことがあります。
+// 最小の10進桁数が選ばれます。
+// precの値は、'b' および 'p' 形式では無視されます。
 func (x *Float) Text(format byte, prec int) string
 
 // Stringはxをx.Text('g', 10)のようにフォーマットします。
