@@ -5,7 +5,7 @@
 package main
 
 import (
-	"github.com/shogo82148/std/_gen/unify"
+	"github.com/shogo82148/std/simd/archsimd/_gen/unify"
 )
 
 type Operation struct {

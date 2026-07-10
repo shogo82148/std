@@ -5,7 +5,7 @@
 package arm64
 
 import (
-	"github.com/shogo82148/std/_gen/unify"
+	"github.com/shogo82148/std/simd/archsimd/_gen/unify"
 )
 
 // Emit generates the unify.Value representation of this operand
