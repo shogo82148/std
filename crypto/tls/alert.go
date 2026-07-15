@@ -10,4 +10,6 @@ package tls
 // which wraps AlertError rather than sending a TLS alert.
 type AlertError uint8
 
+var _ error = AlertError(0)
+
 func (e AlertError) Error() string

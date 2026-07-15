@@ -10,6 +10,7 @@ import (
 	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/fmt"
+	"github.com/shogo82148/std/io"
 	"github.com/shogo82148/std/log"
 	"github.com/shogo82148/std/net/http"
 	"github.com/shogo82148/std/net/netip"
@@ -557,4 +558,32 @@ func ExampleWithUnmarshalers_recordOffsets() {
 
 	// Output:
 	// 3:3: source and destination must both be specified
+}
+
+// UnmarshalDecode can be used to unmarshal a stream of whitespace-delimited
+// JSON values.
+func ExampleUnmarshalDecode_stream() {
+	const jsonStream = `
+	{"Name": "Platypus", "Order": "Monotremata"}
+	{"Name": "Quoll",    "Order": "Dasyuromorphia"}
+	{"Name": "Gopher",   "Order": "Rodentia"}
+`
+	type Animal struct {
+		Name  string
+		Order string
+	}
+	dec := jsontext.NewDecoder(strings.NewReader(jsonStream))
+	for {
+		var a Animal
+		if err := json.UnmarshalDecode(dec, &a); err == io.EOF {
+			break
+		} else if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("%s: %s\n", a.Name, a.Order)
+	}
+	// Output:
+	// Platypus: Monotremata
+	// Quoll: Dasyuromorphia
+	// Gopher: Rodentia
 }

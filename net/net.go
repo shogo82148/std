@@ -247,6 +247,8 @@ func (e UnknownNetworkError) Temporary() bool
 
 type InvalidAddrError string
 
+var _ error = InvalidAddrError("")
+
 func (e InvalidAddrError) Error() string
 func (e InvalidAddrError) Timeout() bool
 func (e InvalidAddrError) Temporary() bool

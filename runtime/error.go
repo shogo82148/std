@@ -32,3 +32,9 @@ type TypeAssertionError struct {
 func (*TypeAssertionError) RuntimeError()
 
 func (e *TypeAssertionError) Error() string
+
+var _ error = errorAddressString{}
+
+var _ error = plainError("")
+
+var _ error = boundsError{}
