@@ -183,7 +183,6 @@ func (p *Package) Resolve(s *modload.Loader, imports []string) []string
 // CoverSetup holds parameters related to coverage setup for a given package (covermode, etc).
 type CoverSetup struct {
 	Mode    string
-	Cfg     string
 	GenMeta bool
 }
 

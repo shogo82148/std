@@ -157,6 +157,10 @@ func (u *Userinfo) String() string
 // error, due to parsing ambiguities.
 func Parse(rawURL string) (*URL, error)
 
+// MustParse calls [Parse](rawURL) and panics on error.
+// It is intended for use with hard-coded strings representing valid urls.
+func MustParse(rawURL string) *URL
+
 // ParseRequestURI parses a raw url into a [URL] structure. It assumes that
 // url was received in an HTTP request, so the url is interpreted
 // only as an absolute URI or an absolute path.

@@ -93,6 +93,8 @@ func NewEncoder(enc *Encoding, w io.Writer) io.WriteCloser
 
 // EncodedLen returns the length in bytes of the base64 encoding
 // of an input buffer of length n.
+// It panics if the encoded length overflows int,
+// which can happen only if n > [math.MaxInt]/4*3.
 func (enc *Encoding) EncodedLen(n int) int
 
 type CorruptInputError int64

@@ -55,7 +55,7 @@ type Func struct {
 	NamedValues map[LocalSlot][]*Value
 	// Names is a copy of NamedValues.Keys. We keep a separate list
 	// of keys to make iteration order deterministic.
-	Names []*LocalSlot
+	Names []LocalSlot
 	// Canonicalize root/top-level local slots, and canonicalize their pieces.
 	// Because LocalSlot pieces refer to their parents with a pointer, this ensures that equivalent slots really are equal.
 	CanonicalLocalSlots  map[LocalSlot]*LocalSlot

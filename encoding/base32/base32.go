@@ -73,6 +73,8 @@ func NewEncoder(enc *Encoding, w io.Writer) io.WriteCloser
 
 // EncodedLen returns the length in bytes of the base32 encoding
 // of an input buffer of length n.
+// It panics if the encoded length overflows int,
+// which can happen only if n > [math.MaxInt]/8*5.
 func (enc *Encoding) EncodedLen(n int) int
 
 type CorruptInputError int64

@@ -9,5 +9,14 @@ package ssa
 // idx may be nil, in which case it is treated as 0.
 type BaseAddress struct {
 	ptr *Value
-	idx *Value
+	idx Index
+}
+
+// Index represents an address index in the form exp<<shift.
+//
+// The shift is typically introduced by slice indexing (log2(element size)),
+// but may also originate from shifts in the source expression.
+type Index struct {
+	exp   *Value
+	shift int64
 }
