@@ -74,6 +74,8 @@ type ErrNaN struct {
 	msg string
 }
 
+var _ error = ErrNaN{}
+
 func (err ErrNaN) Error() string
 
 // NewFloat allocates and returns a new [Float] set to x,

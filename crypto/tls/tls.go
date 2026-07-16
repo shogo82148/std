@@ -47,6 +47,8 @@ func NewListener(inner net.Listener, config *Config) net.Listener
 // at least one certificate or else set GetCertificate.
 func Listen(network, laddr string, config *Config) (net.Listener, error)
 
+var _ error = timeoutError{}
+
 // DialWithDialer connects to the given network address using dialer.Dial and
 // then initiates a TLS handshake, returning the resulting TLS connection. Any
 // timeout or deadline given in the dialer apply to connection and TLS
