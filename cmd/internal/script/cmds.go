@@ -15,6 +15,11 @@ import (
 // commands.
 func DefaultCmds() map[string]Cmd
 
+// InterruptCmd interrupts cmd process.
+// InterruptCmd kills the process on Windows, because
+// cmd.Process.Signal(os.Interrupt) is not supported on Windows.
+func InterruptCmd(cmd *exec.Cmd) error
+
 // Command returns a new Cmd with a Usage method that returns a copy of the
 // given CmdUsage and a Run method calls the given function.
 func Command(usage CmdUsage, run func(*State, ...string) (WaitFunc, error)) Cmd
