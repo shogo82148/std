@@ -40,6 +40,8 @@ func NewListener(inner net.Listener, config *Config) net.Listener
 // 設定（config）は、nil以外である必要があり、少なくとも1つの証明書を含んでいるか、GetCertificateを設定している必要があります。
 func Listen(network, laddr string, config *Config) (net.Listener, error)
 
+var _ error = timeoutError{}
+
 // DialWithDialerは、dialer.Dialを使用して指定されたネットワークアドレスに接続し、
 // TLSハンドシェイクを開始し、結果のTLS接続を返します。dialerで指定されたタイムアウトや
 // デッドラインは、接続とTLSハンドシェイク全体に適用されます。

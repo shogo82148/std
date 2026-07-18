@@ -18,6 +18,7 @@ var ErrProcessDone = errors.New("os: process already finished")
 
 // Processは [StartProcess] によって作成されたプロセスに関する情報を格納します。
 type Process struct {
+	// Pid is the operating system process ID.
 	Pid int
 
 	// state contains the atomic process state.
