@@ -4,7 +4,7 @@
 
 // This file implements Float-to-string conversion functions.
 // It is closely following the corresponding implementation
-// in strconv/ftoa.go, but modified and simplified for Float.
+// in internal/strconv/ftoa.go, but modified and simplified for Float.
 
 package big
 
@@ -34,13 +34,13 @@ import (
 //
 // フォーマットが異なる文字の場合、Textは"%"と認識されないフォーマット文字を続けて返します。
 //
-// 精度precは、'e'、'E'、'f'、'g'、'G'、'x'形式で
-// 出力される桁数（指数部を除く）を制御します。
-// 'e'、'E'、'f'、'x'では、小数点以下の桁数を表します。
-// 'g'と'G'では、全体の有効桁数を表します。負の精度を指定すると、
-// x.Prec() の仮数ビット数を用いて値xを一意に識別するために必要な
-// 最小の10進桁数が選択されます。
-// 'b'と'p'形式ではprecの値は無視されます。
+// The precision prec controls the number of digits (excluding the exponent)
+// printed by the 'e', 'E', 'f', 'g', 'G', and 'x' formats.
+// For 'e', 'E', 'f', and 'x', it is the number of digits after the decimal point.
+// For 'g' and 'G' it is the total number of digits. A negative precision selects
+// the smallest number of decimal digits necessary to identify the value x uniquely
+// using x.Prec() mantissa bits.
+// The prec value is ignored for the 'b' and 'p' formats.
 func (x *Float) Text(format byte, prec int) string
 
 // Stringはxをx.Text('g', 10)のようにフォーマットします。

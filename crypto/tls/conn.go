@@ -183,7 +183,12 @@ func (c *Conn) Handshake() error
 // このパッケージのほとんどの使用では、明示的にHandshakeContextを呼び出す必要はありません：最初の [Conn.Read] または [Conn.Write] が自動的に呼び出します。
 func (c *Conn) HandshakeContext(ctx context.Context) error
 
-// ConnectionState関数は、接続に関する基本的なTLSの詳細を返します。
+// ConnectionStateは、この接続に関する基本的なTLSの詳細を返します。
+//
+// 返される [ConnectionState] は、[ConnectionState.HandshakeComplete] が示すように
+// ハンドシェイクが完了した後にのみ意味を持ちます。それ以前は、その各フィールドは
+// 設定されていません。ハンドシェイクは最初の [Conn.Read] または [Conn.Write] によって
+// 自動的に実行されるほか、[Conn.Handshake] を使って明示的に開始することもできます。
 func (c *Conn) ConnectionState() ConnectionState
 
 // OCSPResponseは、TLSサーバーからステープルされたOCSP応答を返します（クライアント接続の場合のみ有効）。

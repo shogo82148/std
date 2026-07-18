@@ -126,9 +126,15 @@ const TrailerPrefix = "Trailer:"
 // これは、[Server.MaxHeaderBytes] を設定することで上書きできます。
 const DefaultMaxHeaderBytes = 1 << 20
 
-// TimeFormatは、HTTPヘッダーで時間を生成するときに使用する時間形式です。
-// [time.RFC1123] のようですが、タイムゾーンとしてGMTがハードコードされています。
-// フォーマットされる時間はUTCである必要があります。
+// DefaultMaxHeaderValueCountは、HTTPリクエストにおいて許容される
+// ヘッダー値の最大数です。
+// これは、[Server.MaxHeaderValueCount] を設定することで上書きできます。
+const DefaultMaxHeaderValueCount = 500
+
+// TimeFormatは、HTTPヘッダー内の時刻を生成する際に使用する時刻形式です。
+// これは [time.RFC1123] に似ていますが、タイムゾーンとしてGMTを
+// 固定で使用します。Formatが正しい形式を生成するためには、
+// フォーマットする時刻がUTCでなければなりません。
 //
 // この時間形式を解析するには、[ParseTime] を参照してください。
 const TimeFormat = "Mon, 02 Jan 2006 15:04:05 GMT"
@@ -411,11 +417,21 @@ type Server struct {
 	// ゼロの場合、DefaultMaxHeaderBytesが使用されます。
 	MaxHeaderBytes int
 
-	// TLSNextProtoは、ALPNプロトコルアップグレードが発生したときに、提供されたTLS接続の所有権を
-	// 引き継ぐ関数をオプションで指定します。マップキーは、ネゴシエートされたプロトコル名です。
-	// Handler引数は、HTTPリクエストを処理するために使用され、まだ設定されていない場合は
-	// RequestのTLSとRemoteAddrを初期化します。関数が戻るときに接続は自動的に閉じられます。
-	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的に有効になりません。
+	// MaxHeaderValueCountは、サーバーがリクエストから解析することを
+	// 許容するヘッダー値の最大数を制御します。
+	// ゼロの場合、DefaultMaxHeaderValueCountが使用されます。
+	// 1つのヘッダー行内でカンマ区切りになっている値は1回として数えられますが、
+	// 複数のヘッダー行として送信された値は複数回として数えられることに
+	// 注意してください。
+	MaxHeaderValueCount int
+
+	// TLSNextProtoは、ALPNによるプロトコルアップグレードが発生したときに、
+	// 提供されたTLS接続の所有権を引き継ぐ関数をオプションで指定します。
+	// マップのキーは、ネゴシエートされたプロトコル名です。
+	// Handler引数はHTTPリクエストの処理に使用され、まだ設定されていない場合は
+	// RequestのTLSおよびRemoteAddrを初期化します。
+	// 接続は、関数が戻ると自動的に閉じられます。
+	// TLSNextProtoがnilでない場合、HTTP/2サポートは自動的には有効になりません。
 	//
 	// 歴史的に、TLSNextProtoはHTTP/2サポートを無効にするために使用されていました。
 	// Server.Protocolsフィールドは、これを行うためのより簡単な方法を提供します。
