@@ -310,3 +310,8 @@ func Wait()
 // to wait for the system under test to "settle" after sleeping.
 // This is what Sleep accomplishes.
 func Sleep(d time.Duration)
+
+// Subtest is a convenience function that runs f in a subtest of t called name.
+//
+// It is exactly equivalent to calling t.Run with a function that calls [Test].
+func Subtest(t *testing.T, name string, f func(*testing.T))

@@ -67,13 +67,3 @@ func AddKeepRelocations()
 // profitable), to facilitate better dead-code elimination by the
 // linker.
 func OutlineMapInits(fn *ir.Func)
-
-// GenerateVarInitFunc create a new function that will (eventually) have this form:
-//
-//	func init.part.%d() {
-//		...
-//	}
-func GenerateVarInitFunc() *ir.Func
-
-// CanOptimize reports whether the given fn can be optimized for static assignments.
-func CanOptimize(fn *ir.Func) bool

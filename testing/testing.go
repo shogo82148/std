@@ -473,7 +473,9 @@ var (
 // may be called simultaneously from multiple goroutines.
 type T struct {
 	common
-	denyParallel bool
+	// denyParallel, if non-empty, is the operation (such as "t.Setenv") that
+	// forbids a later call to t.Parallel.
+	denyParallel string
 	tstate       *testState
 }
 
