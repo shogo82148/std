@@ -2013,6 +2013,10 @@ const MLKEMDecapsTestGroupParameterSetMLKEM768 MLKEMDecapsTestGroupParameterSet 
 func (j *MLKEMDecapsTestGroupParameterSet) UnmarshalJSON(value []byte) error
 
 type MLKEMDecapsTestGroupTestsElem struct {
+	// If present, the shared key the implementation MUST return on a successful
+	// Decapsulate call.
+	K *string `json:"K,omitempty,omitzero"`
+
 	// An input ciphertext
 	C string `json:"c"`
 
@@ -2021,6 +2025,9 @@ type MLKEMDecapsTestGroupTestsElem struct {
 
 	// The full decapsulation key
 	Dk string `json:"dk"`
+
+	// The encapsulation key bytes of dk.
+	Ek string `json:"ek"`
 
 	// A list of flags
 	Flags []string `json:"flags"`
@@ -2468,7 +2475,40 @@ func (j *MlDsaSignTestGroupType) UnmarshalJSON(value []byte) error
 // UnmarshalJSON implements json.Unmarshaler.
 func (j *MlDsaSignTestGroup) UnmarshalJSON(value []byte) error
 
-type MlDsaSignTestVector interface{}
+type MlDsaSignTestVector struct {
+	// A brief description of the test case
+	Comment string `json:"comment"`
+
+	// [optional] The additional context string (if omitted, the context input is
+	// empty)
+	Ctx *string `json:"ctx,omitempty,omitzero"`
+
+	// A list of flags
+	Flags []string `json:"flags"`
+
+	// [optional] The message to sign (if omitted, mu is provided to use with
+	// Sign_internal)
+	Msg *string `json:"msg,omitempty,omitzero"`
+
+	// [optional] The 64-byte μ value (omitted in case of expected failure)
+	Mu *string `json:"mu,omitempty,omitzero"`
+
+	// Result corresponds to the JSON schema field "result".
+	Result Result `json:"result"`
+
+	// [optional] The 32-byte random value (if omitted, implicitly all zeroes for
+	// deterministic signing)
+	Rnd *string `json:"rnd,omitempty,omitzero"`
+
+	// The encoded signature (empty in case of expected failure)
+	Sig string `json:"sig"`
+
+	// Identifier of the test case
+	TcId int `json:"tcId"`
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *MlDsaSignTestVector) UnmarshalJSON(value []byte) error
 
 type MlDsaVerifyTestGroup struct {
 	// Encoded ML-DSA public key

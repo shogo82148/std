@@ -56,6 +56,8 @@ func JoinUnmarshalers(us ...*Unmarshalers) *Unmarshalers
 //
 // 関数はJSON値をちょうど1つマーシャルしなければなりません。
 // Tの値は関数呼び出しの外部に保持してはなりません。
+// fnは、呼び出し元が保持し、必要に応じて変更しても安全な
+// []byteバッファを返すことが推奨されます。
 // [errors.ErrUnsupported] を返してはなりません。
 func MarshalFunc[T any](fn func(T) ([]byte, error)) *Marshalers
 

@@ -2,6 +2,4 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// TODO: verify that the output of Marshal{Text,JSON} is suitably escaped.
-
 package slog

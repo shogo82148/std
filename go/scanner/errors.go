@@ -16,6 +16,8 @@ type Error struct {
 	Msg string
 }
 
+var _ error = (*Error)(nil)
+
 // Errorはerrorインターフェースを実装します。
 func (e Error) Error() string
 

@@ -67,6 +67,8 @@ type ErrNaN struct {
 	msg string
 }
 
+var _ error = ErrNaN{}
+
 func (err ErrNaN) Error() string
 
 // NewFloatは、精度53と丸めモード [ToNearestEven] でxに設定された新しい [Float] を割り当てて返します。

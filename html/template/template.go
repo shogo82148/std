@@ -19,7 +19,8 @@ type Template struct {
 	// we need to keep our version of the name space and the underlying
 	// template's in sync.
 	text *template.Template
-	// The underlying template's parse tree, updated to be HTML-safe.
+	// The underlying template's parse tree, updated to be HTML-safe
+	// after the first execution.
 	Tree *parse.Tree
 	*nameSpace
 }
@@ -110,11 +111,13 @@ func (t *Template) Name() string
 
 type FuncMap = template.FuncMap
 
-// Funcsは引数のマップの要素をテンプレートの関数マップに追加します。
-// これはテンプレートが解析される前に呼び出す必要があります。
-// マップの値が適切な戻り値型を持つ関数でない場合、パニックを起こします。ただし、
-// マップの要素を上書きすることは合法です。戻り値はテンプレートなので、
-// 呼び出しはチェーンできます。
+// Funcsは、引数マップの要素をテンプレートの関数マップに追加します。
+// テンプレート内で使用する関数は、テンプレートが
+// 解析される前に追加しておく必要があります。Funcsは、解析後であっても（
+// 例えば [Template.Clone] の後でも）同名の関数を置き換えるために、
+// 複数回呼び出すことができます。置き換え後の関数はテンプレート実行時に使用されます。
+// マップ内の値が適切な戻り値型を持つ関数でない場合、パニックを起こします。
+// 戻り値はテンプレート自身なので、呼び出しをチェーンできます。
 func (t *Template) Funcs(funcMap FuncMap) *Template
 
 // Delimsは、アクションのデリミタを指定された文字列に設定します。これは、
