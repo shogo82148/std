@@ -24,7 +24,7 @@ jobs:
         with:
           path: tools
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7
         with:
           go-version-file: ./tools/_tools/go.mod
           cache-dependency-path: ./tools/_tools/go.mod
