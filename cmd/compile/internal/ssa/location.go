@@ -14,20 +14,6 @@ type Location interface {
 	String() string
 }
 
-// A Register is a machine register, like AX.
-// They are numbered densely from 0 (for each architecture).
-type Register struct {
-	num    int32
-	objNum int16
-	name   string
-}
-
-func (r *Register) String() string
-
-// ObjNum returns the register number from cmd/internal/obj/$ARCH that
-// corresponds to this register.
-func (r *Register) ObjNum() int16
-
 // A LocalSlot is a location in the stack frame, which identifies and stores
 // part or all of a PPARAM, PPARAMOUT, or PAUTO ONAME node.
 // It can represent a whole variable, part of a larger stack slot, or part of a

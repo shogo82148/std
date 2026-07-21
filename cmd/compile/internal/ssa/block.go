@@ -5,6 +5,7 @@
 package ssa
 
 import (
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/block"
 	"github.com/shogo82148/std/cmd/internal/src"
 )
 
@@ -21,7 +22,7 @@ type Block struct {
 	CPUfeatures CPUfeatures
 
 	// The kind of block this is.
-	Kind BlockKind
+	Kind block.BlockKind
 
 	// Likely direction for branches.
 	// If BranchLikely, Succs[0] is the most likely branch taken.
@@ -112,9 +113,6 @@ func (e Edge) Index() int
 
 func (e Edge) String() string
 
-// BlockKind is the kind of SSA block.
-type BlockKind uint8
-
 // short form print
 func (b *Block) String() string
 
@@ -153,7 +151,7 @@ func (b *Block) CopyControls(from *Block)
 // Reset sets the block to the provided kind and clears all the blocks control
 // and auxiliary values. Other properties of the block, such as its successors,
 // predecessors and values are left unmodified.
-func (b *Block) Reset(kind BlockKind)
+func (b *Block) Reset(kind block.BlockKind)
 
 // AddEdgeTo adds an edge from block b to block c.
 func (b *Block) AddEdgeTo(c *Block)

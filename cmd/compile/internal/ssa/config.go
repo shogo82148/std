@@ -7,6 +7,7 @@ package ssa
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/abi"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssabase"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
@@ -25,7 +26,7 @@ type Config struct {
 	lateLowerBlock blockRewriter
 	lateLowerValue valueRewriter
 	splitLoad      valueRewriter
-	registers      []Register
+	registers      []ssabase.Register
 	gpRegMask      regMask
 	fpRegMask      regMask
 	fp32RegMask    regMask

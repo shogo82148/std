@@ -7,6 +7,8 @@ package ssa
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/abi"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/block"
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssabase"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
@@ -49,7 +51,7 @@ type Func struct {
 	RegAlloc []Location
 
 	// temporary registers allocated to rare instructions
-	tempRegs map[ID]*Register
+	tempRegs map[ID]*ssabase.Register
 
 	// map from LocalSlot to set of Values that we want to store in that slot.
 	NamedValues map[LocalSlot][]*Value
@@ -134,7 +136,7 @@ func (f *Func) SplitSlot(name *LocalSlot, sfx string, offset int64, t *types.Typ
 func (f *Func) LogStat(key string, args ...any)
 
 // NewBlock allocates a new Block of the given kind and places it at the end of f.Blocks.
-func (f *Func) NewBlock(kind BlockKind) *Block
+func (f *Func) NewBlock(kind block.BlockKind) *Block
 
 // NewValue0 returns a new value in the block with no arguments and zero aux values.
 func (b *Block) NewValue0(pos src.XPos, op Op, t *types.Type) *Value
