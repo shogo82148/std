@@ -226,7 +226,9 @@ See also: go install, go get, go clean.
 	`,
 }
 
-var BuildToolchain toolchain = noToolchain{}
+var (
+	BuildToolchain toolchain = noToolchain{}
+)
 
 type BuildFlagMask int
 

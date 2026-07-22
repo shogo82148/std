@@ -51,8 +51,6 @@ type Value struct {
 	//	- flagAddr: v.CanAddr is true (implies flagIndir and ptr is non-nil)
 	//	- flagMethod: v is a method value.
 	// If !typ.IsDirectIface(), code can assume that flagIndir is set.
-	//
-	// The remaining 22+ bits give a method number for method values.
 	// If flag.kind() != Func, code can assume that flagMethod is unset.
 	flag
 }

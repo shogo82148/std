@@ -217,6 +217,11 @@ type Loader struct {
 	// disabled
 	workFilePath string
 	fetcher      *modfetch.Fetcher
+
+	// PackageCache is a lookup cache for LoadImport,
+	// so that if we look up a package multiple times
+	// we return the same pointer each time.
+	packageCache map[string]any
 }
 
 func NewLoader() *Loader
@@ -224,6 +229,8 @@ func NewLoader() *Loader
 func NewDisabledState() *Loader
 
 func (ld *Loader) Fetcher() *modfetch.Fetcher
+
+func (ld *Loader) PackageCache() map[string]any
 
 // Init determines whether module mode is enabled, locates the root of the
 // current module (if any), sets environment variables for Git subprocesses, and
