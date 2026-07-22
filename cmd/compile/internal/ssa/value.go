@@ -157,3 +157,7 @@ func AutoVar(v *Value) (*ir.Name, int64)
 
 // CanSSA reports whether values of type t can be represented as a Value.
 func CanSSA(t *types.Type) bool
+
+// AddrSinkArg reports whether the idx'th argument is known
+// to not propagate to the output value.
+func (v *Value) AddrSinkArg(idx int) bool
