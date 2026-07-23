@@ -49,3 +49,5 @@ var GenssaDump map[string]bool = make(map[string]bool)
 //
 // BOOT_GO_GCFLAGS=-d='ssa/~^.*scc$/off' GO_GCFLAGS='-d=ssa/~^.*scc$/off' ./make.bash
 func PhaseOption(phase, flag string, val int, valString string) string
+
+func PostCompile()
