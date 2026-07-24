@@ -6,7 +6,7 @@
 
 package simd
 
-// VectorSize returns the bit length of the emulated vector (fixed to 128).
+// VectorBitSize returns the bit length of the emulated vector (fixed to 128).
 func VectorBitSize() int
 
 // Emulated returns whether simd is emulated.
@@ -1022,32 +1022,32 @@ func (x Uint64s) CarrylessMultiplyEven(y Uint64s) Uint64s
 // polynomial terms, but coefficients "add" with XOR.)
 func (x Uint64s) CarrylessMultiplyOdd(y Uint64s) Uint64s
 
-// BroadcastInt8 fills the elements of a slice with its argument value.
+// BroadcastInt8s fills the elements of a slice with its argument value.
 func BroadcastInt8s(x int8) Int8s
 
-// BroadcastInt16 fills the elements of a slice with its argument value.
+// BroadcastInt16s fills the elements of a slice with its argument value.
 func BroadcastInt16s(x int16) Int16s
 
-// BroadcastInt32 fills the elements of a slice with its argument value.
+// BroadcastInt32s fills the elements of a slice with its argument value.
 func BroadcastInt32s(x int32) Int32s
 
-// BroadcastInt64 fills the elements of a slice with its argument value.
+// BroadcastInt64s fills the elements of a slice with its argument value.
 func BroadcastInt64s(x int64) Int64s
 
-// BroadcastUint8 fills the elements of a slice with its argument value.
+// BroadcastUint8s fills the elements of a slice with its argument value.
 func BroadcastUint8s(x uint8) Uint8s
 
-// BroadcastUint16 fills the elements of a slice with its argument value.
+// BroadcastUint16s fills the elements of a slice with its argument value.
 func BroadcastUint16s(x uint16) Uint16s
 
-// BroadcastUint32 fills the elements of a slice with its argument value.
+// BroadcastUint32s fills the elements of a slice with its argument value.
 func BroadcastUint32s(x uint32) Uint32s
 
-// BroadcastUint64 fills the elements of a slice with its argument value.
+// BroadcastUint64s fills the elements of a slice with its argument value.
 func BroadcastUint64s(x uint64) Uint64s
 
-// BroadcastFloat32 fills the elements of a slice with its argument value.
+// BroadcastFloat32s fills the elements of a slice with its argument value.
 func BroadcastFloat32s(x float32) Float32s
 
-// BroadcastFloat64 fills the elements of a slice with its argument value.
+// BroadcastFloat64s fills the elements of a slice with its argument value.
 func BroadcastFloat64s(x float64) Float64s

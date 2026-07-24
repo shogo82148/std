@@ -592,7 +592,7 @@ type Server struct {
 	h2            *http2Server
 	h2Config      http2ExternalServerConfig
 	h2IdleTimeout time.Duration
-	h3            *http3ServerHandler
+	h3Server      http3Server
 
 	listenerGroup sync.WaitGroup
 }

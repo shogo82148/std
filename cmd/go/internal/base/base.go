@@ -91,7 +91,7 @@ func GetExitStatus() int
 // If the command fails, Run reports the error using Errorf.
 func Run(cmdargs ...any)
 
-// Run runs the command, with stdout and stderr
+// RunErr runs the command, with stdout and stderr
 // connected to the go command's own stdout and stderr.
 // If the command fails, RunErr returns the error, which
 // may be an *exec.ExitError.

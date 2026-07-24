@@ -31,14 +31,13 @@ var (
 	ExplicitWriteGoMod bool
 )
 
-// EnterModule resets MainModules and requirements to refer to just this one module.
-func EnterModule(ld *Loader, ctx context.Context, enterModroot string)
+// NewForModroot creates a new module loader in single-module mode for the module at
+// the given modroot..
+func NewForModroot(ctx context.Context, modroot string) *Loader
 
-// EnterWorkspace enters workspace mode from module mode, applying the updated requirements to the main
-// module to that module in the workspace. There should be no calls to any of the exported
-// functions of the modload package running concurrently with a call to EnterWorkspace as
-// EnterWorkspace will modify the global state they depend on in a non-thread-safe way.
-func EnterWorkspace(ld *Loader, ctx context.Context) (exit func(), err error)
+// NewForWorkspace creates a new loader for workspace mode from the given module mode loader ld,
+// applying ld's updated requirements to the main module to the corresponding module in the workspace.
+func (ld *Loader) NewForWorkspace(ctx context.Context) (*Loader, error)
 
 type MainModuleSet struct {
 	// versions are the module.Version values of each of the main modules.
