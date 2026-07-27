@@ -47,6 +47,11 @@ import (
 // pointer from the Func back to the OMETHVALUE.
 type Func struct {
 	miniNode
+
+	// NumPreWalkNodes is the number of IR nodes before Walk.
+	// It is used as an estimate of backend compilation cost.
+	NumPreWalkNodes int32
+
 	Body Nodes
 
 	Nname    *Name
