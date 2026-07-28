@@ -5,7 +5,7 @@
 // Package stringslite implements a subset of strings,
 // only using packages that may be imported by "os".
 //
-// Tests for these functions are in the strings package.
+// Most tests for these functions are in the strings package.
 package stringslite
 
 func HasPrefix(s, prefix string) bool
@@ -25,5 +25,9 @@ func CutSuffix(s, suffix string) (before string, found bool)
 func TrimPrefix(s, prefix string) string
 
 func TrimSuffix(s, suffix string) string
+
+// IsSpace reports whether r is a space character as defined by
+// Unicode's White Space property.
+func IsSpace(r rune) bool
 
 func Clone(s string) string

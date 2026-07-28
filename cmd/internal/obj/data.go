@@ -37,6 +37,10 @@ func (s *LSym) Grow(lsiz int64)
 // GrowCap increases the capacity of s.P to c.
 func (s *LSym) GrowCap(c int64)
 
+// MaxDataOffset is the exclusive upper bound on the starting offset of a
+// write into an LSym.
+const MaxDataOffset = 1 << 30
+
 // WriteFloat32 writes f into s at offset off.
 func (s *LSym) WriteFloat32(ctxt *Link, off int64, f float32)
 
