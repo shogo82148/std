@@ -165,6 +165,7 @@ type Decoder struct {
 	buf            bytes.Buffer
 	saved          *bytes.Buffer
 	stk            *stack
+	stkDepth       int
 	free           *stack
 	needClose      bool
 	toClose        Name
@@ -175,7 +176,7 @@ type Decoder struct {
 	line           int
 	linestart      int64
 	offset         int64
-	unmarshalDepth int
+	inUnmarshalXML bool
 }
 
 // NewDecoder creates a new XML parser reading from r.
