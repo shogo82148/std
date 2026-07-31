@@ -101,7 +101,7 @@ func (c *DiskCache) Put(id ActionID, file io.ReadSeeker) (OutputID, int64, error
 func (c *DiskCache) PutExecutable(id ActionID, name string, file io.ReadSeeker) (OutputID, int64, error)
 
 // PutNoVerify is like Put but disables the verify check
-// when GODEBUG=goverifycache=1 is set.
+// when GODEBUG=gocacheverify=1 is set.
 // It is meant for data that is OK to cache but that we expect to vary slightly from run to run,
 // like test output containing times and the like.
 func PutNoVerify(c Cache, id ActionID, file io.ReadSeeker) (OutputID, int64, error)
