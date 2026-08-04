@@ -6,9 +6,10 @@ package x509
 
 // ParsePKCS8PrivateKey parses an unencrypted private key in PKCS #8, ASN.1 DER form.
 //
-// It returns a *[rsa.PrivateKey], an *[ecdsa.PrivateKey], an [ed25519.PrivateKey] (not
-// a pointer), a *[mldsa.PrivateKey], or an *[ecdh.PrivateKey] (for X25519).
-// More types might be supported in the future.
+// It returns a *[rsa.PrivateKey], an *[ecdsa.PrivateKey], an [ed25519.PrivateKey]
+// (not a pointer), a *[mldsa.PrivateKey], an *[ecdh.PrivateKey] (for X25519), a
+// *[mlkem.DecapsulationKey768], or a *[mlkem.DecapsulationKey1024]. More types
+// might be supported in the future.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PRIVATE KEY".
 //
@@ -20,7 +21,8 @@ func ParsePKCS8PrivateKey(der []byte) (key any, err error)
 //
 // The following key types are currently supported: *[rsa.PrivateKey],
 // *[ecdsa.PrivateKey], [ed25519.PrivateKey] (not a pointer), *[mldsa.PrivateKey],
-// and *[ecdh.PrivateKey]. Unsupported key types result in an error.
+// *[ecdh.PrivateKey], *[mlkem.DecapsulationKey768], and
+// *[mlkem.DecapsulationKey1024]. Unsupported key types result in an error.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PRIVATE KEY".
 //

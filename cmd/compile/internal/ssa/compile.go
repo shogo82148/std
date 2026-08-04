@@ -14,7 +14,7 @@ import (
 //   - the order of f.Blocks is the order to emit the Blocks
 //   - the order of b.Values is the order to emit the Values in each Block
 //   - f has a non-nil regAlloc field
-func Compile(f *Func)
+func Compile(f *Func, htmlWriter *HTMLWriter)
 
 // DumpFileForPhase creates a file from the function name and phase name,
 // warning and returning nil if this is not possible.

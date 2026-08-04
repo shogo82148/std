@@ -299,6 +299,8 @@ const (
 	OpAMD64ADDLconst
 	OpAMD64ADDQconstmodify
 	OpAMD64ADDLconstmodify
+	OpAMD64ADDWconstmodify
+	OpAMD64ADDBconstmodify
 	OpAMD64SUBQ
 	OpAMD64SUBL
 	OpAMD64SUBQconst
@@ -340,18 +342,24 @@ const (
 	OpAMD64ANDLconst
 	OpAMD64ANDQconstmodify
 	OpAMD64ANDLconstmodify
+	OpAMD64ANDWconstmodify
+	OpAMD64ANDBconstmodify
 	OpAMD64ORQ
 	OpAMD64ORL
 	OpAMD64ORQconst
 	OpAMD64ORLconst
 	OpAMD64ORQconstmodify
 	OpAMD64ORLconstmodify
+	OpAMD64ORWconstmodify
+	OpAMD64ORBconstmodify
 	OpAMD64XORQ
 	OpAMD64XORL
 	OpAMD64XORQconst
 	OpAMD64XORLconst
 	OpAMD64XORQconstmodify
 	OpAMD64XORLconstmodify
+	OpAMD64XORWconstmodify
+	OpAMD64XORBconstmodify
 	OpAMD64CMPQ
 	OpAMD64CMPL
 	OpAMD64CMPW
@@ -521,15 +529,27 @@ const (
 	OpAMD64ADDLconstmodifyidx1
 	OpAMD64ADDLconstmodifyidx4
 	OpAMD64ADDLconstmodifyidx8
+	OpAMD64ADDWconstmodifyidx1
+	OpAMD64ADDWconstmodifyidx2
+	OpAMD64ADDBconstmodifyidx1
 	OpAMD64ANDLconstmodifyidx1
 	OpAMD64ANDLconstmodifyidx4
 	OpAMD64ANDLconstmodifyidx8
+	OpAMD64ANDWconstmodifyidx1
+	OpAMD64ANDWconstmodifyidx2
+	OpAMD64ANDBconstmodifyidx1
 	OpAMD64ORLconstmodifyidx1
 	OpAMD64ORLconstmodifyidx4
 	OpAMD64ORLconstmodifyidx8
+	OpAMD64ORWconstmodifyidx1
+	OpAMD64ORWconstmodifyidx2
+	OpAMD64ORBconstmodifyidx1
 	OpAMD64XORLconstmodifyidx1
 	OpAMD64XORLconstmodifyidx4
 	OpAMD64XORLconstmodifyidx8
+	OpAMD64XORWconstmodifyidx1
+	OpAMD64XORWconstmodifyidx2
+	OpAMD64XORBconstmodifyidx1
 	OpAMD64NEGQ
 	OpAMD64NEGL
 	OpAMD64NOTQ

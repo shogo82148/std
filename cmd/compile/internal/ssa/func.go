@@ -30,7 +30,7 @@ type Func struct {
 	bid idAlloc
 	vid idAlloc
 
-	HTMLWriter     *HTMLWriter
+	FatalCleanup   func()
 	PrintOrHtmlSSA bool
 	ruleMatches    map[string]int
 	ABI0           *abi.ABIConfig

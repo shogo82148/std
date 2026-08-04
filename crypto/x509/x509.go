@@ -36,8 +36,9 @@ import (
 // public key is a SubjectPublicKeyInfo structure (see RFC 5280, Section 4.1).
 //
 // It returns a *[rsa.PublicKey], *[dsa.PublicKey], *[ecdsa.PublicKey],
-// [ed25519.PublicKey] (not a pointer), *[mldsa.PublicKey], or *[ecdh.PublicKey]
-// (for X25519). More types might be supported in the future.
+// [ed25519.PublicKey] (not a pointer), *[mldsa.PublicKey], *[ecdh.PublicKey]
+// (for X25519), *[mlkem.EncapsulationKey768], or *[mlkem.EncapsulationKey1024].
+// More types might be supported in the future.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
 func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
@@ -48,7 +49,8 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error)
 //
 // The following key types are currently supported: *[rsa.PublicKey],
 // *[ecdsa.PublicKey], [ed25519.PublicKey] (not a pointer), *[mldsa.PublicKey],
-// and *[ecdh.PublicKey]. Unsupported key types result in an error.
+// *[ecdh.PublicKey], *[mlkem.EncapsulationKey768], and
+// *[mlkem.EncapsulationKey1024]. Unsupported key types result in an error.
 //
 // This kind of key is commonly encoded in PEM blocks of type "PUBLIC KEY".
 func MarshalPKIXPublicKey(pub any) ([]byte, error)
