@@ -46,7 +46,7 @@ var ErrNonStringName = errors.New("object member name must be a string")
 //
 // There is exactly one representation of a pointer to a particular value,
 // so comparability of Pointer values is equivalent to checking whether
-// they both point to the exact same value.
+// they both point to the same value.
 type Pointer string
 
 // IsValid reports whether p is a valid JSON Pointer according to RFC 6901.
@@ -58,16 +58,16 @@ func (p Pointer) IsValid() bool
 func (p Pointer) Contains(pc Pointer) bool
 
 // Parent strips off the last token and returns the remaining pointer.
-// The parent of an empty p is an empty string.
+// The parent of an empty Pointer is the empty string.
 func (p Pointer) Parent() Pointer
 
 // LastToken returns the last token in the pointer.
-// The last token of an empty p is an empty string.
+// The last token of an empty Pointer is the empty string.
 func (p Pointer) LastToken() string
 
 // AppendToken appends a token to the end of p and returns the full pointer.
 func (p Pointer) AppendToken(tok string) Pointer
 
 // Tokens returns an iterator over the reference tokens in the JSON pointer,
-// starting from the first token until the last token (unless stopped early).
+// from first to last.
 func (p Pointer) Tokens() iter.Seq[string]
