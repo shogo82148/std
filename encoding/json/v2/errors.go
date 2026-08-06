@@ -31,7 +31,7 @@ import (
 var ErrUnknownName = errors.New("unknown object member name")
 
 // SemanticError describes an error determining the meaning
-// of JSON data as Go data or vice-versa.
+// of JSON data as Go data, or vice versa.
 //
 // If a [Marshaler], [MarshalerTo], [Unmarshaler], or [UnmarshalerFrom] method
 // returns a SemanticError when called by the [json] package,
