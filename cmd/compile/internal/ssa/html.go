@@ -33,7 +33,7 @@ func (w *HTMLWriter) Close()
 // phase is used for collapsing columns and should be unique across the table.
 func (w *HTMLWriter) WritePhase(phase, title string)
 
-// FatalCleanup should be called to do cleanup if the complation is exiting early due to
+// FatalCleanup should be called to do cleanup if the compilation is exiting early due to
 // a fatal error.
 func (w *HTMLWriter) FatalCleanup()
 

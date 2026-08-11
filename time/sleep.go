@@ -13,8 +13,8 @@ func Sleep(d Duration)
 // unless the Timer was created by [AfterFunc].
 // A Timer must be created with [NewTimer] or AfterFunc.
 type Timer struct {
-	C         <-chan Time
-	initTimer bool
+	C    <-chan Time
+	self *Timer
 }
 
 // Stop prevents the [Timer] from firing.

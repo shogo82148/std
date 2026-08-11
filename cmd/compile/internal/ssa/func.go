@@ -224,6 +224,8 @@ func (f *Func) Log() bool
 
 func (f *Func) Fatalf(msg string, args ...any)
 
+func (f *Func) FatalfWithPos(pos src.XPos, msg string, args ...any)
+
 func (f *Func) Postorder() []*Block
 
 // Idom returns a map from block ID to the immediate dominator of that block.
