@@ -163,6 +163,16 @@ func (m IPMask) Size() (ones, bits int)
 // String returns the hexadecimal form of m, with no punctuation.
 func (m IPMask) String() string
 
+// MarshalText implements the [encoding.TextMarshaler] interface.
+// We marshal an IPMask as though it were an IP address.
+func (m IPMask) MarshalText() ([]byte, error)
+
+// UnmarshalText implements the [encoding.TextUnmarshaler] interface.
+// In older Go versions the JSON encoding of IPMask was
+// that of a []byte. In order to support new Go programs reading JSON
+// encodings produced by old Go programs, we support the []byte encoding.
+func (m *IPMask) UnmarshalText(text []byte) error
+
 // Contains reports whether the network includes ip.
 func (n *IPNet) Contains(ip IP) bool
 

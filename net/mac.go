@@ -23,3 +23,14 @@ func (a HardwareAddr) String() string
 //	0000.0000.fe80.0000.0000.0000.0200.5e10.0000.0001
 //	00005e005301
 func ParseMAC(s string) (hw HardwareAddr, err error)
+
+// MarshalText implements the [encoding.TextMarshaler] interface.
+// The encoding is the same as the one returned by [HardwareAddr.String].
+// This will be enabled in a future Go release; see issue #29678.
+func (a HardwareAddr) MarshalText() ([]byte, error)
+
+// UnmarshalText implements the [encoding.TextUnmarshaler] interface.
+// In older Go versions the JSON encoding of HardwareAddr was
+// that of a []byte. In order to support new Go programs reading JSON
+// encodings produced by old Go programs, we support the []byte encoding.
+func (a *HardwareAddr) UnmarshalText(text []byte) error

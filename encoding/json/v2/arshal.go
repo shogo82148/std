@@ -120,7 +120,6 @@ var (
 //     have no default representation and result in a [SemanticError].
 //
 // JSON cannot represent cyclic data structures and Marshal does not handle them.
-// Passing cyclic structures will result in an error.
 func Marshal(in any, opts ...Options) (out []byte, err error)
 
 // MarshalWrite serializes a Go value into an [io.Writer] according to the provided

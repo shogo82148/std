@@ -196,6 +196,8 @@ type Type struct {
 	flags bitset16
 	alg   AlgKind
 
+	tflag uint8
+
 	// size of prefix of object that contains all pointers. valid if Align > 0.
 	// Note that for pointers, this is always PtrSize even if the element type
 	// is NotInHeap. See size.go:PtrDataSize for details.
@@ -219,12 +221,14 @@ func (t *Type) Recur() bool
 func (t *Type) IsShape() bool
 func (t *Type) HasShape() bool
 func (t *Type) IsFullyInstantiated() bool
+func (t *Type) MethodsComputed() bool
 
 func (t *Type) SetNotInHeap(b bool)
 func (t *Type) SetNoalg(b bool)
 func (t *Type) SetDeferwidth(b bool)
 func (t *Type) SetRecur(b bool)
 func (t *Type) SetIsFullyInstantiated(b bool)
+func (t *Type) SetMethodsComputed(b bool)
 
 // Should always do SetHasShape(true) when doing SetIsShape(true).
 func (t *Type) SetIsShape(b bool)
