@@ -15,3 +15,5 @@ var ARM64 ARM64Features
 // PMULL is defined on all GOARCHes, but will only return true on
 // GOARCH arm64.
 func (ARM64Features) PMULL() bool
+
+func (ARM64Features) SVE() bool
