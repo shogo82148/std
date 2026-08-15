@@ -69,6 +69,7 @@ type ServerRequestParam struct {
 // ServerRequestResult is the result of NewServerRequest.
 type ServerRequestResult struct {
 	// Various http.Request fields.
+	Host       string
 	URL        *url.URL
 	RequestURI string
 	Trailer    map[string][]string
