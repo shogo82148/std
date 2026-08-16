@@ -9,6 +9,8 @@
 // primitive data types such as booleans, strings, and numbers,
 // in addition to structured data types such as objects and arrays.
 //
+// See the [Working with JSON] tutorial for an introduction to this package.
+//
 // [Marshal] and [Unmarshal] encode and decode Go values
 // to/from JSON text contained within a []byte.
 // [MarshalWrite] and [UnmarshalRead] operate on JSON text
@@ -85,11 +87,11 @@
 //     and to be decoded from a JSON string containing the JSON number
 //     without any surrounding whitespace.
 //     The "string" option only applies to the top-level of the Go struct field
-//     value. Applying this option to any type that does not encode as a JSON
-//     number causes a runtime error. Specifically, for the default
-//     representation of composite Go data types (e.g., array, slice, struct,
-//     or map), it will cause a runtime error rather than affecting JSON
-//     numbers within such types.
+//     value. It is an error to apply this option to any type that does not
+//     encode as a JSON number.
+//     Note that composite types such as arrays, slices, structs, and maps do
+//     not encode as a JSON number, so applying this option will cause an error
+//     rather than affecting JSON numbers within such types.
 //     This extra level of encoding is often necessary since many JSON parsers
 //     cannot precisely represent 64-bit integers.
 //
@@ -239,5 +241,6 @@
 // The v2 API generally chooses more secure defaults than v1,
 // but care should still be taken with large integers or unknown members.
 //
+// [Working with JSON]: https://go.dev/doc/tutorial/json
 // [For example, suppose we have two micro-services.]: https://www.youtube.com/watch?v=avilmOcHKHE&t=1057s
 package json
