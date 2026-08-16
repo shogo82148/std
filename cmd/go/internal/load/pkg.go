@@ -297,7 +297,6 @@ type TargetDir int
 const (
 	ToTool TargetDir = iota
 	ToBin
-	StalePath
 )
 
 // InstallTargetDir reports the target directory for installing the command p.

@@ -8,4 +8,5 @@ func Map[T, U any](f func(T) U, in []T) []U
 
 const SIMD = "../../"
 const TD = "../../internal/simd_test/"
-const SSA = "../../../../cmd/compile/internal/ssa/"
+
+var SSA = "../../../../cmd/compile/internal/ssa/"

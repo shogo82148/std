@@ -20,17 +20,6 @@ func Compile(f *Func, htmlWriter *HTMLWriter)
 // warning and returning nil if this is not possible.
 func (f *Func) DumpFileForPhase(phaseName string) io.WriteCloser
 
-// Debug output
-var IntrinsicsDebug int
-var IntrinsicsDisable bool
-
-var BuildDebug int
-var BuildTest int
-var BuildStats int
-var BuildDump map[string]bool = make(map[string]bool)
-
-var GenssaDump map[string]bool = make(map[string]bool)
-
 // PhaseOption sets the specified flag in the specified ssa phase,
 // returning empty string if this was successful or a string explaining
 // the error if it was not.
