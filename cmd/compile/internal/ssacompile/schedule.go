@@ -1,0 +1,38 @@
+// Copyright 2015 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package ssacompile
+
+import (
+	"github.com/shogo82148/std/cmd/compile/internal/ssa"
+)
+
+const (
+	ScorePhi = iota
+	ScoreArg
+	ScoreInitMem
+	ScoreReadTuple
+	ScoreNilCheck
+	ScoreMemory
+	ScoreReadFlags
+	ScoreDefault
+	ScoreFlags
+	ScoreInductionInc
+	ScoreControl
+)
+
+type ValHeap struct {
+	a           []*ssa.Value
+	score       []int8
+	inBlockUses []bool
+}
+
+func (h ValHeap) Len() int
+func (h ValHeap) Swap(i, j int)
+
+func (h *ValHeap) Push(x any)
+
+func (h *ValHeap) Pop() any
+
+func (h ValHeap) Less(i, j int) bool

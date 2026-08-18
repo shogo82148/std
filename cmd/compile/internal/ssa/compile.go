@@ -8,35 +8,45 @@ import (
 	"github.com/shogo82148/std/io"
 )
 
-// Compile is the main entry point for this package.
-// Compile modifies f so that on return:
-//   - all Values in f map to 0 or 1 assembly instructions of the target architecture
-//   - the order of f.Blocks is the order to emit the Blocks
-//   - the order of b.Values is the order to emit the Values in each Block
-//   - f has a non-nil regAlloc field
-func Compile(f *Func, htmlWriter *HTMLWriter)
+type Compiler interface {
+	Compile(f *Func, htmlWriter HTMLWriter)
+	Passes() []Pass
+}
+
+type HTMLWriter interface {
+	Enabled() bool
+	FlushPhases()
+	WritePhase(phase, title string)
+	WriteColumn(phase, title, class, html string)
+	Close()
+}
+
+type Pass struct {
+	Name     string
+	Fn       func(*Func)
+	Required bool
+	Disabled bool
+	Time     bool
+	Mem      bool
+	Stats    int
+	Debug    int
+	Test     int
+	Dump     map[string]bool
+	Keywords map[string]int64
+	UsedKW   map[string]bool
+}
 
 // DumpFileForPhase creates a file from the function name and phase name,
 // warning and returning nil if this is not possible.
 func (f *Func) DumpFileForPhase(phaseName string) io.WriteCloser
 
-// PhaseOption sets the specified flag in the specified ssa phase,
-// returning empty string if this was successful or a string explaining
-// the error if it was not.
-// A version of the phase name with "_" replaced by " " is also checked for a match.
-// If the phase name begins a '~' then the rest of the underscores-replaced-with-blanks
-// version is used as a regular expression to match the phase name(s).
-//
-// Special cases that have turned out to be useful:
-//   - ssa/check/on enables checking after each phase
-//   - ssa/all/time enables time reporting for all phases
-//
-// See gc/lex.go for dissection of the option string.
-// Example uses:
-//
-// GO_GCFLAGS=-d=ssa/generic_cse/time,ssa/generic_cse/stats,ssa/generic_cse/debug=3 ./make.bash
-//
-// BOOT_GO_GCFLAGS=-d='ssa/~^.*scc$/off' GO_GCFLAGS='-d=ssa/~^.*scc$/off' ./make.bash
-func PhaseOption(phase, flag string, val int, valString string) string
+// DumpFile creates a file from the phase name and function name
+// Dumping is done to files to avoid buffering huge strings before
+// output.
+func (f *Func) DumpFile(phaseName string)
 
-func PostCompile()
+func (p *Pass) AddDump(s string)
+
+func (p *Pass) String() string
+
+func (p *Pass) Val(kw string, ifUnset int64) int64

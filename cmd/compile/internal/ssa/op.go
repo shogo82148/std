@@ -7,33 +7,104 @@ package ssa
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/abi"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssaop"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 )
 
-// An Op encodes the specific operation that a Value performs.
-// Opcodes' semantics can be modified by the type and aux fields of the Value.
-// For instance, OpAdd can be 32 or 64 bit, signed or unsigned, float or complex, depending on Value.Type.
-// Semantics of each op are described in the opcode files in _gen/*Ops.go.
-// There is one file for generic (architecture-independent) ops and one file
-// for each architecture.
-type Op int32
+// For ABI register index r, returns the (dense) register number used in
+// SSA backend.
+func ArchRegForAbiReg(r abi.RegIndex, c *Config) uint8
+
+// Arm64BitField is the GO type of ARM64BitField auxInt.
+// if x is an ARM64BitField, then width=x&0xff, lsb=(x>>8)&0xff, and
+// width+lsb<64 for 64-bit variant, width+lsb<32 for 32-bit variant.
+// the meaning of width and lsb are instruction-dependent.
+type Arm64BitField int16
+
+// Arm64ConditionalParams is the GO type of ARM64ConditionalParams auxInt.
+type Arm64ConditionalParams struct {
+	Cond     ssaop.Op
+	NzcvVal  uint8
+	ConstVal uint8
+	Ind      bool
+}
+
+type AuxCall struct {
+	Fn       *obj.LSym
+	RegCache *ssaop.RegInfo
+	AbiInfo  *abi.ABIParamResultInfo
+}
 
 type AuxNameOffset struct {
 	Name   *ir.Name
 	Offset int64
 }
 
+func MakeValAndOff(val, off int32) ValAndOff
+
+// A ValAndOff is used by the several opcodes. It holds
+// both a value and a pointer offset.
+// A ValAndOff is intended to be encoded into an AuxInt field.
+// The zero ValAndOff encodes a value of 0 and an offset of 0.
+// The high 32 bits hold a value.
+// The low 32 bits hold a pointer offset.
+type ValAndOff int64
+
+type BoundsKind uint8
+
+const (
+	BoundsIndex BoundsKind = iota
+	BoundsIndexU
+	BoundsSliceAlen
+	BoundsSliceAlenU
+	BoundsSliceAcap
+	BoundsSliceAcapU
+	BoundsSliceB
+	BoundsSliceBU
+	BoundsSlice3Alen
+	BoundsSlice3AlenU
+	BoundsSlice3Acap
+	BoundsSlice3AcapU
+	BoundsSlice3B
+	BoundsSlice3BU
+	BoundsSlice3C
+	BoundsSlice3CU
+	BoundsConvert
+	BoundsKindCount
+)
+
+// For ABI register index r, returns the register number used in the obj
+// package (assembler).
+func ObjRegForAbiReg(r abi.RegIndex, c *Config) int16
+
+// StaticAuxCall returns an AuxCall for a static call.
+func StaticAuxCall(sym *obj.LSym, paramResultInfo *abi.ABIParamResultInfo) *AuxCall
+
+// InterfaceAuxCall returns an AuxCall for an interface call.
+func InterfaceAuxCall(paramResultInfo *abi.ABIParamResultInfo) *AuxCall
+
+// ClosureAuxCall returns an AuxCall for a closure call.
+func ClosureAuxCall(paramResultInfo *abi.ABIParamResultInfo) *AuxCall
+
+// OwnAuxCall returns a function's own AuxCall.
+func OwnAuxCall(fn *obj.LSym, paramResultInfo *abi.ABIParamResultInfo) *AuxCall
+
+// A Sym represents a symbolic offset from a base register.
+// Currently a Sym can be one of 3 things:
+//   - a *ir.Name, for an offset from SP (the stack pointer)
+//   - a *obj.LSym, for an offset from SB (the global pointer)
+//   - nil, for no offset
+type Sym interface {
+	Aux
+	CanBeAnSSASym()
+}
+
 func (a *AuxNameOffset) CanBeAnSSAAux()
+
 func (a *AuxNameOffset) String() string
 
 func (a *AuxNameOffset) FrameOffset() int64
-
-type AuxCall struct {
-	Fn      *obj.LSym
-	reg     *regInfo
-	abiInfo *abi.ABIParamResultInfo
-}
 
 // Reg returns the regInfo for a given call, combining the derived in/out register masks
 // with the machine-specific register information in the input i.  (The machine-specific
@@ -45,17 +116,13 @@ type AuxCall struct {
 // and outputs from calls, so that all integer registers come first, then all floating registers.
 // At this point (active development of register ABI) that is very premature,
 // but if this turns out to be a cost, we could do it.
-func (a *AuxCall) Reg(i *regInfo, c *Config) *regInfo
+func (a *AuxCall) Reg(i *ssaop.RegInfo, c *Config) *ssaop.RegInfo
 
 func (a *AuxCall) ABI() *abi.ABIConfig
 
 func (a *AuxCall) ABIInfo() *abi.ABIParamResultInfo
 
-func (a *AuxCall) ResultReg(c *Config) *regInfo
-
-// For ABI register index r, returns the register number used in the obj
-// package (assembler).
-func ObjRegForAbiReg(r abi.RegIndex, c *Config) int16
+func (a *AuxCall) ResultReg(c *Config) *ssaop.RegInfo
 
 // ArgWidth returns the amount of stack needed for all the inputs
 // and outputs of a function or method, including ABI-defined parameter
@@ -112,84 +179,29 @@ func (a *AuxCall) NArgs() int64
 // String returns "AuxCall{<fn>}"
 func (a *AuxCall) String() string
 
-// StaticAuxCall returns an AuxCall for a static call.
-func StaticAuxCall(sym *obj.LSym, paramResultInfo *abi.ABIParamResultInfo) *AuxCall
-
-// InterfaceAuxCall returns an AuxCall for an interface call.
-func InterfaceAuxCall(paramResultInfo *abi.ABIParamResultInfo) *AuxCall
-
-// ClosureAuxCall returns an AuxCall for a closure call.
-func ClosureAuxCall(paramResultInfo *abi.ABIParamResultInfo) *AuxCall
-
 func (*AuxCall) CanBeAnSSAAux()
 
-// OwnAuxCall returns a function's own AuxCall.
-func OwnAuxCall(fn *obj.LSym, paramResultInfo *abi.ABIParamResultInfo) *AuxCall
-
-// A SymEffect describes the effect that an SSA Value has on the variable
-// identified by the symbol in its Aux field.
-type SymEffect int8
-
-const (
-	SymRead SymEffect = 1 << iota
-	SymWrite
-	SymAddr
-
-	SymRdWr = SymRead | SymWrite
-
-	SymNone SymEffect = 0
-)
-
-// A Sym represents a symbolic offset from a base register.
-// Currently a Sym can be one of 3 things:
-//   - a *ir.Name, for an offset from SP (the stack pointer)
-//   - a *obj.LSym, for an offset from SB (the global pointer)
-//   - nil, for no offset
-type Sym interface {
-	Aux
-	CanBeAnSSASym()
-}
-
-// A ValAndOff is used by the several opcodes. It holds
-// both a value and a pointer offset.
-// A ValAndOff is intended to be encoded into an AuxInt field.
-// The zero ValAndOff encodes a value of 0 and an offset of 0.
-// The high 32 bits hold a value.
-// The low 32 bits hold a pointer offset.
-type ValAndOff int64
-
 func (x ValAndOff) Val() int32
+
 func (x ValAndOff) Val64() int64
+
 func (x ValAndOff) Val16() int16
+
 func (x ValAndOff) Val8() int8
 
 func (x ValAndOff) Off64() int64
+
 func (x ValAndOff) Off() int32
 
 func (x ValAndOff) String() string
 
-type BoundsKind uint8
+func (x ValAndOff) CanAdd32(off int32) bool
 
-const (
-	BoundsIndex BoundsKind = iota
-	BoundsIndexU
-	BoundsSliceAlen
-	BoundsSliceAlenU
-	BoundsSliceAcap
-	BoundsSliceAcapU
-	BoundsSliceB
-	BoundsSliceBU
-	BoundsSlice3Alen
-	BoundsSlice3AlenU
-	BoundsSlice3Acap
-	BoundsSlice3AcapU
-	BoundsSlice3B
-	BoundsSlice3BU
-	BoundsSlice3C
-	BoundsSlice3CU
-	BoundsConvert
-	BoundsKindCount
-)
+func (x ValAndOff) CanAdd64(off int64) bool
+
+func (x ValAndOff) AddOffset32(off int32) ValAndOff
+
+func (x ValAndOff) AddOffset64(off int64) ValAndOff
 
 // Returns the bounds error code needed by the runtime, and
 // whether the x field is signed.

@@ -4,27 +4,32 @@
 
 package ssa
 
+// NewSparseTree creates a SparseTree from a block-to-parent map (array indexed by Block.ID).
+// The children of a given node are in reverse postorder.
+// This has the nice property that for a given tree walk, the source block of all
+// non-retreating edges are visited before their destination block.
+func NewSparseTree(f *Func, parentOf []*Block) SparseTree
+
+// A SparseTree is a tree of Blocks.
+// It allows rapid ancestor queries,
+// such as whether one block dominates another.
+type SparseTree []SparseTreeNode
+
 type SparseTreeNode struct {
-	child   *Block
-	sibling *Block
+	Child   *Block
+	Sibling *Block
 	parent  *Block
 
 	// Every block has 6 numbers associated with it:
-	// entry-1, entry, entry+1, exit-1, and exit, exit+1.
-	// entry and exit are conceptually the top of the block (phi functions)
-	// entry+1 and exit-1 are conceptually the bottom of the block (ordinary defs)
-	// entry-1 and exit+1 are conceptually "just before" the block (conditions flowing in)
+	// Entry-1, Entry, Entry+1, Exit-1, and Exit, Exit+1.
+	// Entry and Exit are conceptually the top of the block (phi functions)
+	// Entry+1 and Exit-1 are conceptually the bottom of the block (ordinary defs)
+	// Entry-1 and Exit+1 are conceptually "just before" the block (conditions flowing in)
 	//
 	// This simplifies life if we wish to query information about x
 	// when x is both an input to and output of a block.
-	entry, exit int32
+	Entry, Exit int32
 }
-
-func (s *SparseTreeNode) String() string
-
-func (s *SparseTreeNode) Entry() int32
-
-func (s *SparseTreeNode) Exit() int32
 
 const (
 	// When used to lookup up definitions in a sparse tree,
@@ -39,10 +44,14 @@ const (
 	AdjustAfter  = 1
 )
 
-// A SparseTree is a tree of Blocks.
-// It allows rapid ancestor queries,
-// such as whether one block dominates another.
-type SparseTree []SparseTreeNode
+func (s *SparseTreeNode) String() string
+
+// Treestructure provides a string description of the dominator
+// tree and flow structure of block b and all blocks that it
+// dominates.
+func (t SparseTree) Treestructure(b *Block) string
+
+func (t SparseTree) NumberBlock(b *Block, n int32) int32
 
 // Sibling returns a sibling of x in the dominator tree (i.e.,
 // a node with the same immediate dominator) or nil if there
@@ -64,3 +73,17 @@ func (t SparseTree) Parent(x *Block) *Block
 
 // IsAncestorEq reports whether x is an ancestor of or equal to y.
 func (t SparseTree) IsAncestorEq(x, y *Block) bool
+
+// IsAncestor reports whether x is a strict ancestor of y.
+func (t SparseTree) IsAncestor(x, y *Block) bool
+
+// DomOrder returns a value for dominator-oriented sorting.
+// Block domination does not provide a total ordering,
+// but DomOrder two has useful properties.
+//  1. If DomOrder(x) > DomOrder(y) then x does not dominate y.
+//  2. If DomOrder(x) < DomOrder(y) and DomOrder(y) < DomOrder(z) and x does not dominate y,
+//     then x does not dominate z.
+//
+// Property (1) means that blocks sorted by DomOrder always have a maximal dominant block first.
+// Property (2) allows searches for dominated blocks to exit early.
+func (t SparseTree) DomOrder(x *Block) int32

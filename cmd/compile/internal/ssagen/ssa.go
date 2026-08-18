@@ -18,7 +18,7 @@ func DumpInline(fn *ir.Func)
 
 func InitEnv()
 
-func InitConfig()
+func InitConfig(config *ssa.Config)
 
 func InitTables()
 

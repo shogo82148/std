@@ -4,31 +4,8 @@
 
 package ssa
 
-const (
-	ScorePhi       = iota
-	ScoreArg
-	ScoreInitMem
-	ScoreReadTuple
-	ScoreNilCheck
-	ScoreMemory
-	ScoreReadFlags
-	ScoreDefault
-	ScoreFlags
-	ScoreInductionInc
-	ScoreControl
-)
+// IsFlagOp reports if v is an OP with the flag type.
+func (v *Value) IsFlagOp() bool
 
-type ValHeap struct {
-	a           []*Value
-	score       []int8
-	inBlockUses []bool
-}
-
-func (h ValHeap) Len() int
-func (h ValHeap) Swap(i, j int)
-
-func (h *ValHeap) Push(x any)
-
-func (h *ValHeap) Pop() any
-
-func (h ValHeap) Less(i, j int) bool
+// HasFlagInput reports whether v has a flag value as any of its inputs.
+func (v *Value) HasFlagInput() bool

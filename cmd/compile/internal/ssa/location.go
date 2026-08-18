@@ -9,10 +9,7 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 )
 
-// A place that an ssa variable can reside.
-type Location interface {
-	String() string
-}
+type LocPair [2]Location
 
 // A LocalSlot is a location in the stack frame, which identifies and stores
 // part or all of a PPARAM, PPARAMOUT, or PAUTO ONAME node.
@@ -42,18 +39,21 @@ type LocalSlot struct {
 	SplitOffset int64
 }
 
-func (s LocalSlot) String() string
-
-type LocPair [2]Location
-
-func (t LocPair) String() string
-
-type LocResults []Location
-
-func (t LocResults) String() string
+// A place that an ssa variable can reside.
+type Location interface {
+	String() string
+}
 
 type Spill struct {
 	Type   *types.Type
 	Offset int64
 	Reg    int16
 }
+
+type LocResults []Location
+
+func (s LocalSlot) String() string
+
+func (t LocPair) String() string
+
+func (t LocResults) String() string

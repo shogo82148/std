@@ -7,48 +7,10 @@ package ssa
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/abt"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssabase"
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssaop"
 	"github.com/shogo82148/std/cmd/internal/obj"
 )
-
-type SlotID int32
-type VarID int32
-
-// A FuncDebug contains all the debug information for the variables in a
-// function. Variables are identified by their LocalSlot, which may be
-// the result of decomposing a larger variable.
-type FuncDebug struct {
-	// Slots is all the slots used in the debug info, indexed by their SlotID.
-	Slots []LocalSlot
-	// The user variables, indexed by VarID.
-	Vars []*ir.Name
-	// The slots that make up each variable, indexed by VarID.
-	VarSlots [][]SlotID
-	// The location list data, indexed by VarID. Must be processed by PutLocationList.
-	LocationLists [][]LocListEntry
-	// Register-resident output parameters for the function. This is filled in at
-	// SSA generation time.
-	RegOutputParams []*ir.Name
-	// Variable declarations that were removed during optimization
-	OptDcl []*ir.Name
-	// The ssa.Func.EntryID value, used to build location lists for
-	// return values promoted to heap in later DWARF generation.
-	EntryID ID
-
-	// Filled in by the user. Translates Block and Value ID to PC.
-	//
-	// NOTE: block is only used if value is BlockStart.ID or BlockEnd.ID.
-	// Otherwise, it is ignored.
-	GetPC func(block, value ID) int64
-}
-
-// LocListEntry represents a single entry in a location list.
-// StartBlock/StartValue and EndBlock/EndValue are SSA coordinates
-// that get resolved to PCs during final encoding.
-type LocListEntry struct {
-	StartBlock, StartValue ID
-	EndBlock, EndValue     ID
-	Expr                   []byte
-}
 
 type BlockDebug struct {
 	// State at the start and end of the block. These are initialized,
@@ -66,10 +28,91 @@ type BlockDebug struct {
 	everProcessed bool
 }
 
+var BlockEnd = &Value{
+	ID:  -20000,
+	Op:  ssaop.OpInvalid,
+	Aux: StringToAux("BlockEnd"),
+}
+
+var BlockStart = &Value{
+	ID:  -10000,
+	Op:  ssaop.OpInvalid,
+	Aux: StringToAux("BlockStart"),
+}
+
+type DebugState struct {
+	// See FuncDebug.
+	Slots    []LocalSlot
+	Vars     []*ir.Name
+	VarSlots [][]SlotID
+	Lists    [][]LocListEntry
+
+	// The user variable that each slot rolls up to, indexed by SlotID.
+	SlotVars []VarID
+
+	F             *Func
+	LoggingLevel  int
+	ConvergeCount int
+	Registers     []ssabase.Register
+	StackOffset   func(LocalSlot) int32
+	Ctxt          *obj.Link
+
+	// The names (slots) associated with each value, indexed by Value ID.
+	ValueNames [][]SlotID
+
+	// The current state of whatever analysis is running.
+	currentState StateAtPC
+	changedVars  *SparseSet
+	changedSlots *SparseSet
+
+	// The pending location list entry for each user variable, indexed by VarID.
+	pendingEntries []pendingEntry
+
+	VarParts        map[*ir.Name][]SlotID
+	blockDebug      []BlockDebug
+	pendingSlotLocs []VarLoc
+}
+
+var FuncEnd = &Value{
+	ID:  -30000,
+	Op:  ssaop.OpInvalid,
+	Aux: StringToAux("FuncEnd"),
+}
+
+// IsVarWantedForDebug returns true if the debug info for the node should
+// be generated.
+// For example, internal variables for range-over-func loops have little
+// value to users, so we don't generate debug info for them.
+func IsVarWantedForDebug(n ir.Node) bool
+
+// LocListEntry represents a single entry in a location list.
+// StartBlock/StartValue and EndBlock/EndValue are SSA coordinates
+// that get resolved to PCs during final encoding.
+type LocListEntry struct {
+	StartBlock, StartValue ID
+	EndBlock, EndValue     ID
+	Expr                   []byte
+}
+
+// RegisterSet is a bitmap of registers, indexed by Register.num.
+type RegisterSet uint64
+
+type SlotID int32
+
 // StackOffset encodes whether a value is on the stack and if so, where.
 // It is a 31-bit integer followed by a presence flag at the low-order
 // bit.
 type StackOffset int32
+
+// StateAtPC is the current state of all variables at some point.
+type StateAtPC struct {
+	// The location of each known slot, indexed by SlotID.
+	slots []VarLoc
+	// The slots present in each register, indexed by register number.
+	registers [][]SlotID
+}
+
+type VarID int32
 
 // A VarLoc describes the storage for part of a user variable.
 type VarLoc struct {
@@ -80,94 +123,22 @@ type VarLoc struct {
 	StackOffset
 }
 
-var BlockStart = &Value{
-	ID:  -10000,
-	Op:  OpInvalid,
-	Aux: StringToAux("BlockStart"),
-}
+func (s *DebugState) LocString(loc VarLoc) string
 
-var BlockEnd = &Value{
-	ID:  -20000,
-	Op:  OpInvalid,
-	Aux: StringToAux("BlockEnd"),
-}
+// Logf prints debug-specific logging to stdout (always stdout) if the
+// current function is tagged by GOSSAFUNC (for ssa output directed
+// either to stdout or html).
+func (s *DebugState) Logf(msg string, args ...any)
 
-var FuncEnd = &Value{
-	ID:  -30000,
-	Op:  OpInvalid,
-	Aux: StringToAux("FuncEnd"),
-}
+func (state *DebugState) InitializeCache(f *Func, numVars, numSlots int)
 
-// RegisterSet is a bitmap of registers, indexed by Register.num.
-type RegisterSet uint64
+// Liveness walks the function in control flow order, calculating the start
+// and end state of each block.
+func (state *DebugState) Liveness() []*BlockDebug
 
-type SlKeyIdx uint32
-
-// PopulateABIInRegArgOps examines the entry block of the function
-// and looks for incoming parameters that have missing or partial
-// OpArg{Int,Float}Reg values, inserting additional values in
-// cases where they are missing. Example:
-//
-//	func foo(s string, used int, notused int) int {
-//	  return len(s) + used
-//	}
-//
-// In the function above, the incoming parameter "used" is fully live,
-// "notused" is not live, and "s" is partially live (only the length
-// field of the string is used). At the point where debug value
-// analysis runs, we might expect to see an entry block with:
-//
-//	b1:
-//	  v4 = ArgIntReg <uintptr> {s+8} [0] : BX
-//	  v5 = ArgIntReg <int> {used} [0] : CX
-//
-// While this is an accurate picture of the live incoming params,
-// we also want to have debug locations for non-live params (or
-// their non-live pieces), e.g. something like
-//
-//	b1:
-//	  v9 = ArgIntReg <*uint8> {s+0} [0] : AX
-//	  v4 = ArgIntReg <uintptr> {s+8} [0] : BX
-//	  v5 = ArgIntReg <int> {used} [0] : CX
-//	  v10 = ArgIntReg <int> {unused} [0] : DI
-//
-// This function examines the live OpArg{Int,Float}Reg values and
-// synthesizes new (dead) values for the non-live params or the
-// non-live pieces of partially live params.
-func PopulateABIInRegArgOps(f *Func)
-
-// BuildFuncDebug builds debug information for f, placing the results
-// in "rval". f must be fully processed, so that each Value is where it
-// will be when machine code is emitted.
-func BuildFuncDebug(ctxt *obj.Link, f *Func, loggingLevel int, stackOffset func(LocalSlot) int32, rval *FuncDebug)
-
-// PutLocationList adds entries (a location list in structured form)
-// to listSym, encoding it in the appropriate DWARF format.
-func (debugInfo *FuncDebug) PutLocationList(entries []LocListEntry, ctxt *obj.Link, listSym, startPC *obj.LSym)
-
-// PutLocationListDwarf5 adds entries (a location list in structured form)
-// to listSym in DWARF 5 format.
-func (debugInfo *FuncDebug) PutLocationListDwarf5(entries []LocListEntry, ctxt *obj.Link, listSym, startPC *obj.LSym)
-
-// PutLocationListDwarf4 adds entries (a location list in structured form)
-// to listSym in DWARF 4 format.
-func (debugInfo *FuncDebug) PutLocationListDwarf4(entries []LocListEntry, ctxt *obj.Link, listSym, startPC *obj.LSym)
-
-// BuildFuncDebugNoOptimized populates a FuncDebug object "rval" with
-// entries corresponding to the register-resident input parameters for
-// the function "f"; it is used when we are compiling without
-// optimization but the register ABI is enabled. For each reg param,
-// it constructs a 2-element location list: the first element holds
-// the input register, and the second element holds the stack location
-// of the param (the assumption being that when optimization is off,
-// each input param reg will be spilled in the prolog). In addition
-// to the register params, here we also build location lists (where
-// appropriate for the ".closureptr" compiler-synthesized variable
-// needed by the debugger for range func bodies.
-func BuildFuncDebugNoOptimized(ctxt *obj.Link, f *Func, loggingEnabled bool, stackOffset func(LocalSlot) int32, rval *FuncDebug)
-
-// IsVarWantedForDebug returns true if the debug info for the node should
-// be generated.
-// For example, internal variables for range-over-func loops have little
-// value to users, so we don't generate debug info for them.
-func IsVarWantedForDebug(n ir.Node) bool
+// BuildLocationLists builds location lists for all the user variables
+// in state.f, using the information about block state in blockLocs.
+// The returned location lists are not fully complete. They are in
+// terms of SSA values rather than PCs, and have no base address/end
+// entries. They will be finished by PutLocationList.
+func (state *DebugState) BuildLocationLists(blockLocs []*BlockDebug)

@@ -6,6 +6,7 @@ package ssa
 
 import (
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssaop"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/src"
 )
@@ -19,7 +20,7 @@ type Value struct {
 	ID ID
 
 	// The operation that computes this value. See op.go.
-	Op Op
+	Op ssaop.Op
 
 	// The type of this value. Normally this will be a Go type, but there
 	// are a few other pseudo-types, see ../types/type.go.
@@ -55,8 +56,15 @@ type Value struct {
 	InCache bool
 
 	// Storage for the first three args
-	argstorage [3]*Value
+	Argstorage [3]*Value
 }
+
+// CanSSA reports whether values of type t can be represented as a Value.
+func CanSSA(t *types.Type) bool
+
+// AutoVar returns a *Name and int64 representing the auto variable and offset within it
+// where v should be spilled.
+func AutoVar(v *Value) (*ir.Name, int64)
 
 // short form print. Just v#.
 func (v *Value) String() string
@@ -78,12 +86,14 @@ func (v *Value) AuxFloat() float64
 
 func (v *Value) AuxValAndOff() ValAndOff
 
-func (v *Value) AuxArm64BitField() arm64BitField
+func (v *Value) AuxArm64BitField() Arm64BitField
 
-func (v *Value) AuxArm64ConditionalParams() arm64ConditionalParams
+func (v *Value) AuxArm64ConditionalParams() Arm64ConditionalParams
 
 // long form print.  v# = opcode <type> [aux] args [: reg] (names)
 func (v *Value) LongString() string
+
+func (v *Value) AuxString() string
 
 // If/when midstack inlining is enabled (-l=4), the compiler gets both larger and slower.
 // Not-inlining this method is a help (*Value.reset and *Block.NewValue0 are similar).
@@ -118,9 +128,51 @@ func (v *Value) SetArgs3(a, b, c *Value)
 
 func (v *Value) SetArgs4(a, b, c, d *Value)
 
+func (v *Value) ResetArgs()
+
+// Reset is called from most rewrite rules.
+// Allowing it to be inlined increases the size
+// of cmd/compile by almost 10%, and slows it down.
+//
+//go:noinline
+func (v *Value) Reset(op ssaop.Op)
+
+// InvalidateRecursively marks a value as invalid (unused)
+// and after decrementing reference counts on its Args,
+// also recursively invalidates any of those whose use
+// count goes to zero.  It returns whether any of the
+// invalidated values was marked with IsStmt.
+//
+// BEWARE of doing this *before* you've applied intended
+// updates to SSA.
+func (v *Value) InvalidateRecursively() bool
+
+// CopyOf is called from rewrite rules.
+// It modifies v to be (Copy a).
+//
+//go:noinline
+func (v *Value) CopyOf(a *Value)
+
+// CopyInto makes a new value identical to v and adds it to the end of b.
+// unlike copyIntoWithXPos this does not check for v.Pos being a statement.
+func (v *Value) CopyInto(b *Block) *Value
+
+// CopyIntoWithXPos makes a new value identical to v and adds it to the end of b.
+// The supplied position is used as the position of the new value.
+// Because this is used for rematerialization, check for case that (rematerialized)
+// input to value with position 'pos' carried a statement mark, and that the supplied
+// position (of the instruction using the rematerialized value) is not marked, and
+// preserve that mark if its line matches the supplied position.
+func (v *Value) CopyIntoWithXPos(b *Block, pos src.XPos) *Value
+
 func (v *Value) Logf(msg string, args ...any)
+
 func (v *Value) Log() bool
+
 func (v *Value) Fatalf(msg string, args ...any)
+
+// IsGenericIntConst reports whether v is a generic integer constant.
+func (v *Value) IsGenericIntConst() bool
 
 // ResultReg returns the result register assigned to v, in cmd/internal/obj/$ARCH numbering.
 // It is similar to Reg and Reg0, except that it is usable interchangeably for all Value Ops.
@@ -151,12 +203,9 @@ func (v *Value) MemoryArg() *Value
 // assigned to nearby values and the blocks containing them.
 func (v *Value) LackingPos() bool
 
-// AutoVar returns a *Name and int64 representing the auto variable and offset within it
-// where v should be spilled.
-func AutoVar(v *Value) (*ir.Name, int64)
-
-// CanSSA reports whether values of type t can be represented as a Value.
-func CanSSA(t *types.Type) bool
+// Removeable reports whether the value v can be removed from the SSA graph entirely
+// if its use count drops to 0.
+func (v *Value) Removeable() bool
 
 // AddrSinkArg reports whether the idx'th argument is known
 // to not propagate to the output value.

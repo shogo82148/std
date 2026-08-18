@@ -3,3 +3,6 @@
 // license that can be found in the LICENSE file.
 
 package ssa
+
+// KnownBits does constant folding across bitfields
+func KnownBits(f *Func)

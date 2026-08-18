@@ -112,3 +112,48 @@
 // TODO: maybe we should introduce these extra phis?
 
 package ssa
+
+import (
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssaop"
+	"github.com/shogo82148/std/cmd/internal/src"
+)
+
+const (
+	LogSpills
+	RegDebug
+	StackDebug
+)
+
+func RegMaskAt(i ssaop.Register) ssaop.RegMask
+
+type Use struct {
+	// distance from start of the block to a use of a value
+	//   Dist == 0                 used by first instruction in block
+	//   Dist == len(b.Values)-1   used by last instruction in block
+	//   Dist == len(b.Values)     used by block's control value
+	//   Dist  > len(b.Values)     used by a subsequent block
+	Dist int32
+	Pos  src.XPos
+	Next *Use
+}
+
+// A ValState records the register allocation state for a (pre-regalloc) value.
+type ValState struct {
+	Regs              ssaop.RegMask
+	Uses              *Use
+	Spill             *Value
+	RestoreMin        int32
+	RestoreMax        int32
+	NeedReg           bool
+	Rematerializeable bool
+}
+
+// NeedRegister reports whether v needs a register.
+func (v *Value) NeedRegister() bool
+
+// Rematerializeable reports whether the register allocator should recompute
+// a value instead of spilling/restoring it.
+func (v *Value) Rematerializeable() bool
+
+// ComputeUnavoidableCalls computes the containsUnavoidableCall fields in the loop nest.
+func (loopnest *LoopNest) ComputeUnavoidableCalls()

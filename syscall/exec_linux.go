@@ -92,10 +92,18 @@ type SysProcAttr struct {
 	// users this should be set to false for mappings work.
 	GidMappingsEnableSetgroups bool
 	AmbientCaps                []uintptr
+	NoNewPrivs                 bool
 	UseCgroupFD                bool
 	CgroupFD                   int
 	// PidFD, if not nil, is used to store the pidfd of a child, if the
 	// functionality is supported by the kernel, or -1. Note *PidFD is
 	// changed only if the process starts successfully.
 	PidFD *int
+	// UseLandlock places the child into a Landlock restriction by
+	// calling landlock_restrict_self(LandlockFD, LandlockFlags) before exec.
+	//
+	// Generally this should be combined with setting NoNewPrivs.
+	UseLandlock   bool
+	LandlockFD    int
+	LandlockFlags uint32
 }

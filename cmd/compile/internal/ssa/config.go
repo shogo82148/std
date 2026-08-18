@@ -8,51 +8,83 @@ import (
 	"github.com/shogo82148/std/cmd/compile/internal/abi"
 	"github.com/shogo82148/std/cmd/compile/internal/ir"
 	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssabase"
+	"github.com/shogo82148/std/cmd/compile/internal/ssa/ssaop"
 	"github.com/shogo82148/std/cmd/compile/internal/types"
 	"github.com/shogo82148/std/cmd/internal/obj"
 	"github.com/shogo82148/std/cmd/internal/src"
+)
+
+type (
+	BlockRewriter func(*Block) bool
+	ValueRewriter func(*Value) bool
 )
 
 // A Config holds readonly compilation information.
 // It is created once, early during compilation,
 // and shared across all compilations.
 type Config struct {
-	arch           string
+	Arch           string
 	PtrSize        int64
 	RegSize        int64
 	Types          Types
-	lowerBlock     blockRewriter
-	lowerValue     valueRewriter
-	lateLowerBlock blockRewriter
-	lateLowerValue valueRewriter
-	splitLoad      valueRewriter
-	registers      []ssabase.Register
-	gpRegMask      regMask
-	fpRegMask      regMask
-	fp32RegMask    regMask
-	fp64RegMask    regMask
-	simdRegMask    regMask
-	specialRegMask regMask
-	intParamRegs   []int8
-	floatParamRegs []int8
+	LowerBlock     BlockRewriter
+	LowerValue     ValueRewriter
+	LateLowerBlock BlockRewriter
+	LateLowerValue ValueRewriter
+	SplitLoad      ValueRewriter
+	Registers      []ssabase.Register
+	GpRegMask      ssaop.RegMask
+	FpRegMask      ssaop.RegMask
+	Fp32RegMask    ssaop.RegMask
+	Fp64RegMask    ssaop.RegMask
+	SimdRegMask    ssaop.RegMask
+	SpecialRegMask ssaop.RegMask
+	IntParamRegs   []int8
+	FloatParamRegs []int8
 	ABI1           *abi.ABIConfig
 	ABI0           *abi.ABIConfig
 	FPReg          int8
 	LinkReg        int8
-	hasGReg        bool
-	ctxt           *obj.Link
-	optimize       bool
+	HasGReg        bool
+	Ctxt           *obj.Link
+	Optimize       bool
 	SoftFloat      bool
 	Race           bool
 	BigEndian      bool
-	unalignedOK    bool
-	haveBswap64    bool
-	haveBswap32    bool
-	haveBswap16    bool
-	haveCondSelect bool
+	UnalignedOK    bool
+	HaveBswap64    bool
+	HaveBswap32    bool
+	HaveBswap16    bool
+	HaveCondSelect bool
 
-	// mulRecipes[x] = function to build v * x from v.
-	mulRecipes map[int64]mulRecipe
+	// MulRecipes[x] = function to build v * x from v.
+	MulRecipes map[int64]mulRecipe
+}
+
+type Frontend interface {
+	Logger
+
+	StringData(string) *obj.LSym
+
+	SplitSlot(parent *LocalSlot, suffix string, offset int64, t *types.Type) LocalSlot
+
+	Syslook(string) *obj.LSym
+
+	UseWriteBarrier() bool
+
+	Func() *ir.Func
+}
+
+type Logger interface {
+	Logf(string, ...any)
+
+	Log() bool
+
+	Fatalf(pos src.XPos, msg string, args ...any)
+
+	Warnl(pos src.XPos, fmt_ string, args ...any)
+
+	Debug_checknil() bool
 }
 
 type Types struct {
@@ -91,33 +123,6 @@ func NewTypes() *Types
 // SetTypPtrs populates t.
 func (t *Types) SetTypPtrs()
 
-type Logger interface {
-	Logf(string, ...any)
+func (c *Config) HaveByteSwap(size int64) bool
 
-	Log() bool
-
-	Fatalf(pos src.XPos, msg string, args ...any)
-
-	Warnl(pos src.XPos, fmt_ string, args ...any)
-
-	Debug_checknil() bool
-}
-
-type Frontend interface {
-	Logger
-
-	StringData(string) *obj.LSym
-
-	SplitSlot(parent *LocalSlot, suffix string, offset int64, t *types.Type) LocalSlot
-
-	Syslook(string) *obj.LSym
-
-	UseWriteBarrier() bool
-
-	Func() *ir.Func
-}
-
-// NewConfig returns a new configuration object for the given architecture.
-func NewConfig(arch string, types Types, ctxt *obj.Link, optimize, softfloat bool) *Config
-
-func (c *Config) Ctxt() *obj.Link
+func (c *Config) BuildRecipes(arch string)
