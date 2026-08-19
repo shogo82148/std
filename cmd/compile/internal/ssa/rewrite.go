@@ -427,8 +427,6 @@ func MergePPC64SldiSrw(sld, srw int64) int64
 // offsets, we just pick the non-nil one.
 func MergeSym(x, y Sym) Sym
 
-func ModularMultiplicativeInverse(x uint64) (y uint64)
-
 // MoveSize returns the number of bytes an aligned MOV instruction moves.
 func MoveSize(align int64, c *Config) int64
 
