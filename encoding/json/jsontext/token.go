@@ -170,8 +170,8 @@ func (t Token) Kind() Kind
 
 // KindはJSONトークンの種類を表します。
 //
-// Kindは各JSONトークンの種類を1バイトで表現し、便利なことにその種類の文法の
-// 最初のバイトになっています。ただし、数値は常に'0'で表現されるという制限があります。
+// Kind は1バイトの型であり、文法上のその種別のシンボルの先頭バイトと
+// 便宜上対応しています（ただし数値は常に '0' で表現されます）。
 type Kind byte
 
 const (
@@ -187,5 +187,5 @@ const (
 	KindEndArray    Kind = ']'
 )
 
-// Stringは種類を人間が読みやすい形で出力します。
+// String は、k の文字列表現を返します。
 func (k Kind) String() string

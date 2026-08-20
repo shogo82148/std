@@ -43,8 +43,9 @@ var ErrNonStringName = errors.New("object member name must be a string")
 // 配列インデックスとオブジェクト名（たまたま10進でエンコードされた整数である）を
 // 区別することは不可能です。
 //
-// 特定の値へのポインタの表現は常に1つだけなので、Pointer値の比較は
-// 両者がまったく同じ値を指しているかどうかの判定と同じです。
+// 特定の値へのポインタには、正確に1つの表現しかありません。
+// そのため、Pointer 値の比較可能性は、
+// 両者が同じ値を指しているかどうかを確認することと等価です。
 type Pointer string
 
 // IsValidは、pがRFC 6901に従った有効なJSONポインタかどうかを報告します。
@@ -55,17 +56,17 @@ func (p Pointer) IsValid() bool
 // pcが指すJSON値と等しいか、またはそれを含んでいるかどうかを報告します。
 func (p Pointer) Contains(pc Pointer) bool
 
-// Parentは最後のトークンを取り除き、残りのポインタを返します。
-// 空のpの親は空文字列です。
+// Parent は最後のトークンを取り除き、残りのポインタを返します。
+// 空の Pointer の親は空文字列です。
 func (p Pointer) Parent() Pointer
 
-// LastTokenは、ポインタ内の最後のトークンを返します。
-// 空のpの最後のトークンは空文字列です。
+// LastToken は、ポインタ内の最後のトークンを返します。
+// 空の Pointer の最後のトークンは空文字列です。
 func (p Pointer) LastToken() string
 
 // AppendTokenは、トークンをpの末尾に追加し、完全なポインタを返します。
 func (p Pointer) AppendToken(tok string) Pointer
 
-// Tokensは、JSONポインタ内の参照トークンに対するイテレータを返します。
-// 最初のトークンから最後のトークンまで（途中で停止しない限り）順に返します。
+// Tokens は、JSONポインタ内の参照トークンに対するイテレータを返します。
+// 最初のトークンから最後のトークンまで順に返します。
 func (p Pointer) Tokens() iter.Seq[string]

@@ -70,8 +70,8 @@ func (d *Decoder) Options() Options
 // キャッシュされ、最終的にPeekKind呼び出しの後に読み取り呼び出しを続けることは呼び出し側の責任です。
 func (d *Decoder) PeekKind() Kind
 
-// SkipValueは、[Decoder.ReadValue] を呼び出して結果を破棄するのと意味的に同等ですが、
-// 結果全体を保持するためにメモリを無駄に消費しません。
+// SkipValue は [Decoder.ReadValue] を呼び、その結果を破棄することと意味的に同等です。
+// ただし、結果全体を保持しようとしてメモリを浪費することはありません。
 func (d *Decoder) SkipValue() error
 
 // ReadTokenは次の [Token] を読み取り、読み取り位置を進めます。
@@ -90,17 +90,19 @@ func (d *Decoder) ReadToken() (Token, error)
 // これ以上値がない場合は [io.EOF] を返します。
 func (d *Decoder) ReadValue() (Value, error)
 
-// InputOffsetは現在の入力バイトオフセットを返します。これは直前に返されたトークンまたは値の直後の次のバイト位置を示します。
-// 実際に基礎となる [io.Reader] から読み込まれたバイト数は、内部バッファリングの影響でこのオフセットより多い場合があります。
+// InputOffset は現在の入力バイトオフセットを返します。
+// これは、直近に返されたトークンまたは値の直後の次のバイト位置を示します。
+// 基礎となる [io.Reader] から実際に読み込まれたバイト数は、
+// 内部バッファリングの影響により、このオフセットより多い場合があります。
 func (d *Decoder) InputOffset() int64
 
-// UnreadBufferは、未読バッファに残っているデータを返します。
-// このデータには0バイト以上が含まれる可能性があります。
+// UnreadBuffer は、未読バッファに残っているデータを返します。
+// これは 0 バイト以上のデータを含み得ます。
 // これは入力 [io.Reader] からすでに消費されたデータですが、
-// まだ [Decoder.ReadToken] または [Decoder.ReadValue] の呼び出しでは読み取られていません。
-// JSON文法に従ってまだ検証されていないため、
-// 有効なJSONを構成しないバイトを含む可能性があります。
-// バッファリングされるデータ量の正確な値はDecoderの実装詳細であり、
+// まだ [Decoder.ReadToken] または [Decoder.ReadValue] の呼び出しでは読まれていません。
+// JSON 文法に従ってまだ検証されていないため、
+// 有効な JSON を構成しないバイトを含む可能性があります。
+// バッファリングされるデータ量の正確な値は Decoder の実装詳細であり、
 // 時間とともに変わる可能性があります。
 //
 // 最後に読み取られたJSONトークンまたは値の後に続くバイト列全体を得るには、
@@ -110,10 +112,10 @@ func (d *Decoder) InputOffset() int64
 // バッファ内容は次のPeek、Read、Skip呼び出しまで有効です。
 func (d *Decoder) UnreadBuffer() []byte
 
-// StackDepthは、読み取ったJSONデータに対する状態機械の深さを返します。
-// スタック上の各レベルは、ネストしたJSONオブジェクトまたは配列を表します。
-// [BeginObject] または [BeginArray] トークンに遭遇するたびにインクリメントされ、
-// [EndObject] または [EndArray] トークンに遭遇するたびにデクリメントされます。
+// StackDepth は、すでに読み取られたJSONデータに対する状態機械の深さを返します。
+// スタックの各レベルは、入れ子になったJSONオブジェクトまたは配列を表します。
+// [BeginObject] または [BeginArray] トークンが出現するたびに増加し、
+// [EndObject] または [EndArray] トークンが出現するたびに減少します。
 //
 // オブジェクトや配列の内側にいない場合、StackDepthは0を返します。
 // 具体的には、まだトークンを何も読んでいないとき、
@@ -144,7 +146,7 @@ func (d *Decoder) StackDepth() int
 //   - JSONオブジェクトを表すレベルの場合は [KindBeginObject]
 //   - JSON配列を表すレベルの場合は [KindBeginArray]
 //
-// また、これまでにデコードされたそのJSONオブジェクトまたは配列の長さも報告します。
+// また、このJSONオブジェクトまたは配列の、これまでにデコードされた長さも報告します。
 // JSONオブジェクト内の各名前と値は個別に数えられるため、
 // 実際のメンバー数は長さの半分になります。
 // 完全なJSONオブジェクトは偶数の長さでなければなりません。
