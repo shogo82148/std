@@ -116,7 +116,12 @@
 //   - jsonv2.Marshal(v)
 //     デフォルトのv2セマンティクスを使用します。
 //
-// Goで新しく"json"を使う場合はv2パッケージの利用を推奨しますが、v1パッケージも今後もサポートされ続けます。
+// Go で新たに "json" を使用する場合は、v2 パッケージを使うべきです。
+// ただし、v1 パッケージは今後も引き続きサポートされます。
+//
+// 移行アプローチの詳細については、[encoding/json/v2 Migration Guide] を参照してください。
+//
+// [encoding/json/v2 Migration Guide]: https://go.dev/doc/jsonv2-migration
 package json
 
 import (
@@ -322,15 +327,15 @@ func ParseTimeWithLooseRFC3339(v bool) Options
 // v1のデフォルトはtrueです。
 func ReportErrorsWithLegacySemantics(v bool) Options
 
-// StringifyWithLegacySemanticsは、`string` タグオプションで
-// bool値やstring値も文字列化できることを指定します。これは、
-// 最上位の型がbool、string、数値型、またはそれらへのポインタである
-// フィールドにのみ適用されます。対してv2のデフォルトでは、
-// 本来JSON数値としてシリアライズされるGo型に対してのみ `string` タグオプションを許可し、
-// そのJSON数値をJSON文字列内に文字列化します。特に、
-// v2のデフォルトではGoのboolとstringは文字列化されません。
-// [ReportErrorsWithLegacySemantics] がfalseの場合、
-// `string` の不正な使用はランタイムエラーになります。
+// StringifyWithLegacySemantics は、`string` タグオプションが
+// bool 値や string 値も文字列化できることを指定します。
+// これは、最上位の型が bool、string、数値型、またはそのような型へのポインタである
+// フィールドにのみ効きます。対照的に、v2 のデフォルトでは `string` タグオプションを
+// それ以外に JSON 数値としてシリアライズされる Go 型に対してのみ許可し、
+// その JSON 数値を JSON 文字列の中に文字列化します。
+// 特に、v2 のデフォルトでは Go の bool と string は文字列化されません。
+// [ReportErrorsWithLegacySemantics] が false の場合、
+// `string` の不正な使用は実行時エラーになります。
 //
 // マーシャル時には、そのようなGo値は通常どおりのJSON表現で
 // シリアライズされますが、JSON文字列としてクォートされます。

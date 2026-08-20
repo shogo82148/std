@@ -7,8 +7,7 @@
 // jsonパッケージはRFC 7159で定義されたJSONのエンコードとデコードを実装します。
 // JSONとGoの値の対応関係については、MarshalおよびUnmarshal関数のドキュメントを参照してください。
 //
-// このパッケージの概要については「JSON and Go」を参照してください:
-// https://golang.org/doc/articles/json_and_go.html
+// このパッケージの概要については [JSON and Go] を参照してください:
 //
 // # Security Considerations
 //
@@ -17,6 +16,8 @@
 // 歴史的な理由により、v1 [encoding/json] のデフォルト動作は
 // 残念ながらセキュリティ面で安全性が低い設定となっています。
 // Goで新しくJSONを利用する場合は [encoding/json/v2] の使用を推奨します。
+//
+// [JSON and Go]: https://go.dev/blog/json
 package json
 
 import (
