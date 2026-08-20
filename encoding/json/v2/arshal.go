@@ -114,8 +114,7 @@ var (
 //
 //   - その他のGo型（複素数、チャネル、関数など）はデフォルト表現がなく、[SemanticError] になります。
 //
-// JSONは循環データ構造を表現できず、Marshalはそれらを扱いません。
-// 循環構造を渡すとエラーになります。
+// JSON は循環データ構造を表現できないため、Marshal はそれらを処理しません。
 func Marshal(in any, opts ...Options) (out []byte, err error)
 
 // MarshalWriteは、指定されたマーシャルおよびエンコードオプションに従って
@@ -270,9 +269,9 @@ func UnmarshalRead(in io.Reader, out any, opts ...Options) (err error)
 // 指定されたオプションは、[jsontext.Decoder] にすでに適用されているオプションより優先され、
 // アンマーシャル呼び出しの期間中のみ適用されます。
 //
-// 入力は0個以上のJSON値のストリームであっても構いませんが、
-// これはストリーム内の次のJSON値のみをアンマーシャルします。
-// トップレベルのJSON値がもうない場合は、[io.EOF] を報告します。
-// 出力は非nilのポインタでなければなりません。
-// JSONからGo値への変換の詳細は [Unmarshal] を参照してください。
+// 入力は 0 個以上の JSON 値のストリームであっても構いません。
+// UnmarshalDecode はストリーム内の次の JSON 値だけをアンマーシャルします。
+// トップレベルの JSON 値がもうない場合は、[io.EOF] を報告します。
+// 出力は非 nil のポインタでなければなりません。
+// JSON を Go の値へ変換する詳細は [Unmarshal] を参照してください。
 func UnmarshalDecode(in *jsontext.Decoder, out any, opts ...Options) (err error)

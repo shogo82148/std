@@ -88,7 +88,7 @@ func (v *Value) Format(opts ...Options) error
 
 // Compactは、生のJSON値からすべての空白を除去します。
 //
-// JSON文字列や数値の表現は変更しません。
+// JSON文字列や数値の表現を別の表現に再フォーマットすることはありません。
 // フォーマット可能なJSON値の集合を最大化するため、
 // 重複した名前や不正なUTF-8を含む値も許容します。
 //
@@ -104,7 +104,7 @@ func (v *Value) Compact(opts ...Options) error
 // Indentは、生のJSON値中の空白を再整形し、
 // JSONオブジェクトまたは配列の各要素がネストに応じたインデント行で始まるようにします。
 //
-// JSON文字列や数値の表現は変更しません。
+// JSON文字列や数値の表現を別の表現に再フォーマットすることはありません。
 // フォーマット可能なJSON値の集合を最大化するため、
 // 重複した名前や不正なUTF-8を含む値も許容します。
 //
@@ -118,21 +118,18 @@ func (v *Value) Compact(opts ...Options) error
 // 意図的に前のオプションを上書きすることもできます。
 func (v *Value) Indent(opts ...Options) error
 
-// Canonicalizeは、RFC 8785で定義されたJSON正規化スキーム（JCS）に従って
-// 生のJSON値を正規化し、安定した表現を生成します。
+// Canonicalize は、RFC 8785 で定義されているJSON正規化スキーム（JCS）に従って、
+// 生のJSON値を正規化します。
+// 正規化によって、元の値と同じ意味を持つJSON値が生成されますが、
+// すでに正規化済みの値に対して Canonicalize を呼び出しても何もしない、
+// 安定した結果になります。
 //
 // JSON文字列は最小表現でフォーマットされ、
 // JSON数値は安定したシリアライズアルゴリズムに従い倍精度でフォーマットされます。
 // JSONオブジェクトのメンバーは名前順に昇順でソートされます。
 // すべての空白は除去されます。
 //
-// 出力の安定性はアプリケーションデータの安定性に依存します
-// （RFC 8785の付録E参照）。本質的に不安定な入力からは
-// 安定した出力を生成できません。例えば、JSON値に
-// 一時的なデータ（頻繁に変化するタイムスタンプなど）が含まれている場合、
-// この関数を呼び出しても値は不安定なままです。
-//
-// Canonicalizeは、以下のオプションを指定して [Value.Format] を呼び出すのと同等です:
+// Canonicalize は、次のオプションを指定して [Value.Format] を呼び出すのと同等です:
 //   - [CanonicalizeRawInts](true)
 //   - [CanonicalizeRawFloats](true)
 //   - [ReorderRawObjects](true)
@@ -148,9 +145,9 @@ func (v *Value) Indent(opts ...Options) error
 //	v.Canonicalize(jsontext.CanonicalizeRawInts(false))
 func (v *Value) Canonicalize(opts ...Options) error
 
-// MarshalJSONは、vをJSONエンコーディングとして返します。
-// 検証を行わずに、格納されている値を生のJSON出力として返します。
-// vがnilの場合は、JSONのnullを返します。
+// MarshalJSON は、v をその JSON 表現として返します。
+// 検証は行いません。
+// v が nil の場合は、JSON の null を返します。
 func (v Value) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSONは、bをJSONエンコーディングとしてvに設定します。

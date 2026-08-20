@@ -6,7 +6,8 @@
 
 package jsontext
 
-// SyntacticErrorは、文法に従ってJSONをエンコードまたはデコードする際に発生した構文エラーの説明です。
+// SyntacticError は、JSONの文法に従ってエンコードまたはデコードする際に
+// 発生したエラーの説明です。
 //
 // このパッケージによって生成されるこのエラーの内容は将来的に変更される可能性があります。
 type SyntacticError struct {

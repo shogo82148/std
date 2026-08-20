@@ -10,68 +10,132 @@ import (
 	"github.com/shogo82148/std/encoding/json/jsontext"
 )
 
-// Marshalerは自分自身をマーシャルできる型が実装します。
-// 実装が "jsontext" パッケージへの強い依存を避けたい場合を除き、[MarshalerTo] を実装することを推奨します。
+// Marshalerは、自分自身をマーシャルできる型が実装します。
+// 実装が "jsontext" パッケージへの直接依存を避けようとしていない限り、
+// 型は [MarshalerTo] を実装することが推奨されます。
 //
-// 実装では、呼び出し元が保持・変更しても安全なバッファを返すことを推奨します。
+// 実装は、呼び出し元が保持して必要に応じて変更できるような
+// バッファを返すべきです。
+//
+// 実装は [errors.ErrUnsupported] を返してはいけません。
+//
+// 返されたエラーが [SemanticError] の場合、未設定のフィールドには
+// [json] によって追加のコンテキストが設定されることがあります。
+// それ以外の型のエラーは [SemanticError] でラップされます。
+//
+// 実装は [Deterministic] が true であると仮定して、
+// 決定的な出力を返すべきです。
 type Marshaler interface {
 	MarshalJSON() ([]byte, error)
 }
 
-// MarshalerToは自分自身をマーシャルできる型が実装します。
-// より高いパフォーマンスと柔軟性のため、[Marshaler] ではなくMarshalerToを実装することが推奨されます。
-// MarshalerとMarshalerToの両方を実装している場合は、MarshalerToが優先されます。
-// その場合、両方の実装はデフォルトのマーシャルオプションで同等の動作を目指すべきです。
+// MarshalerToは、自分自身をマーシャルできる型が実装します。
+// [Marshaler] の代わりに MarshalerTo を実装することが推奨されます。
+// これはより高いパフォーマンスと柔軟性を提供するためです。
+// 型が Marshaler と MarshalerTo の両方を実装している場合、
+// MarshalerTo が優先されます。その場合、両方の実装は
+// デフォルトのマーシャルオプションに対して同等の動作を目指すべきです。
 //
-// 実装では、Encoderに1つのJSON値だけを書き込む必要があります。
-// または、[errors.ErrUnsupported] を返してEncoderを変更せずにすることもできます。
-// このメソッドを呼び出す "json" パッケージはレシーバー型の
-// 次の利用可能なJSON表現を使用します。
+// 実装は Encoder に JSON 値を 1 つだけ書き込まなければなりません。
+// あるいは、Encoder を変更せずに [errors.ErrUnsupported] を返しても構いません。
+// そのメソッドを呼び出す "json" パッケージは、
+// レシーバー型の次に利用可能なJSON表現を使います。
+// これは [Marshal] で説明されている通りです。
 // 実装は [jsontext.Encoder] へのポインタを保持してはいけません。
 //
-// 返されたエラーが [SemanticError] の場合、エラーの未設定フィールド
-// は [json] によって追加コンテキストで設定されることがあります。
-// 他の型のエラーは [SemanticError] でラップされます。
-// ただし、IOエラーの場合は除きます。
+// 返されたエラーが [SemanticError] の場合、未設定のフィールドには
+// [json] によって追加のコンテキストが設定されることがあります。
+// 他の型のエラーは [SemanticError] でラップされ、
+// IO エラーを除きます。
 //
-// MarshalJSONToメソッドは直接呼び出すべきではありません。これは
-// 特別な処理が必要なセンチネルエラーを返す場合があるためです。
-// ユーザーは代わりに [MarshalEncode] を呼び出すべきです。これはそのような場合を処理します。
+// MarshalJSONTo メソッドは直接呼び出してはいけません。
+// 特殊な処理が必要なセンチネルエラーを返す場合があるためです。
+// ユーザーはそのような場合を処理する [MarshalEncode] を代わりに呼び出すべきです。
+//
+// 実装は [jsontext.Encoder.Options] からマーシャルオプションを確認し、
+// 必要に応じてそのオプションに従って動作を調整すべきです。
+//
+// 次のオプションは MarshalerTo 実装に関連している場合があります:
+//
+// - [Deterministic]: 実装が非決定的な出力を生成する可能性がある場合
+// - [StringifyNumbers]: 型が JSON 数値として表現される場合
+//
+// [FormatNilSliceAsNull] のようないくつかのオプションは、
+// ネイティブな Go の型にのみ適用されます。そのため、
+// これらのオプションは通常 MarshalerTo 実装には直接関係しません。
+// ただし、複合型を表す型は、含まれる型に対して [MarshalEncode] を使って
+// マーシャルし、これらのオプションがその型に適用されるようにすべきです。
+// 同様に、[WithMarshalers] は複合型内の含まれる型のマーシャルにも影響し得ます。
+//
+// それ以外のオプションはすべて MarshalerTo 実装の外側で自動的に処理されるため、
+// 実装には関係しません。
 type MarshalerTo interface {
 	MarshalJSONTo(*jsontext.Encoder) error
 }
 
-// Unmarshalerは自分自身をアンマーシャルできる型が実装します。
-// 実装が "jsontext" パッケージへの強い依存を避けたい場合を除き、[UnmarshalerFrom] を実装することを推奨します。
+// Unmarshalerは、自分自身をアンマーシャルできる型が実装します。
+// 実装が "jsontext" パッケージへの直接依存を避けようとしていない限り、
+// [UnmarshalerFrom] を実装することが推奨されます。
 //
-// 入力はこのパッケージのアンマーシャル機能から呼び出された場合、正しいJSON値のエンコーディングであるとみなせます。
-// UnmarshalJSONが返却後もJSONデータを保持する場合は、必ずコピーしてください。
-// 事前に値が設定された変数にアンマーシャルする場合は、UnmarshalJSONでマージセマンティクスを実装することが推奨されます。
+// このパッケージのアンマーシャル機能から呼び出された場合、
+// 入力は JSON 値の有効なエンコーディングであるとみなしてよいです。
+// 事前に値が設定された変数にアンマーシャルする場合は、
+// [Unmarshal] で説明されているように UnmarshalJSON がマージセマンティクスを
+// 実装することが推奨されます。
 //
-// 実装は入力の[]byteを保持したり変更したりしてはいけません。
+// 実装は入力の []byte を保持したり変更したりしてはいけません。
+//
+// 実装は [errors.ErrUnsupported] を返してはいけません。
+//
+// 返されたエラーが [SemanticError] の場合、未設定のフィールドには
+// [json] によって追加のコンテキストが設定されることがあります。
+// 他の型のエラーは [SemanticError] でラップされます。
 type Unmarshaler interface {
 	UnmarshalJSON([]byte) error
 }
 
-// UnmarshalerFromは自分自身をアンマーシャルできる型が実装します。
-// より高いパフォーマンスと柔軟性のため、[Unmarshaler] ではなくUnmarshalerFromを実装することが推奨されます。
-// UnmarshalerとUnmarshalerFromの両方を実装している場合は、UnmarshalerFromが優先されます。
-// その場合、両方の実装はデフォルトのアンマーシャルオプションで同等の動作を目指すべきです。
+// UnmarshalerFromは、自分自身をアンマーシャルできる型が実装します。
+// 実装が "jsontext" パッケージへの直接依存を避けようとしていない限り、
+// [Unmarshaler] の代わりに UnmarshalerFrom を実装することが推奨されます。
+// これはより高いパフォーマンスと柔軟性を提供するためです。
+// 型が Unmarshaler と UnmarshalerFrom の両方を実装している場合、
+// UnmarshalerFrom が優先されます。その場合、両方の実装は
+// デフォルトのアンマーシャルオプションに対して同等の動作を目指すべきです。
 //
-// 実装はDecoderから1つのJSON値だけを読み込む必要があります。
-// 事前に設定された値にアンマーシャルする場合は、UnmarshalJSONFromがマージセマンティクスを実装することが推奨されます。
-// または、[errors.ErrUnsupported] を返してDecoderを変更せずにすることもできます。
-// このメソッドを呼び出す "json" パッケージはレシーバー型の次の利用可能なJSON表現を使用します。
+// 実装は Decoder から JSON 値を 1 つだけ読み込まなければなりません。
+// 事前に値が設定された変数にアンマーシャルする場合は、
+// [Unmarshal] で説明されているように UnmarshalJSONFrom がマージセマンティクスを
+// 実装することが推奨されます。
+// あるいは、Decoder を変更せずに [errors.ErrUnsupported] を返しても構いません。
+// そのメソッドを呼び出す "json" パッケージは、
+// レシーバー型の次に利用可能なJSON表現を使います。
 // 実装は [jsontext.Decoder] へのポインタを保持してはいけません。
 //
-// 返されたエラーが [SemanticError] の場合、エラーの未設定フィールド
-// は [json] によって追加コンテキストで設定されることがあります。
-// 他の型のエラーは [SemanticError] でラップされます。
-// ただし、[jsontext.SyntacticError] またはIOエラーの場合は除きます。
+// 返されたエラーが [SemanticError] の場合、未設定のフィールドには
+// [json] によって追加のコンテキストが設定されることがあります。
+// 他の型のエラーは [SemanticError] でラップされ、
+// [jsontext.SyntacticError] と IO エラーを除きます。
 //
-// UnmarshalJSONFromメソッドは直接呼び出すべきではありません。これは
-// 特別な処理が必要なセンチネルエラーを返す場合があるためです。
-// ユーザーは代わりに [UnmarshalDecode] を呼び出すべきです。これはそのような場合を処理します。
+// UnmarshalJSONFrom メソッドは直接呼び出してはいけません。
+// 特殊な処理が必要なセンチネルエラーを返す場合があるためです。
+// ユーザーはそのような場合を処理する [UnmarshalDecode] を代わりに呼び出すべきです。
+//
+// 実装は [jsontext.Decoder.Options] からアンマーシャルオプションを確認し、
+// 必要に応じてそのオプションに従って動作を調整すべきです。
+//
+// 次のオプションは UnmarshalerFrom 実装に関連している場合があります:
+//
+// - [StringifyNumbers]: 型が JSON 数値として表現される場合
+//
+// [FormatNilSliceAsNull] のようないくつかのオプションは、
+// ネイティブな Go の型にのみ適用されます。そのため、
+// これらのオプションは通常 UnmarshalerFrom 実装には直接関係しません。
+// ただし、複合型を表す型は、含まれる型に対して [UnmarshalDecode] を使って
+// アンマーシャルし、これらのオプションがその型に適用されるようにすべきです。
+// 同様に、[WithUnmarshalers] は複合型内の含まれる型のアンマーシャルにも影響し得ます。
+//
+// それ以外のオプションはすべて UnmarshalerFrom 実装の外側で自動的に処理されるため、
+// 実装には関係しません。
 type UnmarshalerFrom interface {
 	UnmarshalJSONFrom(*jsontext.Decoder) error
 }
