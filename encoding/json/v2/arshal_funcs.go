@@ -54,43 +54,34 @@ func JoinUnmarshalers(us ...*Unmarshalers) *Unmarshalers
 // Tは名前付きポインタ以外の任意の型にできます。
 // Tがインターフェース型またはポインタ型の場合、関数には必ず非nilのポインタ値が渡されます。
 //
-// 関数はJSON値をちょうど1つマーシャルしなければなりません。
-// Tの値は関数呼び出しの外部に保持してはなりません。
-// fnは、呼び出し元が保持し、必要に応じて変更しても安全な
-// []byteバッファを返すことが推奨されます。
-// [errors.ErrUnsupported] を返してはなりません。
+// 実装は [Marshaler] の要件に従わなければなりません。
+//
+// 実装は T の値を保持してはなりません。
 func MarshalFunc[T any](fn func(T) ([]byte, error)) *Marshalers
 
 // MarshalToFuncは、型T専用のマーシャル方法を指定する関数を構築します。
 // Tは名前付きポインタ以外の任意の型にできます。
 // Tがインターフェース型またはポインタ型の場合、関数には必ず非nilのポインタ値が渡されます。
 //
-// 関数は提供されたエンコーダーの書き込みメソッドを呼び出して、
-// JSON値をちょうど1つマーシャルしなければなりません。
-// [errors.ErrUnsupported] を返すことで、次のマーシャル関数に処理を移すことができます。
-// ただし、[errors.ErrUnsupported] を返す場合、エンコーダーの変更を伴うメソッドを
-// 呼び出してはなりません。
-// [jsontext.Encoder] へのポインタとTの値は関数呼び出しの外部に保持してはなりません。
+// 実装は [MarshalerTo] の要件に従わなければなりません。
+//
+// [jsontext.Encoder] へのポインタや T の値を保持してはなりません。
 func MarshalToFunc[T any](fn func(*jsontext.Encoder, T) error) *Marshalers
 
 // UnmarshalFuncは、型T専用のアンマーシャル方法を指定する関数を構築します。
 // Tは名前なしポインタ型またはインターフェース型でなければなりません。
 // 関数には必ず非nilのポインタ値が渡されます。
 //
-// 関数はJSON値をちょうど1つアンマーシャルしなければなりません。
-// 入力の[]byteを変更してはなりません。
-// 入力の[]byteとTの値は関数呼び出しの外部に保持してはなりません。
-// [errors.ErrUnsupported] を返してはなりません。
+// 実装は [Unmarshaler] の要件に従わなければなりません。
+//
+// 実装は T の値を保持してはなりません。
 func UnmarshalFunc[T any](fn func([]byte, T) error) *Unmarshalers
 
 // UnmarshalFromFuncは、型T専用のアンマーシャル方法を指定する関数を構築します。
 // Tは名前なしポインタ型またはインターフェース型でなければなりません。
 // 関数には必ず非nilのポインタ値が渡されます。
 //
-// 関数は提供されたデコーダーの読み取りメソッドを呼び出して、
-// JSON値をちょうど1つアンマーシャルしなければなりません。
-// [errors.ErrUnsupported] を返すことで、次のアンマーシャル関数に処理を移すことができます。
-// ただし、[errors.ErrUnsupported] を返す場合、デコーダーの変更を伴うメソッドを
-// 呼び出してはなりません。
-// [jsontext.Decoder] へのポインタとTの値は関数呼び出しの外部に保持してはなりません。
+// 実装は [UnmarshalerFrom] の要件に従わなければなりません。
+//
+// [jsontext.Decoder] へのポインタや T の値を保持してはなりません。
 func UnmarshalFromFunc[T any](fn func(*jsontext.Decoder, T) error) *Unmarshalers

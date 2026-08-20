@@ -30,7 +30,8 @@ import (
 // このエラーは [RejectUnknownMembers] がtrueの場合のみ返されます。
 var ErrUnknownName = errors.New("unknown object member name")
 
-// SemanticErrorは、JSONデータをGoデータへ、またはその逆へ意味付けする際のエラーを表します。
+// SemanticError は、JSON データを Go のデータとして解釈する際の意味や、
+// その逆の変換における意味の決定に失敗したエラーを表します。
 //
 // このパッケージによって生成されるこのエラーの内容は将来的に変更される可能性があります。
 type SemanticError struct {

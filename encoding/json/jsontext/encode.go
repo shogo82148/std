@@ -107,9 +107,9 @@ func (e *Encoder) OutputOffset() int64
 //	b = append(b, '"')
 //	... := e.WriteValue(b)
 //
-// WriteValueはJSON値を期待します。AvailableBufferを使って手動で値を構築する場合は、
-// 無効なJSON値を生成してWriteValueが失敗しないよう、
-// 注意が必要です。
+// [WriteValue] は有効なJSON値を受け取ることに注意してください。
+// 生の []byte から値を構築するには、常に有効な [Token] または [Value] を返す
+// [String] のようなコンストラクタ関数を使うよりも、さらに注意が必要です。
 func (e *Encoder) AvailableBuffer() []byte
 
 // StackDepthは、書き込まれたJSONデータに対する状態機械の深さを返します。
