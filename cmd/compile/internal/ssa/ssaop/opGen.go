@@ -5844,6 +5844,10 @@ const (
 	OpRISCV64LoweredAtomicCas64
 	OpRISCV64LoweredAtomicAnd32
 	OpRISCV64LoweredAtomicOr32
+	OpRISCV64LoweredAtomicAnd32value
+	OpRISCV64LoweredAtomicAnd64value
+	OpRISCV64LoweredAtomicOr32value
+	OpRISCV64LoweredAtomicOr64value
 	OpRISCV64LoweredNilCheck
 	OpRISCV64LoweredGetClosurePtr
 	OpRISCV64LoweredGetCallerSP
@@ -97025,6 +97029,74 @@ var OpcodeTable = [...]OpInfo{
 			Inputs: []InputInfo{
 				{1, RegMask{V1: 1073741808, V2: 0}},
 				{0, RegMask{V1: 9223372037928517618, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredAtomicAnd32value",
+		ArgLen:          3,
+		ResultNotInArgs: true,
+		FaultOnNilArg0:  true,
+		HasSideEffects:  true,
+		asm:             riscv.AAMOANDW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 1073741808, V2: 0}},
+				{0, RegMask{V1: 9223372037928517618, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredAtomicAnd64value",
+		ArgLen:          3,
+		ResultNotInArgs: true,
+		FaultOnNilArg0:  true,
+		HasSideEffects:  true,
+		asm:             riscv.AAMOANDD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 1073741808, V2: 0}},
+				{0, RegMask{V1: 9223372037928517618, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredAtomicOr32value",
+		ArgLen:          3,
+		ResultNotInArgs: true,
+		FaultOnNilArg0:  true,
+		HasSideEffects:  true,
+		asm:             riscv.AAMOORW,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 1073741808, V2: 0}},
+				{0, RegMask{V1: 9223372037928517618, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:            "LoweredAtomicOr64value",
+		ArgLen:          3,
+		ResultNotInArgs: true,
+		FaultOnNilArg0:  true,
+		HasSideEffects:  true,
+		asm:             riscv.AAMOORD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 1073741808, V2: 0}},
+				{0, RegMask{V1: 9223372037928517618, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 1006632944, V2: 0}},
 			},
 		},
 	},

@@ -231,6 +231,7 @@ var ArchRISCV64 = &Arch{
 	MinLC:          2,
 	Alignment:      8,
 	CanMergeLoads:  false,
+	CanJumpTable:   true,
 	HasLR:          true,
 	FixedFrameSize: 8,
 }
