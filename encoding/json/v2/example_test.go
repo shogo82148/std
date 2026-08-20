@@ -51,9 +51,10 @@ func Example_textMarshal() {
 		log.Fatalf("roundtrip mismatch: got %v, want %v", got, want)
 	}
 
-	// シリアライズされたJSONオブジェクトを表示します。
-	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
-	fmt.Println(string(b))
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println(string(v))
 
 	// Output:
 	// {
@@ -84,8 +85,11 @@ func Example_fieldNames() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
-	fmt.Println(string(b))
+
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println(string(v))
 
 	// Output:
 	// {
@@ -205,8 +209,10 @@ func Example_omitFields() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent()      // 可読性のためインデント
-	fmt.Println("OmitZero:", string(b)) // "Struct", "Slice", "Map", "Pointer", "Interface"が出力されます
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println("OmitZero:", string(v)) // "Struct", "Slice", "Map", "Pointer", "Interface"が出力されます
 
 	// "omitempty"の挙動を示します。
 	b, err = json.Marshal(struct {
@@ -251,8 +257,10 @@ func Example_omitFields() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent()       // indent for readability
-	fmt.Println("OmitEmpty:", string(b)) // outputs "Bool", "Int", and "Time"
+	// Indent output for readability.
+	v = jsontext.Value(b)
+	v.Indent()
+	fmt.Println("OmitEmpty:", string(v)) // outputs "Bool", "Int", and "Time"
 
 	// Output:
 	// OmitZero: {
@@ -310,8 +318,10 @@ func Example_embeddedFields() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	(*jsontext.Value)(&b).Indent() // 可読性のためインデント
-	fmt.Println(string(b))
+	// 可読性のためインデント
+	v := jsontext.Value(b)
+	v.Indent()
+	fmt.Println(string(v))
 
 	// Output:
 	// {
@@ -585,4 +595,36 @@ func ExampleUnmarshalDecode_stream() {
 	// Platypus: Monotremata
 	// Quoll: Dasyuromorphia
 	// Gopher: Rodentia
+}
+
+// Use [jsontext.Multiline] to create multiline, idented output for more
+// readable output for human consumption.
+//
+// See [jsontext.Multiline] for additional options that customize the multiline
+// output.
+func ExampleMarshal_multiline() {
+	type Pet struct {
+		Name    string
+		Species string
+		Breed   string
+	}
+
+	p := Pet{
+		Name:    "Oliver",
+		Species: "Dog",
+		Breed:   "Goldendoodle",
+	}
+
+	b, err := json.Marshal(p, jsontext.Multiline(true))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(b))
+	// Output:
+	// {
+	// 	"Name": "Oliver",
+	// 	"Species": "Dog",
+	// 	"Breed": "Goldendoodle"
+	// }
 }
