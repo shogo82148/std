@@ -31,6 +31,7 @@ type Func struct {
 	bid IDAlloc
 	vid IDAlloc
 
+	HTMLWriter     HTMLWriter
 	FatalCleanup   func()
 	PrintOrHtmlSSA bool
 	RuleMatches    map[string]int

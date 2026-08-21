@@ -170,6 +170,7 @@ var RISCV64 struct {
 	HasZvksed         bool
 	HasZvksh          bool
 	HasZvkt           bool
+	VLENB             uint
 	_                 CacheLinePad
 }
 

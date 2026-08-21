@@ -6,6 +6,7 @@ package ssa
 
 import (
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/time"
 )
 
 type Compiler interface {
@@ -18,6 +19,8 @@ type HTMLWriter interface {
 	FlushPhases()
 	WritePhase(phase, title string)
 	WriteColumn(phase, title, class, html string)
+	DebugInfo(v func(*Value) string)
+	TimeFormatting() time.Duration
 	Close()
 }
 

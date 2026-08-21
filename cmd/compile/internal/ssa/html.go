@@ -6,7 +6,7 @@ package ssa
 
 func (v *Value) HTML() string
 
-func (v *Value) LongHTML() string
+func (v *Value) LongHTML(debugStr string) string
 
 func (b *Block) HTML() string
 

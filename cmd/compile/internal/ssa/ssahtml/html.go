@@ -7,18 +7,21 @@ package ssahtml
 import (
 	"github.com/shogo82148/std/bytes"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/time"
 
 	"github.com/shogo82148/std/cmd/compile/internal/ssa"
 )
 
 type HTMLWriter struct {
-	w             io.WriteCloser
-	Func          *ssa.Func
-	path          string
-	dot           *dotWriter
-	prevHash      []byte
-	pendingPhases []string
-	pendingTitles []string
+	w              io.WriteCloser
+	Func           *ssa.Func
+	path           string
+	dot            *dotWriter
+	prevHash       []byte
+	pendingPhases  []string
+	pendingTitles  []string
+	debugInfo      []string
+	timeFormatting time.Duration
 }
 
 func NewHTMLWriter(path string, f *ssa.Func, cfgMask string, passes []ssa.Pass) *HTMLWriter
@@ -72,4 +75,8 @@ func (w *HTMLWriter) Printf(msg string, v ...any)
 
 func (w *HTMLWriter) WriteString(s string)
 
-func HTML(f *ssa.Func, phase string, dot *dotWriter) string
+func (w *HTMLWriter) DebugInfo(format func(*ssa.Value) string)
+
+func (w *HTMLWriter) TimeFormatting() time.Duration
+
+func HTML(f *ssa.Func, phase string, dot *dotWriter, debugStr []string) string
