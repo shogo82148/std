@@ -4760,6 +4760,10 @@ const (
 	OpARM64VCMHS4S
 	OpARM64VCMHS8H
 	OpARM64VCMHS16B
+	OpARM64VCMTST2D
+	OpARM64VCMTST4S
+	OpARM64VCMTST8H
+	OpARM64VCMTST16B
 	OpARM64VCNT16B
 	OpARM64VEOR16B
 	OpARM64VFABS2D
@@ -81605,6 +81609,66 @@ var OpcodeTable = [...]OpInfo{
 		Name:   "VCMHS16B",
 		ArgLen: 2,
 		asm:    arm64.AVCMHS,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "VCMTST2D",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AVCMTST,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "VCMTST4S",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AVCMTST,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "VCMTST8H",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AVCMTST,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "VCMTST16B",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AVCMTST,
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},

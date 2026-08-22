@@ -4,16 +4,19 @@
 
 // simdgen is an experiment in generating Go <-> asm SIMD mappings.
 //
-// Usage: simdgen [-xedPath=path | -arm64Path=path] [-q=query] input.yaml...
+// Usage: simdgen [-xedPath=path | -arm64Path=path | -svePath=path] [-q=query] input.yaml...
 //
-// Only one of -xedPath or -arm64Path may be specified.
+// Only one of -xedPath, -arm64Path or -svePath may be specified.
 //
 // If -xedPath is provided, one of the inputs is a sum of op-code definitions
 // generated from the Intel XED data at path.
 //
-// If -arm64Path is provided, one of the inputs is a set of instruction
-// definitions parsed from ARM64 ISA XML files at path (obtained from
+// If -arm64Path is provided, one of the inputs is a set of NEON (advsimd)
+// instruction definitions parsed from ARM64 ISA XML files at path (obtained from
 // https://developer.arm.com/-/cdn-downloads/permalink/Exploration-Tools-A64-ISA/ISA_A64/ISA_A64_xml_A_profile-2025-12.tar.gz).
+//
+// If -svePath is provided, one of the inputs is a set of SVE / SVE2 instruction
+// definitions parsed from the same ARM64 ISA XML files. See the sve package.
 //
 // If input YAML files are provided, each file is read as an input value. See
 // [unify.Closure.UnmarshalYAML] or "go doc unify.Closure.UnmarshalYAML" for the
