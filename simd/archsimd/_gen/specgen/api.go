@@ -5,6 +5,7 @@
 package specgen
 
 import (
+	"github.com/shogo82148/std/go/types"
 	"github.com/shogo82148/std/simd/archsimd/_gen/specgen/specexpr"
 )
 
@@ -21,6 +22,12 @@ type Func struct {
 
 	In  []Arg
 	Out []Arg
+
+	// specFunc and instance describe the underlying spec function and its
+	// instantiation that led to this API function.
+	specFunc      *specFunc
+	typeParamVars map[*types.TypeParam]specexpr.Variable
+	instance      *specexpr.Bindings
 }
 
 type Arg struct {
@@ -31,3 +38,9 @@ type Arg struct {
 func (f *Func) Signature() string
 
 func (f *Func) Decl() string
+
+// SpecFunc returns information about the spec package function that generated
+// f. name is the name of the function in the spec package, sig is its
+// uninstantiated signature type, and typeArgs is a slice of the type arguments
+// it was instantiated on to construct f.
+func (f *Func) SpecFunc() (name string, sig *types.Signature, typeArgs []types.Type)

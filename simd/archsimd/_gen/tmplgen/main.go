@@ -6,7 +6,9 @@ package main
 
 func Map[T, U any](f func(T) U, in []T) []U
 
-const SIMD = "../../"
-const TD = "../../internal/simd_test/"
-
-var SSA = "../../../../cmd/compile/internal/ssa/"
+// File paths
+const (
+	SIMD = "simd/archsimd/"
+	TD   = "simd/archsimd/internal/simd_test/"
+	SSA  = "cmd/compile/internal/ssacompile/"
+)
