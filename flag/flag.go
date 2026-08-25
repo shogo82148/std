@@ -87,6 +87,7 @@ import (
 	"github.com/shogo82148/std/errors"
 	"github.com/shogo82148/std/fmt"
 	"github.com/shogo82148/std/io"
+	"github.com/shogo82148/std/iter"
 	"github.com/shogo82148/std/os"
 	"github.com/shogo82148/std/time"
 )
@@ -158,6 +159,7 @@ type Flag struct {
 	Usage    string
 	Value    Value
 	DefValue string
+	IsSet    bool
 }
 
 // Output returns the destination for usage and error messages. [os.Stderr] is returned if
@@ -177,6 +179,14 @@ func (f *FlagSet) SetOutput(output io.Writer)
 // VisitAll visits the flags in lexicographical order, calling fn for each.
 // It visits all flags, even those not set.
 func (f *FlagSet) VisitAll(fn func(*Flag))
+
+// All yields the flags in lexicographical order.
+// It visits all flags, even those not set.
+func (f *FlagSet) All() iter.Seq[*Flag]
+
+// All yields all command-line flags, in lexicographical order.
+// It visits all flags, even those not set.
+func All() iter.Seq[*Flag]
 
 // VisitAll visits the command-line flags in lexicographical order, calling
 // fn for each. It visits all flags, even those not set.

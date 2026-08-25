@@ -4703,19 +4703,18 @@ const (
 	OpARM64DMB
 	OpARM64ZERO
 	OpARM64VMOVI16B
-	OpARM64ZADDBPred
-	OpARM64ZLD1BPredload
-	OpARM64ZST1BPredstore
-	OpARM64PWHILELTB
-	OpARM64ZCMPGTB
-	OpARM64ZSELB
-	OpARM64RDVL
-	OpARM64PPFALSE
-	OpARM64ZDUPBconst
 	OpARM64ZLDRload
 	OpARM64ZSTRstore
 	OpARM64PLDRload
 	OpARM64PSTRstore
+	OpARM64ZDUPBconst
+	OpARM64RDVL
+	OpARM64PWHILELTB
+	OpARM64PWHILELTH
+	OpARM64PWHILELTS
+	OpARM64PWHILELTD
+	OpARM64ZLD1BPredload
+	OpARM64ZST1BPredstore
 	OpARM64VABS2D
 	OpARM64VABS4S
 	OpARM64VABS8H
@@ -5026,6 +5025,24 @@ const (
 	OpARM64VUSHR4S
 	OpARM64VUSHR8H
 	OpARM64VUSHR16B
+	OpARM64ZADDB
+	OpARM64ZADDD
+	OpARM64ZADDH
+	OpARM64ZADDS
+	OpARM64ZCMPGTB
+	OpARM64ZCMPGTD
+	OpARM64ZCMPGTH
+	OpARM64ZCMPGTS
+	OpARM64ZFADDD
+	OpARM64ZFADDS
+	OpARM64ZSQADDB
+	OpARM64ZSQADDD
+	OpARM64ZSQADDH
+	OpARM64ZSQADDS
+	OpARM64ZUQADDB
+	OpARM64ZUQADDD
+	OpARM64ZUQADDH
+	OpARM64ZUQADDS
 
 	OpLOONG64NEGV
 	OpLOONG64NEGF
@@ -6932,11 +6949,8 @@ const (
 	OpIsNaNFloat64x2
 	OpIsNaNFloat64x4
 	OpIsNaNFloat64x8
-	OpCount8s
-	OpAddInt8s
-	OpMergeInt8s
-	OpGreaterInt8s
 	OpScalableVectorLen
+	OpCount8s
 	OpAESDecryptLastRoundUint8x16
 	OpAESDecryptLastRoundUint8x32
 	OpAESDecryptLastRoundUint8x64
@@ -6964,21 +6978,27 @@ const (
 	OpAbsInt64x2
 	OpAbsInt64x4
 	OpAbsInt64x8
+	OpAddFloat32s
 	OpAddFloat32x4
 	OpAddFloat32x8
 	OpAddFloat32x16
+	OpAddFloat64s
 	OpAddFloat64x2
 	OpAddFloat64x4
 	OpAddFloat64x8
+	OpAddInt8s
 	OpAddInt8x16
 	OpAddInt8x32
 	OpAddInt8x64
+	OpAddInt16s
 	OpAddInt16x8
 	OpAddInt16x16
 	OpAddInt16x32
+	OpAddInt32s
 	OpAddInt32x4
 	OpAddInt32x8
 	OpAddInt32x16
+	OpAddInt64s
 	OpAddInt64x2
 	OpAddInt64x4
 	OpAddInt64x8
@@ -6986,31 +7006,43 @@ const (
 	OpAddOddSubEvenFloat32x8
 	OpAddOddSubEvenFloat64x2
 	OpAddOddSubEvenFloat64x4
+	OpAddSaturatedInt8s
 	OpAddSaturatedInt8x16
 	OpAddSaturatedInt8x32
 	OpAddSaturatedInt8x64
+	OpAddSaturatedInt16s
 	OpAddSaturatedInt16x8
 	OpAddSaturatedInt16x16
 	OpAddSaturatedInt16x32
+	OpAddSaturatedInt32s
 	OpAddSaturatedInt32x4
+	OpAddSaturatedInt64s
 	OpAddSaturatedInt64x2
+	OpAddSaturatedUint8s
 	OpAddSaturatedUint8x16
 	OpAddSaturatedUint8x32
 	OpAddSaturatedUint8x64
+	OpAddSaturatedUint16s
 	OpAddSaturatedUint16x8
 	OpAddSaturatedUint16x16
 	OpAddSaturatedUint16x32
+	OpAddSaturatedUint32s
 	OpAddSaturatedUint32x4
+	OpAddSaturatedUint64s
 	OpAddSaturatedUint64x2
+	OpAddUint8s
 	OpAddUint8x16
 	OpAddUint8x32
 	OpAddUint8x64
+	OpAddUint16s
 	OpAddUint16x8
 	OpAddUint16x16
 	OpAddUint16x32
+	OpAddUint32s
 	OpAddUint32x4
 	OpAddUint32x8
 	OpAddUint32x16
+	OpAddUint64s
 	OpAddUint64x2
 	OpAddUint64x4
 	OpAddUint64x8
@@ -7437,15 +7469,19 @@ const (
 	OpGreaterFloat64x2
 	OpGreaterFloat64x4
 	OpGreaterFloat64x8
+	OpGreaterInt8s
 	OpGreaterInt8x16
 	OpGreaterInt8x32
 	OpGreaterInt8x64
+	OpGreaterInt16s
 	OpGreaterInt16x8
 	OpGreaterInt16x16
 	OpGreaterInt16x32
+	OpGreaterInt32s
 	OpGreaterInt32x4
 	OpGreaterInt32x8
 	OpGreaterInt32x16
+	OpGreaterInt64s
 	OpGreaterInt64x2
 	OpGreaterInt64x4
 	OpGreaterInt64x8
@@ -80820,130 +80856,6 @@ var OpcodeTable = [...]OpInfo{
 		},
 	},
 	{
-		Name:         "ZADDBPred",
-		ArgLen:       3,
-		ResultInArg0: true,
-		asm:          arm64.AZADD,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
-				{0, RegMask{V1: 9223372034707292160, V2: 0}},
-				{1, RegMask{V1: 9223372034707292160, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 9223372034707292160, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:           "ZLD1BPredload",
-		AuxType:        AuxTypeSymOff,
-		ArgLen:         3,
-		FaultOnNilArg0: true,
-		symEffect:      SymRead,
-		asm:            arm64.AZLD1B,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
-				{0, RegMask{V1: 1476395007, V2: 32768}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 9223372034707292160, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:           "ZST1BPredstore",
-		AuxType:        AuxTypeSymOff,
-		ArgLen:         4,
-		FaultOnNilArg0: true,
-		symEffect:      SymWrite,
-		asm:            arm64.AZST1B,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
-				{0, RegMask{V1: 1476395007, V2: 32768}},
-				{1, RegMask{V1: 9223372034707292160, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:   "PWHILELTB",
-		ArgLen: 2,
-		asm:    arm64.APWHILELT,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{0, RegMask{V1: 402653183, V2: 0}},
-				{1, RegMask{V1: 402653183, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
-			},
-		},
-	},
-	{
-		Name:   "ZCMPGTB",
-		ArgLen: 3,
-		asm:    arm64.AZCMPGT,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
-				{0, RegMask{V1: 9223372034707292160, V2: 0}},
-				{1, RegMask{V1: 9223372034707292160, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
-			},
-		},
-	},
-	{
-		Name:   "ZSELB",
-		ArgLen: 3,
-		asm:    arm64.AZSEL,
-		Reg: RegInfo{
-			Inputs: []InputInfo{
-				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
-				{0, RegMask{V1: 9223372034707292160, V2: 0}},
-				{1, RegMask{V1: 9223372034707292160, V2: 0}},
-			},
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 9223372034707292160, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:    "RDVL",
-		AuxType: AuxTypeInt64,
-		ArgLen:  0,
-		asm:     arm64.ARDVL,
-		Reg: RegInfo{
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 335544319, V2: 0}},
-			},
-		},
-	},
-	{
-		Name:   "PPFALSE",
-		ArgLen: 0,
-		asm:    arm64.APPFALSE,
-		Reg: RegInfo{
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
-			},
-		},
-	},
-	{
-		Name:    "ZDUPBconst",
-		AuxType: AuxTypeInt8,
-		ArgLen:  0,
-		asm:     arm64.AZDUP,
-		Reg: RegInfo{
-			Outputs: []OutputInfo{
-				{0, RegMask{V1: 9223372034707292160, V2: 0}},
-			},
-		},
-	},
-	{
 		Name:           "ZLDRload",
 		AuxType:        AuxTypeSymOff,
 		ArgLen:         2,
@@ -81000,6 +80912,116 @@ var OpcodeTable = [...]OpInfo{
 			Inputs: []InputInfo{
 				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
 				{0, RegMask{V1: 1476395007, V2: 32768}},
+			},
+		},
+	},
+	{
+		Name:    "ZDUPBconst",
+		AuxType: AuxTypeInt8,
+		ArgLen:  0,
+		asm:     arm64.AZDUP,
+		Reg: RegInfo{
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:    "RDVL",
+		AuxType: AuxTypeInt64,
+		ArgLen:  0,
+		asm:     arm64.ARDVL,
+		Reg: RegInfo{
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 335544319, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "PWHILELTB",
+		ArgLen: 2,
+		asm:    arm64.APWHILELT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 402653183, V2: 0}},
+				{1, RegMask{V1: 402653183, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:   "PWHILELTH",
+		ArgLen: 2,
+		asm:    arm64.APWHILELT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 402653183, V2: 0}},
+				{1, RegMask{V1: 402653183, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:   "PWHILELTS",
+		ArgLen: 2,
+		asm:    arm64.APWHILELT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 402653183, V2: 0}},
+				{1, RegMask{V1: 402653183, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:   "PWHILELTD",
+		ArgLen: 2,
+		asm:    arm64.APWHILELT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 402653183, V2: 0}},
+				{1, RegMask{V1: 402653183, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:           "ZLD1BPredload",
+		AuxType:        AuxTypeSymOff,
+		ArgLen:         3,
+		FaultOnNilArg0: true,
+		symEffect:      SymRead,
+		asm:            arm64.AZLD1B,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{1, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 1476395007, V2: 32768}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:           "ZST1BPredstore",
+		AuxType:        AuxTypeSymOff,
+		ArgLen:         4,
+		FaultOnNilArg0: true,
+		symEffect:      SymWrite,
+		asm:            arm64.AZST1B,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 1476395007, V2: 32768}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 		},
 	},
@@ -85371,6 +85393,276 @@ var OpcodeTable = [...]OpInfo{
 		Reg: RegInfo{
 			Inputs: []InputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZADDB",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZADDD",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZADDH",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZADDS",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:   "ZCMPGTB",
+		ArgLen: 3,
+		asm:    arm64.AZCMPGT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:   "ZCMPGTD",
+		ArgLen: 3,
+		asm:    arm64.AZCMPGT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:   "ZCMPGTH",
+		ArgLen: 3,
+		asm:    arm64.AZCMPGT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:   "ZCMPGTS",
+		ArgLen: 3,
+		asm:    arm64.AZCMPGT,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{2, RegMask{V1: 9223372036854775808, V2: 32767}},
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372036854775808, V2: 32767}},
+			},
+		},
+	},
+	{
+		Name:        "ZFADDD",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZFADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZFADDS",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZFADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZSQADDB",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZSQADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZSQADDD",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZSQADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZSQADDH",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZSQADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZSQADDS",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZSQADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZUQADDB",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZUQADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZUQADDD",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZUQADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZUQADDH",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZUQADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+			Outputs: []OutputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+			},
+		},
+	},
+	{
+		Name:        "ZUQADDS",
+		ArgLen:      2,
+		Commutative: true,
+		asm:         arm64.AZUQADD,
+		Reg: RegInfo{
+			Inputs: []InputInfo{
+				{0, RegMask{V1: 9223372034707292160, V2: 0}},
+				{1, RegMask{V1: 9223372034707292160, V2: 0}},
 			},
 			Outputs: []OutputInfo{
 				{0, RegMask{V1: 9223372034707292160, V2: 0}},
@@ -108801,29 +109093,13 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
-		Name:    "Count8s",
-		ArgLen:  1,
-		Generic: true,
-	},
-	{
-		Name:        "AddInt8s",
-		ArgLen:      2,
-		Commutative: true,
-		Generic:     true,
-	},
-	{
-		Name:    "MergeInt8s",
-		ArgLen:  3,
-		Generic: true,
-	},
-	{
-		Name:    "GreaterInt8s",
-		ArgLen:  2,
-		Generic: true,
-	},
-	{
 		Name:    "ScalableVectorLen",
 		ArgLen:  0,
+		Generic: true,
+	},
+	{
+		Name:    "Count8s",
+		ArgLen:  1,
 		Generic: true,
 	},
 	{
@@ -108962,6 +109238,12 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:        "AddFloat32s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddFloat32x4",
 		ArgLen:      2,
 		Commutative: true,
@@ -108975,6 +109257,12 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:        "AddFloat32x16",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
+		Name:        "AddFloat64s",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
@@ -108998,6 +109286,12 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
+		Name:        "AddInt8s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddInt8x16",
 		ArgLen:      2,
 		Commutative: true,
@@ -109011,6 +109305,12 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:        "AddInt8x64",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
+		Name:        "AddInt16s",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
@@ -109034,6 +109334,12 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
+		Name:        "AddInt32s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddInt32x4",
 		ArgLen:      2,
 		Commutative: true,
@@ -109047,6 +109353,12 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:        "AddInt32x16",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
+		Name:        "AddInt64s",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
@@ -109090,6 +109402,12 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:        "AddSaturatedInt8s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddSaturatedInt8x16",
 		ArgLen:      2,
 		Commutative: true,
@@ -109103,6 +109421,12 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:        "AddSaturatedInt8x64",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
+		Name:        "AddSaturatedInt16s",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
@@ -109126,13 +109450,31 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
+		Name:        "AddSaturatedInt32s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddSaturatedInt32x4",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
 	},
 	{
+		Name:        "AddSaturatedInt64s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddSaturatedInt64x2",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
+		Name:        "AddSaturatedUint8s",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
@@ -109156,6 +109498,12 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
+		Name:        "AddSaturatedUint16s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddSaturatedUint16x8",
 		ArgLen:      2,
 		Commutative: true,
@@ -109174,13 +109522,31 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
+		Name:        "AddSaturatedUint32s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddSaturatedUint32x4",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
 	},
 	{
+		Name:        "AddSaturatedUint64s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddSaturatedUint64x2",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
+		Name:        "AddUint8s",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
@@ -109204,6 +109570,12 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
+		Name:        "AddUint16s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddUint16x8",
 		ArgLen:      2,
 		Commutative: true,
@@ -109222,6 +109594,12 @@ var OpcodeTable = [...]OpInfo{
 		Generic:     true,
 	},
 	{
+		Name:        "AddUint32s",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
 		Name:        "AddUint32x4",
 		ArgLen:      2,
 		Commutative: true,
@@ -109235,6 +109613,12 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:        "AddUint32x16",
+		ArgLen:      2,
+		Commutative: true,
+		Generic:     true,
+	},
+	{
+		Name:        "AddUint64s",
 		ArgLen:      2,
 		Commutative: true,
 		Generic:     true,
@@ -111437,6 +111821,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "GreaterInt8s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "GreaterInt8x16",
 		ArgLen:  2,
 		Generic: true,
@@ -111448,6 +111837,11 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "GreaterInt8x64",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "GreaterInt16s",
 		ArgLen:  2,
 		Generic: true,
 	},
@@ -111467,6 +111861,11 @@ var OpcodeTable = [...]OpInfo{
 		Generic: true,
 	},
 	{
+		Name:    "GreaterInt32s",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
 		Name:    "GreaterInt32x4",
 		ArgLen:  2,
 		Generic: true,
@@ -111478,6 +111877,11 @@ var OpcodeTable = [...]OpInfo{
 	},
 	{
 		Name:    "GreaterInt32x16",
+		ArgLen:  2,
+		Generic: true,
+	},
+	{
+		Name:    "GreaterInt64s",
 		ArgLen:  2,
 		Generic: true,
 	},

@@ -82,4 +82,19 @@ type Operand struct {
 	// Currently only list number 0 is supported (we might need to teach regalloc handle register lists
 	// to support more than one register in the list).
 	ListNumber *int
+	// ImplicitAllTrue marks an SVE governing-predicate input that is dropped from
+	// the user-facing (unpredicated) API: the generated method/generic op/intrinsic
+	// omit it, and the lowering synthesizes an all-true predicate for it. This is
+	// how predicated-only SVE instructions (e.g. ZCMPGT) expose an unpredicated Go
+	// API, for #79781.
+	ImplicitAllTrue *bool
 }
+
+// DecodeUnified translates an SVE scalable operand's bits:"scalable" marker into
+// the concrete Go-visible width before the generic struct decode. The SVE loader
+// emits bits:"scalable" (a non-numeric discriminator) so scalable operands never
+// unify with the fixed-width NEON/AVX types that share types.yaml; by the time we
+// decode, unification is done and Bits (an *int) needs a real width. We use
+// maxVectorBits and derive lanes = maxVectorBits/elemBits. Non-scalable operands
+// (numeric bits) decode unchanged.
+func (o *Operand) DecodeUnified(v *unify.Value) error
