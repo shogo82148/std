@@ -180,10 +180,10 @@ func (x Int16s) Not() Int16s
 func (x Int16s) Or(y Int16s) Int16s
 
 // ShiftAllLeft shifts all elements left by y bits.
-func (x Int16s) ShiftAllLeft(y uint8) Int16s
+func (x Int16s) ShiftAllLeft(y uint64) Int16s
 
 // ShiftAllRight shifts all elements right by y bits.
-func (x Int16s) ShiftAllRight(y uint8) Int16s
+func (x Int16s) ShiftAllRight(y uint64) Int16s
 
 // RotateAllLeft rotates all elements left by dist bits.
 func (x Int16s) RotateAllLeft(dist uint64) Int16s
@@ -285,10 +285,10 @@ func (x Int32s) Not() Int32s
 func (x Int32s) Or(y Int32s) Int32s
 
 // ShiftAllLeft shifts all elements left by y bits.
-func (x Int32s) ShiftAllLeft(y uint8) Int32s
+func (x Int32s) ShiftAllLeft(y uint64) Int32s
 
 // ShiftAllRight shifts all elements right by y bits.
-func (x Int32s) ShiftAllRight(y uint8) Int32s
+func (x Int32s) ShiftAllRight(y uint64) Int32s
 
 // RotateAllLeft rotates all elements left by dist bits.
 func (x Int32s) RotateAllLeft(dist uint64) Int32s
@@ -372,7 +372,7 @@ func (x Int64s) Not() Int64s
 func (x Int64s) Or(y Int64s) Int64s
 
 // ShiftAllLeft shifts all elements left by y bits.
-func (x Int64s) ShiftAllLeft(y uint8) Int64s
+func (x Int64s) ShiftAllLeft(y uint64) Int64s
 
 // RotateAllLeft rotates all elements left by dist bits.
 func (x Int64s) RotateAllLeft(dist uint64) Int64s
@@ -552,10 +552,10 @@ func (x Uint16s) Not() Uint16s
 func (x Uint16s) Or(y Uint16s) Uint16s
 
 // ShiftAllLeft shifts all elements left by y bits.
-func (x Uint16s) ShiftAllLeft(y uint8) Uint16s
+func (x Uint16s) ShiftAllLeft(y uint64) Uint16s
 
 // ShiftAllRight shifts all elements right by y bits.
-func (x Uint16s) ShiftAllRight(y uint8) Uint16s
+func (x Uint16s) ShiftAllRight(y uint64) Uint16s
 
 // RotateAllLeft rotates all elements left by dist bits.
 func (x Uint16s) RotateAllLeft(dist uint64) Uint16s
@@ -654,10 +654,10 @@ func (x Uint32s) Not() Uint32s
 func (x Uint32s) Or(y Uint32s) Uint32s
 
 // ShiftAllLeft shifts all elements left by y bits.
-func (x Uint32s) ShiftAllLeft(y uint8) Uint32s
+func (x Uint32s) ShiftAllLeft(y uint64) Uint32s
 
 // ShiftAllRight shifts all elements right by y bits.
-func (x Uint32s) ShiftAllRight(y uint8) Uint32s
+func (x Uint32s) ShiftAllRight(y uint64) Uint32s
 
 // RotateAllLeft rotates all elements left by dist bits.
 func (x Uint32s) RotateAllLeft(dist uint64) Uint32s
@@ -747,10 +747,10 @@ func (x Uint64s) Not() Uint64s
 func (x Uint64s) Or(y Uint64s) Uint64s
 
 // ShiftAllLeft shifts all elements left by y bits.
-func (x Uint64s) ShiftAllLeft(y uint8) Uint64s
+func (x Uint64s) ShiftAllLeft(y uint64) Uint64s
 
 // ShiftAllRight shifts all elements right by y bits.
-func (x Uint64s) ShiftAllRight(y uint8) Uint64s
+func (x Uint64s) ShiftAllRight(y uint64) Uint64s
 
 // RotateAllLeft rotates all elements left by dist bits.
 func (x Uint64s) RotateAllLeft(dist uint64) Uint64s

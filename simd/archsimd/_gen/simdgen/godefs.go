@@ -5,6 +5,7 @@
 package main
 
 import (
+	"github.com/shogo82148/std/simd/archsimd/_gen/simdgen/types"
 	"github.com/shogo82148/std/simd/archsimd/_gen/unify"
 )
 
@@ -29,7 +30,7 @@ type Operation struct {
 	// In is the sequence of parameters to the Go method.
 	//
 	// For masked operations, this will have the mask operand appended.
-	In []Operand
+	In []types.Operand
 }
 
 func (o *Operation) IsMasked() bool
@@ -39,62 +40,3 @@ func (o *Operation) SkipMaskedMethod() bool
 func (o *Operation) DecodeUnified(v *unify.Value) error
 
 func (o *Operation) VectorWidth() int
-
-type Operand struct {
-	Class string
-
-	Go     *string
-	AsmPos int
-
-	Base     *string
-	ElemBits *int
-	Bits     *int
-
-	Const *string
-	// Optional immediate arg offsets. If this field is non-nil,
-	// This operand will be an immediate operand:
-	// The compiler will right-shift the user-passed value by ImmOffset and set it as the AuxInt
-	// field of the operation.
-	ImmOffset *string
-	ImmMax    *int
-	Name      *string
-	Lanes     *int
-	// TreatLikeAScalarOfSize means only the lower $TreatLikeAScalarOfSize bits of the vector
-	// is used, so at the API level we can make it just a scalar value of this size; Then we
-	// can overwrite it to a vector of the right size during intrinsics stage.
-	TreatLikeAScalarOfSize *int
-	// If non-nil, it means the [Class] field is overwritten here, right now this is used to
-	// overwrite the results of AVX2 compares to masks.
-	OverwriteClass *string
-	// If non-nil, it means the [Base] field is overwritten here. This field exist solely
-	// because Intel's XED data is inconsistent. e.g. VANDNP[SD] marks its operand int.
-	OverwriteBase *string
-	// If non-nil, it means the [ElementBits] field is overwritten. This field exist solely
-	// because Intel's XED data is inconsistent. e.g. AVX512 VPMADDUBSW marks its operand
-	// elemBits 16, which should be 8.
-	OverwriteElementBits *int
-	// For greg only, specifically VPEXTR[BW], their results are specified by Intel as 32 bits,
-	// but they really are 8/16 bits.
-	OverwriteBits *int
-	// FixedReg is the name of the fixed registers
-	FixedReg *string
-	// If non-nil, marks this vreg as a register list operand (for TBL/TBX).
-	// Currently only list number 0 is supported (we might need to teach regalloc handle register lists
-	// to support more than one register in the list).
-	ListNumber *int
-	// ImplicitAllTrue marks an SVE governing-predicate input that is dropped from
-	// the user-facing (unpredicated) API: the generated method/generic op/intrinsic
-	// omit it, and the lowering synthesizes an all-true predicate for it. This is
-	// how predicated-only SVE instructions (e.g. ZCMPGT) expose an unpredicated Go
-	// API, for #79781.
-	ImplicitAllTrue *bool
-}
-
-// DecodeUnified translates an SVE scalable operand's bits:"scalable" marker into
-// the concrete Go-visible width before the generic struct decode. The SVE loader
-// emits bits:"scalable" (a non-numeric discriminator) so scalable operands never
-// unify with the fixed-width NEON/AVX types that share types.yaml; by the time we
-// decode, unification is done and Bits (an *int) needs a real width. We use
-// maxVectorBits and derive lanes = maxVectorBits/elemBits. Non-scalable operands
-// (numeric bits) decode unchanged.
-func (o *Operand) DecodeUnified(v *unify.Value) error

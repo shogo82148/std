@@ -61,10 +61,6 @@ func (op Operation) ImmName() string
 
 func (op Operation) ImmType() string
 
-func (o Operand) OpName(s string) string
-
-func (o Operand) OpNameAndType(s string) string
-
 // GoExported returns [Go] with first character capitalized.
 func (op Operation) GoExported() string
 
@@ -115,5 +111,3 @@ func (op Operation) Op4NameAndType(s string) string
 func (op Operation) GenericName() string
 
 func (o Operation) String() string
-
-func (op Operand) String() string
