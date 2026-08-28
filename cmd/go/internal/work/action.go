@@ -173,6 +173,9 @@ func (b *Builder) CompileAction(mode, depMode BuildMode, p *load.Package) *Actio
 // to make sure that the install depends on (runs after) vet.
 func (b *Builder) VetAction(s *modload.Loader, mode, depMode BuildMode, needFix bool, p *load.Package) *Action
 
+// ExportAction returns an action to export the type information of p.
+func (b *Builder) ExportAction(p *load.Package) *Action
+
 // LinkAction returns the action for linking p into an executable
 // and possibly installing the result (according to mode).
 // depMode is the action (build or install) to use when compiling dependencies.
