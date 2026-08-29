@@ -29,6 +29,9 @@ type SparseTreeNode struct {
 	// This simplifies life if we wish to query information about x
 	// when x is both an input to and output of a block.
 	Entry, Exit int32
+
+	// level is the depth of the block in the tree.
+	level int32
 }
 
 const (
@@ -51,7 +54,7 @@ func (s *SparseTreeNode) String() string
 // dominates.
 func (t SparseTree) Treestructure(b *Block) string
 
-func (t SparseTree) NumberBlock(b *Block, n int32) int32
+func (t SparseTree) NumberBlock(b *Block, n int32, level int32) int32
 
 // Sibling returns a sibling of x in the dominator tree (i.e.,
 // a node with the same immediate dominator) or nil if there
@@ -70,6 +73,11 @@ func (t SparseTree) Child(x *Block) *Block
 // Parent returns the parent of x in the dominator tree, or
 // nil if x is the function's entry.
 func (t SparseTree) Parent(x *Block) *Block
+
+// Level returns the depth of x in the tree: the root is level 1, its
+// children 2, and so on. Blocks that are not in the tree (unreachable
+// from the entry) have level 0.
+func (t SparseTree) Level(x *Block) int
 
 // IsAncestorEq reports whether x is an ancestor of or equal to y.
 func (t SparseTree) IsAncestorEq(x, y *Block) bool

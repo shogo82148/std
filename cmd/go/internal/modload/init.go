@@ -11,6 +11,7 @@ import (
 	"github.com/shogo82148/std/sync"
 
 	"github.com/shogo82148/std/cmd/go/internal/modfetch"
+	"github.com/shogo82148/std/cmd/internal/par"
 
 	"golang.org/x/mod/modfile"
 	"golang.org/x/mod/module"
@@ -228,6 +229,12 @@ type Loader struct {
 	// disabled
 	workFilePath string
 	fetcher      *modfetch.Fetcher
+
+	// rawGoModSummaryCache is per-loader because reading a go.mod verifies it
+	// against this loader's go.sum files, recording the checksum as one to keep.
+	// A shared cache would let one loader's verification stand in for another's,
+	// leaving the second loader's go.sum missing the entry.
+	rawGoModSummaryCache *par.ErrCache[module.Version, *modFileSummary]
 
 	// PackageCache is a lookup cache for LoadImport,
 	// so that if we look up a package multiple times
