@@ -381,6 +381,10 @@ type WriteOpts struct {
 // WriteGoMod writes the current build list back to go.mod.
 func WriteGoMod(ld *Loader, ctx context.Context, opts WriteOpts) error
 
+// WriteTidyGoSum writes the checksums needed to reproduce the current module
+// graph and removes unneeded checksums.
+func WriteTidyGoSum(ld *Loader, ctx context.Context) error
+
 // UpdateGoModFromReqs returns a modified go.mod file using the current
 // requirements. It does not commit these changes to disk.
 func UpdateGoModFromReqs(ld *Loader, ctx context.Context, opts WriteOpts) (before, after []byte, modFile *modfile.File, err error)

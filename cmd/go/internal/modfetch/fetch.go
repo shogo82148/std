@@ -64,6 +64,9 @@ func (f *Fetcher) SetGoSumFile(str string)
 
 func (f *Fetcher) AddWorkspaceGoSumFile(file string)
 
+// ReloadWorkspaceGoSumFiles reloads the go.sum files for workspace modules.
+func (f *Fetcher) ReloadWorkspaceGoSumFiles() error
+
 // Reset resets globals in the modfetch package, so previous loads don't affect
 // contents of go.sum files.
 func (f *Fetcher) Reset()

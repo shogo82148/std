@@ -86,11 +86,6 @@ type Client struct {
 	//
 	// The Client cancels requests to the underlying Transport
 	// as if the Request's Context ended.
-	//
-	// For compatibility, the Client will also use the deprecated
-	// CancelRequest method on Transport if found. New
-	// RoundTripper implementations should use the Request's Context
-	// for cancellation instead of implementing CancelRequest.
 	Timeout time.Duration
 }
 

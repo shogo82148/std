@@ -85,9 +85,6 @@ type Transport struct {
 	idleConnWait map[connectMethodKey]wantConnQueue
 	idleLRU      connLRU
 
-	reqMu       sync.Mutex
-	reqCanceler map[*Request]context.CancelCauseFunc
-
 	altMu    sync.Mutex
 	altProto atomic.Value
 
@@ -349,12 +346,10 @@ func (t *Transport) RegisterProtocol(scheme string, rt RoundTripper)
 // in use.
 func (t *Transport) CloseIdleConnections()
 
-// CancelRequest cancels an in-flight request by closing its connection.
-// CancelRequest should only be called after [Transport.RoundTrip] has returned.
+// CancelRequest is obsolete and does nothing.
 //
-// Deprecated: Use [Request.WithContext] to create a request with a
-// cancelable context instead. CancelRequest cannot cancel HTTP/2
-// requests. This may become a no-op in a future release of Go.
+// Deprecated: Use [NewRequestWithContext] to create a request with a
+// cancelable context instead.
 func (t *Transport) CancelRequest(req *Request)
 
 var _ io.ReaderFrom = (*persistConnWriter)(nil)
