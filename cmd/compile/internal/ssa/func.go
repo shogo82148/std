@@ -128,11 +128,11 @@ func (f *Func) NewSparseSet(n int) *SparseSet
 func (f *Func) RetSparseSet(ss *SparseSet)
 
 // NewSparseMap returns a sparse map that can store at least up to n integers.
-func (f *Func) NewSparseMap(n int) *sparseMap
+func (f *Func) NewSparseMap(n int) *SparseMap
 
 // RetSparseMap returns a sparse map to the config's cache of sparse
 // sets to be reused by f.newSparseMap.
-func (f *Func) RetSparseMap(ss *sparseMap)
+func (f *Func) RetSparseMap(ss *SparseMap)
 
 // NewSparseMapPos returns a sparse map that can store at least up to n integers.
 func (f *Func) NewSparseMapPos(n int) *SparseMapPos

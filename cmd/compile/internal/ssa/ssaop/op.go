@@ -43,6 +43,7 @@ const (
 	AuxTypeS390XCCMask
 	AuxTypeS390XCCMaskInt8
 	AuxTypeS390XCCMaskUint8
+	AuxTypeSizeAndAlign
 )
 
 // An Op encodes the specific operation that a Value performs.

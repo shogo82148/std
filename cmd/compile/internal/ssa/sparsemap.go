@@ -6,7 +6,9 @@ package ssa
 
 // NewSparseMap returns a sparseMap that can map
 // integers between 0 and n-1 to int32s.
-func NewSparseMap(n int) *sparseMap
+func NewSparseMap(n int) *SparseMap
+
+type SparseMap = genericSparseMap[ID, int32]
 
 func (s *genericSparseMap[K, V]) Contains(k K) bool
 

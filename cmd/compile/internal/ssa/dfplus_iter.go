@@ -10,12 +10,13 @@ import (
 
 // IterDomFrontierPlus iterates the DF+ of seeds: every block at which
 // a phi may need to be placed if a variable were defined in the seed
-// blocks. Blocks are yielded at most once, in a deterministic order;
-// an early break stops the walk. Seed blocks themselves are not
-// yielded as such, but a seed that is also a merge point (e.g. a loop
-// header) is.
+// blocks. For each frontier block, it also yields the block whose
+// outgoing edge discovered the frontier. Frontier blocks are yielded
+// at most once, in a deterministic order; an early break stops the walk.
+// Seed blocks themselves are not yielded as such, but a seed that is
+// also a merge point (e.g. a loop header) is.
 // seeds iterator is consumed in full before the walk starts (the current
 // algorithm has to walk deeper roots first).
 // CFG must not change while iteration is in progress; inserting
 // values (like phis) is fine.
-func (f *Func) IterDomFrontierPlus(seeds iter.Seq[*Block]) iter.Seq[*Block]
+func (f *Func) IterDomFrontierPlus(seeds iter.Seq[*Block]) iter.Seq2[*Block, *Block]

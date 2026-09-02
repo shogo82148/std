@@ -14,9 +14,9 @@ func (c *Cache) AllocSparseSet(n int) *SparseSet
 
 func (c *Cache) FreeSparseSet(s *SparseSet)
 
-func (c *Cache) AllocSparseMap(n int) *sparseMap
+func (c *Cache) AllocSparseMap(n int) *SparseMap
 
-func (c *Cache) FreeSparseMap(s *sparseMap)
+func (c *Cache) FreeSparseMap(s *SparseMap)
 
 func (c *Cache) AllocSparseMapPos(n int) *SparseMapPos
 

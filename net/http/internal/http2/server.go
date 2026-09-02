@@ -37,10 +37,6 @@ import (
 type Server struct {
 	mu          sync.Mutex
 	activeConns map[*serverConn]struct{}
-
-	// Pool of error channels. This is per-Server rather than global
-	// because channels can't be reused across synctest bubbles.
-	errChanPool sync.Pool
 }
 
 func (s *Server) Configure(conf ServerConfig, tcfg *tls.Config) error
