@@ -66,11 +66,16 @@ type Operand struct {
 	// and unknown operands so diagnostics can name what was skipped.
 	Raw string
 
-	// role is the operand's internal role: "destination", "op0"/"op1"/..., or
-	// "mask" (a governing predicate). It drives out/in/inVariant partitioning at
-	// emit time but is NOT emitted (simdgen orders operands by AsmPos, so a role
-	// field in the YAML would be redundant).
+	// role is the operand's internal role: "destination" or "op0"/"op1"/....
+	// It drives out/in partitioning at emit time but is NOT emitted (simdgen
+	// orders operands by AsmPos, so a role field in the YAML would be
+	// redundant). A governing predicate has no role; it is marked by governing.
 	role string
+	// governing marks the governing predicate — the operand selecting which
+	// lanes the instruction acts on, as opposed to a predicate read as data.
+	// It is classified from the spec's own explanation text for the symbol and
+	// emitted as the def's "governing" field.
+	governing bool
 	// arngLink is the <a> link of this operand's arrangement symbol (<T>/<Ta>/
 	// <Tb>), used to resolve its per-operand element widths. Empty if the
 	// operand has a fixed or no arrangement.
@@ -87,4 +92,9 @@ type Operand struct {
 	isList bool
 	// regName is the inner register symbol, e.g. "Zdn", "Zm", "Pg".
 	regName string
+	// predRegName is the symbol this operand has in each paired predicated
+	// encoding, indexed to match the operation's predicated variants (and so the
+	// inVariant tuple the def carries). It is nil when the operation has no
+	// predicated form.
+	predRegName []string
 }

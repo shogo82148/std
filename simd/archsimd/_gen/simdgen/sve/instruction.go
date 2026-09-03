@@ -46,4 +46,9 @@ type Instruction struct {
 	// If nil, the first iclass is used.
 	iclass        *xmlspec.Iclass
 	mnemonicCache string
+	// predVariants is set on the unpredicated instruction of a
+	// predicated/unpredicated pair (see [groupPredicationForms]), one entry per
+	// predicated machine op the pair implies. It is nil for an instruction that
+	// comes in one form only.
+	predVariants []predVariant
 }

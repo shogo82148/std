@@ -31,6 +31,19 @@ type Operation struct {
 	//
 	// For masked operations, this will have the mask operand appended.
 	In []types.Operand
+
+	// sveMergingPrefixed marks the MOVPRFX-prefixed variant of a merging
+	// predicated operation, built by [Operation.sveMergingPrefixedOp]. It exists
+	// only to give that variant a machine-op name of its own.
+	sveMergingPrefixed bool
+
+	// sveMergeSourceIn0 marks a merging predicated operation whose first input
+	// is the value the destination starts out holding, and which therefore has
+	// to share that input's register. Merging predication leaves the inactive
+	// lanes of the destination alone, so that value is an operand of the
+	// operation whether the instruction names it (a constructive one does, as
+	// ABS <Zd>, <Pg>/M, <Zn>) or a MOVPRFX has to put it there.
+	sveMergeSourceIn0 bool
 }
 
 func (o *Operation) IsMasked() bool
