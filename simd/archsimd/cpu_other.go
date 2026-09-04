@@ -17,3 +17,6 @@ var ARM64 ARM64Features
 func (ARM64Features) PMULL() bool
 
 func (ARM64Features) SVE() bool
+
+// SVE2 returns whether the CPU supports the SVE2 extension.
+func (ARM64Features) SVE2() bool
