@@ -2,6 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Trace event writing API for trace2runtime.go.
+// Trace event writing API for traceruntime.go.
 
 package runtime

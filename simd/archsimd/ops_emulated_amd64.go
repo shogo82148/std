@@ -95,3 +95,33 @@ func (x Uint8x32) Mul(y Uint8x32) Uint8x32
 //
 // Emulated, CPU Feature: AVX512
 func (x Uint8x64) Mul(y Uint8x64) Uint8x64
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Float32x4) ReduceSum() float32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Float64x2) ReduceSum() float64
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Float32x8) ReduceSum() float32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX
+func (x Float64x4) ReduceSum() float64
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX512
+func (x Float32x16) ReduceSum() float32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated, CPU Feature: AVX512
+func (x Float64x8) ReduceSum() float64

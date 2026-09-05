@@ -94,3 +94,13 @@ func (x Uint64x2) CarrylessMultiplyEven(y Uint64x2) Uint64x2
 //
 // Emulated
 func (x Uint64x2) CarrylessMultiplyOdd(y Uint64x2) Uint64x2
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated
+func (x Float32x4) ReduceSum() float32
+
+// ReduceSum returns the sum of all elements in x.
+//
+// Emulated
+func (x Float64x2) ReduceSum() float64

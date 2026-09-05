@@ -93,10 +93,25 @@ type Conn struct {
 	clientProtocol string
 
 	// input/output
-	in, out   halfConn
-	rawInput  bytes.Buffer
-	input     bytes.Reader
-	hand      bytes.Buffer
+	in, out halfConn
+	// rawInput holds raw input, starting with a record header.
+	// It is nil when no input is buffered, in which case the buffer has
+	// been returned to rawInputPool so that connections idle in Read do
+	// not pin a record-sized buffer. It is lazily repopulated from the
+	// pool by readFromUntil.
+	rawInput *bytes.Buffer
+	// smallInput is a small buffer that serves as rawInput while
+	// waiting for a record header after rawInput has been returned to
+	// rawInputPool. It is lazily allocated by readFromUntil and then
+	// kept for the life of the connection.
+	smallInput *bytes.Buffer
+	// input holds application data waiting to be read, from rawInput.Next.
+	input bytes.Reader
+	// hand holds handshake data waiting to be read.
+	// It is nil when no handshake data is buffered, in which case the
+	// buffer has been returned to handPool. Use handBuf and handLen to
+	// access it.
+	hand      *bytes.Buffer
 	buffering bool
 	sendBuf   []byte
 

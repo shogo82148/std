@@ -14,6 +14,7 @@ import (
 
 	"github.com/shogo82148/std/net"
 	"github.com/shogo82148/std/sync"
+	"github.com/shogo82148/std/sync/atomic"
 	"github.com/shogo82148/std/time"
 
 	"golang.org/x/net/http2/hpack"
@@ -39,7 +40,7 @@ type ClientConn struct {
 	t             *Transport
 	tconn         net.Conn
 	tlsState      *tls.ConnectionState
-	atomicReused  uint32
+	reused        atomic.Bool
 	singleUse     bool
 	getConnCalled bool
 
