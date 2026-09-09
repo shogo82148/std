@@ -167,4 +167,9 @@ func (o Operand) OpName(s string) string
 
 func (o Operand) OpNameAndType(s string) string
 
+// Compare sorts operands into basic Go API order: immediates and memory,
+// vectors and scalars, then masks. Ties are broken by their assembly order.
+// Note that operand order may be further overridden on a case-by-case basis.
+func (o Operand) Compare(p Operand) int
+
 func (vs *VectorSize) DecodeUnified(v *unify.Value) error

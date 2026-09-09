@@ -89,26 +89,4 @@
 // are required for phi implementations and helps generate allocations
 // for 2-register architectures.
 
-// Note: regalloc generates a not-quite-SSA output. If we have:
-//
-//             b1: x = ... : AX
-//                 x2 = StoreReg x
-//                 ... AX gets reused for something else ...
-//                 if ... goto b3 else b4
-//
-//   b3: x3 = LoadReg x2 : BX       b4: x4 = LoadReg x2 : CX
-//       ... use x3 ...                 ... use x4 ...
-//
-//             b2: ... use x3 ...
-//
-// If b3 is the primary predecessor of b2, then we use x3 in b2 and
-// add a x4:CX->BX copy at the end of b4.
-// But the definition of x3 doesn't dominate b2.  We should really
-// insert an extra phi at the start of b2 (x5=phi(x3,x4):BX) to keep
-// SSA form. For now, we ignore this problem as remaining in strict
-// SSA form isn't needed after regalloc. We'll just leave the use
-// of x3 not dominated by the definition of x3, and the CX->BX copy
-// will have no use (so don't run deadcode after regalloc!).
-// TODO: maybe we should introduce these extra phis?
-
 package ssacompile
