@@ -48,7 +48,7 @@ type Options struct {
 // struct.
 //
 // If fs is nil, the returned options are remembered globally as defaults for
-// zero-value Files instances.
+// zero-value Files instances. This should only be used in the main module.
 func RegisterFlags(fs *flag.FlagSet) *Options
 
 // InputPath resolves relPath relative to either o.OutDir/src, if that file
@@ -114,3 +114,5 @@ func (f *Files) Flush() error
 // It is intended to be deferred at the beginning of main (e.g., `defer files.FlushOrExit()`).
 // Hence, if invoked as part of a panic, it skips flushing and instead allows the panic to propagate.
 func (f *Files) FlushOrExit()
+
+func DefaultGOROOT() string

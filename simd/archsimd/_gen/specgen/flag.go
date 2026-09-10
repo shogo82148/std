@@ -5,7 +5,7 @@
 package specgen
 
 // FindSpecDir returns the path to the standard spec package
-// $GOROOT/simd/internal/spec.
-func FindSpecDir() (string, error)
+// GOROOT/simd/internal/spec. If GOROOT is "", it uses gentools.DefaultGOROOT().
+func FindSpecDir(goroot string) (string, error)
 
-func MustFindSpecDir() string
+func MustFindSpecDir(goroot string) string

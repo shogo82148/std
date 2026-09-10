@@ -52,4 +52,6 @@ func (o *Operation) SkipMaskedMethod() bool
 
 func (o *Operation) DecodeUnified(v *unify.Value) error
 
+func (o *Operation) EncodeUnified() *unify.Value
+
 func (o *Operation) VectorWidth() int

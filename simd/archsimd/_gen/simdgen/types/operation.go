@@ -5,6 +5,7 @@
 package types
 
 import (
+	"github.com/shogo82148/std/regexp"
 	"github.com/shogo82148/std/simd/archsimd/_gen/specgen/specexpr"
 	"github.com/shogo82148/std/simd/archsimd/_gen/unify"
 )
@@ -73,12 +74,15 @@ const MaxVectorBits = 256
 type Operand struct {
 	Class string
 
-	Go     *string
+	Go *string
+
 	AsmPos int
 
-	Base     *string
-	ElemBits *int
-	Bits     VectorSize
+	Base       *string
+	EncodeBase *regexp.Regexp
+	ElemBits   *int
+	Bits       VectorSize
+	EncodeBits *VectorSize
 
 	Const *string
 	// Optional immediate arg offsets. If this field is non-nil,
@@ -173,3 +177,5 @@ func (o Operand) OpNameAndType(s string) string
 func (o Operand) Compare(p Operand) int
 
 func (vs *VectorSize) DecodeUnified(v *unify.Value) error
+
+func (vs *VectorSize) EncodeUnified() *unify.Value
