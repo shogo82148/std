@@ -5,6 +5,7 @@
 package specgen
 
 import (
+	"github.com/shogo82148/std/go/token"
 	"github.com/shogo82148/std/go/types"
 	"github.com/shogo82148/std/simd/archsimd/_gen/specgen/specexpr"
 )
@@ -16,12 +17,23 @@ type Func struct {
 	// Doc is the function documentation, without any leading comment markers
 	Doc string
 
+	// Commutative indicates that this operation produces the same result
+	// regardless of the order of its arguments in Recv and In.
+	Commutative bool
+
+	// The general category of this function or method (useful for overview
+	// documentation).
+	Category string
+
 	// Recv, if non-zero, is the shape of the receiver. The name of the receiver
 	// is always "x".
 	Recv Arg
 
 	In  []Arg
 	Out []Arg
+
+	// Pos is the source position of this definition.
+	Pos token.Position
 
 	// specFunc and instance describe the underlying spec function and its
 	// instantiation that led to this API function.

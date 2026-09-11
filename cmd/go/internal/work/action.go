@@ -160,6 +160,14 @@ func (b *Builder) NewObjdir() string
 // AutoAction returns the "right" action for go build or go install of p.
 func (b *Builder) AutoAction(s *modload.Loader, mode, depMode BuildMode, p *load.Package) *Action
 
+// BuildExportAction returns the action to start the compile for p.
+// The compile process is logically split between the export action
+// and the compile action. The export action completing signifies the
+// availability of the export data for dependent build actions, while
+// the build action completing signifies that the complete archive for
+// a package is ready.
+func (b *Builder) BuildExportAction(mode, depMode BuildMode, p *load.Package) *Action
+
 // CompileAction returns the action for compiling and possibly installing
 // (according to mode) the given package. The resulting action is only
 // for building packages (archives), never for linking executables.

@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//simdgen:category Load/Store
+
 package spec
 
 // BroadcastZ returns a vector with the input x assigned to all elements of the
